@@ -353,7 +353,6 @@
 !missing-pinvoke! CFAttributedStringReplaceString is not bound
 !missing-pinvoke! CFAttributedStringSetAttribute is not bound
 !missing-pinvoke! CFAttributedStringSetAttributes is not bound
-!missing-pinvoke! CFAutorelease is not bound
 !missing-pinvoke! CFBagAddValue is not bound
 !missing-pinvoke! CFBagApplyFunction is not bound
 !missing-pinvoke! CFBagContainsValue is not bound

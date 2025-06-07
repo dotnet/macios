@@ -297,11 +297,11 @@ namespace MediaPlayer {
 				GC.KeepAlive (result);
 			}
 			if (TryGetValue (source, MPNowPlayingInfoCenter.PropertyCollectionIdentifier, out result))
-				CollectionIdentifier = (string) (result as NSString);
+				CollectionIdentifier = (string?) (result as NSString);
 			if (TryGetValue (source, MPNowPlayingInfoCenter.PropertyExternalContentIdentifier, out result))
-				ExternalContentIdentifier = (string) (result as NSString);
+				ExternalContentIdentifier = (string?) (result as NSString);
 			if (TryGetValue (source, MPNowPlayingInfoCenter.PropertyExternalUserProfileIdentifier, out result))
-				ExternalUserProfileIdentifier = (string) (result as NSString);
+				ExternalUserProfileIdentifier = (string?) (result as NSString);
 			if (TryGetValue (source, MPNowPlayingInfoCenter.PropertyPlaybackProgress, out result))
 				PlaybackProgress = (result as NSNumber)?.FloatValue;
 			if (TryGetValue (source, MPNowPlayingInfoCenter.PropertyMediaType, out result))
@@ -327,17 +327,17 @@ namespace MediaPlayer {
 				PlaybackDuration = (result as NSNumber)?.DoubleValue;
 
 			if (TryGetValue (source, MPMediaItem.AlbumTitleProperty, out result))
-				AlbumTitle = (string) (result as NSString);
+				AlbumTitle = (string?) (result as NSString);
 			if (TryGetValue (source, MPMediaItem.ArtistProperty, out result))
-				Artist = (string) (result as NSString);
+				Artist = (string?) (result as NSString);
 			if (TryGetValue (source, MPMediaItem.ArtworkProperty, out result))
 				Artwork = result as MPMediaItemArtwork;
 			if (TryGetValue (source, MPMediaItem.ComposerProperty, out result))
-				Composer = (string) (result as NSString);
+				Composer = (string?) (result as NSString);
 			if (TryGetValue (source, MPMediaItem.GenreProperty, out result))
-				Genre = (string) (result as NSString);
+				Genre = (string?) (result as NSString);
 			if (TryGetValue (source, MPMediaItem.TitleProperty, out result))
-				Title = (string) (result as NSString);
+				Title = (string?) (result as NSString);
 		}
 	}
 

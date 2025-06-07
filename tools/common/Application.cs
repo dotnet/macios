@@ -148,7 +148,7 @@ namespace Xamarin.Bundler {
 		public List<string> WarnOnTypeRef = new List<string> ();
 
 		public bool EnableSGenConc;
-		public bool EnableProfiling;
+		public bool EnableDiagnostics;
 		public bool? DebugTrack;
 
 		public Dictionary<string, string> EnvironmentVariables = new Dictionary<string, string> ();

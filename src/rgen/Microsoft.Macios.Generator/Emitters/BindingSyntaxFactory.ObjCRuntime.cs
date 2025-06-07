@@ -870,4 +870,71 @@ static partial class BindingSyntaxFactory {
 	internal static string? GetObjCMessageSendMethod (in Method method, bool isSuper = false, bool isStret = false)
 		=> GetObjCMessageSendMethodName (method.ExportMethodData, method.ReturnType, method.Parameters, isSuper,
 			isStret);
+
+	/// <summary>
+	/// Gets the name of the NSValue instance method used to retrieve its underlying value, based on the provided type.
+	/// For example, if the type is CGPoint, this returns "CGPointValue".
+	/// </summary>
+	/// <param name="type">The <see cref="TypeInfo"/> representing the expected underlying type of the NSValue.</param>
+	/// <returns>A string representing the name of the NSValue method to call (e.g., "CGPointValue", "CGRectValue"),
+	/// or an empty string if the type is not a supported NSValue underlying type.</returns>
+	internal static string GetNSValueValue (in TypeInfo type)
+	{
+		// return the method needed to retrieve the value from the NSValue object based on the type
+#pragma warning disable format
+		// get the factory method based on the parameter type, if it is not found, return null
+		return type switch { 
+			{ FullyQualifiedName: "CoreGraphics.CGAffineTransform" } => "CGAffineTransformValue", 
+			{ FullyQualifiedName: "Foundation.NSRange" } => "RangeValue", 
+			{ FullyQualifiedName: "CoreGraphics.CGVector" } => "CGVectorValue", 
+			{ FullyQualifiedName: "SceneKit.SCNMatrix4" } => "SCNMatrix4Value", 
+			{ FullyQualifiedName: "CoreLocation.CLLocationCoordinate2D" } => "MKCoordinateValue", 
+			{ FullyQualifiedName: "SceneKit.SCNVector3" } => "VectorValue", 
+			{ FullyQualifiedName: "SceneKit.SCNVector4" } => "VectorValue", 
+			{ FullyQualifiedName: "CoreGraphics.CGPoint" } => "CGPointValue", 
+			{ FullyQualifiedName: "CoreGraphics.CGRect" } => "CGRectValue", 
+			{ FullyQualifiedName: "CoreGraphics.CGSize" } => "CGSizeValue", 
+			{ FullyQualifiedName: "UIKit.UIEdgeInsets" } => "UIEdgeInsetsValue", 
+			{ FullyQualifiedName: "UIKit.UIOffset" } => "UIOffsetValue", 
+			{ FullyQualifiedName: "MapKit.MKCoordinateSpan" } => "MKCoordinateSpanValue", 
+			{ FullyQualifiedName: "CoreMedia.CMTimeRange" } => "CMTimeRangeValue", 
+			{ FullyQualifiedName: "CoreMedia.CMTime" } => "CMTimeValue", 
+			{ FullyQualifiedName: "CoreMedia.CMTimeMapping" } => "CMTimeMappingValue", 
+			{ FullyQualifiedName: "CoreAnimation.CATransform3D" } => "CATransform3DValue",
+			_ => string.Empty,
+		};
+#pragma warning restore format
+	}
+
+	/// <summary>
+	/// Gets the name of the NSNumber instance method used to retrieve its underlying value, based on the provided type.
+	/// For example, if the type is `int`, this returns "Int32Value".
+	/// </summary>
+	/// <param name="type">The <see cref="TypeInfo"/> representing the expected underlying type of the NSNumber.</param>
+	/// <returns>A string representing the name of the NSNumber method to call (e.g., "Int32Value", "DoubleValue"),
+	/// or an empty string if the type is not a supported NSNumber underlying type.</returns>
+	internal static string GetNSNumberValue (in TypeInfo type)
+	{
+#pragma warning disable format
+		return type switch {
+			{ Name: "nint" } => "NIntValue",
+			{ Name: "nuint" } => "NUIntValue",
+			{ Name: "nfloat" or "NFloat" } => "NFloatValue",
+			{ SpecialType: SpecialType.System_Boolean } => "BooleanValue",
+			{ SpecialType: SpecialType.System_Byte } => "ByteValue",
+			{ SpecialType: SpecialType.System_Double } => "DoubleValue",
+			{ SpecialType: SpecialType.System_Single } => "FloatValue",
+			{ SpecialType: SpecialType.System_Int16 } => "Int16Value",
+			{ SpecialType: SpecialType.System_Int32 } => "Int32Value",
+			{ SpecialType: SpecialType.System_Int64 } => "Int64Value",
+			{ SpecialType: SpecialType.System_SByte } => "SByteValue",
+			{ SpecialType: SpecialType.System_UInt16 } => "UInt16Value",
+			{ SpecialType: SpecialType.System_UInt32 } => "UInt32Value",
+			{ SpecialType: SpecialType.System_UInt64 } => "UInt64Value",
+			{ SpecialType: SpecialType.System_IntPtr } => "NIntValue",
+			{ SpecialType: SpecialType.System_UIntPtr } => "NUIntValue",
+			_ => string.Empty,
+		};
+#pragma warning restore format
+	}
 }

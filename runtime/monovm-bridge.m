@@ -413,7 +413,7 @@ static MonoToggleRefStatus
 gc_toggleref_callback (MonoObject *object)
 {
 	MonoToggleRefStatus res;
-	uint8_t flags = xamarin_get_nsobject_flags (object);
+	uint32_t flags = xamarin_get_nsobject_flags (object);
 
 	res = xamarin_gc_toggleref_callback (flags, NULL, xamarin_get_nsobject_handle, object);
 

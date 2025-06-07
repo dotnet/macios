@@ -2,6 +2,7 @@ using System;
 using System.ComponentModel;
 // the linker will remove the attributes
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 
 #nullable enable
 
@@ -50,6 +51,13 @@ namespace ObjCRuntime {
 		public static void ThrowObjectDisposedException (object o)
 		{
 			throw new ObjectDisposedException (o.GetType ().ToString ());
+		}
+
+		internal static T ThrowIfNull<T> (T? value, [CallerArgumentExpression ("value")] string paramName = "") where T : class
+		{
+			if (value is null)
+				ThrowArgumentNullException (paramName);
+			return value;
 		}
 	}
 }

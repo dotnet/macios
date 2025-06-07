@@ -24688,7 +24688,7 @@ namespace AppKit {
 		/// <param name="identifier">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[Wrap ("this (identifier.GetConstant ())")]
+		[Wrap ("this (identifier.GetConstant ()!)")]
 		NativeHandle Constructor (NSTouchBarItemIdentifier identifier);
 
 		[Export ("identifier")]

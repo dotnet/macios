@@ -378,14 +378,14 @@ namespace CoreServices {
 		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos14.0")]
-		public static string GetDefaultRoleHandlerForContentType (string contentType, LSRoles roles = LSRoles.All)
+		public static string? GetDefaultRoleHandlerForContentType (string contentType, LSRoles roles = LSRoles.All)
 		{
 			if (contentType is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (contentType));
 
 			var contentTypeHandle = CFString.CreateNative (contentType);
 			try {
-				return (string) Runtime.GetNSObject<NSString> (
+				return Runtime.GetNSObject<NSString> (
 					LSCopyDefaultRoleHandlerForContentType (contentTypeHandle, roles)
 				);
 			}
@@ -470,14 +470,14 @@ namespace CoreServices {
 		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos10.15", "Use 'GetDefaultApplicationUrlForUrl' instead.")]
-		public static string GetDefaultHandlerForUrlScheme (string urlScheme)
+		public static string? GetDefaultHandlerForUrlScheme (string urlScheme)
 		{
 			if (urlScheme is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (urlScheme));
 
 			var urlSchemeHandle = CFString.CreateNative (urlScheme);
 			try {
-				return (string) Runtime.GetNSObject<NSString> (
+				return Runtime.GetNSObject<NSString> (
 					LSCopyDefaultHandlerForURLScheme (urlSchemeHandle)
 				);
 			}

@@ -1,0 +1,1113 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LCX SchemaVersion="6.0" Name="D:\a\_work\1\s\macios\src\Resources.resx" PsrId="211" FileType="1" SrcCul="en-US" TgtCul="es-ES" xmlns="http://schemas.microsoft.com/locstudio/2006/6/lcx">
+  <OwnedComments>
+    <Cmt Name="Dev" />
+    <Cmt Name="LcxAdmin" />
+    <Cmt Name="Rccx" />
+  </OwnedComments>
+  <Settings Name="@vsLocTools@\default.lss" Type="Lss" />
+  <Item ItemId=";Resources.resx" ItemType="0" PsrId="211" Leaf="false">
+    <Disp Icon="Expand" Expand="true" Disp="true" LocTbl="false" />
+    <Item ItemId=";Strings" ItemType="0" PsrId="211" Leaf="false">
+      <Disp Icon="Str" Disp="true" LocTbl="false" />
+      <Item ItemId=";BI0000" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Unexpected error - Please fill a bug report at https://github.com/dotnet/macios/issues/new]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Error inesperado: rellene un informe de errores en https://github.com/dotnet/macios/issues/new]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI0001" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The .NET runtime could not load the {0} type. Message: {1}]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[.NET Runtime no pudo cargar el tipo de {0}. Mensaje: {1}]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI0002" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Could not compile the API bindings.]D;]A;		{0}]D;]A;		]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[No se pudieron compilar los enlaces de API.]D;]A;		{0}]D;]A;		]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI0003" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Frameworks were not loaded for platform {0}.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[No se cargaron los marcos para la plataforma {0}.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI0004" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Universe was not loaded for platform {0}.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[El universo no se cargó para la plataforma {0}.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI0026" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Could not parse the command line argument '--warnaserror': {0}]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[No se pudo analizar el argumento de la línea de comandos "--warnaserror": {0}]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI0027" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Could not parse the command line argument '{0}': {1}]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[No se pudo analizar el argumento de la línea de comandos "{0}": {1}]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI0028" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[No C# compiler has been specified (using --compiler or --compile-command).]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[No se ha especificado ningún compilador de C# (mediante --compiler o --compile-command).]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI0068" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Invalid value for target framework: {0}.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Valor no válido para la plataforma de destino: {0}.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI0070" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Invalid target framework: {0}. Valid target frameworks are: {1}.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Plataforma de destino no válida: {0}. Las plataformas de destino válidas son: {1}.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI0086" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[A target framework (--target-framework) must be specified.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Se debe especificar una plataforma de destino (--target-framework).]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI0088" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Internal error: don't know how to create ref/out (input) code for {0} in {1}. Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new).]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Error interno: no se sabe cómo crear código de ref/out (entrada) para {0} en {1}. Envíe un informe de errores con un caso de prueba (https://github.com/dotnet/macios/issues/new).]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI0089" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Internal error: property {0} doesn't have neither a getter nor a setter.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Error interno: la propiedad {0} no tiene ni un captador ni un establecedor.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI0099" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Internal error {0}. Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new).]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Error interno {0}. Envíe un informe de errores con un caso de prueba (https://github.com/dotnet/macios/issues/new).]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1000" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Could not compile the generated API bindings.	]D;]A;		{0}]D;]A;		]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[No se pudieron compilar los enlaces de API generados.	]D;]A;		{0}]D;]A;		]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1001" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Do not know how to make a trampoline for {0}]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[No se sabe cómo crear un trampolín para {0}]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1002" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Unknown kind {0} in method '{1}.{2}']]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Tipo desconocido {0} en el método "{1}.{2}"]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1003" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The delegate method {0}.{1} needs to take at least one parameter]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[El método delegado {0}.{1} debe aceptar al menos un parámetro]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1004" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The delegate method {0}.{1} is missing the [EventArgs]5D; attribute (has {2} parameters)]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Falta el atributo [EventArgs]5D; en el método delegado {0}.{1} (tiene parámetros {2})]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1005" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[EventArgs in {0}.{1} attribute should not include the text `EventArgs' at the end]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[EventArgs en el atributo {0}.{1} no debe incluir el texto "EventArgs" al final]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1006" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The delegate method {0}.{1} is missing the [DelegateName]5D; attribute (or EventArgs)]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Falta el atributo [DelegateName]5D; (o EventArgs) en el método delegado {0}.{1}]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1007" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Unknown attribute {0} on {1}.{2}]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Atributo desconocido {0} en {1}.{2}]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1008" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[[IsThreadStatic]5D; is only valid on properties that are also [Static]5D;]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[[IsThreadStatic]5D; solo es válido en propiedades que también son [Static]5D;]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1009" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[No selector specified for method `{0}.{1}']]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[No se especificó un selector para el método "{0}.{1}"]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1010" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[No Export attribute on {0}.{1} property]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[No hay ningún atributo de exportación en la propiedad {0}.{1}]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1011" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Do not know how to extract type {0}/{1} from an NSDictionary]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[No se sabe cómo extraer el tipo {0}/{1} de NSDictionary]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1012" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[No Export or Bind attribute defined on {0}.{1}]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[No se definió ningún atributo de exportación o enlace en {0}.{1}]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1013" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Unsupported type for Fields (string), you probably meant NSString]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Tipo no admitido para Fields (cadena), probablemente quiso decir NSString]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1014" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Unsupported type for Fields: {0} for '{1}'.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Tipo no admitido para campos: {0} para "{1}".]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1015" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[In class {0} You specified the Events property, but did not bind those to names with Delegates]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[En la clase {0}, ha especificado la propiedad Events, pero no se enlazaron esos objetos a los nombres con Delegates]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1016" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The delegate method {0}.{1} is missing the [DefaultValue]5D; attribute]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Falta el atributo [DefaultValue]5D; en el método delegado {0}.{1}]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1017" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Do not know how to make a signature for {0}]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[No se sabe cómo crear una firma para {0}]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1018" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[No [Export]5D; attribute on property {0}.{1}]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[No hay ningún atributo [Export]5D; en la propiedad {0}.{1}]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1019" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Invalid [NoDefaultValue]5D; attribute on method '{0}.{1}']]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Atributo [NoDefaultValue]5D; no válido en el método "{0}.{1}"]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1020" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Unsupported type {0} used on exported method {1}.{2} -> {3}]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Tipo {0} no admitido usado en el método exportado {1}.{2} -> {3}]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1021" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Unsupported type for read/write Fields: {0} for {1}.{2}]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Tipo no admitido para campos de lectura y escritura: {0} para {1}.{2}]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1022" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Model classes can not be categories]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Las clases de modelo no pueden ser categorías]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1023" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The number of Events (Type) and Delegates (string) must match for `{0}`]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[El número de eventos (Tipo) y delegados (cadena) debe coincidir con "{0}"]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1024" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[No selector specified for property '{0}.{1}']]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[No se especificó un selector para la propiedad "{0}.{1}"]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1025" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[[Static]5D; and [Protocol]5D; are mutually exclusive ({0})]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[[Static]5D; y [Protocol]5D; son mutuamente excluyentes ({0})]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1026" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[`{0}`: Enums attributed with [{1}]5D; must have an underlying type of `long` or `ulong`]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA["{0}": las enumeraciones atribuidas con [{1}]5D; deben tener un tipo subyacente de "long" o "ulong"]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1027" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Support for ZeroCopy strings is not implemented. Strings will be marshalled as NSStrings.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[No se ha implementado la compatibilidad con cadenas de ZeroCopy. Las cadenas se deben serializar como NSStrings.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1028" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Internal sanity check failed, please file a bug report (https://github.com/dotnet/macios/issues/new) with a test case.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Error en la comprobación de integridad interna. Envíe un informe de errores (https://github.com/dotnet/macios/issues/new) con un caso de prueba.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1029" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Internal error: invalid enum mode for type '{0}']]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Error interno: modo de enumeración no válido para el tipo "{0}"]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1030" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[{0} cannot have [BaseType(typeof({1}))]5D; as it creates a circular dependency]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[{0} no puede tener [BaseType(typeof ({1}))]5D; porque crea una dependencia circular]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1031" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The [Target]5D; attribute is not supported for the Unified API (found on the member '{0}.{1}'). For Objective-C categories, create an api definition interface with the [Category]5D; attribute instead.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[No se admite el atributo [Target]5D; para Unified API (que se encuentra en el miembro "{0}.{1}"). Para las categorías de Objective-C, cree en su lugar una interfaz de definición de API con el atributo [Category]5D;.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1032" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[No support for setters in StrongDictionary classes for type {0} in {1}.{2}]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[No compatible con los establecedores de las clases StrongDictionary para el tipo {0} en {1}.{2}]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1033" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Limitation: can not automatically create strongly typed dictionary for ({0}) the value type of the {1}.{2} property]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Limitación: no se puede crear automáticamente un diccionario con establecimiento inflexible de tipos para ({0}) el tipo de valor de la propiedad {1}.{2}]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1035" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The property {0} on class {1} is hiding a property from a parent class {2} but the selectors do not match.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[La propiedad {0} de la clase {1} oculta una propiedad de una clase principal {2} pero los selectores no coinciden.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1036" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The last parameter in the method '{0}.{1}' must be a delegate (it's '{2}').]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[El último parámetro del método "{0}.{1}" debe ser un delegado (es "{2}").]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1037" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The selector {0} on type {1} is found multiple times with both read only and write only versions, with no read/write version.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[El selector {0} en el tipo {1} se ha encontrado varias veces con versiones de solo lectura y solo escritura, sin versión de lectura y escritura.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1038" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The selector {0} on type {1} is found multiple times with different return types.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[El selector {0} en el tipo {1} se ha encontrado varias veces con distintos tipos de valor devuelto.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1039" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The selector {0} on type {1} is found multiple times with different argument length {2} : {3}.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[El selector {0} en el tipo {1} se ha encontrado varias veces con diferente longitud de argumento {2} : {3}.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1040" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The selector {0} on type {1} is found multiple times with different argument out states on argument {2}.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[El selector {0} en el tipo {1} se ha encontrado varias veces con distintos estados de salida de argumento en el argumento {2}.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1041" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The selector {0} on type {1} is found multiple times with different argument types on argument {2} - {3} : {4}.		]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[El selector {0} en el tipo {1} se ha encontrado varias veces con distintos tipos de argumento en el argumento {2} - {3} : {4}.		]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1042" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Missing '[Field (LibraryName=value)]5D;' for {0} (e.g."__Internal")]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Falta "[Field (LibraryName=value)]5D;" para {0} (e.g."__Internal")]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1043" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Repeated overload {0} and no [DelegateApiNameAttribute]5D; provided to generate property name on host class.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Se repitió la sobrecarga {0} y no se proporcionó ningún elemento [DelegateApiNameAttribute]5D; para generar el nombre de la propiedad en la clase de host.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1044" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Repeated name '{0}' provided in [DelegateApiNameAttribute]5D;.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Nombre repetido "{0}" proporcionado en [DelegateApiNameAttribute]5D;.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1045" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Only a single [DefaultEnumValue]5D; attribute can be used inside enum {0}.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Solo se puede usar un atributo [DefaultEnumValue]5D; dentro de la enumeración {0}.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1046" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The [Field]5D; constant {0} cannot only be used once inside enum {1}.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[La constante [Field]5D; {0} no se puede usar solo una vez en enumeraciones {1}.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1047" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Unsupported platform: {0}. Please file a bug report (https://github.com/dotnet/macios/issues/new) with a test case.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Plataforma no admitida: {0}. Envíe un informe de errores (https://github.com/dotnet/macios/issues/new) con un caso de prueba.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1048" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Unsupported type {0} decorated with [BindAs]5D;]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Tipo {0} no admitido decorado con [BindAs]5D;]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1049" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Could not {0} type {1} from {2} {3} used on member {4} decorated with [BindAs]5D;.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[No se pudo {0} el tipo {1} de {2} {3} usado en el miembro {4} decorado con [BindAs]5D;.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1050" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[[BindAs]5D; cannot be used inside Protocol or Model types. Type: {0}]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[[BindAs]5D; no se puede usar dentro de los tipos de protocolo o modelo. Tipo: {0}]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1051" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Internal error: Don't know how to get attributes for {0}. Please file a bug report (https://github.com/dotnet/macios/issues/new) with a test case.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Error interno: no se sabe cómo obtener los atributos de {0}. Envíe un informe de errores (https://github.com/dotnet/macios/issues/new) con un caso de prueba.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1052" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Internal error: Could not find the type {0} in the assembly {1}. Please file a bug report (https://github.com/dotnet/macios/issues/new) with a test case.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Error interno: no se pudo encontrar el tipo {0} en el ensamblado {1}. Envíe un informe de errores (https://github.com/dotnet/macios/issues/new) con un caso de prueba.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1053" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Internal error: unknown target framework '{0}'.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Error interno: plataforma de destino "{0}" desconocida.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1054" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Internal error: can't convert type '{0}' (unknown assembly). Please file a bug report (https://github.com/dotnet/macios/issues/new) with a test case.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Error interno: no se puede convertir el tipo "{0}" (ensamblado desconocido). Envíe un informe de errores (https://github.com/dotnet/macios/issues/new) con un caso de prueba.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1055" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Internal error: failed to convert type '{0}'. Please file a bug report (https://github.com/dotnet/macios/issues/new) with a test case.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Error interno: no se pudo convertir el tipo "{0}". Envíe un informe de errores (https://github.com/dotnet/macios/issues/new) con un caso de prueba.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1056" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Internal error: failed to instantiate mock attribute '{0}' (could not convert type constructor argument #{1}). Please file a bug report (https://github.com/dotnet/macios/issues/new) with a test case.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Error interno: no se pudo crear una instancia del atributo ficticio "{0}" (no se pudo convertir el argumento de constructor de tipo #{1}). Envíe un informe de errores (https://github.com/dotnet/macios/issues/new) con un caso de prueba.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1057" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Internal error: failed to instantiate mock attribute '{0}' (could not convert constructor type #{1} ({2})). Please file a bug report (https://github.com/dotnet/macios/issues/new) with a test case.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Error interno: no se pudo crear una instancia del atributo ficticio "{0}" (no se pudo convertir el tipo de constructor #{1} ({2})). Envíe un informe de errores (https://github.com/dotnet/macios/issues/new) con un caso de prueba.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1058" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Internal error: could not find a constructor for the mock attribute '{0}'. Please file a bug report (https://github.com/dotnet/macios/issues/new) with a test case.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Error interno: no se pudo encontrar un constructor para el atributo ficticio "{0}". Envíe un informe de errores (https://github.com/dotnet/macios/issues/new) con un caso de prueba.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1059" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Found {0} {1} attributes on the member {2}. At most one was expected.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Se encontraron {0} {1} atributos en el miembro {2}. Como mucho se esperaba uno.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1060" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The {0} protocol is decorated with [Model]5D;, but not [BaseType]5D;. Please verify that [Model]5D; is relevant for this protocol; if so, add [BaseType]5D; as well, otherwise remove [Model]5D;.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[El protocolo {0} está decorado con [Model]5D;, pero no con [BaseType]5D;. Compruebe que [Model]5D; es pertinente para este protocolo; si es así, agregue también [BaseType]5D;; de lo contrario, quite [Model]5D;.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1061" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The attribute '{0}' found on '{1}' is not a valid binding attribute. Please remove this attribute.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[El atributo "{0}" encontrado en "{1}" no es un atributo de enlace válido. Quite este atributo.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1062" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The member '{0}.{1}' contains ref/out parameters and must not be decorated with [Async]5D;.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[El miembro "{0}.{1}" contiene parámetros ref/out y no debe estar decorado con [Async]5D;.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1063" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The 'WrapAttribute' can only be used at the property or at getter/setter level at a given time. Property: '{0}.{1}']]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA["WrapAttribute" solo se puede usar en la propiedad o en el nivel de captador/establecedor en un momento dado. Propiedad: "{0}.{1}"]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1064" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Unsupported ref/out parameter type '{0}' for the parameter '{1}' in {2}.{3}.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Tipo de parámetro ref/out "{0}" no admitido para el parámetro "{1}" en {2}.{3}.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1065" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Unsupported parameter type '{0}' for the parameter '{1}' in {2}.{3}.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Tipo de parámetro "{0}" no admitido para el parámetro "{1}" en {2}.{3}.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1066" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Unsupported return type '{0}' in {1}.{2}.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Tipo de valor devuelto "{0}" no admitido en {1}.{2}.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1067" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The type '{0}' is trying to inline the property '{1}' from the protocols '{2}' and '{3}', but the inlined properties don't share the same accessors ('{4}' is read-only, while '${5}' is write-only).]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[El tipo "{0}" intenta insertar la propiedad "{1}" desde los protocolos "{2}" y "{3}", pero las propiedades insertadas no comparten los mismos descriptores de acceso ("{4}" es de solo lectura, mientras que "${5}" es de solo escritura).]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1068" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The type '{0}' is trying to inline the property '{1}' from the protocols '{2}' and '{3}', and the inlined properties use different selectors ({4}.{5} uses '{6}', and {7}.{8} uses '{9}'.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[El tipo "{0}" intenta insertar la propiedad "{1}" de los protocolos "{2}" y "{3}", y las propiedades insertadas usan selectores diferentes ({4}.{5} usa "{6}" y {7}.{8} usa "{9}".]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1069" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The type '{0}' is trying to inline the methods binding the selector '{1}' from the protocols '{2}' and '{3}', using methods with different signatures ('{4}' vs '{5}').]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[El tipo "{0}" intenta insertar los métodos que enlazan el selector "{1}" desde los protocolos "{2}" y "{3}", mediante métodos con distintas firmas ("{4}" frente a "{5}").]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1070" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The type '{0}' is trying to inline the property '{1}' from the protocols '{2}' and '{3}', but the inlined properties are of different types ('{4}' is {5}, while '{6}' is {7}).]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[El tipo "{0}" intenta insertar la propiedad "{1}" de los protocolos "{2}" y "{3}", pero las propiedades insertadas son de tipos diferentes ("{4}" es {5}, mientras que "{6}" es {7}).]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1071" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The BindAs type for the member "{0}.{1}" must be an array when the member's type is an array.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[El tipo BindAs para el miembro "{0}.{1}" debe ser una matriz cuando el tipo del miembro es una matriz.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1072" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The BindAs type for the parameter "{0}" in the method "{1}.{2}" must be an array when the parameter's type is an array.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[El tipo de BindAs del parámetro "{0}" en el método "{1}.{2}" debe ser una matriz cuando el tipo del parámetro es una matriz.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1073" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Internal error: failed to instantiate mock attribute '{0}' (unknown type for the named argument #{1} ({2}). Please file a bug report (https://github.com/dotnet/macios/issues/new) with a test case.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Error interno: no se pudo crear una instancia del atributo ficticio "{0}" (tipo desconocido para el argumento con nombre #{1} ({2}). Envíe un informe de errores (https://github.com/dotnet/macios/issues/new) con un caso de prueba.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1074" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[ Missing [CoreImageFilterProperty]5D; attribute on {0} property {1}]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[ Falta el atributo [CoreImageFilterProperty]5D; en la propiedad {0} {1}]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1075" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Unimplemented CoreImage property type {0}]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Tipo de propiedad CoreImage no implementado: {0}]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1076" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Unable to find selector for {0} on {1} on self or base class]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[No se puede encontrar el selector para {0} en {1}, en la clase propia o de base]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1077" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Async method {0} with more than one result parameter in the callback by neither ResultTypeName or ResultType]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Método Async {0} con más de un parámetro de resultado en la devolución de llamada ni por ResultTypeName ni por ResultType]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1078" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[{0} in method `{1}']]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[{0} en el método "{1}"]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1079" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[{0} in parameter `{1}' from {2}.{3}]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[{0} en el parámetro "{1}" desde {2}.{3}]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1080" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Unsupported type 'ref/out {0}' decorated with [BindAs]5D;]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Tipo no admitido "ref/out {0}" decorado con [BindAs]5D;]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1081" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Unable to find the assembly '{0}'. Add it as a reference using its full path.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[No se encuentra el ensamblado "{0}". Agréguelo como referencia mediante su ruta de acceso completa.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1082" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Selector name missing in [CoreImageFilterProperty]5D; attribute on {0} property {1}]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Falta el nombre del selector en el atributo [CoreImageFilterProperty]5D; en la propiedad {0}, {1}]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1083" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Found {0} {1} attributes on the method {2}'s parameter #{3} ({4}). At most one was expected.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Se encontraron {0} atributos {1} en el parámetro #{3}({4}) del método {2}. Como mucho se esperaba uno.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1084" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Found {0} {1} attributes on the type {2}. At most one was expected.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Se encontraron {0} atributos {1} en el tipo {2}. Como mucho se esperaba uno.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1085" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Found {0} {1} attributes on the assembly {2}. At most one was expected.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Se encontraron {0} atributos {1} en el ensamblado {2}. Como mucho se esperaba uno.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1086" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Found {0} {1} attributes on the module {2}. At most one was expected.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Se encontraron {0} atributos {1} en el módulo {2}. Como mucho se esperaba uno.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1087" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Missing value for the 'LibraryName' property for the '[ErrorDomain]5D;' attribute for {0} (e.g. '[ErrorDomain ("MyDomain", LibraryName = "__Internal")]5D;')]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Falta el valor de la propiedad "LibraryName" del atributo "[ErrorDomain]5D;" para {0} (por ejemplo, '[ErrorDomain ("MyDomain", LibraryName = "__Internal")]5D;')]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1088" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The backing field type '{0}' is invalid. Valid backing field types are: "NSString", "NSNumber", "nint" and "nuint".]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[El tipo de campo de respaldo "{0}" no es válido. Los tipos de campo de respaldo válidos son: "NSString", "NSNumber", "nint" y "nuint".]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1101" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Trying to use a string as a [Target]5D;]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Se está intentando usar una cadena como [Target]5D;]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1102" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Using the deprecated 'EventArgs' for a delegate signature in {0}.{1}, please use 'DelegateName' instead.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Se está usando el elemento "EventArgs" en desuso para una firma de delegado en {0}.{1}. Use "DelegateName" en su lugar.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1103" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA['{0}' does not live under a namespace; namespaces are a highly recommended .NET best practice]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA["{0}" no reside en un espacio de nombres; los espacios de nombres son un procedimiento muy recomendado de .NET]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1104" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Could not load the referenced library '{0}': {1}.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[No se pudo cargar la biblioteca "{0}" a la que se hace referencia: {1}.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1105" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Potential selector/argument mismatch [Export ("{0}")]5D; has {1} arguments and {2} has {3} arguments]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[El selector o argumento potenciales no coinciden con [Export ("{0}")]5D; tiene {1} argumentos y {2} tiene {3} argumentos]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1106" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The parameter {2} in the method {0}.{1} exposes a model ({3}). Please expose the corresponding protocol type instead ({4}.I{5}).]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[El parámetro {2} del método {0}.{1} expone un modelo ({3}). Exponga en su lugar el tipo de protocolo correspondiente ({4}.{5}).]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1107" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The return type of the method {0}.{1} exposes a model ({2}). Please expose the corresponding protocol type instead ({3}.I{4}).]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[El tipo de valor devuelto del método {0}.{1} expone un modelo ({2}). Exponga en su lugar el tipo de protocolo correspondiente ({3}.A{4}).]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1109" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The return type of the method {0}.{1} exposes a model ({2}). Please expose the corresponding protocol type instead ({3}.I{4}).]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[El tipo de valor devuelto del método {0}.{1} expone un modelo ({2}). Exponga en su lugar el tipo de protocolo correspondiente ({3}.A{4}).]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1110" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The property {0}.{1} exposes a model ({2}). Please expose the corresponding protocol type instead ({3}.I{4}).]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[La propiedad {0}.{1} expone un modelo ({2}). Exponga en su lugar el tipo de protocolo correspondiente ({3}.A{4}).]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1111" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Interface '{0}' on '{1}' is being ignored as it is not a protocol. Did you mean '{2}' instead?]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Se omitirá la interfaz "{0}" en "{1}" porque no es un protocolo. ¿Quiso decir en cambio "{2}"?]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1112" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Property {0} should be renamed to 'Delegate' for BaseType.Events and BaseType.Delegates to work.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Se debe cambiar el nombre de la propiedad {0} a "Delegate" para que BaseType.Events y BaseType.Delegates funcionen.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1113" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[BaseType.Delegates were set but no properties could be found. Do ensure that the WrapAttribute is used on the right properties.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Se establecieron BaseType.Delegates, pero no se han encontrado las propiedades. Asegúrese de que se usa WrapAttribute en las propiedades adecuadas.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1114" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Binding error: test unable to find property: {0} on {1}]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Error de enlace: la prueba no puede encontrar la propiedad: {0} en {1}]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1115" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The parameter '{0}' in the delegate '{1}' does not have a [CCallback]5D; or [BlockCallback]5D; attribute. Defaulting to [CCallback]5D;.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[El parámetro "{0}" del delegado "{1}" no tiene ningún atributo [CCallback]5D; ni [BlockCallback]5D;. Se está tomando como predeterminado [CCallback]5D;.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1116" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The parameter '{0}' in the delegate '{1}' does not have a [CCallback]5D; or [BlockCallback]5D; attribute. Defaulting to [CCallback]5D;. Declare a custom delegate instead of using System.Action / System.Func and add the attribute on the corresponding parameter.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[El parámetro "{0}" del delegado "{1}" no tiene ningún atributo [CCallback]5D; ni [BlockCallback]5D;. Se está tomando como predeterminado [CCallback]5D;. Declare un delegado personalizado en lugar de usar System.Action/System.Func y agregue el atributo en el parámetro correspondiente.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1117" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The member '{0}' is decorated with [Static]5D; and its container class {1} is decorated with [Category]5D; this leads to hard to use code. Please inline {0} into {2} class.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[El miembro "{0}" está decorado con [Static]5D; y su clase contenedora {1} está decorada con [Category]5D;, lo que conduce a un código difícil de usar. Inserte {0} en la clase {2}.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1118" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[[NullAllowed]5D; should not be used on methods, like '{0}', but only on properties, parameters and return values.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[[NullAllowed]5D; no se debe usar en métodos, como "{0}", sino solo en propiedades, parámetros y valores devueltos.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1119" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Internal error: found the same type ({0}) in multiple assemblies ({1} and {2}). Please file a bug report (https://github.com/dotnet/macios/issues/new) with a test case.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Error interno: se encontró el mismo tipo ({0}) en varios ensamblados ({1} y {2}). Envíe un informe de errores (https://github.com/dotnet/macios/issues/new) con un caso de prueba.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1120" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The type '{0}' is trying to inline the methods binding the selector '{1}' from the protocols '{2}' and '{3}', using methods with different signatures ('{4}' vs '{5}'). These methods will be ignored.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[El tipo "{0}" intenta insertar los métodos que enlazan el selector "{1}" desde los protocolos "{2}" y "{3}", mediante métodos con distintas firmas ("{4}" frente a "{5}"). Estos métodos se omitirán.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";default" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The error message for code {0} could not be found. Please report this missing message on GitHub at https://github.com/dotnet/macios/issues/new]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[No se encontró el mensaje de error para el código {0}. Informe de este mensaje faltante en GitHub en https://github.com/dotnet/macios/issues/new]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+    </Item>
+  </Item>
+</LCX>

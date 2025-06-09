@@ -34,7 +34,7 @@ namespace Xamarin.MacDev.Tasks {
 		[Required]
 		public bool SdkIsSimulator { get; set; }
 
-		public string DotNetRoot { get; set; }
+		public string DotNetRoot { get; set; } = "";
 		#endregion
 
 		public override bool Execute ()

@@ -176,7 +176,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			//If the directory points to a dotnet pack, we want to ensure the full path 
 			//is actually pointing to a sub-folder in the dotnet SDK
-			if (path.IndexOf(dotnetPacksIdentifier, StringComparison.Ordinal) >= 0 && !path.StartsWith (DotNetRoot, StringComparison.Ordinal)) {
+			if (path.IndexOf (dotnetPacksIdentifier, StringComparison.Ordinal) >= 0 && !path.StartsWith (DotNetRoot, StringComparison.Ordinal)) {
 				var relativePath = path.Substring (path.IndexOf (packsIdentifier, StringComparison.Ordinal));
 				//We combine the relative pack dir (starting from "packs") with the dotnet root to get the full path
 				var newPath = Path.Combine (DotNetRoot, relativePath);

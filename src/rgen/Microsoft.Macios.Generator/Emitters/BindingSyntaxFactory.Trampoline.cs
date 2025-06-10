@@ -559,9 +559,7 @@ static partial class BindingSyntaxFactory {
 
 	/// <summary>
 	/// Returns an array of syntax nodes representing initializations required for a 'byref' parameter before invoking the trampoline.
-	/// This method generates statements to assign the default value to the 'byref' parameter.
-	/// If the parameter type is a pointer, it generates an assignment to the dereferenced pointer (e.g., `*paramName = default;`).
-	/// Otherwise, it generates a direct assignment (e.g., `paramName = default;`).
+	/// This is primarily used for handling 'byref' parameters, which may require temporary variables or conversions.
 	/// </summary>
 	/// <param name="parameter">The delegate parameter, which is expected to be 'byref'.</param>
 	/// <returns>An immutable array of syntax nodes representing the initialization statements for the 'byref' parameter.</returns>
@@ -912,7 +910,7 @@ static partial class BindingSyntaxFactory {
 			.WithParameterList (parametersSyntax.WithLeadingTrivia (Space));
 		return method;
 	}
-
+	
 	/// <summary>
 	/// Returns the method declaration signature for the native trampoline invoke method.
 	/// This is the method that will be directly called from the native side (e.g., by a block invocation).
@@ -968,6 +966,13 @@ static partial class BindingSyntaxFactory {
 		return [expr];
 	}
 
+	/// <summary>
+	/// Returns a list of syntax nodes representing the necessary initializations for a trampoline argument before the native delegate (block) is invoked.
+	/// This is primarily used for handling 'out' parameters, which must be initialized to their default value before the native call.
+	/// </summary>
+	/// <param name="trampolineName">The name of the trampoline. Although not directly used in this specific method's logic for 'out' parameter handling, it's kept for consistency with related methods.</param>
+	/// <param name="parameter">The delegate parameter for which initializations might be needed.</param>
+	/// <returns>An immutable array of syntax nodes for the initializations. Returns an empty array if no special initialization (e.g., for 'out' parameters) is required.</returns>
 	internal static ImmutableArray<SyntaxNode> GetTrampolineNativeInvokeArgumentInitializations (string trampolineName,
 		in DelegateParameter parameter)
 	{
@@ -976,4 +981,80 @@ static partial class BindingSyntaxFactory {
 			_ => []
 		};
 	}
+	
+	
+	/// <summary>
+	/// Returns a list of syntax nodes representing the necessary conversions for a trampoline argument before the native delegate (block) is invoked.
+	/// This method handles converting managed types to their corresponding native representations.
+	/// For example, it can generate code to:
+	/// - Throw an <see cref="ArgumentNullException"/> if a non-nullable reference type parameter is null.
+	/// - Convert a C# string to an NSString.
+	/// - Convert a C# array of INativeObject to an NSArray.
+	/// - Get the handle (IntPtr) of an NSObject or INativeObject.
+	/// - Convert a smart enum to its underlying NSString constant.
+	/// </summary>
+	/// <param name="trampolineName">The name of the trampoline. This can be used to generate unique variable names if needed, though not directly used in all conversion paths.</param>
+	/// <param name="parameter">The delegate parameter for which pre-native-invoke conversions might be needed.</param>
+	/// <returns>An immutable array of syntax nodes for the conversions. Returns an empty array if no special conversion is required.</returns>
+	internal static ImmutableArray<SyntaxNode> GetTrampolinePreNativeInvokeArgumentConversions (string trampolineName,
+		in DelegateParameter parameter)
+	{
+		var builder = ImmutableArray.CreateBuilder<SyntaxNode> ();
+		// if the parameter does not allow the object to be null and it is a reference type, we need to add the null check
+		// otherwise ignore it
+		if (parameter.Type is { IsReferenceType: true, IsNullable: false }) {
+			builder.Add (ThrowIfNull (parameter.Name));
+		}
+
+		// based on the trampoline name and the parameter we will lower the parameter to the expected type for the invoker
+		// which is the lower type of the parameter
+#pragma warning disable format
+		ImmutableArray<SyntaxNode> conversions = parameter.Type switch {
+			// pointer parameter 
+			{ IsPointer: true } => [],
+			
+			// delegate parameter is a NativeHandle
+			{ IsDelegate: true } => [],
+			
+			// return the conversion expression to the native type
+			{ IsSmartEnum: true} =>  [GetNSStringSmartEnumAuxVariable (parameter)!],
+
+			// boolean, convert it to byte
+			{ SpecialType: SpecialType.System_Boolean } => [],
+			
+			{ IsArray: true, ArrayElementType: SpecialType.System_String } => [GetNSArrayAuxVariable (parameter)!],
+
+			{ IsArray: true, ArrayElementIsINativeObject: true } => [GetNSArrayAuxVariable (parameter)!],
+
+			{ SpecialType: SpecialType.System_String } =>  [GetStringAuxVariable (parameter)!],
+
+			{ IsProtocol: true } => [GetHandleAuxVariable (parameter)!],
+
+			// special types
+
+			// CoreMedia.CMSampleBuffer
+			{ FullyQualifiedName: "CoreMedia.CMSampleBuffer" } => [GetHandleAuxVariable (parameter)!],
+
+			// AudioToolbox.AudioBuffers
+			{ FullyQualifiedName: "AudioToolbox.AudioBuffers" } => [GetHandleAuxVariable (parameter)!],
+
+			// general NSObject/INativeObject, has to be after the special types otherwise the special types will
+			// fall into the NSObject/INativeObject case
+
+			// same name, native handle
+			{ IsNSObject: true } => [GetHandleAuxVariable (parameter)!],
+
+			// same name, native handle
+			{ IsINativeObject: true } => [GetHandleAuxVariable (parameter)!],
+			
+			// by default, we will use the parameter name as is and the type of the parameter
+			_ => [],
+		};
+#pragma warning restore format
+		
+		// should contain any null check and the required conversions to the native type
+		builder.AddRange (conversions);
+		return builder.ToImmutable ();
+	}
+	
 }

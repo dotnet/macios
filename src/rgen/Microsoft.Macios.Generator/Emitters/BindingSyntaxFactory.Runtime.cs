@@ -496,6 +496,26 @@ static partial class BindingSyntaxFactory {
 	}
 
 	/// <summary>
+	/// Generates a nameof(variableName) expression.
+	/// </summary>
+	/// <param name="variableName">The name of the variable to use in the nameof expression.</param>
+	/// <returns>An <see cref="InvocationExpressionSyntax"/> representing the nameof call.</returns>
+	internal static InvocationExpressionSyntax NameOf (string variableName)
+	{
+		return InvocationExpression (
+				IdentifierName (
+					Identifier (TriviaList (),
+						SyntaxKind.NameOfKeyword,
+						"nameof", "nameof",
+						TriviaList (Space))))
+			.WithArgumentList (
+				ArgumentList (
+					SingletonSeparatedList (
+						Argument (
+							IdentifierName (variableName)))));
+	}
+
+	/// <summary>
 	/// Generate a ternary expression that checks if the variable is IntPtr.Zero and returns null or the expression
 	/// </summary>
 	/// <param name="variableName">The variable to check against IntPtr.Zero.</param>

@@ -4297,7 +4297,7 @@ namespace NS {
 		sb.Write (conversions, false);
 		Assert.Equal (expectedExpression, sb.ToCode ());
 	}
-	
+
 	class TestDataGetTrampolinePostNativeInvokeArgumentConversions : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()
 		{
@@ -4386,7 +4386,7 @@ namespace NS {
 				stringArrayParameter,
 				$"{Global ("System.GC")}.KeepAlive (nsa_stringParameter);\n"
 			];
-			
+
 			var nullableStringArrayParameter = @"
 using System;
 
@@ -4402,7 +4402,7 @@ namespace NS {
 				nullableStringArrayParameter,
 				$"{Global ("System.GC")}.KeepAlive (nsa_stringParameter);\n"
 			];
-			
+
 			// smart enum parameter
 			var smartEnumParameter = @"
 using System;
@@ -4429,8 +4429,8 @@ namespace NS {
 				$"{Global ("System.GC")}.KeepAlive (nsb_enumParameter);\n"
 			];
 
-				// normal enum parameter
-				var enumParameter = @"
+			// normal enum parameter
+			var enumParameter = @"
 	using System;
 	using ObjCBindings;
 
@@ -4447,15 +4447,15 @@ namespace NS {
 		}
 	}
 	";
-				yield return [
-					"someTrampolineName",
-					enumParameter,
-					string.Empty,
-				];
+			yield return [
+				"someTrampolineName",
+				enumParameter,
+				string.Empty,
+			];
 
-				// NSObject parameter
+			// NSObject parameter
 
-				var nsObjectParameter = @"
+			var nsObjectParameter = @"
 	using System;
 	using Foundation;
 	using ObjCBindings;
@@ -4468,11 +4468,11 @@ namespace NS {
 		}
 	}
 	";
-				yield return [
-					"someTrampolineName",
-					nsObjectParameter,
-					$"{Global ("System.GC")}.KeepAlive (nsObjectParameter__handle__);\n"
-				];
+			yield return [
+				"someTrampolineName",
+				nsObjectParameter,
+				$"{Global ("System.GC")}.KeepAlive (nsObjectParameter__handle__);\n"
+			];
 
 			// nullable NSObject parameter
 
@@ -4628,7 +4628,7 @@ namespace NS {
 
 		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
 	}
-	
+
 	[Theory]
 	[AllSupportedPlatformsClassData<TestDataGetTrampolinePostNativeInvokeArgumentConversions>]
 	void GetTrampolinePostNativeInvokeArgumentConversionsTests (ApplePlatform platform, string trampolineName, string inputText, string expectedExpression)

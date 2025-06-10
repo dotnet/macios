@@ -1056,7 +1056,7 @@ static partial class BindingSyntaxFactory {
 		builder.AddRange (conversions);
 		return builder.ToImmutable ();
 	}
-	
+
 	/// <summary>
 	/// Returns a list of syntax nodes representing the necessary conversions or cleanup actions for a trampoline argument
 	/// after the native delegate (block) has been invoked.

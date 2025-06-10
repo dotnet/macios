@@ -919,7 +919,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 		var declaration = GetDelegateForFunctionPointer (objectType, arguments);
 		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
 	}
-	
+
 	[Fact]
 	void ThrowIfNullTests ()
 	{

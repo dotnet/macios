@@ -140,7 +140,7 @@ public unsafe static {delegateIdentifier}? Create (IntPtr block)
 									 // invoke method
 			using (var invokeBlock = classBlock.CreateBlock (GetTrampolineNativeInvokeSignature (typeInfo).ToString (), true)) {
 				invokeBlock.WriteLine ("// TODO: generate invoke method.");
-			} 
+			}
 		}
 
 		return true;

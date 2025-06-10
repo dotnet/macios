@@ -3921,7 +3921,7 @@ namespace NS {
 		sb.Write (conversions);
 		Assert.Equal (expectedExpression, sb.ToCode ());
 	}
-	
+
 	class TestDataGetTrampolinePreNativeInvokeArgumentConversions : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()
 		{
@@ -3941,7 +3941,7 @@ namespace NS {
 				intParameter,
 				string.Empty,
 			];
-			
+
 			// struct parameter
 			var structParameter = @"
 using System;
@@ -3962,7 +3962,7 @@ namespace NS {
 				structParameter,
 				string.Empty,
 			];
-			
+
 			var stringParameter = @"
 using System;
 
@@ -3976,12 +3976,12 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				stringParameter,
-@"if (stringParameter is null)
+				@"if (stringParameter is null)
 	global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (stringParameter));
 var nsstringParameter = global::CoreFoundation.CFString.CreateNative (stringParameter);
 ",
 			];
-			
+
 			var nullableStringParameter = @"
 using System;
 
@@ -3994,10 +3994,10 @@ namespace NS {
 ";
 			yield return [
 				"someTrampolineName",
-				nullableStringParameter, 
+				nullableStringParameter,
 				"var nsstringParameter = global::CoreFoundation.CFString.CreateNative (stringParameter);\n",
 			];
-			
+
 			var stringArrayParameter = @"
 using System;
 
@@ -4010,13 +4010,13 @@ namespace NS {
 ";
 			yield return [
 				"someTrampolineName",
-				stringArrayParameter, 
-@"if (stringParameter is null)
+				stringArrayParameter,
+				@"if (stringParameter is null)
 	global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (stringParameter));
 var nsa_stringParameter = global::Foundation.NSArray.FromStrings (stringParameter);
 ",
 			];
-			
+
 			var nullableStringArrayParameter = @"
 using System;
 
@@ -4029,10 +4029,10 @@ namespace NS {
 ";
 			yield return [
 				"someTrampolineName",
-				nullableStringArrayParameter, 
+				nullableStringArrayParameter,
 				"var nsa_stringParameter = stringParameter is null ? null : global::Foundation.NSArray.FromStrings (stringParameter);\n",
 			];
-			
+
 			// smart enum parameter
 			var smartEnumParameter = @"
 using System;
@@ -4055,11 +4055,11 @@ namespace NS {
 ";
 			yield return [
 				"someTrampolineName",
-				smartEnumParameter, 
+				smartEnumParameter,
 				"var nsb_enumParameter = enumParameter.GetConstant ();\n"
 			];
-			
-			
+
+
 			// normal enum parameter
 			var enumParameter = @"
 using System;
@@ -4080,13 +4080,13 @@ namespace NS {
 ";
 			yield return [
 				"someTrampolineName",
-				enumParameter, 
+				enumParameter,
 				string.Empty,
 			];
-			
-			
+
+
 			// NSObject parameter
-			
+
 			var nsObjectParameter = @"
 using System;
 using Foundation;
@@ -4102,15 +4102,15 @@ namespace NS {
 ";
 			yield return [
 				"someTrampolineName",
-				nsObjectParameter, 
-@"if (nsObjectParameter is null)
+				nsObjectParameter,
+				@"if (nsObjectParameter is null)
 	global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (nsObjectParameter));
 var nsObjectParameter__handle__ = nsObjectParameter.GetHandle ();
 ",
 			];
-			
+
 			// nullable NSObject parameter
-			
+
 			var nullableNSObjectParameter = @"
 using System;
 using Foundation;
@@ -4126,12 +4126,12 @@ namespace NS {
 ";
 			yield return [
 				"someTrampolineName",
-				nullableNSObjectParameter, 
+				nullableNSObjectParameter,
 				"var nsObjectParameter__handle__ = nsObjectParameter!.GetNonNullHandle (nameof (nsObjectParameter));\n",
 			];
-			
+
 			// NSObject array parameter
-			
+
 			var nsObjectArrayParameter = @"
 using System;
 using Foundation;
@@ -4147,15 +4147,15 @@ namespace NS {
 ";
 			yield return [
 				"someTrampolineName",
-				nsObjectArrayParameter, 
-@"if (nsObjectParameter is null)
+				nsObjectArrayParameter,
+				@"if (nsObjectParameter is null)
 	global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (nsObjectParameter));
 var nsa_nsObjectParameter = global::Foundation.NSArray.FromNSObjects (nsObjectParameter);
 ",
 			];
-			
+
 			// nullable NSObject array parameter
-			
+
 			var nullableNSObjectArrayParameter = @"
 using System;
 using Foundation;
@@ -4171,12 +4171,12 @@ namespace NS {
 ";
 			yield return [
 				"someTrampolineName",
-				nullableNSObjectArrayParameter, 
+				nullableNSObjectArrayParameter,
 				"var nsa_nsObjectParameter = nsObjectParameter is null ? null : global::Foundation.NSArray.FromNSObjects (nsObjectParameter);\n",
 			];
-			
+
 			// INativeObject parameter
-			
+
 			var iNativeParameter = @"
 using System;
 using Foundation;
@@ -4194,14 +4194,14 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				iNativeParameter,
-@"if (inative is null)
+				@"if (inative is null)
 	global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (inative));
 var inative__handle__ = inative.GetHandle ();
 "
 			];
-			
+
 			// nullable INativeObject parameter
-			
+
 			var nullableINativeParameter = @"
 using System;
 using Foundation;
@@ -4221,9 +4221,9 @@ namespace NS {
 				nullableINativeParameter,
 				"var inative__handle__ = inative!.GetNonNullHandle (nameof (inative));\n",
 			];
-			
+
 			// INativeObject array parameter
-			
+
 			var inativeArrayParameter = @"
 using System;
 using Foundation;
@@ -4241,14 +4241,14 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				inativeArrayParameter,
-@"if (inativeArray is null)
+				@"if (inativeArray is null)
 	global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (inativeArray));
 var nsa_inativeArray = global::Foundation.NSArray.FromNSObjects (inativeArray);
 ",
 			];
 
 			// nullable INativeObject array parameter
-			
+
 			var nullableINativeArrayParameter = @"
 using System;
 using Foundation;
@@ -4272,7 +4272,7 @@ namespace NS {
 
 		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
 	}
-	
+
 	[Theory]
 	[AllSupportedPlatformsClassData<TestDataGetTrampolinePreNativeInvokeArgumentConversions>]
 	void GetTrampolinePreNativeInvokeArgumentConversionsTests (ApplePlatform platform, string trampolineName, string inputText, string expectedExpression)

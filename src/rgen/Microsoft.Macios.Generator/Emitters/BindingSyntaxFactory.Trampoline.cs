@@ -910,7 +910,7 @@ static partial class BindingSyntaxFactory {
 			.WithParameterList (parametersSyntax.WithLeadingTrivia (Space));
 		return method;
 	}
-	
+
 	/// <summary>
 	/// Returns the method declaration signature for the native trampoline invoke method.
 	/// This is the method that will be directly called from the native side (e.g., by a block invocation).
@@ -981,8 +981,8 @@ static partial class BindingSyntaxFactory {
 			_ => []
 		};
 	}
-	
-	
+
+
 	/// <summary>
 	/// Returns a list of syntax nodes representing the necessary conversions for a trampoline argument before the native delegate (block) is invoked.
 	/// This method handles converting managed types to their corresponding native representations.
@@ -1056,5 +1056,5 @@ static partial class BindingSyntaxFactory {
 		builder.AddRange (conversions);
 		return builder.ToImmutable ();
 	}
-	
+
 }

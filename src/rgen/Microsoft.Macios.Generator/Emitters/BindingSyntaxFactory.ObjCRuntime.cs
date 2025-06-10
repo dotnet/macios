@@ -275,7 +275,7 @@ static partial class BindingSyntaxFactory {
 	/// <returns>A <see cref="LocalDeclarationStatementSyntax"/> for the auxiliary NSArray variable, or null if the input is not an array or if a variable name cannot be generated.</returns>
 	internal static LocalDeclarationStatementSyntax? GetNSArrayAuxVariable (in Parameter parameter)
 		=> GetNSArrayAuxVariable (parameter.Name, parameter.Type);
-	
+
 	/// <summary>
 	/// Generates a local variable declaration for an auxiliary NSArray.
 	/// This is a convenience overload for <see cref="GetNSArrayAuxVariable(string, in TypeInfo)"/> for delegate parameters.
@@ -341,7 +341,7 @@ static partial class BindingSyntaxFactory {
 				SingletonSeparatedList (declarator.WithLeadingTrivia (Space))
 			));
 	}
-	
+
 	/// <summary>
 	/// Generates a local variable declaration for an auxiliary handle (IntPtr).
 	/// This is a convenience overload for <see cref="GetHandleAuxVariable(string, in TypeInfo)"/>.
@@ -350,7 +350,7 @@ static partial class BindingSyntaxFactory {
 	/// <returns>A <see cref="LocalDeclarationStatementSyntax"/> for the auxiliary handle variable, or null if the input is not an NSObject or INativeObject, or if a variable name cannot be generated.</returns>
 	internal static LocalDeclarationStatementSyntax? GetHandleAuxVariable (in Parameter parameter)
 		=> GetHandleAuxVariable (parameter.Name, parameter.Type);
-	
+
 	/// <summary>
 	/// Generates a local variable declaration for an auxiliary handle (IntPtr).
 	/// This is a convenience overload for <see cref="GetHandleAuxVariable(string, in TypeInfo)"/> for delegate parameters.
@@ -405,7 +405,7 @@ static partial class BindingSyntaxFactory {
 	/// <returns>A <see cref="LocalDeclarationStatementSyntax"/> for the auxiliary NSString variable, or null if the input is not a string or if a variable name cannot be generated.</returns>
 	internal static LocalDeclarationStatementSyntax? GetStringAuxVariable (in Parameter parameter)
 		=> GetStringAuxVariable (parameter.Name, parameter.Type);
-	
+
 	/// <summary>
 	/// Generates a local variable declaration for an auxiliary NSString.
 	/// This is a convenience overload for <see cref="GetStringAuxVariable(string, in TypeInfo)"/> for delegate parameters.
@@ -633,7 +633,7 @@ static partial class BindingSyntaxFactory {
 	/// <returns>A <see cref="LocalDeclarationStatementSyntax"/> for the auxiliary NSString variable, or null if the input is not a smart enum or if a variable name cannot be generated.</returns>
 	internal static LocalDeclarationStatementSyntax? GetNSStringSmartEnumAuxVariable (in Parameter parameter)
 		=> GetNSStringSmartEnumAuxVariable (parameter.Name, parameter.Type);
-	
+
 	/// <summary>
 	/// Generates a local variable declaration for an auxiliary NSString for a smart enum.
 	/// This is a convenience overload for <see cref="GetNSStringSmartEnumAuxVariable(string, in TypeInfo)"/> for delegate parameters.
@@ -642,7 +642,7 @@ static partial class BindingSyntaxFactory {
 	/// <returns>A <see cref="LocalDeclarationStatementSyntax"/> for the auxiliary NSString variable, or null if the input is not a smart enum or if a variable name cannot be generated.</returns>
 	internal static LocalDeclarationStatementSyntax? GetNSStringSmartEnumAuxVariable (in DelegateParameter parameter)
 		=> GetNSStringSmartEnumAuxVariable (parameter.Name, parameter.Type);
-	
+
 	internal static LocalDeclarationStatementSyntax? GetNSArrayBindFromAuxVariable (in Parameter parameter)
 	{
 		// we can only work with parameters that are an array
@@ -1035,8 +1035,8 @@ static partial class BindingSyntaxFactory {
 		var isExpression = IsPatternExpression (
 			IdentifierName (variableName),
 			ConstantPattern (LiteralExpression (SyntaxKind.NullLiteralExpression))).NormalizeWhitespace ();
-		
-		var throwHelper = ExpressionStatement(InvocationExpression (
+
+		var throwHelper = ExpressionStatement (InvocationExpression (
 				MemberAccessExpression (
 					SyntaxKind.SimpleMemberAccessExpression,
 					ThrowHelper,
@@ -1044,15 +1044,15 @@ static partial class BindingSyntaxFactory {
 			.WithArgumentList (
 				ArgumentList (
 					SingletonSeparatedList (Argument (NameOf (variableName))))));
-		
+
 		// if + throw using the mono style, other methods will remove the spaces with added before the ()
-		return IfStatement(
-			attributeLists: default, 
-			ifKeyword: Token (SyntaxKind.IfKeyword).WithTrailingTrivia (Space), 
-			openParenToken: Token (SyntaxKind.OpenParenToken), 
-			condition: isExpression, 
-			closeParenToken: Token (SyntaxKind.CloseParenToken), 
-			statement: throwHelper.WithLeadingTrivia (LineFeed, Tab), 
+		return IfStatement (
+			attributeLists: default,
+			ifKeyword: Token (SyntaxKind.IfKeyword).WithTrailingTrivia (Space),
+			openParenToken: Token (SyntaxKind.OpenParenToken),
+			condition: isExpression,
+			closeParenToken: Token (SyntaxKind.CloseParenToken),
+			statement: throwHelper.WithLeadingTrivia (LineFeed, Tab),
 			@else: default);
 	}
 }

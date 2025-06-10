@@ -227,26 +227,26 @@ public class BindingSyntaxFactoryObjCRuntimeTests {
 
 			// not nullable string[]
 			yield return [
-				new Parameter (0, ReturnTypeForArray ("string", isNullable: false, underlyingType:SpecialType.System_String), "myParam"),
+				new Parameter (0, ReturnTypeForArray ("string", isNullable: false, underlyingType: SpecialType.System_String), "myParam"),
 				"var nsa_myParam = global::Foundation.NSArray.FromStrings (myParam);",
 				false
 			];
 
 			yield return [
-				new Parameter (0, ReturnTypeForArray ("string", isNullable: false, underlyingType:SpecialType.System_String), "myParam"),
+				new Parameter (0, ReturnTypeForArray ("string", isNullable: false, underlyingType: SpecialType.System_String), "myParam"),
 				"using var nsa_myParam = global::Foundation.NSArray.FromStrings (myParam);",
 				true
 			];
 
 			// nullable string []
 			yield return [
-				new Parameter (0, ReturnTypeForArray ("string", isNullable: true, underlyingType:SpecialType.System_String), "myParam"),
+				new Parameter (0, ReturnTypeForArray ("string", isNullable: true, underlyingType: SpecialType.System_String), "myParam"),
 				"var nsa_myParam = myParam is null ? null : global::Foundation.NSArray.FromStrings (myParam);",
 				false
 			];
 
 			yield return [
-				new Parameter (0, ReturnTypeForArray ("string", isNullable: true, underlyingType:SpecialType.System_String), "myParam"),
+				new Parameter (0, ReturnTypeForArray ("string", isNullable: true, underlyingType: SpecialType.System_String), "myParam"),
 				"using var nsa_myParam = myParam is null ? null : global::Foundation.NSArray.FromStrings (myParam);",
 				true
 			];

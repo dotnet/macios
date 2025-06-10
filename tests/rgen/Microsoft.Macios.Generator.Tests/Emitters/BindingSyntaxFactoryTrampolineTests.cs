@@ -4653,5 +4653,202 @@ namespace NS {
 		sb.Write (conversions, false);
 		Assert.Equal (expectedExpression, sb.ToCode ());
 	}
+	
+	class TestDataGetTrampolineNativeInvokeArguments : IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
+		{
+			var pointerParameter = @"
+using System;
+
+namespace NS {
+	public delegate void Callback (int* pointerParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				"someTrampolineName",
+				pointerParameter,
+				"invoker (pointerParameter);",
+			];
+
+			var pointerParameterWithReturn = @"
+using System;
+
+namespace NS {
+	public delegate int Callback (int* pointerParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				"someTrampolineName",
+				pointerParameterWithReturn,
+				"var ret = invoker (pointerParameter);",
+			];
+
+			var nsNumberParameterWithReturn = @"
+using System;
+using Foundation;
+using ObjCBindings;
+
+namespace NS {
+	public delegate int Callback ([BindFrom (typeof(NSNumber))]int pointerParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				"someTrampolineName",
+				nsNumberParameterWithReturn,
+				"var ret = invoker (pointerParameter__handle__);",
+			];
+
+			var nsNumberArrayParameterWithReturn = @"
+using System;
+using Foundation;
+using ObjCBindings;
+
+namespace NS {
+	public delegate int Callback ([BindFrom (typeof(NSNumber))]int[] pointerParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				"someTrampolineName",
+				nsNumberArrayParameterWithReturn,
+				"var ret = invoker (nsa_pointerParameter);",
+			];
+
+			var nsValueParameterWithReturn = @"
+using System;
+using Foundation;
+using CoreGraphics;
+using ObjCBindings;
+
+namespace NS {
+	public delegate int Callback ([BindFrom (typeof(NSValue))]CGSize size);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				"someTrampolineName",
+				nsValueParameterWithReturn,
+				"var ret = invoker (size__handle__);"
+			];
+
+			var nsValueArrayParameterWithReturn = @"
+using System;
+using Foundation;
+using CoreGraphics;
+using ObjCBindings;
+
+namespace NS {
+	public delegate int Callback ([BindFrom (typeof(NSValue))]CGSize[] size);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				"someTrampolineName",
+				nsValueArrayParameterWithReturn,
+				"var ret = invoker (nsa_size);",
+			];
+
+			var smartEnumParameterWithReturn = @"
+using System;
+using Foundation;
+using AVFoundation;
+using ObjCBindings;
+
+namespace NS {
+
+	[BindingType<SmartEnum>]
+	public enum CustomLibraryEnum {
+		[Field<EnumValue> (""None"", ""/path/to/customlibrary.framework"")]
+		None,
+		[Field<EnumValue> (""Medium"", ""/path/to/customlibrary.framework"")]
+		Medium,
+		[Field<EnumValue> (""High"", ""/path/to/customlibrary.framework"")]
+		High,
+	}
+
+	public delegate int Callback ([BindFrom (typeof(NSString))]CustomLibraryEnum level);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				"someTrampolineName",
+				smartEnumParameterWithReturn,
+				"var ret = invoker (nslevel);"
+			];
+
+			var smartEnumArrayParameterWithReturn = @"
+using System;
+using Foundation;
+using AVFoundation;
+using ObjCBindings;
+
+namespace NS {
+
+	[BindingType<SmartEnum>]
+	public enum CustomLibraryEnum {
+		[Field<EnumValue> (""None"", ""/path/to/customlibrary.framework"")]
+		None,
+		[Field<EnumValue> (""Medium"", ""/path/to/customlibrary.framework"")]
+		Medium,
+		[Field<EnumValue> (""High"", ""/path/to/customlibrary.framework"")]
+		High,
+	}
+
+	public delegate int Callback ([BindFrom (typeof(NSString))]CustomLibraryEnum[] level);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				"someTrampolineName",
+				smartEnumArrayParameterWithReturn,
+				"var ret = invoker (nsa_level);"
+			];
+		}
+
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
+	}
+	
+	[Theory]
+	[AllSupportedPlatformsClassData<TestDataGetTrampolineNativeInvokeArguments>]
+	void CallNativeInvokerDelegateTests (ApplePlatform platform, string trampolineName, string inputText, string expectedExpression)
+	{
+		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
+		Assert.Single (syntaxTrees);
+		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
+		var declaration = syntaxTrees [0].GetRoot ()
+			.DescendantNodes ().OfType<MethodDeclarationSyntax> ()
+			.FirstOrDefault ();
+		Assert.NotNull (declaration);
+		Assert.True (Method.TryCreate (declaration, semanticModel, out var changes));
+		Assert.NotNull (changes);
+		// we know the first parameter of the method is the delegate
+		Assert.Single (changes.Value.Parameters);
+		var parameter = changes.Value.Parameters [0];
+		// assert it is indeed a delegate
+		Assert.NotNull (parameter.Type.Delegate);
+		var argumentSyntax = GetTrampolineNativeInvokeArguments (trampolineName, parameter.Type.Delegate);
+		var invocation = CallNativeInvokerDelegate (parameter.Type.Delegate, argumentSyntax);
+		var x = invocation.ToFullString ();
+		Assert.Equal (expectedExpression, invocation.ToFullString ());
+	}
 
 }

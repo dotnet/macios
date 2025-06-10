@@ -162,6 +162,12 @@ static class Nomenclator {
 	/// </summary>
 	/// <returns>The name of the variable used to store delegates in trampolines.</returns>
 	public static string GetTrampolineDelegateVariableName () => "del";
+	
+	/// <summary>
+	/// Returns the name of the variable used to store the native invoker in trampolines.
+	/// </summary>
+	/// <returns>The name of the native invoker variable.</returns>
+	public static string GetNativeInvokerVariableName () => "invoker";
 
 	/// <summary>
 	/// Return the name of the trampoline block parameter. This is the name of the parameter that will be containing the

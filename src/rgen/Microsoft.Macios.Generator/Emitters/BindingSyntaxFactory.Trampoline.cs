@@ -1150,7 +1150,7 @@ static partial class BindingSyntaxFactory {
 		};
 #pragma warning restore format
 	}
-	
+
 	/// <summary>
 	/// Returns the argument syntax for a parameter to be used when invoking the native delegate (block) from the trampoline.
 	/// This method determines how a managed parameter should be represented when calling the native function.
@@ -1262,7 +1262,7 @@ static partial class BindingSyntaxFactory {
 			};
 #pragma warning restore format
 		}
-		
+
 		// Argument syntax is the same as the expression syntax, but we need to add the ref kind keyword if needed
 		var argument = Argument (expression);
 		if (parameter.IsByRef)
@@ -1271,7 +1271,7 @@ static partial class BindingSyntaxFactory {
 				.WithTrailingTrivia (Space));
 		return argument;
 	}
-	
+
 	/// <summary>
 	/// Generates a list of <see cref="TrampolineArgumentSyntax"/> objects for invoking a native delegate (block) from a trampoline.
 	/// Each <see cref="TrampolineArgumentSyntax"/> encapsulates the argument itself, along with any necessary
@@ -1296,7 +1296,7 @@ static partial class BindingSyntaxFactory {
 		}
 		return bucket.ToImmutable ();
 	}
-	
+
 	internal static StatementSyntax CallNativeInvokerDelegate (in DelegateInfo delegateInfo,
 		in ImmutableArray<TrampolineArgumentSyntax> argumentSyntax)
 	{

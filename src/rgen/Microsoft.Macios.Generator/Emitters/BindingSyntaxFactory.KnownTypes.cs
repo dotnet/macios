@@ -172,5 +172,9 @@ static partial class BindingSyntaxFactory {
 	public readonly static TypeSyntax EventHandler = StringExtensions.GetIdentifierName (
 		@namespace: ["System"],
 		@class: "EventHandler");
+	
+	public readonly static TypeSyntax GC = StringExtensions.GetIdentifierName (
+		@namespace: ["System"],
+		@class: "GC");
 
 }

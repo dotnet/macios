@@ -188,7 +188,7 @@ if (IsDirectBinding) {{
 }} else {{
 	{ExpressionStatement (invocations.Getter.SendSuper)}
 }}
-GC.KeepAlive (this);
+{KeepAlive ("this")};
 return {tempVar};
 ");
 				}

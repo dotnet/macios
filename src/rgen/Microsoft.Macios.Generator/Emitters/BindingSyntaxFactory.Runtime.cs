@@ -291,7 +291,7 @@ static partial class BindingSyntaxFactory {
 			return null;
 		return MemberAccessExpression (
 			SyntaxKind.SimpleMemberAccessExpression,
-			GetIdentifierName ("NSValue"),
+			NSValue,
 			IdentifierName (memberName));
 	}
 
@@ -357,7 +357,7 @@ static partial class BindingSyntaxFactory {
 			return null;
 		return MemberAccessExpression (
 			SyntaxKind.SimpleMemberAccessExpression,
-			GetIdentifierName ("NSNumber"),
+			NSNumber,
 			IdentifierName (memberName));
 	}
 
@@ -428,49 +428,42 @@ static partial class BindingSyntaxFactory {
 			.WithArgumentList (argumentList);
 	}
 
+	internal static ExpressionSyntax SmartEnumGetValue (in TypeInfo enumType)
+	{
+		var extensionClassName = Nomenclator.GetSmartEnumExtensionClassName (enumType.FullyQualifiedName);
+		var getValueMethod = enumType.IsNullable ? "GetNullableValue" : "GetValue";
+
+		return MemberAccessExpression (SyntaxKind.SimpleMemberAccessExpression,
+			AliasQualifiedName (
+				IdentifierName (Token (SyntaxKind.GlobalKeyword)),
+				IdentifierName (extensionClassName)),
+			IdentifierName (getValueMethod));
+	}
+
 	/// <summary>
 	/// Returns the enum extension method needed to get the value of the enum from a NativeHandle.
 	/// </summary>
 	/// <param name="enumType">The type info of the enum type.</param>
 	/// <param name="arguments">The arguments to pass to the method invocation.</param>
-	/// <param name="isNullable">If the execution should consider the enum to be nullable. This
 	/// method does not use the data in the TypeInfo to allow it to be overriden. This is because
 	/// the BindAsAttribute might need to override the call. Use the overload when the type info is all
 	/// we care about.</param>
 	/// <returns>The extension method invocation syntax.</returns>
 	internal static InvocationExpressionSyntax SmartEnumGetValue (in TypeInfo enumType,
-		ImmutableArray<ArgumentSyntax> arguments, bool isNullable)
+		ImmutableArray<ArgumentSyntax> arguments)
 	{
-		// use the nomenclator to get the class name for the extensions
-		var extensionClassName = Nomenclator.GetSmartEnumExtensionClassName (enumType.FullyQualifiedName);
-		var getValueMethod = isNullable ? "GetNullableValue" : "GetValue";
 
 		// generate (arg1, arg2, arg3)
 		var argumentList = ArgumentList (
 			SeparatedList<ArgumentSyntax> (arguments.ToSyntaxNodeOrTokenArray ()));
 
 		// generate: global::extensionNamespace.extensionClassName.GetValue
-		var memberAccess = MemberAccessExpression (SyntaxKind.SimpleMemberAccessExpression,
-			AliasQualifiedName (
-				IdentifierName (Token (SyntaxKind.GlobalKeyword)),
-				IdentifierName (extensionClassName)),
-			IdentifierName (getValueMethod).WithTrailingTrivia (Space));
+		var memberAccess = SmartEnumGetValue (enumType).WithTrailingTrivia (Space);
 
 		// generate the invocation with the given params
 		return InvocationExpression (memberAccess)
 			.WithArgumentList (argumentList);
 	}
-
-	/// <summary>
-	/// Overload that returns the enum extension method need to get a enum value from a NativeHandle. This method
-	/// uses the type info data to decide if the result is a nullable enum value.
-	/// </summary>
-	/// <param name="enumType">The type info of the enum value.</param>
-	/// <param name="arguments">The arguments to pass to the method invocation.</param>
-	/// <returns>The extension method invocation syntax.</returns>
-	internal static InvocationExpressionSyntax SmartEnumGetValue (in TypeInfo enumType,
-		ImmutableArray<ArgumentSyntax> arguments)
-		=> SmartEnumGetValue (enumType, arguments, enumType.IsNullable);
 
 	/// <summary>
 	/// Generates the expression GetHandle () for a given expression syntax. For example:

@@ -642,7 +642,7 @@ static partial class BindingSyntaxFactory {
 	/// <returns>A <see cref="LocalDeclarationStatementSyntax"/> for the auxiliary NSString variable, or null if the input is not a smart enum or if a variable name cannot be generated.</returns>
 	internal static LocalDeclarationStatementSyntax? GetNSStringSmartEnumAuxVariable (in DelegateParameter parameter)
 		=> GetNSStringSmartEnumAuxVariable (parameter.Name, parameter.Type);
-	
+
 	/// <summary>
 	/// Generates an invocation expression to convert an NSString (represented by an argument syntax) back to its corresponding smart enum value.
 	/// This method relies on a generated extension class for the smart enum that provides a `GetValue(string)` method.

@@ -978,6 +978,6 @@ public class BindingSyntaxFactoryObjCRuntimeTests {
 		var extensionClass = Nomenclator.GetSmartEnumExtensionClassName (smartEnumName);
 		var expectedExpression = $"{extensionClass}.GetValue ({auxVariable})";
 		Assert.Equal (expectedExpression, GetSmartEnunFromNSString (smartEnumType, Argument (auxVariable)).ToString ());
-	} 
+	}
 
 }

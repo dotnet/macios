@@ -221,12 +221,29 @@ static partial class BindingSyntaxFactory {
 					IdentifierName ("CreateNative").WithTrailingTrivia (Space))
 			).WithArgumentList (argumentList);
 	}
-
+	
 	/// <summary>
-	/// Generates the expression to call the CFString.CreateNative method.
+	/// Generates the expression to call the CFString.ReleaseNative method.
 	/// </summary>
 	/// <param name="arguments">The argument list for the invocation.</param>
-	/// <returns>The expression to call the CFString.CreateNative method with the provided args.</returns>
+	/// <returns>The expression to call the CFString.ReleaseNative method with the provided args.</returns>
+	internal static InvocationExpressionSyntax StringReleaseNative (ImmutableArray<ArgumentSyntax> arguments)
+	{
+		var argumentList = ArgumentList (
+			SeparatedList<ArgumentSyntax> (arguments.ToSyntaxNodeOrTokenArray ()));
+		return InvocationExpression (
+			MemberAccessExpression (
+				SyntaxKind.SimpleMemberAccessExpression,
+				CFString,
+				IdentifierName ("ReleaseNative").WithTrailingTrivia (Space))
+		).WithArgumentList (argumentList);
+	}
+
+	/// <summary>
+	/// Generates the expression to call the NFString.CreateNative method.
+	/// </summary>
+	/// <param name="arguments">The argument list for the invocation.</param>
+	/// <returns>The expression to call the NFString.CreateNative method with the provided args.</returns>
 	internal static InvocationExpressionSyntax NStringCreateNative (ImmutableArray<ArgumentSyntax> arguments)
 	{
 		var argumentList = ArgumentList (

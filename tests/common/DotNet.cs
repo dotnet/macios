@@ -309,13 +309,13 @@ namespace Xamarin.Tests {
 
 		public static string GetProperty (string projectPath, string name, string? target = null, Dictionary<string, string>? properties = null, Dictionary<string, string?>? environment = null)
 		{
-			return Get (projectPath, name, "Property", target, properties);
+			return Get (projectPath, name, "Property", target, properties, environment);
 		}
 
 		// returns json
 		public static string GetItems (string projectPath, string name, string? target = null, Dictionary<string, string>? properties = null, Dictionary<string, string?>? environment = null)
 		{
-			return Get (projectPath, name, "Item", target, properties);
+			return Get (projectPath, name, "Item", target, properties, environment);
 		}
 
 		static string Get (string projectPath, string name, string what, string? target = null, Dictionary<string, string>? properties = null, Dictionary<string, string?>? environment = null)

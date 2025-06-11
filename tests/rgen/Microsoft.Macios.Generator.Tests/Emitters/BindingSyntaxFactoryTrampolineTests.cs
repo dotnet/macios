@@ -4298,4 +4298,360 @@ namespace NS {
 		Assert.Equal (expectedExpression, sb.ToCode ());
 	}
 
+	class TestDataGetTrampolinePostNativeInvokeArgumentConversions : IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
+		{
+			// int value
+			var intParameter = @"
+using System;
+
+namespace NS {
+	public delegate void Callback (int intParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				"someTrampolineName",
+				intParameter,
+				string.Empty,
+			];
+
+			// struct parameter
+			var structParameter = @"
+using System;
+
+namespace NS {
+	public struct MyStruct {
+		public int Value;
+	}
+
+	public delegate void Callback (MyStruct structParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				"someTrampolineName",
+				structParameter,
+				string.Empty,
+			];
+
+			var stringParameter = @"
+using System;
+
+namespace NS {
+	public delegate void Callback (string stringParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				"someTrampolineName",
+				stringParameter,
+				$"{Global ("System.GC")}.KeepAlive (nsstringParameter);\n"
+			];
+
+			var nullableStringParameter = @"
+using System;
+
+namespace NS {
+	public delegate void Callback (string? stringParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				"someTrampolineName",
+				nullableStringParameter,
+				$"{Global ("System.GC")}.KeepAlive (nsstringParameter);\n"
+			];
+
+			var stringArrayParameter = @"
+using System;
+
+namespace NS {
+	public delegate void Callback (string[] stringParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				"someTrampolineName",
+				stringArrayParameter,
+				$"{Global ("System.GC")}.KeepAlive (nsa_stringParameter);\n"
+			];
+
+			var nullableStringArrayParameter = @"
+using System;
+
+namespace NS {
+	public delegate void Callback (string[]? stringParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				"someTrampolineName",
+				nullableStringArrayParameter,
+				$"{Global ("System.GC")}.KeepAlive (nsa_stringParameter);\n"
+			];
+
+			// smart enum parameter
+			var smartEnumParameter = @"
+using System;
+using ObjCBindings;
+
+namespace NS {
+
+    [Native (""""GKErrorCode"""")]
+	[BindingType<SmartEnum> (Flags = SmartEnum.ErrorCode, ErrorDomain = """"GKErrorDomain"""")]
+	public enum NativeSampleEnum {
+			None = 0,
+			Unknown = 1,
+	}
+
+    public delegate void Callback (NativeSampleEnum enumParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				"someTrampolineName",
+				smartEnumParameter,
+				$"{Global ("System.GC")}.KeepAlive (nsb_enumParameter);\n"
+			];
+
+			// normal enum parameter
+			var enumParameter = @"
+	using System;
+	using ObjCBindings;
+
+	namespace NS {
+
+		public enum NativeSampleEnum {
+				None = 0,
+				Unknown = 1,
+		}
+
+	    public delegate void Callback (NativeSampleEnum enumParameter);
+		public class MyClass {
+			public void MyMethod (Callback cb) {}
+		}
+	}
+	";
+			yield return [
+				"someTrampolineName",
+				enumParameter,
+				string.Empty,
+			];
+
+			// NSObject parameter
+
+			var nsObjectParameter = @"
+	using System;
+	using Foundation;
+	using ObjCBindings;
+
+	namespace NS {
+
+		public delegate void Callback (NSObject nsObjectParameter);
+		public class MyClass {
+			public void MyMethod (Callback cb) {}
+		}
+	}
+	";
+			yield return [
+				"someTrampolineName",
+				nsObjectParameter,
+				$"{Global ("System.GC")}.KeepAlive (nsObjectParameter__handle__);\n"
+			];
+
+			// nullable NSObject parameter
+
+			var nullableNSObjectParameter = @"
+using System;
+using Foundation;
+using ObjCBindings;
+
+namespace NS {
+
+    public delegate void Callback (NSObject? nsObjectParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				"someTrampolineName",
+				nullableNSObjectParameter,
+				$"{Global ("System.GC")}.KeepAlive (nsObjectParameter__handle__);\n"
+			];
+
+			// NSObject array parameter
+
+			var nsObjectArrayParameter = @"
+using System;
+using Foundation;
+using ObjCBindings;
+
+namespace NS {
+
+    public delegate void Callback (NSObject[] nsObjectParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				"someTrampolineName",
+				nsObjectArrayParameter,
+				$"{Global ("System.GC")}.KeepAlive (nsa_nsObjectParameter);\n"
+			];
+
+			// nullable NSObject array parameter
+
+			var nullableNSObjectArrayParameter = @"
+using System;
+using Foundation;
+using ObjCBindings;
+
+namespace NS {
+
+    public delegate void Callback (NSObject[]? nsObjectParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				"someTrampolineName",
+				nullableNSObjectArrayParameter,
+				$"{Global ("System.GC")}.KeepAlive (nsa_nsObjectParameter);\n"
+			];
+
+			// INativeObject parameter
+
+			var iNativeParameter = @"
+using System;
+using Foundation;
+using CoreMedia;
+using ObjCRuntime;
+
+namespace NS {
+	public delegate void Callback (CMTimebase inative);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				"someTrampolineName",
+				iNativeParameter,
+				$"{Global ("System.GC")}.KeepAlive (inative__handle__);\n"
+			];
+
+			// nullable INativeObject parameter
+
+			var nullableINativeParameter = @"
+using System;
+using Foundation;
+using CoreMedia;
+using ObjCRuntime;
+
+namespace NS {
+	public delegate void Callback (CMTimebase? inative);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				"someTrampolineName",
+				nullableINativeParameter,
+				$"{Global ("System.GC")}.KeepAlive (inative__handle__);\n"
+			];
+
+			// INativeObject array parameter
+
+			var inativeArrayParameter = @"
+using System;
+using Foundation;
+using CoreMedia;
+using ObjCRuntime;
+
+namespace NS {
+	public delegate void Callback (CMTimebase[] inativeArray);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				"someTrampolineName",
+				inativeArrayParameter,
+				$"{Global ("System.GC")}.KeepAlive (nsa_inativeArray);\n"
+			];
+
+			// nullable INativeObject array parameter
+
+			var nullableINativeArrayParameter = @"
+using System;
+using Foundation;
+using CoreMedia;
+using ObjCRuntime;
+
+namespace NS {
+	public delegate void Callback (CMTimebase[]? inativeArray);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				"someTrampolineName",
+				nullableINativeArrayParameter,
+				$"{Global ("System.GC")}.KeepAlive (nsa_inativeArray);\n"
+			];
+		}
+
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
+	}
+
+	[Theory]
+	[AllSupportedPlatformsClassData<TestDataGetTrampolinePostNativeInvokeArgumentConversions>]
+	void GetTrampolinePostNativeInvokeArgumentConversionsTests (ApplePlatform platform, string trampolineName, string inputText, string expectedExpression)
+	{
+		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
+		Assert.Single (syntaxTrees);
+		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
+		var declaration = syntaxTrees [0].GetRoot ()
+			.DescendantNodes ().OfType<MethodDeclarationSyntax> ()
+			.FirstOrDefault ();
+		Assert.NotNull (declaration);
+		Assert.True (Method.TryCreate (declaration, semanticModel, out var changes));
+		Assert.NotNull (changes);
+		// we know the first parameter of the method is the delegate
+		Assert.Single (changes.Value.Parameters);
+		var parameter = changes.Value.Parameters [0];
+		// assert it is indeed a delegate
+		Assert.NotNull (parameter.Type.Delegate);
+		var conversions = GetTrampolinePostNativeInvokeArgumentConversions (trampolineName, parameter.Type.Delegate!.Parameters [0]);
+		// uses a tabbeb string builder to get the conversion string and test
+		var sb = new TabbedStringBuilder (new ());
+		sb.Write (conversions, false);
+		Assert.Equal (expectedExpression, sb.ToCode ());
+	}
+
 }

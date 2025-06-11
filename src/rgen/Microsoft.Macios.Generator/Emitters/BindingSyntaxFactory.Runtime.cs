@@ -563,4 +563,21 @@ static partial class BindingSyntaxFactory {
 	internal static ExpressionSyntax RetainAndAutoreleaseNativeObject (ImmutableArray<ArgumentSyntax> arguments)
 		=> StaticInvocationExpression (Runtime, "RetainAndAutoreleaseNativeObject", arguments);
 
+	/// <summary>
+	/// Generates a call to System.GC.KeepAlive(variableName).
+	/// </summary>
+	/// <param name="variableName">The name of the variable to keep alive.</param>
+	/// <returns>An <see cref="InvocationExpressionSyntax"/> representing the call to GC.KeepAlive.</returns>
+	internal static InvocationExpressionSyntax KeepAlive (string variableName)
+	{
+		return InvocationExpression (
+				MemberAccessExpression (
+					SyntaxKind.SimpleMemberAccessExpression,
+					GC,
+					IdentifierName ("KeepAlive").WithTrailingTrivia (Space)))
+			.WithArgumentList (
+				ArgumentList (
+					SingletonSeparatedList (
+						Argument (IdentifierName (variableName)))));
+	}
 }

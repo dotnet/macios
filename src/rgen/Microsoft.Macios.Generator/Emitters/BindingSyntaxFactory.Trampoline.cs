@@ -1057,4 +1057,98 @@ static partial class BindingSyntaxFactory {
 		return builder.ToImmutable ();
 	}
 
+	/// <summary>
+	/// Returns a list of syntax nodes representing the necessary conversions or cleanup actions for a trampoline argument
+	/// after the native delegate (block) has been invoked.
+	/// This method primarily handles ensuring that managed objects passed to native code are kept alive
+	/// until the native call completes, by generating <c>GC.KeepAlive</c> calls for their corresponding
+	/// native representations (e.g., auxiliary variables holding NSString, NSArray, or handles).
+	/// </summary>
+	/// <param name="trampolineName">The name of the trampoline. This is not directly used in the current logic for GC.KeepAlive but is kept for consistency.</param>
+	/// <param name="parameter">The delegate parameter for which post-native-invoke conversions or cleanup might be needed.</param>
+	/// <returns>An immutable array of syntax nodes for the post-invoke actions. Returns an empty array if no special action is required.</returns>
+	internal static ImmutableArray<SyntaxNode> GetTrampolinePostNativeInvokeArgumentConversions (string trampolineName,
+		in DelegateParameter parameter)
+	{
+		// decide the type of conversion we need to do based on the type of the parameter
+#pragma warning disable format
+		return parameter.Type switch { 
+			{ IsPointer: true } => [],
+			
+			{ IsDelegate: true } => [],
+			
+			// ensure that the gc does not collect the smart NSString value
+			{ IsSmartEnum: true} =>  [ExpressionStatement (
+				KeepAlive (
+					// use the nomenclator to get the name for the variable type
+					Nomenclator.GetNameForVariableType (parameter.Name, Nomenclator.VariableType.BindFrom)!
+				))],
+
+			// boolean, nothing to do
+			{ SpecialType: SpecialType.System_Boolean } => [],
+			
+			// ensure that the gc does not collect the NSArray value
+			{ IsArray: true, ArrayElementType: SpecialType.System_String } => [ExpressionStatement (
+				KeepAlive (
+					//  use the nomenclator to get the name for the variable type
+					Nomenclator.GetNameForVariableType (parameter.Name, Nomenclator.VariableType.NSArray)!
+				))],
+
+			{ IsArray: true, ArrayElementIsINativeObject: true } => [ExpressionStatement (
+				KeepAlive (
+					//  use the nomenclator to get the name for the variable type
+					Nomenclator.GetNameForVariableType (parameter.Name, Nomenclator.VariableType.NSArray)!
+				))],
+
+			{ SpecialType: SpecialType.System_String } =>  [ExpressionStatement (
+				KeepAlive (
+					//  use the nomenclator to get the name for the variable type
+					Nomenclator.GetNameForVariableType (parameter.Name, Nomenclator.VariableType.NSString)!
+				))],
+
+			{ IsProtocol: true } => [ExpressionStatement (
+				KeepAlive (
+					//  use the nomenclator to get the name for the variable type
+					Nomenclator.GetNameForVariableType (parameter.Name, Nomenclator.VariableType.Handle)!
+				))],
+
+			// special types
+
+			// CoreMedia.CMSampleBuffer
+			{ FullyQualifiedName: "CoreMedia.CMSampleBuffer" } => [ExpressionStatement (
+				KeepAlive (
+					//  use the nomenclator to get the name for the variable type
+					Nomenclator.GetNameForVariableType (parameter.Name, Nomenclator.VariableType.Handle)!
+				))],
+
+			// AudioToolbox.AudioBuffers
+			{ FullyQualifiedName: "AudioToolbox.AudioBuffers" } => [ExpressionStatement (
+				KeepAlive (
+					//  use the nomenclator to get the name for the variable type
+					Nomenclator.GetNameForVariableType (parameter.Name, Nomenclator.VariableType.Handle)!
+				))],
+
+			// general NSObject/INativeObject, has to be after the special types otherwise the special types will
+			// fall into the NSObject/INativeObject case
+
+			// same name, native handle
+			{ IsNSObject: true } => [ExpressionStatement (
+				KeepAlive (
+					//  use the nomenclator to get the name for the variable type
+					Nomenclator.GetNameForVariableType (parameter.Name, Nomenclator.VariableType.Handle)!
+				))],
+
+			// same name, native handle
+			{ IsINativeObject: true } => [ExpressionStatement (
+				KeepAlive (
+					//  use the nomenclator to get the name for the variable type
+					Nomenclator.GetNameForVariableType (parameter.Name, Nomenclator.VariableType.Handle)!
+				))],
+			
+			// by default, we will use the parameter name as is and the type of the parameter
+			_ => [],
+		};
+#pragma warning restore format
+	}
+
 }

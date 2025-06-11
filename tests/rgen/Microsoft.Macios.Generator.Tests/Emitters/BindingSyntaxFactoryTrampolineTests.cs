@@ -2167,6 +2167,24 @@ namespace NS {
 				$"var ret = del ({Global ("ObjCRuntime.Runtime")}.GetNSObject<{Global ("Foundation.NSNumber")}> (pointerParameter)!.Int32Value);",
 			];
 
+			var nsNumberArrayParameterWithReturn = @"
+using System;
+using Foundation;
+using ObjCBindings;
+
+namespace NS {
+	public delegate int Callback ([BindFrom (typeof(NSNumber))]int[] pointerParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				"someTrampolineName",
+				nsNumberArrayParameterWithReturn,
+				$"var ret = del ({Global ("Foundation.NSArray")}.ArrayFromHandleFunc<int> (pointerParameter, {Global ("Foundation.NSNumber")}.ToInt32, false)!);"
+			];
+
 			var nsValueParameterWithReturn = @"
 using System;
 using Foundation;
@@ -2184,6 +2202,25 @@ namespace NS {
 				"someTrampolineName",
 				nsValueParameterWithReturn,
 				$"var ret = del ({Global ("ObjCRuntime.Runtime")}.GetNSObject<{Global ("Foundation.NSValue")}> (size)!.CGSizeValue);",
+			];
+
+			var nsValueArrayParameterWithReturn = @"
+using System;
+using Foundation;
+using CoreGraphics;
+using ObjCBindings;
+
+namespace NS {
+	public delegate int Callback ([BindFrom (typeof(NSValue))]CGSize[] size);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				"someTrampolineName",
+				nsValueArrayParameterWithReturn,
+				$"var ret = del ({Global ("Foundation.NSArray")}.ArrayFromHandleFunc<{Global ("CoreGraphics.CGSize")}> (size, {Global ("Foundation.NSValue")}.ToCGSize, false)!);"
 			];
 
 			var smartEnumParameterWithReturn = @"
@@ -2216,6 +2253,35 @@ namespace NS {
 				$"var ret = del ({Global ("NS.CustomLibraryEnum")}.GetValue ({Global ("ObjCRuntime.Runtime")}.GetNSObject<{Global ("Foundation.NSString")}> (level)!));",
 			];
 
+			var smartEnumArrayParameterWithReturn = @"
+using System;
+using Foundation;
+using AVFoundation;
+using ObjCBindings;
+
+namespace NS {
+
+	[BindingType<SmartEnum>]
+	public enum CustomLibraryEnum {
+		[Field<EnumValue> (""None"", ""/path/to/customlibrary.framework"")]
+		None,
+		[Field<EnumValue> (""Medium"", ""/path/to/customlibrary.framework"")]
+		Medium,
+		[Field<EnumValue> (""High"", ""/path/to/customlibrary.framework"")]
+		High,
+	}
+
+	public delegate int Callback ([BindFrom (typeof(NSString))]CustomLibraryEnum[] level);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				"someTrampolineName",
+				smartEnumArrayParameterWithReturn,
+				$"var ret = del ({Global ("Foundation.NSArray")}.ArrayFromHandleFunc<{Global ("NS.CustomLibraryEnum")}> (level, {Global ("NS.CustomLibraryEnumExtensions")}.GetValue, false)!);"
+			];
 		}
 
 		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
@@ -2241,6 +2307,7 @@ namespace NS {
 		Assert.NotNull (parameter.Type.Delegate);
 		var argumentSyntax = GetTrampolineInvokeArguments (trampolineName, parameter.Type.Delegate);
 		var invocation = CallTrampolineDelegate (parameter.Type.Delegate, argumentSyntax);
+		var x = invocation.ToFullString ();
 		Assert.Equal (expectedExpression, invocation.ToFullString ());
 	}
 

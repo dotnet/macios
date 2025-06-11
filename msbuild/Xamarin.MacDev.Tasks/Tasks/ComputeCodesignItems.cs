@@ -67,11 +67,13 @@ namespace Xamarin.MacDev.Tasks {
 
 			// Add the app bundles themselves
 			foreach (var bundle in CodesignBundle) {
-				// An app bundle is signed if either 'RequireCodeSigning' is true
+				// An app bundle is signed if either 'EnableCodeSigning' is true
 				// or a 'CodesignSigningKey' has been provided.
-				var requireCodeSigning = bundle.GetMetadata ("RequireCodeSigning");
+				var enableCodeSigning = bundle.GetMetadata ("EnableCodeSigning");
+				if (string.IsNullOrEmpty (enableCodeSigning))
+					enableCodeSigning = bundle.GetMetadata ("RequireCodeSigning");
 				var codesignSigningKey = bundle.GetMetadata ("CodesignSigningKey");
-				if (!string.Equals (requireCodeSigning, "true") && string.IsNullOrEmpty (codesignSigningKey))
+				if (!string.Equals (enableCodeSigning, "true") && string.IsNullOrEmpty (codesignSigningKey))
 					continue;
 
 				// Create a new item for the app bundle, and copy any metadata over.

@@ -126,8 +126,11 @@ namespace Xamarin.MacDev.Tasks {
 			return true;
 		}
 
-		bool StampFileNeedsUpdate (ITaskItem item)
+		bool StampFileNeedsUpdate (ITaskItem? item)
 		{
+			if (item is null)
+				return false;
+
 			var stampFile = GetCodesignStampFile (item);
 			if (!File.Exists (stampFile)) {
 				Log.LogMessage (MessageImportance.Low, "The stamp file '{0}' does not exist, so the item '{1}' needs to be codesigned.", stampFile, item.ItemSpec);
@@ -143,9 +146,12 @@ namespace Xamarin.MacDev.Tasks {
 		}
 
 		// 'sortedItems' is sorted by length of path, longest first.
-		bool NeedsCodesign (ITaskItem [] sortedItems, int index, string stampFileContents)
+		bool NeedsCodesign (ITaskItem? [] sortedItems, int index, string stampFileContents)
 		{
 			var item = sortedItems [index];
+			if (item is null)
+				return false;
+
 			var stampFile = GetCodesignStampFile (item);
 			if (StampFileNeedsUpdate (item))
 				return true;
@@ -159,14 +165,15 @@ namespace Xamarin.MacDev.Tasks {
 				var resolvedStampFile = Path.GetFullPath (PathUtils.ResolveSymbolicLinks (stampFile));
 
 				for (var i = 0; i < index; i++) {
-					if (sortedItems [i] is null)
+					var sortedItem = sortedItems [i];
+					if (sortedItem is null)
 						continue; // this item does not need to be signed
-					if (sortedItems [i].ItemSpec.StartsWith (itemPath, StringComparison.OrdinalIgnoreCase)) {
-						if (StampFileNeedsUpdate (sortedItems [i])) {
-							Log.LogMessage (MessageImportance.Low, "The item '{0}' contains '{1}', which must be signed, which means that the item must be signed too.", item.ItemSpec, sortedItems [i].ItemSpec);
+					if (sortedItem.ItemSpec.StartsWith (itemPath, StringComparison.OrdinalIgnoreCase)) {
+						if (StampFileNeedsUpdate (sortedItem)) {
+							Log.LogMessage (MessageImportance.Low, "The item '{0}' contains '{1}', which must be signed, which means that the item must be signed too.", item.ItemSpec, sortedItem.ItemSpec);
 							return true; // there's an item inside this directory that needs to be signed, so this directory must be signed too
 						}
-						Log.LogMessage (MessageImportance.Low, "The item '{0}' contains '{1}', which must be signed, which means that the item must be signed too; however this other item has an up-to-date signature.", item.ItemSpec, sortedItems [i].ItemSpec);
+						Log.LogMessage (MessageImportance.Low, "The item '{0}' contains '{1}', which must be signed, which means that the item must be signed too; however this other item has an up-to-date signature.", item.ItemSpec, sortedItem.ItemSpec);
 					}
 				}
 
@@ -438,17 +445,22 @@ namespace Xamarin.MacDev.Tasks {
 			}
 
 			// first sort all the items by path length, longest path first.
-			resourcesToSign = resourcesToSign.OrderBy (v => v.ItemSpec.Length).Reverse ().ToArray ();
+			ITaskItem? [] sortedResources = resourcesToSign.OrderBy (v => v.ItemSpec.Length).Reverse ().ToArray ();
 
 			// remove items that are up-to-date
 			var itemsToSign = new List<SignInfo> ();
-			for (var i = 0; i < resourcesToSign.Length; i++) {
-				var item = resourcesToSign [i];
+			for (var i = 0; i < sortedResources.Length; i++) {
+				var item = sortedResources [i];
+				if (item is null)
+					continue;
 				var info = new SignInfo (item);
 				if (!Validate (info))
 					continue;
-				if (NeedsCodesign (resourcesToSign, i, info.GetStampFileContents (this)))
+				if (NeedsCodesign (sortedResources, i, info.GetStampFileContents (this))) {
 					itemsToSign.Add (info);
+				} else {
+					sortedResources [i] = null;
+				}
 			}
 
 			if (Log.HasLoggedErrors)

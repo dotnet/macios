@@ -157,97 +157,97 @@ public class BindingSyntaxFactoryRuntimeTests {
 		{
 			yield return [
 				ReturnTypeForNSObject ("CoreAnimation.CATransform3D"),
-				"NSValue.ToCATransform3D"
+				$"{Global ("Foundation.NSValue")}.ToCATransform3D"
 			];
 
 			yield return [
 				ReturnTypeForNSObject ("CoreGraphics.CGAffineTransform"),
-				"NSValue.ToCGAffineTransform"
+				$"{Global ("Foundation.NSValue")}.ToCGAffineTransform"
 			];
 
 			yield return [
 				ReturnTypeForNSObject ("CoreGraphics.CGPoint"),
-				"NSValue.ToCGPoint"
+				$"{Global ("Foundation.NSValue")}.ToCGPoint"
 			];
 
 			yield return [
 				ReturnTypeForNSObject ("CoreGraphics.CGRect"),
-				"NSValue.ToCGRect"
+				$"{Global ("Foundation.NSValue")}.ToCGRect"
 			];
 
 			yield return [
 				ReturnTypeForNSObject ("CoreGraphics.CGSize"),
-				"NSValue.ToCGSize"
+				$"{Global ("Foundation.NSValue")}.ToCGSize"
 			];
 
 			yield return [
 				ReturnTypeForNSObject ("CoreGraphics.CGVector"),
-				"NSValue.ToCGVector"
+				$"{Global ("Foundation.NSValue")}.ToCGVector"
 			];
 
 			yield return [
 				ReturnTypeForNSObject ("CoreMedia.CMTime"),
-				"NSValue.ToCMTime"
+				$"{Global ("Foundation.NSValue")}.ToCMTime"
 			];
 
 			yield return [
 				ReturnTypeForNSObject ("CoreMedia.CMTimeMapping"),
-				"NSValue.ToCMTimeMapping"
+				$"{Global ("Foundation.NSValue")}.ToCMTimeMapping"
 			];
 
 			yield return [
 				ReturnTypeForNSObject ("CoreMedia.CMTimeRange"),
-				"NSValue.ToCMTimeRange"
+				$"{Global ("Foundation.NSValue")}.ToCMTimeRange"
 			];
 
 			yield return [
 				ReturnTypeForNSObject ("CoreMedia.CMVideoDimensions"),
-				"NSValue.ToCMVideoDimensions"
+				$"{Global ("Foundation.NSValue")}.ToCMVideoDimensions"
 			];
 
 			yield return [
 				ReturnTypeForNSObject ("CoreLocation.CLLocationCoordinate2D"),
-				"NSValue.ToCLLocationCoordinate2D"
+				$"{Global ("Foundation.NSValue")}.ToCLLocationCoordinate2D"
 			];
 
 			yield return [
 				ReturnTypeForNSObject ("Foundation.NSRange"),
-				"NSValue.ToNSRange"
+				$"{Global ("Foundation.NSValue")}.ToNSRange"
 			];
 
 			yield return [
 				ReturnTypeForNSObject ("MapKit.MKCoordinateSpan"),
-				"NSValue.ToMKCoordinateSpan"
+				$"{Global ("Foundation.NSValue")}.ToMKCoordinateSpan"
 			];
 
 			yield return [
 				ReturnTypeForNSObject ("SceneKit.SCNMatrix4"),
-				"NSValue.ToSCNMatrix4"
+				$"{Global ("Foundation.NSValue")}.ToSCNMatrix4"
 			];
 
 			yield return [
 				ReturnTypeForNSObject ("SceneKit.SCNVector3"),
-				"NSValue.ToSCNVector3"
+				$"{Global ("Foundation.NSValue")}.ToSCNVector3"
 			];
 
 			yield return [
 				ReturnTypeForNSObject ("SceneKit.SCNVector4"),
-				"NSValue.ToSCNVector4"
+				$"{Global ("Foundation.NSValue")}.ToSCNVector4"
 			];
 
 			yield return [
 				ReturnTypeForNSObject ("UIKit.NSDirectionalEdgeInsets"),
-				"NSValue.ToNSDirectionalEdgeInsets"
+				$"{Global ("Foundation.NSValue")}.ToNSDirectionalEdgeInsets"
 			];
 
 			yield return [
 				ReturnTypeForNSObject ("UIKit.UIEdgeInsets"),
-				"NSValue.ToUIEdgeInsets"
+				$"{Global ("Foundation.NSValue")}.ToUIEdgeInsets"
 			];
 
 			yield return [
 				ReturnTypeForNSObject ("UIKit.UIOffset"),
-				"NSValue.ToUIOffset"
+				$"{Global ("Foundation.NSValue")}.ToUIOffset"
 			];
 		}
 
@@ -268,72 +268,72 @@ public class BindingSyntaxFactoryRuntimeTests {
 
 			yield return [
 				ReturnTypeForBool (),
-				"NSNumber.ToBool"
+				$"{Global ("Foundation.NSNumber")}.ToBool"
 			];
 
 			yield return [
 				ReturnTypeForInt (),
-				"NSNumber.ToInt32"
+				$"{Global ("Foundation.NSNumber")}.ToInt32"
 			];
 
 			yield return [
 				ReturnTypeForInt (isUnsigned: true),
-				"NSNumber.ToUInt32"
+				$"{Global ("Foundation.NSNumber")}.ToUInt32"
 			];
 
 			yield return [
 				ReturnTypeForShort (),
-				"NSNumber.ToInt16"
+				$"{Global ("Foundation.NSNumber")}.ToInt16"
 			];
 
 			yield return [
 				ReturnTypeForShort (isUnsigned: true),
-				"NSNumber.ToUInt16"
+				$"{Global ("Foundation.NSNumber")}.ToUInt16"
 			];
 
 			yield return [
 				ReturnTypeForLong (),
-				"NSNumber.ToInt64"
+				$"{Global ("Foundation.NSNumber")}.ToInt64"
 			];
 
 			yield return [
 				ReturnTypeForLong (isUnsigned: true),
-				"NSNumber.ToUInt64"
+				$"{Global ("Foundation.NSNumber")}.ToUInt64"
 			];
 
 			yield return [
 				ReturnTypeForNInt (),
-				"NSNumber.ToNInt"
+				$"{Global ("Foundation.NSNumber")}.ToNInt"
 			];
 
 			yield return [
 				ReturnTypeForNInt (isUnsigned: true),
-				"NSNumber.ToNUInt"
+				$"{Global ("Foundation.NSNumber")}.ToNUInt"
 			];
 
 			yield return [
 				ReturnTypeForDouble (),
-				"NSNumber.ToDouble"
+				$"{Global ("Foundation.NSNumber")}.ToDouble"
 			];
 
 			yield return [
 				ReturnTypeForFloat (),
-				"NSNumber.ToFloat"
+				$"{Global ("Foundation.NSNumber")}.ToFloat"
 			];
 
 			yield return [
 				ReturnTypeForArray ("int", underlyingType: SpecialType.System_Int32),
-				"NSNumber.ToInt32"
+				$"{Global ("Foundation.NSNumber")}.ToInt32"
 			];
 
 			yield return [
 				ReturnTypeForArray ("uint", underlyingType: SpecialType.System_UInt32),
-				"NSNumber.ToUInt32"
+				$"{Global ("Foundation.NSNumber")}.ToUInt32"
 			];
 
 			yield return [
 				ReturnTypeForArray ("nint", underlyingType: SpecialType.System_IntPtr),
-				"NSNumber.ToNInt"
+				$"{Global ("Foundation.NSNumber")}.ToNInt"
 			];
 		}
 
@@ -386,15 +386,13 @@ public class BindingSyntaxFactoryRuntimeTests {
 				ReturnTypeForEnum ("AVFoundation.AVCaptureSystemPressureLevel", isSmartEnum: true),
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1"))),
-				false,
 				"global::AVFoundation.AVCaptureSystemPressureLevelExtensions.GetValue (arg1)"
 			];
 
 			yield return [
-				ReturnTypeForEnum ("AVFoundation.AVCaptureSystemPressureLevel", isSmartEnum: true),
+				ReturnTypeForEnum ("AVFoundation.AVCaptureSystemPressureLevel", isSmartEnum: true, isNullable: true),
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1"))),
-				true,
 				"global::AVFoundation.AVCaptureSystemPressureLevelExtensions.GetNullableValue (arg1)"
 			];
 		}
@@ -404,9 +402,9 @@ public class BindingSyntaxFactoryRuntimeTests {
 
 	[Theory]
 	[ClassData (typeof (TestDataSmartEnumGetValue))]
-	void SmartEnumGetValueTests (TypeInfo enumType, ImmutableArray<ArgumentSyntax> arguments, bool isNullable, string expectedDeclaration)
+	void SmartEnumGetValueTests (TypeInfo enumType, ImmutableArray<ArgumentSyntax> arguments, string expectedDeclaration)
 	{
-		var declaration = SmartEnumGetValue (enumType, arguments, isNullable);
+		var declaration = SmartEnumGetValue (enumType, arguments);
 		var str = declaration.ToString ();
 		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
 	}
@@ -446,16 +444,14 @@ public class BindingSyntaxFactoryRuntimeTests {
 			yield return [
 				SmartEnumGetValue (
 					ReturnTypeForEnum ("AVFoundation.AVCaptureSystemPressureLevel", isSmartEnum: true),
-					[Argument (IdentifierName ("arg1"))],
-					false),
+					[Argument (IdentifierName ("arg1"))]),
 				"global::AVFoundation.AVCaptureSystemPressureLevelExtensions.GetValue (arg1).GetHandle ()"
 			];
 
 			yield return [
 				SmartEnumGetValue (
-					ReturnTypeForEnum ("AVFoundation.AVCaptureSystemPressureLevel", isSmartEnum: true),
-					[Argument (IdentifierName ("arg1"))],
-					true),
+					ReturnTypeForEnum ("AVFoundation.AVCaptureSystemPressureLevel", isSmartEnum: true, isNullable: true),
+					[Argument (IdentifierName ("arg1"))]),
 				"global::AVFoundation.AVCaptureSystemPressureLevelExtensions.GetNullableValue (arg1).GetHandle ()"
 			];
 		}

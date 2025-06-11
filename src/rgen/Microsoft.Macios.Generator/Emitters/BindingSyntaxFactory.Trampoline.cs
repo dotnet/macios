@@ -423,18 +423,18 @@ static partial class BindingSyntaxFactory {
 		// attribute, we need get that expression and convert the NSValue/NSNumber to the expected type.
 		if (parameter.BindAs is not null) {
 #pragma warning disable format
-			expression = parameter.BindAs.Value.Type switch {
-				{ FullyQualifiedName: "Foundation.NSValue", IsArray: false } =>
+			expression = (BindAsType: parameter.BindAs.Value.Type, ParameterType: parameter.Type) switch {
+				{ BindAsType.FullyQualifiedName: "Foundation.NSValue", ParameterType.IsArray: false } =>
 					MemberAccessExpression (
 						kind: SyntaxKind.SimpleMemberAccessExpression, 
 						expression: expression, 
 						name: IdentifierName (GetNSValueValue (parameter.Type))),
-				{ FullyQualifiedName: "Foundation.NSNumber", IsArray: false } =>
+				{ BindAsType.FullyQualifiedName: "Foundation.NSNumber", ParameterType.IsArray: false } =>
 					MemberAccessExpression (
 						kind: SyntaxKind.SimpleMemberAccessExpression, 
 						expression: expression, 
 						name: IdentifierName (GetNSNumberValue (parameter.Type))),
-				{ FullyQualifiedName: "Foundation.NSString", IsArray: false }
+				{ BindAsType.FullyQualifiedName: "Foundation.NSString", ParameterType.IsArray: false }
 					=> InvocationExpression(
 						MemberAccessExpression(
 							SyntaxKind.SimpleMemberAccessExpression,
@@ -442,6 +442,34 @@ static partial class BindingSyntaxFactory {
 							IdentifierName ("GetValue").WithTrailingTrivia (Space)))
 						.WithArgumentList (
 							ArgumentList (SingletonSeparatedList(Argument (expression)))), // pass the nsstring expression
+				// array support: NSArray.ArrayFromHandleFunc<parameterType> (parameterName, NSValue.FromHandle, false)!
+				{ BindAsType.FullyQualifiedName: "Foundation.NSValue", ParameterType.IsArray: true } =>
+					SuppressNullableWarning (NSArrayFromHandleFunc (
+						returnType: parameter.Type.ToArrayElementType ().GetIdentifierSyntax (), 
+						arguments: [
+							Argument (parameterIdentifier),
+							Argument (NSValueFromHandle (parameter.Type)!), 
+							BoolArgument (false)
+						]
+					)),
+				{ BindAsType.FullyQualifiedName: "Foundation.NSNumber", ParameterType.IsArray: true } =>
+					SuppressNullableWarning (NSArrayFromHandleFunc (
+						returnType: parameter.Type.ToArrayElementType ().GetIdentifierSyntax (), 
+						arguments: [
+							Argument (parameterIdentifier),
+							Argument (NSNumberFromHandle (parameter.Type)!), 
+							BoolArgument (false)
+						]
+					)),
+				{ BindAsType.FullyQualifiedName: "Foundation.NSString", ParameterType.IsArray: true } =>
+					SuppressNullableWarning (NSArrayFromHandleFunc (
+						returnType: parameter.Type.ToArrayElementType ().GetIdentifierSyntax (), 
+						arguments: [
+							Argument (parameterIdentifier),
+							Argument (SmartEnumGetValue (parameter.Type)), 
+							BoolArgument (false)
+						]
+					)),
 				_ => expression
 			};
 #pragma warning restore format

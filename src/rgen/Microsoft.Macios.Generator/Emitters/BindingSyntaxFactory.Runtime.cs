@@ -479,7 +479,7 @@ static partial class BindingSyntaxFactory {
 				IdentifierName ("GetHandle").WithTrailingTrivia (Space)
 			)
 		);
-	
+
 	/// <summary>
 	/// Generate an object creation expressing for the given type info using the provided arguments.
 	/// </summary>

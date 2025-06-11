@@ -7,9 +7,9 @@ using Microsoft.Macios.Generator.Extensions;
 namespace Microsoft.Macios.Generator.Emitters;
 
 static partial class BindingSyntaxFactory {
-	
+
 	// AudioToolbox
-	
+
 	/// <summary>
 	/// TypeSyntax for AudioToolbox.AudioBuffers.
 	/// </summary>
@@ -157,7 +157,7 @@ static partial class BindingSyntaxFactory {
 	public readonly static TypeSyntax CMTag = StringExtensions.GetIdentifierName (
 		@namespace: ["CoreMedia"],
 		@class: "CMTag");
-	
+
 	/// <summary>
 	/// TypeSyntax for CoreMedia.CMSampleBuffer.
 	/// </summary>

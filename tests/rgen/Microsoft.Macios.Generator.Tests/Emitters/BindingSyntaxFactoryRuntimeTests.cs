@@ -520,7 +520,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 		var declaration = New (typeInfo, arguments);
 		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
 	}
-	
+
 	[Fact]
 	void NewTestsKnownType ()
 	{

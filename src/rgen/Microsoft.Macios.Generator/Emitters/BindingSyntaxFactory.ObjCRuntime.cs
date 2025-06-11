@@ -650,8 +650,7 @@ static partial class BindingSyntaxFactory {
 	/// <param name="typeInfo">The <see cref="TypeInfo"/> of the target smart enum. Must be a smart enum type.</param>
 	/// <param name="argument">The <see cref="ArgumentSyntax"/> representing the NSString value.</param>
 	/// <returns>An <see cref="InvocationExpressionSyntax"/> that calls the `GetValue` extension method to perform the conversion.</returns>
-	/// <exception cref="ArgumentException">Thrown if <paramref name="typeInfo"/> is not a smart enum.</exception>
-	internal static InvocationExpressionSyntax GetSmartEnunFromNSString (in TypeInfo typeInfo, ArgumentSyntax argument)
+	internal static InvocationExpressionSyntax GetSmartEnumFromNSString (in TypeInfo typeInfo, ArgumentSyntax argument)
 	{
 		var extensionClass = Nomenclator.GetSmartEnumExtensionClassName (typeInfo.GetIdentifierSyntax ().ToString ());
 		// generates: SmartEnum.GetValue (variableName);

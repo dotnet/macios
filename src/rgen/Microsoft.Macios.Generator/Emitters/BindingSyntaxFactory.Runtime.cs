@@ -479,21 +479,29 @@ static partial class BindingSyntaxFactory {
 				IdentifierName ("GetHandle").WithTrailingTrivia (Space)
 			)
 		);
+	
+	/// <summary>
+	/// Generate an object creation expressing for the given type info using the provided arguments.
+	/// </summary>
+	/// <param name="type">The information of the type of object to be created.</param>
+	/// <param name="arguments">The argument list for the object creation expression.</param>
+	/// <returns>An object creation expression.</returns>
+	internal static ObjectCreationExpressionSyntax New (TypeSyntax type, ImmutableArray<ArgumentSyntax> arguments)
+	{
+		var argumentList = ArgumentList (
+			SeparatedList<ArgumentSyntax> (arguments.ToSyntaxNodeOrTokenArray ()));
+		return ObjectCreationExpression (type.WithLeadingTrivia (Space).WithTrailingTrivia (Space))
+			.WithArgumentList (argumentList);
+	}
 
 	/// <summary>
 	/// Generate an object creation expressing for the given type info using the provided arguments.
 	/// </summary>
 	/// <param name="type">The information of the type of object to be created.</param>
 	/// <param name="arguments">The argument list for the object creation expression.</param>
-	/// <param name="global">If the global qualifier should be used.</param>
 	/// <returns>An object creation expression.</returns>
 	internal static ObjectCreationExpressionSyntax New (in TypeInfo type, ImmutableArray<ArgumentSyntax> arguments)
-	{
-		var argumentList = ArgumentList (
-			SeparatedList<ArgumentSyntax> (arguments.ToSyntaxNodeOrTokenArray ()));
-		return ObjectCreationExpression (type.GetIdentifierSyntax ().WithLeadingTrivia (Space).WithTrailingTrivia (Space))
-			.WithArgumentList (argumentList);
-	}
+		=> New (type.GetIdentifierSyntax (), arguments);
 
 	/// <summary>
 	/// Generates a nameof(variableName) expression.

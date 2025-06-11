@@ -1084,7 +1084,7 @@ static partial class BindingSyntaxFactory {
 					Nomenclator.GetNameForVariableType (parameter.Name, Nomenclator.VariableType.BindFrom)!
 				))],
 
-			// boolean, convert it to byte
+			// boolean, nothing to do
 			{ SpecialType: SpecialType.System_Boolean } => [],
 			
 			// ensure that the gc does not collect the NSArray value

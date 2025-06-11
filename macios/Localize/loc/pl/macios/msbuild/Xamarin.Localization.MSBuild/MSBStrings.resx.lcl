@@ -157,6 +157,9 @@
       <Item ItemId=";E0044v2" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Could not find a valid Xcode app bundle at '{0}'. Please verify that 'xcode-select -p' points to your Xcode installation. For more information see https://aka.ms/macios-missing-xcode.]D;]A;        ]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Nie można odnaleźć prawidłowego zbioru aplikacji Xcode w lokalizacji „{0}”. Sprawdź, czy polecenie „xcode-select -p” prowadzi do instalacji środowiska Xcode. Aby uzyskać więcej informacji, sprawdź witrynę https://aka.ms/macios-missing-xcode.]D;]A;        ]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -208,6 +211,9 @@
       <Item ItemId=";E0053" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Target architecture ARMv6 is no longer supported. Please select a supported architecture.]D;]A;        ]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Architektura docelowa ARMv6 nie jest już obsługiwana. Wybierz obsługiwaną architekturę.]D;]A;        ]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -529,6 +535,9 @@
       <Item ItemId=";E0118" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[{0} exited with code {1}:]D;]A;{2}]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Zakończono „{0}” z kodem {1}:]D;]A;{2}]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -958,6 +967,9 @@
       <Item ItemId=";E0191" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[This version of .NET for {0} ({1}) requires Xcode {2}. The current version of Xcode is {3}. Either install Xcode {2}, or use a different version of .NET for {0}. See https://aka.ms/xcode-requirement for more information.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Ta wersja środowiska .NET dla {0} ({1}) wymaga środowiska Xcode {2}. Obecna wersja środowiska Xcode to {3}. Zainstaluj środowisko Xcode {2} lub użyj innej wersji środowiska .NET dla {0}. Więcej informacji można znaleźć w witrynie https://aka.ms/xcode-requirement.]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -1864,6 +1876,9 @@
       <Item ItemId=";E7115" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[The illink assembly doesn't exist: '{0}'.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Zestaw plików illink nie istnieje: „{0}”.]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -2077,6 +2092,9 @@
       <Item ItemId=";E7140" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[The app requests the entitlement '{0}', but the provisioning profile '{1}' doesn't contain this entitlement.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Aplikacja żąda upoważnienia „{0}”, ale profil aprowizacji „{1}” nie zawiera tego upoważnienia.]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -2164,24 +2182,36 @@
       <Item ItemId=";E7151" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[The app requests the entitlement '{0}', but this entitlement is not allowed on the current platform ({1}). It's only allowed on: {2}.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Aplikacja żąda upoważnienia „{0}”, ale to upoważnienie nie jest dozwolone na bieżącej platformie ({1}). Jest to dozwolone tylko w przypadku {2}.]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7152" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[The app requests the entitlement '{0}' with the value '{1}', but the provisioning profile '{2}' grants it for the values '{3}'.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Aplikacja żąda upoważnienia „{0}” o wartości „{1}”, ale profil aprowizacji „{2}” przyznaje je dla wartości „{3}”.]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7152_InvalidMtouchHttpClientHandler" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Invalid value for 'MtouchHttpClientHandler' ('{0}', must be either 'NSUrlSessionHandler' or 'CFNetworkHandler' (or not set at all).]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Nieprawidłowa wartość dla elementu „MtouchHttpClientHandler” („{0}”, musi być „NSUrlSessionHandler” lub „CFNetworkHandler” (bądź wcale nie jest ustawiona).]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7153" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[The app requests the entitlement '{0}' with the value '{1}' of type '{2}', but this entitlement must be of type '{3}'.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Aplikacja żąda upoważnienia „{0}” o wartości „{1}” typu „{2}”, ale to upoważnienie musi być typu „{3}”.]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -2206,12 +2236,18 @@
       <Item ItemId=";M0001" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Started external tool execution #{0}: {1} {2}]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Rozpoczęto wykonywanie narzędzia zewnętrznego #{0}: {1} {2}]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";M0002" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Finished external tool execution #{0} in {1} and with exit code {2}.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Zakończono wykonywanie narzędzia zewnętrznego #{0} w {1} i z kodem zakończenia {2}.]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>

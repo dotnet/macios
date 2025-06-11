@@ -642,6 +642,26 @@ static partial class BindingSyntaxFactory {
 	/// <returns>A <see cref="LocalDeclarationStatementSyntax"/> for the auxiliary NSString variable, or null if the input is not a smart enum or if a variable name cannot be generated.</returns>
 	internal static LocalDeclarationStatementSyntax? GetNSStringSmartEnumAuxVariable (in DelegateParameter parameter)
 		=> GetNSStringSmartEnumAuxVariable (parameter.Name, parameter.Type);
+	
+	/// <summary>
+	/// Generates an invocation expression to convert an NSString (represented by an argument syntax) back to its corresponding smart enum value.
+	/// This method relies on a generated extension class for the smart enum that provides a `GetValue(string)` method.
+	/// </summary>
+	/// <param name="typeInfo">The <see cref="TypeInfo"/> of the target smart enum. Must be a smart enum type.</param>
+	/// <param name="argument">The <see cref="ArgumentSyntax"/> representing the NSString value.</param>
+	/// <returns>An <see cref="InvocationExpressionSyntax"/> that calls the `GetValue` extension method to perform the conversion.</returns>
+	/// <exception cref="ArgumentException">Thrown if <paramref name="typeInfo"/> is not a smart enum.</exception>
+	internal static InvocationExpressionSyntax GetSmartEnunFromNSString (in TypeInfo typeInfo, ArgumentSyntax argument)
+	{
+		var extensionClass = Nomenclator.GetSmartEnumExtensionClassName (typeInfo.GetIdentifierSyntax ().ToString ());
+		// generates: SmartEnum.GetValue (variableName);
+		return InvocationExpression (
+			MemberAccessExpression (
+				SyntaxKind.SimpleMemberAccessExpression,
+				IdentifierName (extensionClass),
+				IdentifierName ("GetValue").WithTrailingTrivia (Space)))
+			.WithArgumentList (ArgumentList (SingletonSeparatedList (argument)));
+	}
 
 	internal static LocalDeclarationStatementSyntax? GetNSArrayBindFromAuxVariable (in Parameter parameter)
 	{

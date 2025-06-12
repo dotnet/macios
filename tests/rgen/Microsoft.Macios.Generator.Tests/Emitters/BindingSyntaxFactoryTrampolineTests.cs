@@ -4286,7 +4286,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				audioBuffer,
-@"if (audioBuffer is null)
+				@"if (audioBuffer is null)
 	global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (audioBuffer));
 var audioBuffer__handle__ = audioBuffer.GetHandle ();
 ",
@@ -4309,7 +4309,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				cmSampleBuffer,
-@"if (cmSampleBuffer is null)
+				@"if (cmSampleBuffer is null)
 	global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (cmSampleBuffer));
 var cmSampleBuffer__handle__ = cmSampleBuffer.GetHandle ();
 ",

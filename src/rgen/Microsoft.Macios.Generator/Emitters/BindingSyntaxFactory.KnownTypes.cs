@@ -188,8 +188,19 @@ static partial class BindingSyntaxFactory {
 		@namespace: ["System"],
 		@class: "EventHandler");
 
+	/// <summary>
+	/// TypeSyntax for System.GC.
+	/// </summary>
 	public readonly static TypeSyntax GC = StringExtensions.GetIdentifierName (
 		@namespace: ["System"],
 		@class: "GC");
+
+	/// <summary>
+	/// TypeSyntax for System.Runtime.CompilerServices.Unsafe.
+	/// </summary>
+	public readonly static TypeSyntax Unsafe = StringExtensions.GetIdentifierName (
+		@namespace: ["System", "Runtime", "CompilerServices"],
+		@class: "Unsafe");
+
 
 }

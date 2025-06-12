@@ -48,7 +48,11 @@ static partial class BindingSyntaxFactory {
 			{ SpecialType: SpecialType.System_String }
 				=> NStringCreateNative ([Argument (IdentifierName(auxVariableName)), BoolArgument (true)]),
 			
-			// (UIntPtr) (ulong) myParam 
+			// Runtime.RetainAndAutoreleaseNativeObject (auxVariable) of the native NSString that represents a smart enum
+			{ IsSmartEnum: true, IsNativeEnum: false }
+				=> RetainAndAutoreleaseNSObject ([Argument (IdentifierName(auxVariableName))]),
+
+			// (UIntPtr) (ulong) myParam
 			{ IsNativeEnum: true }
 				=> CastEnumToNative (auxVariableName, typeInfo.Delegate.ReturnType),
 			

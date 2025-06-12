@@ -495,7 +495,7 @@ static partial class BindingSyntaxFactory {
 	}
 
 	/// <summary>
-	/// Generate an object creation expressing for the given type info using the provided arguments.
+	/// Generate an object creation expression for the given type info using the provided arguments.
 	/// </summary>
 	/// <param name="type">The information of the type of object to be created.</param>
 	/// <param name="arguments">The argument list for the object creation expression.</param>

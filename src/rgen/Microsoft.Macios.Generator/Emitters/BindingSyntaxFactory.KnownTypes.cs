@@ -161,7 +161,7 @@ static partial class BindingSyntaxFactory {
 	/// <summary>
 	/// TypeSyntax for CoreMedia.CMSampleBuffer.
 	/// </summary>
-	public readonly static TypeSyntax CMSampleBuffer = StringExtensions.GetIdentifierName (
+	public static readonly TypeSyntax CMSampleBuffer = StringExtensions.GetIdentifierName (
 		@namespace: ["CoreMedia"],
 		@class: "CMSampleBuffer");
 

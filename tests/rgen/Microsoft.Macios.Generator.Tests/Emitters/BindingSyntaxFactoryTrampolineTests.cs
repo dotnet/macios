@@ -37,7 +37,25 @@ namespace NS {
 
 			yield return [
 				arrayNSObjectResult,
-				"global::ObjCRuntime.Runtime.RetainAndAutoreleaseNSObject (global::Foundation.NSArray.FromNSObjects (auxVariable))"
+				$"{Global ("ObjCRuntime.Runtime")}.RetainAndAutoreleaseNSObject (global::Foundation.NSArray.FromNSObjects (auxVariable))"
+			];
+
+			const string nullableArrayNSObjectResult = @"
+using System;
+using Foundation;
+
+namespace NS {
+
+	public delegate NSString []? Callback ();
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				nullableArrayNSObjectResult,
+				$"{Global ("ObjCRuntime.Runtime")}.RetainAndAutoreleaseNSObject (global::Foundation.NSArray.FromNSObjects (auxVariable))"
 			];
 
 			const string nsObjectResult = @"
@@ -55,7 +73,25 @@ namespace NS {
 
 			yield return [
 				nsObjectResult,
-				"global::ObjCRuntime.Runtime.RetainAndAutoreleaseNSObject (auxVariable)"
+				$"{Global ("ObjCRuntime.Runtime")}.RetainAndAutoreleaseNSObject (auxVariable)"
+			];
+
+			const string nullableNSObjectResult = @"
+using System;
+using Foundation;
+
+namespace NS {
+
+	public delegate NSString? Callback ();
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				nullableNSObjectResult,
+				$"{Global ("ObjCRuntime.Runtime")}.RetainAndAutoreleaseNSObject (auxVariable)"
 			];
 
 			const string nativeObjectResult = @"
@@ -74,7 +110,26 @@ namespace NS {
 
 			yield return [
 				nativeObjectResult,
-				"global::ObjCRuntime.Runtime.RetainAndAutoreleaseNativeObject (auxVariable)"
+				$"{Global ("ObjCRuntime.Runtime")}.RetainAndAutoreleaseNativeObject (auxVariable)"
+			];
+
+			const string nullableNativeObjectResult = @"
+using System;
+using Foundation;
+using Security;
+
+namespace NS {
+
+	public delegate SecKeyChain? Callback ();
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				nullableNativeObjectResult,
+				$"{Global ("ObjCRuntime.Runtime")}.RetainAndAutoreleaseNativeObject (auxVariable)"
 			];
 
 			const string protocolResult = @"
@@ -93,7 +148,26 @@ namespace NS {
 
 			yield return [
 				protocolResult,
-				"global::ObjCRuntime.Runtime.RetainAndAutoreleaseNSObject (auxVariable)"
+				$"{Global ("ObjCRuntime.Runtime")}.RetainAndAutoreleaseNSObject (auxVariable)"
+			];
+
+			const string nullableProtocolResult = @"
+using System;
+using Foundation;
+using Metal;
+
+namespace NS {
+
+	public delegate IMTLTexture Callback ();
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				nullableProtocolResult,
+				$"{Global ("ObjCRuntime.Runtime")}.RetainAndAutoreleaseNSObject (auxVariable)"
 			];
 
 			const string systemStringResult = @"
@@ -171,6 +245,62 @@ namespace NS {
 			yield return [
 				nativeEnum,
 				"(IntPtr) (long) auxVariable",
+			];
+
+			const string smartEnum = @"
+using System;
+using ObjCBindings;
+using ObjCRuntime;
+
+namespace NS {
+
+	[BindingType<SmartEnum>]
+	public enum MySmartEnum {
+
+		[Field<EnumValue> (""AVCaptureDeviceTypeBuiltInMicrophone"")]
+		BuiltInMicrophone,
+
+		[Field<EnumValue> (""AVCaptureDeviceTypeBuiltInWideAngleCamera"")]
+		BuiltInWideAngleCamera,
+
+		[Field<EnumValue> (""AVCaptureDeviceTypeBuiltInTelephotoCamera"")]
+		BuiltInTelephotoCamera,
+
+		[Field<EnumValue> (""AVCaptureDeviceTypeBuiltInDuoCamera"")]
+		BuiltInDuoCamera,
+
+		[Field<EnumValue> (""AVCaptureDeviceTypeBuiltInDualCamera"")]
+		BuiltInDualCamera,
+
+		[Field<EnumValue> (""AVCaptureDeviceTypeBuiltInTrueDepthCamera"")]
+		BuiltInTrueDepthCamera,
+
+		[Field<EnumValue> (""AVCaptureDeviceTypeBuiltInUltraWideCamera"")]
+		BuiltInUltraWideCamera,
+
+		[Field<EnumValue> (""AVCaptureDeviceTypeBuiltInTripleCamera"")]
+		BuiltInTripleCamera,
+
+		[Field<EnumValue> (""AVCaptureDeviceTypeBuiltInDualWideCamera"")]
+		BuiltInDualWideCamera,
+
+		[Field<EnumValue> (""AVCaptureDeviceTypeExternalUnknown"")]
+		ExternalUnknown,
+
+		[Field<EnumValue> (""AVCaptureDeviceTypeBuiltInLiDARDepthCamera"")]
+		BuiltInLiDarDepthCamera,
+	}
+
+	public delegate MySmartEnum Callback()
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				smartEnum,
+				$"{Global ("ObjCRuntime.Runtime")}.RetainAndAutoreleaseNSObject (auxVariable)"
 			];
 
 			const string unsignedNativeEnum = @"

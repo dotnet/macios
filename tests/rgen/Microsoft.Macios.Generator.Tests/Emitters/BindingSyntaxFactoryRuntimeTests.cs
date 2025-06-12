@@ -521,6 +521,17 @@ public class BindingSyntaxFactoryRuntimeTests {
 		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
 	}
 
+	[Fact]
+	void NewTestsKnownType ()
+	{
+		var expected = $"new {Global ("AudioToolbox.AudioBuffers")} (arg1, arg2)";
+		var declaration = New (AudioBuffers, [
+			Argument (IdentifierName ("arg1")),
+			Argument (IdentifierName ("arg2"))
+		]);
+		Assert.Equal (expected, declaration.ToFullString ());
+	}
+
 	class TestDataGetNSObject : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()
 		{

@@ -4352,7 +4352,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				stringParameter,
-				$"{Global ("System.GC")}.KeepAlive (nsstringParameter);\n"
+				$"{Global ("CoreFoundation.CFString")}.ReleaseNative (nsstringParameter);\n"
 			];
 
 			var nullableStringParameter = @"
@@ -4368,7 +4368,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				nullableStringParameter,
-				$"{Global ("System.GC")}.KeepAlive (nsstringParameter);\n"
+				$"{Global ("CoreFoundation.CFString")}.ReleaseNative (nsstringParameter);\n"
 			];
 
 			var stringArrayParameter = @"

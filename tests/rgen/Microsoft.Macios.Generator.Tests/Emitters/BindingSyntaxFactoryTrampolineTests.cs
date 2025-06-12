@@ -4268,6 +4268,52 @@ namespace NS {
 				nullableINativeArrayParameter,
 				"var nsa_inativeArray = inativeArray is null ? null : global::Foundation.NSArray.FromNSObjects (inativeArray);\n"
 			];
+
+			var audioBuffer = @"
+using System;
+using AudioToolbox;
+using Foundation;
+using ObjCBindings;
+
+namespace NS {
+	public delegate void Callback (AudioBuffers audioBuffer);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				"someTrampolineName",
+				audioBuffer,
+@"if (audioBuffer is null)
+	global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (audioBuffer));
+var audioBuffer__handle__ = audioBuffer.GetHandle ();
+",
+			];
+
+			var cmSampleBuffer = @"
+using System;
+using CoreMedia;
+using Foundation;
+using ObjCBindings;
+
+namespace NS {
+	public delegate void Callback (CMSampleBuffer cmSampleBuffer);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				"someTrampolineName",
+				cmSampleBuffer,
+@"if (cmSampleBuffer is null)
+	global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (cmSampleBuffer));
+var cmSampleBuffer__handle__ = cmSampleBuffer.GetHandle ();
+",
+			];
 		}
 
 		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();

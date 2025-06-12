@@ -1101,10 +1101,12 @@ static partial class BindingSyntaxFactory {
 				))],
 
 			{ SpecialType: SpecialType.System_String } =>  [ExpressionStatement (
-				KeepAlive (
-					//  use the nomenclator to get the name for the variable type
-					Nomenclator.GetNameForVariableType (parameter.Name, Nomenclator.VariableType.NSString)!
-				))],
+					StringReleaseNative(
+						[Argument(IdentifierName(
+							//  use the nomenclator to get the name for the variable type
+							Nomenclator.GetNameForVariableType (parameter.Name, Nomenclator.VariableType.NSString)!
+						))
+						]))],
 
 			{ IsProtocol: true } => [ExpressionStatement (
 				KeepAlive (

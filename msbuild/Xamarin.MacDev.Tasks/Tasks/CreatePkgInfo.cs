@@ -6,8 +6,7 @@ using Microsoft.Build.Utilities;
 
 using Xamarin.Messaging.Build.Client;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Xamarin.MacDev.Tasks {
 	public class CreatePkgInfo : XamarinTask, ICancelableTask {
@@ -15,7 +14,7 @@ namespace Xamarin.MacDev.Tasks {
 		#region Inputs
 
 		[Required]
-		public string OutputPath { get; set; }
+		public string OutputPath { get; set; } = "";
 
 		#endregion
 

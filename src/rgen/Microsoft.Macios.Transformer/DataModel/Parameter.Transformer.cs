@@ -27,7 +27,7 @@ readonly partial struct Parameter {
 		// retrieve the parameter attributes because those might affect the parameter type, for example, the 
 		// NullAllowed attribute can change the parameter type to be nullable.
 		var parameterAttrs = symbol.GetAttributeData ();
-		parameter = new (symbol.Ordinal, new (symbol.Type, parameterAttrs), symbol.Name) {
+		parameter = new (symbol.Ordinal, new (symbol.Type, parameterAttrs), symbol.GetSafeName ()) {
 			IsOptional = symbol.IsOptional,
 			IsParams = symbol.IsParams,
 			IsThis = symbol.IsThis,

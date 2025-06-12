@@ -16,25 +16,14 @@ using System;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 
-#if NET
 using Vector4d = global::CoreGraphics.NVector4d;
-#else
-using Vector4d = global::OpenTK.Vector4d;
-#endif
 
 // This type does not come from the CoreGraphics framework; it's defined in /usr/include/simd/matrix_types.h
-#if NET
-namespace CoreGraphics
-#else
-namespace OpenTK
-#endif
-{
-#if NET
+namespace CoreGraphics {
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct NMatrix4d : IEquatable<NMatrix4d> {
 		public double M11;
@@ -301,21 +290,6 @@ namespace OpenTK
 			return !left.Equals (right);
 		}
 
-#if !NET
-		public static explicit operator global::OpenTK.Matrix4d (NMatrix4d value)
-		{
-			return new global::OpenTK.Matrix4d (
-				value.M11, value.M12, value.M13, value.M14,
-				value.M21, value.M22, value.M23, value.M24,
-				value.M31, value.M32, value.M33, value.M34,
-				value.M41, value.M42, value.M43, value.M44);
-		}
-
-		public static explicit operator NMatrix4d (global::OpenTK.Matrix4d value)
-		{
-			return new NMatrix4d (value.Row0, value.Row1, value.Row2, value.Row3);
-		}
-#endif // !NET
 		public override string ToString ()
 		{
 			return

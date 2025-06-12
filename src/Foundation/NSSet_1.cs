@@ -32,20 +32,14 @@ using System.Runtime.Versioning;
 
 using ObjCRuntime;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 // Disable until we get around to enable + fix any issues.
 #nullable disable
 
 namespace Foundation {
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	[Register ("NSSet", SkipRegistration = true)]
 	public sealed class NSSet<TKey> : NSSet, IEnumerable<TKey>
 		where TKey : class, INativeObject {

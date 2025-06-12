@@ -13,10 +13,6 @@ using ObjCRuntime;
 using Foundation;
 using UniformTypeIdentifiers;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreSpotlight {
 
 	[Partial]

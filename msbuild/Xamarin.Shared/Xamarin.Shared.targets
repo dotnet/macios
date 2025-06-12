@@ -616,6 +616,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			AppBundleName="$(_AppBundleName)"
 			AppManifest="$(AppBundleManifest)"
 			AssemblyName="$(AssemblyName)"
+			BundleExecutable="$(_NativeExecutableName)"
 			CompiledAppManifest="$(_TemporaryAppManifest)"
 			Debug="$(_BundlerDebug)"
 			DefaultSdkVersion="$(_SdkVersion)"
@@ -727,7 +728,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	</PropertyGroup>
 
 	<Target Name="_CompileEntitlements"
-		Condition="'$(_RequireCodeSigning)' == 'true' Or '$(CodesignEntitlements)' != ''"
+		Condition="'$(EnableCodeSigning)' == 'true' Or '$(CodesignEntitlements)' != ''"
 		DependsOnTargets="$(_CompileEntitlementsDependsOn)"
 		Outputs="$(_CompiledEntitlementsPath)">
 		<!-- Automatically add the 'allow-jit' entitlement for desktop release builds in .NET -->
@@ -1232,7 +1233,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			will apply to Xamarin.Mac as well.
 		-->
 		<ParseDeviceSpecificBuildInformation
-			Condition="'$(DeviceSpecificBuild)' == 'true' And '$(TargetiOSDevice)' != '' And '$(_CanDeployToDeviceOrSimulator)' == 'true' And '$(_PlatformName)' != 'macOS'"
+			Condition="'$(DeviceSpecificBuild)' == 'true' And '$(TargetiOSDevice)' != '' And '$(_CanDeployToDeviceOrSimulator)' == 'true' And '$(_PlatformName)' != 'macOS' And '$(_PlatformName)' != 'MacCatalyst'"
 			Architectures="$(TargetArchitectures)"
 			IntermediateOutputPath="$(IntermediateOutputPath)"
 			OutputPath="$(OutputPath)"
@@ -1981,10 +1982,11 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			_ComputeTargetFrameworkMoniker;
 			_GenerateBundleName;
 			_ReadAppManifest;
+			$(CodesignConfigureDependsOn);
 		</_DetectSigningIdentityDependsOn>
 	</PropertyGroup>
 
-	<Target Name="_DetectSigningIdentity" Condition="'$(_CanOutputAppBundle)' == 'true'" DependsOnTargets="$(_DetectSigningIdentityDependsOn)">
+	<Target Name="_DetectSigningIdentity" Condition="'$(_CanOutputAppBundle)' == 'true' And '$(EnableCodeSigning)' == 'true'" DependsOnTargets="$(_DetectSigningIdentityDependsOn)">
 		<DetectSigningIdentity
 			SessionId="$(BuildSessionId)"
 			CodesignEntitlements="$(CodesignEntitlements)"
@@ -1994,7 +1996,6 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			BundleIdentifier="$(_BundleIdentifier)"
 			CustomEntitlements="@(CustomEntitlements)"
 			Keychain="$(CodesignKeychain)"
-			RequireCodeSigning="$(_RequireCodeSigning)"
 			SdkIsSimulator="$(_SdkIsSimulator)"
 			SdkPlatform="$(_SdkPlatform)"
 			ProvisioningProfile="$(CodesignProvision)"
@@ -2393,7 +2394,8 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 				<CodesignSigningKey Condition="'%(_CustomCodesignBundle.CodesignSigningKey)' == ''">$(_CodeSigningKey)</CodesignSigningKey>
 				<CodesignUseHardenedRuntime Condition="'%(_CustomCodesignBundle.CodesignUseHardenedRuntime)' == ''">$(UseHardenedRuntime)</CodesignUseHardenedRuntime>
 				<CodesignUseSecureTimestamp Condition="'%(_CustomCodesignBundle.CodesignUseSecureTimestamp)' == ''">$(UseHardenedRuntime)</CodesignUseSecureTimestamp>
-				<RequireCodeSigning Condition="'%(_CustomCodesignBundle.RequireCodeSigning)' == ''">$(_RequireCodeSigning)</RequireCodeSigning>
+				<EnableCodeSigning Condition="'%(_CustomCodesignBundle.EnableCodeSigning)' == '' And '%(_CustomCodesignBundle.RequireCodeSigning)' != ''">%(_CustomCodesignBundle.RequireCodeSigning)</EnableCodeSigning>
+				<EnableCodeSigning Condition="'%(_CustomCodesignBundle.EnableCodeSigning)' == ''">$(EnableCodeSigning)</EnableCodeSigning>
 				<SourceProjectPath>$(MSBuildProjectDirectory)</SourceProjectPath>
 				<BundleRelativePath Condition="'%(_CustomCodesignBundle.BundleRelativePath)' == ''">$(_AppPlugInsRelativePath)</BundleRelativePath>
 			</_CustomCodesignBundle>
@@ -2413,7 +2415,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 				<CodesignSigningKey>$(_CodeSigningKey)</CodesignSigningKey>
 				<CodesignUseHardenedRuntime>$(UseHardenedRuntime)</CodesignUseHardenedRuntime>
 				<CodesignUseSecureTimestamp>$(UseHardenedRuntime)</CodesignUseSecureTimestamp>
-				<RequireCodeSigning>$(_RequireCodeSigning)</RequireCodeSigning>
+				<EnableCodeSigning>$(EnableCodeSigning)</EnableCodeSigning>
 				<SourceProjectPath>$(MSBuildProjectDirectory)</SourceProjectPath>
 				<BundleRelativePath Condition="'$(IsAppExtension)' == 'true' and '$(IsXPCService)' != 'true'">$(_AppPlugInsRelativePath)</BundleRelativePath>
 				<BundleRelativePath Condition="'$(IsAppExtension)' == 'true' and '$(IsXPCService)' == 'true'">$(_AppXpcServicesRelativePath)</BundleRelativePath>
@@ -2544,6 +2546,9 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	</Target>
 
 	<Target Name="_ExtendAppExtensionReferences" DependsOnTargets="_ResolveAppExtensionReferences;_DetectSigningIdentity" Condition=" '@(AdditionalAppExtensions)' != ''">
+		<PropertyGroup>
+			<CodesignWarnIfNoEntitlements Condition="'$(CodesignWarnIfNoEntitlements)' == ''">true</CodesignWarnIfNoEntitlements>
+		</PropertyGroup>
 	<!-- The idea here is that after _ResolveAppExtensionReferences we inject the 3rd party extensions into the list being processed later for embedding and code signing.
 		- _ResolvedAppExtensionReferences is an item group of the path, so that's easy.
 		- _AppExtensionCodesignProperties less so. It is generated by reading codesign.items generated by the c# tasks during build, which we don't have. 
@@ -2555,13 +2560,15 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 				<CodesignAllocate>$(_CodesignAllocate)</CodesignAllocate>
 				<CodesignDisableTimestamp>false</CodesignDisableTimestamp>
 				<CodesignDisableTimestamp Condition="'$(_SdkIsSimulator)' == 'true' Or '$(_BundlerDebug)' == 'true'">true</CodesignDisableTimestamp>
-				<CodesignEntitlements Condition="Exists('%(AdditionalAppExtensions.Identity)/%(AdditionalAppExtensions.Name).entitlements')">%(AdditionalAppExtensions.Identity)/%(AdditionalAppExtensions.Name).entitlements</CodesignEntitlements>
+				<CodesignEntitlements Condition="'%(AdditionalAppExtensions.CodesignEntitlements)' != ''">%(AdditionalAppExtensions.CodesignEntitlements)</CodesignEntitlements>
+				<CodesignEntitlements Condition="'%(AdditionalAppExtensions.CodesignEntitlements)' == '' And Exists('%(AdditionalAppExtensions.Identity)/%(AdditionalAppExtensions.Name).entitlements')">%(AdditionalAppExtensions.Identity)/%(AdditionalAppExtensions.Name).entitlements</CodesignEntitlements>
+				<CodesignWarnIfNoEntitlements Condition="'%(AdditionalAppExtensions.CodesignWarnIfNoEntitlements)' == ''">$(CodesignWarnIfNoEntitlements)</CodesignWarnIfNoEntitlements>
 				<CodesignKeychain>$(CodesignKeychain)</CodesignKeychain>
 				<CodesignResourceRules>$(_PreparedResourceRules)</CodesignResourceRules>
 				<CodesignSigningKey>$(_CodeSigningKey)</CodesignSigningKey>
 				<CodesignUseHardenedRuntime>$(UseHardenedRuntime)</CodesignUseHardenedRuntime>
 				<CodesignUseSecureTimestamp>$(UseHardenedRuntime)</CodesignUseSecureTimestamp>
-				<RequireCodeSigning>$(_RequireCodeSigning)</RequireCodeSigning>
+				<EnableCodeSigning>$(EnableCodeSigning)</EnableCodeSigning>
 			</_CodesignBundle>
 		</ItemGroup>
 	</Target>

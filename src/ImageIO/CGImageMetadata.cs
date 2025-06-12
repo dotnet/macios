@@ -16,18 +16,11 @@ using ObjCRuntime;
 using Foundation;
 using CoreFoundation;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace ImageIO {
-
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public partial class CGImageMetadataEnumerateOptions {
 
 		/// <summary>To be added.</summary>
@@ -54,22 +47,13 @@ namespace ImageIO {
 	public delegate bool CGImageMetadataTagBlock (NSString path, CGImageMetadataTag tag);
 
 	// CGImageMetadata.h
-#if NET
 	/// <summary>An immutable container for metadata. (See <see cref="ImageIO.CGMutableImageMetadata" />.)</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public partial class CGImageMetadata : NativeObject {
-#if !NET
-		public CGImageMetadata (NativeHandle handle)
-			: base (handle, false)
-		{
-		}
-#endif
-
 		[Preserve (Conditional = true)]
 		internal CGImageMetadata (NativeHandle handle, bool owns)
 			: base (handle, owns)
@@ -162,13 +146,7 @@ namespace ImageIO {
 		extern unsafe static void CGImageMetadataEnumerateTagsUsingBlock (/* CGImageMetadataRef __nonnull */ IntPtr metadata,
 						/* CFStringRef __nullable */ IntPtr rootPath, /* CFDictionaryRef __nullable */ IntPtr options, BlockLiteral* block);
 
-#if !NET
-		delegate byte TrampolineCallback (IntPtr blockPtr, NativeHandle key, NativeHandle value);
-
-		[MonoPInvokeCallback (typeof (TrampolineCallback))]
-#else
 		[UnmanagedCallersOnly]
-#endif
 		static byte TagEnumerator (IntPtr block, NativeHandle key, NativeHandle value)
 		{
 			var nsKey = Runtime.GetNSObject<NSString> (key, false)!;
@@ -176,10 +154,6 @@ namespace ImageIO {
 			var del = BlockLiteral.GetTarget<CGImageMetadataTagBlock> (block);
 			return del (nsKey, nsValue) ? (byte) 1 : (byte) 0;
 		}
-
-#if !NET
-		static unsafe readonly TrampolineCallback static_action = TagEnumerator;
-#endif
 
 		/// <param name="rootPath">To be added.</param>
 		///         <param name="options">To be added.</param>
@@ -191,13 +165,8 @@ namespace ImageIO {
 		{
 			using var o = options?.ToDictionary ();
 			unsafe {
-#if NET
 				delegate* unmanaged<IntPtr, NativeHandle, NativeHandle, byte> trampoline = &TagEnumerator;
 				using var block_handler = new BlockLiteral (trampoline, block, typeof (CGImageMetadata), nameof (TagEnumerator));
-#else
-				using var block_handler = new BlockLiteral ();
-				block_handler.SetupBlockUnsafe (static_action, block);
-#endif
 				CGImageMetadataEnumerateTagsUsingBlock (Handle, rootPath.GetHandle (), o.GetHandle (), &block_handler);
 				GC.KeepAlive (rootPath);
 				GC.KeepAlive (o);

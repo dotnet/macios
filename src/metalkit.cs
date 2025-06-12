@@ -10,10 +10,6 @@ using ObjCRuntime;
 using AppKit;
 #endif
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace MetalKit {
 
 #if !MONOMAC

@@ -30,10 +30,6 @@ using AppKit;
 using Foundation;
 using ObjCRuntime;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace ScriptingBridge {
 
 
@@ -234,16 +230,9 @@ namespace ScriptingBridge {
 	[Model]
 	[Protocol]
 	interface SBApplicationDelegate {
-#if !NET
-		[Abstract]
-		[Export ("eventDidFail:withError:"), DelegateName ("SBApplicationError"), DefaultValue (null)]
-		//NSObject EventDidFailwithError (const AppleEvent event, NSError error);
-		NSObject EventDidFailwithError (IntPtr appleEvent, NSError error);
-#else
 		[Abstract]
 		[Export ("eventDidFail:withError:"), DelegateName ("SBApplicationError"), DefaultValue (null)]
 		NSObject EventFailed (IntPtr appleEvent, NSError error);
-#endif
 	}
 
 }

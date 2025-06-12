@@ -25,24 +25,18 @@ namespace AudioUnit {
 	///     <remarks>To be added.</remarks>
 	public delegate void AUScheduledAudioFileRegionCompletionHandler (AUScheduledAudioFileRegion audioFileRegion, AudioUnitStatus status);
 
-#if NET
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class AUScheduledAudioFileRegion : IDisposable {
 
 		[StructLayout (LayoutKind.Sequential)]
 		internal struct ScheduledAudioFileRegion {
 			public AudioTimeStamp TimeStamp;
-#if NET
 			public unsafe delegate* unmanaged<IntPtr, IntPtr, AudioUnitStatus, void> CompletionHandler;
-#else
-			public IntPtr CompletionHandler;
-#endif
 			public /* void * */ IntPtr CompletionHandlerUserData;
 			public IntPtr AudioFile;
 			public uint LoopCount;
@@ -88,20 +82,7 @@ namespace AudioUnit {
 			this.completionHandler = completionHandler;
 		}
 
-#if !NET
-		internal delegate void ScheduledAudioFileRegionCompletionHandler (
-			/* void * */IntPtr userData,
-			/* ScheduledAudioFileRegion * */ IntPtr fileRegion,
-			/* OSStatus */ AudioUnitStatus result);
-
-		static readonly ScheduledAudioFileRegionCompletionHandler static_ScheduledAudioFileRegionCompletionHandler = new ScheduledAudioFileRegionCompletionHandler (ScheduledAudioFileRegionCallback);
-
-#if !MONOMAC
-		[MonoPInvokeCallback (typeof (ScheduledAudioFileRegionCompletionHandler))]
-#endif
-#else
 		[UnmanagedCallersOnly]
-#endif
 		static void ScheduledAudioFileRegionCallback (IntPtr userData, IntPtr fileRegion, AudioUnitStatus status)
 		{
 			if (userData == IntPtr.Zero)
@@ -135,11 +116,7 @@ namespace AudioUnit {
 
 			if (ptr != IntPtr.Zero) {
 				unsafe {
-#if NET
 					ret.CompletionHandler = &ScheduledAudioFileRegionCallback;
-#else
-					ret.CompletionHandler = Marshal.GetFunctionPointerForDelegate (static_ScheduledAudioFileRegionCompletionHandler);
-#endif
 				}
 			}
 

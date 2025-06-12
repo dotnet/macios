@@ -1,4 +1,4 @@
-#if MONOMAC && NET
+#if MONOMAC
 #nullable enable
 
 using System;
@@ -23,14 +23,10 @@ namespace VideoToolbox {
 	/// <param name="processedPixelBuffer">The <see cref="CoreVideo.CVPixelBuffer" /> with the processed video frame if the processing was successful, otherwise null.</param>
 	public delegate void VTRawProcessingOutputHandler (VTStatus status, CVPixelBuffer? processedPixelBuffer);
 
-#if NET
 	[UnsupportedOSPlatform ("ios")]
 	[UnsupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos15.0")]
 	[UnsupportedOSPlatform ("tvos")]
-#else
-	[NoTV, NoiOS, NoMacCatalyst, Mac (15, 0)]
-#endif
 	public class VTRawProcessingSession : NativeObject {
 		[Preserve (Conditional = true)]
 		protected VTRawProcessingSession (NativeHandle handle, bool owns)
@@ -110,7 +106,6 @@ namespace VideoToolbox {
 			return VTRAWProcessingSessionGetTypeID ();
 		}
 
-#if NET
 		[DllImport (Constants.VideoToolboxLibrary)]
 		unsafe static extern VTStatus VTRAWProcessingSessionSetParameterChangedHander (
 			IntPtr /* VTRAWProcessingSessionRef */ session,
@@ -139,10 +134,7 @@ namespace VideoToolbox {
 				del (newParams);
 			}
 		}
-#endif
 
-
-#if NET
 		[DllImport (Constants.VideoToolboxLibrary)]
 		unsafe static extern VTStatus VTRAWProcessingSessionProcessFrame (
 			IntPtr /* VTRAWProcessingSessionRef */ session,
@@ -164,7 +156,6 @@ namespace VideoToolbox {
 			GC.KeepAlive (frameOptions);
 			return status;
 		}
-#endif
 
 		[UnmanagedCallersOnly]
 		static void VTRawProcessingOutputHandlerCallback (IntPtr block, VTStatus status, IntPtr processedPixelBuffer)

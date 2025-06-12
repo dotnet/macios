@@ -3,11 +3,17 @@
 
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.CodeAnalysis;
+using Microsoft.Macios.Generator.Extensions;
 using Microsoft.Macios.Transformer.Attributes;
 
 namespace Microsoft.Macios.Generator.DataModel;
 
 readonly partial struct DelegateParameter {
+
+	/// <summary>
+	/// Returns the bind from data if present in the binding.
+	/// </summary>
+	public BindAsData? BindAs => BindAsAttribute;
 
 	/// <summary>
 	/// Returns the forced type data if present in the binding.
@@ -17,7 +23,7 @@ readonly partial struct DelegateParameter {
 	public static bool TryCreate (IParameterSymbol symbol,
 		[NotNullWhen (true)] out DelegateParameter? parameter)
 	{
-		parameter = new (symbol.Ordinal, new (symbol.Type), symbol.Name) {
+		parameter = new (symbol.Ordinal, new (symbol.Type), symbol.GetSafeName ()) {
 			IsOptional = symbol.IsOptional,
 			IsParams = symbol.IsParams,
 			IsThis = symbol.IsThis,

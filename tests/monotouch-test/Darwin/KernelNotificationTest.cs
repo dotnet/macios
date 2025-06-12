@@ -18,11 +18,7 @@ namespace apitest {
 					Ident = (IntPtr) process.Id,
 					Filter = EventFilter.Proc,
 					Flags = EventFlags.Add,
-#if NET
 					FilterFlags = FilterFlags.ProcExit,
-#else
-					FilterFlags = (uint) (FilterFlags.ProcExit),
-#endif
 				}
 			};
 		}
@@ -35,11 +31,7 @@ namespace apitest {
 			using (var sleep = Process.Start ("/bin/sleep", sleep_duration)) {
 				using (var kqueue = new KernelQueue ()) {
 					var events = CreateEvents (sleep);
-#if NET
 					Assert.That (kqueue.KEvent (events, events), Is.GreaterThan (0), "kevent");
-#else
-					Assert.IsTrue (kqueue.KEvent (events, events), "kevent");
-#endif
 				}
 			}
 
@@ -85,11 +77,7 @@ namespace apitest {
 					TimeSpec ts = new TimeSpec {
 						Seconds = 5,
 					};
-#if NET
 					Assert.That (kqueue.KEvent (events, events.Length, events, events.Length, ts), Is.GreaterThan (0), "kevent");
-#else
-					Assert.IsTrue (kqueue.KEvent (events, events.Length, events, events.Length, ref ts), "kevent");
-#endif
 				}
 			}
 
@@ -97,15 +85,7 @@ namespace apitest {
 			using (var sleep = Process.Start ("/bin/sleep", sleep_duration)) {
 				using (var kqueue = new KernelQueue ()) {
 					var events = CreateEvents (sleep);
-#if NET
 					Assert.That (kqueue.KEvent (events, events, TimeSpan.FromSeconds (5)), Is.GreaterThan (0), "kevent");
-#else
-					TimeSpec ts = new TimeSpec
-					{
-						Seconds = 5,
-					};
-					Assert.IsTrue (kqueue.KEvent (events, events, ref ts), "kevent");
-#endif
 				}
 			}
 
@@ -113,11 +93,7 @@ namespace apitest {
 			using (var sleep = Process.Start ("/bin/sleep", sleep_duration)) {
 				using (var kqueue = new KernelQueue ()) {
 					var events = CreateEvents (sleep);
-#if NET
 					Assert.That (kqueue.KEvent (events, events.Length, events, events.Length), Is.GreaterThan (0), "kevent");
-#else
-					Assert.IsTrue (kqueue.KEvent (events, events.Length, events, events.Length), "kevent");
-#endif
 				}
 			}
 		}

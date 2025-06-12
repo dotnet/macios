@@ -1,6 +1,5 @@
 #nullable enable
 
-#if NET
 namespace CoreGraphics {
 	static class MathHelper {
 		/// <summary>
@@ -43,4 +42,3 @@ namespace CoreGraphics {
 		}
 	}
 }
-#endif // !NET

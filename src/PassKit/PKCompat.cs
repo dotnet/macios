@@ -5,36 +5,18 @@ using System.Threading.Tasks;
 using Foundation;
 using ObjCRuntime;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 #nullable enable
 
 namespace PassKit {
-
-#if !NET
-	partial class PKPaymentAuthorizationViewController {
-
-		[Obsolete ("This constructor does not create a valid instance of the type")]
-		public PKPaymentAuthorizationViewController ()
-		{
-		}
-	}
-#endif // !NET
-
-
 #if !XAMCORE_5_0
 #if __IOS__ || __MACCATALYST__
 	// Apple just removed this class from their headers in Xcode 15 (beta 1).
 	// It's also not found on their documentation site, so I'm assuming it's done on purpose.
-#if NET
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
 	[UnsupportedOSPlatform ("macos")]
 	[UnsupportedOSPlatform ("ios")]
 	[UnsupportedOSPlatform ("maccatalyst")]
-#endif // NET
 	[EditorBrowsable (EditorBrowsableState.Never)]
 	[Obsolete ("This class is removed.")]
 	public unsafe partial class PKDisbursementVoucher : NSObject {
@@ -69,13 +51,11 @@ namespace PassKit {
 
 	// Apple just removed this class from their headers in Xcode 15 (beta 1).
 	// It's also not found on their documentation site, so I'm assuming it's done on purpose.
-#if NET
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
 	[UnsupportedOSPlatform ("macos")]
 	[UnsupportedOSPlatform ("ios")]
 	[UnsupportedOSPlatform ("maccatalyst")]
-#endif // NET
 	[EditorBrowsable (EditorBrowsableState.Never)]
 	[Obsolete ("This class is removed.")]
 	public unsafe partial class PKDisbursementAuthorizationController : NSObject {
@@ -162,13 +142,11 @@ namespace PassKit {
 
 	// Apple just removed this protocol from their headers in Xcode 15 (beta 1).
 	// It's also not found on their documentation site, so I'm assuming it's done on purpose.
-#if NET
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
 	[UnsupportedOSPlatform ("macos")]
 	[UnsupportedOSPlatform ("ios")]
 	[UnsupportedOSPlatform ("maccatalyst")]
-#endif // NET
 	[EditorBrowsable (EditorBrowsableState.Never)]
 	[Obsolete ("This class is removed.")]
 	public partial interface IPKDisbursementAuthorizationControllerDelegate : INativeObject, IDisposable {
@@ -185,13 +163,11 @@ namespace PassKit {
 
 	// Apple just removed this protocol from their headers in Xcode 15 (beta 1).
 	// It's also not found on their documentation site, so I'm assuming it's done on purpose.
-#if NET
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
 	[UnsupportedOSPlatform ("macos")]
 	[UnsupportedOSPlatform ("ios")]
 	[UnsupportedOSPlatform ("maccatalyst")]
-#endif // NET
 	[EditorBrowsable (EditorBrowsableState.Never)]
 	[Obsolete ("This class is removed.")]
 	public unsafe abstract partial class PKDisbursementAuthorizationControllerDelegate : NSObject, IPKDisbursementAuthorizationControllerDelegate {
@@ -239,7 +215,6 @@ namespace PassKit {
 
 		// Apple just removed this protocol from their headers in Xcode 15 (beta 1).
 		// It's also not found on their documentation site, so I'm assuming it's done on purpose.
-#if NET
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -247,7 +222,6 @@ namespace PassKit {
 		[UnsupportedOSPlatform ("ios")]
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
-#endif // NET
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		[Obsolete ("This property is removed.")]
 		public virtual NSDecimalNumber Amount {
@@ -255,7 +229,6 @@ namespace PassKit {
 			set => throw new InvalidOperationException (Constants.RemovedFromPassKit);
 		}
 
-#if NET
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -263,7 +236,6 @@ namespace PassKit {
 		[UnsupportedOSPlatform ("ios")]
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
-#endif // NET
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		[Obsolete ("This property is removed.")]
 		public virtual string CountryCode {
@@ -271,7 +243,6 @@ namespace PassKit {
 			set => throw new InvalidOperationException (Constants.RemovedFromPassKit);
 		}
 
-#if NET
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -279,7 +250,6 @@ namespace PassKit {
 		[UnsupportedOSPlatform ("ios")]
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
-#endif // NET
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		[Obsolete ("This property is removed.")]
 		public virtual PKDisbursementRequestSchedule RequestSchedule {

@@ -1,4 +1,4 @@
-#if HAS_MAPKIT && !WATCH
+#if HAS_MAPKIT
 
 using System;
 
@@ -29,4 +29,4 @@ namespace MonoTouchFixtures.MapKit {
 	}
 }
 
-#endif // HAS_MAPKIT && !WATCH
+#endif // HAS_MAPKIT

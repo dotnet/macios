@@ -10,23 +10,15 @@ using ObjCRuntime;
 
 #nullable enable
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CloudKit {
 	/// <summary>A <see cref="CloudKit.CKOperation" /> that ret../../summary_set.sh CKFetchNotificationChangesOperation A</summary>
 	///     <remarks>To be added.</remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CloudKit/Reference/CKFetchNotificationChangesOperation_class/index.html">Apple documentation for <c>CKFetchNotificationChangesOperation</c></related>
 	[Register ("CKFetchNotificationChangesOperation", SkipRegistration = true)]
-#if NET
 	[UnsupportedOSPlatform ("ios", "Use 'CKDatabaseSubscription', 'CKFetchDatabaseChangesOperation' and 'CKFetchRecordZoneChangesOperation' instead.")]
 	[UnsupportedOSPlatform ("macos", "Use 'CKDatabaseSubscription', 'CKFetchDatabaseChangesOperation' and 'CKFetchRecordZoneChangesOperation' instead.")]
 	[UnsupportedOSPlatform ("tvos", "Use 'CKDatabaseSubscription', 'CKFetchDatabaseChangesOperation' and 'CKFetchRecordZoneChangesOperation' instead.")]
 	[UnsupportedOSPlatform ("maccatalyst", "Use 'CKDatabaseSubscription', 'CKFetchDatabaseChangesOperation' and 'CKFetchRecordZoneChangesOperation' instead.")]
-#else
-	[Obsolete ("Use 'CKDatabaseSubscription', 'CKFetchDatabaseChangesOperation' and 'CKFetchRecordZoneChangesOperation' instead.")]
-#endif
 	[EditorBrowsable (EditorBrowsableState.Never)]
 	public unsafe partial class CKFetchNotificationChangesOperation : CKOperation {
 		/// <summary>The handle for this class.</summary>

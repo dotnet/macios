@@ -289,11 +289,9 @@ namespace PrintCore {
 		ReverseLandscape = 4,
 	}
 
-#if NET
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct PMResolution {
 
@@ -326,11 +324,9 @@ namespace PrintCore {
 		}
 	}
 
-#if NET
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct PMRect {
 		internal double top;
@@ -378,11 +374,9 @@ namespace PrintCore {
 		}
 	}
 
-#if NET
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct PMPaperMargins {
 		PMRect Rect;

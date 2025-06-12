@@ -275,9 +275,7 @@ namespace AudioUnit {
 
 	[MacCatalyst (13, 1)]
 	[NoTV]
-#if NET
 	[NoiOS]
-#endif
 	public enum AudioObjectPropertySelector : uint {
 		/// <summary>To be added.</summary>
 		PropertyDevices = 1684370979, // 'dev#'
@@ -350,9 +348,7 @@ namespace AudioUnit {
 
 	[MacCatalyst (13, 1)]
 	[NoTV]
-#if NET
 	[NoiOS]
-#endif
 	public enum AudioObjectPropertyScope : uint {
 		/// <summary>To be added.</summary>
 		Global = 1735159650, // 'glob'
@@ -366,14 +362,8 @@ namespace AudioUnit {
 
 	[MacCatalyst (13, 1)]
 	[NoTV]
-#if NET
 	[NoiOS]
-#endif
 	public enum AudioObjectPropertyElement : uint {
-#if !NET
-		[Obsolete ("Use the 'Main' element instead.")]
-		Master = 0, // 0
-#endif
 		/// <summary>To be added.</summary>
 		Main = 0, // 0
 	}

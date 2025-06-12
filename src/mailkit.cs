@@ -5,10 +5,6 @@ using ObjCRuntime;
 using AVFoundation;
 using AppKit;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace MailKit {
 	[NoTV, NoiOS, NoMacCatalyst]
 	[Native]

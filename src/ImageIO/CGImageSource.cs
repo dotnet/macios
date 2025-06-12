@@ -37,10 +37,6 @@ using Foundation;
 using CoreFoundation;
 using CoreGraphics;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace ImageIO {
 
 #if !COREBUILD
@@ -83,7 +79,6 @@ namespace ImageIO {
 		///         <remarks>To be added.</remarks>
 		public bool ShouldCache { get; set; }
 
-#if NET
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -91,7 +86,6 @@ namespace ImageIO {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public bool ShouldCacheImmediately { get; set; }
 
 		/// <summary>Determines whether the image loaded will use floating point values for its components (if the source image has them).</summary>
@@ -135,7 +129,6 @@ namespace ImageIO {
 		///         <remarks>To be added.</remarks>
 		public bool CreateThumbnailWithTransform { get; set; }
 
-#if NET
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -143,7 +136,6 @@ namespace ImageIO {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public int? SubsampleFactor { get; set; }
 
 		internal override NSMutableDictionary ToDictionary ()
@@ -433,11 +425,7 @@ namespace ImageIO {
 		{
 			using (var dict = options?.ToDictionary ()) {
 				var ret = CGImageSourceCreateThumbnailAtIndex (Handle, index, dict.GetHandle ());
-#if NET
 				return CGImage.FromHandle (ret, true);
-#else
-				return new CGImage (ret, true);
-#endif
 			}
 		}
 
@@ -514,21 +502,17 @@ namespace ImageIO {
 			return CGImageSourceGetStatusAtIndex (Handle, index);
 		}
 
-#if NET
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		[DllImport (Constants.ImageIOLibrary)]
 		static extern IntPtr /* CFDictionaryRef* */ CGImageSourceCopyAuxiliaryDataInfoAtIndex (IntPtr /* CGImageSourceRef* */ isrc, nuint index, IntPtr /* CFStringRef* */ auxiliaryImageDataType);
 
-#if NET
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public CGImageAuxiliaryDataInfo? CopyAuxiliaryDataInfo (nuint index, CGImageAuxiliaryDataType auxiliaryImageDataType)
 		{
 			var ptr = CGImageSourceCopyAuxiliaryDataInfoAtIndex (Handle, index, auxiliaryImageDataType.GetConstant ().GetHandle ());
@@ -539,16 +523,13 @@ namespace ImageIO {
 			return new CGImageAuxiliaryDataInfo (dictionary);
 		}
 
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		[DllImport (Constants.ImageIOLibrary)]
 		extern static nuint CGImageSourceGetPrimaryImageIndex (IntPtr /* CGImageSource */ src);
 
-#if NET
 		/// <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
@@ -556,7 +537,6 @@ namespace ImageIO {
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public nuint GetPrimaryImageIndex ()
 		{
 			return CGImageSourceGetPrimaryImageIndex (Handle);
@@ -564,25 +544,17 @@ namespace ImageIO {
 #endif
 
 #if !COREBUILD
-#if NET
 		[SupportedOSPlatform ("macos14.4")]
 		[SupportedOSPlatform ("ios17.4")]
 		[SupportedOSPlatform ("tvos17.4")]
 		[SupportedOSPlatform ("maccatalyst17.4")]
-#else
-		[TV (17, 4), Mac (14, 4), iOS (17, 4)]
-#endif
 		[DllImport (Constants.ImageIOLibrary)]
 		static extern OSStatus CGImageSourceSetAllowableTypes (IntPtr allowableTypes);
 
-#if NET
 		[SupportedOSPlatform ("macos14.4")]
 		[SupportedOSPlatform ("ios17.4")]
 		[SupportedOSPlatform ("tvos17.4")]
 		[SupportedOSPlatform ("maccatalyst17.4")]
-#else
-		[TV (17, 4), Mac (14, 4), iOS (17, 4)]
-#endif
 		public static void SetAllowableTypes (string [] allowableTypes)
 		{
 			if (allowableTypes is null || allowableTypes.Length == 0)

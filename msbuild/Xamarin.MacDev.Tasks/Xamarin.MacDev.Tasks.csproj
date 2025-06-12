@@ -8,9 +8,10 @@
     <AssemblyOriginatorKeyFile>../../product.snk</AssemblyOriginatorKeyFile>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
-    <WarningsAsErrors>Nullable</WarningsAsErrors>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DefineConstants>$(DefineConstants);MSBUILD_TASKS</DefineConstants>
     <NoWarn>$(NoWarn);NU1603</NoWarn> <!-- Xamarin.Messaging.Build.Common 1.6.24 depends on Merq (>= 1.1.0) but Merq 1.1.0 was not found. An approximate best match of Merq 1.1.4 was resolved. -->
+    <NoWarn>$(NoWarn);NU1701</NoWarn> <!-- Package 'Microsoft.Build 16.10.0' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework '.NETStandard,Version=v2.0'. This package may not be fully compatible with your project. -->
     <NoWarn>$(NoWarn);MSB3277</NoWarn> <!-- warning MSB3277: Found conflicts between different versions of "System.Reflection.Metadata" that could not be resolved. -->
     <NoWarn>$(NoWarn);8002</NoWarn> <!-- Referenced projects aren't signed: this doesn't matter, because we use ILMerge to merge into a single assembly which we sign -->
     <Nullable>enable</Nullable>

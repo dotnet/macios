@@ -463,7 +463,7 @@ namespace CoreFoundation {
 					runLoop.AddSource (source, CFRunLoop.ModeDefault);
 				}
 
-				this.Handle = handle;
+				InitializeHandle (handle);
 			} catch {
 				gch.Free ();
 				throw;

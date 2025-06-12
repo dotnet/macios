@@ -21,8 +21,6 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-#if MONOMAC || NET
-
 using System;
 using System.Text;
 
@@ -30,11 +28,7 @@ using Foundation;
 
 #nullable enable
 
-#if NET
 namespace ObjCRuntime {
-#else
-namespace Foundation {
-#endif
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
 	public class ObjCException : Exception {
@@ -99,5 +93,3 @@ namespace Foundation {
 		}
 	}
 }
-
-#endif // MONOMAC || NET

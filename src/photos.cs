@@ -17,10 +17,6 @@ using AppKit;
 using UIImage = AppKit.NSImage;
 #endif
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace Photos {
 	/// <summary>Application-specific "recipe" data for the most recent edit made to a <see cref="Photos.PHAsset" />.</summary>
 	///     
@@ -606,9 +602,7 @@ namespace Photos {
 	[BaseType (typeof (PHObject))]
 	[DisableDefaultCtor] // not user createable (calling description fails, see below) must be fetched by API
 						 // NSInternalInconsistencyException Reason: PHCollection has no identifier
-#if TVOS || NET
 	[Abstract] // Acording to docs: The abstract superclass for Photos asset collections and collection lists.
-#endif
 	interface PHCollection {
 
 		[Export ("canContainAssets", ArgumentSemantic.Assign)]
@@ -1164,12 +1158,8 @@ namespace Photos {
 	delegate void PHImageManagerRequestPlayerHandler (AVPlayerItem playerItem, NSDictionary info);
 	/// <summary>Completion handler for the <see cref="Photos.PHImageManager.RequestExportSession(Photos.PHAsset,Photos.PHVideoRequestOptions,System.String,Photos.PHImageManagerRequestExportHandler)" /> method.</summary>
 	delegate void PHImageManagerRequestExportHandler (AVAssetExportSession exportSession, NSDictionary info);
-#if NET
 	/// <summary>Completion handle for the <see cref="Photos.PHImageManager.RequestAvAsset(Photos.PHAsset,Photos.PHVideoRequestOptions,Photos.PHImageManagerRequestAvAssetHandler)" /> method.</summary>
 	delegate void PHImageManagerRequestAVAssetHandler (AVAsset asset, AVAudioMix audioMix, NSDictionary info);
-#else
-	delegate void PHImageManagerRequestAvAssetHandler (AVAsset asset, AVAudioMix audioMix, NSDictionary info);
-#endif
 	/// <summary>The result handler delegate for calls to <see cref="Photos.PHImageManager.RequestLivePhoto(Photos.PHAsset,CoreGraphics.CGSize,Photos.PHImageContentMode,Photos.PHLivePhotoRequestOptions,Photos.PHImageManagerRequestLivePhoto)" />.</summary>
 	delegate void PHImageManagerRequestLivePhoto (PHLivePhoto livePhoto, NSDictionary info);
 	delegate void PHImageManagerRequestImageDataHandler ([NullAllowed] NSData imageData, [NullAllowed] string dataUti, CGImagePropertyOrientation orientation, [NullAllowed] NSDictionary info);
@@ -1210,11 +1200,7 @@ namespace Photos {
 		/// <summary>Requests the AV Foundation objects that the asset comprises.</summary>
 		[MacCatalyst (13, 1)]
 		[Export ("requestAVAssetForVideo:options:resultHandler:")]
-#if NET
 		int /* PHImageRequestID = int32_t */ RequestAVAsset (PHAsset asset, [NullAllowed] PHVideoRequestOptions options, PHImageManagerRequestAVAssetHandler resultHandler);
-#else
-		int /* PHImageRequestID = int32_t */ RequestAvAsset (PHAsset asset, [NullAllowed] PHVideoRequestOptions options, PHImageManagerRequestAvAssetHandler resultHandler);
-#endif
 
 		/// <summary>Represents the value associated with the constant PHImageManagerMaximumSize</summary>
 		///         <value>
@@ -1267,9 +1253,7 @@ namespace Photos {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // doc -> "abstract base class"
 						 // throws "NSInternalInconsistencyException Reason: PHObject has no identifier"
-#if TVOS || NET
 	[Abstract] // Acording to docs: The abstract base class for Photos model objects (assets and collections).
-#endif
 	interface PHObject : NSCopying {
 
 		[Export ("localIdentifier", ArgumentSemantic.Copy)]
@@ -1527,15 +1511,11 @@ namespace Photos {
 		NSString CancelledKey { get; }
 	}
 
-#if NET
 	/// <param name="frame">The video frame to process.</param>
 	///     <param name="error">An error in which to record problems that occurred while processing the frame.</param>
 	///     <summary>Delegate that is called on every frame of a Live Photo as it is processed.</summary>
 	///     <returns>A processed image that represents the frame.</returns>
 	delegate CIImage PHLivePhotoFrameProcessingBlock (IPHLivePhotoFrame frame, ref NSError error);
-#else
-	delegate CIImage PHLivePhotoFrameProcessingBlock2 (IPHLivePhotoFrame frame, ref NSError error);
-#endif
 
 	/// <summary>An editing context for a live photo's image, audio, and video data.</summary>
 	///     
@@ -1558,11 +1538,7 @@ namespace Photos {
 		CMTime PhotoTime { get; }
 
 		[NullAllowed, Export ("frameProcessor", ArgumentSemantic.Copy)]
-#if NET
 		PHLivePhotoFrameProcessingBlock FrameProcessor { get; set; }
-#else
-		PHLivePhotoFrameProcessingBlock2 FrameProcessor2 { get; set; }
-#endif
 
 		[Export ("audioVolume")]
 		float AudioVolume { get; set; }

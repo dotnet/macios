@@ -91,7 +91,6 @@ namespace AudioUnit {
 		TooManyFilesOpenError = -42,
 	}
 
-#if NET
 	/// <summary>The ExtendedAudioFile provides high-level audio file access. It provides a single unified interface to reading and writing both encoded and unencoded files with access to <see cref="AudioToolbox.AudioFile" /> and <see cref="AudioToolbox.AudioConverter" /> API. 
 	///     </summary>
 	///     <remarks>
@@ -100,7 +99,6 @@ namespace AudioUnit {
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class ExtAudioFile : IDisposable {
 		IntPtr _extAudioFile;
 

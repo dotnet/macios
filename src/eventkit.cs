@@ -34,10 +34,6 @@ using ABRecord = Foundation.NSObject;
 using NSColor = UIKit.UIColor;
 #endif
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace EventKit {
 
 	/// <summary>The base-class for persistent Event Kit classes.</summary>
@@ -70,9 +66,7 @@ namespace EventKit {
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/EventKit/Reference/EKCalendarItemClassRef/index.html">Apple documentation for <c>EKCalendarItem</c></related>
 	[BaseType (typeof (EKObject))]
-#if NET
 	[Abstract] // "The EKCalendarItem class is a an abstract superclass ..." from Apple docs.
-#endif
 	interface EKCalendarItem {
 		// Never made avaialble on MonoMac
 		[Export ("UUID")]
@@ -473,39 +467,21 @@ namespace EventKit {
 	[BaseType (typeof (NSObject))]
 	interface EKRecurrenceDayOfWeek : NSCopying, NSSecureCoding {
 		[Export ("dayOfTheWeek")]
-#if NET
 		EKWeekday DayOfTheWeek { get; }
-#else
-		nint DayOfTheWeek { get; }
-#endif
 
 		[Export ("weekNumber")]
 		nint WeekNumber { get; }
 
 		[Static]
 		[Export ("dayOfWeek:")]
-#if NET
 		EKRecurrenceDayOfWeek FromDay (EKWeekday dayOfTheWeek);
-#else
-		[Internal]
-		EKRecurrenceDayOfWeek _FromDay (nint dayOfTheWeek);
-#endif
 
 		[Static]
 		[Export ("dayOfWeek:weekNumber:")]
-#if NET
 		EKRecurrenceDayOfWeek FromDay (EKWeekday dayOfTheWeek, nint weekNumber);
-#else
-		[Internal]
-		EKRecurrenceDayOfWeek _FromDay (nint dayOfTheWeek, nint weekNumber);
-#endif
 
 		[Export ("initWithDayOfTheWeek:weekNumber:")]
-#if NET
 		NativeHandle Constructor (EKWeekday dayOfTheWeek, nint weekNumber);
-#else
-		NativeHandle Constructor (nint dayOfTheWeek, nint weekNumber);
-#endif
 	}
 
 	/// <summary>Describes the recurring rule for an event.</summary>
@@ -527,12 +503,7 @@ namespace EventKit {
 		nint Interval { get; }
 
 		[Export ("firstDayOfTheWeek")]
-#if NET
 		EKWeekday FirstDayOfTheWeek { get; }
-#else
-		[Internal]
-		nint _FirstDayOfTheWeek { get; }
-#endif
 
 		[NullAllowed]
 		[Export ("daysOfTheWeek")]
@@ -556,11 +527,7 @@ namespace EventKit {
 
 		[NullAllowed]
 		[Export ("setPositions")]
-#if NET
 		NSNumber [] SetPositions { get; }
-#else
-		NSObject [] SetPositions { get; }
-#endif
 
 		/// <param name="type">To be added.</param>
 		/// <param name="interval">To be added.</param>

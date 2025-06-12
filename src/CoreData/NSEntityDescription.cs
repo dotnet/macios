@@ -16,7 +16,6 @@ namespace CoreData {
 	///     <remarks>To be added.</remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/CoreDataFramework/Classes/NSEntityDescription_Class/index.html">Apple documentation for <c>NSEntityDescription</c></related>
 	public partial class NSEntityDescription {
-#if NET
 		/// <summary>Gets or sets the uniqueness constraints for this entity.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -24,7 +23,6 @@ namespace CoreData {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public NSObject [] [] UniquenessConstraints {
 			get { return NSArray.FromArrayOfArray (_UniquenessConstraints); }
 			set { _UniquenessConstraints = NSArray.From (value); }

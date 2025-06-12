@@ -10,6 +10,7 @@ using ObjCRuntime;
 using Xunit;
 using static Microsoft.Macios.Generator.Emitters.BindingSyntaxFactory;
 using static Microsoft.Macios.Generator.Tests.TestDataFactory;
+using static Microsoft.Macios.Generator.Tests.BaseGeneratorTestClass;
 
 namespace Microsoft.Macios.Generator.Tests.Emitters;
 
@@ -215,8 +216,8 @@ public class BindingSyntaxFactoryPropertyTests {
 
 			yield return [
 				property,
-				"ret = global::ObjCRuntime.Runtime.GetNSObject<Foundation.NSObject> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"myProperty\")))!",
-				"ret = global::ObjCRuntime.Runtime.GetNSObject<Foundation.NSObject> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"myProperty\")))!"
+				$"ret = global::ObjCRuntime.Runtime.GetNSObject<{Global ("Foundation.NSObject")}> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"myProperty\")))!",
+				$"ret = global::ObjCRuntime.Runtime.GetNSObject<{Global ("Foundation.NSObject")}> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"myProperty\")))!"
 			];
 
 			property = new Property (
@@ -240,8 +241,8 @@ public class BindingSyntaxFactoryPropertyTests {
 
 			yield return [
 				property,
-				"ret = global::ObjCRuntime.Runtime.GetNSObject<Foundation.NSObject> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"myProperty\")))",
-				"ret = global::ObjCRuntime.Runtime.GetNSObject<Foundation.NSObject> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"myProperty\")))"
+				$"ret = global::ObjCRuntime.Runtime.GetNSObject<{Global ("Foundation.NSObject")}> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"myProperty\")))",
+				$"ret = global::ObjCRuntime.Runtime.GetNSObject<{Global ("Foundation.NSObject")}> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"myProperty\")))"
 			];
 
 			property = new Property (
@@ -265,8 +266,8 @@ public class BindingSyntaxFactoryPropertyTests {
 
 			yield return [
 				property,
-				"ret = global::CoreFoundation.CFArray.ArrayFromHandle<Foundation.NSObject> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"myProperty\")))!",
-				"ret = global::CoreFoundation.CFArray.ArrayFromHandle<Foundation.NSObject> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"myProperty\")))!"
+				$"ret = global::CoreFoundation.CFArray.ArrayFromHandle<{Global ("Foundation.NSObject")}> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"myProperty\")))!",
+				$"ret = global::CoreFoundation.CFArray.ArrayFromHandle<{Global ("Foundation.NSObject")}> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"myProperty\")))!"
 			];
 
 			property = new Property (
@@ -291,8 +292,8 @@ public class BindingSyntaxFactoryPropertyTests {
 
 			yield return [
 				property,
-				"ret = NSNumber.ToInt32 (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"myProperty\")))",
-				"ret = NSNumber.ToInt32 (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"myProperty\")))",
+				$"ret = {Global ("Foundation.NSNumber")}.ToInt32 (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"myProperty\")))",
+				$"ret = {Global ("Foundation.NSNumber")}.ToInt32 (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"myProperty\")))",
 			];
 
 			property = new Property (
@@ -317,8 +318,8 @@ public class BindingSyntaxFactoryPropertyTests {
 
 			yield return [
 				property,
-				"ret = NSNumber.ToInt64 (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"myProperty\")))",
-				"ret = NSNumber.ToInt64 (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"myProperty\")))",
+				$"ret = {Global ("Foundation.NSNumber")}.ToInt64 (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"myProperty\")))",
+				$"ret = {Global ("Foundation.NSNumber")}.ToInt64 (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"myProperty\")))",
 			];
 
 			property = new Property (
@@ -343,8 +344,8 @@ public class BindingSyntaxFactoryPropertyTests {
 
 			yield return [
 				property,
-				"ret = global::Foundation.NSArray.ArrayFromHandleFunc<int> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"myProperty\")), NSNumber.ToInt32, false)",
-				"ret = global::Foundation.NSArray.ArrayFromHandleFunc<int> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"myProperty\")), NSNumber.ToInt32, false)",
+				$"ret = global::Foundation.NSArray.ArrayFromHandleFunc<int> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"myProperty\")), {Global ("Foundation.NSNumber")}.ToInt32, false)",
+				$"ret = global::Foundation.NSArray.ArrayFromHandleFunc<int> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"myProperty\")), {Global ("Foundation.NSNumber")}.ToInt32, false)",
 			];
 
 			property = new Property (
@@ -369,8 +370,8 @@ public class BindingSyntaxFactoryPropertyTests {
 
 			yield return [
 				property,
-				"ret = global::Foundation.NSArray.ArrayFromHandleFunc<uint> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"myProperty\")), NSNumber.ToUInt32, false)",
-				"ret = global::Foundation.NSArray.ArrayFromHandleFunc<uint> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"myProperty\")), NSNumber.ToUInt32, false)",
+				$"ret = global::Foundation.NSArray.ArrayFromHandleFunc<uint> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"myProperty\")), {Global ("Foundation.NSNumber")}.ToUInt32, false)",
+				$"ret = global::Foundation.NSArray.ArrayFromHandleFunc<uint> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"myProperty\")), {Global ("Foundation.NSNumber")}.ToUInt32, false)",
 			];
 
 			property = new Property (
@@ -421,8 +422,8 @@ public class BindingSyntaxFactoryPropertyTests {
 
 			yield return [
 				property,
-				"ret = NSValue.ToCATransform3D (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"myProperty\")))",
-				"ret = NSValue.ToCATransform3D (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"myProperty\")))",
+				$"ret = {Global ("Foundation.NSValue")}.ToCATransform3D (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"myProperty\")))",
+				$"ret = {Global ("Foundation.NSValue")}.ToCATransform3D (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"myProperty\")))",
 			];
 
 			property = new Property (
@@ -447,8 +448,8 @@ public class BindingSyntaxFactoryPropertyTests {
 
 			yield return [
 				property,
-				"ret = NSValue.ToCGPoint (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"myProperty\")))",
-				"ret = NSValue.ToCGPoint (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"myProperty\")))",
+				$"ret = {Global ("Foundation.NSValue")}.ToCGPoint (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"myProperty\")))",
+				$"ret = {Global ("Foundation.NSValue")}.ToCGPoint (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"myProperty\")))",
 			];
 
 			property = new Property (
@@ -473,8 +474,8 @@ public class BindingSyntaxFactoryPropertyTests {
 
 			yield return [
 				property,
-				"ret = global::Foundation.NSArray.ArrayFromHandleFunc<CoreAnimation.CATransform3D> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"myProperty\")), NSValue.ToCATransform3D, false)",
-				"ret = global::Foundation.NSArray.ArrayFromHandleFunc<CoreAnimation.CATransform3D> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"myProperty\")), NSValue.ToCATransform3D, false)",
+				$"ret = global::Foundation.NSArray.ArrayFromHandleFunc<{Global ("CoreAnimation.CATransform3D")}> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"myProperty\")), {Global ("Foundation.NSValue")}.ToCATransform3D, false)",
+				$"ret = global::Foundation.NSArray.ArrayFromHandleFunc<{Global ("CoreAnimation.CATransform3D")}> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"myProperty\")), {Global ("Foundation.NSValue")}.ToCATransform3D, false)",
 			];
 
 			property = new Property (
@@ -499,8 +500,8 @@ public class BindingSyntaxFactoryPropertyTests {
 
 			yield return [
 				property,
-				"ret = global::Foundation.NSArray.ArrayFromHandleFunc<CoreGraphics.CGPoint> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"myProperty\")), NSValue.ToCGPoint, false)",
-				"ret = global::Foundation.NSArray.ArrayFromHandleFunc<CoreGraphics.CGPoint> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"myProperty\")), NSValue.ToCGPoint, false)",
+				$"ret = global::Foundation.NSArray.ArrayFromHandleFunc<{Global ("CoreGraphics.CGPoint")}> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"myProperty\")), {Global ("Foundation.NSValue")}.ToCGPoint, false)",
+				$"ret = global::Foundation.NSArray.ArrayFromHandleFunc<{Global ("CoreGraphics.CGPoint")}> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"myProperty\")), {Global ("Foundation.NSValue")}.ToCGPoint, false)",
 			];
 		}
 

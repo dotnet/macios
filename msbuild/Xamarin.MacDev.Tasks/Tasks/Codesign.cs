@@ -126,10 +126,11 @@ namespace Xamarin.MacDev.Tasks {
 			return true;
 		}
 
-		// 'sortedItems' is sorted by length of path, longest first.
-		bool NeedsCodesign (ITaskItem [] sortedItems, int index, string stampFileContents)
+		bool StampFileNeedsUpdate (ITaskItem? item)
 		{
-			var item = sortedItems [index];
+			if (item is null)
+				return false;
+
 			var stampFile = GetCodesignStampFile (item);
 			if (!File.Exists (stampFile)) {
 				Log.LogMessage (MessageImportance.Low, "The stamp file '{0}' does not exist, so the item '{1}' needs to be codesigned.", stampFile, item.ItemSpec);
@@ -141,6 +142,20 @@ namespace Xamarin.MacDev.Tasks {
 				return true;
 			}
 
+			return false;
+		}
+
+		// 'sortedItems' is sorted by length of path, longest first.
+		bool NeedsCodesign (ITaskItem? [] sortedItems, int index, string stampFileContents)
+		{
+			var item = sortedItems [index];
+			if (item is null)
+				return false;
+
+			var stampFile = GetCodesignStampFile (item);
+			if (StampFileNeedsUpdate (item))
+				return true;
+
 			if (Directory.Exists (item.ItemSpec)) {
 				// We're signing a directory. First check if any of the
 				// previous items in the sorted item array must be signed, and
@@ -150,11 +165,15 @@ namespace Xamarin.MacDev.Tasks {
 				var resolvedStampFile = Path.GetFullPath (PathUtils.ResolveSymbolicLinks (stampFile));
 
 				for (var i = 0; i < index; i++) {
-					if (sortedItems [i] is null)
+					var sortedItem = sortedItems [i];
+					if (sortedItem is null)
 						continue; // this item does not need to be signed
-					if (sortedItems [i].ItemSpec.StartsWith (itemPath, StringComparison.OrdinalIgnoreCase)) {
-						Log.LogMessage (MessageImportance.Low, "The item '{0}' contains '{1}', which must be signed, which means that the item must be signed too.", item.ItemSpec, sortedItems [i].ItemSpec);
-						return true; // there's an item inside this directory that needs to be signed, so this directory must be signed too
+					if (sortedItem.ItemSpec.StartsWith (itemPath, StringComparison.OrdinalIgnoreCase)) {
+						if (StampFileNeedsUpdate (sortedItem)) {
+							Log.LogMessage (MessageImportance.Low, "The item '{0}' contains '{1}', which must be signed, which means that the item must be signed too.", item.ItemSpec, sortedItem.ItemSpec);
+							return true; // there's an item inside this directory that needs to be signed, so this directory must be signed too
+						}
+						Log.LogMessage (MessageImportance.Low, "The item '{0}' contains '{1}', which must be signed, which means that the item must be signed too; however this other item has an up-to-date signature.", item.ItemSpec, sortedItem.ItemSpec);
 					}
 				}
 
@@ -221,9 +240,9 @@ namespace Xamarin.MacDev.Tasks {
 			return rv;
 		}
 
-		IList<string> GenerateCommandLineArguments (ITaskItem item)
+		bool TryGenerateCommandLineArguments (ITaskItem item, out IList<string> args)
 		{
-			var args = new List<string> ();
+			args = new List<string> ();
 			var isDeep = ParseBoolean (item, "CodesignDeep", IsAppExtension);
 			var useHardenedRuntime = ParseBoolean (item, "CodesignUseHardenedRuntime", UseHardenedRuntime);
 			var useSecureTimestamp = ParseBoolean (item, "CodesignUseSecureTimestamp", UseSecureTimestamp);
@@ -233,6 +252,15 @@ namespace Xamarin.MacDev.Tasks {
 			var resourceRules = GetCodesignResourceRules (item);
 			var entitlements = GetCodesignEntitlements (item);
 			var extraArgs = GetNonEmptyStringOrFallback (item, "CodesignExtraArgs", ExtraArgs);
+
+			if (!string.IsNullOrEmpty (entitlements)) {
+				if (!File.Exists (entitlements)) {
+					Log.LogError (MSBStrings.E0112, entitlements);
+					return false;
+				}
+			} else if (ParseBoolean (item, "CodesignWarnIfNoEntitlements", false)) {
+				Log.LogWarning ($"No entitlements set for {item.ItemSpec}.");
+			}
 
 			args.Add ("-v");
 			args.Add ("--force");
@@ -290,14 +318,15 @@ namespace Xamarin.MacDev.Tasks {
 			path = PathUtils.ResolveSymbolicLinks (path);
 			args.Add (Path.GetFullPath (path));
 
-			return args;
+			return true;
 		}
 
 		void Sign (SignInfo info)
 		{
 			var item = info.Item;
 			var fileName = GetFullPathToTool ();
-			var arguments = info.GetCommandLineArguments (this);
+			if (!info.TryGetCommandLineArguments (this, out var arguments))
+				return;
 			var environment = new Dictionary<string, string?> () {
 				{ "CODESIGN_ALLOCATE", GetCodesignAllocate (item) },
 			};
@@ -320,14 +349,14 @@ namespace Xamarin.MacDev.Tasks {
 					Log.LogMessage (MessageImportance.Low, "No stamp file '{0}' available for the item '{1}'", stampFile, item.ItemSpec);
 				} else if (IsUpToDate (item.ItemSpec, stampFile)) {
 					Log.LogMessage (MessageImportance.Low, "The stamp file '{0}' is already up-to-date for the item '{1}', updating it anyway", stampFile, item.ItemSpec);
-					File.WriteAllText (stampFile, info.GetStampFileContents (this));
+					File.WriteAllText (stampFile, info.GetStampFileContents (this, arguments));
 				} else if (File.Exists (stampFile)) {
 					Log.LogMessage (MessageImportance.Low, "The stamp file '{0}' is not up-to-date for the item '{1}', and it will be updated", stampFile, item.ItemSpec);
-					File.WriteAllText (stampFile, info.GetStampFileContents (this));
+					File.WriteAllText (stampFile, info.GetStampFileContents (this, arguments));
 				} else {
 					Log.LogMessage (MessageImportance.Low, "The stamp file '{0}' does not exit for the item '{1}', and it will be created", stampFile, item.ItemSpec);
 					Directory.CreateDirectory (Path.GetDirectoryName (stampFile)!);
-					File.WriteAllText (stampFile, info.GetStampFileContents (this));
+					File.WriteAllText (stampFile, info.GetStampFileContents (this, arguments));
 				}
 
 				var additionalFilesToTouch = item.GetMetadata ("CodesignAdditionalFilesToTouch").Split (new char [] { ';' }, StringSplitOptions.RemoveEmptyEntries);
@@ -416,17 +445,22 @@ namespace Xamarin.MacDev.Tasks {
 			}
 
 			// first sort all the items by path length, longest path first.
-			resourcesToSign = resourcesToSign.OrderBy (v => v.ItemSpec.Length).Reverse ().ToArray ();
+			ITaskItem? [] sortedResources = resourcesToSign.OrderBy (v => v.ItemSpec.Length).Reverse ().ToArray ();
 
 			// remove items that are up-to-date
 			var itemsToSign = new List<SignInfo> ();
-			for (var i = 0; i < resourcesToSign.Length; i++) {
-				var item = resourcesToSign [i];
+			for (var i = 0; i < sortedResources.Length; i++) {
+				var item = sortedResources [i];
+				if (item is null)
+					continue;
 				var info = new SignInfo (item);
 				if (!Validate (info))
 					continue;
-				if (NeedsCodesign (resourcesToSign, i, info.GetStampFileContents (this)))
+				if (NeedsCodesign (sortedResources, i, info.GetStampFileContents (this))) {
 					itemsToSign.Add (info);
+				} else {
+					sortedResources [i] = null;
+				}
 			}
 
 			if (Log.HasLoggedErrors)
@@ -586,16 +620,24 @@ namespace Xamarin.MacDev.Tasks {
 				Item = item;
 			}
 
-			public IList<string> GetCommandLineArguments (Codesign task)
+			public bool TryGetCommandLineArguments (Codesign task, out IList<string> arguments)
 			{
-				if (arguments is null)
-					arguments = task.GenerateCommandLineArguments (Item);
-				return arguments;
+				if (this.arguments is null) {
+					if (!task.TryGenerateCommandLineArguments (Item, out arguments))
+						return false;
+					this.arguments = arguments;
+				}
+
+				arguments = this.arguments;
+
+				return true;
 			}
 
-			public string GetStampFileContents (Codesign task)
+			public string GetStampFileContents (Codesign task, IList<string>? arguments = null)
 			{
-				return string.Join (" ", GetCommandLineArguments (task));
+				if (arguments is null)
+					TryGetCommandLineArguments (task, out arguments);
+				return string.Join (" ", arguments);
 			}
 		}
 

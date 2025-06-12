@@ -42,19 +42,13 @@ namespace XamarinTests.ObjCRuntime {
 			}
 		}
 
-#if NET
 		[UnconditionalSuppressMessage ("Trimming", "IL2026", Justification = "This test accesses internals, and this code seems to work fine with the trimmer enabled.")]
-#endif
 		public static Registrars CurrentRegistrar {
 			get {
 				var __registrar__ = typeof (Class).Assembly.GetType ("ObjCRuntime.__Registrar__");
 				if (__registrar__ is not null)
 					return Registrars.ManagedStatic;
-#if NET
 				var types = new Type [] { typeof (NativeHandle), typeof (bool).MakeByRefType () };
-#else
-				var types = new Type [] { typeof (IntPtr), typeof (bool).MakeByRefType () };
-#endif
 				var find_type = typeof (Class).GetMethod ("FindType", BindingFlags.Static | BindingFlags.NonPublic, null, types, null);
 				var type_to_find = typeof (RegistrationTestClass);
 				var type = (Type) find_type.Invoke (null, new object [] { Class.GetHandle (type_to_find), false });

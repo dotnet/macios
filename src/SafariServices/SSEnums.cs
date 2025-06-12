@@ -80,15 +80,4 @@ namespace SafariServices {
 		/// <summary>To be added.</summary>
 		CanceledLogin = 1,
 	}
-
-#if !NET
-	[Obsolete ("Enum not used by any API.")]
-	[NoiOS]
-	[Native]
-	public enum SFSafariServicesVersion : long {
-		V10_0,
-		V10_1,
-		V11_0,
-	}
-#endif
 }

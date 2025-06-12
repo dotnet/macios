@@ -12,10 +12,6 @@ using System.ComponentModel;
 using ObjCRuntime;
 using Foundation;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace Contacts {
 
 	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Contacts.ICNKeyDescriptor" />.</summary>
@@ -1632,9 +1628,6 @@ namespace Contacts {
 
 	/// <summary>Completion handler for calls to <see cref="Contacts.CNContactStore.RequestAccess(Contacts.CNEntityType,Contacts.CNContactStoreRequestAccessHandler)" /></summary>
 	delegate void CNContactStoreRequestAccessHandler (bool granted, NSError error);
-#if !NET
-	delegate void CNContactStoreEnumerateContactsHandler (CNContact contact, bool stop);
-#endif
 	delegate void CNContactStoreListContactsHandler (CNContact contact, ref bool stop);
 
 	interface ICNChangeHistoryEventVisitor { }
@@ -1900,14 +1893,6 @@ namespace Contacts {
 		[return: NullAllowed]
 		CNFetchResult<NSEnumerator<CNChangeHistoryEvent>> GetEnumeratorForChangeHistory (CNChangeHistoryFetchRequest request, [NullAllowed] out NSError error);
 
-
-#if !NET
-		[Obsolete ("Use the overload that takes 'CNContactStoreListContactsHandler' instead.")]
-		[Export ("enumerateContactsWithFetchRequest:error:usingBlock:")]
-		bool EnumerateContacts (CNContactFetchRequest fetchRequest, out NSError error, CNContactStoreEnumerateContactsHandler handler);
-
-		[Sealed]
-#endif
 		[Export ("enumerateContactsWithFetchRequest:error:usingBlock:")]
 		bool EnumerateContacts (CNContactFetchRequest fetchRequest, [NullAllowed] out NSError error, CNContactStoreListContactsHandler handler);
 
@@ -1983,30 +1968,6 @@ namespace Contacts {
 		CNContact [] GetContactsFromData (NSData data, out NSError error);
 	}
 
-#if !NET
-#pragma warning disable 0618 // warning CS0618: 'CategoryAttribute.CategoryAttribute(bool)' is obsolete: 'Inline the static members in this category in the category's class (and remove this obsolete once fixed)'
-	[Category (allowStaticMembers: true)]
-#pragma warning disable
-	[BaseType (typeof (CNContainer))]
-	interface CNContainer_PredicatesExtension {
-
-		[Obsolete ("Use 'CNContainer.CreatePredicateForContainers' instead.")]
-		[Static]
-		[Export ("predicateForContainersWithIdentifiers:")]
-		NSPredicate GetPredicateForContainers (string [] identifiers);
-
-		[Obsolete ("Use 'CNContainer.CreatePredicateForContainerOfContact' instead.")]
-		[Static]
-		[Export ("predicateForContainerOfContactWithIdentifier:")]
-		NSPredicate GetPredicateForContainerOfContact (string contactIdentifier);
-
-		[Obsolete ("Use 'CNContainer.CreatePredicateForContainerOfGroup' instead.")]
-		[Static]
-		[Export ("predicateForContainerOfGroupWithIdentifier:")]
-		NSPredicate GetPredicateForContainerOfGroup (string groupIdentifier);
-	}
-#endif
-
 	/// <summary>An object such as an Exchange or CalDAV account that contains zero or more <see cref="Contacts.CNContact" /> objects.</summary>
 	///     <remarks>
 	///       <para> A <see cref="Contacts.CNContact" /> may be a member of only one <see cref="Contacts.CNContainer" />. This is in contrast to <see cref="Contacts.CNGroup" /> objects.</para>
@@ -2027,27 +1988,15 @@ namespace Contacts {
 
 		#region comes from CNContainer (Predicates) Category
 		[Static]
-#if NET
 		[Export ("predicateForContainersWithIdentifiers:")]
-#else
-		[Wrap ("CNContainer_PredicatesExtension.GetPredicateForContainers (null!, identifiers)")]
-#endif
 		NSPredicate CreatePredicateForContainers (string [] identifiers);
 
 		[Static]
-#if NET
 		[Export ("predicateForContainerOfContactWithIdentifier:")]
-#else
-		[Wrap ("CNContainer_PredicatesExtension.GetPredicateForContainerOfContact (null!, contactIdentifier)")]
-#endif
 		NSPredicate CreatePredicateForContainerOfContact (string contactIdentifier);
 
 		[Static]
-#if NET
 		[Export ("predicateForContainerOfGroupWithIdentifier:")]
-#else
-		[Wrap ("CNContainer_PredicatesExtension.GetPredicateForContainerOfGroup (null!, groupIdentifier)")]
-#endif
 		NSPredicate CreatePredicateForContainerOfGroup (string groupIdentifier);
 		#endregion
 	}
@@ -2108,31 +2057,6 @@ namespace Contacts {
 		NSString KeyPaths { get; }
 	}
 
-#if !NET
-#pragma warning disable 0618 // warning CS0618: 'CategoryAttribute.CategoryAttribute(bool)' is obsolete: 'Inline the static members in this category in the category's class (and remove this obsolete once fixed)'
-	[Category (allowStaticMembers: true)]
-#pragma warning disable
-	[BaseType (typeof (CNGroup))]
-	interface CNGroup_PredicatesExtension {
-
-		[Obsolete ("Use 'CNGroup.CreatePredicateForGroups' instead.")]
-		[Static]
-		[Export ("predicateForGroupsWithIdentifiers:")]
-		NSPredicate GetPredicateForGroups (string [] identifiers);
-
-		[Obsolete ("Use 'CNGroup.CreatePredicateForSubgroupsInGroup' instead.")]
-		[NoiOS]
-		[Static]
-		[Export ("predicateForSubgroupsInGroupWithIdentifier:")]
-		NSPredicate GetPredicateForSubgroupsInGroup (string parentGroupIdentifier);
-
-		[Obsolete ("Use 'CNGroup.CreatePredicateForGroupsInContainer' instead.")]
-		[Static]
-		[Export ("predicateForGroupsInContainerWithIdentifier:")]
-		NSPredicate GetPredicateForGroupsInContainer (string containerIdentifier);
-	}
-#endif
-
 	/// <summary>A group that contains <see cref="Contacts.CNContact" /> objects.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Contacts/Reference/CNGroup_Class/index.html">Apple documentation for <c>CNGroup</c></related>
@@ -2148,29 +2072,17 @@ namespace Contacts {
 
 		#region comes from CNGroup (Predicates) Category
 		[Static]
-#if NET
 		[Export ("predicateForGroupsWithIdentifiers:")]
-#else
-		[Wrap ("CNGroup_PredicatesExtension.GetPredicateForGroups (null!, identifiers)")]
-#endif
 		NSPredicate CreatePredicateForGroups (string [] identifiers);
 
 		[NoiOS]
 		[NoMacCatalyst]
 		[Static]
-#if NET
 		[Export ("predicateForSubgroupsInGroupWithIdentifier:")]
-#else
-		[Wrap ("CNGroup_PredicatesExtension.GetPredicateForSubgroupsInGroup (null!, parentGroupIdentifier)")]
-#endif
 		NSPredicate CreatePredicateForSubgroupsInGroup (string parentGroupIdentifier);
 
 		[Static]
-#if NET
 		[Export ("predicateForGroupsInContainerWithIdentifier:")]
-#else
-		[Wrap ("CNGroup_PredicatesExtension.GetPredicateForGroupsInContainer (null!, containerIdentifier)")]
-#endif
 		NSPredicate CreatePredicateForGroupsInContainer (string containerIdentifier);
 		#endregion
 	}
@@ -2685,37 +2597,6 @@ namespace Contacts {
 		[Wrap ("LocalizeProperty (option.GetConstant ()!)")]
 		string LocalizeProperty (CNPostalAddressKeyOption option);
 	}
-
-#if !NET
-	[Static]
-	[EditorBrowsable (EditorBrowsableState.Advanced)]
-	interface CNPostalAddressKey { // Can be used in KVO
-
-		[Field ("CNPostalAddressStreetKey")]
-		NSString Street { get; }
-
-		[Field ("CNPostalAddressSubLocalityKey")]
-		NSString SubLocality { get; }
-
-		[Field ("CNPostalAddressCityKey")]
-		NSString City { get; }
-
-		[Field ("CNPostalAddressSubAdministrativeAreaKey")]
-		NSString SubAdministrativeArea { get; }
-
-		[Field ("CNPostalAddressStateKey")]
-		NSString State { get; }
-
-		[Field ("CNPostalAddressPostalCodeKey")]
-		NSString PostalCode { get; }
-
-		[Field ("CNPostalAddressCountryKey")]
-		NSString Country { get; }
-
-		[Field ("CNPostalAddressISOCountryCodeKey")]
-		NSString IsoCountryCode { get; }
-	}
-#endif
 
 	/// <summary>Enumeration of properties of a <see cref="Contacts.CNPostalAddress" />.</summary>
 	[MacCatalyst (13, 1)]

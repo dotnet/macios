@@ -39,7 +39,7 @@ namespace Security {
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
-		public static string GetStatusDescription (this SecStatusCode status)
+		public static string? GetStatusDescription (this SecStatusCode status)
 		{
 			var ret = SecCopyErrorMessageString (status, IntPtr.Zero);
 			return Runtime.GetNSObject<NSString> (ret, owns: true);

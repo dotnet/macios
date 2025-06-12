@@ -227,26 +227,26 @@ public class BindingSyntaxFactoryObjCRuntimeTests {
 
 			// not nullable string[]
 			yield return [
-				new Parameter (0, ReturnTypeForArray ("string", isNullable: false), "myParam"),
+				new Parameter (0, ReturnTypeForArray ("string", isNullable: false, underlyingType: SpecialType.System_String), "myParam"),
 				"var nsa_myParam = global::Foundation.NSArray.FromStrings (myParam);",
 				false
 			];
 
 			yield return [
-				new Parameter (0, ReturnTypeForArray ("string", isNullable: false), "myParam"),
+				new Parameter (0, ReturnTypeForArray ("string", isNullable: false, underlyingType: SpecialType.System_String), "myParam"),
 				"using var nsa_myParam = global::Foundation.NSArray.FromStrings (myParam);",
 				true
 			];
 
 			// nullable string []
 			yield return [
-				new Parameter (0, ReturnTypeForArray ("string", isNullable: true), "myParam"),
+				new Parameter (0, ReturnTypeForArray ("string", isNullable: true, underlyingType: SpecialType.System_String), "myParam"),
 				"var nsa_myParam = myParam is null ? null : global::Foundation.NSArray.FromStrings (myParam);",
 				false
 			];
 
 			yield return [
-				new Parameter (0, ReturnTypeForArray ("string", isNullable: true), "myParam"),
+				new Parameter (0, ReturnTypeForArray ("string", isNullable: true, underlyingType: SpecialType.System_String), "myParam"),
 				"using var nsa_myParam = myParam is null ? null : global::Foundation.NSArray.FromStrings (myParam);",
 				true
 			];
@@ -303,33 +303,28 @@ public class BindingSyntaxFactoryObjCRuntimeTests {
 			yield return [
 				new Parameter (0, ReturnTypeForNSObject ("MyNSObject"), "myParam"),
 				"var myParam__handle__ = myParam.GetHandle ();",
-				false
 			];
 
 			yield return [
-				new Parameter (0, ReturnTypeForNSObject ("MyNSObject"), "myParam"),
-				"var myParam__handle__ = myParam!.GetNonNullHandle ( nameof (myParam));",
-				true
+				new Parameter (0, ReturnTypeForNSObject ("MyNSObject", isNullable: true), "myParam"),
+				"var myParam__handle__ = myParam!.GetNonNullHandle (nameof (myParam));",
 			];
 
 			// interface type
 			yield return [
 				new Parameter (0, ReturnTypeForINativeObject ("MyNativeObject"), "myParam"),
 				"var myParam__handle__ = myParam.GetHandle ();",
-				false
 			];
 
 			yield return [
-				new Parameter (0, ReturnTypeForINativeObject ("MyNativeObject"), "myParam"),
-				"var myParam__handle__ = myParam!.GetNonNullHandle ( nameof (myParam));",
-				true
+				new Parameter (0, ReturnTypeForINativeObject ("MyNativeObject", isNullable: true), "myParam"),
+				"var myParam__handle__ = myParam!.GetNonNullHandle (nameof (myParam));",
 			];
 
 			// value type
 			yield return [
 				new Parameter (0, ReturnTypeForBool (), "myParam"),
 				null!,
-				false
 			];
 		}
 
@@ -338,9 +333,9 @@ public class BindingSyntaxFactoryObjCRuntimeTests {
 
 	[Theory]
 	[ClassData (typeof (TestDataGetHandleAuxVariableTests))]
-	void GetHandleAuxVariableTests (in Parameter parameter, string? expectedDeclaration, bool withNullAllowed)
+	void GetHandleAuxVariableTests (in Parameter parameter, string? expectedDeclaration)
 	{
-		var declaration = GetHandleAuxVariable (parameter, withNullAllowed: withNullAllowed);
+		var declaration = GetHandleAuxVariable (parameter);
 		if (expectedDeclaration is null) {
 			Assert.Null (declaration);
 		} else {

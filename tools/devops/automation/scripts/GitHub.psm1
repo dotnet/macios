@@ -710,7 +710,7 @@ mutation {
             $latestCommit = $prInfo.head.sha
             
             Write-Host "Current commit: $($this.Hash)"
-            Write-Host "Latest commit in PR #$prId: $latestCommit"
+            Write-Host "Latest commit in PR #${prId}: $latestCommit"
             
             return $this.Hash -eq $latestCommit
         } catch {

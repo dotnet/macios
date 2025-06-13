@@ -4106,7 +4106,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				stringParameter,
-$@"if (stringParameter is null)
+				$@"if (stringParameter is null)
 	{Global ("ObjCRuntime")}.ThrowHelper.ThrowArgumentNullException (nameof (stringParameter));
 var nsstringParameter = {Global ("CoreFoundation")}.CFString.CreateNative (stringParameter);
 ",
@@ -4141,7 +4141,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				stringArrayParameter,
-$@"if (stringParameter is null)
+				$@"if (stringParameter is null)
 	{Global ("ObjCRuntime")}.ThrowHelper.ThrowArgumentNullException (nameof (stringParameter));
 var nsa_stringParameter = {Global ("Foundation")}.NSArray.FromStrings (stringParameter);
 ",
@@ -4233,7 +4233,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				nsObjectParameter,
-$@"if (nsObjectParameter is null)
+				$@"if (nsObjectParameter is null)
 	{Global ("ObjCRuntime")}.ThrowHelper.ThrowArgumentNullException (nameof (nsObjectParameter));
 var nsObjectParameter__handle__ = nsObjectParameter.GetHandle ();
 ",
@@ -4278,7 +4278,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				nsObjectArrayParameter,
-$@"if (nsObjectParameter is null)
+				$@"if (nsObjectParameter is null)
 	{Global ("ObjCRuntime")}.ThrowHelper.ThrowArgumentNullException (nameof (nsObjectParameter));
 var nsa_nsObjectParameter = {Global ("Foundation")}.NSArray.FromNSObjects (nsObjectParameter);
 ",
@@ -4324,7 +4324,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				iNativeParameter,
-$@"if (inative is null)
+				$@"if (inative is null)
 	{Global ("ObjCRuntime")}.ThrowHelper.ThrowArgumentNullException (nameof (inative));
 var inative__handle__ = inative.GetHandle ();
 "
@@ -4371,7 +4371,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				inativeArrayParameter,
-$@"if (inativeArray is null)
+				$@"if (inativeArray is null)
 	{Global ("ObjCRuntime")}.ThrowHelper.ThrowArgumentNullException (nameof (inativeArray));
 var nsa_inativeArray = {Global ("Foundation")}.NSArray.FromNSObjects (inativeArray);
 ",
@@ -4416,7 +4416,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				audioBuffer,
-$@"if (audioBuffer is null)
+				$@"if (audioBuffer is null)
 	{Global ("ObjCRuntime")}.ThrowHelper.ThrowArgumentNullException (nameof (audioBuffer));
 var audioBuffer__handle__ = audioBuffer.GetHandle ();
 ",
@@ -4439,7 +4439,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				cmSampleBuffer,
-$@"if (cmSampleBuffer is null)
+				$@"if (cmSampleBuffer is null)
 	{Global ("ObjCRuntime")}.ThrowHelper.ThrowArgumentNullException (nameof (cmSampleBuffer));
 var cmSampleBuffer__handle__ = cmSampleBuffer.GetHandle ();
 ",

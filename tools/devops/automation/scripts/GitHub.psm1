@@ -424,11 +424,7 @@ class GitHubComments {
         [string] $commentId
     ) {
         # Check if we should hide previous comments (only if current commit is latest)
-        if ($this.IsCurrentCommitLatestInPR()) {
-            $this.HideComments($commentId)
-        } else {
-            Write-Host "Not hiding previous comments, because current commit is not the latest in the PR"
-        }
+        $this.HandlePreviousCommentHiding($commentId)
 
         # build the message, which will be sent to github, users can use markdown
         $msg = [System.Text.StringBuilder]::new()
@@ -446,15 +442,7 @@ class GitHubComments {
         $result = $this.NewComment($msg)
         
         # If this commit is not the latest in the PR, hide this comment immediately
-        if ($this.IsPR() -and -not $this.IsCurrentCommitLatestInPR()) {
-            Write-Host "Current commit is not the latest in PR, attempting to hide the new comment"
-            try {
-                Start-Sleep -Seconds 2  # Give GitHub a moment to process the comment
-                $this.HideNewlyPostedComment($result.id, $commentId)
-            } catch {
-                Write-Host "Warning: Failed to hide comment for non-latest commit: $_"
-            }
-        }
+        $this.HandleNewCommentHiding($result, $commentId)
 
         return $result
     }
@@ -466,11 +454,7 @@ class GitHubComments {
         [string] $commentId
     ) {
         # Check if we should hide previous comments (only if current commit is latest)
-        if ($this.IsCurrentCommitLatestInPR()) {
-            $this.HideComments($commentId)
-        } else {
-            Write-Host "Not hiding previous comments, because current commit is not the latest in the PR"
-        }
+        $this.HandlePreviousCommentHiding($commentId)
 
         # build the message, which will be sent to github, users can use markdown
         $msg = [System.Text.StringBuilder]::new()
@@ -495,15 +479,7 @@ class GitHubComments {
         $result = $this.NewComment($msg)
         
         # If this commit is not the latest in the PR, hide this comment immediately
-        if ($this.IsPR() -and -not $this.IsCurrentCommitLatestInPR()) {
-            Write-Host "Current commit is not the latest in PR, attempting to hide the new comment"
-            try {
-                Start-Sleep -Seconds 2  # Give GitHub a moment to process the comment
-                $this.HideNewlyPostedComment($result.id, $commentId)
-            } catch {
-                Write-Host "Warning: Failed to hide comment for non-latest commit: $_"
-            }
-        }
+        $this.HandleNewCommentHiding($result, $commentId)
 
         return $result
     }
@@ -515,11 +491,7 @@ class GitHubComments {
         [string] $commentId
     ) {
         # Check if we should hide previous comments (only if current commit is latest)
-        if ($this.IsCurrentCommitLatestInPR()) {
-            $this.HideComments($commentId)
-        } else {
-            Write-Host "Not hiding previous comments, because current commit is not the latest in the PR"
-        }
+        $this.HandlePreviousCommentHiding($commentId)
 
         $msg = [System.Text.StringBuilder]::new()
 
@@ -536,17 +508,7 @@ class GitHubComments {
         $result = $this.NewComment($msg)
         
         # If this commit is not the latest in the PR, hide this comment immediately
-        if ($this.IsPR() -and -not $this.IsCurrentCommitLatestInPR()) {
-            Write-Host "Current commit is not the latest in PR, attempting to hide the new comment"
-            try {
-                # We need to get the GraphQL node ID to minimize the comment
-                # Since we just posted the comment, we can find it by searching recent comments
-                Start-Sleep -Seconds 2  # Give GitHub a moment to process the comment
-                $this.HideNewlyPostedComment($result.id, $commentId)
-            } catch {
-                Write-Host "Warning: Failed to hide comment for non-latest commit: $_"
-            }
-        }
+        $this.HandleNewCommentHiding($result, $commentId)
 
         return $result
     }
@@ -685,6 +647,57 @@ mutation {
         } # foreach
     }
 
+    <#
+    .SYNOPSIS
+        Handles hiding previous comments if the current commit is the latest in the PR.
+    
+    .PARAMETER commentId
+        The identifier used to find and hide previous comments of the same type.
+    #>
+    [void] HandlePreviousCommentHiding([string] $commentId) {
+        if ($this.IsCurrentCommitLatestInPR()) {
+            $this.HideComments($commentId)
+        } else {
+            Write-Host "Not hiding previous comments, because current commit is not the latest in the PR"
+        }
+    }
+
+    <#
+    .SYNOPSIS
+        Handles hiding the newly posted comment if the current commit is not the latest in the PR.
+    
+    .PARAMETER result
+        The result object from posting the comment, containing the comment ID.
+    
+    .PARAMETER commentId
+        The identifier used to mark the comment.
+    #>
+    [void] HandleNewCommentHiding([object] $result, [string] $commentId) {
+        if ($this.IsPR() -and -not $this.IsCurrentCommitLatestInPR()) {
+            Write-Host "Current commit is not the latest in PR, attempting to hide the new comment"
+            try {
+                Start-Sleep -Seconds 2  # Give GitHub a moment to process the comment
+                $this.HideNewlyPostedComment($result.id, $commentId)
+            } catch {
+                Write-Host "Warning: Failed to hide comment for non-latest commit: $_"
+            }
+        }
+    }
+
+    <#
+    .SYNOPSIS
+        Checks if the current commit being built matches the head commit of the PR.
+    
+    .DESCRIPTION
+        This method determines whether the commit currently being processed is the latest commit
+        in the pull request. This is used to decide whether to hide previous CI comments or not.
+        If the current commit is not the latest, it means we're building an older commit (possibly
+        due to CI retry or queue delay), and we should not hide previous comments.
+    
+    .OUTPUTS
+        [bool] Returns true if the current commit is the latest in the PR, false otherwise.
+               Also returns true if not in a PR context or if hash comparison cannot be performed.
+    #>
     [bool] IsCurrentCommitLatestInPR() {
         # If we're not in a PR context, we can't determine this
         if (-not $this.IsPR()) {
@@ -720,6 +733,22 @@ mutation {
         }
     }
 
+    <#
+    .SYNOPSIS
+        Hides a recently posted comment by finding it among recent PR comments.
+    
+    .DESCRIPTION
+        This method searches for a recently posted comment by matching the comment identifier
+        in the comment body and hides it if it belongs to the CI bot and is not already minimized.
+        This is used when building non-latest commits to hide their CI results while preserving
+        the visibility of the most recent CI results.
+    
+    .PARAMETER restCommentId
+        The REST API comment ID of the comment that was just posted.
+    
+    .PARAMETER commentId
+        The identifier used to mark the comment, which will be embedded in the comment body.
+    #>
     [void] HideNewlyPostedComment([int] $restCommentId, [string] $commentId) {
         # Get recent comments to find the one we just posted
         if (-not $this.IsPR()) {
@@ -731,13 +760,13 @@ mutation {
         $commentIdentifier = $this.GetCommentIdentifier($commentId)
         
         # Find the comment we just posted by matching the comment identifier in the body
-        foreach ($c in $prComments) {
-            if ($c.Body.Contains($commentIdentifier)) {
+        foreach ($comment in $prComments) {
+            if ($comment.Body.Contains($commentIdentifier)) {
                 # This could be our comment or a previous one, but let's check if it's recent
                 # We'll minimize any comment with our identifier that's from the bot and not already minimized
-                if ($c.Author -eq "vs-mobiletools-engineering-service2" -and -not $c.IsMinimized) {
-                    Write-Host "Found recently posted comment to minimize: $($c.Id)"
-                    $this.MinimizeComments(@($c))
+                if ($comment.Author -eq "vs-mobiletools-engineering-service2" -and -not $comment.IsMinimized) {
+                    Write-Host "Found recently posted comment to minimize: $($comment.Id)"
+                    $this.MinimizeComments(@($comment))
                     break
                 }
             }

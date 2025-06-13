@@ -1,14 +1,16 @@
 using System;
+using System.IO;
+
+using CoreGraphics;
+using CoreImage;
 using Foundation;
 #if MONOMAC
 using AppKit;
 #else
 using UIKit;
 #endif
-using CoreGraphics;
+
 using NUnit.Framework;
-using System.IO;
-using CoreImage;
 
 namespace monotouchtest.CoreGraphics {
 	[TestFixture]
@@ -19,28 +21,29 @@ namespace monotouchtest.CoreGraphics {
 		{
 			// Test default constructor
 			var png = new CGImagePropertiesPng ();
-			Assert.IsNotNull (png, "Default constructor should create a valid instance");
+			Assert.That (png, Is.Not.Null, "Default constructor should create a valid instance");
 
 			// Test setting and getting string properties
 			png.Author = "Test Author";
-			Assert.AreEqual ("Test Author", png.Author, "Author property should be settable and gettable");
+			Assert.That (png.Author, Is.EqualTo ("Test Author"), "Author property should be settable and gettable");
 
 			png.Description = "Test PNG image";
-			Assert.AreEqual ("Test PNG image", png.Description, "Description property should be settable and gettable");
+			Assert.That (png.Description, Is.EqualTo ("Test PNG image"), "Description property should be settable and gettable");
 
 			png.Software = "Test Software";
-			Assert.AreEqual ("Test Software", png.Software, "Software property should be settable and gettable");
+			Assert.That (png.Software, Is.EqualTo ("Test Software"), "Software property should be settable and gettable");
 
 			png.Title = "Test Title";
-			Assert.AreEqual ("Test Title", png.Title, "Title property should be settable and gettable");
+			Assert.That (png.Title, Is.EqualTo ("Test Title"), "Title property should be settable and gettable");
 		}
 
 		[Test]
 		public void ConstructorWithDictionaryTest ()
 		{
-			var dict = new NSMutableDictionary ();
-			var png = new CGImagePropertiesPng (dict);
-			Assert.IsNotNull (png, "Constructor with dictionary should create a valid instance");
+			using (var dict = new NSMutableDictionary ()) {
+				var png = new CGImagePropertiesPng (dict);
+				Assert.That (png, Is.Not.Null, "Constructor with dictionary should create a valid instance");
+			}
 		}
 
 		[Test]
@@ -52,7 +55,7 @@ namespace monotouchtest.CoreGraphics {
 			using (var url = NSUrl.FromFilename (file))
 			using (var ci = CIImage.FromUrl (url)) {
 				var imageProps = ci.Properties;
-				Assert.IsNotNull (imageProps, "Image properties should be available");
+				Assert.That (imageProps, Is.Not.Null, "Image properties should be available");
 				
 				// For a PNG file, the Png property should be accessible
 				var png = imageProps.Png;
@@ -67,13 +70,13 @@ namespace monotouchtest.CoreGraphics {
 			
 			// Test numeric properties
 			png.Gamma = 2.2f;
-			Assert.AreEqual (2.2f, png.Gamma, 0.001f, "Gamma should be settable and gettable");
+			Assert.That (png.Gamma, Is.EqualTo (2.2f).Within (0.001f), "Gamma should be settable and gettable");
 			
 			png.XPixelsPerMeter = 3780; // ~96 DPI
-			Assert.AreEqual (3780, png.XPixelsPerMeter, "XPixelsPerMeter should be settable");
+			Assert.That (png.XPixelsPerMeter, Is.EqualTo (3780), "XPixelsPerMeter should be settable");
 			
 			png.YPixelsPerMeter = 3780; // ~96 DPI
-			Assert.AreEqual (3780, png.YPixelsPerMeter, "YPixelsPerMeter should be settable");
+			Assert.That (png.YPixelsPerMeter, Is.EqualTo (3780), "YPixelsPerMeter should be settable");
 		}
 
 		[Test]
@@ -83,13 +86,13 @@ namespace monotouchtest.CoreGraphics {
 			
 			// Test common gamma values
 			png.Gamma = 1.0f;
-			Assert.AreEqual (1.0f, png.Gamma, 0.001f, "Should handle gamma of 1.0");
+			Assert.That (png.Gamma, Is.EqualTo (1.0f).Within (0.001f), "Should handle gamma of 1.0");
 			
 			png.Gamma = 2.2f;
-			Assert.AreEqual (2.2f, png.Gamma, 0.001f, "Should handle gamma of 2.2");
+			Assert.That (png.Gamma, Is.EqualTo (2.2f).Within (0.001f), "Should handle gamma of 2.2");
 			
 			png.Gamma = 1.8f;
-			Assert.AreEqual (1.8f, png.Gamma, 0.001f, "Should handle gamma of 1.8");
+			Assert.That (png.Gamma, Is.EqualTo (1.8f).Within (0.001f), "Should handle gamma of 1.8");
 		}
 
 		[Test]
@@ -101,14 +104,14 @@ namespace monotouchtest.CoreGraphics {
 			// 72 DPI = ~2835 pixels per meter
 			png.XPixelsPerMeter = 2835;
 			png.YPixelsPerMeter = 2835;
-			Assert.AreEqual (2835, png.XPixelsPerMeter, "Should handle 72 DPI equivalent");
-			Assert.AreEqual (2835, png.YPixelsPerMeter, "Should handle 72 DPI equivalent");
+			Assert.That (png.XPixelsPerMeter, Is.EqualTo (2835), "Should handle 72 DPI equivalent");
+			Assert.That (png.YPixelsPerMeter, Is.EqualTo (2835), "Should handle 72 DPI equivalent");
 			
 			// Different X and Y resolutions
 			png.XPixelsPerMeter = 3780; // ~96 DPI
 			png.YPixelsPerMeter = 2835; // ~72 DPI
-			Assert.AreEqual (3780, png.XPixelsPerMeter, "X and Y resolutions can be different");
-			Assert.AreEqual (2835, png.YPixelsPerMeter, "X and Y resolutions can be different");
+			Assert.That (png.XPixelsPerMeter, Is.EqualTo (3780), "X and Y resolutions can be different");
+			Assert.That (png.YPixelsPerMeter, Is.EqualTo (2835), "X and Y resolutions can be different");
 		}
 
 		[Test]
@@ -118,16 +121,16 @@ namespace monotouchtest.CoreGraphics {
 			
 			// Test that nullable properties can be set to null
 			png.Author = null;
-			Assert.IsNull (png.Author, "Author should be nullable");
+			Assert.That (png.Author, Is.Null, "Author should be nullable");
 			
 			png.Description = null;
-			Assert.IsNull (png.Description, "Description should be nullable");
+			Assert.That (png.Description, Is.Null, "Description should be nullable");
 			
 			png.Gamma = null;
-			Assert.IsNull (png.Gamma, "Gamma should be nullable");
+			Assert.That (png.Gamma, Is.Null, "Gamma should be nullable");
 			
 			png.XPixelsPerMeter = null;
-			Assert.IsNull (png.XPixelsPerMeter, "XPixelsPerMeter should be nullable");
+			Assert.That (png.XPixelsPerMeter, Is.Null, "XPixelsPerMeter should be nullable");
 		}
 
 		[Test]
@@ -137,13 +140,13 @@ namespace monotouchtest.CoreGraphics {
 			
 			// Test that empty strings work correctly
 			png.Author = "";
-			Assert.AreEqual ("", png.Author, "Author should accept empty strings");
+			Assert.That (png.Author, Is.EqualTo (""), "Author should accept empty strings");
 			
 			png.Title = "";
-			Assert.AreEqual ("", png.Title, "Title should accept empty strings");
+			Assert.That (png.Title, Is.EqualTo (""), "Title should accept empty strings");
 			
 			png.Software = "";
-			Assert.AreEqual ("", png.Software, "Software should accept empty strings");
+			Assert.That (png.Software, Is.EqualTo (""), "Software should accept empty strings");
 		}
 
 		[Test]
@@ -153,10 +156,10 @@ namespace monotouchtest.CoreGraphics {
 			
 			// Test that unicode strings work correctly
 			png.Author = "Test Author 測試";
-			Assert.AreEqual ("Test Author 測試", png.Author, "Author should handle unicode");
+			Assert.That (png.Author, Is.EqualTo ("Test Author 測試"), "Author should handle unicode");
 			
 			png.Title = "Тест Title";
-			Assert.AreEqual ("Тест Title", png.Title, "Title should handle unicode");
+			Assert.That (png.Title, Is.EqualTo ("Тест Title"), "Title should handle unicode");
 		}
 	}
 }

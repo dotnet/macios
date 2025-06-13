@@ -244,7 +244,7 @@ static partial class BindingSyntaxFactory {
 	/// <returns>An <see cref="ArgumentSyntax"/> representing the parameter.</returns>
 	internal static ArgumentSyntax ArgumentForParameter (string argumentName, ReferenceKind referenceKind = ReferenceKind.None)
 	{
-		var arg =  Argument (IdentifierName (argumentName));
+		var arg = Argument (IdentifierName (argumentName));
 #pragma warning disable format
 		arg = referenceKind switch {
 			ReferenceKind.In => arg.WithRefOrOutKeyword (Token (SyntaxKind.InKeyword)),

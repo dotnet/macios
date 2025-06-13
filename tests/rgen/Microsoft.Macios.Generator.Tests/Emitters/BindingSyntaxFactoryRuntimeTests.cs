@@ -973,9 +973,8 @@ public class BindingSyntaxFactoryRuntimeTests {
 		Assert.Equal (expected, declaration.ToFullString ());
 	}
 
-	class TestDataArgumentSyntaxForParameterTests : IEnumerable<object[]>
-	{
-		public IEnumerator<object[]> GetEnumerator()
+	class TestDataArgumentSyntaxForParameterTests : IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
 		{
 			yield return ["arg1", ReferenceKind.None, "arg1"];
 			yield return ["arg2", ReferenceKind.In, "in arg2"];
@@ -983,15 +982,15 @@ public class BindingSyntaxFactoryRuntimeTests {
 			yield return ["arg4", ReferenceKind.Ref, "ref arg4"];
 		}
 
-		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
 	}
 
 	[Theory]
-	[ClassData(typeof(TestDataArgumentSyntaxForParameterTests))]
-	void ArgumentSyntaxForParameterTests(string argumentName, ReferenceKind referenceKind, string expectedSyntax)
+	[ClassData (typeof (TestDataArgumentSyntaxForParameterTests))]
+	void ArgumentSyntaxForParameterTests (string argumentName, ReferenceKind referenceKind, string expectedSyntax)
 	{
-		var argumentSyntax = ArgumentForParameter(argumentName, referenceKind);
-		Assert.Equal(expectedSyntax, argumentSyntax.ToFullString());
+		var argumentSyntax = ArgumentForParameter (argumentName, referenceKind);
+		Assert.Equal (expectedSyntax, argumentSyntax.ToFullString ());
 	}
 
 }

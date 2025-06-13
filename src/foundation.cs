@@ -3535,18 +3535,18 @@ namespace Foundation {
 		[return: NullAllowed]
 		NSData GetArchivedData (NSObject @object, bool requiresSecureCoding, [NullAllowed] out NSError error);
 
-		[Deprecated (PlatformName.TvOS, 12, 0, message: "Use 'ArchivedDataWithRootObject (NSObject, bool, out NSError)' instead.")]
-		[Deprecated (PlatformName.iOS, 12, 0, message: "Use 'ArchivedDataWithRootObject (NSObject, bool, out NSError)' instead.")]
-		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'ArchivedDataWithRootObject (NSObject, bool, out NSError)' instead.")]
-		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'ArchivedDataWithRootObject (NSObject, bool, out NSError)' instead.")]
+		[Deprecated (PlatformName.TvOS, 12, 0, message: "Use 'GetArchivedData (NSObject, bool, out NSError)' instead.")]
+		[Deprecated (PlatformName.iOS, 12, 0, message: "Use 'GetArchivedData (NSObject, bool, out NSError)' instead.")]
+		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'GetArchivedData (NSObject, bool, out NSError)' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'GetArchivedData (NSObject, bool, out NSError)' instead.")]
 		[Export ("archivedDataWithRootObject:")]
 		[Static]
 		NSData GetArchivedData (NSObject root);
 
-		[Deprecated (PlatformName.TvOS, 12, 0, message: "Use 'ArchivedDataWithRootObject (NSObject, bool, out NSError)' instead.")]
-		[Deprecated (PlatformName.iOS, 12, 0, message: "Use 'ArchivedDataWithRootObject (NSObject, bool, out NSError)' instead.")]
-		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'ArchivedDataWithRootObject (NSObject, bool, out NSError)' instead.")]
-		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'ArchivedDataWithRootObject (NSObject, bool, out NSError)' instead.")]
+		[Deprecated (PlatformName.TvOS, 12, 0, message: "Use 'GetArchivedData (NSObject, bool, out NSError)' and then 'NSData.Save' instead.")]
+		[Deprecated (PlatformName.iOS, 12, 0, message: "Use 'GetArchivedData (NSObject, bool, out NSError)' and then 'NSData.Save' instead.")]
+		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'GetArchivedData (NSObject, bool, out NSError)' and then 'NSData.Save' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'GetArchivedData (NSObject, bool, out NSError)' and then 'NSData.Save' instead.")]
 		[Export ("archiveRootObject:toFile:")]
 		[Static]
 		bool ArchiveRootObjectToFile (NSObject root, string file);

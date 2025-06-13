@@ -240,10 +240,10 @@ static partial class BindingSyntaxFactory {
 	}
 
 	/// <summary>
-	/// Generates the expression to call the NFString.CreateNative method.
+	/// Generates the expression to call the NSString.CreateNative method.
 	/// </summary>
 	/// <param name="arguments">The argument list for the invocation.</param>
-	/// <returns>The expression to call the NFString.CreateNative method with the provided args.</returns>
+	/// <returns>The expression to call the NSString.CreateNative method with the provided args.</returns>
 	internal static InvocationExpressionSyntax NStringCreateNative (ImmutableArray<ArgumentSyntax> arguments)
 	{
 		var argumentList = ArgumentList (
@@ -251,7 +251,7 @@ static partial class BindingSyntaxFactory {
 		return InvocationExpression (
 				MemberAccessExpression (
 					SyntaxKind.SimpleMemberAccessExpression,
-					IdentifierName ("NFString"),
+					NSString,
 					IdentifierName ("CreateNative").WithTrailingTrivia (Space))
 			).WithArgumentList (argumentList);
 	}

@@ -899,6 +899,38 @@ public class BindingSyntaxFactoryRuntimeTests {
 		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
 	}
 
+	class TestDataAsPointerTests : IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
+		{
+			yield return [
+				IdentifierName ("int"),
+				ImmutableArray.Create (
+					Argument (IdentifierName ("arg1"))
+				),
+				$"(int*) global::System.Runtime.CompilerServices.Unsafe.AsPointer<int> (arg1)"
+			];
+
+			yield return [
+				IdentifierName ("uint"),
+				ImmutableArray.Create (
+					Argument (IdentifierName ("arg1")),
+					Argument (IdentifierName ("arg2")),
+					Argument (IdentifierName ("arg3"))),
+				$"(uint*) global::System.Runtime.CompilerServices.Unsafe.AsPointer<uint> (arg1, arg2, arg3)"
+			];
+		}
+
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
+	}
+
+	[Theory]
+	[ClassData (typeof (TestDataAsPointerTests))]
+	void AsPointerTests (TypeSyntax objectType, ImmutableArray<ArgumentSyntax> arguments, string expectedDeclaration)
+	{
+		var declaration = AsPointer (objectType, arguments);
+		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
+	}
+
 	class TestDataGetDelegateForFunctionPointer : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()
 		{

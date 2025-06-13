@@ -20,6 +20,29 @@ namespace Xamarin.MacDev.Tasks {
 		[Output]
 		public ITaskItem []? FrameworkToPublish { get; set; }
 
+		static string GetFrameworkExecutablePath (string frameworkPath)
+		{
+			if (!frameworkPath.EndsWith (".framework", StringComparison.OrdinalIgnoreCase) || !Directory.Exists (frameworkPath))
+				return frameworkPath;
+
+			// Try to read the CFBundleExecutable from Info.plist
+			var infoPlistPath = Path.Combine (frameworkPath, "Info.plist");
+			if (File.Exists (infoPlistPath)) {
+				try {
+					var plist = PDictionary.FromFile (infoPlistPath);
+					var bundleExecutable = plist?.GetCFBundleExecutable ();
+					if (!string.IsNullOrEmpty (bundleExecutable)) {
+						return Path.Combine (frameworkPath, bundleExecutable);
+					}
+				} catch {
+					// If reading the plist fails, fall back to the default behavior
+				}
+			}
+
+			// Fall back to the default assumption: framework name without extension
+			return Path.Combine (frameworkPath, Path.GetFileNameWithoutExtension (frameworkPath));
+		}
+
 		public override bool Execute ()
 		{
 			if (ShouldExecuteRemotely ())
@@ -32,7 +55,7 @@ namespace Xamarin.MacDev.Tasks {
 					var frameworkExecutablePath = PathUtils.ConvertToMacPath (item.ItemSpec);
 					try {
 						if (frameworkExecutablePath.EndsWith (".framework", StringComparison.OrdinalIgnoreCase) && Directory.Exists (frameworkExecutablePath)) {
-							frameworkExecutablePath = Path.Combine (frameworkExecutablePath, Path.GetFileNameWithoutExtension (frameworkExecutablePath));
+							frameworkExecutablePath = GetFrameworkExecutablePath (frameworkExecutablePath);
 						}
 
 						if (OnlyFilterFrameworks && !Path.GetDirectoryName (frameworkExecutablePath).EndsWith (".framework", StringComparison.OrdinalIgnoreCase)) {

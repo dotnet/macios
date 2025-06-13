@@ -235,4 +235,40 @@ static partial class BindingSyntaxFactory {
 		return StaticInvocationGenericExpression (marshalType, "GetDelegateForFunctionPointer",
 			delegateType, argsList);
 	}
+
+	/// <summary>
+	/// Creates an <see cref="ArgumentSyntax"/> for a given parameter name and reference kind.
+	/// </summary>
+	/// <param name="argumentName">The name of the argument.</param>
+	/// <param name="referenceKind">The <see cref="ReferenceKind"/> of the argument.</param>
+	/// <returns>An <see cref="ArgumentSyntax"/> representing the parameter.</returns>
+	internal static ArgumentSyntax ArgumentForParameter (string argumentName, ReferenceKind referenceKind = ReferenceKind.None)
+	{
+		var arg = Argument (IdentifierName (argumentName));
+#pragma warning disable format
+		arg = referenceKind switch {
+			ReferenceKind.In => arg.WithRefOrOutKeyword (Token (SyntaxKind.InKeyword)),
+			ReferenceKind.Out => arg.WithRefOrOutKeyword (Token (SyntaxKind.OutKeyword)),
+			ReferenceKind.Ref => arg.WithRefOrOutKeyword (Token (SyntaxKind.RefKeyword)),
+			_ => arg
+		};
+#pragma warning restore format
+		return arg.NormalizeWhitespace ();
+	}
+
+	/// <summary>
+	/// Creates an <see cref="ArgumentSyntax"/> for a given <see cref="Parameter"/>.
+	/// </summary>
+	/// <param name="parameter">The <see cref="Parameter"/> to create the argument for.</param>
+	/// <returns>An <see cref="ArgumentSyntax"/> representing the parameter.</returns>
+	internal static ArgumentSyntax ArgumentForParameter (in Parameter parameter)
+		=> ArgumentForParameter (parameter.Name, parameter.ReferenceKind);
+
+	/// <summary>
+	/// Creates an <see cref="ArgumentSyntax"/> for a given <see cref="DelegateParameter"/>.
+	/// </summary>
+	/// <param name="parameter">The <see cref="DelegateParameter"/> to create the argument for.</param>
+	/// <returns>An <see cref="ArgumentSyntax"/> representing the parameter.</returns>
+	internal static ArgumentSyntax ArgumentForParameter (in DelegateParameter parameter)
+		=> ArgumentForParameter (parameter.Name, parameter.ReferenceKind);
 }

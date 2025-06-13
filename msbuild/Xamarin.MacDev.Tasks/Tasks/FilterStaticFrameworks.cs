@@ -22,7 +22,7 @@ namespace Xamarin.MacDev.Tasks {
 
 		static string GetFrameworkExecutablePath (string frameworkPath)
 		{
-			if (!frameworkPath.EndsWith (".framework", StringComparison.OrdinalIgnoreCase) || !Directory.Exists (frameworkPath))
+			if (!(frameworkPath.EndsWith (".framework", StringComparison.OrdinalIgnoreCase) && Directory.Exists (frameworkPath)))
 				return frameworkPath;
 
 			// Try to read the CFBundleExecutable from Info.plist

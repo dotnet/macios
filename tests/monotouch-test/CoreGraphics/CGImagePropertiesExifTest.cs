@@ -43,10 +43,9 @@ namespace monotouchtest.CoreGraphics {
 		[Test]
 		public void ConstructorWithDictionaryTest ()
 		{
-			using (var dict = new NSMutableDictionary ()) {
-				var exif = new CGImagePropertiesExif (dict);
-				Assert.That (exif, Is.Not.Null, "Constructor with dictionary should create a valid instance");
-			}
+			using var dict = new NSMutableDictionary ();
+			var exif = new CGImagePropertiesExif (dict);
+			Assert.That (exif, Is.Not.Null, "Constructor with dictionary should create a valid instance");
 		}
 
 		[Test]
@@ -55,16 +54,15 @@ namespace monotouchtest.CoreGraphics {
 			// Test that CGImageProperties can access Exif properties
 			string file = Path.Combine (NSBundle.MainBundle.ResourcePath, "basn3p08.png");
 			
-			using (var url = NSUrl.FromFilename (file))
-			using (var ci = CIImage.FromUrl (url)) {
-				var imageProps = ci.Properties;
-				Assert.That (imageProps, Is.Not.Null, "Image properties should be available");
-				
-				// Note: The test image may not have EXIF data, so Exif property could be null
-				// This test mainly verifies the property access doesn't throw exceptions
-				var exif = imageProps.Exif;
-				// exif may be null for PNG files without EXIF data, which is expected
-			}
+			using var url = NSUrl.FromFilename (file);
+			using var ci = CIImage.FromUrl (url);
+			var imageProps = ci.Properties;
+			Assert.That (imageProps, Is.Not.Null, "Image properties should be available");
+			
+			// Note: The test image may not have EXIF data, so Exif property could be null
+			// This test mainly verifies the property access doesn't throw exceptions
+			var exif = imageProps.Exif;
+			// exif may be null for PNG files without EXIF data, which is expected
 		}
 
 		[Test]

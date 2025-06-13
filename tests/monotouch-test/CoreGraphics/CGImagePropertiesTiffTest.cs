@@ -37,10 +37,9 @@ namespace monotouchtest.CoreGraphics {
 		[Test]
 		public void ConstructorWithDictionaryTest ()
 		{
-			using (var dict = new NSMutableDictionary ()) {
-				var tiff = new CGImagePropertiesTiff (dict);
-				Assert.That (tiff, Is.Not.Null, "Constructor with dictionary should create a valid instance");
-			}
+			using var dict = new NSMutableDictionary ();
+			var tiff = new CGImagePropertiesTiff (dict);
+			Assert.That (tiff, Is.Not.Null, "Constructor with dictionary should create a valid instance");
 		}
 
 		[Test]
@@ -49,16 +48,15 @@ namespace monotouchtest.CoreGraphics {
 			// Test that CGImageProperties can access TIFF properties
 			string file = Path.Combine (NSBundle.MainBundle.ResourcePath, "basn3p08.png");
 			
-			using (var url = NSUrl.FromFilename (file))
-			using (var ci = CIImage.FromUrl (url)) {
-				var imageProps = ci.Properties;
-				Assert.That (imageProps, Is.Not.Null, "Image properties should be available");
-				
-				// Note: The test image is PNG, so TIFF property might be null
-				// This test mainly verifies the property access doesn't throw exceptions
-				var tiff = imageProps.Tiff;
-				// tiff may be null for PNG files, which is expected
-			}
+			using var url = NSUrl.FromFilename (file);
+			using var ci = CIImage.FromUrl (url);
+			var imageProps = ci.Properties;
+			Assert.That (imageProps, Is.Not.Null, "Image properties should be available");
+			
+			// Note: The test image is PNG, so TIFF property might be null
+			// This test mainly verifies the property access doesn't throw exceptions
+			var tiff = imageProps.Tiff;
+			// tiff may be null for PNG files, which is expected
 		}
 
 		[Test]

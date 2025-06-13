@@ -25,14 +25,13 @@ namespace monotouchtest.CoreGraphics {
 			string expectedLongitudeRef = "W";
 			string file = Path.Combine (NSBundle.MainBundle.ResourcePath, "basn3p08_with_loc.png");
 
-			using (var url = NSUrl.FromFilename (file))
-			using (var ci = CIImage.FromUrl (url)) {
-				var gps = ci.Properties.Gps;
-				Assert.That (gps.Latitude, Is.EqualTo (expectedLatitude).Within (0.0001f), "Invalid or no Latitude value found.");
-				Assert.That (gps.Longitude, Is.EqualTo (expectedLongitude).Within (0.0001f), "Invalid or no Longitude value found.");
-				Assert.That (gps.LatitudeRef, Is.EqualTo (expectedLatitudeRef), "Invalid or no LatitudeRef value found.");
-				Assert.That (gps.LongitudeRef, Is.EqualTo (expectedLongitudeRef), "Invalid or no LongitudeRef value found.");
-			}
+			using var url = NSUrl.FromFilename (file);
+			using var ci = CIImage.FromUrl (url);
+			var gps = ci.Properties.Gps;
+			Assert.That (gps.Latitude, Is.EqualTo (expectedLatitude).Within (0.0001f), "Invalid or no Latitude value found.");
+			Assert.That (gps.Longitude, Is.EqualTo (expectedLongitude).Within (0.0001f), "Invalid or no Longitude value found.");
+			Assert.That (gps.LatitudeRef, Is.EqualTo (expectedLatitudeRef), "Invalid or no LatitudeRef value found.");
+			Assert.That (gps.LongitudeRef, Is.EqualTo (expectedLongitudeRef), "Invalid or no LongitudeRef value found.");
 		}
 
 		[Test]
@@ -62,10 +61,9 @@ namespace monotouchtest.CoreGraphics {
 		[Test]
 		public void ConstructorWithDictionaryTest ()
 		{
-			using (var dict = new NSMutableDictionary ()) {
-				var gps = new CGImagePropertiesGps (dict);
-				Assert.That (gps, Is.Not.Null, "Constructor with dictionary should create a valid instance");
-			}
+			using var dict = new NSMutableDictionary ();
+			var gps = new CGImagePropertiesGps (dict);
+			Assert.That (gps, Is.Not.Null, "Constructor with dictionary should create a valid instance");
 		}
 
 		[Test]
@@ -74,16 +72,15 @@ namespace monotouchtest.CoreGraphics {
 			// Test that CGImageProperties can access GPS properties
 			string file = Path.Combine (NSBundle.MainBundle.ResourcePath, "basn3p08.png");
 			
-			using (var url = NSUrl.FromFilename (file))
-			using (var ci = CIImage.FromUrl (url)) {
-				var imageProps = ci.Properties;
-				Assert.That (imageProps, Is.Not.Null, "Image properties should be available");
-				
-				// Note: The regular PNG may not have GPS data, so Gps property could be null
-				// This test mainly verifies the property access doesn't throw exceptions
-				var gps = imageProps.Gps;
-				// gps may be null for PNG files without GPS data, which is expected
-			}
+			using var url = NSUrl.FromFilename (file);
+			using var ci = CIImage.FromUrl (url);
+			var imageProps = ci.Properties;
+			Assert.That (imageProps, Is.Not.Null, "Image properties should be available");
+			
+			// Note: The regular PNG may not have GPS data, so Gps property could be null
+			// This test mainly verifies the property access doesn't throw exceptions
+			var gps = imageProps.Gps;
+			// gps may be null for PNG files without GPS data, which is expected
 		}
 
 		[Test]

@@ -40,10 +40,9 @@ namespace monotouchtest.CoreGraphics {
 		[Test]
 		public void ConstructorWithDictionaryTest ()
 		{
-			using (var dict = new NSMutableDictionary ()) {
-				var png = new CGImagePropertiesPng (dict);
-				Assert.That (png, Is.Not.Null, "Constructor with dictionary should create a valid instance");
-			}
+			using var dict = new NSMutableDictionary ();
+			var png = new CGImagePropertiesPng (dict);
+			Assert.That (png, Is.Not.Null, "Constructor with dictionary should create a valid instance");
 		}
 
 		[Test]
@@ -52,15 +51,14 @@ namespace monotouchtest.CoreGraphics {
 			// Test that CGImageProperties can access PNG properties from a real PNG file
 			string file = Path.Combine (NSBundle.MainBundle.ResourcePath, "basn3p08.png");
 			
-			using (var url = NSUrl.FromFilename (file))
-			using (var ci = CIImage.FromUrl (url)) {
-				var imageProps = ci.Properties;
-				Assert.That (imageProps, Is.Not.Null, "Image properties should be available");
-				
-				// For a PNG file, the Png property should be accessible
-				var png = imageProps.Png;
-				// png may be null or contain properties depending on the PNG file
-			}
+			using var url = NSUrl.FromFilename (file);
+			using var ci = CIImage.FromUrl (url);
+			var imageProps = ci.Properties;
+			Assert.That (imageProps, Is.Not.Null, "Image properties should be available");
+			
+			// For a PNG file, the Png property should be accessible
+			var png = imageProps.Png;
+			// png may be null or contain properties depending on the PNG file
 		}
 
 		[Test]

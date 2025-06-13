@@ -40,10 +40,9 @@ namespace monotouchtest.CoreGraphics {
 		[Test]
 		public void ConstructorWithDictionaryTest ()
 		{
-			using (var dict = new NSMutableDictionary ()) {
-				var iptc = new CGImagePropertiesIptc (dict);
-				Assert.That (iptc, Is.Not.Null, "Constructor with dictionary should create a valid instance");
-			}
+			using var dict = new NSMutableDictionary ();
+			var iptc = new CGImagePropertiesIptc (dict);
+			Assert.That (iptc, Is.Not.Null, "Constructor with dictionary should create a valid instance");
 		}
 
 		[Test]
@@ -52,16 +51,15 @@ namespace monotouchtest.CoreGraphics {
 			// Test that CGImageProperties can access IPTC properties
 			string file = Path.Combine (NSBundle.MainBundle.ResourcePath, "basn3p08.png");
 			
-			using (var url = NSUrl.FromFilename (file))
-			using (var ci = CIImage.FromUrl (url)) {
-				var imageProps = ci.Properties;
-				Assert.That (imageProps, Is.Not.Null, "Image properties should be available");
-				
-				// Note: The test image may not have IPTC data, so Iptc property could be null
-				// This test mainly verifies the property access doesn't throw exceptions
-				var iptc = imageProps.Iptc;
-				// iptc may be null for PNG files without IPTC data, which is expected
-			}
+			using var url = NSUrl.FromFilename (file);
+			using var ci = CIImage.FromUrl (url);
+			var imageProps = ci.Properties;
+			Assert.That (imageProps, Is.Not.Null, "Image properties should be available");
+			
+			// Note: The test image may not have IPTC data, so Iptc property could be null
+			// This test mainly verifies the property access doesn't throw exceptions
+			var iptc = imageProps.Iptc;
+			// iptc may be null for PNG files without IPTC data, which is expected
 		}
 
 		[Test]

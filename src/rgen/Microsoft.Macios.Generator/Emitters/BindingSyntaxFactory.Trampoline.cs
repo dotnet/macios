@@ -1173,22 +1173,23 @@ static partial class BindingSyntaxFactory {
 	/// <returns>An <see cref="ArgumentSyntax"/> representing the parameter as it should be passed to the native delegate invocation.</returns>
 	internal static ArgumentSyntax GetTrampolineNativeInvokeArgument (string trampolineName, in DelegateParameter parameter)
 	{
-		// build the needed expression based on the information of the parameter and its type, taking into account
+		// build the necessary expression based on the information of the parameter and its type, taking into account
 		// that the type of the parameter might be different from the type specified in the BindAs attribute.
 		TypeInfo parameterType = parameter.BindAs?.Type ?? parameter.Type;
 		var parameterIdentifier = IdentifierName (parameter.Name);
 #pragma warning disable format
 		var expression = (Type: parameterType, Parameter: parameter) switch {
+			// ref parameters have to be converted to a pointer
+			{ Parameter.IsByRef: true } => AsPointer (parameterType, [ArgumentForParameter (parameter.Name, ReferenceKind.Ref)]),
+
 			// delegate parameter, c callback
 			// System.Runtime.InteropServices.Marshal.GetDelegateForFunctionPointer<ParameterType> (ParameterName)
-			// TODO
-			{ Type.IsDelegate: true, Parameter.IsCCallback: true } => 
+			{ Type.IsDelegate: true, Parameter.IsCCallback: true } =>
 				GetDelegateForFunctionPointer (parameterType.GetIdentifierSyntax (), [Argument (parameterIdentifier)]),
 			
 			// delegate parameter, block callback
 			// TrampolineNativeInvocationClass.Create (ParameterName)!
-			// TODO
-			{ Type.IsDelegate: true, Parameter.IsBlockCallback: true } 
+			{ Type.IsDelegate: true, Parameter.IsBlockCallback: true }
 				=> CreateTrampolineNativeInvocationClass (trampolineName, [Argument (parameterIdentifier)]),
 			
 			// native enum, return the conversion expression to the native type
@@ -1270,12 +1271,7 @@ static partial class BindingSyntaxFactory {
 		}
 
 		// Argument syntax is the same as the expression syntax, but we need to add the ref kind keyword if needed
-		var argument = Argument (expression);
-		if (parameter.IsByRef)
-			argument = argument.WithRefKindKeyword (
-				Token (parameter.ReferenceKind.ToSyntaxKind ()) // match the correct syntax kind
-				.WithTrailingTrivia (Space));
-		return argument;
+		return Argument (expression);
 	}
 
 	/// <summary>
@@ -1292,6 +1288,11 @@ static partial class BindingSyntaxFactory {
 	{
 		// create the builder for the arguments, we already know the size of the array
 		var bucket = ImmutableArray.CreateBuilder<TrampolineArgumentSyntax> (delegateInfo.Parameters.Length);
+
+		// add the first parameter to be the BlockPointer of the class.
+		bucket.Add ( new TrampolineArgumentSyntax (Argument (IdentifierName (Nomenclator.GetBlockLiteralName ()))));
+
+		// add all the mising parameters to the bucket.
 		foreach (var parameter in delegateInfo.Parameters) {
 			var argument = new TrampolineArgumentSyntax (GetTrampolineNativeInvokeArgument (trampolineName, parameter)) {
 				Initializers = GetTrampolineInvokeArgumentInitializations (trampolineName, parameter),

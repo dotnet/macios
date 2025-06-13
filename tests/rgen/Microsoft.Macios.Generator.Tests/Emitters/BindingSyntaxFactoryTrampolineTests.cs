@@ -4846,7 +4846,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				pointerParameter,
-				"invoker (pointerParameter);",
+				"invoker (BlockLiteral, pointerParameter);",
 			];
 
 			var pointerParameterWithReturn = @"
@@ -4862,7 +4862,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				pointerParameterWithReturn,
-				"var ret = invoker (pointerParameter);",
+				"var ret = invoker (BlockLiteral, pointerParameter);",
 			];
 
 			var nsNumberParameterWithReturn = @"
@@ -4880,7 +4880,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				nsNumberParameterWithReturn,
-				"var ret = invoker (pointerParameter__handle__);",
+				"var ret = invoker (BlockLiteral, pointerParameter__handle__);",
 			];
 
 			var nsNumberArrayParameterWithReturn = @"
@@ -4898,7 +4898,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				nsNumberArrayParameterWithReturn,
-				"var ret = invoker (nsa_pointerParameter);",
+				"var ret = invoker (BlockLiteral, nsa_pointerParameter);",
 			];
 
 			var nsValueParameterWithReturn = @"
@@ -4917,7 +4917,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				nsValueParameterWithReturn,
-				"var ret = invoker (size__handle__);"
+				"var ret = invoker (BlockLiteral, size__handle__);"
 			];
 
 			var nsValueArrayParameterWithReturn = @"
@@ -4936,7 +4936,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				nsValueArrayParameterWithReturn,
-				"var ret = invoker (nsa_size);",
+				"var ret = invoker (BlockLiteral, nsa_size);",
 			];
 
 			var smartEnumParameterWithReturn = @"
@@ -4966,7 +4966,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				smartEnumParameterWithReturn,
-				"var ret = invoker (nslevel);"
+				"var ret = invoker (BlockLiteral, nslevel);"
 			];
 
 			var smartEnumArrayParameterWithReturn = @"
@@ -4996,7 +4996,74 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				smartEnumArrayParameterWithReturn,
-				"var ret = invoker (nsa_level);"
+				"var ret = invoker (BlockLiteral, nsa_level);"
+			];
+
+			var refParameter = @"
+using System;
+
+namespace NS {
+	public delegate int Callback (ref int pointerParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				"someTrampolineName",
+				refParameter,
+				$"var ret = invoker (BlockLiteral, (int*) {Global ("System.Runtime")}.CompilerServices.Unsafe.AsPointer<int> (ref pointerParameter));",
+			];
+
+			var refEnumParameter = @"
+using System;
+using AVFoundation;
+
+namespace NS {
+	public class MyClass {
+		public void MyMethod (AVAudioConverterInputHandler cb) {}
+	}
+}
+";
+
+			yield return [
+				"someTrampolineName",
+				refEnumParameter,
+				$"var ret = invoker (BlockLiteral, inNumberOfPackets, ({Global ("AVFoundation.AVAudioConverterInputStatus")}*) {Global ("System.Runtime")}.CompilerServices.Unsafe.AsPointer<{Global ("AVFoundation.AVAudioConverterInputStatus")}> (ref outStatus));",
+			];
+
+			var boolReferenceParameter = @"
+using System;
+using AVFoundation;
+
+namespace NS {
+	public class MyClass {
+		public void MyMethod (AVAudioUnitComponentFilter cb) {}
+	}
+}
+";
+
+			yield return [
+				"someTrampolineName",
+				boolReferenceParameter,
+				$"var ret = invoker (BlockLiteral, comp__handle__, (byte*) {Global ("System.Runtime")}.CompilerServices.Unsafe.AsPointer<bool> (ref stop));",
+			];
+
+			var doubleReferenceParameter = @"
+using System;
+using AVFoundation;
+
+namespace NS {
+	public class MyClass {
+		public void MyMethod (AVMusicEventEnumerationBlock cb) {}
+	}
+}
+";
+
+			yield return [
+				"someTrampolineName",
+				doubleReferenceParameter,
+				$"invoker (BlockLiteral, event__handle__, (double*) {Global ("System.Runtime")}.CompilerServices.Unsafe.AsPointer<double> (ref timeStamp), (byte*) global::System.Runtime.CompilerServices.Unsafe.AsPointer<bool> (ref removeEvent));",
 			];
 		}
 

@@ -207,4 +207,9 @@ static class Nomenclator {
 	/// </summary>
 	/// <returns>The method name to be used.</returns>
 	public static string GetTrampolineDelegatePointerVariableName () => "trampoline";
+
+	/// <summary>
+	/// Returns the name used for the block literal type.
+	/// </summary>
+	public static string GetBlockLiteralName () => "BlockLiteral";
 }

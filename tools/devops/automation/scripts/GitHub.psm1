@@ -439,12 +439,7 @@ class GitHubComments {
         # footer
         $this.WriteCommentFooter($msg, $commentId)
 
-        $result = $this.NewComment($msg)
-        
-        # If this commit is not the latest in the PR, hide this comment immediately
-        $this.HandleNewCommentHiding($result, $commentId)
-
-        return $result
+        return $this.CreateAndPostComment($msg, $commentId)
     }
 
     [object] NewCommentFromFile(
@@ -476,12 +471,7 @@ class GitHubComments {
         # footer
         $this.WriteCommentFooter($msg, $commentId)
 
-        $result = $this.NewComment($msg)
-        
-        # If this commit is not the latest in the PR, hide this comment immediately
-        $this.HandleNewCommentHiding($result, $commentId)
-
-        return $result
+        return $this.CreateAndPostComment($msg, $commentId)
     }
 
     [object] NewCommentFromMessage(
@@ -505,12 +495,7 @@ class GitHubComments {
         # footer
         $this.WriteCommentFooter($msg, $commentId)
 
-        $result = $this.NewComment($msg)
-        
-        # If this commit is not the latest in the PR, hide this comment immediately
-        $this.HandleNewCommentHiding($result, $commentId)
-
-        return $result
+        return $this.CreateAndPostComment($msg, $commentId)
     }
 
     [object] GetCommentsForPR ($prId) {
@@ -682,6 +667,32 @@ mutation {
                 Write-Host "Warning: Failed to hide comment for non-latest commit: $_"
             }
         }
+    }
+
+    <#
+    .SYNOPSIS
+        Creates a comment and handles conditional hiding based on commit status.
+    
+    .DESCRIPTION
+        This helper method consolidates the common pattern of creating a new comment,
+        then conditionally hiding it if the current commit is not the latest in the PR.
+    
+    .PARAMETER msg
+        The message content for the comment (StringBuilder or string).
+    
+    .PARAMETER commentId
+        The identifier used to mark the comment.
+    
+    .OUTPUTS
+        The result object from posting the comment, containing the comment ID.
+    #>
+    [object] CreateAndPostComment([object] $msg, [string] $commentId) {
+        $result = $this.NewComment($msg)
+        
+        # If this commit is not the latest in the PR, hide this comment immediately
+        $this.HandleNewCommentHiding($result, $commentId)
+
+        return $result
     }
 
     <#

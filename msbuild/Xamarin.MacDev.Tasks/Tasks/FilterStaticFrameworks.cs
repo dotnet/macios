@@ -28,14 +28,12 @@ namespace Xamarin.MacDev.Tasks {
 			// Try to read the CFBundleExecutable from Info.plist
 			var infoPlistPath = Path.Combine (frameworkPath, "Info.plist");
 			if (File.Exists (infoPlistPath)) {
-				try {
-					var plist = PDictionary.FromFile (infoPlistPath);
-					var bundleExecutable = plist?.GetCFBundleExecutable ();
+				var plist = PDictionary.FromFile (infoPlistPath);
+				if (plist is not null) {
+					var bundleExecutable = plist.GetCFBundleExecutable ();
 					if (!string.IsNullOrEmpty (bundleExecutable)) {
 						return Path.Combine (frameworkPath, bundleExecutable);
 					}
-				} catch {
-					// If reading the plist fails, fall back to the default behavior
 				}
 			}
 

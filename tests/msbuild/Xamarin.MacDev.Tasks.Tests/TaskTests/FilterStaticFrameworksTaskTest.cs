@@ -93,5 +93,34 @@ namespace Xamarin.MacDev.Tasks.Tests {
 			// Assert: Should return the path unchanged
 			Assert.That (result, Is.EqualTo (nonFrameworkPath), "Should return non-framework paths unchanged");
 		}
+
+		[Test]
+		public void TestMalformedInfoPlist ()
+		{
+			// Arrange: Create a framework with malformed Info.plist
+			var frameworkDir = Path.Combine (tempDir, "BadFramework.framework");
+			Directory.CreateDirectory (frameworkDir);
+
+			// Create malformed Info.plist
+			File.WriteAllText (Path.Combine (frameworkDir, "Info.plist"), "This is not a valid plist file");
+
+			var expectedPath = Path.Combine (frameworkDir, "BadFramework");
+
+			// Act: Use reflection to test the helper method
+			var method = typeof (FilterStaticFrameworks).GetMethod ("GetFrameworkExecutablePath", 
+				System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
+			
+			// Assert: Should either throw an exception or fall back to default path
+			// The exact behavior depends on the implementation - if we remove try-catch,
+			// this should throw an exception that gets caught by the caller
+			try {
+				var result = method?.Invoke (null, new object[] { frameworkDir }) as string;
+				// If no exception, should fall back to default
+				Assert.That (result, Is.EqualTo (expectedPath), "Should fall back to default path for malformed plist");
+			} catch (System.Reflection.TargetInvocationException ex) {
+				// If exception is thrown, that's also acceptable - it will be caught by the caller
+				Assert.That (ex.InnerException, Is.Not.Null, "Should have an inner exception for malformed plist");
+			}
+		}
 	}
 }

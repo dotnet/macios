@@ -1290,7 +1290,7 @@ static partial class BindingSyntaxFactory {
 		var bucket = ImmutableArray.CreateBuilder<TrampolineArgumentSyntax> (delegateInfo.Parameters.Length);
 
 		// add the first parameter to be the BlockPointer of the class.
-		bucket.Add ( new TrampolineArgumentSyntax (Argument (IdentifierName (Nomenclator.GetBlockLiteralName ()))));
+		bucket.Add (new TrampolineArgumentSyntax (Argument (IdentifierName (Nomenclator.GetBlockLiteralName ()))));
 
 		// add all the mising parameters to the bucket.
 		foreach (var parameter in delegateInfo.Parameters) {

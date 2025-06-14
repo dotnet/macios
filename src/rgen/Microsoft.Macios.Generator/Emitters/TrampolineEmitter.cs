@@ -145,15 +145,15 @@ public unsafe static {delegateIdentifier}? Create (IntPtr block)
 				foreach (var argument in argumentSyntax) {
 					invokeBlock.Write (argument.PreDelegateCallConversion, verifyTrivia: false);
 				}
-				
+
 				// execute the native invoker delegate
 				invokeBlock.WriteLine ($"{CallNativeInvokerDelegate (typeInfo.Delegate!, argumentSyntax)}");
-				
+
 				// build any needed post conversion operations after calling the delegate
 				foreach (var argument in argumentSyntax) {
 					invokeBlock.Write (argument.PostDelegateCallConversion, verifyTrivia: false);
 				}
-				
+
 				// perform any return conversions needed
 				if (typeInfo.Delegate!.ReturnType.SpecialType != SpecialType.System_Void)
 					invokeBlock.WriteLine ($"return {GetTrampolineNativeInvokeReturnType (typeInfo, Nomenclator.GetReturnVariableName ())};");

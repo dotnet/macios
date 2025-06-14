@@ -385,7 +385,7 @@ namespace NS {
 		var expression = GetTrampolineInvokeReturnType (parameter.Type, auxVariableName);
 		Assert.Equal (expectedExpression, expression?.ToString ());
 	}
-	
+
 	class TestDataGetTrampolineNativeInvokeReturnType : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()
 		{
@@ -406,7 +406,7 @@ namespace NS {
 				arrayNSObjectResult,
 				$"{Global ("CoreFoundation.CFArray")}.ArrayFromHandle<{Global ("Foundation.NSString")}> (auxVariable)!"
 			];
-			
+
 			const string nullableArrayNSObjectResult = @"
 using System;
 using Foundation;
@@ -424,7 +424,7 @@ namespace NS {
 				nullableArrayNSObjectResult,
 				$"{Global ("CoreFoundation.CFArray")}.ArrayFromHandle<{Global ("Foundation.NSString")}> (auxVariable)"
 			];
-			
+
 			const string arrayINativeResult = @"
 using System;
 using Foundation;
@@ -443,7 +443,7 @@ namespace NS {
 				arrayINativeResult,
 				$"{Global ("CoreFoundation.CFArray")}.ArrayFromHandle<{Global ("Security.SecKeyChain")}> (auxVariable)!"
 			];
-			
+
 			const string nullableArrayINativeResult = @"
 using System;
 using Foundation;
@@ -480,7 +480,7 @@ namespace NS {
 				nsObjectResult,
 				$"{Global ("ObjCRuntime.Runtime")}.GetNSObject<{Global ("Foundation.NSString")}> (auxVariable, false)!"
 			];
-			
+
 			const string nullableNSObjectResult = @"
 using System;
 using Foundation;
@@ -517,7 +517,7 @@ namespace NS {
 				nativeObjectResult,
 				$"{Global ("ObjCRuntime.Runtime")}.GetINativeObject<{Global ("Security.SecKeyChain")}> (auxVariable, false)!"
 			];
-			
+
 			const string nullableNativeObjectResult = @"
 using System;
 using Foundation;
@@ -555,7 +555,7 @@ namespace NS {
 				protocolResult,
 				$"{Global ("ObjCRuntime.Runtime")}.GetINativeObject<{Global ("Metal.IMTLTexture")}> (auxVariable, false)!"
 			];
-			
+
 			const string nullableProtocolResult = @"
 using System;
 using Foundation;
@@ -651,7 +651,7 @@ namespace NS {
 				nativeEnum,
 				"(global::NS.NativeSampleEnum) (long) auxVariable",
 			];
-			
+
 			const string smartEnum = @"
 using System;
 using ObjCBindings;
@@ -769,7 +769,7 @@ namespace NS {
 
 		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
 	}
-	
+
 	[Theory]
 	[AllSupportedPlatformsClassData<TestDataGetTrampolineNativeInvokeReturnType>]
 	void GetTrampolineNativeInvokeReturnTypeTests (ApplePlatform platform, string inputText, string? expectedExpression)

@@ -66,7 +66,7 @@ static partial class BindingSyntaxFactory {
 		};
 #pragma warning restore format
 	}
-	
+
 	/// <summary>
 	/// Returns an expression syntax representing the conversion of a native return value to its corresponding managed type
 	/// after a native delegate (block) invocation within a trampoline.

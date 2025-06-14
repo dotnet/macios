@@ -84,7 +84,6 @@ namespace Xamarin.MacDev.Tasks {
 				switch (Platform) {
 				case ApplePlatform.iOS:
 				case ApplePlatform.TVOS:
-				case ApplePlatform.WatchOS:
 					return Path.Combine (AppBundleDir.ItemSpec, "Frameworks");
 				case ApplePlatform.MacOSX:
 				case ApplePlatform.MacCatalyst:
@@ -100,7 +99,6 @@ namespace Xamarin.MacDev.Tasks {
 				switch (Platform) {
 				case ApplePlatform.iOS:
 				case ApplePlatform.TVOS:
-				case ApplePlatform.WatchOS:
 					return AppBundleDir.ItemSpec;
 				case ApplePlatform.MacOSX:
 				case ApplePlatform.MacCatalyst:

@@ -68,7 +68,10 @@ static partial class Trampolines
 			return del ?? new NIDTrampolinePropertyTests_CreateObject ((global::ObjCRuntime.BlockLiteral *) block).Invoke;
 		}
 
-		// TODO: generate invoke method.
+		unsafe global::Foundation.NSObject Invoke (global::Foundation.NSObject obj)
+		{
+			// TODO: generate invoke method.
+		}
 	}
 
 	[UnmanagedFunctionPointerAttribute (CallingConvention.Cdecl)]
@@ -123,7 +126,10 @@ static partial class Trampolines
 			return del ?? new NIDAction ((global::ObjCRuntime.BlockLiteral *) block).Invoke;
 		}
 
-		// TODO: generate invoke method.
+		unsafe void Invoke ()
+		{
+			// TODO: generate invoke method.
+		}
 	}
 
 	[UnmanagedFunctionPointerAttribute (CallingConvention.Cdecl)]
@@ -179,7 +185,10 @@ static partial class Trampolines
 			return del ?? new NIDCIKernelRoiCallback ((global::ObjCRuntime.BlockLiteral *) block).Invoke;
 		}
 
-		// TODO: generate invoke method.
+		unsafe global::CoreGraphics.CGRect Invoke (int index, global::CoreGraphics.CGRect rect)
+		{
+			// TODO: generate invoke method.
+		}
 	}
 
 	[UnmanagedFunctionPointerAttribute (CallingConvention.Cdecl)]
@@ -234,7 +243,10 @@ static partial class Trampolines
 			return del ?? new NIDActionArity1string ((global::ObjCRuntime.BlockLiteral *) block).Invoke;
 		}
 
-		// TODO: generate invoke method.
+		unsafe void Invoke (string obj)
+		{
+			// TODO: generate invoke method.
+		}
 	}
 
 	[UnmanagedFunctionPointerAttribute (CallingConvention.Cdecl)]
@@ -289,7 +301,10 @@ static partial class Trampolines
 			return del ?? new NIDActionArity1int ((global::ObjCRuntime.BlockLiteral *) block).Invoke;
 		}
 
-		// TODO: generate invoke method.
+		unsafe void Invoke (int obj)
+		{
+			// TODO: generate invoke method.
+		}
 	}
 
 	[UnmanagedFunctionPointerAttribute (CallingConvention.Cdecl)]
@@ -344,7 +359,10 @@ static partial class Trampolines
 			return del ?? new NIDActionArity1bool ((global::ObjCRuntime.BlockLiteral *) block).Invoke;
 		}
 
-		// TODO: generate invoke method.
+		unsafe void Invoke (bool obj)
+		{
+			// TODO: generate invoke method.
+		}
 	}
 
 	[UnmanagedFunctionPointerAttribute (CallingConvention.Cdecl)]
@@ -399,7 +417,10 @@ static partial class Trampolines
 			return del ?? new NIDAVAssetImageGenerateAsynchronouslyForTimeCompletionHandler ((global::ObjCRuntime.BlockLiteral *) block).Invoke;
 		}
 
-		// TODO: generate invoke method.
+		unsafe void Invoke (global::CoreGraphics.CGImage imageRef, global::CoreMedia.CMTime actualTime, global::Foundation.NSError error)
+		{
+			// TODO: generate invoke method.
+		}
 	}
 
 	[UnmanagedFunctionPointerAttribute (CallingConvention.Cdecl)]
@@ -456,7 +477,10 @@ static partial class Trampolines
 			return del ?? new NIDAVAudioEngineManualRenderingBlock ((global::ObjCRuntime.BlockLiteral *) block).Invoke;
 		}
 
-		// TODO: generate invoke method.
+		unsafe global::AVFoundation.AVAudioEngineManualRenderingStatus Invoke (uint numberOfFrames, global::AudioToolbox.AudioBuffers outBuffer, ref int outError)
+		{
+			// TODO: generate invoke method.
+		}
 	}
 
 }

@@ -231,9 +231,12 @@ static partial class BindingSyntaxFactory {
 	internal static ExpressionSyntax AsPointer (in TypeInfo objectType, ImmutableArray<ArgumentSyntax> arguments)
 	{
 		// some types need to be cast to a pointer type that can be handled by the native code
-		var castType = objectType switch { { SpecialType: SpecialType.System_Boolean } => PredefinedType (Token (SyntaxKind.ByteKeyword)),
+#pragma warning disable format
+		var castType = objectType switch {
+			{ SpecialType: SpecialType.System_Boolean } => PredefinedType (Token (SyntaxKind.ByteKeyword)),
 			_ => null,
 		};
+#pragma warning restore format
 		return AsPointer (
 			objectType: objectType.GetIdentifierSyntax (),
 			arguments: arguments,

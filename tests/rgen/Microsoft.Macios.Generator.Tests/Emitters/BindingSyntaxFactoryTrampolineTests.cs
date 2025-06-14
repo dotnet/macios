@@ -37,7 +37,25 @@ namespace NS {
 
 			yield return [
 				arrayNSObjectResult,
-				"global::ObjCRuntime.Runtime.RetainAndAutoreleaseNSObject (global::Foundation.NSArray.FromNSObjects (auxVariable))"
+				$"{Global ("ObjCRuntime.Runtime")}.RetainAndAutoreleaseNSObject (global::Foundation.NSArray.FromNSObjects (auxVariable))"
+			];
+
+			const string nullableArrayNSObjectResult = @"
+using System;
+using Foundation;
+
+namespace NS {
+
+	public delegate NSString []? Callback ();
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				nullableArrayNSObjectResult,
+				$"{Global ("ObjCRuntime.Runtime")}.RetainAndAutoreleaseNSObject (global::Foundation.NSArray.FromNSObjects (auxVariable))"
 			];
 
 			const string nsObjectResult = @"
@@ -55,7 +73,25 @@ namespace NS {
 
 			yield return [
 				nsObjectResult,
-				"global::ObjCRuntime.Runtime.RetainAndAutoreleaseNSObject (auxVariable)"
+				$"{Global ("ObjCRuntime.Runtime")}.RetainAndAutoreleaseNSObject (auxVariable)"
+			];
+
+			const string nullableNSObjectResult = @"
+using System;
+using Foundation;
+
+namespace NS {
+
+	public delegate NSString? Callback ();
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				nullableNSObjectResult,
+				$"{Global ("ObjCRuntime.Runtime")}.RetainAndAutoreleaseNSObject (auxVariable)"
 			];
 
 			const string nativeObjectResult = @"
@@ -74,7 +110,26 @@ namespace NS {
 
 			yield return [
 				nativeObjectResult,
-				"global::ObjCRuntime.Runtime.RetainAndAutoreleaseNativeObject (auxVariable)"
+				$"{Global ("ObjCRuntime.Runtime")}.RetainAndAutoreleaseNativeObject (auxVariable)"
+			];
+
+			const string nullableNativeObjectResult = @"
+using System;
+using Foundation;
+using Security;
+
+namespace NS {
+
+	public delegate SecKeyChain? Callback ();
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				nullableNativeObjectResult,
+				$"{Global ("ObjCRuntime.Runtime")}.RetainAndAutoreleaseNativeObject (auxVariable)"
 			];
 
 			const string protocolResult = @"
@@ -93,7 +148,26 @@ namespace NS {
 
 			yield return [
 				protocolResult,
-				"global::ObjCRuntime.Runtime.RetainAndAutoreleaseNSObject (auxVariable)"
+				$"{Global ("ObjCRuntime.Runtime")}.RetainAndAutoreleaseNSObject (auxVariable)"
+			];
+
+			const string nullableProtocolResult = @"
+using System;
+using Foundation;
+using Metal;
+
+namespace NS {
+
+	public delegate IMTLTexture Callback ();
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				nullableProtocolResult,
+				$"{Global ("ObjCRuntime.Runtime")}.RetainAndAutoreleaseNSObject (auxVariable)"
 			];
 
 			const string systemStringResult = @"
@@ -110,7 +184,7 @@ namespace NS {
 
 			yield return [
 				systemStringResult,
-				"NFString.CreateNative (auxVariable, true)"
+				$"{Global ("Foundation.NSString")}.CreateNative (auxVariable, true)"
 			];
 
 			const string nullableSystemStringResult = @"
@@ -127,7 +201,7 @@ namespace NS {
 
 			yield return [
 				nullableSystemStringResult,
-				"NFString.CreateNative (auxVariable, true)"
+				$"{Global ("Foundation.NSString")}.CreateNative (auxVariable, true)"
 			];
 
 			const string boolReturnType = @"
@@ -171,6 +245,62 @@ namespace NS {
 			yield return [
 				nativeEnum,
 				"(IntPtr) (long) auxVariable",
+			];
+
+			const string smartEnum = @"
+using System;
+using ObjCBindings;
+using ObjCRuntime;
+
+namespace NS {
+
+	[BindingType<SmartEnum>]
+	public enum MySmartEnum {
+
+		[Field<EnumValue> (""AVCaptureDeviceTypeBuiltInMicrophone"")]
+		BuiltInMicrophone,
+
+		[Field<EnumValue> (""AVCaptureDeviceTypeBuiltInWideAngleCamera"")]
+		BuiltInWideAngleCamera,
+
+		[Field<EnumValue> (""AVCaptureDeviceTypeBuiltInTelephotoCamera"")]
+		BuiltInTelephotoCamera,
+
+		[Field<EnumValue> (""AVCaptureDeviceTypeBuiltInDuoCamera"")]
+		BuiltInDuoCamera,
+
+		[Field<EnumValue> (""AVCaptureDeviceTypeBuiltInDualCamera"")]
+		BuiltInDualCamera,
+
+		[Field<EnumValue> (""AVCaptureDeviceTypeBuiltInTrueDepthCamera"")]
+		BuiltInTrueDepthCamera,
+
+		[Field<EnumValue> (""AVCaptureDeviceTypeBuiltInUltraWideCamera"")]
+		BuiltInUltraWideCamera,
+
+		[Field<EnumValue> (""AVCaptureDeviceTypeBuiltInTripleCamera"")]
+		BuiltInTripleCamera,
+
+		[Field<EnumValue> (""AVCaptureDeviceTypeBuiltInDualWideCamera"")]
+		BuiltInDualWideCamera,
+
+		[Field<EnumValue> (""AVCaptureDeviceTypeExternalUnknown"")]
+		ExternalUnknown,
+
+		[Field<EnumValue> (""AVCaptureDeviceTypeBuiltInLiDARDepthCamera"")]
+		BuiltInLiDarDepthCamera,
+	}
+
+	public delegate MySmartEnum Callback()
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				smartEnum,
+				$"{Global ("ObjCRuntime.Runtime")}.RetainAndAutoreleaseNSObject (auxVariable)"
 			];
 
 			const string unsignedNativeEnum = @"
@@ -2167,6 +2297,24 @@ namespace NS {
 				$"var ret = del ({Global ("ObjCRuntime.Runtime")}.GetNSObject<{Global ("Foundation.NSNumber")}> (pointerParameter)!.Int32Value);",
 			];
 
+			var nsNumberArrayParameterWithReturn = @"
+using System;
+using Foundation;
+using ObjCBindings;
+
+namespace NS {
+	public delegate int Callback ([BindFrom (typeof(NSNumber))]int[] pointerParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				"someTrampolineName",
+				nsNumberArrayParameterWithReturn,
+				$"var ret = del ({Global ("Foundation.NSArray")}.ArrayFromHandleFunc<int> (pointerParameter, {Global ("Foundation.NSNumber")}.ToInt32, false)!);"
+			];
+
 			var nsValueParameterWithReturn = @"
 using System;
 using Foundation;
@@ -2184,6 +2332,25 @@ namespace NS {
 				"someTrampolineName",
 				nsValueParameterWithReturn,
 				$"var ret = del ({Global ("ObjCRuntime.Runtime")}.GetNSObject<{Global ("Foundation.NSValue")}> (size)!.CGSizeValue);",
+			];
+
+			var nsValueArrayParameterWithReturn = @"
+using System;
+using Foundation;
+using CoreGraphics;
+using ObjCBindings;
+
+namespace NS {
+	public delegate int Callback ([BindFrom (typeof(NSValue))]CGSize[] size);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				"someTrampolineName",
+				nsValueArrayParameterWithReturn,
+				$"var ret = del ({Global ("Foundation.NSArray")}.ArrayFromHandleFunc<{Global ("CoreGraphics.CGSize")}> (size, {Global ("Foundation.NSValue")}.ToCGSize, false)!);"
 			];
 
 			var smartEnumParameterWithReturn = @"
@@ -2216,6 +2383,35 @@ namespace NS {
 				$"var ret = del ({Global ("NS.CustomLibraryEnum")}.GetValue ({Global ("ObjCRuntime.Runtime")}.GetNSObject<{Global ("Foundation.NSString")}> (level)!));",
 			];
 
+			var smartEnumArrayParameterWithReturn = @"
+using System;
+using Foundation;
+using AVFoundation;
+using ObjCBindings;
+
+namespace NS {
+
+	[BindingType<SmartEnum>]
+	public enum CustomLibraryEnum {
+		[Field<EnumValue> (""None"", ""/path/to/customlibrary.framework"")]
+		None,
+		[Field<EnumValue> (""Medium"", ""/path/to/customlibrary.framework"")]
+		Medium,
+		[Field<EnumValue> (""High"", ""/path/to/customlibrary.framework"")]
+		High,
+	}
+
+	public delegate int Callback ([BindFrom (typeof(NSString))]CustomLibraryEnum[] level);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				"someTrampolineName",
+				smartEnumArrayParameterWithReturn,
+				$"var ret = del ({Global ("Foundation.NSArray")}.ArrayFromHandleFunc<{Global ("NS.CustomLibraryEnum")}> (level, {Global ("NS.CustomLibraryEnumExtensions")}.GetValue, false)!);"
+			];
 		}
 
 		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
@@ -2241,6 +2437,7 @@ namespace NS {
 		Assert.NotNull (parameter.Type.Delegate);
 		var argumentSyntax = GetTrampolineInvokeArguments (trampolineName, parameter.Type.Delegate);
 		var invocation = CallTrampolineDelegate (parameter.Type.Delegate, argumentSyntax);
+		var x = invocation.ToFullString ();
 		Assert.Equal (expectedExpression, invocation.ToFullString ());
 	}
 
@@ -3852,6 +4049,784 @@ namespace NS {
 		// uses a tabbeb string builder to get the conversion string and test
 		var sb = new TabbedStringBuilder (new ());
 		sb.Write (conversions);
+		Assert.Equal (expectedExpression, sb.ToCode ());
+	}
+
+	class TestDataGetTrampolinePreNativeInvokeArgumentConversions : IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
+		{
+			// int value
+			var intParameter = @"
+using System;
+
+namespace NS {
+	public delegate void Callback (int intParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				"someTrampolineName",
+				intParameter,
+				string.Empty,
+			];
+
+			// struct parameter
+			var structParameter = @"
+using System;
+
+namespace NS {
+	public struct MyStruct {
+		public int Value;
+	}
+
+	public delegate void Callback (MyStruct structParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				"someTrampolineName",
+				structParameter,
+				string.Empty,
+			];
+
+			var stringParameter = @"
+using System;
+
+namespace NS {
+	public delegate void Callback (string stringParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				"someTrampolineName",
+				stringParameter,
+				@"if (stringParameter is null)
+	global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (stringParameter));
+var nsstringParameter = global::CoreFoundation.CFString.CreateNative (stringParameter);
+",
+			];
+
+			var nullableStringParameter = @"
+using System;
+
+namespace NS {
+	public delegate void Callback (string? stringParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				"someTrampolineName",
+				nullableStringParameter,
+				"var nsstringParameter = global::CoreFoundation.CFString.CreateNative (stringParameter);\n",
+			];
+
+			var stringArrayParameter = @"
+using System;
+
+namespace NS {
+	public delegate void Callback (string[] stringParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				"someTrampolineName",
+				stringArrayParameter,
+				@"if (stringParameter is null)
+	global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (stringParameter));
+var nsa_stringParameter = global::Foundation.NSArray.FromStrings (stringParameter);
+",
+			];
+
+			var nullableStringArrayParameter = @"
+using System;
+
+namespace NS {
+	public delegate void Callback (string[]? stringParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				"someTrampolineName",
+				nullableStringArrayParameter,
+				"var nsa_stringParameter = stringParameter is null ? null : global::Foundation.NSArray.FromStrings (stringParameter);\n",
+			];
+
+			// smart enum parameter
+			var smartEnumParameter = @"
+using System;
+using ObjCBindings;
+
+namespace NS {
+
+    [Native (""""GKErrorCode"""")]
+	[BindingType<SmartEnum> (Flags = SmartEnum.ErrorCode, ErrorDomain = """"GKErrorDomain"""")]
+	public enum NativeSampleEnum {
+			None = 0,
+			Unknown = 1,
+	}
+
+    public delegate void Callback (NativeSampleEnum enumParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				"someTrampolineName",
+				smartEnumParameter,
+				"var nsb_enumParameter = enumParameter.GetConstant ();\n"
+			];
+
+
+			// normal enum parameter
+			var enumParameter = @"
+using System;
+using ObjCBindings;
+
+namespace NS {
+
+	public enum NativeSampleEnum {
+			None = 0,
+			Unknown = 1,
+	}
+
+    public delegate void Callback (NativeSampleEnum enumParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				"someTrampolineName",
+				enumParameter,
+				string.Empty,
+			];
+
+
+			// NSObject parameter
+
+			var nsObjectParameter = @"
+using System;
+using Foundation;
+using ObjCBindings;
+
+namespace NS {
+
+    public delegate void Callback (NSObject nsObjectParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				"someTrampolineName",
+				nsObjectParameter,
+				@"if (nsObjectParameter is null)
+	global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (nsObjectParameter));
+var nsObjectParameter__handle__ = nsObjectParameter.GetHandle ();
+",
+			];
+
+			// nullable NSObject parameter
+
+			var nullableNSObjectParameter = @"
+using System;
+using Foundation;
+using ObjCBindings;
+
+namespace NS {
+
+    public delegate void Callback (NSObject? nsObjectParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				"someTrampolineName",
+				nullableNSObjectParameter,
+				"var nsObjectParameter__handle__ = nsObjectParameter!.GetNonNullHandle (nameof (nsObjectParameter));\n",
+			];
+
+			// NSObject array parameter
+
+			var nsObjectArrayParameter = @"
+using System;
+using Foundation;
+using ObjCBindings;
+
+namespace NS {
+
+    public delegate void Callback (NSObject[] nsObjectParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				"someTrampolineName",
+				nsObjectArrayParameter,
+				@"if (nsObjectParameter is null)
+	global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (nsObjectParameter));
+var nsa_nsObjectParameter = global::Foundation.NSArray.FromNSObjects (nsObjectParameter);
+",
+			];
+
+			// nullable NSObject array parameter
+
+			var nullableNSObjectArrayParameter = @"
+using System;
+using Foundation;
+using ObjCBindings;
+
+namespace NS {
+
+    public delegate void Callback (NSObject[]? nsObjectParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				"someTrampolineName",
+				nullableNSObjectArrayParameter,
+				"var nsa_nsObjectParameter = nsObjectParameter is null ? null : global::Foundation.NSArray.FromNSObjects (nsObjectParameter);\n",
+			];
+
+			// INativeObject parameter
+
+			var iNativeParameter = @"
+using System;
+using Foundation;
+using CoreMedia;
+using ObjCRuntime;
+
+namespace NS {
+	public delegate void Callback (CMTimebase inative);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				"someTrampolineName",
+				iNativeParameter,
+				@"if (inative is null)
+	global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (inative));
+var inative__handle__ = inative.GetHandle ();
+"
+			];
+
+			// nullable INativeObject parameter
+
+			var nullableINativeParameter = @"
+using System;
+using Foundation;
+using CoreMedia;
+using ObjCRuntime;
+
+namespace NS {
+	public delegate void Callback (CMTimebase? inative);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				"someTrampolineName",
+				nullableINativeParameter,
+				"var inative__handle__ = inative!.GetNonNullHandle (nameof (inative));\n",
+			];
+
+			// INativeObject array parameter
+
+			var inativeArrayParameter = @"
+using System;
+using Foundation;
+using CoreMedia;
+using ObjCRuntime;
+
+namespace NS {
+	public delegate void Callback (CMTimebase[] inativeArray);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				"someTrampolineName",
+				inativeArrayParameter,
+				@"if (inativeArray is null)
+	global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (inativeArray));
+var nsa_inativeArray = global::Foundation.NSArray.FromNSObjects (inativeArray);
+",
+			];
+
+			// nullable INativeObject array parameter
+
+			var nullableINativeArrayParameter = @"
+using System;
+using Foundation;
+using CoreMedia;
+using ObjCRuntime;
+
+namespace NS {
+	public delegate void Callback (CMTimebase[]? inativeArray);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				"someTrampolineName",
+				nullableINativeArrayParameter,
+				"var nsa_inativeArray = inativeArray is null ? null : global::Foundation.NSArray.FromNSObjects (inativeArray);\n"
+			];
+
+			var audioBuffer = @"
+using System;
+using AudioToolbox;
+using Foundation;
+using ObjCBindings;
+
+namespace NS {
+	public delegate void Callback (AudioBuffers audioBuffer);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				"someTrampolineName",
+				audioBuffer,
+				@"if (audioBuffer is null)
+	global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (audioBuffer));
+var audioBuffer__handle__ = audioBuffer.GetHandle ();
+",
+			];
+
+			var cmSampleBuffer = @"
+using System;
+using CoreMedia;
+using Foundation;
+using ObjCBindings;
+
+namespace NS {
+	public delegate void Callback (CMSampleBuffer cmSampleBuffer);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				"someTrampolineName",
+				cmSampleBuffer,
+				@"if (cmSampleBuffer is null)
+	global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (cmSampleBuffer));
+var cmSampleBuffer__handle__ = cmSampleBuffer.GetHandle ();
+",
+			];
+		}
+
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
+	}
+
+	[Theory]
+	[AllSupportedPlatformsClassData<TestDataGetTrampolinePreNativeInvokeArgumentConversions>]
+	void GetTrampolinePreNativeInvokeArgumentConversionsTests (ApplePlatform platform, string trampolineName, string inputText, string expectedExpression)
+	{
+		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
+		Assert.Single (syntaxTrees);
+		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
+		var declaration = syntaxTrees [0].GetRoot ()
+			.DescendantNodes ().OfType<MethodDeclarationSyntax> ()
+			.FirstOrDefault ();
+		Assert.NotNull (declaration);
+		Assert.True (Method.TryCreate (declaration, semanticModel, out var changes));
+		Assert.NotNull (changes);
+		// we know the first parameter of the method is the delegate
+		Assert.Single (changes.Value.Parameters);
+		var parameter = changes.Value.Parameters [0];
+		// assert it is indeed a delegate
+		Assert.NotNull (parameter.Type.Delegate);
+		var conversions = GetTrampolinePreNativeInvokeArgumentConversions (trampolineName, parameter.Type.Delegate!.Parameters [0]);
+		// uses a tabbeb string builder to get the conversion string and test
+		var sb = new TabbedStringBuilder (new ());
+		sb.Write (conversions, false);
+		Assert.Equal (expectedExpression, sb.ToCode ());
+	}
+
+	class TestDataGetTrampolinePostNativeInvokeArgumentConversions : IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
+		{
+			// int value
+			var intParameter = @"
+using System;
+
+namespace NS {
+	public delegate void Callback (int intParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				"someTrampolineName",
+				intParameter,
+				string.Empty,
+			];
+
+			// struct parameter
+			var structParameter = @"
+using System;
+
+namespace NS {
+	public struct MyStruct {
+		public int Value;
+	}
+
+	public delegate void Callback (MyStruct structParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				"someTrampolineName",
+				structParameter,
+				string.Empty,
+			];
+
+			var stringParameter = @"
+using System;
+
+namespace NS {
+	public delegate void Callback (string stringParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				"someTrampolineName",
+				stringParameter,
+				$"{Global ("CoreFoundation.CFString")}.ReleaseNative (nsstringParameter);\n"
+			];
+
+			var nullableStringParameter = @"
+using System;
+
+namespace NS {
+	public delegate void Callback (string? stringParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				"someTrampolineName",
+				nullableStringParameter,
+				$"{Global ("CoreFoundation.CFString")}.ReleaseNative (nsstringParameter);\n"
+			];
+
+			var stringArrayParameter = @"
+using System;
+
+namespace NS {
+	public delegate void Callback (string[] stringParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				"someTrampolineName",
+				stringArrayParameter,
+				$"{Global ("System.GC")}.KeepAlive (nsa_stringParameter);\n"
+			];
+
+			var nullableStringArrayParameter = @"
+using System;
+
+namespace NS {
+	public delegate void Callback (string[]? stringParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				"someTrampolineName",
+				nullableStringArrayParameter,
+				$"{Global ("System.GC")}.KeepAlive (nsa_stringParameter);\n"
+			];
+
+			// smart enum parameter
+			var smartEnumParameter = @"
+using System;
+using ObjCBindings;
+
+namespace NS {
+
+    [Native (""""GKErrorCode"""")]
+	[BindingType<SmartEnum> (Flags = SmartEnum.ErrorCode, ErrorDomain = """"GKErrorDomain"""")]
+	public enum NativeSampleEnum {
+			None = 0,
+			Unknown = 1,
+	}
+
+    public delegate void Callback (NativeSampleEnum enumParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				"someTrampolineName",
+				smartEnumParameter,
+				$"{Global ("System.GC")}.KeepAlive (nsb_enumParameter);\n"
+			];
+
+			// normal enum parameter
+			var enumParameter = @"
+	using System;
+	using ObjCBindings;
+
+	namespace NS {
+
+		public enum NativeSampleEnum {
+				None = 0,
+				Unknown = 1,
+		}
+
+	    public delegate void Callback (NativeSampleEnum enumParameter);
+		public class MyClass {
+			public void MyMethod (Callback cb) {}
+		}
+	}
+	";
+			yield return [
+				"someTrampolineName",
+				enumParameter,
+				string.Empty,
+			];
+
+			// NSObject parameter
+
+			var nsObjectParameter = @"
+	using System;
+	using Foundation;
+	using ObjCBindings;
+
+	namespace NS {
+
+		public delegate void Callback (NSObject nsObjectParameter);
+		public class MyClass {
+			public void MyMethod (Callback cb) {}
+		}
+	}
+	";
+			yield return [
+				"someTrampolineName",
+				nsObjectParameter,
+				$"{Global ("System.GC")}.KeepAlive (nsObjectParameter__handle__);\n"
+			];
+
+			// nullable NSObject parameter
+
+			var nullableNSObjectParameter = @"
+using System;
+using Foundation;
+using ObjCBindings;
+
+namespace NS {
+
+    public delegate void Callback (NSObject? nsObjectParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				"someTrampolineName",
+				nullableNSObjectParameter,
+				$"{Global ("System.GC")}.KeepAlive (nsObjectParameter__handle__);\n"
+			];
+
+			// NSObject array parameter
+
+			var nsObjectArrayParameter = @"
+using System;
+using Foundation;
+using ObjCBindings;
+
+namespace NS {
+
+    public delegate void Callback (NSObject[] nsObjectParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				"someTrampolineName",
+				nsObjectArrayParameter,
+				$"{Global ("System.GC")}.KeepAlive (nsa_nsObjectParameter);\n"
+			];
+
+			// nullable NSObject array parameter
+
+			var nullableNSObjectArrayParameter = @"
+using System;
+using Foundation;
+using ObjCBindings;
+
+namespace NS {
+
+    public delegate void Callback (NSObject[]? nsObjectParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				"someTrampolineName",
+				nullableNSObjectArrayParameter,
+				$"{Global ("System.GC")}.KeepAlive (nsa_nsObjectParameter);\n"
+			];
+
+			// INativeObject parameter
+
+			var iNativeParameter = @"
+using System;
+using Foundation;
+using CoreMedia;
+using ObjCRuntime;
+
+namespace NS {
+	public delegate void Callback (CMTimebase inative);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				"someTrampolineName",
+				iNativeParameter,
+				$"{Global ("System.GC")}.KeepAlive (inative__handle__);\n"
+			];
+
+			// nullable INativeObject parameter
+
+			var nullableINativeParameter = @"
+using System;
+using Foundation;
+using CoreMedia;
+using ObjCRuntime;
+
+namespace NS {
+	public delegate void Callback (CMTimebase? inative);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				"someTrampolineName",
+				nullableINativeParameter,
+				$"{Global ("System.GC")}.KeepAlive (inative__handle__);\n"
+			];
+
+			// INativeObject array parameter
+
+			var inativeArrayParameter = @"
+using System;
+using Foundation;
+using CoreMedia;
+using ObjCRuntime;
+
+namespace NS {
+	public delegate void Callback (CMTimebase[] inativeArray);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				"someTrampolineName",
+				inativeArrayParameter,
+				$"{Global ("System.GC")}.KeepAlive (nsa_inativeArray);\n"
+			];
+
+			// nullable INativeObject array parameter
+
+			var nullableINativeArrayParameter = @"
+using System;
+using Foundation;
+using CoreMedia;
+using ObjCRuntime;
+
+namespace NS {
+	public delegate void Callback (CMTimebase[]? inativeArray);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				"someTrampolineName",
+				nullableINativeArrayParameter,
+				$"{Global ("System.GC")}.KeepAlive (nsa_inativeArray);\n"
+			];
+		}
+
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
+	}
+
+	[Theory]
+	[AllSupportedPlatformsClassData<TestDataGetTrampolinePostNativeInvokeArgumentConversions>]
+	void GetTrampolinePostNativeInvokeArgumentConversionsTests (ApplePlatform platform, string trampolineName, string inputText, string expectedExpression)
+	{
+		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
+		Assert.Single (syntaxTrees);
+		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
+		var declaration = syntaxTrees [0].GetRoot ()
+			.DescendantNodes ().OfType<MethodDeclarationSyntax> ()
+			.FirstOrDefault ();
+		Assert.NotNull (declaration);
+		Assert.True (Method.TryCreate (declaration, semanticModel, out var changes));
+		Assert.NotNull (changes);
+		// we know the first parameter of the method is the delegate
+		Assert.Single (changes.Value.Parameters);
+		var parameter = changes.Value.Parameters [0];
+		// assert it is indeed a delegate
+		Assert.NotNull (parameter.Type.Delegate);
+		var conversions = GetTrampolinePostNativeInvokeArgumentConversions (trampolineName, parameter.Type.Delegate!.Parameters [0]);
+		// uses a tabbeb string builder to get the conversion string and test
+		var sb = new TabbedStringBuilder (new ());
+		sb.Write (conversions, false);
 		Assert.Equal (expectedExpression, sb.ToCode ());
 	}
 

@@ -26840,15 +26840,15 @@ namespace AppKit {
 		bool OpenUrl (NSUrl url);
 
 		[Export ("launchApplication:"), ThreadSafe]
-		[Deprecated (PlatformName.MacOSX, 10, 15)]
+		[Deprecated (PlatformName.MacOSX, 10, 15, "Use 'OpenApplication' instead.")]
 		bool LaunchApplication (string appName);
 
 		[Export ("launchApplicationAtURL:options:configuration:error:"), ThreadSafe]
-		[Deprecated (PlatformName.MacOSX, 10, 15)]
+		[Deprecated (PlatformName.MacOSX, 10, 15, "Use 'OpenApplication' instead.")]
 		NSRunningApplication LaunchApplication (NSUrl url, NSWorkspaceLaunchOptions options, NSDictionary configuration, out NSError error);
 
 		[Export ("launchApplication:showIcon:autolaunch:"), ThreadSafe]
-		[Deprecated (PlatformName.MacOSX, 10, 15)]
+		[Deprecated (PlatformName.MacOSX, 10, 15, "Use 'OpenApplication' instead.")]
 		bool LaunchApplication (string appName, bool showIcon, bool autolaunch);
 
 		[Export ("fullPathForApplication:"), ThreadSafe]

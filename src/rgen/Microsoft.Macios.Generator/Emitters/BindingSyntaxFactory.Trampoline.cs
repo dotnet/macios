@@ -595,6 +595,14 @@ static partial class BindingSyntaxFactory {
 		return argument;
 	}
 
+	/// <summary>
+	/// Generates any necessary pre-invocation statements for a by-ref trampoline argument.
+	/// This is used to handle special cases for by-ref parameters, such as creating temporary variables
+	/// for nullable or boolean types that require conversion before the trampoline is invoked.
+	/// Returns an empty array if no special handling is required.
+	/// </summary>
+	/// <param name="parameter">The delegate parameter to process for pre-invocation by-ref handling.</param>
+	/// <returns>An immutable array of syntax nodes representing the required pre-invocation statements for the by-ref argument.</returns>
 	internal static ImmutableArray<SyntaxNode> GetTrampolinePreInvokeByRefArgument (in DelegateParameter parameter)
 	{
 		// there are two cases in which we need to do something with the byref parameters:
@@ -692,6 +700,16 @@ static partial class BindingSyntaxFactory {
 		return [expr];
 	}
 
+	/// <summary>
+	/// Generates any necessary post-invocation statements for a by-ref trampoline argument.
+	/// This is used to handle special cases for by-ref parameters, such as assigning back values
+	/// from temporary variables for nullable types or converting boolean values back to their native
+	/// representation after the trampoline is invoked.
+	/// Returns an empty array if no special handling is required.
+	/// </summary>
+	/// <param name="trampolineName">The name of the trampoline. This parameter is not directly used in the current implementation but is kept for consistency with related methods.</param>
+	/// <param name="parameter">The delegate parameter to process for post-invocation by-ref handling.</param>
+	/// <returns>An immutable array of syntax nodes representing the required post-invocation statements for the by-ref argument.</returns>
 	internal static ImmutableArray<SyntaxNode> GetTrampolinePostInvokeByRefArgument (string trampolineName,
 		in DelegateParameter parameter)
 	{
@@ -1063,6 +1081,12 @@ static partial class BindingSyntaxFactory {
 		return method;
 	}
 
+	/// <summary>
+	/// Returns an array of syntax nodes representing initializations required for a 'byref' parameter before invoking the native trampoline.
+	/// This method handles the initialization of 'byref' parameters by assigning them their default value.
+	/// </summary>
+	/// <param name="parameter">The delegate parameter, which is expected to be 'byref'.</param>
+	/// <returns>An immutable array of syntax nodes representing the initialization statements for the 'byref' parameter.</returns>
 	internal static ImmutableArray<SyntaxNode> GetTrampolineNativeInitializationByRefArgument (in DelegateParameter parameter)
 	{
 		// create the pointer variable and assign it to its default value
@@ -1392,6 +1416,14 @@ static partial class BindingSyntaxFactory {
 		return bucket.ToImmutable ();
 	}
 
+	/// <summary>
+	/// Generates the statement syntax for calling the native invoker delegate.
+	/// This method constructs the invocation of the delegate using the provided arguments,
+	/// and handles whether the delegate returns a value or is void.
+	/// </summary>
+	/// <param name="delegateInfo">The information about the delegate being called.</param>
+	/// <param name="argumentSyntax">The immutable array of argument syntax for the delegate call.</param>
+	/// <returns>A <see cref="StatementSyntax"/> representing the call to the native invoker delegate.</returns>
 	internal static StatementSyntax CallNativeInvokerDelegate (in DelegateInfo delegateInfo,
 		in ImmutableArray<TrampolineArgumentSyntax> argumentSyntax)
 	{

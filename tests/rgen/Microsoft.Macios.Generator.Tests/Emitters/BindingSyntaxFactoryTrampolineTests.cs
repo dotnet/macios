@@ -385,6 +385,411 @@ namespace NS {
 		var expression = GetTrampolineInvokeReturnType (parameter.Type, auxVariableName);
 		Assert.Equal (expectedExpression, expression?.ToString ());
 	}
+	
+	class TestDataGetTrampolineNativeInvokeReturnType : IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
+		{
+			const string arrayNSObjectResult = @"
+using System;
+using Foundation;
+
+namespace NS {
+
+	public delegate NSString [] Callback ();
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				arrayNSObjectResult,
+				$"{Global ("CoreFoundation.CFArray")}.ArrayFromHandle<{Global ("Foundation.NSString")}> (auxVariable)!"
+			];
+			
+			const string nullableArrayNSObjectResult = @"
+using System;
+using Foundation;
+
+namespace NS {
+
+	public delegate NSString []? Callback ();
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				nullableArrayNSObjectResult,
+				$"{Global ("CoreFoundation.CFArray")}.ArrayFromHandle<{Global ("Foundation.NSString")}> (auxVariable)"
+			];
+			
+			const string arrayINativeResult = @"
+using System;
+using Foundation;
+using Security;
+
+namespace NS {
+
+	public delegate SecKeyChain [] Callback ();
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				arrayINativeResult,
+				$"{Global ("CoreFoundation.CFArray")}.ArrayFromHandle<{Global ("Security.SecKeyChain")}> (auxVariable)!"
+			];
+			
+			const string nullableArrayINativeResult = @"
+using System;
+using Foundation;
+using Security;
+
+namespace NS {
+
+	public delegate SecKeyChain []? Callback ();
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				nullableArrayINativeResult,
+				$"{Global ("CoreFoundation.CFArray")}.ArrayFromHandle<{Global ("Security.SecKeyChain")}> (auxVariable)"
+			];
+
+			const string nsObjectResult = @"
+using System;
+using Foundation;
+
+namespace NS {
+
+	public delegate NSString Callback ();
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				nsObjectResult,
+				$"{Global ("ObjCRuntime.Runtime")}.GetNSObject<{Global ("Foundation.NSString")}> (auxVariable, false)!"
+			];
+			
+			const string nullableNSObjectResult = @"
+using System;
+using Foundation;
+
+namespace NS {
+
+	public delegate NSString? Callback ();
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				nullableNSObjectResult,
+				$"{Global ("ObjCRuntime.Runtime")}.GetNSObject<{Global ("Foundation.NSString")}> (auxVariable, false)"
+			];
+
+			const string nativeObjectResult = @"
+using System;
+using Foundation;
+using Security;
+
+namespace NS {
+
+	public delegate SecKeyChain Callback ();
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				nativeObjectResult,
+				$"{Global ("ObjCRuntime.Runtime")}.GetINativeObject<{Global ("Security.SecKeyChain")}> (auxVariable, false)!"
+			];
+			
+			const string nullableNativeObjectResult = @"
+using System;
+using Foundation;
+using Security;
+
+namespace NS {
+
+	public delegate SecKeyChain? Callback ();
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				nullableNativeObjectResult,
+				$"{Global ("ObjCRuntime.Runtime")}.GetINativeObject<{Global ("Security.SecKeyChain")}> (auxVariable, false)"
+			];
+
+			const string protocolResult = @"
+using System;
+using Foundation;
+using Metal;
+
+namespace NS {
+
+	public delegate IMTLTexture Callback ();
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				protocolResult,
+				$"{Global ("ObjCRuntime.Runtime")}.GetINativeObject<{Global ("Metal.IMTLTexture")}> (auxVariable, false)!"
+			];
+			
+			const string nullableProtocolResult = @"
+using System;
+using Foundation;
+using Metal;
+
+namespace NS {
+
+	public delegate IMTLTexture? Callback ();
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				nullableProtocolResult,
+				$"{Global ("ObjCRuntime.Runtime")}.GetINativeObject<{Global ("Metal.IMTLTexture")}> (auxVariable, false)"
+			];
+
+			const string systemStringResult = @"
+using System;
+
+namespace NS {
+
+	public delegate string Callback ();
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				systemStringResult,
+				$"{Global ("CoreFoundation.CFString")}.FromHandle (auxVariable)!"
+			];
+
+			const string nullableSystemStringResult = @"
+using System;
+
+namespace NS {
+
+	public delegate string? Callback ();
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				nullableSystemStringResult,
+				$"{Global ("CoreFoundation.CFString")}.FromHandle (auxVariable)"
+			];
+
+			const string boolReturnType = @"
+using System;
+
+namespace NS {
+
+	public delegate bool Callback ();
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				boolReturnType,
+				"auxVariable != 0"
+			];
+
+			const string nativeEnum = @"
+using System;
+using ObjCBindings;
+using ObjCRuntime;
+
+namespace NS {
+
+	[Native (""GKErrorCode"")]
+	[BindingType<SmartEnum> (Flags = SmartEnum.ErrorCode, ErrorDomain = ""GKErrorDomain"")]
+	public enum NativeSampleEnum : long {
+		None = 0,
+		Unknown = 1,
+	}
+
+	public delegate NativeSampleEnum Callback()
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				nativeEnum,
+				"(global::NS.NativeSampleEnum) (long) auxVariable",
+			];
+			
+			const string smartEnum = @"
+using System;
+using ObjCBindings;
+using ObjCRuntime;
+
+namespace NS {
+
+	[BindingType<SmartEnum>]
+	public enum MySmartEnum {
+
+		[Field<EnumValue> (""AVCaptureDeviceTypeBuiltInMicrophone"")]
+		BuiltInMicrophone,
+
+		[Field<EnumValue> (""AVCaptureDeviceTypeBuiltInWideAngleCamera"")]
+		BuiltInWideAngleCamera,
+
+		[Field<EnumValue> (""AVCaptureDeviceTypeBuiltInTelephotoCamera"")]
+		BuiltInTelephotoCamera,
+
+		[Field<EnumValue> (""AVCaptureDeviceTypeBuiltInDuoCamera"")]
+		BuiltInDuoCamera,
+
+		[Field<EnumValue> (""AVCaptureDeviceTypeBuiltInDualCamera"")]
+		BuiltInDualCamera,
+
+		[Field<EnumValue> (""AVCaptureDeviceTypeBuiltInTrueDepthCamera"")]
+		BuiltInTrueDepthCamera,
+
+		[Field<EnumValue> (""AVCaptureDeviceTypeBuiltInUltraWideCamera"")]
+		BuiltInUltraWideCamera,
+
+		[Field<EnumValue> (""AVCaptureDeviceTypeBuiltInTripleCamera"")]
+		BuiltInTripleCamera,
+
+		[Field<EnumValue> (""AVCaptureDeviceTypeBuiltInDualWideCamera"")]
+		BuiltInDualWideCamera,
+
+		[Field<EnumValue> (""AVCaptureDeviceTypeExternalUnknown"")]
+		ExternalUnknown,
+
+		[Field<EnumValue> (""AVCaptureDeviceTypeBuiltInLiDARDepthCamera"")]
+		BuiltInLiDarDepthCamera,
+	}
+
+	public delegate MySmartEnum Callback()
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				smartEnum,
+				$"{Global ("NS.MySmartEnumExtensions")}.GetValue (auxVariable)",
+			];
+
+			const string unsignedNativeEnum = @"
+using System;
+using ObjCBindings;
+using ObjCRuntime;
+
+namespace NS {
+
+	[Native (""GKErrorCode"")]
+	[BindingType<SmartEnum> (Flags = SmartEnum.ErrorCode, ErrorDomain = ""GKErrorDomain"")]
+	public enum NativeSampleEnum : ulong {
+		None = 0,
+		Unknown = 1,
+	}
+
+	public delegate NativeSampleEnum Callback()
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				unsignedNativeEnum,
+				"(global::NS.NativeSampleEnum) (ulong) auxVariable",
+			];
+
+			const string intReturnType = @"
+using System;
+
+namespace NS {
+	public delegate int Callback()
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				intReturnType,
+				"auxVariable"
+			];
+
+			const string voidReturnType = @"
+using System;
+
+namespace NS {
+	public delegate void Callback()
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				voidReturnType,
+				null!
+			];
+		}
+
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
+	}
+	
+	[Theory]
+	[AllSupportedPlatformsClassData<TestDataGetTrampolineNativeInvokeReturnType>]
+	void GetTrampolineNativeInvokeReturnTypeTests (ApplePlatform platform, string inputText, string? expectedExpression)
+	{
+		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
+		Assert.Single (syntaxTrees);
+		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
+		var declaration = syntaxTrees [0].GetRoot ()
+			.DescendantNodes ().OfType<MethodDeclarationSyntax> ()
+			.FirstOrDefault ();
+		Assert.NotNull (declaration);
+		Assert.True (Method.TryCreate (declaration, semanticModel, out var changes));
+		Assert.NotNull (changes);
+		// we know the first parameter of the method is the delegate
+		Assert.Single (changes.Value.Parameters);
+		var parameter = changes.Value.Parameters [0];
+		var auxVariableName = "auxVariable";
+		var expression = GetTrampolineNativeInvokeReturnType (parameter.Type, auxVariableName);
+		Assert.Equal (expectedExpression, expression?.ToString ());
+	}
 
 	class TestDataCreateNativeClass : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()
@@ -4647,7 +5052,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				nsObjectParameter,
-				$"{Global ("System.GC")}.KeepAlive (nsObjectParameter__handle__);\n"
+				$"{Global ("System.GC")}.KeepAlive (nsObjectParameter);\n"
 			];
 
 			// nullable NSObject parameter
@@ -4668,7 +5073,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				nullableNSObjectParameter,
-				$"{Global ("System.GC")}.KeepAlive (nsObjectParameter__handle__);\n"
+				$"{Global ("System.GC")}.KeepAlive (nsObjectParameter);\n"
 			];
 
 			// NSObject array parameter
@@ -4732,7 +5137,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				iNativeParameter,
-				$"{Global ("System.GC")}.KeepAlive (inative__handle__);\n"
+				$"{Global ("System.GC")}.KeepAlive (inative);\n"
 			];
 
 			// nullable INativeObject parameter
@@ -4754,7 +5159,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				nullableINativeParameter,
-				$"{Global ("System.GC")}.KeepAlive (inative__handle__);\n"
+				$"{Global ("System.GC")}.KeepAlive (inative);\n"
 			];
 
 			// INativeObject array parameter

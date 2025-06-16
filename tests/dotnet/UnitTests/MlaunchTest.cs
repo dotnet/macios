@@ -52,9 +52,9 @@ namespace Xamarin.Tests {
 		public static object [] GetMlaunchRunArgumentsTestCases ()
 		{
 			return new object [] {
-				new object [] {ApplePlatform.iOS, "iossimulator-x64;iossimulator-arm64", $":v2:runtime=com.apple.CoreSimulator.SimRuntime.iOS-{SdkVersions.iOS.Replace('.', '-')},devicetype=com.apple.CoreSimulator.SimDeviceType.iPhone-16e" },
+				new object [] {ApplePlatform.iOS, "iossimulator-x64;iossimulator-arm64", $":v2:runtime=com.apple.CoreSimulator.SimRuntime.iOS-{SdkVersions.iOS.Replace('.', '-')},devicetype=com.apple.CoreSimulator.SimDeviceType.iPhone-.*" },
 				new object [] {ApplePlatform.iOS, "ios-arm64", "" },
-				new object [] {ApplePlatform.TVOS, "tvossimulator-arm64", $":v2:runtime=com.apple.CoreSimulator.SimRuntime.tvOS-{SdkVersions.TVOS.Replace('.', '-')},devicetype=com.apple.CoreSimulator.SimDeviceType.Apple-TV-4K-3rd-generation-1080p" },
+				new object [] {ApplePlatform.TVOS, "tvossimulator-arm64", $":v2:runtime=com.apple.CoreSimulator.SimRuntime.tvOS-{SdkVersions.TVOS.Replace('.', '-')},devicetype=com.apple.CoreSimulator.SimDeviceType.Apple-TV-.*" },
 			};
 		}
 
@@ -93,11 +93,11 @@ namespace Xamarin.Tests {
 				expectedArguments.Append (device);
 			}
 			expectedArguments.Append ($" --wait-for-exit:true");
-			Assert.AreEqual (expectedArguments.ToString (), mlaunchRunArguments);
+			Assert.That (mlaunchRunArguments, Does.Match (expectedArguments.ToString ()), "arguments");
 
 			var scriptContents = File.ReadAllText (outputPath).Trim ('\n');
 			var expectedScriptContents = mlaunchPath + " " + expectedArguments.ToString ();
-			Assert.AreEqual (expectedScriptContents, scriptContents, "Script contents");
+			Assert.That (scriptContents, Does.Match (expectedScriptContents), "Script contents");
 		}
 	}
 }

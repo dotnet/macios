@@ -7,6 +7,8 @@
 // Copyright 2017 Microsoft Inc. All rights reserved.
 //
 
+#nullable enable
+
 using System;
 using System.ComponentModel;
 using System.Numerics;

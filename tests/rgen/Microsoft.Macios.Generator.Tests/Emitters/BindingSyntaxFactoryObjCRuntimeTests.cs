@@ -967,4 +967,17 @@ public class BindingSyntaxFactoryObjCRuntimeTests {
 	[ClassData (typeof (TestDataGetSelectorHandleField))]
 	void GetSelectorHandleFieldTest (string selector, string selectorName, string expectedDeclaration)
 		=> Assert.Equal (expectedDeclaration, GetSelectorHandleField (selector, selectorName).ToString ());
+
+	[Fact]
+	void GetSmartEnunFromNSStringTest ()
+	{
+		// create a fake smart enum type
+		var smartEnumName = "MySmartEnum";
+		var auxVariable = IdentifierName ("myParam");
+		var smartEnumType = ReturnTypeForEnum (smartEnumName, isSmartEnum: true);
+		var extensionClass = Nomenclator.GetSmartEnumExtensionClassName (smartEnumName);
+		var expectedExpression = $"{extensionClass}.GetValue ({auxVariable})";
+		Assert.Equal (expectedExpression, GetSmartEnumFromNSString (smartEnumType, Argument (auxVariable)).ToString ());
+	}
+
 }

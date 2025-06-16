@@ -37,7 +37,25 @@ namespace NS {
 
 			yield return [
 				arrayNSObjectResult,
-				"global::ObjCRuntime.Runtime.RetainAndAutoreleaseNSObject (global::Foundation.NSArray.FromNSObjects (auxVariable))"
+				$"{Global ("ObjCRuntime.Runtime")}.RetainAndAutoreleaseNSObject (global::Foundation.NSArray.FromNSObjects (auxVariable))"
+			];
+
+			const string nullableArrayNSObjectResult = @"
+using System;
+using Foundation;
+
+namespace NS {
+
+	public delegate NSString []? Callback ();
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				nullableArrayNSObjectResult,
+				$"{Global ("ObjCRuntime.Runtime")}.RetainAndAutoreleaseNSObject (global::Foundation.NSArray.FromNSObjects (auxVariable))"
 			];
 
 			const string nsObjectResult = @"
@@ -55,7 +73,25 @@ namespace NS {
 
 			yield return [
 				nsObjectResult,
-				"global::ObjCRuntime.Runtime.RetainAndAutoreleaseNSObject (auxVariable)"
+				$"{Global ("ObjCRuntime.Runtime")}.RetainAndAutoreleaseNSObject (auxVariable)"
+			];
+
+			const string nullableNSObjectResult = @"
+using System;
+using Foundation;
+
+namespace NS {
+
+	public delegate NSString? Callback ();
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				nullableNSObjectResult,
+				$"{Global ("ObjCRuntime.Runtime")}.RetainAndAutoreleaseNSObject (auxVariable)"
 			];
 
 			const string nativeObjectResult = @"
@@ -74,7 +110,26 @@ namespace NS {
 
 			yield return [
 				nativeObjectResult,
-				"global::ObjCRuntime.Runtime.RetainAndAutoreleaseNativeObject (auxVariable)"
+				$"{Global ("ObjCRuntime.Runtime")}.RetainAndAutoreleaseNativeObject (auxVariable)"
+			];
+
+			const string nullableNativeObjectResult = @"
+using System;
+using Foundation;
+using Security;
+
+namespace NS {
+
+	public delegate SecKeyChain? Callback ();
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				nullableNativeObjectResult,
+				$"{Global ("ObjCRuntime.Runtime")}.RetainAndAutoreleaseNativeObject (auxVariable)"
 			];
 
 			const string protocolResult = @"
@@ -93,7 +148,26 @@ namespace NS {
 
 			yield return [
 				protocolResult,
-				"global::ObjCRuntime.Runtime.RetainAndAutoreleaseNSObject (auxVariable)"
+				$"{Global ("ObjCRuntime.Runtime")}.RetainAndAutoreleaseNSObject (auxVariable)"
+			];
+
+			const string nullableProtocolResult = @"
+using System;
+using Foundation;
+using Metal;
+
+namespace NS {
+
+	public delegate IMTLTexture Callback ();
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				nullableProtocolResult,
+				$"{Global ("ObjCRuntime.Runtime")}.RetainAndAutoreleaseNSObject (auxVariable)"
 			];
 
 			const string systemStringResult = @"
@@ -110,7 +184,7 @@ namespace NS {
 
 			yield return [
 				systemStringResult,
-				"NFString.CreateNative (auxVariable, true)"
+				$"{Global ("Foundation.NSString")}.CreateNative (auxVariable, true)"
 			];
 
 			const string nullableSystemStringResult = @"
@@ -127,7 +201,7 @@ namespace NS {
 
 			yield return [
 				nullableSystemStringResult,
-				"NFString.CreateNative (auxVariable, true)"
+				$"{Global ("Foundation.NSString")}.CreateNative (auxVariable, true)"
 			];
 
 			const string boolReturnType = @"
@@ -171,6 +245,62 @@ namespace NS {
 			yield return [
 				nativeEnum,
 				"(IntPtr) (long) auxVariable",
+			];
+
+			const string smartEnum = @"
+using System;
+using ObjCBindings;
+using ObjCRuntime;
+
+namespace NS {
+
+	[BindingType<SmartEnum>]
+	public enum MySmartEnum {
+
+		[Field<EnumValue> (""AVCaptureDeviceTypeBuiltInMicrophone"")]
+		BuiltInMicrophone,
+
+		[Field<EnumValue> (""AVCaptureDeviceTypeBuiltInWideAngleCamera"")]
+		BuiltInWideAngleCamera,
+
+		[Field<EnumValue> (""AVCaptureDeviceTypeBuiltInTelephotoCamera"")]
+		BuiltInTelephotoCamera,
+
+		[Field<EnumValue> (""AVCaptureDeviceTypeBuiltInDuoCamera"")]
+		BuiltInDuoCamera,
+
+		[Field<EnumValue> (""AVCaptureDeviceTypeBuiltInDualCamera"")]
+		BuiltInDualCamera,
+
+		[Field<EnumValue> (""AVCaptureDeviceTypeBuiltInTrueDepthCamera"")]
+		BuiltInTrueDepthCamera,
+
+		[Field<EnumValue> (""AVCaptureDeviceTypeBuiltInUltraWideCamera"")]
+		BuiltInUltraWideCamera,
+
+		[Field<EnumValue> (""AVCaptureDeviceTypeBuiltInTripleCamera"")]
+		BuiltInTripleCamera,
+
+		[Field<EnumValue> (""AVCaptureDeviceTypeBuiltInDualWideCamera"")]
+		BuiltInDualWideCamera,
+
+		[Field<EnumValue> (""AVCaptureDeviceTypeExternalUnknown"")]
+		ExternalUnknown,
+
+		[Field<EnumValue> (""AVCaptureDeviceTypeBuiltInLiDARDepthCamera"")]
+		BuiltInLiDarDepthCamera,
+	}
+
+	public delegate MySmartEnum Callback()
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				smartEnum,
+				$"{Global ("ObjCRuntime.Runtime")}.RetainAndAutoreleaseNSObject (auxVariable)"
 			];
 
 			const string unsignedNativeEnum = @"
@@ -4268,6 +4398,52 @@ namespace NS {
 				nullableINativeArrayParameter,
 				"var nsa_inativeArray = inativeArray is null ? null : global::Foundation.NSArray.FromNSObjects (inativeArray);\n"
 			];
+
+			var audioBuffer = @"
+using System;
+using AudioToolbox;
+using Foundation;
+using ObjCBindings;
+
+namespace NS {
+	public delegate void Callback (AudioBuffers audioBuffer);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				"someTrampolineName",
+				audioBuffer,
+				@"if (audioBuffer is null)
+	global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (audioBuffer));
+var audioBuffer__handle__ = audioBuffer.GetHandle ();
+",
+			];
+
+			var cmSampleBuffer = @"
+using System;
+using CoreMedia;
+using Foundation;
+using ObjCBindings;
+
+namespace NS {
+	public delegate void Callback (CMSampleBuffer cmSampleBuffer);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				"someTrampolineName",
+				cmSampleBuffer,
+				@"if (cmSampleBuffer is null)
+	global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (cmSampleBuffer));
+var cmSampleBuffer__handle__ = cmSampleBuffer.GetHandle ();
+",
+			];
 		}
 
 		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
@@ -4352,7 +4528,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				stringParameter,
-				$"{Global ("System.GC")}.KeepAlive (nsstringParameter);\n"
+				$"{Global ("CoreFoundation.CFString")}.ReleaseNative (nsstringParameter);\n"
 			];
 
 			var nullableStringParameter = @"
@@ -4368,7 +4544,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				nullableStringParameter,
-				$"{Global ("System.GC")}.KeepAlive (nsstringParameter);\n"
+				$"{Global ("CoreFoundation.CFString")}.ReleaseNative (nsstringParameter);\n"
 			];
 
 			var stringArrayParameter = @"
@@ -4652,6 +4828,270 @@ namespace NS {
 		var sb = new TabbedStringBuilder (new ());
 		sb.Write (conversions, false);
 		Assert.Equal (expectedExpression, sb.ToCode ());
+	}
+
+	class TestDataGetTrampolineNativeInvokeArguments : IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
+		{
+			var pointerParameter = @"
+using System;
+
+namespace NS {
+	public delegate void Callback (int* pointerParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				"someTrampolineName",
+				pointerParameter,
+				"invoker (BlockLiteral, pointerParameter);",
+			];
+
+			var pointerParameterWithReturn = @"
+using System;
+
+namespace NS {
+	public delegate int Callback (int* pointerParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				"someTrampolineName",
+				pointerParameterWithReturn,
+				"var ret = invoker (BlockLiteral, pointerParameter);",
+			];
+
+			var nsNumberParameterWithReturn = @"
+using System;
+using Foundation;
+using ObjCBindings;
+
+namespace NS {
+	public delegate int Callback ([BindFrom (typeof(NSNumber))]int pointerParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				"someTrampolineName",
+				nsNumberParameterWithReturn,
+				"var ret = invoker (BlockLiteral, pointerParameter__handle__);",
+			];
+
+			var nsNumberArrayParameterWithReturn = @"
+using System;
+using Foundation;
+using ObjCBindings;
+
+namespace NS {
+	public delegate int Callback ([BindFrom (typeof(NSNumber))]int[] pointerParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				"someTrampolineName",
+				nsNumberArrayParameterWithReturn,
+				"var ret = invoker (BlockLiteral, nsa_pointerParameter);",
+			];
+
+			var nsValueParameterWithReturn = @"
+using System;
+using Foundation;
+using CoreGraphics;
+using ObjCBindings;
+
+namespace NS {
+	public delegate int Callback ([BindFrom (typeof(NSValue))]CGSize size);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				"someTrampolineName",
+				nsValueParameterWithReturn,
+				"var ret = invoker (BlockLiteral, size__handle__);"
+			];
+
+			var nsValueArrayParameterWithReturn = @"
+using System;
+using Foundation;
+using CoreGraphics;
+using ObjCBindings;
+
+namespace NS {
+	public delegate int Callback ([BindFrom (typeof(NSValue))]CGSize[] size);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				"someTrampolineName",
+				nsValueArrayParameterWithReturn,
+				"var ret = invoker (BlockLiteral, nsa_size);",
+			];
+
+			var smartEnumParameterWithReturn = @"
+using System;
+using Foundation;
+using AVFoundation;
+using ObjCBindings;
+
+namespace NS {
+
+	[BindingType<SmartEnum>]
+	public enum CustomLibraryEnum {
+		[Field<EnumValue> (""None"", ""/path/to/customlibrary.framework"")]
+		None,
+		[Field<EnumValue> (""Medium"", ""/path/to/customlibrary.framework"")]
+		Medium,
+		[Field<EnumValue> (""High"", ""/path/to/customlibrary.framework"")]
+		High,
+	}
+
+	public delegate int Callback ([BindFrom (typeof(NSString))]CustomLibraryEnum level);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				"someTrampolineName",
+				smartEnumParameterWithReturn,
+				"var ret = invoker (BlockLiteral, nslevel);"
+			];
+
+			var smartEnumArrayParameterWithReturn = @"
+using System;
+using Foundation;
+using AVFoundation;
+using ObjCBindings;
+
+namespace NS {
+
+	[BindingType<SmartEnum>]
+	public enum CustomLibraryEnum {
+		[Field<EnumValue> (""None"", ""/path/to/customlibrary.framework"")]
+		None,
+		[Field<EnumValue> (""Medium"", ""/path/to/customlibrary.framework"")]
+		Medium,
+		[Field<EnumValue> (""High"", ""/path/to/customlibrary.framework"")]
+		High,
+	}
+
+	public delegate int Callback ([BindFrom (typeof(NSString))]CustomLibraryEnum[] level);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				"someTrampolineName",
+				smartEnumArrayParameterWithReturn,
+				"var ret = invoker (BlockLiteral, nsa_level);"
+			];
+
+			var refParameter = @"
+using System;
+
+namespace NS {
+	public delegate int Callback (ref int pointerParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				"someTrampolineName",
+				refParameter,
+				$"var ret = invoker (BlockLiteral, (int*) {Global ("System.Runtime")}.CompilerServices.Unsafe.AsPointer<int> (ref pointerParameter));",
+			];
+
+			var refEnumParameter = @"
+using System;
+using AVFoundation;
+
+namespace NS {
+	public class MyClass {
+		public void MyMethod (AVAudioConverterInputHandler cb) {}
+	}
+}
+";
+
+			yield return [
+				"someTrampolineName",
+				refEnumParameter,
+				$"var ret = invoker (BlockLiteral, inNumberOfPackets, ({Global ("AVFoundation.AVAudioConverterInputStatus")}*) {Global ("System.Runtime")}.CompilerServices.Unsafe.AsPointer<{Global ("AVFoundation.AVAudioConverterInputStatus")}> (ref outStatus));",
+			];
+
+			var boolReferenceParameter = @"
+using System;
+using AVFoundation;
+
+namespace NS {
+	public class MyClass {
+		public void MyMethod (AVAudioUnitComponentFilter cb) {}
+	}
+}
+";
+
+			yield return [
+				"someTrampolineName",
+				boolReferenceParameter,
+				$"var ret = invoker (BlockLiteral, comp__handle__, (byte*) {Global ("System.Runtime")}.CompilerServices.Unsafe.AsPointer<bool> (ref stop));",
+			];
+
+			var doubleReferenceParameter = @"
+using System;
+using AVFoundation;
+
+namespace NS {
+	public class MyClass {
+		public void MyMethod (AVMusicEventEnumerationBlock cb) {}
+	}
+}
+";
+
+			yield return [
+				"someTrampolineName",
+				doubleReferenceParameter,
+				$"invoker (BlockLiteral, event__handle__, (double*) {Global ("System.Runtime")}.CompilerServices.Unsafe.AsPointer<double> (ref timeStamp), (byte*) global::System.Runtime.CompilerServices.Unsafe.AsPointer<bool> (ref removeEvent));",
+			];
+		}
+
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
+	}
+
+	[Theory]
+	[AllSupportedPlatformsClassData<TestDataGetTrampolineNativeInvokeArguments>]
+	void CallNativeInvokerDelegateTests (ApplePlatform platform, string trampolineName, string inputText, string expectedExpression)
+	{
+		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
+		Assert.Single (syntaxTrees);
+		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
+		var declaration = syntaxTrees [0].GetRoot ()
+			.DescendantNodes ().OfType<MethodDeclarationSyntax> ()
+			.FirstOrDefault ();
+		Assert.NotNull (declaration);
+		Assert.True (Method.TryCreate (declaration, semanticModel, out var changes));
+		Assert.NotNull (changes);
+		// we know the first parameter of the method is the delegate
+		Assert.Single (changes.Value.Parameters);
+		var parameter = changes.Value.Parameters [0];
+		// assert it is indeed a delegate
+		Assert.NotNull (parameter.Type.Delegate);
+		var argumentSyntax = GetTrampolineNativeInvokeArguments (trampolineName, parameter.Type.Delegate);
+		var invocation = CallNativeInvokerDelegate (parameter.Type.Delegate, argumentSyntax);
+		var x = invocation.ToFullString ();
+		Assert.Equal (expectedExpression, invocation.ToFullString ());
 	}
 
 }

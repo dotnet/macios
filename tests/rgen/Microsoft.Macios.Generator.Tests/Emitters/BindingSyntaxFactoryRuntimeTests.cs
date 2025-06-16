@@ -8,6 +8,7 @@ using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.Macios.Generator.DataModel;
 using Microsoft.Macios.Generator.Extensions;
 using Xunit;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
@@ -521,6 +522,17 @@ public class BindingSyntaxFactoryRuntimeTests {
 		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
 	}
 
+	[Fact]
+	void NewTestsKnownType ()
+	{
+		var expected = $"new {Global ("AudioToolbox.AudioBuffers")} (arg1, arg2)";
+		var declaration = New (AudioBuffers, [
+			Argument (IdentifierName ("arg1")),
+			Argument (IdentifierName ("arg2"))
+		]);
+		Assert.Equal (expected, declaration.ToFullString ());
+	}
+
 	class TestDataGetNSObject : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()
 		{
@@ -888,6 +900,50 @@ public class BindingSyntaxFactoryRuntimeTests {
 		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
 	}
 
+	class TestDataAsPointerTests : IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
+		{
+			yield return [
+				IdentifierName ("int"),
+				null!,
+				ImmutableArray.Create (
+					Argument (IdentifierName ("arg1"))
+				),
+				$"(int*) {Global ("System.Runtime")}.CompilerServices.Unsafe.AsPointer<int> (arg1)"
+			];
+
+			yield return [
+				IdentifierName ("uint"),
+				null!,
+				ImmutableArray.Create (
+					Argument (IdentifierName ("arg1")),
+					Argument (IdentifierName ("arg2")),
+					Argument (IdentifierName ("arg3"))),
+				$"(uint*) {Global ("System.Runtime")}.CompilerServices.Unsafe.AsPointer<uint> (arg1, arg2, arg3)"
+			];
+
+			// test case with explicit castType
+			yield return [
+				IdentifierName ("bool"),
+				PredefinedType (Token (SyntaxKind.ByteKeyword)),
+				ImmutableArray.Create (
+					Argument (IdentifierName ("arg1"))
+				),
+				$"(byte*) {Global ("System.Runtime")}.CompilerServices.Unsafe.AsPointer<bool> (arg1)"
+			];
+		}
+
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
+	}
+
+	[Theory]
+	[ClassData (typeof (TestDataAsPointerTests))]
+	void AsPointerTests (TypeSyntax objectType, TypeSyntax? castType, ImmutableArray<ArgumentSyntax> arguments, string expectedDeclaration)
+	{
+		var declaration = AsPointer (objectType, arguments, castType);
+		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
+	}
+
 	class TestDataGetDelegateForFunctionPointer : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()
 		{
@@ -927,6 +983,26 @@ public class BindingSyntaxFactoryRuntimeTests {
 		var declaration = ThrowIfNull (variableName);
 		var expected = $"if (markers is null)\n\t{Global ("ObjCRuntime.ThrowHelper")}.ThrowArgumentNullException (nameof (markers));";
 		Assert.Equal (expected, declaration.ToFullString ());
+	}
+
+	class TestDataArgumentSyntaxForParameterTests : IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
+		{
+			yield return ["arg1", ReferenceKind.None, "arg1"];
+			yield return ["arg2", ReferenceKind.In, "in arg2"];
+			yield return ["arg3", ReferenceKind.Out, "out arg3"];
+			yield return ["arg4", ReferenceKind.Ref, "ref arg4"];
+		}
+
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
+	}
+
+	[Theory]
+	[ClassData (typeof (TestDataArgumentSyntaxForParameterTests))]
+	void ArgumentSyntaxForParameterTests (string argumentName, ReferenceKind referenceKind, string expectedSyntax)
+	{
+		var argumentSyntax = ArgumentForParameter (argumentName, referenceKind);
+		Assert.Equal (expectedSyntax, argumentSyntax.ToFullString ());
 	}
 
 }

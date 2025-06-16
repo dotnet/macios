@@ -832,6 +832,9 @@
       <Item ItemId=";MT0078" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Incremental builds are enabled with a deployment target < 8.0 (currently {0}). This is not supported (the resulting application will not launch on iOS 9), so the deployment target will be set to 8.0.]D;]A;		]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Las compilaciones incrementales están habilitadas con un destino de implementación < 8.0 (actualmente {0}). Esto no se admite (la aplicación resultante no se iniciará en iOS 9), por lo que el destino de implementación se establecerá en 8.0.]D;]A;		]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>

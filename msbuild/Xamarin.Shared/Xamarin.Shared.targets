@@ -728,7 +728,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	</PropertyGroup>
 
 	<Target Name="_CompileEntitlements"
-		Condition="'$(_RequireCodeSigning)' == 'true' Or '$(CodesignEntitlements)' != ''"
+		Condition="'$(EnableCodeSigning)' == 'true' Or '$(CodesignEntitlements)' != ''"
 		DependsOnTargets="$(_CompileEntitlementsDependsOn)"
 		Outputs="$(_CompiledEntitlementsPath)">
 		<!-- Automatically add the 'allow-jit' entitlement for desktop release builds in .NET -->
@@ -1982,10 +1982,11 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			_ComputeTargetFrameworkMoniker;
 			_GenerateBundleName;
 			_ReadAppManifest;
+			$(CodesignConfigureDependsOn);
 		</_DetectSigningIdentityDependsOn>
 	</PropertyGroup>
 
-	<Target Name="_DetectSigningIdentity" Condition="'$(_CanOutputAppBundle)' == 'true'" DependsOnTargets="$(_DetectSigningIdentityDependsOn)">
+	<Target Name="_DetectSigningIdentity" Condition="'$(_CanOutputAppBundle)' == 'true' And '$(EnableCodeSigning)' == 'true'" DependsOnTargets="$(_DetectSigningIdentityDependsOn)">
 		<DetectSigningIdentity
 			SessionId="$(BuildSessionId)"
 			CodesignEntitlements="$(CodesignEntitlements)"
@@ -1995,7 +1996,6 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			BundleIdentifier="$(_BundleIdentifier)"
 			CustomEntitlements="@(CustomEntitlements)"
 			Keychain="$(CodesignKeychain)"
-			RequireCodeSigning="$(_RequireCodeSigning)"
 			SdkIsSimulator="$(_SdkIsSimulator)"
 			SdkPlatform="$(_SdkPlatform)"
 			ProvisioningProfile="$(CodesignProvision)"
@@ -2394,7 +2394,8 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 				<CodesignSigningKey Condition="'%(_CustomCodesignBundle.CodesignSigningKey)' == ''">$(_CodeSigningKey)</CodesignSigningKey>
 				<CodesignUseHardenedRuntime Condition="'%(_CustomCodesignBundle.CodesignUseHardenedRuntime)' == ''">$(UseHardenedRuntime)</CodesignUseHardenedRuntime>
 				<CodesignUseSecureTimestamp Condition="'%(_CustomCodesignBundle.CodesignUseSecureTimestamp)' == ''">$(UseHardenedRuntime)</CodesignUseSecureTimestamp>
-				<RequireCodeSigning Condition="'%(_CustomCodesignBundle.RequireCodeSigning)' == ''">$(_RequireCodeSigning)</RequireCodeSigning>
+				<EnableCodeSigning Condition="'%(_CustomCodesignBundle.EnableCodeSigning)' == '' And '%(_CustomCodesignBundle.RequireCodeSigning)' != ''">%(_CustomCodesignBundle.RequireCodeSigning)</EnableCodeSigning>
+				<EnableCodeSigning Condition="'%(_CustomCodesignBundle.EnableCodeSigning)' == ''">$(EnableCodeSigning)</EnableCodeSigning>
 				<SourceProjectPath>$(MSBuildProjectDirectory)</SourceProjectPath>
 				<BundleRelativePath Condition="'%(_CustomCodesignBundle.BundleRelativePath)' == ''">$(_AppPlugInsRelativePath)</BundleRelativePath>
 			</_CustomCodesignBundle>
@@ -2414,7 +2415,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 				<CodesignSigningKey>$(_CodeSigningKey)</CodesignSigningKey>
 				<CodesignUseHardenedRuntime>$(UseHardenedRuntime)</CodesignUseHardenedRuntime>
 				<CodesignUseSecureTimestamp>$(UseHardenedRuntime)</CodesignUseSecureTimestamp>
-				<RequireCodeSigning>$(_RequireCodeSigning)</RequireCodeSigning>
+				<EnableCodeSigning>$(EnableCodeSigning)</EnableCodeSigning>
 				<SourceProjectPath>$(MSBuildProjectDirectory)</SourceProjectPath>
 				<BundleRelativePath Condition="'$(IsAppExtension)' == 'true' and '$(IsXPCService)' != 'true'">$(_AppPlugInsRelativePath)</BundleRelativePath>
 				<BundleRelativePath Condition="'$(IsAppExtension)' == 'true' and '$(IsXPCService)' == 'true'">$(_AppXpcServicesRelativePath)</BundleRelativePath>
@@ -2567,7 +2568,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 				<CodesignSigningKey>$(_CodeSigningKey)</CodesignSigningKey>
 				<CodesignUseHardenedRuntime>$(UseHardenedRuntime)</CodesignUseHardenedRuntime>
 				<CodesignUseSecureTimestamp>$(UseHardenedRuntime)</CodesignUseSecureTimestamp>
-				<RequireCodeSigning>$(_RequireCodeSigning)</RequireCodeSigning>
+				<EnableCodeSigning>$(EnableCodeSigning)</EnableCodeSigning>
 			</_CodesignBundle>
 		</ItemGroup>
 	</Target>

@@ -156,6 +156,25 @@ The path to the `codesign_allocate` tool.
 
 By default this value is auto-detected.
 
+## CodesignConfigureDependsOn
+
+This is an extension point for the build: a developer can add any targets to
+this property to execute those targets before the build looks at any of the
+codesigning properties.
+
+This can for instance be used to disable code signing for simulator builds:
+
+```xml
+<PropertyGroup>
+  <CodesignConfigureDependsOn>$(CodesignConfigureDependsOn);DisableCodesignInSimulator</CodesignConfigureDependsOn>
+</PropertyGroup>
+<Target Name="DisableCodesignInSimulator" Condition="'$(SdkIsSimulator)' == 'true'">
+  <PropertyGroup>
+    <EnableCodeSigning>false</EnableCodeSigning>
+  </PropertyGroup>
+</Target>
+```
+
 ## CodesignDependsOn
 
 This is an extension point for the build: a developer can add any targets to
@@ -316,8 +335,7 @@ Default: true
 
 If code signing is enabled.
 
-Typically the build will automatically determine whether code signing is
-required; this automatic detection can be overridden with this property.
+Code signing is enabled by default for all platforms; this can be overridden with this property.
 
 ## EnableDefaultCodesignEntitlements
 
@@ -865,6 +883,40 @@ only scan libraries with the `[LinkWith]` attribute for Objective-C classes:
   <RequireLinkWithAttributeForObjectiveCClassSearch>true</RequireLinkWithAttributeForObjectiveCClassSearch>
 </PropertyGroup>
 ```
+
+## SdkIsSimulator
+
+This property is a read-only property (setting it will have no effect) that
+specifies whether we're building for a simulator or not.
+
+It is only set after [imports and
+properties](https://learn.microsoft.com/visualstudio/msbuild/build-process-overview#evaluate-imports-and-properties)
+have been evaluated. This means the property is not set while evaluating the
+properties in the project file, so this will _not_ work:
+
+```xml
+<PropertyGroup>
+  <EnableCodeSigning Condition="'$(SdkIsSimulator)' == 'true'">false</EnableCodeSigning>
+</PropertyGroup>
+```
+
+However, the either of the following works:
+
+```xml
+<ItemGroup>
+  <!-- item groups (and their conditions) are evaluated after properties have been evaluated -->
+  <CustomEntitlements Condition="'$(SdkIsSimulator)' == 'true'" Include="com.apple.simulator-entitlement" Type="Boolean" Value="true" />
+  <CodesignConfigureDependsOn>$(CodesignConfigureDependsOn);ConfigureSimulatorSigning</CodesignConfigureDependsOn>
+</ItemGroup>
+<!-- targets are executed after properties have been evaluated -->
+<Target Name="ConfigureSimulatorSigning">
+  <PropertyGroup>
+    <EnableCodeSigning Condition="'$(SdkIsSimulator) == 'true'">false</EnableCodeSigning>
+  </PropertyGroup>
+</Target>
+```
+
+Note: this property will always be `false` on macOS and Mac Catalyst.
 
 ## SkipStaticLibraryValidation
 

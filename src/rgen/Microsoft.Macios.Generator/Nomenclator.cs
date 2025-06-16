@@ -164,6 +164,12 @@ static class Nomenclator {
 	public static string GetTrampolineDelegateVariableName () => "del";
 
 	/// <summary>
+	/// Returns the name of the variable used to store the native invoker in trampolines.
+	/// </summary>
+	/// <returns>The name of the native invoker variable.</returns>
+	public static string GetNativeInvokerVariableName () => "invoker";
+
+	/// <summary>
 	/// Return the name of the trampoline block parameter. This is the name of the parameter that will be containing the
 	/// IntPtr to the trampoline block.
 	///
@@ -201,4 +207,9 @@ static class Nomenclator {
 	/// </summary>
 	/// <returns>The method name to be used.</returns>
 	public static string GetTrampolineDelegatePointerVariableName () => "trampoline";
+
+	/// <summary>
+	/// Returns the name used for the block literal type.
+	/// </summary>
+	public static string GetBlockLiteralName () => "BlockLiteral";
 }

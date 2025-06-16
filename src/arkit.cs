@@ -962,7 +962,7 @@ namespace ARKit {
 		void DidRemoveNode (ARSKView view, SKNode node, ARAnchor anchor);
 	}
 
-	delegate void GetGeolocationCallback (CLLocationCoordinate2D coordinate, double altitude, NSError error);
+	delegate void GetGeolocationCallback (CLLocationCoordinate2D coordinate, double altitude, NSError? error);
 
 	/// <include file="../docs/api/ARKit/ARSession.xml" path="/Documentation/Docs[@DocId='T:ARKit.ARSession']/*" />
 	[NoTV, NoMac]
@@ -1039,7 +1039,6 @@ namespace ARKit {
 		void Update (ARCollaborationData collaborationData);
 
 		[iOS (14, 0)]
-		[Async (ResultTypeName = "GeoLocationForPoint")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		[Export ("getGeoLocationForPoint:completionHandler:")]
 		void GetGeoLocation (Vector3 position, GetGeolocationCallback completionHandler);
@@ -1049,6 +1048,36 @@ namespace ARKit {
 		[Export ("captureHighResolutionFrameWithCompletion:")]
 		void CaptureHighResolutionFrame (Action<ARFrame, NSError> handler);
 	}
+
+#if !COREBUILD
+	/// <summary>Extensions to ARSession for backward compatibility.</summary>
+	public static partial class ARSessionExtensions {
+		/// <summary>Gets the geolocation for a point in the scene asynchronously.</summary>
+		/// <param name="session">The ARSession instance.</param>
+		/// <param name="position">The position in the scene to get geolocation for.</param>
+		/// <returns>A task that represents the asynchronous operation. The task result contains the geolocation information.</returns>
+		/// <remarks>This method is deprecated. Use GetGeoLocation with a callback instead.</remarks>
+		[iOS (14, 0)]
+		[Obsolete ("This method is deprecated. Use GetGeoLocation with a callback instead.")]
+		public static System.Threading.Tasks.Task<GeoLocationForPoint> GetGeoLocationAsync (this ARSession session, Vector3 position)
+		{
+			var tcs = new System.Threading.Tasks.TaskCompletionSource<GeoLocationForPoint> ();
+			
+			session.GetGeoLocation (position, (coordinate, altitude, error) => {
+				if (error != null) {
+					tcs.SetException (new Foundation.NSErrorException (error));
+				} else {
+					tcs.SetResult (new GeoLocationForPoint {
+						Coordinate = coordinate,
+						Altitude = altitude
+					});
+				}
+			});
+			
+			return tcs.Task;
+		}
+	}
+#endif
 
 	/// <summary>Interface defining methods that respond to events in an <see cref="ARKit.ARSession" />.</summary>
 	/// <remarks>To be added.</remarks>
@@ -2759,5 +2788,14 @@ namespace ARKit {
 		float Height { get; }
 	}
 
+	/// <summary>Contains the result of a geolocation lookup operation.</summary>
+	[iOS (14, 0)]
+	public class GeoLocationForPoint {
+		/// <summary>The coordinate of the geolocation.</summary>
+		public CLLocationCoordinate2D Coordinate { get; set; }
+		
+		/// <summary>The altitude of the geolocation.</summary>
+		public double Altitude { get; set; }
+	}
 
 }

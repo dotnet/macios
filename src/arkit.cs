@@ -7,8 +7,6 @@
 // Copyright 2017 Microsoft Inc. All rights reserved.
 //
 
-#nullable enable
-
 using System;
 using System.ComponentModel;
 using System.Numerics;
@@ -964,7 +962,7 @@ namespace ARKit {
 		void DidRemoveNode (ARSKView view, SKNode node, ARAnchor anchor);
 	}
 
-	delegate void GetGeolocationCallback (CLLocationCoordinate2D coordinate, double altitude, out NSError? error);
+	delegate void GetGeolocationCallback (CLLocationCoordinate2D coordinate, double altitude, out NSError error);
 
 	/// <include file="../docs/api/ARKit/ARSession.xml" path="/Documentation/Docs[@DocId='T:ARKit.ARSession']/*" />
 	[NoTV, NoMac]

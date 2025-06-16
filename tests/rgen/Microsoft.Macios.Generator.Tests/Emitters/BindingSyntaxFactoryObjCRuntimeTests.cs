@@ -984,9 +984,9 @@ public class BindingSyntaxFactoryObjCRuntimeTests {
 	void GetHandleDefaultVariableTest ()
 	{
 		var variableName = "myParam__handle__";
-		var expectedDeclaration = $"{BaseGeneratorTestClass.Global ("ObjCRuntime.NativeHandle")} {variableName} = {BaseGeneratorTestClass.Global ("System.IntPtr")}.Zero;";	
+		var expectedDeclaration = $"{BaseGeneratorTestClass.Global ("ObjCRuntime.NativeHandle")} {variableName} = {BaseGeneratorTestClass.Global ("System.IntPtr")}.Zero;";
 		var declaration = GetHandleDefaultVariable (variableName);
 		Assert.Equal (expectedDeclaration, declaration?.ToString ());
-	} 
+	}
 
 }

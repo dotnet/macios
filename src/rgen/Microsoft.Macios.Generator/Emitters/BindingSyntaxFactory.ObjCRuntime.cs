@@ -359,7 +359,7 @@ static partial class BindingSyntaxFactory {
 	/// <returns>A <see cref="LocalDeclarationStatementSyntax"/> for the auxiliary handle variable, or null if the input is not an NSObject or INativeObject, or if a variable name cannot be generated.</returns>
 	internal static LocalDeclarationStatementSyntax? GetHandleAuxVariable (in DelegateParameter parameter)
 		=> GetHandleAuxVariable (parameter.Name, parameter.Type);
-	
+
 	/// <summary>
 	/// Generates a local variable declaration for an auxiliary handle (IntPtr) initialized to IntPtr.Zero.
 	/// This is typically used to declare a default handle variable before assigning it a valid native handle.
@@ -368,19 +368,19 @@ static partial class BindingSyntaxFactory {
 	/// <returns>A <see cref="LocalDeclarationStatementSyntax"/> representing the declaration of the handle variable initialized to IntPtr.Zero.</returns>
 	internal static LocalDeclarationStatementSyntax? GetHandleDefaultVariable (string variableName)
 	{
-			// generates: var handle = IntPtr.Zero;
-			var declarator = VariableDeclarator (Identifier (variableName))
-				.WithInitializer (EqualsValueClause (
-						MemberAccessExpression (
-							SyntaxKind.SimpleMemberAccessExpression,
-							IntPtr,
-							IdentifierName ("Zero")))
-					.WithLeadingTrivia (Space).WithTrailingTrivia (Space));
+		// generates: var handle = IntPtr.Zero;
+		var declarator = VariableDeclarator (Identifier (variableName))
+			.WithInitializer (EqualsValueClause (
+					MemberAccessExpression (
+						SyntaxKind.SimpleMemberAccessExpression,
+						IntPtr,
+						IdentifierName ("Zero")))
+				.WithLeadingTrivia (Space).WithTrailingTrivia (Space));
 
-			var variableDeclaration = VariableDeclaration (NativeHandle)
-				.WithVariables (SingletonSeparatedList (declarator));
-			return LocalDeclarationStatement (variableDeclaration).NormalizeWhitespace ();
-		}
+		var variableDeclaration = VariableDeclaration (NativeHandle)
+			.WithVariables (SingletonSeparatedList (declarator));
+		return LocalDeclarationStatement (variableDeclaration).NormalizeWhitespace ();
+	}
 
 	/// <summary>
 	/// Generates a local variable declaration for an auxiliary NSString.

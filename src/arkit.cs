@@ -1049,22 +1049,7 @@ namespace ARKit {
 		void CaptureHighResolutionFrame (Action<ARFrame, NSError> handler);
 	}
 
-#if !COREBUILD
-	/// <summary>Extensions to ARSession for backward compatibility.</summary>
-	public static partial class ARSessionExtensions {
-		/// <summary>Gets the geolocation for a point in the scene asynchronously.</summary>
-		/// <param name="session">The ARSession instance.</param>
-		/// <param name="position">The position in the scene to get geolocation for.</param>
-		/// <returns>A task that represents the asynchronous operation. The task result contains the geolocation information.</returns>
-		/// <remarks>This method is deprecated and throws NotSupportedException. Use GetGeoLocation with a callback instead.</remarks>
-		[iOS (14, 0)]
-		[Obsolete ("This method is deprecated and throws NotSupportedException. Use GetGeoLocation with a callback instead.", true)]
-		public static System.Threading.Tasks.Task<GeoLocationForPoint> GetGeoLocationAsync (this ARSession session, Vector3 position)
-		{
-			throw new NotSupportedException ("This method is deprecated due to incompatible signature changes. Use GetGeoLocation with a callback instead.");
-		}
-	}
-#endif
+
 
 	/// <summary>Interface defining methods that respond to events in an <see cref="ARKit.ARSession" />.</summary>
 	/// <remarks>To be added.</remarks>
@@ -2775,14 +2760,6 @@ namespace ARKit {
 		float Height { get; }
 	}
 
-	/// <summary>Contains the result of a geolocation lookup operation.</summary>
-	[iOS (14, 0)]
-	public class GeoLocationForPoint {
-		/// <summary>The coordinate of the geolocation.</summary>
-		public CLLocationCoordinate2D Coordinate { get; set; }
-		
-		/// <summary>The altitude of the geolocation.</summary>
-		public double Altitude { get; set; }
-	}
+
 
 }

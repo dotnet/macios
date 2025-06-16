@@ -1049,8 +1049,6 @@ namespace ARKit {
 		void CaptureHighResolutionFrame (Action<ARFrame, NSError> handler);
 	}
 
-
-
 	/// <summary>Interface defining methods that respond to events in an <see cref="ARKit.ARSession" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[NoTV, NoMac]
@@ -2759,7 +2757,4 @@ namespace ARKit {
 		[Export ("height")]
 		float Height { get; }
 	}
-
-
-
 }

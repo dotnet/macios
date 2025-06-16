@@ -962,7 +962,7 @@ namespace ARKit {
 		void DidRemoveNode (ARSKView view, SKNode node, ARAnchor anchor);
 	}
 
-	delegate void GetGeolocationCallback (CLLocationCoordinate2D coordinate, double altitude, NSError? error);
+	delegate void GetGeolocationCallback (CLLocationCoordinate2D coordinate, double altitude, out NSError? error);
 
 	/// <include file="../docs/api/ARKit/ARSession.xml" path="/Documentation/Docs[@DocId='T:ARKit.ARSession']/*" />
 	[NoTV, NoMac]
@@ -1056,25 +1056,12 @@ namespace ARKit {
 		/// <param name="session">The ARSession instance.</param>
 		/// <param name="position">The position in the scene to get geolocation for.</param>
 		/// <returns>A task that represents the asynchronous operation. The task result contains the geolocation information.</returns>
-		/// <remarks>This method is deprecated. Use GetGeoLocation with a callback instead.</remarks>
+		/// <remarks>This method is deprecated and throws NotSupportedException. Use GetGeoLocation with a callback instead.</remarks>
 		[iOS (14, 0)]
-		[Obsolete ("This method is deprecated. Use GetGeoLocation with a callback instead.")]
+		[Obsolete ("This method is deprecated and throws NotSupportedException. Use GetGeoLocation with a callback instead.", true)]
 		public static System.Threading.Tasks.Task<GeoLocationForPoint> GetGeoLocationAsync (this ARSession session, Vector3 position)
 		{
-			var tcs = new System.Threading.Tasks.TaskCompletionSource<GeoLocationForPoint> ();
-			
-			session.GetGeoLocation (position, (coordinate, altitude, error) => {
-				if (error != null) {
-					tcs.SetException (new Foundation.NSErrorException (error));
-				} else {
-					tcs.SetResult (new GeoLocationForPoint {
-						Coordinate = coordinate,
-						Altitude = altitude
-					});
-				}
-			});
-			
-			return tcs.Task;
+			throw new NotSupportedException ("This method is deprecated due to incompatible signature changes. Use GetGeoLocation with a callback instead.");
 		}
 	}
 #endif

@@ -22,13 +22,13 @@ namespace Microsoft.Macios.Generator.Tests.Emitters;
 public class BindingSyntaxFactoryRuntimeTests {
 
 	[Theory]
-	[InlineData ("Test", "global::ObjCRuntime.Selector.GetHandle (\"Test\")")]
-	[InlineData ("name", "global::ObjCRuntime.Selector.GetHandle (\"name\")")]
-	[InlineData ("setName:", "global::ObjCRuntime.Selector.GetHandle (\"setName:\")")]
+	[InlineData ("Test", "ObjCRuntime.Selector.GetHandle (\"Test\")")]
+	[InlineData ("name", "ObjCRuntime.Selector.GetHandle (\"name\")")]
+	[InlineData ("setName:", "ObjCRuntime.Selector.GetHandle (\"setName:\")")]
 	void SelectorGetHandleTests (string selector, string expectedDeclaration)
 	{
 		var declaration = SelectorGetHandle (selector);
-		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
+		Assert.Equal (Global (expectedDeclaration), declaration.ToFullString ());
 	}
 
 	class TestDataMessagingInvocationTests : IEnumerable<object []> {
@@ -39,7 +39,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 				"IntPtr_objc_msgSend",
 				"string",
 				ImmutableArray<ArgumentSyntax>.Empty,
-				"global::ObjCRuntime.Messaging.IntPtr_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"string\"))"
+				$"{Global ("ObjCRuntime.Messaging")}.IntPtr_objc_msgSend (this.Handle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"string\"))"
 			];
 
 			// one param extra
@@ -50,7 +50,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 				"IntPtr_objc_msgSend",
 				"string",
 				args,
-				"global::ObjCRuntime.Messaging.IntPtr_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"string\"), arg1)"
+				$"{Global ("ObjCRuntime.Messaging")}.IntPtr_objc_msgSend (this.Handle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"string\"), arg1)"
 			];
 
 			// several params
@@ -63,7 +63,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 				"IntPtr_objc_msgSend",
 				"string",
 				args,
-				"global::ObjCRuntime.Messaging.IntPtr_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"string\"), arg1, arg2, arg3)"
+				$"{Global ("ObjCRuntime.Messaging")}.IntPtr_objc_msgSend (this.Handle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"string\"), arg1, arg2, arg3)"
 			];
 
 			// out parameter
@@ -75,7 +75,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 				"IntPtr_objc_msgSend",
 				"string",
 				args,
-				"global::ObjCRuntime.Messaging.IntPtr_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"string\"), &errorValue)"
+				$"{Global ("ObjCRuntime.Messaging")}.IntPtr_objc_msgSend (this.Handle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"string\"), &errorValue)"
 			];
 
 		}
@@ -100,7 +100,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 			yield return [
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1"))),
-				"global::CoreFoundation.CFArray.StringArrayFromHandle (arg1)"
+				$"{Global ("CoreFoundation.CFArray")}.StringArrayFromHandle (arg1)"
 			];
 
 			yield return [
@@ -108,7 +108,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 					Argument (IdentifierName ("arg1")),
 					Argument (IdentifierName ("arg2")),
 					Argument (IdentifierName ("arg3"))),
-				"global::CoreFoundation.CFArray.StringArrayFromHandle (arg1, arg2, arg3)"
+				$"{Global ("CoreFoundation.CFArray")}.StringArrayFromHandle (arg1, arg2, arg3)"
 			];
 		}
 
@@ -130,7 +130,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 			yield return [
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1"))),
-				"global::CoreFoundation.CFString.FromHandle (arg1)"
+				$"{Global ("CoreFoundation.CFString")}.FromHandle (arg1)"
 			];
 
 			yield return [
@@ -138,7 +138,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 					Argument (IdentifierName ("arg1")),
 					Argument (IdentifierName ("arg2")),
 					Argument (IdentifierName ("arg3"))),
-				"global::CoreFoundation.CFString.FromHandle (arg1, arg2, arg3)"
+				$"{Global ("CoreFoundation.CFString")}.FromHandle (arg1, arg2, arg3)"
 			];
 		}
 
@@ -356,7 +356,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 				"int".GetIdentifierName ([]),
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1"))),
-				"global::Foundation.NSArray.ArrayFromHandleFunc<int> (arg1)"
+				$"{Global ("Foundation.NSArray")}.ArrayFromHandleFunc<int> (arg1)"
 			];
 
 			yield return [
@@ -365,7 +365,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 					Argument (IdentifierName ("arg1")),
 					Argument (IdentifierName ("arg2")),
 					Argument (IdentifierName ("arg3"))),
-				"global::Foundation.NSArray.ArrayFromHandleFunc<string> (arg1, arg2, arg3)"
+				$"{Global ("Foundation.NSArray")}.ArrayFromHandleFunc<string> (arg1, arg2, arg3)"
 			];
 		}
 
@@ -387,14 +387,14 @@ public class BindingSyntaxFactoryRuntimeTests {
 				ReturnTypeForEnum ("AVFoundation.AVCaptureSystemPressureLevel", isSmartEnum: true),
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1"))),
-				"global::AVFoundation.AVCaptureSystemPressureLevelExtensions.GetValue (arg1)"
+				$"{Global ("AVFoundation.AVCaptureSystemPressureLevelExtensions")}.GetValue (arg1)"
 			];
 
 			yield return [
 				ReturnTypeForEnum ("AVFoundation.AVCaptureSystemPressureLevel", isSmartEnum: true, isNullable: true),
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1"))),
-				"global::AVFoundation.AVCaptureSystemPressureLevelExtensions.GetNullableValue (arg1)"
+				$"{Global ("AVFoundation.AVCaptureSystemPressureLevelExtensions")}.GetNullableValue (arg1)"
 			];
 		}
 
@@ -416,7 +416,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 			yield return [
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1"))),
-				"global::Foundation.NSArray.FromNSObjects (arg1)"
+				$"{Global ("Foundation.NSArray")}.FromNSObjects (arg1)"
 			];
 
 			yield return [
@@ -424,7 +424,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 					Argument (IdentifierName ("arg1")),
 					Argument (IdentifierName ("arg2")),
 					Argument (IdentifierName ("arg3"))),
-				"global::Foundation.NSArray.FromNSObjects (arg1, arg2, arg3)"
+				$"{Global ("Foundation.NSArray")}.FromNSObjects (arg1, arg2, arg3)"
 			];
 		}
 
@@ -446,14 +446,14 @@ public class BindingSyntaxFactoryRuntimeTests {
 				SmartEnumGetValue (
 					ReturnTypeForEnum ("AVFoundation.AVCaptureSystemPressureLevel", isSmartEnum: true),
 					[Argument (IdentifierName ("arg1"))]),
-				"global::AVFoundation.AVCaptureSystemPressureLevelExtensions.GetValue (arg1).GetHandle ()"
+				$"{Global ("AVFoundation.AVCaptureSystemPressureLevelExtensions")}.GetValue (arg1).GetHandle ()"
 			];
 
 			yield return [
 				SmartEnumGetValue (
 					ReturnTypeForEnum ("AVFoundation.AVCaptureSystemPressureLevel", isSmartEnum: true, isNullable: true),
 					[Argument (IdentifierName ("arg1"))]),
-				"global::AVFoundation.AVCaptureSystemPressureLevelExtensions.GetNullableValue (arg1).GetHandle ()"
+				$"{Global ("AVFoundation.AVCaptureSystemPressureLevelExtensions")}.GetNullableValue (arg1).GetHandle ()"
 			];
 		}
 
@@ -541,7 +541,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1"))),
 				false,
-				$"global::ObjCRuntime.Runtime.GetNSObject<{Global ("Foundation.NSString")}> (arg1)"
+				$"{Global ("ObjCRuntime.Runtime")}.GetNSObject<{Global ("Foundation.NSString")}> (arg1)"
 			];
 
 			yield return [
@@ -549,7 +549,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1"))),
 				true,
-				$"global::ObjCRuntime.Runtime.GetNSObject<{Global ("Foundation.NSString")}> (arg1)!"
+				$"{Global ("ObjCRuntime.Runtime")}.GetNSObject<{Global ("Foundation.NSString")}> (arg1)!"
 			];
 
 			yield return [
@@ -560,7 +560,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 					Argument (IdentifierName ("arg3"))
 				),
 				false,
-				$"global::ObjCRuntime.Runtime.GetNSObject<{Global ("Foundation.NSNumber")}> (arg1, arg2, arg3)"
+				$"{Global ("ObjCRuntime.Runtime")}.GetNSObject<{Global ("Foundation.NSNumber")}> (arg1, arg2, arg3)"
 			];
 
 			yield return [
@@ -571,7 +571,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 					Argument (IdentifierName ("arg3"))
 				),
 				true,
-				$"global::ObjCRuntime.Runtime.GetNSObject<{Global ("Foundation.NSNumber")}> (arg1, arg2, arg3)!"
+				$"{Global ("ObjCRuntime.Runtime")}.GetNSObject<{Global ("Foundation.NSNumber")}> (arg1, arg2, arg3)!"
 			];
 		}
 
@@ -594,7 +594,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1"))),
 				false,
-				$"global::ObjCRuntime.Runtime.GetINativeObject<{Global ("Foundation.NSString")}> (arg1)"
+				$"{Global ("ObjCRuntime.Runtime")}.GetINativeObject<{Global ("Foundation.NSString")}> (arg1)"
 			];
 
 			yield return [
@@ -602,7 +602,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1"))),
 				true,
-				$"global::ObjCRuntime.Runtime.GetINativeObject<{Global ("Foundation.NSString")}> (arg1)!"
+				$"{Global ("ObjCRuntime.Runtime")}.GetINativeObject<{Global ("Foundation.NSString")}> (arg1)!"
 			];
 
 			yield return [
@@ -613,7 +613,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 					Argument (IdentifierName ("arg3"))
 				),
 				false,
-				$"global::ObjCRuntime.Runtime.GetINativeObject<{Global ("Foundation.NSNumber")}> (arg1, arg2, arg3)"
+				$"{Global ("ObjCRuntime.Runtime")}.GetINativeObject<{Global ("Foundation.NSNumber")}> (arg1, arg2, arg3)"
 			];
 
 			yield return [
@@ -624,7 +624,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 					Argument (IdentifierName ("arg3"))
 				),
 				true,
-				$"global::ObjCRuntime.Runtime.GetINativeObject<{Global ("Foundation.NSNumber")}> (arg1, arg2, arg3)!"
+				$"{Global ("ObjCRuntime.Runtime")}.GetINativeObject<{Global ("Foundation.NSNumber")}> (arg1, arg2, arg3)!"
 			];
 		}
 
@@ -649,7 +649,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 					[Argument (IdentifierName ("enumPtr"))]
 					),
 				false,
-				"enumPtr == IntPtr.Zero ? null : global::AVFoundation.AVCaptureSystemPressureLevelExtensions.GetValue (enumPtr)"
+				$"enumPtr == IntPtr.Zero ? null : {Global ("AVFoundation.AVCaptureSystemPressureLevelExtensions")}.GetValue (enumPtr)"
 			];
 
 			yield return [
@@ -659,7 +659,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 					[Argument (IdentifierName ("enumPtr"))]
 					),
 				true,
-				"enumPtr == IntPtr.Zero ? null! : global::AVFoundation.AVCaptureSystemPressureLevelExtensions.GetValue (enumPtr)"
+				$"enumPtr == IntPtr.Zero ? null! : {Global ("AVFoundation.AVCaptureSystemPressureLevelExtensions")}.GetValue (enumPtr)"
 			];
 		}
 
@@ -680,7 +680,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 			yield return [
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1"))),
-				"global::ObjCRuntime.Runtime.RetainAndAutoreleaseNSObject (arg1)",
+				$"{Global ("ObjCRuntime.Runtime")}.RetainAndAutoreleaseNSObject (arg1)",
 			];
 
 			yield return [
@@ -689,7 +689,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 					Argument (IdentifierName ("arg2")),
 					Argument (IdentifierName ("arg3"))
 				),
-				"global::ObjCRuntime.Runtime.RetainAndAutoreleaseNSObject (arg1, arg2, arg3)",
+				$"{Global ("ObjCRuntime.Runtime")}.RetainAndAutoreleaseNSObject (arg1, arg2, arg3)",
 			];
 		}
 
@@ -710,7 +710,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 			yield return [
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1"))),
-				"global::ObjCRuntime.Runtime.RetainAndAutoreleaseNativeObject (arg1)",
+				$"{Global ("ObjCRuntime.Runtime")}.RetainAndAutoreleaseNativeObject (arg1)",
 			];
 
 			yield return [
@@ -719,7 +719,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 					Argument (IdentifierName ("arg2")),
 					Argument (IdentifierName ("arg3"))
 				),
-				"global::ObjCRuntime.Runtime.RetainAndAutoreleaseNativeObject (arg1, arg2, arg3)",
+				$"{Global ("ObjCRuntime.Runtime")}.RetainAndAutoreleaseNativeObject (arg1, arg2, arg3)",
 			];
 		}
 
@@ -741,7 +741,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 				"NSObject".GetIdentifierName (["Foundation"]),
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1"))),
-				$"global::CoreFoundation.CFArray.ArrayFromHandle<{Global ("Foundation.NSObject")}> (arg1)",
+				$"{Global ("CoreFoundation.CFArray")}.ArrayFromHandle<{Global ("Foundation.NSObject")}> (arg1)",
 			];
 
 			yield return [
@@ -751,7 +751,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 					Argument (IdentifierName ("arg2")),
 					Argument (IdentifierName ("arg3"))
 				),
-				$"global::CoreFoundation.CFArray.ArrayFromHandle<{Global ("Foundation.NSString")}> (arg1, arg2, arg3)",
+				$"{Global ("CoreFoundation.CFArray")}.ArrayFromHandle<{Global ("Foundation.NSString")}> (arg1, arg2, arg3)",
 			];
 		}
 
@@ -773,7 +773,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 				"NSObject".GetIdentifierName (["Foundation"]),
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1"))),
-				$"global::Foundation.NSArray.ArrayFromHandle<{Global ("Foundation.NSObject")}> (arg1)",
+				$"{Global ("Foundation.NSArray")}.ArrayFromHandle<{Global ("Foundation.NSObject")}> (arg1)",
 			];
 
 			yield return [
@@ -783,7 +783,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 					Argument (IdentifierName ("arg2")),
 					Argument (IdentifierName ("arg3"))
 				),
-				$"global::Foundation.NSArray.ArrayFromHandle<{Global ("Foundation.NSString")}> (arg1, arg2, arg3)",
+				$"{Global ("Foundation.NSArray")}.ArrayFromHandle<{Global ("Foundation.NSString")}> (arg1, arg2, arg3)",
 			];
 		}
 
@@ -829,7 +829,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 				new [] { "Foundation" },
 				"NSObject",
 				true,
-				"global::Foundation.NSObject",
+				Global ("Foundation.NSObject"),
 			];
 
 			// multiple namespaces
@@ -853,7 +853,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 				},
 				"Unsafe",
 				true,
-				"global::System.Runtime.CompilerServices.Unsafe"
+				Global ("System.Runtime.CompilerServices.Unsafe")
 			];
 		}
 
@@ -876,7 +876,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1"))
 				),
-				$"global::System.Runtime.CompilerServices.Unsafe.AsRef<{Global ("Foundation.NSObject")}> (arg1)"
+				$"{Global ("System.Runtime.CompilerServices.Unsafe")}.AsRef<{Global ("Foundation.NSObject")}> (arg1)"
 			];
 
 			yield return [
@@ -885,7 +885,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 					Argument (IdentifierName ("arg1")),
 					Argument (IdentifierName ("arg2")),
 					Argument (IdentifierName ("arg3"))),
-				$"global::System.Runtime.CompilerServices.Unsafe.AsRef<{Global ("Foundation.NSString")}> (arg1, arg2, arg3)"
+				$"{Global ("System.Runtime.CompilerServices.Unsafe")}.AsRef<{Global ("Foundation.NSString")}> (arg1, arg2, arg3)"
 			];
 		}
 
@@ -909,7 +909,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1"))
 				),
-				$"(int*) {Global ("System.Runtime")}.CompilerServices.Unsafe.AsPointer<int> (arg1)"
+				$"(int*) {Global ("System.Runtime.CompilerServices.Unsafe")}.AsPointer<int> (arg1)"
 			];
 
 			yield return [
@@ -919,7 +919,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 					Argument (IdentifierName ("arg1")),
 					Argument (IdentifierName ("arg2")),
 					Argument (IdentifierName ("arg3"))),
-				$"(uint*) {Global ("System.Runtime")}.CompilerServices.Unsafe.AsPointer<uint> (arg1, arg2, arg3)"
+				$"(uint*) {Global ("System.Runtime.CompilerServices.Unsafe")}.AsPointer<uint> (arg1, arg2, arg3)"
 			];
 
 			// test case with explicit castType
@@ -952,7 +952,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1"))
 				),
-				$"global::System.Runtime.InteropServices.Marshal.GetDelegateForFunctionPointer<{Global ("NS.MyDelegateType")}> (arg1)"
+				$"{Global ("System.Runtime.InteropServices.Marshal")}.GetDelegateForFunctionPointer<{Global ("NS.MyDelegateType")}> (arg1)"
 			];
 
 			yield return [
@@ -961,7 +961,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 					Argument (IdentifierName ("arg1")),
 					Argument (IdentifierName ("arg2")),
 					Argument (IdentifierName ("arg3"))),
-				$"global::System.Runtime.InteropServices.Marshal.GetDelegateForFunctionPointer<{Global ("System.Action<string>")}> (arg1, arg2, arg3)"
+				$"{Global ("System.Runtime.InteropServices.Marshal")}.GetDelegateForFunctionPointer<{Global ("System.Action<string>")}> (arg1, arg2, arg3)"
 			];
 		}
 

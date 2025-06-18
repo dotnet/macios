@@ -194,7 +194,7 @@ namespace AuthenticationServices {
 	}
 
 	/// <summary>Delegate used in callbacks by <see cref="AuthenticationServices.ASCredentialIdentityStore" />.</summary>
-	delegate void ASCredentialIdentityStoreCompletionHandler (bool success, NSError error);
+	delegate void ASCredentialIdentityStoreCompletionHandler (bool success, [NullAllowed] NSError error);
 	delegate void ASCredentialIdentityStoreGetCredentialIdentitiesHandler (IASCredentialIdentity [] credentialIdentities);
 
 	/// <summary>A class whose shared instance (see <see cref="AuthenticationServices.ASCredentialIdentityStore.SharedStore" />) holds credentials across providers.</summary>

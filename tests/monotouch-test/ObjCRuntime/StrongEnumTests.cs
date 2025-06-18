@@ -15,7 +15,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		[Test]
 		public void GetConstant ()
 		{
-		Assert.Multiple (() => {
+			Assert.Multiple (() => {
 				var allTypes = typeof (NSObject).Assembly.GetTypes ();
 				var types = allTypes.ToDictionary (v => v.FullName, v => v);
 				var valuesToSkip = GetSkippedEnumValues ().ToHashSet ();
@@ -50,7 +50,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			});
 		}
 
-		Enum[] GetSkippedEnumValues ()
+		Enum [] GetSkippedEnumValues ()
 		{
 			var rv = new List<Enum> () {
 				global::AVFoundation.AVCaptureDeviceType.BuiltInDualCamera,
@@ -89,11 +89,11 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			if (!type.IsValueType)
 				return type;
 			if (!type.IsGenericType)
-                return type;
-            var ggtd = type.GetGenericTypeDefinition ();
-            if (ggtd.Name != "Nullable`1")
-                return type;
-            return type.GetGenericArguments () [0];
+				return type;
+			var ggtd = type.GetGenericTypeDefinition ();
+			if (ggtd.Name != "Nullable`1")
+				return type;
+			return type.GetGenericArguments () [0];
 		}
 	}
 }

@@ -224,7 +224,7 @@ public partial class Generator {
 				indent++;
 				print ("get {");
 				indent++;
-				var actualLibName =useFieldAttrLibName ? libname : library_name;
+				var actualLibName = useFieldAttrLibName ? libname : library_name;
 				if (isBackingFieldValueType) {
 					print ($"if (!values [{n}].HasValue)");
 					print ($"\tvalues [{n}] = Dlfcn.Get{backingFieldType.Name} (Libraries.{actualLibName}.Handle, \"{fa.SymbolName}\");");

@@ -109,6 +109,9 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	<UsingTask TaskName="Xamarin.MacDev.Tasks.WriteItemsToFile" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask TaskName="Xamarin.MacDev.Tasks.Zip" AssemblyFile="$(_TaskAssemblyName)" />
 
+	<!-- .NET tasks we use -->
+	<UsingTask TaskName="Microsoft.NET.Build.Tasks.GetNuGetShortFolderName" AssemblyFile="$(MicrosoftNETBuildTasksAssembly)" />
+
 	<Import Project="$(MSBuildThisFileDirectory)$(MSBuildThisFileName).Before.targets"
 			Condition="Exists('$(MSBuildThisFileDirectory)$(MSBuildThisFileName).Before.targets')"/>
 

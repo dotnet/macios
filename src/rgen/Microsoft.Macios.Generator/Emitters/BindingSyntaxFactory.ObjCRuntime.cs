@@ -897,6 +897,62 @@ static partial class BindingSyntaxFactory {
 	}
 
 	/// <summary>
+	/// Generates a local variable declaration for an auxiliary variable that holds a native block created from a nullable C# delegate.
+	/// This method is used to handle block parameters that can be null. It generates a call to a static `CreateNullableBlock`
+	/// method on a trampoline-specific static bridge class. This helper method is responsible for creating the native block
+	/// if the delegate is not null, or returning `IntPtr.Zero` if it is.
+	/// </summary>
+	/// <param name="trampolineName">The name of the trampoline, used to identify the correct static bridge class.</param>
+	/// <param name="variableName">The name of the C# delegate variable.</param>
+	/// <param name="blockTypeInfo">The <see cref="TypeInfo"/> of the delegate.</param>
+	/// <returns>A <see cref="LocalDeclarationStatementSyntax"/> for the auxiliary nullable block variable.</returns>
+	internal static LocalDeclarationStatementSyntax GetNullableBlockAuxVariable (string trampolineName, string variableName, in TypeInfo blockTypeInfo)
+	{
+		var staticBridgeClassName =
+			Nomenclator.GetTrampolineClassName (trampolineName, Nomenclator.TrampolineClassType.StaticBridgeClass);
+		// generates the call to create the nullable block
+		var invocation = InvocationExpression (
+				MemberAccessExpression (
+					SyntaxKind.SimpleMemberAccessExpression,
+					MemberAccessExpression (
+						SyntaxKind.SimpleMemberAccessExpression,
+						Trampolines,
+						IdentifierName (staticBridgeClassName)),
+					IdentifierName ("CreateNullableBlock").WithTrailingTrivia (Space)))
+			.WithArgumentList (
+				ArgumentList (
+					SingletonSeparatedList (
+						Argument ( IdentifierName (variableName)))));
+		// variable declarator 'name = invocation'
+		var declarator = VariableDeclarator (
+				Identifier (Nomenclator.GetNameForVariableType (variableName, Nomenclator.VariableType.NullableBlock)!).WithTrailingTrivia (Space))
+			.WithInitializer (
+				EqualsValueClause (invocation.WithLeadingTrivia (Space)));
+		// var declaration
+		return LocalDeclarationStatement (
+			VariableDeclaration (
+					IdentifierName (
+						Identifier (
+							TriviaList (),
+							SyntaxKind.VarKeyword,
+							"var",
+							"var",
+							TriviaList (Space))))
+				.WithVariables (
+					SingletonSeparatedList (declarator)));
+	}
+	
+	/// <summary>
+	/// Generates a local variable declaration for an auxiliary variable that holds a native block created from a nullable C# delegate.
+	/// This is a convenience overload for <see cref="GetNullableBlockAuxVariable(string, string, in TypeInfo)"/>.
+	/// </summary>
+	/// <param name="trampolineName">The name of the trampoline, used to identify the correct static bridge class.</param>
+	/// <param name="parameter">The <see cref="DelegateParameter"/> representing the C# delegate.</param>
+	/// <returns>A <see cref="LocalDeclarationStatementSyntax"/> for the auxiliary nullable block variable.</returns>
+	internal static LocalDeclarationStatementSyntax GetNullableBlockAuxVariable (string trampolineName, DelegateParameter parameter)
+		=> GetNullableBlockAuxVariable (trampolineName, parameter.Name, parameter.Type);
+
+	/// <summary>
 	/// Returns the declaration needed for the string field of a given selector.
 	/// </summary>
 	/// <param name="selector">The selector to be store in the field.</param>

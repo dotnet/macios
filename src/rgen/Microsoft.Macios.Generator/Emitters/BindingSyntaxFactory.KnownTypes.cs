@@ -8,6 +8,15 @@ namespace Microsoft.Macios.Generator.Emitters;
 
 static partial class BindingSyntaxFactory {
 
+	// AudioToolbox
+
+	/// <summary>
+	/// TypeSyntax for AudioToolbox.AudioBuffers.
+	/// </summary>
+	public static readonly TypeSyntax AudioBuffers = StringExtensions.GetIdentifierName (
+		@namespace: ["AudioToolbox"],
+		@class: "AudioBuffers");
+
 	// CoreFoundation types
 
 	/// <summary>
@@ -74,6 +83,13 @@ static partial class BindingSyntaxFactory {
 	public static readonly TypeSyntax BlockLiteral = StringExtensions.GetIdentifierName (
 		@namespace: ["ObjCRuntime"],
 		@class: "BlockLiteral");
+
+	/// <summary>
+	/// TypeSyntax for ObjCRuntime.BlockLiteral.
+	/// </summary>
+	public static readonly TypeSyntax ThrowHelper = StringExtensions.GetIdentifierName (
+		@namespace: ["ObjCRuntime"],
+		@class: "ThrowHelper");
 
 	// Foundation types
 
@@ -142,6 +158,12 @@ static partial class BindingSyntaxFactory {
 		@namespace: ["CoreMedia"],
 		@class: "CMTag");
 
+	/// <summary>
+	/// TypeSyntax for CoreMedia.CMSampleBuffer.
+	/// </summary>
+	public static readonly TypeSyntax CMSampleBuffer = StringExtensions.GetIdentifierName (
+		@namespace: ["CoreMedia"],
+		@class: "CMSampleBuffer");
 
 	// System types
 
@@ -165,5 +187,20 @@ static partial class BindingSyntaxFactory {
 	public readonly static TypeSyntax EventHandler = StringExtensions.GetIdentifierName (
 		@namespace: ["System"],
 		@class: "EventHandler");
+
+	/// <summary>
+	/// TypeSyntax for System.GC.
+	/// </summary>
+	public readonly static TypeSyntax GC = StringExtensions.GetIdentifierName (
+		@namespace: ["System"],
+		@class: "GC");
+
+	/// <summary>
+	/// TypeSyntax for System.Runtime.CompilerServices.Unsafe.
+	/// </summary>
+	public readonly static TypeSyntax Unsafe = StringExtensions.GetIdentifierName (
+		@namespace: ["System", "Runtime", "CompilerServices"],
+		@class: "Unsafe");
+
 
 }

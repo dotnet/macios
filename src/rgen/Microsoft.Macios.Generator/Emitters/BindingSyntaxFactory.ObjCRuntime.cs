@@ -210,18 +210,20 @@ static partial class BindingSyntaxFactory {
 	}
 
 	/// <summary>
-	/// Returns the aux nsarray variable for an array object. This method will do the following:
-	/// 1. Check if the object is nullable or not.
-	/// 2. Use the correct NSArray method depending on the content of the array. 
+	/// Generates a local variable declaration for an auxiliary NSArray.
+	/// This is used when a C# array needs to be passed to an Objective-C method expecting an NSArray.
+	/// The method handles nullable arrays by assigning null to the auxiliary variable if the input array is null.
 	/// </summary>
-	/// <param name="parameter">The parameter whose aux variable we want to generate.</param>
-	/// <returns>The variable declaration for the NSArray aux variable of the parameter.</returns>
-	internal static LocalDeclarationStatementSyntax? GetNSArrayAuxVariable (in Parameter parameter)
+	/// <param name="parameterName">The name of the C# array parameter.</param>
+	/// <param name="parameterType">The <see cref="TypeInfo"/> of the C# array parameter.</param>
+	/// <returns>A <see cref="LocalDeclarationStatementSyntax"/> for the auxiliary NSArray variable, or null if the input is not an array or if a variable name cannot be generated.</returns>
+	internal static LocalDeclarationStatementSyntax? GetNSArrayAuxVariable (string parameterName,
+		in TypeInfo parameterType)
 	{
-		if (!parameter.Type.IsArray)
+		if (!parameterType.IsArray)
 			return null;
-		var nsArrayFactoryMethod = parameter.Type.Name switch {
-			"string" => "FromStrings",
+		var nsArrayFactoryMethod = parameterType.ArrayElementType switch {
+			SpecialType.System_String => "FromStrings",
 			_ => "FromNSObjects" // the general assumption is that we are working with nsobjects unless we have a bind form
 		};
 		// syntax that calls the NSArray factory method using the parameter: NSArray.FromNSObjects (targetTensors);
@@ -229,19 +231,19 @@ static partial class BindingSyntaxFactory {
 				NSArray, IdentifierName (nsArrayFactoryMethod).WithTrailingTrivia (Space)))
 			.WithArgumentList (
 				ArgumentList (SingletonSeparatedList (
-					Argument (IdentifierName (parameter.Name)))));
+					Argument (IdentifierName (parameterName)))));
 
 		// variable name
-		var variableName = Nomenclator.GetNameForVariableType (parameter.Name, Nomenclator.VariableType.NSArray);
+		var variableName = Nomenclator.GetNameForVariableType (parameterName, Nomenclator.VariableType.NSArray);
 		if (variableName is null)
 			return null;
 		var declarator = VariableDeclarator (Identifier (variableName));
 		// we have the basic constructs, now depending on if the variable is nullable or not, we need to write the initializer 	
-		if (parameter.Type.IsNullable) {
+		if (parameterType.IsNullable) {
 			// writes the param ? null : NSArray expression
 			var nullCheck = ConditionalExpression (
 				IsPatternExpression (
-					IdentifierName (parameter.Name).WithLeadingTrivia (Space).WithTrailingTrivia (Space),
+					IdentifierName (parameterName).WithLeadingTrivia (Space).WithTrailingTrivia (Space),
 					ConstantPattern (LiteralExpression (SyntaxKind.NullLiteralExpression).WithLeadingTrivia (Space)
 						.WithTrailingTrivia (Space))),
 				LiteralExpression (
@@ -266,44 +268,58 @@ static partial class BindingSyntaxFactory {
 	}
 
 	/// <summary>
-	/// Returns the aux variable for a handle object. This method will do the following:
-	/// 1. Check if the object is nullable or not.
-	/// 2. Use the correct GetHandle method depending on the content of the object.
+	/// Generates a local variable declaration for an auxiliary NSArray.
+	/// This is a convenience overload for <see cref="GetNSArrayAuxVariable(string, in TypeInfo)"/>.
 	/// </summary>
-	internal static LocalDeclarationStatementSyntax? GetHandleAuxVariable (in Parameter parameter,
-		bool withNullAllowed = false)
+	/// <param name="parameter">The <see cref="Parameter"/> representing the C# array.</param>
+	/// <returns>A <see cref="LocalDeclarationStatementSyntax"/> for the auxiliary NSArray variable, or null if the input is not an array or if a variable name cannot be generated.</returns>
+	internal static LocalDeclarationStatementSyntax? GetNSArrayAuxVariable (in Parameter parameter)
+		=> GetNSArrayAuxVariable (parameter.Name, parameter.Type);
+
+	/// <summary>
+	/// Generates a local variable declaration for an auxiliary NSArray.
+	/// This is a convenience overload for <see cref="GetNSArrayAuxVariable(string, in TypeInfo)"/> for delegate parameters.
+	/// </summary>
+	/// <param name="parameter">The <see cref="DelegateParameter"/> representing the C# array.</param>
+	/// <returns>A <see cref="LocalDeclarationStatementSyntax"/> for the auxiliary NSArray variable, or null if the input is not an array or if a variable name cannot be generated.</returns>
+	internal static LocalDeclarationStatementSyntax? GetNSArrayAuxVariable (in DelegateParameter parameter)
+		=> GetNSArrayAuxVariable (parameter.Name, parameter.Type);
+
+	/// <summary>
+	/// Generates a local variable declaration for an auxiliary handle (IntPtr).
+	/// This is used when a C# object (NSObject or INativeObject) needs to be passed as its handle to an Objective-C method.
+	/// The method handles nullable objects by calling `GetNonNullHandle` if the object is nullable, otherwise `GetHandle`.
+	/// </summary>
+	/// <param name="parameterName">The name of the C# object parameter.</param>
+	/// <param name="parameterType">The <see cref="TypeInfo"/> of the C# object parameter. Must be an NSObject or INativeObject.</param>
+	/// <returns>A <see cref="LocalDeclarationStatementSyntax"/> for the auxiliary handle variable, or null if the input is not an NSObject or INativeObject, or if a variable name cannot be generated.</returns>
+	internal static LocalDeclarationStatementSyntax? GetHandleAuxVariable (string parameterName, in TypeInfo parameterType)
 	{
-		if (!parameter.Type.IsNSObject && !parameter.Type.IsINativeObject)
+		if (!parameterType.IsNSObject && !parameterType.IsINativeObject)
 			return null;
 
-		var variableName = Nomenclator.GetNameForVariableType (parameter.Name, Nomenclator.VariableType.Handle);
+		var variableName = Nomenclator.GetNameForVariableType (parameterName, Nomenclator.VariableType.Handle);
 		if (variableName is null)
 			return null;
 		// decide about the factory based on the need of a null check 
-		InvocationExpressionSyntax factoryInvocation;
-		if (withNullAllowed) {
+		ExpressionSyntax factoryInvocation;
+		if (parameterType.IsNullable) {
+			// generates: zone?.GetHandle ();
+			factoryInvocation = ConditionalAccessExpression (
+					IdentifierName (parameterName),
+					InvocationExpression (
+						MemberBindingExpression (
+							IdentifierName ("GetHandle").WithTrailingTrivia (Space))));
+		} else {
 			// generates: zone!.GetNonNullHandle (nameof (zone));
 			factoryInvocation = InvocationExpression (
 					MemberAccessExpression (SyntaxKind.SimpleMemberAccessExpression,
 						PostfixUnaryExpression (
 							SyntaxKind.SuppressNullableWarningExpression,
-							IdentifierName (parameter.Name)),
+							IdentifierName (parameterName)),
 						IdentifierName ("GetNonNullHandle").WithTrailingTrivia (Space)))
 				.WithArgumentList (ArgumentList (
-					SingletonSeparatedList (Argument (
-						InvocationExpression (
-								IdentifierName (Identifier (TriviaList (Space), SyntaxKind.NameOfKeyword, "nameof",
-									"nameof",
-									TriviaList (Space))))
-							.WithArgumentList (ArgumentList (
-								SingletonSeparatedList<ArgumentSyntax> (
-									Argument (IdentifierName (parameter.Name)))))))));
-		} else {
-			// generates: zone.GetHandle ();
-			factoryInvocation = InvocationExpression (
-				MemberAccessExpression (SyntaxKind.SimpleMemberAccessExpression,
-					IdentifierName (parameter.Name),
-					IdentifierName ("GetHandle").WithTrailingTrivia (Space)));
+					SingletonSeparatedList (Argument (NameOf (parameterName)))));
 		}
 
 		// generates: variable = {FactoryCall}
@@ -327,18 +343,67 @@ static partial class BindingSyntaxFactory {
 			));
 	}
 
-	internal static LocalDeclarationStatementSyntax? GetStringAuxVariable (in Parameter parameter)
+	/// <summary>
+	/// Generates a local variable declaration for an auxiliary handle (IntPtr).
+	/// This is a convenience overload for <see cref="GetHandleAuxVariable(string, in TypeInfo)"/>.
+	/// </summary>
+	/// <param name="parameter">The <see cref="Parameter"/> representing the C# object.</param>
+	/// <returns>A <see cref="LocalDeclarationStatementSyntax"/> for the auxiliary handle variable, or null if the input is not an NSObject or INativeObject, or if a variable name cannot be generated.</returns>
+	internal static LocalDeclarationStatementSyntax? GetHandleAuxVariable (in Parameter parameter)
+		=> GetHandleAuxVariable (parameter.Name, parameter.Type);
+
+	/// <summary>
+	/// Generates a local variable declaration for an auxiliary handle (IntPtr).
+	/// This is a convenience overload for <see cref="GetHandleAuxVariable(string, in TypeInfo)"/> for delegate parameters.
+	/// </summary>
+	/// <param name="parameter">The <see cref="DelegateParameter"/> representing the C# object.</param>
+	/// <returns>A <see cref="LocalDeclarationStatementSyntax"/> for the auxiliary handle variable, or null if the input is not an NSObject or INativeObject, or if a variable name cannot be generated.</returns>
+	internal static LocalDeclarationStatementSyntax? GetHandleAuxVariable (in DelegateParameter parameter)
+		=> GetHandleAuxVariable (parameter.Name, parameter.Type);
+
+	/// <summary>
+	/// Generates a local variable declaration for an auxiliary handle (IntPtr) initialized to IntPtr.Zero.
+	/// This is typically used to declare a default handle variable before assigning it a valid native handle.
+	/// </summary>
+	/// <param name="variableName">The name of the handle variable to declare.</param>
+	/// <returns>A <see cref="LocalDeclarationStatementSyntax"/> representing the declaration of the handle variable initialized to IntPtr.Zero.</returns>
+	internal static LocalDeclarationStatementSyntax? GetHandleDefaultVariable (string variableName)
 	{
-		if (parameter.Type.Name != "string")
+		// generates: var handle = IntPtr.Zero;
+		var declarator = VariableDeclarator (Identifier (variableName))
+			.WithInitializer (EqualsValueClause (
+					MemberAccessExpression (
+						SyntaxKind.SimpleMemberAccessExpression,
+						IntPtr,
+						IdentifierName ("Zero")))
+				.WithLeadingTrivia (Space).WithTrailingTrivia (Space));
+
+		var variableDeclaration = VariableDeclaration (NativeHandle)
+			.WithVariables (SingletonSeparatedList (declarator));
+		return LocalDeclarationStatement (variableDeclaration).NormalizeWhitespace ();
+	}
+
+	/// <summary>
+	/// Generates a local variable declaration for an auxiliary NSString.
+	/// This is used when a C# string needs to be passed to an Objective-C method expecting an NSString.
+	/// The method uses <c>CFString.CreateNative</c> to create the native string.
+	/// </summary>
+	/// <param name="parameterName">The name of the C# string parameter.</param>
+	/// <param name="parameterType">The <see cref="TypeInfo"/> of the C# string parameter. Must be a string type.</param>
+	/// <returns>A <see cref="LocalDeclarationStatementSyntax"/> for the auxiliary NSString variable, or null if the input is not a string or if a variable name cannot be generated.</returns>
+	internal static LocalDeclarationStatementSyntax? GetStringAuxVariable (string parameterName,
+		in TypeInfo parameterType)
+	{
+		if (parameterType.Name != "string")
 			return null;
 
-		var variableName = Nomenclator.GetNameForVariableType (parameter.Name, Nomenclator.VariableType.NSString);
+		var variableName = Nomenclator.GetNameForVariableType (parameterName, Nomenclator.VariableType.NSString);
 		if (variableName is null)
 			return null;
 
 		// generates: CFString.CreateNative ({parameter.Name});
 		var cfstringFactoryInvocation = StringCreateNative ([
-			Argument (IdentifierName (parameter.Name)),
+			Argument (IdentifierName (parameterName)),
 		]);
 
 		// generates {var} = CFString.CreateNative ({parameter.Name});
@@ -354,6 +419,24 @@ static partial class BindingSyntaxFactory {
 
 		return LocalDeclarationStatement (declaration);
 	}
+
+	/// <summary>
+	/// Generates a local variable declaration for an auxiliary NSString.
+	/// This is a convenience overload for <see cref="GetStringAuxVariable(string, in TypeInfo)"/>.
+	/// </summary>
+	/// <param name="parameter">The <see cref="Parameter"/> representing the C# string.</param>
+	/// <returns>A <see cref="LocalDeclarationStatementSyntax"/> for the auxiliary NSString variable, or null if the input is not a string or if a variable name cannot be generated.</returns>
+	internal static LocalDeclarationStatementSyntax? GetStringAuxVariable (in Parameter parameter)
+		=> GetStringAuxVariable (parameter.Name, parameter.Type);
+
+	/// <summary>
+	/// Generates a local variable declaration for an auxiliary NSString.
+	/// This is a convenience overload for <see cref="GetStringAuxVariable(string, in TypeInfo)"/> for delegate parameters.
+	/// </summary>
+	/// <param name="parameter">The <see cref="DelegateParameter"/> representing the C# string.</param>
+	/// <returns>A <see cref="LocalDeclarationStatementSyntax"/> for the auxiliary NSString variable, or null if the input is not a string or if a variable name cannot be generated.</returns>
+	internal static LocalDeclarationStatementSyntax? GetStringAuxVariable (in DelegateParameter parameter)
+		=> GetStringAuxVariable (parameter.Name, parameter.Type);
 
 	internal static LocalDeclarationStatementSyntax? GetNSNumberAuxVariable (in Parameter parameter)
 	{
@@ -526,12 +609,21 @@ static partial class BindingSyntaxFactory {
 		return LocalDeclarationStatement (declaration);
 	}
 
-	internal static LocalDeclarationStatementSyntax? GetNSStringSmartEnumAuxVariable (in Parameter parameter)
+	/// <summary>
+	/// Generates a local variable declaration for an auxiliary NSString for a smart enum.
+	/// This is used when a C# smart enum needs to be passed to an Objective-C method expecting an NSString constant.
+	/// The method calls the `GetConstant()` extension method on the smart enum.
+	/// </summary>
+	/// <param name="parameterName">The name of the C# smart enum parameter.</param>
+	/// <param name="parameterType">The <see cref="TypeInfo"/> of the C# smart enum parameter.</param>
+	/// <returns>A <see cref="LocalDeclarationStatementSyntax"/> for the auxiliary NSString variable, or null if the input is not a smart enum or if a variable name cannot be generated.</returns>
+	internal static LocalDeclarationStatementSyntax? GetNSStringSmartEnumAuxVariable (string parameterName,
+		in TypeInfo parameterType)
 	{
-		if (!parameter.Type.IsSmartEnum)
+		if (!parameterType.IsSmartEnum)
 			return null;
 
-		var variableName = Nomenclator.GetNameForVariableType (parameter.Name, Nomenclator.VariableType.BindFrom);
+		var variableName = Nomenclator.GetNameForVariableType (parameterName, Nomenclator.VariableType.BindFrom);
 		if (variableName is null)
 			return null;
 
@@ -540,7 +632,7 @@ static partial class BindingSyntaxFactory {
 		var factoryInvocation = InvocationExpression (
 			MemberAccessExpression (
 				SyntaxKind.SimpleMemberAccessExpression,
-				IdentifierName (parameter.Name),
+				IdentifierName (parameterName),
 				IdentifierName ("GetConstant").WithTrailingTrivia (Space))
 		);
 
@@ -554,6 +646,43 @@ static partial class BindingSyntaxFactory {
 			.WithVariables (SingletonSeparatedList (declarator));
 
 		return LocalDeclarationStatement (declaration);
+	}
+
+	/// <summary>
+	/// Generates a local variable declaration for an auxiliary NSString for a smart enum.
+	/// This is a convenience overload for <see cref="GetNSStringSmartEnumAuxVariable(string, in TypeInfo)"/>.
+	/// </summary>
+	/// <param name="parameter">The <see cref="Parameter"/> representing the C# smart enum.</param>
+	/// <returns>A <see cref="LocalDeclarationStatementSyntax"/> for the auxiliary NSString variable, or null if the input is not a smart enum or if a variable name cannot be generated.</returns>
+	internal static LocalDeclarationStatementSyntax? GetNSStringSmartEnumAuxVariable (in Parameter parameter)
+		=> GetNSStringSmartEnumAuxVariable (parameter.Name, parameter.Type);
+
+	/// <summary>
+	/// Generates a local variable declaration for an auxiliary NSString for a smart enum.
+	/// This is a convenience overload for <see cref="GetNSStringSmartEnumAuxVariable(string, in TypeInfo)"/> for delegate parameters.
+	/// </summary>
+	/// <param name="parameter">The <see cref="DelegateParameter"/> representing the C# smart enum.</param>
+	/// <returns>A <see cref="LocalDeclarationStatementSyntax"/> for the auxiliary NSString variable, or null if the input is not a smart enum or if a variable name cannot be generated.</returns>
+	internal static LocalDeclarationStatementSyntax? GetNSStringSmartEnumAuxVariable (in DelegateParameter parameter)
+		=> GetNSStringSmartEnumAuxVariable (parameter.Name, parameter.Type);
+
+	/// <summary>
+	/// Generates an invocation expression to convert an NSString (represented by an argument syntax) back to its corresponding smart enum value.
+	/// This method relies on a generated extension class for the smart enum that provides a `GetValue(string)` method.
+	/// </summary>
+	/// <param name="typeInfo">The <see cref="TypeInfo"/> of the target smart enum. Must be a smart enum type.</param>
+	/// <param name="argument">The <see cref="ArgumentSyntax"/> representing the NSString value.</param>
+	/// <returns>An <see cref="InvocationExpressionSyntax"/> that calls the `GetValue` extension method to perform the conversion.</returns>
+	internal static InvocationExpressionSyntax GetSmartEnumFromNSString (in TypeInfo typeInfo, ArgumentSyntax argument)
+	{
+		var extensionClass = Nomenclator.GetSmartEnumExtensionClassName (typeInfo.GetIdentifierSyntax ().ToString ());
+		// generates: SmartEnum.GetValue (variableName);
+		return InvocationExpression (
+			MemberAccessExpression (
+				SyntaxKind.SimpleMemberAccessExpression,
+				IdentifierName (extensionClass),
+				IdentifierName ("GetValue").WithTrailingTrivia (Space)))
+			.WithArgumentList (ArgumentList (SingletonSeparatedList (argument)));
 	}
 
 	internal static LocalDeclarationStatementSyntax? GetNSArrayBindFromAuxVariable (in Parameter parameter)
@@ -936,5 +1065,36 @@ static partial class BindingSyntaxFactory {
 			_ => string.Empty,
 		};
 #pragma warning restore format
+	}
+
+	/// <summary>
+	/// Generates an if-statement that throws an <see cref="ArgumentNullException"/> if the specified variable is null.
+	/// </summary>
+	/// <param name="variableName">The name of the variable to check for null.</param>
+	/// <returns>An <see cref="IfStatementSyntax"/> that performs the null check and throws if necessary.</returns>
+	internal static SyntaxNode ThrowIfNull (string variableName)
+	{
+		var isExpression = IsPatternExpression (
+			IdentifierName (variableName),
+			ConstantPattern (LiteralExpression (SyntaxKind.NullLiteralExpression))).NormalizeWhitespace ();
+
+		var throwHelper = ExpressionStatement (InvocationExpression (
+				MemberAccessExpression (
+					SyntaxKind.SimpleMemberAccessExpression,
+					ThrowHelper,
+					IdentifierName ("ThrowArgumentNullException").WithTrailingTrivia (Space)))
+			.WithArgumentList (
+				ArgumentList (
+					SingletonSeparatedList (Argument (NameOf (variableName))))));
+
+		// if + throw using the mono style, other methods will remove the spaces with added before the ()
+		return IfStatement (
+			attributeLists: default,
+			ifKeyword: Token (SyntaxKind.IfKeyword).WithTrailingTrivia (Space),
+			openParenToken: Token (SyntaxKind.OpenParenToken),
+			condition: isExpression,
+			closeParenToken: Token (SyntaxKind.CloseParenToken),
+			statement: throwHelper.WithLeadingTrivia (LineFeed, Tab),
+			@else: default);
 	}
 }

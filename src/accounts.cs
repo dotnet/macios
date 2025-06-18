@@ -63,14 +63,14 @@ namespace Accounts {
 	}
 
 	/// <summary>A delegate that specifies the completion handler in calls to the <see cref="Accounts.ACAccountStore.SaveAccount(Accounts.ACAccount,Accounts.ACAccountStoreSaveCompletionHandler)" /> method.</summary>
-	delegate void ACAccountStoreSaveCompletionHandler (bool success, NSError error);
+	delegate void ACAccountStoreSaveCompletionHandler (bool success, [NullAllowed] NSError error);
 	/// <param name="success">
 	///       <see langword="true" /> if the account was removed. Otherwise, <see langword="false" />.</param>
 	///     <param name="error">The error that was encountered, or <see langword="null" /> if no error was encountered.</param>
 	///     <summary>A handler to be run when an attempt is made to remove an account from the store.</summary>
-	delegate void ACAccountStoreRemoveCompletionHandler (bool success, NSError error);
+	delegate void ACAccountStoreRemoveCompletionHandler (bool success, [NullAllowed] NSError error);
 	/// <summary>A delegate that specifies the handler executed at the completion of calls to <see cref="Accounts.ACAccountStore.RequestAccessAsync(Accounts.ACAccountType,Foundation.NSDictionary)" />s.</summary>
-	delegate void ACRequestCompletionHandler (bool granted, NSError error);
+	delegate void ACRequestCompletionHandler (bool granted, [NullAllowed] NSError error);
 
 	/// <include file="../docs/api/Accounts/ACAccountStore.xml" path="/Documentation/Docs[@DocId='T:Accounts.ACAccountStore']/*" />
 	[Deprecated (PlatformName.iOS, 15, 0, message: "Use the non-Apple SDK relating to your account type instead.")]

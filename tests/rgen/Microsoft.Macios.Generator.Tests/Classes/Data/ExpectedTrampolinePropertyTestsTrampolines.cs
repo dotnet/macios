@@ -68,7 +68,13 @@ static partial class Trampolines
 			return del ?? new NIDTrampolinePropertyTests_CreateObject ((global::ObjCRuntime.BlockLiteral *) block).Invoke;
 		}
 
-		// TODO: generate invoke method.
+		unsafe global::Foundation.NSObject Invoke (global::Foundation.NSObject obj)
+		{
+			var obj__handle__ = obj!.GetNonNullHandle (nameof (obj));
+			var ret = invoker (BlockLiteral, obj__handle__);
+			global::System.GC.KeepAlive (obj);
+			return global::ObjCRuntime.Runtime.GetNSObject<global::Foundation.NSObject> (ret, false)!;
+		}
 	}
 
 	[UnmanagedFunctionPointerAttribute (CallingConvention.Cdecl)]
@@ -123,7 +129,10 @@ static partial class Trampolines
 			return del ?? new NIDAction ((global::ObjCRuntime.BlockLiteral *) block).Invoke;
 		}
 
-		// TODO: generate invoke method.
+		unsafe void Invoke ()
+		{
+			invoker (BlockLiteral);
+		}
 	}
 
 	[UnmanagedFunctionPointerAttribute (CallingConvention.Cdecl)]
@@ -179,7 +188,11 @@ static partial class Trampolines
 			return del ?? new NIDCIKernelRoiCallback ((global::ObjCRuntime.BlockLiteral *) block).Invoke;
 		}
 
-		// TODO: generate invoke method.
+		unsafe global::CoreGraphics.CGRect Invoke (int index, global::CoreGraphics.CGRect rect)
+		{
+			var ret = invoker (BlockLiteral, index, rect);
+			return ret;
+		}
 	}
 
 	[UnmanagedFunctionPointerAttribute (CallingConvention.Cdecl)]
@@ -234,7 +247,14 @@ static partial class Trampolines
 			return del ?? new NIDActionArity1string ((global::ObjCRuntime.BlockLiteral *) block).Invoke;
 		}
 
-		// TODO: generate invoke method.
+		unsafe void Invoke (string obj)
+		{
+			if (obj is null)
+				global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (obj));
+			var nsobj = global::CoreFoundation.CFString.CreateNative (obj);
+			invoker (BlockLiteral, nsobj);
+			global::CoreFoundation.CFString.ReleaseNative (nsobj);
+		}
 	}
 
 	[UnmanagedFunctionPointerAttribute (CallingConvention.Cdecl)]
@@ -289,7 +309,10 @@ static partial class Trampolines
 			return del ?? new NIDActionArity1int ((global::ObjCRuntime.BlockLiteral *) block).Invoke;
 		}
 
-		// TODO: generate invoke method.
+		unsafe void Invoke (int obj)
+		{
+			invoker (BlockLiteral, obj);
+		}
 	}
 
 	[UnmanagedFunctionPointerAttribute (CallingConvention.Cdecl)]
@@ -344,7 +367,10 @@ static partial class Trampolines
 			return del ?? new NIDActionArity1bool ((global::ObjCRuntime.BlockLiteral *) block).Invoke;
 		}
 
-		// TODO: generate invoke method.
+		unsafe void Invoke (bool obj)
+		{
+			invoker (BlockLiteral, obj ? (byte) 1 : (byte) 0);
+		}
 	}
 
 	[UnmanagedFunctionPointerAttribute (CallingConvention.Cdecl)]
@@ -399,7 +425,14 @@ static partial class Trampolines
 			return del ?? new NIDAVAssetImageGenerateAsynchronouslyForTimeCompletionHandler ((global::ObjCRuntime.BlockLiteral *) block).Invoke;
 		}
 
-		// TODO: generate invoke method.
+		unsafe void Invoke (global::CoreGraphics.CGImage imageRef, global::CoreMedia.CMTime actualTime, global::Foundation.NSError error)
+		{
+			var imageRef__handle__ = imageRef!.GetNonNullHandle (nameof (imageRef));
+			var error__handle__ = error!.GetNonNullHandle (nameof (error));
+			invoker (BlockLiteral, imageRef__handle__, actualTime, error__handle__);
+			global::System.GC.KeepAlive (imageRef);
+			global::System.GC.KeepAlive (error);
+		}
 	}
 
 	[UnmanagedFunctionPointerAttribute (CallingConvention.Cdecl)]
@@ -456,7 +489,13 @@ static partial class Trampolines
 			return del ?? new NIDAVAudioEngineManualRenderingBlock ((global::ObjCRuntime.BlockLiteral *) block).Invoke;
 		}
 
-		// TODO: generate invoke method.
+		unsafe global::AVFoundation.AVAudioEngineManualRenderingStatus Invoke (uint numberOfFrames, global::AudioToolbox.AudioBuffers outBuffer, ref int outError)
+		{
+			var outBuffer__handle__ = outBuffer!.GetNonNullHandle (nameof (outBuffer));
+			var ret = invoker (BlockLiteral, numberOfFrames, outBuffer__handle__, (int*) global::System.Runtime.CompilerServices.Unsafe.AsPointer<int> (ref outError));
+			global::System.GC.KeepAlive (outBuffer);
+			return (global::AVFoundation.AVAudioEngineManualRenderingStatus) (long) ret;
+		}
 	}
 
 }

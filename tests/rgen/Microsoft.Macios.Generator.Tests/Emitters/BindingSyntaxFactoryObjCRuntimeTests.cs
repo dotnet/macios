@@ -227,27 +227,27 @@ public class BindingSyntaxFactoryObjCRuntimeTests {
 
 			// not nullable string[]
 			yield return [
-				new Parameter (0, ReturnTypeForArray ("string", isNullable: false), "myParam"),
-				"var nsa_myParam = global::Foundation.NSArray.FromStrings (myParam);",
+				new Parameter (0, ReturnTypeForArray ("string", isNullable: false, underlyingType: SpecialType.System_String), "myParam"),
+				$"var nsa_myParam = {BaseGeneratorTestClass.Global ("Foundation.NSArray")}.FromStrings (myParam);",
 				false
 			];
 
 			yield return [
-				new Parameter (0, ReturnTypeForArray ("string", isNullable: false), "myParam"),
-				"using var nsa_myParam = global::Foundation.NSArray.FromStrings (myParam);",
+				new Parameter (0, ReturnTypeForArray ("string", isNullable: false, underlyingType: SpecialType.System_String), "myParam"),
+				$"using var nsa_myParam = {BaseGeneratorTestClass.Global ("Foundation.NSArray")}.FromStrings (myParam);",
 				true
 			];
 
 			// nullable string []
 			yield return [
-				new Parameter (0, ReturnTypeForArray ("string", isNullable: true), "myParam"),
-				"var nsa_myParam = myParam is null ? null : global::Foundation.NSArray.FromStrings (myParam);",
+				new Parameter (0, ReturnTypeForArray ("string", isNullable: true, underlyingType: SpecialType.System_String), "myParam"),
+				$"var nsa_myParam = myParam is null ? null : {BaseGeneratorTestClass.Global ("Foundation.NSArray")}.FromStrings (myParam);",
 				false
 			];
 
 			yield return [
-				new Parameter (0, ReturnTypeForArray ("string", isNullable: true), "myParam"),
-				"using var nsa_myParam = myParam is null ? null : global::Foundation.NSArray.FromStrings (myParam);",
+				new Parameter (0, ReturnTypeForArray ("string", isNullable: true, underlyingType: SpecialType.System_String), "myParam"),
+				$"using var nsa_myParam = myParam is null ? null : {BaseGeneratorTestClass.Global ("Foundation.NSArray")}.FromStrings (myParam);",
 				true
 			];
 
@@ -255,25 +255,25 @@ public class BindingSyntaxFactoryObjCRuntimeTests {
 
 			yield return [
 				new Parameter (0, ReturnTypeForArray ("NSString", isNullable: false), "myParam"),
-				"var nsa_myParam = global::Foundation.NSArray.FromNSObjects (myParam);",
+				$"var nsa_myParam = {BaseGeneratorTestClass.Global ("Foundation.NSArray")}.FromNSObjects (myParam);",
 				false
 			];
 
 			yield return [
 				new Parameter (0, ReturnTypeForArray ("NSString", isNullable: false), "myParam"),
-				"using var nsa_myParam = global::Foundation.NSArray.FromNSObjects (myParam);",
+				$"using var nsa_myParam = {BaseGeneratorTestClass.Global ("Foundation.NSArray")}.FromNSObjects (myParam);",
 				true
 			];
 
 			yield return [
 				new Parameter (0, ReturnTypeForArray ("NSString", isNullable: true), "myParam"),
-				"var nsa_myParam = myParam is null ? null : global::Foundation.NSArray.FromNSObjects (myParam);",
+				$"var nsa_myParam = myParam is null ? null : {BaseGeneratorTestClass.Global ("Foundation.NSArray")}.FromNSObjects (myParam);",
 				false
 			];
 
 			yield return [
 				new Parameter (0, ReturnTypeForArray ("NSString", isNullable: true), "myParam"),
-				"using var nsa_myParam = myParam is null ? null : global::Foundation.NSArray.FromNSObjects (myParam);",
+				$"using var nsa_myParam = myParam is null ? null : {BaseGeneratorTestClass.Global ("Foundation.NSArray")}.FromNSObjects (myParam);",
 				true
 			];
 		}
@@ -302,34 +302,29 @@ public class BindingSyntaxFactoryObjCRuntimeTests {
 			// nsobject type
 			yield return [
 				new Parameter (0, ReturnTypeForNSObject ("MyNSObject"), "myParam"),
-				"var myParam__handle__ = myParam.GetHandle ();",
-				false
+				"var myParam__handle__ = myParam!.GetNonNullHandle (nameof (myParam));",
 			];
 
 			yield return [
-				new Parameter (0, ReturnTypeForNSObject ("MyNSObject"), "myParam"),
-				"var myParam__handle__ = myParam!.GetNonNullHandle ( nameof (myParam));",
-				true
+				new Parameter (0, ReturnTypeForNSObject ("MyNSObject", isNullable: true), "myParam"),
+				"var myParam__handle__ = myParam?.GetHandle ();",
 			];
 
 			// interface type
 			yield return [
 				new Parameter (0, ReturnTypeForINativeObject ("MyNativeObject"), "myParam"),
-				"var myParam__handle__ = myParam.GetHandle ();",
-				false
+				"var myParam__handle__ = myParam!.GetNonNullHandle (nameof (myParam));",
 			];
 
 			yield return [
-				new Parameter (0, ReturnTypeForINativeObject ("MyNativeObject"), "myParam"),
-				"var myParam__handle__ = myParam!.GetNonNullHandle ( nameof (myParam));",
-				true
+				new Parameter (0, ReturnTypeForINativeObject ("MyNativeObject", isNullable: true), "myParam"),
+				"var myParam__handle__ = myParam?.GetHandle ();",
 			];
 
 			// value type
 			yield return [
 				new Parameter (0, ReturnTypeForBool (), "myParam"),
 				null!,
-				false
 			];
 		}
 
@@ -338,9 +333,9 @@ public class BindingSyntaxFactoryObjCRuntimeTests {
 
 	[Theory]
 	[ClassData (typeof (TestDataGetHandleAuxVariableTests))]
-	void GetHandleAuxVariableTests (in Parameter parameter, string? expectedDeclaration, bool withNullAllowed)
+	void GetHandleAuxVariableTests (in Parameter parameter, string? expectedDeclaration)
 	{
-		var declaration = GetHandleAuxVariable (parameter, withNullAllowed: withNullAllowed);
+		var declaration = GetHandleAuxVariable (parameter);
 		if (expectedDeclaration is null) {
 			Assert.Null (declaration);
 		} else {
@@ -354,7 +349,7 @@ public class BindingSyntaxFactoryObjCRuntimeTests {
 		{
 			yield return [
 				new Parameter (0, ReturnTypeForString (), "myParam"),
-				"var nsmyParam = global::CoreFoundation.CFString.CreateNative (myParam);",
+				$"var nsmyParam = {BaseGeneratorTestClass.Global ("CoreFoundation.CFString")}.CreateNative (myParam);",
 			];
 
 			yield return [
@@ -384,52 +379,52 @@ public class BindingSyntaxFactoryObjCRuntimeTests {
 		{
 			yield return [
 				new Parameter (0, ReturnTypeForInt (), "myParam"),
-				"var nsb_myParam = global::Foundation.NSNumber.FromInt32 (myParam);"
+				$"var nsb_myParam = {BaseGeneratorTestClass.Global ("Foundation.NSNumber")}.FromInt32 (myParam);"
 			];
 
 			yield return [
 				new Parameter (0, ReturnTypeForInt (isUnsigned: true), "myParam"),
-				"var nsb_myParam = global::Foundation.NSNumber.FromUInt32 (myParam);"
+				$"var nsb_myParam = {BaseGeneratorTestClass.Global ("Foundation.NSNumber")}.FromUInt32 (myParam);"
 			];
 
 			yield return [
 				new Parameter (0, ReturnTypeForBool (), "myParam"),
-				"var nsb_myParam = global::Foundation.NSNumber.FromBoolean (myParam);"
+				$"var nsb_myParam = {BaseGeneratorTestClass.Global ("Foundation.NSNumber")}.FromBoolean (myParam);"
 			];
 
 			yield return [
 				new Parameter (0, ReturnTypeForEnum ("MyEnum"), "myParam"),
-				"var nsb_myParam = global::Foundation.NSNumber.FromInt32 ((int) myParam);",
+				$"var nsb_myParam = {BaseGeneratorTestClass.Global ("Foundation.NSNumber")}.FromInt32 ((int) myParam);",
 			];
 
 			yield return [
 				new Parameter (0, ReturnTypeForEnum ("MyEnum", underlyingType: SpecialType.System_Byte), "myParam"),
-				"var nsb_myParam = global::Foundation.NSNumber.FromByte ((byte) myParam);",
+				$"var nsb_myParam = {BaseGeneratorTestClass.Global ("Foundation.NSNumber")}.FromByte ((byte) myParam);",
 			];
 
 			yield return [
 				new Parameter (0, ReturnTypeForEnum ("MyEnum", underlyingType: SpecialType.System_SByte), "myParam"),
-				"var nsb_myParam = global::Foundation.NSNumber.FromSByte ((sbyte) myParam);",
+				$"var nsb_myParam = {BaseGeneratorTestClass.Global ("Foundation.NSNumber")}.FromSByte ((sbyte) myParam);",
 			];
 
 			yield return [
 				new Parameter (0, ReturnTypeForEnum ("MyEnum", underlyingType: SpecialType.System_Int16), "myParam"),
-				"var nsb_myParam = global::Foundation.NSNumber.FromInt16 ((short) myParam);",
+				$"var nsb_myParam = {BaseGeneratorTestClass.Global ("Foundation.NSNumber")}.FromInt16 ((short) myParam);",
 			];
 
 			yield return [
 				new Parameter (0, ReturnTypeForEnum ("MyEnum", underlyingType: SpecialType.System_UInt16), "myParam"),
-				"var nsb_myParam = global::Foundation.NSNumber.FromUInt16 ((ushort) myParam);",
+				$"var nsb_myParam = {BaseGeneratorTestClass.Global ("Foundation.NSNumber")}.FromUInt16 ((ushort) myParam);",
 			];
 
 			yield return [
 				new Parameter (0, ReturnTypeForEnum ("MyEnum", underlyingType: SpecialType.System_Int64), "myParam"),
-				"var nsb_myParam = global::Foundation.NSNumber.FromInt64 ((long) myParam);",
+				$"var nsb_myParam = {BaseGeneratorTestClass.Global ("Foundation.NSNumber")}.FromInt64 ((long) myParam);",
 			];
 
 			yield return [
 				new Parameter (0, ReturnTypeForEnum ("MyEnum", underlyingType: SpecialType.System_UInt64), "myParam"),
-				"var nsb_myParam = global::Foundation.NSNumber.FromUInt64 ((ulong) myParam);",
+				$"var nsb_myParam = {BaseGeneratorTestClass.Global ("Foundation.NSNumber")}.FromUInt64 ((ulong) myParam);",
 			];
 		}
 
@@ -454,85 +449,85 @@ public class BindingSyntaxFactoryObjCRuntimeTests {
 		{
 			yield return [
 				new Parameter (0, ReturnTypeForStruct ("CoreGraphics.CGAffineTransform"), "myParam"),
-				"var nsb_myParam = global::Foundation.NSValue.FromCGAffineTransform (myParam);"
+				$"var nsb_myParam = {BaseGeneratorTestClass.Global ("Foundation.NSValue")}.FromCGAffineTransform (myParam);"
 			];
 			yield return [
 				new Parameter (0, ReturnTypeForStruct ("Foundation.NSRange"), "myParam"),
-				"var nsb_myParam = global::Foundation.NSValue.FromRange (myParam);"
+				$"var nsb_myParam = {BaseGeneratorTestClass.Global ("Foundation.NSValue")}.FromRange (myParam);"
 			];
 			yield return [
 				new Parameter (0, ReturnTypeForStruct ("CoreGraphics.CGVector"), "myParam"),
-				"var nsb_myParam = global::Foundation.NSValue.FromCGVector (myParam);"
+				$"var nsb_myParam = {BaseGeneratorTestClass.Global ("Foundation.NSValue")}.FromCGVector (myParam);"
 			];
 
 			yield return [
 				new Parameter (0, ReturnTypeForStruct ("SceneKit.SCNMatrix4"), "myParam"),
-				"var nsb_myParam = global::Foundation.NSValue.FromSCNMatrix4 (myParam);",
+				$"var nsb_myParam = {BaseGeneratorTestClass.Global ("Foundation.NSValue")}.FromSCNMatrix4 (myParam);",
 			];
 
 			yield return [
 				new Parameter (0, ReturnTypeForStruct ("CoreLocation.CLLocationCoordinate2D"), "myParam"),
-				"var nsb_myParam = global::Foundation.NSValue.FromMKCoordinate (myParam);",
+				$"var nsb_myParam = {BaseGeneratorTestClass.Global ("Foundation.NSValue")}.FromMKCoordinate (myParam);",
 			];
 
 			yield return [
 				new Parameter (0, ReturnTypeForStruct ("SceneKit.SCNVector3"), "myParam"),
-				"var nsb_myParam = global::Foundation.NSValue.FromVector (myParam);",
+				$"var nsb_myParam = {BaseGeneratorTestClass.Global ("Foundation.NSValue")}.FromVector (myParam);",
 			];
 
 			yield return [
 				new Parameter (0, ReturnTypeForStruct ("SceneKit.SCNVector4"), "myParam"),
-				"var nsb_myParam = global::Foundation.NSValue.FromVector (myParam);",
+				$"var nsb_myParam = {BaseGeneratorTestClass.Global ("Foundation.NSValue")}.FromVector (myParam);",
 			];
 
 			yield return [
 				new Parameter (0, ReturnTypeForStruct ("CoreGraphics.CGPoint"), "myParam"),
-				"var nsb_myParam = global::Foundation.NSValue.FromCGPoint (myParam);",
+				$"var nsb_myParam = {BaseGeneratorTestClass.Global ("Foundation.NSValue")}.FromCGPoint (myParam);",
 			];
 
 			yield return [
 				new Parameter (0, ReturnTypeForStruct ("CoreGraphics.CGRect"), "myParam"),
-				"var nsb_myParam = global::Foundation.NSValue.FromCGRect (myParam);",
+				$"var nsb_myParam = {BaseGeneratorTestClass.Global ("Foundation.NSValue")}.FromCGRect (myParam);",
 			];
 
 			yield return [
 				new Parameter (0, ReturnTypeForStruct ("CoreGraphics.CGSize"), "myParam"),
-				"var nsb_myParam = global::Foundation.NSValue.FromCGSize (myParam);",
+				$"var nsb_myParam = {BaseGeneratorTestClass.Global ("Foundation.NSValue")}.FromCGSize (myParam);",
 			];
 
 			yield return [
 				new Parameter (0, ReturnTypeForStruct ("UIKit.UIEdgeInsets"), "myParam"),
-				"var nsb_myParam = global::Foundation.NSValue.FromUIEdgeInsets (myParam);",
+				$"var nsb_myParam = {BaseGeneratorTestClass.Global ("Foundation.NSValue")}.FromUIEdgeInsets (myParam);",
 			];
 
 			yield return [
 				new Parameter (0, ReturnTypeForStruct ("UIKit.UIOffset"), "myParam"),
-				"var nsb_myParam = global::Foundation.NSValue.FromUIOffset (myParam);",
+				$"var nsb_myParam = {BaseGeneratorTestClass.Global ("Foundation.NSValue")}.FromUIOffset (myParam);",
 			];
 
 			yield return [
 				new Parameter (0, ReturnTypeForStruct ("MapKit.MKCoordinateSpan"), "myParam"),
-				"var nsb_myParam = global::Foundation.NSValue.FromMKCoordinateSpan (myParam);",
+				$"var nsb_myParam = {BaseGeneratorTestClass.Global ("Foundation.NSValue")}.FromMKCoordinateSpan (myParam);",
 			];
 
 			yield return [
 				new Parameter (0, ReturnTypeForStruct ("CoreMedia.CMTimeRange"), "myParam"),
-				"var nsb_myParam = global::Foundation.NSValue.FromCMTimeRange (myParam);",
+				$"var nsb_myParam = {BaseGeneratorTestClass.Global ("Foundation.NSValue")}.FromCMTimeRange (myParam);",
 			];
 
 			yield return [
 				new Parameter (0, ReturnTypeForStruct ("CoreMedia.CMTime"), "myParam"),
-				"var nsb_myParam = global::Foundation.NSValue.FromCMTime (myParam);",
+				$"var nsb_myParam = {BaseGeneratorTestClass.Global ("Foundation.NSValue")}.FromCMTime (myParam);",
 			];
 
 			yield return [
 				new Parameter (0, ReturnTypeForStruct ("CoreMedia.CMTimeMapping"), "myParam"),
-				"var nsb_myParam = global::Foundation.NSValue.FromCMTimeMapping (myParam);",
+				$"var nsb_myParam = {BaseGeneratorTestClass.Global ("Foundation.NSValue")}.FromCMTimeMapping (myParam);",
 			];
 
 			yield return [
 				new Parameter (0, ReturnTypeForStruct ("CoreAnimation.CATransform3D"), "myParam"),
-				"var nsb_myParam = global::Foundation.NSValue.FromCATransform3D (myParam);",
+				$"var nsb_myParam = {BaseGeneratorTestClass.Global ("Foundation.NSValue")}.FromCATransform3D (myParam);",
 			];
 		}
 
@@ -593,7 +588,7 @@ public class BindingSyntaxFactoryObjCRuntimeTests {
 					name: "myParam") {
 					BindAs = new (ReturnTypeForNSObject ("Foundation.NSNumber")),
 				},
-				"var nsb_myParam = global::Foundation.NSArray.FromNSObjects (obj => new global::Foundation.NSNumber (obj), myParam);"
+				$"var nsb_myParam = {BaseGeneratorTestClass.Global ("Foundation.NSArray")}.FromNSObjects (obj => new {BaseGeneratorTestClass.Global ("Foundation.NSNumber")} (obj), myParam);"
 			];
 
 			// nsvalue
@@ -604,7 +599,7 @@ public class BindingSyntaxFactoryObjCRuntimeTests {
 					name: "myParam") {
 					BindAs = new (ReturnTypeForNSObject ("Foundation.NSValue")),
 				},
-				"var nsb_myParam = global::Foundation.NSArray.FromNSObjects (obj => new global::Foundation.NSValue (obj), myParam);"
+				$"var nsb_myParam = {BaseGeneratorTestClass.Global ("Foundation.NSArray")}.FromNSObjects (obj => new {BaseGeneratorTestClass.Global ("Foundation.NSValue")} (obj), myParam);"
 			];
 
 			// smart enum
@@ -615,7 +610,7 @@ public class BindingSyntaxFactoryObjCRuntimeTests {
 					name: "myParam") {
 					BindAs = new (ReturnTypeForNSObject ("Foundation.NSString")),
 				},
-				"var nsb_myParam = global::Foundation.NSArray.FromNSObjects (obj => obj.GetConstant(), myParam);"
+				$"var nsb_myParam = {BaseGeneratorTestClass.Global ("Foundation.NSArray")}.FromNSObjects (obj => obj.GetConstant(), myParam);"
 			];
 		}
 
@@ -646,7 +641,7 @@ public class BindingSyntaxFactoryObjCRuntimeTests {
 					name: "myParam") {
 					BindAs = new (ReturnTypeForNSObject ("Foundation.NSNumber")),
 				},
-				"var nsb_myParam = global::Foundation.NSNumber.FromUInt64 ((ulong) myParam);",
+				$"var nsb_myParam = {BaseGeneratorTestClass.Global ("Foundation.NSNumber")}.FromUInt64 ((ulong) myParam);",
 			];
 
 			yield return [
@@ -656,7 +651,7 @@ public class BindingSyntaxFactoryObjCRuntimeTests {
 					name: "myParam") {
 					BindAs = new (ReturnTypeForNSObject ("Foundation.NSNumber")),
 				},
-				"var nsb_myParam = global::Foundation.NSArray.FromNSObjects (obj => new global::Foundation.NSNumber (obj), myParam);"
+				$"var nsb_myParam = {BaseGeneratorTestClass.Global ("Foundation.NSArray")}.FromNSObjects (obj => new {BaseGeneratorTestClass.Global ("Foundation.NSNumber")} (obj), myParam);"
 			];
 
 			// nsvalue	
@@ -667,7 +662,7 @@ public class BindingSyntaxFactoryObjCRuntimeTests {
 					name: "myParam") {
 					BindAs = new (ReturnTypeForNSObject ("Foundation.NSValue")),
 				},
-				"var nsb_myParam = global::Foundation.NSValue.FromCATransform3D (myParam);",
+				$"var nsb_myParam = {BaseGeneratorTestClass.Global ("Foundation.NSValue")}.FromCATransform3D (myParam);",
 			];
 
 			yield return [
@@ -677,7 +672,7 @@ public class BindingSyntaxFactoryObjCRuntimeTests {
 					name: "myParam") {
 					BindAs = new (ReturnTypeForNSObject ("Foundation.NSValue")),
 				},
-				"var nsb_myParam = global::Foundation.NSArray.FromNSObjects (obj => new global::Foundation.NSValue (obj), myParam);"
+				$"var nsb_myParam = {BaseGeneratorTestClass.Global ("Foundation.NSArray")}.FromNSObjects (obj => new {BaseGeneratorTestClass.Global ("Foundation.NSValue")} (obj), myParam);"
 			];
 
 			// smart enum
@@ -688,7 +683,7 @@ public class BindingSyntaxFactoryObjCRuntimeTests {
 					name: "myParam") {
 					BindAs = new (ReturnTypeForNSObject ("Foundation.NSString")),
 				},
-				"var nsb_myParam = myParam.GetConstant ();",
+				$"var nsb_myParam = myParam.GetConstant ();",
 			];
 
 			yield return [
@@ -698,7 +693,7 @@ public class BindingSyntaxFactoryObjCRuntimeTests {
 					name: "myParam") {
 					BindAs = new (ReturnTypeForNSObject ("Foundation.NSString")),
 				},
-				"var nsb_myParam = global::Foundation.NSArray.FromNSObjects (obj => obj.GetConstant(), myParam);"
+				$"var nsb_myParam = {BaseGeneratorTestClass.Global ("Foundation.NSArray")}.FromNSObjects (obj => obj.GetConstant(), myParam);"
 			];
 
 			//missing attr
@@ -972,4 +967,26 @@ public class BindingSyntaxFactoryObjCRuntimeTests {
 	[ClassData (typeof (TestDataGetSelectorHandleField))]
 	void GetSelectorHandleFieldTest (string selector, string selectorName, string expectedDeclaration)
 		=> Assert.Equal (expectedDeclaration, GetSelectorHandleField (selector, selectorName).ToString ());
+
+	[Fact]
+	void GetSmartEnunFromNSStringTest ()
+	{
+		// create a fake smart enum type
+		var smartEnumName = "MySmartEnum";
+		var auxVariable = IdentifierName ("myParam");
+		var smartEnumType = ReturnTypeForEnum (smartEnumName, isSmartEnum: true);
+		var extensionClass = Nomenclator.GetSmartEnumExtensionClassName (smartEnumName);
+		var expectedExpression = $"{extensionClass}.GetValue ({auxVariable})";
+		Assert.Equal (expectedExpression, GetSmartEnumFromNSString (smartEnumType, Argument (auxVariable)).ToString ());
+	}
+
+	[Fact]
+	void GetHandleDefaultVariableTest ()
+	{
+		var variableName = "myParam__handle__";
+		var expectedDeclaration = $"{BaseGeneratorTestClass.Global ("ObjCRuntime.NativeHandle")} {variableName} = {BaseGeneratorTestClass.Global ("System.IntPtr")}.Zero;";
+		var declaration = GetHandleDefaultVariable (variableName);
+		Assert.Equal (expectedDeclaration, declaration?.ToString ());
+	}
+
 }

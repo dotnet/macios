@@ -556,14 +556,10 @@ static partial class Trampolines
 
 		unsafe global::AudioUnit.AudioUnitStatus Invoke (ref global::AudioUnit.AudioUnitRenderActionFlags actionFlags, ref global::AudioToolbox.AudioTimeStamp timestamp, uint frameCount, global::System.IntPtr outputBusNumber, global::AudioToolbox.AudioBuffers outputData, global::AudioUnit.AURenderEventEnumerator realtimeEventListHead, global::AudioUnit.AURenderPullInputBlock? pullInputBlock)
 		{
-			if (outputData is null)
-				global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (outputData));
-			var outputData__handle__ = outputData.GetHandle ();
-			if (realtimeEventListHead is null)
-				global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (realtimeEventListHead));
-			var realtimeEventListHead__handle__ = realtimeEventListHead.GetHandle ();
+			var outputData__handle__ = outputData!.GetNonNullHandle (nameof (outputData));
+			var realtimeEventListHead__handle__ = realtimeEventListHead!.GetNonNullHandle (nameof (realtimeEventListHead));
 			var block_pullInputBlock = global::ObjCRuntime.Trampolines.SDAUInternalRenderBlock.CreateNullableBlock (pullInputBlock);
-			global::ObjCRuntime.BlockLiteral* block_ptr_pullInputBlock = null;
+			global::ObjCRuntime.BlockLiteral* block_ptr_pullInputBlock = pullInputBlock is not null ? &block_pullInputBlock : null;
 			var ret = invoker (BlockLiteral, (global::AudioUnit.AudioUnitRenderActionFlags*) global::System.Runtime.CompilerServices.Unsafe.AsPointer<global::AudioUnit.AudioUnitRenderActionFlags> (ref actionFlags), (global::AudioToolbox.AudioTimeStamp*) global::System.Runtime.CompilerServices.Unsafe.AsPointer<global::AudioToolbox.AudioTimeStamp> (ref timestamp), frameCount, outputBusNumber, outputData__handle__, realtimeEventListHead__handle__, NIDAUInternalRenderBlock.Create (pullInputBlock)!);
 			global::System.GC.KeepAlive (outputData);
 			global::System.GC.KeepAlive (realtimeEventListHead);

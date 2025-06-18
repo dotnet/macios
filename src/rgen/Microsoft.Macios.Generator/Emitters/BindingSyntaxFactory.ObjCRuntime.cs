@@ -955,20 +955,35 @@ static partial class BindingSyntaxFactory {
 
 	/// <summary>
 	/// Generates a local variable declaration for a pointer to a BlockLiteral structure.
-	/// This is used in trampolines to manage the lifecycle of a native block. The variable is initialized to null.
+	/// This is used in trampolines to manage the lifecycle of a native block.
+	/// If the corresponding C# delegate is not null, the variable is initialized with the address of the block literal struct; otherwise, it's initialized to null.
 	/// </summary>
 	/// <param name="variableName">The name of the C# delegate variable, used to derive the name of the block literal pointer variable.</param>
 	/// <returns>A <see cref="LocalDeclarationStatementSyntax"/> for the block literal pointer variable.</returns>
 	internal static LocalDeclarationStatementSyntax GetBlockLiteralAuxVariable (string variableName)
 	{
 		var blockLiteralPointerName = Nomenclator.GetNameForVariableType (variableName, Nomenclator.VariableType.BlockLiteral);
+		var blockVariableName = Nomenclator.GetNameForVariableType (variableName, Nomenclator.VariableType.NullableBlock);
+		// generates parameterName is not null ? &blockVariableName : null;
+		var conditional = ConditionalExpression (
+			IsPatternExpression (
+				IdentifierName (variableName),
+				UnaryPattern (
+					ConstantPattern (
+						LiteralExpression (
+							SyntaxKind.NullLiteralExpression)))),
+			PrefixUnaryExpression (
+				SyntaxKind.AddressOfExpression,
+				IdentifierName (blockVariableName!)),
+			LiteralExpression (
+				SyntaxKind.NullLiteralExpression));
+		
 		return LocalDeclarationStatement (
 			VariableDeclaration (PointerType (BlockLiteral))
 				.WithVariables (
 					SingletonSeparatedList (
 						VariableDeclarator (Identifier (blockLiteralPointerName!))
-							.WithInitializer (EqualsValueClause (LiteralExpression (
-								SyntaxKind.NullLiteralExpression)))))).NormalizeWhitespace ();
+							.WithInitializer (EqualsValueClause (conditional))))).NormalizeWhitespace ();
 	}
 
 	/// <summary>

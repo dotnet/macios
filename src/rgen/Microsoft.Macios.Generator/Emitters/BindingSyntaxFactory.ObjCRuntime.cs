@@ -977,7 +977,7 @@ static partial class BindingSyntaxFactory {
 				IdentifierName (blockVariableName!)),
 			LiteralExpression (
 				SyntaxKind.NullLiteralExpression));
-		
+
 		return LocalDeclarationStatement (
 			VariableDeclaration (PointerType (BlockLiteral))
 				.WithVariables (

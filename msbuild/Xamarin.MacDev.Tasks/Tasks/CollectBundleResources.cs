@@ -130,9 +130,9 @@ namespace Xamarin.MacDev.Tasks {
 				}
 
 				// More than one item per LogicalName is not good at all.
-				var notBundledInAssembly = group.Where (item => string.IsNullOrEmpty (item.GetMetadata ("BundledInAssembly")));
-				var bundledInAssembly = group.Where (item => !string.IsNullOrEmpty (item.GetMetadata ("BundledInAssembly")));
-				if (notBundledInAssembly.Count () == 1) {
+				var notBundledInAssembly = group.Where (item => string.IsNullOrEmpty (item.GetMetadata ("BundledInAssembly"))).ToArray ();
+				var bundledInAssembly = group.Where (item => !string.IsNullOrEmpty (item.GetMetadata ("BundledInAssembly"))).ToArray ();
+				if (notBundledInAssembly.Length == 1) {
 					// Only one not from a library
 					rv.AddRange (notBundledInAssembly);
 					// warn about ignoring all the other imported ones.
@@ -142,7 +142,7 @@ namespace Xamarin.MacDev.Tasks {
 						}
 					}
 					continue;
-				} else if (notBundledInAssembly.Count () == 0) {
+				} else if (notBundledInAssembly.Length == 0) {
 					// none from the current assembly, but multiple imported ones. Don't add any of them (to have a predictable build).
 					// warn about ignoring all the other ones
 					foreach (var item in bundledInAssembly) {

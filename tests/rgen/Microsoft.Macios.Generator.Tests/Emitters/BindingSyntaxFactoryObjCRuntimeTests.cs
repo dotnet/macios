@@ -988,5 +988,15 @@ public class BindingSyntaxFactoryObjCRuntimeTests {
 		var declaration = GetHandleDefaultVariable (variableName);
 		Assert.Equal (expectedDeclaration, declaration?.ToString ());
 	}
+	
+	[Fact]
+	void GetBlockLiteralAuxVariableTest ()
+	{
+		var variableName = "myCallback";
+		var expectedDeclaration = $"{BaseGeneratorTestClass.Global ("ObjCRuntime")}.BlockLiteral* block_ptr_myCallback = null;";
+		var declaration = GetBlockLiteralAuxVariable (variableName);
+		var x = declaration.ToString ();
+		Assert.Equal (expectedDeclaration, declaration?.ToString ());
+	}
 
 }

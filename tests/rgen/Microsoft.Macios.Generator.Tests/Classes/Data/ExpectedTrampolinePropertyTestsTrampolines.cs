@@ -571,6 +571,7 @@ static partial class Trampolines
 				global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (realtimeEventListHead));
 			var realtimeEventListHead__handle__ = realtimeEventListHead.GetHandle ();
 			var block_pullInputBlock = global::ObjCRuntime.Trampolines.SDAUInternalRenderBlock.CreateNullableBlock (pullInputBlock);
+			global::ObjCRuntime.BlockLiteral* block_ptr_pullInputBlock = null;
 			var ret = invoker (BlockLiteral, (global::AudioUnit.AudioUnitRenderActionFlags*) global::System.Runtime.CompilerServices.Unsafe.AsPointer<global::AudioUnit.AudioUnitRenderActionFlags> (ref actionFlags), (global::AudioToolbox.AudioTimeStamp*) global::System.Runtime.CompilerServices.Unsafe.AsPointer<global::AudioToolbox.AudioTimeStamp> (ref timestamp), frameCount, outputBusNumber, outputData__handle__, realtimeEventListHead__handle__, NIDAUInternalRenderBlock.Create (pullInputBlock)!);
 			global::System.GC.KeepAlive (outputData);
 			global::System.GC.KeepAlive (realtimeEventListHead);

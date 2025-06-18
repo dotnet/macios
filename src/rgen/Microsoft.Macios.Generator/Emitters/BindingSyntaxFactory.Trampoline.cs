@@ -1150,7 +1150,10 @@ static partial class BindingSyntaxFactory {
 			{ Type.IsPointer: true } => [],
 			
 			// block delegate parameter is a NativeHandle
-			{ Type.IsDelegate: true, IsBlockCallback: true} => [GetNullableBlockAuxVariable (trampolineName, parameter)],
+			{ Type.IsDelegate: true, IsBlockCallback: true} => [
+				GetNullableBlockAuxVariable (trampolineName, parameter),
+				GetBlockLiteralAuxVariable (parameter),
+			],
 			
 			{ Type.IsDelegate: true, IsCCallback: true} => [],
 			

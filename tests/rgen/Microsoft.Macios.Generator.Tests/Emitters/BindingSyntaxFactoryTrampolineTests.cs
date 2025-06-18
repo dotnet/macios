@@ -4865,7 +4865,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				blockParameter,
-@$"var block_callbackParameter = {Global ("ObjCRuntime.Trampolines.")}{Nomenclator.GetTrampolineClassName ("someTrampolineName", Nomenclator.TrampolineClassType.StaticBridgeClass)}.CreateNullableBlock (callbackParameter);
+				@$"var block_callbackParameter = {Global ("ObjCRuntime.Trampolines.")}{Nomenclator.GetTrampolineClassName ("someTrampolineName", Nomenclator.TrampolineClassType.StaticBridgeClass)}.CreateNullableBlock (callbackParameter);
 {Global ("ObjCRuntime")}.BlockLiteral* block_ptr_callbackParameter = null;
 ",
 			];

@@ -965,11 +965,11 @@ static partial class BindingSyntaxFactory {
 			VariableDeclaration (PointerType (BlockLiteral))
 				.WithVariables (
 					SingletonSeparatedList (
-						VariableDeclarator (Identifier(blockLiteralPointerName!))
-							.WithInitializer (EqualsValueClause (LiteralExpression ( 
+						VariableDeclarator (Identifier (blockLiteralPointerName!))
+							.WithInitializer (EqualsValueClause (LiteralExpression (
 								SyntaxKind.NullLiteralExpression)))))).NormalizeWhitespace ();
 	}
-	
+
 	/// <summary>
 	/// Generates a local variable declaration for a pointer to a BlockLiteral structure.
 	/// This is a convenience overload for <see cref="GetBlockLiteralAuxVariable(string)"/>.

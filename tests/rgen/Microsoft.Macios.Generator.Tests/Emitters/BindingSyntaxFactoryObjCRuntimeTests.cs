@@ -988,7 +988,7 @@ public class BindingSyntaxFactoryObjCRuntimeTests {
 		var declaration = GetHandleDefaultVariable (variableName);
 		Assert.Equal (expectedDeclaration, declaration?.ToString ());
 	}
-	
+
 	[Fact]
 	void GetBlockLiteralAuxVariableTest ()
 	{

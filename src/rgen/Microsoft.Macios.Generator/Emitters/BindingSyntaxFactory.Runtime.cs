@@ -223,10 +223,27 @@ static partial class BindingSyntaxFactory {
 	}
 
 	/// <summary>
-	/// Generates the expression to call the CFString.CreateNative method.
+	/// Generates the expression to call the CFString.ReleaseNative method.
 	/// </summary>
 	/// <param name="arguments">The argument list for the invocation.</param>
-	/// <returns>The expression to call the CFString.CreateNative method with the provided args.</returns>
+	/// <returns>The expression to call the CFString.ReleaseNative method with the provided args.</returns>
+	internal static InvocationExpressionSyntax StringReleaseNative (ImmutableArray<ArgumentSyntax> arguments)
+	{
+		var argumentList = ArgumentList (
+			SeparatedList<ArgumentSyntax> (arguments.ToSyntaxNodeOrTokenArray ()));
+		return InvocationExpression (
+			MemberAccessExpression (
+				SyntaxKind.SimpleMemberAccessExpression,
+				CFString,
+				IdentifierName ("ReleaseNative").WithTrailingTrivia (Space))
+		).WithArgumentList (argumentList);
+	}
+
+	/// <summary>
+	/// Generates the expression to call the NSString.CreateNative method.
+	/// </summary>
+	/// <param name="arguments">The argument list for the invocation.</param>
+	/// <returns>The expression to call the NSString.CreateNative method with the provided args.</returns>
 	internal static InvocationExpressionSyntax NStringCreateNative (ImmutableArray<ArgumentSyntax> arguments)
 	{
 		var argumentList = ArgumentList (
@@ -234,7 +251,7 @@ static partial class BindingSyntaxFactory {
 		return InvocationExpression (
 				MemberAccessExpression (
 					SyntaxKind.SimpleMemberAccessExpression,
-					IdentifierName ("NFString"),
+					NSString,
 					IdentifierName ("CreateNative").WithTrailingTrivia (Space))
 			).WithArgumentList (argumentList);
 	}
@@ -485,15 +502,23 @@ static partial class BindingSyntaxFactory {
 	/// </summary>
 	/// <param name="type">The information of the type of object to be created.</param>
 	/// <param name="arguments">The argument list for the object creation expression.</param>
-	/// <param name="global">If the global qualifier should be used.</param>
 	/// <returns>An object creation expression.</returns>
-	internal static ObjectCreationExpressionSyntax New (in TypeInfo type, ImmutableArray<ArgumentSyntax> arguments)
+	internal static ObjectCreationExpressionSyntax New (TypeSyntax type, ImmutableArray<ArgumentSyntax> arguments)
 	{
 		var argumentList = ArgumentList (
 			SeparatedList<ArgumentSyntax> (arguments.ToSyntaxNodeOrTokenArray ()));
-		return ObjectCreationExpression (type.GetIdentifierSyntax ().WithLeadingTrivia (Space).WithTrailingTrivia (Space))
+		return ObjectCreationExpression (type.WithLeadingTrivia (Space).WithTrailingTrivia (Space))
 			.WithArgumentList (argumentList);
 	}
+
+	/// <summary>
+	/// Generate an object creation expression for the given type info using the provided arguments.
+	/// </summary>
+	/// <param name="type">The information of the type of object to be created.</param>
+	/// <param name="arguments">The argument list for the object creation expression.</param>
+	/// <returns>An object creation expression.</returns>
+	internal static ObjectCreationExpressionSyntax New (in TypeInfo type, ImmutableArray<ArgumentSyntax> arguments)
+		=> New (type.GetIdentifierSyntax (), arguments);
 
 	/// <summary>
 	/// Generates a nameof(variableName) expression.

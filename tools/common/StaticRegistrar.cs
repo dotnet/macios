@@ -3490,7 +3490,8 @@ namespace Registrar {
 					sb.AppendLine ("-(BOOL) conformsToProtocol: (void *) protocol");
 					sb.AppendLine ("{");
 					sb.AppendLine ("GCHandle exception_gchandle;");
-					sb.AppendLine ("BOOL rv = xamarin_invoke_conforms_to_protocol (self, (Protocol *) protocol, &exception_gchandle) != 0;");
+					sb.AppendLine ("GCHandle obj_gchandle = xamarin_get_gchandle (self);");
+					sb.AppendLine ("BOOL rv = xamarin_invoke_conforms_to_protocol (obj_gchandle, self, (Protocol *) protocol, &exception_gchandle) != 0;");
 					sb.AppendLine ("xamarin_process_managed_exception_gchandle (exception_gchandle);");
 					sb.AppendLine ("return rv;");
 					sb.AppendLine ("}");

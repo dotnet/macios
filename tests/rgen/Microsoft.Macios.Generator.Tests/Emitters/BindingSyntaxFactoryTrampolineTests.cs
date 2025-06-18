@@ -749,7 +749,7 @@ namespace NS {
 				intReturnType,
 				"auxVariable"
 			];
-			
+
 			const string enumReturnType = @"
 using System;
 

@@ -70,9 +70,7 @@ static partial class Trampolines
 
 		unsafe global::Foundation.NSObject Invoke (global::Foundation.NSObject obj)
 		{
-			if (obj is null)
-				global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (obj));
-			var obj__handle__ = obj.GetHandle ();
+			var obj__handle__ = obj!.GetNonNullHandle (nameof (obj));
 			var ret = invoker (BlockLiteral, obj__handle__);
 			global::System.GC.KeepAlive (obj);
 			return global::ObjCRuntime.Runtime.GetNSObject<global::Foundation.NSObject> (ret, false)!;
@@ -429,12 +427,8 @@ static partial class Trampolines
 
 		unsafe void Invoke (global::CoreGraphics.CGImage imageRef, global::CoreMedia.CMTime actualTime, global::Foundation.NSError error)
 		{
-			if (imageRef is null)
-				global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (imageRef));
-			var imageRef__handle__ = imageRef.GetHandle ();
-			if (error is null)
-				global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (error));
-			var error__handle__ = error.GetHandle ();
+			var imageRef__handle__ = imageRef!.GetNonNullHandle (nameof (imageRef));
+			var error__handle__ = error!.GetNonNullHandle (nameof (error));
 			invoker (BlockLiteral, imageRef__handle__, actualTime, error__handle__);
 			global::System.GC.KeepAlive (imageRef);
 			global::System.GC.KeepAlive (error);
@@ -497,9 +491,7 @@ static partial class Trampolines
 
 		unsafe global::AVFoundation.AVAudioEngineManualRenderingStatus Invoke (uint numberOfFrames, global::AudioToolbox.AudioBuffers outBuffer, ref int outError)
 		{
-			if (outBuffer is null)
-				global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (outBuffer));
-			var outBuffer__handle__ = outBuffer.GetHandle ();
+			var outBuffer__handle__ = outBuffer!.GetNonNullHandle (nameof (outBuffer));
 			var ret = invoker (BlockLiteral, numberOfFrames, outBuffer__handle__, (int*) global::System.Runtime.CompilerServices.Unsafe.AsPointer<int> (ref outError));
 			global::System.GC.KeepAlive (outBuffer);
 			return (global::AVFoundation.AVAudioEngineManualRenderingStatus) (long) ret;

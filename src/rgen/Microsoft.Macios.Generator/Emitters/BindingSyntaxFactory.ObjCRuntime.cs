@@ -302,8 +302,15 @@ static partial class BindingSyntaxFactory {
 		if (variableName is null)
 			return null;
 		// decide about the factory based on the need of a null check 
-		InvocationExpressionSyntax factoryInvocation;
+		ExpressionSyntax factoryInvocation;
 		if (parameterType.IsNullable) {
+			// generates: zone?.GetHandle ();
+			factoryInvocation = ConditionalAccessExpression (
+					IdentifierName (parameterName),
+					InvocationExpression (
+						MemberBindingExpression (
+							IdentifierName ("GetHandle").WithTrailingTrivia (Space))));
+		} else {
 			// generates: zone!.GetNonNullHandle (nameof (zone));
 			factoryInvocation = InvocationExpression (
 					MemberAccessExpression (SyntaxKind.SimpleMemberAccessExpression,
@@ -313,12 +320,6 @@ static partial class BindingSyntaxFactory {
 						IdentifierName ("GetNonNullHandle").WithTrailingTrivia (Space)))
 				.WithArgumentList (ArgumentList (
 					SingletonSeparatedList (Argument (NameOf (parameterName)))));
-		} else {
-			// generates: zone.GetHandle ();
-			factoryInvocation = InvocationExpression (
-				MemberAccessExpression (SyntaxKind.SimpleMemberAccessExpression,
-					IdentifierName (parameterName),
-					IdentifierName ("GetHandle").WithTrailingTrivia (Space)));
 		}
 
 		// generates: variable = {FactoryCall}

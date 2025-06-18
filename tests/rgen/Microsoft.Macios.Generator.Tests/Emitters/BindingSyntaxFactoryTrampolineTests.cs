@@ -4638,10 +4638,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				nsObjectParameter,
-				$@"if (nsObjectParameter is null)
-	{Global ("ObjCRuntime")}.ThrowHelper.ThrowArgumentNullException (nameof (nsObjectParameter));
-var nsObjectParameter__handle__ = nsObjectParameter.GetHandle ();
-",
+				"var nsObjectParameter__handle__ = nsObjectParameter!.GetNonNullHandle (nameof (nsObjectParameter));\n",
 			];
 
 			// nullable NSObject parameter
@@ -4662,7 +4659,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				nullableNSObjectParameter,
-				"var nsObjectParameter__handle__ = nsObjectParameter!.GetNonNullHandle (nameof (nsObjectParameter));\n",
+				"var nsObjectParameter__handle__ = nsObjectParameter?.GetHandle ();\n",
 			];
 
 			// NSObject array parameter
@@ -4729,10 +4726,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				iNativeParameter,
-				$@"if (inative is null)
-	{Global ("ObjCRuntime")}.ThrowHelper.ThrowArgumentNullException (nameof (inative));
-var inative__handle__ = inative.GetHandle ();
-"
+				"var inative__handle__ = inative!.GetNonNullHandle (nameof (inative));\n"
 			];
 
 			// nullable INativeObject parameter
@@ -4754,7 +4748,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				nullableINativeParameter,
-				"var inative__handle__ = inative!.GetNonNullHandle (nameof (inative));\n",
+				"var inative__handle__ = inative?.GetHandle ();\n",
 			];
 
 			// INativeObject array parameter
@@ -4821,10 +4815,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				audioBuffer,
-				$@"if (audioBuffer is null)
-	{Global ("ObjCRuntime")}.ThrowHelper.ThrowArgumentNullException (nameof (audioBuffer));
-var audioBuffer__handle__ = audioBuffer.GetHandle ();
-",
+				"var audioBuffer__handle__ = audioBuffer!.GetNonNullHandle (nameof (audioBuffer));\n",
 			];
 
 			var cmSampleBuffer = @"
@@ -4844,10 +4835,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				cmSampleBuffer,
-				$@"if (cmSampleBuffer is null)
-	{Global ("ObjCRuntime")}.ThrowHelper.ThrowArgumentNullException (nameof (cmSampleBuffer));
-var cmSampleBuffer__handle__ = cmSampleBuffer.GetHandle ();
-",
+				"var cmSampleBuffer__handle__ = cmSampleBuffer!.GetNonNullHandle (nameof (cmSampleBuffer));\n",
 			];
 		}
 

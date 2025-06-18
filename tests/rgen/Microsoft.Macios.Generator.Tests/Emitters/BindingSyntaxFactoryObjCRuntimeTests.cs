@@ -302,23 +302,23 @@ public class BindingSyntaxFactoryObjCRuntimeTests {
 			// nsobject type
 			yield return [
 				new Parameter (0, ReturnTypeForNSObject ("MyNSObject"), "myParam"),
-				"var myParam__handle__ = myParam.GetHandle ();",
+				"var myParam__handle__ = myParam!.GetNonNullHandle (nameof (myParam));",
 			];
 
 			yield return [
 				new Parameter (0, ReturnTypeForNSObject ("MyNSObject", isNullable: true), "myParam"),
-				"var myParam__handle__ = myParam!.GetNonNullHandle (nameof (myParam));",
+				"var myParam__handle__ = myParam?.GetHandle ();",
 			];
 
 			// interface type
 			yield return [
 				new Parameter (0, ReturnTypeForINativeObject ("MyNativeObject"), "myParam"),
-				"var myParam__handle__ = myParam.GetHandle ();",
+				"var myParam__handle__ = myParam!.GetNonNullHandle (nameof (myParam));",
 			];
 
 			yield return [
 				new Parameter (0, ReturnTypeForINativeObject ("MyNativeObject", isNullable: true), "myParam"),
-				"var myParam__handle__ = myParam!.GetNonNullHandle (nameof (myParam));",
+				"var myParam__handle__ = myParam?.GetHandle ();",
 			];
 
 			// value type

@@ -110,7 +110,7 @@ namespace ObjCRuntime {
 		}
 
 		internal unsafe static IntPtr RetainWeakReferenceTrampoline {
-			get{ return Runtime.options->Trampolines->retainWeakReference_tramp; }
+			get { return Runtime.options->Trampolines->retainWeakReference_tramp; }
 		}
 #endif // !COREBUILD
 	}

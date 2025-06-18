@@ -1137,8 +1137,9 @@ static partial class BindingSyntaxFactory {
 	{
 		var builder = ImmutableArray.CreateBuilder<SyntaxNode> ();
 		// if the parameter does not allow the object to be null and it is a reference type, we need to add the null check
-		// otherwise ignore it
-		if (parameter.Type is { IsReferenceType: true, IsNullable: false }) {
+		// otherwise ignore it. We do not want this check for INativeObjects (includes NSObject) because the GetNonNullableHandle
+		// will throw an exception if the object is null.
+		if (parameter.Type is { IsReferenceType: true, IsINativeObject: false, IsNullable: false }) {
 			builder.Add (ThrowIfNull (parameter.Name));
 		}
 

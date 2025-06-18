@@ -858,10 +858,13 @@
       </Item>
       <Item ItemId=";E0175" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[No matching framework found inside '{0}'. SupportedPlatform: '{0}', SupportedPlatformVariant: '{1}', SupportedArchitectures: '{2}'.]]></Val>
+          <Val><![CDATA[No matching framework found inside '{0}'. SupportedPlatform: '{1}', SupportedPlatformVariant: '{2}', SupportedArchitectures: '{3}'.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Non sono stati trovati framework corrispondenti all'interno di '{0}'. SupportedPlatform: '{0}', SupportedPlatformVariant: '{1}', SupportedArchitectures: '{2}'.]]></Val>
+            <Val><![CDATA[Non sono stati trovati framework corrispondenti all'interno di '{0}'. SupportedPlatform: '{1}', SupportedPlatformVariant: '{2}', SupportedArchitectures: '{3}'.]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[No matching framework found inside '{0}'. SupportedPlatform: '{0}', SupportedPlatformVariant: '{1}', SupportedArchitectures: '{2}'.]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>

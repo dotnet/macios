@@ -922,7 +922,7 @@ static partial class BindingSyntaxFactory {
 			.WithArgumentList (
 				ArgumentList (
 					SingletonSeparatedList (
-						Argument ( IdentifierName (variableName)))));
+						Argument (IdentifierName (variableName)))));
 		// variable declarator 'name = invocation'
 		var declarator = VariableDeclarator (
 				Identifier (Nomenclator.GetNameForVariableType (variableName, Nomenclator.VariableType.NullableBlock)!).WithTrailingTrivia (Space))
@@ -941,7 +941,7 @@ static partial class BindingSyntaxFactory {
 				.WithVariables (
 					SingletonSeparatedList (declarator)));
 	}
-	
+
 	/// <summary>
 	/// Generates a local variable declaration for an auxiliary variable that holds a native block created from a nullable C# delegate.
 	/// This is a convenience overload for <see cref="GetNullableBlockAuxVariable(string, string, in TypeInfo)"/>.

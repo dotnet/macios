@@ -4849,7 +4849,7 @@ namespace NS {
 var cmSampleBuffer__handle__ = cmSampleBuffer.GetHandle ();
 ",
 			];
-			
+
 			var blockParameter = @"
 using System;
 using ObjCRuntime;

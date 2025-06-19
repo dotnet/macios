@@ -108,6 +108,12 @@ static partial class BindingSyntaxFactory {
 			{ IsEnum: true, IsSmartEnum: true, IsNativeEnum: false } 
 				=> GetSmartEnumFromNSString (typeInfo.Delegate.ReturnType, Argument (auxIdentifier)),
 			
+			// normal enum casting
+			{ IsEnum: true, IsSmartEnum: false, IsNativeEnum: false } 
+				=> CastExpression (
+					typeInfo.Delegate.ReturnType.GetIdentifierSyntax (), 
+					auxIdentifier.WithLeadingTrivia (Space)),
+			
 			// string from native handle
 			// CFString.FromHandle (auxVariable)!
 			{ SpecialType: SpecialType.System_String, IsNullable: false} 
@@ -1151,7 +1157,10 @@ static partial class BindingSyntaxFactory {
 			{ Type.IsPointer: true } => [],
 			
 			// block delegate parameter is a NativeHandle
-			{ Type.IsDelegate: true, IsBlockCallback: true} => [GetNullableBlockAuxVariable (trampolineName, parameter)],
+			{ Type.IsDelegate: true, IsBlockCallback: true} => [
+				GetNullableBlockAuxVariable (trampolineName, parameter),
+				GetBlockLiteralAuxVariable (parameter),
+			],
 			
 			{ Type.IsDelegate: true, IsCCallback: true} => [],
 			

@@ -55,7 +55,7 @@ namespace Xamarin.Messaging.Build {
 
 		void SetDotNetVariables ()
 		{
-			var xmaSdkRootPath = Path.Combine (MessagingContext.GetXmaPath (), "SDKs");
+			var xmaSdkRootPath = MessagingContext.SdksPath;
 			var xmaDotNetRootPath = Path.Combine (xmaSdkRootPath, "dotnet");
 			var xmaDotNetPath = default (string);
 

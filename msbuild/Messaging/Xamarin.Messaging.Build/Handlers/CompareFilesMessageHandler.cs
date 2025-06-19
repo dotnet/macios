@@ -10,7 +10,7 @@ namespace Xamarin.Messaging.Build {
 		protected override async Task<CompareItemsResult> ExecuteAsync (CompareItemsMessage message)
 		{
 			return await Task.Run (() => {
-				var buildPath = Path.Combine (MessagingContext.GetBuildPath (), message.AppName, message.SessionId);
+				var buildPath = Path.Combine (MessagingContext.BuildsPath, message.AppName, message.SessionId);
 				var files = new List<string> ();
 
 				using (var hashAlgorithm = Hash.GetAlgorithm ()) {

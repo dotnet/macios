@@ -822,11 +822,13 @@ xamarin_retainWeakReference_trampoline (id self, SEL sel)
 	bool isInFinalizerQueue = false;
 
 	if (gchandle != INVALID_GCHANDLE) {
+		MONO_THREAD_ATTACH;
 		mobj = xamarin_gchandle_get_target (gchandle);
 		if (mobj != NULL) {
 			flags = xamarin_get_nsobject_flags (mobj);
 			isInFinalizerQueue = (flags & NSObjectFlagsInFinalizerQueue) == NSObjectFlagsInFinalizerQueue;
 		}
+		MONO_THREAD_DETACH;
 	}
 
 #if defined(DEBUG_REF_COUNTING)

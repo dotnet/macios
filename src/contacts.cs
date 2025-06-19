@@ -1627,7 +1627,7 @@ namespace Contacts {
 	}
 
 	/// <summary>Completion handler for calls to <see cref="Contacts.CNContactStore.RequestAccess(Contacts.CNEntityType,Contacts.CNContactStoreRequestAccessHandler)" /></summary>
-	delegate void CNContactStoreRequestAccessHandler (bool granted, NSError error);
+	delegate void CNContactStoreRequestAccessHandler (bool granted, [NullAllowed] NSError error);
 	delegate void CNContactStoreListContactsHandler (CNContact contact, ref bool stop);
 
 	interface ICNChangeHistoryEventVisitor { }

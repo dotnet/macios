@@ -5500,7 +5500,7 @@ namespace NS {
 				doubleReferenceParameter,
 				$"invoker (BlockLiteral, event__handle__, (double*) {Global ("System.Runtime")}.CompilerServices.Unsafe.AsPointer<double> (ref timeStamp), (byte*) global::System.Runtime.CompilerServices.Unsafe.AsPointer<bool> (ref removeEvent));",
 			];
-			
+
 			var blockParameter = @"
 using System;
 using ObjCRuntime;
@@ -5511,7 +5511,7 @@ namespace NS {
 	}
 }
 ";
-			
+
 			yield return [
 				"someTrampolineName",
 				blockParameter,

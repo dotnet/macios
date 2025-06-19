@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
@@ -97,9 +98,90 @@ namespace Xamarin.MacDev.Tasks {
 
 			bundleResources.AddRange (UnpackedResources);
 
-			BundleResourcesWithLogicalNames = bundleResources.ToArray ();
+			var distinctBundleResources = VerifyLogicalNameUniqueness (Log, bundleResources, "BundleResource");
+
+			BundleResourcesWithLogicalNames = distinctBundleResources.ToArray ();
 
 			return !Log.HasLoggedErrors;
+		}
+
+		[return: NotNullIfNotNull (nameof (items))]
+		public static ITaskItem []? VerifyLogicalNameUniqueness (TaskLoggingHelper Log, IEnumerable<ITaskItem>? items, string itemName)
+		{
+			if (items is null)
+				return null;
+
+			var rv = new List<ITaskItem> ();
+			var groupedBundleResources = items.GroupBy (item => item.GetMetadata ("LogicalName"));
+			var reportedItems = new HashSet<string> (); // Keep track of items we've shown warnings for, to not show multiple warnings.
+
+			foreach (var group in groupedBundleResources) {
+				// No/empty LogicalName is not OK.
+				if (string.IsNullOrEmpty (group.Key)) {
+					foreach (var item in group)
+						Log.LogError (7157, item.ItemSpec, MSBStrings.E7157 /* The {0} item '{0}' does not have a 'LogicalName' metadata. */, itemName, item.ItemSpec);
+					continue;
+				}
+
+				// One item per LogicalName is OK.
+				if (group.Count () == 1) {
+					rv.AddRange (group);
+					continue;
+				}
+
+				// More than one item per LogicalName is not good at all.
+				var notBundledInAssembly = group.Where (item => string.IsNullOrEmpty (item.GetMetadata ("BundledInAssembly"))).ToArray ();
+				var bundledInAssembly = group.Where (item => !string.IsNullOrEmpty (item.GetMetadata ("BundledInAssembly"))).ToArray ();
+				if (notBundledInAssembly.Length == 1) {
+					// Only one not from a library
+					rv.AddRange (notBundledInAssembly);
+					// warn about ignoring all the other imported ones.
+					foreach (var item in bundledInAssembly) {
+						if (reportedItems.Add (item.ItemSpec)) {
+							Log.LogWarning (7154, item.ItemSpec, MSBStrings.W7154 /* The {0} item '{1}' imported from '{2}' was ignored, because there's already an existing item from the current project with the same LogicalName ('{3}'). */, itemName, item.ItemSpec, item.GetMetadata ("BundledInAssembly"), group.Key);
+						}
+					}
+					continue;
+				} else if (notBundledInAssembly.Length == 0) {
+					// none from the current assembly, but multiple imported ones. Don't add any of them (to have a predictable build).
+					// warn about ignoring all the other ones
+					foreach (var item in bundledInAssembly) {
+						if (reportedItems.Add (item.ItemSpec)) {
+							var others = bundledInAssembly.
+											Where (i => !object.ReferenceEquals (i, item)).
+											Select (i => Path.GetFileName (i.GetMetadata ("BundledInAssembly"))).
+											ToArray ();
+							Log.LogWarning (7155, item.ItemSpec, MSBStrings.W7155 /* The {0} item '{1}' imported from '{2}' was ignored, because there's another item from a different assembly ({4}) with the same LogicalName ('{3}'). */, itemName, item.ItemSpec, item.GetMetadata ("BundledInAssembly"), group.Key, string.Join (", ", others));
+						}
+					}
+					continue;
+				} else {
+					// more than one for the current project?
+					// don't add any of them (to have a predictable build).
+					// warn about them all.
+					foreach (var item in notBundledInAssembly) {
+						if (reportedItems.Add (item.ItemSpec)) {
+							Log.LogWarning (7156, item.ItemSpec, MSBStrings.W7156 /* The {0} item '{1}' was ignored, because there's another item with the same LogicalName ('{2}'). */, itemName, item.ItemSpec, group.Key);
+						}
+					}
+				}
+			}
+
+			return rv.ToArray ();
+		}
+
+		[return: NotNullIfNotNull (nameof (items))]
+		public static ITaskItem []? ComputeLogicalNameAndDetectDuplicates<U> (U task, IEnumerable<ITaskItem>? items, string projectDir, string resourcePrefix, string itemName) where U : Task, IHasProjectDir, IHasResourcePrefix, IHasSessionId
+		{
+			if (items is null)
+				return null;
+
+			var prefixes = BundleResource.SplitResourcePrefixes (resourcePrefix);
+			foreach (var item in items) {
+				var logicalName = BundleResource.GetLogicalName (task, item);
+				item.SetMetadata ("LogicalName", logicalName);
+			}
+			return VerifyLogicalNameUniqueness (task.Log, items, itemName);
 		}
 
 		public static bool TryCreateItemWithLogicalName<T> (T task, ITaskItem item, [NotNullWhen (true)] out TaskItem? itemWithLogicalName) where T : Task, IHasProjectDir, IHasResourcePrefix, IHasSessionId

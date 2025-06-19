@@ -750,6 +750,28 @@ namespace NS {
 				"auxVariable"
 			];
 
+			const string enumReturnType = @"
+using System;
+
+namespace NS {
+
+	public enum TestEnum {
+		First,
+		Last
+	}
+
+	public delegate TestEnum Callback()
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				enumReturnType,
+				"(global::NS.TestEnum) auxVariable",
+			];
+
 			const string voidReturnType = @"
 using System;
 
@@ -2237,7 +2259,7 @@ namespace NS {
 			yield return [
 				ccallbackParameter,
 				"DCallback",
-				$"unsafe internal delegate void DCallback ({Global ("System")}.IntPtr block_ptr, {Global ("System")}.IntPtr callbackParameter);",
+				$"unsafe internal delegate void DCallback ({Global ("System")}.IntPtr block_ptr, {Global ("ObjCRuntime")}.NativeHandle callbackParameter);",
 			];
 
 			var nativeEnumParameter = @"
@@ -2879,7 +2901,7 @@ namespace NS {
 
 			yield return [
 				ccallbackParameter,
-				$"{Global ("System")}.IntPtr callbackParameter"
+				$"{Global ("ObjCRuntime")}.NativeHandle callbackParameter"
 			];
 
 			var blockParameter = @"
@@ -2896,7 +2918,7 @@ namespace NS {
 
 			yield return [
 				blockParameter,
-				$"{Global ("System")}.IntPtr callbackParameter",
+				$"{Global ("ObjCRuntime")}.NativeHandle callbackParameter",
 			];
 
 			var nativeEnumParameter = @"
@@ -3279,7 +3301,7 @@ namespace NS {
 
 			yield return [
 				ccallbackParameter,
-				$"internal static unsafe void Invoke ({Global ("System")}.IntPtr block_ptr, {Global ("System")}.IntPtr callbackParameter)",
+				$"internal static unsafe void Invoke ({Global ("System")}.IntPtr block_ptr, {Global ("ObjCRuntime")}.NativeHandle callbackParameter)",
 			];
 
 			var nativeEnumParameter = @"
@@ -3651,7 +3673,7 @@ namespace NS {
 
 			yield return [
 				ccallbackParameter,
-				$"delegate* unmanaged<{Global ("System")}.IntPtr, {Global ("System")}.IntPtr, void> trampoline = &Invoke;",
+				$"delegate* unmanaged<{Global ("System")}.IntPtr, {Global ("ObjCRuntime")}.NativeHandle, void> trampoline = &Invoke;",
 			];
 
 			var nativeEnumParameter = @"
@@ -4836,6 +4858,26 @@ namespace NS {
 				"someTrampolineName",
 				cmSampleBuffer,
 				"var cmSampleBuffer__handle__ = cmSampleBuffer!.GetNonNullHandle (nameof (cmSampleBuffer));\n",
+			];
+
+			var blockParameter = @"
+using System;
+using ObjCRuntime;
+
+namespace NS {
+	public delegate void Callback ([BlockCallback] Action? callbackParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				"someTrampolineName",
+				blockParameter,
+				@$"var block_callbackParameter = {Global ("ObjCRuntime.Trampolines.")}{Nomenclator.GetTrampolineClassName ("someTrampolineName", Nomenclator.TrampolineClassType.StaticBridgeClass)}.CreateNullableBlock (callbackParameter);
+{Global ("ObjCRuntime")}.BlockLiteral* block_ptr_callbackParameter = callbackParameter is not null ? &block_callbackParameter : null;
+",
 			];
 		}
 

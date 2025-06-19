@@ -5500,6 +5500,23 @@ namespace NS {
 				doubleReferenceParameter,
 				$"invoker (BlockLiteral, event__handle__, (double*) {Global ("System.Runtime")}.CompilerServices.Unsafe.AsPointer<double> (ref timeStamp), (byte*) global::System.Runtime.CompilerServices.Unsafe.AsPointer<bool> (ref removeEvent));",
 			];
+			
+			var blockParameter = @"
+using System;
+using ObjCRuntime;
+namespace NS {
+	public delegate void Callback ([BlockCallback] Action? callbackParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			
+			yield return [
+				"someTrampolineName",
+				blockParameter,
+				$"invoker (BlockLiteral, ({Global ("ObjCRuntime.NativeHandle")}) block_ptr_callbackParameter);"
+			];
 		}
 
 		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();

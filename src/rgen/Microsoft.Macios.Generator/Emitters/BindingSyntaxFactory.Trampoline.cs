@@ -1308,13 +1308,17 @@ static partial class BindingSyntaxFactory {
 
 			// delegate parameter, c callback
 			// System.Runtime.InteropServices.Marshal.GetDelegateForFunctionPointer<ParameterType> (ParameterName)
-			{ Type.IsDelegate: true, Parameter.IsCCallback: true } =>
-				GetDelegateForFunctionPointer (parameterType.GetIdentifierSyntax (), [Argument (parameterIdentifier)]),
+			{ Type.IsDelegate: true, Parameter.IsCCallback: true } 
+				=> CastExpression (
+					NativeHandle, 
+					IdentifierName (Nomenclator.GetNameForVariableType (parameter.Name, Nomenclator.VariableType.BlockLiteral)!).WithLeadingTrivia (Space)),
 			
 			// delegate parameter, block callback
 			// TrampolineNativeInvocationClass.Create (ParameterName)!
 			{ Type.IsDelegate: true, Parameter.IsBlockCallback: true }
-				=> CreateTrampolineNativeInvocationClass (trampolineName, [Argument (parameterIdentifier)]),
+				=> CastExpression(
+					NativeHandle, 
+					IdentifierName (Nomenclator.GetNameForVariableType (parameter.Name, Nomenclator.VariableType.BlockLiteral)!).WithLeadingTrivia (Space)),
 			
 			// native enum, return the conversion expression to the native type
 			{ Type.IsNativeEnum: true} 

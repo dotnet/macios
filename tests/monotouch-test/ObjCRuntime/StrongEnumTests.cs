@@ -33,7 +33,9 @@ namespace MonoTouchFixtures.ObjCRuntime {
 					if (getValue is null)
 						continue;
 
+#pragma warning disable IL3050 // Using member 'System.Enum.GetValues(Type)' which has 'RequiresDynamicCodeAttribute' can break functionality when AOT compiling. It might not be possible to create an array of the enum type at runtime. Use the GetValues<TEnum> overload or the GetValuesAsUnderlyingType method instead.
 					foreach (var enumValue in Enum.GetValues (type)) {
+#pragma warning restore IL3050
 						var obj = getConstant.Invoke (null, new object [] { enumValue });
 
 						if (valuesToSkip.Remove ((Enum) enumValue))
@@ -46,7 +48,9 @@ namespace MonoTouchFixtures.ObjCRuntime {
 					}
 				}
 
-				Assert.That (valuesToSkip, Is.Empty, "All values to be skipped were actually skipped");
+				// Only very that all the skipped values are correct if nothing has been trimmed away.
+				if (!TestRuntime.IsLinkAny)
+					Assert.That (valuesToSkip, Is.Empty, "All values to be skipped were actually skipped");
 			});
 		}
 

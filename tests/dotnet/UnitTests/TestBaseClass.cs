@@ -278,15 +278,24 @@ namespace Xamarin.Tests {
 			foreach (var assembly in assemblies) {
 				ModuleDefinition definition = ModuleDefinition.ReadModule (assembly, new ReaderParameters { ReadingMode = ReadingMode.Deferred });
 
-				bool onlyHasEmptyMethods = definition.Assembly.MainModule.Types.All (t =>
-					t.Methods.Where (m => m.HasBody).All (m => m.Body.Instructions.Count == 1));
+				var nonEmptyMethods = definition.Assembly.MainModule.Types.SelectMany (t =>
+					t.Methods.Where (m => m.HasBody && m.Body.Instructions.Count > 1)).ToArray ();
+				var onlyHasEmptyMethods = !nonEmptyMethods.Any ();
 				if (onlyHasEmptyMethods) {
 					assembliesWithOnlyEmptyMethods.Add (assembly);
+				} else if (shouldStrip) {
+					Console.WriteLine ($"The assembly {definition.Assembly.Name} has {nonEmptyMethods.Length} non-empty methods ({assembly}):");
+					foreach (var m in nonEmptyMethods)
+						Console.WriteLine ($"    {m}: {m.Body.Instructions.Count} instructions.");
 				}
 			}
 
 			// Some assemblies, such as Facades, will be completely empty even when not stripped
-			Assert.That (assemblies.Length == assembliesWithOnlyEmptyMethods.Count, Is.EqualTo (shouldStrip), $"Unexpected stripping status: of {assemblies.Length} assemblies {assembliesWithOnlyEmptyMethods.Count} were empty.");
+			if (shouldStrip) {
+				Assert.That (assembliesWithOnlyEmptyMethods, Is.EquivalentTo (assemblies), $"Unexpected stripping status: some assemblies contains methods that weren't fully stripped.");
+			} else {
+				Assert.That (assembliesWithOnlyEmptyMethods, Is.Not.EquivalentTo (assemblies), $"Unexpected stripping status: no methods in any assembly contains any code.");
+			}
 		}
 
 		protected void AssertDSymDirectory (string appPath)

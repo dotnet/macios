@@ -51,6 +51,27 @@ namespace UIKit {
 		{
 			throw new NotSupportedException ($"Use 'GetConstantValue' instead, the return type for this method is incorrect.");
 		}
+
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Obsolete ("Use 'GetValue (ulong)' instead.")]
+		public static UIAccessibilityTraits GetValue (NSString constant)
+		{
+			throw new NotSupportedException ($"Use 'GetValue (ulong)' instead.");
+		}
+
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Obsolete ("Use 'GetValue (ulong)' instead.")]
+		public static UIAccessibilityTraits GetValue (NativeHandle handle)
+		{
+			throw new NotSupportedException ($"Use 'GetValue (ulong)' instead.");
+		}
+
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Obsolete ("Use 'GetValue (ulong)' instead.")]
+		public static UIAccessibilityTraits? GetNullableValue (NativeHandle handle)
+		{
+			throw new NotSupportedException ($"Use 'GetValue (ulong)' instead.");
+		}
 #endif
 	}
 }

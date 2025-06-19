@@ -111,7 +111,7 @@ return CreateBlock (callback);
 		var delegateIdentifier = Nomenclator.GetTrampolineClassName (trampolineName, Nomenclator.TrampolineClassType.DelegateType);
 
 		using (var classBlock = classBuilder.CreateBlock ($"internal sealed class {className} : TrampolineBlockBase", true)) {
-			classBlock.WriteLine ($"{delegateName} invoker;");
+			classBlock.WriteLine ($"{delegateName} {Nomenclator.GetNativeInvokerVariableName ()};");
 			classBlock.WriteLine (); // empty line for readability
 									 // constructor
 			classBlock.WriteRaw (
@@ -138,7 +138,26 @@ public unsafe static {delegateIdentifier}? Create (IntPtr block)
 );
 			classBlock.WriteLine (); // empty line for readability
 									 // invoke method
-			classBlock.WriteLine ("// TODO: generate invoke method.");
+			using (var invokeBlock = classBlock.CreateBlock (GetTrampolineNativeInvokeSignature (typeInfo).ToString (), true)) {
+				// retrieve the arguments for the invoker execution. 
+				var argumentSyntax = GetTrampolineNativeInvokeArguments (trampolineName, typeInfo.Delegate!);
+				// write the conversion code for the arguments
+				foreach (var argument in argumentSyntax) {
+					invokeBlock.Write (argument.PreDelegateCallConversion, verifyTrivia: false);
+				}
+
+				// execute the native invoker delegate
+				invokeBlock.WriteLine ($"{CallNativeInvokerDelegate (typeInfo.Delegate!, argumentSyntax)}");
+
+				// build any needed post conversion operations after calling the delegate
+				foreach (var argument in argumentSyntax) {
+					invokeBlock.Write (argument.PostDelegateCallConversion, verifyTrivia: false);
+				}
+
+				// perform any return conversions needed
+				if (typeInfo.Delegate!.ReturnType.SpecialType != SpecialType.System_Void)
+					invokeBlock.WriteLine ($"return {GetTrampolineNativeInvokeReturnType (typeInfo, Nomenclator.GetReturnVariableName ())};");
+			}
 		}
 
 		return true;

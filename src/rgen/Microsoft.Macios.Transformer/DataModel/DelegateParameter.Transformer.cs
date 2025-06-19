@@ -11,6 +11,11 @@ namespace Microsoft.Macios.Generator.DataModel;
 readonly partial struct DelegateParameter {
 
 	/// <summary>
+	/// Returns the bind from data if present in the binding.
+	/// </summary>
+	public BindAsData? BindAs => BindAsAttribute;
+
+	/// <summary>
 	/// Returns the forced type data if present in the binding.
 	/// </summary>
 	public ForcedTypeData? ForcedType { get; init; }

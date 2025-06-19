@@ -244,6 +244,7 @@ public class XamarinBindingAPIGenerator : IIncrementalGenerator {
 		var models = new (string Model, AttributeTargets[] Targets) [] {
 			("EnumMember", [AttributeTargets.Field]), 
 			("Parameter", [AttributeTargets.Parameter]),
+			("DelegateParameter", [AttributeTargets.Parameter]),
 			("Accessor", [AttributeTargets.Property]),
 			("Property", [AttributeTargets.Property]),
 			("Constructor", [AttributeTargets.Constructor]),

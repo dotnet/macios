@@ -27,7 +27,7 @@ namespace Xamarin.Tests {
 			}
 		}
 
-		protected static Dictionary<string, string> GetDefaultProperties (string? runtimeIdentifiers = null, Dictionary<string, string>? extraProperties = null)
+		protected static Dictionary<string, string> GetDefaultProperties (string? runtimeIdentifiers = null, Dictionary<string, string>? extraProperties = null, bool? includeRemoteProperties = null)
 		{
 			var rv = new Dictionary<string, string> (verbosity);
 			if (!string.IsNullOrEmpty (runtimeIdentifiers))
@@ -37,7 +37,10 @@ namespace Xamarin.Tests {
 					rv [kvp.Key] = kvp.Value;
 			}
 
-			if (Configuration.IsBuildingRemotely && !rv.ContainsKey ("IsHotRestartBuild"))
+			if (!includeRemoteProperties.HasValue)
+				includeRemoteProperties = Configuration.IsBuildingRemotely && !rv.ContainsKey ("IsHotRestartBuild");
+
+			if (includeRemoteProperties == true)
 				AddRemoteProperties (rv);
 
 			return rv;

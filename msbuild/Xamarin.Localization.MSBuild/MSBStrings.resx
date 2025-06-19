@@ -819,7 +819,7 @@
     </data>
 
     <data name="E0175" xml:space="preserve">
-        <value>No matching framework found inside '{0}'. SupportedPlatform: '{0}', SupportedPlatformVariant: '{1}', SupportedArchitectures: '{2}'.</value>
+        <value>No matching framework found inside '{0}'. SupportedPlatform: '{1}', SupportedPlatformVariant: '{2}', SupportedArchitectures: '{3}'.</value>
         <comment>
             Do not translate: 'SupportedPlatform', 'SupportedPlatformVariant', 'SupportedArchitectures' (they're keys inside a file with key/value pairs))
         </comment>
@@ -1765,5 +1765,43 @@
 
     <data name="E7152_InvalidMtouchHttpClientHandler" xml:space="preserve">
         <value>Invalid value for 'MtouchHttpClientHandler' ('{0}', must be either 'NSUrlSessionHandler' or 'CFNetworkHandler' (or not set at all).</value>
+    </data>
+
+    <data name="W7154" xml:space="preserve">
+        <value>The {0} item '{1}' imported from '{2}' was ignored, because there's already an existing item from the current project with the same LogicalName ('{3}')</value>
+        <comment>
+            {0}: the name of the MSBuild item in question (BundleResource, ImageAsset, SceneKitAsset, etc.).
+            {1}: path to a file name (of an item)
+            {2}: path to an assembly
+            {3}: value of the LogicalName metadata of the item
+        </comment>
+    </data>
+
+    <data name="W7155" xml:space="preserve">
+        <value>The {0} item '{1}' imported from '{2}' was ignored, because there's another item from a different assembly ({4}) with the same LogicalName ('{3}')</value>
+        <comment>
+            {0}: the name of the MSBuild item in question (BundleResource, ImageAsset, SceneKitAsset, etc.).
+            {1}: path to a file name (of a resource)
+            {2}: path to an assembly
+            {3}: value of the LogicalName metadata.
+            {4}: comma-separated list of assemblies.
+        </comment>
+    </data>
+
+    <data name="W7156" xml:space="preserve">
+        <value>The {0} item '{1}' was ignored, because there's another item with the same LogicalName ('{2}')</value>
+        <comment>
+            {0}: the name of the MSBuild item in question (BundleResource, ImageAsset, SceneKitAsset, etc.).
+            {1}: path to a file name (of a resource)
+            {2}: value of the LogicalName metadata.
+        </comment>
+    </data>
+
+    <data name="E7157" xml:space="preserve">
+        <value>The {0} item '{1}' does not have a 'LogicalName' metadata.</value>
+        <comment>
+            {0}: the name of the MSBuild item in question (BundleResource, ImageAsset, SceneKitAsset, etc.).
+            {1}: path to a file name (of a resource)
+        </comment>
     </data>
 </root>

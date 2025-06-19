@@ -9447,12 +9447,8 @@ M:CoreFoundation.CFStream.remove_ClosedEvent(System.EventHandler{CoreFoundation.
 M:CoreFoundation.CFStream.remove_ErrorEvent(System.EventHandler{CoreFoundation.CFStream.StreamEventArgs})
 M:CoreFoundation.CFStream.remove_HasBytesAvailableEvent(System.EventHandler{CoreFoundation.CFStream.StreamEventArgs})
 M:CoreFoundation.CFStream.remove_OpenCompletedEvent(System.EventHandler{CoreFoundation.CFStream.StreamEventArgs})
-M:CoreFoundation.CFString.CreateNative(System.String)
-M:CoreFoundation.CFString.FromHandle(ObjCRuntime.NativeHandle,System.Boolean)
-M:CoreFoundation.CFString.FromHandle(ObjCRuntime.NativeHandle)
 M:CoreFoundation.CFString.op_Implicit(CoreFoundation.CFString)~System.String
 M:CoreFoundation.CFString.op_Implicit(System.String)~CoreFoundation.CFString
-M:CoreFoundation.CFString.ReleaseNative(ObjCRuntime.NativeHandle)
 M:CoreFoundation.CFWriteStream.DoSetClient(.method,System.IntPtr,System.IntPtr)
 M:CoreFoundation.CFWriteStream.Write(System.Byte[],System.IntPtr,System.IntPtr)
 M:CoreFoundation.DispatchBlock.op_Explicit(CoreFoundation.DispatchBlock)~System.Action
@@ -10994,9 +10990,6 @@ M:Foundation.NSStream.remove_OnEvent(System.EventHandler{Foundation.NSStreamEven
 M:Foundation.NSStreamSocksOptions.#ctor
 M:Foundation.NSString.CompareTo(Foundation.NSString)
 M:Foundation.NSString.LoadDataAsync(System.String,Foundation.NSProgress@)
-M:Foundation.NSString.op_Equality(Foundation.NSString,Foundation.NSString)
-M:Foundation.NSString.op_Explicit(System.String)~Foundation.NSString
-M:Foundation.NSString.op_Inequality(Foundation.NSString,Foundation.NSString)
 M:Foundation.NSTimer.Dispose(System.Boolean)
 M:Foundation.NSUrl.LoadDataAsync(System.String,Foundation.NSProgress@)
 M:Foundation.NSUrl.op_Equality(Foundation.NSUrl,Foundation.NSUrl)
@@ -16869,10 +16862,12 @@ M:UIKit.UITableViewHeaderFooterView.UITableViewHeaderFooterViewAppearance.#ctor(
 M:UIKit.UITextAlignmentExtensions.ToManaged(System.IntPtr)
 M:UIKit.UITextAlignmentExtensions.ToNative(UIKit.UITextAlignment)
 M:UIKit.UITextCursorDropPositionAnimator.AnimateAlongsideChangesAsync(System.Action)
+M:UIKit.UITextField.add_DidChangeSelection(System.EventHandler)
 M:UIKit.UITextField.add_Ended(System.EventHandler)
 M:UIKit.UITextField.add_EndedWithReason(System.EventHandler{UIKit.UITextFieldEditingEndedEventArgs})
 M:UIKit.UITextField.add_Started(System.EventHandler)
 M:UIKit.UITextField.Dispose(System.Boolean)
+M:UIKit.UITextField.remove_DidChangeSelection(System.EventHandler)
 M:UIKit.UITextField.remove_Ended(System.EventHandler)
 M:UIKit.UITextField.remove_EndedWithReason(System.EventHandler{UIKit.UITextFieldEditingEndedEventArgs})
 M:UIKit.UITextField.remove_Started(System.EventHandler)

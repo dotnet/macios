@@ -565,16 +565,16 @@ namespace ObjCRuntime {
 			return Marshal.StringToHGlobalAuto (location);
 		}
 
-		static void SetFlagsForNSObject (IntPtr gchandle, byte flags)
+		static void SetFlagsForNSObject (IntPtr gchandle, uint flags)
 		{
 			var obj = (NSObject) GetGCHandleTarget (gchandle)!;
 			obj.FlagsInternal = (NSObject.Flags) flags;
 		}
 
-		static byte GetFlagsForNSObject (IntPtr gchandle)
+		static uint GetFlagsForNSObject (IntPtr gchandle)
 		{
 			var obj = (NSObject) GetGCHandleTarget (gchandle)!;
-			return (byte) obj.FlagsInternal;
+			return (uint) obj.FlagsInternal;
 		}
 
 		static unsafe MonoObject* GetMethodDeclaringType (MonoObject* mobj)

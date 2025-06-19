@@ -444,7 +444,7 @@
 		<ItemGroup>
 			<_MonoComponent Include="hot_reload" Condition="'$(MtouchInterpreter)' != ''" />
 			<_MonoComponent Include="debugger" Condition="'$(_BundlerDebug)' == 'true'" />
-			<_MonoComponent Include="diagnostics_tracing" Condition="'$(EnableProfiler)' == 'true'" />
+			<_MonoComponent Include="diagnostics_tracing" Condition="'$(EnableDiagnostics)' == 'true'" />
 			<_MonoComponent Include="marshal-ilgen" Condition="'$(_AppleExcludeMarshalIlgenComponent)' != 'true'" />
 		</ItemGroup>
 	</Target>
@@ -453,10 +453,10 @@
 		<!-- We only include any mono components when linking with mono statically. The components are already included in the dynamic versions of Mono (both the dylib and the framework) -->
 		<ItemGroup Condition="'$(_LibMonoLinkMode)' == 'static'">
 			<!-- Remove files mono told us not to link with -->
-			<_MonoLibrary Remove="@(_MonoRuntimeComponentDontLink -> '$(_MonoRuntimePackPath)native/%(Identity)')" />
+			<_MonoLibrary Remove="@(_MonoRuntimeComponentDontLink -> '$(_MonoRuntimePackPathNative)%(Identity)')" />
 
 			<!-- Add files mono told us to link with -->
-			<_MonoLibrary Include="@(_MonoRuntimeComponentLink -> '$(_MonoRuntimePackPath)native/%(Identity)')" />
+			<_MonoLibrary Include="@(_MonoRuntimeComponentLink -> '$(_MonoRuntimePackPathNative)%(Identity)')" />
 		</ItemGroup>
 	</Target>
 
@@ -1072,16 +1072,17 @@
 		<PropertyGroup>
 			<_XamarinSdkRuntimePackDirectory>%(_XamarinFrameworkReference.RuntimePackPath)</_XamarinSdkRuntimePackDirectory>
 			<_XamarinRefPackageDirectory>%(_XamarinFrameworkReference.TargetingPackPath)</_XamarinRefPackageDirectory>
-			<_XamarinNativeLibraryDirectory>$(_XamarinSdkRuntimePackDirectory)/runtimes/$(RuntimeIdentifier)/native</_XamarinNativeLibraryDirectory>
-			<_XamarinIncludeDirectory>$(_XamarinSdkRuntimePackDirectory)/runtimes/$(RuntimeIdentifier)/native</_XamarinIncludeDirectory>
-			<_XamarinRefAssemblyDirectory>$(_XamarinRefPackageDirectory)/ref/$(_XamarinDotNetVersion)/</_XamarinRefAssemblyDirectory>
+			<_XamarinNativeLibraryDirectory>$([MSBuild]::NormalizeDirectory('$(_XamarinSdkRuntimePackDirectory)/runtimes/$(RuntimeIdentifier)/native/'))</_XamarinNativeLibraryDirectory>
+			<_XamarinIncludeDirectory>$([MSBuild]::NormalizeDirectory('$(_XamarinSdkRuntimePackDirectory)/runtimes/$(RuntimeIdentifier)/native/'))</_XamarinIncludeDirectory>
+			<_XamarinRefAssemblyDirectory>$([MSBuild]::NormalizeDirectory('$(_XamarinRefPackageDirectory)/ref/$(_XamarinDotNetVersion)/'))</_XamarinRefAssemblyDirectory>
 			<_XamarinRefAssemblyPath>$(_XamarinRefAssemblyDirectory)$(_PlatformAssemblyName).dll</_XamarinRefAssemblyPath>
 
-			<_LibPartialStaticRegistrar Condition="'$(_XamarinRuntime)' == 'MonoVM'">$(_XamarinNativeLibraryDirectory)/Microsoft.$(_PlatformName).registrar.a</_LibPartialStaticRegistrar>
-			<_LibPartialStaticRegistrar Condition="'$(_XamarinRuntime)' == 'CoreCLR'">$(_XamarinNativeLibraryDirectory)/Microsoft.$(_PlatformName).registrar.coreclr.a</_LibPartialStaticRegistrar>
-			<_LibPartialStaticRegistrar Condition="'$(_XamarinRuntime)' == 'NativeAOT'">$(_XamarinNativeLibraryDirectory)/Microsoft.$(_PlatformName).registrar.nativeaot.a</_LibPartialStaticRegistrar>
+			<_LibPartialStaticRegistrar Condition="'$(_XamarinRuntime)' == 'MonoVM'">$(_XamarinNativeLibraryDirectory)Microsoft.$(_PlatformName).registrar.a</_LibPartialStaticRegistrar>
+			<_LibPartialStaticRegistrar Condition="'$(_XamarinRuntime)' == 'CoreCLR'">$(_XamarinNativeLibraryDirectory)Microsoft.$(_PlatformName).registrar.coreclr.a</_LibPartialStaticRegistrar>
+			<_LibPartialStaticRegistrar Condition="'$(_XamarinRuntime)' == 'NativeAOT'">$(_XamarinNativeLibraryDirectory)Microsoft.$(_PlatformName).registrar.nativeaot.a</_LibPartialStaticRegistrar>
 
-			<_MonoRuntimePackPath>%(_MonoFrameworkReference.RuntimePackPath)/runtimes/$(RuntimeIdentifier)/</_MonoRuntimePackPath>
+			<_MonoRuntimePackPath>$([MSBuild]::NormalizeDirectory('%(_MonoFrameworkReference.RuntimePackPath)/runtimes/$(RuntimeIdentifier)/'))</_MonoRuntimePackPath>
+			<_MonoRuntimePackPathNative>$([MSBuild]::NormalizeDirectory('$(_MonoRuntimePackPath)native/'))</_MonoRuntimePackPathNative>
 		</PropertyGroup>
 	</Target>
 
@@ -1632,7 +1633,7 @@
 			<_NativeLinkCachePath2>$(_NativeLinkCachePath).uptodate</_NativeLinkCachePath2>
 		</PropertyGroup>
 		<ItemGroup>
-			<_XamarinMainLibraries Include="$(_XamarinNativeLibraryDirectory)/$(_LibXamarinName)" />
+			<_XamarinMainLibraries Include="$(_XamarinNativeLibraryDirectory)$(_LibXamarinName)" />
 			<!-- Link with the libraries shipped with the mono runtime pack -->
 			<_XamarinMainLibraries Include="@(_MonoLibrary)" />
 
@@ -2169,7 +2170,7 @@
 	<Target Name="_ComputeCodesignItems"
 		Outputs="$(_CodesignItemsPath)"
 		>
-		<ItemGroup Condition="'$(_RequireCodeSigning)' == 'true' And '$(BundleCreateDump)' == 'true'">
+		<ItemGroup Condition="'$(EnableCodeSigning)' == 'true' And '$(BundleCreateDump)' == 'true'">
 			<!-- The 'createdump' executable must be signed. -->
 			<!-- Ref: https://github.com/dotnet/macios/issues/13417 -->
 			<_CreateDumpExecutableToSign Include="@(_CreateDumpExecutable -> '$(_DylibPublishDir)%(RelativePath)')" KeepMetadata="false">

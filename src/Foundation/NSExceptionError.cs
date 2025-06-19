@@ -14,7 +14,7 @@ namespace Foundation {
 		public Exception Exception { get => exception; }
 
 		public NSExceptionError (Exception exception)
-			: base ((NSString) exception.GetType ().FullName, exception.HResult, GetDictionary (exception))
+			: base ((NSString) exception.GetType ().FullName!, exception.HResult, GetDictionary (exception))
 		{
 			this.exception = exception;
 			IsDirectBinding = false;

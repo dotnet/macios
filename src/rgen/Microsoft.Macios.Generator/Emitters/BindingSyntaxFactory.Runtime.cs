@@ -223,10 +223,27 @@ static partial class BindingSyntaxFactory {
 	}
 
 	/// <summary>
-	/// Generates the expression to call the CFString.CreateNative method.
+	/// Generates the expression to call the CFString.ReleaseNative method.
 	/// </summary>
 	/// <param name="arguments">The argument list for the invocation.</param>
-	/// <returns>The expression to call the CFString.CreateNative method with the provided args.</returns>
+	/// <returns>The expression to call the CFString.ReleaseNative method with the provided args.</returns>
+	internal static InvocationExpressionSyntax StringReleaseNative (ImmutableArray<ArgumentSyntax> arguments)
+	{
+		var argumentList = ArgumentList (
+			SeparatedList<ArgumentSyntax> (arguments.ToSyntaxNodeOrTokenArray ()));
+		return InvocationExpression (
+			MemberAccessExpression (
+				SyntaxKind.SimpleMemberAccessExpression,
+				CFString,
+				IdentifierName ("ReleaseNative").WithTrailingTrivia (Space))
+		).WithArgumentList (argumentList);
+	}
+
+	/// <summary>
+	/// Generates the expression to call the NSString.CreateNative method.
+	/// </summary>
+	/// <param name="arguments">The argument list for the invocation.</param>
+	/// <returns>The expression to call the NSString.CreateNative method with the provided args.</returns>
 	internal static InvocationExpressionSyntax NStringCreateNative (ImmutableArray<ArgumentSyntax> arguments)
 	{
 		var argumentList = ArgumentList (
@@ -234,7 +251,7 @@ static partial class BindingSyntaxFactory {
 		return InvocationExpression (
 				MemberAccessExpression (
 					SyntaxKind.SimpleMemberAccessExpression,
-					IdentifierName ("NFString"),
+					NSString,
 					IdentifierName ("CreateNative").WithTrailingTrivia (Space))
 			).WithArgumentList (argumentList);
 	}
@@ -291,7 +308,7 @@ static partial class BindingSyntaxFactory {
 			return null;
 		return MemberAccessExpression (
 			SyntaxKind.SimpleMemberAccessExpression,
-			GetIdentifierName ("NSValue"),
+			NSValue,
 			IdentifierName (memberName));
 	}
 
@@ -357,7 +374,7 @@ static partial class BindingSyntaxFactory {
 			return null;
 		return MemberAccessExpression (
 			SyntaxKind.SimpleMemberAccessExpression,
-			GetIdentifierName ("NSNumber"),
+			NSNumber,
 			IdentifierName (memberName));
 	}
 
@@ -428,49 +445,42 @@ static partial class BindingSyntaxFactory {
 			.WithArgumentList (argumentList);
 	}
 
+	internal static ExpressionSyntax SmartEnumGetValue (in TypeInfo enumType)
+	{
+		var extensionClassName = Nomenclator.GetSmartEnumExtensionClassName (enumType.FullyQualifiedName);
+		var getValueMethod = enumType.IsNullable ? "GetNullableValue" : "GetValue";
+
+		return MemberAccessExpression (SyntaxKind.SimpleMemberAccessExpression,
+			AliasQualifiedName (
+				IdentifierName (Token (SyntaxKind.GlobalKeyword)),
+				IdentifierName (extensionClassName)),
+			IdentifierName (getValueMethod));
+	}
+
 	/// <summary>
 	/// Returns the enum extension method needed to get the value of the enum from a NativeHandle.
 	/// </summary>
 	/// <param name="enumType">The type info of the enum type.</param>
 	/// <param name="arguments">The arguments to pass to the method invocation.</param>
-	/// <param name="isNullable">If the execution should consider the enum to be nullable. This
 	/// method does not use the data in the TypeInfo to allow it to be overriden. This is because
 	/// the BindAsAttribute might need to override the call. Use the overload when the type info is all
 	/// we care about.</param>
 	/// <returns>The extension method invocation syntax.</returns>
 	internal static InvocationExpressionSyntax SmartEnumGetValue (in TypeInfo enumType,
-		ImmutableArray<ArgumentSyntax> arguments, bool isNullable)
+		ImmutableArray<ArgumentSyntax> arguments)
 	{
-		// use the nomenclator to get the class name for the extensions
-		var extensionClassName = Nomenclator.GetSmartEnumExtensionClassName (enumType.FullyQualifiedName);
-		var getValueMethod = isNullable ? "GetNullableValue" : "GetValue";
 
 		// generate (arg1, arg2, arg3)
 		var argumentList = ArgumentList (
 			SeparatedList<ArgumentSyntax> (arguments.ToSyntaxNodeOrTokenArray ()));
 
 		// generate: global::extensionNamespace.extensionClassName.GetValue
-		var memberAccess = MemberAccessExpression (SyntaxKind.SimpleMemberAccessExpression,
-			AliasQualifiedName (
-				IdentifierName (Token (SyntaxKind.GlobalKeyword)),
-				IdentifierName (extensionClassName)),
-			IdentifierName (getValueMethod).WithTrailingTrivia (Space));
+		var memberAccess = SmartEnumGetValue (enumType).WithTrailingTrivia (Space);
 
 		// generate the invocation with the given params
 		return InvocationExpression (memberAccess)
 			.WithArgumentList (argumentList);
 	}
-
-	/// <summary>
-	/// Overload that returns the enum extension method need to get a enum value from a NativeHandle. This method
-	/// uses the type info data to decide if the result is a nullable enum value.
-	/// </summary>
-	/// <param name="enumType">The type info of the enum value.</param>
-	/// <param name="arguments">The arguments to pass to the method invocation.</param>
-	/// <returns>The extension method invocation syntax.</returns>
-	internal static InvocationExpressionSyntax SmartEnumGetValue (in TypeInfo enumType,
-		ImmutableArray<ArgumentSyntax> arguments)
-		=> SmartEnumGetValue (enumType, arguments, enumType.IsNullable);
 
 	/// <summary>
 	/// Generates the expression GetHandle () for a given expression syntax. For example:
@@ -492,14 +502,42 @@ static partial class BindingSyntaxFactory {
 	/// </summary>
 	/// <param name="type">The information of the type of object to be created.</param>
 	/// <param name="arguments">The argument list for the object creation expression.</param>
-	/// <param name="global">If the global qualifier should be used.</param>
 	/// <returns>An object creation expression.</returns>
-	internal static ObjectCreationExpressionSyntax New (in TypeInfo type, ImmutableArray<ArgumentSyntax> arguments)
+	internal static ObjectCreationExpressionSyntax New (TypeSyntax type, ImmutableArray<ArgumentSyntax> arguments)
 	{
 		var argumentList = ArgumentList (
 			SeparatedList<ArgumentSyntax> (arguments.ToSyntaxNodeOrTokenArray ()));
-		return ObjectCreationExpression (type.GetIdentifierSyntax ().WithLeadingTrivia (Space).WithTrailingTrivia (Space))
+		return ObjectCreationExpression (type.WithLeadingTrivia (Space).WithTrailingTrivia (Space))
 			.WithArgumentList (argumentList);
+	}
+
+	/// <summary>
+	/// Generate an object creation expression for the given type info using the provided arguments.
+	/// </summary>
+	/// <param name="type">The information of the type of object to be created.</param>
+	/// <param name="arguments">The argument list for the object creation expression.</param>
+	/// <returns>An object creation expression.</returns>
+	internal static ObjectCreationExpressionSyntax New (in TypeInfo type, ImmutableArray<ArgumentSyntax> arguments)
+		=> New (type.GetIdentifierSyntax (), arguments);
+
+	/// <summary>
+	/// Generates a nameof(variableName) expression.
+	/// </summary>
+	/// <param name="variableName">The name of the variable to use in the nameof expression.</param>
+	/// <returns>An <see cref="InvocationExpressionSyntax"/> representing the nameof call.</returns>
+	internal static InvocationExpressionSyntax NameOf (string variableName)
+	{
+		return InvocationExpression (
+				IdentifierName (
+					Identifier (TriviaList (),
+						SyntaxKind.NameOfKeyword,
+						"nameof", "nameof",
+						TriviaList (Space))))
+			.WithArgumentList (
+				ArgumentList (
+					SingletonSeparatedList (
+						Argument (
+							IdentifierName (variableName)))));
 	}
 
 	/// <summary>
@@ -550,4 +588,21 @@ static partial class BindingSyntaxFactory {
 	internal static ExpressionSyntax RetainAndAutoreleaseNativeObject (ImmutableArray<ArgumentSyntax> arguments)
 		=> StaticInvocationExpression (Runtime, "RetainAndAutoreleaseNativeObject", arguments);
 
+	/// <summary>
+	/// Generates a call to System.GC.KeepAlive(variableName).
+	/// </summary>
+	/// <param name="variableName">The name of the variable to keep alive.</param>
+	/// <returns>An <see cref="InvocationExpressionSyntax"/> representing the call to GC.KeepAlive.</returns>
+	internal static InvocationExpressionSyntax KeepAlive (string variableName)
+	{
+		return InvocationExpression (
+				MemberAccessExpression (
+					SyntaxKind.SimpleMemberAccessExpression,
+					GC,
+					IdentifierName ("KeepAlive").WithTrailingTrivia (Space)))
+			.WithArgumentList (
+				ArgumentList (
+					SingletonSeparatedList (
+						Argument (IdentifierName (variableName)))));
+	}
 }

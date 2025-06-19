@@ -164,6 +164,7 @@ namespace ObjCRuntime {
 			public IntPtr set_gchandle_tramp;
 			public IntPtr get_flags_tramp;
 			public IntPtr set_flags_tramp;
+			public IntPtr retainWeakReference_tramp;
 		}
 #pragma warning restore 649
 

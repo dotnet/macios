@@ -654,6 +654,15 @@ xamarin_invoke_objc_method_implementation (id self, SEL sel, IMP xamarin_impl)
 	return ((func_objc_msgSendSuper) objc_msgSendSuper) (&sup, sel);
 }
 
+BOOL
+xamarin_invoke_objc_method_implementation_BOOL (id self, SEL sel, IMP xamarin_impl)
+{
+	struct objc_super sup;
+	find_objc_method_implementation (&sup, self, sel, xamarin_impl);
+	typedef BOOL (*func_objc_msgSendSuper) (struct objc_super *sup, SEL sel);
+	return ((func_objc_msgSendSuper) objc_msgSendSuper) (&sup, sel);
+}
+
 #if MONOMAC
 id
 xamarin_copyWithZone_trampoline1 (id self, SEL sel, NSZone *zone)
@@ -804,6 +813,37 @@ xamarin_retain_trampoline (id self, SEL sel)
 	return self;
 }
 
+BOOL
+xamarin_retainWeakReference_trampoline (id self, SEL sel)
+{
+	GCHandle gchandle = xamarin_get_gchandle (self);
+	uint32_t flags = 0;
+	MonoObject *mobj = NULL;
+	bool isInFinalizerQueue = false;
+
+	if (gchandle != INVALID_GCHANDLE) {
+		MONO_THREAD_ATTACH;
+		mobj = xamarin_gchandle_get_target (gchandle);
+		if (mobj != NULL) {
+			flags = xamarin_get_nsobject_flags (mobj);
+			isInFinalizerQueue = (flags & NSObjectFlagsInFinalizerQueue) == NSObjectFlagsInFinalizerQueue;
+		}
+		MONO_THREAD_DETACH;
+	}
+
+#if defined(DEBUG_REF_COUNTING)
+	PRINT ("xamarin_retainWeakReference_trampoline (%s Handle=%p) gchandle: %i flags: %x mobj: %p isInFinalizerQueue: %i\n",
+		class_getName ([self class]), self, gchandle, flags, mobj, isInFinalizerQueue);
+#endif
+
+	// Do not allow any weak references to be resolved if the managed wrapper has been scheduled for finalization,
+	// all kinds of bad things happen when native code tries to use such an object.
+	if (isInFinalizerQueue)
+		return FALSE;
+
+	/* Invoke the real release method */
+	return xamarin_invoke_objc_method_implementation_BOOL (self, sel, (IMP) xamarin_retainWeakReference_trampoline);
+}
 
 // We try to use the associated object API as little as possible, because the API does
 // not like recursion (see bug #35017), and it calls retain/release, which we might

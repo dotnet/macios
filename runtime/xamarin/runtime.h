@@ -274,6 +274,7 @@ void			xamarin_log_managed_exception (MonoObject *exception, MarshalManagedExcep
 void			xamarin_log_objectivec_exception (NSException *exception, MarshalObjectiveCExceptionMode mode);
 
 id				xamarin_invoke_objc_method_implementation (id self, SEL sel, IMP xamarin_impl);
+BOOL			xamarin_invoke_objc_method_implementation_BOOL (id self, SEL sel, IMP xamarin_impl);
 MonoType *		xamarin_get_nsnumber_type ();
 MonoType *		xamarin_get_nsvalue_type ();
 MonoClass *		xamarin_get_inativeobject_class ();

@@ -121,6 +121,7 @@ struct Trampolines {
 	void* set_gchandle_tramp;
 	void* get_flags_tramp;
 	void* set_flags_tramp;
+	void* retainWeakReference_tramp;
 };
 
 enum InitializationFlags : int {
@@ -180,6 +181,7 @@ static struct Trampolines trampolines = {
 	(void *) &xamarin_set_gchandle_trampoline,
 	(void *) &xamarin_get_flags_trampoline,
 	(void *) &xamarin_set_flags_trampoline,
+	(void *) &xamarin_retainWeakReference_trampoline,
 };
 
 static struct InitializationOptions options = { 0 };

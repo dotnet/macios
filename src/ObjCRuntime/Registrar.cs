@@ -618,6 +618,7 @@ namespace Registrar {
 					case Trampoline.SetGCHandle:
 					case Trampoline.GetFlags:
 					case Trampoline.SetFlags:
+					case Trampoline.RetainWeakReference:
 						return true;
 					default:
 						return false;
@@ -2115,6 +2116,13 @@ namespace Registrar {
 						Signature = "v@:i",
 						IsStatic = false,
 					}, ref exceptions);
+
+					objcType.Add (new ObjCMethod (this, objcType, null) {
+						Selector = "retainWeakReference",
+						Trampoline = Trampoline.RetainWeakReference,
+						Signature = $"{GetBoolEncoding ()}@:",
+						IsStatic = false,
+					}, ref exceptions);
 				}
 
 				// Find conform_to_protocol
@@ -2650,6 +2658,29 @@ namespace Registrar {
 			return GetExportedTypeName (type, GetRegisterAttribute (type));
 		}
 
+		string GetBoolEncoding ()
+		{
+			// map managed 'bool' to ObjC BOOL = 'unsigned char' in OSX and 32bit iOS architectures and 'bool' in 64bit iOS architectures
+#if MTOUCH || MMP || BUNDLER
+			switch (App.Platform) {
+			case ApplePlatform.iOS:
+			case ApplePlatform.TVOS:
+				return "B";
+			case ApplePlatform.MacOSX:
+			case ApplePlatform.MacCatalyst:
+				return IsARM64 ? "B" : "c";
+			default:
+				throw ErrorHelper.CreateError (71, Errors.MX0071, App.Platform, App.ProductName);
+			}
+#else
+#if MONOMAC || __MACCATALYST__
+			return IsARM64 ? "B" : "c";
+#else
+			return "B";
+#endif
+#endif
+		}
+
 		protected string ToSignature (TType type, ObjCMember member, ref bool success, bool forProperty = false)
 		{
 			bool isNativeEnum;
@@ -2670,26 +2701,7 @@ namespace Registrar {
 			case "System.UInt64": return "Q";
 			case "System.Single": return "f";
 			case "System.Double": return "d";
-			case "System.Boolean":
-				// map managed 'bool' to ObjC BOOL = 'unsigned char' in OSX and 32bit iOS architectures and 'bool' in 64bit iOS architectures
-#if MTOUCH || MMP || BUNDLER
-				switch (App.Platform) {
-				case ApplePlatform.iOS:
-				case ApplePlatform.TVOS:
-					return "B";
-				case ApplePlatform.MacOSX:
-				case ApplePlatform.MacCatalyst:
-					return IsARM64 ? "B" : "c";
-				default:
-					throw ErrorHelper.CreateError (71, Errors.MX0071, App.Platform, App.ProductName);
-				}
-#else
-#if MONOMAC || __MACCATALYST__
-				return IsARM64 ? "B" : "c";
-#else
-				return "B";
-#endif
-#endif
+			case "System.Boolean": return GetBoolEncoding ();
 			case "System.Void": return "v";
 			case "System.String":
 				return forProperty ? "@\"NSString\"" : "@";
@@ -2845,5 +2857,6 @@ namespace Registrar {
 		SetGCHandle,
 		GetFlags,
 		SetFlags,
+		RetainWeakReference,
 	}
 }

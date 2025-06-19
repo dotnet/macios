@@ -26,6 +26,7 @@ void		xamarin_stret_trampoline (void *buffer, id self, SEL sel, ...);
 float		xamarin_fpret_single_trampoline (id self, SEL sel, ...);
 double		xamarin_fpret_double_trampoline (id self, SEL sel, ...);
 void		xamarin_release_trampoline (id self, SEL sel);
+BOOL		xamarin_retainWeakReference_trampoline (id self, SEL sel);
 void		xamarin_calayer_release_trampoline (id self, SEL sel);
 id			xamarin_retain_trampoline (id self, SEL sel);
 void		xamarin_dealloc_trampoline (id self, SEL sel);

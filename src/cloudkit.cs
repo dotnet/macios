@@ -978,8 +978,8 @@ namespace CloudKit {
 	/// <param name="operationError">To be added.</param>
 	/// <summary>Delegate for the <see cref="CloudKit.CKFetchSubscriptionsOperation.Completed" /> property.</summary>
 	/// <remarks>To be added.</remarks>
-	[MacCatalyst(13, 1)]
-	delegate void CKFetchSubscriptionsCompleteHandler([NullAllowed] NSDictionary subscriptionsBySubscriptionId, [NullAllowed] NSError operationError);
+	[MacCatalyst (13, 1)]
+	delegate void CKFetchSubscriptionsCompleteHandler ([NullAllowed] NSDictionary subscriptionsBySubscriptionId, [NullAllowed] NSError operationError);
 
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 	delegate void CKFetchSubscriptionsPerSubscriptionCompletionHandler ([NullAllowed] NSString subscriptionId, [NullAllowed] CKSubscription subscription, [NullAllowed] NSError error);

@@ -750,6 +750,28 @@ namespace NS {
 				"auxVariable"
 			];
 
+			const string enumReturnType = @"
+using System;
+
+namespace NS {
+
+	public enum TestEnum {
+		First,
+		Last
+	}
+
+	public delegate TestEnum Callback()
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				enumReturnType,
+				"(global::NS.TestEnum) auxVariable",
+			];
+
 			const string voidReturnType = @"
 using System;
 
@@ -4853,7 +4875,9 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				blockParameter,
-				$"var block_callbackParameter = {Global ("ObjCRuntime.Trampolines.")}{Nomenclator.GetTrampolineClassName ("someTrampolineName", Nomenclator.TrampolineClassType.StaticBridgeClass)}.CreateNullableBlock (callbackParameter);\n",
+				@$"var block_callbackParameter = {Global ("ObjCRuntime.Trampolines.")}{Nomenclator.GetTrampolineClassName ("someTrampolineName", Nomenclator.TrampolineClassType.StaticBridgeClass)}.CreateNullableBlock (callbackParameter);
+{Global ("ObjCRuntime")}.BlockLiteral* block_ptr_callbackParameter = callbackParameter is not null ? &block_callbackParameter : null;
+",
 			];
 		}
 

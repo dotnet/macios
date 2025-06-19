@@ -164,12 +164,13 @@ namespace Xamarin.MacDev.Tasks {
 			var mapping = new Dictionary<string, IDictionary> ();
 			var bundleResources = new List<ITaskItem> ();
 			var partialPlists = new List<ITaskItem> ();
+			var models = CollectBundleResources.ComputeLogicalNameAndDetectDuplicates (this, Models, ProjectDir, ResourcePrefix, "CoreMLModel");
 
-			if (Models.Length > 0) {
+			if (models.Length > 0) {
 				Directory.CreateDirectory (coremlcOutputDir);
 
-				foreach (var model in Models) {
-					var logicalName = BundleResource.GetLogicalName (this, model);
+				foreach (var model in models) {
+					var logicalName = model.GetMetadata ("LogicalName");
 					var bundleName = GetPathWithoutExtension (logicalName) + ".mlmodelc";
 					var outputPath = Path.Combine (coremlcOutputDir, bundleName);
 					var outputDir = Path.GetDirectoryName (outputPath);

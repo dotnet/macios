@@ -37,7 +37,7 @@ namespace NS {
 
 			yield return [
 				arrayNSObjectResult,
-				$"{Global ("ObjCRuntime.Runtime")}.RetainAndAutoreleaseNSObject (global::Foundation.NSArray.FromNSObjects (auxVariable))"
+				$"{Global ("ObjCRuntime.Runtime")}.RetainAndAutoreleaseNSObject ({Global ("Foundation.NSArray")}.FromNSObjects (auxVariable))"
 			];
 
 			const string nullableArrayNSObjectResult = @"
@@ -55,7 +55,7 @@ namespace NS {
 
 			yield return [
 				nullableArrayNSObjectResult,
-				$"{Global ("ObjCRuntime.Runtime")}.RetainAndAutoreleaseNSObject (global::Foundation.NSArray.FromNSObjects (auxVariable))"
+				$"{Global ("ObjCRuntime.Runtime")}.RetainAndAutoreleaseNSObject ({Global ("Foundation.NSArray")}.FromNSObjects (auxVariable))"
 			];
 
 			const string nsObjectResult = @"
@@ -863,7 +863,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				ccallbackParameter,
-				$"global::System.Runtime.InteropServices.Marshal.GetDelegateForFunctionPointer<{Global ("System.Action")}> (callbackParameter)"
+				$"{Global ("System.Runtime")}.InteropServices.Marshal.GetDelegateForFunctionPointer<{Global ("System.Action")}> (callbackParameter)"
 			];
 
 			var blockParameter = @"
@@ -945,7 +945,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				nsObjectArray,
-				$"global::CoreFoundation.CFArray.ArrayFromHandle<{Global ("Foundation.NSObject")}> (nsObjectArray)!",
+				$"{Global ("CoreFoundation.CFArray")}.ArrayFromHandle<{Global ("Foundation.NSObject")}> (nsObjectArray)!",
 			];
 
 			var iNativeObjectArray = @"
@@ -965,7 +965,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				iNativeObjectArray,
-				$"global::Foundation.NSArray.ArrayFromHandle<{Global ("CoreMedia.CMTimebase")}> (inativeArray)!",
+				$"{Global ("Foundation.NSArray")}.ArrayFromHandle<{Global ("CoreMedia.CMTimebase")}> (inativeArray)!",
 			];
 
 			var stringArray = @"
@@ -984,7 +984,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				stringArray,
-				"global::CoreFoundation.CFArray.StringArrayFromHandle (stringArray)!",
+				$"{Global ("CoreFoundation.CFArray")}.StringArrayFromHandle (stringArray)!",
 			];
 
 			var stringParameter = @"
@@ -1003,7 +1003,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				stringParameter,
-				"global::CoreFoundation.CFString.FromHandle (stringParameter)!",
+				$"{Global ("CoreFoundation.CFString")}.FromHandle (stringParameter)!",
 			];
 
 			var protocolParameter = @"
@@ -1022,7 +1022,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				protocolParameter,
-				$"global::ObjCRuntime.Runtime.GetINativeObject<{Global ("Foundation.INSUrlConnectionDataDelegate")}> (protocolParameter, false)!",
+				$"{Global ("ObjCRuntime.Runtime")}.GetINativeObject<{Global ("Foundation.INSUrlConnectionDataDelegate")}> (protocolParameter, false)!",
 			];
 
 			var forcedParameterOwnsFalse = @"
@@ -1041,7 +1041,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				forcedParameterOwnsFalse,
-				$"global::ObjCRuntime.Runtime.GetINativeObject<{Global ("Foundation.INSUrlConnectionDataDelegate")}> (forcedParameter, true, false)!",
+				$"{Global ("ObjCRuntime.Runtime")}.GetINativeObject<{Global ("Foundation.INSUrlConnectionDataDelegate")}> (forcedParameter, true, false)!",
 			];
 
 			var forcedParameterOwnsTrue = @"
@@ -1060,7 +1060,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				forcedParameterOwnsTrue,
-				$"global::ObjCRuntime.Runtime.GetINativeObject<{Global ("Foundation.INSUrlConnectionDataDelegate")}> (forcedParameter, true, true)!",
+				$"{Global ("ObjCRuntime.Runtime")}.GetINativeObject<{Global ("Foundation.INSUrlConnectionDataDelegate")}> (forcedParameter, true, true)!",
 			];
 
 			var nsObjectParameter = @"
@@ -1079,7 +1079,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				nsObjectParameter,
-				$"global::ObjCRuntime.Runtime.GetNSObject<{Global ("Foundation.NSObject")}> (nsObjectParameter)!",
+				$"{Global ("ObjCRuntime.Runtime")}.GetNSObject<{Global ("Foundation.NSObject")}> (nsObjectParameter)!",
 			];
 
 			var nullableNSObjectParameter = @"
@@ -1098,7 +1098,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				nullableNSObjectParameter,
-				$"global::ObjCRuntime.Runtime.GetNSObject<{Global ("Foundation.NSObject")}> (nsObjectParameter)",
+				$"{Global ("ObjCRuntime.Runtime")}.GetNSObject<{Global ("Foundation.NSObject")}> (nsObjectParameter)",
 			];
 
 			var iNativeParameter = @"
@@ -1118,7 +1118,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				iNativeParameter,
-				$"global::ObjCRuntime.Runtime.GetINativeObject<{Global ("CoreMedia.CMTimebase")}> (inativeParameter, false)!",
+				$"{Global ("ObjCRuntime.Runtime")}.GetINativeObject<{Global ("CoreMedia.CMTimebase")}> (inativeParameter, false)!",
 			];
 
 			var nullableINativeParameter = @"
@@ -1138,7 +1138,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				nullableINativeParameter,
-				$"global::ObjCRuntime.Runtime.GetINativeObject<{Global ("CoreMedia.CMTimebase")}> (inativeParameter, false)",
+				$"{Global ("ObjCRuntime.Runtime")}.GetINativeObject<{Global ("CoreMedia.CMTimebase")}> (inativeParameter, false)",
 			];
 
 			var cmSampleBuffer = @"
@@ -1158,7 +1158,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				cmSampleBuffer,
-				"cmSampleBuffer == IntPtr.Zero ? null! : new global::CoreMedia.CMSampleBuffer (cmSampleBuffer, false)",
+				$"cmSampleBuffer == IntPtr.Zero ? null! : new {Global ("CoreMedia.CMSampleBuffer")} (cmSampleBuffer, false)",
 			];
 
 			var audioBuffer = @"
@@ -2219,7 +2219,7 @@ namespace NS {
 			yield return [
 				pointerParameter,
 				"DCallback",
-				"unsafe internal delegate void DCallback (global::System.IntPtr block_ptr, int* pointerParameter);",
+				$"unsafe internal delegate void DCallback ({Global ("System")}.IntPtr block_ptr, int* pointerParameter);",
 			];
 
 			var ccallbackParameter = @"
@@ -2237,7 +2237,7 @@ namespace NS {
 			yield return [
 				ccallbackParameter,
 				"DCallback",
-				"unsafe internal delegate void DCallback (global::System.IntPtr block_ptr, global::System.IntPtr callbackParameter);",
+				$"unsafe internal delegate void DCallback ({Global ("System")}.IntPtr block_ptr, {Global ("ObjCRuntime")}.NativeHandle callbackParameter);",
 			];
 
 			var nativeEnumParameter = @"
@@ -2264,7 +2264,7 @@ namespace NS {
 			yield return [
 				nativeEnumParameter,
 				"DCallback",
-				$"unsafe internal delegate void DCallback (global::System.IntPtr block_ptr, {Global ("System.IntPtr")} enumParameter);",
+				$"unsafe internal delegate void DCallback ({Global ("System")}.IntPtr block_ptr, {Global ("System.IntPtr")} enumParameter);",
 			];
 
 			var boolParameter = @"
@@ -2282,7 +2282,7 @@ namespace NS {
 			yield return [
 				boolParameter,
 				"DCallback",
-				"unsafe internal delegate void DCallback (global::System.IntPtr block_ptr, byte boolParameter);",
+				$"unsafe internal delegate void DCallback ({Global ("System")}.IntPtr block_ptr, byte boolParameter);",
 			];
 
 			var nsObjectArray = @"
@@ -2301,7 +2301,7 @@ namespace NS {
 			yield return [
 				nsObjectArray,
 				"DCallback",
-				"unsafe internal delegate void DCallback (global::System.IntPtr block_ptr, global::ObjCRuntime.NativeHandle nsObjectArray);",
+				$"unsafe internal delegate void DCallback ({Global ("System")}.IntPtr block_ptr, {Global ("ObjCRuntime")}.NativeHandle nsObjectArray);",
 			];
 
 			var iNativeObjectArray = @"
@@ -2321,7 +2321,7 @@ namespace NS {
 			yield return [
 				iNativeObjectArray,
 				"DCallback",
-				"unsafe internal delegate void DCallback (global::System.IntPtr block_ptr, global::ObjCRuntime.NativeHandle inativeArray);"
+				$"unsafe internal delegate void DCallback ({Global ("System")}.IntPtr block_ptr, {Global ("ObjCRuntime")}.NativeHandle inativeArray);"
 			];
 
 
@@ -2341,7 +2341,7 @@ namespace NS {
 			yield return [
 				stringArray,
 				"DCallback",
-				"unsafe internal delegate void DCallback (global::System.IntPtr block_ptr, global::ObjCRuntime.NativeHandle stringArray);",
+				$"unsafe internal delegate void DCallback ({Global ("System")}.IntPtr block_ptr, {Global ("ObjCRuntime")}.NativeHandle stringArray);",
 			];
 
 			var protocolParameter = @"
@@ -2360,7 +2360,7 @@ namespace NS {
 			yield return [
 				protocolParameter,
 				"DCallback",
-				"unsafe internal delegate void DCallback (global::System.IntPtr block_ptr, global::ObjCRuntime.NativeHandle protocolParameter);"
+				$"unsafe internal delegate void DCallback ({Global ("System")}.IntPtr block_ptr, {Global ("ObjCRuntime")}.NativeHandle protocolParameter);"
 			];
 
 			var outNullableInt = @"
@@ -2379,7 +2379,7 @@ namespace NS {
 			yield return [
 				outNullableInt,
 				"DCallback",
-				"unsafe internal delegate void DCallback (global::System.IntPtr block_ptr, int* outNullableInt);"
+				$"unsafe internal delegate void DCallback ({Global ("System")}.IntPtr block_ptr, int* outNullableInt);"
 			];
 
 			var outInt = @"
@@ -2398,7 +2398,7 @@ namespace NS {
 			yield return [
 				outInt,
 				"DCallback",
-				"unsafe internal delegate void DCallback (global::System.IntPtr block_ptr, int* outNullableInt);"
+				$"unsafe internal delegate void DCallback ({Global ("System")}.IntPtr block_ptr, int* outNullableInt);"
 			];
 
 			var outBoolean = @"
@@ -2417,7 +2417,7 @@ namespace NS {
 			yield return [
 				outBoolean,
 				"DCallback",
-				"unsafe internal delegate void DCallback (global::System.IntPtr block_ptr, byte* outBool);",
+				$"unsafe internal delegate void DCallback ({Global ("System")}.IntPtr block_ptr, byte* outBool);",
 			];
 
 
@@ -2437,7 +2437,7 @@ namespace NS {
 			yield return [
 				outNSObject,
 				"DCallback",
-				"unsafe internal delegate void DCallback (global::System.IntPtr block_ptr, global::ObjCRuntime.NativeHandle* outNSObject);"
+				$"unsafe internal delegate void DCallback ({Global ("System")}.IntPtr block_ptr, {Global ("ObjCRuntime")}.NativeHandle* outNSObject);"
 			];
 
 			var valueReturnboolParameter = @"
@@ -2455,7 +2455,7 @@ namespace NS {
 			yield return [
 				valueReturnboolParameter,
 				"DCallback",
-				"unsafe internal delegate int DCallback (global::System.IntPtr block_ptr, byte boolParameter);",
+				$"unsafe internal delegate int DCallback ({Global ("System")}.IntPtr block_ptr, byte boolParameter);",
 			];
 
 			var nsObjectReturnBoolParameter = @"
@@ -2474,7 +2474,7 @@ namespace NS {
 			yield return [
 				nsObjectReturnBoolParameter,
 				"DCallback",
-				"unsafe internal delegate global::ObjCRuntime.NativeHandle DCallback (global::System.IntPtr block_ptr, byte boolParameter);",
+				$"unsafe internal delegate {Global ("ObjCRuntime")}.NativeHandle DCallback ({Global ("System")}.IntPtr block_ptr, byte boolParameter);",
 			];
 
 			var nullableNSObjectReturnBoolParameter = @"
@@ -2493,7 +2493,7 @@ namespace NS {
 			yield return [
 				nullableNSObjectReturnBoolParameter,
 				"DCallback",
-				"unsafe internal delegate global::ObjCRuntime.NativeHandle DCallback (global::System.IntPtr block_ptr, byte boolParameter);",
+				$"unsafe internal delegate {Global ("ObjCRuntime")}.NativeHandle DCallback ({Global ("System")}.IntPtr block_ptr, byte boolParameter);",
 			];
 
 			var arrayNSObjectReturnBoolParameter = @"
@@ -2512,7 +2512,7 @@ namespace NS {
 			yield return [
 				arrayNSObjectReturnBoolParameter,
 				"DCallback",
-				"unsafe internal delegate global::ObjCRuntime.NativeHandle DCallback (global::System.IntPtr block_ptr, byte boolParameter);",
+				$"unsafe internal delegate {Global ("ObjCRuntime")}.NativeHandle DCallback ({Global ("System")}.IntPtr block_ptr, byte boolParameter);",
 			];
 
 			var nullableArrayNSObjectReturnBoolParameter = @"
@@ -2531,7 +2531,7 @@ namespace NS {
 			yield return [
 				nullableArrayNSObjectReturnBoolParameter,
 				"DCallback",
-				"unsafe internal delegate global::ObjCRuntime.NativeHandle DCallback (global::System.IntPtr block_ptr, byte boolParameter);",
+				$"unsafe internal delegate {Global ("ObjCRuntime")}.NativeHandle DCallback ({Global ("System")}.IntPtr block_ptr, byte boolParameter);",
 			];
 
 			var intPtrParameters = @"
@@ -2549,7 +2549,7 @@ namespace NS {
 			yield return [
 				intPtrParameters,
 				"DCallback",
-				"unsafe internal delegate int DCallback (global::System.IntPtr block_ptr, global::System.IntPtr timestamp, uint frameCount, global::System.IntPtr inputData);",
+				$"unsafe internal delegate int DCallback ({Global ("System")}.IntPtr block_ptr, {Global ("System")}.IntPtr timestamp, uint frameCount, {Global ("System")}.IntPtr inputData);",
 			];
 
 			var nsNumberType = @"
@@ -2645,7 +2645,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				ccallbackParameter,
-				$"del (global::System.Runtime.InteropServices.Marshal.GetDelegateForFunctionPointer<{Global ("System.Action")}> (callbackParameter));",
+				$"del ({Global ("System")}.Runtime.InteropServices.Marshal.GetDelegateForFunctionPointer<{Global ("System.Action")}> (callbackParameter));",
 			];
 
 			var severalParametersConversion = @"
@@ -2663,7 +2663,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				severalParametersConversion,
-				$"del (global::System.Runtime.InteropServices.Marshal.GetDelegateForFunctionPointer<{Global ("System.Action")}> (callbackParameter), NIDsomeTrampolineName.Create (callbackParameter)!);",
+				$"del ({Global ("System")}.Runtime.InteropServices.Marshal.GetDelegateForFunctionPointer<{Global ("System.Action")}> (callbackParameter), NIDsomeTrampolineName.Create (callbackParameter)!);",
 			];
 
 			var severalParametersConversionReturn = @"
@@ -2681,7 +2681,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				severalParametersConversionReturn,
-				$"var ret = del (global::System.Runtime.InteropServices.Marshal.GetDelegateForFunctionPointer<{Global ("System.Action")}> (callbackParameter), NIDsomeTrampolineName.Create (callbackParameter)!);",
+				$"var ret = del ({Global ("System")}.Runtime.InteropServices.Marshal.GetDelegateForFunctionPointer<{Global ("System.Action")}> (callbackParameter), NIDsomeTrampolineName.Create (callbackParameter)!);",
 			];
 
 			var nsNumberParameterWithReturn = @"
@@ -2879,7 +2879,7 @@ namespace NS {
 
 			yield return [
 				ccallbackParameter,
-				"global::System.IntPtr callbackParameter"
+				$"{Global ("ObjCRuntime")}.NativeHandle callbackParameter"
 			];
 
 			var blockParameter = @"
@@ -2896,7 +2896,7 @@ namespace NS {
 
 			yield return [
 				blockParameter,
-				"global::System.IntPtr callbackParameter",
+				$"{Global ("ObjCRuntime")}.NativeHandle callbackParameter",
 			];
 
 			var nativeEnumParameter = @"
@@ -2957,7 +2957,7 @@ namespace NS {
 
 			yield return [
 				nsObjectArray,
-				"global::ObjCRuntime.NativeHandle nsObjectArray",
+				$"{Global ("ObjCRuntime")}.NativeHandle nsObjectArray",
 			];
 
 
@@ -2978,7 +2978,7 @@ namespace NS {
 
 			yield return [
 				iNativeObjectArray,
-				"global::ObjCRuntime.NativeHandle inativeArray",
+				$"{Global ("ObjCRuntime")}.NativeHandle inativeArray",
 			];
 
 
@@ -2997,7 +2997,7 @@ namespace NS {
 
 			yield return [
 				stringArray,
-				"global::ObjCRuntime.NativeHandle stringArray",
+				$"{Global ("ObjCRuntime")}.NativeHandle stringArray",
 			];
 
 			var stringParameter = @"
@@ -3015,7 +3015,7 @@ namespace NS {
 
 			yield return [
 				stringParameter,
-				"global::ObjCRuntime.NativeHandle stringParameter",
+				$"{Global ("ObjCRuntime")}.NativeHandle stringParameter",
 			];
 
 			var protocolParameter = @"
@@ -3033,7 +3033,7 @@ namespace NS {
 
 			yield return [
 				protocolParameter,
-				"global::ObjCRuntime.NativeHandle protocolParameter",
+				$"{Global ("ObjCRuntime")}.NativeHandle protocolParameter",
 			];
 
 
@@ -3052,7 +3052,7 @@ namespace NS {
 
 			yield return [
 				forcedParameterOwnsFalse,
-				"global::ObjCRuntime.NativeHandle forcedParameter",
+				$"{Global ("ObjCRuntime")}.NativeHandle forcedParameter",
 			];
 
 			var nsObjectParameter = @"
@@ -3070,7 +3070,7 @@ namespace NS {
 
 			yield return [
 				nsObjectParameter,
-				"global::ObjCRuntime.NativeHandle nsObjectParameter",
+				$"{Global ("ObjCRuntime")}.NativeHandle nsObjectParameter",
 			];
 
 			var iNativeParameter = @"
@@ -3089,7 +3089,7 @@ namespace NS {
 
 			yield return [
 				iNativeParameter,
-				"global::ObjCRuntime.NativeHandle inativeParameter",
+				$"{Global ("ObjCRuntime")}.NativeHandle inativeParameter",
 			];
 
 			var cmSampleBuffer = @"
@@ -3108,7 +3108,7 @@ namespace NS {
 
 			yield return [
 				cmSampleBuffer,
-				"global::ObjCRuntime.NativeHandle cmSampleBuffer",
+				$"{Global ("ObjCRuntime")}.NativeHandle cmSampleBuffer",
 			];
 
 			var audioBuffer = @"
@@ -3127,7 +3127,7 @@ namespace NS {
 
 			yield return [
 				audioBuffer,
-				"global::ObjCRuntime.NativeHandle audioBuffer",
+				$"{Global ("ObjCRuntime")}.NativeHandle audioBuffer",
 			];
 
 			var outNullableInt = @"
@@ -3181,7 +3181,7 @@ namespace NS {
 
 			yield return [
 				outNSObject,
-				"global::ObjCRuntime.NativeHandle* outNSObject",
+				$"{Global ("ObjCRuntime")}.NativeHandle* outNSObject",
 			];
 
 			var valueType = @"
@@ -3263,7 +3263,7 @@ namespace NS {
 ";
 			yield return [
 				pointerParameter,
-				"internal static unsafe void Invoke (global::System.IntPtr block_ptr, int* pointerParameter)",
+				$"internal static unsafe void Invoke ({Global ("System")}.IntPtr block_ptr, int* pointerParameter)",
 			];
 
 			var ccallbackParameter = @"
@@ -3279,7 +3279,7 @@ namespace NS {
 
 			yield return [
 				ccallbackParameter,
-				"internal static unsafe void Invoke (global::System.IntPtr block_ptr, global::System.IntPtr callbackParameter)",
+				$"internal static unsafe void Invoke ({Global ("System")}.IntPtr block_ptr, {Global ("ObjCRuntime")}.NativeHandle callbackParameter)",
 			];
 
 			var nativeEnumParameter = @"
@@ -3318,7 +3318,7 @@ namespace NS {
 
 			yield return [
 				boolParameter,
-				"internal static unsafe void Invoke (global::System.IntPtr block_ptr, byte boolParameter)",
+				$"internal static unsafe void Invoke ({Global ("System")}.IntPtr block_ptr, byte boolParameter)",
 			];
 
 			var nsObjectArray = @"
@@ -3335,7 +3335,7 @@ namespace NS {
 
 			yield return [
 				nsObjectArray,
-				"internal static unsafe void Invoke (global::System.IntPtr block_ptr, global::ObjCRuntime.NativeHandle nsObjectArray)",
+				$"internal static unsafe void Invoke ({Global ("System")}.IntPtr block_ptr, {Global ("ObjCRuntime")}.NativeHandle nsObjectArray)",
 			];
 
 			var iNativeObjectArray = @"
@@ -3353,7 +3353,7 @@ namespace NS {
 
 			yield return [
 				iNativeObjectArray,
-				"internal static unsafe void Invoke (global::System.IntPtr block_ptr, global::ObjCRuntime.NativeHandle inativeArray)"
+				$"internal static unsafe void Invoke ({Global ("System")}.IntPtr block_ptr, {Global ("ObjCRuntime")}.NativeHandle inativeArray)"
 			];
 
 
@@ -3371,7 +3371,7 @@ namespace NS {
 
 			yield return [
 				stringArray,
-				"internal static unsafe void Invoke (global::System.IntPtr block_ptr, global::ObjCRuntime.NativeHandle stringArray)",
+				$"internal static unsafe void Invoke ({Global ("System")}.IntPtr block_ptr, {Global ("ObjCRuntime")}.NativeHandle stringArray)",
 			];
 
 			var protocolParameter = @"
@@ -3388,7 +3388,7 @@ namespace NS {
 
 			yield return [
 				protocolParameter,
-				"internal static unsafe void Invoke (global::System.IntPtr block_ptr, global::ObjCRuntime.NativeHandle protocolParameter)"
+				$"internal static unsafe void Invoke ({Global ("System")}.IntPtr block_ptr, {Global ("ObjCRuntime")}.NativeHandle protocolParameter)"
 			];
 
 			var outNullableInt = @"
@@ -3405,7 +3405,7 @@ namespace NS {
 
 			yield return [
 				outNullableInt,
-				"internal static unsafe void Invoke (global::System.IntPtr block_ptr, int* outNullableInt)"
+				$"internal static unsafe void Invoke ({Global ("System")}.IntPtr block_ptr, int* outNullableInt)"
 			];
 
 			var outInt = @"
@@ -3422,7 +3422,7 @@ namespace NS {
 
 			yield return [
 				outInt,
-				"internal static unsafe void Invoke (global::System.IntPtr block_ptr, int* outNullableInt)"
+				$"internal static unsafe void Invoke ({Global ("System")}.IntPtr block_ptr, int* outNullableInt)"
 			];
 
 			var outBoolean = @"
@@ -3439,7 +3439,7 @@ namespace NS {
 
 			yield return [
 				outBoolean,
-				"internal static unsafe void Invoke (global::System.IntPtr block_ptr, byte* outBool)",
+				$"internal static unsafe void Invoke ({Global ("System")}.IntPtr block_ptr, byte* outBool)",
 			];
 
 
@@ -3457,7 +3457,7 @@ namespace NS {
 
 			yield return [
 				outNSObject,
-				"internal static unsafe void Invoke (global::System.IntPtr block_ptr, global::ObjCRuntime.NativeHandle* outNSObject)"
+				$"internal static unsafe void Invoke ({Global ("System")}.IntPtr block_ptr, {Global ("ObjCRuntime")}.NativeHandle* outNSObject)"
 			];
 
 			var valueReturnboolParameter = @"
@@ -3473,7 +3473,7 @@ namespace NS {
 
 			yield return [
 				valueReturnboolParameter,
-				"internal static unsafe int Invoke (global::System.IntPtr block_ptr, byte boolParameter)",
+				$"internal static unsafe int Invoke ({Global ("System")}.IntPtr block_ptr, byte boolParameter)",
 			];
 
 			var nsObjectReturnBoolParameter = @"
@@ -3490,7 +3490,7 @@ namespace NS {
 
 			yield return [
 				nsObjectReturnBoolParameter,
-				"internal static unsafe global::ObjCRuntime.NativeHandle Invoke (global::System.IntPtr block_ptr, byte boolParameter)",
+				$"internal static unsafe {Global ("ObjCRuntime")}.NativeHandle Invoke ({Global ("System")}.IntPtr block_ptr, byte boolParameter)",
 			];
 
 			var nullableNSObjectReturnBoolParameter = @"
@@ -3507,7 +3507,7 @@ namespace NS {
 
 			yield return [
 				nullableNSObjectReturnBoolParameter,
-				"internal static unsafe global::ObjCRuntime.NativeHandle Invoke (global::System.IntPtr block_ptr, byte boolParameter)",
+				$"internal static unsafe {Global ("ObjCRuntime")}.NativeHandle Invoke ({Global ("System")}.IntPtr block_ptr, byte boolParameter)",
 			];
 
 			var arrayNSObjectReturnBoolParameter = @"
@@ -3524,7 +3524,7 @@ namespace NS {
 
 			yield return [
 				arrayNSObjectReturnBoolParameter,
-				"internal static unsafe global::ObjCRuntime.NativeHandle Invoke (global::System.IntPtr block_ptr, byte boolParameter)",
+				$"internal static unsafe {Global ("ObjCRuntime")}.NativeHandle Invoke ({Global ("System")}.IntPtr block_ptr, byte boolParameter)",
 			];
 
 			var nullableArrayNSObjectReturnBoolParameter = @"
@@ -3541,7 +3541,7 @@ namespace NS {
 
 			yield return [
 				nullableArrayNSObjectReturnBoolParameter,
-				"internal static unsafe global::ObjCRuntime.NativeHandle Invoke (global::System.IntPtr block_ptr, byte boolParameter)",
+				$"internal static unsafe {Global ("ObjCRuntime")}.NativeHandle Invoke ({Global ("System")}.IntPtr block_ptr, byte boolParameter)",
 			];
 
 			var blockNamedParameter = @"
@@ -3558,7 +3558,7 @@ namespace NS {
 
 			yield return [
 				blockNamedParameter,
-				"internal static unsafe global::ObjCRuntime.NativeHandle Invoke (global::System.IntPtr block_ptr_0, byte block_ptr)",
+				$"internal static unsafe {Global ("ObjCRuntime")}.NativeHandle Invoke ({Global ("System")}.IntPtr block_ptr_0, byte block_ptr)",
 			];
 
 			var doubleBlockNamedParameter = @"
@@ -3575,7 +3575,7 @@ namespace NS {
 
 			yield return [
 				doubleBlockNamedParameter,
-				"internal static unsafe global::ObjCRuntime.NativeHandle Invoke (global::System.IntPtr block_ptr_1, byte block_ptr, byte block_ptr_0)",
+				$"internal static unsafe {Global ("ObjCRuntime")}.NativeHandle Invoke ({Global ("System")}.IntPtr block_ptr_1, byte block_ptr, byte block_ptr_0)",
 			];
 
 			var nsNumberIntParameter = @"
@@ -3635,7 +3635,7 @@ namespace NS {
 ";
 			yield return [
 				pointerParameter,
-				"delegate* unmanaged<global::System.IntPtr, int*, void> trampoline = &Invoke;",
+				$"delegate* unmanaged<{Global ("System")}.IntPtr, int*, void> trampoline = &Invoke;",
 			];
 
 			var ccallbackParameter = @"
@@ -3651,7 +3651,7 @@ namespace NS {
 
 			yield return [
 				ccallbackParameter,
-				"delegate* unmanaged<global::System.IntPtr, global::System.IntPtr, void> trampoline = &Invoke;",
+				$"delegate* unmanaged<{Global ("System")}.IntPtr, {Global ("ObjCRuntime")}.NativeHandle, void> trampoline = &Invoke;",
 			];
 
 			var nativeEnumParameter = @"
@@ -3674,7 +3674,7 @@ namespace NS {
 
 			yield return [
 				nativeEnumParameter,
-				$"delegate* unmanaged<global::System.IntPtr, {Global ("System.IntPtr")}, void> trampoline = &Invoke;",
+				$"delegate* unmanaged<{Global ("System")}.IntPtr, {Global ("System.IntPtr")}, void> trampoline = &Invoke;",
 			];
 
 			var boolParameter = @"
@@ -3690,7 +3690,7 @@ namespace NS {
 
 			yield return [
 				boolParameter,
-				"delegate* unmanaged<global::System.IntPtr, byte, void> trampoline = &Invoke;",
+				$"delegate* unmanaged<{Global ("System")}.IntPtr, byte, void> trampoline = &Invoke;",
 			];
 
 			var nsObjectArray = @"
@@ -3707,7 +3707,7 @@ namespace NS {
 
 			yield return [
 				nsObjectArray,
-				"delegate* unmanaged<global::System.IntPtr, global::ObjCRuntime.NativeHandle, void> trampoline = &Invoke;",
+				$"delegate* unmanaged<{Global ("System")}.IntPtr, {Global ("ObjCRuntime")}.NativeHandle, void> trampoline = &Invoke;",
 			];
 
 			var iNativeObjectArray = @"
@@ -3725,7 +3725,7 @@ namespace NS {
 
 			yield return [
 				iNativeObjectArray,
-				"delegate* unmanaged<global::System.IntPtr, global::ObjCRuntime.NativeHandle, void> trampoline = &Invoke;",
+				$"delegate* unmanaged<{Global ("System")}.IntPtr, {Global ("ObjCRuntime")}.NativeHandle, void> trampoline = &Invoke;",
 			];
 
 			var stringArray = @"
@@ -3742,7 +3742,7 @@ namespace NS {
 
 			yield return [
 				stringArray,
-				"delegate* unmanaged<global::System.IntPtr, global::ObjCRuntime.NativeHandle, void> trampoline = &Invoke;",
+				$"delegate* unmanaged<{Global ("System")}.IntPtr, {Global ("ObjCRuntime")}.NativeHandle, void> trampoline = &Invoke;",
 			];
 
 			var protocolParameter = @"
@@ -3759,7 +3759,7 @@ namespace NS {
 
 			yield return [
 				protocolParameter,
-				"delegate* unmanaged<global::System.IntPtr, global::ObjCRuntime.NativeHandle, void> trampoline = &Invoke;",
+				$"delegate* unmanaged<{Global ("System")}.IntPtr, {Global ("ObjCRuntime")}.NativeHandle, void> trampoline = &Invoke;",
 			];
 			var outNullableInt = @"
 using System;
@@ -3775,7 +3775,7 @@ namespace NS {
 
 			yield return [
 				outNullableInt,
-				"delegate* unmanaged<global::System.IntPtr, int*, void> trampoline = &Invoke;",
+				$"delegate* unmanaged<{Global ("System")}.IntPtr, int*, void> trampoline = &Invoke;",
 			];
 
 			var outInt = @"
@@ -3792,7 +3792,7 @@ namespace NS {
 
 			yield return [
 				outInt,
-				"delegate* unmanaged<global::System.IntPtr, int*, void> trampoline = &Invoke;",
+				$"delegate* unmanaged<{Global ("System")}.IntPtr, int*, void> trampoline = &Invoke;",
 			];
 
 			var outBoolean = @"
@@ -3809,7 +3809,7 @@ namespace NS {
 
 			yield return [
 				outBoolean,
-				"delegate* unmanaged<global::System.IntPtr, byte*, void> trampoline = &Invoke;",
+				$"delegate* unmanaged<{Global ("System")}.IntPtr, byte*, void> trampoline = &Invoke;",
 			];
 
 			var outNSObject = @"
@@ -3826,7 +3826,7 @@ namespace NS {
 
 			yield return [
 				outNSObject,
-				"delegate* unmanaged<global::System.IntPtr, global::ObjCRuntime.NativeHandle*, void> trampoline = &Invoke;",
+				$"delegate* unmanaged<{Global ("System")}.IntPtr, {Global ("ObjCRuntime")}.NativeHandle*, void> trampoline = &Invoke;",
 			];
 
 			var valueReturnboolParameter = @"
@@ -3842,7 +3842,7 @@ namespace NS {
 
 			yield return [
 				valueReturnboolParameter,
-				"delegate* unmanaged<global::System.IntPtr, byte, int> trampoline = &Invoke;",
+				$"delegate* unmanaged<{Global ("System")}.IntPtr, byte, int> trampoline = &Invoke;",
 			];
 
 			var nsObjectReturnBoolParameter = @"
@@ -3859,7 +3859,7 @@ namespace NS {
 
 			yield return [
 				nsObjectReturnBoolParameter,
-				"delegate* unmanaged<global::System.IntPtr, byte, global::ObjCRuntime.NativeHandle> trampoline = &Invoke;",
+				$"delegate* unmanaged<{Global ("System")}.IntPtr, byte, {Global ("ObjCRuntime")}.NativeHandle> trampoline = &Invoke;",
 			];
 
 			var nullableNSObjectReturnBoolParameter = @"
@@ -3876,7 +3876,7 @@ namespace NS {
 
 			yield return [
 				nullableNSObjectReturnBoolParameter,
-				"delegate* unmanaged<global::System.IntPtr, byte, global::ObjCRuntime.NativeHandle> trampoline = &Invoke;",
+				$"delegate* unmanaged<{Global ("System")}.IntPtr, byte, {Global ("ObjCRuntime")}.NativeHandle> trampoline = &Invoke;",
 			];
 
 			var arrayNSObjectReturnBoolParameter = @"
@@ -3893,7 +3893,7 @@ namespace NS {
 
 			yield return [
 				arrayNSObjectReturnBoolParameter,
-				"delegate* unmanaged<global::System.IntPtr, byte, global::ObjCRuntime.NativeHandle> trampoline = &Invoke;",
+				$"delegate* unmanaged<{Global ("System")}.IntPtr, byte, {Global ("ObjCRuntime")}.NativeHandle> trampoline = &Invoke;",
 			];
 
 			var nullableArrayNSObjectReturnBoolParameter = @"
@@ -3910,7 +3910,7 @@ namespace NS {
 
 			yield return [
 				nullableArrayNSObjectReturnBoolParameter,
-				"delegate* unmanaged<global::System.IntPtr, byte, global::ObjCRuntime.NativeHandle> trampoline = &Invoke;",
+				$"delegate* unmanaged<{Global ("System")}.IntPtr, byte, {Global ("ObjCRuntime")}.NativeHandle> trampoline = &Invoke;",
 			];
 		}
 
@@ -4511,9 +4511,9 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				stringParameter,
-				@"if (stringParameter is null)
-	global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (stringParameter));
-var nsstringParameter = global::CoreFoundation.CFString.CreateNative (stringParameter);
+				$@"if (stringParameter is null)
+	{Global ("ObjCRuntime")}.ThrowHelper.ThrowArgumentNullException (nameof (stringParameter));
+var nsstringParameter = {Global ("CoreFoundation")}.CFString.CreateNative (stringParameter);
 ",
 			];
 
@@ -4530,7 +4530,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				nullableStringParameter,
-				"var nsstringParameter = global::CoreFoundation.CFString.CreateNative (stringParameter);\n",
+				$"var nsstringParameter = {Global ("CoreFoundation")}.CFString.CreateNative (stringParameter);\n",
 			];
 
 			var stringArrayParameter = @"
@@ -4546,9 +4546,9 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				stringArrayParameter,
-				@"if (stringParameter is null)
-	global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (stringParameter));
-var nsa_stringParameter = global::Foundation.NSArray.FromStrings (stringParameter);
+				$@"if (stringParameter is null)
+	{Global ("ObjCRuntime")}.ThrowHelper.ThrowArgumentNullException (nameof (stringParameter));
+var nsa_stringParameter = {Global ("Foundation")}.NSArray.FromStrings (stringParameter);
 ",
 			];
 
@@ -4565,7 +4565,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				nullableStringArrayParameter,
-				"var nsa_stringParameter = stringParameter is null ? null : global::Foundation.NSArray.FromStrings (stringParameter);\n",
+				$"var nsa_stringParameter = stringParameter is null ? null : {Global ("Foundation")}.NSArray.FromStrings (stringParameter);\n",
 			];
 
 			// smart enum parameter
@@ -4638,10 +4638,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				nsObjectParameter,
-				@"if (nsObjectParameter is null)
-	global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (nsObjectParameter));
-var nsObjectParameter__handle__ = nsObjectParameter.GetHandle ();
-",
+				"var nsObjectParameter__handle__ = nsObjectParameter!.GetNonNullHandle (nameof (nsObjectParameter));\n",
 			];
 
 			// nullable NSObject parameter
@@ -4662,7 +4659,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				nullableNSObjectParameter,
-				"var nsObjectParameter__handle__ = nsObjectParameter!.GetNonNullHandle (nameof (nsObjectParameter));\n",
+				"var nsObjectParameter__handle__ = nsObjectParameter?.GetHandle ();\n",
 			];
 
 			// NSObject array parameter
@@ -4683,9 +4680,9 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				nsObjectArrayParameter,
-				@"if (nsObjectParameter is null)
-	global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (nsObjectParameter));
-var nsa_nsObjectParameter = global::Foundation.NSArray.FromNSObjects (nsObjectParameter);
+				$@"if (nsObjectParameter is null)
+	{Global ("ObjCRuntime")}.ThrowHelper.ThrowArgumentNullException (nameof (nsObjectParameter));
+var nsa_nsObjectParameter = {Global ("Foundation")}.NSArray.FromNSObjects (nsObjectParameter);
 ",
 			];
 
@@ -4707,7 +4704,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				nullableNSObjectArrayParameter,
-				"var nsa_nsObjectParameter = nsObjectParameter is null ? null : global::Foundation.NSArray.FromNSObjects (nsObjectParameter);\n",
+				$"var nsa_nsObjectParameter = nsObjectParameter is null ? null : {Global ("Foundation")}.NSArray.FromNSObjects (nsObjectParameter);\n",
 			];
 
 			// INativeObject parameter
@@ -4729,10 +4726,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				iNativeParameter,
-				@"if (inative is null)
-	global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (inative));
-var inative__handle__ = inative.GetHandle ();
-"
+				"var inative__handle__ = inative!.GetNonNullHandle (nameof (inative));\n"
 			];
 
 			// nullable INativeObject parameter
@@ -4754,7 +4748,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				nullableINativeParameter,
-				"var inative__handle__ = inative!.GetNonNullHandle (nameof (inative));\n",
+				"var inative__handle__ = inative?.GetHandle ();\n",
 			];
 
 			// INativeObject array parameter
@@ -4776,9 +4770,9 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				inativeArrayParameter,
-				@"if (inativeArray is null)
-	global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (inativeArray));
-var nsa_inativeArray = global::Foundation.NSArray.FromNSObjects (inativeArray);
+				$@"if (inativeArray is null)
+	{Global ("ObjCRuntime")}.ThrowHelper.ThrowArgumentNullException (nameof (inativeArray));
+var nsa_inativeArray = {Global ("Foundation")}.NSArray.FromNSObjects (inativeArray);
 ",
 			];
 
@@ -4801,7 +4795,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				nullableINativeArrayParameter,
-				"var nsa_inativeArray = inativeArray is null ? null : global::Foundation.NSArray.FromNSObjects (inativeArray);\n"
+				$"var nsa_inativeArray = inativeArray is null ? null : {Global ("Foundation")}.NSArray.FromNSObjects (inativeArray);\n"
 			];
 
 			var audioBuffer = @"
@@ -4821,10 +4815,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				audioBuffer,
-				@"if (audioBuffer is null)
-	global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (audioBuffer));
-var audioBuffer__handle__ = audioBuffer.GetHandle ();
-",
+				"var audioBuffer__handle__ = audioBuffer!.GetNonNullHandle (nameof (audioBuffer));\n",
 			];
 
 			var cmSampleBuffer = @"
@@ -4844,9 +4835,26 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				cmSampleBuffer,
-				@"if (cmSampleBuffer is null)
-	global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (cmSampleBuffer));
-var cmSampleBuffer__handle__ = cmSampleBuffer.GetHandle ();
+				"var cmSampleBuffer__handle__ = cmSampleBuffer!.GetNonNullHandle (nameof (cmSampleBuffer));\n",
+			];
+
+			var blockParameter = @"
+using System;
+using ObjCRuntime;
+
+namespace NS {
+	public delegate void Callback ([BlockCallback] Action? callbackParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				"someTrampolineName",
+				blockParameter,
+				@$"var block_callbackParameter = {Global ("ObjCRuntime.Trampolines.")}{Nomenclator.GetTrampolineClassName ("someTrampolineName", Nomenclator.TrampolineClassType.StaticBridgeClass)}.CreateNullableBlock (callbackParameter);
+{Global ("ObjCRuntime")}.BlockLiteral* block_ptr_callbackParameter = callbackParameter is not null ? &block_callbackParameter : null;
 ",
 			];
 		}

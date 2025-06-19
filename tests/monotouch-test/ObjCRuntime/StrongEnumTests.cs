@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 using Foundation;
 using ObjCRuntime;
@@ -24,13 +25,15 @@ namespace MonoTouchFixtures.ObjCRuntime {
 				foreach (var type in allTypes) {
 					if (!type.IsEnum)
 						continue;
+					if (type.IsDefined (typeof (ObsoleteAttribute)))
+						continue;
 					if (!types.TryGetValue (type.FullName + "Extensions", out var extensions))
 						continue;
 					var getConstant = extensions.GetMethod ("GetConstant", new Type [] { type });
-					if (getConstant is null)
+					if (getConstant is null || getConstant.IsDefined (typeof (ObsoleteAttribute)))
 						continue;
 					var getValue = extensions.GetMethod ("GetValue", new Type [] { GetNonnullableType (getConstant.ReturnType) });
-					if (getValue is null)
+					if (getValue is null || getConstant.IsDefined (typeof (ObsoleteAttribute)))
 						continue;
 
 #pragma warning disable IL3050 // Using member 'System.Enum.GetValues(Type)' which has 'RequiresDynamicCodeAttribute' can break functionality when AOT compiling. It might not be possible to create an array of the enum type at runtime. Use the GetValues<TEnum> overload or the GetValuesAsUnderlyingType method instead.

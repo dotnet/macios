@@ -2373,9 +2373,11 @@ F:CoreNFC.NFCVasErrorCode.WrongLCField
 F:CoreNFC.NFCVasErrorCode.WrongParameters
 F:CoreNFC.NFCVasMode.Normal
 F:CoreNFC.NFCVasMode.UrlOnly
+F:CoreServices.FSEventStreamCreateFlags.DeviceState
 F:CoreServices.FSEventStreamCreateFlags.FullHistory
 F:CoreServices.FSEventStreamCreateFlags.MarkSelf
 F:CoreServices.FSEventStreamCreateFlags.UseExtendedData
+F:CoreServices.FSEventStreamCreateFlags.WithDocId
 F:CoreServices.FSEventStreamEventFlags.ItemCloned
 F:CoreServices.LSResult.MalformedLocErr
 F:CoreSpotlight.CSIndexErrorCode.MismatchedClientState

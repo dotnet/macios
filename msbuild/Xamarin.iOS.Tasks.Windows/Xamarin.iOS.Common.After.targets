@@ -35,6 +35,16 @@ Copyright (C) 2011-2013 Xamarin. All rights reserved.
 		Condition="'$(_RequiresMacConnection)' == 'true'"
 		BeforeTargets="_CleanDebugSymbols;_CleanAppBundle;_DetectAppManifest;_DetectSdkLocations;_GenerateBundleName" />
 	
+	<!-- Default context path values for remote builds -->
+	<!-- When building from VS, these values will be passed directly from the IDE -->
+	<Target Name="EnsureMessagingContext" BeforeTargets="_SayHello">
+		<PropertyGroup>
+			<BasePath Condition="'$(BasePath)' == ''">~/Library/Caches/maui/PairToMac</BasePath>
+			<LogsPath Condition="'$(LogsPath)' == ''">~/Library/Logs</LogsPath>
+			<LocalBasePath Condition="'$(LocalBasePath)' == ''">%LOCALAPPDATA%\maui\iOS\PairToMac</LocalBasePath>
+		</PropertyGroup>
+	</Target>
+
 	<PropertyGroup>
 		<CreateAppBundleDependsOn>
 			GetBundleResourceWithLogicalNameItems;

@@ -461,7 +461,7 @@ namespace Xamarin.MacDev.Tasks {
 
 					foreach (var tag in resourceTags.EnumerateArray ()) {
 						if (tag.ValueKind == JsonValueKind.String)
-							tags.Add (tag.GetString ());
+							tags.Add (tag.GetString ()!);
 					}
 
 					var tagList = tags.ToList ();

@@ -563,7 +563,7 @@ static partial class Trampolines
 			var ret = invoker (BlockLiteral, (global::AudioUnit.AudioUnitRenderActionFlags*) global::System.Runtime.CompilerServices.Unsafe.AsPointer<global::AudioUnit.AudioUnitRenderActionFlags> (ref actionFlags), (global::AudioToolbox.AudioTimeStamp*) global::System.Runtime.CompilerServices.Unsafe.AsPointer<global::AudioToolbox.AudioTimeStamp> (ref timestamp), frameCount, outputBusNumber, outputData__handle__, realtimeEventListHead__handle__, NIDAUInternalRenderBlock.Create (pullInputBlock)!);
 			global::System.GC.KeepAlive (outputData);
 			global::System.GC.KeepAlive (realtimeEventListHead);
-			return ret;
+			return (global::AudioUnit.AudioUnitStatus) ret;
 		}
 	}
 

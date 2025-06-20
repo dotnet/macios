@@ -1314,9 +1314,16 @@
 		</ItemGroup>
 	</Target>
 
+	<Target Name="_ComputeDotNetRoot">
+		<PropertyGroup>
+			<_DotNetRoot Condition="'$(IsMacEnabled)' == 'true'">$(_DotNetRootRemoteDirectory)</_DotNetRoot>
+		</PropertyGroup>
+	</Target>
+
 	<PropertyGroup>
 		<_AOTCompileDependsOn>
 			$(_AOTCompileDependsOn);
+			_ComputeDotNetRoot;
 			_ComputeVariables;
 			_FindAotCompiler;
 			_DetectAppManifest;
@@ -1409,6 +1416,7 @@
 			SdkIsSimulator="$(_SdkIsSimulator)"
 			SdkRoot="$(_SdkRoot)"
 			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
+			DotNetRoot="$(_DotNetRoot)"
 		>
 		</CompileNativeCode>
 
@@ -1541,6 +1549,7 @@
 	<PropertyGroup>
 		<_CompileNativeExecutableDependsOn>
 			$(_CompileNativeExecutableDependsOn);
+			_ComputeDotNetRoot;
 			_DetectSdkLocations;
 			_ComputeTargetArchitectures;
 			_GenerateBundleName;
@@ -1574,6 +1583,7 @@
 			SdkIsSimulator="$(_SdkIsSimulator)"
 			SdkRoot="$(_SdkRoot)"
 			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
+			DotNetRoot="$(_DotNetRoot)"
 		>
 		</CompileNativeCode>
 

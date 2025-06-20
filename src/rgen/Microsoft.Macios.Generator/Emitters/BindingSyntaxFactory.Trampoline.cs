@@ -1469,5 +1469,37 @@ static partial class BindingSyntaxFactory {
 							EqualsValueClause (invocation.WithLeadingTrivia (Space)).WithLeadingTrivia (Space))));
 		return LocalDeclarationStatement (declaration);
 	}
-
+	
+	/// <summary>
+	/// Generates an expression to create an instance of a native invocation class for a given trampoline type.
+	/// This is used to create a native block from a C# delegate. The generated expression calls the static `Create`
+	/// method on the appropriate `NativeInvocationClass` within the `ObjCRuntime.Trampolines` namespace.
+	/// </summary>
+	/// <param name="trampolineType">The <see cref="TypeInfo"/> of the delegate for which to create the native invocation class.</param>
+	/// <param name="arguments">The arguments to pass to the `Create` method.</param>
+	/// <returns>An <see cref="ExpressionSyntax"/> representing the call to create the native invocation class instance.</returns>
+	internal static ExpressionSyntax TrampolineNativeInvocationClassCreate (in TypeInfo trampolineType, ImmutableArray<ArgumentSyntax> arguments)
+	{
+		var argumentList = ArgumentList (
+			SeparatedList<ArgumentSyntax> (arguments.ToSyntaxNodeOrTokenArray ()));
+		// get the name of the native class to be used to call the create method
+		var className =
+			Nomenclator.GetTrampolineClassName (trampolineType, Nomenclator.TrampolineClassType.NativeInvocationClass);
+		
+		// generate the needed invocation expression for the Create method with the passed arguments
+		var invocation = InvocationExpression (
+				MemberAccessExpression (
+					SyntaxKind.SimpleMemberAccessExpression,
+					MemberAccessExpression (
+						SyntaxKind.SimpleMemberAccessExpression,
+						Trampolines,
+						IdentifierName (className)),
+					IdentifierName ("Create").WithTrailingTrivia (Space))).
+			WithArgumentList (argumentList);
+		
+		// null ignore
+		return PostfixUnaryExpression (
+			SyntaxKind.SuppressNullableWarningExpression,
+			invocation);
+	}
 }

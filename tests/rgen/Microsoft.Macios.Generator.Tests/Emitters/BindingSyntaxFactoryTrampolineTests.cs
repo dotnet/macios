@@ -5528,5 +5528,114 @@ namespace NS {
 		var x = invocation.ToFullString ();
 		Assert.Equal (expectedExpression, invocation.ToFullString ());
 	}
+	
+	class TestDataTrampolioneNativeNativeInvocationClassCreate : IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
+		{
+			var refParameter = @"
+using System;
+
+namespace NS {
+	public delegate int Callback (ref int pointerParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				refParameter,
+				ImmutableArray.Create(
+					Argument (IdentifierName ("arg1")),
+					Argument (IdentifierName ("arg2"))
+				),
+				$"{Global ("ObjCRuntime.Trampolines")}.NIDCallback.Create (arg1, arg2)!",
+			];
+
+			var refEnumParameter = @"
+using System;
+using AVFoundation;
+
+namespace NS {
+	public class MyClass {
+		public void MyMethod (AVAudioConverterInputHandler cb) {}
+	}
+}
+";
+
+			yield return [
+				refEnumParameter,
+				ImmutableArray.Create(
+					Argument (IdentifierName ("arg1")),
+					Argument (IdentifierName ("arg2"))
+				),
+				$"{Global ("ObjCRuntime.Trampolines")}.NIDAVAudioConverterInputHandler.Create (arg1, arg2)!",
+			];
+
+			var boolReferenceParameter = @"
+using System;
+using AVFoundation;
+
+namespace NS {
+	public class MyClass {
+		public void MyMethod (AVAudioUnitComponentFilter cb) {}
+	}
+}
+";
+
+			yield return [
+				boolReferenceParameter,
+				ImmutableArray.Create(
+					Argument (IdentifierName ("arg1")),
+					Argument (IdentifierName ("arg2"))
+				),
+				$"{Global ("ObjCRuntime.Trampolines")}.NIDAVAudioUnitComponentFilter.Create (arg1, arg2)!",
+			];
+
+			var doubleReferenceParameter = @"
+using System;
+using AVFoundation;
+
+namespace NS {
+	public class MyClass {
+		public void MyMethod (AVMusicEventEnumerationBlock cb) {}
+	}
+}
+";
+
+			yield return [
+				doubleReferenceParameter,
+				ImmutableArray.Create(
+					Argument (IdentifierName ("arg1")),
+					Argument (IdentifierName ("arg2"))
+				),
+				$"{Global ("ObjCRuntime.Trampolines")}.NIDAVMusicEventEnumerationBlock.Create (arg1, arg2)!",
+			];
+		}
+
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
+	}
+	
+	[Theory]
+	[AllSupportedPlatformsClassData<TestDataTrampolioneNativeNativeInvocationClassCreate>]
+	void TrampolioneNativeNativeInvocationClassCreateTests (ApplePlatform platform, string inputText, ImmutableArray<ArgumentSyntax> argumnets, string expectedExpression)
+	{
+		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
+		Assert.Single (syntaxTrees);
+		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
+		var declaration = syntaxTrees [0].GetRoot ()
+			.DescendantNodes ().OfType<MethodDeclarationSyntax> ()
+			.FirstOrDefault ();
+		Assert.NotNull (declaration);
+		Assert.True (Method.TryCreate (declaration, semanticModel, out var changes));
+		Assert.NotNull (changes);
+		// we know the first parameter of the method is the delegate
+		Assert.Single (changes.Value.Parameters);
+		var parameter = changes.Value.Parameters [0];
+		// assert it is indeed a delegate
+		Assert.NotNull (parameter.Type.Delegate);
+		var invocation = TrampolineNativeInvocationClassCreate (parameter.Type, argumnets);
+		var x = invocation.ToFullString ();
+		Assert.Equal (expectedExpression, invocation.ToFullString ());
+	}
 
 }

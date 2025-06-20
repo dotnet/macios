@@ -16,6 +16,8 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		[Test]
 		public void GetConstant ()
 		{
+			TestRuntime.AssertMatchingOSVersionAndSdkVersion ();
+
 			Assert.Multiple (() => {
 				var allTypes = typeof (NSObject).Assembly.GetTypes ();
 				var types = allTypes.ToDictionary (v => v.FullName, v => v);
@@ -60,6 +62,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		Enum [] GetSkippedEnumValues ()
 		{
 			var rv = new List<Enum> () {
+#if !XAMCORE_5_0
 				global::AVFoundation.AVCaptureDeviceType.BuiltInDualCamera,
 #if __MACOS__
 				global::AVFoundation.AVCaptureDeviceType.External,
@@ -79,14 +82,15 @@ namespace MonoTouchFixtures.ObjCRuntime {
 #if !__MACOS__
 				global::UIKit.UIWindowSceneSessionRole.ExternalDisplayNonInteractive,
 #endif
+#endif // !XAMCORE_5_0
 			};
 
-#if __TVOS__
+#if __TVOS__ && !XAMCORE_5_0
 			if (Runtime.Arch == Arch.SIMULATOR) {
 				rv.AddRange (Enum.GetValues<global::BrowserEngineKit.BEAccessibilityTrait> ().Cast<Enum> ()); // BrowserEngineKit isn't available in the simulator
 				rv.AddRange (Enum.GetValues<global::BrowserEngineKit.BEAccessibilityNotification> ().Cast<Enum> ()); // BrowserEngineKit isn't available in the simulator
 			}
-#endif // __TVOS__
+#endif // __TVOS__ && !XAMCORE_5_0
 
 			return rv.ToArray ();
 		}

@@ -574,7 +574,7 @@ namespace Registrar {
 					// First look for a more specific constraint
 					var constraints = type.GetGenericParameterConstraints ();
 					foreach (var constraint in constraints) {
-						if (constraint.IsSubclassOf (typeof (INativeObject))) {
+						if (typeof (INativeObject).IsAssignableFrom (constraint)) {
 							constrained_type = constraint;
 							return true;
 						}

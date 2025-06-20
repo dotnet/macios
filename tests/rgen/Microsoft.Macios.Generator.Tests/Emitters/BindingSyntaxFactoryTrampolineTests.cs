@@ -5528,7 +5528,7 @@ namespace NS {
 		var x = invocation.ToFullString ();
 		Assert.Equal (expectedExpression, invocation.ToFullString ());
 	}
-	
+
 	class TestDataTrampolioneNativeNativeInvocationClassCreate : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()
 		{
@@ -5544,7 +5544,7 @@ namespace NS {
 ";
 			yield return [
 				refParameter,
-				ImmutableArray.Create(
+				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1")),
 					Argument (IdentifierName ("arg2"))
 				),
@@ -5564,7 +5564,7 @@ namespace NS {
 
 			yield return [
 				refEnumParameter,
-				ImmutableArray.Create(
+				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1")),
 					Argument (IdentifierName ("arg2"))
 				),
@@ -5584,7 +5584,7 @@ namespace NS {
 
 			yield return [
 				boolReferenceParameter,
-				ImmutableArray.Create(
+				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1")),
 					Argument (IdentifierName ("arg2"))
 				),
@@ -5604,7 +5604,7 @@ namespace NS {
 
 			yield return [
 				doubleReferenceParameter,
-				ImmutableArray.Create(
+				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1")),
 					Argument (IdentifierName ("arg2"))
 				),
@@ -5614,7 +5614,7 @@ namespace NS {
 
 		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
 	}
-	
+
 	[Theory]
 	[AllSupportedPlatformsClassData<TestDataTrampolioneNativeNativeInvocationClassCreate>]
 	void TrampolioneNativeNativeInvocationClassCreateTests (ApplePlatform platform, string inputText, ImmutableArray<ArgumentSyntax> argumnets, string expectedExpression)

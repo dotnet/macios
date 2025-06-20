@@ -111,7 +111,7 @@ static class Nomenclator {
 			_ => throw new ArgumentOutOfRangeException (nameof (trampolineClassType), trampolineClassType, null)
 		};
 	}
-	
+
 	/// <summary>
 	/// Return the name of the trampoline class to be used for the given type info.
 	/// This is a convenience overload for <see cref="GetTrampolineClassName(string, TrampolineClassType)"/>.

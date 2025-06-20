@@ -83,7 +83,7 @@ static class TabbedStringBuilderExtensions {
 		self.WriteLine ();
 		return self;
 	}
-	
+
 	/// <summary>
 	/// Appends a `[return: DelegateProxy]` attribute to the current writer.
 	/// This attribute is used for properties that return a delegate, and it points to the static bridge class
@@ -109,7 +109,7 @@ static class TabbedStringBuilderExtensions {
 	/// <param name="self">A tabbed string writer.</param>
 	/// <param name="typeInfo">The <see cref="TypeInfo"/> of the delegate.</param>
 	/// <returns>The current writer.</returns>
-	public static TabbedWriter<StringWriter> AppendDelegateParameter (this TabbedWriter<StringWriter> self, 
+	public static TabbedWriter<StringWriter> AppendDelegateParameter (this TabbedWriter<StringWriter> self,
 		in TypeInfo typeInfo)
 	{
 		var nativeInvoker =

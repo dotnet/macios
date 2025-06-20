@@ -12716,6 +12716,7 @@ M:MediaSetup.MSSetupSession.#ctor(MediaSetup.MSServiceAccount)
 M:MediaSetup.MSSetupSession.Dispose(System.Boolean)
 M:MediaSetup.MSSetupSession.Start(Foundation.NSError@)
 M:MediaToolbox.MTAudioProcessingTap.GetSourceAudio(System.IntPtr,AudioToolbox.AudioBuffers,MediaToolbox.MTAudioProcessingTapFlags@,CoreMedia.CMTimeRange@,System.IntPtr@)
+M:Messages.IMSMessagesAppTranscriptPresentation.InvalidateMessageTintColor
 M:Messages.MSSticker.#ctor(Foundation.NSUrl,Foundation.NSUuid,System.String)
 M:Messages.MSStickerBrowserView.Dispose(System.Boolean)
 M:Messages.MSStickerBrowserView.MSStickerBrowserViewAppearance.#ctor(System.IntPtr)
@@ -21655,6 +21656,7 @@ P:MediaSetup.MSServiceAccount.ConfigurationUrl
 P:MediaSetup.MSServiceAccount.ServiceName
 P:MediaSetup.MSSetupSession.Account
 P:MediaSetup.MSSetupSession.PresentationContext
+P:Messages.IMSMessagesAppTranscriptPresentation.MessageTintColor
 P:MessageUI.MFMessageAvailabilityChangedEventArgs.TextMessageAvailability
 P:Metal.IMTLAccelerationStructure.GpuResourceId
 P:Metal.IMTLAccelerationStructure.Size

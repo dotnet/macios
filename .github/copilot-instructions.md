@@ -78,7 +78,7 @@ Use these attributes to specify platform availability:
 - `[Mac (version)]` - Available on macOS from specified version
 - `[TV (version)]` - Available on tvOS from specified version
 - `[MacCatalyst (version)]` - Available on Mac Catalyst from specified version
-- `[NoiOS]`, `[NoMac]`, `[NoTV]` - Not available on specified platforms
+- `[NoiOS]`, `[NoMac]`, `[NoTV]`, `[NoMacCatalyst]` - Not available on specified platforms
 
 ## Testing Strategy
 

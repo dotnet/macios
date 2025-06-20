@@ -342,7 +342,7 @@ namespace Xamarin.Linker {
 						// FIXME: calculate the potential constant branch (currently there are no optimizable methods where the switch condition is constant, so this is not needed for now)
 						var targets = ins.Operand as Instruction [];
 						if (targets is null) {
-							Driver.Log (4, $"Can't optimize {0} because of unknown target of branch instruction {1} {2}", method, ins, ins.Operand);
+							Driver.Log (4, "Can't optimize {0} because of unknown target of branch instruction {1} {2}", method, ins, ins.Operand);
 							return false;
 						}
 						foreach (var target in targets) {
@@ -354,7 +354,7 @@ namespace Xamarin.Linker {
 					}
 
 					if (cond_target is null) {
-						Driver.Log (4, $"Can't optimize {0} because of unknown target of branch instruction {1} {2}", method, ins, ins.Operand);
+						Driver.Log (4, "Can't optimize {0} because of unknown target of branch instruction {1} {2}", method, ins, ins.Operand);
 						return false;
 					}
 
@@ -438,7 +438,7 @@ namespace Xamarin.Linker {
 						break;
 					}
 					default:
-						Driver.Log ($"Can't optimize {0} because of unknown branch instruction: {1}", method, ins);
+						Driver.Log ("Can't optimize {0} because of unknown branch instruction: {1}", method, ins);
 						break;
 					}
 

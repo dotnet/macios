@@ -63,9 +63,9 @@ namespace Xamarin.Tests {
 			return Execute ("restore", project, properties, false);
 		}
 
-		public static ExecutionResult AssertBuild (string project, Dictionary<string, string>? properties = null, TimeSpan? timeout = null)
+		public static ExecutionResult AssertBuild (string project, Dictionary<string, string>? properties = null, string? target = null, TimeSpan? timeout = null)
 		{
-			return Execute ("build", project, properties, true, timeout: timeout);
+			return Execute ("build", project, properties, true, target: target, timeout: timeout);
 		}
 
 		public static ExecutionResult AssertBuildFailure (string project, Dictionary<string, string>? properties = null)
@@ -149,7 +149,12 @@ namespace Xamarin.Tests {
 
 		public static ExecutionResult ExecuteCommand (string exe, params string [] args)
 		{
-			var env = new Dictionary<string, string?> ();
+			return ExecuteCommand (exe, null, args);
+		}
+
+		public static ExecutionResult ExecuteCommand (string exe, Dictionary<string, string?>? environment, params string [] args)
+		{
+			var env = environment ?? new Dictionary<string, string?> ();
 			env ["MSBuildSDKsPath"] = null;
 			env ["MSBUILD_EXE_PATH"] = null;
 
@@ -300,6 +305,51 @@ namespace Xamarin.Tests {
 			default:
 				throw new NotImplementedException ($"Unknown dotnet action: '{verb}'");
 			}
+		}
+
+		public static string GetProperty (string projectPath, string name, string? target = null, Dictionary<string, string>? properties = null, Dictionary<string, string?>? environment = null)
+		{
+			return Get (projectPath, name, "Property", target, properties, environment);
+		}
+
+		// returns json
+		public static string GetItems (string projectPath, string name, string? target = null, Dictionary<string, string>? properties = null, Dictionary<string, string?>? environment = null)
+		{
+			return Get (projectPath, name, "Item", target, properties, environment);
+		}
+
+		static string Get (string projectPath, string name, string what, string? target = null, Dictionary<string, string>? properties = null, Dictionary<string, string?>? environment = null)
+		{
+			if (!File.Exists (projectPath))
+				throw new FileNotFoundException ($"The project file '{projectPath}' does not exist.");
+
+			var outputFile = Path.Combine (Cache.CreateTemporaryDirectory (), "evaluateOutput.txt");
+
+			var args = new List<string> ();
+			args.Add ("build");
+			args.Add (projectPath);
+			if (!string.IsNullOrEmpty (target))
+				args.Add ($"-target:{target}");
+			args.Add ($"-get{what}:{name}");
+			args.Add ("-nologo");
+			args.Add ("-verbosity:quiet");
+			args.Add ($"-getResultOutputFile:{outputFile}");
+			var binlogPath = Path.Combine (Path.GetDirectoryName (projectPath)!, $"log-get{what}-{DateTime.Now:yyyyMMdd_HHmmss}.binlog");
+			args.Add ($"-bl:{binlogPath}");
+			args.Add ($"-v:diag");
+			Console.WriteLine ($"Binlog: {binlogPath}");
+
+			if (properties is not null) {
+				foreach (var prop in properties) {
+					if (prop.Value.IndexOfAny (new char [] { ';' }) >= 0) {
+						args.Add ($"/p:{prop.Key}=\"{prop.Value}\"");
+					} else {
+						args.Add ($"/p:{prop.Key}={prop.Value}");
+					}
+				}
+			}
+			ExecuteCommand (Executable, environment, args.ToArray ());
+			return File.ReadAllText (outputFile);
 		}
 
 		public static void CompareApps (string old_app, string new_app)

@@ -9,7 +9,7 @@
       ]
     },
     "dotnet-ilrepack": {
-      "version": "1.0.0",
+      "version": "2.0.43",
       "commands": [
         "ilrepack"
       ]

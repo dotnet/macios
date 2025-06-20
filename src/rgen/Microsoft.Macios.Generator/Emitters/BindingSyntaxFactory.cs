@@ -8,7 +8,9 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Macios.Generator.DataModel;
 using Microsoft.Macios.Generator.Extensions;
+using Microsoft.Macios.Generator.Formatters;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using TypeInfo = Microsoft.Macios.Generator.DataModel.TypeInfo;
 
 namespace Microsoft.Macios.Generator.Emitters;
 
@@ -196,12 +198,49 @@ static partial class BindingSyntaxFactory {
 	/// <returns>The needed expression to call the AsRef method.</returns>
 	internal static ExpressionSyntax AsRef (TypeSyntax objectType, ImmutableArray<ArgumentSyntax> arguments)
 	{
-		var unsafeType = StringExtensions.GetIdentifierName (
-			@namespace: ["System", "Runtime", "CompilerServices"],
-			@class: "Unsafe");
 		var argsList = ArgumentList (SeparatedList<ArgumentSyntax> (arguments.ToSyntaxNodeOrTokenArray ()));
-		return StaticInvocationGenericExpression (unsafeType, "AsRef",
+		return StaticInvocationGenericExpression (Unsafe, "AsRef",
 			objectType, argsList);
+	}
+
+	/// <summary>
+	/// Create the necessary expression to call the AsPointer method from the Unsafe class and cast the result to a pointer of the objectType.
+	/// </summary>
+	/// <param name="objectType">The target type for the pointer.</param>
+	/// <param name="arguments">The arguments to pass to the AsPointer method.</param>
+	/// <param name="castType">The explicit type to cast the pointer to. If null, <paramref name="objectType"/> is used.</param>
+	/// <returns>The necessary expression to call the AsPointer method and cast to a pointer.</returns>
+	internal static ExpressionSyntax AsPointer (TypeSyntax objectType, ImmutableArray<ArgumentSyntax> arguments, TypeSyntax? castType = null)
+	{
+		var argsList = ArgumentList (SeparatedList<ArgumentSyntax> (arguments.ToSyntaxNodeOrTokenArray ()));
+		var invocation = StaticInvocationGenericExpression (Unsafe, "AsPointer",
+			objectType, argsList);
+		// we have the invocation, but we need to convert it to a pointer
+		return CastExpression (PointerType (castType ?? objectType),
+			invocation.WithLeadingTrivia (Space));
+
+	}
+
+	/// <summary>
+	/// Create the necessary expression to call the AsPointer method from the Unsafe class and cast the result to a pointer of the objectType.
+	/// This overload handles specific type conversions, such as System.Boolean to byte*.
+	/// </summary>
+	/// <param name="objectType">The <see cref="TypeInfo"/> for the target type for the pointer.</param>
+	/// <param name="arguments">The arguments to pass to the AsPointer method.</param>
+	/// <returns>The needed expression to call the AsPointer method and cast to a pointer.</returns>
+	internal static ExpressionSyntax AsPointer (in TypeInfo objectType, ImmutableArray<ArgumentSyntax> arguments)
+	{
+		// some types need to be cast to a pointer type that can be handled by the native code
+#pragma warning disable format
+		var castType = objectType switch {
+			{ SpecialType: SpecialType.System_Boolean } => PredefinedType (Token (SyntaxKind.ByteKeyword)),
+			_ => null,
+		};
+#pragma warning restore format
+		return AsPointer (
+			objectType: objectType.GetIdentifierSyntax (),
+			arguments: arguments,
+			castType: castType);
 	}
 
 	/// <summary>
@@ -221,4 +260,40 @@ static partial class BindingSyntaxFactory {
 		return StaticInvocationGenericExpression (marshalType, "GetDelegateForFunctionPointer",
 			delegateType, argsList);
 	}
+
+	/// <summary>
+	/// Creates an <see cref="ArgumentSyntax"/> for a given parameter name and reference kind.
+	/// </summary>
+	/// <param name="argumentName">The name of the argument.</param>
+	/// <param name="referenceKind">The <see cref="ReferenceKind"/> of the argument.</param>
+	/// <returns>An <see cref="ArgumentSyntax"/> representing the parameter.</returns>
+	internal static ArgumentSyntax ArgumentForParameter (string argumentName, ReferenceKind referenceKind = ReferenceKind.None)
+	{
+		var arg = Argument (IdentifierName (argumentName));
+#pragma warning disable format
+		arg = referenceKind switch {
+			ReferenceKind.In => arg.WithRefOrOutKeyword (Token (SyntaxKind.InKeyword)),
+			ReferenceKind.Out => arg.WithRefOrOutKeyword (Token (SyntaxKind.OutKeyword)),
+			ReferenceKind.Ref => arg.WithRefOrOutKeyword (Token (SyntaxKind.RefKeyword)),
+			_ => arg
+		};
+#pragma warning restore format
+		return arg.NormalizeWhitespace ();
+	}
+
+	/// <summary>
+	/// Creates an <see cref="ArgumentSyntax"/> for a given <see cref="Parameter"/>.
+	/// </summary>
+	/// <param name="parameter">The <see cref="Parameter"/> to create the argument for.</param>
+	/// <returns>An <see cref="ArgumentSyntax"/> representing the parameter.</returns>
+	internal static ArgumentSyntax ArgumentForParameter (in Parameter parameter)
+		=> ArgumentForParameter (parameter.Name, parameter.ReferenceKind);
+
+	/// <summary>
+	/// Creates an <see cref="ArgumentSyntax"/> for a given <see cref="DelegateParameter"/>.
+	/// </summary>
+	/// <param name="parameter">The <see cref="DelegateParameter"/> to create the argument for.</param>
+	/// <returns>An <see cref="ArgumentSyntax"/> representing the parameter.</returns>
+	internal static ArgumentSyntax ArgumentForParameter (in DelegateParameter parameter)
+		=> ArgumentForParameter (parameter.Name, parameter.ReferenceKind);
 }

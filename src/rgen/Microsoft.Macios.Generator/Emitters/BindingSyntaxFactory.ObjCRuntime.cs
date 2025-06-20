@@ -271,19 +271,10 @@ static partial class BindingSyntaxFactory {
 	/// Generates a local variable declaration for an auxiliary NSArray.
 	/// This is a convenience overload for <see cref="GetNSArrayAuxVariable(string, in TypeInfo)"/>.
 	/// </summary>
-	/// <param name="parameter">The <see cref="Parameter"/> representing the C# array.</param>
+	/// <param name="argumentInfo">The <see cref="ArgumentInfo"/> representing the C# array.</param>
 	/// <returns>A <see cref="LocalDeclarationStatementSyntax"/> for the auxiliary NSArray variable, or null if the input is not an array or if a variable name cannot be generated.</returns>
-	internal static LocalDeclarationStatementSyntax? GetNSArrayAuxVariable (in Parameter parameter)
-		=> GetNSArrayAuxVariable (parameter.Name, parameter.Type);
-
-	/// <summary>
-	/// Generates a local variable declaration for an auxiliary NSArray.
-	/// This is a convenience overload for <see cref="GetNSArrayAuxVariable(string, in TypeInfo)"/> for delegate parameters.
-	/// </summary>
-	/// <param name="parameter">The <see cref="DelegateParameter"/> representing the C# array.</param>
-	/// <returns>A <see cref="LocalDeclarationStatementSyntax"/> for the auxiliary NSArray variable, or null if the input is not an array or if a variable name cannot be generated.</returns>
-	internal static LocalDeclarationStatementSyntax? GetNSArrayAuxVariable (in DelegateParameter parameter)
-		=> GetNSArrayAuxVariable (parameter.Name, parameter.Type);
+	internal static LocalDeclarationStatementSyntax? GetNSArrayAuxVariable (in ArgumentInfo argumentInfo)
+		=> GetNSArrayAuxVariable (argumentInfo.Name, argumentInfo.Type);
 
 	/// <summary>
 	/// Generates a local variable declaration for an auxiliary handle (IntPtr).
@@ -347,19 +338,10 @@ static partial class BindingSyntaxFactory {
 	/// Generates a local variable declaration for an auxiliary handle (IntPtr).
 	/// This is a convenience overload for <see cref="GetHandleAuxVariable(string, in TypeInfo)"/>.
 	/// </summary>
-	/// <param name="parameter">The <see cref="Parameter"/> representing the C# object.</param>
+	/// <param name="argumentInfo">The <see cref="ArgumentInfo"/> representing the C# object.</param>
 	/// <returns>A <see cref="LocalDeclarationStatementSyntax"/> for the auxiliary handle variable, or null if the input is not an NSObject or INativeObject, or if a variable name cannot be generated.</returns>
-	internal static LocalDeclarationStatementSyntax? GetHandleAuxVariable (in Parameter parameter)
-		=> GetHandleAuxVariable (parameter.Name, parameter.Type);
-
-	/// <summary>
-	/// Generates a local variable declaration for an auxiliary handle (IntPtr).
-	/// This is a convenience overload for <see cref="GetHandleAuxVariable(string, in TypeInfo)"/> for delegate parameters.
-	/// </summary>
-	/// <param name="parameter">The <see cref="DelegateParameter"/> representing the C# object.</param>
-	/// <returns>A <see cref="LocalDeclarationStatementSyntax"/> for the auxiliary handle variable, or null if the input is not an NSObject or INativeObject, or if a variable name cannot be generated.</returns>
-	internal static LocalDeclarationStatementSyntax? GetHandleAuxVariable (in DelegateParameter parameter)
-		=> GetHandleAuxVariable (parameter.Name, parameter.Type);
+	internal static LocalDeclarationStatementSyntax? GetHandleAuxVariable (in ArgumentInfo argumentInfo)
+		=> GetHandleAuxVariable (argumentInfo.Name, argumentInfo.Type);
 
 	/// <summary>
 	/// Generates a local variable declaration for an auxiliary handle (IntPtr) initialized to IntPtr.Zero.
@@ -424,19 +406,10 @@ static partial class BindingSyntaxFactory {
 	/// Generates a local variable declaration for an auxiliary NSString.
 	/// This is a convenience overload for <see cref="GetStringAuxVariable(string, in TypeInfo)"/>.
 	/// </summary>
-	/// <param name="parameter">The <see cref="Parameter"/> representing the C# string.</param>
+	/// <param name="argumentInfo">The <see cref="ArgumentInfo"/> representing the C# string.</param>
 	/// <returns>A <see cref="LocalDeclarationStatementSyntax"/> for the auxiliary NSString variable, or null if the input is not a string or if a variable name cannot be generated.</returns>
-	internal static LocalDeclarationStatementSyntax? GetStringAuxVariable (in Parameter parameter)
-		=> GetStringAuxVariable (parameter.Name, parameter.Type);
-
-	/// <summary>
-	/// Generates a local variable declaration for an auxiliary NSString.
-	/// This is a convenience overload for <see cref="GetStringAuxVariable(string, in TypeInfo)"/> for delegate parameters.
-	/// </summary>
-	/// <param name="parameter">The <see cref="DelegateParameter"/> representing the C# string.</param>
-	/// <returns>A <see cref="LocalDeclarationStatementSyntax"/> for the auxiliary NSString variable, or null if the input is not a string or if a variable name cannot be generated.</returns>
-	internal static LocalDeclarationStatementSyntax? GetStringAuxVariable (in DelegateParameter parameter)
-		=> GetStringAuxVariable (parameter.Name, parameter.Type);
+	internal static LocalDeclarationStatementSyntax? GetStringAuxVariable (in ArgumentInfo argumentInfo)
+		=> GetStringAuxVariable (argumentInfo.Name, argumentInfo.Type);
 
 	internal static LocalDeclarationStatementSyntax? GetNSNumberAuxVariable (in Parameter parameter)
 	{
@@ -652,19 +625,10 @@ static partial class BindingSyntaxFactory {
 	/// Generates a local variable declaration for an auxiliary NSString for a smart enum.
 	/// This is a convenience overload for <see cref="GetNSStringSmartEnumAuxVariable(string, in TypeInfo)"/>.
 	/// </summary>
-	/// <param name="parameter">The <see cref="Parameter"/> representing the C# smart enum.</param>
+	/// <param name="argumentInfo">The <see cref="ArgumentInfo"/> representing the C# smart enum.</param>
 	/// <returns>A <see cref="LocalDeclarationStatementSyntax"/> for the auxiliary NSString variable, or null if the input is not a smart enum or if a variable name cannot be generated.</returns>
-	internal static LocalDeclarationStatementSyntax? GetNSStringSmartEnumAuxVariable (in Parameter parameter)
-		=> GetNSStringSmartEnumAuxVariable (parameter.Name, parameter.Type);
-
-	/// <summary>
-	/// Generates a local variable declaration for an auxiliary NSString for a smart enum.
-	/// This is a convenience overload for <see cref="GetNSStringSmartEnumAuxVariable(string, in TypeInfo)"/> for delegate parameters.
-	/// </summary>
-	/// <param name="parameter">The <see cref="DelegateParameter"/> representing the C# smart enum.</param>
-	/// <returns>A <see cref="LocalDeclarationStatementSyntax"/> for the auxiliary NSString variable, or null if the input is not a smart enum or if a variable name cannot be generated.</returns>
-	internal static LocalDeclarationStatementSyntax? GetNSStringSmartEnumAuxVariable (in DelegateParameter parameter)
-		=> GetNSStringSmartEnumAuxVariable (parameter.Name, parameter.Type);
+	internal static LocalDeclarationStatementSyntax? GetNSStringSmartEnumAuxVariable (in ArgumentInfo argumentInfo)
+		=> GetNSStringSmartEnumAuxVariable (argumentInfo.Name, argumentInfo.Type);
 
 	/// <summary>
 	/// Generates an invocation expression to convert an NSString (represented by an argument syntax) back to its corresponding smart enum value.
@@ -805,7 +769,7 @@ static partial class BindingSyntaxFactory {
 			{ IsArray: true } => GetNSArrayBindFromAuxVariable (parameter),
 			{ Type.FullyQualifiedName: "Foundation.NSNumber" } => GetNSNumberAuxVariable (parameter),
 			{ Type.FullyQualifiedName: "Foundation.NSValue" } => GetNSValueAuxVariable (parameter),
-			{ Type.FullyQualifiedName: "Foundation.NSString" } => GetNSStringSmartEnumAuxVariable(parameter),
+			{ Type.FullyQualifiedName: "Foundation.NSString" } => GetNSStringSmartEnumAuxVariable (parameter),
 			_ => null,
 		};
 #pragma warning restore format
@@ -903,14 +867,13 @@ static partial class BindingSyntaxFactory {
 	/// method on a trampoline-specific static bridge class. This helper method is responsible for creating the native block
 	/// if the delegate is not null, or returning `IntPtr.Zero` if it is.
 	/// </summary>
-	/// <param name="trampolineName">The name of the trampoline, used to identify the correct static bridge class.</param>
 	/// <param name="variableName">The name of the C# delegate variable.</param>
 	/// <param name="blockTypeInfo">The <see cref="TypeInfo"/> of the delegate.</param>
 	/// <returns>A <see cref="LocalDeclarationStatementSyntax"/> for the auxiliary nullable block variable.</returns>
-	internal static LocalDeclarationStatementSyntax GetNullableBlockAuxVariable (string trampolineName, string variableName, in TypeInfo blockTypeInfo)
+	internal static LocalDeclarationStatementSyntax GetNullableBlockAuxVariable (string variableName, in TypeInfo blockTypeInfo)
 	{
 		var staticBridgeClassName =
-			Nomenclator.GetTrampolineClassName (trampolineName, Nomenclator.TrampolineClassType.StaticBridgeClass);
+			Nomenclator.GetTrampolineClassName (blockTypeInfo, Nomenclator.TrampolineClassType.StaticBridgeClass);
 		// generates the call to create the nullable block
 		var invocation = InvocationExpression (
 				MemberAccessExpression (
@@ -947,11 +910,10 @@ static partial class BindingSyntaxFactory {
 	/// Generates a local variable declaration for an auxiliary variable that holds a native block created from a nullable C# delegate.
 	/// This is a convenience overload for <see cref="GetNullableBlockAuxVariable(string, string, in TypeInfo)"/>.
 	/// </summary>
-	/// <param name="trampolineName">The name of the trampoline, used to identify the correct static bridge class.</param>
-	/// <param name="parameter">The <see cref="DelegateParameter"/> representing the C# delegate.</param>
+	/// <param name="argumentInfo">The <see cref="ArgumentInfo"/> representing the C# delegate.</param>
 	/// <returns>A <see cref="LocalDeclarationStatementSyntax"/> for the auxiliary nullable block variable.</returns>
-	internal static LocalDeclarationStatementSyntax GetNullableBlockAuxVariable (string trampolineName, DelegateParameter parameter)
-		=> GetNullableBlockAuxVariable (trampolineName, parameter.Name, parameter.Type);
+	internal static LocalDeclarationStatementSyntax GetNullableBlockAuxVariable (in ArgumentInfo argumentInfo)
+		=> GetNullableBlockAuxVariable (argumentInfo.Name, argumentInfo.Type);
 
 	/// <summary>
 	/// Generates a local variable declaration for a pointer to a BlockLiteral structure.
@@ -990,10 +952,10 @@ static partial class BindingSyntaxFactory {
 	/// Generates a local variable declaration for a pointer to a BlockLiteral structure.
 	/// This is a convenience overload for <see cref="GetBlockLiteralAuxVariable(string)"/>.
 	/// </summary>
-	/// <param name="parameter">The <see cref="DelegateParameter"/> representing the C# delegate.</param>
+	/// <param name="argumentInfo">The <see cref="ArgumentInfo"/> representing the C# delegate.</param>
 	/// <returns>A <see cref="LocalDeclarationStatementSyntax"/> for the block literal pointer variable.</returns>
-	internal static LocalDeclarationStatementSyntax GetBlockLiteralAuxVariable (in DelegateParameter parameter)
-		=> GetBlockLiteralAuxVariable (parameter.Name);
+	internal static LocalDeclarationStatementSyntax GetBlockLiteralAuxVariable (in ArgumentInfo argumentInfo)
+		=> GetBlockLiteralAuxVariable (argumentInfo.Name);
 
 	/// <summary>
 	/// Returns the declaration needed for the string field of a given selector.

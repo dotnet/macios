@@ -682,30 +682,7 @@ static partial class BindingSyntaxFactory {
 		// default case, we do not need to do anything
 		return [];
 	}
-
-	/// <summary>
-	/// Returns an array of syntax nodes representing initializations required for a 'byref' parameter before invoking the trampoline.
-	/// This is primarily used for handling 'byref' parameters, which may require temporary variables or conversions.
-	/// </summary>
-	/// <param name="parameter">The delegate parameter, which is expected to be 'byref'.</param>
-	/// <returns>An immutable array of syntax nodes representing the initialization statements for the 'byref' parameter.</returns>
-	internal static ImmutableArray<SyntaxNode> GetTrampolineInitializationByRefArgument (in DelegateParameter parameter)
-	{
-		// create the pointer variable and assign it to its default value
-		// generates the following:
-		// *{ParameterName} = default;
-		var expr = ExpressionStatement (
-			AssignmentExpression (
-				SyntaxKind.SimpleAssignmentExpression,
-				PrefixUnaryExpression (
-					SyntaxKind.PointerIndirectionExpression,
-					IdentifierName (parameter.Name)),
-				LiteralExpression (
-					SyntaxKind.DefaultLiteralExpression,
-					Token (SyntaxKind.DefaultKeyword)))).NormalizeWhitespace ();
-		return [expr];
-	}
-
+	
 	/// <summary>
 	/// Generates any necessary post-invocation statements for a by-ref trampoline argument.
 	/// This is used to handle special cases for by-ref parameters, such as assigning back values
@@ -810,23 +787,7 @@ static partial class BindingSyntaxFactory {
 		}
 		return [];
 	}
-
-	/// <summary>
-	/// Returns a list of syntax nodes representing the necessary initializations for a trampoline argument before the delegate is invoked.
-	/// This is primarily used for handling 'byref' parameters, which may require temporary variables or conversions.
-	/// </summary>
-	/// <param name="trampolineName">The name of the trampoline. Although not directly used in this specific method's logic for by-ref handling, it's kept for consistency with related methods.</param>
-	/// <param name="parameter">The delegate parameter for which initializations might be needed.</param>
-	/// <returns>An immutable array of syntax nodes for the initializations. Returns an empty array if no special initialization is required.</returns>
-	internal static ImmutableArray<SyntaxNode> GetTrampolineInvokeArgumentInitializations (string trampolineName,
-		in DelegateParameter parameter)
-	{
-		// decide the type of conversion we need to do based on the type of the parameter
-		return parameter switch { { IsByRef: true } => GetTrampolineInitializationByRefArgument (parameter),
-			_ => []
-		};
-	}
-
+	
 	/// <summary>
 	/// Returns the list of expressions that need to be executed before the trampoline is invoked. This allows to
 	/// help the trampoline to convert the parameters to the expected types.
@@ -874,7 +835,7 @@ static partial class BindingSyntaxFactory {
 		var bucket = ImmutableArray.CreateBuilder<TrampolineArgumentSyntax> (delegateInfo.Parameters.Length);
 		foreach (var parameter in delegateInfo.Parameters) {
 			var argument = new TrampolineArgumentSyntax (GetTrampolineInvokeArgument (trampolineName, parameter)) {
-				Initializers = GetTrampolineInvokeArgumentInitializations (trampolineName, parameter),
+				Initializers = GetInvokeArgumentInitializations (parameter),
 				PreDelegateCallConversion = GetTrampolinePreInvokeArgumentConversions (trampolineName, parameter),
 				PostDelegateCallConversion = GetTrampolinePostInvokeArgumentConversions (trampolineName, parameter),
 			};
@@ -1123,285 +1084,7 @@ static partial class BindingSyntaxFactory {
 			_ => []
 		};
 	}
-
-
-	/// <summary>
-	/// Returns a list of syntax nodes representing the necessary conversions for a trampoline argument before the native delegate (block) is invoked.
-	/// This method handles converting managed types to their corresponding native representations.
-	/// For example, it can generate code to:
-	/// - Throw an <see cref="ArgumentNullException"/> if a non-nullable reference type parameter is null.
-	/// - Convert a C# string to an NSString.
-	/// - Convert a C# array of INativeObject to an NSArray.
-	/// - Get the handle (IntPtr) of an NSObject or INativeObject.
-	/// - Convert a smart enum to its underlying NSString constant.
-	/// </summary>
-	/// <param name="trampolineName">The name of the trampoline. This can be used to generate unique variable names if needed, though not directly used in all conversion paths.</param>
-	/// <param name="parameter">The delegate parameter for which pre-native-invoke conversions might be needed.</param>
-	/// <returns>An immutable array of syntax nodes for the conversions. Returns an empty array if no special conversion is required.</returns>
-	internal static ImmutableArray<SyntaxNode> GetTrampolinePreNativeInvokeArgumentConversions (string trampolineName,
-		in DelegateParameter parameter)
-	{
-		var builder = ImmutableArray.CreateBuilder<SyntaxNode> ();
-		// if the parameter does not allow the object to be null and it is a reference type, we need to add the null check
-		// otherwise ignore it. We do not want this check for INativeObjects (includes NSObject) because the GetNonNullableHandle
-		// will throw an exception if the object is null.
-		if (parameter.Type is { IsReferenceType: true, IsINativeObject: false, IsNullable: false }) {
-			builder.Add (ThrowIfNull (parameter.Name));
-		}
-
-		// based on the trampoline name and the parameter we will lower the parameter to the expected type for the invoker
-		// which is the lower type of the parameter
-#pragma warning disable format
-		ImmutableArray<SyntaxNode> conversions = parameter switch {
-			// pointer parameter 
-			{ Type.IsPointer: true } => [],
-			
-			// block delegate parameter is a NativeHandle
-			{ Type.IsDelegate: true, IsBlockCallback: true} => [
-				GetNullableBlockAuxVariable (trampolineName, parameter),
-				GetBlockLiteralAuxVariable (parameter),
-			],
-			
-			{ Type.IsDelegate: true, IsCCallback: true} => [],
-			
-			// return the conversion expression to the native type
-			{ Type.IsSmartEnum: true} =>  [GetNSStringSmartEnumAuxVariable (parameter)!],
-
-			// boolean, convert it to byte
-			{ Type.SpecialType: SpecialType.System_Boolean } => [],
-			
-			{ Type.IsArray: true, Type.ArrayElementType: SpecialType.System_String } => [GetNSArrayAuxVariable (parameter)!],
-
-			{ Type.IsArray: true, Type.ArrayElementIsINativeObject: true } => [GetNSArrayAuxVariable (parameter)!],
-
-			{ Type.SpecialType: SpecialType.System_String } =>  [GetStringAuxVariable (parameter)!],
-
-			{ Type.IsProtocol: true } => [GetHandleAuxVariable (parameter)!],
-
-			// special types
-
-			// CoreMedia.CMSampleBuffer
-			{ Type.FullyQualifiedName: "CoreMedia.CMSampleBuffer" } => [GetHandleAuxVariable (parameter)!],
-
-			// AudioToolbox.AudioBuffers
-			{ Type.FullyQualifiedName: "AudioToolbox.AudioBuffers" } => [GetHandleAuxVariable (parameter)!],
-
-			// general NSObject/INativeObject, has to be after the special types otherwise the special types will
-			// fall into the NSObject/INativeObject case
-
-			// same name, native handle
-			{ Type.IsNSObject: true } => [GetHandleAuxVariable (parameter)!],
-
-			// same name, native handle
-			{ Type.IsINativeObject: true } => [GetHandleAuxVariable (parameter)!],
-			
-			// by default, we will use the parameter name as is and the type of the parameter
-			_ => [],
-		};
-#pragma warning restore format
-		
-		// should contain any null check and the required conversions to the native type
-		builder.AddRange (conversions);
-		return builder.ToImmutable ();
-	}
-
-	/// <summary>
-	/// Returns a list of syntax nodes representing the necessary conversions or cleanup actions for a trampoline argument
-	/// after the native delegate (block) has been invoked.
-	/// This method primarily handles ensuring that managed objects passed to native code are kept alive
-	/// until the native call completes, by generating <c>GC.KeepAlive</c> calls for their corresponding
-	/// native representations (e.g., auxiliary variables holding NSString, NSArray, or handles).
-	/// </summary>
-	/// <param name="trampolineName">The name of the trampoline. This is not directly used in the current logic for GC.KeepAlive but is kept for consistency.</param>
-	/// <param name="parameter">The delegate parameter for which post-native-invoke conversions or cleanup might be needed.</param>
-	/// <returns>An immutable array of syntax nodes for the post-invoke actions. Returns an empty array if no special action is required.</returns>
-	internal static ImmutableArray<SyntaxNode> GetTrampolinePostNativeInvokeArgumentConversions (string trampolineName,
-		in DelegateParameter parameter)
-	{
-		// decide the type of conversion we need to do based on the type of the parameter
-#pragma warning disable format
-		return parameter.Type switch { 
-			{ IsPointer: true } => [],
-			
-			{ IsDelegate: true } => [],
-			
-			// ensure that the gc does not collect the smart NSString value
-			{ IsSmartEnum: true} =>  [ExpressionStatement (
-				KeepAlive (
-					// use the nomenclator to get the name for the variable type
-					Nomenclator.GetNameForVariableType (parameter.Name, Nomenclator.VariableType.BindFrom)!
-				))],
-
-			// boolean, nothing to do
-			{ SpecialType: SpecialType.System_Boolean } => [],
-			
-			// ensure that the gc does not collect the NSArray value
-			{ IsArray: true, ArrayElementType: SpecialType.System_String } => [ExpressionStatement (
-				KeepAlive (
-					//  use the nomenclator to get the name for the variable type
-					Nomenclator.GetNameForVariableType (parameter.Name, Nomenclator.VariableType.NSArray)!
-				))],
-
-			{ IsArray: true, ArrayElementIsINativeObject: true } => [ExpressionStatement (
-				KeepAlive (
-					//  use the nomenclator to get the name for the variable type
-					Nomenclator.GetNameForVariableType (parameter.Name, Nomenclator.VariableType.NSArray)!
-				))],
-
-			{ SpecialType: SpecialType.System_String } =>  [ExpressionStatement (
-					StringReleaseNative(
-						[Argument(IdentifierName(
-							//  use the nomenclator to get the name for the variable type
-							Nomenclator.GetNameForVariableType (parameter.Name, Nomenclator.VariableType.NSString)!
-						))
-						]))],
-
-			{ IsProtocol: true } => [ExpressionStatement (KeepAlive (parameter.Name))],
-
-			// special types
-
-			// CoreMedia.CMSampleBuffer
-			{ FullyQualifiedName: "CoreMedia.CMSampleBuffer" } => [ExpressionStatement (KeepAlive (parameter.Name))],
-
-			// AudioToolbox.AudioBuffers
-			{ FullyQualifiedName: "AudioToolbox.AudioBuffers" } => [ExpressionStatement (KeepAlive (parameter.Name))],
-
-			// general NSObject/INativeObject, has to be after the special types otherwise the special types will
-			// fall into the NSObject/INativeObject case
-
-			// same name, native handle
-			{ IsNSObject: true } => [ExpressionStatement (KeepAlive (parameter.Name))],
-
-			// same name, native handle
-			{ IsINativeObject: true } => [ExpressionStatement (KeepAlive (parameter.Name))],
-			
-			// by default, we will use the parameter name as is and the type of the parameter
-			_ => [],
-		};
-#pragma warning restore format
-	}
-
-	/// <summary>
-	/// Returns the argument syntax for a parameter to be used when invoking the native delegate (block) from the trampoline.
-	/// This method determines how a managed parameter should be represented when calling the native function.
-	/// It handles conversions such as:
-	/// - Getting the native representation of a C# string (e.g., an auxiliary NSString variable).
-	/// - Getting the native representation of a C# array (e.g., an auxiliary NSArray variable).
-	/// - Getting the handle of an NSObject or INativeObject (e.g., an auxiliary handle variable).
-	/// - Casting a C# bool to a byte.
-	/// - Casting a C# native enum to its underlying integral type.
-	/// For 'byref' parameters, it ensures the correct `ref`, `in`, or `out` keyword is used.
-	/// </summary>
-	/// <param name="trampolineName">The name of the trampoline. This is used to potentially create unique names for auxiliary variables if needed, though not all paths use it directly.</param>
-	/// <param name="parameter">The delegate parameter for which to generate the native invoke argument syntax.</param>
-	/// <returns>An <see cref="ArgumentSyntax"/> representing the parameter as it should be passed to the native delegate invocation.</returns>
-	internal static ArgumentSyntax GetTrampolineNativeInvokeArgument (string trampolineName, in DelegateParameter parameter)
-	{
-		// build the necessary expression based on the information of the parameter and its type, taking into account
-		// that the type of the parameter might be different from the type specified in the BindAs attribute.
-		TypeInfo parameterType = parameter.BindAs?.Type ?? parameter.Type;
-		var parameterIdentifier = IdentifierName (parameter.Name);
-#pragma warning disable format
-		var expression = (Type: parameterType, Parameter: parameter) switch {
-			// ref parameters have to be converted to a pointer
-			{ Parameter.IsByRef: true } => AsPointer (parameterType, [ArgumentForParameter (parameter.Name, ReferenceKind.Ref)]),
-
-			// delegate parameter, c callback
-			// System.Runtime.InteropServices.Marshal.GetDelegateForFunctionPointer<ParameterType> (ParameterName)
-			{ Type.IsDelegate: true, Parameter.IsCCallback: true } 
-				=> CastExpression (
-					NativeHandle, 
-					IdentifierName (Nomenclator.GetNameForVariableType (parameter.Name, Nomenclator.VariableType.BlockLiteral)!).WithLeadingTrivia (Space)),
-			
-			// delegate parameter, block callback
-			// TrampolineNativeInvocationClass.Create (ParameterName)!
-			{ Type.IsDelegate: true, Parameter.IsBlockCallback: true }
-				=> CastExpression(
-					NativeHandle, 
-					IdentifierName (Nomenclator.GetNameForVariableType (parameter.Name, Nomenclator.VariableType.BlockLiteral)!).WithLeadingTrivia (Space)),
-			
-			// native enum, return the conversion expression to the native type
-			{ Type.IsNativeEnum: true} 
-				=> CastNativeToEnum (parameter)!,
-			
-			// boolean, convert it to byte
-			{ Type.SpecialType: SpecialType.System_Boolean } 
-				=> CastToByte (parameter.Name, parameterType)!,
-			
-			// array types
-			
-			// use the native handle of the array
-			{ Type.IsArray: true, Type.ArrayElementTypeIsWrapped: true } =>
-				IdentifierName (Nomenclator.GetNameForVariableType (parameter.Name, Nomenclator.VariableType.NSArray)!),
-			
-			// NSArray.ArrayFromHandle<{0}> ({1})!
-			{ Type.IsArray: true, Type.ArrayElementIsINativeObject: true } =>
-				IdentifierName (Nomenclator.GetNameForVariableType (parameter.Name, Nomenclator.VariableType.NSArray)!),
-			
-			// string[]
-			// CFArray.StringArrayFromHandle (ParameterName)!
-			{ Type.IsArray: true, Type.ArrayElementType: SpecialType.System_String } =>
-				IdentifierName (Nomenclator.GetNameForVariableType (parameter.Name, Nomenclator.VariableType.NSArray)!),
-			
-			// string
-			// CFString.FromHandle (ParameterName)!
-			{ Type.SpecialType: SpecialType.System_String } =>
-				IdentifierName (Nomenclator.GetNameForVariableType (parameter.Name, Nomenclator.VariableType.NSString)!),
-			
-			// Runtime.GetINativeObject<ParameterType> (ParameterName, false)!
-			{ Type.IsProtocol: true } => 
-				IdentifierName (Nomenclator.GetNameForVariableType (parameter.Name, Nomenclator.VariableType.Handle)!),
-			
-			// special types
-			
-			{ Type.FullyQualifiedName: "CoreMedia.CMSampleBuffer" } =>
-				IdentifierName (Nomenclator.GetNameForVariableType (parameter.Name, Nomenclator.VariableType.Handle)!),
-			
-			{ Type.FullyQualifiedName: "AudioToolbox.AudioBuffers" } =>
-				IdentifierName (Nomenclator.GetNameForVariableType (parameter.Name, Nomenclator.VariableType.Handle)!),
-			
-			// general NSObject/INativeObject, has to be after the special types otherwise the special types will
-			// fall into the NSObject/INativeObject case
-			
-			{ Type.IsNSObject: true } =>
-				IdentifierName (Nomenclator.GetNameForVariableType (parameter.Name, Nomenclator.VariableType.Handle)!),
-			
-			// Runtime.GetINativeObject<ParameterType> (ParameterName, false)!
-			{ Type.IsINativeObject: true } =>
-				IdentifierName (Nomenclator.GetNameForVariableType (parameter.Name, Nomenclator.VariableType.Handle)!),
-			
-			// by default, we will use the parameter name as is
-			_ => parameterIdentifier
-		};
-#pragma warning restore format
-		
-		// at this point we have the native type to the manage type conversion done BUT if we are using a BindFrom
-		// attribute, we need get that expression and convert the NSValue/NSNumber to the expected type.
-		if (parameter.BindAs is not null) {
-#pragma warning disable format
-			expression = (BindAsType: parameter.BindAs.Value.Type, ParameterType: parameter.Type) switch {
-				{ BindAsType.FullyQualifiedName: "Foundation.NSValue", ParameterType.IsArray: false } =>
-					IdentifierName (Nomenclator.GetNameForVariableType (parameter.Name, Nomenclator.VariableType.Handle)!),
-				{ BindAsType.FullyQualifiedName: "Foundation.NSNumber", ParameterType.IsArray: false } =>
-					IdentifierName (Nomenclator.GetNameForVariableType (parameter.Name, Nomenclator.VariableType.Handle)!),
-				{ BindAsType.FullyQualifiedName: "Foundation.NSString", ParameterType.IsArray: false } =>
-					IdentifierName (Nomenclator.GetNameForVariableType (parameter.Name, Nomenclator.VariableType.NSString)!),
-				// array support: NSArray.ArrayFromHandleFunc<parameterType> (parameterName, NSValue.FromHandle, false)!
-				{ BindAsType.FullyQualifiedName: "Foundation.NSValue", ParameterType.IsArray: true } =>
-					IdentifierName (Nomenclator.GetNameForVariableType (parameter.Name, Nomenclator.VariableType.NSArray)!),
-				{ BindAsType.FullyQualifiedName: "Foundation.NSNumber", ParameterType.IsArray: true } =>
-					IdentifierName (Nomenclator.GetNameForVariableType (parameter.Name, Nomenclator.VariableType.NSArray)!),
-				{ BindAsType.FullyQualifiedName: "Foundation.NSString", ParameterType.IsArray: true } =>
-					IdentifierName (Nomenclator.GetNameForVariableType (parameter.Name, Nomenclator.VariableType.NSArray)!),
-				_ => expression
-			};
-#pragma warning restore format
-		}
-
-		// Argument syntax is the same as the expression syntax, but we need to add the ref kind keyword if needed
-		return Argument (expression);
-	}
-
+	
 	/// <summary>
 	/// Generates a list of <see cref="TrampolineArgumentSyntax"/> objects for invoking a native delegate (block) from a trampoline.
 	/// Each <see cref="TrampolineArgumentSyntax"/> encapsulates the argument itself, along with any necessary
@@ -1422,10 +1105,10 @@ static partial class BindingSyntaxFactory {
 
 		// add all the mising parameters to the bucket.
 		foreach (var parameter in delegateInfo.Parameters) {
-			var argument = new TrampolineArgumentSyntax (GetTrampolineNativeInvokeArgument (trampolineName, parameter)) {
-				Initializers = GetTrampolineInvokeArgumentInitializations (trampolineName, parameter),
-				PreDelegateCallConversion = GetTrampolinePreNativeInvokeArgumentConversions (trampolineName, parameter),
-				PostDelegateCallConversion = GetTrampolinePostNativeInvokeArgumentConversions (trampolineName, parameter),
+			var argument = new TrampolineArgumentSyntax (GetNativeInvokeArgument (parameter)) {
+				Initializers = GetInvokeArgumentInitializations (parameter),
+				PreDelegateCallConversion = GetPreNativeInvokeArgumentConversions (parameter),
+				PostDelegateCallConversion = GetPostNativeInvokeArgumentConversions (parameter),
 			};
 			bucket.Add (argument);
 		}

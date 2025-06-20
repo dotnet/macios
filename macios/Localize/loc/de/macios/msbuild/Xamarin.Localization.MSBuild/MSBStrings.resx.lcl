@@ -2218,6 +2218,15 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";E7157" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The {0} item '{1}' does not have a 'LogicalName' metadata.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Das {0} Element „{1}“ verfügt nicht über die Metadaten „LogicalName“.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";InvalidFramework" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Invalid framework: {0}]]></Val>
@@ -2475,6 +2484,15 @@
           <Val><![CDATA[  Skipping framework assembly: {0}]D;]A;        ]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[  Frameworkassembly wird übersprungen: {0}]D;]A;        ]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";M0169" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Adjusted path from '{0}' to '{1}']D;]A;        ]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Pfad von „{0}“ zu „{1}“ angepasst]D;]A;        ]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -2889,6 +2907,33 @@
           <Val><![CDATA[Unable to retrieve information from '{0}'. The file may not be a valid PE file.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[Es können keine Informationen von „{0}“ abgerufen werden. Die Datei ist möglicherweise keine gültige PE-Datei.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";W7154" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The {0} item '{1}' imported from '{2}' was ignored, because there's already an existing item from the current project with the same LogicalName ('{3}')]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Das {0} Element „{1}“, importiert aus „{2}“, wurde ignoriert, da bereits ein Element aus dem aktuellen Projekt mit demselben LogicalName („{3}“) vorhanden ist.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";W7155" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The {0} item '{1}' imported from '{2}' was ignored, because there's another item from a different assembly ({4}) with the same LogicalName ('{3}')]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Das {0} Element „{1}“, importiert aus „{2}“, wurde ignoriert, da ein anderes Element aus einer anderen Assembly ({4}) mit demselben LogicalName („{3}“) vorhanden ist.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";W7156" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The {0} item '{1}' was ignored, because there's another item with the same LogicalName ('{2}')]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Das {0} Element „{1}“ wurde ignoriert, da ein anderes Element mit demselben LogicalName („{2}“) vorhanden ist.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

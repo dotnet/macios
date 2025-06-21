@@ -158,6 +158,7 @@ public class Example {
 			yield return [exampleParameter, Nomenclator.VariableType.NSArray, $"nsa_{exampleParameter.Name}"];
 			yield return [exampleParameter, Nomenclator.VariableType.NSString, $"ns{exampleParameter.Name}"];
 			yield return [exampleParameter, Nomenclator.VariableType.NSStringStruct, $"_s{exampleParameter.Name}"];
+			yield return [exampleParameter, Nomenclator.VariableType.NullableBlock, $"block_{exampleParameter.Name}"];
 			yield return [exampleParameter, Nomenclator.VariableType.BindFrom, $"nsb_{exampleParameter.Name}"];
 		}
 

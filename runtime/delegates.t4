@@ -664,6 +664,7 @@
 		},
 
 		new XDelegate ("NSInteger", "nint", "xamarin_invoke_conforms_to_protocol",
+			"GCHandle", "IntPtr", "gchandle",
 			"id", "IntPtr", "obj",
 			"Protocol *", "IntPtr", "protocol"
 		) {

@@ -16,93 +16,7 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 namespace Microsoft.Macios.Generator.Tests.Emitters;
 
 public class BindingSyntaxFactoryArgumentsTests : BaseGeneratorTestClass {
-
-	class TestDataGetTrampolineInvokeArgumentInitializations : IEnumerable<object []> {
-		public IEnumerator<object []> GetEnumerator ()
-		{
-			var outNullableInt = @"
-using System;
-using Foundation;
-using ObjCBindings;
-
-namespace NS {
-	public delegate void Callback (out int? outNullableInt);
-	public class MyClass {
-		public void MyMethod (Callback cb) {}
-	}
-}
-";
-
-			yield return [
-				outNullableInt,
-				"*outNullableInt = default;\n",
-			];
-
-			var outBoolean = @"
-using System;
-using Foundation;
-using ObjCBindings;
-
-namespace NS {
-	public delegate void Callback (out bool outBool);
-	public class MyClass {
-		public void MyMethod (Callback cb) {}
-	}
-}
-";
-
-			yield return [
-				outBoolean,
-				"*outBool = default;\n",
-			];
-
-			var outNSObject = @"
-using System;
-using Foundation;
-using ObjCBindings;
-
-namespace NS {
-	public delegate void Callback (out NSObject outNSObject);
-	public class MyClass {
-		public void MyMethod (Callback cb) {}
-	}
-}
-";
-
-			yield return [
-				outNSObject,
-				"*outNSObject = default;\n",
-			];
-		}
-
-		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
-	}
-
-	[Theory]
-	[AllSupportedPlatformsClassData<TestDataGetTrampolineInvokeArgumentInitializations>]
-	void GetTrampolineInvokeArgumentInitializationsTests (ApplePlatform platform, string inputText, string expectedExpression)
-	{
-		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
-		Assert.Single (syntaxTrees);
-		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
-		var declaration = syntaxTrees [0].GetRoot ()
-			.DescendantNodes ().OfType<MethodDeclarationSyntax> ()
-			.FirstOrDefault ();
-		Assert.NotNull (declaration);
-		Assert.True (Method.TryCreate (declaration, semanticModel, out var changes));
-		Assert.NotNull (changes);
-		// we know the first parameter of the method is the delegate
-		Assert.Single (changes.Value.Parameters);
-		var parameter = changes.Value.Parameters [0];
-		// assert it is indeed a delegate
-		Assert.NotNull (parameter.Type.Delegate);
-		var conversions = GetInvokeArgumentInitializations (parameter.Type.Delegate!.Parameters [0]);
-		// uses a tabbeb string builder to get the conversion string and test
-		var sb = new TabbedStringBuilder (new ());
-		sb.Write (conversions);
-		Assert.Equal (expectedExpression, sb.ToCode ());
-	}
-
+	
 	class TestDataGetTrampolinePostNativeInvokeArgumentConversions : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()
 		{
@@ -851,6 +765,197 @@ namespace NS {
 		// uses a tabbeb string builder to get the conversion string and test
 		var sb = new TabbedStringBuilder (new ());
 		sb.Write (conversions, false);
+		Assert.Equal (expectedExpression, sb.ToCode ());
+	}
+	
+	class TestDataGetTrampolineNativeInvokeArgumentInitializations : IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
+		{
+			var outNullableInt = @"
+using System;
+using Foundation;
+using ObjCBindings;
+
+namespace NS {
+	public delegate void Callback (out int? outNullableInt);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				outNullableInt,
+				"outNullableInt = default;\n",
+			];
+
+			var outBoolean = @"
+using System;
+using Foundation;
+using ObjCBindings;
+
+namespace NS {
+	public delegate void Callback (out bool outBool);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				outBoolean,
+				"outBool = default;\n",
+			];
+
+			var outNSObject = @"
+using System;
+using Foundation;
+using ObjCBindings;
+
+namespace NS {
+	public delegate void Callback (out NSObject outNSObject);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				outNSObject,
+				"outNSObject = default;\n",
+			];
+
+			var refNSObject = @"
+using System;
+using Foundation;
+using ObjCBindings;
+
+namespace NS {
+	public delegate void Callback (ref NSObject outNSObject);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				refNSObject,
+				string.Empty,
+			];
+
+		}
+
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
+	}
+
+	[Theory]
+	[AllSupportedPlatformsClassData<TestDataGetTrampolineNativeInvokeArgumentInitializations>]
+	void GetTrampolineInvokeArgumentNativeInitializationsTests (ApplePlatform platform, string inputText, string expectedExpression)
+	{
+		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
+		Assert.Single (syntaxTrees);
+		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
+		var declaration = syntaxTrees [0].GetRoot ()
+			.DescendantNodes ().OfType<MethodDeclarationSyntax> ()
+			.FirstOrDefault ();
+		Assert.NotNull (declaration);
+		Assert.True (Method.TryCreate (declaration, semanticModel, out var changes));
+		Assert.NotNull (changes);
+		// we know the first parameter of the method is the delegate
+		Assert.Single (changes.Value.Parameters);
+		var parameter = changes.Value.Parameters [0];
+		// assert it is indeed a delegate
+		Assert.NotNull (parameter.Type.Delegate);
+		var conversions = GetNativeInvokeArgumentInitializations (parameter.Type.Delegate!.Parameters [0]);
+		// uses a tabbeb string builder to get the conversion string and test
+		var sb = new TabbedStringBuilder (new ());
+		sb.Write (conversions);
+		Assert.Equal (expectedExpression, sb.ToCode ());
+	}
+	
+	class TestDataGetTrampolineInvokeArgumentInitializations : IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
+		{
+			var outNullableInt = @"
+using System;
+using Foundation;
+using ObjCBindings;
+
+namespace NS {
+	public delegate void Callback (out int? outNullableInt);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				outNullableInt,
+				"*outNullableInt = default;\n",
+			];
+
+			var outBoolean = @"
+using System;
+using Foundation;
+using ObjCBindings;
+
+namespace NS {
+	public delegate void Callback (out bool outBool);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				outBoolean,
+				"*outBool = default;\n",
+			];
+
+			var outNSObject = @"
+using System;
+using Foundation;
+using ObjCBindings;
+
+namespace NS {
+	public delegate void Callback (out NSObject outNSObject);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				outNSObject,
+				"*outNSObject = default;\n",
+			];
+		}
+
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
+	}
+
+	[Theory]
+	[AllSupportedPlatformsClassData<TestDataGetTrampolineInvokeArgumentInitializations>]
+	void GetTrampolineInvokeArgumentInitializationsTests (ApplePlatform platform, string inputText, string expectedExpression)
+	{
+		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
+		Assert.Single (syntaxTrees);
+		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
+		var declaration = syntaxTrees [0].GetRoot ()
+			.DescendantNodes ().OfType<MethodDeclarationSyntax> ()
+			.FirstOrDefault ();
+		Assert.NotNull (declaration);
+		Assert.True (Method.TryCreate (declaration, semanticModel, out var changes));
+		Assert.NotNull (changes);
+		// we know the first parameter of the method is the delegate
+		Assert.Single (changes.Value.Parameters);
+		var parameter = changes.Value.Parameters [0];
+		// assert it is indeed a delegate
+		Assert.NotNull (parameter.Type.Delegate);
+		var conversions = GetTrampolineInvokeArgumentInitializations (parameter.Type.Delegate!.Parameters [0]);
+		// uses a tabbeb string builder to get the conversion string and test
+		var sb = new TabbedStringBuilder (new ());
+		sb.Write (conversions);
 		Assert.Equal (expectedExpression, sb.ToCode ());
 	}
 }

@@ -27,9 +27,7 @@ static partial class BindingSyntaxFactory {
 		var expr = ExpressionStatement (
 			AssignmentExpression (
 				SyntaxKind.SimpleAssignmentExpression,
-				PrefixUnaryExpression (
-					SyntaxKind.PointerIndirectionExpression,
-					IdentifierName (parameterName)),
+				IdentifierName (parameterName),
 				LiteralExpression (
 					SyntaxKind.DefaultLiteralExpression,
 					Token (SyntaxKind.DefaultKeyword)))).NormalizeWhitespace ();
@@ -43,12 +41,12 @@ static partial class BindingSyntaxFactory {
 	/// </summary>
 	/// <param name="argumentInfo">The information about the argument for which to generate initializations.</param>
 	/// <returns>An immutable array of <see cref="SyntaxNode"/> representing the initialization statements.</returns>
-	internal static ImmutableArray<SyntaxNode> GetInvokeArgumentInitializations (in ArgumentInfo argumentInfo)
+	internal static ImmutableArray<SyntaxNode> GetNativeInvokeArgumentInitializations (in ArgumentInfo argumentInfo)
 	{
 		// decide the type of conversion we need to do based on the type of the parameter
 #pragma warning disable format
 		return argumentInfo switch { 
-			{ IsByRef: true } => GetNativeInitializationByRefArgument (argumentInfo.Name),
+			{ IsByRef: true, ReferenceKind: ReferenceKind.Out} => GetNativeInitializationByRefArgument (argumentInfo.Name),
 			_ => []
 		};
 #pragma warning restore format

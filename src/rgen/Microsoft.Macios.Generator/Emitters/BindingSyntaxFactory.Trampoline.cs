@@ -684,6 +684,29 @@ static partial class BindingSyntaxFactory {
 	}
 
 	/// <summary>
+	/// Returns an array of syntax nodes representing initializations required for a 'byref' parameter before invoking the trampoline.
+	/// This is primarily used for handling 'byref' parameters, which may require temporary variables or conversions.
+	/// </summary>
+	/// <param name="parameter">The delegate parameter, which is expected to be 'byref'.</param>
+	/// <returns>An immutable array of syntax nodes representing the initialization statements for the 'byref' parameter.</returns>
+	internal static ImmutableArray<SyntaxNode> GetTrampolineInitializationByRefArgument (in DelegateParameter parameter)
+	{
+		// create the pointer variable and assign it to its default value
+		// generates the following:
+		// *{ParameterName} = default;
+		var expr = ExpressionStatement (
+			AssignmentExpression (
+				SyntaxKind.SimpleAssignmentExpression,
+				PrefixUnaryExpression (
+					SyntaxKind.PointerIndirectionExpression,
+					IdentifierName (parameter.Name)),
+				LiteralExpression (
+					SyntaxKind.DefaultLiteralExpression,
+					Token (SyntaxKind.DefaultKeyword)))).NormalizeWhitespace ();
+		return [expr];
+	}
+
+	/// <summary>
 	/// Generates any necessary post-invocation statements for a by-ref trampoline argument.
 	/// This is used to handle special cases for by-ref parameters, such as assigning back values
 	/// from temporary variables for nullable types or converting boolean values back to their native
@@ -789,15 +812,27 @@ static partial class BindingSyntaxFactory {
 	}
 
 	/// <summary>
+	/// Returns a list of syntax nodes representing the necessary initializations for a trampoline argument before the delegate is invoked.
+	/// This is primarily used for handling 'byref' parameters, which may require temporary variables or conversions.
+	/// </summary>
+	/// <param name="parameter">The delegate parameter for which initializations might be needed.</param>
+	/// <returns>An immutable array of syntax nodes for the initializations. Returns an empty array if no special initialization is required.</returns>
+	internal static ImmutableArray<SyntaxNode> GetTrampolineInvokeArgumentInitializations (in DelegateParameter parameter)
+	{
+		// decide the type of conversion we need to do based on the type of the parameter
+		return parameter switch { { IsByRef: true } => GetTrampolineInitializationByRefArgument (parameter),
+			_ => []
+		};
+	}
+
+	/// <summary>
 	/// Returns the list of expressions that need to be executed before the trampoline is invoked. This allows to
 	/// help the trampoline to convert the parameters to the expected types.
 	/// </summary>
-	/// <param name="trampolineName">The trampoline name to which the conversion is needed.</param>
 	/// <param name="parameter">The parameters whose conversions we need.</param>
 	/// <returns>An immutable array with the needed conversion expressions. Empty is return if no conversion
 	/// is needed.</returns>
-	internal static ImmutableArray<SyntaxNode> GetTrampolinePreInvokeArgumentConversions (string trampolineName,
-		in DelegateParameter parameter)
+	internal static ImmutableArray<SyntaxNode> GetTrampolinePreInvokeArgumentConversions (in DelegateParameter parameter)
 	{
 		// decide the type of conversion we need to do based on the type of the parameter
 		return parameter switch { { IsByRef: true } => GetTrampolinePreInvokeByRefArgument (parameter),
@@ -835,8 +870,8 @@ static partial class BindingSyntaxFactory {
 		var bucket = ImmutableArray.CreateBuilder<TrampolineArgumentSyntax> (delegateInfo.Parameters.Length);
 		foreach (var parameter in delegateInfo.Parameters) {
 			var argument = new TrampolineArgumentSyntax (GetTrampolineInvokeArgument (trampolineName, parameter)) {
-				Initializers = GetInvokeArgumentInitializations (parameter),
-				PreDelegateCallConversion = GetTrampolinePreInvokeArgumentConversions (trampolineName, parameter),
+				Initializers = GetTrampolineInvokeArgumentInitializations (parameter),
+				PreDelegateCallConversion = GetTrampolinePreInvokeArgumentConversions (parameter),
 				PostDelegateCallConversion = GetTrampolinePostInvokeArgumentConversions (trampolineName, parameter),
 			};
 			bucket.Add (argument);
@@ -1049,43 +1084,6 @@ static partial class BindingSyntaxFactory {
 	}
 
 	/// <summary>
-	/// Returns an array of syntax nodes representing initializations required for a 'byref' parameter before invoking the native trampoline.
-	/// This method handles the initialization of 'byref' parameters by assigning them their default value.
-	/// </summary>
-	/// <param name="parameter">The delegate parameter, which is expected to be 'byref'.</param>
-	/// <returns>An immutable array of syntax nodes representing the initialization statements for the 'byref' parameter.</returns>
-	internal static ImmutableArray<SyntaxNode> GetTrampolineNativeInitializationByRefArgument (in DelegateParameter parameter)
-	{
-		// create the pointer variable and assign it to its default value
-		// generates the following:
-		// *{ParameterName} = default;
-		var expr = ExpressionStatement (
-			AssignmentExpression (
-				SyntaxKind.SimpleAssignmentExpression,
-					IdentifierName (parameter.Name),
-				LiteralExpression (
-					SyntaxKind.DefaultLiteralExpression,
-					Token (SyntaxKind.DefaultKeyword)))).NormalizeWhitespace ();
-		return [expr];
-	}
-
-	/// <summary>
-	/// Returns a list of syntax nodes representing the necessary initializations for a trampoline argument before the native delegate (block) is invoked.
-	/// This is primarily used for handling 'out' parameters, which must be initialized to their default value before the native call.
-	/// </summary>
-	/// <param name="trampolineName">The name of the trampoline. Although not directly used in this specific method's logic for 'out' parameter handling, it's kept for consistency with related methods.</param>
-	/// <param name="parameter">The delegate parameter for which initializations might be needed.</param>
-	/// <returns>An immutable array of syntax nodes for the initializations. Returns an empty array if no special initialization (e.g., for 'out' parameters) is required.</returns>
-	internal static ImmutableArray<SyntaxNode> GetTrampolineNativeInvokeArgumentInitializations (string trampolineName,
-		in DelegateParameter parameter)
-	{
-		// decide the type of conversion we need to do based on the type of the parameter
-		return parameter switch { { IsByRef: true, ReferenceKind: ReferenceKind.Out } => GetTrampolineNativeInitializationByRefArgument (parameter),
-			_ => []
-		};
-	}
-
-	/// <summary>
 	/// Generates a list of <see cref="TrampolineArgumentSyntax"/> objects for invoking a native delegate (block) from a trampoline.
 	/// Each <see cref="TrampolineArgumentSyntax"/> encapsulates the argument itself, along with any necessary
 	/// pre-invocation initializations, pre-invocation conversions (managed to native), and post-invocation
@@ -1106,7 +1104,7 @@ static partial class BindingSyntaxFactory {
 		// add all the mising parameters to the bucket.
 		foreach (var parameter in delegateInfo.Parameters) {
 			var argument = new TrampolineArgumentSyntax (GetNativeInvokeArgument (parameter)) {
-				Initializers = GetInvokeArgumentInitializations (parameter),
+				Initializers = GetNativeInvokeArgumentInitializations (parameter),
 				PreDelegateCallConversion = GetPreNativeInvokeArgumentConversions (parameter),
 				PostDelegateCallConversion = GetPostNativeInvokeArgumentConversions (parameter),
 			};

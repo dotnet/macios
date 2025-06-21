@@ -33,6 +33,11 @@ readonly record struct ArgumentInfo {
 	public bool IsByRef { get; init; }
 
 	/// <summary>
+	/// The reference kind of the argument.
+	/// </summary>
+	public ReferenceKind ReferenceKind { get; init; } = ReferenceKind.None;
+
+	/// <summary>
 	/// True if the argument is a C-style function pointer callback.
 	/// </summary>
 	public bool IsCCallback { get; init; }
@@ -52,6 +57,7 @@ readonly record struct ArgumentInfo {
 		Type = parameter.Type;
 		BindAs = parameter.BindAs;
 		IsByRef = parameter.IsByRef;
+		ReferenceKind = parameter.ReferenceKind;
 		IsCCallback = false;
 		IsBlockCallback = false;
 	}
@@ -66,6 +72,7 @@ readonly record struct ArgumentInfo {
 		Type = parameter.Type;
 		BindAs = parameter.BindAs;
 		IsByRef = parameter.IsByRef;
+		ReferenceKind = parameter.ReferenceKind;
 		IsCCallback = parameter.IsCCallback;
 		IsBlockCallback = parameter.IsBlockCallback;
 	}

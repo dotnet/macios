@@ -2661,6 +2661,8 @@ namespace Registrar {
 				return "-(bool) xamarinSetGCHandle: (GCHandle) gchandle flags: (enum XamarinGCHandleFlags) flags";
 			else if (method.CurrentTrampoline == Trampoline.CopyWithZone1 || method.CurrentTrampoline == Trampoline.CopyWithZone2)
 				return "-(id) copyWithZone: (NSZone *)zone";
+			else if (method.CurrentTrampoline == Trampoline.RetainWeakReference)
+				return "-(BOOL) retainWeakReference";
 
 			var sb = new StringBuilder ();
 			var isCtor = method.CurrentTrampoline == Trampoline.Constructor;
@@ -3477,6 +3479,13 @@ namespace Registrar {
 				sb.AppendLine ("return xamarin_copyWithZone_trampoline2 (self, _cmd, zone);");
 				sb.AppendLine ("}");
 				return true;
+			case Trampoline.RetainWeakReference:
+				sb.WriteLine ("-(BOOL) retainWeakReference");
+				sb.WriteLine ("{");
+				sb.WriteLine ("\treturn xamarin_retainWeakReference_trampoline (self, _cmd);");
+				sb.WriteLine ("}");
+				sb.WriteLine ();
+				return true;
 			}
 
 			var customConformsToProtocol = method.Selector == "conformsToProtocol:" && method.Method.DeclaringType.Is ("Foundation", "NSObject") && method.Method.Name == "InvokeConformsToProtocol" && method.Parameters.Length == 1;
@@ -3490,7 +3499,8 @@ namespace Registrar {
 					sb.AppendLine ("-(BOOL) conformsToProtocol: (void *) protocol");
 					sb.AppendLine ("{");
 					sb.AppendLine ("GCHandle exception_gchandle;");
-					sb.AppendLine ("BOOL rv = xamarin_invoke_conforms_to_protocol (self, (Protocol *) protocol, &exception_gchandle) != 0;");
+					sb.AppendLine ("GCHandle obj_gchandle = xamarin_get_gchandle (self);");
+					sb.AppendLine ("BOOL rv = xamarin_invoke_conforms_to_protocol (obj_gchandle, self, (Protocol *) protocol, &exception_gchandle) != 0;");
 					sb.AppendLine ("xamarin_process_managed_exception_gchandle (exception_gchandle);");
 					sb.AppendLine ("return rv;");
 					sb.AppendLine ("}");
@@ -3536,6 +3546,10 @@ namespace Registrar {
 					rettype = ToSimpleObjCParameterType (method.NativeReturnType, descriptiveMethodName, exceptions, method.Method);
 					return true;
 				}
+			case Trampoline.RetainWeakReference:
+				rettype = "BOOL";
+				isCtor = false;
+				return true;
 			case Trampoline.Constructor:
 				rettype = "id";
 				isCtor = true;

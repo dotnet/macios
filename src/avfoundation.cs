@@ -79,10 +79,10 @@ namespace AVFoundation {
 	/// <param name="error">To be added.</param>
 	/// <summary>A delegate that defines the handler for <see cref="AVFoundation.AVAssetImageGenerator.GenerateCGImagesAsynchronously(Foundation.NSValue[],AVFoundation.AVAssetImageGeneratorCompletionHandler)" />.</summary>
 	/// <remarks>To be added.</remarks>
-	delegate void AVAssetImageGeneratorCompletionHandler (CMTime requestedTime, IntPtr imageRef, CMTime actualTime, AVAssetImageGeneratorResult result, NSError error);
-	delegate void AVAssetImageGeneratorCompletionHandler2 (CMTime requestedTime, CGImage imageRef, CMTime actualTime, AVAssetImageGeneratorResult result, NSError error);
+	delegate void AVAssetImageGeneratorCompletionHandler (CMTime requestedTime, IntPtr imageRef, CMTime actualTime, AVAssetImageGeneratorResult result, [NullAllowed] NSError error);
+	delegate void AVAssetImageGeneratorCompletionHandler2 (CMTime requestedTime, [NullAllowed] CGImage imageRef, CMTime actualTime, AVAssetImageGeneratorResult result, [NullAllowed] NSError error);
 #endif
-	delegate void AVAssetImageGenerateAsynchronouslyForTimeCompletionHandler (CGImage imageRef, CMTime actualTime, NSError error);
+	delegate void AVAssetImageGenerateAsynchronouslyForTimeCompletionHandler ([NullAllowed] CGImage imageRef, CMTime actualTime, [NullAllowed] NSError error);
 	/// <param name="finished">To be added.</param>
 	/// <summary>A delegate that defines the completion handler for various methods in <see cref="AVFoundation.AVPlayer" /> and <see cref="AVFoundation.AVPlayerItem" /></summary>
 	/// <remarks>To be added.</remarks>
@@ -18548,7 +18548,7 @@ namespace AVFoundation {
 	}
 
 	/// <summary>A delegate for the completion handler of <see cref="AVFoundation.AVCaptureStillImageOutput.CaptureStillImageAsynchronously(AVFoundation.AVCaptureConnection,AVFoundation.AVCaptureCompletionHandler)" />.</summary>
-	delegate void AVCaptureCompletionHandler (CMSampleBuffer imageDataSampleBuffer, NSError error);
+	delegate void AVCaptureCompletionHandler (CMSampleBuffer imageDataSampleBuffer, [NullAllowed] NSError error);
 
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 	enum AVPlayerRateDidChangeReason {

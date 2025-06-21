@@ -501,7 +501,7 @@ namespace CloudKit {
 	/// <param name="error">To be added.</param>
 	/// <summary>Completion handler for the <see cref="CloudKit.CKDatabase.DeleteSubscription(System.String,CloudKit.CKDatabaseDeleteSubscriptionHandler)" /> method.</summary>
 	/// <remarks>To be added.</remarks>
-	delegate void CKDatabaseDeleteSubscriptionHandler (string subscriptionId, NSError error);
+	delegate void CKDatabaseDeleteSubscriptionHandler ([NullAllowed] string subscriptionId, [NullAllowed] NSError error);
 
 	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor] // *** Assertion failure in -[CKDatabase init]
@@ -723,7 +723,7 @@ namespace CloudKit {
 	/// <summary>Delegate for the <see cref="CloudKit.CKFetchRecordChangesOperation.AllChangesReported" /> property.</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
-	delegate void CKFetchRecordChangesHandler (CKServerChangeToken serverChangeToken, NSData clientChangeTokenData, NSError operationError);
+	delegate void CKFetchRecordChangesHandler ([NullAllowed] CKServerChangeToken serverChangeToken, [NullAllowed] NSData clientChangeTokenData, [NullAllowed] NSError operationError);
 
 	[Deprecated (PlatformName.iOS, 10, 0, message: "Use 'CKFetchRecordZoneChangesOperation' instead.")]
 	[Deprecated (PlatformName.TvOS, 10, 0, message: "Use 'CKFetchRecordZoneChangesOperation' instead.")]
@@ -785,13 +785,13 @@ namespace CloudKit {
 	delegate void CKFetchRecordZoneChangesWithIDWasDeletedHandler (CKRecordID recordID, NSString recordType);
 
 	[MacCatalyst (13, 1)]
-	delegate void CKFetchRecordZoneChangesTokensUpdatedHandler (CKRecordZoneID recordZoneID, CKServerChangeToken serverChangeToken, NSData clientChangeTokenData);
+	delegate void CKFetchRecordZoneChangesTokensUpdatedHandler ([NullAllowed] CKRecordZoneID recordZoneID, [NullAllowed] CKServerChangeToken serverChangeToken, [NullAllowed] NSData clientChangeTokenData);
 
 	[MacCatalyst (13, 1)]
-	delegate void CKFetchRecordZoneChangesFetchCompletedHandler (CKRecordZoneID recordZoneID, CKServerChangeToken serverChangeToken, NSData clientChangeTokenData, bool moreComing, NSError recordZoneError);
+	delegate void CKFetchRecordZoneChangesFetchCompletedHandler ([NullAllowed] CKRecordZoneID recordZoneID, [NullAllowed] CKServerChangeToken serverChangeToken, [NullAllowed] NSData clientChangeTokenData, bool moreComing, [NullAllowed] NSError recordZoneError);
 
 	[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
-	delegate void CKFetchRecordZoneChangesRecordWasChangedHandler (CKRecordID recordId, CKRecord record, NSError error);
+	delegate void CKFetchRecordZoneChangesRecordWasChangedHandler ([NullAllowed] CKRecordID recordId, [NullAllowed] CKRecord record, [NullAllowed] NSError error);
 
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CKDatabaseOperation))]
@@ -891,7 +891,7 @@ namespace CloudKit {
 	/// <summary>Delegate for the <see cref="CloudKit.CKFetchRecordsOperation.Completed" /> property.</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
-	delegate void CKFetchRecordsCompletedHandler (NSDictionary recordsByRecordId, NSError error);
+	delegate void CKFetchRecordsCompletedHandler ([NullAllowed] NSDictionary recordsByRecordId, [NullAllowed] NSError error);
 
 	[MacCatalyst (13, 1)]
 	[DesignatedDefaultCtor]
@@ -940,10 +940,10 @@ namespace CloudKit {
 	/// <summary>Delegate for the <see cref="CloudKit.CKFetchRecordZonesOperation.Completed" /> property.</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
-	delegate void CKRecordZoneCompleteHandler (NSDictionary recordZonesByZoneId, NSError operationError);
+	delegate void CKRecordZoneCompleteHandler ([NullAllowed] NSDictionary recordZonesByZoneId, [NullAllowed] NSError operationError);
 
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
-	delegate void CKRecordZonePerRecordZoneCompletionHandler (CKRecordZoneID recordZoneId, CKRecordZone recordZone, NSError error);
+	delegate void CKRecordZonePerRecordZoneCompletionHandler ([NullAllowed] CKRecordZoneID recordZoneId, [NullAllowed] CKRecordZone recordZone, [NullAllowed] NSError error);
 
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CKDatabaseOperation))]
@@ -979,10 +979,10 @@ namespace CloudKit {
 	/// <summary>Delegate for the <see cref="CloudKit.CKFetchSubscriptionsOperation.Completed" /> property.</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
-	delegate void CKFetchSubscriptionsCompleteHandler (NSDictionary subscriptionsBySubscriptionId, NSError operationError);
+	delegate void CKFetchSubscriptionsCompleteHandler ([NullAllowed] NSDictionary subscriptionsBySubscriptionId, [NullAllowed] NSError operationError);
 
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
-	delegate void CKFetchSubscriptionsPerSubscriptionCompletionHandler (NSString subscriptionId, CKSubscription subscription, NSError error);
+	delegate void CKFetchSubscriptionsPerSubscriptionCompletionHandler ([NullAllowed] NSString subscriptionId, [NullAllowed] CKSubscription subscription, [NullAllowed] NSError error);
 
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CKDatabaseOperation))]
@@ -1035,13 +1035,13 @@ namespace CloudKit {
 	/// <summary>Delegate for the <see cref="CloudKit.CKModifyRecordsOperation.Completed" /> property.</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
-	delegate void CKModifyRecordsOperationHandler (CKRecord [] savedRecords, CKRecordID [] deletedRecordIds, NSError operationError);
+	delegate void CKModifyRecordsOperationHandler ([NullAllowed] CKRecord [] savedRecords, [NullAllowed] CKRecordID [] deletedRecordIds, [NullAllowed] NSError operationError);
 
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
-	delegate void CKModifyRecordsOperationPerRecordSaveHandler (CKRecordID recordId, CKRecord record, NSError error);
+	delegate void CKModifyRecordsOperationPerRecordSaveHandler ([NullAllowed] CKRecordID recordId, [NullAllowed] CKRecord record, [NullAllowed] NSError error);
 
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
-	delegate void CKModifyRecordsOperationPerRecordDeleteHandler (CKRecordID recordId, NSError error);
+	delegate void CKModifyRecordsOperationPerRecordDeleteHandler ([NullAllowed] CKRecordID recordId, [NullAllowed] NSError error);
 
 	[MacCatalyst (13, 1)]
 	[DesignatedDefaultCtor]
@@ -1112,13 +1112,13 @@ namespace CloudKit {
 	/// <summary>Delegate for the <see cref="CloudKit.CKModifyRecordZonesOperation.Completed" /> property.</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
-	delegate void CKModifyRecordZonesHandler (CKRecordZone [] savedRecordZones, CKRecordZoneID [] deletedRecordZoneIds, NSError operationError);
+	delegate void CKModifyRecordZonesHandler ([NullAllowed] CKRecordZone [] savedRecordZones, [NullAllowed] CKRecordZoneID [] deletedRecordZoneIds, [NullAllowed] NSError operationError);
 
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
-	delegate void CKModifyRecordZonesPerRecordZoneSaveHandler (CKRecordZoneID zoneId, CKRecordZone zone, NSError error);
+	delegate void CKModifyRecordZonesPerRecordZoneSaveHandler ([NullAllowed] CKRecordZoneID zoneId, [NullAllowed] CKRecordZone zone, [NullAllowed] NSError error);
 
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
-	delegate void CKModifyRecordZonesPerRecordZoneDeleteHandler (CKRecordZoneID zoneId, NSError error);
+	delegate void CKModifyRecordZonesPerRecordZoneDeleteHandler ([NullAllowed] CKRecordZoneID zoneId, [NullAllowed] NSError error);
 
 	[MacCatalyst (13, 1)]
 	[DesignatedDefaultCtor]
@@ -1160,13 +1160,13 @@ namespace CloudKit {
 	/// <summary>Delegate for the <see cref="CloudKit.CKModifySubscriptionsOperation.Completed" /> property.</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
-	delegate void CKModifySubscriptionsHandler (CKSubscription [] savedSubscriptions, string [] deletedSubscriptionIds, NSError operationError);
+	delegate void CKModifySubscriptionsHandler ([NullAllowed] CKSubscription [] savedSubscriptions, [NullAllowed] string [] deletedSubscriptionIds, [NullAllowed] NSError operationError);
 
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
-	delegate void CKModifySubscriptionsPerSubscriptionSaveHandler (NSString subscriptionId, CKSubscription subscription, NSError error);
+	delegate void CKModifySubscriptionsPerSubscriptionSaveHandler ([NullAllowed] NSString subscriptionId, [NullAllowed] CKSubscription subscription, [NullAllowed] NSError error);
 
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
-	delegate void CKModifySubscriptionsPerSubscriptionDeleteHandler (NSString subscriptionId, NSError error);
+	delegate void CKModifySubscriptionsPerSubscriptionDeleteHandler ([NullAllowed] NSString subscriptionId, [NullAllowed] NSError error);
 
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CKDatabaseOperation))]
@@ -1529,7 +1529,7 @@ namespace CloudKit {
 	}
 
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
-	delegate void CKQueryOperationRecordMatchedHandler (CKRecordID recordId, CKRecord record, NSError error);
+	delegate void CKQueryOperationRecordMatchedHandler ([NullAllowed] CKRecordID recordId, [NullAllowed] CKRecord record, [NullAllowed] NSError error);
 
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CKDatabaseOperation))]
@@ -2039,7 +2039,7 @@ namespace CloudKit {
 
 	}
 
-	delegate void CKFetchWebAuthTokenOperationHandler (string webAuthToken, NSError operationError);
+	delegate void CKFetchWebAuthTokenOperationHandler ([NullAllowed] string webAuthToken, [NullAllowed] NSError operationError);
 
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CKDatabaseOperation))]
@@ -2110,7 +2110,7 @@ namespace CloudKit {
 	}
 
 	[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
-	delegate void CKFetchShareParticipantsOperationPerShareParticipantCompletionHandler (CKUserIdentityLookupInfo identityLookupInfo, CKShareParticipant participant, NSError error);
+	delegate void CKFetchShareParticipantsOperationPerShareParticipantCompletionHandler ([NullAllowed] CKUserIdentityLookupInfo identityLookupInfo, [NullAllowed] CKShareParticipant participant, [NullAllowed] NSError error);
 
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CKOperation))]
@@ -2144,7 +2144,7 @@ namespace CloudKit {
 	}
 
 	[MacCatalyst (13, 1)]
-	delegate void CKAcceptPerShareCompletionHandler (CKShareMetadata shareMetadata, CKShare acceptedShare, NSError error);
+	delegate void CKAcceptPerShareCompletionHandler (CKShareMetadata shareMetadata, [NullAllowed] CKShare acceptedShare, [NullAllowed] NSError error);
 
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CKOperation))]
@@ -2169,7 +2169,7 @@ namespace CloudKit {
 	}
 
 	[MacCatalyst (13, 1)]
-	delegate void CKFetchPerShareMetadataHandler (NSUrl shareURL, CKShareMetadata shareMetadata, NSError error);
+	delegate void CKFetchPerShareMetadataHandler (NSUrl shareURL, [NullAllowed] CKShareMetadata shareMetadata, [NullAllowed] NSError error);
 
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CKOperation))]
@@ -2200,7 +2200,7 @@ namespace CloudKit {
 	}
 
 	[MacCatalyst (13, 1)]
-	delegate void CKFetchDatabaseChangesCompletionHandler (CKServerChangeToken serverChangeToken, bool moreComing, NSError operationError);
+	delegate void CKFetchDatabaseChangesCompletionHandler ([NullAllowed] CKServerChangeToken serverChangeToken, bool moreComing, [NullAllowed] NSError operationError);
 
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CKDatabaseOperation))]

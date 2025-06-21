@@ -96,6 +96,11 @@ static partial class BindingSyntaxFactory {
 				{ BindAs.Type.FullyQualifiedName: "Foundation.NSString", ReturnType.IsSmartEnum: true} =>
 					SmartEnumGetValue (property.ReturnType, [Argument (objMsgSend)]),
 				
+				// block callback
+				// global::ObjCRuntime.Trampolines.{TrampolineNativeClass}.Create (ret)!;
+				{ ReturnType.IsDelegate: true } 
+					=> TrampolineNativeInvocationClassCreate (property.ReturnType, [Argument (objMsgSend)]), 
+				
 				// string[]? => CFArray.StringArrayFromHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (class_ptr, Selector.GetHandle ("selector")), false);
 				{ ReturnType.IsArray: true, ReturnType.Name: "string", ReturnType.IsNullable: true } =>
 					StringArrayFromHandle ([Argument (objMsgSend), BoolArgument (false)]),

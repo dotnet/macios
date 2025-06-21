@@ -302,8 +302,15 @@ static partial class BindingSyntaxFactory {
 		if (variableName is null)
 			return null;
 		// decide about the factory based on the need of a null check 
-		InvocationExpressionSyntax factoryInvocation;
+		ExpressionSyntax factoryInvocation;
 		if (parameterType.IsNullable) {
+			// generates: zone?.GetHandle ();
+			factoryInvocation = ConditionalAccessExpression (
+					IdentifierName (parameterName),
+					InvocationExpression (
+						MemberBindingExpression (
+							IdentifierName ("GetHandle").WithTrailingTrivia (Space))));
+		} else {
 			// generates: zone!.GetNonNullHandle (nameof (zone));
 			factoryInvocation = InvocationExpression (
 					MemberAccessExpression (SyntaxKind.SimpleMemberAccessExpression,
@@ -313,12 +320,6 @@ static partial class BindingSyntaxFactory {
 						IdentifierName ("GetNonNullHandle").WithTrailingTrivia (Space)))
 				.WithArgumentList (ArgumentList (
 					SingletonSeparatedList (Argument (NameOf (parameterName)))));
-		} else {
-			// generates: zone.GetHandle ();
-			factoryInvocation = InvocationExpression (
-				MemberAccessExpression (SyntaxKind.SimpleMemberAccessExpression,
-					IdentifierName (parameterName),
-					IdentifierName ("GetHandle").WithTrailingTrivia (Space)));
 		}
 
 		// generates: variable = {FactoryCall}
@@ -359,6 +360,28 @@ static partial class BindingSyntaxFactory {
 	/// <returns>A <see cref="LocalDeclarationStatementSyntax"/> for the auxiliary handle variable, or null if the input is not an NSObject or INativeObject, or if a variable name cannot be generated.</returns>
 	internal static LocalDeclarationStatementSyntax? GetHandleAuxVariable (in DelegateParameter parameter)
 		=> GetHandleAuxVariable (parameter.Name, parameter.Type);
+
+	/// <summary>
+	/// Generates a local variable declaration for an auxiliary handle (IntPtr) initialized to IntPtr.Zero.
+	/// This is typically used to declare a default handle variable before assigning it a valid native handle.
+	/// </summary>
+	/// <param name="variableName">The name of the handle variable to declare.</param>
+	/// <returns>A <see cref="LocalDeclarationStatementSyntax"/> representing the declaration of the handle variable initialized to IntPtr.Zero.</returns>
+	internal static LocalDeclarationStatementSyntax? GetHandleDefaultVariable (string variableName)
+	{
+		// generates: var handle = IntPtr.Zero;
+		var declarator = VariableDeclarator (Identifier (variableName))
+			.WithInitializer (EqualsValueClause (
+					MemberAccessExpression (
+						SyntaxKind.SimpleMemberAccessExpression,
+						IntPtr,
+						IdentifierName ("Zero")))
+				.WithLeadingTrivia (Space).WithTrailingTrivia (Space));
+
+		var variableDeclaration = VariableDeclaration (NativeHandle)
+			.WithVariables (SingletonSeparatedList (declarator));
+		return LocalDeclarationStatement (variableDeclaration).NormalizeWhitespace ();
+	}
 
 	/// <summary>
 	/// Generates a local variable declaration for an auxiliary NSString.
@@ -873,6 +896,104 @@ static partial class BindingSyntaxFactory {
 				.WithVariables (SingletonSeparatedList (VariableDeclarator (Identifier (variableName)))));
 		return (Name: variableName, Declaration: declaration);
 	}
+
+	/// <summary>
+	/// Generates a local variable declaration for an auxiliary variable that holds a native block created from a nullable C# delegate.
+	/// This method is used to handle block parameters that can be null. It generates a call to a static `CreateNullableBlock`
+	/// method on a trampoline-specific static bridge class. This helper method is responsible for creating the native block
+	/// if the delegate is not null, or returning `IntPtr.Zero` if it is.
+	/// </summary>
+	/// <param name="trampolineName">The name of the trampoline, used to identify the correct static bridge class.</param>
+	/// <param name="variableName">The name of the C# delegate variable.</param>
+	/// <param name="blockTypeInfo">The <see cref="TypeInfo"/> of the delegate.</param>
+	/// <returns>A <see cref="LocalDeclarationStatementSyntax"/> for the auxiliary nullable block variable.</returns>
+	internal static LocalDeclarationStatementSyntax GetNullableBlockAuxVariable (string trampolineName, string variableName, in TypeInfo blockTypeInfo)
+	{
+		var staticBridgeClassName =
+			Nomenclator.GetTrampolineClassName (trampolineName, Nomenclator.TrampolineClassType.StaticBridgeClass);
+		// generates the call to create the nullable block
+		var invocation = InvocationExpression (
+				MemberAccessExpression (
+					SyntaxKind.SimpleMemberAccessExpression,
+					MemberAccessExpression (
+						SyntaxKind.SimpleMemberAccessExpression,
+						Trampolines,
+						IdentifierName (staticBridgeClassName)),
+					IdentifierName ("CreateNullableBlock").WithTrailingTrivia (Space)))
+			.WithArgumentList (
+				ArgumentList (
+					SingletonSeparatedList (
+						Argument (IdentifierName (variableName)))));
+		// variable declarator 'name = invocation'
+		var declarator = VariableDeclarator (
+				Identifier (Nomenclator.GetNameForVariableType (variableName, Nomenclator.VariableType.NullableBlock)!).WithTrailingTrivia (Space))
+			.WithInitializer (
+				EqualsValueClause (invocation.WithLeadingTrivia (Space)));
+		// var declaration
+		return LocalDeclarationStatement (
+			VariableDeclaration (
+					IdentifierName (
+						Identifier (
+							TriviaList (),
+							SyntaxKind.VarKeyword,
+							"var",
+							"var",
+							TriviaList (Space))))
+				.WithVariables (
+					SingletonSeparatedList (declarator)));
+	}
+
+	/// <summary>
+	/// Generates a local variable declaration for an auxiliary variable that holds a native block created from a nullable C# delegate.
+	/// This is a convenience overload for <see cref="GetNullableBlockAuxVariable(string, string, in TypeInfo)"/>.
+	/// </summary>
+	/// <param name="trampolineName">The name of the trampoline, used to identify the correct static bridge class.</param>
+	/// <param name="parameter">The <see cref="DelegateParameter"/> representing the C# delegate.</param>
+	/// <returns>A <see cref="LocalDeclarationStatementSyntax"/> for the auxiliary nullable block variable.</returns>
+	internal static LocalDeclarationStatementSyntax GetNullableBlockAuxVariable (string trampolineName, DelegateParameter parameter)
+		=> GetNullableBlockAuxVariable (trampolineName, parameter.Name, parameter.Type);
+
+	/// <summary>
+	/// Generates a local variable declaration for a pointer to a BlockLiteral structure.
+	/// This is used in trampolines to manage the lifecycle of a native block.
+	/// If the corresponding C# delegate is not null, the variable is initialized with the address of the block literal struct; otherwise, it's initialized to null.
+	/// </summary>
+	/// <param name="variableName">The name of the C# delegate variable, used to derive the name of the block literal pointer variable.</param>
+	/// <returns>A <see cref="LocalDeclarationStatementSyntax"/> for the block literal pointer variable.</returns>
+	internal static LocalDeclarationStatementSyntax GetBlockLiteralAuxVariable (string variableName)
+	{
+		var blockLiteralPointerName = Nomenclator.GetNameForVariableType (variableName, Nomenclator.VariableType.BlockLiteral);
+		var blockVariableName = Nomenclator.GetNameForVariableType (variableName, Nomenclator.VariableType.NullableBlock);
+		// generates parameterName is not null ? &blockVariableName : null;
+		var conditional = ConditionalExpression (
+			IsPatternExpression (
+				IdentifierName (variableName),
+				UnaryPattern (
+					ConstantPattern (
+						LiteralExpression (
+							SyntaxKind.NullLiteralExpression)))),
+			PrefixUnaryExpression (
+				SyntaxKind.AddressOfExpression,
+				IdentifierName (blockVariableName!)),
+			LiteralExpression (
+				SyntaxKind.NullLiteralExpression));
+
+		return LocalDeclarationStatement (
+			VariableDeclaration (PointerType (BlockLiteral))
+				.WithVariables (
+					SingletonSeparatedList (
+						VariableDeclarator (Identifier (blockLiteralPointerName!))
+							.WithInitializer (EqualsValueClause (conditional))))).NormalizeWhitespace ();
+	}
+
+	/// <summary>
+	/// Generates a local variable declaration for a pointer to a BlockLiteral structure.
+	/// This is a convenience overload for <see cref="GetBlockLiteralAuxVariable(string)"/>.
+	/// </summary>
+	/// <param name="parameter">The <see cref="DelegateParameter"/> representing the C# delegate.</param>
+	/// <returns>A <see cref="LocalDeclarationStatementSyntax"/> for the block literal pointer variable.</returns>
+	internal static LocalDeclarationStatementSyntax GetBlockLiteralAuxVariable (in DelegateParameter parameter)
+		=> GetBlockLiteralAuxVariable (parameter.Name);
 
 	/// <summary>
 	/// Returns the declaration needed for the string field of a given selector.

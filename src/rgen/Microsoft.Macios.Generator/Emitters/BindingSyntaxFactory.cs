@@ -8,7 +8,9 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Macios.Generator.DataModel;
 using Microsoft.Macios.Generator.Extensions;
+using Microsoft.Macios.Generator.Formatters;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using TypeInfo = Microsoft.Macios.Generator.DataModel.TypeInfo;
 
 namespace Microsoft.Macios.Generator.Emitters;
 
@@ -206,16 +208,39 @@ static partial class BindingSyntaxFactory {
 	/// </summary>
 	/// <param name="objectType">The target type for the pointer.</param>
 	/// <param name="arguments">The arguments to pass to the AsPointer method.</param>
-	/// <returns>The needed expression to call the AsPointer method and cast to a pointer.</returns>
-	internal static ExpressionSyntax AsPointer (TypeSyntax objectType, ImmutableArray<ArgumentSyntax> arguments)
+	/// <param name="castType">The explicit type to cast the pointer to. If null, <paramref name="objectType"/> is used.</param>
+	/// <returns>The necessary expression to call the AsPointer method and cast to a pointer.</returns>
+	internal static ExpressionSyntax AsPointer (TypeSyntax objectType, ImmutableArray<ArgumentSyntax> arguments, TypeSyntax? castType = null)
 	{
 		var argsList = ArgumentList (SeparatedList<ArgumentSyntax> (arguments.ToSyntaxNodeOrTokenArray ()));
 		var invocation = StaticInvocationGenericExpression (Unsafe, "AsPointer",
 			objectType, argsList);
 		// we have the invocation, but we need to convert it to a pointer
-		return CastExpression (PointerType (objectType),
+		return CastExpression (PointerType (castType ?? objectType),
 			invocation.WithLeadingTrivia (Space));
 
+	}
+
+	/// <summary>
+	/// Create the necessary expression to call the AsPointer method from the Unsafe class and cast the result to a pointer of the objectType.
+	/// This overload handles specific type conversions, such as System.Boolean to byte*.
+	/// </summary>
+	/// <param name="objectType">The <see cref="TypeInfo"/> for the target type for the pointer.</param>
+	/// <param name="arguments">The arguments to pass to the AsPointer method.</param>
+	/// <returns>The needed expression to call the AsPointer method and cast to a pointer.</returns>
+	internal static ExpressionSyntax AsPointer (in TypeInfo objectType, ImmutableArray<ArgumentSyntax> arguments)
+	{
+		// some types need to be cast to a pointer type that can be handled by the native code
+#pragma warning disable format
+		var castType = objectType switch {
+			{ SpecialType: SpecialType.System_Boolean } => PredefinedType (Token (SyntaxKind.ByteKeyword)),
+			_ => null,
+		};
+#pragma warning restore format
+		return AsPointer (
+			objectType: objectType.GetIdentifierSyntax (),
+			arguments: arguments,
+			castType: castType);
 	}
 
 	/// <summary>

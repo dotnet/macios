@@ -117,7 +117,7 @@ stages:
             eq(variables['Build.SourceBranch'], 'refs/heads/net8.0'),
             eq(variables['Build.SourceBranch'], 'refs/heads/net9.0'),
             eq(variables['Build.SourceBranch'], 'refs/heads/net10.0'),
-            eq(variables['Build.SourceBranch'], 'refs/heads/xcode16'),
+            startsWith(variables['Build.SourceBranch'], 'refs/heads/xcode'),
             eq(parameters.forceInsertion, true)
           )
         )

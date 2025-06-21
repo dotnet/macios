@@ -2,18 +2,18 @@
   <!--Package versions-->
   <PropertyGroup>
     <!-- Versions updated by maestro -->
-    <MicrosoftNETSdkPackageVersion>10.0.100-preview.7.25318.105</MicrosoftNETSdkPackageVersion>
-    <MicrosoftNETILLinkTasksPackageVersion>10.0.0-preview.7.25318.105</MicrosoftNETILLinkTasksPackageVersion>
-    <MicrosoftNETILLinkPackageVersion>10.0.0-preview.7.25318.105</MicrosoftNETILLinkPackageVersion>
-    <MicrosoftDotNetBuildTasksFeedPackageVersion>10.0.0-beta.25318.105</MicrosoftDotNetBuildTasksFeedPackageVersion>
-    <MicrosoftDotNetSharedFrameworkSdkVersion>10.0.0-beta.25318.105</MicrosoftDotNetSharedFrameworkSdkVersion>
-    <MicrosoftNETCoreAppRefPackageVersion>10.0.0-preview.7.25318.105</MicrosoftNETCoreAppRefPackageVersion>
-    <MicrosoftNETRuntimeMonoTargetsSdkPackageVersion>10.0.0-preview.7.25318.105</MicrosoftNETRuntimeMonoTargetsSdkPackageVersion>
-    <MicrosoftTemplateEngineAuthoringTasksPackageVersion>10.0.100-preview.6.25318.105</MicrosoftTemplateEngineAuthoringTasksPackageVersion>
+    <MicrosoftNETSdkPackageVersion>10.0.100-preview.7.25320.106</MicrosoftNETSdkPackageVersion>
+    <MicrosoftNETILLinkTasksPackageVersion>10.0.0-preview.7.25320.106</MicrosoftNETILLinkTasksPackageVersion>
+    <MicrosoftNETILLinkPackageVersion>10.0.0-preview.7.25320.106</MicrosoftNETILLinkPackageVersion>
+    <MicrosoftDotNetBuildTasksFeedPackageVersion>10.0.0-beta.25320.106</MicrosoftDotNetBuildTasksFeedPackageVersion>
+    <MicrosoftDotNetSharedFrameworkSdkVersion>10.0.0-beta.25320.106</MicrosoftDotNetSharedFrameworkSdkVersion>
+    <MicrosoftNETCoreAppRefPackageVersion>10.0.0-preview.7.25320.106</MicrosoftNETCoreAppRefPackageVersion>
+    <MicrosoftNETRuntimeMonoTargetsSdkPackageVersion>10.0.0-preview.7.25320.106</MicrosoftNETRuntimeMonoTargetsSdkPackageVersion>
+    <MicrosoftTemplateEngineAuthoringTasksPackageVersion>10.0.100-preview.6.25320.106</MicrosoftTemplateEngineAuthoringTasksPackageVersion>
     <MicrosoftTemplateEngineTasksVersion>7.0.100-alpha.1.21601.1</MicrosoftTemplateEngineTasksVersion>
-    <MicrosoftDotNetCecilPackageVersion>0.11.5-alpha.25318.105</MicrosoftDotNetCecilPackageVersion>
+    <MicrosoftDotNetCecilPackageVersion>0.11.5-alpha.25320.106</MicrosoftDotNetCecilPackageVersion>
     <MicrosoftDotNetXHarnessiOSSharedPackageVersion>10.0.0-prerelease.25318.1</MicrosoftDotNetXHarnessiOSSharedPackageVersion>
-    <MicrosoftDotNetArcadeSdkPackageVersion>10.0.0-beta.25318.105</MicrosoftDotNetArcadeSdkPackageVersion>
+    <MicrosoftDotNetArcadeSdkPackageVersion>10.0.0-beta.25320.106</MicrosoftDotNetArcadeSdkPackageVersion>
     <!-- Manually updated versions -->
     <MicrosoftDotnetSdkInternalPackageVersion>$(MicrosoftNETSdkPackageVersion)</MicrosoftDotnetSdkInternalPackageVersion>
     <!-- This is a subscription of the .NET 9 latest stable versions of our packages -->

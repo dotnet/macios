@@ -37,7 +37,7 @@ namespace CoreGraphics {
 ";
 
 			yield return [nsStringFieldProperty,
-				"global::ObjCRuntime.Dlfcn.GetStringConstant (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\")!"];
+				$"{Global ("ObjCRuntime.Dlfcn")}.GetStringConstant ({Global ("ObjCRuntime.Libraries.CoreGraphics")}.Handle, \"kCGColorSpaceGenericGray\")!"];
 
 			const string byteFieldProperty = @"
 using System;
@@ -57,7 +57,7 @@ namespace CoreGraphics {
 ";
 
 			yield return [byteFieldProperty,
-				"global::ObjCRuntime.Dlfcn.GetByte (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\")"];
+				$"{Global ("ObjCRuntime.Dlfcn")}.GetByte ({Global ("ObjCRuntime.Libraries.CoreGraphics")}.Handle, \"kCGColorSpaceGenericGray\")"];
 
 			const string otherByteFieldProperty = @"
 using System;
@@ -76,7 +76,7 @@ namespace CoreGraphics {
 }
 ";
 			yield return [otherByteFieldProperty,
-				"global::ObjCRuntime.Dlfcn.GetByte (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\")"];
+				$"{Global ("ObjCRuntime.Dlfcn")}.GetByte ({Global ("ObjCRuntime.Libraries.CoreGraphics")}.Handle, \"kCGColorSpaceGenericGray\")"];
 
 			const string sbyteFieldProperty = @"
 using System;
@@ -96,7 +96,7 @@ namespace CoreGraphics {
 ";
 
 			yield return [sbyteFieldProperty,
-				"global::ObjCRuntime.Dlfcn.GetSByte (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\")"];
+				$"{Global ("ObjCRuntime.Dlfcn")}.GetSByte ({Global ("ObjCRuntime.Libraries.CoreGraphics")}.Handle, \"kCGColorSpaceGenericGray\")"];
 
 			const string otherSbyteFieldProperty = @"
 using System;
@@ -116,7 +116,7 @@ namespace CoreGraphics {
 ";
 
 			yield return [otherSbyteFieldProperty,
-				"global::ObjCRuntime.Dlfcn.GetSByte (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\")"];
+				$"{Global ("ObjCRuntime.Dlfcn")}.GetSByte ({Global ("ObjCRuntime.Libraries.CoreGraphics")}.Handle, \"kCGColorSpaceGenericGray\")"];
 
 			const string int16FieldProperty = @"
 using System;
@@ -136,7 +136,7 @@ namespace CoreGraphics {
 ";
 
 			yield return [int16FieldProperty,
-				"global::ObjCRuntime.Dlfcn.GetInt16 (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\")"];
+				$"{Global ("ObjCRuntime.Dlfcn")}.GetInt16 ({Global ("ObjCRuntime.Libraries.CoreGraphics")}.Handle, \"kCGColorSpaceGenericGray\")"];
 
 			const string otherInt16FieldProperty = @"
 using System;
@@ -156,7 +156,7 @@ namespace CoreGraphics {
 ";
 
 			yield return [otherInt16FieldProperty,
-				"global::ObjCRuntime.Dlfcn.GetInt16 (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\")"];
+				$"{Global ("ObjCRuntime.Dlfcn")}.GetInt16 ({Global ("ObjCRuntime.Libraries.CoreGraphics")}.Handle, \"kCGColorSpaceGenericGray\")"];
 
 			const string uint16FieldProperty = @"
 using System;
@@ -176,7 +176,7 @@ namespace CoreGraphics {
 ";
 
 			yield return [uint16FieldProperty,
-				"global::ObjCRuntime.Dlfcn.GetUInt16 (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\")"];
+				$"{Global ("ObjCRuntime.Dlfcn")}.GetUInt16 ({Global ("ObjCRuntime.Libraries.CoreGraphics")}.Handle, \"kCGColorSpaceGenericGray\")"];
 
 			const string otherUint16FieldProperty = @"
 using System;
@@ -196,7 +196,7 @@ namespace CoreGraphics {
 ";
 
 			yield return [otherUint16FieldProperty,
-				"global::ObjCRuntime.Dlfcn.GetUInt16 (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\")"];
+				$"{Global ("ObjCRuntime.Dlfcn")}.GetUInt16 ({Global ("ObjCRuntime.Libraries.CoreGraphics")}.Handle, \"kCGColorSpaceGenericGray\")"];
 
 			const string int32FieldProperty = @"
 using System;
@@ -216,7 +216,7 @@ namespace CoreGraphics {
 ";
 
 			yield return [int32FieldProperty,
-				"global::ObjCRuntime.Dlfcn.GetInt32 (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\")"];
+				$"{Global ("ObjCRuntime.Dlfcn")}.GetInt32 ({Global ("ObjCRuntime.Libraries.CoreGraphics")}.Handle, \"kCGColorSpaceGenericGray\")"];
 
 			const string otherInt32FieldProperty = @"
 using System;
@@ -236,7 +236,7 @@ namespace CoreGraphics {
 ";
 
 			yield return [otherInt32FieldProperty,
-				"global::ObjCRuntime.Dlfcn.GetInt32 (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\")"];
+				$"{Global ("ObjCRuntime.Dlfcn")}.GetInt32 ({Global ("ObjCRuntime.Libraries.CoreGraphics")}.Handle, \"kCGColorSpaceGenericGray\")"];
 
 			const string uint32FieldProperty = @"
 using System;
@@ -256,7 +256,7 @@ namespace CoreGraphics {
 ";
 
 			yield return [uint32FieldProperty,
-				"global::ObjCRuntime.Dlfcn.GetUInt32 (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\")"];
+				$"{Global ("ObjCRuntime.Dlfcn")}.GetUInt32 ({Global ("ObjCRuntime.Libraries.CoreGraphics")}.Handle, \"kCGColorSpaceGenericGray\")"];
 
 			const string otherUint32FieldProperty = @"
 using System;
@@ -276,7 +276,7 @@ namespace CoreGraphics {
 ";
 
 			yield return [otherUint32FieldProperty,
-				"global::ObjCRuntime.Dlfcn.GetUInt32 (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\")"];
+				$"{Global ("ObjCRuntime.Dlfcn")}.GetUInt32 ({Global ("ObjCRuntime.Libraries.CoreGraphics")}.Handle, \"kCGColorSpaceGenericGray\")"];
 
 			const string doubleFieldProperty = @"
 using System;
@@ -296,7 +296,7 @@ namespace CoreGraphics {
 ";
 
 			yield return [doubleFieldProperty,
-				"global::ObjCRuntime.Dlfcn.GetDouble (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\")"];
+				$"{Global ("ObjCRuntime.Dlfcn")}.GetDouble ({Global ("ObjCRuntime.Libraries.CoreGraphics")}.Handle, \"kCGColorSpaceGenericGray\")"];
 
 			const string otherDoubleFieldProperty = @"
 using System;
@@ -316,7 +316,7 @@ namespace CoreGraphics {
 ";
 
 			yield return [otherDoubleFieldProperty,
-				"global::ObjCRuntime.Dlfcn.GetDouble (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\")"];
+				$"{Global ("ObjCRuntime.Dlfcn")}.GetDouble ({Global ("ObjCRuntime.Libraries.CoreGraphics")}.Handle, \"kCGColorSpaceGenericGray\")"];
 
 			const string floatFieldProperty = @"
 using System;
@@ -336,7 +336,7 @@ namespace CoreGraphics {
 ";
 
 			yield return [floatFieldProperty,
-				"global::ObjCRuntime.Dlfcn.GetFloat (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\")"];
+				$"{Global ("ObjCRuntime.Dlfcn")}.GetFloat ({Global ("ObjCRuntime.Libraries.CoreGraphics")}.Handle, \"kCGColorSpaceGenericGray\")"];
 
 			const string otherFloatFieldProperty = @"
 using System;
@@ -356,7 +356,7 @@ namespace CoreGraphics {
 ";
 
 			yield return [otherFloatFieldProperty,
-				"global::ObjCRuntime.Dlfcn.GetFloat (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\")"];
+				$"{Global ("ObjCRuntime.Dlfcn")}.GetFloat ({Global ("ObjCRuntime.Libraries.CoreGraphics")}.Handle, \"kCGColorSpaceGenericGray\")"];
 
 			const string intPtrFieldProperty = @"
 using System;
@@ -376,7 +376,7 @@ namespace CoreGraphics {
 ";
 
 			yield return [intPtrFieldProperty,
-				"global::ObjCRuntime.Dlfcn.GetIntPtr (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\")"];
+				$"{Global ("ObjCRuntime.Dlfcn")}.GetIntPtr ({Global ("ObjCRuntime.Libraries.CoreGraphics")}.Handle, \"kCGColorSpaceGenericGray\")"];
 
 			const string uintPtrFieldProperty = @"
 using System;
@@ -396,7 +396,7 @@ namespace CoreGraphics {
 ";
 
 			yield return [uintPtrFieldProperty,
-				"global::ObjCRuntime.Dlfcn.GetUIntPtr (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\")"];
+				$"{Global ("ObjCRuntime.Dlfcn")}.GetUIntPtr ({Global ("ObjCRuntime.Libraries.CoreGraphics")}.Handle, \"kCGColorSpaceGenericGray\")"];
 
 			const string nintFieldProperty = @"
 using System;
@@ -416,7 +416,7 @@ namespace CoreGraphics {
 ";
 
 			yield return [nintFieldProperty,
-				"global::ObjCRuntime.Dlfcn.GetIntPtr (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\")"];
+				$"{Global ("ObjCRuntime.Dlfcn")}.GetIntPtr ({Global ("ObjCRuntime.Libraries.CoreGraphics")}.Handle, \"kCGColorSpaceGenericGray\")"];
 
 			const string nuintFieldProperty = @"
 using System;
@@ -436,7 +436,7 @@ namespace CoreGraphics {
 ";
 
 			yield return [nuintFieldProperty,
-				"global::ObjCRuntime.Dlfcn.GetUIntPtr (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\")"];
+				$"{Global ("ObjCRuntime.Dlfcn")}.GetUIntPtr ({Global ("ObjCRuntime.Libraries.CoreGraphics")}.Handle, \"kCGColorSpaceGenericGray\")"];
 
 			const string nfloatFieldProperty = @"
 using System;
@@ -456,7 +456,7 @@ namespace CoreGraphics {
 ";
 
 			yield return [nfloatFieldProperty,
-				"global::ObjCRuntime.Dlfcn.GetNFloat (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\")"];
+				$"{Global ("ObjCRuntime.Dlfcn")}.GetNFloat ({Global ("ObjCRuntime.Libraries.CoreGraphics")}.Handle, \"kCGColorSpaceGenericGray\")"];
 
 			const string cgsizeFieldProperty = @"
 using System;
@@ -477,7 +477,7 @@ namespace CoreGraphics {
 ";
 
 			yield return [cgsizeFieldProperty,
-				"global::ObjCRuntime.Dlfcn.GetCGSize (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\")"];
+				$"{Global ("ObjCRuntime.Dlfcn")}.GetCGSize ({Global ("ObjCRuntime.Libraries.CoreGraphics")}.Handle, \"kCGColorSpaceGenericGray\")"];
 
 			const string cmtagFieldProperty = @"
 using System;
@@ -498,7 +498,7 @@ namespace CoreGraphics {
 ";
 
 			yield return [cmtagFieldProperty,
-				$"global::ObjCRuntime.Dlfcn.GetStruct<{Global ("CoreMedia.CMTag")}> (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\")"];
+				$"{Global ("ObjCRuntime.Dlfcn")}.GetStruct<{Global ("CoreMedia.CMTag")}> ({Global ("ObjCRuntime.Libraries.CoreGraphics")}.Handle, \"kCGColorSpaceGenericGray\")"];
 
 			const string nsArrayFieldProperty = @"
 using System;
@@ -519,7 +519,7 @@ namespace CoreGraphics {
 ";
 
 			yield return [nsArrayFieldProperty,
-				$"global::ObjCRuntime.Runtime.GetNSObject<{Global ("Foundation.NSArray")}> (global::ObjCRuntime.Dlfcn.GetIndirect (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\"))!"];
+				$"{Global ("ObjCRuntime.Runtime")}.GetNSObject<{Global ("Foundation.NSArray")}> ({Global ("ObjCRuntime.Dlfcn")}.GetIndirect ({Global ("ObjCRuntime.Libraries.CoreGraphics")}.Handle, \"kCGColorSpaceGenericGray\"))!"];
 
 			const string nsNumberFieldProperty = @"
 using System;
@@ -540,7 +540,7 @@ namespace CoreGraphics {
 ";
 
 			yield return [nsNumberFieldProperty,
-				$"global::ObjCRuntime.Runtime.GetNSObject<{Global ("Foundation.NSNumber")}> (global::ObjCRuntime.Dlfcn.GetIndirect (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\"))!"];
+				$"{Global ("ObjCRuntime.Runtime")}.GetNSObject<{Global ("Foundation.NSNumber")}> ({Global ("ObjCRuntime.Dlfcn")}.GetIndirect ({Global ("ObjCRuntime.Libraries.CoreGraphics")}.Handle, \"kCGColorSpaceGenericGray\"))!"];
 
 			const string sbyteEnumFieldProperty = @"
 using System;
@@ -567,7 +567,7 @@ namespace CoreGraphics {
 
 			yield return [
 				sbyteEnumFieldProperty,
-				"global::ObjCRuntime.Dlfcn.GetSByte (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\")"
+				$"{Global ("ObjCRuntime.Dlfcn")}.GetSByte ({Global ("ObjCRuntime.Libraries.CoreGraphics")}.Handle, \"kCGColorSpaceGenericGray\")"
 			];
 
 			const string byteEnumFieldProperty = @"
@@ -595,7 +595,7 @@ namespace CoreGraphics {
 
 			yield return [
 				byteEnumFieldProperty,
-				"global::ObjCRuntime.Dlfcn.GetByte (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\")"
+				$"{Global ("ObjCRuntime.Dlfcn")}.GetByte ({Global ("ObjCRuntime.Libraries.CoreGraphics")}.Handle, \"kCGColorSpaceGenericGray\")"
 			];
 
 			const string shortEnumFieldProperty = @"
@@ -623,7 +623,7 @@ namespace CoreGraphics {
 
 			yield return [
 				shortEnumFieldProperty,
-				"global::ObjCRuntime.Dlfcn.GetInt16 (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\")"
+				$"{Global ("ObjCRuntime.Dlfcn")}.GetInt16 ({Global ("ObjCRuntime.Libraries.CoreGraphics")}.Handle, \"kCGColorSpaceGenericGray\")"
 			];
 
 			const string ushortEnumFieldProperty = @"
@@ -651,7 +651,7 @@ namespace CoreGraphics {
 
 			yield return [
 				ushortEnumFieldProperty,
-				"global::ObjCRuntime.Dlfcn.GetUInt16 (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\")"
+				$"{Global ("ObjCRuntime.Dlfcn")}.GetUInt16 ({Global ("ObjCRuntime.Libraries.CoreGraphics")}.Handle, \"kCGColorSpaceGenericGray\")"
 			];
 
 			const string intEnumFieldProperty = @"
@@ -679,7 +679,7 @@ namespace CoreGraphics {
 
 			yield return [
 				intEnumFieldProperty,
-				"global::ObjCRuntime.Dlfcn.GetInt32 (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\")"
+				$"{Global ("ObjCRuntime.Dlfcn")}.GetInt32 ({Global ("ObjCRuntime.Libraries.CoreGraphics")}.Handle, \"kCGColorSpaceGenericGray\")"
 			];
 
 			const string uintEnumFieldProperty = @"
@@ -707,7 +707,7 @@ namespace CoreGraphics {
 
 			yield return [
 				uintEnumFieldProperty,
-				"global::ObjCRuntime.Dlfcn.GetUInt32 (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\")"
+				$"{Global ("ObjCRuntime.Dlfcn")}.GetUInt32 ({Global ("ObjCRuntime.Libraries.CoreGraphics")}.Handle, \"kCGColorSpaceGenericGray\")"
 			];
 
 			const string longEnumFieldProperty = @"
@@ -735,7 +735,7 @@ namespace CoreGraphics {
 
 			yield return [
 				longEnumFieldProperty,
-				"global::ObjCRuntime.Dlfcn.GetInt64 (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\")"
+				$"{Global ("ObjCRuntime.Dlfcn")}.GetInt64 ({Global ("ObjCRuntime.Libraries.CoreGraphics")}.Handle, \"kCGColorSpaceGenericGray\")"
 			];
 
 			const string ulongEnumFieldProperty = @"
@@ -763,7 +763,7 @@ namespace CoreGraphics {
 
 			yield return [
 				ulongEnumFieldProperty,
-				"global::ObjCRuntime.Dlfcn.GetUInt64 (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\")"
+				$"{Global ("ObjCRuntime.Dlfcn")}.GetUInt64 ({Global ("ObjCRuntime.Libraries.CoreGraphics")}.Handle, \"kCGColorSpaceGenericGray\")"
 			];
 
 			const string cmTimeFieldProperty = @"
@@ -786,7 +786,7 @@ namespace CoreGraphics {
 
 			yield return [
 				cmTimeFieldProperty,
-				$"*(({Global ("CoreMedia.CMTime")}*) global::ObjCRuntime.Dlfcn.dlsym (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\"))"
+				$"*(({Global ("CoreMedia.CMTime")}*) {Global ("ObjCRuntime.Dlfcn")}.dlsym ({Global ("ObjCRuntime.Libraries.CoreGraphics")}.Handle, \"kCGColorSpaceGenericGray\"))"
 			];
 
 			const string whiteFieldProperty = @"
@@ -810,7 +810,7 @@ namespace CoreGraphics {
 
 			yield return [
 				whiteFieldProperty,
-				$"*(({Global ("AVFoundation.AVCaptureWhiteBalanceGains")}*) global::ObjCRuntime.Dlfcn.dlsym (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\"))"
+				$"*(({Global ("AVFoundation.AVCaptureWhiteBalanceGains")}*) {Global ("ObjCRuntime.Dlfcn")}.dlsym ({Global ("ObjCRuntime.Libraries.CoreGraphics")}.Handle, \"kCGColorSpaceGenericGray\"))"
 			];
 		}
 
@@ -860,7 +860,7 @@ namespace CoreGraphics {
 
 			yield return [nsStringFieldProperty,
 				"value",
-				"global::ObjCRuntime.Dlfcn.SetString (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\", value)"];
+				$"{Global ("ObjCRuntime.Dlfcn")}.SetString ({Global ("ObjCRuntime.Libraries.CoreGraphics")}.Handle, \"kCGColorSpaceGenericGray\", value)"];
 
 			const string byteFieldProperty = @"
 using System;
@@ -881,7 +881,7 @@ namespace CoreGraphics {
 
 			yield return [byteFieldProperty,
 				"value",
-				"global::ObjCRuntime.Dlfcn.SetByte (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\", value)"];
+				$"{Global ("ObjCRuntime.Dlfcn")}.SetByte ({Global ("ObjCRuntime.Libraries.CoreGraphics")}.Handle, \"kCGColorSpaceGenericGray\", value)"];
 
 			const string otherByteFieldProperty = @"
 using System;
@@ -901,7 +901,7 @@ namespace CoreGraphics {
 ";
 			yield return [otherByteFieldProperty,
 				"value",
-				"global::ObjCRuntime.Dlfcn.SetByte (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\", value)"];
+				$"{Global ("ObjCRuntime.Dlfcn")}.SetByte ({Global ("ObjCRuntime.Libraries.CoreGraphics")}.Handle, \"kCGColorSpaceGenericGray\", value)"];
 
 			const string sbyteFieldProperty = @"
 using System;
@@ -922,7 +922,7 @@ namespace CoreGraphics {
 
 			yield return [sbyteFieldProperty,
 				"value",
-				"global::ObjCRuntime.Dlfcn.SetSByte (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\", value)"];
+				$"{Global ("ObjCRuntime.Dlfcn")}.SetSByte ({Global ("ObjCRuntime.Libraries.CoreGraphics")}.Handle, \"kCGColorSpaceGenericGray\", value)"];
 
 			const string otherSbyteFieldProperty = @"
 using System;
@@ -943,7 +943,7 @@ namespace CoreGraphics {
 
 			yield return [otherSbyteFieldProperty,
 				"value",
-				"global::ObjCRuntime.Dlfcn.SetSByte (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\", value)"];
+				$"{Global ("ObjCRuntime.Dlfcn")}.SetSByte ({Global ("ObjCRuntime.Libraries.CoreGraphics")}.Handle, \"kCGColorSpaceGenericGray\", value)"];
 
 			const string int16FieldProperty = @"
 using System;
@@ -964,7 +964,7 @@ namespace CoreGraphics {
 
 			yield return [int16FieldProperty,
 				"value",
-				"global::ObjCRuntime.Dlfcn.SetInt16 (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\", value)"];
+				$"{Global ("ObjCRuntime.Dlfcn")}.SetInt16 ({Global ("ObjCRuntime.Libraries.CoreGraphics")}.Handle, \"kCGColorSpaceGenericGray\", value)"];
 
 			const string otherInt16FieldProperty = @"
 using System;
@@ -985,7 +985,7 @@ namespace CoreGraphics {
 
 			yield return [otherInt16FieldProperty,
 				"value",
-				"global::ObjCRuntime.Dlfcn.SetInt16 (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\", value)"];
+				$"{Global ("ObjCRuntime.Dlfcn")}.SetInt16 ({Global ("ObjCRuntime.Libraries.CoreGraphics")}.Handle, \"kCGColorSpaceGenericGray\", value)"];
 
 			const string uint16FieldProperty = @"
 using System;
@@ -1006,7 +1006,7 @@ namespace CoreGraphics {
 
 			yield return [uint16FieldProperty,
 				"value",
-				"global::ObjCRuntime.Dlfcn.SetUInt16 (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\", value)"];
+				$"{Global ("ObjCRuntime.Dlfcn")}.SetUInt16 ({Global ("ObjCRuntime.Libraries.CoreGraphics")}.Handle, \"kCGColorSpaceGenericGray\", value)"];
 
 			const string otherUint16FieldProperty = @"
 using System;
@@ -1027,7 +1027,7 @@ namespace CoreGraphics {
 
 			yield return [otherUint16FieldProperty,
 				"value",
-				"global::ObjCRuntime.Dlfcn.SetUInt16 (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\", value)"];
+				$"{Global ("ObjCRuntime.Dlfcn")}.SetUInt16 ({Global ("ObjCRuntime.Libraries.CoreGraphics")}.Handle, \"kCGColorSpaceGenericGray\", value)"];
 
 			const string int32FieldProperty = @"
 using System;
@@ -1048,7 +1048,7 @@ namespace CoreGraphics {
 
 			yield return [int32FieldProperty,
 				"value",
-				"global::ObjCRuntime.Dlfcn.SetInt32 (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\", value)"];
+				$"{Global ("ObjCRuntime.Dlfcn")}.SetInt32 ({Global ("ObjCRuntime.Libraries.CoreGraphics")}.Handle, \"kCGColorSpaceGenericGray\", value)"];
 
 			const string otherInt32FieldProperty = @"
 using System;
@@ -1069,7 +1069,7 @@ namespace CoreGraphics {
 
 			yield return [otherInt32FieldProperty,
 				"value",
-				"global::ObjCRuntime.Dlfcn.SetInt32 (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\", value)"];
+				$"{Global ("ObjCRuntime.Dlfcn")}.SetInt32 ({Global ("ObjCRuntime.Libraries.CoreGraphics")}.Handle, \"kCGColorSpaceGenericGray\", value)"];
 
 			const string uint32FieldProperty = @"
 using System;
@@ -1090,7 +1090,7 @@ namespace CoreGraphics {
 
 			yield return [uint32FieldProperty,
 				"value",
-				"global::ObjCRuntime.Dlfcn.SetUInt32 (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\", value)"];
+				$"{Global ("ObjCRuntime.Dlfcn")}.SetUInt32 ({Global ("ObjCRuntime.Libraries.CoreGraphics")}.Handle, \"kCGColorSpaceGenericGray\", value)"];
 
 			const string otherUint32FieldProperty = @"
 using System;
@@ -1111,7 +1111,7 @@ namespace CoreGraphics {
 
 			yield return [otherUint32FieldProperty,
 				"value",
-				"global::ObjCRuntime.Dlfcn.SetUInt32 (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\", value)"];
+				$"{Global ("ObjCRuntime.Dlfcn")}.SetUInt32 ({Global ("ObjCRuntime.Libraries.CoreGraphics")}.Handle, \"kCGColorSpaceGenericGray\", value)"];
 
 			const string doubleFieldProperty = @"
 using System;
@@ -1132,7 +1132,7 @@ namespace CoreGraphics {
 
 			yield return [doubleFieldProperty,
 				"value",
-				"global::ObjCRuntime.Dlfcn.SetDouble (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\", value)"];
+				$"{Global ("ObjCRuntime.Dlfcn")}.SetDouble ({Global ("ObjCRuntime.Libraries.CoreGraphics")}.Handle, \"kCGColorSpaceGenericGray\", value)"];
 
 			const string otherDoubleFieldProperty = @"
 using System;
@@ -1153,7 +1153,7 @@ namespace CoreGraphics {
 
 			yield return [otherDoubleFieldProperty,
 				"value",
-				"global::ObjCRuntime.Dlfcn.SetDouble (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\", value)"];
+				$"{Global ("ObjCRuntime.Dlfcn")}.SetDouble ({Global ("ObjCRuntime.Libraries.CoreGraphics")}.Handle, \"kCGColorSpaceGenericGray\", value)"];
 
 			const string floatFieldProperty = @"
 using System;
@@ -1174,7 +1174,7 @@ namespace CoreGraphics {
 
 			yield return [floatFieldProperty,
 				"value",
-				"global::ObjCRuntime.Dlfcn.SetFloat (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\", value)"];
+				$"{Global ("ObjCRuntime.Dlfcn")}.SetFloat ({Global ("ObjCRuntime.Libraries.CoreGraphics")}.Handle, \"kCGColorSpaceGenericGray\", value)"];
 
 			const string otherFloatFieldProperty = @"
 using System;
@@ -1195,7 +1195,7 @@ namespace CoreGraphics {
 
 			yield return [otherFloatFieldProperty,
 				"value",
-				"global::ObjCRuntime.Dlfcn.SetFloat (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\", value)"];
+				$"{Global ("ObjCRuntime.Dlfcn")}.SetFloat ({Global ("ObjCRuntime.Libraries.CoreGraphics")}.Handle, \"kCGColorSpaceGenericGray\", value)"];
 
 			const string intPtrFieldProperty = @"
 using System;
@@ -1216,7 +1216,7 @@ namespace CoreGraphics {
 
 			yield return [intPtrFieldProperty,
 				"value",
-				"global::ObjCRuntime.Dlfcn.SetIntPtr (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\", value)"];
+				$"{Global ("ObjCRuntime.Dlfcn")}.SetIntPtr ({Global ("ObjCRuntime.Libraries.CoreGraphics")}.Handle, \"kCGColorSpaceGenericGray\", value)"];
 
 			const string uintPtrFieldProperty = @"
 using System;
@@ -1237,7 +1237,7 @@ namespace CoreGraphics {
 
 			yield return [uintPtrFieldProperty,
 				"value",
-				"global::ObjCRuntime.Dlfcn.SetUIntPtr (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\", value)"];
+				$"{Global ("ObjCRuntime.Dlfcn")}.SetUIntPtr ({Global ("ObjCRuntime.Libraries.CoreGraphics")}.Handle, \"kCGColorSpaceGenericGray\", value)"];
 
 			const string nintFieldProperty = @"
 using System;
@@ -1258,7 +1258,7 @@ namespace CoreGraphics {
 
 			yield return [nintFieldProperty,
 				"value",
-				"global::ObjCRuntime.Dlfcn.SetIntPtr (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\", value)"];
+				$"{Global ("ObjCRuntime.Dlfcn")}.SetIntPtr ({Global ("ObjCRuntime.Libraries.CoreGraphics")}.Handle, \"kCGColorSpaceGenericGray\", value)"];
 
 			const string nuintFieldProperty = @"
 using System;
@@ -1279,7 +1279,7 @@ namespace CoreGraphics {
 
 			yield return [nuintFieldProperty,
 				"value",
-				"global::ObjCRuntime.Dlfcn.SetUIntPtr (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\", value)"];
+				$"{Global ("ObjCRuntime.Dlfcn")}.SetUIntPtr ({Global ("ObjCRuntime.Libraries.CoreGraphics")}.Handle, \"kCGColorSpaceGenericGray\", value)"];
 
 			const string nfloatFieldProperty = @"
 using System;
@@ -1300,7 +1300,7 @@ namespace CoreGraphics {
 
 			yield return [nfloatFieldProperty,
 				"value",
-				"global::ObjCRuntime.Dlfcn.SetNFloat (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\", value)"];
+				$"{Global ("ObjCRuntime.Dlfcn")}.SetNFloat ({Global ("ObjCRuntime.Libraries.CoreGraphics")}.Handle, \"kCGColorSpaceGenericGray\", value)"];
 
 			const string cgsizeFieldProperty = @"
 using System;
@@ -1322,7 +1322,7 @@ namespace CoreGraphics {
 
 			yield return [cgsizeFieldProperty,
 				"value",
-				"global::ObjCRuntime.Dlfcn.SetCGSize (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\", value)"];
+				$"{Global ("ObjCRuntime.Dlfcn")}.SetCGSize ({Global ("ObjCRuntime.Libraries.CoreGraphics")}.Handle, \"kCGColorSpaceGenericGray\", value)"];
 
 			const string cmtagFieldProperty = @"
 using System;
@@ -1367,7 +1367,7 @@ namespace CoreGraphics {
 
 			yield return [nsArrayFieldProperty,
 				"value",
-				"global::ObjCRuntime.Dlfcn.SetArray (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\", value)"];
+				$"{Global ("ObjCRuntime.Dlfcn")}.SetArray ({Global ("ObjCRuntime.Libraries.CoreGraphics")}.Handle, \"kCGColorSpaceGenericGray\", value)"];
 
 			const string nsNumberFieldProperty = @"
 using System;
@@ -1389,7 +1389,7 @@ namespace CoreGraphics {
 
 			yield return [nsNumberFieldProperty,
 				"value",
-				"global::ObjCRuntime.Dlfcn.SetObject (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\", value)"];
+				$"{Global ("ObjCRuntime.Dlfcn")}.SetObject ({Global ("ObjCRuntime.Libraries.CoreGraphics")}.Handle, \"kCGColorSpaceGenericGray\", value)"];
 
 			const string sbyteEnumFieldProperty = @"
 using System;
@@ -1417,7 +1417,7 @@ namespace CoreGraphics {
 			yield return [
 				sbyteEnumFieldProperty,
 				"value",
-				"global::ObjCRuntime.Dlfcn.SetSByte (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\", (sbyte)value)"
+				$"{Global ("ObjCRuntime.Dlfcn")}.SetSByte ({Global ("ObjCRuntime.Libraries.CoreGraphics")}.Handle, \"kCGColorSpaceGenericGray\", (sbyte)value)"
 			];
 
 			const string byteEnumFieldProperty = @"
@@ -1446,7 +1446,7 @@ namespace CoreGraphics {
 			yield return [
 				byteEnumFieldProperty,
 				"value",
-				"global::ObjCRuntime.Dlfcn.SetByte (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\", (byte)value)"
+				$"{Global ("ObjCRuntime.Dlfcn")}.SetByte ({Global ("ObjCRuntime.Libraries.CoreGraphics")}.Handle, \"kCGColorSpaceGenericGray\", (byte)value)"
 			];
 
 			const string shortEnumFieldProperty = @"
@@ -1475,7 +1475,7 @@ namespace CoreGraphics {
 			yield return [
 				shortEnumFieldProperty,
 				"value",
-				"global::ObjCRuntime.Dlfcn.SetInt16 (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\", (short)value)"
+				$"{Global ("ObjCRuntime.Dlfcn")}.SetInt16 ({Global ("ObjCRuntime.Libraries.CoreGraphics")}.Handle, \"kCGColorSpaceGenericGray\", (short)value)"
 			];
 
 			const string ushortEnumFieldProperty = @"
@@ -1504,7 +1504,7 @@ namespace CoreGraphics {
 			yield return [
 				ushortEnumFieldProperty,
 				"value",
-				"global::ObjCRuntime.Dlfcn.SetUInt16 (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\", (ushort)value)"
+				$"{Global ("ObjCRuntime.Dlfcn")}.SetUInt16 ({Global ("ObjCRuntime.Libraries.CoreGraphics")}.Handle, \"kCGColorSpaceGenericGray\", (ushort)value)"
 			];
 
 			const string intEnumFieldProperty = @"
@@ -1533,7 +1533,7 @@ namespace CoreGraphics {
 			yield return [
 				intEnumFieldProperty,
 				"value",
-				"global::ObjCRuntime.Dlfcn.SetInt32 (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\", (int)value)"
+				$"{Global ("ObjCRuntime.Dlfcn")}.SetInt32 ({Global ("ObjCRuntime.Libraries.CoreGraphics")}.Handle, \"kCGColorSpaceGenericGray\", (int)value)"
 			];
 
 			const string uintEnumFieldProperty = @"
@@ -1562,7 +1562,7 @@ namespace CoreGraphics {
 			yield return [
 				uintEnumFieldProperty,
 				"value",
-				"global::ObjCRuntime.Dlfcn.SetUInt32 (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\", (uint)value)"
+				$"{Global ("ObjCRuntime.Dlfcn")}.SetUInt32 ({Global ("ObjCRuntime.Libraries.CoreGraphics")}.Handle, \"kCGColorSpaceGenericGray\", (uint)value)"
 			];
 
 			const string longEnumFieldProperty = @"
@@ -1591,7 +1591,7 @@ namespace CoreGraphics {
 			yield return [
 				longEnumFieldProperty,
 				"value",
-				"global::ObjCRuntime.Dlfcn.SetInt64 (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\", (long)value)"
+				$"{Global ("ObjCRuntime.Dlfcn")}.SetInt64 ({Global ("ObjCRuntime.Libraries.CoreGraphics")}.Handle, \"kCGColorSpaceGenericGray\", (long)value)"
 			];
 
 			const string ulongEnumFieldProperty = @"
@@ -1620,7 +1620,7 @@ namespace CoreGraphics {
 			yield return [
 				ulongEnumFieldProperty,
 				"value",
-				"global::ObjCRuntime.Dlfcn.SetUInt64 (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\", (ulong)value)"
+				$"{Global ("ObjCRuntime.Dlfcn")}.SetUInt64 ({Global ("ObjCRuntime.Libraries.CoreGraphics")}.Handle, \"kCGColorSpaceGenericGray\", (ulong)value)"
 			];
 
 			const string cmTimeFieldProperty = @"

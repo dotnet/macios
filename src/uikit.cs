@@ -20712,6 +20712,8 @@ namespace UIKit {
 		[NoTV, NoMacCatalyst, iOS (18, 4)]
 		[Export ("textField:insertInputSuggestion:"), EventArgs ("UITextFieldInsertInputSuggestion")]
 		void InsertInputSuggestion (UITextField textField, UIInputSuggestion inputSuggestion);
+
+		// Any new APIs here must be manually implemented as events in UITextField.cs
 	}
 
 	[MacCatalyst (13, 1)]

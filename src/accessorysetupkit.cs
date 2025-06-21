@@ -144,7 +144,6 @@ namespace AccessorySetupKit {
 
 	[BaseType (typeof (NSObject))]
 	[iOS (18, 0)]
-	[DisableDefaultCtor]
 	interface ASAccessorySettings {
 		[Export ("defaultSettings")]
 		[Static]
@@ -159,7 +158,6 @@ namespace AccessorySetupKit {
 
 	[BaseType (typeof (NSObject))]
 	[iOS (18, 0)]
-	[DisableDefaultCtor]
 	interface ASDiscoveryDescriptor {
 		[Export ("supportedOptions", ArgumentSemantic.Assign)]
 		ASAccessorySupportOptions SupportedOptions { get; set; }

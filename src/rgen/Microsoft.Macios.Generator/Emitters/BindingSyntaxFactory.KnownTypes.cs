@@ -91,6 +91,10 @@ static partial class BindingSyntaxFactory {
 		@namespace: ["ObjCRuntime"],
 		@class: "ThrowHelper");
 
+	public static readonly TypeSyntax Trampolines = StringExtensions.GetIdentifierName (
+		@namespace: ["ObjCRuntime"],
+		@class: "Trampolines");
+
 	// Foundation types
 
 	/// <summary>

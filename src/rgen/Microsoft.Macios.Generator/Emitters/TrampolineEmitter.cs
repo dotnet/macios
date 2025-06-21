@@ -140,7 +140,7 @@ public unsafe static {delegateIdentifier}? Create (IntPtr block)
 									 // invoke method
 			using (var invokeBlock = classBlock.CreateBlock (GetTrampolineNativeInvokeSignature (typeInfo).ToString (), true)) {
 				// retrieve the arguments for the invoker execution. 
-				var argumentSyntax = GetTrampolineNativeInvokeArguments (trampolineName, typeInfo.Delegate!);
+				var argumentSyntax = GetTrampolineNativeInvokeArguments (typeInfo.Delegate!);
 				// write the conversion code for the arguments
 				foreach (var argument in argumentSyntax) {
 					invokeBlock.Write (argument.PreDelegateCallConversion, verifyTrivia: false);

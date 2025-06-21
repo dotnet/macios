@@ -4275,7 +4275,6 @@ namespace NS {
 }
 ";
 			yield return [
-				"someTrampolineName",
 				pointerParameter,
 				"invoker (BlockLiteral, pointerParameter);",
 			];
@@ -4291,7 +4290,6 @@ namespace NS {
 }
 ";
 			yield return [
-				"someTrampolineName",
 				pointerParameterWithReturn,
 				"var ret = invoker (BlockLiteral, pointerParameter);",
 			];
@@ -4309,7 +4307,6 @@ namespace NS {
 }
 ";
 			yield return [
-				"someTrampolineName",
 				nsNumberParameterWithReturn,
 				"var ret = invoker (BlockLiteral, pointerParameter__handle__);",
 			];
@@ -4327,7 +4324,6 @@ namespace NS {
 }
 ";
 			yield return [
-				"someTrampolineName",
 				nsNumberArrayParameterWithReturn,
 				"var ret = invoker (BlockLiteral, nsa_pointerParameter);",
 			];
@@ -4346,7 +4342,6 @@ namespace NS {
 }
 ";
 			yield return [
-				"someTrampolineName",
 				nsValueParameterWithReturn,
 				"var ret = invoker (BlockLiteral, size__handle__);"
 			];
@@ -4365,7 +4360,6 @@ namespace NS {
 }
 ";
 			yield return [
-				"someTrampolineName",
 				nsValueArrayParameterWithReturn,
 				"var ret = invoker (BlockLiteral, nsa_size);",
 			];
@@ -4395,7 +4389,6 @@ namespace NS {
 }
 ";
 			yield return [
-				"someTrampolineName",
 				smartEnumParameterWithReturn,
 				"var ret = invoker (BlockLiteral, nslevel);"
 			];
@@ -4425,7 +4418,6 @@ namespace NS {
 }
 ";
 			yield return [
-				"someTrampolineName",
 				smartEnumArrayParameterWithReturn,
 				"var ret = invoker (BlockLiteral, nsa_level);"
 			];
@@ -4441,7 +4433,6 @@ namespace NS {
 }
 ";
 			yield return [
-				"someTrampolineName",
 				refParameter,
 				$"var ret = invoker (BlockLiteral, (int*) {Global ("System.Runtime")}.CompilerServices.Unsafe.AsPointer<int> (ref pointerParameter));",
 			];
@@ -4458,7 +4449,6 @@ namespace NS {
 ";
 
 			yield return [
-				"someTrampolineName",
 				refEnumParameter,
 				$"var ret = invoker (BlockLiteral, inNumberOfPackets, ({Global ("AVFoundation.AVAudioConverterInputStatus")}*) {Global ("System.Runtime")}.CompilerServices.Unsafe.AsPointer<{Global ("AVFoundation.AVAudioConverterInputStatus")}> (ref outStatus));",
 			];
@@ -4475,7 +4465,6 @@ namespace NS {
 ";
 
 			yield return [
-				"someTrampolineName",
 				boolReferenceParameter,
 				$"var ret = invoker (BlockLiteral, comp__handle__, (byte*) {Global ("System.Runtime")}.CompilerServices.Unsafe.AsPointer<bool> (ref stop));",
 			];
@@ -4492,7 +4481,6 @@ namespace NS {
 ";
 
 			yield return [
-				"someTrampolineName",
 				doubleReferenceParameter,
 				$"invoker (BlockLiteral, event__handle__, (double*) {Global ("System.Runtime")}.CompilerServices.Unsafe.AsPointer<double> (ref timeStamp), (byte*) global::System.Runtime.CompilerServices.Unsafe.AsPointer<bool> (ref removeEvent));",
 			];
@@ -4509,7 +4497,6 @@ namespace NS {
 ";
 
 			yield return [
-				"someTrampolineName",
 				blockParameter,
 				$"invoker (BlockLiteral, ({Global ("ObjCRuntime.NativeHandle")}) block_ptr_callbackParameter);"
 			];
@@ -4520,7 +4507,7 @@ namespace NS {
 
 	[Theory]
 	[AllSupportedPlatformsClassData<TestDataGetTrampolineNativeInvokeArguments>]
-	void CallNativeInvokerDelegateTests (ApplePlatform platform, string trampolineName, string inputText, string expectedExpression)
+	void CallNativeInvokerDelegateTests (ApplePlatform platform, string inputText, string expectedExpression)
 	{
 		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
 		Assert.Single (syntaxTrees);
@@ -4536,7 +4523,7 @@ namespace NS {
 		var parameter = changes.Value.Parameters [0];
 		// assert it is indeed a delegate
 		Assert.NotNull (parameter.Type.Delegate);
-		var argumentSyntax = GetTrampolineNativeInvokeArguments (trampolineName, parameter.Type.Delegate);
+		var argumentSyntax = GetTrampolineNativeInvokeArguments (parameter.Type.Delegate);
 		var invocation = CallNativeInvokerDelegate (parameter.Type.Delegate, argumentSyntax);
 		var x = invocation.ToFullString ();
 		Assert.Equal (expectedExpression, invocation.ToFullString ());

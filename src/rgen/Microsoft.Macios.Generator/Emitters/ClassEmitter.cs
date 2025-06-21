@@ -166,6 +166,12 @@ return {backingField};
 			if (getter is null)
 				continue;
 
+			// add backing variable for the property if it is needed
+			if (property.NeedsBackingField) {
+				classBlock.WriteLine ();
+				classBlock.WriteLine($"object? {property.BackingField} = null;");
+			}
+			
 			classBlock.WriteLine ();
 			classBlock.AppendMemberAvailability (property.SymbolAvailability);
 			classBlock.AppendGeneratedCodeAttribute (optimizable: true);
@@ -193,8 +199,12 @@ if (IsDirectBinding) {{
 	{ExpressionStatement (invocations.Getter.SendSuper)}
 }}
 {ExpressionStatement (KeepAlive ("this"))}
-return {tempVar};
 ");
+					if (property.RequiresDirtyCheck) {
+						getterBlock.WriteLine ("MarkDirty ();");
+						getterBlock.WriteLine ($"{property.BackingField} = ret;");
+					}
+					getterBlock.WriteLine ($"return {tempVar};");
 				}
 
 				var setter = property.GetAccessor (AccessorKind.Setter);
@@ -214,6 +224,11 @@ return {tempVar};
 						setterBlock.WriteLine ();
 					}
 					setterBlock.WriteLine ("throw new NotImplementedException();");
+					
+					if (property.RequiresDirtyCheck) {
+						setterBlock.WriteLine ("MarkDirty ();");
+						setterBlock.WriteLine ($"{property.BackingField} = value;");
+					}
 				}
 			}
 		}

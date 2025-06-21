@@ -72,7 +72,7 @@ public class BindingSyntaxFactoryPropertyTests {
 
 			property = new Property (
 				name: "MyProperty",
-				returnType: ReturnTypeForArray ("string"),
+				returnType: ReturnTypeForArray ("string", underlyingType: SpecialType.System_String),
 				symbolAvailability: new (),
 				attributes: [],
 				modifiers: [],
@@ -97,7 +97,7 @@ public class BindingSyntaxFactoryPropertyTests {
 
 			property = new Property (
 				name: "MyProperty",
-				returnType: ReturnTypeForArray ("string", isNullable: true),
+				returnType: ReturnTypeForArray ("string", isNullable: true, underlyingType: SpecialType.System_String),
 				symbolAvailability: new (),
 				attributes: [],
 				modifiers: [],

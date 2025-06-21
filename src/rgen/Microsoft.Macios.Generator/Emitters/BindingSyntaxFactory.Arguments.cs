@@ -248,7 +248,7 @@ static partial class BindingSyntaxFactory {
 			
 			// native enum, return the conversion expression to the native type
 			{ Type.IsNativeEnum: true} 
-				=> CastNativeToEnum (argumentInfo.Name, argumentInfo.Type)!,
+				=> CastNativeToEnum (IdentifierName (argumentInfo.Name), argumentInfo.Type)!,
 			
 			// boolean, convert it to byte
 			{ Type.SpecialType: SpecialType.System_Boolean } 

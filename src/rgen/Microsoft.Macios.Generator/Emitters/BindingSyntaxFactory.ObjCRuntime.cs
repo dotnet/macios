@@ -76,7 +76,7 @@ static partial class BindingSyntaxFactory {
 	/// an enum and be marked as native. If it is not, the method returns null.</param>
 	/// <returns>The cast C# expression, or null if the parameter is not a native enum.</returns>
 	internal static CastExpressionSyntax? CastNativeToEnum (in Parameter parameter)
-		=> CastNativeToEnum (parameter.Name, parameter.Type);
+		=> CastNativeToEnum (IdentifierName (parameter.Name), parameter.Type);
 
 	/// <summary>
 	/// Returns the expression needed to cast a native representation of an enum back to its enum type.
@@ -85,7 +85,7 @@ static partial class BindingSyntaxFactory {
 	/// an enum and be marked as native. If it is not, the method returns null.</param>
 	/// <returns>The cast C# expression, or null if the parameter is not a native enum.</returns>
 	internal static CastExpressionSyntax? CastNativeToEnum (in DelegateParameter parameter)
-		=> CastNativeToEnum (parameter.Name, parameter.Type);
+		=> CastNativeToEnum (IdentifierName (parameter.Name), parameter.Type);
 
 	/// <summary>
 	/// Returns the expression needed to cast a native representation of an enum back to its enum type.
@@ -94,7 +94,7 @@ static partial class BindingSyntaxFactory {
 	/// <param name="typeInfo">The type information of the enum. The type info has to be
 	/// an enum and be marked as native. If it is not, the method returns null.</param>
 	/// <returns>The cast C# expression, or null if the typeInfo is not a native enum.</returns>
-	internal static CastExpressionSyntax? CastNativeToEnum (string variableName, in TypeInfo typeInfo)
+	internal static CastExpressionSyntax? CastNativeToEnum (ExpressionSyntax variableName, in TypeInfo typeInfo)
 	{
 		// not an enum and not a native value. we cannot calculate the casting expression.
 		if (!typeInfo.IsEnum || !typeInfo.IsNativeEnum)
@@ -104,7 +104,7 @@ static partial class BindingSyntaxFactory {
 		var castExpression = CastExpression (typeInfo.GetIdentifierSyntax (), // (IntPtr/UIntPtr) cast
 			CastExpression (
 					IdentifierName (enumBackingValue),
-					IdentifierName (variableName)
+					variableName
 						.WithLeadingTrivia (Space))
 				.WithLeadingTrivia (Space)); // (backingfield) (variable) cast
 		return castExpression;
@@ -178,29 +178,11 @@ static partial class BindingSyntaxFactory {
 	}
 
 	/// <summary>
-	/// Returns the expression needed to cast a byte to a bool to be used in a call. 
-	/// </summary>
-	/// <param name="variableName">The variable to cast.</param>
-	/// <param name="typeInfo">The type information of the variable.</param>
-	/// <returns>A binary expression that casts a byte to a bool.</returns>
-	internal static BinaryExpressionSyntax CastToBool (string variableName, in TypeInfo typeInfo)
-	{
-		// with this exact space count
-		// byte != 0;
-		return BinaryExpression (
-			SyntaxKind.NotEqualsExpression,
-			IdentifierName (variableName),
-			LiteralExpression (
-				SyntaxKind.NumericLiteralExpression,
-				Literal (0))).NormalizeWhitespace ();
-	}
-
-	/// <summary>
 	/// Return the expression needed to cast an invocation that returns a byte to a bool.
 	/// </summary>
 	/// <param name="expression">The byte returning invocation expression.</param>
 	/// <returns>The expression need to cast the invocation to a byte.</returns>
-	internal static BinaryExpressionSyntax ByteToBool (ExpressionSyntax expression)
+	internal static BinaryExpressionSyntax CastToBool (ExpressionSyntax expression)
 	{
 		// generates: invocation != 0
 		return BinaryExpression (
@@ -1157,4 +1139,154 @@ static partial class BindingSyntaxFactory {
 			statement: throwHelper.WithLeadingTrivia (LineFeed, Tab),
 			@else: default);
 	}
+
+	/// <summary>
+	/// Generates an expression to convert a native value (represented by an expression) to its corresponding managed type.
+	/// This method handles various conversions required when receiving data from a native call, such as:
+	/// - Casting native integer values to managed enums (including native and smart enums).
+	/// - Creating managed wrapper objects like <c>CMSampleBuffer</c> and <c>AudioBuffers</c> from native handles.
+	/// - Converting native objects returned via a <c>[BindAs]</c> attribute (e.g., NSNumber, NSValue, NSString) to the corresponding managed type.
+	/// - Creating managed delegates from native block pointers.
+	/// - Converting native arrays (e.g., CFArray) to managed arrays (e.g., string[], INativeObject[]).
+	/// - Creating managed <c>INativeObject</c> or <c>NSObject</c> instances from native handles, with optional handle release semantics.
+	/// - Converting native strings (e.g., CFString) to managed strings.
+	/// - Converting native booleans (bytes) to managed booleans.
+	/// </summary>
+	/// <param name="info">The <see cref="ReturnInfo"/> describing the expected managed return type and its attributes.</param>
+	/// <param name="expression">The <see cref="ExpressionSyntax"/> representing the native value to be converted.</param>
+	/// <returns>An <see cref="ExpressionSyntax"/> representing the converted managed value, or the original expression if no conversion is needed.</returns>
+#pragma warning disable format
+	internal static ExpressionSyntax? ConvertToManaged (in ReturnInfo info, ExpressionSyntax expression) 
+		=> info switch { 
+			
+			// enum values
+			
+			{ Type.IsEnum: true, Type.IsNativeEnum: true } 
+				=> CastNativeToEnum (expression, info.Type), 
+			
+			// smart enum, get type from string
+			{ Type.IsEnum: true, Type.IsSmartEnum: true, Type.IsNativeEnum: false } 
+				=> GetSmartEnumFromNSString (info.Type, Argument (expression)),
+			
+			// normal enum casting
+			{ Type.IsEnum: true, Type.IsSmartEnum: false, Type.IsNativeEnum: false } 
+				=> CastExpression (
+					info.Type.GetIdentifierSyntax (), 
+					expression.WithLeadingTrivia (Space)),
+			
+			// CoreMedia.CMSampleBuffer
+			// new global::CoreMedia.CMSampleBuffer ({0})
+			{ Type.FullyQualifiedName: "CoreMedia.CMSampleBuffer" } => 
+				New (CMSampleBuffer, [Argument (expression), BoolArgument (false)]), 
+			
+			// AudioToolbox.AudioBuffers
+			// new global::AudioToolbox.AudioBuffers ({0})
+			{ Type.FullyQualifiedName: "AudioToolbox.AudioBuffers" } =>
+				New (AudioBuffers, [Argument (expression), BoolArgument (false)]),
+			
+			// bind from NSNumber: NSNumber.ToInt32 (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (class_ptr, Selector.GetHandle ("selector"));
+			{ BindAs.Type.FullyQualifiedName: "Foundation.NSNumber", Type.IsArray: false } => 
+				NSNumberFromHandle (info.Type, [Argument (expression)]),
+			
+			// bind from NSNumber array: NSArray.ArrayFromHandleFunc <int> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (class_ptr, Selector.GetHandle ("selector"), NSNumber.ToInt32, false))
+			{ BindAs.Type.FullyQualifiedName: "Foundation.NSNumber", Type.IsArray: true } => 
+				NSArrayFromHandleFunc (info.Type.ToArrayElementType ().GetIdentifierSyntax (), [Argument (expression), Argument(NSNumberFromHandle (info.Type)!), BoolArgument (false)]),
+			
+			// bind from NSValue: NSValue.ToCGPoint (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, Selector.GetHandle (\"myProperty\")))
+			{ BindAs.Type.FullyQualifiedName: "Foundation.NSValue", Type.IsArray: false } => 
+				NSValueFromHandle (info.Type, [Argument (expression)]),
+			
+			// bind from NSValue array: NSArray.ArrayFromHandleFunc<CoreGraphics.CGPoint> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, Selector.GetHandle (\"myProperty\")), NSValue.ToCGPoint, false)
+			{ BindAs.Type.FullyQualifiedName: "Foundation.NSValue", Type.IsArray: true } => 
+				NSArrayFromHandleFunc (info.Type.ToArrayElementType ().GetIdentifierSyntax (), [Argument (expression), Argument(NSValueFromHandle (info.Type)!), BoolArgument (false)]),
+
+			// bind from NSString to a SmartEnum: "global::AVFoundation.AVCaptureSystemPressureLevelExtensions.GetNullableValue (arg1)
+			{ BindAs.Type.FullyQualifiedName: "Foundation.NSString", Type.IsSmartEnum: true} =>
+				SmartEnumGetValue (info.Type, [Argument (expression)]),
+			
+			// block callback
+			// global::ObjCRuntime.Trampolines.{TrampolineNativeClass}.Create (ret)!;
+			{ Type.IsDelegate: true } 
+				=> TrampolineNativeInvocationClassCreate (info.Type, [Argument (expression)]), 
+			
+			// Arrays 
+			
+			// string[]? => CFArray.StringArrayFromHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (class_ptr, Selector.GetHandle ("selector")), false);
+			{ Type.IsArray: true, Type.ArrayElementType: SpecialType.System_String, Type.IsNullable: true } =>
+				StringArrayFromHandle ([Argument (expression), BoolArgument (false)]),
+
+			// string[] => CFArray.StringArrayFromHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (class_ptr, Selector.GetHandle ("selector")), false)!;
+			{ Type.IsArray: true, Type.ArrayElementType: SpecialType.System_String, Type.IsNullable: false } =>
+				SuppressNullableWarning (StringArrayFromHandle ([Argument (expression), BoolArgument (false)])),
+			
+			// NSObject[] => CFArray.ArrayFromHandle<Foundation.NSMetadataItem> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, Selector.GetHandle ("results")))!;
+			{ Type.IsArray: true, Type.ArrayElementTypeIsWrapped: true }
+				=> GetCFArrayFromHandle (info.Type.ToArrayElementType ().ToNonNullable ().GetIdentifierSyntax (), [
+					Argument (expression)
+				], suppressNullableWarning: !info.Type.IsNullable), 
+			
+			{ Type.IsArray: true, Type.ArrayElementIsINativeObject: true }
+				=> GetCFArrayFromHandle (info.Type.ToArrayElementType ().ToNonNullable ().GetIdentifierSyntax (), [
+					Argument (expression)
+				], suppressNullableWarning: !info.Type.IsNullable), 
+			
+			// Native objects
+			
+			// INativeObject from a native handle
+			// Runtime.GetINativeObject<NSString> (auxVariable, false)!;
+			{ Type.IsINativeObject: true, Type.IsNSObject: false, ReleaseHandle: not null}
+				=> GetINativeObject (
+					nsObjectType: info.Type.ToNonNullable ().GetIdentifierSyntax (), 
+					args: [
+						Argument (expression),
+						BoolArgument (info.ReleaseHandle.Value)
+					], 
+					suppressNullableWarning: !info.Type.IsNullable),
+			
+			{ Type.IsINativeObject: true, Type.IsNSObject: false, ReleaseHandle: null}
+				=> GetINativeObject (
+					nsObjectType: info.Type.ToNonNullable ().GetIdentifierSyntax (), 
+					args: [
+						Argument (expression),
+					], 
+					suppressNullableWarning: !info.Type.IsNullable),
+			
+			// NSObject from a native handle
+			// Runtime.GetNSObject<NSString> (auxVariable, false)!;
+			{ Type.IsNSObject: true, ReleaseHandle: not null} 
+				=> GetNSObject (
+					nsObjectType: info.Type.ToNonNullable ().GetIdentifierSyntax (), 
+					args: [
+						Argument (expression),
+						BoolArgument (false)
+					],
+					suppressNullableWarning: !info.Type.IsNullable),
+			
+			{ Type.IsNSObject: true, ReleaseHandle: null} 
+				=> GetNSObject (
+					nsObjectType: info.Type.ToNonNullable ().GetIdentifierSyntax (), 
+					args: [
+						Argument (expression),
+					],
+					suppressNullableWarning: !info.Type.IsNullable),
+			
+			// Strings
+
+			// string => CFString.FromHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, Selector.GetHandle ("tunnelRemoteAddress")), false);
+			{ Type.SpecialType: SpecialType.System_String, Type.IsNullable: true } =>
+				StringFromHandle ([Argument (expression), BoolArgument (false)]),
+
+			// string => CFString.FromHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, Selector.GetHandle ("tunnelRemoteAddress")), false)!;
+			{ Type.SpecialType: SpecialType.System_String, Type.IsNullable: false } =>
+				SuppressNullableWarning (StringFromHandle ([Argument (expression), BoolArgument (false)])),
+			
+			// Booleans
+
+			// bool => global::ObjCRuntime.Messaging.bool_objc_msgSend (this.Handle, Selector.GetHandle ("canDraw")) != 0;
+			{ Type.SpecialType: SpecialType.System_Boolean } => CastToBool (expression),
+			
+			// general case, just return the result of the send message
+			_ => expression,
+		}; 
+#pragma warning restore format
 }

@@ -4260,7 +4260,7 @@ namespace NS {
 		var delegateDeclaration = GetTrampolineNativeInvokeSignature (parameter.Type);
 		Assert.Equal (expectedExpression, delegateDeclaration.ToString ());
 	}
-	
+
 	class TestDataGetTrampolineNativeInvokeArguments : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()
 		{

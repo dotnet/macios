@@ -16,7 +16,7 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 namespace Microsoft.Macios.Generator.Tests.Emitters;
 
 public class BindingSyntaxFactoryArgumentsTests : BaseGeneratorTestClass {
-	
+
 	class TestDataGetTrampolinePostNativeInvokeArgumentConversions : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()
 		{
@@ -767,7 +767,7 @@ namespace NS {
 		sb.Write (conversions, false);
 		Assert.Equal (expectedExpression, sb.ToCode ());
 	}
-	
+
 	class TestDataGetTrampolineNativeInvokeArgumentInitializations : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()
 		{
@@ -872,7 +872,7 @@ namespace NS {
 		sb.Write (conversions);
 		Assert.Equal (expectedExpression, sb.ToCode ());
 	}
-	
+
 	class TestDataGetTrampolineInvokeArgumentInitializations : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()
 		{

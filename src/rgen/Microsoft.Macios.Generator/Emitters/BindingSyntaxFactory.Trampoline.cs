@@ -682,7 +682,7 @@ static partial class BindingSyntaxFactory {
 		// default case, we do not need to do anything
 		return [];
 	}
-	
+
 	/// <summary>
 	/// Generates any necessary post-invocation statements for a by-ref trampoline argument.
 	/// This is used to handle special cases for by-ref parameters, such as assigning back values
@@ -787,7 +787,7 @@ static partial class BindingSyntaxFactory {
 		}
 		return [];
 	}
-	
+
 	/// <summary>
 	/// Returns the list of expressions that need to be executed before the trampoline is invoked. This allows to
 	/// help the trampoline to convert the parameters to the expected types.
@@ -1084,7 +1084,7 @@ static partial class BindingSyntaxFactory {
 			_ => []
 		};
 	}
-	
+
 	/// <summary>
 	/// Generates a list of <see cref="TrampolineArgumentSyntax"/> objects for invoking a native delegate (block) from a trampoline.
 	/// Each <see cref="TrampolineArgumentSyntax"/> encapsulates the argument itself, along with any necessary

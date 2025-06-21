@@ -11,7 +11,7 @@ using TypeInfo = Microsoft.Macios.Generator.DataModel.TypeInfo;
 
 namespace Microsoft.Macios.Generator.Emitters;
 static partial class BindingSyntaxFactory {
-	
+
 	/// <summary>
 	/// Generates an initialization statement for a 'byref' parameter that is passed as a pointer.
 	/// This is used to initialize 'out' parameters to their default value before a native call.
@@ -35,7 +35,7 @@ static partial class BindingSyntaxFactory {
 					Token (SyntaxKind.DefaultKeyword)))).NormalizeWhitespace ();
 		return [expr];
 	}
-	
+
 	/// <summary>
 	/// Generates a list of syntax nodes representing the necessary initializations for an argument before a native invocation.
 	/// This method is used to set up variables that will be passed by reference to native code.
@@ -53,7 +53,7 @@ static partial class BindingSyntaxFactory {
 		};
 #pragma warning restore format
 	}
-	
+
 	/// <summary>
 	/// Generates a list of syntax nodes representing the necessary conversions or cleanup for an argument after a native invocation.
 	/// This method is primarily used for resource management after a native call has completed. It generates statements that:
@@ -127,7 +127,7 @@ static partial class BindingSyntaxFactory {
 		};
 #pragma warning restore format
 	}
-	
+
 	/// <summary>
 	/// Generates a list of syntax nodes representing the necessary conversions for an argument before a native invocation.
 	/// This method prepares managed types for a native call by generating statements that:
@@ -205,7 +205,7 @@ static partial class BindingSyntaxFactory {
 		builder.AddRange (conversions);
 		return builder.ToImmutable ();
 	}
-	
+
 	/// <summary>
 	/// Generates an <see cref="ArgumentSyntax"/> for a parameter in a native invocation.
 	/// This method constructs the appropriate expression to pass a managed type as an argument to a native function,

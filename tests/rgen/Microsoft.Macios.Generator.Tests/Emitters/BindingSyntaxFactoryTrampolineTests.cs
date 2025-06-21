@@ -3960,7 +3960,7 @@ namespace NS {
 		var delegateDeclaration = GetTrampolineDelegatePointer (parameter.Type);
 		Assert.Equal (expectedExpression, delegateDeclaration.ToString ());
 	}
-	
+
 	class TestDataGetTrampolineNativeInvokeSignature : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()
 		{
@@ -4389,7 +4389,7 @@ namespace NS {
 		sb.Write (conversions);
 		Assert.Equal (expectedExpression, sb.ToCode ());
 	}
-	
+
 	class TestDataGetTrampolineNativeInvokeArguments : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()
 		{

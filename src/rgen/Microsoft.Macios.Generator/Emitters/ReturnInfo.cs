@@ -18,11 +18,11 @@ readonly record struct ReturnInfo {
 	/// The [BindAs] attribute data, if any.
 	/// </summary>
 	public BindFromData? BindAs { get; init; }
-	
+
 	/// <summary>
 	/// True if the returned handle should be released after use.
 	/// </summary>
-	public bool? ReleaseHandle {get; init; } = null;
+	public bool? ReleaseHandle { get; init; } = null;
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="ReturnInfo"/> struct from a <see cref="Property"/>.
@@ -44,14 +44,14 @@ readonly record struct ReturnInfo {
 		BindAs = null;
 		ReleaseHandle = false;
 	}
-	
+
 	/// <summary>
 	/// Implicitly converts a <see cref="Property"/> to a <see cref="ReturnInfo"/>.
 	/// </summary>
 	/// <param name="property">The property to convert.</param>
 	public static implicit operator ReturnInfo (in Property property)
 		=> new (property);
-	
+
 	/// <summary>
 	/// Implicitly converts a <see cref="DelegateInfo"/> to a <see cref="ReturnInfo"/>.
 	/// </summary>

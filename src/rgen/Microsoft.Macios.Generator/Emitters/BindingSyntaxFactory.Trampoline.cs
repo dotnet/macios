@@ -88,97 +88,8 @@ static partial class BindingSyntaxFactory {
 		// ignore those types that are not delegates or that are a delegate with a void return type
 		if (!typeInfo.IsDelegate || typeInfo.Delegate.ReturnType.IsVoid)
 			return null;
-
 		var auxIdentifier = IdentifierName (auxVariableName);
-#pragma warning disable format
-		// based on the return type of the delegate we build a statement that will return the expected value
-		return typeInfo.Delegate.ReturnType switch {
-			// auxVariable != 0
-			{ SpecialType: SpecialType.System_Boolean } 
-				=> CastToBool (auxVariableName, typeInfo.Delegate.ReturnType),
-			
-			// enum values
-			
-			// normal enum, cast to the enum type
-			// (EnumType) auxVariable
-			
-			{ IsEnum: true, IsNativeEnum: true } => CastNativeToEnum (auxVariableName, typeInfo.Delegate.ReturnType), 
-		
-			// smart enum, get type from string
-			{ IsEnum: true, IsSmartEnum: true, IsNativeEnum: false } 
-				=> GetSmartEnumFromNSString (typeInfo.Delegate.ReturnType, Argument (auxIdentifier)),
-			
-			// normal enum casting
-			{ IsEnum: true, IsSmartEnum: false, IsNativeEnum: false } 
-				=> CastExpression (
-					typeInfo.Delegate.ReturnType.GetIdentifierSyntax (), 
-					auxIdentifier.WithLeadingTrivia (Space)),
-			
-			// string from native handle
-			// CFString.FromHandle (auxVariable)!
-			{ SpecialType: SpecialType.System_String, IsNullable: false} 
-				=> SuppressNullableWarning (StringFromHandle ([Argument (auxIdentifier)])),
-			
-			// CFString.FromHandle (auxVariable)
-			{ SpecialType: SpecialType.System_String, IsNullable: true} 
-				=> StringFromHandle ([Argument (auxIdentifier)]),
-			
-			// string array
-			// CFArray.StringArrayFromHandle (obj)!
-			{ IsArray: true, ArrayElementType: SpecialType.System_String, IsNullable: false} 
-				=> SuppressNullableWarning (StringArrayFromHandle ([Argument (auxIdentifier)])),
-			
-			// CFArray.StringArrayFromHandle (obj)
-			{ IsArray: true, ArrayElementType: SpecialType.System_String, IsNullable: true} 
-				=> StringArrayFromHandle ([Argument (auxIdentifier)]),
-			
-			{ FullyQualifiedName: "CoreMedia.CMSampleBuffer" } => 
-				New (CMSampleBuffer, [Argument (auxIdentifier), BoolArgument (false)]), 
-			
-			// AudioToolbox.AudioBuffers
-			// new global::AudioToolbox.AudioBuffers ({0})
-			{ FullyQualifiedName: "AudioToolbox.AudioBuffers" } =>
-				New (AudioBuffers, [Argument (auxIdentifier), BoolArgument (false)]),
-			
-			// INativeObject from a native handle
-			// Runtime.GetINativeObject<NSString> (auxVariable, false)!;
-			{ IsINativeObject: true, IsNSObject: false }
-				=> GetINativeObject (
-					nsObjectType: typeInfo.Delegate.ReturnType.ToNonNullable ().GetIdentifierSyntax (), 
-					args: [
-						Argument (auxIdentifier),
-						BoolArgument (false)
-					], 
-					suppressNullableWarning: !typeInfo.Delegate.ReturnType.IsNullable),
-			
-			// NSObject from a native handle
-			// Runtime.GetNSObject<NSString> (auxVariable, false)!;
-			{ IsNSObject: true } 
-				=> GetNSObject (
-					nsObjectType: typeInfo.Delegate.ReturnType.ToNonNullable ().GetIdentifierSyntax (), 
-					args: [
-						Argument (auxIdentifier),
-						BoolArgument (false)
-					],
-					suppressNullableWarning: !typeInfo.Delegate.ReturnType.IsNullable), 
-			
-			// CFArray.ArrayFromHandle<global::Foundation.NSMetadataItem>  
-			{ IsArray: true, ArrayElementTypeIsWrapped: true }
-				=> GetCFArrayFromHandle (typeInfo.Delegate.ReturnType.ToArrayElementType ().ToNonNullable ().GetIdentifierSyntax (), [
-					Argument (auxIdentifier)
-				], suppressNullableWarning: !typeInfo.Delegate.ReturnType.IsNullable), 
-			
-			// CFArray.ArrayFromHandle<global::Foundation.NSMetadataItem>  
-			{ IsArray: true, ArrayElementIsINativeObject: true }
-				=> GetCFArrayFromHandle (typeInfo.Delegate.ReturnType.ToArrayElementType ().ToNonNullable ().GetIdentifierSyntax (), [
-					Argument (auxIdentifier)
-				], suppressNullableWarning: !typeInfo.Delegate.ReturnType.IsNullable), 
-			
-			// default case, return the value as is
-			_ => auxIdentifier,
-
-		};
-#pragma warning restore format
+		return ConvertToManaged (typeInfo.Delegate, auxIdentifier);
 	}
 
 	/// <summary>
@@ -449,7 +360,7 @@ static partial class BindingSyntaxFactory {
 			
 			// boolean, convert it to byte
 			{ Type.SpecialType: SpecialType.System_Boolean } 
-				=> CastToBool (parameter.Name, parameterType)!,
+				=> CastToBool (IdentifierName (parameter.Name))!,
 			
 			// array types
 			

@@ -195,9 +195,9 @@ public class BindingSyntaxFactoryObjCRuntimeTests {
 
 	[Theory]
 	[ClassData (typeof (TestDataByteToBoolTests))]
-	void ByteToBoolTests (InvocationExpressionSyntax invocationExpressionSyntax, string expectedDeclaration)
+	void CastToBoolTests (InvocationExpressionSyntax invocationExpressionSyntax, string expectedDeclaration)
 	{
-		var declaration = ByteToBool (invocationExpressionSyntax);
+		var declaration = CastToBool (invocationExpressionSyntax);
 		Assert.Equal (expectedDeclaration, declaration.ToString ());
 	}
 

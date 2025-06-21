@@ -589,7 +589,7 @@ namespace NS {
 
 			yield return [
 				systemStringResult,
-				$"{Global ("CoreFoundation.CFString")}.FromHandle (auxVariable)!"
+				$"{Global ("CoreFoundation.CFString")}.FromHandle (auxVariable, false)!"
 			];
 
 			const string nullableSystemStringResult = @"
@@ -606,7 +606,7 @@ namespace NS {
 
 			yield return [
 				nullableSystemStringResult,
-				$"{Global ("CoreFoundation.CFString")}.FromHandle (auxVariable)"
+				$"{Global ("CoreFoundation.CFString")}.FromHandle (auxVariable, false)"
 			];
 
 			const string boolReturnType = @"

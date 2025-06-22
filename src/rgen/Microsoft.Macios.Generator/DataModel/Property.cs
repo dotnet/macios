@@ -70,7 +70,7 @@ readonly partial struct Property : IEquatable<Property> {
 	/// <summary>
 	/// Returns if the property is static.
 	/// </summary>
-	public bool IsStatic => isStatic; 
+	public bool IsStatic => isStatic;
 
 	/// <summary>
 	/// The platform availability of the property.

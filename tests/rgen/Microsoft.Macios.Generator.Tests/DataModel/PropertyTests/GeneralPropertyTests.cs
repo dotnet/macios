@@ -23,12 +23,12 @@ public class GeneralPropertyTests {
 		var property = new Property (
 			name: propertyName,
 			returnType: ReturnTypeForString (),
-			symbolAvailability: new(),
+			symbolAvailability: new (),
 			attributes: [],
 			modifiers: [Token (SyntaxKind.StaticKeyword)],
 			accessors: []
 		) {
-			ExportFieldData = new()
+			ExportFieldData = new ()
 		};
 		Assert.Equal ($"_{propertyName}", property.BackingField);
 	}
@@ -42,12 +42,12 @@ public class GeneralPropertyTests {
 		var property = new Property (
 			name: propertyName,
 			returnType: ReturnTypeForString (),
-			symbolAvailability: new(),
+			symbolAvailability: new (),
 			attributes: [],
 			modifiers: isStatic ? [Token (SyntaxKind.StaticKeyword)] : [],
 			accessors: []
 		) {
-			ExportFieldData = null, 
+			ExportFieldData = null,
 		};
 		Assert.Equal (Nomenclator.GetPropertyBackingFieldName (propertyName, isStatic), property.BackingField);
 	}

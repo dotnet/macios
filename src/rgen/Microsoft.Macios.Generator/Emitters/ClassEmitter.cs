@@ -169,9 +169,9 @@ return {backingField};
 			// add backing variable for the property if it is needed
 			if (property.NeedsBackingField) {
 				classBlock.WriteLine ();
-				classBlock.WriteLine($"object? {property.BackingField} = null;");
+				classBlock.WriteLine ($"object? {property.BackingField} = null;");
 			}
-			
+
 			classBlock.WriteLine ();
 			classBlock.AppendMemberAvailability (property.SymbolAvailability);
 			classBlock.AppendGeneratedCodeAttribute (optimizable: true);
@@ -224,7 +224,7 @@ if (IsDirectBinding) {{
 						setterBlock.WriteLine ();
 					}
 					setterBlock.WriteLine ("throw new NotImplementedException();");
-					
+
 					if (property.RequiresDirtyCheck) {
 						setterBlock.WriteLine ("MarkDirty ();");
 						setterBlock.WriteLine ($"{property.BackingField} = value;");

@@ -224,7 +224,7 @@ static class Nomenclator {
 	/// Returns the name used for the block literal type.
 	/// </summary>
 	public static string GetBlockLiteralName () => "BlockLiteral";
-	
+
 	/// <summary>
 	/// Generates the name for the backing field of a property.
 	/// </summary>

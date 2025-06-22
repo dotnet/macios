@@ -202,7 +202,7 @@ if (IsDirectBinding) {{
 ");
 					if (property.RequiresDirtyCheck) {
 						getterBlock.WriteLine ("MarkDirty ();");
-						getterBlock.WriteLine ($"{property.BackingField} = ret;");
+						getterBlock.WriteLine ($"{property.BackingField} = {tempVar};");
 					}
 					getterBlock.WriteLine ($"return {tempVar};");
 				}

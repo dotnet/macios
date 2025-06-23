@@ -192,10 +192,10 @@ static partial class BindingSyntaxFactory {
 				GetNSArrayAuxVariable (argumentInfo)!
 					.WithUsingKeyword (Token (SyntaxKind.UsingKeyword).WithTrailingTrivia (Space)) 
 			],
-
+			
 			{ Type.SpecialType: SpecialType.System_String } =>  [
+				// CFString.CreateNative returns a NativeHandle, which doesn't work with using.
 				GetStringAuxVariable (argumentInfo)!
-					.WithUsingKeyword (Token (SyntaxKind.UsingKeyword).WithTrailingTrivia (Space)) 
 			],
 
 			{ Type.IsProtocol: true } => [GetHandleAuxVariable (argumentInfo)!],

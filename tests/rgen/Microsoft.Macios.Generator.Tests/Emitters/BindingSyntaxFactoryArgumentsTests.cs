@@ -410,7 +410,7 @@ namespace NS {
 				stringParameter,
 				$@"if (stringParameter is null)
 	{Global ("ObjCRuntime")}.ThrowHelper.ThrowArgumentNullException (nameof (stringParameter));
-using var nsstringParameter = {Global ("CoreFoundation")}.CFString.CreateNative (stringParameter);
+var nsstringParameter = {Global ("CoreFoundation")}.CFString.CreateNative (stringParameter);
 ",
 			];
 
@@ -426,7 +426,7 @@ namespace NS {
 ";
 			yield return [
 				nullableStringParameter,
-				$"using var nsstringParameter = {Global ("CoreFoundation")}.CFString.CreateNative (stringParameter);\n",
+				$"var nsstringParameter = {Global ("CoreFoundation")}.CFString.CreateNative (stringParameter);\n",
 			];
 
 			var stringArrayParameter = @"

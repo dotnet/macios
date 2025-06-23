@@ -269,7 +269,7 @@ static partial class BindingSyntaxFactory {
 			};
 #pragma warning restore format
 		}
-		
+
 		// should contain any null check and the required conversions to the native type
 		builder.AddRange (conversions);
 		return builder.ToImmutable ();
@@ -380,7 +380,7 @@ static partial class BindingSyntaxFactory {
 		// attribute, we need get that expression and convert the NSValue/NSNumber to the expected type.
 		if (argumentInfo.BindAs is not null) {
 			// the name of the bind as aux variable
-			var variableName = Nomenclator.GetNameForVariableType (argumentInfo.Name, 
+			var variableName = Nomenclator.GetNameForVariableType (argumentInfo.Name,
 				argumentInfo.Type.IsArray ? Nomenclator.VariableType.NSArray : Nomenclator.VariableType.BindFrom)!;
 			// we need to use the name used for the handle
 			variableName = Nomenclator.GetNameForVariableType (variableName, Nomenclator.VariableType.Handle)!;

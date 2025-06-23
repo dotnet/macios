@@ -789,6 +789,11 @@
         </value>
     </data>
     
+    <data name="M0169" xml:space="preserve">
+        <value>Adjusted path from '{0}' to '{1}'
+        </value>
+    </data>
+
     <data name="E0169" xml:space="preserve">
         <value>Unknown target framework identifier: {0}.
         </value>
@@ -1765,5 +1770,43 @@
 
     <data name="E7152_InvalidMtouchHttpClientHandler" xml:space="preserve">
         <value>Invalid value for 'MtouchHttpClientHandler' ('{0}', must be either 'NSUrlSessionHandler' or 'CFNetworkHandler' (or not set at all).</value>
+    </data>
+
+    <data name="W7154" xml:space="preserve">
+        <value>The {0} item '{1}' imported from '{2}' was ignored, because there's already an existing item from the current project with the same LogicalName ('{3}')</value>
+        <comment>
+            {0}: the name of the MSBuild item in question (BundleResource, ImageAsset, SceneKitAsset, etc.).
+            {1}: path to a file name (of an item)
+            {2}: path to an assembly
+            {3}: value of the LogicalName metadata of the item
+        </comment>
+    </data>
+
+    <data name="W7155" xml:space="preserve">
+        <value>The {0} item '{1}' imported from '{2}' was ignored, because there's another item from a different assembly ({4}) with the same LogicalName ('{3}')</value>
+        <comment>
+            {0}: the name of the MSBuild item in question (BundleResource, ImageAsset, SceneKitAsset, etc.).
+            {1}: path to a file name (of a resource)
+            {2}: path to an assembly
+            {3}: value of the LogicalName metadata.
+            {4}: comma-separated list of assemblies.
+        </comment>
+    </data>
+
+    <data name="W7156" xml:space="preserve">
+        <value>The {0} item '{1}' was ignored, because there's another item with the same LogicalName ('{2}')</value>
+        <comment>
+            {0}: the name of the MSBuild item in question (BundleResource, ImageAsset, SceneKitAsset, etc.).
+            {1}: path to a file name (of a resource)
+            {2}: value of the LogicalName metadata.
+        </comment>
+    </data>
+
+    <data name="E7157" xml:space="preserve">
+        <value>The {0} item '{1}' does not have a 'LogicalName' metadata.</value>
+        <comment>
+            {0}: the name of the MSBuild item in question (BundleResource, ImageAsset, SceneKitAsset, etc.).
+            {1}: path to a file name (of a resource)
+        </comment>
     </data>
 </root>

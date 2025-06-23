@@ -2,6 +2,7 @@
 
 #nullable enable
 
+using AudioUnit;
 using AVFoundation;
 using CoreImage;
 using Foundation;
@@ -388,7 +389,7 @@ static partial class Trampolines
 			var del = global::ObjCRuntime.BlockLiteral.GetTarget<global::AVFoundation.AVAssetImageGenerateAsynchronouslyForTimeCompletionHandler> (block_ptr);
 			if (del is null)
 				throw ErrorHelper.CreateError (8059, Errors.MX8059, block_ptr, typeof (global::AVFoundation.AVAssetImageGenerateAsynchronouslyForTimeCompletionHandler));
-			del (global::ObjCRuntime.Runtime.GetINativeObject<global::CoreGraphics.CGImage> (imageRef, false)!, actualTime, global::ObjCRuntime.Runtime.GetNSObject<global::Foundation.NSError> (error)!);
+			del (global::ObjCRuntime.Runtime.GetINativeObject<global::CoreGraphics.CGImage> (imageRef, false), actualTime, global::ObjCRuntime.Runtime.GetNSObject<global::Foundation.NSError> (error));
 		}
 
 		internal static unsafe global::ObjCRuntime.BlockLiteral CreateNullableBlock (global::AVFoundation.AVAssetImageGenerateAsynchronouslyForTimeCompletionHandler? callback)
@@ -425,10 +426,10 @@ static partial class Trampolines
 			return del ?? new NIDAVAssetImageGenerateAsynchronouslyForTimeCompletionHandler ((global::ObjCRuntime.BlockLiteral *) block).Invoke;
 		}
 
-		unsafe void Invoke (global::CoreGraphics.CGImage imageRef, global::CoreMedia.CMTime actualTime, global::Foundation.NSError error)
+		unsafe void Invoke (global::CoreGraphics.CGImage? imageRef, global::CoreMedia.CMTime actualTime, global::Foundation.NSError? error)
 		{
-			var imageRef__handle__ = imageRef!.GetNonNullHandle (nameof (imageRef));
-			var error__handle__ = error!.GetNonNullHandle (nameof (error));
+			var imageRef__handle__ = imageRef?.GetHandle ();
+			var error__handle__ = error?.GetHandle ();
 			invoker (BlockLiteral, imageRef__handle__, actualTime, error__handle__);
 			global::System.GC.KeepAlive (imageRef);
 			global::System.GC.KeepAlive (error);
@@ -495,6 +496,74 @@ static partial class Trampolines
 			var ret = invoker (BlockLiteral, numberOfFrames, outBuffer__handle__, (int*) global::System.Runtime.CompilerServices.Unsafe.AsPointer<int> (ref outError));
 			global::System.GC.KeepAlive (outBuffer);
 			return (global::AVFoundation.AVAudioEngineManualRenderingStatus) (long) ret;
+		}
+	}
+
+	[UnmanagedFunctionPointerAttribute (CallingConvention.Cdecl)]
+	[UserDelegateType (typeof (global::AudioUnit.AUInternalRenderBlock))]
+	unsafe internal delegate global::AudioUnit.AudioUnitStatus DAUInternalRenderBlock (global::System.IntPtr block_ptr, global::AudioUnit.AudioUnitRenderActionFlags* actionFlags, global::AudioToolbox.AudioTimeStamp* timestamp, uint frameCount, global::System.IntPtr outputBusNumber, global::ObjCRuntime.NativeHandle outputData, global::ObjCRuntime.NativeHandle realtimeEventListHead, global::ObjCRuntime.NativeHandle pullInputBlock);
+
+	/// <summary>This class bridges native block invocations that call into C#</summary>
+	static internal class SDAUInternalRenderBlock
+	{
+		[Preserve (Conditional = true)]
+		[UnmanagedCallersOnly]
+		[UserDelegateType (typeof (global::AudioUnit.AUInternalRenderBlock))]
+		internal static unsafe global::AudioUnit.AudioUnitStatus Invoke (global::System.IntPtr block_ptr, global::AudioUnit.AudioUnitRenderActionFlags* actionFlags, global::AudioToolbox.AudioTimeStamp* timestamp, uint frameCount, global::System.IntPtr outputBusNumber, global::ObjCRuntime.NativeHandle outputData, global::ObjCRuntime.NativeHandle realtimeEventListHead, global::ObjCRuntime.NativeHandle pullInputBlock)
+		{
+			*actionFlags = default;
+			*timestamp = default;
+			var del = global::ObjCRuntime.BlockLiteral.GetTarget<global::AudioUnit.AUInternalRenderBlock> (block_ptr);
+			if (del is null)
+				throw ErrorHelper.CreateError (8059, Errors.MX8059, block_ptr, typeof (global::AudioUnit.AUInternalRenderBlock));
+			var ret = del (ref global::System.Runtime.CompilerServices.Unsafe.AsRef<global::AudioUnit.AudioUnitRenderActionFlags> (actionFlags), ref global::System.Runtime.CompilerServices.Unsafe.AsRef<global::AudioToolbox.AudioTimeStamp> (timestamp), frameCount, outputBusNumber, new global::AudioToolbox.AudioBuffers (outputData), global::ObjCRuntime.Runtime.GetINativeObject<global::AudioUnit.AURenderEventEnumerator> (realtimeEventListHead, false)!, NIDAUInternalRenderBlock.Create (pullInputBlock)!);
+			return ret;
+		}
+
+		internal static unsafe global::ObjCRuntime.BlockLiteral CreateNullableBlock (global::AudioUnit.AUInternalRenderBlock? callback)
+		{
+			if (callback is null)
+				return default (global::ObjCRuntime.BlockLiteral);
+			return CreateBlock (callback);
+		}
+
+		[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+		internal static unsafe global::ObjCRuntime.BlockLiteral CreateBlock (global::AudioUnit.AUInternalRenderBlock callback)
+		{
+			delegate* unmanaged<global::System.IntPtr, global::AudioUnit.AudioUnitRenderActionFlags*, global::AudioToolbox.AudioTimeStamp*, uint, global::System.IntPtr, global::ObjCRuntime.NativeHandle, global::ObjCRuntime.NativeHandle, global::ObjCRuntime.NativeHandle, global::AudioUnit.AudioUnitStatus> trampoline = &Invoke;
+			return new global::ObjCRuntime.BlockLiteral (trampoline, callback, typeof (SDAUInternalRenderBlock), nameof (Invoke));
+		}
+	}
+	internal sealed class NIDAUInternalRenderBlock : TrampolineBlockBase
+	{
+		DAUInternalRenderBlock invoker;
+
+		[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+		public unsafe NIDAUInternalRenderBlock (global::ObjCRuntime.BlockLiteral *block) : base (block)
+		{
+			invoker = block->GetDelegateForBlock<DAUInternalRenderBlock> ();
+		}
+
+		[Preserve (Conditional=true)]
+		[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+		public unsafe static DAUInternalRenderBlock? Create (IntPtr block)
+		{
+			if (block == IntPtr.Zero)
+				return null;
+			var del = (DAUInternalRenderBlock) GetExistingManagedDelegate (block);
+			return del ?? new NIDAUInternalRenderBlock ((global::ObjCRuntime.BlockLiteral *) block).Invoke;
+		}
+
+		unsafe global::AudioUnit.AudioUnitStatus Invoke (ref global::AudioUnit.AudioUnitRenderActionFlags actionFlags, ref global::AudioToolbox.AudioTimeStamp timestamp, uint frameCount, global::System.IntPtr outputBusNumber, global::AudioToolbox.AudioBuffers outputData, global::AudioUnit.AURenderEventEnumerator realtimeEventListHead, global::AudioUnit.AURenderPullInputBlock? pullInputBlock)
+		{
+			var outputData__handle__ = outputData!.GetNonNullHandle (nameof (outputData));
+			var realtimeEventListHead__handle__ = realtimeEventListHead!.GetNonNullHandle (nameof (realtimeEventListHead));
+			var block_pullInputBlock = global::ObjCRuntime.Trampolines.SDAUInternalRenderBlock.CreateNullableBlock (pullInputBlock);
+			global::ObjCRuntime.BlockLiteral* block_ptr_pullInputBlock = pullInputBlock is not null ? &block_pullInputBlock : null;
+			var ret = invoker (BlockLiteral, (global::AudioUnit.AudioUnitRenderActionFlags*) global::System.Runtime.CompilerServices.Unsafe.AsPointer<global::AudioUnit.AudioUnitRenderActionFlags> (ref actionFlags), (global::AudioToolbox.AudioTimeStamp*) global::System.Runtime.CompilerServices.Unsafe.AsPointer<global::AudioToolbox.AudioTimeStamp> (ref timestamp), frameCount, outputBusNumber, outputData__handle__, realtimeEventListHead__handle__, NIDAUInternalRenderBlock.Create (pullInputBlock)!);
+			global::System.GC.KeepAlive (outputData);
+			global::System.GC.KeepAlive (realtimeEventListHead);
+			return (global::AudioUnit.AudioUnitStatus) ret;
 		}
 	}
 

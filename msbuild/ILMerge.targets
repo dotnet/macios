@@ -23,6 +23,7 @@
       <MergedAssemblies Include="@(ReferencePath)" Condition="'%(FileName)' == 'ILStrip'" />
       <MergedAssemblies Include="@(ReferencePath)" Condition="'%(FileName)' == 'Newtonsoft.Json'" />
       <MergedAssemblies Include="@(ReferencePath)" Condition="'%(FileName)' == 'Renci.SshNet'" />
+      <MergedAssemblies Include="@(ReferencePath)" Condition="'%(FileName)' == 'BouncyCastle.Cryptography'" />
       <MergedAssemblies Include="@(ReferencePath)" Condition="'%(FileName)' == 'Merq'" />
       <MergedAssemblies Include="@(ReferencePath)" Condition="'%(FileName)' == 'Merq.Core'" />
       <MergedAssemblies Include="@(ReferencePath)" Condition="'%(FileName)' == 'SshNet.Security.Cryptography'" />

@@ -31,7 +31,7 @@ namespace Xamarin.Messaging.Build {
 					var currentDirectory = Directory.GetCurrentDirectory ();
 
 					try {
-						var buildDirectory = Path.Combine (MessagingContext.GetBuildPath (), message.AppName, message.SessionId);
+						var buildDirectory = Path.Combine (MessagingContext.BuildsPath, message.AppName, message.SessionId);
 
 						Directory.CreateDirectory (buildDirectory);
 

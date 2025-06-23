@@ -148,6 +148,10 @@ namespace EventKit {
 
 		[Export ("calendarItemExternalIdentifier")]
 		string CalendarItemExternalIdentifier { get; }
+
+		[iOS (26, 0), MacCatalyst (26, 0), Mac (26, 0)]
+		[Export ("hasMaximumAlarms")]
+		bool HasMaximumAlarms { get; }
 	}
 
 	/// <summary>Encapsulates an account that a calendar reflects.</summary>

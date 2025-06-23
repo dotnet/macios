@@ -108,6 +108,12 @@ static partial class BindingSyntaxFactory {
 			{ IsEnum: true, IsSmartEnum: true, IsNativeEnum: false } 
 				=> GetSmartEnumFromNSString (typeInfo.Delegate.ReturnType, Argument (auxIdentifier)),
 			
+			// normal enum casting
+			{ IsEnum: true, IsSmartEnum: false, IsNativeEnum: false } 
+				=> CastExpression (
+					typeInfo.Delegate.ReturnType.GetIdentifierSyntax (), 
+					auxIdentifier.WithLeadingTrivia (Space)),
+			
 			// string from native handle
 			// CFString.FromHandle (auxVariable)!
 			{ SpecialType: SpecialType.System_String, IsNullable: false} 
@@ -322,7 +328,7 @@ static partial class BindingSyntaxFactory {
 			{ IsPointer: true } => typeInfo.GetIdentifierSyntax (),
 			
 			// delegate parameter is a NativeHandle
-			{ IsDelegate: true } => IntPtr,
+			{ IsDelegate: true } => NativeHandle,
 			
 			// native enum, return the conversion expression to the native type
 			{ IsNativeEnum: true} =>  GetNativeEnumLowLevel (typeInfo),
@@ -1146,43 +1152,48 @@ static partial class BindingSyntaxFactory {
 		// based on the trampoline name and the parameter we will lower the parameter to the expected type for the invoker
 		// which is the lower type of the parameter
 #pragma warning disable format
-		ImmutableArray<SyntaxNode> conversions = parameter.Type switch {
+		ImmutableArray<SyntaxNode> conversions = parameter switch {
 			// pointer parameter 
-			{ IsPointer: true } => [],
+			{ Type.IsPointer: true } => [],
 			
-			// delegate parameter is a NativeHandle
-			{ IsDelegate: true } => [],
+			// block delegate parameter is a NativeHandle
+			{ Type.IsDelegate: true, IsBlockCallback: true} => [
+				GetNullableBlockAuxVariable (trampolineName, parameter),
+				GetBlockLiteralAuxVariable (parameter),
+			],
+			
+			{ Type.IsDelegate: true, IsCCallback: true} => [],
 			
 			// return the conversion expression to the native type
-			{ IsSmartEnum: true} =>  [GetNSStringSmartEnumAuxVariable (parameter)!],
+			{ Type.IsSmartEnum: true} =>  [GetNSStringSmartEnumAuxVariable (parameter)!],
 
 			// boolean, convert it to byte
-			{ SpecialType: SpecialType.System_Boolean } => [],
+			{ Type.SpecialType: SpecialType.System_Boolean } => [],
 			
-			{ IsArray: true, ArrayElementType: SpecialType.System_String } => [GetNSArrayAuxVariable (parameter)!],
+			{ Type.IsArray: true, Type.ArrayElementType: SpecialType.System_String } => [GetNSArrayAuxVariable (parameter)!],
 
-			{ IsArray: true, ArrayElementIsINativeObject: true } => [GetNSArrayAuxVariable (parameter)!],
+			{ Type.IsArray: true, Type.ArrayElementIsINativeObject: true } => [GetNSArrayAuxVariable (parameter)!],
 
-			{ SpecialType: SpecialType.System_String } =>  [GetStringAuxVariable (parameter)!],
+			{ Type.SpecialType: SpecialType.System_String } =>  [GetStringAuxVariable (parameter)!],
 
-			{ IsProtocol: true } => [GetHandleAuxVariable (parameter)!],
+			{ Type.IsProtocol: true } => [GetHandleAuxVariable (parameter)!],
 
 			// special types
 
 			// CoreMedia.CMSampleBuffer
-			{ FullyQualifiedName: "CoreMedia.CMSampleBuffer" } => [GetHandleAuxVariable (parameter)!],
+			{ Type.FullyQualifiedName: "CoreMedia.CMSampleBuffer" } => [GetHandleAuxVariable (parameter)!],
 
 			// AudioToolbox.AudioBuffers
-			{ FullyQualifiedName: "AudioToolbox.AudioBuffers" } => [GetHandleAuxVariable (parameter)!],
+			{ Type.FullyQualifiedName: "AudioToolbox.AudioBuffers" } => [GetHandleAuxVariable (parameter)!],
 
 			// general NSObject/INativeObject, has to be after the special types otherwise the special types will
 			// fall into the NSObject/INativeObject case
 
 			// same name, native handle
-			{ IsNSObject: true } => [GetHandleAuxVariable (parameter)!],
+			{ Type.IsNSObject: true } => [GetHandleAuxVariable (parameter)!],
 
 			// same name, native handle
-			{ IsINativeObject: true } => [GetHandleAuxVariable (parameter)!],
+			{ Type.IsINativeObject: true } => [GetHandleAuxVariable (parameter)!],
 			
 			// by default, we will use the parameter name as is and the type of the parameter
 			_ => [],

@@ -2,6 +2,7 @@
 
 #nullable enable
 
+using AudioUnit;
 using AVFoundation;
 using CoreGraphics;
 using CoreImage;
@@ -93,6 +94,14 @@ public partial class TrampolinePropertyTests
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	const string selSetManualRenderingCallback_X = "setManualRenderingCallback:";
 	static readonly global::ObjCRuntime.NativeHandle selSetManualRenderingCallback_XHandle = global::ObjCRuntime.Selector.GetHandle ("setManualRenderingCallback:");
+
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	const string selInternalRenderBlockHandlerX = "internalRenderBlockHandler";
+	static readonly global::ObjCRuntime.NativeHandle selInternalRenderBlockHandlerXHandle = global::ObjCRuntime.Selector.GetHandle ("internalRenderBlockHandler");
+
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	const string selSetInternalRenderBlockHandler_X = "setInternalRenderBlockHandler:";
+	static readonly global::ObjCRuntime.NativeHandle selSetInternalRenderBlockHandler_XHandle = global::ObjCRuntime.Selector.GetHandle ("setInternalRenderBlockHandler:");
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	static readonly global::ObjCRuntime.NativeHandle class_ptr = global::ObjCRuntime.Class.GetHandle ("TrampolinePropertyTests");
@@ -315,6 +324,27 @@ public partial class TrampolinePropertyTests
 				ret = global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("intActionHandler"));
 			} else {
 				ret = global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("intActionHandler"));
+			}
+			global::System.GC.KeepAlive (this);
+			return ret;
+		}
+
+		set
+		{
+			throw new NotImplementedException();
+		}
+	}
+
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public partial global::AudioUnit.AUInternalRenderBlock InternalRenderBlockHandler
+	{
+		get
+		{
+			global::AudioUnit.AUInternalRenderBlock ret;
+			if (IsDirectBinding) {
+				ret = global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("internalRenderBlockHandler"));
+			} else {
+				ret = global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("internalRenderBlockHandler"));
 			}
 			global::System.GC.KeepAlive (this);
 			return ret;

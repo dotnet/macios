@@ -4500,7 +4500,7 @@ namespace NS {
 				blockParameter,
 				$"invoker (BlockLiteral, ({Global ("ObjCRuntime.NativeHandle")}) block_ptr_callbackParameter);"
 			];
-			
+
 			var nonDecoratedBlockParameter = @"
 using System;
 using ObjCRuntime;

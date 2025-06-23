@@ -738,7 +738,7 @@ namespace NS {
 {Global ("ObjCRuntime")}.BlockLiteral* block_ptr_callbackParameter = callbackParameter is not null ? &block_callbackParameter : null;
 ",
 			];
-			
+
 			var notDecoratedBlockParameter = @"
 using System;
 using ObjCRuntime;

@@ -255,7 +255,7 @@ static partial class BindingSyntaxFactory {
 					IdentifierName (Nomenclator.GetNameForVariableType (argumentInfo.Name, Nomenclator.VariableType.BlockLiteral)!).WithLeadingTrivia (Space)),
 			
 			// this happens when the parameter is not decorated. This is the default behaviour with properties and methods
-			// if that is the case, we always assupe we are dealing with a block callback
+			// if that is the case, we always assume we are dealing with a block callback
 			{ Type.IsDelegate: true, Parameter.IsBlockCallback: false, Parameter.IsCCallback: false }
 				=> CastExpression(
 					NativeHandle, 

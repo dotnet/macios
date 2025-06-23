@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using Xamarin.Messaging.Build.Contracts;
 using Xamarin.Messaging.Client;
@@ -39,7 +40,7 @@ namespace Xamarin.Messaging.Build {
 			return Task.FromResult (true);
 		}
 
-		protected override async Task RegisterCustomHandlersAsync (MessageHandlerManager manager)
+		protected override async Task RegisterCustomHandlersAsync (MessageHandlerManager manager, CancellationToken cancellationToken)
 		{
 			await TryRegisterHandlerAsync (new ExecuteTaskMessageHandler ())
 				.ConfigureAwait (continueOnCapturedContext: false);

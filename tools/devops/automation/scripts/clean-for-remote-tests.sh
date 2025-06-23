@@ -10,6 +10,11 @@ if du -hs ~/Library/Caches/Xamarin; then
 	rm -rf ~/Library/Caches/Xamarin
 fi
 
+# Make sure we don't have any old stuff installed
+if du -hs ~/Library/Caches/maui; then
+	rm -rf ~/Library/Caches/maui
+fi
+
 # Clean up temporary logs
 rm -rf /tmp/com.xamarin.*
 

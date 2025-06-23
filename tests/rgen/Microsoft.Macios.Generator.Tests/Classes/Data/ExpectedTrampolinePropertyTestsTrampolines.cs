@@ -389,7 +389,7 @@ static partial class Trampolines
 			var del = global::ObjCRuntime.BlockLiteral.GetTarget<global::AVFoundation.AVAssetImageGenerateAsynchronouslyForTimeCompletionHandler> (block_ptr);
 			if (del is null)
 				throw ErrorHelper.CreateError (8059, Errors.MX8059, block_ptr, typeof (global::AVFoundation.AVAssetImageGenerateAsynchronouslyForTimeCompletionHandler));
-			del (global::ObjCRuntime.Runtime.GetINativeObject<global::CoreGraphics.CGImage> (imageRef, false)!, actualTime, global::ObjCRuntime.Runtime.GetNSObject<global::Foundation.NSError> (error)!);
+			del (global::ObjCRuntime.Runtime.GetINativeObject<global::CoreGraphics.CGImage> (imageRef, false), actualTime, global::ObjCRuntime.Runtime.GetNSObject<global::Foundation.NSError> (error));
 		}
 
 		internal static unsafe global::ObjCRuntime.BlockLiteral CreateNullableBlock (global::AVFoundation.AVAssetImageGenerateAsynchronouslyForTimeCompletionHandler? callback)
@@ -426,10 +426,10 @@ static partial class Trampolines
 			return del ?? new NIDAVAssetImageGenerateAsynchronouslyForTimeCompletionHandler ((global::ObjCRuntime.BlockLiteral *) block).Invoke;
 		}
 
-		unsafe void Invoke (global::CoreGraphics.CGImage imageRef, global::CoreMedia.CMTime actualTime, global::Foundation.NSError error)
+		unsafe void Invoke (global::CoreGraphics.CGImage? imageRef, global::CoreMedia.CMTime actualTime, global::Foundation.NSError? error)
 		{
-			var imageRef__handle__ = imageRef!.GetNonNullHandle (nameof (imageRef));
-			var error__handle__ = error!.GetNonNullHandle (nameof (error));
+			var imageRef__handle__ = imageRef?.GetHandle ();
+			var error__handle__ = error?.GetHandle ();
 			invoker (BlockLiteral, imageRef__handle__, actualTime, error__handle__);
 			global::System.GC.KeepAlive (imageRef);
 			global::System.GC.KeepAlive (error);
@@ -558,12 +558,12 @@ static partial class Trampolines
 		{
 			var outputData__handle__ = outputData!.GetNonNullHandle (nameof (outputData));
 			var realtimeEventListHead__handle__ = realtimeEventListHead!.GetNonNullHandle (nameof (realtimeEventListHead));
-			var block_pullInputBlock = global::ObjCRuntime.Trampolines.SDAUInternalRenderBlock.CreateNullableBlock (pullInputBlock);
+			var block_pullInputBlock = global::ObjCRuntime.Trampolines.SDAURenderPullInputBlock.CreateNullableBlock (pullInputBlock);
 			global::ObjCRuntime.BlockLiteral* block_ptr_pullInputBlock = pullInputBlock is not null ? &block_pullInputBlock : null;
-			var ret = invoker (BlockLiteral, (global::AudioUnit.AudioUnitRenderActionFlags*) global::System.Runtime.CompilerServices.Unsafe.AsPointer<global::AudioUnit.AudioUnitRenderActionFlags> (ref actionFlags), (global::AudioToolbox.AudioTimeStamp*) global::System.Runtime.CompilerServices.Unsafe.AsPointer<global::AudioToolbox.AudioTimeStamp> (ref timestamp), frameCount, outputBusNumber, outputData__handle__, realtimeEventListHead__handle__, NIDAUInternalRenderBlock.Create (pullInputBlock)!);
+			var ret = invoker (BlockLiteral, (global::AudioUnit.AudioUnitRenderActionFlags*) global::System.Runtime.CompilerServices.Unsafe.AsPointer<global::AudioUnit.AudioUnitRenderActionFlags> (ref actionFlags), (global::AudioToolbox.AudioTimeStamp*) global::System.Runtime.CompilerServices.Unsafe.AsPointer<global::AudioToolbox.AudioTimeStamp> (ref timestamp), frameCount, outputBusNumber, outputData__handle__, realtimeEventListHead__handle__, (global::ObjCRuntime.NativeHandle) block_ptr_pullInputBlock);
 			global::System.GC.KeepAlive (outputData);
 			global::System.GC.KeepAlive (realtimeEventListHead);
-			return ret;
+			return (global::AudioUnit.AudioUnitStatus) ret;
 		}
 	}
 

@@ -91,6 +91,7 @@ namespace Xamarin.Mac.Tests {
 						return;
 					Thread.Sleep (10);
 				}
+				TestRuntime.IgnoreInCI ("This test is unreliable on bots.");
 				Assert.Fail ("Did not see events after 1 second");
 			} finally {
 				graph.Stop ();

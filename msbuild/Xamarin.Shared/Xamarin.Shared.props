@@ -78,36 +78,11 @@ Copyright (C) 2020 Microsoft. All rights reserved.
 		<AppManifestDetectionEnabled Condition="'$(AppManifestDetectionEnabled)' == ''">true</AppManifestDetectionEnabled>
 	</PropertyGroup>
 
-	<!-- RequireCodeSigning -->
-	<!-- iOS/watchOS/tvOS is simple: device builds require code signing, simulator builds do not. This is a big lie, for some simulator builds need to be signed, but the _DetectCodeSigning task handles those cases. -->
-	<PropertyGroup Condition="'$(_PlatformName)' != 'macOS' And '$(_PlatformName)' != 'MacCatalyst'">
-		<!-- Make it possible to override the default logic by setting EnableCodeSigning -->
-		<_RequireCodeSigning Condition="'$(_RequireCodeSigning)' == ''">$(EnableCodeSigning)</_RequireCodeSigning>
-		<!-- Device builds must be signed -->
-		<_RequireCodeSigning Condition="'$(_RequireCodeSigning)' == '' And '$(ComputedPlatform)' == 'iPhone'">true</_RequireCodeSigning>
-		<!-- Otherwise code signing is disabled by default (simulator builds)-->
-		<_RequireCodeSigning Condition="'$(_RequireCodeSigning)' == ''">false</_RequireCodeSigning>
-	</PropertyGroup>
-	<!-- macOS is a bit more complicated:
-		* 'EnableCodeSigning' specifies whether the app is signed or not, and this defaults to false if it's not set.
-		* Extensions are special, because they must be signed. However, due to historical reasons, extension projects will have set EnableCodeSigning=false. So we do the following:
-		    * If we're an extension, and code signing is disabled: enable code signing, set the code signing key (_CodeSigningKey) to '-', and pass this value to the _DetectCodeSigning task.
-	-->
-	<PropertyGroup Condition="'$(_PlatformName)' == 'macOS' Or '$(_PlatformName)' == 'MacCatalyst'">
-		<!-- macOS and Mac Catalyst projects use the 'EnableCodeSigning' variable to enable code signing -->
-		<_RequireCodeSigning Condition="'$(_RequireCodeSigning)' == ''">$(EnableCodeSigning)</_RequireCodeSigning>
-		<!-- Signing must be enabled when archiving -->
-		<_RequireCodeSigning Condition="'$(_RequireCodeSigning)' == '' And '$(ArchiveOnBuild)' == 'true'">true</_RequireCodeSigning>
-		<!-- Extensions must be signed, so make sure they are -->
-		<_RequireCodeSigning Condition="'$(_RequireCodeSigning)' == '' And '$(IsAppExtension)' == 'true'">true</_RequireCodeSigning>
-		<!-- Otherwise code signing is disabled by default -->
-		<_RequireCodeSigning Condition="'$(_RequireCodeSigning)' == ''">false</_RequireCodeSigning>
-
-		<!-- Set _CodeSigningKey to '-' if we're an extension where code signing is not requested -->
-		<_CodeSigningKey Condition="'$(IsAppExtension)' == 'true' And '$(_CodeSigningKey)' == '' And '$(_RequireCodeSigning)' == 'false'">-</_CodeSigningKey>
-	</PropertyGroup>
-
+	<!-- Code signing defaults -->
 	<PropertyGroup>
+	<!-- EnableCodeSigning: enable by default -->
+		<EnableCodeSigning Condition="'$(EnableCodeSigning)' == ''">true</EnableCodeSigning>
+
 		<!-- SpecifiedCodeSigningKey -->
 		<!-- Xamarin.Mac projects use 'CodeSigningKey', and Xamarin.iOS projects use 'CodesignKey'. -->
 		<!-- Here we accept both, and we'll recommend using 'CodesignKey' for all platforms going forward -->
@@ -238,7 +213,7 @@ Copyright (C) 2020 Microsoft. All rights reserved.
 		<!-- that also encapsulates whether we're a library or not (this makes conditions simpler) -->
 		<_BundleOriginalResources Condition="'$(OutputType)' == 'Library' And '$(IsAppExtension)' != 'true' And '$(BundleOriginalResources)' == 'true'">true</_BundleOriginalResources>
 
-		<EnableProfiler Condition="'$(EnableProfiler)' == '' And '$(_BundlerDebug)' == 'true'">true</EnableProfiler>
+		<EnableDiagnostics Condition="'$(EnableDiagnostics)' == '' And '$(_BundlerDebug)' == 'true'">true</EnableDiagnostics>
 
 		<!-- Set the name of the native executable -->
 		<_NativeExecutableName Condition="'$(_NativeExecutableName)' == ''">$(AssemblyName)</_NativeExecutableName>
@@ -265,6 +240,9 @@ Copyright (C) 2020 Microsoft. All rights reserved.
 
 		<!-- Default NoBindingEmbedding to 'true' for .NET projects, it's the new way -->
 		<NoBindingEmbedding Condition="'$(NoBindingEmbedding)' == ''">true</NoBindingEmbedding>
+
+		<!-- We don't want to build a binding project when in design time mode, and not bundling original resources, because we might end up requiring a connection to a remote mac, which is not a good idea for a supposedly quick design-time build. -->
+		<_DisableBindingProjectBuild Condition="'$(_DisableBindingProjectBuild)' == '' And '$(BundleOriginalResources)' != 'true' And '$(DesignTimeBuild)' == 'true'">true</_DisableBindingProjectBuild>
 	</PropertyGroup>
 
 	<Target Name="_ComputeTargetFrameworkMoniker" Condition="'$(_ComputedTargetFrameworkMoniker)' == ''">

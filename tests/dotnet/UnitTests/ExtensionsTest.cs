@@ -61,21 +61,15 @@ namespace Xamarin.Tests {
 				var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath)
 					.Where (v => v?.Message?.Contains ("Supported iPhone orientations have not been set") != true)
 					.ToArray ();
-				if (IsRuntimeIdentifierSigned (runtimeIdentifiers)) {
-					var extensionPath = Path.Combine (appPath, GetPlugInsRelativePath (platform), $"{extensionProject}.appex");
-					AssertWarningMessages (warnings, [
-						$"No entitlements set for {extensionPath}."
-					]);
-				} else {
-					rv.AssertNoWarnings ();
-				}
+				var extensionPath = Path.Combine (appPath, GetPlugInsRelativePath (platform), $"{extensionProject}.appex");
+				AssertWarningMessages (warnings, [
+					$"No entitlements set for {extensionPath}."
+				]);
 			}
 
 			var expectedDirectories = new List<string> ();
-			if (IsRuntimeIdentifierSigned (runtimeIdentifiers)) {
-				expectedDirectories.Add (Path.Combine (appPath, "_CodeSignature"));
-				expectedDirectories.Add (Path.Combine (appPath, "PlugIns", extensionProject + ".appex", "_CodeSignature"));
-			}
+			expectedDirectories.Add (Path.Combine (appPath, GetRelativeCodesignDirectory (platform), "_CodeSignature"));
+			expectedDirectories.Add (Path.Combine (appPath, GetPlugInsRelativePath (platform), extensionProject + ".appex", GetRelativeCodesignDirectory (platform), "_CodeSignature"));
 
 			foreach (var dir in expectedDirectories)
 				Assert.That (dir, Does.Exist, "Directory should exist.");

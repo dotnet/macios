@@ -121,6 +121,7 @@ struct Trampolines {
 	void* set_gchandle_tramp;
 	void* get_flags_tramp;
 	void* set_flags_tramp;
+	void* retainWeakReference_tramp;
 };
 
 enum InitializationFlags : int {
@@ -180,6 +181,7 @@ static struct Trampolines trampolines = {
 	(void *) &xamarin_set_gchandle_trampoline,
 	(void *) &xamarin_get_flags_trampoline,
 	(void *) &xamarin_set_flags_trampoline,
+	(void *) &xamarin_retainWeakReference_trampoline,
 };
 
 static struct InitializationOptions options = { 0 };
@@ -205,7 +207,7 @@ xamarin_get_nsobject_handle (MonoObject *obj)
 #endif
 }
 
-uint8_t
+uint32_t
 xamarin_get_nsobject_flags (MonoObject *obj)
 {
 #if defined (CORECLR_RUNTIME)
@@ -217,7 +219,7 @@ xamarin_get_nsobject_flags (MonoObject *obj)
 }
 
 void
-xamarin_set_nsobject_flags (MonoObject *obj, uint8_t flags)
+xamarin_set_nsobject_flags (MonoObject *obj, uint32_t flags)
 {
 #if defined (CORECLR_RUNTIME)
 	xamarin_set_flags_for_nsobject (obj->gchandle, flags);
@@ -698,7 +700,7 @@ xamarin_type_get_full_name (MonoType *type, GCHandle *exception_gchandle)
 // #define DEBUG_TOGGLEREF 1
 
 MonoToggleRefStatus
-xamarin_gc_toggleref_callback (uint8_t flags, id handle, xamarin_get_handle_func get_handle, MonoObject *info)
+xamarin_gc_toggleref_callback (uint32_t flags, id handle, xamarin_get_handle_func get_handle, MonoObject *info)
 {
 	MonoToggleRefStatus res;
 

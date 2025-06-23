@@ -33,6 +33,8 @@ namespace Xamarin.MacDev.Tasks {
 
 		[Required]
 		public bool SdkIsSimulator { get; set; }
+
+		public string DotNetRoot { get; set; } = "";
 		#endregion
 
 		public override bool Execute ()
@@ -107,8 +109,11 @@ namespace Xamarin.MacDev.Tasks {
 				arguments.Add (SdkRoot);
 
 				if (IncludeDirectories is not null) {
-					foreach (var inc in IncludeDirectories)
-						arguments.Add ("-I" + Path.GetFullPath (inc.ItemSpec));
+					foreach (var inc in IncludeDirectories) {
+						var incPath = GetIncludeDirectory (inc);
+
+						arguments.Add ("-I" + incPath);
+					}
 				}
 
 				var args = info.GetMetadata ("Arguments");
@@ -156,6 +161,31 @@ namespace Xamarin.MacDev.Tasks {
 		{
 			if (ShouldExecuteRemotely ())
 				BuildConnection.CancelAsync (BuildEngine4).Wait ();
+		}
+
+		string GetIncludeDirectory (ITaskItem item)
+		{
+			var path = Path.GetFullPath (item.ItemSpec);
+
+			if (string.IsNullOrEmpty (DotNetRoot)) {
+				return path;
+			}
+
+			var packsIdentifier = "packs";
+			var dotnetPacksIdentifier = Path.Combine ("dotnet", packsIdentifier);
+
+			//If the directory points to a dotnet pack, we want to ensure the full path 
+			//is actually pointing to a sub-folder in the dotnet SDK
+			if (path.IndexOf (dotnetPacksIdentifier, StringComparison.Ordinal) >= 0 && !path.StartsWith (DotNetRoot, StringComparison.Ordinal)) {
+				var relativePath = path.Substring (path.IndexOf (packsIdentifier, StringComparison.Ordinal));
+				//We combine the relative pack dir (starting from "packs") with the dotnet root to get the full path
+				var newPath = Path.Combine (DotNetRoot, relativePath);
+
+				Log.LogMessage (MessageImportance.Low, MSBStrings.M0169, path, newPath);
+				path = newPath;
+			}
+
+			return path;
 		}
 	}
 }

@@ -12,7 +12,7 @@ namespace Xamarin.Messaging.Build {
 		{
 			await Task.Run (async () => {
 				var targetPath = Path.GetFullPath (Path.Combine (
-					MessagingContext.GetBuildPath (),
+					MessagingContext.BuildsPath,
 					message.AppName,
 					message.SessionId,
 					PlatformPath.GetPathForCurrentPlatform (message.ItemSpec)));

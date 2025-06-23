@@ -30,7 +30,7 @@ Copyright (C) 2020 Microsoft. All rights reserved.
 
 	<Target Name="_CollectGeneratedSources"
 		DependsOnTargets="_GenerateBindings;_CompressNativeFrameworkResources"
-		Condition="'$(DesignTimeBuild)' != 'true'"
+		Condition="'$(_DisableBindingProjectBuild)' != 'true'"
 	>
 
 		<ReadLinesFromFile File="$(_GeneratedSourcesFileList)" >
@@ -109,7 +109,7 @@ Copyright (C) 2020 Microsoft. All rights reserved.
 		</ItemGroup>
 	</Target>
 
-	<Target Name="_PrepareNativeReferences" Condition="'$(DesignTimeBuild)' != 'true'" DependsOnTargets="_SanitizeNativeReferences">
+	<Target Name="_PrepareNativeReferences" Condition="'$(_DisableBindingProjectBuild)' != 'true'" DependsOnTargets="_SanitizeNativeReferences">
 		<PrepareNativeReferences
 			IntermediateOutputPath="$(IntermediateOutputPath)"
 			NativeReferences="@(NativeReference)"

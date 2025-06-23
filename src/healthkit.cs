@@ -2410,7 +2410,7 @@ namespace HealthKit {
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
-		[Wrap ("GetPredicateForClinicalRecords (source, resourceType.GetConstant (), identifier)")]
+		[Wrap ("GetPredicateForClinicalRecords (source, resourceType.GetConstant ()!, identifier)")]
 		NSPredicate GetPredicateForClinicalRecords (HKSource source, HKFhirResourceType resourceType, string identifier);
 
 		// @interface HKElectrocardiogramPredicates (HKQuery)

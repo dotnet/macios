@@ -163,6 +163,14 @@ static partial class BindingSyntaxFactory {
 			
 			{ Type.IsDelegate: true, IsCCallback: true} => [],
 			
+			// This is the case when the delegate has not been decorated with a BlockCallback or CCallback attribute.
+			// this is the default behaviour with properties and methods. In that case we assume we are dealing with
+			// a block callback
+			{ Type.IsDelegate: true, IsBlockCallback: false, IsCCallback: false } => [
+				GetNullableBlockAuxVariable (argumentInfo),
+				GetBlockLiteralAuxVariable (argumentInfo),
+			],
+			
 			// return the conversion expression to the native type
 			{ Type.IsSmartEnum: true} =>  [GetNSStringSmartEnumAuxVariable (argumentInfo)!],
 
@@ -242,6 +250,13 @@ static partial class BindingSyntaxFactory {
 			// delegate parameter, block callback
 			// TrampolineNativeInvocationClass.Create (ParameterName)!
 			{ Type.IsDelegate: true, Parameter.IsBlockCallback: true }
+				=> CastExpression(
+					NativeHandle, 
+					IdentifierName (Nomenclator.GetNameForVariableType (argumentInfo.Name, Nomenclator.VariableType.BlockLiteral)!).WithLeadingTrivia (Space)),
+			
+			// this happens when the parameter is not decorated. This is the default behaviour with properties and methods
+			// if that is the case, we always assupe we are dealing with a block callback
+			{ Type.IsDelegate: true, Parameter.IsBlockCallback: false, Parameter.IsCCallback: false }
 				=> CastExpression(
 					NativeHandle, 
 					IdentifierName (Nomenclator.GetNameForVariableType (argumentInfo.Name, Nomenclator.VariableType.BlockLiteral)!).WithLeadingTrivia (Space)),

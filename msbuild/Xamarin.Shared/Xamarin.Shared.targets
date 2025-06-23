@@ -123,6 +123,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<IsHotRestartBuild Condition="'$(IsHotRestartBuild)' == 'True' And '$(_PlatformName)' != 'iOS'">False</IsHotRestartBuild>
 			<IsRemoteBuild Condition="'$(IsHotRestartBuild)' == 'True'">False</IsRemoteBuild>
 			<IsRemoteBuild Condition="'$(BundleOriginalResources)' == 'true' And '$(OutputType)' != 'Exe' And '$(BuildBindingProjectLocally)' != 'false'">False</IsRemoteBuild>
+			<_IsNonMacOSBuildForNonRemotablePlatform Condition="'$(_IsNonMacOSBuildForNonRemotablePlatform)' == '' And $([System.OperatingSystem]::IsMacOS()) And '$(_PlatformName)' != 'iOS'">true</_IsNonMacOSBuildForNonRemotablePlatform>
 		</PropertyGroup>
 	</Target>
 

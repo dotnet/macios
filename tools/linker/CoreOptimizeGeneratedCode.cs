@@ -330,7 +330,7 @@ namespace Xamarin.Linker {
 				case FlowControl.Branch:
 					// Unconditional branch, we continue marking from the instruction that we branch to.
 					var br_target = (Instruction) ins.Operand;
-					return MarkInstructions (method, instructions, reachable, instructions.IndexOf (br_target), end);
+					return MarkInstructions (method, instructions, reachable, instructions.IndexOf (br_target), instructions.Count);
 				case FlowControl.Cond_Branch:
 					// Conditional instruction, we need to check if we can calculate a constant value for the condition
 					var cond_target = ins.Operand as Instruction;

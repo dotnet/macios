@@ -113,6 +113,16 @@ static class Nomenclator {
 	}
 
 	/// <summary>
+	/// Return the name of the trampoline class to be used for the given type info.
+	/// This is a convenience overload for <see cref="GetTrampolineClassName(string, TrampolineClassType)"/>.
+	/// </summary>
+	/// <param name="typeInfo">The type info for which to get the trampoline class name.</param>
+	/// <param name="trampolineClassType">The type of class to be generated.</param>
+	/// <returns>The name to be used by the generated class.</returns>
+	public static string GetTrampolineClassName (in TypeInfo typeInfo, TrampolineClassType trampolineClassType)
+		=> GetTrampolineClassName (GetTrampolineName (typeInfo), trampolineClassType);
+
+	/// <summary>
 	/// Returns the name of the aux variable that would have needed for the given parameter. Use the
 	/// variable type to name it.
 	/// </summary>

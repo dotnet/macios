@@ -558,9 +558,9 @@ static partial class Trampolines
 		{
 			var outputData__handle__ = outputData!.GetNonNullHandle (nameof (outputData));
 			var realtimeEventListHead__handle__ = realtimeEventListHead!.GetNonNullHandle (nameof (realtimeEventListHead));
-			var block_pullInputBlock = global::ObjCRuntime.Trampolines.SDAUInternalRenderBlock.CreateNullableBlock (pullInputBlock);
+			var block_pullInputBlock = global::ObjCRuntime.Trampolines.SDAURenderPullInputBlock.CreateNullableBlock (pullInputBlock);
 			global::ObjCRuntime.BlockLiteral* block_ptr_pullInputBlock = pullInputBlock is not null ? &block_pullInputBlock : null;
-			var ret = invoker (BlockLiteral, (global::AudioUnit.AudioUnitRenderActionFlags*) global::System.Runtime.CompilerServices.Unsafe.AsPointer<global::AudioUnit.AudioUnitRenderActionFlags> (ref actionFlags), (global::AudioToolbox.AudioTimeStamp*) global::System.Runtime.CompilerServices.Unsafe.AsPointer<global::AudioToolbox.AudioTimeStamp> (ref timestamp), frameCount, outputBusNumber, outputData__handle__, realtimeEventListHead__handle__, NIDAUInternalRenderBlock.Create (pullInputBlock)!);
+			var ret = invoker (BlockLiteral, (global::AudioUnit.AudioUnitRenderActionFlags*) global::System.Runtime.CompilerServices.Unsafe.AsPointer<global::AudioUnit.AudioUnitRenderActionFlags> (ref actionFlags), (global::AudioToolbox.AudioTimeStamp*) global::System.Runtime.CompilerServices.Unsafe.AsPointer<global::AudioToolbox.AudioTimeStamp> (ref timestamp), frameCount, outputBusNumber, outputData__handle__, realtimeEventListHead__handle__, (global::ObjCRuntime.NativeHandle) block_ptr_pullInputBlock);
 			global::System.GC.KeepAlive (outputData);
 			global::System.GC.KeepAlive (realtimeEventListHead);
 			return (global::AudioUnit.AudioUnitStatus) ret;

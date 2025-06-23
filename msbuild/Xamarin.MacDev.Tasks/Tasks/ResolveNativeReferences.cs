@@ -437,8 +437,9 @@ namespace Xamarin.MacDev.Tasks {
 				nativeLibraryPath = Path.Combine (intermediateDecompressionDir, xcframework, nativeLibraryRelativePath);
 
 				return true;
-			} catch (Exception) {
-				log.LogError (MSBStrings.E0174, resourcePath);
+			} catch (Exception e) {
+				log.LogError (MSBStrings.E0174 /* Failed to resolve the xcframework {0} in {1} due to an unexpected error: {2} */, xcframework, resourcePath, e.Message);
+				log.LogErrorsFromException (e); // report the original exception too.
 			}
 
 			return false;
@@ -485,12 +486,15 @@ namespace Xamarin.MacDev.Tasks {
 			// plist structure https://github.com/spouliot/xcframework#infoplist
 			var bundle_package_type = (PString?) plist ["CFBundlePackageType"];
 			if (bundle_package_type?.Value != "XFWK") {
-				log.LogError (MSBStrings.E0174 /* The xcframework {0} has an incorrect or unknown format and cannot be processed. */, xcframeworkPath);
+				log.LogError (MSBStrings.E0174a /* The xcframework {0} has an incorrect or unknown format and cannot be processed: expected the value for 'CFBundlePackageType' to be 'XFWK' in the xcframework's Info.plist, but it's '{1}'. */, xcframeworkPath, bundle_package_type?.Value);
 				return false;
 			}
 			var available_libraries = plist.GetArray ("AvailableLibraries");
-			if ((available_libraries is null) || (available_libraries.Count == 0)) {
-				log.LogError (MSBStrings.E0174 /* The xcframework {0} has an incorrect or unknown format and cannot be processed. */, xcframeworkPath);
+			if (available_libraries is null) {
+				log.LogError (MSBStrings.E0174b /* The xcframework {0} has an incorrect or unknown format and cannot be processed: there's no 'AvailableLibraries' entry in the xcframework's Info.plist. */, xcframeworkPath);
+				return false;
+			} else if (available_libraries.Count == 0) {
+				log.LogError (MSBStrings.E0174c /* The xcframework {0} has an incorrect or unknown format and cannot be processed: expected some 'AvailableLibraries' entries in the xcframework's Info.plist, but found 0 entries. */, xcframeworkPath);
 				return false;
 			}
 

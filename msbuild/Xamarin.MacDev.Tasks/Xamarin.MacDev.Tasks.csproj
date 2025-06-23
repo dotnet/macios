@@ -21,7 +21,7 @@
 
   <ItemGroup>
     <PackageReference Include="System.Reflection.MetadataLoadContext" Version="8.0.0" />
-    <PackageReference Include="System.Text.Json" Version="4.7.0" />
+    <PackageReference Include="System.Text.Json" Version="8.0.5" />
     <PackageReference Include="Mono.Cecil" Version="$(MonoCecilPackageVersion)" />
     <!-- Compile against Microsoft.Build* NuGet refs, but do not copy to OutputDir if IncludeMSBuildAssets was not set. -->
     <PackageReference Include="Microsoft.Build" Version="$(MicrosoftBuildPackageVersion)" IncludeAssets="$(IncludeMSBuildAssets)" />

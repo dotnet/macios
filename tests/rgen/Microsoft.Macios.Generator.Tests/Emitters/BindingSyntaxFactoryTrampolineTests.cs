@@ -750,6 +750,28 @@ namespace NS {
 				"auxVariable"
 			];
 
+			const string enumReturnType = @"
+using System;
+
+namespace NS {
+
+	public enum TestEnum {
+		First,
+		Last
+	}
+
+	public delegate TestEnum Callback()
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				enumReturnType,
+				"(global::NS.TestEnum) auxVariable",
+			];
+
 			const string voidReturnType = @"
 using System;
 

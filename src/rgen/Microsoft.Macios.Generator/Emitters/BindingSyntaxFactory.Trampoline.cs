@@ -108,6 +108,12 @@ static partial class BindingSyntaxFactory {
 			{ IsEnum: true, IsSmartEnum: true, IsNativeEnum: false } 
 				=> GetSmartEnumFromNSString (typeInfo.Delegate.ReturnType, Argument (auxIdentifier)),
 			
+			// normal enum casting
+			{ IsEnum: true, IsSmartEnum: false, IsNativeEnum: false } 
+				=> CastExpression (
+					typeInfo.Delegate.ReturnType.GetIdentifierSyntax (), 
+					auxIdentifier.WithLeadingTrivia (Space)),
+			
 			// string from native handle
 			// CFString.FromHandle (auxVariable)!
 			{ SpecialType: SpecialType.System_String, IsNullable: false} 

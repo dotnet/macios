@@ -69,8 +69,7 @@ namespace Xamarin.MacDev.Tasks {
 
 		async System.Threading.Tasks.Task CopyArchiveAsync (ISshCommands sshCommands)
 		{
-			var serverHomeDirectory = await sshCommands.GetHomeDirectoryAsync ().ConfigureAwait (continueOnCapturedContext: false);
-			var buildPath = PlatformPath.GetServerBuildPath (serverHomeDirectory, AppName, SessionId, TargetPath);
+			var buildPath = PlatformPath.GetServerBuildPath (AppName, SessionId, TargetPath);
 
 			if (!Directory.Exists (buildPath)) {
 				await sshCommands.CreateDirectoryAsync (buildPath).ConfigureAwait (continueOnCapturedContext: false);

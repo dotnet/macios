@@ -1,5 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+    <!-- When bumping the target framework version here, the VS side must be updated accordingly to make sure VS will install a version of .NET that's capable of running this project's output -->
+    <!-- See 72977a8f50c8acc2290281bb9b6d121084f3e579 in the ClientTools.Platform repository for an example. -->
+    <!-- This should probably never be a preview version of .NET, only stable versions. -->
     <TargetFramework>net9.0</TargetFramework>
     <OutputType>Exe</OutputType>
     <AssemblyName>Build</AssemblyName>

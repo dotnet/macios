@@ -14,3 +14,5 @@
 !missing-field! kCGImagePropertyBCFormat not bound
 !missing-field! kCGImagePropertyEncoder not bound
 !missing-field! kCGImagePropertyPVREncoder not bound
+!missing-field! kCGImageProviderPreferredTileHeight not bound
+!missing-field! kCGImageProviderPreferredTileWidth not bound

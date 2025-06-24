@@ -8,3 +8,4 @@
 !missing-selector! NSFileProviderDomain::supportsStringSearchRequest not bound
 !missing-selector! NSFileProviderStringSearchRequest::query not bound
 !missing-type! NSFileProviderStringSearchRequest not bound
+!missing-selector! NSFileProviderStringSearchRequest::desiredNumberOfResults not bound

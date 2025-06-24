@@ -286,3 +286,7 @@
 !missing-type! UITraitSplitViewControllerLayoutEnvironment not bound
 !missing-type! UITraitTabAccessoryEnvironment not bound
 !missing-type! UIViewLayoutRegion not bound
+!missing-selector! UIBarButtonItem::identifier not bound
+!missing-selector! UIBarButtonItem::setIdentifier: not bound
+!missing-selector! UIDocumentBrowserAction::imageOnlyForContextMenu not bound
+!missing-selector! UIDocumentBrowserAction::setImageOnlyForContextMenu: not bound

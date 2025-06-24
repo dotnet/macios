@@ -1,6 +1,5 @@
 !missing-enum-value! PKContentVersion native value PKContentVersionLatest = 4 not bound
 !missing-field! PKInkTypeReed not bound
-!missing-field! PKInkTypeReedCalligraphyPen not bound
 !missing-selector! PKInkingTool::azimuth not bound
 !missing-selector! PKInkingTool::initWithInkType:color:width:azimuth: not bound
 !missing-selector! PKStrokePoint::initWithLocation:timeOffset:size:opacity:force:azimuth:altitude:secondaryScale:threshold: not bound

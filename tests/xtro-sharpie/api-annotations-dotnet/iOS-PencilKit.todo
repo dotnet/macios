@@ -2,7 +2,6 @@
 !missing-enum! PKToolPickerVisibility not bound
 !missing-enum-value! PKContentVersion native value PKContentVersionLatest = 4 not bound
 !missing-field! PKInkTypeReed not bound
-!missing-field! PKInkTypeReedCalligraphyPen not bound
 !missing-selector! +PKToolPicker::defaultToolItems not bound
 !missing-selector! PKInkingTool::azimuth not bound
 !missing-selector! PKInkingTool::initWithInkType:color:width:azimuth: not bound

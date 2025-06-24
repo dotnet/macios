@@ -24,6 +24,66 @@ namespace MonoTouchFixtures.AudioToolbox {
 	public class AudioConverterTest {
 
 		[Test]
+		public void Properties ()
+		{
+			TestRuntime.AssertXcodeVersion (26, 0);
+
+			var srcFormat = new AudioStreamBasicDescription () {
+				SampleRate = 8000,
+				Format = AudioFormatType.LinearPCM,
+				FormatFlags = AudioFormatFlags.IsSignedInteger | AudioFormatFlags.IsPacked,
+				BytesPerPacket = 4,
+				FramesPerPacket = 1,
+				BytesPerFrame = 4,
+				ChannelsPerFrame = 2,
+				BitsPerChannel = 16,
+			};
+
+			var dstFormat = new AudioStreamBasicDescription () {
+				SampleRate = 8000,
+				Format = AudioFormatType.AppleLossless,
+				// FormatFlags = 0,
+				BytesPerPacket = 0,
+				FramesPerPacket = 4096,
+				BytesPerFrame = 0,
+				ChannelsPerFrame = 2,
+				BitsPerChannel = 0,
+			};
+
+			// create the AudioConverter
+			using AudioConverter? converter = AudioConverter.Create (srcFormat, dstFormat, out var createResult);
+			Assert.AreEqual (AudioConverterError.None, createResult, $"AudioConverterCreate ({srcFormat} -> {dstFormat}): {createResult}");
+
+			Assert.That (converter.PerformDownmix, Is.EqualTo (false), "PerformDownmix #0");
+			converter.PerformDownmix = true;
+			Assert.That (converter.PerformDownmix, Is.EqualTo (true), "PerformDownmix #1");
+			converter.PerformDownmix = false;
+			Assert.That (converter.PerformDownmix, Is.EqualTo (false), "PerformDownmix #2");
+			converter.PerformDownmix = true;
+			Assert.That (converter.PerformDownmix, Is.EqualTo (true), "PerformDownmix #3");
+
+			Assert.That (converter.ChannelMixMap, Is.Not.Null, "ChannelMixMap #0");
+			Assert.That (converter.ChannelMixMap.Length, Is.EqualTo (0), "ChannelMixMap #0.Length");
+			converter.ChannelMixMap = new float [] { 0.25f, 0.6f, 0.75f, 0.4f };
+			Assert.That (converter.ChannelMixMap, Is.Not.Null, "ChannelMixMap #1");
+			Assert.That (converter.ChannelMixMap.Length, Is.EqualTo (4), "ChannelMixMap #1.Length");
+			Assert.That (converter.ChannelMixMap [0], Is.EqualTo (0.25f), "ChannelMixMap #1[0]");
+			Assert.That (converter.ChannelMixMap [1], Is.EqualTo (0.60f), "ChannelMixMap #1[1]");
+			Assert.That (converter.ChannelMixMap [2], Is.EqualTo (0.75f), "ChannelMixMap #1[2]");
+			Assert.That (converter.ChannelMixMap [3], Is.EqualTo (0.40f), "ChannelMixMap #1[3]");
+
+			Assert.Throws<ArgumentNullException> (() => converter.ChannelMixMap = null, "ChannelMixMap #3");
+
+			converter.ChannelMixMap = new float [4];
+			Assert.That (converter.ChannelMixMap, Is.Not.Null, "ChannelMixMap #2");
+			Assert.That (converter.ChannelMixMap.Length, Is.EqualTo (4), "ChannelMixMap #2.Length");
+			Assert.That (converter.ChannelMixMap [0], Is.EqualTo (0), "ChannelMixMap #2[0]");
+			Assert.That (converter.ChannelMixMap [1], Is.EqualTo (0), "ChannelMixMap #2[1]");
+			Assert.That (converter.ChannelMixMap [2], Is.EqualTo (0), "ChannelMixMap #2[2]");
+			Assert.That (converter.ChannelMixMap [3], Is.EqualTo (0), "ChannelMixMap #2[3]");
+		}
+
+		[Test]
 		public void Formats ()
 		{
 			var decodeFormats = AudioConverter.DecodeFormats;
@@ -93,7 +153,20 @@ namespace MonoTouchFixtures.AudioToolbox {
 			Convert (output1, output2, AudioFormatType.LinearPCM);
 		}
 
-		void Convert (string sourceFilePath, string destinationFilePath, AudioFormatType outputFormatType, int? sampleRate = null, AudioConverterOptions? options = null)
+		[Test]
+		[TestCase (AudioFormatType.Apac)]
+		public void ConvertWithPacketDependencies (AudioFormatType targetType)
+		{
+			TestRuntime.AssertXcodeVersion (26, 0);
+
+			var sourcePath = Path.Combine (NSBundle.MainBundle.ResourcePath, "Hand.wav");
+			var paths = NSSearchPath.GetDirectories (NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomain.User);
+
+			var output1 = Path.Combine (paths [0], "output1.caf");
+			Convert (sourcePath, output1, targetType, withPacketDependencies: true);
+		}
+
+		void Convert (string sourceFilePath, string destinationFilePath, AudioFormatType outputFormatType, int? sampleRate = null, AudioConverterOptions? options = null, bool withPacketDependencies = false)
 		{
 			var destinationUrl = NSUrl.FromFilename (destinationFilePath);
 			var sourceUrl = NSUrl.FromFilename (sourceFilePath);
@@ -107,22 +180,29 @@ namespace MonoTouchFixtures.AudioToolbox {
 
 			// setup the output file format
 			dstFormat.SampleRate = sampleRate ?? srcFormat.SampleRate;
+			dstFormat.Format = outputFormatType;
 			if (outputFormatType == AudioFormatType.LinearPCM) {
 				// if the output format is PCM create a 16 - bit int PCM file format
-				dstFormat.Format = AudioFormatType.LinearPCM;
 				dstFormat.ChannelsPerFrame = srcFormat.ChannelsPerFrame;
 				dstFormat.BitsPerChannel = 16;
 				dstFormat.BytesPerPacket = dstFormat.BytesPerFrame = 2 * dstFormat.ChannelsPerFrame;
 				dstFormat.FramesPerPacket = 1;
 				dstFormat.FormatFlags = AudioFormatFlags.LinearPCMIsPacked | AudioFormatFlags.LinearPCMIsSignedInteger;
-			} else {
+			} else if (outputFormatType == AudioFormatType.Apac) {
+				// No samples or example code from Apple or anybody else, so:
+				Assert.Ignore ("Couldn't figure out the right properties to make the Apac encoder work:/");
+				// use AudioFormat API to fill out the rest of the description
+				var afe = AudioStreamBasicDescription.GetFormatInfo (ref dstFormat);
+				Assert.AreEqual (AudioFormatError.None, afe, $"GetFormatInfo: {name}");
+			} else if (outputFormatType == AudioFormatType.AppleLossless) {
 				// compressed format - need to set at least format, sample rate and channel fields for kAudioFormatProperty_FormatInfo
-				dstFormat.Format = outputFormatType;
 				dstFormat.ChannelsPerFrame = srcFormat.ChannelsPerFrame; // for iLBC num channels must be 1
 
 				// use AudioFormat API to fill out the rest of the description
 				var afe = AudioStreamBasicDescription.GetFormatInfo (ref dstFormat);
 				Assert.AreEqual (AudioFormatError.None, afe, $"GetFormatInfo: {name}");
+			} else {
+				throw new NotImplementedException ();
 			}
 
 			// create the AudioConverter
@@ -130,7 +210,7 @@ namespace MonoTouchFixtures.AudioToolbox {
 			using AudioConverter? converter = options.HasValue ?
 				AudioConverter.Create (srcFormat, dstFormat, options.Value, out ce) :
 				AudioConverter.Create (srcFormat, dstFormat, out ce);
-			Assert.AreEqual (AudioConverterError.None, ce, $"AudioConverterCreate: {name}");
+			Assert.AreEqual (AudioConverterError.None, ce, $"AudioConverterCreate : {name}\n\tSource format: {srcFormat}\n\tDestination format: {dstFormat})");
 
 			// set up source buffers and data proc info struct
 			var afio = new AudioFileIO (32 * 1024); // 32Kb
@@ -193,6 +273,12 @@ namespace MonoTouchFixtures.AudioToolbox {
 				outputPacketDescriptions = new AudioStreamPacketDescription [theOutputBufSize / outputSizePerPacket];
 			}
 			int numOutputPackets = theOutputBufSize / outputSizePerPacket;
+			AudioStreamPacketDependencyDescription[] packetDependencies = null;
+
+			if (withPacketDependencies) {
+				Assert.That (dstFormat.EmploysDependentPackets, Is.True, "EmploysDependentPackets");
+				packetDependencies = new AudioStreamPacketDependencyDescription [numOutputPackets];
+			}
 
 			// if the destination format has a cookie, get it and set it on the output file
 			WriteCookie (converter, destinationFile);
@@ -212,7 +298,12 @@ namespace MonoTouchFixtures.AudioToolbox {
 
 				// convert data
 				int ioOutputDataPackets = numOutputPackets;
-				var fe = converter.FillComplexBuffer (ref ioOutputDataPackets, fillBufList, outputPacketDescriptions);
+				AudioConverterError fe;
+				if (withPacketDependencies) {
+					fe = converter.FillComplexBuffer (ref ioOutputDataPackets, fillBufList, outputPacketDescriptions, packetDependencies);
+				} else {
+					fe = converter.FillComplexBuffer (ref ioOutputDataPackets, fillBufList, outputPacketDescriptions);
+				}
 				// if interrupted in the process of the conversion call, we must handle the error appropriately
 				Assert.AreEqual (AudioConverterError.None, fe, $"FillComplexBuffer: {name}");
 

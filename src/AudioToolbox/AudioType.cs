@@ -516,6 +516,21 @@ namespace AudioToolbox {
 			}
 		}
 
+		/// <summary>Whether this format is able to combining independently decodable packets with dependent packets.</summary>
+		public unsafe bool EmploysDependentPackets {
+			get {
+				uint data;
+				var size = sizeof (uint);
+
+				fixed (AudioStreamBasicDescription* self = &this) {
+					if (AudioFormatPropertyNative.AudioFormatGetProperty (AudioFormatProperty.FormatEmploysDependentPackets, sizeof (AudioStreamBasicDescription), self, &size, &data) != 0)
+						return false;
+				}
+
+				return data != 0;
+			}
+		}
+
 		/// <summary>Renders a debugging-friendly description of the contents of the AudioStreamBasicDescription.</summary>
 		///         <returns>
 		///         </returns>
@@ -553,6 +568,49 @@ namespace AudioToolbox {
 		public override string ToString ()
 		{
 			return String.Format ("StartOffset={0} VariableFramesInPacket={1} DataByteSize={2}", StartOffset, VariableFramesInPacket, DataByteSize);
+		}
+	}
+
+	/// <summary>A structure that describes dependencies between audio packets.</summary>
+	[SupportedOSPlatform ("ios26.0")]
+	[SupportedOSPlatform ("maccatalyst26.0")]
+	[SupportedOSPlatform ("macos26.0")]
+	[SupportedOSPlatform ("tvos26.0")]
+	public struct AudioStreamPacketDependencyDescription {
+		uint isIndependentlyDecodable;
+		uint preRollCount;
+		uint flags;
+		uint reserved;
+
+		/// <summary>Specifies whether an audio packet is independency decodable, or if more audio packets are required to reset the decoder.</summary>
+		public bool IsIndependentlyDecodable {
+			get => isIndependentlyDecodable != 0;
+			set => isIndependentlyDecodable = value ? (uint) 1 : (uint) 0;
+		}
+
+		/// <summary>Specifies how many additional audio packets are required to reset the decoder for audio packets that aren't independenly decodable.</summary>
+		/// <remarks>Ignored for independenly decodable audio packets.</remarks>
+		public uint PreRollCount {
+			get => preRollCount;
+			set => preRollCount = value;
+		}
+
+		/// <summary>Currently unused.</summary>
+		public uint Flags {
+			get => flags;
+			set => flags = value;
+		}
+
+		/// <summary>Currently unused.</summary>
+		public uint Reserved {
+			get => reserved;
+			set => reserved = value;
+		}
+
+		/// <summary>Provides a string representation of the packet dependency description.</summary>
+		public override string ToString ()
+		{
+			return $"AudioStreamPacketDependencyDescription[IsIndependentlyDecodable={IsIndependentlyDecodable};PreRollCount={PreRollCount};Flags={Flags}]";
 		}
 	}
 

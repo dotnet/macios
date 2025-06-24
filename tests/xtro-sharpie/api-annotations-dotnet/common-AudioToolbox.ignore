@@ -96,3 +96,5 @@
 !missing-pinvoke! AUParameterValueFromLinear is not bound
 !missing-pinvoke! AUParameterValueToLinear is not bound
 
+# We can't provide any realtime guarantees, so we should probably not bind any APIs that require/give realtiem guarantees
+!missing-pinvoke! AudioConverterFillComplexBufferRealtimeSafe is not bound

@@ -224,7 +224,8 @@ namespace AutomaticAssessmentConfiguration {
 		[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
 		[Export ("required")]
 		bool Required {
-			[Bind ("isRequired")] get;
+			[Bind ("isRequired")]
+			get;
 			set;
 		}
 	}

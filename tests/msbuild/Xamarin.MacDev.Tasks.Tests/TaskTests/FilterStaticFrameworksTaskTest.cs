@@ -53,9 +53,9 @@ namespace Xamarin.MacDev.Tasks.Tests {
 			File.WriteAllText (customExecutablePath, "mock executable");
 
 			// Act: Use reflection to test the helper method
-			var method = typeof (FilterStaticFrameworks).GetMethod ("GetFrameworkExecutablePath", 
+			var method = typeof (FilterStaticFrameworks).GetMethod ("GetFrameworkExecutablePath",
 				System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
-			var result = method?.Invoke (null, new object[] { frameworkDir }) as string;
+			var result = method?.Invoke (null, new object [] { frameworkDir }) as string;
 
 			// Assert: Should return the custom executable path from CFBundleExecutable
 			Assert.That (result, Is.EqualTo (customExecutablePath), "Should use CFBundleExecutable from Info.plist");
@@ -71,9 +71,9 @@ namespace Xamarin.MacDev.Tasks.Tests {
 			var expectedPath = Path.Combine (frameworkDir, "TestFramework");
 
 			// Act: Use reflection to test the helper method
-			var method = typeof (FilterStaticFrameworks).GetMethod ("GetFrameworkExecutablePath", 
+			var method = typeof (FilterStaticFrameworks).GetMethod ("GetFrameworkExecutablePath",
 				System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
-			var result = method?.Invoke (null, new object[] { frameworkDir }) as string;
+			var result = method?.Invoke (null, new object [] { frameworkDir }) as string;
 
 			// Assert: Should return the default framework executable path
 			Assert.That (result, Is.EqualTo (expectedPath), "Should use default framework executable path");
@@ -86,9 +86,9 @@ namespace Xamarin.MacDev.Tasks.Tests {
 			var nonFrameworkPath = Path.Combine (tempDir, "regular_file.dylib");
 
 			// Act: Use reflection to test the helper method
-			var method = typeof (FilterStaticFrameworks).GetMethod ("GetFrameworkExecutablePath", 
+			var method = typeof (FilterStaticFrameworks).GetMethod ("GetFrameworkExecutablePath",
 				System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
-			var result = method?.Invoke (null, new object[] { nonFrameworkPath }) as string;
+			var result = method?.Invoke (null, new object [] { nonFrameworkPath }) as string;
 
 			// Assert: Should return the path unchanged
 			Assert.That (result, Is.EqualTo (nonFrameworkPath), "Should return non-framework paths unchanged");
@@ -107,14 +107,14 @@ namespace Xamarin.MacDev.Tasks.Tests {
 			var expectedPath = Path.Combine (frameworkDir, "BadFramework");
 
 			// Act: Use reflection to test the helper method
-			var method = typeof (FilterStaticFrameworks).GetMethod ("GetFrameworkExecutablePath", 
+			var method = typeof (FilterStaticFrameworks).GetMethod ("GetFrameworkExecutablePath",
 				System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
-			
+
 			// Assert: Should either throw an exception or fall back to default path
 			// The exact behavior depends on the implementation - if we remove try-catch,
 			// this should throw an exception that gets caught by the caller
 			try {
-				var result = method?.Invoke (null, new object[] { frameworkDir }) as string;
+				var result = method?.Invoke (null, new object [] { frameworkDir }) as string;
 				// If no exception, should fall back to default
 				Assert.That (result, Is.EqualTo (expectedPath), "Should fall back to default path for malformed plist");
 			} catch (System.Reflection.TargetInvocationException ex) {

@@ -58,8 +58,7 @@ namespace BackgroundAssets {
 	[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0), Mac (26, 0)]
 	[Flags]
 	[Native]
-	public enum BAAssetPackStatus : ulong
-	{
+	public enum BAAssetPackStatus : ulong {
 		DownloadAvailable = 1uL << 0,
 		UpdateAvailable = 1uL << 1,
 		UpToDate = 1uL << 2,
@@ -72,8 +71,7 @@ namespace BackgroundAssets {
 	[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0), Mac (26, 0)]
 	[ErrorDomain ("BAManagedErrorDomain")]
 	[Native]
-	public enum BAManagedErrorCode : long
-	{
+	public enum BAManagedErrorCode : long {
 		AssetPackNotFound,
 		FileNotFound,
 	}
@@ -251,9 +249,8 @@ namespace BackgroundAssets {
 
 	[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0), Mac (26, 0)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false), Model]
-	[BaseType (typeof(NSObject))]
-	interface BAManagedAssetPackDownloadDelegate
-	{
+	[BaseType (typeof (NSObject))]
+	interface BAManagedAssetPackDownloadDelegate {
 		[Export ("downloadOfAssetPackBegan:")]
 		void DownloadOfAssetPackBegan (BAAssetPack assetPack);
 
@@ -270,12 +267,11 @@ namespace BackgroundAssets {
 		void DownloadOfAssetPack (BAAssetPack assetPack, NSError error);
 	}
 
-	interface IBAManagedAssetPackDownloadDelegate {}
+	interface IBAManagedAssetPackDownloadDelegate { }
 
 	[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0), Mac (26, 0)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
-	interface BAManagedDownloaderExtension : BADownloaderExtension
-	{
+	interface BAManagedDownloaderExtension : BADownloaderExtension {
 		[Export ("shouldDownloadAssetPack:")]
 		bool ShouldDownloadAssetPack (BAAssetPack assetPack);
 	}
@@ -283,8 +279,7 @@ namespace BackgroundAssets {
 	[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0), Mac (26, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface BAAssetPack
-	{
+	interface BAAssetPack {
 		[Export ("identifier")]
 		string Identifier { get; }
 
@@ -318,8 +313,7 @@ namespace BackgroundAssets {
 	[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0), Mac (26, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface BAAssetPackManager
-	{
+	interface BAAssetPackManager {
 		[Static]
 		[Export ("sharedManager", ArgumentSemantic.Strong)]
 		BAAssetPackManager SharedManager { get; }
@@ -370,8 +364,7 @@ namespace BackgroundAssets {
 	[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0), Mac (26, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface BAAssetPackManifest
-	{
+	interface BAAssetPackManifest {
 		[Export ("assetPacks", ArgumentSemantic.Copy)]
 		NSSet<BAAssetPack> AssetPacks { get; }
 

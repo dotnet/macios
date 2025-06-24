@@ -1,6 +1,1 @@
 !missing-selector! AEAssessmentApplication::initWithBundleIdentifier:teamIdentifier: not bound
-!missing-enum-value! AEAssessmentErrorCode native value AEAssessmentErrorRequiredParticipantsNotAvailable = 5 not bound
-!missing-field! AENotInstalledParticipantsKey not bound
-!missing-field! AERestrictedSystemParticipantsKey not bound
-!missing-selector! AEAssessmentParticipantConfiguration::isRequired not bound
-!missing-selector! AEAssessmentParticipantConfiguration::setRequired: not bound

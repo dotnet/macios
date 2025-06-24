@@ -166,6 +166,12 @@ return {backingField};
 			if (getter is null)
 				continue;
 
+			// add backing variable for the property if it is needed
+			if (property.NeedsBackingField) {
+				classBlock.WriteLine ();
+				classBlock.WriteLine ($"object? {property.BackingField} = null;");
+			}
+
 			classBlock.WriteLine ();
 			classBlock.AppendMemberAvailability (property.SymbolAvailability);
 			classBlock.AppendGeneratedCodeAttribute (optimizable: true);
@@ -173,6 +179,10 @@ return {backingField};
 			using (var propertyBlock = classBlock.CreateBlock (property.ToDeclaration ().ToString (), block: true)) {
 				// be very verbose with the availability, makes the life easier to the dotnet analyzer
 				propertyBlock.AppendMemberAvailability (getter.Value.SymbolAvailability);
+				// if we deal with a delegate, include the attr:
+				// [return: DelegateProxy (typeof ({staticBridge}))]
+				if (property.ReturnType.IsDelegate)
+					propertyBlock.AppendDelegateProxyReturn (property.ReturnType);
 				using (var getterBlock = propertyBlock.CreateBlock ("get", block: true)) {
 					if (uiThreadCheck is not null) {
 						getterBlock.WriteLine (uiThreadCheck.ToString ());
@@ -189,8 +199,12 @@ if (IsDirectBinding) {{
 	{ExpressionStatement (invocations.Getter.SendSuper)}
 }}
 {ExpressionStatement (KeepAlive ("this"))}
-return {tempVar};
 ");
+					if (property.RequiresDirtyCheck) {
+						getterBlock.WriteLine ("MarkDirty ();");
+						getterBlock.WriteLine ($"{property.BackingField} = {tempVar};");
+					}
+					getterBlock.WriteLine ($"return {tempVar};");
 				}
 
 				var setter = property.GetAccessor (AccessorKind.Setter);
@@ -200,12 +214,21 @@ return {tempVar};
 
 				propertyBlock.WriteLine (); // add space between getter and setter since we have the attrs
 				propertyBlock.AppendMemberAvailability (setter.Value.SymbolAvailability);
+				// if we deal with a delegate, include the attr:
+				// [param: BlockProxy (typeof ({nativeInvoker}))]
+				if (property.ReturnType.IsDelegate)
+					propertyBlock.AppendDelegateParameter (property.ReturnType);
 				using (var setterBlock = propertyBlock.CreateBlock ("set", block: true)) {
 					if (uiThreadCheck is not null) {
 						setterBlock.WriteLine (uiThreadCheck.ToString ());
 						setterBlock.WriteLine ();
 					}
 					setterBlock.WriteLine ("throw new NotImplementedException();");
+
+					if (property.RequiresDirtyCheck) {
+						setterBlock.WriteLine ("MarkDirty ();");
+						setterBlock.WriteLine ($"{property.BackingField} = value;");
+					}
 				}
 			}
 		}

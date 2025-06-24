@@ -1498,7 +1498,7 @@ namespace CoreLocation {
 	/// <summary>A delegate that is the <c>completionHandler</c> in calls to <see cref="CoreLocation.CLGeocoder.GeocodePostalAddressAsync(Contacts.CNPostalAddress,Foundation.NSLocale)" />.</summary>
 	/// <remarks>
 	///     </remarks>
-	delegate void CLGeocodeCompletionHandler (CLPlacemark [] placemarks, NSError error);
+	delegate void CLGeocodeCompletionHandler ([NullAllowed] CLPlacemark [] placemarks, [NullAllowed] NSError error);
 
 	/// <include file="../docs/api/CoreLocation/CLGeocoder.xml" path="/Documentation/Docs[@DocId='T:CoreLocation.CLGeocoder']/*" />
 	[BaseType (typeof (NSObject))]

@@ -8,6 +8,7 @@ using ObjCRuntime;
 using Xunit;
 using Property = Microsoft.Macios.Generator.DataModel.Property;
 using static Microsoft.Macios.Generator.Tests.TestDataFactory;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Microsoft.Macios.Generator.Tests.DataModel.PropertyTests;
 
@@ -17,17 +18,38 @@ public class GeneralPropertyTests {
 	[InlineData ("Name")]
 	[InlineData ("Surname")]
 	[InlineData ("Date")]
-	public void BackingFieldTests (string propertyName)
+	public void BackingFieldStaticFieldTests (string propertyName)
 	{
 		var property = new Property (
 			name: propertyName,
 			returnType: ReturnTypeForString (),
 			symbolAvailability: new (),
 			attributes: [],
-			modifiers: [],
+			modifiers: [Token (SyntaxKind.StaticKeyword)],
 			accessors: []
-		);
+		) {
+			ExportFieldData = new ()
+		};
 		Assert.Equal ($"_{propertyName}", property.BackingField);
+	}
+
+	[Theory]
+	[InlineData ("Name", false)]
+	[InlineData ("Surname", false)]
+	[InlineData ("Date", true)]
+	public void BackingFieldTests (string propertyName, bool isStatic)
+	{
+		var property = new Property (
+			name: propertyName,
+			returnType: ReturnTypeForString (),
+			symbolAvailability: new (),
+			attributes: [],
+			modifiers: isStatic ? [Token (SyntaxKind.StaticKeyword)] : [],
+			accessors: []
+		) {
+			ExportFieldData = null,
+		};
+		Assert.Equal (Nomenclator.GetPropertyBackingFieldName (propertyName, isStatic), property.BackingField);
 	}
 
 	[Fact]

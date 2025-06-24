@@ -1028,6 +1028,15 @@ partial class TestRuntime {
 		}
 	}
 
+	/// <summary>Calls Assert.Ignore if we're running on an earlier OS version than the highest we support.</summary>
+	public static void AssertMatchingOSVersionAndSdkVersion ()
+	{
+		var sdk = new Version (Constants.SdkVersion);
+		if (CheckSystemVersion (CurrentPlatform, sdk.Major, sdk.Minor, sdk.Build == -1 ? 0 : sdk.Build))
+			return;
+		Assert.Ignore ($"This test only executes using the latest OS version ({sdk.Major}.{sdk.Minor})");
+	}
+
 	// This method returns true if:
 	// system version >= specified version
 	// AND

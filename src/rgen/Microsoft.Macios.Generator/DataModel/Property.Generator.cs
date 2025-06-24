@@ -181,7 +181,6 @@ readonly partial struct Property {
 		ImmutableArray<Accessor> accessors)
 	{
 		Name = name;
-		BackingField = $"_{Name}";
 		ReturnType = returnType;
 		SymbolAvailability = symbolAvailability;
 		Attributes = attributes;

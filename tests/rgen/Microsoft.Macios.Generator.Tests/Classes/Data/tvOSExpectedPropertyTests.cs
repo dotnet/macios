@@ -206,6 +206,8 @@ public partial class PropertyTests
 	[EditorBrowsable (EditorBrowsableState.Advanced)]
 	protected internal PropertyTests (global::ObjCRuntime.NativeHandle handle) : base (handle) {}
 
+	object? __mt_Alphanumerics_var = null;
+
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("tvos")]
@@ -226,9 +228,13 @@ public partial class PropertyTests
 				ret = global::ObjCRuntime.Runtime.GetNSObject<global::Foundation.NSCharacterSet> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("alphanumericCharacterSet")))!;
 			}
 			global::System.GC.KeepAlive (this);
+			MarkDirty ();
+			__mt_Alphanumerics_var = ret;
 			return ret;
 		}
 	}
+
+	object? __mt_AttributedStringByInflectingString_var = null;
 
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
@@ -250,6 +256,8 @@ public partial class PropertyTests
 				ret = global::ObjCRuntime.Runtime.GetNSObject<global::Foundation.NSAttributedString> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("attributedStringByInflectingString")))!;
 			}
 			global::System.GC.KeepAlive (this);
+			MarkDirty ();
+			__mt_AttributedStringByInflectingString_var = ret;
 			return ret;
 		}
 	}
@@ -467,6 +475,8 @@ public partial class PropertyTests
 		}
 	}
 
+	object? __mt_Locale_var = null;
+
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("tvos")]
@@ -487,6 +497,8 @@ public partial class PropertyTests
 				ret = global::ObjCRuntime.Runtime.GetNSObject<global::Foundation.NSLocale> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("locale")))!;
 			}
 			global::System.GC.KeepAlive (this);
+			MarkDirty ();
+			__mt_Locale_var = ret;
 			return ret;
 		}
 
@@ -497,6 +509,8 @@ public partial class PropertyTests
 		set
 		{
 			throw new NotImplementedException();
+			MarkDirty ();
+			__mt_Locale_var = value;
 		}
 	}
 
@@ -665,6 +679,8 @@ public partial class PropertyTests
 		}
 	}
 
+	object? __mt_Results_var = null;
+
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("tvos")]
@@ -685,6 +701,8 @@ public partial class PropertyTests
 				ret = global::CoreFoundation.CFArray.ArrayFromHandle<global::Foundation.NSMetadataItem> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("results")))!;
 			}
 			global::System.GC.KeepAlive (this);
+			MarkDirty ();
+			__mt_Results_var = ret;
 			return ret;
 		}
 	}
@@ -736,6 +754,8 @@ public partial class PropertyTests
 			return ret;
 		}
 	}
+
+	object? __mt_WeakDelegate_var = null;
 
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]

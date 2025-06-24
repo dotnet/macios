@@ -5524,6 +5524,15 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			GC.KeepAlive (obj);
 		}
 #endif // HAS_UIKIT
+
+#if HAS_UIKIT
+		// This is a test case for https://github.com/dotnet/macios/issues/23070.
+		// It only needs to exist in the source code, it doesn't have to do anything.
+		private void Issue23070TestCase (UIView origin, UIView target)
+		{
+			origin.LeftAnchor.ConstraintEqualTo (target.LeftAnchor);
+		}
+#endif // HAS_UIKIT
 	}
 
 	[Category (typeof (CALayer))]

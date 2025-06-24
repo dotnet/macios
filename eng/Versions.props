@@ -1,30 +1,30 @@
 <Project>
   <!--Package versions-->
   <PropertyGroup>
-	<!-- Versions updated by maestro -->
-	<MicrosoftNETSdkPackageVersion>10.0.100-preview.7.25321.101</MicrosoftNETSdkPackageVersion>
-	<MicrosoftNETILLinkTasksPackageVersion>10.0.0-preview.7.25321.101</MicrosoftNETILLinkTasksPackageVersion>
-	<MicrosoftNETILLinkPackageVersion>10.0.0-preview.7.25321.101</MicrosoftNETILLinkPackageVersion>
-	<MicrosoftDotNetBuildTasksFeedPackageVersion>10.0.0-beta.25321.101</MicrosoftDotNetBuildTasksFeedPackageVersion>
-	<MicrosoftDotNetSharedFrameworkSdkVersion>10.0.0-beta.25321.101</MicrosoftDotNetSharedFrameworkSdkVersion>
-	<MicrosoftNETCoreAppRefPackageVersion>10.0.0-preview.7.25321.101</MicrosoftNETCoreAppRefPackageVersion>
-	<MicrosoftNETRuntimeMonoTargetsSdkPackageVersion>10.0.0-preview.7.25321.101</MicrosoftNETRuntimeMonoTargetsSdkPackageVersion>
-	<MicrosoftTemplateEngineAuthoringTasksPackageVersion>10.0.100-preview.6.25321.101</MicrosoftTemplateEngineAuthoringTasksPackageVersion>
-	<MicrosoftTemplateEngineTasksVersion>7.0.100-alpha.1.21601.1</MicrosoftTemplateEngineTasksVersion>
-	<MicrosoftDotNetCecilPackageVersion>0.11.5-alpha.25321.101</MicrosoftDotNetCecilPackageVersion>
-	<MicrosoftDotNetXHarnessiOSSharedPackageVersion>10.0.0-prerelease.25318.1</MicrosoftDotNetXHarnessiOSSharedPackageVersion>
-	<MicrosoftDotNetArcadeSdkPackageVersion>10.0.0-beta.25321.101</MicrosoftDotNetArcadeSdkPackageVersion>
-	<!-- Manually updated versions -->
-	<MicrosoftDotnetSdkInternalPackageVersion>$(MicrosoftNETSdkPackageVersion)</MicrosoftDotnetSdkInternalPackageVersion>
-	<!-- This is a subscription of the .NET 9 latest stable versions of our packages -->
-	<MicrosoftMacCatalystSdknet90_185PackageVersion>18.5.9200</MicrosoftMacCatalystSdknet90_185PackageVersion>
-	<MicrosoftmacOSSdknet90_155PackageVersion>15.5.9200</MicrosoftmacOSSdknet90_155PackageVersion>
-	<MicrosoftiOSSdknet90_185PackageVersion>18.5.9200</MicrosoftiOSSdknet90_185PackageVersion>
-	<MicrosofttvOSSdknet90_185PackageVersion>18.5.9200</MicrosofttvOSSdknet90_185PackageVersion>
-	<!-- This is a subscription to the .NET 9/Xcode 16.0 versions of our packages -->
-	<MicrosoftMacCatalystSdknet90_180PackageVersion>18.0.9617</MicrosoftMacCatalystSdknet90_180PackageVersion>
-	<MicrosoftmacOSSdknet90_150PackageVersion>15.0.9617</MicrosoftmacOSSdknet90_150PackageVersion>
-	<MicrosoftiOSSdknet90_180PackageVersion>18.0.9617</MicrosoftiOSSdknet90_180PackageVersion>
-	<MicrosofttvOSSdknet90_180PackageVersion>18.0.9617</MicrosofttvOSSdknet90_180PackageVersion>
+    <!-- Versions updated by maestro -->
+    <MicrosoftNETSdkPackageVersion>10.0.100-preview.7.25323.102</MicrosoftNETSdkPackageVersion>
+    <MicrosoftNETILLinkTasksPackageVersion>10.0.0-preview.7.25323.102</MicrosoftNETILLinkTasksPackageVersion>
+    <MicrosoftNETILLinkPackageVersion>10.0.0-preview.7.25323.102</MicrosoftNETILLinkPackageVersion>
+    <MicrosoftDotNetBuildTasksFeedPackageVersion>10.0.0-beta.25323.102</MicrosoftDotNetBuildTasksFeedPackageVersion>
+    <MicrosoftDotNetSharedFrameworkSdkVersion>10.0.0-beta.25323.102</MicrosoftDotNetSharedFrameworkSdkVersion>
+    <MicrosoftNETCoreAppRefPackageVersion>10.0.0-preview.7.25323.102</MicrosoftNETCoreAppRefPackageVersion>
+    <MicrosoftNETRuntimeMonoTargetsSdkPackageVersion>10.0.0-preview.7.25323.102</MicrosoftNETRuntimeMonoTargetsSdkPackageVersion>
+    <MicrosoftTemplateEngineAuthoringTasksPackageVersion>10.0.100-preview.7.25323.102</MicrosoftTemplateEngineAuthoringTasksPackageVersion>
+    <MicrosoftTemplateEngineTasksVersion>7.0.100-alpha.1.21601.1</MicrosoftTemplateEngineTasksVersion>
+    <MicrosoftDotNetCecilPackageVersion>0.11.5-alpha.25323.102</MicrosoftDotNetCecilPackageVersion>
+    <MicrosoftDotNetXHarnessiOSSharedPackageVersion>10.0.0-prerelease.25318.1</MicrosoftDotNetXHarnessiOSSharedPackageVersion>
+    <MicrosoftDotNetArcadeSdkPackageVersion>10.0.0-beta.25323.102</MicrosoftDotNetArcadeSdkPackageVersion>
+    <!-- Manually updated versions -->
+    <MicrosoftDotnetSdkInternalPackageVersion>$(MicrosoftNETSdkPackageVersion)</MicrosoftDotnetSdkInternalPackageVersion>
+    <!-- This is a subscription of the .NET 9 latest stable versions of our packages -->
+    <MicrosoftMacCatalystSdknet90_185PackageVersion>18.5.9200</MicrosoftMacCatalystSdknet90_185PackageVersion>
+    <MicrosoftmacOSSdknet90_155PackageVersion>15.5.9200</MicrosoftmacOSSdknet90_155PackageVersion>
+    <MicrosoftiOSSdknet90_185PackageVersion>18.5.9200</MicrosoftiOSSdknet90_185PackageVersion>
+    <MicrosofttvOSSdknet90_185PackageVersion>18.5.9200</MicrosofttvOSSdknet90_185PackageVersion>
+    <!-- This is a subscription to the .NET 9/Xcode 16.0 versions of our packages -->
+    <MicrosoftMacCatalystSdknet90_180PackageVersion>18.0.9617</MicrosoftMacCatalystSdknet90_180PackageVersion>
+    <MicrosoftmacOSSdknet90_150PackageVersion>15.0.9617</MicrosoftmacOSSdknet90_150PackageVersion>
+    <MicrosoftiOSSdknet90_180PackageVersion>18.0.9617</MicrosoftiOSSdknet90_180PackageVersion>
+    <MicrosofttvOSSdknet90_180PackageVersion>18.0.9617</MicrosofttvOSSdknet90_180PackageVersion>
   </PropertyGroup>
 </Project>

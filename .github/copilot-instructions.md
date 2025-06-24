@@ -25,7 +25,7 @@ This repository provides C# bindings and tooling for Apple platforms:
 
 This project uses a Make-based build system. Key commands:
 
-- `make` - Build everything
+- `make all` and `make install` - Both required to get a complete build
 - `make world` - Reset, build, and install everything  
 - `make check-system` - Verify system dependencies
 - `make show-versions` - Display version information
@@ -38,7 +38,7 @@ The build system supports multiple platforms simultaneously:
 - tvOS: Apple TV applications  
 - Mac Catalyst: iOS apps adapted for macOS
 
-Use `DOTNET_PLATFORMS` to control which platforms are built.
+The `configure` script is used to select which platforms to build. This script must be run before `make`.
 
 ## Binding System
 
@@ -96,11 +96,7 @@ Use these attributes to specify platform availability:
 
 ### Running Tests
 
-```bash
-make run              # Run all tests (simulator + device)
-make run-all-sim      # Run simulator tests only  
-make run-all-dev      # Run device tests only
-```
+It's typically `make run-tests` in the directory with the test project.
 
 ## Apple Platform Integration
 
@@ -122,7 +118,6 @@ interface SomeClass {
 
 ### Memory Management
 
-- ARC (Automatic Reference Counting) patterns
 - Proper `[Export]` declarations for Objective-C methods
 - `using` statements for `IDisposable` resources
 
@@ -131,8 +126,6 @@ interface SomeClass {
 ### Custom MSBuild Tasks
 
 Located in `msbuild/` directory:
-- `Xamarin.iOS.Tasks` - iOS-specific build tasks
-- `Xamarin.Mac.Tasks` - macOS-specific build tasks  
 - `Xamarin.MacDev.Tasks` - Shared Apple development tasks
 
 ### Project Templates
@@ -161,6 +154,7 @@ Common project structure for Apple platform apps:
 - Follow existing patterns in binding definitions
 - Use consistent naming conventions matching Apple's APIs
 - Add appropriate platform availability attributes
+- Use the code style as defined in .editorconfig
 
 ## Nullable Reference Types
 
@@ -275,7 +269,7 @@ void DoSomething (Action<bool, NSError> completion);
 ### Branch Strategy
 
 - `main` - .NET 9 development
-- `net8.0` - .NET 8 maintenance  
+- `net10.0` - .NET 10 development  
 - `release/` branches for specific releases
 - Platform-specific branches for Xcode updates
 

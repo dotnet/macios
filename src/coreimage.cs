@@ -4234,7 +4234,7 @@ namespace CoreImage {
 		/// <summary>Represents the value associated with the constant kCIFormatABGR8.</summary>
 		[Field ("kCIFormatABGR8")]
 		[MacCatalyst (13, 1)]
-		Abgr8 =7, // same as value in old enum
+		Abgr8 = 7, // same as value in old enum
 
 		/// <summary>Represents the value associated with the constant kCIFormatA8.</summary>
 		[Field ("kCIFormatA8")]

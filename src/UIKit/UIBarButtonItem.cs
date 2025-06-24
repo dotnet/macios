@@ -58,7 +58,7 @@ namespace UIKit {
 		/// <summary>Constructor that allows a particular <see cref="UIKit.UIBarButtonSystemItem" /> to be specified when the button is created along with an event handler.</summary>
 		/// <remarks>The event handler will be called when the button is pressed.</remarks>
 		public UIBarButtonItem (UIBarButtonSystemItem systemItem, EventHandler handler)
-		: this (systemItem, null, null)
+		: this (systemItem, target: null, action: null)
 		{
 			Clicked += handler;
 		}

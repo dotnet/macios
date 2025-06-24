@@ -52,6 +52,7 @@ namespace Cecil.Tests {
 			"The field 'Metal.MTLLanguageVersion Metal.MTLLanguageVersion::v3_0' has incorrect capitalization: first letter is not upper case.",
 			"The field 'Metal.MTLLanguageVersion Metal.MTLLanguageVersion::v3_1' has incorrect capitalization: first letter is not upper case.",
 			"The field 'Metal.MTLLanguageVersion Metal.MTLLanguageVersion::v3_2' has incorrect capitalization: first letter is not upper case.",
+			"The field 'Metal.MTLLanguageVersion Metal.MTLLanguageVersion::v4_0' has incorrect capitalization: first letter is not upper case.",
 			"The field 'Metal.MTLTextureType Metal.MTLTextureType::k1D' has incorrect capitalization: first letter is not upper case.",
 			"The field 'Metal.MTLTextureType Metal.MTLTextureType::k1DArray' has incorrect capitalization: first letter is not upper case.",
 			"The field 'Metal.MTLTextureType Metal.MTLTextureType::k2D' has incorrect capitalization: first letter is not upper case.",

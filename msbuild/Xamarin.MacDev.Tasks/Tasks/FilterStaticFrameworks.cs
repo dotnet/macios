@@ -26,14 +26,22 @@ namespace Xamarin.MacDev.Tasks {
 				return frameworkPath;
 
 			// Try to read the CFBundleExecutable from Info.plist
-			var infoPlistPath = Path.Combine (frameworkPath, "Info.plist");
-			if (File.Exists (infoPlistPath)) {
-				var plist = PDictionary.FromFile (infoPlistPath);
-				if (plist is not null) {
-					var bundleExecutable = plist.GetCFBundleExecutable ();
-					if (!string.IsNullOrEmpty (bundleExecutable)) {
-						return Path.Combine (frameworkPath, bundleExecutable);
+			// Check multiple locations where Info.plist might be located
+			var infoPlistPaths = new string[] {
+				Path.Combine (frameworkPath, "Info.plist"), // iOS, tvOS
+				Path.Combine (frameworkPath, "Resources", "Info.plist") // macOS, MacCatalyst
+			};
+
+			foreach (var infoPlistPath in infoPlistPaths) {
+				if (File.Exists (infoPlistPath)) {
+					var plist = PDictionary.FromFile (infoPlistPath);
+					if (plist is not null) {
+						var bundleExecutable = plist.GetCFBundleExecutable ();
+						if (!string.IsNullOrEmpty (bundleExecutable)) {
+							return Path.Combine (frameworkPath, bundleExecutable);
+						}
 					}
+					break; // Found Info.plist but no CFBundleExecutable, stop looking
 				}
 			}
 

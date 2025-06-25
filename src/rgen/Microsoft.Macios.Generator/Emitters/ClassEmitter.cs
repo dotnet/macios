@@ -208,7 +208,7 @@ if (IsDirectBinding) {{
 				}
 
 				var setter = property.GetAccessor (AccessorKind.Setter);
-				if (setter is null)
+				if (setter is null || invocations.Setter is null)
 					// we are done with the current property
 					continue;
 
@@ -223,8 +223,23 @@ if (IsDirectBinding) {{
 						setterBlock.WriteLine (uiThreadCheck.ToString ());
 						setterBlock.WriteLine ();
 					}
-					setterBlock.WriteLine ("throw new NotImplementedException();");
-
+					// init the needed temp variables
+					setterBlock.Write (invocations.Setter.Value.Argument.Initializers, verifyTrivia: false);
+					setterBlock.Write (invocations.Setter.Value.Argument.PreDelegateCallConversion, verifyTrivia: false);
+					
+					// perform the invocation
+					setterBlock.WriteRaw (
+$@"if (IsDirectBinding) {{
+	{ExpressionStatement (invocations.Setter.Value.Send)}
+}} else {{
+	{ExpressionStatement (invocations.Setter.Value.SendSuper)}
+}}
+{ExpressionStatement (KeepAlive ("this"))}
+");
+					// perform the post delegate call conversion, this might include the GC.KeepAlive calls to keep
+					// the native object alive
+					setterBlock.Write (invocations.Setter.Value.Argument.PostDelegateCallConversion, verifyTrivia: false);
+					// mark property as dirty if needed
 					if (property.RequiresDirtyCheck) {
 						setterBlock.WriteLine ("MarkDirty ();");
 						setterBlock.WriteLine ($"{property.BackingField} = value;");

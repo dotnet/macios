@@ -147,6 +147,11 @@ return {backingField};
 		notificationProperties = notificationsBuilder.ToImmutable ();
 	}
 
+	/// <summary>
+	/// Emit the code for all the properties in the class.
+	/// </summary>
+	/// <param name="context">The current binding context.</param>
+	/// <param name="classBlock">Current class block.</param>
 	void EmitProperties (in BindingContext context, TabbedWriter<StringWriter> classBlock)
 	{
 
@@ -230,6 +235,25 @@ if (IsDirectBinding) {{
 						setterBlock.WriteLine ($"{property.BackingField} = value;");
 					}
 				}
+			}
+		}
+	}
+
+	/// <summary>
+	/// Emit the code for all the methods in the class.
+	/// </summary>
+	/// <param name="context">The current binding context.</param>
+	/// <param name="classBlock">Current class block.</param>
+	void EmitMethods (in BindingContext context, TabbedWriter<StringWriter> classBlock)
+	{
+		foreach (var method in context.Changes.Methods.OrderBy (m => m.Name)) {
+			
+			classBlock.WriteLine ();
+			classBlock.AppendMemberAvailability (method.SymbolAvailability);
+			classBlock.AppendGeneratedCodeAttribute (optimizable: true);
+
+			using (var methodBlock = classBlock.CreateBlock (method.ToDeclaration ().ToString (), block: true)) {
+				methodBlock.WriteLine ("throw new NotImplementedException ();");
 			}
 		}
 	}
@@ -373,6 +397,7 @@ public static NSObject {name} ({NSObject} objectToObserve, {EventHandler}<{event
 			EmitFields (bindingContext.Changes.Name, bindingContext.Changes.Properties, classBlock,
 				out var notificationProperties);
 			EmitProperties (bindingContext, classBlock);
+			EmitMethods (bindingContext, classBlock);
 
 			// emit the notification helper classes, leave this for the very bottom of the class
 			EmitNotifications (notificationProperties, classBlock);

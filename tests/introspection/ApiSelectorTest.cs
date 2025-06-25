@@ -1124,14 +1124,12 @@ namespace Introspection {
 					return TestRuntime.CheckXcodeVersion (26, 0); // https://github.com/rolfbjarne/apple-feedback/tree/main/FB18122430
 				}
 				break;
-#if __MACOS__
 			case "PhaseSoundEvent":
 				switch (selectorName) {
-				case "startAndReturnError:": // introspection complains about this in Xcode 26 b1 on macOS only, but the selector is still available in the header for macOS.
-					return TestRuntime.CheckExactXcodeVersion (26, 0, 1);
+				case "startAndReturnError:": // introspection complains about this in Xcode 26 b1 and b2 only, but the selector is still available in the headers, so only verify the exact Xcode version for now to see if Apple changes their minds in a future beta.
+					return TestRuntime.CheckExactXcodeVersion (26, 0, 1) || TestRuntime.CheckExactXcodeVersion (26, 0, 2);
 				}
 				break;
-#endif // __MACOS__
 			}
 
 			// old binding mistake

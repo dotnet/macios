@@ -6505,7 +6505,7 @@ namespace Foundation {
 	/// <summary>A delegate that enumerates values for <see cref="Foundation.NSLinguisticTagger.EnumerateTagsInRange(Foundation.NSRange,Foundation.NSString,Foundation.NSLinguisticTaggerOptions,Foundation.NSLingusticEnumerator)" />.</summary>
 	/// <remarks>To be added.</remarks>
 #if XAMCORE_5_0
-	delegate void  NSLinguisticEnumerator ([NullAllowed] NSString tag, NSRange tokenRange, NSRange sentenceRange, ref bool stop);
+	delegate void NSLinguisticEnumerator ([NullAllowed] NSString tag, NSRange tokenRange, NSRange sentenceRange, ref bool stop);
 #else
 	delegate void NSLingusticEnumerator ([NullAllowed] NSString tag, NSRange tokenRange, NSRange sentenceRange, ref bool stop);
 #endif

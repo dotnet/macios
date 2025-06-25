@@ -14,7 +14,7 @@ using CoreGraphics;
 namespace JavaScriptCore {
 
 	/// <summary>The delegate that can be used as the <see cref="JavaScriptCore.JSContext.ExceptionHandler" />.</summary>
-	delegate void JSContextExceptionHandler (JSContext context, JSValue exception);
+	delegate void JSContextExceptionHandler ([NullAllowed] JSContext context, [NullAllowed] JSValue exception);
 
 	/// <include file="../docs/api/JavaScriptCore/JSContext.xml" path="/Documentation/Docs[@DocId='T:JavaScriptCore.JSContext']/*" />
 	[MacCatalyst (13, 1)]
@@ -94,7 +94,7 @@ namespace JavaScriptCore {
 	[iOS (13, 0)]
 	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
-	delegate void JSPromiseCreationExecutor (JSValue resolve, JSValue rejected);
+	delegate void JSPromiseCreationExecutor ([NullAllowed] JSValue resolve, [NullAllowed] JSValue rejected);
 
 	/// <summary>Holds a JavaScript value and provides type-testing and conversion functions.</summary>
 	///     

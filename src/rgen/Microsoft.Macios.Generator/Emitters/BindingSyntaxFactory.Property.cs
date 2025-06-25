@@ -125,7 +125,7 @@ static partial class BindingSyntaxFactory {
 	{
 		// retrieve the objc_msgSend methods
 		var (getter, setter) = GetObjCMessageSendMethods (property, isStret: property.ReturnType.NeedsStret);
-		var (superGetter, supperSetter) = GetObjCMessageSendMethods (property, isSuper: true, isStret: property.ReturnType.NeedsStret);
+		var (superGetter, superSetter) = GetObjCMessageSendMethods (property, isSuper: true, isStret: property.ReturnType.NeedsStret);
 		var getterSelector = property.GetAccessor (AccessorKind.Getter)?.GetSelector (property);
 		var getterInvocations = GetGetterInvocations (property, getterSelector, getter, superGetter);
 
@@ -133,7 +133,7 @@ static partial class BindingSyntaxFactory {
 		var setterAccessor = property.GetAccessor (AccessorKind.Setter);
 		if (setterAccessor is not null) {
 			var setterSelector = setterAccessor.Value.GetSelector (property);
-			setterInvocations = GetSetterInvocations (property, setterSelector, setter, supperSetter);
+			setterInvocations = GetSetterInvocations (property, setterSelector, setter, superSetter);
 		}
 
 		return new () {

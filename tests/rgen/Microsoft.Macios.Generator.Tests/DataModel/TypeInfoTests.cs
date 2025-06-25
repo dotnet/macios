@@ -691,7 +691,7 @@ namespace Example {
 		Assert.Equal ("Example.NS.MyClass.ExampleClass", changes.Value.Parameters [0].Type.FullyQualifiedName);
 		Assert.Equal ("Example.NS", string.Join ('.', changes.Value.Parameters [0].Type.Namespace));
 	}
-	
+
 	[Theory]
 	[PlatformInlineData (ApplePlatform.iOS, "Action", "Task", "TaskCompletionSource")]
 	[PlatformInlineData (ApplePlatform.TVOS, "Action", "Task", "TaskCompletionSource")]

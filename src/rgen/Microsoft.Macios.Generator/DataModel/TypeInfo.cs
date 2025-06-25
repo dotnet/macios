@@ -120,7 +120,7 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 	/// Return if the type represents a wrapped object from the objc world.
 	/// </summary>
 	public bool IsWrapped { get; init; }
-	
+
 	/// <summary>
 	/// True if the type represents a Task.
 	/// </summary>
@@ -603,19 +603,19 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 	{
 		if (Delegate is null)
 			return [];
-		
+
 		// get all the type information from the delegate parameters since this is what is needed for 
 		// the task type. It is important to remember that for async methods in objc if the last parameter is a
 		// a NSError we will drop it since that will be converted to an exception in the generated code.
 		var delegateTypes = Delegate.Parameters.Select (p => p.Type).ToArray ();
-		if (delegateTypes.Length > 0 && delegateTypes[^1].Name.Contains ("NSError")) {
+		if (delegateTypes.Length > 0 && delegateTypes [^1].Name.Contains ("NSError")) {
 			// remove the last parameter since it is not needed for the task type
 			delegateTypes = delegateTypes [..^1];
 		}
 
-		return [..delegateTypes.Select (t => t.GetIdentifierSyntax ().ToString ())];
+		return [.. delegateTypes.Select (t => t.GetIdentifierSyntax ().ToString ())];
 	}
-	
+
 	/// <summary>
 	/// If the current <see cref="TypeInfo"/> represents a delegate, this method returns a new <see cref="TypeInfo"/>
 	/// representing a <see cref="System.Threading.Tasks.Task"/> with the delegate's parameters as generic arguments.
@@ -636,9 +636,9 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		return new TypeInfo (
 			name: "System.Threading.Tasks.Task",
 			specialType: SpecialType.None,
-			isNullable: false, 
+			isNullable: false,
 			isBlittable: false,
-			isSmartEnum: false, 
+			isSmartEnum: false,
 			isArray: false,
 			isReferenceType: true,
 			isStruct: false
@@ -650,7 +650,7 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 			TypeArguments = genericTypeArguments,
 		};
 	}
-	
+
 	/// <summary>
 	/// If the current <see cref="TypeInfo"/> represents a <see cref="System.Threading.Tasks.Task"/>, this method returns a new <see cref="TypeInfo"/>
 	/// representing a <see cref="System.Threading.Tasks.TaskCompletionSource{TResult}"/> with the task's generic arguments.
@@ -664,7 +664,7 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 	{
 		if (!IsTask)
 			return this;
-		
+
 		return this with {
 			Name = "TaskCompletionSource",
 			FullyQualifiedName = "System.Threading.Tasks.TaskCompletionSource",

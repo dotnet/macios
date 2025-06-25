@@ -738,7 +738,6 @@ namespace NS {{
 		Assert.NotNull (changes);
 		// ensure that the method has a single parameter
 		Assert.Single (changes.Value.Parameters);
-		// ensure that the first parameter is a pointer
 		var type = changes.Value.Parameters [0].Type;
 		var task = type.ToTask ();
 		Assert.NotEqual (type, task);

@@ -19897,6 +19897,7 @@ P:Darwin.Message.Item(System.String)
 P:DataDetection.DDMatchCalendarEvent.AllDay
 P:DeviceCheck.DCAppAttestService.Supported
 P:DeviceDiscoveryExtension.DDDevice.NetworkEndpoint
+P:EventKit.EKCalendarItem.HasMaximumAlarms
 P:EventKitUI.EKEventEditEventArgs.Action
 P:EventKitUI.EKEventViewEventArgs.Action
 P:ExecutionPolicy.EPDeveloperTool.AuthorizationStatus

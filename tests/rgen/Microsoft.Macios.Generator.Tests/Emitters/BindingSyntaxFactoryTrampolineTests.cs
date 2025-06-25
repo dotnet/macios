@@ -4500,6 +4500,22 @@ namespace NS {
 				blockParameter,
 				$"invoker (BlockLiteral, ({Global ("ObjCRuntime.NativeHandle")}) block_ptr_callbackParameter);"
 			];
+
+			var nonDecoratedBlockParameter = @"
+using System;
+using ObjCRuntime;
+namespace NS {
+	public delegate void Callback (Action? callbackParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				nonDecoratedBlockParameter,
+				$"invoker (BlockLiteral, ({Global ("ObjCRuntime.NativeHandle")}) block_ptr_callbackParameter);"
+			];
 		}
 
 		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();

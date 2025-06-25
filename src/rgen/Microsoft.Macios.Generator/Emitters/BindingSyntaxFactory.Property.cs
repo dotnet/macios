@@ -84,7 +84,7 @@ static partial class BindingSyntaxFactory {
 			SendSuper: AssignVariable (Nomenclator.GetReturnVariableName (), getterSuperSend)
 		);
 	}
-	
+
 	/// <summary>
 	/// Gets the argument and expressions for invoking a property's setter.
 	/// </summary>
@@ -105,9 +105,9 @@ static partial class BindingSyntaxFactory {
 		if (selector is null || sendMethod is null || superSendMethod is null) {
 			return (argument, ThrowNotImplementedException (), ThrowNotImplementedException ());
 		}
-		
+
 		var setterSend = MessagingInvocation (sendMethod, selector, [argument.ArgumentSyntax]);
-		var setterSuperSend =  MessagingInvocation (superSendMethod, selector, [argument.ArgumentSyntax]);
+		var setterSuperSend = MessagingInvocation (superSendMethod, selector, [argument.ArgumentSyntax]);
 
 		return (
 			Argument: argument,
@@ -115,7 +115,7 @@ static partial class BindingSyntaxFactory {
 			SendSuper: setterSuperSend
 		);
 	}
-	
+
 	/// <summary>
 	/// Gets the invocations for a property's getter and setter.
 	/// </summary>
@@ -128,7 +128,7 @@ static partial class BindingSyntaxFactory {
 		var (superGetter, supperSetter) = GetObjCMessageSendMethods (property, isSuper: true, isStret: property.ReturnType.NeedsStret);
 		var getterSelector = property.GetAccessor (AccessorKind.Getter)?.GetSelector (property);
 		var getterInvocations = GetGetterInvocations (property, getterSelector, getter, superGetter);
-		
+
 		(TrampolineArgumentSyntax Argument, ExpressionSyntax Send, ExpressionSyntax SendSuper)? setterInvocations = null;
 		var setterAccessor = property.GetAccessor (AccessorKind.Setter);
 		if (setterAccessor is not null) {

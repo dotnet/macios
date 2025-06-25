@@ -84,7 +84,7 @@ public class ArgumentInfoTests {
 	}
 
 	[Fact]
-	public void ExplicitConstructor_FromProperty()
+	public void ExplicitConstructor_FromProperty ()
 	{
 		var typeInfo = new TypeInfo ("System.String");
 		var property = new Property (
@@ -97,7 +97,7 @@ public class ArgumentInfoTests {
 		) {
 			BindAs = new (),
 			ExportPropertyData = new ("myProperty", ArgumentSemantic.None, ObjCBindings.Property.Default)
-		};	
+		};
 
 		var argumentInfo = new ArgumentInfo (property);
 
@@ -112,7 +112,7 @@ public class ArgumentInfoTests {
 	}
 
 	[Fact]
-	public void ImplicitConversion_FromProperty()
+	public void ImplicitConversion_FromProperty ()
 	{
 		var typeInfo = new TypeInfo ("System.String");
 		var property = new Property (
@@ -125,7 +125,7 @@ public class ArgumentInfoTests {
 		) {
 			BindAs = new (),
 			ExportPropertyData = new ("myProperty", ArgumentSemantic.None, ObjCBindings.Property.Default)
-		};	
+		};
 
 		ArgumentInfo argumentInfo = property;
 

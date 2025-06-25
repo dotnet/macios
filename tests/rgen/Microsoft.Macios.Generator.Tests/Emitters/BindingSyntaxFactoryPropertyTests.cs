@@ -694,7 +694,7 @@ public class BindingSyntaxFactoryPropertyTests {
 				"global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"setMyProperty:\"), nsa_value__handle__)",
 				"global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"setMyProperty:\"), nsa_value__handle__)"
 			];
-			
+
 			// test property with no setter
 			property = new Property (
 				name: "MyProperty",
@@ -715,7 +715,7 @@ public class BindingSyntaxFactoryPropertyTests {
 				ExportPropertyData = new ("myProperty", ArgumentSemantic.None, ObjCBindings.Property.IsThreadSafe),
 				BindAs = new (ReturnTypeForNSObject ("Foundation.NSValue")),
 			};
-			
+
 			yield return [
 				property,
 				$"ret = {Global ("Foundation.NSArray")}.ArrayFromHandleFunc<{Global ("CoreGraphics.CGPoint")}> ({Global ("ObjCRuntime.Messaging")}.NativeHandle_objc_msgSend (this.Handle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"myProperty\")), {Global ("Foundation.NSValue")}.ToCGPoint, false)",
@@ -743,7 +743,7 @@ public class BindingSyntaxFactoryPropertyTests {
 			Assert.Equal (setterArgument, invocations.Setter.Value.Argument.ArgumentSyntax.ToString ());
 		} else {
 			Assert.Null (invocations.Setter);
-		} 
+		}
 	}
 }
 

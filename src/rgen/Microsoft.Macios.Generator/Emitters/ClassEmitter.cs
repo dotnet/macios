@@ -226,7 +226,7 @@ if (IsDirectBinding) {{
 					// init the needed temp variables
 					setterBlock.Write (invocations.Setter.Value.Argument.Initializers, verifyTrivia: false);
 					setterBlock.Write (invocations.Setter.Value.Argument.PreDelegateCallConversion, verifyTrivia: false);
-					
+
 					// perform the invocation
 					setterBlock.WriteRaw (
 $@"if (IsDirectBinding) {{

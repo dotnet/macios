@@ -106,7 +106,7 @@ readonly record struct ArgumentInfo {
 	/// <param name="parameter">The delegate parameter to convert.</param>
 	public static implicit operator ArgumentInfo (in DelegateParameter parameter)
 		=> new (parameter);
-	
+
 	/// <summary>
 	/// Implicitly converts a <see cref="Property"/> to an <see cref="ArgumentInfo"/>.
 	/// This is used when treating the property as a setter argument.

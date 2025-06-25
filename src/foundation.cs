@@ -177,7 +177,7 @@ namespace Foundation {
 	/// <param name="options">To be added.</param>
 	/// <summary>Defines the load handler for use with the <see cref="Foundation.NSItemProvider.RegisterItemForTypeIdentifier(System.String,Foundation.NSItemProviderLoadHandler)" /> and <see cref="Foundation.NSItemProvider.SetPreviewImageHandler(Foundation.NSItemProviderLoadHandler)" /> methods.</summary>
 	/// <remarks>To be added.</remarks>
-	delegate void NSItemProviderLoadHandler ([BlockCallback] NSItemProviderCompletionHandler completionHandler, Class expectedValueClass, NSDictionary options);
+	delegate void NSItemProviderLoadHandler ([BlockCallback, NullAllowed] NSItemProviderCompletionHandler completionHandler, [NullAllowed] Class expectedValueClass, [NullAllowed] NSDictionary options);
 	/// <param name="date">To be added.</param>
 	/// <param name="exactMatch">To be added.</param>
 	/// <param name="stop">To be added.</param>
@@ -6231,7 +6231,7 @@ namespace Foundation {
 		string [] CallStackSymbols { get; }
 	}
 
-	delegate NSObject NSExpressionCallbackHandler (NSObject evaluatedObject, NSExpression [] expressions, NSMutableDictionary context);
+	delegate NSObject NSExpressionCallbackHandler ([NullAllowed] NSObject evaluatedObject, NSExpression [] expressions, [NullAllowed] NSMutableDictionary context);
 	[BaseType (typeof (NSObject))]
 	// Objective-C exception thrown.  Name: NSInvalidArgumentException Reason: *** -predicateFormat cannot be sent to an abstract object of class NSExpression: Create a concrete instance!
 	[DisableDefaultCtor]
@@ -6504,7 +6504,11 @@ namespace Foundation {
 	/// <param name="stop">To be added.</param>
 	/// <summary>A delegate that enumerates values for <see cref="Foundation.NSLinguisticTagger.EnumerateTagsInRange(Foundation.NSRange,Foundation.NSString,Foundation.NSLinguisticTaggerOptions,Foundation.NSLingusticEnumerator)" />.</summary>
 	/// <remarks>To be added.</remarks>
-	delegate void NSLingusticEnumerator (NSString tag, NSRange tokenRange, NSRange sentenceRange, ref bool stop);
+#if XAMCORE_5_0
+	delegate void NSLinguisticEnumerator ([NullAllowed] NSString tag, NSRange tokenRange, NSRange sentenceRange, ref bool stop);
+#else
+	delegate void NSLingusticEnumerator ([NullAllowed] NSString tag, NSRange tokenRange, NSRange sentenceRange, ref bool stop);
+#endif
 
 	[Deprecated (PlatformName.MacOSX, 11, 0, message: "Use 'NaturalLanguage.*' API instead.")]
 	[Deprecated (PlatformName.iOS, 14, 0, message: "Use 'NaturalLanguage.*' API instead.")]
@@ -6542,7 +6546,11 @@ namespace Foundation {
 		void StringEditedInRange (NSRange newRange, nint delta);
 
 		[Export ("enumerateTagsInRange:scheme:options:usingBlock:")]
+#if XAMCORE_5_0
+		void EnumerateTagsInRange (NSRange range, NSString tagScheme, NSLinguisticTaggerOptions opts, NSLinguisticEnumerator enumerator);
+#else
 		void EnumerateTagsInRange (NSRange range, NSString tagScheme, NSLinguisticTaggerOptions opts, NSLingusticEnumerator enumerator);
+#endif
 
 		[Export ("sentenceRangeForRange:")]
 		NSRange GetSentenceRangeForRange (NSRange range);
@@ -9559,7 +9567,7 @@ namespace Foundation {
 	/// <param name="error">To be added.</param>
 	/// <summary>The delegate used as the completion handler for <see cref="Foundation.NSUrlConnection.SendAsynchronousRequest(Foundation.NSUrlRequest,Foundation.NSOperationQueue,Foundation.NSUrlConnectionDataResponse)" />.</summary>
 	/// <remarks>To be added.</remarks>
-	delegate void NSUrlConnectionDataResponse (NSUrlResponse response, NSData data, NSError error);
+	delegate void NSUrlConnectionDataResponse ([NullAllowed] NSUrlResponse response, [NullAllowed] NSData data, [NullAllowed] NSError error);
 
 	[BaseType (typeof (NSObject), Name = "NSURLConnection")]
 	interface NSUrlConnection :
@@ -9979,7 +9987,7 @@ namespace Foundation {
 	/// <summary>Signature for callbacks invoked by NSUrlSession for various background operations.</summary>
 	/// <remarks>
 	///     </remarks>
-	delegate void NSUrlSessionResponse (NSData data, NSUrlResponse response, NSError error);
+	delegate void NSUrlSessionResponse ([NullAllowed] NSData data, [NullAllowed] NSUrlResponse response, [NullAllowed] NSError error);
 	delegate void NSUrlSessionDownloadResponse (NSUrl data, NSUrlResponse response, NSError error);
 
 	/// <param name="location">To be added.</param>
@@ -9987,7 +9995,7 @@ namespace Foundation {
 	/// <param name="error">To be added.</param>
 	/// <summary>Completion handler for calls to <see cref="Foundation.NSUrlSession.CreateDownloadTask" /> and <see cref="Foundation.NSUrlSession.CreateDownloadTaskFromResumeData(Foundation.NSData,Foundation.NSUrlDownloadSessionResponse)" />.</summary>
 	/// <remarks>To be added.</remarks>
-	delegate void NSUrlDownloadSessionResponse (NSUrl location, NSUrlResponse response, NSError error);
+	delegate void NSUrlDownloadSessionResponse ([NullAllowed] NSUrl location, [NullAllowed] NSUrlResponse response, [NullAllowed] NSError error);
 
 	interface INSUrlSessionDelegate { }
 
@@ -10375,7 +10383,7 @@ namespace Foundation {
 		void CompletedTaskCaptureStreams (NSUrlSession session, NSUrlSessionStreamTask streamTask, NSInputStream inputStream, NSOutputStream outputStream);
 	}
 
-	delegate void NSUrlSessionDataRead (NSData data, bool atEof, NSError error);
+	delegate void NSUrlSessionDataRead ([NullAllowed] NSData data, bool atEof, [NullAllowed] NSError error);
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSUrlSessionTask), Name = "NSURLSessionStreamTask")]
 	[DisableDefaultCtor] // now (xcode11) marked as deprecated
@@ -12519,7 +12527,7 @@ namespace Foundation {
 	/// <summary>An enumerator to pass to methods in the <see cref="Foundation.NSLinguisticAnalysis" /> class.</summary>
 	/// <returns>To be added.</returns>
 	/// <remarks>To be added.</remarks>
-	delegate bool NSEnumerateLinguisticTagsEnumerator (NSString tag, NSRange tokenRange, NSRange sentenceRange, ref bool stop);
+	delegate bool NSEnumerateLinguisticTagsEnumerator ([NullAllowed] NSString tag, NSRange tokenRange, NSRange sentenceRange, ref bool stop);
 
 	[Category]
 	[BaseType (typeof (NSString))]
@@ -14792,12 +14800,12 @@ namespace Foundation {
 	[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 	delegate NSProgress NSItemProviderUTTypeLoadDelegate ([BlockCallback] ItemProviderDataCompletionHandler completionHandler);
 	[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
-	delegate void LoadFileRepresentationHandler (NSUrl fileUrl, bool openInPlace, NSError error);
+	delegate void LoadFileRepresentationHandler ([NullAllowed] NSUrl fileUrl, bool openInPlace, [NullAllowed] NSError error);
 	delegate NSProgress RegisterFileRepresentationLoadHandler ([BlockCallback] RegisterFileRepresentationCompletionHandler completionHandler);
 	delegate void RegisterFileRepresentationCompletionHandler (NSUrl fileUrl, bool coordinated, NSError error);
-	delegate void ItemProviderDataCompletionHandler (NSData data, NSError error);
+	delegate void ItemProviderDataCompletionHandler ([NullAllowed] NSData data, [NullAllowed] NSError error);
 	delegate NSProgress RegisterDataRepresentationLoadHandler ([BlockCallback] ItemProviderDataCompletionHandler completionHandler);
-	delegate void LoadInPlaceFileRepresentationHandler (NSUrl fileUrl, bool isInPlace, NSError error);
+	delegate void LoadInPlaceFileRepresentationHandler ([NullAllowed] NSUrl fileUrl, bool isInPlace, [NullAllowed] NSError error);
 	delegate NSProgress RegisterObjectRepresentationLoadHandler ([BlockCallback] RegisterObjectRepresentationCompletionHandler completionHandler);
 	delegate void RegisterObjectRepresentationCompletionHandler (INSItemProviderWriting @object, NSError error);
 
@@ -18555,7 +18563,7 @@ namespace Foundation {
 	/// <summary>A delegate that represents the expression to use with <see cref="Foundation.NSPredicate.FromExpression(Foundation.NSPredicateEvaluator)" />.</summary>
 	/// <returns>To be added.</returns>
 	/// <remarks>To be added.</remarks>
-	delegate bool NSPredicateEvaluator (NSObject evaluatedObject, NSDictionary bindings);
+	delegate bool NSPredicateEvaluator ([NullAllowed] NSObject evaluatedObject, [NullAllowed] NSDictionary bindings);
 
 	[BaseType (typeof (NSObject))]
 	// 'init' returns NIL

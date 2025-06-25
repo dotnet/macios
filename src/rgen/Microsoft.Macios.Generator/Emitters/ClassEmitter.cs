@@ -247,7 +247,7 @@ if (IsDirectBinding) {{
 	void EmitMethods (in BindingContext context, TabbedWriter<StringWriter> classBlock)
 	{
 		foreach (var method in context.Changes.Methods.OrderBy (m => m.Name)) {
-			
+
 			classBlock.WriteLine ();
 			classBlock.AppendMemberAvailability (method.SymbolAvailability);
 			classBlock.AppendGeneratedCodeAttribute (optimizable: true);

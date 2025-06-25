@@ -41,7 +41,7 @@ public class ClassGenerationTests : BaseGeneratorTestClass {
 			(ApplePlatform.TVOS, "NSUserDefaults", "NSUserDefaults.cs", "ExpectedNSUserDefaults.cs", null, null),
 			(ApplePlatform.MacCatalyst, "NSUserDefaults", "NSUserDefaults.cs", "ExpectedNSUserDefaults.cs", null, null),
 			(ApplePlatform.MacOSX, "NSUserDefaults", "NSUserDefaults.cs", "ExpectedNSUserDefaults.cs", null, null),
-			
+
 			(ApplePlatform.iOS, "MethodTests", "MethodTests.cs", "ExpectedMethodsTests.cs", null, null),
 			(ApplePlatform.TVOS, "MethodTests", "MethodTests.cs", "ExpectedMethodsTests.cs", null, null),
 			(ApplePlatform.MacCatalyst, "MethodTests", "MethodTests.cs", "ExpectedMethodsTests.cs", null, null),

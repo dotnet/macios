@@ -14,7 +14,7 @@ namespace TestNamespace;
 
 [BindingType<Class>]
 public partial class MethodTests {
-	
+
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
@@ -55,5 +55,5 @@ public partial class MethodTests {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[Export<Method> ("filteredArrayUsingPredicate:")]
-	public partial NSArray Filter (NSPredicate predicate);	
+	public partial NSArray Filter (NSPredicate predicate);
 }

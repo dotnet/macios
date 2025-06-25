@@ -25,11 +25,6 @@ while ! test -z $1; do
 			unset IGNORE_XCODE
 			shift
 			;;
-		--provision-xcode-components)
-			PROVISION_XCODE_COMPONENTS=1
-			unset IGNORE_XCODE_COMPONENTS
-			shift
-			;;
 		--provision)
 			# historical reasons :(
 			PROVISION_XCODE=1
@@ -121,8 +116,6 @@ while ! test -z $1; do
 			unset IGNORE_SHELLCHECK
 			PROVISION_YAMLLINT=1
 			unset IGNORE_YAMLLINT
-			PROVISION_XCODE_COMPONENTS=1
-			unset IGNORE_XCODE_COMPONENTS
 			shift
 			;;
 		--ignore-all)
@@ -138,7 +131,6 @@ while ! test -z $1; do
 			IGNORE_DOTNET=1
 			IGNORE_SHELLCHECK=1
 			IGNORE_YAMLLINT=1
-			IGNORE_XCODE_COMPONENTS=1
 			shift
 			;;
 		--ignore-osx)
@@ -147,10 +139,6 @@ while ! test -z $1; do
 			;;
 		--ignore-xcode)
 			IGNORE_XCODE=1
-			shift
-			;;
-		--ignore-xcode-components)
-			IGNORE_XCODE_COMPONENTS=1
 			shift
 			;;
 		--ignore-*-studio)
@@ -524,19 +512,12 @@ function install_coresimulator ()
 		CURRENT_CORESIMULATOR_VERSION=$(otool -L $CURRENT_CORESIMULATOR_PATH | grep "$CURRENT_CORESIMULATOR_PATH.*current version" | sed -e 's/.*current version//' -e 's/)//' -e 's/[[:space:]]//g' | uniq)
 	fi
 
-	# Either version may be composed of either 1, 2 or 3 numbers.
+	# Either version may be composed of either 2 or 3 numbers.
 	# We only care about the first two, so strip off the 3rd number if it exists.
 	# shellcheck disable=SC2001
 	CURRENT_CORESIMULATOR_VERSION=$(echo "$CURRENT_CORESIMULATOR_VERSION" | sed 's/\([0-9]*[.][0-9]*\).*/\1/')
 	# shellcheck disable=SC2001
 	TARGET_CORESIMULATOR_VERSION=$(echo "$TARGET_CORESIMULATOR_VERSION" | sed 's/\([0-9]*[.][0-9]*\).*/\1/')
-	# Add a .0 if we only got one number
-	if [[ "${CURRENT_CORESIMULATOR_VERSION/./}" == "${CURRENT_CORESIMULATOR_VERSION}" ]]; then
-		CURRENT_CORESIMULATOR_VERSION=$CURRENT_CORESIMULATOR_VERSION.0
-	fi
-	if [[ "${TARGET_CORESIMULATOR_VERSION/./}" == "${TARGET_CORESIMULATOR_VERSION}" ]]; then
-		TARGET_CORESIMULATOR_VERSION=$TARGET_CORESIMULATOR_VERSION.0
-	fi
 
 	# Compare versions to see if we got what we need
 	if [[ x"$TARGET_CORESIMULATOR_VERSION" == x"$CURRENT_CORESIMULATOR_VERSION" ]]; then
@@ -627,42 +608,6 @@ function check_xcode () {
 	if test ! -d $D -a -z "$FAIL"; then
 		fail "The directory $D does not exist. If you've updated the Xcode location it means you also need to update TVOS_SDK_VERSION in Make.config."
 	fi
-}
-
-function check_xcode_components ()
-{
-	if ! test -z "$IGNORE_XCODE_COMPONENTS"; then return; fi
-
-	local COMPONENTS=(MetalToolchain)
-
-	for comp in "${COMPONENTS[@]}"; do
-		componentInfo=$(xcrun xcodebuild -showComponent "$comp")
-		if  [[ "$componentInfo" =~ .*Status:" "installed.* ]]; then
-			ok "The Xcode component ${COLOR_BLUE}$comp${COLOR_CLEAR} is installed."
-		elif test -z "$PROVISION_XCODE_COMPONENTS"; then
-			fail "The Xcode component ${COLOR_BLUE}$comp${COLOR_RESET} is not installed. Execute ${COLOR_MAGENTA}xcrun xcodebuild -downloadComponent $comp${COLOR_RESET} or ${COLOR_MAGENTA}./system-dependencies.sh --provision-xcode-components${COLOR_RESET} to install."
-			fail "Alternatively you can ${COLOR_MAGENTA}export IGNORE_XCODE_COMPONENTS=1${COLOR_RED} to skip this check."
-		else
-			if [[ "$componentInfo" =~ .*Build" "Version:" "17A5241e.* ]]; then
-				# Xcode 26 beta 1 has a known issue with the MetalToolchain component, this is how Apple says to work around it
-				log "Downloading the Xcode component ${COLOR_BLUE}$comp${COLOR_CLEAR} by executing ${COLOR_BLUE}xcrun xcodebuild -downloadComponent $comp -exportPath /tmp/MyMetalExport${COLOR_CLEAR}..."
-				xcrun xcodebuild -downloadComponent metalToolchain -exportPath /tmp/MyMetalExport/
-				log "Fixing broken Xcode component ${COLOR_BLUE}$comp${COLOR_CLEAR} by executing ${COLOR_BLUE}sed -i '' -e 's/17A5241c/17A5241e/g' /tmp/MyMetalExport/MetalToolchain-17A5241c.exportedBundle/ExportMetadata.plist${COLOR_CLEAR}..."
-				sed -i '' -e 's/17A5241c/17A5241e/g' /tmp/MyMetalExport/MetalToolchain-17A5241c.exportedBundle/ExportMetadata.plist
-				log "Installing the Xcode component ${COLOR_BLUE}$comp${COLOR_CLEAR} by executing ${COLOR_BLUE}xcrun xcodebuild -importComponent metalToolchain -importPath /tmp/MyMetalExport/MetalToolchain-17A5241c.exportedBundle${COLOR_CLEAR}..."
-				xcrun xcodebuild -importComponent metalToolchain -importPath /tmp/MyMetalExport/MetalToolchain-17A5241c.exportedBundle
-				rm -rf /tmp/MyMetalExport
-			else
-				log "Installing the Xcode component ${COLOR_BLUE}$comp${COLOR_CLEAR} by executing ${COLOR_BLUE}xcrun xcodebuild -downloadComponent $comp${COLOR_CLEAR}..."
-				xcrun xcodebuild -downloadComponent "$comp"
-			fi
-
-			ok "Successfully installed the Xcode component ${COLOR_BLUE}$comp${COLOR_CLEAR}."
-		fi
-	done
-
-	log "Clearing xcrun cache..."
-	xcrun -k
 }
 
 function check_mono () {
@@ -1013,7 +958,6 @@ echo "Checking system..."
 check_osx_version
 check_checkout_dir
 check_xcode
-check_xcode_components
 check_homebrew
 check_shellcheck
 check_yamllint

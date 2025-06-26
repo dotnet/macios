@@ -27,7 +27,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			// Try to read the CFBundleExecutable from Info.plist
 			// Check multiple locations where Info.plist might be located
-			var infoPlistPaths = new string[] {
+			var infoPlistPaths = new string [] {
 				Path.Combine (frameworkPath, "Info.plist"), // iOS, tvOS
 				Path.Combine (frameworkPath, "Resources", "Info.plist") // macOS, MacCatalyst
 			};

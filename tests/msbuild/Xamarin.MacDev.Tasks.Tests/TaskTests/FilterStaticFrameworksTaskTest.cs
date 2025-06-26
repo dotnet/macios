@@ -41,7 +41,7 @@ namespace Xamarin.MacDev.Tasks.Tests {
 		void TestCustomFrameworkExecutablePathForPlatform (ApplePlatform platform, string frameworkName, string executableName)
 		{
 			bool usesVersionsStructure = platform == ApplePlatform.MacOSX || platform == ApplePlatform.MacCatalyst;
-			
+
 			// Arrange: Create a mock framework with custom CFBundleExecutable
 			var frameworkDir = Path.Combine (tempDir, platform.AsString (), frameworkName);
 			Directory.CreateDirectory (frameworkDir);
@@ -53,7 +53,7 @@ namespace Xamarin.MacDev.Tasks.Tests {
 				var resourcesDir = Path.Combine (versionsDir, "Resources");
 				Directory.CreateDirectory (resourcesDir);
 				infoPlistPath = Path.Combine (resourcesDir, "Info.plist");
-				
+
 				// Create symlinks as they exist in real frameworks
 				Directory.CreateSymbolicLink (Path.Combine (frameworkDir, "Resources"), "Versions/A/Resources");
 			} else {
@@ -104,7 +104,7 @@ namespace Xamarin.MacDev.Tasks.Tests {
 		void TestDefaultFrameworkExecutablePathForPlatform (ApplePlatform platform, string frameworkName)
 		{
 			bool usesVersionsStructure = platform == ApplePlatform.MacOSX || platform == ApplePlatform.MacCatalyst;
-			
+
 			// Arrange: Create a framework without Info.plist (or with default CFBundleExecutable)
 			var frameworkDir = Path.Combine (tempDir, platform.AsString (), frameworkName);
 			Directory.CreateDirectory (frameworkDir);
@@ -114,7 +114,7 @@ namespace Xamarin.MacDev.Tasks.Tests {
 				var versionsDir = Path.Combine (frameworkDir, "Versions", "A");
 				var resourcesDir = Path.Combine (versionsDir, "Resources");
 				Directory.CreateDirectory (resourcesDir);
-				
+
 				// Create symlinks as they exist in real frameworks
 				Directory.CreateSymbolicLink (Path.Combine (frameworkDir, "Resources"), "Versions/A/Resources");
 			}
@@ -168,7 +168,7 @@ namespace Xamarin.MacDev.Tasks.Tests {
 		void TestMalformedInfoPlistForPlatform (ApplePlatform platform, string frameworkName)
 		{
 			bool usesVersionsStructure = platform == ApplePlatform.MacOSX || platform == ApplePlatform.MacCatalyst;
-			
+
 			// Arrange: Create a framework with malformed Info.plist
 			var frameworkDir = Path.Combine (tempDir, platform.AsString (), frameworkName);
 			Directory.CreateDirectory (frameworkDir);
@@ -180,7 +180,7 @@ namespace Xamarin.MacDev.Tasks.Tests {
 				var resourcesDir = Path.Combine (versionsDir, "Resources");
 				Directory.CreateDirectory (resourcesDir);
 				infoPlistPath = Path.Combine (resourcesDir, "Info.plist");
-				
+
 				// Create symlinks as they exist in real frameworks
 				Directory.CreateSymbolicLink (Path.Combine (frameworkDir, "Resources"), "Versions/A/Resources");
 			} else {

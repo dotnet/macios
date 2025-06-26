@@ -5,19 +5,16 @@ using System.Collections.Generic;
 using System.IO;
 using NUnit.Framework;
 
-namespace Xamarin.Tests
-{
+namespace Xamarin.Tests {
 	[TestFixture]
-	public class ResourcePrefixTest : TestBaseClass
-	{
+	public class ResourcePrefixTest : TestBaseClass {
 		[Test]
 		public void ResourcePrefix_DefaultValues ()
 		{
 			// Arrange
 			var platforms = Configuration.GetAllPlatforms ();
 
-			foreach (var platform in platforms)
-			{
+			foreach (var platform in platforms) {
 				// Act & Assert
 				var defaultValue = GetResourcePrefix (platform);
 				Assert.AreEqual ("Resources", defaultValue, $"Default value for {platform} should be 'Resources'");
@@ -31,8 +28,7 @@ namespace Xamarin.Tests
 			var platforms = Configuration.GetAllPlatforms ();
 			var customPrefix = "CustomResources";
 
-			foreach (var platform in platforms)
-			{
+			foreach (var platform in platforms) {
 				// Act
 				var value = GetResourcePrefix (platform, ("AppBundleResourcePrefix", customPrefix));
 
@@ -46,24 +42,24 @@ namespace Xamarin.Tests
 		{
 			// Arrange
 			var customPrefix = "CustomResources";
-			
+
 			// Act & Assert
-			
+
 			// iOS and tvOS use IPhoneResourcePrefix
 			var iOSValue = GetResourcePrefix ("ios", ("IPhoneResourcePrefix", customPrefix));
 			Assert.AreEqual (customPrefix, iOSValue, "iOS should use IPhoneResourcePrefix");
-			
+
 			var tvOSValue = GetResourcePrefix ("tvos", ("IPhoneResourcePrefix", customPrefix));
 			Assert.AreEqual (customPrefix, tvOSValue, "tvOS should use IPhoneResourcePrefix");
-			
+
 			// Mac Catalyst uses IPhoneResourcePrefix
 			var macCatalystValue = GetResourcePrefix ("maccatalyst", ("IPhoneResourcePrefix", customPrefix));
 			Assert.AreEqual (customPrefix, macCatalystValue, "Mac Catalyst should use IPhoneResourcePrefix");
-			
+
 			// macOS can use either XamMacResourcePrefix or MonoMacResourcePrefix
 			var macOSXamValue = GetResourcePrefix ("macos", ("XamMacResourcePrefix", customPrefix));
 			Assert.AreEqual (customPrefix, macOSXamValue, "macOS should use XamMacResourcePrefix");
-			
+
 			var macOSMonoValue = GetResourcePrefix ("macos", ("MonoMacResourcePrefix", customPrefix));
 			Assert.AreEqual (customPrefix, macOSMonoValue, "macOS should use MonoMacResourcePrefix");
 		}
@@ -74,59 +70,58 @@ namespace Xamarin.Tests
 			// Arrange
 			var appBundlePrefix = "AppPrefix";
 			var platformPrefix = "PlatformPrefix";
-			
+
 			// Act & Assert
-			
+
 			// iOS - AppBundleResourcePrefix should take precedence over IPhoneResourcePrefix
-			var iOSValue = GetResourcePrefix ("ios", 
-				("AppBundleResourcePrefix", appBundlePrefix), 
+			var iOSValue = GetResourcePrefix ("ios",
+				("AppBundleResourcePrefix", appBundlePrefix),
 				("IPhoneResourcePrefix", platformPrefix));
 			Assert.AreEqual (appBundlePrefix, iOSValue, "iOS should prioritize AppBundleResourcePrefix over IPhoneResourcePrefix");
-			
+
 			// tvOS - AppBundleResourcePrefix should take precedence over IPhoneResourcePrefix
-			var tvOSValue = GetResourcePrefix ("tvos", 
-				("AppBundleResourcePrefix", appBundlePrefix), 
+			var tvOSValue = GetResourcePrefix ("tvos",
+				("AppBundleResourcePrefix", appBundlePrefix),
 				("IPhoneResourcePrefix", platformPrefix));
 			Assert.AreEqual (appBundlePrefix, tvOSValue, "tvOS should prioritize AppBundleResourcePrefix over IPhoneResourcePrefix");
-			
+
 			// Mac Catalyst - AppBundleResourcePrefix should take precedence over IPhoneResourcePrefix
-			var macCatalystValue = GetResourcePrefix ("maccatalyst", 
-				("AppBundleResourcePrefix", appBundlePrefix), 
+			var macCatalystValue = GetResourcePrefix ("maccatalyst",
+				("AppBundleResourcePrefix", appBundlePrefix),
 				("IPhoneResourcePrefix", platformPrefix));
 			Assert.AreEqual (appBundlePrefix, macCatalystValue, "Mac Catalyst should prioritize AppBundleResourcePrefix over IPhoneResourcePrefix");
-			
+
 			// macOS - AppBundleResourcePrefix should take precedence over XamMacResourcePrefix
-			var macOSXamValue = GetResourcePrefix ("macos", 
-				("AppBundleResourcePrefix", appBundlePrefix), 
+			var macOSXamValue = GetResourcePrefix ("macos",
+				("AppBundleResourcePrefix", appBundlePrefix),
 				("XamMacResourcePrefix", platformPrefix));
 			Assert.AreEqual (appBundlePrefix, macOSXamValue, "macOS should prioritize AppBundleResourcePrefix over XamMacResourcePrefix");
-			
+
 			// macOS - AppBundleResourcePrefix should take precedence over MonoMacResourcePrefix
-			var macOSMonoValue = GetResourcePrefix ("macos", 
-				("AppBundleResourcePrefix", appBundlePrefix), 
+			var macOSMonoValue = GetResourcePrefix ("macos",
+				("AppBundleResourcePrefix", appBundlePrefix),
 				("MonoMacResourcePrefix", platformPrefix));
 			Assert.AreEqual (appBundlePrefix, macOSMonoValue, "macOS should prioritize AppBundleResourcePrefix over MonoMacResourcePrefix");
 		}
 
-		private string GetResourcePrefix (string platform, params (string Property, string Value)[] properties)
+		private string GetResourcePrefix (string platform, params (string Property, string Value) [] properties)
 		{
 			// Create a temporary test project
 			var testDirectory = CreateTemporaryTestDirectory ();
 			var projectPath = Path.Combine (testDirectory, "TestApp.csproj");
-			
+
 			// Create project file with specified properties
 			File.WriteAllText (projectPath, GetTestProjectContent (platform, properties));
-			
+
 			// Use dotnet build with getProperty to get _ResourcePrefix value
 			return DotNet.GetProperty (projectPath, "_ResourcePrefix");
 		}
 
-		private string GetTestProjectContent (string platform, params (string Property, string Value)[] properties)
+		private string GetTestProjectContent (string platform, params (string Property, string Value) [] properties)
 		{
 			// Create project property group with specified properties
 			var propertyGroup = "";
-			foreach (var (property, value) in properties)
-			{
+			foreach (var (property, value) in properties) {
 				propertyGroup += $"    <{property}>{value}</{property}>\n";
 			}
 

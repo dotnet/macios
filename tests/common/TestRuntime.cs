@@ -384,7 +384,7 @@ partial class TestRuntime {
 
 		var twentysixb2 = new {
 			Xcode = new { Major = 26, Minor = 0, Beta = 2 },
-			iOS = new { Major = 26, Minor = 0, Build = "25A5295e" },
+			iOS = new { Major = 26, Minor = 0, Build = "23A5276e" },
 			tvOS = new { Major = 26, Minor = 0, Build = "23J5295e" },
 			macOS = new { Major = 26, Minor = 0, Build = "25A5295e" },
 		};

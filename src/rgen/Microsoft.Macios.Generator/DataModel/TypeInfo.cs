@@ -664,10 +664,10 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 	{
 		if (!IsTask)
 			return this;
-		
+
 		// update the type arguments to use the provided ones in the method
 		return this with {
-			TypeArguments = [..types],
+			TypeArguments = [.. types],
 		};
 	}
 

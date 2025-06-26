@@ -877,7 +877,7 @@ namespace NS {
 		Assert.NotNull (changes);
 		Assert.Equal (expected, changes);
 	}
-	
+
 	class TestDataFromMethodDeclarationToAsync : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()
 		{
@@ -896,7 +896,7 @@ namespace NS {
 ";
 
 			yield return [simpleAsyncMethod];
-			
+
 			const string asyncMethodWithName = @"
 using System;
 using ObjCBindings;
@@ -919,7 +919,7 @@ namespace NS {
 
 		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
 	}
-	
+
 	[Theory]
 	[AllSupportedPlatformsClassData<TestDataFromMethodDeclarationToAsync>]
 	void FromMethodDeclarationToAsync (ApplePlatform platform, string inputText)
@@ -933,7 +933,7 @@ namespace NS {
 		Assert.NotNull (declaration);
 		Assert.True (Method.TryCreate (declaration, semanticModel, out var changes));
 		Assert.NotNull (changes);
-		
+
 		var asyncMethod = changes.Value.ToAsync ();
 		if (changes.Value.ExportMethodData.MethodName is null) {
 			Assert.Equal ($"{changes.Value.Name}Async", asyncMethod.Name);

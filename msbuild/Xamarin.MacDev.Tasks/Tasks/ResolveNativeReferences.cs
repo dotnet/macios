@@ -514,7 +514,7 @@ namespace Xamarin.MacDev.Tasks {
 							break;
 					}
 					if (!found) {
-						log.LogError (MSBStrings.E0175 /* No matching framework found inside '{0}'. SupportedPlatform: '{0}', SupportedPlatformVariant: '{1}', SupportedArchitectures: '{2}'. */, xcframeworkPath, platformName, variant, architectures);
+						log.LogError (MSBStrings.E0175 /* No matching framework found inside '{0}'. SupportedPlatform: '{1}', SupportedPlatformVariant: '{2}', SupportedArchitectures: '{3}'. */, xcframeworkPath, platformName, variant, architectures);
 						return false;
 					}
 				}
@@ -524,7 +524,7 @@ namespace Xamarin.MacDev.Tasks {
 				return true;
 			}
 
-			log.LogError (MSBStrings.E0175 /* No matching framework found inside '{0}'. SupportedPlatform: '{0}', SupportedPlatformVariant: '{1}', SupportedArchitectures: '{2}'. */, xcframeworkPath, platformName, variant, architectures);
+			log.LogError (MSBStrings.E0175 /* No matching framework found inside '{0}'. SupportedPlatform: '{1}', SupportedPlatformVariant: '{2}', SupportedArchitectures: '{3}'. */, xcframeworkPath, platformName, variant, architectures);
 			return false;
 		}
 

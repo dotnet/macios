@@ -635,7 +635,7 @@ namespace CoreMidi {
 
 	delegate void MidiCIProfileChangedHandler (MidiCISession session, byte channel, MidiCIProfile profile, bool enabled);
 	delegate void MidiCIProfileSpecificDataHandler (MidiCISession session, byte channel, MidiCIProfile profile, NSData data);
-	delegate void MidiCISessionDisconnectHandler (MidiCISession session, NSError error);
+	delegate void MidiCISessionDisconnectHandler ([NullAllowed] MidiCISession session, [NullAllowed] NSError error);
 
 	[NoTV]
 	[MacCatalyst (13, 1)]

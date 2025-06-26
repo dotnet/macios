@@ -30,4 +30,48 @@ namespace UIKit {
 		}
 	}
 #endif
+
+	public static partial class UIAccessibilityTraitsExtensions {
+#if XAMCORE_6_0
+		// .NET: GetConstant (manually written, only exists for binary compat) is completely broken, use GetConstantValue (generated).
+		// XAMCORE_5_0: GetConstant works (generated), provide GetConstantValue (manually written) which does the same thing, but is obsoleted.
+		// XAMCORE_6_0: GetConstant works (generated), remove GetConstantValue since it was obsoleted in the previous version.
+#elif XAMCORE_5_0
+		// This method is to provide source-compatibility with the previous version. No need to break people's builds if we don't have to.
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Obsolete ("Use 'GetConstant' instead.")]
+		public static ulong? GetConstantValue (this UIAccessibilityTraits self)
+		{
+			return GetConstant (self);
+		}
+#else
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Obsolete ("Use 'GetConstantValue' instead.")]
+		public static NSString? GetConstant (this UIAccessibilityTraits self)
+		{
+			throw new NotSupportedException ($"Use 'GetConstantValue' instead, the return type for this method is incorrect.");
+		}
+
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Obsolete ("Use 'GetValue (ulong)' instead.")]
+		public static UIAccessibilityTraits GetValue (NSString constant)
+		{
+			throw new NotSupportedException ($"Use 'GetValue (ulong)' instead.");
+		}
+
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Obsolete ("Use 'GetValue (ulong)' instead.")]
+		public static UIAccessibilityTraits GetValue (NativeHandle handle)
+		{
+			throw new NotSupportedException ($"Use 'GetValue (ulong)' instead.");
+		}
+
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Obsolete ("Use 'GetValue (ulong)' instead.")]
+		public static UIAccessibilityTraits? GetNullableValue (NativeHandle handle)
+		{
+			throw new NotSupportedException ($"Use 'GetValue (ulong)' instead.");
+		}
+#endif
+	}
 }

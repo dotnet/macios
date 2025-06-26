@@ -26,6 +26,7 @@ static class Nomenclator {
 		NSArray,
 		NSString,
 		NSStringStruct,
+		NullableBlock,
 		PrimitivePointer,
 		StringPointer,
 		BindFrom,
@@ -112,6 +113,16 @@ static class Nomenclator {
 	}
 
 	/// <summary>
+	/// Return the name of the trampoline class to be used for the given type info.
+	/// This is a convenience overload for <see cref="GetTrampolineClassName(string, TrampolineClassType)"/>.
+	/// </summary>
+	/// <param name="typeInfo">The type info for which to get the trampoline class name.</param>
+	/// <param name="trampolineClassType">The type of class to be generated.</param>
+	/// <returns>The name to be used by the generated class.</returns>
+	public static string GetTrampolineClassName (in TypeInfo typeInfo, TrampolineClassType trampolineClassType)
+		=> GetTrampolineClassName (GetTrampolineName (typeInfo), trampolineClassType);
+
+	/// <summary>
 	/// Returns the name of the aux variable that would have needed for the given parameter. Use the
 	/// variable type to name it.
 	/// </summary>
@@ -127,6 +138,7 @@ static class Nomenclator {
 			VariableType.NSArray => $"nsa_{cleanedName}",
 			VariableType.NSString => $"ns{cleanedName}",
 			VariableType.NSStringStruct => $"_s{cleanedName}",
+			VariableType.NullableBlock => $"block_{cleanedName}",
 			VariableType.PrimitivePointer => $"converted_{cleanedName}",
 			VariableType.StringPointer => $"_p{cleanedName}",
 			VariableType.BindFrom => $"nsb_{cleanedName}",
@@ -162,6 +174,12 @@ static class Nomenclator {
 	/// </summary>
 	/// <returns>The name of the variable used to store delegates in trampolines.</returns>
 	public static string GetTrampolineDelegateVariableName () => "del";
+
+	/// <summary>
+	/// Returns the name of the variable used to store the native invoker in trampolines.
+	/// </summary>
+	/// <returns>The name of the native invoker variable.</returns>
+	public static string GetNativeInvokerVariableName () => "invoker";
 
 	/// <summary>
 	/// Return the name of the trampoline block parameter. This is the name of the parameter that will be containing the
@@ -201,4 +219,18 @@ static class Nomenclator {
 	/// </summary>
 	/// <returns>The method name to be used.</returns>
 	public static string GetTrampolineDelegatePointerVariableName () => "trampoline";
+
+	/// <summary>
+	/// Returns the name used for the block literal type.
+	/// </summary>
+	public static string GetBlockLiteralName () => "BlockLiteral";
+
+	/// <summary>
+	/// Generates the name for the backing field of a property.
+	/// </summary>
+	/// <param name="propertyName">The name of the property.</param>
+	/// <param name="isStatic">A value indicating whether the property is static.</param>
+	/// <returns>The name of the backing field for the property.</returns>
+	public static string GetPropertyBackingFieldName (string propertyName, bool isStatic)
+		=> $"__mt_{propertyName}_var{(isStatic ? "_static" : "")}";
 }

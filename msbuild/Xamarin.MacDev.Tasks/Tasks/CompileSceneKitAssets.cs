@@ -141,8 +141,9 @@ namespace Xamarin.MacDev.Tasks {
 			var bundleResources = new List<ITaskItem> ();
 			var modified = new HashSet<string> ();
 			var items = new List<ITaskItem> ();
+			var sceneKitAssets = CollectBundleResources.ComputeLogicalNameAndDetectDuplicates (this, SceneKitAssets, ProjectDir, ResourcePrefix, "SceneKitAsset");
 
-			foreach (var asset in SceneKitAssets) {
+			foreach (var asset in sceneKitAssets) {
 				if (!File.Exists (asset.ItemSpec))
 					continue;
 
@@ -150,8 +151,9 @@ namespace Xamarin.MacDev.Tasks {
 				if (!TryGetScnAssetsPath (asset.ItemSpec, out var scnassets))
 					continue;
 
-				var bundleName = BundleResource.GetLogicalName (this, asset);
-				var output = new TaskItem (Path.Combine (intermediate, bundleName));
+				var logicalName = asset.GetMetadata ("LogicalName");
+				var bundleName = logicalName;
+				var output = new TaskItem (Path.Combine (intermediate, logicalName));
 
 				if (!modified.Contains (scnassets) && (!File.Exists (output.ItemSpec) || File.GetLastWriteTimeUtc (asset.ItemSpec) > File.GetLastWriteTimeUtc (output.ItemSpec))) {
 					// Base the new item on @asset, to get the `DefiningProject*` metadata too
@@ -161,7 +163,7 @@ namespace Xamarin.MacDev.Tasks {
 					scnassetsItem.ItemSpec = scnassets;
 
 					// .. and set LogicalName, the original one is for @asset
-					if (!TryGetScnAssetsPath (bundleName, out var logicalScnAssetsPath)) {
+					if (!TryGetScnAssetsPath (logicalName, out var logicalScnAssetsPath)) {
 						Log.LogError (null, null, null, asset.ItemSpec, MSBStrings.E7136 /* Unable to compute the path of the *.scnassets path from the item's LogicalName '{0}'. */ , bundleName);
 						continue;
 					}

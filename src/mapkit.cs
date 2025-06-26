@@ -1753,7 +1753,7 @@ namespace MapKit {
 	/// <summary>A delegate that is used to handle the results of a map-based search.</summary>
 	/// <remarks>To be added.</remarks>
 	/// <altmember cref="MapKit.MKLocalSearch" />
-	delegate void MKLocalSearchCompletionHandler (MKLocalSearchResponse response, NSError error);
+	delegate void MKLocalSearchCompletionHandler ([NullAllowed] MKLocalSearchResponse response, [NullAllowed] NSError error);
 
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
@@ -1928,13 +1928,13 @@ namespace MapKit {
 	/// <summary>The completion handler for calls to <see cref="MapKit.MKDirections.CalculateDirections(MapKit.MKDirectionsHandler)" />.</summary>
 	/// <remarks>To be added.</remarks>
 	/// <altmember cref="MapKit.MKDirectionsRequest" />
-	delegate void MKDirectionsHandler (MKDirectionsResponse response, NSError error);
+	delegate void MKDirectionsHandler ([NullAllowed] MKDirectionsResponse response, [NullAllowed] NSError error);
 
 	/// <param name="response">Returned if the request was successful.</param>
 	/// <param name="error">If not <see langword="null" />, an error occurred with the request.</param>
 	/// <summary>The completion handler for calls to <see cref="MapKit.MKDirections.CalculateETA(MapKit.MKETAHandler)" />.</summary>
 	/// <remarks>To be added.</remarks>
-	delegate void MKETAHandler (MKETAResponse response, NSError error);
+	delegate void MKETAHandler ([NullAllowed] MKETAResponse response, [NullAllowed] NSError error);
 
 	[BaseType (typeof (NSObject))]
 	[MacCatalyst (13, 1)]
@@ -2253,7 +2253,7 @@ namespace MapKit {
 	/// <param name="error">If not <see langword="null" />, an error occurred with the request.</param>
 	/// <summary>The completion handler for <see cref="MapKit.MKMapSnapshotter.StartAsync(CoreFoundation.DispatchQueue)" />.</summary>
 	/// <remarks>To be added.</remarks>
-	delegate void MKMapSnapshotCompletionHandler (MKMapSnapshot snapshot, NSError error);
+	delegate void MKMapSnapshotCompletionHandler ([NullAllowed] MKMapSnapshot snapshot, [NullAllowed] NSError error);
 
 	[BaseType (typeof (MKOverlayRenderer))]
 	[MacCatalyst (13, 1)]
@@ -2509,7 +2509,7 @@ namespace MapKit {
 	/// <param name="error">To be added.</param>
 	/// <summary>The completion handler for <see cref="MapKit.MKTileOverlay.LoadTileAtPath(MapKit.MKTileOverlayPath,MapKit.MKTileOverlayLoadTileCompletionHandler)" />.</summary>
 	/// <remarks>To be added.</remarks>
-	delegate void MKTileOverlayLoadTileCompletionHandler (NSData tileData, NSError error);
+	delegate void MKTileOverlayLoadTileCompletionHandler ([NullAllowed] NSData tileData, [NullAllowed] NSError error);
 
 	[BaseType (typeof (MKOverlayRenderer))]
 	// Objective-C exception thrown.  Name: NSInvalidArgumentException Reason: Expected a MKTileOverlay but got (null)

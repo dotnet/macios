@@ -574,7 +574,7 @@ namespace Registrar {
 					// First look for a more specific constraint
 					var constraints = type.GetGenericParameterConstraints ();
 					foreach (var constraint in constraints) {
-						if (constraint.IsSubclassOf (typeof (INativeObject))) {
+						if (typeof (INativeObject).IsAssignableFrom (constraint)) {
 							constrained_type = constraint;
 							return true;
 						}
@@ -1130,6 +1130,9 @@ namespace Registrar {
 				break;
 			case Trampoline.SetFlags:
 				tramp = Method.SetFlagsTrampoline;
+				break;
+			case Trampoline.RetainWeakReference:
+				tramp = Method.RetainWeakReferenceTrampoline;
 				break;
 			default:
 				throw ErrorHelper.CreateError (4144, "Cannot register the method '{0}.{1}' since it does not have an associated trampoline. Please file a bug report at https://github.com/dotnet/macios/issues/new", method.DeclaringType.Type.FullName, method.Name);

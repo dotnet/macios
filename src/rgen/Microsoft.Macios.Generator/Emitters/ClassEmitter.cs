@@ -147,6 +147,11 @@ return {backingField};
 		notificationProperties = notificationsBuilder.ToImmutable ();
 	}
 
+	/// <summary>
+	/// Emit the code for all the properties in the class.
+	/// </summary>
+	/// <param name="context">The current binding context.</param>
+	/// <param name="classBlock">Current class block.</param>
 	void EmitProperties (in BindingContext context, TabbedWriter<StringWriter> classBlock)
 	{
 
@@ -166,6 +171,12 @@ return {backingField};
 			if (getter is null)
 				continue;
 
+			// add backing variable for the property if it is needed
+			if (property.NeedsBackingField) {
+				classBlock.WriteLine ();
+				classBlock.WriteLine ($"object? {property.BackingField} = null;");
+			}
+
 			classBlock.WriteLine ();
 			classBlock.AppendMemberAvailability (property.SymbolAvailability);
 			classBlock.AppendGeneratedCodeAttribute (optimizable: true);
@@ -173,6 +184,10 @@ return {backingField};
 			using (var propertyBlock = classBlock.CreateBlock (property.ToDeclaration ().ToString (), block: true)) {
 				// be very verbose with the availability, makes the life easier to the dotnet analyzer
 				propertyBlock.AppendMemberAvailability (getter.Value.SymbolAvailability);
+				// if we deal with a delegate, include the attr:
+				// [return: DelegateProxy (typeof ({staticBridge}))]
+				if (property.ReturnType.IsDelegate)
+					propertyBlock.AppendDelegateProxyReturn (property.ReturnType);
 				using (var getterBlock = propertyBlock.CreateBlock ("get", block: true)) {
 					if (uiThreadCheck is not null) {
 						getterBlock.WriteLine (uiThreadCheck.ToString ());
@@ -189,24 +204,71 @@ if (IsDirectBinding) {{
 	{ExpressionStatement (invocations.Getter.SendSuper)}
 }}
 {ExpressionStatement (KeepAlive ("this"))}
-return {tempVar};
 ");
+					if (property.RequiresDirtyCheck) {
+						getterBlock.WriteLine ("MarkDirty ();");
+						getterBlock.WriteLine ($"{property.BackingField} = {tempVar};");
+					}
+					getterBlock.WriteLine ($"return {tempVar};");
 				}
 
 				var setter = property.GetAccessor (AccessorKind.Setter);
-				if (setter is null)
+				if (setter is null || invocations.Setter is null)
 					// we are done with the current property
 					continue;
 
 				propertyBlock.WriteLine (); // add space between getter and setter since we have the attrs
 				propertyBlock.AppendMemberAvailability (setter.Value.SymbolAvailability);
+				// if we deal with a delegate, include the attr:
+				// [param: BlockProxy (typeof ({nativeInvoker}))]
+				if (property.ReturnType.IsDelegate)
+					propertyBlock.AppendDelegateParameter (property.ReturnType);
 				using (var setterBlock = propertyBlock.CreateBlock ("set", block: true)) {
 					if (uiThreadCheck is not null) {
 						setterBlock.WriteLine (uiThreadCheck.ToString ());
 						setterBlock.WriteLine ();
 					}
-					setterBlock.WriteLine ("throw new NotImplementedException();");
+					// init the needed temp variables
+					setterBlock.Write (invocations.Setter.Value.Argument.Initializers, verifyTrivia: false);
+					setterBlock.Write (invocations.Setter.Value.Argument.PreDelegateCallConversion, verifyTrivia: false);
+
+					// perform the invocation
+					setterBlock.WriteRaw (
+$@"if (IsDirectBinding) {{
+	{ExpressionStatement (invocations.Setter.Value.Send)}
+}} else {{
+	{ExpressionStatement (invocations.Setter.Value.SendSuper)}
+}}
+{ExpressionStatement (KeepAlive ("this"))}
+");
+					// perform the post delegate call conversion, this might include the GC.KeepAlive calls to keep
+					// the native object alive
+					setterBlock.Write (invocations.Setter.Value.Argument.PostDelegateCallConversion, verifyTrivia: false);
+					// mark property as dirty if needed
+					if (property.RequiresDirtyCheck) {
+						setterBlock.WriteLine ("MarkDirty ();");
+						setterBlock.WriteLine ($"{property.BackingField} = value;");
+					}
 				}
+			}
+		}
+	}
+
+	/// <summary>
+	/// Emit the code for all the methods in the class.
+	/// </summary>
+	/// <param name="context">The current binding context.</param>
+	/// <param name="classBlock">Current class block.</param>
+	void EmitMethods (in BindingContext context, TabbedWriter<StringWriter> classBlock)
+	{
+		foreach (var method in context.Changes.Methods.OrderBy (m => m.Name)) {
+
+			classBlock.WriteLine ();
+			classBlock.AppendMemberAvailability (method.SymbolAvailability);
+			classBlock.AppendGeneratedCodeAttribute (optimizable: true);
+
+			using (var methodBlock = classBlock.CreateBlock (method.ToDeclaration ().ToString (), block: true)) {
+				methodBlock.WriteLine ("throw new NotImplementedException ();");
 			}
 		}
 	}
@@ -350,6 +412,7 @@ public static NSObject {name} ({NSObject} objectToObserve, {EventHandler}<{event
 			EmitFields (bindingContext.Changes.Name, bindingContext.Changes.Properties, classBlock,
 				out var notificationProperties);
 			EmitProperties (bindingContext, classBlock);
+			EmitMethods (bindingContext, classBlock);
 
 			// emit the notification helper classes, leave this for the very bottom of the class
 			EmitNotifications (notificationProperties, classBlock);

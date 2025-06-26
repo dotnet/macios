@@ -166,8 +166,8 @@ readonly partial struct Method {
 		}
 		
 		return this with {
-			// update name to include async
-			Name = ExportMethodData.MethodName ?? $"{Name}Async", // update name, if user did not specify a name, use the default one
+			// update name, if user did not specify a name, use the default one
+			Name = ExportMethodData.MethodName ?? $"{Name}Async", 
 			// remove last parameter which is the completion handler
 			Parameters = [..Parameters.SkipLast (1)],
 			// update the return type to be a task

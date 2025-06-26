@@ -51,10 +51,10 @@ readonly struct ExportData<T> : IEquatable<ExportData<T>> where T : Enum {
 	/// Should only be present with the CustomeMarshalDirective flag.
 	/// </summary >
 	public string? Library { get; init; }
-	
+
 	// async related data. This data will only be present if the ExportAttribute is a Method AND has a 
 	// Async flag set. Otherwise they will be ignored. All this methods have to be named parameters
-	
+
 	/// <summary>
 	/// The type of the result for an async method.
 	/// </summary>
@@ -160,10 +160,10 @@ readonly struct ExportData<T> : IEquatable<ExportData<T>> where T : Enum {
 			// set the flags first, so we can check if the export is an async method
 			flags = (T) flagsValue!;
 		}
-		
+
 		// from this point we have to check the name of the argument AND if the export method is an Async method.
 		var isAsync = typeof (T) == typeof (ObjCBindings.Method) && flags is not null && flags.HasFlag (ObjCBindings.Method.Async);
-		
+
 		// loop over all the named arguments and set the data accordingly, ignore the Flags one since we already set it
 		foreach (var (name, value) in attrsDict) {
 			switch (name) {

@@ -102,11 +102,11 @@ namespace NS {
 					exportMethodData: new ("myMethod"), // async valus are null
 					attributes: [
 						new (
-							name: "ObjCBindings.ExportAttribute<ObjCBindings.Method>", 
+							name: "ObjCBindings.ExportAttribute<ObjCBindings.Method>",
 							arguments: [
-								"myMethod", 
+								"myMethod",
 								"ObjCBindings.Method.Default",
-								"NSObject", 
+								"NSObject",
 								"throw new NotImplementedException();"
 							]),
 					],
@@ -145,10 +145,10 @@ namespace NS {
 					},
 					attributes: [
 						new (
-							name: "ObjCBindings.ExportAttribute<ObjCBindings.Method>", 
+							name: "ObjCBindings.ExportAttribute<ObjCBindings.Method>",
 							arguments: [
-								"myMethod", 
-								"NSObject", 
+								"myMethod",
+								"NSObject",
 								"throw new NotImplementedException();"
 							]),
 					],

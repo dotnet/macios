@@ -71,7 +71,7 @@ namespace ObjCBindings {
 		/// </summary>
 		public string? PostNonResultSnippet { get; set; } = null;
 
-		protected ExportAttribute() { }
+		protected ExportAttribute () { }
 
 		/// <summary>
 		/// Mark a managed method as a exported selector.

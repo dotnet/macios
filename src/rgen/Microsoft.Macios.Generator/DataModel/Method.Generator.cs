@@ -140,7 +140,7 @@ readonly partial struct Method {
 
 		return true;
 	}
-	
+
 	/// <summary>
 	/// Converts the current method to its asynchronous version if it's marked with the `Async` flag.
 	/// </summary>
@@ -152,10 +152,10 @@ readonly partial struct Method {
 	{
 		if (!IsAsync)
 			return this;
-		
+
 		// calculating the return type depends on the data present in the export data
-		var resultType = Parameters[^1].Type.ToTask ();
-		
+		var resultType = Parameters [^1].Type.ToTask ();
+
 		// if the user provided a result type, we need to update the calculated result type to a task
 		if (ExportMethodData.ResultType is not null) {
 			resultType = resultType.ToTask (ExportMethodData.ResultType.Value.GetIdentifierSyntax ().ToString ());
@@ -164,12 +164,12 @@ readonly partial struct Method {
 		if (ExportMethodData.ResultTypeName is not null) {
 			resultType = resultType.ToTask (ExportMethodData.ResultTypeName);
 		}
-		
+
 		return this with {
-			// update name to include async
-			Name = ExportMethodData.MethodName ?? $"{Name}Async", // update name, if user did not specify a name, use the default one
+			// update name, if user did not specify a name, use the default one
+			Name = ExportMethodData.MethodName ?? $"{Name}Async",
 			// remove last parameter which is the completion handler
-			Parameters = [..Parameters.SkipLast (1)],
+			Parameters = [.. Parameters.SkipLast (1)],
 			// update the return type to be a task
 			ReturnType = resultType,
 		};

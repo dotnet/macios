@@ -270,15 +270,15 @@ $@"if (IsDirectBinding) {{
 			using (var methodBlock = classBlock.CreateBlock (method.ToDeclaration ().ToString (), block: true)) {
 				methodBlock.WriteLine ("throw new NotImplementedException ();");
 			}
-			
-			if (!method.IsAsync) 
+
+			if (!method.IsAsync)
 				continue;
-			
+
 			// if the method is an async method, generate its async version
 			classBlock.WriteLine ();
 			classBlock.AppendMemberAvailability (method.SymbolAvailability);
 			classBlock.AppendGeneratedCodeAttribute (optimizable: true);
-			
+
 			var asyncMethod = method.ToAsync ();
 			using (var methodBlock = classBlock.CreateBlock (asyncMethod.ToDeclaration ().ToString (), block: true)) {
 				methodBlock.WriteLine ("throw new NotImplementedException ();");

@@ -877,4 +877,71 @@ namespace NS {
 		Assert.NotNull (changes);
 		Assert.Equal (expected, changes);
 	}
+	
+	class TestDataFromMethodDeclarationToAsync : IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
+		{
+			const string simpleAsyncMethod = @"
+using System;
+using ObjCBindings;
+using ObjCRuntime;
+
+namespace NS {
+	public class MyClass {
+
+		[Export<Method> (""completeRequestReturningItems:completionHandler:"", Flags = ObjCBindings.Method.Async)] 
+		public void MyMethod (string[]? input, Action<bool> callback) { }
+	}
+}
+";
+
+			yield return [simpleAsyncMethod];
+			
+			const string asyncMethodWithName = @"
+using System;
+using ObjCBindings;
+using ObjCRuntime;
+
+namespace NS {
+	public class MyClass {
+
+		[Export<Method> (""completeRequestReturningItems:completionHandler:"", 
+			Flags = ObjCBindings.Method.Async,
+			MethodName = ""MyMethodAsync"")] 
+		public void MyMethod (string[]? input, Action<bool> callback) { }
+	}
+}
+";
+
+			yield return [asyncMethodWithName];
+
+		}
+
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
+	}
+	
+	[Theory]
+	[AllSupportedPlatformsClassData<TestDataFromMethodDeclarationToAsync>]
+	void FromMethodDeclarationToAsync (ApplePlatform platform, string inputText)
+	{
+		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
+		Assert.Single (syntaxTrees);
+		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
+		var declaration = syntaxTrees [0].GetRoot ()
+			.DescendantNodes ().OfType<MethodDeclarationSyntax> ()
+			.FirstOrDefault ();
+		Assert.NotNull (declaration);
+		Assert.True (Method.TryCreate (declaration, semanticModel, out var changes));
+		Assert.NotNull (changes);
+		
+		var asyncMethod = changes.Value.ToAsync ();
+		if (changes.Value.ExportMethodData.MethodName is null) {
+			Assert.Equal ($"{changes.Value.Name}Async", asyncMethod.Name);
+		} else {
+			Assert.Equal (changes.Value.ExportMethodData.MethodName, asyncMethod.Name);
+		}
+		Assert.False (asyncMethod.ReturnType.IsVoid);
+		Assert.True (asyncMethod.ReturnType.IsTask);
+		Assert.Equal (changes.Value.Parameters.Length - 1, asyncMethod.Parameters.Length);
+	}
 }

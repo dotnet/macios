@@ -179,7 +179,7 @@ public partial class MethodTests
 	[UnsupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public partial static void LoadFromHtml (global::Foundation.NSUrlRequest request, global::Foundation.NSDictionary options, global::Foundation.NSAttributedStringCompletionHandler completionHandler)
+	public partial static void LoadFromHtml (global::Foundation.NSUrlRequest request, global::Foundation.NSDictionary options, global::.NSAttributedStringCompletionHandler completionHandler)
 	{
 		throw new NotImplementedException ();
 	}
@@ -189,7 +189,7 @@ public partial class MethodTests
 	[UnsupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public partial static global::System.Threading.Tasks.Task<NSLoadFromHtmlResult> LoadFromHtmlAsync (global::Foundation.NSUrlRequest request, global::Foundation.NSDictionary options)
+	public partial static global::.NSAttributedStringCompletionHandler LoadFromHtmlAsync (global::Foundation.NSUrlRequest request, global::Foundation.NSDictionary options)
 	{
 		throw new NotImplementedException ();
 	}

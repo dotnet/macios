@@ -653,6 +653,26 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 
 	/// <summary>
 	/// If the current <see cref="TypeInfo"/> represents a <see cref="System.Threading.Tasks.Task"/>, this method returns a new <see cref="TypeInfo"/>
+	/// with its generic type arguments replaced by the provided types. Otherwise, it returns the current instance.
+	/// </summary>
+	/// <param name="types">The new generic type arguments for the task.</param>
+	/// <returns>
+	/// A new <see cref="TypeInfo"/> instance with updated generic type arguments if the type is a <c>Task</c>;
+	/// otherwise, returns the current <see cref="TypeInfo"/> instance.
+	/// </returns>
+	public TypeInfo ToTask (params string [] types)
+	{
+		if (!IsTask)
+			return this;
+		
+		// update the type arguments to use the provided ones in the method
+		return this with {
+			TypeArguments = [..types],
+		};
+	}
+
+	/// <summary>
+	/// If the current <see cref="TypeInfo"/> represents a <see cref="System.Threading.Tasks.Task"/>, this method returns a new <see cref="TypeInfo"/>
 	/// representing a <see cref="System.Threading.Tasks.TaskCompletionSource{TResult}"/> with the task's generic arguments.
 	/// Otherwise, it returns the current instance.
 	/// </summary>

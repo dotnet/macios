@@ -78,6 +78,7 @@ trigger:
       - refs/heads/backport-pr-*
       - refs/heads/lego/*
       - refs/heads/locfiles/*
+      - refs/heads/copilot/*
   paths:
     exclude:
       - .github

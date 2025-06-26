@@ -1526,12 +1526,12 @@ namespace StoreKit {
 	[NoiOS]
 	[NoTV]
 	[NoMacCatalyst]
-	delegate void SKArcadeServiceRegisterHandler (NSData randomFromFP, uint /* uint32_t */ randomFromFPLength, NSData cmacOfAppPid, uint /* uint32_t */ cmacOfAppPidLength, NSError error);
+	delegate void SKArcadeServiceRegisterHandler ([NullAllowed] NSData randomFromFP, uint /* uint32_t */ randomFromFPLength, [NullAllowed] NSData cmacOfAppPid, uint /* uint32_t */ cmacOfAppPidLength, [NullAllowed] NSError error);
 
 	[NoiOS]
 	[NoTV]
 	[NoMacCatalyst]
-	delegate void SKArcadeServiceSubscriptionHandler (NSData subscriptionStatus, uint /* uint32_t */ subscriptionStatusLength, NSData cmacOfNonce, uint /* uint32_t */ cmacOfNonceLength, NSError error);
+	delegate void SKArcadeServiceSubscriptionHandler ([NullAllowed] NSData subscriptionStatus, uint /* uint32_t */ subscriptionStatusLength, [NullAllowed] NSData cmacOfNonce, uint /* uint32_t */ cmacOfNonceLength, [NullAllowed] NSError error);
 
 	[iOS (13, 0)]
 	[TV (13, 0)]

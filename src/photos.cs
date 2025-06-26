@@ -368,7 +368,7 @@ namespace Photos {
 	}
 
 	/// <summary>Completion handler for the <see cref="Photos.PHAssetContentEditingInputExtensions.RequestContentEditingInput(Photos.PHAsset,Photos.PHContentEditingInputRequestOptions,Photos.PHContentEditingHandler)" /> method.</summary>
-	delegate void PHContentEditingHandler (PHContentEditingInput contentEditingInput, NSDictionary requestStatusInfo);
+	delegate void PHContentEditingHandler ([NullAllowed] PHContentEditingInput contentEditingInput, NSDictionary requestStatusInfo);
 
 	/// <summary>Extension methods for <see cref="Photos.PHAsset" /> objects.</summary>
 	[MacCatalyst (13, 1)]
@@ -1035,7 +1035,7 @@ namespace Photos {
 	}
 
 	/// <summary>A continuation handler for that is called by the Photos application to show progress for an image request.</summary>
-	delegate void PHAssetImageProgressHandler (double progress, NSError error, out bool stop, NSDictionary info);
+	delegate void PHAssetImageProgressHandler (double progress, [NullAllowed] NSError error, out bool stop, [NullAllowed] NSDictionary info);
 
 	/// <summary>Options used when retrieving images with the <see cref="PHImageManager" /> singleton.</summary>
 	///     
@@ -1078,7 +1078,7 @@ namespace Photos {
 	}
 
 	/// <summary>Delegate type used with <see cref="Photos.PHVideoRequestOptions.ProgressHandler" />.</summary>
-	delegate void PHAssetVideoProgressHandler (double progress, NSError error, out bool stop, NSDictionary info);
+	delegate void PHAssetVideoProgressHandler (double progress, [NullAllowed] NSError error, out bool stop, [NullAllowed] NSDictionary info);
 
 	/// <summary>Options used when retrieiving videos with the <see cref="Photos.PHPhotoManager" /> singleton.</summary>
 	///     
@@ -1146,22 +1146,22 @@ namespace Photos {
 	}
 
 #if MONOMAC
-	delegate void PHImageResultHandler (NSImage result, NSDictionary info);
+	delegate void PHImageResultHandler ([NullAllowed] NSImage result, [NullAllowed] NSDictionary info);
 #else
 	/// <param name="result">The requested image.</param>
 	///     <param name="info">Keys and values are defined in <see cref="Photos.PHImageKeys" />.</param>
 	///     <summary>Completion handler for the <see cref="Photos.PHImageManager.RequestImageForAsset(Photos.PHAsset,CoreGraphics.CGSize,Photos.PHImageContentMode,Photos.PHImageRequestOptions,Photos.PHImageResultHandler)" /> method.</summary>
-	delegate void PHImageResultHandler (UIImage result, NSDictionary info);
+	delegate void PHImageResultHandler ([NullAllowed] UIImage result, [NullAllowed] NSDictionary info);
 #endif
 
 	/// <summary>Completion handler for the <see cref="Photos.PHImageManager.RequestPlayerItem(Photos.PHAsset,Photos.PHVideoRequestOptions,Photos.PHImageManagerRequestPlayerHandler)" /> method.</summary>
-	delegate void PHImageManagerRequestPlayerHandler (AVPlayerItem playerItem, NSDictionary info);
+	delegate void PHImageManagerRequestPlayerHandler ([NullAllowed] AVPlayerItem playerItem, [NullAllowed] NSDictionary info);
 	/// <summary>Completion handler for the <see cref="Photos.PHImageManager.RequestExportSession(Photos.PHAsset,Photos.PHVideoRequestOptions,System.String,Photos.PHImageManagerRequestExportHandler)" /> method.</summary>
-	delegate void PHImageManagerRequestExportHandler (AVAssetExportSession exportSession, NSDictionary info);
+	delegate void PHImageManagerRequestExportHandler ([NullAllowed] AVAssetExportSession exportSession, [NullAllowed] NSDictionary info);
 	/// <summary>Completion handle for the <see cref="Photos.PHImageManager.RequestAvAsset(Photos.PHAsset,Photos.PHVideoRequestOptions,Photos.PHImageManagerRequestAvAssetHandler)" /> method.</summary>
-	delegate void PHImageManagerRequestAVAssetHandler (AVAsset asset, AVAudioMix audioMix, NSDictionary info);
+	delegate void PHImageManagerRequestAVAssetHandler ([NullAllowed] AVAsset asset, [NullAllowed] AVAudioMix audioMix, [NullAllowed] NSDictionary info);
 	/// <summary>The result handler delegate for calls to <see cref="Photos.PHImageManager.RequestLivePhoto(Photos.PHAsset,CoreGraphics.CGSize,Photos.PHImageContentMode,Photos.PHLivePhotoRequestOptions,Photos.PHImageManagerRequestLivePhoto)" />.</summary>
-	delegate void PHImageManagerRequestLivePhoto (PHLivePhoto livePhoto, NSDictionary info);
+	delegate void PHImageManagerRequestLivePhoto ([NullAllowed] PHLivePhoto livePhoto, [NullAllowed] NSDictionary info);
 	delegate void PHImageManagerRequestImageDataHandler ([NullAllowed] NSData imageData, [NullAllowed] string dataUti, CGImagePropertyOrientation orientation, [NullAllowed] NSDictionary info);
 
 	/// <summary>A singleton object that allows loading <see cref="Photos.PHAsset" /> objects.</summary>

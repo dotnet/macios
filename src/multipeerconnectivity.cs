@@ -18,10 +18,6 @@ using UIViewController = AppKit.NSViewController;
 using UIKit;
 #endif
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace MultipeerConnectivity {
 
 	/// <summary>Identifies a device in a multipeer connectivity network.</summary>
@@ -50,7 +46,7 @@ namespace MultipeerConnectivity {
 	}
 
 	/// <summary>A delegate that serves as the completion handler for <see cref="MultipeerConnectivity.MCSession.NearbyConnectionDataForPeer(MultipeerConnectivity.MCPeerID,MultipeerConnectivity.MCSessionNearbyConnectionDataForPeerCompletionHandler)" />.</summary>
-	delegate void MCSessionNearbyConnectionDataForPeerCompletionHandler (NSData connectionData, NSError error);
+	delegate void MCSessionNearbyConnectionDataForPeerCompletionHandler ([NullAllowed] NSData connectionData, [NullAllowed] NSError error);
 
 	/// <include file="../docs/api/MultipeerConnectivity/MCSession.xml" path="/Documentation/Docs[@DocId='T:MultipeerConnectivity.MCSession']/*" />
 	[MacCatalyst (13, 1)]

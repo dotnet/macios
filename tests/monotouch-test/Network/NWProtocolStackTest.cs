@@ -45,11 +45,7 @@ namespace MonoTouchFixtures.Network {
 				stack = parameters.ProtocolStack;
 				using (var ipOptions = stack.InternetProtocol) {
 					if (ipOptions is not null) {
-#if NET
 						ipOptions.SetVersion (NWIPVersion.Version4);
-#else
-						ipOptions.IPSetVersion (NWIPVersion.Version4);
-#endif
 						stack.PrependApplicationProtocol (ipOptions);
 					}
 				}

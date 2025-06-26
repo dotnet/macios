@@ -7,22 +7,21 @@ using Xamarin.MacDev;
 using Xamarin.Localization.MSBuild;
 using Xamarin.Messaging.Build.Client;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Xamarin.MacDev.Tasks {
 	public class GetNativeExecutableName : XamarinTask, ICancelableTask {
 		#region Inputs
 
 		[Required]
-		public string AppManifest { get; set; }
+		public string AppManifest { get; set; } = "";
 
 		#endregion
 
 		#region Outputs
 
 		[Output]
-		public string ExecutableName { get; set; }
+		public string ExecutableName { get; set; } = "";
 
 		#endregion
 
@@ -34,7 +33,7 @@ namespace Xamarin.MacDev.Tasks {
 			PDictionary plist;
 
 			try {
-				plist = PDictionary.FromFile (AppManifest);
+				plist = PDictionary.FromFile (AppManifest)!;
 			} catch (Exception ex) {
 				Log.LogError (MSBStrings.E0055, ex.Message);
 				return false;

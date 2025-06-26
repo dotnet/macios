@@ -83,19 +83,32 @@ namespace Xamarin.Tests {
 			}
 		}
 
-		// This is the location of an Xcode which is older than the recommended one.
-		public static string GetOldXcodeRoot (Version min_version = null)
+		public static IEnumerable<(string Path, Version Version)> GetAllXcodes ()
 		{
 			var xcodes = Directory.GetDirectories ("/Applications", "Xcode*.app", SearchOption.TopDirectoryOnly);
-			var with_versions = new List<Tuple<Version, string>> ();
+			var with_versions = new List<(string Path, Version Version)> ();
 
-			var max_version = Version.Parse (XcodeVersionString);
 			foreach (var xcode in xcodes) {
 				var path = Path.Combine (xcode, "Contents", "Developer");
 				var xcode_version = GetXcodeVersion (path);
 				if (xcode_version is null)
 					continue;
 				var version = Version.Parse (xcode_version);
+				with_versions.Add ((path, version));
+			}
+
+			return with_versions;
+		}
+
+		// This is the location of an Xcode which is older than the recommended one.
+		public static string GetOldXcodeRoot (Version min_version = null)
+		{
+			var with_versions = new List<Tuple<Version, string>> ();
+
+			var max_version = Version.Parse (XcodeVersionString);
+			foreach (var xcode in GetAllXcodes ()) {
+				var path = xcode.Path;
+				var version = xcode.Version;
 				if (version >= max_version)
 					continue;
 				if (version.Major == max_version.Major)
@@ -402,6 +415,11 @@ namespace Xamarin.Tests {
 			return GetVariable (variableName, variableName + " not found");
 		}
 
+		public static Version GetDotNetVersion ()
+		{
+			return Version.Parse (DotNetTfm.Replace ("net", ""));
+		}
+
 		public static string GetDotNetRoot ()
 		{
 			if (IsVsts) {
@@ -513,6 +531,14 @@ namespace Xamarin.Tests {
 		public static string GetBaseLibrary (TargetFramework targetFramework)
 		{
 			return Path.Combine (GetRefDirectory (targetFramework), GetBaseLibraryName (targetFramework));
+		}
+
+		public static IList<string> GetAllRuntimeIdentifiers ()
+		{
+			var rv = new List<string> ();
+			foreach (var platform in GetAllPlatforms ())
+				rv.AddRange (GetRuntimeIdentifiers (platform));
+			return rv;
 		}
 
 		public static IList<string> GetRuntimeIdentifiers (ApplePlatform platform)

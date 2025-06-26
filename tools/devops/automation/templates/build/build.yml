@@ -203,6 +203,7 @@ steps:
       $githubComments.NewCommentFromMessage($commentTitle, $commentIcon, $commentMessage.ToString(), "build $(System.JobDisplayName)")
     condition: always()
     displayName: 'Report build result'
+    continueOnError: true
     env:
       ${{ if eq(parameters.repositoryAlias, 'self') }}:
         COMMENT_HASH: $(fix_commit.GIT_HASH)

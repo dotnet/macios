@@ -30,19 +30,10 @@ using System.Collections.Generic;
 
 using ObjCRuntime;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace Foundation {
 	[Register ("NSEnumerator", SkipRegistration = true)]
 	public sealed class NSEnumerator<TKey> : NSEnumerator
 		where TKey : INativeObject {
-#if !NET
-		public NSEnumerator ()
-		{
-		}
-#endif
 
 		internal NSEnumerator (NativeHandle handle)
 			: base (handle)

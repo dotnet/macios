@@ -176,6 +176,12 @@
 # Apple says this is not implemented
 !missing-field! NSDidBecomeSingleThreadedNotification not bound
 
+# Contains variadic arguments, which are complicated to bind from managed code
+!missing-selector! +NSDictionary::dictionaryWithObjectsAndKeys: not bound
+
+# same as NSDictionary::objectForKey according to docs
+!missing-selector! NSDictionary::objectForKeyedSubscript: not bound
+
 ## unsorted
 
 !extra-designated-initializer! NSSortDescriptor::initWithCoder: is incorrectly decorated with an [DesignatedInitializer] attribute
@@ -288,7 +294,6 @@
 !missing-selector! +NSDecimalNumber::decimalNumberWithString:locale: not bound
 !missing-selector! +NSDecimalNumberHandler::decimalNumberHandlerWithRoundingMode:scale:raiseOnExactness:raiseOnOverflow:raiseOnUnderflow:raiseOnDivideByZero: not bound
 !missing-selector! +NSDecimalNumberHandler::defaultDecimalNumberHandler not bound
-!missing-selector! +NSDictionary::dictionaryWithObjectsAndKeys: not bound
 !missing-selector! +NSException::exceptionWithName:reason:userInfo: not bound
 !missing-selector! +NSException::raise:format: not bound
 !missing-selector! +NSException::raise:format:arguments: not bound
@@ -445,21 +450,10 @@
 !missing-selector! NSDecimalNumberHandler::initWithRoundingMode:scale:raiseOnExactness:raiseOnOverflow:raiseOnUnderflow:raiseOnDivideByZero: not bound
 !missing-selector! NSDictionary::countByEnumeratingWithState:objects:count: not bound
 !missing-selector! NSDictionary::description not bound
-!missing-selector! NSDictionary::descriptionWithLocale: not bound
-!missing-selector! NSDictionary::descriptionWithLocale:indent: not bound
-!missing-selector! NSDictionary::enumerateKeysAndObjectsUsingBlock: not bound
-!missing-selector! NSDictionary::enumerateKeysAndObjectsWithOptions:usingBlock: not bound
 !missing-selector! NSDictionary::getObjects:andKeys:count: not bound
 !missing-selector! NSDictionary::initWithObjects:forKeys:count: not bound
 !missing-selector! NSDictionary::initWithObjectsAndKeys: not bound
-!missing-selector! NSDictionary::keysOfEntriesPassingTest: not bound
-!missing-selector! NSDictionary::keysOfEntriesWithOptions:passingTest: not bound
-!missing-selector! NSDictionary::keysSortedByValueUsingComparator: not bound
 !missing-selector! NSDictionary::keysSortedByValueUsingSelector: not bound
-!missing-selector! NSDictionary::keysSortedByValueWithOptions:usingComparator: not bound
-!missing-selector! NSDictionary::objectForKeyedSubscript: not bound
-!missing-selector! NSDictionary::valueForKey: not bound
-!missing-selector! NSDictionary::writeToURL:error: not bound
 !missing-selector! NSEnumerator::allObjects not bound
 !missing-selector! NSError::recoveryAttempter not bound
 !missing-selector! NSExpression::arguments not bound
@@ -872,7 +866,6 @@
 !missing-selector! NSDictionary::fileSystemFileNumber not bound
 !missing-selector! NSDictionary::fileSystemNumber not bound
 !missing-selector! NSDictionary::fileType not bound
-!missing-selector! NSDictionary::keyEnumerator not bound
 !missing-selector! NSDirectoryEnumerator::skipDescendants not bound
 !missing-selector! NSException::raise not bound
 !missing-selector! NSHashTable::objectEnumerator not bound
@@ -899,8 +892,6 @@
 !missing-selector! NSXPCCoder::userInfo not bound
 
 # Initial result from new rule extra-null-allowed
-!extra-null-allowed! 'Foundation.NSDictionary Foundation.NSDictionary::FromObjectsAndKeysInternal(Foundation.NSArray,Foundation.NSArray)' has a extraneous [NullAllowed] on parameter #0
-!extra-null-allowed! 'Foundation.NSDictionary Foundation.NSDictionary::FromObjectsAndKeysInternal(Foundation.NSArray,Foundation.NSArray)' has a extraneous [NullAllowed] on parameter #1
 !extra-null-allowed! 'Foundation.NSString Foundation.NSBundle::GetLocalizedString(Foundation.NSString,Foundation.NSString,Foundation.NSString)' has a extraneous [NullAllowed] on parameter #0
 !extra-null-allowed! 'Foundation.NSUrlSessionDataTask Foundation.NSUrlSession::CreateDataTask(Foundation.NSUrl,Foundation.NSUrlSessionResponse)' has a extraneous [NullAllowed] on parameter #1
 !extra-null-allowed! 'Foundation.NSUrlSessionDataTask Foundation.NSUrlSession::CreateDataTask(Foundation.NSUrlRequest,Foundation.NSUrlSessionResponse)' has a extraneous [NullAllowed] on parameter #1
@@ -1015,7 +1006,6 @@
 !missing-null-allowed! 'Foundation.NSObject Foundation.NSCoder::DecodeTopLevelObject(Foundation.NSSet`1<ObjCRuntime.Class>,System.String,Foundation.NSError&)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'Foundation.NSObject Foundation.NSCoder::DecodeTopLevelObject(ObjCRuntime.Class,System.String,Foundation.NSError&)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'Foundation.NSObject Foundation.NSCoder::DecodeTopLevelObject(System.String,Foundation.NSError&)' is missing an [NullAllowed] on return type
-!missing-null-allowed! 'Foundation.NSObject Foundation.NSDictionary::ObjectForKey(Foundation.NSObject)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'Foundation.NSObject Foundation.NSEnumerator::NextObject()' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'Foundation.NSObject Foundation.NSException::get_UserInfo()' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'Foundation.NSObject Foundation.NSFileManager::get_UbiquityIdentityToken()' is missing an [NullAllowed] on return type

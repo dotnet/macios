@@ -5,8 +5,6 @@ using ObjCRuntime;
 
 using NUnit.Framework;
 
-#if NET
-
 namespace MonoTouchFixtures.ObjCRuntime {
 	[TestFixture]
 	[Preserve (AllMembers = true)]
@@ -23,4 +21,3 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		}
 	}
 }
-#endif

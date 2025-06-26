@@ -24,7 +24,7 @@ public partial class AppKitPropertyTests
 	static readonly global::ObjCRuntime.NativeHandle selCountXHandle = global::ObjCRuntime.Selector.GetHandle ("count");
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	static readonly global::ObjCRuntime.NativeHandle class_ptr = Class.GetHandle ("AppKitPropertyTests");
+	static readonly global::ObjCRuntime.NativeHandle class_ptr = global::ObjCRuntime.Class.GetHandle ("AppKitPropertyTests");
 
 	/// <summary>The Objective-C class handle for this class.</summary>
 	/// <value>The pointer to the Objective-C class.</value>
@@ -39,7 +39,7 @@ public partial class AppKitPropertyTests
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[DesignatedInitializer]
 	[Export ("init")]
-	public AppKitPropertyTests () : base (NSObjectFlag.Empty)
+	public AppKitPropertyTests () : base (global::Foundation.NSObjectFlag.Empty)
 	{
 		if (IsDirectBinding)
 			InitializeHandle (global::ObjCRuntime.Messaging.IntPtr_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("init")), "init");
@@ -94,7 +94,7 @@ public partial class AppKitPropertyTests
 	/// </remarks>
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable (EditorBrowsableState.Advanced)]
-	protected AppKitPropertyTests (NSObjectFlag t) : base (t) {}
+	protected AppKitPropertyTests (global::Foundation.NSObjectFlag t) : base (t) {}
 
 	/// <summary>A constructor used when creating managed representations of unmanaged objects. Called by the runtime.</summary>
 	/// <param name="handle">Pointer (handle) to the unmanaged object.</param>
@@ -113,7 +113,7 @@ public partial class AppKitPropertyTests
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual partial UIntPtr Count
+	public virtual partial global::System.UIntPtr Count
 	{
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
@@ -123,13 +123,13 @@ public partial class AppKitPropertyTests
 		{
 			AppKit.NSApplication.EnsureUIThread ();
 
-			UIntPtr ret;
+			global::System.UIntPtr ret;
 			if (IsDirectBinding) {
 				ret = global::ObjCRuntime.Messaging.UIntPtr_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("count"));
 			} else {
 				ret = global::ObjCRuntime.Messaging.UIntPtr_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("count"));
 			}
-			GC.KeepAlive (this);
+			global::System.GC.KeepAlive (this);
 			return ret;
 		}
 	}

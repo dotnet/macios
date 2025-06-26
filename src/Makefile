@@ -56,7 +56,7 @@ DOTNET_REFERENCES = \
 	/r:$(DOTNET_BCL_DIR)/System.Xml.ReaderWriter.dll \
 
 DOTNET_OR_GREATER_DEFINES:=$(foreach version,$(shell seq 6 $(firstword $(subst ., ,$(subst net,,$(DOTNET_TFM))))),/define:NET$(version)_0_OR_GREATER)
-DOTNET_FLAGS=/warnaserror+ /nostdlib+ /deterministic /features:strict /nologo /target:library /debug /unsafe /define:NET /define:NET_TODO $(DOTNET_OR_GREATER_DEFINES) $(DOTNET_REFERENCES) /fullpaths
+DOTNET_FLAGS=/warnaserror+ /nostdlib+ /deterministic /features:strict /nologo /target:library /debug /unsafe /define:NET $(DOTNET_OR_GREATER_DEFINES) $(DOTNET_REFERENCES) /fullpaths
 
 ifeq ($(XCODE_IS_STABLE),true)
 DOTNET_FLAGS+=/define:XCODE_IS_STABLE

@@ -14,13 +14,11 @@ using System.Runtime.InteropServices;
 namespace CoreMotion {
 
 	// CMMagnetometer.h
-#if NET
 	/// <summary>Represents the 3-axis magnetometer data in microteslas.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct CMMagneticField {
 		/// <summary>X component of the magnetic field, measured in microteslas.</summary>

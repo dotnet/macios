@@ -26,10 +26,6 @@ using System;
 using CNPostalAddress = Foundation.NSObject;
 #endif
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreLocation {
 
 	/// <summary>An enumeration whose values specify whether the device is inside or outside a region or unknown.</summary>
@@ -64,11 +60,7 @@ namespace CoreLocation {
 	}
 
 	[ErrorDomain ("CLLocationPushServiceErrorDomain")]
-#if NET // Apple fixed this in Xcode 13.1
 	[iOS (15, 0), NoTV, NoMacCatalyst, NoMac]
-#else
-	[iOS (15, 0), NoTV, MacCatalyst (15, 0), NoMac]
-#endif
 	[Native]
 	public enum CLLocationPushServiceError : long {
 		Unknown = 0,
@@ -1506,7 +1498,7 @@ namespace CoreLocation {
 	/// <summary>A delegate that is the <c>completionHandler</c> in calls to <see cref="CoreLocation.CLGeocoder.GeocodePostalAddressAsync(Contacts.CNPostalAddress,Foundation.NSLocale)" />.</summary>
 	/// <remarks>
 	///     </remarks>
-	delegate void CLGeocodeCompletionHandler (CLPlacemark [] placemarks, NSError error);
+	delegate void CLGeocodeCompletionHandler ([NullAllowed] CLPlacemark [] placemarks, [NullAllowed] NSError error);
 
 	/// <include file="../docs/api/CoreLocation/CLGeocoder.xml" path="/Documentation/Docs[@DocId='T:CoreLocation.CLGeocoder']/*" />
 	[BaseType (typeof (NSObject))]
@@ -1751,11 +1743,7 @@ namespace CoreLocation {
 		NSNumber Minor { get; }
 	}
 
-#if NET // Apple fixed this in Xcode 13.1
 	[iOS (15, 0), NoTV, NoMacCatalyst, NoMac]
-#else
-	[iOS (15, 0), NoTV, MacCatalyst (15, 0), NoMac]
-#endif
 	[Protocol]
 	interface CLLocationPushServiceExtension {
 		[Abstract]

@@ -54,10 +54,6 @@ using ObjCRuntime;
 using CoreGraphics;
 using System.ComponentModel;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 // Verify/Test Delegate Models
 // Check for missing NullAllowed on all object properties
 // Test methods returning typed arrays in lieu of NSArray
@@ -905,7 +901,6 @@ namespace PdfKit {
 		[NullAllowed]
 		PdfPage Page { get; set; }
 
-#if NET
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -913,11 +908,6 @@ namespace PdfKit {
 		[Export ("type")]
 		[NullAllowed]
 		NSString Type { get; set; }
-#else
-		[Export ("type")]
-		[NullAllowed]
-		string Type { get; set; }
-#endif
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
@@ -1616,19 +1606,11 @@ namespace PdfKit {
 		[Export ("paths")]
 		NSBezierPath [] Paths { get; }
 
-#if !NET
-		[Export ("addBezierPath:")]
-		void AddBezierPathpath (NSBezierPath path);
-
-		[Export ("removeBezierPath:")]
-		void RemoveBezierPathpath (NSBezierPath path);
-#else
 		[Export ("addBezierPath:")]
 		void AddBezierPath (NSBezierPath path);
 
 		[Export ("removeBezierPath:")]
 		void RemoveBezierPath (NSBezierPath path);
-#endif
 	}
 
 	[NoiOS]
@@ -2045,7 +2027,6 @@ namespace PdfKit {
 		[Wrap ("DocumentAttributes = attributes?.GetDictionary ()")]
 		void SetDocumentAttributes ([NullAllowed] PdfDocumentAttributes attributes);
 
-#if NET || IOS
 		/// <summary>Gets the major version number of the document.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -2057,15 +2038,6 @@ namespace PdfKit {
 		///         <remarks>To be added.</remarks>
 		[Export ("minorVersion")]
 		nint MinorVersion { get; }
-#else
-		[NoiOS]
-		[Export ("majorVersion")]
-		int MajorVersion { get; } /* int, not NSInteger */
-
-		[NoiOS]
-		[Export ("minorVersion")]
-		int MinorVersion { get; } /* int, not NSInteger */
-#endif
 
 		/// <summary>Gets a Boolean value that tells whether the document is encrypted.</summary>
 		///         <value>To be added.</value>
@@ -2306,12 +2278,6 @@ namespace PdfKit {
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[Export ("findString:withOptions:")]
-#if MONOMAC && !NET
-		[Obsolete ("Use 'Find (string, NSStringCompareOptions)' instead.")]
-		PdfSelection [] Find (string text, nint options);
-
-		[Wrap ("Find (text: text, options: (nint) (int) compareOptions)", IsVirtual = true)]
-#endif
 		PdfSelection [] Find (string text, NSStringCompareOptions compareOptions);
 
 		/// <param name="text">The text to find.</param>
@@ -2319,13 +2285,6 @@ namespace PdfKit {
 		///         <summary>Asynchronously searches for the specified text with the specified comparison options.</summary>
 		///         <remarks>To be added.</remarks>
 		[Export ("beginFindString:withOptions:")]
-#if MONOMAC && !NET
-		[Obsolete ("Use 'FindAsync (string, NSStringCompareOptions)' instead.")]
-		[return: NullAllowed]
-		void FindAsync (string text, nint options);
-
-		[Wrap ("FindAsync (text: text, options: (nint) (int) compareOptions)", IsVirtual = true)]
-#endif
 		[return: NullAllowed]
 		void FindAsync (string text, NSStringCompareOptions compareOptions);
 
@@ -2334,13 +2293,6 @@ namespace PdfKit {
 		///         <summary>Asynchronously searches for the specified text with the specified comparison options.</summary>
 		///         <remarks>To be added.</remarks>
 		[Export ("beginFindStrings:withOptions:")]
-#if MONOMAC && !NET
-		[Obsolete ("Use 'FindAsync (string [], NSStringCompareOptions)' instead.")]
-		[return: NullAllowed]
-		void FindAsync (string [] text, nint options);
-
-		[Wrap ("FindAsync (text: text, options: (nint) (int) compareOptions)", IsVirtual = true)]
-#endif
 		[return: NullAllowed]
 		void FindAsync (string [] text, NSStringCompareOptions compareOptions);
 
@@ -2351,13 +2303,6 @@ namespace PdfKit {
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[Export ("findString:fromSelection:withOptions:")]
-#if MONOMAC && !NET
-		[Obsolete ("Use 'Find (string, PdfSelection, NSStringCompareOptions)' instead.")]
-		[return: NullAllowed]
-		PdfSelection Find (string text, [NullAllowed] PdfSelection selection, nint options);
-
-		[Wrap ("Find (text: text, selection: selection, options: (nint) (int) compareOptions)", IsVirtual = true)]
-#endif
 		[return: NullAllowed]
 		PdfSelection Find (string text, [NullAllowed] PdfSelection selection, NSStringCompareOptions compareOptions);
 
@@ -2494,11 +2439,7 @@ namespace PdfKit {
 		[NoTV]
 		[NoMacCatalyst]
 		[Export ("classForAnnotationClass:"), DelegateName ("ClassForAnnotationClassDelegate"), DefaultValue (null)]
-#if NET
 		Class GetClassForAnnotationClass (Class sender);
-#else
-		Class ClassForAnnotationClass (Class sender);
-#endif
 
 		/// <param name="notification">To be added.</param>
 		///         <summary>To be added.</summary>

@@ -8,15 +8,10 @@ using ObjCRuntime;
 #if !__MACCATALYST__
 
 namespace Cinematic {
-
-#if NET
 	[SupportedOSPlatform ("tvos17.0")]
 	[SupportedOSPlatform ("macos14.0")]
 	[SupportedOSPlatform ("ios17.0")]
 	[SupportedOSPlatform ("maccatalyst17.0")]
-#else
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
-#endif
 	public enum CNDecisionIdentifierType {
 		Single,
 		Group,

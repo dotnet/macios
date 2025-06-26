@@ -413,9 +413,9 @@ namespace AppKit {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		public string ToolTip {
+		public string? ToolTip {
 			get { return Get (NSStringAttributeKey.ToolTip, handle => new NSString (handle)); }
-			set { SetNativeValue (NSStringAttributeKey.ToolTip, new NSString (value)); }
+			set { SetNativeValue (NSStringAttributeKey.ToolTip, (NSString?) value); }
 		}
 
 		/// <summary>To be added.</summary>

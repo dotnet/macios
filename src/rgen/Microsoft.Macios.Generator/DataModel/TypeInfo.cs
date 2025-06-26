@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -8,6 +9,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.Macios.Generator.Extensions;
+using Microsoft.Macios.Generator.Formatters;
 
 namespace Microsoft.Macios.Generator.DataModel;
 
@@ -19,25 +21,20 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 
 	public static TypeInfo Void = new ("void", SpecialType.System_Void) { Parents = ["System.ValueType", "object"], };
 
-	readonly string fullyQualifiedName = string.Empty;
 	/// <summary>
 	/// The fully qualified name of the type.
 	/// </summary>
-	public string FullyQualifiedName {
-		get => fullyQualifiedName;
-		init {
-			fullyQualifiedName = value;
-			var index = fullyQualifiedName.LastIndexOf ('.');
-			Name = index != -1
-				? fullyQualifiedName.Substring (index + 1)
-				: fullyQualifiedName;
-		}
-	}
+	public string FullyQualifiedName { get; init; } = string.Empty;
 
 	/// <summary>
 	/// Type name.
 	/// </summary>
-	public string Name { get; private init; } = string.Empty;
+	public string Name { get; init; } = string.Empty;
+
+	/// <summary>
+	/// The namespace of the type, split by '.'.
+	/// </summary>
+	public ImmutableArray<string> Namespace { get; init; } = [];
 
 	/// <summary>
 	/// The metadata name of the type. This is normally the same as name except
@@ -59,12 +56,12 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 	/// <summary>
 	/// The special type enum of the type info. This is used to differentiate nint from IntPtr and other.
 	/// </summary>
-	public SpecialType SpecialType { get; } = SpecialType.None;
+	public SpecialType SpecialType { get; init; } = SpecialType.None;
 
 	/// <summary>
 	/// True if the parameter is nullable.
 	/// </summary>
-	public bool IsNullable { get; }
+	public bool IsNullable { get; init; }
 
 	/// <summary>
 	/// True if the parameter type is blittable.
@@ -85,7 +82,7 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 	/// Returns if the return type is an array type.
 	/// </summary>
 	[MemberNotNullWhen (true, nameof (ArrayElementType))]
-	public bool IsArray { get; }
+	public bool IsArray { get; init; }
 
 	/// <summary>
 	/// Returns if the return type is a reference type.
@@ -123,6 +120,11 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 	/// Return if the type represents a wrapped object from the objc world.
 	/// </summary>
 	public bool IsWrapped { get; init; }
+
+	/// <summary>
+	/// True if the type represents a Task.
+	/// </summary>
+	public bool IsTask { get; init; }
 
 	/// <summary>
 	/// Returns, if the type is an array, if its elements are a wrapped object from the objc world.
@@ -219,6 +221,24 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 	{
 		FullyQualifiedName = name;
 		SpecialType = specialType;
+
+		// calculate the name and namespace based on the name. This is not the most efficient way to do it and it is
+		// a internal constructor for testing purposes only.
+		// there are few things to consider when setting the name of the class, first we need to
+		// to make the diff between a generic class and a non generic class
+		var nonGenericName = FullyQualifiedName.Contains ('<')
+			? FullyQualifiedName.Substring (0, FullyQualifiedName.IndexOf ('<'))
+			: FullyQualifiedName;
+		var index = nonGenericName.LastIndexOf ('.');
+		Name = index != -1
+			? nonGenericName.Substring (index + 1)
+			: nonGenericName;
+		// based on the name, calculate the name space for the class
+		if (Name.Length == nonGenericName.Length)
+			Namespace = [];
+		else
+			// remove the name + 1 for the dot
+			Namespace = [.. nonGenericName.Remove (nonGenericName.Length - (Name.Length + 1)).Split ('.')];
 	}
 
 	internal TypeInfo (string name,
@@ -238,13 +258,64 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		IsStruct = isStruct;
 	}
 
-	internal TypeInfo (ITypeSymbol symbol) :
-		this (
-			symbol is IArrayTypeSymbol arrayTypeSymbol
-				? arrayTypeSymbol.ElementType.ToDisplayString ()
-				: symbol.ToDisplayString ().Trim ('?', '[', ']'),
-			symbol.SpecialType)
+	static (string Name, ImmutableArray<string> Namespace) GetTypeNameAndNamespace (ITypeSymbol symbol)
 	{
+		if (symbol.SpecialType is SpecialType.None or SpecialType.System_IntPtr or SpecialType.System_UIntPtr)
+			return (GetName (symbol), GetNamespaceComponents (symbol));
+
+		var token = symbol.SpecialType.GetKeyword ();
+		var name = string.IsNullOrEmpty (token) ? symbol.Name : token;
+		// if we are dealing with int, uint etc.. we will ignore the namespace since it is not needed
+		return (name, []);
+	}
+
+	/// <summary>
+	/// Returns the name of the type symbol including any containing types BUT not namespaces.
+	/// </summary>
+	static string GetName (ITypeSymbol symbol)
+	{
+		// before we return the name, make sure that we do not have parent types, if we do, append those to the name
+		var sb = new StringBuilder ();
+		var parentSymbol = symbol.ContainingType;
+
+		if (parentSymbol is null)
+			return symbol.Name;
+
+		while (parentSymbol is not null) {
+			// add in reverse order, since we are going from the child to the parent
+			sb.Insert (0, parentSymbol.Name + ".");
+			parentSymbol = parentSymbol.ContainingType;
+		}
+
+		sb.Append (symbol.Name);
+		return sb.ToString ();
+	}
+
+	/// <summary>
+	/// Returns the namespace components of the type symbol.
+	/// </summary>
+	/// <param name="symbol">The symbol we are interested in.</param>
+	/// <returns>An immutable array with the namespace components.</returns>
+	static ImmutableArray<string> GetNamespaceComponents (ITypeSymbol symbol)
+	{
+		var namespaceSymbol = symbol.ContainingNamespace;
+		var components = ImmutableArray.CreateBuilder<string> ();
+		while (namespaceSymbol is not null) {
+			components.Insert (0, namespaceSymbol.Name);
+			namespaceSymbol = namespaceSymbol.ContainingNamespace;
+			if (namespaceSymbol is INamespaceSymbol { IsGlobalNamespace: true })
+				break;
+		}
+		return components.ToImmutableArray ();
+	}
+
+	internal TypeInfo (ITypeSymbol symbol)
+	{
+		// general case, get the name and namespace. If we are dealing with a generic type or an array type
+		// the name will be later overwritten with the generic name or the array name
+		(Name, Namespace) = GetTypeNameAndNamespace (symbol);
+		SpecialType = symbol.SpecialType;
+		FullyQualifiedName = symbol.ToDisplayString ().Trim ('?', '[', ']');
 		IsNullable = symbol.NullableAnnotation == NullableAnnotation.Annotated;
 		IsBlittable = symbol.IsBlittable ();
 		IsSmartEnum = symbol.IsSmartEnum ();
@@ -252,7 +323,6 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		IsStruct = symbol.TypeKind == TypeKind.Struct;
 		IsInterface = symbol.TypeKind == TypeKind.Interface;
 		IsDelegate = symbol.TypeKind == TypeKind.Delegate;
-		IsPointer = symbol is IPointerTypeSymbol;
 		IsNativeIntegerType = symbol.IsNativeIntegerType;
 		IsNativeEnum = symbol.HasAttribute (AttributesNames.NativeAttribute);
 		IsProtocol = symbol.HasAttribute (AttributesNames.ProtocolAttribute);
@@ -267,6 +337,9 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 
 		IsWrapped = symbol.IsWrapped (isNSObject);
 		if (symbol is IArrayTypeSymbol arraySymbol) {
+			// override the name and namespace with the array name
+			(Name, Namespace) = GetTypeNameAndNamespace (arraySymbol.ElementType);
+			FullyQualifiedName = arraySymbol.ElementType.ToDisplayString ();
 			IsArray = true;
 			ArrayElementType = arraySymbol.ElementType.SpecialType;
 			ArrayElementTypeIsWrapped = arraySymbol.ElementType.IsWrapped ();
@@ -280,10 +353,15 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		EnumUnderlyingType = namedTypeSymbol?.EnumUnderlyingType?.SpecialType;
 		if (namedTypeSymbol is not null) {
 			IsGenericType = namedTypeSymbol.IsGenericType;
-			TypeArguments = [
-				.. namedTypeSymbol.TypeArguments
-					.Select (x => x.ToDisplayString ())
-			];
+			var typeArgumentsBucket = ImmutableArray.CreateBuilder<string> (namedTypeSymbol.TypeArguments.Length);
+			foreach (var typeArgument in namedTypeSymbol.TypeArguments) {
+				// rather than use the display name, which could be a generic name, we will create a struct for the 
+				// type and use our type formater
+				var info = new TypeInfo (typeArgument);
+				var syntax = info.GetIdentifierSyntax ();
+				typeArgumentsBucket.Add (syntax.ToString ());
+			}
+			TypeArguments = typeArgumentsBucket.ToImmutable ();
 
 			if (namedTypeSymbol.DelegateInvokeMethod is not null &&
 				DelegateInfo.TryCreate (namedTypeSymbol, out var delegateInfo))
@@ -294,12 +372,23 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 			// get the type argument for nullable, which we know is the data that was boxed and use it to 
 			// overwrite the SpecialType 
 			var typeArgument = namedTypeSymbol.TypeArguments [0];
+			// we need to update the name and namespace with the type argument
+			(Name, Namespace) = GetTypeNameAndNamespace (typeArgument);
+			// we need to decide if is generic based on the inner type
+			if (typeArgument is INamedTypeSymbol innerType) {
+				IsGenericType = innerType.IsGenericType;
+			}
 			SpecialType = typeArgument.SpecialType;
 			MetadataName = SpecialType is SpecialType.None or SpecialType.System_Void
 				? null : typeArgument.MetadataName;
 		} else {
 			MetadataName = SpecialType is SpecialType.None or SpecialType.System_Void
 				? null : symbol.MetadataName;
+		}
+
+		if (symbol is IPointerTypeSymbol pointerTypeSymbol) {
+			IsPointer = true;
+			(Name, Namespace) = GetTypeNameAndNamespace (pointerTypeSymbol.PointedAtType);
 		}
 	}
 
@@ -445,6 +534,141 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		};
 #pragma warning restore format
 		return type;
+	}
+
+	/// <summary>
+	/// If the current <see cref="TypeInfo"/> represents an array, this method returns a new <see cref="TypeInfo"/>
+	/// representing the element type of the array. Otherwise, it returns the current instance.
+	/// </summary>
+	/// <returns>
+	/// A new <see cref="TypeInfo"/> instance representing the array element's type if <see cref="IsArray"/> is true;
+	/// otherwise, returns the current <see cref="TypeInfo"/> instance.
+	/// </returns>
+	public TypeInfo ToArrayElementType ()
+	{
+		if (!IsArray)
+			return this;
+		// copy all the elements from the current array type and set the array type to false
+		return this with {
+			IsArray = false,
+			SpecialType = ArrayElementType ?? SpecialType.None,
+		};
+	}
+
+	/// <summary>
+	/// If the current <see cref="TypeInfo"/> is nullable, this method returns a new <see cref="TypeInfo"/>
+	/// representing the non-nullable version of the type. Otherwise, it returns the current instance.
+	/// </summary>
+	/// <returns>
+	/// A new <see cref="TypeInfo"/> instance with <see cref="IsNullable"/> set to false if the original <see cref="IsNullable"/> was true;
+	/// otherwise, returns the current <see cref="TypeInfo"/> instance.
+	/// </returns>
+	public TypeInfo ToNonNullable ()
+	{
+		if (!IsNullable)
+			return this;
+		// copy all the elements from the current array type and set the array type to false
+		return this with {
+			IsNullable = false,
+		};
+	}
+
+	/// <summary>
+	/// If the current <see cref="TypeInfo"/> represents a pointer, this method returns a new <see cref="TypeInfo"/>
+	/// representing the type pointed to. Otherwise, it returns the current instance.
+	/// </summary>
+	/// <returns>
+	/// A new <see cref="TypeInfo"/> instance representing the pointed-at type if <see cref="IsPointer"/> is true;
+	/// otherwise, returns the current <see cref="TypeInfo"/> instance.
+	/// </returns>
+	public TypeInfo ToPointedAtType ()
+	{
+		if (!IsPointer)
+			return this;
+		// copy all the elements from the current array type and set the array type to false
+		return this with {
+			IsPointer = false,
+		};
+	}
+
+	/// <summary>
+	/// Gets the generic type arguments for a <see cref="System.Threading.Tasks.Task"/> from a delegate's parameters.
+	/// </summary>
+	/// <returns>An immutable array of strings representing the type arguments for the task.</returns>
+	/// <remarks>
+	/// This method extracts the parameter types from the delegate. If the last parameter is an <c>NSError</c>,
+	/// it is omitted from the returned types, as it will be handled as an exception in the async method.
+	/// </remarks>
+	ImmutableArray<string> GetDelegateTypesForTask ()
+	{
+		if (Delegate is null)
+			return [];
+
+		// get all the type information from the delegate parameters since this is what is needed for 
+		// the task type. It is important to remember that for async methods in objc if the last parameter is a
+		// a NSError we will drop it since that will be converted to an exception in the generated code.
+		var delegateTypes = Delegate.Parameters.Select (p => p.Type).ToArray ();
+		if (delegateTypes.Length > 0 && delegateTypes [^1].Name.Contains ("NSError")) {
+			// remove the last parameter since it is not needed for the task type
+			delegateTypes = delegateTypes [..^1];
+		}
+
+		return [.. delegateTypes.Select (t => t.GetIdentifierSyntax ().ToString ())];
+	}
+
+	/// <summary>
+	/// If the current <see cref="TypeInfo"/> represents a delegate, this method returns a new <see cref="TypeInfo"/>
+	/// representing a <see cref="System.Threading.Tasks.Task"/> with the delegate's parameters as generic arguments.
+	/// Otherwise, it returns the current instance.
+	/// </summary>
+	/// <returns>
+	/// A new <see cref="TypeInfo"/> instance representing a <c>Task</c> if the type is a delegate;
+	/// otherwise, returns the current <see cref="TypeInfo"/> instance.
+	/// </returns>
+	public TypeInfo ToTask ()
+	{
+		// no conversion is done if we are not dealing with a delegate type
+		if (Delegate is null)
+			return this;
+
+		var genericTypeArguments = GetDelegateTypesForTask ();
+		// generate a task type that will contain the delegate type information.
+		return new TypeInfo (
+			name: "System.Threading.Tasks.Task",
+			specialType: SpecialType.None,
+			isNullable: false,
+			isBlittable: false,
+			isSmartEnum: false,
+			isArray: false,
+			isReferenceType: true,
+			isStruct: false
+		) {
+			Delegate = null,
+			EnumUnderlyingType = null,
+			IsGenericType = genericTypeArguments.Length > 0,
+			IsTask = true,
+			TypeArguments = genericTypeArguments,
+		};
+	}
+
+	/// <summary>
+	/// If the current <see cref="TypeInfo"/> represents a <see cref="System.Threading.Tasks.Task"/>, this method returns a new <see cref="TypeInfo"/>
+	/// representing a <see cref="System.Threading.Tasks.TaskCompletionSource{TResult}"/> with the task's generic arguments.
+	/// Otherwise, it returns the current instance.
+	/// </summary>
+	/// <returns>
+	/// A new <see cref="TypeInfo"/> instance representing a <c>TaskCompletionSource</c> if the type is a <c>Task</c>;
+	/// otherwise, returns the current <see cref="TypeInfo"/> instance.
+	/// </returns>
+	public TypeInfo ToTaskCompletionSource ()
+	{
+		if (!IsTask)
+			return this;
+
+		return this with {
+			Name = "TaskCompletionSource",
+			FullyQualifiedName = "System.Threading.Tasks.TaskCompletionSource",
+		};
 	}
 
 	/// <inheritdoc/>

@@ -3,6 +3,8 @@
 
 using System.ComponentModel;
 using System.IO;
+using Microsoft.Macios.Generator.DataModel;
+using static Microsoft.Macios.Generator.Emitters.BindingSyntaxFactory;
 
 namespace Microsoft.Macios.Generator.IO;
 
@@ -79,6 +81,40 @@ static class TabbedStringBuilderExtensions {
 		self.WriteLine ();
 		self.WriteLine ("#nullable enable");
 		self.WriteLine ();
+		return self;
+	}
+
+	/// <summary>
+	/// Appends a `[return: DelegateProxy]` attribute to the current writer.
+	/// This attribute is used for properties that return a delegate, and it points to the static bridge class
+	/// generated for the specified delegate type.
+	/// </summary>
+	/// <param name="self">A tabbed string writer.</param>
+	/// <param name="typeInfo">The <see cref="TypeInfo"/> of the delegate.</param>
+	/// <returns>The current writer.</returns>
+	public static TabbedWriter<StringWriter> AppendDelegateProxyReturn (this TabbedWriter<StringWriter> self,
+		in TypeInfo typeInfo)
+	{
+		var staticBridge =
+			Nomenclator.GetTrampolineClassName (typeInfo, Nomenclator.TrampolineClassType.StaticBridgeClass);
+		self.WriteLine ($"[return: DelegateProxy (typeof ({Trampolines}.{staticBridge}))]");
+		return self;
+	}
+
+	/// <summary>
+	/// Appends a `[param: BlockProxy]` attribute to the current writer.
+	/// This attribute is used for parameters that are delegates (blocks), and it points to the native invocation class
+	/// generated for the specified delegate type.
+	/// </summary>
+	/// <param name="self">A tabbed string writer.</param>
+	/// <param name="typeInfo">The <see cref="TypeInfo"/> of the delegate.</param>
+	/// <returns>The current writer.</returns>
+	public static TabbedWriter<StringWriter> AppendDelegateParameter (this TabbedWriter<StringWriter> self,
+		in TypeInfo typeInfo)
+	{
+		var nativeInvoker =
+			Nomenclator.GetTrampolineClassName (typeInfo, Nomenclator.TrampolineClassType.NativeInvocationClass);
+		self.WriteLine ($"[param: BlockProxy (typeof ({Trampolines}.{nativeInvoker}))]");
 		return self;
 	}
 }

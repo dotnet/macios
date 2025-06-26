@@ -8,22 +8,21 @@ using Microsoft.Build.Framework;
 using Xamarin.MacDev.Tasks;
 using Xamarin.Messaging.Build.Client;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Xamarin.MacDev.Tasks {
 	public class CollectAssetPacks : XamarinTask, ICancelableTask {
 		#region Inputs
 
 		[Required]
-		public string OnDemandResourcesPath { get; set; }
+		public string OnDemandResourcesPath { get; set; } = "";
 
 		#endregion
 
 		#region Outputs
 
 		[Output]
-		public ITaskItem [] AssetPacks { get; set; }
+		public ITaskItem [] AssetPacks { get; set; } = [];
 
 		#endregion
 

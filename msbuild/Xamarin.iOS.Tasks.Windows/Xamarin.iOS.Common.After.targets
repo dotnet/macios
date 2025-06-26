@@ -24,10 +24,27 @@ Copyright (C) 2011-2013 Xamarin. All rights reserved.
 	<Import Project="$(MSBuildThisFileDirectory)Xamarin.Messaging.Build.targets" Condition="Exists('$(MSBuildThisFileDirectory)Xamarin.Messaging.Build.targets') And '$(MessagingBuildTargetsImported)' != 'true'" />
 	<Import Project="$(MSBuildThisFileDirectory)Xamarin.iOS.Windows.After.targets" Condition="Exists('$(MSBuildThisFileDirectory)Xamarin.iOS.Windows.After.targets')" />
 
+	<PropertyGroup>
+		<_RequiresMacConnection Condition="'$(_RequiresMacConnection)' == '' And '$(_CanOutputAppBundle)' == 'true'">true</_RequiresMacConnection>
+		<_RequiresMacConnection Condition="'$(_RequiresMacConnection)' == '' And '$(_BundleOriginalResources)' != 'true'">true</_RequiresMacConnection>
+		<_RequiresMacConnection Condition="'$(_RequiresMacConnection)' == ''">false</_RequiresMacConnection>
+	</PropertyGroup>
+
 	<Target Name="EnsureMacConnection" 
 		DependsOnTargets="_SayHello" 
+		Condition="'$(_RequiresMacConnection)' == 'true'"
 		BeforeTargets="_CleanDebugSymbols;_CleanAppBundle;_DetectAppManifest;_DetectSdkLocations;_GenerateBundleName" />
 	
+	<!-- Default context path values for remote builds -->
+	<!-- When building from VS, these values will be passed directly from the IDE -->
+	<Target Name="EnsureMessagingContext" BeforeTargets="_SayHello">
+		<PropertyGroup>
+			<BasePath Condition="'$(BasePath)' == ''">~/Library/Caches/maui/PairToMac</BasePath>
+			<LogsPath Condition="'$(LogsPath)' == ''">~/Library/Logs</LogsPath>
+			<LocalBasePath Condition="'$(LocalBasePath)' == ''">%LOCALAPPDATA%\maui\iOS\PairToMac</LocalBasePath>
+		</PropertyGroup>
+	</Target>
+
 	<PropertyGroup>
 		<CreateAppBundleDependsOn>
 			GetBundleResourceWithLogicalNameItems;
@@ -205,12 +222,6 @@ Copyright (C) 2011-2013 Xamarin. All rights reserved.
 		</PropertyGroup>
 		
 		<Message Importance="high" Text="Resolved Path: $(IpaPackagePath)" />
-	</Target>
-
-	<Target Name="_SetMtouchProjectDirectory" AfterTargets="_SayHello" BeforeTargets="_CompileToNative">
-		<PropertyGroup>
-			<MtouchProjectDirectory>$(MacBuildPath)</MtouchProjectDirectory>
-		</PropertyGroup>
 	</Target>
 
 	<Target Name="_ResolveUniversalTypeIdentifiers" BeforeTargets="_CompileImageAssets" Condition="'$(IsMacEnabled)' == 'true' And '$(_BundleOriginalResources)' != 'true'"

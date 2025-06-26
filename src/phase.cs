@@ -1,3 +1,5 @@
+using System.Numerics;
+
 using AudioToolbox;
 using AVFoundation;
 using CoreFoundation;
@@ -5,23 +7,10 @@ using Foundation;
 using ModelIO;
 using ObjCRuntime;
 
-#if NET
 using Vector2d = global::CoreGraphics.NVector2d;
-using Vector3 = global::System.Numerics.Vector3;
 using NMatrix4 = global::CoreGraphics.NMatrix4;
-using Quaternion = global::System.Numerics.Quaternion;
-#else
-using Vector2d = global::OpenTK.Vector2d;
-using Vector3 = global::OpenTK.Vector3;
-using NMatrix4 = global::OpenTK.NMatrix4;
-using Quaternion = global::OpenTK.Quaternion;
-#endif
 
 using System;
-
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
 
 namespace Phase {
 

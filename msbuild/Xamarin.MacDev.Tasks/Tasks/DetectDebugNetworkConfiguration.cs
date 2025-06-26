@@ -13,8 +13,7 @@ using Xamarin.MacDev;
 using Xamarin.Localization.MSBuild;
 using Xamarin.Messaging.Build.Client;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Xamarin.MacDev.Tasks {
 	public class DetectDebugNetworkConfiguration : XamarinTask, ICancelableTask {
@@ -23,7 +22,7 @@ namespace Xamarin.MacDev.Tasks {
 		[Required]
 		public bool DebugOverWiFi { get; set; }
 
-		public string DebuggerHosts { get; set; }
+		public string DebuggerHosts { get; set; } = "";
 
 		[Required]
 		public bool SdkIsSimulator { get; set; }
@@ -33,7 +32,7 @@ namespace Xamarin.MacDev.Tasks {
 		#region Outputs
 
 		[Output]
-		public string DebugIPAddresses { get; set; }
+		public string DebugIPAddresses { get; set; } = "";
 
 		#endregion
 
@@ -47,7 +46,7 @@ namespace Xamarin.MacDev.Tasks {
 				DebugIPAddresses = IPAddress.Loopback.ToString ();
 			} else if (DebugOverWiFi) {
 				var ips = new List<string> ();
-				string [] hosts = null;
+				string []? hosts = null;
 
 				if (!string.IsNullOrEmpty (DebuggerHosts))
 					hosts = DebuggerHosts.Split (new [] { ';' }, StringSplitOptions.RemoveEmptyEntries);

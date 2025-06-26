@@ -42,9 +42,38 @@ namespace ObjCRuntime {
 #error Unknown platform
 #endif
 
+		// Due to an issue with the analyzer (https://github.com/dotnet/roslyn-analyzers/issues/7665),
+		// always use a versioned string with "SupportedOSPlatformGuard". Also, this version can't be
+		// lower than the minimum OS version.
+		// https://github.com/dotnet/roslyn-analyzers/issues/7665
+
+		[SupportedOSPlatformGuard ("ios13.0")]
+		[SupportedOSPlatformGuard (Constants.MinimumVersions.MacCatalyst)]
+		[SupportedOSPlatformGuard (Constants.MinimumVersions.macOS)]
+		[SupportedOSPlatformGuard ("tvos13.0")]
+		internal static bool IsAtLeastXcode11 {
+			get {
+				if (is_at_least_xcode_11 is null) {
+#if __MACOS__
+					is_at_least_xcode_11 = true;
+#elif __MACCATALYST__
+					is_at_least_xcode_11 = true;
+#elif __IOS__
+					is_at_least_xcode_11 = OperatingSystem.IsIOSVersionAtLeast (13, 0);
+#elif __TVOS__
+					is_at_least_xcode_11 = OperatingSystem.IsTvOSVersionAtLeast (13, 0);
+#else
+#error Unknown platform
+#endif
+				}
+				return is_at_least_xcode_11.Value;
+			}
+		}
+		static bool? is_at_least_xcode_11;
+
 		[SupportedOSPlatformGuard ("ios14.0")]
-		[SupportedOSPlatformGuard ("maccatalyst14.0")]
-		[SupportedOSPlatformGuard ("macos11.0")]
+		[SupportedOSPlatformGuard (Constants.MinimumVersions.MacCatalyst)]
+		[SupportedOSPlatformGuard (Constants.MinimumVersions.macOS)]
 		[SupportedOSPlatformGuard ("tvos14.0")]
 		internal static bool IsAtLeastXcode12 {
 			get {
@@ -67,9 +96,33 @@ namespace ObjCRuntime {
 		static bool? is_at_least_xcode_12;
 
 
+		[SupportedOSPlatformGuard ("ios14.2")]
+		[SupportedOSPlatformGuard (Constants.MinimumVersions.MacCatalyst)]
+		[SupportedOSPlatformGuard (Constants.MinimumVersions.macOS)]
+		[SupportedOSPlatformGuard ("tvos14.2")]
+		internal static bool IsAtLeastXcode12_2 {
+			get {
+				if (is_at_least_xcode_12_2 is null) {
+#if __MACOS__
+					is_at_least_xcode_12_2 = true;
+#elif __MACCATALYST__
+					is_at_least_xcode_12_2 = true;
+#elif __IOS__
+					is_at_least_xcode_12_2 = OperatingSystem.IsIOSVersionAtLeast (14, 2);
+#elif __TVOS__
+					is_at_least_xcode_12_2 = OperatingSystem.IsTvOSVersionAtLeast (14, 2);
+#else
+#error Unknown platform
+#endif
+				}
+				return is_at_least_xcode_12_2.Value;
+			}
+		}
+		static bool? is_at_least_xcode_12_2;
+
 		[SupportedOSPlatformGuard ("ios15.0")]
-		[SupportedOSPlatformGuard ("maccatalyst15.0")]
-		[SupportedOSPlatformGuard ("macos12.0")]
+		[SupportedOSPlatformGuard (Constants.MinimumVersions.MacCatalyst)]
+		[SupportedOSPlatformGuard (Constants.MinimumVersions.macOS)]
 		[SupportedOSPlatformGuard ("tvos15.0")]
 		internal static bool IsAtLeastXcode13 {
 			get {
@@ -77,7 +130,7 @@ namespace ObjCRuntime {
 #if __MACOS__
 					is_at_least_xcode_13 = true;
 #elif __MACCATALYST__
-					is_at_least_xcode_13 = OperatingSystem.IsMacCatalystVersionAtLeast (15, 0);
+					is_at_least_xcode_13 = true;
 #elif __IOS__
 					is_at_least_xcode_13 = OperatingSystem.IsIOSVersionAtLeast (15, 0);
 #elif __TVOS__
@@ -114,6 +167,30 @@ namespace ObjCRuntime {
 			}
 		}
 		static bool? is_at_least_xcode_16;
+
+		[SupportedOSPlatformGuard ("ios18.5")]
+		[SupportedOSPlatformGuard ("maccatalyst18.5")]
+		[SupportedOSPlatformGuard ("macos15.5")]
+		[SupportedOSPlatformGuard ("tvos18.5")]
+		internal static bool IsAtLeastXcode16_4 {
+			get {
+				if (is_at_least_xcode_16_4 is null) {
+#if __MACOS__
+					is_at_least_xcode_16_4 = OperatingSystem.IsMacOSVersionAtLeast (15, 5);
+#elif __MACCATALYST__
+					is_at_least_xcode_16_4 = OperatingSystem.IsMacCatalystVersionAtLeast (18, 5);
+#elif __IOS__
+					is_at_least_xcode_16_4 = OperatingSystem.IsIOSVersionAtLeast (18, 5);
+#elif __TVOS__
+					is_at_least_xcode_16_4 = OperatingSystem.IsTvOSVersionAtLeast (18, 5);
+#else
+#error Unknown platform
+#endif
+				}
+				return is_at_least_xcode_16_4.Value;
+			}
+		}
+		static bool? is_at_least_xcode_16_4;
 	}
 }
 #endif

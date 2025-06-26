@@ -5,10 +5,6 @@ using UIKit;
 
 using System;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreLocationUI {
 
 	[NoTV, NoMac, iOS (15, 0), MacCatalyst (15, 0)]

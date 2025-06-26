@@ -7,7 +7,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Macios.Generator.Attributes;
 using Microsoft.Macios.Generator.Context;
 using Microsoft.Macios.Generator.DataModel;
@@ -46,7 +45,7 @@ class ClassEmitter : ICodeEmitter {
 			classBlock.AppendDesignatedInitializer ();
 			classBlock.WriteRaw (
 $@"[Export (""init"")]
-public {bindingContext.Changes.Name} () : base (NSObjectFlag.Empty)
+public {bindingContext.Changes.Name} () : base ({NSObjectFlag}.Empty)
 {{
 	if (IsDirectBinding)
 		InitializeHandle (global::ObjCRuntime.Messaging.IntPtr_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle (""init"")), ""init"");
@@ -60,7 +59,7 @@ public {bindingContext.Changes.Name} () : base (NSObjectFlag.Empty)
 		classBlock.WriteDocumentation (Documentation.Class.DefaultInitWithFlag (bindingContext.Changes.Name));
 		classBlock.AppendGeneratedCodeAttribute ();
 		classBlock.AppendEditorBrowsableAttribute (EditorBrowsableState.Advanced);
-		classBlock.WriteLine ($"protected {bindingContext.Changes.Name} (NSObjectFlag t) : base (t) {{}}");
+		classBlock.WriteLine ($"protected {bindingContext.Changes.Name} ({NSObjectFlag} t) : base (t) {{}}");
 
 		classBlock.WriteLine ();
 		classBlock.WriteDocumentation (Documentation.Class.DefaultInitWithHandle (bindingContext.Changes.Name));
@@ -148,6 +147,11 @@ return {backingField};
 		notificationProperties = notificationsBuilder.ToImmutable ();
 	}
 
+	/// <summary>
+	/// Emit the code for all the properties in the class.
+	/// </summary>
+	/// <param name="context">The current binding context.</param>
+	/// <param name="classBlock">Current class block.</param>
 	void EmitProperties (in BindingContext context, TabbedWriter<StringWriter> classBlock)
 	{
 
@@ -167,6 +171,12 @@ return {backingField};
 			if (getter is null)
 				continue;
 
+			// add backing variable for the property if it is needed
+			if (property.NeedsBackingField) {
+				classBlock.WriteLine ();
+				classBlock.WriteLine ($"object? {property.BackingField} = null;");
+			}
+
 			classBlock.WriteLine ();
 			classBlock.AppendMemberAvailability (property.SymbolAvailability);
 			classBlock.AppendGeneratedCodeAttribute (optimizable: true);
@@ -174,6 +184,10 @@ return {backingField};
 			using (var propertyBlock = classBlock.CreateBlock (property.ToDeclaration ().ToString (), block: true)) {
 				// be very verbose with the availability, makes the life easier to the dotnet analyzer
 				propertyBlock.AppendMemberAvailability (getter.Value.SymbolAvailability);
+				// if we deal with a delegate, include the attr:
+				// [return: DelegateProxy (typeof ({staticBridge}))]
+				if (property.ReturnType.IsDelegate)
+					propertyBlock.AppendDelegateProxyReturn (property.ReturnType);
 				using (var getterBlock = propertyBlock.CreateBlock ("get", block: true)) {
 					if (uiThreadCheck is not null) {
 						getterBlock.WriteLine (uiThreadCheck.ToString ());
@@ -189,25 +203,72 @@ if (IsDirectBinding) {{
 }} else {{
 	{ExpressionStatement (invocations.Getter.SendSuper)}
 }}
-GC.KeepAlive (this);
-return {tempVar};
+{ExpressionStatement (KeepAlive ("this"))}
 ");
+					if (property.RequiresDirtyCheck) {
+						getterBlock.WriteLine ("MarkDirty ();");
+						getterBlock.WriteLine ($"{property.BackingField} = {tempVar};");
+					}
+					getterBlock.WriteLine ($"return {tempVar};");
 				}
 
 				var setter = property.GetAccessor (AccessorKind.Setter);
-				if (setter is null)
+				if (setter is null || invocations.Setter is null)
 					// we are done with the current property
 					continue;
 
 				propertyBlock.WriteLine (); // add space between getter and setter since we have the attrs
 				propertyBlock.AppendMemberAvailability (setter.Value.SymbolAvailability);
+				// if we deal with a delegate, include the attr:
+				// [param: BlockProxy (typeof ({nativeInvoker}))]
+				if (property.ReturnType.IsDelegate)
+					propertyBlock.AppendDelegateParameter (property.ReturnType);
 				using (var setterBlock = propertyBlock.CreateBlock ("set", block: true)) {
 					if (uiThreadCheck is not null) {
 						setterBlock.WriteLine (uiThreadCheck.ToString ());
 						setterBlock.WriteLine ();
 					}
-					setterBlock.WriteLine ("throw new NotImplementedException();");
+					// init the needed temp variables
+					setterBlock.Write (invocations.Setter.Value.Argument.Initializers, verifyTrivia: false);
+					setterBlock.Write (invocations.Setter.Value.Argument.PreDelegateCallConversion, verifyTrivia: false);
+
+					// perform the invocation
+					setterBlock.WriteRaw (
+$@"if (IsDirectBinding) {{
+	{ExpressionStatement (invocations.Setter.Value.Send)}
+}} else {{
+	{ExpressionStatement (invocations.Setter.Value.SendSuper)}
+}}
+{ExpressionStatement (KeepAlive ("this"))}
+");
+					// perform the post delegate call conversion, this might include the GC.KeepAlive calls to keep
+					// the native object alive
+					setterBlock.Write (invocations.Setter.Value.Argument.PostDelegateCallConversion, verifyTrivia: false);
+					// mark property as dirty if needed
+					if (property.RequiresDirtyCheck) {
+						setterBlock.WriteLine ("MarkDirty ();");
+						setterBlock.WriteLine ($"{property.BackingField} = value;");
+					}
 				}
+			}
+		}
+	}
+
+	/// <summary>
+	/// Emit the code for all the methods in the class.
+	/// </summary>
+	/// <param name="context">The current binding context.</param>
+	/// <param name="classBlock">Current class block.</param>
+	void EmitMethods (in BindingContext context, TabbedWriter<StringWriter> classBlock)
+	{
+		foreach (var method in context.Changes.Methods.OrderBy (m => m.Name)) {
+
+			classBlock.WriteLine ();
+			classBlock.AppendMemberAvailability (method.SymbolAvailability);
+			classBlock.AppendGeneratedCodeAttribute (optimizable: true);
+
+			using (var methodBlock = classBlock.CreateBlock (method.ToDeclaration ().ToString (), block: true)) {
+				methodBlock.WriteLine ("throw new NotImplementedException ();");
 			}
 		}
 	}
@@ -216,10 +277,6 @@ return {tempVar};
 	{
 		if (properties.Length == 0)
 			return;
-
-		// default values
-		const string defaultNotificationCenter = "NSNotificationCenter.DefaultCenter";
-		const string defaultEventArgument = "Foundation.NSNotificationEventArgs";
 
 		// add a space just to make it nicer to read
 		classBlock.WriteLine ();
@@ -231,16 +288,16 @@ return {tempVar};
 			foreach (var notification in properties) {
 				var count = 12; // == "Notification".Length;
 				var name = $"Observe{notification.Name [..^count]}";
-				var notificationCenter = notification.ExportFieldData?.FieldData.NotificationCenter ?? defaultNotificationCenter;
-				var eventType = notification.ExportFieldData?.FieldData.Type ?? defaultEventArgument;
+				var notificationCenter = notification.ExportFieldData?.FieldData.NotificationCenter ?? $"{NotificationCenter}.DefaultCenter";
+				var eventType = notification.ExportFieldData?.FieldData.Type ?? NSNotificationEventArgs.ToString ();
 				// use the raw writer which makes it easier to read in this case
 				notificationClass.WriteRaw (
-@$"public static NSObject {name} (EventHandler<{eventType}> handler)
+@$"public static {NSObject} {name} ({EventHandler}<{eventType}> handler)
 {{
 	return {notificationCenter}.AddObserver ({notification.Name}, notification => handler (null, new {eventType} (notification)));
 }}
 
-public static NSObject {name} (NSObject objectToObserve, EventHandler<{eventType}> handler)
+public static NSObject {name} ({NSObject} objectToObserve, {EventHandler}<{eventType}> handler)
 {{
 	return {notificationCenter}.AddObserver ({notification.Name}, notification => handler (null, new {eventType} (notification)), objectToObserve);
 }}
@@ -341,7 +398,7 @@ public static NSObject {name} (NSObject objectToObserve, EventHandler<{eventType
 
 			if (!bindingContext.Changes.IsStatic) {
 				classBlock.AppendGeneratedCodeAttribute (optimizable: true);
-				classBlock.WriteLine ($"static readonly {NativeHandle} {ClassPtr} = Class.GetHandle (\"{registrationName}\");");
+				classBlock.WriteLine ($"static readonly {NativeHandle} {ClassPtr} = {BindingSyntaxFactory.Class}.GetHandle (\"{registrationName}\");");
 				classBlock.WriteLine ();
 				classBlock.WriteDocumentation (Documentation.Class.ClassHandle (bindingContext.Changes.Name));
 				classBlock.WriteLine ($"public override {NativeHandle} ClassHandle => {ClassPtr};");
@@ -349,12 +406,13 @@ public static NSObject {name} (NSObject objectToObserve, EventHandler<{eventType
 
 				EmitDefaultConstructors (bindingContext: bindingContext,
 					classBlock: classBlock,
-					disableDefaultCtor: bindingData.Flags.HasFlag (Class.DisableDefaultCtor));
+					disableDefaultCtor: bindingData.Flags.HasFlag (ObjCBindings.Class.DisableDefaultCtor));
 			}
 
 			EmitFields (bindingContext.Changes.Name, bindingContext.Changes.Properties, classBlock,
 				out var notificationProperties);
 			EmitProperties (bindingContext, classBlock);
+			EmitMethods (bindingContext, classBlock);
 
 			// emit the notification helper classes, leave this for the very bottom of the class
 			EmitNotifications (notificationProperties, classBlock);

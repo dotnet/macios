@@ -107,11 +107,7 @@ namespace MonoTouchFixtures.AVFoundation {
 								captureSession.AddOutput (metadataOutput);
 
 							AVMetadataObjectType all = AVMetadataObjectType.None;
-#if NET
 							foreach (var val in Enum.GetValues<AVMetadataObjectType> ()) {
-#else
-							foreach (AVMetadataObjectType val in Enum.GetValues (typeof (AVMetadataObjectType))) {
-#endif
 								switch (val) {
 								case AVMetadataObjectType.CatBody:
 								case AVMetadataObjectType.DogBody:

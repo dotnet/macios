@@ -20,8 +20,6 @@ namespace NetworkExtension {
 	///     <remarks>To be added.</remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/NetworkExtension/Reference/NEVPNManagerClassRef/index.html">Apple documentation for <c>NEVPNManager</c></related>
 	public partial class NEVpnManager {
-
-#if NET
 		/// <param name="authorization">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
@@ -29,7 +27,6 @@ namespace NetworkExtension {
 		[UnsupportedOSPlatform ("ios")]
 		[UnsupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("tvos")]
-#endif
 		public void SetAuthorization (Authorization authorization)
 		{
 			if (authorization is null)

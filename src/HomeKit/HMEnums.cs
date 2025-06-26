@@ -269,11 +269,6 @@ namespace HomeKit {
 		[Field ("HMCharacteristicTypeHeatingThreshold")]
 		HeatingThreshold,
 
-#if !NET
-		[Obsolete ("This value does not exist anymore and will always return null.")]
-		HeatingCoolingStatus,
-#endif
-
 		/// <summary>A float that indicates the current relative humidity percentage.</summary>
 		[Field ("HMCharacteristicTypeCurrentRelativeHumidity")]
 		CurrentRelativeHumidity,

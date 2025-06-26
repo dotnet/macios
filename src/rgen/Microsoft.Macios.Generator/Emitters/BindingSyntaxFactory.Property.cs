@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Macios.Generator.DataModel;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
@@ -11,6 +10,13 @@ namespace Microsoft.Macios.Generator.Emitters;
 
 static partial class BindingSyntaxFactory {
 
+	/// <summary>
+	/// Gets the names of the `objc_msgSend` P/Invoke methods for a property's getter and setter.
+	/// </summary>
+	/// <param name="property">The property for which to get the message send method names.</param>
+	/// <param name="isSuper">A value indicating whether to call the superclass implementation.</param>
+	/// <param name="isStret">A value indicating whether the return value requires a struct-return mechanism.</param>
+	/// <returns>A tuple containing the names of the P/Invoke methods for the getter and setter. Either can be <c>null</c> if the corresponding accessor does not exist.</returns>
 	internal static (string? Getter, string? Setter) GetObjCMessageSendMethods (in Property property,
 		bool isSuper = false, bool isStret = false)
 	{
@@ -49,6 +55,14 @@ static partial class BindingSyntaxFactory {
 		return default;
 	}
 
+	/// <summary>
+	/// Gets the expressions for invoking a property's getter.
+	/// </summary>
+	/// <param name="property">The property for which to get the invocations.</param>
+	/// <param name="selector">The selector for the getter.</param>
+	/// <param name="sendMethod">The name of the `objc_msgSend` method for the getter.</param>
+	/// <param name="superSendMethod">The name of the `objc_msgSend` method for the superclass getter.</param>
+	/// <returns>A tuple containing the expressions for the normal and superclass getter invocations.</returns>
 	internal static (ExpressionSyntax Send, ExpressionSyntax SendSuper) GetGetterInvocations (in Property property,
 		string? selector, string? sendMethod, string? superSendMethod)
 	{
@@ -57,8 +71,8 @@ static partial class BindingSyntaxFactory {
 			return (ThrowNotImplementedException (), ThrowNotImplementedException ());
 		}
 
-		var getterSend = GetterInvocation (MessagingInvocation (sendMethod, selector, []), property);
-		var getterSuperSend = GetterInvocation (MessagingInvocation (superSendMethod, selector, []), property);
+		var getterSend = ConvertToManaged (property, MessagingInvocation (sendMethod, selector, []));
+		var getterSuperSend = ConvertToManaged (property, MessagingInvocation (superSendMethod, selector, []));
 		// if we cannot get the methods, throw a runtime exception 
 		if (getterSend is null || getterSuperSend is null) {
 			return (ThrowNotImplementedException (), ThrowNotImplementedException ());
@@ -69,76 +83,62 @@ static partial class BindingSyntaxFactory {
 			Send: AssignVariable (Nomenclator.GetReturnVariableName (), getterSend),
 			SendSuper: AssignVariable (Nomenclator.GetReturnVariableName (), getterSuperSend)
 		);
-
-#pragma warning disable format
-		// helper internal function that returns the expression based on the property return type and uses the passed
-		// message send expression
-		ExpressionSyntax? GetterInvocation (InvocationExpressionSyntax objMsgSend, in Property property)
-			=> property switch {
-				// bind from NSNumber: NSNumber.ToInt32 (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (class_ptr, Selector.GetHandle ("selector"));
-				{ BindAs.Type.FullyQualifiedName: "Foundation.NSNumber", ReturnType.IsArray: false } => 
-					NSNumberFromHandle (property.ReturnType, [Argument (objMsgSend)]),
-				
-				// bind from NSNumber array: NSArray.ArrayFromHandleFunc <int> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (class_ptr, Selector.GetHandle ("selector"), NSNumber.ToInt32, false))
-				{ BindAs.Type.FullyQualifiedName: "Foundation.NSNumber", ReturnType.IsArray: true } => 
-					NSArrayFromHandleFunc (property.ReturnType.FullyQualifiedName, [Argument (objMsgSend), Argument(NSNumberFromHandle (property.ReturnType)!), BoolArgument (false)]),
-				
-				// bind from NSValue: NSValue.ToCGPoint (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, Selector.GetHandle (\"myProperty\")))
-				{ BindAs.Type.FullyQualifiedName: "Foundation.NSValue", ReturnType.IsArray: false } => 
-					NSValueFromHandle (property.ReturnType, [Argument (objMsgSend)]),
-				
-				// bind from NSValue array: NSArray.ArrayFromHandleFunc<CoreGraphics.CGPoint> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, Selector.GetHandle (\"myProperty\")), NSValue.ToCGPoint, false)
-				{ BindAs.Type.FullyQualifiedName: "Foundation.NSValue", ReturnType.IsArray: true } => 
-					NSArrayFromHandleFunc (property.ReturnType.FullyQualifiedName, [Argument (objMsgSend), Argument(NSValueFromHandle (property.ReturnType)!), BoolArgument (false)]),
-
-				// bind from NSString to a SmartEnum: "global::AVFoundation.AVCaptureSystemPressureLevelExtensions.GetNullableValue (arg1)
-				{ BindAs.Type.FullyQualifiedName: "Foundation.NSString", ReturnType.IsSmartEnum: true} =>
-					SmartEnumGetValue (property.ReturnType, [Argument (objMsgSend)]),
-				
-				// string[]? => CFArray.StringArrayFromHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (class_ptr, Selector.GetHandle ("selector")), false);
-				{ ReturnType.IsArray: true, ReturnType.Name: "string", ReturnType.IsNullable: true } =>
-					StringArrayFromHandle ([Argument (objMsgSend), BoolArgument (false)]),
-
-				// string[] => CFArray.StringArrayFromHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (class_ptr, Selector.GetHandle ("selector")), false)!;
-				{ ReturnType.IsArray: true, ReturnType.Name: "string", ReturnType.IsNullable: false } =>
-					SuppressNullableWarning (StringArrayFromHandle ([Argument (objMsgSend), BoolArgument (false)])),
-				
-				// NSObject[] => CFArray.ArrayFromHandle<Foundation.NSMetadataItem> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, Selector.GetHandle ("results")))!;
-				{ ReturnType.IsArray: true, ReturnType.ArrayElementTypeIsWrapped: true } => 
-					GetCFArrayFromHandle (property.ReturnType.FullyQualifiedName, [Argument (objMsgSend)], suppressNullableWarning: !property.ReturnType.IsNullable),
-				
-				// Runtime.GetNSObject<Foundation.NSObject> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, Selector.GetHandle ("delegate")));
-				{ ReturnType.IsArray: false, ReturnType.IsNSObject: true } => 
-					GetNSObject (property.ReturnType.FullyQualifiedName, [Argument (objMsgSend)], suppressNullableWarning: !property.ReturnType.IsNullable),
-
-				// string => CFString.FromHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, Selector.GetHandle ("tunnelRemoteAddress")), false);
-				{ ReturnType.SpecialType: SpecialType.System_String, ReturnType.IsNullable: true } =>
-					StringFromHandle ([Argument (objMsgSend), BoolArgument (false)]),
-
-				// string => CFString.FromHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, Selector.GetHandle ("tunnelRemoteAddress")), false)!;
-				{ ReturnType.SpecialType: SpecialType.System_String, ReturnType.IsNullable: false } =>
-					SuppressNullableWarning (StringFromHandle ([Argument (objMsgSend), BoolArgument (false)])),
-
-				// bool => global::ObjCRuntime.Messaging.bool_objc_msgSend (this.Handle, Selector.GetHandle ("canDraw")) != 0;
-				{ ReturnType.SpecialType: SpecialType.System_Boolean } => ByteToBool (objMsgSend),
-				
-				// general case, just return the result of the send message
-				_ => objMsgSend,
-			}; 
-#pragma warning restore format
 	}
 
+	/// <summary>
+	/// Gets the argument and expressions for invoking a property's setter.
+	/// </summary>
+	/// <param name="property">The property for which to get the invocations.</param>
+	/// <param name="selector">The selector for the setter.</param>
+	/// <param name="sendMethod">The name of the `objc_msgSend` method for the setter.</param>
+	/// <param name="superSendMethod">The name of the `objc_msgSend` method for the superclass setter.</param>
+	/// <returns>A tuple containing the argument syntax, and the expressions for the normal and superclass setter invocations.</returns>
+	internal static (TrampolineArgumentSyntax Argument, ExpressionSyntax Send, ExpressionSyntax SendSuper) GetSetterInvocations (
+		in Property property, string? selector, string? sendMethod, string? superSendMethod)
+	{
+		var argument = new TrampolineArgumentSyntax (GetNativeInvokeArgument (property)) {
+			Initializers = GetNativeInvokeArgumentInitializations (property),
+			PreDelegateCallConversion = GetPreNativeInvokeArgumentConversions (property),
+			PostDelegateCallConversion = GetPostNativeInvokeArgumentConversions (property),
+		};
+		// if any of the methods is null, return a throw statement for both
+		if (selector is null || sendMethod is null || superSendMethod is null) {
+			return (argument, ThrowNotImplementedException (), ThrowNotImplementedException ());
+		}
+
+		var setterSend = MessagingInvocation (sendMethod, selector, [argument.ArgumentSyntax]);
+		var setterSuperSend = MessagingInvocation (superSendMethod, selector, [argument.ArgumentSyntax]);
+
+		return (
+			Argument: argument,
+			Send: setterSend,
+			SendSuper: setterSuperSend
+		);
+	}
+
+	/// <summary>
+	/// Gets the invocations for a property's getter and setter.
+	/// </summary>
+	/// <param name="property">The property for which to get the invocations.</param>
+	/// <returns>A <see cref="PropertyInvocations"/> instance containing the getter and setter invocations.</returns>
 	internal static PropertyInvocations GetInvocations (in Property property)
 	{
 		// retrieve the objc_msgSend methods
 		var (getter, setter) = GetObjCMessageSendMethods (property, isStret: property.ReturnType.NeedsStret);
-		var (superGetter, supperSetter) = GetObjCMessageSendMethods (property, isSuper: true, isStret: property.ReturnType.NeedsStret);
+		var (superGetter, superSetter) = GetObjCMessageSendMethods (property, isSuper: true, isStret: property.ReturnType.NeedsStret);
 		var getterSelector = property.GetAccessor (AccessorKind.Getter)?.GetSelector (property);
-		var setterSelector = property.GetAccessor (AccessorKind.Getter)?.GetSelector (property);
+		var getterInvocations = GetGetterInvocations (property, getterSelector, getter, superGetter);
+
+		(TrampolineArgumentSyntax Argument, ExpressionSyntax Send, ExpressionSyntax SendSuper)? setterInvocations = null;
+		var setterAccessor = property.GetAccessor (AccessorKind.Setter);
+		if (setterAccessor is not null) {
+			var setterSelector = setterAccessor.Value.GetSelector (property);
+			setterInvocations = GetSetterInvocations (property, setterSelector, setter, superSetter);
+		}
 
 		return new () {
-			Getter = GetGetterInvocations (property, getterSelector, getter, superGetter),
-			Setter = (ThrowNotImplementedException (), ThrowNotImplementedException ()),
+			Getter = getterInvocations,
+			Setter = setterInvocations,
 		};
 	}
 }

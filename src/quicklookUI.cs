@@ -7,10 +7,6 @@ using System;
 using System.ComponentModel;
 using UniformTypeIdentifiers;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace QuickLookUI {
 
 	[Native]
@@ -80,15 +76,9 @@ namespace QuickLookUI {
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface QLPreviewItem {
-#if NET
 		[Abstract]
-#endif
 		[Export ("previewItemURL")]
-#if NET
 		NSUrl PreviewItemUrl { get; }
-#else
-		NSUrl PreviewItemURL { get; }
-#endif
 
 		[Export ("previewItemTitle")]
 		string PreviewItemTitle { get; }
@@ -220,9 +210,6 @@ namespace QuickLookUI {
 
 	[Protocol]
 	interface QLPreviewingController {
-#if !NET
-		[Abstract]
-#endif
 		/// <param name="identifier">To be added.</param>
 		/// <param name="queryString">To be added.</param>
 		/// <param name="ItemLoadingHandler">To be added.</param>

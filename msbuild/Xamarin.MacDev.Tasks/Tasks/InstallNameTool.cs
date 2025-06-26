@@ -8,21 +8,20 @@ using Microsoft.Build.Framework;
 
 using Xamarin.Messaging.Build.Client;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Xamarin.MacDev.Tasks {
 	public class InstallNameTool : XamarinTask, ITaskCallback {
 		[Required]
-		public ITaskItem [] DynamicLibrary { get; set; }
+		public ITaskItem [] DynamicLibrary { get; set; } = [];
 
 		[Required]
-		public string SdkDevPath { get; set; }
+		public string SdkDevPath { get; set; } = "";
 
 		// This isn't consumed from the targets files, but it's needed for VSX to create corresponding
 		// files on Windows.
 		[Output]
-		public ITaskItem [] ReidentifiedDynamicLibrary { get; set; }
+		public ITaskItem [] ReidentifiedDynamicLibrary { get; set; } = [];
 
 		public override bool Execute ()
 		{

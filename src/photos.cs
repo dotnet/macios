@@ -17,10 +17,6 @@ using AppKit;
 using UIImage = AppKit.NSImage;
 #endif
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace Photos {
 	/// <summary>Application-specific "recipe" data for the most recent edit made to a <see cref="Photos.PHAsset" />.</summary>
 	///     
@@ -372,7 +368,7 @@ namespace Photos {
 	}
 
 	/// <summary>Completion handler for the <see cref="Photos.PHAssetContentEditingInputExtensions.RequestContentEditingInput(Photos.PHAsset,Photos.PHContentEditingInputRequestOptions,Photos.PHContentEditingHandler)" /> method.</summary>
-	delegate void PHContentEditingHandler (PHContentEditingInput contentEditingInput, NSDictionary requestStatusInfo);
+	delegate void PHContentEditingHandler ([NullAllowed] PHContentEditingInput contentEditingInput, NSDictionary requestStatusInfo);
 
 	/// <summary>Extension methods for <see cref="Photos.PHAsset" /> objects.</summary>
 	[MacCatalyst (13, 1)]
@@ -606,9 +602,7 @@ namespace Photos {
 	[BaseType (typeof (PHObject))]
 	[DisableDefaultCtor] // not user createable (calling description fails, see below) must be fetched by API
 						 // NSInternalInconsistencyException Reason: PHCollection has no identifier
-#if TVOS || NET
 	[Abstract] // Acording to docs: The abstract superclass for Photos asset collections and collection lists.
-#endif
 	interface PHCollection {
 
 		[Export ("canContainAssets", ArgumentSemantic.Assign)]
@@ -1041,7 +1035,7 @@ namespace Photos {
 	}
 
 	/// <summary>A continuation handler for that is called by the Photos application to show progress for an image request.</summary>
-	delegate void PHAssetImageProgressHandler (double progress, NSError error, out bool stop, NSDictionary info);
+	delegate void PHAssetImageProgressHandler (double progress, [NullAllowed] NSError error, out bool stop, [NullAllowed] NSDictionary info);
 
 	/// <summary>Options used when retrieving images with the <see cref="PHImageManager" /> singleton.</summary>
 	///     
@@ -1084,7 +1078,7 @@ namespace Photos {
 	}
 
 	/// <summary>Delegate type used with <see cref="Photos.PHVideoRequestOptions.ProgressHandler" />.</summary>
-	delegate void PHAssetVideoProgressHandler (double progress, NSError error, out bool stop, NSDictionary info);
+	delegate void PHAssetVideoProgressHandler (double progress, [NullAllowed] NSError error, out bool stop, [NullAllowed] NSDictionary info);
 
 	/// <summary>Options used when retrieiving videos with the <see cref="Photos.PHPhotoManager" /> singleton.</summary>
 	///     
@@ -1152,26 +1146,22 @@ namespace Photos {
 	}
 
 #if MONOMAC
-	delegate void PHImageResultHandler (NSImage result, NSDictionary info);
+	delegate void PHImageResultHandler ([NullAllowed] NSImage result, [NullAllowed] NSDictionary info);
 #else
 	/// <param name="result">The requested image.</param>
 	///     <param name="info">Keys and values are defined in <see cref="Photos.PHImageKeys" />.</param>
 	///     <summary>Completion handler for the <see cref="Photos.PHImageManager.RequestImageForAsset(Photos.PHAsset,CoreGraphics.CGSize,Photos.PHImageContentMode,Photos.PHImageRequestOptions,Photos.PHImageResultHandler)" /> method.</summary>
-	delegate void PHImageResultHandler (UIImage result, NSDictionary info);
+	delegate void PHImageResultHandler ([NullAllowed] UIImage result, [NullAllowed] NSDictionary info);
 #endif
 
 	/// <summary>Completion handler for the <see cref="Photos.PHImageManager.RequestPlayerItem(Photos.PHAsset,Photos.PHVideoRequestOptions,Photos.PHImageManagerRequestPlayerHandler)" /> method.</summary>
-	delegate void PHImageManagerRequestPlayerHandler (AVPlayerItem playerItem, NSDictionary info);
+	delegate void PHImageManagerRequestPlayerHandler ([NullAllowed] AVPlayerItem playerItem, [NullAllowed] NSDictionary info);
 	/// <summary>Completion handler for the <see cref="Photos.PHImageManager.RequestExportSession(Photos.PHAsset,Photos.PHVideoRequestOptions,System.String,Photos.PHImageManagerRequestExportHandler)" /> method.</summary>
-	delegate void PHImageManagerRequestExportHandler (AVAssetExportSession exportSession, NSDictionary info);
-#if NET
+	delegate void PHImageManagerRequestExportHandler ([NullAllowed] AVAssetExportSession exportSession, [NullAllowed] NSDictionary info);
 	/// <summary>Completion handle for the <see cref="Photos.PHImageManager.RequestAvAsset(Photos.PHAsset,Photos.PHVideoRequestOptions,Photos.PHImageManagerRequestAvAssetHandler)" /> method.</summary>
-	delegate void PHImageManagerRequestAVAssetHandler (AVAsset asset, AVAudioMix audioMix, NSDictionary info);
-#else
-	delegate void PHImageManagerRequestAvAssetHandler (AVAsset asset, AVAudioMix audioMix, NSDictionary info);
-#endif
+	delegate void PHImageManagerRequestAVAssetHandler ([NullAllowed] AVAsset asset, [NullAllowed] AVAudioMix audioMix, [NullAllowed] NSDictionary info);
 	/// <summary>The result handler delegate for calls to <see cref="Photos.PHImageManager.RequestLivePhoto(Photos.PHAsset,CoreGraphics.CGSize,Photos.PHImageContentMode,Photos.PHLivePhotoRequestOptions,Photos.PHImageManagerRequestLivePhoto)" />.</summary>
-	delegate void PHImageManagerRequestLivePhoto (PHLivePhoto livePhoto, NSDictionary info);
+	delegate void PHImageManagerRequestLivePhoto ([NullAllowed] PHLivePhoto livePhoto, [NullAllowed] NSDictionary info);
 	delegate void PHImageManagerRequestImageDataHandler ([NullAllowed] NSData imageData, [NullAllowed] string dataUti, CGImagePropertyOrientation orientation, [NullAllowed] NSDictionary info);
 
 	/// <summary>A singleton object that allows loading <see cref="Photos.PHAsset" /> objects.</summary>
@@ -1210,11 +1200,7 @@ namespace Photos {
 		/// <summary>Requests the AV Foundation objects that the asset comprises.</summary>
 		[MacCatalyst (13, 1)]
 		[Export ("requestAVAssetForVideo:options:resultHandler:")]
-#if NET
 		int /* PHImageRequestID = int32_t */ RequestAVAsset (PHAsset asset, [NullAllowed] PHVideoRequestOptions options, PHImageManagerRequestAVAssetHandler resultHandler);
-#else
-		int /* PHImageRequestID = int32_t */ RequestAvAsset (PHAsset asset, [NullAllowed] PHVideoRequestOptions options, PHImageManagerRequestAvAssetHandler resultHandler);
-#endif
 
 		/// <summary>Represents the value associated with the constant PHImageManagerMaximumSize</summary>
 		///         <value>
@@ -1267,9 +1253,7 @@ namespace Photos {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // doc -> "abstract base class"
 						 // throws "NSInternalInconsistencyException Reason: PHObject has no identifier"
-#if TVOS || NET
 	[Abstract] // Acording to docs: The abstract base class for Photos model objects (assets and collections).
-#endif
 	interface PHObject : NSCopying {
 
 		[Export ("localIdentifier", ArgumentSemantic.Copy)]
@@ -1527,15 +1511,11 @@ namespace Photos {
 		NSString CancelledKey { get; }
 	}
 
-#if NET
 	/// <param name="frame">The video frame to process.</param>
 	///     <param name="error">An error in which to record problems that occurred while processing the frame.</param>
 	///     <summary>Delegate that is called on every frame of a Live Photo as it is processed.</summary>
 	///     <returns>A processed image that represents the frame.</returns>
 	delegate CIImage PHLivePhotoFrameProcessingBlock (IPHLivePhotoFrame frame, ref NSError error);
-#else
-	delegate CIImage PHLivePhotoFrameProcessingBlock2 (IPHLivePhotoFrame frame, ref NSError error);
-#endif
 
 	/// <summary>An editing context for a live photo's image, audio, and video data.</summary>
 	///     
@@ -1558,11 +1538,7 @@ namespace Photos {
 		CMTime PhotoTime { get; }
 
 		[NullAllowed, Export ("frameProcessor", ArgumentSemantic.Copy)]
-#if NET
 		PHLivePhotoFrameProcessingBlock FrameProcessor { get; set; }
-#else
-		PHLivePhotoFrameProcessingBlock2 FrameProcessor2 { get; set; }
-#endif
 
 		[Export ("audioVolume")]
 		float AudioVolume { get; set; }

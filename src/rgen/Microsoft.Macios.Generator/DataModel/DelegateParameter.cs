@@ -87,6 +87,8 @@ readonly partial struct DelegateParameter : IEquatable<DelegateParameter> {
 			return false;
 		if (ForcedType != other.ForcedType)
 			return false;
+		if (BindAs != other.BindAs)
+			return false;
 		return ReferenceKind == other.ReferenceKind;
 	}
 

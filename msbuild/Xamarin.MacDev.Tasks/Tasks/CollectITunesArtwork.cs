@@ -11,21 +11,20 @@ using Xamarin.MacDev.Tasks;
 using Xamarin.Messaging.Build.Client;
 using Xamarin.Localization.MSBuild;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Xamarin.MacDev.Tasks {
 	public class CollectITunesArtwork : XamarinTask, ITaskCallback, ICancelableTask {
 		#region Inputs
 
-		public ITaskItem [] ITunesArtwork { get; set; }
+		public ITaskItem [] ITunesArtwork { get; set; } = [];
 
 		#endregion
 
 		#region Outputs
 
 		[Output]
-		public ITaskItem [] ITunesArtworkWithLogicalNames { get; set; }
+		public ITaskItem [] ITunesArtworkWithLogicalNames { get; set; } = [];
 
 		#endregion
 
@@ -44,7 +43,7 @@ namespace Xamarin.MacDev.Tasks {
 		static bool GetPngImageSize (string path, out int width, out int height)
 		{
 			// PNG file format specification can be found at: http://www.w3.org/TR/PNG
-			BinaryReader reader = null;
+			BinaryReader? reader = null;
 
 			width = height = -1;
 

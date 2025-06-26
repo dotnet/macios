@@ -10,11 +10,7 @@ using ObjCRuntime;
 
 namespace Foundation {
 #if false // https://github.com/dotnet/macios/issues/15577
-#if !NET
-	[TV (13,0), iOS (13,0)]
-#else
 	[SupportedOSPlatform ("ios13.0"), SupportedOSPlatform ("tvos13.0"), SupportedOSPlatform ("macos")]
-#endif
 	[Register (SkipRegistration = true)]
 	public sealed partial class NSOrderedCollectionChange<TKey> : NSOrderedCollectionChange
 		where TKey : class, INativeObject {

@@ -16,13 +16,10 @@ using ObjCRuntime;
 
 namespace MetalKit {
 #if !COREBUILD
-
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public partial class MTKTextureLoaderOptions : DictionaryContainer {
 
 		/// <summary>Gets an orable flag value that describes for which of the following the texture will be used: for blitting; as a render target; as a shader read source or write target; as a pixel format view; or for an unknown use.</summary>
@@ -61,7 +58,6 @@ namespace MetalKit {
 			}
 		}
 
-#if NET
 		/// <summary>Gets or sets the texture storage mode of the new texture.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -69,7 +65,6 @@ namespace MetalKit {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public MTLStorageMode? TextureStorageMode {
 			get {
 				var val = GetNUIntValue (MTKTextureLoaderKeys.TextureStorageModeKey);
@@ -85,7 +80,6 @@ namespace MetalKit {
 			}
 		}
 
-#if NET
 		/// <summary>Gets or sets a value that indicates the orientation of cube map texture data.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -93,7 +87,6 @@ namespace MetalKit {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public MTKTextureLoaderCubeLayout? CubeLayout {
 			get {
 				var val = GetNSStringValue (MTKTextureLoaderKeys.CubeLayoutKey);
@@ -109,7 +102,6 @@ namespace MetalKit {
 			}
 		}
 
-#if NET
 		/// <summary>Gets or sets a value that controls when to flip the texture.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -117,7 +109,6 @@ namespace MetalKit {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public MTKTextureLoaderOrigin? Origin {
 			get {
 				var val = GetNSStringValue (MTKTextureLoaderKeys.OriginKey);

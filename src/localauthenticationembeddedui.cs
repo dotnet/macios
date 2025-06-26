@@ -14,10 +14,6 @@ using AppKit;
 using CoreGraphics;
 using LocalAuthentication;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace LocalAuthenticationEmbeddedUI {
 
 	[NoTV, NoiOS, NoMacCatalyst]

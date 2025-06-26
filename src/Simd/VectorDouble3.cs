@@ -17,18 +17,11 @@ using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 
 // This type does not come from the CoreGraphics framework; it's defined in /usr/include/simd/vector_types.h
-#if NET
-namespace CoreGraphics
-#else
-namespace OpenTK
-#endif
-{
-#if NET
+namespace CoreGraphics {
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct NVector3d : IEquatable<NVector3d> {
 		public double X;
@@ -54,7 +47,6 @@ namespace OpenTK
 			return !left.Equals (right);
 		}
 
-#if NET
 		public static NVector3d operator * (NVector3d vec, double scale)
 		{
 			vec.X *= scale;
@@ -71,19 +63,6 @@ namespace OpenTK
 			vec.Z *= mult;
 			return vec;
 		}
-#endif // NET
-
-#if !NET
-		public static explicit operator global::OpenTK.Vector3d (NVector3d value)
-		{
-			return new global::OpenTK.Vector3d (value.X, value.Y, value.Z);
-		}
-
-		public static explicit operator NVector3d (global::OpenTK.Vector3d value)
-		{
-			return new NVector3d (value.X, value.Y, value.Z);
-		}
-#endif // !NET
 
 		public override string ToString ()
 		{
@@ -112,7 +91,6 @@ namespace OpenTK
 			get => default;
 		}
 
-#if NET
 		internal double Length =>
 			System.Math.Sqrt (X * X + Y * Y + Z * Z);
 
@@ -134,6 +112,5 @@ namespace OpenTK
 		internal static readonly NVector3d UnitZ = new NVector3d (0, 0, 1);
 
 		internal static readonly NVector3d One = new NVector3d (1, 1, 1);
-#endif // NET
 	}
 }

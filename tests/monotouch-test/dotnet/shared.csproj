@@ -16,6 +16,9 @@
     <!-- Don't remove native symbols, because it makes debugging native crashes harder -->
     <MtouchNoSymbolStrip>true</MtouchNoSymbolStrip>
 
+    <CodesignEntitlements Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'iOS' ">$(MonoTouchTestDirectory)\Entitlements.plist</CodesignEntitlements>
+    <CodesignEntitlements Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tvOS'">$(MonoTouchTestDirectory)\Entitlements.plist</CodesignEntitlements>
+
     <DefineConstants Condition="'$(Configuration)' == 'Debug'">$(DefineConstants);DEBUG</DefineConstants>
 
     <!-- warning CA1422: This call site is reachable on: '...': we use APIs that aren't available on a certain OS platform all the time (in some cases to verify any broken behavior), so ignore such warnings -->
@@ -45,6 +48,12 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors>Nullable</WarningsAsErrors>
   </PropertyGroup>
+
+  <ItemGroup>
+    <CustomEntitlements Include="com.apple.security.network.client" Condition="'$(_PlatformName)' == 'macOS' Or '$(_PlatformName)' == 'MacCatalyst'" Type="boolean" Value="true" />
+    <CustomEntitlements Include="com.apple.security.network.server" Condition="'$(_PlatformName)' == 'macOS' Or '$(_PlatformName)' == 'MacCatalyst'" Type="boolean" Value="true" />
+    <CustomEntitlements Include="com.apple.developer.networking.multicast" Condition="'$(_PlatformName)' == 'iOS'" Type="boolean" Value="true" />
+  </ItemGroup>
 
   <ItemGroup>
     <TestVariations Include="static-registrar-all-optimizations" Description="Static registrar + all optimizations" />

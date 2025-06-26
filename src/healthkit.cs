@@ -25,10 +25,6 @@ using UIKit;
 using NSViewController = Foundation.NSObject;
 #endif
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace HealthKit {
 
 	/// <summary>Enumerates HealthKit document types.</summary>
@@ -234,20 +230,13 @@ namespace HealthKit {
 		Right = 1,
 	}
 
-#if NET
 	/// <summary>The completion handler for <see cref="HealthKit.HKAnchoredObjectQuery.HKAnchoredObjectQuery(HealthKit.HKSampleType,Foundation.NSPredicate,System.UIntPtr,System.UIntPtr,HealthKit.HKAnchoredObjectResultHandler2)" />.</summary>
 	/// <summary>Completion handler for anchored object queries.</summary>
-	delegate void HKAnchoredObjectResultHandler (HKAnchoredObjectQuery query, HKSample [] results, nuint newAnchor, NSError error);
-#else
-	delegate void HKAnchoredObjectResultHandler2 (HKAnchoredObjectQuery query, HKSample [] results, nuint newAnchor, NSError error);
+	delegate void HKAnchoredObjectResultHandler (HKAnchoredObjectQuery query, [NullAllowed] HKSample [] results, nuint newAnchor, [NullAllowed] NSError error);
 
-	[Obsolete ("Use HKAnchoredObjectResultHandler2 instead")]
-	delegate void HKAnchoredObjectResultHandler (HKAnchoredObjectQuery query, HKSampleType [] results, nuint newAnchor, NSError error);
-#endif
+	delegate void HKAnchoredObjectUpdateHandler (HKAnchoredObjectQuery query, [NullAllowed] HKSample [] addedObjects, [NullAllowed] HKDeletedObject [] deletedObjects, [NullAllowed] HKQueryAnchor newAnchor, [NullAllowed] NSError error);
 
-	delegate void HKAnchoredObjectUpdateHandler (HKAnchoredObjectQuery query, HKSample [] addedObjects, HKDeletedObject [] deletedObjects, HKQueryAnchor newAnchor, NSError error);
-
-	delegate void HKWorkoutRouteBuilderDataHandler (HKWorkoutRouteQuery query, CLLocation [] routeData, bool done, NSError error);
+	delegate void HKWorkoutRouteBuilderDataHandler (HKWorkoutRouteQuery query, [NullAllowed] CLLocation [] routeData, bool done, [NullAllowed] NSError error);
 
 	/// <summary>An <see cref="HealthKit.HKQuery" /> that on its initial call returns the most recent result and in subsequent calls returns only data added after the initial call.</summary>
 	///     
@@ -257,10 +246,6 @@ namespace HealthKit {
 	[BaseType (typeof (HKQuery))]
 	[DisableDefaultCtor] // NSInvalidArgumentException: The -init method is not available on HKAnchoredObjectQuery
 	interface HKAnchoredObjectQuery {
-
-#if !NET
-		[Obsolete ("Use the overload that takes HKAnchoredObjectResultHandler2 instead")]
-#endif
 		/// <param name="type">To be added.</param>
 		/// <param name="predicate">
 		///           <para>To be added.</para>
@@ -276,13 +261,6 @@ namespace HealthKit {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 		[Export ("initWithType:predicate:anchor:limit:completionHandler:")]
 		NativeHandle Constructor (HKSampleType type, [NullAllowed] NSPredicate predicate, nuint anchor, nuint limit, HKAnchoredObjectResultHandler completion);
-
-#if !NET
-		[Sealed]
-		[Deprecated (PlatformName.iOS, 9, 0)]
-		[Export ("initWithType:predicate:anchor:limit:completionHandler:")]
-		NativeHandle Constructor (HKSampleType type, [NullAllowed] NSPredicate predicate, nuint anchor, nuint limit, HKAnchoredObjectResultHandler2 completion);
-#endif
 
 		/// <param name="type">To be added.</param>
 		/// <param name="predicate">
@@ -823,7 +801,7 @@ namespace HealthKit {
 	}
 
 	/// <summary>Completion handler for <see cref="HealthKit.HKCorrelationQuery" />.</summary>
-	delegate void HKCorrelationQueryResultHandler (HKCorrelationQuery query, HKCorrelation [] correlations, NSError error);
+	delegate void HKCorrelationQueryResultHandler (HKCorrelationQuery query, [NullAllowed] HKCorrelation [] correlations, [NullAllowed] NSError error);
 
 	/// <summary>An <see cref="HealthKit.HKQuery" /> that returns only data that had been stored with correlations. (Note: Systolic and diastolic blood pressure readings are not correlated.)</summary>
 	///     
@@ -857,9 +835,9 @@ namespace HealthKit {
 	/// <param name="requestStatus">The resulting request status.</param>
 	///     <param name="error">The error, if one occurred..</param>
 	///     <summary>Handler to pass to <see cref="HealthKit.HKHealthStore.GetRequestStatusForAuthorizationToShare(Foundation.NSSet{HealthKit.HKSampleType},Foundation.NSSet{HealthKit.HKObjectType},HealthKit.HKHealthStoreGetRequestStatusForAuthorizationToShareHandler)" />.</summary>
-	delegate void HKHealthStoreGetRequestStatusForAuthorizationToShareHandler (HKAuthorizationRequestStatus requestStatus, NSError error);
+	delegate void HKHealthStoreGetRequestStatusForAuthorizationToShareHandler (HKAuthorizationRequestStatus requestStatus, [NullAllowed] NSError error);
 	delegate void HKHealthStoreRecoverActiveWorkoutSessionHandler (HKWorkoutSession session, NSError error);
-	delegate void HKHealthStoreCompletionHandler (bool success, NSError error);
+	delegate void HKHealthStoreCompletionHandler (bool success, [NullAllowed] NSError error);
 
 	/// <include file="../docs/api/HealthKit/HKHealthStore.xml" path="/Documentation/Docs[@DocId='T:HealthKit.HKHealthStore']/*" />
 	[Mac (13, 0)]
@@ -1158,7 +1136,7 @@ namespace HealthKit {
 	}
 
 	/// <summary>Completion handler for <see cref="HealthKit.HKHealthStore.AddSamples(HealthKit.HKSample[],HealthKit.HKWorkout,HealthKit.HKStoreSampleAddedCallback)" />.</summary>
-	delegate void HKStoreSampleAddedCallback (bool success, NSError error);
+	delegate void HKStoreSampleAddedCallback (bool success, [NullAllowed] NSError error);
 
 	/// <summary>Returned by <see cref="HealthKit.HKHealthStore.GetBiologicalSex(out Foundation.NSError)" />.</summary>
 	///     
@@ -1904,9 +1882,7 @@ namespace HealthKit {
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/HealthKit/Reference/HKObject_Class/index.html">Apple documentation for <c>HKObject</c></related>
 	[Mac (13, 0)]
 	[MacCatalyst (13, 1)]
-#if NET
 	[Abstract] // as per docs
-#endif
 	[DisableDefaultCtor] // - (instancetype)init NS_UNAVAILABLE;
 	[BaseType (typeof (NSObject))]
 	interface HKObject : NSSecureCoding {
@@ -1941,9 +1917,7 @@ namespace HealthKit {
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/HealthKit/Reference/HKObjectType_Class/index.html">Apple documentation for <c>HKObjectType</c></related>
 	[Mac (13, 0)]
 	[MacCatalyst (13, 1)]
-#if NET
 	[Abstract]
-#endif
 	[DisableDefaultCtor] // - (instancetype)init NS_UNAVAILABLE;
 	[BaseType (typeof (NSObject))]
 	interface HKObjectType : NSSecureCoding, NSCopying {
@@ -1951,57 +1925,41 @@ namespace HealthKit {
 		[Export ("identifier")]
 		NSString Identifier { get; }
 
-#if NET
 		/// <param name="hkTypeIdentifier">To be added.</param>
 		///         <summary>Returns the quantity type of <paramref name="hkTypeIdentifier" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[Internal]
-#else
-		[Obsolete ("Use 'HKQuantityType.Create (HKQuantityTypeIdentifier)'.")]
-#endif
 		[Static]
 		[Export ("quantityTypeForIdentifier:")]
 		[return: NullAllowed]
 		HKQuantityType GetQuantityType ([NullAllowed] NSString hkTypeIdentifier);
 
-#if NET
 		/// <param name="hkCategoryTypeIdentifier">To be added.</param>
 		///         <summary>Returns the category type for <paramref name="hkCategoryTypeIdentifier" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[Internal]
-#else
-		[Obsolete ("Use 'HKCategoryType.Create (HKCategoryTypeIdentifier)'.")]
-#endif
 		[Static]
 		[Export ("categoryTypeForIdentifier:")]
 		[return: NullAllowed]
 		HKCategoryType GetCategoryType ([NullAllowed] NSString hkCategoryTypeIdentifier);
 
-#if NET
 		/// <param name="hkCharacteristicTypeIdentifier">To be added.</param>
 		///         <summary>Returns the characteristic type of <paramref name="hkCharacteristicTypeIdentifier" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[Internal]
-#else
-		[Obsolete ("Use 'HKCharacteristicType.Create (HKCharacteristicTypeIdentifier)'.")]
-#endif
 		[Static]
 		[Export ("characteristicTypeForIdentifier:")]
 		[return: NullAllowed]
 		HKCharacteristicType GetCharacteristicType ([NullAllowed] NSString hkCharacteristicTypeIdentifier);
 
-#if NET
 		/// <param name="hkCorrelationTypeIdentifier">To be added.</param>
 		///         <summary>Returns the correlation type of <paramref name="hkCorrelationTypeIdentifier" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[Internal]
-#else
-		[Obsolete ("Use 'HKCorrelationType.Create (HKCorrelationTypeIdentifier)'.")]
-#endif
 		[Static, Export ("correlationTypeForIdentifier:")]
 		[return: NullAllowed]
 		HKCorrelationType GetCorrelationType ([NullAllowed] NSString hkCorrelationTypeIdentifier);
@@ -2014,11 +1972,7 @@ namespace HealthKit {
 		HKDocumentType _GetDocumentType (NSString hkDocumentTypeIdentifier);
 
 		[Static, Export ("workoutType")]
-#if NET
 		HKWorkoutType WorkoutType { get; }
-#else
-		HKWorkoutType GetWorkoutType ();
-#endif
 
 		[Mac (13, 0)]
 		[MacCatalyst (13, 1)]
@@ -2180,11 +2134,11 @@ namespace HealthKit {
 	}
 
 	/// <summary>Update handler for <see cref="HealthKit.HKObserverQuery" /> objects.</summary>
-	delegate void HKObserverQueryUpdateHandler (HKObserverQuery query, [BlockCallback] Action completion, NSError error);
+	delegate void HKObserverQueryUpdateHandler (HKObserverQuery query, [BlockCallback] Action completion, [NullAllowed] NSError error);
 
 	[iOS (15, 0)]
 	[MacCatalyst (15, 0)]
-	delegate void HKObserverQueryDescriptorUpdateHandler (HKObserverQuery query, NSSet<HKSampleType> samples, [BlockCallback] Action completion, NSError error);
+	delegate void HKObserverQueryDescriptorUpdateHandler (HKObserverQuery query, [NullAllowed] NSSet<HKSampleType> samples, [BlockCallback] Action completion, [NullAllowed] NSError error);
 
 	/// <summary>An <see cref="HealthKit.HKQuery" /> that runs once initially and then is automatically executed when relevant data is added to the database .</summary>
 	///     
@@ -2192,9 +2146,7 @@ namespace HealthKit {
 	[Mac (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (HKQuery))]
-#if NET
 	[Abstract]
-#endif
 	[DisableDefaultCtor] // NSInvalidArgumentException Reason: The -init method is not available on HKObserverQuery
 	interface HKObserverQuery {
 		[Export ("initWithSampleType:predicate:updateHandler:")]
@@ -2458,7 +2410,7 @@ namespace HealthKit {
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
-		[Wrap ("GetPredicateForClinicalRecords (source, resourceType.GetConstant (), identifier)")]
+		[Wrap ("GetPredicateForClinicalRecords (source, resourceType.GetConstant ()!, identifier)")]
 		NSPredicate GetPredicateForClinicalRecords (HKSource source, HKFhirResourceType resourceType, string identifier);
 
 		// @interface HKElectrocardiogramPredicates (HKQuery)
@@ -2563,9 +2515,7 @@ namespace HealthKit {
 	[Mac (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (HKObject))]
-#if NET
 	[Abstract]
-#endif
 	[DisableDefaultCtor] // NSInvalidArgumentException Reason: The -init method is not available on HKSample
 	interface HKSample {
 
@@ -2665,7 +2615,7 @@ namespace HealthKit {
 	}
 
 	/// <summary>Completion handler for <see cref="HealthKit.HKSourceQuery" />.</summary>
-	delegate void HKSourceQueryCompletionHandler (HKSourceQuery query, NSSet sources, NSError error);
+	delegate void HKSourceQueryCompletionHandler (HKSourceQuery query, [NullAllowed] NSSet sources, [NullAllowed] NSError error);
 
 	/// <summary>Class that represents a query for HealthKit data.</summary>
 	///     
@@ -2790,8 +2740,8 @@ namespace HealthKit {
 	}
 
 	/// <summary>Results handler for <see cref="HealthKit.HKStatisticsCollectionQuery.SetInitialResultsHandler(HealthKit.HKStatisticsCollectionQueryInitialResultsHandler)" /> and <see cref="HealthKit.HKStatisticsCollectionQuery.SetStatisticsUpdateHandler(HealthKit.HKStatisticsCollectionQueryInitialResultsHandler)" />.</summary>
-	delegate void HKStatisticsCollectionQueryInitialResultsHandler (HKStatisticsCollectionQuery query, HKStatisticsCollection result, NSError error);
-	delegate void HKStatisticsCollectionQueryStatisticsUpdateHandler (HKStatisticsCollectionQuery query, HKStatistics statistics, HKStatisticsCollection collection, NSError error);
+	delegate void HKStatisticsCollectionQueryInitialResultsHandler (HKStatisticsCollectionQuery query, [NullAllowed] HKStatisticsCollection result, [NullAllowed] NSError error);
+	delegate void HKStatisticsCollectionQueryStatisticsUpdateHandler (HKStatisticsCollectionQuery query, [NullAllowed] HKStatistics statistics, [NullAllowed] HKStatisticsCollection collection, [NullAllowed] NSError error);
 
 
 	/// <summary>An <see cref="HealthKit.HKQuery" /> that produces a collection of statistics (for instance, number of steps per day for the previous month).</summary>
@@ -2823,7 +2773,7 @@ namespace HealthKit {
 	}
 
 	/// <summary>Results handler for <see cref="HKStatisticsQuery" />.</summary>
-	delegate void HKStatisticsQueryHandler (HKStatisticsQuery query, HKStatistics result, NSError error);
+	delegate void HKStatisticsQueryHandler (HKStatisticsQuery query, [NullAllowed] HKStatistics result, [NullAllowed] NSError error);
 
 	/// <summary>An <see cref="HealthKit.HKQuery" /> that can calculate basic statistics (such as the sum and mean) on its constituent data.</summary>
 	///     
@@ -4980,7 +4930,7 @@ namespace HealthKit {
 	/// <param name="success">Whether the operation succeeded.</param>
 	///     <param name="error">The error that occurred, if <paramref name="success" /> was <see langword="false" />.</param>
 	///     <summary>Completion handler for adding metadata with <see cref="HealthKit.HKWorkoutRouteQuery.HKWorkoutRouteQuery(HealthKit.HKWorkoutRoute,HealthKit.HKWorkoutRouteBuilderDataHandler)" />.</summary>
-	delegate void HKWorkoutRouteBuilderAddMetadataHandler (bool success, NSError error);
+	delegate void HKWorkoutRouteBuilderAddMetadataHandler (bool success, [NullAllowed] NSError error);
 	/// <summary>A class for adding geographical data to a workout as the user's location changes.</summary>
 	[Mac (13, 0)]
 	[MacCatalyst (13, 1)]
@@ -5069,7 +5019,7 @@ namespace HealthKit {
 	/// <param name="success">Whether the operation succeeded.</param>
 	///     <param name="error">The error that occurred, if <paramref name="success" /> was <see langword="false" />.</param>
 	///     <summary>Completion handler for adding metadata with <see cref="HealthKit.HKWorkoutRouteQuery.HKWorkoutRouteQuery(HealthKit.HKWorkoutRoute,HealthKit.HKWorkoutRouteBuilderDataHandler)" />.</summary>
-	delegate void HKWorkoutBuilderCompletionHandler (bool success, NSError error);
+	delegate void HKWorkoutBuilderCompletionHandler (bool success, [NullAllowed] NSError error);
 	/// <summary>Builds a workout from workout data as it is added.</summary>
 	[Mac (13, 0)]
 	[MacCatalyst (13, 1)]
@@ -5210,8 +5160,8 @@ namespace HealthKit {
 	}
 
 	/// <summary>A handler to pass to <see cref="HealthKit.HKQuantitySeriesSampleQuery.HKQuantitySeriesSampleQuery(HealthKit.HKQuantitySample,HealthKit.HKQuantitySeriesSampleQueryQuantityDelegate)" />.</summary>
-	delegate void HKQuantitySeriesSampleQueryQuantityDelegate (HKQuantitySeriesSampleQuery query, HKQuantity quantity, NSDate date, bool done, NSError error);
-	delegate void HKQuantitySeriesSampleQueryQuantityHandler (HKQuantitySeriesSampleQuery query, HKQuantity quantity, NSDateInterval date, bool done, NSError error);
+	delegate void HKQuantitySeriesSampleQueryQuantityDelegate (HKQuantitySeriesSampleQuery query, [NullAllowed] HKQuantity quantity, [NullAllowed] NSDate date, bool done, [NullAllowed] NSError error);
+	delegate void HKQuantitySeriesSampleQueryQuantityHandler (HKQuantitySeriesSampleQuery query, [NullAllowed] HKQuantity quantity, [NullAllowed] NSDateInterval date, bool done, [NullAllowed] NSError error);
 
 	/// <summary>Queries series data in a quantity sample.</summary>
 	[Mac (13, 0)]
@@ -5242,7 +5192,7 @@ namespace HealthKit {
 	/// <param name="samples">The samples that were added.</param>
 	///     <param name="error">The error, if one occurred.</param>
 	///     <summary>Completion handler for <see cref="HealthKit.HKQuantitySeriesSampleBuilder.FinishSeries" />.</summary>
-	delegate void HKQuantitySeriesSampleBuilderFinishSeriesDelegate (HKQuantitySample [] samples, NSError error);
+	delegate void HKQuantitySeriesSampleBuilderFinishSeriesDelegate ([NullAllowed] HKQuantitySample [] samples, [NullAllowed] NSError error);
 
 	/// <summary>Builds quantity sample series.</summary>
 	[Mac (13, 0)]
@@ -5536,7 +5486,7 @@ namespace HealthKit {
 	[DisableDefaultCtor]
 	interface HKHeartbeatSeriesSample : NSSecureCoding { }
 
-	delegate void HKHeartbeatSeriesBuilderCompletionHandler (bool success, NSError error);
+	delegate void HKHeartbeatSeriesBuilderCompletionHandler (bool success, [NullAllowed] NSError error);
 
 	[iOS (13, 0), Mac (13, 0)]
 	[MacCatalyst (13, 1)]
@@ -5564,7 +5514,7 @@ namespace HealthKit {
 		void FinishSeries (Action<HKHeartbeatSeriesSample, NSError> completion);
 	}
 
-	delegate void HKHeartbeatSeriesQueryDataHandler (HKHeartbeatSeriesQuery query, double timeSinceSeriesStart, bool precededByGap, bool done, NSError error);
+	delegate void HKHeartbeatSeriesQueryDataHandler (HKHeartbeatSeriesQuery query, double timeSinceSeriesStart, bool precededByGap, bool done, [NullAllowed] NSError error);
 
 	[iOS (13, 0), Mac (13, 0)]
 	[MacCatalyst (13, 1)]
@@ -5596,7 +5546,7 @@ namespace HealthKit {
 		HKElectrocardiogramSymptomsStatus SymptomsStatus { get; }
 	}
 
-	delegate void HKElectrocardiogramQueryDataHandler (HKElectrocardiogramQuery query, HKElectrocardiogramVoltageMeasurement voltageMeasurement, bool done, NSError error);
+	delegate void HKElectrocardiogramQueryDataHandler (HKElectrocardiogramQuery query, [NullAllowed] HKElectrocardiogramVoltageMeasurement voltageMeasurement, bool done, [NullAllowed] NSError error);
 
 	[iOS (14, 0), Mac (13, 0)]
 	[MacCatalyst (14, 0)]
@@ -5741,7 +5691,7 @@ namespace HealthKit {
 		NSData JwsRepresentation { get; }
 	}
 
-	delegate void HKVerifiableClinicalRecordQueryResultHandler (HKVerifiableClinicalRecordQuery query, NSArray<HKVerifiableClinicalRecord> records, NSError error);
+	delegate void HKVerifiableClinicalRecordQueryResultHandler (HKVerifiableClinicalRecordQuery query, [NullAllowed] NSArray<HKVerifiableClinicalRecord> records, [NullAllowed] NSError error);
 
 	[iOS (15, 0), Mac (13, 0)]
 	[MacCatalyst (15, 0)]
@@ -5802,7 +5752,7 @@ namespace HealthKit {
 		NSDictionary<NSString, NSObject> Metadata { get; }
 	}
 
-	delegate void HKAttachmentStoreCompletionHandler (bool success, NSError error);
+	delegate void HKAttachmentStoreCompletionHandler (bool success, [NullAllowed] NSError error);
 	delegate void HKAttachmentStoreDataHandler ([NullAllowed] NSData dataChunk, [NullAllowed] NSError error, bool done);
 	delegate void HKAttachmentStoreGetAttachmentCompletionHandler ([NullAllowed] HKAttachment [] attachments, [NullAllowed] NSError error);
 

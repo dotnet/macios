@@ -6,6 +6,7 @@ using System.Linq;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Macios.Generator.DataModel;
+using Microsoft.Macios.Generator.Formatters;
 using Xamarin.Tests;
 using Xamarin.Utils;
 using Xunit;
@@ -441,5 +442,307 @@ namespace NS {
 		Assert.Single (changes.Value.Parameters);
 		// ensure that the first parameter is a pointer
 		Assert.True (changes.Value.Parameters [0].Type.IsPointer);
+	}
+
+	[Theory]
+	[AllSupportedPlatforms]
+	void TypeInfoGenericName (ApplePlatform platform)
+	{
+		var inputText = @"
+using System;
+using System.Collections.Generic;
+using ObjCRuntime;
+using System.Collections.Generic;
+
+namespace NS {
+
+	public class ExampleClass {
+		public int Number => 0;
+	}
+
+	public class MyClass {
+		public int ProcessPointer (List<ExampleClass> pointer)
+		{
+			return pointer.Count;
+		}
+	}
+}
+";
+		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
+		Assert.Single (syntaxTrees);
+		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
+		var declaration = syntaxTrees [0].GetRoot ()
+			.DescendantNodes ().OfType<MethodDeclarationSyntax> ()
+			.FirstOrDefault ();
+		Assert.NotNull (declaration);
+		Assert.True (Method.TryCreate (declaration, semanticModel, out var changes));
+		Assert.NotNull (changes);
+		// ensure that the method has a single parameter
+		Assert.Single (changes.Value.Parameters);
+		// ensure that the first parameter is a pointer
+		Assert.True (changes.Value.Parameters [0].Type.IsGenericType);
+		Assert.Single (changes.Value.Parameters [0].Type.TypeArguments);
+		Assert.Equal (Global ("NS.ExampleClass"), changes.Value.Parameters [0].Type.TypeArguments [0]);
+		Assert.Equal ("List", changes.Value.Parameters [0].Type.Name);
+		Assert.Equal ("System.Collections.Generic.List<NS.ExampleClass>", changes.Value.Parameters [0].Type.FullyQualifiedName);
+		Assert.Equal ("System.Collections.Generic", string.Join ('.', changes.Value.Parameters [0].Type.Namespace));
+	}
+
+	[Theory]
+	[AllSupportedPlatforms]
+	void TypeInfoArrayName (ApplePlatform platform)
+	{
+		var inputText = @"
+using System;
+using System.Collections.Generic;
+using ObjCRuntime;
+using System.Collections.Generic;
+
+namespace NS {
+
+	public class ExampleClass {
+		public int Number => 0;
+	}
+
+	public class MyClass {
+		public int ProcessPointer (ExampleClass[] pointer)
+		{
+			return pointer.Length;
+		}
+	}
+}
+";
+		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
+		Assert.Single (syntaxTrees);
+		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
+		var declaration = syntaxTrees [0].GetRoot ()
+			.DescendantNodes ().OfType<MethodDeclarationSyntax> ()
+			.FirstOrDefault ();
+		Assert.NotNull (declaration);
+		Assert.True (Method.TryCreate (declaration, semanticModel, out var changes));
+		Assert.NotNull (changes);
+		// ensure that the method has a single parameter
+		Assert.Single (changes.Value.Parameters);
+		// ensure that the first parameter is a pointer
+		Assert.True (changes.Value.Parameters [0].Type.IsArray);
+		Assert.Equal ("ExampleClass", changes.Value.Parameters [0].Type.Name);
+		Assert.Equal ("NS.ExampleClass", changes.Value.Parameters [0].Type.FullyQualifiedName);
+		Assert.Equal ("NS", string.Join ('.', changes.Value.Parameters [0].Type.Namespace));
+	}
+
+	[Theory]
+	[AllSupportedPlatforms]
+	void TypeInfoNonGenericNoNamespace (ApplePlatform platform)
+	{
+		var inputText = @"
+using System;
+using System.Collections.Generic;
+using ObjCRuntime;
+using System.Collections.Generic;
+
+namespace NS {
+	public class MyClass {
+		public int ProcessPointer (int pointer)
+		{
+			return pointer;
+		}
+	}
+}
+";
+		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
+		Assert.Single (syntaxTrees);
+		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
+		var declaration = syntaxTrees [0].GetRoot ()
+			.DescendantNodes ().OfType<MethodDeclarationSyntax> ()
+			.FirstOrDefault ();
+		Assert.NotNull (declaration);
+		Assert.True (Method.TryCreate (declaration, semanticModel, out var changes));
+		Assert.NotNull (changes);
+		// ensure that the method has a single parameter
+		Assert.Single (changes.Value.Parameters);
+		// ensure that the first parameter is a pointer
+		Assert.False (changes.Value.Parameters [0].Type.IsGenericType);
+		Assert.Equal ("int", changes.Value.Parameters [0].Type.Name);
+		Assert.Equal ("int", changes.Value.Parameters [0].Type.FullyQualifiedName);
+		Assert.Empty (changes.Value.Parameters [0].Type.Namespace);
+	}
+
+	[Theory]
+	[AllSupportedPlatforms]
+	void TypeInfoNameStringArray (ApplePlatform platform)
+	{
+		var inputText = @"
+using System;
+using System.Collections.Generic;
+using ObjCRuntime;
+using System.Collections.Generic;
+
+namespace NS {
+	public class MyClass {
+		public int ProcessPointer (string[] pointer)
+		{
+			return pointer.Length;
+		}
+	}
+}
+";
+		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
+		Assert.Single (syntaxTrees);
+		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
+		var declaration = syntaxTrees [0].GetRoot ()
+			.DescendantNodes ().OfType<MethodDeclarationSyntax> ()
+			.FirstOrDefault ();
+		Assert.NotNull (declaration);
+		Assert.True (Method.TryCreate (declaration, semanticModel, out var changes));
+		Assert.NotNull (changes);
+		// ensure that the method has a single parameter
+		Assert.Single (changes.Value.Parameters);
+		// ensure that the first parameter is a pointer
+		Assert.False (changes.Value.Parameters [0].Type.IsGenericType);
+		Assert.Equal ("string", changes.Value.Parameters [0].Type.Name);
+		Assert.Equal ("string", changes.Value.Parameters [0].Type.FullyQualifiedName);
+		Assert.Empty (changes.Value.Parameters [0].Type.Namespace);
+	}
+
+	[Theory]
+	[AllSupportedPlatforms]
+	void TypeInfoGeneralCase (ApplePlatform platform)
+	{
+		var inputText = @"
+using System;
+using System.Collections.Generic;
+using ObjCRuntime;
+using System.Collections.Generic;
+
+namespace Example {
+	namespace NS {
+		public class ExampleClass {
+			public int Number => 0;
+		}
+
+		public class MyClass {
+			public int ProcessPointer (ExampleClass pointer)
+			{
+				return pointer.Number;
+			}
+		}
+	}
+}
+";
+		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
+		Assert.Single (syntaxTrees);
+		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
+		var declaration = syntaxTrees [0].GetRoot ()
+			.DescendantNodes ().OfType<MethodDeclarationSyntax> ()
+			.FirstOrDefault ();
+		Assert.NotNull (declaration);
+		Assert.True (Method.TryCreate (declaration, semanticModel, out var changes));
+		Assert.NotNull (changes);
+		// ensure that the method has a single parameter
+		Assert.Single (changes.Value.Parameters);
+		// ensure that the first parameter is a pointer
+		Assert.False (changes.Value.Parameters [0].Type.IsGenericType);
+		Assert.Equal ("ExampleClass", changes.Value.Parameters [0].Type.Name);
+		Assert.Equal ("Example.NS.ExampleClass", changes.Value.Parameters [0].Type.FullyQualifiedName);
+		Assert.Equal ("Example.NS", string.Join ('.', changes.Value.Parameters [0].Type.Namespace));
+	}
+
+	[Theory]
+	[AllSupportedPlatforms]
+	void TypeInfoNestedCase (ApplePlatform platform)
+	{
+		var inputText = @"
+using System;
+using System.Collections.Generic;
+using ObjCRuntime;
+using System.Collections.Generic;
+
+namespace Example {
+	namespace NS {
+
+		public class MyClass {
+
+			public class ExampleClass {
+				public int Number => 0;
+			}
+
+			public int ProcessPointer (ExampleClass pointer)
+			{
+				return pointer.Number;
+			}
+		}
+	}
+}
+";
+		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
+		Assert.Single (syntaxTrees);
+		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
+		var declaration = syntaxTrees [0].GetRoot ()
+			.DescendantNodes ().OfType<MethodDeclarationSyntax> ()
+			.FirstOrDefault ();
+		Assert.NotNull (declaration);
+		Assert.True (Method.TryCreate (declaration, semanticModel, out var changes));
+		Assert.NotNull (changes);
+		// ensure that the method has a single parameter
+		Assert.Single (changes.Value.Parameters);
+		// ensure that the first parameter is a pointer
+		Assert.False (changes.Value.Parameters [0].Type.IsGenericType);
+		Assert.Equal ("MyClass.ExampleClass", changes.Value.Parameters [0].Type.Name);
+		Assert.Equal ("Example.NS.MyClass.ExampleClass", changes.Value.Parameters [0].Type.FullyQualifiedName);
+		Assert.Equal ("Example.NS", string.Join ('.', changes.Value.Parameters [0].Type.Namespace));
+	}
+
+	[Theory]
+	[PlatformInlineData (ApplePlatform.iOS, "Action", "Task", "TaskCompletionSource")]
+	[PlatformInlineData (ApplePlatform.TVOS, "Action", "Task", "TaskCompletionSource")]
+	[PlatformInlineData (ApplePlatform.MacCatalyst, "Action", "Task", "TaskCompletionSource")]
+	[PlatformInlineData (ApplePlatform.MacOSX, "Action", "Task", "TaskCompletionSource")]
+	[PlatformInlineData (ApplePlatform.iOS, "Action<int>", "Task<int>", "TaskCompletionSource<int>")]
+	[PlatformInlineData (ApplePlatform.TVOS, "Action<int>", "Task<int>", "TaskCompletionSource<int>")]
+	[PlatformInlineData (ApplePlatform.MacCatalyst, "Action<int>", "Task<int>", "TaskCompletionSource<int>")]
+	[PlatformInlineData (ApplePlatform.MacOSX, "Action<int>", "Task<int>", "TaskCompletionSource<int>")]
+	[PlatformInlineData (ApplePlatform.iOS, "Action<int, NSError>", "Task<int>", "TaskCompletionSource<int>")]
+	[PlatformInlineData (ApplePlatform.TVOS, "Action<int, NSError>", "Task<int>", "TaskCompletionSource<int>")]
+	[PlatformInlineData (ApplePlatform.MacCatalyst, "Action<int, NSError>", "Task<int>", "TaskCompletionSource<int>")]
+	[PlatformInlineData (ApplePlatform.MacOSX, "Action<int, NSError>", "Task<int>", "TaskCompletionSource<int>")]
+	[PlatformInlineData (ApplePlatform.iOS, "Action<int, string>", "Task<int, string>", "TaskCompletionSource<int, string>")]
+	[PlatformInlineData (ApplePlatform.TVOS, "Action<int, string>", "Task<int, string>", "TaskCompletionSource<int, string>")]
+	[PlatformInlineData (ApplePlatform.MacCatalyst, "Action<int, string>", "Task<int, string>", "TaskCompletionSource<int, string>")]
+	[PlatformInlineData (ApplePlatform.MacOSX, "Action<int, string>", "Task<int, string>", "TaskCompletionSource<int, string>")]
+	void TypeInfoToTask (ApplePlatform platform, string action, string expectedTask, string expectedCompletionSource)
+	{
+		var inputText = $@"
+using System;
+using System.Threading.Tasks;
+using Foundation;
+using ObjCRuntime;
+using System.Collections.Generic;
+
+namespace NS {{
+	public class MyClass {{
+		public void ProcessPointer ({action} myTask)
+		{{
+			// do nothing
+		}}
+	}}
+}}
+";
+		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
+		Assert.Single (syntaxTrees);
+		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
+		var declaration = syntaxTrees [0].GetRoot ()
+			.DescendantNodes ().OfType<MethodDeclarationSyntax> ()
+			.FirstOrDefault ();
+		Assert.NotNull (declaration);
+		Assert.True (Method.TryCreate (declaration, semanticModel, out var changes));
+		Assert.NotNull (changes);
+		// ensure that the method has a single parameter
+		Assert.Single (changes.Value.Parameters);
+		var type = changes.Value.Parameters [0].Type;
+		var task = type.ToTask ();
+		Assert.NotEqual (type, task);
+		Assert.Equal ($"{Global ("System.Threading")}.Tasks.{expectedTask}", task.GetIdentifierSyntax ().ToString ());
+		var completionSource = task.ToTaskCompletionSource ();
+		Assert.Equal ($"{Global ("System.Threading")}.Tasks.{expectedCompletionSource}", completionSource.GetIdentifierSyntax ().ToString ());
 	}
 }

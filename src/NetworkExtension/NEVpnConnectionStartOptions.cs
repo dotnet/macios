@@ -5,15 +5,12 @@ using System.Runtime.Versioning;
 using Foundation;
 
 namespace NetworkExtension {
-
-#if NET
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos17.0")]
-#endif
 	public class NEVpnConnectionStartOptions : DictionaryContainer {
 
 #if !COREBUILD

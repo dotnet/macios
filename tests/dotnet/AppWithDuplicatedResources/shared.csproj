@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+
+		<ApplicationTitle>AppWithDuplicatedResources</ApplicationTitle>
+		<ApplicationId>com.xamarin.appwithduplicatedresources</ApplicationId>
+
+		<ExcludeTouchUnitReference>true</ExcludeTouchUnitReference>
+		<ExcludeNUnitLiteReference>true</ExcludeNUnitLiteReference>
+	</PropertyGroup>
+
+	<Import Project="../../common/shared-dotnet.csproj" />
+
+	<ItemGroup>
+		<Compile Include="../*.cs" />
+		<ProjectReference Include="../../LibraryWithResources/$(_PlatformName)/LibraryWithResources.csproj" Condition="'$(IncludeLibraryWithResources)' == 'true'" />
+		<ProjectReference Include="../../SecondLibraryWithResources/$(_PlatformName)/SecondLibraryWithResources.csproj" Condition="'$(IncludeSecondLibraryWithResources)' == 'true'" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(IncludeFirstExecutableResources)' == 'true'">
+		<BundleResource Include="../../SecondLibraryWithResources/$(_PlatformName)/$(_ResourcePrefix)/B.otf" RegisterFont="true" Link="B.otf" />
+
+		<PartialAppManifest Include="../../SecondLibraryWithResources/shared.plist" />
+
+		<ImageAsset Include="../../SecondLibraryWithResources/$(_PlatformName)/**/*.xcassets/**/*.*" Exclude="../../SecondLibraryWithResources/$(_PlatformName)/**/*.xcassets/**/*.DS_Store">
+			<Link>$([MSBuild]::MakeRelative ('../../SecondLibraryWithResources/$(_PlatformName)/Resources', '%(FullPath)'))</Link>
+		</ImageAsset>
+
+		<InterfaceDefinition Include="../../SecondLibraryWithResources/$(_PlatformName)/**/*.storyboard;../../SecondLibraryWithResources/$(_PlatformName)/**/*.xib" Condition="'$(DisableFirstExecutableInterfaceDefinition)' != 'true'" >
+			<Link>$([MSBuild]::MakeRelative ('../../SecondLibraryWithResources/$(_PlatformName)/Resources', '%(FullPath)'))</Link>
+		</InterfaceDefinition>
+
+		<SceneKitAsset Include="../../SecondLibraryWithResources/*.scnassets/*" Link="%(RecursiveDir)%(FileName)%(Extension)" />
+		<SceneKitAsset Include="../../SecondLibraryWithResources/*/linkedArt.scnassets/*" Link="%(RecursiveDir)%(FileName)%(Extension)" />
+
+		<Collada Include="../../SecondLibraryWithResources/*.dae" Link="%(FileName)%(Extension)" />
+		<AtlasTexture Include="../../SecondLibraryWithResources/*.atlas/**/*" Link="%(RecursiveDir)%(FileName)%(Extension)" />
+		<CoreMLModel Include="../../SecondLibraryWithResources/*.mlmodel" Link="%(FileName)%(Extension)" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(IncludeSecondExecutableResources)' == 'true'">
+		<BundleResource Include="../../SecondLibraryWithResources/$(_PlatformName)/$(_ResourcePrefix)/B.otf" RegisterFont="true" Link="B.otf" />
+
+		<PartialAppManifest Include="../../SecondLibraryWithResources/shared.plist" />
+
+		<ImageAsset Include="../../SecondLibraryWithResources/$(_PlatformName)/**/*.xcassets/**/*.*" Exclude="../../SecondLibraryWithResources/$(_PlatformName)/**/*.xcassets/**/*.DS_Store">
+			<Link>$([MSBuild]::MakeRelative ('../../SecondLibraryWithResources/$(_PlatformName)/Resources', '%(FullPath)'))</Link>
+		</ImageAsset>
+
+		<InterfaceDefinition Include="../../SecondLibraryWithResources/$(_PlatformName)/**/*.storyboard;../../SecondLibraryWithResources/$(_PlatformName)/**/*.xib" Condition="'$(DisableSecondExecutableInterfaceDefinition)' != 'true'">
+			<Link>$([MSBuild]::MakeRelative ('../../SecondLibraryWithResources/$(_PlatformName)/Resources', '%(FullPath)'))</Link>
+		</InterfaceDefinition>
+
+		<SceneKitAsset Include="../../SecondLibraryWithResources/*.scnassets/*" Link="%(RecursiveDir)%(FileName)%(Extension)" />
+		<SceneKitAsset Include="../../SecondLibraryWithResources/*/linkedArt.scnassets/*" Link="%(RecursiveDir)%(FileName)%(Extension)" />
+
+		<Collada Include="../../SecondLibraryWithResources/*.dae" Link="%(FileName)%(Extension)" />
+		<AtlasTexture Include="../../SecondLibraryWithResources/*.atlas/**/*" Link="%(RecursiveDir)%(FileName)%(Extension)" />
+		<CoreMLModel Include="../../SecondLibraryWithResources/*.mlmodel" Link="%(FileName)%(Extension)" />
+	</ItemGroup>
+</Project>

@@ -67,11 +67,13 @@ namespace Xamarin.MacDev.Tasks {
 
 			// Add the app bundles themselves
 			foreach (var bundle in CodesignBundle) {
-				// An app bundle is signed if either 'RequireCodeSigning' is true
+				// An app bundle is signed if either 'EnableCodeSigning' is true
 				// or a 'CodesignSigningKey' has been provided.
-				var requireCodeSigning = bundle.GetMetadata ("RequireCodeSigning");
+				var enableCodeSigning = bundle.GetMetadata ("EnableCodeSigning");
+				if (string.IsNullOrEmpty (enableCodeSigning))
+					enableCodeSigning = bundle.GetMetadata ("RequireCodeSigning");
 				var codesignSigningKey = bundle.GetMetadata ("CodesignSigningKey");
-				if (!string.Equals (requireCodeSigning, "true") && string.IsNullOrEmpty (codesignSigningKey))
+				if (!string.Equals (enableCodeSigning, "true") && string.IsNullOrEmpty (codesignSigningKey))
 					continue;
 
 				// Create a new item for the app bundle, and copy any metadata over.
@@ -228,8 +230,8 @@ namespace Xamarin.MacDev.Tasks {
 					continue;
 				}
 
-				if (!Directory.Exists (outputPath))
-					continue;
+				if (Directory.Exists (outputPath))
+					outputPath = PathUtils.EnsureTrailingSlash (outputPath);
 
 				var matchingDirectory = canonicalizedDirectoriesToSkip.FirstOrDefault (v => outputPath.StartsWith (v, StringComparison.OrdinalIgnoreCase));
 				if (matchingDirectory is not null) {
@@ -237,6 +239,25 @@ namespace Xamarin.MacDev.Tasks {
 					output.RemoveAt (i);
 					continue;
 				}
+			}
+		}
+
+		IEnumerable<string> EnumerateAppBundleEntries (string appPath)
+		{
+			foreach (var file in Directory.EnumerateFiles (appPath, "*", SearchOption.TopDirectoryOnly)) {
+				// Don't sign symlinks, just the real file (this avoids trying to sign the same file multiple times through a symlink)
+				if (PathUtils.IsSymlink (file))
+					continue;
+				yield return file;
+			}
+
+			foreach (var dir in Directory.EnumerateDirectories (appPath, "*", SearchOption.TopDirectoryOnly)) {
+				// Don't recurse into symlinks, for same reason as above.
+				if (PathUtils.IsSymlink (dir))
+					continue;
+				yield return dir;
+				foreach (var entry in EnumerateAppBundleEntries (dir))
+					yield return entry;
 			}
 		}
 
@@ -276,16 +297,13 @@ namespace Xamarin.MacDev.Tasks {
 			dylibDirectory = PathUtils.EnsureTrailingSlash (dylibDirectory);
 			metallibDirectory = PathUtils.EnsureTrailingSlash (metallibDirectory);
 
-			foreach (var entry in Directory.EnumerateFileSystemEntries (appPath, "*", SearchOption.AllDirectories)) {
+			foreach (var entry in EnumerateAppBundleEntries (appPath)) {
 				var relativePath = entry.Substring (appPath.Length);
 				// Don't recurse into the PlugIns directory, that's already handled for any app bundle inside the PlugIns directory
 				if (relativePath.StartsWith ("PlugIns" + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase))
 					continue;
 				// Don't recurse into the Watch directory, for the same reason
 				if (relativePath.StartsWith ("Watch" + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase))
-					continue;
-				// Don't sign symlinks, just the real file (this avoids trying to sign the same file multiple times through a symlink)
-				if (PathUtils.IsSymlink (entry))
 					continue;
 
 				if (entry.EndsWith (".dylib", StringComparison.OrdinalIgnoreCase) && entry.StartsWith (dylibDirectory, StringComparison.OrdinalIgnoreCase)) {

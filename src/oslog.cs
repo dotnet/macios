@@ -3,10 +3,6 @@ using Foundation;
 using ObjCRuntime;
 using CoreFoundation;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace OSLog {
 
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]

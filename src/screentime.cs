@@ -10,10 +10,6 @@ using AppKit;
 using UIViewController = AppKit.NSViewController;
 #endif
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace ScreenTime {
 
 	[iOS (14, 0)]

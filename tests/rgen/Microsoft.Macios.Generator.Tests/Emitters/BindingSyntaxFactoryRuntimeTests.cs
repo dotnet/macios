@@ -1,16 +1,20 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.Macios.Generator.DataModel;
+using Microsoft.Macios.Generator.Extensions;
 using Xunit;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Microsoft.Macios.Generator.Emitters.BindingSyntaxFactory;
 using static Microsoft.Macios.Generator.Tests.TestDataFactory;
+using static Microsoft.Macios.Generator.Tests.BaseGeneratorTestClass;
 using TypeInfo = Microsoft.Macios.Generator.DataModel.TypeInfo;
 
 namespace Microsoft.Macios.Generator.Tests.Emitters;
@@ -18,13 +22,13 @@ namespace Microsoft.Macios.Generator.Tests.Emitters;
 public class BindingSyntaxFactoryRuntimeTests {
 
 	[Theory]
-	[InlineData ("Test", "global::ObjCRuntime.Selector.GetHandle (\"Test\")")]
-	[InlineData ("name", "global::ObjCRuntime.Selector.GetHandle (\"name\")")]
-	[InlineData ("setName:", "global::ObjCRuntime.Selector.GetHandle (\"setName:\")")]
+	[InlineData ("Test", "ObjCRuntime.Selector.GetHandle (\"Test\")")]
+	[InlineData ("name", "ObjCRuntime.Selector.GetHandle (\"name\")")]
+	[InlineData ("setName:", "ObjCRuntime.Selector.GetHandle (\"setName:\")")]
 	void SelectorGetHandleTests (string selector, string expectedDeclaration)
 	{
 		var declaration = SelectorGetHandle (selector);
-		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
+		Assert.Equal (Global (expectedDeclaration), declaration.ToFullString ());
 	}
 
 	class TestDataMessagingInvocationTests : IEnumerable<object []> {
@@ -35,7 +39,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 				"IntPtr_objc_msgSend",
 				"string",
 				ImmutableArray<ArgumentSyntax>.Empty,
-				"global::ObjCRuntime.Messaging.IntPtr_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"string\"))"
+				$"{Global ("ObjCRuntime.Messaging")}.IntPtr_objc_msgSend (this.Handle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"string\"))"
 			];
 
 			// one param extra
@@ -46,7 +50,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 				"IntPtr_objc_msgSend",
 				"string",
 				args,
-				"global::ObjCRuntime.Messaging.IntPtr_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"string\"), arg1)"
+				$"{Global ("ObjCRuntime.Messaging")}.IntPtr_objc_msgSend (this.Handle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"string\"), arg1)"
 			];
 
 			// several params
@@ -59,7 +63,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 				"IntPtr_objc_msgSend",
 				"string",
 				args,
-				"global::ObjCRuntime.Messaging.IntPtr_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"string\"), arg1, arg2, arg3)"
+				$"{Global ("ObjCRuntime.Messaging")}.IntPtr_objc_msgSend (this.Handle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"string\"), arg1, arg2, arg3)"
 			];
 
 			// out parameter
@@ -71,7 +75,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 				"IntPtr_objc_msgSend",
 				"string",
 				args,
-				"global::ObjCRuntime.Messaging.IntPtr_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"string\"), &errorValue)"
+				$"{Global ("ObjCRuntime.Messaging")}.IntPtr_objc_msgSend (this.Handle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"string\"), &errorValue)"
 			];
 
 		}
@@ -96,7 +100,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 			yield return [
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1"))),
-				"global::CoreFoundation.CFArray.StringArrayFromHandle (arg1)"
+				$"{Global ("CoreFoundation.CFArray")}.StringArrayFromHandle (arg1)"
 			];
 
 			yield return [
@@ -104,7 +108,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 					Argument (IdentifierName ("arg1")),
 					Argument (IdentifierName ("arg2")),
 					Argument (IdentifierName ("arg3"))),
-				"global::CoreFoundation.CFArray.StringArrayFromHandle (arg1, arg2, arg3)"
+				$"{Global ("CoreFoundation.CFArray")}.StringArrayFromHandle (arg1, arg2, arg3)"
 			];
 		}
 
@@ -126,7 +130,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 			yield return [
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1"))),
-				"global::CoreFoundation.CFString.FromHandle (arg1)"
+				$"{Global ("CoreFoundation.CFString")}.FromHandle (arg1)"
 			];
 
 			yield return [
@@ -134,7 +138,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 					Argument (IdentifierName ("arg1")),
 					Argument (IdentifierName ("arg2")),
 					Argument (IdentifierName ("arg3"))),
-				"global::CoreFoundation.CFString.FromHandle (arg1, arg2, arg3)"
+				$"{Global ("CoreFoundation.CFString")}.FromHandle (arg1, arg2, arg3)"
 			];
 		}
 
@@ -154,97 +158,97 @@ public class BindingSyntaxFactoryRuntimeTests {
 		{
 			yield return [
 				ReturnTypeForNSObject ("CoreAnimation.CATransform3D"),
-				"NSValue.ToCATransform3D"
+				$"{Global ("Foundation.NSValue")}.ToCATransform3D"
 			];
 
 			yield return [
 				ReturnTypeForNSObject ("CoreGraphics.CGAffineTransform"),
-				"NSValue.ToCGAffineTransform"
+				$"{Global ("Foundation.NSValue")}.ToCGAffineTransform"
 			];
 
 			yield return [
 				ReturnTypeForNSObject ("CoreGraphics.CGPoint"),
-				"NSValue.ToCGPoint"
+				$"{Global ("Foundation.NSValue")}.ToCGPoint"
 			];
 
 			yield return [
 				ReturnTypeForNSObject ("CoreGraphics.CGRect"),
-				"NSValue.ToCGRect"
+				$"{Global ("Foundation.NSValue")}.ToCGRect"
 			];
 
 			yield return [
 				ReturnTypeForNSObject ("CoreGraphics.CGSize"),
-				"NSValue.ToCGSize"
+				$"{Global ("Foundation.NSValue")}.ToCGSize"
 			];
 
 			yield return [
 				ReturnTypeForNSObject ("CoreGraphics.CGVector"),
-				"NSValue.ToCGVector"
+				$"{Global ("Foundation.NSValue")}.ToCGVector"
 			];
 
 			yield return [
 				ReturnTypeForNSObject ("CoreMedia.CMTime"),
-				"NSValue.ToCMTime"
+				$"{Global ("Foundation.NSValue")}.ToCMTime"
 			];
 
 			yield return [
 				ReturnTypeForNSObject ("CoreMedia.CMTimeMapping"),
-				"NSValue.ToCMTimeMapping"
+				$"{Global ("Foundation.NSValue")}.ToCMTimeMapping"
 			];
 
 			yield return [
 				ReturnTypeForNSObject ("CoreMedia.CMTimeRange"),
-				"NSValue.ToCMTimeRange"
+				$"{Global ("Foundation.NSValue")}.ToCMTimeRange"
 			];
 
 			yield return [
 				ReturnTypeForNSObject ("CoreMedia.CMVideoDimensions"),
-				"NSValue.ToCMVideoDimensions"
+				$"{Global ("Foundation.NSValue")}.ToCMVideoDimensions"
 			];
 
 			yield return [
 				ReturnTypeForNSObject ("CoreLocation.CLLocationCoordinate2D"),
-				"NSValue.ToCLLocationCoordinate2D"
+				$"{Global ("Foundation.NSValue")}.ToCLLocationCoordinate2D"
 			];
 
 			yield return [
 				ReturnTypeForNSObject ("Foundation.NSRange"),
-				"NSValue.ToNSRange"
+				$"{Global ("Foundation.NSValue")}.ToNSRange"
 			];
 
 			yield return [
 				ReturnTypeForNSObject ("MapKit.MKCoordinateSpan"),
-				"NSValue.ToMKCoordinateSpan"
+				$"{Global ("Foundation.NSValue")}.ToMKCoordinateSpan"
 			];
 
 			yield return [
 				ReturnTypeForNSObject ("SceneKit.SCNMatrix4"),
-				"NSValue.ToSCNMatrix4"
+				$"{Global ("Foundation.NSValue")}.ToSCNMatrix4"
 			];
 
 			yield return [
 				ReturnTypeForNSObject ("SceneKit.SCNVector3"),
-				"NSValue.ToSCNVector3"
+				$"{Global ("Foundation.NSValue")}.ToSCNVector3"
 			];
 
 			yield return [
 				ReturnTypeForNSObject ("SceneKit.SCNVector4"),
-				"NSValue.ToSCNVector4"
+				$"{Global ("Foundation.NSValue")}.ToSCNVector4"
 			];
 
 			yield return [
 				ReturnTypeForNSObject ("UIKit.NSDirectionalEdgeInsets"),
-				"NSValue.ToNSDirectionalEdgeInsets"
+				$"{Global ("Foundation.NSValue")}.ToNSDirectionalEdgeInsets"
 			];
 
 			yield return [
 				ReturnTypeForNSObject ("UIKit.UIEdgeInsets"),
-				"NSValue.ToUIEdgeInsets"
+				$"{Global ("Foundation.NSValue")}.ToUIEdgeInsets"
 			];
 
 			yield return [
 				ReturnTypeForNSObject ("UIKit.UIOffset"),
-				"NSValue.ToUIOffset"
+				$"{Global ("Foundation.NSValue")}.ToUIOffset"
 			];
 		}
 
@@ -265,72 +269,72 @@ public class BindingSyntaxFactoryRuntimeTests {
 
 			yield return [
 				ReturnTypeForBool (),
-				"NSNumber.ToBool"
+				$"{Global ("Foundation.NSNumber")}.ToBool"
 			];
 
 			yield return [
 				ReturnTypeForInt (),
-				"NSNumber.ToInt32"
+				$"{Global ("Foundation.NSNumber")}.ToInt32"
 			];
 
 			yield return [
 				ReturnTypeForInt (isUnsigned: true),
-				"NSNumber.ToUInt32"
+				$"{Global ("Foundation.NSNumber")}.ToUInt32"
 			];
 
 			yield return [
 				ReturnTypeForShort (),
-				"NSNumber.ToInt16"
+				$"{Global ("Foundation.NSNumber")}.ToInt16"
 			];
 
 			yield return [
 				ReturnTypeForShort (isUnsigned: true),
-				"NSNumber.ToUInt16"
+				$"{Global ("Foundation.NSNumber")}.ToUInt16"
 			];
 
 			yield return [
 				ReturnTypeForLong (),
-				"NSNumber.ToInt64"
+				$"{Global ("Foundation.NSNumber")}.ToInt64"
 			];
 
 			yield return [
 				ReturnTypeForLong (isUnsigned: true),
-				"NSNumber.ToUInt64"
+				$"{Global ("Foundation.NSNumber")}.ToUInt64"
 			];
 
 			yield return [
 				ReturnTypeForNInt (),
-				"NSNumber.ToNInt"
+				$"{Global ("Foundation.NSNumber")}.ToNInt"
 			];
 
 			yield return [
 				ReturnTypeForNInt (isUnsigned: true),
-				"NSNumber.ToNUInt"
+				$"{Global ("Foundation.NSNumber")}.ToNUInt"
 			];
 
 			yield return [
 				ReturnTypeForDouble (),
-				"NSNumber.ToDouble"
+				$"{Global ("Foundation.NSNumber")}.ToDouble"
 			];
 
 			yield return [
 				ReturnTypeForFloat (),
-				"NSNumber.ToFloat"
+				$"{Global ("Foundation.NSNumber")}.ToFloat"
 			];
 
 			yield return [
 				ReturnTypeForArray ("int", underlyingType: SpecialType.System_Int32),
-				"NSNumber.ToInt32"
+				$"{Global ("Foundation.NSNumber")}.ToInt32"
 			];
 
 			yield return [
 				ReturnTypeForArray ("uint", underlyingType: SpecialType.System_UInt32),
-				"NSNumber.ToUInt32"
+				$"{Global ("Foundation.NSNumber")}.ToUInt32"
 			];
 
 			yield return [
 				ReturnTypeForArray ("nint", underlyingType: SpecialType.System_IntPtr),
-				"NSNumber.ToNInt"
+				$"{Global ("Foundation.NSNumber")}.ToNInt"
 			];
 		}
 
@@ -349,19 +353,19 @@ public class BindingSyntaxFactoryRuntimeTests {
 		public IEnumerator<object []> GetEnumerator ()
 		{
 			yield return [
-				"int",
+				"int".GetIdentifierName ([]),
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1"))),
-				"global::Foundation.NSArray.ArrayFromHandleFunc<int> (arg1)"
+				$"{Global ("Foundation.NSArray")}.ArrayFromHandleFunc<int> (arg1)"
 			];
 
 			yield return [
-				"string",
+				"string".GetIdentifierName ([]),
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1")),
 					Argument (IdentifierName ("arg2")),
 					Argument (IdentifierName ("arg3"))),
-				"global::Foundation.NSArray.ArrayFromHandleFunc<string> (arg1, arg2, arg3)"
+				$"{Global ("Foundation.NSArray")}.ArrayFromHandleFunc<string> (arg1, arg2, arg3)"
 			];
 		}
 
@@ -370,7 +374,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 
 	[Theory]
 	[ClassData (typeof (TestDataNSArrayFromHandleFunc))]
-	void NSArrayFromHandleFuncTests (string returnType, ImmutableArray<ArgumentSyntax> arguments, string expectedDeclaration)
+	void NSArrayFromHandleFuncTests (TypeSyntax returnType, ImmutableArray<ArgumentSyntax> arguments, string expectedDeclaration)
 	{
 		var declaration = NSArrayFromHandleFunc (returnType, arguments);
 		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
@@ -383,16 +387,14 @@ public class BindingSyntaxFactoryRuntimeTests {
 				ReturnTypeForEnum ("AVFoundation.AVCaptureSystemPressureLevel", isSmartEnum: true),
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1"))),
-				false,
-				"global::AVFoundation.AVCaptureSystemPressureLevelExtensions.GetValue (arg1)"
+				$"{Global ("AVFoundation.AVCaptureSystemPressureLevelExtensions")}.GetValue (arg1)"
 			];
 
 			yield return [
-				ReturnTypeForEnum ("AVFoundation.AVCaptureSystemPressureLevel", isSmartEnum: true),
+				ReturnTypeForEnum ("AVFoundation.AVCaptureSystemPressureLevel", isSmartEnum: true, isNullable: true),
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1"))),
-				true,
-				"global::AVFoundation.AVCaptureSystemPressureLevelExtensions.GetNullableValue (arg1)"
+				$"{Global ("AVFoundation.AVCaptureSystemPressureLevelExtensions")}.GetNullableValue (arg1)"
 			];
 		}
 
@@ -401,9 +403,9 @@ public class BindingSyntaxFactoryRuntimeTests {
 
 	[Theory]
 	[ClassData (typeof (TestDataSmartEnumGetValue))]
-	void SmartEnumGetValueTests (TypeInfo enumType, ImmutableArray<ArgumentSyntax> arguments, bool isNullable, string expectedDeclaration)
+	void SmartEnumGetValueTests (TypeInfo enumType, ImmutableArray<ArgumentSyntax> arguments, string expectedDeclaration)
 	{
-		var declaration = SmartEnumGetValue (enumType, arguments, isNullable);
+		var declaration = SmartEnumGetValue (enumType, arguments);
 		var str = declaration.ToString ();
 		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
 	}
@@ -414,7 +416,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 			yield return [
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1"))),
-				"global::Foundation.NSArray.FromNSObjects (arg1)"
+				$"{Global ("Foundation.NSArray")}.FromNSObjects (arg1)"
 			];
 
 			yield return [
@@ -422,7 +424,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 					Argument (IdentifierName ("arg1")),
 					Argument (IdentifierName ("arg2")),
 					Argument (IdentifierName ("arg3"))),
-				"global::Foundation.NSArray.FromNSObjects (arg1, arg2, arg3)"
+				$"{Global ("Foundation.NSArray")}.FromNSObjects (arg1, arg2, arg3)"
 			];
 		}
 
@@ -443,17 +445,15 @@ public class BindingSyntaxFactoryRuntimeTests {
 			yield return [
 				SmartEnumGetValue (
 					ReturnTypeForEnum ("AVFoundation.AVCaptureSystemPressureLevel", isSmartEnum: true),
-					[Argument (IdentifierName ("arg1"))],
-					false),
-				"global::AVFoundation.AVCaptureSystemPressureLevelExtensions.GetValue (arg1).GetHandle ()"
+					[Argument (IdentifierName ("arg1"))]),
+				$"{Global ("AVFoundation.AVCaptureSystemPressureLevelExtensions")}.GetValue (arg1).GetHandle ()"
 			];
 
 			yield return [
 				SmartEnumGetValue (
-					ReturnTypeForEnum ("AVFoundation.AVCaptureSystemPressureLevel", isSmartEnum: true),
-					[Argument (IdentifierName ("arg1"))],
-					true),
-				"global::AVFoundation.AVCaptureSystemPressureLevelExtensions.GetNullableValue (arg1).GetHandle ()"
+					ReturnTypeForEnum ("AVFoundation.AVCaptureSystemPressureLevel", isSmartEnum: true, isNullable: true),
+					[Argument (IdentifierName ("arg1"))]),
+				$"{Global ("AVFoundation.AVCaptureSystemPressureLevelExtensions")}.GetNullableValue (arg1).GetHandle ()"
 			];
 		}
 
@@ -476,15 +476,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 			yield return [
 				ReturnTypeForNSObject ("AudioToolbox.AudioBuffers"),
 				ImmutableArray<ArgumentSyntax>.Empty,
-				false,
-				"new AudioToolbox.AudioBuffers ()"
-			];
-
-			yield return [
-				ReturnTypeForNSObject ("AudioToolbox.AudioBuffers"),
-				ImmutableArray<ArgumentSyntax>.Empty,
-				true,
-				"new global::AudioToolbox.AudioBuffers ()"
+				$"new {Global ("AudioToolbox.AudioBuffers")} ()"
 			];
 
 			// single param
@@ -493,39 +485,17 @@ public class BindingSyntaxFactoryRuntimeTests {
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1"))
 				),
-				false,
-				"new AudioToolbox.AudioBuffers (arg1)"
-			];
-
-			yield return [
-				ReturnTypeForNSObject ("AudioToolbox.AudioBuffers"),
-				ImmutableArray.Create (
-					Argument (IdentifierName ("arg1"))
-				),
-				true,
-				"new global::AudioToolbox.AudioBuffers (arg1)"
+				$"new {Global ("AudioToolbox.AudioBuffers")} (arg1)"
 			];
 
 			// several params
-
 			yield return [
 				ReturnTypeForNSObject ("AudioToolbox.AudioBuffers"),
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1")),
 					Argument (IdentifierName ("arg2"))
 				),
-				false,
-				"new AudioToolbox.AudioBuffers (arg1, arg2)"
-			];
-
-			yield return [
-				ReturnTypeForNSObject ("AudioToolbox.AudioBuffers"),
-				ImmutableArray.Create (
-					Argument (IdentifierName ("arg1")),
-					Argument (IdentifierName ("arg2"))
-				),
-				true,
-				"new global::AudioToolbox.AudioBuffers (arg1, arg2)"
+				$"new {Global ("AudioToolbox.AudioBuffers")} (arg1, arg2)"
 			];
 
 			// out params
@@ -537,20 +507,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 						.WithRefOrOutKeyword (Token (SyntaxKind.OutKeyword))
 						.NormalizeWhitespace ()
 				),
-				false,
-				"new AudioToolbox.AudioBuffers (arg1, out arg2)"
-			];
-
-			yield return [
-				ReturnTypeForNSObject ("AudioToolbox.AudioBuffers"),
-				ImmutableArray.Create (
-					Argument (IdentifierName ("arg1")),
-					Argument (IdentifierName ("arg2"))
-						.WithRefOrOutKeyword (Token (SyntaxKind.OutKeyword))
-						.NormalizeWhitespace ()
-				),
-				true,
-				"new global::AudioToolbox.AudioBuffers (arg1, out arg2)"
+				$"new {Global ("AudioToolbox.AudioBuffers")} (arg1, out arg2)"
 			];
 		}
 
@@ -559,51 +516,62 @@ public class BindingSyntaxFactoryRuntimeTests {
 
 	[Theory]
 	[ClassData (typeof (TestDataNew))]
-	void NewTests (TypeInfo typeInfo, ImmutableArray<ArgumentSyntax> arguments, bool global, string expectedDeclaration)
+	void NewTests (TypeInfo typeInfo, ImmutableArray<ArgumentSyntax> arguments, string expectedDeclaration)
 	{
-		var declaration = New (typeInfo, arguments, global);
+		var declaration = New (typeInfo, arguments);
 		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
+	}
+
+	[Fact]
+	void NewTestsKnownType ()
+	{
+		var expected = $"new {Global ("AudioToolbox.AudioBuffers")} (arg1, arg2)";
+		var declaration = New (AudioBuffers, [
+			Argument (IdentifierName ("arg1")),
+			Argument (IdentifierName ("arg2"))
+		]);
+		Assert.Equal (expected, declaration.ToFullString ());
 	}
 
 	class TestDataGetNSObject : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()
 		{
 			yield return [
-				"NSString",
+				"NSString".GetIdentifierName (["Foundation"]),
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1"))),
 				false,
-				"global::ObjCRuntime.Runtime.GetNSObject<NSString> (arg1)"
+				$"{Global ("ObjCRuntime.Runtime")}.GetNSObject<{Global ("Foundation.NSString")}> (arg1)"
 			];
 
 			yield return [
-				"NSString",
+				"NSString".GetIdentifierName (["Foundation"]),
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1"))),
 				true,
-				"global::ObjCRuntime.Runtime.GetNSObject<NSString> (arg1)!"
+				$"{Global ("ObjCRuntime.Runtime")}.GetNSObject<{Global ("Foundation.NSString")}> (arg1)!"
 			];
 
 			yield return [
-				"NSNumber",
+				"NSNumber".GetIdentifierName (["Foundation"]),
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1")),
 					Argument (IdentifierName ("arg2")),
 					Argument (IdentifierName ("arg3"))
 				),
 				false,
-				"global::ObjCRuntime.Runtime.GetNSObject<NSNumber> (arg1, arg2, arg3)"
+				$"{Global ("ObjCRuntime.Runtime")}.GetNSObject<{Global ("Foundation.NSNumber")}> (arg1, arg2, arg3)"
 			];
 
 			yield return [
-				"NSNumber",
+				"NSNumber".GetIdentifierName (["Foundation"]),
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1")),
 					Argument (IdentifierName ("arg2")),
 					Argument (IdentifierName ("arg3"))
 				),
 				true,
-				"global::ObjCRuntime.Runtime.GetNSObject<NSNumber> (arg1, arg2, arg3)!"
+				$"{Global ("ObjCRuntime.Runtime")}.GetNSObject<{Global ("Foundation.NSNumber")}> (arg1, arg2, arg3)!"
 			];
 		}
 
@@ -612,7 +580,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 
 	[Theory]
 	[ClassData (typeof (TestDataGetNSObject))]
-	void GetNSObjectTests (string nsObjecttype, ImmutableArray<ArgumentSyntax> arguments, bool suppressNullable, string expectedDeclaration)
+	void GetNSObjectTests (TypeSyntax nsObjecttype, ImmutableArray<ArgumentSyntax> arguments, bool suppressNullable, string expectedDeclaration)
 	{
 		var declaration = GetNSObject (nsObjecttype, arguments, suppressNullable);
 		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
@@ -622,41 +590,41 @@ public class BindingSyntaxFactoryRuntimeTests {
 		public IEnumerator<object []> GetEnumerator ()
 		{
 			yield return [
-				"NSString",
+				"NSString".GetIdentifierName (["Foundation"]),
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1"))),
 				false,
-				"global::ObjCRuntime.Runtime.GetINativeObject<NSString> (arg1)"
+				$"{Global ("ObjCRuntime.Runtime")}.GetINativeObject<{Global ("Foundation.NSString")}> (arg1)"
 			];
 
 			yield return [
-				"NSString",
+				"NSString".GetIdentifierName (["Foundation"]),
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1"))),
 				true,
-				"global::ObjCRuntime.Runtime.GetINativeObject<NSString> (arg1)!"
+				$"{Global ("ObjCRuntime.Runtime")}.GetINativeObject<{Global ("Foundation.NSString")}> (arg1)!"
 			];
 
 			yield return [
-				"NSNumber",
+				"NSNumber".GetIdentifierName (["Foundation"]),
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1")),
 					Argument (IdentifierName ("arg2")),
 					Argument (IdentifierName ("arg3"))
 				),
 				false,
-				"global::ObjCRuntime.Runtime.GetINativeObject<NSNumber> (arg1, arg2, arg3)"
+				$"{Global ("ObjCRuntime.Runtime")}.GetINativeObject<{Global ("Foundation.NSNumber")}> (arg1, arg2, arg3)"
 			];
 
 			yield return [
-				"NSNumber",
+				"NSNumber".GetIdentifierName (["Foundation"]),
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1")),
 					Argument (IdentifierName ("arg2")),
 					Argument (IdentifierName ("arg3"))
 				),
 				true,
-				"global::ObjCRuntime.Runtime.GetINativeObject<NSNumber> (arg1, arg2, arg3)!"
+				$"{Global ("ObjCRuntime.Runtime")}.GetINativeObject<{Global ("Foundation.NSNumber")}> (arg1, arg2, arg3)!"
 			];
 		}
 
@@ -665,7 +633,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 
 	[Theory]
 	[ClassData (typeof (TestGetINativeObject))]
-	void GetINativeObjectTests (string iNativeObject, ImmutableArray<ArgumentSyntax> arguments, bool suppressNullable, string expectedDeclaration)
+	void GetINativeObjectTests (TypeSyntax iNativeObject, ImmutableArray<ArgumentSyntax> arguments, bool suppressNullable, string expectedDeclaration)
 	{
 		var declaration = GetINativeObject (iNativeObject, arguments, suppressNullable);
 		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
@@ -681,7 +649,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 					[Argument (IdentifierName ("enumPtr"))]
 					),
 				false,
-				"enumPtr == IntPtr.Zero ? null : global::AVFoundation.AVCaptureSystemPressureLevelExtensions.GetValue (enumPtr)"
+				$"enumPtr == IntPtr.Zero ? null : {Global ("AVFoundation.AVCaptureSystemPressureLevelExtensions")}.GetValue (enumPtr)"
 			];
 
 			yield return [
@@ -691,7 +659,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 					[Argument (IdentifierName ("enumPtr"))]
 					),
 				true,
-				"enumPtr == IntPtr.Zero ? null! : global::AVFoundation.AVCaptureSystemPressureLevelExtensions.GetValue (enumPtr)"
+				$"enumPtr == IntPtr.Zero ? null! : {Global ("AVFoundation.AVCaptureSystemPressureLevelExtensions")}.GetValue (enumPtr)"
 			];
 		}
 
@@ -712,7 +680,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 			yield return [
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1"))),
-				"global::ObjCRuntime.Runtime.RetainAndAutoreleaseNSObject (arg1)",
+				$"{Global ("ObjCRuntime.Runtime")}.RetainAndAutoreleaseNSObject (arg1)",
 			];
 
 			yield return [
@@ -721,7 +689,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 					Argument (IdentifierName ("arg2")),
 					Argument (IdentifierName ("arg3"))
 				),
-				"global::ObjCRuntime.Runtime.RetainAndAutoreleaseNSObject (arg1, arg2, arg3)",
+				$"{Global ("ObjCRuntime.Runtime")}.RetainAndAutoreleaseNSObject (arg1, arg2, arg3)",
 			];
 		}
 
@@ -742,7 +710,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 			yield return [
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1"))),
-				"global::ObjCRuntime.Runtime.RetainAndAutoreleaseNativeObject (arg1)",
+				$"{Global ("ObjCRuntime.Runtime")}.RetainAndAutoreleaseNativeObject (arg1)",
 			];
 
 			yield return [
@@ -751,7 +719,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 					Argument (IdentifierName ("arg2")),
 					Argument (IdentifierName ("arg3"))
 				),
-				"global::ObjCRuntime.Runtime.RetainAndAutoreleaseNativeObject (arg1, arg2, arg3)",
+				$"{Global ("ObjCRuntime.Runtime")}.RetainAndAutoreleaseNativeObject (arg1, arg2, arg3)",
 			];
 		}
 
@@ -770,20 +738,20 @@ public class BindingSyntaxFactoryRuntimeTests {
 		public IEnumerator<object []> GetEnumerator ()
 		{
 			yield return [
-				"NSObject",
+				"NSObject".GetIdentifierName (["Foundation"]),
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1"))),
-				"global::CoreFoundation.CFArray.ArrayFromHandle<NSObject> (arg1)",
+				$"{Global ("CoreFoundation.CFArray")}.ArrayFromHandle<{Global ("Foundation.NSObject")}> (arg1)",
 			];
 
 			yield return [
-				"NSString",
+				"NSString".GetIdentifierName (["Foundation"]),
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1")),
 					Argument (IdentifierName ("arg2")),
 					Argument (IdentifierName ("arg3"))
 				),
-				"global::CoreFoundation.CFArray.ArrayFromHandle<NSString> (arg1, arg2, arg3)",
+				$"{Global ("CoreFoundation.CFArray")}.ArrayFromHandle<{Global ("Foundation.NSString")}> (arg1, arg2, arg3)",
 			];
 		}
 
@@ -792,7 +760,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 
 	[Theory]
 	[ClassData (typeof (TestDataGetCFArrayFromHandle))]
-	void GetCFArrayFromHandleTests (string objectType, ImmutableArray<ArgumentSyntax> arguments, string expectedDeclaration)
+	void GetCFArrayFromHandleTests (TypeSyntax objectType, ImmutableArray<ArgumentSyntax> arguments, string expectedDeclaration)
 	{
 		var declaration = GetCFArrayFromHandle (objectType, arguments);
 		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
@@ -802,20 +770,20 @@ public class BindingSyntaxFactoryRuntimeTests {
 		public IEnumerator<object []> GetEnumerator ()
 		{
 			yield return [
-				"NSObject",
+				"NSObject".GetIdentifierName (["Foundation"]),
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1"))),
-				"global::Foundation.NSArray.ArrayFromHandle<NSObject> (arg1)",
+				$"{Global ("Foundation.NSArray")}.ArrayFromHandle<{Global ("Foundation.NSObject")}> (arg1)",
 			];
 
 			yield return [
-				"NSString",
+				"NSString".GetIdentifierName (["Foundation"]),
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1")),
 					Argument (IdentifierName ("arg2")),
 					Argument (IdentifierName ("arg3"))
 				),
-				"global::Foundation.NSArray.ArrayFromHandle<NSString> (arg1, arg2, arg3)",
+				$"{Global ("Foundation.NSArray")}.ArrayFromHandle<{Global ("Foundation.NSString")}> (arg1, arg2, arg3)",
 			];
 		}
 
@@ -824,7 +792,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 
 	[Theory]
 	[ClassData (typeof (TestDataGetNSArrayFromHandle))]
-	void GetNSArrayFromHandleTests (string objectType, ImmutableArray<ArgumentSyntax> arguments, string expectedDeclaration)
+	void GetNSArrayFromHandleTests (TypeSyntax objectType, ImmutableArray<ArgumentSyntax> arguments, string expectedDeclaration)
 	{
 		var declaration = GetNSArrayFromHandle (objectType, arguments);
 		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
@@ -835,14 +803,14 @@ public class BindingSyntaxFactoryRuntimeTests {
 		{
 			// no namespace
 			yield return [
-				null!,
+				Array.Empty<string> (),
 				"NSObject",
 				false,
 				"NSObject",
 			];
 
 			yield return [
-				null!,
+				Array.Empty<string> (),
 				"NSObject",
 				true,
 				"NSObject",
@@ -861,7 +829,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 				new [] { "Foundation" },
 				"NSObject",
 				true,
-				"global::Foundation.NSObject",
+				Global ("Foundation.NSObject"),
 			];
 
 			// multiple namespaces
@@ -885,7 +853,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 				},
 				"Unsafe",
 				true,
-				"global::System.Runtime.CompilerServices.Unsafe"
+				Global ("System.Runtime.CompilerServices.Unsafe")
 			];
 		}
 
@@ -894,9 +862,9 @@ public class BindingSyntaxFactoryRuntimeTests {
 
 	[Theory]
 	[ClassData (typeof (TestDataGetIdentifierNameTests))]
-	void GetIdentifierNameTests (string []? @namespace, string @class, bool isGlobal, string expectedDeclaration)
+	void GetIdentifierNameTests (string [] @namespace, string @class, bool isGlobal, string expectedDeclaration)
 	{
-		var declaration = GetIdentifierName (@namespace, @class, isGlobal);
+		var declaration = @class.GetIdentifierName (@namespace, isGlobal);
 		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
 	}
 
@@ -904,20 +872,20 @@ public class BindingSyntaxFactoryRuntimeTests {
 		public IEnumerator<object []> GetEnumerator ()
 		{
 			yield return [
-				"NSObject",
+				"NSObject".GetIdentifierName (["Foundation"]),
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1"))
 				),
-				"global::System.Runtime.CompilerServices.Unsafe.AsRef<NSObject> (arg1)"
+				$"{Global ("System.Runtime.CompilerServices.Unsafe")}.AsRef<{Global ("Foundation.NSObject")}> (arg1)"
 			];
 
 			yield return [
-				"NSString",
+				"NSString".GetIdentifierName (["Foundation"]),
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1")),
 					Argument (IdentifierName ("arg2")),
 					Argument (IdentifierName ("arg3"))),
-				"global::System.Runtime.CompilerServices.Unsafe.AsRef<NSString> (arg1, arg2, arg3)"
+				$"{Global ("System.Runtime.CompilerServices.Unsafe")}.AsRef<{Global ("Foundation.NSString")}> (arg1, arg2, arg3)"
 			];
 		}
 
@@ -926,9 +894,53 @@ public class BindingSyntaxFactoryRuntimeTests {
 
 	[Theory]
 	[ClassData (typeof (TestDataAsRefTests))]
-	void AsRefTests (string objectType, ImmutableArray<ArgumentSyntax> arguments, string expectedDeclaration)
+	void AsRefTests (TypeSyntax objectType, ImmutableArray<ArgumentSyntax> arguments, string expectedDeclaration)
 	{
 		var declaration = AsRef (objectType, arguments);
+		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
+	}
+
+	class TestDataAsPointerTests : IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
+		{
+			yield return [
+				IdentifierName ("int"),
+				null!,
+				ImmutableArray.Create (
+					Argument (IdentifierName ("arg1"))
+				),
+				$"(int*) {Global ("System.Runtime.CompilerServices.Unsafe")}.AsPointer<int> (arg1)"
+			];
+
+			yield return [
+				IdentifierName ("uint"),
+				null!,
+				ImmutableArray.Create (
+					Argument (IdentifierName ("arg1")),
+					Argument (IdentifierName ("arg2")),
+					Argument (IdentifierName ("arg3"))),
+				$"(uint*) {Global ("System.Runtime.CompilerServices.Unsafe")}.AsPointer<uint> (arg1, arg2, arg3)"
+			];
+
+			// test case with explicit castType
+			yield return [
+				IdentifierName ("bool"),
+				PredefinedType (Token (SyntaxKind.ByteKeyword)),
+				ImmutableArray.Create (
+					Argument (IdentifierName ("arg1"))
+				),
+				$"(byte*) {Global ("System.Runtime")}.CompilerServices.Unsafe.AsPointer<bool> (arg1)"
+			];
+		}
+
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
+	}
+
+	[Theory]
+	[ClassData (typeof (TestDataAsPointerTests))]
+	void AsPointerTests (TypeSyntax objectType, TypeSyntax? castType, ImmutableArray<ArgumentSyntax> arguments, string expectedDeclaration)
+	{
+		var declaration = AsPointer (objectType, arguments, castType);
 		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
 	}
 
@@ -936,20 +948,20 @@ public class BindingSyntaxFactoryRuntimeTests {
 		public IEnumerator<object []> GetEnumerator ()
 		{
 			yield return [
-				"MyDelegateType",
+				"MyDelegateType".GetIdentifierName (["NS"]),
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1"))
 				),
-				"global::System.Runtime.InteropServices.Marshal.GetDelegateForFunctionPointer<MyDelegateType> (arg1)"
+				$"{Global ("System.Runtime.InteropServices.Marshal")}.GetDelegateForFunctionPointer<{Global ("NS.MyDelegateType")}> (arg1)"
 			];
 
 			yield return [
-				"Action<string>",
+				"Action<string>".GetIdentifierName (["System"]),
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1")),
 					Argument (IdentifierName ("arg2")),
 					Argument (IdentifierName ("arg3"))),
-				"global::System.Runtime.InteropServices.Marshal.GetDelegateForFunctionPointer<Action<string>> (arg1, arg2, arg3)"
+				$"{Global ("System.Runtime.InteropServices.Marshal")}.GetDelegateForFunctionPointer<{Global ("System.Action<string>")}> (arg1, arg2, arg3)"
 			];
 		}
 
@@ -958,10 +970,39 @@ public class BindingSyntaxFactoryRuntimeTests {
 
 	[Theory]
 	[ClassData (typeof (TestDataGetDelegateForFunctionPointer))]
-	void GetDelegateForFunctionPointerTests (string objectType, ImmutableArray<ArgumentSyntax> arguments, string expectedDeclaration)
+	void GetDelegateForFunctionPointerTests (TypeSyntax objectType, ImmutableArray<ArgumentSyntax> arguments, string expectedDeclaration)
 	{
 		var declaration = GetDelegateForFunctionPointer (objectType, arguments);
 		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
+	}
+
+	[Fact]
+	void ThrowIfNullTests ()
+	{
+		var variableName = "markers";
+		var declaration = ThrowIfNull (variableName);
+		var expected = $"if (markers is null)\n\t{Global ("ObjCRuntime.ThrowHelper")}.ThrowArgumentNullException (nameof (markers));";
+		Assert.Equal (expected, declaration.ToFullString ());
+	}
+
+	class TestDataArgumentSyntaxForParameterTests : IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
+		{
+			yield return ["arg1", ReferenceKind.None, "arg1"];
+			yield return ["arg2", ReferenceKind.In, "in arg2"];
+			yield return ["arg3", ReferenceKind.Out, "out arg3"];
+			yield return ["arg4", ReferenceKind.Ref, "ref arg4"];
+		}
+
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
+	}
+
+	[Theory]
+	[ClassData (typeof (TestDataArgumentSyntaxForParameterTests))]
+	void ArgumentSyntaxForParameterTests (string argumentName, ReferenceKind referenceKind, string expectedSyntax)
+	{
+		var argumentSyntax = ArgumentForParameter (argumentName, referenceKind);
+		Assert.Equal (expectedSyntax, argumentSyntax.ToFullString ());
 	}
 
 }

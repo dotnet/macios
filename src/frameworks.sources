@@ -85,7 +85,6 @@ APPKIT_CORE_SOURCES = \
 	AppKit/Defs.cs \
 	AppKit/NSAccessibility.cs \
 	XKit/Types.cs \
-	XKit/XKitCompat.cs \
 
 APPKIT_SOURCES = \
 	AppKit/ActionDispatcher.cs \
@@ -321,7 +320,6 @@ BUSINESSCHAT_SOURCES = \
 # CallKit
 
 CALLKIT_SOURCES = \
-	CallKit/CXCompat.cs \
 	CallKit/CXProvider.cs \
 
 # CarPlay
@@ -340,21 +338,12 @@ CARPLAY_SOURCES = \
 CLASSKIT_SOURCES = \
 	ClassKit/CLSContext.cs \
 
-# ClockKit
-
-CLOCKKIT_CORE_SOURCES = \
-	ClockKit/CLKEnums.cs \
-
-CLOCKKIT_SOURCES = \
-	ClockKit/CLKComplication.cs \
-
 # CloudKit
 
 CLOUDKIT_API_SOURCES = \
 	CloudKit/Enums.cs \
 
 CLOUDKIT_SOURCES = \
-	CloudKit/CKCompat.cs \
 	CloudKit/CKFetchNotificationChangesOperation.cs \
 	CloudKit/CKMarkNotificationsReadOperation.cs \
 	CloudKit/CKModifyBadgeOperation.cs \
@@ -412,13 +401,11 @@ COREANIMATION_CORE_SOURCES = \
 
 COREANIMATION_SOURCES = \
 	CoreAnimation/CABasicAnimation.cs \
-	CoreAnimation/CACompat.cs \
 	CoreAnimation/CADefs.cs \
 	CoreAnimation/CALayer.cs \
 	CoreAnimation/CAKeyFrameAnimation.cs \
 	CoreAnimation/CALayerDelegate.cs \
 	CoreAnimation/CAMediaTimingFunction.cs \
-	CoreAnimation/CAScrollLayer.cs \
 	CoreAnimation/CATextLayer.cs \
 	CoreAnimation/NSValue.cs \
 
@@ -446,7 +433,6 @@ COREDATA_API_SOURCES = \
 COREDATA_SOURCES = \
 	CoreData/NSEntityDescription.cs \
 	CoreData/NSPersistentStoreCoordinator.cs \
-	CoreData/Obsolete.cs \
 
 # CoreFoundation
 
@@ -573,7 +559,6 @@ CORELOCATION_CORE_SOURCES = \
 
 CORELOCATION_SOURCES = \
 	CoreLocation/CLBeaconRegion.cs \
-	CoreLocation/CLCompat.cs \
 	CoreLocation/CLLocationManager.cs \
 	CoreLocation/NSValue.cs \
 
@@ -754,7 +739,6 @@ EVENTKIT_API_SOURCES = \
 	EventKit/EKEnums.cs
 
 EVENTKIT_SOURCES = \
-	EventKit/EventKit.cs \
 
 # EventKitUI
 
@@ -775,7 +759,6 @@ FILEPROVIDER_CORE_SOURCES = \
 	FileProvider/Structs.cs \
 
 FILEPROVIDER_SOURCES = \
-	FileProvider/Compat.cs \
 
 # FinderSync
 
@@ -800,7 +783,6 @@ FOUNDATION_CORE_SOURCES = \
 	Foundation/ModelNotImplementedException.cs \
 	Foundation/NotImplementedAttribute.cs \
 	Foundation/NSAction.cs \
-	Foundation/NSAutoreleasePool.cs \
 	Foundation/NSDecimal.cs \
 	Foundation/NSDimension.cs \
 	Foundation/NSError.cs \
@@ -816,7 +798,6 @@ FOUNDATION_CORE_SOURCES = \
 	Foundation/PreserveAttribute.cs \
 	Foundation/ProtocolAttribute.cs \
 	Foundation/RegisterAttribute.cs \
-	Foundation/NSObject.iOS.cs \
 	Foundation/NSAttributedStringDocumentAttributes.cs  \
 	Foundation/NSObject.mac.cs \
 	Foundation/NSDateComponents.cs \
@@ -852,7 +833,6 @@ FOUNDATION_SOURCES = \
 	Foundation/NSFastEnumerator.cs \
 	Foundation/NSFileManager.cs \
 	Foundation/NSFileManagerDelegate.cs \
-	Foundation/NSFormatter.cs \
 	Foundation/NSHost.cs \
 	Foundation/NSHttpCookie.cs \
 	Foundation/NSIndexPath.cs \
@@ -899,14 +879,11 @@ FOUNDATION_SOURCES = \
 	Foundation/NSTimeZone.cs \
 	Foundation/NSUbiquitousKeyValueStore.cs \
 	Foundation/NSUndoManager.cs \
-	Foundation/NSUnit.cs \
 	Foundation/NSUrl.cs \
 	Foundation/NSUrlComponents.cs \
 	Foundation/NSUrlCredential.cs \
 	Foundation/NSUrlDownload.cs \
 	Foundation/NSUrlProtectionSpace.cs \
-	Foundation/NSUrlProtocol.cs \
-	Foundation/NSUrlProtocolClient.cs \
 	Foundation/NSUrlSession.cs \
 	Foundation/NSUrlSessionConfiguration.cs \
 	Foundation/NSUserDefaults.cs \
@@ -919,16 +896,12 @@ FOUNDATION_SOURCES = \
 
 # FSKit
 
-# FSKit was removed from Xcode 16 RC, but keeping it commented, because it's likely to return in a later release
+FSKIT_CORE_SOURCES = \
 
-# FSKIT_CORE_SOURCES = \
-# 	FSKit/FSMetaReadahead.cs \
-
-# FSKIT_SOURCES = \
-# 	FSKit/FSBlockDeviceResource.cs \
-# 	FSKit/FSFileName.cs \
-# 	FSKit/FSKitFunctions.cs \
-# 	FSKit/FSMessageConnection.cs \
+FSKIT_SOURCES = \
+	FSKit/FSBlockDeviceResource.cs \
+	FSKit/FSFileName.cs \
+	FSKit/FSKitFunctions.cs \
 
 # GameController
 
@@ -964,7 +937,6 @@ GAMEPLAYKIT_CORE_SOURCES = \
 
 GAMEPLAYKIT_SOURCES = \
 	GameplayKit/GKBehavior.cs \
-	GameplayKit/GKCompat.cs \
 	GameplayKit/GKComponentSystem.cs \
 	GameplayKit/GKCompositeBehavior.cs \
 	GameplayKit/GKEntity.cs \
@@ -993,7 +965,6 @@ HEALTHKIT_API_SOURCES = \
 	HealthKit/Enums.cs \
 
 HEALTHKIT_SOURCES = \
-	HealthKit/EnumsCompat.cs \
 	HealthKit/HKAppleSleepingBreathingDisturbances.cs \
 	HealthKit/HKAppleWalkingSteadiness.cs \
 	HealthKit/HKAnchoredObjectQuery.cs \
@@ -1079,7 +1050,6 @@ ITUNESLIBRARY_API_SOURCES = \
 	iTunesLibrary/Enums.cs \
 
 ITUNESLIBRARY_SOURCES = \
-	iTunesLibrary/ITCompat.cs \
 
 # JavaScriptCore
 
@@ -1107,7 +1077,6 @@ MAPKIT_CORE_SOURCES = \
 
 MAPKIT_SOURCES = \
 	MapKit/MKAddressFilter.cs \
-	MapKit/MKCompat.cs \
 	MapKit/MKFeatureDisplayPriority.cs \
 	MapKit/MKGeodesicPolyline.cs \
 	MapKit/MKLocalSearch.cs \
@@ -1281,8 +1250,6 @@ MODELIO_SOURCES = \
 	ModelIO/MDLAsset.cs \
 	ModelIO/MDLMaterial.cs \
 	ModelIO/MDLNoiseTexture.cs \
-	ModelIO/MDLTransform.cs \
-	ModelIO/MDLTransformComponent.cs \
 	ModelIO/MDLVertexDescriptor.cs \
 	ModelIO/MDLMesh.cs \
 
@@ -1447,7 +1414,6 @@ PDFKIT_API_SOURCES = \
 
 PDFKIT_SOURCES = \
 	PdfKit/PdfAnnotation.cs \
-	PdfKit/PdfCompat.cs \
 	PdfKit/PdfKit.cs \
 
 # Photos
@@ -1458,7 +1424,6 @@ PHOTOS_API_SOURCES = \
 PHOTOS_SOURCES = \
 	Photos/PHAssetChangeRequest.cs \
 	Photos/PHAssetCreationRequest.cs \
-	Photos/PHCompat.cs \
 	Photos/PHFetchResult.cs \
 	Photos/PHLivePhoto.cs \
 	Photos/PHPhotoLibrary.cs \
@@ -1690,7 +1655,6 @@ UIKIT_CORE_SOURCES = \
     UIKit/UIStringAttributes.cs \
     UIKit/UITypes.cs \
     XKit/Types.cs \
-    XKit/XKitCompat.cs \
 
 UIKIT_SOURCES = \
 	UIKit/Compat.cs \
@@ -1806,7 +1770,6 @@ VIDEOTOOLBOX_SOURCES = \
 VISION_SOURCES = \
 	Vision/VNBarcodeSymbologyExtensions.cs \
 	Vision/VNCircle.cs \
-	Vision/VNCompat.cs \
 	Vision/VNDetectBarcodesRequest.cs \
 	Vision/VNFaceLandmarkRegion2D.cs \
 	Vision/VNFeaturePrintObservation.cs \
@@ -1836,7 +1799,6 @@ WEBKIT_SOURCES = \
 	WebKit/WebNavigationPolicyEventArgs.cs \
 	WebKit/WebPolicyDelegate.cs \
 	WebKit/WebView.cs \
-	WebKit/WKCompat.cs \
 	WebKit/WKPreferences.cs \
 	WebKit/WKWebExtensionMatchPattern.cs \
 	WebKit/WKWindowFeatures.cs \
@@ -2024,6 +1986,7 @@ MACOS_FRAMEWORKS =          \
 	FileProvider	\
 	FileProviderUI	\
 	FinderSync		\
+	FSKit                   \
 	GameController          \
 	GameplayKit             \
 	GLKit                   \

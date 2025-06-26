@@ -9,11 +9,7 @@ using Phase;
 
 using NUnit.Framework;
 
-#if NET
 using Vector2d = global::CoreGraphics.NVector2d;
-#else
-using OpenTK;
-#endif
 
 #nullable enable
 

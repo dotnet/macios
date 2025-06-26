@@ -41,12 +41,21 @@
 			DestinationFiles="$(AppBundleDir)/$(SharedSupportDir)/lib3.dylib">
 		</Copy>
 
+		<Copy
+			Condition="'$(RuntimeIdentifiers)' ==''"
+			SourceFiles="$(MSBuildThisFileDirectory)/../../test-libraries/libraries/.libs/$(RuntimeIdentifier)/libNoneE.dylib"
+			DestinationFiles="$(AppBundleDir)/$(SharedSupportDir)/app3.app/$(DylibDir)/lib3.dylib">
+		</Copy>
+
 		<WriteLinesToFile File="$(AppBundleDir)/$(SharedSupportDir)/app1.app/$(AppExecutableDir)/app1" Lines="app1" Overwrite="true" />
 		<WriteLinesToFile File="$(AppBundleDir)/$(SharedSupportDir)/app2.app/$(AppExecutableDir)/app2" Lines="app2" Overwrite="true" />
+		<WriteLinesToFile File="$(AppBundleDir)/$(SharedSupportDir)/app3.app/$(AppExecutableDir)/app3" Lines="app3" Overwrite="true" />
 
 		<ItemGroup>
 			<!-- Sign the first bundle -->
 			<CodesignBundle Include="$(AssemblyName).app/$(SharedSupportDir)/app1.app" />
+			<!-- Sign the third bundle, which has a dylib -->
+			<CodesignBundle Include="$(AssemblyName).app/$(SharedSupportDir)/app3.app" />
 			<!-- But not the second, and that includes the *.dylib inside too -->
 			<SkipCodesignItems Include="$(SharedSupportDir)/app2.app" />
 			<!-- Don't sign this dylib located outside an app bundle either -->

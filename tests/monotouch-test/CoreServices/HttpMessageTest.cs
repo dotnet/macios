@@ -9,11 +9,7 @@
 
 using System;
 using System.Net;
-#if NET
 using CFNetwork;
-#else
-using CoreServices;
-#endif
 using Foundation;
 using CoreFoundation;
 using NUnit.Framework;

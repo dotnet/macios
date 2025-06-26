@@ -112,7 +112,7 @@ namespace Xamarin.MacDev.Tasks {
 			var task = CreateTask (skipStaticLibraryValidation, "/does/not/exist");
 			ExecuteTask (task, expectedErrorCount: 1);
 			Assert.AreEqual (0, Engine.Logger.WarningsEvents.Count, "Warning Count");
-			Assert.AreEqual ($"The file '/does/not/exist' does not exist.", Engine.Logger.ErrorEvents [0].Message.TrimEnd (), "Error Message");
+			Assert.AreEqual ($"The file '/does/not/exist' does not exist.", Engine.Logger.ErrorEvents [0].Message?.TrimEnd (), "Error Message");
 		}
 
 		[Test]
@@ -122,7 +122,7 @@ namespace Xamarin.MacDev.Tasks {
 			var task = CreateTask (skipStaticLibraryValidation, "/does/not/exist");
 			ExecuteTask (task, expectedErrorCount: 0);
 			Assert.AreEqual (1, Engine.Logger.WarningsEvents.Count, "Warning Count");
-			Assert.AreEqual ($"The file '/does/not/exist' does not exist.", Engine.Logger.WarningsEvents [0].Message.TrimEnd (), "Error Message");
+			Assert.AreEqual ($"The file '/does/not/exist' does not exist.", Engine.Logger.WarningsEvents [0].Message?.TrimEnd (), "Error Message");
 		}
 	}
 }

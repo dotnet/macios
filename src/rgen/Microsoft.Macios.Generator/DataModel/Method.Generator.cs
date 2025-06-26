@@ -78,6 +78,11 @@ readonly partial struct Method {
 	/// </summary>
 	public bool IsProxy => ExportMethodData.Flags.HasFlag (ObjCBindings.Method.Proxy);
 
+	/// <summary>
+	/// True if the method was marked to be generated as an async method.
+	/// </summary>
+	public bool IsAsync => ExportMethodData.Flags.HasFlag (ObjCBindings.Method.Async);
+
 	public Method (string type, string name, TypeInfo returnType,
 		SymbolAvailability symbolAvailability,
 		ExportData<ObjCBindings.Method> exportMethodData,

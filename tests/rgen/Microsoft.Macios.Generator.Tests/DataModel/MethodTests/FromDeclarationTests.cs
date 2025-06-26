@@ -78,6 +78,87 @@ namespace NS {
 				)
 			];
 
+			const string asyncVoidMethodNoParamsExportDataMisingFlag = @"
+using System;
+using ObjCBindings;
+
+namespace NS {
+	public class MyClass {
+		[Export<Method>(""myMethod"", Flags = Method.Default,
+			ResultTypeName = ""NSObject"",
+			PostNonResultSnippet = ""throw new NotImplementedException();"")]
+		public void MyMethod () {}
+	}
+}
+";
+
+			yield return [
+				asyncVoidMethodNoParamsExportDataMisingFlag,
+				new Method (
+					type: "NS.MyClass",
+					name: "MyMethod",
+					returnType: ReturnTypeForVoid (),
+					symbolAvailability: new (),
+					exportMethodData: new ("myMethod"), // async valus are null
+					attributes: [
+						new (
+							name: "ObjCBindings.ExportAttribute<ObjCBindings.Method>", 
+							arguments: [
+								"myMethod", 
+								"ObjCBindings.Method.Default",
+								"NSObject", 
+								"throw new NotImplementedException();"
+							]),
+					],
+					modifiers: [
+						SyntaxFactory.Token (SyntaxKind.PublicKeyword),
+					],
+					parameters: []
+				)
+			];
+
+			const string asyncVoidMethodNoParamsExportDataAsyncFlag = @"
+using System;
+using ObjCBindings;
+
+namespace NS {
+	public class MyClass {
+		[Export<Method>(""myMethod"", Flags = Method.Default | Method.Async,
+			ResultTypeName = ""NSObject"",
+			PostNonResultSnippet = ""throw new NotImplementedException();"")]
+		public void MyMethod () {}
+	}
+}
+";
+
+			yield return [
+				asyncVoidMethodNoParamsExportDataAsyncFlag,
+				new Method (
+					type: "NS.MyClass",
+					name: "MyMethod",
+					returnType: ReturnTypeForVoid (),
+					symbolAvailability: new (),
+					exportMethodData: new ("myMethod") {
+						Flags = ObjCBindings.Method.Default | ObjCBindings.Method.Async,
+						ResultTypeName = "NSObject",
+						PostNonResultSnippet = "throw new NotImplementedException();",
+					},
+					attributes: [
+						new (
+							name: "ObjCBindings.ExportAttribute<ObjCBindings.Method>", 
+							arguments: [
+								"myMethod", 
+								"NSObject", 
+								"throw new NotImplementedException();"
+							]),
+					],
+					modifiers: [
+						SyntaxFactory.Token (SyntaxKind.PublicKeyword),
+					],
+					parameters: []
+				)
+			];
+
 			const string stringMethodNoParams = @"
 using System;
 

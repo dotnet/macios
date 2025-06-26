@@ -502,7 +502,7 @@ namespace NetworkExtension {
 		Network.NWEndpoint RemoteFlowEndpoint { get; }
 	}
 
-	delegate void NEDatagramRead (NSData [] datagrams, NWEndpoint [] remoteEndpoints, NSError error);
+	delegate void NEDatagramRead ([NullAllowed] NSData [] datagrams, [NullAllowed] NWEndpoint [] remoteEndpoints, [NullAllowed] NSError error);
 	delegate void NEDatagramAndFlowEndpointsRead ([NullAllowed] NSData [] datagrams, [NullAllowed] Network.NWEndpoint [] remoteEndpoints, [NullAllowed] NSError error);
 	delegate void NEDatagramWriteResult ([NullAllowed] NSError error);
 	/// <summary>Provides IO over a UDP socket.</summary>

@@ -168,7 +168,8 @@ static partial class BindingSyntaxFactory {
 			
 			// block delegate parameter is a NativeHandle
 			{ Type.IsDelegate: true, IsBlockCallback: true} => [
-				GetNullableBlockAuxVariable (argumentInfo),
+				GetNullableBlockAuxVariable (argumentInfo)
+					.WithUsingKeyword (Token (SyntaxKind.UsingKeyword).WithTrailingTrivia (Space)),
 				GetBlockLiteralAuxVariable (argumentInfo),
 			],
 			
@@ -178,7 +179,8 @@ static partial class BindingSyntaxFactory {
 			// this is the default behaviour with properties and methods. In that case we assume we are dealing with
 			// a block callback
 			{ Type.IsDelegate: true, IsBlockCallback: false, IsCCallback: false } => [
-				GetNullableBlockAuxVariable (argumentInfo),
+				GetNullableBlockAuxVariable (argumentInfo)
+					.WithUsingKeyword (Token (SyntaxKind.UsingKeyword).WithTrailingTrivia (Space)),
 				GetBlockLiteralAuxVariable (argumentInfo),
 			],
 			
@@ -277,7 +279,6 @@ static partial class BindingSyntaxFactory {
 			};
 #pragma warning restore format
 		}
-
 		// should contain any null check and the required conversions to the native type
 		builder.AddRange (conversions);
 		return builder.ToImmutable ();

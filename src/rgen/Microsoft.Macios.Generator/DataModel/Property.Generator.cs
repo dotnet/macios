@@ -106,6 +106,11 @@ readonly partial struct Property {
 	/// </summary>
 	public bool IsProxy => IsProperty && ExportPropertyData.Value.Flags.HasFlag (ObjCBindings.Property.Proxy);
 
+	/// <summary>
+	/// True if the property was marked as a weak delegate.
+	/// </summary>
+	public bool IsWeakDelegate => IsProperty && ExportPropertyData.Value.Flags.HasFlag (ObjCBindings.Property.WeakDelegate);
+
 	readonly bool? needsBackingField = null;
 	/// <summary>
 	/// States if the property, when generated, needs a backing field.

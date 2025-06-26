@@ -204,6 +204,9 @@ namespace ObjCBindings {
 		/// </summary>
 		Proxy = 1 << 14,
 
+		/// <summary>
+		/// Use this flag on a property to mark it as a weak delegate.
+		/// </summary>
+		WeakDelegate = 1 << 15,
 	}
 }
-

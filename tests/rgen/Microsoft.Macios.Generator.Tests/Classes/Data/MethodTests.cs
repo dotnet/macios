@@ -57,6 +57,8 @@ public partial class MethodTests {
 	[Export<Method> ("filteredArrayUsingPredicate:")]
 	public partial NSArray Filter (NSPredicate predicate);
 	
+#if !__TVOS__
+	
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
@@ -65,6 +67,8 @@ public partial class MethodTests {
 		Flags = ObjCBindings.Method.Async, 
 		ResultTypeName = "NSLoadFromHtmlResult")]
 	public partial static void LoadFromHtml (NSUrlRequest request, NSDictionary options, NSAttributedStringCompletionHandler completionHandler);
+	
+#endif
 	
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("tvos")]

@@ -14,6 +14,7 @@ using CoreGraphics;
 using Foundation;
 using ObjCBindings;
 using ObjCRuntime;
+using AudioUnit;
 
 namespace TestNamespace;
 
@@ -62,4 +63,7 @@ public partial class TrampolinePropertyTests {
 	// Property using AVAssetImageGenerator.AsynchronouslyForTimeCompletionHandler
 	[Export<Property> ("manualRenderingCallback", ArgumentSemantic.Copy)]
 	public partial AVAudioEngineManualRenderingBlock ManualRendering { get; set; }
+
+	[Export<Property> ("internalRenderBlockHandler", ArgumentSemantic.Copy)]
+	public partial AUInternalRenderBlock InternalRenderBlockHandler { get; set; }
 }

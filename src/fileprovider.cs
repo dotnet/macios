@@ -1059,7 +1059,7 @@ namespace FileProvider {
 	}
 
 	// typedef NSString *NSFileProviderDomainIdentifier NS_EXTENSIBLE_STRING_ENUM
-	delegate void NSFileProviderGetIdentifierHandler (/* /NSFileProviderItemIdentifier */ NSString itemIdentifier, /* NSFileProviderDomainIdentifier */ NSString domainIdentifier, NSError error);
+	delegate void NSFileProviderGetIdentifierHandler (/* /NSFileProviderItemIdentifier */ [NullAllowed] NSString itemIdentifier, /* NSFileProviderDomainIdentifier */ [NullAllowed] NSString domainIdentifier, [NullAllowed] NSError error);
 
 	interface INSFileProviderServiceSource { }
 

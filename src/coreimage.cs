@@ -3410,11 +3410,13 @@ namespace CoreImage {
 		[Export ("definition")]
 		CIFilterShape Definition { get; }
 
+#if !XAMCORE_5_0
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("kCIFormatRGBA16")]
+		[Obsolete ("Use 'CIFormat.Rgba16.GetConstant ()' instead.")]
 		int FormatRGBA16 { get; } /* CIFormat = int */
 
 		/// <summary>Represents the value associated with the constant kCIFormatARGB8</summary>
@@ -3422,6 +3424,7 @@ namespace CoreImage {
 		///         </value>
 		///         <remarks>32-bit color in ARGB format.</remarks>
 		[Field ("kCIFormatARGB8")]
+		[Obsolete ("Use 'CIFormat.Argb8.GetConstant ()' instead.")]
 		int FormatARGB8 { get; } /* CIFormat = int */
 
 		/// <summary>Represents the value associated with the constant kCIFormatRGBAh</summary>
@@ -3430,6 +3433,7 @@ namespace CoreImage {
 		///         <remarks>
 		///         </remarks>
 		[Field ("kCIFormatRGBAh")]
+		[Obsolete ("Use 'CIFormat.Rgbah.GetConstant ()' instead.")]
 		int FormatRGBAh { get; } /* CIFormat = int */
 
 		/// <summary>Represents the value associated with the constant kCIFormatRGBAf</summary>
@@ -3438,6 +3442,7 @@ namespace CoreImage {
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("kCIFormatRGBAf")]
+		[Obsolete ("Use 'CIFormat.Rgbaf.GetConstant ()' instead.")]
 		int FormatRGBAf { get; } /* CIFormat = int */
 
 		/// <summary>Represents the value associated with the constant kCIFormatBGRA8</summary>
@@ -3446,6 +3451,7 @@ namespace CoreImage {
 		///         <remarks>
 		///         </remarks>
 		[Field ("kCIFormatBGRA8")]
+		[Obsolete ("Use 'CIFormat.Bgra8.GetConstant ()' instead.")]
 		int FormatBGRA8 { get; } /* CIFormat = int */
 
 		/// <summary>Represents the value associated with the constant kCIFormatRGBA8</summary>
@@ -3454,6 +3460,7 @@ namespace CoreImage {
 		///         <remarks>
 		///         </remarks>
 		[Field ("kCIFormatRGBA8")]
+		[Obsolete ("Use 'CIFormat.Rgba8.GetConstant ()' instead.")]
 		int FormatRGBA8 { get; } /* CIFormat = int */
 
 		/// <summary>Represents the value associated with the constant kCIFormatABGR8.</summary>
@@ -3461,6 +3468,7 @@ namespace CoreImage {
 		///         <remarks>To be added.</remarks>
 		[Field ("kCIFormatABGR8")]
 		[MacCatalyst (13, 1)]
+		[Obsolete ("Use 'CIFormat.Abgr8.GetConstant ()' instead.")]
 		int FormatABGR8 { get; }
 
 		/// <summary>Represents the value associated with the constant kCIFormatA8.</summary>
@@ -3468,6 +3476,7 @@ namespace CoreImage {
 		///         <remarks>To be added.</remarks>
 		[Field ("kCIFormatA8")]
 		[MacCatalyst (13, 1)]
+		[Obsolete ("Use 'CIFormat.A8.GetConstant ()' instead.")]
 		int FormatA8 { get; }
 
 		/// <summary>Represents the value associated with the constant kCIFormatA16.</summary>
@@ -3475,6 +3484,7 @@ namespace CoreImage {
 		///         <remarks>To be added.</remarks>
 		[Field ("kCIFormatA16")]
 		[MacCatalyst (13, 1)]
+		[Obsolete ("Use 'CIFormat.A16.GetConstant ()' instead.")]
 		int FormatA16 { get; }
 
 		/// <summary>Represents the value associated with the constant kCIFormatAh.</summary>
@@ -3482,6 +3492,7 @@ namespace CoreImage {
 		///         <remarks>To be added.</remarks>
 		[Field ("kCIFormatAh")]
 		[MacCatalyst (13, 1)]
+		[Obsolete ("Use 'CIFormat.Ah.GetConstant ()' instead.")]
 		int FormatAh { get; }
 
 		/// <summary>Represents the value associated with the constant kCIFormatAf.</summary>
@@ -3489,6 +3500,7 @@ namespace CoreImage {
 		///         <remarks>To be added.</remarks>
 		[Field ("kCIFormatAf")]
 		[MacCatalyst (13, 1)]
+		[Obsolete ("Use 'CIFormat.Af.GetConstant ()' instead.")]
 		int FormatAf { get; }
 
 		/// <summary>Represents the value associated with the constant kCIFormatR8.</summary>
@@ -3496,6 +3508,7 @@ namespace CoreImage {
 		///         <remarks>To be added.</remarks>
 		[Field ("kCIFormatR8")]
 		[MacCatalyst (13, 1)]
+		[Obsolete ("Use 'CIFormat.R8.GetConstant ()' instead.")]
 		int FormatR8 { get; }
 
 		/// <summary>Represents the value associated with the constant kCIFormatR16.</summary>
@@ -3503,6 +3516,7 @@ namespace CoreImage {
 		///         <remarks>To be added.</remarks>
 		[Field ("kCIFormatR16")]
 		[MacCatalyst (13, 1)]
+		[Obsolete ("Use 'CIFormat.R16.GetConstant ()' instead.")]
 		int FormatR16 { get; }
 
 		/// <summary>Represents the value associated with the constant kCIFormatRh.</summary>
@@ -3510,6 +3524,7 @@ namespace CoreImage {
 		///         <remarks>To be added.</remarks>
 		[Field ("kCIFormatRh")]
 		[MacCatalyst (13, 1)]
+		[Obsolete ("Use 'CIFormat.Rh.GetConstant ()' instead.")]
 		int FormatRh { get; }
 
 		/// <summary>Represents the value associated with the constant kCIFormatRf.</summary>
@@ -3517,6 +3532,7 @@ namespace CoreImage {
 		///         <remarks>To be added.</remarks>
 		[Field ("kCIFormatRf")]
 		[MacCatalyst (13, 1)]
+		[Obsolete ("Use 'CIFormat.Rf.GetConstant ()' instead.")]
 		int FormatRf { get; }
 
 		/// <summary>Represents the value associated with the constant kCIFormatRG8.</summary>
@@ -3524,6 +3540,7 @@ namespace CoreImage {
 		///         <remarks>To be added.</remarks>
 		[Field ("kCIFormatRG8")]
 		[MacCatalyst (13, 1)]
+		[Obsolete ("Use 'CIFormat.RG8.GetConstant ()' instead.")]
 		int FormatRG8 { get; }
 
 		/// <summary>Represents the value associated with the constant kCIFormatRG16.</summary>
@@ -3531,6 +3548,7 @@ namespace CoreImage {
 		///         <remarks>To be added.</remarks>
 		[Field ("kCIFormatRG16")]
 		[MacCatalyst (13, 1)]
+		[Obsolete ("Use 'CIFormat.RG16.GetConstant ()' instead.")]
 		int FormatRG16 { get; }
 
 		/// <summary>Represents the value associated with the constant kCIFormatRGh.</summary>
@@ -3538,6 +3556,7 @@ namespace CoreImage {
 		///         <remarks>To be added.</remarks>
 		[Field ("kCIFormatRGh")]
 		[MacCatalyst (13, 1)]
+		[Obsolete ("Use 'CIFormat.RGh.GetConstant ()' instead.")]
 		int FormatRGh { get; }
 
 		/// <summary>Represents the value associated with the constant kCIFormatRGf.</summary>
@@ -3545,6 +3564,7 @@ namespace CoreImage {
 		///         <remarks>To be added.</remarks>
 		[Field ("kCIFormatRGf")]
 		[MacCatalyst (13, 1)]
+		[Obsolete ("Use 'CIFormat.RGf.GetConstant ()' instead.")]
 		int FormatRGf { get; }
 
 		/// <summary>To be added.</summary>
@@ -3552,6 +3572,7 @@ namespace CoreImage {
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("kCIFormatL8")]
+		[Obsolete ("Use 'CIFormat.L8.GetConstant ()' instead.")]
 		int FormatL8 { get; }
 
 		/// <summary>To be added.</summary>
@@ -3559,6 +3580,7 @@ namespace CoreImage {
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("kCIFormatL16")]
+		[Obsolete ("Use 'CIFormat.L16.GetConstant ()' instead.")]
 		int FormatL16 { get; }
 
 		/// <summary>To be added.</summary>
@@ -3566,6 +3588,7 @@ namespace CoreImage {
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("kCIFormatLh")]
+		[Obsolete ("Use 'CIFormat.Lh.GetConstant ()' instead.")]
 		int FormatLh { get; }
 
 		/// <summary>To be added.</summary>
@@ -3573,6 +3596,7 @@ namespace CoreImage {
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("kCIFormatLf")]
+		[Obsolete ("Use 'CIFormat.Lf.GetConstant ()' instead.")]
 		int FormatLf { get; }
 
 		/// <summary>To be added.</summary>
@@ -3580,6 +3604,7 @@ namespace CoreImage {
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("kCIFormatLA8")]
+		[Obsolete ("Use 'CIFormat.LA8.GetConstant ()' instead.")]
 		int FormatLA8 { get; }
 
 		/// <summary>To be added.</summary>
@@ -3587,6 +3612,7 @@ namespace CoreImage {
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("kCIFormatLA16")]
+		[Obsolete ("Use 'CIFormat.LA16.GetConstant ()' instead.")]
 		int FormatLA16 { get; }
 
 		/// <summary>To be added.</summary>
@@ -3594,6 +3620,7 @@ namespace CoreImage {
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("kCIFormatLAh")]
+		[Obsolete ("Use 'CIFormat.LAh.GetConstant ()' instead.")]
 		int FormatLAh { get; }
 
 		/// <summary>To be added.</summary>
@@ -3601,23 +3628,29 @@ namespace CoreImage {
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("kCIFormatLAf")]
+		[Obsolete ("Use 'CIFormat.LAf.GetConstant ()' instead.")]
 		int FormatLAf { get; }
 
 		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0), Mac (14, 0)]
 		[Field ("kCIFormatRGB10")]
+		[Obsolete ("Use 'CIFormat.Rgb10.GetConstant ()' instead.")]
 		int FormatRgb10 { get; }
 
 		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0), Mac (14, 0)]
 		[Field ("kCIFormatRGBX16")]
+		[Obsolete ("Use 'CIFormat.RgbX16.GetConstant ()' instead.")]
 		int FormatRgbX16 { get; }
 
 		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0), Mac (14, 0)]
 		[Field ("kCIFormatRGBXf")]
+		[Obsolete ("Use 'CIFormat.RgbXf.GetConstant ()' instead.")]
 		int FormatRgbXf { get; }
 
 		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0), Mac (14, 0)]
 		[Field ("kCIFormatRGBXh")]
+		[Obsolete ("Use 'CIFormat.RgbXh.GetConstant ()' instead.")]
 		int FormatRgbXh { get; }
+#endif // XAMCORE_5_0
 
 		// UIKit extensions
 		/// <param name="image">UIKit image.</param>
@@ -4137,6 +4170,191 @@ namespace CoreImage {
 		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Export ("metalTexture"), NullAllowed]
 		IMTLTexture MetalTexture { get; }
+	}
+
+	/// <summary>An enumeration whose values specify pixel formats.</summary>
+	[BackingFieldType (typeof (int))]
+	public enum CIFormat {
+#if !XAMCORE_5_0
+		/// <summary>Value that represents the kCIFormatARGB8 pixel format.</summary>
+		[Obsolete ("Use 'Argb8' instead.")]
+		ARGB8 = Argb8,
+		/// <summary>Value that represents the kCIFormatRGBAh pixel format.</summary>
+		[Obsolete ("Use 'Rgbah' instead.")]
+		RGBAh = Rgbah,
+		/// <summary>Value that represents the kCIFormatkRGBA16 pixel format.</summary>
+		[Obsolete ("Use 'Rgba16' instead.")]
+		[NoiOS, NoTV, NoMacCatalyst]
+		RGBA16 = Rgba16,
+		/// <summary>Value that represents the kCIFormatkRGBAf pixel format.</summary>
+		[Obsolete ("Use 'Rgbaf' instead.")]
+		[NoiOS, NoTV, NoMacCatalyst]
+		RGBAf = 3,
+		/// <summary>Value that represents the kCIFormatkRGBAf pixel format.</summary>
+		[Obsolete ("Use 'Rgbaf' instead.")]
+		kRGBAf = Rgbaf,
+		/// <summary>Value that represents the kCIFormatkBGRA8 pixel format.</summary>
+		[Obsolete ("Use 'Bgra8' instead.")]
+		kBGRA8 = Bgra8,
+		/// <summary>Value that represents the kCIFormatkRGBA8 pixel format.</summary>
+		[Obsolete ("Use 'Rgba8' instead.")]
+		kRGBA8 = Rgba8,
+		/// <summary>Value that represents the kCIFormatABGR8 pixel format.</summary>
+		[Obsolete ("Use 'Abgr8' instead.")]
+		ABGR8 = Abgr8,
+#endif // !XAMCORE_5_0
+
+		/// <summary>Represents the value associated with the constant kCIFormatRGBA16.</summary>
+		[MacCatalyst (13, 1)]
+		[Field ("kCIFormatRGBA16")]
+		Rgba16 = 2, // same as value in old enum
+
+		/// <summary>Represents the value associated with the constant kCIFormatARGB8</summary>
+		/// <remarks>32-bit color in ARGB format.</remarks>
+		[Field ("kCIFormatARGB8")]
+		Argb8 = 0, // same as value in old enum
+
+		/// <summary>Represents the value associated with the constant kCIFormatRGBAh</summary>
+		[Field ("kCIFormatRGBAh")]
+		Rgbah = 1, // same as value in old enum
+
+		/// <summary>Represents the value associated with the constant kCIFormatRGBAf</summary>
+		[MacCatalyst (13, 1)]
+		[Field ("kCIFormatRGBAf")]
+		Rgbaf = 4, // same as value in old enum
+
+		/// <summary>Represents the value associated with the constant kCIFormatBGRA8</summary>
+		[Field ("kCIFormatBGRA8")]
+		Bgra8 = 5, // same as value in old enum
+
+		/// <summary>Represents the value associated with the constant kCIFormatRGBA8</summary>
+		[Field ("kCIFormatRGBA8")]
+		Rgba8 = 6, // same as value in old enum
+
+		/// <summary>Represents the value associated with the constant kCIFormatABGR8.</summary>
+		[Field ("kCIFormatABGR8")]
+		[MacCatalyst (13, 1)]
+		Abgr8 = 7, // same as value in old enum
+
+		/// <summary>Represents the value associated with the constant kCIFormatA8.</summary>
+		[Field ("kCIFormatA8")]
+		[MacCatalyst (13, 1)]
+		A8 = 11, // same as value in old enum
+
+		/// <summary>Represents the value associated with the constant kCIFormatA16.</summary>
+		[Field ("kCIFormatA16")]
+		[MacCatalyst (13, 1)]
+		A16 = 12, // same as value in old enum
+
+		/// <summary>Represents the value associated with the constant kCIFormatAh.</summary>
+		[Field ("kCIFormatAh")]
+		[MacCatalyst (13, 1)]
+		Ah = 13, // same as value in old enum
+
+		/// <summary>Represents the value associated with the constant kCIFormatAf.</summary>
+		[Field ("kCIFormatAf")]
+		[MacCatalyst (13, 1)]
+		Af = 14, // same as value in old enum
+
+		/// <summary>Represents the value associated with the constant kCIFormatR8.</summary>
+		[Field ("kCIFormatR8")]
+		[MacCatalyst (13, 1)]
+		R8 = 15, // same as value in old enum
+
+		/// <summary>Represents the value associated with the constant kCIFormatR16.</summary>
+		[Field ("kCIFormatR16")]
+		[MacCatalyst (13, 1)]
+		R16 = 16, // same as value in old enum
+
+		/// <summary>Represents the value associated with the constant kCIFormatRh.</summary>
+		[Field ("kCIFormatRh")]
+		[MacCatalyst (13, 1)]
+		Rh = 17, // same as value in old enum
+
+		/// <summary>Represents the value associated with the constant kCIFormatRf.</summary>
+		[Field ("kCIFormatRf")]
+		[MacCatalyst (13, 1)]
+		Rf = 18, // same as value in old enum
+
+		/// <summary>Represents the value associated with the constant kCIFormatRG8.</summary>
+		[Field ("kCIFormatRG8")]
+		[MacCatalyst (13, 1)]
+		RG8 = 19, // same as value in old enum
+
+		/// <summary>Represents the value associated with the constant kCIFormatRG16.</summary>
+		[Field ("kCIFormatRG16")]
+		[MacCatalyst (13, 1)]
+		RG16 = 20, // same as value in old enum
+
+		/// <summary>Represents the value associated with the constant kCIFormatRGh.</summary>
+		[Field ("kCIFormatRGh")]
+		[MacCatalyst (13, 1)]
+		RGh = 21, // same as value in old enum
+
+		/// <summary>Represents the value associated with the constant kCIFormatRGf.</summary>
+		[Field ("kCIFormatRGf")]
+		[MacCatalyst (13, 1)]
+		RGf = 22, // same as value in old enum
+
+		/// <summary>Represents the value associated with the constant kCIFormatL8.</summary>
+		[MacCatalyst (13, 1)]
+		[Field ("kCIFormatL8")]
+		L8 = 23,
+
+		/// <summary>Represents the value associated with the constant kCIFormatL16.</summary>
+		[MacCatalyst (13, 1)]
+		[Field ("kCIFormatL16")]
+		L16 = 24,
+
+		/// <summary>Represents the value associated with the constant kCIFormatLh.</summary>
+		[MacCatalyst (13, 1)]
+		[Field ("kCIFormatLh")]
+		Lh = 25,
+
+		/// <summary>Represents the value associated with the constant kCIFormatLf.</summary>
+		[MacCatalyst (13, 1)]
+		[Field ("kCIFormatLf")]
+		Lf = 26,
+
+		/// <summary>Represents the value associated with the constant kCIFormatLA8.</summary>
+		[MacCatalyst (13, 1)]
+		[Field ("kCIFormatLA8")]
+		LA8 = 27,
+
+		/// <summary>Represents the value associated with the constant kCIFormatLA16.</summary>
+		[MacCatalyst (13, 1)]
+		[Field ("kCIFormatLA16")]
+		LA16 = 28,
+
+		/// <summary>Represents the value associated with the constant kCIFormatLAh.</summary>
+		[MacCatalyst (13, 1)]
+		[Field ("kCIFormatLAh")]
+		LAh = 29,
+
+		/// <summary>Represents the value associated with the constant kCIFormatLAf.</summary>
+		[MacCatalyst (13, 1)]
+		[Field ("kCIFormatLAf")]
+		LAf = 30,
+
+		/// <summary>Represents the value associated with the constant kCIFormatRGB10.</summary>
+		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0), Mac (14, 0)]
+		[Field ("kCIFormatRGB10")]
+		Rgb10 = 31,
+
+		/// <summary>Represents the value associated with the constant kCIFormatRGBX16.</summary>
+		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0), Mac (14, 0)]
+		[Field ("kCIFormatRGBX16")]
+		RgbX16 = 32,
+
+		/// <summary>Represents the value associated with the constant kCIFormatRGBXf.</summary>
+		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0), Mac (14, 0)]
+		[Field ("kCIFormatRGBXf")]
+		RgbXf = 33,
+
+		/// <summary>Represents the value associated with the constant kCIFormatRGBXh.</summary>
+		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0), Mac (14, 0)]
+		[Field ("kCIFormatRGBXh")]
+		RgbXh = 34,
 	}
 
 	interface ICIImageProcessorInput { }

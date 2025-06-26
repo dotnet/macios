@@ -240,6 +240,9 @@ Copyright (C) 2020 Microsoft. All rights reserved.
 
 		<!-- Default NoBindingEmbedding to 'true' for .NET projects, it's the new way -->
 		<NoBindingEmbedding Condition="'$(NoBindingEmbedding)' == ''">true</NoBindingEmbedding>
+
+		<!-- We don't want to build a binding project when in design time mode, and not bundling original resources, because we might end up requiring a connection to a remote mac, which is not a good idea for a supposedly quick design-time build. -->
+		<_DisableBindingProjectBuild Condition="'$(_DisableBindingProjectBuild)' == '' And '$(BundleOriginalResources)' != 'true' And '$(DesignTimeBuild)' == 'true'">true</_DisableBindingProjectBuild>
 	</PropertyGroup>
 
 	<Target Name="_ComputeTargetFrameworkMoniker" Condition="'$(_ComputedTargetFrameworkMoniker)' == ''">

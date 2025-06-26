@@ -271,32 +271,14 @@ namespace CoreImage {
 
 		internal static int CIFormatToInt (CIFormat format)
 		{
-			switch (format) {
-			case CIFormat.ARGB8: return FormatARGB8;
-			case CIFormat.RGBAh: return FormatRGBAh;
-#if MONOMAC
-			case CIFormat.RGBA16: return FormatRGBA16;
-			case CIFormat.RGBAf: return FormatRGBAf;
-#endif
-			case CIFormat.kRGBAf: return FormatRGBAf;
-			case CIFormat.kBGRA8: return FormatBGRA8;
-			case CIFormat.kRGBA8: return FormatRGBA8;
-			case CIFormat.ABGR8: return FormatABGR8;
-			case CIFormat.A8: return FormatA8;
-			case CIFormat.A16: return FormatA16;
-			case CIFormat.Ah: return FormatAh;
-			case CIFormat.Af: return FormatAf;
-			case CIFormat.R8: return FormatR8;
-			case CIFormat.R16: return FormatR16;
-			case CIFormat.Rh: return FormatRh;
-			case CIFormat.Rf: return FormatRf;
-			case CIFormat.RG8: return FormatRG8;
-			case CIFormat.RG16: return FormatRG16;
-			case CIFormat.RGh: return FormatRGh;
-			case CIFormat.RGf: return FormatRGf;
-			default:
-				throw new ArgumentOutOfRangeException ("format");
-			}
+#if !XAMCORE_5_0
+			if (format == CIFormat.RGBAf)
+				format = CIFormat.Rgbaf;
+#endif // !XAMCORE_5_0
+			var rv = format.GetConstant ();
+			if (!rv.HasValue)
+				throw new ArgumentOutOfRangeException (nameof (format));
+			return rv.Value;
 		}
 
 		/// <param name="bitmapData">To be added.</param>

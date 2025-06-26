@@ -78,6 +78,22 @@ readonly record struct ArgumentInfo {
 	}
 
 	/// <summary>
+	/// Initializes a new instance of the <see cref="ArgumentInfo"/> struct from a <see cref="Property"/>.
+	/// This constructor is used when treating the property as a setter argument.
+	/// </summary>
+	/// <param name="property">The property to create the argument info from.</param>
+	public ArgumentInfo (in Property property)
+	{
+		Name = "value";
+		Type = property.ReturnType;
+		BindAs = property.BindAs;
+		IsByRef = false;
+		ReferenceKind = ReferenceKind.None;
+		IsCCallback = false;
+		IsBlockCallback = false;
+	}
+
+	/// <summary>
 	/// Implicitly converts a <see cref="Parameter"/> to an <see cref="ArgumentInfo"/>.
 	/// </summary>
 	/// <param name="parameter">The parameter to convert.</param>
@@ -89,5 +105,13 @@ readonly record struct ArgumentInfo {
 	/// </summary>
 	/// <param name="parameter">The delegate parameter to convert.</param>
 	public static implicit operator ArgumentInfo (in DelegateParameter parameter)
+		=> new (parameter);
+
+	/// <summary>
+	/// Implicitly converts a <see cref="Property"/> to an <see cref="ArgumentInfo"/>.
+	/// This is used when treating the property as a setter argument.
+	/// </summary>
+	/// <param name="parameter">The property to convert.</param>
+	public static implicit operator ArgumentInfo (in Property parameter)
 		=> new (parameter);
 }

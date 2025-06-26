@@ -122,6 +122,11 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 	public bool IsWrapped { get; init; }
 
 	/// <summary>
+	/// True if the type represents a Task.
+	/// </summary>
+	public bool IsTask { get; init; }
+
+	/// <summary>
 	/// Returns, if the type is an array, if its elements are a wrapped object from the objc world.
 	/// </summary>
 	public bool ArrayElementTypeIsWrapped { get; init; }
@@ -583,6 +588,86 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		// copy all the elements from the current array type and set the array type to false
 		return this with {
 			IsPointer = false,
+		};
+	}
+
+	/// <summary>
+	/// Gets the generic type arguments for a <see cref="System.Threading.Tasks.Task"/> from a delegate's parameters.
+	/// </summary>
+	/// <returns>An immutable array of strings representing the type arguments for the task.</returns>
+	/// <remarks>
+	/// This method extracts the parameter types from the delegate. If the last parameter is an <c>NSError</c>,
+	/// it is omitted from the returned types, as it will be handled as an exception in the async method.
+	/// </remarks>
+	ImmutableArray<string> GetDelegateTypesForTask ()
+	{
+		if (Delegate is null)
+			return [];
+
+		// get all the type information from the delegate parameters since this is what is needed for 
+		// the task type. It is important to remember that for async methods in objc if the last parameter is a
+		// a NSError we will drop it since that will be converted to an exception in the generated code.
+		var delegateTypes = Delegate.Parameters.Select (p => p.Type).ToArray ();
+		if (delegateTypes.Length > 0 && delegateTypes [^1].Name.Contains ("NSError")) {
+			// remove the last parameter since it is not needed for the task type
+			delegateTypes = delegateTypes [..^1];
+		}
+
+		return [.. delegateTypes.Select (t => t.GetIdentifierSyntax ().ToString ())];
+	}
+
+	/// <summary>
+	/// If the current <see cref="TypeInfo"/> represents a delegate, this method returns a new <see cref="TypeInfo"/>
+	/// representing a <see cref="System.Threading.Tasks.Task"/> with the delegate's parameters as generic arguments.
+	/// Otherwise, it returns the current instance.
+	/// </summary>
+	/// <returns>
+	/// A new <see cref="TypeInfo"/> instance representing a <c>Task</c> if the type is a delegate;
+	/// otherwise, returns the current <see cref="TypeInfo"/> instance.
+	/// </returns>
+	public TypeInfo ToTask ()
+	{
+		// no conversion is done if we are not dealing with a delegate type
+		if (Delegate is null)
+			return this;
+
+		var genericTypeArguments = GetDelegateTypesForTask ();
+		// generate a task type that will contain the delegate type information.
+		return new TypeInfo (
+			name: "System.Threading.Tasks.Task",
+			specialType: SpecialType.None,
+			isNullable: false,
+			isBlittable: false,
+			isSmartEnum: false,
+			isArray: false,
+			isReferenceType: true,
+			isStruct: false
+		) {
+			Delegate = null,
+			EnumUnderlyingType = null,
+			IsGenericType = genericTypeArguments.Length > 0,
+			IsTask = true,
+			TypeArguments = genericTypeArguments,
+		};
+	}
+
+	/// <summary>
+	/// If the current <see cref="TypeInfo"/> represents a <see cref="System.Threading.Tasks.Task"/>, this method returns a new <see cref="TypeInfo"/>
+	/// representing a <see cref="System.Threading.Tasks.TaskCompletionSource{TResult}"/> with the task's generic arguments.
+	/// Otherwise, it returns the current instance.
+	/// </summary>
+	/// <returns>
+	/// A new <see cref="TypeInfo"/> instance representing a <c>TaskCompletionSource</c> if the type is a <c>Task</c>;
+	/// otherwise, returns the current <see cref="TypeInfo"/> instance.
+	/// </returns>
+	public TypeInfo ToTaskCompletionSource ()
+	{
+		if (!IsTask)
+			return this;
+
+		return this with {
+			Name = "TaskCompletionSource",
+			FullyQualifiedName = "System.Threading.Tasks.TaskCompletionSource",
 		};
 	}
 

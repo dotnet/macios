@@ -8,20 +8,31 @@ namespace Microsoft.Macios.Generator.Formatters;
 
 static class MethodFormatter {
 
-	public static CompilationUnitSyntax? ToDeclaration (this in Method? method)
+	/// <summary>
+	/// Converts a <see cref="Method"/> to its C# declaration as a <see cref="CompilationUnitSyntax"/>.
+	/// </summary>
+	/// <param name="method">The method to convert.</param>
+	/// <returns>A <see cref="CompilationUnitSyntax"/> representing the method declaration.</returns>
+	public static CompilationUnitSyntax ToDeclaration (this in Method method)
 	{
-		if (method is null)
-			return null;
 		var compilationUnit = CompilationUnit ()
 			.WithMembers (
 				SingletonList<MemberDeclarationSyntax> (
 					MethodDeclaration (
-							returnType: method.Value.ReturnType.GetIdentifierSyntax (),
-							identifier: Identifier (method.Value.Name)
+							returnType: method.ReturnType.GetIdentifierSyntax (),
+							identifier: Identifier (method.Name)
 								.WithLeadingTrivia (Space)
 								.WithTrailingTrivia (Space)) // adding the spaces manually to follow the mono style
-						.WithModifiers (TokenList (method.Value.Modifiers))
-						.WithParameterList (method.Value.Parameters.GetParameterList ())));
+						.WithModifiers (TokenList (method.Modifiers))
+						.WithParameterList (method.Parameters.GetParameterList ())));
 		return compilationUnit;
 	}
+
+	/// <summary>
+	/// Converts a nullable <see cref="Method"/> to its C# declaration as a <see cref="CompilationUnitSyntax"/>.
+	/// </summary>
+	/// <param name="method">The method to convert.</param>
+	/// <returns>A <see cref="CompilationUnitSyntax"/> representing the method declaration, or <c>null</c> if the input method is <c>null</c>.</returns>
+	public static CompilationUnitSyntax? ToDeclaration (this in Method? method)
+		=> method?.ToDeclaration ();
 }

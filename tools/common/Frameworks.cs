@@ -401,7 +401,7 @@ public class Frameworks : Dictionary<string, Framework> {
 				{ "IntentsUI", "IntentsUI", 10 },
 
 				{ "ARKit", "ARKit", 11 },
-				{ "CoreNFC", "CoreNFC", new Version (11, 0), NotAvailableInSimulator, true }, /* not always present, e.g. iPad w/iOS 12, so must be weak linked; doesn't work in the simulator in Xcode 12 (https://stackoverflow.com/q/63915728/183422) */
+				{ "CoreNFC", "CoreNFC", new Version (11, 0), new Version (15, 0), true }, /* not always present, e.g. iPad w/iOS 12, so must be weak linked; doesn't work in the simulator in Xcode 12 (https://stackoverflow.com/q/63915728/183422), but works in at least Xcode 15 (maybe earlier too) */
 				{ "DeviceCheck", "DeviceCheck", new Version (11, 0), new Version (13, 0) },
 				{ "IdentityLookup", "IdentityLookup", 11 },
 				{ "IOSurface", "IOSurface", new Version (11, 0), NotAvailableInSimulator /* Not available in the simulator (the header is there, but broken) */  },

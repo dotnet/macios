@@ -446,4 +446,25 @@ public class GeneralPropertyTests {
 		};
 		Assert.Equal (expectedResult, property.IsNotification);
 	}
+
+	[Theory]
+	[InlineData (ObjCBindings.Property.Default, false)]
+	[InlineData (ObjCBindings.Property.WeakDelegate, true)]
+#pragma warning disable xUnit1025
+	[InlineData (ObjCBindings.Property.WeakDelegate | ObjCBindings.Property.Default, true)]
+#pragma warning restore xUnit1025
+	public void IsWeakDelegate (ObjCBindings.Property flag, bool expectedResult)
+	{
+		var property = new Property (
+			name: "Test",
+			returnType: new TypeInfo ("string"),
+			symbolAvailability: new (),
+			attributes: [],
+			modifiers: [],
+			accessors: []
+		) {
+			ExportPropertyData = new ("name", ArgumentSemantic.None, flag),
+		};
+		Assert.Equal (expectedResult, property.IsWeakDelegate);
+	}
 }

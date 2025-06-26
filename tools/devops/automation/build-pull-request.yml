@@ -63,6 +63,7 @@ trigger:
     - refs/heads/backport-pr-*
     - refs/heads/lego/*
     - refs/heads/locfiles/*
+    - refs/heads/copilot/*
 
 pr:
   autoCancel: true

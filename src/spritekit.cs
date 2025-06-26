@@ -1937,7 +1937,7 @@ namespace SpriteKit {
 		void ModifyPixelData (SKTextureModify modifyMethod);
 	}
 
-	delegate void SKTextureAtlasLoadCallback (NSError error, SKTextureAtlas foundAtlases);
+	delegate void SKTextureAtlasLoadCallback ([NullAllowed] NSError error, SKTextureAtlas foundAtlases);
 
 	/// <summary>A collection of <see cref="SpriteKit.SKTexture" />s that are loaded from a single source.</summary>
 	///     

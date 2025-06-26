@@ -393,7 +393,15 @@ static partial class BindingSyntaxFactory {
 	internal static LocalDeclarationStatementSyntax? GetStringAuxVariable (in ArgumentInfo argumentInfo)
 		=> GetStringAuxVariable (argumentInfo.Name, argumentInfo.Type);
 
-	internal static LocalDeclarationStatementSyntax? GetNSNumberAuxVariable (in Parameter parameter)
+	/// <summary>
+	/// Generates a local variable declaration for an auxiliary NSNumber.
+	/// This is used when a C# numeric value, boolean, or enum needs to be passed to an Objective-C method expecting an NSNumber.
+	/// The method selects the appropriate factory method (e.g., NSNumber.FromInt32, NSNumber.FromBoolean) based on the type.
+	/// </summary>
+	/// <param name="argumentInfo">The <see cref="ArgumentInfo"/> representing the C# value to convert to NSNumber.</param>
+	/// <returns>A <see cref="LocalDeclarationStatementSyntax"/> for the auxiliary NSNumber variable, or null if the input type
+	/// is not supported for NSNumber conversion or if a variable name cannot be generated.</returns>
+	internal static LocalDeclarationStatementSyntax? GetNSNumberAuxVariable (in ArgumentInfo argumentInfo)
 	{
 		// the BindFrom attribute with a nsnumber supports the following types:
 		// - bool
@@ -415,7 +423,7 @@ static partial class BindingSyntaxFactory {
 
 		// make sure that the parameter type is valid and return the required method for the nsnumber variable
 #pragma warning disable format
-		var factoryMethod = parameter.Type switch {
+		var factoryMethod = argumentInfo.Type switch {
 			{ Name: "nint" } => "FromNInt",
 			{ Name: "nuint" } => "FromNUInt",
 			{ Name: "nfloat" or "NFloat" } => "FromNFloat",
@@ -450,7 +458,7 @@ static partial class BindingSyntaxFactory {
 		if (factoryMethod is null)
 			return null;
 
-		var variableName = Nomenclator.GetNameForVariableType (parameter.Name, Nomenclator.VariableType.BindFrom);
+		var variableName = Nomenclator.GetNameForVariableType (argumentInfo.Name, Nomenclator.VariableType.BindFrom);
 		if (variableName is null)
 			return null;
 
@@ -464,18 +472,18 @@ static partial class BindingSyntaxFactory {
 
 		// the arguments of the factory information depends on if we are dealing with a enum, in which case we cast
 		// or not, in which case we just add the arguments
-		if (parameter.Type.IsEnum) {
+		if (argumentInfo.Type.IsEnum) {
 			// generates: NSNumber.FromDouble ((int)value);
 			factoryInvocation = factoryInvocation
 				.WithArgumentList (ArgumentList (SingletonSeparatedList (Argument (
 					CastExpression (
-						IdentifierName (parameter.Type.EnumUnderlyingType.GetKeyword () ?? ""),
-						IdentifierName (parameter.Name).WithLeadingTrivia (Space))))));
+						IdentifierName (argumentInfo.Type.EnumUnderlyingType.GetKeyword () ?? ""),
+						IdentifierName (argumentInfo.Name).WithLeadingTrivia (Space))))));
 		} else {
 			// generates: NSNumber.FromDouble (value);
 			factoryInvocation = factoryInvocation
 				.WithArgumentList (ArgumentList (SingletonSeparatedList (
-					Argument (IdentifierName (parameter.Name)))));
+					Argument (IdentifierName (argumentInfo.Name)))));
 		}
 
 		var declarator =
@@ -490,7 +498,7 @@ static partial class BindingSyntaxFactory {
 		return LocalDeclarationStatement (declaration);
 	}
 
-	internal static LocalDeclarationStatementSyntax? GetNSValueAuxVariable (in Parameter parameter)
+	internal static LocalDeclarationStatementSyntax? GetNSValueAuxVariable (in ArgumentInfo parameter)
 	{
 
 		// the BindFrom attribute with a nsvalue supports the following types:

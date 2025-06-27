@@ -234,6 +234,7 @@ public partial class PropertyTests
 	[EditorBrowsable (EditorBrowsableState.Advanced)]
 	protected internal PropertyTests (global::ObjCRuntime.NativeHandle handle) : base (handle) {}
 
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	object? __mt_Alphanumerics_var = null;
 
 	[SupportedOSPlatform ("macos")]
@@ -280,6 +281,7 @@ public partial class PropertyTests
 		}
 	}
 
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	object? __mt_AttributedStringByInflectingString_var = null;
 
 	[SupportedOSPlatform ("macos")]
@@ -595,6 +597,7 @@ public partial class PropertyTests
 		}
 	}
 
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	object? __mt_Locale_var = null;
 
 	[SupportedOSPlatform ("macos")]
@@ -849,6 +852,7 @@ public partial class PropertyTests
 		}
 	}
 
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	object? __mt_Results_var = null;
 
 	[SupportedOSPlatform ("macos")]
@@ -975,6 +979,7 @@ public partial class PropertyTests
 		}
 	}
 
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	object? __mt_WeakDelegate_var = null;
 
 	[SupportedOSPlatform ("macos")]
@@ -997,6 +1002,8 @@ public partial class PropertyTests
 				ret = global::ObjCRuntime.Runtime.GetNSObject<global::Foundation.NSObject> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("delegate")));
 			}
 			global::System.GC.KeepAlive (this);
+			MarkDirty ();
+			__mt_WeakDelegate_var = ret;
 			return ret;
 		}
 
@@ -1014,6 +1021,8 @@ public partial class PropertyTests
 			}
 			global::System.GC.KeepAlive (this);
 			global::System.GC.KeepAlive (value);
+			MarkDirty ();
+			__mt_WeakDelegate_var = value;
 		}
 	}
 	// TODO: add binding code here

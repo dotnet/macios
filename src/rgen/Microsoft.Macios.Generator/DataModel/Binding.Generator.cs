@@ -95,7 +95,7 @@ readonly partial struct Binding {
 	public IEnumerable<AsyncResultInfo> AsyncResults {
 		get {
 			// async results are only present in the methods that have been marked as async and have a return type name
-			// any other chases is either a simple result of the user provided a result type that exists at compilation
+			// any other cases is either a simple result of the user provided a result type that exists at compilation
 			// time. It might be the case that a result type is used more than once, so we are using a hash set to
 			// ensure that we do not return the same result type more than once.
 			var found = new HashSet<string> ();

@@ -213,7 +213,7 @@ if (IsDirectBinding) {{
 					if (property.NeedsBackingField) {
 						getterBlock.WriteLine ($"{property.BackingField} = {tempVar};");
 					}
-					
+
 					getterBlock.WriteLine ($"return {tempVar};");
 				}
 

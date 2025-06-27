@@ -14,18 +14,29 @@ namespace Xamarin.MacDev.Tasks.Tests {
 	[TestFixture]
 	public class FilterStaticFrameworksTaskTest : TestBase {
 
-		string tempDir = "";
-
-		[SetUp]
-		public void Setup ()
+		static byte [] CreateMinimalMachODylib ()
 		{
-			tempDir = Cache.CreateTemporaryDirectory ();
-		}
-
-		[TearDown]
-		public void TearDown ()
-		{
-			// Cache.CreateTemporaryDirectory() handles cleanup automatically
+			// Create a minimal Mach-O dylib header
+			// This is a very basic Mach-O file that should pass basic file type detection
+			var header = new byte [] {
+				// Mach-O magic number for 64-bit (MH_MAGIC_64)
+				0xCF, 0xFA, 0xED, 0xFE,
+				// CPU type (CPU_TYPE_X86_64 = 0x01000007)
+				0x07, 0x00, 0x00, 0x01,
+				// CPU subtype
+				0x03, 0x00, 0x00, 0x00,
+				// File type (MH_DYLIB = 6)
+				0x06, 0x00, 0x00, 0x00,
+				// Number of load commands
+				0x00, 0x00, 0x00, 0x00,
+				// Size of load commands
+				0x00, 0x00, 0x00, 0x00,
+				// Flags
+				0x00, 0x00, 0x00, 0x00,
+				// Reserved (64-bit only)
+				0x00, 0x00, 0x00, 0x00
+			};
+			return header;
 		}
 
 		[Test]
@@ -40,14 +51,15 @@ namespace Xamarin.MacDev.Tasks.Tests {
 
 		void TestCustomFrameworkExecutablePathForPlatform (ApplePlatform platform, string frameworkName, string executableName)
 		{
-			bool usesVersionsStructure = platform == ApplePlatform.MacOSX || platform == ApplePlatform.MacCatalyst;
+			var isDesktopPlatform = platform == ApplePlatform.MacOSX || platform == ApplePlatform.MacCatalyst;
 
 			// Arrange: Create a mock framework with custom CFBundleExecutable
+			var tempDir = Cache.CreateTemporaryDirectory ();
 			var frameworkDir = Path.Combine (tempDir, platform.AsString (), frameworkName);
 			Directory.CreateDirectory (frameworkDir);
 
 			string infoPlistPath;
-			if (usesVersionsStructure) {
+			if (isDesktopPlatform) {
 				// macOS and MacCatalyst structure: Framework.framework/Versions/A/Resources/Info.plist
 				var versionsDir = Path.Combine (frameworkDir, "Versions", "A");
 				var resourcesDir = Path.Combine (versionsDir, "Resources");
@@ -76,7 +88,7 @@ namespace Xamarin.MacDev.Tasks.Tests {
 
 			// Create the custom executable file 
 			var customExecutablePath = Path.Combine (frameworkDir, executableName);
-			File.WriteAllText (customExecutablePath, "mock executable");
+			File.WriteAllBytes (customExecutablePath, CreateMinimalMachODylib ());
 
 			// Act: Create and execute the task
 			var task = CreateTask<FilterStaticFrameworks> ();
@@ -103,13 +115,14 @@ namespace Xamarin.MacDev.Tasks.Tests {
 
 		void TestDefaultFrameworkExecutablePathForPlatform (ApplePlatform platform, string frameworkName)
 		{
-			bool usesVersionsStructure = platform == ApplePlatform.MacOSX || platform == ApplePlatform.MacCatalyst;
+			var isDesktopPlatform = platform == ApplePlatform.MacOSX || platform == ApplePlatform.MacCatalyst;
 
 			// Arrange: Create a framework without Info.plist (or with default CFBundleExecutable)
+			var tempDir = Cache.CreateTemporaryDirectory ();
 			var frameworkDir = Path.Combine (tempDir, platform.AsString (), frameworkName);
 			Directory.CreateDirectory (frameworkDir);
 
-			if (usesVersionsStructure) {
+			if (isDesktopPlatform) {
 				// macOS and MacCatalyst structure
 				var versionsDir = Path.Combine (frameworkDir, "Versions", "A");
 				var resourcesDir = Path.Combine (versionsDir, "Resources");
@@ -120,7 +133,7 @@ namespace Xamarin.MacDev.Tasks.Tests {
 			}
 
 			var expectedExecutable = Path.Combine (frameworkDir, "TestFramework");
-			File.WriteAllText (expectedExecutable, "mock executable");
+			File.WriteAllBytes (expectedExecutable, CreateMinimalMachODylib ());
 
 			// Act: Create and execute the task
 			var task = CreateTask<FilterStaticFrameworks> ();
@@ -139,6 +152,7 @@ namespace Xamarin.MacDev.Tasks.Tests {
 		public void TestNonFrameworkPath ()
 		{
 			// Arrange: Use a non-framework path
+			var tempDir = Cache.CreateTemporaryDirectory ();
 			var nonFrameworkPath = Path.Combine (tempDir, "regular_file.dylib");
 			File.WriteAllText (nonFrameworkPath, "mock dylib");
 
@@ -167,14 +181,15 @@ namespace Xamarin.MacDev.Tasks.Tests {
 
 		void TestMalformedInfoPlistForPlatform (ApplePlatform platform, string frameworkName)
 		{
-			bool usesVersionsStructure = platform == ApplePlatform.MacOSX || platform == ApplePlatform.MacCatalyst;
+			var isDesktopPlatform = platform == ApplePlatform.MacOSX || platform == ApplePlatform.MacCatalyst;
 
 			// Arrange: Create a framework with malformed Info.plist
+			var tempDir = Cache.CreateTemporaryDirectory ();
 			var frameworkDir = Path.Combine (tempDir, platform.AsString (), frameworkName);
 			Directory.CreateDirectory (frameworkDir);
 
 			string infoPlistPath;
-			if (usesVersionsStructure) {
+			if (isDesktopPlatform) {
 				// macOS and MacCatalyst structure: Framework.framework/Versions/A/Resources/Info.plist
 				var versionsDir = Path.Combine (frameworkDir, "Versions", "A");
 				var resourcesDir = Path.Combine (versionsDir, "Resources");
@@ -192,7 +207,7 @@ namespace Xamarin.MacDev.Tasks.Tests {
 			File.WriteAllText (infoPlistPath, "This is not a valid plist file");
 
 			var expectedExecutable = Path.Combine (frameworkDir, "BadFramework");
-			File.WriteAllText (expectedExecutable, "mock executable");
+			File.WriteAllBytes (expectedExecutable, CreateMinimalMachODylib ());
 
 			// Act: Create and execute the task
 			var task = CreateTask<FilterStaticFrameworks> ();

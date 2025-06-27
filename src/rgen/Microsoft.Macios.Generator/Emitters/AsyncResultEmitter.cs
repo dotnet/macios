@@ -46,7 +46,7 @@ class AsyncResultEmitter (
 		foreach (var parameter in asyncResult.CompletionHandler.Type.Delegate.Parameters) {
 			var ns = string.Join ('.', parameter.Type.Namespace);
 			if (!string.IsNullOrEmpty (ns) 
-			    && ns != typeNamespace  // make use we do not add a using for the same namespace
+			    && ns != typeNamespace  // ensure that we do not add a using statement for the same namespace
 			    && namespaces.Add (ns)) {
 				builder.WriteLine($"using {ns};");
 			}

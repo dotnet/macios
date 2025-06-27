@@ -125,6 +125,14 @@ public class BaseGeneratorTestClass {
 				var generatedLibSyntax = runResult.GeneratedTrees.Single (t => t.FilePath.EndsWith ("ObjCRuntime/Trampolines.g.cs"));
 				Assert.Equal (testData.ExpectedTrampolineText, generatedLibSyntax.GetText ().ToString ());
 			}
+
+			if (testData.ExtraFiles is not null) {
+				// validate that we have the expected extra files and that their values are the correct ones
+				foreach (var (filePath, fileContent) in testData.ExtraFiles) {
+					var generatedFile = runResult.GeneratedTrees.Single (t => t.FilePath.EndsWith (filePath));
+					Assert.Equal (fileContent, generatedFile.GetText ().ToString ());
+				}
+			}
 		}
 
 	}

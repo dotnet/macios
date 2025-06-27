@@ -100,12 +100,12 @@ readonly partial struct Binding {
 			// ensure that we do not return the same result type more than once.
 			var found = new HashSet<string> ();
 			foreach (var method in Methods) {
-				if (method is { IsAsync: true, ExportMethodData.ResultTypeName: not null } 
-				    && found.Add (method.ExportMethodData.ResultTypeName)) {
-					yield return new() {
+				if (method is { IsAsync: true, ExportMethodData.ResultTypeName: not null }
+					&& found.Add (method.ExportMethodData.ResultTypeName)) {
+					yield return new () {
 						Namespace = Namespace,
 						Name = method.ExportMethodData.ResultTypeName,
-						CompletionHandler= method.Parameters [^1]
+						CompletionHandler = method.Parameters [^1]
 					};
 				}
 			}

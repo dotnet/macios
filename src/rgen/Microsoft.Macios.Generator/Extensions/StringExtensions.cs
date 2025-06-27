@@ -96,7 +96,7 @@ static class StringExtensions {
 			IdentifierName (fullNamespace),
 			IdentifierName (@class));
 	}
-	
+
 	/// <summary>
 	/// Capitalizes the first letter of the string.
 	/// </summary>
@@ -104,9 +104,9 @@ static class StringExtensions {
 	/// <returns>The capitalized string.</returns>
 	public static string Capitalize (this string s)
 	{
-		if (string.IsNullOrEmpty(s)) 
+		if (string.IsNullOrEmpty (s))
 			return s;
-		
+
 		return char.ToUpper (s [0]) + s [1..];
 	}
 }

@@ -18,7 +18,7 @@ public class ClassGenerationTests : BaseGeneratorTestClass {
 		public string? LibrariesFile { get; set; } = null;
 		public string? TrampolinesFile { get; set; } = null;
 		public Dictionary<string, string>? ExtraFiles { get; set; } = null;
-	} 
+	}
 
 	public class TestDataGenerator : BaseTestDataGenerator, IEnumerable<object []> {
 		readonly List<ClassGenerationData> _data = new ()
@@ -46,7 +46,7 @@ public class ClassGenerationTests : BaseGeneratorTestClass {
 			new (ApplePlatform.MacCatalyst, "ThreadSafeUIKitPropertyTests", "ThreadSafeUIKitPropertyTests.cs", "ExpectedThreadSafeUIKitPropertyTests.cs"),
 			new (ApplePlatform.MacOSX, "AppKitPropertyTests", "AppKitPropertyTests.cs", "ExpectedAppKitPropertyTests.cs"),
 			new (ApplePlatform.MacOSX, "ThreadSafeAppKitPropertyTests", "ThreadSafeAppKitPropertyTests.cs", "ExpectedThreadSafeAppKitPropertyTests.cs"),
-			
+
 			new (ApplePlatform.iOS, "NSUserDefaults", "NSUserDefaults.cs", "ExpectedNSUserDefaults.cs"),
 			new (ApplePlatform.TVOS, "NSUserDefaults", "NSUserDefaults.cs", "ExpectedNSUserDefaults.cs"),
 			new (ApplePlatform.MacCatalyst, "NSUserDefaults", "NSUserDefaults.cs", "ExpectedNSUserDefaults.cs"),
@@ -88,7 +88,7 @@ public class ClassGenerationTests : BaseGeneratorTestClass {
 					null : ReadFileAsString (file: testData.TrampolinesFile);
 				Dictionary<string, string>? extraFiles = null;
 				if (testData.ExtraFiles is not null) {
-					extraFiles = new();
+					extraFiles = new ();
 					foreach (var (key, filePath) in testData.ExtraFiles) {
 						var extraFileText = ReadFileAsString (file: filePath);
 						extraFiles.Add (key, extraFileText);

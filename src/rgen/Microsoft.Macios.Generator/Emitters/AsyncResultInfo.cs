@@ -15,17 +15,17 @@ readonly record struct AsyncResultInfo {
 	/// Gets the namespace of the result type.
 	/// </summary>
 	public ImmutableArray<string> Namespace { get; init; }
-	
+
 	/// <summary>
 	/// Gets the name of the result type.
 	/// </summary>
 	public string Name { get; init; }
-	
+
 	/// <summary>
 	/// Gets the completion handler parameter.
 	/// </summary>
 	public Parameter CompletionHandler { get; init; }
-	
+
 	/// <summary>
 	/// Gets the fully qualified name of the result type.
 	/// </summary>
@@ -33,7 +33,7 @@ readonly record struct AsyncResultInfo {
 		get {
 			if (Namespace.IsDefaultOrEmpty)
 				return Name;
-			return string.Join(".", Namespace) + "." + Name;
+			return string.Join (".", Namespace) + "." + Name;
 		}
 	}
 }

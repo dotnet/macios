@@ -18,11 +18,11 @@ namespace Microsoft.Macios.Generator.Emitters;
 
 class AsyncResultEmitter (
 	TabbedStringBuilder builder) {
-	
-	public bool TryEmit (AsyncResultInfo asyncResult,  [NotNullWhen (false)] out ImmutableArray<Diagnostic>? diagnostics)
+
+	public bool TryEmit (AsyncResultInfo asyncResult, [NotNullWhen (false)] out ImmutableArray<Diagnostic>? diagnostics)
 	{
 		diagnostics = null;
-		
+
 		// get the parameters based on the completion handler
 		if (asyncResult.CompletionHandler.Type.Delegate is null) {
 			diagnostics = [Diagnostic.Create (
@@ -45,13 +45,13 @@ class AsyncResultEmitter (
 		var namespaces = new HashSet<string> ();
 		foreach (var parameter in asyncResult.CompletionHandler.Type.Delegate.Parameters) {
 			var ns = string.Join ('.', parameter.Type.Namespace);
-			if (!string.IsNullOrEmpty (ns) 
-			    && ns != typeNamespace  // ensure that we do not add a using statement for the same namespace
-			    && namespaces.Add (ns)) {
-				builder.WriteLine($"using {ns};");
+			if (!string.IsNullOrEmpty (ns)
+				&& ns != typeNamespace  // ensure that we do not add a using statement for the same namespace
+				&& namespaces.Add (ns)) {
+				builder.WriteLine ($"using {ns};");
 			}
 		}
-		
+
 		// add space for readability
 		if (namespaces.Count > 0)
 			builder.WriteLine ();
@@ -60,9 +60,9 @@ class AsyncResultEmitter (
 		builder.WriteLine ($"namespace {typeNamespace};");
 		builder.WriteLine ();
 
-		using (var classBlock = 
-		       builder.CreateBlock ($"public partial class {asyncResult.Name}", true)) {
-			
+		using (var classBlock =
+			   builder.CreateBlock ($"public partial class {asyncResult.Name}", true)) {
+
 			foreach (var parameter in parameters) {
 				classBlock.WriteLine ();
 				classBlock.WriteLine ($"public {parameter.Type.GetIdentifierSyntax ().ToString ()} {parameter.Name.Capitalize ()} {{ get; set; }}");
@@ -71,13 +71,13 @@ class AsyncResultEmitter (
 			// get the parameter from the delegate type
 			classBlock.WriteLine ();
 			classBlock.WriteLine ("partial void Initialize ();");
-			
+
 			// create a constructor for the result type 
 			var constructor = new Constructor (
-				type: asyncResult.Name, 
-				symbolAvailability: new SymbolAvailability(), 
-				attributes: [], 
-				modifiers: [Token (SyntaxKind.PublicKeyword)], 
+				type: asyncResult.Name,
+				symbolAvailability: new SymbolAvailability (),
+				attributes: [],
+				modifiers: [Token (SyntaxKind.PublicKeyword)],
 				parameters: parameters);
 			classBlock.WriteLine ();
 			using (var constructorBlock = classBlock.CreateBlock ($"{constructor.ToDeclaration ()}", true)) {

@@ -58,7 +58,7 @@ public class BindingSourceGeneratorGenerator : IIncrementalGenerator {
 
 		var trampolineProvider = provider
 			.Select ((tuple, _) => (tuple.RootBindingContext, tuple.Bindings.Trampolines));
-		
+
 		var asyncResultsProvider = provider
 			.Select ((tuple, _) => (tuple.RootBindingContext, tuple.Bindings.AsyncResults));
 
@@ -70,7 +70,7 @@ public class BindingSourceGeneratorGenerator : IIncrementalGenerator {
 
 		context.RegisterSourceOutput (context.CompilationProvider.Combine (trampolineProvider.Collect ()),
 			((ctx, t) => GenerateTrampolineCode (ctx, t.Right)));
-		
+
 		context.RegisterSourceOutput (context.CompilationProvider.Combine (asyncResultsProvider.Collect ()),
 			((ctx, t) => GenerateAsyncResultCode (ctx, t.Right)));
 	}
@@ -258,7 +258,7 @@ public class BindingSourceGeneratorGenerator : IIncrementalGenerator {
 			} else {
 				// add to the diagnostics and continue to the next possible candidate
 				context.ReportDiagnostics (diagnostics);
-			}	
+			}
 		}
 	}
 

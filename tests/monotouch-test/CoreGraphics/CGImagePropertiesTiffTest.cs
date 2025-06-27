@@ -65,17 +65,17 @@ namespace monotouchtest.CoreGraphics {
 			var tiff = new CGImagePropertiesTiff ();
 
 			// Test orientation property
-			tiff.Orientation = CIImageOrientation.Up;
-			Assert.That (tiff.Orientation, Is.EqualTo (CIImageOrientation.Up), "Orientation should be settable to Up");
+			tiff.Orientation = CIImageOrientation.TopLeft;
+			Assert.That (tiff.Orientation, Is.EqualTo (CIImageOrientation.TopLeft), "Orientation should be settable to TopLeft");
 
-			tiff.Orientation = CIImageOrientation.Down;
-			Assert.That (tiff.Orientation, Is.EqualTo (CIImageOrientation.Down), "Orientation should be settable to Down");
+			tiff.Orientation = CIImageOrientation.TopRight;
+			Assert.That (tiff.Orientation, Is.EqualTo (CIImageOrientation.TopRight), "Orientation should be settable to TopRight");
 
-			tiff.Orientation = CIImageOrientation.Left;
-			Assert.That (tiff.Orientation, Is.EqualTo (CIImageOrientation.Left), "Orientation should be settable to Left");
+			tiff.Orientation = CIImageOrientation.BottomLeft;
+			Assert.That (tiff.Orientation, Is.EqualTo (CIImageOrientation.BottomLeft), "Orientation should be settable to BottomLeft");
 
-			tiff.Orientation = CIImageOrientation.Right;
-			Assert.That (tiff.Orientation, Is.EqualTo (CIImageOrientation.Right), "Orientation should be settable to Right");
+			tiff.Orientation = CIImageOrientation.BottomRight;
+			Assert.That (tiff.Orientation, Is.EqualTo (CIImageOrientation.BottomRight), "Orientation should be settable to BottomRight");
 		}
 
 		[Test]

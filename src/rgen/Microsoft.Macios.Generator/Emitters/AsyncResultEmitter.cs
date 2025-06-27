@@ -18,13 +18,13 @@ namespace Microsoft.Macios.Generator.Emitters;
 
 class AsyncResultEmitter (
 	TabbedStringBuilder builder) {
-	
+
 	static HashSet<string> DefaultNamespaces { get; } = [
 		"System",
 		"System.Threading.Tasks",
 		"System.Runtime.CompilerServices"
 	];
-	
+
 	/// <summary>
 	/// Writes the necessary 'using' statements for the generated async result type.
 	/// </summary>
@@ -34,23 +34,23 @@ class AsyncResultEmitter (
 	{
 		if (asyncResult.CompletionHandler.Type.Delegate is null)
 			return;
-		
+
 		// add the default namespaces
-		foreach (var ns in DefaultNamespaces.OrderBy (x=> x)) {
+		foreach (var ns in DefaultNamespaces.OrderBy (x => x)) {
 			builder.WriteLine ($"using {ns};");
 		}
-		
+
 		// collect the namespaces of the parameters of the delegate, use a set to avoid duplicates
 		var namespaces = new HashSet<string> ();
 		// add missing namespaces
 		foreach (var parameter in asyncResult.CompletionHandler.Type.Delegate.Parameters) {
 			var ns = string.Join ('.', parameter.Type.Namespace);
 			if (!string.IsNullOrEmpty (ns)
-			    && ns != typeNamespace // ensure that we do not add a using statement for the same namespace
-			    && !DefaultNamespaces.Contains (ns) )
+				&& ns != typeNamespace // ensure that we do not add a using statement for the same namespace
+				&& !DefaultNamespaces.Contains (ns))
 				namespaces.Add (ns);
 		}
-		
+
 		// sort the namespaces to be consistent and add them
 		foreach (var ns in namespaces.OrderBy (x => x)) {
 			builder.WriteLine ($"using {ns};");
@@ -83,7 +83,7 @@ class AsyncResultEmitter (
 		}
 
 		var typeNamespace = string.Join ('.', asyncResult.Namespace);
-		
+
 		WriteNamespaces (asyncResult, typeNamespace);
 
 		// namespace declaration

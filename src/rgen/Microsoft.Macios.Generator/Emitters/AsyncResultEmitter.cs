@@ -18,6 +18,48 @@ namespace Microsoft.Macios.Generator.Emitters;
 
 class AsyncResultEmitter (
 	TabbedStringBuilder builder) {
+	
+	static HashSet<string> DefaultNamespaces { get; } = [
+		"System",
+		"System.Threading.Tasks",
+		"System.Runtime.CompilerServices"
+	];
+	
+	/// <summary>
+	/// Writes the necessary 'using' statements for the generated async result type.
+	/// </summary>
+	/// <param name="asyncResult">The information about the async result type being generated.</param>
+	/// <param name="typeNamespace">The namespace of the generated type.</param>
+	void WriteNamespaces (AsyncResultInfo asyncResult, string typeNamespace)
+	{
+		if (asyncResult.CompletionHandler.Type.Delegate is null)
+			return;
+		
+		// add the default namespaces
+		foreach (var ns in DefaultNamespaces.OrderBy (x=> x)) {
+			builder.WriteLine ($"using {ns};");
+		}
+		
+		// collect the namespaces of the parameters of the delegate, use a set to avoid duplicates
+		var namespaces = new HashSet<string> ();
+		// add missing namespaces
+		foreach (var parameter in asyncResult.CompletionHandler.Type.Delegate.Parameters) {
+			var ns = string.Join ('.', parameter.Type.Namespace);
+			if (!string.IsNullOrEmpty (ns)
+			    && ns != typeNamespace // ensure that we do not add a using statement for the same namespace
+			    && !DefaultNamespaces.Contains (ns) )
+				namespaces.Add (ns);
+		}
+		
+		// sort the namespaces to be consistent and add them
+		foreach (var ns in namespaces.OrderBy (x => x)) {
+			builder.WriteLine ($"using {ns};");
+		}
+
+		// add space for readability
+		if (namespaces.Count > 0)
+			builder.WriteLine ();
+	}
 
 	public bool TryEmit (AsyncResultInfo asyncResult, [NotNullWhen (false)] out ImmutableArray<Diagnostic>? diagnostics)
 	{
@@ -41,20 +83,8 @@ class AsyncResultEmitter (
 		}
 
 		var typeNamespace = string.Join ('.', asyncResult.Namespace);
-		// collect the namespaces of the parameters of the delegate, use a set to avoid duplicates
-		var namespaces = new HashSet<string> ();
-		foreach (var parameter in asyncResult.CompletionHandler.Type.Delegate.Parameters) {
-			var ns = string.Join ('.', parameter.Type.Namespace);
-			if (!string.IsNullOrEmpty (ns)
-				&& ns != typeNamespace  // ensure that we do not add a using statement for the same namespace
-				&& namespaces.Add (ns)) {
-				builder.WriteLine ($"using {ns};");
-			}
-		}
-
-		// add space for readability
-		if (namespaces.Count > 0)
-			builder.WriteLine ();
+		
+		WriteNamespaces (asyncResult, typeNamespace);
 
 		// namespace declaration
 		builder.WriteLine ($"namespace {typeNamespace};");

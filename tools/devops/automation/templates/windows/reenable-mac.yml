@@ -30,14 +30,18 @@ steps:
   displayName: 'Download id_rsa'
 
 - pwsh: |
-    $idRsaPath = "$(Get-Location)\id_rsa"
+    $idRsaPath = "$(Get-Location)/id_rsa"
     Write-Host "##vso[task.setvariable variable=ID_RSA_PATH]$idRsaPath"
     Add-Content -Path "id_rsa"  -Value "$(RemoteMacIdRsa)"
     # We need to make sure the private key is only accessible by the current user,
     # otherwise ssh will complain and not use it.
-    icacls id_rsa /inheritance:r
-    $grant="$Env:USERNAME" + ":(R)"
-    icacls id_rsa /grant:r $grant
+    if ($IsWindows) {
+      icacls id_rsa /inheritance:r
+      $grant="$Env:USERNAME" + ":(R)"
+      icacls id_rsa /grant:r $grant
+    } else {
+      chmod 600 $idRsaPath
+    }
   displayName: "Write and verify id_rsa"
   continueOnError: true
 
@@ -51,7 +55,7 @@ steps:
 - template: ./generate-token.yml
 
 - pwsh: |
-    Import-Module $Env:SYSTEM_DEFAULTWORKINGDIRECTORY\$Env:BUILD_REPOSITORY_TITLE\tools\devops\automation\scripts\MaciosCI.psd1
+    Import-Module $Env:SYSTEM_DEFAULTWORKINGDIRECTORY/$Env:BUILD_REPOSITORY_TITLE/tools/devops/automation/scripts/MaciosCI.psd1
 
     $azdoBearerToken = "$(AzDO.BearerToken)"
     $azdoBearerTokenHint = $azdoBearerToken.Substring(0, 8)

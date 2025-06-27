@@ -484,7 +484,7 @@ namespace ReplayKit {
 	///     <param name="displayName">The display name of the newly loaded broadcasting service.</param>
 	///     <param name="appIcon">The application icon of the newly loaded broadcasting service.</param>
 	///     <summary>Delegate that specifies the signature of the completion handler in calls to the <see cref="ReplayKit.NSExtensionContext_RPBroadcastExtension.LoadBroadcastingApplicationInfo(Foundation.NSExtensionContext,ReplayKit.LoadBroadcastingHandler)" /> method.</summary>
-	delegate void LoadBroadcastingHandler (string bundleID, string displayName, UIImage appIcon);
+	delegate void LoadBroadcastingHandler (string bundleID, string displayName, [NullAllowed] UIImage appIcon);
 
 	[MacCatalyst (13, 1)]
 	[Category]

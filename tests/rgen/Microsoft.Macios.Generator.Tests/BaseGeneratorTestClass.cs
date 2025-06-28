@@ -105,6 +105,8 @@ public class BaseGeneratorTestClass {
 
 			// Run generators and retrieve all results.
 			var runResult = RunGenerators (driver, compilation);
+			var errors = runResult.Diagnostics.Where (d => d.Severity == DiagnosticSeverity.Error);
+			Assert.Empty (errors);
 
 			// All generated files can be found in 'RunResults.GeneratedTrees'.
 			var generatedFileSyntax = runResult.GeneratedTrees.Where (t => t.FilePath.EndsWith ($"{testData.ClassName}.g.cs")).ToArray ();

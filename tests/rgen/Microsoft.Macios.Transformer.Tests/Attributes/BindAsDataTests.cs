@@ -123,7 +123,9 @@ interface UIFeedbackGenerator {
 
 		Assert.NotNull (declaration);
 
+#pragma warning disable RS1039
 		var symbol = semanticModel.GetDeclaredSymbol (declaration);
+#pragma warning restore RS1039
 		Assert.NotNull (symbol);
 		var attribute = symbol.GetAttribute<BindAsData> (AttributesNames.BindAsAttribute, BindAsData.TryParse);
 		Assert.NotNull (attribute);

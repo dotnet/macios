@@ -204,7 +204,9 @@ public class ParentClass {
 		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
 		var declaration = getNode (syntaxTrees [0].GetRoot ());
 		Assert.NotNull (declaration);
+#pragma warning disable RS1039
 		var symbol = semanticModel.GetDeclaredSymbol (declaration);
+#pragma warning restore RS1039
 		Assert.NotNull (symbol);
 		var parents = symbol.GetParents ().Select (p => p.Name).ToArray ();
 		Assert.Equal (expectedParents, parents);

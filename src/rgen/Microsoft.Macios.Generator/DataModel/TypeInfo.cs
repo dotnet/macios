@@ -556,20 +556,19 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 	}
 
 	/// <summary>
-	/// If the current <see cref="TypeInfo"/> is nullable, this method returns a new <see cref="TypeInfo"/>
-	/// representing the non-nullable version of the type. Otherwise, it returns the current instance.
+	/// Returns a new <see cref="TypeInfo"/> with the specified nullability.
 	/// </summary>
+	/// <param name="isNullable">A boolean value indicating whether the new type should be nullable.</param>
 	/// <returns>
-	/// A new <see cref="TypeInfo"/> instance with <see cref="IsNullable"/> set to false if the original <see cref="IsNullable"/> was true;
-	/// otherwise, returns the current <see cref="TypeInfo"/> instance.
+	/// A new <see cref="TypeInfo"/> instance with the specified nullability. If the current instance already has the
+	/// specified nullability, the current instance is returned.
 	/// </returns>
-	public TypeInfo ToNonNullable ()
+	public TypeInfo WithNullable (bool isNullable)
 	{
-		if (!IsNullable)
+		if (IsNullable == isNullable)
 			return this;
-		// copy all the elements from the current array type and set the array type to false
 		return this with {
-			IsNullable = false,
+			IsNullable = isNullable,
 		};
 	}
 

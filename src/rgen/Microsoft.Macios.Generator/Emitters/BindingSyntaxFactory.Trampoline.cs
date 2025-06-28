@@ -208,7 +208,7 @@ static partial class BindingSyntaxFactory {
 			// parameters that are passed by reference, depend on the type that is referenced
 			{ IsByRef: true, Type.IsReferenceType: false, Type.IsNullable: true} 
 				=> (parameterIdentifier, 
-					PointerType (GetLowLevelType (parameterType.ToNonNullable ()))),
+					PointerType (GetLowLevelType (parameterType.WithNullable (isNullable: false)))),
 			
 			{ IsByRef: true, Type.IsReferenceType: false, Type.IsNullable: false} 
 				=> (parameterIdentifier, 
@@ -333,7 +333,7 @@ static partial class BindingSyntaxFactory {
 			
 			// Runtime.GetNSObject<ParameterType> (ParameterName) 
 			{ Type.IsNSObject: true, Type.IsNullable: true} =>
-				GetNSObject (parameterType.ToNonNullable ().GetIdentifierSyntax (), [
+				GetNSObject (parameterType.WithNullable (isNullable: false).GetIdentifierSyntax (), [
 					Argument (parameterIdentifier)
 				], suppressNullableWarning: false),
 			
@@ -345,7 +345,7 @@ static partial class BindingSyntaxFactory {
 			
 			// Runtime.GetINativeObject<ParameterType> (ParameterName, false)!
 			{ Type.IsINativeObject: true, Type.IsNullable: true } =>
-				GetINativeObject (parameterType.ToNonNullable ().GetIdentifierSyntax (), [
+				GetINativeObject (parameterType.WithNullable (isNullable: false).GetIdentifierSyntax (), [
 					Argument (parameterIdentifier), 
 					BoolArgument (false)
 				], suppressNullableWarning: false),

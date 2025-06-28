@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
+#pragma warning disable APL0003
 
 using System;
 using System.Runtime.Versioning;
@@ -12,7 +13,7 @@ using nfloat = System.Runtime.InteropServices.NFloat;
 
 namespace TestNamespace;
 
-[BindingType<Class>]
+[BindingType<ObjCBindings.Class>]
 public partial class PropertyTests {
 
 	// the following are a list of examples of all possible property definitions
@@ -62,7 +63,7 @@ public partial class PropertyTests {
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
-	public virtual partial string? Name { get; set; }
+	public virtual partial string? OtherName { get; set; }
 
 	// array of strings
 	[Export<Property> ("surnames")]
@@ -70,7 +71,7 @@ public partial class PropertyTests {
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
-	public virtual partial string [] Name { get; set; }
+	public virtual partial string [] Names { get; set; }
 
 	// simple NSObject
 	[SupportedOSPlatform ("ios")]
@@ -85,7 +86,10 @@ public partial class PropertyTests {
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
-	[Export<Property> ("delegate", ArgumentSemantic.Weak, Flags = Property.WeakDelegate)]
+	[Export<Property> ("delegate", 
+		ArgumentSemantic.Weak, 
+		Flags = Property.WeakDelegate, 
+		StrongDelegateType = typeof (INSUserActivityDelegate))]
 	public virtual partial NSObject? WeakDelegate { get; set; }
 
 	// array nsobject
@@ -142,16 +146,6 @@ public partial class PropertyTests {
 		get;
 		[Export<Property> ("setLenient:")]
 		set;
-	}
-
-	// wrapper property example
-	[SupportedOSPlatform ("ios")]
-	[SupportedOSPlatform ("tvos")]
-	[SupportedOSPlatform ("macos")]
-	[SupportedOSPlatform ("maccatalyst13.1")]
-	public virtual INSMetadataQueryDelegate? Delegate {
-		get => WeakDelegate as INSMetadataQueryDelegate;
-		set => WeakDelegate = value;
 	}
 
 	// bindfrom

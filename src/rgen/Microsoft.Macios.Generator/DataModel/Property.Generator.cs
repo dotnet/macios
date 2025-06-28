@@ -266,6 +266,19 @@ readonly partial struct Property {
 		return RequiresDirtyCheck == other.RequiresDirtyCheck;
 	}
 
+	public Property ToStrongDelegate ()
+	{
+		// has to be a property, weak delegate and have its strong delegate type set
+		if (!IsProperty || !IsWeakDelegate || ExportPropertyData.Value.StrongDelegateType is null)
+			return this;
+
+		// update the return type, all the rest is the same
+		return this with {
+			Name = ExportPropertyData.Value.StrongDelegateName ?? Name.Remove (0, 4 /* "Weak".Length */),
+			ReturnType = ExportPropertyData.Value.StrongDelegateType.Value.WithNullable (true),
+		};
+	}
+
 	/// <inheritdoc />
 	public override string ToString ()
 	{

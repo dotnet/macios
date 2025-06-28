@@ -18,7 +18,7 @@ readonly partial struct Property : IEquatable<Property> {
 	/// <summary>
 	/// Name of the property.
 	/// </summary>
-	public string Name { get; } = string.Empty;
+	public string Name { get; init; } = string.Empty;
 
 	readonly string? backingField = null;
 

@@ -1059,6 +1059,7 @@ namespace UIKit {
 		[NullAllowed, Export ("accessibilityTextualContext", ArgumentSemantic.Strong)]
 		string AccessibilityTextualContext { get; set; }
 
+#if !XAMCORE_5_0
 		/// <summary>Gets a trait that indicates that <c>this</c> <see cref="UIKit.IUIAccessibilityIdentification" /> element has no traits.</summary>
 		/// <value>The value to be set for the trait.</value>
 		/// <remarks>To be added.</remarks>
@@ -1182,6 +1183,7 @@ namespace UIKit {
 		[MacCatalyst (13, 1)]
 		[Field ("UIAccessibilityTraitTabBar")]
 		long TraitTabBar { get; }
+#endif // !XAMCORE_5_0
 
 		/// <include file="../docs/api/UIKit/UIBarItem.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIBarItem.AnnouncementDidFinishNotification']/*" />
 		[Field ("UIAccessibilityAnnouncementDidFinishNotification")]
@@ -36380,6 +36382,11 @@ namespace UIKit {
 		double Fast { get; }
 	}
 
+#if XAMCORE_5_0
+	[BackingFieldType (typeof (ulong))]
+#else
+	[BackingFieldType (typeof (ulong), GetConstantMethodName = "GetConstantValue")]
+#endif
 	public enum UIAccessibilityTraits : long {
 		[Field ("UIAccessibilityTraitNone")]
 		None,

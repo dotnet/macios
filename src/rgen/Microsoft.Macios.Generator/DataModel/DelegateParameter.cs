@@ -122,6 +122,12 @@ readonly partial struct DelegateParameter : IEquatable<DelegateParameter> {
 		return !left.Equals (right);
 	}
 
+	/// <summary>
+	/// Converts this <see cref="DelegateParameter"/> to a <see cref="Parameter"/>.
+	/// </summary>
+	/// <returns>A new <see cref="Parameter"/> instance.</returns>
+	public Parameter ToParameter () => new (Position, Type, Name);
+
 	/// <inheritdoc/>
 	public override string ToString ()
 	{

@@ -66,6 +66,11 @@ readonly partial struct Property {
 	public bool IsTransient => IsProperty && HasTransientFlag;
 
 	/// <summary>
+	/// True if the property is a weak delegate.
+	/// </summary>
+	public bool IsWeakDelegate => IsProperty && Name.StartsWith ("Weak");
+
+	/// <summary>
 	/// Returns the bind from data if present in the binding.
 	/// </summary>
 	public BindAsData? BindAs => BindAsAttribute;

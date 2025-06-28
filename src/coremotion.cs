@@ -83,7 +83,7 @@ namespace CoreMotion {
 	///     </remarks>
 	[NoMac]
 	[MacCatalyst (13, 1)]
-	delegate void CMAccelerometerHandler (CMAccelerometerData data, NSError error);
+	delegate void CMAccelerometerHandler ([NullAllowed] CMAccelerometerData data, [NullAllowed] NSError error);
 	/// <param name="gyroData">The gyroscope data for this event.</param>
 	///     <param name="error">Error or null if there are no errors.</param>
 	///     <summary>A delegate signature used to receive events from <see cref="CoreMotion.CMMotionManager" /></summary>
@@ -105,11 +105,11 @@ namespace CoreMotion {
 	///     </remarks>
 	[NoMac]
 	[MacCatalyst (13, 1)]
-	delegate void CMGyroHandler (CMGyroData gyroData, NSError error);
+	delegate void CMGyroHandler ([NullAllowed] CMGyroData gyroData, [NullAllowed] NSError error);
 	/// <include file="../docs/api/CoreMotion/CMDeviceMotionHandler.xml" path="/Documentation/Docs[@DocId='T:CoreMotion.CMDeviceMotionHandler']/*" />
 	[NoMac]
 	[MacCatalyst (13, 1)]
-	delegate void CMDeviceMotionHandler (CMDeviceMotion motion, NSError error);
+	delegate void CMDeviceMotionHandler ([NullAllowed] CMDeviceMotion motion, [NullAllowed] NSError error);
 
 	/// <include file="../docs/api/CoreMotion/CMMotionManager.xml" path="/Documentation/Docs[@DocId='T:CoreMotion.CMMotionManager']/*" />
 	[NoMac]
@@ -455,15 +455,15 @@ namespace CoreMotion {
 	///   	   </param>
 	///     <summary>A delegate that is the <c>handler</c> for the <see cref="CoreMotion.CMMotionManager.StartMagnetometerUpdates(Foundation.NSOperationQueue,CoreMotion.CMMagnetometerHandler)" /> method.</summary>
 	///     <remarks>Signature for a method that can receive magnetometer data from the CMMotionManager.</remarks>
-	delegate void CMMagnetometerHandler (CMMagnetometerData magnetometerData, NSError error);
+	delegate void CMMagnetometerHandler ([NullAllowed] CMMagnetometerData magnetometerData, [NullAllowed] NSError error);
 
 	/// <summary>The delegate for use with <see cref="CoreMotion.CMStepCounter.QueryStepCount(Foundation.NSDate,Foundation.NSDate,Foundation.NSOperationQueue,CoreMotion.CMStepQueryHandler)" />.</summary>
 	[MacCatalyst (13, 1)]
-	delegate void CMStepQueryHandler (nint numberOfSteps, NSError error);
+	delegate void CMStepQueryHandler (nint numberOfSteps, [NullAllowed] NSError error);
 
 	/// <summary>The delegate used with <see cref="CoreMotion.CMStepCounter.StartStepCountingUpdates(Foundation.NSOperationQueue,System.IntPtr,CoreMotion.CMStepUpdateHandler)" />.</summary>
 	[MacCatalyst (13, 1)]
-	delegate void CMStepUpdateHandler (nint numberOfSteps, NSDate timestamp, NSError error);
+	delegate void CMStepUpdateHandler (nint numberOfSteps, NSDate timestamp, [NullAllowed] NSError error);
 
 	/// <summary>On supported devices, stores the number of steps the user has taken with the device and allows step-counting to be dynamically tracked.</summary>
 	///     <remarks>
@@ -722,12 +722,12 @@ namespace CoreMotion {
 	/// <summary>The delegate that acts as the handler for <see cref="CoreMotion.CMMotionActivityManager.QueryActivity(Foundation.NSDate,Foundation.NSDate,Foundation.NSOperationQueue,CoreMotion.CMMotionActivityQueryHandler)" />.</summary>
 	[NoMac]
 	[MacCatalyst (13, 1)]
-	delegate void CMMotionActivityHandler (CMMotionActivity activity);
+	delegate void CMMotionActivityHandler ([NullAllowed] CMMotionActivity activity);
 
 	/// <summary>The delegate that is the handler for <see cref="CoreMotion.CMMotionActivityManager.StartActivityUpdates(Foundation.NSOperationQueue,CoreMotion.CMMotionActivityHandler)" />.</summary>
 	[NoMac]
 	[MacCatalyst (13, 1)]
-	delegate void CMMotionActivityQueryHandler (CMMotionActivity [] activities, NSError error);
+	delegate void CMMotionActivityQueryHandler ([NullAllowed] CMMotionActivity [] activities, [NullAllowed] NSError error);
 
 	/// <summary>On supported devices, accesses stored motion data and allows monitoring of motion updates.</summary>
 	///     <remarks>

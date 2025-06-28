@@ -732,7 +732,7 @@ namespace EventKit {
 		EKAuthorizationStatus GetAuthorizationStatus (EKEntityType entityType);
 	}
 
-	delegate void EKEventStoreRequestAccessCompletionHandler (bool didRequestAccess, NSError error);
+	delegate void EKEventStoreRequestAccessCompletionHandler (bool didRequestAccess, [NullAllowed] NSError error);
 	/// <param name="theEvent">The matching event.</param>
 	///     <param name="stop">If you set this ref value to true, the enumeration will stop.</param>
 	///     <summary>Delegate signature for the event enumeration method in <see cref="EventKit.EKEventStore" /></summary>
@@ -791,8 +791,8 @@ namespace EventKit {
 		string ConferenceDetails { get; }
 	}
 
-	delegate void VirtualConferenceRoomTypeHandler (NSArray<EKVirtualConferenceRoomTypeDescriptor> virtualConferenceRoomTypeDescriptor, NSError error);
-	delegate void VirtualConferenceHandler (EKVirtualConferenceDescriptor virtualConferenceDescriptor, NSError error);
+	delegate void VirtualConferenceRoomTypeHandler ([NullAllowed] NSArray<EKVirtualConferenceRoomTypeDescriptor> virtualConferenceRoomTypeDescriptor, [NullAllowed] NSError error);
+	delegate void VirtualConferenceHandler ([NullAllowed] EKVirtualConferenceDescriptor virtualConferenceDescriptor, [NullAllowed] NSError error);
 
 	[iOS (15, 0), MacCatalyst (15, 0), NoTV]
 	[BaseType (typeof (NSObject))]

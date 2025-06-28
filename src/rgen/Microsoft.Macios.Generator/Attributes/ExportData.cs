@@ -74,16 +74,16 @@ readonly struct ExportData<T> : IEquatable<ExportData<T>> where T : Enum {
 	/// A code snippet to be executed after the async method call.
 	/// </summary>
 	public string? PostNonResultSnippet { get; init; }
-	
+
 	/// <summary>
 	/// The type of the strong delegate for a weak delegate property.
 	/// </summary>
 	public TypeInfo? StrongDelegateType { get; init; }
-	
+
 	/// <summary>
 	/// The name of the strong delegate for a weak delegate property.
 	/// </summary>
-	public string? StrongDelegateName{ get; init; }
+	public string? StrongDelegateName { get; init; }
 
 	public ExportData () { }
 

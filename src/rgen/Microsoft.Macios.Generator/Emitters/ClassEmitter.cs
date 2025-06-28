@@ -213,7 +213,7 @@ if (IsDirectBinding) {{
 					if (property.NeedsBackingField) {
 						getterBlock.WriteLine ($"{property.BackingField} = {tempVar};");
 					}
-					
+
 					getterBlock.WriteLine ($"return {tempVar};");
 				}
 
@@ -259,23 +259,23 @@ $@"if (IsDirectBinding) {{
 					}
 				}
 			}
-			
+
 			// if the property is a weak delegate and has the strong delegate type set, we need to emit the
 			// strong delegate property
-			if (property is { IsProperty: true, IsWeakDelegate: true } 
-			    && property.ExportPropertyData.Value.StrongDelegateType is not null) {
+			if (property is { IsProperty: true, IsWeakDelegate: true }
+				&& property.ExportPropertyData.Value.StrongDelegateType is not null) {
 				classBlock.WriteLine ();
 				var strongDelegate = property.ToStrongDelegate ();
 				using (var propertyBlock =
-				       classBlock.CreateBlock (strongDelegate.ToDeclaration ().ToString (), block: true)) {
-					using (var getterBlock = 
-					       propertyBlock.CreateBlock ("get", block: true)) {
+					   classBlock.CreateBlock (strongDelegate.ToDeclaration ().ToString (), block: true)) {
+					using (var getterBlock =
+						   propertyBlock.CreateBlock ("get", block: true)) {
 						getterBlock.WriteLine (
 							$"return {property.Name} as {strongDelegate.ReturnType.WithNullable (isNullable: false).GetIdentifierSyntax ()};");
 					}
-					
-					using (var setterBlock = 
-					       propertyBlock.CreateBlock ("set", block: true)) {
+
+					using (var setterBlock =
+						   propertyBlock.CreateBlock ("set", block: true)) {
 						setterBlock.WriteRaw (
 $@"var rvalue = value as NSObject;
 if (!(value is null) && rvalue is null) {{

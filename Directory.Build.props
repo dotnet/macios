@@ -4,7 +4,7 @@
 		<DisableTransitiveFrameworkReferenceDownloads>true</DisableTransitiveFrameworkReferenceDownloads>
 		<MonoCecilPackageVersion>0.11.5</MonoCecilPackageVersion>
 		<MSBuildStructuredLoggerPackageVersion>2.2.158</MSBuildStructuredLoggerPackageVersion>
-		<MicrosoftBuildPackageVersion>17.13.1</MicrosoftBuildPackageVersion>
+		<MicrosoftBuildPackageVersion>17.13.9</MicrosoftBuildPackageVersion>
 		<MicrosoftBuildFrameworkPackageVersion>$(MicrosoftBuildPackageVersion)</MicrosoftBuildFrameworkPackageVersion>
 		<MicrosoftBuildTasksCorePackageVersion>$(MicrosoftBuildPackageVersion)</MicrosoftBuildTasksCorePackageVersion>
 		<MicrosoftBuildUtilitiesCorePackageVersion>$(MicrosoftBuildPackageVersion)</MicrosoftBuildUtilitiesCorePackageVersion>

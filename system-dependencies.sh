@@ -512,12 +512,19 @@ function install_coresimulator ()
 		CURRENT_CORESIMULATOR_VERSION=$(otool -L $CURRENT_CORESIMULATOR_PATH | grep "$CURRENT_CORESIMULATOR_PATH.*current version" | sed -e 's/.*current version//' -e 's/)//' -e 's/[[:space:]]//g' | uniq)
 	fi
 
-	# Either version may be composed of either 2 or 3 numbers.
+	# Either version may be composed of either 1, 2 or 3 numbers.
 	# We only care about the first two, so strip off the 3rd number if it exists.
 	# shellcheck disable=SC2001
 	CURRENT_CORESIMULATOR_VERSION=$(echo "$CURRENT_CORESIMULATOR_VERSION" | sed 's/\([0-9]*[.][0-9]*\).*/\1/')
 	# shellcheck disable=SC2001
 	TARGET_CORESIMULATOR_VERSION=$(echo "$TARGET_CORESIMULATOR_VERSION" | sed 's/\([0-9]*[.][0-9]*\).*/\1/')
+	# Add a .0 if we only got one number
+	if [[ "${CURRENT_CORESIMULATOR_VERSION/./}" == "${CURRENT_CORESIMULATOR_VERSION}" ]]; then
+		CURRENT_CORESIMULATOR_VERSION=$CURRENT_CORESIMULATOR_VERSION.0
+	fi
+	if [[ "${TARGET_CORESIMULATOR_VERSION/./}" == "${TARGET_CORESIMULATOR_VERSION}" ]]; then
+		TARGET_CORESIMULATOR_VERSION=$TARGET_CORESIMULATOR_VERSION.0
+	fi
 
 	# Compare versions to see if we got what we need
 	if [[ x"$TARGET_CORESIMULATOR_VERSION" == x"$CURRENT_CORESIMULATOR_VERSION" ]]; then

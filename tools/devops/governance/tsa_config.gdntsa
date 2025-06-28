@@ -9,7 +9,7 @@
     ],
     "instanceUrl": "https://devdiv.visualstudio.com",
     "projectName": "DevDiv",
-    "areaPath": "DevDiv\\VS Client - Runtime SDKs\\iOS and Mac",
+    "areaPath": "DevDiv\\.NET MAUI\\iOS and Mac",
     "iterationPath": "DevDiv",
     "tools": [
         "ApiScan", 

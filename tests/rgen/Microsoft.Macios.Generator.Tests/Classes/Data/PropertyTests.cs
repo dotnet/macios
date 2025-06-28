@@ -23,7 +23,7 @@ public partial class PropertyTests {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[Export<Property> ("count")]
-	public virtual partial nuint Count { get; }
+	public virtual partial nuint Count { get; set; }
 
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("tvos")]
@@ -38,7 +38,7 @@ public partial class PropertyTests {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[Export<Property> ("sizes")]
-	public virtual partial nuint [] Sizes { get; }
+	public virtual partial nuint [] Sizes { get; set; }
 
 	// boolean
 	[SupportedOSPlatform ("ios")]
@@ -46,7 +46,7 @@ public partial class PropertyTests {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[Export<Property> ("containsAttachments")]
-	public virtual partial bool ContainsAttachments { get; }
+	public virtual partial bool ContainsAttachments { get; set; }
 
 	// simple string
 	[SupportedOSPlatform ("ios")]
@@ -78,7 +78,7 @@ public partial class PropertyTests {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[Export<Property> ("attributedStringByInflectingString")]
-	public virtual partial NSAttributedString AttributedStringByInflectingString { get; }
+	public virtual partial NSAttributedString AttributedStringByInflectingString { get; set; }
 
 	// nullable NSObject
 	[SupportedOSPlatform ("ios")]
@@ -94,7 +94,7 @@ public partial class PropertyTests {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[Export<Property> ("results")]
-	public virtual partial NSMetadataItem [] Results { get; }
+	public virtual partial NSMetadataItem [] Results { get; set; }
 
 	// struct
 	[SupportedOSPlatform ("ios")]
@@ -102,7 +102,7 @@ public partial class PropertyTests {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[Export<Property> ("size")]
-	public virtual partial CGSize Size { get; }
+	public virtual partial CGSize Size { get; set; }
 
 	// static property
 	[SupportedOSPlatform ("ios")]
@@ -110,7 +110,7 @@ public partial class PropertyTests {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[Export<Property> ("alphanumericCharacterSet", ArgumentSemantic.Copy)]
-	public static partial NSCharacterSet Alphanumerics { get; }
+	public static partial NSCharacterSet Alphanumerics { get; set; }
 
 	// internal property
 	[SupportedOSPlatform ("ios")]
@@ -175,7 +175,6 @@ public partial class PropertyTests {
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
-	[BindFrom (typeof (NSValue))]
 	[Export<Property> ("Center")]
 	public virtual partial CGPoint Center { get; set; }
 

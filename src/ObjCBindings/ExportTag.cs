@@ -106,6 +106,11 @@ namespace ObjCBindings {
 		/// </summary>
 		Factory = 1 << 12,
 
+		/// <summary>
+		/// Use this flag on a method to generate an async version of the method.
+		/// </summary>
+		Async = 1 << 13,
+
 	}
 
 	/// <summary>
@@ -204,6 +209,9 @@ namespace ObjCBindings {
 		/// </summary>
 		Proxy = 1 << 14,
 
+		/// <summary>
+		/// Use this flag on a property to mark it as a weak delegate.
+		/// </summary>
+		WeakDelegate = 1 << 15,
 	}
 }
-

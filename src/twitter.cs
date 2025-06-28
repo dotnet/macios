@@ -15,7 +15,7 @@ using Accounts;
 namespace Twitter {
 
 	/// <summary>A delegate that is used as the <c>handler</c> in calls to <see cref="Twitter.TWRequest.PerformRequest(Twitter.TWRequestHandler)" />.</summary>
-	delegate void TWRequestHandler (NSData responseData, NSHttpUrlResponse urlResponse, NSError error);
+	delegate void TWRequestHandler ([NullAllowed] NSData responseData, [NullAllowed] NSHttpUrlResponse urlResponse, [NullAllowed] NSError error);
 
 	/// <summary>A Twitter request.</summary>
 	///     

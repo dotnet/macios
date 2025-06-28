@@ -1,13 +1,13 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using System;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Macios.Generator.DataModel;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using static Microsoft.Macios.Generator.Nomenclator; 
 using TypeInfo = Microsoft.Macios.Generator.DataModel.TypeInfo;
 
 namespace Microsoft.Macios.Generator.Emitters;
@@ -71,10 +71,10 @@ static partial class BindingSyntaxFactory {
 			{ BindAs: not null } => [
 				ExpressionStatement (
 					KeepAlive (
-						Nomenclator.GetNameForVariableType (
+						GetNameForVariableType (
 							parameter.Name, 
 							parameter.BindAs.Value.Type.IsArray 
-								? Nomenclator.VariableType.NSArray : Nomenclator.VariableType.BindFrom)! 
+								? VariableType.NSArray : VariableType.BindFrom)! 
 				))],
 			
 			{ Type.IsPointer: true } => [],
@@ -85,7 +85,7 @@ static partial class BindingSyntaxFactory {
 			{ Type.IsSmartEnum: true} =>  [ExpressionStatement (
 				KeepAlive (
 					// use the nomenclator to get the name for the variable type
-					Nomenclator.GetNameForVariableType (parameter.Name, Nomenclator.VariableType.BindFrom)!
+					GetNameForVariableType (parameter.Name, VariableType.BindFrom)!
 				))],
 
 			// boolean, nothing to do
@@ -95,20 +95,20 @@ static partial class BindingSyntaxFactory {
 			{ Type.IsArray: true, Type.ArrayElementType: SpecialType.System_String } => [ExpressionStatement (
 				KeepAlive (
 					//  use the nomenclator to get the name for the variable type
-					Nomenclator.GetNameForVariableType (parameter.Name, Nomenclator.VariableType.NSArray)!
+					GetNameForVariableType (parameter.Name, VariableType.NSArray)!
 				))],
 
 			{ Type.IsArray: true, Type.ArrayElementIsINativeObject: true } => [ExpressionStatement (
 				KeepAlive (
 					//  use the nomenclator to get the name for the variable type
-					Nomenclator.GetNameForVariableType (parameter.Name, Nomenclator.VariableType.NSArray)!
+					GetNameForVariableType (parameter.Name, VariableType.NSArray)!
 				))],
 
 			{ Type.SpecialType: SpecialType.System_String } =>  [ExpressionStatement (
 					StringReleaseNative(
 						[Argument(IdentifierName(
 							//  use the nomenclator to get the name for the variable type
-							Nomenclator.GetNameForVariableType (parameter.Name, Nomenclator.VariableType.NSString)!
+							GetNameForVariableType (parameter.Name, VariableType.NSString)!
 						))
 						]))],
 
@@ -242,38 +242,38 @@ static partial class BindingSyntaxFactory {
 					[
 						GetNSValueAuxVariable (argumentInfo)!
 							.WithUsingKeyword (Token (SyntaxKind.UsingKeyword).WithTrailingTrivia (Space)), 
-						GetHandleAuxVariable (Nomenclator.GetNameForVariableType (argumentInfo.Name, Nomenclator.VariableType.BindFrom)!, argumentInfo.BindAs.Value.Type)!
+						GetHandleAuxVariable (GetNameForVariableType (argumentInfo.Name, VariableType.BindFrom)!, argumentInfo.BindAs.Value.Type)!
 					],
 				{ BindAs.FullyQualifiedName: "Foundation.NSNumber", Type.IsArray: false } =>
 					[
 						GetNSNumberAuxVariable (argumentInfo)! 
 							.WithUsingKeyword (Token (SyntaxKind.UsingKeyword).WithTrailingTrivia (Space)), 
-						GetHandleAuxVariable (Nomenclator.GetNameForVariableType (argumentInfo.Name, Nomenclator.VariableType.BindFrom)!, argumentInfo.BindAs.Value.Type)!
+						GetHandleAuxVariable (GetNameForVariableType (argumentInfo.Name, VariableType.BindFrom)!, argumentInfo.BindAs.Value.Type)!
 					],
 				{ BindAs.FullyQualifiedName: "Foundation.NSString", Type.IsArray: false } =>
 					[
 						GetNSStringSmartEnumAuxVariable (argumentInfo)!
 							.WithUsingKeyword (Token (SyntaxKind.UsingKeyword).WithTrailingTrivia (Space)), 
-						GetHandleAuxVariable (Nomenclator.GetNameForVariableType (argumentInfo.Name, Nomenclator.VariableType.BindFrom)!, argumentInfo.BindAs.Value.Type)!
+						GetHandleAuxVariable (GetNameForVariableType (argumentInfo.Name, VariableType.BindFrom)!, argumentInfo.BindAs.Value.Type)!
 					],
 				// array support: NSArray.ArrayFromHandleFunc<parameterType> (parameterName, NSValue.FromHandle, false)!
 				{ BindAs.FullyQualifiedName: "Foundation.NSValue", Type.IsArray: true } =>
 					[
 						GetNSArrayAuxVariable (argumentInfo)!
 							.WithUsingKeyword (Token (SyntaxKind.UsingKeyword).WithTrailingTrivia (Space)), 
-						GetHandleAuxVariable (Nomenclator.GetNameForVariableType (argumentInfo.Name, Nomenclator.VariableType.BindFrom)!, argumentInfo.BindAs.Value.Type)!
+						GetHandleAuxVariable (GetNameForVariableType (argumentInfo.Name, VariableType.BindFrom)!, argumentInfo.BindAs.Value.Type)!
 					],
 				{ BindAs.FullyQualifiedName: "Foundation.NSNumber", Type.IsArray: true } =>
 					[
 						GetNSArrayAuxVariable (argumentInfo)!
 							.WithUsingKeyword (Token (SyntaxKind.UsingKeyword).WithTrailingTrivia (Space)), 
-						GetHandleAuxVariable (Nomenclator.GetNameForVariableType (argumentInfo.Name, Nomenclator.VariableType.BindFrom)!, argumentInfo.BindAs.Value.Type)!
+						GetHandleAuxVariable (GetNameForVariableType (argumentInfo.Name, VariableType.BindFrom)!, argumentInfo.BindAs.Value.Type)!
 					],
 				{ BindAs.FullyQualifiedName: "Foundation.NSString", Type.IsArray: true } =>
 					[
 						GetNSArrayAuxVariable (argumentInfo)!
 							.WithUsingKeyword (Token (SyntaxKind.UsingKeyword).WithTrailingTrivia (Space)), 
-						GetHandleAuxVariable (Nomenclator.GetNameForVariableType (argumentInfo.Name, Nomenclator.VariableType.BindFrom)!, argumentInfo.BindAs.Value.Type)!
+						GetHandleAuxVariable (GetNameForVariableType (argumentInfo.Name, VariableType.BindFrom)!, argumentInfo.BindAs.Value.Type)!
 					],
 				_ => conversions
 			};
@@ -317,25 +317,25 @@ static partial class BindingSyntaxFactory {
 			{ Type.IsDelegate: true, Parameter.IsCCallback: true } 
 				=> CastExpression (
 					NativeHandle, 
-					IdentifierName (Nomenclator.GetNameForVariableType (argumentInfo.Name, Nomenclator.VariableType.BlockLiteral)!).WithLeadingTrivia (Space)),
+					IdentifierName (GetNameForVariableType (argumentInfo.Name, VariableType.BlockLiteral)!).WithLeadingTrivia (Space)),
 			
 			// delegate parameter, block callback
 			// TrampolineNativeInvocationClass.Create (ParameterName)!
 			{ Type.IsDelegate: true, Parameter.IsBlockCallback: true }
 				=> CastExpression(
 					NativeHandle, 
-					IdentifierName (Nomenclator.GetNameForVariableType (argumentInfo.Name, Nomenclator.VariableType.BlockLiteral)!).WithLeadingTrivia (Space)),
+					IdentifierName (GetNameForVariableType (argumentInfo.Name, VariableType.BlockLiteral)!).WithLeadingTrivia (Space)),
 			
 			// this happens when the parameter is not decorated. This is the default behaviour with properties and methods
 			// if that is the case, we always assume we are dealing with a block callback
 			{ Type.IsDelegate: true, Parameter.IsBlockCallback: false, Parameter.IsCCallback: false }
 				=> CastExpression(
 					NativeHandle, 
-					IdentifierName (Nomenclator.GetNameForVariableType (argumentInfo.Name, Nomenclator.VariableType.BlockLiteral)!).WithLeadingTrivia (Space)),
+					IdentifierName (GetNameForVariableType (argumentInfo.Name, VariableType.BlockLiteral)!).WithLeadingTrivia (Space)),
     
 			// smart enums must use the aux variable
 			{ Type.IsSmartEnum: true} 
-				=> IdentifierName (Nomenclator.GetNameForVariableType (argumentInfo.Name, Nomenclator.VariableType.BindFrom)!),
+				=> IdentifierName (GetNameForVariableType (argumentInfo.Name, VariableType.BindFrom)!),
 			
 			// native enum, return the conversion expression to the native type
 			{ Type.IsNativeEnum: true} 
@@ -349,43 +349,43 @@ static partial class BindingSyntaxFactory {
 			
 			// use the native handle of the array
 			{ Type.IsArray: true, Type.ArrayElementTypeIsWrapped: true } =>
-				IdentifierName (Nomenclator.GetNameForVariableType (argumentInfo.Name, Nomenclator.VariableType.NSArray)!),
+				IdentifierName (GetNameForVariableType (argumentInfo.Name, VariableType.NSArray)!),
 			
 			// NSArray.ArrayFromHandle<{0}> ({1})!
 			{ Type.IsArray: true, Type.ArrayElementIsINativeObject: true } =>
-				IdentifierName (Nomenclator.GetNameForVariableType (argumentInfo.Name, Nomenclator.VariableType.NSArray)!),
+				IdentifierName (GetNameForVariableType (argumentInfo.Name, VariableType.NSArray)!),
 			
 			// string[]
 			// CFArray.StringArrayFromHandle (ParameterName)!
 			{ Type.IsArray: true, Type.ArrayElementType: SpecialType.System_String } =>
-				IdentifierName (Nomenclator.GetNameForVariableType (argumentInfo.Name, Nomenclator.VariableType.NSArray)!),
+				IdentifierName (GetNameForVariableType (argumentInfo.Name, VariableType.NSArray)!),
 			
 			// string
 			// CFString.FromHandle (ParameterName)!
 			{ Type.SpecialType: SpecialType.System_String } =>
-				IdentifierName (Nomenclator.GetNameForVariableType (argumentInfo.Name, Nomenclator.VariableType.NSString)!),
+				IdentifierName (GetNameForVariableType (argumentInfo.Name, VariableType.NSString)!),
 			
 			// Runtime.GetINativeObject<ParameterType> (ParameterName, false)!
 			{ Type.IsProtocol: true } => 
-				IdentifierName (Nomenclator.GetNameForVariableType (argumentInfo.Name, Nomenclator.VariableType.Handle)!),
+				IdentifierName (GetNameForVariableType (argumentInfo.Name, VariableType.Handle)!),
 			
 			// special types
 			
 			{ Type.FullyQualifiedName: "CoreMedia.CMSampleBuffer" } =>
-				IdentifierName (Nomenclator.GetNameForVariableType (argumentInfo.Name, Nomenclator.VariableType.Handle)!),
+				IdentifierName (GetNameForVariableType (argumentInfo.Name, VariableType.Handle)!),
 			
 			{ Type.FullyQualifiedName: "AudioToolbox.AudioBuffers" } =>
-				IdentifierName (Nomenclator.GetNameForVariableType (argumentInfo.Name, Nomenclator.VariableType.Handle)!),
+				IdentifierName (GetNameForVariableType (argumentInfo.Name, VariableType.Handle)!),
 			
 			// general NSObject/INativeObject, has to be after the special types otherwise the special types will
 			// fall into the NSObject/INativeObject case
 			
 			{ Type.IsNSObject: true } =>
-				IdentifierName (Nomenclator.GetNameForVariableType (argumentInfo.Name, Nomenclator.VariableType.Handle)!),
+				IdentifierName (GetNameForVariableType (argumentInfo.Name, VariableType.Handle)!),
 			
 			// Runtime.GetINativeObject<ParameterType> (ParameterName, false)!
 			{ Type.IsINativeObject: true } =>
-				IdentifierName (Nomenclator.GetNameForVariableType (argumentInfo.Name, Nomenclator.VariableType.Handle)!),
+				IdentifierName (GetNameForVariableType (argumentInfo.Name, VariableType.Handle)!),
 			
 			// by default, we will use the parameter name as is
 			_ => parameterIdentifier
@@ -396,10 +396,10 @@ static partial class BindingSyntaxFactory {
 		// attribute, we need get that expression and convert the NSValue/NSNumber to the expected type.
 		if (argumentInfo.BindAs is not null) {
 			// the name of the bind as aux variable
-			var variableName = Nomenclator.GetNameForVariableType (argumentInfo.Name,
-				argumentInfo.Type.IsArray ? Nomenclator.VariableType.NSArray : Nomenclator.VariableType.BindFrom)!;
+			var variableName = GetNameForVariableType (argumentInfo.Name,
+				argumentInfo.Type.IsArray ? VariableType.NSArray : VariableType.BindFrom)!;
 			// we need to use the name used for the handle
-			variableName = Nomenclator.GetNameForVariableType (variableName, Nomenclator.VariableType.Handle)!;
+			variableName = GetNameForVariableType (variableName, VariableType.Handle)!;
 			expression = IdentifierName (variableName);
 		}
 

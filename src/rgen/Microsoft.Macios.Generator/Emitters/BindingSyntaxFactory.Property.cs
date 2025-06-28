@@ -3,7 +3,7 @@
 
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Macios.Generator.DataModel;
-using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using static Microsoft.Macios.Generator.Nomenclator; 
 using TypeInfo = Microsoft.Macios.Generator.DataModel.TypeInfo;
 
 namespace Microsoft.Macios.Generator.Emitters;
@@ -80,8 +80,8 @@ static partial class BindingSyntaxFactory {
 
 		// get the getter invocation and assign it to the return variable 
 		return (
-			Send: AssignVariable (Nomenclator.GetReturnVariableName (), getterSend),
-			SendSuper: AssignVariable (Nomenclator.GetReturnVariableName (), getterSuperSend)
+			Send: AssignVariable (GetReturnVariableName (), getterSend),
+			SendSuper: AssignVariable (GetReturnVariableName (), getterSuperSend)
 		);
 	}
 

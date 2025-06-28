@@ -11,6 +11,7 @@ using Microsoft.Macios.Generator.DataModel;
 using Microsoft.Macios.Generator.Extensions;
 using Microsoft.Macios.Generator.Formatters;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using static Microsoft.Macios.Generator.Nomenclator; 
 using TypeInfo = Microsoft.Macios.Generator.DataModel.TypeInfo;
 
 namespace Microsoft.Macios.Generator.Emitters;
@@ -100,7 +101,7 @@ static partial class BindingSyntaxFactory {
 	/// <returns>The expression needed to create the native invocation class.</returns>
 	internal static ExpressionSyntax CreateTrampolineNativeInvocationClass (string trampolineName, ImmutableArray<ArgumentSyntax> arguments)
 	{
-		var className = Nomenclator.GetTrampolineClassName (trampolineName, Nomenclator.TrampolineClassType.NativeInvocationClass);
+		var className = GetTrampolineClassName (trampolineName, TrampolineClassType.NativeInvocationClass);
 		var staticClassName = IdentifierName (className);
 		return StaticInvocationExpression (staticClassName, "Create", arguments, suppressNullableWarning: true);
 	}
@@ -204,7 +205,7 @@ static partial class BindingSyntaxFactory {
 		var parameterIdentifier = Identifier (parameter.Name);
 		TypeInfo parameterType = parameter.BindAs?.Type ?? parameter.Type; 
 #pragma warning disable format
-		(SyntaxToken ParameterName, TypeSyntax ParameterType) parameterInfo = (IsByRef: parameter.IsByRef, Type: parameterType) switch {
+		(SyntaxToken ParameterName, TypeSyntax ParameterType) parameterInfo = (parameter.IsByRef, Type: parameterType) switch {
 			// parameters that are passed by reference, depend on the type that is referenced
 			{ IsByRef: true, Type.IsReferenceType: false, Type.IsNullable: true} 
 				=> (parameterIdentifier, 
@@ -245,13 +246,13 @@ static partial class BindingSyntaxFactory {
 			// parameters that are passed by reference, the nomenclator will return the name of the
 			// temporary variable to use for the trampoline, there is no need for us to do anything
 			{ Parameter.IsByRef: true, Type.IsReferenceType: false, Type.IsNullable: true} => 
-				IdentifierName (Nomenclator.GetNameForTempTrampolineVariable (parameter) ?? parameter.Name),
+				IdentifierName (GetNameForTempTrampolineVariable (parameter) ?? parameter.Name),
 			
 			{ Parameter.IsByRef: true, Type.IsReferenceType: true } => 
-				IdentifierName (Nomenclator.GetNameForTempTrampolineVariable (parameter) ?? parameter.Name),
+				IdentifierName (GetNameForTempTrampolineVariable (parameter) ?? parameter.Name),
 			
 			{ Parameter.IsByRef: true, Type.SpecialType: SpecialType.System_Boolean } => 
-				IdentifierName (Nomenclator.GetNameForTempTrampolineVariable (parameter) ?? parameter.Name),
+				IdentifierName (GetNameForTempTrampolineVariable (parameter) ?? parameter.Name),
 			
 			// other cases in which we will use AsRef for the pointed type
 			{ Parameter.IsByRef: true } 
@@ -440,7 +441,7 @@ static partial class BindingSyntaxFactory {
 		// 1. the parameter is by ref and nullable, we need to create a temporary variable to hold the value
 		// 2. the parameter is a boolean type and we need a conversion
 		// any other case we can just use the parameter as is and we will return an empty array
-		var tempVariableName = Nomenclator.GetNameForTempTrampolineVariable (parameter);
+		var tempVariableName = GetNameForTempTrampolineVariable (parameter);
 		if (tempVariableName is null)
 			return [];
 
@@ -547,7 +548,7 @@ static partial class BindingSyntaxFactory {
 		// similar to the pre invoke case, we need to do something with the byref parameters:
 		// 1. the parameter is by ref and nullable we need to assign the value
 		// 2. the parameter is a boolean type we need to convert back the value from a byte
-		var tempVariableName = Nomenclator.GetNameForTempTrampolineVariable (parameter);
+		var tempVariableName = GetNameForTempTrampolineVariable (parameter);
 		if (tempVariableName is null)
 			return [];
 
@@ -719,7 +720,7 @@ static partial class BindingSyntaxFactory {
 			.Select (x => x.ArgumentSyntax)
 			.ToImmutableArray ();
 		var invocation = InvocationExpression (
-				IdentifierName (Nomenclator.GetTrampolineDelegateVariableName ()).WithTrailingTrivia (Space))
+				IdentifierName (GetTrampolineDelegateVariableName ()).WithTrailingTrivia (Space))
 			.WithArgumentList (ArgumentList (SeparatedList<ArgumentSyntax> (args.ToSyntaxNodeOrTokenArray ())));
 
 		// return the invocation expression if the delegate return type is a void type
@@ -738,7 +739,7 @@ static partial class BindingSyntaxFactory {
 			.WithVariables (
 				SingletonSeparatedList (
 					VariableDeclarator (
-							Identifier (Nomenclator.GetReturnVariableName ()))
+							Identifier (GetReturnVariableName ()))
 						.WithInitializer (
 							EqualsValueClause (invocation.WithLeadingTrivia (Space)).WithLeadingTrivia (Space))));
 		return LocalDeclarationStatement (declaration);
@@ -755,7 +756,7 @@ static partial class BindingSyntaxFactory {
 		var parameterBucket = ImmutableArray.CreateBuilder<ParameterSyntax> (delegateTypeInfo.Delegate!.Parameters.Length + 1);
 		// block parameter needed for the trampoline
 		parameterBucket.Add (
-			Parameter (Identifier (Nomenclator.GetTrampolineBlockParameterName (delegateTypeInfo.Delegate!.Parameters)))
+			Parameter (Identifier (GetTrampolineBlockParameterName (delegateTypeInfo.Delegate!.Parameters)))
 				.WithType (IntPtr));
 		// calculate the rest of the parameters  
 		foreach (var currentParameter in delegateTypeInfo.Delegate!.Parameters) {
@@ -836,12 +837,12 @@ static partial class BindingSyntaxFactory {
 		var declaration = VariableDeclaration (pointerType)
 			.WithVariables (SingletonSeparatedList (
 				VariableDeclarator (
-						Identifier (Nomenclator.GetTrampolineDelegatePointerVariableName ()))
+						Identifier (GetTrampolineDelegatePointerVariableName ()))
 					.WithInitializer (
 						EqualsValueClause (
 							PrefixUnaryExpression (
 								SyntaxKind.AddressOfExpression,
-								IdentifierName (Nomenclator.GetTrampolineInvokeMethodName ()))))));
+								IdentifierName (GetTrampolineInvokeMethodName ()))))));
 
 		return LocalDeclarationStatement (declaration.NormalizeWhitespace ());
 	}
@@ -862,7 +863,7 @@ static partial class BindingSyntaxFactory {
 
 		var method = MethodDeclaration (
 				GetLowLevelType (delegateTypeInfo.Delegate!.ReturnType), // return the low level type, not the manged version
-				Identifier (Nomenclator.GetTrampolineInvokeMethodName ()))
+				Identifier (GetTrampolineInvokeMethodName ()))
 			.WithModifiers (modifiers).NormalizeWhitespace ()
 			.WithParameterList (parametersSyntax.WithLeadingTrivia (Space));
 		return method;
@@ -902,7 +903,7 @@ static partial class BindingSyntaxFactory {
 
 		var method = MethodDeclaration (
 				returnType, // return the low level type, not the managed version
-				Identifier (Nomenclator.GetTrampolineInvokeMethodName ()))
+				Identifier (GetTrampolineInvokeMethodName ()))
 			.WithModifiers (modifiers).NormalizeWhitespace ()
 			.WithParameterList (parametersSyntax.WithLeadingTrivia (Space));
 		return method;
@@ -922,7 +923,7 @@ static partial class BindingSyntaxFactory {
 		var bucket = ImmutableArray.CreateBuilder<TrampolineArgumentSyntax> (delegateInfo.Parameters.Length);
 
 		// add the first parameter to be the BlockPointer of the class.
-		bucket.Add (new TrampolineArgumentSyntax (Argument (IdentifierName (Nomenclator.GetBlockLiteralName ()))));
+		bucket.Add (new TrampolineArgumentSyntax (Argument (IdentifierName (GetBlockLiteralName ()))));
 
 		// add all the mising parameters to the bucket.
 		foreach (var parameter in delegateInfo.Parameters) {
@@ -953,7 +954,7 @@ static partial class BindingSyntaxFactory {
 			.Select (x => x.ArgumentSyntax)
 			.ToImmutableArray ();
 		var invocation = InvocationExpression (
-				IdentifierName (Nomenclator.GetNativeInvokerVariableName ()).WithTrailingTrivia (Space))
+				IdentifierName (GetNativeInvokerVariableName ()).WithTrailingTrivia (Space))
 			.WithArgumentList (ArgumentList (SeparatedList<ArgumentSyntax> (args.ToSyntaxNodeOrTokenArray ())));
 
 		// return the invocation expression if the delegate return type is a void type
@@ -972,7 +973,7 @@ static partial class BindingSyntaxFactory {
 			.WithVariables (
 				SingletonSeparatedList (
 					VariableDeclarator (
-							Identifier (Nomenclator.GetReturnVariableName ()))
+							Identifier (GetReturnVariableName ()))
 						.WithInitializer (
 							EqualsValueClause (invocation.WithLeadingTrivia (Space)).WithLeadingTrivia (Space))));
 		return LocalDeclarationStatement (declaration);
@@ -991,8 +992,7 @@ static partial class BindingSyntaxFactory {
 		var argumentList = ArgumentList (
 			SeparatedList<ArgumentSyntax> (arguments.ToSyntaxNodeOrTokenArray ()));
 		// get the name of the native class to be used to call the create method
-		var className =
-			Nomenclator.GetTrampolineClassName (trampolineType, Nomenclator.TrampolineClassType.NativeInvocationClass);
+		var className = GetTrampolineClassName (trampolineType, TrampolineClassType.NativeInvocationClass);
 
 		// generate the needed invocation expression for the Create method with the passed arguments
 		var invocation = InvocationExpression (

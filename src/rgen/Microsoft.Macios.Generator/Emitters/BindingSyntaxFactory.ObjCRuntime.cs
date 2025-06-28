@@ -13,6 +13,7 @@ using Microsoft.Macios.Generator.DataModel;
 using Microsoft.Macios.Generator.Extensions;
 using Microsoft.Macios.Generator.Formatters;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using static Microsoft.Macios.Generator.Nomenclator; 
 using TypeInfo = Microsoft.Macios.Generator.DataModel.TypeInfo;
 using Parameter = Microsoft.Macios.Generator.DataModel.Parameter;
 
@@ -209,14 +210,13 @@ static partial class BindingSyntaxFactory {
 			_ => "FromNSObjects" // the general assumption is that we are working with nsobjects unless we have a bind form
 		};
 		// syntax that calls the NSArray factory method using the parameter: NSArray.FromNSObjects (targetTensors);
-		var factoryInvocation = InvocationExpression (MemberAccessExpression (SyntaxKind.SimpleMemberAccessExpression,
-				NSArray, IdentifierName (nsArrayFactoryMethod).WithTrailingTrivia (Space)))
-			.WithArgumentList (
-				ArgumentList (SingletonSeparatedList (
-					Argument (IdentifierName (parameterName)))));
+		var factoryInvocation = MemberInvocationExpression (
+			instanceVariable: NSArray, 
+			methodName: nsArrayFactoryMethod, 
+			arguments: [Argument (IdentifierName (parameterName))]);
 
 		// variable name
-		var variableName = Nomenclator.GetNameForVariableType (parameterName, Nomenclator.VariableType.NSArray);
+		var variableName = GetNameForVariableType (parameterName, VariableType.NSArray);
 		if (variableName is null)
 			return null;
 		var declarator = VariableDeclarator (Identifier (variableName));
@@ -271,7 +271,7 @@ static partial class BindingSyntaxFactory {
 		if (!parameterType.IsNSObject && !parameterType.IsINativeObject)
 			return null;
 
-		var variableName = Nomenclator.GetNameForVariableType (parameterName, Nomenclator.VariableType.Handle);
+		var variableName = GetNameForVariableType (parameterName, VariableType.Handle);
 		if (variableName is null)
 			return null;
 		// decide about the factory based on the need of a null check 
@@ -361,7 +361,7 @@ static partial class BindingSyntaxFactory {
 		if (parameterType.Name != "string")
 			return null;
 
-		var variableName = Nomenclator.GetNameForVariableType (parameterName, Nomenclator.VariableType.NSString);
+		var variableName = GetNameForVariableType (parameterName, VariableType.NSString);
 		if (variableName is null)
 			return null;
 
@@ -458,33 +458,32 @@ static partial class BindingSyntaxFactory {
 		if (factoryMethod is null)
 			return null;
 
-		var variableName = Nomenclator.GetNameForVariableType (argumentInfo.Name, Nomenclator.VariableType.BindFrom);
+		var variableName = GetNameForVariableType (argumentInfo.Name, VariableType.BindFrom);
 		if (variableName is null)
 			return null;
-
-		// generates: NSNumber.FromDouble
-		var factoryInvocation = InvocationExpression (
-			MemberAccessExpression (
-				SyntaxKind.SimpleMemberAccessExpression,
-				NSNumber,
-				IdentifierName (factoryMethod).WithTrailingTrivia (Space))
-		);
+		
+		ImmutableArray<ArgumentSyntax> arguments;
 
 		// the arguments of the factory information depends on if we are dealing with a enum, in which case we cast
 		// or not, in which case we just add the arguments
 		if (argumentInfo.Type.IsEnum) {
 			// generates: NSNumber.FromDouble ((int)value);
-			factoryInvocation = factoryInvocation
-				.WithArgumentList (ArgumentList (SingletonSeparatedList (Argument (
+			arguments = [
+				Argument (
 					CastExpression (
 						IdentifierName (argumentInfo.Type.EnumUnderlyingType.GetKeyword () ?? ""),
-						IdentifierName (argumentInfo.Name).WithLeadingTrivia (Space))))));
+						IdentifierName (argumentInfo.Name).WithLeadingTrivia (Space))
+				)
+			];
 		} else {
 			// generates: NSNumber.FromDouble (value);
-			factoryInvocation = factoryInvocation
-				.WithArgumentList (ArgumentList (SingletonSeparatedList (
-					Argument (IdentifierName (argumentInfo.Name)))));
+			arguments = [
+				Argument (IdentifierName (argumentInfo.Name))
+			];
 		}
+		
+		// generates: NSNumber.FromDouble
+		var factoryInvocation = MemberInvocationExpression (NSNumber, factoryMethod, arguments);
 
 		var declarator =
 			VariableDeclarator (Identifier (variableName).WithLeadingTrivia (Space).WithTrailingTrivia (Space))
@@ -547,18 +546,16 @@ static partial class BindingSyntaxFactory {
 		if (factoryMethod is null)
 			return null;
 
-		var variableName = Nomenclator.GetNameForVariableType (parameter.Name, Nomenclator.VariableType.BindFrom);
+		var variableName = GetNameForVariableType (parameter.Name, VariableType.BindFrom);
 		if (variableName is null)
 			return null;
 
 		// generates: NSValue.FromCMTime 
-		var factoryInvocation = InvocationExpression (
-			MemberAccessExpression (
-				SyntaxKind.SimpleMemberAccessExpression,
-				NSValue,
-				IdentifierName (factoryMethod).WithTrailingTrivia (Space))
-		).WithArgumentList (ArgumentList (SingletonSeparatedList (
-			Argument (IdentifierName (parameter.Name)))));
+		var factoryInvocation = MemberInvocationExpression (
+			instanceVariable: NSValue, 
+			methodName: factoryMethod, 
+			arguments: [Argument (IdentifierName (parameter.Name))]
+		);
 
 		var declarator =
 			VariableDeclarator (Identifier (variableName).WithLeadingTrivia (Space).WithTrailingTrivia (Space))
@@ -586,18 +583,13 @@ static partial class BindingSyntaxFactory {
 		if (!parameterType.IsSmartEnum)
 			return null;
 
-		var variableName = Nomenclator.GetNameForVariableType (parameterName, Nomenclator.VariableType.BindFrom);
+		var variableName = GetNameForVariableType (parameterName, VariableType.BindFrom);
 		if (variableName is null)
 			return null;
 
 		// smart enums are very simple to do, we need to call the GetConstant that was generated as an extension
 		// method
-		var factoryInvocation = InvocationExpression (
-			MemberAccessExpression (
-				SyntaxKind.SimpleMemberAccessExpression,
-				IdentifierName (parameterName),
-				IdentifierName ("GetConstant").WithTrailingTrivia (Space))
-		);
+		var factoryInvocation = MemberInvocationExpression (parameterName, "GetConstant");
 
 		var declarator =
 			VariableDeclarator (Identifier (variableName).WithLeadingTrivia (Space).WithTrailingTrivia (Space))
@@ -629,14 +621,9 @@ static partial class BindingSyntaxFactory {
 	/// <returns>An <see cref="InvocationExpressionSyntax"/> that calls the `GetValue` extension method to perform the conversion.</returns>
 	internal static InvocationExpressionSyntax GetSmartEnumFromNSString (in TypeInfo typeInfo, ArgumentSyntax argument)
 	{
-		var extensionClass = Nomenclator.GetSmartEnumExtensionClassName (typeInfo.GetIdentifierSyntax ().ToString ());
+		var extensionClass = GetSmartEnumExtensionClassName (typeInfo.GetIdentifierSyntax ().ToString ());
 		// generates: SmartEnum.GetValue (variableName);
-		return InvocationExpression (
-			MemberAccessExpression (
-				SyntaxKind.SimpleMemberAccessExpression,
-				IdentifierName (extensionClass),
-				IdentifierName ("GetValue").WithTrailingTrivia (Space)))
-			.WithArgumentList (ArgumentList (SingletonSeparatedList (argument)));
+		return MemberInvocationExpression (extensionClass, "GetValue", [argument]);
 	}
 
 	internal static LocalDeclarationStatementSyntax? GetNSArrayBindFromAuxVariable (in Parameter parameter)
@@ -645,7 +632,7 @@ static partial class BindingSyntaxFactory {
 		if (!parameter.Type.IsArray)
 			return null;
 
-		var variableName = Nomenclator.GetNameForVariableType (parameter.Name, Nomenclator.VariableType.BindFrom);
+		var variableName = GetNameForVariableType (parameter.Name, VariableType.BindFrom);
 		if (variableName is null)
 			return null;
 
@@ -755,7 +742,7 @@ static partial class BindingSyntaxFactory {
 
 #pragma warning disable format
 		// based on the bindas type call one of the helper factory methods
-		return (Type: parameter.BindAs.Value.Type, IsArray: parameter.Type.IsArray) switch {
+		return (parameter.BindAs.Value.Type, parameter.Type.IsArray) switch {
 			{ IsArray: true } => GetNSArrayBindFromAuxVariable (parameter),
 			{ Type.FullyQualifiedName: "Foundation.NSNumber" } => GetNSNumberAuxVariable (parameter),
 			{ Type.FullyQualifiedName: "Foundation.NSValue" } => GetNSValueAuxVariable (parameter),
@@ -843,7 +830,7 @@ static partial class BindingSyntaxFactory {
 	internal static (string Name, LocalDeclarationStatementSyntax Declaration) GetReturnValueAuxVariable (in TypeInfo returnType)
 	{
 		var typeSyntax = returnType.GetIdentifierSyntax ();
-		var variableName = Nomenclator.GetReturnVariableName ();
+		var variableName = GetReturnVariableName ();
 		// generates Type ret; The GetIdentifierSyntax will ensure that the correct type and nullable annotation is used
 		var declaration = LocalDeclarationStatement (
 			VariableDeclaration (typeSyntax.WithTrailingTrivia (Space))
@@ -863,7 +850,7 @@ static partial class BindingSyntaxFactory {
 	internal static LocalDeclarationStatementSyntax GetNullableBlockAuxVariable (string variableName, in TypeInfo blockTypeInfo)
 	{
 		var staticBridgeClassName =
-			Nomenclator.GetTrampolineClassName (blockTypeInfo, Nomenclator.TrampolineClassType.StaticBridgeClass);
+			GetTrampolineClassName (blockTypeInfo, TrampolineClassType.StaticBridgeClass);
 		// generates the call to create the nullable block
 		var invocation = InvocationExpression (
 				MemberAccessExpression (
@@ -879,7 +866,7 @@ static partial class BindingSyntaxFactory {
 						Argument (IdentifierName (variableName)))));
 		// variable declarator 'name = invocation'
 		var declarator = VariableDeclarator (
-				Identifier (Nomenclator.GetNameForVariableType (variableName, Nomenclator.VariableType.NullableBlock)!).WithTrailingTrivia (Space))
+				Identifier (GetNameForVariableType (variableName, VariableType.NullableBlock)!).WithTrailingTrivia (Space))
 			.WithInitializer (
 				EqualsValueClause (invocation.WithLeadingTrivia (Space)));
 		// var declaration
@@ -914,8 +901,8 @@ static partial class BindingSyntaxFactory {
 	/// <returns>A <see cref="LocalDeclarationStatementSyntax"/> for the block literal pointer variable.</returns>
 	internal static LocalDeclarationStatementSyntax GetBlockLiteralAuxVariable (string variableName)
 	{
-		var blockLiteralPointerName = Nomenclator.GetNameForVariableType (variableName, Nomenclator.VariableType.BlockLiteral);
-		var blockVariableName = Nomenclator.GetNameForVariableType (variableName, Nomenclator.VariableType.NullableBlock);
+		var blockLiteralPointerName = GetNameForVariableType (variableName, VariableType.BlockLiteral);
+		var blockVariableName = GetNameForVariableType (variableName, VariableType.NullableBlock);
 		// generates parameterName is not null ? &blockVariableName : null;
 		var conditional = ConditionalExpression (
 			IsPatternExpression (
@@ -974,13 +961,11 @@ static partial class BindingSyntaxFactory {
 			Token (SyntaxKind.StaticKeyword).WithTrailingTrivia (Space),
 			Token (SyntaxKind.ReadOnlyKeyword).WithTrailingTrivia (Space));
 		// generates: Selector.GetHandle (selector);
-		var getHandleInvocation = InvocationExpression (MemberAccessExpression (SyntaxKind.SimpleMemberAccessExpression,
-					Selector, IdentifierName ("GetHandle").WithTrailingTrivia (Space)))
-			.WithArgumentList (
-				ArgumentList (
-					SingletonSeparatedList (
-						Argument (
-							LiteralExpression (SyntaxKind.StringLiteralExpression, Literal (selector))))));
+		var getHandleInvocation = MemberInvocationExpression (
+			instanceVariable: Selector, 
+			methodName: "GetHandle", 
+			arguments: [Argument (LiteralExpression (SyntaxKind.StringLiteralExpression, Literal (selector)))]
+		);
 
 		// generates: NativeHandler selectorName = Selector.GetHandle (selector);
 		return LocalDeclarationStatement (
@@ -1128,14 +1113,13 @@ static partial class BindingSyntaxFactory {
 			IdentifierName (variableName),
 			ConstantPattern (LiteralExpression (SyntaxKind.NullLiteralExpression))).NormalizeWhitespace ();
 
-		var throwHelper = ExpressionStatement (InvocationExpression (
-				MemberAccessExpression (
-					SyntaxKind.SimpleMemberAccessExpression,
-					ThrowHelper,
-					IdentifierName ("ThrowArgumentNullException").WithTrailingTrivia (Space)))
-			.WithArgumentList (
-				ArgumentList (
-					SingletonSeparatedList (Argument (NameOf (variableName))))));
+		var throwHelper = ExpressionStatement (
+			MemberInvocationExpression (
+				instanceVariable: ThrowHelper,
+				methodName: "ThrowArgumentNullException",
+				arguments: [Argument (NameOf (variableName))]
+			)
+		);
 
 		// if + throw using the mono style, other methods will remove the spaces with added before the ()
 		return IfStatement (

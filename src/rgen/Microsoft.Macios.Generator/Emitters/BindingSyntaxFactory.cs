@@ -80,13 +80,25 @@ static partial class BindingSyntaxFactory {
 	{
 		var argumentList = ArgumentList (
 			SeparatedList<ArgumentSyntax> (arguments.ToSyntaxNodeOrTokenArray ()));
-		return InvocationExpression (
-				MemberAccessExpression (
-					SyntaxKind.SimpleMemberAccessExpression,
-					instanceVariable,
-					IdentifierName (methodName).WithTrailingTrivia (Space)))
-			.WithArgumentList (argumentList);
+		var invocation = InvocationExpression (
+			MemberAccessExpression (
+				SyntaxKind.SimpleMemberAccessExpression,
+				instanceVariable,
+				IdentifierName (methodName).WithTrailingTrivia (Space)));
+		
+		if (arguments.Length != 0)
+			invocation = invocation.WithArgumentList (argumentList);
+		return invocation;
 	}
+	
+	/// <summary>
+	/// Creates an invocation expression for calling a method on an instance variable with no arguments.
+	/// </summary>
+	/// <param name="instanceVariable">The instance variable to call the method on.</param>
+	/// <param name="methodName">The name of the method to call.</param>
+	/// <returns>An invocation expression for the method call.</returns>
+	static InvocationExpressionSyntax MemberInvocationExpression (TypeSyntax instanceVariable, string methodName)
+		=> MemberInvocationExpression (instanceVariable, methodName, ImmutableArray<ArgumentSyntax>.Empty);
 	
 	/// <summary>
 	/// Creates an invocation expression for calling a method on an instance variable.
@@ -98,6 +110,15 @@ static partial class BindingSyntaxFactory {
 	static InvocationExpressionSyntax MemberInvocationExpression (string instanceVariable, string methodName,
 		ImmutableArray<ArgumentSyntax> arguments)
 		=> MemberInvocationExpression ( IdentifierName (instanceVariable), methodName, arguments);
+	
+	/// <summary>
+	/// Creates an invocation expression for calling a method on an instance variable with no arguments.
+	/// </summary>
+	/// <param name="instanceVariable">The name of the instance variable.</param>
+	/// <param name="methodName">The name of the method to call.</param>
+	/// <returns>An invocation expression for the method call.</returns>
+	static InvocationExpressionSyntax MemberInvocationExpression (string instanceVariable, string methodName)
+		=> MemberInvocationExpression (IdentifierName (instanceVariable), methodName, ImmutableArray<ArgumentSyntax>.Empty);
 
 	static ExpressionSyntax ThrowException (string type, string? message = null)
 	{

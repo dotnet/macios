@@ -85,7 +85,7 @@ public partial class PropertyTests {
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
-	[Export<Property> ("delegate", ArgumentSemantic.Assign)]
+	[Export<Property> ("delegate", ArgumentSemantic.Weak, Flags = Property.WeakDelegate)]
 	public virtual partial NSObject? WeakDelegate { get; set; }
 
 	// array nsobject

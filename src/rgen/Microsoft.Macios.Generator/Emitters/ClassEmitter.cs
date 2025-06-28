@@ -174,6 +174,7 @@ return {backingField};
 			// add backing variable for the property if it is needed
 			if (property.NeedsBackingField) {
 				classBlock.WriteLine ();
+				classBlock.AppendGeneratedCodeAttribute (optimizable: true);
 				classBlock.WriteLine ($"object? {property.BackingField} = null;");
 			}
 
@@ -205,10 +206,14 @@ if (IsDirectBinding) {{
 }}
 {ExpressionStatement (KeepAlive ("this"))}
 ");
-					if (property.RequiresDirtyCheck) {
+					if (property.RequiresDirtyCheck || property.IsWeakDelegate) {
 						getterBlock.WriteLine ("MarkDirty ();");
+					}
+
+					if (property.NeedsBackingField) {
 						getterBlock.WriteLine ($"{property.BackingField} = {tempVar};");
 					}
+
 					getterBlock.WriteLine ($"return {tempVar};");
 				}
 
@@ -245,8 +250,11 @@ $@"if (IsDirectBinding) {{
 					// the native object alive
 					setterBlock.Write (invocations.Setter.Value.Argument.PostDelegateCallConversion, verifyTrivia: false);
 					// mark property as dirty if needed
-					if (property.RequiresDirtyCheck) {
+					if (property.RequiresDirtyCheck || property.IsWeakDelegate) {
 						setterBlock.WriteLine ("MarkDirty ();");
+					}
+
+					if (property.NeedsBackingField) {
 						setterBlock.WriteLine ($"{property.BackingField} = value;");
 					}
 				}

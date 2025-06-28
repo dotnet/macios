@@ -68,6 +68,37 @@ static partial class BindingSyntaxFactory {
 			: invocation;
 	}
 
+	/// <summary>
+	/// Creates an invocation expression for calling a method on an instance variable.
+	/// </summary>
+	/// <param name="instanceVariable">The name of the instance variable.</param>
+	/// <param name="methodName">The name of the method to call.</param>
+	/// <param name="arguments">The arguments to pass to the method.</param>
+	/// <returns>An invocation expression for the method call.</returns>
+	static InvocationExpressionSyntax MemberInvocationExpression (TypeSyntax instanceVariable, string methodName,
+		ImmutableArray<ArgumentSyntax> arguments)
+	{
+		var argumentList = ArgumentList (
+			SeparatedList<ArgumentSyntax> (arguments.ToSyntaxNodeOrTokenArray ()));
+		return InvocationExpression (
+				MemberAccessExpression (
+					SyntaxKind.SimpleMemberAccessExpression,
+					instanceVariable,
+					IdentifierName (methodName).WithTrailingTrivia (Space)))
+			.WithArgumentList (argumentList);
+	}
+	
+	/// <summary>
+	/// Creates an invocation expression for calling a method on an instance variable.
+	/// </summary>
+	/// <param name="instanceVariable">The name of the instance variable.</param>
+	/// <param name="methodName">The name of the method to call.</param>
+	/// <param name="arguments">The arguments to pass to the method.</param>
+	/// <returns>An invocation expression for the method call.</returns>
+	static InvocationExpressionSyntax MemberInvocationExpression (string instanceVariable, string methodName,
+		ImmutableArray<ArgumentSyntax> arguments)
+		=> MemberInvocationExpression ( IdentifierName (instanceVariable), methodName, arguments);
+
 	static ExpressionSyntax ThrowException (string type, string? message = null)
 	{
 		var throwExpression = ObjectCreationExpression (IdentifierName (type));
@@ -296,4 +327,25 @@ static partial class BindingSyntaxFactory {
 	/// <returns>An <see cref="ArgumentSyntax"/> representing the parameter.</returns>
 	internal static ArgumentSyntax ArgumentForParameter (in DelegateParameter parameter)
 		=> ArgumentForParameter (parameter.Name, parameter.ReferenceKind);
+
+	/// <summary>
+	/// Creates an invocation expression for the SetException method of a TaskCompletionSource.
+	/// </summary>
+	/// <param name="tcsVariableName">The name of the TaskCompletionSource variable.</param>
+	/// <param name="arguments">The arguments to pass to the SetException method.</param>
+	/// <returns>An invocation expression for the SetException method.</returns>
+	internal static InvocationExpressionSyntax TcsSetException (string tcsVariableName,
+		ImmutableArray<ArgumentSyntax> arguments)
+		=> MemberInvocationExpression (tcsVariableName, "SetException", arguments);
+
+	/// <summary>
+	/// Creates an invocation expression for the SetResult method of a TaskCompletionSource.
+	/// </summary>
+	/// <param name="tcsVariableName">The name of the TaskCompletionSource variable.</param>
+	/// <param name="arguments">The arguments to pass to the SetResult method.</param>
+	/// <returns>An invocation expression for the SetResult method.</returns>
+	internal static InvocationExpressionSyntax TcsSetResult (string tcsVariableName,
+		ImmutableArray<ArgumentSyntax> arguments)
+		=> MemberInvocationExpression (tcsVariableName, "SetResult", arguments);
+	
 }

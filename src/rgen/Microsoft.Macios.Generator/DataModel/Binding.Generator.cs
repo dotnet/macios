@@ -11,6 +11,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Macios.Generator.Availability;
 using Microsoft.Macios.Generator.Context;
+using Microsoft.Macios.Generator.Emitters;
 using Microsoft.Macios.Generator.Extensions;
 
 namespace Microsoft.Macios.Generator.DataModel;
@@ -83,6 +84,29 @@ readonly partial struct Binding {
 				foreach (var parameter in method.Parameters) {
 					if (parameter.Type.IsDelegate)
 						yield return parameter.Type;
+				}
+			}
+		}
+	}
+
+	/// <summary>
+	/// Return all the types that are used as async results and need to be generated.
+	/// </summary>
+	public IEnumerable<AsyncResultInfo> AsyncResults {
+		get {
+			// async results are only present in the methods that have been marked as async and have a return type name
+			// any other cases is either a simple result of the user provided a result type that exists at compilation
+			// time. It might be the case that a result type is used more than once, so we are using a hash set to
+			// ensure that we do not return the same result type more than once.
+			var found = new HashSet<string> ();
+			foreach (var method in Methods) {
+				if (method is { IsAsync: true, ExportMethodData.ResultTypeName: not null }
+					&& found.Add (method.ExportMethodData.ResultTypeName)) {
+					yield return new () {
+						Namespace = Namespace,
+						Name = method.ExportMethodData.ResultTypeName,
+						CompletionHandler = method.Parameters [^1]
+					};
 				}
 			}
 		}

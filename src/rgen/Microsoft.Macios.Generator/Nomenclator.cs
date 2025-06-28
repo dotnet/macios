@@ -224,4 +224,13 @@ static class Nomenclator {
 	/// Returns the name used for the block literal type.
 	/// </summary>
 	public static string GetBlockLiteralName () => "BlockLiteral";
+
+	/// <summary>
+	/// Generates the name for the backing field of a property.
+	/// </summary>
+	/// <param name="propertyName">The name of the property.</param>
+	/// <param name="isStatic">A value indicating whether the property is static.</param>
+	/// <returns>The name of the backing field for the property.</returns>
+	public static string GetPropertyBackingFieldName (string propertyName, bool isStatic)
+		=> $"__mt_{propertyName}_var{(isStatic ? "_static" : "")}";
 }

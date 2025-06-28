@@ -21,4 +21,14 @@ public class StringExtensionsTests {
 	[InlineData (null, false)]
 	public void IsValidIdentifier (string? identifier, bool expected)
 		=> Assert.Equal (expected, identifier.IsValidIdentifier ());
+
+	[Theory]
+	[InlineData ("", "")]
+	[InlineData ("a", "A")]
+	[InlineData ("test", "Test")]
+	[InlineData ("Test", "Test")]
+	[InlineData ("TEST", "TEST")]
+	[InlineData ("1test", "1test")]
+	public void Capitalize (string s, string expected)
+		=> Assert.Equal (expected, s.Capitalize ());
 }

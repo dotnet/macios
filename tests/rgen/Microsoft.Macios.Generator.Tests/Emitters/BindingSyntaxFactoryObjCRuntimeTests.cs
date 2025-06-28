@@ -195,9 +195,9 @@ public class BindingSyntaxFactoryObjCRuntimeTests {
 
 	[Theory]
 	[ClassData (typeof (TestDataByteToBoolTests))]
-	void ByteToBoolTests (InvocationExpressionSyntax invocationExpressionSyntax, string expectedDeclaration)
+	void CastToBoolTests (InvocationExpressionSyntax invocationExpressionSyntax, string expectedDeclaration)
 	{
-		var declaration = ByteToBool (invocationExpressionSyntax);
+		var declaration = CastToBool (invocationExpressionSyntax);
 		Assert.Equal (expectedDeclaration, declaration.ToString ());
 	}
 
@@ -285,9 +285,9 @@ public class BindingSyntaxFactoryObjCRuntimeTests {
 	[ClassData (typeof (TestDataGetNSArrayAuxVariableTest))]
 	void GetNSArrayAuxVariableTests (in Parameter parameter, string? expectedDeclaration, bool withUsing)
 	{
-		var declaration = GetNSArrayAuxVariable (in parameter);
+		var declaration = GetNSArrayAuxVariable (parameter);
 		if (withUsing && expectedDeclaration is not null)
-			declaration = Using (GetNSArrayAuxVariable (in parameter)!);
+			declaration = Using (GetNSArrayAuxVariable (parameter)!);
 		if (expectedDeclaration is null) {
 			Assert.Null (declaration);
 		} else {

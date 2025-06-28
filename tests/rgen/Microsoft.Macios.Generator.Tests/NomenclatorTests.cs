@@ -198,5 +198,10 @@ public class Example {
 	[ClassData (typeof (TestDataGetNameForTempTrampolineVariable))]
 	void GetNameForTempTrampolineVariable (DelegateParameter parameter, string expectedName)
 		=> Assert.Equal (expectedName, Nomenclator.GetNameForTempTrampolineVariable (parameter));
-}
 
+	[Theory]
+	[InlineData ("MyProperty", true, "__mt_MyProperty_var_static")]
+	[InlineData ("AnotherProperty", false, "__mt_AnotherProperty_var")]
+	public void GetPropertyBackingFieldNameTests (string propertyName, bool isStatic, string expectedName)
+		=> Assert.Equal (expectedName, Nomenclator.GetPropertyBackingFieldName (propertyName, isStatic));
+}

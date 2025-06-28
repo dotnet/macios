@@ -5141,19 +5141,19 @@ namespace CoreData {
 	}
 
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
-	delegate void NSPersistentCloudKitContainerShareManagedObjectsHandler (NSSet<NSManagedObjectID> sharedObjectIds, CKShare share, CKContainer container, NSError error);
+	delegate void NSPersistentCloudKitContainerShareManagedObjectsHandler ([NullAllowed] NSSet<NSManagedObjectID> sharedObjectIds, [NullAllowed] CKShare share, [NullAllowed] CKContainer container, [NullAllowed] NSError error);
 
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
-	delegate void NSPersistentCloudKitContainerFetchParticipantsMatchingLookupInfosHandler (NSArray<CKShareParticipant> fetchedParticipants, NSError error);
+	delegate void NSPersistentCloudKitContainerFetchParticipantsMatchingLookupInfosHandler ([NullAllowed] NSArray<CKShareParticipant> fetchedParticipants, [NullAllowed] NSError error);
 
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
-	delegate void NSPersistentCloudKitContainerPersistUpdatedShareHandler (CKShare persistedShare, NSError error);
+	delegate void NSPersistentCloudKitContainerPersistUpdatedShareHandler ([NullAllowed] CKShare persistedShare, [NullAllowed] NSError error);
 
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
-	delegate void NSPersistentCloudKitContainerPurgeObjectsAndRecordsInZoneHandler (CKRecordZoneID purgedZoneId, NSError error);
+	delegate void NSPersistentCloudKitContainerPurgeObjectsAndRecordsInZoneHandler ([NullAllowed] CKRecordZoneID purgedZoneId, [NullAllowed] NSError error);
 
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
-	delegate void NSPersistentCloudKitContainerAcceptShareInvitationsHandler (NSArray<CKShareMetadata> acceptedShareMetadatas, NSError error);
+	delegate void NSPersistentCloudKitContainerAcceptShareInvitationsHandler ([NullAllowed] NSArray<CKShareMetadata> acceptedShareMetadatas, [NullAllowed] NSError error);
 
 	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]

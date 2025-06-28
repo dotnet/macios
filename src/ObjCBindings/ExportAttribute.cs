@@ -51,6 +51,26 @@ namespace ObjCBindings {
 		/// </summary >
 		public string? Library { get; set; } = null;
 
+		/// <summary>
+		/// The type of the result for an async method.
+		/// </summary>
+		public TypeInfo? ResultType { get; set; } = null;
+
+		/// <summary>
+		/// The name of the generated async method.
+		/// </summary>
+		public string? MethodName { get; set; } = null;
+
+		/// <summary>
+		/// The name of the type of the result for an async method.
+		/// </summary>
+		public string? ResultTypeName { get; set; } = null;
+
+		/// <summary>
+		/// A code snippet to be executed after the async method call.
+		/// </summary>
+		public string? PostNonResultSnippet { get; set; } = null;
+
 		protected ExportAttribute () { }
 
 		/// <summary>

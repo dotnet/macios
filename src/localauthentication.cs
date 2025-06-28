@@ -24,7 +24,7 @@ namespace LocalAuthentication {
 	/// <summary>Signature for a function to be invoked in response to a <see cref="LocalAuthentication.LAContext.EvaluatePolicy(LocalAuthentication.LAPolicy,System.String,LocalAuthentication.LAContextReplyHandler)" /> invocation.</summary>
 	///     <remarks>The method when invoked returns a boolean indicating if the policy evaluation was successful, and on failure a detailed description of the error in the error parameter.</remarks>
 	[MacCatalyst (13, 1)]
-	delegate void LAContextReplyHandler (bool success, NSError error);
+	delegate void LAContextReplyHandler (bool success, [NullAllowed] NSError error);
 
 	/// <summary>The context in which authentication policies are evaluated.</summary>
 	///     

@@ -13597,7 +13597,7 @@ namespace Intents {
 		INShortcut Shortcut { get; }
 	}
 
-	delegate void INVoiceShortcutCenterGetVoiceShortcutsHandler ([NullAllowed] INVoiceShortcut [] voiceShortcuts, NSError error);
+	delegate void INVoiceShortcutCenterGetVoiceShortcutsHandler ([NullAllowed] INVoiceShortcut [] voiceShortcuts, [NullAllowed] NSError error);
 
 	[NoTV]
 	[MacCatalyst (13, 1)]

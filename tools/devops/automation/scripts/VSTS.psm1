@@ -889,7 +889,7 @@ function Find-AzureDevOpsWorkItemWithTitle {
         $WorkItemType = 'Bug',
 
         [string]
-        $AreaPath = 'DevDiv\VS Client - Runtime SDKs\iOS and Mac'
+        $AreaPath = 'DevDiv\.NET MAUI\iOS and Mac'
     )
 
     $headers = Get-AuthHeader -AccessToken $Env:ACCESSTOKEN
@@ -941,7 +941,7 @@ function New-AzureDevOpsWorkItem {
         $WorkItemType = 'Bug',
 
         [string]
-        $AreaPath = 'DevDiv\VS Client - Runtime SDKs\iOS and Mac'
+        $AreaPath = 'DevDiv\.NET MAUI\iOS and Mac'
     )
 
     $headers = Get-AuthHeader -AccessToken $Env:ACCESSTOKEN

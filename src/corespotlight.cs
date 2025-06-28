@@ -230,7 +230,7 @@ namespace CoreSpotlight {
 	}
 
 	/// <summary>Completion handler used in <see cref="CoreSpotlight.CSSearchableIndex_CSOptionalBatchingExtension.FetchLastClientState(CoreSpotlight.CSSearchableIndex,CoreSpotlight.CSSearchableIndexFetchHandler)" />.</summary>
-	delegate void CSSearchableIndexFetchHandler (NSData clientState, NSError error);
+	delegate void CSSearchableIndexFetchHandler (NSData clientState, [NullAllowed] NSError error);
 
 	delegate void CSSearchableIndexEndIndexHandler ([NullAllowed] NSError error);
 

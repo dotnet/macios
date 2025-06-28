@@ -338,14 +338,6 @@ CARPLAY_SOURCES = \
 CLASSKIT_SOURCES = \
 	ClassKit/CLSContext.cs \
 
-# ClockKit
-
-CLOCKKIT_CORE_SOURCES = \
-	ClockKit/CLKEnums.cs \
-
-CLOCKKIT_SOURCES = \
-	ClockKit/CLKComplication.cs \
-
 # CloudKit
 
 CLOUDKIT_API_SOURCES = \

@@ -243,4 +243,24 @@ public class DelegateParameterTests {
 		Assert.True (x != y);
 	}
 
+	[Fact]
+	public void ToParameterTest ()
+	{
+		var delegateParameter = new DelegateParameter (
+			position: 1,
+			type: ReturnTypeForString (),
+			name: "arg1"
+		) {
+			IsOptional = true,
+			IsParams = false,
+			IsThis = false,
+			ReferenceKind = ReferenceKind.In,
+		};
+
+		var parameter = delegateParameter.ToParameter ();
+
+		Assert.Equal (delegateParameter.Position, parameter.Position);
+		Assert.Equal (delegateParameter.Type, parameter.Type);
+		Assert.Equal (delegateParameter.Name, parameter.Name);
+	}
 }

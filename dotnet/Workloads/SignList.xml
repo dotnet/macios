@@ -35,9 +35,6 @@
     <Skip Include="Build\System.Text.Json.dll" />
     <Skip Include="Build\System.Threading.Tasks.Dataflow.dll" />
     <Skip Include="Build\System.Threading.Tasks.Extensions.dll" />
-    <!-- They are now signed by their origin build https://github.com/xamarin/XamarinVS/pull/14522 -->
-    <Skip Include="imobiledevice-*\*.dll" />
-    <Skip Include="imobiledevice-*\*.exe" />
   </ItemGroup>
 
   <ItemGroup>
@@ -113,7 +110,6 @@
     <FirstParty Include="Xamarin.Localization.Mlaunch.dll" />
     <FirstParty Include="Xamarin.Localization.Mlaunch.resources.dll" />
     <!-- Microsoft.iOS.Windows.Sdk content -->
-    <FirstParty Include="iSign.Core.dll" />
     <FirstParty Include="System.Diagnostics.Tracer.dll" />
     <!-- Xamarin.Messaging -->
     <FirstParty Include="Merq.dll" />
@@ -126,8 +122,6 @@
     <FirstParty Include="Microsoft.Build*.dll" />
     <FirstParty Include="Microsoft.NET.StringTools.dll" />
     <FirstParty Include="System.IO.Abstractions.dll" />
-    <!-- Xamarin.PreBuilt.iOS.app.zip -->
-    <FirstParty Include="Xamarin.PreBuilt.iOS.app\*.dll" />
     <!-- Our new Microsoft.* product dlls -->
     <FirstParty Include="Microsoft.iOS.dll" />
     <FirstParty Include="Microsoft.MacCatalyst.dll" />

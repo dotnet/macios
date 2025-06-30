@@ -278,9 +278,6 @@ namespace Xamarin.MacDev.Tasks {
 				// Nothing is specified in the Info.plist - use SupportedOSPlatformVersion, and if that's not set, then use the sdkVersion
 				if (!string.IsNullOrEmpty (convertedSupportedOSPlatformVersion)) {
 					minimumOSVersion = convertedSupportedOSPlatformVersion;
-				} else if (OnWindows && string.IsNullOrEmpty (SdkVersion)) {
-					// When building on Windows (Hot Restart), we're not using any Xcode version, so there's no SdkVersion either, so use the min OS version we support if the project doesn't specify anything.
-					minimumOSVersion = Xamarin.SdkVersions.GetMinVersion (Platform).ToString ();
 				} else {
 					minimumOSVersion = SdkVersion;
 				}

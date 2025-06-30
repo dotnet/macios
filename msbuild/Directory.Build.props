@@ -2,8 +2,8 @@
 	<PropertyGroup>
 		<!--
 
-			Some feeds have testing versions of the Messaging and HotRestart
-			packages with versions 99.*. This means that we'll want the exact
+			Some feeds have testing versions of the Messaging packages 
+			with versions 99.*. This means that we'll want the exact
 			version of the packages below, not the specified version or any
 			other later version, because if the requested version doesn't
 			exist, we'll get the testing version and things break in
@@ -16,7 +16,6 @@
 
 		-->
 		<MessagingVersion Condition="'$(MessagingVersion)' == ''">[18.0.280-ga047b642b9]</MessagingVersion>
-		<HotRestartVersion>[17.14.133-g001ce2ac7a]</HotRestartVersion>
 	</PropertyGroup>
 	<Import Project="$(MSBuildThisFileDirectory)../Directory.Build.props" />
 </Project>

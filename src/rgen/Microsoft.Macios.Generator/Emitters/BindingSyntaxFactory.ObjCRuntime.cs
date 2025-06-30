@@ -241,7 +241,7 @@ static partial class BindingSyntaxFactory {
 		}
 
 		// complicated way to write 'var auxVariableName = '
-		return LocalDeclarationStatement (VariableInitialization (declarator));
+		return VariableInitialization (declarator);
 	}
 
 	/// <summary>
@@ -294,9 +294,7 @@ static partial class BindingSyntaxFactory {
 		// var x = zone.GetHandle ();
 		// or 
 		// var x = zone!.GetNonNullHandle (nameof (constantValues));
-		return LocalDeclarationStatement (
-			VariableInitialization (variableName: variableName, value: factoryInvocation)
-		);
+		return VariableInitialization (variableName: variableName, value: factoryInvocation);
 	}
 
 	/// <summary>
@@ -322,11 +320,11 @@ static partial class BindingSyntaxFactory {
 				IntPtr,
 				IdentifierName ("Zero"));
 
-		return LocalDeclarationStatement (VariableInitialization (
+		return VariableInitialization (
 			variableName: variableName, 
 			value: memberAccess, 
 			withType: NativeHandle)
-		).NormalizeWhitespace ();
+			.NormalizeWhitespace ();
 	}
 
 	/// <summary>
@@ -353,10 +351,10 @@ static partial class BindingSyntaxFactory {
 		]);
 
 		// generates {var} = CFString.CreateNative ({parameter.Name});
-		return LocalDeclarationStatement (VariableInitialization (
+		return VariableInitialization (
 			variableName: variableName, 
 			value: cfstringFactoryInvocation
-		));
+		);
 	}
 
 	/// <summary>
@@ -461,10 +459,10 @@ static partial class BindingSyntaxFactory {
 		var factoryInvocation = MemberInvocationExpression (NSNumber, factoryMethod, arguments);
 
 		// generates: var nba_variable = NSNumber.FromDouble(value);
-		return LocalDeclarationStatement (VariableInitialization (
+		return VariableInitialization (
 			variableName: variableName, 
 			value: factoryInvocation
-		));
+		);
 	}
 
 	internal static LocalDeclarationStatementSyntax? GetNSValueAuxVariable (in ArgumentInfo parameter)
@@ -528,10 +526,10 @@ static partial class BindingSyntaxFactory {
 		);
 
 		// generates: var nba_variable = NSNumber.FromDouble(value);
-		return LocalDeclarationStatement (VariableInitialization (
+		return VariableInitialization (
 			variableName: variableName, 
 			value: factoryInvocation
-		));
+		);
 	}
 
 	/// <summary>
@@ -557,10 +555,10 @@ static partial class BindingSyntaxFactory {
 		var factoryInvocation = MemberInvocationExpression (parameterName, "GetConstant");
 
 		// generates: var nba_variable = NSNumber.FromDouble(value);
-		return LocalDeclarationStatement (VariableInitialization (
+		return VariableInitialization (
 			variableName: variableName,
 			value: factoryInvocation
-		));
+		);
 	}
 
 	/// <summary>
@@ -679,10 +677,10 @@ static partial class BindingSyntaxFactory {
 			Argument (IdentifierName (parameter.Name))
 		]);
 
-		return LocalDeclarationStatement (VariableInitialization (
+		return VariableInitialization (
 			variableName: variableName,
 			value: factoryInvocation
-		));
+		);
 	}
 
 	/// <summary>
@@ -715,10 +713,10 @@ static partial class BindingSyntaxFactory {
 	{
 		const string poolVariableName = "autorelease_pool";
 		// return the autorelease pool definition 
-		return LocalDeclarationStatement (VariableInitialization (
+		return VariableInitialization (
 			variableName: poolVariableName,
 			value: New (NSAutoreleasePool, []) 
-		));
+		);
 	}
 
 	/// <summary>
@@ -760,11 +758,11 @@ static partial class BindingSyntaxFactory {
 				IntPtr,
 				IdentifierName ("Zero"));
 
-		return LocalDeclarationStatement (VariableInitialization (
+		return VariableInitialization (
 			handleVariableName,
 			zeroPtr,
 			withType: IntPtr
-		).NormalizeWhitespace ());
+		).NormalizeWhitespace ();
 	}
 
 	internal static (string Name, LocalDeclarationStatementSyntax Declaration) GetReturnValueAuxVariable (in TypeInfo returnType)
@@ -806,10 +804,10 @@ static partial class BindingSyntaxFactory {
 						Argument (IdentifierName (variableName)))));
 		
 		// var declaration
-		return LocalDeclarationStatement (VariableInitialization (
+		return VariableInitialization (
 			variableName: GetNameForVariableType (variableName, VariableType.NullableBlock)!,
 			value: invocation
-		));
+		);
 	}
 
 	/// <summary>
@@ -846,12 +844,10 @@ static partial class BindingSyntaxFactory {
 			LiteralExpression (
 				SyntaxKind.NullLiteralExpression));
 
-		return LocalDeclarationStatement (
-			VariableInitialization (
-				variableName: blockLiteralPointerName!,
-				value: conditional.NormalizeWhitespace (),
-				withType: PointerType (BlockLiteral).WithTrailingTrivia (Space)
-			)
+		return VariableInitialization (
+			variableName: blockLiteralPointerName!,
+			value: conditional.NormalizeWhitespace (),
+			withType: PointerType (BlockLiteral).WithTrailingTrivia (Space)
 		);
 	}
 
@@ -877,7 +873,7 @@ static partial class BindingSyntaxFactory {
 			variableName: fieldName,
 			value: LiteralExpression (SyntaxKind.StringLiteralExpression, Literal (selector)),
 			withType: PredefinedType (Token (SyntaxKind.StringKeyword)));
-		return LocalDeclarationStatement (variableDeclaration)
+		return variableDeclaration
 			.WithModifiers (TokenList (Token (SyntaxKind.ConstKeyword))).NormalizeWhitespace ();
 	}
 
@@ -895,10 +891,10 @@ static partial class BindingSyntaxFactory {
 		);
 
 		// generates: NativeHandler selectorName = Selector.GetHandle (selector);
-		return LocalDeclarationStatement (VariableInitialization (
+		return VariableInitialization (
 				variableName: selectorName,
 				value: getHandleInvocation,
-				withType: NativeHandle.WithTrailingTrivia ((Space)))).WithModifiers (modifiers);
+				withType: NativeHandle.WithTrailingTrivia ((Space))).WithModifiers (modifiers);
 	}
 
 	static string? GetObjCMessageSendMethodName<T> (ExportData<T> exportData,

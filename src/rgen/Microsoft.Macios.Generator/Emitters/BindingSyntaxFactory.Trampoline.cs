@@ -448,11 +448,10 @@ static partial class BindingSyntaxFactory {
 		if (parameter.Type.IsNullable) {
 			// declare a new variable to hold the temp var
 			// ParameterType? tempVariable = null;
-			var declarationNode = LocalDeclarationStatement (
-				VariableInitialization (
-					variableName: tempVariableName,
-					value: LiteralExpression (SyntaxKind.NullLiteralExpression),
-					withType: parameter.Type.GetIdentifierSyntax ())
+			var declarationNode = VariableInitialization (
+				variableName: tempVariableName,
+				value: LiteralExpression (SyntaxKind.NullLiteralExpression),
+				withType: parameter.Type.GetIdentifierSyntax ()
 			);
 			// check for the parameter being null and assign the value if needed.
 			// if (parameterName is not null)
@@ -480,7 +479,7 @@ static partial class BindingSyntaxFactory {
 		if (parameter.Type.SpecialType == SpecialType.System_Boolean) {
 			// generates the following:
 			// bool {tempVariable} = *{parameterName} != 0;
-			return [LocalDeclarationStatement (
+			return [
 				VariableInitialization (
 					variableName: tempVariableName,
 					value: BinaryExpression (
@@ -492,7 +491,7 @@ static partial class BindingSyntaxFactory {
 							SyntaxKind.NumericLiteralExpression,
 							Literal (0))),
 					withType: PredefinedType (Token (SyntaxKind.BoolKeyword)))
-			)];
+			];
 		}
 
 		// default case, we do not need to do anything
@@ -718,10 +717,10 @@ static partial class BindingSyntaxFactory {
 			return ExpressionStatement (invocation);
 
 		// perform an assigment to the return variable
-		return LocalDeclarationStatement (VariableInitialization (
+		return VariableInitialization (
 			variableName: GetReturnVariableName (),
 			value: invocation
-		));
+		);
 	}
 
 	/// <summary>
@@ -814,13 +813,12 @@ static partial class BindingSyntaxFactory {
 			.WithParameterList (parametersSyntax.WithLeadingTrivia (Space));
 		
 		// declare the delegate pointer variable:
-		return LocalDeclarationStatement (VariableInitialization (
-				variableName: GetTrampolineDelegatePointerVariableName (),
-				value: PrefixUnaryExpression (
-					SyntaxKind.AddressOfExpression,
-					IdentifierName (GetTrampolineInvokeMethodName ())),
-				withType: pointerType).NormalizeWhitespace ()
-		);
+		return VariableInitialization (
+			variableName: GetTrampolineDelegatePointerVariableName (),
+			value: PrefixUnaryExpression (
+				SyntaxKind.AddressOfExpression,
+				IdentifierName (GetTrampolineInvokeMethodName ())),
+			withType: pointerType).NormalizeWhitespace ();
 	}
 
 	/// <summary>
@@ -938,10 +936,10 @@ static partial class BindingSyntaxFactory {
 			return ExpressionStatement (invocation);
 
 		// perform an assigment to the return variable
-		return LocalDeclarationStatement (VariableInitialization (
+		return VariableInitialization (
 			variableName: GetReturnVariableName (),
 			value: invocation
-		));
+		);
 	}
 
 	/// <summary>

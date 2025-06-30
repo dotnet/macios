@@ -137,7 +137,7 @@ static partial class BindingSyntaxFactory {
 	/// <param name="value">The variable declarator syntax for the variable.</param>
 	/// <param name="withType">The type syntax for the variable. If null, 'var' is used.</param>
 	/// <returns>A variable declaration syntax.</returns>
-	static VariableDeclarationSyntax VariableInitialization (VariableDeclaratorSyntax value, TypeSyntax? withType = null)
+	static LocalDeclarationStatementSyntax VariableInitialization (VariableDeclaratorSyntax value, TypeSyntax? withType = null)
 	{
 		// if not type is provided, we will use var
 		withType ??= IdentifierName (
@@ -148,8 +148,8 @@ static partial class BindingSyntaxFactory {
 				"var",
 				TriviaList (Space))
 			);
-		return VariableDeclaration (withType)
-			.WithVariables (SingletonSeparatedList (value));
+		return LocalDeclarationStatement (VariableDeclaration (withType)
+			.WithVariables (SingletonSeparatedList (value)));
 	}
 
 	/// <summary>
@@ -159,7 +159,7 @@ static partial class BindingSyntaxFactory {
 	/// <param name="value">The expression to assign to the variable.</param>
 	/// <param name="withType">The type syntax for the variable. If null, 'var' is used.</param>
 	/// <returns>A variable declaration syntax with initialization.</returns>
-	static VariableDeclarationSyntax VariableInitialization (string variableName, ExpressionSyntax value,
+	static LocalDeclarationStatementSyntax VariableInitialization (string variableName, ExpressionSyntax value,
 		TypeSyntax? withType = null)
 		=> VariableInitialization (VariableAssigment (variableName, value), withType);
 	

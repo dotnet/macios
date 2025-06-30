@@ -126,7 +126,7 @@ static partial class BindingSyntaxFactory {
 	/// <param name="variableName">The name of the variable.</param>
 	/// <param name="value">The expression to assign to the variable.</param>
 	/// <returns>A variable declarator syntax with the assignment.</returns>
-	static VariableDeclaratorSyntax VariableAssigment (string variableName, ExpressionSyntax value)
+	static VariableDeclaratorSyntax VariableAssignment (string variableName, ExpressionSyntax value)
 		=> VariableDeclarator (Identifier (variableName))
 			.WithInitializer (EqualsValueClause (value.WithLeadingTrivia (Space))
 				.WithLeadingTrivia (Space));
@@ -161,7 +161,7 @@ static partial class BindingSyntaxFactory {
 	/// <returns>A variable declaration syntax with initialization.</returns>
 	static LocalDeclarationStatementSyntax VariableInitialization (string variableName, ExpressionSyntax value,
 		TypeSyntax? withType = null)
-		=> VariableInitialization (VariableAssigment (variableName, value), withType);
+		=> VariableInitialization (VariableAssignment (variableName, value), withType);
 	
 	static ExpressionSyntax ThrowException (string type, string? message = null)
 	{

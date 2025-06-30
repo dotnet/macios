@@ -87,7 +87,7 @@ static partial class BindingSyntaxFactory {
 					IdentifierName (methodName).WithTrailingTrivia (Space)))
 			.WithArgumentList (argumentList);
 	}
-	
+
 	/// <summary>
 	/// Creates an invocation expression for calling a method on an instance variable.
 	/// </summary>
@@ -97,7 +97,7 @@ static partial class BindingSyntaxFactory {
 	/// <returns>An invocation expression for the method call.</returns>
 	static InvocationExpressionSyntax MemberInvocationExpression (string instanceVariable, string methodName,
 		ImmutableArray<ArgumentSyntax> arguments)
-		=> MemberInvocationExpression ( IdentifierName (instanceVariable), methodName, arguments);
+		=> MemberInvocationExpression (IdentifierName (instanceVariable), methodName, arguments);
 
 	static ExpressionSyntax ThrowException (string type, string? message = null)
 	{
@@ -347,5 +347,5 @@ static partial class BindingSyntaxFactory {
 	internal static InvocationExpressionSyntax TcsSetResult (string tcsVariableName,
 		ImmutableArray<ArgumentSyntax> arguments)
 		=> MemberInvocationExpression (tcsVariableName, "SetResult", arguments);
-	
+
 }

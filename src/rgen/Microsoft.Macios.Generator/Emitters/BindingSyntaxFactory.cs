@@ -119,6 +119,17 @@ static partial class BindingSyntaxFactory {
 	/// <returns>An invocation expression for the method call.</returns>
 	static InvocationExpressionSyntax MemberInvocationExpression (string instanceVariable, string methodName)
 		=> MemberInvocationExpression (IdentifierName (instanceVariable), methodName, ImmutableArray<ArgumentSyntax>.Empty);
+	
+	/// <summary>
+	/// Creates a variable declarator with an assignment to the provided value.
+	/// </summary>
+	/// <param name="variableName">The name of the variable.</param>
+	/// <param name="value">The expression to assign to the variable.</param>
+	/// <returns>A variable declarator syntax with the assignment.</returns>
+	static VariableDeclaratorSyntax VariableAssigment (string variableName, ExpressionSyntax value)
+		=> VariableDeclarator (Identifier (variableName))
+			.WithInitializer (EqualsValueClause (value.WithLeadingTrivia (Space))
+				.WithLeadingTrivia (Space));
 
 	/// <summary>
 	/// Creates a variable declaration with optional type specification. If no type is provided, 'var' is used.
@@ -140,6 +151,17 @@ static partial class BindingSyntaxFactory {
 		return VariableDeclaration (withType)
 			.WithVariables (SingletonSeparatedList (value));
 	}
+
+	/// <summary>
+	/// Creates a variable declaration with initialization using a variable name and expression. If no type is provided, 'var' is used.
+	/// </summary>
+	/// <param name="variableName">The name of the variable to declare.</param>
+	/// <param name="value">The expression to assign to the variable.</param>
+	/// <param name="withType">The type syntax for the variable. If null, 'var' is used.</param>
+	/// <returns>A variable declaration syntax with initialization.</returns>
+	static VariableDeclarationSyntax VariableInitialization (string variableName, ExpressionSyntax value,
+		TypeSyntax? withType = null)
+		=> VariableInitialization (VariableAssigment (variableName, value), withType);
 	
 	static ExpressionSyntax ThrowException (string type, string? message = null)
 	{

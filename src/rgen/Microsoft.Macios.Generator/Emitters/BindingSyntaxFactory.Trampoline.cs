@@ -448,14 +448,10 @@ static partial class BindingSyntaxFactory {
 		if (parameter.Type.IsNullable) {
 			// declare a new variable to hold the temp var
 			// ParameterType? tempVariable = null;
-			var declarator = VariableDeclarator (Identifier (tempVariableName)) 
-				.WithInitializer ( 
-					EqualsValueClause (
-							LiteralExpression (
-								SyntaxKind.NullLiteralExpression)));
 			var declarationNode = LocalDeclarationStatement (
 				VariableInitialization (
-					declarator, 
+					variableName: tempVariableName,
+					value: LiteralExpression (SyntaxKind.NullLiteralExpression),
 					withType: parameter.Type.GetIdentifierSyntax ())
 			);
 			// check for the parameter being null and assign the value if needed.
@@ -484,20 +480,17 @@ static partial class BindingSyntaxFactory {
 		if (parameter.Type.SpecialType == SpecialType.System_Boolean) {
 			// generates the following:
 			// bool {tempVariable} = *{parameterName} != 0;
-			var declarator = VariableDeclarator (Identifier (tempVariableName))
-					.WithInitializer (
-						EqualsValueClause (
-							BinaryExpression (
-								SyntaxKind.NotEqualsExpression,
-								PrefixUnaryExpression (
-									SyntaxKind.PointerIndirectionExpression,
-									IdentifierName (parameter.Name)),
-								LiteralExpression (
-									SyntaxKind.NumericLiteralExpression,
-									Literal (0)))));
 			return [LocalDeclarationStatement (
 				VariableInitialization (
-					declarator, 
+					variableName: tempVariableName,
+					value: BinaryExpression (
+						SyntaxKind.NotEqualsExpression,
+						PrefixUnaryExpression (
+							SyntaxKind.PointerIndirectionExpression,
+							IdentifierName (parameter.Name)),
+						LiteralExpression (
+							SyntaxKind.NumericLiteralExpression,
+							Literal (0))),
 					withType: PredefinedType (Token (SyntaxKind.BoolKeyword)))
 			)];
 		}
@@ -622,7 +615,7 @@ static partial class BindingSyntaxFactory {
 						InvocationExpression (
 								MemberAccessExpression (
 									SyntaxKind.SimpleMemberAccessExpression,
-									IdentifierName ("Runtime"),
+									Runtime,
 									IdentifierName ("RetainAndAutoreleaseNativeObject").WithTrailingTrivia (Space)))
 							.WithArgumentList (
 								ArgumentList (
@@ -725,9 +718,10 @@ static partial class BindingSyntaxFactory {
 			return ExpressionStatement (invocation);
 
 		// perform an assigment to the return variable
-		var declarator = VariableDeclarator (Identifier (GetReturnVariableName ()))
-				.WithInitializer (EqualsValueClause (invocation.WithLeadingTrivia (Space)).WithLeadingTrivia (Space));
-		return LocalDeclarationStatement (VariableInitialization (declarator));
+		return LocalDeclarationStatement (VariableInitialization (
+			variableName: GetReturnVariableName (),
+			value: invocation
+		));
 	}
 
 	/// <summary>
@@ -818,15 +812,14 @@ static partial class BindingSyntaxFactory {
 				FunctionPointerCallingConvention (
 					Token (SyntaxKind.UnmanagedKeyword)))
 			.WithParameterList (parametersSyntax.WithLeadingTrivia (Space));
-		var declarator = VariableDeclarator (Identifier (GetTrampolineDelegatePointerVariableName ()))
-				.WithInitializer (
-					EqualsValueClause (
-						PrefixUnaryExpression (
-							SyntaxKind.AddressOfExpression,
-							IdentifierName (GetTrampolineInvokeMethodName ()))));
+		
 		// declare the delegate pointer variable:
-		return LocalDeclarationStatement (
-			VariableInitialization (declarator, withType: pointerType).NormalizeWhitespace ()
+		return LocalDeclarationStatement (VariableInitialization (
+				variableName: GetTrampolineDelegatePointerVariableName (),
+				value: PrefixUnaryExpression (
+					SyntaxKind.AddressOfExpression,
+					IdentifierName (GetTrampolineInvokeMethodName ())),
+				withType: pointerType).NormalizeWhitespace ()
 		);
 	}
 
@@ -944,11 +937,11 @@ static partial class BindingSyntaxFactory {
 		if (delegateInfo.ReturnType.IsVoid)
 			return ExpressionStatement (invocation);
 
-		var declarator = VariableDeclarator (Identifier (GetReturnVariableName ()))
-				.WithInitializer (EqualsValueClause (invocation.WithLeadingTrivia (Space)).WithLeadingTrivia (Space));
-
 		// perform an assigment to the return variable
-		return LocalDeclarationStatement (VariableInitialization (declarator));
+		return LocalDeclarationStatement (VariableInitialization (
+			variableName: GetReturnVariableName (),
+			value: invocation
+		));
 	}
 
 	/// <summary>

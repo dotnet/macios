@@ -969,7 +969,7 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.MacOSX, "osx-arm64;osx-x64", false)]
 		public void AppWithLibraryWithResourcesReference (ApplePlatform platform, string runtimeIdentifiers, bool bundleOriginalResources)
 		{
-			AppWithLibraryWithResourcesReferenceImpl (platform, runtimeIdentifiers, bundleOriginalResources, false, false);
+			AppWithLibraryWithResourcesReferenceImpl (platform, runtimeIdentifiers, bundleOriginalResources, false);
 		}
 
 
@@ -980,20 +980,10 @@ namespace Xamarin.Tests {
 		{
 			Configuration.IgnoreIfNotOnWindows ();
 
-			AppWithLibraryWithResourcesReferenceImpl (platform, runtimeIdentifiers, bundleOriginalResources, true, false);
+			AppWithLibraryWithResourcesReferenceImpl (platform, runtimeIdentifiers, bundleOriginalResources, true);
 		}
 
-		[Category ("Windows")]
-		[TestCase (ApplePlatform.iOS, "ios-arm64", false)]
-		[TestCase (ApplePlatform.iOS, "ios-arm64", true)]
-		public void AppWithLibraryWithResourcesReferenceWithHotRestart (ApplePlatform platform, string runtimeIdentifiers, bool bundleOriginalResources)
-		{
-			Configuration.IgnoreIfNotOnWindows ();
-
-			AppWithLibraryWithResourcesReferenceImpl (platform, runtimeIdentifiers, bundleOriginalResources, false, isUsingHotRestart: true);
-		}
-
-		void AppWithLibraryWithResourcesReferenceImpl (ApplePlatform platform, string runtimeIdentifiers, bool bundleOriginalResources, bool remoteWindows, bool isUsingHotRestart)
+		void AppWithLibraryWithResourcesReferenceImpl (ApplePlatform platform, string runtimeIdentifiers, bool bundleOriginalResources, bool remoteWindows)
 		{
 			var project = "AppWithLibraryWithResourcesReference";
 			var config = bundleOriginalResources ? "DebugOriginal" : "DebugCompiled";
@@ -1008,12 +998,6 @@ namespace Xamarin.Tests {
 
 			Dictionary<string, string>? extraProperties = null;
 			string? tmpdir;
-			string? hotRestartOutputDir = null;
-			string? hotRestartAppBundlePath = null;
-			if (isUsingHotRestart) {
-				tmpdir = Cache.CreateTemporaryDirectory ();
-				extraProperties = GetHotRestartProperties (tmpdir, out hotRestartOutputDir, out hotRestartAppBundlePath);
-			}
 
 			var properties = GetDefaultProperties (runtimeIdentifiers, extraProperties);
 			properties ["Configuration"] = config;
@@ -1028,7 +1012,7 @@ namespace Xamarin.Tests {
 			var appExecutable = GetNativeExecutable (platform, appPath);
 			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
 
-			var appBundleInfo = new AppBundleInfo (platform, appPath, project_path, remoteWindows, runtimeIdentifiers, config, isUsingHotRestart, hotRestartOutputDir, hotRestartAppBundlePath);
+			var appBundleInfo = new AppBundleInfo (platform, appPath, project_path, remoteWindows, runtimeIdentifiers, config);
 			var appBundleContents = appBundleInfo.GetAppBundleFiles (true).ToHashSet ();
 
 			appBundleInfo.DumpAppBundleContents ();
@@ -1046,37 +1030,37 @@ namespace Xamarin.Tests {
 				Assert.That (appBundleContents, Does.Contain (fontCFile), "C.ttf existence");
 
 				var atlasTexture = Path.Combine (resourcesDirectory, "Archer_Attack.atlasc", "Archer_Attack.plist");
-				AssertExistsOrUsingHotRestart (atlasTexture, "AtlasTexture - Archer_Attack");
+				AssertExists (atlasTexture, "AtlasTexture - Archer_Attack");
 
 				var scnAssetsDir = Path.Combine (resourcesDirectory, "art.scnassets");
-				AssertExistsOrUsingHotRestart (Path.Combine (scnAssetsDir, "scene.scn"), "scene.scn");
-				AssertExistsOrUsingHotRestart (Path.Combine (scnAssetsDir, "texture.png"), "texture.png");
+				AssertExists (Path.Combine (scnAssetsDir, "scene.scn"), "scene.scn");
+				AssertExists (Path.Combine (scnAssetsDir, "texture.png"), "texture.png");
 
-				AssertExistsOrUsingHotRestart (Path.Combine (resourcesDirectory, "Assets.car"), "Assets.car");
+				AssertExists (Path.Combine (resourcesDirectory, "Assets.car"), "Assets.car");
 
-				AssertExistsOrUsingHotRestart (Path.Combine (resourcesDirectory, "DirWithResources", "linkedArt.scnassets", "scene.scn"), "DirWithResources/linkedArt.scnassets/scene.scn");
-				AssertExistsOrUsingHotRestart (Path.Combine (resourcesDirectory, "DirWithResources", "linkedArt.scnassets", "texture.png"), "DirWithResources/linkedArt.scnassets/texture.png");
+				AssertExists (Path.Combine (resourcesDirectory, "DirWithResources", "linkedArt.scnassets", "scene.scn"), "DirWithResources/linkedArt.scnassets/scene.scn");
+				AssertExists (Path.Combine (resourcesDirectory, "DirWithResources", "linkedArt.scnassets", "texture.png"), "DirWithResources/linkedArt.scnassets/texture.png");
 
 				var mainStoryboard = Path.Combine (resourcesDirectory, "Main.storyboardc");
-				AssertExistsOrUsingHotRestart (mainStoryboard, "Main.storyboardc");
-				AssertExistsOrUsingHotRestart (Path.Combine (mainStoryboard, "Info.plist"), "Main.storyboardc/Info.plist");
+				AssertExists (mainStoryboard, "Main.storyboardc");
+				AssertExists (Path.Combine (mainStoryboard, "Info.plist"), "Main.storyboardc/Info.plist");
 
 				var colladaScene = Path.Combine (resourcesDirectory, "scene.dae");
-				AssertExistsOrUsingHotRestart (colladaScene, "Collada - scene.dae");
+				AssertExists (colladaScene, "Collada - scene.dae");
 
 				var mlModel = Path.Combine (resourcesDirectory, "SqueezeNet.mlmodelc");
-				AssertExistsOrUsingHotRestart (mlModel, "CoreMLModel");
-				AssertExistsOrUsingHotRestart (Path.Combine (mlModel, "analytics"), "CoreMLModel/analytics");
-				AssertExistsOrUsingHotRestart (Path.Combine (mlModel, "analytics", "coremldata.bin"), "CoreMLModel/analytics/coremldata.bin");
-				AssertExistsOrUsingHotRestart (Path.Combine (mlModel, "coremldata.bin"), "CoreMLModel/coremldata.bin");
-				AssertExistsOrUsingHotRestart (Path.Combine (mlModel, "metadata.json"), "CoreMLModel/metadata.json");
-				AssertExistsOrUsingHotRestart (Path.Combine (mlModel, "model"), "CoreMLModel/model");
-				AssertExistsOrUsingHotRestart (Path.Combine (mlModel, "model.espresso.net"), "CoreMLModel/model.espresso.net");
-				AssertExistsOrUsingHotRestart (Path.Combine (mlModel, "model.espresso.shape"), "CoreMLModel/model.espresso.shape");
-				AssertExistsOrUsingHotRestart (Path.Combine (mlModel, "model.espresso.weights"), "CoreMLModel/model.espresso.weights");
-				AssertExistsOrUsingHotRestart (Path.Combine (mlModel, "model", "coremldata.bin"), "CoreMLModel/model/coremldata.bin");
-				AssertExistsOrUsingHotRestart (Path.Combine (mlModel, "neural_network_optionals"), "CoreMLModel/neural_network_optionals");
-				AssertExistsOrUsingHotRestart (Path.Combine (mlModel, "neural_network_optionals", "coremldata.bin"), "CoreMLModel/neural_network_optionals/coremldata.bin");
+				AssertExists (mlModel, "CoreMLModel");
+				AssertExists (Path.Combine (mlModel, "analytics"), "CoreMLModel/analytics");
+				AssertExists (Path.Combine (mlModel, "analytics", "coremldata.bin"), "CoreMLModel/analytics/coremldata.bin");
+				AssertExists (Path.Combine (mlModel, "coremldata.bin"), "CoreMLModel/coremldata.bin");
+				AssertExists (Path.Combine (mlModel, "metadata.json"), "CoreMLModel/metadata.json");
+				AssertExists (Path.Combine (mlModel, "model"), "CoreMLModel/model");
+				AssertExists (Path.Combine (mlModel, "model.espresso.net"), "CoreMLModel/model.espresso.net");
+				AssertExists (Path.Combine (mlModel, "model.espresso.shape"), "CoreMLModel/model.espresso.shape");
+				AssertExists (Path.Combine (mlModel, "model.espresso.weights"), "CoreMLModel/model.espresso.weights");
+				AssertExists (Path.Combine (mlModel, "model", "coremldata.bin"), "CoreMLModel/model/coremldata.bin");
+				AssertExists (Path.Combine (mlModel, "neural_network_optionals"), "CoreMLModel/neural_network_optionals");
+				AssertExists (Path.Combine (mlModel, "neural_network_optionals", "coremldata.bin"), "CoreMLModel/neural_network_optionals/coremldata.bin");
 
 				if (bundleOriginalResources) {
 					var infoPlist = appBundleInfo.GetFile (GetInfoPListPath (platform, ""));
@@ -1085,12 +1069,12 @@ namespace Xamarin.Tests {
 				}
 			});
 
-			void AssertExistsOrUsingHotRestart (string path, string message)
+			void AssertExists (string path, string message)
 			{
 				var exists = appBundleContents.Contains (path);
-				if (exists ^ isUsingHotRestart)
-					return;
-				Assert.Fail ($"Expected either hot restart to be enabled ({isUsingHotRestart}) or the file '{path}' to be in the app bundle ({exists}): {message}");
+				if (!exists) {
+					Assert.Fail ($"Expected the file '{path}' to be in the app bundle ({exists}): {message}");
+				}
 			}
 		}
 
@@ -2193,23 +2177,18 @@ namespace Xamarin.Tests {
 			PluralRuntimeIdentifiersImpl (platform, runtimeIdentifiers);
 		}
 
-		internal static void PluralRuntimeIdentifiersImpl (ApplePlatform platform, string runtimeIdentifiers, Dictionary<string, string>? extraProperties = null, bool isUsingHotRestart = false)
+		internal static void PluralRuntimeIdentifiersImpl(ApplePlatform platform, string runtimeIdentifiers, Dictionary<string, string>? extraProperties = null)
 		{
 			var project = "MySimpleApp";
-			Configuration.IgnoreIfIgnoredPlatform (platform);
-			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+			Configuration.IgnoreIfIgnoredPlatform(platform);
+			Configuration.AssertRuntimeIdentifiersAvailable(platform, runtimeIdentifiers);
 
-			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath);
-			Clean (project_path);
-			var properties = GetDefaultProperties (extraProperties: extraProperties);
-			properties ["RuntimeIdentifiers"] = runtimeIdentifiers;
-			if (isUsingHotRestart) {
-				var rv = DotNet.AssertBuildFailure (project_path, properties);
-				var errors = BinLog.GetBuildLogErrors (rv.BinLogPath).ToArray ();
-				AssertErrorMessages (errors, $"Hot Restart is not supported when 'RuntimeIdentifiers' (plural) is set. Use 'RuntimeIdentifier' (singular) instead.");
-			} else {
-				DotNet.AssertBuild (project_path, properties);
-			}
+			var project_path = GetProjectPath(project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath);
+			Clean(project_path);
+			var properties = GetDefaultProperties(extraProperties: extraProperties);
+			properties["RuntimeIdentifiers"] = runtimeIdentifiers;
+			
+			DotNet.AssertBuild (project_path, properties);
 		}
 
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64")]

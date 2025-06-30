@@ -55,156 +55,6 @@ namespace Xamarin.Tests {
 			DotNet.AssertBuild (project_path, properties);
 		}
 
-		[Category ("Windows")]
-		[TestCase (ApplePlatform.iOS, "ios-arm64")]
-		public void BundleStructureWithHotRestart (ApplePlatform platform, string runtimeIdentifiers)
-		{
-			Configuration.IgnoreIfIgnoredPlatform (platform);
-			Configuration.IgnoreIfNotOnWindows ();
-
-			var project = "BundleStructure";
-			var configuration = "Debug";
-			var tmpdir = Cache.CreateTemporaryDirectory ();
-
-			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath, configuration: configuration);
-			var project_dir = Path.GetDirectoryName (Path.GetDirectoryName (project_path))!;
-			Clean (project_path);
-
-			var extraProperties = GetHotRestartProperties (tmpdir, out var hotRestartOutputDir, out var hotRestartAppBundlePath);
-			var properties = GetDefaultProperties (runtimeIdentifiers, extraProperties);
-			if (!string.IsNullOrWhiteSpace (configuration))
-				properties ["Configuration"] = configuration;
-
-			var rv = DotNet.AssertBuild (project_path, properties);
-
-			// Find the files in the prebuilt hot restart app
-			var prebuiltAppEntries = Array.Empty<string> ().ToHashSet ();
-			if (BinLog.TryFindPropertyValue (rv.BinLogPath, "MessagingAgentsDirectory", out var preBuiltAppBundleLocation)) {
-				var preBuiltAppBundlePath = Path.Combine (preBuiltAppBundleLocation, "Xamarin.PreBuilt.iOS.app.zip");
-				using var archive = System.IO.Compression.ZipFile.OpenRead (preBuiltAppBundlePath);
-				prebuiltAppEntries = archive
-					.Entries
-					.Select (v => v.FullName)
-					.SelectMany (v => {
-						// This code has two purposes:
-						// 1 - make sure the paths are using the current platform's directory separator char (instead of '/')
-						// 2 - add both files and their containing directories to the list (since we check for directory presence later in this test)
-						var components = v.Split (new char [] { '/', Path.DirectorySeparatorChar }, StringSplitOptions.RemoveEmptyEntries);
-						var rv = new List<string> ();
-						for (var i = 0; i < components.Length; i++) {
-							rv.Add (Path.Combine (components.Take (i + 1).ToArray ()));
-						}
-						return rv;
-					})
-					.ToHashSet ();
-
-#if TRACE
-				Console.WriteLine ($"Prebuilt app files:");
-				foreach (var pbf in prebuiltAppEntries)
-					Console.WriteLine ($"    {pbf}");
-#endif
-			} else {
-				Assert.Fail ("Could not find the property 'MessagingAgentsDirectory' in the binlog.");
-			}
-
-			DumpDirContents (appPath);
-			DumpDirContents (tmpdir);
-
-			var hotRestartAppBundleFiles = BundleStructureTest.Find (hotRestartAppBundlePath);
-
-			var payloadFiles = BundleStructureTest.Find (Path.Combine (hotRestartOutputDir, "Payload", "BundleStructure.app"));
-			var contentFiles = BundleStructureTest.Find (Path.Combine (hotRestartOutputDir, "BundleStructure.content"));
-
-			// Exclude most files from the prebuilt hot restart app
-			var excludedPrebuiltAppEntries = prebuiltAppEntries
-				.Where (v => {
-					// We're not excluding some files that are common to all apps.
-					switch (v) {
-					case "Info.plist":
-					case "MonoTouchDebugConfiguration.txt":
-					case "PkgInfo":
-					case "Settings.bundle":
-					case "Settings.bundle\\Root.plist":
-						return false;
-					}
-					return true;
-				});
-			var hotRestartAppBundleFilesWithoutPrebuiltFiles = hotRestartAppBundleFiles
-				.Except (excludedPrebuiltAppEntries)
-				.ToList ();
-
-			var merged = hotRestartAppBundleFilesWithoutPrebuiltFiles
-				.Union (payloadFiles)
-				.Union (contentFiles)
-				.Where (v => {
-					// remove files in the BundleStructure.content subdirectory
-					if (v.StartsWith ("BundleStructure.content", StringComparison.Ordinal))
-						return false;
-					// hotrestart-specific files
-					if (v == "Extracted")
-						return false;
-					if (v == "Entitlements.plist")
-						return false;
-					if (v == "BundleStructure.hotrestartapp")
-						return false;
-					return true;
-				})
-				.Distinct ()
-				.OrderBy (v => v)
-				.ToList ();
-
-			// The reference to the bindings-xcframework-test project is skipped on Windows, because we can't build binding projects unless we're connected to a Mac.
-			AddOrAssert (merged, "bindings-framework-test.dll");
-			AddOrAssert (merged, "bindings-framework-test.pdb");
-			AddOrAssert (merged, Path.Combine ("Frameworks", "XTest.framework")); // XTest.framework comes from bindings-framework-test.csproj
-			AddOrAssert (merged, Path.Combine ("Frameworks", "XTest.framework", "Info.plist"));
-			AddOrAssert (merged, Path.Combine ("Frameworks", "XTest.framework", "XTest"));
-
-			// The name of the executable is different.
-			AddOrAssert (merged, project);
-
-			var rids = runtimeIdentifiers.Split (';');
-			BundleStructureTest.CheckAppBundleContents (platform, merged, rids, BundleStructureTest.CodeSignature.None, configuration == "Release");
-
-			// Assert that no files were copied to the signed directory after the app was signed.
-			// https://github.com/dotnet/macios/issues/19278
-			var signedAppBundleFilesWithInfo = hotRestartAppBundleFiles.Select (v => new { Name = v, Info = new FileInfo (v) });
-			Console.WriteLine ($"{signedAppBundleFilesWithInfo.Count ()} files in app bundle:");
-			foreach (var fileWithInfo2 in signedAppBundleFilesWithInfo) {
-				Console.WriteLine ($"    {fileWithInfo2.Info.LastWriteTimeUtc.ToString ("O")} {fileWithInfo2.Name}");
-			}
-
-			var codesignInfo = signedAppBundleFilesWithInfo.Single (v => v.Name.EndsWith ("_CodeSignature\\CodeResources"));
-			var modifiedAfterSignature = signedAppBundleFilesWithInfo.Where (v => v.Info.LastWriteTimeUtc > codesignInfo.Info.LastWriteTimeUtc);
-			if (modifiedAfterSignature.Any ()) {
-				Console.WriteLine ($"{modifiedAfterSignature.Count ()} files were modified after the app was signed. Full list:");
-				foreach (var fileWithInfo in signedAppBundleFilesWithInfo) {
-					Console.WriteLine ($"    {fileWithInfo.Info.LastWriteTimeUtc.ToString ("O")} {(fileWithInfo.Info.LastWriteTimeUtc > codesignInfo.Info.LastWriteTimeUtc ? "MODIFIED " : "unchanged")} {fileWithInfo.Name}");
-				}
-				Assert.That (modifiedAfterSignature, Is.Empty, "Files modified after the app was signed");
-			}
-		}
-
-		static void AddOrAssert (IList<string> list, string item)
-		{
-			Assert.That (list, Does.Not.Contain (item), $"item {item} already in list.");
-			list.Add (item);
-		}
-
-		static void DumpDirContents (string dir)
-		{
-#if TRACE
-			if (!Directory.Exists (dir)) {
-				Console.WriteLine ($"The directory {dir} does not exist!");
-				return;
-			}
-			var files = Directory.GetFileSystemEntries (dir, "*", SearchOption.AllDirectories);
-			Console.WriteLine ($"Found {files.Count ()} in {dir}:");
-			foreach (var entry in files.OrderBy (v => v))
-				Console.WriteLine ($"    {entry}");
-#endif
-		}
-
 		[Category ("RemoteWindows")]
 		[TestCase (ApplePlatform.iOS, "ios-arm64", BundleStructureTest.CodeSignature.All, "Debug")]
 		public void BundleStructureWithRemoteMac (ApplePlatform platform, string runtimeIdentifiers, BundleStructureTest.CodeSignature signature, string configuration)
@@ -311,17 +161,6 @@ namespace Xamarin.Tests {
 			AssertWarningsEqual (expectedWarnings, warningMessages, "Warnings Rebuild 3");
 			AssertTargetNotExecuted (allTargets, "_CompileAppManifest", "_CompileAppManifest Rebuild 3");
 			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
-		}
-
-		[Category ("Windows")]
-		[Category ("RemoteWindows")]
-		[TestCase (ApplePlatform.iOS, "ios-arm64")]
-		public void PluralRuntimeIdentifiersWithHotRestart (ApplePlatform platform, string runtimeIdentifiers)
-		{
-			Configuration.IgnoreIfNotOnWindows ();
-
-			var properties = GetHotRestartProperties ();
-			DotNetProjectTest.PluralRuntimeIdentifiersImpl (platform, runtimeIdentifiers, properties, isUsingHotRestart: true);
 		}
 
 		[Category ("RemoteWindows")]
@@ -473,38 +312,15 @@ namespace Xamarin.Tests {
 
 			return reportFileList;
 		}
-
-		[Test]
-		[Category ("Windows")]
-		[TestCase ("NativeFileReferencesApp", ApplePlatform.iOS, "ios-arm64")]
-		public void StaticLibrariesWithHotRestart (string project, ApplePlatform platform, string runtimeIdentifier)
-		{
-			Configuration.IgnoreIfIgnoredPlatform (platform);
-			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifier);
-			Configuration.IgnoreIfNotOnWindows ();
-
-			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifier, platform: platform, out var _);
-			Clean (project_path);
-			var properties = GetDefaultProperties (runtimeIdentifier, GetHotRestartProperties ());
-			var rv = DotNet.AssertBuildFailure (project_path, properties);
-			var errors = BinLog.GetBuildLogErrors (rv.BinLogPath).ToList ();
-			AssertErrorMessages (errors,
-				$@"The library ..\..\..\test-libraries\.libs\iossimulator\libtest.a is a static library, and static libraries are not supported with Hot Restart. Set 'SkipStaticLibraryValidation=true' in the project file to ignore this error.",
-				$@"The library ..\..\..\test-libraries\.libs\iossimulator\libtest2.a is a static library, and static libraries are not supported with Hot Restart. Set 'SkipStaticLibraryValidation=true' in the project file to ignore this error."
-			);
-		}
 	}
 
 	public class AppBundleInfo {
 		public readonly bool IsRemoteBuild;
-		public readonly bool IsHotRestartBuild;
 		public readonly string AppPath;
 		public readonly string ProjectPath;
 		public readonly ApplePlatform Platform;
 		public readonly string Configuration;
 		public readonly string RuntimeIdentifiers;
-		public readonly string? HotRestartOutputDir;
-		public readonly string? HotRestartAppBundlePath;
 
 		string? zippedAppBundlePath;
 		string ZippedAppBundlePath {
@@ -520,7 +336,7 @@ namespace Xamarin.Tests {
 			}
 		}
 
-		public AppBundleInfo (ApplePlatform platform, string appPath, string projectPath, bool isRemoteBuild, string runtimeIdentifiers, string configuration, bool isHotRestartBuild, string? hotRestartOutputDir, string? hotRestartAppBundlePath)
+		public AppBundleInfo (ApplePlatform platform, string appPath, string projectPath, bool isRemoteBuild, string runtimeIdentifiers, string configuration)
 		{
 			Platform = platform;
 			AppPath = appPath;
@@ -528,9 +344,6 @@ namespace Xamarin.Tests {
 			IsRemoteBuild = isRemoteBuild;
 			Configuration = configuration;
 			RuntimeIdentifiers = runtimeIdentifiers;
-			IsHotRestartBuild = isHotRestartBuild;
-			HotRestartOutputDir = hotRestartOutputDir;
-			HotRestartAppBundlePath = hotRestartAppBundlePath;
 		}
 
 		public byte [] GetFile (string appBundleRelativePath)
@@ -558,11 +371,6 @@ namespace Xamarin.Tests {
 
 				rv.UnionWith (GetAllFilesInDirectory (AppPath));
 
-				if (!IsHotRestartBuild)
-					return rv;
-
-				rv.UnionWith (GetAllFilesInDirectory (HotRestartOutputDir!, "*.content"));
-				rv.UnionWith (GetAllFilesInDirectory (HotRestartAppBundlePath!));
 				return rv;
 			}
 		}
@@ -591,7 +399,6 @@ namespace Xamarin.Tests {
 		{
 			Console.WriteLine ($"App bundle info:");
 			Console.WriteLine ($"    IsRemoteBuild: {IsRemoteBuild}");
-			Console.WriteLine ($"    IsHotRestartBuild: {IsHotRestartBuild}");
 			Console.WriteLine ($"    AppPath: {AppPath}");
 			Console.WriteLine ($"    Platform: {Platform}");
 			Console.WriteLine ($"    Configuration: {Configuration}");
@@ -601,30 +408,6 @@ namespace Xamarin.Tests {
 			Console.WriteLine ($"    App bundle files ({appBundleContents.Length}):");
 			foreach (var abc in appBundleContents)
 				Console.WriteLine ($"        {abc}");
-
-			if (!string.IsNullOrEmpty (HotRestartOutputDir)) {
-				if (!Directory.Exists (HotRestartOutputDir)) {
-					Console.WriteLine ($"    HotRestartOutputDir: {HotRestartOutputDir} (does not exist)");
-				} else {
-					var entries = Directory.GetFileSystemEntries (HotRestartOutputDir, "*", SearchOption.AllDirectories);
-					Console.WriteLine ($"    HotRestartOutputDir: {HotRestartOutputDir} ({entries}):");
-					foreach (var e in entries.OrderBy (v => v)) Console.WriteLine ($"        {e}");
-				}
-			} else {
-				Console.WriteLine ($"    HotRestartOutputDir: {HotRestartOutputDir} (not set)");
-			}
-
-			if (!string.IsNullOrEmpty (HotRestartAppBundlePath)) {
-				if (!Directory.Exists (HotRestartAppBundlePath)) {
-					Console.WriteLine ($"    HotRestartAppBundlePath: {HotRestartAppBundlePath} (does not exist)");
-				} else {
-					var entries = Directory.GetFileSystemEntries (HotRestartAppBundlePath, "*", SearchOption.AllDirectories);
-					Console.WriteLine ($"    HotRestartAppBundlePath: {HotRestartAppBundlePath} ({entries}):");
-					foreach (var e in entries.OrderBy (v => v)) Console.WriteLine ($"        {e}");
-				}
-			} else {
-				Console.WriteLine ($"    HotRestartAppBundlePath: {HotRestartAppBundlePath} (not set)");
-			}
 		}
 	}
 }

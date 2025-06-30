@@ -38,7 +38,7 @@ namespace Xamarin.Tests {
 			}
 
 			if (!includeRemoteProperties.HasValue)
-				includeRemoteProperties = Configuration.IsBuildingRemotely && !rv.ContainsKey ("IsHotRestartBuild");
+				includeRemoteProperties = Configuration.IsBuildingRemotely;
 
 			if (includeRemoteProperties == true)
 				AddRemoteProperties (rv);
@@ -604,37 +604,6 @@ namespace Xamarin.Tests {
 				}
 				return is_pull_request.Value;
 			}
-		}
-
-		protected Dictionary<string, string> GetHotRestartProperties ()
-		{
-			return GetHotRestartProperties (null, out var _, out var _);
-		}
-
-		protected Dictionary<string, string> GetHotRestartProperties (string? tmpdir, out string hotRestartOutputDir, out string hotRestartAppBundlePath)
-		{
-			var properties = new Dictionary<string, string> ();
-			properties ["IsHotRestartBuild"] = "true";
-			properties ["IsHotRestartEnvironmentReady"] = "true";
-			properties ["EnableCodeSigning"] = "false"; // Skip code signing, since that would require making sure we have code signing configured on bots.
-			properties ["_IsAppSigned"] = "false";
-			properties ["_AppIdentifier"] = "placeholder_AppIdentifier"; // This needs to be set to a placeholder value because DetectSigningIdentity usually does it (and we've disabled signing)
-			properties ["_BundleIdentifier"] = "placeholder_BundleIdentifier"; // This needs to be set to a placeholder value because DetectSigningIdentity usually does it (and we've disabled signing)
-
-			if (!string.IsNullOrEmpty (tmpdir)) {
-				// Redirect hot restart output to a place we can control from here
-				hotRestartOutputDir = Path.Combine (tmpdir, "out")!;
-				Directory.CreateDirectory (hotRestartOutputDir);
-				properties ["HotRestartSignedAppOutputDir"] = hotRestartOutputDir + Path.DirectorySeparatorChar;
-
-				hotRestartAppBundlePath = Path.Combine (tmpdir, "HotRestartAppBundlePath")!; // Do not create this directory, it will be created and populated with default contents if it doesn't exist.
-				properties ["HotRestartAppBundlePath"] = hotRestartAppBundlePath; // no trailing directory separator char for this property.
-			} else {
-				hotRestartOutputDir = string.Empty;
-				hotRestartAppBundlePath = string.Empty;
-			}
-
-			return properties;
 		}
 
 		protected void AddNoWarnForPreviewVersions (ApplePlatform platform, IList<string> supportedApiVersion, Dictionary<string, string> properties)

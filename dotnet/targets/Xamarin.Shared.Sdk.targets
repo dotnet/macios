@@ -2056,10 +2056,9 @@
 			<ResolvedFileToPublish Remove="$(ProjectRuntimeConfigFilePath)" Condition="'$(GenerateRuntimeConfigurationFiles)' == 'true'" />
 		</ItemGroup>
 
-		<!-- This task is executed on Windows as well, for hotrestart builds -->
 		<ComputeBundleLocation
 			SessionId="$(BuildSessionId)"
-			Condition="'$(IsMacEnabled)' == 'true' Or '$(IsHotRestartBuild)' == 'true'"
+			Condition="'$(IsMacEnabled)' == 'true'"
 			AssemblyDirectory="$(_AppContentsRelativePath)"
 			BundleResource="@(BundleResource)"
 			BundlerDebug="$(_BundlerDebug)"
@@ -2150,12 +2149,11 @@
 			<ResolvedFileToPublish RelativePath="$(_RelativeAppBundlePath)\%(RelativePath)" OriginalRelativePath="%(RelativePath)" />
 		</ItemGroup>
 
-		<!-- This task is executed on Windows as well, for hotrestart builds -->
 		<!-- resolve any .xcframeworks and binding resource packages -->
 		<!-- Skip doing this when not building on macOS if we're not a remoteable platform (i.e. iOS), because we want such builds to succeed (even if they produce non-working output), and ResolveNativeReferences will fail if running into symlinks (which happens for macOS and Mac Catalyst builds) -->
 		<ResolveNativeReferences
 			SessionId="$(BuildSessionId)"
-			Condition="('$(IsMacEnabled)' == 'true' Or '$(IsHotRestartBuild)' == 'true') And '$(_IsNonMacOSBuildForNonRemotablePlatform)' != 'true'"
+			Condition="'$(IsMacEnabled)' == 'true' And '$(_IsNonMacOSBuildForNonRemotablePlatform)' != 'true'"
 			Architectures="$(TargetArchitectures)"
 			FrameworksDirectory="$(_AppFrameworksRelativePath)"
 			IntermediateOutputPath="$(DeviceSpecificIntermediateOutputPath)"
@@ -2217,10 +2215,9 @@
 			</_CompressedPlugIns>
 		</ItemGroup>
 
-		<!-- This task is executed from Windows as well when using HotRestart -->
 		<Unzip
 			SessionId="$(BuildSessionId)"
-			Condition="'$(IsMacEnabled)' == 'true' Or '$(IsHotRestartBuild)' == 'true'"
+			Condition="'$(IsMacEnabled)' == 'true'"
 			ZipFilePath="%(_CompressedPlugIns.Identity)"
 			ExtractionPath="%(_CompressedPlugIns.ExtractionPath)"
 			>
@@ -2260,10 +2257,9 @@
 			</_CompressedXpcServices>
 		</ItemGroup>
 
-		<!-- This task is executed from Windows as well when using HotRestart -->
 		<Unzip
 			SessionId="$(BuildSessionId)"
-			Condition="'$(IsMacEnabled)' == 'true' Or '$(IsHotRestartBuild)' == 'true'"
+			Condition="'$(IsMacEnabled)' == 'true'"
 			CopyToWindows="true"
 			ZipFilePath="%(_CompressedXpcServices.Identity)"
 			ExtractionPath="%(_CompressedXpcServices.ExtractionPath)"
@@ -2641,10 +2637,10 @@ global using nfloat = global::System.Runtime.InteropServices.NFloat%3B
 			treated as globs. The workaround is to use a custom task for this.
 
 			Note that this task should run remotely from Windows when there's
-			a Mac connected, but locally when there's not a Mac connected (for
-			Hot Restart builds for instance), so we're not conditioning this
-			task on IsMacEnabled. Instead we're only setting SessionId if we
-			have a session id *and* we're connected to a Mac.
+			a Mac connected, but locally when there's not a Mac connected, 
+			so we're not conditioning this task on IsMacEnabled. 
+			Instead we're only setting SessionId if we have a session id 
+			*and* we're connected to a Mac.
 
 		-->
 		<GetFileSystemEntries

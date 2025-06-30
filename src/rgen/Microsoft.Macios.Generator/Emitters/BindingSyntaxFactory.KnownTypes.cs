@@ -103,7 +103,7 @@ static partial class BindingSyntaxFactory {
 	public static readonly TypeSyntax NSArray = StringExtensions.GetIdentifierName (
 		@namespace: ["Foundation"],
 		@class: "NSArray");
-	
+
 	/// <summary>
 	/// TypeSyntax for Foundation.NSAutoreleasePool.
 	/// </summary>

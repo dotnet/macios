@@ -13,7 +13,7 @@ using Microsoft.Macios.Generator.DataModel;
 using Microsoft.Macios.Generator.Extensions;
 using Microsoft.Macios.Generator.Formatters;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
-using static Microsoft.Macios.Generator.Nomenclator; 
+using static Microsoft.Macios.Generator.Nomenclator;
 using TypeInfo = Microsoft.Macios.Generator.DataModel.TypeInfo;
 using Parameter = Microsoft.Macios.Generator.DataModel.Parameter;
 
@@ -211,8 +211,8 @@ static partial class BindingSyntaxFactory {
 		};
 		// syntax that calls the NSArray factory method using the parameter: NSArray.FromNSObjects (targetTensors);
 		var factoryInvocation = MemberInvocationExpression (
-			instanceVariable: NSArray, 
-			methodName: nsArrayFactoryMethod, 
+			instanceVariable: NSArray,
+			methodName: nsArrayFactoryMethod,
 			arguments: [Argument (IdentifierName (parameterName))]);
 
 		// variable name
@@ -321,8 +321,8 @@ static partial class BindingSyntaxFactory {
 				IdentifierName ("Zero"));
 
 		return VariableInitialization (
-			variableName: variableName, 
-			value: memberAccess, 
+			variableName: variableName,
+			value: memberAccess,
 			withType: NativeHandle)
 			.NormalizeWhitespace ();
 	}
@@ -352,7 +352,7 @@ static partial class BindingSyntaxFactory {
 
 		// generates {var} = CFString.CreateNative ({parameter.Name});
 		return VariableInitialization (
-			variableName: variableName, 
+			variableName: variableName,
 			value: cfstringFactoryInvocation
 		);
 	}
@@ -434,7 +434,7 @@ static partial class BindingSyntaxFactory {
 		var variableName = GetNameForVariableType (argumentInfo.Name, VariableType.BindFrom);
 		if (variableName is null)
 			return null;
-		
+
 		ImmutableArray<ArgumentSyntax> arguments;
 
 		// the arguments of the factory information depends on if we are dealing with a enum, in which case we cast
@@ -454,13 +454,13 @@ static partial class BindingSyntaxFactory {
 				Argument (IdentifierName (argumentInfo.Name))
 			];
 		}
-		
+
 		// generates: NSNumber.FromDouble
 		var factoryInvocation = MemberInvocationExpression (NSNumber, factoryMethod, arguments);
 
 		// generates: var nba_variable = NSNumber.FromDouble(value);
 		return VariableInitialization (
-			variableName: variableName, 
+			variableName: variableName,
 			value: factoryInvocation
 		);
 	}
@@ -520,14 +520,14 @@ static partial class BindingSyntaxFactory {
 
 		// generates: NSValue.FromCMTime 
 		var factoryInvocation = MemberInvocationExpression (
-			instanceVariable: NSValue, 
-			methodName: factoryMethod, 
+			instanceVariable: NSValue,
+			methodName: factoryMethod,
 			arguments: [Argument (IdentifierName (parameter.Name))]
 		);
 
 		// generates: var nba_variable = NSNumber.FromDouble(value);
 		return VariableInitialization (
-			variableName: variableName, 
+			variableName: variableName,
 			value: factoryInvocation
 		);
 	}
@@ -715,7 +715,7 @@ static partial class BindingSyntaxFactory {
 		// return the autorelease pool definition 
 		return VariableInitialization (
 			variableName: poolVariableName,
-			value: New (NSAutoreleasePool, []) 
+			value: New (NSAutoreleasePool, [])
 		);
 	}
 
@@ -802,7 +802,7 @@ static partial class BindingSyntaxFactory {
 				ArgumentList (
 					SingletonSeparatedList (
 						Argument (IdentifierName (variableName)))));
-		
+
 		// var declaration
 		return VariableInitialization (
 			variableName: GetNameForVariableType (variableName, VariableType.NullableBlock)!,
@@ -885,8 +885,8 @@ static partial class BindingSyntaxFactory {
 			Token (SyntaxKind.ReadOnlyKeyword).WithTrailingTrivia (Space));
 		// generates: Selector.GetHandle (selector);
 		var getHandleInvocation = MemberInvocationExpression (
-			instanceVariable: Selector, 
-			methodName: "GetHandle", 
+			instanceVariable: Selector,
+			methodName: "GetHandle",
 			arguments: [Argument (LiteralExpression (SyntaxKind.StringLiteralExpression, Literal (selector)))]
 		);
 

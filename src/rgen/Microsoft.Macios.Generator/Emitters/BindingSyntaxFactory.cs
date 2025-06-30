@@ -120,6 +120,27 @@ static partial class BindingSyntaxFactory {
 	static InvocationExpressionSyntax MemberInvocationExpression (string instanceVariable, string methodName)
 		=> MemberInvocationExpression (IdentifierName (instanceVariable), methodName, ImmutableArray<ArgumentSyntax>.Empty);
 
+	/// <summary>
+	/// Creates a variable declaration with optional type specification. If no type is provided, 'var' is used.
+	/// </summary>
+	/// <param name="value">The variable declarator syntax for the variable.</param>
+	/// <param name="withType">The type syntax for the variable. If null, 'var' is used.</param>
+	/// <returns>A variable declaration syntax.</returns>
+	static VariableDeclarationSyntax VariableInitialization (VariableDeclaratorSyntax value, TypeSyntax? withType = null)
+	{
+		// if not type is provided, we will use var
+		withType ??= IdentifierName (
+			Identifier (
+				TriviaList (),
+				SyntaxKind.VarKeyword,
+				"var",
+				"var",
+				TriviaList (Space))
+			);
+		return VariableDeclaration (withType)
+			.WithVariables (SingletonSeparatedList (value));
+	}
+	
 	static ExpressionSyntax ThrowException (string type, string? message = null)
 	{
 		var throwExpression = ObjectCreationExpression (IdentifierName (type));

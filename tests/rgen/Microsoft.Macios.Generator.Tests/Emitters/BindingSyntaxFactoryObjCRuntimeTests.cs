@@ -751,7 +751,7 @@ public class BindingSyntaxFactoryObjCRuntimeTests {
 	[Fact]
 	void GetExceptionHandleAuxVariableTests ()
 	{
-		var expected = "IntPtr exception_gchandle = IntPtr.Zero;";
+		var expected = $"global::System.IntPtr exception_gchandle = global::System.IntPtr.Zero;";
 		var declaration = GetExceptionHandleAuxVariable ();
 		Assert.Equal (expected, declaration.ToString ());
 	}

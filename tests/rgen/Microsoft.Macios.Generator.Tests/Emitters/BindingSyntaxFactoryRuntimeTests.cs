@@ -509,6 +509,20 @@ public class BindingSyntaxFactoryRuntimeTests {
 				),
 				$"new {Global ("AudioToolbox.AudioBuffers")} (arg1, out arg2)"
 			];
+			
+			// named tuples
+			yield return [
+				ReturnTypeForNamedTuple (
+					new ("Name", ReturnTypeForString ()), 
+					new ("Surname", ReturnTypeForString ())),
+				ImmutableArray.Create (
+					Argument (IdentifierName ("arg1"))
+						.WithNameColon (NameColon (IdentifierName("Name"))).NormalizeWhitespace (),
+					Argument (IdentifierName ("arg2"))
+						.WithNameColon (NameColon (IdentifierName ("Surname"))).NormalizeWhitespace ()
+				),
+				"(Name: arg1, Surname: arg2)",
+			];
 		}
 
 		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
@@ -519,6 +533,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 	void NewTests (TypeInfo typeInfo, ImmutableArray<ArgumentSyntax> arguments, string expectedDeclaration)
 	{
 		var declaration = New (typeInfo, arguments);
+		var x = declaration.ToString ();
 		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
 	}
 

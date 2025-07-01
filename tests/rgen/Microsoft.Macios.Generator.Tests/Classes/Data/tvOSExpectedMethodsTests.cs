@@ -155,6 +155,46 @@ public partial class MethodTests
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public partial void CompleteRequest (global::Foundation.NSExtensionItem[] returningItems, global::System.Action<bool, string?>? completionHandler)
+	{
+		throw new NotImplementedException ();
+	}
+
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("maccatalyst13.1")]
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public partial global::System.Threading.Tasks.Task<(bool, string?)> CompleteRequestAsync (global::Foundation.NSExtensionItem[] returningItems)
+	{
+		throw new NotImplementedException ();
+	}
+
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("maccatalyst13.1")]
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public partial void CompleteRequest (global::Foundation.NSExtensionItem[] returningItems, global::System.Action<bool, string, string?>? completionHandler)
+	{
+		throw new NotImplementedException ();
+	}
+
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("maccatalyst13.1")]
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public partial global::System.Threading.Tasks.Task<(bool Success, string Name, string? Surname)> CompleteRequestAsync (global::Foundation.NSExtensionItem[] returningItems)
+	{
+		throw new NotImplementedException ();
+	}
+
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("maccatalyst13.1")]
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public partial global::Foundation.NSArray Filter (global::Foundation.NSPredicate predicate)
 	{
 		throw new NotImplementedException ();

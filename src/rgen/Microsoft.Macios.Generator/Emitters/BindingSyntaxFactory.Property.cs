@@ -3,7 +3,7 @@
 
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Macios.Generator.DataModel;
-using static Microsoft.Macios.Generator.Nomenclator; 
+using static Microsoft.Macios.Generator.Nomenclator;
 using TypeInfo = Microsoft.Macios.Generator.DataModel.TypeInfo;
 
 namespace Microsoft.Macios.Generator.Emitters;

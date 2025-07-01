@@ -82,9 +82,9 @@ static partial class BindingSyntaxFactory {
 	/// <returns>The expression to retrieve a selector handle.</returns>
 	public static InvocationExpressionSyntax SelectorGetHandle (string selector)
 		=> MemberInvocationExpression (
-			instanceVariable: Selector, 
-			methodName: "GetHandle", 
-			arguments: [Argument (LiteralExpression ( SyntaxKind.StringLiteralExpression, Literal (selector)))]
+			instanceVariable: Selector,
+			methodName: "GetHandle",
+			arguments: [Argument (LiteralExpression (SyntaxKind.StringLiteralExpression, Literal (selector)))]
 		);
 
 	/// <summary>
@@ -525,8 +525,8 @@ static partial class BindingSyntaxFactory {
 	/// <returns>An <see cref="InvocationExpressionSyntax"/> representing the call to GC.KeepAlive.</returns>
 	internal static InvocationExpressionSyntax KeepAlive (string variableName)
 		=> MemberInvocationExpression (
-			instanceVariable: GC, 
-			methodName: "KeepAlive", 
+			instanceVariable: GC,
+			methodName: "KeepAlive",
 			arguments: [Argument (IdentifierName (variableName))]
 		);
 }

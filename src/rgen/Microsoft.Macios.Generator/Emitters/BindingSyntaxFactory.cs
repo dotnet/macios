@@ -85,12 +85,12 @@ static partial class BindingSyntaxFactory {
 				SyntaxKind.SimpleMemberAccessExpression,
 				instanceVariable,
 				IdentifierName (methodName).WithTrailingTrivia (Space)));
-
+		
 		if (arguments.Length != 0)
 			invocation = invocation.WithArgumentList (argumentList);
 		return invocation;
 	}
-
+	
 	/// <summary>
 	/// Creates an invocation expression for calling a method on an instance variable with no arguments.
 	/// </summary>
@@ -99,7 +99,7 @@ static partial class BindingSyntaxFactory {
 	/// <returns>An invocation expression for the method call.</returns>
 	static InvocationExpressionSyntax MemberInvocationExpression (TypeSyntax instanceVariable, string methodName)
 		=> MemberInvocationExpression (instanceVariable, methodName, ImmutableArray<ArgumentSyntax>.Empty);
-
+	
 	/// <summary>
 	/// Creates an invocation expression for calling a method on an instance variable.
 	/// </summary>
@@ -109,8 +109,8 @@ static partial class BindingSyntaxFactory {
 	/// <returns>An invocation expression for the method call.</returns>
 	static InvocationExpressionSyntax MemberInvocationExpression (string instanceVariable, string methodName,
 		ImmutableArray<ArgumentSyntax> arguments)
-		=> MemberInvocationExpression (IdentifierName (instanceVariable), methodName, arguments);
-
+		=> MemberInvocationExpression ( IdentifierName (instanceVariable), methodName, arguments);
+	
 	/// <summary>
 	/// Creates an invocation expression for calling a method on an instance variable with no arguments.
 	/// </summary>
@@ -368,5 +368,5 @@ static partial class BindingSyntaxFactory {
 	internal static InvocationExpressionSyntax TcsSetResult (string tcsVariableName,
 		ImmutableArray<ArgumentSyntax> arguments)
 		=> MemberInvocationExpression (tcsVariableName, "SetResult", arguments);
-
+	
 }

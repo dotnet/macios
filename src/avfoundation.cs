@@ -29,6 +29,8 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+#nullable enable
+
 using System.ComponentModel;
 
 using Vector3 = global::System.Numerics.Vector3;
@@ -4061,7 +4063,7 @@ namespace AVFoundation {
 		[Async]
 		[NoTV, NoMac, NoiOS, MacCatalyst (15, 0)]
 		[Export ("activateWithOptions:completionHandler:")]
-		void Activate (AVAudioSessionActivationOptions options, Action<bool, NSError> handler);
+		void Activate (AVAudioSessionActivationOptions options, Action<bool, NSError?> handler);
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
@@ -4603,7 +4605,7 @@ namespace AVFoundation {
 			          <para copied="true">To be added.</para>
 			        </remarks>
 			""")]
-		void FromComponentDescription (AudioComponentDescription audioComponentDescription, AudioComponentInstantiationOptions options, Action<AVAudioUnit, NSError> completionHandler);
+		void FromComponentDescription (AudioComponentDescription audioComponentDescription, AudioComponentInstantiationOptions options, Action<AVAudioUnit?, NSError?> completionHandler);
 
 		/// <summary>Gets the audio unit as an Audio Toolbox audio unit.</summary>
 		///         <value>To be added.</value>
@@ -5599,42 +5601,42 @@ namespace AVFoundation {
 		[Async]
 		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("findUnusedTrackIDWithCompletionHandler:")]
-		void FindUnusedTrackId (Action<int, NSError> completionHandler);
+		void FindUnusedTrackId (Action<int, NSError?> completionHandler);
 
 		[Async]
 		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("loadChapterMetadataGroupsBestMatchingPreferredLanguages:completionHandler:")]
-		void LoadChapterMetadataGroups (string [] bestMatchingPreferredLanguages, Action<NSArray<AVTimedMetadataGroup>, NSError> completionHandler);
+		void LoadChapterMetadataGroups (string [] bestMatchingPreferredLanguages, Action<NSArray<AVTimedMetadataGroup>?, NSError?> completionHandler);
 
 		[Async]
 		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("loadChapterMetadataGroupsWithTitleLocale:containingItemsWithCommonKeys:completionHandler:")]
-		void LoadChapterMetadataGroups (NSLocale titleLocale, string [] commonKeys, Action<NSArray<AVTimedMetadataGroup>, NSError> completionHandler);
+		void LoadChapterMetadataGroups (NSLocale titleLocale, string [] commonKeys, Action<NSArray<AVTimedMetadataGroup>?, NSError?> completionHandler);
 
 		[Async]
 		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("loadMediaSelectionGroupForMediaCharacteristic:completionHandler:")]
-		void LoadMediaSelectionGroup (string mediaCharacteristic, Action<AVMediaSelectionGroup, NSError> completionHandler);
+		void LoadMediaSelectionGroup (string mediaCharacteristic, Action<AVMediaSelectionGroup?, NSError?> completionHandler);
 
 		[Async]
 		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("loadMetadataForFormat:completionHandler:")]
-		void LoadMetadata (string format, Action<NSArray<AVMetadataItem>, NSError> completionHandler);
+		void LoadMetadata (string format, Action<NSArray<AVMetadataItem>?, NSError?> completionHandler);
 
 		[Async]
 		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("loadTrackWithTrackID:completionHandler:")]
-		void LoadTrack (int trackId, Action<AVCompositionTrack, NSError> completionHandler);
+		void LoadTrack (int trackId, Action<AVCompositionTrack?, NSError?> completionHandler);
 
 		[Async]
 		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("loadTracksWithMediaCharacteristic:completionHandler:")]
-		void LoadTrackWithMediaCharacteristics (string mediaCharacteristic, Action<NSArray<AVCompositionTrack>, NSError> completionHandler);
+		void LoadTrackWithMediaCharacteristics (string mediaCharacteristic, Action<NSArray<AVCompositionTrack>?, NSError?> completionHandler);
 
 		[Async]
 		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("loadTracksWithMediaType:completionHandler:")]
-		void LoadTracksWithMediaType (string mediaType, Action<NSArray<AVMutableCompositionTrack>, NSError> completionHandler);
+		void LoadTracksWithMediaType (string mediaType, Action<NSArray<AVMutableCompositionTrack>?, NSError?> completionHandler);
 	}
 
 	interface IAVFragmentMinding { }
@@ -5713,17 +5715,17 @@ namespace AVFoundation {
 		[Async]
 		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("loadTrackWithTrackID:completionHandler:")]
-		void LoadTrack (int trackId, Action<AVFragmentedAssetTrack, NSError> completionHandler);
+		void LoadTrack (int trackId, Action<AVFragmentedAssetTrack?, NSError?> completionHandler);
 
 		[Async]
 		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("loadTracksWithMediaType:completionHandler:")]
-		void LoadTracksWithMediaType (string mediaType, Action<NSArray<AVFragmentedAssetTrack>, NSError> completionHandler);
+		void LoadTracksWithMediaType (string mediaType, Action<NSArray<AVFragmentedAssetTrack>?, NSError?> completionHandler);
 
 		[Async]
 		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("loadTracksWithMediaCharacteristic:completionHandler:")]
-		void LoadTracksWithMediaCharacteristic (string mediaCharacteristic, Action<NSArray<AVFragmentedAssetTrack>, NSError> completionHandler);
+		void LoadTracksWithMediaCharacteristic (string mediaCharacteristic, Action<NSArray<AVFragmentedAssetTrack>?, NSError?> completionHandler);
 
 	}
 
@@ -6125,7 +6127,7 @@ namespace AVFoundation {
 			<remarks>To be added.</remarks>
 			""")]
 		[Export ("notifyOfDataReadyForSampleBuffer:completionHandler:")]
-		void NotifyOfDataReady (CMSampleBuffer sbuf, Action<bool, NSError> completionHandler);
+		void NotifyOfDataReady (CMSampleBuffer sbuf, Action<bool, NSError?> completionHandler);
 
 		[Mac (13, 0)]
 		[Export ("createSampleBufferForRequest:addingToBatch:error:")]
@@ -7405,7 +7407,7 @@ namespace AVFoundation {
 		[Async]
 		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("findCompatibleTrackForCompositionTrack:completionHandler:")]
-		void FindCompatibleTrack (AVCompositionTrack compositionTrack, Action<AVAssetTrack, NSError> completionHandler);
+		void FindCompatibleTrack (AVCompositionTrack compositionTrack, Action<AVAssetTrack?, NSError?> completionHandler);
 
 		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 		[Field ("AVURLAssetURLRequestAttributionKey")]
@@ -12028,9 +12030,11 @@ namespace AVFoundation {
 	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[Flags]
 	enum AVMetadataObjectType : ulong {
+#nullable disable
 		/// <summary>To be added.</summary>
 		[Field (null)]
 		None = 0,
+#nullable enable
 
 		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
@@ -12398,17 +12402,17 @@ namespace AVFoundation {
 		[Async]
 		[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("loadTrackWithTrackID:completionHandler:")]
-		void LoadTrack (int trackId, Action<AVMutableCompositionTrack, NSError> completionHandler);
+		void LoadTrack (int trackId, Action<AVMutableCompositionTrack?, NSError?> completionHandler);
 
 		[Async]
 		[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("loadTracksWithMediaType:completionHandler:")]
-		void LoadTracksWithMediaType (string mediaType, Action<NSArray<AVMutableCompositionTrack>, NSError> completionHandler);
+		void LoadTracksWithMediaType (string mediaType, Action<NSArray<AVMutableCompositionTrack>?, NSError?> completionHandler);
 
 		[Async]
 		[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("loadTracksWithMediaCharacteristic:completionHandler:")]
-		void LoadTracksWithMediaCharacteristic (string mediaCharacteristic, Action<NSArray<AVMutableCompositionTrack>, NSError> completionHandler);
+		void LoadTracksWithMediaCharacteristic (string mediaCharacteristic, Action<NSArray<AVMutableCompositionTrack>?, NSError?> completionHandler);
 	}
 
 	[NoTV, iOS (13, 0)]
@@ -12477,17 +12481,17 @@ namespace AVFoundation {
 		[Async]
 		[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("loadTrackWithTrackID:completionHandler:")]
-		void LoadTrack (int trackId, Action<AVMovieTrack, NSError> completionHandler);
+		void LoadTrack (int trackId, Action<AVMovieTrack?, NSError?> completionHandler);
 
 		[Async]
 		[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("loadTracksWithMediaType:completionHandler:")]
-		void LoadTracksWithMediaType (string mediaType, Action<NSArray<AVMovieTrack>, NSError> completionHandler);
+		void LoadTracksWithMediaType (string mediaType, Action<NSArray<AVMovieTrack>?, NSError?> completionHandler);
 
 		[Async]
 		[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("loadTracksWithMediaCharacteristic:completionHandler:")]
-		void LoadTracksWithMediaCharacteristic (string mediaCharacteristic, Action<NSArray<AVMovieTrack>, NSError> completionHandler);
+		void LoadTracksWithMediaCharacteristic (string mediaCharacteristic, Action<NSArray<AVMovieTrack>?, NSError?> completionHandler);
 
 		// inlined from the AVMutableMovie (SynchronousAssetInterface) category
 		[Export ("metadataForFormat:")]
@@ -12723,17 +12727,17 @@ namespace AVFoundation {
 		[Async]
 		[iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("loadTrackWithTrackID:completionHandler:")]
-		void LoadTrack (int trackId, Action<AVMutableCompositionTrack, NSError> completionHandler);
+		void LoadTrack (int trackId, Action<AVMutableCompositionTrack?, NSError?> completionHandler);
 
 		[Async]
 		[iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("loadTracksWithMediaType:completionHandler:")]
-		void LoadTracksWithMediaType (string mediaType, Action<NSArray<AVMutableCompositionTrack>, NSError> completionHandler);
+		void LoadTracksWithMediaType (string mediaType, Action<NSArray<AVMutableCompositionTrack>?, NSError?> completionHandler);
 
 		[Async]
 		[iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("loadTracksWithMediaCharacteristic:completionHandler:")]
-		void LoadTracksWithMediaCharacteristic (string mediaCharacteristic, Action<NSArray<AVMutableCompositionTrack>, NSError> completionHandler);
+		void LoadTracksWithMediaCharacteristic (string mediaCharacteristic, Action<NSArray<AVMutableCompositionTrack>?, NSError?> completionHandler);
 	}
 
 	[iOS (13, 0), NoTV]
@@ -13322,17 +13326,17 @@ namespace AVFoundation {
 		[Async]
 		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("loadTrackWithTrackID:completionHandler:")]
-		void LoadTrack (int trackId, Action<AVMutableCompositionTrack, NSError> completionHandler);
+		void LoadTrack (int trackId, Action<AVMutableCompositionTrack?, NSError?> completionHandler);
 
 		[Async]
 		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("loadTracksWithMediaType:completionHandler:")]
-		void LoadTracksWithMediaType (string mediaType, Action<NSArray<AVMutableCompositionTrack>, NSError> completionHandler);
+		void LoadTracksWithMediaType (string mediaType, Action<NSArray<AVMutableCompositionTrack>?, NSError?> completionHandler);
 
 		[Async]
 		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("loadTracksWithMediaCharacteristic:completionHandler:")]
-		void LoadTracksWithMediaCharacteristic (string mediaCharacteristic, Action<NSArray<AVMutableCompositionTrack>, NSError> completionHandler);
+		void LoadTracksWithMediaCharacteristic (string mediaCharacteristic, Action<NSArray<AVMutableCompositionTrack>?, NSError?> completionHandler);
 	}
 
 	[MacCatalyst (13, 1)]
@@ -13436,17 +13440,17 @@ namespace AVFoundation {
 		[Async]
 		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("loadTrackWithTrackID:completionHandler:")]
-		void LoadTrack (int trackId, Action<AVMutableCompositionTrack, NSError> completionHandler);
+		void LoadTrack (int trackId, Action<AVMutableCompositionTrack?, NSError?> completionHandler);
 
 		[Async]
 		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("loadTracksWithMediaType:completionHandler:")]
-		void LoadTracksWithMediaType (string mediaType, Action<NSArray<AVMutableCompositionTrack>, NSError> completionHandler);
+		void LoadTracksWithMediaType (string mediaType, Action<NSArray<AVMutableCompositionTrack>?, NSError?> completionHandler);
 
 		[Async]
 		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("loadTracksWithMediaCharacteristic:completionHandler:")]
-		void LoadTracksWithMediaCharacteristic (string mediaCharacteristic, Action<NSArray<AVMutableCompositionTrack>, NSError> completionHandler);
+		void LoadTracksWithMediaCharacteristic (string mediaCharacteristic, Action<NSArray<AVMutableCompositionTrack>?, NSError?> completionHandler);
 	}
 
 	[MacCatalyst (13, 1)]
@@ -13783,13 +13787,13 @@ namespace AVFoundation {
 		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("estimateMaximumDurationWithCompletionHandler:")]
-		void EstimateMaximumDuration (Action<CMTime, NSError> handler);
+		void EstimateMaximumDuration (Action<CMTime, NSError?> handler);
 
 		[Async]
 		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("estimateOutputFileLengthWithCompletionHandler:")]
-		void EstimateOutputFileLength (Action<long, NSError> handler);
+		void EstimateOutputFileLength (Action<long, NSError?> handler);
 
 		[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("audioTrackGroupHandling", ArgumentSemantic.Assign)]
@@ -16622,7 +16626,7 @@ namespace AVFoundation {
 			          <para copied="true">To be added.</para>
 			        </remarks>
 			""")]
-		void SetPreparedPhotoSettings (AVCapturePhotoSettings [] preparedPhotoSettingsArray, [NullAllowed] Action<bool, NSError> completionHandler);
+		void SetPreparedPhotoSettings (AVCapturePhotoSettings [] preparedPhotoSettingsArray, [NullAllowed] Action<bool, NSError?> completionHandler);
 
 		/// <summary>Gets a value that tells whether the device can fuse two camera images to produce 1 higher quality image.</summary>
 		///         <value>To be added.</value>
@@ -17046,7 +17050,7 @@ namespace AVFoundation {
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("captureStillImageBracketAsynchronouslyFromConnection:withSettingsArray:completionHandler:")]
-		void CaptureStillImageBracket (AVCaptureConnection connection, AVCaptureBracketedStillImageSettings [] settings, Action<CMSampleBuffer, AVCaptureBracketedStillImageSettings, NSError> imageHandler);
+		void CaptureStillImageBracket (AVCaptureConnection connection, AVCaptureBracketedStillImageSettings [] settings, Action<CMSampleBuffer?, AVCaptureBracketedStillImageSettings?, NSError?> imageHandler);
 
 		[NoMac]
 		[MacCatalyst (13, 1)]
@@ -17056,7 +17060,7 @@ namespace AVFoundation {
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("prepareToCaptureStillImageBracketFromConnection:withSettingsArray:completionHandler:")]
-		void PrepareToCaptureStillImageBracket (AVCaptureConnection connection, AVCaptureBracketedStillImageSettings [] settings, Action<bool, NSError> handler);
+		void PrepareToCaptureStillImageBracket (AVCaptureConnection connection, AVCaptureBracketedStillImageSettings [] settings, Action<bool, NSError?> handler);
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
@@ -19595,7 +19599,7 @@ namespace AVFoundation {
 	interface AVPlayerItem_AVPlaybackRestrictions {
 		[Async]
 		[Export ("requestPlaybackRestrictionsAuthorization:")]
-		void RequestPlaybackRestrictionsAuthorization (Action<bool, NSError> completion);
+		void RequestPlaybackRestrictionsAuthorization (Action<bool, NSError?> completion);
 
 		[Export ("cancelPlaybackRestrictionsAuthorizationRequest")]
 		void CancelPlaybackRestrictionsAuthorizationRequest ();
@@ -22714,7 +22718,7 @@ namespace AVFoundation {
 		[TV (17, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("makeSecureTokenForExpirationDateOfPersistableContentKey:completionHandler:")]
-		void MakeSecureToken (NSData persistableContentKeyData, Action<NSData, NSError> handler);
+		void MakeSecureToken (NSData persistableContentKeyData, Action<NSData?, NSError?> handler);
 
 		[Async (XmlDocs = """
 			<param name="persistableContentKeyData">To be added.</param>
@@ -22726,7 +22730,7 @@ namespace AVFoundation {
 		[TV (17, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("invalidatePersistableContentKey:options:completionHandler:")]
-		void InvalidatePersistableContentKey (NSData persistableContentKeyData, [NullAllowed] NSDictionary options, Action<NSData, NSError> handler);
+		void InvalidatePersistableContentKey (NSData persistableContentKeyData, [NullAllowed] NSDictionary options, Action<NSData?, NSError?> handler);
 
 		/// <param name="persistableContentKeyData">To be added.</param>
 		///         <param name="options">To be added.</param>
@@ -22743,7 +22747,7 @@ namespace AVFoundation {
 		[NoTV, NoMac]
 		[MacCatalyst (13, 1)]
 		[Wrap ("InvalidatePersistableContentKey (persistableContentKeyData, options.GetDictionary (), handler)")]
-		void InvalidatePersistableContentKey (NSData persistableContentKeyData, [NullAllowed] AVContentKeySessionServerPlaybackContextOptions options, Action<NSData, NSError> handler);
+		void InvalidatePersistableContentKey (NSData persistableContentKeyData, [NullAllowed] AVContentKeySessionServerPlaybackContextOptions options, Action<NSData?, NSError?> handler);
 
 		[Async (XmlDocs = """
 			<param name="appIdentifier">To be added.</param>
@@ -22755,7 +22759,7 @@ namespace AVFoundation {
 		[TV (17, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("invalidateAllPersistableContentKeysForApp:options:completionHandler:")]
-		void InvalidateAllPersistableContentKeys (NSData appIdentifier, [NullAllowed] NSDictionary options, Action<NSData, NSError> handler);
+		void InvalidateAllPersistableContentKeys (NSData appIdentifier, [NullAllowed] NSDictionary options, Action<NSData?, NSError?> handler);
 
 		/// <param name="appIdentifier">To be added.</param>
 		///         <param name="options">To be added.</param>
@@ -22772,7 +22776,7 @@ namespace AVFoundation {
 		[NoTV, NoMac]
 		[MacCatalyst (13, 1)]
 		[Wrap ("InvalidateAllPersistableContentKeys (appIdentifier, options.GetDictionary (), handler)")]
-		void InvalidateAllPersistableContentKeys (NSData appIdentifier, [NullAllowed] AVContentKeySessionServerPlaybackContextOptions options, Action<NSData, NSError> handler);
+		void InvalidateAllPersistableContentKeys (NSData appIdentifier, [NullAllowed] AVContentKeySessionServerPlaybackContextOptions options, Action<NSData?, NSError?> handler);
 
 		#region AVContentKeySession_AVContentKeySessionPendingExpiredSessionReports
 
@@ -22888,7 +22892,7 @@ namespace AVFoundation {
 			        </remarks>
 			""")]
 		[Export ("makeStreamingContentKeyRequestDataForApp:contentIdentifier:options:completionHandler:")]
-		void MakeStreamingContentKeyRequestData (NSData appIdentifier, [NullAllowed] NSData contentIdentifier, [NullAllowed] NSDictionary<NSString, NSObject> options, Action<NSData, NSError> handler);
+		void MakeStreamingContentKeyRequestData (NSData appIdentifier, [NullAllowed] NSData contentIdentifier, [NullAllowed] NSDictionary<NSString, NSObject> options, Action<NSData?, NSError?> handler);
 
 		[MacCatalyst (13, 1)]
 		[Export ("processContentKeyResponse:")]
@@ -23267,9 +23271,11 @@ namespace AVFoundation {
 	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[TV (13, 0), iOS (13, 0)]
 	enum AVSemanticSegmentationMatteType {
+#nullable disable
 		[DefaultEnumValue]
 		[Field (null)]
 		None,
+#nullable enable
 		[Field ("AVSemanticSegmentationMatteTypeSkin")]
 		Skin,
 		[Field ("AVSemanticSegmentationMatteTypeHair")]
@@ -23493,7 +23499,7 @@ namespace AVFoundation {
 		AVAudioRoutingArbiter SharedRoutingArbiter { get; }
 
 		[Export ("beginArbitrationWithCategory:completionHandler:")]
-		void BeginArbitration (AVAudioRoutingArbitrationCategory category, Action<bool, NSError> handler);
+		void BeginArbitration (AVAudioRoutingArbitrationCategory category, Action<bool, NSError?> handler);
 
 		[Export ("leaveArbitration")]
 		void LeaveArbitration ();

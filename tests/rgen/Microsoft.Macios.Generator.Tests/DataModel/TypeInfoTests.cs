@@ -384,7 +384,7 @@ namespace NS {
 					parameters: []
 				)
 			];
-			
+
 			const string namedTuple = @"
 using System;
 
@@ -777,7 +777,7 @@ namespace NS {{
 		var completionSource = task.ToTaskCompletionSource ();
 		Assert.Equal ($"{Global ("System.Threading")}.Tasks.{expectedCompletionSource}", completionSource.GetIdentifierSyntax ().ToString ());
 	}
-	
+
 	[Theory]
 	[AllSupportedPlatforms]
 	void TypeInfoToTaskNamedTuple (ApplePlatform platform)

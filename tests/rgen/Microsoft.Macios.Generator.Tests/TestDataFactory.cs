@@ -654,10 +654,10 @@ static class TestDataFactory {
 				"Foundation.INSObjectFactory"
 			]
 		};
-	
+
 	public static TypeInfo ReturnTypeForNamedTuple (params KeyValuePair<string, TypeInfo> [] fields)
 	{
-		var dataMembers= string.Join (", ", fields.Select (x => $"{x.Value.GetIdentifierSyntax ()} {x.Key}"));
+		var dataMembers = string.Join (", ", fields.Select (x => $"{x.Value.GetIdentifierSyntax ()} {x.Key}"));
 		var genericMembers = string.Join (", ", fields.Select (x => $"{x.Value.GetIdentifierSyntax ()}"));
 		var tupleFields = ImmutableArray.CreateBuilder<KeyValuePair<string, string>> (fields.Length);
 		foreach (var (name, typeInfo) in fields) {

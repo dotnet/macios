@@ -191,7 +191,7 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 	/// True if the type represents a ObjC protocol.
 	/// </summary>
 	public bool IsProtocol { get; init; }
-	
+
 	/// <summary>
 	/// True if the type represents a named tuple.
 	/// </summary>
@@ -388,7 +388,7 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 			}
 
 			if (namedTypeSymbol.DelegateInvokeMethod is not null &&
-			    DelegateInfo.TryCreate (namedTypeSymbol, out var delegateInfo))
+				DelegateInfo.TryCreate (namedTypeSymbol, out var delegateInfo))
 				Delegate = delegateInfo;
 		}
 
@@ -658,7 +658,7 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		if (Delegate is null)
 			return this;
 
-		var delegateTypes= GetDelegateTypesForTask ();
+		var delegateTypes = GetDelegateTypesForTask ();
 		var genericTypeArguments = ImmutableArray.CreateBuilder<string> (delegateTypes.Length);
 		if (delegateTypes.Length > 1) {
 			// we need to create a named tuple or tuple, that depends on the type of delegate type, if we are
@@ -671,11 +671,11 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 				var namedTuple = string.Join (", ", delegateTypes.Select (d => $"{d.Value} {d.Key.Capitalize ()}"));
 				genericTypeArguments.Add ($"({namedTuple})");
 			}
-			
+
 		} else if (delegateTypes.Length == 1) {
-			genericTypeArguments.Add (delegateTypes[0].Value);
+			genericTypeArguments.Add (delegateTypes [0].Value);
 		}
-		
+
 		// generate a task type that will contain the delegate type information.
 		return new TypeInfo (
 			name: "System.Threading.Tasks.Task",

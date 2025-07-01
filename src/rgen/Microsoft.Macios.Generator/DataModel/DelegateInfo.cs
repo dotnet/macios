@@ -18,7 +18,7 @@ sealed record DelegateInfo {
 	/// Method name.
 	/// </summary>
 	public string Name { get; }
-	
+
 	/// <summary>
 	/// The fully qualified type name of the delegate.
 	/// </summary>

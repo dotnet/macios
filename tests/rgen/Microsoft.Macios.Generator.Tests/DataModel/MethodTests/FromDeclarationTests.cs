@@ -896,7 +896,7 @@ namespace NS {
 ";
 
 			yield return [simpleAsyncMethod];
-			
+
 			const string tupleAsyncMethod = @"
 using System;
 using ObjCBindings;

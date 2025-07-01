@@ -509,15 +509,15 @@ public class BindingSyntaxFactoryRuntimeTests {
 				),
 				$"new {Global ("AudioToolbox.AudioBuffers")} (arg1, out arg2)"
 			];
-			
+
 			// named tuples
 			yield return [
 				ReturnTypeForNamedTuple (
-					new ("Name", ReturnTypeForString ()), 
+					new ("Name", ReturnTypeForString ()),
 					new ("Surname", ReturnTypeForString ())),
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1"))
-						.WithNameColon (NameColon (IdentifierName("Name"))).NormalizeWhitespace (),
+						.WithNameColon (NameColon (IdentifierName ("Name"))).NormalizeWhitespace (),
 					Argument (IdentifierName ("arg2"))
 						.WithNameColon (NameColon (IdentifierName ("Surname"))).NormalizeWhitespace ()
 				),

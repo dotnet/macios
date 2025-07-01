@@ -533,7 +533,6 @@ public class BindingSyntaxFactoryRuntimeTests {
 	void NewTests (TypeInfo typeInfo, ImmutableArray<ArgumentSyntax> arguments, string expectedDeclaration)
 	{
 		var declaration = New (typeInfo, arguments);
-		var x = declaration.ToString ();
 		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
 	}
 

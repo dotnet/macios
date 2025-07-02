@@ -54,22 +54,22 @@ public class ExportDataTests {
 			yield return [
 				Method.Default,
 				new ExportData<Method> ("symbol", ArgumentSemantic.None, Method.Default),
-				"{ Type: 'ObjCBindings.Method', Selector: 'symbol', ArgumentSemantic: 'None', Flags: 'Default', NativePrefix: 'null', NativeSuffix: 'null', Library: 'null' }"
+				"{ Type: 'ObjCBindings.Method', Selector: 'symbol', ArgumentSemantic: 'None', Flags: 'Default', NativePrefix: 'null', NativeSuffix: 'null', Library: 'null', ResultType: 'null', MethodName: 'null', ResultTypeName: 'null', PostNonResultSnippet: 'null' }",
 			];
 			yield return [
 				Method.Default,
 				new ExportData<Method> ("symbol"),
-				"{ Type: 'ObjCBindings.Method', Selector: 'symbol', ArgumentSemantic: 'None', Flags: 'Default', NativePrefix: 'null', NativeSuffix: 'null', Library: 'null' }"
+				"{ Type: 'ObjCBindings.Method', Selector: 'symbol', ArgumentSemantic: 'None', Flags: 'Default', NativePrefix: 'null', NativeSuffix: 'null', Library: 'null', ResultType: 'null', MethodName: 'null', ResultTypeName: 'null', PostNonResultSnippet: 'null' }",
 			];
 			yield return [
 				Property.Default,
 				new ExportData<Property> ("symbol", ArgumentSemantic.Retain, Property.Default),
-				"{ Type: 'ObjCBindings.Property', Selector: 'symbol', ArgumentSemantic: 'Retain', Flags: 'Default', NativePrefix: 'null', NativeSuffix: 'null', Library: 'null' }"
+				"{ Type: 'ObjCBindings.Property', Selector: 'symbol', ArgumentSemantic: 'Retain', Flags: 'Default', NativePrefix: 'null', NativeSuffix: 'null', Library: 'null', ResultType: 'null', MethodName: 'null', ResultTypeName: 'null', PostNonResultSnippet: 'null' }"
 			];
 			yield return [
 				Property.Default,
 				new ExportData<Property> ("symbol"),
-				"{ Type: 'ObjCBindings.Property', Selector: 'symbol', ArgumentSemantic: 'None', Flags: 'Default', NativePrefix: 'null', NativeSuffix: 'null', Library: 'null' }"
+				"{ Type: 'ObjCBindings.Property', Selector: 'symbol', ArgumentSemantic: 'None', Flags: 'Default', NativePrefix: 'null', NativeSuffix: 'null', Library: 'null', ResultType: 'null', MethodName: 'null', ResultTypeName: 'null', PostNonResultSnippet: 'null' }"
 			];
 			yield return [
 				Method.Default,
@@ -78,7 +78,7 @@ public class ExportDataTests {
 					NativePrefix = "xamarin_",
 					Library = "__Internal"
 				},
-				"{ Type: 'ObjCBindings.Method', Selector: 'symbol', ArgumentSemantic: 'None', Flags: 'CustomMarshalDirective', NativePrefix: 'xamarin_', NativeSuffix: 'null', Library: '__Internal' }"
+				"{ Type: 'ObjCBindings.Method', Selector: 'symbol', ArgumentSemantic: 'None', Flags: 'CustomMarshalDirective', NativePrefix: 'xamarin_', NativeSuffix: 'null', Library: '__Internal', ResultType: 'null', MethodName: 'null', ResultTypeName: 'null', PostNonResultSnippet: 'null' }"
 			];
 		}
 

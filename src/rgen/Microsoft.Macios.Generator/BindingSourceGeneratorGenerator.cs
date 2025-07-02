@@ -59,6 +59,9 @@ public class BindingSourceGeneratorGenerator : IIncrementalGenerator {
 		var trampolineProvider = provider
 			.Select ((tuple, _) => (tuple.RootBindingContext, tuple.Bindings.Trampolines));
 
+		var asyncResultsProvider = provider
+			.Select ((tuple, _) => (tuple.RootBindingContext, tuple.Bindings.AsyncResults));
+
 		context.RegisterSourceOutput (context.CompilationProvider.Combine (bindings.Collect ()),
 			((ctx, t) => GenerateCode (ctx, t.Right)));
 
@@ -67,6 +70,9 @@ public class BindingSourceGeneratorGenerator : IIncrementalGenerator {
 
 		context.RegisterSourceOutput (context.CompilationProvider.Combine (trampolineProvider.Collect ()),
 			((ctx, t) => GenerateTrampolineCode (ctx, t.Right)));
+
+		context.RegisterSourceOutput (context.CompilationProvider.Combine (asyncResultsProvider.Collect ()),
+			((ctx, t) => GenerateAsyncResultCode (ctx, t.Right)));
 	}
 
 	/// <summary>
@@ -217,6 +223,42 @@ public class BindingSourceGeneratorGenerator : IIncrementalGenerator {
 		} else {
 			// add to the diagnostics and continue to the next possible candidate
 			context.ReportDiagnostics (diagnostics);
+		}
+	}
+
+	static void GenerateAsyncResultCode (SourceProductionContext context,
+		ImmutableArray<(RootContext RootBindingContext, IEnumerable<AsyncResultInfo>
+			AsyncResults)> asyncResultsChanges)
+	{
+		// we don't have any async results to generate, so we can return
+		if (asyncResultsChanges.Length == 0)
+			return;
+
+		// it might be the case that we have several async results with the same name and namespace, so we need to
+		// ensure that we do not have duplicates. We do so by using a dict.
+		var infos = new Dictionary<string, AsyncResultInfo> ();
+		foreach (var (_, asyncInfos) in asyncResultsChanges) {
+			foreach (var info in asyncInfos) {
+				infos.Add (info.FullyQualifiedName, info);
+			}
+		}
+
+		var sb = new TabbedStringBuilder (new ());
+		foreach (var (_, asyncResult) in infos) {
+			// init sb and add the header
+			sb.Clear ();
+			sb.WriteHeader ();
+			var emitter = new AsyncResultEmitter (sb);
+			if (emitter.TryEmit (asyncResult, out var diagnostics)) {
+				// only add a file when we do generate code
+				var code = sb.ToCode ();
+				var namespacePath = Path.Combine (asyncResult.Namespace.ToArray ());
+				context.AddSource ($"{Path.Combine (namespacePath, asyncResult.Name)}.g.cs",
+					SourceText.From (code, Encoding.UTF8));
+			} else {
+				// add to the diagnostics and continue to the next possible candidate
+				context.ReportDiagnostics (diagnostics);
+			}
 		}
 	}
 

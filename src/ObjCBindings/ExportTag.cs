@@ -106,6 +106,11 @@ namespace ObjCBindings {
 		/// </summary>
 		Factory = 1 << 12,
 
+		/// <summary>
+		/// Use this flag on a method to generate an async version of the method.
+		/// </summary>
+		Async = 1 << 13,
+
 	}
 
 	/// <summary>

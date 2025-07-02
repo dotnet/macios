@@ -83,6 +83,8 @@ git-clean-all:
 	@echo "$(COLOR_RED)You have 5 seconds to cancel (Ctrl-C) if you wish.$(COLOR_CLEAR)"
 	@sleep 5
 	@echo "Cleaning macios..."
+	@git clean -xffdq
+	@echo "Cleaning submodules..."
 	@git submodule foreach -q --recursive 'git clean -xffdq && git reset --hard -q'
 	@set -e; \
 	for dir in $(DEPENDENCY_DIRECTORIES); do \

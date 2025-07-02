@@ -40,9 +40,3 @@ steps:
     $vsts.Agents.SetEnabled($pool, $agent, $True)
   displayName: 'Re-enabled macOS bot from pool'
   condition: always()
-
-- pwsh: |
-    Remove-Item "$(ID_RSA_PATH)"
-  displayName: "Remove secrets"
-  condition: always()
-  continueOnError: true

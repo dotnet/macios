@@ -46,6 +46,7 @@ namespace NS {
 							type: ReturnTypeForAction (
 								delegateInfo: new (
 									name: "Invoke",
+									delegateType: "System.Action",
 									returnType: ReturnTypeForVoid (),
 									parameters: []
 								)
@@ -84,6 +85,7 @@ namespace NS {
 							type: ReturnTypeForAction (
 								delegateInfo: new (
 									name: "Invoke",
+									delegateType: "System.Action<string>",
 									returnType: ReturnTypeForVoid (),
 									parameters: [
 										new (
@@ -128,6 +130,7 @@ namespace NS {
 							type: ReturnTypeForAction (
 								delegateInfo: new (
 									name: "Invoke",
+									delegateType: "System.Action<string?>",
 									returnType: ReturnTypeForVoid (),
 									parameters: [
 										new (
@@ -172,6 +175,7 @@ namespace NS {
 							type: ReturnTypeForAction (
 								delegateInfo: new (
 									name: "Invoke",
+									delegateType: "System.Action<string, string>",
 									returnType: ReturnTypeForVoid (),
 									parameters: [
 										new (
@@ -221,6 +225,7 @@ namespace NS {
 							type: ReturnTypeForFunc (
 								delegateInfo: new (
 									name: "Invoke",
+									delegateType: "System.Func<string, string>",
 									returnType: ReturnTypeForString (),
 									parameters: [
 										new (
@@ -265,6 +270,7 @@ namespace NS {
 							type: ReturnTypeForFunc (
 								delegateInfo: new (
 									name: "Invoke",
+									delegateType: "System.Func<string, string, string>",
 									returnType: ReturnTypeForString (),
 									parameters: [
 										new (
@@ -317,6 +323,7 @@ namespace NS {
 								"NS.MyClass.Callback",
 								delegateInfo: new (
 									name: "Invoke",
+									delegateType: "NS.MyClass.Callback",
 									returnType: ReturnTypeForInt (isNullable: true),
 									parameters: [
 										new (
@@ -382,6 +389,7 @@ namespace NS {
 								"NS.MyClass.Callback",
 								delegateInfo: new (
 									name: "Invoke",
+									delegateType: "NS.MyClass.Callback",
 									returnType: ReturnTypeForInt (isNullable: true),
 									parameters: [
 										new (
@@ -438,6 +446,7 @@ namespace NS {
 								"NS.MyClass.Callback",
 								delegateInfo: new (
 									name: "Invoke",
+									delegateType: "NS.MyClass.Callback",
 									returnType: ReturnTypeForInt (isNullable: true),
 									parameters: [
 										new (
@@ -500,6 +509,7 @@ namespace NS {
 								"NS.MyClass.Callback",
 								delegateInfo: new (
 									name: "Invoke",
+									delegateType: "NS.MyClass.Callback",
 									returnType: ReturnTypeForInt (isNullable: true),
 									parameters: [
 										new (
@@ -555,6 +565,7 @@ namespace NS {
 								"NS.MyClass.Callback",
 								delegateInfo: new (
 									name: "Invoke",
+									delegateType: "NS.MyClass.Callback",
 									returnType: ReturnTypeForInt (isNullable: true),
 									parameters: [
 										new (
@@ -621,6 +632,7 @@ namespace NS {
 								"NS.MyClass.Callback",
 								delegateInfo: new (
 									name: "Invoke",
+									delegateType: "NS.MyClass.Callback",
 									returnType: ReturnTypeForInt (isNullable: true),
 									parameters: [
 										new (

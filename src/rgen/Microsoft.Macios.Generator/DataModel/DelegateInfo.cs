@@ -20,6 +20,11 @@ sealed record DelegateInfo {
 	public string Name { get; }
 
 	/// <summary>
+	/// The fully qualified type name of the delegate.
+	/// </summary>
+	public string FullyQualifiedType { get; init; }
+
+	/// <summary>
 	/// Method return type.
 	/// </summary>
 	public TypeInfo ReturnType { get; }
@@ -39,9 +44,10 @@ sealed record DelegateInfo {
 	/// </summary>
 	public ImmutableArray<DelegateParameter> Parameters { get; } = [];
 
-	public DelegateInfo (string name, TypeInfo returnType, ImmutableArray<DelegateParameter> parameters)
+	public DelegateInfo (string name, string delegateType, TypeInfo returnType, ImmutableArray<DelegateParameter> parameters)
 	{
 		Name = name;
+		FullyQualifiedType = delegateType;
 		ReturnType = returnType;
 		Parameters = parameters;
 	}
@@ -53,6 +59,7 @@ sealed record DelegateInfo {
 			return false;
 		}
 
+		var type = symbol.ToDisplayString ();
 		var method = symbol.DelegateInvokeMethod;
 		var parametersBucket = ImmutableArray.CreateBuilder<DelegateParameter> ();
 		// loop over the parameters of the construct since changes on those implies a change in the generated code
@@ -64,6 +71,7 @@ sealed record DelegateInfo {
 
 		change = new (
 			name: method.Name,
+			delegateType: type,
 			returnType: new (method.ReturnType),
 			parameters: parametersBucket.ToImmutableArray ()) {
 			IsBlockCallback = symbol.HasAttribute (AttributesNames.BlockCallbackAttribute),
@@ -78,6 +86,8 @@ sealed record DelegateInfo {
 		if (other is null)
 			return false;
 		if (Name != other.Name)
+			return false;
+		if (FullyQualifiedType != other.FullyQualifiedType)
 			return false;
 		if (ReturnType != other.ReturnType)
 			return false;

@@ -174,6 +174,7 @@ return {backingField};
 			// add backing variable for the property if it is needed
 			if (property.NeedsBackingField) {
 				classBlock.WriteLine ();
+				classBlock.AppendGeneratedCodeAttribute (optimizable: true);
 				classBlock.WriteLine ($"object? {property.BackingField} = null;");
 			}
 
@@ -205,10 +206,14 @@ if (IsDirectBinding) {{
 }}
 {ExpressionStatement (KeepAlive ("this"))}
 ");
-					if (property.RequiresDirtyCheck) {
+					if (property.RequiresDirtyCheck || property.IsWeakDelegate) {
 						getterBlock.WriteLine ("MarkDirty ();");
+					}
+
+					if (property.NeedsBackingField) {
 						getterBlock.WriteLine ($"{property.BackingField} = {tempVar};");
 					}
+
 					getterBlock.WriteLine ($"return {tempVar};");
 				}
 
@@ -245,9 +250,39 @@ $@"if (IsDirectBinding) {{
 					// the native object alive
 					setterBlock.Write (invocations.Setter.Value.Argument.PostDelegateCallConversion, verifyTrivia: false);
 					// mark property as dirty if needed
-					if (property.RequiresDirtyCheck) {
+					if (property.RequiresDirtyCheck || property.IsWeakDelegate) {
 						setterBlock.WriteLine ("MarkDirty ();");
+					}
+
+					if (property.NeedsBackingField) {
 						setterBlock.WriteLine ($"{property.BackingField} = value;");
+					}
+				}
+			}
+
+			// if the property is a weak delegate and has the strong delegate type set, we need to emit the
+			// strong delegate property
+			if (property is { IsProperty: true, IsWeakDelegate: true }
+				&& property.ExportPropertyData.Value.StrongDelegateType is not null) {
+				classBlock.WriteLine ();
+				var strongDelegate = property.ToStrongDelegate ();
+				using (var propertyBlock =
+					   classBlock.CreateBlock (strongDelegate.ToDeclaration ().ToString (), block: true)) {
+					using (var getterBlock =
+						   propertyBlock.CreateBlock ("get", block: true)) {
+						getterBlock.WriteLine (
+							$"return {property.Name} as {strongDelegate.ReturnType.WithNullable (isNullable: false).GetIdentifierSyntax ()};");
+					}
+
+					using (var setterBlock =
+						   propertyBlock.CreateBlock ("set", block: true)) {
+						setterBlock.WriteRaw (
+$@"var rvalue = value as NSObject;
+if (!(value is null) && rvalue is null) {{
+	throw new ArgumentException ($""The object passed of type {{value.GetType ()}} does not derive from NSObject"");
+}}
+{property.Name} = rvalue;
+");
 					}
 				}
 			}

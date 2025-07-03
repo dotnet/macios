@@ -106,7 +106,7 @@ namespace Xamarin.MacDev.Tasks {
 		}
 
 		[return: NotNullIfNotNull (nameof (items))]
-		public static ITaskItem []? VerifyLogicalNameUniqueness<T> (T task, IEnumerable<ITaskItem>? items, string itemName) where T: Task, IHasProjectDir, IHasResourcePrefix, IHasSessionId
+		public static ITaskItem []? VerifyLogicalNameUniqueness<T> (T task, IEnumerable<ITaskItem>? items, string itemName) where T : Task, IHasProjectDir, IHasResourcePrefix, IHasSessionId
 		{
 			if (items is null)
 				return null;

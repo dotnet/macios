@@ -327,9 +327,9 @@ namespace NS {
 				nullableINativeArrayParameter,
 				$"{Global ("System.GC")}.KeepAlive (nsa_inativeArray);\n"
 			];
-			
+
 			// byref string parameter
-			
+
 			var byrefStringParam = @"
 using System;
 using Foundation;
@@ -347,9 +347,9 @@ namespace NS {
 				byrefStringParam,
 				$"outString = {Global ("CoreFoundation")}.CFString.FromHandle (nsoutString, false)!;\n",
 			];
-			
+
 			// byref string parameter nullable
-			
+
 			var nullableByrefStringParam = @"
 using System;
 using Foundation;
@@ -367,7 +367,7 @@ namespace NS {
 				nullableByrefStringParam,
 				$"outNullableString = {Global ("CoreFoundation")}.CFString.FromHandle (nsoutNullableString, false);\n"
 			];
-			
+
 			// byref num not smart
 
 			var outNotSmartEnum = @"
@@ -516,7 +516,7 @@ namespace NS {
 				outNullStringArray,
 				$"outNullStringArray = {Global ("CoreFoundation")}.CFArray.StringArrayFromHandle (nsa_outNullStringArray, false);\n"
 			];
-			
+
 			// byref array of INativeObject
 
 			var outINativeObjectArray = @"
@@ -987,9 +987,9 @@ namespace NS {
 {Global ("ObjCRuntime")}.BlockLiteral* block_ptr_callbackParameter = callbackParameter is not null ? &block_callbackParameter : null;
 ",
 			];
-			
+
 			// byref string parameter
-			
+
 			var byrefStringParam = @"
 using System;
 using Foundation;

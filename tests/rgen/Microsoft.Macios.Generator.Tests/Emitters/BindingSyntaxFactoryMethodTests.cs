@@ -14,7 +14,7 @@ using Xunit;
 namespace Microsoft.Macios.Generator.Tests.Emitters;
 
 public class BindingSyntaxFactoryMethodTests : BaseGeneratorTestClass {
-	
+
 	class TestDataGetInvocationsTests : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()
 		{
@@ -151,7 +151,7 @@ namespace NS {
 				$"ret = {Global ("CoreFoundation")}.CFString.FromHandle ({Global ("ObjCRuntime")}.Messaging.NativeHandle_objc_msgSend_NativeHandle (this.Handle, {Global ("ObjCRuntime")}.Selector.GetHandle (\"myMethod:\"), nsevent), false)!",
 				$"ret = {Global ("CoreFoundation")}.CFString.FromHandle ({Global ("ObjCRuntime")}.Messaging.NativeHandle_objc_msgSendSuper_NativeHandle (this.Handle, {Global ("ObjCRuntime")}.Selector.GetHandle (\"myMethod:\"), nsevent), false)!"
 			];
-	
+
 			const string singleArrayParameterMethod = @"
 using System;
 using ObjCBindings;
@@ -339,7 +339,7 @@ namespace NS {
 
 		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
 	}
-	
+
 	[Theory]
 	[AllSupportedPlatformsClassData<TestDataGetInvocationsTests>]
 	void GetInvocationsTests (ApplePlatform platform, string inputText, string expectedSend, string expectedSendSuper)
@@ -359,5 +359,5 @@ namespace NS {
 		Assert.Equal (expectedSend, invocations.Send.ToString ());
 		Assert.Equal (expectedSendSuper, invocations.SendSuper.ToString ());
 	}
-	
+
 }

@@ -298,13 +298,13 @@ if (!(value is null) && rvalue is null) {{
 	/// <param name="methodBlock">The writer for the method block.</param>
 	void EmitVoidMethodBody (in Method method, in MethodInvocations invocations, TabbedWriter<StringWriter> methodBlock)
 	{
-		
+
 		// init the needed temp variables
 		foreach (var argument in invocations.Arguments) {
 			methodBlock.Write (argument.Initializers, verifyTrivia: false);
 			methodBlock.Write (argument.PreCallConversion, verifyTrivia: false);
 		}
-		
+
 		// simply call the send or sendSuper accordingly
 		methodBlock.WriteRaw (
 $@"if (IsDirectBinding) {{
@@ -314,7 +314,7 @@ $@"if (IsDirectBinding) {{
 }}
 {ExpressionStatement (KeepAlive ("this"))}
 ");
-		
+
 		// before we leave the methods, do any post operations
 		foreach (var argument in invocations.Arguments) {
 			methodBlock.Write (argument.PostCallConversion, verifyTrivia: false);
@@ -332,13 +332,13 @@ $@"if (IsDirectBinding) {{
 		// similar to the void method but we need to create a temp variable to store the return value
 		// and do any conversions that might be needed for the return value, for example byte to bool
 		var (tempVar, tempDeclaration) = GetReturnValueAuxVariable (method.ReturnType);
-		
+
 		// init the needed temp variables
 		foreach (var argument in invocations.Arguments) {
 			methodBlock.Write (argument.Initializers, verifyTrivia: false);
 			methodBlock.Write (argument.PreCallConversion, verifyTrivia: false);
 		}
-		
+
 		methodBlock.WriteRaw (
 $@"{tempDeclaration}
 if (IsDirectBinding) {{
@@ -354,7 +354,7 @@ if (IsDirectBinding) {{
 		}
 		methodBlock.WriteLine ($"return {tempVar};");
 	}
-	
+
 	/// <summary>
 	/// Emit the code for all the methods in the class.
 	/// </summary>
@@ -375,11 +375,11 @@ if (IsDirectBinding) {{
 					methodBlock.WriteLine (uiThreadCheck.ToString ());
 					methodBlock.WriteLine ();
 				}
-				
+
 				// retrieve the method invocation via the factory, this will generate the necessary arguments
 				// transformations and the invocation
 				var invocations = GetInvocations (method);
-				
+
 				if (method.ReturnType.IsVoid) {
 					EmitVoidMethodBody (method, invocations, methodBlock);
 				} else {

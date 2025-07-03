@@ -25,8 +25,8 @@ static partial class BindingSyntaxFactory {
 		var send = GetObjCMessageSendMethodName (
 			exportData: method.ExportMethodData,
 			returnType: returnType,
-			parameters: method.Parameters, 
-			isSuper: isSuper, 
+			parameters: method.Parameters,
+			isSuper: isSuper,
 			isStret: returnType.NeedsStret
 		);
 		if (send is null || method.ExportMethodData.Selector is null) {
@@ -58,7 +58,7 @@ static partial class BindingSyntaxFactory {
 			argumentsTransformations.Add (trampolineSyntax);
 			argumentSyntax.Add (trampolineSyntax.ArgumentSyntax);
 		}
-		
+
 		// calculate the send expressions, we use the export data information to determine the selector
 		var args = argumentSyntax.ToImmutable ();
 		return new MethodInvocations () {

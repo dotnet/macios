@@ -114,7 +114,7 @@ readonly record struct ArgumentInfo {
 	/// <param name="parameter">The property to convert.</param>
 	public static implicit operator ArgumentInfo (in Property parameter)
 		=> new (parameter);
-	
+
 	/// <summary>
 	/// Creates a new instance of <see cref="ArgumentInfo"/> with the specified reference kind.
 	/// </summary>
@@ -126,7 +126,7 @@ readonly record struct ArgumentInfo {
 			return this;
 
 		return this with {
-			ReferenceKind = referenceKind, 
+			ReferenceKind = referenceKind,
 			IsByRef = referenceKind != ReferenceKind.None,
 		};
 	}

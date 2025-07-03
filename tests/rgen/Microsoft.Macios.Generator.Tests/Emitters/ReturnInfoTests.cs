@@ -11,7 +11,7 @@ using Xunit;
 namespace Microsoft.Macios.Generator.Tests.Emitters;
 
 public class ReturnInfoTests {
-	
+
 	[Fact]
 	public void Constructor_WithProperty_SetsPropertiesCorrectly ()
 	{
@@ -31,9 +31,8 @@ public class ReturnInfoTests {
 					attributes: [],
 					modifiers: []
 				)
-			])
-		{
-			ExportPropertyData = new("name"),
+			]) {
+			ExportPropertyData = new ("name"),
 			BindAs = new BindFromData (new TypeInfo { Name = "NSString" })
 		};
 
@@ -63,9 +62,8 @@ public class ReturnInfoTests {
 					attributes: [],
 					modifiers: []
 				)
-			])
-		{
-			ExportPropertyData = new("name"),
+			]) {
+			ExportPropertyData = new ("name"),
 			BindAs = new BindFromData (new TypeInfo { Name = "NSString" })
 		};
 
@@ -82,7 +80,7 @@ public class ReturnInfoTests {
 		var delegateInfo = new DelegateInfo (
 			"TestDelegate",
 			"System.Action",
-			TypeInfo.Void, 
+			TypeInfo.Void,
 			ImmutableArray<DelegateParameter>.Empty
 		);
 
@@ -113,7 +111,7 @@ public class ReturnInfoTests {
 	[Fact]
 	public void Constructor_WithMethod_SetsPropertiesCorrectly ()
 	{
-		
+
 		var method = new Method (
 			type: "MyType",
 			name: "MyMethod",
@@ -137,7 +135,7 @@ public class ReturnInfoTests {
 	[Fact]
 	public void ImplicitConversion_FromMethod_ConvertsCorrectly ()
 	{
-		
+
 		var method = new Method (
 			type: "MyType",
 			name: "MyMethod",

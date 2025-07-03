@@ -174,8 +174,8 @@ readonly partial struct Method {
 			// update the return type to be a task
 			ReturnType = resultType,
 			// remove the unsafe modifier if present since our async methods are not unsafe
-			Modifiers =  [
-				..Modifiers .Where(m => !m.IsKind(SyntaxKind.UnsafeKeyword))
+			Modifiers = [
+				.. Modifiers.Where (m => !m.IsKind (SyntaxKind.UnsafeKeyword))
 			]
 		};
 	}

@@ -120,7 +120,7 @@ static partial class BindingSyntaxFactory {
 		=> MemberInvocationExpression (IdentifierName (instanceVariable), methodName, ImmutableArray<ArgumentSyntax>.Empty);
 
 	static ExpressionStatementSyntax VariableAssignment (string variableName, ExpressionSyntax value)
-		=> ExpressionStatement ( AssignmentExpression (SyntaxKind.SimpleAssignmentExpression,
+		=> ExpressionStatement (AssignmentExpression (SyntaxKind.SimpleAssignmentExpression,
 				IdentifierName (variableName).WithTrailingTrivia (Space),
 				value.WithLeadingTrivia (Space)));
 

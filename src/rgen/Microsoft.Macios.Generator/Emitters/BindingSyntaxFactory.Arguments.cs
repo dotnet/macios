@@ -261,7 +261,7 @@ static partial class BindingSyntaxFactory {
 		// if the parameter does not allow the object to be null and it is a reference type, we need to add the null check
 		// otherwise ignore it. We do not want this check for INativeObjects (includes NSObject) because the GetNonNullableHandle
 		// will throw an exception if the object is null.
-		if (argumentInfo.Type is { IsReferenceType: true, IsINativeObject: false, IsNullable: false} && !argumentInfo.IsByRef) {
+		if (argumentInfo.Type is { IsReferenceType: true, IsINativeObject: false, IsNullable: false } && !argumentInfo.IsByRef) {
 			builder.Add (ThrowIfNull (argumentInfo.Name));
 		}
 

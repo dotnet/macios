@@ -72,7 +72,7 @@ static partial class BindingSyntaxFactory {
 			{ IsByRef: true, Type.IsArray: false, Type.IsNullable: true, Type.SpecialType: SpecialType.System_String }
 				=> [
 					// set the string from the aux pointer
-					VariableAssigment (
+					VariableAssignment (
 						variableName: parameter.Name, 
 						value: StringFromHandle (
 							[
@@ -86,7 +86,7 @@ static partial class BindingSyntaxFactory {
 			{ IsByRef: true, Type.IsArray: false, Type.IsNullable: false, Type.SpecialType: SpecialType.System_String }
 				=> [
 					// set the string from the aux pointer
-					VariableAssigment (
+					VariableAssignment (
 						variableName: parameter.Name, 
 						value: SuppressNullableWarning (StringFromHandle (
 						[
@@ -108,7 +108,7 @@ static partial class BindingSyntaxFactory {
 			{ IsByRef: true, Type.IsArray: false, Type.IsINativeObject: true, Type.IsNSObject: false}
 				=> [
 					// set the nsobject from the aux pointer
-					VariableAssigment (
+					VariableAssignment (
 						variableName: parameter.Name,
 						value: GetINativeObject (
 							nsObjectType: parameter.Type.WithNullable (isNullable: false).GetIdentifierSyntax (), 
@@ -124,7 +124,7 @@ static partial class BindingSyntaxFactory {
 			{ IsByRef: true, Type.IsArray: false, Type.IsNSObject: true }
 				=> [
 					// set the nsobject from the aux pointer
-					VariableAssigment (
+					VariableAssignment (
 						variableName: parameter.Name,
 						value: GetNSObject (
 							nsObjectType: parameter.Type.WithNullable (isNullable: false).GetIdentifierSyntax (), 
@@ -138,7 +138,7 @@ static partial class BindingSyntaxFactory {
 			// get the string array that is nullable
 			{ IsByRef: true, Type.IsArray: true, Type.IsNullable: true, Type.ArrayElementType: SpecialType.System_String }
 				=> [
-					VariableAssigment (
+					VariableAssignment (
 						variableName: parameter.Name,
 						value: StringArrayFromHandle ([
 							Argument (IdentifierName (GetNameForVariableType (parameter.Name, VariableType.NSArray)!)),
@@ -150,7 +150,7 @@ static partial class BindingSyntaxFactory {
 			// get non-nullable string array
 			{ IsByRef: true, Type.IsArray: true, Type.IsNullable: false, Type.ArrayElementType: SpecialType.System_String }
 				=> [
-					VariableAssigment (
+					VariableAssignment (
 						variableName: parameter.Name,
 						value: SuppressNullableWarning (StringArrayFromHandle ([
 							Argument (IdentifierName (GetNameForVariableType (parameter.Name, VariableType.NSArray)!)),
@@ -162,7 +162,7 @@ static partial class BindingSyntaxFactory {
 			// by ref we need to create a native handle for the NSArray 
 			{ IsByRef: true, Type.IsArray: true, Type.ArrayElementTypeIsWrapped: true }
 				=> [
-					VariableAssigment (
+					VariableAssignment (
  						variableName: parameter.Name,
 					    value: GetCFArrayFromHandle (
 						    nsObjectType: parameter.Type.ToArrayElementType ().WithNullable (isNullable: false).GetIdentifierSyntax (), 

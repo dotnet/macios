@@ -725,7 +725,7 @@ public class BindingSyntaxFactoryObjCRuntimeTests {
 	[Fact]
 	void GetAutoreleasePoolVariableTests ()
 	{
-		const string expected = "var autorelease_pool = new NSAutoreleasePool ();";
+		string expected = $"var autorelease_pool = new {BaseGeneratorTestClass.Global ("Foundation")}.NSAutoreleasePool ();";
 		var declaration = GetAutoreleasePoolVariable ();
 		Assert.NotNull (declaration);
 		Assert.Equal (expected, declaration.ToString ());
@@ -751,7 +751,7 @@ public class BindingSyntaxFactoryObjCRuntimeTests {
 	[Fact]
 	void GetExceptionHandleAuxVariableTests ()
 	{
-		var expected = "IntPtr exception_gchandle = IntPtr.Zero;";
+		var expected = $"global::System.IntPtr exception_gchandle = global::System.IntPtr.Zero;";
 		var declaration = GetExceptionHandleAuxVariable ();
 		Assert.Equal (expected, declaration.ToString ());
 	}
@@ -761,7 +761,7 @@ public class BindingSyntaxFactoryObjCRuntimeTests {
 		{
 			yield return [
 				GetAutoreleasePoolVariable (),
-				"using var autorelease_pool = new NSAutoreleasePool ();",
+				$"using var autorelease_pool = new {BaseGeneratorTestClass.Global ("Foundation")}.NSAutoreleasePool ();",
 			];
 
 			Parameter parameter = new (

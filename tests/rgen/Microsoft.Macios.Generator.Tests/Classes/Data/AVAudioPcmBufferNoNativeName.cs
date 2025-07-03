@@ -1,3 +1,4 @@
+#pragma warning disable APL0003
 using System;
 using Foundation;
 using ObjCBindings;

@@ -467,4 +467,48 @@ public class GeneralPropertyTests {
 		};
 		Assert.Equal (expectedResult, property.IsWeakDelegate);
 	}
+
+	[Theory]
+	[InlineData (true, true, true, true)] // isProperty, isWeakDelegate, hasStrongDelegateType, shouldChange
+	[InlineData (false, true, true, false)]
+	[InlineData (true, false, true, false)]
+	[InlineData (true, true, false, false)]
+	public void ToStrongDelegate (bool isProperty, bool isWeakDelegate, bool hasStrongDelegateType, bool shouldChange)
+	{
+		TypeInfo? strongDelegateType = hasStrongDelegateType ? ReturnTypeForNSObject ("StrongDelegate") : null;
+		var flags = isWeakDelegate ? ObjCBindings.Property.WeakDelegate : ObjCBindings.Property.Default;
+		var property = new Property (
+			name: "Test",
+			returnType: ReturnTypeForNSObject (),
+			symbolAvailability: new (),
+			attributes: [],
+			modifiers: [],
+			accessors: []
+		);
+
+		if (isProperty) {
+			property = property with {
+				ExportPropertyData = new ExportData<ObjCBindings.Property> (
+					"name",
+					ArgumentSemantic.None,
+					flags
+				) {
+					StrongDelegateType = strongDelegateType
+				},
+			};
+		} else {
+			property = property with {
+				ExportFieldData = new (new FieldData<ObjCBindings.Property> ("name", flags), ""),
+			};
+		}
+
+		var newProperty = property.ToStrongDelegate ();
+
+		if (shouldChange) {
+			Assert.NotEqual (property, newProperty);
+			Assert.Equal (strongDelegateType!.Value.WithNullable (true), newProperty.ReturnType);
+		} else {
+			Assert.Equal (property, newProperty);
+		}
+	}
 }

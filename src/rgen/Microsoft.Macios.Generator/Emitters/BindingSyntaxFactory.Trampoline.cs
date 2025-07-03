@@ -686,8 +686,8 @@ static partial class BindingSyntaxFactory {
 		foreach (var parameter in delegateInfo.Parameters) {
 			var argument = new TrampolineArgumentSyntax (GetTrampolineInvokeArgument (trampolineName, parameter)) {
 				Initializers = GetTrampolineInvokeArgumentInitializations (parameter),
-				PreDelegateCallConversion = GetTrampolinePreInvokeArgumentConversions (parameter),
-				PostDelegateCallConversion = GetTrampolinePostInvokeArgumentConversions (trampolineName, parameter),
+				PreCallConversion = GetTrampolinePreInvokeArgumentConversions (parameter),
+				PostCallConversion = GetTrampolinePostInvokeArgumentConversions (trampolineName, parameter),
 			};
 			bucket.Add (argument);
 		}
@@ -903,8 +903,8 @@ static partial class BindingSyntaxFactory {
 		foreach (var parameter in delegateInfo.Parameters) {
 			var argument = new TrampolineArgumentSyntax (GetNativeInvokeArgument (parameter)) {
 				Initializers = GetNativeInvokeArgumentInitializations (parameter),
-				PreDelegateCallConversion = GetPreNativeInvokeArgumentConversions (parameter),
-				PostDelegateCallConversion = GetPostNativeInvokeArgumentConversions (parameter),
+				PreCallConversion = GetPreNativeInvokeArgumentConversions (parameter),
+				PostCallConversion = GetPostNativeInvokeArgumentConversions (parameter),
 			};
 			bucket.Add (argument);
 		}

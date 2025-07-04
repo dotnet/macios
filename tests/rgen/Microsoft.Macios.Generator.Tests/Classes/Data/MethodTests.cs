@@ -69,6 +69,14 @@ public partial class MethodTests {
 		ResultTypeName = "NSLoadFromHtmlResult")]
 	public partial static void LoadFromHtml (NSUrlRequest request, NSDictionary options, NSAttributedStringCompletionHandler completionHandler);
 
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("maccatalyst13.1")]
+	[UnsupportedOSPlatform ("tvos")]
+	[Export<Method> ("loadFromHTMLWithRequest:options:completionHandler:",
+		Flags = ObjCBindings.Method.Async)]
+	public partial static void LoadFromHtmlNoName (NSUrlRequest request, NSDictionary options, NSAttributedStringCompletionHandler completionHandler);
+
 #endif
 
 	[SupportedOSPlatform ("ios")]
@@ -77,4 +85,20 @@ public partial class MethodTests {
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[Export<Method> ("completeRequestReturningItems:completionHandler:", Flags = ObjCBindings.Method.Async)]
 	public partial void CompleteRequest (NSExtensionItem [] returningItems, Action<bool>? completionHandler);
+
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("maccatalyst13.1")]
+	[Export<Method> ("completeRequestReturningItems:completionHandler:", Flags = ObjCBindings.Method.Async)]
+	public partial void CompleteRequest (NSExtensionItem [] returningItems, Action<bool, string?>? completionHandler);
+
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("maccatalyst13.1")]
+	[Export<Method> ("completeRequestReturningItems:completionHandler:",
+		Flags = ObjCBindings.Method.Async,
+		ResultType = typeof ((bool Success, string Name, string? Surname)))]
+	public partial void CompleteRequest (NSExtensionItem [] returningItems, Action<bool, string, string?>? completionHandler);
 }

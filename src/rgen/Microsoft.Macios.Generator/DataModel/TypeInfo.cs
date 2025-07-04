@@ -192,6 +192,17 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 	/// </summary>
 	public bool IsProtocol { get; init; }
 
+	/// <summary>
+	/// True if the type represents a named tuple.
+	/// </summary>
+	public bool IsNamedTuple { get; init; }
+
+	/// <summary>
+	/// Array of named tuple field names and their types. We use an array of key-value pairs instead of a dictionary
+	/// because we care about the order in which the values were added.
+	/// </summary>
+	public ImmutableArray<KeyValuePair<string, string>> NamedTupleFields { get; init; } = [];
+
 	readonly ImmutableArray<string> parents = [];
 	/// <summary>
 	/// Array of the parent types of the type.
@@ -352,16 +363,29 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		// store the enum special type, useful when generate code that needs to cast
 		EnumUnderlyingType = namedTypeSymbol?.EnumUnderlyingType?.SpecialType;
 		if (namedTypeSymbol is not null) {
-			IsGenericType = namedTypeSymbol.IsGenericType;
-			var typeArgumentsBucket = ImmutableArray.CreateBuilder<string> (namedTypeSymbol.TypeArguments.Length);
-			foreach (var typeArgument in namedTypeSymbol.TypeArguments) {
-				// rather than use the display name, which could be a generic name, we will create a struct for the 
-				// type and use our type formater
-				var info = new TypeInfo (typeArgument);
-				var syntax = info.GetIdentifierSyntax ();
-				typeArgumentsBucket.Add (syntax.ToString ());
+			// if we are dealing with a tuple type, we will set the named tuple fields otherwise we try to retrieve the 
+			// generic type arguments
+			if (!namedTypeSymbol.TupleElements.IsDefaultOrEmpty) {
+				IsNamedTuple = true;
+				var namedTupleFieldsBucket = ImmutableArray.CreateBuilder<KeyValuePair<string, string>> (namedTypeSymbol.TupleElements.Length);
+				foreach (var field in namedTypeSymbol.TupleElements) {
+					var currentType = new TypeInfo (field.Type);
+					namedTupleFieldsBucket.Add (new (field.Name, currentType.GetIdentifierSyntax ().ToString ()));
+				}
+				NamedTupleFields = namedTupleFieldsBucket.ToImmutable ();
+			} else {
+				IsGenericType = namedTypeSymbol.IsGenericType;
+				var typeArgumentsBucket = ImmutableArray.CreateBuilder<string> (namedTypeSymbol.TypeArguments.Length);
+				foreach (var typeArgument in namedTypeSymbol.TypeArguments) {
+					// rather than use the display name, which could be a generic name, we will create a struct for the 
+					// type and use our type formater
+					var info = new TypeInfo (typeArgument);
+					var syntax = info.GetIdentifierSyntax ();
+					typeArgumentsBucket.Add (syntax.ToString ());
+				}
+
+				TypeArguments = typeArgumentsBucket.ToImmutable ();
 			}
-			TypeArguments = typeArgumentsBucket.ToImmutable ();
 
 			if (namedTypeSymbol.DelegateInvokeMethod is not null &&
 				DelegateInfo.TryCreate (namedTypeSymbol, out var delegateInfo))
@@ -598,7 +622,7 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 	/// This method extracts the parameter types from the delegate. If the last parameter is an <c>NSError</c>,
 	/// it is omitted from the returned types, as it will be handled as an exception in the async method.
 	/// </remarks>
-	ImmutableArray<string> GetDelegateTypesForTask ()
+	ImmutableArray<KeyValuePair<string, string>> GetDelegateTypesForTask ()
 	{
 		if (Delegate is null)
 			return [];
@@ -606,13 +630,17 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		// get all the type information from the delegate parameters since this is what is needed for 
 		// the task type. It is important to remember that for async methods in objc if the last parameter is a
 		// a NSError we will drop it since that will be converted to an exception in the generated code.
-		var delegateTypes = Delegate.Parameters.Select (p => p.Type).ToArray ();
-		if (delegateTypes.Length > 0 && delegateTypes [^1].Name.Contains ("NSError")) {
+		var builder = ImmutableArray.CreateBuilder<KeyValuePair<string, string>> (Delegate.Parameters.Length);
+		foreach (var param in Delegate.Parameters) {
+			builder.Add (new (param.Name, param.Type.GetIdentifierSyntax ().ToString ()));
+		}
+		var delegateTypes = builder.ToImmutableArray ();
+		if (delegateTypes.Length > 0 && delegateTypes [^1].Value.Contains ("NSError")) {
 			// remove the last parameter since it is not needed for the task type
 			delegateTypes = delegateTypes [..^1];
 		}
 
-		return [.. delegateTypes.Select (t => t.GetIdentifierSyntax ().ToString ())];
+		return delegateTypes;
 	}
 
 	/// <summary>
@@ -630,7 +658,24 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		if (Delegate is null)
 			return this;
 
-		var genericTypeArguments = GetDelegateTypesForTask ();
+		var delegateTypes = GetDelegateTypesForTask ();
+		var genericTypeArguments = ImmutableArray.CreateBuilder<string> (delegateTypes.Length);
+		if (delegateTypes.Length > 1) {
+			// we need to create a named tuple or tuple, that depends on the type of delegate type, if we are
+			// dealing with a Action or Func, we will create a tuple type else we will create a named tuple type.
+			if (Delegate.FullyQualifiedType.Contains ("Action")) {
+				// we are dealing with a tuple type, so we will use the tuple syntax
+				genericTypeArguments.Add ($"({string.Join (", ", delegateTypes.Select (d => d.Value))})");
+			} else {
+				// we are dealing with a named tuple type, so we will use the named tuple syntax
+				var namedTuple = string.Join (", ", delegateTypes.Select (d => $"{d.Value} {d.Key.Capitalize ()}"));
+				genericTypeArguments.Add ($"({namedTuple})");
+			}
+
+		} else if (delegateTypes.Length == 1) {
+			genericTypeArguments.Add (delegateTypes [0].Value);
+		}
+
 		// generate a task type that will contain the delegate type information.
 		return new TypeInfo (
 			name: "System.Threading.Tasks.Task",
@@ -644,9 +689,9 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		) {
 			Delegate = null,
 			EnumUnderlyingType = null,
-			IsGenericType = genericTypeArguments.Length > 0,
+			IsGenericType = genericTypeArguments.Count > 0,
 			IsTask = true,
-			TypeArguments = genericTypeArguments,
+			TypeArguments = genericTypeArguments.ToImmutable (),
 		};
 	}
 

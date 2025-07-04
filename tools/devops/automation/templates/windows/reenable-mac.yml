@@ -22,36 +22,11 @@ steps:
 - pwsh: '& "$Env:SYSTEM_DEFAULTWORKINGDIRECTORY/$Env:BUILD_REPOSITORY_TITLE/tools/devops/automation/scripts/show_bot_info.ps1"'
   displayName: 'Show Bot Info'
 
-- task: AzureKeyVault@2
-  inputs:
-    azureSubscription: 'Xamarin - SDK Engineering - macios-team-pair-to-mac-ci'
-    KeyVaultName: 'xamarin-ios-vault'
-    SecretsFilter: 'RemoteMacIdRsa'
-  displayName: 'Download id_rsa'
-
-- pwsh: |
-    $idRsaPath = "$(Get-Location)\id_rsa"
-    Write-Host "##vso[task.setvariable variable=ID_RSA_PATH]$idRsaPath"
-    Add-Content -Path "id_rsa"  -Value "$(RemoteMacIdRsa)"
-    # We need to make sure the private key is only accessible by the current user,
-    # otherwise ssh will complain and not use it.
-    icacls id_rsa /inheritance:r
-    $grant="$Env:USERNAME" + ":(R)"
-    icacls id_rsa /grant:r $grant
-  displayName: "Write and verify id_rsa"
-  continueOnError: true
-
-- pwsh: |
-    ssh -v -i "$(ID_RSA_PATH)" -o IdentitiesOnly=yes -o StrictHostKeyChecking=no builder@$Env:MAC_AGENT_IP -- rm -f "/Users/$($Env:MAC_AGENT_USER)/remote_build_testing/BuildId.txt"
-  displayName: 'Remove BuildId from macOS bot'
-  condition: always()
-  continueOnError: true
-
 # Sets the AzDO.BearerToken variable used as the auth token to disable/reenable agents
 - template: ./generate-token.yml
 
 - pwsh: |
-    Import-Module $Env:SYSTEM_DEFAULTWORKINGDIRECTORY\$Env:BUILD_REPOSITORY_TITLE\tools\devops\automation\scripts\MaciosCI.psd1
+    Import-Module $Env:SYSTEM_DEFAULTWORKINGDIRECTORY/$Env:BUILD_REPOSITORY_TITLE/tools/devops/automation/scripts/MaciosCI.psd1
 
     $azdoBearerToken = "$(AzDO.BearerToken)"
     $azdoBearerTokenHint = $azdoBearerToken.Substring(0, 8)
@@ -65,9 +40,3 @@ steps:
     $vsts.Agents.SetEnabled($pool, $agent, $True)
   displayName: 'Re-enabled macOS bot from pool'
   condition: always()
-
-- pwsh: |
-    Remove-Item "$(ID_RSA_PATH)"
-  displayName: "Remove secrets"
-  condition: always()
-  continueOnError: true

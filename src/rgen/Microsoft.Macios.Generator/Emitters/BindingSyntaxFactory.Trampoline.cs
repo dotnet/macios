@@ -748,7 +748,7 @@ static partial class BindingSyntaxFactory {
 
 		var parametersSyntax = ParameterList (
 			SeparatedList<ParameterSyntax> (
-				parameterBucket.ToImmutableArray ().ToSyntaxNodeOrTokenArray ())).NormalizeWhitespace ();
+				parameterBucket.ToSyntaxNodeOrTokenArray ())).NormalizeWhitespace ();
 		return parametersSyntax;
 	}
 
@@ -803,7 +803,7 @@ static partial class BindingSyntaxFactory {
 		// that is, the block ptr, the parameters and the return type
 		var parametersSyntax = FunctionPointerParameterList (
 			SeparatedList<FunctionPointerParameterSyntax> (
-				parameterBucket.ToImmutableArray ().ToSyntaxNodeOrTokenArray ())).NormalizeWhitespace ();
+				parameterBucket.ToSyntaxNodeOrTokenArray ())).NormalizeWhitespace ();
 
 		// function pointer type
 		var pointerType = FunctionPointerType ()
@@ -869,7 +869,7 @@ static partial class BindingSyntaxFactory {
 
 		var parametersSyntax = ParameterList (
 			SeparatedList<ParameterSyntax> (
-				parameterBucket.ToImmutableArray ().ToSyntaxNodeOrTokenArray ())).NormalizeWhitespace ();
+				parameterBucket.ToSyntaxNodeOrTokenArray ())).NormalizeWhitespace ();
 
 		var returnType = delegateTypeInfo.Delegate!.ReturnType.IsVoid
 			? PredefinedType (Token (SyntaxKind.VoidKeyword))

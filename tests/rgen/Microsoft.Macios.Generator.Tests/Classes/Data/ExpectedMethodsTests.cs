@@ -159,6 +159,46 @@ public partial class MethodTests
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public partial void CompleteRequest (global::Foundation.NSExtensionItem[] returningItems, global::System.Action<bool, string?>? completionHandler)
+	{
+		throw new NotImplementedException ();
+	}
+
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("maccatalyst13.1")]
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public partial global::System.Threading.Tasks.Task<(bool, string?)> CompleteRequestAsync (global::Foundation.NSExtensionItem[] returningItems)
+	{
+		throw new NotImplementedException ();
+	}
+
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("maccatalyst13.1")]
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public partial void CompleteRequest (global::Foundation.NSExtensionItem[] returningItems, global::System.Action<bool, string, string?>? completionHandler)
+	{
+		throw new NotImplementedException ();
+	}
+
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("maccatalyst13.1")]
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public partial global::System.Threading.Tasks.Task<(bool Success, string Name, string? Surname)> CompleteRequestAsync (global::Foundation.NSExtensionItem[] returningItems)
+	{
+		throw new NotImplementedException ();
+	}
+
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("maccatalyst13.1")]
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public partial global::Foundation.NSArray Filter (global::Foundation.NSPredicate predicate)
 	{
 		throw new NotImplementedException ();
@@ -190,6 +230,26 @@ public partial class MethodTests
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public partial static global::System.Threading.Tasks.Task<NSLoadFromHtmlResult> LoadFromHtmlAsync (global::Foundation.NSUrlRequest request, global::Foundation.NSDictionary options)
+	{
+		throw new NotImplementedException ();
+	}
+
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("ios")]
+	[UnsupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("maccatalyst13.1")]
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public partial static void LoadFromHtmlNoName (global::Foundation.NSUrlRequest request, global::Foundation.NSDictionary options, global::Foundation.NSAttributedStringCompletionHandler completionHandler)
+	{
+		throw new NotImplementedException ();
+	}
+
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("ios")]
+	[UnsupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("maccatalyst13.1")]
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public partial static global::System.Threading.Tasks.Task<(global::Foundation.NSAttributedString? AttributedString, global::Foundation.NSDictionary<global::Foundation.NSString, global::Foundation.NSObject>? Attributes)> LoadFromHtmlNoNameAsync (global::Foundation.NSUrlRequest request, global::Foundation.NSDictionary options)
 	{
 		throw new NotImplementedException ();
 	}

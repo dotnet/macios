@@ -166,8 +166,8 @@ namespace NS {
 
 			yield return [
 				singleArrayParameterMethod,
-				$"ret = {Global ("CoreFoundation")}.CFString.FromHandle ({Global ("ObjCRuntime")}.Messaging.NativeHandle_objc_msgSend_NativeHandle (this.Handle, {Global ("ObjCRuntime")}.Selector.GetHandle (\"myMethod:\"), nsa_input), false)!",
-				$"ret = {Global ("CoreFoundation")}.CFString.FromHandle ({Global ("ObjCRuntime")}.Messaging.NativeHandle_objc_msgSendSuper_NativeHandle (this.Handle, {Global ("ObjCRuntime")}.Selector.GetHandle (\"myMethod:\"), nsa_input), false)!"
+				$"ret = {Global ("CoreFoundation")}.CFString.FromHandle ({Global ("ObjCRuntime")}.Messaging.NativeHandle_objc_msgSend_NativeHandle (this.Handle, {Global ("ObjCRuntime")}.Selector.GetHandle (\"myMethod:\"), nsa_input.Handle), false)!",
+				$"ret = {Global ("CoreFoundation")}.CFString.FromHandle ({Global ("ObjCRuntime")}.Messaging.NativeHandle_objc_msgSendSuper_NativeHandle (this.Handle, {Global ("ObjCRuntime")}.Selector.GetHandle (\"myMethod:\"), nsa_input.Handle), false)!"
 			];
 
 			const string nullableSingleArrayParameterMethod = @"
@@ -184,8 +184,8 @@ namespace NS {
 
 			yield return [
 				nullableSingleArrayParameterMethod,
-				$"ret = {Global ("CoreFoundation")}.CFString.FromHandle ({Global ("ObjCRuntime")}.Messaging.NativeHandle_objc_msgSend_NativeHandle (this.Handle, {Global ("ObjCRuntime")}.Selector.GetHandle (\"myMethod:\"), nsa_input), false)!",
-				$"ret = {Global ("CoreFoundation")}.CFString.FromHandle ({Global ("ObjCRuntime")}.Messaging.NativeHandle_objc_msgSendSuper_NativeHandle (this.Handle, {Global ("ObjCRuntime")}.Selector.GetHandle (\"myMethod:\"), nsa_input), false)!"
+				$"ret = {Global ("CoreFoundation")}.CFString.FromHandle ({Global ("ObjCRuntime")}.Messaging.NativeHandle_objc_msgSend_NativeHandle (this.Handle, {Global ("ObjCRuntime")}.Selector.GetHandle (\"myMethod:\"), nsa_input.Handle), false)!",
+				$"ret = {Global ("CoreFoundation")}.CFString.FromHandle ({Global ("ObjCRuntime")}.Messaging.NativeHandle_objc_msgSendSuper_NativeHandle (this.Handle, {Global ("ObjCRuntime")}.Selector.GetHandle (\"myMethod:\"), nsa_input.Handle), false)!"
 			];
 
 			const string customTypeParameter = @"

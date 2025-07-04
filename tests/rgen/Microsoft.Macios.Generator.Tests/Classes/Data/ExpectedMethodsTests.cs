@@ -42,6 +42,10 @@ public partial class MethodTests
 	static readonly global::ObjCRuntime.NativeHandle selFilteredArrayUsingPredicate_XHandle = global::ObjCRuntime.Selector.GetHandle ("filteredArrayUsingPredicate:");
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	const string selFilteredArrayUsingStrings_X = "filteredArrayUsingStrings:";
+	static readonly global::ObjCRuntime.NativeHandle selFilteredArrayUsingStrings_XHandle = global::ObjCRuntime.Selector.GetHandle ("filteredArrayUsingStrings:");
+
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	const string selLoadFromHTMLWithRequest_Options_CompletionHandler_X = "loadFromHTMLWithRequest:options:completionHandler:";
 	static readonly global::ObjCRuntime.NativeHandle selLoadFromHTMLWithRequest_Options_CompletionHandler_XHandle = global::ObjCRuntime.Selector.GetHandle ("loadFromHTMLWithRequest:options:completionHandler:");
 
@@ -147,9 +151,9 @@ public partial class MethodTests
 		using var block_completionHandler = global::ObjCRuntime.Trampolines.SDActionArity1bool.CreateNullableBlock (completionHandler);
 		global::ObjCRuntime.BlockLiteral* block_ptr_completionHandler = completionHandler is not null ? &block_completionHandler : null;
 		if (IsDirectBinding) {
-			global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("completeRequestReturningItems:completionHandler:"), nsa_returningItems, (global::ObjCRuntime.NativeHandle) block_ptr_completionHandler);
+			global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("completeRequestReturningItems:completionHandler:"), nsa_returningItems.Handle, (global::ObjCRuntime.NativeHandle) block_ptr_completionHandler);
 		} else {
-			global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("completeRequestReturningItems:completionHandler:"), nsa_returningItems, (global::ObjCRuntime.NativeHandle) block_ptr_completionHandler);
+			global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("completeRequestReturningItems:completionHandler:"), nsa_returningItems.Handle, (global::ObjCRuntime.NativeHandle) block_ptr_completionHandler);
 		}
 		global::System.GC.KeepAlive (this);
 		global::System.GC.KeepAlive (nsa_returningItems);
@@ -178,9 +182,9 @@ public partial class MethodTests
 		using var block_completionHandler = global::ObjCRuntime.Trampolines.SDActionArity2boolstring?.CreateNullableBlock (completionHandler);
 		global::ObjCRuntime.BlockLiteral* block_ptr_completionHandler = completionHandler is not null ? &block_completionHandler : null;
 		if (IsDirectBinding) {
-			global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("completeRequestReturningItems:completionHandler:"), nsa_returningItems, (global::ObjCRuntime.NativeHandle) block_ptr_completionHandler);
+			global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("completeRequestReturningItems:completionHandler:"), nsa_returningItems.Handle, (global::ObjCRuntime.NativeHandle) block_ptr_completionHandler);
 		} else {
-			global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("completeRequestReturningItems:completionHandler:"), nsa_returningItems, (global::ObjCRuntime.NativeHandle) block_ptr_completionHandler);
+			global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("completeRequestReturningItems:completionHandler:"), nsa_returningItems.Handle, (global::ObjCRuntime.NativeHandle) block_ptr_completionHandler);
 		}
 		global::System.GC.KeepAlive (this);
 		global::System.GC.KeepAlive (nsa_returningItems);
@@ -209,9 +213,9 @@ public partial class MethodTests
 		using var block_completionHandler = global::ObjCRuntime.Trampolines.SDActionArity3boolstringstring?.CreateNullableBlock (completionHandler);
 		global::ObjCRuntime.BlockLiteral* block_ptr_completionHandler = completionHandler is not null ? &block_completionHandler : null;
 		if (IsDirectBinding) {
-			global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("completeRequestReturningItems:completionHandler:"), nsa_returningItems, (global::ObjCRuntime.NativeHandle) block_ptr_completionHandler);
+			global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("completeRequestReturningItems:completionHandler:"), nsa_returningItems.Handle, (global::ObjCRuntime.NativeHandle) block_ptr_completionHandler);
 		} else {
-			global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("completeRequestReturningItems:completionHandler:"), nsa_returningItems, (global::ObjCRuntime.NativeHandle) block_ptr_completionHandler);
+			global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("completeRequestReturningItems:completionHandler:"), nsa_returningItems.Handle, (global::ObjCRuntime.NativeHandle) block_ptr_completionHandler);
 		}
 		global::System.GC.KeepAlive (this);
 		global::System.GC.KeepAlive (nsa_returningItems);
@@ -243,6 +247,27 @@ public partial class MethodTests
 		}
 		global::System.GC.KeepAlive (this);
 		global::System.GC.KeepAlive (predicate);
+		return ret;
+	}
+
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("maccatalyst13.1")]
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual unsafe partial global::Foundation.NSArray FilterStrings (string[] predicate)
+	{
+		if (predicate is null)
+			global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (predicate));
+		using var nsa_predicate = global::Foundation.NSArray.FromStrings (predicate);
+		global::Foundation.NSArray ret;
+		if (IsDirectBinding) {
+			ret = global::ObjCRuntime.Runtime.GetNSObject<global::Foundation.NSArray> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("filteredArrayUsingStrings:"), nsa_predicate.Handle))!;
+		} else {
+			ret = global::ObjCRuntime.Runtime.GetNSObject<global::Foundation.NSArray> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("filteredArrayUsingStrings:"), nsa_predicate.Handle))!;
+		}
+		global::System.GC.KeepAlive (this);
+		global::System.GC.KeepAlive (nsa_predicate);
 		return ret;
 	}
 

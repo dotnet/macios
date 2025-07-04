@@ -57,6 +57,13 @@ public partial class MethodTests {
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[Export<Method> ("filteredArrayUsingPredicate:")]
 	public virtual unsafe partial NSArray Filter (NSPredicate predicate);
+	
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("maccatalyst13.1")]
+	[Export<Method> ("filteredArrayUsingStrings:")]
+	public virtual unsafe partial NSArray FilterStrings (string [] predicate);
 
 #if !__TVOS__
 

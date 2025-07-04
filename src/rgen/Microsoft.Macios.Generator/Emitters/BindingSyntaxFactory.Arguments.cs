@@ -524,7 +524,7 @@ static partial class BindingSyntaxFactory {
     
 			// smart enums must use the aux variable
 			{ Type.IsSmartEnum: true} 
-				=> IdentifierName (GetNameForVariableType (argumentInfo.Name, VariableType.BindFrom)!),
+				=> GetHandleMember (IdentifierName (GetNameForVariableType (argumentInfo.Name, VariableType.BindFrom)!)),
 			
 			// native enum, return the conversion expression to the native type
 			{ Type.IsNativeEnum: true} 
@@ -538,16 +538,16 @@ static partial class BindingSyntaxFactory {
 			
 			// use the native handle of the array
 			{ Type.IsArray: true, Type.ArrayElementTypeIsWrapped: true } =>
-				IdentifierName (GetNameForVariableType (argumentInfo.Name, VariableType.NSArray)!),
+				GetHandleMember (IdentifierName (GetNameForVariableType (argumentInfo.Name, VariableType.NSArray)!)),
 			
 			// NSArray.ArrayFromHandle<{0}> ({1})!
 			{ Type.IsArray: true, Type.ArrayElementIsINativeObject: true } =>
-				IdentifierName (GetNameForVariableType (argumentInfo.Name, VariableType.NSArray)!),
+				GetHandleMember (IdentifierName (GetNameForVariableType (argumentInfo.Name, VariableType.NSArray)!)),
 			
 			// string[]
 			// CFArray.StringArrayFromHandle (ParameterName)!
 			{ Type.IsArray: true, Type.ArrayElementType: SpecialType.System_String } =>
-				IdentifierName (GetNameForVariableType (argumentInfo.Name, VariableType.NSArray)!),
+				GetHandleMember (IdentifierName (GetNameForVariableType (argumentInfo.Name, VariableType.NSArray)!)),
 			
 			// string
 			// CFString.FromHandle (ParameterName)!

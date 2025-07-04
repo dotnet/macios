@@ -197,6 +197,26 @@ namespace CoreMedia {
 		DolbyVisionHevc = 0x64766831,
 		DisparityHevc = 0x64697368,
 		DepthHevc = 0x64657068,
+
+		// The following are copied from CMPixelFormat, because CMPixelFormat values are also valid as CMVideoCodecType values.
+		AlphaRedGreenBlue32bits = 32,
+		BlueGreenRedAlpha32bits = 1111970369, // 'BGRA'
+		RedGreenBlue24bits = 24,
+		BigEndian555_16bits = 16,
+		BigEndian565_16bits = 1110783541, // 'B565'
+		LittleEndian555_16bits = 1278555445, // 'L555'
+		LittleEndian565_16bits = 1278555701, // 'L565'
+		LittleEndian5551_16bits = 892679473, // '5551'
+		YpCbCr422_8bits = 846624121, // '2vuy'
+		YpCbCr422yuvs_8bits = 2037741171, // 'yuvs'
+		YpCbCr444_8bits = 1983066168, // 'v308'
+		YpCbCrA4444_8bits = 1983131704, // 'v408'
+		YpCbCr422_16bits = 1983000886, // 'v216'
+		YpCbCr422_10bits = 1983000880, // 'v210'
+		YpCbCr444_10bits = 1983131952, // 'v410'
+		IndexedGrayWhiteIsZero_8bits = 40,
+
+		// any new entries should go above the copied chunk from CMPixelFormat.
 	}
 
 	// UInt32 enum => CMFormatDescription.h
@@ -206,35 +226,37 @@ namespace CoreMedia {
 		/// <summary>To be added.</summary>
 		AlphaRedGreenBlue32bits = 32,
 		/// <summary>To be added.</summary>
-		BlueGreenRedAlpha32bits = 1111970369,
+		BlueGreenRedAlpha32bits = 1111970369, // 'BGRA'
 		/// <summary>To be added.</summary>
 		RedGreenBlue24bits = 24,
 		/// <summary>To be added.</summary>
 		BigEndian555_16bits = 16,
 		/// <summary>To be added.</summary>
-		BigEndian565_16bits = 1110783541,
+		BigEndian565_16bits = 1110783541, // 'B565'
 		/// <summary>To be added.</summary>
-		LittleEndian555_16bits = 1278555445,
+		LittleEndian555_16bits = 1278555445, // 'L555'
 		/// <summary>To be added.</summary>
-		LittleEndian565_16bits = 1278555701,
+		LittleEndian565_16bits = 1278555701, // 'L565'
 		/// <summary>To be added.</summary>
-		LittleEndian5551_16bits = 892679473,
+		LittleEndian5551_16bits = 892679473, // '5551'
 		/// <summary>To be added.</summary>
-		YpCbCr422_8bits = 846624121,
+		YpCbCr422_8bits = 846624121, // '2vuy'
 		/// <summary>To be added.</summary>
-		YpCbCr422yuvs_8bits = 2037741171,
+		YpCbCr422yuvs_8bits = 2037741171, // 'yuvs'
 		/// <summary>To be added.</summary>
-		YpCbCr444_8bits = 1983066168,
+		YpCbCr444_8bits = 1983066168, // 'v308'
 		/// <summary>To be added.</summary>
-		YpCbCrA4444_8bits = 1983131704,
+		YpCbCrA4444_8bits = 1983131704, // 'v408'
 		/// <summary>To be added.</summary>
-		YpCbCr422_16bits = 1983000886,
+		YpCbCr422_16bits = 1983000886, // 'v216'
 		/// <summary>To be added.</summary>
-		YpCbCr422_10bits = 1983000880,
+		YpCbCr422_10bits = 1983000880, // 'v210'
 		/// <summary>To be added.</summary>
-		YpCbCr444_10bits = 1983131952,
+		YpCbCr444_10bits = 1983131952, // 'v410'
 		/// <summary>To be added.</summary>
 		IndexedGrayWhiteIsZero_8bits = 40,
+
+		// any new entries should be copied to CMVideoCodecType as well.
 	}
 
 	/// <summary>Enumerates attachment propagation policies.</summary>

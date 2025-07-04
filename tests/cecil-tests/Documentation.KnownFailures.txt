@@ -7231,6 +7231,7 @@ F:WebKit.WKWebpagePreferencesUpgradeToHttpsPolicy.AutomaticFallbackToHttp
 F:WebKit.WKWebpagePreferencesUpgradeToHttpsPolicy.ErrorOnFailure
 F:WebKit.WKWebpagePreferencesUpgradeToHttpsPolicy.KeepAsRequested
 F:WebKit.WKWebpagePreferencesUpgradeToHttpsPolicy.UserMediatedFallbackToHttp
+F:WebKit.WKWebViewDataType.SessionStorage
 M:Accelerate.vImage.BoxConvolveARGB8888(Accelerate.vImageBuffer@,Accelerate.vImageBuffer@,System.IntPtr,System.IntPtr,System.IntPtr,System.UInt32,System.UInt32,Accelerate.Pixel8888,Accelerate.vImageFlags)
 M:Accelerate.vImage.BoxConvolveARGB8888(Accelerate.vImageBuffer@,Accelerate.vImageBuffer@,System.IntPtr,System.IntPtr,System.IntPtr,System.UInt32,System.UInt32,Accelerate.Pixel8888*,Accelerate.vImageFlags)
 M:Accelerate.vImage.BoxConvolvePlanar8(Accelerate.vImageBuffer@,Accelerate.vImageBuffer@,System.IntPtr,System.IntPtr,System.IntPtr,System.UInt32,System.UInt32,System.Byte,Accelerate.vImageFlags)
@@ -17124,6 +17125,7 @@ M:WebKit.IWKNavigationDelegate.ShouldGoToBackForwardListItem(WebKit.WKWebView,We
 M:WebKit.IWKScriptMessageHandlerWithReply.DidReceiveScriptMessage(WebKit.WKUserContentController,WebKit.WKScriptMessage,System.Action{Foundation.NSObject,Foundation.NSString})
 M:WebKit.IWKUIDelegate.ContextMenuDidEnd(WebKit.WKWebView,WebKit.WKContextMenuElementInfo)
 M:WebKit.IWKUIDelegate.ContextMenuWillPresent(WebKit.WKWebView,WebKit.WKContextMenuElementInfo)
+M:WebKit.IWKUIDelegate.InsertInputSuggestion(WebKit.WKWebView,UIKit.UIInputSuggestion)
 M:WebKit.IWKUIDelegate.RequestDeviceOrientationAndMotionPermission(WebKit.WKWebView,WebKit.WKSecurityOrigin,WebKit.WKFrameInfo,System.Action{WebKit.WKPermissionDecision})
 M:WebKit.IWKUIDelegate.RequestDeviceOrientationAndMotionPermissionAsync(WebKit.WKWebView,WebKit.WKSecurityOrigin,WebKit.WKFrameInfo)
 M:WebKit.IWKUIDelegate.RequestMediaCapturePermission(WebKit.WKWebView,WebKit.WKSecurityOrigin,WebKit.WKFrameInfo,WebKit.WKMediaCaptureType,System.Action{WebKit.WKPermissionDecision})
@@ -17324,6 +17326,7 @@ M:WebKit.WKDownloadDelegate_Extensions.WillPerformHttpRedirection(WebKit.IWKDown
 M:WebKit.WKFrameInfo.Dispose(System.Boolean)
 M:WebKit.WKHttpCookieStore.GetCookiePolicyAsync
 M:WebKit.WKHttpCookieStore.SetCookiePolicyAsync(WebKit.WKCookiePolicy)
+M:WebKit.WKHttpCookieStore.SetCookiesAsync(Foundation.NSHttpCookie[])
 M:WebKit.WKNavigationDelegate_Extensions.DecidePolicy(WebKit.IWKNavigationDelegate,WebKit.WKWebView,WebKit.WKNavigationAction,WebKit.WKWebpagePreferences,System.Action{WebKit.WKNavigationActionPolicy,WebKit.WKWebpagePreferences})
 M:WebKit.WKNavigationDelegate_Extensions.NavigationActionDidBecomeDownload(WebKit.IWKNavigationDelegate,WebKit.WKWebView,WebKit.WKNavigationAction,WebKit.WKDownload)
 M:WebKit.WKNavigationDelegate_Extensions.NavigationResponseDidBecomeDownload(WebKit.IWKNavigationDelegate,WebKit.WKWebView,WebKit.WKNavigationResponse,WebKit.WKDownload)
@@ -17332,6 +17335,7 @@ M:WebKit.WKNavigationDelegate_Extensions.ShouldGoToBackForwardListItem(WebKit.IW
 M:WebKit.WKScriptMessage.Dispose(System.Boolean)
 M:WebKit.WKUIDelegate_Extensions.ContextMenuDidEnd(WebKit.IWKUIDelegate,WebKit.WKWebView,WebKit.WKContextMenuElementInfo)
 M:WebKit.WKUIDelegate_Extensions.ContextMenuWillPresent(WebKit.IWKUIDelegate,WebKit.WKWebView,WebKit.WKContextMenuElementInfo)
+M:WebKit.WKUIDelegate_Extensions.InsertInputSuggestion(WebKit.IWKUIDelegate,WebKit.WKWebView,UIKit.UIInputSuggestion)
 M:WebKit.WKUIDelegate_Extensions.RequestDeviceOrientationAndMotionPermission(WebKit.IWKUIDelegate,WebKit.WKWebView,WebKit.WKSecurityOrigin,WebKit.WKFrameInfo,System.Action{WebKit.WKPermissionDecision})
 M:WebKit.WKUIDelegate_Extensions.RequestDeviceOrientationAndMotionPermissionAsync(WebKit.IWKUIDelegate,WebKit.WKWebView,WebKit.WKSecurityOrigin,WebKit.WKFrameInfo)
 M:WebKit.WKUIDelegate_Extensions.RequestMediaCapturePermission(WebKit.IWKUIDelegate,WebKit.WKWebView,WebKit.WKSecurityOrigin,WebKit.WKFrameInfo,WebKit.WKMediaCaptureType,System.Action{WebKit.WKPermissionDecision})
@@ -17342,6 +17346,7 @@ M:WebKit.WKUIDelegate_Extensions.ShowLockDownModeAsync(WebKit.IWKUIDelegate,WebK
 M:WebKit.WKUIDelegate_Extensions.WillCommitContextMenu(WebKit.IWKUIDelegate,WebKit.WKWebView,WebKit.WKContextMenuElementInfo,UIKit.IUIContextMenuInteractionCommitAnimating)
 M:WebKit.WKUIDelegate_Extensions.WillDismissEditMenu(WebKit.IWKUIDelegate,WebKit.WKWebView,UIKit.IUIEditMenuInteractionAnimating)
 M:WebKit.WKUIDelegate_Extensions.WillPresentEditMenu(WebKit.IWKUIDelegate,WebKit.WKWebView,UIKit.IUIEditMenuInteractionAnimating)
+M:WebKit.WKUIDelegate.InsertInputSuggestion(WebKit.WKWebView,UIKit.UIInputSuggestion)
 M:WebKit.WKWebExtension.CreateAsync(Foundation.NSBundle)
 M:WebKit.WKWebExtension.CreateAsync(Foundation.NSUrl)
 M:WebKit.WKWebExtensionAction.Dispose(System.Boolean)
@@ -17363,15 +17368,19 @@ M:WebKit.WKWebExtensionDataTypeExtensions.ToFlags(System.Collections.Generic.IEn
 M:WebKit.WKWebExtensionMessagePort.SendMessageAsync(Foundation.NSObject)
 M:WebKit.WKWebExtensionPermissionExtensions.ToFlags(System.Collections.Generic.IEnumerable{Foundation.NSString})
 M:WebKit.WKWebsiteDataStore.FetchAllDataStoreIdentifiersAsync
+M:WebKit.WKWebsiteDataStore.FetchDataAsync(Foundation.NSSet{Foundation.NSString})
 M:WebKit.WKWebsiteDataStore.RemoveAsync(Foundation.NSUuid)
+M:WebKit.WKWebsiteDataStore.RestoreDataAsync(Foundation.NSData)
 M:WebKit.WKWebView.CallAsyncJavaScriptAsync(System.String,Foundation.NSDictionary{Foundation.NSString,Foundation.NSObject},WebKit.WKFrameInfo,WebKit.WKContentWorld)
 M:WebKit.WKWebView.CloseAllMediaPresentationsAsync
 M:WebKit.WKWebView.CreatePdfAsync(WebKit.WKPdfConfiguration)
 M:WebKit.WKWebView.CreateWebArchiveAsync
 M:WebKit.WKWebView.Dispose(System.Boolean)
 M:WebKit.WKWebView.EvaluateJavaScriptAsync(System.String,WebKit.WKFrameInfo,WebKit.WKContentWorld)
+M:WebKit.WKWebView.FetchDataAsync(WebKit.WKWebViewDataType)
 M:WebKit.WKWebView.FindAsync(System.String,WebKit.WKFindConfiguration)
 M:WebKit.WKWebView.RequestMediaPlaybackStateAsync
+M:WebKit.WKWebView.RestoreDataAsync(Foundation.NSData)
 M:WebKit.WKWebView.ResumeDownloadAsync(Foundation.NSData)
 M:WebKit.WKWebView.SetAllMediaPlaybackSuspendedAsync(System.Boolean)
 M:WebKit.WKWebView.SetCameraCaptureStateAsync(WebKit.WKMediaCaptureState)
@@ -24310,6 +24319,7 @@ P:WebKit.WKWebExtensionControllerConfiguration.Persistent
 P:WebKit.WKWebExtensionDataRecord.ContainedDataTypes
 P:WebKit.WKWebExtensionMessagePort.Disconnected
 P:WebKit.WKWebpagePreferences.LockdownModeEnabled
+P:WebKit.WKWebView.ConversationContext
 P:WebKit.WKWebView.FindInteractionEnabled
 P:WebKit.WKWebView.Inspectable
 P:WebKit.WKWebView.WritingToolsActive
@@ -29207,3 +29217,4 @@ T:WebKit.WKWebExtensionWindowCallback
 T:WebKit.WKWebExtensionWindowState
 T:WebKit.WKWebExtensionWindowType
 T:WebKit.WKWebpagePreferencesUpgradeToHttpsPolicy
+T:WebKit.WKWebViewDataType

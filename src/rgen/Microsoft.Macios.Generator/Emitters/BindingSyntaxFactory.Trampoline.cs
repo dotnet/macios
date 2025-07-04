@@ -635,7 +635,7 @@ static partial class BindingSyntaxFactory {
 	internal static ImmutableArray<SyntaxNode> GetTrampolineInvokeArgumentInitializations (in DelegateParameter parameter)
 	{
 		// decide the type of conversion we need to do based on the type of the parameter
-		return parameter switch { { IsByRef: true, Type.IsReferenceType: false, Type.SpecialType: not SpecialType.System_Boolean} 
+		return parameter switch { { IsByRef: true, Type.IsReferenceType: false, Type.SpecialType: not SpecialType.System_Boolean }
 				=> GetTrampolineInitializationByRefArgument (parameter),
 			_ => []
 		};

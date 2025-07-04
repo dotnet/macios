@@ -308,7 +308,7 @@ static partial class BindingSyntaxFactory {
 			SyntaxKind.SimpleMemberAccessExpression,
 			variable,
 			IdentifierName ("Handle"));
-	
+
 	/// <summary>
 	/// Generates a local variable declaration for an auxiliary handle (IntPtr).
 	/// This is a convenience overload for <see cref="GetHandleAuxVariable(string, in TypeInfo)"/>.

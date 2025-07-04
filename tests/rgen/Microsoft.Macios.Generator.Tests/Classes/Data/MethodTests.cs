@@ -57,7 +57,7 @@ public partial class MethodTests {
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[Export<Method> ("filteredArrayUsingPredicate:")]
 	public virtual unsafe partial NSArray Filter (NSPredicate predicate);
-	
+
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
@@ -108,7 +108,7 @@ public partial class MethodTests {
 		Flags = ObjCBindings.Method.Async,
 		ResultType = typeof ((bool Success, string Name, string? Surname)))]
 	public virtual unsafe partial void CompleteRequest (NSExtensionItem [] returningItems, Action<bool, string, string?>? completionHandler);
-	
+
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]

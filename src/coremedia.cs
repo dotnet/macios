@@ -54,19 +54,19 @@ namespace CoreMedia {
 
 		/// <remarks>Array of two numbers: numerator and denominator. Also set <see cref="Width" /> because not all modules read the rational value.</remarks>
 		[NullAllowed]
-		NSNumber[] WidthRational { get; }
+		NSNumber [] WidthRational { get; }
 
 		/// <remarks>Array of two numbers: numerator and denominator. Also set <see cref="Height" /> because not all modules read the rational value.</remarks>
 		[NullAllowed]
-		NSNumber[] HeightRational { get; }
+		NSNumber [] HeightRational { get; }
 
 		/// <remarks>Array of two numbers: numerator and denominator. Also set <see cref="HorizontalOffset" /> because not all modules read the rational value.</remarks>
 		[NullAllowed]
-		NSNumber[] HorizontalOffsetRational { get; }
+		NSNumber [] HorizontalOffsetRational { get; }
 
 		/// <remarks>Array of two numbers: numerator and denominator. Also set <see cref="VerticalOffset" /> because not all modules read the rational value.</remarks>
 		[NullAllowed]
-		NSNumber[] VerticalOffsetRational { get; }
+		NSNumber [] VerticalOffsetRational { get; }
 	}
 
 	enum CMFormatDescriptionFieldDetail {
@@ -191,44 +191,44 @@ namespace CoreMedia {
 	}
 
 	enum CMMPEG2VideoProfile : int {
-		HDV_720p30 =				0x68647631, // 'hdv1'
-		HDV_1080i60 =				0x68647632, // 'hdv2'
-		HDV_1080i50 =				0x68647633, // 'hdv3'
-		HDV_720p24 =				0x68647634, // 'hdv4'
-		HDV_720p25 =				0x68647635, // 'hdv5'
-		HDV_1080p24 =				0x68647636, // 'hdv6'
-		HDV_1080p25 =				0x68647637, // 'hdv7'
-		HDV_1080p30 =				0x68647638, // 'hdv8'
-		HDV_720p60 =				0x68647639, // 'hdv9'
-		HDV_720p50 =				0x68647661, // 'hdva'
-		XDCAM_HD_1080i60_VBR35 =	0x78647632, // 'xdv2'
-		XDCAM_HD_1080i50_VBR35 =	0x78647633, // 'xdv3'
-		XDCAM_HD_1080p24_VBR35 =	0x78647636, // 'xdv6'
-		XDCAM_HD_1080p25_VBR35 =	0x78647637, // 'xdv7'
-		XDCAM_HD_1080p30_VBR35 =	0x78647638, // 'xdv8'
-		XDCAM_EX_720p24_VBR35 =		0x78647634, // 'xdv4'
-		XDCAM_EX_720p25_VBR35 =		0x78647635, // 'xdv5'
-		XDCAM_EX_720p30_VBR35 =		0x78647631, // 'xdv1'
-		XDCAM_EX_720p50_VBR35 =		0x78647661, // 'xdva'
-		XDCAM_EX_720p60_VBR35 =		0x78647639, // 'xdv9'
-		XDCAM_EX_1080i60_VBR35 =	0x78647662, // 'xdvb'
-		XDCAM_EX_1080i50_VBR35 =	0x78647663, // 'xdvc'
-		XDCAM_EX_1080p24_VBR35 =	0x78647664, // 'xdvd'
-		XDCAM_EX_1080p25_VBR35 =	0x78647665, // 'xdve'
-		XDCAM_EX_1080p30_VBR35 =	0x78647666, // 'xdvf'
-		XDCAM_HD422_720p50_CBR50 =	0x78643561, // 'xd5a'
-		XDCAM_HD422_720p60_CBR50 =	0x78643539, // 'xd59'
-		XDCAM_HD422_1080i60_CBR50 =	0x78643562, // 'xd5b'
-		XDCAM_HD422_1080i50_CBR50 =	0x78643563, // 'xd5c'
-		XDCAM_HD422_1080p24_CBR50 =	0x78643564, // 'xd5d'
-		XDCAM_HD422_1080p25_CBR50 =	0x78643565, // 'xd5e'
-		XDCAM_HD422_1080p30_CBR50 =	0x78643566, // 'xd5f'
-		XDCAM_HD_540p =				0x78646864, // 'xdhd'
-		XDCAM_HD422_540p =			0x78646832, // 'xdh2'
-		XDCAM_HD422_720p24_CBR50 =	0x78643534, // 'xd54'
-		XDCAM_HD422_720p25_CBR50 =	0x78643535, // 'xd55'
-		XDCAM_HD422_720p30_CBR50 =	0x78643531, // 'xd51'
-		XF = 						0x78667a31, // 'xfz1'
+		HDV_720p30 = 0x68647631, // 'hdv1'
+		HDV_1080i60 = 0x68647632, // 'hdv2'
+		HDV_1080i50 = 0x68647633, // 'hdv3'
+		HDV_720p24 = 0x68647634, // 'hdv4'
+		HDV_720p25 = 0x68647635, // 'hdv5'
+		HDV_1080p24 = 0x68647636, // 'hdv6'
+		HDV_1080p25 = 0x68647637, // 'hdv7'
+		HDV_1080p30 = 0x68647638, // 'hdv8'
+		HDV_720p60 = 0x68647639, // 'hdv9'
+		HDV_720p50 = 0x68647661, // 'hdva'
+		XDCAM_HD_1080i60_VBR35 = 0x78647632, // 'xdv2'
+		XDCAM_HD_1080i50_VBR35 = 0x78647633, // 'xdv3'
+		XDCAM_HD_1080p24_VBR35 = 0x78647636, // 'xdv6'
+		XDCAM_HD_1080p25_VBR35 = 0x78647637, // 'xdv7'
+		XDCAM_HD_1080p30_VBR35 = 0x78647638, // 'xdv8'
+		XDCAM_EX_720p24_VBR35 = 0x78647634, // 'xdv4'
+		XDCAM_EX_720p25_VBR35 = 0x78647635, // 'xdv5'
+		XDCAM_EX_720p30_VBR35 = 0x78647631, // 'xdv1'
+		XDCAM_EX_720p50_VBR35 = 0x78647661, // 'xdva'
+		XDCAM_EX_720p60_VBR35 = 0x78647639, // 'xdv9'
+		XDCAM_EX_1080i60_VBR35 = 0x78647662, // 'xdvb'
+		XDCAM_EX_1080i50_VBR35 = 0x78647663, // 'xdvc'
+		XDCAM_EX_1080p24_VBR35 = 0x78647664, // 'xdvd'
+		XDCAM_EX_1080p25_VBR35 = 0x78647665, // 'xdve'
+		XDCAM_EX_1080p30_VBR35 = 0x78647666, // 'xdvf'
+		XDCAM_HD422_720p50_CBR50 = 0x78643561, // 'xd5a'
+		XDCAM_HD422_720p60_CBR50 = 0x78643539, // 'xd59'
+		XDCAM_HD422_1080i60_CBR50 = 0x78643562, // 'xd5b'
+		XDCAM_HD422_1080i50_CBR50 = 0x78643563, // 'xd5c'
+		XDCAM_HD422_1080p24_CBR50 = 0x78643564, // 'xd5d'
+		XDCAM_HD422_1080p25_CBR50 = 0x78643565, // 'xd5e'
+		XDCAM_HD422_1080p30_CBR50 = 0x78643566, // 'xd5f'
+		XDCAM_HD_540p = 0x78646864, // 'xdhd'
+		XDCAM_HD422_540p = 0x78646832, // 'xdh2'
+		XDCAM_HD422_720p24_CBR50 = 0x78643534, // 'xd54'
+		XDCAM_HD422_720p25_CBR50 = 0x78643535, // 'xd55'
+		XDCAM_HD422_720p30_CBR50 = 0x78643531, // 'xd51'
+		XF = 0x78667a31, // 'xfz1'
 	}
 
 	[iOS (13, 0), TV (13, 0)]
@@ -413,7 +413,7 @@ namespace CoreMedia {
 
 		[iOS (13, 0), TV (13, 0)]
 		[Field ("kCMFormatDescriptionExtension_AlphaChannelMode")]
-		NSString AlphaChannelMode { get; } 
+		NSString AlphaChannelMode { get; }
 
 		[iOS (13, 0), TV (13, 0)]
 		[Field ("kCMFormatDescriptionExtension_ContainsAlphaChannel")]

@@ -108,4 +108,11 @@ public partial class MethodTests {
 		Flags = ObjCBindings.Method.Async,
 		ResultType = typeof ((bool Success, string Name, string? Surname)))]
 	public virtual unsafe partial void CompleteRequest (NSExtensionItem [] returningItems, Action<bool, string, string?>? completionHandler);
+	
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("maccatalyst13.1")]
+	[Export<Method> ("bookmarkDataWithContentsOfURL:error:")]
+	public static unsafe partial NSData GetBookmarkData (NSUrl bookmarkFileUrl, out NSError? error);
 }

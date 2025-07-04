@@ -54,6 +54,10 @@ public partial class MethodTests
 	static readonly global::ObjCRuntime.NativeHandle selCompleteRequestReturningItems_CompletionHandler_XHandle = global::ObjCRuntime.Selector.GetHandle ("completeRequestReturningItems:completionHandler:");
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	const string selBookmarkDataWithContentsOfURL_Error_X = "bookmarkDataWithContentsOfURL:error:";
+	static readonly global::ObjCRuntime.NativeHandle selBookmarkDataWithContentsOfURL_Error_XHandle = global::ObjCRuntime.Selector.GetHandle ("bookmarkDataWithContentsOfURL:error:");
+
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	static readonly global::ObjCRuntime.NativeHandle class_ptr = global::ObjCRuntime.Class.GetHandle ("MethodTests");
 
 	/// <summary>The Objective-C class handle for this class.</summary>
@@ -289,6 +293,27 @@ public partial class MethodTests
 		}
 		global::System.GC.KeepAlive (this);
 		global::CoreFoundation.CFString.ReleaseNative (nspath);
+		return ret;
+	}
+
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("maccatalyst13.1")]
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static unsafe partial global::Foundation.NSData GetBookmarkData (global::Foundation.NSUrl bookmarkFileUrl, out global::Foundation.NSError? error)
+	{
+		var bookmarkFileUrl__handle__ = bookmarkFileUrl!.GetNonNullHandle (nameof (bookmarkFileUrl));
+		global::ObjCRuntime.NativeHandle error__handle__;
+		global::Foundation.NSData ret;
+		if (IsDirectBinding) {
+			ret = global::ObjCRuntime.Runtime.GetNSObject<global::Foundation.NSData> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend_NativeHandle_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("bookmarkDataWithContentsOfURL:error:"), bookmarkFileUrl__handle__, &error__handle__))!;
+		} else {
+			ret = global::ObjCRuntime.Runtime.GetNSObject<global::Foundation.NSData> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper_NativeHandle_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("bookmarkDataWithContentsOfURL:error:"), bookmarkFileUrl__handle__, &error__handle__))!;
+		}
+		global::System.GC.KeepAlive (this);
+		global::System.GC.KeepAlive (bookmarkFileUrl);
+		error = global::ObjCRuntime.Runtime.GetNSObject<global::Foundation.NSError> (error__handle__);
 		return ret;
 	}
 

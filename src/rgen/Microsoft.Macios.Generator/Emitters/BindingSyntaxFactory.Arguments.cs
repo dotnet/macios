@@ -48,7 +48,8 @@ static partial class BindingSyntaxFactory {
 		// decide the type of conversion we need to do based on the type of the parameter
 #pragma warning disable format
 		return argumentInfo switch { 
-			{ IsByRef: true, ReferenceKind: ReferenceKind.Out} => GetNativeInitializationByRefArgument (argumentInfo.Name),
+			{ IsByRef: true, ReferenceKind: ReferenceKind.Out, Type.IsReferenceType: false, Type.SpecialType: not SpecialType.System_Boolean} 
+				=> GetNativeInitializationByRefArgument (argumentInfo.Name),
 			_ => []
 		};
 #pragma warning restore format

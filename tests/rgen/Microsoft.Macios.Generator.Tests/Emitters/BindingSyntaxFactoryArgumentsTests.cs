@@ -1284,7 +1284,7 @@ namespace NS {
 
 			yield return [
 				outBoolean,
-				"outBool = default;\n",
+				string.Empty
 			];
 
 			var outNSObject = @"
@@ -1302,7 +1302,7 @@ namespace NS {
 
 			yield return [
 				outNSObject,
-				"outNSObject = default;\n",
+				string.Empty,
 			];
 
 			var refNSObject = @"
@@ -1389,7 +1389,7 @@ namespace NS {
 
 			yield return [
 				outBoolean,
-				"*outBool = default;\n",
+				string.Empty
 			];
 
 			var outNSObject = @"
@@ -1407,7 +1407,7 @@ namespace NS {
 
 			yield return [
 				outNSObject,
-				"*outNSObject = default;\n",
+				string.Empty
 			];
 		}
 

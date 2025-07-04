@@ -52,7 +52,7 @@ namespace monotouchtest.CoreGraphics {
 		public void IntegrationWithCGImagePropertiesTest ()
 		{
 			// Test that CGImageProperties can access Exif properties
-			string file = Path.Combine (NSBundle.MainBundle.ResourcePath, "basn3p08.png");
+			var file = Path.Combine (NSBundle.MainBundle.ResourcePath, "basn3p08.png");
 
 			using var url = NSUrl.FromFilename (file);
 			using var ci = CIImage.FromUrl (url);

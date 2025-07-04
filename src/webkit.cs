@@ -5193,10 +5193,10 @@ namespace WebKit {
 		[Async]
 		void GetCookiePolicy (Action<WKCookiePolicy> completionHandler);
 
-		[Mac (26,0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
 		[Async]
 		[Export ("setCookies:completionHandler:")]
-		void SetCookies (NSHttpCookie[] cookies, [NullAllowed] Action completionHandler);
+		void SetCookies (NSHttpCookie [] cookies, [NullAllowed] Action completionHandler);
 	}
 
 	interface IWKHttpCookieStoreObserver { }

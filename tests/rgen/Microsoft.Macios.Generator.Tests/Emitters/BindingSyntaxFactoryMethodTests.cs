@@ -354,8 +354,6 @@ namespace NS {
 		Assert.True (Method.TryCreate (declaration, semanticModel, out var changes));
 		Assert.NotNull (changes);
 		var invocations = BindingSyntaxFactory.GetInvocations (changes.Value);
-		var x = invocations.Send.ToString ();
-		var y = invocations.SendSuper.ToString ();
 		Assert.Equal (expectedSend, invocations.Send.ToString ());
 		Assert.Equal (expectedSendSuper, invocations.SendSuper.ToString ());
 	}

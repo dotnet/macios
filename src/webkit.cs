@@ -41,9 +41,13 @@ using UIEdgeInsets = AppKit.NSEdgeInsets;
 using UIFindInteraction = Foundation.NSObject;
 using UIViewController = AppKit.NSViewController;
 using IUIEditMenuInteractionAnimating = Foundation.NSObject;
+using UIConversationContext = Foundation.NSObject;
+using UIInputSuggestion = Foundation.NSObject;
 #else
 #if __MACCATALYST__
 using AppKit;
+using UIConversationContext = Foundation.NSObject;
+using UIInputSuggestion = Foundation.NSObject;
 #else
 using NSDraggingInfo = Foundation.NSObject;
 using INSDraggingInfo = Foundation.NSObject;
@@ -5188,6 +5192,11 @@ namespace WebKit {
 		[Export ("getCookiePolicy:")]
 		[Async]
 		void GetCookiePolicy (Action<WKCookiePolicy> completionHandler);
+
+		[Mac (26,0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Async]
+		[Export ("setCookies:completionHandler:")]
+		void SetCookies (NSHttpCookie[] cookies, [NullAllowed] Action completionHandler);
 	}
 
 	interface IWKHttpCookieStoreObserver { }
@@ -5731,6 +5740,10 @@ namespace WebKit {
 		[iOS (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
 		[Field ("WKWebsiteDataTypeHashSalt")]
 		NSString HashSalt { get; }
+
+		[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Field ("WKWebsiteDataTypeScreenTime")]
+		NSString TypeScreenTime { get; }
 	}
 
 	[NoiOS, NoMacCatalyst, Mac (14, 0)]
@@ -5845,6 +5858,16 @@ namespace WebKit {
 		[iOS (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
 		[Export ("proxyConfigurations", ArgumentSemantic.Copy), NullAllowed]
 		NWProxyConfig [] ProxyConfigurations { get; set; }
+
+		[Async]
+		[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("fetchDataOfTypes:completionHandler:")]
+		void FetchData (NSSet<NSString> dataTypes, Action<NSData, NSError> completionHandler);
+
+		[Async]
+		[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("restoreData:completionHandler:")]
+		void RestoreData (NSData data, Action<NSError> completionHandler);
 	}
 
 	[iOS (18, 4), NoTV]
@@ -6023,6 +6046,10 @@ namespace WebKit {
 		[NoMac, iOS (16, 4), MacCatalyst (16, 4)]
 		[Export ("webView:willDismissEditMenuWithAnimator:")]
 		void WillDismissEditMenu (WKWebView webView, IUIEditMenuInteractionAnimating animator);
+
+		[NoMacCatalyst, iOS (26, 0), NoMac]
+		[Export ("webView:insertInputSuggestion:")]
+		void InsertInputSuggestion (WKWebView webView, UIInputSuggestion inputSuggestion);
 	}
 
 	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="WebKit.WKUIDelegate" />.</summary>
@@ -6596,6 +6623,24 @@ namespace WebKit {
 		[Mac (15, 0), iOS (18, 2), MacCatalyst (18, 0)]
 		[Export ("writingToolsActive")]
 		bool WritingToolsActive { [Bind ("isWritingToolsActive")] get; }
+
+		[NoMacCatalyst, iOS (26, 0), NoMac]
+		[Export ("conversationContext", ArgumentSemantic.Strong)]
+		UIConversationContext ConversationContext { get; set; }
+
+		[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Async]
+		[Export ("fetchDataOfTypes:completionHandler:")]
+		void FetchData (WKWebViewDataType dataTypes, Action<NSData, NSError> completionHandler);
+
+		[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Async]
+		[Export ("restoreData:completionHandler:")]
+		void RestoreData (NSData data, Action<NSError> completionHandler);
+
+		[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("isBlockedByScreenTime")]
+		bool IsBlockedByScreenTime { get; }
 	}
 
 	/// <param name="result">The result of a successful evaluation. <see langword="null" /> if error occurred.</param>
@@ -6735,6 +6780,10 @@ namespace WebKit {
 		[iOS (18, 4), MacCatalyst (18, 4), Mac (15, 4), NoTV]
 		[Export ("webExtensionController", ArgumentSemantic.Strong), NullAllowed]
 		WKWebExtensionController WebExtensionController { get; set; }
+
+		[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("showsSystemScreenTimeBlockingView")]
+		bool ShowsSystemScreenTimeBlockingView { get; set; }
 	}
 
 	/// <summary>A pool of content processes.</summary>
@@ -8284,5 +8333,12 @@ namespace WebKit {
 
 		[Field ("WKWebExtensionPermissionWebRequest")]
 		WebRequest = 1 << 15,
+	}
+
+	[Flags]
+	[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+	[Native]
+	public enum WKWebViewDataType : ulong {
+		SessionStorage = 1uL << 0,
 	}
 }

@@ -52,8 +52,14 @@ namespace AudioToolbox {
 		LinearPCM = 0x6c70636d,
 		/// <summary>AC-3  codec.</summary>
 		AC3 = 0x61632d33,
+#if !XAMCORE_5_0
 		/// <summary>CAC-3 codec.</summary>
+		[Obsolete ("Use 'AC3_60958' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		CAC3 = 0x63616333,
+#endif
+		/// <summary>The AC-3 codec, packaged to be compliant with an IEC 60958-compliant digital audio interface.</summary>
+		AC3_60958 = 0x63616333, // 'cac3'
 		/// <summary>Apple's IMA 4:1 ADPCM codec.</summary>
 		AppleIMA4 = 0x696d6134,
 		/// <summary>MPEG-4 AAC codec.</summary>

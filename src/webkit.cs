@@ -7866,7 +7866,7 @@ namespace WebKit {
 		void Close (WKWebExtensionContext context, WKWebExtensionWindowCallback completionHandler);
 	}
 
-	delegate void WKWebExtensionControllerDataRecordCallback (WKWebExtensionDataRecord dataRecord);
+	delegate void WKWebExtensionControllerDataRecordCallback ([NullAllowed] WKWebExtensionDataRecord dataRecord);
 	delegate void WKWebExtensionControllerDataRecordsCallback (WKWebExtensionDataRecord [] dataRecords);
 
 	[Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4), NoTV]

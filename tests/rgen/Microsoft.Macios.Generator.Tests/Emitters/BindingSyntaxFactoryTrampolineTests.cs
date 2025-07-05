@@ -2152,8 +2152,8 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				outNSObject,
-				@"if (outNSObject is not null)
-	*outNSObject = Runtime.RetainAndAutoreleaseNativeObject(__xamarin_pref0);
+				$@"if (outNSObject is not null)
+	*outNSObject = {Global ("ObjCRuntime.Runtime")}.RetainAndAutoreleaseNativeObject(__xamarin_pref0);
 ",
 			];
 

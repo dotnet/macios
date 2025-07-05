@@ -897,6 +897,22 @@ namespace NS {
 
 			yield return [simpleAsyncMethod];
 
+			const string tupleAsyncMethod = @"
+using System;
+using ObjCBindings;
+using ObjCRuntime;
+
+namespace NS {
+	public class MyClass {
+
+		[Export<Method> (""completeRequestReturningItems:completionHandler:"", Flags = ObjCBindings.Method.Async)] 
+		public void MyMethod (string[]? input, Action<bool, string> callback) { }
+	}
+}
+";
+
+			yield return [tupleAsyncMethod];
+
 			const string asyncMethodWithName = @"
 using System;
 using ObjCBindings;

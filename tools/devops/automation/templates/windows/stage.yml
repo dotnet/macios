@@ -116,9 +116,7 @@ stages:
     workspace:
       clean: all
     pool:
-      name: ${{ parameters.windowsPool }}
-      demands:
-      - agent.os -equals Windows_NT
+      vmImage: ubuntu-latest
 
     steps:
     - template: reenable-mac.yml

@@ -7,6 +7,8 @@
 // Copyright 2017 Microsoft Inc. All rights reserved.
 //
 
+#nullable enable
+
 using System;
 using System.ComponentModel;
 using System.Numerics;
@@ -724,7 +726,7 @@ namespace ARKit {
 		[iOS (13, 0)]
 		[Async]
 		[Export ("validateWithCompletionHandler:")]
-		void Validate (Action<NSError> completionHandler);
+		void Validate (Action<NSError?> completionHandler);
 
 		/// <param name="image">To be added.</param>
 		/// <param name="orientation">To be added.</param>
@@ -1010,7 +1012,7 @@ namespace ARKit {
 			<remarks>To be added.</remarks>
 			""")]
 		[Export ("getCurrentWorldMapWithCompletionHandler:")]
-		void GetCurrentWorldMap (Action<ARWorldMap, NSError> completionHandler);
+		void GetCurrentWorldMap (Action<ARWorldMap?, NSError?> completionHandler);
 
 		[Async (XmlDocs = """
 			<param name="transform">The transform to the position and orientation of the region from which to create a reference object.</param>
@@ -1022,7 +1024,7 @@ namespace ARKit {
 			""")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		[Export ("createReferenceObjectWithTransform:center:extent:completionHandler:")]
-		void CreateReferenceObject (Matrix4 transform, Vector3 center, Vector3 extent, Action<ARReferenceObject, NSError> completionHandler);
+		void CreateReferenceObject (Matrix4 transform, Vector3 center, Vector3 extent, Action<ARReferenceObject?, NSError?> completionHandler);
 
 		[iOS (13, 0)]
 		[Export ("raycast:")]
@@ -1047,7 +1049,7 @@ namespace ARKit {
 		[iOS (16, 0)]
 		[Async]
 		[Export ("captureHighResolutionFrameWithCompletion:")]
-		void CaptureHighResolutionFrame (Action<ARFrame, NSError> handler);
+		void CaptureHighResolutionFrame (Action<ARFrame?, NSError?> handler);
 	}
 
 	/// <summary>Interface defining methods that respond to events in an <see cref="ARKit.ARSession" />.</summary>
@@ -2696,12 +2698,12 @@ namespace ARKit {
 		[Async]
 		[Static]
 		[Export ("checkAvailabilityWithCompletionHandler:")]
-		void CheckAvailability (Action<bool, NSError> completionHandler);
+		void CheckAvailability (Action<bool, NSError?> completionHandler);
 
 		[Async]
 		[Static]
 		[Export ("checkAvailabilityAtCoordinate:completionHandler:")]
-		void CheckAvailability (CLLocationCoordinate2D coordinate, Action<bool, NSError> completionHandler);
+		void CheckAvailability (CLLocationCoordinate2D coordinate, Action<bool, NSError?> completionHandler);
 
 		[Static]
 		[Export ("new")]

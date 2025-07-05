@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
+#pragma warning disable APL0003
 
 using System;
 using System.Runtime.Versioning;

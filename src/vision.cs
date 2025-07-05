@@ -1128,7 +1128,7 @@ namespace Vision {
 	///       </example>
 	///     </remarks>
 	[MacCatalyst (13, 1)]
-	delegate void VNRequestCompletionHandler (VNRequest request, NSError error);
+	delegate void VNRequestCompletionHandler (VNRequest request, [NullAllowed] NSError error);
 
 	/// <summary>A subclass of <see cref="Vision.VNImageBasedRequest" /> that uses a Core ML model for processing.</summary>
 	[MacCatalyst (13, 1)]

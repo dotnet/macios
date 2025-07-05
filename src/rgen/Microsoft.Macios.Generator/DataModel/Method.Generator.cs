@@ -5,6 +5,7 @@ using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Macios.Generator.Attributes;
 using Microsoft.Macios.Generator.Availability;
@@ -104,7 +105,7 @@ readonly partial struct Method {
 	public static bool TryCreate (MethodDeclarationSyntax declaration, RootContext context,
 		[NotNullWhen (true)] out Method? change)
 	{
-		if (context.SemanticModel.GetDeclaredSymbol (declaration) is not IMethodSymbol method) {
+		if (ModelExtensions.GetDeclaredSymbol (context.SemanticModel, declaration) is not IMethodSymbol method) {
 			change = null;
 			return false;
 		}
@@ -172,6 +173,10 @@ readonly partial struct Method {
 			Parameters = [.. Parameters.SkipLast (1)],
 			// update the return type to be a task
 			ReturnType = resultType,
+			// remove the unsafe modifier if present since our async methods are not unsafe
+			Modifiers = [
+				.. Modifiers.Where (m => !m.IsKind (SyntaxKind.UnsafeKeyword))
+			]
 		};
 	}
 }

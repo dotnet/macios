@@ -75,6 +75,16 @@ readonly struct ExportData<T> : IEquatable<ExportData<T>> where T : Enum {
 	/// </summary>
 	public string? PostNonResultSnippet { get; init; }
 
+	/// <summary>
+	/// The type of the strong delegate for a weak delegate property.
+	/// </summary>
+	public TypeInfo? StrongDelegateType { get; init; }
+
+	/// <summary>
+	/// The name of the strong delegate for a weak delegate property.
+	/// </summary>
+	public string? StrongDelegateName { get; init; }
+
 	public ExportData () { }
 
 	public ExportData (string? selector)
@@ -119,6 +129,9 @@ readonly struct ExportData<T> : IEquatable<ExportData<T>> where T : Enum {
 		string? methodName = null;
 		string? resultTypeName = null;
 		string? postNonResultSnippet = null;
+		// weak delegate related data
+		TypeInfo? strongDelegateType = null;
+		string? strongDelegateName = null;
 
 		switch (count) {
 		case 1:
@@ -163,6 +176,7 @@ readonly struct ExportData<T> : IEquatable<ExportData<T>> where T : Enum {
 
 		// from this point we have to check the name of the argument AND if the export method is an Async method.
 		var isAsync = typeof (T) == typeof (ObjCBindings.Method) && flags is not null && flags.HasFlag (ObjCBindings.Method.Async);
+		var isWeakDelegate = typeof (T) == typeof (ObjCBindings.Property) && flags is not null && flags.HasFlag (ObjCBindings.Property.WeakDelegate);
 
 		// loop over all the named arguments and set the data accordingly, ignore the Flags one since we already set it
 		foreach (var (name, value) in attrsDict) {
@@ -206,6 +220,17 @@ readonly struct ExportData<T> : IEquatable<ExportData<T>> where T : Enum {
 					postNonResultSnippet = (string?) value;
 				}
 				break;
+			// weak delegate related data
+			case "StrongDelegateType":
+				if (isWeakDelegate) {
+					strongDelegateType = new ((INamedTypeSymbol) value!);
+				}
+				break;
+			case "StrongDelegateName":
+				if (isWeakDelegate) {
+					strongDelegateName = (string?) value!;
+				}
+				break;
 			default:
 				data = null;
 				return false;
@@ -221,7 +246,10 @@ readonly struct ExportData<T> : IEquatable<ExportData<T>> where T : Enum {
 				ResultType = isAsync ? resultType : null,
 				MethodName = isAsync ? methodName : null,
 				ResultTypeName = isAsync ? resultTypeName : null,
-				PostNonResultSnippet = isAsync ? postNonResultSnippet : null
+				PostNonResultSnippet = isAsync ? postNonResultSnippet : null,
+				// we set the data for the weak delegate only if the flags are set
+				StrongDelegateType = isWeakDelegate ? strongDelegateType : null,
+				StrongDelegateName = isWeakDelegate ? strongDelegateName : null
 			};
 			return true;
 		}

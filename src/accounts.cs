@@ -2,6 +2,8 @@
 // Copyright 2011, 2013 Xamarin, Inc.
 //
 
+#nullable enable
+
 using System;
 using ObjCRuntime;
 using Foundation;
@@ -133,7 +135,7 @@ namespace Accounts {
 			        </returns>
 			<remarks>To be added.</remarks>
 			""")]
-		void RenewCredentials (ACAccount account, Action<ACAccountCredentialRenewResult, NSError> completionHandler);
+		void RenewCredentials (ACAccount account, Action<ACAccountCredentialRenewResult, NSError?> completionHandler);
 
 		[Protected]
 		[Export ("requestAccessToAccountsWithType:options:completion:")]

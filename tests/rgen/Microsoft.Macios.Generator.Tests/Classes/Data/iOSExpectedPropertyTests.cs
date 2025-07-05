@@ -234,6 +234,7 @@ public partial class PropertyTests
 	[EditorBrowsable (EditorBrowsableState.Advanced)]
 	protected internal PropertyTests (global::ObjCRuntime.NativeHandle handle) : base (handle) {}
 
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	object? __mt_Alphanumerics_var = null;
 
 	[SupportedOSPlatform ("macos")]
@@ -280,6 +281,7 @@ public partial class PropertyTests
 		}
 	}
 
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	object? __mt_AttributedStringByInflectingString_var = null;
 
 	[SupportedOSPlatform ("macos")]
@@ -595,6 +597,7 @@ public partial class PropertyTests
 		}
 	}
 
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	object? __mt_Locale_var = null;
 
 	[SupportedOSPlatform ("macos")]
@@ -731,7 +734,49 @@ public partial class PropertyTests
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual partial string? Name
+	public virtual partial string[] Names
+	{
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("maccatalyst13.1")]
+		get
+		{
+			string[] ret;
+			if (IsDirectBinding) {
+				ret = global::CoreFoundation.CFArray.StringArrayFromHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("surnames")), false)!;
+			} else {
+				ret = global::CoreFoundation.CFArray.StringArrayFromHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("surnames")), false)!;
+			}
+			global::System.GC.KeepAlive (this);
+			return ret;
+		}
+
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("maccatalyst13.1")]
+		set
+		{
+			if (value is null)
+				global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+			using var nsa_value = global::Foundation.NSArray.FromStrings (value);
+			if (IsDirectBinding) {
+				global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setSurnames:"), nsa_value.Handle);
+			} else {
+				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setSurnames:"), nsa_value.Handle);
+			}
+			global::System.GC.KeepAlive (this);
+			global::System.GC.KeepAlive (nsa_value);
+		}
+	}
+
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("maccatalyst13.1")]
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual partial string? OtherName
 	{
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
@@ -763,48 +808,6 @@ public partial class PropertyTests
 			}
 			global::System.GC.KeepAlive (this);
 			global::CoreFoundation.CFString.ReleaseNative (nsvalue);
-		}
-	}
-
-	[SupportedOSPlatform ("macos")]
-	[SupportedOSPlatform ("ios")]
-	[SupportedOSPlatform ("tvos")]
-	[SupportedOSPlatform ("maccatalyst13.1")]
-	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual partial string[] Name
-	{
-		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("tvos")]
-		[SupportedOSPlatform ("maccatalyst13.1")]
-		get
-		{
-			string[] ret;
-			if (IsDirectBinding) {
-				ret = global::CoreFoundation.CFArray.StringArrayFromHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("surnames")), false)!;
-			} else {
-				ret = global::CoreFoundation.CFArray.StringArrayFromHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("surnames")), false)!;
-			}
-			global::System.GC.KeepAlive (this);
-			return ret;
-		}
-
-		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("tvos")]
-		[SupportedOSPlatform ("maccatalyst13.1")]
-		set
-		{
-			if (value is null)
-				global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
-			using var nsa_value = global::Foundation.NSArray.FromStrings (value);
-			if (IsDirectBinding) {
-				global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setSurnames:"), nsa_value);
-			} else {
-				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setSurnames:"), nsa_value);
-			}
-			global::System.GC.KeepAlive (this);
-			global::System.GC.KeepAlive (nsa_value);
 		}
 	}
 
@@ -849,6 +852,7 @@ public partial class PropertyTests
 		}
 	}
 
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	object? __mt_Results_var = null;
 
 	[SupportedOSPlatform ("macos")]
@@ -886,9 +890,9 @@ public partial class PropertyTests
 				global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
 			using var nsa_value = global::Foundation.NSArray.FromNSObjects (value);
 			if (IsDirectBinding) {
-				global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setResults:"), nsa_value);
+				global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setResults:"), nsa_value.Handle);
 			} else {
-				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setResults:"), nsa_value);
+				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setResults:"), nsa_value.Handle);
 			}
 			global::System.GC.KeepAlive (this);
 			global::System.GC.KeepAlive (nsa_value);
@@ -975,6 +979,7 @@ public partial class PropertyTests
 		}
 	}
 
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	object? __mt_WeakDelegate_var = null;
 
 	[SupportedOSPlatform ("macos")]
@@ -997,6 +1002,8 @@ public partial class PropertyTests
 				ret = global::ObjCRuntime.Runtime.GetNSObject<global::Foundation.NSObject> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("delegate")));
 			}
 			global::System.GC.KeepAlive (this);
+			MarkDirty ();
+			__mt_WeakDelegate_var = ret;
 			return ret;
 		}
 
@@ -1014,6 +1021,24 @@ public partial class PropertyTests
 			}
 			global::System.GC.KeepAlive (this);
 			global::System.GC.KeepAlive (value);
+			MarkDirty ();
+			__mt_WeakDelegate_var = value;
+		}
+	}
+
+	public virtual partial global::Foundation.INSUserActivityDelegate? Delegate
+	{
+		get
+		{
+			return WeakDelegate as global::Foundation.INSUserActivityDelegate;
+		}
+		set
+		{
+			var rvalue = value as NSObject;
+			if (!(value is null) && rvalue is null) {
+				throw new ArgumentException ($"The object passed of type {value.GetType ()} does not derive from NSObject");
+			}
+			WeakDelegate = rvalue;
 		}
 	}
 	// TODO: add binding code here

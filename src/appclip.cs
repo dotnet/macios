@@ -1,3 +1,5 @@
+#nullable enable
+
 using System;
 using System.ComponentModel;
 using CoreLocation;
@@ -26,6 +28,6 @@ namespace AppClip {
 
 		[Async]
 		[Export ("confirmAcquiredInRegion:completionHandler:")]
-		void ConfirmAcquired (CLRegion region, Action<bool, NSError> completionHandler);
+		void ConfirmAcquired (CLRegion region, Action<bool, NSError?> completionHandler);
 	}
 }

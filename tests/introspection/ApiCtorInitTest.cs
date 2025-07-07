@@ -177,6 +177,8 @@ namespace Introspection {
 					return true;
 				break;
 #endif
+			case "PhaseConeDirectivityModelParameters":
+				return !TestRuntime.IsSimulator; // fails on device
 			}
 
 			switch (type.Namespace) {

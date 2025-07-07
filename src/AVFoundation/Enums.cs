@@ -1312,14 +1312,14 @@ namespace AVFoundation {
 
 #if !XAMCORE_5_0
 		[MacCatalyst (13, 1)]
-		[Obsolete ("Use 'AVOutputSettingsPreset.PresetHevc1920x1080' instead.")]
+		[Obsolete ("Use 'AVOutputSettingsPreset.PresetHevc1920x1080' instead if you're looking for the 'AVOutputSettingsPresetHEVC1920x1080' constant, or 'Hevc1920x1080' if you're looking for the 'AVAssetExportPresetHEVC1920x1080 constant.")]
 		[Field ("AVOutputSettingsPresetHEVC1920x1080")]
-		Hevc1920x1080 = 11,
+		PresetHevc1920x1080 = 11,
 
 		[MacCatalyst (13, 1)]
-		[Obsolete ("Use 'AVOutputSettingsPreset.PresetHevc3840x2160' instead.")]
+		[Obsolete ("Use 'AVOutputSettingsPreset.PresetHevc3840x2160' instead if you're looking for the 'AVOutputSettingsPresetHEVC3840x2160' constant, or 'Hevc3840x2160' if you're looking for the 'AVAssetExportPresetHEVC3840x2160' constant.")]
 		[Field ("AVOutputSettingsPresetHEVC3840x2160")]
-		Hevc3840x2160 = 12,
+		PresetHevc3840x2160 = 12,
 #endif // !XAMCORE_5_0
 
 		[MacCatalyst (13, 1)]
@@ -1328,33 +1328,11 @@ namespace AVFoundation {
 
 		[MacCatalyst (13, 1)]
 		[Field ("AVAssetExportPresetHEVC3840x2160")]
-#if XAMCORE_6_0
-		Hevc3840x2160,
-#elif XAMCORE_5_0
 		Hevc3840x2160,
 
 		[MacCatalyst (13, 1)]
-		[Field ("AVAssetExportPresetHEVC3840x2160")]
-		[Obsolete ("Use 'Hevc3840x2160' instead.")]
-		PresetHevc3840x2160,
-#else
-		PresetHevc3840x2160,
-#endif
-
-		[MacCatalyst (13, 1)]
 		[Field ("AVAssetExportPresetHEVC1920x1080")]
-#if XAMCORE_6_0
 		Hevc1920x1080,
-#elif XAMCORE_5_0
-		Hevc1920x1080,
-
-		[MacCatalyst (13, 1)]
-		[Field ("AVAssetExportPresetHEVC1920x1080")]
-		[Obsolete ("Use 'Hevc1920x1080' instead.")]
-		PresetHevc1920x1080,
-#else
-		PresetHevc1920x1080,
-#endif
 
 		[NoTV, MacCatalyst (15, 0), iOS (15, 0)]
 		[Field ("AVAssetExportPresetAppleProRes4444LPCM")]

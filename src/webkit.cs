@@ -5770,6 +5770,9 @@ namespace WebKit {
 		NSString DidChangeSelection { get; }
 	}
 
+	delegate void WKWebsiteDataStoreFetchDataHandler ([NullAllowed] NSData data, [NullAllowed] NSError error);
+	delegate void WKWebsiteDataStoreRestoreDataHandler ([NullAllowed] NSError error);
+
 	/// <summary>Data that is associated with a website, such as cookies and caches.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/WebKit/Reference/WKWebsiteDataStore_Class_Ref/index.html">Apple documentation for <c>WKWebsiteDataStore</c></related>
@@ -5862,12 +5865,12 @@ namespace WebKit {
 		[Async]
 		[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
 		[Export ("fetchDataOfTypes:completionHandler:")]
-		void FetchData (NSSet<NSString> dataTypes, Action<NSData, NSError> completionHandler);
+		void FetchData (NSSet<NSString> dataTypes, WKWebsiteDataStoreFetchDataHandler completionHandler);
 
 		[Async]
 		[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
 		[Export ("restoreData:completionHandler:")]
-		void RestoreData (NSData data, Action<NSError> completionHandler);
+		void RestoreData (NSData data, WKWebsiteDataStoreRestoreDataHandler completionHandler);
 	}
 
 	[iOS (18, 4), NoTV]
@@ -6148,6 +6151,9 @@ namespace WebKit {
 		[Export ("forMainFrameOnly")]
 		bool IsForMainFrameOnly { [Bind ("isForMainFrameOnly")] get; }
 	}
+
+	delegate void WKWebViewFetchDataHandler ([NullAllowed] NSData data, [NullAllowed] NSError error);
+	delegate void WKWebViewRestoreDataHandler ([NullAllowed] NSError error);
 
 	/// <summary>Displays a Web page.</summary>
 	///     
@@ -6631,12 +6637,12 @@ namespace WebKit {
 		[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
 		[Async]
 		[Export ("fetchDataOfTypes:completionHandler:")]
-		void FetchData (WKWebViewDataType dataTypes, Action<NSData, NSError> completionHandler);
+		void FetchData (WKWebViewDataType dataTypes, WKWebViewFetchDataHandler completionHandler);
 
 		[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
 		[Async]
 		[Export ("restoreData:completionHandler:")]
-		void RestoreData (NSData data, Action<NSError> completionHandler);
+		void RestoreData (NSData data, WKWebViewRestoreDataHandler completionHandler);
 
 		[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
 		[Export ("isBlockedByScreenTime")]

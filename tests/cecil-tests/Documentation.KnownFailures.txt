@@ -29217,4 +29217,8 @@ T:WebKit.WKWebExtensionWindowCallback
 T:WebKit.WKWebExtensionWindowState
 T:WebKit.WKWebExtensionWindowType
 T:WebKit.WKWebpagePreferencesUpgradeToHttpsPolicy
+T:WebKit.WKWebsiteDataStoreFetchDataHandler
+T:WebKit.WKWebsiteDataStoreRestoreDataHandler
 T:WebKit.WKWebViewDataType
+T:WebKit.WKWebViewFetchDataHandler
+T:WebKit.WKWebViewRestoreDataHandler

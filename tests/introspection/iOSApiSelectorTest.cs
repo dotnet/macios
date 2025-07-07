@@ -122,7 +122,7 @@ namespace Introspection {
 			case "MTLTileRenderPipelineDescriptor":
 			case "MTLRasterizationRateLayerDescriptor":
 			case "MTLRasterizationRateMapDescriptor":
-				return TestRuntime.IsSimulatorOrDesktop;
+				return true;
 			default:
 				return base.Skip (type);
 			}

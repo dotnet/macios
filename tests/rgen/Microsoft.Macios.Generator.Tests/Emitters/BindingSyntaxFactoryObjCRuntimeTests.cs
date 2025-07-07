@@ -999,4 +999,22 @@ public class BindingSyntaxFactoryObjCRuntimeTests {
 		Assert.Equal (expectedDeclaration, declaration?.ToString ());
 	}
 
+	class TestDataGetHandleMemberTests : IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
+		{
+			yield return ["myParam", "myParam.Handle"];
+			yield return ["another_variable", "another_variable.Handle"];
+			yield return ["obj", "obj.Handle"];
+		}
+
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
+	}
+
+	[Theory]
+	[ClassData (typeof (TestDataGetHandleMemberTests))]
+	void GetHandleMemberTests (string variableName, string expectedDeclaration)
+	{
+		var expression = GetHandleMember (IdentifierName (variableName));
+		Assert.Equal (expectedDeclaration, expression.ToString ());
+	}
 }

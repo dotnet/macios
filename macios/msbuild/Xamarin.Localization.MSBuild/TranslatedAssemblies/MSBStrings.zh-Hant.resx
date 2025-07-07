@@ -1264,4 +1264,12 @@
             {1}: path to a file name (of a resource)
         </comment>
     </data>
+  <data name="E7158" xml:space="preserve">
+        <value>The {0} item '{1}' has been included more than once, with different 'LogicalName' metadata: {2}, {3}.</value>
+        <comment>
+            {0}: the name of the MSBuild item in question (BundleResource, ImageAsset, SceneKitAsset, etc.).
+            {1}: path to a file name (of a resource)
+            {2} and {3}: the different LogicalName metadata
+        </comment>
+    </data>
 </root>

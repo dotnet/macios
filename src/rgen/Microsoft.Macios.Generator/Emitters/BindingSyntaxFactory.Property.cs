@@ -98,8 +98,8 @@ static partial class BindingSyntaxFactory {
 	{
 		var argument = new TrampolineArgumentSyntax (GetNativeInvokeArgument (property)) {
 			Initializers = GetNativeInvokeArgumentInitializations (property),
-			PreDelegateCallConversion = GetPreNativeInvokeArgumentConversions (property),
-			PostDelegateCallConversion = GetPostNativeInvokeArgumentConversions (property),
+			PreCallConversion = GetPreNativeInvokeArgumentConversions (property),
+			PostCallConversion = GetPostNativeInvokeArgumentConversions (property),
 		};
 		// if any of the methods is null, return a throw statement for both
 		if (selector is null || sendMethod is null || superSendMethod is null) {

@@ -443,7 +443,7 @@ namespace NS {
 				stringArrayParameter,
 				$@"if (stringParameter is null)
 	{Global ("ObjCRuntime")}.ThrowHelper.ThrowArgumentNullException (nameof (stringParameter));
-var nsa_stringParameter = {Global ("Foundation")}.NSArray.FromStrings (stringParameter);
+using var nsa_stringParameter = {Global ("Foundation")}.NSArray.FromStrings (stringParameter);
 ",
 			];
 
@@ -459,7 +459,7 @@ namespace NS {
 ";
 			yield return [
 				nullableStringArrayParameter,
-				$"var nsa_stringParameter = stringParameter is null ? null : {Global ("Foundation")}.NSArray.FromStrings (stringParameter);\n",
+				$"using var nsa_stringParameter = stringParameter is null ? null : {Global ("Foundation")}.NSArray.FromStrings (stringParameter);\n",
 			];
 
 			// smart enum parameter
@@ -484,7 +484,7 @@ namespace NS {
 ";
 			yield return [
 				smartEnumParameter,
-				"var nsb_enumParameter = enumParameter.GetConstant ();\n"
+				"using var nsb_enumParameter = enumParameter.GetConstant ();\n"
 			];
 
 
@@ -571,7 +571,7 @@ namespace NS {
 				nsObjectArrayParameter,
 				$@"if (nsObjectParameter is null)
 	{Global ("ObjCRuntime")}.ThrowHelper.ThrowArgumentNullException (nameof (nsObjectParameter));
-var nsa_nsObjectParameter = {Global ("Foundation")}.NSArray.FromNSObjects (nsObjectParameter);
+using var nsa_nsObjectParameter = {Global ("Foundation")}.NSArray.FromNSObjects (nsObjectParameter);
 ",
 			];
 
@@ -592,7 +592,7 @@ namespace NS {
 ";
 			yield return [
 				nullableNSObjectArrayParameter,
-				$"var nsa_nsObjectParameter = nsObjectParameter is null ? null : {Global ("Foundation")}.NSArray.FromNSObjects (nsObjectParameter);\n",
+				$"using var nsa_nsObjectParameter = nsObjectParameter is null ? null : {Global ("Foundation")}.NSArray.FromNSObjects (nsObjectParameter);\n",
 			];
 
 			// INativeObject parameter
@@ -657,7 +657,7 @@ namespace NS {
 				inativeArrayParameter,
 				$@"if (inativeArray is null)
 	{Global ("ObjCRuntime")}.ThrowHelper.ThrowArgumentNullException (nameof (inativeArray));
-var nsa_inativeArray = {Global ("Foundation")}.NSArray.FromNSObjects (inativeArray);
+using var nsa_inativeArray = {Global ("Foundation")}.NSArray.FromNSObjects (inativeArray);
 ",
 			];
 
@@ -679,7 +679,7 @@ namespace NS {
 
 			yield return [
 				nullableINativeArrayParameter,
-				$"var nsa_inativeArray = inativeArray is null ? null : {Global ("Foundation")}.NSArray.FromNSObjects (inativeArray);\n"
+				$"using var nsa_inativeArray = inativeArray is null ? null : {Global ("Foundation")}.NSArray.FromNSObjects (inativeArray);\n"
 			];
 
 			var audioBuffer = @"
@@ -734,7 +734,26 @@ namespace NS {
 
 			yield return [
 				blockParameter,
-				@$"var block_callbackParameter = {Global ("ObjCRuntime.Trampolines.")}{Nomenclator.GetTrampolineClassName ("Action", Nomenclator.TrampolineClassType.StaticBridgeClass)}.CreateNullableBlock (callbackParameter);
+				@$"using var block_callbackParameter = {Global ("ObjCRuntime.Trampolines.")}{Nomenclator.GetTrampolineClassName ("Action", Nomenclator.TrampolineClassType.StaticBridgeClass)}.CreateNullableBlock (callbackParameter);
+{Global ("ObjCRuntime")}.BlockLiteral* block_ptr_callbackParameter = callbackParameter is not null ? &block_callbackParameter : null;
+",
+			];
+
+			var notDecoratedBlockParameter = @"
+using System;
+using ObjCRuntime;
+
+namespace NS {
+	public delegate void Callback (Action? callbackParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				notDecoratedBlockParameter,
+				@$"using var block_callbackParameter = {Global ("ObjCRuntime.Trampolines.")}{Nomenclator.GetTrampolineClassName ("Action", Nomenclator.TrampolineClassType.StaticBridgeClass)}.CreateNullableBlock (callbackParameter);
 {Global ("ObjCRuntime")}.BlockLiteral* block_ptr_callbackParameter = callbackParameter is not null ? &block_callbackParameter : null;
 ",
 			];

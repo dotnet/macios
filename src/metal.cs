@@ -33,11 +33,11 @@ namespace Metal {
 	/// <summary>Completion handler for deallocating a buffer.</summary>
 	delegate void MTLDeallocator (IntPtr pointer, nuint length);
 
-	delegate void MTLNewComputePipelineStateWithReflectionCompletionHandler (IMTLComputePipelineState computePipelineState, MTLComputePipelineReflection reflection, NSError error);
+	delegate void MTLNewComputePipelineStateWithReflectionCompletionHandler ([NullAllowed] IMTLComputePipelineState computePipelineState, [NullAllowed] MTLComputePipelineReflection reflection, [NullAllowed] NSError error);
 
 	delegate void MTLDrawablePresentedHandler (IMTLDrawable drawable);
 
-	delegate void MTLNewRenderPipelineStateWithReflectionCompletionHandler (IMTLRenderPipelineState renderPipelineState, MTLRenderPipelineReflection reflection, NSError error);
+	delegate void MTLNewRenderPipelineStateWithReflectionCompletionHandler ([NullAllowed] IMTLRenderPipelineState renderPipelineState, [NullAllowed] MTLRenderPipelineReflection reflection, [NullAllowed] NSError error);
 
 	interface IMTLCommandEncoder { }
 

@@ -2152,8 +2152,8 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				outNSObject,
-				@"if (outNSObject is not null)
-	*outNSObject = Runtime.RetainAndAutoreleaseNativeObject(__xamarin_pref0);
+				$@"if (outNSObject is not null)
+	*outNSObject = {Global ("ObjCRuntime.Runtime")}.RetainAndAutoreleaseNativeObject(__xamarin_pref0);
 ",
 			];
 
@@ -4308,7 +4308,7 @@ namespace NS {
 ";
 			yield return [
 				nsNumberParameterWithReturn,
-				"var ret = invoker (BlockLiteral, pointerParameter__handle__);",
+				"var ret = invoker (BlockLiteral, nsb_pointerParameter__handle__);",
 			];
 
 			var nsNumberArrayParameterWithReturn = @"
@@ -4325,7 +4325,7 @@ namespace NS {
 ";
 			yield return [
 				nsNumberArrayParameterWithReturn,
-				"var ret = invoker (BlockLiteral, nsa_pointerParameter);",
+				"var ret = invoker (BlockLiteral, nsa_pointerParameter__handle__);",
 			];
 
 			var nsValueParameterWithReturn = @"
@@ -4343,7 +4343,7 @@ namespace NS {
 ";
 			yield return [
 				nsValueParameterWithReturn,
-				"var ret = invoker (BlockLiteral, size__handle__);"
+				"var ret = invoker (BlockLiteral, nsb_size__handle__);"
 			];
 
 			var nsValueArrayParameterWithReturn = @"
@@ -4361,7 +4361,7 @@ namespace NS {
 ";
 			yield return [
 				nsValueArrayParameterWithReturn,
-				"var ret = invoker (BlockLiteral, nsa_size);",
+				"var ret = invoker (BlockLiteral, nsa_size__handle__);",
 			];
 
 			var smartEnumParameterWithReturn = @"
@@ -4390,7 +4390,7 @@ namespace NS {
 ";
 			yield return [
 				smartEnumParameterWithReturn,
-				"var ret = invoker (BlockLiteral, nslevel);"
+				"var ret = invoker (BlockLiteral, nsb_level__handle__);"
 			];
 
 			var smartEnumArrayParameterWithReturn = @"
@@ -4419,7 +4419,7 @@ namespace NS {
 ";
 			yield return [
 				smartEnumArrayParameterWithReturn,
-				"var ret = invoker (BlockLiteral, nsa_level);"
+				"var ret = invoker (BlockLiteral, nsa_level__handle__);"
 			];
 
 			var refParameter = @"
@@ -4498,6 +4498,22 @@ namespace NS {
 
 			yield return [
 				blockParameter,
+				$"invoker (BlockLiteral, ({Global ("ObjCRuntime.NativeHandle")}) block_ptr_callbackParameter);"
+			];
+
+			var nonDecoratedBlockParameter = @"
+using System;
+using ObjCRuntime;
+namespace NS {
+	public delegate void Callback (Action? callbackParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				nonDecoratedBlockParameter,
 				$"invoker (BlockLiteral, ({Global ("ObjCRuntime.NativeHandle")}) block_ptr_callbackParameter);"
 			];
 		}

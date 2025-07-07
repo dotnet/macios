@@ -688,7 +688,7 @@ namespace GLKit {
 	/// <param name="textureInfo">The infromation about the texture loaded, or null on error.</param>
 	///     <param name="error">On success, this value is null.   Otherwise it contains the error information.</param>
 	///     <summary>Signature used by the asynchrous texture loading methods in <see cref="GLKit.GLKTextureLoader" />.</summary>
-	delegate void GLKTextureLoaderCallback (GLKTextureInfo textureInfo, NSError error);
+	delegate void GLKTextureLoaderCallback ([NullAllowed] GLKTextureInfo textureInfo, [NullAllowed] NSError error);
 
 	/// <include file="../docs/api/GLKit/GLKTextureLoader.xml" path="/Documentation/Docs[@DocId='T:GLKit.GLKTextureLoader']/*" />
 	[Deprecated (PlatformName.iOS, 12, 0, message: "Use 'Metal' instead.")]

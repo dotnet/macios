@@ -95,7 +95,7 @@ namespace PassKit {
 
 	[iOS (13, 4)]
 	[MacCatalyst (13, 1)]
-	delegate void PKPassLibrarySignDataCompletionHandler (NSData signedData, NSData signature, NSError error);
+	delegate void PKPassLibrarySignDataCompletionHandler ([NullAllowed] NSData signedData, [NullAllowed] NSData signature, [NullAllowed] NSError error);
 
 	/// <summary>Represents the user's library of passes.</summary>
 	///     
@@ -3873,7 +3873,7 @@ namespace PassKit {
 		PKAddPassMetadataPreview Preview { get; set; }
 	}
 
-	delegate void PKAddIdentityDocumentConfigurationGetConfigurationCompletionHandler (PKAddIdentityDocumentConfiguration credentialConfiguration, NSError error);
+	delegate void PKAddIdentityDocumentConfigurationGetConfigurationCompletionHandler ([NullAllowed] PKAddIdentityDocumentConfiguration credentialConfiguration, [NullAllowed] NSError error);
 
 	[NoTV, iOS (18, 0), MacCatalyst (18, 0), Mac (15, 0)]
 	[BaseType (typeof (PKAddSecureElementPassConfiguration))]

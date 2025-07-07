@@ -10,6 +10,7 @@ using Microsoft.Macios.Generator.Attributes;
 using Microsoft.Macios.Generator.Availability;
 using Microsoft.Macios.Generator.Context;
 using Microsoft.Macios.Generator.Extensions;
+using Microsoft.Macios.Generator.Formatters;
 using ObjCRuntime;
 
 namespace Microsoft.Macios.Generator.DataModel;
@@ -78,6 +79,11 @@ readonly partial struct Method {
 	/// </summary>
 	public bool IsProxy => ExportMethodData.Flags.HasFlag (ObjCBindings.Method.Proxy);
 
+	/// <summary>
+	/// True if the method was marked to be generated as an async method.
+	/// </summary>
+	public bool IsAsync => ExportMethodData.Flags.HasFlag (ObjCBindings.Method.Async);
+
 	public Method (string type, string name, TypeInfo returnType,
 		SymbolAvailability symbolAvailability,
 		ExportData<ObjCBindings.Method> exportMethodData,
@@ -133,5 +139,39 @@ readonly partial struct Method {
 		};
 
 		return true;
+	}
+
+	/// <summary>
+	/// Converts the current method to its asynchronous version if it's marked with the `Async` flag.
+	/// </summary>
+	/// <returns>
+	/// A new <see cref="Method"/> instance representing the asynchronous version of the method,
+	/// or the current instance if the method is not marked as async.
+	/// </returns>
+	public Method ToAsync ()
+	{
+		if (!IsAsync)
+			return this;
+
+		// calculating the return type depends on the data present in the export data
+		var resultType = Parameters [^1].Type.ToTask ();
+
+		// if the user provided a result type, we need to update the calculated result type to a task
+		if (ExportMethodData.ResultType is not null) {
+			resultType = resultType.ToTask (ExportMethodData.ResultType.Value.GetIdentifierSyntax ().ToString ());
+		}
+
+		if (ExportMethodData.ResultTypeName is not null) {
+			resultType = resultType.ToTask (ExportMethodData.ResultTypeName);
+		}
+
+		return this with {
+			// update name, if user did not specify a name, use the default one
+			Name = ExportMethodData.MethodName ?? $"{Name}Async",
+			// remove last parameter which is the completion handler
+			Parameters = [.. Parameters.SkipLast (1)],
+			// update the return type to be a task
+			ReturnType = resultType,
+		};
 	}
 }

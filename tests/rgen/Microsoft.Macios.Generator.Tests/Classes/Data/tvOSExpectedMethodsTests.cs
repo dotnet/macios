@@ -42,8 +42,16 @@ public partial class MethodTests
 	static readonly global::ObjCRuntime.NativeHandle selFilteredArrayUsingPredicate_XHandle = global::ObjCRuntime.Selector.GetHandle ("filteredArrayUsingPredicate:");
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	const string selFilteredArrayUsingStrings_X = "filteredArrayUsingStrings:";
+	static readonly global::ObjCRuntime.NativeHandle selFilteredArrayUsingStrings_XHandle = global::ObjCRuntime.Selector.GetHandle ("filteredArrayUsingStrings:");
+
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	const string selCompleteRequestReturningItems_CompletionHandler_X = "completeRequestReturningItems:completionHandler:";
 	static readonly global::ObjCRuntime.NativeHandle selCompleteRequestReturningItems_CompletionHandler_XHandle = global::ObjCRuntime.Selector.GetHandle ("completeRequestReturningItems:completionHandler:");
+
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	const string selBookmarkDataWithContentsOfURL_Error_X = "bookmarkDataWithContentsOfURL:error:";
+	static readonly global::ObjCRuntime.NativeHandle selBookmarkDataWithContentsOfURL_Error_XHandle = global::ObjCRuntime.Selector.GetHandle ("bookmarkDataWithContentsOfURL:error:");
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	static readonly global::ObjCRuntime.NativeHandle class_ptr = global::ObjCRuntime.Class.GetHandle ("MethodTests");
@@ -135,7 +143,28 @@ public partial class MethodTests
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public partial void CompleteRequest (global::Foundation.NSExtensionItem[] returningItems, global::System.Action<bool>? completionHandler)
+	public virtual unsafe partial void CompleteRequest (global::Foundation.NSExtensionItem[] returningItems, global::System.Action<bool>? completionHandler)
+	{
+		if (returningItems is null)
+			global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (returningItems));
+		using var nsa_returningItems = global::Foundation.NSArray.FromNSObjects (returningItems);
+		using var block_completionHandler = global::ObjCRuntime.Trampolines.SDActionArity1bool.CreateNullableBlock (completionHandler);
+		global::ObjCRuntime.BlockLiteral* block_ptr_completionHandler = completionHandler is not null ? &block_completionHandler : null;
+		if (IsDirectBinding) {
+			global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("completeRequestReturningItems:completionHandler:"), nsa_returningItems.Handle, (global::ObjCRuntime.NativeHandle) block_ptr_completionHandler);
+		} else {
+			global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("completeRequestReturningItems:completionHandler:"), nsa_returningItems.Handle, (global::ObjCRuntime.NativeHandle) block_ptr_completionHandler);
+		}
+		global::System.GC.KeepAlive (this);
+		global::System.GC.KeepAlive (nsa_returningItems);
+	}
+
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("maccatalyst13.1")]
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual partial global::System.Threading.Tasks.Task<bool> CompleteRequestAsync (global::Foundation.NSExtensionItem[] returningItems)
 	{
 		throw new NotImplementedException ();
 	}
@@ -145,7 +174,28 @@ public partial class MethodTests
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public partial global::System.Threading.Tasks.Task<bool> CompleteRequestAsync (global::Foundation.NSExtensionItem[] returningItems)
+	public virtual unsafe partial void CompleteRequest (global::Foundation.NSExtensionItem[] returningItems, global::System.Action<bool, string?>? completionHandler)
+	{
+		if (returningItems is null)
+			global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (returningItems));
+		using var nsa_returningItems = global::Foundation.NSArray.FromNSObjects (returningItems);
+		using var block_completionHandler = global::ObjCRuntime.Trampolines.SDActionArity2boolstring?.CreateNullableBlock (completionHandler);
+		global::ObjCRuntime.BlockLiteral* block_ptr_completionHandler = completionHandler is not null ? &block_completionHandler : null;
+		if (IsDirectBinding) {
+			global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("completeRequestReturningItems:completionHandler:"), nsa_returningItems.Handle, (global::ObjCRuntime.NativeHandle) block_ptr_completionHandler);
+		} else {
+			global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("completeRequestReturningItems:completionHandler:"), nsa_returningItems.Handle, (global::ObjCRuntime.NativeHandle) block_ptr_completionHandler);
+		}
+		global::System.GC.KeepAlive (this);
+		global::System.GC.KeepAlive (nsa_returningItems);
+	}
+
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("maccatalyst13.1")]
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual partial global::System.Threading.Tasks.Task<(bool, string?)> CompleteRequestAsync (global::Foundation.NSExtensionItem[] returningItems)
 	{
 		throw new NotImplementedException ();
 	}
@@ -155,7 +205,28 @@ public partial class MethodTests
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public partial void CompleteRequest (global::Foundation.NSExtensionItem[] returningItems, global::System.Action<bool, string?>? completionHandler)
+	public virtual unsafe partial void CompleteRequest (global::Foundation.NSExtensionItem[] returningItems, global::System.Action<bool, string, string?>? completionHandler)
+	{
+		if (returningItems is null)
+			global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (returningItems));
+		using var nsa_returningItems = global::Foundation.NSArray.FromNSObjects (returningItems);
+		using var block_completionHandler = global::ObjCRuntime.Trampolines.SDActionArity3boolstringstring?.CreateNullableBlock (completionHandler);
+		global::ObjCRuntime.BlockLiteral* block_ptr_completionHandler = completionHandler is not null ? &block_completionHandler : null;
+		if (IsDirectBinding) {
+			global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("completeRequestReturningItems:completionHandler:"), nsa_returningItems.Handle, (global::ObjCRuntime.NativeHandle) block_ptr_completionHandler);
+		} else {
+			global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("completeRequestReturningItems:completionHandler:"), nsa_returningItems.Handle, (global::ObjCRuntime.NativeHandle) block_ptr_completionHandler);
+		}
+		global::System.GC.KeepAlive (this);
+		global::System.GC.KeepAlive (nsa_returningItems);
+	}
+
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("maccatalyst13.1")]
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual partial global::System.Threading.Tasks.Task<(bool Success, string Name, string? Surname)> CompleteRequestAsync (global::Foundation.NSExtensionItem[] returningItems)
 	{
 		throw new NotImplementedException ();
 	}
@@ -165,9 +236,18 @@ public partial class MethodTests
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public partial global::System.Threading.Tasks.Task<(bool, string?)> CompleteRequestAsync (global::Foundation.NSExtensionItem[] returningItems)
+	public virtual unsafe partial global::Foundation.NSArray Filter (global::Foundation.NSPredicate predicate)
 	{
-		throw new NotImplementedException ();
+		var predicate__handle__ = predicate!.GetNonNullHandle (nameof (predicate));
+		global::Foundation.NSArray ret;
+		if (IsDirectBinding) {
+			ret = global::ObjCRuntime.Runtime.GetNSObject<global::Foundation.NSArray> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("filteredArrayUsingPredicate:"), predicate__handle__))!;
+		} else {
+			ret = global::ObjCRuntime.Runtime.GetNSObject<global::Foundation.NSArray> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("filteredArrayUsingPredicate:"), predicate__handle__))!;
+		}
+		global::System.GC.KeepAlive (this);
+		global::System.GC.KeepAlive (predicate);
+		return ret;
 	}
 
 	[SupportedOSPlatform ("macos")]
@@ -175,9 +255,20 @@ public partial class MethodTests
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public partial void CompleteRequest (global::Foundation.NSExtensionItem[] returningItems, global::System.Action<bool, string, string?>? completionHandler)
+	public virtual unsafe partial global::Foundation.NSArray FilterStrings (string[] predicate)
 	{
-		throw new NotImplementedException ();
+		if (predicate is null)
+			global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (predicate));
+		using var nsa_predicate = global::Foundation.NSArray.FromStrings (predicate);
+		global::Foundation.NSArray ret;
+		if (IsDirectBinding) {
+			ret = global::ObjCRuntime.Runtime.GetNSObject<global::Foundation.NSArray> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("filteredArrayUsingStrings:"), nsa_predicate.Handle))!;
+		} else {
+			ret = global::ObjCRuntime.Runtime.GetNSObject<global::Foundation.NSArray> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("filteredArrayUsingStrings:"), nsa_predicate.Handle))!;
+		}
+		global::System.GC.KeepAlive (this);
+		global::System.GC.KeepAlive (nsa_predicate);
+		return ret;
 	}
 
 	[SupportedOSPlatform ("macos")]
@@ -185,9 +276,20 @@ public partial class MethodTests
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public partial global::System.Threading.Tasks.Task<(bool Success, string Name, string? Surname)> CompleteRequestAsync (global::Foundation.NSExtensionItem[] returningItems)
+	public virtual unsafe partial static global::Foundation.NSArray FromFile (string path)
 	{
-		throw new NotImplementedException ();
+		if (path is null)
+			global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (path));
+		var nspath = global::CoreFoundation.CFString.CreateNative (path);
+		global::Foundation.NSArray ret;
+		if (IsDirectBinding) {
+			ret = global::ObjCRuntime.Runtime.GetNSObject<global::Foundation.NSArray> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("arrayWithContentsOfFile:"), nspath))!;
+		} else {
+			ret = global::ObjCRuntime.Runtime.GetNSObject<global::Foundation.NSArray> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("arrayWithContentsOfFile:"), nspath))!;
+		}
+		global::System.GC.KeepAlive (this);
+		global::CoreFoundation.CFString.ReleaseNative (nspath);
+		return ret;
 	}
 
 	[SupportedOSPlatform ("macos")]
@@ -195,9 +297,20 @@ public partial class MethodTests
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public partial global::Foundation.NSArray Filter (global::Foundation.NSPredicate predicate)
+	public static unsafe partial global::Foundation.NSData GetBookmarkData (global::Foundation.NSUrl bookmarkFileUrl, out global::Foundation.NSError? error)
 	{
-		throw new NotImplementedException ();
+		var bookmarkFileUrl__handle__ = bookmarkFileUrl!.GetNonNullHandle (nameof (bookmarkFileUrl));
+		global::ObjCRuntime.NativeHandle error__handle__;
+		global::Foundation.NSData ret;
+		if (IsDirectBinding) {
+			ret = global::ObjCRuntime.Runtime.GetNSObject<global::Foundation.NSData> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend_NativeHandle_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("bookmarkDataWithContentsOfURL:error:"), bookmarkFileUrl__handle__, &error__handle__))!;
+		} else {
+			ret = global::ObjCRuntime.Runtime.GetNSObject<global::Foundation.NSData> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper_NativeHandle_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("bookmarkDataWithContentsOfURL:error:"), bookmarkFileUrl__handle__, &error__handle__))!;
+		}
+		global::System.GC.KeepAlive (this);
+		global::System.GC.KeepAlive (bookmarkFileUrl);
+		error = global::ObjCRuntime.Runtime.GetNSObject<global::Foundation.NSError> (error__handle__);
+		return ret;
 	}
 
 	[SupportedOSPlatform ("macos")]
@@ -205,9 +318,18 @@ public partial class MethodTests
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public partial static global::Foundation.NSArray FromFile (string path)
+	public virtual unsafe partial void SetValueForKey (global::Foundation.NSObject value, global::Foundation.NSString key)
 	{
-		throw new NotImplementedException ();
+		var value__handle__ = value!.GetNonNullHandle (nameof (value));
+		var key__handle__ = key!.GetNonNullHandle (nameof (key));
+		if (IsDirectBinding) {
+			global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setValue:forKey:"), value__handle__, key__handle__);
+		} else {
+			global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setValue:forKey:"), value__handle__, key__handle__);
+		}
+		global::System.GC.KeepAlive (this);
+		global::System.GC.KeepAlive (value);
+		global::System.GC.KeepAlive (key);
 	}
 
 	[SupportedOSPlatform ("macos")]
@@ -215,9 +337,20 @@ public partial class MethodTests
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public partial void SetValueForKey (global::Foundation.NSObject value, global::Foundation.NSString key)
+	public virtual unsafe partial global::Foundation.NSArray Sort (global::Foundation.NSComparator cmptr)
 	{
-		throw new NotImplementedException ();
+		if (cmptr is null)
+			global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (cmptr));
+		using var block_cmptr = global::ObjCRuntime.Trampolines.SDNSComparator.CreateNullableBlock (cmptr);
+		global::ObjCRuntime.BlockLiteral* block_ptr_cmptr = cmptr is not null ? &block_cmptr : null;
+		global::Foundation.NSArray ret;
+		if (IsDirectBinding) {
+			ret = global::ObjCRuntime.Runtime.GetNSObject<global::Foundation.NSArray> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("sortedArrayUsingComparator:"), (global::ObjCRuntime.NativeHandle) block_ptr_cmptr))!;
+		} else {
+			ret = global::ObjCRuntime.Runtime.GetNSObject<global::Foundation.NSArray> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("sortedArrayUsingComparator:"), (global::ObjCRuntime.NativeHandle) block_ptr_cmptr))!;
+		}
+		global::System.GC.KeepAlive (this);
+		return ret;
 	}
 
 	[SupportedOSPlatform ("macos")]
@@ -225,19 +358,20 @@ public partial class MethodTests
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public partial global::Foundation.NSArray Sort (global::Foundation.NSComparator cmptr)
+	public virtual unsafe partial bool WriteToFile (string path, bool useAuxiliaryFile)
 	{
-		throw new NotImplementedException ();
-	}
-
-	[SupportedOSPlatform ("macos")]
-	[SupportedOSPlatform ("ios")]
-	[SupportedOSPlatform ("tvos")]
-	[SupportedOSPlatform ("maccatalyst13.1")]
-	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public partial bool WriteToFile (string path, bool useAuxiliaryFile)
-	{
-		throw new NotImplementedException ();
+		if (path is null)
+			global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (path));
+		var nspath = global::CoreFoundation.CFString.CreateNative (path);
+		bool ret;
+		if (IsDirectBinding) {
+			ret = global::ObjCRuntime.Messaging.bool_objc_msgSend_NativeHandle_bool (this.Handle, global::ObjCRuntime.Selector.GetHandle ("writeToFile:atomically:"), nspath, useAuxiliaryFile ? (byte) 1 : (byte) 0) != 0;
+		} else {
+			ret = global::ObjCRuntime.Messaging.bool_objc_msgSendSuper_NativeHandle_bool (this.Handle, global::ObjCRuntime.Selector.GetHandle ("writeToFile:atomically:"), nspath, useAuxiliaryFile ? (byte) 1 : (byte) 0) != 0;
+		}
+		global::System.GC.KeepAlive (this);
+		global::CoreFoundation.CFString.ReleaseNative (nspath);
+		return ret;
 	}
 	// TODO: add binding code here
 }

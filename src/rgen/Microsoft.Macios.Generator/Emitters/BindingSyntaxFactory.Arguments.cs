@@ -6,6 +6,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Macios.Generator.DataModel;
+using Microsoft.Macios.Generator.Formatters;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Microsoft.Macios.Generator.Nomenclator;
 using TypeInfo = Microsoft.Macios.Generator.DataModel.TypeInfo;
@@ -47,7 +48,8 @@ static partial class BindingSyntaxFactory {
 		// decide the type of conversion we need to do based on the type of the parameter
 #pragma warning disable format
 		return argumentInfo switch { 
-			{ IsByRef: true, ReferenceKind: ReferenceKind.Out} => GetNativeInitializationByRefArgument (argumentInfo.Name),
+			{ IsByRef: true, ReferenceKind: ReferenceKind.Out, Type.IsReferenceType: false, Type.SpecialType: not SpecialType.System_Boolean} 
+				=> GetNativeInitializationByRefArgument (argumentInfo.Name),
 			_ => []
 		};
 #pragma warning restore format
@@ -67,6 +69,111 @@ static partial class BindingSyntaxFactory {
 		// decide the type of conversion we need to do based on the type of the parameter
 #pragma warning disable format
 		return parameter switch { 
+			// String handle to string
+			{ IsByRef: true, Type.IsArray: false, Type.IsNullable: true, Type.SpecialType: SpecialType.System_String }
+				=> [
+					// set the string from the aux pointer
+					VariableAssignment (
+						variableName: parameter.Name, 
+						value: StringFromHandle (
+							[
+								Argument (IdentifierName (GetNameForVariableType (parameter.Name, VariableType.NSString)!)), 
+								BoolArgument (false)
+							])
+					),
+				],
+			
+			// string handle to string not null
+			{ IsByRef: true, Type.IsArray: false, Type.IsNullable: false, Type.SpecialType: SpecialType.System_String }
+				=> [
+					// set the string from the aux pointer
+					VariableAssignment (
+						variableName: parameter.Name, 
+						value: SuppressNullableWarning (StringFromHandle (
+						[
+							Argument (IdentifierName (GetNameForVariableType (parameter.Name, VariableType.NSString)!)), 
+							BoolArgument (false)
+						]))
+					),
+				],
+			
+			// nothing to do for enums
+			{ IsByRef: true, Type.IsEnum: true, Type.IsSmartEnum: false} => [],
+			
+			// nothing other types that are not objects
+			{ IsByRef: true, Type.SpecialType: not SpecialType.None } => [], 
+			
+			// nothing to do with pointers
+			{ IsByRef: true, Type.IsStruct: true} => [],
+			
+			{ IsByRef: true, Type.IsArray: false, Type.IsINativeObject: true, Type.IsNSObject: false}
+				=> [
+					// set the nsobject from the aux pointer
+					VariableAssignment (
+						variableName: parameter.Name,
+						value: GetINativeObject (
+							nsObjectType: parameter.Type.WithNullable (isNullable: false).GetIdentifierSyntax (), 
+							args: [
+								Argument (IdentifierName (GetNameForVariableType (parameter.Name, VariableType.Handle)!)),
+							], 
+							suppressNullableWarning: !parameter.Type.IsNullable
+						)
+					),
+				],
+			
+			// nsobject or inative object need a native handle to pass to the native code by ref
+			{ IsByRef: true, Type.IsArray: false, Type.IsNSObject: true }
+				=> [
+					// set the nsobject from the aux pointer
+					VariableAssignment (
+						variableName: parameter.Name,
+						value: GetNSObject (
+							nsObjectType: parameter.Type.WithNullable (isNullable: false).GetIdentifierSyntax (), 
+							args: [
+								Argument (IdentifierName (GetNameForVariableType (parameter.Name, VariableType.Handle)!)),
+							],
+							suppressNullableWarning: !parameter.Type.IsNullable)
+					)
+				],
+			
+			// get the string array that is nullable
+			{ IsByRef: true, Type.IsArray: true, Type.IsNullable: true, Type.ArrayElementType: SpecialType.System_String }
+				=> [
+					VariableAssignment (
+						variableName: parameter.Name,
+						value: StringArrayFromHandle ([
+							Argument (IdentifierName (GetNameForVariableType (parameter.Name, VariableType.NSArray)!)),
+							BoolArgument (false)
+						])
+					),
+				],
+			
+			// get non-nullable string array
+			{ IsByRef: true, Type.IsArray: true, Type.IsNullable: false, Type.ArrayElementType: SpecialType.System_String }
+				=> [
+					VariableAssignment (
+						variableName: parameter.Name,
+						value: SuppressNullableWarning (StringArrayFromHandle ([
+							Argument (IdentifierName (GetNameForVariableType (parameter.Name, VariableType.NSArray)!)),
+							BoolArgument (false)
+						]))
+					),
+				],
+			
+			// by ref we need to create a native handle for the NSArray 
+			{ IsByRef: true, Type.IsArray: true, Type.ArrayElementTypeIsWrapped: true }
+				=> [
+					VariableAssignment (
+ 						variableName: parameter.Name,
+					    value: GetCFArrayFromHandle (
+						    nsObjectType: parameter.Type.ToArrayElementType ().WithNullable (isNullable: false).GetIdentifierSyntax (), 
+						    args: [ 
+							    Argument (IdentifierName(GetNameForVariableType (parameter.Name, VariableType.NSArray)!)) 
+						    ], 
+						    suppressNullableWarning: !parameter.Type.IsNullable) 
+					)
+				],
+			
 			// BindAs
 			{ BindAs: not null } => [
 				ExpressionStatement (
@@ -155,7 +262,7 @@ static partial class BindingSyntaxFactory {
 		// if the parameter does not allow the object to be null and it is a reference type, we need to add the null check
 		// otherwise ignore it. We do not want this check for INativeObjects (includes NSObject) because the GetNonNullableHandle
 		// will throw an exception if the object is null.
-		if (argumentInfo.Type is { IsReferenceType: true, IsINativeObject: false, IsNullable: false }) {
+		if (argumentInfo.Type is { IsReferenceType: true, IsINativeObject: false, IsNullable: false } && !argumentInfo.IsByRef) {
 			builder.Add (ThrowIfNull (argumentInfo.Name));
 		}
 
@@ -163,6 +270,54 @@ static partial class BindingSyntaxFactory {
 		// which is the lower type of the parameter
 #pragma warning disable format
 		ImmutableArray<SyntaxNode> conversions = argumentInfo switch {
+			// by ref we need to create a native handle for the NSString
+			{ IsByRef: true, Type.IsArray: false, Type.SpecialType: SpecialType.System_String }
+				=> [
+					VariableInitialization (
+						variableName: GetNameForVariableType (argumentInfo.Name, VariableType.NSString)!, 
+						type: NativeHandle)
+				],
+			
+			// enums that are not smart enums arse going to be passed as pointers
+			{ IsByRef: true, Type.IsEnum: true, Type.IsSmartEnum: false} => [],
+			
+			// other types that are not objects
+			{ IsByRef: true, Type.SpecialType: not SpecialType.None } => [], 
+
+			// structs just need the pointer
+			{ IsByRef: true, Type.IsStruct: true} => [],
+			
+			{ IsByRef: true, Type.IsArray: false, Type.IsINativeObject: true, Type.IsNSObject: false }
+				=> [
+					VariableInitialization (
+						variableName: GetNameForVariableType (argumentInfo.Name, VariableType.Handle)!, 
+						type: NativeHandle)
+				],
+			
+			// nsobject or interface need a native handle to pass to the native code by ref
+			{ IsByRef: true, Type.IsArray: false, Type.IsWrapped: true}
+				=> [
+					VariableInitialization (
+						variableName: GetNameForVariableType (argumentInfo.Name, VariableType.Handle)!, 
+						type: NativeHandle)
+				],
+			
+			// by ref we need to create a native handle for the NSArray 
+			{ IsByRef: true, Type.IsArray: true, Type.ArrayElementType: SpecialType.System_String }
+				=> [
+					VariableInitialization (
+						variableName: GetNameForVariableType (argumentInfo.Name, VariableType.NSArray)!, 
+						type: NativeHandle)
+				],
+			
+			// by ref we need to create a native handle for the NSArray 
+			{ IsByRef: true, Type.IsArray: true, Type.ArrayElementIsINativeObject: true }
+				=> [
+					VariableInitialization (
+						variableName: GetNameForVariableType (argumentInfo.Name, VariableType.NSArray)!, 
+						type: NativeHandle)
+				],
+			
 			// pointer parameter 
 			{ Type.IsPointer: true } => [],
 			
@@ -309,9 +464,44 @@ static partial class BindingSyntaxFactory {
 		var parameterIdentifier = IdentifierName (argumentInfo.Name);
 #pragma warning disable format
 		var expression = (Type: parameterType, Parameter: argumentInfo ) switch {
-			// ref parameters have to be converted to a pointer
-			{ Parameter.IsByRef: true } => AsPointer (parameterType, [ArgumentForParameter (argumentInfo.Name, ReferenceKind.Ref)]),
-
+			
+			// if it is by ref AND a string, using the handle of the nsstring aux variable
+			{ Parameter.IsByRef: true, Type.IsArray: false, Type.SpecialType: SpecialType.System_String }
+				=> PrefixUnaryExpression (
+					SyntaxKind.AddressOfExpression, 
+					IdentifierName (GetNameForVariableType (argumentInfo.Name, VariableType.NSString)!)), 
+			
+			// enums that are not smart enums arse going to be passed as pointers
+			{ Parameter.IsByRef: true, Type.IsEnum: true, Type.IsSmartEnum: false} 
+				=> AsPointer (parameterType, [ArgumentForParameter (argumentInfo.Name, ReferenceKind.Ref)]),
+			
+			// ref parameters have to be converted to a pointer in they are not a wrapped type, int, byte etc..
+			{ Parameter.IsByRef: true, Type.SpecialType: not SpecialType.None } 
+				=> AsPointer (parameterType, [ArgumentForParameter (argumentInfo.Name, ReferenceKind.Ref)]),
+			
+			// structs are passed as pointers
+			// ref parameters have to be converted to a pointer in they are not a wrapped type, int, byte etc..
+			{ Parameter.IsByRef: true, Type.IsStruct: true} 
+				=> AsPointer (parameterType, [ArgumentForParameter (argumentInfo.Name, ReferenceKind.Ref)]),
+			
+			// ref parameters that are wrapped types, we need to use the native handle of the wrapped type
+			{ Parameter.IsByRef: true, Type.IsArray: false, Type.IsWrapped: true } 
+				=> PrefixUnaryExpression (
+					SyntaxKind.AddressOfExpression, 
+					IdentifierName (GetNameForVariableType (argumentInfo.Name, VariableType.Handle)!)), 
+			
+			// deal with arrays of string
+			{ Parameter.IsByRef: true, Type.IsArray: true, Type.ArrayElementType: SpecialType.System_String }
+				=> PrefixUnaryExpression ( 
+					SyntaxKind.AddressOfExpression, 
+					IdentifierName (GetNameForVariableType (argumentInfo.Name, VariableType.NSArray)!)), 
+			
+			// deal with arrays of INativeObjects
+			{ Parameter.IsByRef: true, Type.IsArray: true, Type.ArrayElementIsINativeObject: true }
+				=> PrefixUnaryExpression ( 
+					SyntaxKind.AddressOfExpression, 
+			IdentifierName (GetNameForVariableType (argumentInfo.Name, VariableType.NSArray)!)), 
+			
 			// delegate parameter, c callback
 			// System.Runtime.InteropServices.Marshal.GetDelegateForFunctionPointer<ParameterType> (ParameterName)
 			{ Type.IsDelegate: true, Parameter.IsCCallback: true } 
@@ -335,7 +525,7 @@ static partial class BindingSyntaxFactory {
     
 			// smart enums must use the aux variable
 			{ Type.IsSmartEnum: true} 
-				=> IdentifierName (GetNameForVariableType (argumentInfo.Name, VariableType.BindFrom)!),
+				=> GetHandleMember (IdentifierName (GetNameForVariableType (argumentInfo.Name, VariableType.BindFrom)!)),
 			
 			// native enum, return the conversion expression to the native type
 			{ Type.IsNativeEnum: true} 
@@ -349,16 +539,16 @@ static partial class BindingSyntaxFactory {
 			
 			// use the native handle of the array
 			{ Type.IsArray: true, Type.ArrayElementTypeIsWrapped: true } =>
-				IdentifierName (GetNameForVariableType (argumentInfo.Name, VariableType.NSArray)!),
+				GetHandleMember (IdentifierName (GetNameForVariableType (argumentInfo.Name, VariableType.NSArray)!)),
 			
 			// NSArray.ArrayFromHandle<{0}> ({1})!
 			{ Type.IsArray: true, Type.ArrayElementIsINativeObject: true } =>
-				IdentifierName (GetNameForVariableType (argumentInfo.Name, VariableType.NSArray)!),
+				GetHandleMember (IdentifierName (GetNameForVariableType (argumentInfo.Name, VariableType.NSArray)!)),
 			
 			// string[]
 			// CFArray.StringArrayFromHandle (ParameterName)!
 			{ Type.IsArray: true, Type.ArrayElementType: SpecialType.System_String } =>
-				IdentifierName (GetNameForVariableType (argumentInfo.Name, VariableType.NSArray)!),
+				GetHandleMember (IdentifierName (GetNameForVariableType (argumentInfo.Name, VariableType.NSArray)!)),
 			
 			// string
 			// CFString.FromHandle (ParameterName)!

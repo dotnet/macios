@@ -22,12 +22,12 @@ readonly partial struct Method : IEquatable<Method> {
 	/// <summary>
 	/// Method name.
 	/// </summary>
-	public string Name { get; }
+	public string Name { get; init; }
 
 	/// <summary>
 	/// Method return type.
 	/// </summary>
-	public TypeInfo ReturnType { get; }
+	public TypeInfo ReturnType { get; init; }
 
 	/// <summary>
 	/// The platform availability of the method.
@@ -47,7 +47,7 @@ readonly partial struct Method : IEquatable<Method> {
 	/// <summary>
 	/// Parameters list.
 	/// </summary>
-	public ImmutableArray<Parameter> Parameters { get; } = [];
+	public ImmutableArray<Parameter> Parameters { get; init; } = [];
 
 	/// <inheritdoc/>
 	public bool Equals (Method other)

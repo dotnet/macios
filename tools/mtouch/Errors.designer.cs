@@ -67,8 +67,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This version of Xamarin.Mac requires Mono {0} (the current Mono version is {1}). Please update the Mono.framework from http://mono-project.com/Downloads
-        ///		.
+        ///   Looks up a localized string similar to This version of Xamarin.Mac requires Mono {0} (the current Mono version is {1}). Please update the Mono.framework from http://mono-project.com/Downloads.
         /// </summary>
         public static string MM0001 {
             get {
@@ -77,8 +76,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You should provide one root assembly only, found {0} assemblies: &apos;{1}&apos;
-        ///		.
+        ///   Looks up a localized string similar to You should provide one root assembly only, found {0} assemblies: &apos;{1}&apos;.
         /// </summary>
         public static string MM0008 {
             get {
@@ -87,8 +85,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Application name &apos;{0}.exe&apos; conflicts with another user assembly.
-        ///		.
+        ///   Looks up a localized string similar to Application name &apos;{0}.exe&apos; conflicts with another user assembly..
         /// </summary>
         public static string MM0023 {
             get {
@@ -97,8 +94,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You cannot provide a root assembly if --no-root-assembly is passed, found {0} assemblies: &apos;{1}&apos;
-        ///		.
+        ///   Looks up a localized string similar to You cannot provide a root assembly if --no-root-assembly is passed, found {0} assemblies: &apos;{1}&apos;.
         /// </summary>
         public static string MM0050 {
             get {
@@ -107,8 +103,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to An output directory (--output) is required if --no-root-assembly is passed.
-        ///		.
+        ///   Looks up a localized string similar to An output directory (--output) is required if --no-root-assembly is passed..
         /// </summary>
         public static string MM0051 {
             get {
@@ -117,8 +112,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No executable was copied into the app bundle.  Please contact &apos;support@xamarin.com&apos;
-        ///		.
+        ///   Looks up a localized string similar to No executable was copied into the app bundle.  Please contact &apos;support@xamarin.com&apos;.
         /// </summary>
         public static string MM0079 {
             get {
@@ -127,8 +121,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to machine.config file &apos;{0}&apos; can not be found.
-        ///		.
+        ///   Looks up a localized string similar to machine.config file &apos;{0}&apos; can not be found..
         /// </summary>
         public static string MM0097 {
             get {
@@ -137,8 +130,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hybrid AOT compilation requires all assemblies to be AOT compiled
-        ///		.
+        ///   Looks up a localized string similar to Hybrid AOT compilation requires all assemblies to be AOT compiled.
         /// </summary>
         public static string MM0114 {
             get {
@@ -147,8 +139,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Projects using the Classic API are not supported anymore. Please migrate the project to the Unified API.
-        ///		.
+        ///   Looks up a localized string similar to Projects using the Classic API are not supported anymore. Please migrate the project to the Unified API..
         /// </summary>
         public static string MM0143 {
             get {
@@ -157,8 +148,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Building 32-bit apps is not supported anymore. Please change the architecture in the project&apos;s Mac Build options to &apos;x86_64&apos;.
-        ///		.
+        ///   Looks up a localized string similar to Building 32-bit apps is not supported anymore. Please change the architecture in the project&apos;s Mac Build options to &apos;x86_64&apos;..
         /// </summary>
         public static string MM0144 {
             get {
@@ -167,8 +157,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unable to parse the cflags &apos;{0} from pkg-config: {1}
-        ///		.
+        ///   Looks up a localized string similar to Unable to parse the cflags &apos;{0} from pkg-config: {1}.
         /// </summary>
         public static string MM0147 {
             get {
@@ -177,8 +166,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not create symlink &apos;{0}&apos; -&gt; &apos;{1}&apos;: error {2}
-        ///		.
+        ///   Looks up a localized string similar to Could not create symlink &apos;{0}&apos; -&gt; &apos;{1}&apos;: error {2}.
         /// </summary>
         public static string MM1034 {
             get {
@@ -187,8 +175,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The required &apos;Xamarin.Mac.dll&apos; assembly is missing from the references
-        ///		.
+        ///   Looks up a localized string similar to The required &apos;Xamarin.Mac.dll&apos; assembly is missing from the references.
         /// </summary>
         public static string MM1401 {
             get {
@@ -197,8 +184,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The assembly &apos;{0}&apos; is not compatible with this tool or profile
-        ///		.
+        ///   Looks up a localized string similar to The assembly &apos;{0}&apos; is not compatible with this tool or profile.
         /// </summary>
         public static string MM1402 {
             get {
@@ -207,8 +193,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} {1} could not be found. Target framework &apos;{2}&apos; is unusable to package the application.
-        ///		.
+        ///   Looks up a localized string similar to {0} {1} could not be found. Target framework &apos;{2}&apos; is unusable to package the application..
         /// </summary>
         public static string MM1403 {
             get {
@@ -217,8 +202,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Target framework &apos;{0}&apos; is invalid.
-        ///		.
+        ///   Looks up a localized string similar to Target framework &apos;{0}&apos; is invalid..
         /// </summary>
         public static string MM1404 {
             get {
@@ -227,8 +211,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to useFullXamMacFramework must always target framework .NET 4.5, not &apos;{0}&apos; which is invalid.
-        ///		.
+        ///   Looks up a localized string similar to useFullXamMacFramework must always target framework .NET 4.5, not &apos;{0}&apos; which is invalid..
         /// </summary>
         public static string MM1405 {
             get {
@@ -237,8 +220,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Mismatch between Xamarin.Mac reference &apos;{0}&apos; and target framework selected &apos;{1}&apos;.
-        ///		.
+        ///   Looks up a localized string similar to Mismatch between Xamarin.Mac reference &apos;{0}&apos; and target framework selected &apos;{1}&apos;..
         /// </summary>
         public static string MM1407 {
             get {
@@ -247,8 +229,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Can not resolve reference: {0}
-        ///		.
+        ///   Looks up a localized string similar to Can not resolve reference: {0}.
         /// </summary>
         public static string MM1501 {
             get {
@@ -257,8 +238,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Native library &apos;{0}&apos; was referenced but could not be found.
-        ///		.
+        ///   Looks up a localized string similar to Native library &apos;{0}&apos; was referenced but could not be found..
         /// </summary>
         public static string MM2006 {
             get {
@@ -267,8 +247,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Xamarin.Mac Unified API against a full .NET framework does not support linking SDK or All assemblies. Pass either the `-nolink` or `-linkplatform` flag.
-        ///		.
+        ///   Looks up a localized string similar to Xamarin.Mac Unified API against a full .NET framework does not support linking SDK or All assemblies. Pass either the `-nolink` or `-linkplatform` flag..
         /// </summary>
         public static string MM2007 {
             get {
@@ -277,8 +256,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to   Referenced by {0}.{1}
-        ///		.
+        ///   Looks up a localized string similar to   Referenced by {0}.{1}.
         /// </summary>
         public static string MM2009 {
             get {
@@ -287,8 +265,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to  Only first {0} of {1} \&quot;Referenced by\&quot; warnings shown.
-        ///		.
+        ///   Looks up a localized string similar to  Only first {0} of {1} \&quot;Referenced by\&quot; warnings shown..
         /// </summary>
         public static string MM2012 {
             get {
@@ -297,8 +274,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Failed to resolve the reference to \&quot;{0}\&quot;, referenced in \&quot;{1}\&quot;. The app will not include the referenced assembly, and may fail at runtime.
-        ///		.
+        ///   Looks up a localized string similar to Failed to resolve the reference to \&quot;{0}\&quot;, referenced in \&quot;{1}\&quot;. The app will not include the referenced assembly, and may fail at runtime..
         /// </summary>
         public static string MM2013 {
             get {
@@ -307,8 +283,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not optimize the call to BlockLiteral.{2} in {0} at offset {1} because the previous instruction was unexpected ({3})
-        ///		.
+        ///   Looks up a localized string similar to Could not optimize the call to BlockLiteral.{2} in {0} at offset {1} because the previous instruction was unexpected ({3}).
         /// </summary>
         public static string MM2106 {
             get {
@@ -317,8 +292,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not optimize the call to BlockLiteral.{2} in {0} at offset {1} because could not determine the type of the delegate type of the first argument (instruction: {3})
-        ///		.
+        ///   Looks up a localized string similar to Could not optimize the call to BlockLiteral.{2} in {0} at offset {1} because could not determine the type of the delegate type of the first argument (instruction: {3}).
         /// </summary>
         public static string MM2106_A {
             get {
@@ -327,8 +301,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not optimize the call to BlockLiteral.{2} in {0} because the type of the value passed as the first argument (the trampoline) is {1}, which makes it impossible to compute the block signature.
-        ///		.
+        ///   Looks up a localized string similar to Could not optimize the call to BlockLiteral.{2} in {0} because the type of the value passed as the first argument (the trampoline) is {1}, which makes it impossible to compute the block signature..
         /// </summary>
         public static string MM2106_B {
             get {
@@ -337,8 +310,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not optimize the call to BlockLiteral.SetupBlock in {0} at offset {1}: {2}.
-        ///		.
+        ///   Looks up a localized string similar to Could not optimize the call to BlockLiteral.SetupBlock in {0} at offset {1}: {2}..
         /// </summary>
         public static string MM2106_D {
             get {
@@ -347,8 +319,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to It&apos;s not safe to remove the dynamic registrar, because {0} references &apos;{1}.{2} ({3})&apos;.
-        ///		.
+        ///   Looks up a localized string similar to It&apos;s not safe to remove the dynamic registrar, because {0} references &apos;{1}.{2} ({3})&apos;..
         /// </summary>
         public static string MM2107 {
             get {
@@ -357,8 +328,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} was stripped of architectures except {1} to comply with App Store restrictions. This could break existing codesigning signatures. Consider stripping the library with lipo or disabling with --optimize=-trim-architectures
-        ///		.
+        ///   Looks up a localized string similar to {0} was stripped of architectures except {1} to comply with App Store restrictions. This could break existing codesigning signatures. Consider stripping the library with lipo or disabling with --optimize=-trim-architectures.
         /// </summary>
         public static string MM2108 {
             get {
@@ -367,8 +337,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Xamarin.Mac &apos;Partial Static&apos; registrar does not support linking. Disable linking or use another registrar mode.
-        ///		.
+        ///   Looks up a localized string similar to Xamarin.Mac &apos;Partial Static&apos; registrar does not support linking. Disable linking or use another registrar mode..
         /// </summary>
         public static string MM2110 {
             get {
@@ -377,8 +346,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to AOT of &apos;{0}&apos; was requested but was not found
-        ///		.
+        ///   Looks up a localized string similar to AOT of &apos;{0}&apos; was requested but was not found.
         /// </summary>
         public static string MM3009 {
             get {
@@ -387,8 +355,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Exclusion of AOT of &apos;{0}&apos; was requested but was not found
-        ///		.
+        ///   Looks up a localized string similar to Exclusion of AOT of &apos;{0}&apos; was requested but was not found.
         /// </summary>
         public static string MM3010 {
             get {
@@ -397,8 +364,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Your application is using the &apos;{0}&apos; framework, which isn&apos;t included in the {3} SDK you&apos;re using to build your app (this framework was introduced in {3} {2}, while you&apos;re building with the {3} {1} SDK.) This configuration is not supported with the static registrar (pass --registrar:dynamic as an additional mmp argument in your project&apos;s Mac Build option to select). Alternatively select a newer SDK in your app&apos;s Mac Build options.	
-        ///		.
+        ///   Looks up a localized string similar to Your application is using the &apos;{0}&apos; framework, which isn&apos;t included in the {3} SDK you&apos;re using to build your app (this framework was introduced in {3} {2}, while you&apos;re building with the {3} {1} SDK.) This configuration is not supported with the static registrar (pass --registrar:dynamic as an additional mmp argument in your project&apos;s Mac Build option to select). Alternatively select a newer SDK in your app&apos;s Mac Build options.	.
         /// </summary>
         public static string MM4134 {
             get {
@@ -407,8 +373,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Failed to compile. Error code - {0}. Please file a bug report at https://github.com/dotnet/macios/issues/new
-        ///		.
+        ///   Looks up a localized string similar to Failed to compile. Error code - {0}. Please file a bug report at https://github.com/dotnet/macios/issues/new.
         /// </summary>
         public static string MM5103 {
             get {
@@ -417,8 +382,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Native linking failed with error code 1.  Check build log for details.
-        ///		.
+        ///   Looks up a localized string similar to Native linking failed with error code 1.  Check build log for details..
         /// </summary>
         public static string MM5109 {
             get {
@@ -427,8 +391,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Mono.framework MDK is missing. Please install the MDK for your Mono.framework version from https://www.mono-project.com/download/
-        ///		.
+        ///   Looks up a localized string similar to Mono.framework MDK is missing. Please install the MDK for your Mono.framework version from https://www.mono-project.com/download/.
         /// </summary>
         public static string MM5202 {
             get {
@@ -437,8 +400,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Can&apos;t find {0}, likely because of a corrupted Xamarin.Mac installation. Please reinstall Xamarin.Mac.
-        ///		.
+        ///   Looks up a localized string similar to Can&apos;t find {0}, likely because of a corrupted Xamarin.Mac installation. Please reinstall Xamarin.Mac..
         /// </summary>
         public static string MM5203 {
             get {
@@ -447,8 +409,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid architecture &apos;{0}&apos;. The only valid architectures is x86_64.
-        ///		.
+        ///   Looks up a localized string similar to Invalid architecture &apos;{0}&apos;. The only valid architectures is x86_64..
         /// </summary>
         public static string MM5205 {
             get {
@@ -457,8 +418,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Skipping framework &apos;{0}&apos;. It is prohibited (rejected) by the Mac App Store
-        ///		.
+        ///   Looks up a localized string similar to Skipping framework &apos;{0}&apos;. It is prohibited (rejected) by the Mac App Store.
         /// </summary>
         public static string MM5220 {
             get {
@@ -467,8 +427,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Linking against framework &apos;{0}&apos;. It is prohibited (rejected) by the Mac App Store
-        ///		.
+        ///   Looks up a localized string similar to Linking against framework &apos;{0}&apos;. It is prohibited (rejected) by the Mac App Store.
         /// </summary>
         public static string MM5221 {
             get {
@@ -477,8 +436,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Xcode license agreement may not have been accepted.  Please launch Xcode.
-        ///		.
+        ///   Looks up a localized string similar to Xcode license agreement may not have been accepted.  Please launch Xcode..
         /// </summary>
         public static string MM5308 {
             get {
@@ -487,8 +445,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to install_name_tool failed with an error code &apos;{0}&apos;. Check build log for details.
-        ///		.
+        ///   Looks up a localized string similar to install_name_tool failed with an error code &apos;{0}&apos;. Check build log for details..
         /// </summary>
         public static string MM5310 {
             get {
@@ -497,8 +454,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unexpected error - Please fill a bug report at https://github.com/dotnet/macios/issues/new
-        ///		.
+        ///   Looks up a localized string similar to Unexpected error - Please fill a bug report at https://github.com/dotnet/macios/issues/new.
         /// </summary>
         public static string MT0000 {
             get {
@@ -507,8 +463,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &apos;-devname&apos; was provided without any device-specific action
-        ///		.
+        ///   Looks up a localized string similar to &apos;-devname&apos; was provided without any device-specific action.
         /// </summary>
         public static string MT0001 {
             get {
@@ -517,8 +472,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not parse the environment variable &apos;{0}&apos;
-        ///		.
+        ///   Looks up a localized string similar to Could not parse the environment variable &apos;{0}&apos;.
         /// </summary>
         public static string MT0002 {
             get {
@@ -527,8 +481,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to New refcounting logic requires SGen to be enabled too.
-        ///		.
+        ///   Looks up a localized string similar to New refcounting logic requires SGen to be enabled too..
         /// </summary>
         public static string MT0004 {
             get {
@@ -537,8 +490,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The output directory * does not exist.
-        ///		.
+        ///   Looks up a localized string similar to The output directory * does not exist..
         /// </summary>
         public static string MT0005 {
             get {
@@ -547,8 +499,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to There is no devel platform at {0}, use --platform=PLAT to specify the SDK.
-        ///		.
+        ///   Looks up a localized string similar to There is no devel platform at {0}, use --platform=PLAT to specify the SDK..
         /// </summary>
         public static string MT0006 {
             get {
@@ -557,8 +508,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} was built against a more recent runtime ({1}) than Xamarin.iOS supports.
-        ///		.
+        ///   Looks up a localized string similar to {0} was built against a more recent runtime ({1}) than Xamarin.iOS supports..
         /// </summary>
         public static string MT0011 {
             get {
@@ -567,8 +517,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Incomplete data is provided to complete *.
-        ///		.
+        ///   Looks up a localized string similar to Incomplete data is provided to complete *..
         /// </summary>
         public static string MT0012 {
             get {
@@ -577,8 +526,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Profiling support requires sgen to be enabled too.
-        ///		.
+        ///   Looks up a localized string similar to Profiling support requires sgen to be enabled too..
         /// </summary>
         public static string MT0013 {
             get {
@@ -587,8 +535,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The iOS {0} SDK does not support building applications targeting {1}.
-        ///		.
+        ///   Looks up a localized string similar to The iOS {0} SDK does not support building applications targeting {1}..
         /// </summary>
         public static string MT0014 {
             get {
@@ -597,8 +544,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid ABI: {0}. Supported ABIs are: i386, x86_64, armv7, armv7+llvm, armv7+llvm+thumb2, armv7s, armv7s+llvm, armv7s+llvm+thumb2, armv7k, armv7k+llvm, arm64, arm64+llvm, arm64_32 and arm64_32+llvm.
-        ///		.
+        ///   Looks up a localized string similar to Invalid ABI: {0}. Supported ABIs are: i386, x86_64, armv7, armv7+llvm, armv7+llvm+thumb2, armv7s, armv7s+llvm, armv7s+llvm+thumb2, armv7k, armv7k+llvm, arm64, arm64+llvm, arm64_32 and arm64_32+llvm..
         /// </summary>
         public static string MT0015 {
             get {
@@ -607,8 +553,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only one --[log|install|kill|launch]dev or --[launch|debug]sim option can be used.
-        ///		.
+        ///   Looks up a localized string similar to Only one --[log|install|kill|launch]dev or --[launch|debug]sim option can be used..
         /// </summary>
         public static string MT0019 {
             get {
@@ -617,8 +562,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot compile using gcc/g++ (--use-gcc) when using the static registrar (this is the default when compiling for device). Either remove the --use-gcc flag or use the dynamic registrar (--registrar:dynamic).
-        ///		.
+        ///   Looks up a localized string similar to Cannot compile using gcc/g++ (--use-gcc) when using the static registrar (this is the default when compiling for device). Either remove the --use-gcc flag or use the dynamic registrar (--registrar:dynamic)..
         /// </summary>
         public static string MT0021 {
             get {
@@ -627,8 +571,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The options &apos;--unsupported--enable-generics-in-registrar&apos; and &apos;--registrar&apos; are not compatible.
-        ///		.
+        ///   Looks up a localized string similar to The options &apos;--unsupported--enable-generics-in-registrar&apos; and &apos;--registrar&apos; are not compatible..
         /// </summary>
         public static string MT0022 {
             get {
@@ -637,8 +580,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The root assembly {0} conflicts with another assembly ({1}).
-        ///		.
+        ///   Looks up a localized string similar to The root assembly {0} conflicts with another assembly ({1})..
         /// </summary>
         public static string MT0023 {
             get {
@@ -647,8 +589,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not find required file &apos;{0}&apos;.
-        ///		.
+        ///   Looks up a localized string similar to Could not find required file &apos;{0}&apos;..
         /// </summary>
         public static string MT0024 {
             get {
@@ -657,8 +598,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No SDK version was provided. Please add --sdk=X.Y to specify which {0} SDK should be used to build your application.
-        ///		.
+        ///   Looks up a localized string similar to No SDK version was provided. Please add --sdk=X.Y to specify which {0} SDK should be used to build your application..
         /// </summary>
         public static string MT0025 {
             get {
@@ -667,8 +607,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The options &apos;\*&apos; and &apos;\*&apos; are not compatible.
-        ///		.
+        ///   Looks up a localized string similar to The options &apos;\*&apos; and &apos;\*&apos; are not compatible..
         /// </summary>
         public static string MT0027 {
             get {
@@ -677,8 +616,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot enable PIE (-pie) when targeting iOS 4.1 or earlier. Please disable PIE (-pie:false) or set the deployment target to at least iOS 4.2
-        ///		.
+        ///   Looks up a localized string similar to Cannot enable PIE (-pie) when targeting iOS 4.1 or earlier. Please disable PIE (-pie:false) or set the deployment target to at least iOS 4.2.
         /// </summary>
         public static string MT0028 {
             get {
@@ -687,8 +625,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to REPL (--enable-repl) is only supported in the simulator (--sim).
-        ///		.
+        ///   Looks up a localized string similar to REPL (--enable-repl) is only supported in the simulator (--sim)..
         /// </summary>
         public static string MT0029 {
             get {
@@ -697,8 +634,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The executable name ({0}) and the app name ({1}) are different, this may prevent crash logs from getting symbolicated properly.
-        ///		.
+        ///   Looks up a localized string similar to The executable name ({0}) and the app name ({1}) are different, this may prevent crash logs from getting symbolicated properly..
         /// </summary>
         public static string MT0030 {
             get {
@@ -707,8 +643,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The command line arguments &apos;--enable-background-fetch&apos; and &apos;--launch-for-background-fetch&apos; require &apos;--launchsim&apos; too.
-        ///		.
+        ///   Looks up a localized string similar to The command line arguments &apos;--enable-background-fetch&apos; and &apos;--launch-for-background-fetch&apos; require &apos;--launchsim&apos; too..
         /// </summary>
         public static string MT0031 {
             get {
@@ -717,8 +652,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The option &apos;--debugtrack&apos; is ignored unless &apos;--debug&apos; is also specified.
-        ///		.
+        ///   Looks up a localized string similar to The option &apos;--debugtrack&apos; is ignored unless &apos;--debug&apos; is also specified..
         /// </summary>
         public static string MT0032 {
             get {
@@ -727,8 +661,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot reference &apos;{0}.dll&apos; in a {1} project - it is implicitly referenced by &apos;{2}&apos;.
-        ///		.
+        ///   Looks up a localized string similar to Cannot reference &apos;{0}.dll&apos; in a {1} project - it is implicitly referenced by &apos;{2}&apos;..
         /// </summary>
         public static string MT0034 {
             get {
@@ -737,8 +670,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot launch a * simulator for a * app. Please enable the correct architecture(s) in your project&apos;s iOS Build options (Advanced page).
-        ///		.
+        ///   Looks up a localized string similar to Cannot launch a * simulator for a * app. Please enable the correct architecture(s) in your project&apos;s iOS Build options (Advanced page)..
         /// </summary>
         public static string MT0036 {
             get {
@@ -747,8 +679,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not find the assembly &apos;\*&apos;, referenced by &apos;\*&apos;.
-        ///		.
+        ///   Looks up a localized string similar to Could not find the assembly &apos;\*&apos;, referenced by &apos;\*&apos;..
         /// </summary>
         public static string MT0040 {
             get {
@@ -757,8 +688,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot reference &apos;{0}&apos; in a {1} app.
-        ///		.
+        ///   Looks up a localized string similar to Cannot reference &apos;{0}&apos; in a {1} app..
         /// </summary>
         public static string MT0041 {
             get {
@@ -767,8 +697,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to --listsim is only supported with Xcode 6.0 or later.
-        ///		.
+        ///   Looks up a localized string similar to --listsim is only supported with Xcode 6.0 or later..
         /// </summary>
         public static string MT0044 {
             get {
@@ -777,8 +706,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to --extension is only supported when using the iOS 8.0 (or later) SDK.
-        ///		.
+        ///   Looks up a localized string similar to --extension is only supported when using the iOS 8.0 (or later) SDK..
         /// </summary>
         public static string MT0045 {
             get {
@@ -787,8 +715,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The minimum deployment target for Unified applications is 5.1.1, the current deployment target is &apos;*&apos;. Please select a newer deployment target in your project&apos;s iOS Application options.
-        ///		.
+        ///   Looks up a localized string similar to The minimum deployment target for Unified applications is 5.1.1, the current deployment target is &apos;*&apos;. Please select a newer deployment target in your project&apos;s iOS Application options..
         /// </summary>
         public static string MT0047 {
             get {
@@ -797,8 +724,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0}.framework is supported only if deployment target is 8.0 or later. {0} features might not work correctly.
-        ///		.
+        ///   Looks up a localized string similar to {0}.framework is supported only if deployment target is 8.0 or later. {0} features might not work correctly..
         /// </summary>
         public static string MT0049 {
             get {
@@ -807,8 +733,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {3} {0} requires Xcode {4} or later. The current Xcode version (found in {2}) is {1}.
-        ///		.
+        ///   Looks up a localized string similar to {3} {0} requires Xcode {4} or later. The current Xcode version (found in {2}) is {1}..
         /// </summary>
         public static string MT0051 {
             get {
@@ -817,8 +742,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No command specified.
-        ///		.
+        ///   Looks up a localized string similar to No command specified..
         /// </summary>
         public static string MT0052 {
             get {
@@ -827,8 +751,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unable to canonicalize the path &apos;{0}&apos;: {1} ({2}).
-        ///		.
+        ///   Looks up a localized string similar to Unable to canonicalize the path &apos;{0}&apos;: {1} ({2})..
         /// </summary>
         public static string MT0054 {
             get {
@@ -837,8 +760,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The Xcode path &apos;{0}&apos; does not exist.
-        ///		.
+        ///   Looks up a localized string similar to The Xcode path &apos;{0}&apos; does not exist..
         /// </summary>
         public static string MT0055 {
             get {
@@ -847,8 +769,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot determine the path to Xcode.app from the sdk root &apos;{0}&apos;. Please specify the full path to the Xcode.app bundle.
-        ///		.
+        ///   Looks up a localized string similar to Cannot determine the path to Xcode.app from the sdk root &apos;{0}&apos;. Please specify the full path to the Xcode.app bundle..
         /// </summary>
         public static string MT0057 {
             get {
@@ -857,8 +778,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The Xcode.app &apos;{0}&apos; is invalid (the file &apos;{1}&apos; does not exist).
-        ///		.
+        ///   Looks up a localized string similar to The Xcode.app &apos;{0}&apos; is invalid (the file &apos;{1}&apos; does not exist)..
         /// </summary>
         public static string MT0058 {
             get {
@@ -867,8 +787,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No Xcode.app specified (using --sdkroot), using the system Xcode as reported by &apos;xcode-select --print-path&apos;: {0}
-        ///		.
+        ///   Looks up a localized string similar to No Xcode.app specified (using --sdkroot), using the system Xcode as reported by &apos;xcode-select --print-path&apos;: {0}.
         /// </summary>
         public static string MT0061 {
             get {
@@ -877,8 +796,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No Xcode.app specified (using --sdkroot or &apos;xcode-select --print-path&apos;), using the default Xcode instead: {0}
-        ///		.
+        ///   Looks up a localized string similar to No Xcode.app specified (using --sdkroot or &apos;xcode-select --print-path&apos;), using the default Xcode instead: {0}.
         /// </summary>
         public static string MT0062 {
             get {
@@ -887,8 +805,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot find the executable in the extension * (no CFBundleExecutable entry in its Info.plist)
-        ///		.
+        ///   Looks up a localized string similar to Cannot find the executable in the extension * (no CFBundleExecutable entry in its Info.plist).
         /// </summary>
         public static string MT0063 {
             get {
@@ -897,8 +814,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Xamarin.iOS only supports embedded frameworks when deployment target is at least 8.0 (current deployment target: &apos;{0}&apos;; embedded frameworks: &apos;{1}&apos;)
-        ///		.
+        ///   Looks up a localized string similar to Xamarin.iOS only supports embedded frameworks when deployment target is at least 8.0 (current deployment target: &apos;{0}&apos;; embedded frameworks: &apos;{1}&apos;).
         /// </summary>
         public static string MT0065 {
             get {
@@ -907,8 +823,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Xamarin.iOS only supports embedded frameworks when deployment target is at least 2.0 (current deployment target: &apos;{0}&apos;; embedded frameworks: &apos;{1}&apos;)
-        ///		.
+        ///   Looks up a localized string similar to Xamarin.iOS only supports embedded frameworks when deployment target is at least 2.0 (current deployment target: &apos;{0}&apos;; embedded frameworks: &apos;{1}&apos;).
         /// </summary>
         public static string MT0065_A {
             get {
@@ -917,8 +832,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid build registrar assembly: *
-        ///		.
+        ///   Looks up a localized string similar to Invalid build registrar assembly: *.
         /// </summary>
         public static string MT0066 {
             get {
@@ -927,8 +841,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid registrar: {0}
-        ///		.
+        ///   Looks up a localized string similar to Invalid registrar: {0}.
         /// </summary>
         public static string MT0067 {
             get {
@@ -937,8 +850,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Extensions are not supported for the platform &apos;{0}&apos;.
-        ///		.
+        ///   Looks up a localized string similar to Extensions are not supported for the platform &apos;{0}&apos;..
         /// </summary>
         public static string MT0072 {
             get {
@@ -947,8 +859,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {4} {0} does not support a deployment target of {1} for {3} (the minimum is {2}). Please select a newer deployment target in your project&apos;s Info.plist or change the SupportedOSPlatformVersion property in your project file.
-        ///		.
+        ///   Looks up a localized string similar to {4} {0} does not support a deployment target of {1} for {3} (the minimum is {2}). Please select a newer deployment target in your project&apos;s Info.plist or change the SupportedOSPlatformVersion property in your project file..
         /// </summary>
         public static string MT0073 {
             get {
@@ -957,8 +868,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid architecture &apos;{0}&apos; for {1} projects. Valid architectures are: {2}
-        ///		.
+        ///   Looks up a localized string similar to Invalid architecture &apos;{0}&apos; for {1} projects. Valid architectures are: {2}.
         /// </summary>
         public static string MT0075 {
             get {
@@ -967,8 +877,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No architecture specified (using the --abi argument). An architecture is required for {0} projects.
-        ///		.
+        ///   Looks up a localized string similar to No architecture specified (using the --abi argument). An architecture is required for {0} projects..
         /// </summary>
         public static string MT0076 {
             get {
@@ -977,8 +886,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Incremental builds are enabled with a deployment target &lt; 8.0 (currently {0}). This is not supported (the resulting application will not launch on iOS 9), so the deployment target will be set to 8.0.
-        ///		.
+        ///   Looks up a localized string similar to Incremental builds are enabled with a deployment target &lt; 8.0 (currently {0}). This is not supported (the resulting application will not launch on iOS 9), so the deployment target will be set to 8.0..
         /// </summary>
         public static string MT0078 {
             get {
@@ -987,8 +895,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The recommended Xcode version for {4} {0} is Xcode {3} or later. The current Xcode version (found in {2}) is {1}.
-        ///		.
+        ///   Looks up a localized string similar to The recommended Xcode version for {4} {0} is Xcode {3} or later. The current Xcode version (found in {2}) is {1}..
         /// </summary>
         public static string MT0079 {
             get {
@@ -997,8 +904,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The command line argument --download-crash-report also requires --download-crash-report-to.
-        ///		.
+        ///   Looks up a localized string similar to The command line argument --download-crash-report also requires --download-crash-report-to..
         /// </summary>
         public static string MT0081 {
             get {
@@ -1007,8 +913,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to REPL (--enable-repl) is only supported when linking is not used (--nolink).
-        ///		.
+        ///   Looks up a localized string similar to REPL (--enable-repl) is only supported when linking is not used (--nolink)..
         /// </summary>
         public static string MT0082 {
             get {
@@ -1017,8 +922,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Bitcode is not supported in the simulator. Do not pass --bitcode when building for the simulator.
-        ///		.
+        ///   Looks up a localized string similar to Bitcode is not supported in the simulator. Do not pass --bitcode when building for the simulator..
         /// </summary>
         public static string MT0084 {
             get {
@@ -1027,8 +931,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No reference to &apos;{0}&apos; was found. It will be added automatically.
-        ///		.
+        ///   Looks up a localized string similar to No reference to &apos;{0}&apos; was found. It will be added automatically..
         /// </summary>
         public static string MT0085 {
             get {
@@ -1037,8 +940,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Incremental builds (--fastdev) is not supported with the Boehm GC. Incremental builds will be disabled.
-        ///		.
+        ///   Looks up a localized string similar to Incremental builds (--fastdev) is not supported with the Boehm GC. Incremental builds will be disabled..
         /// </summary>
         public static string MT0087 {
             get {
@@ -1047,8 +949,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not find &apos;mlaunch&apos;.
-        ///		.
+        ///   Looks up a localized string similar to Could not find &apos;mlaunch&apos;..
         /// </summary>
         public static string MT0093 {
             get {
@@ -1057,8 +958,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Aot files could not be copied to the destination directory {0}: {1}
-        ///		.
+        ///   Looks up a localized string similar to Aot files could not be copied to the destination directory {0}: {1}.
         /// </summary>
         public static string MT0095 {
             get {
@@ -1067,8 +967,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Aot files could not be copied to the destination directory {0}: Could not start process.
-        ///		.
+        ///   Looks up a localized string similar to Aot files could not be copied to the destination directory {0}: Could not start process..
         /// </summary>
         public static string MT0095_A {
             get {
@@ -1077,8 +976,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Aot files could not be copied to the destination directory {0}
-        ///		.
+        ///   Looks up a localized string similar to Aot files could not be copied to the destination directory {0}.
         /// </summary>
         public static string MT0095_B {
             get {
@@ -1087,8 +985,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid assembly build target: &apos;{0}&apos;. Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new).
-        ///		.
+        ///   Looks up a localized string similar to Invalid assembly build target: &apos;{0}&apos;. Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new)..
         /// </summary>
         public static string MT0100 {
             get {
@@ -1097,8 +994,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The assembly &apos;{0}&apos; is specified multiple times in --assembly-build-target arguments.
-        ///		.
+        ///   Looks up a localized string similar to The assembly &apos;{0}&apos; is specified multiple times in --assembly-build-target arguments..
         /// </summary>
         public static string MT0101 {
             get {
@@ -1107,8 +1003,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The assemblies &apos;{0}&apos; and &apos;{1}&apos; have the same target name (&apos;{2}&apos;), but different targets (&apos;{3}&apos; and &apos;{4}&apos;).
-        ///		.
+        ///   Looks up a localized string similar to The assemblies &apos;{0}&apos; and &apos;{1}&apos; have the same target name (&apos;{2}&apos;), but different targets (&apos;{3}&apos; and &apos;{4}&apos;)..
         /// </summary>
         public static string MT0102 {
             get {
@@ -1117,8 +1012,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The static object &apos;{0}&apos; contains more than one assembly (&apos;{1}&apos;), but each static object must correspond with exactly one assembly.
-        ///		.
+        ///   Looks up a localized string similar to The static object &apos;{0}&apos; contains more than one assembly (&apos;{1}&apos;), but each static object must correspond with exactly one assembly..
         /// </summary>
         public static string MT0103 {
             get {
@@ -1127,8 +1021,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No assembly build target was specified for &apos;{0}&apos;.
-        ///		.
+        ///   Looks up a localized string similar to No assembly build target was specified for &apos;{0}&apos;..
         /// </summary>
         public static string MT0105 {
             get {
@@ -1137,8 +1030,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The assembly build target name &apos;{0}&apos; is invalid: the character &apos;{1}&apos; is not allowed.
-        ///		.
+        ///   Looks up a localized string similar to The assembly build target name &apos;{0}&apos; is invalid: the character &apos;{1}&apos; is not allowed..
         /// </summary>
         public static string MT0106 {
             get {
@@ -1147,8 +1039,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The assemblies &apos;{0}&apos; have different custom LLVM optimizations (&apos;{1}&apos;), which is not allowed when they are all compiled to a single binary.
-        ///		.
+        ///   Looks up a localized string similar to The assemblies &apos;{0}&apos; have different custom LLVM optimizations (&apos;{1}&apos;), which is not allowed when they are all compiled to a single binary..
         /// </summary>
         public static string MT0107 {
             get {
@@ -1157,8 +1048,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The assembly build target &apos;{0}&apos; did not match any assemblies.
-        ///		.
+        ///   Looks up a localized string similar to The assembly build target &apos;{0}&apos; did not match any assemblies..
         /// </summary>
         public static string MT0108 {
             get {
@@ -1167,8 +1057,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The assembly &apos;{0}&apos; was loaded from a different path than the provided path (provided path: {1}, actual path: {2}).
-        ///		.
+        ///   Looks up a localized string similar to The assembly &apos;{0}&apos; was loaded from a different path than the provided path (provided path: {1}, actual path: {2})..
         /// </summary>
         public static string MT0109 {
             get {
@@ -1177,8 +1066,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Native code sharing has been disabled because {0}
-        ///		.
+        ///   Looks up a localized string similar to Native code sharing has been disabled because {0}.
         /// </summary>
         public static string MT0112 {
             get {
@@ -1187,8 +1075,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to the container app&apos;s deployment target is earlier than iOS 8.0 (it&apos;s {0}).
-        ///		.
+        ///   Looks up a localized string similar to the container app&apos;s deployment target is earlier than iOS 8.0 (it&apos;s {0})..
         /// </summary>
         public static string MT0112_a {
             get {
@@ -1197,8 +1084,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to the container app includes I18N assemblies ({0}).
-        ///		.
+        ///   Looks up a localized string similar to the container app includes I18N assemblies ({0})..
         /// </summary>
         public static string MT0112_b {
             get {
@@ -1207,8 +1093,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to the container app has custom xml definitions for the managed linker ({0}).
-        ///		.
+        ///   Looks up a localized string similar to the container app has custom xml definitions for the managed linker ({0})..
         /// </summary>
         public static string MT0112_c {
             get {
@@ -1217,8 +1102,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Native code sharing has been disabled for the extension &apos;{0}&apos; because {1}
-        ///		.
+        ///   Looks up a localized string similar to Native code sharing has been disabled for the extension &apos;{0}&apos; because {1}.
         /// </summary>
         public static string MT0113 {
             get {
@@ -1227,8 +1111,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to the bitcode options differ between the container app ({0}) and the extension ({1}).
-        ///		.
+        ///   Looks up a localized string similar to the bitcode options differ between the container app ({0}) and the extension ({1})..
         /// </summary>
         public static string MT0113_a {
             get {
@@ -1237,8 +1120,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to the --assembly-build-target options are different between the container app ({0}) and the extension ({1}).
-        ///		.
+        ///   Looks up a localized string similar to the --assembly-build-target options are different between the container app ({0}) and the extension ({1})..
         /// </summary>
         public static string MT0113_b {
             get {
@@ -1247,8 +1129,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to the I18N assemblies are different between the container app ({0}) and the extension ({1}).
-        ///		.
+        ///   Looks up a localized string similar to the I18N assemblies are different between the container app ({0}) and the extension ({1})..
         /// </summary>
         public static string MT0113_c {
             get {
@@ -1257,8 +1138,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to the arguments to the AOT compiler are different between the container app ({0}) and the extension ({1}).
-        ///		.
+        ///   Looks up a localized string similar to the arguments to the AOT compiler are different between the container app ({0}) and the extension ({1})..
         /// </summary>
         public static string MT0113_d {
             get {
@@ -1267,8 +1147,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to the other arguments to the AOT compiler are different between the container app ({0}) and the extension ({1}).
-        ///		.
+        ///   Looks up a localized string similar to the other arguments to the AOT compiler are different between the container app ({0}) and the extension ({1})..
         /// </summary>
         public static string MT0113_e {
             get {
@@ -1277,8 +1156,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to LLVM is not enabled or disabled in both the container app ({0}) and the extension ({1}).
-        ///		.
+        ///   Looks up a localized string similar to LLVM is not enabled or disabled in both the container app ({0}) and the extension ({1})..
         /// </summary>
         public static string MT0113_f {
             get {
@@ -1287,8 +1165,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to the managed linker settings are different between the container app ({0}) and the extension ({1}).
-        ///		.
+        ///   Looks up a localized string similar to the managed linker settings are different between the container app ({0}) and the extension ({1})..
         /// </summary>
         public static string MT0113_g {
             get {
@@ -1297,8 +1174,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to the skipped assemblies for the managed linker are different between the container app ({0}) and the extension ({1}).
-        ///		.
+        ///   Looks up a localized string similar to the skipped assemblies for the managed linker are different between the container app ({0}) and the extension ({1})..
         /// </summary>
         public static string MT0113_h {
             get {
@@ -1307,8 +1183,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to the extension has custom xml definitions for the managed linker ({0}).
-        ///		.
+        ///   Looks up a localized string similar to the extension has custom xml definitions for the managed linker ({0})..
         /// </summary>
         public static string MT0113_i {
             get {
@@ -1317,8 +1192,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to the interpreter settings are different between the container app ({0}) and the extension ({1}).
-        ///		.
+        ///   Looks up a localized string similar to the interpreter settings are different between the container app ({0}) and the extension ({1})..
         /// </summary>
         public static string MT0113_j {
             get {
@@ -1327,8 +1201,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to the interpreted assemblies are different between the container app ({0}) and the extension ({1}).
-        ///		.
+        ///   Looks up a localized string similar to the interpreted assemblies are different between the container app ({0}) and the extension ({1})..
         /// </summary>
         public static string MT0113_k {
             get {
@@ -1337,8 +1210,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to the container app does not build for the ABI {0} (while the extension is building for this ABI).
-        ///		.
+        ///   Looks up a localized string similar to the container app does not build for the ABI {0} (while the extension is building for this ABI)..
         /// </summary>
         public static string MT0113_l {
             get {
@@ -1347,8 +1219,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to the container app is building for the ABI {0}, which is not compatible with the extension&apos;s ABI ({1}).
-        ///		.
+        ///   Looks up a localized string similar to the container app is building for the ABI {0}, which is not compatible with the extension&apos;s ABI ({1})..
         /// </summary>
         public static string MT0113_m {
             get {
@@ -1357,8 +1228,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to the remove-dynamic-registrar optimization differ between the container app ({0}) and the extension ({1}).
-        ///		.
+        ///   Looks up a localized string similar to the remove-dynamic-registrar optimization differ between the container app ({0}) and the extension ({1})..
         /// </summary>
         public static string MT0113_n {
             get {
@@ -1367,8 +1237,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to the container app is referencing the assembly &apos;{0}&apos; from &apos;{1}&apos;, while the extension references a different version from &apos;{2}&apos;.
-        ///		.
+        ///   Looks up a localized string similar to the container app is referencing the assembly &apos;{0}&apos; from &apos;{1}&apos;, while the extension references a different version from &apos;{2}&apos;..
         /// </summary>
         public static string MT0113_o {
             get {
@@ -1377,8 +1246,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to It is recommended to reference dynamic symbols using code (--dynamic-symbol-mode=code) when bitcode is enabled.
-        ///		.
+        ///   Looks up a localized string similar to It is recommended to reference dynamic symbols using code (--dynamic-symbol-mode=code) when bitcode is enabled..
         /// </summary>
         public static string MT0115 {
             get {
@@ -1387,8 +1255,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid architecture: {0}. 32-bit architectures are not supported when deployment target is 11 or later.
-        ///		.
+        ///   Looks up a localized string similar to Invalid architecture: {0}. 32-bit architectures are not supported when deployment target is 11 or later..
         /// </summary>
         public static string MT0116 {
             get {
@@ -1397,8 +1264,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Can&apos;t launch a 32-bit app on a simulator that only supports 64-bit.
-        ///		.
+        ///   Looks up a localized string similar to Can&apos;t launch a 32-bit app on a simulator that only supports 64-bit..
         /// </summary>
         public static string MT0117 {
             get {
@@ -1407,8 +1273,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The directory {0} containing the mono symbols could not be found.
-        ///		.
+        ///   Looks up a localized string similar to The directory {0} containing the mono symbols could not be found..
         /// </summary>
         public static string MT0118 {
             get {
@@ -1417,8 +1282,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The executable assembly {0} does not reference {1}.dll.
-        ///		.
+        ///   Looks up a localized string similar to The executable assembly {0} does not reference {1}.dll..
         /// </summary>
         public static string MT0123 {
             get {
@@ -1427,8 +1291,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not set the current language to &apos;{0}&apos; (according to LANG={1}): {2}
-        ///		.
+        ///   Looks up a localized string similar to Could not set the current language to &apos;{0}&apos; (according to LANG={1}): {2}.
         /// </summary>
         public static string MT0124 {
             get {
@@ -1437,8 +1300,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The --assembly-build-target command-line argument is ignored in the simulator.
-        ///		.
+        ///   Looks up a localized string similar to The --assembly-build-target command-line argument is ignored in the simulator..
         /// </summary>
         public static string MT0125 {
             get {
@@ -1447,8 +1309,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Incremental builds have been disabled because incremental builds are not supported in the simulator.
-        ///		.
+        ///   Looks up a localized string similar to Incremental builds have been disabled because incremental builds are not supported in the simulator..
         /// </summary>
         public static string MT0126 {
             get {
@@ -1457,8 +1318,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Incremental builds have been disabled because incremental builds are currently not supported in projects that include more than one third-party binding library.
-        ///		.
+        ///   Looks up a localized string similar to Incremental builds have been disabled because incremental builds are currently not supported in projects that include more than one third-party binding library..
         /// </summary>
         public static string MT0127 {
             get {
@@ -1467,8 +1327,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not touch the file &apos;{0}&apos;: {1}
-        ///		.
+        ///   Looks up a localized string similar to Could not touch the file &apos;{0}&apos;: {1}.
         /// </summary>
         public static string MT0128 {
             get {
@@ -1477,8 +1336,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot find the assembly &apos;{0}&apos; referenced from &apos;{1}&apos;.
-        ///		.
+        ///   Looks up a localized string similar to Cannot find the assembly &apos;{0}&apos; referenced from &apos;{1}&apos;..
         /// </summary>
         public static string MT0136 {
             get {
@@ -1487,8 +1345,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot find the assembly &apos;{0}&apos;, referenced by a {2} attribute in &apos;{1}&apos;.
-        ///		.
+        ///   Looks up a localized string similar to Cannot find the assembly &apos;{0}&apos;, referenced by a {2} attribute in &apos;{1}&apos;..
         /// </summary>
         public static string MT0137 {
             get {
@@ -1497,8 +1354,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to File &apos;{0}&apos; is not a valid framework.
-        ///		.
+        ///   Looks up a localized string similar to File &apos;{0}&apos; is not a valid framework..
         /// </summary>
         public static string MT0140 {
             get {
@@ -1507,8 +1363,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The interpreter is not supported in the simulator. Switching to REPL which provide the same extra features on the simulator.
-        ///		.
+        ///   Looks up a localized string similar to The interpreter is not supported in the simulator. Switching to REPL which provide the same extra features on the simulator..
         /// </summary>
         public static string MT0141 {
             get {
@@ -1517,8 +1372,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot find the assembly &apos;{0}&apos;, passed as an argument to --interpreter.
-        ///		.
+        ///   Looks up a localized string similar to Cannot find the assembly &apos;{0}&apos;, passed as an argument to --interpreter..
         /// </summary>
         public static string MT0142 {
             get {
@@ -1527,8 +1381,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Internal error: The interpreter is currently only available for 64 bits.
-        ///		.
+        ///   Looks up a localized string similar to Internal error: The interpreter is currently only available for 64 bits..
         /// </summary>
         public static string MT0150 {
             get {
@@ -1537,8 +1390,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Internal error: byref array is neither string, NSObject or INativeObject.
-        ///		.
+        ///   Looks up a localized string similar to Internal error: byref array is neither string, NSObject or INativeObject..
         /// </summary>
         public static string MT0156 {
             get {
@@ -1547,8 +1399,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Internal error: can&apos;t convert from &apos;{0}&apos; to &apos;{1}&apos; in {2}. Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new).
-        ///		.
+        ///   Looks up a localized string similar to Internal error: can&apos;t convert from &apos;{0}&apos; to &apos;{1}&apos; in {2}. Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new)..
         /// </summary>
         public static string MT0157 {
             get {
@@ -1557,8 +1408,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Internal error: the smart enum {0} doesn&apos;t seem to be a smart enum after all. Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new).
-        ///		.
+        ///   Looks up a localized string similar to Internal error: the smart enum {0} doesn&apos;t seem to be a smart enum after all. Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new)..
         /// </summary>
         public static string MT0158 {
             get {
@@ -1567,8 +1417,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Internal error: unsupported tokentype ({0}) for {1}. Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new).
-        ///		.
+        ///   Looks up a localized string similar to Internal error: unsupported tokentype ({0}) for {1}. Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new)..
         /// </summary>
         public static string MT0159 {
             get {
@@ -1577,8 +1426,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Internal error: the static registrar should not execute unless the linker also executed (or was disabled). A potential workaround is to pass &apos;-f&apos; as an additional {0} argument to force a full build. Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new).
-        ///		.
+        ///   Looks up a localized string similar to Internal error: the static registrar should not execute unless the linker also executed (or was disabled). A potential workaround is to pass &apos;-f&apos; as an additional {0} argument to force a full build. Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new)..
         /// </summary>
         public static string MT0160 {
             get {
@@ -1587,8 +1435,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Internal error: symbol without a name (type: {0}). Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new).
-        ///		.
+        ///   Looks up a localized string similar to Internal error: symbol without a name (type: {0}). Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new)..
         /// </summary>
         public static string MT0161 {
             get {
@@ -1597,8 +1444,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Internal error: &apos;can&apos;t convert frameworks to frameworks: {0}&apos;. Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new).
-        ///		.
+        ///   Looks up a localized string similar to Internal error: &apos;can&apos;t convert frameworks to frameworks: {0}&apos;. Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new)..
         /// </summary>
         public static string MT0168 {
             get {
@@ -1607,8 +1453,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The assembly {0} was referenced by another assembly, but at the same time linked out by the linker.
-        ///		.
+        ///   Looks up a localized string similar to The assembly {0} was referenced by another assembly, but at the same time linked out by the linker..
         /// </summary>
         public static string MT0174_a {
             get {
@@ -1617,8 +1462,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The linker output contains more than one assemblies named &apos;{0}&apos;:\n\t{1}
-        ///		.
+        ///   Looks up a localized string similar to The linker output contains more than one assemblies named &apos;{0}&apos;:\n\t{1}.
         /// </summary>
         public static string MT0175_a {
             get {
@@ -1627,8 +1471,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Not all assemblies for {0} have link tasks
-        ///		.
+        ///   Looks up a localized string similar to Not all assemblies for {0} have link tasks.
         /// </summary>
         public static string MT0175_b {
             get {
@@ -1637,8 +1480,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Link tasks for {0} aren&apos;t all the same
-        ///		.
+        ///   Looks up a localized string similar to Link tasks for {0} aren&apos;t all the same.
         /// </summary>
         public static string MT0175_c {
             get {
@@ -1647,8 +1489,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not load the assembly &apos;{0}&apos;: {1}
-        ///		.
+        ///   Looks up a localized string similar to Could not load the assembly &apos;{0}&apos;: {1}.
         /// </summary>
         public static string MT1010 {
             get {
@@ -1657,8 +1498,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Dependency tracking error: no files to compare. Please file a bug report at https://github.com/dotnet/macios/issues/new with a test case.
-        ///		.
+        ///   Looks up a localized string similar to Dependency tracking error: no files to compare. Please file a bug report at https://github.com/dotnet/macios/issues/new with a test case..
         /// </summary>
         public static string MT1013 {
             get {
@@ -1667,8 +1507,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Failed to re-use cached version of &apos;{0}&apos;: {1}.
-        ///		.
+        ///   Looks up a localized string similar to Failed to re-use cached version of &apos;{0}&apos;: {1}..
         /// </summary>
         public static string MT1014 {
             get {
@@ -1677,8 +1516,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Failed to create the executable &apos;{0}&apos;: {1}
-        ///		.
+        ///   Looks up a localized string similar to Failed to create the executable &apos;{0}&apos;: {1}.
         /// </summary>
         public static string MT1015 {
             get {
@@ -1687,8 +1525,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not copy the directory &apos;{0}&apos; to &apos;{1}&apos;: {2}
-        ///		.
+        ///   Looks up a localized string similar to Could not copy the directory &apos;{0}&apos; to &apos;{1}&apos;: {2}.
         /// </summary>
         public static string MT1022 {
             get {
@@ -1697,8 +1534,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot include different versions of the framework &apos;{0}&apos;
-        ///		.
+        ///   Looks up a localized string similar to Cannot include different versions of the framework &apos;{0}&apos;.
         /// </summary>
         public static string MT1035 {
             get {
@@ -1707,8 +1543,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Framework &apos;{0}&apos; included from: {1} (Related to previous error)
-        ///		.
+        ///   Looks up a localized string similar to Framework &apos;{0}&apos; included from: {1} (Related to previous error).
         /// </summary>
         public static string MT1036 {
             get {
@@ -1717,8 +1552,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unsupported bitcode platform: {0}.
-        ///		.
+        ///   Looks up a localized string similar to Unsupported bitcode platform: {0}..
         /// </summary>
         public static string MT1300 {
             get {
@@ -1727,8 +1561,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unsupported TvOS ABI: {0}.
-        ///		.
+        ///   Looks up a localized string similar to Unsupported TvOS ABI: {0}..
         /// </summary>
         public static string MT1301 {
             get {
@@ -1737,8 +1570,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not extract the native library &apos;{0}&apos; from &apos;{1}&apos;. Please ensure the native library was properly embedded in the managed assembly (if the assembly was built using a binding project, the native library must be included in the project, and its Build Action must be &apos;ObjcBindingNativeLibrary&apos;).
-        ///		.
+        ///   Looks up a localized string similar to Could not extract the native library &apos;{0}&apos; from &apos;{1}&apos;. Please ensure the native library was properly embedded in the managed assembly (if the assembly was built using a binding project, the native library must be included in the project, and its Build Action must be &apos;ObjcBindingNativeLibrary&apos;)..
         /// </summary>
         public static string MT1302 {
             get {
@@ -1747,8 +1579,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid escape sequence when converting .s to .ll, \\ as the last characted in {0}:{1}.
-        ///		.
+        ///   Looks up a localized string similar to Invalid escape sequence when converting .s to .ll, \\ as the last characted in {0}:{1}..
         /// </summary>
         public static string MT1302_A {
             get {
@@ -1757,8 +1588,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid escape sequence when converting .s to .ll, bad octal escape in {0}:{1} due to {2}.
-        ///		.
+        ///   Looks up a localized string similar to Invalid escape sequence when converting .s to .ll, bad octal escape in {0}:{1} due to {2}..
         /// </summary>
         public static string MT1302_B {
             get {
@@ -1767,8 +1597,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not decompress the native framework &apos;{0}&apos; from &apos;{1}&apos;. Please review the build log for more information from the native &apos;unzip&apos; command.
-        ///		.
+        ///   Looks up a localized string similar to Could not decompress the native framework &apos;{0}&apos; from &apos;{1}&apos;. Please review the build log for more information from the native &apos;unzip&apos; command..
         /// </summary>
         public static string MT1303 {
             get {
@@ -1777,8 +1606,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The binding library &apos;{0}&apos; contains a user framework ({0}), but embedded user frameworks require iOS 8.0 (the deployment target is {1}). Please set the deployment target in the Info.plist file to at least 8.0.
-        ///		.
+        ///   Looks up a localized string similar to The binding library &apos;{0}&apos; contains a user framework ({0}), but embedded user frameworks require iOS 8.0 (the deployment target is {1}). Please set the deployment target in the Info.plist file to at least 8.0..
         /// </summary>
         public static string MT1305 {
             get {
@@ -1787,8 +1615,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Not a Mach-O static library (unknown header &apos;{0}&apos;, expected &apos;!&lt;arch&gt;&apos;).
-        ///		.
+        ///   Looks up a localized string similar to Not a Mach-O static library (unknown header &apos;{0}&apos;, expected &apos;!&lt;arch&gt;&apos;)..
         /// </summary>
         public static string MT1601 {
             get {
@@ -1797,8 +1624,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid entry &apos;{0}&apos; in the static library &apos;{1}&apos;, entry header doesn&apos;t end with 0x60 0x0A (found &apos;0x{2} 0x{3}&apos;)
-        ///		.
+        ///   Looks up a localized string similar to Invalid entry &apos;{0}&apos; in the static library &apos;{1}&apos;, entry header doesn&apos;t end with 0x60 0x0A (found &apos;0x{2} 0x{3}&apos;).
         /// </summary>
         public static string MT1605 {
             get {
@@ -1807,8 +1633,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Can not resolve reference: {0}
-        ///		.
+        ///   Looks up a localized string similar to Can not resolve reference: {0}.
         /// </summary>
         public static string MT2002 {
             get {
@@ -1817,8 +1642,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Option &apos;--optimize={0}{1}&apos; will be ignored since the static registrar is not enabled
-        ///		.
+        ///   Looks up a localized string similar to Option &apos;--optimize={0}{1}&apos; will be ignored since the static registrar is not enabled.
         /// </summary>
         public static string MT2003 {
             get {
@@ -1827,8 +1651,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Option &apos;--optimize={0}{1}&apos; will be ignored since linking is disabled
-        ///		.
+        ///   Looks up a localized string similar to Option &apos;--optimize={0}{1}&apos; will be ignored since linking is disabled.
         /// </summary>
         public static string MT2003_B {
             get {
@@ -1846,8 +1669,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Can not load mscorlib.dll from: &apos;{0}&apos;. Please reinstall Xamarin.iOS.
-        ///		.
+        ///   Looks up a localized string similar to Can not load mscorlib.dll from: &apos;{0}&apos;. Please reinstall Xamarin.iOS..
         /// </summary>
         public static string MT2006 {
             get {
@@ -1856,8 +1678,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Failed to resolve &quot;{0}&quot; reference from &quot;{1}&quot;
-        ///		.
+        ///   Looks up a localized string similar to Failed to resolve &quot;{0}&quot; reference from &quot;{1}&quot;.
         /// </summary>
         public static string MT2007 {
             get {
@@ -1866,8 +1687,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unknown HttpMessageHandler `{0}`. Valid values are HttpClientHandler (default), CFNetworkHandler or NSUrlSessionHandler
-        ///		.
+        ///   Looks up a localized string similar to Unknown HttpMessageHandler `{0}`. Valid values are HttpClientHandler (default), CFNetworkHandler or NSUrlSessionHandler.
         /// </summary>
         public static string MT2010 {
             get {
@@ -1876,8 +1696,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unable to link assembly &apos;{0}&apos; as it is mixed-mode.
-        ///		.
+        ///   Looks up a localized string similar to Unable to link assembly &apos;{0}&apos; as it is mixed-mode..
         /// </summary>
         public static string MT2014 {
             get {
@@ -1886,8 +1705,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The assembly &apos;{0}&apos; is referenced from two different locations: &apos;{1}&apos; and &apos;{2}&apos;.
-        ///		.
+        ///   Looks up a localized string similar to The assembly &apos;{0}&apos; is referenced from two different locations: &apos;{1}&apos; and &apos;{2}&apos;..
         /// </summary>
         public static string MT2018 {
             get {
@@ -1896,8 +1714,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Can not load the root assembly &apos;{0}&apos;.
-        ///		.
+        ///   Looks up a localized string similar to Can not load the root assembly &apos;{0}&apos;..
         /// </summary>
         public static string MT2019 {
             get {
@@ -1906,8 +1723,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Can&apos;t resolve the reference &apos;{0}&apos;, referenced from the method &apos;{1}&apos; in &apos;{2}&apos;.
-        ///		.
+        ///   Looks up a localized string similar to Can&apos;t resolve the reference &apos;{0}&apos;, referenced from the method &apos;{1}&apos; in &apos;{2}&apos;..
         /// </summary>
         public static string MT2101 {
             get {
@@ -1916,8 +1732,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error processing the method &apos;{0}&apos; in the assembly &apos;{1}&apos;: {2}
-        ///		.
+        ///   Looks up a localized string similar to Error processing the method &apos;{0}&apos; in the assembly &apos;{1}&apos;: {2}.
         /// </summary>
         public static string MT2102 {
             get {
@@ -1926,8 +1741,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error processing the method &apos;{0}&apos; in the assembly &apos;{1}&apos;
-        ///		.
+        ///   Looks up a localized string similar to Error processing the method &apos;{0}&apos; in the assembly &apos;{1}&apos;.
         /// </summary>
         public static string MT2102_A {
             get {
@@ -1936,8 +1750,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The [BindingImpl] attribute on the member &apos;{0}&apos; is invalid: did not expect fields.
-        ///		.
+        ///   Looks up a localized string similar to The [BindingImpl] attribute on the member &apos;{0}&apos; is invalid: did not expect fields..
         /// </summary>
         public static string MT2105_A {
             get {
@@ -1946,8 +1759,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The [BindingImpl] attribute on the member &apos;{0}&apos; is invalid: did not expect properties.
-        ///		.
+        ///   Looks up a localized string similar to The [BindingImpl] attribute on the member &apos;{0}&apos; is invalid: did not expect properties..
         /// </summary>
         public static string MT2105_B {
             get {
@@ -1956,8 +1768,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The [BindingImpl] attribute on the member &apos;{0}&apos; is invalid: did not expect a constructor with a &apos;{1}&apos; parameter type (expected &apos;ObjCRuntime.BindingImplOptions).
-        ///		.
+        ///   Looks up a localized string similar to The [BindingImpl] attribute on the member &apos;{0}&apos; is invalid: did not expect a constructor with a &apos;{1}&apos; parameter type (expected &apos;ObjCRuntime.BindingImplOptions)..
         /// </summary>
         public static string MT2105_C {
             get {
@@ -1966,8 +1777,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The [BindingImpl] attribute on the member &apos;{0}&apos; is invalid: did not expect a constructor with a {1} parameters (expected 1 parameters).
-        ///		.
+        ///   Looks up a localized string similar to The [BindingImpl] attribute on the member &apos;{0}&apos; is invalid: did not expect a constructor with a {1} parameters (expected 1 parameters)..
         /// </summary>
         public static string MT2105_D {
             get {
@@ -1976,8 +1786,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The property {0}.{1} contains a &apos;{2}&apos; exception clause, which is currently not supported when compiling for bitcode. This property will throw an exception if called.
-        ///		.
+        ///   Looks up a localized string similar to The property {0}.{1} contains a &apos;{2}&apos; exception clause, which is currently not supported when compiling for bitcode. This property will throw an exception if called..
         /// </summary>
         public static string MT2105_E {
             get {
@@ -1986,8 +1795,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The method {0}.{1} contains a &apos;{2}&apos; exception clause, which is currently not supported when compiling for bitcode. This method will throw an exception if called.
-        ///		.
+        ///   Looks up a localized string similar to The method {0}.{1} contains a &apos;{2}&apos; exception clause, which is currently not supported when compiling for bitcode. This method will throw an exception if called..
         /// </summary>
         public static string MT2105_F {
             get {
@@ -1996,8 +1804,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Debugging is not supported when building with LLVM. Debugging has been disabled.
-        ///		.
+        ///   Looks up a localized string similar to Debugging is not supported when building with LLVM. Debugging has been disabled..
         /// </summary>
         public static string MT3003 {
             get {
@@ -2006,8 +1813,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not AOT the assembly &apos;{0}&apos; because it doesn&apos;t exist.
-        ///		.
+        ///   Looks up a localized string similar to Could not AOT the assembly &apos;{0}&apos; because it doesn&apos;t exist..
         /// </summary>
         public static string MT3004 {
             get {
@@ -2016,8 +1822,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The dependency &apos;{0}&apos; of the assembly &apos;{1}&apos; was not found. Please review the project&apos;s references.
-        ///		.
+        ///   Looks up a localized string similar to The dependency &apos;{0}&apos; of the assembly &apos;{1}&apos; was not found. Please review the project&apos;s references..
         /// </summary>
         public static string MT3005 {
             get {
@@ -2026,8 +1831,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not compute a complete dependency map for the project. This will result in slower build times because Xamarin.iOS can&apos;t properly detect what needs to be rebuilt (and what does not need to be rebuilt). Please review previous warnings for more details.
-        ///		.
+        ///   Looks up a localized string similar to Could not compute a complete dependency map for the project. This will result in slower build times because Xamarin.iOS can&apos;t properly detect what needs to be rebuilt (and what does not need to be rebuilt). Please review previous warnings for more details..
         /// </summary>
         public static string MT3006 {
             get {
@@ -2036,8 +1840,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Bitcode support requires the use of LLVM (--abi=arm64+llvm etc.)
-        ///		.
+        ///   Looks up a localized string similar to Bitcode support requires the use of LLVM (--abi=arm64+llvm etc.).
         /// </summary>
         public static string MT3008 {
             get {
@@ -2046,8 +1849,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The main template could not be expanded to `{0}`.
-        ///		.
+        ///   Looks up a localized string similar to The main template could not be expanded to `{0}`..
         /// </summary>
         public static string MT4001 {
             get {
@@ -2056,8 +1858,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Failed to compile the generated code for P/Invoke methods. Please file a bug report at https://github.com/dotnet/macios/issues/new
-        ///		.
+        ///   Looks up a localized string similar to Failed to compile the generated code for P/Invoke methods. Please file a bug report at https://github.com/dotnet/macios/issues/new.
         /// </summary>
         public static string MT4002 {
             get {
@@ -2066,8 +1867,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The registrar cannot build a signature for type `{0}`.
-        ///		.
+        ///   Looks up a localized string similar to The registrar cannot build a signature for type `{0}`..
         /// </summary>
         public static string MT4101 {
             get {
@@ -2076,8 +1876,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The registrar found an invalid type `{0}` in signature for method `{2}`. Use `{1}` instead.
-        ///		.
+        ///   Looks up a localized string similar to The registrar found an invalid type `{0}` in signature for method `{2}`. Use `{1}` instead..
         /// </summary>
         public static string MT4102 {
             get {
@@ -2086,8 +1885,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The registrar found an invalid type `{0}` in signature for method `{1}`: The type implements INativeObject, but does not have a constructor that takes two (IntPtr, bool) arguments.
-        ///		.
+        ///   Looks up a localized string similar to The registrar found an invalid type `{0}` in signature for method `{1}`: The type implements INativeObject, but does not have a constructor that takes two (IntPtr, bool) arguments..
         /// </summary>
         public static string MT4103 {
             get {
@@ -2096,8 +1894,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The registrar cannot marshal the return value for type `{0}` in signature for method `{1}`.
-        ///		.
+        ///   Looks up a localized string similar to The registrar cannot marshal the return value for type `{0}` in signature for method `{1}`..
         /// </summary>
         public static string MT4104 {
             get {
@@ -2106,8 +1903,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The registrar cannot marshal the return value of type `{0}` in the method `{1}.{2}`.
-        ///		.
+        ///   Looks up a localized string similar to The registrar cannot marshal the return value of type `{0}` in the method `{1}.{2}`..
         /// </summary>
         public static string MT4104_A {
             get {
@@ -2116,8 +1912,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The registrar cannot marshal the parameter of type `{0}` in signature for method `{1}`.
-        ///		.
+        ///   Looks up a localized string similar to The registrar cannot marshal the parameter of type `{0}` in signature for method `{1}`..
         /// </summary>
         public static string MT4105 {
             get {
@@ -2126,8 +1921,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The registrar cannot get the ObjectiveC type for managed type `{0}`.
-        ///		.
+        ///   Looks up a localized string similar to The registrar cannot get the ObjectiveC type for managed type `{0}`..
         /// </summary>
         public static string MT4108 {
             get {
@@ -2136,8 +1930,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Failed to compile the generated registrar code. Please file a bug report at https://github.com/dotnet/macios/issues/new
-        ///		.
+        ///   Looks up a localized string similar to Failed to compile the generated registrar code. Please file a bug report at https://github.com/dotnet/macios/issues/new.
         /// </summary>
         public static string MT4109 {
             get {
@@ -2146,8 +1939,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The registrar cannot marshal the out parameter of type `{0}` in signature for method `{1}`.
-        ///		.
+        ///   Looks up a localized string similar to The registrar cannot marshal the out parameter of type `{0}` in signature for method `{1}`..
         /// </summary>
         public static string MT4110 {
             get {
@@ -2156,8 +1948,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The registrar cannot build a signature for type `{0}&apos; in method `{1}`.
-        ///		.
+        ///   Looks up a localized string similar to The registrar cannot build a signature for type `{0}&apos; in method `{1}`..
         /// </summary>
         public static string MT4111 {
             get {
@@ -2166,8 +1957,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The registrar found a generic method: &apos;{0}&apos;. Exporting generic methods is not supported, and will lead to random behavior and/or crashes
-        ///		.
+        ///   Looks up a localized string similar to The registrar found a generic method: &apos;{0}&apos;. Exporting generic methods is not supported, and will lead to random behavior and/or crashes.
         /// </summary>
         public static string MT4113 {
             get {
@@ -2176,8 +1966,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unexpected error in the registrar for the method &apos;{0}.{1}&apos; - Please file a bug report at https://github.com/dotnet/macios/issues/new
-        ///		.
+        ///   Looks up a localized string similar to Unexpected error in the registrar for the method &apos;{0}.{1}&apos; - Please file a bug report at https://github.com/dotnet/macios/issues/new.
         /// </summary>
         public static string MT4114 {
             get {
@@ -2186,8 +1975,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not register the assembly &apos;{0}&apos;: {1}
-        ///		.
+        ///   Looks up a localized string similar to Could not register the assembly &apos;{0}&apos;: {1}.
         /// </summary>
         public static string MT4116 {
             get {
@@ -2196,8 +1984,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The registrar found a signature mismatch in the method &apos;{0}.{1}&apos; - the selector &apos;{4}&apos; indicates the method takes {2} parameters, while the managed method has {3} parameters.
-        ///		.
+        ///   Looks up a localized string similar to The registrar found a signature mismatch in the method &apos;{0}.{1}&apos; - the selector &apos;{4}&apos; indicates the method takes {2} parameters, while the managed method has {3} parameters..
         /// </summary>
         public static string MT4117 {
             get {
@@ -2206,8 +1993,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot register two managed types (&apos;{0}&apos; and &apos;{1}&apos;) with the same native name (&apos;{2}&apos;).
-        ///		.
+        ///   Looks up a localized string similar to Cannot register two managed types (&apos;{0}&apos; and &apos;{1}&apos;) with the same native name (&apos;{2}&apos;)..
         /// </summary>
         public static string MT4118 {
             get {
@@ -2216,8 +2002,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not register the selector &apos;{0}&apos; of the member &apos;{1}.{2}&apos; because the selector is already registered on the member &apos;{3}&apos;.
-        ///		.
+        ///   Looks up a localized string similar to Could not register the selector &apos;{0}&apos; of the member &apos;{1}.{2}&apos; because the selector is already registered on the member &apos;{3}&apos;..
         /// </summary>
         public static string MT4119 {
             get {
@@ -2226,8 +2011,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The registrar found an unknown field type &apos;{0}&apos; in field &apos;{1}.{2}&apos;. Please file a bug report at https://github.com/dotnet/macios/issues/new
-        ///		.
+        ///   Looks up a localized string similar to The registrar found an unknown field type &apos;{0}&apos; in field &apos;{1}.{2}&apos;. Please file a bug report at https://github.com/dotnet/macios/issues/new.
         /// </summary>
         public static string MT4120 {
             get {
@@ -2236,8 +2020,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot use GCC/G++ to compile the generated code from the static registrar when using the Accounts framework (the header files provided by Apple used during the compilation require Clang). Either use Clang (--compiler:clang) or the dynamic registrar (--registrar:dynamic).
-        ///		.
+        ///   Looks up a localized string similar to Cannot use GCC/G++ to compile the generated code from the static registrar when using the Accounts framework (the header files provided by Apple used during the compilation require Clang). Either use Clang (--compiler:clang) or the dynamic registrar (--registrar:dynamic)..
         /// </summary>
         public static string MT4121 {
             get {
@@ -2246,8 +2029,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The type of the variadic parameter in the variadic function &apos;{0}&apos; must be System.IntPtr.
-        ///		.
+        ///   Looks up a localized string similar to The type of the variadic parameter in the variadic function &apos;{0}&apos; must be System.IntPtr..
         /// </summary>
         public static string MT4123 {
             get {
@@ -2256,8 +2038,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid {0} found on &apos;{1}&apos;. Please file a bug report at https://github.com/dotnet/macios/issues/new
-        ///		.
+        ///   Looks up a localized string similar to Invalid {0} found on &apos;{1}&apos;. Please file a bug report at https://github.com/dotnet/macios/issues/new.
         /// </summary>
         public static string MT4124 {
             get {
@@ -2266,8 +2047,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid RegisterAttribute property {1} found on &apos;{0}&apos;. Please file a bug report at https://github.com/dotnet/macios/issues/new
-        ///		.
+        ///   Looks up a localized string similar to Invalid RegisterAttribute property {1} found on &apos;{0}&apos;. Please file a bug report at https://github.com/dotnet/macios/issues/new.
         /// </summary>
         public static string MT4124_A {
             get {
@@ -2276,8 +2056,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid AdoptsAttribute found on &apos;{0}&apos;: expected 1 constructor arguments, got {1}. Please file a bug report at https://github.com/dotnet/macios/issues/new
-        ///		.
+        ///   Looks up a localized string similar to Invalid AdoptsAttribute found on &apos;{0}&apos;: expected 1 constructor arguments, got {1}. Please file a bug report at https://github.com/dotnet/macios/issues/new.
         /// </summary>
         public static string MT4124_B {
             get {
@@ -2286,8 +2065,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid BindAsAttribute found on &apos;{0}.{1}&apos;: unknown field {2}. Please file a bug report at https://github.com/dotnet/macios/issues/new
-        ///		.
+        ///   Looks up a localized string similar to Invalid BindAsAttribute found on &apos;{0}.{1}&apos;: unknown field {2}. Please file a bug report at https://github.com/dotnet/macios/issues/new.
         /// </summary>
         public static string MT4124_C {
             get {
@@ -2296,8 +2074,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid {0} found on &apos;{1}.{2}&apos;. Please file a bug report at https://github.com/dotnet/macios/issues/new
-        ///		.
+        ///   Looks up a localized string similar to Invalid {0} found on &apos;{1}.{2}&apos;. Please file a bug report at https://github.com/dotnet/macios/issues/new.
         /// </summary>
         public static string MT4124_D {
             get {
@@ -2306,8 +2083,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid BindAsAttribute found on &apos;{0}&apos;: should have 1 constructor arguments, found {1}. Please file a bug report at https://github.com/dotnet/macios/issues/new
-        ///		.
+        ///   Looks up a localized string similar to Invalid BindAsAttribute found on &apos;{0}&apos;: should have 1 constructor arguments, found {1}. Please file a bug report at https://github.com/dotnet/macios/issues/new.
         /// </summary>
         public static string MT4124_E {
             get {
@@ -2316,8 +2092,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid BindAsAttribute found on &apos;{0}&apos;: could not find the underlying enum type of {1}. Please file a bug report at https://github.com/dotnet/macios/issues/new
-        ///		.
+        ///   Looks up a localized string similar to Invalid BindAsAttribute found on &apos;{0}&apos;: could not find the underlying enum type of {1}. Please file a bug report at https://github.com/dotnet/macios/issues/new.
         /// </summary>
         public static string MT4124_H {
             get {
@@ -2335,8 +2110,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The registrar found an invalid type &apos;{0}&apos; in signature for method &apos;{1}&apos;: The interface must have a Protocol attribute specifying its wrapper type.
-        ///		.
+        ///   Looks up a localized string similar to The registrar found an invalid type &apos;{0}&apos; in signature for method &apos;{1}&apos;: The interface must have a Protocol attribute specifying its wrapper type..
         /// </summary>
         public static string MT4125 {
             get {
@@ -2345,8 +2119,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot register two managed protocols (&apos;{0}&apos; and &apos;{1}&apos;) with the same native name (&apos;{2}&apos;).
-        ///		.
+        ///   Looks up a localized string similar to Cannot register two managed protocols (&apos;{0}&apos; and &apos;{1}&apos;) with the same native name (&apos;{2}&apos;)..
         /// </summary>
         public static string MT4126 {
             get {
@@ -2355,8 +2128,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot register more than one interface method for the method &apos;{0}.{1}&apos;.
-        ///		.
+        ///   Looks up a localized string similar to Cannot register more than one interface method for the method &apos;{0}.{1}&apos;..
         /// </summary>
         public static string MT4127 {
             get {
@@ -2365,8 +2137,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The registrar found an invalid generic parameter type &apos;{0}&apos; in the parameter {2} of the method &apos;{1}&apos;. The generic parameter must have an &apos;NSObject&apos; constraint.
-        ///		.
+        ///   Looks up a localized string similar to The registrar found an invalid generic parameter type &apos;{0}&apos; in the parameter {2} of the method &apos;{1}&apos;. The generic parameter must have an &apos;NSObject&apos; constraint..
         /// </summary>
         public static string MT4128 {
             get {
@@ -2375,8 +2146,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The registrar found an invalid generic return type &apos;{0}&apos; in the method &apos;{1}&apos;. The generic return type must have an &apos;NSObject&apos; constraint.
-        ///		.
+        ///   Looks up a localized string similar to The registrar found an invalid generic return type &apos;{0}&apos; in the method &apos;{1}&apos;. The generic return type must have an &apos;NSObject&apos; constraint..
         /// </summary>
         public static string MT4129 {
             get {
@@ -2385,8 +2155,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The registrar cannot export static methods in generic classes (&apos;{0}&apos;).
-        ///		.
+        ///   Looks up a localized string similar to The registrar cannot export static methods in generic classes (&apos;{0}&apos;)..
         /// </summary>
         public static string MT4130 {
             get {
@@ -2395,8 +2164,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The registrar cannot export static properties in generic classes (&apos;{0}.{1}&apos;).
-        ///		.
+        ///   Looks up a localized string similar to The registrar cannot export static properties in generic classes (&apos;{0}.{1}&apos;)..
         /// </summary>
         public static string MT4131 {
             get {
@@ -2405,8 +2173,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The registrar found an invalid generic return type &apos;{0}&apos; in the property &apos;{1}.{2}&apos;. The return type must have an &apos;NSObject&apos; constraint.
-        ///		.
+        ///   Looks up a localized string similar to The registrar found an invalid generic return type &apos;{0}&apos; in the property &apos;{1}.{2}&apos;. The return type must have an &apos;NSObject&apos; constraint..
         /// </summary>
         public static string MT4132 {
             get {
@@ -2415,8 +2182,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Your application is using the &apos;{0}&apos; framework, which isn&apos;t included in the {3} SDK you&apos;re using to build your app (this framework was introduced in {3} {2}, while you&apos;re building with the {3} {1} SDK.) Please select a newer SDK in your app&apos;s {3} Build options.
-        ///		.
+        ///   Looks up a localized string similar to Your application is using the &apos;{0}&apos; framework, which isn&apos;t included in the {3} SDK you&apos;re using to build your app (this framework was introduced in {3} {2}, while you&apos;re building with the {3} {1} SDK.) Please select a newer SDK in your app&apos;s {3} Build options..
         /// </summary>
         public static string MT4134 {
             get {
@@ -2425,8 +2191,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The member &apos;{0}&apos; has an Export attribute without a selector. A selector is required.
-        ///		.
+        ///   Looks up a localized string similar to The member &apos;{0}&apos; has an Export attribute without a selector. A selector is required..
         /// </summary>
         public static string MT4135 {
             get {
@@ -2435,8 +2200,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The registrar cannot marshal the parameter type &apos;{0}&apos; of the parameter &apos;{1}&apos; in the method &apos;{2}.{3}&apos;
-        ///		.
+        ///   Looks up a localized string similar to The registrar cannot marshal the parameter type &apos;{0}&apos; of the parameter &apos;{1}&apos; in the method &apos;{2}.{3}&apos;.
         /// </summary>
         public static string MT4136 {
             get {
@@ -2445,8 +2209,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The method &apos;{0}.{1}&apos; is implementing &apos;{2}.{3}&apos;.
-        ///		.
+        ///   Looks up a localized string similar to The method &apos;{0}.{1}&apos; is implementing &apos;{2}.{3}&apos;..
         /// </summary>
         public static string MT4137 {
             get {
@@ -2455,8 +2218,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The registrar cannot marshal the property type &apos;{0}&apos; of the property &apos;{1}.{2}&apos;.
-        ///		.
+        ///   Looks up a localized string similar to The registrar cannot marshal the property type &apos;{0}&apos; of the property &apos;{1}.{2}&apos;..
         /// </summary>
         public static string MT4138 {
             get {
@@ -2465,8 +2227,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The registrar cannot marshal the property type &apos;{0}&apos; of the property &apos;{1}.{2}&apos;. Properties with the [Connect] attribute must have a property type of NSObject (or a subclass of NSObject).
-        ///		.
+        ///   Looks up a localized string similar to The registrar cannot marshal the property type &apos;{0}&apos; of the property &apos;{1}.{2}&apos;. Properties with the [Connect] attribute must have a property type of NSObject (or a subclass of NSObject)..
         /// </summary>
         public static string MT4139 {
             get {
@@ -2475,8 +2236,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The registrar found a signature mismatch in the method &apos;{0}.{1}&apos; - the selector &apos;{4}&apos; indicates the variadic method takes {2} parameters, while the managed method has {3} parameters.
-        ///		.
+        ///   Looks up a localized string similar to The registrar found a signature mismatch in the method &apos;{0}.{1}&apos; - the selector &apos;{4}&apos; indicates the variadic method takes {2} parameters, while the managed method has {3} parameters..
         /// </summary>
         public static string MT4140 {
             get {
@@ -2485,8 +2245,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot register the selector &apos;{0}&apos; on the member &apos;{1}.{2}&apos; because this selector is already implicitly registered.
-        ///		.
+        ///   Looks up a localized string similar to Cannot register the selector &apos;{0}&apos; on the member &apos;{1}.{2}&apos; because this selector is already implicitly registered..
         /// </summary>
         public static string MT4141 {
             get {
@@ -2495,8 +2254,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid enum &apos;{0}&apos;: enums with the [Native] attribute must have a underlying enum type of either &apos;long&apos; or &apos;ulong&apos;.
-        ///		.
+        ///   Looks up a localized string similar to Invalid enum &apos;{0}&apos;: enums with the [Native] attribute must have a underlying enum type of either &apos;long&apos; or &apos;ulong&apos;..
         /// </summary>
         public static string MT4145 {
             get {
@@ -2505,8 +2263,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The Name parameter of the Registrar attribute on the class &apos;{0}&apos; (&apos;{3}&apos;) contains an invalid character: &apos;{1}&apos; (0x{2}).
-        ///		.
+        ///   Looks up a localized string similar to The Name parameter of the Registrar attribute on the class &apos;{0}&apos; (&apos;{3}&apos;) contains an invalid character: &apos;{1}&apos; (0x{2})..
         /// </summary>
         public static string MT4146 {
             get {
@@ -2515,8 +2272,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid {0} found on &apos;{1}&apos;. Please file a bug report at https://github.com/dotnet/macios/issues/new
-        ///		.
+        ///   Looks up a localized string similar to Invalid {0} found on &apos;{1}&apos;. Please file a bug report at https://github.com/dotnet/macios/issues/new.
         /// </summary>
         public static string MT4147 {
             get {
@@ -2525,8 +2281,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The registrar found a generic protocol: &apos;{0}&apos;. Exporting generic protocols is not supported.
-        ///		.
+        ///   Looks up a localized string similar to The registrar found a generic protocol: &apos;{0}&apos;. Exporting generic protocols is not supported..
         /// </summary>
         public static string MT4148 {
             get {
@@ -2535,8 +2290,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot register the extension method &apos;{0}.{1}&apos; because the type of the first parameter (&apos;{2}&apos;) does not match the category type (&apos;{3}&apos;).
-        ///		.
+        ///   Looks up a localized string similar to Cannot register the extension method &apos;{0}.{1}&apos; because the type of the first parameter (&apos;{2}&apos;) does not match the category type (&apos;{3}&apos;)..
         /// </summary>
         public static string MT4149 {
             get {
@@ -2545,8 +2299,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot register the type &apos;{0}&apos; because the category type &apos;{1}&apos; in its Category attribute does not inherit from NSObject.
-        ///		.
+        ///   Looks up a localized string similar to Cannot register the type &apos;{0}&apos; because the category type &apos;{1}&apos; in its Category attribute does not inherit from NSObject..
         /// </summary>
         public static string MT4150 {
             get {
@@ -2555,8 +2308,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot register the type &apos;{0}&apos; because the Type property in its Category attribute isn&apos;t set.
-        ///		.
+        ///   Looks up a localized string similar to Cannot register the type &apos;{0}&apos; because the Type property in its Category attribute isn&apos;t set..
         /// </summary>
         public static string MT4151 {
             get {
@@ -2565,8 +2317,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot register the type &apos;{0}&apos; as a category because it implements INativeObject or subclasses NSObject.
-        ///		.
+        ///   Looks up a localized string similar to Cannot register the type &apos;{0}&apos; as a category because it implements INativeObject or subclasses NSObject..
         /// </summary>
         public static string MT4152 {
             get {
@@ -2575,8 +2326,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot register the type &apos;{0}&apos; as a category because it&apos;s generic.
-        ///		.
+        ///   Looks up a localized string similar to Cannot register the type &apos;{0}&apos; as a category because it&apos;s generic..
         /// </summary>
         public static string MT4153 {
             get {
@@ -2585,8 +2335,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot register the method &apos;{0}.{1}&apos; as a category method because it&apos;s generic.
-        ///		.
+        ///   Looks up a localized string similar to Cannot register the method &apos;{0}.{1}&apos; as a category method because it&apos;s generic..
         /// </summary>
         public static string MT4154 {
             get {
@@ -2595,8 +2344,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot register two categories (&apos;{0}&apos; and &apos;{1}&apos;) with the same native name (&apos;{2}&apos;)
-        ///		.
+        ///   Looks up a localized string similar to Cannot register two categories (&apos;{0}&apos; and &apos;{1}&apos;) with the same native name (&apos;{2}&apos;).
         /// </summary>
         public static string MT4156 {
             get {
@@ -2605,8 +2353,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot register the category method &apos;{0}.{1}&apos; because at least one parameter is required for extension methods (and its type must match the category type &apos;{2}&apos;).
-        ///		.
+        ///   Looks up a localized string similar to Cannot register the category method &apos;{0}.{1}&apos; because at least one parameter is required for extension methods (and its type must match the category type &apos;{2}&apos;)..
         /// </summary>
         public static string MT4157 {
             get {
@@ -2615,8 +2362,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot register the constructor {0}.{1} in the category {0} because constructors in categories are not supported.
-        ///		.
+        ///   Looks up a localized string similar to Cannot register the constructor {0}.{1} in the category {0} because constructors in categories are not supported..
         /// </summary>
         public static string MT4158 {
             get {
@@ -2625,8 +2371,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot register the method &apos;{0}.{1}&apos; as a category method because category methods must be static.
-        ///		.
+        ///   Looks up a localized string similar to Cannot register the method &apos;{0}.{1}&apos; as a category method because category methods must be static..
         /// </summary>
         public static string MT4159 {
             get {
@@ -2635,8 +2380,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid character &apos;{0}&apos; (0x{1}) found in selector &apos;{2}&apos; for &apos;{3}.{4}&apos;
-        ///		.
+        ///   Looks up a localized string similar to Invalid character &apos;{0}&apos; (0x{1}) found in selector &apos;{2}&apos; for &apos;{3}.{4}&apos;.
         /// </summary>
         public static string MT4160 {
             get {
@@ -2645,8 +2389,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The registrar found an unsupported structure &apos;{0}&apos;: All fields in a structure must also be structures (field &apos;{1}&apos; with type &apos;{2}&apos; is not a structure).
-        ///		.
+        ///   Looks up a localized string similar to The registrar found an unsupported structure &apos;{0}&apos;: All fields in a structure must also be structures (field &apos;{1}&apos; with type &apos;{2}&apos; is not a structure)..
         /// </summary>
         public static string MT4161 {
             get {
@@ -2655,8 +2398,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The type &apos;{0}&apos; is not available in {3} {4} (it was introduced in {3} {5}){6} Please build with a newer {3} SDK (usually done by using the most recent version of Xcode).
-        ///		.
+        ///   Looks up a localized string similar to The type &apos;{0}&apos; is not available in {3} {4} (it was introduced in {3} {5}){6} Please build with a newer {3} SDK (usually done by using the most recent version of Xcode)..
         /// </summary>
         public static string MT4162_A {
             get {
@@ -2665,8 +2407,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The type &apos;{0}&apos; (used as a base type of {1}) is not available in {2} {3} (it was introduced in {2} {4}){5} Please build with a newer {2} SDK (usually done by using the most recent version of Xcode).
-        ///		.
+        ///   Looks up a localized string similar to The type &apos;{0}&apos; (used as a base type of {1}) is not available in {2} {3} (it was introduced in {2} {4}){5} Please build with a newer {2} SDK (usually done by using the most recent version of Xcode)..
         /// </summary>
         public static string MT4162_BaseType {
             get {
@@ -2675,8 +2416,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The type &apos;{0}&apos; (used as a parameter in {1}) is not available in {2} {3} (it was introduced in {2} {4}){5} Please build with a newer {2} SDK (usually done by using the most recent version of Xcode).
-        ///		.
+        ///   Looks up a localized string similar to The type &apos;{0}&apos; (used as a parameter in {1}) is not available in {2} {3} (it was introduced in {2} {4}){5} Please build with a newer {2} SDK (usually done by using the most recent version of Xcode)..
         /// </summary>
         public static string MT4162_Parameter {
             get {
@@ -2685,8 +2425,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The type &apos;{0}&apos; (used as the property type of {1}) is not available in {2} {3} (it was introduced in {2} {4}){5} Please build with a newer {2} SDK (usually done by using the most recent version of Xcode).
-        ///		.
+        ///   Looks up a localized string similar to The type &apos;{0}&apos; (used as the property type of {1}) is not available in {2} {3} (it was introduced in {2} {4}){5} Please build with a newer {2} SDK (usually done by using the most recent version of Xcode)..
         /// </summary>
         public static string MT4162_PropertyType {
             get {
@@ -2695,8 +2434,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The type &apos;{0}&apos; (used as a return type in {1}) is not available in {2} {3} (it was introduced in {2} {4}){5} Please build with a newer {2} SDK (usually done by using the most recent version of Xcode).
-        ///		.
+        ///   Looks up a localized string similar to The type &apos;{0}&apos; (used as a return type in {1}) is not available in {2} {3} (it was introduced in {2} {4}){5} Please build with a newer {2} SDK (usually done by using the most recent version of Xcode)..
         /// </summary>
         public static string MT4162_ReturnType {
             get {
@@ -2705,8 +2443,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Internal error in the registrar ({0} ctor with {1} arguments). Please file a bug report at https://github.com/dotnet/macios/issues/new
-        ///		.
+        ///   Looks up a localized string similar to Internal error in the registrar ({0} ctor with {1} arguments). Please file a bug report at https://github.com/dotnet/macios/issues/new.
         /// </summary>
         public static string MT4163 {
             get {
@@ -2715,8 +2452,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Internal error in the registrar (Unknown availability kind: {0}). Please file a bug report at https://github.com/dotnet/macios/issues/new
-        ///		.
+        ///   Looks up a localized string similar to Internal error in the registrar (Unknown availability kind: {0}). Please file a bug report at https://github.com/dotnet/macios/issues/new.
         /// </summary>
         public static string MT4163_A {
             get {
@@ -2725,8 +2461,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Internal error in the registrar (BindAs parameters can&apos;t be ref/out: {0}). Please file a bug report at https://github.com/dotnet/macios/issues/new
-        ///		.
+        ///   Looks up a localized string similar to Internal error in the registrar (BindAs parameters can&apos;t be ref/out: {0}). Please file a bug report at https://github.com/dotnet/macios/issues/new.
         /// </summary>
         public static string MT4163_B {
             get {
@@ -2735,8 +2470,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot export the property &apos;{0}&apos; because its selector &apos;{1}&apos; is an Objective-C keyword. Please use a different name.
-        ///		.
+        ///   Looks up a localized string similar to Cannot export the property &apos;{0}&apos; because its selector &apos;{1}&apos; is an Objective-C keyword. Please use a different name..
         /// </summary>
         public static string MT4164 {
             get {
@@ -2745,8 +2479,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The registrar couldn&apos;t find the type &apos;System.Void&apos; in any of the referenced assemblies.
-        ///		.
+        ///   Looks up a localized string similar to The registrar couldn&apos;t find the type &apos;System.Void&apos; in any of the referenced assemblies..
         /// </summary>
         public static string MT4165 {
             get {
@@ -2755,8 +2488,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot register the method &apos;{0}&apos; because the signature contains a type ({1}) that isn&apos;t a reference type.
-        ///		.
+        ///   Looks up a localized string similar to Cannot register the method &apos;{0}&apos; because the signature contains a type ({1}) that isn&apos;t a reference type..
         /// </summary>
         public static string MT4166 {
             get {
@@ -2765,8 +2497,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot register the method &apos;{0}&apos; because the signature contains a generic type ({1}) with a generic argument type that doesn&apos;t implement INativeObject ({2}).
-        ///		.
+        ///   Looks up a localized string similar to Cannot register the method &apos;{0}&apos; because the signature contains a generic type ({1}) with a generic argument type that doesn&apos;t implement INativeObject ({2})..
         /// </summary>
         public static string MT4167 {
             get {
@@ -2775,8 +2506,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot register the type &apos;{0}&apos; because its Objective-C name &apos;{1}&apos; is an Objective-C keyword. Please use a different name.
-        ///		.
+        ///   Looks up a localized string similar to Cannot register the type &apos;{0}&apos; because its Objective-C name &apos;{1}&apos; is an Objective-C keyword. Please use a different name..
         /// </summary>
         public static string MT4168 {
             get {
@@ -2785,8 +2515,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Failed to generate a P/Invoke wrapper for {0}: {1}
-        ///		.
+        ///   Looks up a localized string similar to Failed to generate a P/Invoke wrapper for {0}: {1}.
         /// </summary>
         public static string MT4169 {
             get {
@@ -2795,8 +2524,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The registrar can&apos;t convert from &apos;{0}&apos; to &apos;{1}&apos; for the return value in the method {2}.
-        ///		.
+        ///   Looks up a localized string similar to The registrar can&apos;t convert from &apos;{0}&apos; to &apos;{1}&apos; for the return value in the method {2}..
         /// </summary>
         public static string MT4170 {
             get {
@@ -2805,8 +2533,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The BindAs attribute on the return value of the method {0} is invalid: the BindAs type {1} is different from the return type {2}.
-        ///		.
+        ///   Looks up a localized string similar to The BindAs attribute on the return value of the method {0} is invalid: the BindAs type {1} is different from the return type {2}..
         /// </summary>
         public static string MT4171 {
             get {
@@ -2815,8 +2542,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The BindAs attribute on the parameter #{0} is invalid: the BindAs type {1} is different from the parameter type {2}.
-        ///		.
+        ///   Looks up a localized string similar to The BindAs attribute on the parameter #{0} is invalid: the BindAs type {1} is different from the parameter type {2}..
         /// </summary>
         public static string MT4171_A {
             get {
@@ -2825,8 +2551,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The BindAs attribute on the property {0}.{1} is invalid: the BindAs type {2} is different from the property type {1}.
-        ///		.
+        ///   Looks up a localized string similar to The BindAs attribute on the property {0}.{1} is invalid: the BindAs type {2} is different from the property type {1}..
         /// </summary>
         public static string MT4171_B {
             get {
@@ -2835,8 +2560,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The registrar can&apos;t convert from &apos;{0}&apos; to &apos;{1}&apos; for the parameter &apos;{2}&apos; in the method {3}.
-        ///		.
+        ///   Looks up a localized string similar to The registrar can&apos;t convert from &apos;{0}&apos; to &apos;{1}&apos; for the parameter &apos;{2}&apos; in the method {3}..
         /// </summary>
         public static string MT4172 {
             get {
@@ -2845,8 +2569,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The registrar can&apos;t compute the block signature for the delegate of type {0} in the method {1} because {0} doesn&apos;t have a specific signature.
-        ///		.
+        ///   Looks up a localized string similar to The registrar can&apos;t compute the block signature for the delegate of type {0} in the method {1} because {0} doesn&apos;t have a specific signature..
         /// </summary>
         public static string MT4173 {
             get {
@@ -2855,8 +2578,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The registrar can&apos;t compute the block signature for the delegate of type {0} in the method {1} because it couldn&apos;t find the Invoke method of the delegate type.
-        ///		.
+        ///   Looks up a localized string similar to The registrar can&apos;t compute the block signature for the delegate of type {0} in the method {1} because it couldn&apos;t find the Invoke method of the delegate type..
         /// </summary>
         public static string MT4173_A {
             get {
@@ -2865,8 +2587,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unable to locate the block to delegate conversion method for the method {0}&apos;s parameter #{1}.
-        ///		.
+        ///   Looks up a localized string similar to Unable to locate the block to delegate conversion method for the method {0}&apos;s parameter #{1}..
         /// </summary>
         public static string MT4174 {
             get {
@@ -2875,8 +2596,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unable to locate the block to delegate conversion method for the method {0}&apos;s parameter #{1}.
-        ///		.
+        ///   Looks up a localized string similar to Unable to locate the block to delegate conversion method for the method {0}&apos;s parameter #{1}..
         /// </summary>
         public static string MT4175 {
             get {
@@ -2885,8 +2605,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unable to locate the delegate to block conversion type for the return value of the method {0}.
-        ///		.
+        ///   Looks up a localized string similar to Unable to locate the delegate to block conversion type for the return value of the method {0}..
         /// </summary>
         public static string MT4176 {
             get {
@@ -2895,8 +2614,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The &apos;ProtocolType&apos; parameter of the &apos;Adopts&apos; attribute used in class &apos;{0}&apos; contains an invalid character. Value used: &apos;{1}&apos; Invalid Char: &apos;{2}&apos;
-        ///		.
+        ///   Looks up a localized string similar to The &apos;ProtocolType&apos; parameter of the &apos;Adopts&apos; attribute used in class &apos;{0}&apos; contains an invalid character. Value used: &apos;{1}&apos; Invalid Char: &apos;{2}&apos;.
         /// </summary>
         public static string MT4177 {
             get {
@@ -2905,8 +2623,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The class &apos;{0}&apos; will not be registered because the {1} framework has been removed from the {2} SDK.
-        ///		.
+        ///   Looks up a localized string similar to The class &apos;{0}&apos; will not be registered because the {1} framework has been removed from the {2} SDK..
         /// </summary>
         public static string MT4178 {
             get {
@@ -2915,8 +2632,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The registrar found the abstract type &apos;{0}&apos; in the signature for &apos;{1}&apos;. Abstract types should not be used in the signature for a member exported to Objective-C.
-        ///		.
+        ///   Looks up a localized string similar to The registrar found the abstract type &apos;{0}&apos; in the signature for &apos;{1}&apos;. Abstract types should not be used in the signature for a member exported to Objective-C..
         /// </summary>
         public static string MT4179 {
             get {
@@ -2925,8 +2641,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Internal error in the registrar (BindAs parameters can&apos;t be ref/out: {0}). Please file a bug report at https://github.com/dotnet/macios/issues/new
-        ///		.
+        ///   Looks up a localized string similar to Internal error in the registrar (BindAs parameters can&apos;t be ref/out: {0}). Please file a bug report at https://github.com/dotnet/macios/issues/new.
         /// </summary>
         public static string MT4184 {
             get {
@@ -2935,8 +2650,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The registrar can&apos;t compute the block signature for the delegate of type {0} in the method {1} because it couldn&apos;t find the Invoke method of the delegate type.
-        ///		.
+        ///   Looks up a localized string similar to The registrar can&apos;t compute the block signature for the delegate of type {0} in the method {1} because it couldn&apos;t find the Invoke method of the delegate type..
         /// </summary>
         public static string MT4185 {
             get {
@@ -2963,8 +2677,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Missing &apos;{0}&apos; compiler. Please install Xcode &apos;Command-Line Tools&apos; component
-        ///		.
+        ///   Looks up a localized string similar to Missing &apos;{0}&apos; compiler. Please install Xcode &apos;Command-Line Tools&apos; component.
         /// </summary>
         public static string MT5101 {
             get {
@@ -2973,8 +2686,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not find neither the &apos;{0}&apos; nor the &apos;{1}&apos; compiler. Please install Xcode &apos;Command-Line Tools&apos; component
-        ///		.
+        ///   Looks up a localized string similar to Could not find neither the &apos;{0}&apos; nor the &apos;{1}&apos; compiler. Please install Xcode &apos;Command-Line Tools&apos; component.
         /// </summary>
         public static string MT5103 {
             get {
@@ -2983,8 +2695,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Failed to compile the file(s) &apos;{0}&apos;. Please file a bug report at https://github.com/dotnet/macios/issues/new
-        ///		.
+        ///   Looks up a localized string similar to Failed to compile the file(s) &apos;{0}&apos;. Please file a bug report at https://github.com/dotnet/macios/issues/new.
         /// </summary>
         public static string MT5103_A {
             get {
@@ -2993,8 +2704,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not compile the file(s) &apos;{0}&apos;. Please file a bug report at https://github.com/dotnet/macios/issues/new
-        ///		.
+        ///   Looks up a localized string similar to Could not compile the file(s) &apos;{0}&apos;. Please file a bug report at https://github.com/dotnet/macios/issues/new.
         /// </summary>
         public static string MT5106 {
             get {
@@ -3003,8 +2713,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The assembly &apos;{0}&apos; can&apos;t be AOT-compiled for 32-bit architectures because the native code is too big for the 32-bit ARM architecture.
-        ///		.
+        ///   Looks up a localized string similar to The assembly &apos;{0}&apos; can&apos;t be AOT-compiled for 32-bit architectures because the native code is too big for the 32-bit ARM architecture..
         /// </summary>
         public static string MT5107 {
             get {
@@ -3013,8 +2722,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The compiler output is too long, it&apos;s been limited to 1000 lines.
-        ///		.
+        ///   Looks up a localized string similar to The compiler output is too long, it&apos;s been limited to 1000 lines..
         /// </summary>
         public static string MT5108 {
             get {
@@ -3023,8 +2731,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Native linking failed. Please review the build log and the user flags provided to gcc: {0}
-        ///		.
+        ///   Looks up a localized string similar to Native linking failed. Please review the build log and the user flags provided to gcc: {0}.
         /// </summary>
         public static string MT5201 {
             get {
@@ -3033,8 +2740,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Native linking failed. Please review the build log.
-        ///		.
+        ///   Looks up a localized string similar to Native linking failed. Please review the build log..
         /// </summary>
         public static string MT5202 {
             get {
@@ -3043,8 +2749,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Native linking warning: {0}
-        ///		.
+        ///   Looks up a localized string similar to Native linking warning: {0}.
         /// </summary>
         public static string MT5203 {
             get {
@@ -3053,8 +2758,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Native linking failed. Please review the build log.
-        ///		.
+        ///   Looks up a localized string similar to Native linking failed. Please review the build log..
         /// </summary>
         public static string MT5204 {
             get {
@@ -3063,8 +2767,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Native linking error: {0}
-        ///		.
+        ///   Looks up a localized string similar to Native linking error: {0}.
         /// </summary>
         public static string MT5209 {
             get {
@@ -3073,8 +2776,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Native linking failed, undefined symbol: {0}. Please verify that all the necessary frameworks have been referenced and native libraries are properly linked in.
-        ///		.
+        ///   Looks up a localized string similar to Native linking failed, undefined symbol: {0}. Please verify that all the necessary frameworks have been referenced and native libraries are properly linked in..
         /// </summary>
         public static string MT5210 {
             get {
@@ -3083,8 +2785,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Native linking failed, undefined Objective-C class: {0}. The symbol &apos;{1}&apos; could not be found in any of the libraries or frameworks linked with your application.
-        ///		.
+        ///   Looks up a localized string similar to Native linking failed, undefined Objective-C class: {0}. The symbol &apos;{1}&apos; could not be found in any of the libraries or frameworks linked with your application..
         /// </summary>
         public static string MT5211 {
             get {
@@ -3093,8 +2794,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Native linking failed, duplicate symbol: &apos;{0}&apos;.
-        ///		.
+        ///   Looks up a localized string similar to Native linking failed, duplicate symbol: &apos;{0}&apos;..
         /// </summary>
         public static string MT5212 {
             get {
@@ -3103,8 +2803,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Duplicate symbol in: {0} (Location related to previous error)
-        ///		.
+        ///   Looks up a localized string similar to Duplicate symbol in: {0} (Location related to previous error).
         /// </summary>
         public static string MT5213 {
             get {
@@ -3113,8 +2812,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Native linking failed, undefined symbol: {0}. This symbol was referenced by the managed member {1}.{2}. Please verify that all the necessary frameworks have been referenced and native libraries linked.
-        ///		.
+        ///   Looks up a localized string similar to Native linking failed, undefined symbol: {0}. This symbol was referenced by the managed member {1}.{2}. Please verify that all the necessary frameworks have been referenced and native libraries linked..
         /// </summary>
         public static string MT5214 {
             get {
@@ -3123,8 +2821,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to References to &apos;{0}&apos; might require additional -framework=XXX or -lXXX instructions to the native linker
-        ///		.
+        ///   Looks up a localized string similar to References to &apos;{0}&apos; might require additional -framework=XXX or -lXXX instructions to the native linker.
         /// </summary>
         public static string MT5215 {
             get {
@@ -3133,8 +2830,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Native linking failed for &apos;{0}&apos;. Please file a bug report at https://github.com/dotnet/macios/issues/new
-        ///		.
+        ///   Looks up a localized string similar to Native linking failed for &apos;{0}&apos;. Please file a bug report at https://github.com/dotnet/macios/issues/new.
         /// </summary>
         public static string MT5216 {
             get {
@@ -3143,8 +2839,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Native linking failed because the linker command line was too long ({0} characters).
-        ///		.
+        ///   Looks up a localized string similar to Native linking failed because the linker command line was too long ({0} characters)..
         /// </summary>
         public static string MT5217 {
             get {
@@ -3153,8 +2848,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Can&apos;t ignore the dynamic symbol {0} (--ignore-dynamic-symbol={0}) because it was not detected as a dynamic symbol.
-        ///		.
+        ///   Looks up a localized string similar to Can&apos;t ignore the dynamic symbol {0} (--ignore-dynamic-symbol={0}) because it was not detected as a dynamic symbol..
         /// </summary>
         public static string MT5218 {
             get {
@@ -3163,8 +2857,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Not linking with WatchKit because it has been removed from iOS.
-        ///		.
+        ///   Looks up a localized string similar to Not linking with WatchKit because it has been removed from iOS..
         /// </summary>
         public static string MT5219 {
             get {
@@ -3173,8 +2866,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Missing &apos;strip&apos; tool. Please install Xcode &apos;Command-Line Tools&apos; component
-        ///		.
+        ///   Looks up a localized string similar to Missing &apos;strip&apos; tool. Please install Xcode &apos;Command-Line Tools&apos; component.
         /// </summary>
         public static string MT5301 {
             get {
@@ -3183,8 +2875,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Missing &apos;dsymutil&apos; tool. Please install Xcode &apos;Command-Line Tools&apos; component
-        ///		.
+        ///   Looks up a localized string similar to Missing &apos;dsymutil&apos; tool. Please install Xcode &apos;Command-Line Tools&apos; component.
         /// </summary>
         public static string MT5302 {
             get {
@@ -3193,8 +2884,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Failed to generate the debug symbols (dSYM directory). Please review the build log.
-        ///		.
+        ///   Looks up a localized string similar to Failed to generate the debug symbols (dSYM directory). Please review the build log..
         /// </summary>
         public static string MT5303 {
             get {
@@ -3203,8 +2893,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Failed to strip the final binary. Please review the build log.
-        ///		.
+        ///   Looks up a localized string similar to Failed to strip the final binary. Please review the build log..
         /// </summary>
         public static string MT5304 {
             get {
@@ -3213,8 +2902,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Failed to create the a fat library. Please review the build log.
-        ///		.
+        ///   Looks up a localized string similar to Failed to create the a fat library. Please review the build log..
         /// </summary>
         public static string MT5306 {
             get {
@@ -3223,8 +2911,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Internal consistency error. Please file a bug report at https://github.com/dotnet/macios/issues/new.
-        ///		.
+        ///   Looks up a localized string similar to Internal consistency error. Please file a bug report at https://github.com/dotnet/macios/issues/new..
         /// </summary>
         public static string MT8018 {
             get {
@@ -3260,8 +2947,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Application name &apos;{0}.exe&apos; conflicts with an SDK or product assembly (.dll) name.
-        ///		.
+        ///   Looks up a localized string similar to Application name &apos;{0}.exe&apos; conflicts with an SDK or product assembly (.dll) name..
         /// </summary>
         public static string MX0003 {
             get {
@@ -3270,8 +2956,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The root assembly &apos;{0}&apos; does not exist
-        ///		.
+        ///   Looks up a localized string similar to The root assembly &apos;{0}&apos; does not exist.
         /// </summary>
         public static string MX0007 {
             get {
@@ -3280,8 +2965,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error while loading assemblies: {0}.
-        ///		.
+        ///   Looks up a localized string similar to Error while loading assemblies: {0}..
         /// </summary>
         public static string MX0009 {
             get {
@@ -3290,8 +2974,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not parse the command line arguments: {0}
-        ///		.
+        ///   Looks up a localized string similar to Could not parse the command line arguments: {0}.
         /// </summary>
         public static string MX0010 {
             get {
@@ -3300,8 +2983,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The option &apos;{0}&apos; has been deprecated.
-        ///		.
+        ///   Looks up a localized string similar to The option &apos;{0}&apos; has been deprecated..
         /// </summary>
         public static string MX0016 {
             get {
@@ -3310,8 +2992,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You should provide a root assembly.
-        ///		.
+        ///   Looks up a localized string similar to You should provide a root assembly..
         /// </summary>
         public static string MX0017 {
             get {
@@ -3320,8 +3001,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unknown command line argument: &apos;{0}&apos;
-        ///		.
+        ///   Looks up a localized string similar to Unknown command line argument: &apos;{0}&apos;.
         /// </summary>
         public static string MX0018 {
             get {
@@ -3330,8 +3010,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The valid options for &apos;{0}&apos; are &apos;{1}&apos;.
-        ///		.
+        ///   Looks up a localized string similar to The valid options for &apos;{0}&apos; are &apos;{1}&apos;..
         /// </summary>
         public static string MX0020 {
             get {
@@ -3340,8 +3019,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not parse the command line argument &apos;-{0}&apos;: {1}
-        ///		.
+        ///   Looks up a localized string similar to Could not parse the command line argument &apos;-{0}&apos;: {1}.
         /// </summary>
         public static string MX0026 {
             get {
@@ -3350,8 +3028,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The Boehm garbage collector is not supported. The SGen garbage collector has been selected instead.
-        ///		.
+        ///   Looks up a localized string similar to The Boehm garbage collector is not supported. The SGen garbage collector has been selected instead..
         /// </summary>
         public static string MX0043 {
             get {
@@ -3360,8 +3037,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot find Xcode in the default location (/Applications/Xcode.app). Please install Xcode, or pass a custom path using --sdkroot &lt;path&gt;.
-        ///		.
+        ///   Looks up a localized string similar to Cannot find Xcode in the default location (/Applications/Xcode.app). Please install Xcode, or pass a custom path using --sdkroot &lt;path&gt;..
         /// </summary>
         public static string MX0056 {
             get {
@@ -3370,8 +3046,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not find the currently selected Xcode on the system: {0}
-        ///		.
+        ///   Looks up a localized string similar to Could not find the currently selected Xcode on the system: {0}.
         /// </summary>
         public static string MX0059 {
             get {
@@ -3380,8 +3055,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not find the currently selected Xcode on the system. &apos;xcode-select --print-path&apos; returned &apos;{0}&apos;, but that directory does not exist.
-        ///		.
+        ///   Looks up a localized string similar to Could not find the currently selected Xcode on the system. &apos;xcode-select --print-path&apos; returned &apos;{0}&apos;, but that directory does not exist..
         /// </summary>
         public static string MX0060 {
             get {
@@ -3390,8 +3064,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid value for target framework: {0}.
-        ///		.
+        ///   Looks up a localized string similar to Invalid value for target framework: {0}..
         /// </summary>
         public static string MX0068 {
             get {
@@ -3400,8 +3073,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid target framework: {0}. Valid target frameworks are: {1}.
-        ///		.
+        ///   Looks up a localized string similar to Invalid target framework: {0}. Valid target frameworks are: {1}..
         /// </summary>
         public static string MX0070 {
             get {
@@ -3410,8 +3082,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unknown platform: {0}. This usually indicates a bug in {1}; please file a bug report at https://github.com/dotnet/macios/issues/new with a test case.
-        ///		.
+        ///   Looks up a localized string similar to Unknown platform: {0}. This usually indicates a bug in {1}; please file a bug report at https://github.com/dotnet/macios/issues/new with a test case..
         /// </summary>
         public static string MX0071 {
             get {
@@ -3420,8 +3091,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {4} {0} does not support a deployment target of {1} for {3} (the maximum is {2}). Please select an older deployment target in your project&apos;s Info.plist or change the SupportedOSPlatformVersion property in your project file, or upgrade to a newer version of {4}.
-        ///		.
+        ///   Looks up a localized string similar to {4} {0} does not support a deployment target of {1} for {3} (the maximum is {2}). Please select an older deployment target in your project&apos;s Info.plist or change the SupportedOSPlatformVersion property in your project file, or upgrade to a newer version of {4}..
         /// </summary>
         public static string MX0074 {
             get {
@@ -3430,8 +3100,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Disabling the new refcount logic is deprecated.
-        ///		.
+        ///   Looks up a localized string similar to Disabling the new refcount logic is deprecated..
         /// </summary>
         public static string MX0080 {
             get {
@@ -3440,8 +3109,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A target framework (--target-framework) must be specified.
-        ///		.
+        ///   Looks up a localized string similar to A target framework (--target-framework) must be specified..
         /// </summary>
         public static string MX0086 {
             get {
@@ -3450,8 +3118,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The target framework &apos;{0}&apos; is deprecated. Use &apos;{1}&apos; instead.
-        ///		.
+        ///   Looks up a localized string similar to The target framework &apos;{0}&apos; is deprecated. Use &apos;{1}&apos; instead..
         /// </summary>
         public static string MX0090 {
             get {
@@ -3460,8 +3127,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Internal error: {0}. Please file an issue at https://github.com/dotnet/macios/issues/new.
-        ///		.
+        ///   Looks up a localized string similar to Internal error: {0}. Please file an issue at https://github.com/dotnet/macios/issues/new..
         /// </summary>
         public static string MX0099 {
             get {
@@ -3470,8 +3136,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Debugging symbol file for &apos;{0}&apos; does not match the assembly and is ignored.
-        ///		.
+        ///   Looks up a localized string similar to Debugging symbol file for &apos;{0}&apos; does not match the assembly and is ignored..
         /// </summary>
         public static string MX0129 {
             get {
@@ -3480,8 +3145,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No root assemblies found. You should provide at least one root assembly.
-        ///		.
+        ///   Looks up a localized string similar to No root assemblies found. You should provide at least one root assembly..
         /// </summary>
         public static string MX0130 {
             get {
@@ -3490,8 +3154,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Product assembly &apos;{0}&apos; not found in assembly list: &apos;{1}&apos;
-        ///		.
+        ///   Looks up a localized string similar to Product assembly &apos;{0}&apos; not found in assembly list: &apos;{1}&apos;.
         /// </summary>
         public static string MX0131 {
             get {
@@ -3500,8 +3163,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unknown optimization: &apos;{0}&apos;. Valid optimizations are: {1}.
-        ///		.
+        ///   Looks up a localized string similar to Unknown optimization: &apos;{0}&apos;. Valid optimizations are: {1}..
         /// </summary>
         public static string MX0132 {
             get {
@@ -3510,8 +3172,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Found more than 1 assembly matching &apos;{0}&apos; choosing first:{1}{2}
-        ///		.
+        ///   Looks up a localized string similar to Found more than 1 assembly matching &apos;{0}&apos; choosing first:{1}{2}.
         /// </summary>
         public static string MX0133 {
             get {
@@ -3520,8 +3181,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Did not link system framework &apos;{0}&apos; (referenced by assembly &apos;{1}&apos;) because it was introduced in {2} {3}, and we&apos;re using the {2} {4} SDK.
-        ///		.
+        ///   Looks up a localized string similar to Did not link system framework &apos;{0}&apos; (referenced by assembly &apos;{1}&apos;) because it was introduced in {2} {3}, and we&apos;re using the {2} {4} SDK..
         /// </summary>
         public static string MX0135 {
             get {
@@ -3530,8 +3190,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unable to parse the linker flags &apos;{0}&apos; from the LinkWith attribute for the library &apos;{1}&apos; in {2} : {3}
-        ///		.
+        ///   Looks up a localized string similar to Unable to parse the linker flags &apos;{0}&apos; from the LinkWith attribute for the library &apos;{1}&apos; in {2} : {3}.
         /// </summary>
         public static string MX0148 {
             get {
@@ -3641,8 +3300,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not copy the assembly &apos;{0}&apos; to &apos;{1}&apos;: {2}
-        ///		.
+        ///   Looks up a localized string similar to Could not copy the assembly &apos;{0}&apos; to &apos;{1}&apos;: {2}.
         /// </summary>
         public static string MX1009 {
             get {
@@ -3678,8 +3336,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to One or more reference(s) to type &apos;{0}&apos; already exists inside &apos;{1}&apos; before linking
-        ///		.
+        ///   Looks up a localized string similar to One or more reference(s) to type &apos;{0}&apos; already exists inside &apos;{1}&apos; before linking.
         /// </summary>
         public static string MX1502 {
             get {
@@ -3688,8 +3345,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to One or more reference(s) to type &apos;{0}&apos; still exists inside &apos;{1}&apos; after linking
-        ///		.
+        ///   Looks up a localized string similar to One or more reference(s) to type &apos;{0}&apos; still exists inside &apos;{1}&apos; after linking.
         /// </summary>
         public static string MX1503 {
             get {
@@ -3698,8 +3354,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Not a Mach-O dynamic library (unknown header &apos;0x{0}&apos;): {1}.
-        ///		.
+        ///   Looks up a localized string similar to Not a Mach-O dynamic library (unknown header &apos;0x{0}&apos;): {1}..
         /// </summary>
         public static string MX1600 {
             get {
@@ -3708,8 +3363,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Not a Mach-O dynamic library (unknown header &apos;0x{0}&apos;): {1}.
-        ///		.
+        ///   Looks up a localized string similar to Not a Mach-O dynamic library (unknown header &apos;0x{0}&apos;): {1}..
         /// </summary>
         public static string MX1602 {
             get {
@@ -3718,8 +3372,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unknown format for fat entry at position {0} in {1}.
-        ///		.
+        ///   Looks up a localized string similar to Unknown format for fat entry at position {0} in {1}..
         /// </summary>
         public static string MX1603 {
             get {
@@ -3728,8 +3381,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to File of type {0} is not a MachO file ({1}).
-        ///		.
+        ///   Looks up a localized string similar to File of type {0} is not a MachO file ({1})..
         /// </summary>
         public static string MX1604 {
             get {
@@ -3738,8 +3390,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not link assemblies. {0}
-        ///		.
+        ///   Looks up a localized string similar to Could not link assemblies. {0}.
         /// </summary>
         public static string MX2001 {
             get {
@@ -3748,8 +3399,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Extra linker definitions file &apos;{0}&apos; could not be located.
-        ///		.
+        ///   Looks up a localized string similar to Extra linker definitions file &apos;{0}&apos; could not be located..
         /// </summary>
         public static string MX2004 {
             get {
@@ -3758,8 +3408,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Definitions from &apos;{0}&apos; could not be parsed.
-        ///		.
+        ///   Looks up a localized string similar to Definitions from &apos;{0}&apos; could not be parsed..
         /// </summary>
         public static string MX2005 {
             get {
@@ -3777,8 +3426,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not process XML description: {0}
-        ///		.
+        ///   Looks up a localized string similar to Could not process XML description: {0}.
         /// </summary>
         public static string MX2017 {
             get {
@@ -3787,8 +3435,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error processing assembly &apos;{0}&apos;: {1}
-        ///		.
+        ///   Looks up a localized string similar to Error processing assembly &apos;{0}&apos;: {1}.
         /// </summary>
         public static string MX2103 {
             get {
@@ -3842,8 +3489,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Can not find the corlib assembly &apos;{0}&apos; in the list of loaded assemblies.
-        ///		.
+        ///   Looks up a localized string similar to Can not find the corlib assembly &apos;{0}&apos; in the list of loaded assemblies..
         /// </summary>
         public static string MX2111 {
             get {
@@ -3870,8 +3516,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not {0} the assembly &apos;{1}&apos;
-        ///		.
+        ///   Looks up a localized string similar to Could not {0} the assembly &apos;{1}&apos;.
         /// </summary>
         public static string MX3001 {
             get {
@@ -3880,8 +3525,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Debug info files (*.mdb / *.pdb) will not be loaded when llvm is enabled.
-        ///		.
+        ///   Looks up a localized string similar to Debug info files (*.mdb / *.pdb) will not be loaded when llvm is enabled..
         /// </summary>
         public static string MX3007 {
             get {
@@ -3936,8 +3580,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Missing &apos;lipo&apos; tool. Please install Xcode &apos;Command-Line Tools&apos; component
-        ///		.
+        ///   Looks up a localized string similar to Missing &apos;lipo&apos; tool. Please install Xcode &apos;Command-Line Tools&apos; component.
         /// </summary>
         public static string MX5305 {
             get {
@@ -3946,8 +3589,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Missing &apos;{0}&apos; tool. Please install Xcode &apos;Command-Line Tools&apos; component
-        ///		.
+        ///   Looks up a localized string similar to Missing &apos;{0}&apos; tool. Please install Xcode &apos;Command-Line Tools&apos; component.
         /// </summary>
         public static string MX5307 {
             get {
@@ -3956,8 +3598,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Failed to execute the tool &apos;{0}&apos;, it failed with an error code &apos;{1}&apos;. Please check the build log for details.
-        ///		.
+        ///   Looks up a localized string similar to Failed to execute the tool &apos;{0}&apos;, it failed with an error code &apos;{1}&apos;. Please check the build log for details..
         /// </summary>
         public static string MX5309 {
             get {
@@ -3966,8 +3607,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to lipo failed with an error code &apos;{0}&apos;. Check build log for details.
-        ///		.
+        ///   Looks up a localized string similar to lipo failed with an error code &apos;{0}&apos;. Check build log for details..
         /// </summary>
         public static string MX5311 {
             get {
@@ -3976,8 +3616,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pkg-config failed with an error code &apos;{0}&apos;. Check build log for details.
-        ///		.
+        ///   Looks up a localized string similar to pkg-config failed with an error code &apos;{0}&apos;. Check build log for details..
         /// </summary>
         public static string MX5312 {
             get {
@@ -3986,8 +3625,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not find {0}. Please install the Mono.framework from https://mono-project.com/Downloads
-        ///		.
+        ///   Looks up a localized string similar to Could not find {0}. Please install the Mono.framework from https://mono-project.com/Downloads.
         /// </summary>
         public static string MX5313 {
             get {
@@ -3996,8 +3634,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Failed to execute pkg-config: &apos;{0}&apos;. Check build log for details.
-        ///		.
+        ///   Looks up a localized string similar to Failed to execute pkg-config: &apos;{0}&apos;. Check build log for details..
         /// </summary>
         public static string MX5314 {
             get {
@@ -4006,8 +3643,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The tool xcrun failed to find result when looking for the tool &apos;{0}&apos; (the file &apos;{1}&apos; does not exist). Check build log for details.
-        ///		.
+        ///   Looks up a localized string similar to The tool xcrun failed to find result when looking for the tool &apos;{0}&apos; (the file &apos;{1}&apos; does not exist). Check build log for details..
         /// </summary>
         public static string MX5315 {
             get {

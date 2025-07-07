@@ -115,6 +115,7 @@
 		<EnableUnsafeUTF7Encoding Condition="'$(EnableUnsafeUTF7Encoding)' == ''">false</EnableUnsafeUTF7Encoding>
 		<EventSourceSupport Condition="'$(EventSourceSupport)' == ''">false</EventSourceSupport>
 		<HttpActivityPropagationSupport Condition="'$(HttpActivityPropagationSupport)' == '' and '$(Optimize)' == 'true'">false</HttpActivityPropagationSupport>
+		<Http3Support Condition="'$(Http3Support)' == ''">false</Http3Support>
 		<InvariantGlobalization Condition="'$(InvariantGlobalization)' == ''">false</InvariantGlobalization>
 		<!-- Enable HybridGlobalization by default-->
 		<HybridGlobalization Condition="'$(InvariantGlobalization)' != 'true'">true</HybridGlobalization>

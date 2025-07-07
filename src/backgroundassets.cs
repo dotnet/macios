@@ -252,19 +252,19 @@ namespace BackgroundAssets {
 	[BaseType (typeof (NSObject))]
 	interface BAManagedAssetPackDownloadDelegate {
 		[Export ("downloadOfAssetPackBegan:")]
-		void DownloadOfAssetPackBegan (BAAssetPack assetPack);
+		void DownloadBegan (BAAssetPack assetPack);
 
 		[Export ("downloadOfAssetPack:hasProgress:")]
-		void DownloadOfAssetPack (BAAssetPack assetPack, NSProgress progress);
+		void DownloadProgress (BAAssetPack assetPack, NSProgress progress);
 
 		[Export ("downloadOfAssetPackPaused:")]
-		void DownloadOfAssetPackPaused (BAAssetPack assetPack);
+		void DownloadPaused (BAAssetPack assetPack);
 
 		[Export ("downloadOfAssetPackFinished:")]
-		void DownloadOfAssetPackFinished (BAAssetPack assetPack);
+		void DownloadFinished (BAAssetPack assetPack);
 
 		[Export ("downloadOfAssetPack:failedWithError:")]
-		void DownloadOfAssetPack (BAAssetPack assetPack, NSError error);
+		void DownloadFailed (BAAssetPack assetPack, NSError error);
 	}
 
 	interface IBAManagedAssetPackDownloadDelegate { }
@@ -273,7 +273,7 @@ namespace BackgroundAssets {
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
 	interface BAManagedDownloaderExtension : BADownloaderExtension {
 		[Export ("shouldDownloadAssetPack:")]
-		bool ShouldDownloadAssetPack (BAAssetPack assetPack);
+		bool ShouldDownload (BAAssetPack assetPack);
 	}
 
 	[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0), Mac (26, 0)]
@@ -305,10 +305,10 @@ namespace BackgroundAssets {
 
 	delegate void BAAssetPackManagerGetAllAssetPacksCompletionHandler ([NullAllowed] NSSet<BAAssetPack> assetPacks, [NullAllowed] NSError error);
 	delegate void BAAssetPackManagerGetAssetPackCompletionHandler ([NullAllowed] BAAssetPack assetPack, [NullAllowed] NSError error);
-	delegate void BAAssetPackManagerGetStatusOfAssetPackCompletionHandler ([NullAllowed] BAAssetPackStatus status, [NullAllowed] NSError error);
-	delegate void BAAssetPackManagerEnsureLocalAvailabilityOfAssetPackCompletionHandler ([NullAllowed] NSError error);
+	delegate void BAAssetPackManagerGetStatusCompletionHandler ([NullAllowed] BAAssetPackStatus status, [NullAllowed] NSError error);
+	delegate void BAAssetPackManagerEnsureLocalAvailabilityCompletionHandler ([NullAllowed] NSError error);
 	delegate void BAAssetPackManagerCheckForUpdatesCompletionHandler ([NullAllowed] NSSet<NSString> updatingIdentifiers, [NullAllowed] NSSet<NSString> removedIdentifiers, [NullAllowed] NSError error);
-	delegate void BAAssetPackManagerRemoveAssetPackWithIdentifierCompletionHandler ([NullAllowed] NSError error);
+	delegate void BAAssetPackManagerRemoveAssetPackCompletionHandler ([NullAllowed] NSError error);
 
 	[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0), Mac (26, 0)]
 	[BaseType (typeof (NSObject))]
@@ -335,11 +335,11 @@ namespace BackgroundAssets {
 
 		[Export ("getStatusOfAssetPackWithIdentifier:completionHandler:")]
 		[Async]
-		void GetStatusOfAssetPack (string assetPackIdentifier, BAAssetPackManagerGetStatusOfAssetPackCompletionHandler completionHandler);
+		void GetStatus (string assetPackIdentifier, BAAssetPackManagerGetStatusCompletionHandler completionHandler);
 
 		[Export ("ensureLocalAvailabilityOfAssetPack:completionHandler:")]
 		[Async]
-		void EnsureLocalAvailabilityOfAssetPack (BAAssetPack assetPack, BAAssetPackManagerEnsureLocalAvailabilityOfAssetPackCompletionHandler completionHandler);
+		void EnsureLocalAvailability (BAAssetPack assetPack, BAAssetPackManagerEnsureLocalAvailabilityCompletionHandler completionHandler);
 
 		[Export ("checkForUpdatesWithCompletionHandler:")]
 		[Async (ResultTypeName = "BAAssetPackManagerCheckForUpdatesResult")]
@@ -358,7 +358,7 @@ namespace BackgroundAssets {
 
 		[Export ("removeAssetPackWithIdentifier:completionHandler:")]
 		[Async]
-		void RemoveAssetPackWithIdentifier (string assetPackIdentifier, [NullAllowed] BAAssetPackManagerRemoveAssetPackWithIdentifierCompletionHandler completionHandler);
+		void RemoveAssetPack (string assetPackIdentifier, [NullAllowed] BAAssetPackManagerRemoveAssetPackCompletionHandler completionHandler);
 	}
 
 	[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0), Mac (26, 0)]

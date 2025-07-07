@@ -316,6 +316,20 @@ namespace Introspection {
 
 				}
 				break;
+			case "/System/Library/Frameworks/MobileCoreServices.framework/MobileCoreServices":
+				switch (dllImportLibrary) {
+				case "/System/Library/Frameworks/CoreServices.framework/CoreServices":
+					return true;
+
+				}
+				break;
+			case "/System/Library/Frameworks/CoreServices.framework/CoreServices":
+				switch (dllImportLibrary) {
+				case "/System/Library/Frameworks/MobileCoreServices.framework/MobileCoreServices":
+					return true;
+
+				}
+				break;
 			case "/System/Library/Frameworks/CoreServices.framework/Frameworks/FSEvents.framework/FSEvents":
 				return dllImportLibrary == "/System/Library/Frameworks/CoreServices.framework/CoreServices";
 #if __MACOS__

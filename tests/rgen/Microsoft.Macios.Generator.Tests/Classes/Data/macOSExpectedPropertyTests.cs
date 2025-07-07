@@ -762,9 +762,9 @@ public partial class PropertyTests
 				global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
 			using var nsa_value = global::Foundation.NSArray.FromStrings (value);
 			if (IsDirectBinding) {
-				global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setSurnames:"), nsa_value);
+				global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setSurnames:"), nsa_value.Handle);
 			} else {
-				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setSurnames:"), nsa_value);
+				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setSurnames:"), nsa_value.Handle);
 			}
 			global::System.GC.KeepAlive (this);
 			global::System.GC.KeepAlive (nsa_value);
@@ -890,9 +890,9 @@ public partial class PropertyTests
 				global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
 			using var nsa_value = global::Foundation.NSArray.FromNSObjects (value);
 			if (IsDirectBinding) {
-				global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setResults:"), nsa_value);
+				global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setResults:"), nsa_value.Handle);
 			} else {
-				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setResults:"), nsa_value);
+				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setResults:"), nsa_value.Handle);
 			}
 			global::System.GC.KeepAlive (this);
 			global::System.GC.KeepAlive (nsa_value);

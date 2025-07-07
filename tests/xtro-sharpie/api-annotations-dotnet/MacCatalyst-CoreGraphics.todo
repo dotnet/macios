@@ -35,3 +35,8 @@
 !missing-pinvoke! CGRenderingBufferProviderGetSize is not bound
 !missing-pinvoke! CGRenderingBufferProviderGetTypeID is not bound
 !missing-pinvoke! CGRenderingBufferUnlockBytePtr is not bound
+!missing-pinvoke! CGGradientCreateWithContentHeadroom is not bound
+!missing-pinvoke! CGGradientGetContentHeadroom is not bound
+!missing-pinvoke! CGShadingCreateAxialWithContentHeadroom is not bound
+!missing-pinvoke! CGShadingCreateRadialWithContentHeadroom is not bound
+!missing-pinvoke! CGShadingGetContentHeadroom is not bound

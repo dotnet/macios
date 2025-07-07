@@ -177,9 +177,9 @@ namespace Introspection {
 					return true;
 				break;
 #endif
-			case "CIPersonSegmentation": // removed in Xcode 26 beta 1?
-			case "CISaliencyMapFilter": // removed in Xcode 26 beta 1?
-				return TestRuntime.CheckExactXcodeVersion (26, 0, 1);
+			case "CIPersonSegmentation": // removed in Xcode 26 beta 1/2?
+			case "CISaliencyMapFilter": // removed in Xcode 26 beta 1/2?
+				return TestRuntime.CheckExactXcodeVersion (26, 0, 1) || TestRuntime.CheckExactXcodeVersion (26, 0, 2);
 			}
 
 			switch (type.Namespace) {

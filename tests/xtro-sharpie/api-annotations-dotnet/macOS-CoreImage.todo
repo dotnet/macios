@@ -48,3 +48,6 @@
 !missing-selector! CIRenderDestination::captureTraceURL not bound
 !missing-selector! CIRenderDestination::setCaptureTraceURL: not bound
 !missing-selector! NSObject::provideImageToMTLTexture:commandBuffer:originx:originy:width:height:userInfo: not bound
+!missing-field! kCIContextCVMetalTextureCache not bound
+!missing-field! kCIFormatRGBX8 not bound
+!missing-field! kCIImageRepresentationHDRGainMapAsRGB not bound

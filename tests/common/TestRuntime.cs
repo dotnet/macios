@@ -382,6 +382,12 @@ partial class TestRuntime {
 			macOS = new { Major = 26, Minor = 0, Build = "25A5279m" },
 		};
 
+		var twentysixb2 = new {
+			Xcode = new { Major = 26, Minor = 0, Beta = 2 },
+			iOS = new { Major = 26, Minor = 0, Build = "23A5276e" },
+			tvOS = new { Major = 26, Minor = 0, Build = "23J5295e" },
+			macOS = new { Major = 26, Minor = 0, Build = "25A5295e" },
+		};
 		var versions = new [] {
 			nineb1,
 			nineb2,
@@ -391,6 +397,7 @@ partial class TestRuntime {
 			twelvedot2b2,
 			twelvedot2b3,
 			twentysixb1,
+			twentysixb2,
 		};
 
 		foreach (var v in versions) {
@@ -1356,7 +1363,7 @@ partial class TestRuntime {
 		// so just ignore these tests for now.
 		NUnit.Framework.Assert.Ignore ("Requires a hardened runtime entitlement: com.apple.security.device.microphone");
 #else
-		if (CheckExactXcodeVersion (26, 0, beta: 1))
+		if (CheckExactXcodeVersion (26, 0, beta: 1) || CheckExactXcodeVersion (26, 0, beta: 2))
 			NUnit.Framework.Assert.Ignore ("AVAudioApplication.RecordPermission crashes. FB18023766");
 
 		if (!CheckXcodeVersion (6, 0))

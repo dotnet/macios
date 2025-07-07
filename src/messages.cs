@@ -91,6 +91,16 @@ namespace Messages {
 		[Abstract]
 		[Export ("contentSizeThatFits:")]
 		CGSize GetContentSizeThatFits (CGSize size);
+
+		[iOS (26, 0), MacCatalyst (26, 0)]
+		[Abstract]
+		[Export ("messageTintColor")]
+		UIColor MessageTintColor { get; }
+
+		[iOS (26, 0), MacCatalyst (26, 0)]
+		[Abstract]
+		[Export ("invalidateMessageTintColor")]
+		void InvalidateMessageTintColor ();
 	}
 
 	/// <summary>A <see cref="Speech.UIViewController" /> that, when extended by the developer, is used to present a custom user-experience within the Messages app.</summary>

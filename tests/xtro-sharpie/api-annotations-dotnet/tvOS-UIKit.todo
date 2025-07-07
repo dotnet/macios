@@ -193,3 +193,5 @@
 !missing-type! UITraitHDRHeadroomUsageLimit not bound
 !missing-type! UITraitSplitViewControllerLayoutEnvironment not bound
 !missing-type! UIViewLayoutRegion not bound
+!missing-selector! UIBarButtonItem::identifier not bound
+!missing-selector! UIBarButtonItem::setIdentifier: not bound

@@ -19,3 +19,5 @@
 !missing-selector! NSFileManager::pauseSyncForUbiquitousItemAtURL:completionHandler: not bound
 !missing-selector! NSFileManager::resumeSyncForUbiquitousItemAtURL:withBehavior:completionHandler: not bound
 !missing-selector! NSFileManager::uploadLocalVersionOfUbiquitousItemAtURL:withConflictResolutionPolicy:completionHandler: not bound
+!missing-selector! NSURLSessionConfiguration::enablesEarlyData not bound
+!missing-selector! NSURLSessionConfiguration::setEnablesEarlyData: not bound

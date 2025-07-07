@@ -3,3 +3,5 @@
 !missing-enum-value! SFSpeechErrorCode native value SFSpeechErrorCodeTimeout = 12 not bound
 !missing-selector! +SFSpeechLanguageModel::prepareCustomLanguageModelForUrl:configuration:completion: not bound
 !missing-selector! +SFSpeechLanguageModel::prepareCustomLanguageModelForUrl:configuration:ignoresCache:completion: not bound
+!missing-selector! SFSpeechLanguageModelConfiguration::initWithLanguageModel:vocabulary:weight: not bound
+!missing-selector! SFSpeechLanguageModelConfiguration::weight not bound

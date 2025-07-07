@@ -34,7 +34,5 @@
 !missing-selector! SCScreenshotOutput::setFileURL: not bound
 !missing-selector! SCScreenshotOutput::setHdrImage: not bound
 !missing-selector! SCScreenshotOutput::setSdrImage: not bound
-!missing-selector! SCScreenshotOutput::setTestImage: not bound
-!missing-selector! SCScreenshotOutput::testImage not bound
 !missing-type! SCScreenshotConfiguration not bound
 !missing-type! SCScreenshotOutput not bound

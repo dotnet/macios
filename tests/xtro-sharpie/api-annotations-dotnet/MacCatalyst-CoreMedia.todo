@@ -30,3 +30,4 @@
 !missing-field! kCMMetadataIdentifier_QuickTimeMetadataSpatialAudioMix not bound
 !missing-field! kCMTagProjectionTypeParametricImmersive not bound
 !missing-pinvoke! CMTaggedBufferGroupFormatDescriptionCreateForTaggedBufferGroupWithExtensions is not bound
+!missing-field! kCMFormatDescriptionProjectionKind_AppleImmersiveVideo not bound

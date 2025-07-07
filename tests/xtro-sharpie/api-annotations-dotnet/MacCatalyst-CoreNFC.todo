@@ -1,3 +1,4 @@
 !missing-enum-value! NFCReaderError native value NFCReaderErrorIneligible = 7 not bound
 !missing-selector! NFCPaymentTagReaderSession::initWithDelegate:queue: not bound
 !missing-type! NFCPaymentTagReaderSession not bound
+!missing-enum-value! NFCReaderError native value NFCReaderErrorAccessNotAccepted = 8 not bound

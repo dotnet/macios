@@ -36,3 +36,6 @@
 !missing-type! MKAddressRepresentations not bound
 !missing-type! MKGeocodingRequest not bound
 !missing-type! MKReverseGeocodingRequest not bound
+!deprecated-attribute-missing! MKMapItem::initWithPlacemark: missing a [Deprecated] attribute
+!deprecated-attribute-missing! MKMapItem::placemark missing a [Deprecated] attribute
+!deprecated-attribute-missing! MKPlacemark missing a [Deprecated] attribute

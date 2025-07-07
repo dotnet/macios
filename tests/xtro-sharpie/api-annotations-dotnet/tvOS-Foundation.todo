@@ -13,3 +13,5 @@
 !missing-field! NSListItemDelimiterAttributeName not bound
 !missing-field! NSURLUbiquitousItemIsSyncPausedKey not bound
 !missing-field! NSURLUbiquitousItemSupportedSyncControlsKey not bound
+!missing-selector! NSURLSessionConfiguration::enablesEarlyData not bound
+!missing-selector! NSURLSessionConfiguration::setEnablesEarlyData: not bound

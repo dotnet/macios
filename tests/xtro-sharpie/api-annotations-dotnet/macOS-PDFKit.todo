@@ -1,6 +1,0 @@
-!missing-enum-value! PdfAreaOfInterest native value kPDFTableArea = 512 not bound
-!missing-enum-value! PdfAreaOfInterest native value kPDFTableResizeArea = 1024 not bound
-!missing-selector! PDFAnnotation::setSignatureAnnotationForRendering: not bound
-!missing-selector! PDFAnnotation::signatureAnnotationForRendering not bound
-!missing-selector! PDFPage::selectionForTableRect: not bound
-!missing-selector! PDFPage::tableSelectionFromPoint:toPoint: not bound

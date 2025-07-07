@@ -23,6 +23,16 @@ namespace AutomaticAssessmentConfiguration {
 		UnsupportedPlatform = 2,
 		MultipleParticipantsNotSupported = 3,
 		ConfigurationUpdatesNotSupported = 4,
+		RequiredParticipantsNotAvailable = 5,
+	}
+
+	[Static]
+	public interface AEAssessmentErrorKeys {
+		[Field ("AENotInstalledParticipantsKey")]
+		NSString NotInstalledParticipants { get; set; }
+
+		[Field ("AERestrictedSystemParticipantsKey")]
+		NSString RestrictedSystemParticipants { get; set; }
 	}
 
 	[iOS (14, 0)]
@@ -210,5 +220,13 @@ namespace AutomaticAssessmentConfiguration {
 		[Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Export ("configurationInfo", ArgumentSemantic.Copy)]
 		NSDictionary<NSString, NSObject> ConfigurationInfo { get; set; }
+
+		[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("required")]
+		bool Required {
+			[Bind ("isRequired")]
+			get;
+			set;
+		}
 	}
 }

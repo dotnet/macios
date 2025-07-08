@@ -56,6 +56,10 @@ namespace Introspection {
 				if (TestRuntime.IsSimulator)
 					return !TestRuntime.CheckXcodeVersion (15, 0); // doesn't seem to be available in the iOS simulator until iOS 17+
 				break;
+			case "SensorKit": // SensorKit doesn't exist on iPads
+				if (TestRuntime.IsDevice && TestRuntime.IsiPad)
+					return true;
+				break;
 			}
 
 			switch (type.FullName) {
@@ -1116,6 +1120,16 @@ namespace Introspection {
 				switch (selectorName) {
 				case "maximumDepth":
 					return !TestRuntime.CheckXcodeVersion (15, 0); // it's not in iOS 16, but maybe iOS 17?
+				}
+				break;
+			case "NSDate":
+				switch (selectorName) {
+				case "dateWithSRAbsoluteTime:": // This is from a category defined in SensorKit, and SensorKit doesn't exist on iPads
+				case "initWithSRAbsoluteTime:": // This is from a category defined in SensorKit, and SensorKit doesn't exist on iPads
+				case "srAbsoluteTime": // This is from a category defined in SensorKit, and SensorKit doesn't exist on iPads
+					if (TestRuntime.IsDevice && TestRuntime.IsiPad)
+						return true;
+					break;
 				}
 				break;
 			}

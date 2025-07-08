@@ -182,6 +182,10 @@ namespace Introspection {
 			}
 
 			switch (type.Namespace) {
+			case "SensorKit": // SensorKit doesn't exist on iPads
+				if (TestRuntime.IsDevice && TestRuntime.IsiPad)
+					return true;
+				break;
 			case "SafetyKit":
 				return true; // SafetyKit requires a custom entitlement, and will throw exceptions if it's not present.
 			}

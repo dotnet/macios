@@ -168,9 +168,13 @@ public partial class MethodTests
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual partial global::System.Threading.Tasks.Task<bool> CompleteRequestAsync (global::Foundation.NSExtensionItem[] returningItems)
+	public virtual global::System.Threading.Tasks.Task<bool> CompleteRequestAsync (global::Foundation.NSExtensionItem[] returningItems)
 	{
-		throw new NotImplementedException ();
+		global::System.Threading.Tasks.TaskCompletionSource<bool> _tcs = new ();
+		CompleteRequest (returningItems, (_cbobj) => {
+			_tcs.SetResult (_cbobj);
+		});
+		return _tcs.Task;
 	}
 
 	[SupportedOSPlatform ("macos")]
@@ -199,9 +203,13 @@ public partial class MethodTests
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual partial global::System.Threading.Tasks.Task<(bool, string?)> CompleteRequestAsync (global::Foundation.NSExtensionItem[] returningItems)
+	public virtual global::System.Threading.Tasks.Task<(bool, string?)> CompleteRequestAsync (global::Foundation.NSExtensionItem[] returningItems)
 	{
-		throw new NotImplementedException ();
+		global::System.Threading.Tasks.TaskCompletionSource<(bool, string?)> _tcs = new ();
+		CompleteRequest (returningItems, (_cbarg1, _cbarg2) => {
+			_tcs.SetResult (new (_cbarg1, _cbarg2));
+		});
+		return _tcs.Task;
 	}
 
 	[SupportedOSPlatform ("macos")]
@@ -230,9 +238,13 @@ public partial class MethodTests
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual partial global::System.Threading.Tasks.Task<(bool Success, string Name, string? Surname)> CompleteRequestAsync (global::Foundation.NSExtensionItem[] returningItems)
+	public virtual global::System.Threading.Tasks.Task<(bool Success, string Name, string? Surname)> CompleteRequestAsync (global::Foundation.NSExtensionItem[] returningItems)
 	{
-		throw new NotImplementedException ();
+		global::System.Threading.Tasks.TaskCompletionSource<(bool Success, string Name, string? Surname)> _tcs = new ();
+		CompleteRequest (returningItems, (_cbarg1, _cbarg2, _cbarg3) => {
+			_tcs.SetResult (new (_cbarg1, _cbarg2, _cbarg3));
+		});
+		return _tcs.Task;
 	}
 
 	[SupportedOSPlatform ("macos")]
@@ -345,9 +357,16 @@ public partial class MethodTests
 	[UnsupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public partial static global::System.Threading.Tasks.Task<NSLoadFromHtmlResult> LoadFromHtmlAsync (global::Foundation.NSUrlRequest request, global::Foundation.NSDictionary options)
+	public static global::System.Threading.Tasks.Task<NSLoadFromHtmlResult> LoadFromHtmlAsync (global::Foundation.NSUrlRequest request, global::Foundation.NSDictionary options)
 	{
-		throw new NotImplementedException ();
+		global::System.Threading.Tasks.TaskCompletionSource<NSLoadFromHtmlResult> _tcs = new ();
+		LoadFromHtml (request, options, (_cbattributedString, _cbattributes, _cberror) => {
+			if (_cberror is not null)
+				_tcs.SetException (new global::Foundation.NSErrorException (_cberror));
+			else
+				_tcs.SetResult (new (_cbattributedString, _cbattributes));
+		});
+		return _tcs.Task;
 	}
 
 	[SupportedOSPlatform ("macos")]
@@ -378,9 +397,16 @@ public partial class MethodTests
 	[UnsupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public partial static global::System.Threading.Tasks.Task<(global::Foundation.NSAttributedString? AttributedString, global::Foundation.NSDictionary<global::Foundation.NSString, global::Foundation.NSObject>? Attributes)> LoadFromHtmlNoNameAsync (global::Foundation.NSUrlRequest request, global::Foundation.NSDictionary options)
+	public static global::System.Threading.Tasks.Task<(global::Foundation.NSAttributedString? AttributedString, global::Foundation.NSDictionary<global::Foundation.NSString, global::Foundation.NSObject>? Attributes)> LoadFromHtmlNoNameAsync (global::Foundation.NSUrlRequest request, global::Foundation.NSDictionary options)
 	{
-		throw new NotImplementedException ();
+		global::System.Threading.Tasks.TaskCompletionSource<(global::Foundation.NSAttributedString? AttributedString, global::Foundation.NSDictionary<global::Foundation.NSString, global::Foundation.NSObject>? Attributes)> _tcs = new ();
+		LoadFromHtmlNoName (request, options, (_cbattributedString, _cbattributes, _cberror) => {
+			if (_cberror is not null)
+				_tcs.SetException (new global::Foundation.NSErrorException (_cberror));
+			else
+				_tcs.SetResult (new (_cbattributedString, _cbattributes));
+		});
+		return _tcs.Task;
 	}
 
 	[SupportedOSPlatform ("macos")]

@@ -164,9 +164,13 @@ public partial class MethodTests
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual partial global::System.Threading.Tasks.Task<bool> CompleteRequestAsync (global::Foundation.NSExtensionItem[] returningItems)
+	public virtual global::System.Threading.Tasks.Task<bool> CompleteRequestAsync (global::Foundation.NSExtensionItem[] returningItems)
 	{
-		throw new NotImplementedException ();
+		global::System.Threading.Tasks.TaskCompletionSource<bool> _tcs = new ();
+		CompleteRequest (returningItems, (_cbobj) => {
+			_tcs.SetResult (_cbobj);
+		});
+		return _tcs.Task;
 	}
 
 	[SupportedOSPlatform ("macos")]
@@ -195,9 +199,13 @@ public partial class MethodTests
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual partial global::System.Threading.Tasks.Task<(bool, string?)> CompleteRequestAsync (global::Foundation.NSExtensionItem[] returningItems)
+	public virtual global::System.Threading.Tasks.Task<(bool, string?)> CompleteRequestAsync (global::Foundation.NSExtensionItem[] returningItems)
 	{
-		throw new NotImplementedException ();
+		global::System.Threading.Tasks.TaskCompletionSource<(bool, string?)> _tcs = new ();
+		CompleteRequest (returningItems, (_cbarg1, _cbarg2) => {
+			_tcs.SetResult (new (_cbarg1, _cbarg2));
+		});
+		return _tcs.Task;
 	}
 
 	[SupportedOSPlatform ("macos")]
@@ -226,9 +234,13 @@ public partial class MethodTests
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual partial global::System.Threading.Tasks.Task<(bool Success, string Name, string? Surname)> CompleteRequestAsync (global::Foundation.NSExtensionItem[] returningItems)
+	public virtual global::System.Threading.Tasks.Task<(bool Success, string Name, string? Surname)> CompleteRequestAsync (global::Foundation.NSExtensionItem[] returningItems)
 	{
-		throw new NotImplementedException ();
+		global::System.Threading.Tasks.TaskCompletionSource<(bool Success, string Name, string? Surname)> _tcs = new ();
+		CompleteRequest (returningItems, (_cbarg1, _cbarg2, _cbarg3) => {
+			_tcs.SetResult (new (_cbarg1, _cbarg2, _cbarg3));
+		});
+		return _tcs.Task;
 	}
 
 	[SupportedOSPlatform ("macos")]

@@ -155,6 +155,8 @@ namespace Introspection {
 			switch (nameSpace) {
 			case "Network": // none of the classes support it and they require a lot of setup to confirm it
 				return true;
+			case "VideoToolbox": // some of the VideoToolbox classes cause VideoToolbox to crash internally on device.
+				return TestRuntime.IsDevice;
 			default:
 				return false;
 			}

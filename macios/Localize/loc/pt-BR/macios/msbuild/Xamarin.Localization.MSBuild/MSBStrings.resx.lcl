@@ -2701,6 +2701,15 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";E7158" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The {0} item '{1}' has been included more than once, with different 'LogicalName' metadata: {2}, {3}.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[O {0} item{1}' foi incluído mais de uma vez, com diferentes metadados 'LogicalName': {2}, {3}.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";InvalidFramework" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Invalid framework: {0}]]></Val>

@@ -15047,7 +15047,6 @@ M:Phase.PhaseSoundEvent.Resume
 M:Phase.PhaseSoundEvent.Seek(System.Double,System.Action{Phase.PhaseSoundEventSeekHandlerReason})
 M:Phase.PhaseSoundEvent.SeekAsync(System.Double,System.Boolean@)
 M:Phase.PhaseSoundEvent.SeekAsync(System.Double)
-M:Phase.PhaseSoundEvent.Start(Foundation.NSError@)
 M:Phase.PhaseSoundEvent.Start(System.Action{Phase.PhaseSoundEventStartHandlerReason})
 M:Phase.PhaseSoundEvent.StartAsync
 M:Phase.PhaseSoundEvent.StartAsync(System.Boolean@)

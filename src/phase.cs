@@ -1113,8 +1113,11 @@ namespace Phase {
 		[Export ("startWithCompletion:")]
 		bool Start ([NullAllowed] Action<PhaseSoundEventStartHandlerReason> completionBlock);
 
+#if !XAMCORE_5_0
+		[Obsolete ("Use the other 'Start' overload instead, this doesn't exist.")]
 		[Export ("startAndReturnError:")]
 		bool Start ([NullAllowed] out NSError error);
+#endif // !XAMCORE_5_0
 
 		[Async]
 		[Export ("seekToTime:completion:")]

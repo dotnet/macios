@@ -74,7 +74,7 @@ static partial class BindingSyntaxFactory {
 			var resultArgsSyntax = resultsArgs.Length == 1
 				? resultsArgs [0]
 				: Argument (New (resultsArgs));
-			
+
 			// update the if to include the result setting, we are doing by hand to fix the indentation to match monos
 			ifErrorNotNull = IfStatement (
 				attributeLists: default,
@@ -91,7 +91,7 @@ static partial class BindingSyntaxFactory {
 				@else: ElseClause (
 					ExpressionStatement (
 						TcsSetResult (
-							tcsVariableName: completionSourceName, 
+							tcsVariableName: completionSourceName,
 							arguments: [resultArgsSyntax]
 						)
 					).WithLeadingTrivia (LineFeed, Tab, Tab)
@@ -100,7 +100,7 @@ static partial class BindingSyntaxFactory {
 
 			return ifErrorNotNull;
 		}
-		
+
 		// no nserror as the last parameter, create the parameters list for the result and set the result directly to the tcs, not if
 		// needed
 		var arguments = ImmutableArray.CreateBuilder<ArgumentSyntax> (delegateType.Delegate.Parameters.Length);
@@ -113,10 +113,10 @@ static partial class BindingSyntaxFactory {
 		var argSyntax = argList.Length == 1
 			? argList [0]
 			: Argument (New (argList));
-		
+
 		return ExpressionStatement (
 			TcsSetResult (
-				tcsVariableName: completionSourceName, 
+				tcsVariableName: completionSourceName,
 				arguments: [argSyntax]
 			)
 		).WithLeadingTrivia (Tab);
@@ -160,7 +160,7 @@ static partial class BindingSyntaxFactory {
 	internal static ExpressionSyntax ExecuteSyncCall (in Method method)
 	{
 		// retrieve the last parameter from the method, since that should be the completion handler
-		var completionHandler= GetCallbackDeclaration (method.Parameters [^1].Type);
+		var completionHandler = GetCallbackDeclaration (method.Parameters [^1].Type);
 		var arguments = ImmutableArray.CreateBuilder<ArgumentSyntax> (method.Parameters.Length);
 		// build the arguments for the method call, those are the same arguments as the method parameters but the last one
 		foreach (var parameter in method.Parameters [..^1]) {
@@ -168,7 +168,7 @@ static partial class BindingSyntaxFactory {
 		}
 		// add the completion handler as the last argument
 		arguments.Add (Argument (completionHandler));
-		
+
 		var argumentList = ArgumentList (
 			SeparatedList<ArgumentSyntax> (arguments.ToSyntaxNodeOrTokenArray ()));
 		return InvocationExpression (IdentifierName (method.Name).WithTrailingTrivia (Space)).WithArgumentList (argumentList);

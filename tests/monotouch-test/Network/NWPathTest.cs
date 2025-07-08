@@ -16,41 +16,28 @@ namespace MonoTouchFixtures.Network {
 	[TestFixture]
 	[Preserve (AllMembers = true)]
 	public class NWPathTest {
-
-		AutoResetEvent connectedEvent;  // used to let us know when the connection was established so that we can access the NWPath
-		string host;
 		NWPath path;
 		List<NWInterface> interfaces = new List<NWInterface> ();
+		ConnectionManager manager;
 		NWConnection connection;
 
 		[OneTimeSetUp]
 		public void Init ()
 		{
-			TestRuntime.AssertXcodeVersion (10, 0);
 			// we want to use a single connection, since it is expensive
-			connectedEvent = new AutoResetEvent (false);
 			interfaces = new List<NWInterface> ();
-			host = NetworkResources.MicrosoftUri.Host;
 			// we create a connection which we are going to use to get the availabe
 			// interfaces, that way we can later test protperties of the NWParameters class.
-			using (var parameters = NWParameters.CreateUdp ())
-			using (var endpoint = NWEndpoint.Create (host, "80")) {
-				using (var protocolStack = parameters.ProtocolStack) {
-					var ipOptions = protocolStack.InternetProtocol;
-					ipOptions.SetVersion (NWIPVersion.Version4);
-				}
-				connection = new NWConnection (endpoint, parameters);
-				connection.SetQueue (DispatchQueue.DefaultGlobalQueue); // important, else we will get blocked
-				connection.SetStateChangeHandler (ConnectionStateHandler);
-				connection.Start ();
-				Assert.True (connectedEvent.WaitOne (20000), "Connection timed out.");
-			}
+			manager = new ConnectionManager ();
+			connection = manager.CreateConnection ();
 		}
 
 		[OneTimeTearDown]
 		public void Dispose ()
 		{
-			connection?.Cancel ();
+			manager?.Dispose ();
+			foreach (var i in interfaces)
+				i.Dispose ();
 		}
 
 		[SetUp]
@@ -60,26 +47,6 @@ namespace MonoTouchFixtures.Network {
 			path = connection.CurrentPath;
 			path.EnumerateInterfaces (EnumerateInterfacesHandler);
 			Assert.That (interfaces.Count, Is.GreaterThan (0), "interfaces.Count");
-		}
-
-		void ConnectionStateHandler (NWConnectionState state, NWError error)
-		{
-			Console.WriteLine ($"State is {state} and error {error}");
-			switch (state) {
-			case NWConnectionState.Ready:
-				connectedEvent.Set ();
-				break;
-			case NWConnectionState.Cancelled:
-				connection?.Dispose ();
-				connection = null;
-				foreach (var i in interfaces)
-					i.Dispose ();
-				break;
-			case NWConnectionState.Invalid:
-			case NWConnectionState.Failed:
-				Assert.Inconclusive ("Network connection could not be performed.");
-				break;
-			}
 		}
 
 		void EnumerateInterfacesHandler (NWInterface nwInterface)

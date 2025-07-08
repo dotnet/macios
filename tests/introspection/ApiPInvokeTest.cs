@@ -350,6 +350,13 @@ namespace Introspection {
 				break;
 			case "/System/Library/Frameworks/CoreServices.framework/Frameworks/FSEvents.framework/FSEvents":
 				return dllImportLibrary == "/System/Library/Frameworks/CoreServices.framework/CoreServices";
+
+			case "/System/Library/Frameworks/_LocationEssentials.framework/_LocationEssentials":
+				switch (dllImportLibrary) {
+				case "/System/Library/Frameworks/CoreLocation.framework/CoreLocation":
+					return true;
+				}
+				break;
 #if __MACOS__
 			case "/System/Library/Frameworks/CoreGraphics.framework/CoreGraphics":
 				// Years ago, CoreGraphics was somewhere else on macOS

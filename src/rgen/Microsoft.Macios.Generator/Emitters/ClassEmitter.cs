@@ -402,7 +402,7 @@ if (IsDirectBinding) {{
 				var tcsName = Nomenclator.GetTaskCompletionSourceName ();
 				methodBlock.WriteRaw (
 $@"{tcsType.GetIdentifierSyntax ()} {tcsName} = new ();
-{ExpressionStatement( ExecuteSyncCall (method))}
+{ExpressionStatement (ExecuteSyncCall (method))}
 return {tcsName}.Task;
 ");
 			}

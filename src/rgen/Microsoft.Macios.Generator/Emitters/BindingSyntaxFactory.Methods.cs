@@ -70,6 +70,11 @@ static partial class BindingSyntaxFactory {
 			foreach (var parameter in delegateType.Delegate.Parameters [..^1]) {
 				noNSErrorArgs.Add (Argument (IdentifierName (GetTaskCallbackParameterName (parameter.Name))));
 			}
+			var resultsArgs = noNSErrorArgs.ToImmutable ();
+			var resultArgsSyntax = resultsArgs.Length == 1
+				? resultsArgs [0]
+				: Argument (New (resultsArgs));
+			
 			// update the if to include the result setting, we are doing by hand to fix the indentation to match monos
 			ifErrorNotNull = IfStatement (
 				attributeLists: default,
@@ -86,8 +91,8 @@ static partial class BindingSyntaxFactory {
 				@else: ElseClause (
 					ExpressionStatement (
 						TcsSetResult (
-							tcsVariableName: completionSourceName,
-							arguments: [Argument (New (noNSErrorArgs.ToImmutable ()))]
+							tcsVariableName: completionSourceName, 
+							arguments: [resultArgsSyntax]
 						)
 					).WithLeadingTrivia (LineFeed, Tab, Tab)
 					).WithLeadingTrivia (LineFeed, Tab)
@@ -95,17 +100,24 @@ static partial class BindingSyntaxFactory {
 
 			return ifErrorNotNull;
 		}
+		
 		// no nserror as the last parameter, create the parameters list for the result and set the result directly to the tcs, not if
 		// needed
 		var arguments = ImmutableArray.CreateBuilder<ArgumentSyntax> (delegateType.Delegate.Parameters.Length);
 		foreach (var parameter in delegateType.Delegate.Parameters) {
 			arguments.Add (Argument (IdentifierName (GetTaskCallbackParameterName (parameter.Name))));
 		}
+
+		var argList = arguments.ToImmutable ();
 		// return a single expression that sets the result of the tcs
+		var argSyntax = argList.Length == 1
+			? argList [0]
+			: Argument (New (argList));
+		
 		return ExpressionStatement (
 			TcsSetResult (
-				tcsVariableName: completionSourceName,
-				arguments: [Argument (New (arguments.ToImmutable ()))]
+				tcsVariableName: completionSourceName, 
+				arguments: [argSyntax]
 			)
 		).WithLeadingTrivia (Tab);
 	}
@@ -138,6 +150,28 @@ static partial class BindingSyntaxFactory {
 				SeparatedList<ParameterSyntax> (
 					parameters.ToSyntaxNodeOrTokenArray ()))).NormalizeWhitespace ()
 			.WithBlock (block);
+	}
+
+	/// <summary>
+	/// Generates an invocation expression for the synchronous part of an async method wrapper.
+	/// </summary>
+	/// <param name="method">The method to be called.</param>
+	/// <returns>An invocation expression syntax.</returns>
+	internal static ExpressionSyntax ExecuteSyncCall (in Method method)
+	{
+		// retrieve the last parameter from the method, since that should be the completion handler
+		var completionHandler= GetCallbackDeclaration (method.Parameters [^1].Type);
+		var arguments = ImmutableArray.CreateBuilder<ArgumentSyntax> (method.Parameters.Length);
+		// build the arguments for the method call, those are the same arguments as the method parameters but the last one
+		foreach (var parameter in method.Parameters [..^1]) {
+			arguments.Add (Argument (IdentifierName (parameter.Name)));
+		}
+		// add the completion handler as the last argument
+		arguments.Add (Argument (completionHandler));
+		
+		var argumentList = ArgumentList (
+			SeparatedList<ArgumentSyntax> (arguments.ToSyntaxNodeOrTokenArray ()));
+		return InvocationExpression (IdentifierName (method.Name).WithTrailingTrivia (Space)).WithArgumentList (argumentList);
 	}
 
 	/// <summary>

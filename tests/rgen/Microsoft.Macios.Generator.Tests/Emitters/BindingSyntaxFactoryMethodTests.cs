@@ -377,8 +377,8 @@ namespace NS {
 
 			yield return [
 				singleArgNoError,
-				@"(_cbvalue) => {
-	_tcs.SetResult (new (_cbvalue));
+@"(_cbvalue) => {
+	_tcs.SetResult (_cbvalue);
 }",
 			];
 
@@ -398,11 +398,11 @@ namespace NS {
 
 			yield return [
 				singleArgWithError,
-				@"(_cbvalue, _cberror) => {
+@"(_cbvalue, _cberror) => {
 	if (_cberror is not null)
 		_tcs.SetException (new global::Foundation.NSErrorException (_cberror));
 	else
-		_tcs.SetResult (new (_cbvalue));
+		_tcs.SetResult (_cbvalue);
 }",
 			];
 
@@ -422,7 +422,7 @@ namespace NS {
 
 			yield return [
 				severalArgNoError,
-				@"(_cbarg1, _cbarg2, _cbarg3) => {
+@"(_cbarg1, _cbarg2, _cbarg3) => {
 	_tcs.SetResult (new (_cbarg1, _cbarg2, _cbarg3));
 }",
 			];
@@ -443,7 +443,7 @@ namespace NS {
 
 			yield return [
 				severalArgWithError,
-				@"(_cbarg1, _cbarg2, _cbarg3, _cberror) => {
+@"(_cbarg1, _cbarg2, _cbarg3, _cberror) => {
 	if (_cberror is not null)
 		_tcs.SetException (new global::Foundation.NSErrorException (_cberror));
 	else
@@ -470,8 +470,8 @@ namespace NS {
 		Assert.NotNull (changes);
 		Assert.Single (changes.Value.Parameters);
 		// get the callback declaration for the first parameter of the method which should always be a delegate
-		Assert.True (changes.Value.Parameters [0].Type.IsDelegate);
-		var callback = BindingSyntaxFactory.GetCallbackDeclaration (changes.Value.Parameters [0].Type);
+		Assert.True (changes.Value.Parameters[0].Type.IsDelegate);
+		var callback = BindingSyntaxFactory.GetCallbackDeclaration (changes.Value.Parameters[0].Type);
 		var x = callback.ToString ();
 		Assert.Equal (expected, callback.ToString ());
 	}

@@ -403,9 +403,7 @@ namespace Introspection {
 			case "HKHealthStore":
 				switch (name) {
 				case "workoutSessionMirroringStartHandler":
-					if (TestRuntime.IsSimulatorOrDesktop)
-						return true;
-					break;
+					return true;
 				}
 				break;
 #endif

@@ -155,7 +155,7 @@ namespace Network {
 			unsafe {
 				delegate* unmanaged<IntPtr, nw_resolution_report_t, void> trampoline = &TrampolineEnumerateResolutionReport;
 				using var block = new BlockLiteral (trampoline, handler, typeof (NWEstablishmentReport), nameof (TrampolineEnumerateResolutionReport));
-				nw_establishment_report_enumerate_protocols (GetCheckedHandle (), &block);
+				nw_establishment_report_enumerate_resolution_reports (GetCheckedHandle (), &block);
 			}
 		}
 	}

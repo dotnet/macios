@@ -241,7 +241,7 @@ static class Nomenclator {
 	/// <returns>The name for the callback parameter.</returns>
 	public static string GetTaskCallbackParameterName (string parameterName)
 		=> $"_cb{parameterName}";
-	
+
 	/// <summary>
 	/// Gets the name for the TaskCompletionSource variable used in async methods.
 	/// </summary>

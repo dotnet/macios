@@ -32,7 +32,7 @@ static partial class BindingSyntaxFactory {
 
 		// tcs name
 		var completionSourceName = GetTaskCompletionSourceName ();
-		
+
 		// get the argument list of the delegate type, if the last on is an NSError, we need a if statement to check for null
 		// else, the body is just the set result for the tcs
 		if (delegateType.Delegate.Parameters [^1].Type.Name.Contains ("NSError")) {
@@ -40,7 +40,7 @@ static partial class BindingSyntaxFactory {
 			// else set the result
 			var nsErrorParamName = GetTaskCallbackParameterName (delegateType.Delegate.Parameters [^1].Name);
 			var newException = New (
-				type: NSErrorException, 
+				type: NSErrorException,
 				arguments: [Argument (IdentifierName (nsErrorParamName))]);
 			// create the if statement to check for null in the error parameter, this can be shared between the code paths
 			// since we can add the Else clause with the WithElse method.
@@ -51,14 +51,14 @@ static partial class BindingSyntaxFactory {
 				openParenToken: Token (SyntaxKind.OpenParenToken),
 				condition: IsNotNull (nsErrorParamName),
 				closeParenToken: Token (SyntaxKind.CloseParenToken),
-				statement: ExpressionStatement ( 
+				statement: ExpressionStatement (
 					TcsSetException (
-						tcsVariableName: completionSourceName, 
+						tcsVariableName: completionSourceName,
 						arguments: [Argument (newException)]
 					)
 				).WithLeadingTrivia (LineFeed, Tab, Tab),
 				@else: default);
-			
+
 			if (delegateType.Delegate.Parameters.Length == 1) {
 				// we only have a single parameter, which is the NSError, check for null and set the exception
 				return ifErrorNotNull;
@@ -67,7 +67,7 @@ static partial class BindingSyntaxFactory {
 			// build the argument list for the result method, this params are the delegate parameters minus the last one
 			var noNSErrorArgs = ImmutableArray.CreateBuilder<ArgumentSyntax> (delegateType.Delegate.Parameters.Length - 1);
 			// append a new argument for each parameter except the last one
-			foreach (var parameter in delegateType.Delegate.Parameters[..^1]) {
+			foreach (var parameter in delegateType.Delegate.Parameters [..^1]) {
 				noNSErrorArgs.Add (Argument (IdentifierName (GetTaskCallbackParameterName (parameter.Name))));
 			}
 			// update the if to include the result setting, we are doing by hand to fix the indentation to match monos
@@ -77,22 +77,22 @@ static partial class BindingSyntaxFactory {
 				openParenToken: Token (SyntaxKind.OpenParenToken),
 				condition: IsNotNull (nsErrorParamName),
 				closeParenToken: Token (SyntaxKind.CloseParenToken),
-				statement: ExpressionStatement ( 
+				statement: ExpressionStatement (
 					TcsSetException (
-						tcsVariableName: completionSourceName, 
+						tcsVariableName: completionSourceName,
 						arguments: [Argument (newException)]
 					)
 				).WithLeadingTrivia (LineFeed, Tab, Tab),
-				@else: ElseClause(
-					ExpressionStatement(
+				@else: ElseClause (
+					ExpressionStatement (
 						TcsSetResult (
-							tcsVariableName: completionSourceName, 
-							arguments: [Argument(New (noNSErrorArgs.ToImmutable ()))]
+							tcsVariableName: completionSourceName,
+							arguments: [Argument (New (noNSErrorArgs.ToImmutable ()))]
 						)
 					).WithLeadingTrivia (LineFeed, Tab, Tab)
 					).WithLeadingTrivia (LineFeed, Tab)
 				);
-			
+
 			return ifErrorNotNull;
 		}
 		// no nserror as the last parameter, create the parameters list for the result and set the result directly to the tcs, not if
@@ -104,8 +104,8 @@ static partial class BindingSyntaxFactory {
 		// return a single expression that sets the result of the tcs
 		return ExpressionStatement (
 			TcsSetResult (
-				tcsVariableName: completionSourceName, 
-				arguments: [Argument(New (arguments.ToImmutable ()))]
+				tcsVariableName: completionSourceName,
+				arguments: [Argument (New (arguments.ToImmutable ()))]
 			)
 		).WithLeadingTrivia (Tab);
 	}
@@ -119,20 +119,20 @@ static partial class BindingSyntaxFactory {
 	{
 		if (delegateType.Delegate is null)
 			return null!;
-		
+
 		// build the arguments using the delegate parameters
 		var parameters = ImmutableArray.CreateBuilder<ParameterSyntax> (delegateType.Delegate.Parameters.Length);
 		foreach (var parameter in delegateType.Delegate.Parameters) {
-			parameters.Add (Parameter (Identifier(GetTaskCallbackParameterName (parameter.Name))));
+			parameters.Add (Parameter (Identifier (GetTaskCallbackParameterName (parameter.Name))));
 		}
 
 		// create the block by hand so that we keep the mono style indentation
 		var block = Block (
-			attributeLists: default, 
-			openBraceToken: (Token (SyntaxKind.OpenBraceToken).WithTrailingTrivia (LineFeed)).WithLeadingTrivia (Space), 
-			statements: List ([GetCallbackBody (delegateType)!]), 
+			attributeLists: default,
+			openBraceToken: (Token (SyntaxKind.OpenBraceToken).WithTrailingTrivia (LineFeed)).WithLeadingTrivia (Space),
+			statements: List ([GetCallbackBody (delegateType)!]),
 			closeBraceToken: Token (SyntaxKind.CloseBraceToken).WithLeadingTrivia (LineFeed));
-		
+
 		return ParenthesizedLambdaExpression ()
 			.WithParameterList (ParameterList (
 				SeparatedList<ParameterSyntax> (

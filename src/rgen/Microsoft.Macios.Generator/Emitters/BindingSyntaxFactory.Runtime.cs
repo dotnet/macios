@@ -426,7 +426,7 @@ static partial class BindingSyntaxFactory {
 				IdentifierName ("GetHandle").WithTrailingTrivia (Space)
 			)
 		);
-	
+
 	/// <summary>
 	/// Generate an implicit object creation expression using the provided arguments.
 	/// </summary>

@@ -949,6 +949,10 @@ namespace AVFoundation {
 		[Export ("initWithLayoutTag:")]
 		NativeHandle Constructor (/* UInt32 */ uint layoutTag);
 
+		[Sealed]
+		[Export ("initWithLayoutTag:")]
+		NativeHandle Constructor (AudioChannelLayoutTag layoutTag);
+
 		[DesignatedInitializer]
 		[Export ("initWithLayout:"), Internal]
 		NativeHandle Constructor (IntPtr layout);

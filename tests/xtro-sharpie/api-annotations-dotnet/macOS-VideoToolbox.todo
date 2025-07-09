@@ -128,12 +128,9 @@
 !missing-selector! VTTemporalNoiseFilterConfiguration::previousFrameCount not bound
 !missing-selector! VTTemporalNoiseFilterConfiguration::sourcePixelBufferAttributes not bound
 !missing-selector! VTTemporalNoiseFilterParameters::destinationFrame not bound
-!missing-selector! VTTemporalNoiseFilterParameters::discontinuity not bound
 !missing-selector! VTTemporalNoiseFilterParameters::filterStrength not bound
-!missing-selector! VTTemporalNoiseFilterParameters::initWithSourceFrame:nextFrames:previousFrames:destinationFrame:filterStrength:discontinuity: not bound
 !missing-selector! VTTemporalNoiseFilterParameters::nextFrames not bound
 !missing-selector! VTTemporalNoiseFilterParameters::previousFrames not bound
-!missing-selector! VTTemporalNoiseFilterParameters::setDiscontinuity: not bound
 !missing-selector! VTTemporalNoiseFilterParameters::setFilterStrength: not bound
 !missing-selector! VTTemporalNoiseFilterParameters::sourceFrame not bound
 !missing-type! VTLowLatencyFrameInterpolationConfiguration not bound
@@ -144,3 +141,10 @@
 !missing-type! VTSuperResolutionScalerParameters not bound
 !missing-type! VTTemporalNoiseFilterConfiguration not bound
 !missing-type! VTTemporalNoiseFilterParameters not bound
+!missing-field! kVTDecodeFrameOptionKey_ContentAnalyzerCropRectangle not bound
+!missing-field! kVTDecodeFrameOptionKey_ContentAnalyzerRotation not bound
+!missing-pinvoke! VTDecompressionSessionDecodeFrameWithOptions is not bound
+!missing-pinvoke! VTDecompressionSessionDecodeFrameWithOptionsAndOutputHandler is not bound
+!missing-selector! VTTemporalNoiseFilterParameters::hasDiscontinuity not bound
+!missing-selector! VTTemporalNoiseFilterParameters::initWithSourceFrame:nextFrames:previousFrames:destinationFrame:filterStrength:hasDiscontinuity: not bound
+!missing-selector! VTTemporalNoiseFilterParameters::setHasDiscontinuity: not bound

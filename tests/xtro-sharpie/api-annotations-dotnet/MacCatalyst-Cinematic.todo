@@ -146,3 +146,4 @@
 !missing-selector! CNAssetSpatialAudioInfo::defaultSpatialAudioTrack not bound
 !missing-selector! CNAssetSpatialAudioInfo::spatialAudioMixMetadata not bound
 !missing-type! CNAssetSpatialAudioInfo not bound
+!missing-selector! +CNAssetSpatialAudioInfo::isSupported not bound

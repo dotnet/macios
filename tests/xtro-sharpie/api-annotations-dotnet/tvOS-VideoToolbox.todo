@@ -109,3 +109,7 @@
 !missing-type! VTLowLatencyFrameInterpolationParameters not bound
 !missing-type! VTLowLatencySuperResolutionScalerConfiguration not bound
 !missing-type! VTLowLatencySuperResolutionScalerParameters not bound
+!missing-field! kVTDecodeFrameOptionKey_ContentAnalyzerCropRectangle not bound
+!missing-field! kVTDecodeFrameOptionKey_ContentAnalyzerRotation not bound
+!missing-pinvoke! VTDecompressionSessionDecodeFrameWithOptions is not bound
+!missing-pinvoke! VTDecompressionSessionDecodeFrameWithOptionsAndOutputHandler is not bound

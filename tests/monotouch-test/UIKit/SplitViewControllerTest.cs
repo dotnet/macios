@@ -32,8 +32,11 @@ namespace MonoTouchFixtures.UIKit {
 				Assert.AreSame (v1, svc.ViewControllers [0], "vc0");
 				Assert.AreSame (v2, svc.ViewControllers [1], "vc1");
 
-				Assert.AreSame (v1, svc.ChildViewControllers [0], "cvc0");
-				Assert.AreSame (v2, svc.ChildViewControllers [1], "cvc1");
+				if (!TestRuntime.CheckXcodeVersion (26, 0)) {
+					Assert.That (svc.ChildViewControllers.Length, Is.AtLeast (2), "cvc.Length");
+					Assert.AreSame (v1, svc.ChildViewControllers [0], "cvc0");
+					Assert.AreSame (v2, svc.ChildViewControllers [1], "cvc1");
+				}
 			}
 		}
 

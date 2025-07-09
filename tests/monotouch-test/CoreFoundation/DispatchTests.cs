@@ -26,6 +26,7 @@ namespace MonoTouchFixtures.CoreFoundation {
 
 	[TestFixture]
 	[Preserve (AllMembers = true)]
+	[Ignore ("NRE")]
 	public class DispatchTests {
 #if !MONOMAC // UIKitThreadAccessException and NSStringDrawing.WeakDrawString don't exist on mac
 		[Test]

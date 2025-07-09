@@ -3732,7 +3732,7 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.MacCatalyst, "NSUrlSessionHandler", "true")]
 		[TestCase (ApplePlatform.iOS, "CFNetworkHandler", "true")]
 		[TestCase (ApplePlatform.iOS, "HttpClientHandler", "")]
-		[TestCase (ApplePlatform.TVOS, "", "true")]
+		[TestCase (ApplePlatform.TVOS, "", "false")]
 		[TestCase (ApplePlatform.MacCatalyst, "Invalid", "true")]
 		public void HttpClientHandlerFeatureTrimmedAway (ApplePlatform platform, string handler, string useNativeHttpHandler)
 		{

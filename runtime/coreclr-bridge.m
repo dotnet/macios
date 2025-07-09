@@ -214,8 +214,7 @@ monoobject_dict_free_value (CFAllocatorRef allocator, const void *value)
  */
 
 struct TrackedObjectInfo {
-	id handle;
-	enum NSObjectFlags flags;
+	struct NSObjectData* data;
 };
 
 void
@@ -298,9 +297,9 @@ xamarin_coreclr_reference_tracking_is_referenced_callback (void* ptr)
 	// (and which is passed as the 'ptr' argument), so let's get the data we need from there.
 	int rv = 0;
 	struct TrackedObjectInfo *info = (struct TrackedObjectInfo *) ptr;
-	enum NSObjectFlags flags = info->flags;
+	enum NSObjectFlags flags = (enum NSObjectFlags) info->data->flags;
 	bool isRegisteredToggleRef = (flags & NSObjectFlagsRegisteredToggleRef) == NSObjectFlagsRegisteredToggleRef;
-	id handle = info->handle;
+	id handle = info->data->handle;
 	MonoToggleRefStatus res = (MonoToggleRefStatus) 0;
 
 	if (isRegisteredToggleRef) {
@@ -339,7 +338,7 @@ void
 xamarin_coreclr_reference_tracking_tracked_object_entered_finalization (void* ptr)
 {
 	struct TrackedObjectInfo *info = (struct TrackedObjectInfo *) ptr;
-	info->flags = (enum NSObjectFlags) (info->flags | NSObjectFlagsInFinalizerQueue);
+	info->data->flags = (enum NSObjectFlags) (info->data->flags | NSObjectFlagsInFinalizerQueue);
 	LOG_CORECLR (stderr, "%s (%p) flags: %i\n", __func__, ptr, (int) info->flags);
 }
 

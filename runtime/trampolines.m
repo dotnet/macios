@@ -816,24 +816,12 @@ xamarin_retain_trampoline (id self, SEL sel)
 BOOL
 xamarin_retainWeakReference_trampoline (id self, SEL sel)
 {
-	GCHandle gchandle = xamarin_get_gchandle (self);
-	uint32_t flags = 0;
-	MonoObject *mobj = NULL;
-	bool isInFinalizerQueue = false;
-
-	if (gchandle != INVALID_GCHANDLE) {
-		MONO_THREAD_ATTACH;
-		mobj = xamarin_gchandle_get_target (gchandle);
-		if (mobj != NULL) {
-			flags = xamarin_get_nsobject_flags (mobj);
-			isInFinalizerQueue = (flags & NSObjectFlagsInFinalizerQueue) == NSObjectFlagsInFinalizerQueue;
-		}
-		MONO_THREAD_DETACH;
-	}
+	uint32_t flags = xamarin_get_nsobject_id_flags (self);
+	bool isInFinalizerQueue = (flags & NSObjectFlagsInFinalizerQueue) == NSObjectFlagsInFinalizerQueue;
 
 #if defined(DEBUG_REF_COUNTING)
-	PRINT ("xamarin_retainWeakReference_trampoline (%s Handle=%p) gchandle: %i flags: %x mobj: %p isInFinalizerQueue: %i\n",
-		class_getName ([self class]), self, gchandle, flags, mobj, isInFinalizerQueue);
+	PRINT ("xamarin_retainWeakReference_trampoline (%s Handle=%p) flags: %x isInFinalizerQueue: %i\n",
+		class_getName ([self class]), self, flags, isInFinalizerQueue);
 #endif
 
 	// Do not allow any weak references to be resolved if the managed wrapper has been scheduled for finalization,
@@ -856,7 +844,7 @@ static pthread_mutex_t gchandle_hash_lock = PTHREAD_MUTEX_INITIALIZER;
 
 struct gchandle_dictionary_entry {
 	GCHandle gc_handle;
-	enum XamarinGCHandleFlags flags;
+	enum XamarinGCHandleFlags gchandle_flags;
 };
 
 static void
@@ -867,22 +855,24 @@ release_gchandle_dictionary_entry (CFAllocatorRef allocator, const void *value)
 
 static const char *associated_key = "x"; // the string value doesn't matter, only the pointer value.
 bool
-xamarin_set_gchandle_trampoline (id self, SEL sel, GCHandle gc_handle, enum XamarinGCHandleFlags flags)
+xamarin_set_gchandle_trampoline (id self, SEL sel, GCHandle gc_handle, enum XamarinGCHandleFlags gchandle_flags, struct NSObjectData *data)
 {
 	/* This is for types registered using the dynamic registrar */
 	XamarinAssociatedObject *obj;
 	obj = objc_getAssociatedObject (self, associated_key);
 
 	// Check if we're setting the initial value, in which case we don't want to overwrite
-	if (obj != NULL && obj->gc_handle != INVALID_GCHANDLE && ((flags & XamarinGCHandleFlags_InitialSet) == XamarinGCHandleFlags_InitialSet))
+	if (obj != NULL && obj->gc_handle != INVALID_GCHANDLE && ((gchandle_flags & XamarinGCHandleFlags_InitialSet) == XamarinGCHandleFlags_InitialSet))
 		return false;
 
-	flags = (enum XamarinGCHandleFlags) (flags & ~XamarinGCHandleFlags_InitialSet); // Remove the InitialSet flag, we don't want to store it.
+	gchandle_flags = (enum XamarinGCHandleFlags) (gchandle_flags & ~XamarinGCHandleFlags_InitialSet); // Remove the InitialSet flag, we don't want to store it.
 
 	if (obj == NULL && gc_handle != INVALID_GCHANDLE) {
 		obj = [[XamarinAssociatedObject alloc] init];
 		obj->gc_handle = gc_handle;
-		obj->flags = flags;
+		assert (data); // fixme!
+		obj->data = data;
+		obj->gchandle_flags = gchandle_flags;
 		obj->native_object = self;
 		objc_setAssociatedObject (self, associated_key, obj, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 		objc_release (obj);
@@ -890,7 +880,8 @@ xamarin_set_gchandle_trampoline (id self, SEL sel, GCHandle gc_handle, enum Xama
 
 	if (obj != NULL) {
 		obj->gc_handle = gc_handle;
-		obj->flags = flags;
+		obj->data = NULL;
+		obj->gchandle_flags = gchandle_flags;
 	}
 	
 	pthread_mutex_lock (&gchandle_hash_lock);
@@ -904,7 +895,7 @@ xamarin_set_gchandle_trampoline (id self, SEL sel, GCHandle gc_handle, enum Xama
 	} else {
 		struct gchandle_dictionary_entry *entry = (struct gchandle_dictionary_entry *) calloc (1, sizeof (struct gchandle_dictionary_entry));
 		entry->gc_handle = gc_handle;
-		entry->flags = flags;
+		entry->gchandle_flags = gchandle_flags;
 		CFDictionarySetValue (gchandle_hash, self, entry);
 	}
 	pthread_mutex_unlock (&gchandle_hash_lock);
@@ -932,20 +923,20 @@ enum XamarinGCHandleFlags
 xamarin_get_flags_trampoline (id self, SEL sel)
 {
 	/* This is for types registered using the dynamic registrar */
-	enum XamarinGCHandleFlags flags = XamarinGCHandleFlags_None;
+	enum XamarinGCHandleFlags gchandle_flags = XamarinGCHandleFlags_None;
 	pthread_mutex_lock (&gchandle_hash_lock);
 	if (gchandle_hash != NULL) {
 		struct gchandle_dictionary_entry *entry;
 		entry = (struct gchandle_dictionary_entry *) CFDictionaryGetValue (gchandle_hash, self);
 		if (entry != NULL)
-			flags = entry->flags;
+			gchandle_flags = entry->gchandle_flags;
 	}
 	pthread_mutex_unlock (&gchandle_hash_lock);
-	return flags;
+	return gchandle_flags;
 }
 
 void
-xamarin_set_flags_trampoline (id self, SEL sel, enum XamarinGCHandleFlags flags)
+xamarin_set_flags_trampoline (id self, SEL sel, enum XamarinGCHandleFlags gchandle_flags)
 {
 	/* This is for types registered using the dynamic registrar */
 	pthread_mutex_lock (&gchandle_hash_lock);
@@ -953,7 +944,7 @@ xamarin_set_flags_trampoline (id self, SEL sel, enum XamarinGCHandleFlags flags)
 		struct gchandle_dictionary_entry *entry;
 		entry = (struct gchandle_dictionary_entry *) CFDictionaryGetValue (gchandle_hash, self);
 		if (entry != NULL)
-			entry->flags = flags;
+			entry->gchandle_flags = gchandle_flags;
 	}
 	pthread_mutex_unlock (&gchandle_hash_lock);
 }

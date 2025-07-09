@@ -1210,6 +1210,26 @@ partial class TestRuntime {
 		}
 	}
 
+	public static bool IsiPad {
+		get {
+#if __MACOS__
+			return false;
+#else
+			return UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Pad;
+#endif
+		}
+	}
+
+	public static bool IsiPhone {
+		get {
+#if __MACOS__
+			return false;
+#else
+			return UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone;
+#endif
+		}
+	}
+
 	public static void IgnoreOnMacCatalyst (string message = "")
 	{
 #if __MACCATALYST__

@@ -185,6 +185,30 @@ namespace MonoTouchFixtures.CoreMedia {
 		public void VideoFormatDescriptionConstructors ()
 		{
 			using (var obj = new CMVideoFormatDescription (CMVideoCodecType.H264, new CMVideoDimensions (960, 540))) {
+				Assert.AreEqual (960, obj.Dimensions.Width, "Width #1");
+				Assert.AreEqual (540, obj.Dimensions.Height, "Height #1");
+				Assert.AreEqual (CMVideoCodecType.H264, obj.VideoCodecType, "VideoCodecType #1");
+				Assert.IsNull (obj.GetExtensions (), "Extensions #1");
+			}
+
+			using (var obj = new CMVideoFormatDescription (CMVideoCodecType.H263, new CMVideoDimensions (480, 270), (NSDictionary?) null)) {
+				Assert.AreEqual (480, obj.Dimensions.Width, "Width #2");
+				Assert.AreEqual (270, obj.Dimensions.Height, "Height #2");
+				Assert.AreEqual (CMVideoCodecType.H263, obj.VideoCodecType, "VideoCodecType #2");
+				Assert.IsNull (obj.GetExtensions (), "Extensions #2");
+			}
+
+			var extensions = new CMFormatDescriptionExtensions () {
+				BytesPerRow = 24,
+			};
+			using (var obj = new CMVideoFormatDescription (CMVideoCodecType.H263, new CMVideoDimensions (480, 270), extensions)) {
+				Assert.AreEqual (480, obj.Dimensions.Width, "Width #3");
+				Assert.AreEqual (270, obj.Dimensions.Height, "Height #3");
+				Assert.AreEqual (CMVideoCodecType.H263, obj.VideoCodecType, "VideoCodecType #3");
+				var dict = obj.GetExtensions ();
+				var ext = new CMFormatDescriptionExtensions (dict);
+				Assert.IsNotNull (ext, "Extensions #3");
+				Assert.AreEqual (24, ext.BytesPerRow, "Extensions.BytesPerRow #3");
 			}
 		}
 	}

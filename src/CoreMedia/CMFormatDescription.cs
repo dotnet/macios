@@ -440,24 +440,42 @@ namespace CoreMedia {
 			/* CFDictionaryRef */ IntPtr extensions,
 			/* CMVideoFormatDescriptionRef* */ IntPtr* outDesc);
 
-		static IntPtr CreateCMVideoFormatDescription (CMVideoCodecType codecType, CMVideoDimensions size)
+		static IntPtr CreateCMVideoFormatDescription (CMVideoCodecType codecType, CMVideoDimensions size, NSDictionary? extensions)
 		{
 			IntPtr handle;
 			CMFormatDescriptionError error;
 			unsafe {
-				error = CMVideoFormatDescriptionCreate (IntPtr.Zero, codecType, size.Width, size.Height, IntPtr.Zero, &handle);
+				error = CMVideoFormatDescriptionCreate (IntPtr.Zero, codecType, size.Width, size.Height, extensions.GetHandle (), &handle);
+				GC.KeepAlive (extensions);
 			}
 			if (error != CMFormatDescriptionError.None)
 				ObjCRuntime.ThrowHelper.ThrowArgumentException (error.ToString ());
 			return handle;
 		}
 
-		/// <param name="codecType">To be added.</param>
-		///         <param name="size">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Initialize a new <see cref="CMVideoFormatDescription" /> instance.</summary>
+		/// <param name="codecType">The video codec type for the new <see cref="CMVideoFormatDescription" /> instance.</param>
+		/// <param name="size">The video dimensions for the new <see cref="CMVideoFormatDescription" /> instance.</param>
 		public CMVideoFormatDescription (CMVideoCodecType codecType, CMVideoDimensions size)
-			: base (CreateCMVideoFormatDescription (codecType, size), true)
+			: base (CreateCMVideoFormatDescription (codecType, size, null), true)
+		{
+		}
+
+		/// <summary>Initialize a new <see cref="CMVideoFormatDescription" /> instance.</summary>
+		/// <param name="codecType">The video codec type for the new <see cref="CMVideoFormatDescription" /> instance.</param>
+		/// <param name="size">The video dimensions for the new <see cref="CMVideoFormatDescription" /> instance.</param>
+		/// <param name="extensions">An optional dictionary of extensions for the new <see cref="CMVideoFormatDescription" /> instance.</param>
+		public CMVideoFormatDescription (CMVideoCodecType codecType, CMVideoDimensions size, NSDictionary? extensions)
+			: base (CreateCMVideoFormatDescription (codecType, size, extensions), true)
+		{
+		}
+
+		/// <summary>Initialize a new <see cref="CMVideoFormatDescription" /> instance.</summary>
+		/// <param name="codecType">The video codec type for the new <see cref="CMVideoFormatDescription" /> instance.</param>
+		/// <param name="size">The video dimensions for the new <see cref="CMVideoFormatDescription" /> instance.</param>
+		/// <param name="extensions">An optional dictionary of extensions for the new <see cref="CMVideoFormatDescription" /> instance.</param>
+		public CMVideoFormatDescription (CMVideoCodecType codecType, CMVideoDimensions size, CMFormatDescriptionExtensions? extensions)
+			: base (CreateCMVideoFormatDescription (codecType, size, extensions?.Dictionary), true)
 		{
 		}
 

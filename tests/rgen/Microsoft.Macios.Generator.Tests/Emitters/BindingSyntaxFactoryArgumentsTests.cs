@@ -327,6 +327,236 @@ namespace NS {
 				nullableINativeArrayParameter,
 				$"{Global ("System.GC")}.KeepAlive (nsa_inativeArray);\n"
 			];
+
+			// byref string parameter
+
+			var byrefStringParam = @"
+using System;
+using Foundation;
+using CoreMedia;
+using ObjCRuntime;
+
+namespace NS {
+	public delegate void Callback (out string outString);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				byrefStringParam,
+				$"outString = {Global ("CoreFoundation")}.CFString.FromHandle (nsoutString, false)!;\n",
+			];
+
+			// byref string parameter nullable
+
+			var nullableByrefStringParam = @"
+using System;
+using Foundation;
+using CoreMedia;
+using ObjCRuntime;
+
+namespace NS {
+	public delegate void Callback (out string? outNullableString);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				nullableByrefStringParam,
+				$"outNullableString = {Global ("CoreFoundation")}.CFString.FromHandle (nsoutNullableString, false);\n"
+			];
+
+			// byref num not smart
+
+			var outNotSmartEnum = @"
+using System;
+using Foundation;
+using CoreMedia;
+using ObjCRuntime;
+
+namespace NS {
+	public MyEnum {
+		First = 0,
+		Last = 1,
+	}
+	public delegate void Callback (out MyEnum outNullableString);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				outNotSmartEnum,
+				string.Empty
+			];
+
+			// byref int
+
+			var outInt = @"
+using System;
+using Foundation;
+using CoreMedia;
+using ObjCRuntime;
+
+namespace NS {
+	public delegate void Callback (out int outNullableString);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				outInt,
+				string.Empty
+			];
+
+			// byref struct
+
+			var outStruct = @"
+using System;
+using AudioToolbox;
+using Foundation;
+using CoreMedia;
+using ObjCRuntime;
+
+namespace NS {
+	public delegate void Callback (out AudioTimeStamp outStruct);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				outStruct,
+				string.Empty
+			];
+
+			// byref INativeObject
+
+			var outINativeObject = @"
+using System;
+using Foundation;
+using CoreMedia;
+using ObjCRuntime;
+using Security;
+
+namespace NS {
+	public delegate void Callback (out SecKey outINativeObject);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				outINativeObject,
+				$"outINativeObject = {Global ("ObjCRuntime")}.Runtime.GetINativeObject<global::Security.SecKey> (outINativeObject__handle__)!;\n"
+			];
+
+			// byref NSObject
+
+			var outNSObject = @"
+using System;
+using AVFoundation;
+using Foundation;
+using CoreMedia;
+using ObjCRuntime;
+
+namespace NS {
+	public delegate void Callback (out NSObject outNSObject);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				outNSObject,
+				$"outNSObject = {Global ("ObjCRuntime")}.Runtime.GetNSObject<{Global ("Foundation")}.NSObject> (outNSObject__handle__)!;\n"
+			];
+
+			// byref string array
+
+			var outStringArray = @"
+using System;
+using AVFoundation;
+using Foundation;
+using CoreMedia;
+using ObjCRuntime;
+
+namespace NS {
+	public delegate void Callback (out string[] outStringArray);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				outStringArray,
+				$"outStringArray = {Global ("CoreFoundation")}.CFArray.StringArrayFromHandle (nsa_outStringArray, false)!;\n"
+			];
+
+			// byref string array nullable
+
+			var outNullStringArray = @"
+using System;
+using AVFoundation;
+using Foundation;
+using CoreMedia;
+using ObjCRuntime;
+
+namespace NS {
+	public delegate void Callback (out string[]? outNullStringArray);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				outNullStringArray,
+				$"outNullStringArray = {Global ("CoreFoundation")}.CFArray.StringArrayFromHandle (nsa_outNullStringArray, false);\n"
+			];
+
+			// byref array of INativeObject
+
+			var outINativeObjectArray = @"
+using System;
+using AVFoundation;
+using Foundation;
+using CoreMedia;
+using ObjCRuntime;
+
+namespace NS {
+	public delegate void Callback (out AVAsset[] outINativeObjectArray);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				outINativeObjectArray,
+				$"outINativeObjectArray = {Global ("CoreFoundation")}.CFArray.ArrayFromHandle<{Global ("AVFoundation")}.AVAsset> (nsa_outINativeObjectArray)!;\n",
+			];
+			// byref array of NSObject
+
+			var outNSObjectArray = @"
+using System;
+using AVFoundation;
+using Foundation;
+using CoreMedia;
+using ObjCRuntime;
+
+namespace NS {
+	public delegate void Callback (out NSObject[] outNSObject);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				outNSObjectArray,
+				$"outNSObject = {Global ("CoreFoundation")}.CFArray.ArrayFromHandle<{Global ("Foundation")}.NSObject> (nsa_outNSObject)!;\n"
+			];
 		}
 
 		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
@@ -757,6 +987,237 @@ namespace NS {
 {Global ("ObjCRuntime")}.BlockLiteral* block_ptr_callbackParameter = callbackParameter is not null ? &block_callbackParameter : null;
 ",
 			];
+
+			// byref string parameter
+
+			var byrefStringParam = @"
+using System;
+using Foundation;
+using CoreMedia;
+using ObjCRuntime;
+
+namespace NS {
+	public delegate void Callback (out string outString);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				byrefStringParam,
+				$"{Global ("ObjCRuntime")}.NativeHandle nsoutString;\n"
+			];
+
+			// byref string parameter nullable
+
+			var nullableByrefStringParam = @"
+using System;
+using Foundation;
+using CoreMedia;
+using ObjCRuntime;
+
+namespace NS {
+	public delegate void Callback (out string? outNullableString);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				nullableByrefStringParam,
+				"global::ObjCRuntime.NativeHandle nsoutNullableString;\n"
+			];
+
+			// byref num not smart
+
+			var outNotSmartEnum = @"
+using System;
+using Foundation;
+using CoreMedia;
+using ObjCRuntime;
+
+namespace NS {
+	public MyEnum {
+		First = 0,
+		Last = 1,
+	}
+	public delegate void Callback (out MyEnum outNullableString);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				outNotSmartEnum,
+				string.Empty
+			];
+
+			// byref int
+
+			var outInt = @"
+using System;
+using Foundation;
+using CoreMedia;
+using ObjCRuntime;
+
+namespace NS {
+	public delegate void Callback (out int outNullableString);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				outInt,
+				string.Empty
+			];
+
+			// byref struct
+
+			var outStruct = @"
+using System;
+using AudioToolbox;
+using Foundation;
+using CoreMedia;
+using ObjCRuntime;
+
+namespace NS {
+	public delegate void Callback (out AudioTimeStamp outStruct);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				outStruct,
+				string.Empty
+			];
+
+			// byref INativeObject
+
+			var outINativeObject = @"
+using System;
+using Foundation;
+using CoreMedia;
+using ObjCRuntime;
+using Security;
+
+namespace NS {
+	public delegate void Callback (out SecKey outINativeObject);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				outINativeObject,
+				$"{Global ("ObjCRuntime")}.NativeHandle outINativeObject__handle__;\n",
+			];
+
+			// byref NSObject
+
+			var outNSObject = @"
+using System;
+using AVFoundation;
+using Foundation;
+using CoreMedia;
+using ObjCRuntime;
+
+namespace NS {
+	public delegate void Callback (out NSObject outNSObject);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				outNSObject,
+				$"{Global ("ObjCRuntime")}.NativeHandle outNSObject__handle__;\n",
+			];
+
+			// byref string array
+
+			var outStringArray = @"
+using System;
+using AVFoundation;
+using Foundation;
+using CoreMedia;
+using ObjCRuntime;
+
+namespace NS {
+	public delegate void Callback (out string[] outStringArray);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				outStringArray,
+				$"{Global ("ObjCRuntime")}.NativeHandle nsa_outStringArray;\n",
+			];
+
+			// byref string array nullable
+
+			var outNullStringArray = @"
+using System;
+using AVFoundation;
+using Foundation;
+using CoreMedia;
+using ObjCRuntime;
+
+namespace NS {
+	public delegate void Callback (out string[]? outNullStringArray);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				outNullStringArray,
+				$"{Global ("ObjCRuntime")}.NativeHandle nsa_outNullStringArray;\n",
+			];
+
+			// byref array of INativeObject
+
+			var outINativeObjectArray = @"
+using System;
+using AVFoundation;
+using Foundation;
+using CoreMedia;
+using ObjCRuntime;
+
+namespace NS {
+	public delegate void Callback (out AVAsset[] outINativeObjectArray);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				outINativeObjectArray,
+				"global::ObjCRuntime.NativeHandle nsa_outINativeObjectArray;\n"
+			];
+
+			// byref array of NSObject
+
+			var outNSObjectArray = @"
+using System;
+using AVFoundation;
+using Foundation;
+using CoreMedia;
+using ObjCRuntime;
+
+namespace NS {
+	public delegate void Callback (out NSObject[] outNSObject);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				outNSObjectArray,
+				$"{Global ("ObjCRuntime")}.NativeHandle nsa_outNSObject;\n",
+			];
 		}
 
 		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
@@ -823,7 +1284,7 @@ namespace NS {
 
 			yield return [
 				outBoolean,
-				"outBool = default;\n",
+				string.Empty
 			];
 
 			var outNSObject = @"
@@ -841,7 +1302,7 @@ namespace NS {
 
 			yield return [
 				outNSObject,
-				"outNSObject = default;\n",
+				string.Empty,
 			];
 
 			var refNSObject = @"
@@ -928,7 +1389,7 @@ namespace NS {
 
 			yield return [
 				outBoolean,
-				"*outBool = default;\n",
+				string.Empty
 			];
 
 			var outNSObject = @"
@@ -946,7 +1407,7 @@ namespace NS {
 
 			yield return [
 				outNSObject,
-				"*outNSObject = default;\n",
+				string.Empty
 			];
 		}
 

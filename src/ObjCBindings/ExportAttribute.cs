@@ -51,6 +51,36 @@ namespace ObjCBindings {
 		/// </summary >
 		public string? Library { get; set; } = null;
 
+		/// <summary>
+		/// The type of the result for an async method.
+		/// </summary>
+		public Type? ResultType { get; set; } = null;
+
+		/// <summary>
+		/// The name of the generated async method.
+		/// </summary>
+		public string? MethodName { get; set; } = null;
+
+		/// <summary>
+		/// The name of the type of the result for an async method.
+		/// </summary>
+		public string? ResultTypeName { get; set; } = null;
+
+		/// <summary>
+		/// A code snippet to be executed after the async method call.
+		/// </summary>
+		public string? PostNonResultSnippet { get; set; } = null;
+
+		/// <summary>
+		/// The type of the strong delegate for a weak delegate property.
+		/// </summary>
+		public Type? StrongDelegateType { get; set; } = null;
+
+		/// <summary>
+		/// The name of the strong delegate for a weak delegate property.
+		/// </summary>
+		public string? StrongDelegateName { get; set; } = null;
+
 		protected ExportAttribute () { }
 
 		/// <summary>

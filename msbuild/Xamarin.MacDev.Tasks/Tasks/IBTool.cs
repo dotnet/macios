@@ -427,7 +427,7 @@ namespace Xamarin.MacDev.Tasks {
 				var bundleName = GetBundleRelativeOutputPath (item);
 				item.SetMetadata ("LogicalName", bundleName);
 			}
-			var interfaceDefinitions = CollectBundleResources.VerifyLogicalNameUniqueness (this.Log, InterfaceDefinitions, "InterfaceDefinition").ToArray ();
+			var interfaceDefinitions = CollectBundleResources.VerifyLogicalNameUniqueness (this, InterfaceDefinitions, "InterfaceDefinition").ToArray ();
 
 			if (interfaceDefinitions.Length > 0) {
 				Directory.CreateDirectory (ibtoolManifestDir);

@@ -105,6 +105,13 @@ static partial class BindingSyntaxFactory {
 		@class: "NSArray");
 
 	/// <summary>
+	/// TypeSyntax for Foundation.NSAutoreleasePool.
+	/// </summary>
+	public static readonly TypeSyntax NSAutoreleasePool = StringExtensions.GetIdentifierName (
+		@namespace: ["Foundation"],
+		@class: "NSAutoreleasePool");
+
+	/// <summary>
 	/// TypeSyntax for Foundation.NSValue.
 	/// </summary>
 	public static readonly TypeSyntax NSValue = StringExtensions.GetIdentifierName (

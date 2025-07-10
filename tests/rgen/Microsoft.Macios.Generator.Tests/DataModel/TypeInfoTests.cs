@@ -384,6 +384,34 @@ namespace NS {
 					parameters: []
 				)
 			];
+
+			const string namedTuple = @"
+using System;
+
+namespace NS {
+	public class MyClass {
+		public (string Name, string Surname) MyMethod () {}
+	}
+}
+";
+			yield return [
+				namedTuple,
+				new Method (
+					type: "NS.MyClass",
+					name: "MyMethod",
+					returnType: ReturnTypeForNamedTuple ([
+						new ("Name", ReturnTypeForString ()),
+						new ("Surname", ReturnTypeForString ()),
+					]),
+					symbolAvailability: new (),
+					exportMethodData: new (),
+					attributes: [],
+					modifiers: [
+						SyntaxFactory.Token (SyntaxKind.PublicKeyword),
+					],
+					parameters: []
+				)
+			];
 		}
 
 		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
@@ -705,10 +733,14 @@ namespace Example {
 	[PlatformInlineData (ApplePlatform.TVOS, "Action<int, NSError>", "Task<int>", "TaskCompletionSource<int>")]
 	[PlatformInlineData (ApplePlatform.MacCatalyst, "Action<int, NSError>", "Task<int>", "TaskCompletionSource<int>")]
 	[PlatformInlineData (ApplePlatform.MacOSX, "Action<int, NSError>", "Task<int>", "TaskCompletionSource<int>")]
-	[PlatformInlineData (ApplePlatform.iOS, "Action<int, string>", "Task<int, string>", "TaskCompletionSource<int, string>")]
-	[PlatformInlineData (ApplePlatform.TVOS, "Action<int, string>", "Task<int, string>", "TaskCompletionSource<int, string>")]
-	[PlatformInlineData (ApplePlatform.MacCatalyst, "Action<int, string>", "Task<int, string>", "TaskCompletionSource<int, string>")]
-	[PlatformInlineData (ApplePlatform.MacOSX, "Action<int, string>", "Task<int, string>", "TaskCompletionSource<int, string>")]
+	[PlatformInlineData (ApplePlatform.iOS, "Action<int, string>", "Task<(int, string)>", "TaskCompletionSource<(int, string)>")]
+	[PlatformInlineData (ApplePlatform.TVOS, "Action<int, string>", "Task<(int, string)>", "TaskCompletionSource<(int, string)>")]
+	[PlatformInlineData (ApplePlatform.MacCatalyst, "Action<int, string>", "Task<(int, string)>", "TaskCompletionSource<(int, string)>")]
+	[PlatformInlineData (ApplePlatform.MacOSX, "Action<int, string>", "Task<(int, string)>", "TaskCompletionSource<(int, string)>")]
+	[PlatformInlineData (ApplePlatform.iOS, "Action<int, string, NSError>", "Task<(int, string)>", "TaskCompletionSource<(int, string)>")]
+	[PlatformInlineData (ApplePlatform.TVOS, "Action<int, string, NSError>", "Task<(int, string)>", "TaskCompletionSource<(int, string)>")]
+	[PlatformInlineData (ApplePlatform.MacCatalyst, "Action<int, string, NSError>", "Task<(int, string)>", "TaskCompletionSource<(int, string)>")]
+	[PlatformInlineData (ApplePlatform.MacOSX, "Action<int, string, NSError>", "Task<(int, string)>", "TaskCompletionSource<(int, string)>")]
 	void TypeInfoToTask (ApplePlatform platform, string action, string expectedTask, string expectedCompletionSource)
 	{
 		var inputText = $@"
@@ -744,5 +776,45 @@ namespace NS {{
 		Assert.Equal ($"{Global ("System.Threading")}.Tasks.{expectedTask}", task.GetIdentifierSyntax ().ToString ());
 		var completionSource = task.ToTaskCompletionSource ();
 		Assert.Equal ($"{Global ("System.Threading")}.Tasks.{expectedCompletionSource}", completionSource.GetIdentifierSyntax ().ToString ());
+	}
+
+	[Theory]
+	[AllSupportedPlatforms]
+	void TypeInfoToTaskNamedTuple (ApplePlatform platform)
+	{
+		var inputText = @"
+using System;
+using System.Threading.Tasks;
+using Foundation;
+using ObjCRuntime;
+using System.Collections.Generic;
+
+namespace NS {
+	public class MyClass {
+		delegate void Callback (string name, string surname, NSError error);
+		public void ProcessPointer (Callback myTask)
+		{
+			// do nothing
+		}
+	}
+}
+";
+		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
+		Assert.Single (syntaxTrees);
+		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
+		var declaration = syntaxTrees [0].GetRoot ()
+			.DescendantNodes ().OfType<MethodDeclarationSyntax> ()
+			.FirstOrDefault ();
+		Assert.NotNull (declaration);
+		Assert.True (Method.TryCreate (declaration, semanticModel, out var changes));
+		Assert.NotNull (changes);
+		// ensure that the method has a single parameter
+		Assert.Single (changes.Value.Parameters);
+		var type = changes.Value.Parameters [0].Type;
+		var task = type.ToTask ();
+		Assert.NotEqual (type, task);
+		Assert.Equal ($"{Global ("System.Threading")}.Tasks.Task<(string Name, string Surname)>", task.GetIdentifierSyntax ().ToString ());
+		var completionSource = task.ToTaskCompletionSource ();
+		Assert.Equal ($"{Global ("System.Threading")}.Tasks.TaskCompletionSource<(string Name, string Surname)>", completionSource.GetIdentifierSyntax ().ToString ());
 	}
 }

@@ -101,7 +101,7 @@ namespace MapKit {
 	}
 
 	// NSUInteger -> MKTypes.h
-	/// <summary>An enumeration whose values represent various errors that can occur with <see cref="MapKit.MKDirections.CalculateRoute" /> and <see cref="MapKit.MKDirections.CalculateETA(MapKit.MKETAHandler)" />.</summary>
+	/// <summary>An enumeration whose values represent various errors that can occur with <see cref="MapKit.MKDirections.CalculateDirections" /> and <see cref="MapKit.MKDirections.CalculateETA(MapKit.MKETAHandler)" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]

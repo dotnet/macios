@@ -461,9 +461,9 @@ namespace MediaPlayer {
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		NSString DateAddedProperty { get; }
 
-		/// <summary>Backing store for the <see cref="MediaPlayer.MediaItem.PlaybackStoreID" /> property.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+#if !__MACOS__
+		/// <summary>Backing store for the <see cref="MPMediaItem.PlaybackStoreID" /> property.</summary>
+#endif
 		[MacCatalyst (13, 1)]
 		[Field ("MPMediaItemPropertyPlaybackStoreID")]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
@@ -493,10 +493,8 @@ namespace MediaPlayer {
 		[Export ("initWithImage:")]
 		NativeHandle Constructor (UIImage image);
 
-		/// <param name="size">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>The return type is <see cref="UIKit.UIImage" /> on iOS and <see cref="AppKit.NSImage" /> on MacOS.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Get an image of a specific size for the artwork.</summary>
+		/// <param name="size">The size of the returned image.</param>
 		[Export ("imageWithSize:")]
 		[return: NullAllowed]
 		UIImage ImageWithSize (CGSize size);
@@ -1108,7 +1106,7 @@ namespace MediaPlayer {
 	interface MPMediaPredicate : NSSecureCoding {
 	}
 
-	/// <summary>A type of <see cref="MediaPlayer.MPMediaPredicate" /> that evaluates <see cref="MediaPlayer.MPMediaItemProperty" />s.</summary>
+	/// <summary>A type of <see cref="MediaPlayer.MPMediaPredicate" /> that evaluates <see cref="MediaPlayer.MPMediaType" />s.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPMediaPropertyPredicate_ClassReference/index.html">Apple documentation for <c>MPMediaPropertyPredicate</c></related>
 	[NoMac]
@@ -1436,8 +1434,6 @@ namespace MediaPlayer {
 		MPTimedMetadata [] TimedMetadata { get; }
 	}
 
-	/// <summary>Interface that, together with the <see cref="MediaPlayer.MPMediaPlayback_Extensions" /> class, comprise the MPMediaPlayback protocol.</summary>
-	/// <remarks>To be added.</remarks>
 	[NoMac]
 	[TV (16, 0)]
 	[MacCatalyst (13, 1)]

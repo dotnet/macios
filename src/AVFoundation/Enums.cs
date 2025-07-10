@@ -657,7 +657,7 @@ namespace AVFoundation {
 		SessionNotActive = 0x696e6163, // 'inac'
 	}
 
-	/// <summary>An enumeration whose values specify hints to autofocus. Used with <see cref="AVFoundation.AVCaptureDevice.AutoFocusRangeRestriction" />.</summary>
+	/// <summary>An enumeration whose values specify hints to autofocus. Used with <see cref="AVCaptureDevice.AutoFocusRangeRestriction" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[TV (17, 0)]
@@ -687,7 +687,7 @@ namespace AVFoundation {
 	}
 
 	// Convenience enum for native strings (defined in AVAudioSettings.h)
-	/// <summary>An enumeration whose values specify valid rate-converstion algorithms. Used with <see cref="AVFoundation.AVAudioSettings.SampleRateConverterAlgorithm" />.</summary>
+	/// <summary>An enumeration whose values specify valid rate-converstion algorithms. Used with <see cref="AudioSettings.SampleRateConverterAlgorithm" />.</summary>
 	/// <remarks>To be added.</remarks>
 	public enum AVSampleRateConverterAlgorithm : int {
 		/// <summary>To be added.</summary>
@@ -929,7 +929,7 @@ namespace AVFoundation {
 		Linear = 3,
 	}
 
-	/// <summary>Enumerates possible values of the <see cref="AVFoundation.AVSampleBuffer.Status" /> field.</summary>
+	/// <summary>Enumerates possible values of the <see cref="AVSampleBufferAudioRenderer.Status" />, <see cref="AVSampleBufferDisplayLayer.Status" /> and <see cref="AVSampleBufferVideoRenderer.Status" /> fields.</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]

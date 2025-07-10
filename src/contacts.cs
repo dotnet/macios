@@ -355,7 +355,7 @@ namespace Contacts {
 		[Field ("CNContactUrlAddressesKey")]
 		NSString UrlAddresses { get; }
 
-		/// <summary>Key identifying the <see cref="Contacts.CNContact.Relations" /> property.</summary>
+		/// <summary>Key identifying the <see cref="Contacts.CNContact.ContactRelations" /> property.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Field ("CNContactRelationsKey")]
@@ -2750,25 +2750,25 @@ namespace Contacts {
 	[EditorBrowsable (EditorBrowsableState.Advanced)]
 	interface CNSocialProfileKey { // Can be used in KVO
 
-		/// <summary>The key associated with <see cref="Contacts.CNSocialService.UrlString" />.</summary>
+		/// <summary>The key associated with <see cref="Contacts.CNSocialProfileOption.UrlString" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Field ("CNSocialProfileURLStringKey")]
 		NSString UrlString { get; }
 
-		/// <summary>The key associated with <see cref="Contacts.CNSocialService.Username" />.</summary>
+		/// <summary>The key associated with <see cref="Contacts.CNSocialProfileOption.Username" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Field ("CNSocialProfileUsernameKey")]
 		NSString Username { get; }
 
-		/// <summary>The key associated with <see cref="Contacts.CNSocialService.UserIdentifier" />.</summary>
+		/// <summary>The key associated with <see cref="Contacts.CNSocialProfileOption.UserIdentifier" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Field ("CNSocialProfileUserIdentifierKey")]
 		NSString UserIdentifier { get; }
 
-		/// <summary>The key associated with <see cref="Contacts.CNSocialProfile.Service" />.</summary>
+		/// <summary>The key associated with <see cref="Contacts.CNSocialProfileOption.Service" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Field ("CNSocialProfileServiceKey")]

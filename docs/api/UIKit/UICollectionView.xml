@@ -158,7 +158,7 @@ public class SimpleCollectionViewController : UICollectionViewController
     cv.CollectionViewLayout.RegisterClassForDecorationView (typeof(DecorationView), DecorationView.ClassId);
   }
 
-  public override UICollectionViewCell GetCell (UICollectionView collectionView, MonoTouch.Foundation.NSIndexPath indexPath)
+  public override UICollectionViewCell GetCell (UICollectionView collectionView, Foundation.NSIndexPath indexPath)
   {
     var animalCell = (AnimalCell)collectionView.DequeueReusableCell (AnimalCell.ClassId, indexPath);
     var animal = animals [indexPath.Section * (animals.Count / SectionCount) + indexPath.Item];
@@ -339,7 +339,6 @@ public class AnimalCell : UICollectionViewCell
         <altmember cref="UIKit.UICollectionView.RegisterNibForSupplementaryView(UINib, UICollectionElementKindSection, NSString)" />
         <altmember cref="UIKit.UICollectionView.RegisterNibForSupplementaryView(UINib, NSString, NSString)" />
         <altmember cref="UIKit.UICollectionViewLayout.RegisterClassForDecorationView(Type, NSString)" />
-        <altmember cref="UIKit.UICollectionViewLayout.RegisterClassForDecorationView(nint, NSString)" />
         <altmember cref="UIKit.UICollectionViewLayout.RegisterNibForDecorationView" />
       </Docs>
   <Docs DocId="M:UIKit.UICollectionView.RegisterClassForCell(System.Type,Foundation.NSString)">
@@ -371,7 +370,6 @@ public class AnimalCell : UICollectionViewCell
         <altmember cref="UIKit.UICollectionView.RegisterNibForSupplementaryView(UINib, UICollectionElementKindSection, NSString)" />
         <altmember cref="UIKit.UICollectionView.RegisterNibForSupplementaryView(UINib, NSString, NSString)" />
         <altmember cref="UIKit.UICollectionViewLayout.RegisterClassForDecorationView(Type, NSString)" />
-        <altmember cref="UIKit.UICollectionViewLayout.RegisterClassForDecorationView(nint, NSString)" />
         <altmember cref="UIKit.UICollectionViewLayout.RegisterNibForDecorationView" />
       </Docs>
   <Docs DocId="M:UIKit.UICollectionView.RegisterClassForSupplementaryView(System.Type,UIKit.UICollectionElementKindSection,Foundation.NSString)">
@@ -394,7 +392,6 @@ public class AnimalCell : UICollectionViewCell
         <altmember cref="UIKit.UICollectionView.RegisterNibForSupplementaryView(UINib, UICollectionElementKindSection, NSString)" />
         <altmember cref="UIKit.UICollectionView.RegisterNibForSupplementaryView(UINib, NSString, NSString)" />
         <altmember cref="UIKit.UICollectionViewLayout.RegisterClassForDecorationView(Type, NSString)" />
-        <altmember cref="UIKit.UICollectionViewLayout.RegisterClassForDecorationView(nint, NSString)" />
         <altmember cref="UIKit.UICollectionViewLayout.RegisterNibForDecorationView" />
       </Docs>
   <Docs DocId="M:UIKit.UICollectionView.RegisterNibForSupplementaryView(UIKit.UINib,UIKit.UICollectionElementKindSection,Foundation.NSString)">

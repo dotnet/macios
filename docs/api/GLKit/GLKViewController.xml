@@ -118,7 +118,7 @@ public class RippleViewController : GLKViewController {
 	    You should not attempt to draw in this method.  Drawing
 	    will be triggered on your <see cref="GLKit.GLKView" /> instance (either using
 	    the <see cref="GLKit.GLKView.DrawInRect" />
-	    event handler, or using the <see cref="GLKit.GLKViewControllerDelegate.DrawInRect(GLKit.GLKView,CGRect)" /> method.
+	    event handler, or using the <see cref="GLKit.GLKViewDelegate.DrawInRect(GLKit.GLKView,CGRect)" /> method.
 
 	  </para>
     </remarks>

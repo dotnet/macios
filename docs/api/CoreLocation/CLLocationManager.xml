@@ -577,7 +577,11 @@ var isAvail = CLLocationManager.IsMonitoringAvailable(typeof(CLCircularRegion));
       <para>Application developers who require GPS-accurate location information when their application is in the background, but do not need that information in near-real-time should use this method to defer delivery. Deferred delivery consumes significantly less power.</para>
       <para>This method is only a request. Location updates may occur even if the application is in deferred mode. If updates occur when the application is in deferred mode, the application will stay in deferred mode.</para>
       <para>If the application is in the foreground, location updates are not delayed.</para>
-      <para>This method requires GPS hardware to be available, <see cref="CoreLocation.CLLocationManager.DistanceFilter" /> to be <see cref="CoreLocation.CLLocationDistance.None" />, and <see cref="CoreLocation.CLLocationManager.DesiredAccuracy" /> be either <see cref="CoreLocation.CLLocation.AccuracyBest" /> or <see cref="CoreLocation.CLLocation.AccurracyBestForNavigation" />.</para>
+      <para>
+        This method requires GPS hardware to be available, <see cref="CoreLocation.CLLocationManager.DistanceFilter" /> to be
+        <see cref="CoreLocation.CLLocationDistance.FilterNone" />, and <see cref="CoreLocation.CLLocationManager.DesiredAccuracy" /> be
+        either <see cref="CoreLocation.CLLocation.AccuracyBest" /> or <see cref="CoreLocation.CLLocation.AccurracyBestForNavigation" />.
+      </para>
     </remarks>
   </Docs>
 </Documentation>

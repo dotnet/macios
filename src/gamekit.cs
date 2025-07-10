@@ -2506,9 +2506,13 @@ namespace GameKit {
 		GKDialogController SharedDialogController { get; }
 	}
 
-	/// <summary>A <see cref="UIKit.UINavigationController" /> that presents a screen for sending friend requests.</summary>
-	///     
-	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GameKit/Reference/GKFriendRequestComposeViewController_Ref/index.html">Apple documentation for <c>GKFriendRequestComposeViewController</c></related>
+#if MONOMAC
+	/// <summary>A <see cref="NSViewController" /> that presents a screen for sending friend requests.</summary>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GameKit/Reference/GKFriendRequestComposeViewController_Ref/index.html">Apple documentation for <c>GKFriendRequestComposeViewController</c></related>
+#else
+	/// <summary>A <see cref="UINavigationController" /> that presents a screen for sending friend requests.</summary>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GameKit/Reference/GKFriendRequestComposeViewController_Ref/index.html">Apple documentation for <c>GKFriendRequestComposeViewController</c></related>
+#endif
 	[Deprecated (PlatformName.MacOSX, 10, 12)]
 	[Deprecated (PlatformName.iOS, 10, 0)]
 	[NoMacCatalyst]

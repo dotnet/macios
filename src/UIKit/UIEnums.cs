@@ -1874,7 +1874,7 @@ namespace UIKit {
 
 	// NSInteger -> UIAccessibility.h
 	/// <summary>An enumeration indicating the scrolling direction desired.</summary>
-	/// <remarks>Used as the argument to <see cref="Foundation.NSObject.AccessibilityScroll" /> to generate a scrolling action.</remarks>
+	/// <remarks>Used as the argument to <see cref="UIResponder.AccessibilityScroll" /> to generate a scrolling action.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UIAccessibilityScrollDirection : long {
@@ -2279,8 +2279,11 @@ namespace UIKit {
 	// NSInteger -> UIImage.h
 	/// <summary>An enumeration whose values specify rendering modes for a <see cref="UIKit.UIImage" />.</summary>
 	/// <remarks>
-	///       <para>A template image is used as a mask to create the final image. A template image inherits the <see cref="UIKit.UIImage.TintColor" /> of its parent. Application developers who do not want this behavior should use <see cref="UIKit.UIImageRenderingMode.AlwaysOriginal" />.</para>
-	///     </remarks>
+	///   <para>
+	///     A template image is used as a mask to create the final image. A template image inherits the <see cref="UIView.TintColor" />
+	///     of its parent. Application developers who do not want this behavior should use <see cref="UIKit.UIImageRenderingMode.AlwaysOriginal" />.
+	///   </para>
+	/// </remarks>
 	[Native]
 	public enum UIImageRenderingMode : long {
 		/// <summary>The default rendering mode for the context.</summary>
@@ -2305,7 +2308,7 @@ namespace UIKit {
 
 	// NSInteger -> UINavigationController.h
 	/// <summary>An enumeration whose values specify operations on <see cref="UIKit.UINavigationController" />.</summary>
-	/// <remarks>This enumeration is used in calls to <see cref="UIKit.UINavigationController.GetAnimationController" />.</remarks>
+	/// <remarks>This enumeration is used in calls to <see cref="UINavigationControllerDelegate.GetAnimationControllerForOperation" />.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UINavigationControllerOperation : long {
@@ -2513,7 +2516,8 @@ namespace UIKit {
 	// NSInteger -> UITabBar.h
 	/// <summary>An enumeration whose values specify how a <see cref="UIKit.UITabBarItem" /> is positioned.</summary>
 	/// <remarks>To be added.</remarks>
-	/// <altmember cref="UIKit.UITabBarItem.ItemPositioning" />
+	/// <altmember cref="UIKit.UITabBar.ItemPositioning" />
+	/// <altmember cref="UIKit.UITabBarAppearance.StackedItemPositioning" />
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UITabBarItemPositioning : long {
@@ -2923,7 +2927,7 @@ namespace UIKit {
 		PrimaryOverlay = OneOverSecondary,
 	}
 
-	/// <summary>Enumerates characteristics of the button displayed in a table row. Used with the <see cref="UIKit.UITableViewRowAction(UIKit.UITableViewRowActionStyle,string ,Action{T},Foundation.NSIndexPath)" /> constructor.</summary>
+	/// <summary>Enumerates characteristics of the button displayed in a table row. Used with the <see cref="UITableViewRowAction.Create(UITableViewRowActionStyle,string,Action{UITableViewRowAction,NSIndexPath})" /> factory method.</summary>
 	[Native]
 	[NoTV]
 	[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'UIContextualActionStyle' and corresponding APIs instead.")]

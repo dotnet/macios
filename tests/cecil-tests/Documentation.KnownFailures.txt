@@ -4066,6 +4066,9 @@ F:MapKit.MKAddressFilterOption.Locality
 F:MapKit.MKAddressFilterOption.PostalCode
 F:MapKit.MKAddressFilterOption.SubAdministrativeArea
 F:MapKit.MKAddressFilterOption.SubLocality
+F:MapKit.MKAddressRepresentationsContextStyle.Automatic
+F:MapKit.MKAddressRepresentationsContextStyle.Full
+F:MapKit.MKAddressRepresentationsContextStyle.Short
 F:MapKit.MKAnnotationViewCollisionMode.None
 F:MapKit.MKDirectionsRoutePreference.Any
 F:MapKit.MKDirectionsRoutePreference.Avoid
@@ -4166,6 +4169,7 @@ F:MapKit.MKPointOfInterestCategory.University
 F:MapKit.MKPointOfInterestCategory.Volleyball
 F:MapKit.MKPointOfInterestCategory.Winery
 F:MapKit.MKPointOfInterestCategory.Zoo
+F:MapKit.MKScaleViewAlignment.Center
 F:MapKit.MKStandardMapEmphasisStyle.Default
 F:MapKit.MKStandardMapEmphasisStyle.Muted
 F:MediaExtension.MEDecodeFrameStatus.FrameDropped
@@ -12585,6 +12589,7 @@ M:MapKit.MKAnnotationView.MKAnnotationViewAppearance.#ctor(System.IntPtr)
 M:MapKit.MKCircleView.MKCircleViewAppearance.#ctor(System.IntPtr)
 M:MapKit.MKCompassButton.Dispose(System.Boolean)
 M:MapKit.MKCompassButton.MKCompassButtonAppearance.#ctor(System.IntPtr)
+M:MapKit.MKGeocodingRequest.GetMapItemsAsync
 M:MapKit.MKLaunchOptions.#ctor
 M:MapKit.MKLocalSearchCompleter.Dispose(System.Boolean)
 M:MapKit.MKLookAroundSceneRequest.GetSceneAsync
@@ -21638,6 +21643,8 @@ P:MapKit.MKAnnotationEventArgs.Annotation
 P:MapKit.MKAnnotationViewEventArgs.View
 P:MapKit.MKDidAddOverlayRenderersEventArgs.Renderers
 P:MapKit.MKDidFinishRenderingMapEventArgs.FullyRendered
+P:MapKit.MKGeocodingRequest.Cancelled
+P:MapKit.MKGeocodingRequest.Loading
 P:MapKit.MKLookAroundSceneRequest.IsCancelled
 P:MapKit.MKLookAroundSceneRequest.IsLoading
 P:MapKit.MKLookAroundSnapshotter.IsLoading
@@ -21655,6 +21662,8 @@ P:MapKit.MKMapViewDragStateEventArgs.AnnotationView
 P:MapKit.MKMapViewDragStateEventArgs.NewState
 P:MapKit.MKMapViewDragStateEventArgs.OldState
 P:MapKit.MKOverlayViewsEventArgs.OverlayViews
+P:MapKit.MKReverseGeocodingRequest.Cancelled
+P:MapKit.MKReverseGeocodingRequest.Loading
 P:MapKit.MKUserLocationEventArgs.UserLocation
 P:MapKit.MMapViewUserTrackingEventArgs.Animated
 P:MapKit.MMapViewUserTrackingEventArgs.Mode
@@ -27240,7 +27249,9 @@ T:MapKit.IMKGeoJsonObject
 T:MapKit.IMKLookAroundViewControllerDelegate
 T:MapKit.IMKMapItemDetailViewControllerDelegate
 T:MapKit.MKAddressFilterOption
+T:MapKit.MKAddressRepresentationsContextStyle
 T:MapKit.MKDirectionsRoutePreference
+T:MapKit.MKGeocodingRequestGetMapItemsCompletionHandler
 T:MapKit.MKLocalSearchCompleterResultType
 T:MapKit.MKLocalSearchRegionPriority
 T:MapKit.MKLocalSearchResultType
@@ -27253,6 +27264,7 @@ T:MapKit.MKMapItemDetailSelectionAccessoryCalloutStyle
 T:MapKit.MKMapItemDetailViewControllerDelegate
 T:MapKit.MKMapViewDefault
 T:MapKit.MKPointOfInterestCategory
+T:MapKit.MKReverseGeocodingRequestGetMapItemsCompletionHandler
 T:MapKit.MKScaleViewAlignment
 T:MapKit.MKStandardMapEmphasisStyle
 T:MediaAccessibility.MAFlashingLightsProcessor

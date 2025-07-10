@@ -28,6 +28,12 @@ namespace MapKit {
 		Walking,
 		/// <summary>Transit directions.</summary>
 		Transit,
+		/// <summary>Cycling directions.</summary>
+		[SupportedOSPlatform ("ios14.0")]
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[UnsupportedOSPlatform ("tvos")]
+		Cycling,
 		/// <summary>The user's preferred direction type.</summary>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
@@ -110,6 +116,9 @@ namespace MapKit {
 					v = MKMapItem.MKLaunchOptionsDirectionsModeWalking;
 					break;
 #if !TV
+				case MKDirectionsMode.Cycling:
+					v = MKMapItem.MKLaunchOptionsDirectionsModeCycling;
+					break;
 				case MKDirectionsMode.Default:
 					v = MKMapItem.MKLaunchOptionsDirectionsModeDefault;
 					break;

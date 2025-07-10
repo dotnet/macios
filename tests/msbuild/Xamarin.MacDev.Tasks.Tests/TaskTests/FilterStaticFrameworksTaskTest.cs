@@ -154,7 +154,7 @@ namespace Xamarin.MacDev.Tasks.Tests {
 			// Arrange: Use a non-framework path
 			var tempDir = Cache.CreateTemporaryDirectory ();
 			var nonFrameworkPath = Path.Combine (tempDir, "regular_file.dylib");
-			File.WriteAllText (nonFrameworkPath, "mock dylib");
+			File.WriteAllBytes (nonFrameworkPath, CreateMinimalMachODylib ());
 
 			// Act: Create and execute the task
 			var task = CreateTask<FilterStaticFrameworks> ();

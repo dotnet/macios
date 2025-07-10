@@ -34,12 +34,16 @@ namespace Xamarin.MacDev.Tasks {
 
 			foreach (var infoPlistPath in infoPlistPaths) {
 				if (File.Exists (infoPlistPath)) {
-					var plist = PDictionary.FromFile (infoPlistPath);
-					if (plist is not null) {
-						var bundleExecutable = plist.GetCFBundleExecutable ();
-						if (!string.IsNullOrEmpty (bundleExecutable)) {
-							return Path.Combine (frameworkPath, bundleExecutable);
+					try {
+						var plist = PDictionary.FromFile (infoPlistPath);
+						if (plist is not null) {
+							var bundleExecutable = plist.GetCFBundleExecutable ();
+							if (!string.IsNullOrEmpty (bundleExecutable)) {
+								return Path.Combine (frameworkPath, bundleExecutable);
+							}
 						}
+					} catch (Exception) {
+						// Ignore exceptions from malformed plist files and fall back to default behavior
 					}
 					break; // Found Info.plist but no CFBundleExecutable, stop looking
 				}

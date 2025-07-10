@@ -6,8 +6,7 @@ namespace CoreTelephony {
 
 	[iOS (26, 0), Mac (26, 0), MacCatalyst (26, 0)]
 	[Native]
-	public enum CTCellularPlanCapability : long
-	{
+	public enum CTCellularPlanCapability : long {
 		Only,
 		AndVoice,
 	}
@@ -476,8 +475,7 @@ namespace CoreTelephony {
 
 	[NoTV, NoMac, iOS (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
-	interface CTCellularPlanProperties : NSSecureCoding
-	{
+	interface CTCellularPlanProperties : NSSecureCoding {
 		[NullAllowed, Export ("associatedIccid")]
 		string AssociatedIccid { get; set; }
 
@@ -485,13 +483,12 @@ namespace CoreTelephony {
 		CTCellularPlanCapability SimCapability { get; set; }
 
 		[Export ("supportedRegionCodes", ArgumentSemantic.Assign)]
-		string[] SupportedRegionCodes { get; set; }
+		string [] SupportedRegionCodes { get; set; }
 	}
 
 	[iOS (26, 0), MacCatalyst (26, 0), NoTV, NoMac]
 	[BaseType (typeof (NSObject))]
-	interface CTCellularPlanStatus
-	{
+	interface CTCellularPlanStatus {
 		[Async]
 		[Static]
 		[Export ("getTokenWithCompletion:")]

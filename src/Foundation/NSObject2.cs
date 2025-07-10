@@ -90,7 +90,7 @@ namespace Foundation {
 		}
 
 		public unsafe NSObjectData* Data {
-			get => (NSObjectData *) handle;
+			get => (NSObjectData*) handle;
 		}
 
 		public override bool IsInvalid {
@@ -100,7 +100,7 @@ namespace Foundation {
 		protected override bool ReleaseHandle ()
 		{
 			unsafe {
-				NativeMemory.Free ((void *) handle);
+				NativeMemory.Free ((void*) handle);
 			}
 			handle = IntPtr.Zero;
 			return true;

@@ -40,10 +40,9 @@ namespace monotouchtest.CoreGraphics {
 		[Test]
 		public void ConstructorWithDictionaryTest ()
 		{
-			using (var dict = new NSMutableDictionary ()) {
-				var iptc = new CGImagePropertiesIptc (dict);
-				Assert.That (iptc, Is.Not.Null, "Constructor with dictionary should create a valid instance");
-			}
+			using var dict = new NSMutableDictionary ();
+			var iptc = new CGImagePropertiesIptc (dict);
+			Assert.That (iptc, Is.Not.Null, "Constructor with dictionary should create a valid instance");
 		}
 
 		[Test]
@@ -51,28 +50,27 @@ namespace monotouchtest.CoreGraphics {
 		{
 			// Test that CGImageProperties can access IPTC properties
 			string file = Path.Combine (NSBundle.MainBundle.ResourcePath, "basn3p08.png");
-			
-			using (var url = NSUrl.FromFilename (file))
-			using (var ci = CIImage.FromUrl (url)) {
-				var imageProps = ci.Properties;
-				Assert.That (imageProps, Is.Not.Null, "Image properties should be available");
-				
-				// Note: The test image may not have IPTC data, so Iptc property could be null
-				// This test mainly verifies the property access doesn't throw exceptions
-				var iptc = imageProps.Iptc;
-				// iptc may be null for PNG files without IPTC data, which is expected
-			}
+
+			using var url = NSUrl.FromFilename (file);
+			using var ci = CIImage.FromUrl (url);
+			var imageProps = ci.Properties;
+			Assert.That (imageProps, Is.Not.Null, "Image properties should be available");
+
+			// Note: The test image may not have IPTC data, so Iptc property could be null
+			// This test mainly verifies the property access doesn't throw exceptions
+			var iptc = imageProps.Iptc;
+			// iptc may be null for PNG files without IPTC data, which is expected
 		}
 
 		[Test]
 		public void LocationPropertiesTest ()
 		{
 			var iptc = new CGImagePropertiesIptc ();
-			
+
 			// Test location-related properties
 			iptc.ContentLocationName = "Golden Gate Bridge";
 			Assert.That (iptc.ContentLocationName, Is.EqualTo ("Golden Gate Bridge"), "ContentLocationName should be settable");
-			
+
 			iptc.CountryPrimaryLocationName = "United States";
 			Assert.That (iptc.CountryPrimaryLocationName, Is.EqualTo ("United States"), "CountryPrimaryLocationName should be settable");
 		}
@@ -81,17 +79,17 @@ namespace monotouchtest.CoreGraphics {
 		public void CopyrightAndCreditPropertiesTest ()
 		{
 			var iptc = new CGImagePropertiesIptc ();
-			
+
 			// Test copyright and credit properties
 			iptc.CopyrightNotice = "© 2023 Test Photographer";
 			Assert.That (iptc.CopyrightNotice, Is.EqualTo ("© 2023 Test Photographer"), "CopyrightNotice should be settable");
-			
+
 			iptc.Credit = "Test News Agency";
 			Assert.That (iptc.Credit, Is.EqualTo ("Test News Agency"), "Credit should be settable");
-			
+
 			iptc.Source = "Test Photo Source";
 			Assert.That (iptc.Source, Is.EqualTo ("Test Photo Source"), "Source should be settable");
-			
+
 			iptc.WriterEditor = "Test Editor";
 			Assert.That (iptc.WriterEditor, Is.EqualTo ("Test Editor"), "WriterEditor should be settable");
 		}
@@ -100,14 +98,14 @@ namespace monotouchtest.CoreGraphics {
 		public void NullablePropertiesTest ()
 		{
 			var iptc = new CGImagePropertiesIptc ();
-			
+
 			// Test that nullable string properties can be set to null
 			iptc.Byline = null;
 			Assert.That (iptc.Byline, Is.Null, "Byline should be nullable");
-			
+
 			iptc.CaptionAbstract = null;
 			Assert.That (iptc.CaptionAbstract, Is.Null, "CaptionAbstract should be nullable");
-			
+
 			iptc.City = null;
 			Assert.That (iptc.City, Is.Null, "City should be nullable");
 		}
@@ -116,11 +114,11 @@ namespace monotouchtest.CoreGraphics {
 		public void EmptyStringPropertiesTest ()
 		{
 			var iptc = new CGImagePropertiesIptc ();
-			
+
 			// Test that empty strings work correctly
 			iptc.Byline = "";
 			Assert.That (iptc.Byline, Is.EqualTo (""), "Byline should accept empty strings");
-			
+
 			iptc.CopyrightNotice = "";
 			Assert.That (iptc.CopyrightNotice, Is.EqualTo (""), "CopyrightNotice should accept empty strings");
 		}

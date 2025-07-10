@@ -43,38 +43,36 @@ namespace monotouchtest.CoreGraphics {
 		[Test]
 		public void ConstructorWithDictionaryTest ()
 		{
-			using (var dict = new NSMutableDictionary ()) {
-				var exif = new CGImagePropertiesExif (dict);
-				Assert.That (exif, Is.Not.Null, "Constructor with dictionary should create a valid instance");
-			}
+			using var dict = new NSMutableDictionary ();
+			var exif = new CGImagePropertiesExif (dict);
+			Assert.That (exif, Is.Not.Null, "Constructor with dictionary should create a valid instance");
 		}
 
 		[Test]
 		public void IntegrationWithCGImagePropertiesTest ()
 		{
 			// Test that CGImageProperties can access Exif properties
-			string file = Path.Combine (NSBundle.MainBundle.ResourcePath, "basn3p08.png");
-			
-			using (var url = NSUrl.FromFilename (file))
-			using (var ci = CIImage.FromUrl (url)) {
-				var imageProps = ci.Properties;
-				Assert.That (imageProps, Is.Not.Null, "Image properties should be available");
-				
-				// Note: The test image may not have EXIF data, so Exif property could be null
-				// This test mainly verifies the property access doesn't throw exceptions
-				var exif = imageProps.Exif;
-				// exif may be null for PNG files without EXIF data, which is expected
-			}
+			var file = Path.Combine (NSBundle.MainBundle.ResourcePath, "basn3p08.png");
+
+			using var url = NSUrl.FromFilename (file);
+			using var ci = CIImage.FromUrl (url);
+			var imageProps = ci.Properties;
+			Assert.That (imageProps, Is.Not.Null, "Image properties should be available");
+
+			// Note: The test image may not have EXIF data, so Exif property could be null
+			// This test mainly verifies the property access doesn't throw exceptions
+			var exif = imageProps.Exif;
+			// exif may be null for PNG files without EXIF data, which is expected
 		}
 
 		[Test]
 		public void ExposureProgramTest ()
 		{
 			var exif = new CGImagePropertiesExif ();
-			
+
 			exif.ExposureProgram = 1; // Manual mode
 			Assert.That (exif.ExposureProgram, Is.EqualTo (1), "ExposureProgram should be settable and gettable");
-			
+
 			exif.ExposureProgram = 2; // Aperture priority
 			Assert.That (exif.ExposureProgram, Is.EqualTo (2), "ExposureProgram should accept different values");
 		}
@@ -83,20 +81,20 @@ namespace monotouchtest.CoreGraphics {
 		public void FloatingPointPropertiesTest ()
 		{
 			var exif = new CGImagePropertiesExif ();
-			
+
 			// Test various floating point properties
 			exif.Brightness = 0.5f;
 			Assert.That (exif.Brightness, Is.EqualTo (0.5f).Within (0.001f), "Brightness should be settable");
-			
+
 			exif.DigitalZoomRatio = 2.0f;
 			Assert.That (exif.DigitalZoomRatio, Is.EqualTo (2.0f).Within (0.001f), "DigitalZoomRatio should be settable");
-			
+
 			exif.ExposureBias = -1.5f;
 			Assert.That (exif.ExposureBias, Is.EqualTo (-1.5f).Within (0.001f), "ExposureBias should accept negative values");
-			
+
 			exif.FlashEnergy = 10.0f;
 			Assert.That (exif.FlashEnergy, Is.EqualTo (10.0f).Within (0.001f), "FlashEnergy should be settable");
-			
+
 			exif.SubjectDistance = 5.2f;
 			Assert.That (exif.SubjectDistance, Is.EqualTo (5.2f).Within (0.001f), "SubjectDistance should be settable");
 		}
@@ -105,7 +103,7 @@ namespace monotouchtest.CoreGraphics {
 		public void ISOSpeedRatingsTest ()
 		{
 			var exif = new CGImagePropertiesExif ();
-			
+
 			// ISOSpeedRatings is read-only in the current implementation
 			// This test verifies it doesn't throw when accessed
 			var isoRatings = exif.ISOSpeedRatings;
@@ -116,14 +114,14 @@ namespace monotouchtest.CoreGraphics {
 		public void NullablePropertiesTest ()
 		{
 			var exif = new CGImagePropertiesExif ();
-			
+
 			// Test that nullable properties can be set to null
 			exif.Aperture = null;
 			Assert.That (exif.Aperture, Is.Null, "Aperture should be nullable");
-			
+
 			exif.ExposureTime = null;
 			Assert.That (exif.ExposureTime, Is.Null, "ExposureTime should be nullable");
-			
+
 			exif.Flash = null;
 			Assert.That (exif.Flash, Is.Null, "Flash should be nullable");
 		}

@@ -3,7 +3,7 @@
 
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Macios.Generator.DataModel;
-using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using static Microsoft.Macios.Generator.Nomenclator;
 using TypeInfo = Microsoft.Macios.Generator.DataModel.TypeInfo;
 
 namespace Microsoft.Macios.Generator.Emitters;
@@ -80,8 +80,8 @@ static partial class BindingSyntaxFactory {
 
 		// get the getter invocation and assign it to the return variable 
 		return (
-			Send: AssignVariable (Nomenclator.GetReturnVariableName (), getterSend),
-			SendSuper: AssignVariable (Nomenclator.GetReturnVariableName (), getterSuperSend)
+			Send: AssignVariable (GetReturnVariableName (), getterSend),
+			SendSuper: AssignVariable (GetReturnVariableName (), getterSuperSend)
 		);
 	}
 
@@ -98,8 +98,8 @@ static partial class BindingSyntaxFactory {
 	{
 		var argument = new TrampolineArgumentSyntax (GetNativeInvokeArgument (property)) {
 			Initializers = GetNativeInvokeArgumentInitializations (property),
-			PreDelegateCallConversion = GetPreNativeInvokeArgumentConversions (property),
-			PostDelegateCallConversion = GetPostNativeInvokeArgumentConversions (property),
+			PreCallConversion = GetPreNativeInvokeArgumentConversions (property),
+			PostCallConversion = GetPostNativeInvokeArgumentConversions (property),
 		};
 		// if any of the methods is null, return a throw statement for both
 		if (selector is null || sendMethod is null || superSendMethod is null) {

@@ -62,14 +62,14 @@ $@"if ({delegateVariableName} is null)
 
 				// build any needed pre conversion operations before calling the delegate
 				foreach (var argument in argumentSyntax) {
-					invokeMethod.Write (argument.PreDelegateCallConversion);
+					invokeMethod.Write (argument.PreCallConversion);
 				}
 
 				invokeMethod.WriteLine ($"{CallTrampolineDelegate (typeInfo.Delegate!, argumentSyntax)}");
 
 				// build any needed post conversion operations after calling the delegate
 				foreach (var argument in argumentSyntax) {
-					invokeMethod.Write (argument.PostDelegateCallConversion);
+					invokeMethod.Write (argument.PostCallConversion);
 				}
 
 				// perform any return conversions needed
@@ -143,7 +143,7 @@ public unsafe static {delegateIdentifier}? Create (IntPtr block)
 				var argumentSyntax = GetTrampolineNativeInvokeArguments (typeInfo.Delegate!);
 				// write the conversion code for the arguments
 				foreach (var argument in argumentSyntax) {
-					invokeBlock.Write (argument.PreDelegateCallConversion, verifyTrivia: false);
+					invokeBlock.Write (argument.PreCallConversion, verifyTrivia: false);
 				}
 
 				// execute the native invoker delegate
@@ -151,7 +151,7 @@ public unsafe static {delegateIdentifier}? Create (IntPtr block)
 
 				// build any needed post conversion operations after calling the delegate
 				foreach (var argument in argumentSyntax) {
-					invokeBlock.Write (argument.PostDelegateCallConversion, verifyTrivia: false);
+					invokeBlock.Write (argument.PostCallConversion, verifyTrivia: false);
 				}
 
 				// perform any return conversions needed

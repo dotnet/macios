@@ -25,10 +25,10 @@ readonly record struct TrampolineArgumentSyntax (ArgumentSyntax ArgumentSyntax) 
 	/// <summary>
 	/// Collection of expressions that need to be called before the delegate call.
 	/// </summary>
-	public ImmutableArray<SyntaxNode> PreDelegateCallConversion { get; init; } = [];
+	public ImmutableArray<SyntaxNode> PreCallConversion { get; init; } = [];
 
 	/// <summary>
 	/// Collection of expressions that need to be called after the delegate call.
 	/// </summary>
-	public ImmutableArray<SyntaxNode> PostDelegateCallConversion { get; init; } = [];
+	public ImmutableArray<SyntaxNode> PostCallConversion { get; init; } = [];
 }

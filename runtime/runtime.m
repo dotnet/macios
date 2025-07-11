@@ -231,7 +231,7 @@ xamarin_set_nsobject_flags (MonoObject *obj, uint8_t flags)
 #endif
 }
 
-uint32_t
+uint8_t
 xamarin_get_nsobject_id_flags (id obj)
 {
 	NSObjectData *data = xamarin_get_nsobject_data (obj);

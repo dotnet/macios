@@ -145,8 +145,8 @@ namespace Foundation {
 			set => GetData ()->handle = value;
 		}
 
-		// The NSObjectData contains some data we want to keep in native memoroy, so that it can be accessed
-		// safely fron native code without having to make sure the GC doesn't move the memory around. Among
+		// The NSObjectData contains some data we want to keep in native memory, so that it can be accessed
+		// safely from native code without having to make sure the GC doesn't move the memory around. Among
 		// other things, this means it's accessible from threads that has never seen/run managed code without
 		// having to attach those threads to to the managed runtime.
 #nullable enable

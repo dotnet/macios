@@ -813,6 +813,23 @@ xamarin_retain_trampoline (id self, SEL sel)
 	return self;
 }
 
+/*
+ * We override 'NSObject retainWeakReference' so that we can detect when Objective-C tries to resolve
+ * a weak reference, and if the managed wrapper is in the finalization queue, we refuse to resolve the
+ * weak reference (because it would mean we end up with a native object whose managed wrapper is
+ * finalized, and a number of things start going wrong when that native object is surfaced to managed
+ * code again).
+ *
+ * Unfortunately it's limited what we can do here, because the Objective-C runtime has acquired internal
+ * locks, which means we can't re-enter the Objective-C runtime. One of the results is that we can't
+ * call into managed code, not even the Mono/CoreCLR's runtime code, because that might end up calling
+ * into the Objective-C runtime, and those previously acquired locks will abort because they're not
+ * recursive locks.
+ *
+ * For this reason, the managed wrapper's flags that say whether the manager wrapper is in the finalization
+ * queue or not, is stored in native memory - and that's all we do here, we fetch the flag and return
+ * FALSE if we're in the finalization queue.
+ */
 BOOL
 xamarin_retainWeakReference_trampoline (id self, SEL sel)
 {
@@ -870,7 +887,6 @@ xamarin_set_gchandle_trampoline (id self, SEL sel, GCHandle gc_handle, enum Xama
 	if (obj == NULL && gc_handle != INVALID_GCHANDLE) {
 		obj = [[XamarinAssociatedObject alloc] init];
 		obj->gc_handle = gc_handle;
-		assert (data); // fixme!
 		obj->data = data;
 		obj->gchandle_flags = gchandle_flags;
 		obj->native_object = self;

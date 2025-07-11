@@ -1352,28 +1352,18 @@ namespace Xamarin.Linker {
 			var body = clonedCtor.CreateBody (out var il);
 
 			// ensure visible
-			abr.Foundation_NSObject_HandleField.Resolve ().IsFamily = true;
-#if NET
+			abr.Foundation_NSObject_HandleSetterMethod.Resolve ().IsFamily = true;
 			abr.Foundation_NSObject_FlagsSetterMethod.Resolve ().IsFamily = true;
-#else
-			abr.Foundation_NSObject_FlagsField.Resolve ().IsFamily = true;
-#endif
 
 			// store the handle and flags first
 			il.Emit (OpCodes.Ldarg_0);
 			il.Emit (OpCodes.Ldarg, handleParameter);
-#if NET
 			il.Emit (OpCodes.Call, abr.NativeObject_op_Implicit_NativeHandle);
-#endif
-			il.Emit (OpCodes.Stfld, abr.CurrentAssembly.MainModule.ImportReference (abr.Foundation_NSObject_HandleField));
+			il.Emit (OpCodes.Call, abr.CurrentAssembly.MainModule.ImportReference (abr.Foundation_NSObject_HandleSetterMethod));
 
 			il.Emit (OpCodes.Ldarg_0);
 			il.Emit (OpCodes.Ldc_I4_2); // Flags.NativeRef == 2
-#if NET
-			il.Emit (OpCodes.Call, abr.Foundation_NSObject_FlagsSetterMethod);
-#else
-			il.Emit (OpCodes.Stfld, abr.Foundation_NSObject_FlagsField);
-#endif
+			il.Emit (OpCodes.Call, abr.CurrentAssembly.MainModule.ImportReference (abr.Foundation_NSObject_FlagsSetterMethod));
 
 			// call the original constructor with all of the original parameters
 			il.Emit (OpCodes.Ldarg_0);

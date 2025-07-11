@@ -38,7 +38,7 @@ using System.Runtime.InteropServices.ObjectiveC;
 using ObjCRuntime;
 #if !COREBUILD
 using Xamarin.Bundler;
-#if MONOTOUCH
+#if HAS_UIKIT
 using UIKit;
 using CoreAnimation;
 #endif

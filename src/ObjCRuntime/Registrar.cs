@@ -9,10 +9,6 @@
 
 // #define VERBOSE_REGISTRAR
 
-#if IPHONE
-#define MONOTOUCH
-#endif
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

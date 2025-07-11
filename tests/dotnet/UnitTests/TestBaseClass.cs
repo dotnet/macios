@@ -636,5 +636,20 @@ namespace Xamarin.Tests {
 
 			return properties;
 		}
+
+		protected void AddNoWarnForPreviewVersions (ApplePlatform platform, IList<string> supportedApiVersion, Dictionary<string, string> properties)
+		{
+			// If any of the api versions we support are higher than the api version we're built for, we need to ignore any XCODE_*_PREVIEW warnings.
+			var osVersion = Version.Parse (Configuration.GetNuGetOsVersion (platform));
+			var nowarn = new List<string> ();
+			foreach (var apiVersion in supportedApiVersion) {
+				var v = apiVersion [(apiVersion.IndexOf ('-') + 1)..];
+				var version = Version.Parse (v);
+				if (version > osVersion)
+					nowarn.Add ($"XCODE_{v.Replace ('.', '_')}_PREVIEW");
+			}
+			if (nowarn.Count > 0)
+				properties ["NoWarn"] = string.Join (";", nowarn);
+		}
 	}
 }

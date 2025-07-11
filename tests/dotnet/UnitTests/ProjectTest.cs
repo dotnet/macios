@@ -2493,16 +2493,7 @@ namespace Xamarin.Tests {
 			var properties = GetDefaultProperties ();
 
 			// If any of the api versions we support are higher than the api version we're built for, we need to ignore any XCODE_*_PREVIEW warnings.
-			var osVersion = Version.Parse (Configuration.GetNuGetOsVersion (platform));
-			var nowarn = new List<string> ();
-			foreach (var apiVersion in supportedApiVersion) {
-				var v = apiVersion [(apiVersion.IndexOf ('-') + 1)..];
-				var version = Version.Parse (v);
-				if (version > osVersion)
-					nowarn.Add ($"XCODE_{v.Replace ('.', '_')}_PREVIEW");
-			}
-			if (nowarn.Count > 0)
-				properties ["NoWarn"] = string.Join (";", nowarn);
+			AddNoWarnForPreviewVersions (platform, supportedApiVersion, properties);
 
 			properties ["cmdline:AllTheTargetFrameworks"] = targetFrameworks;
 			var rv = DotNet.AssertBuild (project_path, properties);

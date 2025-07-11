@@ -8551,6 +8551,7 @@ M:AVFoundation.AVAudioApplication.RequestRecordPermission(System.Action{System.B
 M:AVFoundation.AVAudioApplication.RequestRecordPermissionAsync
 M:AVFoundation.AVAudioApplication.SetInputMuted(System.Boolean,Foundation.NSError@)
 M:AVFoundation.AVAudioApplication.SetInputMuteStateChangeHandler(AVFoundation.AVAudioApplicationSetInputMuteStateChangeHandler,Foundation.NSError@)
+M:AVFoundation.AVAudioChannelLayout.#ctor(AudioToolbox.AudioChannelLayoutTag)
 M:AVFoundation.AVAudioChannelLayout.#ctor(System.UInt32)
 M:AVFoundation.AVAudioChannelLayout.op_Equality(AVFoundation.AVAudioChannelLayout,AVFoundation.AVAudioChannelLayout)
 M:AVFoundation.AVAudioChannelLayout.op_Inequality(AVFoundation.AVAudioChannelLayout,AVFoundation.AVAudioChannelLayout)

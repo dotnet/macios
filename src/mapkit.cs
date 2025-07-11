@@ -3441,8 +3441,7 @@ namespace MapKit {
 	[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface MKAddress
-	{
+	interface MKAddress {
 		[Export ("initWithFullAddress:shortAddress:")]
 		NativeHandle Constructor (string fullAddress, [NullAllowed] string shortAddress);
 
@@ -3455,8 +3454,7 @@ namespace MapKit {
 
 	[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
 	[Native]
-	public enum MKAddressRepresentationsContextStyle : long
-	{
+	public enum MKAddressRepresentationsContextStyle : long {
 		Automatic,
 		Short,
 		Full,
@@ -3465,8 +3463,7 @@ namespace MapKit {
 	[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface MKAddressRepresentations
-	{
+	interface MKAddressRepresentations {
 		[Export ("fullAddressIncludingRegion:singleLine:")]
 		[return: NullAllowed]
 		string GetFullAddress (bool includingRegion, bool singleLine);
@@ -3488,13 +3485,12 @@ namespace MapKit {
 		string RegionCode { get; }
 	}
 
-	delegate void MKGeocodingRequestGetMapItemsCompletionHandler ([NullAllowed] MKMapItem[] mapItems, [NullAllowed] NSError error);
+	delegate void MKGeocodingRequestGetMapItemsCompletionHandler ([NullAllowed] MKMapItem [] mapItems, [NullAllowed] NSError error);
 
 	[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface MKGeocodingRequest
-	{
+	interface MKGeocodingRequest {
 		[Export ("cancelled")]
 		bool Cancelled { [Bind ("isCancelled")] get; }
 
@@ -3521,13 +3517,12 @@ namespace MapKit {
 		void Cancel ();
 	}
 
-	delegate void MKReverseGeocodingRequestGetMapItemsCompletionHandler ([NullAllowed] MKMapItem[] mapItems, [NullAllowed] NSError error);
+	delegate void MKReverseGeocodingRequestGetMapItemsCompletionHandler ([NullAllowed] MKMapItem [] mapItems, [NullAllowed] NSError error);
 
 	[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface MKReverseGeocodingRequest
-	{
+	interface MKReverseGeocodingRequest {
 		[Export ("cancelled")]
 		bool Cancelled { [Bind ("isCancelled")] get; }
 

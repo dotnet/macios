@@ -1122,9 +1122,39 @@
       </Item>
       <Item ItemId=";E0174" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The xcframework {0} has an incorrect or unknown format and cannot be processed.]]></Val>
+          <Val><![CDATA[Failed to resolve the xcframework {0} in {1} due to an unexpected error: {2}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[xcframework {0}의 형식이 잘못되었거나 알 수 없어 처리할 수 없습니다.]]></Val>
+            <Val><![CDATA[예기치 않은 오류 {2}(으)로 인해 {1}의 xcframework {0}을(를) 해결할 수 없습니다.]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The xcframework {0} has an incorrect or unknown format and cannot be processed.]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";E0174a" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The xcframework {0} has an incorrect or unknown format and cannot be processed: expected the value for 'CFBundlePackageType' to be 'XFWK' in the xcframework's Info.plist, but it's '{1}'.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[xcframework {0}은(는) 형식이 잘못되었거나 알 수 없는 형식이어서 처리할 수 없습니다. xcframework의 Info.plist의 'CFBundlePackageType'의 값이 'XFWK'여야 하는데, 현재 값은 '{1}'입니다.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";E0174b" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The xcframework {0} has an incorrect or unknown format and cannot be processed: there's no 'AvailableLibraries' entry in the xcframework's Info.plist.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[xcframework {0}은(는) 형식이 잘못되었거나 알 수 없는 형식이어서 처리할 수 없습니다. xcframework의 Info.plist에 'AvailableLibraries' 항목이 하나도 없습니다.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";E0174c" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The xcframework {0} has an incorrect or unknown format and cannot be processed: expected some 'AvailableLibraries' entries in the xcframework's Info.plist, but found 0 entries.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[xcframework {0}은(는) 형식이 잘못되었거나 알 수 없는 형식이어서 처리할 수 없습니다. xcframework의 Info.plist에 몇몇 'AvailableLibraries' 항목이 있어야 하는데, 항목이 하나도 없습니다.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -2697,6 +2727,15 @@
           <Val><![CDATA[The {0} item '{1}' does not have a 'LogicalName' metadata.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[{0} 항목 '{1}'에 'LogicalName' 메타데이터가 없습니다.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";E7158" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The {0} item '{1}' has been included more than once, with different 'LogicalName' metadata: {2}, {3}.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[{0} 항목 '{1}'이(가) 서로 다른 'LogicalName' 메타데이터({2}, {3})로 두 번 이상 포함되었습니다.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

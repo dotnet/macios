@@ -3729,11 +3729,12 @@ namespace Xamarin.Tests {
 
 		// macOS doesn't support UseNativeHttpHandler / any of our native http handlers being the default http handler.
 		[Test]
-		[TestCase (ApplePlatform.MacCatalyst, "NSUrlSessionHandler")]
-		[TestCase (ApplePlatform.iOS, "CFNetworkHandler")]
-		[TestCase (ApplePlatform.TVOS, "")]
-		[TestCase (ApplePlatform.MacCatalyst, "Invalid")]
-		public void HttpClientHandlerFeatureTrimmedAway (ApplePlatform platform, string handler)
+		[TestCase (ApplePlatform.MacCatalyst, "NSUrlSessionHandler", "true")]
+		[TestCase (ApplePlatform.iOS, "CFNetworkHandler", "true")]
+		[TestCase (ApplePlatform.iOS, "HttpClientHandler", "")]
+		[TestCase (ApplePlatform.TVOS, "", "false")]
+		[TestCase (ApplePlatform.MacCatalyst, "Invalid", "true")]
+		public void HttpClientHandlerFeatureTrimmedAway (ApplePlatform platform, string handler, string useNativeHttpHandler)
 		{
 			var project = "ApiTestApp";
 			Configuration.IgnoreIfIgnoredPlatform (platform);
@@ -3744,7 +3745,8 @@ namespace Xamarin.Tests {
 			var properties = GetDefaultProperties (runtimeIdentifiers);
 			properties ["AdditionalDefineConstants"] = "HttpClientHandlerFeatureTrimmedAway";
 			properties ["TrimMode"] = "partial";
-			properties ["UseNativeHttpHandler"] = string.IsNullOrEmpty (handler) ? "false" : "true";
+			if (!string.IsNullOrEmpty (useNativeHttpHandler))
+				properties ["UseNativeHttpHandler"] = useNativeHttpHandler;
 			if (!string.IsNullOrEmpty (handler))
 				properties ["MtouchHttpClientHandler"] = handler;
 			properties ["ExcludeTouchUnitReference"] = "true"; // speed things up a bit
@@ -3783,6 +3785,7 @@ namespace Xamarin.Tests {
 			var nsUrlSessionHandlerType = ad.MainModule.Types.SingleOrDefault (v => v.FullName == nsurlSessionHandleNamespace);
 			switch (handler) {
 			case "":
+			case "HttpClientHandler":
 				Assert.That (cfnetworkHandlerType, Is.Null, $"System.Net.Http.CFNetworkHandler: {platformAssembly}");
 				Assert.That (nsUrlSessionHandlerType, Is.Null, $"{nsurlSessionHandleNamespace}: {platformAssembly}");
 				break;

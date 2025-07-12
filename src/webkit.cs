@@ -5072,6 +5072,7 @@ namespace WebKit {
 	/// <summary>A list of rules to apply to web content.</summary>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor] // Apple: "You don’t create a WKContentRuleList directly."
 	interface WKContentRuleList {
 		[Export ("identifier")]
 		string Identifier { get; }
@@ -5080,6 +5081,7 @@ namespace WebKit {
 	/// <summary>A store that contents rules for web content.</summary>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor] // instances created with the default ctor crashes on dealloc
 	interface WKContentRuleListStore {
 		[Static]
 		[Export ("defaultStore")]

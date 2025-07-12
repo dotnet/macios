@@ -225,7 +225,7 @@ namespace MetalFX {
 	[TV (18, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface MTLFXSpatialScalerDescriptor {
+	interface MTLFXSpatialScalerDescriptor : NSCopying {
 		[Export ("colorTextureFormat", ArgumentSemantic.Assign)]
 		MTLPixelFormat ColorTextureFormat { get; set; }
 
@@ -260,7 +260,7 @@ namespace MetalFX {
 	[TV (18, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface MTLFXTemporalScalerDescriptor {
+	interface MTLFXTemporalScalerDescriptor : NSCopying {
 		[Export ("colorTextureFormat", ArgumentSemantic.Assign)]
 		MTLPixelFormat ColorTextureFormat { get; set; }
 

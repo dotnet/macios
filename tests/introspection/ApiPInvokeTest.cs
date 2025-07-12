@@ -47,6 +47,9 @@ namespace Introspection {
 
 		protected virtual bool Skip (Type type)
 		{
+			if (SkipDueToDeviceCapabilities (type))
+				return true;
+
 			return SkipDueToAttribute (type);
 		}
 
@@ -185,6 +188,17 @@ namespace Introspection {
 			Assert.AreEqual (0, Errors, "{0} errors found in {1} functions validated: {2}", Errors, n, string.Join (", ", failed_api));
 		}
 
+		bool SkipDueToDeviceCapabilities (Type type)
+		{
+			switch (type.Namespace) {
+			case "SensorKit": // SensorKit doesn't exist on iPads
+				if (TestRuntime.IsDevice && TestRuntime.IsiPad)
+					return true;
+				break;
+			}
+			return false;
+		}
+
 		// we just want to confirm the symbol exists so `dlsym` can be disabled
 		protected void Check (Assembly a)
 		{
@@ -192,6 +206,10 @@ namespace Introspection {
 			ErrorData.Clear ();
 			int n = 0;
 			foreach (var t in a.GetTypes ()) {
+
+				if (SkipDueToDeviceCapabilities (t))
+					continue;
+
 				foreach (var m in t.GetMethods (BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static)) {
 					if ((m.Attributes & MethodAttributes.PinvokeImpl) == 0)
 						continue;
@@ -316,8 +334,29 @@ namespace Introspection {
 
 				}
 				break;
+			case "/System/Library/Frameworks/MobileCoreServices.framework/MobileCoreServices":
+				switch (dllImportLibrary) {
+				case "/System/Library/Frameworks/CoreServices.framework/CoreServices":
+					return true;
+
+				}
+				break;
+			case "/System/Library/Frameworks/CoreServices.framework/CoreServices":
+				switch (dllImportLibrary) {
+				case "/System/Library/Frameworks/MobileCoreServices.framework/MobileCoreServices":
+					return true;
+
+				}
+				break;
 			case "/System/Library/Frameworks/CoreServices.framework/Frameworks/FSEvents.framework/FSEvents":
 				return dllImportLibrary == "/System/Library/Frameworks/CoreServices.framework/CoreServices";
+
+			case "/System/Library/Frameworks/_LocationEssentials.framework/_LocationEssentials":
+				switch (dllImportLibrary) {
+				case "/System/Library/Frameworks/CoreLocation.framework/CoreLocation":
+					return true;
+				}
+				break;
 #if __MACOS__
 			case "/System/Library/Frameworks/CoreGraphics.framework/CoreGraphics":
 				// Years ago, CoreGraphics was somewhere else on macOS

@@ -13722,7 +13722,7 @@ namespace AVFoundation {
 		///         <param name="asset">The asset against which to check the preset.</param>
 		///         <param name="outputFileType">The output file type against which to check the preset.</param>
 		///         <param name="isCompatibleResult">An action to run with the result of the check.</param>
-		///         <summary>Determines if a preset is compatible with an asset and output type, passing the result to <parmref name="isCompatibleResult" />.</summary>
+		///         <summary>Determines if a preset is compatible with an asset and output type, passing the result to <paramref name="isCompatibleResult" />.</summary>
 		///         <remarks>To be added.</remarks>
 		[Async (XmlDocs = """
 			<param name="presetName">The preset to check.</param>

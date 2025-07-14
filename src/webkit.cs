@@ -5415,6 +5415,7 @@ namespace WebKit {
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/WebKit/Reference/WKNavigationResponse_Ref/index.html">Apple documentation for <c>WKNavigationResponse</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
 	interface WKNavigationResponse {
 
 		/// <summary>Gets a value that indicates whether the response resulted from a request that was sent by the main frame.</summary>

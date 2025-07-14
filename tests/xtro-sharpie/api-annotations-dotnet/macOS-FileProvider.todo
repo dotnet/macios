@@ -9,3 +9,5 @@
 !missing-selector! NSFileProviderStringSearchRequest::query not bound
 !missing-type! NSFileProviderStringSearchRequest not bound
 !missing-selector! NSFileProviderStringSearchRequest::desiredNumberOfResults not bound
+!missing-enum-value! NSFileProviderModifyItemOptions native value NSFileProviderModifyItemIsImmediateUploadRequestByPresentingApplication = 4 not bound
+!missing-field! NSFileProviderUserInfoExperimentIDKey not bound

@@ -86,3 +86,5 @@
 !missing-type! GKChallengeDefinition not bound
 !missing-type! GKGameActivity not bound
 !missing-type! GKGameActivityDefinition not bound
+!missing-protocol-conformance! GKBasePlayer should conform to NSCopying
+!missing-selector! GKAccessPoint::triggerAccessPointWithGameActivity:handler: not bound

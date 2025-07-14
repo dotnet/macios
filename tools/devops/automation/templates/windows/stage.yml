@@ -86,7 +86,6 @@ stages:
       name: ${{ parameters.windowsPool }}
       demands:
       - agent.os -equals Windows_NT
-      - agent.name -equals VSM-XAM-138
 
     variables:
       DOTNET_IOS_RUNTIME_IDENTIFIERS:  $[ stageDependencies.configure_build.configure.outputs['configure_platforms.DOTNET_IOS_RUNTIME_IDENTIFIERS'] ]

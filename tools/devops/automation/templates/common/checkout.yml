@@ -38,13 +38,32 @@ steps:
       Write-Host "installing $output result: $LASTEXITCODE"
       msiexec.exe /package $output /quiet ADD_EXPLORER_CONTEXT_MENU_OPENPOWERSHELL=1 ENABLE_PSREMOTING=1 REGISTER_MANIFEST=1
       Write-Host "install completed: $LASTEXITCODE"
-      Write-Host "##vso[task.prependpath]C:\Program Files\PowerShell\7\"
-      Write-Host "##vso[task.prependpath]D:\Program Files\PowerShell\7\"
+      Write-Host "##vso[task.prependpath]$($Env:ProgramFiles)\PowerShell\7\"
+      Write-Host "PROGRAM FILES:"
+      Get-ChildItem -Path "$Env:ProgramFiles"
+      Write-Host "PROGRAM FILES/PowerShell:"
+      Get-ChildItem -Path "$($Env:ProgramFiles)\PowerShell"
+      Write-Host "PROGRAM FILES/PowerShell/7:"
+      Get-ChildItem -Path "$($Env:ProgramFiles)\PowerShell\7"
     } else {
       Write-Host "pwsh is already installed: $LASTEXITCODE"
     }
     exit 0
   displayName: 'Install PowerShell Core'
+  condition: and(succeeded(), eq(variables['Agent.OS'], 'Windows_NT'))
+  env:
+    POWERSHELL_VERSION: 7.4.0
+
+# some bots don't seem to have pwsh installed, so make sure it is
+- powershell: |
+    if (-not $(where.exe pwsh)) {
+      Write-Host "pwsh not found: $LASTEXITCODE"
+      Write-Host "PATH: $env:PATH"
+    } else {
+      Write-Host "pwsh is already installed: $LASTEXITCODE"
+    }
+    exit 0
+  displayName: 'Is PowerShell Core there?'
   condition: and(succeeded(), eq(variables['Agent.OS'], 'Windows_NT'))
   env:
     POWERSHELL_VERSION: 7.4.0

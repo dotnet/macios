@@ -51,3 +51,6 @@
 !missing-field! kCIContextCVMetalTextureCache not bound
 !missing-field! kCIFormatRGBX8 not bound
 !missing-field! kCIImageRepresentationHDRGainMapAsRGB not bound
+!missing-selector! CIRAWFilter::isHighlightRecoveryEnabled not bound
+!missing-selector! CIRAWFilter::isHighlightRecoverySupported not bound
+!missing-selector! CIRAWFilter::setHighlightRecoveryEnabled: not bound

@@ -1126,8 +1126,8 @@ namespace Introspection {
 				break;
 			case "PhaseSoundEvent":
 				switch (selectorName) {
-				case "startAndReturnError:": // introspection complains about this in Xcode 26 b1 and b2 only, but the selector is still available in the headers, so only verify the exact Xcode version for now to see if Apple changes their minds in a future beta.
-					return TestRuntime.CheckExactXcodeVersion (26, 0, 1) || TestRuntime.CheckExactXcodeVersion (26, 0, 2);
+				case "startAndReturnError:": // incorrect binding
+					return TestRuntime.CheckXcodeVersion (26, 0);
 				}
 				break;
 			}

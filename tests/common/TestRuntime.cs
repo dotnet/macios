@@ -388,6 +388,14 @@ partial class TestRuntime {
 			tvOS = new { Major = 26, Minor = 0, Build = "23J5295e" },
 			macOS = new { Major = 26, Minor = 0, Build = "25A5295e" },
 		};
+
+		var twentysixb3 = new {
+			Xcode = new { Major = 26, Minor = 0, Beta = 3 },
+			iOS = new { Major = 26, Minor = 0, Build = "25A5306g" },
+			tvOS = new { Major = 26, Minor = 0, Build = "23J5306f" },
+			macOS = new { Major = 26, Minor = 0, Build = "25A5306g" },
+		};
+
 		var versions = new [] {
 			nineb1,
 			nineb2,
@@ -398,6 +406,7 @@ partial class TestRuntime {
 			twelvedot2b3,
 			twentysixb1,
 			twentysixb2,
+			twentysixb3,
 		};
 
 		foreach (var v in versions) {
@@ -414,7 +423,6 @@ partial class TestRuntime {
 			if (v.iOS.Build == "?")
 				throw new NotImplementedException ($"Build number for iOS {v.iOS.Major}.{v.iOS.Minor} beta {beta} (candidate: {GetiOSBuildVersion ()})");
 			var actual = GetiOSBuildVersion ();
-			Console.WriteLine (actual);
 			return actual.StartsWith (v.iOS.Build, StringComparison.Ordinal);
 #elif __TVOS__
 			if (!CheckExacttvOSSystemVersion (v.tvOS.Major, v.tvOS.Minor))
@@ -422,7 +430,6 @@ partial class TestRuntime {
 			if (v.tvOS.Build == "?")
 				throw new NotImplementedException ($"Build number for tvOS {v.tvOS.Major}.{v.tvOS.Minor} beta {beta} (candidate: {GetiOSBuildVersion ()})");
 			var actual = GetiOSBuildVersion ();
-			Console.WriteLine (actual);
 			return actual.StartsWith (v.tvOS.Build, StringComparison.Ordinal);
 #elif __MACOS__
 			if (!CheckExactmacOSSystemVersion (v.macOS.Major, v.macOS.Minor))

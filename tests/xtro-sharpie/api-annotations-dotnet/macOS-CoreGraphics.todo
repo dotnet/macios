@@ -21,14 +21,6 @@
 !missing-pinvoke! CGImageCreateCopyWithCalculatedHDRStats is not bound
 !missing-pinvoke! CGImageCreateCopyWithContentAverageLightLevel is not bound
 !missing-pinvoke! CGImageGetContentAverageLightLevel is not bound
-!missing-pinvoke! CGPDFWrappedObjectCreateWithArray is not bound
-!missing-pinvoke! CGPDFWrappedObjectCreateWithBoolean is not bound
-!missing-pinvoke! CGPDFWrappedObjectCreateWithDictionary is not bound
-!missing-pinvoke! CGPDFWrappedObjectCreateWithInteger is not bound
-!missing-pinvoke! CGPDFWrappedObjectCreateWithName is not bound
-!missing-pinvoke! CGPDFWrappedObjectCreateWithReal is not bound
-!missing-pinvoke! CGPDFWrappedObjectCreateWithStream is not bound
-!missing-pinvoke! CGPDFWrappedObjectCreateWithString is not bound
 !missing-pinvoke! CGRenderingBufferLockBytePtr is not bound
 !missing-pinvoke! CGRenderingBufferProviderCreate is not bound
 !missing-pinvoke! CGRenderingBufferProviderCreateWithCFData is not bound

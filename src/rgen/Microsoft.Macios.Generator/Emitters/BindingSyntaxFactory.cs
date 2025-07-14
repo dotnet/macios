@@ -119,13 +119,18 @@ static partial class BindingSyntaxFactory {
 	static InvocationExpressionSyntax MemberInvocationExpression (string instanceVariable, string methodName)
 		=> MemberInvocationExpression (IdentifierName (instanceVariable), methodName, ImmutableArray<ArgumentSyntax>.Empty);
 
+	static ExpressionStatementSyntax VariableAssignment (string variableName, ExpressionSyntax value)
+		=> ExpressionStatement (AssignmentExpression (SyntaxKind.SimpleAssignmentExpression,
+				IdentifierName (variableName).WithTrailingTrivia (Space),
+				value.WithLeadingTrivia (Space)));
+
 	/// <summary>
 	/// Creates a variable declarator with an assignment to the provided value.
 	/// </summary>
 	/// <param name="variableName">The name of the variable.</param>
 	/// <param name="value">The expression to assign to the variable.</param>
 	/// <returns>A variable declarator syntax with the assignment.</returns>
-	static VariableDeclaratorSyntax VariableAssignment (string variableName, ExpressionSyntax value)
+	static VariableDeclaratorSyntax VariableInitializationAssignment (string variableName, ExpressionSyntax value)
 		=> VariableDeclarator (Identifier (variableName))
 			.WithInitializer (EqualsValueClause (value.WithLeadingTrivia (Space))
 				.WithLeadingTrivia (Space));
@@ -160,7 +165,18 @@ static partial class BindingSyntaxFactory {
 	/// <returns>A variable declaration syntax with initialization.</returns>
 	static LocalDeclarationStatementSyntax VariableInitialization (string variableName, ExpressionSyntax value,
 		TypeSyntax? withType = null)
-		=> VariableInitialization (VariableAssignment (variableName, value), withType);
+		=> VariableInitialization (VariableInitializationAssignment (variableName, value), withType);
+
+
+	/// <summary>
+	/// Creates a local variable declaration without an initial value.
+	/// </summary>
+	/// <param name="variableName">The name of the variable to declare.</param>
+	/// <param name="type">The type of the variable.</param>
+	/// <returns>A local declaration statement syntax.</returns>
+	static LocalDeclarationStatementSyntax VariableInitialization (string variableName, TypeSyntax type)
+		=> LocalDeclarationStatement (VariableDeclaration (type.WithTrailingTrivia (Space))
+				.WithVariables (SingletonSeparatedList (VariableDeclarator (Identifier (variableName)))));
 
 	static ExpressionSyntax ThrowException (string type, string? message = null)
 	{
@@ -332,7 +348,7 @@ static partial class BindingSyntaxFactory {
 		};
 #pragma warning restore format
 		return AsPointer (
-			objectType: objectType.GetIdentifierSyntax (),
+			objectType: objectType.WithNullable (isNullable: false).GetIdentifierSyntax (),
 			arguments: arguments,
 			castType: castType);
 	}

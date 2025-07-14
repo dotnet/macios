@@ -39,8 +39,8 @@ namespace ObjCBindings {
 
 		/// <summary>
 		/// Create a new FieldAttribute for the given symbol and using the namespace as its containing library.
-		/// <param name="symbolName">The name of the symbol.</param>
 		/// </summary>
+		/// <param name="symbolName">The name of the symbol.</param>
 		public FieldAttribute (string symbolName)
 		{
 			SymbolName = symbolName;
@@ -50,9 +50,9 @@ namespace ObjCBindings {
 
 		/// <summary>
 		/// Create a new FieldAttribute for the given symbol in the provided library.
+		/// </summary>
 		/// <param name="symbolName">The name of the symbol.</param>
 		/// <param name="libraryName">The name of the library that contains the symbol.</param>
-		/// </summary>
 		public FieldAttribute (string symbolName, string libraryName)
 		{
 			SymbolName = symbolName;
@@ -62,9 +62,9 @@ namespace ObjCBindings {
 
 		/// <summary>
 		/// Create a new FieldAttribute for the given symbol and customizing the flags.
+		/// </summary>
 		/// <param name="symbolName">The name of the symbol.</param>
 		/// <param name="flags">The flags to customize the field.</param>
-		/// </summary>
 		public FieldAttribute (string symbolName, T? flags)
 		{
 			SymbolName = symbolName;
@@ -74,10 +74,10 @@ namespace ObjCBindings {
 
 		/// <summary>
 		/// Create a new FieldAttribute for the given symbol in the provided library and customizing the flags.
+		/// </summary>
 		/// <param name="symbolName">The name of the symbol.</param>
 		/// <param name="libraryName">The name of the library that contains the symbol.</param>
 		/// <param name="flags">The flags to customize the field.</param>
-		/// </summary>
 		public FieldAttribute (string symbolName, string libraryName, T? flags)
 		{
 			SymbolName = symbolName;

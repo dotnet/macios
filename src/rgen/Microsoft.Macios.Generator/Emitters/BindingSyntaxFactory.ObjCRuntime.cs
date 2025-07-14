@@ -298,6 +298,18 @@ static partial class BindingSyntaxFactory {
 	}
 
 	/// <summary>
+	/// Generates a member access expression to get the Handle property of a variable.
+	/// This is used to access the native handle (IntPtr) from NSObject or INativeObject instances.
+	/// </summary>
+	/// <param name="variable">The expression representing the variable to access the Handle property from.</param>
+	/// <returns>A <see cref="MemberAccessExpressionSyntax"/> representing variable.Handle.</returns>
+	internal static ExpressionSyntax GetHandleMember (ExpressionSyntax variable)
+		=> MemberAccessExpression (
+			SyntaxKind.SimpleMemberAccessExpression,
+			variable,
+			IdentifierName ("Handle"));
+
+	/// <summary>
 	/// Generates a local variable declaration for an auxiliary handle (IntPtr).
 	/// This is a convenience overload for <see cref="GetHandleAuxVariable(string, in TypeInfo)"/>.
 	/// </summary>

@@ -16,6 +16,7 @@ using Microsoft.Macios.Generator.IO;
 using ObjCBindings;
 using static Microsoft.Macios.Generator.Emitters.BindingSyntaxFactory;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using Method = Microsoft.Macios.Generator.DataModel.Method;
 using Property = Microsoft.Macios.Generator.DataModel.Property;
 
 namespace Microsoft.Macios.Generator.Emitters;
@@ -235,7 +236,7 @@ if (IsDirectBinding) {{
 					}
 					// init the needed temp variables
 					setterBlock.Write (invocations.Setter.Value.Argument.Initializers, verifyTrivia: false);
-					setterBlock.Write (invocations.Setter.Value.Argument.PreDelegateCallConversion, verifyTrivia: false);
+					setterBlock.Write (invocations.Setter.Value.Argument.PreCallConversion, verifyTrivia: false);
 
 					// perform the invocation
 					setterBlock.WriteRaw (
@@ -248,7 +249,7 @@ $@"if (IsDirectBinding) {{
 ");
 					// perform the post delegate call conversion, this might include the GC.KeepAlive calls to keep
 					// the native object alive
-					setterBlock.Write (invocations.Setter.Value.Argument.PostDelegateCallConversion, verifyTrivia: false);
+					setterBlock.Write (invocations.Setter.Value.Argument.PostCallConversion, verifyTrivia: false);
 					// mark property as dirty if needed
 					if (property.RequiresDirtyCheck || property.IsWeakDelegate) {
 						setterBlock.WriteLine ("MarkDirty ();");
@@ -290,20 +291,100 @@ if (!(value is null) && rvalue is null) {{
 	}
 
 	/// <summary>
+	/// Emits the body for a method that does not return a value.
+	/// </summary>
+	/// <param name="method">The method for which to generate the body.</param>
+	/// <param name="invocations">The method invocations and argument transformations.</param>
+	/// <param name="methodBlock">The writer for the method block.</param>
+	void EmitVoidMethodBody (in Method method, in MethodInvocations invocations, TabbedWriter<StringWriter> methodBlock)
+	{
+
+		// init the needed temp variables
+		foreach (var argument in invocations.Arguments) {
+			methodBlock.Write (argument.Initializers, verifyTrivia: false);
+			methodBlock.Write (argument.PreCallConversion, verifyTrivia: false);
+		}
+
+		// simply call the send or sendSuper accordingly
+		methodBlock.WriteRaw (
+$@"if (IsDirectBinding) {{
+	{ExpressionStatement (invocations.Send)}
+}} else {{
+	{ExpressionStatement (invocations.SendSuper)}
+}}
+{ExpressionStatement (KeepAlive ("this"))}
+");
+
+		// before we leave the methods, do any post operations
+		foreach (var argument in invocations.Arguments) {
+			methodBlock.Write (argument.PostCallConversion, verifyTrivia: false);
+		}
+	}
+
+	/// <summary>
+	/// Emits the body for a method that returns a value.
+	/// </summary>
+	/// <param name="method">The method for which to generate the body.</param>
+	/// <param name="invocations">The method invocations and argument transformations.</param>
+	/// <param name="methodBlock">The writer for the method block.</param>
+	void EmitReturnMethodBody (in Method method, in MethodInvocations invocations, TabbedWriter<StringWriter> methodBlock)
+	{
+		// similar to the void method but we need to create a temp variable to store the return value
+		// and do any conversions that might be needed for the return value, for example byte to bool
+		var (tempVar, tempDeclaration) = GetReturnValueAuxVariable (method.ReturnType);
+
+		// init the needed temp variables
+		foreach (var argument in invocations.Arguments) {
+			methodBlock.Write (argument.Initializers, verifyTrivia: false);
+			methodBlock.Write (argument.PreCallConversion, verifyTrivia: false);
+		}
+
+		methodBlock.WriteRaw (
+$@"{tempDeclaration}
+if (IsDirectBinding) {{
+	{ExpressionStatement (invocations.Send)}
+}} else {{
+	{ExpressionStatement (invocations.SendSuper)}
+}}
+{ExpressionStatement (KeepAlive ("this"))}
+");
+		// before returning the value, we need to do the post operations for the temp vars
+		foreach (var argument in invocations.Arguments) {
+			methodBlock.Write (argument.PostCallConversion, verifyTrivia: false);
+		}
+		methodBlock.WriteLine ($"return {tempVar};");
+	}
+
+	/// <summary>
 	/// Emit the code for all the methods in the class.
 	/// </summary>
 	/// <param name="context">The current binding context.</param>
 	/// <param name="classBlock">Current class block.</param>
 	void EmitMethods (in BindingContext context, TabbedWriter<StringWriter> classBlock)
 	{
+		var uiThreadCheck = (context.NeedsThreadChecks)
+			? EnsureUiThread (context.RootContext.CurrentPlatform) : null;
 		foreach (var method in context.Changes.Methods.OrderBy (m => m.Name)) {
-
 			classBlock.WriteLine ();
 			classBlock.AppendMemberAvailability (method.SymbolAvailability);
 			classBlock.AppendGeneratedCodeAttribute (optimizable: true);
 
 			using (var methodBlock = classBlock.CreateBlock (method.ToDeclaration ().ToString (), block: true)) {
-				methodBlock.WriteLine ("throw new NotImplementedException ();");
+				// write any possible thread check at the beginning of the method
+				if (uiThreadCheck is not null) {
+					methodBlock.WriteLine (uiThreadCheck.ToString ());
+					methodBlock.WriteLine ();
+				}
+
+				// retrieve the method invocation via the factory, this will generate the necessary arguments
+				// transformations and the invocation
+				var invocations = GetInvocations (method);
+
+				if (method.ReturnType.IsVoid) {
+					EmitVoidMethodBody (method, invocations, methodBlock);
+				} else {
+					EmitReturnMethodBody (method, invocations, methodBlock);
+				}
 			}
 
 			if (!method.IsAsync)

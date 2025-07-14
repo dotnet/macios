@@ -1584,7 +1584,7 @@ namespace UIKit {
 	interface UIAccessibilityContainerDataTable {
 		/// <param name="row">The row that contains the desired element.</param>
 		/// <param name="column">The column that contains the desired element.</param>
-		/// <summary>Returns a description of the row span and column span for the cell that is located at the specified <parmref name="row" /> and <paramref name="column" />.</summary>
+		/// <summary>Returns a description of the row span and column span for the cell that is located at the specified <paramref name="row" /> and <paramref name="column" />.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[Abstract]

@@ -616,8 +616,8 @@ namespace Registrar {
 					case Trampoline.Retain:
 					case Trampoline.GetGCHandle:
 					case Trampoline.SetGCHandle:
-					case Trampoline.GetFlags:
-					case Trampoline.SetFlags:
+					case Trampoline.GetGCHandleFlags:
+					case Trampoline.SetGCHandleFlags:
 					case Trampoline.RetainWeakReference:
 						return true;
 					default:
@@ -2097,22 +2097,22 @@ namespace Registrar {
 					}, ref exceptions);
 
 					objcType.Add (new ObjCMethod (this, objcType, null) {
-						Selector = "xamarinSetGCHandle:flags:",
+						Selector = "xamarinSetGCHandle:flags:data:",
 						Trampoline = Trampoline.SetGCHandle,
-						Signature = "v@:^vi",
+						Signature = "v@:^vi^v",
 						IsStatic = false,
 					}, ref exceptions);
 
 					objcType.Add (new ObjCMethod (this, objcType, null) {
-						Selector = "xamarinGetFlags",
-						Trampoline = Trampoline.GetFlags,
+						Selector = "xamarinGetGCHandleFlags",
+						Trampoline = Trampoline.GetGCHandleFlags,
 						Signature = "i@:",
 						IsStatic = false,
 					}, ref exceptions);
 
 					objcType.Add (new ObjCMethod (this, objcType, null) {
-						Selector = "xamarinSetFlags:",
-						Trampoline = Trampoline.SetFlags,
+						Selector = "xamarinSetGCHandleFlags:",
+						Trampoline = Trampoline.SetGCHandleFlags,
 						Signature = "v@:i",
 						IsStatic = false,
 					}, ref exceptions);
@@ -2855,8 +2855,8 @@ namespace Registrar {
 		CopyWithZone2,
 		GetGCHandle,
 		SetGCHandle,
-		GetFlags,
-		SetFlags,
+		GetGCHandleFlags,
+		SetGCHandleFlags,
 		RetainWeakReference,
 	}
 }

@@ -411,7 +411,6 @@ namespace Messages {
 		bool IsAnimating { get; }
 	}
 
-	/// <include file="../docs/api/Messages/IMSStickerBrowserViewDataSource.xml" path="/Documentation/Docs[@DocId='T:Messages.IMSStickerBrowserViewDataSource']/*" />
 	interface IMSStickerBrowserViewDataSource { }
 
 	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/Messages/MSStickerBrowserViewDataSource">Apple documentation for <c>MSStickerBrowserViewDataSource</c></related>

@@ -1575,12 +1575,6 @@ namespace UIKit {
 		NSTextView GetTextViewForBeginningOfSelection ();
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UIKit.NSLayoutManagerDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UIKit.NSLayoutManagerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UIKit.NSLayoutManagerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="UIKit.NSLayoutManagerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface INSLayoutManagerDelegate { }
 
 	/// <summary>A delegate object that exposes events for <see cref="UIKit.NSLayoutManager" />s.</summary>
@@ -3152,12 +3146,6 @@ namespace UIKit {
 		INSTextStorageObserving TextStorageObserver { get; set; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UIKit.NSTextStorageDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UIKit.NSTextStorageDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UIKit.NSTextStorageDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="UIKit.NSTextStorageDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface INSTextStorageDelegate { }
 
 	/// <summary>A delegate object that provides events relating to processing editing for <see cref="UIKit.NSTextStorage" />.</summary>

@@ -1917,17 +1917,8 @@ namespace Metal {
 		IMTLResidencySet CreateResidencySet (MTLResidencySetDescriptor descriptor, out NSError error);
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Metal.MTLDrawable" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Metal.MTLDrawable" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Metal.MTLDrawable" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="Metal.MTLDrawable_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
-	/// <summary>Extension methods to the <see cref="Metal.IMTLDrawable" /> interface to support all the methods from the <see cref="Metal.MTLDrawable" /> protocol.</summary>
-	///     <remarks>
-	///       <para>The extension methods for <see cref="Metal.IMTLDrawable" /> allow developers to treat instances of the interface as having all the optional methods of the original <see cref="Metal.MTLDrawable" /> protocol.   Since the interface only contains the required members, these extension methods allow developers to call the optional members of the protocol.</para>
-	///     </remarks>
 	interface IMTLDrawable { }
+
 	/// <summary>Interface definition for objects that can receive rendering commands.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Metal/Reference/MTLDrawable_Ref/index.html">Apple documentation for <c>MTLDrawable</c></related>
@@ -3255,10 +3246,6 @@ namespace Metal {
 	interface IMTLParallelRenderCommandEncoder { }
 
 	/// <summary>System protocol for breaking a single rendering pass into parallel command sets.</summary>
-	/// <summary>Extension methods to the <see cref="Metal.IMTLParallelRenderCommandEncoder" /> interface to support all the methods from the <see cref="Metal.IMTLParallelRenderCommandEncoder" /> protocol.</summary>
-	///     <remarks>
-	///       <para>The extension methods for <see cref="Metal.IMTLParallelRenderCommandEncoder" /> allow developers to treat instances of the interface as having all the optional methods of the original <see cref="Metal.IMTLParallelRenderCommandEncoder" /> protocol.   Since the interface only contains the required members, these extension methods allow developers to call the optional members of the protocol.</para>
-	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol] // From Apple Docs: Your app does not define classes that implement this protocol. Model is not needed
 	interface MTLParallelRenderCommandEncoder : MTLCommandEncoder {
@@ -4575,10 +4562,6 @@ namespace Metal {
 	interface IMTLResource { }
 	interface IMTLHeap { }
 	/// <summary>System protocol for for allocated segments of GPU memory.</summary>
-	/// <summary>Extension methods to the <see cref="Metal.IMTLResource" /> interface to support all the methods from the <see cref="Metal.IMTLResource" /> protocol.</summary>
-	///     <remarks>
-	///       <para>The extension methods for <see cref="Metal.IMTLResource" /> allow developers to treat instances of the interface as having all the optional methods of the original <see cref="Metal.IMTLResource" /> protocol.   Since the interface only contains the required members, these extension methods allow developers to call the optional members of the protocol.</para>
-	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol] // From Apple Docs: Your app does not define classes that implement this protocol. Model is not needed
 	partial interface MTLResource : MTLAllocation {

@@ -1118,6 +1118,8 @@ namespace Xamarin.Tests {
 			FirstLibraryAndSecondLibrary,
 			FirstLibraryAndExecutable,
 			ExecutableAndExecutable,
+			IdenticalInExecutable,
+			IdenticalInExecutableDifferentMetadata,
 		}
 
 		[TestCase (ApplePlatform.iOS, "iossimulator-x64", true, DuplicatedResourcesScenarios.FirstLibraryAndSecondLibrary)]
@@ -1126,6 +1128,8 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.iOS, "ios-arm64", false, DuplicatedResourcesScenarios.FirstLibraryAndExecutable)]
 		[TestCase (ApplePlatform.iOS, "iossimulator-x64", true, DuplicatedResourcesScenarios.ExecutableAndExecutable)]
 		[TestCase (ApplePlatform.iOS, "iossimulator-arm64", false, DuplicatedResourcesScenarios.ExecutableAndExecutable)]
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64", true, DuplicatedResourcesScenarios.IdenticalInExecutable)]
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64", true, DuplicatedResourcesScenarios.IdenticalInExecutableDifferentMetadata)]
 
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64", true, DuplicatedResourcesScenarios.FirstLibraryAndSecondLibrary)]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64", false, DuplicatedResourcesScenarios.FirstLibraryAndSecondLibrary)]
@@ -1133,6 +1137,8 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64", false, DuplicatedResourcesScenarios.FirstLibraryAndExecutable)]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64", true, DuplicatedResourcesScenarios.ExecutableAndExecutable)]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64;maccatalyst-arm64", false, DuplicatedResourcesScenarios.ExecutableAndExecutable)]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64", true, DuplicatedResourcesScenarios.IdenticalInExecutable)]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64", true, DuplicatedResourcesScenarios.IdenticalInExecutableDifferentMetadata)]
 
 		[TestCase (ApplePlatform.TVOS, "tvossimulator-x64", true, DuplicatedResourcesScenarios.FirstLibraryAndSecondLibrary)]
 		[TestCase (ApplePlatform.TVOS, "tvossimulator-arm64", false, DuplicatedResourcesScenarios.FirstLibraryAndSecondLibrary)]
@@ -1140,6 +1146,8 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.TVOS, "tvossimulator-arm64", false, DuplicatedResourcesScenarios.FirstLibraryAndExecutable)]
 		[TestCase (ApplePlatform.TVOS, "tvossimulator-x64", true, DuplicatedResourcesScenarios.ExecutableAndExecutable)]
 		[TestCase (ApplePlatform.TVOS, "tvos-arm64", false, DuplicatedResourcesScenarios.ExecutableAndExecutable)]
+		[TestCase (ApplePlatform.TVOS, "tvos-arm64", true, DuplicatedResourcesScenarios.IdenticalInExecutable)]
+		[TestCase (ApplePlatform.TVOS, "tvos-arm64", true, DuplicatedResourcesScenarios.IdenticalInExecutableDifferentMetadata)]
 
 		[TestCase (ApplePlatform.MacOSX, "osx-x64;osx-arm64", true, DuplicatedResourcesScenarios.FirstLibraryAndSecondLibrary)]
 		[TestCase (ApplePlatform.MacOSX, "osx-arm64", false, DuplicatedResourcesScenarios.FirstLibraryAndSecondLibrary)]
@@ -1147,6 +1155,8 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.MacOSX, "osx-arm64;osx-x64", false, DuplicatedResourcesScenarios.FirstLibraryAndExecutable)]
 		[TestCase (ApplePlatform.MacOSX, "osx-x64", true, DuplicatedResourcesScenarios.ExecutableAndExecutable)]
 		[TestCase (ApplePlatform.MacOSX, "osx-arm64", false, DuplicatedResourcesScenarios.ExecutableAndExecutable)]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64", true, DuplicatedResourcesScenarios.IdenticalInExecutable)]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64", true, DuplicatedResourcesScenarios.IdenticalInExecutableDifferentMetadata)]
 		public void AppWithDuplicatedResources (ApplePlatform platform, string runtimeIdentifiers, bool bundleOriginalResources, DuplicatedResourcesScenarios scenario)
 		{
 			var project = "AppWithDuplicatedResources";
@@ -1172,11 +1182,19 @@ namespace Xamarin.Tests {
 				break;
 			case DuplicatedResourcesScenarios.FirstLibraryAndExecutable:
 				properties ["IncludeLibraryWithResources"] = "true";
-				properties ["IncludeFirstExecutableResources"] = "true";
+				properties ["IncludeSecondExecutableResources"] = "true";
 				break;
 			case DuplicatedResourcesScenarios.ExecutableAndExecutable:
 				properties ["IncludeFirstExecutableResources"] = "true";
 				properties ["IncludeSecondExecutableResources"] = "true";
+				break;
+			case DuplicatedResourcesScenarios.IdenticalInExecutable:
+				properties ["IncludeFirstExecutableResources"] = "true";
+				properties ["IncludeFirstExecutableResourcesAgain"] = "true";
+				break;
+			case DuplicatedResourcesScenarios.IdenticalInExecutableDifferentMetadata:
+				properties ["IncludeFirstExecutableResources"] = "true";
+				properties ["IncludeFirstExecutableResourcesAgainWithDifferentMetadata"] = "true";
 				break;
 			default:
 				throw new NotImplementedException (scenario.ToString ());
@@ -1272,6 +1290,29 @@ namespace Xamarin.Tests {
 					break;
 				case DuplicatedResourcesScenarios.ExecutableAndExecutable:
 					expectedWarnings = new ExpectedBuildMessage [] {
+						new ExpectedBuildMessage ($"../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0001.png", $"The AtlasTexture item '../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0001.png' was ignored, because there's another item with the same LogicalName ('Archer_Attack.atlas/archer_attack_0001.png')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0002.png", $"The AtlasTexture item '../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0002.png' was ignored, because there's another item with the same LogicalName ('Archer_Attack.atlas/archer_attack_0002.png')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0003.png", $"The AtlasTexture item '../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0003.png' was ignored, because there's another item with the same LogicalName ('Archer_Attack.atlas/archer_attack_0003.png')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0004.png", $"The AtlasTexture item '../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0004.png' was ignored, because there's another item with the same LogicalName ('Archer_Attack.atlas/archer_attack_0004.png')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0005.png", $"The AtlasTexture item '../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0005.png' was ignored, because there's another item with the same LogicalName ('Archer_Attack.atlas/archer_attack_0005.png')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0006.png", $"The AtlasTexture item '../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0006.png' was ignored, because there's another item with the same LogicalName ('Archer_Attack.atlas/archer_attack_0006.png')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0007.png", $"The AtlasTexture item '../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0007.png' was ignored, because there's another item with the same LogicalName ('Archer_Attack.atlas/archer_attack_0007.png')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0008.png", $"The AtlasTexture item '../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0008.png' was ignored, because there's another item with the same LogicalName ('Archer_Attack.atlas/archer_attack_0008.png')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0009.png", $"The AtlasTexture item '../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0009.png' was ignored, because there's another item with the same LogicalName ('Archer_Attack.atlas/archer_attack_0009.png')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0010.png", $"The AtlasTexture item '../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0010.png' was ignored, because there's another item with the same LogicalName ('Archer_Attack.atlas/archer_attack_0010.png')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/art.scnassets/scene.scn", $"The SceneKitAsset item '../../LibraryWithResources/art.scnassets/scene.scn' was ignored, because there's another item with the same LogicalName ('art.scnassets/scene.scn')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/art.scnassets/texture.png", $"The SceneKitAsset item '../../LibraryWithResources/art.scnassets/texture.png' was ignored, because there's another item with the same LogicalName ('art.scnassets/texture.png')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/DirWithResources/linkedArt.scnassets/scene.scn", $"The SceneKitAsset item '../../LibraryWithResources/DirWithResources/linkedArt.scnassets/scene.scn' was ignored, because there's another item with the same LogicalName ('DirWithResources/linkedArt.scnassets/scene.scn')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/DirWithResources/linkedArt.scnassets/texture.png", $"The SceneKitAsset item '../../LibraryWithResources/DirWithResources/linkedArt.scnassets/texture.png' was ignored, because there's another item with the same LogicalName ('DirWithResources/linkedArt.scnassets/texture.png')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/{platform.AsString ()}/Main.storyboard", $"The InterfaceDefinition item '../../LibraryWithResources/{platform.AsString ()}/Main.storyboard' was ignored, because there's another item with the same LogicalName ('Main.storyboardc')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/{platform.AsString ()}/Resources/B.otf", $"The BundleResource item '../../LibraryWithResources/{platform.AsString ()}/Resources/B.otf' was ignored, because there's another item with the same LogicalName ('B.otf')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Contents.json", $"The ImageAsset item '../../LibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Contents.json' was ignored, because there's another item with the same LogicalName ('Images.xcassets/Contents.json')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Image.imageset/Contents.json", $"The ImageAsset item '../../LibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Image.imageset/Contents.json' was ignored, because there's another item with the same LogicalName ('Images.xcassets/Image.imageset/Contents.json')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Image.imageset/Icon16.png", $"The ImageAsset item '../../LibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Image.imageset/Icon16.png' was ignored, because there's another item with the same LogicalName ('Images.xcassets/Image.imageset/Icon16.png')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Image.imageset/Icon32.png", $"The ImageAsset item '../../LibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Image.imageset/Icon32.png' was ignored, because there's another item with the same LogicalName ('Images.xcassets/Image.imageset/Icon32.png')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Image.imageset/Icon64.png", $"The ImageAsset item '../../LibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Image.imageset/Icon64.png' was ignored, because there's another item with the same LogicalName ('Images.xcassets/Image.imageset/Icon64.png')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/scene.dae", $"The Collada item '../../LibraryWithResources/scene.dae' was ignored, because there's another item with the same LogicalName ('scene.dae')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/SqueezeNet.mlmodel", $"The CoreMLModel item '../../LibraryWithResources/SqueezeNet.mlmodel' was ignored, because there's another item with the same LogicalName ('SqueezeNet.mlmodel')"),
 						new ExpectedBuildMessage ($"../../SecondLibraryWithResources/Archer_Attack.atlas/archer_attack_0001.png", $"The AtlasTexture item '../../SecondLibraryWithResources/Archer_Attack.atlas/archer_attack_0001.png' was ignored, because there's another item with the same LogicalName ('Archer_Attack.atlas/archer_attack_0001.png')"),
 						new ExpectedBuildMessage ($"../../SecondLibraryWithResources/Archer_Attack.atlas/archer_attack_0002.png", $"The AtlasTexture item '../../SecondLibraryWithResources/Archer_Attack.atlas/archer_attack_0002.png' was ignored, because there's another item with the same LogicalName ('Archer_Attack.atlas/archer_attack_0002.png')"),
 						new ExpectedBuildMessage ($"../../SecondLibraryWithResources/Archer_Attack.atlas/archer_attack_0003.png", $"The AtlasTexture item '../../SecondLibraryWithResources/Archer_Attack.atlas/archer_attack_0003.png' was ignored, because there's another item with the same LogicalName ('Archer_Attack.atlas/archer_attack_0003.png')"),
@@ -1295,6 +1336,35 @@ namespace Xamarin.Tests {
 						new ExpectedBuildMessage ($"../../SecondLibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Image.imageset/Icon64.png", $"The ImageAsset item '../../SecondLibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Image.imageset/Icon64.png' was ignored, because there's another item with the same LogicalName ('Images.xcassets/Image.imageset/Icon64.png')"),
 						new ExpectedBuildMessage ($"../../SecondLibraryWithResources/scene.dae", $"The Collada item '../../SecondLibraryWithResources/scene.dae' was ignored, because there's another item with the same LogicalName ('scene.dae')"),
 						new ExpectedBuildMessage ($"../../SecondLibraryWithResources/SqueezeNet.mlmodel", $"The CoreMLModel item '../../SecondLibraryWithResources/SqueezeNet.mlmodel' was ignored, because there's another item with the same LogicalName ('SqueezeNet.mlmodel')"),
+					};
+
+					break;
+				case DuplicatedResourcesScenarios.IdenticalInExecutable:
+					break;
+				case DuplicatedResourcesScenarios.IdenticalInExecutableDifferentMetadata:
+					expectedWarnings = new ExpectedBuildMessage [] {
+						new ExpectedBuildMessage ($"../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0001.png", $"The AtlasTexture item '../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0001.png' has been included more than once, with different 'LogicalName' metadata: Archer_Attack.atlas/archer_attack_0001.png-other, Archer_Attack.atlas/archer_attack_0001.png."),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0002.png", $"The AtlasTexture item '../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0002.png' has been included more than once, with different 'LogicalName' metadata: Archer_Attack.atlas/archer_attack_0002.png-other, Archer_Attack.atlas/archer_attack_0002.png."),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0003.png", $"The AtlasTexture item '../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0003.png' has been included more than once, with different 'LogicalName' metadata: Archer_Attack.atlas/archer_attack_0003.png-other, Archer_Attack.atlas/archer_attack_0003.png."),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0004.png", $"The AtlasTexture item '../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0004.png' has been included more than once, with different 'LogicalName' metadata: Archer_Attack.atlas/archer_attack_0004.png-other, Archer_Attack.atlas/archer_attack_0004.png."),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0005.png", $"The AtlasTexture item '../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0005.png' has been included more than once, with different 'LogicalName' metadata: Archer_Attack.atlas/archer_attack_0005.png-other, Archer_Attack.atlas/archer_attack_0005.png."),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0006.png", $"The AtlasTexture item '../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0006.png' has been included more than once, with different 'LogicalName' metadata: Archer_Attack.atlas/archer_attack_0006.png-other, Archer_Attack.atlas/archer_attack_0006.png."),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0007.png", $"The AtlasTexture item '../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0007.png' has been included more than once, with different 'LogicalName' metadata: Archer_Attack.atlas/archer_attack_0007.png-other, Archer_Attack.atlas/archer_attack_0007.png."),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0008.png", $"The AtlasTexture item '../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0008.png' has been included more than once, with different 'LogicalName' metadata: Archer_Attack.atlas/archer_attack_0008.png-other, Archer_Attack.atlas/archer_attack_0008.png."),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0009.png", $"The AtlasTexture item '../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0009.png' has been included more than once, with different 'LogicalName' metadata: Archer_Attack.atlas/archer_attack_0009.png-other, Archer_Attack.atlas/archer_attack_0009.png."),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0010.png", $"The AtlasTexture item '../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0010.png' has been included more than once, with different 'LogicalName' metadata: Archer_Attack.atlas/archer_attack_0010.png-other, Archer_Attack.atlas/archer_attack_0010.png."),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/art.scnassets/scene.scn", $"The SceneKitAsset item '../../LibraryWithResources/art.scnassets/scene.scn' has been included more than once, with different 'LogicalName' metadata: art.scnassets/scene.scn-other, art.scnassets/scene.scn."),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/art.scnassets/texture.png", $"The SceneKitAsset item '../../LibraryWithResources/art.scnassets/texture.png' has been included more than once, with different 'LogicalName' metadata: art.scnassets/texture.png-other, art.scnassets/texture.png."),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/DirWithResources/linkedArt.scnassets/scene.scn", $"The SceneKitAsset item '../../LibraryWithResources/DirWithResources/linkedArt.scnassets/scene.scn' has been included more than once, with different 'LogicalName' metadata: DirWithResources/linkedArt.scnassets/scene.scn-other, DirWithResources/linkedArt.scnassets/scene.scn."),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/DirWithResources/linkedArt.scnassets/texture.png", $"The SceneKitAsset item '../../LibraryWithResources/DirWithResources/linkedArt.scnassets/texture.png' has been included more than once, with different 'LogicalName' metadata: DirWithResources/linkedArt.scnassets/texture.png-other, DirWithResources/linkedArt.scnassets/texture.png."),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/{platform.AsString ()}/Resources/B.otf", $"The BundleResource item '../../LibraryWithResources/{platform.AsString ()}/Resources/B.otf' has been included more than once, with different 'LogicalName' metadata: B-other.otf, B.otf."),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Contents.json", $"The ImageAsset item '../../LibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Contents.json' has been included more than once, with different 'LogicalName' metadata: Images.xcassets/Contents.json-other, Images.xcassets/Contents.json."),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Image.imageset/Contents.json", $"The ImageAsset item '../../LibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Image.imageset/Contents.json' has been included more than once, with different 'LogicalName' metadata: Images.xcassets/Image.imageset/Contents.json-other, Images.xcassets/Image.imageset/Contents.json."),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Image.imageset/Icon16.png", $"The ImageAsset item '../../LibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Image.imageset/Icon16.png' has been included more than once, with different 'LogicalName' metadata: Images.xcassets/Image.imageset/Icon16.png-other, Images.xcassets/Image.imageset/Icon16.png."),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Image.imageset/Icon32.png", $"The ImageAsset item '../../LibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Image.imageset/Icon32.png' has been included more than once, with different 'LogicalName' metadata: Images.xcassets/Image.imageset/Icon32.png-other, Images.xcassets/Image.imageset/Icon32.png."),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Image.imageset/Icon64.png", $"The ImageAsset item '../../LibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Image.imageset/Icon64.png' has been included more than once, with different 'LogicalName' metadata: Images.xcassets/Image.imageset/Icon64.png-other, Images.xcassets/Image.imageset/Icon64.png."),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/scene.dae", $"The Collada item '../../LibraryWithResources/scene.dae' has been included more than once, with different 'LogicalName' metadata: scene.dae-other, scene.dae."),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/SqueezeNet.mlmodel", $"The CoreMLModel item '../../LibraryWithResources/SqueezeNet.mlmodel' has been included more than once, with different 'LogicalName' metadata: SqueezeNet.mlmodel-other, SqueezeNet.mlmodel."),
 					};
 					break;
 				default:
@@ -1410,6 +1480,29 @@ namespace Xamarin.Tests {
 					break;
 				case DuplicatedResourcesScenarios.ExecutableAndExecutable:
 					expectedWarnings = new ExpectedBuildMessage [] {
+						new ExpectedBuildMessage ($"../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0001.png", $"The AtlasTexture item '../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0001.png' was ignored, because there's another item with the same LogicalName ('Archer_Attack.atlas/archer_attack_0001.png')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0002.png", $"The AtlasTexture item '../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0002.png' was ignored, because there's another item with the same LogicalName ('Archer_Attack.atlas/archer_attack_0002.png')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0003.png", $"The AtlasTexture item '../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0003.png' was ignored, because there's another item with the same LogicalName ('Archer_Attack.atlas/archer_attack_0003.png')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0004.png", $"The AtlasTexture item '../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0004.png' was ignored, because there's another item with the same LogicalName ('Archer_Attack.atlas/archer_attack_0004.png')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0005.png", $"The AtlasTexture item '../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0005.png' was ignored, because there's another item with the same LogicalName ('Archer_Attack.atlas/archer_attack_0005.png')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0006.png", $"The AtlasTexture item '../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0006.png' was ignored, because there's another item with the same LogicalName ('Archer_Attack.atlas/archer_attack_0006.png')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0007.png", $"The AtlasTexture item '../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0007.png' was ignored, because there's another item with the same LogicalName ('Archer_Attack.atlas/archer_attack_0007.png')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0008.png", $"The AtlasTexture item '../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0008.png' was ignored, because there's another item with the same LogicalName ('Archer_Attack.atlas/archer_attack_0008.png')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0009.png", $"The AtlasTexture item '../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0009.png' was ignored, because there's another item with the same LogicalName ('Archer_Attack.atlas/archer_attack_0009.png')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0010.png", $"The AtlasTexture item '../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0010.png' was ignored, because there's another item with the same LogicalName ('Archer_Attack.atlas/archer_attack_0010.png')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/art.scnassets/scene.scn", $"The SceneKitAsset item '../../LibraryWithResources/art.scnassets/scene.scn' was ignored, because there's another item with the same LogicalName ('art.scnassets/scene.scn')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/art.scnassets/texture.png", $"The SceneKitAsset item '../../LibraryWithResources/art.scnassets/texture.png' was ignored, because there's another item with the same LogicalName ('art.scnassets/texture.png')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/DirWithResources/linkedArt.scnassets/scene.scn", $"The SceneKitAsset item '../../LibraryWithResources/DirWithResources/linkedArt.scnassets/scene.scn' was ignored, because there's another item with the same LogicalName ('DirWithResources/linkedArt.scnassets/scene.scn')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/DirWithResources/linkedArt.scnassets/texture.png", $"The SceneKitAsset item '../../LibraryWithResources/DirWithResources/linkedArt.scnassets/texture.png' was ignored, because there's another item with the same LogicalName ('DirWithResources/linkedArt.scnassets/texture.png')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/{platform.AsString ()}/Main.storyboard", $"The InterfaceDefinition item '../../LibraryWithResources/{platform.AsString ()}/Main.storyboard' was ignored, because there's another item with the same LogicalName ('Main.storyboardc')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/{platform.AsString ()}/Resources/B.otf", $"The BundleResource item '../../LibraryWithResources/{platform.AsString ()}/Resources/B.otf' was ignored, because there's another item with the same LogicalName ('B.otf')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Contents.json", $"The ImageAsset item '../../LibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Contents.json' was ignored, because there's another item with the same LogicalName ('Images.xcassets/Contents.json')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Image.imageset/Contents.json", $"The ImageAsset item '../../LibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Image.imageset/Contents.json' was ignored, because there's another item with the same LogicalName ('Images.xcassets/Image.imageset/Contents.json')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Image.imageset/Icon16.png", $"The ImageAsset item '../../LibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Image.imageset/Icon16.png' was ignored, because there's another item with the same LogicalName ('Images.xcassets/Image.imageset/Icon16.png')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Image.imageset/Icon32.png", $"The ImageAsset item '../../LibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Image.imageset/Icon32.png' was ignored, because there's another item with the same LogicalName ('Images.xcassets/Image.imageset/Icon32.png')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Image.imageset/Icon64.png", $"The ImageAsset item '../../LibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Image.imageset/Icon64.png' was ignored, because there's another item with the same LogicalName ('Images.xcassets/Image.imageset/Icon64.png')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/scene.dae", $"The Collada item '../../LibraryWithResources/scene.dae' was ignored, because there's another item with the same LogicalName ('scene.dae')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/SqueezeNet.mlmodel", $"The CoreMLModel item '../../LibraryWithResources/SqueezeNet.mlmodel' was ignored, because there's another item with the same LogicalName ('SqueezeNet.mlmodel')"),
 						new ExpectedBuildMessage ($"../../SecondLibraryWithResources/Archer_Attack.atlas/archer_attack_0001.png", $"The AtlasTexture item '../../SecondLibraryWithResources/Archer_Attack.atlas/archer_attack_0001.png' was ignored, because there's another item with the same LogicalName ('Archer_Attack.atlas/archer_attack_0001.png')"),
 						new ExpectedBuildMessage ($"../../SecondLibraryWithResources/Archer_Attack.atlas/archer_attack_0002.png", $"The AtlasTexture item '../../SecondLibraryWithResources/Archer_Attack.atlas/archer_attack_0002.png' was ignored, because there's another item with the same LogicalName ('Archer_Attack.atlas/archer_attack_0002.png')"),
 						new ExpectedBuildMessage ($"../../SecondLibraryWithResources/Archer_Attack.atlas/archer_attack_0003.png", $"The AtlasTexture item '../../SecondLibraryWithResources/Archer_Attack.atlas/archer_attack_0003.png' was ignored, because there's another item with the same LogicalName ('Archer_Attack.atlas/archer_attack_0003.png')"),
@@ -1435,6 +1528,8 @@ namespace Xamarin.Tests {
 						new ExpectedBuildMessage ($"../../SecondLibraryWithResources/SqueezeNet.mlmodel", $"The CoreMLModel item '../../SecondLibraryWithResources/SqueezeNet.mlmodel' was ignored, because there's another item with the same LogicalName ('SqueezeNet.mlmodel')"),
 					};
 					break;
+				case DuplicatedResourcesScenarios.IdenticalInExecutable: // didn't add test cases for this
+				case DuplicatedResourcesScenarios.IdenticalInExecutableDifferentMetadata: // didn't add test cases for this
 				default:
 					throw new NotImplementedException (scenario.ToString ());
 				}
@@ -1447,17 +1542,18 @@ namespace Xamarin.Tests {
 								});
 			warnings.AssertWarnings (expectedWarnings);
 
-			if (bundleOriginalResources) {
+			if (bundleOriginalResources && expectedWarnings.Length > 0) {
 				// Assert that all the resource types are mentioned in at least one warning message.
-				var allResourceTypesWithDuplicates = new string [] {
+				var allResourceTypesWithDuplicates = new List<string> {
 					"AtlasTexture",
 					"BundleResource",
 					"Collada",
 					"CoreMLModel",
 					"ImageAsset",
-					"InterfaceDefinition",
 					"SceneKitAsset",
 				};
+				if (scenario != DuplicatedResourcesScenarios.IdenticalInExecutableDifferentMetadata)
+					allResourceTypesWithDuplicates.Add ("InterfaceDefinition");
 				Assert.Multiple (() => {
 					foreach (var rt in allResourceTypesWithDuplicates)
 						Assert.That (warnings.Any (v => v.Message?.Contains (rt) == true), $"Didn't find any warnings about {rt}");
@@ -3645,11 +3741,12 @@ namespace Xamarin.Tests {
 
 		// macOS doesn't support UseNativeHttpHandler / any of our native http handlers being the default http handler.
 		[Test]
-		[TestCase (ApplePlatform.MacCatalyst, "NSUrlSessionHandler")]
-		[TestCase (ApplePlatform.iOS, "CFNetworkHandler")]
-		[TestCase (ApplePlatform.TVOS, "")]
-		[TestCase (ApplePlatform.MacCatalyst, "Invalid")]
-		public void HttpClientHandlerFeatureTrimmedAway (ApplePlatform platform, string handler)
+		[TestCase (ApplePlatform.MacCatalyst, "NSUrlSessionHandler", "true")]
+		[TestCase (ApplePlatform.iOS, "CFNetworkHandler", "true")]
+		[TestCase (ApplePlatform.iOS, "HttpClientHandler", "")]
+		[TestCase (ApplePlatform.TVOS, "", "false")]
+		[TestCase (ApplePlatform.MacCatalyst, "Invalid", "true")]
+		public void HttpClientHandlerFeatureTrimmedAway (ApplePlatform platform, string handler, string useNativeHttpHandler)
 		{
 			var project = "ApiTestApp";
 			Configuration.IgnoreIfIgnoredPlatform (platform);
@@ -3660,7 +3757,8 @@ namespace Xamarin.Tests {
 			var properties = GetDefaultProperties (runtimeIdentifiers);
 			properties ["AdditionalDefineConstants"] = "HttpClientHandlerFeatureTrimmedAway";
 			properties ["TrimMode"] = "partial";
-			properties ["UseNativeHttpHandler"] = string.IsNullOrEmpty (handler) ? "false" : "true";
+			if (!string.IsNullOrEmpty (useNativeHttpHandler))
+				properties ["UseNativeHttpHandler"] = useNativeHttpHandler;
 			if (!string.IsNullOrEmpty (handler))
 				properties ["MtouchHttpClientHandler"] = handler;
 			properties ["ExcludeTouchUnitReference"] = "true"; // speed things up a bit
@@ -3699,6 +3797,7 @@ namespace Xamarin.Tests {
 			var nsUrlSessionHandlerType = ad.MainModule.Types.SingleOrDefault (v => v.FullName == nsurlSessionHandleNamespace);
 			switch (handler) {
 			case "":
+			case "HttpClientHandler":
 				Assert.That (cfnetworkHandlerType, Is.Null, $"System.Net.Http.CFNetworkHandler: {platformAssembly}");
 				Assert.That (nsUrlSessionHandlerType, Is.Null, $"{nsurlSessionHandleNamespace}: {platformAssembly}");
 				break;

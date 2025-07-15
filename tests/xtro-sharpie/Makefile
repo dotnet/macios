@@ -152,6 +152,10 @@ gen-all:: gen-$(3)
 endef
 $(foreach platform,$(XTRO_DOTNET_PLATFORMS),$(eval $(call DotNetAssembly,$(platform),$(shell echo $(platform) | tr a-z A-Z),$(shell echo $(platform) | tr A-Z a-z))))
 
+ifeq ($(XCODE_IS_STABLE),false)
+all: gen-all
+endif
+
 pch-info.proj: Makefile
 	$(Q) rm -f $@.tmp
 	$(Q) printf "<Project>\\n" >> $@.tmp

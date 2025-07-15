@@ -1269,23 +1269,29 @@ namespace AVFoundation {
 		[MacCatalyst (13, 1)]
 		[Field ("AVAssetExportPresetLowQuality")]
 		LowQuality = 0, // AVAssetExportPresetLowQuality
+
 		/// <summary>Indicates a medium quality QuickTime file.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("AVAssetExportPresetMediumQuality")]
 		MediumQuality = 1, // AVAssetExportPresetMediumQuality
+
 		/// <summary>Indicates the highest quality QuickTime file.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("AVAssetExportPresetHighestQuality")]
 		HighestQuality = 2, // AVAssetExportPresetHighestQuality
+
 		/// <summary>Indicates 640x480 output.</summary>
 		[Field ("AVAssetExportPreset640x480")]
 		Preset640x480 = 3, // AVAssetExportPreset640x480
+
 		/// <summary>Indicates 960x540 output.</summary>
 		[Field ("AVAssetExportPreset960x540")]
 		Preset960x540 = 4, // AVAssetExportPreset960x540
+
 		/// <summary>Indicates 1280x720 output.</summary>
 		[Field ("AVAssetExportPreset1280x720")]
 		Preset1280x720 = 5, // AVAssetExportPreset1280x720
+
 		/// <summary>Indicates 1920x1080 output.</summary>
 		[Field ("AVAssetExportPreset1920x1080")]
 		Preset1920x1080 = 6, // AVAssetExportPreset1920x1080
@@ -1296,23 +1302,69 @@ namespace AVFoundation {
 		Preset3840x2160 = 7, // AVAssetExportPreset3840x2160
 
 		/// <summary>Indicates an audio-only m4a file with gapless playback data.</summary>
+		/// <remarks>Audio-only, gapless playback for iTunes.</remarks>
 		[Field ("AVAssetExportPresetAppleM4A")]
 		AppleM4A = 8, // AVAssetExportPresetAppleM4A
+
 		/// <summary>Indicates a pass-through export, where possible.</summary>
 		[Field ("AVAssetExportPresetPassthrough")]
 		Passthrough = 9, // AVAssetExportPresetPassthrough
 
-		/// <summary>To be added.</summary>
+#if !XAMCORE_5_0
 		[MacCatalyst (13, 1)]
-		[Obsolete ("Use 'AVOutputSettingsPreset.PresetHevc1920x1080' instead.")]
+		[Obsolete ("Use 'AVOutputSettingsPreset.PresetHevc1920x1080' instead if you're looking for the 'AVOutputSettingsPresetHEVC1920x1080' constant, or 'Hevc1920x1080' if you're looking for the 'AVAssetExportPresetHEVC1920x1080 constant.")]
 		[Field ("AVOutputSettingsPresetHEVC1920x1080")]
 		PresetHevc1920x1080 = 11,
 
-		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
-		[Obsolete ("Use 'AVOutputSettingsPreset.PresetHevc3840x2160' instead.")]
+		[Obsolete ("Use 'AVOutputSettingsPreset.PresetHevc3840x2160' instead if you're looking for the 'AVOutputSettingsPresetHEVC3840x2160' constant, or 'Hevc3840x2160' if you're looking for the 'AVAssetExportPresetHEVC3840x2160' constant.")]
 		[Field ("AVOutputSettingsPresetHEVC3840x2160")]
 		PresetHevc3840x2160 = 12,
+#endif // !XAMCORE_5_0
+
+		[MacCatalyst (13, 1)]
+		[Field ("AVAssetExportPresetHEVCHighestQuality")]
+		HevcHighestQuality,
+
+		[MacCatalyst (13, 1)]
+		[Field ("AVAssetExportPresetHEVC3840x2160")]
+		Hevc3840x2160,
+
+		[MacCatalyst (13, 1)]
+		[Field ("AVAssetExportPresetHEVC1920x1080")]
+		Hevc1920x1080,
+
+		[NoTV, MacCatalyst (15, 0), iOS (15, 0)]
+		[Field ("AVAssetExportPresetAppleProRes4444LPCM")]
+		AppleProRes4444Lpcm,
+
+		[TV (13, 0), iOS (13, 0)]
+		[MacCatalyst (13, 1)]
+		[Field ("AVAssetExportPresetHEVC1920x1080WithAlpha")]
+		Hevc1920x1080WithAlpha,
+
+		[TV (13, 0), iOS (13, 0)]
+		[MacCatalyst (13, 1)]
+		[Field ("AVAssetExportPresetHEVC3840x2160WithAlpha")]
+		Hevc3840x2160WithAlpha,
+
+		[NoTV, NoiOS, Mac (12, 1)]
+		[NoMacCatalyst]
+		[Field ("AVAssetExportPresetHEVC7680x4320")]
+		Hevc7680x4320,
+
+		[TV (13, 0), iOS (13, 0)]
+		[MacCatalyst (13, 1)]
+		[Field ("AVAssetExportPresetHEVCHighestQualityWithAlpha")]
+		HevcHighestQualityWithAlpha,
+
+		[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[Field ("AVAssetExportPresetMVHEVC960x960")]
+		MvHevc960x960,
+
+		[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[Field ("AVAssetExportPresetMVHEVC1440x1440")]
+		MvHevc1440x1440,
 	}
 
 	[MacCatalyst (13, 1)]

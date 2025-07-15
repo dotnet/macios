@@ -1484,8 +1484,11 @@ partial class TestRuntime {
 
 	public static uint GetFlags (NSObject obj)
 	{
-		const string fieldName = "actual_flags";
-		return (uint) typeof (NSObject).GetField (fieldName, BindingFlags.Instance | BindingFlags.GetField | BindingFlags.NonPublic)!.GetValue (obj)!;
+		const string name = "flags";
+		var prop = typeof (NSObject).GetProperty (name, BindingFlags.Instance | BindingFlags.NonPublic);
+		if (prop is null)
+			throw new InvalidOperationException ($"Unable to find the property '{name}' in NSObject.");
+		return (uint) prop.GetValue (obj)!;
 	}
 
 	// Determine if linkall was enabled by checking if an unused class in this assembly is still here.

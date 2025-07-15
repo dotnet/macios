@@ -40,7 +40,7 @@ long long	xamarin_static_longret_trampoline (id self, SEL sel, ...);
 id			xamarin_copyWithZone_trampoline1 (id self, SEL sel, NSZone *zone);
 id			xamarin_copyWithZone_trampoline2 (id self, SEL sel, NSZone *zone);
 GCHandle	xamarin_get_gchandle_trampoline (id self, SEL sel);
-bool		xamarin_set_gchandle_trampoline (id self, SEL sel, GCHandle gc_handle, enum XamarinGCHandleFlags flags);
+bool		xamarin_set_gchandle_trampoline (id self, SEL sel, GCHandle gc_handle, enum XamarinGCHandleFlags flags, struct NSObjectData *data);
 enum XamarinGCHandleFlags xamarin_get_flags_trampoline (id self, SEL sel);
 void		xamarin_set_flags_trampoline (id self, SEL sel, enum XamarinGCHandleFlags flags);
 

@@ -70,6 +70,45 @@ namespace Foundation {
 	}
 
 #if !COREBUILD
+	// Allocated in native memory, so that it can be accessed from native code without having to deal with the GC.
+	// Also put objc_super here, because it simplifies code.
+	// This is mirrored in runtime.h and the definition needs to be in sync.
+	struct NSObjectData {
+		// the layout here is important, the two first fields have to match the objc_super struct.
+		public NativeHandle handle;
+		public NativeHandle classHandle;
+		public NSObject.Flags flags;
+	}
+
+	class NSObjectDataHandle : CriticalHandle {
+		public NSObjectDataHandle ()
+			: base (IntPtr.Zero)
+		{
+			unsafe {
+				this.handle = (IntPtr) NativeMemory.AllocZeroed ((nuint) sizeof (NSObjectData));
+			}
+		}
+
+		public unsafe NSObjectData* Data {
+			get => (NSObjectData*) handle;
+		}
+
+		public override bool IsInvalid {
+			get => handle != IntPtr.Zero;
+		}
+
+		protected override bool ReleaseHandle ()
+		{
+			unsafe {
+				NativeMemory.Free ((void*) handle);
+			}
+			handle = IntPtr.Zero;
+			return true;
+		}
+	}
+#endif
+
+#if !COREBUILD
 	/// <include file="../../docs/api/Foundation/NSObject.xml" path="/Documentation/Docs[@DocId='T:Foundation.NSObject']/*" />
 	[ObjectiveCTrackedType]
 	[SupportedOSPlatform ("ios")]
@@ -98,29 +137,50 @@ namespace Foundation {
 		///         <remarks>To be added.</remarks>
 		public static readonly Assembly PlatformAssembly = typeof (NSObject).Assembly;
 
-		NativeHandle handle;
-		IntPtr super; /* objc_super* */
+		// This is exclusively for Mono
+		unsafe NSObjectData* __data_for_mono; // Read directly from several places in the runtime
 
-		// See  "Toggle-ref support for CoreCLR" in coreclr-bridge.m for more information.
-		Flags actual_flags;
-		internal unsafe Runtime.TrackedObjectInfo* tracked_object_info;
+		unsafe NativeHandle handle {
+			get => GetData ()->handle;
+			set => GetData ()->handle = value;
+		}
+
+		// The NSObjectData contains some data we want to keep in native memory, so that it can be accessed
+		// safely from native code without having to make sure the GC doesn't move the memory around. Among
+		// other things, this means it's accessible from threads that has never seen/run managed code without
+		// having to attach those threads to to the managed runtime.
+#nullable enable
+		NSObjectDataHandle? data_handle;
+
+		internal unsafe NSObjectData* GetData ()
+		{
+			return AllocateData ().Data;
+		}
+
+		unsafe NSObjectDataHandle AllocateData ()
+		{
+			if (data_handle is not null)
+				return data_handle;
+
+			var data = new NSObjectDataHandle ();
+			var previousValue = Interlocked.CompareExchange (ref data_handle, data, null);
+			if (previousValue is not null) {
+				// somebody beat us to the allocation and assignment.
+				data.Dispose ();
+				return previousValue;
+			}
+
+			if (!Runtime.IsCoreCLR) // This condition (and the assignment to __handle_for_mono if applicable) is trimmed away by the linker.
+				__data_for_mono = data.Data;
+
+			return data;
+		}
 
 		unsafe Flags flags {
-			get {
-				// Get back the InFinalizerQueue flag, it's the only flag we'll set in the tracked object info structure from native code.
-				// The InFinalizerQueue will never be cleared once set, so there's no need to unset it here if it's not set in the tracked_object_info structure.
-				if (tracked_object_info is not null && ((tracked_object_info->Flags) & Flags.InFinalizerQueue) == Flags.InFinalizerQueue)
-					actual_flags |= Flags.InFinalizerQueue;
-
-				return actual_flags;
-			}
-			set {
-				actual_flags = value;
-				// Update the flags value that we can access them from the toggle ref callback as well.
-				if (tracked_object_info is not null)
-					tracked_object_info->Flags = value;
-			}
+			get { return GetData ()->flags; }
+			set { GetData ()->flags = value; }
 		}
+#nullable disable
 
 		// This enum has a native counterpart in runtime.h
 		[Flags]
@@ -144,7 +204,7 @@ namespace Foundation {
 		}
 
 		[StructLayout (LayoutKind.Sequential)]
-		struct objc_super {
+		internal struct objc_super {
 			public IntPtr Handle;
 			public IntPtr ClassHandle;
 		}
@@ -259,32 +319,12 @@ namespace Foundation {
 			}
 		}
 
-		NativeHandle GetSuper ()
+		unsafe NativeHandle GetSuper ()
 		{
-			if (super == NativeHandle.Zero) {
-				IntPtr ptr;
-
-				unsafe {
-					ptr = Marshal.AllocHGlobal (sizeof (objc_super));
-					*(objc_super*) ptr = default (objc_super); // zero fill
-				}
-
-				var previousValue = Interlocked.CompareExchange (ref super, ptr, IntPtr.Zero);
-				if (previousValue != IntPtr.Zero) {
-					// somebody beat us to the assignment.
-					Marshal.FreeHGlobal (ptr);
-					ptr = IntPtr.Zero;
-				}
-			}
-
-			unsafe {
-				objc_super* sup = (objc_super*) super;
-				if (sup->ClassHandle == NativeHandle.Zero)
-					sup->ClassHandle = ClassHandle;
-				sup->Handle = handle;
-			}
-
-			return super;
+			var data = GetData ();
+			if (data->classHandle == NativeHandle.Zero)
+				data->classHandle = ClassHandle;
+			return (IntPtr) (&data->handle);
 		}
 
 		internal static NativeHandle Initialize ()
@@ -378,7 +418,7 @@ namespace Foundation {
 		}
 
 		[DllImport ("__Internal")]
-		static extern byte xamarin_set_gchandle_with_flags_safe (IntPtr handle, IntPtr gchandle, XamarinGCHandleFlags flags);
+		static extern byte xamarin_set_gchandle_with_flags_safe (IntPtr handle, IntPtr gchandle, XamarinGCHandleFlags gchandle_flags, IntPtr data);
 
 		void CreateManagedRef (bool retain)
 		{
@@ -387,10 +427,14 @@ namespace Foundation {
 				throw new InvalidOperationException ($"Unable to create a managed reference for the pointer {handle} whose managed type is {GetType ().FullName} because it wasn't possible to get the class of the pointer: {error_message}");
 
 			if (isUserType) {
-				var flags = XamarinGCHandleFlags.HasManagedRef | XamarinGCHandleFlags.InitialSet | XamarinGCHandleFlags.WeakGCHandle;
+				var gchandle_flags = XamarinGCHandleFlags.HasManagedRef | XamarinGCHandleFlags.InitialSet | XamarinGCHandleFlags.WeakGCHandle;
 				var gchandle = GCHandle.Alloc (this, GCHandleType.WeakTrackResurrection);
 				var h = GCHandle.ToIntPtr (gchandle);
-				if (xamarin_set_gchandle_with_flags_safe (handle, h, flags) == 0) {
+				byte rv;
+				unsafe {
+					rv = xamarin_set_gchandle_with_flags_safe (handle, h, gchandle_flags, (IntPtr) GetData ());
+				}
+				if (rv == 0) {
 					// A GCHandle already existed: this shouldn't happen, but let's handle it anyway.
 					Runtime.NSLog ($"Tried to create a managed reference from an object that already has a managed reference (type: {GetType ()})");
 					gchandle.Free ();
@@ -412,7 +456,6 @@ namespace Foundation {
 				Runtime.NativeObjectHasDied (handle, this);
 			}
 			xamarin_release_managed_ref (handle, user_type.AsByte ());
-			FreeData ();
 		}
 
 		static bool IsProtocol (Type type, IntPtr protocol)
@@ -634,11 +677,6 @@ namespace Foundation {
 					Runtime.UnregisterNSObject (handle);
 
 				handle = value;
-
-				unsafe {
-					if (tracked_object_info is not null)
-						tracked_object_info->Handle = value;
-				}
 
 				if (handle != IntPtr.Zero)
 					Runtime.RegisterNSObject (this, handle);
@@ -966,16 +1004,6 @@ namespace Foundation {
 				} else {
 					NSObject_Disposer.Add (this);
 				}
-			} else {
-				FreeData ();
-			}
-		}
-
-		unsafe void FreeData ()
-		{
-			if (super != NativeHandle.Zero) {
-				Marshal.FreeHGlobal (super);
-				super = NativeHandle.Zero;
 			}
 		}
 

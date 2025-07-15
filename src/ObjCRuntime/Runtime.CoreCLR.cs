@@ -205,8 +205,7 @@ namespace ObjCRuntime {
 
 		// Size: 2 pointers
 		internal struct TrackedObjectInfo {
-			public IntPtr Handle;
-			public NSObject.Flags Flags;
+			public unsafe NSObjectData* Data;
 		}
 
 		[SupportedOSPlatform ("macos")]
@@ -218,11 +217,9 @@ namespace ObjCRuntime {
 				TrackedObjectInfo* tracked_info;
 				fixed (void* ptr = info)
 					tracked_info = (TrackedObjectInfo*) ptr;
-				tracked_info->Handle = handle;
-				tracked_info->Flags = obj.FlagsInternal;
-				obj.tracked_object_info = tracked_info;
+				tracked_info->Data = obj.GetData ();
 
-				log_coreclr ($"GetOrCreateTrackingGCHandle ({obj.GetType ().FullName}, 0x{handle.ToString ("x")}) => Info=0x{((IntPtr) tracked_info).ToString ("x")} Flags={tracked_info->Flags} Created new");
+				log_coreclr ($"GetOrCreateTrackingGCHandle ({obj.GetType ().FullName}, 0x{handle.ToString ("x")}) => Info=0x{((IntPtr) tracked_info).ToString ("x")} Data=0x{(IntPtr) tracked_info->Data:x} Created new");
 			}
 
 			return gchandle;
@@ -232,10 +229,7 @@ namespace ObjCRuntime {
 		internal static void RegisterToggleReferenceCoreCLR (NSObject obj, IntPtr handle, bool isCustomType)
 		{
 			unsafe {
-				TrackedObjectInfo* tracked_info = obj.tracked_object_info;
-				tracked_info->Flags = obj.FlagsInternal;
-
-				log_coreclr ($"RegisterToggleReferenceCoreCLR ({obj.GetType ().FullName}, 0x{handle.ToString ("x")}, {isCustomType}) => Info=0x{((IntPtr) tracked_info).ToString ("x")} Flags={tracked_info->Flags}");
+				log_coreclr ($"RegisterToggleReferenceCoreCLR ({obj.GetType ().FullName}, 0x{handle.ToString ("x")}, {isCustomType}) => Data=0x{(IntPtr) obj.GetData ():x}");
 			}
 
 			// Make sure the GCHandle we have is a weak one for custom types.

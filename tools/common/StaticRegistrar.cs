@@ -2653,12 +2653,12 @@ namespace Registrar {
 				return "-(void) release";
 			else if (method.CurrentTrampoline == Trampoline.GetGCHandle)
 				return "-(GCHandle) xamarinGetGCHandle";
-			else if (method.CurrentTrampoline == Trampoline.GetFlags)
-				return "-(enum XamarinGCHandleFlags) xamarinGetFlags";
-			else if (method.CurrentTrampoline == Trampoline.SetFlags)
-				return "-(void) xamarinSetFlags: (enum XamarinGCHandleFlags) flags";
+			else if (method.CurrentTrampoline == Trampoline.GetGCHandleFlags)
+				return "-(enum XamarinGCHandleFlags) xamarinGetGCHandleFlags";
+			else if (method.CurrentTrampoline == Trampoline.SetGCHandleFlags)
+				return "-(void) xamarinSetGCHandleFlags: (enum XamarinGCHandleFlags) gchandle_flags";
 			else if (method.CurrentTrampoline == Trampoline.SetGCHandle)
-				return "-(bool) xamarinSetGCHandle: (GCHandle) gchandle flags: (enum XamarinGCHandleFlags) flags";
+				return "-(bool) xamarinSetGCHandle: (GCHandle) gchandle flags: (enum XamarinGCHandleFlags) gchandle_flags data: (NSObjectData *) data";
 			else if (method.CurrentTrampoline == Trampoline.CopyWithZone1 || method.CurrentTrampoline == Trampoline.CopyWithZone2)
 				return "-(id) copyWithZone: (NSZone *)zone";
 			else if (method.CurrentTrampoline == Trampoline.RetainWeakReference)
@@ -3411,30 +3411,31 @@ namespace Registrar {
 				sb.WriteLine ();
 				return true;
 			case Trampoline.SetGCHandle:
-				sb.WriteLine ("-(bool) xamarinSetGCHandle: (GCHandle) gc_handle flags: (enum XamarinGCHandleFlags) flags");
+				sb.WriteLine ("-(bool) xamarinSetGCHandle: (GCHandle) gc_handle flags: (enum XamarinGCHandleFlags) gchandle_flags data: (NSObjectData *) data");
 				sb.WriteLine ("{");
-				sb.WriteLine ("if (((flags & XamarinGCHandleFlags_InitialSet) == XamarinGCHandleFlags_InitialSet) && __monoObjectGCHandle.gc_handle != INVALID_GCHANDLE) {");
+				sb.WriteLine ("if (((gchandle_flags & XamarinGCHandleFlags_InitialSet) == XamarinGCHandleFlags_InitialSet) && __monoObjectGCHandle.gc_handle != INVALID_GCHANDLE) {");
 				sb.WriteLine ("return false;");
 				sb.WriteLine ("}");
-				sb.WriteLine ("flags = (enum XamarinGCHandleFlags) (flags & ~XamarinGCHandleFlags_InitialSet);"); // Remove the InitialSet flag, we don't want to store it.
+				sb.WriteLine ("gchandle_flags = (enum XamarinGCHandleFlags) (gchandle_flags & ~XamarinGCHandleFlags_InitialSet);"); // Remove the InitialSet flag, we don't want to store it.
 				sb.WriteLine ("__monoObjectGCHandle.gc_handle = gc_handle;");
-				sb.WriteLine ("__monoObjectGCHandle.flags = flags;");
+				sb.WriteLine ("__monoObjectGCHandle.data = data;");
+				sb.WriteLine ("__monoObjectGCHandle.gchandle_flags = gchandle_flags;");
 				sb.WriteLine ("__monoObjectGCHandle.native_object = self;");
 				sb.WriteLine ("return true;");
 				sb.WriteLine ("}");
 				sb.WriteLine ();
 				return true;
-			case Trampoline.GetFlags:
-				sb.WriteLine ("-(enum XamarinGCHandleFlags) xamarinGetFlags");
+			case Trampoline.GetGCHandleFlags:
+				sb.WriteLine ("-(enum XamarinGCHandleFlags) xamarinGetGCHandleFlags");
 				sb.WriteLine ("{");
-				sb.WriteLine ("return __monoObjectGCHandle.flags;");
+				sb.WriteLine ("return __monoObjectGCHandle.gchandle_flags;");
 				sb.WriteLine ("}");
 				sb.WriteLine ();
 				return true;
-			case Trampoline.SetFlags:
-				sb.WriteLine ("-(void) xamarinSetFlags: (enum XamarinGCHandleFlags) flags");
+			case Trampoline.SetGCHandleFlags:
+				sb.WriteLine ("-(void) xamarinSetGCHandleFlags: (enum XamarinGCHandleFlags) gchandle_flags");
 				sb.WriteLine ("{");
-				sb.WriteLine ("__monoObjectGCHandle.flags = flags;");
+				sb.WriteLine ("__monoObjectGCHandle.gchandle_flags = gchandle_flags;");
 				sb.WriteLine ("}");
 				sb.WriteLine ();
 				return true;
@@ -3453,16 +3454,16 @@ namespace Registrar {
 				sb.AppendLine ("{");
 				sb.AppendLine ("id rv;");
 				sb.AppendLine ("GCHandle gchandle;");
-				sb.AppendLine ("enum XamarinGCHandleFlags flags = XamarinGCHandleFlags_None;");
+				sb.AppendLine ("enum XamarinGCHandleFlags gchandle_flags = XamarinGCHandleFlags_None;");
 				sb.AppendLine ();
-				sb.AppendLine ("gchandle = xamarin_get_gchandle_with_flags (self, &flags);");
+				sb.AppendLine ("gchandle = xamarin_get_gchandle_with_flags (self, &gchandle_flags);");
 				sb.AppendLine ("if (gchandle != INVALID_GCHANDLE)");
 				sb.Indent ().AppendLine ("xamarin_set_gchandle_with_flags (self, INVALID_GCHANDLE, XamarinGCHandleFlags_None);").Unindent ();
 				// Call the base class implementation
 				sb.AppendLine ("rv = [super copyWithZone: zone];");
 				sb.AppendLine ();
 				sb.AppendLine ("if (gchandle != INVALID_GCHANDLE)");
-				sb.Indent ().AppendLine ("xamarin_set_gchandle_with_flags (self, gchandle, flags);").Unindent ();
+				sb.Indent ().AppendLine ("xamarin_set_gchandle_with_flags (self, gchandle, gchandle_flags);").Unindent ();
 				sb.AppendLine ();
 				sb.AppendLine ("return rv;");
 				sb.AppendLine ("}");

@@ -56,7 +56,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 				false,
 				$"{Global ("ObjCRuntime.Messaging")}.IntPtr_objc_msgSend (this.Handle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"string\"))"
 			];
-			
+
 			yield return [
 				"IntPtr_objc_msgSend",
 				"string",
@@ -76,7 +76,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 				false,
 				$"{Global ("ObjCRuntime.Messaging")}.IntPtr_objc_msgSend (this.Handle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"string\"), arg1)"
 			];
-			
+
 			yield return [
 				"IntPtr_objc_msgSend",
 				"string",
@@ -98,7 +98,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 				false,
 				$"{Global ("ObjCRuntime.Messaging")}.IntPtr_objc_msgSend (this.Handle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"string\"), arg1, arg2, arg3)"
 			];
-			
+
 			yield return [
 				"IntPtr_objc_msgSend",
 				"string",
@@ -119,7 +119,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 				false,
 				$"{Global ("ObjCRuntime.Messaging")}.IntPtr_objc_msgSend (this.Handle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"string\"), &errorValue)"
 			];
-			
+
 			yield return [
 				"IntPtr_objc_msgSend",
 				"string",

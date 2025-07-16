@@ -85,7 +85,7 @@ static class AttributesNames {
 		if (type == typeof (ObjCBindings.Method)) {
 			return ExportMethodAttribute;
 		}
-		if (type == typeof(ObjCBindings.Constructor)) {
+		if (type == typeof (ObjCBindings.Constructor)) {
 			return ExportConstructorAttribute;
 		}
 		return null;

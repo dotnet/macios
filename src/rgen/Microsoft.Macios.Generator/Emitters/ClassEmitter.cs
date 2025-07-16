@@ -584,7 +584,7 @@ public static NSObject {name} ({NSObject} objectToObserve, {EventHandler}<{event
 				EmitDefaultConstructors (bindingContext: bindingContext,
 					classBlock: classBlock,
 					disableDefaultCtor: bindingData.Flags.HasFlag (ObjCBindings.Class.DisableDefaultCtor));
-				
+
 				// emit any other constructor that is not the default one
 				EmitConstructors (bindingContext, classBlock);
 			}

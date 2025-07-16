@@ -16,11 +16,11 @@ namespace Microsoft.Macios.Generator.Tests.Classes.Data;
 
 [BindingType<Class>]
 public class ConstructorTests {
-	
+
 	[Export<Constructor> ("initWithScheme:host:path:")]
 	public ConstructorTests (string scheme, string host, string path);
 
-	[Export<Constructor> ("initFileURLWithPath:isDirectory:", 
+	[Export<Constructor> ("initFileURLWithPath:isDirectory:",
 		Flags = Constructor.DesignatedInitializer)]
 	public ConstructorTests (string path, bool isDir) { }
 

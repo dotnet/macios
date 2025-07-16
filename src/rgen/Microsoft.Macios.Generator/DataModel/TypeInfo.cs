@@ -23,7 +23,7 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 	/// Represents the `void` type.
 	/// </summary>
 	public static TypeInfo Void = new ("void", SpecialType.System_Void) { Parents = ["System.ValueType", "object"], };
-	
+
 	/// <summary>
 	/// Represents a `System.NativeHandle` type.
 	/// </summary>

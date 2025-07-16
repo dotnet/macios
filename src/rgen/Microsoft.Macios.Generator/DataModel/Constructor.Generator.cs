@@ -24,7 +24,7 @@ readonly partial struct Constructor {
 	/// Return the native selector that references the enum value.
 	/// </summary>
 	public string? Selector => ExportMethodData.Selector;
-	
+
 	public Constructor (string type,
 		SymbolAvailability symbolAvailability,
 		ExportData<ObjCBindings.Constructor> exportData,
@@ -57,9 +57,9 @@ readonly partial struct Constructor {
 				continue;
 			parametersBucket.Add (parameterChange.Value);
 		}
-		
+
 		var exportData = constructor.GetExportData<ObjCBindings.Constructor> ()
-		                 ?? new (null, ArgumentSemantic.None, ObjCBindings.Constructor.Default);
+						 ?? new (null, ArgumentSemantic.None, ObjCBindings.Constructor.Default);
 
 		change = new (
 			type: constructor.ContainingSymbol.Name, // we DO NOT want the full name

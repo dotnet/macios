@@ -17,32 +17,22 @@ namespace MonoTouchFixtures.Network {
 
 		AutoResetEvent secureEvent;  // used to let us know the handler was indeed called.
 		AutoResetEvent configureEvent;  // used to let us know the handler was indeed called.
-		AutoResetEvent connectedEvent;  // used to let us know when the connection was established so that we can access the NWPath 
 		bool secureConnectionWasSet = false;
 		bool protocolConfigured = false;
 		List<NWInterface> interfaces = new List<NWInterface> ();
-		string host;
+		ConnectionManager manager;
 		NWConnection connection;
-
 
 		[OneTimeSetUp]
 		public void Init ()
 		{
-			TestRuntime.AssertXcodeVersion (10, 0);
 			// we want to use a single connection, since it is expensive
-			connectedEvent = new AutoResetEvent (false);
-			host = NetworkResources.MicrosoftUri.Host;
 			interfaces = new List<NWInterface> ();
-			using (var parameters = NWParameters.CreateUdp ())
-			using (var endpoint = NWEndpoint.Create (host, "80")) {
-				connection = new NWConnection (endpoint, parameters);
-				connection.SetQueue (DispatchQueue.DefaultGlobalQueue); // important, else we will get blocked
-				connection.SetStateChangeHandler (ConnectionStateHandler);
-				connection.Start ();
-				Assert.True (connectedEvent.WaitOne (20000), "Connection timed out.");
-				using (var path = connection.CurrentPath) {
-					path.EnumerateInterfaces (EnumerateInterfacesHandler);
-				}
+
+			manager = new ConnectionManager ();
+			connection = manager.CreateConnection ();
+			using (var path = connection.CurrentPath) {
+				path.EnumerateInterfaces (EnumerateInterfacesHandler);
 			}
 		}
 
@@ -65,27 +55,13 @@ namespace MonoTouchFixtures.Network {
 			protocolConfigured = false;
 		}
 
-		void ConnectionStateHandler (NWConnectionState state, NWError error)
-		{
-			switch (state) {
-			case NWConnectionState.Ready:
-				connectedEvent.Set ();
-				break;
-			case NWConnectionState.Cancelled:
-				break;
-			case NWConnectionState.Invalid:
-			case NWConnectionState.Failed:
-				Assert.Inconclusive ("Network connection could not be performed.");
-				break;
-			}
-		}
-
 		[TearDown]
 		public void TearDown ()
 		{
 			secureEvent = null;
 			secureConnectionWasSet = false;
 			protocolConfigured = false;
+			manager?.Dispose ();
 		}
 
 		void EnumerateInterfacesHandler (NWInterface nwInterface)

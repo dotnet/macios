@@ -1055,6 +1055,16 @@ F:AutomaticAssessmentConfiguration.AEAssessmentErrorCode.UnsupportedPlatform
 F:AutomaticAssessmentConfiguration.AEAutocorrectMode.None
 F:AutomaticAssessmentConfiguration.AEAutocorrectMode.Punctuation
 F:AutomaticAssessmentConfiguration.AEAutocorrectMode.Spelling
+F:AVFoundation.AVAssetExportSessionPreset.AppleProRes4444Lpcm
+F:AVFoundation.AVAssetExportSessionPreset.Hevc1920x1080
+F:AVFoundation.AVAssetExportSessionPreset.Hevc1920x1080WithAlpha
+F:AVFoundation.AVAssetExportSessionPreset.Hevc3840x2160
+F:AVFoundation.AVAssetExportSessionPreset.Hevc3840x2160WithAlpha
+F:AVFoundation.AVAssetExportSessionPreset.Hevc7680x4320
+F:AVFoundation.AVAssetExportSessionPreset.HevcHighestQuality
+F:AVFoundation.AVAssetExportSessionPreset.HevcHighestQualityWithAlpha
+F:AVFoundation.AVAssetExportSessionPreset.MvHevc1440x1440
+F:AVFoundation.AVAssetExportSessionPreset.MvHevc960x960
 F:AVFoundation.AVAssetImageGeneratorDynamicRangePolicy.DynamicRangePolicyForceSdr
 F:AVFoundation.AVAssetImageGeneratorDynamicRangePolicy.DynamicRangePolicyMatchSource
 F:AVFoundation.AVAssetPlaybackConfigurationOption.SpatialVideo
@@ -8541,6 +8551,7 @@ M:AVFoundation.AVAudioApplication.RequestRecordPermission(System.Action{System.B
 M:AVFoundation.AVAudioApplication.RequestRecordPermissionAsync
 M:AVFoundation.AVAudioApplication.SetInputMuted(System.Boolean,Foundation.NSError@)
 M:AVFoundation.AVAudioApplication.SetInputMuteStateChangeHandler(AVFoundation.AVAudioApplicationSetInputMuteStateChangeHandler,Foundation.NSError@)
+M:AVFoundation.AVAudioChannelLayout.#ctor(AudioToolbox.AudioChannelLayoutTag)
 M:AVFoundation.AVAudioChannelLayout.#ctor(System.UInt32)
 M:AVFoundation.AVAudioChannelLayout.op_Equality(AVFoundation.AVAudioChannelLayout,AVFoundation.AVAudioChannelLayout)
 M:AVFoundation.AVAudioChannelLayout.op_Inequality(AVFoundation.AVAudioChannelLayout,AVFoundation.AVAudioChannelLayout)
@@ -10545,6 +10556,11 @@ M:CoreVideo.CVDisplayLink.TryTranslateTime(CoreVideo.CVTimeStamp,CoreVideo.CVTim
 M:CoreVideo.CVFillExtendedPixelsCallBackDataStruct.CallFillCallback(CoreVideo.CVPixelBuffer)
 M:CoreVideo.CVMetalBuffer.GetTypeId
 M:CoreVideo.CVMetalBufferCache.GetTypeId
+M:CoreVideo.CVOpenGLESTexture.GetCleanTexCoords(System.Single[]@,System.Single[]@,System.Single[]@,System.Single[]@)
+M:CoreVideo.CVOpenGLESTextureCache.#ctor(OpenGLES.EAGLContext)
+M:CoreVideo.CVOpenGLESTextureCache.CreateTexture(CoreVideo.CVImageBuffer,System.Boolean,System.Int32,System.Int32,System.Int32,System.UInt32,System.UInt32,System.Int32,CoreVideo.CVReturn@)
+M:CoreVideo.CVOpenGLESTextureCache.Flush(CoreVideo.CVOptionFlags)
+M:CoreVideo.CVOpenGLESTextureCache.FromEAGLContext(OpenGLES.EAGLContext)
 M:CoreVideo.CVPixelBuffer.GetPixelBufferCreationAttributes
 M:CoreVideo.CVPixelBufferAttributes.#ctor(CoreVideo.CVPixelFormatType,System.IntPtr,System.IntPtr)
 M:CoreVideo.CVPixelBufferPool.Release
@@ -15121,7 +15137,6 @@ M:Phase.PhaseSoundEvent.Resume
 M:Phase.PhaseSoundEvent.Seek(System.Double,System.Action{Phase.PhaseSoundEventSeekHandlerReason})
 M:Phase.PhaseSoundEvent.SeekAsync(System.Double,System.Boolean@)
 M:Phase.PhaseSoundEvent.SeekAsync(System.Double)
-M:Phase.PhaseSoundEvent.Start(Foundation.NSError@)
 M:Phase.PhaseSoundEvent.Start(System.Action{Phase.PhaseSoundEventStartHandlerReason})
 M:Phase.PhaseSoundEvent.StartAsync
 M:Phase.PhaseSoundEvent.StartAsync(System.Boolean@)
@@ -20016,6 +20031,9 @@ P:CoreText.CTRunDelegateOperations.Handle
 P:CoreText.CTStringAttributes.AdaptiveImageProvider
 P:CoreText.CTStringAttributes.TrackingAdjustment
 P:CoreVideo.CVMetalBufferCacheAttributes.MaximumBufferAge
+P:CoreVideo.CVOpenGLESTexture.IsFlipped
+P:CoreVideo.CVOpenGLESTexture.Name
+P:CoreVideo.CVOpenGLESTexture.Target
 P:CoreVideo.CVPixelFormatComponentRange.FullRange
 P:CoreVideo.CVPixelFormatComponentRange.VideoRange
 P:CoreVideo.CVPixelFormatComponentRange.WideRange
@@ -26569,6 +26587,8 @@ T:CoreVideo.CVImageBufferColorPrimaries
 T:CoreVideo.CVImageBufferTransferFunction
 T:CoreVideo.CVImageBufferYCbCrMatrix
 T:CoreVideo.CVMetalBufferCacheAttributes
+T:CoreVideo.CVOpenGLESTexture
+T:CoreVideo.CVOpenGLESTextureCache
 T:CoreVideo.CVPixelFormatComponentRange
 T:CoreVideo.CVPixelFormatComponentRangeKeys
 T:CoreVideo.CVPixelFormatKeys

@@ -3596,7 +3596,7 @@ namespace PdfKit {
 		void AnnotationsChanged (PdfPage page);
 
 		/// <param name="page">The page for which to get the row size.</param>
-		///         <summary>Returns the display size of a row on the specified <pararamref name="page" />.</summary>
+		///         <summary>Returns the display size of a row on the specified <paramref name="page" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[Export ("rowSizeForPage:")]

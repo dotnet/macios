@@ -1125,11 +1125,11 @@ namespace Registrar {
 			case Trampoline.SetGCHandle:
 				tramp = Method.SetGCHandleTrampoline;
 				break;
-			case Trampoline.GetFlags:
-				tramp = Method.GetFlagsTrampoline;
+			case Trampoline.GetGCHandleFlags:
+				tramp = Method.GetGCHandleFlagsTrampoline;
 				break;
-			case Trampoline.SetFlags:
-				tramp = Method.SetFlagsTrampoline;
+			case Trampoline.SetGCHandleFlags:
+				tramp = Method.SetGCHandleFlagsTrampoline;
 				break;
 			case Trampoline.RetainWeakReference:
 				tramp = Method.RetainWeakReferenceTrampoline;

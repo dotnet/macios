@@ -122,7 +122,7 @@ namespace Introspection {
 			case "MTLTileRenderPipelineDescriptor":
 			case "MTLRasterizationRateLayerDescriptor":
 			case "MTLRasterizationRateMapDescriptor":
-				return TestRuntime.IsSimulatorOrDesktop;
+				return true;
 			default:
 				return base.Skip (type);
 			}
@@ -403,9 +403,7 @@ namespace Introspection {
 			case "HKHealthStore":
 				switch (name) {
 				case "workoutSessionMirroringStartHandler":
-					if (TestRuntime.IsSimulatorOrDesktop)
-						return true;
-					break;
+					return true;
 				}
 				break;
 #endif

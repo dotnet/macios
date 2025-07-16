@@ -14,62 +14,29 @@ namespace MonoTouchFixtures.Network {
 	[TestFixture]
 	[Preserve (AllMembers = true)]
 	public class NWProtocolIPOptionsTest {
-
-		AutoResetEvent connectedEvent;  // used to let us know when the connection was established so that we can access the NWPath
-		string host;
+		ConnectionManager manager;
 		NWConnection connection;
 		NWProtocolStack stack;
 		NWProtocolIPOptions options;
 
-		void ConnectionStateHandler (NWConnectionState state, NWError error)
-		{
-			switch (state) {
-			case NWConnectionState.Ready:
-				connectedEvent.Set ();
-				break;
-			case NWConnectionState.Invalid:
-			case NWConnectionState.Failed:
-				Assert.Inconclusive ("Network connection could not be performed.");
-				break;
-			}
-		}
-
 		[OneTimeSetUp]
 		public void Init ()
 		{
-			Exception ex = null;
-			TestRuntime.AssertXcodeVersion (11, 0);
-			// we want to use a single connection, since it is expensive
-			connectedEvent = new AutoResetEvent (false);
-			host = NetworkResources.MicrosoftUri.Host;
-			using (var parameters = NWParameters.CreateTcp ())
-			using (var endpoint = NWEndpoint.Create (host, "80")) {
-				connection = new NWConnection (endpoint, parameters);
-				connection.SetQueue (DispatchQueue.DefaultGlobalQueue); // important, else we will get blocked
-				connection.SetStateChangeHandler ((NWConnectionState state, NWError error) => {
-					try {
-						ConnectionStateHandler (state, error);
-					} catch (Exception e) {
-						ex = e;
-					}
-				});
-				connection.Start ();
-				Assert.True (connectedEvent.WaitOne (20000), "Connection timed out.");
-				stack = parameters.ProtocolStack;
-				using (var ipOptions = stack.InternetProtocol) {
-					if (ipOptions is not null) {
-						ipOptions.SetVersion (NWIPVersion.Version4);
-						stack.PrependApplicationProtocol (ipOptions);
-					}
+			manager = new ConnectionManager (true);
+			connection = manager.CreateConnection (out var parameters);
+
+			stack = parameters.ProtocolStack;
+			using (var ipOptions = stack.InternetProtocol) {
+				if (ipOptions is not null) {
+					stack.PrependApplicationProtocol (ipOptions);
 				}
 			}
-			Assert.IsNull (ex, "Exception");
 		}
 
 		[OneTimeTearDown]
 		public void Dispose ()
 		{
-			connection?.Dispose ();
+			manager?.Dispose ();
 			stack?.Dispose ();
 		}
 

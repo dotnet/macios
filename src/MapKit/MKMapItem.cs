@@ -77,7 +77,7 @@ namespace MapKit {
 			int i = 0;
 			if (DirectionsMode.HasValue) {
 				keys [i] = MKMapItem.MKLaunchOptionsDirectionsModeKey;
-				values [i++] = DirectionsMode.Value.GetConstant ();
+				values [i++] = DirectionsMode.Value.GetConstant ()!;
 			}
 
 			if (MapType.HasValue) {

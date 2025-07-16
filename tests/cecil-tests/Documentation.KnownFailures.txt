@@ -12675,6 +12675,7 @@ M:MapKit.MKPitchControl.MKPitchControlAppearance.#ctor(System.IntPtr)
 M:MapKit.MKPolygonView.MKPolygonViewAppearance.#ctor(System.IntPtr)
 M:MapKit.MKPolylineView.MKPolylineViewAppearance.#ctor(System.IntPtr)
 M:MapKit.MKReverseGeocoder.Dispose(System.Boolean)
+M:MapKit.MKReverseGeocodingRequest.GetMapItemsAsync
 M:MapKit.MKScaleView.Dispose(System.Boolean)
 M:MapKit.MKScaleView.MKScaleViewAppearance.#ctor(System.IntPtr)
 M:MapKit.MKUserLocationView.#ctor(CoreGraphics.CGRect)

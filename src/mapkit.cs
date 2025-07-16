@@ -3489,7 +3489,7 @@ namespace MapKit {
 		[NullAllowed, Export ("regionName")]
 		string RegionName { get; }
 
-		[Export ("regionCode")]
+		[NullAllowed, Export ("regionCode")]
 		string RegionCode { get; }
 	}
 

@@ -457,31 +457,6 @@ namespace MapKit {
 		[Field ("MKLaunchOptionsCameraKey"), Internal]
 		NSString MKLaunchOptionsCameraKey { get; }
 
-		[NoTV]
-		[MacCatalyst (13, 1)]
-		[Field ("MKLaunchOptionsDirectionsModeDriving"), Internal]
-		NSString MKLaunchOptionsDirectionsModeDriving { get; }
-
-		[NoTV]
-		[MacCatalyst (13, 1)]
-		[Field ("MKLaunchOptionsDirectionsModeWalking"), Internal]
-		NSString MKLaunchOptionsDirectionsModeWalking { get; }
-
-		[NoTV]
-		[MacCatalyst (13, 1)]
-		[Field ("MKLaunchOptionsDirectionsModeTransit"), Internal]
-		NSString MKLaunchOptionsDirectionsModeTransit { get; }
-
-		[NoTV]
-		[iOS (14, 0)]
-		[Field ("MKLaunchOptionsDirectionsModeCycling"), Internal]
-		NSString MKLaunchOptionsDirectionsModeCycling { get; }
-
-		[NoTV]
-		[MacCatalyst (13, 1)]
-		[Field ("MKLaunchOptionsDirectionsModeDefault"), Internal]
-		NSString MKLaunchOptionsDirectionsModeDefault { get; }
-
 		[Export ("timeZone")]
 		[MacCatalyst (13, 1)]
 		[NullAllowed]
@@ -518,6 +493,39 @@ namespace MapKit {
 		[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
 		[NullAllowed, Export ("addressRepresentations")]
 		MKAddressRepresentations AddressRepresentations { get; }
+	}
+
+	/// <summary>An enumeration of travel methods for which directions can be provided.</summary>>
+	public enum MKDirectionsMode {
+		/// <summary>Driving directions.</summary>
+		[NoTV]
+		[MacCatalyst (13, 1)]
+		[Field ("MKLaunchOptionsDirectionsModeDriving")]
+		Driving,
+
+		/// <summary>Walking directions.</summary>
+		[NoTV]
+		[MacCatalyst (13, 1)]
+		[Field ("MKLaunchOptionsDirectionsModeWalking")]
+		Walking,
+
+		/// <summary>Transit directions.</summary>
+		[NoTV]
+		[MacCatalyst (13, 1)]
+		[Field ("MKLaunchOptionsDirectionsModeTransit")]
+		Transit,
+
+		/// <summary>Cycling directions.</summary>
+		[NoTV]
+		[MacCatalyst (13, 1)]
+		[Field ("MKLaunchOptionsDirectionsModeDefault")]
+		Default,
+
+		/// <summary>The user's preferred direction type.</summary>
+		[NoTV]
+		[iOS (14, 0)]
+		[Field ("MKLaunchOptionsDirectionsModeCycling")]
+		Cycling,
 	}
 
 	[BaseType (typeof (UIView), Delegates = new string [] { "WeakDelegate" }, Events = new Type [] { typeof (MKMapViewDelegate) })]

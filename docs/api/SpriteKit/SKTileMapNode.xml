@@ -16,7 +16,7 @@ tileNode.Fill (tg);
     ]]></code>
         <para>The relationship between a <see cref="Intents.SKTileMapNode" /> and it's tiles is shown in the following image:</para>
         <para>
-          <img href="~/SpriteKit/_images/SKTileMapNode.Hierarchy.png" alt="UML class diagram showing important classes relating to SKTileMapNode" />
+          <img href="~/xml/SpriteKit/_images/SKTileMapNode.Hierarchy.png" alt="UML class diagram showing important classes relating to SKTileMapNode" />
         </para>
       </example>
     </remarks>

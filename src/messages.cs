@@ -320,7 +320,7 @@ namespace Messages {
 	///     <remarks>
 	///       <para>The layout of a message template is:</para>
 	///       <para>
-	///         <img href="~/Messages/_images/Messages.MSMessageTemplateLayout.png" alt="Image showing the layout of the message template" />
+	///         <img href="~/xml/Messages/_images/Messages.MSMessageTemplateLayout.png" alt="Image showing the layout of the message template" />
 	///       </para>
 	///     </remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Messages/MSMessageTemplateLayout">Apple documentation for <c>MSMessageTemplateLayout</c></related>

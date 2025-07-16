@@ -14,7 +14,7 @@
             <see cref="UIKit.UIApplicationShortcutIconType.Add" />
           </description>
           <description>
-            <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Add.png" alt="Application shortcut icon." />
+            <img href="~/xml/UIKit/_images/UIKit.UIApplicationShortcutIconType.Add.png" alt="Application shortcut icon." />
           </description>
         </item>
         <item>
@@ -23,7 +23,7 @@
             <see cref="UIKit.UIApplicationShortcutIconType.Alarm" />
           </description>
           <description>
-            <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Alarm.png" alt="Application shortcut icon." />
+            <img href="~/xml/UIKit/_images/UIKit.UIApplicationShortcutIconType.Alarm.png" alt="Application shortcut icon." />
           </description>
         </item>
         <item>
@@ -32,7 +32,7 @@
             <see cref="UIKit.UIApplicationShortcutIconType.Audio" />
           </description>
           <description>
-            <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Audio.png" alt="Application shortcut icon." />
+            <img href="~/xml/UIKit/_images/UIKit.UIApplicationShortcutIconType.Audio.png" alt="Application shortcut icon." />
           </description>
         </item>
         <item>
@@ -41,7 +41,7 @@
             <see cref="UIKit.UIApplicationShortcutIconType.Bookmark" />
           </description>
           <description>
-            <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Bookmark.png" alt="Application shortcut icon." />
+            <img href="~/xml/UIKit/_images/UIKit.UIApplicationShortcutIconType.Bookmark.png" alt="Application shortcut icon." />
           </description>
         </item>
         <item>
@@ -50,7 +50,7 @@
             <see cref="UIKit.UIApplicationShortcutIconType.CapturePhoto" />
           </description>
           <description>
-            <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.CapturePhoto.png" alt="Application shortcut icon." />
+            <img href="~/xml/UIKit/_images/UIKit.UIApplicationShortcutIconType.CapturePhoto.png" alt="Application shortcut icon." />
           </description>
         </item>
         <item>
@@ -59,7 +59,7 @@
             <see cref="UIKit.UIApplicationShortcutIconType.CaptureVideo" />
           </description>
           <description>
-            <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.CaptureVideo.png" alt="Application shortcut icon." />
+            <img href="~/xml/UIKit/_images/UIKit.UIApplicationShortcutIconType.CaptureVideo.png" alt="Application shortcut icon." />
           </description>
         </item>
         <item>
@@ -68,7 +68,7 @@
             <see cref="UIKit.UIApplicationShortcutIconType.Cloud" />
           </description>
           <description>
-            <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Cloud.png" alt="Application shortcut icon." />
+            <img href="~/xml/UIKit/_images/UIKit.UIApplicationShortcutIconType.Cloud.png" alt="Application shortcut icon." />
           </description>
         </item>
         <item>
@@ -77,7 +77,7 @@
             <see cref="UIKit.UIApplicationShortcutIconType.Compose" />
           </description>
           <description>
-            <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Compose.png" alt="Application shortcut icon." />
+            <img href="~/xml/UIKit/_images/UIKit.UIApplicationShortcutIconType.Compose.png" alt="Application shortcut icon." />
           </description>
         </item>
         <item>
@@ -86,7 +86,7 @@
             <see cref="UIKit.UIApplicationShortcutIconType.Confirmation" />
           </description>
           <description>
-            <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Confirmation.png" alt="Application shortcut icon." />
+            <img href="~/xml/UIKit/_images/UIKit.UIApplicationShortcutIconType.Confirmation.png" alt="Application shortcut icon." />
           </description>
         </item>
         <item>
@@ -95,7 +95,7 @@
             <see cref="UIKit.UIApplicationShortcutIconType.Contact" />
           </description>
           <description>
-            <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Contact.png" alt="Application shortcut icon." />
+            <img href="~/xml/UIKit/_images/UIKit.UIApplicationShortcutIconType.Contact.png" alt="Application shortcut icon." />
           </description>
         </item>
         <item>
@@ -104,7 +104,7 @@
             <see cref="UIKit.UIApplicationShortcutIconType.Date" />
           </description>
           <description>
-            <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Date.png" alt="Application shortcut icon." />
+            <img href="~/xml/UIKit/_images/UIKit.UIApplicationShortcutIconType.Date.png" alt="Application shortcut icon." />
           </description>
         </item>
         <item>
@@ -113,7 +113,7 @@
             <see cref="UIKit.UIApplicationShortcutIconType.Favorite" />
           </description>
           <description>
-            <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Favorite.png" alt="Application shortcut icon." />
+            <img href="~/xml/UIKit/_images/UIKit.UIApplicationShortcutIconType.Favorite.png" alt="Application shortcut icon." />
           </description>
         </item>
         <item>
@@ -122,7 +122,7 @@
             <see cref="UIKit.UIApplicationShortcutIconType.Home" />
           </description>
           <description>
-            <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Home.png" alt="Application shortcut icon." />
+            <img href="~/xml/UIKit/_images/UIKit.UIApplicationShortcutIconType.Home.png" alt="Application shortcut icon." />
           </description>
         </item>
         <item>
@@ -131,7 +131,7 @@
             <see cref="UIKit.UIApplicationShortcutIconType.Invitation" />
           </description>
           <description>
-            <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Invitation.png" alt="Application shortcut icon." />
+            <img href="~/xml/UIKit/_images/UIKit.UIApplicationShortcutIconType.Invitation.png" alt="Application shortcut icon." />
           </description>
         </item>
         <item>
@@ -140,7 +140,7 @@
             <see cref="UIKit.UIApplicationShortcutIconType.Location" />
           </description>
           <description>
-            <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Location.png" alt="Application shortcut icon." />
+            <img href="~/xml/UIKit/_images/UIKit.UIApplicationShortcutIconType.Location.png" alt="Application shortcut icon." />
           </description>
         </item>
         <item>
@@ -149,7 +149,7 @@
             <see cref="UIKit.UIApplicationShortcutIconType.Love" />
           </description>
           <description>
-            <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Love.png" alt="Application shortcut icon." />
+            <img href="~/xml/UIKit/_images/UIKit.UIApplicationShortcutIconType.Love.png" alt="Application shortcut icon." />
           </description>
         </item>
         <item>
@@ -158,7 +158,7 @@
             <see cref="UIKit.UIApplicationShortcutIconType.Mail" />
           </description>
           <description>
-            <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Mail.png" alt="Application shortcut icon." />
+            <img href="~/xml/UIKit/_images/UIKit.UIApplicationShortcutIconType.Mail.png" alt="Application shortcut icon." />
           </description>
         </item>
         <item>
@@ -167,7 +167,7 @@
             <see cref="UIKit.UIApplicationShortcutIconType.MarkLocation" />
           </description>
           <description>
-            <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.MarkLocation.png" alt="Application shortcut icon." />
+            <img href="~/xml/UIKit/_images/UIKit.UIApplicationShortcutIconType.MarkLocation.png" alt="Application shortcut icon." />
           </description>
         </item>
         <item>
@@ -176,7 +176,7 @@
             <see cref="UIKit.UIApplicationShortcutIconType.Message" />
           </description>
           <description>
-            <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Message.png" alt="Application shortcut icon." />
+            <img href="~/xml/UIKit/_images/UIKit.UIApplicationShortcutIconType.Message.png" alt="Application shortcut icon." />
           </description>
         </item>
         <item>
@@ -185,7 +185,7 @@
             <see cref="UIKit.UIApplicationShortcutIconType.Pause" />
           </description>
           <description>
-            <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Pause.png" alt="Application shortcut icon." />
+            <img href="~/xml/UIKit/_images/UIKit.UIApplicationShortcutIconType.Pause.png" alt="Application shortcut icon." />
           </description>
         </item>
         <item>
@@ -194,7 +194,7 @@
             <see cref="UIKit.UIApplicationShortcutIconType.Play" />
           </description>
           <description>
-            <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Play.png" alt="Application shortcut icon." />
+            <img href="~/xml/UIKit/_images/UIKit.UIApplicationShortcutIconType.Play.png" alt="Application shortcut icon." />
           </description>
         </item>
         <item>
@@ -203,7 +203,7 @@
             <see cref="UIKit.UIApplicationShortcutIconType.Prohibit" />
           </description>
           <description>
-            <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Prohibit.png" alt="Application shortcut icon." />
+            <img href="~/xml/UIKit/_images/UIKit.UIApplicationShortcutIconType.Prohibit.png" alt="Application shortcut icon." />
           </description>
         </item>
         <item>
@@ -212,7 +212,7 @@
             <see cref="UIKit.UIApplicationShortcutIconType.Search" />
           </description>
           <description>
-            <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Search.png" alt="Application shortcut icon." />
+            <img href="~/xml/UIKit/_images/UIKit.UIApplicationShortcutIconType.Search.png" alt="Application shortcut icon." />
           </description>
         </item>
         <item>
@@ -221,7 +221,7 @@
             <see cref="UIKit.UIApplicationShortcutIconType.Share" />
           </description>
           <description>
-            <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Share.png" alt="Application shortcut icon." />
+            <img href="~/xml/UIKit/_images/UIKit.UIApplicationShortcutIconType.Share.png" alt="Application shortcut icon." />
           </description>
         </item>
         <item>
@@ -230,7 +230,7 @@
             <see cref="UIKit.UIApplicationShortcutIconType.Shuffle" />
           </description>
           <description>
-            <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Shuffle.png" alt="Application shortcut icon." />
+            <img href="~/xml/UIKit/_images/UIKit.UIApplicationShortcutIconType.Shuffle.png" alt="Application shortcut icon." />
           </description>
         </item>
         <item>
@@ -239,7 +239,7 @@
             <see cref="UIKit.UIApplicationShortcutIconType.Task" />
           </description>
           <description>
-            <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Task.png" alt="Application shortcut icon." />
+            <img href="~/xml/UIKit/_images/UIKit.UIApplicationShortcutIconType.Task.png" alt="Application shortcut icon." />
           </description>
         </item>
         <item>
@@ -248,7 +248,7 @@
             <see cref="UIKit.UIApplicationShortcutIconType.TaskCompleted" />
           </description>
           <description>
-            <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.TaskCompleted.png" alt="Application shortcut icon." />
+            <img href="~/xml/UIKit/_images/UIKit.UIApplicationShortcutIconType.TaskCompleted.png" alt="Application shortcut icon." />
           </description>
         </item>
         <item>
@@ -257,7 +257,7 @@
             <see cref="UIKit.UIApplicationShortcutIconType.Time" />
           </description>
           <description>
-            <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Time.png" alt="Application shortcut icon." />
+            <img href="~/xml/UIKit/_images/UIKit.UIApplicationShortcutIconType.Time.png" alt="Application shortcut icon." />
           </description>
         </item>
         <item>
@@ -266,7 +266,7 @@
             <see cref="UIKit.UIApplicationShortcutIconType.Update" />
           </description>
           <description>
-            <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Update.png" alt="Application shortcut icon." />
+            <img href="~/xml/UIKit/_images/UIKit.UIApplicationShortcutIconType.Update.png" alt="Application shortcut icon." />
           </description>
         </item>
       </list>

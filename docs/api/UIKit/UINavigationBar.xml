@@ -31,7 +31,7 @@
           ]]></code>
       </example>
       <para>
-        <img href="~/UIKit/_images/UIKit.UINavigationBar.Simple.png" alt="Screenshot showing the UINavigationBar" />
+        <img href="~/xml/UIKit/_images/UIKit.UINavigationBar.Simple.png" alt="Screenshot showing the UINavigationBar" />
       </para>
       <para>Application developers who wish to customize the behavior of the <see cref="UIKit.UINavigationController" />'s uniquely-styled '"Back" button when using a <see cref="UIKit.UINavigationController" /> can use the following technique:</para>
       <example>

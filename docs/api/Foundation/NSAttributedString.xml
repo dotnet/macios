@@ -7,7 +7,7 @@
 	series of attributes applied uniformly.  
       </para>
       <para>
-        <img href="~/Foundation/_images/NSAttributedString.png" alt="Diagram showing an attributed string." />
+        <img href="~/xml/Foundation/_images/NSAttributedString.png" alt="Diagram showing an attributed string." />
       </para>
       <para> The companion <see cref="Foundation.NSMutableAttributedString" /> type
 	can be used to create attributed strings that have overlapping

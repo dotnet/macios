@@ -71,8 +71,8 @@ static partial class BindingSyntaxFactory {
 			return (ThrowNotImplementedException (), ThrowNotImplementedException ());
 		}
 
-		var getterSend = ConvertToManaged (property, MessagingInvocation (sendMethod, selector, []));
-		var getterSuperSend = ConvertToManaged (property, MessagingInvocation (superSendMethod, selector, []));
+		var getterSend = ConvertToManaged (property, MessagingInvocation (sendMethod, selector, [], isSuper: false));
+		var getterSuperSend = ConvertToManaged (property, MessagingInvocation (superSendMethod, selector, [], isSuper: true));
 		// if we cannot get the methods, throw a runtime exception 
 		if (getterSend is null || getterSuperSend is null) {
 			return (ThrowNotImplementedException (), ThrowNotImplementedException ());
@@ -106,8 +106,8 @@ static partial class BindingSyntaxFactory {
 			return (argument, ThrowNotImplementedException (), ThrowNotImplementedException ());
 		}
 
-		var setterSend = MessagingInvocation (sendMethod, selector, [argument.ArgumentSyntax]);
-		var setterSuperSend = MessagingInvocation (superSendMethod, selector, [argument.ArgumentSyntax]);
+		var setterSend = MessagingInvocation (sendMethod, selector, [argument.ArgumentSyntax], isSuper: false);
+		var setterSuperSend = MessagingInvocation (superSendMethod, selector, [argument.ArgumentSyntax], isSuper: true);
 
 		return (
 			Argument: argument,

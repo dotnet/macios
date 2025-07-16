@@ -50,10 +50,10 @@ public class BindingSyntaxFactoryPropertyTests {
 			yield return [
 				property,
 				$"ret = {Global ("CoreFoundation.CFString")}.FromHandle ({Global ("ObjCRuntime.Messaging")}.NativeHandle_objc_msgSend (this.Handle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"myProperty\")), false)!",
-				$"ret = {Global ("CoreFoundation.CFString")}.FromHandle ({Global ("ObjCRuntime.Messaging")}.NativeHandle_objc_msgSendSuper (this.Handle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"myProperty\")), false)!",
+				$"ret = {Global ("CoreFoundation.CFString")}.FromHandle ({Global ("ObjCRuntime.Messaging")}.NativeHandle_objc_msgSendSuper (this.SuperHandle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"myProperty\")), false)!",
 				"nsvalue",
 				"global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"setMyProperty:\"), nsvalue)",
-				"global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"setMyProperty:\"), nsvalue)",
+				"global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle (\"setMyProperty:\"), nsvalue)",
 			];
 
 			property = new Property (
@@ -85,10 +85,10 @@ public class BindingSyntaxFactoryPropertyTests {
 			yield return [
 				property,
 				$"ret = {Global ("CoreFoundation.CFString")}.FromHandle ({Global ("ObjCRuntime.Messaging")}.NativeHandle_objc_msgSend (this.Handle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"myProperty\")), false)",
-				$"ret = {Global ("CoreFoundation.CFString")}.FromHandle ({Global ("ObjCRuntime.Messaging")}.NativeHandle_objc_msgSendSuper (this.Handle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"myProperty\")), false)",
+				$"ret = {Global ("CoreFoundation.CFString")}.FromHandle ({Global ("ObjCRuntime.Messaging")}.NativeHandle_objc_msgSendSuper (this.SuperHandle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"myProperty\")), false)",
 				"nsvalue",
 				"global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"setMyProperty:\"), nsvalue)",
-				"global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"setMyProperty:\"), nsvalue)"
+				"global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle (\"setMyProperty:\"), nsvalue)"
 			];
 
 			property = new Property (
@@ -120,10 +120,10 @@ public class BindingSyntaxFactoryPropertyTests {
 			yield return [
 				property,
 				$"ret = {Global ("CoreFoundation.CFArray")}.StringArrayFromHandle ({Global ("ObjCRuntime.Messaging")}.NativeHandle_objc_msgSend (this.Handle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"myProperty\")), false)!",
-				$"ret = {Global ("CoreFoundation.CFArray")}.StringArrayFromHandle ({Global ("ObjCRuntime.Messaging")}.NativeHandle_objc_msgSendSuper (this.Handle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"myProperty\")), false)!",
+				$"ret = {Global ("CoreFoundation.CFArray")}.StringArrayFromHandle ({Global ("ObjCRuntime.Messaging")}.NativeHandle_objc_msgSendSuper (this.SuperHandle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"myProperty\")), false)!",
 				"nsa_value.Handle",
 				"global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"setMyProperty:\"), nsa_value.Handle)",
-				"global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"setMyProperty:\"), nsa_value.Handle)",
+				"global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle (\"setMyProperty:\"), nsa_value.Handle)",
 			];
 
 			property = new Property (
@@ -155,10 +155,10 @@ public class BindingSyntaxFactoryPropertyTests {
 			yield return [
 				property,
 				$"ret = {Global ("CoreFoundation.CFArray")}.StringArrayFromHandle ({Global ("ObjCRuntime.Messaging")}.NativeHandle_objc_msgSend (this.Handle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"myProperty\")), false)",
-				$"ret = {Global ("CoreFoundation.CFArray")}.StringArrayFromHandle ({Global ("ObjCRuntime.Messaging")}.NativeHandle_objc_msgSendSuper (this.Handle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"myProperty\")), false)",
+				$"ret = {Global ("CoreFoundation.CFArray")}.StringArrayFromHandle ({Global ("ObjCRuntime.Messaging")}.NativeHandle_objc_msgSendSuper (this.SuperHandle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"myProperty\")), false)",
 				"nsa_value.Handle",
 				"global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"setMyProperty:\"), nsa_value.Handle)",
-				"global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"setMyProperty:\"), nsa_value.Handle)",
+				"global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle (\"setMyProperty:\"), nsa_value.Handle)",
 			];
 
 			property = new Property (
@@ -190,10 +190,10 @@ public class BindingSyntaxFactoryPropertyTests {
 			yield return [
 				property,
 				$"ret = {Global ("ObjCRuntime.Messaging")}.int_objc_msgSend (this.Handle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"myProperty\"))",
-				$"ret = {Global ("ObjCRuntime.Messaging")}.int_objc_msgSendSuper (this.Handle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"myProperty\"))",
+				$"ret = {Global ("ObjCRuntime.Messaging")}.int_objc_msgSendSuper (this.SuperHandle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"myProperty\"))",
 				"value",
 				"global::ObjCRuntime.Messaging.void_objc_msgSend_int (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"setMyProperty:\"), value)",
-				"global::ObjCRuntime.Messaging.void_objc_msgSendSuper_int (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"setMyProperty:\"), value)",
+				"global::ObjCRuntime.Messaging.void_objc_msgSendSuper_int (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle (\"setMyProperty:\"), value)",
 			];
 
 			property = new Property (
@@ -225,10 +225,10 @@ public class BindingSyntaxFactoryPropertyTests {
 			yield return [
 				property,
 				$"ret = {Global ("ObjCRuntime.Messaging")}.uint_objc_msgSend (this.Handle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"myProperty\"))",
-				$"ret = {Global ("ObjCRuntime.Messaging")}.uint_objc_msgSendSuper (this.Handle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"myProperty\"))",
+				$"ret = {Global ("ObjCRuntime.Messaging")}.uint_objc_msgSendSuper (this.SuperHandle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"myProperty\"))",
 				"value",
 				"global::ObjCRuntime.Messaging.void_objc_msgSend_uint (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"setMyProperty:\"), value)",
-				"global::ObjCRuntime.Messaging.void_objc_msgSendSuper_uint (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"setMyProperty:\"), value)"
+				"global::ObjCRuntime.Messaging.void_objc_msgSendSuper_uint (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle (\"setMyProperty:\"), value)"
 			];
 
 			property = new Property (
@@ -260,10 +260,10 @@ public class BindingSyntaxFactoryPropertyTests {
 			yield return [
 				property,
 				$"ret = {Global ("ObjCRuntime.Messaging")}.bool_objc_msgSend (this.Handle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"myProperty\")) != 0",
-				$"ret = {Global ("ObjCRuntime.Messaging")}.bool_objc_msgSendSuper (this.Handle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"myProperty\")) != 0",
+				$"ret = {Global ("ObjCRuntime.Messaging")}.bool_objc_msgSendSuper (this.SuperHandle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"myProperty\")) != 0",
 				"value ? (byte) 1 : (byte) 0",
 				"global::ObjCRuntime.Messaging.void_objc_msgSend_bool (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"setMyProperty:\"), value ? (byte) 1 : (byte) 0)",
-				"global::ObjCRuntime.Messaging.void_objc_msgSendSuper_bool (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"setMyProperty:\"), value ? (byte) 1 : (byte) 0)"
+				"global::ObjCRuntime.Messaging.void_objc_msgSendSuper_bool (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle (\"setMyProperty:\"), value ? (byte) 1 : (byte) 0)"
 			];
 
 			property = new Property (
@@ -295,10 +295,10 @@ public class BindingSyntaxFactoryPropertyTests {
 			yield return [
 				property,
 				$"ret = {Global ("ObjCRuntime.Runtime")}.GetNSObject<{Global ("Foundation.NSObject")}> ({Global ("ObjCRuntime.Messaging")}.NativeHandle_objc_msgSend (this.Handle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"myProperty\")))!",
-				$"ret = {Global ("ObjCRuntime.Runtime")}.GetNSObject<{Global ("Foundation.NSObject")}> ({Global ("ObjCRuntime.Messaging")}.NativeHandle_objc_msgSendSuper (this.Handle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"myProperty\")))!",
+				$"ret = {Global ("ObjCRuntime.Runtime")}.GetNSObject<{Global ("Foundation.NSObject")}> ({Global ("ObjCRuntime.Messaging")}.NativeHandle_objc_msgSendSuper (this.SuperHandle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"myProperty\")))!",
 				"value__handle__",
 				"global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"setMyProperty:\"), value__handle__)",
-				"global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"setMyProperty:\"), value__handle__)"
+				"global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle (\"setMyProperty:\"), value__handle__)"
 			];
 
 			property = new Property (
@@ -330,10 +330,10 @@ public class BindingSyntaxFactoryPropertyTests {
 			yield return [
 				property,
 				$"ret = {Global ("ObjCRuntime.Runtime")}.GetNSObject<{Global ("Foundation.NSObject")}> ({Global ("ObjCRuntime.Messaging")}.NativeHandle_objc_msgSend (this.Handle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"myProperty\")))",
-				$"ret = {Global ("ObjCRuntime.Runtime")}.GetNSObject<{Global ("Foundation.NSObject")}> ({Global ("ObjCRuntime.Messaging")}.NativeHandle_objc_msgSendSuper (this.Handle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"myProperty\")))",
+				$"ret = {Global ("ObjCRuntime.Runtime")}.GetNSObject<{Global ("Foundation.NSObject")}> ({Global ("ObjCRuntime.Messaging")}.NativeHandle_objc_msgSendSuper (this.SuperHandle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"myProperty\")))",
 				"value__handle__",
 				"global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"setMyProperty:\"), value__handle__)",
-				"global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"setMyProperty:\"), value__handle__)"
+				"global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle (\"setMyProperty:\"), value__handle__)"
 			];
 
 			property = new Property (
@@ -365,10 +365,10 @@ public class BindingSyntaxFactoryPropertyTests {
 			yield return [
 				property,
 				$"ret = {Global ("CoreFoundation.CFArray")}.ArrayFromHandle<{Global ("Foundation.NSObject")}> ({Global ("ObjCRuntime.Messaging")}.NativeHandle_objc_msgSend (this.Handle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"myProperty\")))!",
-				$"ret = {Global ("CoreFoundation.CFArray")}.ArrayFromHandle<{Global ("Foundation.NSObject")}> ({Global ("ObjCRuntime.Messaging")}.NativeHandle_objc_msgSendSuper (this.Handle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"myProperty\")))!",
+				$"ret = {Global ("CoreFoundation.CFArray")}.ArrayFromHandle<{Global ("Foundation.NSObject")}> ({Global ("ObjCRuntime.Messaging")}.NativeHandle_objc_msgSendSuper (this.SuperHandle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"myProperty\")))!",
 				"nsa_value.Handle",
 				"global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"setMyProperty:\"), nsa_value.Handle)",
-				"global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"setMyProperty:\"), nsa_value.Handle)"
+				"global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle (\"setMyProperty:\"), nsa_value.Handle)"
 			];
 
 			property = new Property (
@@ -401,10 +401,10 @@ public class BindingSyntaxFactoryPropertyTests {
 			yield return [
 				property,
 				$"ret = {Global ("Foundation.NSNumber")}.ToInt32 ({Global ("ObjCRuntime.Messaging")}.NativeHandle_objc_msgSend (this.Handle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"myProperty\")))",
-				$"ret = {Global ("Foundation.NSNumber")}.ToInt32 ({Global ("ObjCRuntime.Messaging")}.NativeHandle_objc_msgSendSuper (this.Handle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"myProperty\")))",
+				$"ret = {Global ("Foundation.NSNumber")}.ToInt32 ({Global ("ObjCRuntime.Messaging")}.NativeHandle_objc_msgSendSuper (this.SuperHandle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"myProperty\")))",
 				"nsb_value__handle__",
 				"global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"setMyProperty:\"), nsb_value__handle__)",
-				"global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"setMyProperty:\"), nsb_value__handle__)"
+				"global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle (\"setMyProperty:\"), nsb_value__handle__)"
 			];
 
 			property = new Property (
@@ -437,10 +437,10 @@ public class BindingSyntaxFactoryPropertyTests {
 			yield return [
 				property,
 				$"ret = {Global ("Foundation.NSNumber")}.ToInt64 ({Global ("ObjCRuntime.Messaging")}.NativeHandle_objc_msgSend (this.Handle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"myProperty\")))",
-				$"ret = {Global ("Foundation.NSNumber")}.ToInt64 ({Global ("ObjCRuntime.Messaging")}.NativeHandle_objc_msgSendSuper (this.Handle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"myProperty\")))",
+				$"ret = {Global ("Foundation.NSNumber")}.ToInt64 ({Global ("ObjCRuntime.Messaging")}.NativeHandle_objc_msgSendSuper (this.SuperHandle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"myProperty\")))",
 				"nsb_value__handle__",
 				"global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"setMyProperty:\"), nsb_value__handle__)",
-				"global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"setMyProperty:\"), nsb_value__handle__)",
+				"global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle (\"setMyProperty:\"), nsb_value__handle__)",
 			];
 
 			property = new Property (
@@ -473,10 +473,10 @@ public class BindingSyntaxFactoryPropertyTests {
 			yield return [
 				property,
 				$"ret = {Global ("Foundation.NSArray")}.ArrayFromHandleFunc<int> ({Global ("ObjCRuntime.Messaging")}.NativeHandle_objc_msgSend (this.Handle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"myProperty\")), {Global ("Foundation.NSNumber")}.ToInt32, false)",
-				$"ret = {Global ("Foundation.NSArray")}.ArrayFromHandleFunc<int> ({Global ("ObjCRuntime.Messaging")}.NativeHandle_objc_msgSendSuper (this.Handle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"myProperty\")), {Global ("Foundation.NSNumber")}.ToInt32, false)",
+				$"ret = {Global ("Foundation.NSArray")}.ArrayFromHandleFunc<int> ({Global ("ObjCRuntime.Messaging")}.NativeHandle_objc_msgSendSuper (this.SuperHandle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"myProperty\")), {Global ("Foundation.NSNumber")}.ToInt32, false)",
 				"nsa_value__handle__",
 				"global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"setMyProperty:\"), nsa_value__handle__)",
-				"global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"setMyProperty:\"), nsa_value__handle__)"
+				"global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle (\"setMyProperty:\"), nsa_value__handle__)"
 			];
 
 			property = new Property (
@@ -509,10 +509,10 @@ public class BindingSyntaxFactoryPropertyTests {
 			yield return [
 				property,
 				$"ret = {Global ("Foundation.NSArray")}.ArrayFromHandleFunc<uint> ({Global ("ObjCRuntime.Messaging")}.NativeHandle_objc_msgSend (this.Handle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"myProperty\")), {Global ("Foundation.NSNumber")}.ToUInt32, false)",
-				$"ret = {Global ("Foundation.NSArray")}.ArrayFromHandleFunc<uint> ({Global ("ObjCRuntime.Messaging")}.NativeHandle_objc_msgSendSuper (this.Handle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"myProperty\")), {Global ("Foundation.NSNumber")}.ToUInt32, false)",
+				$"ret = {Global ("Foundation.NSArray")}.ArrayFromHandleFunc<uint> ({Global ("ObjCRuntime.Messaging")}.NativeHandle_objc_msgSendSuper (this.SuperHandle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"myProperty\")), {Global ("Foundation.NSNumber")}.ToUInt32, false)",
 				"nsa_value__handle__",
 				"global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"setMyProperty:\"), nsa_value__handle__)",
-				"global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"setMyProperty:\"), nsa_value__handle__)"
+				"global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle (\"setMyProperty:\"), nsa_value__handle__)"
 			];
 
 			property = new Property (
@@ -545,10 +545,10 @@ public class BindingSyntaxFactoryPropertyTests {
 			yield return [
 				property,
 				$"ret = {Global ("AVFoundation.AVCaptureSystemPressureLevelExtensions")}.GetValue ({Global ("ObjCRuntime.Messaging")}.NativeHandle_objc_msgSend (this.Handle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"myProperty\")))",
-				$"ret = {Global ("AVFoundation.AVCaptureSystemPressureLevelExtensions")}.GetValue ({Global ("ObjCRuntime.Messaging")}.NativeHandle_objc_msgSendSuper (this.Handle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"myProperty\")))",
+				$"ret = {Global ("AVFoundation.AVCaptureSystemPressureLevelExtensions")}.GetValue ({Global ("ObjCRuntime.Messaging")}.NativeHandle_objc_msgSendSuper (this.SuperHandle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"myProperty\")))",
 				"nsb_value__handle__",
 				"global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"setMyProperty:\"), nsb_value__handle__)",
-				"global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"setMyProperty:\"), nsb_value__handle__)",
+				"global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle (\"setMyProperty:\"), nsb_value__handle__)",
 			];
 
 			property = new Property (
@@ -581,10 +581,10 @@ public class BindingSyntaxFactoryPropertyTests {
 			yield return [
 				property,
 				$"ret = {Global ("Foundation.NSValue")}.ToCATransform3D ({Global ("ObjCRuntime.Messaging")}.NativeHandle_objc_msgSend (this.Handle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"myProperty\")))",
-				$"ret = {Global ("Foundation.NSValue")}.ToCATransform3D ({Global ("ObjCRuntime.Messaging")}.NativeHandle_objc_msgSendSuper (this.Handle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"myProperty\")))",
+				$"ret = {Global ("Foundation.NSValue")}.ToCATransform3D ({Global ("ObjCRuntime.Messaging")}.NativeHandle_objc_msgSendSuper (this.SuperHandle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"myProperty\")))",
 				"nsb_value__handle__",
 				"global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"setMyProperty:\"), nsb_value__handle__)",
-				"global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"setMyProperty:\"), nsb_value__handle__)",
+				"global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle (\"setMyProperty:\"), nsb_value__handle__)",
 			];
 
 			property = new Property (
@@ -617,10 +617,10 @@ public class BindingSyntaxFactoryPropertyTests {
 			yield return [
 				property,
 				$"ret = {Global ("Foundation.NSValue")}.ToCGPoint ({Global ("ObjCRuntime.Messaging")}.NativeHandle_objc_msgSend (this.Handle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"myProperty\")))",
-				$"ret = {Global ("Foundation.NSValue")}.ToCGPoint ({Global ("ObjCRuntime.Messaging")}.NativeHandle_objc_msgSendSuper (this.Handle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"myProperty\")))",
+				$"ret = {Global ("Foundation.NSValue")}.ToCGPoint ({Global ("ObjCRuntime.Messaging")}.NativeHandle_objc_msgSendSuper (this.SuperHandle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"myProperty\")))",
 				"nsb_value__handle__",
 				"global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"setMyProperty:\"), nsb_value__handle__)",
-				"global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"setMyProperty:\"), nsb_value__handle__)",
+				"global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle (\"setMyProperty:\"), nsb_value__handle__)",
 			];
 
 			property = new Property (
@@ -653,10 +653,10 @@ public class BindingSyntaxFactoryPropertyTests {
 			yield return [
 				property,
 				$"ret = {Global ("Foundation.NSArray")}.ArrayFromHandleFunc<{Global ("CoreAnimation.CATransform3D")}> ({Global ("ObjCRuntime.Messaging")}.NativeHandle_objc_msgSend (this.Handle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"myProperty\")), {Global ("Foundation.NSValue")}.ToCATransform3D, false)",
-				$"ret = {Global ("Foundation.NSArray")}.ArrayFromHandleFunc<{Global ("CoreAnimation.CATransform3D")}> ({Global ("ObjCRuntime.Messaging")}.NativeHandle_objc_msgSendSuper (this.Handle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"myProperty\")), {Global ("Foundation.NSValue")}.ToCATransform3D, false)",
+				$"ret = {Global ("Foundation.NSArray")}.ArrayFromHandleFunc<{Global ("CoreAnimation.CATransform3D")}> ({Global ("ObjCRuntime.Messaging")}.NativeHandle_objc_msgSendSuper (this.SuperHandle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"myProperty\")), {Global ("Foundation.NSValue")}.ToCATransform3D, false)",
 				"nsa_value__handle__",
 				"global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"setMyProperty:\"), nsa_value__handle__)",
-				"global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"setMyProperty:\"), nsa_value__handle__)"
+				"global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle (\"setMyProperty:\"), nsa_value__handle__)"
 			];
 
 			property = new Property (
@@ -689,10 +689,10 @@ public class BindingSyntaxFactoryPropertyTests {
 			yield return [
 				property,
 				$"ret = {Global ("Foundation.NSArray")}.ArrayFromHandleFunc<{Global ("CoreGraphics.CGPoint")}> ({Global ("ObjCRuntime.Messaging")}.NativeHandle_objc_msgSend (this.Handle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"myProperty\")), {Global ("Foundation.NSValue")}.ToCGPoint, false)",
-				$"ret = {Global ("Foundation.NSArray")}.ArrayFromHandleFunc<{Global ("CoreGraphics.CGPoint")}> ({Global ("ObjCRuntime.Messaging")}.NativeHandle_objc_msgSendSuper (this.Handle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"myProperty\")), {Global ("Foundation.NSValue")}.ToCGPoint, false)",
+				$"ret = {Global ("Foundation.NSArray")}.ArrayFromHandleFunc<{Global ("CoreGraphics.CGPoint")}> ({Global ("ObjCRuntime.Messaging")}.NativeHandle_objc_msgSendSuper (this.SuperHandle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"myProperty\")), {Global ("Foundation.NSValue")}.ToCGPoint, false)",
 				"nsa_value__handle__",
 				"global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"setMyProperty:\"), nsa_value__handle__)",
-				"global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"setMyProperty:\"), nsa_value__handle__)"
+				"global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle (\"setMyProperty:\"), nsa_value__handle__)"
 			];
 
 			// test property with no setter
@@ -719,7 +719,7 @@ public class BindingSyntaxFactoryPropertyTests {
 			yield return [
 				property,
 				$"ret = {Global ("Foundation.NSArray")}.ArrayFromHandleFunc<{Global ("CoreGraphics.CGPoint")}> ({Global ("ObjCRuntime.Messaging")}.NativeHandle_objc_msgSend (this.Handle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"myProperty\")), {Global ("Foundation.NSValue")}.ToCGPoint, false)",
-				$"ret = {Global ("Foundation.NSArray")}.ArrayFromHandleFunc<{Global ("CoreGraphics.CGPoint")}> ({Global ("ObjCRuntime.Messaging")}.NativeHandle_objc_msgSendSuper (this.Handle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"myProperty\")), {Global ("Foundation.NSValue")}.ToCGPoint, false)",
+				$"ret = {Global ("Foundation.NSArray")}.ArrayFromHandleFunc<{Global ("CoreGraphics.CGPoint")}> ({Global ("ObjCRuntime.Messaging")}.NativeHandle_objc_msgSendSuper (this.SuperHandle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"myProperty\")), {Global ("Foundation.NSValue")}.ToCGPoint, false)",
 				null!,
 				null!,
 				null!,

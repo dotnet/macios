@@ -204,5 +204,4 @@ public partial class NSUserDefaults
 		}
 
 	}
-	// TODO: add binding code here
 }

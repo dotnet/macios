@@ -100,14 +100,27 @@ static partial class BindingSyntaxFactory {
 	}
 
 	/// <summary>
+	/// Generates the "this.SuperHandle" expression.
+	/// </summary>
+	/// <returns></returns>
+	public static MemberAccessExpressionSyntax ThisSuperHandle ()
+	{
+		return MemberAccessExpression (
+			SyntaxKind.SimpleMemberAccessExpression,
+			ThisExpression (),
+			IdentifierName ("SuperHandle"));
+	}
+
+	/// <summary>
 	/// Generates the expression to call the objc_msgSend method.
 	/// </summary>
 	/// <param name="objcMsgSendMethod">The name of the method in the messaging namespace.</param>
 	/// <param name="selector">The selector.</param>
 	/// <param name="parameters">An optional argument list.</param>
+	/// <param name="isSuper">A value indicating whether to call the base implementation (`super`).</param>
 	/// <returns>The expression needed to call a specific messaging method.</returns>
 	public static InvocationExpressionSyntax MessagingInvocation (string objcMsgSendMethod, string selector,
-		ImmutableArray<ArgumentSyntax> parameters)
+		ImmutableArray<ArgumentSyntax> parameters, bool isSuper)
 	{
 		// the size of the arguments is 2 + the optional arguments
 		// [0] = the handle
@@ -118,7 +131,7 @@ static partial class BindingSyntaxFactory {
 		var parametersCount = 2 + parameters.Length;
 		var args = new SyntaxNodeOrToken [(2 * parametersCount) - 1];
 		// the first two arguments are the selector and the handle, we add those by hand
-		args [0] = Argument (ThisHandle ());
+		args [0] = Argument (isSuper ? ThisSuperHandle () : ThisHandle ());
 		args [1] = Token (SyntaxKind.CommaToken).WithTrailingTrivia (Space);
 		args [2] = Argument (SelectorGetHandle (selector));
 

@@ -152,6 +152,7 @@ partial class TestRuntime {
 #else
 		NSWindow? window;
 #endif // HAS_UIKIT
+		bool close_window;
 
 		public void Show (XImage? imageToShow)
 		{
@@ -163,7 +164,13 @@ partial class TestRuntime {
 						.SharedApplication
 						.ConnectedScenes
 						.SelectMany<UIScene, UIWindow> (v => (v as UIWindowScene)?.Windows ?? Array.Empty<UIWindow> ())
-						.Last (v => v.IsKeyWindow);
+						.LastOrDefault (v => v.IsKeyWindow);
+			if (window is null) {
+				window = new UIWindow (UIScreen.MainScreen.Bounds);
+				window.RootViewController = vc;
+				window.MakeKeyAndVisible ();
+				close_window = true;
+			}
 			initialRootViewController = window.RootViewController!;
 			navigation = initialRootViewController as UINavigationController;
 
@@ -183,6 +190,7 @@ partial class TestRuntime {
 			window.SetFrameOrigin (loc);
 			window.ContentViewController = vc;
 			window.MakeKeyAndOrderFront (null);
+			close_window = true;
 #endif // HAS_UIKIT
 		}
 
@@ -194,13 +202,17 @@ partial class TestRuntime {
 #if HAS_UIKIT
 			if (navigation is not null) {
 				navigation.PopViewController (false);
-			} else {
+			} else if (!close_window) {
 				window.RootViewController = initialRootViewController;
 			}
-#else
-			window.Close ();
-			window.Dispose ();
 #endif // HAS_UIKIT
+
+			if (close_window) {
+#if !HAS_UIKIT
+				window.Close ();
+#endif
+				window.Dispose ();
+			}
 
 			window = null;
 		}

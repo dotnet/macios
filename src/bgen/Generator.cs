@@ -1906,7 +1906,8 @@ public partial class Generator : IMemberGatherer {
 							getter = "{1} GetUIEdgeInsets ({0})";
 							setter = "SetUIEdgeInsets ({0}, {1}value)";
 						} else {
-							throw new BindingException (1033, true, pi.PropertyType, dictType, pi.Name);
+							exceptions.Add (new BindingException (1033, true, pi.PropertyType, dictType, pi.Name));
+							continue;
 						}
 					} else {
 						if (pi.PropertyType.IsArray) {
@@ -1928,7 +1929,8 @@ public partial class Generator : IMemberGatherer {
 								getter = "GetArray<CTFontDescriptor> ({0}, (ptr) => new CTFontDescriptor (ptr, false))";
 								setter = "SetArrayValue ({0}, value)";
 							} else {
-								throw new BindingException (1033, true, pi.PropertyType, dictType, pi.Name);
+								exceptions.Add (new BindingException (1033, true, pi.PropertyType, dictType, pi.Name));
+								continue;
 							}
 						} else if (pi.PropertyType == TypeCache.NSString) {
 							getter = "GetNSStringValue ({0})";
@@ -1962,7 +1964,8 @@ public partial class Generator : IMemberGatherer {
 							getter = "GetNativeValue<" + pi.PropertyType + "> ({0})";
 							setter = "SetNativeValue ({0}, value)";
 						} else {
-							throw new BindingException (1033, true, pi.PropertyType, dictType, pi.Name);
+							exceptions.Add (new BindingException (1033, true, pi.PropertyType, dictType, pi.Name));
+							continue;
 						}
 					}
 

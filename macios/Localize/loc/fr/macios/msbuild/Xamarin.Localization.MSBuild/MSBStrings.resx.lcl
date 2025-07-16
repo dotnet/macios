@@ -1122,9 +1122,39 @@
       </Item>
       <Item ItemId=";E0174" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The xcframework {0} has an incorrect or unknown format and cannot be processed.]]></Val>
+          <Val><![CDATA[Failed to resolve the xcframework {0} in {1} due to an unexpected error: {2}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Le xcframework {0} a un format incorrect ou inconnu et ne peut pas être traité.]]></Val>
+            <Val><![CDATA[Échec de la résolution du xcframework {0} dans {1} en raison d’une erreur inattendue : {2}]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The xcframework {0} has an incorrect or unknown format and cannot be processed.]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";E0174a" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The xcframework {0} has an incorrect or unknown format and cannot be processed: expected the value for 'CFBundlePackageType' to be 'XFWK' in the xcframework's Info.plist, but it's '{1}'.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Le xcframework {0} a un format incorrect ou inconnu et ne peut pas être traité : la valeur de « CFBundlePackageType » doit être « XFWK » dans le fichier Info.plist du xcframework, mais elle est « {1} ».]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";E0174b" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The xcframework {0} has an incorrect or unknown format and cannot be processed: there's no 'AvailableLibraries' entry in the xcframework's Info.plist.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Le format du xcframework {0} est incorrect ou inconnu et ne peut pas être traité : il n'y a pas d'entrée « AvailableLibraries » dans l'Info.plist du xcframework.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";E0174c" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The xcframework {0} has an incorrect or unknown format and cannot be processed: expected some 'AvailableLibraries' entries in the xcframework's Info.plist, but found 0 entries.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Le xcframework {0} a un format incorrect ou inconnu et ne peut pas être traité : des entrées « AvailableLibraries » sont attendues dans le fichier Info.plist du xcframework, mais aucune entrée n'a été trouvée.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -2697,6 +2727,15 @@
           <Val><![CDATA[The {0} item '{1}' does not have a 'LogicalName' metadata.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[L’élément {0} « {1} » n’a pas de métadonnées « LogicalName ».]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";E7158" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The {0} item '{1}' has been included more than once, with different 'LogicalName' metadata: {2}, {3}.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[L’{0} élément « {1} » a été inclus plusieurs fois, avec des métadonnées « LogicalName » différentes : {2}, {3}.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

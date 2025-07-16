@@ -16,9 +16,6 @@
     <!-- Don't remove native symbols, because it makes debugging native crashes harder -->
     <MtouchNoSymbolStrip>true</MtouchNoSymbolStrip>
 
-    <CodesignEntitlements Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'iOS' ">$(MonoTouchTestDirectory)\Entitlements.plist</CodesignEntitlements>
-    <CodesignEntitlements Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tvOS'">$(MonoTouchTestDirectory)\Entitlements.plist</CodesignEntitlements>
-
     <DefineConstants Condition="'$(Configuration)' == 'Debug'">$(DefineConstants);DEBUG</DefineConstants>
 
     <!-- warning CA1422: This call site is reachable on: '...': we use APIs that aren't available on a certain OS platform all the time (in some cases to verify any broken behavior), so ignore such warnings -->
@@ -52,7 +49,10 @@
   <ItemGroup>
     <CustomEntitlements Include="com.apple.security.network.client" Condition="'$(_PlatformName)' == 'macOS' Or '$(_PlatformName)' == 'MacCatalyst'" Type="boolean" Value="true" />
     <CustomEntitlements Include="com.apple.security.network.server" Condition="'$(_PlatformName)' == 'macOS' Or '$(_PlatformName)' == 'MacCatalyst'" Type="boolean" Value="true" />
-    <CustomEntitlements Include="com.apple.developer.networking.multicast" Condition="'$(_PlatformName)' == 'iOS'" Type="boolean" Value="true" />
+    <CustomEntitlements Include="com.apple.developer.networking.multicast" Condition="'$(_PlatformName)' == 'iOS' And '$(SdkIsSimulator)' == 'true'" Type="boolean" Value="true" />
+    <CustomEntitlements Include="com.apple.developer.ubiquity-kvstore-identifier" Condition="('$(_PlatformName)' == 'iOS' Or '$(_PlatformName)' == 'tvOS') And '$(SdkIsSimulator)' == 'true'" Type="string" Value="%24(TeamIdentifierPrefix)com.xamarin.monotouch-test" />
+    <CustomEntitlements Include="keychain-access-groups" Condition="('$(_PlatformName)' == 'iOS' Or '$(_PlatformName)' == 'tvOS') And '$(SdkIsSimulator)' == 'true'" Type="stringarray" Value="%24(AppIdentifierPrefix)com.xamarin.monotouch-test" />
+    <CustomEntitlements Include="com.apple.developer.pass-type-identifiers" Condition="('$(_PlatformName)' == 'iOS' Or '$(_PlatformName)' == 'tvOS') And '$(SdkIsSimulator)' == 'true'" Type="stringarray" Value=" A93A5CM278.tests/monotouch-test/Entitlements.plist" />
   </ItemGroup>
 
   <ItemGroup>
@@ -92,10 +92,6 @@
 
   <Import Project="$(RootTestsDirectory)/common/shared-dotnet.csproj" />
 
-  <PropertyGroup>
-    <!-- Must be done after importing shared-dotnet.csproj -->
-    <CodesignEntitlements Condition="'$(_IsSimulatorBuild)' == 'true'">$(MonoTouchTestDirectory)\Entitlements.plist</CodesignEntitlements>
-  </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="$(RootTestsDirectory)\EmbeddedResources\dotnet\$(_PlatformName)\EmbeddedResources.csproj" />
@@ -110,7 +106,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="$(MonoTouchTestDirectory)\Entitlements.plist" />
     <None Include="$(MonoTouchTestDirectory)\app.config" />
     <None Include="$(MonoTouchTestDirectory)\EmptyNib.xib" />
   </ItemGroup>

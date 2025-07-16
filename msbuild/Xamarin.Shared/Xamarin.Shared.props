@@ -43,12 +43,19 @@ Copyright (C) 2020 Microsoft. All rights reserved.
 	<!-- Sometimes we've used different variable names for the same thing for Xamarin.iOS and Xamarin.Mac projects. Here we try to unify those variables -->
 	<PropertyGroup>
 		<!-- ResourcePrefix -->
+		<!-- First set platform-specific properties if not already set (for backwards compatibility) -->
 		<MonoMacResourcePrefix Condition="'$(_PlatformName)' == 'macOS' And '$(MonoMacResourcePrefix)' == ''">Resources</MonoMacResourcePrefix>
 		<XamMacResourcePrefix Condition="'$(_PlatformName)' == 'macOS' And '$(XamMacResourcePrefix)' == ''">$(MonoMacResourcePrefix)</XamMacResourcePrefix>
 		<XamMacResourcePrefix Condition="'$(_PlatformName)' == 'macOS' And '$(XamMacResourcePrefix)' == ''">Resources</XamMacResourcePrefix>
 		<IPhoneResourcePrefix Condition="'$(_PlatformName)' != 'macOS' And '$(IPhoneResourcePrefix)' == ''">Resources</IPhoneResourcePrefix>
-		<_ResourcePrefix Condition="'$(_PlatformName)' == 'macOS'">$(XamMacResourcePrefix)</_ResourcePrefix>
-		<_ResourcePrefix Condition="'$(_PlatformName)' != 'macOS'">$(IPhoneResourcePrefix)</_ResourcePrefix>
+		
+		<!-- Set AppBundleResourcePrefix from platform-specific properties if not already set -->
+		<AppBundleResourcePrefix Condition="'$(AppBundleResourcePrefix)' == '' And '$(_PlatformName)' == 'macOS'">$(XamMacResourcePrefix)</AppBundleResourcePrefix>
+		<AppBundleResourcePrefix Condition="'$(AppBundleResourcePrefix)' == '' And '$(_PlatformName)' != 'macOS'">$(IPhoneResourcePrefix)</AppBundleResourcePrefix>
+		<AppBundleResourcePrefix Condition="'$(AppBundleResourcePrefix)' == ''">Resources</AppBundleResourcePrefix>
+		
+		<!-- Set _ResourcePrefix from AppBundleResourcePrefix -->
+		<_ResourcePrefix>$(AppBundleResourcePrefix)</_ResourcePrefix>
 
 		<!-- SdkVersion -->
 		<_SdkVersion Condition="'$(_PlatformName)' == 'macOS'">$(MacOSXSdkVersion)</_SdkVersion>

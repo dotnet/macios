@@ -9,12 +9,12 @@ Generator
 The generator takes API definition files (most *.cs files in src/) as input,
 and generates the required binding code.
 
-There is one generator executable, based on IKVM, that's used to generate the
-binding code for all platforms.
+There is one generator executable, that's used to generate the binding code
+for all platforms.
 
 The generator relies heavily on binding attributes; all the binding attributes
 (that are not in the platform assembly) are compiled into a separate attribute
-assembly (Xamarin.[iOS|TVOS|WatchOS|Mac].BindingAttributes.dll).
+assembly (Xamarin.Apple.BindingAttributes.dll).
 
 Since the platform assemblies (and thus all the binding attributes assemblies
 as well) reference each platform's BCL, those assemblies can't be loaded
@@ -23,9 +23,8 @@ code too complicated, all the attributes are also compiled into the generator
 executable, and then instantiated as mock-objects of the real attributes.
 
 The solution generator.sln can be used to debug the generator. There are
-multiple run configurations (`ios`, `tvos`, `watchos`, `mac-unified`,
-`mac-full`), each configured to execute the generator with the options for the
-corresponding profile.
+multiple run configurations, each configured to execute the generator with the
+options for the corresponding profile.
 
 ### Generator diff
 
@@ -37,91 +36,57 @@ This is **required** when making changes to the generator.
 3. Checkout the feature branch that requires the diff.
 4. Do `make generator-diff`.
 
-*Tip: do `git diff | pbcopy` in `xamarin-ios/src/generator-reference` and paste that anywhere ([gist](https://gist.github.com) for instance).*
+*Tip: do `git diff | pbcopy` in `macios/src/generator-reference` and paste that anywhere ([gist](https://gist.github.com) for instance).*
 
 Conditional compilation
 =======================
 
 These are the symbols defined for each platform assembly:
 
-| Assembly            | Symbols                            |
-| ------------------  | -----------                        |
-| Xamarin.iOS.dll     | IPHONE MONOTOUCH IOS               |
-| Xamarin.Mac.dll     | MONOMAC                            |
-| Xamarin.TVOS.dll    | IPHONE MONOTOUCH TVOS              |
+| Assembly                  | Symbols                     |
+| ------------------------  | ----------------------------|
+| Microsoft.iOS.dll         | `__IOS__` `IOS`             |
+| Microsoft.macOS.dll       | `__MACOS__` `MONOMAC`       |
+| Microsoft.tvOS.dll        | `__TVOS__` `TVOS`           |
+| Microsoft.MacCatalyst.dll | `__MACCATALYST__` `__IOS__` |
 
-To build core for only one platform, use the platform unique variables `IOS`, `MONOMAC`, or `TVOS`.
+To build core for only one platform, use the platform unique variables
+`__IOS__`, `__MACOS__`, `__MACCATALYST__` or `__TVOS__`. The other variables
+can still be used, but will eventually be phased out.
 
-## Core Assemblies ##
+### Binding process ###
 
-Currently 2 variations of the core Xamarin.iOS assembly and 4 variations of
-the core Xamarin.Mac assembly are produced:
+The binding process is a multi-step process:
 
-### Xamarin.iOS ###
-
-* A 32-bit Unified assembly (uses `System.nint` in place of `NSInteger`, etc.)
-* A 64-bit Unified assembly (same as 32-bit Unified)
-
-### Xamarin.Mac ###
-
-* A 32-bit Unified assembly (uses `System.nint` in place of `NSInteger`, etc.)
-* A 64-bit Unified assembly (same as 32-bit Unified)
-* A 32-bit Full assembly (uses `System.nint` in place of `NSInteger`, and references the v4.5 BCL)
-* A 64-bit Full assembly (same as 32-bit Full)
-
-## Classic Assemblies ###
-
-The 32-bit Classic assemblies for iOS and Mac are no longer built and are now
-copied from the [macios-binaries](https://github.com/xamarin/macios-binaries)
-module. 
-
-The Classic assembly are copied in, tested, and shipped in order to not break customer code. 
-Customers can choose to continue using this assembly, but we will encourage customers to
-move to our Unified assemblies.
-
-The Unified assemblies provides many improvements and support for 64-bit
-iOS and OS X APIs.
-
-### Native Types ###
-
-Most native APIs use `NSInteger` (and related) typedefs. On 32-bit systems,
-these are 32-bit underlying types; on 64-bit systems, these are 64-bit
-underlying types.
-
-Historically Xamarin.iOS and Xamarin.Mac have bound these explicitly as 32-bit
-(`System.Int32`, etc). With the move to 64-bit that has been ongoing in OS X
-for a few versions (10.6/Snow Leopard) and more recently with the anouncement
-of 64-bit support in iOS, we needed a solution to support both worlds.
-
-We have introduced 6 new types to make this possible:
-
-| Native Type   | Legacy (32-bit) CIL Type    | New (32/64-bit) CIL Type |
-| ------------- | --------------------------- | ------------------------ |
-| `NSInteger`   | `System.Int32`              | `System.nint`            |
-| `NSUInteger`  | `System.UInt32`             | `System.nuint`           |
-| `CGFloat`     | `System.Single`             | `System.nfloat`          |
-| `CGSize`      | `System.Drawing.SizeF`      | `CoreGraphics.CGSize`    |
-| `CGPoint`     | `System.Drawing.PointF`     | `CoreGraphics.CGPoint`   |
-| `CGRect`      | `System.Drawing.RectangleF` | `CoreGraphics.CGRect`    |
-
-In the Classic assembly, the `System.Drawing` types are backed by the 32-bit
-`System.Single` type. In the Unified assemblies, the `CoreGraphics` types are
-backed by 32/64-bit `System.nfloat` type
-(`System.Runtime.InteropServices.NFloat` in .NET).
+1. We build an assembly with all the attributes used by the generated code
+   (`Xamarin.Apple.BindingAttributes.dll`)
+2. We build the generator (`bgen`)
+3. We compile a `core.dll` with a few important core types (this is any
+   `<FRAMEWORK>_CORE_SOURCES` mentions in `frameworks.sources`).
+4. We compile all the api definitions into an apidefinition.dll (this is the
+   `<framework.cs>.cs` file in this directory + any `<FRAMEWORK>_API_SOURCES`
+   mentions in `frameworks.sources`). This references `core.dll`, so that must
+   happen first.
+5. We pass the `apidefinition.dll` assembly to `bgen`, asking it to generate
+   the binding code (but not compile it).
+6. We compile the generated binding code + any `<FRAMEWORK>_SOURCES` mentions
+   in `frameworks.sources`.
+7. We inject a reference to Apple's documentation into the xml documentation
+   produced by the C# compiler, using the `adr` command-line tool.
 
 #### Enums ####
 
 Enums are handled specially. Most native enums are backed by `NSInteger` or
 `NSUInteger`. Unfortunately in C#, the backing type of an enum may only be
 one of the primitive integral C# types. Thus, an enum cannot be backed by
-`System.nint` or `System.nuint`.
+`nint` or `nuint`.
 
 The convention is to make *all* enums that are backed natively by `NSInteger`
 or `NSUInteger` backed by a 64-bit primitive integral C# type (`long` or
 `ulong`) and then annotated with the `[Native]` attribute. This ensures that
 API is identical between the 32/64-bit assemblies but also hints to the code
 generator that Objective-C runtime calls should first cast the enum to a
-`System.nint` or `System.nuint`.
+`nint` or `nuint`.
 
 **Native Enum Definition**
 
@@ -142,9 +107,9 @@ public enum NSTableViewDropOperation : nuint {
 }
 ```
 
-When dealing with enums in P/Invokes, one must *never* pass such an enum directly.
-The P/Invoke signature should take a `System.nint` or `System.nuint` and a
-wrapper API must cast the enum manually (as mentioned above, this is handled
+When dealing with enums in P/Invokes, one must *never* pass such an enum
+directly. The P/Invoke signature should take a `nint` or `nuint` and a wrapper
+API must cast the enum manually (as mentioned above, this is handled
 automatically for Objective-C APIs by the generator).
 
 **Objective-C Binding**
@@ -169,17 +134,8 @@ public partial class Fooable {
 }
 ```
 
-### `#define` ###
-
-There are a few preprocessor variables that can be used within sources for
-conditional compilation:
-
-| Variable  | Description |
-| --------- | ------------|
-| `MONOMAC` | defined for Xamarin.Mac builds; not defined for Xamarin.iOS |
-| `COREBUILD` | defined when building the intermediate `core.dll` assembly against which the code generator will produce bindings |
-
 ## Source Localization ##
+
 Coming soon!
 
 See [Localization Wiki][Localization-wiki] for more details on our localization process

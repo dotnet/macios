@@ -1210,6 +1210,26 @@ partial class TestRuntime {
 		}
 	}
 
+	public static bool IsiPad {
+		get {
+#if __MACOS__
+			return false;
+#else
+			return UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Pad;
+#endif
+		}
+	}
+
+	public static bool IsiPhone {
+		get {
+#if __MACOS__
+			return false;
+#else
+			return UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone;
+#endif
+		}
+	}
+
 	public static void IgnoreOnMacCatalyst (string message = "")
 	{
 #if __MACCATALYST__
@@ -1464,8 +1484,11 @@ partial class TestRuntime {
 
 	public static uint GetFlags (NSObject obj)
 	{
-		const string fieldName = "actual_flags";
-		return (uint) typeof (NSObject).GetField (fieldName, BindingFlags.Instance | BindingFlags.GetField | BindingFlags.NonPublic)!.GetValue (obj)!;
+		const string name = "flags";
+		var prop = typeof (NSObject).GetProperty (name, BindingFlags.Instance | BindingFlags.NonPublic);
+		if (prop is null)
+			throw new InvalidOperationException ($"Unable to find the property '{name}' in NSObject.");
+		return (uint) prop.GetValue (obj)!;
 	}
 
 	// Determine if linkall was enabled by checking if an unused class in this assembly is still here.

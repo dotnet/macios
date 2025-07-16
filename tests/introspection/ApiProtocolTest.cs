@@ -49,6 +49,10 @@ namespace Introspection {
 				if (TestRuntime.IsSimulator)
 					return !TestRuntime.CheckXcodeVersion (15, 0); // doesn't seem to be available in the iOS simulator until iOS 17+
 				break;
+			case "SensorKit": // SensorKit doesn't exist on iPads
+				if (TestRuntime.IsDevice && TestRuntime.IsiPad)
+					return true;
+				break;
 			}
 
 			switch (type.Name) {

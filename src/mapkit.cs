@@ -3546,6 +3546,7 @@ namespace MapKit {
 		[Export ("initWithLocation:")]
 		NativeHandle Constructor (CLLocation location);
 
+		[Async]
 		[Export ("getMapItemsWithCompletionHandler:")]
 		void GetMapItems (MKReverseGeocodingRequestGetMapItemsCompletionHandler completionHandler);
 

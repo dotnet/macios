@@ -455,7 +455,7 @@ namespace CoreTelephony {
 		[Export ("addPlanWith:completionHandler:")]
 		void AddPlan (CTCellularPlanProvisioningRequest request, Action<CTCellularPlanProvisioningAddPlanResult> completionHandler);
 
-		[iOS (16, 0)]
+		[iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("supportsEmbeddedSIM")]
 		bool SupportsEmbeddedSim { get; }
 

@@ -1406,9 +1406,7 @@ namespace NS {
 ";
 			yield return [
 				nsObjectParameter,
-$@"if (nsObjectParameter is null)
-	{Global ("ObjCRuntime")}.ThrowHelper.ThrowArgumentNullException (nameof (nsObjectParameter));
-",
+				string.Empty,
 			];
 
 			// nullable NSObject parameter
@@ -1491,9 +1489,7 @@ namespace NS {
 
 			yield return [
 				iNativeParameter,
-$@"if (inative is null)
-	{Global ("ObjCRuntime")}.ThrowHelper.ThrowArgumentNullException (nameof (inative));
-",
+				string.Empty,
 			];
 
 			// nullable INativeObject parameter
@@ -1577,9 +1573,7 @@ namespace NS {
 
 			yield return [
 				audioBuffer,
-$@"if (audioBuffer is null)
-	{Global ("ObjCRuntime")}.ThrowHelper.ThrowArgumentNullException (nameof (audioBuffer));
-",
+				string.Empty,
 			];
 
 			var cmSampleBuffer = @"
@@ -1598,9 +1592,7 @@ namespace NS {
 
 			yield return [
 				cmSampleBuffer,
-$@"if (cmSampleBuffer is null)
-	{Global ("ObjCRuntime")}.ThrowHelper.ThrowArgumentNullException (nameof (cmSampleBuffer));
-",
+				string.Empty,
 			];
 
 			var blockParameter = @"

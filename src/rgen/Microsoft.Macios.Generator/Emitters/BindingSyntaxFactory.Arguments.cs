@@ -58,9 +58,9 @@ static partial class BindingSyntaxFactory {
 	internal static ImmutableArray<SyntaxNode> GetNativeInvokeArgumentValidations (in ArgumentInfo argumentInfo)
 	{
 		// if the parameter does not allow the object to be null and it is a reference type, we need to add the null check
-		// otherwise ignore it. We do want this check for INativeObjects (includes NSObject) because the GetNonNullableHandle
-		// will throw an exception if the object is null but that might mean we have other parameters leaking after we create them.
-		if (argumentInfo.Type is { IsReferenceType: true, IsNullable: false } && !argumentInfo.IsByRef) {
+		// otherwise ignore it. We do not want this check for INativeObjects (includes NSObject) because the GetNonNullableHandle
+		// will throw an exception if the object is null.
+		if (argumentInfo.Type is { IsReferenceType: true, IsINativeObject: false, IsNullable: false } && !argumentInfo.IsByRef) {
 			return [ThrowIfNull (argumentInfo.Name)];
 		}
 		return ImmutableArray<SyntaxNode>.Empty;

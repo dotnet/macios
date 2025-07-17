@@ -251,8 +251,6 @@ namespace Cecil.Tests {
 			"SystemConfiguration.CaptiveNetwork.TryGetSupportedInterfaces(out System.String[]&)",
 			"UIKit.UIGestureRecognizer UIKit.UIScrollView::DirectionalPressGestureRecognizer()",
 			"UIKit.UIGraphicsRendererFormat UIKit.UIGraphicsRendererFormat::DefaultFormat()",
-			"WebKit.WKProcessPool",
-			"WebKit.WKProcessPool.EncodeTo(Foundation.NSCoder)",
 		};
 
 		HashSet<string> knownConsistencyIssues = new HashSet<string> { };

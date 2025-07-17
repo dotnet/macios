@@ -119,6 +119,12 @@ static partial class BindingSyntaxFactory {
 	static InvocationExpressionSyntax MemberInvocationExpression (string instanceVariable, string methodName)
 		=> MemberInvocationExpression (IdentifierName (instanceVariable), methodName, ImmutableArray<ArgumentSyntax>.Empty);
 
+	/// <summary>
+	/// Creates an expression statement for a variable assignment.
+	/// </summary>
+	/// <param name="variableName">The name of the variable.</param>
+	/// <param name="value">The expression to assign to the variable.</param>
+	/// <returns>An expression statement syntax for the assignment.</returns>
 	static ExpressionStatementSyntax VariableAssignment (string variableName, ExpressionSyntax value)
 		=> ExpressionStatement (AssignmentExpression (SyntaxKind.SimpleAssignmentExpression,
 				IdentifierName (variableName).WithTrailingTrivia (Space),
@@ -178,6 +184,12 @@ static partial class BindingSyntaxFactory {
 		=> LocalDeclarationStatement (VariableDeclaration (type.WithTrailingTrivia (Space))
 				.WithVariables (SingletonSeparatedList (VariableDeclarator (Identifier (variableName)))));
 
+	/// <summary>
+	/// Creates a throw expression for a specific exception type.
+	/// </summary>
+	/// <param name="type">The type of the exception to throw.</param>
+	/// <param name="message">An optional message for the exception.</param>
+	/// <returns>A throw expression syntax.</returns>
 	static ExpressionSyntax ThrowException (string type, string? message = null)
 	{
 		var throwExpression = ObjectCreationExpression (IdentifierName (type));
@@ -195,9 +207,18 @@ static partial class BindingSyntaxFactory {
 		return ThrowExpression (throwExpression).NormalizeWhitespace ();
 	}
 
+	/// <summary>
+	/// Creates a throw expression for a NotSupportedException.
+	/// </summary>
+	/// <param name="message">The message for the exception.</param>
+	/// <returns>A throw expression syntax.</returns>
 	static ExpressionSyntax ThrowNotSupportedException (string message)
 		=> ThrowException (type: "NotSupportedException", message: message);
 
+	/// <summary>
+	/// Creates a throw expression for a NotImplementedException.
+	/// </summary>
+	/// <returns>A throw expression syntax.</returns>
 	static ExpressionSyntax ThrowNotImplementedException ()
 		=> ThrowException (type: "NotImplementedException");
 
@@ -426,5 +447,16 @@ static partial class BindingSyntaxFactory {
 	internal static InvocationExpressionSyntax TcsSetResult (string tcsVariableName,
 		ImmutableArray<ArgumentSyntax> arguments)
 		=> MemberInvocationExpression (tcsVariableName, "SetResult", arguments);
+
+	/// <summary>
+	/// Creates an expression to check if a variable is not null.
+	/// </summary>
+	/// <param name="variableName">The name of the variable to check.</param>
+	/// <returns>An is-pattern expression to check for not-null.</returns>
+	internal static ExpressionSyntax IsNotNull (string variableName)
+		=> IsPatternExpression (IdentifierName (variableName).WithTrailingTrivia (Space),
+			UnaryPattern (ConstantPattern (
+				LiteralExpression (SyntaxKind.NullLiteralExpression).WithLeadingTrivia (Space)))
+				.WithLeadingTrivia (Space));
 
 }

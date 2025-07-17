@@ -358,4 +358,122 @@ namespace NS {
 		Assert.Equal (expectedSendSuper, invocations.SendSuper.ToString ());
 	}
 
+	class TestDataGetCallbackDeclaration : IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
+		{
+			const string singleArgNoError = @"
+using System;
+using ObjCBindings;
+
+namespace NS {
+	delegate void Callback (int value);
+
+	public class MyClass {
+		[Export<Method>(""myMethod"")]
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				singleArgNoError,
+				@"(_cbvalue) => {
+	_tcs.SetResult (_cbvalue);
+}",
+			];
+
+			const string singleArgWithError = @"
+using System;
+using ObjCBindings;
+
+namespace NS {
+	delegate void Callback (int value, NSError? error);
+
+	public class MyClass {
+		[Export<Method>(""myMethod"")]
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				singleArgWithError,
+				@"(_cbvalue, _cberror) => {
+	if (_cberror is not null)
+		_tcs.SetException (new global::Foundation.NSErrorException (_cberror));
+	else
+		_tcs.SetResult (_cbvalue);
+}",
+			];
+
+			const string severalArgNoError = @"
+using System;
+using ObjCBindings;
+
+namespace NS {
+	delegate void Callback (int arg1, string arg2, bool arg3);
+
+	public class MyClass {
+		[Export<Method>(""myMethod"")]
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				severalArgNoError,
+				@"(_cbarg1, _cbarg2, _cbarg3) => {
+	_tcs.SetResult (new (_cbarg1, _cbarg2, _cbarg3));
+}",
+			];
+
+			const string severalArgWithError = @"
+using System;
+using ObjCBindings;
+
+namespace NS {
+	delegate void Callback (int arg1, string arg2, bool arg3, NSError? error);
+
+	public class MyClass {
+		[Export<Method>(""myMethod"")]
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				severalArgWithError,
+				@"(_cbarg1, _cbarg2, _cbarg3, _cberror) => {
+	if (_cberror is not null)
+		_tcs.SetException (new global::Foundation.NSErrorException (_cberror));
+	else
+		_tcs.SetResult (new (_cbarg1, _cbarg2, _cbarg3));
+}",
+			];
+		}
+
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
+	}
+
+	[Theory]
+	[AllSupportedPlatformsClassData<TestDataGetCallbackDeclaration>]
+	void GetCallbackDeclarationTests (ApplePlatform platform, string inputText, string expected)
+	{
+		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
+		Assert.Single (syntaxTrees);
+		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
+		var declaration = syntaxTrees [0].GetRoot ()
+			.DescendantNodes ().OfType<MethodDeclarationSyntax> ()
+			.FirstOrDefault ();
+		Assert.NotNull (declaration);
+		Assert.True (Method.TryCreate (declaration, semanticModel, out var changes));
+		Assert.NotNull (changes);
+		Assert.Single (changes.Value.Parameters);
+		// get the callback declaration for the first parameter of the method which should always be a delegate
+		Assert.True (changes.Value.Parameters [0].Type.IsDelegate);
+		var callback = BindingSyntaxFactory.GetCallbackDeclaration (changes.Value.Parameters [0].Type);
+		var x = callback.ToString ();
+		Assert.Equal (expected, callback.ToString ());
+	}
+
 }

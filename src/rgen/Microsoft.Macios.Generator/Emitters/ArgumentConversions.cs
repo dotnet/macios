@@ -3,18 +3,13 @@
 
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Microsoft.Macios.Generator.Emitters;
 
 /// <summary>
 /// Represents the conversions needed for a trampoline argument.
 /// </summary>
-readonly record struct TrampolineArgumentSyntax (ArgumentSyntax ArgumentSyntax) {
-	/// <summary>
-	/// The syntax to be used for the argument in the delegate call.
-	/// </summary>
-	public ArgumentSyntax ArgumentSyntax { get; init; } = ArgumentSyntax;
+readonly record struct ArgumentConversions () {
 
 	/// <summary>
 	/// Collection of initializers that need to be executed before the delegate call and the

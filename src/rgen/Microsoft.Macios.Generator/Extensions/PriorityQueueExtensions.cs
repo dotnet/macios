@@ -18,7 +18,7 @@ public static class PriorityQueueExtensions {
 	public static ImmutableArray<TElement> ToImmutable<TElement, TPriority> (this PriorityQueue<TElement, TPriority> queue)
 	{
 		// Create a copy of the original queue to preserve its state
-		var queueCopy = new PriorityQueue<TElement, TPriority> (queue.UnorderedItems);
+		var queueCopy = new PriorityQueue<TElement, TPriority> (queue.UnorderedItems, queue.Comparer);
 
 		var builder = ImmutableArray.CreateBuilder<TElement> (queueCopy.Count);
 		while (queueCopy.TryDequeue (out var element, out _)) {

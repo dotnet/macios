@@ -118,19 +118,7 @@ namespace Foundation {
 		public override void Apply ()
 		{
 			gch.Free ();
-
-			//
-			// Although I would like to call Dispose here, to
-			// reduce the load on the GC, we have some useful diagnostic
-			// code in our runtime that is useful to track down
-			// problems, so we are removing the Dispose and letting
-			// the GC and our pipeline do their job.
-			// 
-#if MONOTOUCH
-			// MonoTouch has fixed the above problems, and we can call
-			// Dispose here.
 			Dispose ();
-#endif
 		}
 	}
 

@@ -89,7 +89,7 @@ namespace CoreGraphics {
 			return false;
 		}
 
-#if MONOTOUCH
+#if HAS_UIKIT
 #if !COREBUILD
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -140,7 +140,7 @@ namespace CoreGraphics {
 			return value;
 		}
 #endif
-#else // MONOMAC
+#else // HAS_UIKIT
 		public override string ToString ()
 		{
 			return $"{{{dx}, {dy}}}";

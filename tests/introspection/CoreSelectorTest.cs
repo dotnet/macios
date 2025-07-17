@@ -99,11 +99,9 @@ namespace Introspection {
 			return base.Skip (type);
 		}
 
-		protected override IntPtr GetClassForType (Type type)
+		protected override bool TryGetClassForType (Type type, out IntPtr cls)
 		{
 			switch (type.Namespace) {
-			case "MonoTouch.Metal":
-			case "MonoMac.Metal":
 			case "Metal":
 				switch (type.Name) {
 				case "MTLArgument":
@@ -131,13 +129,14 @@ namespace Introspection {
 				case "MTLVertexDescriptor":
 					var ctor = type.GetConstructor (Type.EmptyTypes);
 					using (var obj = ctor.Invoke (null) as NSObject) {
-						return IntPtr_objc_msgSend (obj.Handle, Selector.GetHandle ("class"));
+						cls = IntPtr_objc_msgSend (obj.Handle, Selector.GetHandle ("class"));
+						return true;
 					}
 				}
 				break;
 			}
 
-			return base.GetClassForType (type);
+			return base.TryGetClassForType (type, out cls);
 		}
 	}
 }

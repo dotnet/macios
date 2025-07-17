@@ -24496,6 +24496,7 @@ P:WebKit.WebViewToolBarsEventArgs.Visible
 P:WebKit.WKDownload.Delegate
 P:WebKit.WKDownload.Progress
 P:WebKit.WKDownload.UserInitiated
+P:WebKit.WKNavigationAction.IsContentRuleListRedirect
 P:WebKit.WKPreferences.ElementFullscreenEnabled
 P:WebKit.WKPreferences.FraudulentWebsiteWarningEnabled
 P:WebKit.WKPreferences.SiteSpecificQuirksModeEnabled

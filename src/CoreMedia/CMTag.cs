@@ -54,59 +54,42 @@ namespace CoreMedia {
 		[DllImport (Constants.CoreMediaLibrary)]
 		static extern CMTagDataType CMTagGetValueDataType (CMTag tag);
 
-		/// <inheritdoc cref="CMTagConstants.Invalid" />
 		public static CMTag Invalid { get => CMTagConstants.Invalid; }
 
-		/// <inheritdoc cref="CMTagConstants.MediaTypeVideo" />
 		public static CMTag MediaTypeVideo { get => CMTagConstants.MediaTypeVideo; }
 
-		/// <inheritdoc cref="CMTagConstants.MediaSubTypeMebx" />
 		public static CMTag MediaSubTypeMebx { get => CMTagConstants.MediaSubTypeMebx; }
 
-		/// <inheritdoc cref="CMTagConstants.MediaTypeAudio" />
 		public static CMTag MediaTypeAudio { get => CMTagConstants.MediaTypeAudio; }
 
-		/// <inheritdoc cref="CMTagConstants.MediaTypeMetadata" />
 		public static CMTag MediaTypeMetadata { get => CMTagConstants.MediaTypeMetadata; }
 
-		/// <inheritdoc cref="CMTagConstants.StereoLeftEye" />
 		public static CMTag StereoLeftEye { get => CMTagConstants.StereoLeftEye; }
 
-		/// <inheritdoc cref="CMTagConstants.StereoRightEye" />
 		public static CMTag StereoRightEye { get => CMTagConstants.StereoRightEye; }
 
-		/// <inheritdoc cref="CMTagConstants.StereoLeftAndRightEye" />
 		public static CMTag StereoLeftAndRightEye { get => CMTagConstants.StereoLeftAndRightEye; }
 
-		/// <inheritdoc cref="CMTagConstants.StereoNone" />
 		public static CMTag StereoNone { get => CMTagConstants.StereoNone; }
 
-		/// <inheritdoc cref="CMTagConstants.StereoInterpretationOrderReversed" />
 		public static CMTag StereoInterpretationOrderReversed { get => CMTagConstants.StereoInterpretationOrderReversed; }
 
-		/// <inheritdoc cref="CMTagConstants.ProjectionTypeRectangular" />
 		public static CMTag ProjectionTypeRectangular { get => CMTagConstants.ProjectionTypeRectangular; }
 
-		/// <inheritdoc cref="CMTagConstants.ProjectionTypeEquirectangular" />
 		public static CMTag ProjectionTypeEquirectangular { get => CMTagConstants.ProjectionTypeEquirectangular; }
 
-		/// <inheritdoc cref="CMTagConstants.ProjectionTypeHalfEquirectangular" />
 		[SupportedOSPlatform ("ios18.0")]
 		[SupportedOSPlatform ("tvos18.0")]
 		[SupportedOSPlatform ("maccatalyst18.0")]
 		[SupportedOSPlatform ("macos15.0")]
 		public static CMTag ProjectionTypeHalfEquirectangular { get => CMTagConstants.ProjectionTypeHalfEquirectangular; }
 
-		/// <inheritdoc cref="CMTagConstants.ProjectionTypeFisheye" />
 		public static CMTag ProjectionTypeFisheye { get => CMTagConstants.ProjectionTypeFisheye; }
 
-		/// <inheritdoc cref="CMTagConstants.PackingTypeNone" />
 		public static CMTag PackingTypeNone { get => CMTagConstants.PackingTypeNone; }
 
-		/// <inheritdoc cref="CMTagConstants.PackingTypeSideBySide" />
 		public static CMTag PackingTypeSideBySide { get => CMTagConstants.PackingTypeSideBySide; }
 
-		/// <inheritdoc cref="CMTagConstants.PackingTypeOverUnder" />
 		public static CMTag PackingTypeOverUnder { get => CMTagConstants.PackingTypeOverUnder; }
 
 		[DllImport (Constants.CoreMediaLibrary)]

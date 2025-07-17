@@ -242,6 +242,8 @@ public partial class MethodTests
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual unsafe partial global::Foundation.NSArray Filter (global::Foundation.NSPredicate predicate)
 	{
+		if (predicate is null)
+			global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (predicate));
 		var predicate__handle__ = predicate!.GetNonNullHandle (nameof (predicate));
 		global::Foundation.NSArray ret;
 		if (IsDirectBinding) {
@@ -303,6 +305,8 @@ public partial class MethodTests
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static unsafe partial global::Foundation.NSData GetBookmarkData (global::Foundation.NSUrl bookmarkFileUrl, out global::Foundation.NSError? error)
 	{
+		if (bookmarkFileUrl is null)
+			global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (bookmarkFileUrl));
 		var bookmarkFileUrl__handle__ = bookmarkFileUrl!.GetNonNullHandle (nameof (bookmarkFileUrl));
 		global::ObjCRuntime.NativeHandle error__handle__;
 		global::Foundation.NSData ret;
@@ -324,10 +328,14 @@ public partial class MethodTests
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public partial static void LoadFromHtml (global::Foundation.NSUrlRequest request, global::Foundation.NSDictionary options, global::Foundation.NSAttributedStringCompletionHandler completionHandler)
 	{
-		var request__handle__ = request!.GetNonNullHandle (nameof (request));
-		var options__handle__ = options!.GetNonNullHandle (nameof (options));
+		if (request is null)
+			global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (request));
+		if (options is null)
+			global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (options));
 		if (completionHandler is null)
 			global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (completionHandler));
+		var request__handle__ = request!.GetNonNullHandle (nameof (request));
+		var options__handle__ = options!.GetNonNullHandle (nameof (options));
 		using var block_completionHandler = global::ObjCRuntime.Trampolines.SDNSAttributedStringCompletionHandler.CreateNullableBlock (completionHandler);
 		global::ObjCRuntime.BlockLiteral* block_ptr_completionHandler = completionHandler is not null ? &block_completionHandler : null;
 		if (IsDirectBinding) {
@@ -357,10 +365,14 @@ public partial class MethodTests
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public partial static void LoadFromHtmlNoName (global::Foundation.NSUrlRequest request, global::Foundation.NSDictionary options, global::Foundation.NSAttributedStringCompletionHandler completionHandler)
 	{
-		var request__handle__ = request!.GetNonNullHandle (nameof (request));
-		var options__handle__ = options!.GetNonNullHandle (nameof (options));
+		if (request is null)
+			global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (request));
+		if (options is null)
+			global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (options));
 		if (completionHandler is null)
 			global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (completionHandler));
+		var request__handle__ = request!.GetNonNullHandle (nameof (request));
+		var options__handle__ = options!.GetNonNullHandle (nameof (options));
 		using var block_completionHandler = global::ObjCRuntime.Trampolines.SDNSAttributedStringCompletionHandler.CreateNullableBlock (completionHandler);
 		global::ObjCRuntime.BlockLiteral* block_ptr_completionHandler = completionHandler is not null ? &block_completionHandler : null;
 		if (IsDirectBinding) {
@@ -390,6 +402,10 @@ public partial class MethodTests
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual unsafe partial void SetValueForKey (global::Foundation.NSObject value, global::Foundation.NSString key)
 	{
+		if (value is null)
+			global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+		if (key is null)
+			global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (key));
 		var value__handle__ = value!.GetNonNullHandle (nameof (value));
 		var key__handle__ = key!.GetNonNullHandle (nameof (key));
 		if (IsDirectBinding) {

@@ -71,6 +71,8 @@ static partial class Trampolines
 
 		unsafe global::Foundation.NSObject Invoke (global::Foundation.NSObject obj)
 		{
+			if (obj is null)
+				global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (obj));
 			var obj__handle__ = obj!.GetNonNullHandle (nameof (obj));
 			var ret = invoker (BlockLiteral, obj__handle__);
 			global::System.GC.KeepAlive (obj);
@@ -492,6 +494,8 @@ static partial class Trampolines
 
 		unsafe global::AVFoundation.AVAudioEngineManualRenderingStatus Invoke (uint numberOfFrames, global::AudioToolbox.AudioBuffers outBuffer, ref int outError)
 		{
+			if (outBuffer is null)
+				global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (outBuffer));
 			var outBuffer__handle__ = outBuffer!.GetNonNullHandle (nameof (outBuffer));
 			var ret = invoker (BlockLiteral, numberOfFrames, outBuffer__handle__, (int*) global::System.Runtime.CompilerServices.Unsafe.AsPointer<int> (ref outError));
 			global::System.GC.KeepAlive (outBuffer);
@@ -556,6 +560,10 @@ static partial class Trampolines
 
 		unsafe global::AudioUnit.AudioUnitStatus Invoke (ref global::AudioUnit.AudioUnitRenderActionFlags actionFlags, ref global::AudioToolbox.AudioTimeStamp timestamp, uint frameCount, global::System.IntPtr outputBusNumber, global::AudioToolbox.AudioBuffers outputData, global::AudioUnit.AURenderEventEnumerator realtimeEventListHead, global::AudioUnit.AURenderPullInputBlock? pullInputBlock)
 		{
+			if (outputData is null)
+				global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (outputData));
+			if (realtimeEventListHead is null)
+				global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (realtimeEventListHead));
 			var outputData__handle__ = outputData!.GetNonNullHandle (nameof (outputData));
 			var realtimeEventListHead__handle__ = realtimeEventListHead!.GetNonNullHandle (nameof (realtimeEventListHead));
 			using var block_pullInputBlock = global::ObjCRuntime.Trampolines.SDAURenderPullInputBlock.CreateNullableBlock (pullInputBlock);

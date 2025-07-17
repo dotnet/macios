@@ -268,6 +268,8 @@ public partial class PropertyTests
 		[SupportedOSPlatform ("maccatalyst13.1")]
 		set
 		{
+			if (value is null)
+				global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
 			var value__handle__ = value!.GetNonNullHandle (nameof (value));
 			if (IsDirectBinding) {
 				global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setAlphanumericCharacterSet:"), value__handle__);
@@ -315,6 +317,8 @@ public partial class PropertyTests
 		[SupportedOSPlatform ("maccatalyst13.1")]
 		set
 		{
+			if (value is null)
+				global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
 			var value__handle__ = value!.GetNonNullHandle (nameof (value));
 			if (IsDirectBinding) {
 				global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setAttributedStringByInflectingString:"), value__handle__);
@@ -631,6 +635,8 @@ public partial class PropertyTests
 		[SupportedOSPlatform ("maccatalyst13.1")]
 		set
 		{
+			if (value is null)
+				global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
 			var value__handle__ = value!.GetNonNullHandle (nameof (value));
 			if (IsDirectBinding) {
 				global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setLocale:"), value__handle__);

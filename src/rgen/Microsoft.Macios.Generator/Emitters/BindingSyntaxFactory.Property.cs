@@ -98,6 +98,7 @@ static partial class BindingSyntaxFactory {
 	{
 		var argument = new TrampolineArgumentSyntax (GetNativeInvokeArgument (property)) {
 			Initializers = GetNativeInvokeArgumentInitializations (property),
+			Validations = GetNativeInvokeArgumentValidations (property),
 			PreCallConversion = GetPreNativeInvokeArgumentConversions (property),
 			PostCallConversion = GetPostNativeInvokeArgumentConversions (property),
 		};

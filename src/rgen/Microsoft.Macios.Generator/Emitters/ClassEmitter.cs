@@ -236,6 +236,7 @@ if (IsDirectBinding) {{
 					}
 					// init the needed temp variables
 					setterBlock.Write (invocations.Setter.Value.Argument.Initializers, verifyTrivia: false);
+					setterBlock.Write (invocations.Setter.Value.Argument.Validations, verifyTrivia: false);
 					setterBlock.Write (invocations.Setter.Value.Argument.PreCallConversion, verifyTrivia: false);
 
 					// perform the invocation
@@ -299,9 +300,14 @@ if (!(value is null) && rvalue is null) {{
 	void EmitVoidMethodBody (in Method method, in MethodInvocations invocations, TabbedWriter<StringWriter> methodBlock)
 	{
 
-		// init the needed temp variables
+		// validate and init the needed temp variables
 		foreach (var argument in invocations.Arguments) {
+			methodBlock.Write (argument.Validations, verifyTrivia: false);
 			methodBlock.Write (argument.Initializers, verifyTrivia: false);
+		}
+
+		// do any pre-call conversions that might be needed, for example string to NSString
+		foreach (var argument in invocations.Arguments) {
 			methodBlock.Write (argument.PreCallConversion, verifyTrivia: false);
 		}
 
@@ -333,9 +339,14 @@ $@"if (IsDirectBinding) {{
 		// and do any conversions that might be needed for the return value, for example byte to bool
 		var (tempVar, tempDeclaration) = GetReturnValueAuxVariable (method.ReturnType);
 
-		// init the needed temp variables
+		// init and validate the needed temp variables
 		foreach (var argument in invocations.Arguments) {
+			methodBlock.Write (argument.Validations, verifyTrivia: false);
 			methodBlock.Write (argument.Initializers, verifyTrivia: false);
+		}
+
+		// perform any pre-call conversions that might be needed, for example string to NSString
+		foreach (var argument in invocations.Arguments) {
 			methodBlock.Write (argument.PreCallConversion, verifyTrivia: false);
 		}
 

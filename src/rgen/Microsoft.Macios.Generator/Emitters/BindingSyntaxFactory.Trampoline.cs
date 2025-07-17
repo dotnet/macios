@@ -904,6 +904,7 @@ static partial class BindingSyntaxFactory {
 		foreach (var parameter in delegateInfo.Parameters) {
 			var argument = new TrampolineArgumentSyntax (GetNativeInvokeArgument (parameter)) {
 				Initializers = GetNativeInvokeArgumentInitializations (parameter),
+				Validations = GetNativeInvokeArgumentValidations (parameter),
 				PreCallConversion = GetPreNativeInvokeArgumentConversions (parameter),
 				PostCallConversion = GetPostNativeInvokeArgumentConversions (parameter),
 			};

@@ -694,6 +694,8 @@ COREVIDEO_SOURCES = \
 	CoreVideo/CVMetalTextureAttributes.cs \
 	CoreVideo/CVMetalTextureCache.cs \
 	CoreVideo/CVPixelBufferIOSurface.cs \
+	CoreVideo/CVOpenGLESTexture.cs \
+	CoreVideo/CVOpenGLESTextureCache.cs \
 	CoreVideo/CVPixelBufferPoolSettings.cs \
 	CoreVideo/CVPixelFormatDescription.cs \
 	CoreVideo/CVTime.cs \

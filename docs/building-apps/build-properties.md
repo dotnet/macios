@@ -17,6 +17,14 @@ The full path to the `altool` tool.
 
 The default behavior is to use `xcrun altool`.
 
+## AppBundleResourcePrefix
+
+The directory where resources are stored (this prefix will be removed when copying resources to the app bundle).
+
+If not explicitly set, this property will inherit its value from the platform-specific resource prefix properties ([IPhoneResourcePrefix](#iphoneresourceprefix), [MonoMacResourcePrefix](#monomacresourceprefix), or [XamMacResourcePrefix](#xammacresourceprefix) depending on the platform).
+
+Default: "Resources"
+
 ## AppBundleDir
 
 The location of the built app bundle.
@@ -418,6 +426,8 @@ The directory where resources are stored (this prefix will be removed when copyi
 
 Applicable to iOS, tvOS and Mac Catalyst projects.
 
+Consider using the unified [AppBundleResourcePrefix](#appbundleresourceprefix) property instead.
+
 See also [MonoMacResourcePrefix](#monomacresourceprefix) and [XamMacResourcePrefix](#xammacresourceprefix).
 
 ## IpaIncludeArtwork
@@ -594,6 +604,8 @@ This property is deprecated, use [AppBundleExtraOptions](#appbundleextraoptions)
 The directory where resources are stored (this prefix will be removed when copying resources to the app bundle).
 
 Only applicable to macOS projects.
+
+Consider using the unified [AppBundleResourcePrefix](#appbundleresourceprefix) property instead.
 
 See also [IPhoneResourcePrefix](#iphoneresourceprefix) and [XamMacResourcePrefix](#xammacresourceprefix).
 
@@ -1072,6 +1084,8 @@ The default value is to validate; set to `false` to disable.
 The directory where resources are stored (this prefix will be removed when copying resources to the app bundle).
 
 Applicable to macOS projects.
+
+Consider using the unified [AppBundleResourcePrefix](#appbundleresourceprefix) property instead.
 
 See also [IPhoneResourcePrefix](#iphoneresourceprefix) and [MonoMacResourcePrefix](#monomacresourceprefix).
 

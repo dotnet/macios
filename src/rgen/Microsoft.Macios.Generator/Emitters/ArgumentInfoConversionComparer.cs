@@ -34,9 +34,13 @@ class ArgumentInfoConversionComparer : IComparer<ArgumentInfo> {
 		// 3. Reference type (non-nullable) -> 3 We will throw is null so we want to execute it third
 		// 4. BindAs (non-nullable) -> 4 We will need a conversion to the type specified in BindAs so we want to execute it as late as possible
 		// 5. Other reference types (nullable) -> 5 We will not throw if null so we want to execute it last
-
-		return arg.Type switch { { IsNSObject: true, IsNullable: false } => 1, { IsINativeObject: true, IsNullable: false } => 2, { IsReferenceType: true, IsNullable: false } => 3,
+#pragma warning disable format
+		return arg.Type switch { 
+			{ IsNSObject: true, IsNullable: false } => 1, 
+			{ IsINativeObject: true, IsNullable: false } => 2, 
+			{ IsReferenceType: true, IsNullable: false } => 3,
 			_ => arg.BindAs is not null ? 4 : 5
 		};
+#pragma warning restore format
 	}
 }

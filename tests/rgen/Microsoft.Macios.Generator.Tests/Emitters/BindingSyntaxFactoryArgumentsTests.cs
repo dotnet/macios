@@ -1235,7 +1235,7 @@ namespace NS {
 		sb.Write (conversions, false);
 		Assert.Equal (expectedExpression, sb.ToCode ());
 	}
-	
+
 	class TestDataGetTrampolineValidationsArgumentConversionsTests : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()
 		{
@@ -1287,7 +1287,7 @@ namespace NS {
 ";
 			yield return [
 				stringParameter,
-$@"if (stringParameter is null)
+				$@"if (stringParameter is null)
 	{Global ("ObjCRuntime")}.ThrowHelper.ThrowArgumentNullException (nameof (stringParameter));
 ",
 			];
@@ -1319,7 +1319,7 @@ namespace NS {
 ";
 			yield return [
 				stringArrayParameter,
-$@"if (stringArrayParameter is null)
+				$@"if (stringArrayParameter is null)
 	{Global ("ObjCRuntime")}.ThrowHelper.ThrowArgumentNullException (nameof (stringArrayParameter));
 ",
 			];
@@ -1446,7 +1446,7 @@ namespace NS {
 ";
 			yield return [
 				nsObjectArrayParameter,
-$@"if (nsObjectArrayParameter is null)
+				$@"if (nsObjectArrayParameter is null)
 	{Global ("ObjCRuntime")}.ThrowHelper.ThrowArgumentNullException (nameof (nsObjectArrayParameter));
 ",
 			];
@@ -1531,7 +1531,7 @@ namespace NS {
 
 			yield return [
 				inativeArrayParameter,
-$@"if (inativeArray is null)
+				$@"if (inativeArray is null)
 	{Global ("ObjCRuntime")}.ThrowHelper.ThrowArgumentNullException (nameof (inativeArray));
 ",
 			];
@@ -1863,7 +1863,7 @@ namespace NS {
 
 		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
 	}
-		
+
 	[Theory]
 	[AllSupportedPlatformsClassData<TestDataGetTrampolineValidationsArgumentConversionsTests>]
 	void GetTrampolineValidationsArgumentConversionsTests (ApplePlatform platform, string inputText, string expectedExpression)

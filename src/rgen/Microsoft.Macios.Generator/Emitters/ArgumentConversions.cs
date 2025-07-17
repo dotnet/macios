@@ -16,7 +16,7 @@ readonly record struct ArgumentConversions () {
 	/// conversion of the argument syntax.
 	/// </summary>
 	public ImmutableArray<SyntaxNode> Initializers { get; init; } = [];
-	
+
 	/// <summary>
 	/// Collection of validations that need to be executed before the delegate call and the
 	/// conversion of the argument syntax.

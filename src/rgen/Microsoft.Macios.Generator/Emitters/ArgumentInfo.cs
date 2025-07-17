@@ -16,7 +16,7 @@ readonly record struct ArgumentInfo {
 	/// The name of the argument.
 	/// </summary>
 	public string Name { get; init; }
-	
+
 	/// <summary>
 	/// The position of the argument in the parameter list.
 	/// </summary>

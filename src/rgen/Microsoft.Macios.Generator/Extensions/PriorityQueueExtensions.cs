@@ -7,7 +7,7 @@ using System.Collections.Immutable;
 namespace Microsoft.Macios.Generator.Extensions;
 
 public static class PriorityQueueExtensions {
-	
+
 	/// <summary>
 	/// Creates an <see cref="ImmutableArray{TElement}"/> from a <see cref="PriorityQueue{TElement, TPriority}"/>, dequeuing elements in sorted order.
 	/// </summary>
@@ -15,7 +15,7 @@ public static class PriorityQueueExtensions {
 	/// <typeparam name="TPriority">The type of priorities in the priority queue.</typeparam>
 	/// <param name="queue">The priority queue to create an immutable array from.</param>
 	/// <returns>An immutable array containing the elements from the priority queue in sorted order.</returns>
-	public static ImmutableArray<TElement> ToImmutable <TElement, TPriority> (this PriorityQueue<TElement, TPriority> queue)
+	public static ImmutableArray<TElement> ToImmutable<TElement, TPriority> (this PriorityQueue<TElement, TPriority> queue)
 	{
 		var builder = ImmutableArray.CreateBuilder<TElement> (queue.Count);
 		while (queue.TryDequeue (out var element, out _)) {

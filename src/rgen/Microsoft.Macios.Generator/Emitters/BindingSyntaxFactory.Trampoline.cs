@@ -684,7 +684,7 @@ static partial class BindingSyntaxFactory {
 		in DelegateInfo delegateInfo)
 	{
 		// create the builder for the arguments, we already know the size of the array
-		var syntaxBucket= ImmutableArray.CreateBuilder<ArgumentSyntax> (delegateInfo.Parameters.Length);
+		var syntaxBucket = ImmutableArray.CreateBuilder<ArgumentSyntax> (delegateInfo.Parameters.Length);
 		var conversions = new PriorityQueue<ArgumentConversions, ArgumentInfo> (new ArgumentInfoConversionComparer ());
 		foreach (var parameter in delegateInfo.Parameters) {
 			syntaxBucket.Add (GetTrampolineInvokeArgument (trampolineName, parameter));
@@ -895,7 +895,7 @@ static partial class BindingSyntaxFactory {
 	internal static (ImmutableArray<ArgumentSyntax> ArgumentSyntaxes, ImmutableArray<ArgumentConversions> Conversions) GetTrampolineNativeInvokeArguments (in DelegateInfo delegateInfo)
 	{
 		// create the builder for the arguments, we already know the size of the array
-		var syntaxBucket= ImmutableArray.CreateBuilder<ArgumentSyntax> (delegateInfo.Parameters.Length);
+		var syntaxBucket = ImmutableArray.CreateBuilder<ArgumentSyntax> (delegateInfo.Parameters.Length);
 		var conversionsBucket = ImmutableArray.CreateBuilder<ArgumentConversions> (delegateInfo.Parameters.Length);
 
 		// add the first parameter to be the BlockPointer of the class.

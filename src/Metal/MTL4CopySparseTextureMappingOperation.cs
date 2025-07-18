@@ -3,8 +3,7 @@ using System.Runtime.InteropServices;
 namespace Metal {
 	/// <summary>A container for the arguments for a copy sparse texture mapping operation.</summary>
 	[StructLayout (LayoutKind.Sequential)]
-	public struct MTL4CopySparseTextureMappingOperation
-	{
+	public struct MTL4CopySparseTextureMappingOperation {
 		MTLRegion sourceRegion;
 		nuint sourceLevel;
 		nuint sourceSlice;

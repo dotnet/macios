@@ -5,8 +5,7 @@ using Foundation;
 namespace Metal {
 	/// <summary>A container for the arguments for a update sparse buffer mapping operation.</summary>
 	[StructLayout (LayoutKind.Sequential)]
-	public struct MTL4UpdateSparseBufferMappingOperation
-	{
+	public struct MTL4UpdateSparseBufferMappingOperation {
 		MTLSparseTextureMappingMode mode;
 		NSRange bufferRange;
 		nuint heapOffset;

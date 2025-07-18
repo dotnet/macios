@@ -7,7 +7,7 @@ namespace Metal {
 	public partial interface IMTL4CommandQueue {
 		/// <summary>Queue an array of command buffers for execution.</summary>
 		/// <param name="commandBuffers">The array of command buffers to queue for execution.</param>
-		public void Commit (params IMTL4CommandBuffer[] commandBuffers)
+		public void Commit (params IMTL4CommandBuffer [] commandBuffers)
 		{
 			NativeObjectExtensions.CallWithPointerToFirstElementAndCount (commandBuffers, nameof (commandBuffers), Commit);
 		}
@@ -15,7 +15,7 @@ namespace Metal {
 		/// <summary>Queue an array of command buffers for execution.</summary>
 		/// <param name="options">Any options to configure the operation.</param>
 		/// <param name="commandBuffers">The array of command buffers to queue for execution.</param>
-		public void Commit (MTL4CommitOptions options, params IMTL4CommandBuffer[] commandBuffers)
+		public void Commit (MTL4CommitOptions options, params IMTL4CommandBuffer [] commandBuffers)
 		{
 			NativeObjectExtensions.CallWithPointerToFirstElementAndCount (commandBuffers, nameof (commandBuffers), (ptr, count) => Commit (ptr, count, options));
 		}
@@ -38,7 +38,7 @@ namespace Metal {
 		/// <param name="texture">The texture to update.</param>
 		/// <param name="heap">The heap to use.</param>
 		/// <param name="operations">The update operations.</param>
-		public void UpdateTextureMappings (IMTLTexture texture, IMTLHeap? heap, params MTL4UpdateSparseTextureMappingOperation[] operations)
+		public void UpdateTextureMappings (IMTLTexture texture, IMTLHeap? heap, params MTL4UpdateSparseTextureMappingOperation [] operations)
 		{
 			if (operations is null)
 				ThrowHelper.ThrowArgumentNullException (nameof (operations));
@@ -54,7 +54,7 @@ namespace Metal {
 		/// <param name="sourceTexture">The source texture for the texture mappings.</param>
 		/// <param name="destinationTexture">The destination texture for the texture mappings.</param>
 		/// <param name="operations">The copy operations.</param>
-		public void CopyTextureMappings (IMTLTexture sourceTexture, IMTLTexture destinationTexture, params MTL4CopySparseTextureMappingOperation[] operations)
+		public void CopyTextureMappings (IMTLTexture sourceTexture, IMTLTexture destinationTexture, params MTL4CopySparseTextureMappingOperation [] operations)
 		{
 			if (operations is null)
 				ThrowHelper.ThrowArgumentNullException (nameof (operations));
@@ -70,7 +70,7 @@ namespace Metal {
 		/// <param name="buffer">The buffer to update.</param>
 		/// <param name="heap">The heap to use.</param>
 		/// <param name="operations">The update operations.</param>
-		public void UpdateBufferMappings (IMTLBuffer buffer, IMTLHeap? heap, params MTL4UpdateSparseBufferMappingOperation[] operations)
+		public void UpdateBufferMappings (IMTLBuffer buffer, IMTLHeap? heap, params MTL4UpdateSparseBufferMappingOperation [] operations)
 		{
 			if (operations is null)
 				ThrowHelper.ThrowArgumentNullException (nameof (operations));
@@ -86,7 +86,7 @@ namespace Metal {
 		/// <param name="sourceBuffer">The source buffer for the buffer mappings.</param>
 		/// <param name="destinationBuffer">The destination buffer for the buffer mappings.</param>
 		/// <param name="operations">The copy operations.</param>
-		public void CopyBufferMappings (IMTLBuffer sourceBuffer, IMTLBuffer destinationBuffer, params MTL4CopySparseBufferMappingOperation[] operations)
+		public void CopyBufferMappings (IMTLBuffer sourceBuffer, IMTLBuffer destinationBuffer, params MTL4CopySparseBufferMappingOperation [] operations)
 		{
 			if (operations is null)
 				ThrowHelper.ThrowArgumentNullException (nameof (operations));

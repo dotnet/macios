@@ -2436,32 +2436,28 @@ namespace Metal {
 
 	[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0), TV (26, 0)]
 	[Native]
-	public enum MTL4AlphaToCoverageState : long
-	{
+	public enum MTL4AlphaToCoverageState : long {
 		Disabled = 0,
 		Enabled = 1,
 	}
 
 	[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0), TV (26, 0)]
 	[Native]
-	public enum MTL4AlphaToOneState : long
-	{
+	public enum MTL4AlphaToOneState : long {
 		Disabled = 0,
 		Enabled = 1,
 	}
 
 	[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0), TV (26, 0)]
 	[Native]
-	public enum MTL4BinaryFunctionOptions : ulong
-	{
+	public enum MTL4BinaryFunctionOptions : ulong {
 		None = 0x0,
 		PipelineIndependent = 1uL << 1,
 	}
 
 	[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0), TV (26, 0)]
 	[Native]
-	public enum MTL4BlendState : long
-	{
+	public enum MTL4BlendState : long {
 		Disabled = 0,
 		Enabled = 1,
 		Unspecialized = 2,
@@ -2470,8 +2466,7 @@ namespace Metal {
 	[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0), TV (26, 0)]
 	[Native]
 	[ErrorDomain ("MTL4CommandQueueErrorDomain")]
-	public enum MTL4CommandQueueError : long
-	{
+	public enum MTL4CommandQueueError : long {
 		None = 0,
 		Timeout = 1,
 		NotPermitted = 2,
@@ -2483,8 +2478,7 @@ namespace Metal {
 
 	[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0), TV (26, 0)]
 	[Native]
-	public enum MTL4CompilerTaskStatus : long
-	{
+	public enum MTL4CompilerTaskStatus : long {
 		None = 0,
 		Scheduled = 1,
 		Compiling = 2,
@@ -2493,24 +2487,21 @@ namespace Metal {
 
 	[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0), TV (26, 0)]
 	[Native]
-	public enum MTL4CounterHeapType : ulong
-	{
+	public enum MTL4CounterHeapType : ulong {
 		Invalid,
 		Timestamp,
 	}
 
 	[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0), TV (26, 0)]
 	[Native]
-	public enum MTL4IndirectCommandBufferSupportState : long
-	{
+	public enum MTL4IndirectCommandBufferSupportState : long {
 		Disabled = 0,
 		Enabled = 1,
 	}
 
 	[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0), TV (26, 0)]
 	[Native]
-	public enum MTL4LogicalToPhysicalColorAttachmentMappingState : long
-	{
+	public enum MTL4LogicalToPhysicalColorAttachmentMappingState : long {
 		Identity = 0,
 		Inherited = 1,
 	}
@@ -2518,16 +2509,14 @@ namespace Metal {
 	[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0), TV (26, 0)]
 	[Flags]
 	[Native]
-	public enum MTL4PipelineDataSetSerializerConfiguration : long
-	{
+	public enum MTL4PipelineDataSetSerializerConfiguration : long {
 		Descriptors = (1 << 0),
 		Binaries = (1 << 1),
 	}
 
 	[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0), TV (26, 0)]
 	[Native]
-	public enum MTL4RenderEncoderOptions : ulong
-	{
+	public enum MTL4RenderEncoderOptions : ulong {
 		None = 0x0,
 		Suspending = (1uL << 0),
 		Resuming = (1uL << 1),
@@ -2535,8 +2524,7 @@ namespace Metal {
 
 	[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0), TV (26, 0)]
 	[Native]
-	public enum MTL4ShaderReflection : ulong
-	{
+	public enum MTL4ShaderReflection : ulong {
 		None = 0x0,
 		BindingInfo = 1uL << 0,
 		BufferTypeInfo = 1uL << 1,
@@ -2544,16 +2532,14 @@ namespace Metal {
 
 	[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0), TV (26, 0)]
 	[Native]
-	public enum MTL4TimestampGranularity : long
-	{
+	public enum MTL4TimestampGranularity : long {
 		Relaxed = 0,
 		Precise = 1,
 	}
 
 	[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0), TV (26, 0)]
 	[Native]
-	public enum MTL4VisibilityOptions : long
-	{
+	public enum MTL4VisibilityOptions : long {
 		None = 0,
 		Device = 1 << 0,
 		ResourceAlias = 1 << 1,
@@ -2561,16 +2547,14 @@ namespace Metal {
 
 	[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0), TV (26, 0)]
 	[Native]
-	public enum MTLBufferSparseTier : long
-	{
+	public enum MTLBufferSparseTier : long {
 		None = 0,
 		MTLBufferSparseTier1 = 1,
 	}
 
 	[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0), TV (26, 0)]
 	[Native]
-	public enum MTLStages : ulong
-	{
+	public enum MTLStages : ulong {
 		Vertex = 1uL << 0,
 		Fragment = 1uL << 1,
 		Tile = 1uL << 2,
@@ -2586,8 +2570,7 @@ namespace Metal {
 
 	[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0), TV (26, 0)]
 	[Native]
-	public enum MTLTensorDataType : long
-	{
+	public enum MTLTensorDataType : long {
 		None = (long) MTLDataType.None,
 		Float32 = (long) MTLDataType.Float,
 		Float16 = (long) MTLDataType.Half,
@@ -2603,8 +2586,7 @@ namespace Metal {
 	[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0), TV (26, 0)]
 	[Native]
 	[ErrorDomain ("MTLTensorDomain")]
-	public enum MTLTensorError : ulong
-	{
+	public enum MTLTensorError : ulong {
 		None = 0,
 		InternalError = 1,
 		InvalidDescriptor = 2,
@@ -2612,8 +2594,7 @@ namespace Metal {
 
 	[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0), TV (26, 0)]
 	[Native]
-	public enum MTLTensorUsage : long
-	{
+	public enum MTLTensorUsage : long {
 		Compute = 1L << 0,
 		Render = 1L << 1,
 		MachineLearning = 1L << 2,
@@ -2621,8 +2602,7 @@ namespace Metal {
 
 	[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0), TV (26, 0)]
 	[Native]
-	public enum MTLTextureSparseTier : long
-	{
+	public enum MTLTextureSparseTier : long {
 		None = 0,
 		Tier1 = 1,
 		Tier2 = 2,
@@ -2630,8 +2610,7 @@ namespace Metal {
 
 	[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0), TV (26, 0)]
 	[Native]
-	public enum MTLVisibilityResultType : long
-	{
+	public enum MTLVisibilityResultType : long {
 		Reset = 0,
 		Accumulate = 1,
 	}

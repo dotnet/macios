@@ -969,7 +969,7 @@ namespace Metal {
 		[Export ("newComputePipelineStateWithBinaryFunctions:error:")]
 		[return: NullAllowed]
 		[return: Release]
-		IMTLComputePipelineState CreateComputePipelineState (IMTL4BinaryFunction[] additionalBinaryFunctions, [NullAllowed] out NSError error);
+		IMTLComputePipelineState CreateComputePipelineState (IMTL4BinaryFunction [] additionalBinaryFunctions, [NullAllowed] out NSError error);
 
 		[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0), TV (26, 0)]
 		[Abstract]
@@ -7736,12 +7736,11 @@ namespace Metal {
 
 	interface IMTLResidencySet { }
 
-	interface IMTL4Archive {}
+	interface IMTL4Archive { }
 
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
-	interface MTL4Archive
-	{
+	interface MTL4Archive {
 		[Abstract]
 		[NullAllowed, Export ("label")]
 		string Label { get; set; }
@@ -7777,11 +7776,10 @@ namespace Metal {
 		IMTL4BinaryFunction CreateBinaryFunction (MTL4BinaryFunctionDescriptor descriptor, [NullAllowed] out NSError error);
 	}
 
-	interface IMTL4ArgumentTable {}
+	interface IMTL4ArgumentTable { }
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
-	interface MTL4ArgumentTable
-	{
+	interface MTL4ArgumentTable {
 		[Abstract]
 		[Export ("setAddress:atIndex:")]
 		void SetAddress (ulong gpuAddress, nuint bindingIndex);
@@ -7811,12 +7809,11 @@ namespace Metal {
 		string Label { get; }
 	}
 
-	interface IMTL4BinaryFunction {}
+	interface IMTL4BinaryFunction { }
 
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
-	interface MTL4BinaryFunction
-	{
+	interface MTL4BinaryFunction {
 		[Abstract]
 		[NullAllowed, Export ("name")]
 		string Name { get; }
@@ -7826,12 +7823,11 @@ namespace Metal {
 		MTLFunctionType FunctionType { get; }
 	}
 
-	interface IMTL4CommandAllocator {}
+	interface IMTL4CommandAllocator { }
 
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
-	interface MTL4CommandAllocator
-	{
+	interface MTL4CommandAllocator {
 		[Abstract]
 		[Export ("device")]
 		IMTLDevice Device { get; }
@@ -7849,12 +7845,11 @@ namespace Metal {
 		void Reset ();
 	}
 
-	interface IMTL4CommandBuffer {}
+	interface IMTL4CommandBuffer { }
 
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
-	interface MTL4CommandBuffer
-	{
+	interface MTL4CommandBuffer {
 		[Abstract]
 		[Export ("device")]
 		IMTLDevice Device { get; }
@@ -7920,12 +7915,11 @@ namespace Metal {
 		void ResolveCounterHeap (IMTL4CounterHeap counterHeap, NSRange range, MTL4BufferRange bufferRange, [NullAllowed] IMTLFence fenceToWait, [NullAllowed] IMTLFence fenceToUpdate);
 	}
 
-	interface IMTL4CommandEncoder {}
+	interface IMTL4CommandEncoder { }
 
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
-	interface MTL4CommandEncoder
-	{
+	interface MTL4CommandEncoder {
 		[Abstract]
 		[NullAllowed, Export ("label")]
 		string Label { get; set; }
@@ -7971,12 +7965,11 @@ namespace Metal {
 		void EndEncoding ();
 	}
 
-	interface IMTL4CommandQueue {}
+	interface IMTL4CommandQueue { }
 
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
-	interface MTL4CommandQueue
-	{
+	interface MTL4CommandQueue {
 		[Abstract]
 		[Export ("device")]
 		IMTLDevice Device { get; }
@@ -8042,12 +8035,11 @@ namespace Metal {
 		void CopyBufferMappings (IMTLBuffer sourceBuffer, IMTLBuffer destinationBuffer, /* C Array: MTL4CopySparseBufferMappingOperation[] */ IntPtr operations, nuint count);
 	}
 
-	interface IMTL4CommitFeedback {}
+	interface IMTL4CommitFeedback { }
 
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
-	interface MTL4CommitFeedback
-	{
+	interface MTL4CommitFeedback {
 		[Abstract]
 		[Export ("error")]
 		[NullAllowed]
@@ -8062,12 +8054,11 @@ namespace Metal {
 		double GpuEndTime { get; }
 	}
 
-	interface IMTL4CompilerTask {}
+	interface IMTL4CompilerTask { }
 
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
-	interface MTL4CompilerTask
-	{
+	interface MTL4CompilerTask {
 		[Abstract]
 		[Export ("compiler")]
 		IMTL4Compiler Compiler { get; }
@@ -8090,12 +8081,11 @@ namespace Metal {
 	delegate void MTL4CreateBinaryFunctionCompletionHandler ([NullAllowed] IMTL4BinaryFunction function, [NullAllowed] NSError error);
 	delegate void MTL4CreateMachineLearningPipelineStateCompletionHandler ([NullAllowed] IMTL4MachineLearningPipelineState mlPipelineState, [NullAllowed] NSError error);
 
-	interface IMTL4Compiler {}
+	interface IMTL4Compiler { }
 
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
-	interface MTL4Compiler
-	{
+	interface MTL4Compiler {
 		[Abstract]
 		[Export ("device")]
 		IMTLDevice Device { get; }
@@ -8219,12 +8209,11 @@ namespace Metal {
 		IMTL4CompilerTask CreateMachineLearningPipelineState (MTL4MachineLearningPipelineDescriptor descriptor, MTL4CreateMachineLearningPipelineStateCompletionHandler completionHandler);
 	}
 
-	interface IMTL4ComputeCommandEncoder {}
+	interface IMTL4ComputeCommandEncoder { }
 
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
-	interface MTL4ComputeCommandEncoder : MTL4CommandEncoder
-	{
+	interface MTL4ComputeCommandEncoder : MTL4CommandEncoder {
 		[Abstract]
 		[Export ("stages")]
 		MTLStages Stages { get; }
@@ -8370,12 +8359,11 @@ namespace Metal {
 		void WriteTimestamp (MTL4TimestampGranularity granularity, IMTL4CounterHeap counterHeap, nuint index);
 	}
 
-	interface IMTL4CounterHeap {}
+	interface IMTL4CounterHeap { }
 
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
-	interface MTL4CounterHeap
-	{
+	interface MTL4CounterHeap {
 		[Abstract]
 		[NullAllowed, Export ("label")]
 		string Label { get; set; }
@@ -8398,12 +8386,11 @@ namespace Metal {
 		void InvalidateCounterRange (NSRange range);
 	}
 
-	interface IMTL4MachineLearningCommandEncoder {}
+	interface IMTL4MachineLearningCommandEncoder { }
 
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
-	interface MTL4MachineLearningCommandEncoder : MTL4CommandEncoder
-	{
+	interface MTL4MachineLearningCommandEncoder : MTL4CommandEncoder {
 		[Abstract]
 		[Export ("setPipelineState:")]
 		void SetPipelineState (IMTL4MachineLearningPipelineState pipelineState);
@@ -8417,12 +8404,11 @@ namespace Metal {
 		void DispatchNetwork (IMTLHeap intermediatesHeap);
 	}
 
-	interface IMTL4MachineLearningPipelineState {}
+	interface IMTL4MachineLearningPipelineState { }
 
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
-	interface MTL4MachineLearningPipelineState : MTLAllocation
-	{
+	interface MTL4MachineLearningPipelineState : MTLAllocation {
 		[Abstract]
 		[NullAllowed, Export ("label")]
 		string Label { get; }
@@ -8440,12 +8426,11 @@ namespace Metal {
 		nuint IntermediatesHeapSize { get; }
 	}
 
-	interface IMTL4PipelineDataSetSerializer {}
+	interface IMTL4PipelineDataSetSerializer { }
 
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
-	interface MTL4PipelineDataSetSerializer
-	{
+	interface MTL4PipelineDataSetSerializer {
 		[Abstract]
 		[Export ("serializeAsArchiveAndFlushToURL:error:")]
 		bool SerializeAsArchiveAndFlush (NSUrl url, [NullAllowed] out NSError error);
@@ -8456,12 +8441,11 @@ namespace Metal {
 		NSData SerializeAsPipelinesScript ([NullAllowed] out NSError error);
 	}
 
-	interface IMTL4RenderCommandEncoder {}
+	interface IMTL4RenderCommandEncoder { }
 
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
-	interface MTL4RenderCommandEncoder : MTL4CommandEncoder
-	{
+	interface MTL4RenderCommandEncoder : MTL4CommandEncoder {
 		[Abstract]
 		[Export ("tileWidth")]
 		nuint TileWidth { get; }
@@ -8623,12 +8607,11 @@ namespace Metal {
 		void WriteTimestamp (MTL4TimestampGranularity granularity, MTLRenderStages stage, IMTL4CounterHeap counterHeap, nuint index);
 	}
 
-	interface IMTLResourceViewPool {}
+	interface IMTLResourceViewPool { }
 
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
-	interface MTLResourceViewPool
-	{
+	interface MTLResourceViewPool {
 		[Abstract]
 		[Export ("baseResourceID")]
 		MTLResourceId BaseResourceId { get; }
@@ -8650,12 +8633,11 @@ namespace Metal {
 		MTLResourceId CopyResourceViews (IMTLResourceViewPool sourcePool, NSRange sourceRange, nuint destinationIndex);
 	}
 
-	interface IMTLTensor {}
+	interface IMTLTensor { }
 
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
-	interface MTLTensor : MTLResource
-	{
+	interface MTLTensor : MTLResource {
 		[Abstract]
 		[Export ("gpuResourceID")]
 		MTLResourceId GpuResourceId { get; }
@@ -8693,12 +8675,11 @@ namespace Metal {
 		void GetBytes (IntPtr /* void * _Nonnull */ bytes, MTLTensorExtents strides, MTLTensorExtents sliceOrigin, MTLTensorExtents sliceDimensions);
 	}
 
-	interface IMTLTensorBinding {}
+	interface IMTLTensorBinding { }
 
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
-	interface MTLTensorBinding : MTLBinding
-	{
+	interface MTLTensorBinding : MTLBinding {
 		[Abstract]
 		[Export ("tensorDataType")]
 		MTLTensorDataType TensorDataType { get; }
@@ -8712,12 +8693,11 @@ namespace Metal {
 		MTLTensorExtents Dimensions { get; }
 	}
 
-	interface IMTLTextureViewPool {}
+	interface IMTLTextureViewPool { }
 
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
-	interface MTLTextureViewPool : MTLResourceViewPool
-	{
+	interface MTLTextureViewPool : MTLResourceViewPool {
 		[Abstract]
 		[Export ("setTextureView:atIndex:")]
 		MTLResourceId SetTextureView (IMTLTexture texture, nuint index);
@@ -8733,8 +8713,7 @@ namespace Metal {
 
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (MTL4AccelerationStructureGeometryDescriptor))]
-	interface MTL4AccelerationStructureBoundingBoxGeometryDescriptor
-	{
+	interface MTL4AccelerationStructureBoundingBoxGeometryDescriptor {
 		[Export ("boundingBoxBuffer", ArgumentSemantic.Assign)]
 		MTL4BufferRange BoundingBoxBuffer { get; set; }
 
@@ -8747,8 +8726,7 @@ namespace Metal {
 
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (MTL4AccelerationStructureGeometryDescriptor))]
-	interface MTL4AccelerationStructureCurveGeometryDescriptor
-	{
+	interface MTL4AccelerationStructureCurveGeometryDescriptor {
 		[Export ("controlPointBuffer", ArgumentSemantic.Assign)]
 		MTL4BufferRange ControlPointBuffer { get; set; }
 
@@ -8794,14 +8772,12 @@ namespace Metal {
 
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (MTLAccelerationStructureDescriptor))]
-	interface MTL4AccelerationStructureDescriptor
-	{
+	interface MTL4AccelerationStructureDescriptor {
 	}
 
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
-	interface MTL4AccelerationStructureGeometryDescriptor : NSCopying
-	{
+	interface MTL4AccelerationStructureGeometryDescriptor : NSCopying {
 		[Export ("intersectionFunctionTableOffset")]
 		nuint IntersectionFunctionTableOffset { get; set; }
 
@@ -8826,8 +8802,7 @@ namespace Metal {
 
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (MTL4AccelerationStructureGeometryDescriptor))]
-	interface MTL4AccelerationStructureMotionBoundingBoxGeometryDescriptor
-	{
+	interface MTL4AccelerationStructureMotionBoundingBoxGeometryDescriptor {
 		[Export ("boundingBoxBuffers", ArgumentSemantic.Assign)]
 		MTL4BufferRange BoundingBoxBuffers { get; set; }
 
@@ -8840,8 +8815,7 @@ namespace Metal {
 
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (MTL4AccelerationStructureGeometryDescriptor))]
-	interface MTL4AccelerationStructureMotionCurveGeometryDescriptor
-	{
+	interface MTL4AccelerationStructureMotionCurveGeometryDescriptor {
 		[Export ("controlPointBuffers", ArgumentSemantic.Assign)]
 		MTL4BufferRange ControlPointBuffers { get; set; }
 
@@ -8887,8 +8861,7 @@ namespace Metal {
 
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (MTL4AccelerationStructureGeometryDescriptor))]
-	interface MTL4AccelerationStructureMotionTriangleGeometryDescriptor
-	{
+	interface MTL4AccelerationStructureMotionTriangleGeometryDescriptor {
 		[Export ("vertexBuffers", ArgumentSemantic.Assign)]
 		MTL4BufferRange VertexBuffers { get; set; }
 
@@ -8916,8 +8889,7 @@ namespace Metal {
 
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (MTL4AccelerationStructureGeometryDescriptor))]
-	interface MTL4AccelerationStructureTriangleGeometryDescriptor
-	{
+	interface MTL4AccelerationStructureTriangleGeometryDescriptor {
 		[Export ("vertexBuffer", ArgumentSemantic.Assign)]
 		MTL4BufferRange VertexBuffer { get; set; }
 
@@ -8945,8 +8917,7 @@ namespace Metal {
 
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
-	interface MTL4ArgumentTableDescriptor : NSCopying
-	{
+	interface MTL4ArgumentTableDescriptor : NSCopying {
 		[Export ("maxBufferBindCount")]
 		nuint MaxBufferBindCount { get; set; }
 
@@ -8968,8 +8939,7 @@ namespace Metal {
 
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
-	interface MTL4BinaryFunctionDescriptor : NSCopying
-	{
+	interface MTL4BinaryFunctionDescriptor : NSCopying {
 		[Export ("name")]
 		string Name { get; set; }
 
@@ -8982,24 +8952,21 @@ namespace Metal {
 
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
-	interface MTL4CommandAllocatorDescriptor : NSCopying
-	{
+	interface MTL4CommandAllocatorDescriptor : NSCopying {
 		[NullAllowed, Export ("label")]
 		string Label { get; set; }
 	}
 
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
-	interface MTL4CommandBufferOptions : NSCopying
-	{
+	interface MTL4CommandBufferOptions : NSCopying {
 		[NullAllowed, Export ("logState", ArgumentSemantic.Retain)]
 		IMTLLogState LogState { get; set; }
 	}
 
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
-	interface MTL4CommandQueueDescriptor : NSCopying
-	{
+	interface MTL4CommandQueueDescriptor : NSCopying {
 		[NullAllowed, Export ("label")]
 		string Label { get; set; }
 
@@ -9011,16 +8978,14 @@ namespace Metal {
 
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
-	interface MTL4CommitOptions
-	{
+	interface MTL4CommitOptions {
 		[Export ("addFeedbackHandler:")]
 		void AddFeedbackHandler (MTL4CommitFeedbackHandler block);
 	}
 
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
-	interface MTL4CompilerDescriptor : NSCopying
-	{
+	interface MTL4CompilerDescriptor : NSCopying {
 		[NullAllowed, Export ("label")]
 		string Label { get; set; }
 
@@ -9030,16 +8995,14 @@ namespace Metal {
 
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
-	interface MTL4CompilerTaskOptions : NSCopying
-	{
+	interface MTL4CompilerTaskOptions : NSCopying {
 		[NullAllowed, Export ("lookupArchives", ArgumentSemantic.Copy)]
-		IMTL4Archive[] LookupArchives { get; set; }
+		IMTL4Archive [] LookupArchives { get; set; }
 	}
 
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (MTL4PipelineDescriptor))]
-	interface MTL4ComputePipelineDescriptor
-	{
+	interface MTL4ComputePipelineDescriptor {
 		[NullAllowed, Export ("computeFunctionDescriptor", ArgumentSemantic.Copy)]
 		MTL4FunctionDescriptor ComputeFunctionDescriptor { get; set; }
 
@@ -9067,8 +9030,7 @@ namespace Metal {
 
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
-	interface MTL4CounterHeapDescriptor : NSCopying
-	{
+	interface MTL4CounterHeapDescriptor : NSCopying {
 		[Export ("type", ArgumentSemantic.Assign)]
 		MTL4CounterHeapType Type { get; set; }
 
@@ -9078,14 +9040,12 @@ namespace Metal {
 
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
-	interface MTL4FunctionDescriptor : NSCopying
-	{
+	interface MTL4FunctionDescriptor : NSCopying {
 	}
 
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (MTL4AccelerationStructureDescriptor))]
-	interface MTL4IndirectInstanceAccelerationStructureDescriptor
-	{
+	interface MTL4IndirectInstanceAccelerationStructureDescriptor {
 		[Export ("instanceDescriptorBuffer", ArgumentSemantic.Assign)]
 		MTL4BufferRange InstanceDescriptorBuffer { get; set; }
 
@@ -9122,8 +9082,7 @@ namespace Metal {
 
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (MTL4AccelerationStructureDescriptor))]
-	interface MTL4InstanceAccelerationStructureDescriptor
-	{
+	interface MTL4InstanceAccelerationStructureDescriptor {
 		[Export ("instanceDescriptorBuffer", ArgumentSemantic.Assign)]
 		MTL4BufferRange InstanceDescriptorBuffer { get; set; }
 
@@ -9154,8 +9113,7 @@ namespace Metal {
 
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
-	interface MTL4LibraryDescriptor : NSCopying
-	{
+	interface MTL4LibraryDescriptor : NSCopying {
 		[NullAllowed, Export ("source")]
 		string Source { get; set; }
 
@@ -9168,8 +9126,7 @@ namespace Metal {
 
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (MTL4FunctionDescriptor))]
-	interface MTL4LibraryFunctionDescriptor
-	{
+	interface MTL4LibraryFunctionDescriptor {
 		[NullAllowed, Export ("name")]
 		string Name { get; set; }
 
@@ -9179,8 +9136,7 @@ namespace Metal {
 
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (MTL4PipelineDescriptor))]
-	interface MTL4MachineLearningPipelineDescriptor
-	{
+	interface MTL4MachineLearningPipelineDescriptor {
 		[NullAllowed, Export ("label")]
 		string Label { get; set; }
 
@@ -9191,7 +9147,7 @@ namespace Metal {
 		void SetInputDimensions ([NullAllowed] MTLTensorExtents dimensions, nint bufferIndex);
 
 		[Export ("setInputDimensions:withRange:")]
-		void SetInputDimensions (MTLTensorExtents[] dimensions, NSRange range);
+		void SetInputDimensions (MTLTensorExtents [] dimensions, NSRange range);
 
 		[Export ("inputDimensionsAtBufferIndex:")]
 		[return: NullAllowed]
@@ -9203,16 +9159,14 @@ namespace Metal {
 
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
-	interface MTL4MachineLearningPipelineReflection
-	{
+	interface MTL4MachineLearningPipelineReflection {
 		[Export ("bindings")]
-		IMTLBinding[] Bindings { get; }
+		IMTLBinding [] Bindings { get; }
 	}
 
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (MTL4PipelineDescriptor))]
-	interface MTL4MeshRenderPipelineDescriptor
-	{
+	interface MTL4MeshRenderPipelineDescriptor {
 		[NullAllowed, Export ("objectFunctionDescriptor", ArgumentSemantic.Copy)]
 		MTL4FunctionDescriptor ObjectFunctionDescriptor { get; set; }
 
@@ -9294,16 +9248,14 @@ namespace Metal {
 
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
-	interface MTL4PipelineDataSetSerializerDescriptor : NSCopying
-	{
+	interface MTL4PipelineDataSetSerializerDescriptor : NSCopying {
 		[Export ("configuration", ArgumentSemantic.Assign)]
 		MTL4PipelineDataSetSerializerConfiguration Configuration { get; set; }
 	}
 
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
-	interface MTL4PipelineDescriptor : NSCopying
-	{
+	interface MTL4PipelineDescriptor : NSCopying {
 		[NullAllowed, Export ("label")]
 		string Label { get; set; }
 
@@ -9313,8 +9265,7 @@ namespace Metal {
 
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
-	interface MTL4PipelineOptions : NSCopying
-	{
+	interface MTL4PipelineOptions : NSCopying {
 		[Export ("shaderValidation", ArgumentSemantic.Assign)]
 		MTLShaderValidation ShaderValidation { get; set; }
 
@@ -9324,24 +9275,22 @@ namespace Metal {
 
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
-	interface MTL4PipelineStageDynamicLinkingDescriptor : NSCopying
-	{
+	interface MTL4PipelineStageDynamicLinkingDescriptor : NSCopying {
 		[Export ("maxCallStackDepth")]
 		nuint MaxCallStackDepth { get; set; }
 
 		[NullAllowed, Export ("binaryLinkedFunctions", ArgumentSemantic.Copy)]
-		IMTL4BinaryFunction[] BinaryLinkedFunctions { get; set; }
+		IMTL4BinaryFunction [] BinaryLinkedFunctions { get; set; }
 
 		[Export ("preloadedLibraries", ArgumentSemantic.Copy)]
-		IMTLDynamicLibrary[] PreloadedLibraries { get; set; }
+		IMTLDynamicLibrary [] PreloadedLibraries { get; set; }
 	}
 
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (MTL4AccelerationStructureDescriptor))]
-	interface MTL4PrimitiveAccelerationStructureDescriptor
-	{
+	interface MTL4PrimitiveAccelerationStructureDescriptor {
 		[NullAllowed, Export ("geometryDescriptors", ArgumentSemantic.Retain)]
-		MTL4AccelerationStructureGeometryDescriptor[] GeometryDescriptors { get; set; }
+		MTL4AccelerationStructureGeometryDescriptor [] GeometryDescriptors { get; set; }
 
 		[Export ("motionStartBorderMode", ArgumentSemantic.Assign)]
 		MTLMotionBorderMode MotionStartBorderMode { get; set; }
@@ -9361,8 +9310,7 @@ namespace Metal {
 
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
-	interface MTL4RenderPassDescriptor : NSCopying
-	{
+	interface MTL4RenderPassDescriptor : NSCopying {
 		[Export ("colorAttachments")]
 		MTLRenderPassColorAttachmentDescriptorArray ColorAttachments { get; }
 
@@ -9417,22 +9365,21 @@ namespace Metal {
 
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
-	interface MTL4RenderPipelineBinaryFunctionsDescriptor : NSCopying
-	{
+	interface MTL4RenderPipelineBinaryFunctionsDescriptor : NSCopying {
 		[NullAllowed, Export ("vertexAdditionalBinaryFunctions", ArgumentSemantic.Copy)]
-		IMTL4BinaryFunction[] VertexAdditionalBinaryFunctions { get; set; }
+		IMTL4BinaryFunction [] VertexAdditionalBinaryFunctions { get; set; }
 
 		[NullAllowed, Export ("fragmentAdditionalBinaryFunctions", ArgumentSemantic.Copy)]
-		IMTL4BinaryFunction[] FragmentAdditionalBinaryFunctions { get; set; }
+		IMTL4BinaryFunction [] FragmentAdditionalBinaryFunctions { get; set; }
 
 		[NullAllowed, Export ("tileAdditionalBinaryFunctions", ArgumentSemantic.Copy)]
-		IMTL4BinaryFunction[] TileAdditionalBinaryFunctions { get; set; }
+		IMTL4BinaryFunction [] TileAdditionalBinaryFunctions { get; set; }
 
 		[NullAllowed, Export ("objectAdditionalBinaryFunctions", ArgumentSemantic.Copy)]
-		IMTL4BinaryFunction[] ObjectAdditionalBinaryFunctions { get; set; }
+		IMTL4BinaryFunction [] ObjectAdditionalBinaryFunctions { get; set; }
 
 		[NullAllowed, Export ("meshAdditionalBinaryFunctions", ArgumentSemantic.Copy)]
-		IMTL4BinaryFunction[] MeshAdditionalBinaryFunctions { get; set; }
+		IMTL4BinaryFunction [] MeshAdditionalBinaryFunctions { get; set; }
 
 		[Export ("reset")]
 		void Reset ();
@@ -9440,8 +9387,7 @@ namespace Metal {
 
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
-	interface MTL4RenderPipelineColorAttachmentDescriptor : NSCopying
-	{
+	interface MTL4RenderPipelineColorAttachmentDescriptor : NSCopying {
 		[Export ("pixelFormat", ArgumentSemantic.Assign)]
 		MTLPixelFormat PixelFormat { get; set; }
 
@@ -9475,8 +9421,7 @@ namespace Metal {
 
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
-	interface MTL4RenderPipelineColorAttachmentDescriptorArray : NSCopying
-	{
+	interface MTL4RenderPipelineColorAttachmentDescriptorArray : NSCopying {
 		[Export ("objectAtIndexedSubscript:")]
 		MTL4RenderPipelineColorAttachmentDescriptor GetObject (nuint attachmentIndex);
 
@@ -9489,8 +9434,7 @@ namespace Metal {
 
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (MTL4PipelineDescriptor))]
-	interface MTL4RenderPipelineDescriptor
-	{
+	interface MTL4RenderPipelineDescriptor {
 		[NullAllowed, Export ("vertexFunctionDescriptor", ArgumentSemantic.Copy)]
 		MTL4FunctionDescriptor VertexFunctionDescriptor { get; set; }
 
@@ -9545,8 +9489,7 @@ namespace Metal {
 
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
-	interface MTL4RenderPipelineDynamicLinkingDescriptor : NSCopying
-	{
+	interface MTL4RenderPipelineDynamicLinkingDescriptor : NSCopying {
 		[Export ("vertexLinkingDescriptor")]
 		MTL4PipelineStageDynamicLinkingDescriptor VertexLinkingDescriptor { get; }
 
@@ -9565,8 +9508,7 @@ namespace Metal {
 
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (MTL4FunctionDescriptor))]
-	interface MTL4SpecializedFunctionDescriptor
-	{
+	interface MTL4SpecializedFunctionDescriptor {
 		[NullAllowed, Export ("functionDescriptor", ArgumentSemantic.Copy)]
 		MTL4FunctionDescriptor FunctionDescriptor { get; set; }
 
@@ -9579,13 +9521,12 @@ namespace Metal {
 
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
-	interface MTL4StaticLinkingDescriptor : NSCopying
-	{
+	interface MTL4StaticLinkingDescriptor : NSCopying {
 		[NullAllowed, Export ("functionDescriptors", ArgumentSemantic.Copy)]
-		MTL4FunctionDescriptor[] FunctionDescriptors { get; set; }
+		MTL4FunctionDescriptor [] FunctionDescriptors { get; set; }
 
 		[NullAllowed, Export ("privateFunctionDescriptors", ArgumentSemantic.Copy)]
-		MTL4FunctionDescriptor[] PrivateFunctionDescriptors { get; set; }
+		MTL4FunctionDescriptor [] PrivateFunctionDescriptors { get; set; }
 
 		[NullAllowed, Export ("groups", ArgumentSemantic.Copy)]
 		NSDictionary<NSString, NSArray<MTL4FunctionDescriptor>> Groups { get; set; }
@@ -9593,19 +9534,17 @@ namespace Metal {
 
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (MTL4FunctionDescriptor))]
-	interface MTL4StitchedFunctionDescriptor
-	{
+	interface MTL4StitchedFunctionDescriptor {
 		[NullAllowed, Export ("functionGraph", ArgumentSemantic.Copy)]
 		MTLFunctionStitchingGraph FunctionGraph { get; set; }
 
 		[NullAllowed, Export ("functionDescriptors", ArgumentSemantic.Copy)]
-		MTL4FunctionDescriptor[] FunctionDescriptors { get; set; }
+		MTL4FunctionDescriptor [] FunctionDescriptors { get; set; }
 	}
 
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (MTL4PipelineDescriptor))]
-	interface MTL4TileRenderPipelineDescriptor
-	{
+	interface MTL4TileRenderPipelineDescriptor {
 		[NullAllowed, Export ("tileFunctionDescriptor", ArgumentSemantic.Copy)]
 		MTL4FunctionDescriptor TileFunctionDescriptor { get; set; }
 
@@ -9636,16 +9575,14 @@ namespace Metal {
 
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
-	interface MTLFunctionReflection
-	{
+	interface MTLFunctionReflection {
 		[Export ("bindings")]
-		IMTLBinding[] Bindings { get; }
+		IMTLBinding [] Bindings { get; }
 	}
 
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
-	interface MTLLogicalToPhysicalColorAttachmentMap : NSCopying
-	{
+	interface MTLLogicalToPhysicalColorAttachmentMap : NSCopying {
 		[Export ("setPhysicalIndex:forLogicalIndex:")]
 		void SetPhysicalIndex (nuint physicalIndex, nuint logicalIndex);
 
@@ -9658,8 +9595,7 @@ namespace Metal {
 
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
-	interface MTLResourceViewPoolDescriptor : NSCopying
-	{
+	interface MTLResourceViewPoolDescriptor : NSCopying {
 		[Export ("resourceViewCount")]
 		nuint ResourceViewCount { get; set; }
 
@@ -9669,8 +9605,7 @@ namespace Metal {
 
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
-	interface MTLTensorDescriptor : NSCopying
-	{
+	interface MTLTensorDescriptor : NSCopying {
 		[Export ("dimensions", ArgumentSemantic.Copy)]
 		MTLTensorExtents Dimensions { get; set; }
 
@@ -9699,8 +9634,7 @@ namespace Metal {
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // all properties are readonly, and has a non-default ctor
-	interface MTLTensorExtents
-	{
+	interface MTLTensorExtents {
 		[Internal]
 		[Export ("initWithRank:values:")]
 		NativeHandle _InitWithRank (nuint rank, /* C Array: [NullAllowed] nint[] */ IntPtr values);
@@ -9714,8 +9648,7 @@ namespace Metal {
 
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (MTLType))]
-	interface MTLTensorReferenceType
-	{
+	interface MTLTensorReferenceType {
 		[Export ("tensorDataType")]
 		MTLTensorDataType TensorDataType { get; }
 
@@ -9731,8 +9664,7 @@ namespace Metal {
 
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
-	interface MTLTextureViewDescriptor : NSCopying
-	{
+	interface MTLTextureViewDescriptor : NSCopying {
 		[Export ("pixelFormat", ArgumentSemantic.Assign)]
 		MTLPixelFormat PixelFormat { get; set; }
 

@@ -5,8 +5,7 @@ using Foundation;
 namespace Metal {
 	/// <summary>A container for the arguments for a copy sparse buffer mapping operation.</summary>
 	[StructLayout (LayoutKind.Sequential)]
-	public struct MTL4CopySparseBufferMappingOperation
-	{
+	public struct MTL4CopySparseBufferMappingOperation {
 		NSRange sourceRange;
 		nuint destinationOffset;
 

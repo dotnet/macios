@@ -3,8 +3,7 @@ using System.Runtime.InteropServices;
 namespace Metal {
 	/// <summary>A container for the arguments for a update sparse texture mapping operation.</summary>
 	[StructLayout (LayoutKind.Sequential)]
-	public struct MTL4UpdateSparseTextureMappingOperation
-	{
+	public struct MTL4UpdateSparseTextureMappingOperation {
 		MTLSparseTextureMappingMode mode;
 		MTLRegion textureRegion;
 		nuint textureLevel;

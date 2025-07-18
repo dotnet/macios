@@ -89,6 +89,7 @@ public {bindingContext.Changes.Name} () : base ({NSObjectFlag}.Empty)
 
 				// init the needed temp variables
 				foreach (var argument in invocations.Arguments) {
+					constructorBlock.Write (argument.Validations, verifyTrivia: false);
 					constructorBlock.Write (argument.Initializers, verifyTrivia: false);
 					constructorBlock.Write (argument.PreCallConversion, verifyTrivia: false);
 				}

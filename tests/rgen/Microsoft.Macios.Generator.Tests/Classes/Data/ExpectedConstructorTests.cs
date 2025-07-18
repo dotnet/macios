@@ -161,16 +161,16 @@ public class ConstructorTests
 	[DesignatedInitializer]
 	public ConstructorTests (string urlString, global::Foundation.NSUrl relativeToUrl) : base (global::Foundation.NSObjectFlag.Empty)
 	{
+		var relativeToUrl__handle__ = relativeToUrl!.GetNonNullHandle (nameof (relativeToUrl));
 		if (urlString is null)
 			global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (urlString));
 		var nsurlString = global::CoreFoundation.CFString.CreateNative (urlString);
-		var relativeToUrl__handle__ = relativeToUrl!.GetNonNullHandle (nameof (relativeToUrl));
 		if (IsDirectBinding) {
 			InitializeHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend_NativeHandle_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("initWithString:relativeToURL:"), nsurlString, relativeToUrl__handle__), "initWithString:relativeToURL:");
 		} else {
 			InitializeHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper_NativeHandle_NativeHandle (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("initWithString:relativeToURL:"), nsurlString, relativeToUrl__handle__), "initWithString:relativeToURL:");
 		}
-		global::CoreFoundation.CFString.ReleaseNative (nsurlString);
 		global::System.GC.KeepAlive (relativeToUrl);
+		global::CoreFoundation.CFString.ReleaseNative (nsurlString);
 	}
 }

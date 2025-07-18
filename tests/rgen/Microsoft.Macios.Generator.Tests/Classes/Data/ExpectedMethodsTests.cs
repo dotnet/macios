@@ -353,7 +353,7 @@ public partial class MethodTests
 		if (IsDirectBinding) {
 			ret = global::ObjCRuntime.Runtime.GetNSObject<global::Foundation.NSData> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend_NativeHandle_NativeHandle_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("bookmarkDataWithContentsOfURL:subdomain:error:"), bookmarkFileUrl__handle__, nssubdomain, &error__handle__))!;
 		} else {
-			ret = global::ObjCRuntime.Runtime.GetNSObject<global::Foundation.NSData> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper_NativeHandle_NativeHandle_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("bookmarkDataWithContentsOfURL:subdomain:error:"), bookmarkFileUrl__handle__, nssubdomain, &error__handle__))!;
+			ret = global::ObjCRuntime.Runtime.GetNSObject<global::Foundation.NSData> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper_NativeHandle_NativeHandle_NativeHandle (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("bookmarkDataWithContentsOfURL:subdomain:error:"), bookmarkFileUrl__handle__, nssubdomain, &error__handle__))!;
 		}
 		global::System.GC.KeepAlive (this);
 		global::System.GC.KeepAlive (bookmarkFileUrl);

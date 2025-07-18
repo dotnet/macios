@@ -108,8 +108,8 @@ static partial class BindingSyntaxFactory {
 			return (argument, ThrowNotImplementedException (), ThrowNotImplementedException ());
 		}
 
-		var setterSend = MessagingInvocation (sendMethod, selector, [argument.ArgumentSyntax], isSuper: false);
-		var setterSuperSend = MessagingInvocation (superSendMethod, selector, [argument.ArgumentSyntax], isSuper: true);
+		var setterSend = MessagingInvocation (sendMethod, selector, [syntax], isSuper: false);
+		var setterSuperSend = MessagingInvocation (superSendMethod, selector, [syntax], isSuper: true);
 
 		return (
 			Argument: argument,

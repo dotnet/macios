@@ -45,6 +45,14 @@ namespace UIKit {
 	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/MonoCatalog-MonoDevelop/">monocatalog</related>
 	public delegate bool UITextFieldCondition (UITextField textField);
 
+	/// <param name="textField">To be added.</param>
+	///     <param name="ranges">To be added.</param>
+	///     <param name="replacementString">To be added.</param>
+	///     <summary>A delegate used to respond to changes on the UITextField.</summary>
+	///     <returns>To be added.</returns>
+	///     <remarks>To be added.</remarks>
+	public delegate bool UITextFieldChanges (UITextField textField, NSValue [] ranges, string replacementString);
+
 	public partial class UITextField : IUITextInputTraits {
 
 		internal virtual Type GetInternalEventDelegateType {
@@ -182,6 +190,17 @@ namespace UIKit {
 				if (handler is not null)
 					handler (textField, EventArgs.Empty);
 			}
+
+			internal UITextFieldChanges? shouldChangeCharactersInRanges;
+			[Preserve (Conditional = true)]
+			[Export ("textField:shouldChangeCharactersInRanges:replacementString:")]
+			bool ShouldChangeCharacters (UITextField textField, NSValue [] ranges, string replacementString)
+			{
+				var handler = shouldChangeCharactersInRanges;
+				if (handler is not null)
+					return handler (textField, ranges, replacementString);
+				return true;
+			}
 		}
 
 		/// <summary>Raised when editing has ended.</summary>
@@ -239,6 +258,14 @@ namespace UIKit {
 		public event EventHandler DidChangeSelection {
 			add { EnsureUITextFieldDelegate ().didChangeSelection += value; }
 			remove { EnsureUITextFieldDelegate ().didChangeSelection -= value; }
+		}
+
+		[SupportedOSPlatform ("tvos26.0")]
+		[SupportedOSPlatform ("ios26.0")]
+		[SupportedOSPlatform ("maccatalyst26.0")]
+		public UITextFieldChanges? ShouldChangeCharactersInRanges {
+			get { return EnsureUITextFieldDelegate ().shouldChangeCharactersInRanges; }
+			set { EnsureUITextFieldDelegate ().shouldChangeCharactersInRanges = value; }
 		}
 
 		// The following events are already here from the UITextInput protocol, so no need to implement the ones from UITextFieldDelegate:

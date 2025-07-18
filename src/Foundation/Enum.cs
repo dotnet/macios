@@ -1180,6 +1180,9 @@ namespace Foundation {
 		OneShot = (1 << 4),
 		/// <summary>To be added.</summary>
 		TruncatesLastVisibleLine = (1 << 5),
+
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0), Mac (26, 0)]
+		OptionsResolvesNaturalAlignmentWithBaseWritingDirection = (1L << 9),
 	}
 
 	/// <summary>An enumeration of formats that can be used with numbers.</summary>

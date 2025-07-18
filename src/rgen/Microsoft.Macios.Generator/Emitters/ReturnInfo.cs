@@ -46,6 +46,16 @@ readonly record struct ReturnInfo {
 	}
 
 	/// <summary>
+	/// Initializes a new instance of the <see cref="ReturnInfo"/> struct from a <see cref="Method"/>.
+	/// </summary>
+	/// <param name="method">The method to create the return info from.</param>
+	public ReturnInfo (in Method method)
+	{
+		Type = method.ReturnType;
+		BindAs = method.BindAs;
+	}
+
+	/// <summary>
 	/// Implicitly converts a <see cref="Property"/> to a <see cref="ReturnInfo"/>.
 	/// </summary>
 	/// <param name="property">The property to convert.</param>
@@ -58,4 +68,11 @@ readonly record struct ReturnInfo {
 	/// <param name="delegateInfo">The delegate info to convert.</param>
 	public static implicit operator ReturnInfo (in DelegateInfo delegateInfo)
 		=> new (delegateInfo);
+
+	/// <summary>
+	/// Implicitly converts a <see cref="Method"/> to a <see cref="ReturnInfo"/>.
+	/// </summary>
+	/// <param name="method">The method to convert.</param>
+	public static implicit operator ReturnInfo (in Method method)
+		=> new (method);
 }

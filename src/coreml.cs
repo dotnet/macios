@@ -1746,7 +1746,7 @@ namespace CoreML {
 		void GetMultiArrayForState (string stateName, MLStateGetMultiArrayForStateHandler handler);
 	}
 
-	delegate void MLStateGetPredictionCompletionHandler ([NullAllowed] IMLFeatureProvider output, NSError error);
+	delegate void MLStateGetPredictionCompletionHandler ([NullAllowed] IMLFeatureProvider output, [NullAllowed] NSError error);
 
 	[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 	[Category]

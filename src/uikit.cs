@@ -445,7 +445,7 @@ namespace UIKit {
 	///     <summary>Completion handler used with <see cref="UIKit.UIPrinter.ContactPrinter(UIKit.UIPrinterContactPrinterHandler)" />.</summary>
 	delegate void UIPrinterContactPrinterHandler (bool available);
 	/// <summary>Completion handler used with various <see cref="UIKit.UIPrinterPickerController" /> presentation methods.</summary>
-	delegate void UIPrinterPickerCompletionHandler (UIPrinterPickerController printerPickerController, bool userDidSelect, NSError error);
+	delegate void UIPrinterPickerCompletionHandler ([NullAllowed] UIPrinterPickerController printerPickerController, bool userDidSelect, [NullAllowed] NSError error);
 
 	delegate UISplitViewControllerDisplayMode UISplitViewControllerFetchTargetForActionHandler (UISplitViewController svc);
 	delegate bool UISplitViewControllerDisplayEvent (UISplitViewController splitViewController, UIViewController vc, NSObject sender);
@@ -453,7 +453,7 @@ namespace UIKit {
 	delegate bool UISplitViewControllerCanCollapsePredicate (UISplitViewController splitViewController, UIViewController secondaryViewController, UIViewController primaryViewController);
 	delegate UIViewController UISplitViewControllerGetSecondaryViewController (UISplitViewController splitViewController, UIViewController primaryViewController);
 	/// <summary>The callback executed after a <see cref="UIKit.UIActivityViewController" /> is dismissed.</summary>
-	delegate void UIActivityViewControllerCompletion (NSString activityType, bool completed, NSExtensionItem [] returnedItems, NSError error);
+	delegate void UIActivityViewControllerCompletion ([NullAllowed] NSString activityType, bool completed, [NullAllowed] NSExtensionItem [] returnedItems, [NullAllowed] NSError error);
 
 	// In the hopes that the parameter is self document: this array  can contain either UIDocuments or UIResponders
 	/// <param name="uidocumentOrResponderObjects">To be added.</param>
@@ -1059,6 +1059,7 @@ namespace UIKit {
 		[NullAllowed, Export ("accessibilityTextualContext", ArgumentSemantic.Strong)]
 		string AccessibilityTextualContext { get; set; }
 
+#if !XAMCORE_5_0
 		/// <summary>Gets a trait that indicates that <c>this</c> <see cref="UIKit.IUIAccessibilityIdentification" /> element has no traits.</summary>
 		/// <value>The value to be set for the trait.</value>
 		/// <remarks>To be added.</remarks>
@@ -1182,6 +1183,7 @@ namespace UIKit {
 		[MacCatalyst (13, 1)]
 		[Field ("UIAccessibilityTraitTabBar")]
 		long TraitTabBar { get; }
+#endif // !XAMCORE_5_0
 
 		/// <include file="../docs/api/UIKit/UIBarItem.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIBarItem.AnnouncementDidFinishNotification']/*" />
 		[Field ("UIAccessibilityAnnouncementDidFinishNotification")]
@@ -1582,7 +1584,7 @@ namespace UIKit {
 	interface UIAccessibilityContainerDataTable {
 		/// <param name="row">The row that contains the desired element.</param>
 		/// <param name="column">The column that contains the desired element.</param>
-		/// <summary>Returns a description of the row span and column span for the cell that is located at the specified <parmref name="row" /> and <paramref name="column" />.</summary>
+		/// <summary>Returns a description of the row span and column span for the cell that is located at the specified <paramref name="row" /> and <paramref name="column" />.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
@@ -1701,6 +1703,7 @@ namespace UIKit {
 		NSString CategoryEdit { get; }
 	}
 
+	[return: NullAllowed]
 	delegate UIAccessibilityCustomRotorItemResult UIAccessibilityCustomRotorSearch (UIAccessibilityCustomRotorSearchPredicate predicate);
 
 	[MacCatalyst (13, 1)]
@@ -4492,7 +4495,9 @@ namespace UIKit {
 		FullWord,
 	}
 
+	[return: NullAllowed]
 	delegate UIViewController UIContextMenuContentPreviewProvider ();
+	[return: NullAllowed]
 	delegate UIMenu UIContextMenuActionProvider (UIMenuElement [] suggestedActions);
 
 	[TV (17, 0), iOS (13, 0)]
@@ -12191,6 +12196,7 @@ namespace UIKit {
 
 	[NoTV, iOS (13, 4)]
 	[MacCatalyst (13, 1)]
+	[return: NullAllowed]
 	delegate UIPointerStyle UIButtonPointerStyleProvider (UIButton button, UIPointerEffect proposedEffect, UIPointerShape proposedShape);
 
 	[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
@@ -25334,6 +25340,7 @@ namespace UIKit {
 
 	[iOS (13, 0), TV (13, 0)]
 	[MacCatalyst (13, 1)]
+	[return: NullAllowed]
 	delegate UIViewController UIStoryboardViewControllerCreator (NSCoder coder);
 
 	[MacCatalyst (13, 1)]
@@ -26268,7 +26275,7 @@ namespace UIKit {
 	}
 
 	/// <summary>A delegate executed after printing completes or after a printing error occurs.</summary>
-	delegate void UIPrintInteractionCompletionHandler (UIPrintInteractionController printInteractionController, bool completed, NSError error);
+	delegate void UIPrintInteractionCompletionHandler ([NullAllowed] UIPrintInteractionController printInteractionController, bool completed, [NullAllowed] NSError error);
 
 	/// <include file="../docs/api/UIKit/UIPrintInteractionController.xml" path="/Documentation/Docs[@DocId='T:UIKit.UIPrintInteractionController']/*" />
 	[NoTV]
@@ -31248,6 +31255,7 @@ namespace UIKit {
 
 	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
+	[return: NullAllowed]
 	delegate NSCollectionLayoutSection UICollectionViewCompositionalLayoutSectionProvider (nint section, INSCollectionLayoutEnvironment layoutEnvironment);
 
 	[TV (13, 0), iOS (13, 0)]
@@ -31663,7 +31671,7 @@ namespace UIKit {
 
 	[iOS (13, 0), TV (13, 0)]
 	[MacCatalyst (13, 1)]
-	delegate NSDictionary UIScreenshotServiceDelegatePdfHandler (NSData pdfData, nint indexOfCurrentPage, CGRect rectInCurrentPage);
+	delegate NSDictionary UIScreenshotServiceDelegatePdfHandler ([NullAllowed] NSData pdfData, nint indexOfCurrentPage, CGRect rectInCurrentPage);
 
 	interface IUIScreenshotServiceDelegate { }
 
@@ -32118,10 +32126,12 @@ namespace UIKit {
 
 	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
+	[return: NullAllowed]
 	delegate UICollectionViewCell UICollectionViewDiffableDataSourceCellProvider (UICollectionView collectionView, NSIndexPath indexPath, NSObject itemIdentifier);
 
 	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
+	[return: NullAllowed]
 	delegate UICollectionReusableView UICollectionViewDiffableDataSourceSupplementaryViewProvider (UICollectionView collectionView, string elementKind, NSIndexPath indexPath);
 
 	[TV (13, 0), iOS (13, 0)]
@@ -32202,6 +32212,7 @@ namespace UIKit {
 
 	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
+	[return: NullAllowed]
 	delegate UITableViewCell UITableViewDiffableDataSourceCellProvider (UITableView tableView, NSIndexPath indexPath, NSObject obj);
 
 	[TV (13, 0), iOS (13, 0)]
@@ -32278,8 +32289,11 @@ namespace UIKit {
 		NSString ShareRecipients { get; }
 	}
 
+	[return: NullAllowed]
 	delegate NSObject UIActivityItemsConfigurationMetadataProviderHandler (NSString activityItemsConfigurationMetadataKey);
+	[return: NullAllowed]
 	delegate NSObject UIActivityItemsConfigurationPerItemMetadataProviderHandler (nint index, NSString activityItemsConfigurationMetadataKey);
+	[return: NullAllowed]
 	delegate NSObject UIActivityItemsConfigurationPreviewProviderHandler (nint index, NSString activityItemsConfigurationPreviewIntent, CGSize suggestedSize);
 
 	[NoTV, iOS (13, 0)]
@@ -32984,6 +32998,7 @@ namespace UIKit {
 
 	[NoTV]
 	[MacCatalyst (13, 1)]
+	[return: NullAllowed]
 	delegate UISwipeActionsConfiguration UICollectionLayoutListSwipeActionsConfigurationProvider (NSIndexPath indexPath);
 
 	[NoTV]
@@ -34389,6 +34404,7 @@ namespace UIKit {
 	}
 
 	[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
+	[return: NullAllowed]
 	delegate UIWindowSceneActivationConfiguration UIWindowSceneActivationActionConfigurationProvider (UIWindowSceneActivationAction action);
 
 	[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
@@ -34424,6 +34440,7 @@ namespace UIKit {
 	}
 
 	[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
+	[return: NullAllowed]
 	delegate UIWindowSceneActivationConfiguration UIWindowSceneActivationInteractionConfigurationProvider (UIWindowSceneActivationInteraction interaction, CGPoint location);
 
 	[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
@@ -35014,6 +35031,7 @@ namespace UIKit {
 	}
 
 	[NoTV, iOS (16, 0), MacCatalyst (16, 0)]
+	[return: NullAllowed]
 	delegate UIMenu OptionsMenuProviderHandler (UIMenuElement [] elements);
 
 	[NoTV, iOS (16, 0), MacCatalyst (16, 0)]
@@ -36380,6 +36398,11 @@ namespace UIKit {
 		double Fast { get; }
 	}
 
+#if XAMCORE_5_0
+	[BackingFieldType (typeof (ulong))]
+#else
+	[BackingFieldType (typeof (ulong), GetConstantMethodName = "GetConstantValue")]
+#endif
 	public enum UIAccessibilityTraits : long {
 		[Field ("UIAccessibilityTraitNone")]
 		None,
@@ -37781,6 +37804,7 @@ namespace UIKit {
 	}
 
 	[NoMac, NoTV, iOS (18, 1), MacCatalyst (18, 1)]
+	[return: NullAllowed]
 	delegate IUITextInput UITextInputReturnHandler ();
 
 	[NoMac, NoTV, iOS (18, 1), MacCatalyst (18, 1)]

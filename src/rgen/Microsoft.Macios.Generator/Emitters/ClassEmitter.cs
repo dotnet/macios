@@ -16,6 +16,7 @@ using Microsoft.Macios.Generator.IO;
 using ObjCBindings;
 using static Microsoft.Macios.Generator.Emitters.BindingSyntaxFactory;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using Method = Microsoft.Macios.Generator.DataModel.Method;
 using Property = Microsoft.Macios.Generator.DataModel.Property;
 
 namespace Microsoft.Macios.Generator.Emitters;
@@ -147,6 +148,11 @@ return {backingField};
 		notificationProperties = notificationsBuilder.ToImmutable ();
 	}
 
+	/// <summary>
+	/// Emit the code for all the properties in the class.
+	/// </summary>
+	/// <param name="context">The current binding context.</param>
+	/// <param name="classBlock">Current class block.</param>
 	void EmitProperties (in BindingContext context, TabbedWriter<StringWriter> classBlock)
 	{
 
@@ -165,6 +171,13 @@ return {backingField};
 			var getter = property.GetAccessor (AccessorKind.Getter);
 			if (getter is null)
 				continue;
+
+			// add backing variable for the property if it is needed
+			if (property.NeedsBackingField) {
+				classBlock.WriteLine ();
+				classBlock.AppendGeneratedCodeAttribute (optimizable: true);
+				classBlock.WriteLine ($"object? {property.BackingField} = null;");
+			}
 
 			classBlock.WriteLine ();
 			classBlock.AppendMemberAvailability (property.SymbolAvailability);
@@ -193,12 +206,20 @@ if (IsDirectBinding) {{
 	{ExpressionStatement (invocations.Getter.SendSuper)}
 }}
 {ExpressionStatement (KeepAlive ("this"))}
-return {tempVar};
 ");
+					if (property.RequiresDirtyCheck || property.IsWeakDelegate) {
+						getterBlock.WriteLine ("MarkDirty ();");
+					}
+
+					if (property.NeedsBackingField) {
+						getterBlock.WriteLine ($"{property.BackingField} = {tempVar};");
+					}
+
+					getterBlock.WriteLine ($"return {tempVar};");
 				}
 
 				var setter = property.GetAccessor (AccessorKind.Setter);
-				if (setter is null)
+				if (setter is null || invocations.Setter is null)
 					// we are done with the current property
 					continue;
 
@@ -213,8 +234,170 @@ return {tempVar};
 						setterBlock.WriteLine (uiThreadCheck.ToString ());
 						setterBlock.WriteLine ();
 					}
-					setterBlock.WriteLine ("throw new NotImplementedException();");
+					// init the needed temp variables
+					setterBlock.Write (invocations.Setter.Value.Argument.Initializers, verifyTrivia: false);
+					setterBlock.Write (invocations.Setter.Value.Argument.PreCallConversion, verifyTrivia: false);
+
+					// perform the invocation
+					setterBlock.WriteRaw (
+$@"if (IsDirectBinding) {{
+	{ExpressionStatement (invocations.Setter.Value.Send)}
+}} else {{
+	{ExpressionStatement (invocations.Setter.Value.SendSuper)}
+}}
+{ExpressionStatement (KeepAlive ("this"))}
+");
+					// perform the post delegate call conversion, this might include the GC.KeepAlive calls to keep
+					// the native object alive
+					setterBlock.Write (invocations.Setter.Value.Argument.PostCallConversion, verifyTrivia: false);
+					// mark property as dirty if needed
+					if (property.RequiresDirtyCheck || property.IsWeakDelegate) {
+						setterBlock.WriteLine ("MarkDirty ();");
+					}
+
+					if (property.NeedsBackingField) {
+						setterBlock.WriteLine ($"{property.BackingField} = value;");
+					}
 				}
+			}
+
+			// if the property is a weak delegate and has the strong delegate type set, we need to emit the
+			// strong delegate property
+			if (property is { IsProperty: true, IsWeakDelegate: true }
+				&& property.ExportPropertyData.Value.StrongDelegateType is not null) {
+				classBlock.WriteLine ();
+				var strongDelegate = property.ToStrongDelegate ();
+				using (var propertyBlock =
+					   classBlock.CreateBlock (strongDelegate.ToDeclaration ().ToString (), block: true)) {
+					using (var getterBlock =
+						   propertyBlock.CreateBlock ("get", block: true)) {
+						getterBlock.WriteLine (
+							$"return {property.Name} as {strongDelegate.ReturnType.WithNullable (isNullable: false).GetIdentifierSyntax ()};");
+					}
+
+					using (var setterBlock =
+						   propertyBlock.CreateBlock ("set", block: true)) {
+						setterBlock.WriteRaw (
+$@"var rvalue = value as NSObject;
+if (!(value is null) && rvalue is null) {{
+	throw new ArgumentException ($""The object passed of type {{value.GetType ()}} does not derive from NSObject"");
+}}
+{property.Name} = rvalue;
+");
+					}
+				}
+			}
+		}
+	}
+
+	/// <summary>
+	/// Emits the body for a method that does not return a value.
+	/// </summary>
+	/// <param name="method">The method for which to generate the body.</param>
+	/// <param name="invocations">The method invocations and argument transformations.</param>
+	/// <param name="methodBlock">The writer for the method block.</param>
+	void EmitVoidMethodBody (in Method method, in MethodInvocations invocations, TabbedWriter<StringWriter> methodBlock)
+	{
+
+		// init the needed temp variables
+		foreach (var argument in invocations.Arguments) {
+			methodBlock.Write (argument.Initializers, verifyTrivia: false);
+			methodBlock.Write (argument.PreCallConversion, verifyTrivia: false);
+		}
+
+		// simply call the send or sendSuper accordingly
+		methodBlock.WriteRaw (
+$@"if (IsDirectBinding) {{
+	{ExpressionStatement (invocations.Send)}
+}} else {{
+	{ExpressionStatement (invocations.SendSuper)}
+}}
+{ExpressionStatement (KeepAlive ("this"))}
+");
+
+		// before we leave the methods, do any post operations
+		foreach (var argument in invocations.Arguments) {
+			methodBlock.Write (argument.PostCallConversion, verifyTrivia: false);
+		}
+	}
+
+	/// <summary>
+	/// Emits the body for a method that returns a value.
+	/// </summary>
+	/// <param name="method">The method for which to generate the body.</param>
+	/// <param name="invocations">The method invocations and argument transformations.</param>
+	/// <param name="methodBlock">The writer for the method block.</param>
+	void EmitReturnMethodBody (in Method method, in MethodInvocations invocations, TabbedWriter<StringWriter> methodBlock)
+	{
+		// similar to the void method but we need to create a temp variable to store the return value
+		// and do any conversions that might be needed for the return value, for example byte to bool
+		var (tempVar, tempDeclaration) = GetReturnValueAuxVariable (method.ReturnType);
+
+		// init the needed temp variables
+		foreach (var argument in invocations.Arguments) {
+			methodBlock.Write (argument.Initializers, verifyTrivia: false);
+			methodBlock.Write (argument.PreCallConversion, verifyTrivia: false);
+		}
+
+		methodBlock.WriteRaw (
+$@"{tempDeclaration}
+if (IsDirectBinding) {{
+	{ExpressionStatement (invocations.Send)}
+}} else {{
+	{ExpressionStatement (invocations.SendSuper)}
+}}
+{ExpressionStatement (KeepAlive ("this"))}
+");
+		// before returning the value, we need to do the post operations for the temp vars
+		foreach (var argument in invocations.Arguments) {
+			methodBlock.Write (argument.PostCallConversion, verifyTrivia: false);
+		}
+		methodBlock.WriteLine ($"return {tempVar};");
+	}
+
+	/// <summary>
+	/// Emit the code for all the methods in the class.
+	/// </summary>
+	/// <param name="context">The current binding context.</param>
+	/// <param name="classBlock">Current class block.</param>
+	void EmitMethods (in BindingContext context, TabbedWriter<StringWriter> classBlock)
+	{
+		var uiThreadCheck = (context.NeedsThreadChecks)
+			? EnsureUiThread (context.RootContext.CurrentPlatform) : null;
+		foreach (var method in context.Changes.Methods.OrderBy (m => m.Name)) {
+			classBlock.WriteLine ();
+			classBlock.AppendMemberAvailability (method.SymbolAvailability);
+			classBlock.AppendGeneratedCodeAttribute (optimizable: true);
+
+			using (var methodBlock = classBlock.CreateBlock (method.ToDeclaration ().ToString (), block: true)) {
+				// write any possible thread check at the beginning of the method
+				if (uiThreadCheck is not null) {
+					methodBlock.WriteLine (uiThreadCheck.ToString ());
+					methodBlock.WriteLine ();
+				}
+
+				// retrieve the method invocation via the factory, this will generate the necessary arguments
+				// transformations and the invocation
+				var invocations = GetInvocations (method);
+
+				if (method.ReturnType.IsVoid) {
+					EmitVoidMethodBody (method, invocations, methodBlock);
+				} else {
+					EmitReturnMethodBody (method, invocations, methodBlock);
+				}
+			}
+
+			if (!method.IsAsync)
+				continue;
+
+			// if the method is an async method, generate its async version
+			classBlock.WriteLine ();
+			classBlock.AppendMemberAvailability (method.SymbolAvailability);
+			classBlock.AppendGeneratedCodeAttribute (optimizable: true);
+
+			var asyncMethod = method.ToAsync ();
+			using (var methodBlock = classBlock.CreateBlock (asyncMethod.ToDeclaration ().ToString (), block: true)) {
+				methodBlock.WriteLine ("throw new NotImplementedException ();");
 			}
 		}
 	}
@@ -358,6 +541,7 @@ public static NSObject {name} ({NSObject} objectToObserve, {EventHandler}<{event
 			EmitFields (bindingContext.Changes.Name, bindingContext.Changes.Properties, classBlock,
 				out var notificationProperties);
 			EmitProperties (bindingContext, classBlock);
+			EmitMethods (bindingContext, classBlock);
 
 			// emit the notification helper classes, leave this for the very bottom of the class
 			EmitNotifications (notificationProperties, classBlock);

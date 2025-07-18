@@ -35,6 +35,9 @@
         <Compile Include="../Microsoft.Macios.Generator/Configuration.cs" >
             <Link>Configuration.cs</Link>
         </Compile>
+        <Compile Include="../Microsoft.Macios.Generator/Nomenclator.cs" >
+            <Link>Nomenclator.cs</Link>
+        </Compile>
         <Compile Include="../Microsoft.Macios.Generator/DictionaryComparer.cs">
             <Link>DictionaryComparer.cs</Link>
         </Compile>

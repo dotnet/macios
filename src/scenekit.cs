@@ -82,7 +82,7 @@ using NSBezierPath = global::UIKit.UIBezierPath;
 namespace SceneKit {
 	/// <summary>Callback used to reflect progress during execution of <see cref="SceneKit.SCNSceneSource.SceneFromOptions(SceneKit.SCNSceneLoadingOptions,SceneKit.SCNSceneSourceStatusHandler)" />.</summary>
 	[MacCatalyst (13, 1)]
-	delegate void SCNSceneSourceStatusHandler (float /* float, not CGFloat */ totalProgress, SCNSceneSourceStatus status, NSError error, ref bool stopLoading);
+	delegate void SCNSceneSourceStatusHandler (float /* float, not CGFloat */ totalProgress, SCNSceneSourceStatus status, [NullAllowed] NSError error, ref bool stopLoading);
 
 	delegate void SCNAnimationDidStartHandler (SCNAnimation animation, ISCNAnimatable receiver);
 
@@ -3226,7 +3226,7 @@ namespace SceneKit {
 	///     <param name="stop">Developers set this to true to cancel processing.</param>
 	///     <summary>Continuation handler that SceneKit repeatedly calls when exporting a scene.</summary>
 	[MacCatalyst (13, 1)]
-	delegate void SCNSceneExportProgressHandler (float /* float, not CGFloat */ totalProgress, NSError error, out bool stop);
+	delegate void SCNSceneExportProgressHandler (float /* float, not CGFloat */ totalProgress, [NullAllowed] NSError error, out bool stop);
 
 	/// <summary>The highest-level description of a 3D scene.</summary>
 	///     
@@ -5106,7 +5106,7 @@ namespace SceneKit {
 
 	/// <summary>Completion handler used with <see cref="SceneKit.SCNShadable.HandleBinding(System.String,SceneKit.SCNBindingHandler)" />.</summary>
 	[MacCatalyst (13, 1)]
-	delegate void SCNBindingHandler (uint /* unsigned int */ programId, uint /* unsigned int */ location, SCNNode renderedNode, SCNRenderer renderer);
+	delegate void SCNBindingHandler (uint /* unsigned int */ programId, uint /* unsigned int */ location, [NullAllowed] SCNNode renderedNode, SCNRenderer renderer);
 
 	/// <summary>A <see cref="Foundation.DictionaryContainer" /> containing options for shaders.</summary>
 	[MacCatalyst (13, 1)]

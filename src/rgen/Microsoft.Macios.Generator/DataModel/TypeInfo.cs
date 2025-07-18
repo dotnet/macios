@@ -122,6 +122,11 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 	public bool IsWrapped { get; init; }
 
 	/// <summary>
+	/// True if the type represents a Task.
+	/// </summary>
+	public bool IsTask { get; init; }
+
+	/// <summary>
 	/// Returns, if the type is an array, if its elements are a wrapped object from the objc world.
 	/// </summary>
 	public bool ArrayElementTypeIsWrapped { get; init; }
@@ -186,6 +191,17 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 	/// True if the type represents a ObjC protocol.
 	/// </summary>
 	public bool IsProtocol { get; init; }
+
+	/// <summary>
+	/// True if the type represents a named tuple.
+	/// </summary>
+	public bool IsNamedTuple { get; init; }
+
+	/// <summary>
+	/// Array of named tuple field names and their types. We use an array of key-value pairs instead of a dictionary
+	/// because we care about the order in which the values were added.
+	/// </summary>
+	public ImmutableArray<KeyValuePair<string, string>> NamedTupleFields { get; init; } = [];
 
 	readonly ImmutableArray<string> parents = [];
 	/// <summary>
@@ -347,16 +363,29 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		// store the enum special type, useful when generate code that needs to cast
 		EnumUnderlyingType = namedTypeSymbol?.EnumUnderlyingType?.SpecialType;
 		if (namedTypeSymbol is not null) {
-			IsGenericType = namedTypeSymbol.IsGenericType;
-			var typeArgumentsBucket = ImmutableArray.CreateBuilder<string> (namedTypeSymbol.TypeArguments.Length);
-			foreach (var typeArgument in namedTypeSymbol.TypeArguments) {
-				// rather than use the display name, which could be a generic name, we will create a struct for the 
-				// type and use our type formater
-				var info = new TypeInfo (typeArgument);
-				var syntax = info.GetIdentifierSyntax ();
-				typeArgumentsBucket.Add (syntax.ToString ());
+			// if we are dealing with a tuple type, we will set the named tuple fields otherwise we try to retrieve the 
+			// generic type arguments
+			if (!namedTypeSymbol.TupleElements.IsDefaultOrEmpty) {
+				IsNamedTuple = true;
+				var namedTupleFieldsBucket = ImmutableArray.CreateBuilder<KeyValuePair<string, string>> (namedTypeSymbol.TupleElements.Length);
+				foreach (var field in namedTypeSymbol.TupleElements) {
+					var currentType = new TypeInfo (field.Type);
+					namedTupleFieldsBucket.Add (new (field.Name, currentType.GetIdentifierSyntax ().ToString ()));
+				}
+				NamedTupleFields = namedTupleFieldsBucket.ToImmutable ();
+			} else {
+				IsGenericType = namedTypeSymbol.IsGenericType;
+				var typeArgumentsBucket = ImmutableArray.CreateBuilder<string> (namedTypeSymbol.TypeArguments.Length);
+				foreach (var typeArgument in namedTypeSymbol.TypeArguments) {
+					// rather than use the display name, which could be a generic name, we will create a struct for the 
+					// type and use our type formater
+					var info = new TypeInfo (typeArgument);
+					var syntax = info.GetIdentifierSyntax ();
+					typeArgumentsBucket.Add (syntax.ToString ());
+				}
+
+				TypeArguments = typeArgumentsBucket.ToImmutable ();
 			}
-			TypeArguments = typeArgumentsBucket.ToImmutable ();
 
 			if (namedTypeSymbol.DelegateInvokeMethod is not null &&
 				DelegateInfo.TryCreate (namedTypeSymbol, out var delegateInfo))
@@ -551,20 +580,19 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 	}
 
 	/// <summary>
-	/// If the current <see cref="TypeInfo"/> is nullable, this method returns a new <see cref="TypeInfo"/>
-	/// representing the non-nullable version of the type. Otherwise, it returns the current instance.
+	/// Returns a new <see cref="TypeInfo"/> with the specified nullability.
 	/// </summary>
+	/// <param name="isNullable">A boolean value indicating whether the new type should be nullable.</param>
 	/// <returns>
-	/// A new <see cref="TypeInfo"/> instance with <see cref="IsNullable"/> set to false if the original <see cref="IsNullable"/> was true;
-	/// otherwise, returns the current <see cref="TypeInfo"/> instance.
+	/// A new <see cref="TypeInfo"/> instance with the specified nullability. If the current instance already has the
+	/// specified nullability, the current instance is returned.
 	/// </returns>
-	public TypeInfo ToNonNullable ()
+	public TypeInfo WithNullable (bool isNullable)
 	{
-		if (!IsNullable)
+		if (IsNullable == isNullable)
 			return this;
-		// copy all the elements from the current array type and set the array type to false
 		return this with {
-			IsNullable = false,
+			IsNullable = isNullable,
 		};
 	}
 
@@ -583,6 +611,127 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		// copy all the elements from the current array type and set the array type to false
 		return this with {
 			IsPointer = false,
+		};
+	}
+
+	/// <summary>
+	/// Gets the generic type arguments for a <see cref="System.Threading.Tasks.Task"/> from a delegate's parameters.
+	/// </summary>
+	/// <returns>An immutable array of strings representing the type arguments for the task.</returns>
+	/// <remarks>
+	/// This method extracts the parameter types from the delegate. If the last parameter is an <c>NSError</c>,
+	/// it is omitted from the returned types, as it will be handled as an exception in the async method.
+	/// </remarks>
+	ImmutableArray<KeyValuePair<string, string>> GetDelegateTypesForTask ()
+	{
+		if (Delegate is null)
+			return [];
+
+		// get all the type information from the delegate parameters since this is what is needed for 
+		// the task type. It is important to remember that for async methods in objc if the last parameter is a
+		// a NSError we will drop it since that will be converted to an exception in the generated code.
+		var builder = ImmutableArray.CreateBuilder<KeyValuePair<string, string>> (Delegate.Parameters.Length);
+		foreach (var param in Delegate.Parameters) {
+			builder.Add (new (param.Name, param.Type.GetIdentifierSyntax ().ToString ()));
+		}
+		var delegateTypes = builder.ToImmutableArray ();
+		if (delegateTypes.Length > 0 && delegateTypes [^1].Value.Contains ("NSError")) {
+			// remove the last parameter since it is not needed for the task type
+			delegateTypes = delegateTypes [..^1];
+		}
+
+		return delegateTypes;
+	}
+
+	/// <summary>
+	/// If the current <see cref="TypeInfo"/> represents a delegate, this method returns a new <see cref="TypeInfo"/>
+	/// representing a <see cref="System.Threading.Tasks.Task"/> with the delegate's parameters as generic arguments.
+	/// Otherwise, it returns the current instance.
+	/// </summary>
+	/// <returns>
+	/// A new <see cref="TypeInfo"/> instance representing a <c>Task</c> if the type is a delegate;
+	/// otherwise, returns the current <see cref="TypeInfo"/> instance.
+	/// </returns>
+	public TypeInfo ToTask ()
+	{
+		// no conversion is done if we are not dealing with a delegate type
+		if (Delegate is null)
+			return this;
+
+		var delegateTypes = GetDelegateTypesForTask ();
+		var genericTypeArguments = ImmutableArray.CreateBuilder<string> (delegateTypes.Length);
+		if (delegateTypes.Length > 1) {
+			// we need to create a named tuple or tuple, that depends on the type of delegate type, if we are
+			// dealing with a Action or Func, we will create a tuple type else we will create a named tuple type.
+			if (Delegate.FullyQualifiedType.Contains ("Action")) {
+				// we are dealing with a tuple type, so we will use the tuple syntax
+				genericTypeArguments.Add ($"({string.Join (", ", delegateTypes.Select (d => d.Value))})");
+			} else {
+				// we are dealing with a named tuple type, so we will use the named tuple syntax
+				var namedTuple = string.Join (", ", delegateTypes.Select (d => $"{d.Value} {d.Key.Capitalize ()}"));
+				genericTypeArguments.Add ($"({namedTuple})");
+			}
+
+		} else if (delegateTypes.Length == 1) {
+			genericTypeArguments.Add (delegateTypes [0].Value);
+		}
+
+		// generate a task type that will contain the delegate type information.
+		return new TypeInfo (
+			name: "System.Threading.Tasks.Task",
+			specialType: SpecialType.None,
+			isNullable: false,
+			isBlittable: false,
+			isSmartEnum: false,
+			isArray: false,
+			isReferenceType: true,
+			isStruct: false
+		) {
+			Delegate = null,
+			EnumUnderlyingType = null,
+			IsGenericType = genericTypeArguments.Count > 0,
+			IsTask = true,
+			TypeArguments = genericTypeArguments.ToImmutable (),
+		};
+	}
+
+	/// <summary>
+	/// If the current <see cref="TypeInfo"/> represents a <see cref="System.Threading.Tasks.Task"/>, this method returns a new <see cref="TypeInfo"/>
+	/// with its generic type arguments replaced by the provided types. Otherwise, it returns the current instance.
+	/// </summary>
+	/// <param name="types">The new generic type arguments for the task.</param>
+	/// <returns>
+	/// A new <see cref="TypeInfo"/> instance with updated generic type arguments if the type is a <c>Task</c>;
+	/// otherwise, returns the current <see cref="TypeInfo"/> instance.
+	/// </returns>
+	public TypeInfo ToTask (params string [] types)
+	{
+		if (!IsTask)
+			return this;
+
+		// update the type arguments to use the provided ones in the method
+		return this with {
+			TypeArguments = [.. types],
+		};
+	}
+
+	/// <summary>
+	/// If the current <see cref="TypeInfo"/> represents a <see cref="System.Threading.Tasks.Task"/>, this method returns a new <see cref="TypeInfo"/>
+	/// representing a <see cref="System.Threading.Tasks.TaskCompletionSource{TResult}"/> with the task's generic arguments.
+	/// Otherwise, it returns the current instance.
+	/// </summary>
+	/// <returns>
+	/// A new <see cref="TypeInfo"/> instance representing a <c>TaskCompletionSource</c> if the type is a <c>Task</c>;
+	/// otherwise, returns the current <see cref="TypeInfo"/> instance.
+	/// </returns>
+	public TypeInfo ToTaskCompletionSource ()
+	{
+		if (!IsTask)
+			return this;
+
+		return this with {
+			Name = "TaskCompletionSource",
+			FullyQualifiedName = "System.Threading.Tasks.TaskCompletionSource",
 		};
 	}
 

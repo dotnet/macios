@@ -3,12 +3,20 @@
 
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Macios.Generator.DataModel;
+using static Microsoft.Macios.Generator.Nomenclator;
 using TypeInfo = Microsoft.Macios.Generator.DataModel.TypeInfo;
 
 namespace Microsoft.Macios.Generator.Emitters;
 
 static partial class BindingSyntaxFactory {
 
+	/// <summary>
+	/// Gets the names of the `objc_msgSend` P/Invoke methods for a property's getter and setter.
+	/// </summary>
+	/// <param name="property">The property for which to get the message send method names.</param>
+	/// <param name="isSuper">A value indicating whether to call the superclass implementation.</param>
+	/// <param name="isStret">A value indicating whether the return value requires a struct-return mechanism.</param>
+	/// <returns>A tuple containing the names of the P/Invoke methods for the getter and setter. Either can be <c>null</c> if the corresponding accessor does not exist.</returns>
 	internal static (string? Getter, string? Setter) GetObjCMessageSendMethods (in Property property,
 		bool isSuper = false, bool isStret = false)
 	{
@@ -47,6 +55,14 @@ static partial class BindingSyntaxFactory {
 		return default;
 	}
 
+	/// <summary>
+	/// Gets the expressions for invoking a property's getter.
+	/// </summary>
+	/// <param name="property">The property for which to get the invocations.</param>
+	/// <param name="selector">The selector for the getter.</param>
+	/// <param name="sendMethod">The name of the `objc_msgSend` method for the getter.</param>
+	/// <param name="superSendMethod">The name of the `objc_msgSend` method for the superclass getter.</param>
+	/// <returns>A tuple containing the expressions for the normal and superclass getter invocations.</returns>
 	internal static (ExpressionSyntax Send, ExpressionSyntax SendSuper) GetGetterInvocations (in Property property,
 		string? selector, string? sendMethod, string? superSendMethod)
 	{
@@ -64,22 +80,65 @@ static partial class BindingSyntaxFactory {
 
 		// get the getter invocation and assign it to the return variable 
 		return (
-			Send: AssignVariable (Nomenclator.GetReturnVariableName (), getterSend),
-			SendSuper: AssignVariable (Nomenclator.GetReturnVariableName (), getterSuperSend)
+			Send: AssignVariable (GetReturnVariableName (), getterSend),
+			SendSuper: AssignVariable (GetReturnVariableName (), getterSuperSend)
 		);
 	}
 
+	/// <summary>
+	/// Gets the argument and expressions for invoking a property's setter.
+	/// </summary>
+	/// <param name="property">The property for which to get the invocations.</param>
+	/// <param name="selector">The selector for the setter.</param>
+	/// <param name="sendMethod">The name of the `objc_msgSend` method for the setter.</param>
+	/// <param name="superSendMethod">The name of the `objc_msgSend` method for the superclass setter.</param>
+	/// <returns>A tuple containing the argument syntax, and the expressions for the normal and superclass setter invocations.</returns>
+	internal static (TrampolineArgumentSyntax Argument, ExpressionSyntax Send, ExpressionSyntax SendSuper) GetSetterInvocations (
+		in Property property, string? selector, string? sendMethod, string? superSendMethod)
+	{
+		var argument = new TrampolineArgumentSyntax (GetNativeInvokeArgument (property)) {
+			Initializers = GetNativeInvokeArgumentInitializations (property),
+			PreCallConversion = GetPreNativeInvokeArgumentConversions (property),
+			PostCallConversion = GetPostNativeInvokeArgumentConversions (property),
+		};
+		// if any of the methods is null, return a throw statement for both
+		if (selector is null || sendMethod is null || superSendMethod is null) {
+			return (argument, ThrowNotImplementedException (), ThrowNotImplementedException ());
+		}
+
+		var setterSend = MessagingInvocation (sendMethod, selector, [argument.ArgumentSyntax]);
+		var setterSuperSend = MessagingInvocation (superSendMethod, selector, [argument.ArgumentSyntax]);
+
+		return (
+			Argument: argument,
+			Send: setterSend,
+			SendSuper: setterSuperSend
+		);
+	}
+
+	/// <summary>
+	/// Gets the invocations for a property's getter and setter.
+	/// </summary>
+	/// <param name="property">The property for which to get the invocations.</param>
+	/// <returns>A <see cref="PropertyInvocations"/> instance containing the getter and setter invocations.</returns>
 	internal static PropertyInvocations GetInvocations (in Property property)
 	{
 		// retrieve the objc_msgSend methods
 		var (getter, setter) = GetObjCMessageSendMethods (property, isStret: property.ReturnType.NeedsStret);
-		var (superGetter, supperSetter) = GetObjCMessageSendMethods (property, isSuper: true, isStret: property.ReturnType.NeedsStret);
+		var (superGetter, superSetter) = GetObjCMessageSendMethods (property, isSuper: true, isStret: property.ReturnType.NeedsStret);
 		var getterSelector = property.GetAccessor (AccessorKind.Getter)?.GetSelector (property);
-		var setterSelector = property.GetAccessor (AccessorKind.Getter)?.GetSelector (property);
+		var getterInvocations = GetGetterInvocations (property, getterSelector, getter, superGetter);
+
+		(TrampolineArgumentSyntax Argument, ExpressionSyntax Send, ExpressionSyntax SendSuper)? setterInvocations = null;
+		var setterAccessor = property.GetAccessor (AccessorKind.Setter);
+		if (setterAccessor is not null) {
+			var setterSelector = setterAccessor.Value.GetSelector (property);
+			setterInvocations = GetSetterInvocations (property, setterSelector, setter, superSetter);
+		}
 
 		return new () {
-			Getter = GetGetterInvocations (property, getterSelector, getter, superGetter),
-			Setter = (ThrowNotImplementedException (), ThrowNotImplementedException ()),
+			Getter = getterInvocations,
+			Setter = setterInvocations,
 		};
 	}
 }

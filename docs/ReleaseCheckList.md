@@ -47,6 +47,7 @@ This happens after the stable version of Xcode has been released and the `xcodeX
 * [ ] Review the API diff to make sure all api differences are expected.
 * [ ] Make sure the release branch created packages after the merge and pushed them to maestro.
 * [ ] Create VS insertion (this may not happen for all releases, sometimes we release only to NuGet).
+* [ ] Let MAUI know about our new package names, so they can update their darc dependencies. For instance, these dependencies: https://github.com/dotnet/maui/blob/408a1cc69d6a120cafa4e75ae30411f1ec48fa3a/eng/Version.Details.xml#L15-L30 would have to be updated to `net9.0_18.5` or `net9.0_15.5` for our Xcode 16.4 release.
 
 ## Release process
   

@@ -12,307 +12,409 @@
       <Disp Icon="Str" Disp="true" LocTbl="false" />
       <Item ItemId=";E0004" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Failed to codesign '{0}': {1}]D;]A;        ]]></Val>
+          <Val><![CDATA[Failed to codesign '{0}': {1}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[未能 codesign“{0}”: {1}]D;]A;]]></Val>
+            <Val><![CDATA[未能对 ‘{0}’ 进行代码签名: {1}]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Failed to codesign '{0}': {1}]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0005" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Failed to codesign '{0}']D;]A;        ]]></Val>
+          <Val><![CDATA[Failed to codesign '{0}']]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[未能对 “{0}” 进行代码签名]D;]A;]]></Val>
+            <Val><![CDATA[未能对 ‘{0}’ 进行代码签名]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Failed to codesign '{0}']D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0006" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[  '{0}' not found.]D;]A;        ]]></Val>
+          <Val><![CDATA[  '{0}' not found.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[  找不到“{0}”。]D;]A;]]></Val>
+            <Val><![CDATA[  未找到 '{0}'。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[  '{0}' not found.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0007" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Error loading '{0}': Unknown image format.]D;]A;        ]]></Val>
+          <Val><![CDATA[Error loading '{0}': Unknown image format.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[加载“{0}”时出错: 未知图像格式。]D;]A;]]></Val>
+            <Val><![CDATA[加载 ‘{0}’ 时出错: 未知图像格式。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Error loading '{0}': Unknown image format.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0008" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Invalid iTunesArtwork dimensions ({0}x{1}) for '{2}'.]D;]A;        ]]></Val>
+          <Val><![CDATA[Invalid iTunesArtwork dimensions ({0}x{1}) for '{2}'.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[“{2}”的 iTunesArtwork 维度({0}x{1})无效。]D;]A;]]></Val>
+            <Val><![CDATA[‘{2}’ 的 iTunesArtwork 维度数({0}x{1})无效。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Invalid iTunesArtwork dimensions ({0}x{1}) for '{2}'.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0009" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Multiple iTunesArtwork files with the same dimensions detected ({0}x{1}) for '{2}'.]D;]A;        ]]></Val>
+          <Val><![CDATA[Multiple iTunesArtwork files with the same dimensions detected ({0}x{1}) for '{2}'.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[针对“{2}”检测到多个具有相同的维数的 iTunesArtwork 文件({0}x{1})。]D;]A;        ]]></Val>
+            <Val><![CDATA[针对 ‘{2}’ 检测到多个具有相同的维数的 iTunesArtwork 文件({0}x{1})。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Multiple iTunesArtwork files with the same dimensions detected ({0}x{1}) for '{2}'.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0010" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Error loading '{0}': {1}]D;]A;        ]]></Val>
+          <Val><![CDATA[Error loading '{0}': {1}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[加载“{0}”时出错: {1}]D;]A;]]></Val>
+            <Val><![CDATA[加载 '{0}' 时出错: {1}]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Error loading '{0}': {1}]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0011" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Could not parse MinimumOSVersion value '{0}']D;]A;        ]]></Val>
+          <Val><![CDATA[Could not parse MinimumOSVersion value '{0}']]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[无法分析 MinimumOSVersion 值“{0}”]D;]A;]]></Val>
+            <Val><![CDATA[无法分析 MinimumOSVersion 值 ‘{0}’]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Could not parse MinimumOSVersion value '{0}']D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0012" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Could not parse TargetArchitectures '{0}']D;]A;        ]]></Val>
+          <Val><![CDATA[Could not parse TargetArchitectures '{0}']]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[无法分析 TargetArchitectures“{0}”]D;]A;        ]]></Val>
+            <Val><![CDATA[无法分析 TargetArchitectures '{0}']]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Could not parse TargetArchitectures '{0}']D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0013" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The {0} SDK for '{1}' is not installed.]D;]A;        ]]></Val>
+          <Val><![CDATA[The {0} SDK for '{1}' is not installed.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[未安装“{1}”的 {0} SDK。]D;]A;]]></Val>
+            <Val><![CDATA[未安装 '{1}' 的 {0} SDK。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The {0} SDK for '{1}' is not installed.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0014" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The executable (CFBundleExecutable) name ({0}) cannot end with '.app', because iOS may fail to launch the app.]D;]A;        ]]></Val>
+          <Val><![CDATA[The executable (CFBundleExecutable) name ({0}) cannot end with '.app', because iOS may fail to launch the app.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[可执行文件(CFBundleExecutable)名称({0})不能以 ".app" 结尾，因为 iOS 可能无法启动应用。]D;]A;]]></Val>
+            <Val><![CDATA[可执行文件(CFBundleExecutable)名称({0})不能以 ‘.app’ 结尾，因为 iOS 可能无法启动应用。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The executable (CFBundleExecutable) name ({0}) cannot end with '.app', because iOS may fail to launch the app.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0023" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Cannot have more than 1 iTunesMetadata.plist.]D;]A;        ]]></Val>
+          <Val><![CDATA[Cannot have more than 1 iTunesMetadata.plist.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[iTunesMetadata.plist 数量不能超过 1 个。]D;]A;        ]]></Val>
+            <Val><![CDATA[iTunesMetadata.plist 数量不能超过 1 个。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Cannot have more than 1 iTunesMetadata.plist.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0024" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Error loading Settings plist file '{0}/Settings.bundle/Root.plist': {1}.]D;]A;        ]]></Val>
+          <Val><![CDATA[Error loading Settings plist file '{0}/Settings.bundle/Root.plist': {1}.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[加载设置 plist 文件“{0}/Settings.bundle/Root.plist”时出错: {1}。]D;]A;]]></Val>
+            <Val><![CDATA[加载设置 plist 文件 ‘{0}/Settings.bundle/Root.plist’ 时出错: {1}。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Error loading Settings plist file '{0}/Settings.bundle/Root.plist': {1}.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0025" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Could not parse the SDK version '{0}']D;]A;        ]]></Val>
+          <Val><![CDATA[Could not parse the SDK version '{0}']]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[无法分析 SDK 版本“{0}”]D;]A;]]></Val>
+            <Val><![CDATA[无法分析 SDK 版本 ‘{0}’]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Could not parse the SDK version '{0}']D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0032" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Could not locate SDK bin directory]D;]A;        ]]></Val>
+          <Val><![CDATA[Could not locate SDK bin directory]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[无法找到 SDK bin 目录]D;]A;]]></Val>
+            <Val><![CDATA[无法找到 SDK bin 目录]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Could not locate SDK bin directory]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0044" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Could not find a valid Xcode app bundle at '{0}'. Please update your Apple SDK location in Visual Studio's preferences {1}.]D;]A;        ]]></Val>
+          <Val><![CDATA[Could not find a valid Xcode app bundle at '{0}'. Please update your Apple SDK location in Visual Studio's preferences {1}.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[在“{0}”中找不到有效的 Xcode 应用捆绑包。请在 Visual Studio 的首选项 {1} 中更新 Apple SDK 位置。]D;]A;]]></Val>
+            <Val><![CDATA[在 '{0}' 中找不到有效的 Xcode 应用捆绑包。请在 Visual Studio 的首选项 {1} 中更新 Apple SDK 位置。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Could not find a valid Xcode app bundle at '{0}'. Please update your Apple SDK location in Visual Studio's preferences {1}.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0044v2" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Could not find a valid Xcode app bundle at '{0}'. Please verify that 'xcode-select -p' points to your Xcode installation. For more information see https://aka.ms/macios-missing-xcode.]D;]A;        ]]></Val>
+          <Val><![CDATA[Could not find a valid Xcode app bundle at '{0}'. Please verify that 'xcode-select -p' points to your Xcode installation. For more information see https://aka.ms/macios-missing-xcode.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[在“{0}”中找不到有效的 Xcode 应用捆绑包。请验证 'xcode-select -p' 是否指向 Xcode 安装。有关详细信息，请参阅 https://aka.ms/macios-missing-xcode。]D;]A;        ]]></Val>
+            <Val><![CDATA[在 '{0}' 中找不到有效的 Xcode 应用捆绑包。请验证 'xcode-select -p' 是否指向 Xcode 安装。有关详细信息，请参阅 https://aka.ms/macios-missing-xcode。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Could not find a valid Xcode app bundle at '{0}'. Please verify that 'xcode-select -p' points to your Xcode installation. For more information see https://aka.ms/macios-missing-xcode.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0045" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Could not find valid a usable Xcode developer path]D;]A;        ]]></Val>
+          <Val><![CDATA[Could not find valid a usable Xcode developer path]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[找不到有效的可用 Xcode 开发人员路径]D;]A;]]></Val>
+            <Val><![CDATA[找不到有效的可用 Xcode 开发人员路径]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Could not find valid a usable Xcode developer path]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0046" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Could not find '{0}']D;]A;        ]]></Val>
+          <Val><![CDATA[Could not find '{0}']]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[找不到“{0}”]D;]A;        ]]></Val>
+            <Val><![CDATA[找不到 ‘{0}’]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Could not find '{0}']D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0048" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Unknown SDK platform: {0}]D;]A;        ]]></Val>
+          <Val><![CDATA[Unknown SDK platform: {0}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[未知的 SQL 平台: {0}]D;]A;]]></Val>
+            <Val><![CDATA[未知的 SDK 平台: {0}]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Unknown SDK platform: {0}]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0049" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Could not locate the provisioning profile with a Name or UUID of {0}.]D;]A;        ]]></Val>
+          <Val><![CDATA[Could not locate the provisioning profile with a Name or UUID of {0}.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[找不到具有名称或 UUID {0} 的预配配置文件。]D;]A;]]></Val>
+            <Val><![CDATA[找不到具有名称或 UUID 为 {0} 的预配配置文件。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Could not locate the provisioning profile with a Name or UUID of {0}.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0050" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Unknown search option: {0}]D;]A;        ]]></Val>
+          <Val><![CDATA[Unknown search option: {0}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[未知的搜索选项: {0}]D;]A;]]></Val>
+            <Val><![CDATA[未知的搜索选项: {0}]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Unknown search option: {0}]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0053" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Target architecture ARMv6 is no longer supported. Please select a supported architecture.]D;]A;        ]]></Val>
+          <Val><![CDATA[Target architecture ARMv6 is no longer supported. Please select a supported architecture.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[目标体系结构 ARMv6 已不再受支持。请选择支持的体系结构。]D;]A;        ]]></Val>
+            <Val><![CDATA[目标体系结构 ARMv6 已不再受支持。请选择支持的体系结构。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Target architecture ARMv6 is no longer supported. Please select a supported architecture.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0055" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Could not load Info.plist: {0}]D;]A;        ]]></Val>
+          <Val><![CDATA[Could not load Info.plist: {0}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[无法加载 Info.plist: {0}]D;]A;]]></Val>
+            <Val><![CDATA[无法加载 Info.plist: {0}]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Could not load Info.plist: {0}]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0057" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Invalid architectures: '{0}'.]D;]A;        ]]></Val>
+          <Val><![CDATA[Invalid architectures: '{0}'.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[无效的体系结构:“{0}”。]D;]A;]]></Val>
+            <Val><![CDATA[无效的体系结构: ‘{0}’。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Invalid architectures: '{0}'.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0058" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Failed to parse the target device information.]D;]A;        ]]></Val>
+          <Val><![CDATA[Failed to parse the target device information.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[无法分析目标设备信息。]D;]A;]]></Val>
+            <Val><![CDATA[无法分析目标设备信息。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Failed to parse the target device information.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0059" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[No target device found.]D;]A;        ]]></Val>
+          <Val><![CDATA[No target device found.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[找不到目标设备。]D;]A;]]></Val>
+            <Val><![CDATA[找不到目标设备。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[No target device found.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0060" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[No device architecture information found.]D;]A;        ]]></Val>
+          <Val><![CDATA[No device architecture information found.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[找不到设备体系结构信息。]D;]A;]]></Val>
+            <Val><![CDATA[找不到设备体系结构信息。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[No device architecture information found.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0061" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Invalid target architecture: '{0}']D;]A;        ]]></Val>
+          <Val><![CDATA[Invalid target architecture: '{0}']]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[无效的目标体系结构:“{0}”]D;]A;]]></Val>
+            <Val><![CDATA[无效的目标体系结构: ‘{0}’]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Invalid target architecture: '{0}']D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0062" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[No device operating system information found.]D;]A;        ]]></Val>
+          <Val><![CDATA[No device operating system information found.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[找不到设备操作系统信息。]D;]A;]]></Val>
+            <Val><![CDATA[找不到设备操作系统信息。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[No device operating system information found.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0063" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[No device model information found.]D;]A;        ]]></Val>
+          <Val><![CDATA[No device model information found.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[找不到设备模型信息。]D;]A;]]></Val>
+            <Val><![CDATA[找不到设备型号信息。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[No device model information found.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0064" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[No iOS version information found.]D;]A;        ]]></Val>
+          <Val><![CDATA[No iOS version information found.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[找不到 iOS 版本信息。]D;]A;]]></Val>
+            <Val><![CDATA[找不到 iOS 版本信息。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[No iOS version information found.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0065" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Resources rules file '{0}' not found.]D;]A;        ]]></Val>
+          <Val><![CDATA[Resources rules file '{0}' not found.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[找不到资源规则文件“{0}”。]D;]A;]]></Val>
+            <Val><![CDATA[找不到资源规则文件 '{0}'。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Resources rules file '{0}' not found.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0066" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Failed to parse SdkVersion '{0}'.]D;]A;        ]]></Val>
+          <Val><![CDATA[Failed to parse SdkVersion '{0}'.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[未能分析 SdkVersion“{0}”。]D;]A;]]></Val>
+            <Val><![CDATA[未能分析 SdkVersion ‘{0}’。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Failed to parse SdkVersion '{0}'.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -327,208 +429,277 @@
       </Item>
       <Item ItemId=";E0068" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[An installation of Xcode >= 6.2 is required to build WatchKit applications.]D;]A;        ]]></Val>
+          <Val><![CDATA[An installation of Xcode >= 6.2 is required to build WatchKit applications.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[需要安装 Xcode >= 6.2 才能生成 WatchKit 应用程序。]D;]A;]]></Val>
+            <Val><![CDATA[需要安装 Xcode >= 6.2 才能生成 WatchKit 应用程序。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[An installation of Xcode >= 6.2 is required to build WatchKit applications.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0069" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[iOS {0} does not support WatchKit.]D;]A;        ]]></Val>
+          <Val><![CDATA[iOS {0} does not support WatchKit.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[iOS {0} 不支持 WatchKit。]D;]A;]]></Val>
+            <Val><![CDATA[iOS {0} 不支持 WatchKit。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[iOS {0} does not support WatchKit.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0070" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Failed to locate the WatchKit launcher in the Xcode app bundle.]D;]A;        ]]></Val>
+          <Val><![CDATA[Failed to locate the WatchKit launcher in the Xcode app bundle.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[在 Xcode 应用捆绑包中找不到 WatchKit 启动程序。]D;]A;]]></Val>
+            <Val><![CDATA[在 Xcode 应用捆绑包中找不到 WatchKit 启动程序。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Failed to locate the WatchKit launcher in the Xcode app bundle.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0084" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Could not locate the {0} '{1}' SDK at path '{}']D;]A;        ]]></Val>
+          <Val><![CDATA[Could not locate the {0} '{1}' SDK at path '{}']]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[在路径“{}”中找不到 {0}“{1}”SDK]D;]A;        ]]></Val>
+            <Val><![CDATA[在路径 ‘{}’ 中找不到 {0} ‘{1}’ SDK]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Could not locate the {0} '{1}' SDK at path '{}']D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0085" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Could not locate the {0} '{1}' SDK usr path at '{2}']D;]A;        ]]></Val>
+          <Val><![CDATA[Could not locate the {0} '{1}' SDK usr path at '{2}']]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[在“{2}”中找不到 {0}“{1}”SDK usr 路径]D;]A;        ]]></Val>
+            <Val><![CDATA[在 ‘{2}’ 中找不到 {0} ‘{1}’ SDK usr 路径]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Could not locate the {0} '{1}' SDK usr path at '{2}']D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0086" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Could not find a valid Xcode developer path]D;]A;        ]]></Val>
+          <Val><![CDATA[Could not find a valid Xcode developer path]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[找不到有效的 Xcode 开发人员路径]D;]A;]]></Val>
+            <Val><![CDATA[找不到有效的 Xcode 开发人员路径]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Could not find a valid Xcode developer path]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0089" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Unrecognized platform: {0}]D;]A;        ]]></Val>
+          <Val><![CDATA[Unrecognized platform: {0}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[无法识别的平台: {0}]D;]A;]]></Val>
+            <Val><![CDATA[无法识别的平台: {0}]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Unrecognized platform: {0}]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0091" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[File not found: {0}]D;]A;        ]]></Val>
+          <Val><![CDATA[File not found: {0}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[找不到文件: {0}]D;]A;]]></Val>
+            <Val><![CDATA[找不到文件: {0}]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[File not found: {0}]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0092" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Invalid json: {0}]D;]A;        ]]></Val>
+          <Val><![CDATA[Invalid json: {0}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[无效的 JSON: {0}]D;]A;]]></Val>
+            <Val><![CDATA[JSON 无效: {0}]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Invalid json: {0}]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0093" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Partial Info.plist file was not generated: {0}]D;]A;        ]]></Val>
+          <Val><![CDATA[Partial Info.plist file was not generated: {0}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[未生成部分 Info.plist 文件: {0}]D;]A;]]></Val>
+            <Val><![CDATA[未生成部分 Info.plist 文件: {0}]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Partial Info.plist file was not generated: {0}]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0094" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Failed to load {0} log file `{1}`: {2}]D;]A;        ]]></Val>
+          <Val><![CDATA[Failed to load {0} log file `{1}`: {2}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[未能加载 {0} 日志文件“{1}”: {2}]D;]A;        ]]></Val>
+            <Val><![CDATA[未能加载 {0} 日志文件 `{1}`: {2}]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Failed to load {0} log file `{1}`: {2}]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0097" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[No API definition file specified.]D;]A;        ]]></Val>
+          <Val><![CDATA[No API definition file specified.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[未指定 API 定义文件。]D;]A;]]></Val>
+            <Val><![CDATA[未指定 API 定义文件。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[No API definition file specified.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0098" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[{0} failed.]D;]A;        ]]></Val>
+          <Val><![CDATA[{0} failed.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[{0} 已失败。]D;]A;        ]]></Val>
+            <Val><![CDATA[{0} 失败。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[{0} failed.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0099" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[  Bundle Resource '{0}' not found on disk (should be at '{1}')]D;]A;        ]]></Val>
+          <Val><![CDATA[  Bundle Resource '{0}' not found on disk (should be at '{1}')]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[  在磁盘上找不到捆绑资源“{0}”(应位于“{1}”中)]D;]A;]]></Val>
+            <Val><![CDATA[  在磁盘上找不到捆绑资源 ‘{0}’ (应位于 ‘{1}’ 中)]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[  Bundle Resource '{0}' not found on disk (should be at '{1}')]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0100" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The path '{0}' would result in a file outside of the app bundle and cannot be used.]D;]A;        ]]></Val>
+          <Val><![CDATA[The path '{0}' would result in a file outside of the app bundle and cannot be used.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[路径“{0}”将导致应用捆绑包外的文件无法使用。]D;]A;]]></Val>
+            <Val><![CDATA[路径 ‘{0}’ 将在应用捆绑包外生成文件，并且无法使用。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The path '{0}' would result in a file outside of the app bundle and cannot be used.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0101" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Info.plist files should have a Build Action of 'None'.]D;]A;        ]]></Val>
+          <Val><![CDATA[Info.plist files should have a Build Action of 'None'.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Info.plist 文件应具有生成操作 "None"。]D;]A;]]></Val>
+            <Val><![CDATA[Info.plist 文件应具有生成操作 ‘None’。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Info.plist files should have a Build Action of 'None'.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0102" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The name '{0}' is reserved and cannot be used.]D;]A;        ]]></Val>
+          <Val><![CDATA[The name '{0}' is reserved and cannot be used.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[名称“{0}”是预留名称，不能使用。]D;]A;]]></Val>
+            <Val><![CDATA[名称 '{0}' 是保留名称，不能使用。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The name '{0}' is reserved and cannot be used.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0107" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Error loading partial Info.plist template file '{0}': {1}]D;]A;        ]]></Val>
+          <Val><![CDATA[Error loading partial Info.plist template file '{0}': {1}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[加载部分 Info.plist 模板文件“{0}”时出错: {1}]D;]A;]]></Val>
+            <Val><![CDATA[加载部分 Info.plist 模板文件 ‘{0}’ 时出错: {1}]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Error loading partial Info.plist template file '{0}': {1}]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0112" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Entitlements.plist template '{0}' not found.]D;]A;        ]]></Val>
+          <Val><![CDATA[Entitlements.plist template '{0}' not found.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[未找到 Entitlements.plist 模板“{0}”。]D;]A;]]></Val>
+            <Val><![CDATA[找不到 Entitlements.plist 模板 ‘{0}’。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Entitlements.plist template '{0}' not found.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0113" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Error loading Entitlements.plist template '{0}': {1}]D;]A;        ]]></Val>
+          <Val><![CDATA[Error loading Entitlements.plist template '{0}': {1}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[加载 Entitlements.plist 模板“{0}”时出错: {1}]D;]A;]]></Val>
+            <Val><![CDATA[加载 Entitlements.plist 模板 ‘{0}’ 时出错: {1}]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Error loading Entitlements.plist template '{0}': {1}]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0114" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Error writing xcent file '{0}': {1}]D;]A;        ]]></Val>
+          <Val><![CDATA[Error writing xcent file '{0}': {1}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[写入 xcent 文件“{0}”时出错: {1}]D;]A;]]></Val>
+            <Val><![CDATA[写入 xcent 文件 '{0}' 时出错: {1}]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Error writing xcent file '{0}': {1}]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0115" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Error writing archived-expanded-entitlements.xcent file: {0}]D;]A;        ]]></Val>
+          <Val><![CDATA[Error writing archived-expanded-entitlements.xcent file: {0}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[写入 archived-expanded-entitlements.xcent 文件时出错: {0}]D;]A;]]></Val>
+            <Val><![CDATA[写入 archived-expanded-entitlements.xcent 文件时出错: {0}]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Error writing archived-expanded-entitlements.xcent file: {0}]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0117" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[{0} exited with code {1}]D;]A;        ]]></Val>
+          <Val><![CDATA[{0} exited with code {1}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[{0} 已退出，代码为 {1}]D;]A;]]></Val>
+            <Val><![CDATA[{0} 已退出，代码为 {1}]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[{0} exited with code {1}]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -543,315 +714,447 @@
       </Item>
       <Item ItemId=";E0120" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Error saving `{0}': {1}]D;]A;        ]]></Val>
+          <Val><![CDATA[Error saving `{0}': {1}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[保存“{0}”时出错: {1}]D;]A;]]></Val>
+            <Val><![CDATA[保存 `{0}' 时出错: {1}]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Error saving `{0}': {1}]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0122" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Error loading '{0}']D;]A;        ]]></Val>
+          <Val><![CDATA[Error loading '{0}']]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[加载“{0}”时出错]D;]A;]]></Val>
+            <Val><![CDATA[加载 '{0}' 时出错]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Error loading '{0}']D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0123" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Package creation failed. Could not parse extra arguments.]D;]A;        ]]></Val>
+          <Val><![CDATA[Package creation failed. Could not parse extra arguments.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[创建包失败。无法分析其他参数。]D;]A;]]></Val>
+            <Val><![CDATA[创建包失败。无法分析其他参数。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Package creation failed. Could not parse extra arguments.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0124" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The identity '{0}' doesn't match any valid certificate/private key pair in the default keychain.]D;]A;        ]]></Val>
+          <Val><![CDATA[The identity '{0}' doesn't match any valid certificate/private key pair in the default keychain.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[标识“{0}”与默认密钥链中的任何有效证书/私钥对都不匹配。]D;]A;        ]]></Val>
+            <Val><![CDATA[标识“{0}”与默认密钥链中的任何有效证书/私钥对都不匹配。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The identity '{0}' doesn't match any valid certificate/private key pair in the default keychain.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0128" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[No valid {0} code signing keys found in keychain. You need to request a codesigning certificate from https://developer.apple.com.]D;]A;        ]]></Val>
+          <Val><![CDATA[No valid {0} code signing keys found in keychain. You need to request a codesigning certificate from https://developer.apple.com.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[在密钥链中找不到有效的 {0} 代码签名密钥。需要从 https://developer.apple.com 请求代码签名证书。]D;]A;]]></Val>
+            <Val><![CDATA[在密钥链中找不到有效的 {0} 代码签名密钥。需要从 https://developer.apple.com 请求代码签名证书。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[No valid {0} code signing keys found in keychain. You need to request a codesigning certificate from https://developer.apple.com.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0130" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[{0} code signing key '{1}' not found in keychain.]D;]A;        ]]></Val>
+          <Val><![CDATA[{0} code signing key '{1}' not found in keychain.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[密钥链中找不到 {0} 代码签名密钥“{1}”。]D;]A;]]></Val>
+            <Val><![CDATA[密钥链中找不到 {0} 代码签名密钥 '{1}'。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[{0} code signing key '{1}' not found in keychain.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0131" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Could not find any available provisioning profiles for {0} on {1}.]D;]A;        ]]></Val>
+          <Val><![CDATA[Could not find any available provisioning profiles for {0} on {1}.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[在 {1} 上找不到 {0} 的任何可用预配配置文件。]D;]A;]]></Val>
+            <Val><![CDATA[在 {1} 上找不到 {0} 的任何可用预配配置文件。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Could not find any available provisioning profiles for {0} on {1}.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0133" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[No installed provisioning profiles match the installed {0} {1} signing identities.]D;]A;        ]]></Val>
+          <Val><![CDATA[No installed provisioning profiles match the installed {0} {1} signing identities.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[已安装的预配配置文件均与已安装 {0} {1} 签名标识不匹配。]D;]A;]]></Val>
+            <Val><![CDATA[已安装的预配配置文件与已安装的 {0} {1} 签名标识均不匹配。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[No installed provisioning profiles match the installed {0} {1} signing identities.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0139" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[{0} does not define CFBundleIdentifier]D;]A;        ]]></Val>
+          <Val><![CDATA[{0} does not define CFBundleIdentifier]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[{0} 未定义 CFBundleIdentifier]D;]A;]]></Val>
+            <Val><![CDATA[{0} 未定义 CFBundleIdentifier]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[{0} does not define CFBundleIdentifier]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0140" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The specified {0} provisioning profile '{1}' could not be found]D;]A;        ]]></Val>
+          <Val><![CDATA[The specified {0} provisioning profile '{1}' could not be found]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[找不到指定的 {0} 预配配置文件“{1}”]D;]A;]]></Val>
+            <Val><![CDATA[找不到指定的 {0} 预配配置文件 ‘{1}’]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The specified {0} provisioning profile '{1}' could not be found]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0141" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Project bundle identifier '{0}' does not match specified provisioning profile '{1}']D;]A;        ]]></Val>
+          <Val><![CDATA[Project bundle identifier '{0}' does not match specified provisioning profile '{1}']]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[项目捆绑包标识符“{0}”与指定的预配配置文件“{1}”不匹配]D;]A;]]></Val>
+            <Val><![CDATA[项目捆绑包标识符 ‘{0}’ 与指定的预配配置文件 ‘{1}’ 不匹配]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Project bundle identifier '{0}' does not match specified provisioning profile '{1}']D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0144" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The specified {0} provisioning profile '{1}' could not be found]D;]A;        ]]></Val>
+          <Val><![CDATA[The specified {0} provisioning profile '{1}' could not be found]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[找不到指定的 {0} 预配配置文件“{1}”]D;]A;]]></Val>
+            <Val><![CDATA[找不到指定的 {0} 预配配置文件 ‘{1}’]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The specified {0} provisioning profile '{1}' could not be found]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0145" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[No {0} signing identities match the specified provisioning profile '{1}'.]D;]A;        ]]></Val>
+          <Val><![CDATA[No {0} signing identities match the specified provisioning profile '{1}'.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[没有与指定的预配配置文件“{1}”匹配的 {0} 签名标识。]D;]A;]]></Val>
+            <Val><![CDATA[没有与指定的预配配置文件 '{1}' 匹配的 {0} 签名标识。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[No {0} signing identities match the specified provisioning profile '{1}'.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0146" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Bundle identifier '{0}' does not match any installed provisioning profile for selected signing identity '{0}'.]D;]A;        ]]></Val>
+          <Val><![CDATA[Bundle identifier '{0}' does not match any installed provisioning profile for selected signing identity '{0}'.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[捆绑包标识符“{0}”与所选签名标识“{0}”的任何已安装的预配配置文件都不匹配。]D;]A;]]></Val>
+            <Val><![CDATA[捆绑包标识符“{0}”与所选签名标识“{0}”的任何已安装预配配置文件都不匹配。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Bundle identifier '{0}' does not match any installed provisioning profile for selected signing identity '{0}'.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0147" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Bundle identifier '{0}' does not match any installed provisioning profile for selected signing identity '{0}'.]D;]A;        ]]></Val>
+          <Val><![CDATA[Bundle identifier '{0}' does not match any installed provisioning profile for selected signing identity '{0}'.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[捆绑包标识符“{0}”与所选签名标识“{0}”的任何已安装的预配配置文件都不匹配。]D;]A;]]></Val>
+            <Val><![CDATA[捆绑包标识符“{0}”与所选签名标识“{0}”的任何已安装预配配置文件都不匹配。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Bundle identifier '{0}' does not match any installed provisioning profile for selected signing identity '{0}'.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0148" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Bundle identifier '{0}' does not match any installed provisioning profile.]D;]A;        ]]></Val>
+          <Val><![CDATA[Bundle identifier '{0}' does not match any installed provisioning profile.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[捆绑包标识符“{0}”与任何已安装的预配配置文件都不匹配。]D;]A;]]></Val>
+            <Val><![CDATA[捆绑包标识符“{0}”与任何已安装预配配置文件都不匹配。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Bundle identifier '{0}' does not match any installed provisioning profile.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0150" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[  AssemblyPath cannot be null or empty]D;]A;        ]]></Val>
+          <Val><![CDATA[  AssemblyPath cannot be null or empty]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[  AssemblyPath 不能为 null 或空]D;]A;]]></Val>
+            <Val><![CDATA[  AssemblyPath 不能为 null 或空]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[  AssemblyPath cannot be null or empty]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0152" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[No property specified.]D;]A;        ]]></Val>
+          <Val><![CDATA[No property specified.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[未指定任何属性。]D;]A;]]></Val>
+            <Val><![CDATA[未指定任何属性。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[No property specified.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0153" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The dictionary at '{0}' did not contain the key: {1}]D;]A;        ]]></Val>
+          <Val><![CDATA[The dictionary at '{0}' did not contain the key: {1}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[“{0}”中的字典不包含该密钥: {1}]D;]A;]]></Val>
+            <Val><![CDATA[‘{0}’ 中的字典不包含该密钥: {1}]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The dictionary at '{0}' did not contain the key: {1}]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0154" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Could not parse array index: {0}]D;]A;        ]]></Val>
+          <Val><![CDATA[Could not parse array index: {0}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[无法分析数组索引: {0}]D;]A;]]></Val>
+            <Val><![CDATA[无法分析数组索引: {0}]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Could not parse array index: {0}]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0155" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Array index out of range for item '{0}']D;]A;        ]]></Val>
+          <Val><![CDATA[Array index out of range for item '{0}']]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[数组索引超出项“{0}”的范围]D;]A;]]></Val>
+            <Val><![CDATA[数组索引超出项 ‘{0}’ 的范围]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Array index out of range for item '{0}']D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0156" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[{0} values do not support child properties.]D;]A;        ]]></Val>
+          <Val><![CDATA[{0} values do not support child properties.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[{0} 值不支持子属性。]D;]A;]]></Val>
+            <Val><![CDATA[{0} 值不支持子属性。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[{0} values do not support child properties.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0157" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Getting {0} values is not supported.]D;]A;        ]]></Val>
+          <Val><![CDATA[Getting {0} values is not supported.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[不支持获取 {0} 值。]D;]A;]]></Val>
+            <Val><![CDATA[不支持获取 {0} 值。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Getting {0} values is not supported.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0158" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The file '{0}' does not exist.]D;]A;        ]]></Val>
+          <Val><![CDATA[The file '{0}' does not exist.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[文件“{0}”不存在。]D;]A;]]></Val>
+            <Val><![CDATA[文件“{0}”不存在。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The file '{0}' does not exist.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0159" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The file '{0}' conflicts with '{1}'.]D;]A;        ]]></Val>
+          <Val><![CDATA[The file '{0}' conflicts with '{1}'.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[文件“{0}”与“{1}”冲突。]D;]A;]]></Val>
+            <Val><![CDATA[文件 ‘{0}’ 与 ‘{1}’冲突。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The file '{0}' conflicts with '{1}'.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0160" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Watch apps/extensions require Xcode 6.2 or later. The current Xcode version is {0}]D;]A;        ]]></Val>
+          <Val><![CDATA[Watch apps/extensions require Xcode 6.2 or later. The current Xcode version is {0}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Watch 应用/扩展需要 Xcode 6.2 或更高版本。当前的 Xcode 版本为 {0}]D;]A;]]></Val>
+            <Val><![CDATA[手表应用/扩展需要 Xcode 6.2 或更高版本。当前 Xcode 版本为 {0}]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Watch apps/extensions require Xcode 6.2 or later. The current Xcode version is {0}]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0161" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Items must have logical names computed.]D;]A;        ]]></Val>
+          <Val><![CDATA[Items must have logical names computed.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[项必须具有计算出的逻辑名称。]D;]A;]]></Val>
+            <Val><![CDATA[项必须具有计算出的逻辑名称。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Items must have logical names computed.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0166" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[You must specify a DestinationFolder or the DestinationFiles, but not both.]D;]A;        ]]></Val>
+          <Val><![CDATA[You must specify a DestinationFolder or the DestinationFiles, but not both.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[必须指定 DestinationFolder 或 DestinationFiles，但不能同时指定这两者。]D;]A;]]></Val>
+            <Val><![CDATA[必须指定 DestinationFolder 或 DestinationFiles，但不能同时指定这两者。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[You must specify a DestinationFolder or the DestinationFiles, but not both.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0167" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The number of DestinationFiles must match the number of SourceFiles.]D;]A;        ]]></Val>
+          <Val><![CDATA[The number of DestinationFiles must match the number of SourceFiles.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[DestinationFiles 数目必须与 SourceFiles 数目匹配。]D;]A;]]></Val>
+            <Val><![CDATA[DestinationFiles 数目必须与 SourceFiles 数目匹配。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The number of DestinationFiles must match the number of SourceFiles.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0169" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Unknown target framework identifier: {0}.]D;]A;        ]]></Val>
+          <Val><![CDATA[Unknown target framework identifier: {0}.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[未知的目标框架标识符: {0}。]D;]A;        ]]></Val>
+            <Val><![CDATA[目标框架标识符未知: {0}。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Unknown target framework identifier: {0}.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0170" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Could not find {0} in {1}.]D;]A;        ]]></Val>
+          <Val><![CDATA[Could not find {0} in {1}.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[在 {1} 中找不到 {0}。]D;]A;        ]]></Val>
+            <Val><![CDATA[在 {1} 中找不到 {0}。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Could not find {0} in {1}.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0171" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The {0} SDK is not installed.]D;]A;        ]]></Val>
+          <Val><![CDATA[The {0} SDK is not installed.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[未安装 {0} SDK。]D;]A;        ]]></Val>
+            <Val><![CDATA[未安装 {0} SDK。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The {0} SDK is not installed.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0172" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The {0} SDK version '{1}' is not installed, and no newer version was found.]D;]A;        ]]></Val>
+          <Val><![CDATA[The {0} SDK version '{1}' is not installed, and no newer version was found.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[未安装 {0} SDK 版本“{1}”，找不到更新的版本。]D;]A;        ]]></Val>
+            <Val><![CDATA[未安装 {0} SDK 版本 ‘{1}’，找不到更新的版本。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The {0} SDK version '{1}' is not installed, and no newer version was found.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0173" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The {0} SDK version '{1}' is not installed. Using newer version '{2}' instead'.]D;]A;        ]]></Val>
+          <Val><![CDATA[The {0} SDK version '{1}' is not installed. Using newer version '{2}' instead'.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[未安装 {0} SDK 版本“{1}”。请改用更新的版本“{2}”。]D;]A;        ]]></Val>
+            <Val><![CDATA[未安装 {0} SDK 版本‘{1}’。请改用更新的版本 ‘{2}’。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The {0} SDK version '{1}' is not installed. Using newer version '{2}' instead'.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E0174" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The xcframework {0} has an incorrect or unknown format and cannot be processed.]]></Val>
+          <Val><![CDATA[Failed to resolve the xcframework {0} in {1} due to an unexpected error: {2}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[xcframework“{0}”的格式不正确或未知，无法处理。]]></Val>
+            <Val><![CDATA[由于意外错误，无法解析 {1} 中的 xcframework {0}: {2}]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The xcframework {0} has an incorrect or unknown format and cannot be processed.]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";E0174a" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The xcframework {0} has an incorrect or unknown format and cannot be processed: expected the value for 'CFBundlePackageType' to be 'XFWK' in the xcframework's Info.plist, but it's '{1}'.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[xcframework {0} 的格式不正确或未知，且无法处理: 在 xcframework 的 Info.plist 中，"CFBundlePackageType" 的值应为 "XFWK"，但它为 "{1}"。]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";E0174b" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The xcframework {0} has an incorrect or unknown format and cannot be processed: there's no 'AvailableLibraries' entry in the xcframework's Info.plist.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[xcframework {0} 的格式不正确或未知，且无法处理: 在 xcframework 的 Info.plist 中没有 "AvailableLibraries" 条目。]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";E0174c" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The xcframework {0} has an incorrect or unknown format and cannot be processed: expected some 'AvailableLibraries' entries in the xcframework's Info.plist, but found 0 entries.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[xcframework {0} 的格式不正确或未知，且无法处理: 在 xcframework 的 Info.plist 中应有一些 "AvailableLibraries" 条目，但发现了 0 个条目。]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -978,604 +1281,805 @@
       </Item>
       <Item ItemId=";E7001" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Could not resolve host IPs for WiFi debugger settings.]D;]A;        ]]></Val>
+          <Val><![CDATA[Could not resolve host IPs for WiFi debugger settings.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[无法解析 WiFi 调试程序设置的主机 IP。]D;]A;]]></Val>
+            <Val><![CDATA[无法解析 WiFi 调试程序设置的主机 IP。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Could not resolve host IPs for WiFi debugger settings.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7002" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[This machine does not have any network adapters. This is required when debugging or profiling on device over WiFi.]D;]A;        ]]></Val>
+          <Val><![CDATA[This machine does not have any network adapters. This is required when debugging or profiling on device over WiFi.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[此计算机没有任何网络适配器。在通过 WiFi 对设备进行调试或分析时需要此适配器。]D;]A;]]></Val>
+            <Val><![CDATA[此计算机没有任何网络适配器。在通过 WiFi 对设备进行调试或分析时需要此适配器。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[This machine does not have any network adapters. This is required when debugging or profiling on device over WiFi.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7003" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The App Extension '{0}' does not contain an Info.plist.]D;]A;        ]]></Val>
+          <Val><![CDATA[The App Extension '{0}' does not contain an Info.plist.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[应用扩展“{0}”不包含 Info.plist。]D;]A;]]></Val>
+            <Val><![CDATA[应用扩展 ‘{0}’ 不包含 Info.plist。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The App Extension '{0}' does not contain an Info.plist.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7004" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The App Extension '{0}' does not specify a CFBundleIdentifier.]D;]A;        ]]></Val>
+          <Val><![CDATA[The App Extension '{0}' does not specify a CFBundleIdentifier.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[应用扩展“{0}”未指定 CFBundleIdentifier。]D;]A;]]></Val>
+            <Val><![CDATA[应用扩展 ‘{0}’ 未指定 CFBundleIdentifier。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The App Extension '{0}' does not specify a CFBundleIdentifier.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7005" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The App Extension '{0}' does not specify a CFBundleExecutable.]D;]A;        ]]></Val>
+          <Val><![CDATA[The App Extension '{0}' does not specify a CFBundleExecutable.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[应用扩展“{0}”未指定 CFBundleExecutable。]D;]A;]]></Val>
+            <Val><![CDATA[应用扩展 ‘{0}’ 未指定 CFBundleExecutable。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The App Extension '{0}' does not specify a CFBundleExecutable.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7006" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The App Extension '{0}' has an invalid CFBundleIdentifier ({1}), it does not begin with the main app bundle's CFBundleIdentifier ({2}).]D;]A;        ]]></Val>
+          <Val><![CDATA[The App Extension '{0}' has an invalid CFBundleIdentifier ({1}), it does not begin with the main app bundle's CFBundleIdentifier ({2}).]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[应用扩展“{0}”的 CFBundleIdentifier ({1})无效，它不以主应用捆绑包的 CFBundleIdentifier ({2})开头。]D;]A;]]></Val>
+            <Val><![CDATA[应用扩展 ‘{0}’ 的 CFBundleIdentifier ({1})无效，它不以主应用捆绑包的 CFBundleIdentifier ({2})开头。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The App Extension '{0}' has an invalid CFBundleIdentifier ({1}), it does not begin with the main app bundle's CFBundleIdentifier ({2}).]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7007" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The App Extension '{0}' has a CFBundleIdentifier ({1}) that ends with the illegal suffix ".key".]D;]A;        ]]></Val>
+          <Val><![CDATA[The App Extension '{0}' has a CFBundleIdentifier ({1}) that ends with the illegal suffix ".key".]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[应用扩展“{0}”有一个以非法后缀 ".key" 结尾的 CFBundleIdentifier ({1})。]D;]A;]]></Val>
+            <Val><![CDATA[应用扩展 ‘{0}’ 有一个以非法后缀 ".key" 结尾的 CFBundleIdentifier ({1})。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The App Extension '{0}' has a CFBundleIdentifier ({1}) that ends with the illegal suffix ".key".]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7008" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The App Extension '{0}' does not specify a CFBundleShortVersionString.]D;]A;        ]]></Val>
+          <Val><![CDATA[The App Extension '{0}' does not specify a CFBundleShortVersionString.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[应用扩展“{0}”未指定 CFBundleShortVersionString。]D;]A;]]></Val>
+            <Val><![CDATA[应用扩展 ‘{0}’ 未指定 CFBundleShortVersionString。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The App Extension '{0}' does not specify a CFBundleShortVersionString.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7009" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The App Extension '{0}' has an invalid Info.plist: it does not contain an NSExtension dictionary.]D;]A;        ]]></Val>
+          <Val><![CDATA[The App Extension '{0}' has an invalid Info.plist: it does not contain an NSExtension dictionary.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[应用扩展“{0}”包含无效的 Info.plist: 它不包含 NSExtension 字典。]D;]A;]]></Val>
+            <Val><![CDATA[应用扩展 ‘{0}’ 包含无效的 Info.plist: 它不包含 NSExtension 字典。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The App Extension '{0}' has an invalid Info.plist: it does not contain an NSExtension dictionary.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7010" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The App Extension '{0}' has an invalid Info.plist: the NSExtension dictionary does not contain an NSExtensionPointIdentifier value.]D;]A;        ]]></Val>
+          <Val><![CDATA[The App Extension '{0}' has an invalid Info.plist: the NSExtension dictionary does not contain an NSExtensionPointIdentifier value.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[应用扩展“{0}”包含无效的 Info.plist: NSExtension 字典不包含 NSExtensionPointIdentifier 值。]D;]A;]]></Val>
+            <Val><![CDATA[应用扩展 ‘{0}’ 包含无效的 Info.plist: NSExtension 字典不包含 NSExtensionPointIdentifier 值。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The App Extension '{0}' has an invalid Info.plist: the NSExtension dictionary does not contain an NSExtensionPointIdentifier value.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7014" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The Watch App '{0}' does not contain an Info.plist.]D;]A;        ]]></Val>
+          <Val><![CDATA[The Watch App '{0}' does not contain an Info.plist.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Watch 应用“{0}”不包含 Info.plist。]D;]A;]]></Val>
+            <Val><![CDATA[手表应用 ‘{0}’ 不包含 Info.plist。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The Watch App '{0}' does not contain an Info.plist.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7015" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The Watch App '{0}' does not specify a CFBundleIdentifier.]D;]A;        ]]></Val>
+          <Val><![CDATA[The Watch App '{0}' does not specify a CFBundleIdentifier.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Watch 应用“{0}”未指定 CFBundleIdentifier。]D;]A;]]></Val>
+            <Val><![CDATA[手表应用 ‘{0}’ 未指定 CFBundleIdentifier。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The Watch App '{0}' does not specify a CFBundleIdentifier.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7016" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The Watch App '{0}' has an invalid CFBundleIdentifier ({1}), it does not begin with the main app bundle's CFBundleIdentifier ({2}).]D;]A;        ]]></Val>
+          <Val><![CDATA[The Watch App '{0}' has an invalid CFBundleIdentifier ({1}), it does not begin with the main app bundle's CFBundleIdentifier ({2}).]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Watch 应用“{0}”具有无效的 CFBundleIdentifier ({1})，它不以主应用捆绑包的 CFBundleIdentifier ({2})开头。]D;]A;]]></Val>
+            <Val><![CDATA[手表应用 ‘{0}’ 具有无效的 CFBundleIdentifier ({1})，它不以主应用捆绑包的 CFBundleIdentifier ({2})开头。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The Watch App '{0}' has an invalid CFBundleIdentifier ({1}), it does not begin with the main app bundle's CFBundleIdentifier ({2}).]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7017" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The Watch App '{0}' does not have a valid UIDeviceFamily value. Expected 'Watch (4)' but found '{1} ({2})'.]D;]A;        ]]></Val>
+          <Val><![CDATA[The Watch App '{0}' does not have a valid UIDeviceFamily value. Expected 'Watch (4)' but found '{1} ({2})'.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Watch 应用“{0}”没有有效的 UIDeviceFamily 值。期望查找 "Watch (4)"，但找到“{1} ({2})”。]D;]A;]]></Val>
+            <Val><![CDATA[手表应用 ‘{0}’ 没有有效的 UIDeviceFamily 值。预期为“手表(4)”，但找到 ‘{1} ({2})’。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The Watch App '{0}' does not have a valid UIDeviceFamily value. Expected 'Watch (4)' but found '{1} ({2})'.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7018" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The Watch App '{name}' does not specify a CFBundleExecutable]D;]A;        ]]></Val>
+          <Val><![CDATA[The Watch App '{name}' does not specify a CFBundleExecutable]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Watch 应用 "{name}" 未指定 CFBundleExecutable]D;]A;]]></Val>
+            <Val><![CDATA[手表应用 ‘{name}’ 未指定 CFBundleExecutable]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The Watch App '{name}' does not specify a CFBundleExecutable]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7019" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The Watch App '{0}' has an invalid WKCompanionAppBundleIdentifier value ('{1}'), it does not match the main app bundle's CFBundleIdentifier ('{2}').]D;]A;        ]]></Val>
+          <Val><![CDATA[The Watch App '{0}' has an invalid WKCompanionAppBundleIdentifier value ('{1}'), it does not match the main app bundle's CFBundleIdentifier ('{2}').]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Watch 应用“{0}”具有无效的 WKCompanionAppBundleIdentifier 值 ("{1}")，它与主应用捆绑包的 CFBundleIdentifier  ("{2}") 不匹配。]D;]A;]]></Val>
+            <Val><![CDATA[手表应用 ‘{0}’ 具有无效的 WKCompanionAppBundleIdentifier 值(‘{1}’)，它与主应用捆绑包的 CFBundleIdentifier (‘{2}’)不匹配。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The Watch App '{0}' has an invalid WKCompanionAppBundleIdentifier value ('{1}'), it does not match the main app bundle's CFBundleIdentifier ('{2}').]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7020" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The Watch App '{0}' has an invalid Info.plist: the WKWatchKitApp key must be present and have a value of 'true'.]D;]A;        ]]></Val>
+          <Val><![CDATA[The Watch App '{0}' has an invalid Info.plist: the WKWatchKitApp key must be present and have a value of 'true'.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Watch 应用“{0}”具有无效的 Info.plist: WKWatchKitApp 密钥必须存在，并且值为 "true"。]D;]A;]]></Val>
+            <Val><![CDATA[手表应用 ‘{0}’ 具有无效的 Info.plist: WKWatchKitApp 键必须存在，并且值为 ‘true’。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The Watch App '{0}' has an invalid Info.plist: the WKWatchKitApp key must be present and have a value of 'true'.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7021" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The Watch App '{0}' has an invalid Info.plist: the LSRequiresIPhoneOS key must not be present.]D;]A;        ]]></Val>
+          <Val><![CDATA[The Watch App '{0}' has an invalid Info.plist: the LSRequiresIPhoneOS key must not be present.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Watch 应用“{0}”具有无效的 Info.plist: 不得包含 LSRequiresIPhoneOS 密钥。]D;]A;]]></Val>
+            <Val><![CDATA[手表应用 ‘{0}’ 具有无效的 Info.plist: 不得显示 LSRequiresIPhoneOS 键。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The Watch App '{0}' has an invalid Info.plist: the LSRequiresIPhoneOS key must not be present.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7022" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The Watch App '{0}' does not contain any Watch Extensions.]D;]A;        ]]></Val>
+          <Val><![CDATA[The Watch App '{0}' does not contain any Watch Extensions.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Watch 应用“{0}”不包含任何 Watch 扩展。]D;]A;]]></Val>
+            <Val><![CDATA[手表应用 ‘{0}’ 不包含任何 Watch 扩展。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The Watch App '{0}' does not contain any Watch Extensions.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7022_A" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The Watch App '{0}' does not contain a Watch Extension.]D;]A;        ]]></Val>
+          <Val><![CDATA[The Watch App '{0}' does not contain a Watch Extension.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Watch 应用“{0}”不包含 Watch 扩展。]D;]A;]]></Val>
+            <Val><![CDATA[手表应用 ‘{0}’ 不包含 Watch 扩展。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The Watch App '{0}' does not contain a Watch Extension.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7023" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The Watch Extension '{0}' does not contain an Info.plist.]D;]A;        ]]></Val>
+          <Val><![CDATA[The Watch Extension '{0}' does not contain an Info.plist.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Watch 应用“{0}”不包含 Info.plist。]D;]A;]]></Val>
+            <Val><![CDATA[Watch 扩展 ‘{0}’ 不包含 Info.plist。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The Watch Extension '{0}' does not contain an Info.plist.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7024" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The Watch Extension '{0}' does not specify a CFBundleIdentifier.]D;]A;        ]]></Val>
+          <Val><![CDATA[The Watch Extension '{0}' does not specify a CFBundleIdentifier.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Watch 应用“{0}”未指定任何 CFBundleIdentifier。]D;]A;]]></Val>
+            <Val><![CDATA[手表应用 ‘{0}’ 未指定任何 CFBundleIdentifier。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The Watch Extension '{0}' does not specify a CFBundleIdentifier.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7025" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The Watch Extension '{0}' does not specify a CFBundleExecutable.]D;]A;        ]]></Val>
+          <Val><![CDATA[The Watch Extension '{0}' does not specify a CFBundleExecutable.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Watch 应用“{0}”未指定任何 CFBundleExecutable。]D;]A;]]></Val>
+            <Val><![CDATA[Watch 扩展 ‘{0}’ 未指定 CFBundleExecutable。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The Watch Extension '{0}' does not specify a CFBundleExecutable.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7026" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The Watch Extension '{0}' has an invalid CFBundleIdentifier ({1}), it does not begin with the main app bundle's CFBundleIdentifier ({2}).]D;]A;        ]]></Val>
+          <Val><![CDATA[The Watch Extension '{0}' has an invalid CFBundleIdentifier ({1}), it does not begin with the main app bundle's CFBundleIdentifier ({2}).]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Watch 应用“{0}”具有无效的 CFBundleIdentifier ({1})，它不以主应用捆绑包的 CFBundleIdentifier ({2})开头。]D;]A;]]></Val>
+            <Val><![CDATA[Watch 扩展 ‘{0}’ 具有无效的 CFBundleIdentifier ({1})，它不以主应用捆绑包的 CFBundleIdentifier ({2})开头。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The Watch Extension '{0}' has an invalid CFBundleIdentifier ({1}), it does not begin with the main app bundle's CFBundleIdentifier ({2}).]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7027" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The Watch Extension '{0}' has a CFBundleIdentifier ({1}) that ends with the illegal suffix ".key".]D;]A;        ]]></Val>
+          <Val><![CDATA[The Watch Extension '{0}' has a CFBundleIdentifier ({1}) that ends with the illegal suffix ".key".]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Watch 应用“{0}”具有以非法后缀 "key" 结尾的 CFBundleIdentifier ({1})。]D;]A;]]></Val>
+            <Val><![CDATA[手表应用 ‘{0}’ 具有以非法后缀 "key" 结尾的 CFBundleIdentifier ({1})。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The Watch Extension '{0}' has a CFBundleIdentifier ({1}) that ends with the illegal suffix ".key".]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7028" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The Watch Extension '{0}' has an invalid Info.plist: it does not contain an NSExtension dictionary.]D;]A;        ]]></Val>
+          <Val><![CDATA[The Watch Extension '{0}' has an invalid Info.plist: it does not contain an NSExtension dictionary.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Watch 应用“{0}”具有无效的 Info.plist: 它不包含 NSExtension 字典。]D;]A;]]></Val>
+            <Val><![CDATA[手表应用 ‘{0}’ 具有无效的 Info.plist: 它不包含 NSExtension 字典。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The Watch Extension '{0}' has an invalid Info.plist: it does not contain an NSExtension dictionary.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7029" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The Watch Extension '{0}' has an invalid Info.plist: the NSExtensionPointIdentifier must be "com.apple.watchkit".]D;]A;        ]]></Val>
+          <Val><![CDATA[The Watch Extension '{0}' has an invalid Info.plist: the NSExtensionPointIdentifier must be "com.apple.watchkit".]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Watch 应用“{0}”具有无效的 Info.plist: NSExtensionPointIdentifier 必须为 "com.apple.watchkit"。]D;]A;]]></Val>
+            <Val><![CDATA[手表应用 ‘{0}’ 具有无效的 Info.plist: NSExtensionPointIdentifier 必须为 "com.apple.watchkit"。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The Watch Extension '{0}' has an invalid Info.plist: the NSExtensionPointIdentifier must be "com.apple.watchkit".]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7029_A" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The Watch Extension '{0}' has an invalid Info.plist: the NSExtension dictionary must contain an NSExtensionPointIdentifier.]D;]A;        ]]></Val>
+          <Val><![CDATA[The Watch Extension '{0}' has an invalid Info.plist: the NSExtension dictionary must contain an NSExtensionPointIdentifier.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Watch 应用“{0}”具有无效的 Info.plist: NSExtension 字典必须包含 NSExtensionPointIdentifier。]D;]A;]]></Val>
+            <Val><![CDATA[手表应用 ‘{0}’ 具有无效的 Info.plist: NSExtension 字典必须包含 NSExtensionPointIdentifier。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The Watch Extension '{0}' has an invalid Info.plist: the NSExtension dictionary must contain an NSExtensionPointIdentifier.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7030" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The Watch Extension '{0}' has an invalid Info.plist: the NSExtension dictionary must contain NSExtensionAttributes.]D;]A;        ]]></Val>
+          <Val><![CDATA[The Watch Extension '{0}' has an invalid Info.plist: the NSExtension dictionary must contain NSExtensionAttributes.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Watch 应用“{0}”具有无效的 Info.plist: NSExtension 字典必须包含 NSExtensionAttributes。]D;]A;]]></Val>
+            <Val><![CDATA[手表应用 ‘{0}’ 具有无效的 Info.plist: NSExtension 字典必须包含 NSExtensionAttributes。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The Watch Extension '{0}' has an invalid Info.plist: the NSExtension dictionary must contain NSExtensionAttributes.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7031" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The Watch Extension '{0}' has an invalid WKAppBundleIdentifier value ('{1}'), it does not match the parent Watch App bundle's CFBundleIdentifier ('{2}').]D;]A;        ]]></Val>
+          <Val><![CDATA[The Watch Extension '{0}' has an invalid WKAppBundleIdentifier value ('{1}'), it does not match the parent Watch App bundle's CFBundleIdentifier ('{2}').]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Watch 应用“{0}”具有无效的 WKAppBundleIdentifier 值(“{1}”)，它与父 Watch 应用捆绑包的 CFBundleIdentifier  (“{2}”)不匹配。]D;]A;]]></Val>
+            <Val><![CDATA[Watch 扩展 ‘{0}’ 具有无效的 WKAppBundleIdentifier 值(‘{1}’)，它与父级手表应用捆绑包的 CFBundleIdentifier (‘{2}’)不匹配。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The Watch Extension '{0}' has an invalid WKAppBundleIdentifier value ('{1}'), it does not match the parent Watch App bundle's CFBundleIdentifier ('{2}').]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7031_A" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The Watch Extension '{0}' has an invalid Info.plist: the NSExtensionAttributes dictionary must contain a WKAppBundleIdentifier.]D;]A;        ]]></Val>
+          <Val><![CDATA[The Watch Extension '{0}' has an invalid Info.plist: the NSExtensionAttributes dictionary must contain a WKAppBundleIdentifier.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Watch 应用“{0}”具有无效的 Info.plist: NSExtensionAttributes 字典必须包含 WKAppBundleIdentifier。]D;]A;]]></Val>
+            <Val><![CDATA[手表应用 ‘{0}’ 具有无效的 Info.plist: NSExtensionAttributes 字典必须包含 WKAppBundleIdentifier。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The Watch Extension '{0}' has an invalid Info.plist: the NSExtensionAttributes dictionary must contain a WKAppBundleIdentifier.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7032" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The WatchKit Extension '{0}' has an invalid Info.plist: the UIRequiredDeviceCapabilities dictionary should not contain the 'watch-companion' capability.]D;]A;        ]]></Val>
+          <Val><![CDATA[The WatchKit Extension '{0}' has an invalid Info.plist: the UIRequiredDeviceCapabilities dictionary should not contain the 'watch-companion' capability.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[WatchKit 扩展“{0}”具有无效的 Info.plist: UIRequiredDeviceCapabilities 字典不应包含 "watch-companion" 功能。]D;]A;]]></Val>
+            <Val><![CDATA[WatchKit 扩展 ‘{0}’ 具有无效的 Info.plist: UIRequiredDeviceCapabilities 字典不应包含 ‘watch-companion’ 功能。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The WatchKit Extension '{0}' has an invalid Info.plist: the UIRequiredDeviceCapabilities dictionary should not contain the 'watch-companion' capability.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7032_A" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The WatchKit Extension '{0}' has an invalid Info.plist: the UIRequiredDeviceCapabilities array should not contain the 'watch-companion' capability.]D;]A;        ]]></Val>
+          <Val><![CDATA[The WatchKit Extension '{0}' has an invalid Info.plist: the UIRequiredDeviceCapabilities array should not contain the 'watch-companion' capability.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[WatchKit 扩展“{0}”具有无效的 Info.plist: UIRequiredDeviceCapabilities 数组不应包含 "watch-companion" 功能。]D;]A;]]></Val>
+            <Val><![CDATA[WatchKit 扩展‘{0}’具有无效的 Info.plist: UIRequiredDeviceCapabilities 数组不应包含 "watch-companion" 功能。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The WatchKit Extension '{0}' has an invalid Info.plist: the UIRequiredDeviceCapabilities array should not contain the 'watch-companion' capability.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7033" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The Watch App '{0}' does not contain an Info.plist.]D;]A;        ]]></Val>
+          <Val><![CDATA[The Watch App '{0}' does not contain an Info.plist.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Watch 应用“{0}”不包含 Info.plist。]D;]A;]]></Val>
+            <Val><![CDATA[手表应用 ‘{0}’ 不包含 Info.plist。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The Watch App '{0}' does not contain an Info.plist.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7034" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The Watch App '{0}' does not specify a CFBundleIdentifier.]D;]A;        ]]></Val>
+          <Val><![CDATA[The Watch App '{0}' does not specify a CFBundleIdentifier.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Watch 应用“{0}”未指定 CFBundleIdentifier。]D;]A;]]></Val>
+            <Val><![CDATA[手表应用 ‘{0}’ 未指定 CFBundleIdentifier。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The Watch App '{0}' does not specify a CFBundleIdentifier.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7035" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The Watch App '{0}' does not have a valid UIDeviceFamily value. Expected '{1}' but found '{2} ({3})'.]D;]A;        ]]></Val>
+          <Val><![CDATA[The Watch App '{0}' does not have a valid UIDeviceFamily value. Expected '{1}' but found '{2} ({3})'.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Watch 应用“{0}”没有有效的 UIDeviceFamily 值。期望查找“{1}”，但找到“{2} ({3})”。]D;]A;]]></Val>
+            <Val><![CDATA[手表应用 ‘{0}’ 没有有效的 UIDeviceFamily 值。应为 ‘{1}’，但找到‘{2} ({3})’。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The Watch App '{0}' does not have a valid UIDeviceFamily value. Expected '{1}' but found '{2} ({3})'.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7036" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The Watch App '{0}' does not specify a CFBundleExecutable.]D;]A;        ]]></Val>
+          <Val><![CDATA[The Watch App '{0}' does not specify a CFBundleExecutable.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Watch 应用“{0}”未指定任何 CFBundleExecutable。]D;]A;]]></Val>
+            <Val><![CDATA[手表应用 ‘{0}’ 未指定 CFBundleExecutable。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The Watch App '{0}' does not specify a CFBundleExecutable.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7037" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The WatchKit Extension '{0}' has an invalid WKAppBundleIdentifier value ('{1}'), it does not match the Watch App's CFBundleIdentifier ('{2}').]D;]A;        ]]></Val>
+          <Val><![CDATA[The WatchKit Extension '{0}' has an invalid WKAppBundleIdentifier value ('{1}'), it does not match the Watch App's CFBundleIdentifier ('{2}').]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[WatchKit 扩展“{0}”具有无效的 WKAppBundleIdentifier 值(“{1}”)，它与 Watch 应用的 CFBundleIdentifier (“{2}”)不匹配。]D;]A;]]></Val>
+            <Val><![CDATA[WatchKit 扩展 ‘{0}’ 具有无效的 WKAppBundleIdentifier 值(‘{1}’)，它与手表应用的 CFBundleIdentifier (‘{2}’)不匹配。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The WatchKit Extension '{0}' has an invalid WKAppBundleIdentifier value ('{1}'), it does not match the Watch App's CFBundleIdentifier ('{2}').]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7038" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The Watch App '{0}' has an invalid WKCompanionAppBundleIdentifier value ('{1}'), it does not match the main app bundle's CFBundleIdentifier ('{2}').]D;]A;        ]]></Val>
+          <Val><![CDATA[The Watch App '{0}' has an invalid WKCompanionAppBundleIdentifier value ('{1}'), it does not match the main app bundle's CFBundleIdentifier ('{2}').]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Watch 应用“{0}”具有无效的 WKCompanionAppBundleIdentifier 值 ("{1}")，它与主应用捆绑包的 CFBundleIdentifier  ("{2}") 不匹配。]D;]A;]]></Val>
+            <Val><![CDATA[手表应用 ‘{0}’ 具有无效的 WKCompanionAppBundleIdentifier 值(‘{1}’)，它与主应用捆绑包的 CFBundleIdentifier (‘{2}’)不匹配。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The Watch App '{0}' has an invalid WKCompanionAppBundleIdentifier value ('{1}'), it does not match the main app bundle's CFBundleIdentifier ('{2}').]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7038_A" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The Watch App '{0}' has an invalid Info.plist: the WKCompanionAppBundleIdentifier must exist and must match the main app bundle's CFBundleIdentifier.]D;]A;        ]]></Val>
+          <Val><![CDATA[The Watch App '{0}' has an invalid Info.plist: the WKCompanionAppBundleIdentifier must exist and must match the main app bundle's CFBundleIdentifier.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Watch 应用“{0}”具有无效的 Info.plist: WKCompanionAppBundleIdentifier 必须存在，并且必须与主应用捆绑包的 CFBundleIdentifier 匹配。]D;]A;]]></Val>
+            <Val><![CDATA[手表应用 ‘{0}’ 具有无效的 Info.plist: WKCompanionAppBundleIdentifier 必须存在，并且必须与主应用捆绑包的 CFBundleIdentifier 匹配。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The Watch App '{0}' has an invalid Info.plist: the WKCompanionAppBundleIdentifier must exist and must match the main app bundle's CFBundleIdentifier.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7039" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The Watch App '{0}' has an invalid Info.plist: the LSRequiresIPhoneOS key must not be present.]D;]A;        ]]></Val>
+          <Val><![CDATA[The Watch App '{0}' has an invalid Info.plist: the LSRequiresIPhoneOS key must not be present.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Watch 应用“{0}”具有无效的 Info.plist: 不得包含 LSRequiresIPhoneOS 密钥。]D;]A;]]></Val>
+            <Val><![CDATA[手表应用 ‘{0}’ 具有无效的 Info.plist: 不得显示 LSRequiresIPhoneOS 键。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The Watch App '{0}' has an invalid Info.plist: the LSRequiresIPhoneOS key must not be present.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7040" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The app bundle {0} does not contain an Info.plist.]D;]A;        ]]></Val>
+          <Val><![CDATA[The app bundle {0} does not contain an Info.plist.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[应用捆绑包 {0} 不包含 Info.plist。]D;]A;]]></Val>
+            <Val><![CDATA[应用捆绑包 {0} 不包含 Info.plist。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The app bundle {0} does not contain an Info.plist.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7041" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[{0} does not specify a CFBundleIdentifier.]D;]A;        ]]></Val>
+          <Val><![CDATA[{0} does not specify a CFBundleIdentifier.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[{0} 未指定任何 CFBundleIdentifier。]D;]A;]]></Val>
+            <Val><![CDATA[{0} 未指定 CFBundleIdentifier。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[{0} does not specify a CFBundleIdentifier.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7042" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[{0} does not specify a CFBundleExecutable.]D;]A;        ]]></Val>
+          <Val><![CDATA[{0} does not specify a CFBundleExecutable.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[{0} 未指定任何 CFBundleExecutable。]D;]A;]]></Val>
+            <Val><![CDATA[{0} 未指定 CFBundleExecutable。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[{0} does not specify a CFBundleExecutable.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7043" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[{0} does not specify a CFBundleSupportedPlatforms.]D;]A;        ]]></Val>
+          <Val><![CDATA[{0} does not specify a CFBundleSupportedPlatforms.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[{0} 未指定任何 CFBundleSupportedPlatforms。]D;]A;]]></Val>
+            <Val><![CDATA[{0} 未指定 CFBundleSupportedPlatforms。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[{0} does not specify a CFBundleSupportedPlatforms.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7044" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[{0} does not specify a UIDeviceFamily.]D;]A;        ]]></Val>
+          <Val><![CDATA[{0} does not specify a UIDeviceFamily.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[{0} 未指定任何 UIDeviceFamily。]D;]A;]]></Val>
+            <Val><![CDATA[{0} 未指定 UIDeviceFamily。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[{0} does not specify a UIDeviceFamily.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7044_A" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[{0} is invalid: the UIDeviceFamily key must contain a value for '{1}'.]D;]A;        ]]></Val>
+          <Val><![CDATA[{0} is invalid: the UIDeviceFamily key must contain a value for '{1}'.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[{0} 无效: UIDeviceFamily 密钥必须包含“{1}”的值。]D;]A;]]></Val>
+            <Val><![CDATA[{0} 无效: UIDeviceFamily 键必须包含 ‘{1}’ 的值。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[{0} is invalid: the UIDeviceFamily key must contain a value for '{1}'.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7045" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Unrecognized Type: {Type}]D;]A;        ]]></Val>
+          <Val><![CDATA[Unrecognized Type: {Type}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[无法识别的类型: {Type}]D;]A;]]></Val>
+            <Val><![CDATA[无法识别的类型: {Type}]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Unrecognized Type: {Type}]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7046" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Add: Entry, "{0}", Incorrectly Specified]D;]A;        ]]></Val>
+          <Val><![CDATA[Add: Entry, "{0}", Incorrectly Specified]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[添加: 未正确指定的条目“{0}”]D;]A;]]></Val>
+            <Val><![CDATA[添加: 未正确指定条目 “{0}”]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Add: Entry, "{0}", Incorrectly Specified]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7047" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Add: Entry, "{0}", Contains Invalid Array Index]D;]A;        ]]></Val>
+          <Val><![CDATA[Add: Entry, "{0}", Contains Invalid Array Index]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[添加: 包含无效数组索引的条目“{0}”]D;]A;]]></Val>
+            <Val><![CDATA[添加: 条目 “{0}” 包含无效数组索引]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Add: Entry, "{0}", Contains Invalid Array Index]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7048" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Add: "{0}" Entry Already Exists]D;]A;        ]]></Val>
+          <Val><![CDATA[Add: "{0}" Entry Already Exists]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[添加: 已存在的条目“{0}”]D;]A;]]></Val>
+            <Val><![CDATA[添加: 条目 ‘{0}’ 已存在]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Add: "{0}" Entry Already Exists]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7049" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Add: Can't Add Entry, "{0}", to Parent]D;]A;        ]]></Val>
+          <Val><![CDATA[Add: Can't Add Entry, "{0}", to Parent]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[添加: 无法向父项添加条目“{0}”]D;]A;]]></Val>
+            <Val><![CDATA[添加: 无法向父级添加条目 ‘{0}’]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Add: Can't Add Entry, "{0}", to Parent]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7050" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Delete: Can't Delete Entry, "{0}", from Parent]D;]A;        ]]></Val>
+          <Val><![CDATA[Delete: Can't Delete Entry, "{0}", from Parent]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[删除: 无法从父项中删除条目“{0}”]D;]A;]]></Val>
+            <Val><![CDATA[删除: 无法从父项中删除条目 “{0}”]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Delete: Can't Delete Entry, "{0}", from Parent]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7051" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Delete: Entry, "{0}", Contains Invalid Array Index]D;]A;        ]]></Val>
+          <Val><![CDATA[Delete: Entry, "{0}", Contains Invalid Array Index]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[删除: 包含无效数组索引的条目“{0}”]D;]A;]]></Val>
+            <Val><![CDATA[删除: 条目 “{0}” 包含无效的数组索引]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Delete: Entry, "{0}", Contains Invalid Array Index]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7052" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Delete: Entry, "{0}", Does Not Exist]D;]A;        ]]></Val>
+          <Val><![CDATA[Delete: Entry, "{0}", Does Not Exist]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[删除: 不存在条目“{0}”]D;]A;]]></Val>
+            <Val><![CDATA[删除: 条目 “{0}” 不存在]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Delete: Entry, "{0}", Does Not Exist]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7053" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Import: Entry, "{0}", Incorrectly Specified]D;]A;        ]]></Val>
+          <Val><![CDATA[Import: Entry, "{0}", Incorrectly Specified]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[导入: 未正确指定的条目“{0}”]D;]A;]]></Val>
+            <Val><![CDATA[导入: 未正确指定条目 “{0}”]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Import: Entry, "{0}", Incorrectly Specified]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7054" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Import: Entry, "{0}", Contains Invalid Array Index]D;]A;        ]]></Val>
+          <Val><![CDATA[Import: Entry, "{0}", Contains Invalid Array Index]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[导入: 包含无效数组索引的条目“{0}”]D;]A;]]></Val>
+            <Val><![CDATA[导入: 条目 “{0}” 包含无效的数组索引]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Import: Entry, "{0}", Contains Invalid Array Index]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7055" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Import: Error Reading File: {0}]D;]A;        ]]></Val>
+          <Val><![CDATA[Import: Error Reading File: {0}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[导入: 读取文件时出错: {0}]D;]A;]]></Val>
+            <Val><![CDATA[导入: 读取文件时出错: {0}]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Import: Error Reading File: {0}]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7056" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Import: Can't Add Entry, "{0}", to Parent]D;]A;        ]]></Val>
+          <Val><![CDATA[Import: Can't Add Entry, "{0}", to Parent]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[导入: 无法向父项添加条目“{0}”]D;]A;]]></Val>
+            <Val><![CDATA[导入: 无法向父项添加条目 “{0}”]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Import: Can't Add Entry, "{0}", to Parent]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7057" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Merge: Can't Add array Entries to dict]D;]A;        ]]></Val>
+          <Val><![CDATA[Merge: Can't Add array Entries to dict]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[合并: 无法将数组条目添加到字典]D;]A;]]></Val>
+            <Val><![CDATA[合并: 无法将数组条目添加到字典]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Merge: Can't Add array Entries to dict]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7058" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Merge: Specified Entry Must Be a Container]D;]A;        ]]></Val>
+          <Val><![CDATA[Merge: Specified Entry Must Be a Container]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[合并: 指定的条目必须是容器]D;]A;]]></Val>
+            <Val><![CDATA[合并: 指定的条目必须是容器]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Merge: Specified Entry Must Be a Container]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7059" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Merge: Entry, "{0}", Contains Invalid Array Index]D;]A;        ]]></Val>
+          <Val><![CDATA[Merge: Entry, "{0}", Contains Invalid Array Index]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[合并: 包含无效数组索引的条目“{0}”]D;]A;]]></Val>
+            <Val><![CDATA[合并: 条目 “{0}” 包含无效的数组索引]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Merge: Entry, "{0}", Contains Invalid Array Index]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7060" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Merge: Entry, "{0}", Does Not Exist]D;]A;        ]]></Val>
+          <Val><![CDATA[Merge: Entry, "{0}", Does Not Exist]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[合并: 不存在条目“{0}”]D;]A;]]></Val>
+            <Val><![CDATA[合并: 条目 “{0}” 不存在]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Merge: Entry, "{0}", Does Not Exist]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7061" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Merge: Error Reading File: {0}]D;]A;        ]]></Val>
+          <Val><![CDATA[Merge: Error Reading File: {0}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[合并: 读取文件时出错: {0}]D;]A;]]></Val>
+            <Val><![CDATA[合并: 读取文件时出错: {0}]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Merge: Error Reading File: {0}]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7062" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Set: Entry, "{0}", Incorrectly Specified]D;]A;        ]]></Val>
+          <Val><![CDATA[Set: Entry, "{0}", Incorrectly Specified]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[设置: 未正确指定的条目“{0}”]D;]A;]]></Val>
+            <Val><![CDATA[设置: 未正确指定的条目 “{0}”]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Set: Entry, "{0}", Incorrectly Specified]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7063" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Set: Entry, "{0}", Contains Invalid Array Index]D;]A;        ]]></Val>
+          <Val><![CDATA[Set: Entry, "{0}", Contains Invalid Array Index]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[设置: 包含无效数组索引的条目“{0}”]D;]A;]]></Val>
+            <Val><![CDATA[设置: 条目 “{0}” 包含无效数组索引]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Set: Entry, "{0}", Contains Invalid Array Index]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7064" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Set: Entry, "{0}", Does Not Exist]D;]A;        ]]></Val>
+          <Val><![CDATA[Set: Entry, "{0}", Does Not Exist]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[设置: 不存在条目“{0}”]D;]A;]]></Val>
+            <Val><![CDATA[设置: 条目 ‘{0}’ 不存在]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Set: Entry, "{0}", Does Not Exist]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -2218,6 +2722,24 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";E7157" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The {0} item '{1}' does not have a 'LogicalName' metadata.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[{0} 项 "{1}" 没有 "LogicalName" 元数据。]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";E7158" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The {0} item '{1}' has been included more than once, with different 'LogicalName' metadata: {2}, {3}.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[{0} 项 ‘{1}’ 已被包含多次，但 ‘LogicalName’ 元数据不同: {2}，{3}。]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";InvalidFramework" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Invalid framework: {0}]]></Val>
@@ -2256,163 +2778,217 @@
       </Item>
       <Item ItemId=";M0017" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[All http loads are already allowed.]D;]A;        ]]></Val>
+          <Val><![CDATA[All http loads are already allowed.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[已允许所有 http 加载。]D;]A;]]></Val>
+            <Val><![CDATA[已允许所有 http 加载。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[All http loads are already allowed.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";M0018" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Allowed arbitrary HTTP loads to support debugging.]D;]A;        ]]></Val>
+          <Val><![CDATA[Allowed arbitrary HTTP loads to support debugging.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[已允许任意 HTTP 加载以支持调试。]D;]A;]]></Val>
+            <Val><![CDATA[已允许任意 HTTP 加载以支持调试。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Allowed arbitrary HTTP loads to support debugging.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";M0047" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Searching for '{0}' in '{1}']D;]A;        ]]></Val>
+          <Val><![CDATA[Searching for '{0}' in '{1}']]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[正在“{1}”中搜索“{0}”]D;]A;]]></Val>
+            <Val><![CDATA[正在 ‘{1}’ 中搜索 ‘{0}’]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Searching for '{0}' in '{1}']D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";M0105" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[No Frameworks directory found.]D;]A;        ]]></Val>
+          <Val><![CDATA[No Frameworks directory found.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[未找到 Frameworks 目录。]D;]A;]]></Val>
+            <Val><![CDATA[未找到 Frameworks 目录。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[No Frameworks directory found.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";M0119" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Skipping `{0}' as the output file, `{1}', is newer.]D;]A;        ]]></Val>
+          <Val><![CDATA[Skipping `{0}' as the output file, `{1}', is newer.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[即将跳过“{0}”，因为输出文件“{1}”较新。]D;]A;]]></Val>
+            <Val><![CDATA[正在跳过 `{0}’，因为输出文件 `{1}’ 较新。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Skipping `{0}' as the output file, `{1}', is newer.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";M0121" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Creating binding resource package: {0}]D;]A;        ]]></Val>
+          <Val><![CDATA[Creating binding resource package: {0}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[正在创建绑定资源包: {0}]D;]A;]]></Val>
+            <Val><![CDATA[正在创建绑定资源包: {0}]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Creating binding resource package: {0}]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";M0125" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Detected signing identity:]D;]A;        ]]></Val>
+          <Val><![CDATA[Detected signing identity:]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[检测到的签名标识:]D;]A;]]></Val>
+            <Val><![CDATA[检测到的签名标识:]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Detected signing identity:]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";M0126" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The certificate '{0}' does not match any of the prefixes '{1}'.]D;]A;        ]]></Val>
+          <Val><![CDATA[The certificate '{0}' does not match any of the prefixes '{1}'.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[证书“{0}”与所有前缀“{1}”都不匹配。]D;]A;]]></Val>
+            <Val><![CDATA[证书 ‘{0}’ 与所有前缀 ‘{1}’ 均不匹配。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The certificate '{0}' does not match any of the prefixes '{1}'.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";M0127" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The certificate '{0}' has expired ({1})]D;]A;        ]]></Val>
+          <Val><![CDATA[The certificate '{0}' has expired ({1})]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[证书“{0}”已过期 ({1})]D;]A;]]></Val>
+            <Val><![CDATA[证书 ‘{0}’ 已过期({1})]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The certificate '{0}' has expired ({1})]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";M0129" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The certificate '{0}' does not match '{1}'.]D;]A;        ]]></Val>
+          <Val><![CDATA[The certificate '{0}' does not match '{1}'.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[证书“{0}”与“{1}”不匹配。]D;]A;        ]]></Val>
+            <Val><![CDATA[证书 ‘{0}’ 与 ‘{1}’ 不匹配。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The certificate '{0}' does not match '{1}'.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";M0132" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA['{0}' doesn't match '{1}'.]D;]A;        ]]></Val>
+          <Val><![CDATA['{0}' doesn't match '{1}'.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[“{0}”与“{1}”不匹配。]D;]A;]]></Val>
+            <Val><![CDATA[‘{0}’ 与 ‘{1}’ 不匹配。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA['{0}' doesn't match '{1}'.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";M0134" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Finding matching provisioning profiles with compatible AppID, keeping only those with the longest matching (wildcard) IDs.]D;]A;        ]]></Val>
+          <Val><![CDATA[Finding matching provisioning profiles with compatible AppID, keeping only those with the longest matching (wildcard) IDs.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[查找具有兼容 AppID 的匹配预配配置文件，仅保留那些具有最长的匹配(通配符) ID 的配置文件。]D;]A;]]></Val>
+            <Val><![CDATA[正在查找具有兼容 AppID 的匹配预配配置文件，仅保留那些具有最长的匹配(通配符) ID 的配置文件。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Finding matching provisioning profiles with compatible AppID, keeping only those with the longest matching (wildcard) IDs.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";M0135" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[AppID: {0} was ruled out because we found a better match: {1}.]D;]A;        ]]></Val>
+          <Val><![CDATA[AppID: {0} was ruled out because we found a better match: {1}.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[AppID: 已排除 {0}，因为我们找到了更好的匹配项: {1}。]D;]A;]]></Val>
+            <Val><![CDATA[AppID: 已排除 {0}，因为我们找到了更好的匹配项: {1}。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[AppID: {0} was ruled out because we found a better match: {1}.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";M0136" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[AppID: {0} was ruled out because we already found better matches: {1}.]D;]A;        ]]></Val>
+          <Val><![CDATA[AppID: {0} was ruled out because we already found better matches: {1}.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[AppID: 已排除 {0}，因为我们找到了更好的匹配项: {1}。]D;]A;]]></Val>
+            <Val><![CDATA[AppID: 已排除 {0}，因为我们找到了更好的匹配项: {1}。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[AppID: {0} was ruled out because we already found better matches: {1}.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";M0138" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Multiple provisioning profiles match the bundle identifier; using the first match.]D;]A;        ]]></Val>
+          <Val><![CDATA[Multiple provisioning profiles match the bundle identifier; using the first match.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[多个预配配置文件与捆绑包标识符匹配。请使用第一个匹配项。]D;]A;]]></Val>
+            <Val><![CDATA[多个预配配置文件与捆绑包标识符匹配；使用第一个匹配项。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Multiple provisioning profiles match the bundle identifier; using the first match.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";M0142" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Multiple signing identities match '{0}'; using the first match.]D;]A;        ]]></Val>
+          <Val><![CDATA[Multiple signing identities match '{0}'; using the first match.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[多个签名标识与“{0}”匹配。请使用第一个匹配项。]D;]A;]]></Val>
+            <Val><![CDATA[多个签名标识与 ‘{0}’ 匹配；使用第一个匹配项。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Multiple signing identities match '{0}'; using the first match.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";M0143" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Multiple signing identities found; using the first identity.]D;]A;        ]]></Val>
+          <Val><![CDATA[Multiple signing identities found; using the first identity.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[找到了多个签名标识。请使用第一个标识。]D;]A;]]></Val>
+            <Val><![CDATA[找到多个签名标识；使用第一个标识。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Multiple signing identities found; using the first identity.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";M0149" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[  {0} found at: {1}]D;]A;        ]]></Val>
+          <Val><![CDATA[  {0} found at: {1}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[  在 {1} 中找到 {0}]D;]A;]]></Val>
+            <Val><![CDATA[  {0} 发现位置: {1}]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[  {0} found at: {1}]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -2427,280 +3003,382 @@
       </Item>
       <Item ItemId=";M0151" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Generated bundle name: {0}]D;]A;        ]]></Val>
+          <Val><![CDATA[Generated bundle name: {0}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[生成的捆绑包名称: {0}]D;]A;]]></Val>
+            <Val><![CDATA[生成的捆绑包名称: {0}]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Generated bundle name: {0}]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";M0162" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Duplicate Entry Was Skipped: {0}]D;]A;        ]]></Val>
+          <Val><![CDATA[Duplicate Entry Was Skipped: {0}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[已跳过重复条目: {0}]D;]A;]]></Val>
+            <Val><![CDATA[已跳过重复条目: {0}]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Duplicate Entry Was Skipped: {0}]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";M0163" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[File Doesn't Exist, Will Create: {0}]D;]A;        ]]></Val>
+          <Val><![CDATA[File Doesn't Exist, Will Create: {0}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[文件不存在，将创建: {0}]D;]A;]]></Val>
+            <Val><![CDATA[文件不存在，将创建: {0}]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[File Doesn't Exist, Will Create: {0}]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";M0164" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Creating directory '{0}']D;]A;        ]]></Val>
+          <Val><![CDATA[Creating directory '{0}']]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[正在创建目录“{0}”]D;]A;]]></Val>
+            <Val><![CDATA[正在创建目录 ‘{0}’]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Creating directory '{0}']D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";M0165" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Copying file from '{0}' to '{1}']D;]A;        ]]></Val>
+          <Val><![CDATA[Copying file from '{0}' to '{1}']]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[正在将文件从“{0}”复制到“{1}”]D;]A;]]></Val>
+            <Val><![CDATA[正在将文件从 ‘{0}’ 复制到 ‘{1}’]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Copying file from '{0}' to '{1}']D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";M0168" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[  Skipping framework assembly: {0}]D;]A;        ]]></Val>
+          <Val><![CDATA[  Skipping framework assembly: {0}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[  正在跳过框架程序集: {0}]D;]A;]]></Val>
+            <Val><![CDATA[  正在跳过框架程序集: {0}]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[  Skipping framework assembly: {0}]D;]A;        ]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";M0169" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Adjusted path from '{0}' to '{1}']D;]A;        ]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[已将路径从 "{0}" 调整为 "{1}"]D;]A;        ]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";W0016" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Can only fake the watchOS 4.3 SDK when building for watchOS.]D;]A;        ]]></Val>
+          <Val><![CDATA[Can only fake the watchOS 4.3 SDK when building for watchOS.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[针对 watchOS 进行生成时，只能虚设 watchOS 4.3 SDK。]D;]A;]]></Val>
+            <Val><![CDATA[针对 watchOS 进行生成时，只能模拟 watchOS 4.3 SDK。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Can only fake the watchOS 4.3 SDK when building for watchOS.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";W0019" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Supported iPhone orientations have not been set]D;]A;        ]]></Val>
+          <Val><![CDATA[Supported iPhone orientations have not been set]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[尚未设置受支持的 iPhone 方向]D;]A;]]></Val>
+            <Val><![CDATA[尚未设置受支持的 iPhone 方向]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Supported iPhone orientations have not been set]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";W0020" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Supported iPhone orientations are not matched pairs]D;]A;        ]]></Val>
+          <Val><![CDATA[Supported iPhone orientations are not matched pairs]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[受支持的 iPhone 方向不匹配]D;]A;]]></Val>
+            <Val><![CDATA[受支持的 iPhone 方向不是匹配的成对设置]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Supported iPhone orientations are not matched pairs]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";W0021" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Supported iPad orientations have not been set]D;]A;        ]]></Val>
+          <Val><![CDATA[Supported iPad orientations have not been set]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[尚未设置受支持的 iPad 方向]D;]A;]]></Val>
+            <Val><![CDATA[尚未设置支持的 iPad 方向]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Supported iPad orientations have not been set]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";W0022" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Supported iPad orientations are not matched pairs]D;]A;        ]]></Val>
+          <Val><![CDATA[Supported iPad orientations are not matched pairs]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[受支持的 iPad 方向不匹配]D;]A;]]></Val>
+            <Val><![CDATA[受支持的 iPad 方向不是匹配的成对设置]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Supported iPad orientations are not matched pairs]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";W0051" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Unknown native reference type for '{0}'.]D;]A;        ]]></Val>
+          <Val><![CDATA[Unknown native reference type for '{0}'.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[“{0}”的本机引用类型未知。]D;]A;]]></Val>
+            <Val><![CDATA[‘{0}’ 的本机引用类型未知。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Unknown native reference type for '{0}'.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";W0052" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Dynamic native references are not supported: '{0}']D;]A;        ]]></Val>
+          <Val><![CDATA[Dynamic native references are not supported: '{0}']]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[不支持动态本机引用:“{0}”]D;]A;]]></Val>
+            <Val><![CDATA[不支持动态本机引用: ‘{0}’]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Dynamic native references are not supported: '{0}']D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";W0054" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Failed to create response file '{0}': {1}]D;]A;        ]]></Val>
+          <Val><![CDATA[Failed to create response file '{0}': {1}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[无法创建响应文件“{0}”: {1}]D;]A;]]></Val>
+            <Val><![CDATA[无法创建响应文件 ‘{0}’: {1}]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Failed to create response file '{0}': {1}]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";W0071" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The App Extension '{0}' has a CFBundleShortVersionString ({1}) that does not match the main app bundle's CFBundleShortVersionString ({2})]D;]A;        ]]></Val>
+          <Val><![CDATA[The App Extension '{0}' has a CFBundleShortVersionString ({1}) that does not match the main app bundle's CFBundleShortVersionString ({2})]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[应用扩展“{0}”的 CFBundleShortVersionString ({1})与主应用捆绑包的 CFBundleShortVersionString ({2})不匹配]D;]A;]]></Val>
+            <Val><![CDATA[应用扩展 ‘{0}’ 的 CFBundleShortVersionString ({1})与主应用捆绑包的 CFBundleShortVersionString ({2})不匹配]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The App Extension '{0}' has a CFBundleShortVersionString ({1}) that does not match the main app bundle's CFBundleShortVersionString ({2})]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";W0072" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The App Extension '{0}' does not specify a CFBundleVersion]D;]A;        ]]></Val>
+          <Val><![CDATA[The App Extension '{0}' does not specify a CFBundleVersion]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[应用扩展“{0}”未指定任何 CFBundleVersion]D;]A;]]></Val>
+            <Val><![CDATA[应用扩展 ‘{0}’ 未指定 CFBundleVersion]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The App Extension '{0}' does not specify a CFBundleVersion]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";W0073" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The App Extension '{0}' has a CFBundleVersion ({1}) that does not match the main app bundle's CFBundleVersion ({2})]D;]A;        ]]></Val>
+          <Val><![CDATA[The App Extension '{0}' has a CFBundleVersion ({1}) that does not match the main app bundle's CFBundleVersion ({2})]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[应用扩展“{0}”的 CFBundleVersion ({1})与主应用捆绑包的 CFBundleVersion ({2})不匹配]D;]A;]]></Val>
+            <Val><![CDATA[应用扩展 ‘{0}’ 的 CFBundleVersion ({1})与主应用捆绑包的 CFBundleVersion ({2})不匹配]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The App Extension '{0}' has a CFBundleVersion ({1}) that does not match the main app bundle's CFBundleVersion ({2})]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";W0074" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The App Extension '{0}' has an unrecognized NSExtensionPointIdentifier value ('{1}').]D;]A;        ]]></Val>
+          <Val><![CDATA[The App Extension '{0}' has an unrecognized NSExtensionPointIdentifier value ('{1}').]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[应用扩展“{0}”的 NSExtensionPointIdentifier 值(“{1}”)无法识别。]D;]A;]]></Val>
+            <Val><![CDATA[应用扩展 ‘{0}’ 的 NSExtensionPointIdentifier 值(‘{1}’)无法识别。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The App Extension '{0}' has an unrecognized NSExtensionPointIdentifier value ('{1}').]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";W0075" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The Watch App '{0}' does not specify a CFBundleShortVersionString]D;]A;        ]]></Val>
+          <Val><![CDATA[The Watch App '{0}' does not specify a CFBundleShortVersionString]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Watch 应用“{0}”未指定任何 CFBundleShortVersionString]D;]A;]]></Val>
+            <Val><![CDATA[手表应用 ‘{0}’ 未指定 CFBundleShortVersionString]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The Watch App '{0}' does not specify a CFBundleShortVersionString]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";W0076" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The Watch App '{0}' has a CFBundleShortVersionString ({1}) that does not match the main app bundle's CFBundleShortVersionString ({2})]D;]A;        ]]></Val>
+          <Val><![CDATA[The Watch App '{0}' has a CFBundleShortVersionString ({1}) that does not match the main app bundle's CFBundleShortVersionString ({2})]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Watch 应用“{0}”的 CFBundleShortVersionString ({1})与主应用捆绑包的 CFBundleShortVersionString ({2})不匹配]D;]A;]]></Val>
+            <Val><![CDATA[手表应用 ‘{0} 的 CFBundleShortVersionString ({1})与主应用捆绑包的 CFBundleShortVersionString ({2})不匹配]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The Watch App '{0}' has a CFBundleShortVersionString ({1}) that does not match the main app bundle's CFBundleShortVersionString ({2})]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";W0077" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The Watch App '{0}' does not specify a CFBundleVersion]D;]A;        ]]></Val>
+          <Val><![CDATA[The Watch App '{0}' does not specify a CFBundleVersion]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Watch 应用“{0}”未指定任何 CFBundleVersion]D;]A;]]></Val>
+            <Val><![CDATA[手表应用 ‘{0}’ 未指定 CFBundleVersion]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The Watch App '{0}' does not specify a CFBundleVersion]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";W0078" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The Watch App '{0}' has a CFBundleVersion ({1}) that does not match the main app bundle's CFBundleVersion ({2})]D;]A;        ]]></Val>
+          <Val><![CDATA[The Watch App '{0}' has a CFBundleVersion ({1}) that does not match the main app bundle's CFBundleVersion ({2})]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Watch 应用“{0}”的 CFBundleVersion ({1})与主应用捆绑包的 CFBundleVersion ({2})不匹配]D;]A;]]></Val>
+            <Val><![CDATA[手表应用 ‘{0}’ 的 CFBundleVersion ({1})与主应用捆绑包的 CFBundleVersion ({2})不匹配]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The Watch App '{0}' has a CFBundleVersion ({1}) that does not match the main app bundle's CFBundleVersion ({2})]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";W0079" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The Watch Extension '{0}' does not specify a CFBundleShortVersionString)]D;]A;        ]]></Val>
+          <Val><![CDATA[The Watch Extension '{0}' does not specify a CFBundleShortVersionString)]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Watch 扩展 “{0}”未指定任何 CFBundleShortVersionString)]D;]A;]]></Val>
+            <Val><![CDATA[Watch 扩展 ‘{0}’ 未指定 CFBundleShortVersionString)]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The Watch Extension '{0}' does not specify a CFBundleShortVersionString)]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";W0080" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The Watch Extension '{0}' has a CFBundleShortVersionString ({1}) that does not match the main app bundle's CFBundleShortVersionString ({2})]D;]A;        ]]></Val>
+          <Val><![CDATA[The Watch Extension '{0}' has a CFBundleShortVersionString ({1}) that does not match the main app bundle's CFBundleShortVersionString ({2})]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Watch 扩展 “{0}”的 CFBundleShortVersionString ({1})与主应用捆绑包的 CFBundleShortVersionString ({2})不匹配]D;]A;]]></Val>
+            <Val><![CDATA[Watch 扩展 ‘{0}’ 的 CFBundleShortVersionString ({1})与主应用捆绑包的 CFBundleShortVersionString ({2})不匹配]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The Watch Extension '{0}' has a CFBundleShortVersionString ({1}) that does not match the main app bundle's CFBundleShortVersionString ({2})]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";W0081" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The Watch Extension '{0}' does not specify a CFBundleVersion]D;]A;        ]]></Val>
+          <Val><![CDATA[The Watch Extension '{0}' does not specify a CFBundleVersion]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Watch 扩展 “{0}”未指定任何 CFBundleVersion]D;]A;]]></Val>
+            <Val><![CDATA[Watch 扩展 ‘{0}’ 未指定 CFBundleVersion]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The Watch Extension '{0}' does not specify a CFBundleVersion]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";W0082" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The Watch Extension '{0}' has a CFBundleVersion ({1}) that does not match the main app bundle's CFBundleVersion ({2})]D;]A;        ]]></Val>
+          <Val><![CDATA[The Watch Extension '{0}' has a CFBundleVersion ({1}) that does not match the main app bundle's CFBundleVersion ({2})]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Watch 扩展 “{0}”的 CFBundleVersion ({1})与主应用捆绑包的 CFBundleVersion ({2})不匹配]D;]A;]]></Val>
+            <Val><![CDATA[Watch 扩展 ‘{0}’ 的 CFBundleVersion ({1})与主应用捆绑包的 CFBundleVersion ({2})不匹配]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The Watch Extension '{0}' has a CFBundleVersion ({1}) that does not match the main app bundle's CFBundleVersion ({2})]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";W0090" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Asset not part of an asset catalog: {0}]D;]A;        ]]></Val>
+          <Val><![CDATA[Asset not part of an asset catalog: {0}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[资产不属于资产目录: {0}]D;]A;]]></Val>
+            <Val><![CDATA[资产不属于资产目录: {0}]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Asset not part of an asset catalog: {0}]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";W0095" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Failed to parse altool output: {0}.]D;]A;            Output: {1}]D;]A;        ]]></Val>
+          <Val><![CDATA[Failed to parse altool output: {0}.]D;]A;            Output: {1}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[无法分析 altool 输出: {0}。]D;]A;            输出: {1}]D;]A;        ]]></Val>
+            <Val><![CDATA[无法分析 altool 输出: {0}。]D;]A;            输出: {1}]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Failed to parse altool output: {0}.]D;]A;            Output: {1}]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";W0103" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Found a directory within the Frameworks directory which is not a framework: {0}]D;]A;        ]]></Val>
+          <Val><![CDATA[Found a directory within the Frameworks directory which is not a framework: {0}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[在“框架”目录中找到了一个非框架目录: {0}]D;]A;]]></Val>
+            <Val><![CDATA[在 Frameworks 目录中找到一个非框架目录: {0}]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Found a directory within the Frameworks directory which is not a framework: {0}]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";W0104" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The framework {0} does not contain a binary named {1}]D;]A;        ]]></Val>
+          <Val><![CDATA[The framework {0} does not contain a binary named {1}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[框架 {0} 不包含名为 {1} 的二进制文件]D;]A;]]></Val>
+            <Val><![CDATA[框架 {0} 不包含名为 {1} 的二进制文件]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The framework {0} does not contain a binary named {1}]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";W0106" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Could not determine value for manifest key '{0}']D;]A;        ]]></Val>
+          <Val><![CDATA[Could not determine value for manifest key '{0}']]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[无法确定清单密钥“{0}”的值]D;]A;]]></Val>
+            <Val><![CDATA[无法确定清单键 ‘{0}’ 的值]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Could not determine value for manifest key '{0}']D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -2724,19 +3402,25 @@
       </Item>
       <Item ItemId=";W0137" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[No installed provisioning profiles match the bundle identifier.]D;]A;        ]]></Val>
+          <Val><![CDATA[No installed provisioning profiles match the bundle identifier.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[没有与捆绑包标识符匹配的已安装的预配配置文件。]D;]A;]]></Val>
+            <Val><![CDATA[没有与捆绑包标识符匹配的已安装预配配置文件。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[No installed provisioning profiles match the bundle identifier.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";W0176" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Conflicting '{0}' and '{1}' options. '{1}' will be ignored.]D;]A;        ]]></Val>
+          <Val><![CDATA[Conflicting '{0}' and '{1}' options. '{1}' will be ignored.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[“{0}”和“{1}”选项冲突。将忽略“{1}”。]D;]A;        ]]></Val>
+            <Val><![CDATA[‘{0}’ 和 ‘{1}’ 选项冲突。将忽略 ‘{1}’。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Conflicting '{0}' and '{1}' options. '{1}' will be ignored.]D;]A;        ]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -2889,6 +3573,33 @@
           <Val><![CDATA[Unable to retrieve information from '{0}'. The file may not be a valid PE file.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[无法从“{0}”检索信息。该文件可能不是有效的 PE 文件。]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";W7154" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The {0} item '{1}' imported from '{2}' was ignored, because there's already an existing item from the current project with the same LogicalName ('{3}')]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[已忽略从 "{2}" 导入的 {0} 项 "{1}"，因为当前项目中已有一个具有相同 LogicalName ("{3}") 的现有项]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";W7155" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The {0} item '{1}' imported from '{2}' was ignored, because there's another item from a different assembly ({4}) with the same LogicalName ('{3}')]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[已忽略从 "{2}" 导入的 {0} 项 "{1}"，因为存在来自不同程序集 ({4}) 的具有相同 LogicalName ("{3}") 的另一个项]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";W7156" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The {0} item '{1}' was ignored, because there's another item with the same LogicalName ('{2}')]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[已忽略 {0} 项 "{1}"，因为存在另一个具有相同 LogicalName ('{2}') 的项]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

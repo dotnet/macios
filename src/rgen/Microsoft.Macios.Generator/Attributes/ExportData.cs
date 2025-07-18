@@ -2,9 +2,11 @@
 // Licensed under the MIT License.
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Text;
 using Microsoft.CodeAnalysis;
 using ObjCRuntime;
+using TypeInfo = Microsoft.Macios.Generator.DataModel.TypeInfo;
 
 namespace Microsoft.Macios.Generator.Attributes;
 
@@ -22,7 +24,7 @@ readonly struct ExportData<T> : IEquatable<ExportData<T>> where T : Enum {
 	/// <summary>
 	/// The configuration flags used on the exported member.
 	/// </summary>
-	public T? Flags { get; }
+	public T? Flags { get; init; }
 
 	/// <summary>
 	/// Argument semantics to use with the selector.
@@ -49,6 +51,39 @@ readonly struct ExportData<T> : IEquatable<ExportData<T>> where T : Enum {
 	/// Should only be present with the CustomeMarshalDirective flag.
 	/// </summary >
 	public string? Library { get; init; }
+
+	// async related data. This data will only be present if the ExportAttribute is a Method AND has a 
+	// Async flag set. Otherwise they will be ignored. All this methods have to be named parameters
+
+	/// <summary>
+	/// The type of the result for an async method.
+	/// </summary>
+	public TypeInfo? ResultType { get; init; }
+
+	/// <summary>
+	/// The name of the generated async method.
+	/// </summary>
+	public string? MethodName { get; init; }
+
+	/// <summary>
+	/// The name of the type of the result for an async method.
+	/// </summary>
+	public string? ResultTypeName { get; init; }
+
+	/// <summary>
+	/// A code snippet to be executed after the async method call.
+	/// </summary>
+	public string? PostNonResultSnippet { get; init; }
+
+	/// <summary>
+	/// The type of the strong delegate for a weak delegate property.
+	/// </summary>
+	public TypeInfo? StrongDelegateType { get; init; }
+
+	/// <summary>
+	/// The name of the strong delegate for a weak delegate property.
+	/// </summary>
+	public string? StrongDelegateName { get; init; }
 
 	public ExportData () { }
 
@@ -89,6 +124,14 @@ readonly struct ExportData<T> : IEquatable<ExportData<T>> where T : Enum {
 		string? nativePrefix = null;
 		string? nativeSuffix = null;
 		string? library = null;
+		// async related data
+		TypeInfo? resultType = null;
+		string? methodName = null;
+		string? resultTypeName = null;
+		string? postNonResultSnippet = null;
+		// weak delegate related data
+		TypeInfo? strongDelegateType = null;
+		string? strongDelegateName = null;
 
 		switch (count) {
 		case 1:
@@ -123,25 +166,70 @@ readonly struct ExportData<T> : IEquatable<ExportData<T>> where T : Enum {
 			return true;
 		}
 
-		foreach (var (name, value) in attributeData.NamedArguments) {
+		// convert the attrs names to a dictionary to avoid multiple lookups
+		var attrsDict = attributeData.NamedArguments
+			.ToDictionary (x => x.Key, x => x.Value.Value);
+		if (attrsDict.TryGetValue ("Flags", out var flagsValue)) {
+			// set the flags first, so we can check if the export is an async method
+			flags = (T) flagsValue!;
+		}
+
+		// from this point we have to check the name of the argument AND if the export method is an Async method.
+		var isAsync = typeof (T) == typeof (ObjCBindings.Method) && flags is not null && flags.HasFlag (ObjCBindings.Method.Async);
+		var isWeakDelegate = typeof (T) == typeof (ObjCBindings.Property) && flags is not null && flags.HasFlag (ObjCBindings.Property.WeakDelegate);
+
+		// loop over all the named arguments and set the data accordingly, ignore the Flags one since we already set it
+		foreach (var (name, value) in attrsDict) {
 			switch (name) {
 			case "Selector":
-				selector = (string?) value.Value!;
+				selector = (string?) value!;
 				break;
 			case "ArgumentSemantic":
-				argumentSemantic = (ArgumentSemantic) value.Value!;
-				break;
-			case "Flags":
-				flags = (T) value.Value!;
+				argumentSemantic = (ArgumentSemantic) value!;
 				break;
 			case "NativePrefix":
-				nativePrefix = (string?) value.Value!;
+				nativePrefix = (string?) value!;
 				break;
 			case "NativeSuffix":
-				nativeSuffix = (string?) value.Value!;
+				nativeSuffix = (string?) value!;
 				break;
 			case "Library":
-				library = (string?) value.Value!;
+				library = (string?) value!;
+				break;
+			case "Flags":
+				// we already set the flags, so we can ignore this one
+				break;
+			// async related data
+			case "ResultType":
+				if (isAsync) {
+					resultType = new ((INamedTypeSymbol) value!);
+				}
+				break;
+			case "MethodName":
+				if (isAsync) {
+					methodName = (string?) value!;
+				}
+				break;
+			case "ResultTypeName":
+				if (isAsync) {
+					resultTypeName = (string?) value!;
+				}
+				break;
+			case "PostNonResultSnippet":
+				if (isAsync) {
+					postNonResultSnippet = (string?) value;
+				}
+				break;
+			// weak delegate related data
+			case "StrongDelegateType":
+				if (isWeakDelegate) {
+					strongDelegateType = new ((INamedTypeSymbol) value!);
+				}
+				break;
+			case "StrongDelegateName":
+				if (isWeakDelegate) {
+					strongDelegateName = (string?) value!;
+				}
 				break;
 			default:
 				data = null;
@@ -153,7 +241,15 @@ readonly struct ExportData<T> : IEquatable<ExportData<T>> where T : Enum {
 			data = new (selector, argumentSemantic, flags) {
 				NativePrefix = nativePrefix,
 				NativeSuffix = nativeSuffix,
-				Library = library
+				Library = library,
+				// set the data for async methods only if the flags are set
+				ResultType = isAsync ? resultType : null,
+				MethodName = isAsync ? methodName : null,
+				ResultTypeName = isAsync ? resultTypeName : null,
+				PostNonResultSnippet = isAsync ? postNonResultSnippet : null,
+				// we set the data for the weak delegate only if the flags are set
+				StrongDelegateType = isWeakDelegate ? strongDelegateType : null,
+				StrongDelegateName = isWeakDelegate ? strongDelegateName : null
 			};
 			return true;
 		}
@@ -178,6 +274,14 @@ readonly struct ExportData<T> : IEquatable<ExportData<T>> where T : Enum {
 		if (NativeSuffix != other.NativeSuffix)
 			return false;
 		if (Library != other.Library)
+			return false;
+		if (ResultType != other.ResultType)
+			return false;
+		if (MethodName != other.MethodName)
+			return false;
+		if (ResultTypeName != other.ResultTypeName)
+			return false;
+		if (PostNonResultSnippet != other.PostNonResultSnippet)
 			return false;
 		return (Flags, other.Flags) switch {
 			(null, null) => true,
@@ -226,6 +330,14 @@ readonly struct ExportData<T> : IEquatable<ExportData<T>> where T : Enum {
 		sb.Append (NativeSuffix ?? "null");
 		sb.Append ("', Library: '");
 		sb.Append (Library ?? "null");
+		sb.Append ("', ResultType: '");
+		sb.Append (ResultType?.FullyQualifiedName ?? "null");
+		sb.Append ("', MethodName: '");
+		sb.Append (MethodName ?? "null");
+		sb.Append ("', ResultTypeName: '");
+		sb.Append (ResultTypeName ?? "null");
+		sb.Append ("', PostNonResultSnippet: '");
+		sb.Append (PostNonResultSnippet ?? "null");
 		sb.Append ("' }");
 		return sb.ToString ();
 	}

@@ -1,8 +1,11 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+#pragma warning disable APL0003
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.Macios.Generator.DataModel;
 using Microsoft.Macios.Generator.Emitters;
+using ObjCRuntime;
 using Xunit;
 
 namespace Microsoft.Macios.Generator.Tests.Emitters;
@@ -78,5 +81,61 @@ public class ArgumentInfoTests {
 		Assert.Equal (delegateParameter.IsByRef, argumentInfo.IsByRef);
 		Assert.Equal (delegateParameter.IsCCallback, argumentInfo.IsCCallback);
 		Assert.Equal (delegateParameter.IsBlockCallback, argumentInfo.IsBlockCallback);
+	}
+
+	[Fact]
+	public void ExplicitConstructor_FromProperty ()
+	{
+		var typeInfo = new TypeInfo ("System.String");
+		var property = new Property (
+			name: "MyProperty",
+			returnType: typeInfo,
+			symbolAvailability: new (),
+			attributes: [],
+			modifiers: [],
+			accessors: []
+		) {
+			BindAs = new (),
+			ExportPropertyData = new ("myProperty", ArgumentSemantic.None, ObjCBindings.Property.Default)
+		};
+
+		var argumentInfo = new ArgumentInfo (property);
+
+		Assert.Equal ("value", argumentInfo.Name);
+		Assert.Equal (property.ReturnType, argumentInfo.Type);
+		Assert.NotNull (argumentInfo.BindAs);
+		Assert.Equal (property.BindAs, argumentInfo.BindAs);
+		Assert.False (argumentInfo.IsByRef);
+		Assert.Equal (ReferenceKind.None, argumentInfo.ReferenceKind);
+		Assert.False (argumentInfo.IsCCallback);
+		Assert.False (argumentInfo.IsBlockCallback);
+	}
+
+	[Fact]
+	public void ImplicitConversion_FromProperty ()
+	{
+		var typeInfo = new TypeInfo ("System.String");
+		var property = new Property (
+			name: "MyProperty",
+			returnType: typeInfo,
+			symbolAvailability: new (),
+			attributes: [],
+			modifiers: [],
+			accessors: []
+		) {
+			BindAs = new (),
+			ExportPropertyData = new ("myProperty", ArgumentSemantic.None, ObjCBindings.Property.Default)
+		};
+
+		ArgumentInfo argumentInfo = property;
+
+		Assert.Equal ("value", argumentInfo.Name);
+		Assert.Equal (property.ReturnType, argumentInfo.Type);
+		Assert.NotNull (argumentInfo.BindAs);
+		Assert.Equal (property.BindAs, argumentInfo.BindAs);
+		Assert.False (argumentInfo.IsByRef);
+		Assert.Equal (ReferenceKind.None, argumentInfo.ReferenceKind);
+		Assert.False (argumentInfo.IsCCallback);
+		Assert.False (argumentInfo.IsBlockCallback);
 	}
 }

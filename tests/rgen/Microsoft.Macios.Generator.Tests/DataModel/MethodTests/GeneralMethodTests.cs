@@ -86,7 +86,7 @@ public class GeneralMethodTests {
 		Assert.False (method.IsExtension);
 		Assert.Equal ("this", method.This);
 
-		// Not an extension method (no parameters)
+		// Not an extension method (has one parameter, but it is not marked as 'this')
 		method = new Method (
 			type: "NS.MyClass",
 			name: "MyMethod",

@@ -522,7 +522,16 @@
         <value>The {0} SDK version '{1}' is not installed. Using newer version '{2}' instead'.</value>
     </data>
   <data name="E0174" xml:space="preserve">
-        <value>The xcframework {0} has an incorrect or unknown format and cannot be processed.</value>
+        <value>Failed to resolve the xcframework {0} in {1} due to an unexpected error: {2}</value>
+    </data>
+  <data name="E0174a" xml:space="preserve">
+        <value>The xcframework {0} has an incorrect or unknown format and cannot be processed: expected the value for 'CFBundlePackageType' to be 'XFWK' in the xcframework's Info.plist, but it's '{1}'.</value>
+    </data>
+  <data name="E0174b" xml:space="preserve">
+        <value>The xcframework {0} has an incorrect or unknown format and cannot be processed: there's no 'AvailableLibraries' entry in the xcframework's Info.plist.</value>
+    </data>
+  <data name="E0174c" xml:space="preserve">
+        <value>The xcframework {0} has an incorrect or unknown format and cannot be processed: expected some 'AvailableLibraries' entries in the xcframework's Info.plist, but found 0 entries.</value>
     </data>
   <data name="E0175" xml:space="preserve">
         <value>No matching framework found inside '{0}'. SupportedPlatform: '{1}', SupportedPlatformVariant: '{2}', SupportedArchitectures: '{3}'.</value>
@@ -1262,6 +1271,14 @@
         <comment>
             {0}: the name of the MSBuild item in question (BundleResource, ImageAsset, SceneKitAsset, etc.).
             {1}: path to a file name (of a resource)
+        </comment>
+    </data>
+  <data name="E7158" xml:space="preserve">
+        <value>The {0} item '{1}' has been included more than once, with different 'LogicalName' metadata: {2}, {3}.</value>
+        <comment>
+            {0}: the name of the MSBuild item in question (BundleResource, ImageAsset, SceneKitAsset, etc.).
+            {1}: path to a file name (of a resource)
+            {2} and {3}: the different LogicalName metadata
         </comment>
     </data>
 </root>

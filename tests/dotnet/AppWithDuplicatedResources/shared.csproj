@@ -19,24 +19,66 @@
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(IncludeFirstExecutableResources)' == 'true'">
-		<BundleResource Include="../../SecondLibraryWithResources/$(_PlatformName)/$(_ResourcePrefix)/B.otf" RegisterFont="true" Link="B.otf" />
+		<BundleResource Include="../../LibraryWithResources/$(_PlatformName)/$(_ResourcePrefix)/B.otf" RegisterFont="true" Link="B.otf" />
 
-		<PartialAppManifest Include="../../SecondLibraryWithResources/shared.plist" />
+		<PartialAppManifest Include="../../LibraryWithResources/shared.plist" />
 
-		<ImageAsset Include="../../SecondLibraryWithResources/$(_PlatformName)/**/*.xcassets/**/*.*" Exclude="../../SecondLibraryWithResources/$(_PlatformName)/**/*.xcassets/**/*.DS_Store">
-			<Link>$([MSBuild]::MakeRelative ('../../SecondLibraryWithResources/$(_PlatformName)/Resources', '%(FullPath)'))</Link>
+		<ImageAsset Include="../../LibraryWithResources/$(_PlatformName)/**/*.xcassets/**/*.*" Exclude="../../LibraryWithResources/$(_PlatformName)/**/*.xcassets/**/*.DS_Store">
+			<Link>$([MSBuild]::MakeRelative ('../../LibraryWithResources/$(_PlatformName)/Resources', '%(FullPath)'))</Link>
 		</ImageAsset>
 
-		<InterfaceDefinition Include="../../SecondLibraryWithResources/$(_PlatformName)/**/*.storyboard;../../SecondLibraryWithResources/$(_PlatformName)/**/*.xib" Condition="'$(DisableFirstExecutableInterfaceDefinition)' != 'true'" >
-			<Link>$([MSBuild]::MakeRelative ('../../SecondLibraryWithResources/$(_PlatformName)/Resources', '%(FullPath)'))</Link>
+		<InterfaceDefinition Include="../../LibraryWithResources/$(_PlatformName)/**/*.storyboard;../../LibraryWithResources/$(_PlatformName)/**/*.xib" Condition="'$(DisableFirstExecutableInterfaceDefinition)' != 'true'" >
+			<Link>$([MSBuild]::MakeRelative ('../../LibraryWithResources/$(_PlatformName)/Resources', '%(FullPath)'))</Link>
 		</InterfaceDefinition>
 
-		<SceneKitAsset Include="../../SecondLibraryWithResources/*.scnassets/*" Link="%(RecursiveDir)%(FileName)%(Extension)" />
-		<SceneKitAsset Include="../../SecondLibraryWithResources/*/linkedArt.scnassets/*" Link="%(RecursiveDir)%(FileName)%(Extension)" />
+		<SceneKitAsset Include="../../LibraryWithResources/*.scnassets/*" Link="%(RecursiveDir)%(FileName)%(Extension)" />
+		<SceneKitAsset Include="../../LibraryWithResources/*/linkedArt.scnassets/*" Link="%(RecursiveDir)%(FileName)%(Extension)" />
 
-		<Collada Include="../../SecondLibraryWithResources/*.dae" Link="%(FileName)%(Extension)" />
-		<AtlasTexture Include="../../SecondLibraryWithResources/*.atlas/**/*" Link="%(RecursiveDir)%(FileName)%(Extension)" />
-		<CoreMLModel Include="../../SecondLibraryWithResources/*.mlmodel" Link="%(FileName)%(Extension)" />
+		<Collada Include="../../LibraryWithResources/*.dae" Link="%(FileName)%(Extension)" />
+		<AtlasTexture Include="../../LibraryWithResources/*.atlas/**/*" Link="%(RecursiveDir)%(FileName)%(Extension)" />
+		<CoreMLModel Include="../../LibraryWithResources/*.mlmodel" Link="%(FileName)%(Extension)" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(IncludeFirstExecutableResourcesAgain)' == 'true'">
+		<BundleResource Include="../../LibraryWithResources/$(_PlatformName)/$(_ResourcePrefix)/B.otf" RegisterFont="true" Link="B.otf" />
+
+		<PartialAppManifest Include="../../LibraryWithResources/shared.plist" />
+
+		<ImageAsset Include="../../LibraryWithResources/$(_PlatformName)/**/*.xcassets/**/*.*" Exclude="../../LibraryWithResources/$(_PlatformName)/**/*.xcassets/**/*.DS_Store">
+			<Link>$([MSBuild]::MakeRelative ('../../LibraryWithResources/$(_PlatformName)/Resources', '%(FullPath)'))</Link>
+		</ImageAsset>
+
+		<InterfaceDefinition Include="../../LibraryWithResources/$(_PlatformName)/**/*.storyboard;../../LibraryWithResources/$(_PlatformName)/**/*.xib" Condition="'$(DisableFirstExecutableInterfaceDefinition)' != 'true'" >
+			<Link>$([MSBuild]::MakeRelative ('../../LibraryWithResources/$(_PlatformName)/Resources', '%(FullPath)'))</Link>
+		</InterfaceDefinition>
+
+		<SceneKitAsset Include="../../LibraryWithResources/*.scnassets/*" Link="%(RecursiveDir)%(FileName)%(Extension)" />
+		<SceneKitAsset Include="../../LibraryWithResources/*/linkedArt.scnassets/*" Link="%(RecursiveDir)%(FileName)%(Extension)" />
+
+		<Collada Include="../../LibraryWithResources/*.dae" Link="%(FileName)%(Extension)" />
+		<AtlasTexture Include="../../LibraryWithResources/*.atlas/**/*" Link="%(RecursiveDir)%(FileName)%(Extension)" />
+		<CoreMLModel Include="../../LibraryWithResources/*.mlmodel" Link="%(FileName)%(Extension)" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(IncludeFirstExecutableResourcesAgainWithDifferentMetadata)' == 'true'">
+		<BundleResource Include="../../LibraryWithResources/$(_PlatformName)/$(_ResourcePrefix)/B.otf" RegisterFont="true" Link="B-other.otf" />
+
+		<PartialAppManifest Include="../../LibraryWithResources/shared.plist" />
+
+		<ImageAsset Include="../../LibraryWithResources/$(_PlatformName)/**/*.xcassets/**/*.*" Exclude="../../LibraryWithResources/$(_PlatformName)/**/*.xcassets/**/*.DS_Store">
+			<Link>$([MSBuild]::MakeRelative ('../../LibraryWithResources/$(_PlatformName)/Resources', '%(FullPath)'))-other</Link>
+		</ImageAsset>
+
+		<InterfaceDefinition Include="../../LibraryWithResources/$(_PlatformName)/**/*.storyboard;../../LibraryWithResources/$(_PlatformName)/**/*.xib" Condition="'$(DisableFirstExecutableInterfaceDefinition)' != 'true'" >
+			<Link>$([MSBuild]::MakeRelative ('../../LibraryWithResources/$(_PlatformName)/Resources', '%(FullPath)'))-other</Link>
+		</InterfaceDefinition>
+
+		<SceneKitAsset Include="../../LibraryWithResources/*.scnassets/*" Link="%(RecursiveDir)%(FileName)%(Extension)-other" />
+		<SceneKitAsset Include="../../LibraryWithResources/*/linkedArt.scnassets/*" Link="%(RecursiveDir)%(FileName)%(Extension)-other" />
+
+		<Collada Include="../../LibraryWithResources/*.dae" Link="%(FileName)%(Extension)-other" />
+		<AtlasTexture Include="../../LibraryWithResources/*.atlas/**/*" Link="%(RecursiveDir)%(FileName)%(Extension)-other" />
+		<CoreMLModel Include="../../LibraryWithResources/*.mlmodel" Link="%(FileName)%(Extension)-other" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(IncludeSecondExecutableResources)' == 'true'">

@@ -358,25 +358,17 @@ namespace Xamarin.Linker {
 			}
 		}
 
-		public FieldReference Foundation_NSObject_HandleField {
+		public MethodReference Foundation_NSObject_HandleSetterMethod {
 			get {
-				return GetFieldReference (PlatformAssembly, Foundation_NSObject, "handle", "Foundation.NSObject::handle", out var _);
+				return GetMethodReference (PlatformAssembly, Foundation_NSObject, "set_handle", "Foundation.NSObject::set_handle", predicate: null, out var _);
 			}
 		}
 
-#if NET
 		public MethodReference Foundation_NSObject_FlagsSetterMethod {
 			get {
 				return GetMethodReference (PlatformAssembly, Foundation_NSObject, "set_flags", "Foundation.NSObject::set_flags", predicate: null, out var _);
 			}
 		}
-#else
-		public FieldReference Foundation_NSObject_FlagsField {
-			get {
-				return GetFieldReference (PlatformAssembly, Foundation_NSObject, "flags", "Foundation.NSObject::flags", out var _);
-			}
-		}
-#endif
 
 		public TypeReference ObjCRuntime_BindAs {
 			get {

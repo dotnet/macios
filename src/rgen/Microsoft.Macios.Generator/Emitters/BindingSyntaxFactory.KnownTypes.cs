@@ -105,6 +105,13 @@ static partial class BindingSyntaxFactory {
 		@class: "NSArray");
 
 	/// <summary>
+	/// TypeSyntax for Foundation.NSAutoreleasePool.
+	/// </summary>
+	public static readonly TypeSyntax NSAutoreleasePool = StringExtensions.GetIdentifierName (
+		@namespace: ["Foundation"],
+		@class: "NSAutoreleasePool");
+
+	/// <summary>
 	/// TypeSyntax for Foundation.NSValue.
 	/// </summary>
 	public static readonly TypeSyntax NSValue = StringExtensions.GetIdentifierName (
@@ -152,6 +159,13 @@ static partial class BindingSyntaxFactory {
 	public readonly static TypeSyntax NSNotificationEventArgs = StringExtensions.GetIdentifierName (
 		@namespace: ["Foundation"],
 		@class: "NSNotificationEventArgs");
+
+	/// <summary>
+	/// TypeSyntax for Foundation.NSErrorException.
+	/// </summary>
+	public readonly static TypeSyntax NSErrorException = StringExtensions.GetIdentifierName (
+		@namespace: ["Foundation"],
+		@class: "NSErrorException");
 
 	// CoreMedia types
 

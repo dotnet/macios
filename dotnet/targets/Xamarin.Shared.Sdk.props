@@ -93,6 +93,13 @@
 		<!-- Tell .NET to skip sanity checks that trigger too eagerly for builds with multiple RuntimeIdentifiers -->
 		<AllowPublishAotWithoutRuntimeIdentifier Condition="'$(AllowPublishAotWithoutRuntimeIdentifier)' == '' And '$(_UseNativeAot)' == 'true'">true</AllowPublishAotWithoutRuntimeIdentifier>
 		<AllowSelfContainedWithoutRuntimeIdentifier Condition="'$(AllowSelfContainedWithoutRuntimeIdentifier)' == ''">true</AllowSelfContainedWithoutRuntimeIdentifier>
+
+		<!--
+        	Disable Visual Studio build acceleration as our build is not compatible with it.
+        	It skips building the app project depending on changes on the project references, but we need still need to build the app project to generate the app bundle.
+        	https://github.com/dotnet/project-system/blob/main/docs/build-acceleration.md 
+      	-->
+		<AccelerateBuildsInVisualStudio Condition="'$(AccelerateBuildsInVisualStudio)' == ''">false</AccelerateBuildsInVisualStudio>
 	</PropertyGroup>
 
 	<!-- Set the default RuntimeIdentifier if not already specified. -->

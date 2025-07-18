@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 
 using System.Collections.Immutable;
-using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -68,6 +67,129 @@ static partial class BindingSyntaxFactory {
 			: invocation;
 	}
 
+	/// <summary>
+	/// Creates an invocation expression for calling a method on an instance variable.
+	/// </summary>
+	/// <param name="instanceVariable">The name of the instance variable.</param>
+	/// <param name="methodName">The name of the method to call.</param>
+	/// <param name="arguments">The arguments to pass to the method.</param>
+	/// <returns>An invocation expression for the method call.</returns>
+	static InvocationExpressionSyntax MemberInvocationExpression (TypeSyntax instanceVariable, string methodName,
+		ImmutableArray<ArgumentSyntax> arguments)
+	{
+		var argumentList = ArgumentList (
+			SeparatedList<ArgumentSyntax> (arguments.ToSyntaxNodeOrTokenArray ()));
+		var invocation = InvocationExpression (
+			MemberAccessExpression (
+				SyntaxKind.SimpleMemberAccessExpression,
+				instanceVariable,
+				IdentifierName (methodName).WithTrailingTrivia (Space)));
+
+		if (arguments.Length != 0)
+			invocation = invocation.WithArgumentList (argumentList);
+		return invocation;
+	}
+
+	/// <summary>
+	/// Creates an invocation expression for calling a method on an instance variable with no arguments.
+	/// </summary>
+	/// <param name="instanceVariable">The instance variable to call the method on.</param>
+	/// <param name="methodName">The name of the method to call.</param>
+	/// <returns>An invocation expression for the method call.</returns>
+	static InvocationExpressionSyntax MemberInvocationExpression (TypeSyntax instanceVariable, string methodName)
+		=> MemberInvocationExpression (instanceVariable, methodName, ImmutableArray<ArgumentSyntax>.Empty);
+
+	/// <summary>
+	/// Creates an invocation expression for calling a method on an instance variable.
+	/// </summary>
+	/// <param name="instanceVariable">The name of the instance variable.</param>
+	/// <param name="methodName">The name of the method to call.</param>
+	/// <param name="arguments">The arguments to pass to the method.</param>
+	/// <returns>An invocation expression for the method call.</returns>
+	static InvocationExpressionSyntax MemberInvocationExpression (string instanceVariable, string methodName,
+		ImmutableArray<ArgumentSyntax> arguments)
+		=> MemberInvocationExpression (IdentifierName (instanceVariable), methodName, arguments);
+
+	/// <summary>
+	/// Creates an invocation expression for calling a method on an instance variable with no arguments.
+	/// </summary>
+	/// <param name="instanceVariable">The name of the instance variable.</param>
+	/// <param name="methodName">The name of the method to call.</param>
+	/// <returns>An invocation expression for the method call.</returns>
+	static InvocationExpressionSyntax MemberInvocationExpression (string instanceVariable, string methodName)
+		=> MemberInvocationExpression (IdentifierName (instanceVariable), methodName, ImmutableArray<ArgumentSyntax>.Empty);
+
+	/// <summary>
+	/// Creates an expression statement for a variable assignment.
+	/// </summary>
+	/// <param name="variableName">The name of the variable.</param>
+	/// <param name="value">The expression to assign to the variable.</param>
+	/// <returns>An expression statement syntax for the assignment.</returns>
+	static ExpressionStatementSyntax VariableAssignment (string variableName, ExpressionSyntax value)
+		=> ExpressionStatement (AssignmentExpression (SyntaxKind.SimpleAssignmentExpression,
+				IdentifierName (variableName).WithTrailingTrivia (Space),
+				value.WithLeadingTrivia (Space)));
+
+	/// <summary>
+	/// Creates a variable declarator with an assignment to the provided value.
+	/// </summary>
+	/// <param name="variableName">The name of the variable.</param>
+	/// <param name="value">The expression to assign to the variable.</param>
+	/// <returns>A variable declarator syntax with the assignment.</returns>
+	static VariableDeclaratorSyntax VariableInitializationAssignment (string variableName, ExpressionSyntax value)
+		=> VariableDeclarator (Identifier (variableName))
+			.WithInitializer (EqualsValueClause (value.WithLeadingTrivia (Space))
+				.WithLeadingTrivia (Space));
+
+	/// <summary>
+	/// Creates a variable declaration with optional type specification. If no type is provided, 'var' is used.
+	/// </summary>
+	/// <param name="value">The variable declarator syntax for the variable.</param>
+	/// <param name="withType">The type syntax for the variable. If null, 'var' is used.</param>
+	/// <returns>A variable declaration syntax.</returns>
+	static LocalDeclarationStatementSyntax VariableInitialization (VariableDeclaratorSyntax value, TypeSyntax? withType = null)
+	{
+		// if not type is provided, we will use var
+		withType ??= IdentifierName (
+			Identifier (
+				TriviaList (),
+				SyntaxKind.VarKeyword,
+				"var",
+				"var",
+				TriviaList (Space))
+			);
+		return LocalDeclarationStatement (VariableDeclaration (withType)
+			.WithVariables (SingletonSeparatedList (value)));
+	}
+
+	/// <summary>
+	/// Creates a variable declaration with initialization using a variable name and expression. If no type is provided, 'var' is used.
+	/// </summary>
+	/// <param name="variableName">The name of the variable to declare.</param>
+	/// <param name="value">The expression to assign to the variable.</param>
+	/// <param name="withType">The type syntax for the variable. If null, 'var' is used.</param>
+	/// <returns>A variable declaration syntax with initialization.</returns>
+	static LocalDeclarationStatementSyntax VariableInitialization (string variableName, ExpressionSyntax value,
+		TypeSyntax? withType = null)
+		=> VariableInitialization (VariableInitializationAssignment (variableName, value), withType);
+
+
+	/// <summary>
+	/// Creates a local variable declaration without an initial value.
+	/// </summary>
+	/// <param name="variableName">The name of the variable to declare.</param>
+	/// <param name="type">The type of the variable.</param>
+	/// <returns>A local declaration statement syntax.</returns>
+	static LocalDeclarationStatementSyntax VariableInitialization (string variableName, TypeSyntax type)
+		=> LocalDeclarationStatement (VariableDeclaration (type.WithTrailingTrivia (Space))
+				.WithVariables (SingletonSeparatedList (VariableDeclarator (Identifier (variableName)))));
+
+	/// <summary>
+	/// Creates a throw expression for a specific exception type.
+	/// </summary>
+	/// <param name="type">The type of the exception to throw.</param>
+	/// <param name="message">An optional message for the exception.</param>
+	/// <returns>A throw expression syntax.</returns>
 	static ExpressionSyntax ThrowException (string type, string? message = null)
 	{
 		var throwExpression = ObjectCreationExpression (IdentifierName (type));
@@ -85,9 +207,18 @@ static partial class BindingSyntaxFactory {
 		return ThrowExpression (throwExpression).NormalizeWhitespace ();
 	}
 
+	/// <summary>
+	/// Creates a throw expression for a NotSupportedException.
+	/// </summary>
+	/// <param name="message">The message for the exception.</param>
+	/// <returns>A throw expression syntax.</returns>
 	static ExpressionSyntax ThrowNotSupportedException (string message)
 		=> ThrowException (type: "NotSupportedException", message: message);
 
+	/// <summary>
+	/// Creates a throw expression for a NotImplementedException.
+	/// </summary>
+	/// <returns>A throw expression syntax.</returns>
 	static ExpressionSyntax ThrowNotImplementedException ()
 		=> ThrowException (type: "NotImplementedException");
 
@@ -238,7 +369,7 @@ static partial class BindingSyntaxFactory {
 		};
 #pragma warning restore format
 		return AsPointer (
-			objectType: objectType.GetIdentifierSyntax (),
+			objectType: objectType.WithNullable (isNullable: false).GetIdentifierSyntax (),
 			arguments: arguments,
 			castType: castType);
 	}
@@ -296,4 +427,36 @@ static partial class BindingSyntaxFactory {
 	/// <returns>An <see cref="ArgumentSyntax"/> representing the parameter.</returns>
 	internal static ArgumentSyntax ArgumentForParameter (in DelegateParameter parameter)
 		=> ArgumentForParameter (parameter.Name, parameter.ReferenceKind);
+
+	/// <summary>
+	/// Creates an invocation expression for the SetException method of a TaskCompletionSource.
+	/// </summary>
+	/// <param name="tcsVariableName">The name of the TaskCompletionSource variable.</param>
+	/// <param name="arguments">The arguments to pass to the SetException method.</param>
+	/// <returns>An invocation expression for the SetException method.</returns>
+	internal static InvocationExpressionSyntax TcsSetException (string tcsVariableName,
+		ImmutableArray<ArgumentSyntax> arguments)
+		=> MemberInvocationExpression (tcsVariableName, "SetException", arguments);
+
+	/// <summary>
+	/// Creates an invocation expression for the SetResult method of a TaskCompletionSource.
+	/// </summary>
+	/// <param name="tcsVariableName">The name of the TaskCompletionSource variable.</param>
+	/// <param name="arguments">The arguments to pass to the SetResult method.</param>
+	/// <returns>An invocation expression for the SetResult method.</returns>
+	internal static InvocationExpressionSyntax TcsSetResult (string tcsVariableName,
+		ImmutableArray<ArgumentSyntax> arguments)
+		=> MemberInvocationExpression (tcsVariableName, "SetResult", arguments);
+
+	/// <summary>
+	/// Creates an expression to check if a variable is not null.
+	/// </summary>
+	/// <param name="variableName">The name of the variable to check.</param>
+	/// <returns>An is-pattern expression to check for not-null.</returns>
+	internal static ExpressionSyntax IsNotNull (string variableName)
+		=> IsPatternExpression (IdentifierName (variableName).WithTrailingTrivia (Space),
+			UnaryPattern (ConstantPattern (
+				LiteralExpression (SyntaxKind.NullLiteralExpression).WithLeadingTrivia (Space)))
+				.WithLeadingTrivia (Space));
+
 }

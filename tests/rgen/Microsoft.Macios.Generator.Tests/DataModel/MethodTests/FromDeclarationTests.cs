@@ -78,6 +78,87 @@ namespace NS {
 				)
 			];
 
+			const string asyncVoidMethodNoParamsExportDataMisingFlag = @"
+using System;
+using ObjCBindings;
+
+namespace NS {
+	public class MyClass {
+		[Export<Method>(""myMethod"", Flags = Method.Default,
+			ResultTypeName = ""NSObject"",
+			PostNonResultSnippet = ""throw new NotImplementedException();"")]
+		public void MyMethod () {}
+	}
+}
+";
+
+			yield return [
+				asyncVoidMethodNoParamsExportDataMisingFlag,
+				new Method (
+					type: "NS.MyClass",
+					name: "MyMethod",
+					returnType: ReturnTypeForVoid (),
+					symbolAvailability: new (),
+					exportMethodData: new ("myMethod"), // async valus are null
+					attributes: [
+						new (
+							name: "ObjCBindings.ExportAttribute<ObjCBindings.Method>",
+							arguments: [
+								"myMethod",
+								"ObjCBindings.Method.Default",
+								"NSObject",
+								"throw new NotImplementedException();"
+							]),
+					],
+					modifiers: [
+						SyntaxFactory.Token (SyntaxKind.PublicKeyword),
+					],
+					parameters: []
+				)
+			];
+
+			const string asyncVoidMethodNoParamsExportDataAsyncFlag = @"
+using System;
+using ObjCBindings;
+
+namespace NS {
+	public class MyClass {
+		[Export<Method>(""myMethod"", Flags = Method.Default | Method.Async,
+			ResultTypeName = ""NSObject"",
+			PostNonResultSnippet = ""throw new NotImplementedException();"")]
+		public void MyMethod () {}
+	}
+}
+";
+
+			yield return [
+				asyncVoidMethodNoParamsExportDataAsyncFlag,
+				new Method (
+					type: "NS.MyClass",
+					name: "MyMethod",
+					returnType: ReturnTypeForVoid (),
+					symbolAvailability: new (),
+					exportMethodData: new ("myMethod") {
+						Flags = ObjCBindings.Method.Default | ObjCBindings.Method.Async,
+						ResultTypeName = "NSObject",
+						PostNonResultSnippet = "throw new NotImplementedException();",
+					},
+					attributes: [
+						new (
+							name: "ObjCBindings.ExportAttribute<ObjCBindings.Method>",
+							arguments: [
+								"myMethod",
+								"NSObject",
+								"throw new NotImplementedException();"
+							]),
+					],
+					modifiers: [
+						SyntaxFactory.Token (SyntaxKind.PublicKeyword),
+					],
+					parameters: []
+				)
+			];
+
 			const string stringMethodNoParams = @"
 using System;
 
@@ -795,5 +876,88 @@ namespace NS {
 		Assert.True (Method.TryCreate (declaration, semanticModel, out var changes));
 		Assert.NotNull (changes);
 		Assert.Equal (expected, changes);
+	}
+
+	class TestDataFromMethodDeclarationToAsync : IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
+		{
+			const string simpleAsyncMethod = @"
+using System;
+using ObjCBindings;
+using ObjCRuntime;
+
+namespace NS {
+	public class MyClass {
+
+		[Export<Method> (""completeRequestReturningItems:completionHandler:"", Flags = ObjCBindings.Method.Async)] 
+		public void MyMethod (string[]? input, Action<bool> callback) { }
+	}
+}
+";
+
+			yield return [simpleAsyncMethod];
+
+			const string tupleAsyncMethod = @"
+using System;
+using ObjCBindings;
+using ObjCRuntime;
+
+namespace NS {
+	public class MyClass {
+
+		[Export<Method> (""completeRequestReturningItems:completionHandler:"", Flags = ObjCBindings.Method.Async)] 
+		public void MyMethod (string[]? input, Action<bool, string> callback) { }
+	}
+}
+";
+
+			yield return [tupleAsyncMethod];
+
+			const string asyncMethodWithName = @"
+using System;
+using ObjCBindings;
+using ObjCRuntime;
+
+namespace NS {
+	public class MyClass {
+
+		[Export<Method> (""completeRequestReturningItems:completionHandler:"", 
+			Flags = ObjCBindings.Method.Async,
+			MethodName = ""MyMethodAsync"")] 
+		public void MyMethod (string[]? input, Action<bool> callback) { }
+	}
+}
+";
+
+			yield return [asyncMethodWithName];
+
+		}
+
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
+	}
+
+	[Theory]
+	[AllSupportedPlatformsClassData<TestDataFromMethodDeclarationToAsync>]
+	void FromMethodDeclarationToAsync (ApplePlatform platform, string inputText)
+	{
+		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
+		Assert.Single (syntaxTrees);
+		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
+		var declaration = syntaxTrees [0].GetRoot ()
+			.DescendantNodes ().OfType<MethodDeclarationSyntax> ()
+			.FirstOrDefault ();
+		Assert.NotNull (declaration);
+		Assert.True (Method.TryCreate (declaration, semanticModel, out var changes));
+		Assert.NotNull (changes);
+
+		var asyncMethod = changes.Value.ToAsync ();
+		if (changes.Value.ExportMethodData.MethodName is null) {
+			Assert.Equal ($"{changes.Value.Name}Async", asyncMethod.Name);
+		} else {
+			Assert.Equal (changes.Value.ExportMethodData.MethodName, asyncMethod.Name);
+		}
+		Assert.False (asyncMethod.ReturnType.IsVoid);
+		Assert.True (asyncMethod.ReturnType.IsTask);
+		Assert.Equal (changes.Value.Parameters.Length - 1, asyncMethod.Parameters.Length);
 	}
 }

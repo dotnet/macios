@@ -949,6 +949,10 @@ namespace AVFoundation {
 		[Export ("initWithLayoutTag:")]
 		NativeHandle Constructor (/* UInt32 */ uint layoutTag);
 
+		[Sealed]
+		[Export ("initWithLayoutTag:")]
+		NativeHandle Constructor (AudioChannelLayoutTag layoutTag);
+
 		[DesignatedInitializer]
 		[Export ("initWithLayout:"), Internal]
 		NativeHandle Constructor (IntPtr layout);
@@ -13568,130 +13572,122 @@ namespace AVFoundation {
 		[Export ("error"), NullAllowed]
 		NSError Error { get; }
 
+#if !XAMCORE_5_0
 		/// <summary>Represents the value associated with the constant AVAssetExportPresetLowQuality</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>Quicktime preset: low quality.</remarks>
+		/// <remarks>Quicktime preset: low quality.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("AVAssetExportPresetLowQuality")]
+		[Obsolete ("Use 'AVAssetExportSessionPreset.LowQuality.GetConstant ()' instead.")]
 		NSString PresetLowQuality { get; }
 
 		/// <summary>Represents the value associated with the constant AVAssetExportPresetMediumQuality</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>Quicktime preset: medium quality.</remarks>
+		/// <remarks>Quicktime preset: medium quality.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("AVAssetExportPresetMediumQuality")]
+		[Obsolete ("Use 'AVAssetExportSessionPreset.MediumQuality.GetConstant ()' instead.")]
 		NSString PresetMediumQuality { get; }
 
 		/// <summary>Represents the value associated with the constant AVAssetExportPresetHighestQuality</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>Quicktime preset: highest quality.</remarks>
+		/// <remarks>Quicktime preset: highest quality.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("AVAssetExportPresetHighestQuality")]
+		[Obsolete ("Use 'AVAssetExportSessionPreset.HighestQuality.GetConstant ()' instead.")]
 		NSString PresetHighestQuality { get; }
 
 		/// <summary>Represents the value associated with the constant AVAssetExportPresetHEVCHighestQuality.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("AVAssetExportPresetHEVCHighestQuality")]
+		[Obsolete ("Use 'AVAssetExportSessionPreset.HevcHighestQuality.GetConstant ()' instead.")]
 		NSString PresetHevcHighestQuality { get; }
 
 		/// <summary>Represents the value associated with the constant AVAssetExportPresetHEVC3840x2160.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("AVAssetExportPresetHEVC3840x2160")]
+		[Obsolete ("Use 'AVAssetExportSessionPreset.Hevc3840x2160.GetConstant ()' instead.")]
 		NSString PresetHevc3840x2160 { get; }
 
 		/// <summary>Represents the value associated with the constant AVAssetExportPreset640x480</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
 		[Field ("AVAssetExportPreset640x480")]
+		[Obsolete ("Use 'AVAssetExportSessionPreset.Preset640x480.GetConstant ()' instead.")]
 		NSString Preset640x480 { get; }
 
 		/// <summary>Represents the value associated with the constant AVAssetExportPreset960x540</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>Represents the value associated with the constant AVAssetExportPreset960x540.</remarks>
 		[Field ("AVAssetExportPreset960x540")]
+		[Obsolete ("Use 'AVAssetExportSessionPreset.Preset960x540.GetConstant ()' instead.")]
 		NSString Preset960x540 { get; }
 
 		/// <summary>Represents the value associated with the constant AVAssetExportPreset1280x720</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
 		[Field ("AVAssetExportPreset1280x720")]
+		[Obsolete ("Use 'AVAssetExportSessionPreset.Preset1280x720.GetConstant ()' instead.")]
 		NSString Preset1280x720 { get; }
 
 		/// <summary>Represents the value associated with the constant AVAssetExportPreset1920x1080.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Field ("AVAssetExportPreset1920x1080")]
+		[Obsolete ("Use 'AVAssetExportSessionPreset.Preset1920x1080.GetConstant ()' instead.")]
 		NSString Preset1920x1080 { get; }
 
 		/// <summary>Represents the value associated with the constant AVAssetExportPreset3840x2160.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("AVAssetExportPreset3840x2160")]
+		[Obsolete ("Use 'AVAssetExportSessionPreset.Preset3840x2160.GetConstant ()' instead.")]
 		NSString Preset3840x2160 { get; }
 
 		/// <summary>Represents the value associated with the constant AVAssetExportPresetHEVC1920x1080.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("AVAssetExportPresetHEVC1920x1080")]
+		[Obsolete ("Use 'AVAssetExportSessionPreset.Hevc1920x1080.GetConstant ()' instead.")]
 		NSString PresetHevc1920x1080 { get; }
 
 		/// <summary>Represents the value associated with the constant AVAssetExportPresetAppleM4A</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>Audio-only, gapless playback for iTunes.</remarks>
+		/// <remarks>Audio-only, gapless playback for iTunes.</remarks>
 		[Field ("AVAssetExportPresetAppleM4A")]
+		[Obsolete ("Use 'AVAssetExportSessionPreset.AppleM4A.GetConstant ()' instead.")]
 		NSString PresetAppleM4A { get; }
 
 		/// <summary>Represents the value associated with the constant AVAssetExportPresetPassthrough</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
 		[Field ("AVAssetExportPresetPassthrough")]
+		[Obsolete ("Use 'AVAssetExportSessionPreset.Passthrough.GetConstant ()' instead.")]
 		NSString PresetPassthrough { get; }
 
 		[NoTV, MacCatalyst (15, 0), iOS (15, 0)]
 		[Field ("AVAssetExportPresetAppleProRes4444LPCM")]
+		[Obsolete ("Use 'AVAssetExportSessionPreset.AppleProRes4444Lpcm.GetConstant ()' instead.")]
 		NSString PresetAppleProRes4444Lpcm { get; }
 
 		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("AVAssetExportPresetHEVC1920x1080WithAlpha")]
+		[Obsolete ("Use 'AVAssetExportSessionPreset.Hevc1920x1080WithAlpha.GetConstant ()' instead.")]
 		NSString PresetHevc1920x1080WithAlpha { get; }
 
 		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("AVAssetExportPresetHEVC3840x2160WithAlpha")]
+		[Obsolete ("Use 'AVAssetExportSessionPreset.Hevc3840x2160WithAlpha.GetConstant ()' instead.")]
 		NSString PresetHevc3840x2160WithAlpha { get; }
 
 		[NoTV, NoiOS, Mac (12, 1)]
 		[NoMacCatalyst]
 		[Field ("AVAssetExportPresetHEVC7680x4320")]
+		[Obsolete ("Use 'AVAssetExportSessionPreset.Hevc7680x4320.GetConstant ()' instead.")]
 		NSString PresetHevc7680x4320 { get; }
 
 		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("AVAssetExportPresetHEVCHighestQualityWithAlpha")]
+		[Obsolete ("Use 'AVAssetExportSessionPreset.HevcHighestQualityWithAlpha.GetConstant ()' instead.")]
 		NSString PresetHevcHighestQualityWithAlpha { get; }
 
 		[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Field ("AVAssetExportPresetMVHEVC960x960")]
+		[Obsolete ("Use 'AVAssetExportSessionPreset.MvHevc960x960.GetConstant ()' instead.")]
 		NSString AVAssetExportPresetMvHevc960x960 { get; }
 
 		[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Field ("AVAssetExportPresetMVHEVC1440x1440")]
+		[Obsolete ("Use 'AVAssetExportSessionPreset.MvHevc1440x1440.GetConstant ()' instead.")]
 		NSString AVAssetExportPresetMvHevc1440x1440 { get; }
+#endif // !XAMCORE_5_0
 
 		// 5.0 APIs
 		[Export ("asset", ArgumentSemantic.Retain)]
@@ -13730,7 +13726,7 @@ namespace AVFoundation {
 		///         <param name="asset">The asset against which to check the preset.</param>
 		///         <param name="outputFileType">The output file type against which to check the preset.</param>
 		///         <param name="isCompatibleResult">An action to run with the result of the check.</param>
-		///         <summary>Determines if a preset is compatible with an asset and output type, passing the result to <parmref name="isCompatibleResult" />.</summary>
+		///         <summary>Determines if a preset is compatible with an asset and output type, passing the result to <paramref name="isCompatibleResult" />.</summary>
 		///         <remarks>To be added.</remarks>
 		[Async (XmlDocs = """
 			<param name="presetName">The preset to check.</param>

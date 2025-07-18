@@ -3943,6 +3943,9 @@ namespace UIKit {
 		Hide,
 		[Field ("UIMenuQuit")]
 		Quit,
+		[Deprecated (PlatformName.iOS, 26, 0, message: "Use 'UIMenuNewItem' instead.")]
+		[Deprecated (PlatformName.TV, 26, 0, message: "Use 'UIMenuNewItem' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, message: "Use 'UIMenuNewItem' instead.")]
 		[Field ("UIMenuNewScene")]
 		NewScene,
 		[Field ("UIMenuClose")]

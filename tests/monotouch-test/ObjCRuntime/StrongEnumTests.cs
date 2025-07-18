@@ -92,6 +92,13 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			}
 #endif // __TVOS__ && !XAMCORE_5_0
 
+			if (TestRuntime.CheckXcodeVersion (26, 0)) {
+				// NewScene and NewItem both return 'com.apple.menu.new-item' so
+				// Round trip failed: NewItem.GetConstant () -> com.apple.menu.new-item but GetValue (com.apple.menu.new-item) -> NewScene
+				// That said NewItem is the one that should be used and NewScene is deprecated in Xcode 26.0.
+				rv.Add (global::UIKit.UIMenuIdentifier.NewItem);
+			}
+
 			return rv.ToArray ();
 		}
 

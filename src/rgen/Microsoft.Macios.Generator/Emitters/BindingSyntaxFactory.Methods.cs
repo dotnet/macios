@@ -101,6 +101,7 @@ static partial class BindingSyntaxFactory {
 
 			return ifErrorNotNull;
 		}
+
 		// no nserror as the last parameter, create the parameters list for the result and set the result directly to the tcs, not if
 		// needed
 		var arguments = ImmutableArray.CreateBuilder<ArgumentSyntax> (delegateType.Delegate.Parameters.Length);

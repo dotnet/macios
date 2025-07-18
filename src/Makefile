@@ -124,223 +124,83 @@ $(SHARED_DESIGNER_CS): $(SHARED_RESX) $(GENERATE_ERRORS) | $(DOTNET_BUILD_DIR)/c
 
 DOTNET_TARGETS_DIRS += $(DOTNET_BUILD_DIR)/common
 
+define DotNetVariables
+
+$(2)_DEFINES += -d:__$(2)__
+
+## Add new bindings + source files in frameworks.sources, not here.
+
+$(2)_DOTNET_EXTRA_SOURCES = \
+	$($(2)_DOTNET_BUILD_DIR)/Constants.cs    \
+	$($(2)_DOTNET_BUILD_DIR)/Constants.generated.cs \
+	$($(2)_DOTNET_BUILD_DIR)/AssemblyInfo.cs \
+	$(SHARED_DESIGNER_CS) \
+
+$(2)_DOTNET_CORE_SOURCES += $$($(2)_DOTNET_EXTRA_SOURCES)
+
+$(2)_DOTNET_SOURCES += $$($(2)_DOTNET_EXTRA_SOURCES)
+
+$($(2)_DOTNET_BUILD_DIR)/Constants.cs: Constants.$(1).cs.in Makefile $(TOP)/Make.config.inc | $($(2)_DOTNET_BUILD_DIR)
+	$$(call Q_PROF_GEN,$(3)) sed \
+		-e "s/@VERSION@/$($(2)_NUGET_VERSION_MAJOR).$($(2)_NUGET_VERSION_MINOR).$($(2)_NUGET_VERSION_PATCH)/g" \
+		-e 's/@REVISION@/$($(2)_NUGET_COMMIT_DISTANCE) ($(CURRENT_BRANCH_SED_ESCAPED): $(shell git log -1 --pretty=%h))/g' \
+		-e "s/@$(2)_SDK_VERSION@/$($(2)_SDK_VERSION)/g" \
+		$$< > $$@
+
+$($(2)_DOTNET_BUILD_DIR)/AssemblyInfo.cs: $(TOP)/src/AssemblyInfo.cs.in | $($(2)_DOTNET_BUILD_DIR)
+	$$(call Q_PROF_GEN,$(3)) sed \
+		-e 's|@PACKAGE_HEAD_REV@|$(PACKAGE_HEAD_REV)|g' \
+		-e 's|@PACKAGE_HEAD_BRANCH@|$(CURRENT_BRANCH_SED_ESCAPED)|g' \
+		-e 's|@NUGET_VERSION_NO_METADATA@|$($(2)_NUGET_VERSION_NO_METADATA)|g' \
+		-e 's|@NUGET_VERSION_MAJOR@|$($(2)_NUGET_VERSION_MAJOR)|g' \
+		-e 's|@NUGET_VERSION_MINOR@|$($(2)_NUGET_VERSION_MINOR)|g' \
+		-e 's|@NUGET_VERSION_REV@|$($(2)_NUGET_VERSION_PATCH)|g' \
+		-e 's|@NUGET_VERSION_BUILD@|$($(2)_NUGET_COMMIT_DISTANCE)|g' \
+		-e 's|@DOTNET_PLATFORM@|iOS|g' \
+		-e 's|@XCODE_VERSION@|$(subst .,_,$(XCODE_VERSION))|g' \
+		< $$< > $$@.tmp
+	$$(Q) diff $$@ $$@.tmp >/dev/null 2>&1 || mv -f $$@.tmp $$@
+	$$(Q) rm -f $$@.tmp
+	$$(Q) touch $$@
+endef
+
+# Template variables:
+# 1: Platform (correct case)
+# 2: PLATFORM (all upper case)
+# 3: platform (all lower case)
+# pseudo-code:
+#     foreach (var platform in DOTNET_PLATFORMS)
+#        BuildDotNetIntermediateAssembly (platform, platform.ToUpper (), platform.ToLower ())
+$(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call DotNetVariables,$(platform),$(shell echo $(platform) | tr '[:lower:]' '[:upper:]'),$(shell echo $(platform) | tr '[:upper:]' '[:lower:]'))))
+
 #
 # iOS
 #
 
-# Add new bindings + source files in frameworks.sources, not here.
-
-IOS_DOTNET_EXTRA_SOURCES = \
-	$(IOS_DOTNET_BUILD_DIR)/Constants.cs    \
-	$(IOS_DOTNET_BUILD_DIR)/Constants.generated.cs \
-	$(IOS_DOTNET_BUILD_DIR)/AssemblyInfo.cs \
-	$(SHARED_DESIGNER_CS) \
-
-IOS_DOTNET_HTTP_SOURCES = \
-	Foundation/NSUrlSessionHandler.cs \
-	System.Net.Http/CFContentStream.cs \
-	System.Net.Http/CFNetworkHandler.cs \
-
-IOS_DOTNET_CORE_SOURCES += $(IOS_DOTNET_EXTRA_SOURCES)
-
-IOS_DOTNET_SOURCES += $(IOS_DOTNET_EXTRA_SOURCES) $(IOS_DOTNET_HTTP_SOURCES)
-
-IOS_GENERATOR_DEFINES = -d:IOS -d:__IOS__
-IOS_GENERATOR_FLAGS = -inline-selectors -process-enums $(IOS_GENERATOR_WARNASERROR) $(IOS_GENERATOR_DEFINES)
-IOS_DEFINES = -define:IOS -d:__IOS__
-
-IOS_CORE_DEFINES=-define:COREBUILD $(IOS_DEFINES)
-
-$(IOS_DOTNET_BUILD_DIR)/Constants.cs: Constants.iOS.cs.in Makefile $(TOP)/Make.config.inc | $(IOS_DOTNET_BUILD_DIR)
-	$(call Q_PROF_GEN,ios) sed \
-		-e "s/@VERSION@/$(IOS_NUGET_VERSION_MAJOR).$(IOS_NUGET_VERSION_MINOR).$(IOS_NUGET_VERSION_PATCH)/g" \
-		-e 's/@REVISION@/$(IOS_NUGET_COMMIT_DISTANCE) ($(CURRENT_BRANCH_SED_ESCAPED): $(shell git log -1 --pretty=%h))/g' \
-		-e "s/@IOS_SDK_VERSION@/$(IOS_SDK_VERSION)/g" \
-		$< > $@
-
-$(IOS_DOTNET_BUILD_DIR)/AssemblyInfo.cs: $(TOP)/src/AssemblyInfo.cs.in | $(IOS_DOTNET_BUILD_DIR)
-	$(call Q_PROF_GEN,ios) sed \
-		-e 's|@PACKAGE_HEAD_REV@|$(PACKAGE_HEAD_REV)|g' \
-		-e 's|@PACKAGE_HEAD_BRANCH@|$(CURRENT_BRANCH_SED_ESCAPED)|g' \
-		-e 's|@NUGET_VERSION_NO_METADATA@|$(IOS_NUGET_VERSION_NO_METADATA)|g' \
-		-e 's|@NUGET_VERSION_MAJOR@|$(IOS_NUGET_VERSION_MAJOR)|g' \
-		-e 's|@NUGET_VERSION_MINOR@|$(IOS_NUGET_VERSION_MINOR)|g' \
-		-e 's|@NUGET_VERSION_REV@|$(IOS_NUGET_VERSION_PATCH)|g' \
-		-e 's|@NUGET_VERSION_BUILD@|$(IOS_NUGET_COMMIT_DISTANCE)|g' \
-		-e 's|@DOTNET_PLATFORM@|iOS|g' \
-		-e 's|@XCODE_VERSION@|$(subst .,_,$(XCODE_VERSION))|g' \
-		< $< > $@.tmp
-	$(Q) diff $@ $@.tmp >/dev/null 2>&1 || mv -f $@.tmp $@
-	$(Q) rm -f $@.tmp
-	$(Q) touch $@
+IOS_DEFINES += -d:IOS
+IOS_GENERATOR_FLAGS = -inline-selectors
 
 #
 # macOS
 #
 
-MAC_COMMON_DEFINES = -define:MONOMAC -d:__MACOS__
-MACOS_GENERATOR_DEFINES = -d:MONOMAC -d:__MACOS__
-MACOS_GENERATOR_FLAGS = $(MACOS_GENERATOR_DEFINES)
-MACOS_CORE_DEFINES = $(MAC_COMMON_DEFINES),COREBUILD
-MACOS_DEFINES = $(MAC_COMMON_DEFINES)
-
-SN_KEY = $(PRODUCT_KEY_PATH)
-
-MAC_DOTNET_EXTRA_CORE_SOURCES += \
-	$(MACOS_DOTNET_BUILD_DIR)/Constants.cs \
-	$(MACOS_DOTNET_BUILD_DIR)/Constants.generated.cs \
-
-# Add new bindings + source files in frameworks.sources, not here.
-
-MACOS_DOTNET_CORE_SOURCES += \
-	$(MAC_DOTNET_EXTRA_CORE_SOURCES) \
-
-MACOS_DOTNET_SOURCES += \
-	$(MAC_DOTNET_EXTRA_CORE_SOURCES) \
-	$(MACOS_DOTNET_BUILD_DIR)/AssemblyInfo.cs \
-	$(SHARED_DESIGNER_CS) \
-
-MAC_HTTP_SOURCES = \
-	Foundation/NSUrlSessionHandler.cs \
-	System.Net.Http/CFContentStream.cs \
-	System.Net.Http/CFNetworkHandler.cs \
-
-MACOS_DOTNET_SOURCES += \
-	$(MAC_HTTP_SOURCES) \
-
-$(MACOS_DOTNET_BUILD_DIR)/Constants.cs: Constants.mac.cs.in Makefile $(TOP)/Make.config.inc | $(MACOS_DOTNET_BUILD_DIR)
-	$(Q) sed \
-			-e "s/@VERSION@/$(MACOS_NUGET_VERSION_MAJOR).$(MACOS_NUGET_VERSION_MINOR).$(MACOS_NUGET_VERSION_PATCH)/g" \
-			-e 's/@REVISION@/$(MACOS_NUGET_COMMIT_DISTANCE) ($(CURRENT_BRANCH_SED_ESCAPED): $(shell git log -1 --pretty=%h))/g' \
-			-e "s/@MACOS_SDK_VERSION@/$(MACOS_SDK_VERSION)/g" \
-			-e "s/@MIN_XM_MONO_VERSION@/$(MIN_XM_MONO_VERSION)/g" \
-		$< > $@
-
-$(MACOS_DOTNET_BUILD_DIR)/AssemblyInfo.cs: $(TOP)/src/AssemblyInfo.cs.in | $(MACOS_DOTNET_BUILD_DIR)
-	$(call Q_PROF_GEN,mac) sed \
-		-e 's|@PACKAGE_HEAD_REV@|$(PACKAGE_HEAD_REV)|g' \
-		-e 's|@NUGET_VERSION_NO_METADATA@|$(MACOS_NUGET_VERSION_NO_METADATA)|g' \
-		-e 's|@NUGET_VERSION_MAJOR@|$(MACOS_NUGET_VERSION_MAJOR)|g' \
-		-e 's|@NUGET_VERSION_MINOR@|$(MACOS_NUGET_VERSION_MINOR)|g' \
-		-e 's|@NUGET_VERSION_REV@|$(MACOS_NUGET_VERSION_PATCH)|g' \
-		-e 's|@NUGET_VERSION_BUILD@|$(MACOS_NUGET_COMMIT_DISTANCE)|g' \
-		-e 's|@DOTNET_PLATFORM@|macOS|g' \
-		-e 's|@XCODE_VERSION@|$(subst .,_,$(XCODE_VERSION))|g' \
-		< $< > $@.tmp
-	$(Q) diff $@ $@.tmp >/dev/null 2>&1 || mv -f $@.tmp $@
-	$(Q) rm -f $@.tmp
-	$(Q) touch $@
+MACOS_DEFINES += -d:MONOMAC
+MACOS_GENERATOR_FLAGS =
 
 #
 # tvOS
 #
 
-TVOS_DEFINES = -d:TVOS -d:__TVOS__
-
-TVOS_CORE_DEFINES=$(TVOS_DEFINES) -d:COREBUILD
-TVOS_GENERATOR_DEFINES = -d:TVOS -d:__TVOS__
-TVOS_GENERATOR_FLAGS = $(TVOS_GENERATOR_DEFINES) -inline-selectors
-
-TVOS_DOTNET_EXTRA_CORE_SOURCES = \
-	$(TVOS_DOTNET_BUILD_DIR)/Constants.cs    \
-	$(TVOS_DOTNET_BUILD_DIR)/Constants.generated.cs \
-	$(TVOS_DOTNET_BUILD_DIR)/AssemblyInfo.cs \
-
-TVOS_DOTNET_CORE_SOURCES += \
-	$(TVOS_DOTNET_EXTRA_CORE_SOURCES) \
-
-TVOS_DOTNET_HTTP_SOURCES = \
-	Foundation/NSUrlSessionHandler.cs \
-	System.Net.Http/CFContentStream.cs \
-	System.Net.Http/CFNetworkHandler.cs \
-	$(SHARED_DESIGNER_CS) \
-
-TVOS_HTTP_SOURCES = \
-	Foundation/NSUrlSessionHandler.cs \
-	System.Net.Http/CFContentStream.cs \
-	System.Net.Http/CFNetworkHandler.cs \
-	$(SHARED_DESIGNER_CS) \
-
-TVOS_DOTNET_SOURCES += \
-	$(TVOS_DOTNET_EXTRA_CORE_SOURCES) \
-	$(TVOS_HTTP_SOURCES)     \
-
-$(TVOS_DOTNET_BUILD_DIR)/Constants.cs: $(TOP)/src/Constants.tvos.cs.in Makefile $(TOP)/Make.config.inc | $(TVOS_DOTNET_BUILD_DIR)
-	$(call Q_PROF_GEN,tvos) sed \
-		-e "s/@VERSION@/$(TVOS_NUGET_VERSION_MAJOR).$(TVOS_NUGET_VERSION_MINOR).$(TVOS_NUGET_VERSION_PATCH)/g" \
-		-e 's/@REVISION@/$(TVOS_NUGET_COMMIT_DISTANCE) ($(CURRENT_BRANCH_SED_ESCAPED): $(shell git log -1 --pretty=%h))/g' \
-		-e "s/@TVOS_SDK_VERSION@/$(TVOS_SDK_VERSION)/g" \
-		$< > $@
-
-$(TVOS_DOTNET_BUILD_DIR)/AssemblyInfo.cs: $(TOP)/src/AssemblyInfo.cs.in $(TOP)/Make.config  $(GIT_DIRECTORY)/HEAD | $(TVOS_DOTNET_BUILD_DIR)
-	$(call Q_PROF_GEN,tvos) sed \
-		-e 's|@PRODUCT_NAME@|Xamarin.TVOS|g' \
-		-e 's|@PACKAGE_HEAD_REV@|$(PACKAGE_HEAD_REV)|g' \
-		-e 's|@PACKAGE_HEAD_BRANCH@|$(CURRENT_BRANCH_SED_ESCAPED)|g' \
-		-e 's|@NUGET_VERSION_NO_METADATA@|$(TVOS_NUGET_VERSION_NO_METADATA)|g' \
-		-e 's|@NUGET_VERSION_MAJOR@|$(TVOS_NUGET_VERSION_MAJOR)|g' \
-		-e 's|@NUGET_VERSION_MINOR@|$(TVOS_NUGET_VERSION_MINOR)|g' \
-		-e 's|@NUGET_VERSION_REV@|$(TVOS_NUGET_VERSION_PATCH)|g' \
-		-e 's|@NUGET_VERSION_BUILD@|$(TVOS_NUGET_COMMIT_DISTANCE)|g' \
-		-e 's|@DOTNET_PLATFORM@|tvOS|g' \
-		-e 's|@XCODE_VERSION@|$(subst .,_,$(XCODE_VERSION))|g' \
-		$< > $@.tmp
-	$(Q) diff $@ $@.tmp >/dev/null 2>&1 || mv -f $@.tmp $@
-	$(Q) rm -f $@.tmp
-	$(Q) touch $@
+TVOS_DEFINES += -d:TVOS
+TVOS_GENERATOR_FLAGS = -inline-selectors
 
 #
 # Mac Catalyst
 #
 
 # MacCatalyst is a variant of iOS, so it defines the iOS variables as well.
-MACCATALYST_DEFINES = -define:IOS -d:__IOS__ -d:__MACCATALYST__
-
-MACCATALYST_CORE_DEFINES=$(MACCATALYST_DEFINES) -d:COREBUILD
-MACCATALYST_GENERATOR_DEFINES = -d:MACCATALYST -d:__MACCATALYST__ -d:IOS -d:__IOS__
-MACCATALYST_GENERATOR_FLAGS = $(MACCATALYST_GENERATOR_DEFINES) -inline-selectors
-
-MACCATALYST_DOTNET_EXTRA_CORE_SOURCES = \
-	$(MACCATALYST_DOTNET_BUILD_DIR)/Constants.cs    \
-	$(MACCATALYST_DOTNET_BUILD_DIR)/Constants.generated.cs \
-	$(MACCATALYST_DOTNET_BUILD_DIR)/AssemblyInfo.cs \
-
-MACCATALYST_DOTNET_CORE_SOURCES += \
-	$(MACCATALYST_DOTNET_EXTRA_CORE_SOURCES) \
-
-MACCATALYST_DOTNET_HTTP_SOURCES = \
-	Foundation/NSUrlSessionHandler.cs \
-	System.Net.Http/CFContentStream.cs \
-	System.Net.Http/CFNetworkHandler.cs \
-	$(SHARED_DESIGNER_CS) \
-
-MACCATALYST_DOTNET_SOURCES += \
-	$(MACCATALYST_DOTNET_EXTRA_CORE_SOURCES) \
-	$(MACCATALYST_DOTNET_HTTP_SOURCES) \
-
-$(MACCATALYST_DOTNET_BUILD_DIR)/Constants.cs: $(TOP)/src/Constants.maccatalyst.cs.in Makefile $(TOP)/Make.config.inc | $(MACCATALYST_DOTNET_BUILD_DIR)
-	$(call Q_PROF_GEN,maccatalyst) sed \
-		-e "s/@VERSION@/$(MACCATALYST_NUGET_VERSION_MAJOR).$(MACCATALYST_NUGET_VERSION_MINOR).$(MACCATALYST_NUGET_VERSION_PATCH)/g" \
-		-e 's/@REVISION@/$(MACCATALYST_NUGET_COMMIT_DISTANCE) ($(CURRENT_BRANCH_SED_ESCAPED): $(shell git log -1 --pretty=%h))/g' \
-		-e "s/@MACCATALYST_SDK_VERSION@/$(MACCATALYST_SDK_VERSION)/g" \
-		$< > $@
-
-$(MACCATALYST_DOTNET_BUILD_DIR)/AssemblyInfo.cs: $(TOP)/src/AssemblyInfo.cs.in $(TOP)/Make.config  $(GIT_DIRECTORY)/HEAD | $(MACCATALYST_DOTNET_BUILD_DIR)
-	$(call Q_PROF_GEN,maccatalyst) sed \
-		-e 's|@PRODUCT_NAME@|Xamarin.MacCatalyst|g' \
-		-e 's|@PACKAGE_HEAD_REV@|$(PACKAGE_HEAD_REV)|g' \
-		-e 's|@PACKAGE_HEAD_BRANCH@|$(CURRENT_BRANCH_SED_ESCAPED)|g' \
-		-e 's|@NUGET_VERSION_NO_METADATA@|$(MACCATALYST_NUGET_VERSION_NO_METADATA)|g' \
-		-e 's|@NUGET_VERSION_MAJOR@|$(MACCATALYST_NUGET_VERSION_MAJOR)|g' \
-		-e 's|@NUGET_VERSION_MINOR@|$(MACCATALYST_NUGET_VERSION_MINOR)|g' \
-		-e 's|@NUGET_VERSION_REV@|$(MACCATALYST_NUGET_VERSION_PATCH)|g' \
-		-e 's|@NUGET_VERSION_BUILD@|$(MACCATALYST_NUGET_COMMIT_DISTANCE)|g' \
-		-e 's|@DOTNET_PLATFORM@|MacCatalyst|g' \
-		-e 's|@XCODE_VERSION@|$(subst .,_,$(XCODE_VERSION))|g' \
-		$< > $@.tmp
-	$(Q) diff $@ $@.tmp >/dev/null 2>&1 || mv -f $@.tmp $@
-	$(Q) rm -f $@.tmp
-	$(Q) touch $@
+MACCATALYST_DEFINES += $(IOS_DEFINES) -d:MACCATALYST
+MACCATALYST_GENERATOR_FLAGS = -inline-selectors
 
 ### .NET ###
 
@@ -368,7 +228,8 @@ $($(2)_DOTNET_BUILD_DIR)/core-$(3).rsp: Makefile frameworks.sources $($(2)_DOTNE
 		$(DOTNET_FLAGS) \
 		$(DOTNET_CORE_WARNINGS_TO_FIX) \
 		@$(RSP_DIR)/dotnet/$(3)-defines-dotnet.rsp \
-		$($(2)_CORE_DEFINES) \
+		$($(2)_DEFINES) \
+		-d:COREBUILD \
 		$($(2)_DOTNET_CORE_SOURCES) \
 		-nullable+ \
 		-warnaserror+ \
@@ -398,7 +259,7 @@ $($(2)_DOTNET_BUILD_DIR)/apidefinition-$(3).rsp: Makefile frameworks.sources $($
 		-nologo \
 		-r:$(DOTNET_BINDING_ATTRIBUTES) \
 		$($(2)_APIS) \
-		$($(2)_GENERATOR_DEFINES) \
+		$($(2)_DEFINES) \
 		@$(RSP_DIR)/dotnet/$(3)-defines-dotnet.rsp \
 		> $$@.tmp
 	$$(Q) mv $$@.tmp $$@
@@ -428,6 +289,7 @@ $($(2)_DOTNET_BUILD_DIR)/$(3)-generated-sources: $(DOTNET_GENERATOR) $($(2)_DOTN
 
 $($(2)_DOTNET_BUILD_DIR)/$(3).rsp: Makefile Makefile.generator Makefile.rgenerator frameworks.sources $(ROSLYN_GENERATOR) $(ROSLYN_ANALYZER) | $($(2)_DOTNET_BUILD_DIR)
 	$(Q) echo \
+		$($(2)_DEFINES) \
 		$($(2)_GENERATOR_FLAGS) \
 		$(DOTNET_GENERATOR_FLAGS) \
 		$($(2)_GENERATOR_WARNASERROR) \

@@ -190,18 +190,16 @@ namespace VideoSubscriberAccount {
 		[NullAllowed, Export ("delegate", ArgumentSemantic.Weak)]
 		IVSAccountManagerDelegate Delegate { get; set; }
 
+		/// <summary>Checks whether the user has provided permission for the app to access their subscription information.</summary>
 		/// <param name="options">If not empty, may contain the key <see cref="VideoSubscriberAccount.VSCheckAccessOptionKeys" />.</param>
-		///         <param name="completionHandler">Called by the system with the results of the permission check.</param>
-		///         <summary>Checks whether the user has provided permission for the app to access their subscription information.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <param name="completionHandler">Called by the system with the results of the permission check.</param>
 		[NoMac]
 		[Async (XmlDocs = """
-			<param name="options">If not empty, may contain the key .</param>
 			<summary>Checks whether the user has provided permission for the app to access their subscription information.</summary>
+			<param name="options">If not empty, may contain the key <see cref="VideoSubscriberAccount.VSCheckAccessOptionKeys" />.</param>
 			<returns>
-			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous CheckAccessStatus operation.  The value of the TResult parameter is of type System.Action&lt;VideoSubscriberAccount.VSAccountAccessStatus,Foundation.NSError&gt;.</para>
-			        </returns>
-			<remarks>To be added.</remarks>
+			  <para class="improve-task-t-return-type-description">A task that represents the asynchronous CheckAccessStatus operation.  The value of the TResult parameter is of type System.Action&lt;VideoSubscriberAccount.VSAccountAccessStatus,Foundation.NSError&gt;.</para>
+			</returns>
 			""")]
 		[Export ("checkAccessStatusWithOptions:completionHandler:")]
 		void CheckAccessStatus (NSDictionary options, Action<VSAccountAccessStatus, NSError> completionHandler);
@@ -241,7 +239,6 @@ namespace VideoSubscriberAccount {
 	}
 
 	[Static]
-	[Internal]
 	[NoMacCatalyst]
 	interface VSCheckAccessOptionKeys {
 

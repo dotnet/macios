@@ -38132,6 +38132,10 @@ namespace UIKit {
 		void UpdateLink (UIView windowScene, NSObject target, Selector selector);
 	}
 
+	[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+	[return: NullAllowed]
+	delegate UIBarButtonItem UIViewControllerTransitionZoomBarButtonHandler (UIZoomTransitionSourceViewProviderContext context);
+
 	[TV (18, 0), iOS (18, 0), MacCatalyst (18, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -38143,7 +38147,7 @@ namespace UIKit {
 		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 		[Static]
 		[Export ("zoomWithOptions:sourceBarButtonItemProvider:")]
-		UIViewControllerTransition Zoom ([NullAllowed] UIZoomTransitionOptions options, Func<UIZoomTransitionSourceViewProviderContext, UIBarButtonItem> sourceBarButtonItemProvider);
+		UIViewControllerTransition Zoom ([NullAllowed] UIZoomTransitionOptions options, UIViewControllerTransitionZoomBarButtonHandler sourceBarButtonItemProvider);
 
 		[Static]
 		[Export ("coverVerticalTransition")]

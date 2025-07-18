@@ -45,10 +45,16 @@ namespace UIKit {
 	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/MonoCatalog-MonoDevelop/">monocatalog</related>
 	public delegate bool UITextFieldCondition (UITextField textField);
 
-	/// <summary>A delegate used to respond to changes on the UITextField.</summary>
-	/// <param name="textField">To be added.</param>
-	/// <param name="ranges">To be added.</param>
-	/// <param name="replacementString">To be added.</param>
+	/// <summary>Delegate that determines whether text changes should be allowed in a UITextField for multiple ranges.</summary>
+	/// <param name="textField">The text field that contains the text to be modified.</param>
+	/// <param name="ranges">An array of NSValue objects containing NSRange values representing the character ranges to be replaced.</param>
+	/// <param name="replacementString">The replacement text for the specified ranges. When typing, this typically contains the single new character entered, but may contain multiple characters if pasting. An empty string indicates character deletion.</param>
+	/// <returns>Returns true if the text changes should be allowed; otherwise, false to prevent the modification.</returns>
+	/// <remarks>
+	/// <para>This delegate method is called when the text field needs to validate text changes across multiple ranges simultaneously.</para>
+	/// <para>Use this method to implement custom text validation logic, such as restricting input to specific formats or preventing certain types of content.</para>
+	/// <para>This is the multiple-range version of the standard shouldChangeCharactersInRange method.</para>
+	/// </remarks>
 	public delegate bool UITextFieldChanges (UITextField textField, NSValue [] ranges, string replacementString);
 
 	public partial class UITextField : IUITextInputTraits {
@@ -258,6 +264,7 @@ namespace UIKit {
 			remove { EnsureUITextFieldDelegate ().didChangeSelection -= value; }
 		}
 
+		/// <summary>Raised when the text field wants to know if the text in the text field should be changed for multiple ranges.</summary
 		[SupportedOSPlatform ("tvos26.0")]
 		[SupportedOSPlatform ("ios26.0")]
 		[SupportedOSPlatform ("maccatalyst26.0")]

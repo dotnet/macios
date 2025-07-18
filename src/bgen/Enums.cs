@@ -90,7 +90,9 @@ public partial class Generator {
 		Tuple<FieldInfo, FieldAttribute> default_symbol = null;
 		var underlying_type = GetCSharpTypeName (type.GetEnumUnderlyingType ());
 		var is_internal = AttributeManager.HasAttribute<InternalAttribute> (type);
-		var backingFieldType = AttributeManager.GetCustomAttribute<BackingFieldTypeAttribute> (type)?.BackingFieldType ?? TypeCache.NSString;
+		var backingFieldTypeAttribute = AttributeManager.GetCustomAttribute<BackingFieldTypeAttribute> (type);
+		var backingFieldType = backingFieldTypeAttribute?.BackingFieldType ?? TypeCache.NSString;
+		var getConstantMethodName = backingFieldTypeAttribute?.GetConstantMethodName ?? "GetConstant";
 		var isBackingFieldValueType = backingFieldType.IsValueType;
 		var visibility = is_internal ? "internal" : "public";
 
@@ -196,11 +198,15 @@ public partial class Generator {
 		}
 
 		if ((fields.Count > 0) || (null_field is not null)) {
-			print ("static IntPtr[] values = new IntPtr [{0}];", fields.Count);
+			var backingFieldTypeName = TypeManager.FormatType (type, backingFieldType);
+			if (isBackingFieldValueType) {
+				print ($"static {backingFieldTypeName}?[] values = new {backingFieldTypeName}? [{fields.Count}];");
+			} else {
+				print ("static IntPtr[] values = new IntPtr [{0}];", fields.Count);
+			}
 			print ("");
 
 			int n = 0;
-			var backingFieldTypeName = TypeManager.FormatType (type, backingFieldType);
 			foreach (var kvp in fields) {
 				var f = kvp.Key;
 				var fa = kvp.Value;
@@ -214,15 +220,22 @@ public partial class Generator {
 				// library_name contains the Framework constant name the Field is inside of, used as fallback.
 				bool useFieldAttrLibName = libname is not null && !string.Equals (libname, library_name, StringComparison.OrdinalIgnoreCase);
 				print ("[Field (\"{0}\", \"{1}\")]", fa.SymbolName, useFieldAttrLibName ? libname : libPath ?? library_name);
-				print ("internal unsafe static {1} {0} {{", fa.SymbolName, isBackingFieldValueType ? backingFieldTypeName + "*" : "IntPtr");
+				print ("internal unsafe static {1} {0} {{", fa.SymbolName, isBackingFieldValueType ? backingFieldTypeName : "IntPtr");
 				indent++;
 				print ("get {");
 				indent++;
-				print ("fixed (IntPtr *storage = &values [{0}])", n++);
-				indent++;
-				var cast = isBackingFieldValueType ? $"({backingFieldTypeName} *) " : string.Empty;
-				print ("return {2}Dlfcn.CachePointer (Libraries.{0}.Handle, \"{1}\", storage);", useFieldAttrLibName ? libname : library_name, fa.SymbolName, cast);
-				indent--;
+				var actualLibName = useFieldAttrLibName ? libname : library_name;
+				if (isBackingFieldValueType) {
+					print ($"if (!values [{n}].HasValue)");
+					print ($"\tvalues [{n}] = Dlfcn.Get{backingFieldType.Name} (Libraries.{actualLibName}.Handle, \"{fa.SymbolName}\");");
+					print ($"return values [{n}]!.Value;"); // The ! is required due to https://github.com/dotnet/roslyn/issues/79004.
+					n++;
+				} else {
+					print ("fixed (IntPtr *storage = &values [{0}])", n++);
+					indent++;
+					print ("return Dlfcn.CachePointer (Libraries.{0}.Handle, \"{1}\", storage);", actualLibName, fa.SymbolName);
+					indent--;
+				}
 				indent--;
 				print ("}");
 				indent--;
@@ -234,12 +247,10 @@ public partial class Generator {
 				print ($"/// <summary>Retrieves the <see cref=\"global::{backingFieldType.FullName}\" /> constant that describes <paramref name=\"self\" />.</summary>");
 				print ($"/// <param name=\"self\">The instance on which this method operates.</param>");
 			}
-			print ("public static {2}{1}? GetConstant (this {0} self)", type.Name, backingFieldTypeName, isBackingFieldValueType ? "unsafe " : string.Empty);
+			print ("public static {2}{1}? {3} (this {0} self)", type.Name, backingFieldTypeName, isBackingFieldValueType ? "unsafe " : string.Empty, getConstantMethodName);
 			print ("{");
 			indent++;
-			if (isBackingFieldValueType) {
-				print ($"{backingFieldTypeName}* ptr = null;");
-			} else {
+			if (!isBackingFieldValueType) {
 				print ("IntPtr ptr = IntPtr.Zero;");
 			}
 			// can be empty - and the C# compiler emit `warning CS1522: Empty switch block`
@@ -253,16 +264,18 @@ public partial class Generator {
 					if (sn == default_symbol_name)
 						print ("default:");
 					indent++;
-					print ("ptr = {0};", sn);
-					print ("break;");
+					if (isBackingFieldValueType) {
+						print ($"return {sn};");
+					} else {
+						print ("ptr = {0};", sn);
+						print ("break;");
+					}
 					indent--;
 				}
 				print ("}");
 			}
 			if (isBackingFieldValueType) {
-				print ("if (ptr is null)");
-				print ("\t return null;");
-				print ("return *ptr;");
+				print ("return null;");
 			} else {
 				print ("return ({0}?) Runtime.GetNSObject (ptr);", backingFieldTypeName);
 			}
@@ -291,7 +304,7 @@ public partial class Generator {
 			}
 			foreach (var kvp in fields) {
 				if (isBackingFieldValueType) {
-					print ($"if (constant == *{kvp.Value.SymbolName})");
+					print ($"if (constant == {kvp.Value.SymbolName})");
 				} else {
 					print ("if (constant.IsEqualTo ({0}))", kvp.Value.SymbolName);
 				}
@@ -353,7 +366,7 @@ public partial class Generator {
 			print ("for (var i = 0; i < values.Length; i++) {");
 			indent++;
 			print ("var value = values [i];");
-			print ("rv.Add (value.GetConstant ());");
+			print ($"rv.Add (value.{getConstantMethodName} ());");
 			indent--;
 			print ("}");
 			print ("return rv.ToArray ();");

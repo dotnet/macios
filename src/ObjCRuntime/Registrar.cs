@@ -9,10 +9,6 @@
 
 // #define VERBOSE_REGISTRAR
 
-#if IPHONE
-#define MONOTOUCH
-#endif
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -616,8 +612,9 @@ namespace Registrar {
 					case Trampoline.Retain:
 					case Trampoline.GetGCHandle:
 					case Trampoline.SetGCHandle:
-					case Trampoline.GetFlags:
-					case Trampoline.SetFlags:
+					case Trampoline.GetGCHandleFlags:
+					case Trampoline.SetGCHandleFlags:
+					case Trampoline.RetainWeakReference:
 						return true;
 					default:
 						return false;
@@ -2096,23 +2093,30 @@ namespace Registrar {
 					}, ref exceptions);
 
 					objcType.Add (new ObjCMethod (this, objcType, null) {
-						Selector = "xamarinSetGCHandle:flags:",
+						Selector = "xamarinSetGCHandle:flags:data:",
 						Trampoline = Trampoline.SetGCHandle,
-						Signature = "v@:^vi",
+						Signature = "v@:^vi^v",
 						IsStatic = false,
 					}, ref exceptions);
 
 					objcType.Add (new ObjCMethod (this, objcType, null) {
-						Selector = "xamarinGetFlags",
-						Trampoline = Trampoline.GetFlags,
+						Selector = "xamarinGetGCHandleFlags",
+						Trampoline = Trampoline.GetGCHandleFlags,
 						Signature = "i@:",
 						IsStatic = false,
 					}, ref exceptions);
 
 					objcType.Add (new ObjCMethod (this, objcType, null) {
-						Selector = "xamarinSetFlags:",
-						Trampoline = Trampoline.SetFlags,
+						Selector = "xamarinSetGCHandleFlags:",
+						Trampoline = Trampoline.SetGCHandleFlags,
 						Signature = "v@:i",
+						IsStatic = false,
+					}, ref exceptions);
+
+					objcType.Add (new ObjCMethod (this, objcType, null) {
+						Selector = "retainWeakReference",
+						Trampoline = Trampoline.RetainWeakReference,
+						Signature = $"{GetBoolEncoding ()}@:",
 						IsStatic = false,
 					}, ref exceptions);
 				}
@@ -2650,6 +2654,29 @@ namespace Registrar {
 			return GetExportedTypeName (type, GetRegisterAttribute (type));
 		}
 
+		string GetBoolEncoding ()
+		{
+			// map managed 'bool' to ObjC BOOL = 'unsigned char' in OSX and 32bit iOS architectures and 'bool' in 64bit iOS architectures
+#if MTOUCH || MMP || BUNDLER
+			switch (App.Platform) {
+			case ApplePlatform.iOS:
+			case ApplePlatform.TVOS:
+				return "B";
+			case ApplePlatform.MacOSX:
+			case ApplePlatform.MacCatalyst:
+				return IsARM64 ? "B" : "c";
+			default:
+				throw ErrorHelper.CreateError (71, Errors.MX0071, App.Platform, App.ProductName);
+			}
+#else
+#if MONOMAC || __MACCATALYST__
+			return IsARM64 ? "B" : "c";
+#else
+			return "B";
+#endif
+#endif
+		}
+
 		protected string ToSignature (TType type, ObjCMember member, ref bool success, bool forProperty = false)
 		{
 			bool isNativeEnum;
@@ -2670,26 +2697,7 @@ namespace Registrar {
 			case "System.UInt64": return "Q";
 			case "System.Single": return "f";
 			case "System.Double": return "d";
-			case "System.Boolean":
-				// map managed 'bool' to ObjC BOOL = 'unsigned char' in OSX and 32bit iOS architectures and 'bool' in 64bit iOS architectures
-#if MTOUCH || MMP || BUNDLER
-				switch (App.Platform) {
-				case ApplePlatform.iOS:
-				case ApplePlatform.TVOS:
-					return "B";
-				case ApplePlatform.MacOSX:
-				case ApplePlatform.MacCatalyst:
-					return IsARM64 ? "B" : "c";
-				default:
-					throw ErrorHelper.CreateError (71, Errors.MX0071, App.Platform, App.ProductName);
-				}
-#else
-#if MONOMAC || __MACCATALYST__
-				return IsARM64 ? "B" : "c";
-#else
-				return "B";
-#endif
-#endif
+			case "System.Boolean": return GetBoolEncoding ();
 			case "System.Void": return "v";
 			case "System.String":
 				return forProperty ? "@\"NSString\"" : "@";
@@ -2843,7 +2851,8 @@ namespace Registrar {
 		CopyWithZone2,
 		GetGCHandle,
 		SetGCHandle,
-		GetFlags,
-		SetFlags,
+		GetGCHandleFlags,
+		SetGCHandleFlags,
+		RetainWeakReference,
 	}
 }

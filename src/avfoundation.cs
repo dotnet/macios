@@ -79,10 +79,10 @@ namespace AVFoundation {
 	/// <param name="error">To be added.</param>
 	/// <summary>A delegate that defines the handler for <see cref="AVFoundation.AVAssetImageGenerator.GenerateCGImagesAsynchronously(Foundation.NSValue[],AVFoundation.AVAssetImageGeneratorCompletionHandler)" />.</summary>
 	/// <remarks>To be added.</remarks>
-	delegate void AVAssetImageGeneratorCompletionHandler (CMTime requestedTime, IntPtr imageRef, CMTime actualTime, AVAssetImageGeneratorResult result, NSError error);
-	delegate void AVAssetImageGeneratorCompletionHandler2 (CMTime requestedTime, CGImage imageRef, CMTime actualTime, AVAssetImageGeneratorResult result, NSError error);
+	delegate void AVAssetImageGeneratorCompletionHandler (CMTime requestedTime, IntPtr imageRef, CMTime actualTime, AVAssetImageGeneratorResult result, [NullAllowed] NSError error);
+	delegate void AVAssetImageGeneratorCompletionHandler2 (CMTime requestedTime, [NullAllowed] CGImage imageRef, CMTime actualTime, AVAssetImageGeneratorResult result, [NullAllowed] NSError error);
 #endif
-	delegate void AVAssetImageGenerateAsynchronouslyForTimeCompletionHandler (CGImage imageRef, CMTime actualTime, NSError error);
+	delegate void AVAssetImageGenerateAsynchronouslyForTimeCompletionHandler ([NullAllowed] CGImage imageRef, CMTime actualTime, [NullAllowed] NSError error);
 	/// <param name="finished">To be added.</param>
 	/// <summary>A delegate that defines the completion handler for various methods in <see cref="AVFoundation.AVPlayer" /> and <see cref="AVFoundation.AVPlayerItem" /></summary>
 	/// <remarks>To be added.</remarks>
@@ -948,6 +948,10 @@ namespace AVFoundation {
 	interface AVAudioChannelLayout : NSSecureCoding {
 		[Export ("initWithLayoutTag:")]
 		NativeHandle Constructor (/* UInt32 */ uint layoutTag);
+
+		[Sealed]
+		[Export ("initWithLayoutTag:")]
+		NativeHandle Constructor (AudioChannelLayoutTag layoutTag);
 
 		[DesignatedInitializer]
 		[Export ("initWithLayout:"), Internal]
@@ -5381,7 +5385,7 @@ namespace AVFoundation {
 		///         <summary>Returns an array of tracks of the specified media type.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[Wrap ("TracksWithMediaType (mediaType.GetConstant ())")]
+		[Wrap ("TracksWithMediaType (mediaType.GetConstant ()!)")]
 		AVAssetTrack [] GetTracks (AVMediaTypes mediaType);
 
 		[Deprecated (PlatformName.MacOSX, 15, 0)]
@@ -5395,7 +5399,7 @@ namespace AVFoundation {
 		///         <summary>Returns an array of tracks that have the specified characteristic.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[Wrap ("TracksWithMediaType (mediaCharacteristic.GetConstant ())")]
+		[Wrap ("TracksWithMediaType (mediaCharacteristic.GetConstant ()!)")]
 		AVAssetTrack [] GetTracks (AVMediaCharacteristics mediaCharacteristic);
 
 		[Export ("lyrics"), NullAllowed]
@@ -5693,7 +5697,7 @@ namespace AVFoundation {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
-		[Wrap ("This.GetTracks (mediaType.GetConstant ())")]
+		[Wrap ("This.GetTracks (mediaType.GetConstant ()!)")]
 		AVFragmentedAssetTrack [] GetTracks (AVMediaTypes mediaType);
 
 		/// <param name="mediaCharacteristic">To be added.</param>
@@ -5707,7 +5711,7 @@ namespace AVFoundation {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
-		[Wrap ("This.GetTracksWithMediaCharacteristic (mediaCharacteristic.GetConstant ())")]
+		[Wrap ("This.GetTracksWithMediaCharacteristic (mediaCharacteristic.GetConstant ()!)")]
 		AVFragmentedAssetTrack [] GetTracks (AVMediaCharacteristics mediaCharacteristic);
 
 		[Async]
@@ -12378,7 +12382,7 @@ namespace AVFoundation {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
-		[Wrap ("This.GetTracks (mediaType.GetConstant ())")]
+		[Wrap ("This.GetTracks (mediaType.GetConstant ()!)")]
 		AVMovieTrack [] GetTracks (AVMediaTypes mediaType);
 
 		/// <param name="mediaCharacteristic">To be added.</param>
@@ -12392,7 +12396,7 @@ namespace AVFoundation {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
-		[Wrap ("This.GetTracksWithMediaCharacteristic (mediaCharacteristic.GetConstant ())")]
+		[Wrap ("This.GetTracksWithMediaCharacteristic (mediaCharacteristic.GetConstant ()!)")]
 		AVMovieTrack [] GetTracks (AVMediaCharacteristics mediaCharacteristic);
 
 		[Async]
@@ -12609,7 +12613,7 @@ namespace AVFoundation {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
-		[Wrap ("This.GetTracks (mediaType.GetConstant ())")]
+		[Wrap ("This.GetTracks (mediaType.GetConstant ()!)")]
 		AVMutableMovieTrack [] GetTracks (AVMediaTypes mediaType);
 
 		/// <param name="mediaCharacteristic">To be added.</param>
@@ -12623,7 +12627,7 @@ namespace AVFoundation {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
-		[Wrap ("This.GetTracksWithMediaCharacteristic (mediaCharacteristic.GetConstant ())")]
+		[Wrap ("This.GetTracksWithMediaCharacteristic (mediaCharacteristic.GetConstant ()!)")]
 		AVMutableMovieTrack [] GetTracks (AVMediaCharacteristics mediaCharacteristic);
 	}
 
@@ -12703,7 +12707,7 @@ namespace AVFoundation {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
-		[Wrap ("This.GetTracks (mediaType.GetConstant ())")]
+		[Wrap ("This.GetTracks (mediaType.GetConstant ()!)")]
 		AVFragmentedMovieTrack [] GetTracks (AVMediaTypes mediaType);
 
 		/// <param name="mediaCharacteristic">To be added.</param>
@@ -12717,7 +12721,7 @@ namespace AVFoundation {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
-		[Wrap ("This.GetTracksWithMediaCharacteristic (mediaCharacteristic.GetConstant ())")]
+		[Wrap ("This.GetTracksWithMediaCharacteristic (mediaCharacteristic.GetConstant ()!)")]
 		AVFragmentedMovieTrack [] GetTracks (AVMediaCharacteristics mediaCharacteristic);
 
 		[Async]
@@ -13302,7 +13306,7 @@ namespace AVFoundation {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
-		[Wrap ("This.GetTracks (mediaType.GetConstant ())")]
+		[Wrap ("This.GetTracks (mediaType.GetConstant ()!)")]
 		AVCompositionTrack [] GetTracks (AVMediaTypes mediaType);
 
 		/// <param name="mediaCharacteristic">To be added.</param>
@@ -13316,7 +13320,7 @@ namespace AVFoundation {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
-		[Wrap ("This.GetTracksWithMediaCharacteristic (mediaCharacteristic.GetConstant ())")]
+		[Wrap ("This.GetTracksWithMediaCharacteristic (mediaCharacteristic.GetConstant ()!)")]
 		AVCompositionTrack [] GetTracks (AVMediaCharacteristics mediaCharacteristic);
 
 		[Async]
@@ -13416,7 +13420,7 @@ namespace AVFoundation {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
-		[Wrap ("This.GetTracks (mediaType.GetConstant ())")]
+		[Wrap ("This.GetTracks (mediaType.GetConstant ()!)")]
 		AVMutableCompositionTrack [] GetTracks (AVMediaTypes mediaType);
 
 		/// <param name="mediaCharacteristic">To be added.</param>
@@ -13430,7 +13434,7 @@ namespace AVFoundation {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
-		[Wrap ("This.GetTracksWithMediaCharacteristic (mediaCharacteristic.GetConstant ())")]
+		[Wrap ("This.GetTracksWithMediaCharacteristic (mediaCharacteristic.GetConstant ()!)")]
 		AVMutableCompositionTrack [] GetTracks (AVMediaCharacteristics mediaCharacteristic);
 
 		[Async]
@@ -13551,7 +13555,7 @@ namespace AVFoundation {
 		/// <param name="preset">To be added.</param>
 		/// <summary>Creates an export session from an AVAsset and a preset.</summary>
 		/// <remarks>To be added.</remarks>
-		[Wrap ("this (asset, preset.GetConstant ())")]
+		[Wrap ("this (asset, preset.GetConstant ()!)")]
 		NativeHandle Constructor (AVAsset asset, AVAssetExportSessionPreset preset);
 
 		[Export ("exportAsynchronouslyWithCompletionHandler:")]
@@ -13568,130 +13572,122 @@ namespace AVFoundation {
 		[Export ("error"), NullAllowed]
 		NSError Error { get; }
 
+#if !XAMCORE_5_0
 		/// <summary>Represents the value associated with the constant AVAssetExportPresetLowQuality</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>Quicktime preset: low quality.</remarks>
+		/// <remarks>Quicktime preset: low quality.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("AVAssetExportPresetLowQuality")]
+		[Obsolete ("Use 'AVAssetExportSessionPreset.LowQuality.GetConstant ()' instead.")]
 		NSString PresetLowQuality { get; }
 
 		/// <summary>Represents the value associated with the constant AVAssetExportPresetMediumQuality</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>Quicktime preset: medium quality.</remarks>
+		/// <remarks>Quicktime preset: medium quality.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("AVAssetExportPresetMediumQuality")]
+		[Obsolete ("Use 'AVAssetExportSessionPreset.MediumQuality.GetConstant ()' instead.")]
 		NSString PresetMediumQuality { get; }
 
 		/// <summary>Represents the value associated with the constant AVAssetExportPresetHighestQuality</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>Quicktime preset: highest quality.</remarks>
+		/// <remarks>Quicktime preset: highest quality.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("AVAssetExportPresetHighestQuality")]
+		[Obsolete ("Use 'AVAssetExportSessionPreset.HighestQuality.GetConstant ()' instead.")]
 		NSString PresetHighestQuality { get; }
 
 		/// <summary>Represents the value associated with the constant AVAssetExportPresetHEVCHighestQuality.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("AVAssetExportPresetHEVCHighestQuality")]
+		[Obsolete ("Use 'AVAssetExportSessionPreset.HevcHighestQuality.GetConstant ()' instead.")]
 		NSString PresetHevcHighestQuality { get; }
 
 		/// <summary>Represents the value associated with the constant AVAssetExportPresetHEVC3840x2160.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("AVAssetExportPresetHEVC3840x2160")]
+		[Obsolete ("Use 'AVAssetExportSessionPreset.Hevc3840x2160.GetConstant ()' instead.")]
 		NSString PresetHevc3840x2160 { get; }
 
 		/// <summary>Represents the value associated with the constant AVAssetExportPreset640x480</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
 		[Field ("AVAssetExportPreset640x480")]
+		[Obsolete ("Use 'AVAssetExportSessionPreset.Preset640x480.GetConstant ()' instead.")]
 		NSString Preset640x480 { get; }
 
 		/// <summary>Represents the value associated with the constant AVAssetExportPreset960x540</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>Represents the value associated with the constant AVAssetExportPreset960x540.</remarks>
 		[Field ("AVAssetExportPreset960x540")]
+		[Obsolete ("Use 'AVAssetExportSessionPreset.Preset960x540.GetConstant ()' instead.")]
 		NSString Preset960x540 { get; }
 
 		/// <summary>Represents the value associated with the constant AVAssetExportPreset1280x720</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
 		[Field ("AVAssetExportPreset1280x720")]
+		[Obsolete ("Use 'AVAssetExportSessionPreset.Preset1280x720.GetConstant ()' instead.")]
 		NSString Preset1280x720 { get; }
 
 		/// <summary>Represents the value associated with the constant AVAssetExportPreset1920x1080.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Field ("AVAssetExportPreset1920x1080")]
+		[Obsolete ("Use 'AVAssetExportSessionPreset.Preset1920x1080.GetConstant ()' instead.")]
 		NSString Preset1920x1080 { get; }
 
 		/// <summary>Represents the value associated with the constant AVAssetExportPreset3840x2160.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("AVAssetExportPreset3840x2160")]
+		[Obsolete ("Use 'AVAssetExportSessionPreset.Preset3840x2160.GetConstant ()' instead.")]
 		NSString Preset3840x2160 { get; }
 
 		/// <summary>Represents the value associated with the constant AVAssetExportPresetHEVC1920x1080.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("AVAssetExportPresetHEVC1920x1080")]
+		[Obsolete ("Use 'AVAssetExportSessionPreset.Hevc1920x1080.GetConstant ()' instead.")]
 		NSString PresetHevc1920x1080 { get; }
 
 		/// <summary>Represents the value associated with the constant AVAssetExportPresetAppleM4A</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>Audio-only, gapless playback for iTunes.</remarks>
+		/// <remarks>Audio-only, gapless playback for iTunes.</remarks>
 		[Field ("AVAssetExportPresetAppleM4A")]
+		[Obsolete ("Use 'AVAssetExportSessionPreset.AppleM4A.GetConstant ()' instead.")]
 		NSString PresetAppleM4A { get; }
 
 		/// <summary>Represents the value associated with the constant AVAssetExportPresetPassthrough</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
 		[Field ("AVAssetExportPresetPassthrough")]
+		[Obsolete ("Use 'AVAssetExportSessionPreset.Passthrough.GetConstant ()' instead.")]
 		NSString PresetPassthrough { get; }
 
 		[NoTV, MacCatalyst (15, 0), iOS (15, 0)]
 		[Field ("AVAssetExportPresetAppleProRes4444LPCM")]
+		[Obsolete ("Use 'AVAssetExportSessionPreset.AppleProRes4444Lpcm.GetConstant ()' instead.")]
 		NSString PresetAppleProRes4444Lpcm { get; }
 
 		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("AVAssetExportPresetHEVC1920x1080WithAlpha")]
+		[Obsolete ("Use 'AVAssetExportSessionPreset.Hevc1920x1080WithAlpha.GetConstant ()' instead.")]
 		NSString PresetHevc1920x1080WithAlpha { get; }
 
 		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("AVAssetExportPresetHEVC3840x2160WithAlpha")]
+		[Obsolete ("Use 'AVAssetExportSessionPreset.Hevc3840x2160WithAlpha.GetConstant ()' instead.")]
 		NSString PresetHevc3840x2160WithAlpha { get; }
 
 		[NoTV, NoiOS, Mac (12, 1)]
 		[NoMacCatalyst]
 		[Field ("AVAssetExportPresetHEVC7680x4320")]
+		[Obsolete ("Use 'AVAssetExportSessionPreset.Hevc7680x4320.GetConstant ()' instead.")]
 		NSString PresetHevc7680x4320 { get; }
 
 		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("AVAssetExportPresetHEVCHighestQualityWithAlpha")]
+		[Obsolete ("Use 'AVAssetExportSessionPreset.HevcHighestQualityWithAlpha.GetConstant ()' instead.")]
 		NSString PresetHevcHighestQualityWithAlpha { get; }
 
 		[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Field ("AVAssetExportPresetMVHEVC960x960")]
+		[Obsolete ("Use 'AVAssetExportSessionPreset.MvHevc960x960.GetConstant ()' instead.")]
 		NSString AVAssetExportPresetMvHevc960x960 { get; }
 
 		[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Field ("AVAssetExportPresetMVHEVC1440x1440")]
+		[Obsolete ("Use 'AVAssetExportSessionPreset.MvHevc1440x1440.GetConstant ()' instead.")]
 		NSString AVAssetExportPresetMvHevc1440x1440 { get; }
+#endif // !XAMCORE_5_0
 
 		// 5.0 APIs
 		[Export ("asset", ArgumentSemantic.Retain)]
@@ -13730,7 +13726,7 @@ namespace AVFoundation {
 		///         <param name="asset">The asset against which to check the preset.</param>
 		///         <param name="outputFileType">The output file type against which to check the preset.</param>
 		///         <param name="isCompatibleResult">An action to run with the result of the check.</param>
-		///         <summary>Determines if a preset is compatible with an asset and output type, passing the result to <parmref name="isCompatibleResult" />.</summary>
+		///         <summary>Determines if a preset is compatible with an asset and output type, passing the result to <paramref name="isCompatibleResult" />.</summary>
 		///         <remarks>To be added.</remarks>
 		[Async (XmlDocs = """
 			<param name="presetName">The preset to check.</param>
@@ -15549,7 +15545,7 @@ namespace AVFoundation {
 		NSDictionary GetRecommendedVideoSettings (string videoCodecType, string outputFileType, [NullAllowed] NSUrl outputFileUrl);
 
 		[TV (17, 0), MacCatalyst (17, 0), Mac (14, 0), iOS (17, 0)]
-		[Wrap ("new AVPlayerItemVideoOutputSettings (GetRecommendedVideoSettings ((string) videoCodecType.GetConstant (), (string) outputFileType.GetConstant (), outputFileUrl)!)")]
+		[Wrap ("new AVPlayerItemVideoOutputSettings (GetRecommendedVideoSettings ((string) videoCodecType.GetConstant ()!, (string) outputFileType.GetConstant ()!, outputFileUrl)!)")]
 		[return: NullAllowed]
 		AVPlayerItemVideoOutputSettings GetRecommendedVideoSettings ([BindAs (typeof (AVVideoCodecType))] NSString videoCodecType, [BindAs (typeof (AVFileTypes))] NSString outputFileType, [NullAllowed] NSUrl outputFileUrl);
 
@@ -17271,7 +17267,7 @@ namespace AVFoundation {
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
-		[Wrap ("HasMediaType ((string) mediaType.GetConstant ())")]
+		[Wrap ("HasMediaType ((string) mediaType.GetConstant ()!)")]
 		bool HasMediaType (AVMediaTypes mediaType);
 
 		[MacCatalyst (13, 1)]
@@ -18548,7 +18544,7 @@ namespace AVFoundation {
 	}
 
 	/// <summary>A delegate for the completion handler of <see cref="AVFoundation.AVCaptureStillImageOutput.CaptureStillImageAsynchronously(AVFoundation.AVCaptureConnection,AVFoundation.AVCaptureCompletionHandler)" />.</summary>
-	delegate void AVCaptureCompletionHandler (CMSampleBuffer imageDataSampleBuffer, NSError error);
+	delegate void AVCaptureCompletionHandler (CMSampleBuffer imageDataSampleBuffer, [NullAllowed] NSError error);
 
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 	enum AVPlayerRateDidChangeReason {
@@ -23606,9 +23602,16 @@ namespace AVFoundation {
 		[Export ("assetVariantQualifierWithVariant:")]
 		AVAssetVariantQualifier Create (AVAssetVariant variant);
 
+#if !XAMCORE_5_0
+		[Obsolete ("Use 'GetPredicateForChannelCount' instead.")]
 		[Static]
 		[Export ("predicateForChannelCount:mediaSelectionOption:operatorType:")]
-		NSPredicate GetPredicate (nint channelCount, AVMediaSelectionOption mediaSelectionOption, NSPredicateOperatorType operatorType);
+		NSPredicate GetPredicate (nint channelCount, [NullAllowed] AVMediaSelectionOption mediaSelectionOption, NSPredicateOperatorType operatorType);
+#endif // XAMCORE_5_0
+
+		[Static]
+		[Export ("predicateForChannelCount:mediaSelectionOption:operatorType:")]
+		NSPredicate GetPredicateForChannelCount (nint channelCount, [NullAllowed] AVMediaSelectionOption mediaSelectionOption, NSPredicateOperatorType operatorType);
 
 		[Internal]
 		[Static]
@@ -23623,22 +23626,47 @@ namespace AVFoundation {
 		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Static]
 		[Export ("predicateForBinauralAudio:mediaSelectionOption:")]
-		NSPredicate GetPredicateForBinauralAudio (bool isBinauralAudio, AVMediaSelectionOption mediaSelectionOption);
+		NSPredicate GetPredicateForBinauralAudio (bool isBinauralAudio, [NullAllowed] AVMediaSelectionOption mediaSelectionOption);
 
 		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Static]
 		[Export ("predicateForImmersiveAudio:mediaSelectionOption:")]
-		NSPredicate GetPredicateForImmersiveAudio (bool isImmersiveAudio, AVMediaSelectionOption mediaSelectionOption);
+		NSPredicate GetPredicateForImmersiveAudio (bool isImmersiveAudio, [NullAllowed] AVMediaSelectionOption mediaSelectionOption);
 
 		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Static]
 		[Export ("predicateForDownmixAudio:mediaSelectionOption:")]
-		NSPredicate GetPredicateForDownmixAudio (bool isDownmixAudio, AVMediaSelectionOption mediaSelectionOption);
+		NSPredicate GetPredicateForDownmixAudio (bool isDownmixAudio, [NullAllowed] AVMediaSelectionOption mediaSelectionOption);
 
 		[MacCatalyst (18, 0), TV (18, 0), Mac (15, 0), iOS (18, 0)]
 		[Static]
 		[Export ("predicateForAudioSampleRate:mediaSelectionOption:operatorType:")]
-		NSPredicate GetPredicateForAudioSampleRate (double sampleRate, AVMediaSelectionOption mediaSelectionOption, NSPredicateOperatorType operatorType);
+		NSPredicate GetPredicateForAudioSampleRate (double sampleRate, [NullAllowed] AVMediaSelectionOption mediaSelectionOption, NSPredicateOperatorType operatorType);
+
+		[Static]
+		[MacCatalyst (18, 5), TV (18, 5), Mac (15, 5), iOS (18, 5)]
+		[Export ("predicateForChannelCount:operatorType:")]
+		NSPredicate GetPredicateForChannelCount (nint channelCount, NSPredicateOperatorType operatorType);
+
+		[Static]
+		[MacCatalyst (18, 5), TV (18, 5), Mac (15, 5), iOS (18, 5)]
+		[Export ("predicateForBinauralAudio:")]
+		NSPredicate GetPredicateForBinauralAudio (bool isBinauralAudio);
+
+		[Static]
+		[MacCatalyst (18, 5), TV (18, 5), Mac (15, 5), iOS (18, 5)]
+		[Export ("predicateForImmersiveAudio:")]
+		NSPredicate GetPredicateForImmersiveAudio (bool isImmersiveAudio);
+
+		[Static]
+		[MacCatalyst (18, 5), TV (18, 5), Mac (15, 5), iOS (18, 5)]
+		[Export ("predicateForDownmixAudio:")]
+		NSPredicate GetPredicateForDownmixAudio (bool isDownmixAudio);
+
+		[Static]
+		[MacCatalyst (18, 5), TV (18, 5), Mac (15, 5), iOS (18, 5)]
+		[Export ("predicateForAudioSampleRate:operatorType:")]
+		NSPredicate GetPredicateForAudioSampleRate (double sampleRate, NSPredicateOperatorType operatorType);
 	}
 
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]

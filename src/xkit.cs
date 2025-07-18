@@ -3842,7 +3842,7 @@ namespace UIKit {
 	delegate bool NSTextLayoutManagerEnumerateRenderingAttributesDelegate (NSTextLayoutManager textLayoutManager, NSDictionary<NSString, NSObject> attributes, NSTextRange textRange);
 
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
-	delegate bool NSTextLayoutManagerEnumerateTextSegmentsDelegate (NSTextRange textSegmentRange, CGRect textSegmentFrame, nfloat baselinePosition, NSTextContainer textContainer);
+	delegate bool NSTextLayoutManagerEnumerateTextSegmentsDelegate ([NullAllowed] NSTextRange textSegmentRange, CGRect textSegmentFrame, nfloat baselinePosition, NSTextContainer textContainer);
 
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 	[DesignatedDefaultCtor]
@@ -4409,7 +4409,7 @@ namespace UIKit {
 	}
 
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
-	delegate void NSTextSelectionDataSourceEnumerateSubstringsDelegate (NSString substring, NSTextRange substringRange, NSTextRange enclodingRange, out bool stop);
+	delegate void NSTextSelectionDataSourceEnumerateSubstringsDelegate ([NullAllowed] NSString substring, NSTextRange substringRange, [NullAllowed] NSTextRange enclodingRange, out bool stop);
 
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 	delegate void NSTextSelectionDataSourceEnumerateCaretOffsetsDelegate (nfloat caretOffset, INSTextLocation location, bool leadingEdge, out bool stop);
@@ -4733,10 +4733,10 @@ namespace UIKit {
 		/// <param name="mask">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[Wrap ("this (format.GetConstant(), mask)")]
+		[Wrap ("this (format.GetConstant ()!, mask)")]
 		NativeHandle Constructor (NSTextListMarkerFormats format, NSTextListOptions mask);
 
-		[Wrap ("this (format.GetConstant(), NSTextListOptions.None)")]
+		[Wrap ("this (format.GetConstant ()!, NSTextListOptions.None)")]
 		NativeHandle Constructor (NSTextListMarkerFormats format);
 
 		[BindAs (typeof (NSTextListMarkerFormats))]

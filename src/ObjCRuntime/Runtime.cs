@@ -162,8 +162,9 @@ namespace ObjCRuntime {
 #endif
 			public IntPtr get_gchandle_tramp;
 			public IntPtr set_gchandle_tramp;
-			public IntPtr get_flags_tramp;
-			public IntPtr set_flags_tramp;
+			public IntPtr get_gchandle_flags_tramp;
+			public IntPtr set_gchandle_flags_tramp;
+			public IntPtr retainWeakReference_tramp;
 		}
 #pragma warning restore 649
 
@@ -2644,9 +2645,9 @@ namespace ObjCRuntime {
 		[DllImport ("__Internal")]
 		static extern IntPtr xamarin_get_original_working_directory_path ();
 
-		static nint InvokeConformsToProtocol (IntPtr handle, IntPtr protocol)
+		static nint InvokeConformsToProtocol (IntPtr gchandle, IntPtr handle, IntPtr protocol)
 		{
-			var obj = Runtime.GetNSObject (handle);
+			var obj = GetGCHandleTarget (gchandle) as NSObject;
 			if (obj is null)
 				return 0;
 			var rv = obj.ConformsToProtocol (protocol);

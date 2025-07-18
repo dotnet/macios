@@ -187,8 +187,10 @@ MonoObject *	xamarin_get_nsobject_with_type_for_ptr_created (id self, bool owns,
 MonoObject *	xamarin_get_delegate_for_block_parameter (MonoMethod *method, guint32 token_ref, int par, void *nativeBlock, GCHandle *exception_gchandle);
 id              xamarin_get_block_for_delegate (MonoMethod *method, MonoObject *delegate, const char *signature /* NULL allowed, but requires the dynamic registrar at runtime to compute */, guint32 token_ref /* INVALID_TOKEN_REF allowed, but requires the dynamic registrar at runtime */, GCHandle *exception_gchandle);
 id				xamarin_get_nsobject_handle (MonoObject *obj);
-uint8_t         xamarin_get_nsobject_flags (MonoObject *obj);
-void			xamarin_set_nsobject_flags (MonoObject *obj, uint8_t flags);
+uint32_t        xamarin_get_nsobject_flags (MonoObject *obj);
+void			xamarin_set_nsobject_flags (MonoObject *obj, uint32_t flags);
+uint32_t		xamarin_get_nsobject_id_flags (id obj);
+struct NSObjectData* xamarin_get_nsobject_data (id obj);
 void			xamarin_throw_nsexception (MonoException *exc);
 void			xamarin_rethrow_managed_exception (GCHandle original_gchandle, GCHandle *exception_gchandle);
 MonoException *	xamarin_create_exception (const char *msg);
@@ -239,7 +241,7 @@ void			xamarin_free_gchandle (id self, GCHandle gchandle);
 void			xamarin_clear_gchandle (id self);
 GCHandle		xamarin_get_gchandle_with_flags (id self, enum XamarinGCHandleFlags *flags);
 bool			xamarin_set_gchandle_with_flags (id self, GCHandle gchandle, enum XamarinGCHandleFlags flags);
-bool			xamarin_set_gchandle_with_flags_safe (id self, GCHandle gchandle, enum XamarinGCHandleFlags flags);
+bool			xamarin_set_gchandle_with_flags_safe (id self, GCHandle gchandle, enum XamarinGCHandleFlags flags, struct NSObjectData *data);
 void            xamarin_release_managed_ref (id self, bool user_type);
 void			xamarin_notify_dealloc (id self, GCHandle gchandle);
 void			xamarin_release_static_dictionaries ();
@@ -274,6 +276,7 @@ void			xamarin_log_managed_exception (MonoObject *exception, MarshalManagedExcep
 void			xamarin_log_objectivec_exception (NSException *exception, MarshalObjectiveCExceptionMode mode);
 
 id				xamarin_invoke_objc_method_implementation (id self, SEL sel, IMP xamarin_impl);
+BOOL			xamarin_invoke_objc_method_implementation_BOOL (id self, SEL sel, IMP xamarin_impl);
 MonoType *		xamarin_get_nsnumber_type ();
 MonoType *		xamarin_get_nsvalue_type ();
 MonoClass *		xamarin_get_inativeobject_class ();
@@ -322,7 +325,7 @@ void			xamarin_gchandle_free (GCHandle handle);
 MonoObject *	xamarin_gchandle_unwrap (GCHandle handle); // Will get the target and free the GCHandle
 
 typedef id (*xamarin_get_handle_func) (MonoObject *info);
-MonoToggleRefStatus	xamarin_gc_toggleref_callback (uint8_t flags, id handle, xamarin_get_handle_func get_handle, MonoObject *info);
+MonoToggleRefStatus	xamarin_gc_toggleref_callback (uint32_t flags, id handle, xamarin_get_handle_func get_handle, MonoObject *info);
 void				xamarin_gc_event (MonoGCEvent event);
 
 void			xamarin_bridge_log_monoobject (MonoObject *obj, const char *stacktrace);
@@ -362,12 +365,20 @@ typedef void (*xamarin_register_assemblies_callback) ();
 extern xamarin_register_module_callback xamarin_register_modules;
 extern xamarin_register_assemblies_callback xamarin_register_assemblies;
 
+// This has a managed equivalent in NSObject.cs
+struct NSObjectData {
+	id handle;
+	struct objc_super* super;
+	uint32_t /* NSObjectFlags */ flags;
+};
+
 #ifdef __cplusplus
 class XamarinObject {
 public:
 	id native_object;
 	GCHandle gc_handle;
-	enum XamarinGCHandleFlags flags;
+	enum XamarinGCHandleFlags gchandle_flags;
+	struct NSObjectData* data;
 
 	~XamarinObject ();
 };
@@ -378,14 +389,16 @@ public:
 @public
 	id native_object;
 	GCHandle gc_handle;
-	enum XamarinGCHandleFlags flags;
+	enum XamarinGCHandleFlags gchandle_flags;
+	struct NSObjectData* data;
 }
 -(void) dealloc;
 @end
 
 @interface NSObject (NonXamarinObject)
 -(GCHandle) xamarinGetGCHandle;
--(enum XamarinGCHandleFlags) xamarinGetFlags;
+-(enum XamarinGCHandleFlags) xamarinGetGCHandleFlags;
+-(struct NSObjectData*) xamarinGetNSObjectData;
 @end
 #endif
 

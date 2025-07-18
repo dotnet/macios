@@ -34,46 +34,46 @@ using NSResponder = Foundation.NSObject;
 namespace GameKit {
 
 	/// <summary>A delegate used with <see cref="GameKit.GKLocalPlayer.LoadFriends(GameKit.GKFriendsHandler)" /> and <see cref="GameKit.GKMatchmaker.FindPlayers(GameKit.GKMatchRequest,GameKit.GKFriendsHandler)" /> that defines behavior after the request completes.</summary>
-	delegate void GKFriendsHandler (string [] friends, NSError error);
+	delegate void GKFriendsHandler ([NullAllowed] string [] friends, [NullAllowed] NSError error);
 	/// <param name="players">To be added.</param>
 	/// <param name="error">To be added.</param>
 	/// <summary>A delegate used with <see cref="GameKit.GKPlayer.LoadPlayersForIdentifiers(System.String[],GameKit.GKPlayersHandler)" /> to specify behavior to happen after the players are loaded.</summary>
 	/// <remarks>To be added.</remarks>
-	delegate void GKPlayersHandler (GKPlayer [] players, NSError error);
+	delegate void GKPlayersHandler ([NullAllowed] GKPlayer [] players, [NullAllowed] NSError error);
 	/// <param name="leaderboards">To be added.</param>
 	/// <param name="error">To be added.</param>
 	/// <summary>Completion handler for the <see cref="GameKit.GKLeaderboardSet.LoadLeaderboards(GameKit.GKLeaderboardsHandler)" /> method.</summary>
 	/// <remarks>To be added.</remarks>
-	delegate void GKLeaderboardsHandler (GKLeaderboard [] leaderboards, NSError error);
+	delegate void GKLeaderboardsHandler ([NullAllowed] GKLeaderboard [] leaderboards, [NullAllowed] NSError error);
 	/// <param name="scoreArray">To be added.</param>
 	/// <param name="error">To be added.</param>
 	/// <summary>A delegate used with <see cref="GameKit.GKLeaderboard.LoadScores(GameKit.GKScoresLoadedHandler)" /> that specifies behavior after the scores are loaded.</summary>
 	/// <remarks>To be added.</remarks>
-	delegate void GKScoresLoadedHandler (GKScore [] scoreArray, NSError error);
+	delegate void GKScoresLoadedHandler ([NullAllowed] GKScore [] scoreArray, [NullAllowed] NSError error);
 	/// <param name="match">To be added.</param>
 	/// <param name="error">To be added.</param>
 	/// <summary>A delegate used with <see cref="GameKit.GKMatchmaker.FindMatch(GameKit.GKMatchRequest,GameKit.GKNotificationMatch)" /> that specifies behavior after a match has been made.</summary>
 	/// <remarks>To be added.</remarks>
-	delegate void GKNotificationMatch (GKMatch match, NSError error);
+	delegate void GKNotificationMatch ([NullAllowed] GKMatch match, [NullAllowed] NSError error);
 	/// <summary>A delegate that is used to define behavior after a response to a <see cref="GameKit.GKInvite" />.</summary>
-	delegate void GKInviteHandler (GKInvite invite, string [] playerIDs);
+	delegate void GKInviteHandler (GKInvite invite, [NullAllowed] string [] playerIDs);
 	/// <param name="activity">To be added.</param>
 	/// <param name="error">To be added.</param>
 	/// <summary>A delegate used with <see cref="GameKit.GKMatchmaker.QueryActivity(GameKit.GKQueryHandler)" /> and <see cref="GameKit.GKMatchmaker.QueryPlayerGroupActivity(System.IntPtr,GameKit.GKQueryHandler)" /> to specify behavior after the query is completed.</summary>
 	/// <remarks>To be added.</remarks>
-	delegate void GKQueryHandler (nint activity, NSError error);
+	delegate void GKQueryHandler (nint activity, [NullAllowed] NSError error);
 	/// <param name="achivements">To be added.</param>
 	/// <param name="error">To be added.</param>
 	/// <summary>A delegate passed to <see cref="GameKit.GKAchievement.LoadAchievements(GameKit.GKCompletionHandler)" /> that specifies behavior after the downloading of achievements from Game Center is completed.</summary>
 	/// <remarks>To be added.</remarks>
-	delegate void GKCompletionHandler (GKAchievement [] achivements, NSError error);
+	delegate void GKCompletionHandler ([NullAllowed] GKAchievement [] achivements, [NullAllowed] NSError error);
 	/// <param name="descriptions">To be added.</param>
 	/// <param name="error">To be added.</param>
 	/// <summary>A delegate that is called by <see cref="GameKit.GKAchievementDescription.LoadAchievementDescriptions(GameKit.GKAchievementDescriptionHandler)" />.</summary>
 	/// <remarks>To be added.</remarks>
-	delegate void GKAchievementDescriptionHandler (GKAchievementDescription [] descriptions, NSError error);
+	delegate void GKAchievementDescriptionHandler ([NullAllowed] GKAchievementDescription [] descriptions, [NullAllowed] NSError error);
 	/// <summary>A delegate that is called by <see cref="GameKit.GKLeaderboard.LoadCategories(GameKit.GKCategoryHandler)" />.</summary>
-	delegate void GKCategoryHandler (string [] categories, string [] titles, NSError error);
+	delegate void GKCategoryHandler ([NullAllowed] string [] categories, [NullAllowed] string [] titles, [NullAllowed] NSError error);
 	/// <summary>A delegate used with <see cref="GameKit.GKVoiceChat.PlayerStateUpdateHandler" /> that specifies behavior when the player's <see cref="GameKit.GKVoiceChatPlayerState" /> changes.</summary>
 	delegate void GKPlayerStateUpdateHandler (string playerId, GKVoiceChatPlayerState state);
 	/// <param name="publicKeyUrl">To be added.</param>
@@ -83,20 +83,20 @@ namespace GameKit {
 	/// <param name="error">To be added.</param>
 	/// <summary>Completion handler for the <see cref="GameKit.GKLocalPlayer.GenerateIdentityVerificationSignature(GameKit.GKIdentityVerificationSignatureHandler)" /> method.</summary>
 	/// <remarks>To be added.</remarks>
-	delegate void GKIdentityVerificationSignatureHandler (NSUrl publicKeyUrl, NSData signature, NSData salt, ulong timestamp, NSError error);
+	delegate void GKIdentityVerificationSignatureHandler ([NullAllowed] NSUrl publicKeyUrl, [NullAllowed] NSData signature, [NullAllowed] NSData salt, ulong timestamp, [NullAllowed] NSError error);
 	/// <param name="leaderboardSets">To be added.</param>
 	/// <param name="error">To be added.</param>
 	/// <summary>Completion handler for the <see cref="GameKit.GKLeaderboardSet.LoadLeaderboardSets(GameKit.GKLeaderboardSetsHandler)" /> method.</summary>
 	/// <remarks>To be added.</remarks>
-	delegate void GKLeaderboardSetsHandler (GKLeaderboardSet [] leaderboardSets, NSError error);
-	delegate void GKEntriesForPlayerScopeHandler (GKLeaderboardEntry localPlayerEntry, GKLeaderboardEntry [] entries, nint totalPlayerCount, NSError error);
-	delegate void GKEntriesForPlayersHandler (GKLeaderboardEntry localPlayerEntry, GKLeaderboardEntry [] entries, NSError error);
+	delegate void GKLeaderboardSetsHandler ([NullAllowed] GKLeaderboardSet [] leaderboardSets, [NullAllowed] NSError error);
+	delegate void GKEntriesForPlayerScopeHandler ([NullAllowed] GKLeaderboardEntry localPlayerEntry, [NullAllowed] GKLeaderboardEntry [] entries, nint totalPlayerCount, [NullAllowed] NSError error);
+	delegate void GKEntriesForPlayersHandler ([NullAllowed] GKLeaderboardEntry localPlayerEntry, [NullAllowed] GKLeaderboardEntry [] entries, [NullAllowed] NSError error);
 
 #if MONOMAC
-	delegate void GKImageLoadedHandler (NSImage image, NSError error);
-	delegate void GKPlayerPhotoLoaded (NSImage photo, NSError error);
-	delegate void GKChallengeComposeHandler (NSViewController composeController, bool issuedChallenge, string [] sentPlayerIDs);
-	delegate void GKChallengeComposeHandler2 (NSViewController composeController, bool issuedChallenge, GKPlayer [] sentPlayers);
+	delegate void GKImageLoadedHandler ([NullAllowed] NSImage image, [NullAllowed] NSError error);
+	delegate void GKPlayerPhotoLoaded ([NullAllowed] NSImage photo, [NullAllowed] NSError error);
+	delegate void GKChallengeComposeHandler (NSViewController composeController, bool issuedChallenge, [NullAllowed] string [] sentPlayerIDs);
+	delegate void GKChallengeComposeHandler2 (NSViewController composeController, bool issuedChallenge, [NullAllowed] GKPlayer [] sentPlayers);
 #else
 	/// <param name="image">To be added.</param>
 	/// <param name="error">To be added.</param>
@@ -1025,7 +1025,7 @@ namespace GameKit {
 
 	[TV (13, 4), iOS (13, 4)]
 	[MacCatalyst (13, 1)]
-	delegate void GKFetchItemsForIdentityVerificationSignatureCompletionHandler (NSUrl publicKeyUrl, NSData signature, NSData salt, ulong timestamp, NSError error);
+	delegate void GKFetchItemsForIdentityVerificationSignatureCompletionHandler ([NullAllowed] NSUrl publicKeyUrl, [NullAllowed] NSData signature, [NullAllowed] NSData salt, ulong timestamp, [NullAllowed] NSError error);
 
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (GKPlayer))]
@@ -2772,19 +2772,19 @@ namespace GameKit {
 	/// <param name="error">To be added.</param>
 	/// <summary>A delegate that specifies the completion handler for <see cref="GameKit.GKTurnBasedMatch.FindMatch(GameKit.GKMatchRequest,GameKit.GKTurnBasedMatchRequest)" />.</summary>
 	/// <remarks>To be added.</remarks>
-	delegate void GKTurnBasedMatchRequest (GKTurnBasedMatch match, NSError error);
+	delegate void GKTurnBasedMatchRequest ([NullAllowed] GKTurnBasedMatch match, [NullAllowed] NSError error);
 
 	/// <param name="matches">To be added.</param>
 	/// <param name="error">To be added.</param>
 	/// <summary>A delegate used with <see cref="GameKit.GKTurnBasedMatch.LoadMatches(GameKit.GKTurnBasedMatchesRequest)" /> to specify behavior after the matches have been loaded.</summary>
 	/// <remarks>To be added.</remarks>
-	delegate void GKTurnBasedMatchesRequest (GKTurnBasedMatch [] matches, NSError error);
+	delegate void GKTurnBasedMatchesRequest ([NullAllowed] GKTurnBasedMatch [] matches, [NullAllowed] NSError error);
 
 	/// <param name="matchData">To be added.</param>
 	/// <param name="error">To be added.</param>
 	/// <summary>A delegate that is used with <see cref="GameKit.GKTurnBasedMatch.LoadMatchData(GameKit.GKTurnBasedMatchData)" /> to specify behavior after the data is loaded.</summary>
 	/// <remarks>To be added.</remarks>
-	delegate void GKTurnBasedMatchData (NSData matchData, NSError error);
+	delegate void GKTurnBasedMatchData ([NullAllowed] NSData matchData, [NullAllowed] NSError error);
 
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]

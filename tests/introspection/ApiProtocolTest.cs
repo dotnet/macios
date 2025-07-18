@@ -49,6 +49,10 @@ namespace Introspection {
 				if (TestRuntime.IsSimulator)
 					return !TestRuntime.CheckXcodeVersion (15, 0); // doesn't seem to be available in the iOS simulator until iOS 17+
 				break;
+			case "SensorKit": // SensorKit doesn't exist on iPads
+				if (TestRuntime.IsDevice && TestRuntime.IsiPad)
+					return true;
+				break;
 			}
 
 			switch (type.Name) {
@@ -471,6 +475,11 @@ namespace Introspection {
 				case "SCWindow":
 				case "SCStreamConfiguration":
 					return true;
+				// Xcode 16.3 Conformance not in headers
+				case "FSMutableFileDataBuffer":
+				case "FSTask":
+				case "FSTaskOptions":
+					return true;
 				}
 				break;
 			case "NSSecureCoding":
@@ -694,6 +703,11 @@ namespace Introspection {
 				case "SCRunningApplication":
 				case "SCWindow":
 				case "SCStreamConfiguration":
+					return true;
+				// Xcode 16.3 Conformance not in headers
+				case "FSMutableFileDataBuffer":
+				case "FSTask":
+				case "FSTaskOptions":
 					return true;
 				}
 				break;

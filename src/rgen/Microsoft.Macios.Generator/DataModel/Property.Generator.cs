@@ -106,6 +106,11 @@ readonly partial struct Property {
 	/// </summary>
 	public bool IsProxy => IsProperty && ExportPropertyData.Value.Flags.HasFlag (ObjCBindings.Property.Proxy);
 
+	/// <summary>
+	/// True if the property was marked as a weak delegate.
+	/// </summary>
+	public bool IsWeakDelegate => IsProperty && ExportPropertyData.Value.Flags.HasFlag (ObjCBindings.Property.WeakDelegate);
+
 	readonly bool? needsBackingField = null;
 	/// <summary>
 	/// States if the property, when generated, needs a backing field.
@@ -181,7 +186,6 @@ readonly partial struct Property {
 		ImmutableArray<Accessor> accessors)
 	{
 		Name = name;
-		BackingField = $"_{Name}";
 		ReturnType = returnType;
 		SymbolAvailability = symbolAvailability;
 		Attributes = attributes;
@@ -260,6 +264,19 @@ readonly partial struct Property {
 		if (NeedsBackingField != other.NeedsBackingField)
 			return false;
 		return RequiresDirtyCheck == other.RequiresDirtyCheck;
+	}
+
+	public Property ToStrongDelegate ()
+	{
+		// has to be a property, weak delegate and have its strong delegate type set
+		if (!IsProperty || !IsWeakDelegate || ExportPropertyData.Value.StrongDelegateType is null)
+			return this;
+
+		// update the return type, all the rest is the same
+		return this with {
+			Name = ExportPropertyData.Value.StrongDelegateName ?? Name.Remove (0, 4 /* "Weak".Length */),
+			ReturnType = ExportPropertyData.Value.StrongDelegateType.Value.WithNullable (true),
+		};
 	}
 
 	/// <inheritdoc />

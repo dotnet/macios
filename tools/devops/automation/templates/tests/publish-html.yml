@@ -93,5 +93,6 @@ steps:
     ${{ else }}:
       COMMENT_HASH: $(Build.SourceVersion)
   displayName: 'Add summaries'
+  continueOnError: true
   condition: always()
   timeoutInMinutes: 15

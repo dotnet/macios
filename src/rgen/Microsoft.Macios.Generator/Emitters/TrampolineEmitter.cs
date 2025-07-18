@@ -17,11 +17,6 @@ namespace Microsoft.Macios.Generator.Emitters;
 class TrampolineEmitter (
 	RootContext context,
 	TabbedStringBuilder builder) {
-	/// <summary>
-	/// The nomenclator is used to generate the name of the static class that will contain the trampoline, needs to
-	/// be an instance class since we want to keep track of the already generated names.
-	/// </summary>
-	Nomenclator nomenclator = new ();
 
 	public string SymbolNamespace => "ObjCRuntime";
 	public string SymbolName => "Trampolines";
@@ -67,14 +62,14 @@ $@"if ({delegateVariableName} is null)
 
 				// build any needed pre conversion operations before calling the delegate
 				foreach (var argument in argumentSyntax) {
-					invokeMethod.Write (argument.PreDelegateCallConversion);
+					invokeMethod.Write (argument.PreCallConversion);
 				}
 
 				invokeMethod.WriteLine ($"{CallTrampolineDelegate (typeInfo.Delegate!, argumentSyntax)}");
 
 				// build any needed post conversion operations after calling the delegate
 				foreach (var argument in argumentSyntax) {
-					invokeMethod.Write (argument.PostDelegateCallConversion);
+					invokeMethod.Write (argument.PostCallConversion);
 				}
 
 				// perform any return conversions needed
@@ -104,6 +99,67 @@ return CreateBlock (callback);
 					$"return new {BlockLiteral} ({trampolineVariableName}, callback, typeof ({className}), nameof ({invokeMethodName}));");
 			}
 		}
+
+		return true;
+	}
+
+	public bool TryEmitNativeInvocationClass (in TypeInfo typeInfo, string trampolineName,
+		TabbedWriter<StringWriter> classBuilder)
+	{
+		var className = Nomenclator.GetTrampolineClassName (trampolineName, Nomenclator.TrampolineClassType.NativeInvocationClass);
+		var delegateName = Nomenclator.GetTrampolineClassName (trampolineName, Nomenclator.TrampolineClassType.DelegateType);
+		var delegateIdentifier = Nomenclator.GetTrampolineClassName (trampolineName, Nomenclator.TrampolineClassType.DelegateType);
+
+		using (var classBlock = classBuilder.CreateBlock ($"internal sealed class {className} : TrampolineBlockBase", true)) {
+			classBlock.WriteLine ($"{delegateName} {Nomenclator.GetNativeInvokerVariableName ()};");
+			classBlock.WriteLine (); // empty line for readability
+									 // constructor
+			classBlock.WriteRaw (
+$@"[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+public unsafe {className} ({BlockLiteral} *block) : base (block)
+{{
+	invoker = block->GetDelegateForBlock<{delegateName}> ();
+}}
+"
+			);
+			classBlock.WriteLine (); // empty line for readability
+									 // create method
+			classBlock.WriteRaw (
+$@"[Preserve (Conditional=true)]
+[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+public unsafe static {delegateIdentifier}? Create (IntPtr block)
+{{
+	if (block == IntPtr.Zero)
+		return null;
+	var del = ({delegateIdentifier}) GetExistingManagedDelegate (block);
+	return del ?? new {className} (({BlockLiteral} *) block).Invoke;
+}}
+"
+);
+			classBlock.WriteLine (); // empty line for readability
+									 // invoke method
+			using (var invokeBlock = classBlock.CreateBlock (GetTrampolineNativeInvokeSignature (typeInfo).ToString (), true)) {
+				// retrieve the arguments for the invoker execution. 
+				var argumentSyntax = GetTrampolineNativeInvokeArguments (typeInfo.Delegate!);
+				// write the conversion code for the arguments
+				foreach (var argument in argumentSyntax) {
+					invokeBlock.Write (argument.PreCallConversion, verifyTrivia: false);
+				}
+
+				// execute the native invoker delegate
+				invokeBlock.WriteLine ($"{CallNativeInvokerDelegate (typeInfo.Delegate!, argumentSyntax)}");
+
+				// build any needed post conversion operations after calling the delegate
+				foreach (var argument in argumentSyntax) {
+					invokeBlock.Write (argument.PostCallConversion, verifyTrivia: false);
+				}
+
+				// perform any return conversions needed
+				if (typeInfo.Delegate!.ReturnType.SpecialType != SpecialType.System_Void)
+					invokeBlock.WriteLine ($"return {GetTrampolineNativeInvokeReturnType (typeInfo, Nomenclator.GetReturnVariableName ())};");
+			}
+		}
+
 		return true;
 	}
 
@@ -112,24 +168,21 @@ return CreateBlock (callback);
 	/// </summary>
 	/// <param name="typeInfo">The type of the trampoline to generate.</param>
 	/// <param name="classBuilder">The current tabbed string builder to use.</param>
-	/// <param name="addedDelegates">A hash set with the delegates already added.</param>
-	/// <param name="delegateName">The delegate name.</param>
+	/// <param name="trampolineName">The name of the trampoline.</param>
 	/// <returns>True if the code was generated, false otherwise.</returns>
-	public bool TryEmitInternalDelegate (in TypeInfo typeInfo, TabbedWriter<StringWriter> classBuilder, HashSet<string> addedDelegates,
-		[NotNullWhen (true)] out string? delegateName)
+	public bool TryEmitInternalDelegate (in TypeInfo typeInfo, TabbedWriter<StringWriter> classBuilder, string trampolineName)
 	{
-		delegateName = null;
 		if (typeInfo.Delegate is null)
 			return false;
 
+		var delegateName = Nomenclator.GetTrampolineClassName (trampolineName, Nomenclator.TrampolineClassType.DelegateType);
 		// generate the delegate and get its name, if we already emitted it, skip it
-		var delegateDeclaration = GetTrampolineDelegateDeclaration (typeInfo, out delegateName);
-		if (addedDelegates.Add (delegateName)) {
-			// print the attributes needed for the delegate and the delegate itself
-			classBuilder.WriteLine ("[UnmanagedFunctionPointerAttribute (CallingConvention.Cdecl)]");
-			classBuilder.WriteLine ($"[UserDelegateType (typeof ({typeInfo.GetIdentifierSyntax ()}))]");
-			classBuilder.WriteLine (delegateDeclaration.ToString ());
-		}
+		var delegateDeclaration = GetTrampolineDelegateDeclaration (typeInfo, delegateName);
+
+		// print the attributes needed for the delegate and the delegate itself
+		classBuilder.WriteLine ("[UnmanagedFunctionPointerAttribute (CallingConvention.Cdecl)]");
+		classBuilder.WriteLine ($"[UserDelegateType (typeof ({typeInfo.GetIdentifierSyntax ()}))]");
+		classBuilder.WriteLine (delegateDeclaration.ToString ());
 		return true;
 	}
 
@@ -165,8 +218,6 @@ return CreateBlock (callback);
 	public bool TryEmit (IReadOnlySet<TypeInfo> trampolines,
 		[NotNullWhen (false)] out ImmutableArray<Diagnostic>? diagnostics)
 	{
-		// TODO: actual trampoline generation, for the current time write the using statements, namespace, class
-		// and some comments with the trampolines to emit
 		diagnostics = null;
 
 		// write the using statements
@@ -176,16 +227,13 @@ return CreateBlock (callback);
 		builder.WriteLine ("namespace ObjCRuntime;");
 		builder.WriteLine ();
 
-		// keep track of the already emitted delegates
-		var addedDelegates = new HashSet<string> ();
-
 		using (var classBlock = builder.CreateBlock ($"static partial class {SymbolName}", true)) {
 			classBlock.WriteLine ($"// Generate trampolines for compilation");
 			_ = context.CurrentPlatform;
 			foreach (var info in trampolines) {
-				var trampolineName = nomenclator.GetTrampolineName (info);
+				var trampolineName = Nomenclator.GetTrampolineName (info);
 				// write the delegate declaration
-				if (!TryEmitInternalDelegate (info, classBlock, addedDelegates, out var delegateDeclaration)) {
+				if (!TryEmitInternalDelegate (info, classBlock, trampolineName)) {
 					diagnostics = [];
 					return false;
 				}
@@ -198,7 +246,11 @@ return CreateBlock (callback);
 					return false;
 				}
 
-				classBlock.WriteLine ($"// TODO: generate trampoline for {info.FullyQualifiedName}");
+				if (!TryEmitNativeInvocationClass (info, trampolineName, classBlock)) {
+					diagnostics = [];
+					return false;
+				}
+				// generate the native invoker class
 				classBlock.WriteLine ();
 			}
 		}

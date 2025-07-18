@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.Macios.Generator.DataModel;
 using TypeInfo = Microsoft.Macios.Generator.DataModel.TypeInfo;
@@ -16,22 +17,20 @@ namespace Microsoft.Macios.Generator;
 ///
 /// In this case, the Nomenclator is used to generate the names of the bindings.
 /// </summary>
-class Nomenclator {
+static class Nomenclator {
 
+	const string globalPrefix = "global::";
 	public enum VariableType {
 		BlockLiteral,
 		Handle,
 		NSArray,
 		NSString,
 		NSStringStruct,
+		NullableBlock,
 		PrimitivePointer,
 		StringPointer,
 		BindFrom,
 	}
-
-	// keep track of the generic versions of a trampoline, we will use the fully qualified name
-	// of the type to keep track of the generic versions.
-	readonly Dictionary<string, int> trampolinesGenericVersions = new ();
 
 	/// <summary>
 	/// Returns the name to be used by the extension classes for smart enumerators.
@@ -45,38 +44,35 @@ class Nomenclator {
 	/// </summary>
 	/// <param name="typeInfo">The type info whose trampoline name we require.</param>
 	/// <returns>The name of the trampoline to be used for the given type.</returns>
-	public string GetTrampolineName (TypeInfo typeInfo)
+	public static string GetTrampolineName (TypeInfo typeInfo)
 	{
-		// The following algo is used to generate the same trampoline name that bgen used to generate.
-		// for that we need to understand how bgen generates the name:
-		// old code:
-		//
-		// var trampolineName = typeInfo.Name.Replace ("`", "Arity");
-		// if (typeInfo.IsGenericType) {
-		// 	var gdef = typeInfo.GetGenericTypeDefinition ();
-		//
-		// 	if (!trampolinesGenericVersions.ContainsKey (gdef))
-		// 		trampolinesGenericVersions.Add (gdef, 0);
-		//
-		// 	trampolineName = trampolineName + "V" + trampolinesGenericVersions [gdef]++;
-		// }
-		// return trampolineName;
-
-		// trampoline name will the the name of the type + the arity + the length of the generic types
-		// else it will be the trampoline name 
+		// trampoline name will the name of the type + the arity + the length of the generic types
+		// else it will be the trampoline name. We will replace any . with _ to ensure that the name is valid
+		// when working with nested classes.
+		var typeName = typeInfo.Name.Replace ('.', '_');
 		var trampolineName = typeInfo.IsGenericType
-			? $"{typeInfo.Name}Arity{typeInfo.TypeArguments.Length}"
-			: typeInfo.Name;
+			? $"{typeName}Arity{typeInfo.TypeArguments.Length}"
+			: typeName;
 
 		if (!typeInfo.IsGenericType)
 			return trampolineName;
 
-		// TryAdd will only insert 0 if it is not already present, reduces the dict access to a single operation
-		// rather than a contain + add
-		trampolinesGenericVersions.TryAdd (typeInfo.Name, 0);
-		trampolineName = trampolineName + "V" + trampolinesGenericVersions [typeInfo.Name]++;
-
-		return trampolineName;
+		// trampoline names have to be deterministic. We are going to use the name of the argyment types 
+		// to calculate the name of the trampoline.
+		var sb = new StringBuilder (trampolineName);
+		foreach (var typeArgument in typeInfo.TypeArguments) {
+			// we will use the name of the type argument to generate the name of the trampoline
+			// we will replace any . with _ to ensure that the name is valid when working with nested classes.
+			var argumentName = typeArgument.Replace ('.', '_');
+			if (GeneratorConfiguration.UseGlobalNamespace) {
+				// remove the global alias if it is present
+				argumentName = argumentName.StartsWith (globalPrefix)
+					? argumentName.Substring (globalPrefix.Length)
+					: argumentName;
+			}
+			sb.Append (argumentName);
+		}
+		return sb.ToString ();
 	}
 
 	/// <summary>
@@ -117,6 +113,16 @@ class Nomenclator {
 	}
 
 	/// <summary>
+	/// Return the name of the trampoline class to be used for the given type info.
+	/// This is a convenience overload for <see cref="GetTrampolineClassName(string, TrampolineClassType)"/>.
+	/// </summary>
+	/// <param name="typeInfo">The type info for which to get the trampoline class name.</param>
+	/// <param name="trampolineClassType">The type of class to be generated.</param>
+	/// <returns>The name to be used by the generated class.</returns>
+	public static string GetTrampolineClassName (in TypeInfo typeInfo, TrampolineClassType trampolineClassType)
+		=> GetTrampolineClassName (GetTrampolineName (typeInfo), trampolineClassType);
+
+	/// <summary>
 	/// Returns the name of the aux variable that would have needed for the given parameter. Use the
 	/// variable type to name it.
 	/// </summary>
@@ -132,6 +138,7 @@ class Nomenclator {
 			VariableType.NSArray => $"nsa_{cleanedName}",
 			VariableType.NSString => $"ns{cleanedName}",
 			VariableType.NSStringStruct => $"_s{cleanedName}",
+			VariableType.NullableBlock => $"block_{cleanedName}",
 			VariableType.PrimitivePointer => $"converted_{cleanedName}",
 			VariableType.StringPointer => $"_p{cleanedName}",
 			VariableType.BindFrom => $"nsb_{cleanedName}",
@@ -167,6 +174,12 @@ class Nomenclator {
 	/// </summary>
 	/// <returns>The name of the variable used to store delegates in trampolines.</returns>
 	public static string GetTrampolineDelegateVariableName () => "del";
+
+	/// <summary>
+	/// Returns the name of the variable used to store the native invoker in trampolines.
+	/// </summary>
+	/// <returns>The name of the native invoker variable.</returns>
+	public static string GetNativeInvokerVariableName () => "invoker";
 
 	/// <summary>
 	/// Return the name of the trampoline block parameter. This is the name of the parameter that will be containing the
@@ -206,4 +219,32 @@ class Nomenclator {
 	/// </summary>
 	/// <returns>The method name to be used.</returns>
 	public static string GetTrampolineDelegatePointerVariableName () => "trampoline";
+
+	/// <summary>
+	/// Returns the name used for the block literal type.
+	/// </summary>
+	public static string GetBlockLiteralName () => "BlockLiteral";
+
+	/// <summary>
+	/// Generates the name for the backing field of a property.
+	/// </summary>
+	/// <param name="propertyName">The name of the property.</param>
+	/// <param name="isStatic">A value indicating whether the property is static.</param>
+	/// <returns>The name of the backing field for the property.</returns>
+	public static string GetPropertyBackingFieldName (string propertyName, bool isStatic)
+		=> $"__mt_{propertyName}_var{(isStatic ? "_static" : "")}";
+
+	/// <summary>
+	/// Generates the name for a parameter in a task-based async method's callback.
+	/// </summary>
+	/// <param name="parameterName">The original name of the parameter.</param>
+	/// <returns>The name for the callback parameter.</returns>
+	public static string GetTaskCallbackParameterName (string parameterName)
+		=> $"_cb{parameterName}";
+
+	/// <summary>
+	/// Gets the name for the TaskCompletionSource variable used in async methods.
+	/// </summary>
+	/// <returns>The name of the TaskCompletionSource variable.</returns>
+	public static string GetTaskCompletionSourceName () => "_tcs";
 }

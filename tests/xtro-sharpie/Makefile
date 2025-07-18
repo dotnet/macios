@@ -67,6 +67,7 @@ COMMON_IGNORED_FRAMEWORKS = \
 
 IGNORED_IOS_FRAMEWORKS = \
 	$(COMMON_IGNORED_FRAMEWORKS) \
+	ClockKit \
 
 IGNORED_TVOS_FRAMEWORKS = \
 	$(COMMON_IGNORED_FRAMEWORKS) \
@@ -150,6 +151,10 @@ gen-$(3): $(3)-$$($(2)_SDK_VERSION).g.cs
 gen-all:: gen-$(3)
 endef
 $(foreach platform,$(XTRO_DOTNET_PLATFORMS),$(eval $(call DotNetAssembly,$(platform),$(shell echo $(platform) | tr a-z A-Z),$(shell echo $(platform) | tr A-Z a-z))))
+
+ifeq ($(XCODE_IS_STABLE),false)
+all: gen-all
+endif
 
 pch-info.proj: Makefile
 	$(Q) rm -f $@.tmp

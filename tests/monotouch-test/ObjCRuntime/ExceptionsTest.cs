@@ -128,8 +128,6 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			Assert.Ignore ("This test only works in debug mode in the simulator.");
 #endif
 
-			TestRuntime.AssertNotARM64Desktop ("Exception handling doesn't work on ARM64 desktop: https://github.com/dotnet/macios/issues/16264");
-
 			var hasDebugger = global::System.Diagnostics.Debugger.IsAttached;
 
 			InstallHandlers ();

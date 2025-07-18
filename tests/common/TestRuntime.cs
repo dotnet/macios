@@ -1028,6 +1028,15 @@ partial class TestRuntime {
 		}
 	}
 
+	/// <summary>Calls Assert.Ignore if we're running on an earlier OS version than the highest we support.</summary>
+	public static void AssertMatchingOSVersionAndSdkVersion ()
+	{
+		var sdk = new Version (Constants.SdkVersion);
+		if (CheckSystemVersion (CurrentPlatform, sdk.Major, sdk.Minor, sdk.Build == -1 ? 0 : sdk.Build))
+			return;
+		Assert.Ignore ($"This test only executes using the latest OS version ({sdk.Major}.{sdk.Minor})");
+	}
+
 	// This method returns true if:
 	// system version >= specified version
 	// AND
@@ -1197,6 +1206,26 @@ partial class TestRuntime {
 			return true;
 #else
 			return Runtime.Arch == Arch.SIMULATOR;
+#endif
+		}
+	}
+
+	public static bool IsiPad {
+		get {
+#if __MACOS__
+			return false;
+#else
+			return UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Pad;
+#endif
+		}
+	}
+
+	public static bool IsiPhone {
+		get {
+#if __MACOS__
+			return false;
+#else
+			return UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone;
 #endif
 		}
 	}
@@ -1453,10 +1482,13 @@ partial class TestRuntime {
 #endif
 	}
 
-	public static byte GetFlags (NSObject obj)
+	public static uint GetFlags (NSObject obj)
 	{
-		const string fieldName = "actual_flags";
-		return (byte) typeof (NSObject).GetField (fieldName, BindingFlags.Instance | BindingFlags.GetField | BindingFlags.NonPublic)!.GetValue (obj)!;
+		const string name = "flags";
+		var prop = typeof (NSObject).GetProperty (name, BindingFlags.Instance | BindingFlags.NonPublic);
+		if (prop is null)
+			throw new InvalidOperationException ($"Unable to find the property '{name}' in NSObject.");
+		return (uint) prop.GetValue (obj)!;
 	}
 
 	// Determine if linkall was enabled by checking if an unused class in this assembly is still here.

@@ -29,9 +29,7 @@ struct _MonoObject {
 
 struct Managed_NSObject {
 	MonoObject obj;
-	id handle;
-	void *class_handle;
-	uint8_t flags;
+	struct NSObjectData *data;
 };
 
 typedef struct {

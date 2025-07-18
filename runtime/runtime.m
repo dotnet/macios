@@ -121,6 +121,7 @@ struct Trampolines {
 	void* set_gchandle_tramp;
 	void* get_flags_tramp;
 	void* set_flags_tramp;
+	void* retainWeakReference_tramp;
 };
 
 enum InitializationFlags : int {
@@ -180,6 +181,7 @@ static struct Trampolines trampolines = {
 	(void *) &xamarin_set_gchandle_trampoline,
 	(void *) &xamarin_get_flags_trampoline,
 	(void *) &xamarin_set_flags_trampoline,
+	(void *) &xamarin_retainWeakReference_trampoline,
 };
 
 static struct InitializationOptions options = { 0 };
@@ -201,30 +203,41 @@ xamarin_get_nsobject_handle (MonoObject *obj)
 	return rv;
 #else
 	struct Managed_NSObject *mobj = (struct Managed_NSObject *) obj;
-	return mobj->handle;
+	return mobj->data->handle;
 #endif
 }
 
-uint8_t
+uint32_t
 xamarin_get_nsobject_flags (MonoObject *obj)
 {
 #if defined (CORECLR_RUNTIME)
 	return xamarin_get_flags_for_nsobject (obj->gchandle);
 #else
 	struct Managed_NSObject *mobj = (struct Managed_NSObject *) obj;
-	return mobj->flags;
+	if (mobj->data)
+		return mobj->data->flags;
+	return NSObjectFlagsDisposed;
 #endif
 }
 
 void
-xamarin_set_nsobject_flags (MonoObject *obj, uint8_t flags)
+xamarin_set_nsobject_flags (MonoObject *obj, uint32_t flags)
 {
 #if defined (CORECLR_RUNTIME)
 	xamarin_set_flags_for_nsobject (obj->gchandle, flags);
 #else
 	struct Managed_NSObject *mobj = (struct Managed_NSObject *) obj;
-	mobj->flags = flags;
+	mobj->data->flags = flags;
 #endif
+}
+
+uint32_t
+xamarin_get_nsobject_id_flags (id obj)
+{
+	NSObjectData *data = xamarin_get_nsobject_data (obj);
+	if (data)
+		return data->flags;
+	return 0;
 }
 
 MonoType *
@@ -398,39 +411,40 @@ xamarin_get_nullable_type (MonoClass *cls, GCHandle *exception_gchandle)
 // compiler warning (no 'xamarinGetGChandle' selector found).
 @protocol XamarinExtendedObject
 -(GCHandle) xamarinGetGCHandle;
--(bool) xamarinSetGCHandle: (GCHandle) gc_handle flags: (enum XamarinGCHandleFlags) flags;
--(enum XamarinGCHandleFlags) xamarinGetFlags;
--(void) xamarinSetFlags: (enum XamarinGCHandleFlags) flags;
+-(bool) xamarinSetGCHandle: (GCHandle) gc_handle flags: (enum XamarinGCHandleFlags) flags data: (struct NSObjectData *) data;
+-(enum XamarinGCHandleFlags) xamarinGetGCHandleFlags;
+-(void) xamarinSetGCHandleFlags: (enum XamarinGCHandleFlags) gchandle_flags;
+-(struct NSObjectData*) xamarinGetNSObjectData;
 @end
 
 static inline GCHandle
-get_gchandle_safe (id self, enum XamarinGCHandleFlags *flags)
+get_gchandle_safe (id self, enum XamarinGCHandleFlags *gchandle_flags)
 {
 	id<XamarinExtendedObject> xself = self;
 	GCHandle rv = [xself xamarinGetGCHandle];
-	if (flags)
-		*flags = [xself xamarinGetFlags];
+	if (gchandle_flags)
+		*gchandle_flags = [xself xamarinGetGCHandleFlags];
 	return rv;
 }
 
 static inline bool
-set_gchandle (id self, GCHandle gc_handle, enum XamarinGCHandleFlags flags)
+set_gchandle (id self, GCHandle gc_handle, enum XamarinGCHandleFlags flags, struct NSObjectData *data)
 {
 	bool rv;
 
 	id<XamarinExtendedObject> xself = self;
-	rv = [xself xamarinSetGCHandle: gc_handle flags: flags];
+	rv = [xself xamarinSetGCHandle: gc_handle flags: flags data: data];
 
 	return rv;
 }
 
 static inline bool
-set_gchandle_safe (id self, GCHandle gc_handle, enum XamarinGCHandleFlags flags)
+set_gchandle_safe (id self, GCHandle gc_handle, enum XamarinGCHandleFlags flags, struct NSObjectData *data)
 {
 	bool rv;
 
 	id<XamarinExtendedObject> xself = self;
-	rv = [xself xamarinSetGCHandle: gc_handle flags: flags];
+	rv = [xself xamarinSetGCHandle: gc_handle flags: flags data: data];
 
 	return rv;
 }
@@ -445,13 +459,13 @@ get_gchandle_without_flags (id self)
 }
 
 static inline GCHandle
-get_gchandle_with_flags (id self, enum XamarinGCHandleFlags* flags)
+get_gchandle_with_flags (id self, enum XamarinGCHandleFlags* gchandle_flags)
 {
 	GCHandle rv;
 	id<XamarinExtendedObject> xself = self;
 	rv = (GCHandle) [xself xamarinGetGCHandle];
-	if (flags != NULL)
-		*flags = [xself xamarinGetFlags];
+	if (gchandle_flags != NULL)
+		*gchandle_flags = [xself xamarinGetGCHandleFlags];
 	return rv;
 }
 
@@ -460,16 +474,16 @@ get_flags (id self)
 {
 	enum XamarinGCHandleFlags rv;
 	id<XamarinExtendedObject> xself = self;
-	rv = [xself xamarinGetFlags];
+	rv = [xself xamarinGetGCHandleFlags];
 
 	return rv;
 }
 
 static inline void
-set_flags_safe (id self, enum XamarinGCHandleFlags flags)
+set_gchandle_flags_safe (id self, enum XamarinGCHandleFlags flags)
 {
 	id<XamarinExtendedObject> xself = self;
-	[xself xamarinSetFlags: flags];
+	[xself xamarinSetGCHandleFlags: flags];
 }
 
 static inline enum XamarinGCHandleFlags
@@ -477,7 +491,17 @@ get_flags_safe (id self)
 {
 	enum XamarinGCHandleFlags rv;
 	id<XamarinExtendedObject> xself = self;
-	rv = [xself xamarinGetFlags];
+	rv = [xself xamarinGetGCHandleFlags];
+
+	return rv;
+}
+
+struct NSObjectData *
+xamarin_get_nsobject_data (id self)
+{
+	struct NSObjectData * rv;
+	id<XamarinExtendedObject> xself = self;
+	rv = [xself xamarinGetNSObjectData];
 
 	return rv;
 }
@@ -698,7 +722,7 @@ xamarin_type_get_full_name (MonoType *type, GCHandle *exception_gchandle)
 // #define DEBUG_TOGGLEREF 1
 
 MonoToggleRefStatus
-xamarin_gc_toggleref_callback (uint8_t flags, id handle, xamarin_get_handle_func get_handle, MonoObject *info)
+xamarin_gc_toggleref_callback (uint32_t flags, id handle, xamarin_get_handle_func get_handle, MonoObject *info)
 {
 	MonoToggleRefStatus res;
 
@@ -893,7 +917,8 @@ object_queued_for_finalization (MonoObject *object)
 	/* This is called with the GC lock held, so it can only use signal-safe code */
 	struct Managed_NSObject *obj = (struct Managed_NSObject *) object;
 	//PRINT ("In finalization response for %s.%s %p (handle: %p class_handle: %p flags: %i)\n", 
-	obj->flags |= NSObjectFlagsInFinalizerQueue;
+	if (obj->data)
+		obj->data->flags |= NSObjectFlagsInFinalizerQueue;
 }
 #endif // !defined (CORECLR_RUNTIME)
 
@@ -1648,7 +1673,7 @@ xamarin_switch_gchandle (id self, bool to_weak)
 		// null, because the target would be collected.
 		xamarin_set_nsobject_flags (managed_object, xamarin_get_nsobject_flags (managed_object) | NSObjectFlagsHasManagedRef);
 	}
-	set_gchandle (self, new_gchandle, flags);
+	set_gchandle (self, new_gchandle, flags, NULL);
 
 	MONO_THREAD_DETACH;
 
@@ -1668,7 +1693,7 @@ xamarin_free_gchandle (id self, GCHandle gchandle)
 #endif
 		xamarin_gchandle_free (gchandle);
 
-		set_gchandle (self, INVALID_GCHANDLE, XamarinGCHandleFlags_None);
+		set_gchandle (self, INVALID_GCHANDLE, XamarinGCHandleFlags_None, NULL);
 	} else {
 #if defined(DEBUG_REF_COUNTING)
 		PRINT ("\tNo GCHandle for the object %p\n", self);
@@ -1679,19 +1704,19 @@ xamarin_free_gchandle (id self, GCHandle gchandle)
 void
 xamarin_clear_gchandle (id self)
 {
-	set_gchandle (self, INVALID_GCHANDLE, XamarinGCHandleFlags_None);
+	set_gchandle (self, INVALID_GCHANDLE, XamarinGCHandleFlags_None, NULL);
 }
 
 bool
 xamarin_set_gchandle_with_flags (id self, GCHandle gchandle, enum XamarinGCHandleFlags flags)
 {
-	return set_gchandle (self, gchandle, flags);
+	return set_gchandle (self, gchandle, flags, NULL);
 }
 
 bool
-xamarin_set_gchandle_with_flags_safe (id self, GCHandle gchandle, enum XamarinGCHandleFlags flags)
+xamarin_set_gchandle_with_flags_safe (id self, GCHandle gchandle, enum XamarinGCHandleFlags flags, struct NSObjectData *data)
 {
-	return set_gchandle_safe (self, gchandle, flags);
+	return set_gchandle_safe (self, gchandle, flags, data);
 }
 
 #if defined(DEBUG_REF_COUNTING)
@@ -1740,7 +1765,7 @@ xamarin_release_managed_ref (id self, bool user_type)
 
 	if (user_type) {
 		/* clear MANAGED_REF_BIT */
-		set_flags_safe (self, (enum XamarinGCHandleFlags) (get_flags_safe (self) & ~XamarinGCHandleFlags_HasManagedRef));
+		set_gchandle_flags_safe (self, (enum XamarinGCHandleFlags) (get_flags_safe (self) & ~XamarinGCHandleFlags_HasManagedRef));
 	} else {
 		//
 		// This waypoint (lock+unlock) is needed so that we can safely call retainCount in the
@@ -2842,7 +2867,7 @@ xamarin_gchandle_unwrap (GCHandle handle)
 bool
 xamarin_is_user_type (Class cls)
 {
-	Method setGCHandle = class_getInstanceMethod (cls, @selector(xamarinSetGCHandle:flags:));
+	Method setGCHandle = class_getInstanceMethod (cls, @selector(xamarinSetGCHandle:flags:data:));
 	return setGCHandle != NULL;
 }
 
@@ -2962,7 +2987,7 @@ XamarinObject::~XamarinObject ()
  * calling xamarinGetGCHandle. TODO: verify if this is really faster than
  * checking the type first.
  *
- * Do not add a xamarinSetGCHandle:flags: method, since we use the presence
+ * Do not add a xamarinSetGCHandle:flags:data: method, since we use the presence
  * of it to detect whether a particular type is a user type or not
  * (see Runtime.IsUserType).
  */
@@ -2973,9 +2998,14 @@ XamarinObject::~XamarinObject ()
 	return INVALID_GCHANDLE;
 }
 
--(enum XamarinGCHandleFlags) xamarinGetFlags
+-(enum XamarinGCHandleFlags) xamarinGetGCHandleFlags
 {
 	return XamarinGCHandleFlags_None;
+}
+
+-(struct NSObjectData*) xamarinGetNSObjectData
+{
+	return NULL;
 }
 @end
 

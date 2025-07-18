@@ -415,6 +415,11 @@ namespace Xamarin.Tests {
 			return GetVariable (variableName, variableName + " not found");
 		}
 
+		public static Version GetDotNetVersion ()
+		{
+			return Version.Parse (DotNetTfm.Replace ("net", ""));
+		}
+
 		public static string GetDotNetRoot ()
 		{
 			if (IsVsts) {
@@ -526,6 +531,14 @@ namespace Xamarin.Tests {
 		public static string GetBaseLibrary (TargetFramework targetFramework)
 		{
 			return Path.Combine (GetRefDirectory (targetFramework), GetBaseLibraryName (targetFramework));
+		}
+
+		public static IList<string> GetAllRuntimeIdentifiers ()
+		{
+			var rv = new List<string> ();
+			foreach (var platform in GetAllPlatforms ())
+				rv.AddRange (GetRuntimeIdentifiers (platform));
+			return rv;
 		}
 
 		public static IList<string> GetRuntimeIdentifiers (ApplePlatform platform)

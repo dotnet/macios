@@ -42,8 +42,9 @@ namespace Xamarin.MacDev.Tasks {
 								return Path.Combine (frameworkPath, bundleExecutable);
 							}
 						}
-					} catch (Exception) {
-						// Ignore exceptions from malformed plist files and fall back to default behavior
+					} catch (Exception ex) {
+						// Log exceptions from malformed plist files and fall back to default behavior
+						Log.LogMessage (MessageImportance.Low, $"Failed to parse Info.plist for framework '{frameworkPath}': {ex.Message}");
 					}
 					break; // Found Info.plist but no CFBundleExecutable, stop looking
 				}

@@ -8,6 +8,8 @@ using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 using Xamarin.Localization.MSBuild;
 
+#nullable enable
+
 namespace Xamarin.MacDev.Tasks {
 	public class PackLibraryResources : XamarinTask, ICancelableTask {
 		#region Inputs

@@ -10,6 +10,8 @@ using Xamarin.Localization.MSBuild;
 using Xamarin.Messaging.Build.Client;
 using Xamarin.Utils;
 
+#nullable enable
+
 namespace Xamarin.MacDev.Tasks {
 	public class IBTool : XcodeCompilerToolTask, ICancelableTask {
 		static readonly string [] WatchAppExtensions = { "-glance.plist", "-notification.plist" };

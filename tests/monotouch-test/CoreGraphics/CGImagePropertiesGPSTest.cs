@@ -81,6 +81,7 @@ namespace monotouchtest.CoreGraphics {
 			// This test mainly verifies the property access doesn't throw exceptions
 			var gps = imageProps.Gps;
 			// gps may be null for PNG files without GPS data, which is expected
+			Assert.That (gps, Is.Null, "GPS data should be null for PNG files without GPS data");
 		}
 
 		[Test]

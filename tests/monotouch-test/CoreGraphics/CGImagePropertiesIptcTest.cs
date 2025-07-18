@@ -60,6 +60,7 @@ namespace monotouchtest.CoreGraphics {
 			// This test mainly verifies the property access doesn't throw exceptions
 			var iptc = imageProps.Iptc;
 			// iptc may be null for PNG files without IPTC data, which is expected
+			Assert.That (iptc, Is.Null, "IPTC data should be null for PNG files without IPTC data");
 		}
 
 		[Test]

@@ -63,6 +63,7 @@ namespace monotouchtest.CoreGraphics {
 			// This test mainly verifies the property access doesn't throw exceptions
 			var exif = imageProps.Exif;
 			// exif may be null for PNG files without EXIF data, which is expected
+			Assert.That (exif, Is.Null, "EXIF data should be null for PNG files without EXIF data");
 		}
 
 		[Test]
@@ -108,6 +109,7 @@ namespace monotouchtest.CoreGraphics {
 			// This test verifies it doesn't throw when accessed
 			var isoRatings = exif.ISOSpeedRatings;
 			// Should not throw, may be null initially
+			Assert.That (isoRatings, Is.Null, "ISOSpeedRatings should be null initially");
 		}
 
 		[Test]

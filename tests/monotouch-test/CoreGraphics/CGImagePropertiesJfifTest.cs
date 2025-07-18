@@ -54,6 +54,7 @@ namespace monotouchtest.CoreGraphics {
 			// This test mainly verifies the property access doesn't throw exceptions
 			var jfif = imageProps.Jfif;
 			// jfif will be null for PNG files, which is expected
+			Assert.That (jfif, Is.Null, "JFIF data should be null for PNG files");
 		}
 
 		[Test]

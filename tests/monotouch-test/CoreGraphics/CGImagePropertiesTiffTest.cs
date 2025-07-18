@@ -57,6 +57,7 @@ namespace monotouchtest.CoreGraphics {
 			// This test mainly verifies the property access doesn't throw exceptions
 			var tiff = imageProps.Tiff;
 			// tiff may be null for PNG files, which is expected
+			Assert.That (tiff, Is.Null, "TIFF data should be null for PNG files");
 		}
 
 		[Test]

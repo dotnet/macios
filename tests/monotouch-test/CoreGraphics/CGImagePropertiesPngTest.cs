@@ -59,6 +59,7 @@ namespace monotouchtest.CoreGraphics {
 			// For a PNG file, the Png property should be accessible
 			var png = imageProps.Png;
 			// png may be null or contain properties depending on the PNG file
+			Assert.That (png, Is.Not.Null, "PNG data should not be null for PNG files");
 		}
 
 		[Test]

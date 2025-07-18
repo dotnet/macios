@@ -38,11 +38,31 @@ public class BindingSyntaxFactoryRuntimeTests {
 		Assert.Equal ("this.Handle", declaration.ToFullString ());
 	}
 
+	[Theory]
+	[InlineData ("self", "self.Handle")]
+	[InlineData ("instance", "instance.Handle")]
+	[InlineData ("myObject", "myObject.Handle")]
+	void ThisHandleWithParameterTests (string parameterName, string expected)
+	{
+		var declaration = ThisHandle (parameterName);
+		Assert.Equal (expected, declaration.ToFullString ());
+	}
+
 	[Fact]
 	void ThisSuperHandleTests ()
 	{
 		var declaration = ThisSuperHandle ();
 		Assert.Equal ("this.SuperHandle", declaration.ToFullString ());
+	}
+
+	[Theory]
+	[InlineData ("self", "self.SuperHandle")]
+	[InlineData ("instance", "instance.SuperHandle")]
+	[InlineData ("myObject", "myObject.SuperHandle")]
+	void ThisSuperHandleWithParameterTests (string parameterName, string expected)
+	{
+		var declaration = ThisSuperHandle (parameterName);
+		Assert.Equal (expected, declaration.ToFullString ());
 	}
 
 	class TestDataMessagingInvocationTests : IEnumerable<object []> {
@@ -54,7 +74,17 @@ public class BindingSyntaxFactoryRuntimeTests {
 				"string",
 				ImmutableArray<ArgumentSyntax>.Empty,
 				false,
+				null!,
 				$"{Global ("ObjCRuntime.Messaging")}.IntPtr_objc_msgSend (this.Handle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"string\"))"
+			];
+			
+			yield return [
+				"IntPtr_objc_msgSend",
+				"string",
+				ImmutableArray<ArgumentSyntax>.Empty,
+				false,
+				"self",
+				$"{Global ("ObjCRuntime.Messaging")}.IntPtr_objc_msgSend (self.Handle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"string\"))"
 			];
 
 			yield return [
@@ -62,6 +92,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 				"string",
 				ImmutableArray<ArgumentSyntax>.Empty,
 				true,
+				null!,
 				$"{Global ("ObjCRuntime.Messaging")}.IntPtr_objc_msgSend (this.SuperHandle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"string\"))"
 			];
 
@@ -74,7 +105,17 @@ public class BindingSyntaxFactoryRuntimeTests {
 				"string",
 				args,
 				false,
+				null!,
 				$"{Global ("ObjCRuntime.Messaging")}.IntPtr_objc_msgSend (this.Handle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"string\"), arg1)"
+			];
+			
+			yield return [
+				"IntPtr_objc_msgSend",
+				"string",
+				args,
+				false,
+				"example",
+				$"{Global ("ObjCRuntime.Messaging")}.IntPtr_objc_msgSend (example.Handle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"string\"), arg1)"
 			];
 
 			yield return [
@@ -82,6 +123,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 				"string",
 				args,
 				true,
+				null!,
 				$"{Global ("ObjCRuntime.Messaging")}.IntPtr_objc_msgSend (this.SuperHandle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"string\"), arg1)"
 			];
 
@@ -96,7 +138,17 @@ public class BindingSyntaxFactoryRuntimeTests {
 				"string",
 				args,
 				false,
+				null!,
 				$"{Global ("ObjCRuntime.Messaging")}.IntPtr_objc_msgSend (this.Handle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"string\"), arg1, arg2, arg3)"
+			];
+			
+			yield return [
+				"IntPtr_objc_msgSend",
+				"string",
+				args,
+				false,
+				"multi",
+				$"{Global ("ObjCRuntime.Messaging")}.IntPtr_objc_msgSend (multi.Handle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"string\"), arg1, arg2, arg3)"
 			];
 
 			yield return [
@@ -104,6 +156,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 				"string",
 				args,
 				true,
+				null!,
 				$"{Global ("ObjCRuntime.Messaging")}.IntPtr_objc_msgSend (this.SuperHandle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"string\"), arg1, arg2, arg3)"
 			];
 
@@ -117,6 +170,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 				"string",
 				args,
 				false,
+				null!,
 				$"{Global ("ObjCRuntime.Messaging")}.IntPtr_objc_msgSend (this.Handle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"string\"), &errorValue)"
 			];
 
@@ -125,6 +179,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 				"string",
 				args,
 				true,
+				null!,
 				$"{Global ("ObjCRuntime.Messaging")}.IntPtr_objc_msgSend (this.SuperHandle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"string\"), &errorValue)"
 			];
 
@@ -136,9 +191,9 @@ public class BindingSyntaxFactoryRuntimeTests {
 	[Theory]
 	[ClassData (typeof (TestDataMessagingInvocationTests))]
 	void MessagingInvocationTests (string objcMsgSendMethod, string selector, ImmutableArray<ArgumentSyntax> parameters,
-		bool isSuper, string expectedDeclaration)
+		bool isSuper, string? thisParameter, string? expectedDeclaration)
 	{
-		var declaration = MessagingInvocation (objcMsgSendMethod, selector, parameters, isSuper);
+		var declaration = MessagingInvocation (objcMsgSendMethod, selector, parameters, isSuper, thisParameter);
 		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
 	}
 

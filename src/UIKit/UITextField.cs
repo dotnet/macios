@@ -45,12 +45,10 @@ namespace UIKit {
 	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/MonoCatalog-MonoDevelop/">monocatalog</related>
 	public delegate bool UITextFieldCondition (UITextField textField);
 
+	/// <summary>A delegate used to respond to changes on the UITextField.</summary>
 	/// <param name="textField">To be added.</param>
-	///     <param name="ranges">To be added.</param>
-	///     <param name="replacementString">To be added.</param>
-	///     <summary>A delegate used to respond to changes on the UITextField.</summary>
-	///     <returns>To be added.</returns>
-	///     <remarks>To be added.</remarks>
+	/// <param name="ranges">To be added.</param>
+	/// <param name="replacementString">To be added.</param>
 	public delegate bool UITextFieldChanges (UITextField textField, NSValue [] ranges, string replacementString);
 
 	public partial class UITextField : IUITextInputTraits {

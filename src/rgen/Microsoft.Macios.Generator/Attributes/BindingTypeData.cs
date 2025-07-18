@@ -14,7 +14,7 @@ readonly struct BindingTypeData : IEquatable<BindingTypeData> {
 	/// Original name of the ObjC class or protocol.
 	/// </summary>
 	public string? Name { get; }
-	
+
 	/// <summary>
 	/// Initializes a new instance of the <see cref="BindingTypeData"/> struct.
 	/// </summary>
@@ -23,7 +23,7 @@ readonly struct BindingTypeData : IEquatable<BindingTypeData> {
 	{
 		Name = name;
 	}
-	
+
 	/// <summary>
 	/// Try to parse the attribute data to retrieve the information of an ExportAttribute&lt;T&gt;.
 	/// </summary>
@@ -148,7 +148,7 @@ readonly struct BindingTypeData<T> : IEquatable<BindingTypeData<T>> where T : En
 	/// The visibility of the string constructor for a core image filter.
 	/// </summary>
 	public MethodAttributes StringCtorVisibility { get; init; } = MethodAttributes.PrivateScope;
-	
+
 	/// <summary>
 	/// The type that the category extends.
 	/// </summary>
@@ -183,7 +183,7 @@ readonly struct BindingTypeData<T> : IEquatable<BindingTypeData<T>> where T : En
 		Name = name;
 		Flags = flags;
 	}
-	
+
 	/// <summary>
 	/// Initializes a new instance of the <see cref="BindingTypeData"/> struct for a category.
 	/// </summary>
@@ -221,9 +221,9 @@ readonly struct BindingTypeData<T> : IEquatable<BindingTypeData<T>> where T : En
 		T? flags = default;
 		// category related data
 		TypeInfo? categoryType = null;
-		
+
 		// check if we have a category type, we can do that by checking the type of the flag
-		var isCategory = typeof(T) == typeof(ObjCBindings.Category); 
+		var isCategory = typeof (T) == typeof (ObjCBindings.Category);
 
 		switch (count) {
 		case 0:
@@ -275,7 +275,7 @@ readonly struct BindingTypeData<T> : IEquatable<BindingTypeData<T>> where T : En
 			data = CreateClassBindingData (flags, name, errorDomain, libraryName, defaultCtorVisibility, intPtrCtorVisibility, stringCtorVisibility);
 			return true;
 		}
-		
+
 		return false;
 	}
 
@@ -290,8 +290,8 @@ readonly struct BindingTypeData<T> : IEquatable<BindingTypeData<T>> where T : En
 	/// <param name="intPtrCtorVisibility">The visibility of the IntPtr constructor.</param>
 	/// <param name="stringCtorVisibility">The visibility of the string constructor.</param>
 	/// <returns>A new instance of <see cref="BindingTypeData{T}"/>.</returns>
-	static BindingTypeData<T> CreateClassBindingData (T? flags, string? name, string? errorDomain, 
-		string? libraryName, MethodAttributes defaultCtorVisibility, MethodAttributes intPtrCtorVisibility, 
+	static BindingTypeData<T> CreateClassBindingData (T? flags, string? name, string? errorDomain,
+		string? libraryName, MethodAttributes defaultCtorVisibility, MethodAttributes intPtrCtorVisibility,
 		MethodAttributes stringCtorVisibility)
 	{
 		return flags is not null
@@ -310,7 +310,7 @@ readonly struct BindingTypeData<T> : IEquatable<BindingTypeData<T>> where T : En
 				StringCtorVisibility = stringCtorVisibility,
 			};
 	}
-	
+
 	/// <summary>
 	/// Creates a new instance of <see cref="BindingTypeData{T}"/> for a category.
 	/// </summary>
@@ -336,7 +336,7 @@ readonly struct BindingTypeData<T> : IEquatable<BindingTypeData<T>> where T : En
 	/// <param name="intPtrCtorVisibility">The visibility of the IntPtr constructor.</param>
 	/// <param name="stringCtorVisibility">The visibility of the string constructor.</param>
 	/// <returns>True if the data was parsed.</returns>
-	static bool TryExtractClassNamedParameters (AttributeData attributeData, 
+	static bool TryExtractClassNamedParameters (AttributeData attributeData,
 		out string? name, ref T? flags, out string? errorDomain, out string? libraryName,
 		out MethodAttributes defaultCtorVisibility, out MethodAttributes intPtrCtorVisibility,
 		out MethodAttributes stringCtorVisibility)
@@ -347,7 +347,7 @@ readonly struct BindingTypeData<T> : IEquatable<BindingTypeData<T>> where T : En
 		defaultCtorVisibility = MethodAttributes.PrivateScope;
 		intPtrCtorVisibility = MethodAttributes.PrivateScope;
 		stringCtorVisibility = MethodAttributes.PrivateScope;
-		
+
 		foreach (var (paramName, value) in attributeData.NamedArguments) {
 			switch (paramName) {
 			case "Name":
@@ -460,6 +460,6 @@ readonly struct BindingTypeData<T> : IEquatable<BindingTypeData<T>> where T : En
 	/// <inheritdoc />
 	public override string ToString ()
 	{
-		return $"{{ Name: '{Name}', CategoryType: '{CategoryType?.ToString () ?? "null" }', Flags: '{Flags}' }}";
+		return $"{{ Name: '{Name}', CategoryType: '{CategoryType?.ToString () ?? "null"}', Flags: '{Flags}' }}";
 	}
 }

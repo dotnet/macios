@@ -397,7 +397,14 @@ if (IsDirectBinding) {{
 
 			var asyncMethod = method.ToAsync ();
 			using (var methodBlock = classBlock.CreateBlock (asyncMethod.ToDeclaration ().ToString (), block: true)) {
-				methodBlock.WriteLine ("throw new NotImplementedException ();");
+				// we need to create the tcs for the the async method
+				var tcsType = asyncMethod.ReturnType.ToTaskCompletionSource ();
+				var tcsName = Nomenclator.GetTaskCompletionSourceName ();
+				methodBlock.WriteRaw (
+$@"{tcsType.GetIdentifierSyntax ()} {tcsName} = new ();
+{ExpressionStatement (ExecuteSyncCall (method))}
+return {tcsName}.Task;
+");
 			}
 		}
 	}

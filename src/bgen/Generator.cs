@@ -1001,7 +1001,7 @@ public partial class Generator : IMemberGatherer {
 		try {
 			sb.Append (ParameterGetMarshalType (new MarshalInfo (this, mi) { IsAligned = aligned }));
 		} catch (BindingException ex) {
-			throw new BindingException (1078, ex.Error, ex, ex.Message, mi.Name);
+			throw new BindingException (1078, ex.Error, ex, ex.Message, $"{mi.DeclaringType}.{mi.Name}");
 		}
 
 		sb.Append ("_");

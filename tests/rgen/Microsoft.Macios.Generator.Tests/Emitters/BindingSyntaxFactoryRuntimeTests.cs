@@ -469,6 +469,55 @@ public class BindingSyntaxFactoryRuntimeTests {
 	}
 
 
+	class TestDataNewWithArgumentsTests : IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
+		{
+			// empty constructor
+			yield return [
+				ImmutableArray<ArgumentSyntax>.Empty,
+				"new ()"
+			];
+
+			// single param
+			yield return [
+				ImmutableArray.Create (
+					Argument (IdentifierName ("arg1"))
+				),
+				"new (arg1)"
+			];
+
+			// several params
+			yield return [
+				ImmutableArray.Create (
+					Argument (IdentifierName ("arg1")),
+					Argument (IdentifierName ("arg2"))
+				),
+				"new (arg1, arg2)"
+			];
+
+			// out params
+			yield return [
+				ImmutableArray.Create (
+					Argument (IdentifierName ("arg1")),
+					Argument (IdentifierName ("arg2"))
+						.WithRefOrOutKeyword (Token (SyntaxKind.OutKeyword))
+						.NormalizeWhitespace ()
+				),
+				"new (arg1, out arg2)"
+			];
+		}
+
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
+	}
+
+	[Theory]
+	[ClassData (typeof (TestDataNewWithArgumentsTests))]
+	void NewWithArgumentsTests (ImmutableArray<ArgumentSyntax> arguments, string expectedDeclaration)
+	{
+		var declaration = New (arguments);
+		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
+	}
+
 	class TestDataNew : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()
 		{
@@ -1079,4 +1128,21 @@ public class BindingSyntaxFactoryRuntimeTests {
 		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
 	}
 
+	class TestDataIsNotNullTests : IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
+		{
+			yield return ["variable1", "variable1 is not null"];
+			yield return ["another_variable", "another_variable is not null"];
+		}
+
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
+	}
+
+	[Theory]
+	[ClassData (typeof (TestDataIsNotNullTests))]
+	void IsNotNullTests (string variableName, string expectedDeclaration)
+	{
+		var declaration = IsNotNull (variableName);
+		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
+	}
 }

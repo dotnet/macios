@@ -428,12 +428,24 @@ static partial class BindingSyntaxFactory {
 		);
 
 	/// <summary>
+	/// Generate an implicit object creation expression using the provided arguments.
+	/// </summary>
+	/// <param name="arguments">The argument list for the object creation expression.</param>
+	/// <returns>An implicit object creation expression.</returns>
+	internal static BaseObjectCreationExpressionSyntax New (ImmutableArray<ArgumentSyntax> arguments)
+	{
+		var argumentList = ArgumentList (
+			SeparatedList<ArgumentSyntax> (arguments.ToSyntaxNodeOrTokenArray ()));
+		return ImplicitObjectCreationExpression ().WithArgumentList (argumentList.WithLeadingTrivia (Space));
+	}
+
+	/// <summary>
 	/// Generate an object creation expressing for the given type info using the provided arguments.
 	/// </summary>
 	/// <param name="type">The information of the type of object to be created.</param>
 	/// <param name="arguments">The argument list for the object creation expression.</param>
 	/// <returns>An object creation expression.</returns>
-	internal static ObjectCreationExpressionSyntax New (TypeSyntax type, ImmutableArray<ArgumentSyntax> arguments)
+	internal static BaseObjectCreationExpressionSyntax New (TypeSyntax type, ImmutableArray<ArgumentSyntax> arguments)
 	{
 		var argumentList = ArgumentList (
 			SeparatedList<ArgumentSyntax> (arguments.ToSyntaxNodeOrTokenArray ()));

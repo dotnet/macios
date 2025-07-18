@@ -25,10 +25,8 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			case "NSNumberBindAs_UInt32_Array_Overrides":
 			case "NSNumberBindAs_UInt64_Array_Overrides":
 				// https://github.com/dotnet/macios/issues/19781
-#if __MACCATALYST__
+#if __IOS__ || __TVOS__
 				if (Runtime.IsARM64CallingConvention)
-#elif __IOS__ || __TVOS__
-				if (Runtime.IsARM64CallingConvention && Runtime.Arch == Arch.SIMULATOR)
 #endif
 					Assert.Ignore ("https://github.com/dotnet/macios/issues/19781");
 				break;

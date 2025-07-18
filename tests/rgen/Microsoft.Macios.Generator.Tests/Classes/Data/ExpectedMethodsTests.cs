@@ -62,6 +62,10 @@ public partial class MethodTests
 	static readonly global::ObjCRuntime.NativeHandle selBookmarkDataWithContentsOfURL_Error_XHandle = global::ObjCRuntime.Selector.GetHandle ("bookmarkDataWithContentsOfURL:error:");
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	const string selBookmarkDataWithContentsOfURL_Subdomain_Error_X = "bookmarkDataWithContentsOfURL:subdomain:error:";
+	static readonly global::ObjCRuntime.NativeHandle selBookmarkDataWithContentsOfURL_Subdomain_Error_XHandle = global::ObjCRuntime.Selector.GetHandle ("bookmarkDataWithContentsOfURL:subdomain:error:");
+
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	static readonly global::ObjCRuntime.NativeHandle class_ptr = global::ObjCRuntime.Class.GetHandle ("MethodTests");
 
 	/// <summary>The Objective-C class handle for this class.</summary>
@@ -335,15 +339,40 @@ public partial class MethodTests
 
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("maccatalyst13.1")]
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static unsafe partial global::Foundation.NSData GetBookmarkData (global::Foundation.NSUrl bookmarkFileUrl, string subdomain, out global::Foundation.NSError? error)
+	{
+		if (subdomain is null)
+			global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (subdomain));
+		var bookmarkFileUrl__handle__ = bookmarkFileUrl!.GetNonNullHandle (nameof (bookmarkFileUrl));
+		var nssubdomain = global::CoreFoundation.CFString.CreateNative (subdomain);
+		global::ObjCRuntime.NativeHandle error__handle__;
+		global::Foundation.NSData ret;
+		if (IsDirectBinding) {
+			ret = global::ObjCRuntime.Runtime.GetNSObject<global::Foundation.NSData> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend_NativeHandle_NativeHandle_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("bookmarkDataWithContentsOfURL:subdomain:error:"), bookmarkFileUrl__handle__, nssubdomain, &error__handle__))!;
+		} else {
+			ret = global::ObjCRuntime.Runtime.GetNSObject<global::Foundation.NSData> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper_NativeHandle_NativeHandle_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("bookmarkDataWithContentsOfURL:subdomain:error:"), bookmarkFileUrl__handle__, nssubdomain, &error__handle__))!;
+		}
+		global::System.GC.KeepAlive (this);
+		global::System.GC.KeepAlive (bookmarkFileUrl);
+		global::CoreFoundation.CFString.ReleaseNative (nssubdomain);
+		error = global::ObjCRuntime.Runtime.GetNSObject<global::Foundation.NSError> (error__handle__);
+		return ret;
+	}
+
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("ios")]
 	[UnsupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public partial static void LoadFromHtml (global::Foundation.NSUrlRequest request, global::Foundation.NSDictionary options, global::Foundation.NSAttributedStringCompletionHandler completionHandler)
 	{
-		var request__handle__ = request!.GetNonNullHandle (nameof (request));
-		var options__handle__ = options!.GetNonNullHandle (nameof (options));
 		if (completionHandler is null)
 			global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (completionHandler));
+		var request__handle__ = request!.GetNonNullHandle (nameof (request));
+		var options__handle__ = options!.GetNonNullHandle (nameof (options));
 		using var block_completionHandler = global::ObjCRuntime.Trampolines.SDNSAttributedStringCompletionHandler.CreateNullableBlock (completionHandler);
 		global::ObjCRuntime.BlockLiteral* block_ptr_completionHandler = completionHandler is not null ? &block_completionHandler : null;
 		if (IsDirectBinding) {
@@ -380,10 +409,10 @@ public partial class MethodTests
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public partial static void LoadFromHtmlNoName (global::Foundation.NSUrlRequest request, global::Foundation.NSDictionary options, global::Foundation.NSAttributedStringCompletionHandler completionHandler)
 	{
-		var request__handle__ = request!.GetNonNullHandle (nameof (request));
-		var options__handle__ = options!.GetNonNullHandle (nameof (options));
 		if (completionHandler is null)
 			global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (completionHandler));
+		var request__handle__ = request!.GetNonNullHandle (nameof (request));
+		var options__handle__ = options!.GetNonNullHandle (nameof (options));
 		using var block_completionHandler = global::ObjCRuntime.Trampolines.SDNSAttributedStringCompletionHandler.CreateNullableBlock (completionHandler);
 		global::ObjCRuntime.BlockLiteral* block_ptr_completionHandler = completionHandler is not null ? &block_completionHandler : null;
 		if (IsDirectBinding) {

@@ -100,7 +100,9 @@ The diagnostic id for FSKit is APL0002.
 
 The
 [AppStore.RequestReview](https://developer.apple.com/documentation/storekit/appstore/3954432-requestreview/)
-method is Swift API we've bound manually, and as such it's marked as experimental until .NET 10.
+method is Swift API we've bound manually, and as such it was marked as experimental for the first .NET 9 releases.
+
+It's no longer marked as experimental.
 
 [1]: https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.codeanalysis.experimentalattribute?view=net-8.0
 

@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -211,22 +212,23 @@ static partial class BindingSyntaxFactory {
 	internal static MethodInvocations GetInvocations (in Method method)
 	{
 		// calculate all the needed transformations for the method parameters
-		var argumentsTransformations = ImmutableArray.CreateBuilder<TrampolineArgumentSyntax> (method.Parameters.Length);
+		var conversions = new PriorityQueue<ArgumentConversions, ArgumentInfo> (new ArgumentInfoConversionComparer ());
 		var argumentSyntax = ImmutableArray.CreateBuilder<ArgumentSyntax> (method.Parameters.Length);
 		foreach (var param in method.Parameters) {
-			var trampolineSyntax = new TrampolineArgumentSyntax (GetNativeInvokeArgument (param)) {
+			var trampolineSyntax = new ArgumentConversions {
 				Initializers = GetNativeInvokeArgumentInitializations (param),
+				Validations = GetNativeInvokeArgumentValidations (param),
 				PreCallConversion = GetPreNativeInvokeArgumentConversions (param),
 				PostCallConversion = GetPostNativeInvokeArgumentConversions (param),
 			};
-			argumentsTransformations.Add (trampolineSyntax);
-			argumentSyntax.Add (trampolineSyntax.ArgumentSyntax);
+			conversions.Enqueue (trampolineSyntax, param);
+			argumentSyntax.Add (GetNativeInvokeArgument (param));
 		}
 
 		// calculate the send expressions, we use the export data information to determine the selector
 		var args = argumentSyntax.ToImmutable ();
 		return new MethodInvocations () {
-			Arguments = argumentsTransformations.ToImmutable (),
+			Arguments = conversions.ToImmutable (),
 			Send = GetSendInvocation (method, args, false),
 			SendSuper = GetSendInvocation (method, args, true)
 		};

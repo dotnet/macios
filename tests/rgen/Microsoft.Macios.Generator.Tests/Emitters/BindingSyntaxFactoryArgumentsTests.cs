@@ -638,10 +638,7 @@ namespace NS {
 ";
 			yield return [
 				stringParameter,
-				$@"if (stringParameter is null)
-	{Global ("ObjCRuntime")}.ThrowHelper.ThrowArgumentNullException (nameof (stringParameter));
-var nsstringParameter = {Global ("CoreFoundation")}.CFString.CreateNative (stringParameter);
-",
+				$"var nsstringParameter = {Global ("CoreFoundation")}.CFString.CreateNative (stringParameter);\n",
 			];
 
 			var nullableStringParameter = @"
@@ -671,10 +668,7 @@ namespace NS {
 ";
 			yield return [
 				stringArrayParameter,
-				$@"if (stringParameter is null)
-	{Global ("ObjCRuntime")}.ThrowHelper.ThrowArgumentNullException (nameof (stringParameter));
-using var nsa_stringParameter = {Global ("Foundation")}.NSArray.FromStrings (stringParameter);
-",
+				$"using var nsa_stringParameter = {Global ("Foundation")}.NSArray.FromStrings (stringParameter);\n",
 			];
 
 			var nullableStringArrayParameter = @"
@@ -799,10 +793,7 @@ namespace NS {
 ";
 			yield return [
 				nsObjectArrayParameter,
-				$@"if (nsObjectParameter is null)
-	{Global ("ObjCRuntime")}.ThrowHelper.ThrowArgumentNullException (nameof (nsObjectParameter));
-using var nsa_nsObjectParameter = {Global ("Foundation")}.NSArray.FromNSObjects (nsObjectParameter);
-",
+				$"using var nsa_nsObjectParameter = {Global ("Foundation")}.NSArray.FromNSObjects (nsObjectParameter);\n",
 			];
 
 			// nullable NSObject array parameter
@@ -885,10 +876,7 @@ namespace NS {
 
 			yield return [
 				inativeArrayParameter,
-				$@"if (inativeArray is null)
-	{Global ("ObjCRuntime")}.ThrowHelper.ThrowArgumentNullException (nameof (inativeArray));
-using var nsa_inativeArray = {Global ("Foundation")}.NSArray.FromNSObjects (inativeArray);
-",
+				$"using var nsa_inativeArray = {Global ("Foundation")}.NSArray.FromNSObjects (inativeArray);\n",
 			];
 
 			// nullable INativeObject array parameter
@@ -1242,6 +1230,659 @@ namespace NS {
 		// assert it is indeed a delegate
 		Assert.NotNull (parameter.Type.Delegate);
 		var conversions = GetPreNativeInvokeArgumentConversions (parameter.Type.Delegate!.Parameters [0]);
+		// uses a tabbeb string builder to get the conversion string and test
+		var sb = new TabbedStringBuilder (new ());
+		sb.Write (conversions, false);
+		Assert.Equal (expectedExpression, sb.ToCode ());
+	}
+
+	class TestDataGetTrampolineValidationsArgumentConversionsTests : IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
+		{
+			// int value
+			var intParameter = @"
+using System;
+
+namespace NS {
+	public delegate void Callback (int intParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				intParameter,
+				string.Empty,
+			];
+
+			// struct parameter
+			var structParameter = @"
+using System;
+
+namespace NS {
+	public struct MyStruct {
+		public int Value;
+	}
+
+	public delegate void Callback (MyStruct structParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				structParameter,
+				string.Empty,
+			];
+
+			var stringParameter = @"
+using System;
+
+namespace NS {
+	public delegate void Callback (string stringParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				stringParameter,
+				$@"if (stringParameter is null)
+	{Global ("ObjCRuntime")}.ThrowHelper.ThrowArgumentNullException (nameof (stringParameter));
+",
+			];
+
+			var nullableStringParameter = @"
+using System;
+
+namespace NS {
+	public delegate void Callback (string? nullableStringParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				nullableStringParameter,
+				string.Empty,
+			];
+
+			var stringArrayParameter = @"
+using System;
+
+namespace NS {
+	public delegate void Callback (string[] stringArrayParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				stringArrayParameter,
+				$@"if (stringArrayParameter is null)
+	{Global ("ObjCRuntime")}.ThrowHelper.ThrowArgumentNullException (nameof (stringArrayParameter));
+",
+			];
+
+			var nullableStringArrayParameter = @"
+using System;
+
+namespace NS {
+	public delegate void Callback (string[]? nullableStringArrayParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				nullableStringArrayParameter,
+				string.Empty,
+			];
+
+			// smart enum parameter
+			var smartEnumParameter = @"
+using System;
+using ObjCBindings;
+
+namespace NS {
+
+    [Native (""""GKErrorCode"""")]
+	[BindingType<SmartEnum> (Flags = SmartEnum.ErrorCode, ErrorDomain = """"GKErrorDomain"""")]
+	public enum NativeSampleEnum {
+			None = 0,
+			Unknown = 1,
+	}
+
+    public delegate void Callback (NativeSampleEnum enumParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				smartEnumParameter,
+				string.Empty,
+			];
+
+
+			// normal enum parameter
+			var enumParameter = @"
+using System;
+using ObjCBindings;
+
+namespace NS {
+
+	public enum NativeSampleEnum {
+			None = 0,
+			Unknown = 1,
+	}
+
+    public delegate void Callback (NativeSampleEnum enumParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				enumParameter,
+				string.Empty,
+			];
+
+
+			// NSObject parameter
+
+			var nsObjectParameter = @"
+using System;
+using Foundation;
+using ObjCBindings;
+
+namespace NS {
+
+    public delegate void Callback (NSObject nsObjectParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				nsObjectParameter,
+				string.Empty,
+			];
+
+			// nullable NSObject parameter
+
+			var nullableNSObjectParameter = @"
+using System;
+using Foundation;
+using ObjCBindings;
+
+namespace NS {
+
+    public delegate void Callback (NSObject? nullableNsObjectParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				nullableNSObjectParameter,
+				string.Empty,
+			];
+
+			// NSObject array parameter
+
+			var nsObjectArrayParameter = @"
+using System;
+using Foundation;
+using ObjCBindings;
+
+namespace NS {
+
+    public delegate void Callback (NSObject[] nsObjectArrayParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				nsObjectArrayParameter,
+				$@"if (nsObjectArrayParameter is null)
+	{Global ("ObjCRuntime")}.ThrowHelper.ThrowArgumentNullException (nameof (nsObjectArrayParameter));
+",
+			];
+
+			// nullable NSObject array parameter
+
+			var nullableNSObjectArrayParameter = @"
+using System;
+using Foundation;
+using ObjCBindings;
+
+namespace NS {
+
+    public delegate void Callback (NSObject[]? nullableNSObjectArrayParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				nullableNSObjectArrayParameter,
+				string.Empty,
+			];
+
+			// INativeObject parameter
+
+			var iNativeParameter = @"
+using System;
+using Foundation;
+using CoreMedia;
+using ObjCRuntime;
+
+namespace NS {
+	public delegate void Callback (CMTimebase inative);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				iNativeParameter,
+				string.Empty,
+			];
+
+			// nullable INativeObject parameter
+
+			var nullableINativeParameter = @"
+using System;
+using Foundation;
+using CoreMedia;
+using ObjCRuntime;
+
+namespace NS {
+	public delegate void Callback (CMTimebase? nullableINativeParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				nullableINativeParameter,
+				string.Empty,
+			];
+
+			// INativeObject array parameter
+
+			var inativeArrayParameter = @"
+using System;
+using Foundation;
+using CoreMedia;
+using ObjCRuntime;
+
+namespace NS {
+	public delegate void Callback (CMTimebase[] inativeArray);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				inativeArrayParameter,
+				$@"if (inativeArray is null)
+	{Global ("ObjCRuntime")}.ThrowHelper.ThrowArgumentNullException (nameof (inativeArray));
+",
+			];
+
+			// nullable INativeObject array parameter
+
+			var nullableINativeArrayParameter = @"
+using System;
+using Foundation;
+using CoreMedia;
+using ObjCRuntime;
+
+namespace NS {
+	public delegate void Callback (CMTimebase[]? nullableINativeArrayParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				nullableINativeArrayParameter,
+				string.Empty,
+			];
+
+			var audioBuffer = @"
+using System;
+using AudioToolbox;
+using Foundation;
+using ObjCBindings;
+
+namespace NS {
+	public delegate void Callback (AudioBuffers audioBuffer);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				audioBuffer,
+				string.Empty,
+			];
+
+			var cmSampleBuffer = @"
+using System;
+using CoreMedia;
+using Foundation;
+using ObjCBindings;
+
+namespace NS {
+	public delegate void Callback (CMSampleBuffer cmSampleBuffer);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				cmSampleBuffer,
+				string.Empty,
+			];
+
+			var blockParameter = @"
+using System;
+using ObjCRuntime;
+
+namespace NS {
+	public delegate void Callback ([BlockCallback] Action? callbackParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				blockParameter,
+				string.Empty,
+			];
+
+			var notDecoratedBlockParameter = @"
+using System;
+using ObjCRuntime;
+
+namespace NS {
+	public delegate void Callback (Action? callbackParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				notDecoratedBlockParameter,
+				string.Empty,
+			];
+
+			// byref string parameter
+
+			var byrefStringParam = @"
+using System;
+using Foundation;
+using CoreMedia;
+using ObjCRuntime;
+
+namespace NS {
+	public delegate void Callback (out string outString);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				byrefStringParam,
+				string.Empty,
+			];
+
+			// byref string parameter nullable
+
+			var nullableByrefStringParam = @"
+using System;
+using Foundation;
+using CoreMedia;
+using ObjCRuntime;
+
+namespace NS {
+	public delegate void Callback (out string? outNullableString);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				nullableByrefStringParam,
+				string.Empty,
+			];
+
+			// byref num not smart
+
+			var outNotSmartEnum = @"
+using System;
+using Foundation;
+using CoreMedia;
+using ObjCRuntime;
+
+namespace NS {
+	public MyEnum {
+		First = 0,
+		Last = 1,
+	}
+	public delegate void Callback (out MyEnum outNullableString);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				outNotSmartEnum,
+				string.Empty
+			];
+
+			// byref int
+
+			var outInt = @"
+using System;
+using Foundation;
+using CoreMedia;
+using ObjCRuntime;
+
+namespace NS {
+	public delegate void Callback (out int outNullableString);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				outInt,
+				string.Empty
+			];
+
+			// byref struct
+
+			var outStruct = @"
+using System;
+using AudioToolbox;
+using Foundation;
+using CoreMedia;
+using ObjCRuntime;
+
+namespace NS {
+	public delegate void Callback (out AudioTimeStamp outStruct);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				outStruct,
+				string.Empty
+			];
+
+			// byref INativeObject
+
+			var outINativeObject = @"
+using System;
+using Foundation;
+using CoreMedia;
+using ObjCRuntime;
+using Security;
+
+namespace NS {
+	public delegate void Callback (out SecKey outINativeObject);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				outINativeObject,
+				string.Empty,
+			];
+
+			// byref NSObject
+
+			var outNSObject = @"
+using System;
+using AVFoundation;
+using Foundation;
+using CoreMedia;
+using ObjCRuntime;
+
+namespace NS {
+	public delegate void Callback (out NSObject outNSObject);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				outNSObject,
+				string.Empty,
+			];
+
+			// byref string array
+
+			var outStringArray = @"
+using System;
+using AVFoundation;
+using Foundation;
+using CoreMedia;
+using ObjCRuntime;
+
+namespace NS {
+	public delegate void Callback (out string[] outStringArray);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				outStringArray,
+				string.Empty,
+			];
+
+			// byref string array nullable
+
+			var outNullStringArray = @"
+using System;
+using AVFoundation;
+using Foundation;
+using CoreMedia;
+using ObjCRuntime;
+
+namespace NS {
+	public delegate void Callback (out string[]? outNullStringArray);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				outNullStringArray,
+				string.Empty,
+			];
+
+			// byref array of INativeObject
+
+			var outINativeObjectArray = @"
+using System;
+using AVFoundation;
+using Foundation;
+using CoreMedia;
+using ObjCRuntime;
+
+namespace NS {
+	public delegate void Callback (out AVAsset[] outINativeObjectArray);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				outINativeObjectArray,
+				string.Empty,
+			];
+
+			// byref array of NSObject
+
+			var outNSObjectArray = @"
+using System;
+using AVFoundation;
+using Foundation;
+using CoreMedia;
+using ObjCRuntime;
+
+namespace NS {
+	public delegate void Callback (out NSObject[] outNSObject);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				outNSObjectArray,
+				string.Empty,
+			];
+		}
+
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
+	}
+
+	[Theory]
+	[AllSupportedPlatformsClassData<TestDataGetTrampolineValidationsArgumentConversionsTests>]
+	void GetTrampolineValidationsArgumentConversionsTests (ApplePlatform platform, string inputText, string expectedExpression)
+	{
+		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
+		Assert.Single (syntaxTrees);
+		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
+		var declaration = syntaxTrees [0].GetRoot ()
+			.DescendantNodes ().OfType<MethodDeclarationSyntax> ()
+			.FirstOrDefault ();
+		Assert.NotNull (declaration);
+		Assert.True (Method.TryCreate (declaration, semanticModel, out var changes));
+		Assert.NotNull (changes);
+		// we know the first parameter of the method is the delegate
+		Assert.Single (changes.Value.Parameters);
+		var parameter = changes.Value.Parameters [0];
+		// assert it is indeed a delegate
+		Assert.NotNull (parameter.Type.Delegate);
+		var conversions = GetNativeInvokeArgumentValidations (parameter.Type.Delegate!.Parameters [0]);
 		// uses a tabbeb string builder to get the conversion string and test
 		var sb = new TabbedStringBuilder (new ());
 		sb.Write (conversions, false);

@@ -115,4 +115,13 @@ public partial class MethodTests {
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[Export<Method> ("bookmarkDataWithContentsOfURL:error:")]
 	public static unsafe partial NSData GetBookmarkData (NSUrl bookmarkFileUrl, out NSError? error);
+
+	// the following methods are used to test that the conversions are in the correc order.
+
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("maccatalyst13.1")]
+	[Export<Method> ("bookmarkDataWithContentsOfURL:subdomain:error:")]
+	public static unsafe partial NSData GetBookmarkData (NSUrl bookmarkFileUrl, string subdomain, out NSError? error);
 }

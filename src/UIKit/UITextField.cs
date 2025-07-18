@@ -264,7 +264,7 @@ namespace UIKit {
 			remove { EnsureUITextFieldDelegate ().didChangeSelection -= value; }
 		}
 
-		/// <summary>Raised when the text field wants to know if the text in the text field should be changed for multiple ranges.</summary
+		/// <summary>Raised when the text field wants to know if the text in the text field should be changed for multiple ranges.</summary>
 		[SupportedOSPlatform ("tvos26.0")]
 		[SupportedOSPlatform ("ios26.0")]
 		[SupportedOSPlatform ("maccatalyst26.0")]

@@ -1811,7 +1811,7 @@ namespace UIKit {
 		/// <summary>Constant that indicates that 30 frames per second are preferred for animations.</summary>
 		[MacCatalyst (13, 1)]
 		PreferredFramesPerSecond30 = 7 << 24,
-		
+
 		/// <summary>Forces layout updates to flush immediately after animation changes.</summary>
 		[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
 		FlushUpdates = 1 << 28,

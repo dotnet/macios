@@ -21620,12 +21620,12 @@ namespace UIKit {
 		void InsertInputSuggestion (UITextView textView, UIInputSuggestion inputSuggestion);
 
 		[IgnoredInDelegate]
-		[MacCatalyst (26,0), TV (26,0), iOS (26,0)]
+		[MacCatalyst (26, 0), TV (26, 0), iOS (26, 0)]
 		[Export ("textView:shouldChangeTextInRanges:replacementText:")]
 		bool ShouldChangeText (UITextView textView, NSValue [] ranges, string replacementText);
 
 		[IgnoredInDelegate]
-		[MacCatalyst (26,0), TV (26,0), iOS (26,0)]
+		[MacCatalyst (26, 0), TV (26, 0), iOS (26, 0)]
 		[Export ("textView:editMenuForTextInRanges:suggestedActions:")]
 		[return: NullAllowed]
 		UIMenu GetEditMenuForText (UITextView textView, NSValue [] ranges, UIMenuElement [] suggestedActions);
@@ -32162,12 +32162,12 @@ namespace UIKit {
 		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 		[Abstract]
 		[Export ("replaceMenuForIdentifier:withElements:")]
-		void ReplaceMenu (string replacedIdentifier, UIMenuElement[] replacementElements);
+		void ReplaceMenu (string replacedIdentifier, UIMenuElement [] replacementElements);
 
 		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 		[Abstract]
 		[Export ("insertElements:beforeMenuForIdentifier:")]
-		void InsertElementsBeforeMenu (UIMenuElement[] insertedElements, string siblingIdentifier);
+		void InsertElementsBeforeMenu (UIMenuElement [] insertedElements, string siblingIdentifier);
 
 		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 		[Abstract]
@@ -32273,7 +32273,7 @@ namespace UIKit {
 
 	[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	delegate void UIMainMenuSystemBuildHandler (IUIMenuBuilder builder);
-	
+
 	[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (UIMenuSystem))]
 	[DisableDefaultCtor]
@@ -33973,7 +33973,7 @@ namespace UIKit {
 
 		[Export ("supportsAlpha")]
 		bool SupportsAlpha { get; set; }
-		
+
 		[iOS (26, 0), NoTV, MacCatalyst (26, 0)]
 		[Export ("supportsEyedropper")]
 		bool SupportsEyedropper { get; set; }
@@ -33999,7 +33999,7 @@ namespace UIKit {
 
 		[NullAllowed, Export ("selectedColor", ArgumentSemantic.Strong)]
 		UIColor SelectedColor { get; set; }
-		
+
 		[iOS (26, 0), NoTV, MacCatalyst (26, 0)]
 		[Export ("supportsEyedropper")]
 		bool SupportsEyedropper { get; set; }
@@ -37696,7 +37696,7 @@ namespace UIKit {
 		UIAction CreateDocumentAction (UIDocumentCreationIntent indent);
 	}
 
-	[NoTV, iOS (26,0), MacCatalyst (26,0)]
+	[NoTV, iOS (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface UITabAccessory {

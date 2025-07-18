@@ -96,7 +96,7 @@ static partial class BindingSyntaxFactory {
 	{
 		return MemberAccessExpression (
 			SyntaxKind.SimpleMemberAccessExpression,
-			thisParameter is null ? ThisExpression (): IdentifierName (thisParameter),
+			thisParameter is null ? ThisExpression () : IdentifierName (thisParameter),
 			IdentifierName ("Handle"));
 	}
 
@@ -109,7 +109,7 @@ static partial class BindingSyntaxFactory {
 	{
 		return MemberAccessExpression (
 			SyntaxKind.SimpleMemberAccessExpression,
-			thisParameter is null ? ThisExpression (): IdentifierName (thisParameter),
+			thisParameter is null ? ThisExpression () : IdentifierName (thisParameter),
 			IdentifierName ("SuperHandle"));
 	}
 

@@ -133,7 +133,7 @@ static partial class BindingSyntaxFactory {
 		// except for the last one, so we need to add parametersCount - 1 commas
 		var parametersCount = 2 + parameters.Length;
 		var args = new SyntaxNodeOrToken [(2 * parametersCount) - 1];
-		// the first two arguments are the selector and the handle, we add those by hand, if the call added a thisParamrter
+		// the first two arguments are the selector and the handle, we add those by hand, if the call added a thisParameter
 		// it means we are dealing with an extension
 		args [0] = Argument (isSuper ? ThisSuperHandle (thisParameter) : ThisHandle (thisParameter));
 		args [1] = Token (SyntaxKind.CommaToken).WithTrailingTrivia (Space);

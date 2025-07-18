@@ -2,6 +2,8 @@ using System;
 using System.IO;
 using System.IO.Compression;
 
+#nullable enable
+
 namespace Xamarin.iOS.Tasks.Windows {
 	internal static class Zip {
 		internal static void Extract (string sourceFileName, string destinationPath)

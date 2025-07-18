@@ -3,6 +3,8 @@ using Microsoft.Build.Utilities;
 using System;
 using System.IO;
 
+#nullable enable
+
 namespace Xamarin.iOS.Tasks.Windows {
 	public class CreateArchiveDirectory : Task {
 		[Required]

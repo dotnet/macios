@@ -10,6 +10,8 @@ using System.Xml.Linq;
 
 using Xamarin.Messaging.Build.Client;
 
+#nullable enable
+
 namespace Xamarin.MacDev.Tasks {
 	public class ReadItemsFromFile : XamarinTask, ITaskCallback {
 		static readonly XNamespace XmlNs = XNamespace.Get ("http://schemas.microsoft.com/developer/msbuild/2003");

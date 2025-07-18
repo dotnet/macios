@@ -4,6 +4,8 @@ using System.IO;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 
+#nullable enable
+
 namespace Xamarin.MacDev.Tasks {
 	public static class TaskItemFixer {
 		public static void FixItemSpecs (TaskLoggingHelper log, Func<ITaskItem, string> itemPathFactory, params ITaskItem [] items)

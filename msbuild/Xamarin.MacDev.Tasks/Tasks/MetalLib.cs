@@ -11,6 +11,8 @@ using Xamarin.Localization.MSBuild;
 using Xamarin.Messaging.Build.Client;
 using Xamarin.Utils;
 
+#nullable enable
+
 namespace Xamarin.MacDev.Tasks {
 	public class MetalLib : XamarinTask, ITaskCallback {
 		CancellationTokenSource? cancellationTokenSource;

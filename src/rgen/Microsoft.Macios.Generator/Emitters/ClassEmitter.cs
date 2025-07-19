@@ -30,7 +30,6 @@ class ClassEmitter : ICodeEmitter {
 		"System.Drawing",
 		"System.Diagnostics",
 		"System.ComponentModel",
-		"System.Threading.Tasks",
 		"System.Runtime.Versioning",
 		"System.Runtime.InteropServices",
 		"System.Diagnostics.CodeAnalysis",

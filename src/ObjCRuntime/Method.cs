@@ -101,12 +101,12 @@ namespace ObjCRuntime {
 			get { return Runtime.options->Trampolines->set_gchandle_tramp; }
 		}
 
-		internal unsafe static IntPtr GetFlagsTrampoline {
-			get { return Runtime.options->Trampolines->get_flags_tramp; }
+		internal unsafe static IntPtr GetGCHandleFlagsTrampoline {
+			get { return Runtime.options->Trampolines->get_gchandle_flags_tramp; }
 		}
 
-		internal unsafe static IntPtr SetFlagsTrampoline {
-			get { return Runtime.options->Trampolines->set_flags_tramp; }
+		internal unsafe static IntPtr SetGCHandleFlagsTrampoline {
+			get { return Runtime.options->Trampolines->set_gchandle_flags_tramp; }
 		}
 
 		internal unsafe static IntPtr RetainWeakReferenceTrampoline {

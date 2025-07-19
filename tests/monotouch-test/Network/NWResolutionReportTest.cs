@@ -2,6 +2,7 @@ using System.Threading;
 using Foundation;
 using Network;
 using CoreFoundation;
+using ObjCRuntime;
 using MonoTests.System.Net.Http;
 using NUnit.Framework;
 
@@ -35,7 +36,7 @@ namespace MonoTouchFixtures.Network {
 			});
 			Assert.True (reportEvent.WaitOne (20000), "Timed out fetching establishment reports.");
 			report.EnumerateResolutionReports ((r) => {
-				resolutionReport = r;
+				resolutionReport = Runtime.GetINativeObject<NWResolutionReport> (r.Handle, false);
 				resolutionEvent.Set ();
 			});
 			Assert.True (resolutionEvent.WaitOne (20000), "Timed out enumerating resolution reports.");

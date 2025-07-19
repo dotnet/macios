@@ -29,7 +29,9 @@ public partial class AppDelegate : UIApplicationDelegate {
 #if __MACCATALYST__ || __MACOS__
 		TestRuntime.NotifyLaunchCompleted ();
 #endif
+#pragma warning disable CA1422
 		var window = new UIWindow (UIScreen.MainScreen.Bounds);
+#pragma warning restore CA1422
 
 		var runner = new TouchRunner (window);
 		foreach (var assembly in TestLoader.GetTestAssemblies ())

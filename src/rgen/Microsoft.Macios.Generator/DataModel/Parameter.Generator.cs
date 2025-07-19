@@ -3,6 +3,7 @@
 
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Macios.Generator.Attributes;
 using Microsoft.Macios.Generator.Context;
@@ -43,7 +44,7 @@ readonly partial struct Parameter {
 			ForcedType = symbol.GetForceTypeData (),
 			IsOptional = symbol.IsOptional,
 			IsParams = symbol.IsParams,
-			IsThis = symbol.IsThis,
+			IsThis = declaration.Modifiers.Any (SyntaxKind.ThisKeyword),
 			DefaultValue = (symbol.HasExplicitDefaultValue) ? symbol.ExplicitDefaultValue?.ToString () : null,
 			ReferenceKind = symbol.RefKind.ToReferenceKind (),
 			Attributes = declaration.GetAttributeCodeChanges (context.SemanticModel),

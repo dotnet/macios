@@ -555,7 +555,7 @@ public partial class MyClass {
 }
 ";
 			yield return [nullableIntPtrReturnMethod, $"public partial {Global ("System.IntPtr")}? TestMethod (string myParam, int myParamInt)"];
-			
+
 			const string extensionMethod = @"
 using System;
 using ObjCBindings;

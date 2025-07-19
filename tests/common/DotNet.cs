@@ -147,6 +147,42 @@ namespace Xamarin.Tests {
 
 		public static ExecutionResult RunTool (string tool, params string [] args) => ExecuteCommand (tool, args);
 
+		public static string GetProperty (string projectPath, string propertyName, Dictionary<string, string>? properties = null)
+		{
+			if (!File.Exists (projectPath))
+				throw new FileNotFoundException ($"The project file '{projectPath}' does not exist.");
+
+			var args = new List<string> ();
+			args.Add ("build");
+			args.Add (projectPath);
+			args.Add ($"-getProperty:{propertyName}");
+			args.Add ("-nologo");
+			args.Add ("-verbosity:quiet");
+
+			if (properties is not null) {
+				foreach (var prop in properties) {
+					if (prop.Value.IndexOfAny (new char [] { ';' }) >= 0) {
+						args.Add ($"/p:{prop.Key}=\"{prop.Value}\"");
+					} else {
+						args.Add ($"/p:{prop.Key}={prop.Value}");
+					}
+				}
+			}
+
+			var env = new Dictionary<string, string?> ();
+			env ["MSBuildSDKsPath"] = null;
+			env ["MSBUILD_EXE_PATH"] = null;
+
+			var output = new StringBuilder ();
+			var rv = Execution.RunWithStringBuildersAsync (Executable, args, env, output, output, null, workingDirectory: Path.GetDirectoryName (projectPath), timeout: TimeSpan.FromMinutes (2)).Result;
+
+			if (rv.ExitCode != 0)
+				throw new Exception ($"Failed to get property '{propertyName}' from project '{projectPath}'. Exit code: {rv.ExitCode}. Output: {output}");
+
+			// Extract the property value from the output
+			return output.ToString ().Trim ();
+		}
+
 		public static ExecutionResult ExecuteCommand (string exe, params string [] args)
 		{
 			return ExecuteCommand (exe, null, args);

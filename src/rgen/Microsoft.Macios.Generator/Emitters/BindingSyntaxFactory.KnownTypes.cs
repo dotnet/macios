@@ -160,6 +160,13 @@ static partial class BindingSyntaxFactory {
 		@namespace: ["Foundation"],
 		@class: "NSNotificationEventArgs");
 
+	/// <summary>
+	/// TypeSyntax for Foundation.NSErrorException.
+	/// </summary>
+	public readonly static TypeSyntax NSErrorException = StringExtensions.GetIdentifierName (
+		@namespace: ["Foundation"],
+		@class: "NSErrorException");
+
 	// CoreMedia types
 
 	/// <summary>

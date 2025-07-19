@@ -19,7 +19,15 @@ namespace Microsoft.Macios.Generator.DataModel;
 [StructLayout (LayoutKind.Auto)]
 readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 
+	/// <summary>
+	/// Represents the `void` type.
+	/// </summary>
 	public static TypeInfo Void = new ("void", SpecialType.System_Void) { Parents = ["System.ValueType", "object"], };
+
+	/// <summary>
+	/// Represents a `System.NativeHandle` type.
+	/// </summary>
+	public static TypeInfo NativeHandle = new ("System.NativeHandle", SpecialType.System_IntPtr) { Parents = ["System.ValueType", "object"], };
 
 	/// <summary>
 	/// The fully qualified name of the type.
@@ -509,26 +517,26 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		return !left.Equals (right);
 	}
 
-	const string NativeHandle = "NativeHandle";
-	const string IntPtr = "IntPtr";
-	const string UIntPtr = "UIntPtr";
+	const string NativeHandleString = "NativeHandle";
+	const string IntPtrString = "IntPtr";
+	const string UIntPtrString = "UIntPtr";
 
 	public string? ToMarshallType ()
 	{
 #pragma warning disable format
 		var type = this switch {
 			// arrays
-			{ IsArray: true } => NativeHandle,
+			{ IsArray: true } => NativeHandleString,
 			
 			// special cases based on name
 			{ Name: "nfloat" or "NFloat" } => "nfloat", 
 			{ Name: "nint" or "nuint" } => MetadataName,
 			// special string case
-			{ SpecialType: SpecialType.System_String } => NativeHandle, // use a NSString when we get a string
+			{ SpecialType: SpecialType.System_String } => NativeHandleString, // use a NSString when we get a string
 
 			// NSObject should use the native handle
-			{ IsNSObject: true } => NativeHandle, 
-			{ IsINativeObject: true } => NativeHandle,
+			{ IsNSObject: true } => NativeHandleString, 
+			{ IsINativeObject: true } => NativeHandleString,
 
 			// structs will use their name
 			{ IsStruct: true, SpecialType: SpecialType.System_Double } => "Double", 
@@ -539,9 +547,9 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 			// IsNativeEnum: Depends on the enum backing field kind.
 			// GeneralEnum: Depends on the EnumUnderlyingType
 
-			{ IsNativeEnum: true, EnumUnderlyingType: SpecialType.System_Int64 } => IntPtr, 
-			{ IsNativeEnum: true, EnumUnderlyingType: SpecialType.System_UInt64 } => UIntPtr, 
-			{ IsSmartEnum: true } => NativeHandle, 
+			{ IsNativeEnum: true, EnumUnderlyingType: SpecialType.System_Int64 } => IntPtrString, 
+			{ IsNativeEnum: true, EnumUnderlyingType: SpecialType.System_UInt64 } => UIntPtrString, 
+			{ IsSmartEnum: true } => NativeHandleString, 
 			{ IsEnum: true, EnumUnderlyingType: not null } => EnumUnderlyingType.GetKeyword (),
 
 			// special type that is a keyword (none would be a ref type)
@@ -552,7 +560,7 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 			{ IsReferenceType: false } => Name,
 			
 			// delegates will use the native handle
-			{ IsDelegate: true} => NativeHandle,
+			{ IsDelegate: true} => NativeHandleString,
 
 			_ => null,
 		};

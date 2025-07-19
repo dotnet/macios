@@ -103,5 +103,4 @@ public partial class AVAudioPcmBuffer
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable (EditorBrowsableState.Advanced)]
 	protected internal AVAudioPcmBuffer (global::ObjCRuntime.NativeHandle handle) : base (handle) {}
-	// TODO: add binding code here
 }

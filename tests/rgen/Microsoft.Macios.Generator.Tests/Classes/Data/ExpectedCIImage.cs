@@ -203,5 +203,4 @@ public partial class CIImage
 		}
 
 	}
-	// TODO: add binding code here
 }

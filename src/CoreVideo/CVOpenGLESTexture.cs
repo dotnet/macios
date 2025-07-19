@@ -8,14 +8,10 @@
 //
 //
 
-#if HAS_OPENGLES
+#if HAS_OPENGLES && !__MACOS__ && !__MACCATALYST__
 
 using System;
 using System.Runtime.InteropServices;
-
-using OpenTK;
-using OpenTK.Graphics;
-using OpenTK.Graphics.ES20;
 
 using ObjCRuntime;
 using CoreFoundation;
@@ -31,43 +27,15 @@ namespace CoreVideo {
 	[SupportedOSPlatform ("ios")]
 	[ObsoletedOSPlatform ("tvos12.0", "Use 'CVMetalTexture' instead.")]
 	[ObsoletedOSPlatform ("ios12.0", "Use 'CVMetalTexture' instead.")]
-	public class CVOpenGLESTexture : INativeObject, IDisposable {
-
-		internal IntPtr handle;
-
-		[DllImport (Constants.CoreFoundationLibrary)]
-		internal extern static IntPtr CFRelease (IntPtr obj);
-
-		public IntPtr Handle {
-			get { return handle; }
-		}
-
-		~CVOpenGLESTexture ()
+	public class CVOpenGLESTexture : NativeObject {
+		[Preserve (Conditional = true)]
+		internal CVOpenGLESTexture (NativeHandle handle, bool owns)
+			: base (handle, owns)
 		{
-			Dispose (false);
-		}
-
-		public void Dispose ()
-		{
-			Dispose (true);
-			GC.SuppressFinalize (this);
-		}
-
-		protected virtual void Dispose (bool disposing)
-		{
-			if (handle != IntPtr.Zero){
-				CFRelease (handle);
-				handle = IntPtr.Zero;
-			}
-		}
-
-		internal CVOpenGLESTexture (IntPtr handle)
-		{
-			this.handle = handle;
 		}
 
 		[DllImport (Constants.CoreVideoLibrary)]
-		extern static /* GLenum */ TextureTarget CVOpenGLESTextureGetTarget (
+		extern static /* GLenum */ uint CVOpenGLESTextureGetTarget (
 			/* CVOpenGLESTextureRef __nonnull */ IntPtr image);
 
 		[DllImport (Constants.CoreVideoLibrary)]
@@ -76,7 +44,7 @@ namespace CoreVideo {
 		// note: kept int for compatibility
 
 		[DllImport (Constants.CoreVideoLibrary)]
-		extern static /* Boolean */ bool CVOpenGLESTextureIsFlipped (
+		extern static /* Boolean */ byte CVOpenGLESTextureIsFlipped (
 			/* CVOpenGLESTextureRef __nonnull */ IntPtr image);
 
 		[DllImport (Constants.CoreVideoLibrary)]
@@ -85,22 +53,22 @@ namespace CoreVideo {
 			/* GLfloat[2] */ IntPtr lowerLeft, /* GLfloat[2] */ IntPtr lowerRight, /* GLfloat[2] */ IntPtr upperRight, 
 			/* GLfloat[2] */ IntPtr upperLeft);
 		// note: a GLfloat is 4 bytes even on 64bits iOS
-		
-		public TextureTarget Target {
+
+		public uint Target {
 			get {
-				return CVOpenGLESTextureGetTarget (handle);
+				return CVOpenGLESTextureGetTarget (GetCheckedHandle ());
 			}
 		}
 
 		public int Name {
 			get {
-				return CVOpenGLESTextureGetName (handle);
+				return CVOpenGLESTextureGetName (GetCheckedHandle ());
 			}
 		}
 
 		public bool IsFlipped {
 			get {
-				return CVOpenGLESTextureIsFlipped (handle);
+				return CVOpenGLESTextureIsFlipped (GetCheckedHandle ()) != 0;
 			}
 		}
 
@@ -113,12 +81,11 @@ namespace CoreVideo {
 
 			unsafe {
 				fixed (float *ll = lowerLeft, lr = lowerRight, ur = upperRight, ul = upperLeft){
-					CVOpenGLESTextureGetCleanTexCoords (handle, (IntPtr) ll, (IntPtr) lr, (IntPtr) ur, (IntPtr) ul);
+					CVOpenGLESTextureGetCleanTexCoords (GetCheckedHandle (), (IntPtr) ll, (IntPtr) lr, (IntPtr) ur, (IntPtr) ul);
 				}
 			}
 		}
 	}
-	
 }
 
 #endif

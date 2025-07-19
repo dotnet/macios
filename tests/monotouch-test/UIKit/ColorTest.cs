@@ -315,6 +315,8 @@ namespace MonoTouchFixtures.UIKit {
 		[TestCase (0.5, 0.5, 0.5, 0.5, 1.5, true)]
 		public void ColorExposureCtorTest (double red, double green, double blue, double alpha, double exposure, bool isLinearExposure)
 		{
+			TestRuntime.AssertXcodeVersion (26, 0);
+
 			var nr = (nfloat) red;
 			var ng = (nfloat) green;
 			var nb = (nfloat) blue;

@@ -22,9 +22,14 @@ using Property = Microsoft.Macios.Generator.DataModel.Property;
 
 namespace Microsoft.Macios.Generator.Emitters;
 
+/// <summary>
+/// Emitter for Objective-C classes.
+/// </summary>
 class ClassEmitter : ICodeEmitter {
+	/// <inheritdoc />
 	public string GetSymbolName (in Binding binding) => binding.Name;
 
+	/// <inheritdoc />
 	public IEnumerable<string> UsingStatements => [
 		"System",
 		"System.Drawing",
@@ -38,6 +43,12 @@ class ClassEmitter : ICodeEmitter {
 	];
 
 
+	/// <summary>
+	/// Emit the default constructors for the class.
+	/// </summary>
+	/// <param name="bindingContext">The current binding context.</param>
+	/// <param name="classBlock">Current class block.</param>
+	/// <param name="disableDefaultCtor">A value indicating whether to disable the default constructor.</param>
 	void EmitDefaultConstructors (in BindingContext bindingContext, TabbedWriter<StringWriter> classBlock, bool disableDefaultCtor)
 	{
 
@@ -70,6 +81,11 @@ public {bindingContext.Changes.Name} () : base ({NSObjectFlag}.Empty)
 		classBlock.WriteLine ($"protected internal {bindingContext.Changes.Name} ({NativeHandle} handle) : base (handle) {{}}");
 	}
 
+	/// <summary>
+	/// Emit the code for all the constructors in the class.
+	/// </summary>
+	/// <param name="context">The current binding context.</param>
+	/// <param name="classBlock">Current class block.</param>
 	void EmitConstructors (in BindingContext context, TabbedWriter<StringWriter> classBlock)
 	{
 		// When dealing with constructors we cannot sort them by name because the name is always the same as the class
@@ -462,6 +478,11 @@ return {tcsName}.Task;
 		}
 	}
 
+	/// <summary>
+	/// Emit the code for all the notifications in the class.
+	/// </summary>
+	/// <param name="properties">All properties of the class, the method will filter those that are notifications.</param>
+	/// <param name="classBlock">Current class block.</param>
 	void EmitNotifications (in ImmutableArray<Property> properties, TabbedWriter<StringWriter> classBlock)
 	{
 		if (properties.Length == 0)
@@ -554,6 +575,7 @@ public static NSObject {name} ({NSObject} objectToObserve, {EventHandler}<{event
 		}
 	}
 
+	/// <inheritdoc />
 	public bool TryEmit (in BindingContext bindingContext, [NotNullWhen (false)] out ImmutableArray<Diagnostic>? diagnostics)
 	{
 		diagnostics = null;

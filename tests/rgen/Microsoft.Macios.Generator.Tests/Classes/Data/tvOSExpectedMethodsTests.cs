@@ -18,6 +18,10 @@ using System.Threading.Tasks;
 
 namespace TestNamespace;
 
+[SupportedOSPlatform ("macos")]
+[SupportedOSPlatform ("ios")]
+[SupportedOSPlatform ("tvos")]
+[SupportedOSPlatform ("maccatalyst13.1")]
 [Register ("MethodTests", true)]
 public partial class MethodTests
 {

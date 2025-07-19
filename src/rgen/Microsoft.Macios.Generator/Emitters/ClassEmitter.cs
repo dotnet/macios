@@ -535,6 +535,8 @@ public static NSObject {name} ({NSObject} objectToObserve, {EventHandler}<{event
 		// we use the name of the class
 		var registrationName = bindingData.Name ?? bindingContext.Changes.Name;
 
+		// append the class availability, this will add the necessary attributes to the class
+		bindingContext.Builder.AppendMemberAvailability (bindingContext.Changes.SymbolAvailability);
 		if (!bindingContext.Changes.IsStatic) {
 			bindingContext.Builder.WriteLine ($"[Register (\"{registrationName}\", true)]");
 		}

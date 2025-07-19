@@ -16,6 +16,10 @@ using System.Threading.Tasks;
 
 namespace UIKit;
 
+[SupportedOSPlatform ("macos")]
+[SupportedOSPlatform ("ios")]
+[SupportedOSPlatform ("tvos")]
+[SupportedOSPlatform ("maccatalyst13.1")]
 [Register ("ThreadSafeUIKitPropertyTests", true)]
 public partial class ThreadSafeUIKitPropertyTests
 {

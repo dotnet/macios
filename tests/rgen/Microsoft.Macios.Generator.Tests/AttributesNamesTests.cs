@@ -14,6 +14,7 @@ public class AttributesNamesTests {
 	[InlineData (EnumValue.Default, null)]
 	[InlineData (Property.Default, AttributesNames.ExportPropertyAttribute)]
 	[InlineData (Method.Default, AttributesNames.ExportMethodAttribute)]
+	[InlineData (Constructor.Default, AttributesNames.ExportConstructorAttribute)]
 	public void GetExportAttributeName<T> (T @enum, string? expectedName) where T : Enum
 	{
 		Assert.NotNull (@enum);

@@ -29,6 +29,8 @@
 
 // TODO: turn NSAnimatablePropertyCOntainer into a system similar to UIAppearance
 
+#nullable enable
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -26941,15 +26943,15 @@ namespace AppKit {
 
 		[Async]
 		[Export ("setDefaultApplicationAtURL:toOpenContentTypeOfFileAtURL:completionHandler:")]
-		void SetDefaultApplicationToOpenContentType (NSUrl applicationUrl, NSUrl url, [NullAllowed] Action<NSError> completionHandler);
+		void SetDefaultApplicationToOpenContentType (NSUrl applicationUrl, NSUrl url, [NullAllowed] Action<NSError?> completionHandler);
 
 		[Async]
 		[Export ("setDefaultApplicationAtURL:toOpenURLsWithScheme:completionHandler:")]
-		void SetDefaultApplicationToOpenUrls (NSUrl applicationUrl, string urlScheme, [NullAllowed] Action<NSError> completionHandler);
+		void SetDefaultApplicationToOpenUrls (NSUrl applicationUrl, string urlScheme, [NullAllowed] Action<NSError?> completionHandler);
 
 		[Async]
 		[Export ("setDefaultApplicationAtURL:toOpenFileAtURL:completionHandler:")]
-		void SetDefaultApplicationToOpenFile (NSUrl applicationUrl, NSUrl url, [NullAllowed] Action<NSError> completionHandler);
+		void SetDefaultApplicationToOpenFile (NSUrl applicationUrl, NSUrl url, [NullAllowed] Action<NSError?> completionHandler);
 
 		[Export ("URLForApplicationToOpenContentType:")]
 		[return: NullAllowed]
@@ -26960,7 +26962,7 @@ namespace AppKit {
 
 		[Async]
 		[Export ("setDefaultApplicationAtURL:toOpenContentType:completionHandler:")]
-		void SetDefaultApplicationToOpenContentType (NSUrl applicationUrl, UTType contentType, [NullAllowed] Action<NSError> completionHandler);
+		void SetDefaultApplicationToOpenContentType (NSUrl applicationUrl, UTType contentType, [NullAllowed] Action<NSError?> completionHandler);
 
 		[Export ("absolutePathForAppBundleWithIdentifier:"), ThreadSafe]
 		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use the 'UrlForApplication' method instead.")]
@@ -27251,19 +27253,19 @@ namespace AppKit {
 		NSString DisplayOptionsDidChangeNotification { get; }
 
 		[Export ("requestAuthorizationOfType:completionHandler:")]
-		void RequestAuthorization (NSWorkspaceAuthorizationType type, Action<NSWorkspaceAuthorization, NSError> completionHandler);
+		void RequestAuthorization (NSWorkspaceAuthorizationType type, Action<NSWorkspaceAuthorization?, NSError?> completionHandler);
 
 		[Async]
 		[Export ("openApplicationAtURL:configuration:completionHandler:")]
-		void OpenApplication (NSUrl applicationUrl, NSWorkspaceOpenConfiguration configuration, [NullAllowed] Action<NSRunningApplication, NSError> completionHandler);
+		void OpenApplication (NSUrl applicationUrl, NSWorkspaceOpenConfiguration configuration, [NullAllowed] Action<NSRunningApplication?, NSError?> completionHandler);
 
 		[Async]
 		[Export ("openURL:configuration:completionHandler:")]
-		void OpenUrl (NSUrl url, NSWorkspaceOpenConfiguration configuration, [NullAllowed] Action<NSRunningApplication, NSError> completionHandler);
+		void OpenUrl (NSUrl url, NSWorkspaceOpenConfiguration configuration, [NullAllowed] Action<NSRunningApplication?, NSError?> completionHandler);
 
 		[Async]
 		[Export ("openURLs:withApplicationAtURL:configuration:completionHandler:")]
-		void OpenUrls (NSUrl [] urls, NSUrl applicationUrl, NSWorkspaceOpenConfiguration configuration, [NullAllowed] Action<NSRunningApplication, NSError> completionHandler);
+		void OpenUrls (NSUrl [] urls, NSUrl applicationUrl, NSWorkspaceOpenConfiguration configuration, [NullAllowed] Action<NSRunningApplication?, NSError?> completionHandler);
 
 		[Export ("iconForContentType:")]
 		NSImage GetIcon (UTType contentType);
@@ -28579,7 +28581,7 @@ namespace AppKit {
 		[Mac (13, 3), MacCatalyst (16, 4)]
 		[Async]
 		[Export ("transferWindowSharingToWindow:completionHandler:")]
-		void TransferWindowSharing (NSWindow window, Action<NSError> completionHandler);
+		void TransferWindowSharing (NSWindow window, Action<NSError?> completionHandler);
 
 		[Mac (13, 3), MacCatalyst (16, 4)]
 		[Export ("hasActiveWindowSharingSession")]
@@ -28588,12 +28590,12 @@ namespace AppKit {
 		[Async]
 		[Mac (15, 0), NoMacCatalyst]
 		[Export ("requestSharingOfWindow:completionHandler:")]
-		void RequestSharingOfWindow (NSWindow window, Action<NSError> completionHandler);
+		void RequestSharingOfWindow (NSWindow window, Action<NSError?> completionHandler);
 
 		[Async]
 		[Mac (15, 0), NoMacCatalyst]
 		[Export ("requestSharingOfWindowUsingPreview:title:completionHandler:")]
-		void RequestSharingOfWindow (NSImage previewImage, string title, Action<NSError> completionHandler);
+		void RequestSharingOfWindow (NSImage previewImage, string title, Action<NSError?> completionHandler);
 	}
 
 	partial interface NSPrintOperation {
@@ -32575,7 +32577,7 @@ namespace AppKit {
 
 		[Abstract]
 		[Export ("filePromiseProvider:writePromiseToURL:completionHandler:")]
-		void WritePromiseToUrl (NSFilePromiseProvider filePromiseProvider, NSUrl url, [NullAllowed] Action<NSError> completionHandler);
+		void WritePromiseToUrl (NSFilePromiseProvider filePromiseProvider, NSUrl url, [NullAllowed] Action<NSError?> completionHandler);
 
 		/// <param name="filePromiseProvider">To be added.</param>
 		/// <summary>To be added.</summary>
@@ -32599,7 +32601,7 @@ namespace AppKit {
 		string [] FileNames { get; }
 
 		[Export ("receivePromisedFilesAtDestination:options:operationQueue:reader:")]
-		void ReceivePromisedFiles (NSUrl destinationDir, NSDictionary options, NSOperationQueue operationQueue, Action<NSUrl, NSError> reader);
+		void ReceivePromisedFiles (NSUrl destinationDir, NSDictionary options, NSOperationQueue operationQueue, Action<NSUrl?, NSError?> reader);
 	}
 
 	interface INSValidatedUserInterfaceItem { }

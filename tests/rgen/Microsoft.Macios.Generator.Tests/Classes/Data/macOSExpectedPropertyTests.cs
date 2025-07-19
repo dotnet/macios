@@ -254,7 +254,7 @@ public partial class PropertyTests
 			if (IsDirectBinding) {
 				ret = global::ObjCRuntime.Runtime.GetNSObject<global::Foundation.NSCharacterSet> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("alphanumericCharacterSet")))!;
 			} else {
-				ret = global::ObjCRuntime.Runtime.GetNSObject<global::Foundation.NSCharacterSet> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("alphanumericCharacterSet")))!;
+				ret = global::ObjCRuntime.Runtime.GetNSObject<global::Foundation.NSCharacterSet> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("alphanumericCharacterSet")))!;
 			}
 			global::System.GC.KeepAlive (this);
 			MarkDirty ();
@@ -272,7 +272,7 @@ public partial class PropertyTests
 			if (IsDirectBinding) {
 				global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setAlphanumericCharacterSet:"), value__handle__);
 			} else {
-				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setAlphanumericCharacterSet:"), value__handle__);
+				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("setAlphanumericCharacterSet:"), value__handle__);
 			}
 			global::System.GC.KeepAlive (this);
 			global::System.GC.KeepAlive (value);
@@ -301,7 +301,7 @@ public partial class PropertyTests
 			if (IsDirectBinding) {
 				ret = global::ObjCRuntime.Runtime.GetNSObject<global::Foundation.NSAttributedString> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("attributedStringByInflectingString")))!;
 			} else {
-				ret = global::ObjCRuntime.Runtime.GetNSObject<global::Foundation.NSAttributedString> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("attributedStringByInflectingString")))!;
+				ret = global::ObjCRuntime.Runtime.GetNSObject<global::Foundation.NSAttributedString> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("attributedStringByInflectingString")))!;
 			}
 			global::System.GC.KeepAlive (this);
 			MarkDirty ();
@@ -319,7 +319,7 @@ public partial class PropertyTests
 			if (IsDirectBinding) {
 				global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setAttributedStringByInflectingString:"), value__handle__);
 			} else {
-				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setAttributedStringByInflectingString:"), value__handle__);
+				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("setAttributedStringByInflectingString:"), value__handle__);
 			}
 			global::System.GC.KeepAlive (this);
 			global::System.GC.KeepAlive (value);
@@ -345,7 +345,7 @@ public partial class PropertyTests
 			if (IsDirectBinding) {
 				ret = global::Foundation.NSNumber.ToBool (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("canDraw")));
 			} else {
-				ret = global::Foundation.NSNumber.ToBool (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("canDraw")));
+				ret = global::Foundation.NSNumber.ToBool (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("canDraw")));
 			}
 			global::System.GC.KeepAlive (this);
 			return ret;
@@ -362,7 +362,7 @@ public partial class PropertyTests
 			if (IsDirectBinding) {
 				global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setCanDraw:"), nsb_value__handle__);
 			} else {
-				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setCanDraw:"), nsb_value__handle__);
+				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("setCanDraw:"), nsb_value__handle__);
 			}
 			global::System.GC.KeepAlive (this);
 			global::System.GC.KeepAlive (nsb_value);
@@ -386,7 +386,7 @@ public partial class PropertyTests
 			if (IsDirectBinding) {
 				ret = global::ObjCRuntime.Messaging.CGPoint_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("Center"));
 			} else {
-				ret = global::ObjCRuntime.Messaging.CGPoint_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("Center"));
+				ret = global::ObjCRuntime.Messaging.CGPoint_objc_msgSendSuper (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("Center"));
 			}
 			global::System.GC.KeepAlive (this);
 			return ret;
@@ -401,7 +401,7 @@ public partial class PropertyTests
 			if (IsDirectBinding) {
 				global::ObjCRuntime.Messaging.void_objc_msgSend_CGPoint (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setCenter:"), value);
 			} else {
-				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_CGPoint (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setCenter:"), value);
+				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_CGPoint (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("setCenter:"), value);
 			}
 			global::System.GC.KeepAlive (this);
 		}
@@ -424,7 +424,7 @@ public partial class PropertyTests
 			if (IsDirectBinding) {
 				ret = global::ObjCRuntime.Messaging.bool_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("containsAttachments")) != 0;
 			} else {
-				ret = global::ObjCRuntime.Messaging.bool_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("containsAttachments")) != 0;
+				ret = global::ObjCRuntime.Messaging.bool_objc_msgSendSuper (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("containsAttachments")) != 0;
 			}
 			global::System.GC.KeepAlive (this);
 			return ret;
@@ -439,7 +439,7 @@ public partial class PropertyTests
 			if (IsDirectBinding) {
 				global::ObjCRuntime.Messaging.void_objc_msgSend_bool (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setContainsAttachments:"), value ? (byte) 1 : (byte) 0);
 			} else {
-				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_bool (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setContainsAttachments:"), value ? (byte) 1 : (byte) 0);
+				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_bool (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("setContainsAttachments:"), value ? (byte) 1 : (byte) 0);
 			}
 			global::System.GC.KeepAlive (this);
 		}
@@ -462,7 +462,7 @@ public partial class PropertyTests
 			if (IsDirectBinding) {
 				ret = global::ObjCRuntime.Messaging.UIntPtr_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("count"));
 			} else {
-				ret = global::ObjCRuntime.Messaging.UIntPtr_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("count"));
+				ret = global::ObjCRuntime.Messaging.UIntPtr_objc_msgSendSuper (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("count"));
 			}
 			global::System.GC.KeepAlive (this);
 			return ret;
@@ -477,7 +477,7 @@ public partial class PropertyTests
 			if (IsDirectBinding) {
 				global::ObjCRuntime.Messaging.void_objc_msgSend_UIntPtr (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setCount:"), value);
 			} else {
-				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_UIntPtr (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setCount:"), value);
+				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_UIntPtr (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("setCount:"), value);
 			}
 			global::System.GC.KeepAlive (this);
 		}
@@ -500,7 +500,7 @@ public partial class PropertyTests
 			if (IsDirectBinding) {
 				ret = global::ObjCRuntime.Messaging.bool_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("isForPersonMassUse")) != 0;
 			} else {
-				ret = global::ObjCRuntime.Messaging.bool_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("isForPersonMassUse")) != 0;
+				ret = global::ObjCRuntime.Messaging.bool_objc_msgSendSuper (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("isForPersonMassUse")) != 0;
 			}
 			global::System.GC.KeepAlive (this);
 			return ret;
@@ -515,7 +515,7 @@ public partial class PropertyTests
 			if (IsDirectBinding) {
 				global::ObjCRuntime.Messaging.void_objc_msgSend_bool (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setForPersonMassUse:"), value ? (byte) 1 : (byte) 0);
 			} else {
-				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_bool (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setForPersonMassUse:"), value ? (byte) 1 : (byte) 0);
+				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_bool (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("setForPersonMassUse:"), value ? (byte) 1 : (byte) 0);
 			}
 			global::System.GC.KeepAlive (this);
 		}
@@ -538,7 +538,7 @@ public partial class PropertyTests
 			if (IsDirectBinding) {
 				ret = global::ObjCRuntime.Messaging.bool_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("isLenient")) != 0;
 			} else {
-				ret = global::ObjCRuntime.Messaging.bool_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("isLenient")) != 0;
+				ret = global::ObjCRuntime.Messaging.bool_objc_msgSendSuper (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("isLenient")) != 0;
 			}
 			global::System.GC.KeepAlive (this);
 			return ret;
@@ -553,7 +553,7 @@ public partial class PropertyTests
 			if (IsDirectBinding) {
 				global::ObjCRuntime.Messaging.void_objc_msgSend_bool (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setLenient:"), value ? (byte) 1 : (byte) 0);
 			} else {
-				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_bool (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setLenient:"), value ? (byte) 1 : (byte) 0);
+				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_bool (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("setLenient:"), value ? (byte) 1 : (byte) 0);
 			}
 			global::System.GC.KeepAlive (this);
 		}
@@ -576,7 +576,7 @@ public partial class PropertyTests
 			if (IsDirectBinding) {
 				ret = global::ObjCRuntime.Messaging.nfloat_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("lineSpacing"));
 			} else {
-				ret = global::ObjCRuntime.Messaging.nfloat_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("lineSpacing"));
+				ret = global::ObjCRuntime.Messaging.nfloat_objc_msgSendSuper (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("lineSpacing"));
 			}
 			global::System.GC.KeepAlive (this);
 			return ret;
@@ -591,7 +591,7 @@ public partial class PropertyTests
 			if (IsDirectBinding) {
 				global::ObjCRuntime.Messaging.void_objc_msgSend_nfloat (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setLineSpacing:"), value);
 			} else {
-				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_nfloat (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setLineSpacing:"), value);
+				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_nfloat (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("setLineSpacing:"), value);
 			}
 			global::System.GC.KeepAlive (this);
 		}
@@ -617,7 +617,7 @@ public partial class PropertyTests
 			if (IsDirectBinding) {
 				ret = global::ObjCRuntime.Runtime.GetNSObject<global::Foundation.NSLocale> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("locale")))!;
 			} else {
-				ret = global::ObjCRuntime.Runtime.GetNSObject<global::Foundation.NSLocale> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("locale")))!;
+				ret = global::ObjCRuntime.Runtime.GetNSObject<global::Foundation.NSLocale> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("locale")))!;
 			}
 			global::System.GC.KeepAlive (this);
 			MarkDirty ();
@@ -635,7 +635,7 @@ public partial class PropertyTests
 			if (IsDirectBinding) {
 				global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setLocale:"), value__handle__);
 			} else {
-				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setLocale:"), value__handle__);
+				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("setLocale:"), value__handle__);
 			}
 			global::System.GC.KeepAlive (this);
 			global::System.GC.KeepAlive (value);
@@ -661,7 +661,7 @@ public partial class PropertyTests
 			if (IsDirectBinding) {
 				ret = global::Foundation.NSArray.ArrayFromHandleFunc<global::CoreGraphics.CGPoint> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("Center")), global::Foundation.NSValue.ToCGPoint, false);
 			} else {
-				ret = global::Foundation.NSArray.ArrayFromHandleFunc<global::CoreGraphics.CGPoint> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("Center")), global::Foundation.NSValue.ToCGPoint, false);
+				ret = global::Foundation.NSArray.ArrayFromHandleFunc<global::CoreGraphics.CGPoint> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("Center")), global::Foundation.NSValue.ToCGPoint, false);
 			}
 			global::System.GC.KeepAlive (this);
 			return ret;
@@ -680,7 +680,7 @@ public partial class PropertyTests
 			if (IsDirectBinding) {
 				global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setCenter:"), nsa_value__handle__);
 			} else {
-				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setCenter:"), nsa_value__handle__);
+				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("setCenter:"), nsa_value__handle__);
 			}
 			global::System.GC.KeepAlive (this);
 			global::System.GC.KeepAlive (nsb_value);
@@ -704,7 +704,7 @@ public partial class PropertyTests
 			if (IsDirectBinding) {
 				ret = global::CoreFoundation.CFString.FromHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("name")), false)!;
 			} else {
-				ret = global::CoreFoundation.CFString.FromHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("name")), false)!;
+				ret = global::CoreFoundation.CFString.FromHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("name")), false)!;
 			}
 			global::System.GC.KeepAlive (this);
 			return ret;
@@ -722,7 +722,7 @@ public partial class PropertyTests
 			if (IsDirectBinding) {
 				global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setName:"), nsvalue);
 			} else {
-				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setName:"), nsvalue);
+				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("setName:"), nsvalue);
 			}
 			global::System.GC.KeepAlive (this);
 			global::CoreFoundation.CFString.ReleaseNative (nsvalue);
@@ -746,7 +746,7 @@ public partial class PropertyTests
 			if (IsDirectBinding) {
 				ret = global::CoreFoundation.CFArray.StringArrayFromHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("surnames")), false)!;
 			} else {
-				ret = global::CoreFoundation.CFArray.StringArrayFromHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("surnames")), false)!;
+				ret = global::CoreFoundation.CFArray.StringArrayFromHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("surnames")), false)!;
 			}
 			global::System.GC.KeepAlive (this);
 			return ret;
@@ -764,7 +764,7 @@ public partial class PropertyTests
 			if (IsDirectBinding) {
 				global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setSurnames:"), nsa_value.Handle);
 			} else {
-				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setSurnames:"), nsa_value.Handle);
+				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("setSurnames:"), nsa_value.Handle);
 			}
 			global::System.GC.KeepAlive (this);
 			global::System.GC.KeepAlive (nsa_value);
@@ -788,7 +788,7 @@ public partial class PropertyTests
 			if (IsDirectBinding) {
 				ret = global::CoreFoundation.CFString.FromHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("name")), false);
 			} else {
-				ret = global::CoreFoundation.CFString.FromHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("name")), false);
+				ret = global::CoreFoundation.CFString.FromHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("name")), false);
 			}
 			global::System.GC.KeepAlive (this);
 			return ret;
@@ -804,7 +804,7 @@ public partial class PropertyTests
 			if (IsDirectBinding) {
 				global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setName:"), nsvalue);
 			} else {
-				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setName:"), nsvalue);
+				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("setName:"), nsvalue);
 			}
 			global::System.GC.KeepAlive (this);
 			global::CoreFoundation.CFString.ReleaseNative (nsvalue);
@@ -828,7 +828,7 @@ public partial class PropertyTests
 			if (IsDirectBinding) {
 				ret = global::AVFoundation.AVCaptureReactionTypeExtensions.GetValue (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("canDraw")));
 			} else {
-				ret = global::AVFoundation.AVCaptureReactionTypeExtensions.GetValue (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("canDraw")));
+				ret = global::AVFoundation.AVCaptureReactionTypeExtensions.GetValue (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("canDraw")));
 			}
 			global::System.GC.KeepAlive (this);
 			return ret;
@@ -845,7 +845,7 @@ public partial class PropertyTests
 			if (IsDirectBinding) {
 				global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setCanDraw:"), nsb_value__handle__);
 			} else {
-				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setCanDraw:"), nsb_value__handle__);
+				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("setCanDraw:"), nsb_value__handle__);
 			}
 			global::System.GC.KeepAlive (this);
 			global::System.GC.KeepAlive (nsb_value);
@@ -872,7 +872,7 @@ public partial class PropertyTests
 			if (IsDirectBinding) {
 				ret = global::CoreFoundation.CFArray.ArrayFromHandle<global::Foundation.NSMetadataItem> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("results")))!;
 			} else {
-				ret = global::CoreFoundation.CFArray.ArrayFromHandle<global::Foundation.NSMetadataItem> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("results")))!;
+				ret = global::CoreFoundation.CFArray.ArrayFromHandle<global::Foundation.NSMetadataItem> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("results")))!;
 			}
 			global::System.GC.KeepAlive (this);
 			MarkDirty ();
@@ -892,7 +892,7 @@ public partial class PropertyTests
 			if (IsDirectBinding) {
 				global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setResults:"), nsa_value.Handle);
 			} else {
-				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setResults:"), nsa_value.Handle);
+				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("setResults:"), nsa_value.Handle);
 			}
 			global::System.GC.KeepAlive (this);
 			global::System.GC.KeepAlive (nsa_value);
@@ -918,7 +918,7 @@ public partial class PropertyTests
 			if (IsDirectBinding) {
 				ret = global::ObjCRuntime.Messaging.CGSize_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("size"));
 			} else {
-				ret = global::ObjCRuntime.Messaging.CGSize_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("size"));
+				ret = global::ObjCRuntime.Messaging.CGSize_objc_msgSendSuper (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("size"));
 			}
 			global::System.GC.KeepAlive (this);
 			return ret;
@@ -933,7 +933,7 @@ public partial class PropertyTests
 			if (IsDirectBinding) {
 				global::ObjCRuntime.Messaging.void_objc_msgSend_CGSize (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setSize:"), value);
 			} else {
-				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_CGSize (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setSize:"), value);
+				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_CGSize (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("setSize:"), value);
 			}
 			global::System.GC.KeepAlive (this);
 		}
@@ -956,7 +956,7 @@ public partial class PropertyTests
 			if (IsDirectBinding) {
 				ret = global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("sizes"));
 			} else {
-				ret = global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("sizes"));
+				ret = global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("sizes"));
 			}
 			global::System.GC.KeepAlive (this);
 			return ret;
@@ -973,7 +973,7 @@ public partial class PropertyTests
 			if (IsDirectBinding) {
 				global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setSizes:"), value);
 			} else {
-				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setSizes:"), value);
+				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("setSizes:"), value);
 			}
 			global::System.GC.KeepAlive (this);
 		}
@@ -999,7 +999,7 @@ public partial class PropertyTests
 			if (IsDirectBinding) {
 				ret = global::ObjCRuntime.Runtime.GetNSObject<global::Foundation.NSObject> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("delegate")));
 			} else {
-				ret = global::ObjCRuntime.Runtime.GetNSObject<global::Foundation.NSObject> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("delegate")));
+				ret = global::ObjCRuntime.Runtime.GetNSObject<global::Foundation.NSObject> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("delegate")));
 			}
 			global::System.GC.KeepAlive (this);
 			MarkDirty ();
@@ -1017,7 +1017,7 @@ public partial class PropertyTests
 			if (IsDirectBinding) {
 				global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setDelegate:"), value__handle__);
 			} else {
-				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setDelegate:"), value__handle__);
+				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("setDelegate:"), value__handle__);
 			}
 			global::System.GC.KeepAlive (this);
 			global::System.GC.KeepAlive (value);
@@ -1041,5 +1041,4 @@ public partial class PropertyTests
 			WeakDelegate = rvalue;
 		}
 	}
-	// TODO: add binding code here
 }

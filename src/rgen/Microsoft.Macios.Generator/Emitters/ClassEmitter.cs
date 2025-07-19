@@ -16,6 +16,7 @@ using Microsoft.Macios.Generator.IO;
 using ObjCBindings;
 using static Microsoft.Macios.Generator.Emitters.BindingSyntaxFactory;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using Constructor = ObjCBindings.Constructor;
 using Method = Microsoft.Macios.Generator.DataModel.Method;
 using Property = Microsoft.Macios.Generator.DataModel.Property;
 
@@ -67,6 +68,47 @@ public {bindingContext.Changes.Name} () : base ({NSObjectFlag}.Empty)
 		classBlock.AppendGeneratedCodeAttribute ();
 		classBlock.AppendEditorBrowsableAttribute (EditorBrowsableState.Advanced);
 		classBlock.WriteLine ($"protected internal {bindingContext.Changes.Name} ({NativeHandle} handle) : base (handle) {{}}");
+	}
+
+	void EmitConstructors (in BindingContext context, TabbedWriter<StringWriter> classBlock)
+	{
+		// When dealing with constructors we cannot sort them by name because the name is always the same as the class
+		// instead we will sort them by the selector name so that we will always generate the constructors in the same order
+		foreach (var constructor in context.Changes.Constructors.OrderBy (c => c.ExportMethodData.Selector)) {
+			classBlock.WriteLine ();
+			classBlock.AppendMemberAvailability (constructor.SymbolAvailability);
+			classBlock.AppendGeneratedCodeAttribute (optimizable: true);
+			if (constructor.ExportMethodData.Flags.HasFlag (Constructor.DesignatedInitializer)) {
+				classBlock.AppendDesignatedInitializer ();
+			}
+
+			using (var constructorBlock = classBlock.CreateBlock (constructor.ToDeclaration (withBaseNSFlag: true).ToString (), block: true)) {
+				// retrieve the method invocation via the factory, this will generate the necessary arguments
+				// transformations and the invocation
+				var invocations = GetInvocations (constructor);
+
+				// init the needed temp variables
+				foreach (var argument in invocations.Arguments) {
+					constructorBlock.Write (argument.Validations, verifyTrivia: false);
+					constructorBlock.Write (argument.Initializers, verifyTrivia: false);
+					constructorBlock.Write (argument.PreCallConversion, verifyTrivia: false);
+				}
+
+				// simply call the send or sendSuper accordingly
+				constructorBlock.WriteRaw (
+$@"if (IsDirectBinding) {{
+	{ExpressionStatement (invocations.Send)}
+}} else {{
+	{ExpressionStatement (invocations.SendSuper)}
+}}
+");
+
+				// before we leave the methods, do any post operations
+				foreach (var argument in invocations.Arguments) {
+					constructorBlock.Write (argument.PostCallConversion, verifyTrivia: false);
+				}
+			}
+		}
 	}
 
 	/// <summary>
@@ -554,6 +596,9 @@ public static NSObject {name} ({NSObject} objectToObserve, {EventHandler}<{event
 				EmitDefaultConstructors (bindingContext: bindingContext,
 					classBlock: classBlock,
 					disableDefaultCtor: bindingData.Flags.HasFlag (ObjCBindings.Class.DisableDefaultCtor));
+
+				// emit any other constructor that is not the default one
+				EmitConstructors (bindingContext, classBlock);
 			}
 
 			EmitFields (bindingContext.Changes.Name, bindingContext.Changes.Properties, classBlock,
@@ -563,7 +608,6 @@ public static NSObject {name} ({NSObject} objectToObserve, {EventHandler}<{event
 
 			// emit the notification helper classes, leave this for the very bottom of the class
 			EmitNotifications (notificationProperties, classBlock);
-			classBlock.WriteLine ("// TODO: add binding code here");
 		}
 		return true;
 	}

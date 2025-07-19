@@ -197,7 +197,7 @@ static partial class BindingSyntaxFactory {
 		if (send is null || method.ExportMethodData.Selector is null) {
 			return ThrowNotImplementedException ();
 		}
-		var invocation = MessagingInvocation (send, method.ExportMethodData.Selector, arguments);
+		var invocation = MessagingInvocation (send, method.ExportMethodData.Selector, arguments, isSuper);
 		if (method.ReturnType.IsVoid)
 			return invocation;
 		// we need to convert the return type to the managed type and assign it to the return variable

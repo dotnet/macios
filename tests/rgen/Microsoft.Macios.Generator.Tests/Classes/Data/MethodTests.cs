@@ -20,7 +20,7 @@ public partial class MethodTests {
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
-	[Export<Method> ("valueForKey:", Flags: Method.MarshalNativeExceptions)]
+	[Export<Method> ("valueForKey:", Flags = Method.MarshalNativeExceptions)]
 	public virtual unsafe partial NSObject ValueForKey (NSString key);
 
 	[SupportedOSPlatform ("ios")]

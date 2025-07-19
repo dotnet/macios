@@ -277,7 +277,7 @@ public class BindingSourceGeneratorGenerator : IIncrementalGenerator {
 		var usingDirectivesToKeep = new SortedSet<string> (binding.UsingDirectives) {
 			// add the using statements that we know we need and print them to the sb
 		};
-		
+
 		// if there is at least one method that is async, we need to add the treading
 		// namespace.
 		if (binding.Methods.Any (m => m.IsAsync)) {

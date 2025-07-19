@@ -24253,7 +24253,6 @@ P:UIKit.UITableViewCell.UITableViewCellAppearance.SeparatorInset
 P:UIKit.UITextDocumentProxy.AllowsNumberPadPopover
 P:UIKit.UITextField.AllowsNumberPadPopover
 P:UIKit.UITextField.Editable
-P:UIKit.UITextField.ShouldChangeCharactersInRanges
 P:UIKit.UITextFormattingCoordinator.Delegate
 P:UIKit.UITextFormattingCoordinator.FontPanelVisible
 P:UIKit.UITextFormattingViewController.Delegate
@@ -29355,6 +29354,7 @@ T:UIKit.UIUpdateLinkCallback
 T:UIKit.UIUserInterfaceActiveAppearance
 T:UIKit.UIUserInterfaceLevel
 T:UIKit.UIVibrancyEffectStyle
+T:UIKit.UIViewControllerTransitionZoomBarButtonHandler
 T:UIKit.UIViewLayoutRegionAdaptivityAxis
 T:UIKit.UIWindowSceneActivationActionConfigurationProvider
 T:UIKit.UIWindowSceneActivationInteractionConfigurationProvider

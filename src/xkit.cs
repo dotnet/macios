@@ -4723,7 +4723,7 @@ namespace UIKit {
 		[return: NullAllowed]
 		NSTextRange GetAdjustedRange (NSTextRange textRange, bool forEditingTextSelection);
 
-		[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0), Mac (26, 0)]
 		[Export ("includesTextListMarkers")]
 		bool IncludesTextListMarkers { get; set; }
 	}
@@ -5292,7 +5292,7 @@ namespace UIKit {
 		[Export ("updateForReflowedTextInContextWithIdentifier:")]
 		void UpdateForReflowedTextInContext (NSUuid contextId);
 
-		[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0), Mac (26, 0)]
 		[Export ("includesTextListMarkers")]
 		bool IncludesTextListMarkers { get; set; }
 	}

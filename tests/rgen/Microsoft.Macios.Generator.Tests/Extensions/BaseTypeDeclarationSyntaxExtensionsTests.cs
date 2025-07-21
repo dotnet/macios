@@ -72,7 +72,7 @@ namespace Foo {
 			.OfType<T> ()
 			.FirstOrDefault ();
 		Assert.NotNull (declaration);
-		semanticModel = compilation.GetSemanticModel (sourceTrees[0]);
+		semanticModel = compilation.GetSemanticModel (sourceTrees [0]);
 		return declaration;
 	}
 
@@ -80,17 +80,23 @@ namespace Foo {
 	{
 		foreach (var platform in Configuration.GetIncludedPlatforms ()) {
 			yield return [GetDeclaration<ClassDeclarationSyntax> (platform, filescopedNamespaceClass, out SemanticModel semanticModel),
-				semanticModel, "Test.Foo"];
+				semanticModel,
+				"Test.Foo"];
 			yield return [GetDeclaration<EnumDeclarationSyntax> (platform, filescopedNamespaceNestedEnum, out semanticModel),
-				semanticModel, "Test.Foo.Bar"];
+				semanticModel,
+				"Test.Foo.Bar"];
 			yield return [GetDeclaration<ClassDeclarationSyntax> (platform, namespaceClass, out semanticModel),
-				semanticModel, "Test.Foo"];
+				semanticModel,
+				"Test.Foo"];
 			yield return [GetDeclaration<ClassDeclarationSyntax> (platform, severalNamespaces, out semanticModel),
-				semanticModel, "Test.Foo"];
+				semanticModel,
+				"Test.Foo"];
 			yield return [GetDeclaration<ClassDeclarationSyntax> (platform, nestedNamespaces, out semanticModel),
-				semanticModel, "Foo.Bar.Test"];
+				semanticModel,
+				"Foo.Bar.Test"];
 			yield return [GetDeclaration<EnumDeclarationSyntax> (platform, nestedEnum, out semanticModel),
-				semanticModel, "Foo.Bar.Test.Final"];
+				semanticModel,
+				"Foo.Bar.Test.Final"];
 		}
 	}
 

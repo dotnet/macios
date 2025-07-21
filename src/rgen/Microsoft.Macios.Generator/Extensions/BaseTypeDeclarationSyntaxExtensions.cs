@@ -17,8 +17,8 @@ static class BaseTypeDeclarationSyntaxExtensions {
 	public static string GetFullyQualifiedIdentifier (this BaseTypeDeclarationSyntax self, SemanticModel semanticModel)
 	{
 		var symbol = semanticModel.GetDeclaredSymbol (self);
-		return symbol is null ? 
-			string.Empty : 
+		return symbol is null ?
+			string.Empty :
 			symbol.ToDisplayString (SymbolDisplayFormat.FullyQualifiedFormat.WithGlobalNamespaceStyle (SymbolDisplayGlobalNamespaceStyle.Omitted));
 	}
 }

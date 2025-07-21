@@ -6176,8 +6176,8 @@ public partial class Generator : IMemberGatherer {
 		///     contains extra information that is specific to the notification type.
 		///   </para>
 		///   <para>
-		///     To subscribe to this notification, developers can use the convenience <see cref="Notifications.Observe{{notificationName}}(NSObject,EventHandler{{ "{" + eventArgsTypeName + "}" }})" />
-		///     or <see cref="Notifications.Observe{{notificationName}}(EventHandler{{ "{" + eventArgsTypeName + "}" }})" /> methods,
+		///     To subscribe to this notification, developers can use the convenience <see cref="Notifications.Observe{{notificationName}}(NSObject,EventHandler{{"{" + eventArgsTypeName + "}"}})" />
+		///     or <see cref="Notifications.Observe{{notificationName}}(EventHandler{{"{" + eventArgsTypeName + "}"}})" /> methods,
 		///     which offers strongly typed access to the parameters of the notification.
 		///   </para>
 		///   <para>

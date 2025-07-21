@@ -77,7 +77,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 				null!,
 				$"{Global ("ObjCRuntime.Messaging")}.IntPtr_objc_msgSend (this.Handle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"string\"))"
 			];
-
+			
 			yield return [
 				"IntPtr_objc_msgSend",
 				"string",
@@ -107,6 +107,24 @@ public class BindingSyntaxFactoryRuntimeTests {
 				false,
 				null!,
 				$"{Global ("ObjCRuntime.Messaging")}.IntPtr_objc_msgSend (this.Handle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"string\"), arg1)"
+			];
+			
+			yield return [
+				"IntPtr_objc_msgSend",
+				"string",
+				args,
+				false,
+				"example",
+				$"{Global ("ObjCRuntime.Messaging")}.IntPtr_objc_msgSend (example.Handle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"string\"), arg1)"
+			];
+
+			yield return [
+				"IntPtr_objc_msgSend",
+				"string",
+				args,
+				true,
+				null!,
+				$"{Global ("ObjCRuntime.Messaging")}.IntPtr_objc_msgSend (this.SuperHandle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"string\"), arg1)"
 			];
 
 			yield return [
@@ -140,6 +158,24 @@ public class BindingSyntaxFactoryRuntimeTests {
 				false,
 				null!,
 				$"{Global ("ObjCRuntime.Messaging")}.IntPtr_objc_msgSend (this.Handle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"string\"), arg1, arg2, arg3)"
+			];
+			
+			yield return [
+				"IntPtr_objc_msgSend",
+				"string",
+				args,
+				false,
+				"multi",
+				$"{Global ("ObjCRuntime.Messaging")}.IntPtr_objc_msgSend (multi.Handle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"string\"), arg1, arg2, arg3)"
+			];
+
+			yield return [
+				"IntPtr_objc_msgSend",
+				"string",
+				args,
+				true,
+				null!,
+				$"{Global ("ObjCRuntime.Messaging")}.IntPtr_objc_msgSend (this.SuperHandle, {Global ("ObjCRuntime.Selector")}.GetHandle (\"string\"), arg1, arg2, arg3)"
 			];
 
 			yield return [

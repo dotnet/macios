@@ -247,7 +247,7 @@ readonly partial struct Binding {
 	{
 		context.SemanticModel.GetSymbolData (
 			declaration: classDeclaration,
-			bindingType: BindingType.Class,
+			bindingType: classDeclaration.GetBindingType (context.SemanticModel),
 			name: out name,
 			baseClass: out baseClass,
 			interfaces: out interfaces,

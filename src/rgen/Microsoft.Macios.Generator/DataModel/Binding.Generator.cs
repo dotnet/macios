@@ -201,6 +201,7 @@ readonly partial struct Binding {
 			name: out name,
 			baseClass: out baseClass,
 			interfaces: out interfaces,
+			outerClasses: out outerClasses,
 			namespaces: out namespaces,
 			symbolAvailability: out availability,
 			bindingInfo: out bindingInfo);
@@ -251,6 +252,7 @@ readonly partial struct Binding {
 			name: out name,
 			baseClass: out baseClass,
 			interfaces: out interfaces,
+			outerClasses: out outerClasses,
 			namespaces: out namespaces,
 			symbolAvailability: out availability,
 			bindingInfo: out bindingInfo);
@@ -283,6 +285,7 @@ readonly partial struct Binding {
 			name: out name,
 			baseClass: out baseClass,
 			interfaces: out interfaces,
+			outerClasses: out outerClasses,
 			namespaces: out namespaces,
 			symbolAvailability: out availability,
 			bindingInfo: out bindingInfo);

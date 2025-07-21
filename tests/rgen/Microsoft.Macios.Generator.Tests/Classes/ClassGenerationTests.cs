@@ -46,12 +46,12 @@ public class ClassGenerationTests : BaseGeneratorTestClass {
 			new (ApplePlatform.MacCatalyst, "ThreadSafeUIKitPropertyTests", "ThreadSafeUIKitPropertyTests.cs", "ExpectedThreadSafeUIKitPropertyTests.cs"),
 			new (ApplePlatform.MacOSX, "AppKitPropertyTests", "AppKitPropertyTests.cs", "ExpectedAppKitPropertyTests.cs"),
 			new (ApplePlatform.MacOSX, "ThreadSafeAppKitPropertyTests", "ThreadSafeAppKitPropertyTests.cs", "ExpectedThreadSafeAppKitPropertyTests.cs"),
-
+			
 			new (ApplePlatform.iOS, "NSUserDefaults", "NSUserDefaults.cs", "ExpectedNSUserDefaults.cs"),
 			new (ApplePlatform.TVOS, "NSUserDefaults", "NSUserDefaults.cs", "ExpectedNSUserDefaults.cs"),
 			new (ApplePlatform.MacCatalyst, "NSUserDefaults", "NSUserDefaults.cs", "ExpectedNSUserDefaults.cs"),
 			new (ApplePlatform.MacOSX, "NSUserDefaults", "NSUserDefaults.cs", "ExpectedNSUserDefaults.cs"),
-
+			
 			new (ApplePlatform.iOS, "MethodTests", "MethodTests.cs", "ExpectedMethodsTests.cs")
 			{
 				ExtraFiles = new () {
@@ -75,6 +75,12 @@ public class ClassGenerationTests : BaseGeneratorTestClass {
 			new (ApplePlatform.TVOS, "ConstructorTests", "ConstructorTests.cs", "ExpectedConstructorTests.cs"),
 			new (ApplePlatform.MacCatalyst, "ConstructorTests", "ConstructorTests.cs", "ExpectedConstructorTests.cs"),
 			new (ApplePlatform.MacOSX, "ConstructorTests", "ConstructorTests.cs", "ExpectedConstructorTests.cs"),
+			
+			// nested classes
+			new (ApplePlatform.iOS, "NestedClasses", "NestedClasses.cs", "ExpectedNestedClasses.cs"),
+			new (ApplePlatform.TVOS, "NestedClasses", "NestedClasses.cs", "ExpectedNestedClasses.cs"),
+			new (ApplePlatform.MacCatalyst, "NestedClasses", "NestedClasses.cs", "ExpectedNestedClasses.cs"),
+			new (ApplePlatform.MacOSX, "NestedClasses", "NestedClasses.cs", "ExpectedNestedClasses.cs"),
 			
 			// trampoline tests
 			new (ApplePlatform.iOS, "TrampolinePropertyTests", "TrampolinePropertyTests.cs", "ExpectedTrampolinePropertyTests.cs"){ TrampolinesFile = "ExpectedTrampolinePropertyTestsTrampolines.cs"},

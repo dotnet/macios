@@ -71,6 +71,7 @@ readonly partial struct Binding {
 			name: out name,
 			baseClass: out baseClass,
 			interfaces: out interfaces,
+			outerClasses: out outerClasses,
 			namespaces: out namespaces,
 			symbolAvailability: out availability);
 		BindingBindingInfo = new BindingInfo (null, BindingType.SmartEnum);
@@ -243,7 +244,7 @@ readonly partial struct Binding {
 		BindingBindingInfo = new (baseTypeAttribute, GetBindingType (AttributesDictionary, baseTypeAttribute));
 		name = symbol.Name;
 		availability = symbol.GetAvailabilityForSymbol ();
-		namespaces = symbol.GetNamespaceArray ();
+		(namespaces, outerClasses) = symbol.GetNamespaceArrayAndOuterClasses ();
 		baseClass = GetBaseClass (BindingBindingInfo);
 
 		// retrieve the interfaces and protocols, notice that this are two out params

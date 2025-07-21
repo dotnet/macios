@@ -118,7 +118,7 @@ $@"if (IsDirectBinding) {{
 			methodBlock.Write (argument.PostCallConversion, verifyTrivia: false);
 		}
 	}
-	
+
 	/// <summary>
 	/// Emits the body for a method that returns a value.
 	/// </summary>
@@ -130,7 +130,7 @@ $@"if (IsDirectBinding) {{
 		// similar to the void method but we need to create a temp variable to store the return value
 		// and do any conversions that might be needed for the return value, for example byte to bool
 		var (tempVar, tempDeclaration) = GetReturnValueAuxVariable (method.ReturnType);
-		
+
 		// init and validate the needed temp variables
 		foreach (var argument in invocations.Arguments) {
 			methodBlock.Write (argument.Validations, verifyTrivia: false);
@@ -165,7 +165,7 @@ if (IsDirectBinding) {{
 		}
 		methodBlock.WriteLine ($"return {tempVar};");
 	}
-	
+
 	/// <summary>
 	/// Emit the code for all the methods in the class.
 	/// </summary>
@@ -219,5 +219,5 @@ return {tcsName}.Task;
 			}
 		}
 	}
-	
+
 }

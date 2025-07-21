@@ -9,7 +9,7 @@ using Xamarin.Utils;
 namespace Microsoft.Macios.Generator.Tests.Categories;
 
 public class CategoryGenerationTests : BaseGeneratorTestClass {
-	
+
 	public class TestDataGenerator : BaseTestDataGenerator, IEnumerable<object []> {
 		readonly List<(ApplePlatform Platform, string ClassName, string BindingFile, string OutputFile, string? LibraryText)> _data = new ()
 		{

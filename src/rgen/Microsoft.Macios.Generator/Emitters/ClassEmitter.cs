@@ -345,7 +345,7 @@ if (!(value is null) && rvalue is null) {{
 			}
 		}
 	}
-	
+
 	/// <summary>
 	/// Emit the code for all the notifications in the class.
 	/// </summary>
@@ -385,7 +385,7 @@ public static NSObject {name} ({NSObject} objectToObserve, {EventHandler}<{event
 			}
 		}
 	}
-	
+
 	/// <inheritdoc />
 	public bool TryEmit (in BindingContext bindingContext, [NotNullWhen (false)] out ImmutableArray<Diagnostic>? diagnostics)
 	{

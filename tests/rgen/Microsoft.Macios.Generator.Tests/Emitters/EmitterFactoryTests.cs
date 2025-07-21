@@ -69,7 +69,7 @@ public class TestClass {
 		Assert.True (EmitterFactory.TryCreate (changes, out var secondEmitter));
 		Assert.Same (emitter, secondEmitter);
 	}
-	
+
 	[Theory]
 	[AllSupportedPlatforms]
 	public void TryCreateEmitterCategory (ApplePlatform platform)

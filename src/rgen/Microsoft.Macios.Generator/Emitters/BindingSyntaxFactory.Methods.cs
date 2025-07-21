@@ -190,7 +190,7 @@ static partial class BindingSyntaxFactory {
 		var send = GetObjCMessageSendMethodName (
 			exportData: method.ExportMethodData,
 			returnType: returnType,
-			parameters: method.IsExtension ? method.Parameters[1..] : method.Parameters,
+			parameters: method.IsExtension ? method.Parameters [1..] : method.Parameters,
 			isSuper: isSuper,
 			isStret: returnType.NeedsStret
 		);
@@ -198,9 +198,9 @@ static partial class BindingSyntaxFactory {
 			return ThrowNotImplementedException ();
 		}
 		var invocation = MessagingInvocation (
-			objcMsgSendMethod: send, 
-			selector: method.ExportMethodData.Selector, 
-			parameters: arguments, 
+			objcMsgSendMethod: send,
+			selector: method.ExportMethodData.Selector,
+			parameters: arguments,
 			isSuper: isSuper,
 			thisParameter: method.IsExtension ? method.This : null);
 		if (method.ReturnType.IsVoid)

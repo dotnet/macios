@@ -30,7 +30,7 @@ class CategoryEmitter : IClassEmitter {
 		"System.Diagnostics.CodeAnalysis",
 		"ObjCRuntime",
 	];
-	
+
 	/// <inheritdoc />
 	public bool TryEmit (in BindingContext bindingContext, [NotNullWhen (false)] out ImmutableArray<Diagnostic>? diagnostics)
 	{
@@ -43,7 +43,7 @@ class CategoryEmitter : IClassEmitter {
 				bindingContext.Changes.FullyQualifiedSymbol)];
 			return false;
 		}
-		
+
 		var bindingData = (BindingTypeData<Category>) bindingContext.Changes.BindingInfo;
 		if (bindingData.CategoryType is null) {
 			diagnostics = [Diagnostic.Create (
@@ -54,23 +54,23 @@ class CategoryEmitter : IClassEmitter {
 			return false;
 		}
 		var registrationName = bindingData.CategoryType.Value.Name;
-		
+
 		// namespace declaration
 		bindingContext.Builder.WriteLine ();
 		bindingContext.Builder.WriteLine ($"namespace {string.Join (".", bindingContext.Changes.Namespace)};");
 		bindingContext.Builder.WriteLine ();
-		
+
 		// append the class availability, this will add the necessary attributes to the class
 		bindingContext.Builder.AppendMemberAvailability (bindingContext.Changes.SymbolAvailability);
-		
+
 		var modifiers = $"{string.Join (' ', bindingContext.Changes.Modifiers)} ";
 		// class declaration, the analyzer should ensure that the class is static, otherwise it will fail to compile with an error.
 		using (var classBlock = bindingContext.Builder.CreateBlock ($"{(string.IsNullOrWhiteSpace (modifiers) ? string.Empty : modifiers)}class {bindingContext.Changes.Name}", true)) {
 			// emit the fields for the selectors before we register the class or anything
 			this.EmitSelectorFields (bindingContext, classBlock);
-			
+
 			classBlock.WriteLine ($"static readonly {NativeHandle} {ClassPtr} = {BindingSyntaxFactory.Class}.GetHandle (\"{registrationName}\");");
-			
+
 			// categories only have methods since we cannot have extensions properties in C#.
 			this.EmitMethods (bindingContext, classBlock);
 		}

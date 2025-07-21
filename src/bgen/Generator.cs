@@ -4826,7 +4826,13 @@ public partial class Generator : IMemberGatherer {
 		// disable CS1573, which can happen when the original member in the api definition has xml comments and we copy that xml comment into the generated interface - because we may add parameters to method signatures, and the new parameters won't have an xml comment.
 		print ("#pragma warning disable CS1573"); // Parameter 'This' has no matching param tag in the XML comment for '...' (but other parameters do)
 
-		WriteDocumentation (type);
+		if (!WriteDocumentation (type)) {
+			print ($"/// <summary>This interface represents the Objective-C protocol <c>{protocol_name}</c>.</summary>");
+			print ($"/// <remarks>");
+			print ($"///   <para>A class that implements this interface (and subclasses <see cref=\"NSObject\" />) will be exported to Objective-C as implementing the Objective-C protocol this interface represents.</para>");
+			print ($"///   <para>A class may also implement members from this interface to implement members from the protocol.</para>");
+			print ($"/// </remarks>");
+		}
 
 		PrintAttributes (type, platform: true, preserve: true, advice: true);
 		print ("[Protocol (Name = \"{1}\", WrapperType = typeof ({0}Wrapper){2}{3}{4})]",

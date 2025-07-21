@@ -5290,6 +5290,10 @@ namespace WebKit {
 		[MacCatalyst (14, 5)]
 		[Export ("shouldPerformDownload")]
 		bool ShouldPerformDownload { get; }
+
+		[iOS (26, 0), Mac (26, 0), MacCatalyst (26, 0)]
+		[Export ("isContentRuleListRedirect")]
+		bool IsContentRuleListRedirect { get; }
 	}
 
 	/// <summary>Delegate object for <see cref="WebKit.WKNavigation" /> objects, provides methods relating to navigation and load policies.</summary>
@@ -6666,6 +6670,9 @@ namespace WebKit {
 	interface WKWebViewConfiguration : NSCopying, NSSecureCoding {
 
 		[Export ("processPool", ArgumentSemantic.Retain)]
+		[Deprecated (PlatformName.iOS, 26, 0, message: "Use 'WKWebsiteDataStore' instead. Creating multiple instances of 'WKProcessPool' no longer works.")]
+		[Deprecated (PlatformName.MacOSX, 26, 0, message: "Use 'WKWebsiteDataStore' instead. Creating multiple instances of 'WKProcessPool' no longer works.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, message: "Use 'WKWebsiteDataStore' instead. Creating multiple instances of 'WKProcessPool' no longer works.")]
 		WKProcessPool ProcessPool { get; set; }
 
 		[Export ("preferences", ArgumentSemantic.Retain)]
@@ -6711,6 +6718,8 @@ namespace WebKit {
 
 		[NoMac]
 		[MacCatalyst (13, 1)]
+		[Deprecated (PlatformName.iOS, 26, 0, message: "No longer supported.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, message: "No longer supported.")]
 		[Export ("selectionGranularity")]
 		WKSelectionGranularity SelectionGranularity { get; set; }
 
@@ -6797,6 +6806,9 @@ namespace WebKit {
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/WebKit/Reference/WKProcessPool_Ref/index.html">Apple documentation for <c>WKProcessPool</c></related>
 	[MacCatalyst (13, 1)]
+	[Deprecated (PlatformName.iOS, 26, 0, message: "Use 'WKWebsiteDataStore' instead. Creating multiple instances of 'WKProcessPool' no longer works.")]
+	[Deprecated (PlatformName.MacOSX, 26, 0, message: "Use 'WKWebsiteDataStore' instead. Creating multiple instances of 'WKProcessPool' no longer works.")]
+	[Deprecated (PlatformName.MacCatalyst, 26, 0, message: "Use 'WKWebsiteDataStore' instead. Creating multiple instances of 'WKProcessPool' no longer works.")]
 	[BaseType (typeof (NSObject))]
 	interface WKProcessPool : NSSecureCoding {
 		// as of Mac 10.10, iOS 8.0 Beta 2,

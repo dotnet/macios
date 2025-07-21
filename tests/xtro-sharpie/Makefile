@@ -40,12 +40,17 @@ $(XTRO_SANITY): $(wildcard xtro-sanity/*.cs) $(wildcard xtro-sanity/*.csproj) $(
 
 CORETELEPHONY_HEADERS = \
 	-i CoreTelephony/CoreTelephonyDefines.h \
-	-i CoreTelephony/CTCarrier.h \
 	-i CoreTelephony/CTCall.h \
 	-i CoreTelephony/CTCallCenter.h \
-	-i CoreTelephony/CTTelephonyNetworkInfo.h \
+	-i CoreTelephony/CTCarrier.h \
+	-i CoreTelephony/CTCellularData.h \
+	-i CoreTelephony/CTCellularPlanProperties.h \
+	-i CoreTelephony/CTCellularPlanProvisioning.h \
+	-i CoreTelephony/CTCellularPlanProvisioningRequest.h \
+	-i CoreTelephony/CTCellularPlanStatus.h \
 	-i CoreTelephony/CTSubscriber.h \
 	-i CoreTelephony/CTSubscriberInfo.h \
+	-i CoreTelephony/CTTelephonyNetworkInfo.h \
 
 SWIFT_FRAMEWORKS = \
 	CoreTransferable \

@@ -2486,6 +2486,8 @@ F:CoreSpotlight.CSSuggestionKind.None
 F:CoreSpotlight.CSUserInteraction.Default
 F:CoreSpotlight.CSUserInteraction.Focus
 F:CoreSpotlight.CSUserInteraction.Select
+F:CoreTelephony.CTCellularPlanCapability.AndVoice
+F:CoreTelephony.CTCellularPlanCapability.Only
 F:CoreTelephony.CTCellularPlanProvisioningAddPlanResult.Cancel
 F:CoreText.CTFontManagerError.AssetNotFound
 F:CoreText.CTFontManagerError.CancelledByUser
@@ -4150,6 +4152,9 @@ F:MapKit.MKAddressFilterOption.Locality
 F:MapKit.MKAddressFilterOption.PostalCode
 F:MapKit.MKAddressFilterOption.SubAdministrativeArea
 F:MapKit.MKAddressFilterOption.SubLocality
+F:MapKit.MKAddressRepresentationsContextStyle.Automatic
+F:MapKit.MKAddressRepresentationsContextStyle.Full
+F:MapKit.MKAddressRepresentationsContextStyle.Short
 F:MapKit.MKAnnotationViewCollisionMode.None
 F:MapKit.MKDirectionsRoutePreference.Any
 F:MapKit.MKDirectionsRoutePreference.Avoid
@@ -4250,6 +4255,7 @@ F:MapKit.MKPointOfInterestCategory.University
 F:MapKit.MKPointOfInterestCategory.Volleyball
 F:MapKit.MKPointOfInterestCategory.Winery
 F:MapKit.MKPointOfInterestCategory.Zoo
+F:MapKit.MKScaleViewAlignment.Center
 F:MapKit.MKStandardMapEmphasisStyle.Default
 F:MapKit.MKStandardMapEmphasisStyle.Muted
 F:MediaExtension.MEDecodeFrameStatus.FrameDropped
@@ -10614,6 +10620,14 @@ M:CoreSpotlight.CSUserQuery.UserEngaged(CoreSpotlight.CSSuggestion,CoreSpotlight
 M:CoreSpotlight.CSUserQueryContext.Create(CoreSpotlight.CSSuggestion)
 M:CoreSpotlight.ICSSearchableIndexDelegate.DidUpdate(CoreSpotlight.CSSearchableItem[])
 M:CoreSpotlight.ICSSearchableIndexDelegate.GetSearchableItems(System.String[],CoreSpotlight.CSSearchableIndexDelegateGetSearchableItemsHandler)
+M:CoreTelephony.CTCellularPlanProvisioning.AddPlan(CoreTelephony.CTCellularPlanProvisioningRequest,CoreTelephony.CTCellularPlanProperties,CoreTelephony.CTCellularPlanProvisioningAddPlanCompletionHandler)
+M:CoreTelephony.CTCellularPlanProvisioning.AddPlanAsync(CoreTelephony.CTCellularPlanProvisioningRequest,CoreTelephony.CTCellularPlanProperties)
+M:CoreTelephony.CTCellularPlanProvisioning.UpdateCellularPlan(CoreTelephony.CTCellularPlanProperties,CoreTelephony.CTCellularPlanProvisioningUpdateCellularPlanCompletionHandler)
+M:CoreTelephony.CTCellularPlanProvisioning.UpdateCellularPlanAsync(CoreTelephony.CTCellularPlanProperties)
+M:CoreTelephony.CTCellularPlanStatus.CheckValidity(System.String,CoreTelephony.CTCellularPlanStatusCheckValidityCompletionHandler)
+M:CoreTelephony.CTCellularPlanStatus.CheckValidityAsync(System.String)
+M:CoreTelephony.CTCellularPlanStatus.GetToken(CoreTelephony.CTCellularPlanStatusGetTokenCompletionHandler)
+M:CoreTelephony.CTCellularPlanStatus.GetTokenAsync
 M:CoreTelephony.CTSubscriber.Dispose(System.Boolean)
 M:CoreTelephony.CTSubscriber.RefreshCarrierToken
 M:CoreTelephony.CTTelephonyNetworkInfo.Dispose(System.Boolean)
@@ -10687,6 +10701,11 @@ M:CoreVideo.CVDisplayLink.TryTranslateTime(CoreVideo.CVTimeStamp,CoreVideo.CVTim
 M:CoreVideo.CVFillExtendedPixelsCallBackDataStruct.CallFillCallback(CoreVideo.CVPixelBuffer)
 M:CoreVideo.CVMetalBuffer.GetTypeId
 M:CoreVideo.CVMetalBufferCache.GetTypeId
+M:CoreVideo.CVOpenGLESTexture.GetCleanTexCoords(System.Single[]@,System.Single[]@,System.Single[]@,System.Single[]@)
+M:CoreVideo.CVOpenGLESTextureCache.#ctor(OpenGLES.EAGLContext)
+M:CoreVideo.CVOpenGLESTextureCache.CreateTexture(CoreVideo.CVImageBuffer,System.Boolean,System.Int32,System.Int32,System.Int32,System.UInt32,System.UInt32,System.Int32,CoreVideo.CVReturn@)
+M:CoreVideo.CVOpenGLESTextureCache.Flush(CoreVideo.CVOptionFlags)
+M:CoreVideo.CVOpenGLESTextureCache.FromEAGLContext(OpenGLES.EAGLContext)
 M:CoreVideo.CVPixelBuffer.GetPixelBufferCreationAttributes
 M:CoreVideo.CVPixelBufferAttributes.#ctor(CoreVideo.CVPixelFormatType,System.IntPtr,System.IntPtr)
 M:CoreVideo.CVPixelBufferPool.Release
@@ -12756,6 +12775,7 @@ M:MapKit.MKAnnotationView.MKAnnotationViewAppearance.#ctor(System.IntPtr)
 M:MapKit.MKCircleView.MKCircleViewAppearance.#ctor(System.IntPtr)
 M:MapKit.MKCompassButton.Dispose(System.Boolean)
 M:MapKit.MKCompassButton.MKCompassButtonAppearance.#ctor(System.IntPtr)
+M:MapKit.MKGeocodingRequest.GetMapItemsAsync
 M:MapKit.MKLaunchOptions.#ctor
 M:MapKit.MKLocalSearchCompleter.Dispose(System.Boolean)
 M:MapKit.MKLookAroundSceneRequest.GetSceneAsync
@@ -12841,6 +12861,7 @@ M:MapKit.MKPitchControl.MKPitchControlAppearance.#ctor(System.IntPtr)
 M:MapKit.MKPolygonView.MKPolygonViewAppearance.#ctor(System.IntPtr)
 M:MapKit.MKPolylineView.MKPolylineViewAppearance.#ctor(System.IntPtr)
 M:MapKit.MKReverseGeocoder.Dispose(System.Boolean)
+M:MapKit.MKReverseGeocodingRequest.GetMapItemsAsync
 M:MapKit.MKScaleView.Dispose(System.Boolean)
 M:MapKit.MKScaleView.MKScaleViewAppearance.#ctor(System.IntPtr)
 M:MapKit.MKUserLocationView.#ctor(CoreGraphics.CGRect)
@@ -20303,6 +20324,9 @@ P:CoreSpotlight.CSUserQueryContext.MaxRankedResultCount
 P:CoreSpotlight.CSUserQueryContext.MaxResultCount
 P:CoreSpotlight.CSUserQueryContext.MaxSuggestionCount
 P:CoreSpotlight.CSUserQueryContext.UserQueryContext
+P:CoreTelephony.CTCellularPlanProperties.AssociatedIccid
+P:CoreTelephony.CTCellularPlanProperties.SimCapability
+P:CoreTelephony.CTCellularPlanProperties.SupportedRegionCodes
 P:CoreTelephony.CTCellularPlanProvisioning.SupportsEmbeddedSim
 P:CoreTelephony.CTSubscriber.IsSimInserted
 P:CoreTelephony.CTTelephonyNetworkInfo.DataServiceIdentifier
@@ -20322,6 +20346,9 @@ P:CoreText.CTRunDelegateOperations.Handle
 P:CoreText.CTStringAttributes.AdaptiveImageProvider
 P:CoreText.CTStringAttributes.TrackingAdjustment
 P:CoreVideo.CVMetalBufferCacheAttributes.MaximumBufferAge
+P:CoreVideo.CVOpenGLESTexture.IsFlipped
+P:CoreVideo.CVOpenGLESTexture.Name
+P:CoreVideo.CVOpenGLESTexture.Target
 P:CoreVideo.CVPixelFormatComponentRange.FullRange
 P:CoreVideo.CVPixelFormatComponentRange.VideoRange
 P:CoreVideo.CVPixelFormatComponentRange.WideRange
@@ -22053,6 +22080,8 @@ P:MapKit.MKAnnotationEventArgs.Annotation
 P:MapKit.MKAnnotationViewEventArgs.View
 P:MapKit.MKDidAddOverlayRenderersEventArgs.Renderers
 P:MapKit.MKDidFinishRenderingMapEventArgs.FullyRendered
+P:MapKit.MKGeocodingRequest.Cancelled
+P:MapKit.MKGeocodingRequest.Loading
 P:MapKit.MKLookAroundSceneRequest.IsCancelled
 P:MapKit.MKLookAroundSceneRequest.IsLoading
 P:MapKit.MKLookAroundSnapshotter.IsLoading
@@ -22070,6 +22099,8 @@ P:MapKit.MKMapViewDragStateEventArgs.AnnotationView
 P:MapKit.MKMapViewDragStateEventArgs.NewState
 P:MapKit.MKMapViewDragStateEventArgs.OldState
 P:MapKit.MKOverlayViewsEventArgs.OverlayViews
+P:MapKit.MKReverseGeocodingRequest.Cancelled
+P:MapKit.MKReverseGeocodingRequest.Loading
 P:MapKit.MKUserLocationEventArgs.UserLocation
 P:MapKit.MMapViewUserTrackingEventArgs.Animated
 P:MapKit.MMapViewUserTrackingEventArgs.Mode
@@ -24825,6 +24856,7 @@ P:WebKit.WebViewToolBarsEventArgs.Visible
 P:WebKit.WKDownload.Delegate
 P:WebKit.WKDownload.Progress
 P:WebKit.WKDownload.UserInitiated
+P:WebKit.WKNavigationAction.IsContentRuleListRedirect
 P:WebKit.WKPreferences.ElementFullscreenEnabled
 P:WebKit.WKPreferences.FraudulentWebsiteWarningEnabled
 P:WebKit.WKPreferences.SiteSpecificQuirksModeEnabled
@@ -26850,9 +26882,16 @@ T:CoreSpotlight.CSSuggestionKind
 T:CoreSpotlight.CSUserInteraction
 T:CoreSpotlight.CSUserQuery
 T:CoreSpotlight.CSUserQueryContext
+T:CoreTelephony.CTCellularPlanCapability
+T:CoreTelephony.CTCellularPlanProperties
 T:CoreTelephony.CTCellularPlanProvisioning
+T:CoreTelephony.CTCellularPlanProvisioningAddPlanCompletionHandler
 T:CoreTelephony.CTCellularPlanProvisioningAddPlanResult
 T:CoreTelephony.CTCellularPlanProvisioningRequest
+T:CoreTelephony.CTCellularPlanProvisioningUpdateCellularPlanCompletionHandler
+T:CoreTelephony.CTCellularPlanStatus
+T:CoreTelephony.CTCellularPlanStatusCheckValidityCompletionHandler
+T:CoreTelephony.CTCellularPlanStatusGetTokenCompletionHandler
 T:CoreTelephony.CTTelephonyNetworkInfoDelegate
 T:CoreTelephony.ICTSubscriberDelegate
 T:CoreTelephony.ICTTelephonyNetworkInfoDelegate
@@ -26868,6 +26907,8 @@ T:CoreVideo.CVImageBufferColorPrimaries
 T:CoreVideo.CVImageBufferTransferFunction
 T:CoreVideo.CVImageBufferYCbCrMatrix
 T:CoreVideo.CVMetalBufferCacheAttributes
+T:CoreVideo.CVOpenGLESTexture
+T:CoreVideo.CVOpenGLESTextureCache
 T:CoreVideo.CVPixelFormatComponentRange
 T:CoreVideo.CVPixelFormatComponentRangeKeys
 T:CoreVideo.CVPixelFormatKeys
@@ -27731,7 +27772,9 @@ T:MapKit.IMKGeoJsonObject
 T:MapKit.IMKLookAroundViewControllerDelegate
 T:MapKit.IMKMapItemDetailViewControllerDelegate
 T:MapKit.MKAddressFilterOption
+T:MapKit.MKAddressRepresentationsContextStyle
 T:MapKit.MKDirectionsRoutePreference
+T:MapKit.MKGeocodingRequestGetMapItemsCompletionHandler
 T:MapKit.MKLocalSearchCompleterResultType
 T:MapKit.MKLocalSearchRegionPriority
 T:MapKit.MKLocalSearchResultType
@@ -27744,6 +27787,7 @@ T:MapKit.MKMapItemDetailSelectionAccessoryCalloutStyle
 T:MapKit.MKMapItemDetailViewControllerDelegate
 T:MapKit.MKMapViewDefault
 T:MapKit.MKPointOfInterestCategory
+T:MapKit.MKReverseGeocodingRequestGetMapItemsCompletionHandler
 T:MapKit.MKScaleViewAlignment
 T:MapKit.MKStandardMapEmphasisStyle
 T:MediaAccessibility.MAFlashingLightsProcessor

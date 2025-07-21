@@ -199,7 +199,8 @@ TVOS_GENERATOR_FLAGS = -inline-selectors
 #
 
 # MacCatalyst is a variant of iOS, so it defines the iOS variables as well.
-MACCATALYST_DEFINES += $(IOS_DEFINES) -d:MACCATALYST
+# Note that we have to define __IOS__ here, because it won't be in IOS_DEFINES unless iOS is an included platform.
+MACCATALYST_DEFINES += $(IOS_DEFINES) -d:__IOS__ -d:MACCATALYST
 MACCATALYST_GENERATOR_FLAGS = -inline-selectors
 
 ### .NET ###

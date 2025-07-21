@@ -2,6 +2,8 @@
 
 #nullable enable
 
+using AVFoundation;
+using CoreGraphics;
 using Foundation;
 using ObjCBindings;
 using ObjCRuntime;
@@ -14,17 +16,13 @@ using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using System.Threading.Tasks;
 
-namespace AppKit;
+namespace Microsoft.Macios.Generator.Tests.Classes.Data;
 
-[Register ("AppKitPropertyTests", true)]
-public partial class AppKitPropertyTests
+[Register ("ConstructorTests", true)]
+public class ConstructorTests
 {
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	const string selCountX = "count";
-	static readonly global::ObjCRuntime.NativeHandle selCountXHandle = global::ObjCRuntime.Selector.GetHandle ("count");
-
-	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	static readonly global::ObjCRuntime.NativeHandle class_ptr = global::ObjCRuntime.Class.GetHandle ("AppKitPropertyTests");
+	static readonly global::ObjCRuntime.NativeHandle class_ptr = global::ObjCRuntime.Class.GetHandle ("ConstructorTests");
 
 	/// <summary>The Objective-C class handle for this class.</summary>
 	/// <value>The pointer to the Objective-C class.</value>
@@ -35,11 +33,11 @@ public partial class AppKitPropertyTests
 	/// </remarks>
 	public override global::ObjCRuntime.NativeHandle ClassHandle => class_ptr;
 
-	/// <summary>Creates a new <see cref="AppKitPropertyTests" /> with default values.</summary>
+	/// <summary>Creates a new <see cref="ConstructorTests" /> with default values.</summary>
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[DesignatedInitializer]
 	[Export ("init")]
-	public AppKitPropertyTests () : base (global::Foundation.NSObjectFlag.Empty)
+	public ConstructorTests () : base (global::Foundation.NSObjectFlag.Empty)
 	{
 		if (IsDirectBinding)
 			InitializeHandle (global::ObjCRuntime.Messaging.IntPtr_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("init")), "init");
@@ -94,7 +92,7 @@ public partial class AppKitPropertyTests
 	/// </remarks>
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable (EditorBrowsableState.Advanced)]
-	protected AppKitPropertyTests (global::Foundation.NSObjectFlag t) : base (t) {}
+	protected ConstructorTests (global::Foundation.NSObjectFlag t) : base (t) {}
 
 	/// <summary>A constructor used when creating managed representations of unmanaged objects. Called by the runtime.</summary>
 	/// <param name="handle">Pointer (handle) to the unmanaged object.</param>
@@ -106,31 +104,73 @@ public partial class AppKitPropertyTests
 	/// </remarks>
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable (EditorBrowsableState.Advanced)]
-	protected internal AppKitPropertyTests (global::ObjCRuntime.NativeHandle handle) : base (handle) {}
+	protected internal ConstructorTests (global::ObjCRuntime.NativeHandle handle) : base (handle) {}
 
-	[SupportedOSPlatform ("macos")]
-	[SupportedOSPlatform ("ios")]
-	[SupportedOSPlatform ("tvos")]
-	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual partial global::System.UIntPtr Count
+	[DesignatedInitializer]
+	public ConstructorTests (string path, bool isDir) : base (global::Foundation.NSObjectFlag.Empty)
 	{
-		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("tvos")]
-		[SupportedOSPlatform ("maccatalyst13.1")]
-		get
-		{
-			AppKit.NSApplication.EnsureUIThread ();
-
-			global::System.UIntPtr ret;
-			if (IsDirectBinding) {
-				ret = global::ObjCRuntime.Messaging.UIntPtr_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("count"));
-			} else {
-				ret = global::ObjCRuntime.Messaging.UIntPtr_objc_msgSendSuper (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("count"));
-			}
-			global::System.GC.KeepAlive (this);
-			return ret;
+		if (path is null)
+			global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (path));
+		var nspath = global::CoreFoundation.CFString.CreateNative (path);
+		if (IsDirectBinding) {
+			InitializeHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend_NativeHandle_bool (this.Handle, global::ObjCRuntime.Selector.GetHandle ("initFileURLWithPath:isDirectory:"), nspath, isDir ? (byte) 1 : (byte) 0), "initFileURLWithPath:isDirectory:");
+		} else {
+			InitializeHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper_NativeHandle_bool (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("initFileURLWithPath:isDirectory:"), nspath, isDir ? (byte) 1 : (byte) 0), "initFileURLWithPath:isDirectory:");
 		}
+		global::CoreFoundation.CFString.ReleaseNative (nspath);
+	}
+
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public ConstructorTests (string scheme, string host, string path) : base (global::Foundation.NSObjectFlag.Empty)
+	{
+		if (scheme is null)
+			global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (scheme));
+		var nsscheme = global::CoreFoundation.CFString.CreateNative (scheme);
+		if (host is null)
+			global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (host));
+		var nshost = global::CoreFoundation.CFString.CreateNative (host);
+		if (path is null)
+			global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (path));
+		var nspath = global::CoreFoundation.CFString.CreateNative (path);
+		if (IsDirectBinding) {
+			InitializeHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend_NativeHandle_NativeHandle_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("initWithScheme:host:path:"), nsscheme, nshost, nspath), "initWithScheme:host:path:");
+		} else {
+			InitializeHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper_NativeHandle_NativeHandle_NativeHandle (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("initWithScheme:host:path:"), nsscheme, nshost, nspath), "initWithScheme:host:path:");
+		}
+		global::CoreFoundation.CFString.ReleaseNative (nsscheme);
+		global::CoreFoundation.CFString.ReleaseNative (nshost);
+		global::CoreFoundation.CFString.ReleaseNative (nspath);
+	}
+
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public ConstructorTests (string urlString) : base (global::Foundation.NSObjectFlag.Empty)
+	{
+		if (urlString is null)
+			global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (urlString));
+		var nsurlString = global::CoreFoundation.CFString.CreateNative (urlString);
+		if (IsDirectBinding) {
+			InitializeHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("initWithString:"), nsurlString), "initWithString:");
+		} else {
+			InitializeHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper_NativeHandle (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("initWithString:"), nsurlString), "initWithString:");
+		}
+		global::CoreFoundation.CFString.ReleaseNative (nsurlString);
+	}
+
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[DesignatedInitializer]
+	public ConstructorTests (string urlString, global::Foundation.NSUrl relativeToUrl) : base (global::Foundation.NSObjectFlag.Empty)
+	{
+		var relativeToUrl__handle__ = relativeToUrl!.GetNonNullHandle (nameof (relativeToUrl));
+		if (urlString is null)
+			global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (urlString));
+		var nsurlString = global::CoreFoundation.CFString.CreateNative (urlString);
+		if (IsDirectBinding) {
+			InitializeHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend_NativeHandle_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("initWithString:relativeToURL:"), nsurlString, relativeToUrl__handle__), "initWithString:relativeToURL:");
+		} else {
+			InitializeHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper_NativeHandle_NativeHandle (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("initWithString:relativeToURL:"), nsurlString, relativeToUrl__handle__), "initWithString:relativeToURL:");
+		}
+		global::System.GC.KeepAlive (relativeToUrl);
+		global::CoreFoundation.CFString.ReleaseNative (nsurlString);
 	}
 }

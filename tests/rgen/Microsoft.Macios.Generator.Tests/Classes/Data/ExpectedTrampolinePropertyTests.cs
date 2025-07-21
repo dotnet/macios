@@ -198,7 +198,7 @@ public partial class TrampolinePropertyTests
 			if (IsDirectBinding) {
 				ret = global::ObjCRuntime.Trampolines.NIDActionArity1bool.Create (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("boolActionHandler")))!;
 			} else {
-				ret = global::ObjCRuntime.Trampolines.NIDActionArity1bool.Create (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("boolActionHandler")))!;
+				ret = global::ObjCRuntime.Trampolines.NIDActionArity1bool.Create (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("boolActionHandler")))!;
 			}
 			global::System.GC.KeepAlive (this);
 			return ret;
@@ -214,7 +214,7 @@ public partial class TrampolinePropertyTests
 			if (IsDirectBinding) {
 				global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setBoolActionHandler:"), (global::ObjCRuntime.NativeHandle) block_ptr_value);
 			} else {
-				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setBoolActionHandler:"), (global::ObjCRuntime.NativeHandle) block_ptr_value);
+				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("setBoolActionHandler:"), (global::ObjCRuntime.NativeHandle) block_ptr_value);
 			}
 			global::System.GC.KeepAlive (this);
 		}
@@ -230,7 +230,7 @@ public partial class TrampolinePropertyTests
 			if (IsDirectBinding) {
 				ret = global::ObjCRuntime.Trampolines.NIDAction.Create (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("completionHandler")))!;
 			} else {
-				ret = global::ObjCRuntime.Trampolines.NIDAction.Create (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("completionHandler")))!;
+				ret = global::ObjCRuntime.Trampolines.NIDAction.Create (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("completionHandler")))!;
 			}
 			global::System.GC.KeepAlive (this);
 			return ret;
@@ -246,7 +246,7 @@ public partial class TrampolinePropertyTests
 			if (IsDirectBinding) {
 				global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setCompletionHandler:"), (global::ObjCRuntime.NativeHandle) block_ptr_value);
 			} else {
-				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setCompletionHandler:"), (global::ObjCRuntime.NativeHandle) block_ptr_value);
+				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("setCompletionHandler:"), (global::ObjCRuntime.NativeHandle) block_ptr_value);
 			}
 			global::System.GC.KeepAlive (this);
 		}
@@ -262,7 +262,7 @@ public partial class TrampolinePropertyTests
 			if (IsDirectBinding) {
 				ret = global::ObjCRuntime.Trampolines.NIDTrampolinePropertyTests_CreateObject.Create (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("createObjectHandler")))!;
 			} else {
-				ret = global::ObjCRuntime.Trampolines.NIDTrampolinePropertyTests_CreateObject.Create (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("createObjectHandler")))!;
+				ret = global::ObjCRuntime.Trampolines.NIDTrampolinePropertyTests_CreateObject.Create (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("createObjectHandler")))!;
 			}
 			global::System.GC.KeepAlive (this);
 			return ret;
@@ -278,7 +278,7 @@ public partial class TrampolinePropertyTests
 			if (IsDirectBinding) {
 				global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setCreateObjectHandler:"), (global::ObjCRuntime.NativeHandle) block_ptr_value);
 			} else {
-				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setCreateObjectHandler:"), (global::ObjCRuntime.NativeHandle) block_ptr_value);
+				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("setCreateObjectHandler:"), (global::ObjCRuntime.NativeHandle) block_ptr_value);
 			}
 			global::System.GC.KeepAlive (this);
 		}
@@ -294,7 +294,7 @@ public partial class TrampolinePropertyTests
 			if (IsDirectBinding) {
 				ret = global::ObjCRuntime.Trampolines.NIDAction.Create (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("duplicateCompletionHandler")))!;
 			} else {
-				ret = global::ObjCRuntime.Trampolines.NIDAction.Create (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("duplicateCompletionHandler")))!;
+				ret = global::ObjCRuntime.Trampolines.NIDAction.Create (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("duplicateCompletionHandler")))!;
 			}
 			global::System.GC.KeepAlive (this);
 			return ret;
@@ -310,7 +310,7 @@ public partial class TrampolinePropertyTests
 			if (IsDirectBinding) {
 				global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setDuplicateCompletionHandler:"), (global::ObjCRuntime.NativeHandle) block_ptr_value);
 			} else {
-				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setDuplicateCompletionHandler:"), (global::ObjCRuntime.NativeHandle) block_ptr_value);
+				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("setDuplicateCompletionHandler:"), (global::ObjCRuntime.NativeHandle) block_ptr_value);
 			}
 			global::System.GC.KeepAlive (this);
 		}
@@ -325,7 +325,7 @@ public partial class TrampolinePropertyTests
 			if (IsDirectBinding) {
 				ret = global::ObjCRuntime.Messaging._objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("imageGeneratorCompletionHandler"));
 			} else {
-				ret = global::ObjCRuntime.Messaging._objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("imageGeneratorCompletionHandler"));
+				ret = global::ObjCRuntime.Messaging._objc_msgSendSuper (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("imageGeneratorCompletionHandler"));
 			}
 			global::System.GC.KeepAlive (this);
 			return ret;
@@ -338,7 +338,7 @@ public partial class TrampolinePropertyTests
 			if (IsDirectBinding) {
 				global::ObjCRuntime.Messaging.void_objc_msgSend_ (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setImageGeneratorCompletionHandler:"), value);
 			} else {
-				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_ (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setImageGeneratorCompletionHandler:"), value);
+				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_ (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("setImageGeneratorCompletionHandler:"), value);
 			}
 			global::System.GC.KeepAlive (this);
 		}
@@ -354,7 +354,7 @@ public partial class TrampolinePropertyTests
 			if (IsDirectBinding) {
 				ret = global::ObjCRuntime.Trampolines.NIDAVAssetImageGenerateAsynchronouslyForTimeCompletionHandler.Create (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("imageGeneratorCompletionHandler")))!;
 			} else {
-				ret = global::ObjCRuntime.Trampolines.NIDAVAssetImageGenerateAsynchronouslyForTimeCompletionHandler.Create (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("imageGeneratorCompletionHandler")))!;
+				ret = global::ObjCRuntime.Trampolines.NIDAVAssetImageGenerateAsynchronouslyForTimeCompletionHandler.Create (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("imageGeneratorCompletionHandler")))!;
 			}
 			global::System.GC.KeepAlive (this);
 			return ret;
@@ -370,7 +370,7 @@ public partial class TrampolinePropertyTests
 			if (IsDirectBinding) {
 				global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setImageGeneratorCompletionHandler:"), (global::ObjCRuntime.NativeHandle) block_ptr_value);
 			} else {
-				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setImageGeneratorCompletionHandler:"), (global::ObjCRuntime.NativeHandle) block_ptr_value);
+				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("setImageGeneratorCompletionHandler:"), (global::ObjCRuntime.NativeHandle) block_ptr_value);
 			}
 			global::System.GC.KeepAlive (this);
 		}
@@ -386,7 +386,7 @@ public partial class TrampolinePropertyTests
 			if (IsDirectBinding) {
 				ret = global::ObjCRuntime.Trampolines.NIDActionArity1int.Create (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("intActionHandler")))!;
 			} else {
-				ret = global::ObjCRuntime.Trampolines.NIDActionArity1int.Create (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("intActionHandler")))!;
+				ret = global::ObjCRuntime.Trampolines.NIDActionArity1int.Create (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("intActionHandler")))!;
 			}
 			global::System.GC.KeepAlive (this);
 			return ret;
@@ -402,7 +402,7 @@ public partial class TrampolinePropertyTests
 			if (IsDirectBinding) {
 				global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setIntActionHandler:"), (global::ObjCRuntime.NativeHandle) block_ptr_value);
 			} else {
-				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setIntActionHandler:"), (global::ObjCRuntime.NativeHandle) block_ptr_value);
+				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("setIntActionHandler:"), (global::ObjCRuntime.NativeHandle) block_ptr_value);
 			}
 			global::System.GC.KeepAlive (this);
 		}
@@ -418,7 +418,7 @@ public partial class TrampolinePropertyTests
 			if (IsDirectBinding) {
 				ret = global::ObjCRuntime.Trampolines.NIDAUInternalRenderBlock.Create (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("internalRenderBlockHandler")))!;
 			} else {
-				ret = global::ObjCRuntime.Trampolines.NIDAUInternalRenderBlock.Create (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("internalRenderBlockHandler")))!;
+				ret = global::ObjCRuntime.Trampolines.NIDAUInternalRenderBlock.Create (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("internalRenderBlockHandler")))!;
 			}
 			global::System.GC.KeepAlive (this);
 			return ret;
@@ -434,7 +434,7 @@ public partial class TrampolinePropertyTests
 			if (IsDirectBinding) {
 				global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setInternalRenderBlockHandler:"), (global::ObjCRuntime.NativeHandle) block_ptr_value);
 			} else {
-				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setInternalRenderBlockHandler:"), (global::ObjCRuntime.NativeHandle) block_ptr_value);
+				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("setInternalRenderBlockHandler:"), (global::ObjCRuntime.NativeHandle) block_ptr_value);
 			}
 			global::System.GC.KeepAlive (this);
 		}
@@ -450,7 +450,7 @@ public partial class TrampolinePropertyTests
 			if (IsDirectBinding) {
 				ret = global::ObjCRuntime.Trampolines.NIDCIKernelRoiCallback.Create (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("kernelRoiCallback")))!;
 			} else {
-				ret = global::ObjCRuntime.Trampolines.NIDCIKernelRoiCallback.Create (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("kernelRoiCallback")))!;
+				ret = global::ObjCRuntime.Trampolines.NIDCIKernelRoiCallback.Create (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("kernelRoiCallback")))!;
 			}
 			global::System.GC.KeepAlive (this);
 			return ret;
@@ -466,7 +466,7 @@ public partial class TrampolinePropertyTests
 			if (IsDirectBinding) {
 				global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setKernelRoiCallback:"), (global::ObjCRuntime.NativeHandle) block_ptr_value);
 			} else {
-				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setKernelRoiCallback:"), (global::ObjCRuntime.NativeHandle) block_ptr_value);
+				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("setKernelRoiCallback:"), (global::ObjCRuntime.NativeHandle) block_ptr_value);
 			}
 			global::System.GC.KeepAlive (this);
 		}
@@ -482,7 +482,7 @@ public partial class TrampolinePropertyTests
 			if (IsDirectBinding) {
 				ret = global::ObjCRuntime.Trampolines.NIDCIKernelRoiCallback.Create (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("kernelRoiCallback")))!;
 			} else {
-				ret = global::ObjCRuntime.Trampolines.NIDCIKernelRoiCallback.Create (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("kernelRoiCallback")))!;
+				ret = global::ObjCRuntime.Trampolines.NIDCIKernelRoiCallback.Create (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("kernelRoiCallback")))!;
 			}
 			global::System.GC.KeepAlive (this);
 			return ret;
@@ -498,7 +498,7 @@ public partial class TrampolinePropertyTests
 			if (IsDirectBinding) {
 				global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setKernelRoiCallback:"), (global::ObjCRuntime.NativeHandle) block_ptr_value);
 			} else {
-				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setKernelRoiCallback:"), (global::ObjCRuntime.NativeHandle) block_ptr_value);
+				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("setKernelRoiCallback:"), (global::ObjCRuntime.NativeHandle) block_ptr_value);
 			}
 			global::System.GC.KeepAlive (this);
 		}
@@ -514,7 +514,7 @@ public partial class TrampolinePropertyTests
 			if (IsDirectBinding) {
 				ret = global::ObjCRuntime.Trampolines.NIDAVAudioEngineManualRenderingBlock.Create (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("manualRenderingCallback")))!;
 			} else {
-				ret = global::ObjCRuntime.Trampolines.NIDAVAudioEngineManualRenderingBlock.Create (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("manualRenderingCallback")))!;
+				ret = global::ObjCRuntime.Trampolines.NIDAVAudioEngineManualRenderingBlock.Create (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("manualRenderingCallback")))!;
 			}
 			global::System.GC.KeepAlive (this);
 			return ret;
@@ -530,7 +530,7 @@ public partial class TrampolinePropertyTests
 			if (IsDirectBinding) {
 				global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setManualRenderingCallback:"), (global::ObjCRuntime.NativeHandle) block_ptr_value);
 			} else {
-				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setManualRenderingCallback:"), (global::ObjCRuntime.NativeHandle) block_ptr_value);
+				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("setManualRenderingCallback:"), (global::ObjCRuntime.NativeHandle) block_ptr_value);
 			}
 			global::System.GC.KeepAlive (this);
 		}
@@ -546,7 +546,7 @@ public partial class TrampolinePropertyTests
 			if (IsDirectBinding) {
 				ret = global::ObjCRuntime.Trampolines.NIDActionArity1string.Create (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("stringActionHandler")))!;
 			} else {
-				ret = global::ObjCRuntime.Trampolines.NIDActionArity1string.Create (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("stringActionHandler")))!;
+				ret = global::ObjCRuntime.Trampolines.NIDActionArity1string.Create (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("stringActionHandler")))!;
 			}
 			global::System.GC.KeepAlive (this);
 			return ret;
@@ -562,10 +562,9 @@ public partial class TrampolinePropertyTests
 			if (IsDirectBinding) {
 				global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setStringActionHandler:"), (global::ObjCRuntime.NativeHandle) block_ptr_value);
 			} else {
-				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setStringActionHandler:"), (global::ObjCRuntime.NativeHandle) block_ptr_value);
+				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("setStringActionHandler:"), (global::ObjCRuntime.NativeHandle) block_ptr_value);
 			}
 			global::System.GC.KeepAlive (this);
 		}
 	}
-	// TODO: add binding code here
 }

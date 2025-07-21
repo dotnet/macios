@@ -16,6 +16,10 @@ using System.Threading.Tasks;
 
 namespace UIKit;
 
+[SupportedOSPlatform ("macos")]
+[SupportedOSPlatform ("ios")]
+[SupportedOSPlatform ("tvos")]
+[SupportedOSPlatform ("maccatalyst13.1")]
 [Register ("ThreadSafeUIKitPropertyTests", true)]
 public partial class ThreadSafeUIKitPropertyTests
 {
@@ -125,11 +129,10 @@ public partial class ThreadSafeUIKitPropertyTests
 			if (IsDirectBinding) {
 				ret = global::ObjCRuntime.Messaging.UIntPtr_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("count"));
 			} else {
-				ret = global::ObjCRuntime.Messaging.UIntPtr_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("count"));
+				ret = global::ObjCRuntime.Messaging.UIntPtr_objc_msgSendSuper (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("count"));
 			}
 			global::System.GC.KeepAlive (this);
 			return ret;
 		}
 	}
-	// TODO: add binding code here
 }

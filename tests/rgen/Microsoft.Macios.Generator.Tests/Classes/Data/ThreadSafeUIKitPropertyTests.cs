@@ -9,6 +9,10 @@ using ObjCBindings;
 
 namespace UIKit;
 
+[SupportedOSPlatform ("macos")]
+[SupportedOSPlatform ("ios")]
+[SupportedOSPlatform ("tvos")]
+[SupportedOSPlatform ("maccatalyst13.1")]
 [BindingType<Class> (Class.IsThreadSafe)]
 public partial class ThreadSafeUIKitPropertyTests {
 

@@ -16,14 +16,20 @@ using Microsoft.Macios.Generator.IO;
 using ObjCBindings;
 using static Microsoft.Macios.Generator.Emitters.BindingSyntaxFactory;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using Constructor = ObjCBindings.Constructor;
 using Method = Microsoft.Macios.Generator.DataModel.Method;
 using Property = Microsoft.Macios.Generator.DataModel.Property;
 
 namespace Microsoft.Macios.Generator.Emitters;
 
+/// <summary>
+/// Emitter for Objective-C classes.
+/// </summary>
 class ClassEmitter : ICodeEmitter {
+	/// <inheritdoc />
 	public string GetSymbolName (in Binding binding) => binding.Name;
 
+	/// <inheritdoc />
 	public IEnumerable<string> UsingStatements => [
 		"System",
 		"System.Drawing",
@@ -37,6 +43,12 @@ class ClassEmitter : ICodeEmitter {
 	];
 
 
+	/// <summary>
+	/// Emit the default constructors for the class.
+	/// </summary>
+	/// <param name="bindingContext">The current binding context.</param>
+	/// <param name="classBlock">Current class block.</param>
+	/// <param name="disableDefaultCtor">A value indicating whether to disable the default constructor.</param>
 	void EmitDefaultConstructors (in BindingContext bindingContext, TabbedWriter<StringWriter> classBlock, bool disableDefaultCtor)
 	{
 
@@ -67,6 +79,52 @@ public {bindingContext.Changes.Name} () : base ({NSObjectFlag}.Empty)
 		classBlock.AppendGeneratedCodeAttribute ();
 		classBlock.AppendEditorBrowsableAttribute (EditorBrowsableState.Advanced);
 		classBlock.WriteLine ($"protected internal {bindingContext.Changes.Name} ({NativeHandle} handle) : base (handle) {{}}");
+	}
+
+	/// <summary>
+	/// Emit the code for all the constructors in the class.
+	/// </summary>
+	/// <param name="context">The current binding context.</param>
+	/// <param name="classBlock">Current class block.</param>
+	void EmitConstructors (in BindingContext context, TabbedWriter<StringWriter> classBlock)
+	{
+		// When dealing with constructors we cannot sort them by name because the name is always the same as the class
+		// instead we will sort them by the selector name so that we will always generate the constructors in the same order
+		foreach (var constructor in context.Changes.Constructors.OrderBy (c => c.ExportMethodData.Selector)) {
+			classBlock.WriteLine ();
+			classBlock.AppendMemberAvailability (constructor.SymbolAvailability);
+			classBlock.AppendGeneratedCodeAttribute (optimizable: true);
+			if (constructor.ExportMethodData.Flags.HasFlag (Constructor.DesignatedInitializer)) {
+				classBlock.AppendDesignatedInitializer ();
+			}
+
+			using (var constructorBlock = classBlock.CreateBlock (constructor.ToDeclaration (withBaseNSFlag: true).ToString (), block: true)) {
+				// retrieve the method invocation via the factory, this will generate the necessary arguments
+				// transformations and the invocation
+				var invocations = GetInvocations (constructor);
+
+				// init the needed temp variables
+				foreach (var argument in invocations.Arguments) {
+					constructorBlock.Write (argument.Validations, verifyTrivia: false);
+					constructorBlock.Write (argument.Initializers, verifyTrivia: false);
+					constructorBlock.Write (argument.PreCallConversion, verifyTrivia: false);
+				}
+
+				// simply call the send or sendSuper accordingly
+				constructorBlock.WriteRaw (
+$@"if (IsDirectBinding) {{
+	{ExpressionStatement (invocations.Send)}
+}} else {{
+	{ExpressionStatement (invocations.SendSuper)}
+}}
+");
+
+				// before we leave the methods, do any post operations
+				foreach (var argument in invocations.Arguments) {
+					constructorBlock.Write (argument.PostCallConversion, verifyTrivia: false);
+				}
+			}
+		}
 	}
 
 	/// <summary>
@@ -236,6 +294,7 @@ if (IsDirectBinding) {{
 					}
 					// init the needed temp variables
 					setterBlock.Write (invocations.Setter.Value.Argument.Initializers, verifyTrivia: false);
+					setterBlock.Write (invocations.Setter.Value.Argument.Validations, verifyTrivia: false);
 					setterBlock.Write (invocations.Setter.Value.Argument.PreCallConversion, verifyTrivia: false);
 
 					// perform the invocation
@@ -299,9 +358,14 @@ if (!(value is null) && rvalue is null) {{
 	void EmitVoidMethodBody (in Method method, in MethodInvocations invocations, TabbedWriter<StringWriter> methodBlock)
 	{
 
-		// init the needed temp variables
+		// validate and init the needed temp variables
 		foreach (var argument in invocations.Arguments) {
+			methodBlock.Write (argument.Validations, verifyTrivia: false);
 			methodBlock.Write (argument.Initializers, verifyTrivia: false);
+		}
+
+		// do any pre-call conversions that might be needed, for example string to NSString
+		foreach (var argument in invocations.Arguments) {
 			methodBlock.Write (argument.PreCallConversion, verifyTrivia: false);
 		}
 
@@ -333,9 +397,14 @@ $@"if (IsDirectBinding) {{
 		// and do any conversions that might be needed for the return value, for example byte to bool
 		var (tempVar, tempDeclaration) = GetReturnValueAuxVariable (method.ReturnType);
 
-		// init the needed temp variables
+		// init and validate the needed temp variables
 		foreach (var argument in invocations.Arguments) {
+			methodBlock.Write (argument.Validations, verifyTrivia: false);
 			methodBlock.Write (argument.Initializers, verifyTrivia: false);
+		}
+
+		// perform any pre-call conversions that might be needed, for example string to NSString
+		foreach (var argument in invocations.Arguments) {
 			methodBlock.Write (argument.PreCallConversion, verifyTrivia: false);
 		}
 
@@ -397,11 +466,23 @@ if (IsDirectBinding) {{
 
 			var asyncMethod = method.ToAsync ();
 			using (var methodBlock = classBlock.CreateBlock (asyncMethod.ToDeclaration ().ToString (), block: true)) {
-				methodBlock.WriteLine ("throw new NotImplementedException ();");
+				// we need to create the tcs for the the async method
+				var tcsType = asyncMethod.ReturnType.ToTaskCompletionSource ();
+				var tcsName = Nomenclator.GetTaskCompletionSourceName ();
+				methodBlock.WriteRaw (
+$@"{tcsType.GetIdentifierSyntax ()} {tcsName} = new ();
+{ExpressionStatement (ExecuteSyncCall (method))}
+return {tcsName}.Task;
+");
 			}
 		}
 	}
 
+	/// <summary>
+	/// Emit the code for all the notifications in the class.
+	/// </summary>
+	/// <param name="properties">All properties of the class, the method will filter those that are notifications.</param>
+	/// <param name="classBlock">Current class block.</param>
 	void EmitNotifications (in ImmutableArray<Property> properties, TabbedWriter<StringWriter> classBlock)
 	{
 		if (properties.Length == 0)
@@ -494,6 +575,7 @@ public static NSObject {name} ({NSObject} objectToObserve, {EventHandler}<{event
 		}
 	}
 
+	/// <inheritdoc />
 	public bool TryEmit (in BindingContext bindingContext, [NotNullWhen (false)] out ImmutableArray<Diagnostic>? diagnostics)
 	{
 		diagnostics = null;
@@ -517,6 +599,8 @@ public static NSObject {name} ({NSObject} objectToObserve, {EventHandler}<{event
 		// we use the name of the class
 		var registrationName = bindingData.Name ?? bindingContext.Changes.Name;
 
+		// append the class availability, this will add the necessary attributes to the class
+		bindingContext.Builder.AppendMemberAvailability (bindingContext.Changes.SymbolAvailability);
 		if (!bindingContext.Changes.IsStatic) {
 			bindingContext.Builder.WriteLine ($"[Register (\"{registrationName}\", true)]");
 		}
@@ -536,6 +620,9 @@ public static NSObject {name} ({NSObject} objectToObserve, {EventHandler}<{event
 				EmitDefaultConstructors (bindingContext: bindingContext,
 					classBlock: classBlock,
 					disableDefaultCtor: bindingData.Flags.HasFlag (ObjCBindings.Class.DisableDefaultCtor));
+
+				// emit any other constructor that is not the default one
+				EmitConstructors (bindingContext, classBlock);
 			}
 
 			EmitFields (bindingContext.Changes.Name, bindingContext.Changes.Properties, classBlock,
@@ -545,7 +632,6 @@ public static NSObject {name} ({NSObject} objectToObserve, {EventHandler}<{event
 
 			// emit the notification helper classes, leave this for the very bottom of the class
 			EmitNotifications (notificationProperties, classBlock);
-			classBlock.WriteLine ("// TODO: add binding code here");
 		}
 		return true;
 	}

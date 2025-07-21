@@ -74,7 +74,7 @@ readonly partial struct Binding {
 			namespaces: out namespaces,
 			symbolAvailability: out availability);
 		BindingBindingInfo = new BindingInfo (null, BindingType.SmartEnum);
-		FullyQualifiedSymbol = enumDeclaration.GetFullyQualifiedIdentifier ();
+		FullyQualifiedSymbol = enumDeclaration.GetFullyQualifiedIdentifier (context.SemanticModel);
 		UsingDirectives = enumDeclaration.SyntaxTree.CollectUsingStatements ();
 		AttributesDictionary = symbol.GetAttributeData ();
 		// smart enums are expected to be public, we might need to change this in the future
@@ -236,7 +236,7 @@ readonly partial struct Binding {
 	internal Binding (InterfaceDeclarationSyntax interfaceDeclarationSyntax, INamedTypeSymbol symbol, in RootContext context)
 	{
 		// basic properties of the binding
-		FullyQualifiedSymbol = interfaceDeclarationSyntax.GetFullyQualifiedIdentifier ();
+		FullyQualifiedSymbol = interfaceDeclarationSyntax.GetFullyQualifiedIdentifier (context.SemanticModel);
 		UsingDirectives = interfaceDeclarationSyntax.SyntaxTree.CollectUsingStatements ();
 		AttributesDictionary = symbol.GetAttributeData ();
 		var baseTypeAttribute = symbol.GetBaseTypeData ();

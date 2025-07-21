@@ -204,7 +204,7 @@ readonly partial struct Binding {
 			namespaces: out namespaces,
 			symbolAvailability: out availability,
 			bindingInfo: out bindingInfo);
-		FullyQualifiedSymbol = enumDeclaration.GetFullyQualifiedIdentifier ();
+		FullyQualifiedSymbol = enumDeclaration.GetFullyQualifiedIdentifier (context.SemanticModel);
 		Attributes = enumDeclaration.GetAttributeCodeChanges (context.SemanticModel);
 		UsingDirectives = enumDeclaration.SyntaxTree.CollectUsingStatements ();
 		Modifiers = [.. enumDeclaration.Modifiers];
@@ -254,7 +254,7 @@ readonly partial struct Binding {
 			namespaces: out namespaces,
 			symbolAvailability: out availability,
 			bindingInfo: out bindingInfo);
-		FullyQualifiedSymbol = classDeclaration.GetFullyQualifiedIdentifier ();
+		FullyQualifiedSymbol = classDeclaration.GetFullyQualifiedIdentifier (context.SemanticModel);
 		Attributes = classDeclaration.GetAttributeCodeChanges (context.SemanticModel);
 		UsingDirectives = classDeclaration.SyntaxTree.CollectUsingStatements ();
 		Modifiers = [.. classDeclaration.Modifiers];
@@ -286,7 +286,7 @@ readonly partial struct Binding {
 			namespaces: out namespaces,
 			symbolAvailability: out availability,
 			bindingInfo: out bindingInfo);
-		FullyQualifiedSymbol = interfaceDeclaration.GetFullyQualifiedIdentifier ();
+		FullyQualifiedSymbol = interfaceDeclaration.GetFullyQualifiedIdentifier (context.SemanticModel);
 		Attributes = interfaceDeclaration.GetAttributeCodeChanges (context.SemanticModel);
 		UsingDirectives = interfaceDeclaration.SyntaxTree.CollectUsingStatements ();
 		Modifiers = [.. interfaceDeclaration.Modifiers];

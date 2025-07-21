@@ -278,7 +278,7 @@ public class BindingSourceGeneratorGenerator : IIncrementalGenerator {
 			// add the using statements that we know we need and print them to the sb
 		};
 
-		// if there is at least one method that is async, we need to add the treading
+		// if there is at least one method that is async, we need to add the threading
 		// namespace.
 		if (binding.Methods.Any (m => m.IsAsync)) {
 			usingDirectivesToKeep.Add ("System.Threading.Tasks");

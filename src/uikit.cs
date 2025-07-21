@@ -35990,12 +35990,12 @@ namespace UIKit {
 		[NoiOS, NoTV, NoMacCatalyst]
 		[Static]
 		[Export ("userInitiatedDismissal")]
-		UISceneDestructionCondition UserInitiatedDismissal ();
+		UISceneDestructionCondition UserInitiatedDismissal { get; }
 
 		[NoiOS, NoTV, NoMacCatalyst]
 		[Static]
 		[Export ("systemDisconnection")]
-		UISceneDestructionCondition SystemDisconnection ();
+		UISceneDestructionCondition SystemDisconnection { get; }
 	}
 
 	[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]

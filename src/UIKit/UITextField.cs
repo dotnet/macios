@@ -53,7 +53,7 @@ namespace UIKit {
 	/// <remarks>
 	/// <para>This delegate method is called when the text field needs to validate text changes across multiple ranges simultaneously.</para>
 	/// <para>Use this method to implement custom text validation logic, such as restricting input to specific formats or preventing certain types of content.</para>
-	/// <para>This is the multiple-range version of the standard <see cref="ShouldChangeCharacters" /> method.</para>
+	/// <para>This is the multiple-range version of the standard <see cref="UIKit.UITextFieldDelegate.ShouldChangeCharacters (UITextField, NSValue [], string)" /> method.</para>
 	/// </remarks>
 	public delegate bool UITextFieldChanges (UITextField textField, NSValue [] ranges, string replacementString);
 

@@ -17,7 +17,7 @@ static partial class SemanticModelExtensions {
 	public static (ImmutableArray<string> Namespace, ImmutableArray<OuterClass> OuterClasses) GetNamespaceArrayAndOuterClasses (this ISymbol? symbol)
 	{
 		var namespaceBucket = ImmutableArray.CreateBuilder<string> ();
-		var outerClassesBucket= ImmutableArray.CreateBuilder<OuterClass> ();
+		var outerClassesBucket = ImmutableArray.CreateBuilder<OuterClass> ();
 		var ns = symbol?.ContainingNamespace;
 		while (ns is not null) {
 			if (!string.IsNullOrWhiteSpace (ns.Name))
@@ -29,7 +29,7 @@ static partial class SemanticModelExtensions {
 		var type = symbol?.ContainingType;
 
 		while (type is not null) {
-			outerClassesBucket.Insert (0, new OuterClass (type)); 
+			outerClassesBucket.Insert (0, new OuterClass (type));
 			type = type.ContainingType;
 		}
 

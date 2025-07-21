@@ -17,7 +17,7 @@ readonly struct OuterClass : IEquatable<OuterClass> {
 	/// Modifiers list.
 	/// </summary>
 	public ImmutableArray<SyntaxToken> Modifiers { init; get; } = [];
-	
+
 	/// <summary>
 	/// The name of the named type that generated the code change.
 	/// </summary>
@@ -62,7 +62,7 @@ readonly struct OuterClass : IEquatable<OuterClass> {
 		if (type.IsAbstract) {
 			bucket.Add (Token (SyntaxKind.AbstractKeyword));
 		}
-			
+
 		// always add the partial modifier
 		bucket.Add (Token (SyntaxKind.PartialKeyword));
 		Modifiers = bucket.ToImmutable ();
@@ -77,20 +77,20 @@ readonly struct OuterClass : IEquatable<OuterClass> {
 		var modifiersComparer = new ModifiersEqualityComparer ();
 		return modifiersComparer.Equals (Modifiers, other.Modifiers);
 	}
-	
+
 	/// <inheritdoc />
 	public override bool Equals (object? obj)
 	{
 		return obj is OuterClass other && Equals (other);
 	}
-	
+
 	/// <inheritdoc />
 	public override int GetHashCode ()
 	{
 		var hash = new HashCode ();
 		hash.Add (Name);
 		foreach (var modifier in Modifiers) {
-			hash.Add (modifier.Kind());
+			hash.Add (modifier.Kind ());
 		}
 		return hash.ToHashCode ();
 	}

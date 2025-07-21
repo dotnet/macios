@@ -17,10 +17,10 @@ namespace TestNamespace;
 public partial class OuterClass {
 
 	public partial class InnerClass {
-		
+
 		[BindingType<ObjCBindings.Class>]
 		public partial class NestedClasses {
-			
+
 			// simple value type
 			[SupportedOSPlatform ("ios")]
 			[SupportedOSPlatform ("tvos")]
@@ -51,7 +51,7 @@ public partial class OuterClass {
 			[SupportedOSPlatform ("maccatalyst13.1")]
 			[Export<Property> ("containsAttachments")]
 			public virtual partial bool ContainsAttachments { get; set; }
-			
+
 			[SupportedOSPlatform ("ios")]
 			[SupportedOSPlatform ("tvos")]
 			[SupportedOSPlatform ("macos")]
@@ -86,8 +86,8 @@ public partial class OuterClass {
 			[SupportedOSPlatform ("maccatalyst13.1")]
 			[Export<Method> ("sortedArrayUsingComparator:")]
 			public virtual unsafe partial NSArray Sort (NSComparator cmptr);
-	
+
 		}
 	}
-	
+
 }

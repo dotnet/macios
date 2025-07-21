@@ -570,7 +570,7 @@ public static NSObject {name} ({NSObject} objectToObserve, {EventHandler}<{event
 		bindingContext.Builder.WriteLine ();
 		bindingContext.Builder.WriteLine ($"namespace {string.Join (".", bindingContext.Changes.Namespace)};");
 		bindingContext.Builder.WriteLine ();
-		
+
 		// if the type of the change contains outer classes, we need to emit the outer classes first
 		TabbedWriter<StringWriter> builder = bindingContext.Builder;
 		// create a list for the outer classes builders so that we can dispose them later, we are using a linked list
@@ -625,7 +625,7 @@ public static NSObject {name} ({NSObject} objectToObserve, {EventHandler}<{event
 			// emit the notification helper classes, leave this for the very bottom of the class
 			EmitNotifications (notificationProperties, classBlock);
 		}
-		
+
 		// close the outer classes since we used a LinkedList to store them and insert them at the head, we can
 		// simply dispose them in current order, which is the reverse of the creation order
 		foreach (var outerClassesBuilder in outerClassesBuilders) {

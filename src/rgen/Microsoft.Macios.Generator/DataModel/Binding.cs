@@ -33,9 +33,9 @@ readonly partial struct Binding {
 	/// The namespace that contains the named type that generated the code change.
 	/// </summary>
 	public ImmutableArray<string> Namespace => namespaces;
-	
+
 	readonly ImmutableArray<OuterClass> outerClasses = ImmutableArray<OuterClass>.Empty;
-	
+
 	/// <summary>
 	/// The containing classes of the type, if it's a nested type.
 	/// </summary>

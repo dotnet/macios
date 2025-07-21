@@ -8,8 +8,8 @@ using System.Linq;
 
 namespace Microsoft.Macios.Generator.DataModel;
 
-class OuterClassEqualityComparer : EqualityComparer<ImmutableArray<OuterClass>>{
-	
+class OuterClassEqualityComparer : EqualityComparer<ImmutableArray<OuterClass>> {
+
 	/// <inheritdoc/>
 	public override bool Equals (ImmutableArray<OuterClass> x, ImmutableArray<OuterClass> y)
 	{

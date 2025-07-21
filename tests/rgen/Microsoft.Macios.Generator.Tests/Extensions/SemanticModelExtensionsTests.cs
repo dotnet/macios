@@ -584,14 +584,14 @@ public interface IFoo : IList<string> {
 		}
 		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
 	}
-	
-	class TestDataGetNameAndNamespaceNestedClasses: IEnumerable<object []> {
+
+	class TestDataGetNameAndNamespaceNestedClasses : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()
 		{
 			var builder = SymbolAvailability.CreateBuilder ();
 			ImmutableArray<string> ns = ImmutableArray.Create ("Test");
 			var bindingData = new BindingInfo (new BindingTypeData<Class> ());
-			
+
 			const string filescopedNamespaceNestedClass = @"
 using ObjCBindings;
 
@@ -611,7 +611,7 @@ public class Foo {
 				ImmutableArray<string>.Empty,
 				ImmutableArray.Create (
 					new OuterClass (
-						name: "Foo", 
+						name: "Foo",
 						modifiers: ImmutableArray.Create (
 							Token (SyntaxKind.PublicKeyword),
 							Token (SyntaxKind.PartialKeyword)
@@ -621,7 +621,7 @@ public class Foo {
 				ns,
 				builder.ToImmutable (),
 				bindingData];
-			
+
 			const string staticFilescopedNamespaceNestedClass = @"
 using ObjCBindings;
 
@@ -641,7 +641,7 @@ public static class Foo {
 				ImmutableArray<string>.Empty,
 				ImmutableArray.Create (
 					new OuterClass (
-						name: "Foo", 
+						name: "Foo",
 						modifiers: ImmutableArray.Create (
 							Token (SyntaxKind.PublicKeyword),
 							Token (SyntaxKind.StaticKeyword),
@@ -652,7 +652,7 @@ public static class Foo {
 				ns,
 				builder.ToImmutable (),
 				bindingData];
-			
+
 			const string filescopedNamespaceMultipleNestedClass = @"
 using ObjCBindings;
 
@@ -674,14 +674,14 @@ public class Foo {
 				ImmutableArray<string>.Empty,
 				ImmutableArray.Create (
 					new OuterClass (
-						name: "Foo", 
+						name: "Foo",
 						modifiers: ImmutableArray.Create (
 							Token (SyntaxKind.PublicKeyword),
 							Token (SyntaxKind.PartialKeyword)
 						)
 					),
 					new OuterClass (
-						name: "Bar", 
+						name: "Bar",
 						modifiers: ImmutableArray.Create (
 							Token (SyntaxKind.PublicKeyword),
 							Token (SyntaxKind.PartialKeyword)
@@ -704,7 +704,7 @@ public class Foo {
 	[AllSupportedPlatformsClassData<TestDataGetNameAndNamespaceNestedClasses>]
 	internal void GetNameAndNamespaceTests (ApplePlatform platform, BindingType bindingType,
 		string inputText, string expectedName, string? expectedBaseClass, ImmutableArray<string> expectedInterfaces,
-		ImmutableArray<OuterClass> expectedOuterClasses, ImmutableArray<string> expectedNamespace, 
+		ImmutableArray<OuterClass> expectedOuterClasses, ImmutableArray<string> expectedNamespace,
 		SymbolAvailability expectedAvailability, BindingInfo expectedInfo)
 	{
 		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);

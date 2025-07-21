@@ -1,4 +1,4 @@
-#if MONOMAC && NET
+#if MONOMAC
 #nullable enable
 
 using System;
@@ -23,14 +23,10 @@ namespace VideoToolbox {
 	/// <param name="processedPixelBuffer">The <see cref="CoreVideo.CVPixelBuffer" /> with the processed video frame if the processing was successful, otherwise null.</param>
 	public delegate void VTRawProcessingOutputHandler (VTStatus status, CVPixelBuffer? processedPixelBuffer);
 
-#if NET
 	[UnsupportedOSPlatform ("ios")]
 	[UnsupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos15.0")]
 	[UnsupportedOSPlatform ("tvos")]
-#else
-	[NoWatch, NoTV, NoiOS, NoMacCatalyst, Mac (15, 0)]
-#endif
 	public class VTRawProcessingSession : NativeObject {
 		[Preserve (Conditional = true)]
 		protected VTRawProcessingSession (NativeHandle handle, bool owns)
@@ -58,6 +54,9 @@ namespace VideoToolbox {
 			IntPtr handle;
 			unsafe {
 				error = VTRAWProcessingSessionCreate (IntPtr.Zero, formatDescription.GetNonNullHandle (nameof (formatDescription)), outputPixelBufferAttributes.GetHandle (), processingSessionOptions.GetHandle (), &handle);
+				GC.KeepAlive (formatDescription);
+				GC.KeepAlive (outputPixelBufferAttributes);
+				GC.KeepAlive (processingSessionOptions);
 			}
 			if (handle != IntPtr.Zero && error == VTStatus.Ok)
 				return new VTRawProcessingSession (handle, owns: true);
@@ -107,11 +106,10 @@ namespace VideoToolbox {
 			return VTRAWProcessingSessionGetTypeID ();
 		}
 
-#if NET
 		[DllImport (Constants.VideoToolboxLibrary)]
 		unsafe static extern VTStatus VTRAWProcessingSessionSetParameterChangedHander (
 			IntPtr /* VTRAWProcessingSessionRef */ session,
-			BlockLiteral * /* VTRAWProcessingParameterChangeHandler */ parameterChangeHandler
+			BlockLiteral* /* VTRAWProcessingParameterChangeHandler */ parameterChangeHandler
 			);
 
 		/// <summary>Provide a callback that will be called when the VTRawProcessingPlugin changes the set of processing parameters.</summary>
@@ -136,16 +134,13 @@ namespace VideoToolbox {
 				del (newParams);
 			}
 		}
-#endif
 
-
-#if NET
 		[DllImport (Constants.VideoToolboxLibrary)]
 		unsafe static extern VTStatus VTRAWProcessingSessionProcessFrame (
 			IntPtr /* VTRAWProcessingSessionRef */ session,
 			IntPtr /* CVPixelBufferRef */ inputPixelBuffer,
 			IntPtr /* CM_NULLABLE CFDictionaryRef */ frameOptions,
-			BlockLiteral * /* VTRAWProcessingOutputHandler */ outputHandler
+			BlockLiteral* /* VTRAWProcessingOutputHandler */ outputHandler
 			);
 
 		/// <summary>Use this function to submit RAW frames for processing using sequence and frame level parameters.</summary>
@@ -156,9 +151,11 @@ namespace VideoToolbox {
 		{
 			delegate* unmanaged<IntPtr, VTStatus, IntPtr, void> trampoline = &VTRawProcessingOutputHandlerCallback;
 			using var block = new BlockLiteral (trampoline, handler, typeof (VTRawProcessingSession), nameof (VTRawProcessingOutputHandlerCallback));
-			return VTRAWProcessingSessionProcessFrame (GetCheckedHandle (), inputPixelBuffer.GetNonNullHandle (nameof (inputPixelBuffer)), frameOptions.GetHandle (), &block);
+			VTStatus status = VTRAWProcessingSessionProcessFrame (GetCheckedHandle (), inputPixelBuffer.GetNonNullHandle (nameof (inputPixelBuffer)), frameOptions.GetHandle (), &block);
+			GC.KeepAlive (inputPixelBuffer);
+			GC.KeepAlive (frameOptions);
+			return status;
 		}
-#endif
 
 		[UnmanagedCallersOnly]
 		static void VTRawProcessingOutputHandlerCallback (IntPtr block, VTStatus status, IntPtr processedPixelBuffer)
@@ -230,7 +227,9 @@ namespace VideoToolbox {
 		/// <returns>An error code if the operation was unsuccessful, otherwise <see cref="VTStatus.Ok" />.</returns>
 		public VTStatus SetProcessingParameters (NSDictionary processingParameters)
 		{
-			return VTRAWProcessingSessionSetProcessingParameters (GetCheckedHandle (), processingParameters.GetNonNullHandle (nameof (processingParameters)));
+			VTStatus status = VTRAWProcessingSessionSetProcessingParameters (GetCheckedHandle (), processingParameters.GetNonNullHandle (nameof (processingParameters)));
+			GC.KeepAlive (processingParameters);
+			return status;
 		}
 
 		/// <summary>Set RAW Processing parameters.</summary>

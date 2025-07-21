@@ -14,11 +14,11 @@ namespace Foundation {
 	// The kyes are not found in any of the public headers from apple. That is the reason
 	// to use this technique.
 	static class NSScriptCommonKeys {
-		private static NSString appEventCode = new NSString ("AppleEventCode"); 
+		private static NSString appEventCode = new NSString ("AppleEventCode");
 		public static NSString AppleEventCodeKey {
 			get { return appEventCode; }
 		}
-		
+
 		private static NSString typeKey = new NSString ("Type");
 		public static NSString TypeKey {
 			get { return typeKey; }
@@ -36,11 +36,17 @@ namespace Foundation {
 			int ret = 0;
 			for (int i = 0; i < 4; i++) {
 				ret <<= 8;
-				ret |= fourCC[i];
+				ret |= fourCC [i];
 			}
 			return ret;
 		}
 
+		/// <param name="suiteName">To be added.</param>
+		///         <param name="commandName">To be added.</param>
+		///         <param name="commandDeclaration">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSScriptCommandDescription Create (string suiteName, string commandName, NSScriptCommandDescriptionDictionary commandDeclaration)
 		{
 			if (String.IsNullOrEmpty (suiteName))
@@ -63,7 +69,7 @@ namespace Foundation {
 				throw new ArgumentException ("eventClass must be a four characters string.");
 			if (commandDeclaration.ResultAppleEventCode is not null && commandDeclaration.ResultAppleEventCode.Length != 4)
 				throw new ArgumentException ("resultAppleEvent must be a four characters string.");
-			
+
 			using (var nsSuitName = new NSString (suiteName))
 			using (var nsCommandName = new NSString (commandName)) {
 				try {
@@ -84,25 +90,39 @@ namespace Foundation {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string AppleEventClassCode {
 			get { return Runtime.ToFourCCString (FCCAppleEventClassCode); }
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string AppleEventCode {
 			get { return Runtime.ToFourCCString (FCCAppleEventCode); }
 		}
 
+		/// <param name="name">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public string GetTypeForArgument (string name)
 		{
 			if (name is null)
 				throw new ArgumentNullException ("name");
-				
-			using (var nsName = new NSString(name))
+
+			using (var nsName = new NSString (name))
 			using (var nsType = GetNSTypeForArgument (nsName)) {
 				return nsType?.ToString ();
 			}
 		}
 
+		/// <param name="name">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public string GetAppleEventCodeForArgument (string name)
 		{
 			if (name is null)
@@ -112,23 +132,36 @@ namespace Foundation {
 				return Runtime.ToFourCCString (FCCAppleEventCodeForArgument (nsName));
 			}
 		}
-		
-		public bool IsOptionalArgument (string name) 
+
+		/// <param name="name">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
+		public bool IsOptionalArgument (string name)
 		{
 			using (var nsName = new NSString (name)) {
 				return NSIsOptionalArgument (nsName);
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string AppleEventCodeForReturnType {
 			get { return Runtime.ToFourCCString (FCCAppleEventCodeForReturnType); }
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public NSScriptCommand CreateCommand ()
 		{
 			return new NSScriptCommand (CreateCommandInstancePtr ());
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSDictionary Dictionary {
 			get { return description.Dictionary; }
 		}

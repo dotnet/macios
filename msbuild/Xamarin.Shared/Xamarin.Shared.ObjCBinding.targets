@@ -18,24 +18,6 @@ Copyright (C) 2020 Microsoft. All rights reserved.
 
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
-	<!-- Add our own pre-build steps -->
-	<PropertyGroup Condition="'$(UsingAppleNETSdk)' != 'true'">
-		<BuildDependsOn>
-			BuildOnlySettings;
-			_CreateGeneratedSourcesDir;
-			_CreateEmbeddedResources;
-			$(BuildDependsOn)
-		</BuildDependsOn>
-	</PropertyGroup>
-
-	<!-- Add our own Clean steps -->
-	<PropertyGroup Condition="'$(UsingAppleNETSdk)' != 'true'">
-		<CleanDependsOn>
-			_CleanGeneratedSources;
-			$(CleanDependsOn)
-		</CleanDependsOn>
-	</PropertyGroup>
-
 	<!-- Create a directory to contain the generated sources -->
 	<Target Name="_CreateGeneratedSourcesDir">
 		<MakeDir Directories="$(GeneratedSourcesDir)" />
@@ -48,7 +30,7 @@ Copyright (C) 2020 Microsoft. All rights reserved.
 
 	<Target Name="_CollectGeneratedSources"
 		DependsOnTargets="_GenerateBindings;_CompressNativeFrameworkResources"
-		Condition="'$(DesignTimeBuild)' != 'true'"
+		Condition="'$(_DisableBindingProjectBuild)' != 'true'"
 	>
 
 		<ReadLinesFromFile File="$(_GeneratedSourcesFileList)" >
@@ -103,7 +85,6 @@ Copyright (C) 2020 Microsoft. All rights reserved.
 
 	<Target Name="_CreateEmbeddedResources" DependsOnTargets="_CollectBundleResources">
 		<CreateEmbeddedResources 
-			SessionId="$(BuildSessionId)" 
 			BundleResources="@(_BundleResourceWithLogicalName)" 
 			Prefix="$(_EmbeddedResourcePrefix)">
 			
@@ -112,15 +93,9 @@ Copyright (C) 2020 Microsoft. All rights reserved.
 	</Target>
 
 	<Target Name="_CompressNativeFrameworkResources" Inputs="@(_NativeFrameworkResource)" Outputs="%(_NativeFrameworkResource.ZipFile)" DependsOnTargets="_CollectNativeFrameworkResources">
-		<Delete SessionId="$(BuildSessionId)" Condition="'$(IsMacEnabled)' == 'true'" Files="%(_NativeFrameworkResource.ZipFile)" />
+		<Delete Files="%(_NativeFrameworkResource.ZipFile)" />
 
 		<Zip
-			SessionId="$(BuildSessionId)"
-			Condition="'$(IsMacEnabled)' == 'true'"
-			ToolExe="$(ZipExe)"
-			ToolPath="$(ZipPath)"
-			Recursive="true"
-			Symlinks="true"
 			Sources="%(_NativeFrameworkResource.FrameworkPath)"
 			OutputFile="%(_NativeFrameworkResource.ZipFile)"
 			WorkingDirectory="%(_NativeFrameworkResource.FrameworkPath)" >
@@ -134,10 +109,8 @@ Copyright (C) 2020 Microsoft. All rights reserved.
 		</ItemGroup>
 	</Target>
 
-	<Target Name="_PrepareNativeReferences" Condition="'$(DesignTimeBuild)' != 'true'" DependsOnTargets="_SanitizeNativeReferences">
+	<Target Name="_PrepareNativeReferences" Condition="'$(_DisableBindingProjectBuild)' != 'true'" DependsOnTargets="_SanitizeNativeReferences">
 		<PrepareNativeReferences
-			Condition="'$(IsMacEnabled)' == 'true'"
-			SessionId="$(BuildSessionId)"
 			IntermediateOutputPath="$(IntermediateOutputPath)"
 			NativeReferences="@(NativeReference)"
 		>

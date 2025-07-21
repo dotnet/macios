@@ -3,7 +3,6 @@ TOP=../..
 include $(TOP)/Make.config
 include $(TOP)/mk/rules.mk
 
-export MD_MTOUCH_SDK_ROOT=$(IOS_DESTDIR)/$(MONOTOUCH_PREFIX)
 export TargetFrameworkFallbackSearchPaths=$(IOS_DESTDIR)/Library/Frameworks/Mono.framework/External/xbuild-frameworks
 export MSBuildExtensionsPathFallbackPathsOverride=$(IOS_DESTDIR)/Library/Frameworks/Mono.framework/External/xbuild
 
@@ -32,7 +31,7 @@ mtouchtests.csproj.inc: export BUILD_VERBOSITY=$(MSBUILD_VERBOSITY)
 -include mtouchtests.csproj.inc
 
 bin/Debug/mtouchtests.dll: $(mtouchtests_dependencies)
-	$(SYSTEM_XIBUILD) -- mtouchtests.csproj /r $(XBUILD_VERBOSITY) /bl
+	$(SYSTEM_MSBUILD) mtouchtests.csproj /r $(XBUILD_VERBOSITY) /bl
 	$(Q) rm -f .failed-stamp
 
 $(abspath $(TOP)/tools/mtouch/Constants.cs):

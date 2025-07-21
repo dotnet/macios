@@ -22,44 +22,50 @@ namespace CoreSpotlight {
 		}
 
 		// Manually deal with these properties until we get BindAs working
-#if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("tvos")]
-#endif
-		public bool? IsUserCreated { 
+		public bool? IsUserCreated {
 			get {
 				return _IsUserCreated?.BoolValue;
-			} set {
+			}
+			set {
 				_IsUserCreated = value.HasValue ? new NSNumber (value.Value) : null;
 			}
 		}
 
-#if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("tvos")]
-#endif
 		public bool? IsUserOwned {
 			get {
 				return _IsUserOwned?.BoolValue;
-			} set {
+			}
+			set {
 				_IsUserOwned = value.HasValue ? new NSNumber (value.Value) : null;
 			}
 		}
 
-#if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("tvos")]
-#endif
-		public bool? IsUserCurated { 
+		public bool? IsUserCurated {
 			get {
 				return _IsUserCurated?.BoolValue;
-			} set {
+			}
+			set {
 				_IsUserCurated = value.HasValue ? new NSNumber (value.Value) : null;
 			}
 		}

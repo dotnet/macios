@@ -40,15 +40,20 @@ using Foundation;
 namespace CoreGraphics {
 
 	// CGAffineTransform.h
-#if NET
+	/// <summary>2D Affine transformation used to convert between coordinate spaces.</summary>
+	///     <remarks>
+	///       <para>An affine transformation uses a matrix to transform poitns between coordinate spaces.   
+	/// </para>
+	///       <para>
+	/// These transformation can be used to rotate, scale, shear and translate points and rectangles from one coordinate system into another.
+	/// </para>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct CGAffineTransform {
-#if NET
 		public /* CGFloat */ nfloat A;
 		public /* CGFloat */ nfloat B;
 		public /* CGFloat */ nfloat C;
@@ -76,36 +81,11 @@ namespace CoreGraphics {
 		[Obsolete ("Use 'Ty' instead.")]
 		public nfloat y0 { get => Ty; set => Ty = value; }
 #endif // !XAMCORE_5_0
-#else
-		[Obsolete ("Use 'A' instead.")]
-		public /* CGFloat */ nfloat xx;   // a
-		[Obsolete ("Use 'B' instead.")]
-		public /* CGFloat */ nfloat yx;   // b 
-		[Obsolete ("Use 'C' instead.")]
-		public /* CGFloat */ nfloat xy;   // c
-		[Obsolete ("Use 'D' instead.")]
-		public /* CGFloat */ nfloat yy;   // d
-		[Obsolete ("Use 'Tx' instead.")]
-		public /* CGFloat */ nfloat x0;   // tx
-		[Obsolete ("Use 'Ty' instead.")]
-		public /* CGFloat */ nfloat y0;   // ty
-
-#pragma warning disable CS0618 // Type or member is obsolete
-		public /* CGFloat */ nfloat A { get => xx; set => xx = value; }
-		public /* CGFloat */ nfloat B { get => yx; set => yx = value; }
-		public /* CGFloat */ nfloat C { get => xy; set => xy = value; }
-		public /* CGFloat */ nfloat D { get => yy; set => yy = value; }
-		public /* CGFloat */ nfloat Tx { get => x0; set => x0 = value; }
-		public /* CGFloat */ nfloat Ty { get => y0; set => y0 = value; }
-#pragma warning restore CS0618 // Type or member is obsolete
-
-#endif // NET
 
 #if !COREBUILD
 		//
 		// Constructors
 		//
-#if NET
 		public CGAffineTransform (nfloat a, nfloat b, nfloat c, nfloat d, nfloat tx, nfloat ty)
 		{
 			this.A = a;
@@ -115,21 +95,24 @@ namespace CoreGraphics {
 			this.Tx = tx;
 			this.Ty = ty;
 		}
-#else
-		public CGAffineTransform (nfloat xx, nfloat yx, nfloat xy, nfloat yy, nfloat x0, nfloat y0)
-		{
-#pragma warning disable CS0618 // Type or member is obsolete
-			this.xx = xx;
-			this.yx = yx;
-			this.xy = xy;
-			this.yy = yy;
-			this.x0 = x0;
-			this.y0 = y0;
-#pragma warning restore CS0618 // Type or member is obsolete
-		}
-#endif // NET
 
 		// Identity
+		/// <summary>Returns the identity affine transformation.</summary>
+		///         <returns>The identity matrix.</returns>
+		///         <remarks>
+		///           <para>
+		/// Sets up an identity transformation, like this:
+		/// </para>
+		///           <para>
+		/// | 1 0 0 |
+		/// </para>
+		///           <para>
+		/// | 0 1 0 |
+		/// </para>
+		///           <para>
+		/// | 0 0 1 |
+		/// </para>
+		///         </remarks>
 		public static CGAffineTransform MakeIdentity ()
 		{
 			return new CGAffineTransform (1, 0, 0, 1, 0, 0);
@@ -158,48 +141,33 @@ namespace CoreGraphics {
 		//
 		// Operations
 		//
+		/// <param name="a">The first affine.</param>
+		///         <param name="b">The second affine.</param>
+		///         <summary>Multiplies the two affine transformations and returns the result.</summary>
+		///         <returns>The multiplied affine.</returns>
+		///         <remarks>Use affine multiplication to compose multiple affine tranformations into a single affine.</remarks>
 		public static CGAffineTransform Multiply (CGAffineTransform a, CGAffineTransform b)
 		{
-#if NET
 			return new CGAffineTransform (a.A * b.A + a.B * b.C,
-						      a.A * b.B + a.B * b.D,
-						      a.C * b.A + a.D * b.C,
-						      a.C * b.B + a.D * b.D,
-						      a.Tx * b.A + a.Ty * b.C + b.Tx,
-						      a.Tx * b.B + a.Ty * b.D + b.Ty);
-#else
-#pragma warning disable CS0618 // Type or member is obsolete
-			return new CGAffineTransform (a.xx * b.xx + a.yx * b.xy,
-							  a.xx * b.yx + a.yx * b.yy,
-							  a.xy * b.xx + a.yy * b.xy,
-							  a.xy * b.yx + a.yy * b.yy,
-							  a.x0 * b.xx + a.y0 * b.xy + b.x0,
-							  a.x0 * b.yx + a.y0 * b.yy + b.y0);
-#pragma warning restore CS0618 // Type or member is obsolete
-#endif // NET
+							  a.A * b.B + a.B * b.D,
+							  a.C * b.A + a.D * b.C,
+							  a.C * b.B + a.D * b.D,
+							  a.Tx * b.A + a.Ty * b.C + b.Tx,
+							  a.Tx * b.B + a.Ty * b.D + b.Ty);
 		}
 
+		/// <param name="b">The affine used to multiply the current affine by.</param>
+		///         <summary>Multiplies the current affine transformation by the specified affine transformation.</summary>
+		///         <remarks>Use affine multiplication to compose multiple affine tranformations into a single affine.</remarks>
 		public void Multiply (CGAffineTransform b)
 		{
 			var a = this;
-#if NET
 			A = a.A * b.A + a.B * b.C;
 			B = a.A * b.B + a.B * b.D;
 			C = a.C * b.A + a.D * b.C;
 			D = a.C * b.B + a.D * b.D;
 			Tx = a.Tx * b.A + a.Ty * b.C + b.Tx;
 			Ty = a.Tx * b.B + a.Ty * b.D + b.Ty;
-#else
-#pragma warning disable CS0618 // Type or member is obsolete
-			xx = a.xx * b.xx + a.yx * b.xy;
-			yx = a.xx * b.yx + a.yx * b.yy;
-			xy = a.xy * b.xx + a.yy * b.xy;
-			yy = a.xy * b.yx + a.yy * b.yy;
-			x0 = a.x0 * b.xx + a.y0 * b.xy + b.x0;
-			y0 = a.x0 * b.yx + a.y0 * b.yy + b.y0;
-#pragma warning restore CS0618 // Type or member is obsolete
-
-#endif // NET
 		}
 
 		public void Scale (nfloat sx, nfloat sy, MatrixOrder order)
@@ -224,7 +192,6 @@ namespace CoreGraphics {
 
 		public static CGAffineTransform Scale (CGAffineTransform transform, nfloat sx, nfloat sy)
 		{
-#if NET
 			return new CGAffineTransform (
 				sx * transform.A,
 				sx * transform.B,
@@ -232,17 +199,6 @@ namespace CoreGraphics {
 				sy * transform.D,
 				transform.Tx,
 				transform.Ty);
-#else
-#pragma warning disable CS0618 // Type or member is obsolete
-			return new CGAffineTransform (
-				sx * transform.xx,
-				sx * transform.yx,
-				sy * transform.xy,
-				sy * transform.yy,
-				transform.x0,
-				transform.y0);
-#pragma warning restore CS0618 // Type or member is obsolete
-#endif // NET
 		}
 
 		public void Translate (nfloat tx, nfloat ty, MatrixOrder order)
@@ -267,7 +223,6 @@ namespace CoreGraphics {
 
 		public static CGAffineTransform Translate (CGAffineTransform transform, nfloat tx, nfloat ty)
 		{
-#if NET
 			return new CGAffineTransform (
 				transform.A,
 				transform.B,
@@ -275,18 +230,6 @@ namespace CoreGraphics {
 				transform.D,
 				tx * transform.A + ty * transform.C + transform.Tx,
 				tx * transform.B + ty * transform.D + transform.Ty);
-#else
-#pragma warning disable CS0618 // Type or member is obsolete
-			return new CGAffineTransform (
-				transform.xx,
-				transform.yx,
-				transform.xy,
-				transform.yy,
-				tx * transform.xx + ty * transform.xy + transform.x0,
-				tx * transform.yx + ty * transform.yy + transform.y0);
-#pragma warning disable CS0618 // Type or member is obsolete
-
-#endif // NET
 		}
 
 		public void Rotate (nfloat angle, MatrixOrder order)
@@ -311,7 +254,6 @@ namespace CoreGraphics {
 
 		public static CGAffineTransform Rotate (CGAffineTransform transform, nfloat angle)
 		{
-#if NET
 			var cos = (nfloat) Math.Cos (angle);
 			var sin = (nfloat) Math.Sin (angle);
 
@@ -322,61 +264,41 @@ namespace CoreGraphics {
 				cos * transform.D - sin * transform.B,
 				transform.Tx,
 				transform.Ty);
-#else
-			var cos = (nfloat) Math.Cos (angle);
-			var sin = (nfloat) Math.Sin (angle);
-
-			return new CGAffineTransform (
-				cos * transform.xx + sin * transform.xy,
-				cos * transform.yx + sin * transform.yy,
-				cos * transform.xy - sin * transform.xx,
-				cos * transform.yy - sin * transform.yx,
-				transform.x0,
-				transform.y0);
-#endif
 		}
 
+		/// <summary>Determines if the affine corresponds to the identity affine.</summary>
+		///         <value>Whether the affine is the identity.</value>
+		///         <remarks>To be added.</remarks>
 		public bool IsIdentity {
 			get {
-#if NET
 				return A == 1 && B == 0 && C == 0 && D == 1 && Tx == 0 && Ty == 0;
-#else
-				return xx == 1 && yx == 0 && xy == 0 && yy == 1 && x0 == 0 && y0 == 0;
-#endif
 			}
 		}
 
-#if NET && !MONOMAC
+#if !MONOMAC
 		// on macOS NSAffineTransform is an ObjC type
 		[DllImport (Constants.UIKitLibrary)]
 		extern static /* NSString */ IntPtr NSStringFromCGAffineTransform (CGAffineTransform transform);
 #endif
 
+		/// <summary>Renders the affine in textual form.</summary>
+		///         <returns />
+		///         <remarks>To be added.</remarks>
 		public override String? ToString ()
 		{
-#if NET
 #if MONOMAC
 			var s = $"[{A}, {B}, {C}, {D}, {Tx}, {Ty}]";
 #else
 			var s = CFString.FromHandle (NSStringFromCGAffineTransform (this));
-#endif
-#else
-			var s = String.Format ("xx:{0:##0.0#} yx:{1:##0.0#} xy:{2:##0.0#} yy:{3:##0.0#} x0:{4:##0.0#} y0:{5:##0.0#}", xx, yx, xy, yy, x0, y0);
 #endif
 			return s;
 		}
 
 		public static bool operator == (CGAffineTransform lhs, CGAffineTransform rhs)
 		{
-#if NET
 			return (lhs.A == rhs.A && lhs.C == rhs.C &&
 				lhs.B == rhs.B && lhs.D == rhs.D &&
 				lhs.Tx == rhs.Tx && lhs.Ty == rhs.Ty);
-#else
-			return (lhs.xx == rhs.xx && lhs.xy == rhs.xy &&
-				lhs.yx == rhs.yx && lhs.yy == rhs.yy &&
-				lhs.x0 == rhs.x0 && lhs.y0 == rhs.y0);
-#endif
 		}
 
 		public static bool operator != (CGAffineTransform lhs, CGAffineTransform rhs)
@@ -386,23 +308,19 @@ namespace CoreGraphics {
 
 		public static CGAffineTransform operator * (CGAffineTransform a, CGAffineTransform b)
 		{
-#if NET
 			return new CGAffineTransform (a.A * b.A + a.B * b.C,
-						      a.A * b.B + a.B * b.D,
-						      a.C * b.A + a.D * b.C,
-						      a.C * b.B + a.D * b.D,
-						      a.Tx * b.A + a.Ty * b.C + b.Tx,
-						      a.Tx * b.B + a.Ty * b.D + b.Ty);
-#else
-			return new CGAffineTransform (a.xx * b.xx + a.yx * b.xy,
-							  a.xx * b.yx + a.yx * b.yy,
-							  a.xy * b.xx + a.yy * b.xy,
-							  a.xy * b.yx + a.yy * b.yy,
-							  a.x0 * b.xx + a.y0 * b.xy + b.x0,
-							  a.x0 * b.yx + a.y0 * b.yy + b.y0);
-#endif
+							  a.A * b.B + a.B * b.D,
+							  a.C * b.A + a.D * b.C,
+							  a.C * b.B + a.D * b.D,
+							  a.Tx * b.A + a.Ty * b.C + b.Tx,
+							  a.Tx * b.B + a.Ty * b.D + b.Ty);
 		}
 
+		/// <param name="o">The object to compare this instance against.</param>
+		///         <summary>Compares the objects for equality.</summary>
+		///         <returns>
+		///           <see langword="true" /> if the objects are equal, <see langword="false" /> if not.</returns>
+		///         <remarks>To be added.</remarks>
 		public override bool Equals (object? o)
 		{
 			if (o is CGAffineTransform transform) {
@@ -411,31 +329,47 @@ namespace CoreGraphics {
 				return false;
 		}
 
+		/// <summary>The hashcode for this object.</summary>
+		///         <returns>An integer value.</returns>
+		///         <remarks>To be added.</remarks>
 		public override int GetHashCode ()
 		{
-#if NET
 			return HashCode.Combine (A, C, B, D, Tx, Ty);
-#else
-			return (int) this.xx ^ (int) this.xy ^
-					(int) this.yx ^ (int) this.yy ^
-					(int) this.x0 ^ (int) this.y0;
-#endif
 		}
 
+		/// <param name="point">The point to transform.</param>
+		///         <summary>Transforms the coordinates of the provided point by the affine.</summary>
+		///         <returns>The point translated to the new coordinate space.</returns>
+		///         <remarks>
+		///           <para>
+		/// The point defined by x, y is transformed like this:
+		/// </para>
+		///           <para>
+		/// new_x = xx * x + xy * y + x0;
+		/// </para>
+		///           <para>
+		/// new_y = yx * x + yy * y + y0;
+		/// </para>
+		///         </remarks>
 		public CGPoint TransformPoint (CGPoint point)
 		{
-#if NET
 			return new CGPoint (A * point.X + C * point.Y + Tx,
-					    B * point.X + D * point.Y + Ty);
-#else
-			return new CGPoint (xx * point.X + xy * point.Y + x0,
-						yx * point.X + yy * point.Y + y0);
-#endif
+						B * point.X + D * point.Y + Ty);
 		}
 
+		/// <param name="rect">To be added.</param>
+		///         <param name="t">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		public extern static CGRect CGRectApplyAffineTransform (CGRect rect, CGAffineTransform t);
 
+		/// <param name="rect">A rectangle to transform.</param>
+		///         <summary>Applies the affine transform to the supplied rectangle and returns the transformed rectangle.</summary>
+		///         <returns>The transformed rectangle.</returns>
+		///         <remarks>
+		///         </remarks>
 		public CGRect TransformRect (CGRect rect)
 		{
 			return CGRectApplyAffineTransform (rect, this);
@@ -444,46 +378,57 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static CGSize CGSizeApplyAffineTransform (CGSize rect, CGAffineTransform t);
 
+		/// <param name="size">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CGSize TransformSize (CGSize size)
 		{
 			return CGSizeApplyAffineTransform (size, this);
 		}
 
+		/// <param name="t">Affine transformation to invert.</param>
+		///         <summary>Inverts the affine transformation matrix.</summary>
+		///         <returns>If the affine transformation can not be inverted, the same matrix is returned.</returns>
+		///         <remarks>You can use the inversion matrix to map points in the target coordinate space that had been mapped to the original coordinate space.</remarks>
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		public extern static CGAffineTransform CGAffineTransformInvert (CGAffineTransform t);
 
+		/// <summary>Inverts this affine transformation.</summary>
+		///         <returns>If the affine transformation can not be inverted, the matrix does not change.</returns>
+		///         <remarks>You can use the inversion matrix to map points in the target coordinate space that had been mapped to the original coordinate space.</remarks>
 		public CGAffineTransform Invert ()
 		{
 			return CGAffineTransformInvert (this);
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios16.0")]
 		[SupportedOSPlatform ("maccatalyst16.0")]
 		[SupportedOSPlatform ("macos13.0")]
 		[SupportedOSPlatform ("tvos16.0")]
-#else
-		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0), Watch (9, 0)]
-#endif
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern CGAffineTransformComponents CGAffineTransformDecompose (CGAffineTransform transform);
 
+		[SupportedOSPlatform ("ios16.0")]
+		[SupportedOSPlatform ("maccatalyst16.0")]
+		[SupportedOSPlatform ("macos13.0")]
+		[SupportedOSPlatform ("tvos16.0")]
 		public CGAffineTransformComponents Decompose ()
 		{
 			return CGAffineTransformDecompose (this);
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios16.0")]
 		[SupportedOSPlatform ("maccatalyst16.0")]
 		[SupportedOSPlatform ("macos13.0")]
 		[SupportedOSPlatform ("tvos16.0")]
-#else
-		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0), Watch (9, 0)]
-#endif
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern CGAffineTransform CGAffineTransformMakeWithComponents (CGAffineTransformComponents components);
 
+		[SupportedOSPlatform ("ios16.0")]
+		[SupportedOSPlatform ("maccatalyst16.0")]
+		[SupportedOSPlatform ("macos13.0")]
+		[SupportedOSPlatform ("tvos16.0")]
 		public static CGAffineTransform MakeWithComponents (CGAffineTransformComponents components)
 		{
 			return CGAffineTransformMakeWithComponents (components);

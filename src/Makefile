@@ -14,7 +14,7 @@ IOS_DOTNET_BUILD_DIR=$(DOTNET_BUILD_DIR)/ios
 TVOS_DOTNET_BUILD_DIR=$(DOTNET_BUILD_DIR)/tvos
 MACCATALYST_DOTNET_BUILD_DIR=$(DOTNET_BUILD_DIR)/maccatalyst
 
-GENERATOR_FLAGS=-process-enums -core -nologo -nostdlib -noconfig -native-exception-marshalling --ns:ObjCRuntime
+GENERATOR_FLAGS=-process-enums -core -nologo -nostdlib -native-exception-marshalling --ns:ObjCRuntime
 
 GENERATOR_TF_VERSION=$(subst net,,$(DOTNET_TFM))
 
@@ -56,14 +56,13 @@ DOTNET_REFERENCES = \
 	/r:$(DOTNET_BCL_DIR)/System.Xml.ReaderWriter.dll \
 
 DOTNET_OR_GREATER_DEFINES:=$(foreach version,$(shell seq 6 $(firstword $(subst ., ,$(subst net,,$(DOTNET_TFM))))),/define:NET$(version)_0_OR_GREATER)
-DOTNET_FLAGS=/warnaserror+ /noconfig /nostdlib+ /deterministic /features:strict /nologo /target:library /debug /unsafe /define:NET /define:NET_TODO /define:XAMCORE_3_0 $(DOTNET_OR_GREATER_DEFINES) $(DOTNET_REFERENCES)
+DOTNET_FLAGS=/warnaserror+ /nostdlib+ /deterministic /features:strict /nologo /target:library /debug /unsafe /define:NET $(DOTNET_OR_GREATER_DEFINES) $(DOTNET_REFERENCES) /fullpaths
 
 ifeq ($(XCODE_IS_STABLE),true)
 DOTNET_FLAGS+=/define:XCODE_IS_STABLE
 endif
 
-DOTNET_COMPILER=$(DOTNET_BUILD_DIR)/compiler
-DOTNET_GENERATOR_FLAGS=$(GENERATOR_FLAGS) -compiler=$(abspath $(DOTNET_COMPILER)) --lib=$(DOTNET_BCL_DIR) -attributelib:$(DOTNET_BINDING_ATTRIBUTES) $(DOTNET_REFERENCES)
+DOTNET_GENERATOR_FLAGS=$(GENERATOR_FLAGS) --lib=$(DOTNET_BCL_DIR) -attributelib:$(DOTNET_BINDING_ATTRIBUTES) $(DOTNET_REFERENCES)
 DOTNET_GENERATOR=$(DOTNET_BUILD_DIR)/bgen/bgen
 DOTNET_BINDING_ATTRIBUTES=$(DOTNET_BUILD_DIR)/Xamarin.Apple.BindingAttributes.dll
 
@@ -76,13 +75,17 @@ DOTNET_BINDING_ATTRIBUTES=$(DOTNET_BUILD_DIR)/Xamarin.Apple.BindingAttributes.dl
 NULLABILITY_WARNINGS=nullable
 GENERATOR_WARNASERROR=-warnaserror:
 IOS_GENERATOR_WARNASERROR=$(GENERATOR_WARNASERROR)
-WATCH_GENERATOR_WARNASERROR=$(GENERATOR_WARNASERROR)
 TVOS_GENERATOR_WARNASERROR=$(GENERATOR_WARNASERROR)
 MACOS_GENERATOR_WARNASERROR=$(GENERATOR_WARNASERROR)
 MACCATALYST_GENERATOR_WARNASERROR=$(GENERATOR_WARNASERROR)
 
 # this is due to deprecated APIs used in the generated code.
 BGEN_WARNINGS_TO_FIX=BI1234
+
+# We ignore some xml docs warnings when building the core and apidefinition assemblies, because
+# the xml docs might want to reference generated APIs, so the compiler would warn about not
+# finding those APIs (because they haven't been generated yet).
+XML_DOCS_WARNINGS=CS0419,CS1574,CS1580
 
 #
 # Specific warnings we're ignoring from the C# compiler
@@ -96,6 +99,12 @@ CSC_WARNINGS_TO_FIX=108,219,618,114,414,1635,3021,4014
 # we can ignore this warning.
 CSC_WARNINGS_TO_FIX:=$(CSC_WARNINGS_TO_FIX),1591
 
+# warning CS8981: The type name 'nfloat' only contains lower-cased ascii characters. Such names may become reserved for the language.
+CSC_WARNINGS_TO_FIX:=$(CSC_WARNINGS_TO_FIX),CS8981
+
+# availability warnings, need to fix https://github.com/dotnet/macios/pull/21185 to stop ignoring this.
+CSC_WARNINGS_TO_FIX:=$(CSC_WARNINGS_TO_FIX),CA1416,CA1422
+
 WARNINGS_TO_FIX = -nowarn:$(CSC_WARNINGS_TO_FIX)
 CORE_WARNINGS_TO_FIX = -nowarn:$(CSC_WARNINGS_TO_FIX),$(BGEN_WARNINGS_TO_FIX)
 
@@ -103,260 +112,185 @@ DOTNET_WARNINGS_TO_FIX = -nowarn:$(CSC_WARNINGS_TO_FIX)
 DOTNET_CORE_WARNINGS_TO_FIX = -nowarn:$(CSC_WARNINGS_TO_FIX),$(BGEN_WARNINGS_TO_FIX)
 
 include ./Makefile.generator
+include ./Makefile.rgenerator
 include ./generator-diff.mk
 
 SHARED_RESX = $(TOP)/tools/mtouch/Errors.resx
 SHARED_DESIGNER_CS = $(DOTNET_BUILD_DIR)/common/Errors.Designer.cs
 
-$(SHARED_DESIGNER_CS): $(SHARED_RESX) | $(DOTNET_BUILD_DIR)/common
-	$(Q_GEN) ./generate-errors.csharp > $(SHARED_DESIGNER_CS)
+include $(TOP)/scripts/generate-errors/fragment.mk
+$(SHARED_DESIGNER_CS): $(SHARED_RESX) $(GENERATE_ERRORS) | $(DOTNET_BUILD_DIR)/common
+	$(Q_GEN) $(GENERATE_ERRORS_EXEC) $(SHARED_RESX) $(SHARED_DESIGNER_CS)
 
 DOTNET_TARGETS_DIRS += $(DOTNET_BUILD_DIR)/common
+
+define DotNetVariables
+
+$(2)_DEFINES += -d:__$(2)__
+
+## Add new bindings + source files in frameworks.sources, not here.
+
+$(2)_DOTNET_EXTRA_SOURCES = \
+	$($(2)_DOTNET_BUILD_DIR)/Constants.cs    \
+	$($(2)_DOTNET_BUILD_DIR)/Constants.generated.cs \
+	$($(2)_DOTNET_BUILD_DIR)/AssemblyInfo.cs \
+	$(SHARED_DESIGNER_CS) \
+
+$(2)_DOTNET_CORE_SOURCES += $$($(2)_DOTNET_EXTRA_SOURCES)
+
+$(2)_DOTNET_SOURCES += $$($(2)_DOTNET_EXTRA_SOURCES)
+
+$($(2)_DOTNET_BUILD_DIR)/Constants.cs: Constants.$(1).cs.in Makefile $(TOP)/Make.config.inc | $($(2)_DOTNET_BUILD_DIR)
+	$$(call Q_PROF_GEN,$(3)) sed \
+		-e "s/@VERSION@/$($(2)_NUGET_VERSION_MAJOR).$($(2)_NUGET_VERSION_MINOR).$($(2)_NUGET_VERSION_PATCH)/g" \
+		-e 's/@REVISION@/$($(2)_NUGET_COMMIT_DISTANCE) ($(CURRENT_BRANCH_SED_ESCAPED): $(shell git log -1 --pretty=%h))/g' \
+		-e "s/@$(2)_SDK_VERSION@/$($(2)_SDK_VERSION)/g" \
+		$$< > $$@
+
+$($(2)_DOTNET_BUILD_DIR)/AssemblyInfo.cs: $(TOP)/src/AssemblyInfo.cs.in | $($(2)_DOTNET_BUILD_DIR)
+	$$(call Q_PROF_GEN,$(3)) sed \
+		-e 's|@PACKAGE_HEAD_REV@|$(PACKAGE_HEAD_REV)|g' \
+		-e 's|@PACKAGE_HEAD_BRANCH@|$(CURRENT_BRANCH_SED_ESCAPED)|g' \
+		-e 's|@NUGET_VERSION_NO_METADATA@|$($(2)_NUGET_VERSION_NO_METADATA)|g' \
+		-e 's|@NUGET_VERSION_MAJOR@|$($(2)_NUGET_VERSION_MAJOR)|g' \
+		-e 's|@NUGET_VERSION_MINOR@|$($(2)_NUGET_VERSION_MINOR)|g' \
+		-e 's|@NUGET_VERSION_REV@|$($(2)_NUGET_VERSION_PATCH)|g' \
+		-e 's|@NUGET_VERSION_BUILD@|$($(2)_NUGET_COMMIT_DISTANCE)|g' \
+		-e 's|@DOTNET_PLATFORM@|iOS|g' \
+		-e 's|@XCODE_VERSION@|$(subst .,_,$(XCODE_VERSION))|g' \
+		< $$< > $$@.tmp
+	$$(Q) diff $$@ $$@.tmp >/dev/null 2>&1 || mv -f $$@.tmp $$@
+	$$(Q) rm -f $$@.tmp
+	$$(Q) touch $$@
+endef
+
+# Template variables:
+# 1: Platform (correct case)
+# 2: PLATFORM (all upper case)
+# 3: platform (all lower case)
+# pseudo-code:
+#     foreach (var platform in DOTNET_PLATFORMS)
+#        BuildDotNetIntermediateAssembly (platform, platform.ToUpper (), platform.ToLower ())
+$(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call DotNetVariables,$(platform),$(shell echo $(platform) | tr '[:lower:]' '[:upper:]'),$(shell echo $(platform) | tr '[:upper:]' '[:lower:]'))))
 
 #
 # iOS
 #
 
-# Add new bindings + source files in frameworks.sources, not here.
-
-IOS_DOTNET_EXTRA_SOURCES = \
-	$(IOS_DOTNET_BUILD_DIR)/Constants.cs    \
-	$(IOS_DOTNET_BUILD_DIR)/Constants.generated.cs \
-	$(IOS_DOTNET_BUILD_DIR)/AssemblyInfo.cs \
-	$(SHARED_DESIGNER_CS) \
-
-IOS_DOTNET_HTTP_SOURCES = \
-	Foundation/NSUrlSessionHandler.cs \
-	System.Net.Http/CFContentStream.cs \
-	System.Net.Http/CFNetworkHandler.cs \
-
-IOS_DOTNET_CORE_SOURCES += $(IOS_DOTNET_EXTRA_SOURCES)
-
-IOS_DOTNET_SOURCES += $(IOS_DOTNET_EXTRA_SOURCES) $(IOS_DOTNET_HTTP_SOURCES)
-
-IOS_GENERATOR_FLAGS = -inline-selectors -d:IOS -process-enums $(IOS_GENERATOR_WARNASERROR)
-IOS_DEFINES = -define:IPHONE -define:IOS -define:MONOTOUCH -d:__IOS__ -d:SYSTEM_NET_HTTP
-
-IOS_CORE_DEFINES=-define:COREBUILD $(IOS_DEFINES)
-
-$(IOS_DOTNET_BUILD_DIR)/Constants.cs: Constants.iOS.cs.in Makefile $(TOP)/Make.config.inc | $(IOS_DOTNET_BUILD_DIR)
-	$(call Q_PROF_GEN,ios) sed \
-		-e "s/@VERSION@/$(IOS_NUGET_VERSION_MAJOR).$(IOS_NUGET_VERSION_MINOR).$(IOS_NUGET_VERSION_PATCH)/g" \
-		-e 's/@REVISION@/$(IOS_COMMIT_DISTANCE) ($(CURRENT_BRANCH_SED_ESCAPED): $(shell git log -1 --pretty=%h))/g' \
-		-e "s/@IOS_SDK_VERSION@/$(IOS_SDK_VERSION)/g" \
-		$< > $@
-
-$(IOS_DOTNET_BUILD_DIR)/AssemblyInfo.cs: $(TOP)/src/AssemblyInfo.cs.in | $(IOS_DOTNET_BUILD_DIR)
-	$(call Q_PROF_GEN,ios) sed \
-		-e 's|@PRODUCT_NAME@|$(IOS_PRODUCT)|g' \
-		-e 's|@PACKAGE_HEAD_REV@|$(PACKAGE_HEAD_REV)|g' \
-		-e 's|@PACKAGE_HEAD_BRANCH@|$(CURRENT_BRANCH_SED_ESCAPED)|g' \
-		-e 's|@NUGET_VERSION_NO_METADATA@|$(IOS_NUGET_VERSION_NO_METADATA)|g' \
-		-e 's|@NUGET_VERSION_MAJOR@|$(IOS_NUGET_VERSION_MAJOR)|g' \
-		-e 's|@NUGET_VERSION_MINOR@|$(IOS_NUGET_VERSION_MINOR)|g' \
-		-e 's|@NUGET_VERSION_REV@|$(IOS_NUGET_VERSION_PATCH)|g' \
-		-e 's|@NUGET_VERSION_BUILD@|$(IOS_NUGET_COMMIT_DISTANCE)|g' \
-		-e 's|@DOTNET_PLATFORM@|iOS|g' \
-		-e 's|@XCODE_VERSION@|$(subst .,_,$(XCODE_VERSION))|g' \
-		< $< > $@.tmp
-	$(Q) diff $@ $@.tmp >/dev/null 2>&1 || mv -f $@.tmp $@
-	$(Q) rm -f $@.tmp
-	$(Q) touch $@
+IOS_DEFINES += -d:IOS
+IOS_GENERATOR_FLAGS = -inline-selectors
 
 #
 # macOS
 #
 
-MAC_COMMON_DEFINES = -define:MONOMAC -d:__MACOS__
-MACOS_GENERATOR_FLAGS = -d:MONOMAC -d:__MACOS__
-MACOS_CORE_DEFINES = $(MAC_COMMON_DEFINES),COREBUILD
-MACOS_DEFINES = $(MAC_COMMON_DEFINES) -D:XAMARIN_MODERN
-
-SN_KEY = $(PRODUCT_KEY_PATH)
-
-MAC_DOTNET_EXTRA_CORE_SOURCES += \
-	$(MACOS_DOTNET_BUILD_DIR)/Constants.cs \
-	$(MACOS_DOTNET_BUILD_DIR)/Constants.generated.cs \
-
-# Add new bindings + source files in frameworks.sources, not here.
-
-MACOS_DOTNET_CORE_SOURCES += \
-	$(MAC_DOTNET_EXTRA_CORE_SOURCES) \
-
-MACOS_DOTNET_SOURCES += \
-	$(MAC_DOTNET_EXTRA_CORE_SOURCES) \
-	$(MACOS_DOTNET_BUILD_DIR)/AssemblyInfo.cs \
-	$(SHARED_DESIGNER_CS) \
-
-MAC_CFNETWORK_SOURCES = \
-	CFNetwork/Content.cs \
-	CFNetwork/MessageHandler.cs \
-	CFNetwork/WebRequestStream.cs \
-	CFNetwork/WebResponseStream.cs \
-	CFNetwork/WorkerThread.cs
-
-MAC_HTTP_SOURCES = \
-	Foundation/NSUrlSessionHandler.cs \
-	System.Net.Http/CFContentStream.cs \
-	System.Net.Http/CFNetworkHandler.cs \
-
-MACOS_DOTNET_SOURCES += \
-	$(MAC_CFNETWORK_SOURCES) \
-	$(MAC_HTTP_SOURCES) \
-
-$(MACOS_DOTNET_BUILD_DIR)/Constants.cs: Constants.mac.cs.in Makefile $(TOP)/Make.config.inc | $(MACOS_DOTNET_BUILD_DIR)
-	$(Q) sed \
-			-e "s/@VERSION@/$(MACOS_NUGET_VERSION_MAJOR).$(MACOS_NUGET_VERSION_MINOR).$(MACOS_NUGET_VERSION_PATCH)/g" \
-			-e 's/@REVISION@/$(MAC_COMMIT_DISTANCE) ($(CURRENT_BRANCH_SED_ESCAPED): $(shell git log -1 --pretty=%h))/g' \
-			-e "s/@MACOS_SDK_VERSION@/$(MACOS_SDK_VERSION)/g" \
-			-e "s/@MIN_XM_MONO_VERSION@/$(MIN_XM_MONO_VERSION)/g" \
-		$< > $@
-
-$(MACOS_DOTNET_BUILD_DIR)/AssemblyInfo.cs: $(TOP)/src/AssemblyInfo.cs.in | $(MACOS_DOTNET_BUILD_DIR)
-	$(call Q_PROF_GEN,mac) sed \
-		-e 's|@PRODUCT_NAME@|$(MAC_PRODUCT)|g' \
-		-e 's|@PACKAGE_HEAD_REV@|$(PACKAGE_HEAD_REV)|g' \
-		-e 's|@NUGET_VERSION_NO_METADATA@|$(MACOS_NUGET_VERSION_NO_METADATA)|g' \
-		-e 's|@NUGET_VERSION_MAJOR@|$(MACOS_NUGET_VERSION_MAJOR)|g' \
-		-e 's|@NUGET_VERSION_MINOR@|$(MACOS_NUGET_VERSION_MINOR)|g' \
-		-e 's|@NUGET_VERSION_REV@|$(MACOS_NUGET_VERSION_PATCH)|g' \
-		-e 's|@NUGET_VERSION_BUILD@|$(MACOS_NUGET_COMMIT_DISTANCE)|g' \
-		-e 's|@DOTNET_PLATFORM@|macOS|g' \
-		-e 's|@XCODE_VERSION@|$(subst .,_,$(XCODE_VERSION))|g' \
-		< $< > $@.tmp
-	$(Q) diff $@ $@.tmp >/dev/null 2>&1 || mv -f $@.tmp $@
-	$(Q) rm -f $@.tmp
-	$(Q) touch $@
+MACOS_DEFINES += -d:MONOMAC
+MACOS_GENERATOR_FLAGS =
 
 #
 # tvOS
 #
 
-TVOS_DEFINES = -define:IPHONE -define:MONOTOUCH -d:TVOS -d:XAMCORE_3_0 -d:__TVOS__ -d:SYSTEM_NET_HTTP
-
-TVOS_CORE_DEFINES=$(TVOS_DEFINES) -d:COREBUILD
-TVOS_GENERATOR_FLAGS = -d:TVOS -d:XAMCORE_3_0 -inline-selectors
-
-TVOS_DOTNET_EXTRA_CORE_SOURCES = \
-	$(TVOS_DOTNET_BUILD_DIR)/Constants.cs    \
-	$(TVOS_DOTNET_BUILD_DIR)/Constants.generated.cs \
-	$(TVOS_DOTNET_BUILD_DIR)/AssemblyInfo.cs \
-
-TVOS_DOTNET_CORE_SOURCES += \
-	$(TVOS_DOTNET_EXTRA_CORE_SOURCES) \
-
-TVOS_DOTNET_HTTP_SOURCES = \
-	Foundation/NSUrlSessionHandler.cs \
-	System.Net.Http/CFContentStream.cs \
-	System.Net.Http/CFNetworkHandler.cs \
-	$(SHARED_DESIGNER_CS) \
-
-TVOS_HTTP_SOURCES = \
-	Foundation/NSUrlSessionHandler.cs \
-	System.Net.Http/CFContentStream.cs \
-	System.Net.Http/CFNetworkHandler.cs \
-	$(SHARED_DESIGNER_CS) \
-
-TVOS_DOTNET_SOURCES += \
-	$(TVOS_DOTNET_EXTRA_CORE_SOURCES) \
-	$(TVOS_HTTP_SOURCES)     \
-
-$(TVOS_DOTNET_BUILD_DIR)/Constants.cs: $(TOP)/src/Constants.tvos.cs.in Makefile $(TOP)/Make.config.inc | $(TVOS_DOTNET_BUILD_DIR)
-	$(call Q_PROF_GEN,tvos) sed \
-		-e "s/@VERSION@/$(TVOS_NUGET_VERSION_MAJOR).$(TVOS_NUGET_VERSION_MINOR).$(TVOS_NUGET_VERSION_PATCH)/g" \
-		-e 's/@REVISION@/$(IOS_COMMIT_DISTANCE) ($(CURRENT_BRANCH_SED_ESCAPED): $(shell git log -1 --pretty=%h))/g' \
-		-e "s/@TVOS_SDK_VERSION@/$(TVOS_SDK_VERSION)/g" \
-		$< > $@
-
-$(TVOS_DOTNET_BUILD_DIR)/AssemblyInfo.cs: $(TOP)/src/AssemblyInfo.cs.in $(TOP)/Make.config  $(GIT_DIRECTORY)/HEAD | $(TVOS_DOTNET_BUILD_DIR)
-	$(call Q_PROF_GEN,tvos) sed \
-		-e 's|@PRODUCT_NAME@|Xamarin.TVOS|g' \
-		-e 's|@PACKAGE_HEAD_REV@|$(PACKAGE_HEAD_REV)|g' \
-		-e 's|@PACKAGE_HEAD_BRANCH@|$(CURRENT_BRANCH_SED_ESCAPED)|g' \
-		-e 's|@NUGET_VERSION_NO_METADATA@|$(TVOS_NUGET_VERSION_NO_METADATA)|g' \
-		-e 's|@NUGET_VERSION_MAJOR@|$(TVOS_NUGET_VERSION_MAJOR)|g' \
-		-e 's|@NUGET_VERSION_MINOR@|$(TVOS_NUGET_VERSION_MINOR)|g' \
-		-e 's|@NUGET_VERSION_REV@|$(TVOS_NUGET_VERSION_PATCH)|g' \
-		-e 's|@NUGET_VERSION_BUILD@|$(TVOS_NUGET_COMMIT_DISTANCE)|g' \
-		-e 's|@DOTNET_PLATFORM@|tvOS|g' \
-		-e 's|@XCODE_VERSION@|$(subst .,_,$(XCODE_VERSION))|g' \
-		$< > $@.tmp
-	$(Q) diff $@ $@.tmp >/dev/null 2>&1 || mv -f $@.tmp $@
-	$(Q) rm -f $@.tmp
-	$(Q) touch $@
+TVOS_DEFINES += -d:TVOS
+TVOS_GENERATOR_FLAGS = -inline-selectors
 
 #
 # Mac Catalyst
 #
 
 # MacCatalyst is a variant of iOS, so it defines the iOS variables as well.
-MACCATALYST_DEFINES = -define:IPHONE -define:IOS -define:MONOTOUCH -d:__IOS__ -d:__MACCATALYST__ -d:SYSTEM_NET_HTTP
-
-MACCATALYST_CORE_DEFINES=$(MACCATALYST_DEFINES) -d:COREBUILD
-MACCATALYST_GENERATOR_FLAGS = -d:__MACCATALYST__ -d:IOS -inline-selectors
-
-MACCATALYST_DOTNET_EXTRA_CORE_SOURCES = \
-	$(MACCATALYST_DOTNET_BUILD_DIR)/Constants.cs    \
-	$(MACCATALYST_DOTNET_BUILD_DIR)/Constants.generated.cs \
-	$(MACCATALYST_DOTNET_BUILD_DIR)/AssemblyInfo.cs \
-
-MACCATALYST_DOTNET_CORE_SOURCES += \
-	$(MACCATALYST_DOTNET_EXTRA_CORE_SOURCES) \
-
-MACCATALYST_DOTNET_HTTP_SOURCES = \
-	Foundation/NSUrlSessionHandler.cs \
-	System.Net.Http/CFContentStream.cs \
-	System.Net.Http/CFNetworkHandler.cs \
-	$(SHARED_DESIGNER_CS) \
-
-MACCATALYST_DOTNET_SOURCES += \
-	$(MACCATALYST_DOTNET_EXTRA_CORE_SOURCES) \
-	$(MACCATALYST_DOTNET_HTTP_SOURCES) \
-
-$(MACCATALYST_DOTNET_BUILD_DIR)/Constants.cs: $(TOP)/src/Constants.maccatalyst.cs.in Makefile $(TOP)/Make.config.inc | $(MACCATALYST_DOTNET_BUILD_DIR)
-	$(call Q_PROF_GEN,maccatalyst) sed \
-		-e "s/@VERSION@/$(MACCATALYST_NUGET_VERSION_MAJOR).$(MACCATALYST_NUGET_VERSION_MINOR).$(MACCATALYST_NUGET_VERSION_PATCH)/g" \
-		-e 's/@REVISION@/$(IOS_COMMIT_DISTANCE) ($(CURRENT_BRANCH_SED_ESCAPED): $(shell git log -1 --pretty=%h))/g' \
-		-e "s/@MACCATALYST_SDK_VERSION@/$(MACCATALYST_SDK_VERSION)/g" \
-		$< > $@
-
-$(MACCATALYST_DOTNET_BUILD_DIR)/AssemblyInfo.cs: $(TOP)/src/AssemblyInfo.cs.in $(TOP)/Make.config  $(GIT_DIRECTORY)/HEAD | $(MACCATALYST_DOTNET_BUILD_DIR)
-	$(call Q_PROF_GEN,maccatalyst) sed \
-		-e 's|@PRODUCT_NAME@|Xamarin.MacCatalyst|g' \
-		-e 's|@PACKAGE_HEAD_REV@|$(PACKAGE_HEAD_REV)|g' \
-		-e 's|@PACKAGE_HEAD_BRANCH@|$(CURRENT_BRANCH_SED_ESCAPED)|g' \
-		-e 's|@NUGET_VERSION_NO_METADATA@|$(MACCATALYST_NUGET_VERSION_NO_METADATA)|g' \
-		-e 's|@NUGET_VERSION_MAJOR@|$(MACCATALYST_NUGET_VERSION_MAJOR)|g' \
-		-e 's|@NUGET_VERSION_MINOR@|$(MACCATALYST_NUGET_VERSION_MINOR)|g' \
-		-e 's|@NUGET_VERSION_REV@|$(MACCATALYST_NUGET_VERSION_PATCH)|g' \
-		-e 's|@NUGET_VERSION_BUILD@|$(MACCATALYST_NUGET_COMMIT_DISTANCE)|g' \
-		-e 's|@DOTNET_PLATFORM@|MacCatalyst|g' \
-		-e 's|@XCODE_VERSION@|$(subst .,_,$(XCODE_VERSION))|g' \
-		$< > $@.tmp
-	$(Q) diff $@ $@.tmp >/dev/null 2>&1 || mv -f $@.tmp $@
-	$(Q) rm -f $@.tmp
-	$(Q) touch $@
+# Note that we have to define __IOS__ here, because it won't be in IOS_DEFINES unless iOS is an included platform.
+MACCATALYST_DEFINES += $(IOS_DEFINES) -d:__IOS__ -d:MACCATALYST
+MACCATALYST_GENERATOR_FLAGS = -inline-selectors
 
 ### .NET ###
 
+include $(TOP)/scripts/generate-sourcelink-json/fragment.mk
+include $(TOP)/scripts/rsp-to-csproj/fragment.mk
+
 define BuildDotNetIntermediateAssembly
-$($(2)_DOTNET_BUILD_DIR)/core-$(3).dll: $($(2)_DOTNET_CORE_SOURCES) frameworks.sources $(RSP_DIR)/dotnet/$(3)-defines-dotnet.rsp | $($(2)_DOTNET_BUILD_DIR)
-	$$(Q_DOTNET_GEN) \
-		$(DOTNET_CSC) \
+
+CORE_$(1)_CSPROJ = $(DOTNET_BUILD_DIR)/$(1)/csproj/core/Core.$(1).csproj
+CSPROJECTS += $$(CORE_$(1)_CSPROJ)
+$$(CORE_$(1)_CSPROJ): $($(2)_DOTNET_BUILD_DIR)/core-$(3).rsp $(RSP_TO_CSPROJ)
+	$$(Q) rm -f $$@
+	$$(Q) mkdir -p $$(dir $$@)
+	$$(call Q_PROF_GEN,$(1)) $(RSP_TO_CSPROJ_EXEC) \
+		--rsp $(abspath $$<) \
+		--working-directory $(abspath .) \
+		--target-framework $(DOTNET_TFM) \
+		--property=LowerCasePlatform=$(3) \
+		--output $$@.tmp
+	$$(Q) mv $$@.tmp $$@
+
+rsp:: $($(2)_DOTNET_BUILD_DIR)/core-$(3).rsp
+$($(2)_DOTNET_BUILD_DIR)/core-$(3).rsp: Makefile frameworks.sources $($(2)_DOTNET_BUILD_DIR)/GeneratedMSBuildEditorConfig.editorconfig | $($(2)_DOTNET_BUILD_DIR)
+	$$(Q_DOTNET_GEN) echo \
 		$(DOTNET_FLAGS) \
 		$(DOTNET_CORE_WARNINGS_TO_FIX) \
 		@$(RSP_DIR)/dotnet/$(3)-defines-dotnet.rsp \
-		$($(2)_CORE_DEFINES) \
+		$($(2)_DEFINES) \
+		-d:COREBUILD \
 		$($(2)_DOTNET_CORE_SOURCES) \
 		-nullable+ \
 		-warnaserror+ \
-		-out:$$@
+		-nowarn:1591 \
+		-nowarn:$(XML_DOCS_WARNINGS) \
+		-out:$($(2)_DOTNET_BUILD_DIR)/core-$(3).dll \
+		-doc:$($(2)_DOTNET_BUILD_DIR)/core-$(3).xml \
+		> $$@.tmp
+	$$(Q) mv $$@.tmp $$@
 
-$($(2)_DOTNET_BUILD_DIR)/$(3)-generated-sources: $(DOTNET_GENERATOR) $($(2)_DOTNET_APIS) $($(2)_DOTNET_BUILD_DIR)/core-$(3).dll $(DOTNET_BINDING_ATTRIBUTES) $($(2)_DOTNET_BUILD_DIR)/$(3).rsp | $($(2)_DOTNET_BUILD_DIR)/generated-sources
+core:: $($(2)_DOTNET_BUILD_DIR)/core-$(3).dll
+$($(2)_DOTNET_BUILD_DIR)/core-$(3).dll: $($(2)_DOTNET_CORE_SOURCES) $($(2)_DOTNET_BUILD_DIR)/core-$(3).rsp | $($(2)_DOTNET_BUILD_DIR)
+	$$(Q_DOTNET_GEN) $(DOTNET_CSC) @$($(2)_DOTNET_BUILD_DIR)/core-$(3).rsp
+
+$($(2)_DOTNET_BUILD_DIR)/apidefinition-$(3).rsp: Makefile frameworks.sources $($(2)_DOTNET_BUILD_DIR)/GeneratedMSBuildEditorConfig.editorconfig | $($(2)_DOTNET_BUILD_DIR)
+	$$(Q_DOTNET_GEN) echo \
+		-debug \
+		-unsafe \
+		-target:library \
+		-nowarn:436,1591,CA1416,CS8981 \
+		-nowarn:$(XML_DOCS_WARNINGS) \
+		-warnaserror+ \
+		-out:$($(2)_DOTNET_BUILD_DIR)/apidefinition-$(3).dll \
+		-doc:$($(2)_DOTNET_BUILD_DIR)/apidefinition-$(3).xml \
+		-r:$($(2)_DOTNET_BUILD_DIR)/core-$(3).dll \
+		-nostdlib \
+		-nologo \
+		-r:$(DOTNET_BINDING_ATTRIBUTES) \
+		$($(2)_APIS) \
+		$($(2)_DEFINES) \
+		@$(RSP_DIR)/dotnet/$(3)-defines-dotnet.rsp \
+		> $$@.tmp
+	$$(Q) mv $$@.tmp $$@
+
+APIDEFINITION_$(1)_CSPROJ = $(DOTNET_BUILD_DIR)/$(1)/csproj/api/ApiDefinition.$(1).csproj
+CSPROJECTS += $$(APIDEFINITION_$(1)_CSPROJ)
+$$(APIDEFINITION_$(1)_CSPROJ): $($(2)_DOTNET_BUILD_DIR)/apidefinition-$(3).rsp $(RSP_TO_CSPROJ)
+	$$(Q) rm -f $$@
+	$$(Q) mkdir -p $$(dir $$@)
+	$$(call Q_PROF_GEN,$(1)) $(RSP_TO_CSPROJ_EXEC) \
+		--rsp $(abspath $$<) \
+		--working-directory $(abspath .) \
+		--target-framework $(DOTNET_TFM) \
+		--property=LowerCasePlatform=$(3) \
+		--output $$@.tmp
+	$$(Q) mv $$@.tmp $$@
+
+apidefinition:: $($(2)_DOTNET_BUILD_DIR)/apidefinition-$(3).dll
+$($(2)_DOTNET_BUILD_DIR)/apidefinition-$(3).dll: $($(2)_DOTNET_BUILD_DIR)/apidefinition-$(3).rsp $($(2)_DOTNET_BUILD_DIR)/core-$(3).dll $(DOTNET_BINDING_ATTRIBUTES) $($(2)_APIS)
+	$$(Q_GEN) $(DOTNET_CSC) $(DOTNET_FLAGS) @$$<
+
+apidefinition:: $(3)-apidefinition
+$(3)-apidefinition: $($(2)_DOTNET_BUILD_DIR)/apidefinition-$(3).dll
+
+$($(2)_DOTNET_BUILD_DIR)/$(3)-generated-sources: $(DOTNET_GENERATOR) $($(2)_DOTNET_APIS) $($(2)_DOTNET_BUILD_DIR)/core-$(3).dll $($(2)_DOTNET_BUILD_DIR)/apidefinition-$(3).dll $(DOTNET_BINDING_ATTRIBUTES) $($(2)_DOTNET_BUILD_DIR)/$(3).rsp | $($(2)_DOTNET_BUILD_DIR)/generated-sources
 	$$(Q_DOTNET_GEN) $$< @$($(2)_DOTNET_BUILD_DIR)/$(3).rsp
 
-$($(2)_DOTNET_BUILD_DIR)/$(3).rsp: Makefile Makefile.generator frameworks.sources $(DOTNET_COMPILER) | $($(2)_DOTNET_BUILD_DIR)
+$($(2)_DOTNET_BUILD_DIR)/$(3).rsp: Makefile Makefile.generator Makefile.rgenerator frameworks.sources $(ROSLYN_GENERATOR) $(ROSLYN_ANALYZER) | $($(2)_DOTNET_BUILD_DIR)
 	$(Q) echo \
+		$($(2)_DEFINES) \
 		$($(2)_GENERATOR_FLAGS) \
 		$(DOTNET_GENERATOR_FLAGS) \
 		$($(2)_GENERATOR_WARNASERROR) \
@@ -364,8 +298,7 @@ $($(2)_DOTNET_BUILD_DIR)/$(3).rsp: Makefile Makefile.generator frameworks.source
 		-tmpdir=$($(2)_DOTNET_BUILD_DIR)/generated-sources \
 		-baselib=$($(2)_DOTNET_BUILD_DIR)/core-$(3).dll \
 		--target-framework=.NETCoreApp,Version=$(GENERATOR_TF_VERSION),Profile=$(3) \
-		$($(2)_APIS) \
-		@$(RSP_DIR)/dotnet/$(3)-defines-dotnet.rsp \
+		--compiled-api-definition-assembly=$($(2)_DOTNET_BUILD_DIR)/apidefinition-$(3).dll \
 		> $$@
 
 DOTNET_TARGETS_$(3) += \
@@ -384,11 +317,19 @@ DOTNET_TARGETS_DIRS_$(3) += \
 dotnet-gen-$(3):: $($(2)_DOTNET_BUILD_DIR)/$(3)-generated-sources
 dotnet-gen:: dotnet-gen-$(3)
 
+$($(2)_DOTNET_BUILD_DIR)/GeneratedMSBuildEditorConfig.editorconfig: | $($(2)_DOTNET_BUILD_DIR)
+	$$(Q) rm -f "$$@.tmp"
+	$$(Q) printf "is_global = true\n" >> "$$@.tmp"
+	$$(Q) printf "build_property.TargetFramework = $(DOTNET_TFM)-$(3)\n" >> "$$@.tmp"
+	$$(Q) printf "build_property.TargetFrameworkIdentifier = .NETCoreApp\n" >> "$$@.tmp"
+	$$(Q) printf "build_property.TargetFrameworkVersion = v$(DOTNET_MAJOR_VERSION).0\n" >> "$$@.tmp"
+	$$(Q) mv "$$@.tmp" "$$@"
+
 $($(2)_DOTNET_BUILD_DIR)/ILLink.LinkAttributes.xml: $(TOP)/src/ILLink.LinkAttributes.xml.in | $($(2)_DOTNET_BUILD_DIR)
 	$$(call Q_PROF_GEN,$(3)) sed < $$< > $$@ 's|@PRODUCT_NAME@|Microsoft.$(1)|g;'
 
-$($(2)_DOTNET_BUILD_DIR)/SourceLink.json: $($(2)_DOTNET_BUILD_DIR)
-	$$(Q) $(TOP)/src/generate-sourcelink-json.csharp "$(PACKAGE_HEAD_REV)" "$(abspath $(TOP)/src)" "$$@"
+$($(2)_DOTNET_BUILD_DIR)/SourceLink.json: $($(2)_DOTNET_BUILD_DIR) $(GENERATE_SOURCELINK_JSON)
+	$$(Q) $(GENERATE_SOURCELINK_JSON_EXEC) "$(PACKAGE_HEAD_REV)" "$(abspath $(TOP)/src)" "$$@"
 
 $($(2)_DOTNET_BUILD_DIR)/embed-files.rsp: $($(2)_DOTNET_BUILD_DIR)/$(3)-generated-sources $($(2)_DOTNET_SOURCES) $(TOP)/src/generate-embed-files.sh
 	$$(Q) $(TOP)/src/generate-embed-files.sh $($(2)_DOTNET_BUILD_DIR)/$(3)-generated-sources "$($(2)_DOTNET_SOURCES)" > $$@.tmp
@@ -405,7 +346,7 @@ $(DOTNET_DESTDIR)/$($(2)_NUGET_REF_NAME)/ref/$(DOTNET_TFM)/Microsoft.$(1).xml: $
 
 $($(2)_DOTNET_BUILD_DIR)/doc/Microsoft.$(1).xml: $($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1).xml $($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1).dll build/.build-adr-stamp | $($(2)_DOTNET_BUILD_DIR)/doc
 ifdef ENABLE_XAMARIN
-	$(Q) $(MAKE) run -C $(MACCORE_PATH)/tools/apple-doc-reader ASSEMBLY="$(abspath $($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1).dll)" INPUT="$(abspath $($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1).xml)" OUTPUT="$(abspath $$@)"
+	$(Q) $(MAKE) run -C $(ADR_PATH) ASSEMBLY="$(abspath $($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1).dll)" INPUT="$(abspath $($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1).xml)" OUTPUT="$(abspath $$@)"
 else
 	$$(Q) $$(CP) $($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1).xml $$@
 endif
@@ -413,8 +354,8 @@ endef
 
 build/.build-adr-stamp:
 ifdef ENABLE_XAMARIN
-	$(Q) $(MAKE) build -C $(MACCORE_PATH)/tools/apple-doc-reader
-	$(Q) $(MAKE) create -C $(MACCORE_PATH)/tools/apple-doc-reader
+	$(Q) $(MAKE) build -C $(ADR_PATH)
+	$(Q) $(MAKE) create -C $(ADR_PATH)
 endif
 	$(Q) touch $@
 
@@ -439,6 +380,7 @@ endif
 
 $(2)_DOTNET_PLATFORM_ASSEMBLY_DEPENDENCIES = \
 	$($(2)_DOTNET_SOURCES) \
+	$($(2)_DOTNET_BUILD_DIR)/Microsoft.$(1).rsp \
 	$($(2)_DOTNET_BUILD_DIR)/$(3)-generated-sources \
 	$($(2)_DOTNET_BUILD_DIR)/SourceLink.json \
 	$($(2)_DOTNET_BUILD_DIR)/embed-files.rsp \
@@ -450,10 +392,33 @@ $(2)_DOTNET_PLATFORM_ASSEMBLY_DIR_DEPENDENCIES = \
 	$($(2)_DOTNET_BUILD_DIR)/$(4) \
 	$($(2)_DOTNET_BUILD_DIR)/ref \
 
-$($(2)_DOTNET_BUILD_DIR)/$(4)/Microsoft.$(1)%dll $($(2)_DOTNET_BUILD_DIR)/$(4)/Microsoft.$(1)%pdb $$($(2)_$(4)_REF_TARGET) $$($(2)_$(4)_DOC_TARGET): $$($(2)_DOTNET_PLATFORM_ASSEMBLY_DEPENDENCIES) | $$($(2)_DOTNET_PLATFORM_ASSEMBLY_DIR_DEPENDENCIES)
-	$$(call Q_PROF_CSC,dotnet/$(4)-bit) \
-		$(DOTNET_CSC)  \
+ifeq ($(4),64)
+PLATFORM_$(1)_CSPROJ = $(DOTNET_BUILD_DIR)/$(1)/csproj/platform/Microsoft.$(1).csproj
+CSPROJECTS += $$(PLATFORM_$(1)_CSPROJ)
+$$(PLATFORM_$(1)_CSPROJ): $($(2)_DOTNET_BUILD_DIR)/Microsoft.$(1).rsp Makefile $(RSP_TO_CSPROJ) $($(2)_DOTNET_BUILD_DIR)/embed-files.rsp
+	$$(Q) rm -f $$@
+	$$(Q) mkdir -p $$(dir $$@)
+	$$(call Q_PROF_GEN,$(1)) $(RSP_TO_CSPROJ_EXEC) \
+		--rsp $(abspath $($(2)_DOTNET_BUILD_DIR)/Microsoft.$(1).rsp) \
+		--working-directory $(abspath .) \
+		--target-framework $(DOTNET_TFM) \
+		--property=LowerCasePlatform=$(3) \
+		--output $$@.tmp
+	$$(Q) mv $$@.tmp $$@
+endif
+
+rsp:: $($(2)_DOTNET_BUILD_DIR)/Microsoft.$(1).rsp
+
+$($(2)_DOTNET_BUILD_DIR)/Microsoft.$(1).rsp: Makefile frameworks.sources | $($(2)_DOTNET_BUILD_DIR)
+	$$(Q) rm -f $$@
+	$$(Q) echo \
 		$(DOTNET_FLAGS) \
+		/analyzer:$(ROSLYN_GENERATOR_COMMON) \
+		/analyzer:$(ROSLYN_GENERATOR) \
+		/analyzer:$(ROSLYN_ANALYZER) \
+		/generatedfilesout:$($(2)_DOTNET_BUILD_DIR)/generated-sources \
+		$$(if $(V),/reportanalyzer:$(ROSLYN_GENERATOR),) \
+		$$(if $(V),/reportanalyzer:$(ROSLYN_ANALYZER),) \
 		-unsafe \
 		-optimize \
 		$$(ARGS_$(1)) \
@@ -461,18 +426,23 @@ $($(2)_DOTNET_BUILD_DIR)/$(4)/Microsoft.$(1)%dll $($(2)_DOTNET_BUILD_DIR)/$(4)/M
 		$$($(2)_$(4)_REFOUT_ARG) \
 		$$($(2)_$(4)_DOC_ARG) \
 		-sourcelink:$($(2)_DOTNET_BUILD_DIR)/SourceLink.json \
-		@$($(2)_DOTNET_BUILD_DIR)/embed-files.rsp \
+		@$$(abspath $($(2)_DOTNET_BUILD_DIR)/embed-files.rsp) \
 		$$($(2)_DEFINES) \
 		$(ARGS_$(4)) \
 		$$(DOTNET_WARNINGS_TO_FIX) \
-		@$(RSP_DIR)/dotnet/$(3)-defines-dotnet.rsp \
+		@$$(abspath $(RSP_DIR)/dotnet/$(3)-defines-dotnet.rsp) \
 		-res:$($(2)_DOTNET_BUILD_DIR)/ILLink.LinkAttributes.xml \
 		-res:$($(2)_DOTNET_BUILD_DIR)/ILLink.Substitutions.xml \
 		-warnaserror+ \
 		-nullable+ \
 		$$($(2)_DOTNET_SOURCES) \
-		@$($(2)_DOTNET_BUILD_DIR)/$(3)-generated-sources \
+		@$$(abspath $($(2)_DOTNET_BUILD_DIR)/$(3)-generated-sources) \
 		-out:$($(2)_DOTNET_BUILD_DIR)/$(4)/Microsoft.$(1).dll \
+		> $$@.tmp
+	$$(Q) mv $$@.tmp $$@
+
+$($(2)_DOTNET_BUILD_DIR)/$(4)/Microsoft.$(1)%dll $($(2)_DOTNET_BUILD_DIR)/$(4)/Microsoft.$(1)%pdb $$($(2)_$(4)_REF_TARGET) $$($(2)_$(4)_DOC_TARGET): $$($(2)_DOTNET_PLATFORM_ASSEMBLY_DEPENDENCIES) $$(ROSLYN_GENERATOR) $$(ROSLYN_ANALYZER) | $$($(2)_DOTNET_PLATFORM_ASSEMBLY_DIR_DEPENDENCIES)
+	$$(call Q_PROF_CSC,dotnet/$(4)-bit) $(DOTNET_CSC) @$($(2)_DOTNET_BUILD_DIR)/Microsoft.$(1).rsp
 
 dotnet-$(3):: $($(2)_DOTNET_BUILD_DIR)/$(4)/Microsoft.$(1).dll
 
@@ -521,21 +491,53 @@ $(SHARED_PATH)/Delegates.generated.cs: $(SHARED_PATH)/Delegates.cs.t4 $(SHARED_P
 $(COMMON_TARGET_DIRS):
 	$(Q) mkdir -p $@
 
-$(DOTNET_COMPILER): Makefile $(TOP)/Make.config | $(DOTNET_BUILD_DIR)
-	$(Q) echo "#!/bin/zsh -e" > $@
-	$(Q) echo "exec $(DOTNET_CSC) $(DOTNET_FLAGS) \"\$$@\"" >> $@
-	$(Q) chmod +x $@
-
-DOTNET_GENERATE_FRAMEWORKS_CONSTANTS=generate-frameworks-constants/dotnet/bin/Debug/$(DOTNET_TFM)/generate-frameworks-constants.dll
-
-$(DOTNET_GENERATE_FRAMEWORKS_CONSTANTS): $(wildcard generate-frameworks-constants/*.cs*) $(TOP)/tools/common/Frameworks.cs Makefile
-	$(Q) $(DOTNET) build "/bl:$@.binlog" /r generate-frameworks-constants/dotnet/generate-frameworks-constants.csproj $(MSBUILD_VERBOSITY)
-	$(Q) touch $@ # Running 'dotnet build' doesn't always touch the target, so make sure we do here, otherwise make can end up confused.
-
 # This rule means: generate a Constants.<platform>.generated.cs for the frameworks in the variable <PLATFORM>_FRAMEWORKS
-$(DOTNET_BUILD_DIR)/%/Constants.generated.cs: Makefile $(DOTNET_GENERATE_FRAMEWORKS_CONSTANTS) | $(DOTNET_BUILD_DIR)
-	$(Q) $(DOTNET) $(DOTNET_GENERATE_FRAMEWORKS_CONSTANTS) "$*" "$@.tmp"
+include $(TOP)/scripts/generate-frameworks-constants/fragment.mk
+$(DOTNET_BUILD_DIR)/%/Constants.generated.cs: Makefile $(GENERATE_FRAMEWORKS_CONSTANTS) | $(DOTNET_BUILD_DIR)
+	$(Q) $(GENERATE_FRAMEWORKS_CONSTANTS_EXEC) "$*" "$@.tmp"
 	$(Q) mv "$@.tmp" "$@"
+
+# This target builds all the generated project files. It's not really useful by itself,
+# except to validate that the csproj files actually work.
+build-csproj: $(CSPROJECTS) $(foreach platform,$(DOTNET_PLATFORMS),$($(shell echo $(platform) | tr '[:lower:]' '[:upper:]')_DOTNET_PLATFORM_ASSEMBLY_DEPENDENCIES))
+	$(Q) set -e; \
+	for csproj in $(CSPROJECTS); do \
+		echo "Building $$csproj..."; \
+		$(DOTNET) build $$csproj /bl:"$$(dirname $$csproj)/$$(basename -s .csproj $$csproj).binlog" $(DOTNET_BUILD_VERBOSITY); \
+		echo "Built $$csproj successfully."; \
+	done
+
+# This targets runs 'dotnet format' on the generated project files.
+format-csproj: $(CSPROJECTS) $(foreach platform,$(DOTNET_PLATFORMS),$($(shell echo $(platform) | tr '[:lower:]' '[:upper:]')_DOTNET_PLATFORM_ASSEMBLY_DEPENDENCIES))
+	$(Q) set -e; \
+	for csproj in $(CSPROJECTS); do \
+		echo "Formatting $$csproj..."; \
+		$(DOTNET) format whitespace $$csproj; \
+		echo "Formatted $$csproj successfully."; \
+	done
+
+# This builds the project files, enabling C# analyzers
+analyze:
+	$(Q) $(MAKE) -j $(CSPROJECTS) $(foreach platform,$(DOTNET_PLATFORMS),$($(shell echo $(platform) | tr '[:lower:]' '[:upper:]')_DOTNET_PLATFORM_ASSEMBLY_DEPENDENCIES))
+	$(Q) set -e; \
+	for csproj in $(CSPROJECTS); do \
+		echo "Analyzing $$csproj..."; \
+		$(DOTNET) clean $$csproj; \
+		$(DOTNET) build $$csproj /p:ANALYZE_CSPROJ=true /p:TreatWarningsAsErrors=false /p:DOTNET_ANALYZERS_DIR=$(DOTNET_ANALYZERS_DIR) /bl:$$csproj-analyze.binlog; \
+		echo "Analyzed $$csproj successfully."; \
+	done
+
+# This target builds the generated project files with StyleCop enabled.
+stylecop-csproj: $(CSPROJECTS) $(foreach platform,$(DOTNET_PLATFORMS),$($(shell echo $(platform) | tr '[:lower:]' '[:upper:]')_DOTNET_PLATFORM_ASSEMBLY_DEPENDENCIES))
+	$(Q) set -e; \
+	for csproj in $(CSPROJECTS); do \
+		echo "Building $$csproj with StyleCop enabled..."; \
+		$(DOTNET) build $$csproj $(DOTNET_BUILD_VERBOSITY) /p:EnableStyleCop=true; \
+		echo "Built $$csproj with StyleCop successfully."; \
+	done
+
+csproj:: $(CSPROJECTS)
+ALL_TARGETS += $(CSPROJECTS)
 
 install-local:: $(INSTALL_TARGETS)
 all-local:: $(ALL_TARGETS)
@@ -543,23 +545,8 @@ all-local:: $(ALL_TARGETS)
 $(DOTNET_TARGETS_DIRS):
 	$(Q) mkdir -p $@
 
-define DotNetProjectFiles
-$(DOTNET_BUILD_DIR)/projects/$(1)/$(1).csproj: dotnet.tmpl.csproj Makefile $$(wildcard $(CURDIR)/*.sources)
-	@mkdir -p $$(dir $$@)
-	@sed \
-		-e 's*%DOTNET_TFM%*$(DOTNET_TFM)*' \
-		-e 's*%PLATFORM%*$(1)*' \
-		-e 's*<!--%FILES%-->*$$(foreach file,$$($(2)_DOTNET_SOURCES),<Compile Include="../../../../$$(file)" Link="sources/$$(file)" />)*' \
-		-e 's*<!--%APIS%-->*$$(foreach file,$$($(2)_DOTNET_APIS),<None Include="../../../../$$(file)" Link="apis/$$(file)" />)*' \
-		$$< | xmllint --format - > $$@
-PROJECT_FILES += $(DOTNET_BUILD_DIR)/projects/$(1)/$(1).csproj
-endef
-$(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call DotNetProjectFiles,$(platform),$(shell echo $(platform) | tr '[:lower:]' '[:upper:]'))))
-
 dotnet: $(DOTNET_TARGETS)
 all-local:: $(DOTNET_TARGETS)
-
-project-files: $(PROJECT_FILES)
 
 $(TOP)/tools/common/SdkVersions.cs: $(TOP)/tools/common/SdkVersions.in.cs
 	@$(MAKE) -C $(TOP)/tools/mtouch ../common/SdkVersions.cs
@@ -571,12 +558,6 @@ MinimumVersions.cs: MinimumVersions.cs.in Makefile $(TOP)/Make.config
 		-e 's/@DOTNET_MIN_TVOS_SDK_VERSION@/$(DOTNET_MIN_TVOS_SDK_VERSION)/' \
 		-e 's/@DOTNET_MIN_MACOS_SDK_VERSION@/$(DOTNET_MIN_MACOS_SDK_VERSION)/' \
 		-e 's/@DOTNET_MIN_MACCATALYST_SDK_VERSION@/$(DOTNET_MIN_MACCATALYST_SDK_VERSION)/g' \
-		\
-		-e 's/@MIN_IOS_SDK_VERSION@/$(subst .,$(COMMA) ,$(MIN_IOS_SDK_VERSION))/g' \
-		-e 's/@MIN_MACOS_SDK_VERSION@/$(subst .,$(COMMA) ,$(MIN_MACOS_SDK_VERSION))/g' \
-		-e 's/@MIN_WATCHOS_SDK_VERSION@/$(subst .,$(COMMA) ,$(MIN_WATCHOS_SDK_VERSION))/g' \
-		-e 's/@MIN_TVOS_SDK_VERSION@/$(subst .,$(COMMA) ,$(MIN_TVOS_SDK_VERSION))/g' \
-		-e 's/@MIN_MACCATALYST_SDK_VERSION@/$(subst .,$(COMMA) ,$(MIN_MACCATALYST_SDK_VERSION))/g' \
 		$< > $@
 
 # Using .SECONDARY can cause make to go into an infinite loop.

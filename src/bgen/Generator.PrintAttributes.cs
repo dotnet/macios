@@ -1,5 +1,3 @@
-#if NET
-
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -15,7 +13,7 @@ public partial class Generator {
 		List<AvailabilityBaseAttribute> memberAvailability = AttributeManager.GetCustomAttributes<AvailabilityBaseAttribute> (mi).ToList ();
 
 		// Due to differences between Xamarin and NET6 availability attributes, we have to synthesize many duplicates for NET6
-		// See https://github.com/xamarin/xamarin-macios/issues/10170 for details
+		// See https://github.com/dotnet/macios/issues/10170 for details
 		if (context is null)
 			context = FindContainingContext (mi);
 		// Attributes on the _target_ context, the class itself or the target of the protocol inlining
@@ -84,18 +82,3 @@ public partial class Generator {
 		return memberAvailability.ToArray ();
 	}
 }
-
-#else
-
-using System.Linq;
-using System.Reflection;
-using ObjCRuntime;
-
-#nullable enable
-
-public partial class Generator {
-
-	AvailabilityBaseAttribute [] GetPlatformAttributesToPrint (MemberInfo mi, MemberInfo? context, MemberInfo? inlinedType)
-		=> AttributeManager.GetCustomAttributes<AvailabilityBaseAttribute> (mi).ToArray ();
-}
-#endif

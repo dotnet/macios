@@ -10,7 +10,7 @@ using Xamarin.Messaging.Build.Client;
 using Xamarin.Utils;
 
 namespace Xamarin.MacDev.Tasks {
-	public class ScnTool : XamarinParallelTask {
+	public class ScnTool : XamarinParallelTask, IHasProjectDir, IHasResourcePrefix {
 		#region Inputs
 
 		[Required]
@@ -76,12 +76,12 @@ namespace Xamarin.MacDev.Tasks {
 			if (ShouldExecuteRemotely ())
 				return new TaskRunner (SessionId, BuildEngine4).RunAsync (this).Result;
 
-			var prefixes = BundleResource.SplitResourcePrefixes (ResourcePrefix);
+			var colladaAssets = CollectBundleResources.ComputeLogicalNameAndDetectDuplicates (this, ColladaAssets, ProjectDir, ResourcePrefix, "Collada");
 			var listOfArguments = new List<(IList<string> Arguments, ITaskItem Input)> ();
 			var bundleResources = new List<ITaskItem> ();
-			foreach (var asset in ColladaAssets) {
+			foreach (var asset in colladaAssets) {
 				var inputScene = asset.ItemSpec;
-				var logicalName = BundleResource.GetLogicalName (ProjectDir, prefixes, asset, !string.IsNullOrEmpty (SessionId));
+				var logicalName = asset.GetMetadata ("LogicalName");
 				var outputScene = Path.Combine (DeviceSpecificIntermediateOutputPath, logicalName);
 				var args = GenerateCommandLineCommands (inputScene, outputScene);
 				listOfArguments.Add (new (args, asset));

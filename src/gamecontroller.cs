@@ -12,11 +12,9 @@
 using System;
 
 using CoreFoundation;
+using CoreGraphics;
 using Foundation;
 using ObjCRuntime;
-#if !NET
-using OpenTK;
-#endif
 #if MONOMAC
 using AppKit;
 using UIViewController = AppKit.NSViewController;
@@ -31,11 +29,17 @@ using UIKit;
 using BezierPath = UIKit.UIBezierPath;
 #endif
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace GameController {
+
+	[Flags]
+	[Native]
+	public enum GCPhysicalInputSourceDirection : ulong {
+		NotApplicable = 0x0,
+		Up = (1uL << 0),
+		Right = (1uL << 1),
+		Down = (1uL << 2),
+		Left = (1uL << 3),
+	}
 
 	/// <summary>The base class for input elements of a game controller.</summary>
 	///     
@@ -47,10 +51,18 @@ namespace GameController {
 
 		// NOTE: ArgumentSemantic.Weak if ARC, ArgumentSemantic.Assign otherwise;
 		// currently MonoTouch is not ARC, neither is Xammac, so go with assign.
+		/// <summary>The <see cref="GameController.GCControllerElement" /> that <c>this</c> is a part of.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>If <c>this</c> is an element of another <see cref="GameController.GCControllerElement" />, this will hold the "parent" <see cref="GameController.GCControllerElement" />. (The D-Pad can be read as either a pair of <see cref="GameController.GCControllerAxisInput" /> elements or as four <see cref="GameController.GCControllerButtonInput" /> elements.)</para>
+		///         </remarks>
 		[NullAllowed]
 		[Export ("collection", ArgumentSemantic.Assign)]
 		GCControllerElement Collection { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("analog")]
 		bool IsAnalog { [Bind ("isAnalog")] get; }
 
@@ -90,10 +102,10 @@ namespace GameController {
 		GCSystemGestureState PreferredSystemGestureState { get; set; }
 	}
 
-	/// <summary>The delegate used as the value-changed handler for <see cref="P:GameController.GCControllerAxisInput.ValueChangedHandler" />.</summary>
+	/// <summary>The delegate used as the value-changed handler for <see cref="GameController.GCControllerAxisInput.ValueChangedHandler" />.</summary>
 	delegate void GCControllerAxisValueChangedHandler (GCControllerAxisInput axis, float /* float, not CGFloat */ value);
 
-	/// <summary>A <see cref="T:GameController.GCControllerElement" /> representing a joystick.</summary>
+	/// <summary>A <see cref="GameController.GCControllerElement" /> representing a joystick.</summary>
 	///     
 	///     
 	///     
@@ -103,10 +115,16 @@ namespace GameController {
 	[DisableDefaultCtor] // return nil handle -> only exposed as getter
 	partial interface GCControllerAxisInput {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("valueChangedHandler", ArgumentSemantic.Copy)]
 		GCControllerAxisValueChangedHandler ValueChangedHandler { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("value")]
 		float Value {  /* float, not CGFloat */
 			get;
@@ -117,28 +135,30 @@ namespace GameController {
 		}
 	}
 
-	/// <summary>Handler that can be passed to the <see cref="M:GameController.GCControllerButtonInput.SetPressedChangedHandler(GameController.GCControllerButtonValueChanged)" /> method to respond to changes to button states.</summary>
+	/// <summary>Handler that can be passed to the <see cref="GameController.GCControllerButtonInput.SetPressedChangedHandler(GameController.GCControllerButtonValueChanged)" /> method to respond to changes to button states.</summary>
 	delegate void GCControllerButtonValueChanged (GCControllerButtonInput button, float /* float, not CGFloat */ buttonValue, bool pressed);
 	delegate void GCControllerButtonTouchedChanged (GCControllerButtonInput button, float value, bool pressed, bool touched);
 
-	/// <summary>A <see cref="T:GameController.GCControllerElement" /> representing a game-controller button.</summary>
+	/// <summary>A <see cref="GameController.GCControllerElement" /> representing a game-controller button.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GameController/Reference/GCControllerButtonInput_Ref/index.html">Apple documentation for <c>GCControllerButtonInput</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (GCControllerElement))]
 	[DisableDefaultCtor] // return nil handle -> only exposed as getter
 	partial interface GCControllerButtonInput {
-
-#if !NET
-		[Obsolete ("Use the 'ValueChangedHandler' property.")]
-		[Wrap ("ValueChangedHandler = handler;", IsVirtual = true)]
-		void SetValueChangedHandler (GCControllerButtonValueChanged handler);
-#endif
-
+		/// <summary>Handler that is called when the button pressure changes.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("valueChangedHandler", ArgumentSemantic.Copy)]
 		GCControllerButtonValueChanged ValueChangedHandler { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("value")]
 		float Value {  /* float, not CGFloat */
 			get;
@@ -148,15 +168,18 @@ namespace GameController {
 			set;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("pressed")]
 		bool IsPressed { [Bind ("isPressed")] get; }
 
-#if !NET
-		[Obsolete ("Use the 'PressedChangedHandler' property.")]
-		[Wrap ("PressedChangedHandler = handler;", IsVirtual = true)]
-		void SetPressedChangedHandler (GCControllerButtonValueChanged handler);
-#endif
-
+		/// <summary>Handler that is called when the button press state changes.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[NullAllowed]
 		[Export ("pressedChangedHandler", ArgumentSemantic.Copy)]
@@ -173,10 +196,10 @@ namespace GameController {
 		bool Touched { [Bind ("isTouched")] get; }
 	}
 
-	/// <summary>The delegate used as the value-changed handler for <see cref="P:GameController.GCControllerDirectionPad.ValueChangedHandler" />.</summary>
+	/// <summary>The delegate used as the value-changed handler for <see cref="GameController.GCControllerDirectionPad.ValueChangedHandler" />.</summary>
 	delegate void GCControllerDirectionPadValueChangedHandler (GCControllerDirectionPad dpad, float /* float, not CGFloat */ xValue, float /* float, not CGFloat */ yValue);
 
-	/// <summary>A <see cref="T:GameController.GCControllerElement" /> representing a direction-pad.</summary>
+	/// <summary>A <see cref="GameController.GCControllerElement" /> representing a direction-pad.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GameController/Reference/GCControllerDirectionPad_Ref/index.html">Apple documentation for <c>GCControllerDirectionPad</c></related>
 	[MacCatalyst (13, 1)]
@@ -184,25 +207,46 @@ namespace GameController {
 	[DisableDefaultCtor] // return nil handle -> only exposed as getter
 	partial interface GCControllerDirectionPad {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("valueChangedHandler", ArgumentSemantic.Copy)]
 		GCControllerDirectionPadValueChangedHandler ValueChangedHandler { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("xAxis")]
 		GCControllerAxisInput XAxis { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("yAxis")]
 		GCControllerAxisInput YAxis { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("up")]
 		GCControllerButtonInput Up { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("down")]
 		GCControllerButtonInput Down { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("left")]
 		GCControllerButtonInput Left { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("right")]
 		GCControllerButtonInput Right { get; }
 
@@ -213,7 +257,7 @@ namespace GameController {
 		void SetValue (float xAxis, float yAxis);
 	}
 
-	/// <summary>The delegate used as the value-changed handler for <see cref="P:GameController.GCGamepad.ValueChangedHandler" />.</summary>
+	/// <summary>The delegate used as the value-changed handler for <see cref="GameController.GCGamepad.ValueChangedHandler" />.</summary>
 	delegate void GCGamepadValueChangedHandler (GCGamepad gamepad, GCControllerElement element);
 
 	/// <summary>A gamepad with two shoulder buttons, a D-Pad, and a directional button array..</summary>
@@ -228,34 +272,64 @@ namespace GameController {
 	[DisableDefaultCtor] // return nil handle -> only exposed as getter
 	partial interface GCGamepad {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("controller", ArgumentSemantic.Assign)]
 		GCController Controller { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("valueChangedHandler", ArgumentSemantic.Copy)]
 		GCGamepadValueChangedHandler ValueChangedHandler { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("saveSnapshot")]
 		GCGamepadSnapshot SaveSnapshot { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("dpad")]
 		GCControllerDirectionPad DPad { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("buttonA")]
 		GCControllerButtonInput ButtonA { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("buttonB")]
 		GCControllerButtonInput ButtonB { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("buttonX")]
 		GCControllerButtonInput ButtonX { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("buttonY")]
 		GCControllerButtonInput ButtonY { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>A gamepad with two shoulder buttons, a D-Pad, and a directional button array.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("leftShoulder")]
 		GCControllerButtonInput LeftShoulder { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("rightShoulder")]
 		GCControllerButtonInput RightShoulder { get; }
 	}
@@ -272,22 +346,32 @@ namespace GameController {
 	[DisableDefaultCtor]
 	partial interface GCGamepadSnapshot {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("snapshotData", ArgumentSemantic.Copy)]
 		NSData SnapshotData { get; set; }
 
+		/// <param name="data">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithSnapshotData:")]
 		NativeHandle Constructor (NSData data);
 
+		/// <param name="controller">To be added.</param>
+		/// <param name="data">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithController:snapshotData:")]
 		NativeHandle Constructor (GCController controller, NSData data);
 	}
 
-	/// <summary>The delegate used as the value-changed handler for <see cref="P:GameController.GCExtendedGamepad.ValueChangedHandler" />.</summary>
+	/// <summary>The delegate used as the value-changed handler for <see cref="GameController.GCExtendedGamepad.ValueChangedHandler" />.</summary>
 	delegate void GCExtendedGamepadValueChangedHandler (GCExtendedGamepad gamepad, GCControllerElement element);
 
 	/// <summary>A gamepad with two shoulder buttons, two triggers, two thumbsticks, a D-Pad, and a directional button array.</summary>
 	///     <remarks>
-	///       <para>Application developers should not instantiate this class. Rather, they should use the instance read from the <see cref="P:GameController.GCController.ExtendedGamepad" /> property.</para>
+	///       <para>Application developers should not instantiate this class. Rather, they should use the instance read from the <see cref="GameController.GCController.ExtendedGamepad" /> property.</para>
 	///     </remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GameController/Reference/GCExtendedGamePad_Ref/index.html">Apple documentation for <c>GCExtendedGamepad</c></related>
 	[MacCatalyst (13, 1)]
@@ -295,13 +379,23 @@ namespace GameController {
 	[DisableDefaultCtor] // return nil handle -> only exposed as getter
 	partial interface GCExtendedGamepad {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("controller", ArgumentSemantic.Assign)]
+		[NullAllowed]
 		GCController Controller { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("valueChangedHandler", ArgumentSemantic.Copy)]
 		GCExtendedGamepadValueChangedHandler ValueChangedHandler { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use 'GCController.Capture()' instead.")]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'GCController.Capture()' instead.")]
 		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use 'GCController.Capture()' instead.")]
@@ -309,43 +403,82 @@ namespace GameController {
 		[Export ("saveSnapshot")]
 		GCExtendedGamepadSnapshot SaveSnapshot ();
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("dpad")]
 		GCControllerDirectionPad DPad { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("buttonA")]
 		GCControllerButtonInput ButtonA { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("buttonB")]
 		GCControllerButtonInput ButtonB { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("buttonX")]
 		GCControllerButtonInput ButtonX { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("buttonY")]
 		GCControllerButtonInput ButtonY { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("leftThumbstick")]
 		GCControllerDirectionPad LeftThumbstick { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("rightThumbstick")]
 		GCControllerDirectionPad RightThumbstick { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("leftShoulder")]
 		GCControllerButtonInput LeftShoulder { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("rightShoulder")]
 		GCControllerButtonInput RightShoulder { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("leftTrigger")]
 		GCControllerButtonInput LeftTrigger { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("rightTrigger")]
 		GCControllerButtonInput RightTrigger { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("leftThumbstickButton")]
 		GCControllerButtonInput LeftThumbstickButton { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("rightThumbstickButton")]
 		GCControllerButtonInput RightThumbstickButton { get; }
@@ -384,15 +517,28 @@ namespace GameController {
 	[DisableDefaultCtor]
 	partial interface GCExtendedGamepadSnapshot {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("snapshotData", ArgumentSemantic.Copy)]
 		NSData SnapshotData { get; set; }
 
+		/// <param name="data">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithSnapshotData:")]
 		NativeHandle Constructor (NSData data);
 
+		/// <param name="controller">To be added.</param>
+		/// <param name="data">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithController:snapshotData:")]
 		NativeHandle Constructor (GCController controller, NSData data);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use 'GCController.GetExtendedGamepadController()' instead.")]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'GCController.GetExtendedGamepadController()' instead.")]
 		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use 'GCController.GetExtendedGamepadController()' instead.")]
@@ -409,6 +555,9 @@ namespace GameController {
 	[BaseType (typeof (NSObject))]
 	partial interface GCController : GCDevice {
 
+		/// <summary>Gets or sets a handler to run when the pause button is pressed.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use the Menu button found on the controller's profile, if it exists.")]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use the Menu button found on the controller's profile, if it exists.")]
 		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use the Menu button found on the controller's profile, if it exists.")]
@@ -417,21 +566,29 @@ namespace GameController {
 		[Export ("controllerPausedHandler", ArgumentSemantic.Copy)]
 		Action<GCController> ControllerPausedHandler { get; set; }
 
+		/// <summary>Gets the manufacturer name for the controller.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("vendorName", ArgumentSemantic.Copy)]
 		new string VendorName { get; }
 
+		/// <summary>Gets a Boolean value that tells whether the controller is attached via a cabled or wireless connection.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("attachedToDevice")]
 		bool AttachedToDevice { [Bind ("isAttachedToDevice")] get; }
 
+		/// <summary>Gets or sets the player index for the player who is assigned to the controller.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("playerIndex")]
-#if NET
-		// enum only added in iOS9 / OSX 10.11 - but with compatible values
 		GCControllerPlayerIndex PlayerIndex { get; set; }
-#else
-		nint PlayerIndex { get; set; }
-#endif
 
+		/// <summary>If not null, the <see cref="GameController.GCController" /> is a standard controller.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		///         <altmember cref="GameController.GCController.ExtendedGamepad" />
 		[Deprecated (PlatformName.MacOSX, 10, 12)]
 		[Deprecated (PlatformName.iOS, 10, 0)]
 		[Deprecated (PlatformName.TvOS, 10, 0)]
@@ -440,35 +597,71 @@ namespace GameController {
 		[Export ("gamepad", ArgumentSemantic.Retain)]
 		GCGamepad Gamepad { get; }
 
+		/// <summary>If not null, the <see cref="GameController.GCController" /> is an extended controller.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		///         <altmember cref="GameController.GCController.Gamepad" />
 		[NullAllowed]
 		[Export ("extendedGamepad", ArgumentSemantic.Retain)]
 		GCExtendedGamepad ExtendedGamepad { get; }
 
+		/// <summary>Gets the micro gamepad for the controller.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("microGamepad", ArgumentSemantic.Retain)]
 		GCMicroGamepad MicroGamepad { get; }
 
+		/// <summary>Gets an array that contains all of the connected controllers.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static, Export ("controllers")]
 		GCController [] Controllers { get; }
 
+		/// <param name="completionHandler">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Starts discovery of nearby wireless controllers, and runs the provided completion handler when all discoverable controllers are discovered.</summary>
+		///         <remarks>To be added.</remarks>
 		[Static, Export ("startWirelessControllerDiscoveryWithCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Starts discovery of nearby wireless controllers, and runs the provided completion handler when all discoverable controllers are discovered.</summary>
+			<returns>A task that represents the asynchronous StartWirelessControllerDiscovery operation</returns>
+			<remarks>
+			          <para copied="true">The StartWirelessControllerDiscoveryAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void StartWirelessControllerDiscovery ([NullAllowed] Action completionHandler);
 
+		/// <summary>Stops discovering nearby wireless controllers.</summary>
+		///         <remarks>To be added.</remarks>
 		[Static, Export ("stopWirelessControllerDiscovery")]
 		void StopWirelessControllerDiscovery ();
 
+		/// <include file="../docs/api/GameController/GCController.xml" path="/Documentation/Docs[@DocId='P:GameController.GCController.DidConnectNotification']/*" />
 		[Notification, Field ("GCControllerDidConnectNotification")]
 		NSString DidConnectNotification { get; }
 
+		/// <include file="../docs/api/GameController/GCController.xml" path="/Documentation/Docs[@DocId='P:GameController.GCController.DidDisconnectNotification']/*" />
 		[Notification, Field ("GCControllerDidDisconnectNotification")]
 		NSString DidDisconnectNotification { get; }
 
+		/// <summary>Gets the object that contains motion data, if the controller supports motion.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[NullAllowed]
 		[Export ("motion", ArgumentSemantic.Retain)]
 		GCMotion Motion { get; }
 
+		/// <summary>Gets or sets the dispatch queue for game controller input changes.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("handlerQueue", ArgumentSemantic.Retain)]
 		new DispatchQueue HandlerQueue { get; set; }
@@ -537,6 +730,10 @@ namespace GameController {
 		[Static]
 		[Export ("shouldMonitorBackgroundEvents")]
 		bool ShouldMonitorBackgroundEvents { get; set; }
+
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[Export ("input", ArgumentSemantic.Strong)]
+		GCControllerLiveInput Input { get; }
 	}
 
 	/// <summary>Holds position data of a game controller.</summary>
@@ -547,50 +744,52 @@ namespace GameController {
 	[DisableDefaultCtor] // access thru GCController.Motion - returns a nil Handle
 	partial interface GCMotion {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("controller", ArgumentSemantic.Assign)]
 		GCController Controller { get; }
 
-#if !NET
-		[Obsolete ("Use the 'ValueChangedHandler' property.")]
-		[Wrap ("ValueChangedHandler = handler;", IsVirtual = true)]
-		void SetValueChangedHandler (Action<GCMotion> handler);
-#endif
-
+		/// <summary>Handler that is called when a value changes.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("valueChangedHandler", ArgumentSemantic.Copy)]
 		Action<GCMotion> ValueChangedHandler { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("gravity", ArgumentSemantic.Assign)]
-#if NET
 		GCAcceleration Gravity { get; }
-#else
-		Vector3d Gravity { get; }
-#endif
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("userAcceleration", ArgumentSemantic.Assign)]
-#if NET
 		GCAcceleration UserAcceleration { get; }
-#else
-		Vector3d UserAcceleration { get; }
-#endif
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("attitude", ArgumentSemantic.Assign)]
-#if NET
 		GCQuaternion Attitude { get; }
-#else
-		Quaterniond Attitude { get; }
-#endif
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("rotationRate", ArgumentSemantic.Assign)]
-#if NET
 		GCRotationRate RotationRate { get; }
-#else
-		Vector3d RotationRate { get; }
-#endif
 
+		/// <summary>Gets a Boolean value that tells whether the controller  can return attitude and rotation data.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.MacOSX, 11, 0, message: "Use 'HasAttitude' and 'HasRotationRate' instead.")]
 		[Deprecated (PlatformName.iOS, 14, 0, message: "Use 'HasAttitude' and 'HasRotationRate' instead.")]
 		[Deprecated (PlatformName.TvOS, 14, 0, message: "Use 'HasAttitude' and 'HasRotationRate' instead.")]
@@ -673,12 +872,27 @@ namespace GameController {
 	[BaseType (typeof (GCPhysicalInputProfile))]
 	[DisableDefaultCtor]
 	interface GCMicroGamepad {
+		/// <summary>Gets the controller for this profile.</summary>
+		///         <value>The controller for this profile.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("controller", ArgumentSemantic.Assign)]
+		[NullAllowed]
 		GCController Controller { get; }
 
+		/// <summary>Gets or sets a handler that is called whenever the state of any controller element changes</summary>
+		///         <value>
+		///           <para>A handler that is called whenever any immediate child element changes.</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>
+		///           <para>This handler is called once for each element change. It is only called for directly attached elements.</para>
+		///         </remarks>
 		[NullAllowed, Export ("valueChangedHandler", ArgumentSemantic.Copy)]
 		GCMicroGamepadValueChangedHandler ValueChangedHandler { get; set; }
 
+		/// <summary>Gest the current state of the controller.</summary>
+		///         <value>The current state of the controller.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use 'GCController.Capture()' instead.")]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'GCController.Capture()' instead.")]
 		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use 'GCController.Capture()' instead.")]
@@ -686,18 +900,34 @@ namespace GameController {
 		[Export ("saveSnapshot")]
 		GCMicroGamepadSnapshot SaveSnapshot { get; }
 
+		/// <summary>Gets the D-pad.</summary>
+		///         <value>The D-pad.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("dpad", ArgumentSemantic.Retain)]
 		GCControllerDirectionPad Dpad { get; }
 
+		/// <summary>Gets the <c>A</c> button.</summary>
+		///         <value>The <c>A</c> button.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("buttonA", ArgumentSemantic.Retain)]
 		GCControllerButtonInput ButtonA { get; }
 
+		/// <summary>Gets the <c>X</c> button.</summary>
+		///         <value>The <c>X</c> button.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("buttonX", ArgumentSemantic.Retain)]
 		GCControllerButtonInput ButtonX { get; }
 
+		/// <summary>Gets or sets a value that controls whether D-pad values are measured from the physical center of the touchpad or from the point that the user first touches. </summary>
+		///         <value>A value that controls whether D-pad values are measured from the physical center of the touchpad or from the point that the user first touches. The default is <see langword="false" />, to indicate that inputs are measured from the place that the user first touches.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("reportsAbsoluteDpadValues")]
 		bool ReportsAbsoluteDpadValues { get; set; }
 
+		/// <summary>Gets or sets a value that controls whether the D-pad changes between portrait and landscape mode on the controller as its orientation changes.</summary>
+		///         <value>
+		///           <see langword="true" /> if the D-pad matches the device's orientation. Otherwise, <see langword="false" />. The default is <see langword="false" />.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("allowsRotation")]
 		bool AllowsRotation { get; set; }
 
@@ -722,15 +952,28 @@ namespace GameController {
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'GCController.Capture()' instead.")]
 	[BaseType (typeof (GCMicroGamepad))]
 	interface GCMicroGamepadSnapshot {
+		/// <summary>Gets or sets the current snapshot data.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("snapshotData", ArgumentSemantic.Copy)]
 		NSData SnapshotData { get; set; }
 
+		/// <param name="data">The data with which to initialize the snapshot.</param>
+		/// <summary>Creates a new snapshot by using the data from another snapshot.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithSnapshotData:")]
 		NativeHandle Constructor (NSData data);
 
+		/// <param name="controller">The controller from which to get snapshots.</param>
+		/// <param name="data">The data with which to initialize the snapshot.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithController:snapshotData:")]
 		NativeHandle Constructor (GCController controller, NSData data);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use 'GCController.GetMicroGamepadController()' instead.")]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'GCController.GetMicroGamepadController()' instead.")]
 		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use 'GCControler.GetMicroGamepadController()' instead.")]
@@ -748,10 +991,23 @@ namespace GameController {
 	interface GCEventViewController {
 
 		// inlined ctor
+		/// <param name="nibName">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="bundle">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithNibName:bundle:")]
 		[PostGet ("NibBundle")]
 		NativeHandle Constructor ([NullAllowed] string nibName, [NullAllowed] NSBundle bundle);
 
+		/// <summary>Gets or sets a value that controls whether events are delivered through the responder chain.</summary>
+		///         <value>A value that controls whether events are delivered through the responder chain.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("controllerUserInteractionEnabled")]
 		bool ControllerUserInteractionEnabled { get; set; }
 	}
@@ -825,7 +1081,6 @@ namespace GameController {
 		[Export ("supportedLocalities", ArgumentSemantic.Strong)]
 		NSSet<NSString> SupportedLocalities { get; }
 
-		[NoMac] // TODO: Remove [NoMac] when CoreHaptics can compile on Mac OSX: https://github.com/xamarin/maccore/issues/2261
 		[MacCatalyst (13, 1)]
 		[Export ("createEngineWithLocality:")]
 		[return: NullAllowed]
@@ -1074,7 +1329,7 @@ namespace GameController {
 		[Export ("mappedPhysicalInputNamesForElementAlias:")]
 		NSSet<NSString> GetMappedPhysicalInputNames (string elementAlias);
 
-		[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoWatch]
+		[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[NullAllowed, Export ("valueDidChangeHandler", ArgumentSemantic.Copy)]
 		Action<GCPhysicalInputProfile, GCControllerElement> ValueDidChangeHandler { get; set; }
 	}
@@ -1163,33 +1418,41 @@ namespace GameController {
 		[Field ("GCInputButtonShare")]
 		NSString ButtonShare { get; }
 
-		[NoiOS, Mac (13, 0), NoWatch, NoTV, MacCatalyst (16, 0)]
+		[NoiOS, Mac (13, 0), NoTV, MacCatalyst (16, 0)]
 		[Field ("GCInputLeftPaddle")]
 		NSString /* IGCButtonElementName */ LeftPaddle { get; }
 
-		[NoiOS, Mac (13, 0), NoWatch, NoTV, MacCatalyst (16, 0)]
+		[NoiOS, Mac (13, 0), NoTV, MacCatalyst (16, 0)]
 		[Field ("GCInputPedalAccelerator")]
 		NSString /* IGCButtonElementName */ PedalAccelerator { get; }
 
-		[NoiOS, Mac (13, 0), NoWatch, NoTV, MacCatalyst (16, 0)]
+		[NoiOS, Mac (13, 0), NoTV, MacCatalyst (16, 0)]
 		[Field ("GCInputPedalBrake")]
 		NSString /* IGCButtonElementName */ PedalBrake { get; }
 
-		[NoiOS, Mac (13, 0), NoWatch, NoTV, MacCatalyst (16, 0)]
+		[NoiOS, Mac (13, 0), NoTV, MacCatalyst (16, 0)]
 		[Field ("GCInputPedalClutch")]
 		NSString /* IGCButtonElementName */ PedalClutch { get; }
 
-		[NoiOS, Mac (13, 0), NoWatch, NoTV, MacCatalyst (16, 0)]
+		[NoiOS, Mac (13, 0), NoTV, MacCatalyst (16, 0)]
 		[Field ("GCInputRightPaddle")]
 		NSString /* IGCButtonElementName */ RightPaddle { get; }
 
-		[NoiOS, Mac (13, 0), NoWatch, NoTV, MacCatalyst (16, 0)]
+		[NoiOS, Mac (13, 0), NoTV, MacCatalyst (16, 0)]
 		[Field ("GCInputShifter")]
 		NSString /* IGCPhysicalInputElementName */ Shifter { get; }
 
-		[NoiOS, Mac (13, 0), NoWatch, NoTV, MacCatalyst (16, 0)]
+		[NoiOS, Mac (13, 0), NoTV, MacCatalyst (16, 0)]
 		[Field ("GCInputSteeringWheel")]
 		NSString /* IGCAxisElementName */ SteeringWheel { get; }
+
+		[TV (17, 4), Mac (14, 4), iOS (17, 4), MacCatalyst (17, 4)]
+		[Field ("GCInputLeftBumper")]
+		NSString /* GCButtonElementName */ LeftBumper { get; }
+
+		[TV (17, 4), Mac (14, 4), iOS (17, 4), MacCatalyst (17, 4)]
+		[Field ("GCInputRightBumper")]
+		NSString /* GCButtonElementName */ RightBumper { get; }
 	}
 
 	[TV (14, 0), iOS (14, 0)]
@@ -1211,6 +1474,125 @@ namespace GameController {
 		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 		[NullAllowed, Export ("buttonShare")]
 		GCControllerButtonInput ButtonShare { get; }
+	}
+
+	[NoiOS, Mac (13, 0), NoTV, MacCatalyst (16, 0)]
+	public enum GCInputElementName {
+		[Field ("GCInputShifter")]
+		Shifter,
+	}
+
+	[TV (14, 0), iOS (14, 0), MacCatalyst (14, 0)]
+	public enum GCInputButtonName {
+		[Field ("GCInputButtonA")]
+		ButtonA,
+
+		[Field ("GCInputButtonB")]
+		ButtonB,
+
+		[Field ("GCInputButtonX")]
+		ButtonX,
+
+		[Field ("GCInputButtonY")]
+		ButtonY,
+
+		[Field ("GCInputLeftThumbstickButton")]
+		LeftThumbstickButton,
+
+		[Field ("GCInputRightThumbstickButton")]
+		RightThumbstickButton,
+
+		[Field ("GCInputLeftShoulder")]
+		LeftShoulder,
+
+		[Field ("GCInputRightShoulder")]
+		RightShoulder,
+
+		[TV (17, 4), Mac (14, 4), iOS (17, 4), MacCatalyst (17, 4)]
+		[Field ("GCInputLeftBumper")]
+		LeftBumper,
+
+		[TV (17, 4), Mac (14, 4), iOS (17, 4), MacCatalyst (17, 4)]
+		[Field ("GCInputRightBumper")]
+		RightBumper,
+
+		[Field ("GCInputLeftTrigger")]
+		LeftTrigger,
+
+		[Field ("GCInputRightTrigger")]
+		RightTrigger,
+
+		[Field ("GCInputButtonHome")]
+		ButtonHome,
+
+		[Field ("GCInputButtonMenu")]
+		ButtonMenu,
+
+		[Field ("GCInputButtonOptions")]
+		ButtonOptions,
+
+		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[Field ("GCInputButtonShare")]
+		ButtonShare,
+
+		[Field ("GCInputXboxPaddleOne")]
+		PaddleOne,
+
+		[Field ("GCInputXboxPaddleTwo")]
+		PaddleTwo,
+
+		[Field ("GCInputXboxPaddleThree")]
+		PaddleThree,
+
+		[Field ("GCInputXboxPaddleFour")]
+		PaddleFour,
+
+		[Field ("GCInputDualShockTouchpadButton")]
+		DualShockTouchpadButton,
+
+		[NoiOS, Mac (13, 0), NoTV, MacCatalyst (16, 0)]
+		[Field ("GCInputLeftPaddle")]
+		LeftPaddle,
+
+		[NoiOS, Mac (13, 0), NoTV, MacCatalyst (16, 0)]
+		[Field ("GCInputPedalAccelerator")]
+		PedalAccelerator,
+
+		[NoiOS, Mac (13, 0), NoTV, MacCatalyst (16, 0)]
+		[Field ("GCInputPedalBrake")]
+		PedalBrake,
+
+		[NoiOS, Mac (13, 0), NoTV, MacCatalyst (16, 0)]
+		[Field ("GCInputPedalClutch")]
+		PedalClutch,
+
+		[NoiOS, Mac (13, 0), NoTV, MacCatalyst (16, 0)]
+		[Field ("GCInputRightPaddle")]
+		RightPaddle,
+	}
+
+	[NoiOS, Mac (13, 0), NoTV, MacCatalyst (16, 0)]
+	public enum GCInputAxisName {
+		[Field ("GCInputSteeringWheel")]
+		SteeringWheel,
+	}
+
+	[TV (14, 0), iOS (14, 0), MacCatalyst (14, 0)]
+	public enum GCInputDirectionPadName {
+		[Field ("GCInputDirectionPad")]
+		DirectionPad,
+
+		[Field ("GCInputLeftThumbstick")]
+		LeftThumbstick,
+
+		[Field ("GCInputRightThumbstick")]
+		RightThumbstick,
+
+		[Field ("GCInputDualShockTouchpadOne")]
+		DualShockTouchpadOne,
+
+		[Field ("GCInputDualShockTouchpadTwo")]
+		DualShockTouchpadTwo,
 	}
 
 	[Static]
@@ -2207,7 +2589,7 @@ namespace GameController {
 
 	delegate GCVirtualControllerElementConfiguration GCVirtualControllerElementUpdateBlock (GCVirtualControllerElementConfiguration configuration);
 
-	[NoTV, NoMac, NoWatch, iOS (15, 0), MacCatalyst (15, 0)]
+	[NoTV, NoMac, iOS (15, 0), MacCatalyst (15, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface GCVirtualController {
@@ -2231,9 +2613,17 @@ namespace GameController {
 
 		[Export ("updateConfigurationForElement:configuration:")]
 		void UpdateConfiguration (string element, GCVirtualControllerElementUpdateBlock configuration);
+
+		[iOS (17, 0), MacCatalyst (17, 0)]
+		[Export ("setValue:forButtonElement:")]
+		void SetValue (nfloat value, string element);
+
+		[iOS (17, 0), MacCatalyst (17, 0)]
+		[Export ("setPosition:forDirectionPadElement:")]
+		void SetPosition (CGPoint position, string element);
 	}
 
-	[NoTV, NoMac, NoWatch, iOS (15, 0), MacCatalyst (15, 0)]
+	[NoTV, NoMac, iOS (15, 0), MacCatalyst (15, 0)]
 	[BaseType (typeof (NSObject))]
 	interface GCVirtualControllerConfiguration {
 		[Export ("elements", ArgumentSemantic.Strong)]
@@ -2244,7 +2634,7 @@ namespace GameController {
 		bool Hidden { [Bind ("isHidden")] get; set; }
 	}
 
-	[NoTV, NoMac, NoWatch, iOS (15, 0), MacCatalyst (15, 0)]
+	[NoTV, NoMac, iOS (15, 0), MacCatalyst (15, 0)]
 	[BaseType (typeof (NSObject))]
 	interface GCVirtualControllerElementConfiguration {
 		[Export ("hidden")]
@@ -2294,12 +2684,23 @@ namespace GameController {
 		[Field ("GCProductCategoryKeyboard")]
 		NSString Keyboard { get; }
 
-		[iOS (16, 0), Mac (13, 0), NoWatch, TV (16, 0), MacCatalyst (16, 0)]
+#if !XAMCORE_5_0
+		[Obsolete ("Use 'Hid' instead.")]
+		[iOS (16, 0), Mac (13, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Field ("GCProductCategoryHID")]
 		NSString GCProductCategoryHid { get; }
+#endif
+
+		[iOS (16, 0), Mac (13, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[Field ("GCProductCategoryHID")]
+		NSString Hid { get; }
+
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[Field ("GCProductCategoryArcadeStick")]
+		NSString ArcadeStick { get; }
 	}
 
-	[NoiOS, Mac (13, 0), NoWatch, NoTV, MacCatalyst (16, 0)]
+	[NoiOS, Mac (13, 0), NoTV, MacCatalyst (16, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface GCRacingWheel : GCDevice {
@@ -2332,7 +2733,7 @@ namespace GameController {
 		NSString DidDisconnectNotification { get; }
 	}
 
-	[NoiOS, Mac (13, 0), NoWatch, NoTV, MacCatalyst (16, 0)]
+	[NoiOS, Mac (13, 0), NoTV, MacCatalyst (16, 0)]
 	[BaseType (typeof (GCRacingWheelInputState))]
 	interface GCRacingWheelInput : GCDevicePhysicalInput {
 		// Sealed since GCDevicePhysicalInput.Capture returns IGCDevicePhysicalInputState
@@ -2344,7 +2745,7 @@ namespace GameController {
 		IGCDevicePhysicalInputStateDiff WheelInputNextInputState { get; }
 	}
 
-	[NoiOS, Mac (13, 0), NoWatch, NoTV, MacCatalyst (16, 0)]
+	[NoiOS, Mac (13, 0), NoTV, MacCatalyst (16, 0)]
 	[BaseType (typeof (NSObject))]
 	interface GCRacingWheelInputState : GCDevicePhysicalInputState {
 		[Export ("wheel")]
@@ -2363,7 +2764,7 @@ namespace GameController {
 		GCGearShifterElement Shifter { get; }
 	}
 
-	[NoiOS, Mac (13, 0), NoWatch, NoTV, MacCatalyst (16, 0)]
+	[NoiOS, Mac (13, 0), NoTV, MacCatalyst (16, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface GCSteeringWheelElement : GCAxisElement {
@@ -2371,32 +2772,31 @@ namespace GameController {
 		float MaximumDegreesOfRotation { get; }
 	}
 
-	// There are issues with the Generic Types listed here: https://github.com/xamarin/xamarin-macios/issues/15725
-	// [iOS (16,0), Mac (13,0), NoWatch, TV (16,0), MacCatalyst (16,0)]
-	// [BaseType (typeof (NSObject))]
-	// [DisableDefaultCtor]
-	// interface GCPhysicalInputElementCollection<KeyIdentifierType, ElementIdentifierType> // : INSFastEnumeration // # no generator support for FastEnumeration - https://bugzilla.xamarin.com/show_bug.cgi?id=4391
-	// 	where KeyIdentifierType : IGCPhysicalInputElementName /* NSString */ // there's currently not an conversion from GCPhysicalInputElementName, GCButtonElementName, and GCDirectionPadElementName to NSString
-	// 	where ElementIdentifierType : IGCPhysicalInputElement /* id<GCPhysicalInputElement>> */
-	// {
-	// 	[Export ("count")]
-	// 	nuint Count { get; }
+	[iOS (16, 0), Mac (13, 0), TV (16, 0), MacCatalyst (16, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface GCPhysicalInputElementCollection<KeyIdentifierType, ElementIdentifierType> : INSFastEnumeration // # no generator support for FastEnumeration - https://github.com/dotnet/macios/issues/22516
+		where KeyIdentifierType : NSString
+		where ElementIdentifierType : IGCPhysicalInputElement /* id<GCPhysicalInputElement>> */
+	{
+		[Export ("count")]
+		nuint Count { get; }
 
-	// 	[Export ("elementForAlias:")]
-	// 	[return: NullAllowed]
-	// 	IGCPhysicalInputElement GetElement (string alias);
+		[Export ("elementForAlias:")]
+		[return: NullAllowed]
+		IGCPhysicalInputElement GetElement (string alias);
 
-	// 	[Export ("objectForKeyedSubscript:")]
-	// 	[return: NullAllowed]
-	// 	IGCPhysicalInputElement GetObject (string key);
+		[Export ("objectForKeyedSubscript:")]
+		[return: NullAllowed]
+		IGCPhysicalInputElement GetObject (string key);
 
-	// 	[Export ("elementEnumerator")]
-	// 	NSEnumerator<IGCPhysicalInputElement> ElementEnumerator { get; }
-	// }
+		[Export ("elementEnumerator")]
+		NSEnumerator<ElementIdentifierType> ElementEnumerator { get; }
+	}
 
 	interface IGCDevicePhysicalInputState { }
 
-	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoWatch, TV (16, 0)]
+	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 	[Protocol]
 	interface GCDevicePhysicalInputState {
 		[Abstract]
@@ -2411,30 +2811,25 @@ namespace GameController {
 		[Export ("lastEventLatency")]
 		double LastEventLatency { get; }
 
-		// Issue with GCPhysicalInputElementCollection found here: https://github.com/xamarin/xamarin-macios/issues/15725
-		// [Abstract]
-		// [Export ("elements")]
-		// GCPhysicalInputElementCollection<IGCPhysicalInputElementName, IGCPhysicalInputElement> Elements { get; }
+		[Abstract]
+		[Export ("elements")]
+		GCPhysicalInputElementCollection<NSString, IGCPhysicalInputElement> Elements { get; }
 
-		// Issue with GCPhysicalInputElementCollection found here: https://github.com/xamarin/xamarin-macios/issues/15725
-		// [Abstract]
-		// [Export ("buttons")]
-		// GCPhysicalInputElementCollection<IGCButtonElementName, IGCButtonElement> Buttons { get; }
+		[Abstract]
+		[Export ("buttons")]
+		GCPhysicalInputElementCollection<NSString, IGCButtonElement> Buttons { get; }
 
-		// Issue with GCPhysicalInputElementCollection found here: https://github.com/xamarin/xamarin-macios/issues/15725
-		// [Abstract]
-		// [Export ("axes")]
-		// GCPhysicalInputElementCollection<IGCAxisElementName, IGCAxisElement> Axes { get; }
+		[Abstract]
+		[Export ("axes")]
+		GCPhysicalInputElementCollection<NSString, IGCAxisElement> Axes { get; }
 
-		// Issue with GCPhysicalInputElementCollection found here: https://github.com/xamarin/xamarin-macios/issues/15725
-		// [Abstract]
-		// [Export ("switches")]
-		// GCPhysicalInputElementCollection<IGCSwitchElementName, IGCSwitchElement> Switches { get; }
+		[Abstract]
+		[Export ("switches")]
+		GCPhysicalInputElementCollection<NSString, IGCSwitchElement> Switches { get; }
 
-		// Issue with GCPhysicalInputElementCollection found here: https://github.com/xamarin/xamarin-macios/issues/15725
-		// [Abstract]
-		// [Export ("dpads")]
-		// GCPhysicalInputElementCollection<IGCDirectionPadElementName, IGCDirectionPadElement> Dpads { get; }
+		[Abstract]
+		[Export ("dpads")]
+		GCPhysicalInputElementCollection<NSString, IGCDirectionPadElement> Dpads { get; }
 
 		[Abstract]
 		[Export ("objectForKeyedSubscript:")]
@@ -2444,7 +2839,7 @@ namespace GameController {
 
 	interface IGCAxisInput { }
 
-	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoWatch, TV (16, 0)]
+	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 	[Protocol]
 	interface GCAxisInput {
 		[Abstract]
@@ -2470,11 +2865,16 @@ namespace GameController {
 		[Abstract]
 		[Export ("lastValueLatency")]
 		double LastValueLatency { get; }
+
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[Abstract]
+		[Export ("sources", ArgumentSemantic.Copy)]
+		NSSet<IGCPhysicalInputSource> Sources { get; }
 	}
 
-	interface IGCAxisElement { }
+	interface IGCAxisElement : IGCPhysicalInputElement { }
 
-	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoWatch, TV (16, 0)]
+	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 	[Protocol]
 	interface GCAxisElement : GCPhysicalInputElement {
 		[Abstract]
@@ -2486,9 +2886,9 @@ namespace GameController {
 		IGCRelativeInput RelativeInput { get; }
 	}
 
-	interface IGCButtonElement { }
+	interface IGCButtonElement : IGCPhysicalInputElement { }
 
-	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoWatch, TV (16, 0)]
+	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 	[Protocol]
 	interface GCButtonElement : GCPhysicalInputElement {
 		[Abstract]
@@ -2503,9 +2903,9 @@ namespace GameController {
 	delegate void ElementValueDidChangeHandler (IGCDevicePhysicalInput physicalInput, IGCPhysicalInputElement element);
 	delegate void InputStateAvailableHandler (IGCDevicePhysicalInput physicalInput);
 
-	interface IGCDevicePhysicalInput { }
+	interface IGCDevicePhysicalInput : IGCPhysicalInputElement { }
 
-	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoWatch, TV (16, 0)]
+	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 	[Protocol]
 	interface GCDevicePhysicalInput : GCDevicePhysicalInputState {
 #if !XAMCORE_5_0
@@ -2535,11 +2935,16 @@ namespace GameController {
 		[Abstract]
 		[NullAllowed, Export ("nextInputState")]
 		NSObject NextInputState { get; }
+
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[Abstract]
+		[NullAllowed, Export ("queue", ArgumentSemantic.Strong)]
+		DispatchQueue Queue { get; set; }
 	}
 
 	interface IGCDevicePhysicalInputStateDiff { }
 
-	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoWatch, TV (16, 0)]
+	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 	[Protocol]
 	interface GCDevicePhysicalInputStateDiff {
 		[Abstract]
@@ -2551,9 +2956,9 @@ namespace GameController {
 		NSEnumerator<IGCPhysicalInputElement> ChangedElements { get; }
 	}
 
-	interface IGCDirectionPadElement { }
+	interface IGCDirectionPadElement : IGCPhysicalInputElement { }
 
-	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoWatch, TV (16, 0)]
+	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 	[Protocol]
 	interface GCDirectionPadElement : GCPhysicalInputElement {
 		[Abstract]
@@ -2579,11 +2984,16 @@ namespace GameController {
 		[Abstract]
 		[Export ("right")]
 		NSObject Right { get; }
+
+		[TV (17, 4), Mac (14, 3), iOS (17, 4), MacCatalyst (17, 4)]
+		[Abstract]
+		[Export ("xyAxes")]
+		IGCAxis2DInput XyAxes { get; }
 	}
 
 	interface IGCLinearInput { }
 
-	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoWatch, TV (16, 0)]
+	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 	[Protocol]
 	interface GCLinearInput {
 		[Abstract]
@@ -2609,11 +3019,16 @@ namespace GameController {
 		[Abstract]
 		[Export ("lastValueLatency")]
 		double LastValueLatency { get; }
+
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[Abstract]
+		[Export ("sources", ArgumentSemantic.Copy)]
+		NSSet<IGCPhysicalInputSource> Sources { get; }
 	}
 
 	interface IGCPhysicalInputElement { }
 
-	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoWatch, TV (16, 0)]
+	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 	[Protocol]
 	interface GCPhysicalInputElement {
 		[Abstract]
@@ -2631,7 +3046,7 @@ namespace GameController {
 
 	interface IGCPressedStateInput { }
 
-	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoWatch, TV (16, 0)]
+	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 	[Protocol]
 	interface GCPressedStateInput {
 		[Abstract]
@@ -2649,11 +3064,16 @@ namespace GameController {
 		[Abstract]
 		[Export ("lastPressedStateLatency")]
 		double LastPressedStateLatency { get; }
+
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[Abstract]
+		[Export ("sources", ArgumentSemantic.Copy)]
+		NSSet<IGCPhysicalInputSource> Sources { get; }
 	}
 
 	interface IGCRelativeInput { }
 
-	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoWatch, TV (16, 0)]
+	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 	[Protocol]
 	interface GCRelativeInput {
 		[Abstract]
@@ -2675,11 +3095,16 @@ namespace GameController {
 		[Abstract]
 		[Export ("lastDeltaLatency")]
 		double LastDeltaLatency { get; }
+
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 4)]
+		[Abstract]
+		[Export ("sources", ArgumentSemantic.Copy)]
+		NSSet<IGCPhysicalInputSource> Sources { get; }
 	}
 
-	interface IGCSwitchElement { }
+	interface IGCSwitchElement : IGCPhysicalInputElement { }
 
-	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoWatch, TV (16, 0)]
+	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 	[Protocol]
 	interface GCSwitchElement : GCPhysicalInputElement {
 		[Abstract]
@@ -2689,7 +3114,7 @@ namespace GameController {
 
 	interface IGCSwitchPositionInput { }
 
-	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoWatch, TV (16, 0)]
+	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 	[Protocol]
 	interface GCSwitchPositionInput {
 		[Abstract]
@@ -2719,11 +3144,16 @@ namespace GameController {
 		[Abstract]
 		[Export ("lastPositionLatency")]
 		double LastPositionLatency { get; }
+
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[Abstract]
+		[Export ("sources", ArgumentSemantic.Copy)]
+		NSSet<IGCPhysicalInputSource> Sources { get; }
 	}
 
 	interface IGCTouchedStateInput { }
 
-	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoWatch, TV (16, 0)]
+	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 	[Protocol]
 	interface GCTouchedStateInput {
 		[Abstract]
@@ -2741,9 +3171,14 @@ namespace GameController {
 		[Abstract]
 		[Export ("lastTouchedStateLatency")]
 		double LastTouchedStateLatency { get; }
+
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[Abstract]
+		[Export ("sources", ArgumentSemantic.Copy)]
+		NSSet<IGCPhysicalInputSource> Sources { get; }
 	}
 
-	[NoiOS, Mac (13, 0), NoWatch, NoTV, MacCatalyst (16, 0)]
+	[NoiOS, Mac (13, 0), NoTV, MacCatalyst (16, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface GCGearShifterElement : GCPhysicalInputElement {
@@ -2755,13 +3190,19 @@ namespace GameController {
 	}
 
 	[Static]
-	[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoWatch]
+	[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 	interface GCControllerUserCustomizations {
 		[Notification, Field ("GCControllerUserCustomizationsDidChangeNotification")]
 		NSString DidChangeNotification { get; }
 	}
 
-	[TV (18, 0), NoMac, iOS (18, 0), MacCatalyst (18, 0), NoWatch]
+#if !XAMCORE_5_0
+	[TV (18, 0)]
+#if __TVOS__
+	[Obsolete ("This enum does not exist on this platform.")]
+#endif
+#endif
+	[NoMac, iOS (18, 0), MacCatalyst (18, 0)]
 	[Native]
 	enum GCUIEventTypes : ulong {
 		None = 0U,
@@ -2769,7 +3210,7 @@ namespace GameController {
 	}
 
 #if IOS || MACCATALYST
-	[NoTV, NoMac, iOS (18, 0), MacCatalyst (18, 0), NoWatch]
+	[NoTV, NoMac, iOS (18, 0), MacCatalyst (18, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface GCEventInteraction : UIInteraction {
@@ -2782,7 +3223,7 @@ namespace GameController {
 	}
 #endif // IOS || MACCATALYST
 
-	[NoTV, NoMac, iOS (18, 0), NoMacCatalyst, NoWatch]
+	[NoTV, NoMac, iOS (18, 0), NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface GCGameControllerActivationContext {
@@ -2790,7 +3231,7 @@ namespace GameController {
 		string PreviousApplicationBundleId { get; }
 	}
 
-	[NoTV, NoMac, iOS (18, 0), NoMacCatalyst, NoWatch]
+	[NoTV, NoMac, iOS (18, 0), NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
 	[Protocol (BackwardsCompatibleCodeGeneration = false), Model]
 	interface GCGameControllerSceneDelegate {
@@ -2799,12 +3240,109 @@ namespace GameController {
 		void DidActivateGameController (UIScene scene, GCGameControllerActivationContext context);
 	}
 
-	[NoTV, NoMac, iOS (18, 0), NoMacCatalyst, NoWatch]
+	[NoTV, NoMac, iOS (18, 0), NoMacCatalyst]
 	[Category]
 	[BaseType (typeof (UISceneConnectionOptions))]
 	interface UISceneConnectionOptions_GameController {
 		[Export ("gameControllerActivationContext")]
 		[return: NullAllowed]
 		GCGameControllerActivationContext GetGameControllerActivationContext ();
+	}
+
+	delegate void GCAxis2DInputValueDidChangeCallback (IGCPhysicalInputElement element, IGCAxis2DInput input, GCPoint2 point);
+
+	[TV (17, 4), Mac (14, 3), iOS (17, 4), MacCatalyst (17, 4)]
+	[Protocol (BackwardsCompatibleCodeGeneration = false)]
+	interface GCAxis2DInput {
+		[Abstract]
+		[NullAllowed, Export ("valueDidChangeHandler", ArgumentSemantic.Copy)]
+		GCAxis2DInputValueDidChangeCallback ValueDidChangeHandler { get; set; }
+
+		[Abstract]
+		[Export ("value")]
+		GCPoint2 Value { get; }
+
+		[Abstract]
+		[Export ("analog")]
+		bool Analog { [Bind ("isAnalog")] get; }
+
+		[Abstract]
+		[Export ("canWrap")]
+		bool CanWrap { get; }
+
+		[Abstract]
+		[Export ("lastValueTimestamp")]
+		double LastValueTimestamp { get; }
+
+		[Abstract]
+		[Export ("lastValueLatency")]
+		double LastValueLatency { get; }
+
+		[Abstract]
+		[Export ("sources", ArgumentSemantic.Copy)]
+		NSSet<IGCPhysicalInputSource> Sources { get; }
+	}
+
+	interface IGCAxis2DInput { }
+
+	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[Protocol (BackwardsCompatibleCodeGeneration = false)]
+	interface GCPhysicalInputSource {
+		[Abstract]
+		[Export ("elementAliases", ArgumentSemantic.Copy)]
+		NSSet<NSString> ElementAliases { get; }
+
+		[Abstract]
+		[NullAllowed, Export ("elementLocalizedName")]
+		string ElementLocalizedName { get; }
+
+		[Abstract]
+		[NullAllowed, Export ("sfSymbolsName")]
+		string SfSymbolsName { get; }
+
+		[Abstract]
+		[Export ("direction")]
+		GCPhysicalInputSourceDirection Direction { get; }
+	}
+
+	interface IGCPhysicalInputSource { }
+
+	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[BaseType (typeof (GCControllerInputState))]
+	[DisableDefaultCtor]
+	interface GCControllerLiveInput : GCDevicePhysicalInput {
+		[NullAllowed, Export ("unmappedInput")]
+		GCControllerLiveInput UnmappedInput { get; }
+
+		// 'new' because this is also implemented in GCDevicePhysicalInput, but with a less defined property type (IGCDevicePhysicalInputState)
+		[Export ("capture")]
+		new GCControllerInputState Capture { get; }
+
+		[NullAllowed, Export ("nextInputState")]
+		// The property type is both GCControllerInputState + implements the GCDevicePhysicalInputStateDiff protocol,
+		// which can't be expressed in C#. Choosing to bind as GCControllerInputState.
+		// 'new' because this is also implemented in GCDevicePhysicalInput, but with a less defined property type (NSObject)
+		new GCControllerInputState NextInputState { get; }
+	}
+
+	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface GCControllerInputState : GCDevicePhysicalInputState {
+	}
+}
+
+namespace Foundation {
+	using GameController;
+
+	partial interface NSValue {
+		[TV (17, 4), Mac (14, 3), iOS (17, 4), MacCatalyst (17, 4)]
+		[Static]
+		[Export ("valueWithGCPoint2:")]
+		NSValue FromGCPoint2 (GCPoint2 point);
+
+		[TV (17, 4), Mac (14, 3), iOS (17, 4), MacCatalyst (17, 4)]
+		[Export ("GCPoint2Value")]
+		GCPoint2 GCPoint2Value { get; }
 	}
 }

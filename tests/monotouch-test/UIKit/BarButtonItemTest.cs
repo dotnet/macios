@@ -1,6 +1,6 @@
 // Copyright 2011-2013 Xamarin Inc. All rights reserved
 
-#if !__WATCHOS__ && !MONOMAC
+#if !MONOMAC
 
 using System;
 using System.Drawing;
@@ -128,15 +128,11 @@ namespace MonoTouchFixtures.UIKit {
 		{
 			using (MyView v = new MyView ("note"))
 			using (var b = new UIBarButtonItem (v)) {
-#if XAMCORE_3_0
 				b.SetTitleTextAttributes ((UIStringAttributes) null, UIControlState.Disabled);
-#else
-				b.SetTitleTextAttributes ((UITextAttributes) null, UIControlState.Disabled);
-#endif
 			}
 		}
 #endif
 	}
 }
 
-#endif // !__WATCHOS__
+#endif // !MONOMAC

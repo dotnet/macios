@@ -74,9 +74,6 @@ xamarin_get_primitive_size (char type)
 static void *
 xamarin_marshal_return_value_impl (MonoType *mtype, const char *type, MonoObject *retval, bool retain, MonoMethod *method, MethodDescription *desc, GCHandle *exception_gchandle)
 {
-	// COOP: accesses managed memory: unsafe mode.
-	MONO_ASSERT_GC_UNSAFE;
-	
 	/* Any changes in this method probably need to be reflected in the static registrar as well */
 	switch (type [0]) {
 		case _C_CLASS:
@@ -166,7 +163,7 @@ xamarin_marshal_return_value_impl (MonoType *mtype, const char *type, MonoObject
 					//    3) Thread U runs the GC, and tries to lock the framework peer lock, and
 					//       deadlocks because thread T already has the framework peer lock.
 					//
-					//    This is https://github.com/xamarin/xamarin-macios/issues/13066
+					//    This is https://github.com/dotnet/macios/issues/13066
 					//
 					// See also comment in xamarin_release_managed_ref
 
@@ -191,7 +188,7 @@ xamarin_marshal_return_value_impl (MonoType *mtype, const char *type, MonoObject
 					} else {
 						// This will try to retain the object if and only if it's an NSObject -
 						// in which case we known it's 'id' here and we can call autorelease on it.
-						bool retained = xamarin_attempt_retain_nsobject (retval, exception_gchandle);
+						bool retained = xamarin_attempt_retain_nsobject (retval, exception_gchandle) != 0;
 						if (*exception_gchandle != INVALID_GCHANDLE)
 							return returnValue;
 						if (retained) {
@@ -201,14 +198,10 @@ xamarin_marshal_return_value_impl (MonoType *mtype, const char *type, MonoObject
 					}
 				}
 			} else {
-#if DOTNET
 				if (xamarin_is_class_intptr (r_klass) || xamarin_is_class_nativehandle (r_klass)) {
-#else
-				if (xamarin_is_class_intptr (r_klass)) {
-#endif
 					returnValue = *(void **) mono_object_unbox (retval);
 				} else {
-					xamarin_assertion_message ("Don't know how to marshal a return value of type '%s.%s'. Please file a bug with a test case at https://github.com/xamarin/xamarin-macios/issues/new\n", mono_class_get_namespace (r_klass), mono_class_get_name (r_klass));
+					xamarin_assertion_message ("Don't know how to marshal a return value of type '%s.%s'. Please file a bug with a test case at https://github.com/dotnet/macios/issues/new\n", mono_class_get_namespace (r_klass), mono_class_get_name (r_klass));
 				}
 			}
 
@@ -435,6 +428,7 @@ xamarin_create_mt_exception (char *msg)
 // Example:
 //    {bc}d => d
 //    {a{b}cd}e => e
+//    {CGRect={CGPoint=dd}{CGSize=dd}}e =>
 static const char *
 skip_nested_brace (const char *type)
 {
@@ -443,7 +437,8 @@ skip_nested_brace (const char *type)
 	while (*++type) {
 		switch (*type) {
 		case '{':
-			return skip_nested_brace (type);
+			type = skip_nested_brace (type);
+			break;
 		case '}':
 			return type++;
 		default:
@@ -462,11 +457,14 @@ skip_nested_brace (const char *type)
 //     {CGRect=dddd} => dddd
 //     ^q => ^
 //	   @? => @ (this is a block)
+//    ^{CGRect={CGPoint=dd}{CGSize=dd}} => ^
 //
 // type: the input type name
 // struct_name: where to write the collapsed struct name. Returns an empty string if the array isn't big enough.
 // max_char: the maximum number of characters to write to struct_name
 // return value: false if something went wrong (an exception thrown, or struct_name wasn't big enough).
+//
+// There's a unit test for this method in monotouch-test (in NativeRuntimeTest.cs)
 bool
 xamarin_collapse_struct_name (const char *type, char struct_name[], int max_char, GCHandle *exception_gchandle)
 {
@@ -629,7 +627,6 @@ xamarin_get_frame_length (id self, SEL sel)
 static inline void
 find_objc_method_implementation (struct objc_super *sup, id self, SEL sel, IMP xamarin_impl)
 {
-	// COOP: does not access managed memory: any mode
 	Class klass = object_getClass (self);
 	Class sklass = class_getSuperclass (klass);
 
@@ -651,10 +648,18 @@ find_objc_method_implementation (struct objc_super *sup, id self, SEL sel, IMP x
 id
 xamarin_invoke_objc_method_implementation (id self, SEL sel, IMP xamarin_impl)
 {
-	// COOP: does not access managed memory: any mode
 	struct objc_super sup;
 	find_objc_method_implementation (&sup, self, sel, xamarin_impl);
 	typedef id (*func_objc_msgSendSuper) (struct objc_super *sup, SEL sel);
+	return ((func_objc_msgSendSuper) objc_msgSendSuper) (&sup, sel);
+}
+
+BOOL
+xamarin_invoke_objc_method_implementation_BOOL (id self, SEL sel, IMP xamarin_impl)
+{
+	struct objc_super sup;
+	find_objc_method_implementation (&sup, self, sel, xamarin_impl);
+	typedef BOOL (*func_objc_msgSendSuper) (struct objc_super *sup, SEL sel);
 	return ((func_objc_msgSendSuper) objc_msgSendSuper) (&sup, sel);
 }
 
@@ -662,7 +667,6 @@ xamarin_invoke_objc_method_implementation (id self, SEL sel, IMP xamarin_impl)
 id
 xamarin_copyWithZone_trampoline1 (id self, SEL sel, NSZone *zone)
 {
-	// COOP: does not access managed memory: any mode
 	// This is for subclasses that themselves do not implement Copy (NSZone)
 
 	id rv;
@@ -694,7 +698,6 @@ xamarin_copyWithZone_trampoline1 (id self, SEL sel, NSZone *zone)
 id
 xamarin_copyWithZone_trampoline2 (id self, SEL sel, NSZone *zone)
 {
-	// COOP: does not access managed memory: any mode
 	// This is for subclasses that already implement Copy (NSZone)
 
 	id rv;
@@ -725,9 +728,6 @@ xamarin_copyWithZone_trampoline2 (id self, SEL sel, NSZone *zone)
 void
 xamarin_release_trampoline (id self, SEL sel)
 {
-	// COOP: does not access managed memory: any mode, but it assumes safe mode upon entry (it takes locks, and doesn't switch to safe mode).
-	MONO_ASSERT_GC_SAFE_OR_DETACHED;
-	
 	unsigned long ref_count;
 	bool detach = false;
 
@@ -764,11 +764,8 @@ xamarin_notify_dealloc (id self, GCHandle gchandle)
 {
 	GCHandle exception_gchandle = INVALID_GCHANDLE;
 
-	// COOP: safe mode upon entry, switches to unsafe when acccessing managed memory.
-	MONO_ASSERT_GC_SAFE_OR_DETACHED;
-	
 	/* This is needed because we call into managed code below (xamarin_unregister_nsobject) */
-	MONO_THREAD_ATTACH; // COOP: This will swith to GC_UNSAFE
+	MONO_THREAD_ATTACH;
 
 	/* Object is about to die. Unregister it and free any gchandles we may have */
 #if defined(DEBUG_REF_COUNTING)
@@ -777,7 +774,7 @@ xamarin_notify_dealloc (id self, GCHandle gchandle)
 	xamarin_unregister_nsobject (self, GINT_TO_POINTER (gchandle), &exception_gchandle);
 	xamarin_free_gchandle (self, gchandle);
 
-	MONO_THREAD_DETACH; // COOP: This will switch to GC_SAFE
+	MONO_THREAD_DETACH;
 
 	xamarin_process_managed_exception_gchandle (exception_gchandle);
 
@@ -787,9 +784,6 @@ xamarin_notify_dealloc (id self, GCHandle gchandle)
 id
 xamarin_retain_trampoline (id self, SEL sel)
 {
-	// COOP: safe mode upon entry, switches to unsafe when acccessing managed memory.
-	MONO_ASSERT_GC_SAFE_OR_DETACHED;
-
 	pthread_mutex_lock (&refcount_mutex);
 
 #if defined(DEBUG_REF_COUNTING)
@@ -819,6 +813,42 @@ xamarin_retain_trampoline (id self, SEL sel)
 	return self;
 }
 
+/*
+ * We override 'NSObject retainWeakReference' so that we can detect when Objective-C tries to resolve
+ * a weak reference, and if the managed wrapper is in the finalization queue, we refuse to resolve the
+ * weak reference (because it would mean we end up with a native object whose managed wrapper is
+ * finalized, and a number of things start going wrong when that native object is surfaced to managed
+ * code again).
+ *
+ * Unfortunately it's limited what we can do here, because the Objective-C runtime has acquired internal
+ * locks, which means we can't re-enter the Objective-C runtime. One of the results is that we can't
+ * call into managed code, not even the Mono/CoreCLR's runtime code, because that might end up calling
+ * into the Objective-C runtime, and those previously acquired locks will abort because they're not
+ * recursive locks.
+ *
+ * For this reason, the managed wrapper's flags that say whether the manager wrapper is in the finalization
+ * queue or not, is stored in native memory - and that's all we do here, we fetch the flag and return
+ * FALSE if we're in the finalization queue.
+ */
+BOOL
+xamarin_retainWeakReference_trampoline (id self, SEL sel)
+{
+	uint32_t flags = xamarin_get_nsobject_id_flags (self);
+	bool isInFinalizerQueue = (flags & NSObjectFlagsInFinalizerQueue) == NSObjectFlagsInFinalizerQueue;
+
+#if defined(DEBUG_REF_COUNTING)
+	PRINT ("xamarin_retainWeakReference_trampoline (%s Handle=%p) flags: %x isInFinalizerQueue: %i\n",
+		class_getName ([self class]), self, flags, isInFinalizerQueue);
+#endif
+
+	// Do not allow any weak references to be resolved if the managed wrapper has been scheduled for finalization,
+	// all kinds of bad things happen when native code tries to use such an object.
+	if (isInFinalizerQueue)
+		return FALSE;
+
+	/* Invoke the real release method */
+	return xamarin_invoke_objc_method_implementation_BOOL (self, sel, (IMP) xamarin_retainWeakReference_trampoline);
+}
 
 // We try to use the associated object API as little as possible, because the API does
 // not like recursion (see bug #35017), and it calls retain/release, which we might
@@ -831,7 +861,7 @@ static pthread_mutex_t gchandle_hash_lock = PTHREAD_MUTEX_INITIALIZER;
 
 struct gchandle_dictionary_entry {
 	GCHandle gc_handle;
-	enum XamarinGCHandleFlags flags;
+	enum XamarinGCHandleFlags gchandle_flags;
 };
 
 static void
@@ -842,26 +872,23 @@ release_gchandle_dictionary_entry (CFAllocatorRef allocator, const void *value)
 
 static const char *associated_key = "x"; // the string value doesn't matter, only the pointer value.
 bool
-xamarin_set_gchandle_trampoline (id self, SEL sel, GCHandle gc_handle, enum XamarinGCHandleFlags flags)
+xamarin_set_gchandle_trampoline (id self, SEL sel, GCHandle gc_handle, enum XamarinGCHandleFlags gchandle_flags, struct NSObjectData *data)
 {
-	// COOP: Called by ObjC (when the setGCHandle:flags: selector is called on an object).
-	// COOP: Safe mode upon entry, and doesn't access managed memory, so no need to change.
-	MONO_ASSERT_GC_SAFE;
-	
 	/* This is for types registered using the dynamic registrar */
 	XamarinAssociatedObject *obj;
 	obj = objc_getAssociatedObject (self, associated_key);
 
 	// Check if we're setting the initial value, in which case we don't want to overwrite
-	if (obj != NULL && obj->gc_handle != INVALID_GCHANDLE && ((flags & XamarinGCHandleFlags_InitialSet) == XamarinGCHandleFlags_InitialSet))
+	if (obj != NULL && obj->gc_handle != INVALID_GCHANDLE && ((gchandle_flags & XamarinGCHandleFlags_InitialSet) == XamarinGCHandleFlags_InitialSet))
 		return false;
 
-	flags = (enum XamarinGCHandleFlags) (flags & ~XamarinGCHandleFlags_InitialSet); // Remove the InitialSet flag, we don't want to store it.
+	gchandle_flags = (enum XamarinGCHandleFlags) (gchandle_flags & ~XamarinGCHandleFlags_InitialSet); // Remove the InitialSet flag, we don't want to store it.
 
 	if (obj == NULL && gc_handle != INVALID_GCHANDLE) {
 		obj = [[XamarinAssociatedObject alloc] init];
 		obj->gc_handle = gc_handle;
-		obj->flags = flags;
+		obj->data = data;
+		obj->gchandle_flags = gchandle_flags;
 		obj->native_object = self;
 		objc_setAssociatedObject (self, associated_key, obj, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 		objc_release (obj);
@@ -869,7 +896,8 @@ xamarin_set_gchandle_trampoline (id self, SEL sel, GCHandle gc_handle, enum Xama
 
 	if (obj != NULL) {
 		obj->gc_handle = gc_handle;
-		obj->flags = flags;
+		obj->data = NULL;
+		obj->gchandle_flags = gchandle_flags;
 	}
 	
 	pthread_mutex_lock (&gchandle_hash_lock);
@@ -883,7 +911,7 @@ xamarin_set_gchandle_trampoline (id self, SEL sel, GCHandle gc_handle, enum Xama
 	} else {
 		struct gchandle_dictionary_entry *entry = (struct gchandle_dictionary_entry *) calloc (1, sizeof (struct gchandle_dictionary_entry));
 		entry->gc_handle = gc_handle;
-		entry->flags = flags;
+		entry->gchandle_flags = gchandle_flags;
 		CFDictionarySetValue (gchandle_hash, self, entry);
 	}
 	pthread_mutex_unlock (&gchandle_hash_lock);
@@ -894,10 +922,6 @@ xamarin_set_gchandle_trampoline (id self, SEL sel, GCHandle gc_handle, enum Xama
 GCHandle
 xamarin_get_gchandle_trampoline (id self, SEL sel)
 {
-	// COOP: Called by ObjC (when the getGCHandle selector is called on an object).
-	// COOP: Safe mode upon entry, and doesn't access managed memory, so no need to switch.
-	MONO_ASSERT_GC_SAFE;
-	
 	/* This is for types registered using the dynamic registrar */
 	GCHandle gc_handle = INVALID_GCHANDLE;
 	pthread_mutex_lock (&gchandle_hash_lock);
@@ -914,37 +938,29 @@ xamarin_get_gchandle_trampoline (id self, SEL sel)
 enum XamarinGCHandleFlags
 xamarin_get_flags_trampoline (id self, SEL sel)
 {
-	// COOP: Called by ObjC (when the getFlags selector is called on an object).
-	// COOP: Safe mode upon entry, and doesn't access managed memory, so no need to switch.
-	MONO_ASSERT_GC_SAFE;
-
 	/* This is for types registered using the dynamic registrar */
-	enum XamarinGCHandleFlags flags = XamarinGCHandleFlags_None;
+	enum XamarinGCHandleFlags gchandle_flags = XamarinGCHandleFlags_None;
 	pthread_mutex_lock (&gchandle_hash_lock);
 	if (gchandle_hash != NULL) {
 		struct gchandle_dictionary_entry *entry;
 		entry = (struct gchandle_dictionary_entry *) CFDictionaryGetValue (gchandle_hash, self);
 		if (entry != NULL)
-			flags = entry->flags;
+			gchandle_flags = entry->gchandle_flags;
 	}
 	pthread_mutex_unlock (&gchandle_hash_lock);
-	return flags;
+	return gchandle_flags;
 }
 
 void
-xamarin_set_flags_trampoline (id self, SEL sel, enum XamarinGCHandleFlags flags)
+xamarin_set_flags_trampoline (id self, SEL sel, enum XamarinGCHandleFlags gchandle_flags)
 {
-	// COOP: Called by ObjC (when the setFlags: selector is called on an object).
-	// COOP: Safe mode upon entry, and doesn't access managed memory, so no need to switch.
-	MONO_ASSERT_GC_SAFE;
-
 	/* This is for types registered using the dynamic registrar */
 	pthread_mutex_lock (&gchandle_hash_lock);
 	if (gchandle_hash != NULL) {
 		struct gchandle_dictionary_entry *entry;
 		entry = (struct gchandle_dictionary_entry *) CFDictionaryGetValue (gchandle_hash, self);
 		if (entry != NULL)
-			entry->flags = flags;
+			entry->gchandle_flags = gchandle_flags;
 	}
 	pthread_mutex_unlock (&gchandle_hash_lock);
 }
@@ -952,9 +968,6 @@ xamarin_set_flags_trampoline (id self, SEL sel, enum XamarinGCHandleFlags flags)
 id
 xamarin_generate_conversion_to_native (MonoObject *value, MonoType *inputType, MonoType *outputType, MonoMethod *method, void *context, GCHandle *exception_gchandle)
 {
-	// COOP: Reads managed memory, needs to be in UNSAFE mode
-	MONO_ASSERT_GC_UNSAFE;
-
 	// This method is a mirror of StaticRegistrar.GenerateConversionToNative
 	// These methods must be kept in sync.
 
@@ -1034,9 +1047,6 @@ exception_handling:
 void *
 xamarin_generate_conversion_to_managed (id value, MonoType *inputType, MonoType *outputType, MonoMethod *method, GCHandle *exception_gchandle, void *context, /*SList*/ void **free_list, /*SList*/ void**release_list_ptr)
 {
-	// COOP: Reads managed memory, needs to be in UNSAFE mode
-	MONO_ASSERT_GC_UNSAFE;
-
 	// This method is a mirror of StaticRegistrar.GenerateConversionToManaged
 	// These methods must be kept in sync.
 
@@ -1179,39 +1189,8 @@ void *xamarin_nsvalue_to_scnmatrix4             (NSValue *value, void *ptr, Mono
 void *
 xamarin_nsvalue_to_scnvector3 (NSValue *value, void *ptr, MonoClass *managedType, void *context, GCHandle *exception_gchandle)
 {
-#if TARGET_OS_IOS && defined (__arm__)
-	// In earlier versions of iOS [NSValue SCNVector3Value] would return 4
-	// floats. This does not cause problems on 64-bit architectures, because
-	// the 4 floats end up in floating point registers that doesn't need to be
-	// preserved. On 32-bit architectures it becomes a real problem though,
-	// since objc_msgSend_stret will be called, and the return value will be
-	// written to the stack. Writing 4 floats to the stack, when clang
-	// allocates 3 bytes, is a bad idea. There's no radar since this has
-	// already been fixed in iOS, it only affects older versions.
-
-	// So we have to avoid the SCNVector3Value selector on 32-bit
-	// architectures, since we can't influence how clang generates the call.
-	// Instead use [NSValue getValue:]. Interestingly enough this function has
-	// the same bug: it will write 4 floats on 32-bit architectures (and
-	// amazingly 4 *doubles* on 64-bit architectures - this has been filed as
-	// radar 33104111), but since we control the input buffer, we can just
-	// allocate the necessary bytes. And for good measure allocate 32 bytes,
-	// just to be sure.
-
-	// Just to complicate matters, everything works fine on watchOS because
-	// armv7k does not use objc_msgSend_stret for this signature, this only
-	// happens on iOS.
-	SCNVector3 *valueptr = (SCNVector3 *) xamarin_calloc (32);
-	[value getValue: valueptr];
-	if (ptr) {
-		memcpy (ptr, valueptr, sizeof (SCNVector3));
-		xamarin_free (valueptr);
-		valueptr = (SCNVector3 *) ptr;
-	}
-#else
 	SCNVector3 *valueptr = (SCNVector3 *) (ptr ? ptr : xamarin_calloc (sizeof (SCNVector3)));
 	*valueptr = [value SCNVector3Value];
-#endif
 
 	return valueptr;
 }
@@ -1551,23 +1530,11 @@ xamarin_get_nsnumber_converter (MonoClass *managedType, MonoMethod *method, bool
 		func = to_managed ? (void *) xamarin_nsnumber_to_double : (void *) xamarin_double_to_nsnumber;
 	} else if (!strcmp (fullname, "System.Boolean")) {
 		func = to_managed ? (void *) xamarin_nsnumber_to_bool : (void *) xamarin_bool_to_nsnumber;
-#if DOTNET
 	} else if (!strcmp (fullname, "System.IntPtr")) {
-#else
-	} else if (!strcmp (fullname, "System.nint")) {
-#endif
 		func = to_managed ? (void *) xamarin_nsnumber_to_nint : (void *) xamarin_nint_to_nsnumber;
-#if DOTNET
 	} else if (!strcmp (fullname, "System.UIntPtr")) {
-#else
-	} else if (!strcmp (fullname, "System.nuint")) {
-#endif
 		func = to_managed ? (void *) xamarin_nsnumber_to_nuint : (void *) xamarin_nuint_to_nsnumber;
-#if DOTNET
 	} else if (!strcmp (fullname, "System.Runtime.InteropServices.NFloat")) {
-#else
-	} else if (!strcmp (fullname, "System.nfloat")) {
-#endif
 		func = to_managed ? (void *) xamarin_nsnumber_to_nfloat : (void *) xamarin_nfloat_to_nsnumber;
 	} else if (mono_class_is_enum (managedType)) {
 		MonoType *baseType = mono_class_enum_basetype (managedType);
@@ -1954,7 +1921,7 @@ xamarin_create_bindas_exception (MonoType *inputType, MonoType *outputType, Mono
 		goto exception_handling;
 
 	method_full_name = mono_method_full_name (method, TRUE);
-	msg = xamarin_strdup_printf ("Internal error: can't convert from '%s' to '%s' in %s. Please file a bug report with a test case (https://github.com/xamarin/xamarin-macios/issues/new).",
+	msg = xamarin_strdup_printf ("Internal error: can't convert from '%s' to '%s' in %s. Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new).",
 										from_name, to_name, method_full_name);
 	exception_gchandle = xamarin_gchandle_new ((MonoObject *) xamarin_create_exception (msg), false);
 

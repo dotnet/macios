@@ -16,32 +16,56 @@ using UIKit;
 using ObjCRuntime;
 
 namespace AddressBookUI {
-#if NET
+	/// <summary>Provides data for the <see cref="AddressBookUI.ABPeoplePickerNavigationController.SelectPerson" /> event.</summary>
+	///     <remarks>
+	///     </remarks>
+	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/MonoCatalog-MonoDevelop/">monocatalog</related>
 	[SupportedOSPlatform ("ios")]
-	[ObsoletedOSPlatform ("ios9.0", "Use the 'Contacts' API instead.")]
-#else
-	[Deprecated (PlatformName.iOS, 9, 0, message: "Use the 'Contacts' API instead.")]
-#endif
+	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
+	[SupportedOSPlatform ("maccatalyst")]
+	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
+	[UnsupportedOSPlatform ("macos")]
+	[UnsupportedOSPlatform ("tvos")]
 	public class ABPeoplePickerSelectPersonEventArgs : EventArgs {
 
+		/// <param name="person">To be added.</param>
+		///         <summary>Initializes a new instance of the ABPeoplePickerSelectPersonEventArgs class.</summary>
+		///         <remarks>
+		///         </remarks>
 		public ABPeoplePickerSelectPersonEventArgs (ABPerson person)
 		{
 			Person = person;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public ABPerson Person { get; private set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool Continue { get; set; }
 	}
 
-#if NET
+	/// <summary>Provides data for the <see cref="AddressBookUI.ABPeoplePickerNavigationController.PerformAction" /> event.</summary>
+	///     <remarks>
+	///     </remarks>
+	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/MonoCatalog-MonoDevelop/">monocatalog</related>
 	[SupportedOSPlatform ("ios")]
-	[ObsoletedOSPlatform ("ios9.0", "Use the 'Contacts' API instead.")]
-#else
-	[Deprecated (PlatformName.iOS, 9, 0, message: "Use the 'Contacts' API instead.")]
-#endif
+	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
+	[SupportedOSPlatform ("maccatalyst")]
+	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
+	[UnsupportedOSPlatform ("macos")]
+	[UnsupportedOSPlatform ("tvos")]
 	public class ABPeoplePickerPerformActionEventArgs : ABPeoplePickerSelectPersonEventArgs {
 
+		/// <param name="person">To be added.</param>
+		///         <param name="property">To be added.</param>
+		///         <param name="identifier">To be added.</param>
+		///         <summary>Initializes a new instance of the ABPeoplePickerPerformActionEventArgs class.</summary>
+		///         <remarks>
+		///         </remarks>
 		public ABPeoplePickerPerformActionEventArgs (ABPerson person, ABPersonProperty property, int? identifier)
 			: base (person)
 		{
@@ -49,34 +73,59 @@ namespace AddressBookUI {
 			Identifier = identifier;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public ABPersonProperty Property { get; private set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public int? Identifier { get; private set; }
 	}
 
-#if NET
+	/// <summary>Provides data for the <see cref="AddressBookUI.ABPeoplePickerNavigationController.SelectPerson2" /> event.</summary>
+	///     <remarks>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
-	[ObsoletedOSPlatform ("ios9.0", "Use the 'Contacts' API instead.")]
-#else
-	[Deprecated (PlatformName.iOS, 9, 0, message: "Use the 'Contacts' API instead.")]
-#endif
+	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
+	[SupportedOSPlatform ("maccatalyst")]
+	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
+	[UnsupportedOSPlatform ("macos")]
+	[UnsupportedOSPlatform ("tvos")]
 	public class ABPeoplePickerSelectPerson2EventArgs : EventArgs {
 
+		/// <param name="person">To be added.</param>
+		///         <summary>Initializes a new instance of the ABPeoplePickerSelectPerson2EventArgs class.</summary>
+		///         <remarks>
+		///         </remarks>
 		public ABPeoplePickerSelectPerson2EventArgs (ABPerson person)
 		{
 			Person = person;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public ABPerson Person { get; private set; }
 	}
 
-#if NET
+	/// <summary>Provides data for the <see cref="AddressBookUI.ABPeoplePickerNavigationController.PerformAction2" /> event.</summary>
+	///     <remarks>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
-	[ObsoletedOSPlatform ("ios9.0", "Use the 'Contacts' API instead.")]
-#else
-	[Deprecated (PlatformName.iOS, 9, 0, message: "Use the 'Contacts' API instead.")]
-#endif
+	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
+	[SupportedOSPlatform ("maccatalyst")]
+	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
+	[UnsupportedOSPlatform ("macos")]
+	[UnsupportedOSPlatform ("tvos")]
 	public class ABPeoplePickerPerformAction2EventArgs : ABPeoplePickerSelectPerson2EventArgs {
 
+		/// <param name="person">To be added.</param>
+		///         <param name="property">To be added.</param>
+		///         <param name="identifier">To be added.</param>
+		///         <summary>Initializes a new instance of the ABPeoplePickerPerformAction2EventArgs class.</summary>
+		///         <remarks>
+		///         </remarks>
 		public ABPeoplePickerPerformAction2EventArgs (ABPerson person, ABPersonProperty property, int? identifier)
 			: base (person)
 		{
@@ -84,10 +133,22 @@ namespace AddressBookUI {
 			Identifier = identifier;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public ABPersonProperty Property { get; private set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public int? Identifier { get; private set; }
 	}
 
+	[SupportedOSPlatform ("ios")]
+	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
+	[SupportedOSPlatform ("maccatalyst")]
+	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
+	[UnsupportedOSPlatform ("macos")]
+	[UnsupportedOSPlatform ("tvos")]
 	class InternalABPeoplePickerNavigationControllerDelegate : ABPeoplePickerNavigationControllerDelegate {
 		internal EventHandler<ABPeoplePickerSelectPersonEventArgs>? selectPerson;
 		internal EventHandler<ABPeoplePickerPerformActionEventArgs>? performAction;
@@ -163,6 +224,9 @@ namespace AddressBookUI {
 	partial class ABPeoplePickerNavigationController {
 
 		DisplayedPropertiesCollection? displayedProperties;
+		/// <summary>Gets the list of properties that the <see cref="AddressBookUI.ABPeoplePickerNavigationController" /> displays.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public DisplayedPropertiesCollection? DisplayedProperties {
 			get {
 				if (displayedProperties is null) {
@@ -176,6 +240,9 @@ namespace AddressBookUI {
 		}
 
 		ABAddressBook? addressBook;
+		/// <summary>Gets or sets the <see cref="AddressBook.ABAddressBook" /> that contains the list of contacts.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public ABAddressBook? AddressBook {
 			get {
 				MarkDirty ();
@@ -197,6 +264,9 @@ namespace AddressBookUI {
 			return d;
 		}
 
+		/// <param name="e">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected internal virtual void OnSelectPerson (ABPeoplePickerSelectPersonEventArgs e)
 		{
 			var h = EnsureEventDelegate<InternalABPeoplePickerNavigationControllerDelegate> ().selectPerson;
@@ -204,6 +274,9 @@ namespace AddressBookUI {
 				h (this, e);
 		}
 
+		/// <param name="e">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected internal virtual void OnSelectPerson2 (ABPeoplePickerSelectPerson2EventArgs e)
 		{
 			var h = EnsureEventDelegate<InternalABPeoplePickerNavigationControllerDelegate> ().selectPerson2;
@@ -211,6 +284,9 @@ namespace AddressBookUI {
 				h (this, e);
 		}
 
+		/// <param name="e">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected internal virtual void OnPerformAction (ABPeoplePickerPerformActionEventArgs e)
 		{
 			var h = EnsureEventDelegate<InternalABPeoplePickerNavigationControllerDelegate> ().performAction;
@@ -218,6 +294,9 @@ namespace AddressBookUI {
 				h (this, e);
 		}
 
+		/// <param name="e">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected internal virtual void OnPerformAction2 (ABPeoplePickerPerformAction2EventArgs e)
 		{
 			var h = EnsureEventDelegate<InternalABPeoplePickerNavigationControllerDelegate> ().performAction2;
@@ -225,6 +304,9 @@ namespace AddressBookUI {
 				h (this, e);
 		}
 
+		/// <param name="e">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected internal virtual void OnCancelled (EventArgs e)
 		{
 			var h = EnsureEventDelegate<InternalABPeoplePickerNavigationControllerDelegate> ().cancelled;
@@ -232,6 +314,12 @@ namespace AddressBookUI {
 				h (this, e);
 		}
 
+		/// <summary>Prior to iOS 8, this event handler was called when the user selected a contact.</summary>
+		/// <remarks>
+		///           <para>In iOS 8 and above, in addition to subscribing to this event, also subscribe to <see cref="AddressBookUI.ABPeoplePickerNavigationController.SelectPerson2" />.</para>
+		///           <para>Set <see cref="AddressBookUI.ABPeoplePickerSelectPersonEventArgs.Continue" /> to <see langword="true" /> to display the contact and dismiss the picker.</para>
+		///           <para>Set <see cref="AddressBookUI.ABPeoplePickerSelectPersonEventArgs.Continue" /> to <see langword="false" /> to do nothing.</para>
+		///         </remarks>
 		public event EventHandler<ABPeoplePickerSelectPersonEventArgs> SelectPerson {
 			add {
 				EnsureEventDelegate<InternalABPeoplePickerNavigationControllerDelegate> ().selectPerson += value;
@@ -241,6 +329,8 @@ namespace AddressBookUI {
 			}
 		}
 
+		/// <summary>In iOS8 and above, this event handler is called after a person has been selected by the user.</summary>
+		/// <remarks>To be added.</remarks>
 		public event EventHandler<ABPeoplePickerSelectPerson2EventArgs> SelectPerson2 {
 			add {
 				EnsureEventDelegate<InternalABPeoplePickerNavigationControllerDelegate> ().selectPerson2 += value;
@@ -250,6 +340,11 @@ namespace AddressBookUI {
 			}
 		}
 
+		/// <summary>Prior to iOS 8, this event handler was called when the user selected one of the person’s properties.</summary>
+		/// <remarks>
+		///           <para>In addition to subscribing to this event, also subscribe to <see cref="AddressBookUI.ABPeoplePickerNavigationController.PerformAction2" /> in iOS 8 and above.
+		///           </para>
+		///         </remarks>
 		public event EventHandler<ABPeoplePickerPerformActionEventArgs> PerformAction {
 			add {
 				EnsureEventDelegate<InternalABPeoplePickerNavigationControllerDelegate> ().performAction += value;
@@ -259,6 +354,8 @@ namespace AddressBookUI {
 			}
 		}
 
+		/// <summary>In iOS8 and above, this event handler will be called after a person has been selected by the user.</summary>
+		/// <remarks>To be added.</remarks>
 		public event EventHandler<ABPeoplePickerPerformAction2EventArgs> PerformAction2 {
 			add {
 				EnsureEventDelegate<InternalABPeoplePickerNavigationControllerDelegate> ().performAction2 += value;
@@ -268,6 +365,12 @@ namespace AddressBookUI {
 			}
 		}
 
+		/// <summary>iOS will call event handler when the user taps Cancel.</summary>
+		/// <remarks>
+		///           <para>If the developer does not subscribe to this event, the people picker will dismiss itself when the user taps cancel.</para>
+		///           <para />
+		///           <para>Note: Prior to iOS 8, the event handler was responsible for dismissing the people picker.</para>
+		///         </remarks>
 		public event EventHandler Cancelled {
 			add {
 				EnsureEventDelegate<InternalABPeoplePickerNavigationControllerDelegate> ().cancelled += value;

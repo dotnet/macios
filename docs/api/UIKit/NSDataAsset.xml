@@ -30,7 +30,7 @@
 }
     ]]></code>
       </example>
-      <para>To load an asset, call <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=C:UIKit.NSDataAsset(String)&amp;scope=Xamarin" title="C:UIKit.NSDataAsset(String)">C:UIKit.NSDataAsset(String)</a></format> or <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=C:UIKit.NSDataAsset(String,Foundation.NSBundle)&amp;scope=Xamarin" title="C:UIKit.NSDataAsset(String,Foundation.NSBundle)">C:UIKit.NSDataAsset(String,Foundation.NSBundle)</a></format> passing the name of the folder. For instance:</para>
+      <para>To load an asset, call <see cref="UIKit.NSDataAsset(String)" /> or <see cref="UIKit.NSDataAsset(String,Foundation.NSBundle)" /> passing the name of the folder. For instance:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
 var assetCatalog = new NSDataAsset ("FolderName");

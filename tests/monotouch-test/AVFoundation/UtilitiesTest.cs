@@ -7,8 +7,6 @@
 // Copyright 2014 Xamarin Inc. All rights reserved.
 //
 
-#if !__WATCHOS__
-
 using System;
 using System.Runtime.InteropServices;
 using CoreGraphics;
@@ -40,7 +38,7 @@ namespace MonoTouchFixtures.AVFoundation {
 		}
 	}
 
-#if __MACOS__ || !NET
+#if __MACOS__
 	[TestFixture]
 	[Preserve (AllMembers = true)]
 	public class AVStructTest {
@@ -57,7 +55,5 @@ namespace MonoTouchFixtures.AVFoundation {
 			Assert.That (Marshal.SizeOf<AVSampleCursorChunkInfo> (), Is.EqualTo (IntPtr.Size == 8 ? 16 : 12), "AVSampleCursorChunkInfo Size");
 		}
 	}
-#endif // __MACOS__ || !NET
+#endif // __MACOS__
 }
-
-#endif // !__WATCHOS__

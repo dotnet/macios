@@ -22,14 +22,14 @@ namespace MonoTouch.Tuner {
 
 	// This class is shared between Xamarin.Mac and Xamarin.iOS
 	public class CoreTypeMapStep :
-#if NET
+#if NET && !LEGACY_TOOLS
 		ConfigurationAwareStep
 #else
 		TypeMapStep
 #endif
 	{
 
-#if NET
+#if NET && !LEGACY_TOOLS
 		protected override string Name { get; } = "CoreTypeMap";
 		protected override int ErrorCode { get; } = 2390;
 
@@ -145,7 +145,7 @@ namespace MonoTouch.Tuner {
 		HashSet<TypeDefinition> cached_isnsobject = new HashSet<TypeDefinition> ();
 		Dictionary<TypeDefinition, bool?> isdirectbinding_value = new Dictionary<TypeDefinition, bool?> ();
 
-#if NET
+#if NET && !LEGACY_TOOLS
 		protected override void TryEndProcess ()
 		{
 #else
@@ -159,12 +159,12 @@ namespace MonoTouch.Tuner {
 		}
 
 		protected
-#if !NET
+#if !NET || LEGACY_TOOLS
 		override
 #endif
 		void MapType (TypeDefinition type)
 		{
-#if !NET
+#if !NET || LEGACY_TOOLS
 			base.MapType (type);
 #endif
 
@@ -219,7 +219,7 @@ namespace MonoTouch.Tuner {
 			// This means we must set the IsDirectBinding value to null for CIFilter
 			// and all its base classes to allow both code paths and determine at runtime.
 			// References:
-			// * https://github.com/xamarin/xamarin-macios/pull/3055
+			// * https://github.com/dotnet/macios/pull/3055
 			// * https://bugzilla.xamarin.com/show_bug.cgi?id=15465
 			if (IsCIFilter (type)) {
 				isdirectbinding_value [type] = null;

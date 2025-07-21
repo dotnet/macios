@@ -50,12 +50,17 @@ using System.IO;
 using System.Text;
 using System.ComponentModel;
 using System.Reflection;
+using System.Xml;
+
+using ObjCBindings;
 using ObjCRuntime;
 using Foundation;
 using Xamarin.Utils;
 
 // Disable until we get around to enable + fix any issues.
 #nullable disable
+// but allow annotation source code with nullability info.
+#pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
 
 public partial class Generator : IMemberGatherer {
 	internal bool IsPublicMode;
@@ -320,7 +325,6 @@ public partial class Generator : IMemberGatherer {
 		return AttributeManager.HasAttribute<ProtocolAttribute> (protocol);
 	}
 
-#if NET
 	public ExperimentalAttribute GetExperimentalAttribute (ICustomAttributeProvider cu)
 	{
 		ExperimentalAttribute rv;
@@ -329,7 +333,6 @@ public partial class Generator : IMemberGatherer {
 
 		return null;
 	}
-#endif
 
 	public BindAsAttribute GetBindAsAttribute (ICustomAttributeProvider cu)
 	{
@@ -421,14 +424,11 @@ public partial class Generator : IMemberGatherer {
 			temp = string.Format ("{3}new NSNumber ({2}{1}{0});", denullify, parameterName, enumCast, nullCheck);
 		} else if (originalType == TypeCache.NSValue) {
 			var typeStr = string.Empty;
-			if (!TypeCache.NSValueCreateMap.TryGetValue (retType, out typeStr)) {
-				// HACK: These are problematic for X.M due to we do not ship System.Drawing for Full profile
-				if (retType.Name == "RectangleF" || retType.Name == "SizeF" || retType.Name == "PointF")
-					typeStr = retType.Name;
-				else
-					throw GetBindAsException ("box", retType.Name, originalType.Name, "container", minfo?.mi, pi);
+			if (TypeCache.NSValueCreateMap.TryGetValue (retType, out typeStr)) {
+				temp = string.Format ("{3}NSValue.From{0} ({2}{1});", typeStr, denullify, parameterName, nullCheck);
+			} else {
+				throw GetBindAsException ("box", retType.Name, originalType.Name, "container", minfo?.mi, pi);
 			}
-			temp = string.Format ("{3}NSValue.From{0} ({2}{1});", typeStr, denullify, parameterName, nullCheck);
 		} else if (originalType == TypeCache.NSString && IsSmartEnum (retType)) {
 			temp = isNullable ? $"{parameterName} is null ? null : " : string.Empty;
 			temp += $"{TypeManager.FormatType (retType.DeclaringType, retType)}Extensions.GetConstant ({parameterName}{denullify});";
@@ -449,13 +449,11 @@ public partial class Generator : IMemberGatherer {
 				valueConverter = $"new NSNumber ({cast}o{denullify}), {parameterName});";
 			} else if (arrType == TypeCache.NSValue && !isNullable) {
 				var typeStr = string.Empty;
-				if (!TypeCache.NSValueCreateMap.TryGetValue (arrRetType, out typeStr)) {
-					if (arrRetType.Name == "RectangleF" || arrRetType.Name == "SizeF" || arrRetType.Name == "PointF")
-						typeStr = retType.Name;
-					else
-						throw GetBindAsException ("box", arrRetType.Name, originalType.Name, "array", minfo?.mi, pi);
+				if (TypeCache.NSValueCreateMap.TryGetValue (arrRetType, out typeStr)) {
+					valueConverter = $"NSValue.From{typeStr} (o{denullify}), {parameterName});";
+				} else {
+					throw GetBindAsException ("box", arrRetType.Name, originalType.Name, "array", minfo?.mi, pi);
 				}
-				valueConverter = $"NSValue.From{typeStr} (o{denullify}), {parameterName});";
 			} else
 				throw new BindingException (1048, true, isNullable ? arrRetType.Name + "?[]" : retType.Name);
 			temp = $"NSArray.FromNSObjects (o => {valueConverter}";
@@ -495,17 +493,18 @@ public partial class Generator : IMemberGatherer {
 			if (isNullable)
 				append = $"?{append}";
 		} else if (originalReturnType == TypeCache.NSValue) {
-			if (!TypeManager.NSValueReturnMap.TryGetValue (retType, out append)) {
-				// HACK: These are problematic for X.M due to we do not ship System.Drawing for Full profile
-				if (retType.Name == "RectangleF" || retType.Name == "SizeF" || retType.Name == "PointF")
-					append = $".{retType.Name}Value";
-				else
-					throw GetBindAsException ("unbox", retType.Name, originalReturnType.Name, "container", minfo.mi);
+			if (TypeManager.NSValueReturnMap.TryGetValue (retType, out append)) {
+				if (isNullable)
+					append = $"?{append}";
+			} else {
+				throw GetBindAsException ("unbox", retType.Name, originalReturnType.Name, "container", minfo.mi);
 			}
-			if (isNullable)
-				append = $"?{append}";
 		} else if (originalReturnType == TypeCache.NSString && IsSmartEnum (retType)) {
-			append = $"{TypeManager.FormatType (retType.DeclaringType, retType)}Extensions.GetValue (";
+			if (isNullable) {
+				append = $"{TypeManager.FormatType (retType.DeclaringType, retType)}Extensions.GetNullableValue (";
+			} else {
+				append = $"{TypeManager.FormatType (retType.DeclaringType, retType)}Extensions.GetValue (";
+			}
 			suffix = ")";
 		} else if (originalReturnType.IsArray && originalReturnType.GetArrayRank () == 1) {
 			var arrType = originalReturnType.GetElementType ();
@@ -514,20 +513,26 @@ public partial class Generator : IMemberGatherer {
 			var arrRetType = arrIsNullable ? nullableElementType : retType.GetElementType ();
 			var valueFetcher = string.Empty;
 			if (arrType == TypeCache.NSString && !arrIsNullable)
-				append = $"ptr => {{\n\tusing (var str = Runtime.GetNSObject<NSString> (ptr)!) {{\n\t\treturn {TypeManager.FormatType (arrRetType.DeclaringType, arrRetType)}Extensions.GetValue (str);\n\t}}\n}}";
+				append = $"{TypeManager.FormatType (arrRetType.DeclaringType, arrRetType)}Extensions.GetValue ";
 			else if (arrType == TypeCache.NSNumber && !arrIsNullable) {
-				if (TypeManager.NSNumberReturnMap.TryGetValue (arrRetType, out valueFetcher) || arrRetType.IsEnum) {
-					var getterStr = string.Format ("{0}{1}", arrIsNullable ? "?" : string.Empty, arrRetType.IsEnum ? ".Int32Value" : valueFetcher);
-					append = string.Format ("ptr => {{\n\tusing (var num = Runtime.GetNSObject<NSNumber> (ptr)!) {{\n\t\treturn ({1}) num{0};\n\t}}\n}}", getterStr, TypeManager.FormatType (arrRetType.DeclaringType, arrRetType));
+				if (arrRetType.IsEnum) {
+					// get the underlying type of the enum and use a callback with the appropiate one
+					var enumType = arrRetType.GetEnumUnderlyingType ();
+					if (TypeManager.NSNumberToValueMap.TryGetValue (enumType, out valueFetcher)) {
+						append = $"ptr => ({TypeManager.FormatType (arrRetType.DeclaringType, arrRetType)}) NSNumber.{valueFetcher} (ptr)";
+					} else {
+						throw GetBindAsException ("unbox", retType.Name, arrType.Name, "array", minfo.mi);
+					}
+				} else if (TypeManager.NSNumberToValueMap.TryGetValue (arrRetType, out valueFetcher)) {
+					append = $"NSNumber.{valueFetcher}";
 				} else
 					throw GetBindAsException ("unbox", retType.Name, arrType.Name, "array", minfo.mi);
 			} else if (arrType == TypeCache.NSValue && !arrIsNullable) {
-				if (arrRetType.Name == "RectangleF" || arrRetType.Name == "SizeF" || arrRetType.Name == "PointF")
-					valueFetcher = $"{(arrIsNullable ? "?" : string.Empty)}.{arrRetType.Name}Value";
-				else if (!TypeManager.NSValueReturnMap.TryGetValue (arrRetType, out valueFetcher))
+				if (TypeManager.NSValueBindAsMap.TryGetValue (arrRetType, out valueFetcher)) {
+					append = string.Format ("NSValue.{0}", valueFetcher);
+				} else {
 					throw GetBindAsException ("unbox", retType.Name, arrType.Name, "array", minfo.mi);
-
-				append = string.Format ("ptr => {{\n\tusing (var val = Runtime.GetNSObject<NSValue> (ptr)!) {{\n\t\treturn val{0};\n\t}}\n}}", valueFetcher);
+				}
 			} else
 				throw new BindingException (1048, true, arrIsNullable ? arrRetType.Name + "?[]" : retType.Name);
 		} else
@@ -535,7 +540,7 @@ public partial class Generator : IMemberGatherer {
 		return append;
 	}
 
-	public bool HasForcedAttribute (ICustomAttributeProvider cu, out string owns)
+	public bool HasForcedAttribute (ICustomAttributeProvider cu, out bool owns)
 	{
 		var att = AttributeManager.GetCustomAttribute<ForcedTypeAttribute> (cu);
 
@@ -546,11 +551,11 @@ public partial class Generator : IMemberGatherer {
 		}
 
 		if (att is null) {
-			owns = "false";
+			owns = false;
 			return false;
 		}
 
-		owns = att.Owns ? "true" : "false";
+		owns = att.Owns;
 		return true;
 	}
 
@@ -582,19 +587,19 @@ public partial class Generator : IMemberGatherer {
 
 		if (mi.ReturnType.IsArray && TypeManager.IsWrappedType (mi.ReturnType.GetElementType ())) {
 			returntype = NativeHandleType;
-			returnformat = "return NSArray.FromNSObjects({0}).Handle;";
+			returnformat = "return Runtime.RetainAndAutoreleaseNSObject (NSArray.FromNSObjects({0}));";
+		} else if (TypeCache.INativeObject.IsAssignableFrom (mi.ReturnType)) {
+			returntype = Generator.NativeHandleType;
+			returnformat = "return Runtime.RetainAndAutoreleaseNativeObject ({0});";
 		} else if (TypeManager.IsWrappedType (mi.ReturnType)) {
 			returntype = Generator.NativeHandleType;
-			returnformat = "return {0}.GetHandle ();";
+			returnformat = "return Runtime.RetainAndAutoreleaseNSObject ({0});";
 		} else if (mi.ReturnType == TypeCache.System_String) {
 			returntype = Generator.NativeHandleType;
 			returnformat = "return NSString.CreateNative ({0}, true);";
 		} else if (GetNativeEnumToNativeExpression (mi.ReturnType, out var preExpression, out var postExpression, out var nativeType)) {
 			returntype = nativeType;
 			returnformat = "return " + preExpression + "{0}" + postExpression + ";";
-		} else if (TypeCache.INativeObject.IsAssignableFrom (mi.ReturnType)) {
-			returntype = Generator.NativeHandleType;
-			returnformat = "return {0}.GetHandle ();";
 		} else if (mi.ReturnType == TypeCache.System_Boolean) {
 			returntype = "byte";
 			returnformat = "return {0} ? (byte) 1 : (byte) 0;";
@@ -605,8 +610,7 @@ public partial class Generator : IMemberGatherer {
 		pars.Add (new TrampolineParameterInfo ("IntPtr", "block"));
 		var parameters = mi.GetParameters ();
 		foreach (var pi in parameters) {
-			string isForcedOwns;
-			var isForced = HasForcedAttribute (pi, out isForcedOwns);
+			var isForced = HasForcedAttribute (pi, out var isForcedOwns);
 
 			if (pi != parameters [0])
 				invoke.Append (", ");
@@ -618,7 +622,7 @@ public partial class Generator : IMemberGatherer {
 				if (IsProtocolInterface (pi.ParameterType)) {
 					invoke.AppendFormat (" Runtime.GetINativeObject<{1}> ({0}, false)!", safe_name, pi.ParameterType);
 				} else if (isForced) {
-					invoke.AppendFormat (" Runtime.GetINativeObject<{1}> ({0}, true, {2})!", safe_name, TypeManager.RenderType (pi.ParameterType), isForcedOwns);
+					invoke.AppendFormat (" Runtime.GetINativeObject<{1}> ({0}, true, {2})!", safe_name, TypeManager.RenderType (pi.ParameterType), isForcedOwns ? "true" : "false");
 				} else if (IsNSObject (pi.ParameterType)) {
 					invoke.AppendFormat (" Runtime.GetNSObject<{1}> ({0})!", safe_name, TypeManager.RenderType (pi.ParameterType));
 				} else {
@@ -695,7 +699,7 @@ public partial class Generator : IMemberGatherer {
 					convert.Append ($"var {refname} = Runtime.GetINativeObject<{TypeManager.RenderType (nt)}> ({safe_name} is not null ? *{safe_name} : NativeHandle.Zero, false)!;");
 					pars.Add (new TrampolineParameterInfo ($"{NativeHandleType}*", safe_name));
 					postConvert.AppendLine ($"if ({safe_name} is not null)");
-					postConvert.Append ($"\t*{safe_name} = {refname}.GetHandle ();");
+					postConvert.Append ($"\t*{safe_name} = Runtime.RetainAndAutoreleaseNativeObject ({refname});");
 					invoke.Append (outOrRef);
 					invoke.Append (" ");
 					invoke.Append (refname);
@@ -749,9 +753,7 @@ public partial class Generator : IMemberGatherer {
 			}
 
 			if (pi.ParameterType.IsSubclassOf (TypeCache.System_Delegate)) {
-				if (!delegate_types.ContainsKey (pi.ParameterType.Name)) {
-					delegate_types [pi.ParameterType.FullName] = pi.ParameterType.GetMethod ("Invoke");
-				}
+				EnsureDelegateCreation (pi.ParameterType);
 				if (AttributeManager.HasAttribute<BlockCallbackAttribute> (pi)) {
 					pars.Add (new TrampolineParameterInfo (NativeHandleType, safe_name));
 					invoke.AppendFormat ("NID{0}.Create ({1})!", Nomenclator.GetTrampolineName (pi.ParameterType), safe_name);
@@ -770,7 +772,7 @@ public partial class Generator : IMemberGatherer {
 				continue;
 			}
 
-			throw new BindingException (1001, true, pi.ParameterType.FullName);
+			exceptions.Add (ErrorHelper.CreateError (1001, pi.ParameterType.FullName));
 		}
 
 		var rt = mi.ReturnType;
@@ -999,7 +1001,7 @@ public partial class Generator : IMemberGatherer {
 		try {
 			sb.Append (ParameterGetMarshalType (new MarshalInfo (this, mi) { IsAligned = aligned }));
 		} catch (BindingException ex) {
-			throw new BindingException (1078, ex.Error, ex, ex.Message, mi.Name);
+			throw new BindingException (1078, ex.Error, ex, ex.Message, $"{mi.DeclaringType}.{mi.Name}");
 		}
 
 		sb.Append ("_");
@@ -1114,7 +1116,6 @@ public partial class Generator : IMemberGatherer {
 		var renderedEnumType = TypeManager.RenderType (enumType);
 		var underlyingEnumType = enumType.GetEnumUnderlyingType ();
 		var underlyingTypeName = TypeManager.RenderType (underlyingEnumType);
-		string itype;
 		string intermediateType;
 		object maxValue;
 		Func<FieldInfo, bool> isMaxDefinedFunc;
@@ -1122,14 +1123,12 @@ public partial class Generator : IMemberGatherer {
 		if (TypeCache.System_Int64 == underlyingEnumType) {
 			nativeType = "IntPtr";
 			intermediateType = "nint";
-			itype = "int";
 			maxValue = long.MaxValue;
 			isMaxDefinedFunc = (v) => (long) v.GetRawConstantValue () == long.MaxValue;
 			isMinDefinedFunc = (v) => (long) v.GetRawConstantValue () == long.MinValue;
 		} else if (TypeCache.System_UInt64 == underlyingEnumType) {
 			nativeType = "UIntPtr";
 			intermediateType = "nuint";
-			itype = "uint";
 			maxValue = ulong.MaxValue;
 			isMaxDefinedFunc = (v) => (ulong) v.GetRawConstantValue () == ulong.MaxValue;
 		} else {
@@ -1292,7 +1291,7 @@ public partial class Generator : IMemberGatherer {
 		this.debug = debug;
 		this.api = api;
 		basedir = ".";
-		NativeHandleType = binding_touch.IsDotNet ? "NativeHandle" : "IntPtr";
+		NativeHandleType = "NativeHandle";
 	}
 
 	public void Go ()
@@ -1367,11 +1366,7 @@ public partial class Generator : IMemberGatherer {
 					throw new BindingException (1018, true, t.FullName, pi.Name);
 				}
 
-#if NET
 				var is_abstract = false;
-#else
-				bool is_abstract = AttributeManager.HasAttribute<AbstractAttribute> (pi) && pi.DeclaringType == t;
-#endif
 
 				if (pi.CanRead) {
 					MethodInfo getter = pi.GetGetMethod ();
@@ -1450,10 +1445,8 @@ public partial class Generator : IMemberGatherer {
 						continue;
 					else if (attr is NoMethodAttribute)
 						continue;
-#if NET
 					else if (attr is ExperimentalAttribute)
 						continue;
-#endif
 					else if (attr is OptionalMemberAttribute || attr is RequiredMemberAttribute)
 						continue;
 					else {
@@ -1537,6 +1530,7 @@ public partial class Generator : IMemberGatherer {
 		if (exceptions.All (v => v is BindingException pe && !pe.Error)) {
 			foreach (var e in exceptions)
 				ErrorHelper.Show (e);
+			return;
 		}
 
 		throw new AggregateException (exceptions);
@@ -1607,16 +1601,8 @@ public partial class Generator : IMemberGatherer {
 			// but we have a workaround in place because we can't fix old, binary bindings so...
 			// print ("[Preserve (Conditional=true)]");
 			// For .NET we fix it using the DynamicDependency attribute below
-#if !NET
-			print ("unsafe static internal readonly {0} Handler = Invoke;", ti.DelegateName);
-			print ("");
-#endif
-#if NET
 			print ("[Preserve (Conditional = true)]");
 			print ("[UnmanagedCallersOnly]");
-#else
-			print ("[MonoPInvokeCallback (typeof ({0}))]", ti.DelegateName);
-#endif
 			print ("[UserDelegateType (typeof ({0}))]", ti.UserDelegate);
 			print ("internal static unsafe {0} Invoke ({1}) {{", ti.ReturnType, ti.Parameters);
 			indent++;
@@ -1666,14 +1652,8 @@ public partial class Generator : IMemberGatherer {
 			print ("internal static unsafe BlockLiteral CreateBlock ({0} callback)", ti.UserDelegate);
 			print ("{");
 			indent++;
-#if NET
 			print ("delegate* unmanaged<{0}> trampoline = &Invoke;", ti.FunctionPointerSignature);
 			print ("return new BlockLiteral (trampoline, callback, typeof ({0}), nameof (Invoke));", ti.StaticName);
-#else
-			print ("var block = new BlockLiteral ();");
-			print ("block.SetupBlockUnsafe (Handler, callback);");
-			print ("return block;");
-#endif
 			indent--;
 			print ("}");
 			indent--;
@@ -1711,7 +1691,7 @@ public partial class Generator : IMemberGatherer {
 			string cast_a = "", cast_b = "";
 			bool use_temp_return;
 
-			GenerateArgumentChecks (mi, true);
+			GenerateArgumentChecks (mi, true, null, out bool needsGCKeepAlives);
 
 			StringBuilder args, convs, disposes, by_ref_processing, by_ref_init;
 			GenerateTypeLowering (mi,
@@ -1737,6 +1717,8 @@ public partial class Generator : IMemberGatherer {
 				   cast_a,
 				   args.ToString (),
 				   cast_b);
+			if (needsGCKeepAlives)
+				GenerateArgumentGCKeepAlives (mi, null);
 			if (disposes.Length > 0)
 				print (disposes.ToString ());
 			if (by_ref_processing.Length > 0)
@@ -1821,13 +1803,21 @@ public partial class Generator : IMemberGatherer {
 
 				print ("namespace {0} {{", dictType.Namespace);
 				indent++;
+				WriteDocumentation (dictType);
 				PrintPlatformAttributes (dictType);
 				PrintExperimentalAttribute (dictType);
 				print ("public partial class {0} : DictionaryContainer {{", typeName);
 				indent++;
 				sw.WriteLine ("#if !COREBUILD");
+				if (BindingTouch.SupportsXmlDocumentation) {
+					print ($"/// <summary>Creates a new <see cref=\"{typeName}\" /> with default (empty) values.</summary>");
+				}
 				print ("[Preserve (Conditional = true)]");
 				print ("public {0} () : base (new NSMutableDictionary ()) {{}}\n", typeName);
+				if (BindingTouch.SupportsXmlDocumentation) {
+					print ($"/// <summary>Creates a new <see cref=\"{typeName}\" /> from the values that are specified in <paramref name=\"dictionary\" />.</summary>");
+					print ($"/// <param name=\"dictionary\">The dictionary to use to populate the properties of this type.</param>");
+				}
 				print ("[Preserve (Conditional = true)]");
 				print ("public {0} (NSDictionary? dictionary) : base (dictionary) {{}}\n", typeName);
 
@@ -1845,6 +1835,7 @@ public partial class Generator : IMemberGatherer {
 							keyname = keyContainerType + "." + keyname + "!";
 					}
 
+					WriteDocumentation (pi);
 					PrintPlatformAttributes (pi);
 					string modifier = pi.IsInternal (this) ? "internal" : "public";
 
@@ -1915,7 +1906,8 @@ public partial class Generator : IMemberGatherer {
 							getter = "{1} GetUIEdgeInsets ({0})";
 							setter = "SetUIEdgeInsets ({0}, {1}value)";
 						} else {
-							throw new BindingException (1033, true, pi.PropertyType, dictType, pi.Name);
+							exceptions.Add (new BindingException (1033, true, pi.PropertyType, dictType, pi.Name));
+							continue;
 						}
 					} else {
 						if (pi.PropertyType.IsArray) {
@@ -1937,7 +1929,8 @@ public partial class Generator : IMemberGatherer {
 								getter = "GetArray<CTFontDescriptor> ({0}, (ptr) => new CTFontDescriptor (ptr, false))";
 								setter = "SetArrayValue ({0}, value)";
 							} else {
-								throw new BindingException (1033, true, pi.PropertyType, dictType, pi.Name);
+								exceptions.Add (new BindingException (1033, true, pi.PropertyType, dictType, pi.Name));
+								continue;
 							}
 						} else if (pi.PropertyType == TypeCache.NSString) {
 							getter = "GetNSStringValue ({0})";
@@ -1971,7 +1964,8 @@ public partial class Generator : IMemberGatherer {
 							getter = "GetNativeValue<" + pi.PropertyType + "> ({0})";
 							setter = "SetNativeValue ({0}, value)";
 						} else {
-							throw new BindingException (1033, true, pi.PropertyType, dictType, pi.Name);
+							exceptions.Add (new BindingException (1033, true, pi.PropertyType, dictType, pi.Name));
+							continue;
 						}
 					}
 
@@ -2028,7 +2022,15 @@ public partial class Generator : IMemberGatherer {
 				indent++;
 			}
 
+			if (BindingTouch.SupportsXmlDocumentation) {
+				print ($"/// <summary>Provides data for an event based on a posted <see cref=\"NSNotification\" /> object.</summary>");
+			}
 			print ("public partial class {0} : NSNotificationEventArgs {{", eventType.Name); indent++;
+
+			if (BindingTouch.SupportsXmlDocumentation) {
+				print ($"/// <summary>Initializes a new instance of the <see cref=\"{eventType.Name}\" /> class.</summary>");
+				print ($"/// <param name=\"notification\">The underlying <see cref=\"NSNotification\" /> object from the posted notification.</param>");
+			}
 			print ("public {0} (NSNotification notification) : base (notification) \n{{\n}}\n", eventType.Name);
 			int i = 0;
 			foreach (var prop in eventType.GetProperties (BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)) {
@@ -2128,12 +2130,6 @@ public partial class Generator : IMemberGatherer {
 						print (GenerateNSNumber ("", "DoubleValue"));
 					else if (propertyType == TypeCache.System_Float)
 						print (GenerateNSNumber ("", "FloatValue"));
-					else if (fullname == "System.Drawing.PointF")
-						print (GenerateNSValue ("PointFValue"));
-					else if (fullname == "System.Drawing.SizeF")
-						print (GenerateNSValue ("SizeFValue"));
-					else if (fullname == "System.Drawing.RectangleF")
-						print (GenerateNSValue ("RectangleFValue"));
 					else if (fullname == "CoreGraphics.CGPoint")
 						print (GenerateNSValue ("CGPointValue"));
 					else if (fullname == "CoreGraphics.CGSize")
@@ -2298,36 +2294,9 @@ public partial class Generator : IMemberGatherer {
 	// more important since dotnet and legacy have different minimums (so this can't be done in binding files)
 	bool FilterMinimumVersion (AvailabilityBaseAttribute aa)
 	{
-#if NET
 		// dotnet can never filter minimum versions, as they are semantically important in some cases
-		// See for details: https://github.com/xamarin/xamarin-macios/issues/10170
+		// See for details: https://github.com/dotnet/macios/issues/10170
 		return true;
-#else
-		if (aa.AvailabilityKind != AvailabilityKind.Introduced)
-			return true;
-
-		Version min;
-		switch (aa.Platform) {
-		case PlatformName.iOS:
-			min = Xamarin.SdkVersions.MiniOSVersion;
-			break;
-		case PlatformName.TvOS:
-			min = Xamarin.SdkVersions.MinTVOSVersion;
-			break;
-		case PlatformName.WatchOS:
-			min = Xamarin.SdkVersions.MinWatchOSVersion;
-			break;
-		case PlatformName.MacOSX:
-			min = Xamarin.SdkVersions.MinOSXVersion;
-			break;
-		case PlatformName.MacCatalyst:
-			min = Xamarin.SdkVersions.MinMacCatalystVersion;
-			break;
-		default:
-			throw new BindingException (1047, aa.Platform.ToString ());
-		}
-		return aa.Version > min;
-#endif
 	}
 
 	HashSet<string> GetFrameworkListForPlatform (PlatformName platform)
@@ -2483,11 +2452,6 @@ public partial class Generator : IMemberGatherer {
 				else
 					type_ca = Array.Empty<AvailabilityBaseAttribute> ();
 			}
-#if !NET
-			// if we're comparing to something else (than ourself) then don't generate duplicate attributes
-			if ((mi != t) && Duplicated (availability, type_ca))
-				continue;
-#endif
 			switch (availability.AvailabilityKind) {
 			case AvailabilityKind.Unavailable:
 				// an unavailable member can override type-level attribute
@@ -2495,11 +2459,6 @@ public partial class Generator : IMemberGatherer {
 				printed = true;
 				break;
 			default:
-#if !NET
-				// can't introduce or deprecate/obsolete a member on a type that is not available
-				if (IsUnavailable (type_ca, availability.Platform))
-					continue;
-#endif
 				if (FilterMinimumVersion (availability))
 					print (availability.ToString ());
 				printed = true;
@@ -2553,13 +2512,6 @@ public partial class Generator : IMemberGatherer {
 		}
 
 		var generated_type_ca = new HashSet<string> ();
-
-#if !NET
-		foreach (var availability in AttributeManager.GetCustomAttributes<AvailabilityBaseAttribute> (generatedType)) {
-			var s = availability.ToString ();
-			generated_type_ca.Add (s);
-		}
-#endif
 
 		// the type, in which we are inlining the current method, might already have the same availability attribute
 		// which we would duplicate if generated
@@ -2795,6 +2747,18 @@ public partial class Generator : IMemberGatherer {
 		return sb.ToString ();
 	}
 
+	void EnsureDelegateCreation (Type type)
+	{
+		if (!type.IsSubclassOf (TypeCache.System_Delegate))
+			return;
+
+		if (type.Namespace == "System" && type.Name.StartsWith ("Action", StringComparison.Ordinal))
+			return;
+
+		if (!delegate_types.ContainsKey (type.FullName))
+			delegate_types [type.FullName] = type.GetMethod ("Invoke");
+	}
+
 	//
 	// Renders the parameters in @parameters in a format suitable for a method declaration.
 	// The result is place into the provided string builder 
@@ -2812,8 +2776,12 @@ public partial class Generator : IMemberGatherer {
 			// Format nicely the type, as succinctly as possible
 			Type parType = pi.ParameterType;
 			if (parType.IsSubclassOf (TypeCache.System_Delegate)) {
-				var ti = MakeTrampoline (parType);
-				sb.AppendFormat ("[BlockProxy (typeof (ObjCRuntime.Trampolines.{0}))]", ti.NativeInvokerName);
+				if (!AttributeManager.HasAttribute<WrapAttribute> (mi)) {
+					var ti = MakeTrampoline (parType);
+					sb.AppendFormat ("[BlockProxy (typeof (ObjCRuntime.Trampolines.{0}))]", ti.NativeInvokerName);
+				} else {
+					EnsureDelegateCreation (parType);
+				}
 			}
 
 			if (AttributeManager.HasAttribute<TransientAttribute> (pi))
@@ -2865,9 +2833,6 @@ public partial class Generator : IMemberGatherer {
 		print (w, "");
 		print (w, "#nullable enable");
 		print (w, "");
-		print (w, "#if !NET");
-		print (w, "using NativeHandle = System.IntPtr;");
-		print (w, "#endif");
 	}
 
 	//
@@ -2888,6 +2853,7 @@ public partial class Generator : IMemberGatherer {
 		MarshalInfo mai = new MarshalInfo (this, mi);
 		MarshalType mt;
 
+		var owns = (minfo?.is_return_release == true) || (minfo?.is_forced_owns == true) ? "true" : "false";
 		if (GetNativeEnumToManagedExpression (mi.ReturnType, out cast_a, out cast_b, out var _, postproc)) {
 			// we're done here
 		} else if (mi.ReturnType.IsEnum) {
@@ -2895,15 +2861,15 @@ public partial class Generator : IMemberGatherer {
 			cast_b = "";
 		} else if (marshalTypes.TryGetMarshalType (mai.Type, out mt)) {
 			cast_a = mt.CreateFromRet;
-			cast_b = mt.ClosingCreate;
+			cast_b = mt.ClosingCreate?.Replace ("%OWNS%", owns) ?? string.Empty;
 		} else if (TypeManager.IsWrappedType (mi.ReturnType)) {
 			// protocol support means we can return interfaces and, as far as .NET knows, they might not be NSObject
 			if (IsProtocolInterface (mi.ReturnType)) {
 				cast_a = " Runtime.GetINativeObject<" + TypeManager.FormatType (minfo?.type ?? mi.DeclaringType, mi.ReturnType) + "> (";
-				cast_b = $", {(minfo?.is_return_release == true ? "true" : "false")})!";
+				cast_b = $", {owns})!";
 			} else if (minfo is not null && minfo.is_forced) {
 				cast_a = " Runtime.GetINativeObject<" + TypeManager.FormatType (minfo.type, mi.ReturnType) + "> (";
-				cast_b = $", true, {minfo.is_forced_owns})!";
+				cast_b = $", true, {owns})!";
 			} else if (minfo is not null && minfo.is_bindAs) {
 				var bindAs = GetBindAsAttribute (minfo.mi);
 				var nullableBindAsType = TypeManager.GetUnderlyingNullableType (bindAs.Type);
@@ -2914,30 +2880,26 @@ public partial class Generator : IMemberGatherer {
 				var wrapper = GetFromBindAsWrapper (minfo, out suffix);
 				var formattedReturnType = TypeManager.FormatType (minfo.type, mi.ReturnType);
 				if (mi.ReturnType == TypeCache.NSString) {
-					if (isNullable) {
-						print ("{0} retvaltmp;", NativeHandleType);
-						cast_a = "((retvaltmp = ";
-						cast_b = $") == IntPtr.Zero ? default ({formattedBindAsType}) : ({wrapper}Runtime.GetNSObject<{formattedReturnType}> (retvaltmp)!){suffix})";
-					} else {
-						cast_a = $"{wrapper}Runtime.GetNSObject<{formattedReturnType}> (";
-						cast_b = $")!{suffix}";
-					}
+					cast_a = $"{wrapper}";
+					cast_b = $"{suffix}";
 				} else {
 					var enumCast = (bindAsType.IsEnum && !minfo.type.IsArray) ? $"({formattedBindAsType}) " : string.Empty;
-					print ("{0} retvaltmp;", NativeHandleType);
-					cast_a = "((retvaltmp = ";
-					cast_b = $") == IntPtr.Zero ? default ({formattedBindAsType}) : ({enumCast}Runtime.GetNSObject<{formattedReturnType}> (retvaltmp)!{wrapper})){suffix}";
+					cast_a = $"{enumCast}Runtime.GetNSObject<{formattedReturnType}> (";
+					if (isNullable)
+						cast_b = $", {owns}){wrapper}";
+					else
+						cast_b = $", {owns})!{wrapper}";
 				}
 			} else {
 				cast_a = " Runtime.GetNSObject<" + TypeManager.FormatType (minfo?.type ?? declaringType, mi.ReturnType) + "> (";
-				cast_b = ")!";
+				cast_b = $", {owns})!";
 			}
 		} else if (mi.ReturnType.IsGenericParameter) {
 			cast_a = " Runtime.GetINativeObject<" + mi.ReturnType.Name + "> (";
-			cast_b = ", false)!";
+			cast_b = $", {owns})!";
 		} else if (mai.Type == TypeCache.System_String && !mai.PlainString) {
 			cast_a = "CFString.FromHandle (";
-			cast_b = ")!";
+			cast_b = $", {owns})!";
 		} else if (mi.ReturnType.IsSubclassOf (TypeCache.System_Delegate)) {
 			cast_a = "";
 			cast_b = "";
@@ -2950,14 +2912,11 @@ public partial class Generator : IMemberGatherer {
 				}
 				var bindAsT = bindAttrType.GetElementType ();
 				var suffix = string.Empty;
-				print ("{0} retvalarrtmp;", NativeHandleType);
-				cast_a = "((retvalarrtmp = ";
-				cast_b = ") == IntPtr.Zero ? null! : (";
-				cast_b += $"NSArray.ArrayFromHandleFunc <{TypeManager.FormatType (bindAsT.DeclaringType, bindAsT)}> (retvalarrtmp, {GetFromBindAsWrapper (minfo, out suffix)})" + suffix;
-				cast_b += "))";
+				cast_a = $"NSArray.ArrayFromHandleFunc <{TypeManager.FormatType (bindAsT.DeclaringType, bindAsT)}> (";
+				cast_b = $", {GetFromBindAsWrapper (minfo, out suffix)}, {owns})!" + suffix;
 			} else if (etype == TypeCache.System_String) {
 				cast_a = "CFArray.StringArrayFromHandle (";
-				cast_b = ")!";
+				cast_b = $", {owns})!";
 			} else if (etype == TypeCache.Selector) {
 				exceptions.Add (ErrorHelper.CreateError (1066, mai.Type.FullName, mi.DeclaringType.FullName, mi.Name));
 			} else {
@@ -2965,7 +2924,7 @@ public partial class Generator : IMemberGatherer {
 					cast_a = "CFArray.ArrayFromHandle<global::" + etype + ">(";
 				else
 					cast_a = "CFArray.ArrayFromHandle<" + TypeManager.FormatType (mi.DeclaringType, etype) + ">(";
-				cast_b = ")!";
+				cast_b = $", {owns})!";
 			}
 		} else if (mi.ReturnType.Namespace == "System" && mi.ReturnType.Name == "nint") {
 			cast_a = "(nint) ";
@@ -2974,9 +2933,11 @@ public partial class Generator : IMemberGatherer {
 		}
 	}
 
-	void GenerateInvoke (bool stret, bool supercall, MethodInfo mi, MemberInformation minfo, string selector, string args, bool assign_to_temp, Type category_type, bool aligned)
+	void GenerateInvoke (bool stret, bool supercall, MethodInfo mi, MemberInformation minfo, string selector, string args, Type category_type, bool aligned)
 	{
-		string target_name = (category_type is null && !minfo.is_extension_method && !minfo.is_protocol_implementation_method) ? "this" : "This";
+		var isInstanceMethod = category_type is null && !minfo.is_extension_method &&
+								  !minfo.is_protocol_implementation_method;
+		string target_name = isInstanceMethod ? "this" : "This";
 		string handle = supercall ? ".SuperHandle" : ".Handle";
 
 		// If we have supercall == false, we can be a Bind method that has a [Target]
@@ -3033,7 +2994,7 @@ public partial class Generator : IMemberGatherer {
 			print ($"IntPtr {handleName};");
 			print ($"{handleName} = global::{NamespaceCache.Messaging}.IntPtr_objc_msgSend (Class.GetHandle (typeof (T)), Selector.GetHandle (\"alloc\"));");
 			print ($"{handleName} = {sig} ({handleName}, {selector_field}{args});");
-			print ($"{(assign_to_temp ? "ret = " : "return ")} global::ObjCRuntime.Runtime.GetINativeObject<T> ({handleName}, true);");
+			print ($"ret = global::ObjCRuntime.Runtime.GetINativeObject<T> ({handleName}, true);");
 		} else {
 			bool returns = mi.ReturnType != TypeCache.System_Void && mi.Name != "Constructor";
 			string cast_a = "", cast_b = "";
@@ -3048,19 +3009,25 @@ public partial class Generator : IMemberGatherer {
 
 			if (minfo.is_static)
 				print ("{0}{1}{2} (class_ptr, {5}{6}){7};",
-					   returns ? (assign_to_temp ? "ret = " : "return ") : "",
+					   returns ? "ret = " : "",
 					   cast_a, sig, target_name,
 					   "/*unusued3*/", //supercall ? "Super" : "",
 					   selector_field, args, cast_b);
 			else
 				print ("{0}{1}{2} ({3}{4}, {5}{6}){7};",
-					   returns ? (assign_to_temp ? "ret = " : "return ") : "",
+					   returns ? "ret = " : "",
 					   cast_a, sig, target_name,
 					   handle,
 					   selector_field, args, cast_b);
 
 			if (postproc.Length > 0)
 				print (postproc.ToString ());
+		}
+
+		if (!isInstanceMethod) {
+			// if this is a extension of any kind, ensure that we keep alive the this parameter
+			// so that it is not collected before the msg send call has completed.
+			print ("GC.KeepAlive (This);");
 		}
 	}
 
@@ -3070,64 +3037,20 @@ public partial class Generator : IMemberGatherer {
 		bool x64_stret = Stret.X86_64NeedStret (returnType, this);
 		bool aligned = AttributeManager.HasAttribute<AlignAttribute> (mi);
 
-		if (CurrentPlatform == PlatformName.MacOSX || CurrentPlatform == PlatformName.MacCatalyst) {
-			if (x64_stret) {
-				print ("if (global::ObjCRuntime.Runtime.IsARM64CallingConvention) {");
-				indent++;
-				GenerateInvoke (false, supercall, mi, minfo, selector, args, assign_to_temp, category_type, false);
-				indent--;
-				print ("} else {");
-				indent++;
-				GenerateInvoke (x64_stret, supercall, mi, minfo, selector, args, assign_to_temp, category_type, aligned && x64_stret);
-				indent--;
-				print ("}");
-			} else {
-				GenerateInvoke (false, supercall, mi, minfo, selector, args, assign_to_temp, category_type, false);
-			}
-			return;
-		}
-
-		bool arm_stret = Stret.ArmNeedStret (returnType, this);
-		bool x86_stret = Stret.X86NeedStret (returnType, this);
-		bool is_stret_multi = arm_stret || x86_stret || x64_stret;
-		bool need_multi_path = is_stret_multi;
-
-		if (need_multi_path) {
-			if (is_stret_multi) {
-				// First check for arm64
-				print ("if (global::ObjCRuntime.Runtime.IsARM64CallingConvention) {");
-				indent++;
-				GenerateInvoke (false, supercall, mi, minfo, selector, args, assign_to_temp, category_type, false);
-				indent--;
-				// If we're not arm64, but we're 64-bit, then we're x86_64
-				print ("} else if (IntPtr.Size == 8) {");
-				indent++;
-				GenerateInvoke (x64_stret, supercall, mi, minfo, selector, args, assign_to_temp, category_type, aligned && x64_stret);
-				indent--;
-				// if we're not 64-bit, but we're on device, then we're 32-bit arm
-				print ("} else if (Runtime.Arch == Arch.DEVICE) {");
-				indent++;
-				GenerateInvoke (arm_stret, supercall, mi, minfo, selector, args, assign_to_temp, category_type, aligned && arm_stret);
-				indent--;
-				// if we're none of the above, we're x86
-				print ("} else {");
-				indent++;
-				GenerateInvoke (x86_stret, supercall, mi, minfo, selector, args, assign_to_temp, category_type, aligned && x86_stret);
-				indent--;
-				print ("}");
-			} else {
-				print ("if (IntPtr.Size == 8) {");
-				indent++;
-				GenerateInvoke (x64_stret, supercall, mi, minfo, selector, args, assign_to_temp, category_type, aligned && x64_stret);
-				indent--;
-				print ("} else {");
-				indent++;
-				GenerateInvoke (x86_stret, supercall, mi, minfo, selector, args, assign_to_temp, category_type, aligned && x86_stret);
-				indent--;
-				print ("}");
-			}
+		if (x64_stret) {
+			// First check for arm64
+			print ("if (global::ObjCRuntime.Runtime.IsARM64CallingConvention) {");
+			indent++;
+			GenerateInvoke (false, supercall, mi, minfo, selector, args, category_type, false);
+			indent--;
+			// If we're not arm64, then we're x86_64
+			print ("} else {");
+			indent++;
+			GenerateInvoke (x64_stret, supercall, mi, minfo, selector, args, category_type, aligned && x64_stret);
+			indent--;
+			print ("}");
 		} else {
-			GenerateInvoke (false, supercall, mi, minfo, selector, args, assign_to_temp, category_type, false);
+			GenerateInvoke (false, supercall, mi, minfo, selector, args, category_type, false);
 		}
 	}
 
@@ -3298,27 +3221,22 @@ public partial class Generator : IMemberGatherer {
 			} else if (mai.Type.IsArray) {
 				Type etype = mai.Type.GetElementType ();
 				if (HasBindAsAttribute (pi)) {
-					convs.AppendFormat ("var nsb_{0} = {1}\n", pi.Name, GetToBindAsWrapper (mi, null, pi));
-					disposes.AppendFormat ("\nnsb_{0}?.Dispose ();", pi.Name);
+					convs.AppendFormat ("using var nsb_{0} = {1}\n", pi.Name, GetToBindAsWrapper (mi, null, pi));
 				} else if (HasBindAsAttribute (propInfo)) {
 					disposes.AppendFormat ("\nnsb_{0}?.Dispose ();", propInfo.Name);
 				} else if (etype == TypeCache.System_String) {
 					if (null_allowed_override || AttributeManager.IsNullable (pi)) {
-						convs.AppendFormat ("var nsa_{0} = {1} is null ? null : NSArray.FromStrings ({1});\n", pi.Name, pi.Name.GetSafeParamName ());
-						disposes.AppendFormat ("if (nsa_{0} is not null)\n\tnsa_{0}.Dispose ();\n", pi.Name);
+						convs.AppendFormat ("using var nsa_{0} = {1} is null ? null : NSArray.FromStrings ({1});\n", pi.Name, pi.Name.GetSafeParamName ());
 					} else {
-						convs.AppendFormat ("var nsa_{0} = NSArray.FromStrings ({1});\n", pi.Name, pi.Name.GetSafeParamName ());
-						disposes.AppendFormat ("nsa_{0}.Dispose ();\n", pi.Name);
+						convs.AppendFormat ("using var nsa_{0} = NSArray.FromStrings ({1});\n", pi.Name, pi.Name.GetSafeParamName ());
 					}
 				} else if (etype == TypeCache.Selector) {
 					exceptions.Add (ErrorHelper.CreateError (1065, mai.Type.FullName, string.IsNullOrEmpty (pi.Name) ? $"#{pi.Position}" : pi.Name, mi.DeclaringType.FullName, mi.Name));
 				} else {
 					if (null_allowed_override || AttributeManager.IsNullable (pi)) {
-						convs.AppendFormat ("var nsa_{0} = {1} is null ? null : NSArray.FromNSObjects ({1});\n", pi.Name, pi.Name.GetSafeParamName ());
-						disposes.AppendFormat ("if (nsa_{0} is not null)\n\tnsa_{0}.Dispose ();\n", pi.Name);
+						convs.AppendFormat ("using var nsa_{0} = {1} is null ? null : NSArray.FromNSObjects ({1});\n", pi.Name, pi.Name.GetSafeParamName ());
 					} else {
-						convs.AppendFormat ("var nsa_{0} = NSArray.FromNSObjects ({1});\n", pi.Name, pi.Name.GetSafeParamName ());
-						disposes.AppendFormat ("nsa_{0}.Dispose ();\n", pi.Name);
+						convs.AppendFormat ("using var nsa_{0} = NSArray.FromNSObjects ({1});\n", pi.Name, pi.Name.GetSafeParamName ());
 					}
 				}
 			} else if (mai.Type.IsSubclassOf (TypeCache.System_Delegate)) {
@@ -3341,7 +3259,7 @@ public partial class Generator : IMemberGatherer {
 			} else if (pi.ParameterType.IsGenericParameter) {
 				//				convs.AppendFormat ("{0}.Handle", pi.Name.GetSafeParamName ());
 			} else if (HasBindAsAttribute (pi)) {
-				convs.AppendFormat ("var nsb_{0} = {1}\n", pi.Name, GetToBindAsWrapper (mi, null, pi));
+				convs.AppendFormat ("using var nsb_{0} = {1}\n", pi.Name, GetToBindAsWrapper (mi, null, pi));
 			} else if (mai.Type.IsPointer && mai.Type.GetElementType ().IsValueType) {
 				// nothing to do
 			} else {
@@ -3391,7 +3309,7 @@ public partial class Generator : IMemberGatherer {
 						by_ref_init.Insert (0, string.Format ("NSArray? {0}ArrayValue = {0} is null ? null : NSArray.FromStrings ({0});\n", pi.Name.GetSafeParamName ()));
 						by_ref_init.AppendFormat ("{0}ArrayValue is null ? NativeHandle.Zero : {0}ArrayValue.Handle;\n", pi.Name.GetSafeParamName ());
 					} else if (isNSObject || isINativeObjectSubclass) {
-						by_ref_init.AppendFormat ("{0} is null ? NativeHandle.Zero : {0}.Handle;\n", pi.Name.GetSafeParamName ());
+						by_ref_init.AppendFormat ("Runtime.RetainAndAutoreleaseNativeObject ({0});\n", pi.Name.GetSafeParamName ());
 					} else {
 						throw ErrorHelper.CreateError (88, mai.Type, mi);
 					}
@@ -3420,7 +3338,7 @@ public partial class Generator : IMemberGatherer {
 				} else if (isINativeObjectSubclass) {
 					if (!pi.IsOut)
 						by_ref_processing.AppendFormat ("if ({0}Value != ({0} is null ? NativeHandle.Zero : {0}.Handle))\n\t", pi.Name.GetSafeParamName ());
-					by_ref_processing.AppendFormat ("{0} = Runtime.GetINativeObject<{1}> ({0}Value, {2}, {3})!;\n", pi.Name.GetSafeParamName (), TypeManager.RenderType (elementType), isForcedType ? "true" : "false", isForcedType ? isForcedOwns : "false");
+					by_ref_processing.AppendFormat ("{0} = Runtime.GetINativeObject<{1}> ({0}Value, {2}, {3})!;\n", pi.Name.GetSafeParamName (), TypeManager.RenderType (elementType), isForcedType ? "true" : "false", (isForcedType && isForcedOwns) ? "true" : "false");
 				} else {
 					throw ErrorHelper.CreateError (88, mai.Type, mi);
 				}
@@ -3428,10 +3346,12 @@ public partial class Generator : IMemberGatherer {
 		}
 	}
 
-	void GenerateArgumentChecks (MethodInfo mi, bool null_allowed_override, PropertyInfo propInfo = null)
+	void GenerateArgumentChecks (MethodInfo mi, bool null_allowed_override, PropertyInfo propInfo, out bool needsGCKeepAlives)
 	{
+		needsGCKeepAlives = false;
+
 		if (AttributeManager.IsNullable (mi))
-			ErrorHelper.Show (new BindingException (1118, false, mi));
+			exceptions.Add (ErrorHelper.CreateWarning (1118, mi));
 
 		foreach (var pi in mi.GetParameters ()) {
 			var safe_name = pi.Name.GetSafeParamName ();
@@ -3447,16 +3367,29 @@ public partial class Generator : IMemberGatherer {
 			var needs_null_check = ParameterNeedsNullCheck (pi, mi, propInfo);
 			var cap = propInfo?.SetMethod == mi ? (ICustomAttributeProvider) propInfo : (ICustomAttributeProvider) pi;
 			var bind_as = GetBindAsAttribute (cap);
-			var pit = bind_as is null ? pi.ParameterType : bind_as.Type;
+			var pit = pi.GetBindingType (mi, bind_as);
 			if (TypeManager.IsWrappedType (pit) || TypeCache.INativeObject.IsAssignableFrom (pit)) {
 				if (needs_null_check && !null_allowed_override) {
 					print ($"var {safe_name}__handle__ = {safe_name}!.GetNonNullHandle (nameof ({safe_name}));");
 				} else {
 					print ($"var {safe_name}__handle__ = {safe_name}.GetHandle ();");
 				}
+				needsGCKeepAlives = true;
 			} else if (needs_null_check) {
 				print ("if ({0} is null)", safe_name);
 				print ("\tObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof ({0}));", safe_name);
+			}
+		}
+	}
+
+	void GenerateArgumentGCKeepAlives (MethodInfo mi, PropertyInfo propInfo = null)
+	{
+		foreach (var pi in mi.GetParameters ()) {
+			var cap = propInfo?.SetMethod == mi ? (ICustomAttributeProvider) propInfo : (ICustomAttributeProvider) pi;
+			var bind_as = GetBindAsAttribute (cap);
+			var pit = pi.GetBindingType (mi, bind_as);
+			if (TypeManager.IsWrappedType (pit) || TypeCache.INativeObject.IsAssignableFrom (pit)) {
+				print ($"GC.KeepAlive ({pi.Name.GetSafeParamName ()});");
 			}
 		}
 	}
@@ -3527,7 +3460,7 @@ public partial class Generator : IMemberGatherer {
 
 		Inject<PrologueSnippetAttribute> (mi);
 
-		GenerateArgumentChecks (mi, false, propInfo);
+		GenerateArgumentChecks (mi, false, propInfo, out bool needsGCKeepAlives);
 
 		// Collect all strings that can be fast-marshalled
 		List<string> stringParameters = CollectFastStringMarshalParameters (mi);
@@ -3550,7 +3483,7 @@ public partial class Generator : IMemberGatherer {
 		}
 
 		if (propInfo is not null && IsSetter (mi) && HasBindAsAttribute (propInfo)) {
-			convs.AppendFormat ("var nsb_{0} = {1}\n", propInfo.Name, GetToBindAsWrapper (mi, minfo, null));
+			convs.AppendFormat ("using var nsb_{0} = {1}\n", propInfo.Name, GetToBindAsWrapper (mi, minfo, null));
 		}
 
 		if (convs.Length > 0)
@@ -3578,7 +3511,7 @@ public partial class Generator : IMemberGatherer {
 		bool use_temp_return =
 			minfo.is_return_release ||
 			(mi.Name != "Constructor" && shouldMarshalNativeExceptions && mi.ReturnType != TypeCache.System_Void) ||
-			(mi.Name != "Constructor" && (CheckNeedStret (mi) || disposes.Length > 0 || postget is not null) && mi.ReturnType != TypeCache.System_Void) ||
+			(mi.Name != "Constructor" && (CheckNeedStret (mi) || disposes.Length > 0 || needsGCKeepAlives || postget is not null) && mi.ReturnType != TypeCache.System_Void) ||
 			(AttributeManager.HasAttribute<FactoryAttribute> (mi)) ||
 			((body_options & BodyOption.NeedsTempReturn) == BodyOption.NeedsTempReturn) ||
 			(mi.ReturnType.IsSubclassOf (TypeCache.System_Delegate)) ||
@@ -3586,7 +3519,7 @@ public partial class Generator : IMemberGatherer {
 			(IsNativeEnum (mi.ReturnType)) ||
 			(mi.ReturnType == TypeCache.System_Boolean) ||
 			(mi.ReturnType == TypeCache.System_Char) ||
-			minfo.is_protocol_member && disposes.Length > 0 && mi.Name == "Constructor" ||
+			(minfo.is_protocol_member && (disposes.Length > 0 || needsGCKeepAlives) && mi.Name == "Constructor") ||
 			((mi.Name != "Constructor" || minfo.is_protocol_member) && by_ref_processing.Length > 0 && mi.ReturnType != TypeCache.System_Void);
 
 		if (use_temp_return) {
@@ -3614,6 +3547,17 @@ public partial class Generator : IMemberGatherer {
 				var nullableReturn = isClassType ? "?" : string.Empty;
 				print ("{0}{1} ret;", TypeManager.FormatType (minfo.type, mi.ReturnType), nullableReturn);
 			}
+		} else if (mi.ReturnType != TypeCache.System_Void && mi.Name != "Constructor") {
+			if (minfo.is_bindAs) {
+				var bindAsAttrib = GetBindAsAttribute (minfo.mi);
+				// tricky, e.g. when an nullable `NSNumber[]` is bound as a `float[]`, since FormatType and bindAsAttrib have not clue about the original nullability 
+				print ("{0} ret;", TypeManager.FormatType (bindAsAttrib.Type.DeclaringType, bindAsAttrib.Type));
+			} else {
+				print ("{0} ret;", TypeManager.FormatType (minfo.type, mi.ReturnType));
+			}
+		} else if (minfo.is_ctor && minfo.is_protocol_member) {
+			// special case because constructors in protocol members will be converted to factory methods
+			print ($"T? ret;");
 		}
 
 		bool needs_temp = use_temp_return || disposes.Length > 0;
@@ -3652,24 +3596,10 @@ public partial class Generator : IMemberGatherer {
 		if (shouldMarshalNativeExceptions)
 			print ("Runtime.ThrowException (exception_gchandle);");
 
-		if (minfo.is_return_release && !IsProtocolInterface (mi.ReturnType)) {
-
-			// Make sure we generate the required signature in Messaging only if needed 
-			// bool_objc_msgSendSuper_IntPtr: for respondsToSelector:
-			if (!send_methods.ContainsKey ("void_objc_msgSend")) {
-				print (m, "[DllImport (LIBOBJC_DYLIB, EntryPoint=\"objc_msgSendSuper\")]");
-				print (m, "public extern static void void_objc_msgSend (IntPtr receiever, IntPtr selector);");
-				RegisterMethodName ("void_objc_msgSend");
-			}
-
-			print ("if (ret is not null)");
-			indent++;
-			print ("global::{0}.void_objc_msgSend (ret.Handle, Selector.GetHandle (\"release\"));", NamespaceCache.Messaging);
-			indent--;
-		}
-
 		Inject<PostSnippetAttribute> (mi);
 
+		if (needsGCKeepAlives)
+			GenerateArgumentGCKeepAlives (mi, propInfo);
 		if (disposes.Length > 0)
 			print (sw, disposes.ToString ());
 		if ((body_options & BodyOption.StoreRet) == BodyOption.StoreRet) {
@@ -3740,6 +3670,12 @@ public partial class Generator : IMemberGatherer {
 				// we can't be 100% confident that the ObjC API annotations are correct so we always null check inside generated code
 				print ("return ret!;");
 			}
+		} else if (minfo.is_ctor && minfo.is_protocol_member) {
+			// special case since ctrs in protocol members become create methods
+			print ("return ret;");
+		} else if (mi.ReturnType != TypeCache.System_Void && mi.Name != "Constructor") {
+			// general case if we do return and we are not a constructor.
+			print ("return ret;");
 		}
 		if (minfo.is_ctor)
 			WriteMarkDirtyIfDerived (sw, mi.DeclaringType);
@@ -3956,13 +3892,11 @@ public partial class Generator : IMemberGatherer {
 		if (!minfo.is_protocol_member || minfo.is_protocol_implementation_method)
 			return;
 
-#if NET
 		if (minfo.is_protocol_member_required.Value) {
 			print ("[global::Foundation.RequiredMember]");
 		} else {
 			print ("[global::Foundation.OptionalMember]");
 		}
-#endif
 	}
 
 	void GenerateProperty (Type type, PropertyInfo pi, List<string> instance_fields_to_clear_on_dispose, bool is_model, bool is_interface_impl = false, bool is_protocol_member = false, bool? is_protocol_member_required = null, bool is_protocol_implementation_method = false)
@@ -4003,9 +3937,8 @@ public partial class Generator : IMemberGatherer {
 			}
 		}
 
-		WriteDocumentation (pi);
-
 		if (wrap is not null) {
+			WriteDocumentation (pi);
 			print_generated_code ();
 			PrintPropertyAttributes (pi, minfo);
 			PrintAttributes (pi, preserve: true, advice: true);
@@ -4017,9 +3950,6 @@ public partial class Generator : IMemberGatherer {
 					pi.Name.GetSafeParamName ());
 			indent++;
 			if (generate_getter) {
-#if !NET
-				PrintAttributes (pi, platform: true);
-#endif
 				PrintAttributes (pi.GetGetMethod (), platform: true, preserve: true, advice: true);
 				print ("get {");
 				indent++;
@@ -4039,9 +3969,6 @@ public partial class Generator : IMemberGatherer {
 				print ("}");
 			}
 			if (generate_setter) {
-#if !NET
-				PrintAttributes (pi, platform: true);
-#endif
 				PrintAttributes (pi.GetSetMethod (), platform: true, preserve: true, advice: true);
 				print ("set {");
 				indent++;
@@ -4088,6 +4015,7 @@ public partial class Generator : IMemberGatherer {
 			}
 		}
 
+		WriteDocumentation (pi);
 		print_generated_code (optimizable: IsOptimizable (pi));
 		PrintPropertyAttributes (pi, minfo);
 
@@ -4150,32 +4078,23 @@ public partial class Generator : IMemberGatherer {
 			string sel = ba is not null ? ba.Selector : export.Selector;
 
 			// print availability separately since we could be inlining
-#if !NET
-			PrintPlatformAttributes (pi, type);
-#endif
-
 			if (!minfo.is_sealed || !minfo.is_wrapper) {
 				PrintDelegateProxy (pi.GetGetMethod ());
 				PrintExport (minfo, sel, export.ArgumentSemantic);
 			}
 
 			PrintAttributes (pi.GetGetMethod (), platform: true, preserve: true, advice: true, notImplemented: true, inlinedType: inlinedType);
-#if NET
 			if (minfo.is_protocol_member && !minfo.is_static) {
 				print ("get {");
 				print ($"\treturn _Get{pi.Name.GetSafeParamName ()} (this);");
 				print ("}");
-#else
-			if (minfo.is_abstract) {
-				print ("get; ");
-#endif
 			} else {
 				print ("get {");
 				if (debug)
 					print ("Console.WriteLine (\"In {0}\");", pi.GetGetMethod ());
 				if (is_model)
 					print ("\tthrow new ModelNotImplementedException ();");
-				else if (minfo.is_abstract && !minfo.is_protocol_member)
+				else if (minfo.is_abstract && !minfo.is_protocol_member && !minfo.is_protocol_implementation_method)
 					print ("throw new You_Should_Not_Call_base_In_This_Method ();");
 				else {
 					if (minfo.is_autorelease) {
@@ -4204,7 +4123,7 @@ public partial class Generator : IMemberGatherer {
 			var ba = GetBindAttribute (setter);
 			bool null_allowed = AttributeManager.IsNullable (setter);
 			if (null_allowed)
-				ErrorHelper.Show (new BindingException (1118, false, setter));
+				exceptions.Add (ErrorHelper.CreateWarning (1118, setter));
 			null_allowed |= AttributeManager.IsNullable (pi);
 			var not_implemented_attr = AttributeManager.GetCustomAttribute<NotImplementedAttribute> (setter);
 			string sel;
@@ -4217,24 +4136,14 @@ public partial class Generator : IMemberGatherer {
 
 			PrintBlockProxy (pi.PropertyType);
 
-			// print availability separately since we could be inlining
-#if !NET
-			PrintPlatformAttributes (pi, type);
-#endif
-
 			if (not_implemented_attr is null && (!minfo.is_sealed || !minfo.is_wrapper))
 				PrintExport (minfo, sel, export.ArgumentSemantic);
 
 			PrintAttributes (pi.GetSetMethod (), platform: true, preserve: true, advice: true, notImplemented: true, inlinedType: inlinedType);
-#if NET
 			if (minfo.is_protocol_member && !minfo.is_static) {
 				print ("set {");
 				print ($"\t_Set{pi.Name.GetSafeParamName ()} (this, value);");
 				print ("}");
-#else
-			if (minfo.is_abstract) {
-				print ("set; ");
-#endif
 			} else {
 				print ("set {");
 				if (debug)
@@ -4253,7 +4162,7 @@ public partial class Generator : IMemberGatherer {
 					print ("\tthrow new NotImplementedException ({0});", not_implemented_attr.Message is null ? "" : "\"" + not_implemented_attr.Message + "\"");
 				} else if (is_model)
 					print ("\tthrow new ModelNotImplementedException ();");
-				else if (minfo.is_abstract && !minfo.is_protocol_member)
+				else if (minfo.is_abstract && !minfo.is_protocol_member && !minfo.is_protocol_implementation_method)
 					print ("throw new You_Should_Not_Call_base_In_This_Method ();");
 				else {
 					GenerateMethodBody (minfo, setter, sel, null_allowed, null, BodyOption.None, pi);
@@ -4281,6 +4190,7 @@ public partial class Generator : IMemberGatherer {
 		return "Task<" + ttype + ">";
 	}
 
+	HashSet<string>? reported1077;
 	string GetAsyncTaskType (AsyncMethodInfo minfo)
 	{
 		if (minfo.IsSingleArgAsync)
@@ -4292,8 +4202,16 @@ public partial class Generator : IMemberGatherer {
 		if (attr.ResultType is not null)
 			return TypeManager.FormatType (minfo.type, attr.ResultType);
 
-		//Console.WriteLine ("{0}", minfo.MethodInfo.GetParameters ().Last ().ParameterType);
-		throw new BindingException (1077, true, minfo.mi);
+		var method = minfo.mi.ToString ();
+		if (reported1077 is null)
+			reported1077 = new HashSet<string> ();
+
+		if (!reported1077.Contains (method)) {
+			reported1077.Add (method);
+			exceptions.Add (ErrorHelper.CreateError (1077, method));
+		}
+
+		return "placeholder";
 	}
 
 	string GetInvokeParamList (ParameterInfo [] parameters, bool suffix = true, bool force = false)
@@ -4357,6 +4275,14 @@ public partial class Generator : IMemberGatherer {
 			}
 		}
 
+		var asyncAttribute = AttributeManager.GetCustomAttribute<AsyncAttribute> (mi);
+		var xmlDocs = asyncKind == AsyncMethodKind.Plain ? asyncAttribute.XmlDocs : asyncAttribute.XmlDocsWithOutParameter;
+		if (!string.IsNullOrEmpty (xmlDocs)) {
+			var docLines = xmlDocs.Split ('\n');
+			foreach (var line in docLines)
+				print ($"/// {line}");
+		}
+
 		PrintMethodAttributes (minfo);
 
 		PrintAsyncHeader (minfo, asyncKind);
@@ -4375,7 +4301,7 @@ public partial class Generator : IMemberGatherer {
 		print ("var tcs = new TaskCompletionSource<{0}> ();", ttype);
 		bool ignoreResult = !is_void &&
 			asyncKind == AsyncMethodKind.Plain &&
-			AttributeManager.GetCustomAttribute<AsyncAttribute> (mi).PostNonResultSnippet is null;
+			asyncAttribute.PostNonResultSnippet is null;
 		print ("{6}{5}{4}{0}{7}({1}{2}({3}) => {{",
 			mi.Name,
 			GetInvokeParamList (minfo.AsyncInitialParams, false),
@@ -4446,7 +4372,7 @@ public partial class Generator : IMemberGatherer {
 		// when we inline methods (e.g. from a protocol) 
 		if (minfo.type != minfo.Method.DeclaringType) {
 			// we must look if the type has an [Availability] attribute
-			// but we must not duplicate existing attributes for a platform, see https://github.com/xamarin/xamarin-macios/issues/7194
+			// but we must not duplicate existing attributes for a platform, see https://github.com/dotnet/macios/issues/7194
 			PrintPlatformAttributesNoDuplicates (minfo.type, minfo.Method);
 		} else {
 			PrintPlatformAttributes (minfo.Method);
@@ -4549,6 +4475,32 @@ public partial class Generator : IMemberGatherer {
 
 		if (minfo.is_extension_method) {
 			WriteDocumentation ((MemberInfo) GetProperty (minfo.Method) ?? minfo.Method);
+		} else if (minfo.is_category_extension) {
+			// If the method has xml docs, it's unlikely it'll have for the 'This' parameter we add to the method signature.
+			// So in that case, inject docs for the 'This' parameter.
+			var injectParamNode = new Func<XmlNode, XmlNode> (node => {
+				var children = node.ChildNodes.Cast<XmlNode> ();
+				XmlNode? firstParamDocs = null;
+				foreach (var p in children) {
+					if (p.Name != "param")
+						continue;
+					// if the method already has a 'param' doc for 'This', then we don't add any
+					if (p.Attributes ["name"].Value == "This")
+						return p;
+					if (firstParamDocs is null)
+						firstParamDocs = p;
+				}
+				// if the method has parameters, but doesn't have any 'param' docs, then we don't add any 'param' doc for 'This'.
+				if (minfo.Method.GetParameters ().Length > 0 && firstParamDocs is null)
+					return node;
+				// we're good for injection
+				var thisParamDoc = node.OwnerDocument.CreateElement ("param");
+				thisParamDoc.SetAttribute ("name", "This");
+				thisParamDoc.InnerText = "The instance on which this method operates.";
+				node.InsertBefore (thisParamDoc, firstParamDocs);
+				return node;
+			});
+			WriteDocumentation (minfo.Method, transformNode: injectParamNode);
 		} else {
 			WriteDocumentation (minfo.Method);
 		}
@@ -4572,22 +4524,20 @@ public partial class Generator : IMemberGatherer {
 
 		var mod = minfo.GetVisibility ();
 
-#if NET
 		var is_abstract = false;
 		bool do_not_call_base;
 		if (minfo.is_ctor && minfo.is_protocol_member) {
 			do_not_call_base = false;
 		} else if (minfo.is_static && minfo.is_protocol_member) {
 			do_not_call_base = false;
+		} else if (minfo.is_protocol_implementation_method) {
+			do_not_call_base = false;
 		} else if (minfo.is_abstract || minfo.is_model) {
 			do_not_call_base = true;
 		} else {
 			do_not_call_base = false;
 		}
-#else
-		var is_abstract = minfo.is_abstract;
-		var do_not_call_base = minfo.is_model;
-#endif
+
 		print_generated_code (optimizable: IsOptimizable (minfo.mi));
 		print ("{0} {1}{2}{3}",
 			   mod,
@@ -4842,11 +4792,7 @@ public partial class Generator : IMemberGatherer {
 	void GenerateProtocolTypes (Type type, string class_visibility, string TypeName, string protocol_name, ProtocolAttribute protocolAttribute)
 	{
 		var protocol = AttributeManager.GetCustomAttribute<ProtocolAttribute> (type);
-#if NET
 		var backwardsCompatibleCodeGeneration = protocol.BackwardsCompatibleCodeGeneration;
-#else
-		var backwardsCompatibleCodeGeneration = true;
-#endif
 		var allProtocolMethods = new List<MethodInfo> ();
 		var allProtocolProperties = new List<PropertyInfo> ();
 		var allProtocolConstructors = new List<MethodInfo> ();
@@ -4876,6 +4822,9 @@ public partial class Generator : IMemberGatherer {
 		var staticProperties = allProtocolProperties.Where (v => AttributeManager.HasAttribute<StaticAttribute> (v));
 		var extensionMethods = optionalInstanceMethods.Concat (requiredInstanceMethods.Where (v => IsRequired (v, out var generateExtensionMethod) && generateExtensionMethod));
 		var extensionProperties = optionalInstanceProperties.Concat (requiredInstanceProperties.Where (v => IsRequired (v, out var generateExtensionMethod) && generateExtensionMethod));
+
+		// disable CS1573, which can happen when the original member in the api definition has xml comments and we copy that xml comment into the generated interface - because we may add parameters to method signatures, and the new parameters won't have an xml comment.
+		print ("#pragma warning disable CS1573"); // Parameter 'This' has no matching param tag in the XML comment for '...' (but other parameters do)
 
 		WriteDocumentation (type);
 
@@ -5014,7 +4963,6 @@ public partial class Generator : IMemberGatherer {
 		print ("{");
 		indent++;
 
-#if NET
 		foreach (var ctor in allProtocolConstructors) {
 			var minfo = new MemberInformation (this, this, ctor, type, null);
 			minfo.is_protocol_member = true;
@@ -5061,28 +5009,7 @@ public partial class Generator : IMemberGatherer {
 			print ("\tGC.KeepAlive (null);"); // need to do _something_ (doesn't seem to matter what), otherwise the static cctor (and the DynamicDependency attributes) are trimmed away.
 			print ("}");
 		}
-#else
-		foreach (var mi in requiredInstanceMethods) {
-			if (AttributeManager.HasAttribute<StaticAttribute> (mi))
-				continue;
 
-			var minfo = new MemberInformation (this, this, mi, type, null);
-			var mod = string.Empty;
-
-			WriteDocumentation (mi);
-			PrintMethodAttributes (minfo);
-			print_generated_code ();
-			PrintDelegateProxy (minfo);
-			PrintExport (minfo);
-			print ("[Preserve (Conditional = true)]");
-			if (minfo.is_unsafe)
-				mod = "unsafe ";
-			print ("{0}{1};", mod, MakeSignature (minfo, true));
-			print ("");
-		}
-#endif
-
-#if NET
 		var instance_fields_to_clear_on_dispose = new List<string> ();
 		foreach (var pi in instanceProperties) {
 			GenerateProperty (type, pi, instance_fields_to_clear_on_dispose, false, is_protocol_member: true, is_protocol_member_required: IsRequired (pi));
@@ -5118,61 +5045,21 @@ public partial class Generator : IMemberGatherer {
 				GenerateMethod (type, setter, false, null, false, false, false, ba?.Selector ?? attrib.ToSetter (pi).Selector, is_protocol_member: true, is_protocol_member_required: IsRequired (pi));
 			}
 		}
-#else
-		foreach (var pi in requiredInstanceProperties) {
-			var minfo = new MemberInformation (this, this, pi, type);
-			var mod = string.Empty;
-			minfo.is_export = true;
-
-			WriteDocumentation (pi);
-			print ("[Preserve (Conditional = true)]");
-			PrintAttributes (pi, platform: true);
-
-			if (minfo.is_unsafe)
-				mod = "unsafe ";
-			// IsValueType check needed for `IntPtr` signatures (which can't become `IntPtr?`)
-			var nullable = !pi.PropertyType.IsValueType && AttributeManager.IsNullable (pi) ? "?" : String.Empty;
-			GetAccessorInfo (pi, out var getMethod, out var setMethod, out var generate_getter, out var generate_setter);
-			print ("{0}{1}{2} {3} {{", mod, TypeManager.FormatType (type, pi.PropertyType), nullable, pi.Name, generate_getter ? "get;" : string.Empty, generate_setter ? "set;" : string.Empty);
-			indent++;
-			if (generate_getter) {
-				var ea = GetGetterExportAttribute (pi);
-				// there can be a [Bind] there that override the selector name to be used
-				// e.g. IMTLTexture.FramebufferOnly
-				var ba = GetBindAttribute (getMethod);
-				PrintDelegateProxy (getMethod);
-				if (!AttributeManager.HasAttribute<NotImplementedAttribute> (getMethod)) {
-					if (ba is not null)
-						PrintExport (minfo, ba.Selector, ea.ArgumentSemantic);
-					else
-						PrintExport (minfo, ea);
-				}
-				PrintAttributes (getMethod, notImplemented: true, platform: true);
-				print ("get;");
-			}
-			if (generate_setter) {
-				PrintBlockProxy (pi.PropertyType);
-				PrintAttributes (setMethod, notImplemented: true, platform: true);
-				if (!AttributeManager.HasAttribute<NotImplementedAttribute> (setMethod))
-					PrintExport (minfo, GetSetterExportAttribute (pi));
-				print ("set;");
-			}
-			indent--;
-			print ("}");
-			print ("");
-		}
-#endif
 
 		indent--;
 		print ("}");
 		print ("");
+
+		print ("#pragma warning restore CS1573");
 
 		// avoid (for unified) all the metadata for empty static classes, we can introduce them later when required
 		bool include_extensions = false;
 		if (backwardsCompatibleCodeGeneration)
 			include_extensions = extensionMethods.Any () || extensionProperties.Any () || requiredInstanceAsyncMethods.Any ();
 		if (include_extensions) {
-			// extension methods
+			// disable CS1573, which can happen when the original member in the api definition has xml comments and we copy that xml comment into the generated extension member - because we may add parameters to method signatures, and the new parameters won't have an xml comment.
+			print ("#pragma warning disable CS1573"); // Parameter 'This' has no matching param tag in the XML comment for '...' (but other parameters do)
+													  // extension methods
 			if (BindingTouch.SupportsXmlDocumentation) {
 				print ($"/// <summary>Extension methods to the <see cref=\"I{TypeName}\" /> interface to support all the methods from the {protocol_name} protocol.</summary>");
 				print ($"/// <remarks>");
@@ -5213,6 +5100,7 @@ public partial class Generator : IMemberGatherer {
 			indent--;
 			print ("}");
 			print ("");
+			print ("#pragma warning restore CS1573");
 		}
 
 		// Add API from base interfaces we also need to implement.
@@ -5530,17 +5418,15 @@ public partial class Generator : IMemberGatherer {
 
 	public void PrintExperimentalAttribute (ICustomAttributeProvider mi)
 	{
-#if NET
 		var e = GetExperimentalAttribute (mi);
 		if (e is null)
 			return;
 		print ($"[Experimental (\"{e.DiagnosticId}\")]");
-#endif
 	}
 
-	void WriteDocumentation (MemberInfo info)
+	bool WriteDocumentation (MemberInfo info, Func<XmlNode, XmlNode>? transformNode = null)
 	{
-		DocumentationManager.WriteDocumentation (sw, indent, info);
+		return DocumentationManager.WriteDocumentation (sw, indent, info, transformNode);
 	}
 
 	public bool TryComputeLibraryName (string attributeLibraryName, Type type, out string library_name, out string library_path)
@@ -5614,13 +5500,11 @@ public partial class Generator : IMemberGatherer {
 
 		switch (BindingTouch.TargetFramework.Platform) {
 		case ApplePlatform.iOS:
-			return BindingTouch.IsDotNet ? "Microsoft.iOS" : "Xamarin.iOS";
+			return "Microsoft.iOS";
 		case ApplePlatform.MacOSX:
-			return BindingTouch.IsDotNet ? "Microsoft.macOS" : "Xamarin.Mac";
+			return "Microsoft.macOS";
 		case ApplePlatform.TVOS:
-			return BindingTouch.IsDotNet ? "Microsoft.tvOS" : "Xamarin.TVOS";
-		case ApplePlatform.WatchOS:
-			return BindingTouch.IsDotNet ? "Microsoft.watchOS" : "Xamarin.WatchOS";
+			return "Microsoft.tvOS";
 		case ApplePlatform.MacCatalyst:
 			return "Microsoft.MacCatalyst";
 		default:
@@ -5630,6 +5514,13 @@ public partial class Generator : IMemberGatherer {
 
 	public void Generate (Type type)
 	{
+
+		// check if the type has been marked as a type that will be generated by the new code generator, if that
+		// is the case, bgen will ignore it allowing the rgen code generator add the type to the final assembly
+		bool is_rgen_type = AttributeManager.HasAttribute<BindingTypeAttribute<SmartEnum>> (type);
+		if (is_rgen_type)
+			return;
+
 		if (ZeroCopyStrings) {
 			ErrorHelper.Warning (1027);
 			ZeroCopyStrings = false;
@@ -5676,13 +5567,9 @@ public partial class Generator : IMemberGatherer {
 			if (is_model) {
 				if (!string.IsNullOrEmpty (model.Name)) {
 					register_name = model.Name;
-#if NET
 				} else {
 					// For .NET, we'll always generate the Objective-C name. If a user wants to use a different name,
 					// they can set the model name (so we'll enter the previous condition)
-#else
-				} else if (model.AutoGeneratedName) {
-#endif
 					register_name = Registrar.Registrar.SanitizeObjectiveCName (GetAssemblyName () + "__" + type.FullName);
 				}
 			}
@@ -5729,19 +5616,15 @@ public partial class Generator : IMemberGatherer {
 						is_direct_binding = false;
 						is_direct_binding_value = "false";
 					}
-					print ("[Register(\"{0}\", {1})]", register_name, is_direct_binding == false ? "false" : "true");
+					print ($"[Register(\"{register_name}\", {(is_direct_binding == false ? "false" : "true")}{(bta.IsStubClass ? ", IsStubClass = true" : string.Empty)})]");
 				}
 				if (is_abstract || need_abstract.ContainsKey (type)) {
 					// Don't mark [Abstract] classes as abstract in .NET, we might need to create instances of them at some point.
 					// This can happen if the OS gives an instance of a subclass, but that subclass is private (so we haven't bound it).
 					// In this case, the best managed type is this type, but it can't be abstract if we want to create an instance of it.
 					// Except that we declare models as abstract, because they're meant to be subclassed (and they're not wrapping a native type anyway).
-#if NET
 					if (is_model)
 						class_mod = "abstract ";
-#else
-					class_mod = "abstract ";
-#endif
 				} else if (is_sealed)
 					class_mod = "sealed ";
 			}
@@ -5798,10 +5681,6 @@ public partial class Generator : IMemberGatherer {
 					// So we can't make the MKUserLocation implement the MKAnnotation protocol in the api definition (for now at least).
 					if (type.Name == "MKUserLocation" && protocolType.Name == "IMKAnnotation")
 						continue;
-#if !NET
-					if (type.Name == "NSFontAssetRequest" || protocolType.Name == "INSProgressReporting")
-						continue;
-#endif
 
 					ErrorHelper.Warning (1111, protocolType, type, nonInterfaceName);
 					continue;
@@ -5849,21 +5728,34 @@ public partial class Generator : IMemberGatherer {
 					class_name += TypeManager.FormatType (type, gargs [i]);
 
 					where_list += "\n\t\twhere " + gargs [i].Name + " : ";
+
+					var constraintList = new List<string> ();
+
+					var genericAttributes = gargs [i].GenericParameterAttributes;
+					if (genericAttributes.HasFlag (GenericParameterAttributes.ReferenceTypeConstraint)) {
+						constraintList.Add ("class");
+						genericAttributes &= ~GenericParameterAttributes.ReferenceTypeConstraint;
+					}
+					if (genericAttributes.HasFlag (GenericParameterAttributes.DefaultConstructorConstraint)) {
+						constraintList.Add ("new()");
+						genericAttributes &= ~GenericParameterAttributes.DefaultConstructorConstraint;
+					}
+					if (genericAttributes != GenericParameterAttributes.None) {
+						exceptions.Add (ErrorHelper.CreateError (99, $"Unexpected generic constraint attributes: {genericAttributes}"));
+					}
+
 					var constraints = gargs [i].GetGenericParameterConstraints ();
 					if (constraints.Length > 0) {
-						var comma = string.Empty;
-						if (IsProtocol (constraints [0])) {
-							where_list += "NSObject";
-							comma = ", ";
-						}
+						if (IsProtocol (constraints [0]))
+							constraintList.Add ("NSObject");
 
-						for (int c = 0; c < constraints.Length; c++) {
-							where_list += comma + TypeManager.FormatType (type, constraints [c]);
-							comma = ", ";
-						}
+						for (int c = 0; c < constraints.Length; c++)
+							constraintList.Add (TypeManager.FormatType (type, constraints [c]));
 					} else {
-						where_list += "NSObject";
+						constraintList.Add ("NSObject");
 					}
+
+					where_list += string.Join (", ", constraintList);
 				}
 				class_name += ">";
 				if (where_list.Length > 0)
@@ -6021,6 +5913,7 @@ public partial class Generator : IMemberGatherer {
 															   () => string.Format ("InitializeHandle (global::{1}.IntPtr_objc_msgSend_IntPtr (this.Handle, {0}, coder.Handle), \"initWithCoder:\");", initWithCoderSelector, NamespaceCache.Messaging),
 															   () => string.Format ("InitializeHandle (global::{1}.IntPtr_objc_msgSendSuper_IntPtr (this.SuperHandle, {0}, coder.Handle), \"initWithCoder:\");", initWithCoderSelector, NamespaceCache.Messaging));
 								WriteMarkDirtyIfDerived (sw, type);
+								sw.WriteLine ("\t\t\tGC.KeepAlive (coder);");
 							} else {
 								sw.WriteLine ("\t\t\tthrow new InvalidOperationException (\"Type does not conform to NSCoding\");");
 							}
@@ -6062,7 +5955,7 @@ public partial class Generator : IMemberGatherer {
 							sw.WriteLine ("\t\t/// // This is taken from the iOS SDK's source code for the UIView class:");
 							sw.WriteLine ("\t\t/// //");
 							sw.WriteLine ("\t\t/// [Export (\"initWithFrame:\")]");
-							sw.WriteLine ("\t\t/// public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)");
+							sw.WriteLine ("\t\t/// public UIView (CGRect frame) : base (NSObjectFlag.Empty)");
 							sw.WriteLine ("\t\t/// {");
 							sw.WriteLine ("\t\t///     // Invoke the init method now.");
 							sw.WriteLine ("\t\t///     var initWithFrame = new Selector (\"initWithFrame:\").Handle;");
@@ -6264,6 +6157,9 @@ public partial class Generator : IMemberGatherer {
 						print ("static {0}? _{1};", fieldTypeName, field_pi.Name);
 					}
 
+					if (!WriteDocumentation (field_pi) && BindingTouch.SupportsXmlDocumentation) {
+						print ($"/// <summary>Represents the value associated with the constant '{fieldAttr.SymbolName}'.</summary>");
+					}
 					PrintAttributes (field_pi, preserve: true, advice: true);
 					PrintObsoleteAttributes (field_pi);
 					print ("[Field (\"{0}\",  \"{1}\")]", fieldAttr.SymbolName, library_path ?? library_name);
@@ -6329,8 +6225,6 @@ public partial class Generator : IMemberGatherer {
 						print ("return Dlfcn.GetIntPtr (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name);
 					} else if (field_pi.PropertyType == TypeCache.System_UIntPtr) {
 						print ("return Dlfcn.GetUIntPtr (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name);
-					} else if (field_pi.PropertyType.FullName == "System.Drawing.SizeF") {
-						print ("return Dlfcn.GetSizeF (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name);
 					} else if (field_pi.PropertyType == TypeCache.System_Int64) {
 						print ("return Dlfcn.GetInt64 (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name);
 					} else if (field_pi.PropertyType == TypeCache.System_UInt64) {
@@ -6351,6 +6245,8 @@ public partial class Generator : IMemberGatherer {
 						print ("return Dlfcn.GetNFloat (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name);
 					} else if (field_pi.PropertyType == TypeCache.CoreGraphics_CGSize) {
 						print ("return Dlfcn.GetCGSize (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name);
+					} else if (field_pi.PropertyType == TypeCache.CMTag) {
+						print ("return Dlfcn.GetStruct<CoreMedia.CMTag> (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name);
 					} else if (field_pi.PropertyType.IsEnum) {
 						var btype = field_pi.PropertyType.GetEnumUnderlyingType ();
 						if (smartEnumTypeName is not null) {
@@ -6413,8 +6309,6 @@ public partial class Generator : IMemberGatherer {
 							print ("Dlfcn.SetIntPtr (Libraries.{2}.Handle, \"{1}\", value);", field_pi.Name, fieldAttr.SymbolName, library_name);
 						} else if (field_pi.PropertyType == TypeCache.System_UIntPtr) {
 							print ("Dlfcn.SetUIntPtr (Libraries.{2}.Handle, \"{1}\", value);", field_pi.Name, fieldAttr.SymbolName, library_name);
-						} else if (field_pi.PropertyType.FullName == "System.Drawing.SizeF") {
-							print ("Dlfcn.SetSizeF (Libraries.{2}.Handle, \"{1}\", value);", field_pi.Name, fieldAttr.SymbolName, library_name);
 						} else if (field_pi.PropertyType == TypeCache.System_Int64) {
 							print ("Dlfcn.SetInt64 (Libraries.{2}.Handle, \"{1}\", value);", field_pi.Name, fieldAttr.SymbolName, library_name);
 						} else if (field_pi.PropertyType == TypeCache.System_UInt64) {
@@ -6797,6 +6691,14 @@ public partial class Generator : IMemberGatherer {
 						} else
 							prev_miname = miname;
 
+						var eventArgs = AttributeManager.GetCustomAttribute<EventArgsAttribute> (mi);
+						var xmlDocs = eventArgs?.XmlDocs;
+						if (!string.IsNullOrEmpty (xmlDocs)) {
+							var docLines = xmlDocs.Split ('\n');
+							foreach (var line in docLines)
+								print ($"/// {line}");
+						}
+
 						if (mi.ReturnType == TypeCache.System_Void) {
 							PrintObsoleteAttributes (mi);
 
@@ -7171,7 +7073,15 @@ public partial class Generator : IMemberGatherer {
 
 				var pars = eventArgTypes [eaclass];
 
+				if (BindingTouch.SupportsXmlDocumentation) {
+					print ("/// <summary>Provides data for an event based on an Objective-C protocol method.</summary>");
+				}
 				print ("public partial class {0} : EventArgs {{", eaclass); indent++;
+				if (BindingTouch.SupportsXmlDocumentation) {
+					print ($"/// <summary>Create a new instance of the <see cref=\"{eaclass}\" /> with the specified event data.</summary>");
+					foreach (var p in pars.Skip (1))
+						print ($"/// <param name=\"{p.Name.GetSafeParamName ()}\">The value for the <see cref=\"{GetPublicParameterName (p)}\" /> property.</param>");
+				}
 				print ("public {0} ({1})", eaclass, RenderParameterDecl (pars.Skip (1), true));
 				print ("{");
 				indent++;
@@ -7204,12 +7114,18 @@ public partial class Generator : IMemberGatherer {
 					continue;
 				async_result_types_emitted.Add (async_type.Item1);
 
+				if (BindingTouch.SupportsXmlDocumentation) {
+					print ($"/// <summary>This class holds the return values for an asynchronous operation.</summary>");
+				}
 				print ("public partial class {0} {{", async_type.Item1); indent++;
 
 				StringBuilder ctor = new StringBuilder ();
 
 				bool comma = false;
 				foreach (var pi in async_type.Item2) {
+					if (BindingTouch.SupportsXmlDocumentation) {
+						print ($"/// <summary>The result value from the asynchronous operation.</summary>");
+					}
 					var safe_name = pi.Name.GetSafeParamName ();
 					print ("public {0} {1} {{ get; set; }}",
 						TypeManager.FormatType (type, pi.ParameterType),
@@ -7223,6 +7139,13 @@ public partial class Generator : IMemberGatherer {
 
 				print ("\npartial void Initialize ();");
 
+				if (BindingTouch.SupportsXmlDocumentation) {
+					print ($"/// <summary>Creates a new instance of this class.</summary>");
+					foreach (var pi in async_type.Item2) {
+						var safe_name = pi.Name.GetSafeParamName ();
+						print ($"/// <param name=\"{safe_name}\">Result value from an asynchronous operation.</param>");
+					}
+				}
 				print ("\npublic {0} ({1}) {{", async_type.Item1, ctor); indent++;
 				foreach (var pi in async_type.Item2) {
 					var safe_name = pi.Name.GetSafeParamName ();
@@ -7487,9 +7410,6 @@ public partial class Generator : IMemberGatherer {
 
 		var type = def as Type;
 		if (type is not null && (
-			type.FullName == "System.Drawing.PointF" ||
-			type.FullName == "System.Drawing.SizeF" ||
-			type.FullName == "System.Drawing.RectangleF" ||
 			type.FullName == "CoreGraphics.CGPoint" ||
 			type.FullName == "CoreGraphics.CGSize" ||
 			type.FullName == "CoreGraphics.CGRect"))

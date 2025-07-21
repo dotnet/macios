@@ -34,9 +34,6 @@ namespace Xharness.Tests.Jenkins {
 			Assert.IsTrue (selection.SelectedPlatforms.HasFlag (PlatformLabel.tvOS), "tvos");
 			Assert.IsTrue (selection.IsEnabled (PlatformLabel.tvOS), "IsEnabled (tvOS)");
 
-			Assert.IsTrue (selection.SelectedPlatforms.HasFlag (PlatformLabel.watchOS), "watchOS");
-			Assert.IsTrue (selection.IsEnabled (PlatformLabel.watchOS), "IsEnabled (watchOS)");
-
 			Assert.IsTrue (selection.SelectedPlatforms.HasFlag (PlatformLabel.iOS), "iOS");
 			Assert.IsTrue (selection.IsEnabled (PlatformLabel.iOS), "IsEnabled (iOS)");
 
@@ -109,11 +106,7 @@ namespace Xharness.Tests.Jenkins {
 		{
 			selection.SetEnabled (TestLabel.All, false);
 			selection.SetEnabled (TestLabel.Monotouch, true);
-#if NET
 			foreach (var obj in Enum.GetValues<TestLabel> ()) {
-#else
-			foreach (var obj in Enum.GetValues (typeof (TestLabel))) {
-#endif
 				if (obj is TestLabel label) {
 					switch (label) {
 					case TestLabel.All:

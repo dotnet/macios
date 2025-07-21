@@ -1,6 +1,6 @@
 // Copyright 2012 Xamarin Inc. All rights reserved
 
-#if !__TVOS__ && !__WATCHOS__ && !MONOMAC
+#if !__TVOS__ && !MONOMAC
 
 using System;
 using System.Drawing;
@@ -19,6 +19,7 @@ namespace MonoTouchFixtures.UIKit {
 	public class PasteboardTest {
 
 		[Test]
+		[Retry (10)]
 		public void ImagesTest ()
 		{
 			string file = Path.Combine (NSBundle.MainBundle.ResourcePath, "basn3p08.png");
@@ -28,10 +29,6 @@ namespace MonoTouchFixtures.UIKit {
 						UIPasteboard.General.Images = new UIImage [] { img };
 						if (TestRuntime.CheckXcodeVersion (8, 0))
 							Assert.True (UIPasteboard.General.HasImages, "HasImages");
-
-						// https://github.com/xamarin/xamarin-macios/issues/6254
-						if (TestRuntime.CheckXcodeVersion (11, 0))
-							return;
 
 						Assert.AreEqual (1, UIPasteboard.General.Images.Length, "a - length");
 
@@ -46,4 +43,4 @@ namespace MonoTouchFixtures.UIKit {
 	}
 }
 
-#endif // !__TVOS__ && !__WATCHOS__
+#endif // !__TVOS__ && !MONOMAC

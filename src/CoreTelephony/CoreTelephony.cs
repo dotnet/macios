@@ -8,25 +8,37 @@ namespace CoreTelephony {
 
 	public partial class CTCall {
 #if !COREBUILD
-		public string StateDialing {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		public string? StateDialing {
 			get {
 				return Dlfcn.SlowGetStringConstant (Constants.CoreTelephonyLibrary, "CTCallStateDialing");
 			}
 		}
 
-		public string StateIncoming {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		public string? StateIncoming {
 			get {
 				return Dlfcn.SlowGetStringConstant (Constants.CoreTelephonyLibrary, "CTCallStateIncoming");
 			}
 		}
 
-		public string StateConnected {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		public string? StateConnected {
 			get {
 				return Dlfcn.SlowGetStringConstant (Constants.CoreTelephonyLibrary, "CTCallStateConnected");
 			}
 		}
 
-		public string StateDisconnected {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		public string? StateDisconnected {
 			get {
 				return Dlfcn.SlowGetStringConstant (Constants.CoreTelephonyLibrary, "CTCallStateDisconnected");
 			}

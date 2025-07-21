@@ -1,4 +1,4 @@
-﻿<!--
+<!--
 ***********************************************************************************************
 Xamarin.iOS.ObjcBinding.CSharp.targets
 
@@ -18,13 +18,7 @@ Copyright (C) 2015-2016 Xamarin Inc. All rights reserved.
 	<Import Project="$(MSBuildThisFileDirectory)$(MSBuildThisFileName).Before.targets"
 			Condition="Exists('$(MSBuildThisFileDirectory)$(MSBuildThisFileName).Before.targets')"/>
 
-	<PropertyGroup>
-		<!-- Version/fx properties -->
-		<TargetFrameworkIdentifier Condition="'$(TargetFrameworkIdentifier)' == ''">Xamarin.TVOS</TargetFrameworkIdentifier>
-		<TargetFrameworkVersion Condition="'$(TargetFrameworkVersion)' == ''">v1.0</TargetFrameworkVersion>
-	</PropertyGroup>
-
-	<Import Project="..\iOS\Xamarin.iOS.ObjCBinding.CSharp.targets"/>
+	<Import Project="Xamarin.iOS.ObjCBinding.CSharp.targets"/>
 
 	<Import Project="$(MSBuildThisFileDirectory)$(MSBuildThisFileName).After.targets"
 			Condition="Exists('$(MSBuildThisFileDirectory)$(MSBuildThisFileName).After.targets')"/>

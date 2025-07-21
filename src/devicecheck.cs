@@ -14,12 +14,13 @@ using Foundation;
 
 namespace DeviceCheck {
 
-	[Watch (9, 0)]
 	[MacCatalyst (13, 1)]
 	[ErrorDomain ("DCErrorDomain")]
 	[Native]
 	public enum DCError : long {
+		/// <summary>To be added.</summary>
 		UnknownSystemFailure,
+		/// <summary>To be added.</summary>
 		FeatureUnsupported,
 		InvalidInput,
 		InvalidKey,
@@ -29,12 +30,10 @@ namespace DeviceCheck {
 	/// <param name="token">The generated token.</param>
 	///     <param name="error">The error that was encountered, or <see langword="null" /> if no error occurred.</param>
 	///     <summary>A completion handler for DeviceCheck token generation.</summary>
-	[Watch (9, 0)]
 	[MacCatalyst (13, 1)]
 	delegate void DCDeviceGenerateTokenCompletionHandler ([NullAllowed] NSData token, [NullAllowed] NSError error);
 
 	/// <summary>A device representation for associating users and devices with tracking data.</summary>
-	[Watch (9, 0)]
 	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor] // From the documentation it seems the only way to create a usable instance is to use the static CurrentDevice property.
 	[BaseType (typeof (NSObject))]
@@ -44,15 +43,26 @@ namespace DeviceCheck {
 		[Export ("currentDevice")]
 		DCDevice CurrentDevice { get; }
 
+		/// <summary>Gets a Boolean value that tells whether the <see cref="DeviceCheck.DCDevice.CurrentDevice" /> supports the DeviceCheck API.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("supported")]
 		bool Supported { [Bind ("isSupported")] get; }
 
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Generates an identification token for <see cref="DeviceCheck.DCDevice.CurrentDevice" /> and runs a handlere after the operation is complete.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous GenerateToken operation.   The value of the TResult parameter is a DeviceCheck.DCDeviceGenerateTokenCompletionHandler.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The GenerateTokenAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("generateTokenWithCompletionHandler:")]
 		void GenerateToken (DCDeviceGenerateTokenCompletionHandler completion);
 	}
 
-	[Watch (9, 0)]
 	[iOS (14, 0)]
 	[TV (15, 0)]
 	[MacCatalyst (14, 5)]

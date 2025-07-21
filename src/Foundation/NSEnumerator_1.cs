@@ -30,19 +30,10 @@ using System.Collections.Generic;
 
 using ObjCRuntime;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace Foundation {
 	[Register ("NSEnumerator", SkipRegistration = true)]
 	public sealed class NSEnumerator<TKey> : NSEnumerator
-		where TKey : class, INativeObject {
-#if !NET
-		public NSEnumerator ()
-		{
-		}
-#endif
+		where TKey : INativeObject {
 
 		internal NSEnumerator (NativeHandle handle)
 			: base (handle)
@@ -53,7 +44,14 @@ namespace Foundation {
 
 		public new TKey NextObject ()
 		{
-			return (TKey) (object) base.NextObject ();
+			var nextObject = base.NextObject ();
+			if (nextObject is null)
+				return default (TKey)!;
+			if (nextObject is TKey rv)
+				return rv;
+			var rv2 = Runtime.GetINativeObject<TKey> (nextObject.GetHandle (), false)!;
+			GC.KeepAlive (nextObject);
+			return rv2;
 		}
 	}
 }

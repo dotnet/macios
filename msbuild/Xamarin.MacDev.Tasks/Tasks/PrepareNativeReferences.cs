@@ -9,26 +9,25 @@ using Xamarin.Localization.MSBuild;
 
 using Xamarin.Messaging.Build.Client;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Xamarin.MacDev.Tasks {
 	public class PrepareNativeReferences : XamarinTask, ITaskCallback, ICancelableTask {
 		[Required]
-		public string IntermediateOutputPath { get; set; }
+		public string IntermediateOutputPath { get; set; } = "";
 
-		public ITaskItem [] NativeReferences { get; set; }
+		public ITaskItem [] NativeReferences { get; set; } = [];
 
 		#region Output
 
 		[Output]
-		public ITaskItem LinkWithAttributes { get; set; }
+		public ITaskItem? LinkWithAttributes { get; set; }
 
 		[Output]
-		public ITaskItem [] EmbeddedResources { get; set; }
+		public ITaskItem [] EmbeddedResources { get; set; } = [];
 
 		[Output]
-		public ITaskItem [] NativeFrameworks { get; set; }
+		public ITaskItem [] NativeFrameworks { get; set; } = [];
 
 		#endregion
 

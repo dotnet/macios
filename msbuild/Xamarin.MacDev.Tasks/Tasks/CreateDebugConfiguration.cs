@@ -9,28 +9,27 @@ using Microsoft.Build.Utilities;
 using Xamarin.MacDev.Tasks;
 using Xamarin.Messaging.Build.Client;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Xamarin.MacDev.Tasks {
 	public class CreateDebugConfiguration : XamarinTask, ICancelableTask {
 		#region Inputs
 
 		[Required]
-		public string AppBundleDir { get; set; }
+		public string AppBundleDir { get; set; } = "";
 
 		[Required]
 		public bool DebugOverWiFi { get; set; }
 
-		public string DebugIPAddresses { get; set; }
+		public string DebugIPAddresses { get; set; } = "";
 
 		[Required]
-		public string DebuggerPort { get; set; }
+		public string DebuggerPort { get; set; } = "";
 
 		[Required]
 		public bool SdkIsSimulator { get; set; }
 
-		public string ConnectTimeout { get; set; }
+		public string ConnectTimeout { get; set; } = "";
 		#endregion
 
 		public override bool Execute ()

@@ -6,33 +6,32 @@ using Microsoft.Build.Utilities;
 using Xamarin.MacDev;
 using Xamarin.Localization.MSBuild;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Xamarin.MacDev.Tasks {
 	public class GetPropertyListValue : Task {
 		#region Inputs
 
 		[Required]
-		public string PropertyListFile { get; set; }
+		public string PropertyListFile { get; set; } = "";
 
 		[Required]
-		public string Property { get; set; }
+		public string Property { get; set; } = "";
 
 		#endregion Inputs
 
 		#region Outputs
 
 		[Output]
-		public string Value { get; set; }
+		public string Value { get; set; } = "";
 
 		#endregion Outputs
 
 		public override bool Execute ()
 		{
-			PArray array = null;
-			PDictionary dict;
-			PObject value;
+			PArray? array = null;
+			PDictionary? dict;
+			PObject? value;
 			string [] path;
 			int i = 0;
 
@@ -73,7 +72,7 @@ namespace Xamarin.MacDev.Tasks {
 
 					value = array [arrayIndex];
 				} else {
-					Log.LogError (MSBStrings.E0156, value.Type);
+					Log.LogError (MSBStrings.E0156, value?.Type);
 					return false;
 				}
 

@@ -10,11 +10,9 @@ namespace Xamarin.Tests {
 	public class DotNetProjectTest : TestBaseClass {
 		[Test]
 		[TestCase (null)]
-		[TestCase ("iossimulator-x86")]
 		[TestCase ("iossimulator-x64")]
 		[TestCase ("iossimulator-arm64")]
 		[TestCase ("ios-arm64")]
-		[TestCase ("ios-arm")]
 		public void BuildMySingleView (string runtimeIdentifier)
 		{
 			var platform = ApplePlatform.iOS;
@@ -96,6 +94,7 @@ namespace Xamarin.Tests {
 		[TestCase ("tvOS")]
 		[TestCase ("macOS")]
 		[TestCase ("MacCatalyst")]
+		[Category ("WindowsInclusive")]
 		public void BuildMyClassLibrary (string platform)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (platform);
@@ -109,6 +108,7 @@ namespace Xamarin.Tests {
 		[TestCase ("tvOS")]
 		[TestCase ("macOS")]
 		[TestCase ("MacCatalyst")]
+		[Category ("WindowsInclusive")]
 		public void BuildEmbeddedResourcesTest (string platform)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (platform);
@@ -141,6 +141,7 @@ namespace Xamarin.Tests {
 		[TestCase ("tvOS")]
 		[TestCase ("macOS")]
 		[TestCase ("MacCatalyst")]
+		[Category ("WindowsInclusive")]
 		public void BuildFSharpLibraryTest (string platform)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (platform);
@@ -152,10 +153,10 @@ namespace Xamarin.Tests {
 			var result = DotNet.AssertBuild (project_path, verbosity);
 			var lines = BinLog.PrintToLines (result.BinLogPath);
 			// Find the resulting binding assembly from the build log
-			var assemblies = FilterToAssembly (lines, assemblyName);
+			var assemblies = FilterToAssembly (lines, assemblyName).Distinct ();
 			Assert.That (assemblies, Is.Not.Empty, "Assemblies");
 			// Make sure there's no other assembly confusing our logic
-			Assert.That (assemblies.Distinct ().Count (), Is.EqualTo (1), "Unique assemblies");
+			Assert.That (assemblies.Count (), Is.EqualTo (1), $"Unique assemblies:\n\t{string.Join ("\n\t", assemblies)}");
 			var asm = assemblies.First ();
 			Assert.That (asm, Does.Exist, "Assembly existence");
 			// Verify that there's no resources in the assembly
@@ -173,6 +174,7 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.TVOS)]
 		[TestCase (ApplePlatform.MacOSX)]
 		[TestCase (ApplePlatform.MacCatalyst)]
+		[Category ("WindowsInclusive")]
 		public void BuildBindingsTest (ApplePlatform platform)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (platform);
@@ -206,6 +208,7 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.TVOS)]
 		[TestCase (ApplePlatform.MacOSX)]
 		[TestCase (ApplePlatform.MacCatalyst)]
+		[Category ("WindowsInclusive")]
 		public void BuildBindingsTest2 (ApplePlatform platform)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (platform);
@@ -232,11 +235,19 @@ namespace Xamarin.Tests {
 			Assert.That (resourceBundle, Does.Exist, "Bundle existence");
 		}
 
-		[TestCase ("iOS", "monotouch")]
-		[TestCase ("tvOS", "monotouch")]
-		[TestCase ("macOS", "xammac")]
-		[TestCase ("MacCatalyst", "monotouch")]
-		public void BuildBundledResources (string platform, string prefix)
+		[TestCase ("iOS", "monotouch", true)]
+		[TestCase ("tvOS", "monotouch", true)]
+		[TestCase ("macOS", "xammac", true)]
+		[TestCase ("MacCatalyst", "monotouch", true)]
+		[TestCase ("iOS", "monotouch", false)]
+		[TestCase ("tvOS", "monotouch", false)]
+		[TestCase ("macOS", "xammac", false)]
+		[TestCase ("MacCatalyst", "monotouch", false)]
+		[TestCase ("iOS", "monotouch", null)]
+		[TestCase ("tvOS", "monotouch", null)]
+		[TestCase ("macOS", "xammac", null)]
+		[TestCase ("MacCatalyst", "monotouch", null)]
+		public void BuildBundledResources (string platform, string prefix, bool? bundleOriginalResources)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 			var assemblyName = "BundledResources";
@@ -245,7 +256,11 @@ namespace Xamarin.Tests {
 			var project_path = Path.Combine (project_dir, $"{assemblyName}.csproj");
 
 			Clean (project_path);
-			var result = DotNet.AssertBuild (project_path, verbosity);
+
+			var properties = GetDefaultProperties ();
+			if (bundleOriginalResources.HasValue)
+				properties ["BundleOriginalResources"] = bundleOriginalResources.Value ? "true" : "false";
+			var result = DotNet.AssertBuild (project_path, properties);
 			var lines = BinLog.PrintToLines (result.BinLogPath);
 			// Find the resulting binding assembly from the build log
 			var assemblies = FilterToAssembly (lines, assemblyName);
@@ -255,14 +270,17 @@ namespace Xamarin.Tests {
 			var asm = assemblies.First ();
 			Assert.That (asm, Does.Exist, "Assembly existence");
 
-			// Verify that there's one resource in the binding assembly, and its name
+			// Verify the resource count in the binding assembly, and their names
 			var ad = AssemblyDefinition.ReadAssembly (asm, new ReaderParameters { ReadingMode = ReadingMode.Deferred });
-			Assert.That (ad.MainModule.Resources.Count, Is.EqualTo (3), "3 resources");
-			// Sort the resources before we assert, since we don't care about the order, and sorted order makes the asserts simpler.
-			var resources = ad.MainModule.Resources.OrderBy (v => v.Name).ToArray ();
-			Assert.That (resources [0].Name, Is.EqualTo ($"__{prefix}_content_basn3p08__with__loc.png"), $"__{prefix}_content_basn3p08__with__loc.png");
-			Assert.That (resources [1].Name, Is.EqualTo ($"__{prefix}_content_basn3p08.png"), $"__{prefix}_content_basn3p08.png");
-			Assert.That (resources [2].Name, Is.EqualTo ($"__{prefix}_content_xamvideotest.mp4"), $"__{prefix}_content_xamvideotest.mp4");
+			var resources = ad.MainModule.Resources.Select (v => v.Name).ToArray ();
+			var expectedResources = new string [] {
+				"basn3p08.png",
+				"basn3p08__with__loc.png",
+				"xamvideotest.mp4",
+			};
+			var oldPrefixed = expectedResources.Select (v => $"__{prefix}_content_{v}").ToArray ();
+			var newPrefixed = expectedResources.Select (v => $"__{prefix}_item_BundleResource_{v}").ToArray ();
+			Assert.That (resources, Is.EquivalentTo (oldPrefixed).Or.EquivalentTo (newPrefixed), "Resources");
 		}
 
 		[TestCase ("iOS")]
@@ -281,21 +299,7 @@ namespace Xamarin.Tests {
 			var result = DotNet.AssertBuild (project_path, verbosity);
 			var lines = BinLog.PrintToLines (result.BinLogPath);
 			// Find the resulting binding assembly from the build log
-			var assemblies = lines.
-				Select (v => v.Trim ()).
-				Where (v => {
-					if (v.Length < 10)
-						return false;
-					if (v [0] != '/')
-						return false;
-					if (!v.EndsWith ($"{assemblyName}.dll", StringComparison.Ordinal))
-						return false;
-					if (!v.Contains ("/bin/", StringComparison.Ordinal))
-						return false;
-					if (!v.Contains ($"{assemblyName}.app", StringComparison.Ordinal))
-						return false;
-					return true;
-				});
+			var assemblies = FilterToAssembly (lines, assemblyName, true);
 			Assert.That (assemblies, Is.Not.Empty, "Assemblies");
 			// Make sure there's no other assembly confusing our logic
 			assemblies = assemblies.Distinct ();
@@ -319,9 +323,7 @@ namespace Xamarin.Tests {
 		}
 
 		[Test]
-		[TestCase (ApplePlatform.iOS, "iossimulator-x86;iossimulator-x64")]
-		[TestCase (ApplePlatform.iOS, "iossimulator-x86;iossimulator-x64;iossimulator-arm64")]
-		[TestCase (ApplePlatform.iOS, "ios-arm;ios-arm64")]
+		[TestCase (ApplePlatform.iOS, "iossimulator-x64;iossimulator-arm64")]
 		[TestCase (ApplePlatform.TVOS, "tvossimulator-x64;tvossimulator-arm64")]
 		[TestCase (ApplePlatform.MacOSX, "osx-arm64;osx-x64")]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64;maccatalyst-x64")]
@@ -346,8 +348,7 @@ namespace Xamarin.Tests {
 		}
 
 		[Test]
-		[TestCase (ApplePlatform.iOS, "iossimulator-x86;iossimulator-x64")]
-		[TestCase (ApplePlatform.iOS, "ios-arm;ios-arm64", "MtouchLink=SdkOnly")]
+		[TestCase (ApplePlatform.iOS, "iossimulator-x64;iossimulator-arm64")]
 		[TestCase (ApplePlatform.MacOSX, "osx-arm64;osx-x64")]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64;maccatalyst-x64")]
 		public void BuildFatMonoTouchTest (ApplePlatform platform, string runtimeIdentifiers, params string [] additionalProperties)
@@ -400,12 +401,11 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.iOS, "ios-arm64", true, null, "Release")]
 		[TestCase (ApplePlatform.iOS, "ios-arm64", true, "PublishTrimmed=true;UseInterpreter=true")]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64;maccatalyst-x64", false)]
+		[Category ("WindowsInclusive")]
 		public void IsNotMacBuild (ApplePlatform platform, string runtimeIdentifiers, bool isDeviceBuild, string? extraProperties = null, string configuration = "Debug")
 		{
 			var project = "MySimpleApp";
 			Configuration.IgnoreIfIgnoredPlatform (platform);
-			if (isDeviceBuild)
-				Configuration.AssertDeviceAvailable ();
 
 			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath, configuration: configuration);
 			Configuration.IgnoreIfIgnoredPlatform (platform);
@@ -427,7 +427,7 @@ namespace Xamarin.Tests {
 				var appExecutable = Path.Combine (appPath, Path.GetFileName (project_path));
 				Assert.That (appPath, Does.Not.Exist, "There is an .app");
 				Assert.That (appExecutable, Does.Not.Empty, "There is no executable");
-				Assert.That (Path.Combine (appPath, Configuration.GetBaseLibraryName (platform, true)), Does.Not.Exist, "Platform assembly is in the bundle");
+				Assert.That (Path.Combine (appPath, Configuration.GetBaseLibraryName (platform)), Does.Not.Exist, "Platform assembly is in the bundle");
 				break;
 			case ApplePlatform.MacCatalyst:
 				break;
@@ -503,19 +503,19 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.iOS, "iossimulator-x84", true)] // it's x86, not x84
 		[TestCase (ApplePlatform.iOS, "iossimulator-arm", true)] // we don't support this
 		[TestCase (ApplePlatform.iOS, "helloworld", true)] // random text
-		[TestCase (ApplePlatform.iOS, "osx-x64", false)] // valid RID for another platform
+		[TestCase (ApplePlatform.iOS, "tvos-arm64", false)] // valid RID for another platform
 		[TestCase (ApplePlatform.TVOS, "tvos-x64", false)] // valid RID in a previous preview (and common mistake)
 		[TestCase (ApplePlatform.TVOS, "tvossimulator-x46", true)] // it's x64, not x46
 		[TestCase (ApplePlatform.TVOS, "tvossimulator-arm", true)] // we don't support this
 		[TestCase (ApplePlatform.TVOS, "helloworld", true)] // random text
-		[TestCase (ApplePlatform.TVOS, "osx-x64", false)] // valid RID for another platform
+		[TestCase (ApplePlatform.TVOS, "iossimulator-x64", false)] // valid RID for another platform
 		[TestCase (ApplePlatform.MacOSX, "osx-x46", true)] // it's x64, not x46
 		[TestCase (ApplePlatform.MacOSX, "macos-arm64", true)] // it's osx, not macos
 		[TestCase (ApplePlatform.MacOSX, "helloworld", true)] // random text
 		[TestCase (ApplePlatform.MacOSX, "ios-arm64", false)] // valid RID for another platform
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x46", true)] // it's x64, not x46
 		[TestCase (ApplePlatform.MacCatalyst, "helloworld", true)] // random text
-		[TestCase (ApplePlatform.MacCatalyst, "osx-x64", false)] // valid RID for another platform
+		[TestCase (ApplePlatform.MacCatalyst, "ios-arm64", false)] // valid RID for another platform
 		public void InvalidRuntimeIdentifier (ApplePlatform platform, string runtimeIdentifier, bool notRecognized)
 		{
 			var project = "MySimpleApp";
@@ -712,12 +712,12 @@ namespace Xamarin.Tests {
 		}
 
 		[TestCase (ApplePlatform.iOS, "iossimulator-x64")]
-		[TestCase (ApplePlatform.iOS, "ios-arm64;ios-arm")]
+		[TestCase (ApplePlatform.iOS, "ios-arm64")]
 		[TestCase (ApplePlatform.TVOS, "tvossimulator-x64")]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64")]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64;maccatalyst-x64")]
 		[TestCase (ApplePlatform.MacOSX, "osx-x64")]
-		[TestCase (ApplePlatform.MacOSX, "osx-arm64;osx-x64")] // https://github.com/xamarin/xamarin-macios/issues/12410
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64;osx-x64")] // https://github.com/dotnet/macios/issues/12410
 		public void AppWithResources (ApplePlatform platform, string runtimeIdentifiers)
 		{
 			var project = "AppWithResources";
@@ -788,13 +788,308 @@ namespace Xamarin.Tests {
 			Assert.AreEqual (runtimeIdentifiers.Split (';').Any (v => v.EndsWith ("-x64")), File.Exists (x64txt), "x64.txt");
 		}
 
+		[Category ("Windows")]
+		[TestCase (ApplePlatform.iOS, true)]
+		[TestCase (ApplePlatform.iOS, false)]
+		[TestCase (ApplePlatform.iOS, null)]
+		public void LibraryWithResourcesOnWindows (ApplePlatform platform, bool? bundleOriginalResources)
+		{
+			Configuration.IgnoreIfNotOnWindows ();
+
+			// This should all execute locally on Windows when BundleOriginalResources=true
+			LibraryWithResources (platform, anyLibraryResources: bundleOriginalResources == true, bundleOriginalResources: bundleOriginalResources);
+		}
+
+
+		[Category ("RemoteWindows")]
+		[TestCase (ApplePlatform.iOS, true)]
+		[TestCase (ApplePlatform.iOS, false)]
+		public void LibraryWithResourcesOnRemoteWindows (ApplePlatform platform, bool? bundleOriginalResources)
+		{
+			Configuration.IgnoreIfNotOnWindows ();
+
+			// This should all execute locally on Windows when BundleOriginalResources=true, but either should work
+			LibraryWithResources (platform, bundleOriginalResources);
+		}
+
+		[TestCase (ApplePlatform.iOS, true)]
+		[TestCase (ApplePlatform.iOS, false)]
+		[TestCase (ApplePlatform.iOS, null)]
+		[TestCase (ApplePlatform.TVOS, true)]
+		[TestCase (ApplePlatform.TVOS, false)]
+		[TestCase (ApplePlatform.TVOS, null)]
+		[TestCase (ApplePlatform.MacCatalyst, true)]
+		[TestCase (ApplePlatform.MacCatalyst, false)]
+		[TestCase (ApplePlatform.MacCatalyst, null)]
+		[TestCase (ApplePlatform.MacOSX, true)]
+		[TestCase (ApplePlatform.MacOSX, false)]
+		[TestCase (ApplePlatform.MacOSX, null)]
+		public void LibraryWithResources (ApplePlatform platform, bool? bundleOriginalResources, bool anyLibraryResources = true)
+		{
+			var project = "LibraryWithResources";
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+
+			var actualBundleOriginalResources = bundleOriginalResources ?? Version.Parse (Configuration.DotNetTfm.Replace ("net", "")).Major >= 10;
+			var project_path = GetProjectPath (project, platform: platform);
+			Clean (project_path);
+
+			var properties = GetDefaultProperties ();
+			if (bundleOriginalResources.HasValue)
+				properties ["BundleOriginalResources"] = bundleOriginalResources.Value ? "true" : "false";
+
+			var rv = DotNet.AssertBuild (project_path, properties);
+
+			var allTargets = BinLog.GetAllTargets (rv.BinLogPath).Where (v => !v.Skipped).Select (v => v.TargetName);
+			// https://github.com/dotnet/macios/issues/15031
+			if (actualBundleOriginalResources) {
+				Assert.That (allTargets, Does.Not.Contain ("_CompileAppManifest"), "Didn't execute '_CompileAppManifest'");
+				Assert.That (allTargets, Does.Not.Contain ("_DetectSdkLocations"), "Didn't execute '_DetectSdkLocations'");
+				Assert.That (allTargets, Does.Not.Contain ("_SayHello"), "Didn't execute '_SayHello'");
+			} else {
+				Assert.That (allTargets, Does.Contain ("_CompileAppManifest"), "Did execute '_CompileAppManifest'");
+				Assert.That (allTargets, Does.Contain ("_DetectSdkLocations"), "Did execute '_DetectSdkLocations'");
+				if (System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform (System.Runtime.InteropServices.OSPlatform.Windows))
+					Assert.That (allTargets, Does.Contain ("_SayHello"), "Did execute '_SayHello'");
+			}
+
+			var lines = BinLog.PrintToLines (rv.BinLogPath);
+			// Find the resulting binding assembly from the build log
+			var assemblies = FilterToAssembly (lines, project);
+			Assert.That (assemblies, Is.Not.Empty, "Assemblies");
+			// Make sure there's no other assembly confusing our logic
+			Assert.That (assemblies.Distinct ().Count (), Is.EqualTo (1), "Unique assemblies");
+			var asm = assemblies.First ();
+			Assert.That (asm, Does.Exist, "Assembly existence");
+
+			using var ad = AssemblyDefinition.ReadAssembly (asm, new ReaderParameters { ReadingMode = ReadingMode.Deferred });
+			var actualResources = ad.MainModule.Resources.Select (v => v.Name).OrderBy (v => v).ToArray ();
+
+			string [] expectedResources;
+
+			if (anyLibraryResources) {
+				var platformPrefix = (platform == ApplePlatform.MacOSX) ? "xammac" : "monotouch";
+				if (actualBundleOriginalResources) {
+					expectedResources = new string [] {
+						$"__{platformPrefix}_item_AtlasTexture_Archer__Attack.atlas_sarcher__attack__0001.png",
+						$"__{platformPrefix}_item_AtlasTexture_Archer__Attack.atlas_sarcher__attack__0002.png",
+						$"__{platformPrefix}_item_AtlasTexture_Archer__Attack.atlas_sarcher__attack__0003.png",
+						$"__{platformPrefix}_item_AtlasTexture_Archer__Attack.atlas_sarcher__attack__0004.png",
+						$"__{platformPrefix}_item_AtlasTexture_Archer__Attack.atlas_sarcher__attack__0005.png",
+						$"__{platformPrefix}_item_AtlasTexture_Archer__Attack.atlas_sarcher__attack__0006.png",
+						$"__{platformPrefix}_item_AtlasTexture_Archer__Attack.atlas_sarcher__attack__0007.png",
+						$"__{platformPrefix}_item_AtlasTexture_Archer__Attack.atlas_sarcher__attack__0008.png",
+						$"__{platformPrefix}_item_AtlasTexture_Archer__Attack.atlas_sarcher__attack__0009.png",
+						$"__{platformPrefix}_item_AtlasTexture_Archer__Attack.atlas_sarcher__attack__0010.png",
+						$"__{platformPrefix}_item_BundleResource_A.ttc",
+						$"__{platformPrefix}_item_BundleResource_B.otf",
+						$"__{platformPrefix}_item_BundleResource_C.ttf",
+						$"__{platformPrefix}_item_Collada_scene.dae",
+						$"__{platformPrefix}_item_CoreMLModel_SqueezeNet.mlmodel",
+						$"__{platformPrefix}_item_ImageAsset_Images.xcassets_sContents.json",
+						$"__{platformPrefix}_item_ImageAsset_Images.xcassets_sImage.imageset_sContents.json",
+						$"__{platformPrefix}_item_ImageAsset_Images.xcassets_sImage.imageset_sIcon16.png",
+						$"__{platformPrefix}_item_ImageAsset_Images.xcassets_sImage.imageset_sIcon32.png",
+						$"__{platformPrefix}_item_ImageAsset_Images.xcassets_sImage.imageset_sIcon64.png",
+						$"__{platformPrefix}_item_InterfaceDefinition_Main.storyboard",
+						$"__{platformPrefix}_item_PartialAppManifest_shared.plist",
+						$"__{platformPrefix}_item_SceneKitAsset_art.scnassets_sscene.scn",
+						$"__{platformPrefix}_item_SceneKitAsset_art.scnassets_stexture.png",
+						$"__{platformPrefix}_item_SceneKitAsset_DirWithResources_slinkedArt.scnassets_sscene.scn",
+						$"__{platformPrefix}_item_SceneKitAsset_DirWithResources_slinkedArt.scnassets_stexture.png",
+					};
+				} else {
+					var expectedList = new List<string> ();
+					expectedList.Add ($"__{platformPrefix}_content_A.ttc");
+					expectedList.Add ($"__{platformPrefix}_content_Archer__Attack.atlasc_sArcher__Attack.plist");
+					expectedList.Add ($"__{platformPrefix}_content_art.scnassets_sscene.scn");
+					expectedList.Add ($"__{platformPrefix}_content_art.scnassets_stexture.png");
+					expectedList.Add ($"__{platformPrefix}_content_Assets.car");
+					expectedList.Add ($"__{platformPrefix}_content_B.otf");
+					expectedList.Add ($"__{platformPrefix}_content_C.ttf");
+					expectedList.Add ($"__{platformPrefix}_content_DirWithResources_slinkedArt.scnassets_sscene.scn");
+					expectedList.Add ($"__{platformPrefix}_content_DirWithResources_slinkedArt.scnassets_stexture.png");
+					expectedList.Add ($"__{platformPrefix}_content_scene.dae");
+					switch (platform) {
+					case ApplePlatform.iOS:
+						expectedList.Add ($"__{platformPrefix}_content_Main.storyboardc_sBYZ-38-t0r-view-8bC-Xf-vdC.nib");
+						expectedList.Add ($"__{platformPrefix}_content_Main.storyboardc_sInfo.plist");
+						expectedList.Add ($"__{platformPrefix}_content_Main.storyboardc_sUIViewController-BYZ-38-t0r.nib");
+						break;
+					case ApplePlatform.TVOS:
+						expectedList.Add ($"__{platformPrefix}_content_Main.storyboardc_sBYZ-38-t0r-view-8bC-Xf-vdC.nib");
+						expectedList.Add ($"__{platformPrefix}_content_Main.storyboardc_sInfo.plist");
+						expectedList.Add ($"__{platformPrefix}_content_Main.storyboardc_sUIViewController-BYZ-38-t0r.nib");
+						break;
+					case ApplePlatform.MacCatalyst:
+						expectedList.Add ($"__{platformPrefix}_content_Main.storyboardc_s1-view-2.nib");
+						expectedList.Add ($"__{platformPrefix}_content_Main.storyboardc_sInfo.plist");
+						expectedList.Add ($"__{platformPrefix}_content_Main.storyboardc_sUIViewController-1.nib");
+						break;
+					case ApplePlatform.MacOSX:
+						expectedList.Add ($"__{platformPrefix}_content_Main.storyboardc_sInfo.plist");
+						expectedList.Add ($"__{platformPrefix}_content_Main.storyboardc_sMainMenu.nib");
+						expectedList.Add ($"__{platformPrefix}_content_Main.storyboardc_sNSWindowController-B8D-0N-5wS.nib");
+						expectedList.Add ($"__{platformPrefix}_content_Main.storyboardc_sXfG-lQ-9wD-view-m2S-Jp-Qdl.nib");
+						break;
+					}
+					expectedList.Add ($"__{platformPrefix}_content_SqueezeNet.mlmodelc_sanalytics_scoremldata.bin");
+					expectedList.Add ($"__{platformPrefix}_content_SqueezeNet.mlmodelc_scoremldata.bin");
+					expectedList.Add ($"__{platformPrefix}_content_SqueezeNet.mlmodelc_smetadata.json");
+					expectedList.Add ($"__{platformPrefix}_content_SqueezeNet.mlmodelc_smodel.espresso.net");
+					expectedList.Add ($"__{platformPrefix}_content_SqueezeNet.mlmodelc_smodel.espresso.shape");
+					expectedList.Add ($"__{platformPrefix}_content_SqueezeNet.mlmodelc_smodel.espresso.weights");
+					expectedList.Add ($"__{platformPrefix}_content_SqueezeNet.mlmodelc_smodel_scoremldata.bin");
+					expectedList.Add ($"__{platformPrefix}_content_SqueezeNet.mlmodelc_sneural__network__optionals_scoremldata.bin");
+					expectedResources = expectedList.ToArray ();
+				}
+			} else {
+				expectedResources = new string [0];
+			}
+			CollectionAssert.AreEquivalent (expectedResources, actualResources, "Resources");
+		}
+
+		[TestCase (ApplePlatform.iOS, "ios-arm64", false)]
+		[TestCase (ApplePlatform.iOS, "ios-arm64", true)]
+		[TestCase (ApplePlatform.TVOS, "tvossimulator-arm64", false)]
+		[TestCase (ApplePlatform.TVOS, "tvossimulator-arm64", true)]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64", false)]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64;maccatalyst-x64", true)]
+		[TestCase (ApplePlatform.MacOSX, "osx-x64", true)]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64;osx-x64", false)]
+		public void AppWithLibraryWithResourcesReference (ApplePlatform platform, string runtimeIdentifiers, bool bundleOriginalResources)
+		{
+			AppWithLibraryWithResourcesReferenceImpl (platform, runtimeIdentifiers, bundleOriginalResources, false, false);
+		}
+
+
+		[Category ("RemoteWindows")]
+		[TestCase (ApplePlatform.iOS, "ios-arm64", false)]
+		[TestCase (ApplePlatform.iOS, "ios-arm64", true)]
+		public void AppWithLibraryWithResourcesReferenceOnRemoteWindows (ApplePlatform platform, string runtimeIdentifiers, bool bundleOriginalResources)
+		{
+			Configuration.IgnoreIfNotOnWindows ();
+
+			AppWithLibraryWithResourcesReferenceImpl (platform, runtimeIdentifiers, bundleOriginalResources, true, false);
+		}
+
+		[Category ("Windows")]
+		[TestCase (ApplePlatform.iOS, "ios-arm64", false)]
+		[TestCase (ApplePlatform.iOS, "ios-arm64", true)]
+		public void AppWithLibraryWithResourcesReferenceWithHotRestart (ApplePlatform platform, string runtimeIdentifiers, bool bundleOriginalResources)
+		{
+			Configuration.IgnoreIfNotOnWindows ();
+
+			AppWithLibraryWithResourcesReferenceImpl (platform, runtimeIdentifiers, bundleOriginalResources, false, isUsingHotRestart: true);
+		}
+
+		void AppWithLibraryWithResourcesReferenceImpl (ApplePlatform platform, string runtimeIdentifiers, bool bundleOriginalResources, bool remoteWindows, bool isUsingHotRestart)
+		{
+			var project = "AppWithLibraryWithResourcesReference";
+			var config = bundleOriginalResources ? "DebugOriginal" : "DebugCompiled";
+
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+
+			var library_project = GetProjectPath ("LibraryWithResources", platform: platform);
+			Clean (library_project);
+			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath, configuration: config);
+			Clean (project_path);
+
+			Dictionary<string, string>? extraProperties = null;
+			string? tmpdir;
+			string? hotRestartOutputDir = null;
+			string? hotRestartAppBundlePath = null;
+			if (isUsingHotRestart) {
+				tmpdir = Cache.CreateTemporaryDirectory ();
+				extraProperties = GetHotRestartProperties (tmpdir, out hotRestartOutputDir, out hotRestartAppBundlePath);
+			}
+
+			var properties = GetDefaultProperties (runtimeIdentifiers, extraProperties);
+			properties ["Configuration"] = config;
+			properties ["BundleOriginalResources"] = bundleOriginalResources ? "true" : "false";
+			if (remoteWindows) {
+				// Copy the app bundle to Windows so that we can inspect the results.
+				properties ["CopyAppBundleToWindows"] = "true";
+			}
+
+			var rv = DotNet.AssertBuild (project_path, properties);
+
+			var appExecutable = GetNativeExecutable (platform, appPath);
+			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
+
+			var appBundleInfo = new AppBundleInfo (platform, appPath, project_path, remoteWindows, runtimeIdentifiers, config, isUsingHotRestart, hotRestartOutputDir, hotRestartAppBundlePath);
+			var appBundleContents = appBundleInfo.GetAppBundleFiles (true).ToHashSet ();
+
+			appBundleInfo.DumpAppBundleContents ();
+
+			Assert.Multiple (() => {
+				var resourcesDirectory = GetResourcesDirectory (platform, "");
+
+				var fontDirectory = resourcesDirectory;
+				var fontAFile = Path.Combine (fontDirectory, "A.ttc");
+				var fontBFile = Path.Combine (fontDirectory, "B.otf");
+				var fontCFile = Path.Combine (fontDirectory, "C.ttf");
+
+				Assert.That (appBundleContents, Does.Contain (fontAFile), "A.ttc existence");
+				Assert.That (appBundleContents, Does.Contain (fontBFile), "B.otf existence");
+				Assert.That (appBundleContents, Does.Contain (fontCFile), "C.ttf existence");
+
+				var atlasTexture = Path.Combine (resourcesDirectory, "Archer_Attack.atlasc", "Archer_Attack.plist");
+				AssertExistsOrUsingHotRestart (atlasTexture, "AtlasTexture - Archer_Attack");
+
+				var scnAssetsDir = Path.Combine (resourcesDirectory, "art.scnassets");
+				AssertExistsOrUsingHotRestart (Path.Combine (scnAssetsDir, "scene.scn"), "scene.scn");
+				AssertExistsOrUsingHotRestart (Path.Combine (scnAssetsDir, "texture.png"), "texture.png");
+
+				AssertExistsOrUsingHotRestart (Path.Combine (resourcesDirectory, "Assets.car"), "Assets.car");
+
+				AssertExistsOrUsingHotRestart (Path.Combine (resourcesDirectory, "DirWithResources", "linkedArt.scnassets", "scene.scn"), "DirWithResources/linkedArt.scnassets/scene.scn");
+				AssertExistsOrUsingHotRestart (Path.Combine (resourcesDirectory, "DirWithResources", "linkedArt.scnassets", "texture.png"), "DirWithResources/linkedArt.scnassets/texture.png");
+
+				var mainStoryboard = Path.Combine (resourcesDirectory, "Main.storyboardc");
+				AssertExistsOrUsingHotRestart (mainStoryboard, "Main.storyboardc");
+				AssertExistsOrUsingHotRestart (Path.Combine (mainStoryboard, "Info.plist"), "Main.storyboardc/Info.plist");
+
+				var colladaScene = Path.Combine (resourcesDirectory, "scene.dae");
+				AssertExistsOrUsingHotRestart (colladaScene, "Collada - scene.dae");
+
+				var mlModel = Path.Combine (resourcesDirectory, "SqueezeNet.mlmodelc");
+				AssertExistsOrUsingHotRestart (mlModel, "CoreMLModel");
+				AssertExistsOrUsingHotRestart (Path.Combine (mlModel, "analytics"), "CoreMLModel/analytics");
+				AssertExistsOrUsingHotRestart (Path.Combine (mlModel, "analytics", "coremldata.bin"), "CoreMLModel/analytics/coremldata.bin");
+				AssertExistsOrUsingHotRestart (Path.Combine (mlModel, "coremldata.bin"), "CoreMLModel/coremldata.bin");
+				AssertExistsOrUsingHotRestart (Path.Combine (mlModel, "metadata.json"), "CoreMLModel/metadata.json");
+				AssertExistsOrUsingHotRestart (Path.Combine (mlModel, "model"), "CoreMLModel/model");
+				AssertExistsOrUsingHotRestart (Path.Combine (mlModel, "model.espresso.net"), "CoreMLModel/model.espresso.net");
+				AssertExistsOrUsingHotRestart (Path.Combine (mlModel, "model.espresso.shape"), "CoreMLModel/model.espresso.shape");
+				AssertExistsOrUsingHotRestart (Path.Combine (mlModel, "model.espresso.weights"), "CoreMLModel/model.espresso.weights");
+				AssertExistsOrUsingHotRestart (Path.Combine (mlModel, "model", "coremldata.bin"), "CoreMLModel/model/coremldata.bin");
+				AssertExistsOrUsingHotRestart (Path.Combine (mlModel, "neural_network_optionals"), "CoreMLModel/neural_network_optionals");
+				AssertExistsOrUsingHotRestart (Path.Combine (mlModel, "neural_network_optionals", "coremldata.bin"), "CoreMLModel/neural_network_optionals/coremldata.bin");
+
+				if (bundleOriginalResources) {
+					var infoPlist = appBundleInfo.GetFile (GetInfoPListPath (platform, ""));
+					var appManifest = PDictionary.FromByteArray (infoPlist, out var _)!;
+					Assert.AreEqual ("Here I am", appManifest.GetString ("LibraryWithResources").Value, "Partial plist entry");
+				}
+			});
+
+			void AssertExistsOrUsingHotRestart (string path, string message)
+			{
+				var exists = appBundleContents.Contains (path);
+				if (exists ^ isUsingHotRestart)
+					return;
+				Assert.Fail ($"Expected either hot restart to be enabled ({isUsingHotRestart}) or the file '{path}' to be in the app bundle ({exists}): {message}");
+			}
+		}
+
 		[TestCase (ApplePlatform.iOS, "iossimulator-x64")]
-		[TestCase (ApplePlatform.iOS, "ios-arm64;ios-arm")]
+		[TestCase (ApplePlatform.iOS, "ios-arm64")]
 		[TestCase (ApplePlatform.TVOS, "tvossimulator-x64")]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64")]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64;maccatalyst-x64")]
 		[TestCase (ApplePlatform.MacOSX, "osx-x64")]
-		[TestCase (ApplePlatform.MacOSX, "osx-arm64;osx-x64")] // https://github.com/xamarin/xamarin-macios/issues/12410
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64;osx-x64")] // https://github.com/dotnet/macios/issues/12410
 		public void DoubleBuild (ApplePlatform platform, string runtimeIdentifiers)
 		{
 			var project = "AppWithResources";
@@ -808,16 +1103,464 @@ namespace Xamarin.Tests {
 			DotNet.AssertBuild (projectPath, GetDefaultProperties (runtimeIdentifiers));
 		}
 
+		public enum DuplicatedResourcesScenarios {
+			FirstLibraryAndSecondLibrary,
+			FirstLibraryAndExecutable,
+			ExecutableAndExecutable,
+			IdenticalInExecutable,
+			IdenticalInExecutableDifferentMetadata,
+		}
+
+		[TestCase (ApplePlatform.iOS, "iossimulator-x64", true, DuplicatedResourcesScenarios.FirstLibraryAndSecondLibrary)]
+		[TestCase (ApplePlatform.iOS, "ios-arm64", false, DuplicatedResourcesScenarios.FirstLibraryAndSecondLibrary)]
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64", true, DuplicatedResourcesScenarios.FirstLibraryAndExecutable)]
+		[TestCase (ApplePlatform.iOS, "ios-arm64", false, DuplicatedResourcesScenarios.FirstLibraryAndExecutable)]
+		[TestCase (ApplePlatform.iOS, "iossimulator-x64", true, DuplicatedResourcesScenarios.ExecutableAndExecutable)]
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64", false, DuplicatedResourcesScenarios.ExecutableAndExecutable)]
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64", true, DuplicatedResourcesScenarios.IdenticalInExecutable)]
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64", true, DuplicatedResourcesScenarios.IdenticalInExecutableDifferentMetadata)]
+
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64", true, DuplicatedResourcesScenarios.FirstLibraryAndSecondLibrary)]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64", false, DuplicatedResourcesScenarios.FirstLibraryAndSecondLibrary)]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64;maccatalyst-arm64", true, DuplicatedResourcesScenarios.FirstLibraryAndExecutable)]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64", false, DuplicatedResourcesScenarios.FirstLibraryAndExecutable)]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64", true, DuplicatedResourcesScenarios.ExecutableAndExecutable)]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64;maccatalyst-arm64", false, DuplicatedResourcesScenarios.ExecutableAndExecutable)]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64", true, DuplicatedResourcesScenarios.IdenticalInExecutable)]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64", true, DuplicatedResourcesScenarios.IdenticalInExecutableDifferentMetadata)]
+
+		[TestCase (ApplePlatform.TVOS, "tvossimulator-x64", true, DuplicatedResourcesScenarios.FirstLibraryAndSecondLibrary)]
+		[TestCase (ApplePlatform.TVOS, "tvossimulator-arm64", false, DuplicatedResourcesScenarios.FirstLibraryAndSecondLibrary)]
+		[TestCase (ApplePlatform.TVOS, "tvos-arm64", true, DuplicatedResourcesScenarios.FirstLibraryAndExecutable)]
+		[TestCase (ApplePlatform.TVOS, "tvossimulator-arm64", false, DuplicatedResourcesScenarios.FirstLibraryAndExecutable)]
+		[TestCase (ApplePlatform.TVOS, "tvossimulator-x64", true, DuplicatedResourcesScenarios.ExecutableAndExecutable)]
+		[TestCase (ApplePlatform.TVOS, "tvos-arm64", false, DuplicatedResourcesScenarios.ExecutableAndExecutable)]
+		[TestCase (ApplePlatform.TVOS, "tvos-arm64", true, DuplicatedResourcesScenarios.IdenticalInExecutable)]
+		[TestCase (ApplePlatform.TVOS, "tvos-arm64", true, DuplicatedResourcesScenarios.IdenticalInExecutableDifferentMetadata)]
+
+		[TestCase (ApplePlatform.MacOSX, "osx-x64;osx-arm64", true, DuplicatedResourcesScenarios.FirstLibraryAndSecondLibrary)]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64", false, DuplicatedResourcesScenarios.FirstLibraryAndSecondLibrary)]
+		[TestCase (ApplePlatform.MacOSX, "osx-x64", true, DuplicatedResourcesScenarios.FirstLibraryAndExecutable)]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64;osx-x64", false, DuplicatedResourcesScenarios.FirstLibraryAndExecutable)]
+		[TestCase (ApplePlatform.MacOSX, "osx-x64", true, DuplicatedResourcesScenarios.ExecutableAndExecutable)]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64", false, DuplicatedResourcesScenarios.ExecutableAndExecutable)]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64", true, DuplicatedResourcesScenarios.IdenticalInExecutable)]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64", true, DuplicatedResourcesScenarios.IdenticalInExecutableDifferentMetadata)]
+		public void AppWithDuplicatedResources (ApplePlatform platform, string runtimeIdentifiers, bool bundleOriginalResources, DuplicatedResourcesScenarios scenario)
+		{
+			var project = "AppWithDuplicatedResources";
+			var config = "Debug";
+
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+
+			var library_project = GetProjectPath ("LibraryWithResources", platform: platform);
+			Clean (library_project);
+			var second_library_project = GetProjectPath ("SecondLibraryWithResources", platform: platform);
+			Clean (second_library_project);
+			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath, configuration: config);
+			Clean (project_path);
+
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			properties ["Configuration"] = config;
+			properties ["BundleOriginalResources"] = bundleOriginalResources ? "true" : "false";
+			switch (scenario) {
+			case DuplicatedResourcesScenarios.FirstLibraryAndSecondLibrary:
+				properties ["IncludeLibraryWithResources"] = "true";
+				properties ["IncludeSecondLibraryWithResources"] = "true";
+				break;
+			case DuplicatedResourcesScenarios.FirstLibraryAndExecutable:
+				properties ["IncludeLibraryWithResources"] = "true";
+				properties ["IncludeSecondExecutableResources"] = "true";
+				break;
+			case DuplicatedResourcesScenarios.ExecutableAndExecutable:
+				properties ["IncludeFirstExecutableResources"] = "true";
+				properties ["IncludeSecondExecutableResources"] = "true";
+				break;
+			case DuplicatedResourcesScenarios.IdenticalInExecutable:
+				properties ["IncludeFirstExecutableResources"] = "true";
+				properties ["IncludeFirstExecutableResourcesAgain"] = "true";
+				break;
+			case DuplicatedResourcesScenarios.IdenticalInExecutableDifferentMetadata:
+				properties ["IncludeFirstExecutableResources"] = "true";
+				properties ["IncludeFirstExecutableResourcesAgainWithDifferentMetadata"] = "true";
+				break;
+			default:
+				throw new NotImplementedException (scenario.ToString ());
+			}
+
+			// Execute the '_CollectBundleResources' target directly to avoid doing the whole build.
+			// This is solely to make the test faster.
+			var rv = DotNet.AssertBuild (project_path, properties, target: "_CollectBundleResources");
+			var expectedWarnings = Array.Empty<ExpectedBuildMessage> ();
+			var runtimeIdentifierInfix = runtimeIdentifiers.IndexOf (';') >= 0 ? "/" : $"/{runtimeIdentifiers}/";
+			if (bundleOriginalResources) {
+				switch (scenario) {
+				case DuplicatedResourcesScenarios.FirstLibraryAndSecondLibrary:
+					expectedWarnings = new ExpectedBuildMessage [] {
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/AtlasTexture/Archer_Attack.atlas/archer_attack_0001.png", $"The AtlasTexture item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/AtlasTexture/Archer_Attack.atlas/archer_attack_0001.png' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's another item from a different assembly (SecondLibraryWithResources.dll) with the same LogicalName ('Archer_Attack.atlas/archer_attack_0001.png')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/AtlasTexture/Archer_Attack.atlas/archer_attack_0002.png", $"The AtlasTexture item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/AtlasTexture/Archer_Attack.atlas/archer_attack_0002.png' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's another item from a different assembly (SecondLibraryWithResources.dll) with the same LogicalName ('Archer_Attack.atlas/archer_attack_0002.png')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/AtlasTexture/Archer_Attack.atlas/archer_attack_0003.png", $"The AtlasTexture item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/AtlasTexture/Archer_Attack.atlas/archer_attack_0003.png' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's another item from a different assembly (SecondLibraryWithResources.dll) with the same LogicalName ('Archer_Attack.atlas/archer_attack_0003.png')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/AtlasTexture/Archer_Attack.atlas/archer_attack_0004.png", $"The AtlasTexture item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/AtlasTexture/Archer_Attack.atlas/archer_attack_0004.png' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's another item from a different assembly (SecondLibraryWithResources.dll) with the same LogicalName ('Archer_Attack.atlas/archer_attack_0004.png')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/AtlasTexture/Archer_Attack.atlas/archer_attack_0005.png", $"The AtlasTexture item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/AtlasTexture/Archer_Attack.atlas/archer_attack_0005.png' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's another item from a different assembly (SecondLibraryWithResources.dll) with the same LogicalName ('Archer_Attack.atlas/archer_attack_0005.png')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/AtlasTexture/Archer_Attack.atlas/archer_attack_0006.png", $"The AtlasTexture item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/AtlasTexture/Archer_Attack.atlas/archer_attack_0006.png' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's another item from a different assembly (SecondLibraryWithResources.dll) with the same LogicalName ('Archer_Attack.atlas/archer_attack_0006.png')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/AtlasTexture/Archer_Attack.atlas/archer_attack_0007.png", $"The AtlasTexture item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/AtlasTexture/Archer_Attack.atlas/archer_attack_0007.png' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's another item from a different assembly (SecondLibraryWithResources.dll) with the same LogicalName ('Archer_Attack.atlas/archer_attack_0007.png')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/AtlasTexture/Archer_Attack.atlas/archer_attack_0008.png", $"The AtlasTexture item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/AtlasTexture/Archer_Attack.atlas/archer_attack_0008.png' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's another item from a different assembly (SecondLibraryWithResources.dll) with the same LogicalName ('Archer_Attack.atlas/archer_attack_0008.png')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/AtlasTexture/Archer_Attack.atlas/archer_attack_0009.png", $"The AtlasTexture item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/AtlasTexture/Archer_Attack.atlas/archer_attack_0009.png' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's another item from a different assembly (SecondLibraryWithResources.dll) with the same LogicalName ('Archer_Attack.atlas/archer_attack_0009.png')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/AtlasTexture/Archer_Attack.atlas/archer_attack_0010.png", $"The AtlasTexture item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/AtlasTexture/Archer_Attack.atlas/archer_attack_0010.png' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's another item from a different assembly (SecondLibraryWithResources.dll) with the same LogicalName ('Archer_Attack.atlas/archer_attack_0010.png')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/BundleResource/A.ttc", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/BundleResource/A.ttc' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's another item from a different assembly (SecondLibraryWithResources.dll) with the same LogicalName ('A.ttc')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/BundleResource/B.otf", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/BundleResource/B.otf' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's another item from a different assembly (SecondLibraryWithResources.dll) with the same LogicalName ('B.otf')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/BundleResource/C.ttf", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/BundleResource/C.ttf' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's another item from a different assembly (SecondLibraryWithResources.dll) with the same LogicalName ('C.ttf')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/Collada/scene.dae", $"The Collada item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/Collada/scene.dae' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's another item from a different assembly (SecondLibraryWithResources.dll) with the same LogicalName ('scene.dae')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/CoreMLModel/SqueezeNet.mlmodel", $"The CoreMLModel item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/CoreMLModel/SqueezeNet.mlmodel' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's another item from a different assembly (SecondLibraryWithResources.dll) with the same LogicalName ('SqueezeNet.mlmodel')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/ImageAsset/Images.xcassets/Contents.json", $"The ImageAsset item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/ImageAsset/Images.xcassets/Contents.json' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's another item from a different assembly (SecondLibraryWithResources.dll) with the same LogicalName ('Images.xcassets/Contents.json')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/ImageAsset/Images.xcassets/Image.imageset/Contents.json", $"The ImageAsset item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/ImageAsset/Images.xcassets/Image.imageset/Contents.json' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's another item from a different assembly (SecondLibraryWithResources.dll) with the same LogicalName ('Images.xcassets/Image.imageset/Contents.json')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/ImageAsset/Images.xcassets/Image.imageset/Icon16.png", $"The ImageAsset item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/ImageAsset/Images.xcassets/Image.imageset/Icon16.png' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's another item from a different assembly (SecondLibraryWithResources.dll) with the same LogicalName ('Images.xcassets/Image.imageset/Icon16.png')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/ImageAsset/Images.xcassets/Image.imageset/Icon32.png", $"The ImageAsset item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/ImageAsset/Images.xcassets/Image.imageset/Icon32.png' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's another item from a different assembly (SecondLibraryWithResources.dll) with the same LogicalName ('Images.xcassets/Image.imageset/Icon32.png')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/ImageAsset/Images.xcassets/Image.imageset/Icon64.png", $"The ImageAsset item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/ImageAsset/Images.xcassets/Image.imageset/Icon64.png' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's another item from a different assembly (SecondLibraryWithResources.dll) with the same LogicalName ('Images.xcassets/Image.imageset/Icon64.png')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/InterfaceDefinition/Main.storyboard", $"The InterfaceDefinition item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/InterfaceDefinition/Main.storyboard' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's another item from a different assembly (SecondLibraryWithResources.dll) with the same LogicalName ('Main.storyboardc')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/SceneKitAsset/art.scnassets/scene.scn", $"The SceneKitAsset item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/SceneKitAsset/art.scnassets/scene.scn' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's another item from a different assembly (SecondLibraryWithResources.dll) with the same LogicalName ('art.scnassets/scene.scn')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/SceneKitAsset/art.scnassets/texture.png", $"The SceneKitAsset item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/SceneKitAsset/art.scnassets/texture.png' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's another item from a different assembly (SecondLibraryWithResources.dll) with the same LogicalName ('art.scnassets/texture.png')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/SceneKitAsset/DirWithResources/linkedArt.scnassets/scene.scn", $"The SceneKitAsset item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/SceneKitAsset/DirWithResources/linkedArt.scnassets/scene.scn' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's another item from a different assembly (SecondLibraryWithResources.dll) with the same LogicalName ('DirWithResources/linkedArt.scnassets/scene.scn')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/SceneKitAsset/DirWithResources/linkedArt.scnassets/texture.png", $"The SceneKitAsset item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/SceneKitAsset/DirWithResources/linkedArt.scnassets/texture.png' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's another item from a different assembly (SecondLibraryWithResources.dll) with the same LogicalName ('DirWithResources/linkedArt.scnassets/texture.png')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/AtlasTexture/Archer_Attack.atlas/archer_attack_0001.png", $"The AtlasTexture item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/AtlasTexture/Archer_Attack.atlas/archer_attack_0001.png' imported from '<root>/tests/dotnet/SecondLibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/SecondLibraryWithResources.dll' was ignored, because there's another item from a different assembly (LibraryWithResources.dll) with the same LogicalName ('Archer_Attack.atlas/archer_attack_0001.png')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/AtlasTexture/Archer_Attack.atlas/archer_attack_0002.png", $"The AtlasTexture item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/AtlasTexture/Archer_Attack.atlas/archer_attack_0002.png' imported from '<root>/tests/dotnet/SecondLibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/SecondLibraryWithResources.dll' was ignored, because there's another item from a different assembly (LibraryWithResources.dll) with the same LogicalName ('Archer_Attack.atlas/archer_attack_0002.png')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/AtlasTexture/Archer_Attack.atlas/archer_attack_0003.png", $"The AtlasTexture item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/AtlasTexture/Archer_Attack.atlas/archer_attack_0003.png' imported from '<root>/tests/dotnet/SecondLibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/SecondLibraryWithResources.dll' was ignored, because there's another item from a different assembly (LibraryWithResources.dll) with the same LogicalName ('Archer_Attack.atlas/archer_attack_0003.png')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/AtlasTexture/Archer_Attack.atlas/archer_attack_0004.png", $"The AtlasTexture item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/AtlasTexture/Archer_Attack.atlas/archer_attack_0004.png' imported from '<root>/tests/dotnet/SecondLibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/SecondLibraryWithResources.dll' was ignored, because there's another item from a different assembly (LibraryWithResources.dll) with the same LogicalName ('Archer_Attack.atlas/archer_attack_0004.png')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/AtlasTexture/Archer_Attack.atlas/archer_attack_0005.png", $"The AtlasTexture item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/AtlasTexture/Archer_Attack.atlas/archer_attack_0005.png' imported from '<root>/tests/dotnet/SecondLibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/SecondLibraryWithResources.dll' was ignored, because there's another item from a different assembly (LibraryWithResources.dll) with the same LogicalName ('Archer_Attack.atlas/archer_attack_0005.png')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/AtlasTexture/Archer_Attack.atlas/archer_attack_0006.png", $"The AtlasTexture item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/AtlasTexture/Archer_Attack.atlas/archer_attack_0006.png' imported from '<root>/tests/dotnet/SecondLibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/SecondLibraryWithResources.dll' was ignored, because there's another item from a different assembly (LibraryWithResources.dll) with the same LogicalName ('Archer_Attack.atlas/archer_attack_0006.png')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/AtlasTexture/Archer_Attack.atlas/archer_attack_0007.png", $"The AtlasTexture item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/AtlasTexture/Archer_Attack.atlas/archer_attack_0007.png' imported from '<root>/tests/dotnet/SecondLibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/SecondLibraryWithResources.dll' was ignored, because there's another item from a different assembly (LibraryWithResources.dll) with the same LogicalName ('Archer_Attack.atlas/archer_attack_0007.png')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/AtlasTexture/Archer_Attack.atlas/archer_attack_0008.png", $"The AtlasTexture item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/AtlasTexture/Archer_Attack.atlas/archer_attack_0008.png' imported from '<root>/tests/dotnet/SecondLibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/SecondLibraryWithResources.dll' was ignored, because there's another item from a different assembly (LibraryWithResources.dll) with the same LogicalName ('Archer_Attack.atlas/archer_attack_0008.png')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/AtlasTexture/Archer_Attack.atlas/archer_attack_0009.png", $"The AtlasTexture item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/AtlasTexture/Archer_Attack.atlas/archer_attack_0009.png' imported from '<root>/tests/dotnet/SecondLibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/SecondLibraryWithResources.dll' was ignored, because there's another item from a different assembly (LibraryWithResources.dll) with the same LogicalName ('Archer_Attack.atlas/archer_attack_0009.png')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/AtlasTexture/Archer_Attack.atlas/archer_attack_0010.png", $"The AtlasTexture item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/AtlasTexture/Archer_Attack.atlas/archer_attack_0010.png' imported from '<root>/tests/dotnet/SecondLibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/SecondLibraryWithResources.dll' was ignored, because there's another item from a different assembly (LibraryWithResources.dll) with the same LogicalName ('Archer_Attack.atlas/archer_attack_0010.png')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/BundleResource/A.ttc", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/BundleResource/A.ttc' imported from '<root>/tests/dotnet/SecondLibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/SecondLibraryWithResources.dll' was ignored, because there's another item from a different assembly (LibraryWithResources.dll) with the same LogicalName ('A.ttc')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/BundleResource/B.otf", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/BundleResource/B.otf' imported from '<root>/tests/dotnet/SecondLibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/SecondLibraryWithResources.dll' was ignored, because there's another item from a different assembly (LibraryWithResources.dll) with the same LogicalName ('B.otf')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/BundleResource/C.ttf", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/BundleResource/C.ttf' imported from '<root>/tests/dotnet/SecondLibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/SecondLibraryWithResources.dll' was ignored, because there's another item from a different assembly (LibraryWithResources.dll) with the same LogicalName ('C.ttf')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/Collada/scene.dae", $"The Collada item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/Collada/scene.dae' imported from '<root>/tests/dotnet/SecondLibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/SecondLibraryWithResources.dll' was ignored, because there's another item from a different assembly (LibraryWithResources.dll) with the same LogicalName ('scene.dae')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/CoreMLModel/SqueezeNet.mlmodel", $"The CoreMLModel item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/CoreMLModel/SqueezeNet.mlmodel' imported from '<root>/tests/dotnet/SecondLibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/SecondLibraryWithResources.dll' was ignored, because there's another item from a different assembly (LibraryWithResources.dll) with the same LogicalName ('SqueezeNet.mlmodel')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/ImageAsset/Images.xcassets/Contents.json", $"The ImageAsset item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/ImageAsset/Images.xcassets/Contents.json' imported from '<root>/tests/dotnet/SecondLibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/SecondLibraryWithResources.dll' was ignored, because there's another item from a different assembly (LibraryWithResources.dll) with the same LogicalName ('Images.xcassets/Contents.json')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/ImageAsset/Images.xcassets/Image.imageset/Contents.json", $"The ImageAsset item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/ImageAsset/Images.xcassets/Image.imageset/Contents.json' imported from '<root>/tests/dotnet/SecondLibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/SecondLibraryWithResources.dll' was ignored, because there's another item from a different assembly (LibraryWithResources.dll) with the same LogicalName ('Images.xcassets/Image.imageset/Contents.json')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/ImageAsset/Images.xcassets/Image.imageset/Icon16.png", $"The ImageAsset item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/ImageAsset/Images.xcassets/Image.imageset/Icon16.png' imported from '<root>/tests/dotnet/SecondLibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/SecondLibraryWithResources.dll' was ignored, because there's another item from a different assembly (LibraryWithResources.dll) with the same LogicalName ('Images.xcassets/Image.imageset/Icon16.png')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/ImageAsset/Images.xcassets/Image.imageset/Icon32.png", $"The ImageAsset item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/ImageAsset/Images.xcassets/Image.imageset/Icon32.png' imported from '<root>/tests/dotnet/SecondLibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/SecondLibraryWithResources.dll' was ignored, because there's another item from a different assembly (LibraryWithResources.dll) with the same LogicalName ('Images.xcassets/Image.imageset/Icon32.png')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/ImageAsset/Images.xcassets/Image.imageset/Icon64.png", $"The ImageAsset item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/ImageAsset/Images.xcassets/Image.imageset/Icon64.png' imported from '<root>/tests/dotnet/SecondLibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/SecondLibraryWithResources.dll' was ignored, because there's another item from a different assembly (LibraryWithResources.dll) with the same LogicalName ('Images.xcassets/Image.imageset/Icon64.png')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/InterfaceDefinition/Main.storyboard", $"The InterfaceDefinition item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/InterfaceDefinition/Main.storyboard' imported from '<root>/tests/dotnet/SecondLibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/SecondLibraryWithResources.dll' was ignored, because there's another item from a different assembly (LibraryWithResources.dll) with the same LogicalName ('Main.storyboardc')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/SceneKitAsset/art.scnassets/scene.scn", $"The SceneKitAsset item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/SceneKitAsset/art.scnassets/scene.scn' imported from '<root>/tests/dotnet/SecondLibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/SecondLibraryWithResources.dll' was ignored, because there's another item from a different assembly (LibraryWithResources.dll) with the same LogicalName ('art.scnassets/scene.scn')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/SceneKitAsset/art.scnassets/texture.png", $"The SceneKitAsset item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/SceneKitAsset/art.scnassets/texture.png' imported from '<root>/tests/dotnet/SecondLibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/SecondLibraryWithResources.dll' was ignored, because there's another item from a different assembly (LibraryWithResources.dll) with the same LogicalName ('art.scnassets/texture.png')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/SceneKitAsset/DirWithResources/linkedArt.scnassets/scene.scn", $"The SceneKitAsset item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/SceneKitAsset/DirWithResources/linkedArt.scnassets/scene.scn' imported from '<root>/tests/dotnet/SecondLibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/SecondLibraryWithResources.dll' was ignored, because there's another item from a different assembly (LibraryWithResources.dll) with the same LogicalName ('DirWithResources/linkedArt.scnassets/scene.scn')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/SceneKitAsset/DirWithResources/linkedArt.scnassets/texture.png", $"The SceneKitAsset item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/SceneKitAsset/DirWithResources/linkedArt.scnassets/texture.png' imported from '<root>/tests/dotnet/SecondLibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/SecondLibraryWithResources.dll' was ignored, because there's another item from a different assembly (LibraryWithResources.dll) with the same LogicalName ('DirWithResources/linkedArt.scnassets/texture.png')"),
+					};
+					break;
+				case DuplicatedResourcesScenarios.FirstLibraryAndExecutable:
+					expectedWarnings = new ExpectedBuildMessage [] {
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/AtlasTexture/Archer_Attack.atlas/archer_attack_0001.png", $"The AtlasTexture item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/AtlasTexture/Archer_Attack.atlas/archer_attack_0001.png' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's already an existing item from the current project with the same LogicalName ('Archer_Attack.atlas/archer_attack_0001.png')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/AtlasTexture/Archer_Attack.atlas/archer_attack_0002.png", $"The AtlasTexture item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/AtlasTexture/Archer_Attack.atlas/archer_attack_0002.png' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's already an existing item from the current project with the same LogicalName ('Archer_Attack.atlas/archer_attack_0002.png')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/AtlasTexture/Archer_Attack.atlas/archer_attack_0003.png", $"The AtlasTexture item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/AtlasTexture/Archer_Attack.atlas/archer_attack_0003.png' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's already an existing item from the current project with the same LogicalName ('Archer_Attack.atlas/archer_attack_0003.png')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/AtlasTexture/Archer_Attack.atlas/archer_attack_0004.png", $"The AtlasTexture item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/AtlasTexture/Archer_Attack.atlas/archer_attack_0004.png' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's already an existing item from the current project with the same LogicalName ('Archer_Attack.atlas/archer_attack_0004.png')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/AtlasTexture/Archer_Attack.atlas/archer_attack_0005.png", $"The AtlasTexture item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/AtlasTexture/Archer_Attack.atlas/archer_attack_0005.png' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's already an existing item from the current project with the same LogicalName ('Archer_Attack.atlas/archer_attack_0005.png')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/AtlasTexture/Archer_Attack.atlas/archer_attack_0006.png", $"The AtlasTexture item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/AtlasTexture/Archer_Attack.atlas/archer_attack_0006.png' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's already an existing item from the current project with the same LogicalName ('Archer_Attack.atlas/archer_attack_0006.png')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/AtlasTexture/Archer_Attack.atlas/archer_attack_0007.png", $"The AtlasTexture item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/AtlasTexture/Archer_Attack.atlas/archer_attack_0007.png' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's already an existing item from the current project with the same LogicalName ('Archer_Attack.atlas/archer_attack_0007.png')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/AtlasTexture/Archer_Attack.atlas/archer_attack_0008.png", $"The AtlasTexture item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/AtlasTexture/Archer_Attack.atlas/archer_attack_0008.png' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's already an existing item from the current project with the same LogicalName ('Archer_Attack.atlas/archer_attack_0008.png')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/AtlasTexture/Archer_Attack.atlas/archer_attack_0009.png", $"The AtlasTexture item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/AtlasTexture/Archer_Attack.atlas/archer_attack_0009.png' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's already an existing item from the current project with the same LogicalName ('Archer_Attack.atlas/archer_attack_0009.png')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/AtlasTexture/Archer_Attack.atlas/archer_attack_0010.png", $"The AtlasTexture item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/AtlasTexture/Archer_Attack.atlas/archer_attack_0010.png' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's already an existing item from the current project with the same LogicalName ('Archer_Attack.atlas/archer_attack_0010.png')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/BundleResource/B.otf", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/BundleResource/B.otf' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's already an existing item from the current project with the same LogicalName ('B.otf')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/Collada/scene.dae", $"The Collada item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/Collada/scene.dae' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's already an existing item from the current project with the same LogicalName ('scene.dae')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/CoreMLModel/SqueezeNet.mlmodel", $"The CoreMLModel item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/CoreMLModel/SqueezeNet.mlmodel' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's already an existing item from the current project with the same LogicalName ('SqueezeNet.mlmodel')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/ImageAsset/Images.xcassets/Contents.json", $"The ImageAsset item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/ImageAsset/Images.xcassets/Contents.json' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's already an existing item from the current project with the same LogicalName ('Images.xcassets/Contents.json')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/ImageAsset/Images.xcassets/Image.imageset/Contents.json", $"The ImageAsset item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/ImageAsset/Images.xcassets/Image.imageset/Contents.json' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's already an existing item from the current project with the same LogicalName ('Images.xcassets/Image.imageset/Contents.json')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/ImageAsset/Images.xcassets/Image.imageset/Icon16.png", $"The ImageAsset item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/ImageAsset/Images.xcassets/Image.imageset/Icon16.png' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's already an existing item from the current project with the same LogicalName ('Images.xcassets/Image.imageset/Icon16.png')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/ImageAsset/Images.xcassets/Image.imageset/Icon32.png", $"The ImageAsset item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/ImageAsset/Images.xcassets/Image.imageset/Icon32.png' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's already an existing item from the current project with the same LogicalName ('Images.xcassets/Image.imageset/Icon32.png')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/ImageAsset/Images.xcassets/Image.imageset/Icon64.png", $"The ImageAsset item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/ImageAsset/Images.xcassets/Image.imageset/Icon64.png' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's already an existing item from the current project with the same LogicalName ('Images.xcassets/Image.imageset/Icon64.png')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/InterfaceDefinition/Main.storyboard", $"The InterfaceDefinition item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/InterfaceDefinition/Main.storyboard' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's already an existing item from the current project with the same LogicalName ('Main.storyboardc')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/SceneKitAsset/art.scnassets/scene.scn", $"The SceneKitAsset item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/SceneKitAsset/art.scnassets/scene.scn' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's already an existing item from the current project with the same LogicalName ('art.scnassets/scene.scn')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/SceneKitAsset/art.scnassets/texture.png", $"The SceneKitAsset item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/SceneKitAsset/art.scnassets/texture.png' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's already an existing item from the current project with the same LogicalName ('art.scnassets/texture.png')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/SceneKitAsset/DirWithResources/linkedArt.scnassets/scene.scn", $"The SceneKitAsset item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/SceneKitAsset/DirWithResources/linkedArt.scnassets/scene.scn' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's already an existing item from the current project with the same LogicalName ('DirWithResources/linkedArt.scnassets/scene.scn')"),
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/SceneKitAsset/DirWithResources/linkedArt.scnassets/texture.png", $"The SceneKitAsset item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/SceneKitAsset/DirWithResources/linkedArt.scnassets/texture.png' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's already an existing item from the current project with the same LogicalName ('DirWithResources/linkedArt.scnassets/texture.png')"),
+					};
+					break;
+				case DuplicatedResourcesScenarios.ExecutableAndExecutable:
+					expectedWarnings = new ExpectedBuildMessage [] {
+						new ExpectedBuildMessage ($"../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0001.png", $"The AtlasTexture item '../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0001.png' was ignored, because there's another item with the same LogicalName ('Archer_Attack.atlas/archer_attack_0001.png')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0002.png", $"The AtlasTexture item '../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0002.png' was ignored, because there's another item with the same LogicalName ('Archer_Attack.atlas/archer_attack_0002.png')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0003.png", $"The AtlasTexture item '../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0003.png' was ignored, because there's another item with the same LogicalName ('Archer_Attack.atlas/archer_attack_0003.png')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0004.png", $"The AtlasTexture item '../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0004.png' was ignored, because there's another item with the same LogicalName ('Archer_Attack.atlas/archer_attack_0004.png')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0005.png", $"The AtlasTexture item '../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0005.png' was ignored, because there's another item with the same LogicalName ('Archer_Attack.atlas/archer_attack_0005.png')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0006.png", $"The AtlasTexture item '../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0006.png' was ignored, because there's another item with the same LogicalName ('Archer_Attack.atlas/archer_attack_0006.png')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0007.png", $"The AtlasTexture item '../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0007.png' was ignored, because there's another item with the same LogicalName ('Archer_Attack.atlas/archer_attack_0007.png')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0008.png", $"The AtlasTexture item '../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0008.png' was ignored, because there's another item with the same LogicalName ('Archer_Attack.atlas/archer_attack_0008.png')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0009.png", $"The AtlasTexture item '../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0009.png' was ignored, because there's another item with the same LogicalName ('Archer_Attack.atlas/archer_attack_0009.png')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0010.png", $"The AtlasTexture item '../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0010.png' was ignored, because there's another item with the same LogicalName ('Archer_Attack.atlas/archer_attack_0010.png')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/art.scnassets/scene.scn", $"The SceneKitAsset item '../../LibraryWithResources/art.scnassets/scene.scn' was ignored, because there's another item with the same LogicalName ('art.scnassets/scene.scn')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/art.scnassets/texture.png", $"The SceneKitAsset item '../../LibraryWithResources/art.scnassets/texture.png' was ignored, because there's another item with the same LogicalName ('art.scnassets/texture.png')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/DirWithResources/linkedArt.scnassets/scene.scn", $"The SceneKitAsset item '../../LibraryWithResources/DirWithResources/linkedArt.scnassets/scene.scn' was ignored, because there's another item with the same LogicalName ('DirWithResources/linkedArt.scnassets/scene.scn')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/DirWithResources/linkedArt.scnassets/texture.png", $"The SceneKitAsset item '../../LibraryWithResources/DirWithResources/linkedArt.scnassets/texture.png' was ignored, because there's another item with the same LogicalName ('DirWithResources/linkedArt.scnassets/texture.png')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/{platform.AsString ()}/Main.storyboard", $"The InterfaceDefinition item '../../LibraryWithResources/{platform.AsString ()}/Main.storyboard' was ignored, because there's another item with the same LogicalName ('Main.storyboardc')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/{platform.AsString ()}/Resources/B.otf", $"The BundleResource item '../../LibraryWithResources/{platform.AsString ()}/Resources/B.otf' was ignored, because there's another item with the same LogicalName ('B.otf')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Contents.json", $"The ImageAsset item '../../LibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Contents.json' was ignored, because there's another item with the same LogicalName ('Images.xcassets/Contents.json')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Image.imageset/Contents.json", $"The ImageAsset item '../../LibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Image.imageset/Contents.json' was ignored, because there's another item with the same LogicalName ('Images.xcassets/Image.imageset/Contents.json')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Image.imageset/Icon16.png", $"The ImageAsset item '../../LibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Image.imageset/Icon16.png' was ignored, because there's another item with the same LogicalName ('Images.xcassets/Image.imageset/Icon16.png')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Image.imageset/Icon32.png", $"The ImageAsset item '../../LibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Image.imageset/Icon32.png' was ignored, because there's another item with the same LogicalName ('Images.xcassets/Image.imageset/Icon32.png')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Image.imageset/Icon64.png", $"The ImageAsset item '../../LibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Image.imageset/Icon64.png' was ignored, because there's another item with the same LogicalName ('Images.xcassets/Image.imageset/Icon64.png')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/scene.dae", $"The Collada item '../../LibraryWithResources/scene.dae' was ignored, because there's another item with the same LogicalName ('scene.dae')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/SqueezeNet.mlmodel", $"The CoreMLModel item '../../LibraryWithResources/SqueezeNet.mlmodel' was ignored, because there's another item with the same LogicalName ('SqueezeNet.mlmodel')"),
+						new ExpectedBuildMessage ($"../../SecondLibraryWithResources/Archer_Attack.atlas/archer_attack_0001.png", $"The AtlasTexture item '../../SecondLibraryWithResources/Archer_Attack.atlas/archer_attack_0001.png' was ignored, because there's another item with the same LogicalName ('Archer_Attack.atlas/archer_attack_0001.png')"),
+						new ExpectedBuildMessage ($"../../SecondLibraryWithResources/Archer_Attack.atlas/archer_attack_0002.png", $"The AtlasTexture item '../../SecondLibraryWithResources/Archer_Attack.atlas/archer_attack_0002.png' was ignored, because there's another item with the same LogicalName ('Archer_Attack.atlas/archer_attack_0002.png')"),
+						new ExpectedBuildMessage ($"../../SecondLibraryWithResources/Archer_Attack.atlas/archer_attack_0003.png", $"The AtlasTexture item '../../SecondLibraryWithResources/Archer_Attack.atlas/archer_attack_0003.png' was ignored, because there's another item with the same LogicalName ('Archer_Attack.atlas/archer_attack_0003.png')"),
+						new ExpectedBuildMessage ($"../../SecondLibraryWithResources/Archer_Attack.atlas/archer_attack_0004.png", $"The AtlasTexture item '../../SecondLibraryWithResources/Archer_Attack.atlas/archer_attack_0004.png' was ignored, because there's another item with the same LogicalName ('Archer_Attack.atlas/archer_attack_0004.png')"),
+						new ExpectedBuildMessage ($"../../SecondLibraryWithResources/Archer_Attack.atlas/archer_attack_0005.png", $"The AtlasTexture item '../../SecondLibraryWithResources/Archer_Attack.atlas/archer_attack_0005.png' was ignored, because there's another item with the same LogicalName ('Archer_Attack.atlas/archer_attack_0005.png')"),
+						new ExpectedBuildMessage ($"../../SecondLibraryWithResources/Archer_Attack.atlas/archer_attack_0006.png", $"The AtlasTexture item '../../SecondLibraryWithResources/Archer_Attack.atlas/archer_attack_0006.png' was ignored, because there's another item with the same LogicalName ('Archer_Attack.atlas/archer_attack_0006.png')"),
+						new ExpectedBuildMessage ($"../../SecondLibraryWithResources/Archer_Attack.atlas/archer_attack_0007.png", $"The AtlasTexture item '../../SecondLibraryWithResources/Archer_Attack.atlas/archer_attack_0007.png' was ignored, because there's another item with the same LogicalName ('Archer_Attack.atlas/archer_attack_0007.png')"),
+						new ExpectedBuildMessage ($"../../SecondLibraryWithResources/Archer_Attack.atlas/archer_attack_0008.png", $"The AtlasTexture item '../../SecondLibraryWithResources/Archer_Attack.atlas/archer_attack_0008.png' was ignored, because there's another item with the same LogicalName ('Archer_Attack.atlas/archer_attack_0008.png')"),
+						new ExpectedBuildMessage ($"../../SecondLibraryWithResources/Archer_Attack.atlas/archer_attack_0009.png", $"The AtlasTexture item '../../SecondLibraryWithResources/Archer_Attack.atlas/archer_attack_0009.png' was ignored, because there's another item with the same LogicalName ('Archer_Attack.atlas/archer_attack_0009.png')"),
+						new ExpectedBuildMessage ($"../../SecondLibraryWithResources/Archer_Attack.atlas/archer_attack_0010.png", $"The AtlasTexture item '../../SecondLibraryWithResources/Archer_Attack.atlas/archer_attack_0010.png' was ignored, because there's another item with the same LogicalName ('Archer_Attack.atlas/archer_attack_0010.png')"),
+						new ExpectedBuildMessage ($"../../SecondLibraryWithResources/art.scnassets/scene.scn", $"The SceneKitAsset item '../../SecondLibraryWithResources/art.scnassets/scene.scn' was ignored, because there's another item with the same LogicalName ('art.scnassets/scene.scn')"),
+						new ExpectedBuildMessage ($"../../SecondLibraryWithResources/art.scnassets/texture.png", $"The SceneKitAsset item '../../SecondLibraryWithResources/art.scnassets/texture.png' was ignored, because there's another item with the same LogicalName ('art.scnassets/texture.png')"),
+						new ExpectedBuildMessage ($"../../SecondLibraryWithResources/DirWithResources/linkedArt.scnassets/scene.scn", $"The SceneKitAsset item '../../SecondLibraryWithResources/DirWithResources/linkedArt.scnassets/scene.scn' was ignored, because there's another item with the same LogicalName ('DirWithResources/linkedArt.scnassets/scene.scn')"),
+						new ExpectedBuildMessage ($"../../SecondLibraryWithResources/DirWithResources/linkedArt.scnassets/texture.png", $"The SceneKitAsset item '../../SecondLibraryWithResources/DirWithResources/linkedArt.scnassets/texture.png' was ignored, because there's another item with the same LogicalName ('DirWithResources/linkedArt.scnassets/texture.png')"),
+						new ExpectedBuildMessage ($"../../SecondLibraryWithResources/{platform.AsString ()}/Main.storyboard", $"The InterfaceDefinition item '../../SecondLibraryWithResources/{platform.AsString ()}/Main.storyboard' was ignored, because there's another item with the same LogicalName ('Main.storyboardc')"),
+						new ExpectedBuildMessage ($"../../SecondLibraryWithResources/{platform.AsString ()}/Resources/B.otf", $"The BundleResource item '../../SecondLibraryWithResources/{platform.AsString ()}/Resources/B.otf' was ignored, because there's another item with the same LogicalName ('B.otf')"),
+						new ExpectedBuildMessage ($"../../SecondLibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Contents.json", $"The ImageAsset item '../../SecondLibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Contents.json' was ignored, because there's another item with the same LogicalName ('Images.xcassets/Contents.json')"),
+						new ExpectedBuildMessage ($"../../SecondLibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Image.imageset/Contents.json", $"The ImageAsset item '../../SecondLibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Image.imageset/Contents.json' was ignored, because there's another item with the same LogicalName ('Images.xcassets/Image.imageset/Contents.json')"),
+						new ExpectedBuildMessage ($"../../SecondLibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Image.imageset/Icon16.png", $"The ImageAsset item '../../SecondLibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Image.imageset/Icon16.png' was ignored, because there's another item with the same LogicalName ('Images.xcassets/Image.imageset/Icon16.png')"),
+						new ExpectedBuildMessage ($"../../SecondLibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Image.imageset/Icon32.png", $"The ImageAsset item '../../SecondLibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Image.imageset/Icon32.png' was ignored, because there's another item with the same LogicalName ('Images.xcassets/Image.imageset/Icon32.png')"),
+						new ExpectedBuildMessage ($"../../SecondLibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Image.imageset/Icon64.png", $"The ImageAsset item '../../SecondLibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Image.imageset/Icon64.png' was ignored, because there's another item with the same LogicalName ('Images.xcassets/Image.imageset/Icon64.png')"),
+						new ExpectedBuildMessage ($"../../SecondLibraryWithResources/scene.dae", $"The Collada item '../../SecondLibraryWithResources/scene.dae' was ignored, because there's another item with the same LogicalName ('scene.dae')"),
+						new ExpectedBuildMessage ($"../../SecondLibraryWithResources/SqueezeNet.mlmodel", $"The CoreMLModel item '../../SecondLibraryWithResources/SqueezeNet.mlmodel' was ignored, because there's another item with the same LogicalName ('SqueezeNet.mlmodel')"),
+					};
+
+					break;
+				case DuplicatedResourcesScenarios.IdenticalInExecutable:
+					break;
+				case DuplicatedResourcesScenarios.IdenticalInExecutableDifferentMetadata:
+					expectedWarnings = new ExpectedBuildMessage [] {
+						new ExpectedBuildMessage ($"../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0001.png", $"The AtlasTexture item '../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0001.png' has been included more than once, with different 'LogicalName' metadata: Archer_Attack.atlas/archer_attack_0001.png-other, Archer_Attack.atlas/archer_attack_0001.png."),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0002.png", $"The AtlasTexture item '../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0002.png' has been included more than once, with different 'LogicalName' metadata: Archer_Attack.atlas/archer_attack_0002.png-other, Archer_Attack.atlas/archer_attack_0002.png."),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0003.png", $"The AtlasTexture item '../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0003.png' has been included more than once, with different 'LogicalName' metadata: Archer_Attack.atlas/archer_attack_0003.png-other, Archer_Attack.atlas/archer_attack_0003.png."),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0004.png", $"The AtlasTexture item '../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0004.png' has been included more than once, with different 'LogicalName' metadata: Archer_Attack.atlas/archer_attack_0004.png-other, Archer_Attack.atlas/archer_attack_0004.png."),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0005.png", $"The AtlasTexture item '../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0005.png' has been included more than once, with different 'LogicalName' metadata: Archer_Attack.atlas/archer_attack_0005.png-other, Archer_Attack.atlas/archer_attack_0005.png."),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0006.png", $"The AtlasTexture item '../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0006.png' has been included more than once, with different 'LogicalName' metadata: Archer_Attack.atlas/archer_attack_0006.png-other, Archer_Attack.atlas/archer_attack_0006.png."),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0007.png", $"The AtlasTexture item '../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0007.png' has been included more than once, with different 'LogicalName' metadata: Archer_Attack.atlas/archer_attack_0007.png-other, Archer_Attack.atlas/archer_attack_0007.png."),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0008.png", $"The AtlasTexture item '../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0008.png' has been included more than once, with different 'LogicalName' metadata: Archer_Attack.atlas/archer_attack_0008.png-other, Archer_Attack.atlas/archer_attack_0008.png."),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0009.png", $"The AtlasTexture item '../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0009.png' has been included more than once, with different 'LogicalName' metadata: Archer_Attack.atlas/archer_attack_0009.png-other, Archer_Attack.atlas/archer_attack_0009.png."),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0010.png", $"The AtlasTexture item '../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0010.png' has been included more than once, with different 'LogicalName' metadata: Archer_Attack.atlas/archer_attack_0010.png-other, Archer_Attack.atlas/archer_attack_0010.png."),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/art.scnassets/scene.scn", $"The SceneKitAsset item '../../LibraryWithResources/art.scnassets/scene.scn' has been included more than once, with different 'LogicalName' metadata: art.scnassets/scene.scn-other, art.scnassets/scene.scn."),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/art.scnassets/texture.png", $"The SceneKitAsset item '../../LibraryWithResources/art.scnassets/texture.png' has been included more than once, with different 'LogicalName' metadata: art.scnassets/texture.png-other, art.scnassets/texture.png."),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/DirWithResources/linkedArt.scnassets/scene.scn", $"The SceneKitAsset item '../../LibraryWithResources/DirWithResources/linkedArt.scnassets/scene.scn' has been included more than once, with different 'LogicalName' metadata: DirWithResources/linkedArt.scnassets/scene.scn-other, DirWithResources/linkedArt.scnassets/scene.scn."),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/DirWithResources/linkedArt.scnassets/texture.png", $"The SceneKitAsset item '../../LibraryWithResources/DirWithResources/linkedArt.scnassets/texture.png' has been included more than once, with different 'LogicalName' metadata: DirWithResources/linkedArt.scnassets/texture.png-other, DirWithResources/linkedArt.scnassets/texture.png."),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/{platform.AsString ()}/Resources/B.otf", $"The BundleResource item '../../LibraryWithResources/{platform.AsString ()}/Resources/B.otf' has been included more than once, with different 'LogicalName' metadata: B-other.otf, B.otf."),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Contents.json", $"The ImageAsset item '../../LibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Contents.json' has been included more than once, with different 'LogicalName' metadata: Images.xcassets/Contents.json-other, Images.xcassets/Contents.json."),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Image.imageset/Contents.json", $"The ImageAsset item '../../LibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Image.imageset/Contents.json' has been included more than once, with different 'LogicalName' metadata: Images.xcassets/Image.imageset/Contents.json-other, Images.xcassets/Image.imageset/Contents.json."),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Image.imageset/Icon16.png", $"The ImageAsset item '../../LibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Image.imageset/Icon16.png' has been included more than once, with different 'LogicalName' metadata: Images.xcassets/Image.imageset/Icon16.png-other, Images.xcassets/Image.imageset/Icon16.png."),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Image.imageset/Icon32.png", $"The ImageAsset item '../../LibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Image.imageset/Icon32.png' has been included more than once, with different 'LogicalName' metadata: Images.xcassets/Image.imageset/Icon32.png-other, Images.xcassets/Image.imageset/Icon32.png."),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Image.imageset/Icon64.png", $"The ImageAsset item '../../LibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Image.imageset/Icon64.png' has been included more than once, with different 'LogicalName' metadata: Images.xcassets/Image.imageset/Icon64.png-other, Images.xcassets/Image.imageset/Icon64.png."),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/scene.dae", $"The Collada item '../../LibraryWithResources/scene.dae' has been included more than once, with different 'LogicalName' metadata: scene.dae-other, scene.dae."),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/SqueezeNet.mlmodel", $"The CoreMLModel item '../../LibraryWithResources/SqueezeNet.mlmodel' has been included more than once, with different 'LogicalName' metadata: SqueezeNet.mlmodel-other, SqueezeNet.mlmodel."),
+					};
+					break;
+				default:
+					throw new NotImplementedException (scenario.ToString ());
+				}
+			} else {
+				switch (scenario) {
+				case DuplicatedResourcesScenarios.FirstLibraryAndSecondLibrary:
+					switch (platform) {
+					case ApplePlatform.MacOSX:
+						expectedWarnings = new ExpectedBuildMessage [] {
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/A.ttc", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/A.ttc' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's another item from a different assembly (SecondLibraryWithResources.dll) with the same LogicalName ('A.ttc')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/Archer_Attack.atlasc/Archer_Attack.plist", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/Archer_Attack.atlasc/Archer_Attack.plist' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's another item from a different assembly (SecondLibraryWithResources.dll) with the same LogicalName ('Archer_Attack.atlasc/Archer_Attack.plist')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/art.scnassets/scene.scn", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/art.scnassets/scene.scn' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's another item from a different assembly (SecondLibraryWithResources.dll) with the same LogicalName ('art.scnassets/scene.scn')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/art.scnassets/texture.png", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/art.scnassets/texture.png' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's another item from a different assembly (SecondLibraryWithResources.dll) with the same LogicalName ('art.scnassets/texture.png')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/Assets.car", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/Assets.car' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's another item from a different assembly (SecondLibraryWithResources.dll) with the same LogicalName ('Assets.car')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/B.otf", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/B.otf' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's another item from a different assembly (SecondLibraryWithResources.dll) with the same LogicalName ('B.otf')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/C.ttf", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/C.ttf' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's another item from a different assembly (SecondLibraryWithResources.dll) with the same LogicalName ('C.ttf')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/DirWithResources/linkedArt.scnassets/scene.scn", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/DirWithResources/linkedArt.scnassets/scene.scn' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's another item from a different assembly (SecondLibraryWithResources.dll) with the same LogicalName ('DirWithResources/linkedArt.scnassets/scene.scn')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/DirWithResources/linkedArt.scnassets/texture.png", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/DirWithResources/linkedArt.scnassets/texture.png' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's another item from a different assembly (SecondLibraryWithResources.dll) with the same LogicalName ('DirWithResources/linkedArt.scnassets/texture.png')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/Main.storyboardc/Info.plist", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/Main.storyboardc/Info.plist' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's another item from a different assembly (SecondLibraryWithResources.dll) with the same LogicalName ('Main.storyboardc/Info.plist')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/Main.storyboardc/MainMenu.nib", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/Main.storyboardc/MainMenu.nib' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's another item from a different assembly (SecondLibraryWithResources.dll) with the same LogicalName ('Main.storyboardc/MainMenu.nib')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/Main.storyboardc/NSWindowController-B8D-0N-5wS.nib", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/Main.storyboardc/NSWindowController-B8D-0N-5wS.nib' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's another item from a different assembly (SecondLibraryWithResources.dll) with the same LogicalName ('Main.storyboardc/NSWindowController-B8D-0N-5wS.nib')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/Main.storyboardc/XfG-lQ-9wD-view-m2S-Jp-Qdl.nib", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/Main.storyboardc/XfG-lQ-9wD-view-m2S-Jp-Qdl.nib' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's another item from a different assembly (SecondLibraryWithResources.dll) with the same LogicalName ('Main.storyboardc/XfG-lQ-9wD-view-m2S-Jp-Qdl.nib')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/scene.dae", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/scene.dae' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's another item from a different assembly (SecondLibraryWithResources.dll) with the same LogicalName ('scene.dae')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/SqueezeNet.mlmodelc/analytics/coremldata.bin", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/SqueezeNet.mlmodelc/analytics/coremldata.bin' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's another item from a different assembly (SecondLibraryWithResources.dll) with the same LogicalName ('SqueezeNet.mlmodelc/analytics/coremldata.bin')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/SqueezeNet.mlmodelc/coremldata.bin", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/SqueezeNet.mlmodelc/coremldata.bin' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's another item from a different assembly (SecondLibraryWithResources.dll) with the same LogicalName ('SqueezeNet.mlmodelc/coremldata.bin')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/SqueezeNet.mlmodelc/metadata.json", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/SqueezeNet.mlmodelc/metadata.json' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's another item from a different assembly (SecondLibraryWithResources.dll) with the same LogicalName ('SqueezeNet.mlmodelc/metadata.json')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/SqueezeNet.mlmodelc/model.espresso.net", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/SqueezeNet.mlmodelc/model.espresso.net' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's another item from a different assembly (SecondLibraryWithResources.dll) with the same LogicalName ('SqueezeNet.mlmodelc/model.espresso.net')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/SqueezeNet.mlmodelc/model.espresso.shape", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/SqueezeNet.mlmodelc/model.espresso.shape' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's another item from a different assembly (SecondLibraryWithResources.dll) with the same LogicalName ('SqueezeNet.mlmodelc/model.espresso.shape')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/SqueezeNet.mlmodelc/model.espresso.weights", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/SqueezeNet.mlmodelc/model.espresso.weights' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's another item from a different assembly (SecondLibraryWithResources.dll) with the same LogicalName ('SqueezeNet.mlmodelc/model.espresso.weights')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/SqueezeNet.mlmodelc/model/coremldata.bin", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/SqueezeNet.mlmodelc/model/coremldata.bin' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's another item from a different assembly (SecondLibraryWithResources.dll) with the same LogicalName ('SqueezeNet.mlmodelc/model/coremldata.bin')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/SqueezeNet.mlmodelc/neural_network_optionals/coremldata.bin", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/SqueezeNet.mlmodelc/neural_network_optionals/coremldata.bin' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's another item from a different assembly (SecondLibraryWithResources.dll) with the same LogicalName ('SqueezeNet.mlmodelc/neural_network_optionals/coremldata.bin')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/A.ttc", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/A.ttc' imported from '<root>/tests/dotnet/SecondLibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/SecondLibraryWithResources.dll' was ignored, because there's another item from a different assembly (LibraryWithResources.dll) with the same LogicalName ('A.ttc')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/Archer_Attack.atlasc/Archer_Attack.plist", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/Archer_Attack.atlasc/Archer_Attack.plist' imported from '<root>/tests/dotnet/SecondLibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/SecondLibraryWithResources.dll' was ignored, because there's another item from a different assembly (LibraryWithResources.dll) with the same LogicalName ('Archer_Attack.atlasc/Archer_Attack.plist')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/art.scnassets/scene.scn", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/art.scnassets/scene.scn' imported from '<root>/tests/dotnet/SecondLibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/SecondLibraryWithResources.dll' was ignored, because there's another item from a different assembly (LibraryWithResources.dll) with the same LogicalName ('art.scnassets/scene.scn')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/art.scnassets/texture.png", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/art.scnassets/texture.png' imported from '<root>/tests/dotnet/SecondLibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/SecondLibraryWithResources.dll' was ignored, because there's another item from a different assembly (LibraryWithResources.dll) with the same LogicalName ('art.scnassets/texture.png')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/Assets.car", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/Assets.car' imported from '<root>/tests/dotnet/SecondLibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/SecondLibraryWithResources.dll' was ignored, because there's another item from a different assembly (LibraryWithResources.dll) with the same LogicalName ('Assets.car')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/B.otf", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/B.otf' imported from '<root>/tests/dotnet/SecondLibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/SecondLibraryWithResources.dll' was ignored, because there's another item from a different assembly (LibraryWithResources.dll) with the same LogicalName ('B.otf')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/C.ttf", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/C.ttf' imported from '<root>/tests/dotnet/SecondLibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/SecondLibraryWithResources.dll' was ignored, because there's another item from a different assembly (LibraryWithResources.dll) with the same LogicalName ('C.ttf')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/DirWithResources/linkedArt.scnassets/scene.scn", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/DirWithResources/linkedArt.scnassets/scene.scn' imported from '<root>/tests/dotnet/SecondLibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/SecondLibraryWithResources.dll' was ignored, because there's another item from a different assembly (LibraryWithResources.dll) with the same LogicalName ('DirWithResources/linkedArt.scnassets/scene.scn')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/DirWithResources/linkedArt.scnassets/texture.png", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/DirWithResources/linkedArt.scnassets/texture.png' imported from '<root>/tests/dotnet/SecondLibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/SecondLibraryWithResources.dll' was ignored, because there's another item from a different assembly (LibraryWithResources.dll) with the same LogicalName ('DirWithResources/linkedArt.scnassets/texture.png')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/Main.storyboardc/Info.plist", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/Main.storyboardc/Info.plist' imported from '<root>/tests/dotnet/SecondLibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/SecondLibraryWithResources.dll' was ignored, because there's another item from a different assembly (LibraryWithResources.dll) with the same LogicalName ('Main.storyboardc/Info.plist')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/Main.storyboardc/MainMenu.nib", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/Main.storyboardc/MainMenu.nib' imported from '<root>/tests/dotnet/SecondLibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/SecondLibraryWithResources.dll' was ignored, because there's another item from a different assembly (LibraryWithResources.dll) with the same LogicalName ('Main.storyboardc/MainMenu.nib')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/Main.storyboardc/NSWindowController-B8D-0N-5wS.nib", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/Main.storyboardc/NSWindowController-B8D-0N-5wS.nib' imported from '<root>/tests/dotnet/SecondLibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/SecondLibraryWithResources.dll' was ignored, because there's another item from a different assembly (LibraryWithResources.dll) with the same LogicalName ('Main.storyboardc/NSWindowController-B8D-0N-5wS.nib')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/Main.storyboardc/XfG-lQ-9wD-view-m2S-Jp-Qdl.nib", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/Main.storyboardc/XfG-lQ-9wD-view-m2S-Jp-Qdl.nib' imported from '<root>/tests/dotnet/SecondLibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/SecondLibraryWithResources.dll' was ignored, because there's another item from a different assembly (LibraryWithResources.dll) with the same LogicalName ('Main.storyboardc/XfG-lQ-9wD-view-m2S-Jp-Qdl.nib')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/scene.dae", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/scene.dae' imported from '<root>/tests/dotnet/SecondLibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/SecondLibraryWithResources.dll' was ignored, because there's another item from a different assembly (LibraryWithResources.dll) with the same LogicalName ('scene.dae')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/SqueezeNet.mlmodelc/analytics/coremldata.bin", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/SqueezeNet.mlmodelc/analytics/coremldata.bin' imported from '<root>/tests/dotnet/SecondLibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/SecondLibraryWithResources.dll' was ignored, because there's another item from a different assembly (LibraryWithResources.dll) with the same LogicalName ('SqueezeNet.mlmodelc/analytics/coremldata.bin')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/SqueezeNet.mlmodelc/coremldata.bin", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/SqueezeNet.mlmodelc/coremldata.bin' imported from '<root>/tests/dotnet/SecondLibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/SecondLibraryWithResources.dll' was ignored, because there's another item from a different assembly (LibraryWithResources.dll) with the same LogicalName ('SqueezeNet.mlmodelc/coremldata.bin')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/SqueezeNet.mlmodelc/metadata.json", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/SqueezeNet.mlmodelc/metadata.json' imported from '<root>/tests/dotnet/SecondLibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/SecondLibraryWithResources.dll' was ignored, because there's another item from a different assembly (LibraryWithResources.dll) with the same LogicalName ('SqueezeNet.mlmodelc/metadata.json')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/SqueezeNet.mlmodelc/model.espresso.net", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/SqueezeNet.mlmodelc/model.espresso.net' imported from '<root>/tests/dotnet/SecondLibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/SecondLibraryWithResources.dll' was ignored, because there's another item from a different assembly (LibraryWithResources.dll) with the same LogicalName ('SqueezeNet.mlmodelc/model.espresso.net')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/SqueezeNet.mlmodelc/model.espresso.shape", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/SqueezeNet.mlmodelc/model.espresso.shape' imported from '<root>/tests/dotnet/SecondLibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/SecondLibraryWithResources.dll' was ignored, because there's another item from a different assembly (LibraryWithResources.dll) with the same LogicalName ('SqueezeNet.mlmodelc/model.espresso.shape')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/SqueezeNet.mlmodelc/model.espresso.weights", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/SqueezeNet.mlmodelc/model.espresso.weights' imported from '<root>/tests/dotnet/SecondLibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/SecondLibraryWithResources.dll' was ignored, because there's another item from a different assembly (LibraryWithResources.dll) with the same LogicalName ('SqueezeNet.mlmodelc/model.espresso.weights')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/SqueezeNet.mlmodelc/model/coremldata.bin", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/SqueezeNet.mlmodelc/model/coremldata.bin' imported from '<root>/tests/dotnet/SecondLibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/SecondLibraryWithResources.dll' was ignored, because there's another item from a different assembly (LibraryWithResources.dll) with the same LogicalName ('SqueezeNet.mlmodelc/model/coremldata.bin')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/SqueezeNet.mlmodelc/neural_network_optionals/coremldata.bin", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/SqueezeNet.mlmodelc/neural_network_optionals/coremldata.bin' imported from '<root>/tests/dotnet/SecondLibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/SecondLibraryWithResources.dll' was ignored, because there's another item from a different assembly (LibraryWithResources.dll) with the same LogicalName ('SqueezeNet.mlmodelc/neural_network_optionals/coremldata.bin')"),
+						};
+						break;
+					default:
+						var simpleNibName = platform == ApplePlatform.MacCatalyst;
+						var uiViewControllerNibName = simpleNibName ? "UIViewController-1.nib" : "UIViewController-BYZ-38-t0r.nib";
+						var uiViewNibName = simpleNibName ? "1-view-2.nib" : "BYZ-38-t0r-view-8bC-Xf-vdC.nib";
+						expectedWarnings = new ExpectedBuildMessage [] {
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/A.ttc", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/A.ttc' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's another item from a different assembly (SecondLibraryWithResources.dll) with the same LogicalName ('A.ttc')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/Archer_Attack.atlasc/Archer_Attack.plist", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/Archer_Attack.atlasc/Archer_Attack.plist' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's another item from a different assembly (SecondLibraryWithResources.dll) with the same LogicalName ('Archer_Attack.atlasc/Archer_Attack.plist')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/art.scnassets/scene.scn", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/art.scnassets/scene.scn' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's another item from a different assembly (SecondLibraryWithResources.dll) with the same LogicalName ('art.scnassets/scene.scn')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/art.scnassets/texture.png", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/art.scnassets/texture.png' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's another item from a different assembly (SecondLibraryWithResources.dll) with the same LogicalName ('art.scnassets/texture.png')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/Assets.car", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/Assets.car' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's another item from a different assembly (SecondLibraryWithResources.dll) with the same LogicalName ('Assets.car')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/B.otf", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/B.otf' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's another item from a different assembly (SecondLibraryWithResources.dll) with the same LogicalName ('B.otf')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/C.ttf", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/C.ttf' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's another item from a different assembly (SecondLibraryWithResources.dll) with the same LogicalName ('C.ttf')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/DirWithResources/linkedArt.scnassets/scene.scn", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/DirWithResources/linkedArt.scnassets/scene.scn' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's another item from a different assembly (SecondLibraryWithResources.dll) with the same LogicalName ('DirWithResources/linkedArt.scnassets/scene.scn')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/DirWithResources/linkedArt.scnassets/texture.png", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/DirWithResources/linkedArt.scnassets/texture.png' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's another item from a different assembly (SecondLibraryWithResources.dll) with the same LogicalName ('DirWithResources/linkedArt.scnassets/texture.png')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/Main.storyboardc/{uiViewNibName}", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/Main.storyboardc/{uiViewNibName}' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's another item from a different assembly (SecondLibraryWithResources.dll) with the same LogicalName ('Main.storyboardc/{uiViewNibName}')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/Main.storyboardc/Info.plist", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/Main.storyboardc/Info.plist' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's another item from a different assembly (SecondLibraryWithResources.dll) with the same LogicalName ('Main.storyboardc/Info.plist')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/Main.storyboardc/{uiViewControllerNibName}", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/Main.storyboardc/{uiViewControllerNibName}' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's another item from a different assembly (SecondLibraryWithResources.dll) with the same LogicalName ('Main.storyboardc/{uiViewControllerNibName}')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/scene.dae", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/scene.dae' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's another item from a different assembly (SecondLibraryWithResources.dll) with the same LogicalName ('scene.dae')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/SqueezeNet.mlmodelc/analytics/coremldata.bin", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/SqueezeNet.mlmodelc/analytics/coremldata.bin' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's another item from a different assembly (SecondLibraryWithResources.dll) with the same LogicalName ('SqueezeNet.mlmodelc/analytics/coremldata.bin')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/SqueezeNet.mlmodelc/coremldata.bin", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/SqueezeNet.mlmodelc/coremldata.bin' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's another item from a different assembly (SecondLibraryWithResources.dll) with the same LogicalName ('SqueezeNet.mlmodelc/coremldata.bin')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/SqueezeNet.mlmodelc/metadata.json", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/SqueezeNet.mlmodelc/metadata.json' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's another item from a different assembly (SecondLibraryWithResources.dll) with the same LogicalName ('SqueezeNet.mlmodelc/metadata.json')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/SqueezeNet.mlmodelc/model.espresso.net", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/SqueezeNet.mlmodelc/model.espresso.net' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's another item from a different assembly (SecondLibraryWithResources.dll) with the same LogicalName ('SqueezeNet.mlmodelc/model.espresso.net')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/SqueezeNet.mlmodelc/model.espresso.shape", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/SqueezeNet.mlmodelc/model.espresso.shape' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's another item from a different assembly (SecondLibraryWithResources.dll) with the same LogicalName ('SqueezeNet.mlmodelc/model.espresso.shape')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/SqueezeNet.mlmodelc/model.espresso.weights", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/SqueezeNet.mlmodelc/model.espresso.weights' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's another item from a different assembly (SecondLibraryWithResources.dll) with the same LogicalName ('SqueezeNet.mlmodelc/model.espresso.weights')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/SqueezeNet.mlmodelc/model/coremldata.bin", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/SqueezeNet.mlmodelc/model/coremldata.bin' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's another item from a different assembly (SecondLibraryWithResources.dll) with the same LogicalName ('SqueezeNet.mlmodelc/model/coremldata.bin')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/SqueezeNet.mlmodelc/neural_network_optionals/coremldata.bin", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/SqueezeNet.mlmodelc/neural_network_optionals/coremldata.bin' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's another item from a different assembly (SecondLibraryWithResources.dll) with the same LogicalName ('SqueezeNet.mlmodelc/neural_network_optionals/coremldata.bin')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/A.ttc", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/A.ttc' imported from '<root>/tests/dotnet/SecondLibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/SecondLibraryWithResources.dll' was ignored, because there's another item from a different assembly (LibraryWithResources.dll) with the same LogicalName ('A.ttc')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/Archer_Attack.atlasc/Archer_Attack.plist", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/Archer_Attack.atlasc/Archer_Attack.plist' imported from '<root>/tests/dotnet/SecondLibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/SecondLibraryWithResources.dll' was ignored, because there's another item from a different assembly (LibraryWithResources.dll) with the same LogicalName ('Archer_Attack.atlasc/Archer_Attack.plist')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/art.scnassets/scene.scn", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/art.scnassets/scene.scn' imported from '<root>/tests/dotnet/SecondLibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/SecondLibraryWithResources.dll' was ignored, because there's another item from a different assembly (LibraryWithResources.dll) with the same LogicalName ('art.scnassets/scene.scn')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/art.scnassets/texture.png", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/art.scnassets/texture.png' imported from '<root>/tests/dotnet/SecondLibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/SecondLibraryWithResources.dll' was ignored, because there's another item from a different assembly (LibraryWithResources.dll) with the same LogicalName ('art.scnassets/texture.png')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/Assets.car", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/Assets.car' imported from '<root>/tests/dotnet/SecondLibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/SecondLibraryWithResources.dll' was ignored, because there's another item from a different assembly (LibraryWithResources.dll) with the same LogicalName ('Assets.car')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/B.otf", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/B.otf' imported from '<root>/tests/dotnet/SecondLibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/SecondLibraryWithResources.dll' was ignored, because there's another item from a different assembly (LibraryWithResources.dll) with the same LogicalName ('B.otf')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/C.ttf", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/C.ttf' imported from '<root>/tests/dotnet/SecondLibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/SecondLibraryWithResources.dll' was ignored, because there's another item from a different assembly (LibraryWithResources.dll) with the same LogicalName ('C.ttf')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/DirWithResources/linkedArt.scnassets/scene.scn", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/DirWithResources/linkedArt.scnassets/scene.scn' imported from '<root>/tests/dotnet/SecondLibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/SecondLibraryWithResources.dll' was ignored, because there's another item from a different assembly (LibraryWithResources.dll) with the same LogicalName ('DirWithResources/linkedArt.scnassets/scene.scn')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/DirWithResources/linkedArt.scnassets/texture.png", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/DirWithResources/linkedArt.scnassets/texture.png' imported from '<root>/tests/dotnet/SecondLibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/SecondLibraryWithResources.dll' was ignored, because there's another item from a different assembly (LibraryWithResources.dll) with the same LogicalName ('DirWithResources/linkedArt.scnassets/texture.png')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/Main.storyboardc/{uiViewNibName}", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/Main.storyboardc/{uiViewNibName}' imported from '<root>/tests/dotnet/SecondLibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/SecondLibraryWithResources.dll' was ignored, because there's another item from a different assembly (LibraryWithResources.dll) with the same LogicalName ('Main.storyboardc/{uiViewNibName}')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/Main.storyboardc/Info.plist", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/Main.storyboardc/Info.plist' imported from '<root>/tests/dotnet/SecondLibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/SecondLibraryWithResources.dll' was ignored, because there's another item from a different assembly (LibraryWithResources.dll) with the same LogicalName ('Main.storyboardc/Info.plist')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/Main.storyboardc/{uiViewControllerNibName}", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/Main.storyboardc/{uiViewControllerNibName}' imported from '<root>/tests/dotnet/SecondLibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/SecondLibraryWithResources.dll' was ignored, because there's another item from a different assembly (LibraryWithResources.dll) with the same LogicalName ('Main.storyboardc/{uiViewControllerNibName}')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/scene.dae", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/scene.dae' imported from '<root>/tests/dotnet/SecondLibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/SecondLibraryWithResources.dll' was ignored, because there's another item from a different assembly (LibraryWithResources.dll) with the same LogicalName ('scene.dae')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/SqueezeNet.mlmodelc/analytics/coremldata.bin", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/SqueezeNet.mlmodelc/analytics/coremldata.bin' imported from '<root>/tests/dotnet/SecondLibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/SecondLibraryWithResources.dll' was ignored, because there's another item from a different assembly (LibraryWithResources.dll) with the same LogicalName ('SqueezeNet.mlmodelc/analytics/coremldata.bin')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/SqueezeNet.mlmodelc/coremldata.bin", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/SqueezeNet.mlmodelc/coremldata.bin' imported from '<root>/tests/dotnet/SecondLibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/SecondLibraryWithResources.dll' was ignored, because there's another item from a different assembly (LibraryWithResources.dll) with the same LogicalName ('SqueezeNet.mlmodelc/coremldata.bin')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/SqueezeNet.mlmodelc/metadata.json", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/SqueezeNet.mlmodelc/metadata.json' imported from '<root>/tests/dotnet/SecondLibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/SecondLibraryWithResources.dll' was ignored, because there's another item from a different assembly (LibraryWithResources.dll) with the same LogicalName ('SqueezeNet.mlmodelc/metadata.json')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/SqueezeNet.mlmodelc/model.espresso.net", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/SqueezeNet.mlmodelc/model.espresso.net' imported from '<root>/tests/dotnet/SecondLibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/SecondLibraryWithResources.dll' was ignored, because there's another item from a different assembly (LibraryWithResources.dll) with the same LogicalName ('SqueezeNet.mlmodelc/model.espresso.net')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/SqueezeNet.mlmodelc/model.espresso.shape", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/SqueezeNet.mlmodelc/model.espresso.shape' imported from '<root>/tests/dotnet/SecondLibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/SecondLibraryWithResources.dll' was ignored, because there's another item from a different assembly (LibraryWithResources.dll) with the same LogicalName ('SqueezeNet.mlmodelc/model.espresso.shape')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/SqueezeNet.mlmodelc/model.espresso.weights", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/SqueezeNet.mlmodelc/model.espresso.weights' imported from '<root>/tests/dotnet/SecondLibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/SecondLibraryWithResources.dll' was ignored, because there's another item from a different assembly (LibraryWithResources.dll) with the same LogicalName ('SqueezeNet.mlmodelc/model.espresso.weights')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/SqueezeNet.mlmodelc/model/coremldata.bin", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/SqueezeNet.mlmodelc/model/coremldata.bin' imported from '<root>/tests/dotnet/SecondLibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/SecondLibraryWithResources.dll' was ignored, because there's another item from a different assembly (LibraryWithResources.dll) with the same LogicalName ('SqueezeNet.mlmodelc/model/coremldata.bin')"),
+							new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/SqueezeNet.mlmodelc/neural_network_optionals/coremldata.bin", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/SecondLibraryWithResources/content/SqueezeNet.mlmodelc/neural_network_optionals/coremldata.bin' imported from '<root>/tests/dotnet/SecondLibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/SecondLibraryWithResources.dll' was ignored, because there's another item from a different assembly (LibraryWithResources.dll) with the same LogicalName ('SqueezeNet.mlmodelc/neural_network_optionals/coremldata.bin')"),
+						};
+						break;
+					}
+					break;
+				case DuplicatedResourcesScenarios.FirstLibraryAndExecutable:
+					expectedWarnings = new ExpectedBuildMessage [] {
+						new ExpectedBuildMessage ($"obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/B.otf", $"The BundleResource item 'obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}unpack/LibraryWithResources/content/B.otf' imported from '<root>/tests/dotnet/LibraryWithResources/{platform.AsString ()}/bin/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}/LibraryWithResources.dll' was ignored, because there's already an existing item from the current project with the same LogicalName ('B.otf')"),
+					};
+					break;
+				case DuplicatedResourcesScenarios.ExecutableAndExecutable:
+					expectedWarnings = new ExpectedBuildMessage [] {
+						new ExpectedBuildMessage ($"../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0001.png", $"The AtlasTexture item '../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0001.png' was ignored, because there's another item with the same LogicalName ('Archer_Attack.atlas/archer_attack_0001.png')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0002.png", $"The AtlasTexture item '../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0002.png' was ignored, because there's another item with the same LogicalName ('Archer_Attack.atlas/archer_attack_0002.png')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0003.png", $"The AtlasTexture item '../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0003.png' was ignored, because there's another item with the same LogicalName ('Archer_Attack.atlas/archer_attack_0003.png')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0004.png", $"The AtlasTexture item '../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0004.png' was ignored, because there's another item with the same LogicalName ('Archer_Attack.atlas/archer_attack_0004.png')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0005.png", $"The AtlasTexture item '../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0005.png' was ignored, because there's another item with the same LogicalName ('Archer_Attack.atlas/archer_attack_0005.png')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0006.png", $"The AtlasTexture item '../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0006.png' was ignored, because there's another item with the same LogicalName ('Archer_Attack.atlas/archer_attack_0006.png')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0007.png", $"The AtlasTexture item '../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0007.png' was ignored, because there's another item with the same LogicalName ('Archer_Attack.atlas/archer_attack_0007.png')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0008.png", $"The AtlasTexture item '../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0008.png' was ignored, because there's another item with the same LogicalName ('Archer_Attack.atlas/archer_attack_0008.png')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0009.png", $"The AtlasTexture item '../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0009.png' was ignored, because there's another item with the same LogicalName ('Archer_Attack.atlas/archer_attack_0009.png')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0010.png", $"The AtlasTexture item '../../LibraryWithResources/Archer_Attack.atlas/archer_attack_0010.png' was ignored, because there's another item with the same LogicalName ('Archer_Attack.atlas/archer_attack_0010.png')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/art.scnassets/scene.scn", $"The SceneKitAsset item '../../LibraryWithResources/art.scnassets/scene.scn' was ignored, because there's another item with the same LogicalName ('art.scnassets/scene.scn')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/art.scnassets/texture.png", $"The SceneKitAsset item '../../LibraryWithResources/art.scnassets/texture.png' was ignored, because there's another item with the same LogicalName ('art.scnassets/texture.png')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/DirWithResources/linkedArt.scnassets/scene.scn", $"The SceneKitAsset item '../../LibraryWithResources/DirWithResources/linkedArt.scnassets/scene.scn' was ignored, because there's another item with the same LogicalName ('DirWithResources/linkedArt.scnassets/scene.scn')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/DirWithResources/linkedArt.scnassets/texture.png", $"The SceneKitAsset item '../../LibraryWithResources/DirWithResources/linkedArt.scnassets/texture.png' was ignored, because there's another item with the same LogicalName ('DirWithResources/linkedArt.scnassets/texture.png')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/{platform.AsString ()}/Main.storyboard", $"The InterfaceDefinition item '../../LibraryWithResources/{platform.AsString ()}/Main.storyboard' was ignored, because there's another item with the same LogicalName ('Main.storyboardc')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/{platform.AsString ()}/Resources/B.otf", $"The BundleResource item '../../LibraryWithResources/{platform.AsString ()}/Resources/B.otf' was ignored, because there's another item with the same LogicalName ('B.otf')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Contents.json", $"The ImageAsset item '../../LibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Contents.json' was ignored, because there's another item with the same LogicalName ('Images.xcassets/Contents.json')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Image.imageset/Contents.json", $"The ImageAsset item '../../LibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Image.imageset/Contents.json' was ignored, because there's another item with the same LogicalName ('Images.xcassets/Image.imageset/Contents.json')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Image.imageset/Icon16.png", $"The ImageAsset item '../../LibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Image.imageset/Icon16.png' was ignored, because there's another item with the same LogicalName ('Images.xcassets/Image.imageset/Icon16.png')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Image.imageset/Icon32.png", $"The ImageAsset item '../../LibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Image.imageset/Icon32.png' was ignored, because there's another item with the same LogicalName ('Images.xcassets/Image.imageset/Icon32.png')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Image.imageset/Icon64.png", $"The ImageAsset item '../../LibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Image.imageset/Icon64.png' was ignored, because there's another item with the same LogicalName ('Images.xcassets/Image.imageset/Icon64.png')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/scene.dae", $"The Collada item '../../LibraryWithResources/scene.dae' was ignored, because there's another item with the same LogicalName ('scene.dae')"),
+						new ExpectedBuildMessage ($"../../LibraryWithResources/SqueezeNet.mlmodel", $"The CoreMLModel item '../../LibraryWithResources/SqueezeNet.mlmodel' was ignored, because there's another item with the same LogicalName ('SqueezeNet.mlmodel')"),
+						new ExpectedBuildMessage ($"../../SecondLibraryWithResources/Archer_Attack.atlas/archer_attack_0001.png", $"The AtlasTexture item '../../SecondLibraryWithResources/Archer_Attack.atlas/archer_attack_0001.png' was ignored, because there's another item with the same LogicalName ('Archer_Attack.atlas/archer_attack_0001.png')"),
+						new ExpectedBuildMessage ($"../../SecondLibraryWithResources/Archer_Attack.atlas/archer_attack_0002.png", $"The AtlasTexture item '../../SecondLibraryWithResources/Archer_Attack.atlas/archer_attack_0002.png' was ignored, because there's another item with the same LogicalName ('Archer_Attack.atlas/archer_attack_0002.png')"),
+						new ExpectedBuildMessage ($"../../SecondLibraryWithResources/Archer_Attack.atlas/archer_attack_0003.png", $"The AtlasTexture item '../../SecondLibraryWithResources/Archer_Attack.atlas/archer_attack_0003.png' was ignored, because there's another item with the same LogicalName ('Archer_Attack.atlas/archer_attack_0003.png')"),
+						new ExpectedBuildMessage ($"../../SecondLibraryWithResources/Archer_Attack.atlas/archer_attack_0004.png", $"The AtlasTexture item '../../SecondLibraryWithResources/Archer_Attack.atlas/archer_attack_0004.png' was ignored, because there's another item with the same LogicalName ('Archer_Attack.atlas/archer_attack_0004.png')"),
+						new ExpectedBuildMessage ($"../../SecondLibraryWithResources/Archer_Attack.atlas/archer_attack_0005.png", $"The AtlasTexture item '../../SecondLibraryWithResources/Archer_Attack.atlas/archer_attack_0005.png' was ignored, because there's another item with the same LogicalName ('Archer_Attack.atlas/archer_attack_0005.png')"),
+						new ExpectedBuildMessage ($"../../SecondLibraryWithResources/Archer_Attack.atlas/archer_attack_0006.png", $"The AtlasTexture item '../../SecondLibraryWithResources/Archer_Attack.atlas/archer_attack_0006.png' was ignored, because there's another item with the same LogicalName ('Archer_Attack.atlas/archer_attack_0006.png')"),
+						new ExpectedBuildMessage ($"../../SecondLibraryWithResources/Archer_Attack.atlas/archer_attack_0007.png", $"The AtlasTexture item '../../SecondLibraryWithResources/Archer_Attack.atlas/archer_attack_0007.png' was ignored, because there's another item with the same LogicalName ('Archer_Attack.atlas/archer_attack_0007.png')"),
+						new ExpectedBuildMessage ($"../../SecondLibraryWithResources/Archer_Attack.atlas/archer_attack_0008.png", $"The AtlasTexture item '../../SecondLibraryWithResources/Archer_Attack.atlas/archer_attack_0008.png' was ignored, because there's another item with the same LogicalName ('Archer_Attack.atlas/archer_attack_0008.png')"),
+						new ExpectedBuildMessage ($"../../SecondLibraryWithResources/Archer_Attack.atlas/archer_attack_0009.png", $"The AtlasTexture item '../../SecondLibraryWithResources/Archer_Attack.atlas/archer_attack_0009.png' was ignored, because there's another item with the same LogicalName ('Archer_Attack.atlas/archer_attack_0009.png')"),
+						new ExpectedBuildMessage ($"../../SecondLibraryWithResources/Archer_Attack.atlas/archer_attack_0010.png", $"The AtlasTexture item '../../SecondLibraryWithResources/Archer_Attack.atlas/archer_attack_0010.png' was ignored, because there's another item with the same LogicalName ('Archer_Attack.atlas/archer_attack_0010.png')"),
+						new ExpectedBuildMessage ($"../../SecondLibraryWithResources/art.scnassets/scene.scn", $"The SceneKitAsset item '../../SecondLibraryWithResources/art.scnassets/scene.scn' was ignored, because there's another item with the same LogicalName ('art.scnassets/scene.scn')"),
+						new ExpectedBuildMessage ($"../../SecondLibraryWithResources/art.scnassets/texture.png", $"The SceneKitAsset item '../../SecondLibraryWithResources/art.scnassets/texture.png' was ignored, because there's another item with the same LogicalName ('art.scnassets/texture.png')"),
+						new ExpectedBuildMessage ($"../../SecondLibraryWithResources/DirWithResources/linkedArt.scnassets/scene.scn", $"The SceneKitAsset item '../../SecondLibraryWithResources/DirWithResources/linkedArt.scnassets/scene.scn' was ignored, because there's another item with the same LogicalName ('DirWithResources/linkedArt.scnassets/scene.scn')"),
+						new ExpectedBuildMessage ($"../../SecondLibraryWithResources/DirWithResources/linkedArt.scnassets/texture.png", $"The SceneKitAsset item '../../SecondLibraryWithResources/DirWithResources/linkedArt.scnassets/texture.png' was ignored, because there's another item with the same LogicalName ('DirWithResources/linkedArt.scnassets/texture.png')"),
+						new ExpectedBuildMessage ($"../../SecondLibraryWithResources/{platform.AsString ()}/Main.storyboard", $"The InterfaceDefinition item '../../SecondLibraryWithResources/{platform.AsString ()}/Main.storyboard' was ignored, because there's another item with the same LogicalName ('Main.storyboardc')"),
+						new ExpectedBuildMessage ($"../../SecondLibraryWithResources/{platform.AsString ()}/Resources/B.otf", $"The BundleResource item '../../SecondLibraryWithResources/{platform.AsString ()}/Resources/B.otf' was ignored, because there's another item with the same LogicalName ('B.otf')"),
+						new ExpectedBuildMessage ($"../../SecondLibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Contents.json", $"The ImageAsset item '../../SecondLibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Contents.json' was ignored, because there's another item with the same LogicalName ('Images.xcassets/Contents.json')"),
+						new ExpectedBuildMessage ($"../../SecondLibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Image.imageset/Contents.json", $"The ImageAsset item '../../SecondLibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Image.imageset/Contents.json' was ignored, because there's another item with the same LogicalName ('Images.xcassets/Image.imageset/Contents.json')"),
+						new ExpectedBuildMessage ($"../../SecondLibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Image.imageset/Icon16.png", $"The ImageAsset item '../../SecondLibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Image.imageset/Icon16.png' was ignored, because there's another item with the same LogicalName ('Images.xcassets/Image.imageset/Icon16.png')"),
+						new ExpectedBuildMessage ($"../../SecondLibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Image.imageset/Icon32.png", $"The ImageAsset item '../../SecondLibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Image.imageset/Icon32.png' was ignored, because there's another item with the same LogicalName ('Images.xcassets/Image.imageset/Icon32.png')"),
+						new ExpectedBuildMessage ($"../../SecondLibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Image.imageset/Icon64.png", $"The ImageAsset item '../../SecondLibraryWithResources/{platform.AsString ()}/Resources/Images.xcassets/Image.imageset/Icon64.png' was ignored, because there's another item with the same LogicalName ('Images.xcassets/Image.imageset/Icon64.png')"),
+						new ExpectedBuildMessage ($"../../SecondLibraryWithResources/scene.dae", $"The Collada item '../../SecondLibraryWithResources/scene.dae' was ignored, because there's another item with the same LogicalName ('scene.dae')"),
+						new ExpectedBuildMessage ($"../../SecondLibraryWithResources/SqueezeNet.mlmodel", $"The CoreMLModel item '../../SecondLibraryWithResources/SqueezeNet.mlmodel' was ignored, because there's another item with the same LogicalName ('SqueezeNet.mlmodel')"),
+					};
+					break;
+				case DuplicatedResourcesScenarios.IdenticalInExecutable: // didn't add test cases for this
+				case DuplicatedResourcesScenarios.IdenticalInExecutableDifferentMetadata: // didn't add test cases for this
+				default:
+					throw new NotImplementedException (scenario.ToString ());
+				}
+			}
+			var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath)
+								.Where (evt => {
+									if (platform == ApplePlatform.iOS && evt.Message?.Trim () == "Supported iPhone orientations have not been set")
+										return false;
+									return true;
+								});
+			warnings.AssertWarnings (expectedWarnings);
+
+			if (bundleOriginalResources && expectedWarnings.Length > 0) {
+				// Assert that all the resource types are mentioned in at least one warning message.
+				var allResourceTypesWithDuplicates = new List<string> {
+					"AtlasTexture",
+					"BundleResource",
+					"Collada",
+					"CoreMLModel",
+					"ImageAsset",
+					"SceneKitAsset",
+				};
+				if (scenario != DuplicatedResourcesScenarios.IdenticalInExecutableDifferentMetadata)
+					allResourceTypesWithDuplicates.Add ("InterfaceDefinition");
+				Assert.Multiple (() => {
+					foreach (var rt in allResourceTypesWithDuplicates)
+						Assert.That (warnings.Any (v => v.Message?.Contains (rt) == true), $"Didn't find any warnings about {rt}");
+				});
+			}
+		}
+
 		[TestCase (ApplePlatform.iOS)]
 		[TestCase (ApplePlatform.TVOS)]
 		[TestCase (ApplePlatform.MacCatalyst)]
 		[TestCase (ApplePlatform.MacOSX)]
+		[Category ("WindowsInclusive")]
 		public void LibraryReferencingBindingLibrary (ApplePlatform platform)
 		{
 			var project = "LibraryReferencingBindingLibrary";
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 
-			var projectPath = GetProjectPath (project, runtimeIdentifiers: string.Empty, platform: platform, out _);
+			var projectPath = GetProjectPath (project, platform: platform);
 			Clean (projectPath);
 
 			DotNet.AssertBuild (projectPath, GetDefaultProperties ());
@@ -859,16 +1602,6 @@ namespace Xamarin.Tests {
 
 				if (rx == "bindings-framework-test") {
 					foreach (var lib in new string [] { "XStaticArTest", "XStaticObjectTest" }) {
-						addHere = Configuration.include_watchos ? mustHaveContents : mayHaveContents;
-						addHere.AddRange (new string [] {
-							$"{lib}.xcframework/watchos-arm64_32_armv7k",
-							$"{lib}.xcframework/watchos-arm64_32_armv7k/{lib}.framework",
-							$"{lib}.xcframework/watchos-arm64_32_armv7k/{lib}.framework/{lib}",
-							$"{lib}.xcframework/watchos-x86_64-simulator",
-							$"{lib}.xcframework/watchos-x86_64-simulator/{lib}.framework",
-							$"{lib}.xcframework/watchos-x86_64-simulator/{lib}.framework/{lib}",
-						});
-
 						addHere = Configuration.include_tvos ? mustHaveContents : mayHaveContents;
 						addHere.AddRange (new string [] {
 							$"{lib}.xcframework/tvos-arm64",
@@ -967,18 +1700,6 @@ namespace Xamarin.Tests {
 					"XTest.xcframework/tvos-arm64_x86_64-simulator/XTest.framework/XTest",
 				});
 
-				addHere = Configuration.include_watchos ? mustHaveContents : mayHaveContents;
-				addHere.AddRange (new string [] {
-					"XTest.xcframework/watchos-arm64_32_armv7k",
-					"XTest.xcframework/watchos-arm64_32_armv7k/XTest.framework",
-					"XTest.xcframework/watchos-arm64_32_armv7k/XTest.framework/Info.plist",
-					"XTest.xcframework/watchos-arm64_32_armv7k/XTest.framework/XTest",
-					"XTest.xcframework/watchos-x86_64-simulator",
-					"XTest.xcframework/watchos-x86_64-simulator/XTest.framework",
-					"XTest.xcframework/watchos-x86_64-simulator/XTest.framework/Info.plist",
-					"XTest.xcframework/watchos-x86_64-simulator/XTest.framework/XTest",
-				});
-
 				var missing = mustHaveContents.ToHashSet ().Except (zipContents);
 				Assert.That (missing, Is.Empty, "No missing files");
 
@@ -1013,21 +1734,31 @@ namespace Xamarin.Tests {
 			Assert.That (libxamarin, Has.Length.LessThanOrEqualTo (1), $"No more than one libxamarin should be present, but found {libxamarin.Length}:\n\t{string.Join ("\n\t", libxamarin)}");
 		}
 
-		IEnumerable<string> FilterToAssembly (IEnumerable<string> lines, string assemblyName)
+		IEnumerable<string> FilterToAssembly (IEnumerable<string> lines, string assemblyName, bool doAppCheckInsteadOfRefCheck = false)
 		{
 			return lines.
 				Select (v => v.Trim ()).
 				Where (v => {
 					if (v.Length < 10)
 						return false;
-					if (v [0] != '/')
-						return false;
+					if (Environment.OSVersion.Platform == PlatformID.Win32NT) {
+						if (v [1] != ':')
+							return false;
+					} else {
+						if (v [0] != '/')
+							return false;
+					}
 					if (!v.EndsWith ($"{assemblyName}.dll", StringComparison.Ordinal))
 						return false;
-					if (!v.Contains ("/bin/", StringComparison.Ordinal))
+					if (!(v.Contains ("/bin/", StringComparison.Ordinal) || v.Contains ("\\bin\\", StringComparison.Ordinal)))
 						return false;
-					if (v.Contains ("/ref/", StringComparison.Ordinal))
+					if (!doAppCheckInsteadOfRefCheck && v.Contains (Path.DirectorySeparatorChar + "ref" + Path.DirectorySeparatorChar, StringComparison.Ordinal))
 						return false; // Skip reference assemblies
+					if (doAppCheckInsteadOfRefCheck && !v.Contains ($"{assemblyName}.app", StringComparison.Ordinal))
+						return false;
+					if (!File.Exists (v))
+						return false;
+
 					return true;
 				});
 		}
@@ -1043,7 +1774,7 @@ namespace Xamarin.Tests {
 
 			ExecutionHelper.Execute ("launchctl", new [] { "remove", "com.apple.CoreSimulator.CoreSimulatorService" }, timeout: TimeSpan.FromSeconds (10));
 
-			var to_kill = new string [] { "iPhone Simulator", "iOS Simulator", "Simulator", "Simulator (Watch)", "com.apple.CoreSimulator.CoreSimulatorService", "ibtoold" };
+			var to_kill = new string [] { "iPhone Simulator", "iOS Simulator", "Simulator", "com.apple.CoreSimulator.CoreSimulatorService", "ibtoold" };
 
 			var args = new List<string> ();
 			args.Add ("-9");
@@ -1051,7 +1782,6 @@ namespace Xamarin.Tests {
 			ExecutionHelper.Execute ("killall", args, timeout: TimeSpan.FromSeconds (10));
 
 			var dirsToBeDeleted = new [] {
-				Path.Combine (Environment.GetFolderPath (Environment.SpecialFolder.UserProfile), "Library", "Saved Application State", "com.apple.watchsimulator.savedState"),
 				Path.Combine (Environment.GetFolderPath (Environment.SpecialFolder.UserProfile), "Library", "Saved Application State", "com.apple.iphonesimulator.savedState"),
 			};
 
@@ -1064,7 +1794,7 @@ namespace Xamarin.Tests {
 				}
 			}
 
-			// https://github.com/xamarin/xamarin-macios/issues/10012
+			// https://github.com/dotnet/macios/issues/10012
 			ExecutionHelper.Execute ("xcrun", new [] { "simctl", "list" });
 		}
 
@@ -1191,7 +1921,19 @@ namespace Xamarin.Tests {
 			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath);
 			Clean (project_path);
 
-			DotNet.AssertBuild (project_path, GetDefaultProperties (runtimeIdentifiers));
+			// We want RuntimeIdentifier(s) so to be specified in a file, otherwise they're applied to the library
+			// project as well, and that might not be valid.
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			if (properties.ContainsKey ("RuntimeIdentifiers")) {
+				properties ["file:RuntimeIdentifiers"] = properties ["RuntimeIdentifiers"];
+				properties.Remove ("RuntimeIdentifiers");
+			}
+			if (properties.ContainsKey ("RuntimeIdentifier")) {
+				properties ["file:RuntimeIdentifier"] = properties ["RuntimeIdentifier"];
+				properties.Remove ("RuntimeIdentifier");
+			}
+
+			DotNet.AssertBuild (project_path, properties);
 
 			var appExecutable = GetNativeExecutable (platform, appPath);
 			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
@@ -1388,7 +2130,7 @@ namespace Xamarin.Tests {
 			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath);
 			Clean (project_path);
 			var properties = GetDefaultProperties (runtimeIdentifiers);
-			var extraArgs = "--require-pinvoke-wrappers:true --registrar:static"; // enable the static registrar too, see https://github.com/xamarin/xamarin-macios/issues/15190.
+			var extraArgs = "--require-pinvoke-wrappers:true --registrar:static"; // enable the static registrar too, see https://github.com/dotnet/macios/issues/15190.
 			properties ["MonoBundlingExtraArgs"] = extraArgs;
 			properties ["MtouchExtraArgs"] = extraArgs;
 
@@ -1434,6 +2176,7 @@ namespace Xamarin.Tests {
 		}
 
 		[TestCase (ApplePlatform.iOS, "ios-arm64")]
+		[TestCase (ApplePlatform.iOS, "iossimulator-x64;iossimulator-arm64")]
 		public void PluralRuntimeIdentifiers (ApplePlatform platform, string runtimeIdentifiers)
 		{
 			PluralRuntimeIdentifiersImpl (platform, runtimeIdentifiers);
@@ -1478,7 +2221,6 @@ namespace Xamarin.Tests {
 			switch (platform) {
 			case ApplePlatform.iOS:
 			case ApplePlatform.TVOS:
-			case ApplePlatform.WatchOS:
 				sharedSupportDir = "SharedSupport";
 				break;
 			case ApplePlatform.MacOSX:
@@ -1498,6 +2240,7 @@ namespace Xamarin.Tests {
 			var directoriesThatMustExist = new string [] {
 				Path.Combine (codesignDirectory, "_CodeSignature"),
 				Path.Combine (sharedSupportDir, "app1.app", codesignDirectory, "_CodeSignature"),
+				Path.Combine (sharedSupportDir, "app3.app", codesignDirectory, "_CodeSignature"),
 			};
 
 			foreach (var mustExist in directoriesThatMustExist)
@@ -1507,12 +2250,12 @@ namespace Xamarin.Tests {
 
 			// And that there are no other signed apps
 			var signatures = appBundleContents.Where (v => v.EndsWith ("_CodeSignature", StringComparison.Ordinal));
-			Assert.That (signatures, Is.Empty, "No other signed app budnles");
+			Assert.That (signatures, Is.Empty, "No other signed app bundles");
 
 			// Assert that some dylibs are signed
 			var dylibs = appBundleContents.Where (v => Path.GetExtension (v) == ".dylib").ToList ();
 			var signedDylibs = new List<string> {
-				Path.Combine (sharedSupportDir, "app2.app", dylibDir, "lib2.dylib"),
+				Path.Combine (sharedSupportDir, "app3.app", dylibDir, "lib3.dylib"),
 			};
 
 			foreach (var dylib in signedDylibs) {
@@ -1530,7 +2273,7 @@ namespace Xamarin.Tests {
 				Assert.That (path, Does.Exist, "unsigned dylib existence");
 				Assert.IsFalse (IsDylibSigned (path), $"Unsigned: {path}");
 			}
-			Assert.AreEqual (1, remainingDylibs.Length, "Unsigned count");
+			Assert.AreEqual (2, remainingDylibs.Length, "Unsigned count");
 
 			// Verify that a Resources subdirectory causes the build to fail.
 			switch (platform) {
@@ -1647,9 +2390,9 @@ namespace Xamarin.Tests {
 			var appExecutable = Path.Combine (appPath, "Contents", "MacOS", Path.GetFileNameWithoutExtension (project_path));
 			Assert.That (appExecutable, Does.Exist, "There is an executable");
 
-			AssertThatDylibExistsAndIsReidentified (appPath, "libtest.dylib");
-			AssertThatDylibExistsAndIsReidentified (appPath, "/subdir/libtest.dylib");
-			AssertThatDylibExistsAndIsReidentified (appPath, "/subdir/libtest.so");
+			AssertThatDylibExistsAndIsReidentified (appPath, "libframework.dylib");
+			AssertThatDylibExistsAndIsReidentified (appPath, "/subdir/libframework.dylib");
+			AssertThatDylibExistsAndIsReidentified (appPath, "/subdir/libframework.so");
 
 			ExecuteWithMagicWordAndAssert (appExecutable);
 		}
@@ -1672,6 +2415,30 @@ namespace Xamarin.Tests {
 			if (CanExecute (platform, runtimeIdentifiers)) {
 				var output = ExecuteWithMagicWordAndAssert (appExecutable);
 				Assert.That (output, Does.Contain ("42"), "Execution");
+			}
+		}
+
+		[Test]
+		[TestCase (ApplePlatform.MacCatalyst)]
+		[TestCase (ApplePlatform.iOS)]
+		[TestCase (ApplePlatform.TVOS)]
+		[TestCase (ApplePlatform.MacOSX)]
+		public void CompressedXCFrameworkInBindingProjectApp (ApplePlatform platform)
+		{
+			var project = "CompressedXCFrameworkInBindingProjectApp";
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+
+			var runtimeIdentifiers = GetDefaultRuntimeIdentifier (platform);
+			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath);
+			Clean (project_path);
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			DotNet.AssertBuild (project_path, properties);
+
+			var appExecutable = GetNativeExecutable (platform, appPath);
+			Assert.That (appExecutable, Does.Exist, "There is an executable");
+
+			if (CanExecute (platform, properties)) {
+				ExecuteWithMagicWordAndAssert (appExecutable);
 			}
 		}
 
@@ -2204,6 +2971,7 @@ namespace Xamarin.Tests {
 			"/System/Library/Frameworks/CoreText.framework/CoreText",
 			"/System/Library/Frameworks/CoreVideo.framework/CoreVideo",
 			"/System/Library/Frameworks/CryptoTokenKit.framework/CryptoTokenKit",
+			"/System/Library/Frameworks/DataDetection.framework/DataDetection",
 			"/System/Library/Frameworks/DeviceCheck.framework/DeviceCheck",
 			"/System/Library/Frameworks/DeviceDiscoveryExtension.framework/DeviceDiscoveryExtension",
 			"/System/Library/Frameworks/EventKit.framework/EventKit",
@@ -2270,6 +3038,7 @@ namespace Xamarin.Tests {
 			"/System/Library/Frameworks/SceneKit.framework/SceneKit",
 			"/System/Library/Frameworks/ScreenTime.framework/ScreenTime",
 			"/System/Library/Frameworks/Security.framework/Security",
+			"/System/Library/Frameworks/SecurityUI.framework/SecurityUI",
 			"/System/Library/Frameworks/SensitiveContentAnalysis.framework/SensitiveContentAnalysis",
 			"/System/Library/Frameworks/SensorKit.framework/SensorKit",
 			"/System/Library/Frameworks/SharedWithYou.framework/SharedWithYou",
@@ -2304,10 +3073,19 @@ namespace Xamarin.Tests {
 			"/usr/lib/libicucore.A.dylib",
 			"/usr/lib/swift/libswiftCore.dylib",
 			"/usr/lib/swift/libswiftCoreFoundation.dylib",
+			"/usr/lib/swift/libswiftCoreImage.dylib",
 			"/usr/lib/swift/libswiftDarwin.dylib",
+			"/usr/lib/swift/libswiftDataDetection.dylib",
 			"/usr/lib/swift/libswiftDispatch.dylib",
 			"/usr/lib/swift/libswiftFoundation.dylib",
+			"/usr/lib/swift/libswiftMetal.dylib",
 			"/usr/lib/swift/libswiftObjectiveC.dylib",
+			"/usr/lib/swift/libswiftos.dylib",
+			"/usr/lib/swift/libswiftOSLog.dylib",
+			"/usr/lib/swift/libswiftQuartzCore.dylib",
+			"/usr/lib/swift/libswiftUIKit.dylib",
+			"/usr/lib/swift/libswiftUniformTypeIdentifiers.dylib",
+			"/usr/lib/swift/libswiftXPC.dylib",
 		];
 
 		static string [] expectedFrameworks_iOS_Full = [
@@ -2335,6 +3113,7 @@ namespace Xamarin.Tests {
 			"/System/Library/Frameworks/AuthenticationServices.framework/AuthenticationServices",
 			"/System/Library/Frameworks/AVFoundation.framework/AVFoundation",
 			"/System/Library/Frameworks/AVKit.framework/AVKit",
+			"/System/Library/Frameworks/BackgroundAssets.framework/BackgroundAssets",
 			"/System/Library/Frameworks/BackgroundTasks.framework/BackgroundTasks",
 			"/System/Library/Frameworks/CFNetwork.framework/CFNetwork",
 			"/System/Library/Frameworks/Cinematic.framework/Cinematic",
@@ -2354,6 +3133,7 @@ namespace Xamarin.Tests {
 			"/System/Library/Frameworks/CoreVideo.framework/CoreVideo",
 			"/System/Library/Frameworks/CryptoKit.framework/CryptoKit",
 			"/System/Library/Frameworks/CryptoTokenKit.framework/CryptoTokenKit",
+			"/System/Library/Frameworks/DataDetection.framework/DataDetection",
 			"/System/Library/Frameworks/DeviceCheck.framework/DeviceCheck",
 			"/System/Library/Frameworks/DeviceDiscoveryUI.framework/DeviceDiscoveryUI",
 			"/System/Library/Frameworks/ExternalAccessory.framework/ExternalAccessory",
@@ -2385,6 +3165,7 @@ namespace Xamarin.Tests {
 			"/System/Library/Frameworks/NetworkExtension.framework/NetworkExtension",
 			"/System/Library/Frameworks/OpenGLES.framework/OpenGLES",
 			"/System/Library/Frameworks/OSLog.framework/OSLog",
+			"/System/Library/Frameworks/PDFKit.framework/PDFKit",
 			"/System/Library/Frameworks/PHASE.framework/PHASE",
 			"/System/Library/Frameworks/Photos.framework/Photos",
 			"/System/Library/Frameworks/PhotosUI.framework/PhotosUI",
@@ -2392,6 +3173,7 @@ namespace Xamarin.Tests {
 			"/System/Library/Frameworks/ReplayKit.framework/ReplayKit",
 			"/System/Library/Frameworks/SceneKit.framework/SceneKit",
 			"/System/Library/Frameworks/Security.framework/Security",
+			"/System/Library/Frameworks/SecurityUI.framework/SecurityUI",
 			"/System/Library/Frameworks/SharedWithYou.framework/SharedWithYou",
 			"/System/Library/Frameworks/ShazamKit.framework/ShazamKit",
 			"/System/Library/Frameworks/SoundAnalysis.framework/SoundAnalysis",
@@ -2417,10 +3199,17 @@ namespace Xamarin.Tests {
 			"/usr/lib/libz.1.dylib",
 			"/usr/lib/swift/libswiftCore.dylib",
 			"/usr/lib/swift/libswiftCoreFoundation.dylib",
+			"/usr/lib/swift/libswiftCoreImage.dylib",
 			"/usr/lib/swift/libswiftDarwin.dylib",
 			"/usr/lib/swift/libswiftDispatch.dylib",
 			"/usr/lib/swift/libswiftFoundation.dylib",
+			"/usr/lib/swift/libswiftMetal.dylib",
 			"/usr/lib/swift/libswiftObjectiveC.dylib",
+			"/usr/lib/swift/libswiftos.dylib",
+			"/usr/lib/swift/libswiftOSLog.dylib",
+			"/usr/lib/swift/libswiftQuartzCore.dylib",
+			"/usr/lib/swift/libswiftUIKit.dylib",
+			"/usr/lib/swift/libswiftUniformTypeIdentifiers.dylib",
 		];
 
 		static string [] expectedFrameworks_tvOS_Full = [
@@ -2481,6 +3270,7 @@ namespace Xamarin.Tests {
 			"/System/Library/Frameworks/CoreBluetooth.framework/Versions/A/CoreBluetooth",
 			"/System/Library/Frameworks/CoreData.framework/Versions/A/CoreData",
 			"/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation",
+			"/System/Library/Frameworks/CoreHaptics.framework/Versions/A/CoreHaptics",
 			"/System/Library/Frameworks/CoreImage.framework/Versions/A/CoreImage",
 			"/System/Library/Frameworks/CoreLocation.framework/Versions/A/CoreLocation",
 			"/System/Library/Frameworks/CoreMedia.framework/Versions/A/CoreMedia",
@@ -2493,6 +3283,7 @@ namespace Xamarin.Tests {
 			"/System/Library/Frameworks/CoreVideo.framework/Versions/A/CoreVideo",
 			"/System/Library/Frameworks/CoreWLAN.framework/Versions/A/CoreWLAN",
 			"/System/Library/Frameworks/CryptoTokenKit.framework/Versions/A/CryptoTokenKit",
+			"/System/Library/Frameworks/DataDetection.framework/Versions/A/DataDetection",
 			"/System/Library/Frameworks/DeviceCheck.framework/Versions/A/DeviceCheck",
 			"/System/Library/Frameworks/DeviceDiscoveryExtension.framework/Versions/A/DeviceDiscoveryExtension",
 			"/System/Library/Frameworks/EventKit.framework/Versions/A/EventKit",
@@ -2503,6 +3294,7 @@ namespace Xamarin.Tests {
 			"/System/Library/Frameworks/FileProviderUI.framework/Versions/A/FileProviderUI",
 			"/System/Library/Frameworks/FinderSync.framework/Versions/A/FinderSync",
 			"/System/Library/Frameworks/Foundation.framework/Versions/C/Foundation",
+			"/System/Library/Frameworks/FSKit.framework/Versions/A/FSKit",
 			"/System/Library/Frameworks/GameController.framework/Versions/A/GameController",
 			"/System/Library/Frameworks/GameKit.framework/Versions/A/GameKit",
 			"/System/Library/Frameworks/GameplayKit.framework/Versions/A/GameplayKit",
@@ -2535,6 +3327,7 @@ namespace Xamarin.Tests {
 			"/System/Library/Frameworks/ModelIO.framework/Versions/A/ModelIO",
 			"/System/Library/Frameworks/MultipeerConnectivity.framework/Versions/A/MultipeerConnectivity",
 			"/System/Library/Frameworks/NaturalLanguage.framework/Versions/A/NaturalLanguage",
+			"/System/Library/Frameworks/NearbyInteraction.framework/Versions/A/NearbyInteraction",
 			"/System/Library/Frameworks/Network.framework/Versions/A/Network",
 			"/System/Library/Frameworks/NetworkExtension.framework/Versions/A/NetworkExtension",
 			"/System/Library/Frameworks/NotificationCenter.framework/Versions/A/NotificationCenter",
@@ -2558,6 +3351,7 @@ namespace Xamarin.Tests {
 			"/System/Library/Frameworks/ScreenTime.framework/Versions/A/ScreenTime",
 			"/System/Library/Frameworks/ScriptingBridge.framework/Versions/A/ScriptingBridge",
 			"/System/Library/Frameworks/Security.framework/Versions/A/Security",
+			"/System/Library/Frameworks/SecurityUI.framework/Versions/A/SecurityUI",
 			"/System/Library/Frameworks/SensitiveContentAnalysis.framework/Versions/A/SensitiveContentAnalysis",
 			"/System/Library/Frameworks/ServiceManagement.framework/Versions/A/ServiceManagement",
 			"/System/Library/Frameworks/SharedWithYou.framework/Versions/A/SharedWithYou",
@@ -2585,6 +3379,21 @@ namespace Xamarin.Tests {
 			"/usr/lib/libobjc.A.dylib",
 			"/usr/lib/libSystem.B.dylib",
 			"/usr/lib/libz.1.dylib",
+			"/usr/lib/swift/libswiftCore.dylib",
+			"/usr/lib/swift/libswiftCoreFoundation.dylib",
+			"/usr/lib/swift/libswiftCoreImage.dylib",
+			"/usr/lib/swift/libswiftDarwin.dylib",
+			"/usr/lib/swift/libswiftDataDetection.dylib",
+			"/usr/lib/swift/libswiftDispatch.dylib",
+			"/usr/lib/swift/libswiftFoundation.dylib",
+			"/usr/lib/swift/libswiftIOKit.dylib",
+			"/usr/lib/swift/libswiftMetal.dylib",
+			"/usr/lib/swift/libswiftObjectiveC.dylib",
+			"/usr/lib/swift/libswiftos.dylib",
+			"/usr/lib/swift/libswiftOSLog.dylib",
+			"/usr/lib/swift/libswiftQuartzCore.dylib",
+			"/usr/lib/swift/libswiftUniformTypeIdentifiers.dylib",
+			"/usr/lib/swift/libswiftXPC.dylib",
 		];
 
 		static string [] expectedFrameworks_macOS_Full = [
@@ -2655,6 +3464,7 @@ namespace Xamarin.Tests {
 			"/System/iOSSupport/System/Library/Frameworks/ReplayKit.framework/Versions/A/ReplayKit",
 			"/System/iOSSupport/System/Library/Frameworks/SafariServices.framework/Versions/A/SafariServices",
 			"/System/iOSSupport/System/Library/Frameworks/SceneKit.framework/Versions/A/SceneKit",
+			"/System/iOSSupport/System/Library/Frameworks/ScreenCaptureKit.framework/Versions/A/ScreenCaptureKit",
 			"/System/iOSSupport/System/Library/Frameworks/ScreenTime.framework/Versions/A/ScreenTime",
 			"/System/iOSSupport/System/Library/Frameworks/SharedWithYou.framework/Versions/A/SharedWithYou",
 			"/System/iOSSupport/System/Library/Frameworks/Social.framework/Versions/A/Social",
@@ -2702,6 +3512,7 @@ namespace Xamarin.Tests {
 			"/System/Library/Frameworks/CoreWLAN.framework/Versions/A/CoreWLAN",
 			"/System/Library/Frameworks/CryptoKit.framework/Versions/A/CryptoKit",
 			"/System/Library/Frameworks/CryptoTokenKit.framework/Versions/A/CryptoTokenKit",
+			"/System/Library/Frameworks/DataDetection.framework/Versions/A/DataDetection",
 			"/System/Library/Frameworks/DeviceCheck.framework/Versions/A/DeviceCheck",
 			"/System/Library/Frameworks/DeviceDiscoveryExtension.framework/Versions/A/DeviceDiscoveryExtension",
 			"/System/Library/Frameworks/EventKit.framework/Versions/A/EventKit",
@@ -2735,6 +3546,7 @@ namespace Xamarin.Tests {
 			"/System/Library/Frameworks/QuartzCore.framework/Versions/A/QuartzCore",
 			"/System/Library/Frameworks/QuickLookThumbnailing.framework/Versions/A/QuickLookThumbnailing",
 			"/System/Library/Frameworks/Security.framework/Versions/A/Security",
+			"/System/Library/Frameworks/SecurityUI.framework/Versions/A/SecurityUI",
 			"/System/Library/Frameworks/SensitiveContentAnalysis.framework/Versions/A/SensitiveContentAnalysis",
 			"/System/Library/Frameworks/SensorKit.framework/Versions/A/SensorKit",
 			"/System/Library/Frameworks/ServiceManagement.framework/Versions/A/ServiceManagement",
@@ -2756,13 +3568,21 @@ namespace Xamarin.Tests {
 			"/usr/lib/libobjc.A.dylib",
 			"/usr/lib/libSystem.B.dylib",
 			"/usr/lib/libz.1.dylib",
+			"/System/iOSSupport/usr/lib/swift/libswiftUIKit.dylib",
 			"/usr/lib/swift/libswiftCore.dylib",
 			"/usr/lib/swift/libswiftCoreFoundation.dylib",
+			"/usr/lib/swift/libswiftCoreImage.dylib",
 			"/usr/lib/swift/libswiftDarwin.dylib",
+			"/usr/lib/swift/libswiftDataDetection.dylib",
 			"/usr/lib/swift/libswiftDispatch.dylib",
 			"/usr/lib/swift/libswiftFoundation.dylib",
 			"/usr/lib/swift/libswiftIOKit.dylib",
+			"/usr/lib/swift/libswiftMetal.dylib",
 			"/usr/lib/swift/libswiftObjectiveC.dylib",
+			"/usr/lib/swift/libswiftos.dylib",
+			"/usr/lib/swift/libswiftOSLog.dylib",
+			"/usr/lib/swift/libswiftQuartzCore.dylib",
+			"/usr/lib/swift/libswiftUniformTypeIdentifiers.dylib",
 			"/usr/lib/swift/libswiftXPC.dylib",
 		];
 
@@ -2845,6 +3665,46 @@ namespace Xamarin.Tests {
 		}
 
 		[Test]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64")]
+		[TestCase (ApplePlatform.iOS, "ios-arm64")]
+		[TestCase (ApplePlatform.TVOS, "tvos-arm64")]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64")]
+		public void SpacedAppTitle (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			var project = "Spaced App";
+			var title = "Spaced App Title";
+
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+
+			var applicationTitle = (platform.IsDesktop () && Version.Parse (Configuration.DotNetTfm.Replace ("net", "")).Major >= 10) ? title : project;
+			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath, applicationTitle: applicationTitle);
+			Clean (project_path);
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			var rv = DotNet.AssertBuild (project_path, properties);
+			var errors = BinLog.GetBuildLogErrors (rv.BinLogPath).ToArray ();
+
+			var infoPlistPath = GetInfoPListPath (platform, appPath);
+			var infoPlist = PDictionary.FromFile (infoPlistPath)!;
+			Assert.AreEqual ("com.xamarin.spacedapp", infoPlist.GetString ("CFBundleIdentifier").Value, "CFBundleIdentifier");
+			Assert.AreEqual ("Spaced App Title", infoPlist.GetString ("CFBundleDisplayName").Value, "CFBundleDisplayName");
+
+			var appName = Path.GetFileNameWithoutExtension (appPath);
+			switch (platform) {
+			case ApplePlatform.MacCatalyst:
+			case ApplePlatform.MacOSX:
+				Assert.That (appName, Is.EqualTo (applicationTitle), "Dock Name");
+				break;
+			case ApplePlatform.iOS:
+			case ApplePlatform.TVOS:
+				Assert.That (appName, Is.EqualTo (project), "App Name");
+				break;
+			default:
+				throw new NotImplementedException ();
+			}
+		}
+
+		[Test]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64", "13.1")]
 		[TestCase (ApplePlatform.iOS, "ios-arm64", "10.0")]
 		[TestCase (ApplePlatform.TVOS, "tvossimulator-x64", "10.0")]
@@ -2860,10 +3720,13 @@ namespace Xamarin.Tests {
 			Clean (project_path);
 			var properties = GetDefaultProperties (runtimeIdentifiers);
 			properties ["SupportedOSPlatformVersion"] = version;
+			properties ["ExcludeTouchUnitReference"] = "true";
+			properties ["ExcludeNUnitLiteReference"] = "true";
 			var rv = DotNet.AssertBuildFailure (project_path, properties);
 			var errors = BinLog.GetBuildLogErrors (rv.BinLogPath).ToArray ();
 			AssertErrorMessages (errors, $"The SupportedOSPlatformVersion value '{version}' in the project file is lower than the minimum value '{minVersion}'.");
 		}
+
 
 		[TestCase (ApplePlatform.MacOSX)]
 		[TestCase (ApplePlatform.MacCatalyst)]
@@ -2887,6 +3750,81 @@ namespace Xamarin.Tests {
 				"-j",
 			};
 			AssertExecute ("make", arguments, out var _);
+		}
+
+		// macOS doesn't support UseNativeHttpHandler / any of our native http handlers being the default http handler.
+		[Test]
+		[TestCase (ApplePlatform.MacCatalyst, "NSUrlSessionHandler", "true")]
+		[TestCase (ApplePlatform.iOS, "CFNetworkHandler", "true")]
+		[TestCase (ApplePlatform.iOS, "HttpClientHandler", "")]
+		[TestCase (ApplePlatform.TVOS, "", "false")]
+		[TestCase (ApplePlatform.MacCatalyst, "Invalid", "true")]
+		public void HttpClientHandlerFeatureTrimmedAway (ApplePlatform platform, string handler, string useNativeHttpHandler)
+		{
+			var project = "ApiTestApp";
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+
+			var runtimeIdentifiers = GetDefaultRuntimeIdentifier (platform);
+			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath);
+			Clean (project_path);
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			properties ["AdditionalDefineConstants"] = "HttpClientHandlerFeatureTrimmedAway";
+			properties ["TrimMode"] = "partial";
+			if (!string.IsNullOrEmpty (useNativeHttpHandler))
+				properties ["UseNativeHttpHandler"] = useNativeHttpHandler;
+			if (!string.IsNullOrEmpty (handler))
+				properties ["MtouchHttpClientHandler"] = handler;
+			properties ["ExcludeTouchUnitReference"] = "true"; // speed things up a bit
+			properties ["ExcludeNUnitLiteReference"] = "true"; // speed things up a bit
+			if (handler == "Invalid") {
+				var rv2 = DotNet.AssertBuildFailure (project_path, properties);
+				var errors = BinLog.GetBuildLogErrors (rv2.BinLogPath).ToArray ();
+				AssertErrorMessages (errors, $"Invalid value for 'MtouchHttpClientHandler' ('Invalid', must be either 'NSUrlSessionHandler' or 'CFNetworkHandler' (or not set at all).");
+				return;
+			}
+			var rv = DotNet.AssertBuild (project_path, properties);
+			var platformAssembly = Path.Combine (appPath, GetRelativeAssemblyDirectory (platform), $"Microsoft.{platform.AsString ()}.dll");
+			var ad = AssemblyDefinition.ReadAssembly (platformAssembly, new ReaderParameters { ReadingMode = ReadingMode.Deferred });
+			var runtimeType = ad.MainModule.Types.Single (v => v.FullName == "ObjCRuntime.Runtime");
+
+			var get_UseCFNetworkHandler = runtimeType.Methods.SingleOrDefault (v => v.Name == "get_UseCFNetworkHandler");
+			Assert.That (get_UseCFNetworkHandler, Is.Null, "get_UseCFNetworkHandler");
+			var get_UseNSUrlSessionHandler = runtimeType.Methods.SingleOrDefault (v => v.Name == "get_UseNSUrlSessionHandler");
+			Assert.That (get_UseNSUrlSessionHandler, Is.Null, "get_UseNSUrlSessionHandler");
+
+			string nsurlSessionHandleNamespace;
+			switch (platform) {
+			case ApplePlatform.iOS:
+			case ApplePlatform.TVOS:
+			case ApplePlatform.MacCatalyst:
+				nsurlSessionHandleNamespace = "System.Net.Http.NSUrlSessionHandler";
+				break;
+			case ApplePlatform.MacOSX:
+				nsurlSessionHandleNamespace = "Foundation.NSUrlSessionHandler";
+				break;
+			default:
+				throw new NotImplementedException ();
+			}
+
+			var cfnetworkHandlerType = ad.MainModule.Types.SingleOrDefault (v => v.FullName == "System.Net.Http.CFNetworkHandler");
+			var nsUrlSessionHandlerType = ad.MainModule.Types.SingleOrDefault (v => v.FullName == nsurlSessionHandleNamespace);
+			switch (handler) {
+			case "":
+			case "HttpClientHandler":
+				Assert.That (cfnetworkHandlerType, Is.Null, $"System.Net.Http.CFNetworkHandler: {platformAssembly}");
+				Assert.That (nsUrlSessionHandlerType, Is.Null, $"{nsurlSessionHandleNamespace}: {platformAssembly}");
+				break;
+			case "NSUrlSessionHandler":
+				Assert.That (cfnetworkHandlerType, Is.Null, $"System.Net.Http.CFNetworkHandler: {platformAssembly}");
+				Assert.That (nsUrlSessionHandlerType, Is.Not.Null, $"{nsurlSessionHandleNamespace}: {platformAssembly}");
+				break;
+			case "CFNetworkHandler":
+				Assert.That (cfnetworkHandlerType, Is.Not.Null, $"System.Net.Http.CFNetworkHandler: {platformAssembly}");
+				Assert.That (nsUrlSessionHandlerType, Is.Null, $"{nsurlSessionHandleNamespace}: {platformAssembly}");
+				break;
+			default:
+				throw new InvalidOperationException ();
+			}
 		}
 	}
 }

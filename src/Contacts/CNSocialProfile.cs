@@ -14,28 +14,49 @@ using Foundation;
 
 namespace Contacts {
 	// Strong typed Keys to enum
+	/// <summary>Enumerates properties of social services that are always fetched.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum CNSocialProfileOption {
+		/// <summary>Associated with the <see cref="Contacts.CNSocialProfileKey.UrlString" /> property.</summary>
 		UrlString,
+		/// <summary>Associated with the <see cref="Contacts.CNSocialProfileKey.Username" /> property.</summary>
 		Username,
+		/// <summary>Associated with the <see cref="Contacts.CNSocialProfileKey.UserIdentifier" /> property.</summary>
 		UserIdentifier,
-		Service
+		/// <summary>Associated with the <see cref="Contacts.CNSocialProfileKey.Service" /> property.</summary>
+		Service,
 	}
 
 	// Strong typed Keys to enum
+	/// <summary>Enumerates known social services.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum CNSocialProfileServiceOption {
+		/// <summary>Facebook.</summary>
 		Facebook,
+		/// <summary>Flickr.</summary>
 		Flickr,
+		/// <summary>LinkedIn.</summary>
 		LinkedIn,
+		/// <summary>MySpace.</summary>
 		MySpace,
+		/// <summary>SinaWeibo.</summary>
 		SinaWeibo,
+		/// <summary>TencentWeibo.</summary>
 		TencentWeibo,
+		/// <summary>Twitter.</summary>
 		Twitter,
+		/// <summary>Yelp.</summary>
 		Yelp,
-		GameCenter
+		/// <summary>Apple GameCenter.</summary>
+		GameCenter,
 	}
 
 	public partial class CNSocialProfile {
 
+		/// <param name="option">To be added.</param>
+		///         <summary>Returns the localized string representing the <paramref name="option" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static string LocalizeProperty (CNSocialProfileOption option)
 		{
 			switch (option) {
@@ -52,6 +73,10 @@ namespace Contacts {
 			}
 		}
 
+		/// <param name="serviceOption">To be added.</param>
+		///         <summary>Returns the localized string representing the <paramref name="serviceOption" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static string LocalizeService (CNSocialProfileServiceOption serviceOption)
 		{
 			var srvc = ServiceOptionsToNSString (serviceOption);

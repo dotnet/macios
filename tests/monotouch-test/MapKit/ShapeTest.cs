@@ -1,6 +1,6 @@
 // Copyright 2011 Xamarin Inc. All rights reserved
 
-#if !__TVOS__ && !__WATCHOS__
+#if !__TVOS__
 
 using System;
 using System.Drawing;
@@ -36,4 +36,4 @@ namespace MonoTouchFixtures.MapKit {
 	}
 }
 
-#endif // !__TVOS__ && !__WATCHOS__
+#endif // !__TVOS__

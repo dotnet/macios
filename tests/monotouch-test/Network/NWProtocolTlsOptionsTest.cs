@@ -1,4 +1,3 @@
-#if !__WATCHOS__
 using Foundation;
 using Network;
 
@@ -26,12 +25,7 @@ namespace MonoTouchFixtures.Network {
 		[Test]
 		public void ProtocolOptionsTest ()
 		{
-#if NET
 			Assert.NotNull (options.ProtocolOptions);
-#else
-			Assert.NotNull (options.TlsProtocolOptions);
-#endif
 		}
 	}
 }
-#endif

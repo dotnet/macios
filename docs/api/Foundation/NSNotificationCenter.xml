@@ -21,7 +21,7 @@
       <para>
 	Notifications are posted on the same thread as the calling
 	thread which could have undesired effects.  If you need to
-	deliver notifications from a background thread, use the <see cref="M:Foundation.NSObject.BeginInvokeOnMainThread(System.Action)" /> method to wrap your posting into a delegate that is
+	deliver notifications from a background thread, use the <see cref="Foundation.NSObject.BeginInvokeOnMainThread(System.Action)" /> method to wrap your posting into a delegate that is
 	invoked on the main thread.
 
       </para>
@@ -39,7 +39,7 @@
 	Notifications are usually NSString fields that are hosted in
 	some class, for example the Objective-C
 	UITextViewTextDidChangeNotification is found in the class
-	UITextView as the <see cref="P:UIKit.UITextView.TextDidChangeNotification" />.
+	UITextView as the <see cref="UIKit.UITextView.TextDidChangeNotification" />.
 	For convenience there are overloads that take C# strings.
 
       </para>
@@ -102,8 +102,8 @@ void Teardown ()
 ]]></code>
       </example>
       <para>
-        Similarly, if your object implements <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20IDisposable&amp;scope=Xamarin" title="T:System.IDisposable">T:System.IDisposable</a></format> (including any object derived from <see cref="T:Foundation.NSObject" />)
-        you MUST call <see cref="M:Foundation.NSNotificationCenter.RemoveObservers(System.Collections.Generic.IEnumerable{Foundation.NSObject})" /> or <c>notificationToken.Dispose()</c> in your <c>Dispose</c> function: 
+        Similarly, if your object implements <see cref="System.IDisposable" /> (including any object derived from <see cref="Foundation.NSObject" />)
+        you MUST call <see cref="Foundation.NSNotificationCenter.RemoveObservers(System.Collections.Generic.IEnumerable{Foundation.NSObject})" /> or <c>notificationToken.Dispose()</c> in your <c>Dispose</c> function: 
       </para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[

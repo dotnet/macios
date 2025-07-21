@@ -14,9 +14,9 @@
 
   <!--
 
-    The task assembly (Xamarin.iOS.Tasks.dll) is ILMerged, which really
+    The task assembly (Xamarin.MacDev.Tasks.dll) is ILMerged, which really
     confuses VSfM when using a project reference to the task assembly project
-    file, so instead use a reference to the final Xamarin.iOS.Tasks.dll
+    file, so instead use a reference to the final Xamarin.MacDev.Tasks.dll
     assembly instead. This approach requires us to manually build the task
     assembly before building the test assembly (the BuildTasksAssembly
     target).
@@ -28,21 +28,34 @@
     <Reference Include="Microsoft.Build.Framework" HintPath="$(MSBuildBinPath)\Microsoft.Build.Framework.dll" />
     <Reference Include="Microsoft.Build.Tasks.Core" HintPath="$(MSBuildBinPath)\Microsoft.Build.Tasks.Core.dll" />
     <Reference Include="Microsoft.Build.Utilities.Core" HintPath="$(MSBuildBinPath)\Microsoft.Build.Utilities.Core.dll" />
-    <Reference Include="Xamarin.iOS.Tasks" HintPath="..\..\..\msbuild\Xamarin.iOS.Tasks\bin\$(Configuration)\netstandard2.0\Xamarin.iOS.Tasks.dll" />
-    <Reference Include="Xamarin.Localization.MSBuild" HintPath="..\..\..\msbuild\Xamarin.iOS.Tasks\bin\$(Configuration)\netstandard2.0\Xamarin.Localization.MSBuild.dll" />
+
+    <!-- Reference the ILMerged assemblies for testing / runtime -->
+    <Reference Include="Xamarin.MacDev.Tasks" Condition="'$(DesignTimeBuild)' != 'true'" HintPath="..\..\..\msbuild\Xamarin.MacDev.Tasks\bin\$(Configuration)\netstandard2.0\Xamarin.MacDev.Tasks.dll" />
+    <Reference Include="Xamarin.Localization.MSBuild" Condition="'$(DesignTimeBuild)' != 'true'" HintPath="..\..\..\msbuild\Xamarin.MacDev.Tasks\bin\$(Configuration)\netstandard2.0\Xamarin.Localization.MSBuild.dll" />
+
+    <!-- Reference the projects for intellisense in VSCode. -->
+    <ProjectReference Include="../../../msbuild/Xamarin.MacDev.Tasks/Xamarin.MacDev.Tasks.csproj" Condition="'$(DesignTimeBuild)' == 'true'" />
+    <ProjectReference Include="../../../external/Xamarin.MacDev/Xamarin.MacDev/Xamarin.MacDev.csproj" Condition="'$(DesignTimeBuild)' == 'true'"/>
+    <ProjectReference Include="../../../msbuild/Xamarin.Localization.MSBuild/Xamarin.Localization.MSBuild.csproj" Condition="'$(DesignTimeBuild)' == 'true'" />
+
     <PackageReference Include="System.Collections.Immutable" Version="8.0.0" />
     <PackageReference Include="NUnit" Version="3.12.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.15.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.1" />
-    <PackageReference Include="Microsoft.Build" Version="17.11.4" />
-    <PackageReference Include="Microsoft.Build.Framework" Version="17.11.4" />
-    <PackageReference Include="Microsoft.Build.Tasks.Core" Version="17.11.4" />
-    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="17.11.4" />
+    <PackageReference Include="Microsoft.Build" Version="$(MicrosoftBuildPackageVersion)" />
+    <PackageReference Include="Microsoft.Build.Framework" Version="$(MicrosoftBuildFrameworkPackageVersion)" />
+    <PackageReference Include="Microsoft.Build.Tasks.Core" Version="$(MicrosoftBuildTasksCorePackageVersion)" />
+    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="$(MicrosoftBuildUtilitiesCorePackageVersion)" />
+    <PackageReference Include="NUnitXml.TestLogger" Version="$(NUnitXmlTestLoggerPackageVersion)" />
+    <!-- Fix transient dependency issue found by component governance 4.7.0 -> 4.7.2 -->
+    <PackageReference Include="System.Drawing.Common" Version="$(SystemDrawingCommonPackageVersion)" />
+    <!-- Fix transient dependency issue found by component governance 4.7.0 -> 4.7.1 -->
+    <PackageReference Include="System.Security.Cryptography.Xml" Version="$(SystemSecurityCryptographyXmlPackageVersion)" />
   </ItemGroup>
 
-  <Target Name="BuildTasksAssembly" AfterTargets="BeforeBuild">
-    <MSBuild Projects="..\..\..\msbuild\Xamarin.iOS.Tasks\Xamarin.iOS.Tasks.csproj" Targets="Restore" Properties="SomeGlobalPropertyToMakeThisUnique=RestoreMe" />
-    <MSBuild Projects="..\..\..\msbuild\Xamarin.iOS.Tasks\Xamarin.iOS.Tasks.csproj" />
+  <Target Name="BuildTasksAssembly" AfterTargets="BeforeBuild" Condition="'$(DesignTimeBuild)' != 'true'">
+    <MSBuild Projects="..\..\..\msbuild\Xamarin.MacDev.Tasks\Xamarin.MacDev.Tasks.csproj" Targets="Restore" Properties="SomeGlobalPropertyToMakeThisUnique=RestoreMe" />
+    <MSBuild Projects="..\..\..\msbuild\Xamarin.MacDev.Tasks\Xamarin.MacDev.Tasks.csproj" />
   </Target>
 
   <ItemGroup>
@@ -51,6 +64,9 @@
     </Compile>
     <Compile Include="..\..\common\Configuration.cs">
       <Link>external\Configuration.cs</Link>
+    </Compile>
+    <Compile Include="..\..\common\ConfigurationNUnit.cs">
+      <Link>external\ConfigurationNUnit.cs</Link>
     </Compile>
     <Compile Include="..\..\common\DotNet.cs">
       <Link>external\DotNet.cs</Link>
@@ -64,6 +80,12 @@
     <Compile Include="..\..\common\ErrorHelper.tests.cs">
       <Link>external\ErrorHelper.tests.cs</Link>
     </Compile>
+    <Compile Include="..\..\common\PListAsserts.cs">
+      <Link>external\PListAsserts.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\tools\common\SdkVersions.cs">
+      <Link>external\SdkVersions.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\tools\common\StringUtils.cs">
       <Link>external\StringUtils.cs</Link>
     </Compile>
@@ -72,7 +94,13 @@
     <None Include="Resources\Entitlements.plist">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\profile.mobileprovision">
+    <None Include="Resources\EmptyEntitlements.plist">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\*.mobileprovision">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\*.provisionprofile">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Resources\iTunesArtwork.jpg">

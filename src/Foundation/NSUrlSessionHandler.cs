@@ -44,6 +44,7 @@ using System.Diagnostics.CodeAnalysis;
 
 using CoreFoundation;
 using Foundation;
+using ObjCRuntime;
 using Security;
 
 #if !MONOMAC
@@ -58,9 +59,6 @@ namespace System.Net.Http {
 namespace Foundation {
 #endif
 
-#if !NET
-	public delegate bool NSUrlSessionHandlerTrustOverrideCallback (NSUrlSessionHandler sender, SecTrust trust);
-#endif
 	public delegate bool NSUrlSessionHandlerTrustOverrideForUrlCallback (NSUrlSessionHandler sender, string url, SecTrust trust);
 
 	// useful extensions for the class in order to set it in a header
@@ -114,20 +112,22 @@ namespace Foundation {
 		}
 	}
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public partial class NSUrlSessionHandler : HttpMessageHandler {
 		private const string SetCookie = "Set-Cookie";
 		private const string Cookie = "Cookie";
 		private CookieContainer? cookieContainer;
 		readonly Dictionary<string, string> headerSeparators = new Dictionary<string, string> {
 			["User-Agent"] = " ",
-			["Server"] = " "
+			["Server"] = " ",
 		};
 
 		NSUrlSession session;
 		readonly Dictionary<NSUrlSessionTask, InflightData> inflightRequests;
 		readonly object inflightRequestsLock = new object ();
 		readonly NSUrlSessionConfiguration.SessionConfigurationType sessionType;
-#if !MONOMAC && !__WATCHOS__
+#if !MONOMAC && !NET8_0 && !NET10_0_OR_GREATER
 		NSObject? notificationToken;  // needed to make sure we do not hang if not using a background session
 		readonly object notificationTokenLock = new object (); // need to make sure that threads do no step on each other with a dispose and a remove  inflight data
 #endif
@@ -143,10 +143,15 @@ namespace Foundation {
 			return config;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSUrlSessionHandler () : this (CreateConfig ())
 		{
 		}
 
+		/// <param name="configuration">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[CLSCompliant (false)]
 		public NSUrlSessionHandler (NSUrlSessionConfiguration configuration)
 		{
@@ -158,27 +163,51 @@ namespace Foundation {
 			allowsCellularAccess = configuration.AllowsCellularAccess;
 			AllowAutoRedirect = true;
 
+#if !NET10_0_OR_GREATER
 #pragma warning disable SYSLIB0014
 			// SYSLIB0014: 'ServicePointManager' is obsolete: 'WebRequest, HttpWebRequest, ServicePoint, and WebClient are obsolete. Use HttpClient instead. Settings on ServicePointManager no longer affect SslStream or HttpClient.' (https://aka.ms/dotnet-warnings/SYSLIB0014)
-			// https://github.com/xamarin/xamarin-macios/issues/20764
+			// https://github.com/dotnet/macios/issues/20764
 			var sp = ServicePointManager.SecurityProtocol;
 #pragma warning restore SYSLIB0014
-			if ((sp & SecurityProtocolType.Ssl3) != 0)
-				configuration.TLSMinimumSupportedProtocol = SslProtocol.Ssl_3_0;
-			else if ((sp & SecurityProtocolType.Tls) != 0)
-				configuration.TLSMinimumSupportedProtocol = SslProtocol.Tls_1_0;
-			else if ((sp & SecurityProtocolType.Tls11) != 0)
-				configuration.TLSMinimumSupportedProtocol = SslProtocol.Tls_1_1;
-			else if ((sp & SecurityProtocolType.Tls12) != 0)
-				configuration.TLSMinimumSupportedProtocol = SslProtocol.Tls_1_2;
-			else if ((sp & (SecurityProtocolType) 12288) != 0) // Tls13 value not yet in monno
-				configuration.TLSMinimumSupportedProtocol = SslProtocol.Tls_1_3;
+
+			// The analyzer has a bug where SupportedOSPlatformGuard attributes don't work correctly (https://github.com/dotnet/roslyn-analyzers/issues/7665#issuecomment-2898275765), so ignore CA1416/CA1422 here
+			// warning CA1422: This call site is reachable on: 'ios' 12.2 and later, 'maccatalyst' 12.2 and later, 'macOS/OSX' 12.0 and later, 'tvos' 12.2 and later. 'NSUrlSessionConfiguration.[...]' is obsoleted on: 'ios' 13.0 and later (Use '...' instead.), 'maccatalyst' 13.0 and later (Use '...' instead.), 'macOS/OSX' 10.15 and later (Use '...' instead.).
+			// warning CA1416: This call site is reachable on: 'ios' 12.2 and later, 'maccatalyst' 12.2 and later, 'macOS/OSX' 10.15 and later, 'tvos' 12.2 and later. 'NSUrlSessionConfiguration.[...]' is only supported on: 'ios' 13.0 and later, 'tvos' 13.0 and later
+#pragma warning disable CA1416
+#pragma warning disable CA1422
+			if (SystemVersion.IsAtLeastXcode11) {
+				if ((sp & SecurityProtocolType.Ssl3) != 0) {
+					// no equivalent
+				} else if ((sp & SecurityProtocolType.Tls) != 0) {
+					configuration.TlsMinimumSupportedProtocolVersion = TlsProtocolVersion.Tls10;
+				} else if ((sp & SecurityProtocolType.Tls11) != 0) {
+					configuration.TlsMinimumSupportedProtocolVersion = TlsProtocolVersion.Tls11;
+				} else if ((sp & SecurityProtocolType.Tls12) != 0) {
+					configuration.TlsMinimumSupportedProtocolVersion = TlsProtocolVersion.Tls12;
+				} else if ((sp & SecurityProtocolType.Tls13) != 0) {
+					configuration.TlsMinimumSupportedProtocolVersion = TlsProtocolVersion.Tls13;
+				}
+			} else {
+				if ((sp & SecurityProtocolType.Ssl3) != 0)
+					configuration.TLSMinimumSupportedProtocol = SslProtocol.Ssl_3_0;
+				else if ((sp & SecurityProtocolType.Tls) != 0)
+					configuration.TLSMinimumSupportedProtocol = SslProtocol.Tls_1_0;
+				else if ((sp & SecurityProtocolType.Tls11) != 0)
+					configuration.TLSMinimumSupportedProtocol = SslProtocol.Tls_1_1;
+				else if ((sp & SecurityProtocolType.Tls12) != 0)
+					configuration.TLSMinimumSupportedProtocol = SslProtocol.Tls_1_2;
+				else if ((sp & SecurityProtocolType.Tls13) != 0)
+					configuration.TLSMinimumSupportedProtocol = SslProtocol.Tls_1_3;
+			}
+#pragma warning restore CA1422
+#pragma warning restore CA1416
+#endif // NET10_0_OR_GREATER
 
 			session = NSUrlSession.FromConfiguration (configuration, (INSUrlSessionDelegate) new NSUrlSessionHandlerDelegate (this), null);
 			inflightRequests = new Dictionary<NSUrlSessionTask, InflightData> ();
 		}
 
-#if !MONOMAC && !__WATCHOS__ && !NET8_0
+#if !MONOMAC && !NET8_0 && !NET10_0_OR_GREATER
 
 		void AddNotification ()
 		{
@@ -217,6 +246,9 @@ namespace Foundation {
 		}
 #endif
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public long MaxInputInMemory { get; set; } = long.MaxValue;
 
 		void RemoveInflightData (NSUrlSessionTask task, bool cancel = true)
@@ -227,7 +259,7 @@ namespace Foundation {
 						data.CancellationTokenSource.Cancel ();
 					inflightRequests.Remove (task);
 				}
-#if !MONOMAC && !__WATCHOS__ && !NET8_0
+#if !MONOMAC && !NET8_0 && !NET10_0_OR_GREATER
 				// do we need to be notified? If we have not inflightData, we do not
 				if (inflightRequests.Count == 0)
 					RemoveNotification ();
@@ -240,10 +272,13 @@ namespace Foundation {
 			task?.Dispose ();
 		}
 
+		/// <param name="disposing">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected override void Dispose (bool disposing)
 		{
 			lock (inflightRequestsLock) {
-#if !MONOMAC && !__WATCHOS__ && !NET8_0
+#if !MONOMAC && !NET8_0 && !NET10_0_OR_GREATER
 				// remove the notification if present, method checks against null
 				RemoveNotification ();
 #endif
@@ -259,6 +294,9 @@ namespace Foundation {
 
 		bool disableCaching;
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool DisableCaching {
 			get {
 				return disableCaching;
@@ -271,6 +309,9 @@ namespace Foundation {
 
 		bool allowAutoRedirect;
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool AllowAutoRedirect {
 			get {
 				return allowAutoRedirect;
@@ -295,6 +336,9 @@ namespace Foundation {
 
 		ICredentials? credentials;
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public ICredentials? Credentials {
 			get {
 				return credentials;
@@ -304,21 +348,6 @@ namespace Foundation {
 				credentials = value;
 			}
 		}
-
-#if !NET
-		NSUrlSessionHandlerTrustOverrideCallback? trustOverride;
-
-		[Obsolete ("Use the 'TrustOverrideForUrl' property instead.")]
-		public NSUrlSessionHandlerTrustOverrideCallback? TrustOverride {
-			get {
-				return trustOverride;
-			}
-			set {
-				EnsureModifiability ();
-				trustOverride = value;
-			}
-		}
-#endif
 
 		NSUrlSessionHandlerTrustOverrideForUrlCallback? trustOverrideForUrl;
 
@@ -331,7 +360,7 @@ namespace Foundation {
 				trustOverrideForUrl = value;
 			}
 		}
-#if !NET8_0
+#if !NET8_0 && !NET10_0_OR_GREATER
 		// we do check if a user does a request and the application goes to the background, but
 		// in certain cases the user does that on purpose (BeingBackgroundTask) and wants to be able
 		// to use the network. In those cases, which are few, we want the developer to explicitly 
@@ -341,21 +370,21 @@ namespace Foundation {
 
 #if !XAMCORE_5_0
 		[EditorBrowsable (EditorBrowsableState.Never)]
-#if NET8_0
+#if NET8_0 || NET10_0_OR_GREATER
 		[Obsolete ("This property is ignored.")]
 #else
-		[Obsolete ("This property will be ignored in .NET 8.")]
+		[Obsolete ("This property will be ignored in .NET 10+.")]
 #endif
 		public bool BypassBackgroundSessionCheck {
 			get {
-#if NET8_0
+#if NET8_0 || NET10_0_OR_GREATER
 				return true;
 #else
 				return bypassBackgroundCheck;
 #endif
 			}
 			set {
-#if !NET8_0
+#if !NET8_0 && !NET10_0_OR_GREATER
 				EnsureModifiability ();
 				bypassBackgroundCheck = value;
 #endif
@@ -422,19 +451,13 @@ namespace Foundation {
 			// errors that exists in both share the same error code, so we can use a single switch/case
 			// this also ease watchOS integration as if does not expose CFNetwork but (I would not be 
 			// surprised if it)could return some of it's error codes
-#if __WATCHOS__
-			if (error.Domain == NSError.NSUrlErrorDomain) {
-#else
 			if ((error.Domain == NSError.NSUrlErrorDomain) || (error.Domain == NSError.CFNetworkErrorDomain)) {
-#endif
 				// Apple docs: https://developer.apple.com/library/mac/documentation/Cocoa/Reference/Foundation/Miscellaneous/Foundation_Constants/index.html#//apple_ref/doc/constant_group/URL_Loading_System_Error_Codes
 				// .NET docs: http://msdn.microsoft.com/en-us/library/system.net.webexceptionstatus(v=vs.110).aspx
 				switch ((NSUrlError) (long) error.Code) {
 				case NSUrlError.Cancelled:
 				case NSUrlError.UserCancelledAuthentication:
-#if !__WATCHOS__
 				case (NSUrlError) NSNetServicesStatus.CancelledError:
-#endif
 					// No more processing is required so just return.
 					return new OperationCanceledException (error.LocalizedDescription, innerException);
 				}
@@ -508,9 +531,11 @@ namespace Foundation {
 			return nsrequest;
 		}
 
-#if (SYSTEM_NET_HTTP || MONOMAC) && !NET
-		internal
-#endif
+		/// <param name="request">To be added.</param>
+		///         <param name="cancellationToken">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		protected override async Task<HttpResponseMessage> SendAsync (HttpRequestMessage request, CancellationToken cancellationToken)
 		{
 			Volatile.Write (ref sentRequest, true);
@@ -521,7 +546,7 @@ namespace Foundation {
 			var inflightData = new InflightData (request.RequestUri?.AbsoluteUri!, cancellationToken, request);
 
 			lock (inflightRequestsLock) {
-#if !MONOMAC && !__WATCHOS__ && !NET8_0
+#if !MONOMAC && !NET8_0 && !NET10_0_OR_GREATER
 				// Add the notification whenever needed
 				AddNotification ();
 #endif
@@ -551,7 +576,6 @@ namespace Foundation {
 			return await inflightData.CompletionSource.Task.ConfigureAwait (false);
 		}
 
-#if NET
 		// Properties that will be called by the default HttpClientHandler
 
 		// NSUrlSession handler automatically handles decompression, and there doesn't seem to be a way to turn it off.
@@ -586,13 +610,6 @@ namespace Foundation {
 			}
 		}
 
-		// We're ignoring this property, just like Xamarin.Android does:
-		// https://github.com/xamarin/xamarin-android/blob/09e8cb5c07ea6c39383185a3f90e53186749b802/src/Mono.Android/Xamarin.Android.Net/AndroidMessageHandler.cs#L148
-		[UnsupportedOSPlatform ("ios")]
-		[UnsupportedOSPlatform ("maccatalyst")]
-		[UnsupportedOSPlatform ("tvos")]
-		[UnsupportedOSPlatform ("macos")]
-		[EditorBrowsable (EditorBrowsableState.Never)]
 		public ClientCertificateOption ClientCertificateOptions { get; set; }
 
 		// We're ignoring this property, just like Xamarin.Android does:
@@ -609,7 +626,7 @@ namespace Foundation {
 			set {
 				// I believe it's possible to implement support for MaxAutomaticRedirections (it just has to be done)
 				if (value != int.MaxValue)
-					ObjCRuntime.ThrowHelper.ThrowArgumentOutOfRangeException (nameof (value), value, "It's not possible to lower the max number of automatic redirections.");;
+					ObjCRuntime.ThrowHelper.ThrowArgumentOutOfRangeException (nameof (value), value, "It's not possible to lower the max number of automatic redirections."); ;
 			}
 		}
 
@@ -663,7 +680,7 @@ namespace Foundation {
 			set {
 				if (value is not null)
 					throw new PlatformNotSupportedException ();
-			} 
+			}
 		}
 
 		// There doesn't seem to be a trivial way to specify the protocols to accept (or not)
@@ -702,8 +719,7 @@ namespace Foundation {
 			return true;
 		}
 
-		sealed class ServerCertificateCustomValidationCallbackHelper
-		{
+		sealed class ServerCertificateCustomValidationCallbackHelper {
 			public Func<HttpRequestMessage, X509Certificate2?, X509Chain?, SslPolicyErrors, bool> Callback { get; private set; }
 
 			public ServerCertificateCustomValidationCallbackHelper (Func<HttpRequestMessage, X509Certificate2?, X509Chain?, SslPolicyErrors, bool> callback)
@@ -713,7 +729,7 @@ namespace Foundation {
 
 			public bool Invoke (HttpRequestMessage request, SecTrust secTrust)
 			{
-				X509Certificate2[] certificates = ConvertCertificates (secTrust);
+				X509Certificate2 [] certificates = ConvertCertificates (secTrust);
 				X509Certificate2? certificate = certificates.Length > 0 ? certificates [0] : null;
 				using X509Chain chain = CreateChain (certificates);
 				SslPolicyErrors sslPolicyErrors = EvaluateSslPolicyErrors (certificate, chain, secTrust);
@@ -721,42 +737,27 @@ namespace Foundation {
 				return Callback (request, certificate, chain, sslPolicyErrors);
 			}
 
-			X509Certificate2[] ConvertCertificates (SecTrust secTrust)
+			X509Certificate2 [] ConvertCertificates (SecTrust secTrust)
 			{
 				var certificates = new X509Certificate2 [secTrust.Count];
 
-				if (IsSecTrustGetCertificateChainSupported) {
+				if (SystemVersion.IsAtLeastXcode13) {
 					var originalChain = secTrust.GetCertificateChain ();
 					for (int i = 0; i < originalChain.Length; i++)
 						certificates [i] = originalChain [i].ToX509Certificate2 ();
 				} else {
-					for (int i = 0; i < secTrust.Count; i++)
+					for (int i = 0; i < secTrust.Count; i++) {
+						// The analyzer has a bug where SupportedOSPlatformGuard attributes don't work correctly (https://github.com/dotnet/roslyn-analyzers/issues/7665#issuecomment-2898275765), so ignore CA1422 here
+#pragma warning disable CA1422 // This call site is reachable on: 'ios' 12.2 and later, 'maccatalyst' 12.2 and later, 'macOS/OSX' 12.0 and later, 'tvos' 12.2 and later. 'SecTrust.this[nint]' is obsoleted on: 'ios' 15.0 and later
 						certificates [i] = secTrust [i].ToX509Certificate2 ();
+#pragma warning restore CA1422
+					}
 				}
 
 				return certificates;
 			}
 
-			static bool? isSecTrustGetCertificateChainSupported = null;
-			static bool IsSecTrustGetCertificateChainSupported {
-				get {
-					if (!isSecTrustGetCertificateChainSupported.HasValue) {
-#if MONOMAC
-						isSecTrustGetCertificateChainSupported = ObjCRuntime.SystemVersion.CheckmacOS (12, 0);
-#elif WATCH
-						isSecTrustGetCertificateChainSupported = ObjCRuntime.SystemVersion.CheckWatchOS (8, 0);
-#elif IOS || TVOS || MACCATALYST
-						isSecTrustGetCertificateChainSupported = ObjCRuntime.SystemVersion.CheckiOS (15, 0);
-#else
-#error Unknown platform
-#endif
-					}
-
-					return isSecTrustGetCertificateChainSupported.Value;
-				}
-			}
-
-			X509Chain CreateChain (X509Certificate2[] certificates)
+			X509Chain CreateChain (X509Certificate2 [] certificates)
 			{
 				// inspired by https://github.com/dotnet/runtime/blob/99d21b9276ebe8f7bea7fb3ba74dca9fca625fe2/src/libraries/System.Security.Cryptography.Pkcs/src/System/Security/Cryptography/Pkcs/SignerInfo.cs#L691-L696
 				var chain = new X509Chain ();
@@ -769,7 +770,7 @@ namespace Foundation {
 			SslPolicyErrors EvaluateSslPolicyErrors (X509Certificate2? certificate, X509Chain chain, SecTrust secTrust)
 			{
 				var sslPolicyErrors = SslPolicyErrors.None;
-				
+
 				try {
 					if (certificate is null) {
 						sslPolicyErrors |= SslPolicyErrors.RemoteCertificateNotAvailable;
@@ -810,10 +811,9 @@ namespace Foundation {
 			get => true;
 			set {
 				if (!value)
-					ObjCRuntime.ThrowHelper.ThrowArgumentOutOfRangeException (nameof (value), value, "It's not possible to disable the use of system proxies.");;
+					ObjCRuntime.ThrowHelper.ThrowArgumentOutOfRangeException (nameof (value), value, "It's not possible to disable the use of system proxies."); ;
 			}
 		}
-#endif // NET
 
 		partial class NSUrlSessionHandlerDelegate : NSUrlSessionDataDelegate {
 			readonly NSUrlSessionHandler sessionHandler;
@@ -899,7 +899,7 @@ namespace Foundation {
 					// NB: The double cast is because of a Xamarin compiler bug
 					var httpResponse = new HttpResponseMessage ((HttpStatusCode) status) {
 						Content = content,
-						RequestMessage = inflight.Request
+						RequestMessage = inflight.Request,
 					};
 					var wasRedirected = dataTask.CurrentRequest?.Url?.AbsoluteString != dataTask.OriginalRequest?.Url?.AbsoluteString;
 					if (wasRedirected)
@@ -1061,17 +1061,6 @@ namespace Foundation {
 				var trustCallbackForUrl = sessionHandler.TrustOverrideForUrl;
 				var trustSec = false;
 				var usedCallback = false;
-#if !NET
-				var trustCallback = sessionHandler.TrustOverride;
-				var hasCallBack = trustCallback is not null || trustCallbackForUrl is not null;
-				if (hasCallBack && challenge.ProtectionSpace.AuthenticationMethod == NSUrlProtectionSpace.AuthenticationMethodServerTrust) {
-					// if one of the delegates allows to ignore the cert, do it. We check first the one that takes the url because is more precisse, later the
-					// more general one. Since we are using nullables, if the delegate is not present, by default is false
-					trustSec = (trustCallbackForUrl?.Invoke (sessionHandler, inflight.RequestUrl, challenge.ProtectionSpace.ServerSecTrust) ?? false) ||
-						(trustCallback?.Invoke (sessionHandler, challenge.ProtectionSpace.ServerSecTrust) ?? false);
-					usedCallback = true;
-				}
-#else
 				if (challenge.ProtectionSpace.AuthenticationMethod == NSUrlProtectionSpace.AuthenticationMethodServerTrust) {
 					// if the trust delegate allows to ignore the cert, do it. Since we are using nullables, if the delegate is not present, by default is false
 					if (trustCallbackForUrl is not null) {
@@ -1081,7 +1070,6 @@ namespace Foundation {
 						usedCallback = true;
 					}
 				}
-#endif
 
 				if (usedCallback) {
 					if (trustSec) {
@@ -1097,7 +1085,7 @@ namespace Foundation {
 					}
 					return;
 				}
-#if NET
+
 				if (sessionHandler.ClientCertificateOptions == ClientCertificateOption.Manual && challenge.ProtectionSpace.AuthenticationMethod == NSUrlProtectionSpace.AuthenticationMethodClientCertificate) {
 					var certificate = CertificateHelper.GetEligibleClientCertificate (sessionHandler.ClientCertificates);
 					if (certificate is not null) {
@@ -1108,7 +1096,6 @@ namespace Foundation {
 						return;
 					}
 				}
-#endif
 
 				// case for the basic auth failing up front. As per apple documentation:
 				// The URL Loading System is designed to handle various aspects of the HTTP protocol for you. As a result, you should not modify the following headers using
@@ -1315,9 +1302,6 @@ namespace Foundation {
 				return content.CopyToAsync (stream, bufferSize, cancellationToken);
 			}
 
-#if !NET
-			internal
-#endif
 			protected override bool TryComputeLength (out long length)
 			{
 				if (!content.CanSeek) {
@@ -1573,16 +1557,9 @@ namespace Foundation {
 			}
 
 			[Preserve (Conditional = true)]
-#if NET
 			public override void Schedule (NSRunLoop aRunLoop, NSString nsMode)
-#else
-			public override void Schedule (NSRunLoop aRunLoop, string mode)
-#endif
 			{
 				var cfRunLoop = aRunLoop.GetCFRunLoop ();
-#if !NET
-				var nsMode = new NSString (mode);
-#endif
 
 				cfRunLoop.AddSource (source, nsMode);
 
@@ -1595,17 +1572,9 @@ namespace Foundation {
 			}
 
 			[Preserve (Conditional = true)]
-#if NET
 			public override void Unschedule (NSRunLoop aRunLoop, NSString nsMode)
-#else
-			public override void Unschedule (NSRunLoop aRunLoop, string mode)
-#endif
 			{
 				var cfRunLoop = aRunLoop.GetCFRunLoop ();
-#if !NET
-				var nsMode = new NSString (mode);
-#endif
-
 				cfRunLoop.RemoveSource (source, nsMode);
 			}
 
@@ -1615,7 +1584,6 @@ namespace Foundation {
 			}
 		}
 
-#if NET
 		static class CertificateHelper {
 			// Based on https://github.com/dotnet/runtime/blob/c2848c582f5d6ae42c89f5bfe0818687ab3345f0/src/libraries/Common/src/System/Net/Security/CertificateHelper.cs
 			// with the NetEventSource code removed and namespace changed.
@@ -1681,6 +1649,5 @@ namespace Foundation {
 				return (ku.KeyUsages & RequiredUsages) == RequiredUsages;
 			}
 		}
-#endif
 	}
 }

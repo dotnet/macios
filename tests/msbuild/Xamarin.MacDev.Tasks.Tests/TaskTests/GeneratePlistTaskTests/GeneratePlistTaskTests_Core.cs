@@ -32,16 +32,9 @@ namespace Xamarin.MacDev.Tasks {
 			get; set;
 		}
 
-		protected bool IsDotNet { get; private set; }
-
 		protected abstract ApplePlatform Platform { get; }
 
-		protected GeneratePlistTaskTests_Core (bool isDotNet)
-		{
-			IsDotNet = isDotNet;
-		}
-
-		protected virtual void ConfigureTask (bool isDotNet)
+		protected virtual void ConfigureTask ()
 		{
 			Task = CreateTask<CompileAppManifest> ();
 
@@ -50,6 +43,7 @@ namespace Xamarin.MacDev.Tasks {
 			Task.CompiledAppManifest = new TaskItem (Path.Combine (Cache.CreateTemporaryDirectory (), "AppBundlePath", "Info.plist"));
 			Task.AssemblyName = assemblyName;
 			Task.AppManifest = new TaskItem (CreateTempFile ("foo.plist"));
+			Task.BundleExecutable = assemblyName;
 			Task.MinSupportedOSPlatformVersion = "10.0";
 			Task.SupportedOSPlatformVersion = "15.0";
 			Task.SdkVersion = "10.0";
@@ -64,13 +58,9 @@ namespace Xamarin.MacDev.Tasks {
 		{
 			base.Setup ();
 
-			if (IsDotNet) {
-				Configuration.AssertDotNetAvailable ();
-			} else {
-				Configuration.AssertLegacyXamarinAvailable ();
-			}
+			Configuration.AssertDotNetAvailable ();
 
-			ConfigureTask (IsDotNet);
+			ConfigureTask ();
 
 			ExecuteTask (Task);
 			CompiledPlist = PDictionary.FromFile (Task.CompiledAppManifest.ItemSpec);
@@ -112,10 +102,7 @@ namespace Xamarin.MacDev.Tasks {
 		[Test]
 		public virtual void XamarinVersion ()
 		{
-			var keyName = "com.xamarin.ios";
-			if (IsDotNet) {
-				keyName = "com.microsoft." + Platform.AsString ().ToLowerInvariant ();
-			}
+			var keyName = "com.microsoft." + Platform.AsString ().ToLowerInvariant ();
 			Assert.That (CompiledPlist.ContainsKey (keyName), "#1");
 			Assert.That (CompiledPlist.Get<PDictionary> (keyName).GetString ("Version").Value, Is.Not.Null.Or.Empty, "#2");
 		}

@@ -9,6 +9,7 @@
     <DefineConstants Condition="'$(XAMMACIOS_DEBUGGER)' != ''">$(DefineConstants);XAMMACIOS_DEBUGGER</DefineConstants>
     <WarningsAsErrors>Nullable</WarningsAsErrors>
     <Nullable>enable</Nullable>
+    <NoWarn>APL0003</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
@@ -26,6 +27,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\ObjCBindings\BindingTypeAttribute.cs">
+      <Link>BindingTypeAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\ObjCBindings\BindingTypeTag.cs">
+      <Link>BindingTypeTag.cs</Link>
+    </Compile>
     <None Include="$(RepositoryPath)\docs\website\generator-errors.md">
       <Link>generator-errors.md</Link>
     </None>
@@ -53,7 +60,6 @@
     <Compile Include="$(RepositoryPath)\src\ObjCRuntime\NativeAttribute.cs" />
     <Compile Include="$(RepositoryPath)\src\ObjCRuntime\NativeNameAttribute.cs" />
     <Compile Include="$(RepositoryPath)\src\ObjCRuntime\PlatformAvailability2.cs" />
-    <Compile Include="$(RepositoryPath)\src\ObjCRuntime\PlatformAvailabilityShadow.cs" />
     <Compile Include="$(RepositoryPath)\src\ObjCRuntime\Registrar.core.cs" />
     <Compile Include="$(RepositoryPath)\src\ObjCRuntime\RequiresSuperAttribute.cs" />
     <Compile Include="$(RepositoryPath)\tools\common\Execution.cs">
@@ -86,56 +92,36 @@
     <StartArguments />
     <StartWorkingDirectory>$(ProjectDir)</StartWorkingDirectory>
     <ExternalConsole>true</ExternalConsole>
-    <EnvironmentVariables>
-      <Variable name="MD_MTOUCH_SDK_ROOT" value="../../_ios-build//Library/Frameworks/Xamarin.iOS.framework/Versions/git" />
-      <Variable name="XamarinMacFrameworkRoot" value="../../_mac-build/Library/Frameworks/Xamarin.Mac.framework/Versions/Current" />
-    </EnvironmentVariables>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'ios' ">
     <StartAction>Project</StartAction>
     <StartArguments>@build/dotnet/$(RunConfiguration)/$(RunConfiguration).rsp</StartArguments>
     <StartWorkingDirectory>..</StartWorkingDirectory>
     <ExternalConsole>false</ExternalConsole>
-    <EnvironmentVariables>
-      <Variable name="MD_MTOUCH_SDK_ROOT" value="../../_ios-build/Library/Frameworks/Xamarin.iOS.framework/Versions/git" />
-    </EnvironmentVariables>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'tvos' ">
     <StartAction>Project</StartAction>
     <StartArguments>@build/dotnet/$(RunConfiguration)/$(RunConfiguration).rsp</StartArguments>
     <StartWorkingDirectory>..</StartWorkingDirectory>
     <ExternalConsole>false</ExternalConsole>
-    <EnvironmentVariables>
-      <Variable name="MD_MTOUCH_SDK_ROOT" value="../../_ios-build//Library/Frameworks/Xamarin.iOS.framework/Versions/git" />
-    </EnvironmentVariables>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'watchos' ">
     <StartAction>Project</StartAction>
     <StartArguments>@build/dotnet/$(RunConfiguration)/$(RunConfiguration).rsp</StartArguments>
     <StartWorkingDirectory>..</StartWorkingDirectory>
     <ExternalConsole>false</ExternalConsole>
-    <EnvironmentVariables>
-      <Variable name="MD_MTOUCH_SDK_ROOT" value="../../_ios-build//Library/Frameworks/Xamarin.iOS.framework/Versions/git" />
-    </EnvironmentVariables>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'macos' ">
     <StartAction>Project</StartAction>
     <StartArguments>@build/dotnet/$(RunConfiguration)/$(RunConfiguration).rsp</StartArguments>
     <StartWorkingDirectory>..</StartWorkingDirectory>
     <ExternalConsole>false</ExternalConsole>
-    <EnvironmentVariables>
-      <Variable name="XamarinMacFrameworkRoot" value="../../_mac-build/Library/Frameworks/Xamarin.Mac.framework/Versions/Current" />
-    </EnvironmentVariables>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'maccatalyst' ">
     <StartAction>Project</StartAction>
     <StartArguments>@build/dotnet/$(RunConfiguration)/$(RunConfiguration).rsp</StartArguments>
     <StartWorkingDirectory>..</StartWorkingDirectory>
     <ExternalConsole>false</ExternalConsole>
-    <EnvironmentVariables>
-      <Variable name="MD_MTOUCH_SDK_ROOT" value="../../_ios-build//Library/Frameworks/Xamarin.iOS.framework/Versions/git" />
-      <Variable name="XamarinMacFrameworkRoot" value="../../_mac-build/Library/Frameworks/Xamarin.Mac.framework/Versions/Current" />
-    </EnvironmentVariables>
   </PropertyGroup>
 
   <Target Name="AfterBuild">

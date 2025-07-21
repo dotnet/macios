@@ -1,0 +1,11 @@
+namespace ObjCRuntime {
+	public static partial class Constants {
+		/// <summary>The version of this Microsoft SDK for Mac Catalyst.</summary>
+		public const string Version = "@VERSION@";
+
+		internal const string Revision = "@REVISION@";
+
+		/// <summary>The Mac Catalyst version this library is built to support.</summary>
+		public const string SdkVersion = "@MACCATALYST_SDK_VERSION@";
+	}
+}

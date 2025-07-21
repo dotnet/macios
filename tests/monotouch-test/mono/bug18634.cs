@@ -13,13 +13,9 @@ using ObjCRuntime;
 #if !__TVOS__
 using MapKit;
 #endif
-#if !__WATCHOS__
 using CoreAnimation;
-#endif
 using CoreGraphics;
 using CoreLocation;
-#if !__WATCHOS__
-#endif
 using NUnit.Framework;
 
 namespace MonoTouchFixtures {

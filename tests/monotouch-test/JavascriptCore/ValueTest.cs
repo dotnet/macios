@@ -7,8 +7,6 @@
 // Copyright 2013 Xamarin Inc.
 //
 
-#if !__WATCHOS__
-
 using System;
 using Foundation;
 using JavaScriptCore;
@@ -93,7 +91,6 @@ namespace MonoTouchFixtures.JavascriptCore {
 
 		}
 
-#if NET
 		[Test]
 		public void ToArray ()
 		{
@@ -106,8 +103,5 @@ namespace MonoTouchFixtures.JavascriptCore {
 			Assert.AreEqual ("a", arr2.GetItem<NSString> (0).ToString (), "a");
 			Assert.AreEqual ("b", arr2.GetItem<NSString> (1).ToString (), "a");
 		}
-#endif
 	}
 }
-
-#endif // !__WATCHOS__

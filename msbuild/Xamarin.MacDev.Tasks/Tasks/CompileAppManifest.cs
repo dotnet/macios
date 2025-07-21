@@ -13,7 +13,7 @@ using Xamarin.Utils;
 #nullable enable
 
 namespace Xamarin.MacDev.Tasks {
-	public class CompileAppManifest : XamarinTask, ITaskCallback, ICancelableTask {
+	public class CompileAppManifest : XamarinTask, IHasProjectDir, IHasResourcePrefix, ITaskCallback, ICancelableTask {
 		#region Inputs
 
 		// Single-project property that maps to CFBundleIdentifier for Apple platforms
@@ -36,6 +36,9 @@ namespace Xamarin.MacDev.Tasks {
 
 		[Required]
 		public string AssemblyName { get; set; } = String.Empty;
+
+		[Required]
+		public string BundleExecutable { get; set; } = "";
 
 		[Required]
 		[Output] // This is required to create an empty file on Windows for the Input/Outputs check.
@@ -133,7 +136,7 @@ namespace Xamarin.MacDev.Tasks {
 			plist.SetIfNotPresent (ManifestKeys.CFBundleInfoDictionaryVersion, "6.0");
 			plist.SetIfNotPresent (ManifestKeys.CFBundlePackageType, IsAppExtension ? "XPC!" : "APPL");
 			plist.SetIfNotPresent (ManifestKeys.CFBundleSignature, "????");
-			plist.SetIfNotPresent (ManifestKeys.CFBundleExecutable, AssemblyName);
+			plist.SetIfNotPresent (ManifestKeys.CFBundleExecutable, BundleExecutable);
 			plist.SetIfNotPresent (ManifestKeys.CFBundleName, AppBundleName);
 
 			if (GenerateApplicationManifest && !string.IsNullOrEmpty (ApplicationTitle))
@@ -183,21 +186,10 @@ namespace Xamarin.MacDev.Tasks {
 			if (IsWatchApp)
 				return;
 
-			string name;
-			string value;
-
 			// This key is our supported way of determining if an app
 			// was built with Xamarin, so it needs to be present in all apps.
-			if (TargetFramework.IsDotNet) {
-				value = DotNetVersion;
-				name = "com.microsoft." + Platform.AsString ().ToLowerInvariant ();
-			} else if (Platform != ApplePlatform.MacOSX) {
-				var version = Sdks.XamIOS.ExtendedVersion;
-				value = string.Format ("{0} ({1}: {2})", version.Version, version.Branch, version.Hash);
-				name = "com.xamarin.ios";
-			} else {
-				return;
-			}
+			var value = DotNetVersion;
+			var name = "com.microsoft." + Platform.AsString ().ToLowerInvariant ();
 
 			var dict = new PDictionary ();
 			dict.Add ("Version", new PString (value));
@@ -212,19 +204,17 @@ namespace Xamarin.MacDev.Tasks {
 			// https://developer.apple.com/documentation/swiftui/applying-custom-fonts-to-text
 
 			// Compute the relative location in the app bundle for each font file
-			var prefixes = BundleResource.SplitResourcePrefixes (ResourcePrefix);
 			const string logicalNameKey = "_ComputedLogicalName_";
 			foreach (var item in FontFilesToRegister) {
-				var logicalName = BundleResource.GetLogicalName (ProjectDir, prefixes, item, !string.IsNullOrEmpty (SessionId));
+				var logicalName = BundleResource.GetLogicalName (this, item);
 				item.SetMetadata (logicalNameKey, logicalName);
 			}
 
 			switch (Platform) {
 			case ApplePlatform.iOS:
 			case ApplePlatform.TVOS:
-			case ApplePlatform.WatchOS:
 			case ApplePlatform.MacCatalyst:
-				// Fonts are listed in the Info.plist in a UIAppFonts entry for iOS, tvOS, watchOS and Mac Catalyst.
+				// Fonts are listed in the Info.plist in a UIAppFonts entry for iOS, tvOS and Mac Catalyst.
 				var uiAppFonts = plist.GetArray ("UIAppFonts");
 				if (uiAppFonts is null) {
 					uiAppFonts = new PArray ();
@@ -351,7 +341,6 @@ namespace Xamarin.MacDev.Tasks {
 			switch (Platform) {
 			case ApplePlatform.iOS:
 			case ApplePlatform.TVOS:
-			case ApplePlatform.WatchOS:
 			case ApplePlatform.MacCatalyst:
 				return CompileMobile (plist);
 			case ApplePlatform.MacOSX:
@@ -393,15 +382,17 @@ namespace Xamarin.MacDev.Tasks {
 				dict [key] = value;
 		}
 
-		public static void MergePartialPlistDictionary (PDictionary plist, PDictionary partial)
+		public static void MergePartialPlistDictionary (PDictionary plist, PDictionary partial, bool overwrite)
 		{
 			foreach (var property in partial) {
 				var key = property.Key!;
 				if (plist.ContainsKey (key)) {
+					if (!overwrite)
+						continue;
 					var value = plist [key];
 
 					if (value is PDictionary && property.Value is PDictionary) {
-						MergePartialPlistDictionary ((PDictionary) value, (PDictionary) property.Value);
+						MergePartialPlistDictionary ((PDictionary) value, (PDictionary) property.Value, overwrite);
 					} else {
 						plist [key] = property.Value.Clone ();
 					}
@@ -418,6 +409,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			foreach (var template in partialLists) {
 				PDictionary partial;
+				var overwrite = !string.Equals (template.GetMetadata ("Overwrite"), "false", StringComparison.OrdinalIgnoreCase);
 
 				try {
 					partial = PDictionary.FromFile (template.ItemSpec)!;
@@ -426,7 +418,7 @@ namespace Xamarin.MacDev.Tasks {
 					continue;
 				}
 
-				MergePartialPlistDictionary (plist, partial);
+				MergePartialPlistDictionary (plist, partial, overwrite);
 			}
 		}
 
@@ -633,9 +625,6 @@ namespace Xamarin.MacDev.Tasks {
 
 				uiDeviceFamily = IPhoneDeviceType.IPhone;
 				break;
-			case ApplePlatform.WatchOS:
-				uiDeviceFamily = IPhoneDeviceType.Watch;
-				break;
 			case ApplePlatform.TVOS:
 				uiDeviceFamily = IPhoneDeviceType.TV;
 				break;
@@ -654,8 +643,6 @@ namespace Xamarin.MacDev.Tasks {
 			//   It would also require a hostname for the mac, which it might not have either.
 			// * NSAppTransportSecurity/NSExceptionDomains does not allow exceptions based
 			//   on IP address (only hostname).
-			// * Which means the only way to make sure watchOS allows connections from 
-			//   the app on device to the mac is to disable App Transport Security altogether.
 			// Good news: watchOS 3 will apparently not apply ATS when connecting
 			// directly to IP addresses, which means we won't have to do this at all
 			// (sometime in the future).

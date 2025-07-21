@@ -9,7 +9,7 @@
       <para>
         <img href="~/Foundation/_images/NSAttributedString.png" alt="Diagram showing an attributed string." />
       </para>
-      <para> The companion <see cref="T:Foundation.NSMutableAttributedString" /> type
+      <para> The companion <see cref="Foundation.NSMutableAttributedString" /> type
 	can be used to create attributed strings that have overlapping
 	attributes and whose contents can be modified after creation.
       </para>
@@ -40,13 +40,13 @@
       </para>
       <para>
 	To create NSAttributedStrings that you can use with CoreText's
-	rendering, you create an instance of the <see cref="T:CoreText.CTStringAttributes" /> class, set its
+	rendering, you create an instance of the <see cref="CoreText.CTStringAttributes" /> class, set its
 	properties to the attributes that you desire, and then invoke
 	the NSAttributedString constructor with it.   
       </para>
       <para>
 	To create NSAttributedStrings that you can use with UIKit's
-	rendering, you create an instance of the <see cref="T:UIKit.UIStringAttributes" /> class, set its
+	rendering, you create an instance of the <see cref="UIKit.UIStringAttributes" /> class, set its
 	properties to the attributes that you desire, and then invoke
 	the NSAttributedString constructor with it.   
       </para>
@@ -85,9 +85,9 @@ label.AttributedText = myText;
 	]]></code>
       </example>
       <para>
-	While both <see cref="T:CoreText.CTStringAttributes" /> and <see cref="T:UIKit.UIStringAttributes" /> are useful to
+	While both <see cref="CoreText.CTStringAttributes" /> and <see cref="UIKit.UIStringAttributes" /> are useful to
 	create attributes that can later be used with attributed
-	strings, it is also possible to use the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=C:Foundation.NSAttributedString(string,UIKit.UIFont,UIKit.UIColor,UIKit.UIColor,UIKit.UIColor,UIKit.NSParagraphStyle,Foundation.NSLigatureType,float,Foundation.NSUnderlineStyle,UIKit.NSShadow,float,Foundation.NSUnderlineStyle&amp;scope=Xamarin" title="C:Foundation.NSAttributedString(string,UIKit.UIFont,UIKit.UIColor,UIKit.UIColor,UIKit.UIColor,UIKit.NSParagraphStyle,Foundation.NSLigatureType,float,Foundation.NSUnderlineStyle,UIKit.NSShadow,float,Foundation.NSUnderlineStyle">C:Foundation.NSAttributedString(string,UIKit.UIFont,UIKit.UIColor,UIKit.UIColor,UIKit.UIColor,UIKit.NSParagraphStyle,Foundation.NSLigatureType,float,Foundation.NSUnderlineStyle,UIKit.NSShadow,float,Foundation.NSUnderlineStyle</a></format> constructor
+	strings, it is also possible to use the <see cref="Foundation.NSAttributedString(string,UIKit.UIFont,UIKit.UIColor,UIKit.UIColor,UIKit.UIColor,UIKit.NSParagraphStyle,Foundation.NSLigatureType,float,Foundation.NSUnderlineStyle,UIKit.NSShadow,float,Foundation.NSUnderlineStyle" /> constructor
 	with C# named parameters for quickly creating attributed
 	strings inline.
       </para>
@@ -128,7 +128,78 @@ var text = new NSAttributedString (
 	]]></code>
       </example>
     </remarks>
-    
     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/Classes/NSAttributedString_Class/index.html">Apple documentation for <c>NSAttributedString</c></related>
   </Docs>
+  <Docs DocId="M:Foundation.NSAttributedString.#ctor(System.String,UIKit.UIFont,UIKit.UIColor,UIKit.UIColor,UIKit.UIColor,UIKit.NSParagraphStyle,Foundation.NSLigatureType,System.Single,Foundation.NSUnderlineStyle,UIKit.NSShadow,System.Single,Foundation.NSUnderlineStyle)">
+    <param name="str">String to create.</param>
+    <param name="font">Desired font (or null, if none is desired).</param>
+    <param name="foregroundColor">Desired foreground color (or null if none is desired).</param>
+    <param name="backgroundColor">Desired background color (or null if none is desired)..</param>
+    <param name="strokeColor">Desired stroke color (or null if none is desired).</param>
+    <param name="paragraphStyle">To be added.</param>
+    <param name="ligatures">To be added.</param>
+    <param name="kerning">To be added.</param>
+    <param name="underlineStyle">To be added.</param>
+    <param name="shadow">Desired shadow.</param>
+    <param name="strokeWidth">Desired stroked width..</param>
+    <param name="strikethroughStyle">To be added.</param>
+    <summary>Creates a UIKit attributed string with the specified attributes in the parameters.</summary>
+    <remarks>
+      <para>
+	    This is the recommended constructor for NSAttributedString
+	    objects that are intended to be unique.   
+	  </para>
+      <para>
+	    The advantage of this constructor is that other than the
+	    string, every parameter is optional.   It provides a
+	    convenient way of creating the objects
+	  </para>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
+//
+// This example shows how to create an NSAttributedString for
+// use with UIKit without creating the attributes separately
+//
+var text = new NSAttributedString (
+    "Hello, World",
+    font: UIFont.FromName ("HoeflerText-Regular", 24.0f),
+    foregroundColor: UIColor.Red,
+    strokeWidth: 4
+);
+	]]></code>
+      </example>
+      <para>
+	    For cases where the same attributes will be reused across
+	    multiple attributed strings, it is best to create the
+	    attributes using the UIStringAttributes class as that will
+	    share the same dictionary across multiple uses while this
+	    constructor creates a dictionary on demand for the
+	    specified attributes in the constructor.
+	  </para>
+    </remarks>
+  </Docs>
+  <Docs DocId="M:Foundation.NSAttributedString.LowLevelGetAttributes(System.IntPtr,Foundation.NSRange@)">
+        <param name="location">The location to probe.</param>
+        <param name="effectiveRange">The range to probe.</param>
+        <summary>Low-level version that provides an NSDictionary for the attributes in the specified range.</summary>
+        <returns>IntPtr handle to a native NSDictionary class.</returns>
+        <remarks>
+          <para>
+	    In general, you should use the <see cref="Foundation.NSAttributedString.LowLevelGetAttributes(System.IntPtr,out Foundation.NSRange)" />
+	    methods, which will return a high-level NSDictionary.
+	  </para>
+          <para>
+	    This is the low-level interface to NSAttributedString and
+	    in general is only useful for subclasses.  You are
+	    expected to return an IntPtr that represents a handle to
+	    an NSDictionary.  This API is kept as a low-level API,
+	    since it is consumed by NSTextStorage which might call
+	    this method thousands of times per character insertion, so
+	    it is very important that this is kept as fast as
+	    possible, possibly even caching or reusing existing
+	    dictionary instances.
+
+	  </para>
+        </remarks>
+      </Docs>
 </Documentation>

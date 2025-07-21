@@ -39,13 +39,15 @@ using Foundation;
 using System.Runtime.Versioning;
 
 namespace AudioUnit {
-#if NET
-    [SupportedOSPlatform ("ios")]
-    [SupportedOSPlatform ("maccatalyst")]
-    [SupportedOSPlatform ("macos")]
-    [SupportedOSPlatform ("tvos")]
-#endif
+	/// <summary>Utility class to hold miscellaneous functions relating to audio streams, samples, and output categories.</summary>
+	///     <remarks>To be added.</remarks>
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("maccatalyst")]
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("tvos")]
 	public static class AudioUnitUtils {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public const int SampleFractionBits = 24;
 	}
 }

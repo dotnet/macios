@@ -15,7 +15,7 @@ namespace Xamarin.MacDev.Tasks {
 			Configuration.IgnoreIfIgnoredPlatform (ApplePlatform.iOS);
 			var task = CreateTask<DetectSdkLocations> ();
 			task.XamarinSdkRoot = "XYZ";
-			task.TargetFrameworkMoniker = "Xamarin.iOS,v1.0";
+			task.TargetFrameworkMoniker = TargetFramework.DotNet_iOS_String;
 			task.Execute ();
 
 			Assert.AreEqual ("XYZ", task.XamarinSdkRoot, "#1");
@@ -28,7 +28,7 @@ namespace Xamarin.MacDev.Tasks {
 			Configuration.IgnoreIfIgnoredPlatform (ApplePlatform.iOS);
 			var task = CreateTask<DetectSdkLocations> ();
 			task.SdkVersion = "4.0";
-			task.TargetFrameworkMoniker = "Xamarin.iOS,v1.0";
+			task.TargetFrameworkMoniker = TargetFramework.DotNet_iOS_String;
 			Assert.IsTrue (task.Execute (), "4.0 Execute");
 
 			Assert.AreNotEqual ("4.0", task.SdkVersion, "#1");

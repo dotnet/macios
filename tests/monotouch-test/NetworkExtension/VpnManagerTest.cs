@@ -7,7 +7,7 @@
 // Copyright 2014 Xamarin Inc. All rights reserved.
 //
 
-#if !__TVOS__ && !__WATCHOS__
+#if !__TVOS__
 
 using System;
 using Foundation;
@@ -46,11 +46,7 @@ namespace MonoTouchFixtures.NetworkExtension {
 			var HasLocalizedDescription = TestRuntime.CheckSystemVersion (ApplePlatform.MacOSX, 10, 11);
 #endif
 			if (HasLocalizedDescription) {
-#if MONOMAC && !NET
-				Assert.AreEqual ("xammac_tests", shared.LocalizedDescription, "LocalizedDescription");
-#else
 				Assert.AreEqual ("MonoTouchTest", shared.LocalizedDescription, "LocalizedDescription");
-#endif
 			} else {
 				Assert.IsNull (shared.LocalizedDescription, "LocalizedDescription");
 			}
@@ -70,4 +66,4 @@ namespace MonoTouchFixtures.NetworkExtension {
 	}
 }
 
-#endif // !__TVOS__ && !__WATCHOS__
+#endif // !__TVOS__

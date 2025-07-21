@@ -1,5 +1,3 @@
-#if !__WATCHOS__
-
 using System;
 using System.Threading;
 
@@ -137,11 +135,7 @@ namespace MonoTouchFixtures.CoreImage {
 #endif
 
 
-#if NET
 					foreach (var type in Enum.GetValues<CustomerFilterType> ()) {
-#else
-					foreach (CustomerFilterType type in Enum.GetValues (typeof (CustomerFilterType))) {
-#endif
 						MyCustomFilter filter = new MyCustomFilter (type);
 						filter.MyImage = ciImg;
 
@@ -186,5 +180,3 @@ namespace MonoTouchFixtures.CoreImage {
 		}
 	}
 }
-
-#endif // !__WATCHOS__

@@ -116,9 +116,6 @@ namespace MonoTouchFixtures.CoreMedia {
 			Assert.DoesNotThrow (() => { var x = CMTimeRange.Zero; }, "CMTimeRangeConstants - Zero");
 			Assert.DoesNotThrow (() => { var x = CMTimeRange.InvalidRange; }, "CMTimeRangeConstants - InvalidRange");
 			Assert.DoesNotThrow (() => { var x = CMTimeRange.InvalidMapping; }, "CMTimeRangeConstants - InvalidMapping");
-#if !XAMCORE_3_0
-			Assert.DoesNotThrow (() => { var x = CMTimeRange.Invalid; }, "CMTimeRangeConstants - Invalid");
-#endif
 			if (TestRuntime.CheckXcodeVersion (7, 0)) {
 				Assert.DoesNotThrow (() => { var x = CMTimeRange.InvalidMapping; }, "CMTimeRangeConstants - InvalidMapping");
 				Assert.DoesNotThrow (() => { var x = CMTimeRange.TimeMappingSourceKey; }, "CMTimeRangeConstants - TimeMappingSourceKey");
@@ -158,7 +155,6 @@ namespace MonoTouchFixtures.CoreMedia {
 			Assert.AreEqual (first.Start, second.Start, "CompareCMTimeRange - start - " + description);
 		}
 
-#if !__WATCHOS__
 		[Test]
 		public void CMTimeStrongDictionary ()
 		{
@@ -177,6 +173,5 @@ namespace MonoTouchFixtures.CoreMedia {
 				set { SetCMTimeValue (TimeKey, value); }
 			}
 		}
-#endif // !__WATCHOS__
 	}
 }

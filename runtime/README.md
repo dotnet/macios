@@ -3,11 +3,6 @@ Native runtime
 
 This directory contains the native runtime for Xamarin.iOS and Xamarin.Mac.
 
-Cooperative GC
-==============
-
-See COOP.md
-
 Generated code
 ==============
 

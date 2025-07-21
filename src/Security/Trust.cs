@@ -37,20 +37,11 @@ using System.Security.Cryptography.X509Certificates;
 using ObjCRuntime;
 using CoreFoundation;
 using Foundation;
-#if NET
-#else
-using NativeHandle = System.IntPtr;
-#endif
 
 namespace Security {
+	/// <summary>A trust level. A trust object combines a certificate with a policy or policies. </summary>
+	///     <remarks>To be added.</remarks>
 	public partial class SecTrust : NativeObject {
-#if !NET
-		public SecTrust (NativeHandle handle)
-			: base (handle, false)
-		{
-		}
-#endif
-
 		[Preserve (Conditional = true)]
 		internal SecTrust (NativeHandle handle, bool owns)
 			: base (handle, owns)
@@ -59,6 +50,16 @@ namespace Security {
 
 #if !COREBUILD
 
+		/// <summary>Type identifier for the Security.SecTrust type.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>
+		///           <para>The returned token is the CoreFoundation type identifier (CFType) that has been assigned to this class.</para>
+		///           <para>This can be used to determine type identity between different CoreFoundation objects.</para>
+		///           <para>You can retrieve the type of a CoreFoundation object by invoking the <see cref="CoreFoundation.CFType.GetTypeID(System.IntPtr)" /> on the native handle of the object</para>
+		///           <example>
+		///             <code lang="csharp lang-csharp"><![CDATA[bool isSecTrust = (CFType.GetTypeID (foo.Handle) == SecTrust.GetTypeID ());]]></code>
+		///           </example>
+		///         </remarks>
 		[DllImport (Constants.SecurityLibrary, EntryPoint = "SecTrustGetTypeID")]
 		public extern static nint GetTypeID ();
 
@@ -69,6 +70,11 @@ namespace Security {
 			/* SecTrustRef *__nonull */ IntPtr* sectrustref);
 
 
+		/// <param name="certificate">The certificate to be evaluated.</param>
+		///         <param name="policy">The policy to be used to evaluate the trust.</param>
+		///         <summary>Create a new instance based on the certificate, to be evaluated, and a policy, to be applied.</summary>
+		///         <remarks>
+		///         </remarks>
 		public SecTrust (X509Certificate certificate, SecPolicy? policy)
 		{
 			if (certificate is null)
@@ -76,9 +82,15 @@ namespace Security {
 
 			using (SecCertificate cert = new SecCertificate (certificate)) {
 				Initialize (cert.Handle, policy);
+				GC.KeepAlive (cert);
 			}
 		}
 
+		/// <param name="certificate">The certificate to be evaluated.</param>
+		///         <param name="policy">The policy to be used to evaluate the trust.</param>
+		///         <summary>Create a new instance based on the certificate, to be evaluated, and a policy, to be applied</summary>
+		///         <remarks>
+		///         </remarks>
 		public SecTrust (X509Certificate2 certificate, SecPolicy? policy)
 		{
 			if (certificate is null)
@@ -86,9 +98,14 @@ namespace Security {
 
 			using (SecCertificate cert = new SecCertificate (certificate)) {
 				Initialize (cert.Handle, policy);
+				GC.KeepAlive (cert);
 			}
 		}
 
+		/// <param name="certificates">A collection of X.509 certificates</param>
+		///         <param name="policy">The policy to be used to evaluate the trust.</param>
+		///         <summary>Create a new instance based on the certificate, to be evaluated, and a policy, to be applied.</summary>
+		///         <remarks>The first certificate (in the collection) is the one to be evaluated, the others will be used to build a chain of trust.</remarks>
 		public SecTrust (X509CertificateCollection certificates, SecPolicy? policy)
 		{
 			if (certificates is null)
@@ -101,6 +118,10 @@ namespace Security {
 			Initialize (array, policy);
 		}
 
+		/// <param name="certificates">A collection of X.509 certificates</param>
+		///         <param name="policy">The policy to be used to evaluate the trust.</param>
+		///         <summary>Create a new instance based on the certificate, to be evaluated, and a policy, to be applied.</summary>
+		///         <remarks>The first certificate (in the collection) is the one to be evaluated, the others will be used to build a chain of trust.</remarks>
 		public SecTrust (X509Certificate2Collection certificates, SecPolicy? policy)
 		{
 			if (certificates is null)
@@ -117,6 +138,7 @@ namespace Security {
 		{
 			using (var certs = CFArray.FromNativeObjects (array)) {
 				Initialize (certs.Handle, policy);
+				GC.KeepAlive (certs);
 			}
 		}
 
@@ -126,43 +148,35 @@ namespace Security {
 			SecStatusCode result;
 			unsafe {
 				result = SecTrustCreateWithCertificates (certHandle, policy.GetHandle (), &handle);
+				GC.KeepAlive (policy);
 			}
 			if (result != SecStatusCode.Success)
 				throw new ArgumentException (result.ToString ());
 			InitializeHandle (handle);
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-		[ObsoletedOSPlatform ("tvos12.1", "Use 'SecTrust.Evaluate (out NSError)' instead.")]
-		[ObsoletedOSPlatform ("macos10.14.1", "Use 'SecTrust.Evaluate (out NSError)' instead.")]
-		[ObsoletedOSPlatform ("ios12.1", "Use 'SecTrust.Evaluate (out NSError)' instead.")]
-#else
-		[Deprecated (PlatformName.iOS, 12, 1, message: "Use 'SecTrust.Evaluate (out NSError)' instead.")]
-		[Deprecated (PlatformName.TvOS, 12, 1, message: "Use 'SecTrust.Evaluate (out NSError)' instead.")]
-		[Deprecated (PlatformName.WatchOS, 5, 1, message: "Use 'SecTrust.Evaluate (out NSError)' instead.")]
-		[Deprecated (PlatformName.MacOSX, 10, 14, 1, message: "Use 'SecTrust.Evaluate (out NSError)' instead.")]
-#endif
+		[ObsoletedOSPlatform ("tvos", "Use 'SecTrust.Evaluate (out NSError)' instead.")]
+		[ObsoletedOSPlatform ("macos", "Use 'SecTrust.Evaluate (out NSError)' instead.")]
+		[ObsoletedOSPlatform ("ios", "Use 'SecTrust.Evaluate (out NSError)' instead.")]
+		[ObsoletedOSPlatform ("maccatalyst", "Use 'SecTrust.Evaluate (out NSError)' instead.")]
 		[DllImport (Constants.SecurityLibrary)]
 		unsafe extern static SecStatusCode /* OSStatus */ SecTrustEvaluate (IntPtr /* SecTrustRef */ trust, /* SecTrustResultType */ SecTrustResult* result);
 
-#if NET
+		/// <summary>Evaluate the trust of the certificate using the policy.</summary>
+		///         <returns>A code that describe if the certificate can be trusted and, if so, under which circumstances.</returns>
+		///         <remarks>In general both Proceed and Unspecified means you can trust the certificate, other values means it should not be trusted.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-		[ObsoletedOSPlatform ("tvos12.1", "Use 'SecTrust.Evaluate (out NSError)' instead.")]
-		[ObsoletedOSPlatform ("macos10.14.1", "Use 'SecTrust.Evaluate (out NSError)' instead.")]
-		[ObsoletedOSPlatform ("ios12.1", "Use 'SecTrust.Evaluate (out NSError)' instead.")]
-#else
-		[Deprecated (PlatformName.iOS, 12, 1, message: "Use 'SecTrust.Evaluate (out NSError)' instead.")]
-		[Deprecated (PlatformName.TvOS, 12, 1, message: "Use 'SecTrust.Evaluate (out NSError)' instead.")]
-		[Deprecated (PlatformName.WatchOS, 5, 1, message: "Use 'SecTrust.Evaluate (out NSError)' instead.")]
-		[Deprecated (PlatformName.MacOSX, 10, 14, 1, message: "Use 'SecTrust.Evaluate (out NSError)' instead.")]
-#endif
+		[ObsoletedOSPlatform ("maccatalyst", "Use 'SecTrust.Evaluate (out NSError)' instead.")]
+		[ObsoletedOSPlatform ("tvos", "Use 'SecTrust.Evaluate (out NSError)' instead.")]
+		[ObsoletedOSPlatform ("macos", "Use 'SecTrust.Evaluate (out NSError)' instead.")]
+		[ObsoletedOSPlatform ("ios", "Use 'SecTrust.Evaluate (out NSError)' instead.")]
 		public SecTrustResult Evaluate ()
 		{
 			SecTrustResult trust;
@@ -178,6 +192,9 @@ namespace Security {
 		[DllImport (Constants.SecurityLibrary)]
 		extern static nint /* CFIndex */ SecTrustGetCertificateCount (IntPtr /* SecTrustRef */ trust);
 
+		/// <summary>Return the number of certificates used for evaluation.</summary>
+		///         <value>The number of certificates.</value>
+		///         <remarks>There can be more and different certificates than the one provided to the constructor.</remarks>
 		public int Count {
 			get {
 				if (Handle == IntPtr.Zero)
@@ -186,41 +203,25 @@ namespace Security {
 			}
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-		[ObsoletedOSPlatform ("macos12.0")]
-		[ObsoletedOSPlatform ("maccatalyst15.0")]
+		[ObsoletedOSPlatform ("macos")]
+		[ObsoletedOSPlatform ("maccatalyst")]
 		[ObsoletedOSPlatform ("tvos15.0")]
 		[ObsoletedOSPlatform ("ios15.0")]
-#else
-		[Deprecated (PlatformName.MacOSX, 12, 0)]
-		[Deprecated (PlatformName.iOS, 15, 0)]
-		[Deprecated (PlatformName.MacCatalyst, 15, 0)]
-		[Deprecated (PlatformName.WatchOS, 8, 0)]
-		[Deprecated (PlatformName.TvOS, 15, 0)]
-#endif
 		[DllImport (Constants.SecurityLibrary)]
 		extern static IntPtr /* SecCertificateRef */ SecTrustGetCertificateAtIndex (IntPtr /* SecTrustRef */ trust, nint /* CFIndex */ ix);
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-		[ObsoletedOSPlatform ("macos12.0", "Use the 'GetCertificateChain' method instead.")]
-		[ObsoletedOSPlatform ("maccatalyst15.0", "Use the 'GetCertificateChain' method instead.")]
+		[ObsoletedOSPlatform ("macos", "Use the 'GetCertificateChain' method instead.")]
+		[ObsoletedOSPlatform ("maccatalyst", "Use the 'GetCertificateChain' method instead.")]
 		[ObsoletedOSPlatform ("tvos15.0", "Use the 'GetCertificateChain' method instead.")]
 		[ObsoletedOSPlatform ("ios15.0", "Use the 'GetCertificateChain' method instead.")]
-#else
-		[Deprecated (PlatformName.MacOSX, 12, 0, message: "Use the 'GetCertificateChain' method instead.")]
-		[Deprecated (PlatformName.iOS, 15, 0, message: "Use the 'GetCertificateChain' method instead.")]
-		[Deprecated (PlatformName.MacCatalyst, 15, 0, message: "Use the 'GetCertificateChain' method instead.")]
-		[Deprecated (PlatformName.WatchOS, 8, 0, message: "Use the 'GetCertificateChain' method instead.")]
-		[Deprecated (PlatformName.TvOS, 15, 0, message: "Use the 'GetCertificateChain' method instead.")]
-#endif
 		public SecCertificate this [nint index] {
 			get {
 				if ((index < 0) || (index >= Count))
@@ -230,144 +231,111 @@ namespace Security {
 			}
 		}
 
-#if NET
 		[SupportedOSPlatform ("tvos15.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[Watch (8, 0)]
-		[TV (15, 0)]
-		[iOS (15, 0)]
-		[MacCatalyst (15, 0)]
-#endif
 		[DllImport (Constants.SecurityLibrary)]
 		static extern /* CFArrayRef */ IntPtr SecTrustCopyCertificateChain (/* SecTrustRef */ IntPtr trust);
 
-#if NET
 		[SupportedOSPlatform ("tvos15.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[Watch (8, 0)]
-		[TV (15, 0)]
-		[iOS (15, 0)]
-		[MacCatalyst (15, 0)]
-#endif
 		public SecCertificate [] GetCertificateChain ()
 			=> NSArray.ArrayFromHandle<SecCertificate> (SecTrustCopyCertificateChain (Handle));
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-		[ObsoletedOSPlatform ("macos11.0")]
+		[ObsoletedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("tvos14.0")]
 		[ObsoletedOSPlatform ("ios14.0")]
-		[ObsoletedOSPlatform ("maccatalyst14.0")]
-#else
-		[Deprecated (PlatformName.iOS, 14, 0)]
-		[Deprecated (PlatformName.MacOSX, 11, 0)]
-		[Deprecated (PlatformName.TvOS, 14, 0)]
-		[Deprecated (PlatformName.WatchOS, 7, 0)]
-#endif
+		[ObsoletedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.SecurityLibrary)]
 		extern static IntPtr /* SecKeyRef */ SecTrustCopyPublicKey (IntPtr /* SecTrustRef */ trust);
 
-#if NET
+		/// <summary>Get the public key of the evaluated certificate.</summary>
+		///         <returns>A SecKey instance of the certificate's public key.</returns>
+		///         <remarks>
+		///         </remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-		[ObsoletedOSPlatform ("macos11.0", "Use 'GetKey' instead.")]
+		[ObsoletedOSPlatform ("maccatalyst", "Use 'GetKey' instead.")]
+		[ObsoletedOSPlatform ("macos", "Use 'GetKey' instead.")]
 		[ObsoletedOSPlatform ("tvos14.0", "Use 'GetKey' instead.")]
 		[ObsoletedOSPlatform ("ios14.0", "Use 'GetKey' instead.")]
-#else
-		[Deprecated (PlatformName.iOS, 14, 0, message: "Use 'GetKey' instead.")]
-		[Deprecated (PlatformName.MacOSX, 11, 0, message: "Use 'GetKey' instead.")]
-		[Deprecated (PlatformName.TvOS, 14, 0, message: "Use 'GetKey' instead.")]
-		[Deprecated (PlatformName.WatchOS, 7, 0, message: "Use 'GetKey' instead.")]
-#endif
 		public SecKey GetPublicKey ()
 		{
 			return new SecKey (SecTrustCopyPublicKey (GetCheckedHandle ()), true);
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios14.0")]
 		[SupportedOSPlatform ("tvos14.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[iOS (14, 0)]
-		[TV (14, 0)]
-		[Watch (7, 0)]
-		[MacCatalyst (14, 0)]
-#endif
 		[DllImport (Constants.SecurityLibrary)]
 		extern static IntPtr /* SecKeyRef */ SecTrustCopyKey (IntPtr /* SecTrustRef */ trust);
 
-#if NET
 		[SupportedOSPlatform ("ios14.0")]
 		[SupportedOSPlatform ("tvos14.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[iOS (14, 0)]
-		[TV (14, 0)]
-		[Watch (7, 0)]
-		[MacCatalyst (14, 0)]
-#endif
 		public SecKey GetKey ()
 		{
 			return new SecKey (SecTrustCopyKey (GetCheckedHandle ()), true);
 		}
 
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		[DllImport (Constants.SecurityLibrary)]
 		extern static IntPtr /* CFDataRef */ SecTrustCopyExceptions (IntPtr /* SecTrustRef */ trust);
 
-#if NET
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public NSData? GetExceptions ()
 		{
 			return Runtime.GetNSObject<NSData> (SecTrustCopyExceptions (GetCheckedHandle ()), true);
 		}
 
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		[DllImport (Constants.SecurityLibrary)]
 		extern static byte SecTrustSetExceptions (IntPtr /* SecTrustRef */ trust, IntPtr /* __nullable CFDataRef */ exceptions);
 
-#if NET
+		/// <param name="data">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public bool SetExceptions (NSData data)
 		{
-			return SecTrustSetExceptions (GetCheckedHandle (), data.GetHandle ()) != 0;
+			bool result = SecTrustSetExceptions (GetCheckedHandle (), data.GetHandle ()) != 0;
+			GC.KeepAlive (data);
+			return result;
 		}
 
 		[DllImport (Constants.SecurityLibrary)]
 		extern static double /* CFAbsoluteTime */ SecTrustGetVerifyTime (IntPtr /* SecTrustRef */ trust);
 
+		/// <summary>Get the verification time.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>This is often used for digital signatures.</remarks>
 		public double GetVerifyTime ()
 		{
 			return SecTrustGetVerifyTime (GetCheckedHandle ());
@@ -376,17 +344,27 @@ namespace Security {
 		[DllImport (Constants.SecurityLibrary)]
 		extern static SecStatusCode /* OSStatus */ SecTrustSetVerifyDate (IntPtr /* SecTrustRef */ trust, IntPtr /* CFDateRef */ verifyDate);
 
+		/// <param name="date">Date for which the verification should made.</param>
+		///         <summary>Set the date at which the trust is to be evaluated.</summary>
+		///         <returns>An error code.</returns>
+		///         <remarks>This is often used for digital signatures.</remarks>
 		public SecStatusCode SetVerifyDate (DateTime date)
 		{
 			// CFDateRef amd NSDate are toll-freee bridged
 			using (NSDate d = (NSDate) date) {
-				return SecTrustSetVerifyDate (GetCheckedHandle (), d.Handle);
+				SecStatusCode statusCode = SecTrustSetVerifyDate (GetCheckedHandle (), d.Handle);
+				return statusCode;
 			}
 		}
 
 		[DllImport (Constants.SecurityLibrary)]
 		extern static SecStatusCode /* OSStatus */ SecTrustSetAnchorCertificates (IntPtr /* SecTrustRef */ trust, IntPtr /* CFArrayRef */ anchorCertificates);
 
+		/// <param name="certificates">A collection of anchor (trusted root) certificates.</param>
+		///         <summary>Provide your own collection of trusted certificate for the evaluation.</summary>
+		///         <returns>An error code.</returns>
+		///         <remarks>
+		///         </remarks>
 		public SecStatusCode SetAnchorCertificates (X509CertificateCollection certificates)
 		{
 			if (certificates is null)
@@ -399,6 +377,11 @@ namespace Security {
 			return SetAnchorCertificates (array);
 		}
 
+		/// <param name="certificates">A collection of anchor (trusted root) certificates.</param>
+		///         <summary>Provide your own collection of trusted certificate for the evaluation.</summary>
+		///         <returns>An error code.</returns>
+		///         <remarks>
+		///         </remarks>
 		public SecStatusCode SetAnchorCertificates (X509Certificate2Collection certificates)
 		{
 			if (certificates is null)
@@ -411,18 +394,29 @@ namespace Security {
 			return SetAnchorCertificates (array);
 		}
 
+		/// <param name="array">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public SecStatusCode SetAnchorCertificates (SecCertificate [] array)
 		{
 			if (array is null)
 				return SecTrustSetAnchorCertificates (Handle, IntPtr.Zero);
 			using (var certs = CFArray.FromNativeObjects (array)) {
-				return SecTrustSetAnchorCertificates (Handle, certs.Handle);
+				SecStatusCode statusCode = SecTrustSetAnchorCertificates (Handle, certs.Handle);
+				GC.KeepAlive (certs);
+				return statusCode;
 			}
 		}
 
 		[DllImport (Constants.SecurityLibrary)]
 		extern static SecStatusCode /* OSStatus */ SecTrustSetAnchorCertificatesOnly (IntPtr /* SecTrustRef */ trust, byte anchorCertificatesOnly);
 
+		/// <param name="anchorCertificatesOnly">true if only the supplied anchors should be used, false if the system anchors should also be used</param>
+		///         <summary>Specify if only the supplied anchor certificates should be used.</summary>
+		///         <returns>An error code.</returns>
+		///         <remarks>
+		///         </remarks>
 		public SecStatusCode SetAnchorCertificatesOnly (bool anchorCertificatesOnly)
 		{
 			return SecTrustSetAnchorCertificatesOnly (GetCheckedHandle (), anchorCertificatesOnly.AsByte ());

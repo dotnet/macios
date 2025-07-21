@@ -1,10 +1,10 @@
 <Documentation>
   <Docs DocId="T:MapKit.MKOverlayRenderer">
-    <summary>The visual representation of a <see cref="T:MapKit.MKOverlay" />.</summary>
+    <summary>The visual representation of a <see cref="MapKit.MKOverlay" />.</summary>
     <remarks>
-      <para>This class, introduced in iOS 7, replaces <see cref="T:MapKit.MKOverlayView" />. It has higher performance and renders the overlay beneath map labels. The map-related methods are the same as that of <see cref="T:MapKit.MKOverlayView" />.</para>
-      <para>iOS distinguishes between the <see cref="T:MapKit.MKOverlay" />, which represents the geometry of an overlay, and it's visual presentation. Prior to iOS 7, overlays were rendered using <see cref="T:MapKit.MKOverlayView" />s. In iOS 7, these classes have been deprecated, and overlays now use the more efficient subclasses of <see cref="T:MapKit.MKOverlayRenderer" />. </para>
-      <para>To create an overlay and its renderer, application developers must add the overlay to the <see cref="T:MapKit.MKMapView" /> and return the renderer either using the <see cref="P:MapKit.MKMapView.OverlayRenderer" /> property or by overriding the <see cref="M:MapKit.MKMapViewDelegate.OverlayRenderer(MapKit.MKMapView,MapKit.IMKOverlay)" /> method.</para>
+      <para>This class, introduced in iOS 7, replaces <see cref="MapKit.MKOverlayView" />. It has higher performance and renders the overlay beneath map labels. The map-related methods are the same as that of <see cref="MapKit.MKOverlayView" />.</para>
+      <para>iOS distinguishes between the <see cref="MapKit.MKOverlay" />, which represents the geometry of an overlay, and it's visual presentation. Prior to iOS 7, overlays were rendered using <see cref="MapKit.MKOverlayView" />s. In iOS 7, these classes have been deprecated, and overlays now use the more efficient subclasses of <see cref="MapKit.MKOverlayRenderer" />. </para>
+      <para>To create an overlay and its renderer, application developers must add the overlay to the <see cref="MapKit.MKMapView" /> and return the renderer either using the <see cref="MapKit.MKMapView.OverlayRenderer" /> property or by overriding the <see cref="MapKit.MKMapViewDelegate.OverlayRenderer(MapKit.MKMapView,MapKit.IMKOverlay)" /> method.</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
 MKPolygon hotelOverlay = MKPolygon.FromCoordinates(coordinates);

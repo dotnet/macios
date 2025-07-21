@@ -14,16 +14,41 @@ namespace Xharness.Jenkins {
 
 	class TestServer {
 
+		static IReadOnlySet<string> AllowedPaths = new HashSet<string> (StringComparer.Ordinal) {
+		"/",
+		"/index.html",
+		"/set-option",
+		"/select",
+		"/deselect",
+		"/stop",
+		"/run",
+		"/build",
+		"/reload-devices",
+		"/reload-simulators",
+		"/quit",
+		"/favicon.ico",
+		"/index.html",
+	};
+
+		static IReadOnlySet<string> AllowedFiles = new HashSet<string> (StringComparer.Ordinal) {
+		"index.html",
+		"xharness.css",
+		"xharness.js",
+	};
+
+
+
 		public Task RunAsync (Jenkins jenkins, HtmlReportWriter htmlReportWriter)
 		{
-			var server = new HttpListener ();
+			HttpListener server;
 
 			// Try and find an unused port
 			int attemptsLeft = 50;
 			int port = 51234; // Try this port first, to try to not vary between runs just because.
 			Random r = new Random ((int) DateTime.Now.Ticks);
-			while (attemptsLeft-- > 0) {
+			do {
 				var newPort = port != 0 ? port : r.Next (49152, 65535); // The suggested range for dynamic ports is 49152-65535 (IANA)
+				server = new HttpListener ();
 				server.Prefixes.Clear ();
 				server.Prefixes.Add ("http://*:" + newPort + "/");
 				try {
@@ -34,7 +59,7 @@ namespace Xharness.Jenkins {
 					jenkins.MainLog.WriteLine ("Failed to listen on port {0}: {1}", newPort, ex.Message);
 					port = 0;
 				}
-			}
+			} while (attemptsLeft-- > 0);
 			jenkins.MainLog.WriteLine ($"Created server on localhost:{port}");
 
 			var tcs = new TaskCompletionSource<bool> ();
@@ -94,7 +119,32 @@ namespace Xharness.Jenkins {
 						}
 
 						string serveFile = null;
-						switch (request.Url.LocalPath) {
+						// do not allow requests that are not http or https
+						if (request.Url.Scheme != Uri.UriSchemeHttp && request.Url.Scheme != Uri.UriSchemeHttps) {
+							response.StatusCode = 400;
+							response.StatusDescription = "Bad Request";
+							response.OutputStream.Write (System.Text.Encoding.UTF8.GetBytes ("Invalid local path"));
+							return;
+						}
+						var localPath = request.Url.LocalPath;
+						var file = Path.GetFileName (localPath);
+						var directoryName = Path.GetDirectoryName (localPath);
+						var jenkinsDirectoryName = $"/{Path.GetFileName (jenkins.LogDirectory)}";
+
+						// for the request to be valid the local path has to be one of the following
+						// 1. local path should be one of the supported ones
+						// 2. Be index.html
+						// 3. Its directory name be the same as the log directory name, no other directory is allowed
+						if (!AllowedPaths.Contains (localPath) && !AllowedFiles.Contains (file) && !directoryName.StartsWith (jenkinsDirectoryName)) {
+							// Validate that we're not requested to serve any file on the file system.
+							// Ref: https://devdiv.visualstudio.com/DevDiv/_workitems/edit/2351243
+							response.StatusCode = 400;
+							response.StatusDescription = "Bad Request";
+							response.OutputStream.Write (System.Text.Encoding.UTF8.GetBytes ("Invalid local path"));
+							return;
+						}
+
+						switch (localPath) {
 						case "/":
 							response.ContentType = System.Net.Mime.MediaTypeNames.Text.Html;
 							using (var writer = new StreamWriter (response.OutputStream)) {
@@ -153,10 +203,6 @@ namespace Xharness.Jenkins {
 									case "?all-ios":
 										switch (task.Platform) {
 										case TestPlatform.iOS:
-										case TestPlatform.iOS_TodayExtension64:
-										case TestPlatform.iOS_Unified:
-										case TestPlatform.iOS_Unified32:
-										case TestPlatform.iOS_Unified64:
 											is_match = true;
 											break;
 										default:
@@ -176,25 +222,9 @@ namespace Xharness.Jenkins {
 											break;
 										}
 										break;
-									case "?all-watchos":
-										switch (task.Platform) {
-										case TestPlatform.watchOS:
-										case TestPlatform.watchOS_32:
-										case TestPlatform.watchOS_64_32:
-											is_match = true;
-											break;
-										default:
-											if (task.Platform.ToString ().StartsWith ("watchOS", StringComparison.Ordinal))
-												throw new NotImplementedException ();
-											break;
-										}
-										break;
 									case "?all-mac":
 										switch (task.Platform) {
 										case TestPlatform.Mac:
-										case TestPlatform.Mac_Modern:
-										case TestPlatform.Mac_Full:
-										case TestPlatform.Mac_System:
 											is_match = true;
 											break;
 										default:
@@ -207,10 +237,10 @@ namespace Xharness.Jenkins {
 										writer.WriteLine ("unknown query: {0}", request.Url.Query);
 										break;
 									}
-									if (request.Url.LocalPath == "/select") {
+									if (localPath == "/select") {
 										if (is_match.HasValue && is_match.Value)
 											task.Ignored = false;
-									} else if (request.Url.LocalPath == "/deselect") {
+									} else if (localPath == "/deselect") {
 										if (is_match.HasValue && is_match.Value)
 											task.Ignored = true;
 									}
@@ -292,14 +322,22 @@ namespace Xharness.Jenkins {
 							response.Redirect (redirect_to);
 							break;
 						default:
-							var filename = Path.GetFileName (request.Url.LocalPath);
-							if (filename == "index.html" && Path.GetFileName (jenkins.LogDirectory) == Path.GetFileName (Path.GetDirectoryName (request.Url.LocalPath))) {
+							var filename = Path.GetFileName (localPath);
+							if (filename == "index.html" && Path.GetFileName (jenkins.LogDirectory) == Path.GetFileName (Path.GetDirectoryName (localPath))) {
 								// We're asked for the report for the current test run, so re-generate it.
 								jenkins.GenerateReport ();
 							}
 
-							if (serveFile is null)
-								serveFile = Path.Combine (Path.GetDirectoryName (jenkins.LogDirectory), request.Url.LocalPath.Substring (1));
+							if (serveFile is null) {
+								serveFile = Path.Combine (Path.GetDirectoryName (jenkins.LogDirectory), localPath.Substring (1));
+								serveFile = Path.GetFullPath (serveFile);
+								if (!serveFile.StartsWith (Path.GetDirectoryName (Path.GetFullPath (jenkins.LogDirectory)) + Path.DirectorySeparatorChar)) {
+									Console.WriteLine ($"400: {localPath}");
+									response.StatusCode = 400;
+									response.OutputStream.WriteByte ((byte) '?');
+									break;
+								}
+							}
 							var path = serveFile;
 							if (File.Exists (path)) {
 								var buffer = new byte [4096];
@@ -327,7 +365,7 @@ namespace Xharness.Jenkins {
 										response.OutputStream.Write (buffer, 0, read);
 								}
 							} else {
-								Console.WriteLine ($"404: {request.Url.LocalPath}");
+								Console.WriteLine ($"404: {localPath}");
 								response.StatusCode = 404;
 								response.OutputStream.WriteByte ((byte) '?');
 							}

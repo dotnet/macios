@@ -1,4 +1,3 @@
-#if !__WATCHOS__
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -11,6 +10,9 @@ using UIKit;
 using MonoTouch.NUnit.UI;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
+
+// Disable until we get around to enable + fix any issues.
+#nullable disable
 
 [Register ("AppDelegate")]
 public partial class AppDelegate : UIApplicationDelegate {
@@ -53,4 +55,3 @@ public static class MainClass {
 #endif
 	}
 }
-#endif // !__WATCHOS__

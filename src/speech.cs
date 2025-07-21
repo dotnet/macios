@@ -17,29 +17,34 @@ using ObjCRuntime;
 
 using System.ComponentModel;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace Speech {
 
-	/// <summary>Enumerates the states of a <see cref="T:Speech.SFSpeechRecognitionTask" />.</summary>
+	/// <summary>Enumerates the states of a <see cref="Speech.SFSpeechRecognitionTask" />.</summary>
 	[Native]
 	[MacCatalyst (13, 1), TV (18, 0)]
 	public enum SFSpeechRecognitionTaskState : long {
+		/// <summary>The recognition task is beginning.</summary>
 		Starting = 0,
+		/// <summary>The task is attempting to recognize speech.</summary>
 		Running = 1,
+		/// <summary>The task is ending.</summary>
 		Finishing = 2,
+		/// <summary>Speech recognition is in the process of being canceled.</summary>
 		Canceling = 3,
+		/// <summary>Speech recognition has completed.</summary>
 		Completed = 4,
 	}
 
 	[Native]
 	[MacCatalyst (13, 1), TV (18, 0)]
 	public enum SFSpeechRecognitionTaskHint : long {
+		/// <summary>No hint exists.</summary>
 		Unspecified = 0,
+		/// <summary>Free-form dictation.</summary>
 		Dictation = 1,
+		/// <summary>A request that may involve keywords associated with search.</summary>
 		Search = 2,
+		/// <summary>Confirming or denying a request.</summary>
 		Confirmation = 3,
 	}
 
@@ -47,9 +52,13 @@ namespace Speech {
 	[Native]
 	[MacCatalyst (13, 1), TV (18, 0)]
 	public enum SFSpeechRecognizerAuthorizationStatus : long {
+		/// <summary>Permission has not been presented.</summary>
 		NotDetermined,
+		/// <summary>The user has denied permission for speech recognition.</summary>
 		Denied,
+		/// <summary>To be added.</summary>
 		Restricted,
+		/// <summary>The user has allowed speech recognition.</summary>
 		Authorized,
 	}
 
@@ -61,9 +70,10 @@ namespace Speech {
 		AudioReadFailed = 2,
 		UndefinedTemplateClassName = 7,
 		MalformedSupplementalModel = 8,
+		Timeout = 10,
 	}
 
-	/// <summary>Abstract base class for speech recognition requests (see <see cref="T:Speech.SFSpeechAudioBufferRecognitionRequest" /> and <see cref="T:Speech.SFSpeechUrlRecognitionRequest" />).</summary>
+	/// <summary>Abstract base class for speech recognition requests (see <see cref="Speech.SFSpeechAudioBufferRecognitionRequest" /> and <see cref="Speech.SFSpeechUrlRecognitionRequest" />).</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Speech/SFSpeechRecognitionRequest">Apple documentation for <c>SFSpeechRecognitionRequest</c></related>
 	[MacCatalyst (13, 1), TV (18, 0)]
@@ -101,7 +111,7 @@ namespace Speech {
 		SFSpeechLanguageModelConfiguration CustomizedLanguageModel { get; set; }
 	}
 
-	/// <summary>A <see cref="T:Speech.SFSpeechRecognitionRequest" /> whose audio source is specified in a URL</summary>
+	/// <summary>A <see cref="Speech.SFSpeechRecognitionRequest" /> whose audio source is specified in a URL</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Speech/SFSpeechURLRecognitionRequest">Apple documentation for <c>SFSpeechURLRecognitionRequest</c></related>
 	[MacCatalyst (13, 1), TV (18, 0)]
@@ -117,7 +127,7 @@ namespace Speech {
 		NSUrl Url { get; }
 	}
 
-	/// <summary>An <see cref="T:Speech.SFSpeechRecognitionRequest" /> that takes its input from an audio buffer.</summary>
+	/// <summary>An <see cref="Speech.SFSpeechRecognitionRequest" /> that takes its input from an audio buffer.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Speech/SFSpeechAudioBufferRecognitionRequest">Apple documentation for <c>SFSpeechAudioBufferRecognitionRequest</c></related>
 	[MacCatalyst (13, 1), TV (18, 0)]
@@ -140,7 +150,7 @@ namespace Speech {
 	/// <summary>Contains transcriptions of a speech recognition task.</summary>
 	///     <remarks>
 	///       <para>
-	///         <see cref="T:Speech.SFSpeechRecognitionResult" />contain a <see cref="T:Speech.SFTranscription" /> in<see cref="P:Speech.SFSpeechRecognitionResult.BestTranscription" /> that is the highest-confidence transcription. Additionally, the <see cref="P:Speech.SFSpeechRecognitionResult.Transcriptions" /> may contain additional <see cref="T:Speech.SFTranscription" /> objects that the developer may search for more domain-appropriate results.</para>
+	///         <see cref="Speech.SFSpeechRecognitionResult" />contain a <see cref="Speech.SFTranscription" /> in<see cref="Speech.SFSpeechRecognitionResult.BestTranscription" /> that is the highest-confidence transcription. Additionally, the <see cref="Speech.SFSpeechRecognitionResult.Transcriptions" /> may contain additional <see cref="Speech.SFTranscription" /> objects that the developer may search for more domain-appropriate results.</para>
 	///     </remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Speech/SFSpeechRecognitionResult">Apple documentation for <c>SFSpeechRecognitionResult</c></related>
 	[MacCatalyst (13, 1), TV (18, 0)]
@@ -153,6 +163,9 @@ namespace Speech {
 		[Export ("transcriptions", ArgumentSemantic.Copy)]
 		SFTranscription [] Transcriptions { get; }
 
+		/// <summary>Gets whether this is the final attempt at recognition.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("final")]
 		bool Final { [Bind ("isFinal")] get; }
 
@@ -172,12 +185,18 @@ namespace Speech {
 		[Export ("state")]
 		SFSpeechRecognitionTaskState State { get; }
 
+		/// <summary>Gets whether the speech recognition activity is in its final stage.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("finishing")]
 		bool Finishing { [Bind ("isFinishing")] get; }
 
 		[Export ("finish")]
 		void Finish ();
 
+		/// <summary>Gets whether the speech recognition attempt was cancelled.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("cancelled")]
 		bool Cancelled { [Bind ("isCancelled")] get; }
 
@@ -188,11 +207,11 @@ namespace Speech {
 		NSError Error { get; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:Speech.SFSpeechRecognitionTaskDelegate" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Speech.SFSpeechRecognitionTaskDelegate" />.</summary>
 	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:Speech.SFSpeechRecognitionTaskDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:Speech.SFSpeechRecognitionTaskDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:Speech.SFSpeechRecognitionTaskDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Speech.SFSpeechRecognitionTaskDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Speech.SFSpeechRecognitionTaskDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="Speech.SFSpeechRecognitionTaskDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	interface ISFSpeechRecognitionTaskDelegate { }
 
@@ -204,21 +223,43 @@ namespace Speech {
 	[BaseType (typeof (NSObject))]
 	interface SFSpeechRecognitionTaskDelegate {
 
+		/// <param name="task">The <see cref="Speech.SFSpeechRecognitionTask" /> for which this is the delegate object.</param>
+		/// <summary>The system calls this method periodically as speech is detected.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("speechRecognitionDidDetectSpeech:")]
 		void DidDetectSpeech (SFSpeechRecognitionTask task);
 
+		/// <param name="task">The <see cref="Speech.SFSpeechRecognitionTask" /> for which this is the delegate object.</param>
+		/// <param name="transcription">To be added.</param>
+		/// <summary>The system calls this method periodically, as the speech recognition attempts to refine the results.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("speechRecognitionTask:didHypothesizeTranscription:")]
 		void DidHypothesizeTranscription (SFSpeechRecognitionTask task, SFTranscription transcription);
 
+		/// <param name="task">The <see cref="Speech.SFSpeechRecognitionTask" /> for which this is the delegate object.</param>
+		/// <param name="recognitionResult">To be added.</param>
+		/// <summary>The system calls this method  after it has completed recognition.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("speechRecognitionTask:didFinishRecognition:")]
 		void DidFinishRecognition (SFSpeechRecognitionTask task, SFSpeechRecognitionResult recognitionResult);
 
+		/// <param name="task">The <see cref="Speech.SFSpeechRecognitionTask" /> for which this is the delegate object.</param>
+		/// <summary>Called by the system after the audio input has finished.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("speechRecognitionTaskFinishedReadingAudio:")]
 		void FinishedReadingAudio (SFSpeechRecognitionTask task);
 
+		/// <param name="task">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("speechRecognitionTaskWasCancelled:")]
 		void WasCancelled (SFSpeechRecognitionTask task);
 
+		/// <param name="task">The <see cref="Speech.SFSpeechRecognitionTask" /> for which this is the delegate object.</param>
+		/// <param name="successfully">
+		///           <see langword="true" /> if the speech recognition ended without error or cancellation.</param>
+		/// <summary>The system calls this method after the <paramref name="task" /> has finished.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("speechRecognitionTask:didFinishSuccessfully:")]
 		void DidFinishSuccessfully (SFSpeechRecognitionTask task, bool successfully);
 
@@ -227,15 +268,15 @@ namespace Speech {
 		void DidProcessAudioDuration (SFSpeechRecognitionTask task, double duration);
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:Speech.SFSpeechRecognizerDelegate" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Speech.SFSpeechRecognizerDelegate" />.</summary>
 	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:Speech.SFSpeechRecognizerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:Speech.SFSpeechRecognizerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:Speech.SFSpeechRecognizerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Speech.SFSpeechRecognizerDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Speech.SFSpeechRecognizerDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="Speech.SFSpeechRecognizerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	interface ISFSpeechRecognizerDelegate { }
 
-	/// <summary>Delegate object for <see cref="T:Speech.SFSpeechRecognizer" />.</summary>
+	/// <summary>Delegate object for <see cref="Speech.SFSpeechRecognizer" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Speech/SFSpeechRecognizerDelegate">Apple documentation for <c>SFSpeechRecognizerDelegate</c></related>
 	[MacCatalyst (13, 1), TV (18, 0)]
@@ -243,6 +284,11 @@ namespace Speech {
 	[BaseType (typeof (NSObject))]
 	interface SFSpeechRecognizerDelegate {
 
+		/// <param name="speechRecognizer">To be added.</param>
+		/// <param name="available">
+		///           <see langword="true" /> if speech recognition is permitted.</param>
+		/// <summary>The system calls this when the availability of speech recognition has been changed.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("speechRecognizer:availabilityDidChange:")]
 		void AvailabilityDidChange (SFSpeechRecognizer speechRecognizer, bool available);
 	}
@@ -268,6 +314,11 @@ namespace Speech {
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSLocale locale);
 
+		/// <summary>Gets whether speech recognition is currently available.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>Speech recognition is not supported on all devices and is always relient on Internet access.</para>
+		///         </remarks>
 		[Export ("available")]
 		bool Available { [Bind ("isAvailable")] get; }
 

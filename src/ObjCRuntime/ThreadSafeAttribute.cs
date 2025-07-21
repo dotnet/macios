@@ -28,18 +28,38 @@ using System;
 
 namespace ObjCRuntime {
 
+	/// <summary>A <see cref="System.Attribute" /> that indicates that a UIKit (for iOS) or AppKit (for macOS) method or class is thread-safe.</summary>
+	///     <remarks>
+	///       <para>
+	/// 	This attribute is used to signal that the methods in the class that this is applied to, or the method that this is applied to can safely be called from a background thread.
+	///       </para>
+	///       <para>
+	/// 	The attribute is only relevant to UIKit/AppKit classes and any subclass of UIKit/AppKit types.   The absence of this method in classes and methods outside of UIKit/AppKit is intentional.
+	///       </para>
+	///     </remarks>
 	public sealed class ThreadSafeAttribute : Attribute {
 
+		/// <summary>Initializes a new ThreadSafe attribute.</summary>
+		///         <remarks>
+		///         </remarks>
 		public ThreadSafeAttribute ()
 		{
 			Safe = true;
 		}
 
+		/// <param name="safe">If the API is thread-safe or not.</param>
+		///         <summary>Initializes a new ThreadSafe attribute.</summary>
+		///         <remarks>
+		///         </remarks>
 		public ThreadSafeAttribute (bool safe)
 		{
 			Safe = safe;
 		}
 
+		/// <summary>If the API is thread-safe or not.</summary>
+		///         <value>If the API is thread-safe or not.</value>
+		///         <remarks>
+		///         </remarks>
 		public bool Safe { get; private set; }
 	}
 }

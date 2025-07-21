@@ -1,0 +1,52 @@
+<Documentation>
+  <Docs DocId="T:MapKit.MKMapPoint">
+    <summary>A location in a 2D map projection.</summary>
+    <remarks>
+      <para>Map Kit uses a Mercator projection with the Prime Meridian as its central meridian. An <see cref="MapKit.MKMapPoint" /> represents a 2D point on that projection.</para>
+      <para>Map projections are a complex topic. The essential challenge is that any projection of a sphere onto a 2D plane will involve some distortions. The Mercator projection is a standard cylindrical projection that distorts large objects, particulary towards the poles. The distortion depends on the zoom factor of the map, as well.</para>
+      <para>
+        <see cref="MapKit.MKMapPoint" /> are the 2D coordinates of a Mercator projection in Map Kit. Application developers can use them, for instance, with the <see cref="MapKit.MKMapSize" /> and <see cref="MapKit.MKMapRect" /> types, but will generally use either <see cref="CoreLocation.CLLocationCoordinate2D" /> types, which encapsulate the concept of latitude and longitude.</para>
+      <para>To convert from <see cref="MapKit.MKMapPoint" />s to other types, use:</para>
+      <para>
+        <list type="table">
+          <listheader>
+            <term>Target Type</term>
+            <description>Relevant methods</description>
+          </listheader>
+          <item>
+            <term>
+              <see cref="CoreLocation.CLLocationCoordinate2D" />
+            </term>
+            <description>
+              <see cref="MapKit.MKMapPoint.ToCoordinate(MapKit.MKMapPoint)" />
+            </description>
+          </item>
+          <item>
+            <term>
+              <see cref="MapKit.MKCoordinateRegion" />
+            </term>
+            <description>
+              <see cref="MapKit.MKCoordinateRegion.FromMapRect(MapKit.MKMapRect)" />
+            </description>
+          </item>
+          <item>
+            <term>
+              <see cref="CGPoint" />
+            </term>
+            <description>
+              <see cref="MapKit.MKOverlayRenderer.PointForMapPoint(MapKit.MKMapPoint)" />
+            </description>
+          </item>
+          <item>
+            <term>
+              <see cref="CGRect" />
+            </term>
+            <description>
+              <see cref="MapKit.MKOverlayRenderer.RectForMapRect(MapKit.MKMapRect)" />
+            </description>
+          </item>
+        </list>
+      </para>
+    </remarks>
+  </Docs>
+</Documentation>

@@ -7,8 +7,6 @@
 // Copyright 2013 Xamarin Inc. All rights reserved.
 //
 
-#if !__WATCHOS__
-
 using System;
 using System.IO;
 using System.Text;
@@ -65,7 +63,6 @@ namespace MonoTouchFixtures.CoreVideo {
 			Assert.NotNull (CVPixelFormatDescription.Create ((CVPixelFormatType) 3), "3b");
 		}
 
-#if NET
 		[Test]
 		public void CV32ARGB ()
 		{
@@ -111,8 +108,5 @@ namespace MonoTouchFixtures.CoreVideo {
 				Assert.IsNotNull (desc.FillExtendedPixelsCallbackStruct, "FillExtendedPixelsCallbackStruct");
 			});
 		}
-#endif // NET
 	}
 }
-
-#endif // !__WATCHOS__

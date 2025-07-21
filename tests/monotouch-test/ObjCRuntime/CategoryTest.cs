@@ -8,20 +8,14 @@ using System.Threading;
 using Foundation;
 #if !MONOMAC
 using UIKit;
-#if NET
 using NativeException = ObjCRuntime.ObjCException;
-#else
-using NativeException = Foundation.MonoTouchException;
-#endif
 #endif
 using Bindings.Test;
 using ObjCRuntime;
 #if !__TVOS__
 using MapKit;
 #endif
-#if !__WATCHOS__
 using CoreAnimation;
-#endif
 using CoreGraphics;
 using CoreLocation;
 using PlatformException = ObjCRuntime.RuntimeException;
@@ -95,7 +89,7 @@ namespace MonoTouchFixtures {
 			}
 		}
 
-#if !__WATCHOS__ && !MONOMAC
+#if !MONOMAC
 		[Test]
 		public void NavigationControllerOverride ()
 		{
@@ -122,10 +116,10 @@ namespace MonoTouchFixtures {
 				Rotation_IOS6.ShouldAutoRotateCallback = null;
 			}
 		}
-#endif // !__WATCHOS__
+#endif // !MONOMAC
 	}
 
-#if !__WATCHOS__ && !MONOMAC
+#if !MONOMAC
 	[CatAttrib (typeof (UINavigationController))]
 	[Preserve (AllMembers = true)]
 	static class Rotation_IOS6 {
@@ -138,5 +132,5 @@ namespace MonoTouchFixtures {
 			return true;
 		}
 	}
-#endif // !__WATCHOS__
+#endif // !MONOMAC
 }

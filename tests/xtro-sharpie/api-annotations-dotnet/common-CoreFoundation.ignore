@@ -10,7 +10,6 @@
 !missing-enum! __CFByteOrder not bound
 !missing-enum! CFCalendarUnit not bound
 !missing-enum! CFCharacterSetPredefinedSet not bound
-!missing-enum! CFComparisonResult not bound
 !missing-enum! CFDataSearchFlags not bound
 !missing-enum! CFDateFormatterStyle not bound
 !missing-enum! CFFileSecurityClearOptions not bound
@@ -354,7 +353,6 @@
 !missing-pinvoke! CFAttributedStringReplaceString is not bound
 !missing-pinvoke! CFAttributedStringSetAttribute is not bound
 !missing-pinvoke! CFAttributedStringSetAttributes is not bound
-!missing-pinvoke! CFAutorelease is not bound
 !missing-pinvoke! CFBagAddValue is not bound
 !missing-pinvoke! CFBagApplyFunction is not bound
 !missing-pinvoke! CFBagContainsValue is not bound

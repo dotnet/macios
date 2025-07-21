@@ -15,32 +15,22 @@ using ObjCRuntime;
 using Foundation;
 using CoreFoundation;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace Network {
 
 	//
 	// The content context, there are a few pre-configured content contexts for sending
 	// available as static properties on this class
 	//
-#if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-#else
-	[Watch (6, 0)]
-#endif
 	public class NWContentContext : NativeObject {
 		bool global;
 		[Preserve (Conditional = true)]
-#if NET
 		internal NWContentContext (NativeHandle handle, bool owns) : base (handle, owns)
-#else
-		public NWContentContext (NativeHandle handle, bool owns) : base (handle, owns)
-#endif
 		{
 		}
 
@@ -57,6 +47,8 @@ namespace Network {
 			return new NWContentContext (handle, owns: true, global: true);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected internal override void Release ()
 		{
 			if (global)
@@ -67,6 +59,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		extern static IntPtr nw_content_context_create (IntPtr contextIdentifier);
 
+		/// <param name="contextIdentifier">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NWContentContext (string contextIdentifier)
 		{
 			if (contextIdentifier is null)
@@ -78,6 +73,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		extern static IntPtr nw_content_context_get_identifier (IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? Identifier => Marshal.PtrToStringAnsi (nw_content_context_get_identifier (GetCheckedHandle ()));
 
 		[DllImport (Constants.NetworkLibrary)]
@@ -86,6 +84,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		extern static void nw_content_context_set_is_final (IntPtr handle, byte is_final);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool IsFinal {
 			get => nw_content_context_get_is_final (GetCheckedHandle ()) != 0;
 			set => nw_content_context_set_is_final (GetCheckedHandle (), value.AsByte ());
@@ -97,6 +98,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		extern static void nw_content_context_set_expiration_milliseconds (IntPtr handle, /* uint64_t */ ulong value);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public ulong ExpirationMilliseconds {
 			get => nw_content_context_get_expiration_milliseconds (GetCheckedHandle ());
 			set => nw_content_context_set_expiration_milliseconds (GetCheckedHandle (), value);
@@ -108,6 +112,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		extern static void nw_content_context_set_relative_priority (IntPtr handle, double value);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public double RelativePriority {
 			get => nw_content_context_get_relative_priority (GetCheckedHandle ());
 			set => nw_content_context_set_relative_priority (GetCheckedHandle (), value);
@@ -119,6 +126,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		extern static void nw_content_context_set_antecedent (IntPtr handle, IntPtr value);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NWContentContext? Antecedent {
 			get {
 				var h = nw_content_context_copy_antecedent (GetCheckedHandle ());
@@ -128,17 +138,23 @@ namespace Network {
 			}
 			set {
 				nw_content_context_set_antecedent (GetCheckedHandle (), value.GetHandle ());
+				GC.KeepAlive (value);
 			}
 		}
 
 		[DllImport (Constants.NetworkLibrary)]
 		extern static IntPtr nw_content_context_copy_protocol_metadata (IntPtr handle, IntPtr protocol);
 
+		/// <param name="protocolDefinition">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public NWProtocolMetadata? GetProtocolMetadata (NWProtocolDefinition protocolDefinition)
 		{
 			if (protocolDefinition is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (protocolDefinition));
 			var x = nw_content_context_copy_protocol_metadata (GetCheckedHandle (), protocolDefinition.Handle);
+			GC.KeepAlive (protocolDefinition);
 			if (x == IntPtr.Zero)
 				return null;
 			return new NWProtocolMetadata (x, owns: true);
@@ -149,27 +165,25 @@ namespace Network {
 			if (protocolDefinition is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (protocolDefinition));
 			var x = nw_content_context_copy_protocol_metadata (GetCheckedHandle (), protocolDefinition.Handle);
+			GC.KeepAlive (protocolDefinition);
 			return Runtime.GetINativeObject<T> (x, owns: true);
 		}
 
 		[DllImport (Constants.NetworkLibrary)]
 		extern static void nw_content_context_set_metadata_for_protocol (IntPtr handle, IntPtr protocolMetadata);
 
+		/// <param name="protocolMetadata">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void SetMetadata (NWProtocolMetadata protocolMetadata)
 		{
 			if (protocolMetadata is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (protocolMetadata));
 			nw_content_context_set_metadata_for_protocol (GetCheckedHandle (), protocolMetadata.Handle);
+			GC.KeepAlive (protocolMetadata);
 		}
 
-#if !NET
-		delegate void ProtocolIterator (IntPtr block, IntPtr definition, IntPtr metadata);
-		static ProtocolIterator static_ProtocolIterator = TrampolineProtocolIterator;
-
-		[MonoPInvokeCallback (typeof (ProtocolIterator))]
-#else
 		[UnmanagedCallersOnly]
-#endif
 		static void TrampolineProtocolIterator (IntPtr block, IntPtr definition, IntPtr metadata)
 		{
 			var del = BlockLiteral.GetTarget<Action<NWProtocolDefinition?, NWProtocolMetadata?>> (block);
@@ -184,17 +198,15 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		unsafe static extern void nw_content_context_foreach_protocol_metadata (IntPtr handle, BlockLiteral* callback);
 
+		/// <param name="callback">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public void IterateProtocolMetadata (Action<NWProtocolDefinition?, NWProtocolMetadata?> callback)
 		{
 			unsafe {
-#if NET
 				delegate* unmanaged<IntPtr, IntPtr, IntPtr, void> trampoline = &TrampolineProtocolIterator;
 				using var block = new BlockLiteral (trampoline, callback, typeof (NWContentContext), nameof (TrampolineProtocolIterator));
-#else
-				using var block = new BlockLiteral ();
-				block.SetupBlockUnsafe (static_ProtocolIterator, callback);
-#endif
 				nw_content_context_foreach_protocol_metadata (GetCheckedHandle (), &block);
 			}
 		}
@@ -203,6 +215,9 @@ namespace Network {
 		// Use this as a parameter to NWConnection.Send's with all the default properties
 		// ie: NW_CONNECTION_DEFAULT_MESSAGE_CONTEXT, use this for datagrams
 		static NWContentContext? defaultMessage;
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public static NWContentContext DefaultMessage {
 			get {
 				if (defaultMessage is null)
@@ -215,6 +230,9 @@ namespace Network {
 		// Use this as a parameter to NWConnection.Send's to indicate that no more sends are expected
 		// (ie: NW_CONNECTION_FINAL_MESSAGE_CONTEXT)
 		static NWContentContext? finalMessage;
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public static NWContentContext FinalMessage {
 			get {
 				if (finalMessage is null)
@@ -226,6 +244,9 @@ namespace Network {
 		// This sending context represents the entire connection
 		// ie: NW_CONNECTION_DEFAULT_STREAM_CONTEXT
 		static NWContentContext? defaultStream;
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public static NWContentContext DefaultStream {
 			get {
 				if (defaultStream is null)

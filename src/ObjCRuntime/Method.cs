@@ -71,18 +71,6 @@ namespace ObjCRuntime {
 			}
 		}
 
-		internal unsafe static IntPtr X86_DoubleABI_StretTrampoline {
-			get {
-				return Runtime.options->Trampolines->x86_double_abi_stret_tramp;
-			}
-		}
-
-		internal unsafe static IntPtr X86_DoubleABI_StaticStretTrampoline {
-			get {
-				return Runtime.options->Trampolines->x86_double_abi_static_stret_tramp;
-			}
-		}
-
 		internal unsafe static IntPtr LongTrampoline {
 			get {
 				return Runtime.options->Trampolines->long_tramp;
@@ -113,12 +101,16 @@ namespace ObjCRuntime {
 			get { return Runtime.options->Trampolines->set_gchandle_tramp; }
 		}
 
-		internal unsafe static IntPtr GetFlagsTrampoline {
-			get { return Runtime.options->Trampolines->get_flags_tramp; }
+		internal unsafe static IntPtr GetGCHandleFlagsTrampoline {
+			get { return Runtime.options->Trampolines->get_gchandle_flags_tramp; }
 		}
 
-		internal unsafe static IntPtr SetFlagsTrampoline {
-			get { return Runtime.options->Trampolines->set_flags_tramp; }
+		internal unsafe static IntPtr SetGCHandleFlagsTrampoline {
+			get { return Runtime.options->Trampolines->set_gchandle_flags_tramp; }
+		}
+
+		internal unsafe static IntPtr RetainWeakReferenceTrampoline {
+			get { return Runtime.options->Trampolines->retainWeakReference_tramp; }
 		}
 #endif // !COREBUILD
 	}

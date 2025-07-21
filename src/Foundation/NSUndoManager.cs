@@ -16,14 +16,9 @@ using ObjCRuntime;
 
 namespace Foundation {
 	public partial class NSUndoManager {
-#if !NET
-		public virtual void SetActionName (string actionName)
-		{
-			SetActionname (actionName);
-		}
-#endif
-
-#if NET
+		/// <summary>Returns the modes governing the types of input handled during a cycle of the run loop.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSRunLoopMode [] RunLoopModes {
 			get {
 				var modes = WeakRunLoopModes;
@@ -39,6 +34,5 @@ namespace Foundation {
 				WeakRunLoopModes = value?.GetConstants ()!;
 			}
 		}
-#endif
 	}
 }

@@ -7,20 +7,14 @@
 // Copyright 2016 Microsoft
 //
 
-#if !__WATCHOS__
-
 using System;
 using Foundation;
 using ModelIO;
 using ObjCRuntime;
 using NUnit.Framework;
 
-#if NET
 using System.Numerics;
 using Vector2i = global::CoreGraphics.NVector2i;
-#else
-using OpenTK;
-#endif
 
 namespace MonoTouchFixtures.ModelIO {
 
@@ -49,5 +43,3 @@ namespace MonoTouchFixtures.ModelIO {
 		}
 	}
 }
-
-#endif // !__WATCHOS__

@@ -75,20 +75,6 @@ namespace Xamarin.Tests {
 		{
 			var coreFiles = new List<string> ();
 
-			if (TargetFrameworkIdentifier == "Xamarin.WatchOS") {
-				coreFiles.Add ("Xamarin.WatchOS.dll");
-				if (Config == "Debug")
-					coreFiles.Add ("Xamarin.WatchOS.pdb");
-			} else if (TargetFrameworkIdentifier == "Xamarin.TVOS") {
-				coreFiles.Add ("Xamarin.TVOS.dll");
-				if (Config == "Debug")
-					coreFiles.Add ("Xamarin.TVOS.pdb");
-			} else {
-				coreFiles.Add ("Xamarin.iOS.dll");
-				if (Config == "Debug")
-					coreFiles.Add ("Xamarin.iOS.pdb");
-			}
-
 			coreFiles.Add ("mscorlib.dll");
 			if (Config == "Debug")
 				coreFiles.Add ("mscorlib.pdb");
@@ -181,10 +167,6 @@ namespace Xamarin.Tests {
 					subdir = isDevice ? "tvos-arm64" : "tvossimulator-x64";
 					targetPlatformSuffix = "tvos";
 					break;
-				case "Xamarin.WatchOS":
-					subdir = isDevice ? "watchos-arm" : "watchos-x86";
-					targetPlatformSuffix = "watchos";
-					break;
 				default:
 					throw new NotImplementedException ($"Unknown TargetFrameworkIdentifier: {TargetFrameworkIdentifier}");
 				}
@@ -205,12 +187,11 @@ namespace Xamarin.Tests {
 		[SetUp]
 		public virtual void Setup ()
 		{
-			testDirectory = GetTestDirectory (forceClone: true);
-			AssertValidDeviceBuild ();
-			MonoTouchProject = SetupProjectPaths ("MySingleView");
-			LibraryProject = SetupProjectPaths ("MySingleView/MyLibrary", false);
-			MonoTouchProjectInstance = new MSBuildProject (MonoTouchProject, this);
-			LibraryProjectInstance = new MSBuildProject (LibraryProject, this);
+			//testDirectory = GetTestDirectory (forceClone: true);
+			//MonoTouchProject = SetupProjectPaths ("MySingleView");
+			//LibraryProject = SetupProjectPaths ("MySingleView/MyLibrary", false);
+			//MonoTouchProjectInstance = new MSBuildProject (MonoTouchProject, this);
+			//LibraryProjectInstance = new MSBuildProject (LibraryProject, this);
 
 			Engine = new BuildEngine ();
 		}
@@ -225,10 +206,6 @@ namespace Xamarin.Tests {
 			get {
 				return "Xamarin.iOS";
 			}
-		}
-
-		public bool IsWatchOS {
-			get { return TargetFrameworkIdentifier == "Xamarin.WatchOS"; }
 		}
 
 		public bool IsTVOS {
@@ -341,12 +318,6 @@ namespace Xamarin.Tests {
 			} else {
 				Assert.AreEqual (0, rv.ExitCode, "ExitCode (success)");
 			}
-		}
-
-		void AssertValidDeviceBuild ()
-		{
-			if (!Configuration.include_device && Platform == "iPhone")
-				Assert.Ignore ("This build does not include device support.");
 		}
 
 		public static void NugetRestore (string project)

@@ -11,12 +11,15 @@ using Xamarin.Localization.MSBuild;
 using Xamarin.Messaging.Build.Client;
 
 using SecKeychain = Xamarin.MacDev.Keychain;
+using System.Diagnostics.CodeAnalysis;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Xamarin.MacDev.Tasks {
+	// https://developer.apple.com/documentation/technotes/tn3125-inside-code-signing-provisioning-profiles
 	public class DetectSigningIdentity : XamarinTask, ITaskCallback, ICancelableTask {
+		CodeSignIdentity? detectedIdentity;
+
 		const string AutomaticProvision = "Automatic";
 		const string AutomaticAdHocProvision = "Automatic:AdHoc";
 		const string AutomaticAppStoreProvision = "Automatic:AppStore";
@@ -37,7 +40,6 @@ namespace Xamarin.MacDev.Tasks {
 				switch (Platform) {
 				case ApplePlatform.iOS:
 				case ApplePlatform.TVOS:
-				case ApplePlatform.WatchOS:
 					return IPhoneCertificate.DevelopmentPrefixes;
 				case ApplePlatform.MacOSX:
 				case ApplePlatform.MacCatalyst:
@@ -53,7 +55,6 @@ namespace Xamarin.MacDev.Tasks {
 				switch (Platform) {
 				case ApplePlatform.iOS:
 				case ApplePlatform.TVOS:
-				case ApplePlatform.WatchOS:
 					return Array.Empty<string> ();
 				case ApplePlatform.MacOSX:
 				case ApplePlatform.MacCatalyst:
@@ -69,7 +70,6 @@ namespace Xamarin.MacDev.Tasks {
 				switch (Platform) {
 				case ApplePlatform.iOS:
 				case ApplePlatform.TVOS:
-				case ApplePlatform.WatchOS:
 					return IPhoneCertificate.DistributionPrefixes;
 				case ApplePlatform.MacOSX:
 				case ApplePlatform.MacCatalyst:
@@ -85,7 +85,6 @@ namespace Xamarin.MacDev.Tasks {
 				switch (Platform) {
 				case ApplePlatform.iOS:
 				case ApplePlatform.TVOS:
-				case ApplePlatform.WatchOS:
 					return "application-identifier";
 				case ApplePlatform.MacOSX:
 				case ApplePlatform.MacCatalyst:
@@ -96,54 +95,52 @@ namespace Xamarin.MacDev.Tasks {
 			}
 		}
 
-		string provisioningProfileName;
-		string codesignCommonName;
+		string? provisioningProfileName = "";
+		string? codesignCommonName = "";
 
 		#region Inputs
 
 		[Required]
-		public string AppBundleName { get; set; }
+		public string AppBundleName { get; set; } = "";
 
-		public string BundleIdentifier { get; set; }
+		public string BundleIdentifier { get; set; } = "";
 
-		public ITaskItem CodesignEntitlements { get; set; }
+		public ITaskItem? CodesignEntitlements { get; set; }
 
-		public string CodesignRequireProvisioningProfile { get; set; }
+		public string CodesignRequireProvisioningProfile { get; set; } = "";
 
 		public ITaskItem [] CustomEntitlements { get; set; } = Array.Empty<ITaskItem> ();
 
-		public string Keychain { get; set; }
+		public string Keychain { get; set; } = "";
 
-		public string SigningKey { get; set; }
+		public string SigningKey { get; set; } = "";
 
-		public string ProvisioningProfile { get; set; }
+		public string ProvisioningProfile { get; set; } = "";
 
 		[Required]
-		public string SdkPlatform { get; set; }
+		public string SdkPlatform { get; set; } = "";
 
 		public bool SdkIsSimulator { get; set; }
-
-		public bool RequireCodeSigning { get; set; }
 
 		#endregion
 
 		#region Outputs
 
 		[Output]
-		public string DetectedAppId { get; set; }
+		public string DetectedAppId { get; set; } = "";
 
 		// This is input too
 		[Output]
-		public string DetectedCodeSigningKey { get; set; }
+		public string DetectedCodeSigningKey { get; set; } = "";
 
 		[Output]
-		public string DetectedCodesignAllocate { get; set; }
+		public string DetectedCodesignAllocate { get; set; } = "";
 
 		[Output]
-		public string DetectedDistributionType { get; set; }
+		public string DetectedDistributionType { get; set; } = "";
 
 		[Output]
-		public string DetectedProvisioningProfile { get; set; }
+		public string DetectedProvisioningProfile { get; set; } = "";
 
 		#endregion
 
@@ -151,8 +148,8 @@ namespace Xamarin.MacDev.Tasks {
 		public bool RequireProvisioningProfile {
 			get {
 				// RequireProvisioningProfile:
-				// * iOS, tvOS, watchOS: required if building for device or if a custom (.NET: non-empty) entitlement file is used
-				// * macOS, Mac Catalyst: requirerd if a provisioning profile is specified
+				// * iOS, tvOS: required if building for device or if a custom (.NET: non-empty) entitlement file is used
+				// * macOS, Mac Catalyst: required if a provisioning profile is specified
 				// * Default logic is overridable by setting the "CodesignRequireProvisioningProfile=true|false" property
 
 				if (!requireProvisioningProfile.HasValue) {
@@ -160,7 +157,6 @@ namespace Xamarin.MacDev.Tasks {
 						switch (Platform) {
 						case ApplePlatform.iOS:
 						case ApplePlatform.TVOS:
-						case ApplePlatform.WatchOS:
 							requireProvisioningProfile = !SdkIsSimulator || HasEntitlements;
 							break;
 						case ApplePlatform.MacCatalyst:
@@ -189,14 +185,9 @@ namespace Xamarin.MacDev.Tasks {
 						// If no CodesignEntitlements was specified, we don't have any entitlements
 						hasEntitlements = false;
 					} else {
-						if (IsDotNet) {
-							// .NET: Check the file to see if there are any entitlements inside
-							var entitlements = PDictionary.FromFile (CodesignEntitlements.ItemSpec);
-							hasEntitlements = entitlements.Count > 0;
-						} else {
-							// Legacy Xamarin: to preserve backwards compat, consider the presence of a file enough to say we have entitlements.
-							hasEntitlements = true;
-						}
+						// Check the file to see if there are any entitlements inside
+						var entitlements = PDictionary.FromFile (CodesignEntitlements!.ItemSpec)!;
+						hasEntitlements = entitlements.Count > 0;
 					}
 				}
 				return hasEntitlements.Value;
@@ -204,10 +195,10 @@ namespace Xamarin.MacDev.Tasks {
 		}
 
 		class CodeSignIdentity {
-			public X509Certificate2 SigningKey { get; set; }
-			public MobileProvision Profile { get; set; }
-			public string BundleId { get; set; }
-			public string AppId { get; set; }
+			public X509Certificate2? SigningKey { get; set; }
+			public MobileProvision? Profile { get; set; }
+			public string? BundleId { get; set; }
+			public string? AppId { get; set; }
 
 			public CodeSignIdentity Clone ()
 			{
@@ -236,14 +227,14 @@ namespace Xamarin.MacDev.Tasks {
 			}
 		}
 
-		string ConstructValidAppId (MobileProvision provision, string bundleId)
+		string? ConstructValidAppId (MobileProvision provision, string bundleId)
 		{
 			int matchLength;
 
 			return ConstructValidAppId (provision, bundleId, out matchLength);
 		}
 
-		string ConstructValidAppId (MobileProvision provision, string bundleId, out int matchLength)
+		string? ConstructValidAppId (MobileProvision provision, string bundleId, out int matchLength)
 		{
 			if (!provision.Entitlements.ContainsKey (ApplicationIdentifierKey)) {
 				matchLength = 0;
@@ -252,12 +243,12 @@ namespace Xamarin.MacDev.Tasks {
 
 			return ConstructValidAppId (
 				provision.ApplicationIdentifierPrefix [0] + "." + bundleId,
-				((PString) provision.Entitlements [ApplicationIdentifierKey]).Value,
+				((PString?) provision.Entitlements [ApplicationIdentifierKey])?.Value!,
 				out matchLength
 			);
 		}
 
-		static string ConstructValidAppId (string appid, string allowed, out int matchLength)
+		static string? ConstructValidAppId (string appid, string allowed, out int matchLength)
 		{
 			// The user can't have a wildcard ID as their actual app id
 			if (appid.Contains ("*")) {
@@ -289,8 +280,17 @@ namespace Xamarin.MacDev.Tasks {
 			Log.LogMessage (MessageImportance.High, MSBStrings.M0125);
 			if (codesignCommonName is not null || !string.IsNullOrEmpty (DetectedCodeSigningKey))
 				Log.LogMessage (MessageImportance.High, "  Code Signing Key: \"{0}\" ({1})", codesignCommonName, DetectedCodeSigningKey);
-			if (provisioningProfileName is not null)
-				Log.LogMessage (MessageImportance.High, "  Provisioning Profile: \"{0}\" ({1})", provisioningProfileName, DetectedProvisioningProfile);
+			if (provisioningProfileName is not null) {
+				var profileEntitlements = detectedIdentity?.Profile?.Entitlements;
+				var entitlements = profileEntitlements?.ToXml ().TrimEnd ().Replace ("\n", "\n      ");
+				if (string.IsNullOrEmpty (entitlements)) {
+					Log.LogMessage (MessageImportance.High, "  Provisioning Profile: \"{0}\" ({1}) - no entitlements", provisioningProfileName, DetectedProvisioningProfile);
+				} else {
+					Log.LogMessage (MessageImportance.High, "  Provisioning Profile: \"{0}\" ({1}) - {2} entitlements", provisioningProfileName, DetectedProvisioningProfile, profileEntitlements?.Count ?? 0);
+					Log.LogMessage (MessageImportance.Low, $"    Entitlements granted by the provisioning profile:");
+					Log.LogMessage (MessageImportance.Low, $"      {entitlements}");
+				}
+			}
 			Log.LogMessage (MessageImportance.High, "  Bundle Id: {0}", BundleIdentifier);
 			Log.LogMessage (MessageImportance.High, "  App Id: {0}", DetectedAppId);
 		}
@@ -375,7 +375,7 @@ namespace Xamarin.MacDev.Tasks {
 			return true;
 		}
 
-		bool TryGetSigningCertificates (out IList<X509Certificate2> certs, bool allowZeroCerts)
+		bool TryGetSigningCertificates ([NotNullWhen (true)] out IList<X509Certificate2>? certs, bool allowZeroCerts)
 		{
 			try {
 				var keychain = !string.IsNullOrEmpty (Keychain) ? SecKeychain.Open (Keychain) : SecKeychain.Default;
@@ -408,11 +408,11 @@ namespace Xamarin.MacDev.Tasks {
 			public int Compare (CodeSignIdentity x, CodeSignIdentity y)
 			{
 				// reverse sort by provisioning profile creation date
-				return y.Profile.CreationDate.CompareTo (x.Profile.CreationDate);
+				return y.Profile!.CreationDate.CompareTo (x.Profile!.CreationDate);
 			}
 		}
 
-		IList<MobileProvision> GetProvisioningProfiles (MobileProvisionPlatform platform, MobileProvisionDistributionType type, CodeSignIdentity identity, IList<X509Certificate2> certs)
+		IList<MobileProvision>? GetProvisioningProfiles (MobileProvisionPlatform platform, MobileProvisionDistributionType type, CodeSignIdentity identity, IList<X509Certificate2> certs)
 		{
 			var failures = new List<string> ();
 			IList<MobileProvision> profiles;
@@ -443,7 +443,7 @@ namespace Xamarin.MacDev.Tasks {
 			return profiles;
 		}
 
-		List<CodeSignIdentity> GetCodeSignIdentityPairs (IList<MobileProvision> profiles, IList<X509Certificate2> certs)
+		List<CodeSignIdentity>? GetCodeSignIdentityPairs (IList<MobileProvision> profiles, IList<X509Certificate2> certs)
 		{
 			List<CodeSignIdentity> pairs;
 
@@ -478,7 +478,7 @@ namespace Xamarin.MacDev.Tasks {
 			// find matching provisioning profiles with compatible appid, keeping only those with the longest matching (wildcard) ids
 			Log.LogMessage (MessageImportance.Low, MSBStrings.M0134);
 			foreach (var pair in pairs) {
-				var appid = ConstructValidAppId (pair.Profile, identity.BundleId, out matchLength);
+				var appid = ConstructValidAppId (pair.Profile!, identity.BundleId!, out matchLength);
 				if (appid is not null) {
 					if (matchLength >= bestMatchLength) {
 						if (matchLength > bestMatchLength) {
@@ -516,7 +516,7 @@ namespace Xamarin.MacDev.Tasks {
 				matches.Sort (new SigningIdentityComparer ());
 
 				for (int i = 0; i < matches.Count; i++) {
-					Log.LogMessage (MessageImportance.Normal, "{0,3}. Provisioning Profile: \"{1}\" ({2})", i + 1, matches [i].Profile.Name, matches [i].Profile.Uuid);
+					Log.LogMessage (MessageImportance.Normal, "{0,3}. Provisioning Profile: \"{1}\" ({2})", i + 1, matches [i].Profile?.Name, matches [i].Profile?.Uuid);
 
 					if (matches [i].SigningKey is not null)
 						Log.LogMessage (MessageImportance.Normal, "{0}  Signing Identity: \"{1}\"", spaces, SecKeychain.GetCertificateCommonName (matches [i].SigningKey));
@@ -528,15 +528,31 @@ namespace Xamarin.MacDev.Tasks {
 
 		public override bool Execute ()
 		{
+			try {
+				LoggingService.SetCustomLogger (this);
+				ExecuteImpl ();
+				if (!Log.HasLoggedErrors) {
+					ReportDetectedCodesignInfo ();
+				}
+				return !Log.HasLoggedErrors;
+			} finally {
+				LoggingService.SetCustomLogger (null);
+			}
+		}
+
+		bool ExecuteImpl ()
+		{
 			if (ShouldExecuteRemotely ())
 				return new TaskRunner (SessionId, BuildEngine4).RunAsync (this).Result;
 
 			var type = MobileProvisionDistributionType.Any;
 			var identity = new CodeSignIdentity ();
 			MobileProvisionPlatform platform;
-			IList<MobileProvision> profiles;
-			IList<X509Certificate2> certs;
-			List<CodeSignIdentity> pairs;
+			IList<MobileProvision>? profiles;
+			IList<X509Certificate2>? certs;
+			List<CodeSignIdentity>? pairs;
+
+			detectedIdentity = identity;
 
 			switch (SdkPlatform) {
 			case "AppleTVSimulator":
@@ -544,9 +560,7 @@ namespace Xamarin.MacDev.Tasks {
 				platform = MobileProvisionPlatform.tvOS;
 				break;
 			case "iPhoneSimulator":
-			case "WatchSimulator":
 			case "iPhoneOS":
-			case "WatchOS":
 				platform = MobileProvisionPlatform.iOS;
 				break;
 			case "MacOSX":
@@ -573,97 +587,27 @@ namespace Xamarin.MacDev.Tasks {
 			identity.BundleId = BundleIdentifier;
 			DetectedAppId = BundleIdentifier; // default value that can be changed below
 
+			// If a code signing key has been pre-detected, it overrides any custom detection on our side.
+			if (!string.IsNullOrEmpty (DetectedCodeSigningKey))
+				return !Log.HasLoggedErrors;
+
 			// If the developer chooses to use the placeholder codesigning key, accept that.
 			if (SigningKey == "-") {
 				DetectedCodeSigningKey = SigningKey;
-				ReportDetectedCodesignInfo ();
 				return !Log.HasLoggedErrors;
 			}
 
-			if (Platform == ApplePlatform.MacOSX) {
-				if (!RequireCodeSigning || !string.IsNullOrEmpty (DetectedCodeSigningKey)) {
-					ReportDetectedCodesignInfo ();
+			// If we're building for the simulator, always use the placeholder codesign key.
+			if (SdkIsSimulator) {
+				DetectedCodeSigningKey = "-";
+				return !Log.HasLoggedErrors;
+			}
 
-					return !Log.HasLoggedErrors;
-				}
-			} else if (Platform == ApplePlatform.MacCatalyst) {
-				var doesNotNeedCodeSigningCertificate = !RequireCodeSigning || !string.IsNullOrEmpty (DetectedCodeSigningKey);
-				if (RequireProvisioningProfile)
-					doesNotNeedCodeSigningCertificate = false;
-				if (doesNotNeedCodeSigningCertificate) {
-					DetectedCodeSigningKey = "-";
-
-					ReportDetectedCodesignInfo ();
-
-					return !Log.HasLoggedErrors;
-				}
-			} else {
-				// Framework is either iOS, tvOS or watchOS
-				if (SdkIsSimulator) {
-					if (AppleSdkSettings.XcodeVersion.Major >= 8 && RequireProvisioningProfile) {
-						// Note: Starting with Xcode 8.0, we need to codesign iOS Simulator builds that enable Entitlements
-						// in order for them to run. The "-" key is a special value allowed by the codesign utility that
-						// allows us to get away with not having an actual codesign key.
-						DetectedCodeSigningKey = "-";
-
-						if (!IsAutoCodeSignProfile (ProvisioningProfile)) {
-							identity.Profile = MobileProvisionIndex.GetMobileProvision (platform, ProvisioningProfile);
-
-							if (identity.Profile is null) {
-								Log.LogError (MSBStrings.E0140, PlatformName, ProvisioningProfile);
-								return false;
-							}
-
-							identity.AppId = ConstructValidAppId (identity.Profile, identity.BundleId);
-							if (identity.AppId is null) {
-								Log.LogError (MSBStrings.E0141, identity.BundleId, ProvisioningProfile);
-								return false;
-							}
-
-							provisioningProfileName = identity.Profile.Name;
-
-							DetectedProvisioningProfile = identity.Profile.Uuid;
-							DetectedDistributionType = identity.Profile.DistributionType.ToString ();
-						} else {
-							certs = new X509Certificate2 [0];
-
-							if ((profiles = GetProvisioningProfiles (platform, type, identity, certs)) is null)
-								return false;
-
-							if ((pairs = GetCodeSignIdentityPairs (profiles, certs)) is null)
-								return false;
-
-							var match = GetBestMatch (pairs, identity);
-							identity.Profile = match.Profile;
-							identity.AppId = match.AppId;
-
-							if (identity.Profile is not null) {
-								DetectedDistributionType = identity.Profile.DistributionType.ToString ();
-								DetectedProvisioningProfile = identity.Profile.Uuid;
-								provisioningProfileName = identity.Profile.Name;
-							}
-
-							DetectedAppId = identity.AppId;
-						}
-					} else {
-						// Note: Do not codesign. Codesigning seems to break the iOS Simulator in older versions of Xcode.
-						DetectedCodeSigningKey = null;
-					}
-
-					ReportDetectedCodesignInfo ();
-
-					return !Log.HasLoggedErrors;
-				}
-
-				if (!SdkIsSimulator && !RequireCodeSigning) {
-					// The "-" key is a special value allowed by the codesign utility that
-					// allows us to get away with not having an actual codesign key.
-					DetectedCodeSigningKey = "-";
-
-					ReportDetectedCodesignInfo ();
-
-					return !Log.HasLoggedErrors;
-				}
+			// If no signing key has been specified, and no provisioning profile is required, we can get away
+			// with using the placeholder codesign key.
+			if (string.IsNullOrEmpty (SigningKey) && !RequireProvisioningProfile) {
+				DetectedCodeSigningKey = "-";
+				return !Log.HasLoggedErrors;
 			}
 
 			// Note: if we make it this far, we absolutely need a codesigning certificate
@@ -689,8 +633,6 @@ namespace Xamarin.MacDev.Tasks {
 
 				codesignCommonName = SecKeychain.GetCertificateCommonName (certs [0]);
 				DetectedCodeSigningKey = certs [0].Thumbprint;
-
-				ReportDetectedCodesignInfo ();
 
 				return !Log.HasLoggedErrors;
 			}
@@ -730,8 +672,6 @@ namespace Xamarin.MacDev.Tasks {
 				DetectedDistributionType = identity.Profile.DistributionType.ToString ();
 				DetectedAppId = identity.AppId;
 
-				ReportDetectedCodesignInfo ();
-
 				return !Log.HasLoggedErrors;
 			}
 
@@ -747,11 +687,9 @@ namespace Xamarin.MacDev.Tasks {
 				codesignCommonName = identity.SigningKey is not null ? SecKeychain.GetCertificateCommonName (identity.SigningKey) : null;
 				provisioningProfileName = identity.Profile.Name;
 
-				DetectedCodeSigningKey = identity.SigningKey?.Thumbprint;
+				DetectedCodeSigningKey = identity.SigningKey?.Thumbprint ?? "";
 				DetectedProvisioningProfile = identity.Profile.Uuid;
 				DetectedAppId = identity.AppId;
-
-				ReportDetectedCodesignInfo ();
 			} else {
 				if (identity.SigningKey is not null) {
 					Log.LogError (MSBStrings.E0146, identity.BundleId, identity.SigningKey);

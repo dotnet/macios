@@ -38,14 +38,10 @@ x_get_matrix_float2x2 (id self, const char *sel,
 		float* r1c0, float* r1c1)
 {
 	matrix_float2x2 rv;
-#if __i386__
-	IMP msgSend = (IMP) objc_msgSend_stret;
-#elif __x86_64__
+#if __x86_64__
 	IMP msgSend = (IMP) objc_msgSend;
 #elif __arm64__
 	IMP msgSend = (IMP) objc_msgSend;
-#elif __arm__
-	IMP msgSend = (IMP) objc_msgSend_stret;
 #else
 #error unknown architecture
 #endif
@@ -64,14 +60,10 @@ x_get_matrix_float3x3 (id self, const char *sel,
 		float* r2c0, float* r2c1, float* r2c2)
 {
 	matrix_float3x3 rv;
-#if __i386__
-	IMP msgSend = (IMP) objc_msgSend_stret;
-#elif __x86_64__
+#if __x86_64__
 	IMP msgSend = (IMP) objc_msgSend_stret;
 #elif __arm64__
 	IMP msgSend = (IMP) objc_msgSend;
-#elif __arm__
-	IMP msgSend = (IMP) objc_msgSend_stret;
 #else
 #error unknown architecture
 #endif
@@ -98,14 +90,10 @@ x_get_matrix_float4x4 (id self, const char *sel,
 		float* r3c0, float* r3c1, float* r3c2, float* r3c3)
 {
 	matrix_float4x4 rv;
-#if __i386__
-	IMP msgSend = (IMP) objc_msgSend_stret;
-#elif __x86_64__
+#if __x86_64__
 	IMP msgSend = (IMP) objc_msgSend_stret;
 #elif __arm64__
 	IMP msgSend = (IMP) objc_msgSend;
-#elif __arm__
-	IMP msgSend = (IMP) objc_msgSend_stret;
 #else
 #error unknown architecture
 #endif
@@ -139,14 +127,10 @@ x_get_matrix_float4x3 (id self, const char *sel,
 		float* r2c0, float* r2c1, float* r2c2, float* r2c3)
 {
 	matrix_float4x3 rv;
-#if __i386__
-	IMP msgSend = (IMP) objc_msgSend_stret;
-#elif __x86_64__
+#if __x86_64__
 	IMP msgSend = (IMP) objc_msgSend_stret;
 #elif __arm64__
 	IMP msgSend = (IMP) objc_msgSend;
-#elif __arm__
-	IMP msgSend = (IMP) objc_msgSend_stret;
 #else
 #error unknown architecture
 #endif
@@ -166,7 +150,7 @@ x_get_matrix_float4x3 (id self, const char *sel,
 	*r2c2 = rv.columns[2][2];
 	*r2c3 = rv.columns[3][2];
 }
-#if !TARGET_OS_WATCH
+
 void
 x_mdltransformcomponent_get_local_transform (id<MDLTransformComponent> self, NSTimeInterval time,
 		float* r0c0, float* r0c1, float* r0c2, float* r0c3,
@@ -256,7 +240,6 @@ x_mdltransform_get_rotation_matrix (MDLTransform *self, NSTimeInterval time,
 	*r3c2 = rv.columns[2][3];
 	*r3c3 = rv.columns[3][3];
 }
-#endif // !TARGET_OS_WATCH
 
 SCNMatrix4
 x_SCNMatrix4MakeTranslation (pfloat tx, pfloat ty, pfloat tz)
@@ -1372,6 +1355,77 @@ static void block_called ()
 	return self;
 }
 
+@end
+
+@implementation VeryGenericCollection
+- (id _Nullable)getElement:(id)alias
+{
+	return self.element;
+}
+
+- (NSEnumerator<id> *)elementEnumerator
+{
+	return nil;
+}
+
+- (void) add: (id) value
+{
+	self.element = value;
+	self.count = 1;
+}
+
+- (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state objects:(id __unsafe_unretained _Nullable [_Nonnull])buffer count:(NSUInteger)len;
+{
+	if (len > 0)
+		buffer [0] = self.element;
+	return 1;
+}
+
+@end
+
+@interface VeryGenericElementClass1 : NSObject<VeryGenericElementProtocol1>
+@property (retain) NSDate * when;
+@property NSInteger number;
+@end
+@implementation VeryGenericElementClass1
+@end
+
+@interface VeryGenericElementClass2 : NSObject<VeryGenericElementProtocol2>
+@property (retain) NSDate * when;
+@property (retain) NSString * animal;
+@end
+@implementation VeryGenericElementClass2
+@end
+
+@interface VeryGenericConsumerClass : NSObject<VeryGenericConsumerProtocol>
+@property (retain) VeryGenericCollection<NSString *, id<VeryGenericElementProtocol1>> *first;
+@property (retain) VeryGenericCollection<NSString *, id<VeryGenericElementProtocol2>> *second;
+@end
+@implementation VeryGenericConsumerClass
+@end
+
+@implementation VeryGenericFactory
++(id<VeryGenericConsumerProtocol>) getConsumer
+{
+	VeryGenericCollection<NSString *, id<VeryGenericElementProtocol1>> *first = [[VeryGenericCollection alloc] init];
+
+	VeryGenericElementClass1* firstA = [[VeryGenericElementClass1 alloc] init];
+	firstA.when = NSDate.distantPast;
+	firstA.number = 42;
+	[first add: firstA];
+
+	VeryGenericCollection<NSString *, id<VeryGenericElementProtocol2>> *second = [[VeryGenericCollection alloc] init];
+
+	VeryGenericElementClass2* secondA = [[VeryGenericElementClass2 alloc] init];
+	secondA.when = NSDate.distantFuture;
+	secondA.animal = @"Sand cat";
+	[second add: secondA];
+
+	VeryGenericConsumerClass *rv = [[VeryGenericConsumerClass alloc] init];
+	rv.first = first;
+	rv.second = second;
+	return rv;
+}
 @end
 
 #include "libtest.decompile.m"

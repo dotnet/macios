@@ -22,6 +22,9 @@ using System.Runtime.InteropServices;
 #nullable enable
 
 namespace AVFoundation {
+	/// <summary>Corresponds to a <see cref="AudioToolbox.AudioChannelLayout " /> channel layout.</summary>
+	///     <remarks>To be added.</remarks>
+	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AVFoundation/Reference/AVAudioChannelLayout_Class/index.html">Apple documentation for <c>AVAudioChannelLayout</c></related>
 	public partial class AVAudioChannelLayout {
 		static IntPtr CreateLayoutPtr (AudioChannelLayout layout, out IntPtr handleToLayout)
 		{
@@ -30,17 +33,19 @@ namespace AVFoundation {
 			return handleToLayout;
 		}
 
+		/// <param name="layout">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		public AVAudioChannelLayout (AudioChannelLayout layout)
-#if NET
 			: this (CreateLayoutPtr (layout, out var handleToLayout))
-#else
-			: this ((nint) CreateLayoutPtr (layout, out var handleToLayout))
-#endif
 		{
 			Marshal.FreeHGlobal (handleToLayout);
 		}
 
+		/// <summary>The underlying <see cref="AudioToolbox.AudioChannelLayout" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public AudioChannelLayout? Layout {
 			get {
 				return AudioChannelLayout.FromHandle (_Layout);

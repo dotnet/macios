@@ -9,13 +9,9 @@ using ObjCRuntime;
 
 using System;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace Cinematic {
 
-	[TV (17, 0), NoWatch, Mac (14, 0), iOS (17, 0), NoMacCatalyst]
+	[TV (17, 0), Mac (14, 0), iOS (17, 0), NoMacCatalyst]
 	[ErrorDomain ("CNCinematicErrorDomain")]
 	[Native]
 	public enum CNCinematicErrorCode : long {
@@ -28,7 +24,7 @@ namespace Cinematic {
 		Cancelled = 7,
 	}
 
-	[TV (17, 0), NoWatch, Mac (14, 0), iOS (17, 0), NoMacCatalyst]
+	[TV (17, 0), Mac (14, 0), iOS (17, 0), NoMacCatalyst]
 	[Native]
 	public enum CNRenderingQuality : long {
 		Thumbnail,
@@ -37,7 +33,7 @@ namespace Cinematic {
 		ExportHigh,
 	}
 
-	[TV (17, 0), NoWatch, Mac (14, 0), iOS (17, 0)]
+	[TV (17, 0), Mac (14, 0), iOS (17, 0)]
 	[Native]
 	public enum CNDetectionType : long {
 		Unknown = 0,
@@ -54,7 +50,7 @@ namespace Cinematic {
 		Custom = 102,
 	}
 
-	[TV (17, 0), NoWatch, Mac (14, 0), iOS (17, 0), NoMacCatalyst]
+	[TV (17, 0), Mac (14, 0), iOS (17, 0), NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CNAssetInfo {
@@ -110,14 +106,14 @@ namespace Cinematic {
 		NSNumber [] SampleDataTrackIds { get; }
 	}
 
-	[TV (17, 0), NoWatch, Mac (14, 0), iOS (17, 0), NoMacCatalyst]
+	[TV (17, 0), Mac (14, 0), iOS (17, 0), NoMacCatalyst]
 	[BaseType (typeof (CNAssetInfo))]
 	interface CNCompositionInfo {
 		[Export ("insertTimeRange:ofCinematicAssetInfo:atTime:error:")]
 		bool InsertTimeRange (CMTimeRange timeRange, CNAssetInfo assetInfo, CMTime startTime, [NullAllowed] out NSError outError);
 	}
 
-	[TV (17, 0), NoWatch, Mac (14, 0), iOS (17, 0), NoMacCatalyst]
+	[TV (17, 0), Mac (14, 0), iOS (17, 0), NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CNRenderingSessionAttributes {
@@ -130,7 +126,7 @@ namespace Cinematic {
 		nint RenderingVersion { get; }
 	}
 
-	[TV (17, 0), NoWatch, Mac (14, 0), iOS (17, 0), NoMacCatalyst]
+	[TV (17, 0), Mac (14, 0), iOS (17, 0), NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CNRenderingSessionFrameAttributes : NSCopying, NSMutableCopying {
@@ -147,7 +143,7 @@ namespace Cinematic {
 		float FNumber { get; set; }
 	}
 
-	[TV (17, 0), NoWatch, Mac (14, 0), iOS (17, 0), NoMacCatalyst]
+	[TV (17, 0), Mac (14, 0), iOS (17, 0), NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CNRenderingSession {
@@ -184,7 +180,7 @@ namespace Cinematic {
 		NSNumber [] DestinationPixelFormatTypes { get; }
 	}
 
-	[TV (17, 0), NoWatch, Mac (14, 0), iOS (17, 0), NoMacCatalyst]
+	[TV (17, 0), Mac (14, 0), iOS (17, 0), NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CNDetection : NSCopying {
@@ -226,7 +222,7 @@ namespace Cinematic {
 		float DisparityInNormalizedRect (CGRect normalizedRect, CVPixelBuffer sourceDisparity, CNDetectionType detectionType, float priorDisparity);
 	}
 
-	[TV (17, 0), NoWatch, Mac (14, 0), iOS (17, 0), NoMacCatalyst]
+	[TV (17, 0), Mac (14, 0), iOS (17, 0), NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CNDecision : NSCopying {
@@ -257,7 +253,7 @@ namespace Cinematic {
 		bool StrongDecision { [Bind ("isStrongDecision")] get; }
 	}
 
-	[TV (17, 0), NoWatch, Mac (14, 0), iOS (17, 0), NoMacCatalyst]
+	[TV (17, 0), Mac (14, 0), iOS (17, 0), NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CNDetectionTrack : NSCopying {
@@ -288,7 +284,7 @@ namespace Cinematic {
 		CNDetection [] GetDetectionsInTimeRange (CMTimeRange timeRange);
 	}
 
-	[TV (17, 0), NoWatch, Mac (14, 0), iOS (17, 0), NoMacCatalyst]
+	[TV (17, 0), Mac (14, 0), iOS (17, 0), NoMacCatalyst]
 	[BaseType (typeof (CNDetectionTrack))]
 	interface CNFixedDetectionTrack {
 		[Export ("initWithFocusDisparity:")]
@@ -304,7 +300,7 @@ namespace Cinematic {
 		CNDetection OriginalDetection { get; }
 	}
 
-	[TV (17, 0), NoWatch, Mac (14, 0), iOS (17, 0), NoMacCatalyst]
+	[TV (17, 0), Mac (14, 0), iOS (17, 0), NoMacCatalyst]
 	[BaseType (typeof (CNDetectionTrack))]
 	interface CNCustomDetectionTrack {
 		[Export ("initWithDetections:smooth:")]
@@ -314,7 +310,7 @@ namespace Cinematic {
 		CNDetection [] AllDetections { get; }
 	}
 
-	[TV (17, 0), NoWatch, Mac (14, 0), iOS (17, 0), NoMacCatalyst]
+	[TV (17, 0), Mac (14, 0), iOS (17, 0), NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CNScript {
@@ -407,7 +403,7 @@ namespace Cinematic {
 		CNDetectionTrack [] AddedDetectionTracks { get; }
 	}
 
-	[TV (17, 0), NoWatch, Mac (14, 0), iOS (17, 0), NoMacCatalyst]
+	[TV (17, 0), Mac (14, 0), iOS (17, 0), NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CNScriptChanges {
@@ -427,7 +423,7 @@ namespace Cinematic {
 		CNDetectionTrack [] AddedDetectionTracks { get; }
 	}
 
-	[TV (17, 0), NoWatch, Mac (14, 0), iOS (17, 0), NoMacCatalyst]
+	[TV (17, 0), Mac (14, 0), iOS (17, 0), NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CNScriptFrame : NSCopying {
@@ -452,7 +448,7 @@ namespace Cinematic {
 		CNDetection GetBestDetectionForGroupId (long detectionGroupId);
 	}
 
-	[TV (17, 0), NoWatch, Mac (14, 0), iOS (17, 0), NoMacCatalyst]
+	[TV (17, 0), Mac (14, 0), iOS (17, 0), NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
 	interface CNBoundsPrediction : NSCopying, NSMutableCopying {
 		[Export ("normalizedBounds", ArgumentSemantic.Assign)]
@@ -462,7 +458,7 @@ namespace Cinematic {
 		float Confidence { get; set; }
 	}
 
-	[TV (17, 0), NoWatch, Mac (14, 0), iOS (17, 0), NoMacCatalyst]
+	[TV (17, 0), Mac (14, 0), iOS (17, 0), NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CNObjectTracker {

@@ -1,27 +1,29 @@
 #if IOS
-#if !(NET && __MACOS__)
+#if !__MACOS__
 
 using Foundation;
 using Intents;
 using ObjCRuntime;
 
+#nullable enable
+
 namespace Intents {
 
 	public partial class INStartWorkoutIntent {
 
+		/// <param name="workoutName">To be added.</param>
+		///         <param name="goalValue">To be added.</param>
+		///         <param name="workoutGoalUnitType">To be added.</param>
+		///         <param name="workoutLocationType">To be added.</param>
+		///         <param name="isOpenEnded">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public INStartWorkoutIntent (INSpeakableString workoutName, NSNumber goalValue, INWorkoutGoalUnitType workoutGoalUnitType, INWorkoutLocationType workoutLocationType, bool? isOpenEnded) :
 			this (workoutName, goalValue, workoutGoalUnitType, workoutLocationType, isOpenEnded.HasValue ? new NSNumber (isOpenEnded.Value) : null)
 		{
 		}
-
-		// if/when we update the generator to allow this pattern we can move this back
-		// into bindings and making them virtual (not a breaking change)
-
-		public bool? IsOpenEnded {
-			get { return _IsOpenEnded is null ? null : (bool?) _IsOpenEnded.BoolValue; }
-		}
 	}
 }
 
-#endif // !(NET && __MACOS__)
+#endif // !__MACOS__
 #endif

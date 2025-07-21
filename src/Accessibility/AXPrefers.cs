@@ -9,7 +9,7 @@ using ObjCRuntime;
 namespace Accessibility {
 
 	// accessibility.cs already provide the following attributes on the type
-	// [Watch (10, 0), TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	// [TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	public static partial class AXPrefers {
 
 		[DllImport (Constants.AccessibilityLibrary)]
@@ -20,7 +20,6 @@ namespace Accessibility {
 			return AXPrefersHorizontalTextLayout () != 0;
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios18.0")]
 		[SupportedOSPlatform ("maccatalyst18.0")]
 		[SupportedOSPlatform ("macos15.0")]
@@ -36,6 +35,5 @@ namespace Accessibility {
 		{
 			return AXPrefersNonBlinkingTextInsertionIndicator () != 0;
 		}
-#endif // NET
 	}
 }

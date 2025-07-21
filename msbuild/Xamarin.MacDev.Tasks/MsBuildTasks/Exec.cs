@@ -7,14 +7,14 @@ using Microsoft.Build.Framework;
 using Xamarin.Messaging.Build.Client;
 using System.Security;
 using System.Reactive.Linq;
+using Xamarin.Messaging.Ssh;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Microsoft.Build.Tasks {
 	public class Exec : Microsoft_Build_Tasks_Core::Microsoft.Build.Tasks.Exec, ITaskCallback {
-		public string SessionId { get; set; }
-		public string ServerPassword { get; set; }
+		public string? SessionId { get; set; }
+		public string? ServerPassword { get; set; }
 
 		public override bool Execute ()
 		{

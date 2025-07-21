@@ -8,16 +8,9 @@ using NSErrorRef = System.IntPtr;
 #nullable enable
 
 namespace HealthKit {
-
-#if NET
 	[SupportedOSPlatform ("ios15.0")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos13.0")]
-#else
-	[Watch (8, 0)]
-	[iOS (15, 0)]
-	[Mac (13, 0)]
-#endif
 	public static class HKAppleWalkingSteadiness {
 
 		[DllImport (Constants.HealthKitLibrary)]
@@ -35,6 +28,7 @@ namespace HealthKit {
 			byte rv;
 			unsafe {
 				rv = HKAppleWalkingSteadinessClassificationForQuantity (value.GetHandle (), &classificationOut, &errorPtr);
+				GC.KeepAlive (value);
 			}
 
 			error = Runtime.GetNSObject<NSError> (errorPtr, false);

@@ -21,8 +21,6 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-#if !WATCH // __WATCHOS_PROHIBITED
-
 using System;
 
 // Disable until we get around to enable + fix any issues.
@@ -32,6 +30,9 @@ namespace Foundation {
 
 	public unsafe partial class NSNetService {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public virtual NSData TxtRecordData {
 			get { return GetTxtRecordData (); }
 			// ignore boolean return value
@@ -39,5 +40,3 @@ namespace Foundation {
 		}
 	}
 }
-
-#endif // !WATCH

@@ -26,22 +26,21 @@ void		xamarin_stret_trampoline (void *buffer, id self, SEL sel, ...);
 float		xamarin_fpret_single_trampoline (id self, SEL sel, ...);
 double		xamarin_fpret_double_trampoline (id self, SEL sel, ...);
 void		xamarin_release_trampoline (id self, SEL sel);
+BOOL		xamarin_retainWeakReference_trampoline (id self, SEL sel);
 void		xamarin_calayer_release_trampoline (id self, SEL sel);
 id			xamarin_retain_trampoline (id self, SEL sel);
 void		xamarin_dealloc_trampoline (id self, SEL sel);
 void *		xamarin_static_trampoline (id self, SEL sel, ...);
 void *		xamarin_ctor_trampoline (id self, SEL sel, ...);
-void		xamarin_x86_double_abi_stret_trampoline ();
 float		xamarin_static_fpret_single_trampoline (id self, SEL sel, ...);
 double		xamarin_static_fpret_double_trampoline (id self, SEL sel, ...);
 void		xamarin_static_stret_trampoline (void *buffer, id self, SEL sel, ...);
-void		xamarin_static_x86_double_abi_stret_trampoline ();
 long long	xamarin_longret_trampoline (id self, SEL sel, ...);
 long long	xamarin_static_longret_trampoline (id self, SEL sel, ...);
 id			xamarin_copyWithZone_trampoline1 (id self, SEL sel, NSZone *zone);
 id			xamarin_copyWithZone_trampoline2 (id self, SEL sel, NSZone *zone);
 GCHandle	xamarin_get_gchandle_trampoline (id self, SEL sel);
-bool		xamarin_set_gchandle_trampoline (id self, SEL sel, GCHandle gc_handle, enum XamarinGCHandleFlags flags);
+bool		xamarin_set_gchandle_trampoline (id self, SEL sel, GCHandle gc_handle, enum XamarinGCHandleFlags flags, struct NSObjectData *data);
 enum XamarinGCHandleFlags xamarin_get_flags_trampoline (id self, SEL sel);
 void		xamarin_set_flags_trampoline (id self, SEL sel, enum XamarinGCHandleFlags flags);
 
@@ -226,6 +225,8 @@ id     xamarin_inativeobject_to_nsobject (MonoObject *object, void *context, GCH
 
 void * xamarin_nsobject_to_inativeobject (id object, void *ptr, MonoClass *managedType, void *context, GCHandle *exception_gchandle);
 void * xamarin_nsobject_to_inativeobject_static (id object, void *ptr, MonoClass *managedType, void *context, GCHandle *exception_gchandle);
+
+bool xamarin_arch_param_passed_by_reference (unsigned long size, const char *parameterType, GCHandle *exception_gchandle);
 
 /* Copied from SGen */
 

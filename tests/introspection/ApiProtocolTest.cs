@@ -34,12 +34,23 @@ namespace Introspection {
 
 		protected virtual bool Skip (Type type)
 		{
+			if (MemberHasEditorBrowsableNever (type))
+				return true;
+
 			switch (type.Namespace) {
 			// Xcode 15:
 			case "MetalFX":
 			case "Cinematic":
 				// only present on device :/
 				if (TestRuntime.IsSimulatorOrDesktop)
+					return true;
+				break;
+			case "SafetyKit":
+				if (TestRuntime.IsSimulator)
+					return !TestRuntime.CheckXcodeVersion (15, 0); // doesn't seem to be available in the iOS simulator until iOS 17+
+				break;
+			case "SensorKit": // SensorKit doesn't exist on iPads
+				if (TestRuntime.IsDevice && TestRuntime.IsiPad)
 					return true;
 				break;
 			}
@@ -49,12 +60,6 @@ namespace Introspection {
 			// *** NSForwarding: warning: object 0x5cbd078 of class 'JSExport' does not implement doesNotRecognizeSelector: -- abort
 			case "JSExport":
 				return true;
-#if !NET
-			case "MTLCounter":
-			case "MTLCounterSampleBuffer":
-			case "MTLCounterSet":
-				return true; // Incorrectly bound, will be fixed for .NET.
-#endif
 			case "MPSImageLaplacianPyramid":
 			case "MPSImageLaplacianPyramidSubtract":
 			case "MPSImageLaplacianPyramidAdd":
@@ -76,6 +81,36 @@ namespace Introspection {
 			case "GKHybridStrategist":
 				// We removed the bindings for this type.
 				return true;
+#endif
+#if __TVOS__
+			case "MTLAccelerationStructureBoundingBoxGeometryDescriptor":
+			case "MTLAccelerationStructureDescriptor":
+			case "MTLAccelerationStructureGeometryDescriptor":
+			case "MTLAccelerationStructureMotionBoundingBoxGeometryDescriptor":
+			case "MTLAccelerationStructureMotionTriangleGeometryDescriptor":
+			case "MTLAccelerationStructurePassDescriptor":
+			case "MTLAccelerationStructurePassSampleBufferAttachmentDescriptor":
+			case "MTLAccelerationStructurePassSampleBufferAttachmentDescriptorArray":
+			case "MTLAccelerationStructureTriangleGeometryDescriptor":
+			case "MTLInstanceAccelerationStructureDescriptor":
+			case "MTLIntersectionFunctionDescriptor":
+			case "MTLIntersectionFunctionTableDescriptor":
+			case "MTLMeshRenderPipelineDescriptor":
+			case "MTLMotionKeyframeData":
+			case "MTLPrimitiveAccelerationStructureDescriptor":
+			case "MTLRasterizationRateLayerArray":
+			case "MTLRasterizationRateLayerDescriptor":
+			case "MTLRasterizationRateMapDescriptor":
+			case "MTLRasterizationRateSampleArray":
+			case "MTLRenderPipelineFunctionsDescriptor":
+			case "MTLResourceStatePassDescriptor":
+			case "MTLResourceStatePassSampleBufferAttachmentDescriptor":
+			case "MTLResourceStatePassSampleBufferAttachmentDescriptorArray":
+			case "MTLVisibleFunctionTableDescriptor":
+				// The initial tvOS 16.0 simulator doesn't have these classes, but the tvOS 16.1 simulator doess
+				if (TestRuntime.IsSimulator && !TestRuntime.CheckXcodeVersion (14, 1))
+					return true;
+				goto default;
 #endif
 			default:
 				return SkipDueToAttribute (type);
@@ -213,6 +248,11 @@ namespace Introspection {
 				case "ASAuthorizationPublicKeyCredentialLargeBlobAssertionInput":
 				case "ASAuthorizationPublicKeyCredentialLargeBlobAssertionOutput":
 				case "ASAuthorizationPublicKeyCredentialLargeBlobRegistrationInput":
+				case "SCContentFilter":
+				case "SCDisplay":
+				case "SCRunningApplication":
+				case "SCWindow":
+				case "SCStreamConfiguration":
 					return true;
 				}
 				break;
@@ -427,6 +467,18 @@ namespace Introspection {
 				case "UISwipeGestureRecognizer":
 				case "UIScreenEdgePanGestureRecognizer":
 				case "UIHoverGestureRecognizer":
+				// Xcode 16.2 Conformance not in headers
+				case "SCSensitivityAnalysis":
+				case "SCContentFilter":
+				case "SCDisplay":
+				case "SCRunningApplication":
+				case "SCWindow":
+				case "SCStreamConfiguration":
+					return true;
+				// Xcode 16.3 Conformance not in headers
+				case "FSMutableFileDataBuffer":
+				case "FSTask":
+				case "FSTaskOptions":
 					return true;
 				}
 				break;
@@ -644,6 +696,19 @@ namespace Introspection {
 					return true;
 				case "FSResource": // header says yes, runtime says no
 					return true;
+				// Xcode 16.2 Conformance not in headers
+				case "SCSensitivityAnalysis":
+				case "SCContentFilter":
+				case "SCDisplay":
+				case "SCRunningApplication":
+				case "SCWindow":
+				case "SCStreamConfiguration":
+					return true;
+				// Xcode 16.3 Conformance not in headers
+				case "FSMutableFileDataBuffer":
+				case "FSTask":
+				case "FSTaskOptions":
+					return true;
 				}
 				break;
 			// conformance added in Xcode 8 (iOS 10 / macOS 10.12)
@@ -727,10 +792,6 @@ namespace Introspection {
 					return true;
 				break;
 #endif
-			case "NSExtensionRequestHandling":
-				if (type.Name == "HMChipServiceRequestHandler") // Apple removed this class
-					return true;
-				break;
 			case "QLPreviewItem":
 				if (type.Name == "NSUrl")
 					return true;

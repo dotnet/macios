@@ -3,12 +3,8 @@ using CoreGraphics;
 using Foundation;
 using ObjCRuntime;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace SensitiveContentAnalysis {
-	[NoTV, NoWatch, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SCSensitivityAnalysis {
@@ -16,7 +12,7 @@ namespace SensitiveContentAnalysis {
 		bool Sensitive { [Bind ("isSensitive")] get; }
 	}
 
-	[NoTV, NoWatch, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[Native]
 	public enum SCSensitivityAnalysisPolicy : long {
 		Disabled = 0,
@@ -24,7 +20,7 @@ namespace SensitiveContentAnalysis {
 		DescriptiveInterventions = 2,
 	}
 
-	[NoTV, NoWatch, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSObject))]
 	interface SCSensitivityAnalyzer {
 		[Export ("analysisPolicy", ArgumentSemantic.Assign)]

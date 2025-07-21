@@ -1,4 +1,4 @@
-#if !TVOS && !WATCH && !__MACCATALYST__ // __TVOS_PROHIBITED, doesn't show up in WatchOS headers
+#if !TVOS && !__MACCATALYST__ // __TVOS_PROHIBITED
 using System;
 using System.Drawing;
 using System.Runtime.InteropServices;
@@ -16,6 +16,9 @@ using CoreGraphics;
 
 namespace UIKit {
 	public partial class UISearchDisplayController {
+		/// <summary>The UITableViewSource holding the search results.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public UITableViewSource SearchResultsSource {
 			get {
 				var d = SearchResultsWeakDelegate as UITableViewSource;
@@ -32,4 +35,4 @@ namespace UIKit {
 	}
 }
 
-#endif // !TVOS && !WATCH && !__MACCATALYST__
+#endif // !TVOS && !__MACCATALYST__

@@ -1,4 +1,6 @@
 using System;
+using System.IO;
+
 using NUnit.Framework;
 using Foundation;
 #if MONOMAC
@@ -9,9 +11,7 @@ using UIKit;
 #endif
 using CoreGraphics;
 using ObjCRuntime;
-#if !__WATCHOS__
 using CoreText;
-#endif
 using Xamarin.Utils;
 
 namespace MonoTouchFixtures.Foundation {
@@ -23,7 +23,6 @@ namespace MonoTouchFixtures.Foundation {
 		CGColor red, yellow;
 		bool failEnum, t1, t2, tFont1, tFont2;
 
-#if !__WATCHOS__
 		[Test]
 		public void Attributes ()
 		{
@@ -39,7 +38,6 @@ namespace MonoTouchFixtures.Foundation {
 			Assert.True (tFont1);
 			Assert.True (tFont2);
 		}
-#endif // !__WATCHOS__
 
 		void cb (NSDictionary attrs, NSRange range, ref bool stop)
 		{
@@ -80,7 +78,6 @@ namespace MonoTouchFixtures.Foundation {
 			}
 		}
 
-#if !__WATCHOS__
 		[Test]
 		public void UIKitAttachmentConveniences_New ()
 		{
@@ -94,7 +91,6 @@ namespace MonoTouchFixtures.Foundation {
 				Assert.That (as2.Value [0], Is.EqualTo ((char) 0xFFFC), "NSAttachmentCharacter");
 			}
 		}
-#endif // !__WATCHOS__
 
 		[Test]
 		public void InitWith ()
@@ -135,7 +131,120 @@ namespace MonoTouchFixtures.Foundation {
 			}
 		}
 
-#if !__WATCHOS__
+		[Test]
+		public void Create_Url_Error ()
+		{
+			{
+				using var obj = NSAttributedString.Create (new NSUrl (""), new NSAttributedStringDocumentAttributes (), out var rda, out var e);
+				Assert.IsNull (obj, "IsNull");
+				Assert.IsNotNull (e, "Error");
+			}
+
+			{
+				using var obj = NSAttributedString.Create (new NSUrl (""), new NSAttributedStringDocumentAttributes (), out var e);
+				Assert.IsNull (obj, "IsNull 2");
+				Assert.IsNotNull (e, "Error 2");
+			}
+		}
+
+		[Test]
+		public void Create_Markdown_Url_Error ()
+		{
+			using var markdownOptions = new NSAttributedStringMarkdownParsingOptions ();
+			using var obj = NSAttributedString.Create (new NSUrl (""), markdownOptions, null, out var e);
+			Assert.IsNull (obj, "IsNull");
+			Assert.IsNotNull (e, "Error");
+		}
+
+
+		[Test]
+		public void Create_Url ()
+		{
+			var textFile = Path.Combine (NSBundle.MainBundle.ResourcePath, "uncompressed.txt");
+			var textUrl = NSUrl.CreateFileUrl (textFile);
+			{
+				using var obj = NSAttributedString.Create (textUrl, new NSAttributedStringDocumentAttributes (), out var rda, out var e);
+				Assert.IsNull (e, "Error");
+				Assert.IsNotNull (obj, "IsNull");
+			}
+			{
+				using var obj = NSAttributedString.Create (textUrl, new NSAttributedStringDocumentAttributes (), out var e);
+				Assert.IsNull (e, "Error 2");
+				Assert.IsNotNull (obj, "IsNull 2");
+			}
+		}
+
+		[Test]
+		public void Create_Markdown_Url ()
+		{
+			var textFile = Path.Combine (NSBundle.MainBundle.ResourcePath, "uncompressed.txt");
+			var textUrl = NSUrl.CreateFileUrl (textFile);
+			using var markdownOptions = new NSAttributedStringMarkdownParsingOptions ();
+			using var obj = NSAttributedString.Create (textUrl, markdownOptions, null, out var e);
+			Assert.IsNull (e, "Error");
+			Assert.IsNotNull (obj, "IsNull");
+		}
+
+		[Test]
+		public void Create_Data_Error ()
+		{
+			var attributes = new NSAttributedStringDocumentAttributes ();
+			attributes.DocumentType = NSDocumentType.RTF;
+			{
+				using var obj = NSAttributedString.Create (NSData.FromArray (new byte [42]), attributes, out var rda, out var e);
+				Assert.IsNull (obj, "IsNull");
+				Assert.IsNotNull (e, "Error");
+			}
+			{
+				using var obj = NSAttributedString.Create (NSData.FromArray (new byte [42]), attributes, out var e);
+				Assert.IsNull (obj, "IsNull 2");
+				Assert.IsNotNull (e, "Error 2");
+			}
+		}
+
+		[Test]
+		public void Create_Markdown_Data_Error ()
+		{
+			using var markdownOptions = new NSAttributedStringMarkdownParsingOptions ();
+			using var obj = NSAttributedString.Create (NSData.FromArray (new byte [] { (byte) '[', (byte) '!', (byte) '"', (byte) '$', (byte) '%', (byte) '&', (byte) '/', (byte) '(', (byte) ')', (byte) '=', (byte) '?', (byte) '¿', (byte) '^', (byte) '*', (byte) '¨', (byte) '´', (byte) '}', (byte) '\\' }), markdownOptions, null, out var e);
+			Assert.IsNull (obj, "IsNull");
+			Assert.IsNotNull (e, "Error");
+		}
+
+		[Test]
+		public void Create_Data ()
+		{
+			{
+				using var obj = NSAttributedString.Create (new NSData (), new NSAttributedStringDocumentAttributes (), out var rda, out var e);
+				Assert.IsNotNull (obj, "IsNull");
+				Assert.IsNull (e, "Error");
+			}
+			{
+				using var obj = NSAttributedString.Create (new NSData (), new NSAttributedStringDocumentAttributes (), out var e);
+				Assert.IsNotNull (obj, "IsNull 2");
+				Assert.IsNull (e, "Error 2");
+			}
+		}
+
+		[Test]
+		public void Create_Markdown_Data ()
+		{
+			using var markdownOptions = new NSAttributedStringMarkdownParsingOptions ();
+			using var obj = NSAttributedString.Create (new NSData (), markdownOptions, null, out var e);
+			Assert.IsNotNull (obj, "IsNull");
+			Assert.IsNull (e, "Error");
+		}
+
+
+		[Test]
+		public void Create_Markdown_String ()
+		{
+			using var markdownOptions = new NSAttributedStringMarkdownParsingOptions ();
+			using var obj = NSAttributedString.Create ("#markdown", markdownOptions, null, out var e);
+			Assert.IsNotNull (obj, "IsNull");
+			Assert.IsNull (e, "Error");
+		}
+
 		[Test]
 		public void IndirectNullDictionary ()
 		{
@@ -144,9 +253,7 @@ namespace MonoTouchFixtures.Foundation {
 				Assert.That (s.Handle, Is.Not.EqualTo (IntPtr.Zero));
 			}
 		}
-#endif // !__WATCHOS__
 
-#if NET // this test crashes in legacy Xamarin
 		[Test]
 		public void LowLevelGetAttributesOverrideTest ()
 		{
@@ -200,6 +307,5 @@ namespace MonoTouchFixtures.Foundation {
 				return attributesPtr;
 			}
 		}
-#endif // NET
 	}
 }

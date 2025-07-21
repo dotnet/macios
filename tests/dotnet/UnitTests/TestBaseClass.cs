@@ -27,7 +27,7 @@ namespace Xamarin.Tests {
 			}
 		}
 
-		protected static Dictionary<string, string> GetDefaultProperties (string? runtimeIdentifiers = null, Dictionary<string, string>? extraProperties = null)
+		protected static Dictionary<string, string> GetDefaultProperties (string? runtimeIdentifiers = null, Dictionary<string, string>? extraProperties = null, bool? includeRemoteProperties = null)
 		{
 			var rv = new Dictionary<string, string> (verbosity);
 			if (!string.IsNullOrEmpty (runtimeIdentifiers))
@@ -36,7 +36,25 @@ namespace Xamarin.Tests {
 				foreach (var kvp in extraProperties)
 					rv [kvp.Key] = kvp.Value;
 			}
+
+			if (!includeRemoteProperties.HasValue)
+				includeRemoteProperties = Configuration.IsBuildingRemotely && !rv.ContainsKey ("IsHotRestartBuild");
+
+			if (includeRemoteProperties == true)
+				AddRemoteProperties (rv);
+
 			return rv;
+		}
+
+		protected static Dictionary<string, string> AddRemoteProperties (Dictionary<string, string>? properties = null)
+		{
+			properties ??= new Dictionary<string, string> ();
+			properties ["ServerAddress"] = Environment.GetEnvironmentVariable ("MAC_AGENT_IP") ?? string.Empty;
+			properties ["ServerUser"] = Environment.GetEnvironmentVariable ("MAC_AGENT_USER") ?? string.Empty;
+			properties ["ServerPassword"] = Environment.GetEnvironmentVariable ("XMA_PASSWORD") ?? string.Empty;
+			if (!string.IsNullOrEmpty (properties ["ServerUser"]))
+				properties ["ContinueOnDisconnected"] = "false";
+			return properties;
 		}
 
 		protected static void SetRuntimeIdentifiers (Dictionary<string, string> properties, string runtimeIdentifiers)
@@ -45,15 +63,17 @@ namespace Xamarin.Tests {
 			properties [multiRid] = runtimeIdentifiers;
 		}
 
-		protected static string GetProjectPath (string project, string runtimeIdentifiers, ApplePlatform platform, out string appPath, string? subdir = null, string configuration = "Debug", string? netVersion = null)
+		protected static string GetProjectPath (string project, string runtimeIdentifiers, ApplePlatform platform, out string appPath, string? subdir = null, string configuration = "Debug", string? netVersion = null, string? applicationTitle = null)
 		{
-			return GetProjectPath (project, null, runtimeIdentifiers, platform, out appPath, configuration, netVersion);
+			return GetProjectPath (project, null, runtimeIdentifiers, platform, out appPath, configuration, netVersion, applicationTitle);
 		}
 
-		protected static string GetProjectPath (string project, string? subdir, string runtimeIdentifiers, ApplePlatform platform, out string appPath, string configuration = "Debug", string? netVersion = null)
+		protected static string GetProjectPath (string project, string? subdir, string runtimeIdentifiers, ApplePlatform platform, out string appPath, string configuration = "Debug", string? netVersion = null, string? applicationTitle = null)
 		{
 			var rv = GetProjectPath (project, subdir, platform);
-			appPath = Path.Combine (GetOutputPath (project, subdir, runtimeIdentifiers, platform, configuration, netVersion), project + ".app");
+			if (applicationTitle is null)
+				applicationTitle = project;
+			appPath = Path.Combine (GetOutputPath (project, subdir, runtimeIdentifiers, platform, configuration, netVersion), applicationTitle + ".app");
 			return rv;
 		}
 
@@ -67,12 +87,12 @@ namespace Xamarin.Tests {
 			return GetBinOrObjDir ("bin", projectPath, platform, runtimeIdentifiers, configuration);
 		}
 
-		protected string GetObjDir (string projectPath, ApplePlatform platform, string runtimeIdentifiers, string configuration = "Debug")
+		internal static protected string GetObjDir (string projectPath, ApplePlatform platform, string runtimeIdentifiers, string configuration = "Debug")
 		{
 			return GetBinOrObjDir ("obj", projectPath, platform, runtimeIdentifiers, configuration);
 		}
 
-		protected string GetBinOrObjDir (string binOrObj, string projectPath, ApplePlatform platform, string runtimeIdentifiers, string configuration = "Debug")
+		internal static protected string GetBinOrObjDir (string binOrObj, string projectPath, ApplePlatform platform, string runtimeIdentifiers, string configuration = "Debug")
 		{
 			var appPathRuntimeIdentifier = runtimeIdentifiers.IndexOf (';') >= 0 ? "" : runtimeIdentifiers;
 			return Path.Combine (Path.GetDirectoryName (projectPath)!, binOrObj, configuration, platform.ToFramework (), appPathRuntimeIdentifier);
@@ -171,12 +191,21 @@ namespace Xamarin.Tests {
 			}
 		}
 
+		protected static bool CanExecute (ApplePlatform platform, Dictionary<string, string> properties)
+		{
+			if (properties.TryGetValue ("RuntimeIdentifier", out var runtimeIdentifiers)) {
+				return CanExecute (platform, runtimeIdentifiers);
+			} else if (properties.TryGetValue ("RuntimeIdentifiers", out runtimeIdentifiers)) {
+				return CanExecute (platform, runtimeIdentifiers);
+			}
+			return false;
+		}
+
 		protected static bool CanExecute (ApplePlatform platform, string runtimeIdentifiers)
 		{
 			switch (platform) {
 			case ApplePlatform.iOS:
 			case ApplePlatform.TVOS:
-			case ApplePlatform.WatchOS:
 				return false;
 			case ApplePlatform.MacOSX:
 			case ApplePlatform.MacCatalyst:
@@ -200,7 +229,6 @@ namespace Xamarin.Tests {
 			switch (platform) {
 			case ApplePlatform.iOS:
 			case ApplePlatform.TVOS:
-			case ApplePlatform.WatchOS:
 				return "Resources";
 			case ApplePlatform.MacOSX:
 			case ApplePlatform.MacCatalyst:
@@ -215,7 +243,6 @@ namespace Xamarin.Tests {
 			switch (platform) {
 			case ApplePlatform.iOS:
 			case ApplePlatform.TVOS:
-			case ApplePlatform.WatchOS:
 				return string.Empty;
 			case ApplePlatform.MacOSX:
 			case ApplePlatform.MacCatalyst:
@@ -235,7 +262,6 @@ namespace Xamarin.Tests {
 			switch (platform) {
 			case ApplePlatform.iOS:
 			case ApplePlatform.TVOS:
-			case ApplePlatform.WatchOS:
 				return Path.Combine (app_directory, "Info.plist");
 			case ApplePlatform.MacOSX:
 			case ApplePlatform.MacCatalyst:
@@ -280,7 +306,6 @@ namespace Xamarin.Tests {
 			switch (platform) {
 			case ApplePlatform.iOS:
 			case ApplePlatform.TVOS:
-			case ApplePlatform.WatchOS:
 				return string.Empty;
 			case ApplePlatform.MacOSX:
 			case ApplePlatform.MacCatalyst:
@@ -295,7 +320,6 @@ namespace Xamarin.Tests {
 			switch (platform) {
 			case ApplePlatform.iOS:
 			case ApplePlatform.TVOS:
-			case ApplePlatform.WatchOS:
 				return string.Empty;
 			case ApplePlatform.MacOSX:
 			case ApplePlatform.MacCatalyst:
@@ -310,7 +334,6 @@ namespace Xamarin.Tests {
 			switch (platform) {
 			case ApplePlatform.iOS:
 			case ApplePlatform.TVOS:
-			case ApplePlatform.WatchOS:
 				return app_directory;
 			case ApplePlatform.MacOSX:
 			case ApplePlatform.MacCatalyst:
@@ -359,9 +382,20 @@ namespace Xamarin.Tests {
 			}
 
 			var rv = Execute (executable, out var output, out string magicWord, environment);
-			Assert.That (output.ToString (), Does.Contain (magicWord), "Contains magic word");
-			Assert.AreEqual (0, rv.ExitCode, "ExitCode");
-			return output.ToString ();
+			var outputString = output.ToString ();
+			if (rv.ExitCode != 0) {
+				var msg = $"'{executable}' exited with exit code {rv.ExitCode} (timed out: {rv.TimedOut} timeout: {rv.Timeout}):" +
+							"\t" + outputString.Replace ("\n", "\n\t").TrimEnd (new char [] { '\n', '\t' });
+				Console.WriteLine (msg);
+				Assert.Fail (msg);
+			}
+			if (!outputString.Contains (magicWord)) {
+				var msg = $"'{executable}' exited with exit code {rv.ExitCode} as expected, but did not contain the magic word '{magicWord}' ({outputString.Length}):" +
+							"\t" + outputString.Replace ("\n", "\n\t").TrimEnd (new char [] { '\n', '\t' });
+				Console.WriteLine (msg);
+				Assert.Fail (msg);
+			}
+			return outputString;
 		}
 
 		protected Execution Execute (string executable, out StringBuilder output, out string magicWord, Dictionary<string, string?>? environment = null)
@@ -380,7 +414,7 @@ namespace Xamarin.Tests {
 			}
 
 			output = new StringBuilder ();
-			return Execution.RunWithStringBuildersAsync (executable, Array.Empty<string> (), environment: env, standardOutput: output, standardError: output, timeout: TimeSpan.FromSeconds (15)).Result;
+			return Execution.RunWithStringBuildersAsync (executable, Array.Empty<string> (), environment: env, standardOutput: output, standardError: output, timeout: TimeSpan.FromSeconds (30)).Result;
 		}
 
 		public static StringBuilder AssertExecute (string executable, params string [] arguments)
@@ -556,11 +590,42 @@ namespace Xamarin.Tests {
 			get {
 				if (!is_pull_request.HasValue) {
 					var pr = string.Equals (Environment.GetEnvironmentVariable ("BUILD_REASON"), "PullRequest", StringComparison.Ordinal);
+					pr |= string.Equals (Environment.GetEnvironmentVariable ("IS_PR"), "true", StringComparison.OrdinalIgnoreCase);
 					is_pull_request = pr;
 				}
 				return is_pull_request.Value;
 			}
 		}
 
+		protected Dictionary<string, string> GetHotRestartProperties ()
+		{
+			return GetHotRestartProperties (null, out var _, out var _);
+		}
+
+		protected Dictionary<string, string> GetHotRestartProperties (string? tmpdir, out string hotRestartOutputDir, out string hotRestartAppBundlePath)
+		{
+			var properties = new Dictionary<string, string> ();
+			properties ["IsHotRestartBuild"] = "true";
+			properties ["IsHotRestartEnvironmentReady"] = "true";
+			properties ["EnableCodeSigning"] = "false"; // Skip code signing, since that would require making sure we have code signing configured on bots.
+			properties ["_IsAppSigned"] = "false";
+			properties ["_AppIdentifier"] = "placeholder_AppIdentifier"; // This needs to be set to a placeholder value because DetectSigningIdentity usually does it (and we've disabled signing)
+			properties ["_BundleIdentifier"] = "placeholder_BundleIdentifier"; // This needs to be set to a placeholder value because DetectSigningIdentity usually does it (and we've disabled signing)
+
+			if (!string.IsNullOrEmpty (tmpdir)) {
+				// Redirect hot restart output to a place we can control from here
+				hotRestartOutputDir = Path.Combine (tmpdir, "out")!;
+				Directory.CreateDirectory (hotRestartOutputDir);
+				properties ["HotRestartSignedAppOutputDir"] = hotRestartOutputDir + Path.DirectorySeparatorChar;
+
+				hotRestartAppBundlePath = Path.Combine (tmpdir, "HotRestartAppBundlePath")!; // Do not create this directory, it will be created and populated with default contents if it doesn't exist.
+				properties ["HotRestartAppBundlePath"] = hotRestartAppBundlePath; // no trailing directory separator char for this property.
+			} else {
+				hotRestartOutputDir = string.Empty;
+				hotRestartAppBundlePath = string.Empty;
+			}
+
+			return properties;
+		}
 	}
 }

@@ -32,20 +32,36 @@ using System.Runtime.InteropServices;
 
 namespace ObjCRuntime {
 
+	/// <include file="../../docs/api/ObjCRuntime/AdoptsAttribute.xml" path="/Documentation/Docs[@DocId='T:ObjCRuntime.AdoptsAttribute']/*" />
 	[AttributeUsage (AttributeTargets.Class, AllowMultiple = true)]
 	public sealed class AdoptsAttribute : Attribute {
 #if !COREBUILD
 		IntPtr handle;
 
+		/// <param name="protocolType">The name of the protocol you are adopting.</param>
+		///         <summary>
+		///         </summary>
+		///         <remarks>
+		///         </remarks>
 		public AdoptsAttribute (string protocolType)
 		{
 			ProtocolType = protocolType;
 		}
 
+		/// <summary>The name of the protocol type adopted.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public string ProtocolType {
 			get; private set;
 		}
 
+		/// <summary>Returns the underlying handle to the Protocol.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public IntPtr ProtocolHandle {
 			get {
 				if (handle == IntPtr.Zero && ProtocolType is not null)

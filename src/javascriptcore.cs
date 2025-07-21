@@ -11,14 +11,10 @@ using ObjCRuntime;
 using Foundation;
 using CoreGraphics;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace JavaScriptCore {
 
-	/// <summary>The delegate that can be used as the <see cref="P:JavaScriptCore.JSContext.ExceptionHandler" />.</summary>
-	delegate void JSContextExceptionHandler (JSContext context, JSValue exception);
+	/// <summary>The delegate that can be used as the <see cref="JavaScriptCore.JSContext.ExceptionHandler" />.</summary>
+	delegate void JSContextExceptionHandler ([NullAllowed] JSContext context, [NullAllowed] JSValue exception);
 
 	/// <include file="../docs/api/JavaScriptCore/JSContext.xml" path="/Documentation/Docs[@DocId='T:JavaScriptCore.JSContext']/*" />
 	[MacCatalyst (13, 1)]
@@ -98,7 +94,7 @@ namespace JavaScriptCore {
 	[iOS (13, 0)]
 	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
-	delegate void JSPromiseCreationExecutor (JSValue resolve, JSValue rejected);
+	delegate void JSPromiseCreationExecutor ([NullAllowed] JSValue resolve, [NullAllowed] JSValue rejected);
 
 	/// <summary>Holds a JavaScript value and provides type-testing and conversion functions.</summary>
 	///     
@@ -186,11 +182,11 @@ namespace JavaScriptCore {
 		[Export ("toUInt32")]
 		uint ToUInt32 ();
 
-		[iOS (18, 0), MacCatalyst (18, 0), TV (18, 0), NoMac]
+		[iOS (18, 0), MacCatalyst (18, 0), TV (18, 0), Mac (15, 0)]
 		[Export ("toInt64")]
 		long ToInt64 ();
 
-		[iOS (18, 0), MacCatalyst (18, 0), TV (18, 0), NoMac]
+		[iOS (18, 0), MacCatalyst (18, 0), TV (18, 0), Mac (15, 0)]
 		[Export ("toUInt64")]
 		ulong ToUInt64 ();
 
@@ -204,11 +200,7 @@ namespace JavaScriptCore {
 		NSDate ToDate ();
 
 		[Export ("toArray")]
-#if NET
 		NSArray ToArray ();
-#else
-		JSValue [] ToArray ();
-#endif
 
 		[Export ("toDictionary")]
 		NSDictionary ToDictionary ();
@@ -228,9 +220,17 @@ namespace JavaScriptCore {
 		[Export ("defineProperty:descriptor:")]
 		void DefineProperty (string property, NSObject descriptor);
 
+		/// <param name="index">To be added.</param>
+		/// <summary>Returns the value at the specified <paramref name="index" />, or <c>undefined</c> if none exists.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("valueAtIndex:")]
 		JSValue GetValueAt (nuint index);
 
+		/// <param name="value">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <summary>Sets the item at the specified index to the specified value.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("setValue:atIndex:")]
 		void SetValue (JSValue value, nuint index);
 
@@ -342,46 +342,46 @@ namespace JavaScriptCore {
 		bool IsSymbol { get; }
 
 		[Static]
-		[iOS (18, 0), MacCatalyst (18, 0), TV (18, 0), NoMac]
+		[iOS (18, 0), MacCatalyst (18, 0), TV (18, 0), Mac (15, 0)]
 		[Export ("valueWithNewBigIntFromString:inContext:")]
 		[return: NullAllowed]
 		JSValue CreateNewBigInt (string @string, JSContext context);
 
 		[Static]
-		[iOS (18, 0), MacCatalyst (18, 0), TV (18, 0), NoMac]
+		[iOS (18, 0), MacCatalyst (18, 0), TV (18, 0), Mac (15, 0)]
 		[Export ("valueWithNewBigIntFromInt64:inContext:")]
 		[return: NullAllowed]
 		JSValue CreateNewBigInt (long int64, JSContext context);
 
 		[Static]
-		[iOS (18, 0), MacCatalyst (18, 0), TV (18, 0), NoMac]
+		[iOS (18, 0), MacCatalyst (18, 0), TV (18, 0), Mac (15, 0)]
 		[Export ("valueWithNewBigIntFromUInt64:inContext:")]
 		[return: NullAllowed]
 		JSValue CreateNewBigInt (ulong uint64, JSContext context);
 
 		[Static]
-		[iOS (18, 0), MacCatalyst (18, 0), TV (18, 0), NoMac]
+		[iOS (18, 0), MacCatalyst (18, 0), TV (18, 0), Mac (15, 0)]
 		[Export ("valueWithNewBigIntFromDouble:inContext:")]
 		[return: NullAllowed]
 		JSValue CreateNewBigInt (double uint64, JSContext context);
 
-		[iOS (18, 0), MacCatalyst (18, 0), TV (18, 0), NoMac]
+		[iOS (18, 0), MacCatalyst (18, 0), TV (18, 0), Mac (15, 0)]
 		[Export ("isBigInt")]
 		bool IsBigInt { get; }
 
-		[iOS (18, 0), MacCatalyst (18, 0), TV (18, 0), NoMac]
+		[iOS (18, 0), MacCatalyst (18, 0), TV (18, 0), Mac (15, 0)]
 		[Export ("compareJSValue:")]
 		JSRelationCondition Compare (JSValue other);
 
-		[iOS (18, 0), MacCatalyst (18, 0), TV (18, 0), NoMac]
+		[iOS (18, 0), MacCatalyst (18, 0), TV (18, 0), Mac (15, 0)]
 		[Export ("compareInt64:")]
 		JSRelationCondition Compare (long other);
 
-		[iOS (18, 0), MacCatalyst (18, 0), TV (18, 0), NoMac]
+		[iOS (18, 0), MacCatalyst (18, 0), TV (18, 0), Mac (15, 0)]
 		[Export ("compareUInt64:")]
 		JSRelationCondition Compare (ulong other);
 
-		[iOS (18, 0), MacCatalyst (18, 0), TV (18, 0), NoMac]
+		[iOS (18, 0), MacCatalyst (18, 0), TV (18, 0), Mac (15, 0)]
 		[Export ("compareDouble:")]
 		JSRelationCondition Compare (double other);
 	}
@@ -391,9 +391,7 @@ namespace JavaScriptCore {
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/JavaScriptCore/JSManagedValue">Apple documentation for <c>JSManagedValue</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
-#if XAMCORE_3_0
 	[DisableDefaultCtor]
-#endif
 	partial interface JSManagedValue {
 		[Static, Export ("managedValueWithValue:")]
 		JSManagedValue Get (JSValue value);
@@ -412,7 +410,7 @@ namespace JavaScriptCore {
 	/// <summary>The JavaScript Virtual Machine, allowing explicit reference-management.</summary>
 	///     <remarks>
 	///       <para>This class can be used by application developers to add and remove references to .NET objects, thus preventing the JavaScript VM from garbage-collecting plugins.</para>
-	///       <para>The <see cref="T:JavaScriptCore.JSVirtualMachine" /> is the unit of locking granularity for multithreaded JavaScript.</para>
+	///       <para>The <see cref="JavaScriptCore.JSVirtualMachine" /> is the unit of locking granularity for multithreaded JavaScript.</para>
 	///     </remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/JavaScriptCore/JSVirtualMachine">Apple documentation for <c>JSVirtualMachine</c></related>
 	[MacCatalyst (13, 1)]
@@ -435,21 +433,45 @@ namespace JavaScriptCore {
 	[Static]
 	interface JSPropertyDescriptorKeys {
 
+		/// <summary>Represents the value associated with the constant JSPropertyDescriptorWritableKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("JSPropertyDescriptorWritableKey")]
 		NSString Writable { get; }
 
+		/// <summary>Represents the value associated with the constant JSPropertyDescriptorEnumerableKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("JSPropertyDescriptorEnumerableKey")]
 		NSString Enumerable { get; }
 
+		/// <summary>Represents the value associated with the constant JSPropertyDescriptorConfigurableKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("JSPropertyDescriptorConfigurableKey")]
 		NSString Configurable { get; }
 
+		/// <summary>Represents the value associated with the constant JSPropertyDescriptorValueKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("JSPropertyDescriptorValueKey")]
 		NSString Value { get; }
 
+		/// <summary>Represents the value associated with the constant JSPropertyDescriptorGetKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("JSPropertyDescriptorGetKey")]
 		NSString Get { get; }
 
+		/// <summary>Represents the value associated with the constant JSPropertyDescriptorSetKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("JSPropertyDescriptorSetKey")]
 		NSString Set { get; }
 	}
@@ -458,11 +480,7 @@ namespace JavaScriptCore {
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/JavaScriptCore/JSExport">Apple documentation for <c>JSExport</c></related>
 	[MacCatalyst (13, 1)]
-#if NET
 	[Protocol, Model]
-#else
-	[Protocol, Model (AutoGeneratedName = true)]
-#endif
 	[BaseType (typeof (NSObject))]
 	interface JSExport {
 

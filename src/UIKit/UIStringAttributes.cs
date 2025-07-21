@@ -33,27 +33,61 @@ using ObjCRuntime;
 using Foundation;
 using CoreFoundation;
 using CoreGraphics;
-#if !WATCH
 using CoreText;
-#endif
 
 // Disable until we get around to enable + fix any issues.
 #nullable disable
 
 namespace UIKit {
 
+	/// <summary>Strongly helper to define UIKit attributes for use with <see cref="Foundation.NSAttributedString" />. </summary>
+	///     <remarks>
+	///       <para>
+	/// 	You use this class to create attributes that can be used with
+	/// 	both <see cref="Foundation.NSAttributedString" />
+	/// 	and <see cref="Foundation.NSMutableAttributedString" />.
+	/// 	Since this class is strongly typed, you will get code
+	/// 	completion as well as avoid common mistakes when using
+	/// 	attributed strings with UIKit.
+	///
+	///       </para>
+	///       <example>
+	///         <code lang="csharp lang-csharp"><![CDATA[
+	/// // 
+	/// // Using NSAttributedString with UIKit
+	/// //
+	/// var myText = new NSAttributedString ("Hello, world",
+	///        new UIStringAttributes () {
+	///               ForegroundColor =  UIColor.Red,
+	/// 	      KerningAdjustment = 3
+	///        });
+	/// label.AttributedText = myText;
+	/// 	]]></code>
+	///       </example>
+	///     </remarks>
 	public class UIStringAttributes : DictionaryContainer {
 #if !COREBUILD
+		/// <summary>Default constructor</summary>
+		///         <remarks>
+		///         </remarks>
 		public UIStringAttributes ()
 			: base (new NSMutableDictionary ())
 		{
 		}
 
+		/// <param name="dictionary">Dictionary to initialize from</param>
+		///         <summary>Creates a UIStringAttributes from UIKit NSAttributedString attributes stored in a dictionary.</summary>
+		///         <remarks>To be added.</remarks>
 		public UIStringAttributes (NSDictionary dictionary)
 			: base (dictionary)
 		{
 		}
 
+		/// <summary>Foreground Color for the text</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public UIColor ForegroundColor {
 			get {
 				return Dictionary [UIStringAttributeKey.ForegroundColor] as UIColor;
@@ -63,6 +97,11 @@ namespace UIKit {
 			}
 		}
 
+		/// <summary>Background Color for the text.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public UIColor BackgroundColor {
 			get {
 				return Dictionary [UIStringAttributeKey.BackgroundColor] as UIColor;
@@ -72,6 +111,11 @@ namespace UIKit {
 			}
 		}
 
+		/// <summary>Font to use for the text.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public UIFont Font {
 			get {
 				return Dictionary [UIStringAttributeKey.Font] as UIFont;
@@ -81,6 +125,10 @@ namespace UIKit {
 			}
 		}
 
+		/// <summary>Kerning value used for the text</summary>
+		///         <value>This value is measured in points, and the value zero is used to mean no kerning.</value>
+		///         <remarks>
+		///         </remarks>
 		public float? KerningAdjustment {
 			get {
 				return GetFloatValue (UIStringAttributeKey.KerningAdjustment);
@@ -90,6 +138,11 @@ namespace UIKit {
 			}
 		}
 
+		/// <summary>The style of ligatures to use.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public NSLigatureType? Ligature {
 			get {
 				var value = GetInt32Value (UIStringAttributeKey.Ligature);
@@ -100,6 +153,11 @@ namespace UIKit {
 			}
 		}
 
+		/// <summary>Used to specify a custom paragraph style.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public NSParagraphStyle ParagraphStyle {
 			get {
 				return Dictionary [UIStringAttributeKey.ParagraphStyle] as NSParagraphStyle;
@@ -109,6 +167,11 @@ namespace UIKit {
 			}
 		}
 
+		/// <summary>Strikethrough style.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public NSUnderlineStyle? StrikethroughStyle {
 			get {
 				var value = GetInt32Value (UIStringAttributeKey.StrikethroughStyle);
@@ -119,6 +182,11 @@ namespace UIKit {
 			}
 		}
 
+		/// <summary>Stroke Color.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public UIColor StrokeColor {
 			get {
 				return Dictionary [UIStringAttributeKey.StrokeColor] as UIColor;
@@ -128,6 +196,10 @@ namespace UIKit {
 			}
 		}
 
+		/// <summary>The stroke width for drawing the text</summary>
+		///         <value>Expressed as percentage of the font size.   Positive values stroke the text, negative values stroke and fill the text.</value>
+		///         <remarks>
+		///         </remarks>
 		public float? StrokeWidth {
 			get {
 				return GetFloatValue (UIStringAttributeKey.StrokeWidth);
@@ -137,7 +209,11 @@ namespace UIKit {
 			}
 		}
 
-#if !WATCH
+		/// <summary>Shadow to use for the text.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public NSShadow Shadow {
 			get {
 				return Dictionary [UIStringAttributeKey.Shadow] as NSShadow;
@@ -146,8 +222,12 @@ namespace UIKit {
 				SetNativeValue (UIStringAttributeKey.Shadow, value);
 			}
 		}
-#endif // !WATCH
 
+		/// <summary>Underline style for the text.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public NSUnderlineStyle? UnderlineStyle {
 			get {
 				var value = GetInt32Value (UIStringAttributeKey.UnderlineStyle);
@@ -158,11 +238,12 @@ namespace UIKit {
 			}
 		}
 
-#if NET
+		/// <summary>A reference to the text effect that does not prevent garbage collection of the underlying resource.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public NSString WeakTextEffect {
 			get {
 				return Dictionary [UIStringAttributeKey.TextEffect] as NSString;
@@ -172,11 +253,12 @@ namespace UIKit {
 			}
 		}
 
-#if NET
+		/// <summary>The NSTextEffect applied to the string.</summary>
+		///         <value>The default value is <see langword="null" />.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public NSTextEffect TextEffect {
 			get {
 				var s = WeakTextEffect;
@@ -195,12 +277,12 @@ namespace UIKit {
 			}
 		}
 
-#if !WATCH
-#if NET
+		/// <summary>The NSTextAttachment, if any.</summary>
+		///         <value>The default value is <see langword="null" />.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public NSTextAttachment TextAttachment {
 			get {
 				return Dictionary [UIStringAttributeKey.Attachment] as NSTextAttachment;
@@ -209,13 +291,13 @@ namespace UIKit {
 				SetNativeValue (UIStringAttributeKey.Attachment, value);
 			}
 		}
-#endif // !WATCH
 
-#if NET
+		/// <summary>The destination URL of a hyperlink.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public NSUrl Link {
 			get {
 				return Dictionary [UIStringAttributeKey.Link] as NSUrl;
@@ -225,11 +307,12 @@ namespace UIKit {
 			}
 		}
 
-#if NET
+		/// <summary>The distance from the bottom of the bounding box of the glyphs of the string to their baseline.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public float? BaselineOffset {
 			get {
 				return GetFloatValue (UIStringAttributeKey.BaselineOffset);
@@ -239,11 +322,12 @@ namespace UIKit {
 			}
 		}
 
-#if NET
+		/// <summary>The color to be used for the strikethrough stroke.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public UIColor StrikethroughColor {
 			get {
 				return Dictionary [UIStringAttributeKey.StrikethroughColor] as UIColor;
@@ -253,11 +337,12 @@ namespace UIKit {
 			}
 		}
 
-#if NET
+		/// <summary>The color of the underline stroke.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public UIColor UnderlineColor {
 			get {
 				return Dictionary [UIStringAttributeKey.UnderlineColor] as UIColor;
@@ -268,11 +353,12 @@ namespace UIKit {
 		}
 
 
-#if NET
+		/// <summary>The amount of skew to apply to glyphs.</summary>
+		///         <value>The default value of 0 indicates no skew.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public float? Obliqueness {
 			get {
 				return GetFloatValue (UIStringAttributeKey.Obliqueness);
@@ -282,11 +368,12 @@ namespace UIKit {
 			}
 		}
 
-#if NET
+		/// <summary>The log of the expansion factor to be applied to glyphs.</summary>
+		///         <value>The default value is 0, indicating no expansion.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public float? Expansion {
 			get {
 				return GetFloatValue (UIStringAttributeKey.Expansion);
@@ -296,11 +383,12 @@ namespace UIKit {
 			}
 		}
 
-#if NET
+		/// <summary>An array indicating the writing-direction overrides.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public NSNumber [] WritingDirectionInt {
 			get {
 				return GetArray<NSNumber> (UIStringAttributeKey.WritingDirection);

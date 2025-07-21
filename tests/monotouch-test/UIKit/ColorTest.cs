@@ -3,9 +3,7 @@
 #if !MONOMAC
 using System;
 using System.IO;
-#if !__WATCHOS__
 using System.Drawing;
-#endif
 using Foundation;
 using UIKit;
 using ObjCRuntime;
@@ -97,7 +95,7 @@ namespace MonoTouchFixtures.UIKit {
 			RoundtripHSBA (UIColor.Red);
 			RoundtripHSBA (UIColor.White);
 			RoundtripHSBA (UIColor.Yellow);
-#if !__TVOS__ && !__WATCHOS__
+#if !__TVOS__
 			RoundtripHSBA (UIColor.DarkText);
 			RoundtripHSBA (UIColor.GroupTableViewBackground, false);           // unsupported color space
 			RoundtripHSBA (UIColor.LightText);
@@ -151,7 +149,7 @@ namespace MonoTouchFixtures.UIKit {
 			//RoundtripHSB (UIColor.Clear); 							// alpha is 0
 			RoundtripHSB (UIColor.Cyan);
 			RoundtripHSB (UIColor.DarkGray);
-#if !__TVOS__ && !__WATCHOS__
+#if !__TVOS__
 			RoundtripHSB (UIColor.DarkText);
 #endif
 			RoundtripHSB (UIColor.Gray);
@@ -187,7 +185,7 @@ namespace MonoTouchFixtures.UIKit {
 			RoundtripRGBA (UIColor.Clear);
 			RoundtripRGBA (UIColor.Cyan);
 			RoundtripRGBA (UIColor.DarkGray);
-#if !__TVOS__ && !__WATCHOS__
+#if !__TVOS__
 			RoundtripRGBA (UIColor.DarkText);
 #endif
 			RoundtripRGBA (UIColor.Gray);
@@ -224,7 +222,7 @@ namespace MonoTouchFixtures.UIKit {
 			// RoundtripRGB (UIColor.Clear);							// alpha is 0
 			RoundtripRGB (UIColor.Cyan);
 			RoundtripRGB (UIColor.DarkGray);
-#if !__TVOS__ && !__WATCHOS__
+#if !__TVOS__
 			RoundtripRGB (UIColor.DarkText);
 #endif
 			RoundtripRGB (UIColor.Gray);
@@ -268,7 +266,7 @@ namespace MonoTouchFixtures.UIKit {
 			RoundtripConstructorRGB (UIColor.Brown);
 			RoundtripConstructorRGB (UIColor.Cyan);
 			RoundtripConstructorRGB (UIColor.DarkGray);
-#if !__TVOS__ && !__WATCHOS__
+#if !__TVOS__
 			RoundtripConstructorRGB (UIColor.DarkText);
 #endif
 			RoundtripConstructorRGB (UIColor.Gray);
@@ -295,7 +293,6 @@ namespace MonoTouchFixtures.UIKit {
 			Assert.That (r.ToString (), Is.EqualTo (c.ToString ()), c.ToString ());
 		}
 
-#if !__WATCHOS__
 		[Test]
 		public void UIConfigurationColorTransformerTest ()
 		{
@@ -305,7 +302,6 @@ namespace MonoTouchFixtures.UIKit {
 			var grayColor = transformer (redColor);
 			Assert.NotNull (grayColor, "Not null");
 		}
-#endif
 	}
 }
 #endif

@@ -13,10 +13,6 @@ using Foundation;
 using ObjCRuntime;
 using NUnit.Framework;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace MonoTouchFixtures.Foundation {
 
 	[TestFixture]
@@ -109,9 +105,13 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			// an invalid NSDictionary returns null from Objective-C but that
 			// results in an 'empty' instance inside MonoTouch
+#if NET10_0_OR_GREATER
+			Assert.Throws<Exception> (() => { new NSHttpCookie (new Cookie ()); }, "Exception");
+#else
 			using (var cookie = new NSHttpCookie (new Cookie ())) {
 				Assert.That (cookie.Handle, Is.EqualTo (NativeHandle.Zero), "ctor");
 			}
+#endif
 		}
 
 		[Test]
@@ -174,7 +174,9 @@ namespace MonoTouchFixtures.Foundation {
 			c.CommentUri = new Uri ("http://comment.uri");
 			c.Discard = false;
 			c.Expires = DateTime.Now.AddDays (1);
+#pragma warning disable SM02360 // "Websites must specify the HttpOnly attribute on sensitive cookies" - this is a cookie test, we're not sending any requests, so it's safe to ignore
 			c.HttpOnly = false;
+#pragma warning restore SM02360
 			c.Port = "\"80\"";
 			c.Secure = true;
 			c.Version = 1;

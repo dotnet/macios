@@ -14,13 +14,9 @@ using CoreFoundation;
 using Foundation;
 using ObjCRuntime;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace SharedWithYouCore {
 
-	[NoWatch, NoTV, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[NoTV, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 	[BaseType (typeof (NSObject))]
 	interface SWAction : NSCopying, NSSecureCoding {
 		[Export ("uuid")]
@@ -38,7 +34,7 @@ namespace SharedWithYouCore {
 
 	interface ISWCollaborationActionHandler { }
 
-	[NoWatch, NoTV, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[NoTV, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 	[Protocol]
 	[DisableDefaultCtor]
 	interface SWCollaborationActionHandler {
@@ -51,7 +47,7 @@ namespace SharedWithYouCore {
 		void HandleUpdateCollaborationParticipantsAction (SWCollaborationCoordinator coordinator, SWUpdateCollaborationParticipantsAction action);
 	}
 
-	[NoWatch, NoTV, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[NoTV, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SWCollaborationCoordinator {
@@ -63,7 +59,7 @@ namespace SharedWithYouCore {
 		ISWCollaborationActionHandler ActionHandler { get; set; }
 	}
 
-	[NoWatch, NoTV, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[NoTV, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SWCollaborationOption : NSCopying, NSSecureCoding {
@@ -91,7 +87,7 @@ namespace SharedWithYouCore {
 		SWCollaborationOption Create (string title, string identifier);
 	}
 
-	[NoWatch, NoTV, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[NoTV, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SWCollaborationOptionsGroup : NSCopying, NSSecureCoding {
@@ -120,7 +116,7 @@ namespace SharedWithYouCore {
 		SWCollaborationOptionsGroup Create (string identifier, SWCollaborationOption [] options);
 	}
 
-	[NoWatch, NoTV, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[NoTV, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 	[BaseType (typeof (SWCollaborationOptionsGroup))]
 	interface SWCollaborationOptionsPickerGroup {
 
@@ -132,7 +128,7 @@ namespace SharedWithYouCore {
 		string SelectedOptionIdentifier { get; set; }
 	}
 
-	[NoWatch, NoTV, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[NoTV, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SWCollaborationShareOptions : NSCopying, NSSecureCoding {
@@ -158,7 +154,7 @@ namespace SharedWithYouCore {
 		SWCollaborationShareOptions Create (SWCollaborationOptionsGroup [] optionsGroups);
 	}
 
-	[NoWatch, NoTV, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[NoTV, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SWCollaborationMetadata : NSSecureCoding, NSCopying, NSMutableCopying
@@ -198,7 +194,7 @@ namespace SharedWithYouCore {
 		NativeHandle _InitWithCollaborationIdentifier (string collaborationIdentifier);
 	}
 
-	[NoWatch, NoTV, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[NoTV, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SWPerson : NSSecureCoding {
@@ -206,7 +202,7 @@ namespace SharedWithYouCore {
 		NativeHandle Constructor ([NullAllowed] string handle, [NullAllowed] SWPersonIdentity identity, string displayName, [NullAllowed] NSData thumbnailImageData);
 	}
 
-	[NoWatch, NoTV, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[NoTV, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SWPersonIdentity : NSSecureCoding, NSCopying {
@@ -217,7 +213,7 @@ namespace SharedWithYouCore {
 		NativeHandle Constructor (NSData rootHash);
 	}
 
-	[NoWatch, NoTV, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[NoTV, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SWPersonIdentityProof : NSSecureCoding, NSCopying {
@@ -231,7 +227,7 @@ namespace SharedWithYouCore {
 		nuint PublicKeyIndex { get; }
 	}
 
-	[NoWatch, NoTV, Mac (13, 0), iOS (16, 0)]
+	[NoTV, Mac (13, 0), iOS (16, 0)]
 	[MacCatalyst (16, 0)]
 	[BaseType (typeof (SWPersonIdentityProof))]
 	interface SWSignedPersonIdentityProof {
@@ -242,7 +238,7 @@ namespace SharedWithYouCore {
 		NSData SignatureData { get; }
 	}
 
-	[NoWatch, NoTV, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[NoTV, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 	[BaseType (typeof (SWAction))]
 	[DisableDefaultCtor]
 	interface SWStartCollaborationAction : NSSecureCoding, NSCopying {
@@ -253,7 +249,7 @@ namespace SharedWithYouCore {
 		void Fulfill (NSUrl url, string collaborationIdentifier);
 	}
 
-	[NoWatch, NoTV, Mac (13, 0), iOS (16, 0)]
+	[NoTV, Mac (13, 0), iOS (16, 0)]
 	[MacCatalyst (16, 0)]
 	[BaseType (typeof (SWAction))]
 	[DisableDefaultCtor]

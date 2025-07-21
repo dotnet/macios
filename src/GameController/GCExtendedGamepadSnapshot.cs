@@ -20,7 +20,8 @@ using Foundation;
 namespace GameController {
 	// GCExtendedGamepadSnapshot.h
 	// float_t are 4 bytes (at least for ARM64)
-#if NET
+	/// <summary>The state of a <see cref="GameController.GCExtendedGamepad" />. Produced by <see cref="GameController.GCExtendedGamepadSnapshot.TryGetSnapShotData(Foundation.NSData,out GameController.GCExtendedGamepadSnapShotDataV100)" />.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
@@ -29,47 +30,73 @@ namespace GameController {
 	[ObsoletedOSPlatform ("tvos12.2", "Use 'GCExtendedGamepadSnapshotData' instead.")]
 	[ObsoletedOSPlatform ("ios12.2", "Use 'GCExtendedGamepadSnapshotData' instead.")]
 	[ObsoletedOSPlatform ("maccatalyst13.1", "Use 'GCExtendedGamepadSnapshotData' instead.")]
-#else
-	[Deprecated (PlatformName.iOS, 12, 2, message: "Use 'GCExtendedGamepadSnapshotData' instead.")]
-	[Deprecated (PlatformName.MacOSX, 10, 14, 4, message: "Use 'GCExtendedGamepadSnapshotData' instead.")]
-	[Deprecated (PlatformName.TvOS, 12, 2, message: "Use 'GCExtendedGamepadSnapshotData' instead.")]
-#endif
 	[StructLayout (LayoutKind.Sequential, Pack = 1)]
 
 	public struct GCExtendedGamepadSnapShotDataV100 {
 
 		// Standard information
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public ushort /* uint16_t */ Version; // 0x0100
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public ushort /* uint16_t */ Size;    // sizeof(GCExtendedGamepadSnapShotDataV100) or larger
 
 		// Extended gamepad data
 		// Axes in the range [-1.0, 1.0]
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float /* float_t = float */ DPadX;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float /* float_t = float */ DPadY;
 
 		// Buttons in the range [0.0, 1.0]
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float /* float_t = float */ ButtonA;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float /* float_t = float */ ButtonB;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float /* float_t = float */ ButtonX;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float /* float_t = float */ ButtonY;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float /* float_t = float */ LeftShoulder;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float /* float_t = float */ RightShoulder;
 
 		// Axes in the range [-1.0, 1.0]
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float /* float_t = float */ LeftThumbstickX;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float /* float_t = float */ LeftThumbstickY;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float /* float_t = float */ RightThumbstickX;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float /* float_t = float */ RightThumbstickY;
 
 		// Buttons in the range [0.0, 1.0]
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float /* float_t = float */ LeftTrigger;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float /* float_t = float */ RightTrigger;
 
 		// radar: https://trello.com/c/7FoGTORD (GCExtendedGamepadSnapShotDataV100 struct size / alignment not backward compatible)
 		// public bool LeftThumbstickButton;
 		// public bool RightThumbstickButton;
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
@@ -78,15 +105,13 @@ namespace GameController {
 		[ObsoletedOSPlatform ("tvos13.0", "Use 'GCController.GetExtendedGamepadController()' instead.")]
 		[ObsoletedOSPlatform ("ios13.0", "Use 'GCController.GetExtendedGamepadController()' instead.")]
 		[ObsoletedOSPlatform ("maccatalyst13.1", "Use 'GCExtendedGamepadSnapshotData' instead.")]
-#else
-		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use 'GCController.GetExtendedGamepadController()' instead.")]
-		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'GCController.GetExtendedGamepadController()' instead.")]
-		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use 'GCController.GetExtendedGamepadController()' instead.")]
-#endif
 		[DllImport (Constants.GameControllerLibrary)]
 		unsafe static extern /* NSData * __nullable */ IntPtr NSDataFromGCExtendedGamepadSnapShotDataV100 (
 			/* GCExtendedGamepadSnapShotDataV100 * __nullable */ GCExtendedGamepadSnapShotDataV100* snapshotData);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public NSData? ToNSData ()
 		{
 			unsafe {
@@ -98,7 +123,8 @@ namespace GameController {
 		}
 	}
 
-#if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
@@ -107,43 +133,69 @@ namespace GameController {
 	[ObsoletedOSPlatform ("tvos13.0", "Use 'GCController.GetExtendedGamepadController()' instead.")]
 	[ObsoletedOSPlatform ("ios13.0", "Use 'GCController.GetExtendedGamepadController()' instead.")]
 	[ObsoletedOSPlatform ("maccatalyst13.1", "Use 'GCExtendedGamepadSnapshotData' instead.")]
-#else
-	[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use 'GCController.GetExtendedGamepadController()' instead.")]
-	[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'GCController.GetExtendedGamepadController()' instead.")]
-	[Deprecated (PlatformName.TvOS, 13, 0, message: "Use 'GCController.GetExtendedGamepadController()' instead.")]
-#endif
 	// float_t are 4 bytes (at least for ARM64)
 	[StructLayout (LayoutKind.Sequential, Pack = 1)]
 	public struct GCExtendedGamepadSnapshotData {
 
 		// Standard information
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public ushort /* uint16_t */ Version;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public ushort /* uint16_t */ Size;
 
 		// Extended gamepad data
 		// Axes in the range [-1.0, 1.0]
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float /* float_t = float */ DPadX;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float /* float_t = float */ DPadY;
 
 		// Buttons in the range [0.0, 1.0]
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float /* float_t = float */ ButtonA;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float /* float_t = float */ ButtonB;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float /* float_t = float */ ButtonX;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float /* float_t = float */ ButtonY;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float /* float_t = float */ LeftShoulder;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float /* float_t = float */ RightShoulder;
 
 		// Axes in the range [-1.0, 1.0]
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float /* float_t = float */ LeftThumbstickX;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float /* float_t = float */ LeftThumbstickY;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float /* float_t = float */ RightThumbstickX;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float /* float_t = float */ RightThumbstickY;
 
 		// Buttons in the range [0.0, 1.0]
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float /* float_t = float */ LeftTrigger;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float /* float_t = float */ RightTrigger;
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
@@ -152,7 +204,6 @@ namespace GameController {
 		[ObsoletedOSPlatform ("tvos13.0", "Use 'GCController.GetExtendedGamepadController()' instead.")]
 		[ObsoletedOSPlatform ("ios13.0", "Use 'GCController.GetExtendedGamepadController()' instead.")]
 		[ObsoletedOSPlatform ("maccatalyst13.1", "Use 'GCExtendedGamepadSnapshotData' instead.")]
-#endif
 #if XAMCORE_5_0
 		byte supportsClickableThumbsticks;
 		public bool SupportsClickableThumbsticks {
@@ -164,7 +215,6 @@ namespace GameController {
 		public bool SupportsClickableThumbsticks;
 #endif
 
-#if NET
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
@@ -173,10 +223,8 @@ namespace GameController {
 		[ObsoletedOSPlatform ("tvos13.0", "Use 'GCController.GetExtendedGamepadController()' instead.")]
 		[ObsoletedOSPlatform ("ios13.0", "Use 'GCController.GetExtendedGamepadController()' instead.")]
 		[ObsoletedOSPlatform ("maccatalyst13.1", "Use 'GCExtendedGamepadSnapshotData' instead.")]
-#endif
 		byte LeftThumbstickButton;
 
-#if NET
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
@@ -185,10 +233,8 @@ namespace GameController {
 		[ObsoletedOSPlatform ("tvos13.0", "Use 'GCController.GetExtendedGamepadController()' instead.")]
 		[ObsoletedOSPlatform ("ios13.0", "Use 'GCController.GetExtendedGamepadController()' instead.")]
 		[ObsoletedOSPlatform ("maccatalyst13.1", "Use 'GCExtendedGamepadSnapshotData' instead.")]
-#endif
 		byte RightThumbstickButton;
 
-#if NET
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
@@ -197,7 +243,6 @@ namespace GameController {
 		[ObsoletedOSPlatform ("tvos13.0", "Use 'GCController.GetExtendedGamepadController()' instead.")]
 		[ObsoletedOSPlatform ("ios13.0", "Use 'GCController.GetExtendedGamepadController()' instead.")]
 		[ObsoletedOSPlatform ("maccatalyst13.1", "Use 'GCExtendedGamepadSnapshotData' instead.")]
-#endif
 		[DllImport (Constants.GameControllerLibrary)]
 		unsafe static extern /* NSData * __nullable */ IntPtr NSDataFromGCExtendedGamepadSnapshotData (
 #if XAMCORE_5_0
@@ -206,7 +251,9 @@ namespace GameController {
 			/* GCExtendedGamepadSnapshotData * __nullable */ GCExtendedGamepadSnapshotData_Blittable* snapshotData);
 #endif
 
-#if NET
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
@@ -215,7 +262,6 @@ namespace GameController {
 		[ObsoletedOSPlatform ("tvos13.0", "Use 'GCController.GetExtendedGamepadController()' instead.")]
 		[ObsoletedOSPlatform ("ios13.0", "Use 'GCController.GetExtendedGamepadController()' instead.")]
 		[ObsoletedOSPlatform ("maccatalyst13.1", "Use 'GCExtendedGamepadSnapshotData' instead.")]
-#endif
 		public NSData? ToNSData ()
 		{
 			unsafe {
@@ -317,7 +363,6 @@ namespace GameController {
 			/* GCExtendedGamepadSnapShotDataV100 * __nullable */ GCExtendedGamepadSnapShotDataV100* snapshotData,
 			/* NSData * __nullable */ IntPtr data);
 
-#if NET
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
@@ -326,7 +371,6 @@ namespace GameController {
 		[ObsoletedOSPlatform ("tvos13.0", "Use 'GCController.GetExtendedGamepadController()' instead.")]
 		[ObsoletedOSPlatform ("ios13.0", "Use 'GCController.GetExtendedGamepadController()' instead.")]
 		[ObsoletedOSPlatform ("maccatalyst13.1")]
-#endif
 		[DllImport (Constants.GameControllerLibrary)]
 		unsafe static extern byte GCExtendedGamepadSnapshotDataFromNSData (
 #if XAMCORE_5_0
@@ -336,15 +380,34 @@ namespace GameController {
 #endif
 			/* NSData * __nullable */ IntPtr data);
 
+		/// <param name="data">To be added.</param>
+		/// <param name="snapshotData">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[ObsoletedOSPlatform ("macos", "Use 'GCExtendedGamepadSnapshotData' instead.")]
+		[ObsoletedOSPlatform ("tvos", "Use 'GCExtendedGamepadSnapshotData' instead.")]
+		[ObsoletedOSPlatform ("ios", "Use 'GCExtendedGamepadSnapshotData' instead.")]
+		[ObsoletedOSPlatform ("maccatalyst", "Use 'GCExtendedGamepadSnapshotData' instead.")]
 		public static bool TryGetSnapShotData (NSData? data, out GCExtendedGamepadSnapShotDataV100 snapshotData)
 		{
 			snapshotData = default;
 			unsafe {
-				return GCExtendedGamepadSnapShotDataV100FromNSData ((GCExtendedGamepadSnapShotDataV100*) Unsafe.AsPointer<GCExtendedGamepadSnapShotDataV100> (ref snapshotData), data.GetHandle ()) != 0;
+				bool result = GCExtendedGamepadSnapShotDataV100FromNSData ((GCExtendedGamepadSnapShotDataV100*) Unsafe.AsPointer<GCExtendedGamepadSnapShotDataV100> (ref snapshotData), data.GetHandle ()) != 0;
+				GC.KeepAlive (data);
+				return result;
 			}
 		}
 
-#if NET
+		/// <param name="data">To be added.</param>
+		///         <param name="snapshotData">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
@@ -353,7 +416,6 @@ namespace GameController {
 		[ObsoletedOSPlatform ("tvos13.0", "Use 'GCController.GetExtendedGamepadController()' instead.")]
 		[ObsoletedOSPlatform ("ios13.0", "Use 'GCController.GetExtendedGamepadController()' instead.")]
 		[ObsoletedOSPlatform ("maccatalyst13.1")]
-#endif
 		public static bool TryGetExtendedSnapShotData (NSData? data, out GCExtendedGamepadSnapshotData snapshotData)
 		{
 			snapshotData = default;
@@ -363,6 +425,7 @@ namespace GameController {
 #else
 				GCExtendedGamepadSnapshotData_Blittable blittableData = snapshotData.ToBlittable ();
 				var rv = GCExtendedGamepadSnapshotDataFromNSData (&blittableData, data.GetHandle ()) != 0;
+				GC.KeepAlive (data);
 				snapshotData = new GCExtendedGamepadSnapshotData (blittableData);
 				return rv;
 #endif

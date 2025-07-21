@@ -37,10 +37,6 @@ parameters:
 - name: xqaCertPass
   type: string
 
-- name: makeTarget
-  type: string
-  default: 'vsts-device-tests' # target to be used to run the tests
-
 - name: condition
   type: boolean
   default: true
@@ -48,12 +44,6 @@ parameters:
 - name: parseLabels
   type: boolean
   default: true
-
-- name: testConfigurations
-  type: object
-
-- name: supportedPlatforms
-  type: object
 
 - name: isPR
   type: boolean
@@ -88,7 +78,6 @@ stages:
 
   jobs:
   - job: "tests"
-    condition: ne(stageDependencies.configure_build.configure.outputs['labels.skip_all_tests'], 'True')
     displayName: 'T:' 
     timeoutInMinutes: 180
     variables:
@@ -100,12 +89,8 @@ stages:
       BRANCH_NAME: $[ replace(variables['Build.SourceBranch'], 'refs/heads/', '') ]
       XHARNESS_LABELS: $[ stageDependencies.configure_build.configure.outputs['labels.xharness_labels'] ]
       DOTNET_PLATFORMS: $[ stageDependencies.configure_build.configure.outputs['configure_platforms.DOTNET_PLATFORMS'] ]
-      ${{ if eq(parameters.testPool, '') }}:
-        AgentPoolComputed: $(PRBuildPool)
-      ${{ else }}:
-        AgentPoolComputed: ${{ parameters.testPool }}
     pool:
-      name: $(AgentPoolComputed)
+      name: ${{ parameters.testPool }}
       demands:
       - Agent.OS -equals Darwin
       - macOS.Name -equals ${{ parameters.macOSName }}
@@ -115,7 +100,8 @@ stages:
       workspace:
         clean: all
     strategy:
-      matrix: $[ stageDependencies.configure_build.configure.outputs['test_matrix.TEST_MATRIX'] ]
+      matrix: $[ stageDependencies.configure_build.configure.outputs['test_matrix.SIMULATOR_TEST_MATRIX'] ]
+    condition: ne(stageDependencies.configure_build.configure.outputs['labels.skip_all_tests'], 'True')
     steps:
 
     - bash: |
@@ -137,7 +123,6 @@ stages:
         vsdropsPrefix: ${{ parameters.vsdropsPrefix }}
         keyringPass: ${{ parameters.keyringPass }}
         testPrefix: $(TEST_PREFIX)
-        makeTarget: ${{ parameters.makeTarget }}
         gitHubToken: ${{ parameters.gitHubToken }}
         xqaCertPass: ${{ parameters.xqaCertPass }}
         XcodeChannel: ${{ parameters.XcodeChannel }}

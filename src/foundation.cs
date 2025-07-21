@@ -30,7 +30,11 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 //
+
 #define DOUBLE_BLOCKS
+
+global using nfloat = global::System.Runtime.InteropServices.NFloat;
+
 using ObjCRuntime;
 using CloudKit;
 using CoreData;
@@ -48,10 +52,8 @@ using QuickLook;
 #if !TVOS
 using Contacts;
 #endif
-#if !WATCH
 using CoreAnimation;
 using CoreSpotlight;
-#endif
 using CoreMedia;
 using SceneKit;
 using Security;
@@ -105,19 +107,7 @@ using NSBezierPath = Foundation.NSObject;
 using NSImage = Foundation.NSObject;
 #endif
 
-#if WATCH
-// dummy usings to make code compile without having the actual types available (for [NoWatch] to work)
-using NSAppleEventSendOptions = Foundation.NSObject;
-using NSBezierPath = Foundation.NSObject;
-using NSImage = Foundation.NSObject;
-using CSSearchableItemAttributeSet = Foundation.NSObject;
-#endif
-
-#if WATCH
-using CIBarcodeDescriptor = Foundation.NSObject;
-#else
 using CoreImage;
-#endif
 
 #if !IOS
 using APActivationPayload = Foundation.NSObject;
@@ -129,7 +119,7 @@ using NSBezierPath = Foundation.NSObject;
 using NSImage = Foundation.NSObject;
 #endif
 
-#if IOS || WATCH || TVOS
+#if IOS || TVOS
 using NSAppearance = UIKit.UIAppearance;
 using NSColor = UIKit.UIColor;
 using NSNotificationSuspensionBehavior = Foundation.NSObject;
@@ -138,37 +128,73 @@ using NSTextBlock = Foundation.NSObject;
 using NSTextTable = Foundation.NSString; // Different frmo NSTextBlock, because some methods overload on these two types.
 #endif
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace Foundation {
+	/// <param name="reacquirer">To be added.</param>
+	/// <summary>Completion handler for relinquishing a file to a reader.</summary>
+	/// <remarks>To be added.</remarks>
 	delegate void NSFilePresenterReacquirer ([BlockCallback] Action reacquirer);
 }
 
 namespace Foundation {
+	/// <param name="obj1">To be added.</param>
+	/// <param name="obj2">To be added.</param>
+	/// <summary>A delegate that defines the comparison function to be used with functins such as <see cref="Foundation.NSArray.Sort(Foundation.NSComparator)" />.</summary>
+	/// <returns>To be added.</returns>
+	/// <remarks>To be added.</remarks>
 	delegate NSComparisonResult NSComparator (NSObject obj1, NSObject obj2);
+	/// <param name="attrs">To be added.</param>
+	/// <param name="range">To be added.</param>
+	/// <param name="stop">To be added.</param>
+	/// <summary>A delegate that specifies the callback for the <see cref="Foundation.NSAttributedString.EnumerateAttributes(Foundation.NSRange,Foundation.NSAttributedStringEnumeration,Foundation.NSAttributedRangeCallback)" /> method.</summary>
+	/// <remarks>To be added.</remarks>
 	delegate void NSAttributedRangeCallback (NSDictionary attrs, NSRange range, ref bool stop);
+	/// <param name="value">To be added.</param>
+	/// <param name="range">To be added.</param>
+	/// <param name="stop">To be added.</param>
+	/// <summary>A delegate that specifies the callback for the <see cref="Foundation.NSAttributedString.EnumerateAttribute(Foundation.NSString,Foundation.NSRange,Foundation.NSAttributedStringEnumeration,Foundation.NSAttributedStringCallback)" /> method.</summary>
+	/// <remarks>To be added.</remarks>
 	delegate void NSAttributedStringCallback (NSObject value, NSRange range, ref bool stop);
 
+	/// <param name="url">To be added.</param>
+	/// <param name="error">To be added.</param>
+	/// <summary>A delegate that specifies the error handler for use in <see cref="Foundation.NSFileManager.GetEnumerator(Foundation.NSUrl,Foundation.NSString[],Foundation.NSDirectoryEnumerationOptions,Foundation.NSEnumerateErrorHandler)" />.</summary>
+	/// <returns>To be added.</returns>
+	/// <remarks>To be added.</remarks>
 	delegate bool NSEnumerateErrorHandler (NSUrl url, NSError error);
+	/// <param name="result">To be added.</param>
+	/// <param name="idx">To be added.</param>
+	/// <param name="stop">To be added.</param>
+	/// <summary>The delegate used as the callback in calls to <see cref="Foundation.NSMetadataQuery.EnumerateResultsUsingBlock(Foundation.NSMetadataQueryEnumerationCallback)" /> and <see cref="Foundation.NSMetadataQuery.EnumerateResultsWithOptions(Foundation.NSEnumerationOptions,Foundation.NSMetadataQueryEnumerationCallback)" />.</summary>
+	/// <remarks>To be added.</remarks>
 	delegate void NSMetadataQueryEnumerationCallback (NSObject result, nuint idx, ref bool stop);
-#if NET
+	/// <param name="itemBeingLoaded">To be added.</param>
+	/// <param name="error">To be added.</param>
+	/// <summary>The completion handler used with <see cref="Foundation.NSItemProviderLoadHandler" /> delegates.</summary>
+	/// <remarks>To be added.</remarks>
 	delegate void NSItemProviderCompletionHandler (INSSecureCoding itemBeingLoaded, NSError error);
-#else
-	delegate void NSItemProviderCompletionHandler (NSObject itemBeingLoaded, NSError error);
-#endif
-	delegate void NSItemProviderLoadHandler ([BlockCallback] NSItemProviderCompletionHandler completionHandler, Class expectedValueClass, NSDictionary options);
+	/// <param name="completionHandler">To be added.</param>
+	/// <param name="expectedValueClass">To be added.</param>
+	/// <param name="options">To be added.</param>
+	/// <summary>Defines the load handler for use with the <see cref="Foundation.NSItemProvider.RegisterItemForTypeIdentifier(System.String,Foundation.NSItemProviderLoadHandler)" /> and <see cref="Foundation.NSItemProvider.SetPreviewImageHandler(Foundation.NSItemProviderLoadHandler)" /> methods.</summary>
+	/// <remarks>To be added.</remarks>
+	delegate void NSItemProviderLoadHandler ([BlockCallback, NullAllowed] NSItemProviderCompletionHandler completionHandler, [NullAllowed] Class expectedValueClass, [NullAllowed] NSDictionary options);
+	/// <param name="date">To be added.</param>
+	/// <param name="exactMatch">To be added.</param>
+	/// <param name="stop">To be added.</param>
+	/// <summary>Completion handler for the <see cref="Foundation.NSCalendar.EnumerateDatesStartingAfterDate(Foundation.NSDate,Foundation.NSDateComponents,Foundation.NSCalendarOptions,Foundation.EnumerateDatesCallback)" /> method.</summary>
+	/// <remarks>To be added.</remarks>
 	delegate void EnumerateDatesCallback (NSDate date, bool exactMatch, ref bool stop);
+	/// <param name="idx">To be added.</param>
+	/// <param name="stop">To be added.</param>
+	/// <summary>Defines the enumerator callback in calls to <see cref="Foundation.NSIndexSet.EnumerateIndexes(Foundation.NSRange,Foundation.NSEnumerationOptions,Foundation.EnumerateIndexSetCallback)" />.</summary>
+	/// <remarks>To be added.</remarks>
 	delegate void EnumerateIndexSetCallback (nuint idx, ref bool stop);
 	delegate void CloudKitRegistrationPreparationAction ([BlockCallback] CloudKitRegistrationPreparationHandler handler);
 	delegate void CloudKitRegistrationPreparationHandler (CKShare share, CKContainer container, NSError error);
 
-#if NET
 	[BaseType (typeof (NSObject))]
 	interface NSAutoreleasePool {
 	}
-#endif
 
 	interface NSArray<TValue> : NSArray { }
 
@@ -178,6 +204,10 @@ namespace Foundation {
 		[Export ("count")]
 		nuint Count { get; }
 
+		/// <param name="idx">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("objectAtIndex:")]
 		NativeHandle ValueAt (nuint idx);
 
@@ -195,7 +225,6 @@ namespace Foundation {
 
 		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use 'Write (NSUrl, out NSError)' instead.")]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'Write (NSUrl, out NSError)' instead.")]
-		[Deprecated (PlatformName.WatchOS, 6, 0, message: "Use 'Write (NSUrl, out NSError)' instead.")]
 		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use 'Write (NSUrl, out NSError)' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'Write (NSUrl, out NSError)' instead.")]
 		[Export ("writeToFile:atomically:")]
@@ -203,7 +232,6 @@ namespace Foundation {
 
 		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use 'NSMutableArray.FromFile' instead.")]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'NSMutableArray.FromFile' instead.")]
-		[Deprecated (PlatformName.WatchOS, 6, 0, message: "Use 'NSMutableArray.FromFile' instead.")]
 		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use 'NSMutableArray.FromFile' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'NSMutableArray.FromFile' instead.")]
 		[Export ("arrayWithContentsOfFile:")]
@@ -251,39 +279,39 @@ namespace Foundation {
 		[return: NullAllowed]
 		NSArray FromUrl (NSUrl url, out NSError error);
 
-#if false // https://github.com/xamarin/xamarin-macios/issues/15577
-		[Watch (6,0), TV (13,0), iOS (13,0)]
+#if false // https://github.com/dotnet/macios/issues/15577
+		[TV (13,0), iOS (13,0)]
 		[Internal]
 		[Export ("differenceFromArray:withOptions:")]
 		NativeHandle _GetDifference (NSArray other, NSOrderedCollectionDifferenceCalculationOptions options);
 
-		[Watch (6,0), TV (13,0), iOS (13,0)]
+		[TV (13,0), iOS (13,0)]
 		[Wrap ("Runtime.GetNSObject <NSOrderedCollectionDifference> (_GetDifference (NSArray.FromNSObjects (other), options))")]
 		[return: NullAllowed]
 		NSOrderedCollectionDifference GetDifference (NSObject[] other, NSOrderedCollectionDifferenceCalculationOptions options);
 
 		[Internal]
-		[Watch (6,0), TV (13,0), iOS (13,0)]
+		[TV (13,0), iOS (13,0)]
 		[Export ("differenceFromArray:")]
 		NativeHandle _GetDifference (NSArray other);
 
-		[Watch (6,0), TV (13,0), iOS (13,0)]
+		[TV (13,0), iOS (13,0)]
 		[Wrap ("Runtime.GetNSObject <NSOrderedCollectionDifference> (_GetDifference(NSArray.FromNSObjects (other)))")]
 		[return: NullAllowed]
 		NSOrderedCollectionDifference GetDifference (NSObject[] other);
 
-		[Watch (6,0), TV (13,0), iOS (13,0)]
+		[TV (13,0), iOS (13,0)]
 		[Export ("arrayByApplyingDifference:")]
 		[return: NullAllowed]
 		NativeHandle _GetArrayByApplyingDifference (NSOrderedCollectionDifference difference);
 
-		[Watch (6,0), TV (13,0), iOS (13,0)]
+		[TV (13,0), iOS (13,0)]
 		[Wrap ("NSArray.ArrayFromHandle<NSObject> (_GetArrayByApplyingDifference (difference))")]
 		[return: NullAllowed]
 		NSObject[] GetArrayByApplyingDifference (NSOrderedCollectionDifference difference);
 
 		[Internal]
-		[Watch (6,0), TV (13,0), iOS (13,0)]
+		[TV (13,0), iOS (13,0)]
 		[Export ("differenceFromArray:withOptions:usingEquivalenceTest:")]
 		NativeHandle _GetDifferenceFromArray (NSArray other, NSOrderedCollectionDifferenceCalculationOptions options, /* Func<NSObject, NSObject, bool> block */ ref BlockLiteral block);
 #endif
@@ -298,14 +326,16 @@ namespace Foundation {
 		, NSItemProviderReading, NSItemProviderWriting
 #endif
 	{
-#if !WATCH
 		// Inlined from the NSAttributedStringAttachmentConveniences category
+		/// <param name="attachment">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static, Export ("attributedStringWithAttachment:")]
 		NSAttributedString FromAttachment (NSTextAttachment attachment);
-#endif
 
 		// Inlined from the NSAttributedStringAttachmentConveniences category
-		[NoWatch, TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Static, Export ("attributedStringWithAttachment:attributes:")]
 		NSAttributedString FromAttachment (NSTextAttachment attachment, NSDictionary<NSString, NSObject> attributes);
 
@@ -313,25 +343,40 @@ namespace Foundation {
 		IntPtr LowLevelValue { get; }
 
 		[Export ("attributesAtIndex:effectiveRange:")]
-#if NET
 		IntPtr LowLevelGetAttributes (nint location, IntPtr effectiveRange);
-#else
-		IntPtr LowLevelGetAttributes (nint location, out NSRange effectiveRange);
-#endif
 
 		[Export ("length")]
 		nint Length { get; }
 
 		// TODO: figure out the type, this deserves to be strongly typed if possble
+		/// <param name="attribute">To be added.</param>
+		/// <param name="location">To be added.</param>
+		/// <param name="effectiveRange">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("attribute:atIndex:effectiveRange:")]
 		NSObject GetAttribute (string attribute, nint location, out NSRange effectiveRange);
 
 		[Export ("attributedSubstringFromRange:"), Internal]
 		NSAttributedString Substring (NSRange range);
 
+		/// <param name="location">To be added.</param>
+		/// <param name="longestEffectiveRange">To be added.</param>
+		/// <param name="rangeLimit">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("attributesAtIndex:longestEffectiveRange:inRange:")]
 		NSDictionary GetAttributes (nint location, out NSRange longestEffectiveRange, NSRange rangeLimit);
 
+		/// <param name="attribute">To be added.</param>
+		/// <param name="location">To be added.</param>
+		/// <param name="longestEffectiveRange">To be added.</param>
+		/// <param name="rangeLimit">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("attribute:atIndex:longestEffectiveRange:inRange:")]
 		NSObject GetAttribute (string attribute, nint location, out NSRange longestEffectiveRange, NSRange rangeLimit);
 
@@ -354,70 +399,148 @@ namespace Foundation {
 		[Export ("enumerateAttribute:inRange:options:usingBlock:")]
 		void EnumerateAttribute (NSString attributeName, NSRange inRange, NSAttributedStringEnumeration options, NSAttributedStringCallback callback);
 
+#if !XAMCORE_5_0
+		/// <param name="url">To be added.</param>
+		/// <param name="options">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="resultDocumentAttributes">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
+		[Obsolete ("Use the 'Create' method instead, because there's no way to return an error from a constructor.")]
 		[Export ("initWithURL:options:documentAttributes:error:")]
-#if !(__MACOS__ || XAMCORE_5_0)
+#if !__MACOS__
 		NativeHandle Constructor (NSUrl url, NSDictionary options, out NSDictionary resultDocumentAttributes, ref NSError error);
 #else
 		NativeHandle Constructor (NSUrl url, NSDictionary options, out NSDictionary resultDocumentAttributes, out NSError error);
 #endif
+#endif // !XAMCORE_5_0
 
+		[Internal]
+		[Sealed]
+		[Export ("initWithURL:options:documentAttributes:error:")]
+		NativeHandle _InitWithUrl (NSUrl url, NSDictionary options, out NSDictionary resultDocumentAttributes, out NSError error);
+
+#if !XAMCORE_5_0
+#if __MACOS__
+		/// <param name="data">To be added.</param>
+		/// <param name="options">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="docAttributes">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
+#else
+		/// <param name="data">To be added.</param>
+		/// <param name="options">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="resultDocumentAttributes">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
+#endif
+		[Obsolete ("Use the 'Create' method instead, because there's no way to return an error from a constructor.")]
 		[Export ("initWithData:options:documentAttributes:error:")]
-#if XAMCORE_5_0
-		NativeHandle Constructor (NSData data, NSDictionary options, out NSDictionary resultDocumentAttributes, out NSError error);
-#elif __MACOS__
+#if __MACOS__
 		NativeHandle Constructor (NSData data, NSDictionary options, out NSDictionary docAttributes, out NSError error);
 #else
 		NativeHandle Constructor (NSData data, NSDictionary options, out NSDictionary resultDocumentAttributes, ref NSError error);
 #endif
+#endif // !XAMCORE_5_0
 
-#if __MACOS__ || XAMCORE_5_0
+		[Internal]
+		[Sealed]
+		[Export ("initWithData:options:documentAttributes:error:")]
+		NativeHandle _InitWithData (NSData data, NSDictionary options, out NSDictionary resultDocumentAttributes, out NSError error);
+
+#if !XAMCORE_5_0
+		/// <param name="url">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="resultDocumentAttributes">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
+		[Obsolete ("Use the 'Create' method instead, because there's no way to return an error from a constructor.")]
+#if __MACOS__
 		[Wrap ("this (url, options.GetDictionary ()!, out resultDocumentAttributes, out error)")]
 		NativeHandle Constructor (NSUrl url, NSAttributedStringDocumentAttributes options, out NSDictionary resultDocumentAttributes, out NSError error);
 #else
 		[Wrap ("this (url, options.GetDictionary ()!, out resultDocumentAttributes, ref error)")]
 		NativeHandle Constructor (NSUrl url, NSAttributedStringDocumentAttributes options, out NSDictionary resultDocumentAttributes, ref NSError error);
 #endif
+#endif // !XAMCORE_5_0
 
-#if __MACOS__ || XAMCORE_5_0
+		/// <param name="data">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="resultDocumentAttributes">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
+		[Obsolete ("Use the 'Create' method instead, because there's no way to return an error from a constructor.")]
+#if !XAMCORE_5_0
+#if __MACOS__
 		[Wrap ("this (data, options.GetDictionary ()!, out resultDocumentAttributes, out error)")]
 		NativeHandle Constructor (NSData data, NSAttributedStringDocumentAttributes options, out NSDictionary resultDocumentAttributes, out NSError error);
 #else
 		[Wrap ("this (data, options.GetDictionary ()!, out resultDocumentAttributes, ref error)")]
 		NativeHandle Constructor (NSData data, NSAttributedStringDocumentAttributes options, out NSDictionary resultDocumentAttributes, ref NSError error);
 #endif
+#endif // !XAMCORE_5_0
 
+		/// <param name="wordDocFormat">To be added.</param>
+		/// <param name="docAttributes">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Export ("initWithDocFormat:documentAttributes:")]
 		NativeHandle Constructor (NSData wordDocFormat, out NSDictionary docAttributes);
 
+		/// <param name="htmlData">To be added.</param>
+		/// <param name="baseUrl">To be added.</param>
+		/// <param name="docAttributes">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Export ("initWithHTML:baseURL:documentAttributes:")]
 		NativeHandle Constructor (NSData htmlData, NSUrl baseUrl, out NSDictionary docAttributes);
 
+		/// <param name="rect">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Export ("drawWithRect:options:")]
 		void DrawString (CGRect rect, NSStringDrawingOptions options);
 
+		/// <param name="path">To be added.</param>
+		/// <param name="resultDocumentAttributes">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Deprecated (PlatformName.MacOSX, 10, 11, message: "Use 'NSAttributedString (NSUrl, NSDictionary, out NSDictionary, ref NSError)' instead.")]
 		[Export ("initWithPath:documentAttributes:")]
 		NativeHandle Constructor (string path, out NSDictionary resultDocumentAttributes);
 
+		/// <param name="url">To be added.</param>
+		/// <param name="resultDocumentAttributes">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Deprecated (PlatformName.MacOSX, 10, 11, message: "Use 'NSAttributedString (NSUrl, NSDictionary, out NSDictionary, ref NSError)' instead.")]
 		[Export ("initWithURL:documentAttributes:")]
@@ -425,98 +548,109 @@ namespace Foundation {
 
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Internal, Export ("initWithRTF:documentAttributes:")]
-		IntPtr InitWithRtf (NSData data, out NSDictionary resultDocumentAttributes);
+		IntPtr _InitWithRtf (NSData data, out NSDictionary resultDocumentAttributes);
 
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Internal, Export ("initWithRTFD:documentAttributes:")]
-		IntPtr InitWithRtfd (NSData data, out NSDictionary resultDocumentAttributes);
+		IntPtr _InitWithRtfd (NSData data, out NSDictionary resultDocumentAttributes);
 
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Internal, Export ("initWithHTML:documentAttributes:")]
-		IntPtr InitWithHTML (NSData data, out NSDictionary resultDocumentAttributes);
+		IntPtr _InitWithHTML (NSData data, out NSDictionary resultDocumentAttributes);
 
+		/// <param name="data">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="resultDocumentAttributes">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Export ("initWithHTML:options:documentAttributes:")]
 		NativeHandle Constructor (NSData data, [NullAllowed] NSDictionary options, out NSDictionary resultDocumentAttributes);
 
+		/// <param name="data">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="resultDocumentAttributes">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Wrap ("this (data, options.GetDictionary (), out resultDocumentAttributes)")]
 		NativeHandle Constructor (NSData data, NSAttributedStringDocumentAttributes options, out NSDictionary resultDocumentAttributes);
 
+		/// <param name="wrapper">To be added.</param>
+		/// <param name="resultDocumentAttributes">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Export ("initWithRTFDFileWrapper:documentAttributes:")]
 		NativeHandle Constructor (NSFileWrapper wrapper, out NSDictionary resultDocumentAttributes);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Export ("containsAttachments")]
 		bool ContainsAttachments { get; }
 
+		/// <param name="range">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Export ("fontAttributesInRange:")]
 		NSDictionary GetFontAttributes (NSRange range);
 
+		/// <param name="range">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Export ("rulerAttributesInRange:")]
 		NSDictionary GetRulerAttributes (NSRange range);
 
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Export ("lineBreakBeforeIndex:withinRange:")]
 		nuint GetLineBreak (nuint beforeIndex, NSRange aRange);
 
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Export ("lineBreakByHyphenatingBeforeIndex:withinRange:")]
 		nuint GetLineBreakByHyphenating (nuint beforeIndex, NSRange aRange);
 
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Export ("doubleClickAtIndex:")]
 		NSRange DoubleClick (nuint index);
 
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Export ("nextWordFromIndex:forward:")]
 		nuint GetNextWord (nuint fromIndex, bool isForward);
 
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Deprecated (PlatformName.MacOSX, 10, 11, message: "Use 'NSDataDetector' instead.")]
 		[Export ("URLAtIndex:effectiveRange:")]
@@ -524,44 +658,58 @@ namespace Foundation {
 
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Export ("rangeOfTextBlock:atIndex:")]
 		NSRange GetRange (NSTextBlock textBlock, nuint index);
 
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Export ("rangeOfTextTable:atIndex:")]
 		NSRange GetRange (NSTextTable textTable, nuint index);
 
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Export ("rangeOfTextList:atIndex:")]
 		NSRange GetRange (NSTextList textList, nuint index);
 
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Export ("itemNumberInTextList:atIndex:")]
 		nint GetItemNumber (NSTextList textList, nuint index);
 
 #if !(MONOMAC || XAMCORE_5_0)
+		/// <param name="range">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Sealed]
 #endif
 		[return: NullAllowed]
 		[Export ("dataFromRange:documentAttributes:error:")]
 		NSData GetData (NSRange range, NSDictionary options, out NSError error);
 
+		/// <param name="range">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[return: NullAllowed]
 		[Wrap ("this.GetData (range, options.GetDictionary ()!, out error)")]
 		NSData GetData (NSRange range, NSAttributedStringDocumentAttributes options, out NSError error);
 
 #if !(MONOMAC || XAMCORE_5_0)
+		/// <param name="range">To be added.</param>
+		///         <param name="attributes">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[return: NullAllowed]
 		[Obsolete ("Use 'GetData' instead.")]
 		[Export ("dataFromRange:documentAttributes:error:")]
@@ -569,6 +717,12 @@ namespace Foundation {
 #endif
 
 #if !(MONOMAC || XAMCORE_5_0)
+		/// <param name="range">To be added.</param>
+		///         <param name="documentAttributes">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[return: NullAllowed]
 		[Obsolete ("Use 'GetData' instead.")]
 		[Wrap ("GetDataFromRange (range, documentAttributes.GetDictionary ()!, ref error)")]
@@ -576,6 +730,12 @@ namespace Foundation {
 #endif
 
 #if !(MONOMAC || XAMCORE_5_0)
+		/// <param name="range">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Sealed]
 #endif
 		[return: NullAllowed]
@@ -583,112 +743,191 @@ namespace Foundation {
 		NSFileWrapper GetFileWrapper (NSRange range, NSDictionary options, out NSError error);
 
 #if !(MONOMAC || XAMCORE_5_0)
+		/// <param name="range">To be added.</param>
+		///         <param name="attributes">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[return: NullAllowed]
 		[Obsolete ("Use 'GetFileWrapper' instead.")]
 		[Export ("fileWrapperFromRange:documentAttributes:error:")]
 		NSFileWrapper GetFileWrapperFromRange (NSRange range, NSDictionary attributes, ref NSError error);
 #endif
 
+		/// <param name="range">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[return: NullAllowed]
 		[Wrap ("this.GetFileWrapper (range, options.GetDictionary ()!, out error)")]
 		NSFileWrapper GetFileWrapper (NSRange range, NSAttributedStringDocumentAttributes options, out NSError error);
 
 #if !(MONOMAC || XAMCORE_5_0)
+		/// <param name="range">To be added.</param>
+		///         <param name="documentAttributes">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[return: NullAllowed]
 		[Obsolete ("Use 'GetFileWrapper' instead.")]
 		[Wrap ("GetFileWrapperFromRange (range, documentAttributes.GetDictionary ()!, ref error)")]
 		NSFileWrapper GetFileWrapperFromRange (NSRange range, NSAttributedStringDocumentAttributes documentAttributes, ref NSError error);
 #endif
 
+		/// <param name="range">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Export ("RTFFromRange:documentAttributes:")]
 		NSData GetRtf (NSRange range, [NullAllowed] NSDictionary options);
 
+		/// <param name="range">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Wrap ("this.GetRtf (range, options.GetDictionary ())")]
 		NSData GetRtf (NSRange range, NSAttributedStringDocumentAttributes options);
 
+		/// <param name="range">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Export ("RTFDFromRange:documentAttributes:")]
 		NSData GetRtfd (NSRange range, [NullAllowed] NSDictionary options);
 
+		/// <param name="range">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Wrap ("this.GetRtfd (range, options.GetDictionary ())")]
 		NSData GetRtfd (NSRange range, NSAttributedStringDocumentAttributes options);
 
+		/// <param name="range">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Export ("RTFDFileWrapperFromRange:documentAttributes:")]
 		NSFileWrapper GetRtfdFileWrapper (NSRange range, [NullAllowed] NSDictionary options);
 
+		/// <param name="range">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Wrap ("this.GetRtfdFileWrapper (range, options.GetDictionary ())")]
 		NSFileWrapper GetRtfdFileWrapper (NSRange range, NSAttributedStringDocumentAttributes options);
 
+		/// <param name="range">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Export ("docFormatFromRange:documentAttributes:")]
 		NSData GetDocFormat (NSRange range, [NullAllowed] NSDictionary options);
 
+		/// <param name="range">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Wrap ("this.GetDocFormat (range, options.GetDictionary ())")]
 		NSData GetDocFormat (NSRange range, NSAttributedStringDocumentAttributes options);
 
+		/// <param name="rect">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <param name="context">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("drawWithRect:options:context:")]
 		void DrawString (CGRect rect, NSStringDrawingOptions options, [NullAllowed] NSStringDrawingContext context);
 
+		/// <param name="size">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <param name="context">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("boundingRectWithSize:options:context:")]
 		CGRect GetBoundingRect (CGSize size, NSStringDrawingOptions options, [NullAllowed] NSStringDrawingContext context);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("size")]
 		CGSize Size { get; }
 
+		/// <param name="point">To be added.</param>
+		///         <summary>Draws the string at the specified point.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("drawAtPoint:")]
 		void DrawString (CGPoint point);
 
+		/// <param name="rect">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("drawInRect:")]
 		void DrawString (CGRect rect);
 
 		// Inlined from the NSAttributedStringKitAdditions category
+		/// <param name="range">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("containsAttachmentsInRange:")]
 		bool ContainsAttachmentsInRange (NSRange range);
 
 		// Inlined from the NSAttributedStringKitAdditions category
-		[Watch (11, 0), TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Export ("prefersRTFDInRange:")]
 		bool PrefersRtfdInRange (NSRange range);
 
 		// inlined from NSAttributedStringWebKitAdditions category (since they are all static members)
 
-		[NoWatch]
 		[NoTV] // really inside WebKit
 		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
@@ -699,7 +938,6 @@ namespace Foundation {
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		void LoadFromHtml (NSUrlRequest request, NSDictionary options, NSAttributedStringCompletionHandler completionHandler);
 
-		[NoWatch]
 		[NoTV] // really inside WebKit
 		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
@@ -708,7 +946,6 @@ namespace Foundation {
 		[Wrap ("LoadFromHtml (request, options.GetDictionary ()!, completionHandler)")]
 		void LoadFromHtml (NSUrlRequest request, NSAttributedStringDocumentAttributes options, NSAttributedStringCompletionHandler completionHandler);
 
-		[NoWatch]
 		[NoTV] // really inside WebKit
 		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
@@ -719,7 +956,6 @@ namespace Foundation {
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		void LoadFromHtml (NSUrl fileUrl, NSDictionary options, NSAttributedStringCompletionHandler completionHandler);
 
-		[NoWatch]
 		[NoTV] // really inside WebKit
 		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
@@ -728,7 +964,6 @@ namespace Foundation {
 		[Wrap ("LoadFromHtml (fileUrl, options.GetDictionary ()!, completionHandler)")]
 		void LoadFromHtml (NSUrl fileUrl, NSAttributedStringDocumentAttributes options, NSAttributedStringCompletionHandler completionHandler);
 
-		[NoWatch]
 		[NoTV] // really inside WebKit
 		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
@@ -739,7 +974,6 @@ namespace Foundation {
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		void LoadFromHtml (string @string, NSDictionary options, NSAttributedStringCompletionHandler completionHandler);
 
-		[NoWatch]
 		[NoTV] // really inside WebKit
 		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
@@ -748,7 +982,6 @@ namespace Foundation {
 		[Wrap ("LoadFromHtml (@string, options.GetDictionary ()!, completionHandler)")]
 		void LoadFromHtml (string @string, NSAttributedStringDocumentAttributes options, NSAttributedStringCompletionHandler completionHandler);
 
-		[NoWatch]
 		[NoTV] // really inside WebKit
 		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
@@ -759,7 +992,6 @@ namespace Foundation {
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		void LoadFromHtml (NSData data, NSDictionary options, NSAttributedStringCompletionHandler completionHandler);
 
-		[NoWatch]
 		[NoTV] // really inside WebKit
 		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
@@ -768,25 +1000,56 @@ namespace Foundation {
 		[Wrap ("LoadFromHtml (data, options.GetDictionary ()!, completionHandler)")]
 		void LoadFromHtml (NSData data, NSAttributedStringDocumentAttributes options, NSAttributedStringCompletionHandler completionHandler);
 
-		[Watch (8, 0), TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+#if !XAMCORE_5_0
+		[Obsolete ("Use the 'Create' method instead, because there's no way to return an error from a constructor.")]
+		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("initWithContentsOfMarkdownFileAtURL:options:baseURL:error:")]
 		NativeHandle Constructor (NSUrl markdownFile, [NullAllowed] NSAttributedStringMarkdownParsingOptions options, [NullAllowed] NSUrl baseUrl, [NullAllowed] out NSError error);
+#endif
 
-		[Watch (8, 0), TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[Internal]
+		[Sealed]
+		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[Export ("initWithContentsOfMarkdownFileAtURL:options:baseURL:error:")]
+		NativeHandle _InitWithContentsOfMarkdownFile (NSUrl markdownFile, [NullAllowed] NSAttributedStringMarkdownParsingOptions options, [NullAllowed] NSUrl baseUrl, [NullAllowed] out NSError error);
+
+#if !XAMCORE_5_0
+		[Obsolete ("Use the 'Create' method instead, because there's no way to return an error from a constructor.")]
+		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("initWithMarkdown:options:baseURL:error:")]
 		NativeHandle Constructor (NSData markdown, [NullAllowed] NSAttributedStringMarkdownParsingOptions options, [NullAllowed] NSUrl baseUrl, [NullAllowed] out NSError error);
+#endif
 
-		[Watch (8, 0), TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[Internal]
+		[Sealed]
+		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[Export ("initWithMarkdown:options:baseURL:error:")]
+		NativeHandle _InitWithMarkdown (NSData markdown, [NullAllowed] NSAttributedStringMarkdownParsingOptions options, [NullAllowed] NSUrl baseUrl, [NullAllowed] out NSError error);
+
+#if !XAMCORE_5_0
+		[Obsolete ("Use the 'Create' method instead, because there's no way to return an error from a constructor.")]
+		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("initWithMarkdownString:options:baseURL:error:")]
 		NativeHandle Constructor (string markdownString, [NullAllowed] NSAttributedStringMarkdownParsingOptions options, [NullAllowed] NSUrl baseUrl, [NullAllowed] out NSError error);
+#endif
 
-		[Watch (8, 0), TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[Internal]
+		[Sealed]
+		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[Export ("initWithMarkdownString:options:baseURL:error:")]
+		NativeHandle _InitWithMarkdownString (string markdownString, [NullAllowed] NSAttributedStringMarkdownParsingOptions options, [NullAllowed] NSUrl baseUrl, [NullAllowed] out NSError error);
+
+		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("attributedStringByInflectingString")]
 		NSAttributedString AttributedStringByInflectingString { get; }
 
+		/// <param name="size">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Export ("boundingRectWithSize:options:")]
 		CGRect BoundingRectWithSize (CGSize size, NSStringDrawingOptions options);
@@ -794,6 +1057,9 @@ namespace Foundation {
 #if MONOMAC
 		[Field ("NSTextLayoutSectionOrientation", "AppKit")]
 #else
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSTextLayoutSectionOrientation", "UIKit")]
 #endif
 		NSString TextLayoutSectionOrientation { get; }
@@ -801,6 +1067,9 @@ namespace Foundation {
 #if MONOMAC
 		[Field ("NSTextLayoutSectionRange", "AppKit")]
 #else
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSTextLayoutSectionRange", "UIKit")]
 #endif
 		NSString TextLayoutSectionRange { get; }
@@ -809,12 +1078,18 @@ namespace Foundation {
 #if MONOMAC
 		[Field ("NSTextLayoutSectionsAttribute", "AppKit")]
 #else
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSTextLayoutSectionsAttribute", "UIKit")]
 #endif
 		NSString TextLayoutSectionsAttribute { get; }
 #endif // !XAMCORE_5_0
 
-		[NoiOS, NoWatch, NoTV]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoiOS, NoTV]
 		[Deprecated (PlatformName.MacOSX, 10, 11)]
 		[NoMacCatalyst]
 		[Field ("NSUnderlineByWordMask", "AppKit")]
@@ -826,7 +1101,7 @@ namespace Foundation {
 #else
 		[Field ("NSTextScalingDocumentAttribute", "UIKit")]
 #endif
-		[iOS (13, 0), TV (13, 0), Watch (6, 0)]
+		[iOS (13, 0), TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		NSString TextScalingDocumentAttribute { get; }
 #endif // !XAMCORE_5_0
@@ -837,7 +1112,7 @@ namespace Foundation {
 #else
 		[Field ("NSSourceTextScalingDocumentAttribute", "UIKit")]
 #endif
-		[iOS (13, 0), TV (13, 0), Watch (6, 0)]
+		[iOS (13, 0), TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		NSString SourceTextScalingDocumentAttribute { get; }
 #endif // !XAMCORE_5_0
@@ -848,20 +1123,20 @@ namespace Foundation {
 #else
 		[Field ("NSCocoaVersionDocumentAttribute", "UIKit")]
 #endif
-		[iOS (13, 0), TV (13, 0), Watch (6, 0)]
+		[iOS (13, 0), TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		NSString CocoaVersionDocumentAttribute { get; }
 #endif // !XAMCORE_5_0
 
 		// Inlined from the NSAttributedStringAdaptiveImageGlyphConveniences category
-		[Watch (11, 0), TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Static]
 		[Export ("attributedStringWithAdaptiveImageGlyph:attributes:")]
 		NSAttributedString Create (NSAdaptiveImageGlyph adaptiveImageGlyph, NSDictionary<NSString, NSObject> attributes);
 	}
 
 	// we follow the API found in swift
-	[Watch (8, 0), TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 	public enum NSAttributedStringNameKey {
 
 		[Field ("NSAlternateDescriptionAttributeName")]
@@ -882,7 +1157,7 @@ namespace Foundation {
 		[Field ("NSLanguageIdentifierAttributeName")]
 		LanguageIdentifier,
 
-		[Watch (9, 0), TV (16, 0), Mac (13, 0), iOS (16, 0)]
+		[TV (16, 0), Mac (13, 0), iOS (16, 0)]
 		[MacCatalyst (16, 0)]
 		[Field ("NSMarkdownSourcePositionAttributeName")]
 		MarkdownSourcePosition,
@@ -896,24 +1171,24 @@ namespace Foundation {
 		[Field ("NSReplacementIndexAttributeName")]
 		ReplacementIndex,
 
-		[Watch (10, 0), TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Field ("NSInflectionAgreementArgumentAttributeName")]
 		InflectionAgreementArgument,
 
-		[Watch (10, 0), TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Field ("NSInflectionAgreementConceptAttributeName")]
 		InflectionAgreementConcept,
 
-		[Watch (10, 0), TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Field ("NSInflectionReferentConceptAttributeName")]
 		InflectionReferentConcept,
 
-		[Watch (11, 0), TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Field ("NSLocalizedNumberFormatAttributeName")]
 		LocalizedNumberFormat,
 	}
 
-	[Watch (10, 0), TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[Native]
 	public enum NSGrammaticalCase : long {
 		NotSet = 0,
@@ -933,7 +1208,7 @@ namespace Foundation {
 		Translative,
 	}
 
-	[Watch (10, 0), TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[Native]
 	public enum NSGrammaticalPronounType : long {
 		NotSet = 0,
@@ -942,7 +1217,7 @@ namespace Foundation {
 		Possessive,
 	}
 
-	[Watch (10, 0), TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[Native]
 	public enum NSGrammaticalDefiniteness : long {
 		NotSet = 0,
@@ -950,7 +1225,7 @@ namespace Foundation {
 		Definite,
 	}
 
-	[Watch (10, 0), TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[Native]
 	public enum NSGrammaticalDetermination : long {
 		NotSet = 0,
@@ -958,7 +1233,7 @@ namespace Foundation {
 		Dependent,
 	}
 
-	[Watch (10, 0), TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[Native]
 	public enum NSGrammaticalPerson : long {
 		NotSet = 0,
@@ -967,7 +1242,6 @@ namespace Foundation {
 		Third,
 	}
 
-	[NoWatch]
 	[NoTV] // really inside WebKit
 	[iOS (13, 0)]
 	[MacCatalyst (13, 1)]
@@ -980,9 +1254,23 @@ namespace Foundation {
 		[Export ("objectForKey:")]
 		NSObject ObjectForKey (NSObject key);
 
+#if !XAMCORE_5_0
+		[Obsolete ("Use 'SetObjectForKey' instead.")]
 		[Export ("setObject:forKey:")]
 		void SetObjectforKey (NSObject obj, NSObject key);
+#endif
 
+#if !XAMCORE_5_0
+		[Sealed]
+#endif
+		[Export ("setObject:forKey:")]
+		void SetObjectForKey (NSObject obj, NSObject key);
+
+		/// <param name="obj">To be added.</param>
+		/// <param name="key">To be added.</param>
+		/// <param name="cost">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("setObject:forKey:cost:")]
 		void SetCost (NSObject obj, NSObject key, nuint cost);
 
@@ -1000,6 +1288,13 @@ namespace Foundation {
 		[NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the Foundation.INSCacheDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the Foundation.INSCacheDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		INSCacheDelegate Delegate { get; set; }
 
@@ -1015,11 +1310,24 @@ namespace Foundation {
 
 	interface INSCacheDelegate { }
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Foundation.NSCacheDelegate" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Foundation.NSCacheDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Foundation.NSCacheDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="Foundation.NSCacheDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[BaseType (typeof (NSObject))]
 	[Model]
 	[Protocol]
 	interface NSCacheDelegate {
-		[Export ("cache:willEvictObject:"), EventArgs ("NSObject")]
+		/// <param name="cache">To be added.</param>
+		/// <param name="obj">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
+		[Export ("cache:willEvictObject:"), EventArgs ("NSObject", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void WillEvictObject (NSCache cache, NSObject obj);
 	}
 
@@ -1047,7 +1355,6 @@ namespace Foundation {
 	}
 
 	[BaseType (typeof (NSObject))]
-	// 'init' returns NIL - `init` now marked as NS_UNAVAILABLE
 	[DisableDefaultCtor]
 	interface NSCalendar : NSSecureCoding, NSCopying {
 		[DesignatedInitializer]
@@ -1079,20 +1386,8 @@ namespace Foundation {
 		[Export ("components:fromDate:toDate:options:")]
 		NSDateComponents Components (NSCalendarUnit unitFlags, NSDate fromDate, NSDate toDate, NSCalendarOptions opts);
 
-#if !NET
-		[Obsolete ("Use the overload with a 'NSCalendarOptions' parameter.")]
-		[Wrap ("Components (unitFlags, fromDate, toDate, (NSCalendarOptions) opts)")]
-		NSDateComponents Components (NSCalendarUnit unitFlags, NSDate fromDate, NSDate toDate, NSDateComponentsWrappingBehavior opts);
-#endif
-
 		[Export ("dateByAddingComponents:toDate:options:")]
 		NSDate DateByAddingComponents (NSDateComponents comps, NSDate date, NSCalendarOptions opts);
-
-#if !NET
-		[Obsolete ("Use the overload with a 'NSCalendarOptions' parameter.")]
-		[Wrap ("DateByAddingComponents (comps, date, (NSCalendarOptions) opts)")]
-		NSDate DateByAddingComponents (NSDateComponents comps, NSDate date, NSDateComponentsWrappingBehavior opts);
-#endif
 
 		[Export ("dateFromComponents:")]
 		NSDate DateFromComponents (NSDateComponents comps);
@@ -1227,22 +1522,66 @@ namespace Foundation {
 		[MacCatalyst (13, 1)]
 		bool Matches (NSDate date, NSDateComponents components);
 
+		/// <param name="unit">To be added.</param>
+		/// <param name="value">To be added.</param>
+		/// <param name="date">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("dateByAddingUnit:value:toDate:options:")]
 		[MacCatalyst (13, 1)]
 		NSDate DateByAddingUnit (NSCalendarUnit unit, nint value, NSDate date, NSCalendarOptions options);
 
+		/// <param name="hour">To be added.</param>
+		/// <param name="minute">To be added.</param>
+		/// <param name="second">To be added.</param>
+		/// <param name="date">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("dateBySettingHour:minute:second:ofDate:options:")]
 		[MacCatalyst (13, 1)]
 		NSDate DateBySettingsHour (nint hour, nint minute, nint second, NSDate date, NSCalendarOptions options);
 
+		/// <param name="unit">To be added.</param>
+		/// <param name="value">To be added.</param>
+		/// <param name="date">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("dateBySettingUnit:value:ofDate:options:")]
 		[MacCatalyst (13, 1)]
 		NSDate DateBySettingUnit (NSCalendarUnit unit, nint value, NSDate date, NSCalendarOptions options);
 
+		/// <param name="era">To be added.</param>
+		/// <param name="year">To be added.</param>
+		/// <param name="month">To be added.</param>
+		/// <param name="date">To be added.</param>
+		/// <param name="hour">To be added.</param>
+		/// <param name="minute">To be added.</param>
+		/// <param name="second">To be added.</param>
+		/// <param name="nanosecond">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("dateWithEra:year:month:day:hour:minute:second:nanosecond:")]
 		[MacCatalyst (13, 1)]
 		NSDate Date (nint era, nint year, nint month, nint date, nint hour, nint minute, nint second, nint nanosecond);
 
+		/// <param name="era">To be added.</param>
+		/// <param name="year">To be added.</param>
+		/// <param name="week">To be added.</param>
+		/// <param name="weekday">To be added.</param>
+		/// <param name="hour">To be added.</param>
+		/// <param name="minute">To be added.</param>
+		/// <param name="second">To be added.</param>
+		/// <param name="nanosecond">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("dateWithEra:yearForWeekOfYear:weekOfYear:weekday:hour:minute:second:nanosecond:")]
 		[MacCatalyst (13, 1)]
 		NSDate DateForWeekOfYear (nint era, nint year, nint week, nint weekday, nint hour, nint minute, nint second, nint nanosecond);
@@ -1251,14 +1590,35 @@ namespace Foundation {
 		[MacCatalyst (13, 1)]
 		void EnumerateDatesStartingAfterDate (NSDate start, NSDateComponents matchingComponents, NSCalendarOptions options, [BlockCallback] EnumerateDatesCallback callback);
 
+		/// <param name="era">To be added.</param>
+		/// <param name="year">To be added.</param>
+		/// <param name="month">To be added.</param>
+		/// <param name="day">To be added.</param>
+		/// <param name="date">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("getEra:year:month:day:fromDate:")]
 		[MacCatalyst (13, 1)]
 		void GetComponentsFromDate (out nint era, out nint year, out nint month, out nint day, NSDate date);
 
+		/// <param name="era">To be added.</param>
+		/// <param name="year">To be added.</param>
+		/// <param name="weekOfYear">To be added.</param>
+		/// <param name="weekday">To be added.</param>
+		/// <param name="date">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("getEra:yearForWeekOfYear:weekOfYear:weekday:fromDate:")]
 		[MacCatalyst (13, 1)]
 		void GetComponentsFromDateForWeekOfYear (out nint era, out nint year, out nint weekOfYear, out nint weekday, NSDate date);
 
+		/// <param name="hour">To be added.</param>
+		/// <param name="minute">To be added.</param>
+		/// <param name="second">To be added.</param>
+		/// <param name="nanosecond">To be added.</param>
+		/// <param name="date">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("getHour:minute:second:nanosecond:fromDate:")]
 		[MacCatalyst (13, 1)]
 		void GetHourComponentsFromDate (out nint hour, out nint minute, out nint second, out nint nanosecond, NSDate date);
@@ -1293,12 +1653,27 @@ namespace Foundation {
 		[return: NullAllowed]
 		NSDate FindNextDateAfterDateMatching (NSDate date, NSDateComponents components, NSCalendarOptions options);
 
+		/// <param name="date">To be added.</param>
+		/// <param name="hour">To be added.</param>
+		/// <param name="minute">To be added.</param>
+		/// <param name="second">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("nextDateAfterDate:matchingHour:minute:second:options:")]
 		[MacCatalyst (13, 1)]
 		[MarshalNativeExceptions]
 		[return: NullAllowed]
 		NSDate FindNextDateAfterDateMatching (NSDate date, nint hour, nint minute, nint second, NSCalendarOptions options);
 
+		/// <param name="date">To be added.</param>
+		/// <param name="unit">To be added.</param>
+		/// <param name="value">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("nextDateAfterDate:matchingUnit:value:options:")]
 		[MacCatalyst (13, 1)]
 		[MarshalNativeExceptions]
@@ -1335,6 +1710,7 @@ namespace Foundation {
 		[MacCatalyst (13, 1)]
 		NSDate StartOfDayForDate (NSDate date);
 
+		/// <include file="../docs/api/Foundation/NSCalendar.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSCalendar.DayChangedNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("NSCalendarDayChangedNotification")]
@@ -1345,7 +1721,6 @@ namespace Foundation {
 	[Deprecated (PlatformName.MacOSX, 10, 1, message: "Use NSCalendar and NSDateComponents.")]
 	[NoiOS]
 	[NoMacCatalyst]
-	[NoWatch]
 	[NoTV]
 	[BaseType (typeof (NSDate))]
 	interface NSCalendarDate {
@@ -1542,6 +1917,9 @@ namespace Foundation {
 		[Export ("unitStyle")]
 		NSFormattingUnitStyle UnitStyle { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("forPersonMassUse")]
 		bool ForPersonMassUse { [Bind ("isForPersonMassUse")] get; set; }
 
@@ -1570,18 +1948,10 @@ namespace Foundation {
 		void RemoveCharacters (NSRange aRange);
 
 		[Export ("addCharactersInString:")]
-#if MONOMAC && !NET
-		void AddCharacters (string str);
-#else
 		void AddCharacters (NSString str);
-#endif
 
 		[Export ("removeCharactersInString:")]
-#if MONOMAC && !NET
-		void RemoveCharacters (string str);
-#else
 		void RemoveCharacters (NSString str);
-#endif
 
 		[Export ("formUnionWithCharacterSet:")]
 		void UnionWith (NSCharacterSet otherSet);
@@ -1709,6 +2079,11 @@ namespace Foundation {
 		[Export ("encodeInt64:forKey:")]
 		void Encode (long val, string key);
 
+		/// <param name="val">Native integer value to encode.</param>
+		/// <param name="key">Key to associate with the object being encoded.</param>
+		/// <summary>Encodes the platform-specific native integer (32 or 64 bits) using the specified associated key.</summary>
+		/// <remarks>
+		///         </remarks>
 		[Export ("encodeInteger:forKey:")]
 		void Encode (nint val, string key);
 
@@ -1739,9 +2114,24 @@ namespace Foundation {
 		[Export ("decodeObjectForKey:")]
 		NSObject DecodeObject (string key);
 
+		/// <param name="key">The key identifying the item to decode.</param>
+		/// <param name="length">Number of bytes in the returned block.</param>
+		/// <summary>Low-level: decodes the item with the associated key into a memory block,
+		/// 	and returns a pointer to it.</summary>
+		/// <returns>Pointer to the block of memory that contains at least
+		/// 	the number of bytes set on the lenght parameter.</returns>
+		/// <remarks>
+		///         </remarks>
 		[Export ("decodeBytesForKey:returnedLength:")]
 		IntPtr DecodeBytes (string key, out nuint length);
 
+		/// <param name="length">Number of bytes in the returned block.</param>
+		/// <summary>Low-level: decodes the next item into a memory block,
+		/// 	and returns a pointer to it.</summary>
+		/// <returns>Pointer to the block of memory that contains at least
+		/// 	the number of bytes set on the lenght parameter.</returns>
+		/// <remarks>
+		///         </remarks>
 		[Export ("decodeBytesWithReturnedLength:")]
 		IntPtr DecodeBytes (out nuint length);
 
@@ -1782,29 +2172,37 @@ namespace Foundation {
 		[NullAllowed, Export ("error", ArgumentSemantic.Copy)]
 		NSError Error { get; }
 
-		[Watch (7, 0), TV (14, 0), iOS (14, 0)]
+		[TV (14, 0), iOS (14, 0)]
 		[MacCatalyst (14, 0)]
 		[Export ("decodeArrayOfObjectsOfClass:forKey:")]
 		[return: NullAllowed]
 		NSObject [] DecodeArrayOfObjects (Class @class, string key);
 
-		[Watch (7, 0), TV (14, 0), iOS (14, 0)]
+		[TV (14, 0), iOS (14, 0)]
 		[MacCatalyst (14, 0)]
 		[Export ("decodeArrayOfObjectsOfClasses:forKey:")]
 		[return: NullAllowed]
 		NSObject [] DecodeArrayOfObjects (NSSet<Class> classes, string key);
 
-		[Watch (7, 0), TV (14, 0), iOS (14, 0)]
+		[TV (14, 0), iOS (14, 0)]
 		[MacCatalyst (14, 0)]
 		[Export ("decodeDictionaryWithKeysOfClass:objectsOfClass:forKey:")]
 		[return: NullAllowed]
 		NSDictionary DecodeDictionary (Class keyClass, Class objectClass, string key);
 
-		[Watch (7, 0), TV (14, 0), iOS (14, 0)]
+		[TV (14, 0), iOS (14, 0)]
 		[MacCatalyst (14, 0)]
 		[Export ("decodeDictionaryWithKeysOfClasses:objectsOfClasses:forKey:")]
 		[return: NullAllowed]
 		NSDictionary DecodeDictionary (NSSet<Class> keyClasses, NSSet<Class> objectClasses, string key);
+
+		[TV (18, 4), iOS (18, 4), MacCatalyst (18, 4), Mac (15, 4)]
+		[Export ("decodeBytesWithMinimumLength:")]
+		IntPtr DecodeBytes (nuint minimumLength);
+
+		[TV (18, 4), iOS (18, 4), MacCatalyst (18, 4), Mac (15, 4)]
+		[Export ("decodeBytesForKey:minimumLength:")]
+		IntPtr DecodeBytes (string key, nuint minimumLength);
 	}
 
 	[BaseType (typeof (NSPredicate))]
@@ -1870,6 +2268,11 @@ namespace Foundation {
 
 	}
 
+	/// <param name="bytes">To be added.</param>
+	/// <param name="range">To be added.</param>
+	/// <param name="stop">To be added.</param>
+	/// <summary>The delegate used to enumerate in calls to <see cref="Foundation.NSData.EnumerateByteRange(Foundation.NSDataByteRangeEnumerator)" />.</summary>
+	/// <remarks>To be added.</remarks>
 	delegate void NSDataByteRangeEnumerator (IntPtr bytes, NSRange range, ref bool stop);
 
 	[BaseType (typeof (NSObject))]
@@ -1919,7 +2322,6 @@ namespace Foundation {
 
 		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use 'Save (NSUrl,bool)' instead.")]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'Save (NSUrl,bool)' instead.")]
-		[Deprecated (PlatformName.WatchOS, 6, 0, message: "Use 'Save (NSUrl,bool)' instead.")]
 		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use 'Save (NSUrl,bool)' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'Save (NSUrl,bool)' instead.")]
 		[Export ("writeToFile:atomically:")]
@@ -1966,13 +2368,13 @@ namespace Foundation {
 
 		// NSDataCompression (NSData)
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("decompressedDataUsingAlgorithm:error:")]
 		[return: NullAllowed]
 		NSData Decompress (NSDataCompressionAlgorithm algorithm, [NullAllowed] out NSError error);
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("compressedDataUsingAlgorithm:error:")]
 		[return: NullAllowed]
@@ -2062,13 +2464,19 @@ namespace Foundation {
 		[Export ("yearForWeekOfYear")]
 		nint YearForWeekOfYear { get; set; }
 
-		[Watch (11, 0), TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Export ("dayOfYear")]
 		nint DayOfYear { get; set; }
 
+		/// <summary>Whether the month is a leap month.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("leapMonth")]
 		bool IsLeapMonth { [Bind ("isLeapMonth")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isValidDate")]
 		[MacCatalyst (13, 1)]
 		bool IsValidDate { get; }
@@ -2077,6 +2485,10 @@ namespace Foundation {
 		[MacCatalyst (13, 1)]
 		bool IsValidDateInCalendar (NSCalendar calendar);
 
+		/// <param name="value">To be added.</param>
+		/// <param name="unit">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("setValue:forComponent:")]
 		[MacCatalyst (13, 1)]
 		void SetValueForComponent (nint value, NSCalendarUnit unit);
@@ -2100,6 +2512,9 @@ namespace Foundation {
 		[Export ("includesActualByteCount")]
 		bool IncludesActualByteCount { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("adaptive")]
 		bool Adaptive { [Bind ("isAdaptive")] get; set; }
 
@@ -2123,19 +2538,19 @@ namespace Foundation {
 		[Export ("formattingContext")]
 		NSFormattingContext FormattingContext { get; set; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("stringForObjectValue:")]
 		[return: NullAllowed]
 		string GetString ([NullAllowed] NSObject obj);
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("stringFromMeasurement:countStyle:")]
 		string Create (NSUnitInformationStorage measurement, NSByteCountFormatterCountStyle countStyle);
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("stringFromMeasurement:")]
 		string Create (NSUnitInformationStorage measurement);
@@ -2177,6 +2592,9 @@ namespace Foundation {
 		NSCalendar Calendar { get; set; }
 
 		// not exposed as a property in documentation
+		/// <summary>Whether this formatter uses heuristics when parsing a string.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isLenient")]
 		bool IsLenient { get; [Bind ("setLenient:")] set; }
 
@@ -2254,6 +2672,12 @@ namespace Foundation {
 		[Static]
 		string ToLocalizedString (NSDate date, NSDateFormatterStyle dateStyle, NSDateFormatterStyle timeStyle);
 
+		/// <param name="template">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="locale">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("dateFormatFromTemplate:options:locale:")]
 		[Static]
 		string GetDateFormatFromTemplate (string template, nuint options, [NullAllowed] NSLocale locale);
@@ -2366,6 +2790,9 @@ namespace Foundation {
 		[Export ("unitStyle")]
 		NSFormattingUnitStyle UnitStyle { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("forFoodEnergyUse")]
 		bool ForFoodEnergyUse { [Bind ("isForFoodEnergyUse")] get; set; }
 
@@ -2386,17 +2813,29 @@ namespace Foundation {
 	}
 
 	interface NSFileHandleReadEventArgs {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("NSFileHandleNotificationDataItem")]
 		NSData AvailableData { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("NSFileHandleError", ArgumentSemantic.Assign)]
 		nint UnixErrorCode { get; }
 	}
 
 	interface NSFileHandleConnectionAcceptedEventArgs {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("NSFileHandleNotificationFileHandleItem")]
 		NSFileHandle NearSocketConnection { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("NSFileHandleError", ArgumentSemantic.Assign)]
 		nint UnixErrorCode { get; }
 	}
@@ -2409,27 +2848,29 @@ namespace Foundation {
 
 		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use 'ReadToEnd (out NSError)' instead.")]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'ReadToEnd (out NSError)' instead.")]
-		[Deprecated (PlatformName.WatchOS, 6, 0, message: "Use 'ReadToEnd (out NSError)' instead.")]
 		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use 'ReadToEnd (out NSError)' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'ReadToEnd (out NSError)' instead.")]
 		[Export ("readDataToEndOfFile")]
 		NSData ReadDataToEndOfFile ();
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("readDataToEndOfFileAndReturnError:")]
 		[return: NullAllowed]
 		NSData ReadToEnd ([NullAllowed] out NSError error);
 
+		/// <param name="length">To be added.</param>
+		/// <summary>Reads a block of data of the specified length from the file represented by this NSFileHandle.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use 'Read (nuint, out NSError)' instead.")]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'Read (nuint, out NSError)' instead.")]
-		[Deprecated (PlatformName.WatchOS, 6, 0, message: "Use 'Read (nuint, out NSError)' instead.")]
 		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use 'Read (nuint, out NSError)' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'Read (nuint, out NSError)' instead.")]
 		[Export ("readDataOfLength:")]
 		NSData ReadDataOfLength (nuint length);
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("readDataUpToLength:error:")]
 		[return: NullAllowed]
@@ -2437,91 +2878,84 @@ namespace Foundation {
 
 		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use 'Write (out NSError)' instead.")]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'Write (out NSError)' instead.")]
-		[Deprecated (PlatformName.WatchOS, 6, 0, message: "Use 'Write (out NSError)' instead.")]
 		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use 'Write (out NSError)' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'Write (out NSError)' instead.")]
 		[Export ("writeData:")]
 		void WriteData (NSData data);
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("writeData:error:")]
 		bool Write (NSData data, [NullAllowed] out NSError error);
 
 		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use 'GetOffset (out ulong, out NSError)' instead.")]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'GetOffset (out ulong, out NSError)' instead.")]
-		[Deprecated (PlatformName.WatchOS, 6, 0, message: "Use 'GetOffset (out ulong, out NSError)' instead.")]
 		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use 'GetOffset (out ulong, out NSError)' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'GetOffset (out ulong, out NSError)' instead.")]
 		[Export ("offsetInFile")]
 		ulong OffsetInFile ();
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("getOffset:error:")]
 		bool GetOffset (out ulong offsetInFile, [NullAllowed] out NSError error);
 
 		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use 'SeekToEnd (out ulong, out NSError)' instead.")]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'SeekToEnd (out ulong, out NSError)' instead.")]
-		[Deprecated (PlatformName.WatchOS, 6, 0, message: "Use 'SeekToEnd (out ulong, out NSError)' instead.")]
 		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use 'SeekToEnd (out ulong, out NSError)' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'SeekToEnd (out ulong, out NSError)' instead.")]
 		[Export ("seekToEndOfFile")]
 		ulong SeekToEndOfFile ();
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("seekToEndReturningOffset:error:")]
 		bool SeekToEnd ([NullAllowed] out ulong offsetInFile, [NullAllowed] out NSError error);
 
 		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use 'Seek (ulong, out NSError)' instead.")]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'Seek (ulong, out NSError)' instead.")]
-		[Deprecated (PlatformName.WatchOS, 6, 0, message: "Use 'Seek (ulong, out NSError)' instead.")]
 		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use 'Seek (ulong, out NSError)' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'Seek (ulong, out NSError)' instead.")]
 		[Export ("seekToFileOffset:")]
 		void SeekToFileOffset (ulong offset);
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("seekToOffset:error:")]
 		bool Seek (ulong offset, [NullAllowed] out NSError error);
 
 		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use 'Truncate (ulong, out NSError)' instead.")]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'Truncate (ulong, out NSError)' instead.")]
-		[Deprecated (PlatformName.WatchOS, 6, 0, message: "Use 'Truncate (ulong, out NSError)' instead.")]
 		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use 'Truncate (ulong, out NSError)' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'Truncate (ulong, out NSError)' instead.")]
 		[Export ("truncateFileAtOffset:")]
 		void TruncateFileAtOffset (ulong offset);
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("truncateAtOffset:error:")]
 		bool Truncate (ulong offset, [NullAllowed] out NSError error);
 
 		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use 'Synchronize (out NSError)' instead.")]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'Synchronize (out NSError)' instead.")]
-		[Deprecated (PlatformName.WatchOS, 6, 0, message: "Use 'Synchronize (out NSError)' instead.")]
 		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use 'Synchronize (out NSError)' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'Synchronize (out NSError)' instead.")]
 		[Export ("synchronizeFile")]
 		void SynchronizeFile ();
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("synchronizeAndReturnError:")]
 		bool Synchronize ([NullAllowed] out NSError error);
 
 		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use 'Close (out NSError)' instead.")]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'Close (out NSError)' instead.")]
-		[Deprecated (PlatformName.WatchOS, 6, 0, message: "Use 'Close (out NSError)' instead.")]
 		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use 'Close (out NSError)' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'Close (out NSError)' instead.")]
 		[Export ("closeFile")]
 		void CloseFile ();
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("closeAndReturnError:")]
 		bool Close ([NullAllowed] out NSError error);
@@ -2569,6 +3003,9 @@ namespace Foundation {
 		[Export ("readInBackgroundAndNotifyForModes:")]
 		void ReadInBackground (NSString [] notifyRunLoopModes);
 
+		/// <param name="notifyRunLoopModes">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("ReadInBackground (notifyRunLoopModes.GetConstants ())")]
 		void ReadInBackground (NSRunLoopMode [] notifyRunLoopModes);
 
@@ -2578,6 +3015,9 @@ namespace Foundation {
 		[Export ("readToEndOfFileInBackgroundAndNotifyForModes:")]
 		void ReadToEndOfFileInBackground (NSString [] notifyRunLoopModes);
 
+		/// <param name="notifyRunLoopModes">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("ReadToEndOfFileInBackground (notifyRunLoopModes.GetConstants ())")]
 		void ReadToEndOfFileInBackground (NSRunLoopMode [] notifyRunLoopModes);
 
@@ -2587,6 +3027,9 @@ namespace Foundation {
 		[Export ("acceptConnectionInBackgroundAndNotifyForModes:")]
 		void AcceptConnectionInBackground (NSString [] notifyRunLoopModes);
 
+		/// <param name="notifyRunLoopModes">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("AcceptConnectionInBackground (notifyRunLoopModes.GetConstants ())")]
 		void AcceptConnectionInBackground (NSRunLoopMode [] notifyRunLoopModes);
 
@@ -2596,6 +3039,9 @@ namespace Foundation {
 		[Export ("waitForDataInBackgroundAndNotifyForModes:")]
 		void WaitForDataInBackground (NSString [] notifyRunLoopModes);
 
+		/// <param name="notifyRunLoopModes">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WaitForDataInBackground (notifyRunLoopModes.GetConstants ())")]
 		void WaitForDataInBackground (NSRunLoopMode [] notifyRunLoopModes);
 
@@ -2612,56 +3058,102 @@ namespace Foundation {
 		[Export ("fileDescriptor")]
 		int FileDescriptor { get; } /* int, not NSInteger */
 
+		/// <param name="readCallback">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setReadabilityHandler:")]
 		void SetReadabilityHandler ([NullAllowed] Action<NSFileHandle> readCallback);
 
+		/// <param name="writeCallback">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setWriteabilityHandler:")]
 		void SetWriteabilityHandle ([NullAllowed] Action<NSFileHandle> writeCallback);
 
+		/// <summary>Represents the value associated with the constant NSFileHandleOperationException</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileHandleOperationException")]
 		NSString OperationException { get; }
 
+		/// <include file="../docs/api/Foundation/NSFileHandle.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSFileHandle.ReadCompletionNotification']/*" />
 		[Field ("NSFileHandleReadCompletionNotification")]
 		[Notification (typeof (NSFileHandleReadEventArgs))]
 		NSString ReadCompletionNotification { get; }
 
+		/// <include file="../docs/api/Foundation/NSFileHandle.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSFileHandle.ReadToEndOfFileCompletionNotification']/*" />
 		[Field ("NSFileHandleReadToEndOfFileCompletionNotification")]
 		[Notification (typeof (NSFileHandleReadEventArgs))]
 		NSString ReadToEndOfFileCompletionNotification { get; }
 
+		/// <include file="../docs/api/Foundation/NSFileHandle.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSFileHandle.ConnectionAcceptedNotification']/*" />
 		[Field ("NSFileHandleConnectionAcceptedNotification")]
 		[Notification (typeof (NSFileHandleConnectionAcceptedEventArgs))]
 		NSString ConnectionAcceptedNotification { get; }
 
+		/// <include file="../docs/api/Foundation/NSFileHandle.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSFileHandle.DataAvailableNotification']/*" />
 		[Field ("NSFileHandleDataAvailableNotification")]
 		[Notification]
 		NSString DataAvailableNotification { get; }
 	}
 
+	/// <summary>Represents the components of a person name.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Static]
 	interface NSPersonNameComponent {
+		/// <summary>Gets the key for the name component.</summary>
+		///         <value>The key for the name component.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSPersonNameComponentKey")]
 		NSString ComponentKey { get; }
 
+		/// <summary>Gets the person's given name.</summary>
+		///         <value>The person's given name.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSPersonNameComponentGivenName")]
 		NSString GivenName { get; }
 
+		/// <summary>Gets the person's family name.</summary>
+		///         <value>The person's family name.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSPersonNameComponentFamilyName")]
 		NSString FamilyName { get; }
 
+		/// <summary>Gets the person's middle name.</summary>
+		///         <value>The person's middle name.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSPersonNameComponentMiddleName")]
 		NSString MiddleName { get; }
 
+		/// <summary>Gets the prefix to the person's name.</summary>
+		///         <value>The prefix to the person's name.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSPersonNameComponentPrefix")]
 		NSString Prefix { get; }
 
+		/// <summary>Gets the suffix to the person's name.</summary>
+		///         <value>The suffix to the person's name.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSPersonNameComponentSuffix")]
 		NSString Suffix { get; }
 
+		/// <summary>Gets the person's nickname.</summary>
+		///         <value>The person's nickname.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSPersonNameComponentNickname")]
 		NSString Nickname { get; }
 
+		/// <summary>Gets the delimiter.</summary>
+		///         <value>The delimiter.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSPersonNameComponentDelimiter")]
 		NSString Delimiter { get; }
 	}
@@ -2699,6 +3191,9 @@ namespace Foundation {
 		[Export ("style", ArgumentSemantic.Assign)]
 		NSPersonNameComponentsFormatterStyle Style { get; set; }
 
+		/// <summary>Gets or sets a value that controls whether the receiver should  use only phonetic name component representations. Default is <see langword="false" />.</summary>
+		///         <value>A value that controls whether the receiver should  use only phonetic name component representations.</value>
+		///         <remarks>Default is <see langword="false" />.</remarks>
 		[Export ("phonetic")]
 		bool Phonetic { [Bind ("isPhonetic")] get; set; }
 
@@ -2720,7 +3215,7 @@ namespace Foundation {
 		[return: NullAllowed]
 		NSPersonNameComponents GetComponents (string @string);
 
-		[Watch (8, 0), TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 		[NullAllowed, Export ("locale", ArgumentSemantic.Copy)]
 		NSLocale Locale { get; set; }
 	}
@@ -2759,6 +3254,11 @@ namespace Foundation {
 		[Export ("attributedStringForObjectValue:withDefaultAttributes:")]
 		NSAttributedString GetAttributedString (NSObject obj, NSDictionary<NSString, NSObject> defaultAttributes);
 
+		/// <param name="obj">To be added.</param>
+		///         <param name="defaultAttributes">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("GetAttributedString (obj, defaultAttributes.GetDictionary ()!)")]
 #if MONOMAC
 		NSAttributedString GetAttributedString (NSObject obj, NSStringAttributes defaultAttributes);
@@ -2777,6 +3277,12 @@ namespace Foundation {
 	}
 
 #if !XAMCORE_5_0
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Foundation.NSCoding" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Foundation.NSCoding" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Foundation.NSCoding" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="Foundation.NSCoding_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[BaseType (typeof (NSObject))]
 	[Model]
 #endif
@@ -2786,22 +3292,51 @@ namespace Foundation {
 		[Export ("initWithCoder:")]
 		NativeHandle Constructor (NSCoder decoder);
 
+		/// <summary>Encodes the state of the object using the provided encoder.</summary>
+		/// <param name="encoder">The encoder object where the state of the object will be stored</param>
+		/// <remarks>
+		///   <para>This method is part of the <see cref="INSCoding" /> protocol and is used by applications to preserve the state of the object into an archive.</para>
+		///   <para>Developers will typically create an <see cref="NSKeyedArchiver" /> and then invoke the <see cref="NSKeyedArchiver.ArchiveRootObjectToFile(Foundation.NSObject,System.String)" /> method which will call into this method.</para>
+		///   <para>If developers want to allow their object to be archived, they should override this method and store their state in using the provided <paramref name="encoder" /> parameter. In addition, developers should also implement a constructor that takes an NSCoder argument and is exported with <c>[Export ("initWithCoder:")]</c>.</para>
+		///   <example>
+		///   <code lang="csharp lang-csharp"><![CDATA[public void override EncodeTo (NSCoder coder) {
+		/// coder.Encode (1, key: "version");
+		/// coder.Encode (userName, key: "userName");
+		/// coder.Encode (hostName, key: "hostName");]]></code>
+		/// </example>
+		/// </remarks>
 		[Abstract]
 		[Export ("encodeWithCoder:")]
 		void EncodeTo (NSCoder encoder);
 	}
 
+	interface INSCoding { }
+
+	/// <summary>The secure coding category.</summary>
+	/// <remarks>To be added.</remarks>
 	[Protocol]
 	interface NSSecureCoding : NSCoding {
 		// note: +supportsSecureCoding being static it is not a good "generated" binding candidate
 	}
 
 #if !XAMCORE_5_0
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Foundation.NSCopying" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Foundation.NSCopying" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Foundation.NSCopying" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="Foundation.NSCopying_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[BaseType (typeof (NSObject))]
 	[Model]
 #endif
 	[Protocol]
 	interface NSCopying {
+		/// <param name="zone">Developers should pass <see langword="null" />.  Memory zones are no longer used.</param>
+		/// <summary>Performs a copy of the underlying Objective-C object.</summary>
+		/// <returns>The newly-allocated object.</returns>
+		/// <remarks>
+		///           <para>This method performs a "shallow copy" of <see langword="this" />. If this object contains references to external objects, the new object will contain references to the same object.</para>
+		///         </remarks>
 		[Abstract]
 		[return: Release]
 		[Export ("copyWithZone:")]
@@ -2809,11 +3344,21 @@ namespace Foundation {
 	}
 
 #if !XAMCORE_5_0
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Foundation.NSMutableCopying" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Foundation.NSMutableCopying" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Foundation.NSMutableCopying" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="Foundation.NSMutableCopying_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[BaseType (typeof (NSObject))]
 	[Model]
 #endif
 	[Protocol]
 	interface NSMutableCopying : NSCopying {
+		/// <param name="zone">Zone to use to allocate this object, or null to use the default zone.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("mutableCopyWithZone:")]
 		[return: Release ()]
@@ -2824,45 +3369,136 @@ namespace Foundation {
 
 	interface INSKeyedArchiverDelegate { }
 
+	/// <summary>Methods that can be invoked by the NSKeyedArchiver during serialization.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/NSKeyedArchiverDelegate_Protocol/index.html">Apple documentation for <c>NSKeyedArchiverDelegate</c></related>
 	[BaseType (typeof (NSObject))]
 	[Model]
 	[Protocol]
 	interface NSKeyedArchiverDelegate {
-		[Export ("archiver:didEncodeObject:"), EventArgs ("NSObject")]
+		/// <param name="archiver">To be added.</param>
+		/// <param name="obj">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
+		[Export ("archiver:didEncodeObject:"), EventArgs ("NSObject", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void EncodedObject (NSKeyedArchiver archiver, NSObject obj);
 
+		/// <param name="archiver">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[Export ("archiverDidFinish:")]
 		void Finished (NSKeyedArchiver archiver);
 
+		/// <param name="archiver">To be added.</param>
+		/// <param name="obj">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Delegate invoked by the object to get a value.</summary>
+			<value>To be added.</value>
+			<remarks>Developers assign a function, delegate or anonymous method to this property to return a value to the object.   If developers assign a value to this property, it this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[Export ("archiver:willEncodeObject:"), DelegateName ("NSEncodeHook"), DefaultValue (null)]
 		NSObject WillEncode (NSKeyedArchiver archiver, NSObject obj);
 
+		/// <param name="archiver">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[Export ("archiverWillFinish:")]
 		void Finishing (NSKeyedArchiver archiver);
 
-		[Export ("archiver:willReplaceObject:withObject:"), EventArgs ("NSArchiveReplace")]
+		/// <param name="archiver">To be added.</param>
+		/// <param name="oldObject">To be added.</param>
+		/// <param name="newObject">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
+		[Export ("archiver:willReplaceObject:withObject:"), EventArgs ("NSArchiveReplace", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void ReplacingObject (NSKeyedArchiver archiver, NSObject oldObject, NSObject newObject);
 	}
 
 	interface INSKeyedUnarchiverDelegate { }
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Foundation.NSKeyedUnarchiverDelegate" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Foundation.NSKeyedUnarchiverDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Foundation.NSKeyedUnarchiverDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="Foundation.NSKeyedUnarchiverDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[BaseType (typeof (NSObject))]
 	[Model]
 	[Protocol]
 	interface NSKeyedUnarchiverDelegate {
+		/// <param name="unarchiver">To be added.</param>
+		/// <param name="obj">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Delegate invoked by the object to get a value.</summary>
+			<value>To be added.</value>
+			<remarks>Developers assign a function, delegate or anonymous method to this property to return a value to the object.   If developers assign a value to this property, it this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[Export ("unarchiver:didDecodeObject:"), DelegateName ("NSDecoderCallback"), DefaultValue (null)]
 		NSObject DecodedObject (NSKeyedUnarchiver unarchiver, NSObject obj);
 
+		/// <param name="unarchiver">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[Export ("unarchiverDidFinish:")]
 		void Finished (NSKeyedUnarchiver unarchiver);
 
+		/// <param name="unarchiver">To be added.</param>
+		/// <param name="klass">To be added.</param>
+		/// <param name="classes">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Delegate invoked by the object to get a value.</summary>
+			<value>To be added.</value>
+			<remarks>Developers assign a function, delegate or anonymous method to this property to return a value to the object.   If developers assign a value to this property, it this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[Export ("unarchiver:cannotDecodeObjectOfClassName:originalClasses:"), DelegateName ("NSDecoderHandler"), DefaultValue (null)]
 		Class CannotDecodeClass (NSKeyedUnarchiver unarchiver, string klass, string [] classes);
 
+		/// <param name="unarchiver">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[Export ("unarchiverWillFinish:")]
 		void Finishing (NSKeyedUnarchiver unarchiver);
 
-		[Export ("unarchiver:willReplaceObject:withObject:"), EventArgs ("NSArchiveReplace")]
+		/// <param name="unarchiver">To be added.</param>
+		/// <param name="oldObject">To be added.</param>
+		/// <param name="newObject">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
+		[Export ("unarchiver:willReplaceObject:withObject:"), EventArgs ("NSArchiveReplace", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void ReplacingObject (NSKeyedUnarchiver unarchiver, NSObject oldObject, NSObject newObject);
 	}
 
@@ -2879,7 +3515,6 @@ namespace Foundation {
 
 		// hack so we can decorate the default .ctor with availability attributes
 		[Deprecated (PlatformName.TvOS, 12, 0, message: "Use 'NSKeyedArchiver (bool)' instead.")]
-		[Deprecated (PlatformName.WatchOS, 5, 0, message: "Use 'NSKeyedArchiver (bool)' instead.")]
 		[Deprecated (PlatformName.iOS, 12, 0, message: "Use 'NSKeyedArchiver (bool)' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'NSKeyedArchiver (bool)' instead.")]
 		[MacCatalyst (13, 1)]
@@ -2888,7 +3523,6 @@ namespace Foundation {
 		NativeHandle Constructor ();
 
 		[Deprecated (PlatformName.TvOS, 12, 0, message: "Use 'NSKeyedArchiver (bool)' instead.")]
-		[Deprecated (PlatformName.WatchOS, 5, 0, message: "Use 'NSKeyedArchiver (bool)' instead.")]
 		[Deprecated (PlatformName.iOS, 12, 0, message: "Use 'NSKeyedArchiver (bool)' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'NSKeyedArchiver (bool)' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'NSKeyedArchiver (bool)' instead.")]
@@ -2899,30 +3533,20 @@ namespace Foundation {
 		[Static]
 		[Export ("archivedDataWithRootObject:requiringSecureCoding:error:")]
 		[return: NullAllowed]
-#if NET
 		NSData GetArchivedData (NSObject @object, bool requiresSecureCoding, [NullAllowed] out NSError error);
-#else
-		NSData ArchivedDataWithRootObject (NSObject @object, bool requiresSecureCoding, [NullAllowed] out NSError error);
-#endif
 
-		[Deprecated (PlatformName.TvOS, 12, 0, message: "Use 'ArchivedDataWithRootObject (NSObject, bool, out NSError)' instead.")]
-		[Deprecated (PlatformName.WatchOS, 5, 0, message: "Use 'ArchivedDataWithRootObject (NSObject, bool, out NSError)' instead.")]
-		[Deprecated (PlatformName.iOS, 12, 0, message: "Use 'ArchivedDataWithRootObject (NSObject, bool, out NSError)' instead.")]
-		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'ArchivedDataWithRootObject (NSObject, bool, out NSError)' instead.")]
-		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'ArchivedDataWithRootObject (NSObject, bool, out NSError)' instead.")]
+		[Deprecated (PlatformName.TvOS, 12, 0, message: "Use 'GetArchivedData (NSObject, bool, out NSError)' instead.")]
+		[Deprecated (PlatformName.iOS, 12, 0, message: "Use 'GetArchivedData (NSObject, bool, out NSError)' instead.")]
+		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'GetArchivedData (NSObject, bool, out NSError)' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'GetArchivedData (NSObject, bool, out NSError)' instead.")]
 		[Export ("archivedDataWithRootObject:")]
 		[Static]
-#if NET
 		NSData GetArchivedData (NSObject root);
-#else
-		NSData ArchivedDataWithRootObject (NSObject root);
-#endif
 
-		[Deprecated (PlatformName.TvOS, 12, 0, message: "Use 'ArchivedDataWithRootObject (NSObject, bool, out NSError)' instead.")]
-		[Deprecated (PlatformName.WatchOS, 5, 0, message: "Use 'ArchivedDataWithRootObject (NSObject, bool, out NSError)' instead.")]
-		[Deprecated (PlatformName.iOS, 12, 0, message: "Use 'ArchivedDataWithRootObject (NSObject, bool, out NSError)' instead.")]
-		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'ArchivedDataWithRootObject (NSObject, bool, out NSError)' instead.")]
-		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'ArchivedDataWithRootObject (NSObject, bool, out NSError)' instead.")]
+		[Deprecated (PlatformName.TvOS, 12, 0, message: "Use 'GetArchivedData (NSObject, bool, out NSError)' and then 'NSData.Save' instead.")]
+		[Deprecated (PlatformName.iOS, 12, 0, message: "Use 'GetArchivedData (NSObject, bool, out NSError)' and then 'NSData.Save' instead.")]
+		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'GetArchivedData (NSObject, bool, out NSError)' and then 'NSData.Save' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'GetArchivedData (NSObject, bool, out NSError)' and then 'NSData.Save' instead.")]
 		[Export ("archiveRootObject:toFile:")]
 		[Static]
 		bool ArchiveRootObjectToFile (NSObject root, string file);
@@ -2933,6 +3557,13 @@ namespace Foundation {
 		[Export ("outputFormat")]
 		NSPropertyListFormat PropertyListFormat { get; set; }
 
+		/// <summary>An instance of the Foundation.INSKeyedArchiverDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the Foundation.INSKeyedArchiverDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		INSKeyedArchiverDelegate Delegate { get; set; }
 
@@ -2946,20 +3577,16 @@ namespace Foundation {
 		[Export ("classNameForClass:")]
 		string GetClassName (Class kls);
 
+		/// <summary>Represents the value associated with the constant NSKeyedArchiveRootObjectKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("NSKeyedArchiveRootObjectKey")]
 		NSString RootObjectKey { get; }
 
-#if NET
 		[Export ("requiresSecureCoding")]
 		bool RequiresSecureCoding { get; set; }
-#else
-		[Export ("setRequiresSecureCoding:")]
-		void SetRequiresSecureCoding (bool requireSecureEncoding);
-
-		[Export ("requiresSecureCoding")]
-		bool GetRequiresSecureCoding ();
-#endif
 
 		[MacCatalyst (13, 1)]
 		[Export ("encodedData", ArgumentSemantic.Strong)]
@@ -2982,6 +3609,12 @@ namespace Foundation {
 		[return: NullAllowed]
 		NSObject GetUnarchivedObject (Class cls, NSData data, [NullAllowed] out NSError error);
 
+		/// <param name="type">To be added.</param>
+		///         <param name="data">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Wrap ("GetUnarchivedObject (new Class (type), data, out error)")]
@@ -2994,6 +3627,12 @@ namespace Foundation {
 		[return: NullAllowed]
 		NSObject GetUnarchivedObject (NSSet<Class> classes, NSData data, [NullAllowed] out NSError error);
 
+		/// <param name="types">To be added.</param>
+		///         <param name="data">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Wrap ("GetUnarchivedObject (new NSSet<Class> (Array.ConvertAll (types, t => new Class (t))), data, out error)")]
@@ -3002,7 +3641,6 @@ namespace Foundation {
 
 		[Export ("initForReadingWithData:")]
 		[Deprecated (PlatformName.TvOS, 12, 0, message: "Use 'NSKeyedUnarchiver (NSData, out NSError)' instead.")]
-		[Deprecated (PlatformName.WatchOS, 5, 0, message: "Use 'NSKeyedUnarchiver (NSData, out NSError)' instead.")]
 		[Deprecated (PlatformName.iOS, 12, 0, message: "Use 'NSKeyedUnarchiver (NSData, out NSError)' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'NSKeyedUnarchiver (NSData, out NSError)' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'NSKeyedUnarchiver (NSData, out NSError)' instead.")]
@@ -3011,7 +3649,6 @@ namespace Foundation {
 
 		[Static, Export ("unarchiveObjectWithData:")]
 		[Deprecated (PlatformName.TvOS, 12, 0, message: "Use 'GetUnarchivedObject ()' instead.")]
-		[Deprecated (PlatformName.WatchOS, 5, 0, message: "Use 'GetUnarchivedObject ()' instead.")]
 		[Deprecated (PlatformName.iOS, 12, 0, message: "Use 'GetUnarchivedObject ()' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'GetUnarchivedObject ()' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'GetUnarchivedObject ()' instead.")]
@@ -3019,7 +3656,6 @@ namespace Foundation {
 		NSObject UnarchiveObject (NSData data);
 
 		[Deprecated (PlatformName.TvOS, 12, 0, message: "Use 'GetUnarchivedObject ()' instead.")]
-		[Deprecated (PlatformName.WatchOS, 5, 0, message: "Use 'GetUnarchivedObject ()' instead.")]
 		[Deprecated (PlatformName.iOS, 12, 0, message: "Use 'GetUnarchivedObject ()' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'GetUnarchivedObject ()' instead.")]
 		[Static, Export ("unarchiveTopLevelObjectWithData:error:")]
@@ -3030,7 +3666,6 @@ namespace Foundation {
 
 		[Static, Export ("unarchiveObjectWithFile:")]
 		[Deprecated (PlatformName.TvOS, 12, 0, message: "Use 'GetUnarchivedObject ()' instead.")]
-		[Deprecated (PlatformName.WatchOS, 5, 0, message: "Use 'GetUnarchivedObject ()' instead.")]
 		[Deprecated (PlatformName.iOS, 12, 0, message: "Use 'GetUnarchivedObject ()' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'GetUnarchivedObject ()' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'GetUnarchivedObject ()' instead.")]
@@ -3040,6 +3675,13 @@ namespace Foundation {
 		[Export ("finishDecoding")]
 		void FinishDecoding ();
 
+		/// <summary>An instance of the Foundation.INSKeyedUnarchiverDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the Foundation.INSKeyedUnarchiverDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		INSKeyedUnarchiverDelegate Delegate { get; set; }
 
@@ -3054,39 +3696,31 @@ namespace Foundation {
 		[return: NullAllowed]
 		Class GetClass (string codedName);
 
-#if NET
 		[Export ("requiresSecureCoding")]
 		bool RequiresSecureCoding { get; set; }
-#else
-		[Export ("setRequiresSecureCoding:")]
-		void SetRequiresSecureCoding (bool requireSecureEncoding);
 
-		[Export ("requiresSecureCoding")]
-		bool GetRequiresSecureCoding ();
-#endif
-
-		[Watch (7, 0), TV (14, 0), iOS (14, 0)]
+		[TV (14, 0), iOS (14, 0)]
 		[MacCatalyst (14, 0)]
 		[Static]
 		[Export ("unarchivedArrayOfObjectsOfClass:fromData:error:")]
 		[return: NullAllowed]
 		NSObject [] GetUnarchivedArray (Class @class, NSData data, [NullAllowed] out NSError error);
 
-		[Watch (7, 0), TV (14, 0), iOS (14, 0)]
+		[TV (14, 0), iOS (14, 0)]
 		[MacCatalyst (14, 0)]
 		[Static]
 		[Export ("unarchivedArrayOfObjectsOfClasses:fromData:error:")]
 		[return: NullAllowed]
 		NSObject [] GetUnarchivedArray (NSSet<Class> classes, NSData data, [NullAllowed] out NSError error);
 
-		[Watch (7, 0), TV (14, 0), iOS (14, 0)]
+		[TV (14, 0), iOS (14, 0)]
 		[MacCatalyst (14, 0)]
 		[Static]
 		[Export ("unarchivedDictionaryWithKeysOfClass:objectsOfClass:fromData:error:")]
 		[return: NullAllowed]
 		NSDictionary GetUnarchivedDictionary (Class keyClass, Class valueClass, NSData data, [NullAllowed] out NSError error);
 
-		[Watch (7, 0), TV (14, 0), iOS (14, 0)]
+		[TV (14, 0), iOS (14, 0)]
 		[MacCatalyst (14, 0)]
 		[Static]
 		[Export ("unarchivedDictionaryWithKeysOfClasses:objectsOfClasses:fromData:error:")]
@@ -3102,12 +3736,21 @@ namespace Foundation {
 		[Export ("stopQuery")]
 		void StopQuery ();
 
+		/// <summary>Whether this query has begun.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isStarted")]
 		bool IsStarted { get; }
 
+		/// <summary>Whether this query is in the initial gathering phase of the query.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isGathering")]
 		bool IsGathering { get; }
 
+		/// <summary>Whether this query has stopped.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isStopped")]
 		bool IsStopped { get; }
 
@@ -3120,6 +3763,10 @@ namespace Foundation {
 		[Export ("resultCount")]
 		nint ResultCount { get; }
 
+		/// <param name="idx">To be added.</param>
+		/// <summary>The result at the specified index.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("resultAtIndex:")]
 		NSObject ResultAtIndex (nint idx);
 
@@ -3135,12 +3782,24 @@ namespace Foundation {
 		[Export ("groupedResults")]
 		NSObject [] GroupedResults { get; }
 
+		/// <param name="attribyteName">To be added.</param>
+		/// <param name="atIndex">To be added.</param>
+		/// <summary>The value of the specified attributeName in the result at the specified index in the Results array.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("valueOfAttribute:forResultAtIndex:")]
 		NSObject ValueOfAttribute (string attribyteName, nint atIndex);
 
 		[Export ("delegate", ArgumentSemantic.Assign), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the Foundation.INSMetadataQueryDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the Foundation.INSMetadataQueryDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		INSMetadataQueryDelegate Delegate { get; set; }
 
@@ -3164,101 +3823,177 @@ namespace Foundation {
 		NSObject [] SearchScopes { get; set; }
 
 		// There is no info associated with these notifications
+		/// <include file="../docs/api/Foundation/NSMetadataQuery.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSMetadataQuery.DidStartGatheringNotification']/*" />
 		[Field ("NSMetadataQueryDidStartGatheringNotification")]
 		[Notification]
 		NSString DidStartGatheringNotification { get; }
 
+		/// <include file="../docs/api/Foundation/NSMetadataQuery.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSMetadataQuery.GatheringProgressNotification']/*" />
 		[Field ("NSMetadataQueryGatheringProgressNotification")]
 		[Notification]
 		NSString GatheringProgressNotification { get; }
 
+		/// <include file="../docs/api/Foundation/NSMetadataQuery.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSMetadataQuery.DidFinishGatheringNotification']/*" />
 		[Field ("NSMetadataQueryDidFinishGatheringNotification")]
 		[Notification]
 		NSString DidFinishGatheringNotification { get; }
 
+		/// <include file="../docs/api/Foundation/NSMetadataQuery.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSMetadataQuery.DidUpdateNotification']/*" />
 		[Field ("NSMetadataQueryDidUpdateNotification")]
 		[Notification]
 		NSString DidUpdateNotification { get; }
 
+		/// <summary>Represents the value associated with the constant NSMetadataQueryResultContentRelevanceAttribute</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSMetadataQueryResultContentRelevanceAttribute")]
 		NSString ResultContentRelevanceAttribute { get; }
 
 		// Scope constants for defined search locations
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Field ("NSMetadataQueryUserHomeScope")]
 		NSString UserHomeScope { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Field ("NSMetadataQueryLocalComputerScope")]
 		NSString LocalComputerScope { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Field ("NSMetadataQueryLocalDocumentsScope")]
 		NSString LocalDocumentsScope { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Field ("NSMetadataQueryNetworkScope")]
 		NSString NetworkScope { get; }
 
+		/// <summary>Represents the value associated with the constant NSMetadataQueryUbiquitousDocumentsScope</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSMetadataQueryUbiquitousDocumentsScope")]
 		NSString UbiquitousDocumentsScope { get; }
 
+		/// <summary>Represents the value associated with the constant NSMetadataQueryUbiquitousDataScope</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSMetadataQueryUbiquitousDataScope")]
 		NSString UbiquitousDataScope { get; }
 
 
+		/// <summary>Represents the value associated with the constant NSMetadataQueryAccessibleUbiquitousExternalDocumentsScope</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("NSMetadataQueryAccessibleUbiquitousExternalDocumentsScope")]
 		NSString AccessibleUbiquitousExternalDocumentsScope { get; }
 
+		/// <summary>Represents the value associated with the constant NSMetadataItemFSNameKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSMetadataItemFSNameKey")]
 		NSString ItemFSNameKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSMetadataItemDisplayNameKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSMetadataItemDisplayNameKey")]
 		NSString ItemDisplayNameKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSMetadataItemURLKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSMetadataItemURLKey")]
 		NSString ItemURLKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSMetadataItemPathKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSMetadataItemPathKey")]
 		NSString ItemPathKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSMetadataItemFSSizeKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSMetadataItemFSSizeKey")]
 		NSString ItemFSSizeKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSMetadataItemFSCreationDateKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSMetadataItemFSCreationDateKey")]
 		NSString ItemFSCreationDateKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSMetadataItemFSContentChangeDateKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSMetadataItemFSContentChangeDateKey")]
 		NSString ItemFSContentChangeDateKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSMetadataItemContentTypeKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("NSMetadataItemContentTypeKey")]
 		NSString ContentTypeKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSMetadataItemContentTypeTreeKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("NSMetadataItemContentTypeTreeKey")]
 		NSString ContentTypeTreeKey { get; }
 
 
+		/// <summary>Represents the value associated with the constant NSMetadataItemIsUbiquitousKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSMetadataItemIsUbiquitousKey")]
 		NSString ItemIsUbiquitousKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSMetadataUbiquitousItemHasUnresolvedConflictsKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSMetadataUbiquitousItemHasUnresolvedConflictsKey")]
 		NSString UbiquitousItemHasUnresolvedConflictsKey { get; }
 
+		/// <summary>Developers should not use this deprecated property. Developers should use 'UbiquitousItemDownloadingStatusKey' instead.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 7, 0, message: "Use 'UbiquitousItemDownloadingStatusKey' instead.")]
 		[Deprecated (PlatformName.TvOS, 9, 0, message: "Use 'UbiquitousItemDownloadingStatusKey' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 9, message: "Use 'UbiquitousItemDownloadingStatusKey' instead.")]
@@ -3266,666 +4001,1173 @@ namespace Foundation {
 		[Field ("NSMetadataUbiquitousItemIsDownloadedKey")]
 		NSString UbiquitousItemIsDownloadedKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSMetadataUbiquitousItemIsDownloadingKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSMetadataUbiquitousItemIsDownloadingKey")]
 		NSString UbiquitousItemIsDownloadingKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSMetadataUbiquitousItemIsUploadedKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSMetadataUbiquitousItemIsUploadedKey")]
 		NSString UbiquitousItemIsUploadedKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSMetadataUbiquitousItemIsUploadingKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSMetadataUbiquitousItemIsUploadingKey")]
 		NSString UbiquitousItemIsUploadingKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSMetadataUbiquitousItemDownloadingStatusKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("NSMetadataUbiquitousItemDownloadingStatusKey")]
 		NSString UbiquitousItemDownloadingStatusKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSMetadataUbiquitousItemDownloadingErrorKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("NSMetadataUbiquitousItemDownloadingErrorKey")]
 		NSString UbiquitousItemDownloadingErrorKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSMetadataUbiquitousItemUploadingErrorKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("NSMetadataUbiquitousItemUploadingErrorKey")]
 		NSString UbiquitousItemUploadingErrorKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSMetadataUbiquitousItemPercentDownloadedKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSMetadataUbiquitousItemPercentDownloadedKey")]
 		NSString UbiquitousItemPercentDownloadedKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSMetadataUbiquitousItemPercentUploadedKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSMetadataUbiquitousItemPercentUploadedKey")]
 		NSString UbiquitousItemPercentUploadedKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSMetadataUbiquitousItemDownloadRequestedKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("NSMetadataUbiquitousItemDownloadRequestedKey")]
 		NSString UbiquitousItemDownloadRequestedKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSMetadataUbiquitousItemIsExternalDocumentKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("NSMetadataUbiquitousItemIsExternalDocumentKey")]
 		NSString UbiquitousItemIsExternalDocumentKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSMetadataUbiquitousItemContainerDisplayNameKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("NSMetadataUbiquitousItemContainerDisplayNameKey")]
 		NSString UbiquitousItemContainerDisplayNameKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSMetadataUbiquitousItemURLInLocalContainerKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("NSMetadataUbiquitousItemURLInLocalContainerKey")]
 		NSString UbiquitousItemURLInLocalContainerKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemKeywordsKey")]
 		NSString KeywordsKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemTitleKey")]
 		NSString TitleKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemAuthorsKey")]
 		NSString AuthorsKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemEditorsKey")]
 		NSString EditorsKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemParticipantsKey")]
 		NSString ParticipantsKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemProjectsKey")]
 		NSString ProjectsKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemDownloadedDateKey")]
 		NSString DownloadedDateKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemWhereFromsKey")]
 		NSString WhereFromsKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemCommentKey")]
 		NSString CommentKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemCopyrightKey")]
 		NSString CopyrightKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemLastUsedDateKey")]
 		NSString LastUsedDateKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemContentCreationDateKey")]
 		NSString ContentCreationDateKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemContentModificationDateKey")]
 		NSString ContentModificationDateKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemDateAddedKey")]
 		NSString DateAddedKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemDurationSecondsKey")]
 		NSString DurationSecondsKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemContactKeywordsKey")]
 		NSString ContactKeywordsKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemVersionKey")]
 		NSString VersionKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemPixelHeightKey")]
 		NSString PixelHeightKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemPixelWidthKey")]
 		NSString PixelWidthKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemPixelCountKey")]
 		NSString PixelCountKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemColorSpaceKey")]
 		NSString ColorSpaceKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemBitsPerSampleKey")]
 		NSString BitsPerSampleKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemFlashOnOffKey")]
 		NSString FlashOnOffKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemFocalLengthKey")]
 		NSString FocalLengthKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemAcquisitionMakeKey")]
 		NSString AcquisitionMakeKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemAcquisitionModelKey")]
 		NSString AcquisitionModelKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemISOSpeedKey")]
 		NSString IsoSpeedKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemOrientationKey")]
 		NSString OrientationKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemLayerNamesKey")]
 		NSString LayerNamesKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemWhiteBalanceKey")]
 		NSString WhiteBalanceKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemApertureKey")]
 		NSString ApertureKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemProfileNameKey")]
 		NSString ProfileNameKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemResolutionWidthDPIKey")]
 		NSString ResolutionWidthDpiKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemResolutionHeightDPIKey")]
 		NSString ResolutionHeightDpiKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemExposureModeKey")]
 		NSString ExposureModeKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemExposureTimeSecondsKey")]
 		NSString ExposureTimeSecondsKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemEXIFVersionKey")]
 		NSString ExifVersionKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemCameraOwnerKey")]
 		NSString CameraOwnerKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemFocalLength35mmKey")]
 		NSString FocalLength35mmKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemLensModelKey")]
 		NSString LensModelKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemEXIFGPSVersionKey")]
 		NSString ExifGpsVersionKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemAltitudeKey")]
 		NSString AltitudeKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemLatitudeKey")]
 		NSString LatitudeKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemLongitudeKey")]
 		NSString LongitudeKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemSpeedKey")]
 		NSString SpeedKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemTimestampKey")]
 		NSString TimestampKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemGPSTrackKey")]
 		NSString GpsTrackKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemImageDirectionKey")]
 		NSString ImageDirectionKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemNamedLocationKey")]
 		NSString NamedLocationKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemGPSStatusKey")]
 		NSString GpsStatusKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemGPSMeasureModeKey")]
 		NSString GpsMeasureModeKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemGPSDOPKey")]
 		NSString GpsDopKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemGPSMapDatumKey")]
 		NSString GpsMapDatumKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemGPSDestLatitudeKey")]
 		NSString GpsDestLatitudeKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemGPSDestLongitudeKey")]
 		NSString GpsDestLongitudeKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemGPSDestBearingKey")]
 		NSString GpsDestBearingKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemGPSDestDistanceKey")]
 		NSString GpsDestDistanceKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemGPSProcessingMethodKey")]
 		NSString GpsProcessingMethodKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemGPSAreaInformationKey")]
 		NSString GpsAreaInformationKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemGPSDateStampKey")]
 		NSString GpsDateStampKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemGPSDifferentalKey")]
 		NSString GpsDifferentalKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemCodecsKey")]
 		NSString CodecsKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemMediaTypesKey")]
 		NSString MediaTypesKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemStreamableKey")]
 		NSString StreamableKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemTotalBitRateKey")]
 		NSString TotalBitRateKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemVideoBitRateKey")]
 		NSString VideoBitRateKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemAudioBitRateKey")]
 		NSString AudioBitRateKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemDeliveryTypeKey")]
 		NSString DeliveryTypeKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemAlbumKey")]
 		NSString AlbumKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemHasAlphaChannelKey")]
 		NSString HasAlphaChannelKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemRedEyeOnOffKey")]
 		NSString RedEyeOnOffKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemMeteringModeKey")]
 		NSString MeteringModeKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemMaxApertureKey")]
 		NSString MaxApertureKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemFNumberKey")]
 		NSString FNumberKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemExposureProgramKey")]
 		NSString ExposureProgramKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemExposureTimeStringKey")]
 		NSString ExposureTimeStringKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemHeadlineKey")]
 		NSString HeadlineKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemInstructionsKey")]
 		NSString InstructionsKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemCityKey")]
 		NSString CityKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemStateOrProvinceKey")]
 		NSString StateOrProvinceKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemCountryKey")]
 		NSString CountryKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemTextContentKey")]
 		NSString TextContentKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemAudioSampleRateKey")]
 		NSString AudioSampleRateKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemAudioChannelCountKey")]
 		NSString AudioChannelCountKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemTempoKey")]
 		NSString TempoKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemKeySignatureKey")]
 		NSString KeySignatureKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemTimeSignatureKey")]
 		NSString TimeSignatureKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemAudioEncodingApplicationKey")]
 		NSString AudioEncodingApplicationKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemComposerKey")]
 		NSString ComposerKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemLyricistKey")]
 		NSString LyricistKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemAudioTrackNumberKey")]
 		NSString AudioTrackNumberKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemRecordingDateKey")]
 		NSString RecordingDateKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemMusicalGenreKey")]
 		NSString MusicalGenreKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemIsGeneralMIDISequenceKey")]
 		NSString IsGeneralMidiSequenceKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemRecordingYearKey")]
 		NSString RecordingYearKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemOrganizationsKey")]
 		NSString OrganizationsKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemLanguagesKey")]
 		NSString LanguagesKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemRightsKey")]
 		NSString RightsKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemPublishersKey")]
 		NSString PublishersKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemContributorsKey")]
 		NSString ContributorsKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemCoverageKey")]
 		NSString CoverageKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemSubjectKey")]
 		NSString SubjectKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemThemeKey")]
 		NSString ThemeKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemDescriptionKey")]
 		NSString DescriptionKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemIdentifierKey")]
 		NSString IdentifierKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemAudiencesKey")]
 		NSString AudiencesKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemNumberOfPagesKey")]
 		NSString NumberOfPagesKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemPageWidthKey")]
 		NSString PageWidthKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemPageHeightKey")]
 		NSString PageHeightKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemSecurityMethodKey")]
 		NSString SecurityMethodKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemCreatorKey")]
 		NSString CreatorKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemEncodingApplicationsKey")]
 		NSString EncodingApplicationsKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemDueDateKey")]
 		NSString DueDateKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemStarRatingKey")]
 		NSString StarRatingKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemPhoneNumbersKey")]
 		NSString PhoneNumbersKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemEmailAddressesKey")]
 		NSString EmailAddressesKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemInstantMessageAddressesKey")]
 		NSString InstantMessageAddressesKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemKindKey")]
 		NSString KindKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemRecipientsKey")]
 		NSString RecipientsKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemFinderCommentKey")]
 		NSString FinderCommentKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemFontsKey")]
 		NSString FontsKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemAppleLoopsRootKeyKey")]
 		NSString AppleLoopsRootKeyKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemAppleLoopsKeyFilterTypeKey")]
 		NSString AppleLoopsKeyFilterTypeKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemAppleLoopsLoopModeKey")]
 		NSString AppleLoopsLoopModeKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemAppleLoopDescriptorsKey")]
 		NSString AppleLoopDescriptorsKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemMusicalInstrumentCategoryKey")]
 		NSString MusicalInstrumentCategoryKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemMusicalInstrumentNameKey")]
 		NSString MusicalInstrumentNameKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemCFBundleIdentifierKey")]
 		NSString CFBundleIdentifierKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemInformationKey")]
 		NSString InformationKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemDirectorKey")]
 		NSString DirectorKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemProducerKey")]
 		NSString ProducerKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemGenreKey")]
 		NSString GenreKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemPerformersKey")]
 		NSString PerformersKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemOriginalFormatKey")]
 		NSString OriginalFormatKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemOriginalSourceKey")]
 		NSString OriginalSourceKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemAuthorEmailAddressesKey")]
 		NSString AuthorEmailAddressesKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemRecipientEmailAddressesKey")]
 		NSString RecipientEmailAddressesKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemAuthorAddressesKey")]
 		NSString AuthorAddressesKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemRecipientAddressesKey")]
 		NSString RecipientAddressesKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemIsLikelyJunkKey")]
 		NSString IsLikelyJunkKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemExecutableArchitecturesKey")]
 		NSString ExecutableArchitecturesKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemExecutablePlatformKey")]
 		NSString ExecutablePlatformKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemApplicationCategoriesKey")]
 		NSString ApplicationCategoriesKey { get; }
 
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemIsApplicationManagedKey")]
 		NSString IsApplicationManagedKey { get; }
 
-		[NoWatch, NoTV]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Field ("NSMetadataUbiquitousItemIsSharedKey")]
 		NSString UbiquitousItemIsSharedKey { get; }
 
-		[NoWatch, NoTV]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Field ("NSMetadataUbiquitousSharedItemCurrentUserRoleKey")]
 		NSString UbiquitousSharedItemCurrentUserRoleKey { get; }
 
-		[NoWatch, NoTV]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Field ("NSMetadataUbiquitousSharedItemCurrentUserPermissionsKey")]
 		NSString UbiquitousSharedItemCurrentUserPermissionsKey { get; }
 
-		[NoWatch, NoTV]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Field ("NSMetadataUbiquitousSharedItemOwnerNameComponentsKey")]
 		NSString UbiquitousSharedItemOwnerNameComponentsKey { get; }
 
-		[NoWatch, NoTV]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Field ("NSMetadataUbiquitousSharedItemMostRecentEditorNameComponentsKey")]
 		NSString UbiquitousSharedItemMostRecentEditorNameComponentsKey { get; }
 
-		[NoWatch, NoTV]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Field ("NSMetadataUbiquitousSharedItemRoleOwner")]
 		NSString UbiquitousSharedItemRoleOwner { get; }
 
-		[NoWatch, NoTV]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Field ("NSMetadataUbiquitousSharedItemRoleParticipant")]
 		NSString UbiquitousSharedItemRoleParticipant { get; }
 
-		[NoWatch, NoTV]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Field ("NSMetadataUbiquitousSharedItemPermissionsReadOnly")]
 		NSString UbiquitousSharedItemPermissionsReadOnly { get; }
 
-		[NoWatch, NoTV]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Field ("NSMetadataUbiquitousSharedItemPermissionsReadWrite")]
 		NSString UbiquitousSharedItemPermissionsReadWrite { get; }
@@ -3952,14 +5194,23 @@ namespace Foundation {
 		//
 		// These are for NSMetadataQueryDidUpdateNotification 
 		//
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("NSMetadataQueryUpdateAddedItemsKey")]
 		NSString QueryUpdateAddedItemsKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("NSMetadataQueryUpdateChangedItemsKey")]
 		NSString QueryUpdateChangedItemsKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("NSMetadataQueryUpdateRemovedItemsKey")]
 		NSString QueryUpdateRemovedItemsKey { get; }
@@ -3967,26 +5218,47 @@ namespace Foundation {
 
 	interface INSMetadataQueryDelegate { }
 
+	/// <summary>Defines optional methods relating to the lifecycle of <see cref="Foundation.NSMetadataQuery" />s.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/NSMetadataQueryDelegate_Protocol/index.html">Apple documentation for <c>NSMetadataQueryDelegate</c></related>
 	[BaseType (typeof (NSObject))]
 	[Model]
 	[Protocol]
 	interface NSMetadataQueryDelegate {
+		/// <param name="query">To be added.</param>
+		/// <param name="result">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Delegate invoked by the object to get a value.</summary>
+			<value>To be added.</value>
+			<remarks>Developers assign a function, delegate or anonymous method to this property to return a value to the object.   If developers assign a value to this property, it this will reset the value for the Delegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[Export ("metadataQuery:replacementObjectForResultObject:"), DelegateName ("NSMetadataQueryObject"), DefaultValue (null)]
 		NSObject ReplacementObjectForResultObject (NSMetadataQuery query, NSMetadataItem result);
 
+		/// <param name="query">To be added.</param>
+		/// <param name="attributeName">To be added.</param>
+		/// <param name="value">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Delegate invoked by the object to get a value.</summary>
+			<value>To be added.</value>
+			<remarks>Developers assign a function, delegate or anonymous method to this property to return a value to the object.   If developers assign a value to this property, it this will reset the value for the Delegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[Export ("metadataQuery:replacementValueForAttribute:value:"), DelegateName ("NSMetadataQueryValue"), DefaultValue (null)]
 		NSObject ReplacementValueForAttributevalue (NSMetadataQuery query, string attributeName, NSObject value);
 	}
 
 	[BaseType (typeof (NSObject))]
-#if NET
 	[DisableDefaultCtor] // points to nothing so access properties crash the apps
-#endif
 	interface NSMetadataItem {
 
 		[NoiOS]
 		[NoTV]
-		[NoWatch]
 		[NoMacCatalyst]
 		[DesignatedInitializer]
 		[Export ("initWithURL:")]
@@ -4032,6 +5304,10 @@ namespace Foundation {
 		[Export ("resultCount")]
 		nint ResultCount { get; }
 
+		/// <param name="idx">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("resultAtIndex:")]
 		NSObject ResultAtIndex (nuint idx);
 
@@ -4046,6 +5322,9 @@ namespace Foundation {
 	[BaseType (typeof (NSArray))]
 	[DesignatedDefaultCtor]
 	interface NSMutableArray {
+		/// <param name="capacity">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithCapacity:")]
 		NativeHandle Constructor (nuint capacity);
@@ -4063,12 +5342,19 @@ namespace Foundation {
 		[Export ("insertObject:atIndex:")]
 		void _Insert (IntPtr obj, nint index);
 
+		/// <param name="obj">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("insertObject:atIndex:")]
 		void Insert (NSObject obj, nint index);
 
 		[Export ("removeLastObject")]
 		void RemoveLastObject ();
 
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("removeObjectAtIndex:")]
 		void RemoveObject (nint index);
 
@@ -4077,6 +5363,10 @@ namespace Foundation {
 		[Export ("replaceObjectAtIndex:withObject:")]
 		void _ReplaceObject (nint index, IntPtr withObject);
 
+		/// <param name="index">To be added.</param>
+		/// <param name="withObject">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("replaceObjectAtIndex:withObject:")]
 		void ReplaceObject (nint index, NSObject withObject);
 
@@ -4105,8 +5395,8 @@ namespace Foundation {
 		[Static, Export ("arrayWithContentsOfURL:")]
 		NSMutableArray FromUrl (NSUrl url);
 
-#if false // https://github.com/xamarin/xamarin-macios/issues/15577
-		[Watch (6,0), TV (13,0), iOS (13,0)]
+#if false // https://github.com/dotnet/macios/issues/15577
+		[TV (13,0), iOS (13,0)]
 		[Export ("applyDifference:")]
 		void ApplyDifference (NSOrderedCollectionDifference difference);
 #endif
@@ -4140,9 +5430,12 @@ namespace Foundation {
 		[Export ("addAttributes:range:")]
 		void AddAttributes (NSDictionary attrs, NSRange range);
 
+		/// <param name="attributes">To be added.</param>
+		///         <param name="range">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Wrap ("AddAttributes (attributes.GetDictionary ()!, range)")]
 		void AddAttributes (NSStringAttributes attributes, NSRange range);
@@ -4153,6 +5446,10 @@ namespace Foundation {
 		[Export ("replaceCharactersInRange:withAttributedString:")]
 		void Replace (NSRange range, NSAttributedString value);
 
+		/// <param name="attrString">Attributed string to insert.</param>
+		/// <param name="location">Location where the string will be inserted.</param>
+		/// <summary>Inserts an attributed string into the current string.</summary>
+		/// <remarks>Any attributes that spanned the insertion point will be expanded, so they will continue to cover both the original text as well as the new text.</remarks>
 		[Export ("insertAttributedString:atIndex:")]
 		void Insert (NSAttributedString attrString, nint location);
 
@@ -4171,6 +5468,13 @@ namespace Foundation {
 		[Export ("endEditing")]
 		void EndEditing ();
 
+		/// <param name="url">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <param name="returnOptions">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'ReadFromUrl' instead.")]
@@ -4179,6 +5483,13 @@ namespace Foundation {
 		[Export ("readFromFileURL:options:documentAttributes:error:")]
 		bool ReadFromFile (NSUrl url, NSDictionary options, ref NSDictionary returnOptions, ref NSError error);
 
+		/// <param name="url">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <param name="returnOptions">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>Developers should not use this deprecated method. Developers should use 'ReadFromUrl' instead.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'ReadFromUrl' instead.")]
@@ -4187,11 +5498,25 @@ namespace Foundation {
 		[Wrap ("ReadFromFile (url, options.GetDictionary ()!, ref returnOptions, ref error)")]
 		bool ReadFromFile (NSUrl url, NSAttributedStringDocumentAttributes options, ref NSDictionary returnOptions, ref NSError error);
 
+		/// <param name="data">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <param name="returnOptions">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("readFromData:options:documentAttributes:error:")]
 		bool ReadFromData (NSData data, NSDictionary options, ref NSDictionary returnOptions, ref NSError error);
 
+		/// <param name="data">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <param name="returnOptions">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Wrap ("ReadFromData (data, options.GetDictionary ()!, ref returnOptions, ref error)")]
@@ -4203,10 +5528,24 @@ namespace Foundation {
 		[Export ("readFromURL:options:documentAttributes:error:")]
 		bool ReadFromUrl (NSUrl url, NSDictionary options, ref NSDictionary<NSString, NSObject> returnOptions, ref NSError error);
 
+		/// <param name="url">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <param name="returnOptions">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("readFromURL:options:documentAttributes:error:")]
 		bool ReadFromUrl (NSUrl url, NSDictionary<NSString, NSObject> options, ref NSDictionary<NSString, NSObject> returnOptions, ref NSError error);
 
+		/// <param name="url">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <param name="returnOptions">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("ReadFromUrl (url, options.GetDictionary ()!, ref returnOptions, ref error)")]
 		bool ReadFromUrl (NSUrl url, NSAttributedStringDocumentAttributes options, ref NSDictionary<NSString, NSObject> returnOptions, ref NSError error);
@@ -4214,11 +5553,19 @@ namespace Foundation {
 
 	[BaseType (typeof (NSData))]
 	interface NSMutableData {
+		/// <param name="capacity">To be added.</param>
+		/// <summary>Factory method that instantiates an NSMutableData instance that can initially hold the specified capacity, in bytes.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("dataWithCapacity:")]
 		[Autorelease]
 		[PreSnippet ("if (capacity < 0 || capacity > nint.MaxValue) throw new ArgumentOutOfRangeException ();", Optimizable = true)]
 		NSMutableData FromCapacity (nint capacity);
 
+		/// <param name="length">To be added.</param>
+		/// <summary>Factory method that instantiates itself with the specified length of zeroed-out bytes.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("dataWithLength:")]
 		[Autorelease]
 		[PreSnippet ("if (length < 0 || length > nint.MaxValue) throw new ArgumentOutOfRangeException ();", Optimizable = true)]
@@ -4231,6 +5578,9 @@ namespace Foundation {
 		[Export ("mutableBytes")]
 		IntPtr MutableBytes { get; }
 
+		/// <param name="capacity">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithCapacity:")]
 		[PreSnippet ("if (capacity > (ulong) nint.MaxValue) throw new ArgumentOutOfRangeException ();", Optimizable = true)]
 		NativeHandle Constructor (nuint capacity);
@@ -4259,18 +5609,18 @@ namespace Foundation {
 
 		// NSMutableDataCompression (NSMutableData)
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("decompressUsingAlgorithm:error:")]
 		bool Decompress (NSDataCompressionAlgorithm algorithm, [NullAllowed] out NSError error);
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("compressUsingAlgorithm:error:")]
 		bool Compress (NSDataCompressionAlgorithm algorithm, [NullAllowed] out NSError error);
 	}
 
-	[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	enum NSDataCompressionAlgorithm : long {
@@ -4338,20 +5688,20 @@ namespace Foundation {
 
 		// NSDate_SensorKit
 
-		[NoWatch, NoTV, NoMac]
+		[NoTV, NoMac]
 		[iOS (14, 0)]
 		[MacCatalyst (14, 0)]
 		[Static]
 		[Export ("dateWithSRAbsoluteTime:")]
 		NSDate CreateFromSRAbsoluteTime (double time);
 
-		[NoWatch, NoTV, NoMac]
+		[NoTV, NoMac]
 		[iOS (14, 0)]
 		[MacCatalyst (14, 0)]
 		[Export ("initWithSRAbsoluteTime:")]
 		NativeHandle Constructor (double srAbsoluteTime);
 
-		[NoWatch, NoTV, NoMac]
+		[NoTV, NoMac]
 		[iOS (14, 0)]
 		[MacCatalyst (14, 0)]
 		[Export ("srAbsoluteTime")]
@@ -4367,7 +5717,6 @@ namespace Foundation {
 	interface NSDictionary : NSSecureCoding, NSMutableCopying, NSFetchRequestResult, INSFastEnumeration {
 		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use 'NSMutableDictionary.FromFile' instead.")]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'NSMutableDictionary.FromFile' instead.")]
-		[Deprecated (PlatformName.WatchOS, 6, 0, message: "Use 'NSMutableDictionary.FromFile' instead.")]
 		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use 'NSMutableDictionary.FromFile' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'NSMutableDictionary.FromFile' instead.")]
 		[Export ("dictionaryWithContentsOfFile:")]
@@ -4376,7 +5725,6 @@ namespace Foundation {
 
 		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use 'NSMutableDictionary.FromUrl' instead.")]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'NSMutableDictionary.FromUrl' instead.")]
-		[Deprecated (PlatformName.WatchOS, 6, 0, message: "Use 'NSMutableDictionary.FromUrl' instead.")]
 		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use 'NSMutableDictionary.FromUrl' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'NSMutableDictionary.FromUrl' instead.")]
 		[Export ("dictionaryWithContentsOfURL:")]
@@ -4405,7 +5753,7 @@ namespace Foundation {
 
 		[Export ("dictionaryWithObjects:forKeys:")]
 		[Static, Internal]
-		NSDictionary FromObjectsAndKeysInternal ([NullAllowed] NSArray objects, [NullAllowed] NSArray keys);
+		NSDictionary FromObjectsAndKeysInternal (NSArray objects, NSArray keys);
 
 		[Export ("initWithDictionary:")]
 		NativeHandle Constructor (NSDictionary other);
@@ -4415,7 +5763,6 @@ namespace Foundation {
 
 		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use 'NSMutableDictionary(string)' constructor instead.")]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'NSMutableDictionary(string)' constructor instead.")]
-		[Deprecated (PlatformName.WatchOS, 6, 0, message: "Use 'NSMutableDictionary(string)' constructor instead.")]
 		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use 'NSMutableDictionary(string)' constructor instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'NSMutableDictionary(string)' constructor instead.")]
 		[Export ("initWithContentsOfFile:")]
@@ -4426,7 +5773,6 @@ namespace Foundation {
 
 		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use 'NSMutableDictionary(NSUrl)' constructor instead.")]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'NSMutableDictionary(NSUrl)' constructor instead.")]
-		[Deprecated (PlatformName.WatchOS, 6, 0, message: "Use 'NSMutableDictionary(NSUrl)' constructor instead.")]
 		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use 'NSMutableDictionary(NSUrl)' constructor instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'NSMutableDictionary(NSUrl)' constructor instead.")]
 		[Export ("initWithContentsOfURL:")]
@@ -4450,6 +5796,7 @@ namespace Foundation {
 		[Export ("objectForKey:")]
 		IntPtr _ObjectForKey (IntPtr key);
 
+		[return: NullAllowed]
 		[Export ("objectForKey:")]
 		NSObject ObjectForKey (NSObject key);
 
@@ -4500,7 +5847,6 @@ namespace Foundation {
 
 		[Deprecated (PlatformName.MacOSX, 10, 15)]
 		[Deprecated (PlatformName.iOS, 13, 0)]
-		[Deprecated (PlatformName.WatchOS, 6, 0)]
 		[Deprecated (PlatformName.TvOS, 13, 0)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 		[Export ("writeToFile:atomically:")]
@@ -4508,7 +5854,6 @@ namespace Foundation {
 
 		[Deprecated (PlatformName.MacOSX, 10, 15)]
 		[Deprecated (PlatformName.iOS, 13, 0)]
-		[Deprecated (PlatformName.WatchOS, 6, 0)]
 		[Deprecated (PlatformName.TvOS, 13, 0)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 		[Export ("writeToURL:atomically:")]
@@ -4518,7 +5863,44 @@ namespace Foundation {
 		[Export ("sharedKeySetForKeys:")]
 		NSObject GetSharedKeySetForKeys (NSObject [] keys);
 
+		[Export ("descriptionWithLocale:")]
+		string GetDescription ([NullAllowed] NSObject locale);
+
+		[Export ("descriptionWithLocale:indent:")]
+		string GetDescription ([NullAllowed] NSObject locale, nuint level);
+
+		[Export ("enumerateKeysAndObjectsUsingBlock:")]
+		void Enumerate (NSDictionaryEnumerator block);
+
+		[Export ("enumerateKeysAndObjectsWithOptions:usingBlock:")]
+		void Enumerate (NSEnumerationOptions options, NSDictionaryEnumerator block);
+
+		[Export ("keysOfEntriesPassingTest:")]
+		NSSet GetKeys (NSDictionaryKeyFilter predicate);
+
+		[Export ("keysOfEntriesWithOptions:passingTest:")]
+		NSSet GetKeys (NSEnumerationOptions options, NSDictionaryKeyFilter predicate);
+
+		[Export ("keysSortedByValueUsingComparator:")]
+		NSObject [] GetKeysSortedByValue (NSComparator comparator);
+
+		[Export ("keysSortedByValueWithOptions:usingComparator:")]
+		NSObject [] GetKeysSortedByValue (NSSortOptions options, NSComparator comparator);
+
+		[return: NullAllowed]
+		[Export ("valueForKey:")]
+		[MarshalNativeExceptions]
+		NSObject ValueForKey (NSString key);
+
+		[Export ("writeToURL:error:")]
+		bool WriteToUrl (NSUrl url, [NullAllowed] out NSError error);
+
+		[Export ("keyEnumerator")]
+		NSEnumerator KeyEnumerator { get; }
 	}
+
+	delegate void NSDictionaryEnumerator (NSObject key, NSObject obj, ref bool stop);
+	delegate bool NSDictionaryKeyFilter (NSObject key, NSObject obj, ref bool stop);
 
 	interface NSDictionary<K, V> : NSDictionary { }
 
@@ -4533,9 +5915,26 @@ namespace Foundation {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSError : NSSecureCoding, NSCopying {
+		/// <param name="domain">To be added.</param>
+		/// <param name="code">To be added.</param>
+		/// <param name="userInfo">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("errorWithDomain:code:userInfo:")]
 		NSError FromDomain (NSString domain, nint code, [NullAllowed] NSDictionary userInfo);
 
+		/// <param name="domain">To be added.</param>
+		/// <param name="code">To be added.</param>
+		/// <param name="userInfo">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithDomain:code:userInfo:")]
 		NativeHandle Constructor (NSString domain, nint code, [NullAllowed] NSDictionary userInfo);
@@ -4564,125 +5963,181 @@ namespace Foundation {
 		[Export ("helpAnchor")]
 		string HelpAnchor { get; }
 
-		[Watch (7, 4), TV (14, 5), iOS (14, 5)]
+		[TV (14, 5), iOS (14, 5)]
 		[MacCatalyst (14, 5)]
 		[Export ("underlyingErrors", ArgumentSemantic.Copy)]
 		NSError [] UnderlyingErrors { get; }
 
+		/// <summary>The Cocoa error domain.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSCocoaErrorDomain")]
 		NSString CocoaErrorDomain { get; }
 
+		/// <summary>Represents the value associated with the constant NSPOSIXErrorDomain</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSPOSIXErrorDomain")]
 		NSString PosixErrorDomain { get; }
 
+		/// <summary>Represents the value associated with the constant NSOSStatusErrorDomain</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSOSStatusErrorDomain")]
 		NSString OsStatusErrorDomain { get; }
 
+		/// <summary>Represents the value associated with the constant NSMachErrorDomain</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSMachErrorDomain")]
 		NSString MachErrorDomain { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLErrorDomain</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLErrorDomain")]
 		NSString NSUrlErrorDomain { get; }
 
-#if NET
-		[NoWatch]
+		/// <summary>Represents the value associated with the constant NSNetServicesErrorDomain</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
-#else
-		[Obsoleted (PlatformName.WatchOS, 7, 0)]
-#endif
 		[Field ("NSNetServicesErrorDomain")]
 		NSString NSNetServicesErrorDomain { get; }
 
-		[NoWatch]
 		[Field ("NSNetServicesErrorCode")]
 		NSString NSNetServicesErrorCode { get; }
 
+		/// <summary>Represents the value associated with the constant NSStreamSocketSSLErrorDomain</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSStreamSocketSSLErrorDomain")]
 		NSString NSStreamSocketSSLErrorDomain { get; }
 
+		/// <summary>Represents the value associated with the constant NSStreamSOCKSErrorDomain</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSStreamSOCKSErrorDomain")]
 		NSString NSStreamSOCKSErrorDomain { get; }
 
+		/// <summary>The CoreLocation error domain.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCLErrorDomain", "CoreLocation")]
 		NSString CoreLocationErrorDomain { get; }
 
-#if !WATCH
+		/// <summary>The CFNetwork error domain.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCFErrorDomainCFNetwork", "CFNetwork")]
 		NSString CFNetworkErrorDomain { get; }
-#endif
 
+		/// <summary>The CoreMotion error domain.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NoMac, NoTV]
 		[MacCatalyst (13, 1)]
 		[Field ("CMErrorDomain", "CoreMotion")]
 		NSString CoreMotionErrorDomain { get; }
 
-		[NoMac, NoTV, NoWatch]
+		[NoMac, NoTV]
 		[iOS (12, 0)]
 		[NoMacCatalyst] // We don't expose CarPlay on Mac Catalyst for the moment // [MacCatalyst (14, 0)]
 		[Field ("CarPlayErrorDomain", "CarPlay")]
 		NSString CarPlayErrorDomain { get; }
 
-#if !XAMCORE_3_0
-		// now exposed with the corresponding EABluetoothAccessoryPickerError enum
-		[NoMac, NoTV, NoWatch]
-		[MacCatalyst (13, 1)]
-		[Field ("EABluetoothAccessoryPickerErrorDomain", "ExternalAccessory")]
-		NSString EABluetoothAccessoryPickerErrorDomain { get; }
-
-		// now exposed with the corresponding MKErrorCode enum
-		[NoMac]
-		[NoWatch]
-		[MacCatalyst (13, 1)]
-		[Field ("MKErrorDomain", "MapKit")]
-		NSString MapKitErrorDomain { get; }
-
-		// now exposed with the corresponding WKErrorCode enum
-		[NoMac, NoTV]
-		[Unavailable (PlatformName.iOS)]
-		[MacCatalyst (13, 1)]
-		[Field ("WatchKitErrorDomain", "WatchKit")]
-		NSString WatchKitErrorDomain { get; }
-#endif
-
+		/// <summary>Represents the value associated with the constant NSUnderlyingErrorKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSUnderlyingErrorKey")]
 		NSString UnderlyingErrorKey { get; }
 
-		[Watch (7, 4), TV (14, 5), iOS (14, 5)]
+		[TV (14, 5), iOS (14, 5)]
 		[MacCatalyst (14, 5)]
 		[Field ("NSMultipleUnderlyingErrorsKey")]
 		NSString MultipleUnderlyingErrorsKey { get; }
 
+		/// <summary>Standard key to use in the userInfo payload for associating a localized description of the problem to provide to the user.</summary>
+		///         <value />
+		///         <remarks>To be added.</remarks>
 		[Field ("NSLocalizedDescriptionKey")]
 		NSString LocalizedDescriptionKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSLocalizedFailureReasonErrorKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSLocalizedFailureReasonErrorKey")]
 		NSString LocalizedFailureReasonErrorKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSLocalizedRecoverySuggestionErrorKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSLocalizedRecoverySuggestionErrorKey")]
 		NSString LocalizedRecoverySuggestionErrorKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSLocalizedRecoveryOptionsErrorKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSLocalizedRecoveryOptionsErrorKey")]
 		NSString LocalizedRecoveryOptionsErrorKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSRecoveryAttempterErrorKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSRecoveryAttempterErrorKey")]
 		NSString RecoveryAttempterErrorKey { get; }
 
+		/// <summary>Standard key to use in the userInfo payload for associating a hint to provide to the user.</summary>
+		///         <value />
+		///         <remarks>To be added.</remarks>
 		[Field ("NSHelpAnchorErrorKey")]
 		NSString HelpAnchorErrorKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSStringEncodingErrorKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSStringEncodingErrorKey")]
 		NSString StringEncodingErrorKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLErrorKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLErrorKey")]
 		NSString UrlErrorKey { get; }
 
+		/// <summary>Standard key to use in the userInfo payload for associating a file path with the error.</summary>
+		///         <value />
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFilePathErrorKey")]
 		NSString FilePathErrorKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("NSDebugDescriptionErrorKey")]
 		NSString DebugDescriptionErrorKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("NSLocalizedFailureErrorKey")]
 		NSString LocalizedFailureErrorKey { get; }
@@ -4700,16 +6155,22 @@ namespace Foundation {
 
 		// From NSError (NSFileProviderError) Category to avoid static category uglyness
 
+		/// <param name="existingItem">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoMacCatalyst]
 		[NoTV]
-		[NoWatch]
 		[Static]
 		[Export ("fileProviderErrorForCollisionWithItem:")]
 		NSError GetFileProviderError (INSFileProviderItem existingItem);
 
+		/// <param name="nonExistentItemIdentifier">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoMacCatalyst]
 		[NoTV]
-		[NoWatch]
 		[Static]
 		[Export ("fileProviderErrorForNonExistentItemWithIdentifier:")]
 		NSError GetFileProviderError (string nonExistentItemIdentifier);
@@ -4717,7 +6178,6 @@ namespace Foundation {
 		[iOS (16, 0)]
 		[NoMacCatalyst]
 		[NoTV]
-		[NoWatch]
 		[Static]
 		[Export ("fileProviderErrorForRejectedDeletionOfItem:")]
 		NSError GetFileProviderErrorForRejectedDeletion (INSFileProviderItem updatedVersion);
@@ -4728,8 +6188,23 @@ namespace Foundation {
 		[Field ("NSURLErrorBackgroundTaskCancelledReasonKey")]
 		NSString NSUrlErrorBackgroundTaskCancelledReasonKey { get; }
 #endif
+
+#if IOS && !MACCATALYST
+		[iOS (18, 2), NoMacCatalyst, NoTV, NoMac]
+		[Field ("UIApplicationCategoryDefaultRetryAvailabilityDateErrorKey", "UIKit")]
+		NSString UIApplicationCategoryDefaultRetryAvailabilityDateErrorKey { get; }
+
+		[iOS (18, 2), NoMacCatalyst, NoTV, NoMac]
+		[Field ("UIApplicationCategoryDefaultStatusLastProvidedDateErrorKey", "UIKit")]
+		NSString UIApplicationCategoryDefaultStatusLastProvidedDateErrorKey { get; }
+#endif
 	}
 
+	/// <param name="error">To be added.</param>
+	/// <param name="userInfoKey">To be added.</param>
+	/// <summary>Delegate returned by <see cref="Foundation.NSError.GetUserInfoValueProvider(System.String)" />.</summary>
+	/// <returns>To be added.</returns>
+	/// <remarks>To be added.</remarks>
 	delegate NSObject NSErrorUserInfoValueProvider (NSError error, NSString userInfoKey);
 
 	[BaseType (typeof (NSObject))]
@@ -4756,11 +6231,7 @@ namespace Foundation {
 		string [] CallStackSymbols { get; }
 	}
 
-#if !NET && !WATCH
-	[Obsolete ("NSExpressionHandler is deprecated, please use FromFormat (string, NSObject[]) instead.")]
-	delegate void NSExpressionHandler (NSObject evaluatedObject, NSExpression [] expressions, NSMutableDictionary context);
-#endif
-	delegate NSObject NSExpressionCallbackHandler (NSObject evaluatedObject, NSExpression [] expressions, NSMutableDictionary context);
+	delegate NSObject NSExpressionCallbackHandler ([NullAllowed] NSObject evaluatedObject, NSExpression [] expressions, [NullAllowed] NSMutableDictionary context);
 	[BaseType (typeof (NSObject))]
 	// Objective-C exception thrown.  Name: NSInvalidArgumentException Reason: *** -predicateFormat cannot be sent to an abstract object of class NSExpression: Create a concrete instance!
 	[DisableDefaultCtor]
@@ -4782,12 +6253,6 @@ namespace Foundation {
 
 		[Static, Export ("expressionWithFormat:")]
 		NSExpression FromFormat (string expressionFormat);
-
-#if !NET && !WATCH
-		[Obsolete ("Use 'FromFormat (string, NSObject[])' instead.")]
-		[Static, Export ("expressionWithFormat:argumentArray:")]
-		NSExpression FromFormat (string format, NSExpression [] parameters);
-#endif
 
 		[Static, Export ("expressionWithFormat:argumentArray:")]
 		NSExpression FromFormat (string format, NSObject [] parameters);
@@ -4811,12 +6276,6 @@ namespace Foundation {
 
 		[Static, Export ("expressionForFunction:selectorName:arguments:")]
 		NSExpression FromFunction (NSExpression target, string name, NSExpression [] parameters);
-
-#if !NET && !WATCH
-		[Obsolete ("Use 'FromFunction (NSExpressionCallbackHandler, NSExpression[])' instead.")]
-		[Static, Export ("expressionForBlock:arguments:")]
-		NSExpression FromFunction (NSExpressionHandler target, [NullAllowed] NSExpression [] parameters);
-#endif
 
 		[Static, Export ("expressionForBlock:arguments:")]
 		NSExpression FromFunction (NSExpressionCallbackHandler target, NSExpression [] parameters);
@@ -4895,7 +6354,14 @@ namespace Foundation {
 		[Export ("inputItems", ArgumentSemantic.Copy)]
 		NSExtensionItem [] InputItems { get; }
 
-		[Async]
+		[Async (XmlDocs = """
+			<param name="returningItems">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous CompleteRequest operation.  The value of the TResult parameter is of type System.Action&lt;System.Boolean&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("completeRequestReturningItems:completionHandler:")]
 		void CompleteRequest (NSExtensionItem [] returningItems, [NullAllowed] Action<bool> completionHandler);
 
@@ -4903,30 +6369,48 @@ namespace Foundation {
 		void CancelRequest (NSError error);
 
 		[Export ("openURL:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="url">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous OpenUrl operation.  The value of the TResult parameter is of type System.Action&lt;System.Boolean&gt;.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The OpenUrlAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void OpenUrl (NSUrl url, [NullAllowed] Action<bool> completionHandler);
 
+		/// <summary>Represents the value associated with the constant NSExtensionItemsAndErrorsKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSExtensionItemsAndErrorsKey")]
 		NSString ItemsAndErrorsKey { get; }
 
+		/// <include file="../docs/api/Foundation/NSExtensionContext.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSExtensionContext.HostWillEnterForegroundNotification']/*" />
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("NSExtensionHostWillEnterForegroundNotification")]
 		NSString HostWillEnterForegroundNotification { get; }
 
+		/// <include file="../docs/api/Foundation/NSExtensionContext.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSExtensionContext.HostDidEnterBackgroundNotification']/*" />
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("NSExtensionHostDidEnterBackgroundNotification")]
 		NSString HostDidEnterBackgroundNotification { get; }
 
+		/// <include file="../docs/api/Foundation/NSExtensionContext.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSExtensionContext.HostWillResignActiveNotification']/*" />
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("NSExtensionHostWillResignActiveNotification")]
 		NSString HostWillResignActiveNotification { get; }
 
+		/// <include file="../docs/api/Foundation/NSExtensionContext.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSExtensionContext.HostDidBecomeActiveNotification']/*" />
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Notification]
@@ -4953,22 +6437,31 @@ namespace Foundation {
 		[Export ("userInfo", ArgumentSemantic.Copy)]
 		NSDictionary UserInfo { get; set; }
 
+		/// <summary>Represents the value associated with the constant NSExtensionItemAttributedTitleKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSExtensionItemAttributedTitleKey")]
 		NSString AttributedTitleKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSExtensionItemAttributedContentTextKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSExtensionItemAttributedContentTextKey")]
 		NSString AttributedContentTextKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSExtensionItemAttachmentsKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSExtensionItemAttachmentsKey")]
 		NSString AttachmentsKey { get; }
 	}
 
 	[BaseType (typeof (NSObject))]
 	interface NSNull : NSSecureCoding, NSCopying
-#if !WATCH
-	, CAAction
-#endif
-	{
+	, CAAction {
 		[Export ("null"), Static]
 		[Internal]
 		NSNull _Null { get; }
@@ -4998,15 +6491,27 @@ namespace Foundation {
 		[Export ("getObjectValue:forString:errorDescription:")]
 		bool GetObjectValue (out NSObject obj, string str, out string error);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("forPersonHeightUse")]
 		bool ForPersonHeightUse { [Bind ("isForPersonHeightUse")] get; set; }
 	}
 
-	delegate void NSLingusticEnumerator (NSString tag, NSRange tokenRange, NSRange sentenceRange, ref bool stop);
+	/// <param name="tag">To be added.</param>
+	/// <param name="tokenRange">To be added.</param>
+	/// <param name="sentenceRange">To be added.</param>
+	/// <param name="stop">To be added.</param>
+	/// <summary>A delegate that enumerates values for <see cref="Foundation.NSLinguisticTagger.EnumerateTagsInRange(Foundation.NSRange,Foundation.NSString,Foundation.NSLinguisticTaggerOptions,Foundation.NSLingusticEnumerator)" />.</summary>
+	/// <remarks>To be added.</remarks>
+#if XAMCORE_5_0
+	delegate void NSLinguisticEnumerator ([NullAllowed] NSString tag, NSRange tokenRange, NSRange sentenceRange, ref bool stop);
+#else
+	delegate void NSLingusticEnumerator ([NullAllowed] NSString tag, NSRange tokenRange, NSRange sentenceRange, ref bool stop);
+#endif
 
 	[Deprecated (PlatformName.MacOSX, 11, 0, message: "Use 'NaturalLanguage.*' API instead.")]
 	[Deprecated (PlatformName.iOS, 14, 0, message: "Use 'NaturalLanguage.*' API instead.")]
-	[Deprecated (PlatformName.WatchOS, 7, 0, message: "Use 'NaturalLanguage.*' API instead.")]
 	[Deprecated (PlatformName.TvOS, 14, 0, message: "Use 'NaturalLanguage.*' API instead.")]
 	[Deprecated (PlatformName.MacCatalyst, 14, 0, message: "Use 'NaturalLanguage.*' API instead.")]
 	[BaseType (typeof (NSObject))]
@@ -5025,18 +6530,38 @@ namespace Foundation {
 		[Export ("setOrthography:range:")]
 		void SetOrthographyrange (NSOrthography orthography, NSRange range);
 
+		/// <param name="charIndex">To be added.</param>
+		/// <param name="effectiveRange">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("orthographyAtIndex:effectiveRange:")]
 		NSOrthography GetOrthography (nint charIndex, ref NSRange effectiveRange);
 
+		/// <param name="newRange">To be added.</param>
+		/// <param name="delta">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("stringEditedInRange:changeInLength:")]
 		void StringEditedInRange (NSRange newRange, nint delta);
 
 		[Export ("enumerateTagsInRange:scheme:options:usingBlock:")]
+#if XAMCORE_5_0
+		void EnumerateTagsInRange (NSRange range, NSString tagScheme, NSLinguisticTaggerOptions opts, NSLinguisticEnumerator enumerator);
+#else
 		void EnumerateTagsInRange (NSRange range, NSString tagScheme, NSLinguisticTaggerOptions opts, NSLingusticEnumerator enumerator);
+#endif
 
 		[Export ("sentenceRangeForRange:")]
 		NSRange GetSentenceRangeForRange (NSRange range);
 
+		/// <param name="charIndex">To be added.</param>
+		/// <param name="tagScheme">To be added.</param>
+		/// <param name="tokenRange">To be added.</param>
+		/// <param name="sentenceRange">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("tagAtIndex:scheme:tokenRange:sentenceRange:")]
 		string GetTag (nint charIndex, NSString tagScheme, ref NSRange tokenRange, ref NSRange sentenceRange);
 
@@ -5059,11 +6584,26 @@ namespace Foundation {
 		[Export ("enumerateTagsInRange:unit:scheme:options:usingBlock:")]
 		void EnumerateTags (NSRange range, NSLinguisticTaggerUnit unit, string scheme, NSLinguisticTaggerOptions options, LinguisticTagEnumerator enumerator);
 
+		/// <param name="charIndex">To be added.</param>
+		/// <param name="unit">To be added.</param>
+		/// <param name="scheme">To be added.</param>
+		/// <param name="tokenRange">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("tagAtIndex:unit:scheme:tokenRange:")]
 		[return: NullAllowed]
 		string GetTag (nuint charIndex, NSLinguisticTaggerUnit unit, string scheme, [NullAllowed] ref NSRange tokenRange);
 
+		/// <param name="charIndex">To be added.</param>
+		/// <param name="unit">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("tokenRangeAtIndex:unit:")]
 		NSRange GetTokenRange (nuint charIndex, NSLinguisticTaggerUnit unit);
@@ -5083,6 +6623,21 @@ namespace Foundation {
 		[return: NullAllowed]
 		string GetDominantLanguage (string str);
 
+		/// <param name="str">To be added.</param>
+		/// <param name="charIndex">To be added.</param>
+		/// <param name="unit">To be added.</param>
+		/// <param name="scheme">To be added.</param>
+		/// <param name="orthography">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="tokenRange">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("tagForString:atIndex:unit:scheme:orthography:tokenRange:")]
@@ -5102,129 +6657,7 @@ namespace Foundation {
 
 	delegate void LinguisticTagEnumerator (string tag, NSRange tokenRange, bool stop);
 
-#if !NET
-	[Obsolete ("Use 'NSLinguisticTagUnit' enum instead.")]
-	[Static]
-	interface NSLinguisticTag {
-		[Field ("NSLinguisticTagSchemeTokenType")]
-		NSString SchemeTokenType { get; }
-
-		[Field ("NSLinguisticTagSchemeLexicalClass")]
-		NSString SchemeLexicalClass { get; }
-
-		[Field ("NSLinguisticTagSchemeNameType")]
-		NSString SchemeNameType { get; }
-
-		[Field ("NSLinguisticTagSchemeNameTypeOrLexicalClass")]
-		NSString SchemeNameTypeOrLexicalClass { get; }
-
-		[Field ("NSLinguisticTagSchemeLemma")]
-		NSString SchemeLemma { get; }
-
-		[Field ("NSLinguisticTagSchemeLanguage")]
-		NSString SchemeLanguage { get; }
-
-		[Field ("NSLinguisticTagSchemeScript")]
-		NSString SchemeScript { get; }
-
-		[Field ("NSLinguisticTagWord")]
-		NSString Word { get; }
-
-		[Field ("NSLinguisticTagPunctuation")]
-		NSString Punctuation { get; }
-
-		[Field ("NSLinguisticTagWhitespace")]
-		NSString Whitespace { get; }
-
-		[Field ("NSLinguisticTagOther")]
-		NSString Other { get; }
-
-		[Field ("NSLinguisticTagNoun")]
-		NSString Noun { get; }
-
-		[Field ("NSLinguisticTagVerb")]
-		NSString Verb { get; }
-
-		[Field ("NSLinguisticTagAdjective")]
-		NSString Adjective { get; }
-
-		[Field ("NSLinguisticTagAdverb")]
-		NSString Adverb { get; }
-
-		[Field ("NSLinguisticTagPronoun")]
-		NSString Pronoun { get; }
-
-		[Field ("NSLinguisticTagDeterminer")]
-		NSString Determiner { get; }
-
-		[Field ("NSLinguisticTagParticle")]
-		NSString Particle { get; }
-
-		[Field ("NSLinguisticTagPreposition")]
-		NSString Preposition { get; }
-
-		[Field ("NSLinguisticTagNumber")]
-		NSString Number { get; }
-
-		[Field ("NSLinguisticTagConjunction")]
-		NSString Conjunction { get; }
-
-		[Field ("NSLinguisticTagInterjection")]
-		NSString Interjection { get; }
-
-		[Field ("NSLinguisticTagClassifier")]
-		NSString Classifier { get; }
-
-		[Field ("NSLinguisticTagIdiom")]
-		NSString Idiom { get; }
-
-		[Field ("NSLinguisticTagOtherWord")]
-		NSString OtherWord { get; }
-
-		[Field ("NSLinguisticTagSentenceTerminator")]
-		NSString SentenceTerminator { get; }
-
-		[Field ("NSLinguisticTagOpenQuote")]
-		NSString OpenQuote { get; }
-
-		[Field ("NSLinguisticTagCloseQuote")]
-		NSString CloseQuote { get; }
-
-		[Field ("NSLinguisticTagOpenParenthesis")]
-		NSString OpenParenthesis { get; }
-
-		[Field ("NSLinguisticTagCloseParenthesis")]
-		NSString CloseParenthesis { get; }
-
-		[Field ("NSLinguisticTagWordJoiner")]
-		NSString WordJoiner { get; }
-
-		[Field ("NSLinguisticTagDash")]
-		NSString Dash { get; }
-
-		[Field ("NSLinguisticTagOtherPunctuation")]
-		NSString OtherPunctuation { get; }
-
-		[Field ("NSLinguisticTagParagraphBreak")]
-		NSString ParagraphBreak { get; }
-
-		[Field ("NSLinguisticTagOtherWhitespace")]
-		NSString OtherWhitespace { get; }
-
-		[Field ("NSLinguisticTagPersonalName")]
-		NSString PersonalName { get; }
-
-		[Field ("NSLinguisticTagPlaceName")]
-		NSString PlaceName { get; }
-
-		[Field ("NSLinguisticTagOrganizationName")]
-		NSString OrganizationName { get; }
-	}
-#endif
-
 	[BaseType (typeof (NSObject))]
-	// 'init' returns NIL so it's not usable evenif it does not throw an ObjC exception
-	// funnily it was "added" in iOS 7 and header files says "do not invoke; not a valid initializer for this class"
 	[DisableDefaultCtor]
 	interface NSLocale : NSSecureCoding, NSCopying {
 		[Static]
@@ -5298,6 +6731,7 @@ namespace Foundation {
 		[Export ("localeWithLocaleIdentifier:")]
 		NSLocale FromLocaleIdentifier (string ident);
 
+		/// <include file="../docs/api/Foundation/NSLocale.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSLocale.CurrentLocaleDidChangeNotification']/*" />
 		[Field ("NSCurrentLocaleDidChangeNotification")]
 		[Notification]
 		NSString CurrentLocaleDidChangeNotification { get; }
@@ -5376,15 +6810,20 @@ namespace Foundation {
 		[return: NullAllowed]
 		string GetLocalizedCalendarIdentifier (string calendarIdentifier);
 
-		[Watch (10, 0), TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("languageIdentifier")]
 		string LanguageIdentifier { get; }
 
-		[Watch (10, 0), TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[NullAllowed, Export ("regionCode")]
 		string RegionCode { get; }
 	}
 
+	/// <param name="result">To be added.</param>
+	/// <param name="flags">To be added.</param>
+	/// <param name="stop">To be added.</param>
+	/// <summary>Delegate applied to results in <see cref="Foundation.NSRegularExpression.EnumerateMatches(Foundation.NSString,Foundation.NSMatchingOptions,Foundation.NSRange,Foundation.NSMatchEnumerator)" />.</summary>
+	/// <remarks>To be added.</remarks>
 	delegate void NSMatchEnumerator (NSTextCheckingResult result, NSMatchingFlags flags, ref bool stop);
 
 	// This API surfaces NSString instead of strings, because we already have the .NET version that uses
@@ -5418,19 +6857,8 @@ namespace Foundation {
 		[Export ("enumerateMatchesInString:options:range:usingBlock:")]
 		void EnumerateMatches (NSString str, NSMatchingOptions options, NSRange range, NSMatchEnumerator enumerator);
 
-#if !NET
-		[Obsolete ("Use 'GetMatches2' instead, this method has the wrong return type.")]
 		[Export ("matchesInString:options:range:")]
-		NSString [] GetMatches (NSString str, NSMatchingOptions options, NSRange range);
-#endif
-
-		[Export ("matchesInString:options:range:")]
-#if NET
 		NSTextCheckingResult [] GetMatches (NSString str, NSMatchingOptions options, NSRange range);
-#else
-		[Sealed]
-		NSTextCheckingResult [] GetMatches2 (NSString str, NSMatchingOptions options, NSRange range);
-#endif
 
 		[Export ("numberOfMatchesInString:options:range:")]
 		nuint GetNumberOfMatches (NSString str, NSMatchingOptions options, NSRange range);
@@ -5450,6 +6878,13 @@ namespace Foundation {
 		[Export ("replaceMatchesInString:options:range:withTemplate:")]
 		nuint ReplaceMatches (NSMutableString mutableString, NSMatchingOptions options, NSRange range, NSString template);
 
+		/// <param name="result">To be added.</param>
+		/// <param name="str">To be added.</param>
+		/// <param name="offset">To be added.</param>
+		/// <param name="template">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("replacementStringForResult:inString:offset:template:")]
 		NSString GetReplacementString (NSTextCheckingResult result, NSString str, nint offset, NSString template);
 
@@ -5474,6 +6909,9 @@ namespace Foundation {
 		[Export ("currentMode")]
 		NSString CurrentMode { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("NSRunLoopModeExtensions.GetValue (CurrentMode)")]
 		NSRunLoopMode CurrentRunLoopMode { get; }
 
@@ -5483,18 +6921,30 @@ namespace Foundation {
 		[Export ("addTimer:forMode:")]
 		void AddTimer (NSTimer timer, NSString forMode);
 
+		/// <param name="timer">To be added.</param>
+		///         <param name="forMode">The runloop to insert this into.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("AddTimer (timer, forMode.GetConstant ()!)")]
 		void AddTimer (NSTimer timer, NSRunLoopMode forMode);
 
 		[Export ("limitDateForMode:")]
 		NSDate LimitDateForMode (NSString mode);
 
+		/// <param name="mode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("LimitDateForMode (mode.GetConstant ()!)")]
 		NSDate LimitDateForMode (NSRunLoopMode mode);
 
 		[Export ("acceptInputForMode:beforeDate:")]
 		void AcceptInputForMode (NSString mode, NSDate limitDate);
 
+		/// <param name="mode">To be added.</param>
+		///         <param name="limitDate">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("AcceptInputForMode (mode.GetConstant ()!, limitDate)")]
 		void AcceptInputForMode (NSRunLoopMode mode, NSDate limitDate);
 
@@ -5507,6 +6957,11 @@ namespace Foundation {
 		[Export ("runMode:beforeDate:")]
 		bool RunUntil (NSString runLoopMode, NSDate limitdate);
 
+		/// <param name="runLoopMode">To be added.</param>
+		///         <param name="limitDate">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("RunUntil (runLoopMode.GetConstant ()!, limitDate)")]
 		bool RunUntil (NSRunLoopMode runLoopMode, NSDate limitDate);
 
@@ -5518,41 +6973,13 @@ namespace Foundation {
 		[Export ("performInModes:block:")]
 		void Perform (NSString [] modes, Action block);
 
+		/// <param name="modes">To be added.</param>
+		///         <param name="block">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("Perform (modes.GetConstants ()!, block)")]
 		void Perform (NSRunLoopMode [] modes, Action block);
-
-#if !NET
-		[Obsolete ("Use the 'NSRunLoopMode' enum instead.")]
-		[Field ("NSDefaultRunLoopMode")]
-		NSString NSDefaultRunLoopMode { get; }
-
-		[Obsolete ("Use the 'NSRunLoopMode' enum instead.")]
-		[Field ("NSRunLoopCommonModes")]
-		NSString NSRunLoopCommonModes { get; }
-
-		[Obsolete ("Use the 'NSRunLoopMode' enum instead.")]
-		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'NSXpcConnection' instead.")]
-		[NoiOS, NoWatch, NoTV, MacCatalyst (15, 0)]
-		[Field ("NSConnectionReplyMode")]
-		NSString NSRunLoopConnectionReplyMode { get; }
-
-		[Obsolete ("Use the 'NSRunLoopMode' enum instead.")]
-		[NoiOS, NoWatch, NoTV]
-		[Field ("NSModalPanelRunLoopMode", "AppKit")]
-		NSString NSRunLoopModalPanelMode { get; }
-
-		[Obsolete ("Use the 'NSRunLoopMode' enum instead.")]
-		[NoiOS, NoWatch, NoTV]
-		[Field ("NSEventTrackingRunLoopMode", "AppKit")]
-		NSString NSRunLoopEventTracking { get; }
-
-		[Obsolete ("Use the 'NSRunLoopMode' enum instead.")]
-		[NoMac]
-		[NoWatch]
-		[Field ("UITrackingRunLoopMode", "UIKit")]
-		NSString UITrackingRunLoopMode { get; }
-#endif
 	}
 
 	[BaseType (typeof (NSObject))]
@@ -5662,22 +7089,38 @@ namespace Foundation {
 		void AllowEvaluation ();
 	}
 
+	/// <summary>Defines an extension method for <see cref="Foundation.NSOrderedSet" /> objects, allowing sorting by <see cref="Foundation.NSSortDescriptor" /> objects.</summary>
+	/// <remarks>To be added.</remarks>
 	[Category, BaseType (typeof (NSOrderedSet))]
 	partial interface NSKeyValueSorting_NSOrderedSet {
+		/// <param name="sortDescriptors">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("sortedArrayUsingDescriptors:")]
 		NSObject [] GetSortedArray (NSSortDescriptor [] sortDescriptors);
 	}
 
 #pragma warning disable 618
+	/// <summary>Defines a static method for sorting <see cref="Foundation.NSMutableArray" /> objects using <see cref="Foundation.NSSortDescriptor" /> objects.</summary>
+	/// <remarks>To be added.</remarks>
 	[Category, BaseType (typeof (NSMutableArray))]
 #pragma warning restore 618
 	partial interface NSSortDescriptorSorting_NSMutableArray {
+		/// <param name="sortDescriptors">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("sortUsingDescriptors:")]
 		void SortUsingDescriptors (NSSortDescriptor [] sortDescriptors);
 	}
 
+	/// <summary>Defines an extension method for <see cref="NSMutableOrderedSet" /> objects, allowing them to be sorted using <see cref="Foundation.NSSortDescriptor" /> objects.</summary>
+	/// <remarks>To be added.</remarks>
 	[Category, BaseType (typeof (NSMutableOrderedSet))]
 	partial interface NSKeyValueSorting_NSMutableOrderedSet {
+		/// <param name="sortDescriptors">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("sortUsingDescriptors:")]
 		void SortUsingDescriptors (NSSortDescriptor [] sortDescriptors);
 	}
@@ -5724,6 +7167,10 @@ namespace Foundation {
 		[Export ("invalidate")]
 		void Invalidate ();
 
+		/// <summary>Returns <see langword="true" /> if the the timer will still fire at some point in the future.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isValid")]
 		bool IsValid { get; }
 
@@ -5783,6 +7230,10 @@ namespace Foundation {
 		[Static, Export ("timeZoneWithName:data:")]
 		NSTimeZone FromName (string tzName, NSData data);
 
+		/// <param name="seconds">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static]
 		[Export ("timeZoneForSecondsFromGMT:")]
 		NSTimeZone FromGMT (nint seconds);
@@ -5820,18 +7271,20 @@ namespace Foundation {
 	}
 
 	interface NSUbiquitousKeyValueStoreChangeEventArgs {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("NSUbiquitousKeyValueStoreChangedKeysKey")]
 		string [] ChangedKeys { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("NSUbiquitousKeyValueStoreChangeReasonKey")]
 		NSUbiquitousKeyValueStoreChangeReason ChangeReason { get; }
 	}
 
 	[BaseType (typeof (NSObject))]
-#if WATCH
-	[Advice (Constants.UnavailableOnWatchOS)]
-	[DisableDefaultCtor] // "NSUbiquitousKeyValueStore is unavailable" is printed to the log.
-#endif
 	interface NSUbiquitousKeyValueStore {
 		[Static]
 		[Export ("defaultStore")]
@@ -5899,13 +7352,22 @@ namespace Foundation {
 		[Export ("synchronize")]
 		bool Synchronize ();
 
+		/// <include file="../docs/api/Foundation/NSUbiquitousKeyValueStore.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSUbiquitousKeyValueStore.DidChangeExternallyNotification']/*" />
 		[Field ("NSUbiquitousKeyValueStoreDidChangeExternallyNotification")]
 		[Notification (typeof (NSUbiquitousKeyValueStoreChangeEventArgs))]
 		NSString DidChangeExternallyNotification { get; }
 
+		/// <summary>Represents the value associated with the constant NSUbiquitousKeyValueStoreChangeReasonKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSUbiquitousKeyValueStoreChangeReasonKey")]
 		NSString ChangeReasonKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSUbiquitousKeyValueStoreChangedKeysKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSUbiquitousKeyValueStoreChangedKeysKey")]
 		NSString ChangedKeysKey { get; }
 	}
@@ -5926,7 +7388,7 @@ namespace Foundation {
 		[Export ("UUIDString")]
 		string AsString ();
 
-		[Watch (8, 0), TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("compare:")]
 		NSComparisonResult Compare (NSUuid otherUuid);
 	}
@@ -5966,6 +7428,13 @@ namespace Foundation {
 		[Export ("delegate", ArgumentSemantic.Weak), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the Foundation.INSUserActivityDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the Foundation.INSUserActivityDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		INSUserActivityDelegate Delegate { get; set; }
 
@@ -5979,7 +7448,16 @@ namespace Foundation {
 		void Invalidate ();
 
 		[Export ("getContinuationStreamsWithCompletionHandler:")]
-		[Async (ResultTypeName = "NSUserActivityContinuation")]
+		[Async (ResultTypeName = "NSUserActivityContinuation", XmlDocs = """
+			<summary>To be added.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous GetContinuationStreams operation.  The value of the TResult parameter is of type System.Action&lt;Foundation.NSInputStream,Foundation.NSOutputStream,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The GetContinuationStreamsAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void GetContinuationStreams (Action<NSInputStream, NSOutputStream, NSError> completionHandler);
 
 		[MacCatalyst (13, 1)]
@@ -5998,19 +7476,33 @@ namespace Foundation {
 		[Export ("resignCurrent")]
 		void ResignCurrent ();
 
+		/// <summary>Gets or sets whether this NSUserActivity is eligible for handoff.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("eligibleForHandoff")]
 		bool EligibleForHandoff { [Bind ("isEligibleForHandoff")] get; set; }
 
+		/// <summary>Gets or sets whether this NSUserActivity is eligible for search.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("eligibleForSearch")]
 		bool EligibleForSearch { [Bind ("isEligibleForSearch")] get; set; }
 
+		/// <summary>Gets or sets whether this NSUserActivity may have entries in public indices.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("eligibleForPublicIndexing")]
 		bool EligibleForPublicIndexing { [Bind ("isEligibleForPublicIndexing")] get; set; }
 
-		[NoWatch]
+		/// <summary>Gets or sets the list of searchable properties for this activity.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[NullAllowed]
@@ -6023,73 +7515,98 @@ namespace Foundation {
 
 		// From NSUserActivity (CIBarcodeDescriptor)
 
-		[NoWatch]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("detectedBarcodeDescriptor", ArgumentSemantic.Copy)]
 		CIBarcodeDescriptor DetectedBarcodeDescriptor { get; }
 
 		// From NSUserActivity (CLSDeepLinks)
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Introduced (PlatformName.MacCatalyst, 14, 0)]
-		[NoWatch, NoTV]
+		[NoTV]
 		[Export ("isClassKitDeepLink")]
 		bool IsClassKitDeepLink { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Introduced (PlatformName.MacCatalyst, 14, 0)]
-		[NoWatch, NoTV]
+		[NoTV]
 		[NullAllowed, Export ("contextIdentifierPath", ArgumentSemantic.Strong)]
 		string [] ContextIdentifierPath { get; }
 
 		// From NSUserActivity (IntentsAdditions)
 
-		[Watch (5, 0), NoTV]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("suggestedInvocationPhrase")]
 		string SuggestedInvocationPhrase {
 			// This _simply_ ensure that the Intents namespace (via the enum) will be present which,
 			// in turns, means that the Intents.framework is loaded into memory and this makes the
 			// selectors (getter and setter) work at runtime. Other selectors do not need it.
-			// reference: https://github.com/xamarin/xamarin-macios/issues/4894
+			// reference: https://github.com/dotnet/macios/issues/4894
 			[PreSnippet ("GC.KeepAlive (Intents.INCallCapabilityOptions.AudioCall); // no-op to ensure Intents.framework is loaded into memory", Optimizable = true)]
 			get;
 			[PreSnippet ("GC.KeepAlive (Intents.INCallCapabilityOptions.AudioCall); // no-op to ensure Intents.framework is loaded into memory", Optimizable = true)]
 			set;
 		}
 
-		[Watch (5, 0), NoTV, NoMac]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV, NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("eligibleForPrediction")]
 		bool EligibleForPrediction { [Bind ("isEligibleForPrediction")] get; set; }
 
-		[Watch (5, 0), NoTV]
+		[NoTV]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("persistentIdentifier")]
 		string PersistentIdentifier { get; set; }
 
-		[Watch (5, 0), NoTV]
+		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Static]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="persistentIdentifiers">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("deleteSavedUserActivitiesWithPersistentIdentifiers:completionHandler:")]
 		void DeleteSavedUserActivities (string [] persistentIdentifiers, Action handler);
 
-		[Watch (5, 0), NoTV]
+		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Static]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>To be added.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("deleteAllSavedUserActivitiesWithCompletionHandler:")]
 		void DeleteAllSavedUserActivities (Action handler);
 
 		// Inlined from NSUserActivity (UISceneActivationConditions)
 
-		[iOS (13, 0), TV (13, 0), Watch (6, 0)]
+		[iOS (13, 0), TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("targetContentIdentifier")]
 		string TargetContentIdentifier { get; set; }
 
 #if HAS_APPCLIP
 		// Inlined from NSUserActivity (AppClip)
-		[iOS (14,0)][NoTV][NoMac][NoWatch]
+		[iOS (14, 0)]
+		[NoTV]
+		[NoMac]
 		[MacCatalyst (14, 0)]
 		[Export ("appClipActivationPayload", ArgumentSemantic.Strong)]
 		[NullAllowed]
@@ -6097,25 +7614,45 @@ namespace Foundation {
 #endif
 	}
 
+	/// <summary>Defines types of <see cref="Foundation.NSUserActivity" /> available from the system (currently only browsing the Web).</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Static]
 	partial interface NSUserActivityType {
+		/// <summary>Represents the value associated with the constant NSUserActivityTypeBrowsingWeb</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSUserActivityTypeBrowsingWeb")]
 		NSString BrowsingWeb { get; }
 	}
 
 	interface INSUserActivityDelegate { }
 
+	/// <summary>Delegate object for <see cref="Foundation.NSUserActivity" /> objects, exposing events relating to an activity begun on one device and continued on another.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AppKit/Reference/NSUserActivityDelegate_Protocol/index.html">Apple documentation for <c>NSUserActivityDelegate</c></related>
 	[MacCatalyst (13, 1)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	partial interface NSUserActivityDelegate {
+		/// <param name="userActivity">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("userActivityWillSave:")]
 		void UserActivityWillSave (NSUserActivity userActivity);
 
+		/// <param name="userActivity">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("userActivityWasContinued:")]
 		void UserActivityWasContinued (NSUserActivity userActivity);
 
+		/// <param name="userActivity">To be added.</param>
+		/// <param name="inputStream">To be added.</param>
+		/// <param name="outputStream">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("userActivity:didReceiveInputStream:outputStream:")]
 		void UserActivityReceivedData (NSUserActivity userActivity, NSInputStream inputStream, NSOutputStream outputStream);
 	}
@@ -6139,12 +7676,12 @@ namespace Foundation {
 
 		[Internal]
 		[Export ("initWithUser:")]
-		IntPtr InitWithUserName (string username);
+		IntPtr _InitWithUserName (string username);
 
 		[Internal]
 		[MacCatalyst (13, 1)]
 		[Export ("initWithSuiteName:")]
-		IntPtr InitWithSuiteName ([NullAllowed] string suiteName);
+		IntPtr _InitWithSuiteName ([NullAllowed] string suiteName);
 
 		[Export ("objectForKey:")]
 		[Internal]
@@ -6190,6 +7727,10 @@ namespace Foundation {
 		[Export ("boolForKey:")]
 		bool BoolForKey (string defaultName);
 
+		/// <param name="value">To be added.</param>
+		/// <param name="defaultName">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("setInteger:forKey:")]
 		void SetInt (nint value, string defaultName);
 
@@ -6256,39 +7797,86 @@ namespace Foundation {
 		[Export ("objectIsForcedForKey:inDomain:")]
 		bool ObjectIsForced (string key, string domain);
 
+		/// <summary>This is the key used to retrieve the global user defaults domain.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///           <para>
+		/// 	    This key is used to retrieve the global user defaults.
+		/// 	  </para>
+		///           <example>
+		///             <code lang="c#">
+		/// // Retrieve the gloabl NSButtonDelay setting on MacOS:
+		/// var global = new NSUserDefaults (NSUserDefaults.GlobalDomain);
+		/// Console.WriteLine ("Delay: " + j.FloatForKey ("NSButtonDelay"));
+		/// 	    </code>
+		///           </example>
+		///         </remarks>
 		[Field ("NSGlobalDomain")]
 		NSString GlobalDomain { get; }
 
+		/// <summary>This is they key used to retrieve the domain associated with the command line arguments passed at startup.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///           <para>
+		/// 	    This domain contains the command line arguments that were
+		/// 	    parsed at application startup.
+		///
+		/// 	  </para>
+		///           <para>
+		/// 	    For each command line argument of the form -NAME VALUE
+		/// 	    that is passed at startup to your application, the "NAME"
+		/// 	    is used as the key, with the value set to VALUE.  
+		///
+		/// 	  </para>
+		///           <example>
+		///             <code lang="c#">
+		/// // Retrieve the gloabl NSButtonDelay setting on MacOS:
+		/// var global = new NSUserDefaults (NSUserDefaults.GlobalDomain);
+		/// Console.WriteLine ("Delay: " + j.FloatForKey ("NSButtonDelay"));
+		/// 	    </code>
+		///           </example>
+		///         </remarks>
 		[Field ("NSArgumentDomain")]
 		NSString ArgumentDomain { get; }
 
+		/// <summary>Represents the value associated with the constant NSRegistrationDomain</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSRegistrationDomain")]
 		NSString RegistrationDomain { get; }
 
+		/// <include file="../docs/api/Foundation/NSUserDefaults.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSUserDefaults.SizeLimitExceededNotification']/*" />
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("NSUserDefaultsSizeLimitExceededNotification")]
 		NSString SizeLimitExceededNotification { get; }
 
+		/// <include file="../docs/api/Foundation/NSUserDefaults.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSUserDefaults.NoCloudAccountNotification']/*" />
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("NSUbiquitousUserDefaultsNoCloudAccountNotification")]
 		NSString NoCloudAccountNotification { get; }
 
+		/// <include file="../docs/api/Foundation/NSUserDefaults.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSUserDefaults.DidChangeAccountsNotification']/*" />
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("NSUbiquitousUserDefaultsDidChangeAccountsNotification")]
 		NSString DidChangeAccountsNotification { get; }
 
+		/// <include file="../docs/api/Foundation/NSUserDefaults.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSUserDefaults.CompletedInitialSyncNotification']/*" />
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("NSUbiquitousUserDefaultsCompletedInitialSyncNotification")]
 		NSString CompletedInitialSyncNotification { get; }
 
+		/// <include file="../docs/api/Foundation/NSUserDefaults.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSUserDefaults.DidChangeNotification']/*" />
 		[Notification]
 		[Field ("NSUserDefaultsDidChangeNotification")]
 		NSString DidChangeNotification { get; }
@@ -6307,7 +7895,6 @@ namespace Foundation {
 #endif
 	{
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'NSUrlComponents' instead.")]
-		[Deprecated (PlatformName.WatchOS, 2, 0, message: "Use 'NSUrlComponents' instead.")]
 		[Deprecated (PlatformName.TvOS, 9, 0, message: "Use 'NSUrlComponents' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 11, message: "Use 'NSUrlComponents' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'NSUrlComponents' instead.")]
@@ -6335,7 +7922,7 @@ namespace Foundation {
 		[Static]
 		NSUrl _FromStringRelative (string url, NSUrl relative);
 
-		[Watch (10, 0), TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Static]
 		[Export ("URLWithString:encodingInvalidCharacters:")]
 		[return: NullAllowed]
@@ -6365,6 +7952,9 @@ namespace Foundation {
 		[Export ("isEqual:")]
 		bool IsEqual ([NullAllowed] NSUrl other);
 
+		/// <summary>Whether this NSUrl uses the file scheme.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isFileURL")]
 		bool IsFileUrl { get; }
 
@@ -6373,7 +7963,6 @@ namespace Foundation {
 
 		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Always return 'null'. Use and parse 'Path' instead.")]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Always return 'null'. Use and parse 'Path' instead.")]
-		[Deprecated (PlatformName.WatchOS, 6, 0, message: "Always return 'null'. Use and parse 'Path' instead.")]
 		[Deprecated (PlatformName.TvOS, 13, 0, message: "Always return 'null'. Use and parse 'Path' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Always return 'null'. Use and parse 'Path' instead.")]
 		[Export ("parameterString")]
@@ -6469,18 +8058,23 @@ namespace Foundation {
 		NSUrl FromUTF8Pointer (IntPtr ptrUtf8path, bool isDir, [NullAllowed] NSUrl baseURL);
 
 		/* These methods come from NURL_AppKitAdditions */
+		/// <param name="pasteboard">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Export ("URLFromPasteboard:")]
 		[Static]
 		[return: NullAllowed]
 		NSUrl FromPasteboard (NSPasteboard pasteboard);
 
+		/// <param name="pasteboard">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Export ("writeToPasteboard:")]
 		void WriteToPasteboard (NSPasteboard pasteboard);
@@ -6518,336 +8112,709 @@ namespace Foundation {
 		[NullAllowed]
 		NSNumber PortNumber { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLNameKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLNameKey")]
 		NSString NameKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLLocalizedNameKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLLocalizedNameKey")]
 		NSString LocalizedNameKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLIsRegularFileKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLIsRegularFileKey")]
 		NSString IsRegularFileKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLIsDirectoryKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLIsDirectoryKey")]
 		NSString IsDirectoryKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLIsSymbolicLinkKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLIsSymbolicLinkKey")]
 		NSString IsSymbolicLinkKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLIsVolumeKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLIsVolumeKey")]
 		NSString IsVolumeKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLIsPackageKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLIsPackageKey")]
 		NSString IsPackageKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLIsSystemImmutableKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLIsSystemImmutableKey")]
 		NSString IsSystemImmutableKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLIsUserImmutableKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLIsUserImmutableKey")]
 		NSString IsUserImmutableKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLIsHiddenKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLIsHiddenKey")]
 		NSString IsHiddenKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLHasHiddenExtensionKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLHasHiddenExtensionKey")]
 		NSString HasHiddenExtensionKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLCreationDateKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLCreationDateKey")]
 		NSString CreationDateKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLContentAccessDateKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLContentAccessDateKey")]
 		NSString ContentAccessDateKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLContentModificationDateKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLContentModificationDateKey")]
 		NSString ContentModificationDateKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLAttributeModificationDateKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLAttributeModificationDateKey")]
 		NSString AttributeModificationDateKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLLinkCountKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLLinkCountKey")]
 		NSString LinkCountKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLParentDirectoryURLKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLParentDirectoryURLKey")]
 		NSString ParentDirectoryURLKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLVolumeURLKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLVolumeURLKey")]
 		NSString VolumeURLKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLTypeIdentifierKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 14, 0, message: "Use 'ContentTypeKey' instead.")]
 		[Deprecated (PlatformName.TvOS, 14, 0, message: "Use 'ContentTypeKey' instead.")]
-		[Deprecated (PlatformName.WatchOS, 7, 0, message: "Use 'ContentTypeKey' instead.")]
 		[Deprecated (PlatformName.MacOSX, 11, 0, message: "Use 'ContentTypeKey' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 14, 0, message: "Use 'ContentTypeKey' instead.")]
 		[Field ("NSURLTypeIdentifierKey")]
 		NSString TypeIdentifierKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLLocalizedTypeDescriptionKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLLocalizedTypeDescriptionKey")]
 		NSString LocalizedTypeDescriptionKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLLabelNumberKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLLabelNumberKey")]
 		NSString LabelNumberKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLLabelColorKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLLabelColorKey")]
 		NSString LabelColorKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLLocalizedLabelKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLLocalizedLabelKey")]
 		NSString LocalizedLabelKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLEffectiveIconKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLEffectiveIconKey")]
 		NSString EffectiveIconKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLCustomIconKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLCustomIconKey")]
 		NSString CustomIconKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLFileSizeKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLFileSizeKey")]
 		NSString FileSizeKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLFileAllocatedSizeKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLFileAllocatedSizeKey")]
 		NSString FileAllocatedSizeKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLIsAliasFileKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLIsAliasFileKey")]
 		NSString IsAliasFileKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLVolumeLocalizedFormatDescriptionKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLVolumeLocalizedFormatDescriptionKey")]
 		NSString VolumeLocalizedFormatDescriptionKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLVolumeTotalCapacityKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLVolumeTotalCapacityKey")]
 		NSString VolumeTotalCapacityKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLVolumeAvailableCapacityKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLVolumeAvailableCapacityKey")]
 		NSString VolumeAvailableCapacityKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLVolumeResourceCountKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLVolumeResourceCountKey")]
 		NSString VolumeResourceCountKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLVolumeSupportsPersistentIDsKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLVolumeSupportsPersistentIDsKey")]
 		NSString VolumeSupportsPersistentIDsKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLVolumeSupportsSymbolicLinksKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLVolumeSupportsSymbolicLinksKey")]
 		NSString VolumeSupportsSymbolicLinksKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLVolumeSupportsHardLinksKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLVolumeSupportsHardLinksKey")]
 		NSString VolumeSupportsHardLinksKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLVolumeSupportsJournalingKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLVolumeSupportsJournalingKey")]
 		NSString VolumeSupportsJournalingKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLVolumeIsJournalingKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLVolumeIsJournalingKey")]
 		NSString VolumeIsJournalingKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLVolumeSupportsSparseFilesKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLVolumeSupportsSparseFilesKey")]
 		NSString VolumeSupportsSparseFilesKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLVolumeSupportsZeroRunsKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLVolumeSupportsZeroRunsKey")]
 		NSString VolumeSupportsZeroRunsKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLVolumeSupportsCaseSensitiveNamesKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLVolumeSupportsCaseSensitiveNamesKey")]
 		NSString VolumeSupportsCaseSensitiveNamesKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLVolumeSupportsCasePreservedNamesKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLVolumeSupportsCasePreservedNamesKey")]
 		NSString VolumeSupportsCasePreservedNamesKey { get; }
 
 		// 5.0 Additions
+		/// <summary>Represents the value associated with the constant NSURLKeysOfUnsetValuesKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLKeysOfUnsetValuesKey")]
 		NSString KeysOfUnsetValuesKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLFileResourceIdentifierKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLFileResourceIdentifierKey")]
 		NSString FileResourceIdentifierKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLVolumeIdentifierKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLVolumeIdentifierKey")]
 		NSString VolumeIdentifierKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLPreferredIOBlockSizeKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLPreferredIOBlockSizeKey")]
 		NSString PreferredIOBlockSizeKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLIsReadableKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLIsReadableKey")]
 		NSString IsReadableKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLIsWritableKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLIsWritableKey")]
 		NSString IsWritableKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLIsExecutableKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLIsExecutableKey")]
 		NSString IsExecutableKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLIsMountTriggerKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLIsMountTriggerKey")]
 		NSString IsMountTriggerKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLFileSecurityKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLFileSecurityKey")]
 		NSString FileSecurityKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLFileResourceTypeKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLFileResourceTypeKey")]
 		NSString FileResourceTypeKey { get; }
 
-		[Watch (9, 4), TV (16, 4), Mac (13, 3), iOS (16, 4)]
+		[TV (16, 4), Mac (13, 3), iOS (16, 4)]
 		[MacCatalyst (16, 4)]
 		[Field ("NSURLFileIdentifierKey")]
 		NSString FileIdentifierKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLFileResourceTypeNamedPipe</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLFileResourceTypeNamedPipe")]
 		NSString FileResourceTypeNamedPipe { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLFileResourceTypeCharacterSpecial</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLFileResourceTypeCharacterSpecial")]
 		NSString FileResourceTypeCharacterSpecial { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLFileResourceTypeDirectory</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLFileResourceTypeDirectory")]
 		NSString FileResourceTypeDirectory { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLFileResourceTypeBlockSpecial</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLFileResourceTypeBlockSpecial")]
 		NSString FileResourceTypeBlockSpecial { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLFileResourceTypeRegular</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLFileResourceTypeRegular")]
 		NSString FileResourceTypeRegular { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLFileResourceTypeSymbolicLink</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLFileResourceTypeSymbolicLink")]
 		NSString FileResourceTypeSymbolicLink { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLFileResourceTypeSocket</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLFileResourceTypeSocket")]
 		NSString FileResourceTypeSocket { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLFileResourceTypeUnknown</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLFileResourceTypeUnknown")]
 		NSString FileResourceTypeUnknown { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLTotalFileSizeKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLTotalFileSizeKey")]
 		NSString TotalFileSizeKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLTotalFileAllocatedSizeKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLTotalFileAllocatedSizeKey")]
 		NSString TotalFileAllocatedSizeKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLVolumeSupportsRootDirectoryDatesKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLVolumeSupportsRootDirectoryDatesKey")]
 		NSString VolumeSupportsRootDirectoryDatesKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLVolumeSupportsVolumeSizesKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLVolumeSupportsVolumeSizesKey")]
 		NSString VolumeSupportsVolumeSizesKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLVolumeSupportsRenamingKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLVolumeSupportsRenamingKey")]
 		NSString VolumeSupportsRenamingKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLVolumeSupportsAdvisoryFileLockingKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLVolumeSupportsAdvisoryFileLockingKey")]
 		NSString VolumeSupportsAdvisoryFileLockingKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLVolumeSupportsExtendedSecurityKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLVolumeSupportsExtendedSecurityKey")]
 		NSString VolumeSupportsExtendedSecurityKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLVolumeIsBrowsableKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLVolumeIsBrowsableKey")]
 		NSString VolumeIsBrowsableKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLVolumeMaximumFileSizeKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLVolumeMaximumFileSizeKey")]
 		NSString VolumeMaximumFileSizeKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLVolumeIsEjectableKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLVolumeIsEjectableKey")]
 		NSString VolumeIsEjectableKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLVolumeIsRemovableKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLVolumeIsRemovableKey")]
 		NSString VolumeIsRemovableKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLVolumeIsInternalKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLVolumeIsInternalKey")]
 		NSString VolumeIsInternalKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLVolumeIsAutomountedKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLVolumeIsAutomountedKey")]
 		NSString VolumeIsAutomountedKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLVolumeIsLocalKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLVolumeIsLocalKey")]
 		NSString VolumeIsLocalKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLVolumeIsReadOnlyKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLVolumeIsReadOnlyKey")]
 		NSString VolumeIsReadOnlyKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLVolumeCreationDateKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLVolumeCreationDateKey")]
 		NSString VolumeCreationDateKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLVolumeURLForRemountingKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLVolumeURLForRemountingKey")]
 		NSString VolumeURLForRemountingKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLVolumeUUIDStringKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLVolumeUUIDStringKey")]
 		NSString VolumeUUIDStringKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLVolumeNameKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLVolumeNameKey")]
 		NSString VolumeNameKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLVolumeLocalizedNameKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLVolumeLocalizedNameKey")]
 		NSString VolumeLocalizedNameKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("NSURLVolumeIsEncryptedKey")]
 		NSString VolumeIsEncryptedKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("NSURLVolumeIsRootFileSystemKey")]
 		NSString VolumeIsRootFileSystemKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("NSURLVolumeSupportsCompressionKey")]
 		NSString VolumeSupportsCompressionKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("NSURLVolumeSupportsFileCloningKey")]
 		NSString VolumeSupportsFileCloningKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("NSURLVolumeSupportsSwapRenamingKey")]
 		NSString VolumeSupportsSwapRenamingKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("NSURLVolumeSupportsExclusiveRenamingKey")]
 		NSString VolumeSupportsExclusiveRenamingKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("NSURLVolumeSupportsImmutableFilesKey")]
 		NSString VolumeSupportsImmutableFilesKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("NSURLVolumeSupportsAccessPermissionsKey")]
 		NSString VolumeSupportsAccessPermissionsKey { get; }
 
-		[Watch (7, 0), TV (14, 0), iOS (14, 0)]
+		[TV (14, 0), iOS (14, 0)]
 		[MacCatalyst (14, 0)]
 		[Field ("NSURLVolumeSupportsFileProtectionKey")]
 		NSString VolumeSupportsFileProtectionKey { get; }
 
-		[NoWatch, NoTV]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Field ("NSURLVolumeAvailableCapacityForImportantUsageKey")]
 		NSString VolumeAvailableCapacityForImportantUsageKey { get; }
 
-		[NoWatch, NoTV]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Field ("NSURLVolumeAvailableCapacityForOpportunisticUsageKey")]
 		NSString VolumeAvailableCapacityForOpportunisticUsageKey { get; }
 
-		[Watch (9, 4), TV (16, 4), Mac (13, 3), iOS (16, 4)]
+		[TV (16, 4), Mac (13, 3), iOS (16, 4)]
 		[MacCatalyst (16, 4)]
 		[Field ("NSURLVolumeTypeNameKey")]
 		NSString VolumeTypeNameKey { get; }
 
-		[Watch (9, 4), TV (16, 4), Mac (13, 3), iOS (16, 4)]
+		[TV (16, 4), Mac (13, 3), iOS (16, 4)]
 		[MacCatalyst (16, 4)]
 		[Field ("NSURLVolumeSubtypeKey")]
 		NSString VolumeSubtypeKey { get; }
 
-		[Watch (9, 4), TV (16, 4), Mac (13, 3), iOS (16, 4)]
+		[TV (16, 4), Mac (13, 3), iOS (16, 4)]
 		[MacCatalyst (16, 4)]
 		[Field ("NSURLVolumeMountFromLocationKey")]
 		NSString VolumeMountFromLocationKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLIsUbiquitousItemKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLIsUbiquitousItemKey")]
 		NSString IsUbiquitousItemKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLUbiquitousItemHasUnresolvedConflictsKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLUbiquitousItemHasUnresolvedConflictsKey")]
 		NSString UbiquitousItemHasUnresolvedConflictsKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLUbiquitousItemIsDownloadedKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLUbiquitousItemIsDownloadedKey")]
 		NSString UbiquitousItemIsDownloadedKey { get; }
 
+		/// <summary>Developers should not use this deprecated property. </summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLUbiquitousItemIsDownloadingKey")]
 		[Deprecated (PlatformName.iOS, 7, 0)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 		NSString UbiquitousItemIsDownloadingKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLUbiquitousItemIsUploadedKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLUbiquitousItemIsUploadedKey")]
 		NSString UbiquitousItemIsUploadedKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLUbiquitousItemIsUploadingKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLUbiquitousItemIsUploadingKey")]
 		NSString UbiquitousItemIsUploadingKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLUbiquitousItemPercentDownloadedKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLUbiquitousItemPercentDownloadedKey")]
 		[Deprecated (PlatformName.iOS, 6, 0, message: "Use 'NSMetadataQuery.UbiquitousItemPercentDownloadedKey' on 'NSMetadataItem' instead.")]
 		[Deprecated (PlatformName.TvOS, 9, 0, message: "Use 'NSMetadataQuery.UbiquitousItemPercentDownloadedKey' on 'NSMetadataItem' instead.")]
@@ -6855,6 +8822,10 @@ namespace Foundation {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'NSMetadataQuery.UbiquitousItemPercentDownloadedKey' on 'NSMetadataItem' instead.")]
 		NSString UbiquitousItemPercentDownloadedKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLUbiquitousItemPercentUploadedKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 6, 0, message: "Use 'NSMetadataQuery.UbiquitousItemPercentUploadedKey' on 'NSMetadataItem' instead.")]
 		[Deprecated (PlatformName.TvOS, 9, 0, message: "Use 'NSMetadataQuery.UbiquitousItemPercentUploadedKey' on 'NSMetadataItem' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 8, message: "Use 'NSMetadataQuery.UbiquitousItemPercentUploadedKey' on 'NSMetadataItem' instead.")]
@@ -6862,51 +8833,82 @@ namespace Foundation {
 		[Field ("NSURLUbiquitousItemPercentUploadedKey")]
 		NSString UbiquitousItemPercentUploadedKey { get; }
 
-		[NoWatch, NoTV]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Field ("NSURLUbiquitousItemIsSharedKey")]
 		NSString UbiquitousItemIsSharedKey { get; }
 
-		[NoWatch, NoTV]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Field ("NSURLUbiquitousSharedItemCurrentUserRoleKey")]
 		NSString UbiquitousSharedItemCurrentUserRoleKey { get; }
 
-		[NoWatch, NoTV]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Field ("NSURLUbiquitousSharedItemCurrentUserPermissionsKey")]
 		NSString UbiquitousSharedItemCurrentUserPermissionsKey { get; }
 
-		[NoWatch, NoTV]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Field ("NSURLUbiquitousSharedItemOwnerNameComponentsKey")]
 		NSString UbiquitousSharedItemOwnerNameComponentsKey { get; }
 
-		[NoWatch, NoTV]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Field ("NSURLUbiquitousSharedItemMostRecentEditorNameComponentsKey")]
 		NSString UbiquitousSharedItemMostRecentEditorNameComponentsKey { get; }
 
-		[NoWatch, NoTV]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Field ("NSURLUbiquitousSharedItemRoleOwner")]
 		NSString UbiquitousSharedItemRoleOwner { get; }
 
-		[NoWatch, NoTV]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Field ("NSURLUbiquitousSharedItemRoleParticipant")]
 		NSString UbiquitousSharedItemRoleParticipant { get; }
 
-		[NoWatch, NoTV]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Field ("NSURLUbiquitousSharedItemPermissionsReadOnly")]
 		NSString UbiquitousSharedItemPermissionsReadOnly { get; }
 
-		[NoWatch, NoTV]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Field ("NSURLUbiquitousSharedItemPermissionsReadWrite")]
 		NSString UbiquitousSharedItemPermissionsReadWrite { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLIsExcludedFromBackupKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLIsExcludedFromBackupKey")]
 		NSString IsExcludedFromBackupKey { get; }
 
@@ -6916,29 +8918,57 @@ namespace Foundation {
 		[Export ("initByResolvingBookmarkData:options:relativeToURL:bookmarkDataIsStale:error:")]
 		NativeHandle Constructor (NSData bookmarkData, NSUrlBookmarkResolutionOptions resolutionOptions, [NullAllowed] NSUrl relativeUrl, out bool bookmarkIsStale, out NSError error);
 
+		/// <summary>Represents the value associated with the constant NSURLPathKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLPathKey")]
 		NSString PathKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLUbiquitousItemDownloadingStatusKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("NSURLUbiquitousItemDownloadingStatusKey")]
 		NSString UbiquitousItemDownloadingStatusKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLUbiquitousItemDownloadingErrorKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("NSURLUbiquitousItemDownloadingErrorKey")]
 		NSString UbiquitousItemDownloadingErrorKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLUbiquitousItemUploadingErrorKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("NSURLUbiquitousItemUploadingErrorKey")]
 		NSString UbiquitousItemUploadingErrorKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLUbiquitousItemDownloadingStatusNotDownloaded</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("NSURLUbiquitousItemDownloadingStatusNotDownloaded")]
 		NSString UbiquitousItemDownloadingStatusNotDownloaded { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLUbiquitousItemDownloadingStatusDownloaded</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("NSURLUbiquitousItemDownloadingStatusDownloaded")]
 		NSString UbiquitousItemDownloadingStatusDownloaded { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLUbiquitousItemDownloadingStatusCurrent</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("NSURLUbiquitousItemDownloadingStatusCurrent")]
 		NSString UbiquitousItemDownloadingStatusCurrent { get; }
@@ -6958,31 +8988,55 @@ namespace Foundation {
 		[Static, Export ("fileURLWithPathComponents:")]
 		NSUrl CreateFileUrl (string [] pathComponents);
 
+		/// <summary>Represents the value associated with the constant NSURLAddedToDirectoryDateKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("NSURLAddedToDirectoryDateKey")]
 		NSString AddedToDirectoryDateKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLDocumentIdentifierKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("NSURLDocumentIdentifierKey")]
 		NSString DocumentIdentifierKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLGenerationIdentifierKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("NSURLGenerationIdentifierKey")]
 		NSString GenerationIdentifierKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLThumbnailDictionaryKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("NSURLThumbnailDictionaryKey")]
 		NSString ThumbnailDictionaryKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLUbiquitousItemContainerDisplayNameKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("NSURLUbiquitousItemContainerDisplayNameKey")]
 		NSString UbiquitousItemContainerDisplayNameKey { get; }
 
-		[Watch (7, 4), TV (14, 5), iOS (14, 5)]
+		[TV (14, 5), iOS (14, 5)]
 		[MacCatalyst (14, 5)]
 		[Field ("NSURLUbiquitousItemIsExcludedFromSyncKey")]
 		NSString UbiquitousItemIsExcludedFromSyncKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLUbiquitousItemDownloadRequestedKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("NSURLUbiquitousItemDownloadRequestedKey")]
 		NSString UbiquitousItemDownloadRequestedKey { get; }
@@ -7030,74 +9084,86 @@ namespace Foundation {
 		[Export ("hasDirectoryPath")]
 		bool HasDirectoryPath { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("NSURLIsApplicationKey")]
 		NSString IsApplicationKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("NSURLFileProtectionKey")]
 		NSString FileProtectionKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("NSURLFileProtectionNone")]
 		NSString FileProtectionNone { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("NSURLFileProtectionComplete")]
 		NSString FileProtectionComplete { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("NSURLFileProtectionCompleteUnlessOpen")]
 		NSString FileProtectionCompleteUnlessOpen { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("NSURLFileProtectionCompleteUntilFirstUserAuthentication")]
 		NSString FileProtectionCompleteUntilFirstUserAuthentication { get; }
 
-		[Watch (10, 0), TV (17, 0), NoMac, iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), NoMac, iOS (17, 0), MacCatalyst (17, 0)]
 		[Field ("NSURLFileProtectionCompleteWhenUserInactive")]
 		NSString FileProtectionCompleteWhenUserInactive { get; }
 
-		[Watch (10, 0), TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Field ("NSURLDirectoryEntryCountKey")]
 		NSString DirectoryEntryCountKey { get; }
 
-		[Watch (7, 0)]
 		[TV (14, 0)]
 		[iOS (14, 0)]
 		[MacCatalyst (14, 0)]
 		[Field ("NSURLContentTypeKey")]
 		NSString ContentTypeKey { get; }
 
-		[Watch (7, 0)]
 		[TV (14, 0)]
 		[iOS (14, 0)]
 		[MacCatalyst (14, 0)]
 		[Field ("NSURLFileContentIdentifierKey")]
 		NSString FileContentIdentifierKey { get; }
 
-		[Watch (7, 0)]
 		[TV (14, 0)]
 		[iOS (14, 0)]
 		[MacCatalyst (14, 0)]
 		[Field ("NSURLIsPurgeableKey")]
 		NSString IsPurgeableKey { get; }
 
-		[Watch (7, 0)]
 		[TV (14, 0)]
 		[iOS (14, 0)]
 		[MacCatalyst (14, 0)]
 		[Field ("NSURLIsSparseKey")]
 		NSString IsSparseKey { get; }
 
-		[Watch (7, 0)]
 		[TV (14, 0)]
 		[iOS (14, 0)]
 		[MacCatalyst (14, 0)]
 		[Field ("NSURLMayHaveExtendedAttributesKey")]
 		NSString MayHaveExtendedAttributesKey { get; }
 
-		[Watch (7, 0)]
 		[TV (14, 0)]
 		[iOS (14, 0)]
 		[MacCatalyst (14, 0)]
@@ -7128,16 +9194,35 @@ namespace Foundation {
 	//
 	// Just a category so we can document the three methods together
 	//
+	/// <summary>Defines static methods for dealing with promised items.</summary>
+	/// <remarks>
+	///       <para>Promised items are resources whose presence in the local file system is not guaranteed until an <see cref="Foundation.NSFileCoordinator" /> performs a coordinated read on the URL, resulting in the contents being either downloaded or generated.</para>
+	///     </remarks>
 	[Category, BaseType (typeof (NSUrl))]
 	partial interface NSUrl_PromisedItems {
+		/// <param name="error">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("checkPromisedItemIsReachableAndReturnError:")]
 		bool CheckPromisedItemIsReachable (out NSError error);
 
+		/// <param name="value">To be added.</param>
+		/// <param name="key">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("getPromisedItemResourceValue:forKey:error:")]
 		bool GetPromisedItemResourceValue (out NSObject value, NSString key, out NSError error);
 
+		/// <param name="keys">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("promisedItemResourceValuesForKeys:error:")]
 		[return: NullAllowed]
@@ -7159,23 +9244,43 @@ namespace Foundation {
 		string Value { get; }
 	}
 
+	/// <summary>Defines static methods defining character sets for various subcomponents of a <see cref="Foundation.NSUrl" />.</summary>
+	/// <remarks>To be added.</remarks>
 	[Category, BaseType (typeof (NSCharacterSet))]
 	partial interface NSUrlUtilities_NSCharacterSet {
+		/// <summary>The <see cref="Foundation.NSCharacterSet" /> for characters allowed in a URL user component.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static, Export ("URLUserAllowedCharacterSet", ArgumentSemantic.Copy)]
 		NSCharacterSet UrlUserAllowedCharacterSet { get; }
 
+		/// <summary>The <see cref="Foundation.NSCharacterSet" /> for characters allowed in a URL password component.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static, Export ("URLPasswordAllowedCharacterSet", ArgumentSemantic.Copy)]
 		NSCharacterSet UrlPasswordAllowedCharacterSet { get; }
 
+		/// <summary>The <see cref="Foundation.NSCharacterSet" /> for characters allowed in a host URL.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static, Export ("URLHostAllowedCharacterSet", ArgumentSemantic.Copy)]
 		NSCharacterSet UrlHostAllowedCharacterSet { get; }
 
+		/// <summary>The <see cref="Foundation.NSCharacterSet" /> for characters allowed in a URL path component.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static, Export ("URLPathAllowedCharacterSet", ArgumentSemantic.Copy)]
 		NSCharacterSet UrlPathAllowedCharacterSet { get; }
 
+		/// <summary>The <see cref="Foundation.NSCharacterSet" /> for characters allowed in a URL query component.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static, Export ("URLQueryAllowedCharacterSet", ArgumentSemantic.Copy)]
 		NSCharacterSet UrlQueryAllowedCharacterSet { get; }
 
+		/// <summary>The <see cref="Foundation.NSCharacterSet" /> for characters allowed in a fragment URL component.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static, Export ("URLFragmentAllowedCharacterSet", ArgumentSemantic.Copy)]
 		NSCharacterSet UrlFragmentAllowedCharacterSet { get; }
 	}
@@ -7185,15 +9290,19 @@ namespace Foundation {
 		[Export ("sharedURLCache", ArgumentSemantic.Strong), Static]
 		NSUrlCache SharedCache { get; set; }
 
+		/// <param name="memoryCapacity">To be added.</param>
+		/// <param name="diskCapacity">To be added.</param>
+		/// <param name="diskPath">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use the overload that accepts an 'NSUrl' parameter instead.")]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use the overload that accepts an 'NSUrl' parameter instead.")]
-		[Deprecated (PlatformName.WatchOS, 6, 0, message: "Use the overload that accepts an 'NSUrl' parameter instead.")]
 		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use the overload that accepts an 'NSUrl' parameter instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use the overload that accepts an 'NSUrl' parameter instead.")]
 		[Export ("initWithMemoryCapacity:diskCapacity:diskPath:")]
 		NativeHandle Constructor (nuint memoryCapacity, nuint diskCapacity, [NullAllowed] string diskPath);
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("initWithMemoryCapacity:diskCapacity:directoryURL:")]
 		NativeHandle Constructor (nuint memoryCapacity, nuint diskCapacity, [NullAllowed] NSUrl directoryUrl);
@@ -7232,7 +9341,17 @@ namespace Foundation {
 
 		[MacCatalyst (13, 1)]
 		[Export ("getCachedResponseForDataTask:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="dataTask">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous GetCachedResponse operation.  The value of the TResult parameter is of type System.Action&lt;Foundation.NSCachedUrlResponse&gt;.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The GetCachedResponseAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void GetCachedResponse (NSUrlSessionDataTask dataTask, Action<NSCachedUrlResponse> completionHandler);
 
 		[MacCatalyst (13, 1)]
@@ -7255,7 +9374,7 @@ namespace Foundation {
 		[Static, Export ("componentsWithString:")]
 		NSUrlComponents FromString (string urlString);
 
-		[Watch (10, 0), TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Static]
 		[Export ("componentsWithString:encodingInvalidCharacters:")]
 		[return: NullAllowed]
@@ -7312,7 +9431,7 @@ namespace Foundation {
 		[Export ("percentEncodedHost", ArgumentSemantic.Copy)]
 		string PercentEncodedHost { get; set; }
 
-		[Watch (9, 0), TV (16, 0), Mac (13, 0), iOS (16, 0)]
+		[TV (16, 0), Mac (13, 0), iOS (16, 0)]
 		[MacCatalyst (16, 0)]
 		[NullAllowed, Export ("encodedHost")]
 		string EncodedHost { get; set; }
@@ -7379,6 +9498,17 @@ namespace Foundation {
 	// 'init' returns NIL
 	[DisableDefaultCtor]
 	interface NSUrlAuthenticationChallenge : NSSecureCoding {
+		/// <param name="space">To be added.</param>
+		/// <param name="credential">To be added.</param>
+		/// <param name="previousFailureCount">To be added.</param>
+		/// <param name="response">To be added.</param>
+		/// <param name="error">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="sender">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithProtectionSpace:proposedCredential:previousFailureCount:failureResponse:error:sender:")]
 		NativeHandle Constructor (NSUrlProtectionSpace space, NSUrlCredential credential, nint previousFailureCount, [NullAllowed] NSUrlResponse response, [NullAllowed] NSError error, NSUrlConnection sender);
 
@@ -7404,14 +9534,14 @@ namespace Foundation {
 		NSUrlConnection Sender { get; }
 	}
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Foundation.NSURLAuthenticationChallengeSender" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Foundation.NSURLAuthenticationChallengeSender" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Foundation.NSURLAuthenticationChallengeSender" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="Foundation.NSURLAuthenticationChallengeSender_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[Protocol (Name = "NSURLAuthenticationChallengeSender")]
-#if NET
 	interface NSUrlAuthenticationChallengeSender {
-#else
-	[Model]
-	[BaseType (typeof (NSObject))]
-	interface NSURLAuthenticationChallengeSender {
-#endif
 		[Abstract]
 		[Export ("useCredential:forAuthenticationChallenge:")]
 		void UseCredential (NSUrlCredential credential, NSUrlAuthenticationChallenge challenge);
@@ -7432,22 +9562,21 @@ namespace Foundation {
 	}
 
 
-	delegate void NSUrlConnectionDataResponse (NSUrlResponse response, NSData data, NSError error);
+	/// <param name="response">To be added.</param>
+	/// <param name="data">To be added.</param>
+	/// <param name="error">To be added.</param>
+	/// <summary>The delegate used as the completion handler for <see cref="Foundation.NSUrlConnection.SendAsynchronousRequest(Foundation.NSUrlRequest,Foundation.NSOperationQueue,Foundation.NSUrlConnectionDataResponse)" />.</summary>
+	/// <remarks>To be added.</remarks>
+	delegate void NSUrlConnectionDataResponse ([NullAllowed] NSUrlResponse response, [NullAllowed] NSData data, [NullAllowed] NSError error);
 
 	[BaseType (typeof (NSObject), Name = "NSURLConnection")]
 	interface NSUrlConnection :
-#if NET
-		NSUrlAuthenticationChallengeSender
-#else
-		NSURLAuthenticationChallengeSender
-#endif
-	{
+		NSUrlAuthenticationChallengeSender {
 		[Export ("canHandleRequest:")]
 		[Static]
 		bool CanHandleRequest (NSUrlRequest request);
 
 		[return: NullAllowed]
-		[NoWatch]
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'NSUrlSession' instead.")]
 		[Deprecated (PlatformName.TvOS, 9, 0, message: "Use 'NSUrlSession' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 11, message: "Use 'NSUrlSession' instead.")]
@@ -7480,12 +9609,20 @@ namespace Foundation {
 		[Export ("scheduleInRunLoop:forMode:")]
 		void Schedule (NSRunLoop aRunLoop, NSString forMode);
 
+		/// <param name="aRunLoop">To be added.</param>
+		///         <param name="forMode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("Schedule (aRunLoop, forMode.GetConstant ()!)")]
 		void Schedule (NSRunLoop aRunLoop, NSRunLoopMode forMode);
 
 		[Export ("unscheduleFromRunLoop:forMode:")]
 		void Unschedule (NSRunLoop aRunLoop, NSString forMode);
 
+		/// <param name="aRunLoop">To be added.</param>
+		///         <param name="forMode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("Unschedule (aRunLoop, forMode.GetConstant ()!)")]
 		void Unschedule (NSRunLoop aRunLoop, NSRunLoopMode forMode);
 
@@ -7505,7 +9642,6 @@ namespace Foundation {
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'NSUrlSession' instead.")]
 		[Deprecated (PlatformName.TvOS, 9, 0, message: "Use 'NSUrlSession' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 11, message: "Use 'NSUrlSession' instead.")]
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'NSUrlSession' instead.")]
 		[Static]
@@ -7516,21 +9652,41 @@ namespace Foundation {
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'NSUrlSession.CreateDataTask' instead.")]
 		[Deprecated (PlatformName.TvOS, 9, 0, message: "Use 'NSUrlSession.CreateDataTask' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 11, message: "Use 'NSUrlSession.CreateDataTask' instead.")]
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'NSUrlSession.CreateDataTask' instead.")]
 		[Static]
 		[Export ("sendAsynchronousRequest:queue:completionHandler:")]
-		[Async (ResultTypeName = "NSUrlAsyncResult", MethodName = "SendRequestAsync")]
+		[Async (ResultTypeName = "NSUrlAsyncResult", MethodName = "SendRequestAsync", XmlDocs = """
+			<param name="request">Request to perform</param>
+			<param name="queue">Operation queue to dispatch the completion to.</param>
+			<summary>Loads the data and invokes a method upon completion.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous SendAsynchronousRequest operation. The value of the TResult parameter is of type <c>Action&lt;Foundation.NSUrlAsyncResult&gt;</c>.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The SendRequestAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			        </remarks>
+			""")]
 		void SendAsynchronousRequest (NSUrlRequest request, NSOperationQueue queue, NSUrlConnectionDataResponse completionHandler);
 	}
 
 	interface INSUrlConnectionDelegate { }
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Foundation.NSUrlConnectionDelegate" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Foundation.NSUrlConnectionDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Foundation.NSUrlConnectionDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="Foundation.NSUrlConnectionDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[BaseType (typeof (NSObject), Name = "NSURLConnectionDelegate")]
 	[Model]
 	[Protocol]
 	interface NSUrlConnectionDelegate {
+		/// <param name="connection">To be added.</param>
+		/// <param name="protectionSpace">To be added.</param>
+		/// <summary>Developers should not use this deprecated method. Developers should use 'WillSendRequestForAuthenticationChallenge' instead.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("connection:canAuthenticateAgainstProtectionSpace:")]
 		[Deprecated (PlatformName.iOS, 8, 0, message: "Use 'WillSendRequestForAuthenticationChallenge' instead.")]
 		[Deprecated (PlatformName.TvOS, 9, 0, message: "Use 'WillSendRequestForAuthenticationChallenge' instead.")]
@@ -7538,6 +9694,10 @@ namespace Foundation {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'WillSendRequestForAuthenticationChallenge' instead.")]
 		bool CanAuthenticateAgainstProtectionSpace (NSUrlConnection connection, NSUrlProtectionSpace protectionSpace);
 
+		/// <param name="connection">To be added.</param>
+		/// <param name="challenge">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("connection:didReceiveAuthenticationChallenge:")]
 		[Deprecated (PlatformName.iOS, 8, 0, message: "Use 'WillSendRequestForAuthenticationChallenge' instead.")]
 		[Deprecated (PlatformName.TvOS, 9, 0, message: "Use 'WillSendRequestForAuthenticationChallenge' instead.")]
@@ -7545,6 +9705,10 @@ namespace Foundation {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'WillSendRequestForAuthenticationChallenge' instead.")]
 		void ReceivedAuthenticationChallenge (NSUrlConnection connection, NSUrlAuthenticationChallenge challenge);
 
+		/// <param name="connection">To be added.</param>
+		/// <param name="challenge">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("connection:didCancelAuthenticationChallenge:")]
 		[Deprecated (PlatformName.iOS, 8, 0, message: "Use 'WillSendRequestForAuthenticationChallenge' instead.")]
 		[Deprecated (PlatformName.TvOS, 9, 0, message: "Use 'WillSendRequestForAuthenticationChallenge' instead.")]
@@ -7552,59 +9716,131 @@ namespace Foundation {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'WillSendRequestForAuthenticationChallenge' instead.")]
 		void CanceledAuthenticationChallenge (NSUrlConnection connection, NSUrlAuthenticationChallenge challenge);
 
+		/// <param name="connection">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("connectionShouldUseCredentialStorage:")]
 		bool ConnectionShouldUseCredentialStorage (NSUrlConnection connection);
 
+		/// <param name="connection">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("connection:didFailWithError:")]
 		void FailedWithError (NSUrlConnection connection, NSError error);
 
+		/// <param name="connection">To be added.</param>
+		/// <param name="challenge">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("connection:willSendRequestForAuthenticationChallenge:")]
 		void WillSendRequestForAuthenticationChallenge (NSUrlConnection connection, NSUrlAuthenticationChallenge challenge);
 	}
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Foundation.NSUrlConnectionDataDelegate" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Foundation.NSUrlConnectionDataDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Foundation.NSUrlConnectionDataDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="Foundation.NSUrlConnectionDataDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[BaseType (typeof (NSUrlConnectionDelegate), Name = "NSURLConnectionDataDelegate")]
 	[Protocol, Model]
 	interface NSUrlConnectionDataDelegate {
 
+		/// <param name="connection">To be added.</param>
+		/// <param name="request">To be added.</param>
+		/// <param name="response">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("connection:willSendRequest:redirectResponse:")]
 		NSUrlRequest WillSendRequest (NSUrlConnection connection, NSUrlRequest request, NSUrlResponse response);
 
+		/// <param name="connection">To be added.</param>
+		/// <param name="response">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("connection:didReceiveResponse:")]
 		void ReceivedResponse (NSUrlConnection connection, NSUrlResponse response);
 
+		/// <param name="connection">To be added.</param>
+		/// <param name="data">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("connection:didReceiveData:")]
 		void ReceivedData (NSUrlConnection connection, NSData data);
 
+		/// <param name="connection">To be added.</param>
+		/// <param name="request">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("connection:needNewBodyStream:")]
 		NSInputStream NeedNewBodyStream (NSUrlConnection connection, NSUrlRequest request);
 
+		/// <param name="connection">To be added.</param>
+		/// <param name="bytesWritten">To be added.</param>
+		/// <param name="totalBytesWritten">To be added.</param>
+		/// <param name="totalBytesExpectedToWrite">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("connection:didSendBodyData:totalBytesWritten:totalBytesExpectedToWrite:")]
 		void SentBodyData (NSUrlConnection connection, nint bytesWritten, nint totalBytesWritten, nint totalBytesExpectedToWrite);
 
+		/// <param name="connection">To be added.</param>
+		/// <param name="cachedResponse">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("connection:willCacheResponse:")]
 		NSCachedUrlResponse WillCacheResponse (NSUrlConnection connection, NSCachedUrlResponse cachedResponse);
 
+		/// <param name="connection">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("connectionDidFinishLoading:")]
 		void FinishedLoading (NSUrlConnection connection);
 	}
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Foundation.NSUrlConnectionDownloadDelegate" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Foundation.NSUrlConnectionDownloadDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Foundation.NSUrlConnectionDownloadDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="Foundation.NSUrlConnectionDownloadDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[BaseType (typeof (NSUrlConnectionDelegate), Name = "NSURLConnectionDownloadDelegate")]
 	[Model]
 	[Protocol]
 	interface NSUrlConnectionDownloadDelegate {
+		/// <param name="connection">To be added.</param>
+		/// <param name="bytesWritten">To be added.</param>
+		/// <param name="totalBytesWritten">To be added.</param>
+		/// <param name="expectedTotalBytes">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("connection:didWriteData:totalBytesWritten:expectedTotalBytes:")]
 		void WroteData (NSUrlConnection connection, long bytesWritten, long totalBytesWritten, long expectedTotalBytes);
 
+		/// <param name="connection">To be added.</param>
+		/// <param name="totalBytesWritten">To be added.</param>
+		/// <param name="expectedTotalBytes">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("connectionDidResumeDownloading:totalBytesWritten:expectedTotalBytes:")]
 		void ResumedDownloading (NSUrlConnection connection, long totalBytesWritten, long expectedTotalBytes);
 
+		/// <param name="connection">To be added.</param>
+		/// <param name="destinationUrl">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("connectionDidFinishDownloading:destinationURL:")]
 		void FinishedDownloading (NSUrlConnection connection, NSUrl destinationUrl);
 	}
 
 	[BaseType (typeof (NSObject), Name = "NSURLCredential")]
-	// crash when calling NSObjecg.get_Description (and likely other selectors)
+	// crash when calling NSObject.get_Description (and likely other selectors)
 	[DisableDefaultCtor]
 	interface NSUrlCredential : NSSecureCoding, NSCopying {
 
@@ -7630,9 +9866,9 @@ namespace Foundation {
 		[Export ("hasPassword")]
 		bool HasPassword { get; }
 
-		[Export ("initWithIdentity:certificates:persistence:")]
 		[Internal]
-		NativeHandle Constructor (IntPtr identity, IntPtr certificates, NSUrlCredentialPersistence persistance);
+		[Export ("initWithIdentity:certificates:persistence:")]
+		NativeHandle _InitWithIdentity (IntPtr identity, IntPtr certificates, NSUrlCredentialPersistence persistence);
 
 		[Static]
 		[Internal]
@@ -7645,10 +9881,6 @@ namespace Foundation {
 
 		[Export ("certificates")]
 		SecCertificate [] Certificates { get; }
-
-		// bound manually to keep the managed/native signatures identical
-		//[Export ("initWithTrust:")]
-		//NativeHandle Constructor (IntPtr SecTrustRef_trust, bool ignored);
 
 		[Internal]
 		[Static]
@@ -7686,16 +9918,29 @@ namespace Foundation {
 		[Export ("removeCredential:forProtectionSpace:options:")]
 		void RemoveCredential (NSUrlCredential credential, NSUrlProtectionSpace forProtectionSpace, NSDictionary options);
 
+		/// <summary>Represents the value associated with the constant NSURLCredentialStorageRemoveSynchronizableCredentials</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("NSURLCredentialStorageRemoveSynchronizableCredentials")]
 		NSString RemoveSynchronizableCredentials { get; }
 
+		/// <include file="../docs/api/Foundation/NSUrlCredentialStorage.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSUrlCredentialStorage.ChangedNotification']/*" />
 		[Field ("NSURLCredentialStorageChangedNotification")]
 		[Notification]
 		NSString ChangedNotification { get; }
 
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="protectionSpace">To be added.</param>
+			<param name="task">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous GetCredentials operation.  The value of the TResult parameter is of type System.Action&lt;Foundation.NSDictionary&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("getCredentialsForProtectionSpace:task:completionHandler:")]
 		void GetCredentials (NSUrlProtectionSpace protectionSpace, NSUrlSessionTask task, [NullAllowed] Action<NSDictionary> completionHandler);
 
@@ -7708,7 +9953,18 @@ namespace Foundation {
 		void RemoveCredential (NSUrlCredential credential, NSUrlProtectionSpace protectionSpace, NSDictionary options, NSUrlSessionTask task);
 
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="space">To be added.</param>
+			<param name="task">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous GetDefaultCredential operation.  The value of the TResult parameter is of type System.Action&lt;Foundation.NSUrlCredential&gt;.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The GetDefaultCredentialAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("getDefaultCredentialForProtectionSpace:task:completionHandler:")]
 		void GetDefaultCredential (NSUrlProtectionSpace space, NSUrlSessionTask task, [NullAllowed] Action<NSUrlCredential> completionHandler);
 
@@ -7718,19 +9974,28 @@ namespace Foundation {
 
 	}
 
-#if NET
-	delegate void NSUrlSessionPendingTasks (NSUrlSessionTask [] dataTasks, NSUrlSessionTask [] uploadTasks, NSUrlSessionTask[] downloadTasks);
-#elif XAMCORE_3_0
-	delegate void NSUrlSessionPendingTasks2 (NSUrlSessionTask [] dataTasks, NSUrlSessionTask [] uploadTasks, NSUrlSessionTask[] downloadTasks);
-#else
-	delegate void NSUrlSessionPendingTasks (NSUrlSessionDataTask [] dataTasks, NSUrlSessionUploadTask [] uploadTasks, NSUrlSessionDownloadTask [] downloadTasks);
-	delegate void NSUrlSessionPendingTasks2 (NSUrlSessionTask [] dataTasks, NSUrlSessionTask [] uploadTasks, NSUrlSessionTask [] downloadTasks);
-#endif
+	/// <param name="dataTasks">To be added.</param>
+	/// <param name="uploadTasks">To be added.</param>
+	/// <param name="downloadTasks">To be added.</param>
+	/// <summary>The delegate that serves as the completion handler for <see cref="Foundation.NSUrlSession.GetTasks(Foundation.NSUrlSessionPendingTasks)" />.</summary>
+	/// <remarks>To be added.</remarks>
+	delegate void NSUrlSessionPendingTasks (NSUrlSessionTask [] dataTasks, NSUrlSessionTask [] uploadTasks, NSUrlSessionTask [] downloadTasks);
 	delegate void NSUrlSessionAllPendingTasks (NSUrlSessionTask [] tasks);
-	delegate void NSUrlSessionResponse (NSData data, NSUrlResponse response, NSError error);
+	/// <param name="data">Data that was received.</param>
+	/// <param name="response">The object representing the response.</param>
+	/// <param name="error">Error code, if any.</param>
+	/// <summary>Signature for callbacks invoked by NSUrlSession for various background operations.</summary>
+	/// <remarks>
+	///     </remarks>
+	delegate void NSUrlSessionResponse ([NullAllowed] NSData data, [NullAllowed] NSUrlResponse response, [NullAllowed] NSError error);
 	delegate void NSUrlSessionDownloadResponse (NSUrl data, NSUrlResponse response, NSError error);
 
-	delegate void NSUrlDownloadSessionResponse (NSUrl location, NSUrlResponse response, NSError error);
+	/// <param name="location">To be added.</param>
+	/// <param name="response">To be added.</param>
+	/// <param name="error">To be added.</param>
+	/// <summary>Completion handler for calls to <see cref="Foundation.NSUrlSession.CreateDownloadTask" /> and <see cref="Foundation.NSUrlSession.CreateDownloadTaskFromResumeData(Foundation.NSData,Foundation.NSUrlDownloadSessionResponse)" />.</summary>
+	/// <remarks>To be added.</remarks>
+	delegate void NSUrlDownloadSessionResponse ([NullAllowed] NSUrl location, [NullAllowed] NSUrlResponse response, [NullAllowed] NSError error);
 
 	interface INSUrlSessionDelegate { }
 
@@ -7760,11 +10025,12 @@ namespace Foundation {
 		[Static, Export ("sessionWithConfiguration:delegate:delegateQueue:")]
 		NSUrlSession FromWeakConfiguration (NSUrlSessionConfiguration configuration, [NullAllowed] NSObject weakDelegate, [NullAllowed] NSOperationQueue delegateQueue);
 
-#if !NET
-		[Obsolete ("Use the overload with a 'INSUrlSessionDelegate' parameter.")]
-		[Static, Wrap ("FromWeakConfiguration (configuration, sessionDelegate, delegateQueue);")]
-		NSUrlSession FromConfiguration (NSUrlSessionConfiguration configuration, NSUrlSessionDelegate sessionDelegate, [NullAllowed] NSOperationQueue delegateQueue);
-#endif
+		/// <param name="configuration">To be added.</param>
+		///         <param name="sessionDelegate">To be added.</param>
+		///         <param name="delegateQueue">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static, Wrap ("FromWeakConfiguration (configuration, (NSObject) sessionDelegate, delegateQueue);")]
 		NSUrlSession FromConfiguration (NSUrlSessionConfiguration configuration, INSUrlSessionDelegate sessionDelegate, [NullAllowed] NSOperationQueue delegateQueue);
 
@@ -7774,6 +10040,13 @@ namespace Foundation {
 		[Export ("delegate", ArgumentSemantic.Retain), NullAllowed]
 		NSObject WeakDelegate { get; }
 
+		/// <summary>An instance of the Foundation.INSUrlSessionDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the Foundation.INSUrlSessionDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		INSUrlSessionDelegate Delegate { get; }
 
@@ -7791,34 +10064,31 @@ namespace Foundation {
 		void InvalidateAndCancel ();
 
 		[Export ("resetWithCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>To be added.</summary>
+			<returns>A task that represents the asynchronous Reset operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void Reset (Action completionHandler);
 
 		[Export ("flushWithCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>To be added.</summary>
+			<returns>A task that represents the asynchronous Flush operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void Flush (Action completionHandler);
 
-#if !XAMCORE_3_0
-		// broken version that we must keep for XAMCORE_3_0 binary compatibility
-		// but that we do not have to expose on tvOS and watchOS, forcing people to use the correct API
-		[Obsolete ("Use GetTasks2 instead. This method may throw spurious InvalidCastExceptions, in particular for backgrounded tasks.")]
-		[Export ("getTasksWithCompletionHandler:")]
-		[Async (ResultTypeName = "NSUrlSessionActiveTasks")]
-		void GetTasks (NSUrlSessionPendingTasks completionHandler);
-#elif NET
 		// Fixed version (breaking change) only for NET
 		[Export ("getTasksWithCompletionHandler:")]
-		[Async (ResultTypeName="NSUrlSessionActiveTasks")]
+		[Async (ResultTypeName = "NSUrlSessionActiveTasks", XmlDocs = """
+			<summary>Requests the groups of pending tasks (data, upload and downloads).</summary>
+			<returns>
+			          <para>A task that represents the asynchronous GetTasks operation.   The value of the TResult parameter is of type <c>Action&lt;Foundation.NSUrlSessionActiveTasks&gt;</c>.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void GetTasks (NSUrlSessionPendingTasks completionHandler);
-#endif
-
-#if !NET
-		// Workaround, not needed for NET+
-		[Sealed]
-		[Export ("getTasksWithCompletionHandler:")]
-		[Async (ResultTypeName = "NSUrlSessionActiveTasks2")]
-		void GetTasks2 (NSUrlSessionPendingTasks2 completionHandler);
-#endif
 
 		[Export ("dataTaskWithRequest:")]
 		[return: ForcedType]
@@ -7854,45 +10124,183 @@ namespace Foundation {
 
 		[Export ("dataTaskWithRequest:completionHandler:")]
 		[return: ForcedType]
-		[Async (ResultTypeName = "NSUrlSessionDataTaskRequest", PostNonResultSnippet = "result.Resume ();")]
+		[Async (ResultTypeName = "NSUrlSessionDataTaskRequest", PostNonResultSnippet = "result.Resume ();", XmlDocs = """
+			<param name="request">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous CreateDataTask operation.   The value of the TResult parameter is of type <c>Action&lt;Foundation.NSUrlSessionDataTaskRequest&gt;</c>.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""",
+			XmlDocsWithOutParameter = """
+			<param name="request">To be added.</param>
+			<param name="result">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		NSUrlSessionDataTask CreateDataTask (NSUrlRequest request, [NullAllowed] NSUrlSessionResponse completionHandler);
 
 		[Export ("dataTaskWithURL:completionHandler:")]
 		[return: ForcedType]
-		[Async (ResultTypeName = "NSUrlSessionDataTaskRequest", PostNonResultSnippet = "result.Resume ();")]
+		[Async (ResultTypeName = "NSUrlSessionDataTaskRequest", PostNonResultSnippet = "result.Resume ();", XmlDocs = """
+			<param name="url">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous CreateDataTask operation.   The value of the TResult parameter is of type <c>Action&lt;Foundation.NSUrlSessionDataTaskRequest&gt;</c>.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""",
+			XmlDocsWithOutParameter = """
+			<param name="url">To be added.</param>
+			<param name="result">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		NSUrlSessionDataTask CreateDataTask (NSUrl url, [NullAllowed] NSUrlSessionResponse completionHandler);
 
 		[Export ("uploadTaskWithRequest:fromFile:completionHandler:")]
 		[return: ForcedType]
-		[Async (ResultTypeName = "NSUrlSessionDataTaskRequest", PostNonResultSnippet = "result.Resume ();")]
+		[Async (ResultTypeName = "NSUrlSessionDataTaskRequest", PostNonResultSnippet = "result.Resume ();", XmlDocs = """
+			<param name="request">To be added.</param>
+			<param name="fileURL">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous CreateUploadTask operation.   The value of the TResult parameter is of type <c>Action&lt;Foundation.NSUrlSessionDataTaskRequest&gt;</c>.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""",
+			XmlDocsWithOutParameter = """
+			<param name="request">To be added.</param>
+			<param name="fileURL">To be added.</param>
+			<param name="result">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		NSUrlSessionUploadTask CreateUploadTask (NSUrlRequest request, NSUrl fileURL, NSUrlSessionResponse completionHandler);
 
 		[Export ("uploadTaskWithRequest:fromData:completionHandler:")]
 		[return: ForcedType]
-		[Async (ResultTypeName = "NSUrlSessionDataTaskRequest", PostNonResultSnippet = "result.Resume ();")]
+		[Async (ResultTypeName = "NSUrlSessionDataTaskRequest", PostNonResultSnippet = "result.Resume ();", XmlDocs = """
+			<param name="request">To be added.</param>
+			<param name="bodyData">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous CreateUploadTask operation.   The value of the TResult parameter is of type <c>Action&lt;Foundation.NSUrlSessionDataTaskRequest&gt;</c>.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""",
+			XmlDocsWithOutParameter = """
+			<param name="request">To be added.</param>
+			<param name="bodyData">To be added.</param>
+			<param name="result">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		NSUrlSessionUploadTask CreateUploadTask (NSUrlRequest request, NSData bodyData, NSUrlSessionResponse completionHandler);
 
 		[Export ("downloadTaskWithRequest:completionHandler:")]
 		[return: ForcedType]
-		[Async (ResultTypeName = "NSUrlSessionDownloadTaskRequest", PostNonResultSnippet = "result.Resume ();")]
+		[Async (ResultTypeName = "NSUrlSessionDownloadTaskRequest", PostNonResultSnippet = "result.Resume ();", XmlDocs = """
+			<param name="request">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous CreateDownloadTask operation.</para>
+			        </returns>
+			<remarks>
+			          <para>
+			The downloaded content is stored in a temporary file, whose path is stored in the returned NSUrlSessionDownloadTaskRequest instance. Since this is a temporary file, it will be deleted once the NSUrlSessionDownloadTaskRequest instance is garbage collected (or disposed).
+			        </para>
+			        </remarks>
+			""",
+			XmlDocsWithOutParameter = """
+			<param name="request">A url request that specifies the resource to download.</param>
+			<param name="result">Upon return contains the NSUrlSessionDownloadTask for that was created.</param>
+			<summary>Downloads a url resource asynchronously to a temporary file.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous CreateDownloadTask operation.</para>
+			        </returns>
+			<remarks>
+			          <para>
+			The downloaded content is stored in a temporary file, whose path is stored in the returned NSUrlSessionDownloadTaskRequest instance. Since this is a temporary file, it will be deleted once the NSUrlSessionDownloadTaskRequest instance is garbage collected (or disposed).
+			          </para>
+			        </remarks>
+			""")]
 		NSUrlSessionDownloadTask CreateDownloadTask (NSUrlRequest request, [NullAllowed] NSUrlDownloadSessionResponse completionHandler);
 
 		[Export ("downloadTaskWithURL:completionHandler:")]
 		[return: ForcedType]
-		[Async (ResultTypeName = "NSUrlSessionDownloadTaskRequest", PostNonResultSnippet = "result.Resume ();")]
+		[Async (ResultTypeName = "NSUrlSessionDownloadTaskRequest", PostNonResultSnippet = "result.Resume ();", XmlDocs = """
+			<param name="url">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous CreateDownloadTask operation.</para>
+			        </returns>
+			<remarks>
+			          <para>
+			The downloaded content is stored in a temporary file, whose path is stored in the returned NSUrlSessionDownloadTaskRequest instance. Since this is a temporary file, it will be deleted once the NSUrlSessionDownloadTaskRequest instance is garbage collected (or disposed).
+			        </para>
+			        </remarks>
+			""",
+			XmlDocsWithOutParameter = """
+			<param name="url">The url that specifies the resource to download.</param>
+			<param name="result">Upon return contains the NSUrlSessionDownloadTask for that was created.</param>
+			<summary>Downloads a url resource asynchronously to a temporary file.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous CreateDownloadTask operation.</para>
+			        </returns>
+			<remarks>
+			The downloaded content is stored in a temporary file, whose path is stored in the returned NSUrlSessionDownloadTaskRequest instance. Since this is a temporary file, it will be deleted once the NSUrlSessionDownloadTaskRequest instance is garbage collected (or disposed).
+			        </remarks>
+			""")]
 		NSUrlSessionDownloadTask CreateDownloadTask (NSUrl url, [NullAllowed] NSUrlDownloadSessionResponse completionHandler);
 
 		[Export ("downloadTaskWithResumeData:completionHandler:")]
 		[return: ForcedType]
-		[Async (ResultTypeName = "NSUrlSessionDownloadTaskRequest", PostNonResultSnippet = "result.Resume ();")]
+		[Async (ResultTypeName = "NSUrlSessionDownloadTaskRequest", PostNonResultSnippet = "result.Resume ();", XmlDocs = """
+			<param name="resumeData">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous CreateDownloadTaskFromResumeData operation.   The value of the TResult parameter is of type <c>Action&lt;Foundation.NSUrlSessionDownloadTaskRequest&gt;</c>.</para>
+			        </returns>
+			<remarks>
+			          <para>
+			The downloaded content is stored in a temporary file, whose path is stored in the returned NSUrlSessionDownloadTaskRequest instance. Since this is a temporary file, it will be deleted once the NSUrlSessionDownloadTaskRequest instance is garbage collected (or disposed).
+			          </para>
+			        </remarks>
+			""",
+			XmlDocsWithOutParameter = """
+			<param name="resumeData">To be added.</param>
+			<param name="result">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		NSUrlSessionDownloadTask CreateDownloadTaskFromResumeData (NSData resumeData, [NullAllowed] NSUrlDownloadSessionResponse completionHandler);
 
 
 		[MacCatalyst (13, 1)]
 		[Export ("getAllTasksWithCompletionHandler:")]
-		[Async (ResultTypeName = "NSUrlSessionCombinedTasks")]
+		[Async (ResultTypeName = "NSUrlSessionCombinedTasks", XmlDocs = """
+			<summary>To be added.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous GetAllTasks operation.   The value of the TResult parameter is an array of MonoTouch.Foundation.NSUrlSessionTask.  The base class for data-transfer tasks created by a .</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The GetAllTasksAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void GetAllTasks (NSUrlSessionAllPendingTasks completionHandler);
 
+		/// <param name="hostname">To be added.</param>
+		/// <param name="port">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("streamTaskWithHostName:port:")]
 		NSUrlSessionStreamTask CreateBidirectionalStream (string hostname, nint port);
@@ -7900,49 +10308,63 @@ namespace Foundation {
 		[Deprecated (PlatformName.MacOSX, 12, 0, message: "Use the Network.framework instead.")]
 		[Deprecated (PlatformName.iOS, 15, 0, message: "Use the Network.framework instead.")]
 		[Deprecated (PlatformName.TvOS, 15, 0, message: "Use the Network.framework instead.")]
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 15, 0, message: "Use the Network.framework instead.")]
 		[Export ("streamTaskWithNetService:")]
 		NSUrlSessionStreamTask CreateBidirectionalStream (NSNetService service);
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("webSocketTaskWithURL:")]
 		NSUrlSessionWebSocketTask CreateWebSocketTask (NSUrl url);
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("webSocketTaskWithURL:protocols:")]
 		NSUrlSessionWebSocketTask CreateWebSocketTask (NSUrl url, string [] protocols);
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("webSocketTaskWithRequest:")]
 		NSUrlSessionWebSocketTask CreateWebSocketTask (NSUrlRequest request);
 
-		[Watch (10, 0), TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("uploadTaskWithResumeData:")]
 		[return: ForcedType]
 		NSUrlSessionUploadTask CreateUploadTask (NSData resumeData);
 
 		[Async (ResultTypeName = "NSUrlSessionUploadTaskResumeRequest")]
-		[Watch (10, 0), TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("uploadTaskWithResumeData:completionHandler:")]
 		[return: ForcedType]
 		NSUrlSessionUploadTask CreateUploadTask (NSData resumeData, Action<NSData, NSUrlResponse, NSError> completionHandler);
 	}
 
+	/// <summary>Delegate object for <see cref="Foundation.NSUrlSession" /> objects that have <see cref="Foundation.NSUrlSessionStreamTask" /> objects.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/Foundation/NSURLSessionStreamDelegate">Apple documentation for <c>NSURLSessionStreamDelegate</c></related>
 	[MacCatalyst (13, 1)]
 	[Protocol, Model]
 	[BaseType (typeof (NSUrlSessionTaskDelegate), Name = "NSURLSessionStreamDelegate")]
 	interface NSUrlSessionStreamDelegate {
+		/// <param name="session">To be added.</param>
+		/// <param name="streamTask">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("URLSession:readClosedForStreamTask:")]
 		void ReadClosed (NSUrlSession session, NSUrlSessionStreamTask streamTask);
 
+		/// <param name="session">To be added.</param>
+		/// <param name="streamTask">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("URLSession:writeClosedForStreamTask:")]
 		void WriteClosed (NSUrlSession session, NSUrlSessionStreamTask streamTask);
 
+		/// <param name="session">To be added.</param>
+		/// <param name="streamTask">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("URLSession:betterRouteDiscoveredForStreamTask:")]
 		void BetterRouteDiscovered (NSUrlSession session, NSUrlSessionStreamTask streamTask);
 
@@ -7951,21 +10373,51 @@ namespace Foundation {
 		// because it was a bad name, and does not describe what this does, so the name
 		// was picked from the documentation and what it does.
 		//
+		/// <param name="session">To be added.</param>
+		/// <param name="streamTask">To be added.</param>
+		/// <param name="inputStream">To be added.</param>
+		/// <param name="outputStream">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("URLSession:streamTask:didBecomeInputStream:outputStream:")]
 		void CompletedTaskCaptureStreams (NSUrlSession session, NSUrlSessionStreamTask streamTask, NSInputStream inputStream, NSOutputStream outputStream);
 	}
 
-	delegate void NSUrlSessionDataRead (NSData data, bool atEof, NSError error);
+	delegate void NSUrlSessionDataRead ([NullAllowed] NSData data, bool atEof, [NullAllowed] NSError error);
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSUrlSessionTask), Name = "NSURLSessionStreamTask")]
 	[DisableDefaultCtor] // now (xcode11) marked as deprecated
 	interface NSUrlSessionStreamTask {
+		/// <param name="minBytes">To be added.</param>
+		/// <param name="maxBytes">To be added.</param>
+		/// <param name="timeout">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("readDataOfMinLength:maxLength:timeout:completionHandler:")]
-		[Async (ResultTypeName = "NSUrlSessionStreamDataRead")]
+		[Async (ResultTypeName = "NSUrlSessionStreamDataRead", XmlDocs = """
+			<param name="minBytes">To be added.</param>
+			<param name="maxBytes">To be added.</param>
+			<param name="timeout">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous ReadData operation.   The value of the TResult parameter is of type Foundation.NSUrlSessionStreamDataRead.  To be added.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void ReadData (nuint minBytes, nuint maxBytes, double timeout, NSUrlSessionDataRead completionHandler);
 
 		[Export ("writeData:timeout:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="data">To be added.</param>
+			<param name="timeout">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>A task that represents the asynchronous WriteData operation</returns>
+			<remarks>
+			          <para copied="true">The WriteDataAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void WriteData (NSData data, double timeout, Action<NSError> completionHandler);
 
 		[Export ("captureStreams")]
@@ -7982,7 +10434,6 @@ namespace Foundation {
 
 		[Deprecated (PlatformName.MacOSX, 10, 15, message: "A secure (TLS) connection cannot become drop back to insecure (non-TLS).")]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "A secure (TLS) connection cannot become drop back to insecure (non-TLS).")]
-		[Deprecated (PlatformName.WatchOS, 6, 0, message: "A secure (TLS) connection cannot become drop back to insecure (non-TLS).")]
 		[Deprecated (PlatformName.TvOS, 13, 0, message: "A secure (TLS) connection cannot become drop back to insecure (non-TLS).")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "A secure (TLS) connection cannot become drop back to insecure (non-TLS).")]
 		[Export ("stopSecureConnection")]
@@ -7995,7 +10446,6 @@ namespace Foundation {
 	partial interface NSUrlSessionTask : NSCopying, NSProgressReporting {
 		[Deprecated (PlatformName.MacOSX, 10, 15, message: "This type is not meant to be user created.")]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "This type is not meant to be user created.")]
-		[Deprecated (PlatformName.WatchOS, 6, 0, message: "This type is not meant to be user created.")]
 		[Deprecated (PlatformName.TvOS, 13, 0, message: "This type is not meant to be user created.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "This type is not meant to be user created.")]
 		[Export ("init")]
@@ -8044,6 +10494,10 @@ namespace Foundation {
 		[Export ("resume")]
 		void Resume ();
 
+		/// <summary>Represents the value associated with the constant NSUrlSessionTransferSizeUnknown</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLSessionTransferSizeUnknown")]
 		long TransferSizeUnknown { get; }
 
@@ -8051,7 +10505,7 @@ namespace Foundation {
 		[Export ("priority")]
 		float Priority { get; set; } /* float, not CGFloat */
 
-		[Watch (7, 4), TV (14, 5), iOS (14, 5)]
+		[TV (14, 5), iOS (14, 5)]
 		[MacCatalyst (14, 5)]
 		[Export ("prefersIncrementalDelivery")]
 		bool PrefersIncrementalDelivery { get; set; }
@@ -8068,25 +10522,39 @@ namespace Foundation {
 		[Export ("countOfBytesClientExpectsToReceive")]
 		long CountOfBytesClientExpectsToReceive { get; set; }
 
-		[Watch (8, 0), TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 		[NullAllowed, Export ("delegate", ArgumentSemantic.Retain)]
 		NSObject WeakDelegate { get; set; }
 
-		[Watch (8, 0), TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 		[Wrap ("WeakDelegate")]
 		[NullAllowed]
 		INSUrlSessionTaskDelegate Delegate { get; set; }
 	}
 
+	/// <summary>Defines constants for use with <see cref="Foundation.NSUrlSessionTask.Priority" />.</summary>
+	/// <remarks>To be added.</remarks>
 	[Static]
 	[MacCatalyst (13, 1)]
 	interface NSUrlSessionTaskPriority {
+		/// <summary>Represents the value associated with the constant NSURLSessionTaskPriorityDefault</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLSessionTaskPriorityDefault")]
 		float Default { get; } /* float, not CGFloat */
 
+		/// <summary>Represents the value associated with the constant NSURLSessionTaskPriorityLow</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLSessionTaskPriorityLow")]
 		float Low { get; } /* float, not CGFloat */
 
+		/// <summary>Represents the value associated with the constant NSURLSessionTaskPriorityHigh</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLSessionTaskPriorityHigh")]
 		float High { get; } /* float, not CGFloat */
 	}
@@ -8100,7 +10568,6 @@ namespace Foundation {
 	partial interface NSUrlSessionDataTask {
 		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use 'NSURLSession.CreateDataTask' instead.")]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'NSURLSession.CreateDataTask' instead.")]
-		[Deprecated (PlatformName.WatchOS, 6, 0, message: "Use 'NSURLSession.CreateDataTask' instead.")]
 		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use 'NSURLSession.CreateDataTask' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'NSURLSession.CreateDataTask' instead.")]
 		[Export ("init")]
@@ -8113,18 +10580,17 @@ namespace Foundation {
 	partial interface NSUrlSessionUploadTask {
 		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use 'NSURLSession.CreateUploadTask' instead.")]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'NSURLSession.CreateUploadTask' instead.")]
-		[Deprecated (PlatformName.WatchOS, 6, 0, message: "Use 'NSURLSession.CreateUploadTask' instead.")]
 		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use 'NSURLSession.CreateUploadTask' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'NSURLSession.CreateUploadTask' instead.")]
 		[Export ("init")]
 		NativeHandle Constructor ();
 
-		[Watch (10, 0), TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Field ("NSURLSessionUploadTaskResumeData")]
 		NSString ResumeDataKey { get; }
 
 		[Async]
-		[Watch (10, 0), TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("cancelByProducingResumeData:")]
 		void CancelByProducingResumeData (Action<NSData> completionHandler);
 	}
@@ -8135,7 +10601,6 @@ namespace Foundation {
 	partial interface NSUrlSessionDownloadTask {
 		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use 'NSURLSession.CreateDownloadTask' instead.")]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'NSURLSession.CreateDownloadTask' instead.")]
-		[Deprecated (PlatformName.WatchOS, 6, 0, message: "Use 'NSURLSession.CreateDownloadTask' instead.")]
 		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use 'NSURLSession.CreateDownloadTask' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'NSURLSession.CreateDownloadTask' instead.")]
 		[Export ("init")]
@@ -8147,7 +10612,6 @@ namespace Foundation {
 
 	[Internal]
 	[Static]
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	interface ProxyConfigurationDictionaryKeys {
 		[Field ("kCFNetworkProxiesHTTPEnable")]
@@ -8171,7 +10635,6 @@ namespace Foundation {
 		NSString HttpsProxyPortKey { get; }
 	}
 
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	[StrongDictionary ("ProxyConfigurationDictionaryKeys")]
 	interface ProxyConfigurationDictionary {
@@ -8220,6 +10683,9 @@ namespace Foundation {
 		[Export ("allowsCellularAccess")]
 		bool AllowsCellularAccess { get; set; }
 
+		/// <summary>Whether background tasks can be scheduled at the discretion of the system in order to improve performance.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("discretionary")]
 		bool Discretionary { [Bind ("isDiscretionary")] get; set; }
 
@@ -8231,7 +10697,6 @@ namespace Foundation {
 		[Export ("connectionProxyDictionary", ArgumentSemantic.Copy)]
 		NSDictionary ConnectionProxyDictionary { get; set; }
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		ProxyConfigurationDictionary StrongConnectionProxyDictionary {
 			[Wrap ("new ProxyConfigurationDictionary (ConnectionProxyDictionary!)")]
@@ -8242,30 +10707,32 @@ namespace Foundation {
 
 		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use 'TlsMinimumSupportedProtocolVersion' instead.")]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'TlsMinimumSupportedProtocolVersion' instead.")]
-		[Deprecated (PlatformName.WatchOS, 6, 0, message: "Use 'TlsMinimumSupportedProtocolVersion' instead.")]
 		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use 'TlsMinimumSupportedProtocolVersion' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'TlsMinimumSupportedProtocolVersion' instead.")]
 		[Export ("TLSMinimumSupportedProtocol")]
 		SslProtocol TLSMinimumSupportedProtocol { get; set; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("TLSMinimumSupportedProtocolVersion", ArgumentSemantic.Assign)]
 		TlsProtocolVersion TlsMinimumSupportedProtocolVersion { get; set; }
 
 		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use 'TlsMaximumSupportedProtocolVersion' instead.")]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'TlsMaximumSupportedProtocolVersion' instead.")]
-		[Deprecated (PlatformName.WatchOS, 6, 0, message: "Use 'TlsMaximumSupportedProtocolVersion' instead.")]
 		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use 'TlsMaximumSupportedProtocolVersion' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'TlsMaximumSupportedProtocolVersion' instead.")]
 		[Export ("TLSMaximumSupportedProtocol")]
 		SslProtocol TLSMaximumSupportedProtocol { get; set; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("TLSMaximumSupportedProtocolVersion", ArgumentSemantic.Assign)]
 		TlsProtocolVersion TlsMaximumSupportedProtocolVersion { get; set; }
 
+		[Deprecated (PlatformName.iOS, 18, 4, message: "Use HTTP/2 or HTTP/3 instead. Only supported when the classic loader is enabled.")]
+		[Deprecated (PlatformName.TvOS, 18, 4, message: "Use HTTP/2 or HTTP/3 instead. Only supported when the classic loader is enabled.")]
+		[Deprecated (PlatformName.MacCatalyst, 18, 4, message: "Use HTTP/2 or HTTP/3 instead. Only supported when the classic loader is enabled.")]
+		[Deprecated (PlatformName.MacOSX, 15, 4, message: "Use HTTP/2 or HTTP/3 instead. Only supported when the classic loader is enabled.")]
 		[Export ("HTTPShouldUsePipelining")]
 		bool HttpShouldUsePipelining { get; set; }
 
@@ -8308,11 +10775,15 @@ namespace Foundation {
 		[Static, Export ("backgroundSessionConfigurationWithIdentifier:")]
 		NSUrlSessionConfiguration _CreateBackgroundSessionConfiguration (string identifier);
 
+		[Deprecated (PlatformName.iOS, 18, 4, message: "Not supported anymore.")]
+		[Deprecated (PlatformName.TvOS, 18, 4, message: "Not supported anymore.")]
+		[Deprecated (PlatformName.MacCatalyst, 18, 4, message: "Not supported anymore.")]
+		[Deprecated (PlatformName.MacOSX, 15, 4, message: "Not supported anymore.")]
 		[MacCatalyst (13, 1)]
 		[Export ("shouldUseExtendedBackgroundIdleMode")]
 		bool ShouldUseExtendedBackgroundIdleMode { get; set; }
 
-		[NoWatch, NoTV, NoMac]
+		[NoTV, NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("multipathServiceType", ArgumentSemantic.Assign)]
 		NSUrlSessionMultipathServiceType MultipathServiceType { get; set; }
@@ -8321,17 +10792,17 @@ namespace Foundation {
 		[Export ("waitsForConnectivity")]
 		bool WaitsForConnectivity { get; set; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("allowsExpensiveNetworkAccess")]
 		bool AllowsExpensiveNetworkAccess { get; set; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("allowsConstrainedNetworkAccess")]
 		bool AllowsConstrainedNetworkAccess { get; set; }
 
-		[Watch (9, 0), TV (16, 0), Mac (13, 0), iOS (16, 0)]
+		[TV (16, 0), Mac (13, 0), iOS (16, 0)]
 		[MacCatalyst (16, 0)]
 		[Export ("requiresDNSSECValidation")]
 		bool RequiresDnsSecValidation { get; set; }
@@ -8339,18 +10810,40 @@ namespace Foundation {
 		[Internal]
 		[Export ("proxyConfigurations", ArgumentSemantic.Copy)]
 		IntPtr _ProxyConfigurations { get; set; }
+
+		[iOS (18, 4), TV (18, 4), MacCatalyst (18, 4), Mac (15, 4)]
+		[Export ("usesClassicLoadingMode")]
+		bool UsesClassicLoadingMode { get; set; }
 	}
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Foundation.NSUrlSessionDelegate" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Foundation.NSUrlSessionDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Foundation.NSUrlSessionDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="Foundation.NSUrlSessionDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Model, BaseType (typeof (NSObject), Name = "NSURLSessionDelegate")]
 	[Protocol]
 	partial interface NSUrlSessionDelegate {
+		/// <param name="session">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("URLSession:didBecomeInvalidWithError:")]
 		void DidBecomeInvalid (NSUrlSession session, NSError error);
 
+		/// <param name="session">To be added.</param>
+		/// <param name="challenge">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("URLSession:didReceiveChallenge:completionHandler:")]
 		void DidReceiveChallenge (NSUrlSession session, NSUrlAuthenticationChallenge challenge, Action<NSUrlSessionAuthChallengeDisposition, NSUrlCredential> completionHandler);
 
+		/// <param name="session">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("URLSessionDidFinishEventsForBackgroundURLSession:")]
 		void DidFinishEventsForBackgroundSession (NSUrlSession session);
@@ -8358,97 +10851,215 @@ namespace Foundation {
 
 	public interface INSUrlSessionTaskDelegate { }
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Foundation.NSUrlSessionTaskDelegate" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Foundation.NSUrlSessionTaskDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Foundation.NSUrlSessionTaskDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="Foundation.NSUrlSessionTaskDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Model]
 	[BaseType (typeof (NSUrlSessionDelegate), Name = "NSURLSessionTaskDelegate")]
 	[Protocol]
 	partial interface NSUrlSessionTaskDelegate {
 
+		/// <param name="session">To be added.</param>
+		/// <param name="task">To be added.</param>
+		/// <param name="response">To be added.</param>
+		/// <param name="newRequest">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("URLSession:task:willPerformHTTPRedirection:newRequest:completionHandler:")]
 		void WillPerformHttpRedirection (NSUrlSession session, NSUrlSessionTask task, NSHttpUrlResponse response, NSUrlRequest newRequest, Action<NSUrlRequest> completionHandler);
 
+		/// <param name="session">To be added.</param>
+		/// <param name="task">To be added.</param>
+		/// <param name="challenge">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("URLSession:task:didReceiveChallenge:completionHandler:")]
 		void DidReceiveChallenge (NSUrlSession session, NSUrlSessionTask task, NSUrlAuthenticationChallenge challenge, Action<NSUrlSessionAuthChallengeDisposition, NSUrlCredential> completionHandler);
 
+		/// <param name="session">To be added.</param>
+		/// <param name="task">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("URLSession:task:needNewBodyStream:")]
 		void NeedNewBodyStream (NSUrlSession session, NSUrlSessionTask task, Action<NSInputStream> completionHandler);
 
+		/// <param name="session">To be added.</param>
+		/// <param name="task">To be added.</param>
+		/// <param name="bytesSent">To be added.</param>
+		/// <param name="totalBytesSent">To be added.</param>
+		/// <param name="totalBytesExpectedToSend">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("URLSession:task:didSendBodyData:totalBytesSent:totalBytesExpectedToSend:")]
 		void DidSendBodyData (NSUrlSession session, NSUrlSessionTask task, long bytesSent, long totalBytesSent, long totalBytesExpectedToSend);
 
+		/// <param name="session">To be added.</param>
+		/// <param name="task">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("URLSession:task:didCompleteWithError:")]
 		void DidCompleteWithError (NSUrlSession session, NSUrlSessionTask task, [NullAllowed] NSError error);
 
+		/// <param name="session">To be added.</param>
+		/// <param name="task">To be added.</param>
+		/// <param name="metrics">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("URLSession:task:didFinishCollectingMetrics:")]
 		void DidFinishCollectingMetrics (NSUrlSession session, NSUrlSessionTask task, NSUrlSessionTaskMetrics metrics);
 
+		/// <param name="session">To be added.</param>
+		/// <param name="task">To be added.</param>
+		/// <param name="request">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("URLSession:task:willBeginDelayedRequest:completionHandler:")]
 		void WillBeginDelayedRequest (NSUrlSession session, NSUrlSessionTask task, NSUrlRequest request, Action<NSUrlSessionDelayedRequestDisposition, NSUrlRequest> completionHandler);
 
+		/// <param name="session">To be added.</param>
+		/// <param name="task">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("URLSession:taskIsWaitingForConnectivity:")]
 		void TaskIsWaitingForConnectivity (NSUrlSession session, NSUrlSessionTask task);
 
-		[Watch (9, 0), TV (16, 0), Mac (13, 0), iOS (16, 0)]
+		[TV (16, 0), Mac (13, 0), iOS (16, 0)]
 		[MacCatalyst (16, 0)]
 		[Export ("URLSession:didCreateTask:")]
 		void DidCreateTask (NSUrlSession session, NSUrlSessionTask task);
 
-		[Watch (10, 0), TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("URLSession:task:didReceiveInformationalResponse:")]
 		void DidReceiveInformationalResponse (NSUrlSession session, NSUrlSessionTask task, NSHttpUrlResponse response);
 
-		[Watch (10, 0), TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("URLSession:task:needNewBodyStreamFromOffset:completionHandler:")]
 		void NeedNewBodyStream (NSUrlSession session, NSUrlSessionTask task, long offset, Action<NSInputStream> completionHandler);
 	}
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Foundation.NSUrlSessionDataDelegate" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Foundation.NSUrlSessionDataDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Foundation.NSUrlSessionDataDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="Foundation.NSUrlSessionDataDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Model]
 	[BaseType (typeof (NSUrlSessionTaskDelegate), Name = "NSURLSessionDataDelegate")]
 	[Protocol]
 	partial interface NSUrlSessionDataDelegate {
+		/// <param name="session">To be added.</param>
+		/// <param name="dataTask">To be added.</param>
+		/// <param name="response">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("URLSession:dataTask:didReceiveResponse:completionHandler:")]
 		void DidReceiveResponse (NSUrlSession session, NSUrlSessionDataTask dataTask, NSUrlResponse response, Action<NSUrlSessionResponseDisposition> completionHandler);
 
+		/// <param name="session">To be added.</param>
+		/// <param name="dataTask">To be added.</param>
+		/// <param name="downloadTask">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("URLSession:dataTask:didBecomeDownloadTask:")]
 		void DidBecomeDownloadTask (NSUrlSession session, NSUrlSessionDataTask dataTask, NSUrlSessionDownloadTask downloadTask);
 
+		/// <param name="session">To be added.</param>
+		/// <param name="dataTask">To be added.</param>
+		/// <param name="data">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("URLSession:dataTask:didReceiveData:")]
 		void DidReceiveData (NSUrlSession session, NSUrlSessionDataTask dataTask, NSData data);
 
+		/// <param name="session">To be added.</param>
+		/// <param name="dataTask">To be added.</param>
+		/// <param name="proposedResponse">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("URLSession:dataTask:willCacheResponse:completionHandler:")]
 		void WillCacheResponse (NSUrlSession session, NSUrlSessionDataTask dataTask, NSCachedUrlResponse proposedResponse, Action<NSCachedUrlResponse> completionHandler);
 
+		/// <param name="session">To be added.</param>
+		/// <param name="dataTask">To be added.</param>
+		/// <param name="streamTask">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("URLSession:dataTask:didBecomeStreamTask:")]
 		void DidBecomeStreamTask (NSUrlSession session, NSUrlSessionDataTask dataTask, NSUrlSessionStreamTask streamTask);
 	}
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Foundation.NSUrlSessionDownloadDelegate" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Foundation.NSUrlSessionDownloadDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Foundation.NSUrlSessionDownloadDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="Foundation.NSUrlSessionDownloadDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Model]
 	[BaseType (typeof (NSUrlSessionTaskDelegate), Name = "NSURLSessionDownloadDelegate")]
 	[Protocol]
 	partial interface NSUrlSessionDownloadDelegate {
 
+		/// <param name="session">To be added.</param>
+		/// <param name="downloadTask">To be added.</param>
+		/// <param name="location">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("URLSession:downloadTask:didFinishDownloadingToURL:")]
 		void DidFinishDownloading (NSUrlSession session, NSUrlSessionDownloadTask downloadTask, NSUrl location);
 
+		/// <param name="session">To be added.</param>
+		/// <param name="downloadTask">To be added.</param>
+		/// <param name="bytesWritten">To be added.</param>
+		/// <param name="totalBytesWritten">To be added.</param>
+		/// <param name="totalBytesExpectedToWrite">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("URLSession:downloadTask:didWriteData:totalBytesWritten:totalBytesExpectedToWrite:")]
 		void DidWriteData (NSUrlSession session, NSUrlSessionDownloadTask downloadTask, long bytesWritten, long totalBytesWritten, long totalBytesExpectedToWrite);
 
+		/// <param name="session">To be added.</param>
+		/// <param name="downloadTask">To be added.</param>
+		/// <param name="resumeFileOffset">To be added.</param>
+		/// <param name="expectedTotalBytes">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("URLSession:downloadTask:didResumeAtOffset:expectedTotalBytes:")]
 		void DidResume (NSUrlSession session, NSUrlSessionDownloadTask downloadTask, long resumeFileOffset, long expectedTotalBytes);
 
+		/// <summary>Represents the value associated with the constant NSURLSessionDownloadTaskResumeData</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLSessionDownloadTaskResumeData")]
 		NSString TaskResumeDataKey { get; }
 	}
 
 	interface NSUndoManagerCloseUndoGroupEventArgs {
 		// Bug in docs, see header file
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Export ("NSUndoManagerGroupIsDiscardableKey")]
 		[NullAllowed]
 		bool Discardable { get; }
@@ -8471,6 +11082,9 @@ namespace Foundation {
 		[Export ("enableUndoRegistration")]
 		void EnableUndoRegistration ();
 
+		/// <summary>Whether the recording of undo operations is enabled.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isUndoRegistrationEnabled")]
 		bool IsUndoRegistrationEnabled { get; }
 
@@ -8480,13 +11094,8 @@ namespace Foundation {
 		[Export ("levelsOfUndo")]
 		nint LevelsOfUndo { get; set; }
 
-#if NET
 		[Export ("runLoopModes", ArgumentSemantic.Copy)]
 		NSString [] WeakRunLoopModes { get; set; }
-#else
-		[Export ("runLoopModes")]
-		string [] RunLoopModes { get; set; }
-#endif
 
 		[Export ("undo")]
 		void Undo ();
@@ -8503,17 +11112,23 @@ namespace Foundation {
 		[Export ("canRedo")]
 		bool CanRedo { get; }
 
-		[Watch (10, 4), TV (17, 4), Mac (14, 4), iOS (17, 4), MacCatalyst (17, 4)]
+		[TV (17, 4), Mac (14, 4), iOS (17, 4), MacCatalyst (17, 4)]
 		[Export ("undoCount")]
 		nuint UndoCount { get; }
 
-		[Watch (10, 4), TV (17, 4), Mac (14, 4), iOS (17, 4), MacCatalyst (17, 4)]
+		[TV (17, 4), Mac (14, 4), iOS (17, 4), MacCatalyst (17, 4)]
 		[Export ("redoCount")]
 		nuint RedoCount { get; }
 
+		/// <summary>Whether this NSUndoManager is in the process of performing its undo or UndoNestedGroup method.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isUndoing")]
 		bool IsUndoing { get; }
 
+		/// <summary>Whether this NSUndoManager is in the process of performing its redo method.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isRedoing")]
 		bool IsRedoing { get; }
 
@@ -8535,14 +11150,8 @@ namespace Foundation {
 		[Export ("redoActionName")]
 		string RedoActionName { get; }
 
-#if NET
 		[Export ("setActionName:")]
 		void SetActionName (string actionName);
-#else
-		[Advice ("Use the correctly named method: 'SetActionName'.")]
-		[Export ("setActionName:")]
-		void SetActionname (string actionName);
-#endif
 
 		[Export ("undoMenuItemTitle")]
 		string UndoMenuItemTitle { get; }
@@ -8556,30 +11165,37 @@ namespace Foundation {
 		[Export ("redoMenuTitleForUndoActionName:")]
 		string RedoMenuTitleForUndoActionName (string name);
 
+		/// <include file="../docs/api/Foundation/NSUndoManager.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSUndoManager.CheckpointNotification']/*" />
 		[Field ("NSUndoManagerCheckpointNotification")]
 		[Notification]
 		NSString CheckpointNotification { get; }
 
+		/// <include file="../docs/api/Foundation/NSUndoManager.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSUndoManager.DidOpenUndoGroupNotification']/*" />
 		[Field ("NSUndoManagerDidOpenUndoGroupNotification")]
 		[Notification]
 		NSString DidOpenUndoGroupNotification { get; }
 
+		/// <include file="../docs/api/Foundation/NSUndoManager.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSUndoManager.DidRedoChangeNotification']/*" />
 		[Field ("NSUndoManagerDidRedoChangeNotification")]
 		[Notification]
 		NSString DidRedoChangeNotification { get; }
 
+		/// <include file="../docs/api/Foundation/NSUndoManager.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSUndoManager.DidUndoChangeNotification']/*" />
 		[Field ("NSUndoManagerDidUndoChangeNotification")]
 		[Notification]
 		NSString DidUndoChangeNotification { get; }
 
+		/// <include file="../docs/api/Foundation/NSUndoManager.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSUndoManager.WillCloseUndoGroupNotification']/*" />
 		[Field ("NSUndoManagerWillCloseUndoGroupNotification")]
 		[Notification (typeof (NSUndoManagerCloseUndoGroupEventArgs))]
 		NSString WillCloseUndoGroupNotification { get; }
 
+		/// <include file="../docs/api/Foundation/NSUndoManager.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSUndoManager.WillRedoChangeNotification']/*" />
 		[Field ("NSUndoManagerWillRedoChangeNotification")]
 		[Notification]
 		NSString WillRedoChangeNotification { get; }
 
+		/// <include file="../docs/api/Foundation/NSUndoManager.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSUndoManager.WillUndoChangeNotification']/*" />
 		[Field ("NSUndoManagerWillUndoChangeNotification")]
 		[Notification]
 		NSString WillUndoChangeNotification { get; }
@@ -8593,9 +11209,14 @@ namespace Foundation {
 		[Export ("redoActionIsDiscardable")]
 		bool RedoActionIsDiscardable { get; }
 
+		/// <summary>Represents the value associated with the constant NSUndoManagerGroupIsDiscardableKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSUndoManagerGroupIsDiscardableKey")]
 		NSString GroupIsDiscardableKey { get; }
 
+		/// <include file="../docs/api/Foundation/NSUndoManager.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSUndoManager.DidCloseUndoGroupNotification']/*" />
 		[Field ("NSUndoManagerDidCloseUndoGroupNotification")]
 		[Notification (typeof (NSUndoManagerCloseUndoGroupEventArgs))]
 		NSString DidCloseUndoGroupNotification { get; }
@@ -8604,17 +11225,17 @@ namespace Foundation {
 		[Export ("registerUndoWithTarget:handler:")]
 		void RegisterUndo (NSObject target, Action<NSObject> undoHandler);
 
-		[Watch (11, 0), TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Export ("undoActionUserInfoValueForKey:")]
 		[return: NullAllowed]
 		NSObject GetUndoActionUserInfoValue (string key);
 
-		[Watch (11, 0), TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Export ("redoActionUserInfoValueForKey:")]
 		[return: NullAllowed]
 		NSObject GetRedoActionUserInfoValue (string key);
 
-		[Watch (11, 0), TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Export ("setActionUserInfoValue:forKey:")]
 		void SetActionUserInfoValue ([NullAllowed] NSObject info, string key);
 	}
@@ -8626,11 +11247,11 @@ namespace Foundation {
 
 		[Internal]
 		[Export ("initWithHost:port:protocol:realm:authenticationMethod:")]
-		IntPtr Init (string host, nint port, [NullAllowed] string protocol, [NullAllowed] string realm, [NullAllowed] string authenticationMethod);
+		IntPtr _Init (string host, nint port, [NullAllowed] string protocol, [NullAllowed] string realm, [NullAllowed] string authenticationMethod);
 
 		[Internal]
 		[Export ("initWithProxyHost:port:type:realm:authenticationMethod:")]
-		IntPtr InitWithProxy (string host, nint port, [NullAllowed] string type, [NullAllowed] string realm, [NullAllowed] string authenticationMethod);
+		IntPtr _InitWithProxy (string host, nint port, [NullAllowed] string type, [NullAllowed] string realm, [NullAllowed] string authenticationMethod);
 
 		[Export ("realm")]
 		string Realm { get; }
@@ -8666,48 +11287,116 @@ namespace Foundation {
 		[Export ("serverTrust")]
 		IntPtr ServerTrust { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLProtectionSpaceHTTP</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLProtectionSpaceHTTP")]
 		NSString HTTP { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLProtectionSpaceHTTPS</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLProtectionSpaceHTTPS")]
 		NSString HTTPS { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLProtectionSpaceFTP</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
+		[Deprecated (PlatformName.iOS, 18, 4, message: "FTP is deprecated. Only supported when the classic loader is enabled.")]
+		[Deprecated (PlatformName.TvOS, 18, 4, message: "FTP is deprecated. Only supported when the classic loader is enabled.")]
+		[Deprecated (PlatformName.MacCatalyst, 18, 4, message: "FTP is deprecated. Only supported when the classic loader is enabled.")]
+		[Deprecated (PlatformName.MacOSX, 15, 4, message: "FTP is deprecated. Only supported when the classic loader is enabled.")]
 		[Field ("NSURLProtectionSpaceFTP")]
 		NSString FTP { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLProtectionSpaceHTTPProxy</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
+		[Deprecated (PlatformName.iOS, 18, 4, message: "FTP is deprecated. Only supported when the classic loader is enabled.")]
+		[Deprecated (PlatformName.TvOS, 18, 4, message: "FTP is deprecated. Only supported when the classic loader is enabled.")]
+		[Deprecated (PlatformName.MacCatalyst, 18, 4, message: "FTP is deprecated. Only supported when the classic loader is enabled.")]
+		[Deprecated (PlatformName.MacOSX, 15, 4, message: "FTP is deprecated. Only supported when the classic loader is enabled.")]
 		[Field ("NSURLProtectionSpaceHTTPProxy")]
 		NSString HTTPProxy { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLProtectionSpaceHTTPSProxy</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLProtectionSpaceHTTPSProxy")]
 		NSString HTTPSProxy { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLProtectionSpaceFTPProxy</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLProtectionSpaceFTPProxy")]
 		NSString FTPProxy { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLProtectionSpaceSOCKSProxy</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLProtectionSpaceSOCKSProxy")]
 		NSString SOCKSProxy { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLAuthenticationMethodDefault</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLAuthenticationMethodDefault")]
 		NSString AuthenticationMethodDefault { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLAuthenticationMethodHTTPBasic</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLAuthenticationMethodHTTPBasic")]
 		NSString AuthenticationMethodHTTPBasic { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLAuthenticationMethodHTTPDigest</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLAuthenticationMethodHTTPDigest")]
 		NSString AuthenticationMethodHTTPDigest { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLAuthenticationMethodHTMLForm</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLAuthenticationMethodHTMLForm")]
 		NSString AuthenticationMethodHTMLForm { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLAuthenticationMethodNTLM</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLAuthenticationMethodNTLM")]
 		NSString AuthenticationMethodNTLM { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLAuthenticationMethodNegotiate</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLAuthenticationMethodNegotiate")]
 		NSString AuthenticationMethodNegotiate { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLAuthenticationMethodClientCertificate</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLAuthenticationMethodClientCertificate")]
 		NSString AuthenticationMethodClientCertificate { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLAuthenticationMethodServerTrust</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLAuthenticationMethodServerTrust")]
 		NSString AuthenticationMethodServerTrust { get; }
 	}
@@ -8743,12 +11432,12 @@ namespace Foundation {
 		[Export ("allowsCellularAccess")]
 		bool AllowsCellularAccess { get; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("allowsExpensiveNetworkAccess")]
 		bool AllowsExpensiveNetworkAccess { get; [NotImplemented] set; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("allowsConstrainedNetworkAccess")]
 		bool AllowsConstrainedNetworkAccess { get; [NotImplemented] set; }
@@ -8772,24 +11461,28 @@ namespace Foundation {
 		[Export ("HTTPShouldHandleCookies")]
 		bool ShouldHandleCookies { get; }
 
-		[Watch (7, 4), TV (14, 5), iOS (14, 5)]
+		[TV (14, 5), iOS (14, 5)]
 		[MacCatalyst (14, 5)]
 		[Export ("assumesHTTP3Capable")]
 		bool AssumesHttp3Capable { get; [NotImplemented] set; }
 
-		[Watch (8, 0), TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("attribution")]
 		NSURLRequestAttribution Attribution { get; }
 
 		// macOS is documented out of sync with iOS here
-		[Watch (9, 1), TV (16, 1), Mac (13, 0), iOS (16, 1)]
+		[TV (16, 1), Mac (13, 0), iOS (16, 1)]
 		[MacCatalyst (16, 1)]
 		[Export ("requiresDNSSECValidation")]
 		bool RequiresDnsSecValidation { get; }
 
-		[Watch (11, 0), TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Export ("allowsPersistentDNS")]
 		bool AllowsPersistentDns { get; }
+
+		[TV (18, 2), iOS (18, 2), MacCatalyst (18, 2), Mac (15, 2)]
+		[Export ("cookiePartitionIdentifier", ArgumentSemantic.Copy), NullAllowed]
+		string CookiePartitionIdentifier { get; }
 	}
 
 	[BaseType (typeof (NSDictionary))]
@@ -8873,6 +11566,9 @@ namespace Foundation {
 		[Export ("initWithSet:")]
 		NativeHandle Constructor (NSSet other);
 
+		/// <param name="capacity">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithCapacity:")]
 		NativeHandle Constructor (nint capacity);
@@ -8971,38 +11667,51 @@ namespace Foundation {
 		[Export ("allowsCellularAccess")]
 		bool AllowsCellularAccess { get; set; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("allowsExpensiveNetworkAccess")]
 		bool AllowsExpensiveNetworkAccess { get; set; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("allowsConstrainedNetworkAccess")]
 		bool AllowsConstrainedNetworkAccess { get; set; }
 
-		[Watch (7, 4), TV (14, 5), iOS (14, 5)]
+		[TV (14, 5), iOS (14, 5)]
 		[MacCatalyst (14, 5)]
 		[Export ("assumesHTTP3Capable")]
 		bool AssumesHttp3Capable { get; set; }
 
-		[Watch (8, 0), TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("attribution", ArgumentSemantic.Assign)]
 		NSURLRequestAttribution Attribution { get; set; }
 
 		// Documented as 16.0 but did not work until 16.1 - https://github.com/xamarin/maccore/issues/2608 - https://feedbackassistant.apple.com/feedback/10897552
-		[Watch (9, 1), TV (16, 1), Mac (13, 0), iOS (16, 1)]
+		[TV (16, 1), Mac (13, 0), iOS (16, 1)]
 		[MacCatalyst (16, 1)]
 		[Export ("requiresDNSSECValidation")]
 		bool RequiresDnsSecValidation { get; set; }
 
-		[Watch (11, 0), TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Export ("allowsPersistentDNS")]
 		bool AllowsPersistentDns { get; set; }
+
+		[TV (18, 2), iOS (18, 2), MacCatalyst (18, 2), Mac (15, 2)]
+		[Export ("cookiePartitionIdentifier", ArgumentSemantic.Copy), NullAllowed]
+		string CookiePartitionIdentifier { get; set; }
 	}
 
 	[BaseType (typeof (NSObject), Name = "NSURLResponse")]
 	interface NSUrlResponse : NSSecureCoding, NSCopying {
+		/// <param name="url">To be added.</param>
+		/// <param name="mimetype">To be added.</param>
+		/// <param name="expectedContentLength">To be added.</param>
+		/// <param name="textEncodingName">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithURL:MIMEType:expectedContentLength:textEncodingName:")]
 		NativeHandle Constructor (NSUrl url, string mimetype, nint expectedContentLength, [NullAllowed] string textEncodingName);
@@ -9037,40 +11746,43 @@ namespace Foundation {
 		[Export ("delegate", ArgumentSemantic.Weak), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the Foundation.INSStreamDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the Foundation.INSStreamDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		INSStreamDelegate Delegate { get; set; }
 
-#if NET
 		[Abstract]
-#endif
 		[return: NullAllowed]
 		[Protected]
 		[Export ("propertyForKey:")]
 		NSObject GetProperty (NSString key);
 
-#if NET
 		[Abstract]
-#endif
 		[Protected]
 		[Export ("setProperty:forKey:")]
 		bool SetProperty ([NullAllowed] NSObject property, NSString key);
 
-#if NET
 		[Export ("scheduleInRunLoop:forMode:")]
 		void Schedule (NSRunLoop aRunLoop, NSString mode);
 
 		[Export ("removeFromRunLoop:forMode:")]
 		void Unschedule (NSRunLoop aRunLoop, NSString mode);
-#else
-		[Export ("scheduleInRunLoop:forMode:")]
-		void Schedule (NSRunLoop aRunLoop, string mode);
-
-		[Export ("removeFromRunLoop:forMode:")]
-		void Unschedule (NSRunLoop aRunLoop, string mode);
-#endif
+		/// <param name="aRunLoop">To be added.</param>
+		///         <param name="mode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("Schedule (aRunLoop, mode.GetConstant ()!)")]
 		void Schedule (NSRunLoop aRunLoop, NSRunLoopMode mode);
 
+		/// <param name="aRunLoop">To be added.</param>
+		///         <param name="mode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("Unschedule (aRunLoop, mode.GetConstant ()!)")]
 		void Unschedule (NSRunLoop aRunLoop, NSRunLoopMode mode);
 
@@ -9080,85 +11792,191 @@ namespace Foundation {
 		[Export ("streamError")]
 		NSError Error { get; }
 
+		/// <summary>Low-level key: Represents the value associated with the constant NSStreamSocketSecurityLevelKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Advanced, Field ("NSStreamSocketSecurityLevelKey")]
 		NSString SocketSecurityLevelKey { get; }
 
+		/// <summary>Low-level key: Represents the value associated with the constant NSStreamSocketSecurityLevelNone</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Advanced, Field ("NSStreamSocketSecurityLevelNone")]
 		NSString SocketSecurityLevelNone { get; }
 
+		/// <summary>Low-level key: Represents the value associated with the constant NSStreamSocketSecurityLevelSSLv2</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Advanced, Field ("NSStreamSocketSecurityLevelSSLv2")]
 		NSString SocketSecurityLevelSslV2 { get; }
 
+		/// <summary>Low-level key: Represents the value associated with the constant NSStreamSocketSecurityLevelSSLv3</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Advanced, Field ("NSStreamSocketSecurityLevelSSLv3")]
 		NSString SocketSecurityLevelSslV3 { get; }
 
+		/// <summary>Low-level key: Represents the value associated with the constant NSStreamSocketSecurityLevelTLSv1</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Advanced, Field ("NSStreamSocketSecurityLevelTLSv1")]
 		NSString SocketSecurityLevelTlsV1 { get; }
 
+		/// <summary>Low-level key: Represents the value associated with the constant NSStreamSocketSecurityLevelNegotiatedSSL</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Advanced, Field ("NSStreamSocketSecurityLevelNegotiatedSSL")]
 		NSString SocketSecurityLevelNegotiatedSsl { get; }
 
+		/// <summary>Low-level key: Represents the value associated with the constant NSStreamSOCKSProxyConfigurationKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Advanced, Field ("NSStreamSOCKSProxyConfigurationKey")]
 		NSString SocksProxyConfigurationKey { get; }
 
+		/// <summary>Low-level key: Represents the value associated with the constant NSStreamSOCKSProxyHostKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Advanced, Field ("NSStreamSOCKSProxyHostKey")]
 		NSString SocksProxyHostKey { get; }
 
+		/// <summary>Low-level key: Represents the value associated with the constant NSStreamSOCKSProxyPortKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Advanced, Field ("NSStreamSOCKSProxyPortKey")]
 		NSString SocksProxyPortKey { get; }
 
+		/// <summary>Low-level key: Represents the value associated with the constant NSStreamSOCKSProxyVersionKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Advanced, Field ("NSStreamSOCKSProxyVersionKey")]
 		NSString SocksProxyVersionKey { get; }
 
+		/// <summary>Low-level key: Represents the value associated with the constant NSStreamSOCKSProxyUserKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Advanced, Field ("NSStreamSOCKSProxyUserKey")]
 		NSString SocksProxyUserKey { get; }
 
+		/// <summary>Low-level key: Represents the value associated with the constant NSStreamSOCKSProxyPasswordKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Advanced, Field ("NSStreamSOCKSProxyPasswordKey")]
 		NSString SocksProxyPasswordKey { get; }
 
+		/// <summary>Low-level key: Represents the value associated with the constant NSStreamSOCKSProxyVersion4</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Advanced, Field ("NSStreamSOCKSProxyVersion4")]
 		NSString SocksProxyVersion4 { get; }
 
+		/// <summary>Low-level key: Represents the value associated with the constant NSStreamSOCKSProxyVersion5</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Advanced, Field ("NSStreamSOCKSProxyVersion5")]
 		NSString SocksProxyVersion5 { get; }
 
+		/// <summary>Low-level key: Represents the value associated with the constant NSStreamDataWrittenToMemoryStreamKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Advanced, Field ("NSStreamDataWrittenToMemoryStreamKey")]
 		NSString DataWrittenToMemoryStreamKey { get; }
 
+		/// <summary>Low-level key: Represents the value associated with the constant NSStreamFileCurrentOffsetKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Advanced, Field ("NSStreamFileCurrentOffsetKey")]
 		NSString FileCurrentOffsetKey { get; }
 
+		/// <summary>Low-level key: Represents the value associated with the constant NSStreamSocketSSLErrorDomain</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Advanced, Field ("NSStreamSocketSSLErrorDomain")]
 		NSString SocketSslErrorDomain { get; }
 
+		/// <summary>Low-level key: Represents the value associated with the constant NSStreamSOCKSErrorDomain</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Advanced, Field ("NSStreamSOCKSErrorDomain")]
 		NSString SocksErrorDomain { get; }
 
+		/// <summary>The low-level service type that this stream is providing.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>This is the low-level token-based setting for the service type, in general, you can use the strongly typed ServiceType instead.</remarks>
 		[Advanced, Field ("NSStreamNetworkServiceType")]
 		NSString NetworkServiceType { get; }
 
+		/// <summary>Low-level key: Represents the value associated with the constant NSStreamNetworkServiceTypeVoIP</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Advanced, Field ("NSStreamNetworkServiceTypeVoIP")]
 		NSString NetworkServiceTypeVoIP { get; }
 
+		/// <summary>Low-level key: Represents the value associated with the constant NSStreamNetworkServiceTypeVideo</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Advanced, Field ("NSStreamNetworkServiceTypeVideo")]
 		NSString NetworkServiceTypeVideo { get; }
 
+		/// <summary>Low-level key: Represents the value associated with the constant NSStreamNetworkServiceTypeBackground</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		[Advanced, Field ("NSStreamNetworkServiceTypeBackground")]
 		NSString NetworkServiceTypeBackground { get; }
 
+		/// <summary>Low-level key: Represents the value associated with the constant NSStreamNetworkServiceTypeVoice</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Advanced, Field ("NSStreamNetworkServiceTypeVoice")]
 		NSString NetworkServiceTypeVoice { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Advanced]
 		[MacCatalyst (13, 1)]
 		[Field ("NSStreamNetworkServiceTypeCallSignaling")]
 		NSString NetworkServiceTypeCallSignaling { get; }
 
+		/// <param name="bufferSize">To be added.</param>
+		/// <param name="inputStream">To be added.</param>
+		/// <param name="outputStream">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static, Export ("getBoundStreamsWithBufferSize:inputStream:outputStream:")]
 		void GetBoundStreams (nuint bufferSize, out NSInputStream inputStream, out NSOutputStream outputStream);
 
-		[NoWatch]
+		/// <param name="hostname">To be added.</param>
+		/// <param name="port">To be added.</param>
+		/// <param name="inputStream">To be added.</param>
+		/// <param name="outputStream">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static, Export ("getStreamsToHostWithName:port:inputStream:outputStream:")]
 		void GetStreamsToHost (string hostname, nint port, out NSInputStream inputStream, out NSOutputStream outputStream);
@@ -9166,11 +11984,24 @@ namespace Foundation {
 
 	interface INSStreamDelegate { }
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Foundation.NSStreamDelegate" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Foundation.NSStreamDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Foundation.NSStreamDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="Foundation.NSStreamDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[BaseType (typeof (NSObject))]
 	[Model]
 	[Protocol]
 	interface NSStreamDelegate {
-		[Export ("stream:handleEvent:"), EventArgs ("NSStream"), EventName ("OnEvent")]
+		/// <param name="theStream">To be added.</param>
+		/// <param name="streamEvent">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
+		[Export ("stream:handleEvent:"), EventArgs ("NSStream", XmlDocs = """
+			<summary>To be added.</summary>
+			<remarks>To be added.</remarks>
+			"""), EventName ("OnEvent")]
 		void HandleEvent (NSStream theStream, NSStreamEvent streamEvent);
 	}
 
@@ -9184,37 +12015,55 @@ namespace Foundation {
 		[Export ("initWithData:encoding:")]
 		NativeHandle Constructor (NSData data, NSStringEncoding encoding);
 
+		/// <param name="attributedStringAttributes">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Bind ("sizeWithAttributes:")]
 		CGSize StringSize ([NullAllowed] NSDictionary attributedStringAttributes);
 
+		/// <param name="size">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="attributes">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Bind ("boundingRectWithSize:options:attributes:")]
 		CGRect BoundingRectWithSize (CGSize size, NSStringDrawingOptions options, NSDictionary attributes);
 
+		/// <param name="point">To be added.</param>
+		/// <param name="attributes">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Bind ("drawAtPoint:withAttributes:")]
 		void DrawString (CGPoint point, NSDictionary attributes);
 
+		/// <param name="rect">To be added.</param>
+		/// <param name="attributes">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Bind ("drawInRect:withAttributes:")]
 		void DrawString (CGRect rect, NSDictionary attributes);
 
+		/// <param name="rect">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="attributes">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Bind ("drawWithRect:options:attributes:")]
 		void DrawString (CGRect rect, NSStringDrawingOptions options, NSDictionary attributes);
@@ -9226,6 +12075,10 @@ namespace Foundation {
 		[Export ("length")]
 		nint Length { get; }
 
+		/// <param name="handle">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Sealed]
 		[Export ("isEqualToString:")]
 		bool IsEqualTo (IntPtr handle);
@@ -9257,6 +12110,9 @@ namespace Foundation {
 		[Export ("pathComponents")]
 		string [] PathComponents { get; }
 
+		/// <summary>Whether this is an absolute path.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Export ("isAbsolutePath")]
 		bool IsAbsolutePath { get; }
 
@@ -9317,6 +12173,13 @@ namespace Foundation {
 		[Static, Export ("stringEncodingForData:encodingOptions:convertedString:usedLossyConversion:")]
 		nuint DetectStringEncoding (NSData rawData, NSDictionary options, out string convertedString, out bool usedLossyConversion);
 
+		/// <param name="rawData">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="convertedString">To be added.</param>
+		/// <param name="usedLossyConversion">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static, Wrap ("DetectStringEncoding(rawData,options.GetDictionary ()!, out convertedString, out usedLossyConversion)")]
 		nuint DetectStringEncoding (NSData rawData, EncodingDetectionOptions options, out string convertedString, out bool usedLossyConversion);
@@ -9352,9 +12215,19 @@ namespace Foundation {
 		[Export ("lineRangeForRange:")]
 		NSRange LineRangeForRange (NSRange range);
 
+		/// <param name="startPtr">To be added.</param>
+		/// <param name="lineEndPtr">To be added.</param>
+		/// <param name="contentsEndPtr">To be added.</param>
+		/// <param name="range">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("getLineStart:end:contentsEnd:forRange:")]
 		void GetLineStart (out nuint startPtr, out nuint lineEndPtr, out nuint contentsEndPtr, NSRange range);
 
+		/// <param name="width">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("variantFittingPresentationWidth:")]
 		NSString GetVariantFittingPresentationWidth (nint width);
@@ -9391,12 +12264,23 @@ namespace Foundation {
 		bool HasSuffix (NSString suffix);
 
 		// UNUserNotificationCenterSupport category
+		/// <param name="key">To be added.</param>
+		/// <param name="arguments">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("localizedUserNotificationStringForKey:arguments:")]
 		NSString GetLocalizedUserNotificationString (NSString key, [Params][NullAllowed] NSObject [] arguments);
 
+		/// <param name="paragraphStartPosition">To be added.</param>
+		/// <param name="paragraphEndPosition">To be added.</param>
+		/// <param name="contentsEndPosition">To be added.</param>
+		/// <param name="range">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("getParagraphStart:end:contentsEnd:forRange:")]
 		void GetParagraphPositions (out nuint paragraphStartPosition, out nuint paragraphEndPosition, out nuint contentsEndPosition, NSRange range);
 
@@ -9429,23 +12313,55 @@ namespace Foundation {
 		new string [] WritableTypeIdentifiers { get; }
 	}
 
+	/// <summary>A <see cref="Foundation.DictionaryContainer" /> containing hints for detecting the encoding of an <see cref="Foundation.NSString" />.</summary>
+	/// <remarks>To be added.</remarks>
 	[StrongDictionary ("NSString")]
 	interface EncodingDetectionOptions {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		NSStringEncoding [] EncodingDetectionSuggestedEncodings { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		NSStringEncoding [] EncodingDetectionDisallowedEncodings { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		bool EncodingDetectionUseOnlySuggestedEncodings { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		bool EncodingDetectionAllowLossy { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		bool EncodingDetectionFromWindows { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		NSString EncodingDetectionLossySubstitution { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		NSString EncodingDetectionLikelyLanguage { get; set; }
 	}
 
 	[BaseType (typeof (NSString))]
 	// hack: it seems that generator.cs can't track NSCoding correctly ? maybe because the type is named NSString2 at that time
 	interface NSMutableString : NSCoding {
+		/// <param name="capacity">Initial capacity for the mutable string.</param>
+		/// <summary>Creates a new mutable string with the specified initial capacity.</summary>
+		/// <remarks>
+		///         </remarks>
 		[Export ("initWithCapacity:")]
 		NativeHandle Constructor (nint capacity);
 
+		/// <param name="str">String to insert.</param>
+		/// <param name="index">Position in the mutable string where the string will be inserted.</param>
+		/// <summary>Inserts a string into the mutable string.</summary>
+		/// <remarks>
+		///         </remarks>
 		[PreSnippet ("Check (index);", Optimizable = true)]
 		[Export ("insertString:atIndex:")]
 		void Insert (NSString str, nint index);
@@ -9469,6 +12385,13 @@ namespace Foundation {
 		[Export ("applyTransform:reverse:range:updatedRange:")]
 		bool ApplyTransform (NSString transform, bool reverse, NSRange range, out NSRange resultingRange);
 
+		/// <param name="transform">To be added.</param>
+		///         <param name="reverse">To be added.</param>
+		///         <param name="range">To be added.</param>
+		///         <param name="resultingRange">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("ApplyTransform (transform.GetConstant ()!, reverse, range, out resultingRange)")]
 		bool ApplyTransform (NSStringTransform transform, bool reverse, NSRange range, out NSRange resultingRange);
@@ -9477,29 +12400,53 @@ namespace Foundation {
 		void ReplaceCharactersInRange (NSRange range, NSString aString);
 	}
 
+	/// <summary>Defines static methods for URL encoding and escaping.</summary>
+	/// <remarks>To be added.</remarks>
 	[Category, BaseType (typeof (NSString))]
 	partial interface NSUrlUtilities_NSString {
+		/// <param name="allowedCharacters">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("stringByAddingPercentEncodingWithAllowedCharacters:")]
 		NSString CreateStringByAddingPercentEncoding (NSCharacterSet allowedCharacters);
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("stringByRemovingPercentEncoding")]
 		NSString CreateStringByRemovingPercentEncoding ();
 
+		/// <param name="enc">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("stringByAddingPercentEscapesUsingEncoding:")]
 		NSString CreateStringByAddingPercentEscapes (NSStringEncoding enc);
 
+		/// <param name="enc">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("stringByReplacingPercentEscapesUsingEncoding:")]
 		NSString CreateStringByReplacingPercentEscapes (NSStringEncoding enc);
 	}
 
 	// This comes from UIKit.framework/Headers/NSStringDrawing.h
+	/// <include file="../docs/api/Foundation/NSStringDrawingContext.xml" path="/Documentation/Docs[@DocId='T:Foundation.NSStringDrawingContext']/*" />
 	[NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface NSStringDrawingContext {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("minimumScaleFactor")]
 		nfloat MinimumScaleFactor { get; set; }
 
+		/// <summary>Desired tracking adjustement (minimum space to maintain between characteres) desired to be used during the drawing operation.</summary>
+		/// <value>The value is specified in points, typically a value between -0.5f and 0.</value>
+		/// <remarks>Zero means that standard spacing should be used.  Use negative values to adjust the tracking, for example -0.5f allows characters to be closer together by half a point. </remarks>
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 7, 0)]
 		[NoMacCatalyst]
@@ -9507,9 +12454,18 @@ namespace Foundation {
 		[Export ("minimumTrackingAdjustment")]
 		nfloat MinimumTrackingAdjustment { get; set; }
 
+		/// <summary>Actual scale factor used during the drawing operation.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		[Export ("actualScaleFactor")]
 		nfloat ActualScaleFactor { get; }
 
+		/// <summary>Developers should not use this deprecated property. </summary>
+		///         <value>The value is specified in points.</value>
+		///         <remarks>
+		///         </remarks>
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 7, 0)]
 		[MacCatalyst (13, 1)]
@@ -9517,6 +12473,10 @@ namespace Foundation {
 		[Export ("actualTrackingAdjustment")]
 		nfloat ActualTrackingAdjustment { get; }
 
+		/// <summary>Boundaries used by the drawing operation.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>This value is updated after a drawing operation.</remarks>
 		[Export ("totalBounds")]
 		CGRect TotalBounds { get; }
 	}
@@ -9550,7 +12510,6 @@ namespace Foundation {
 		[Export ("inputStreamWithURL:")]
 		NSInputStream FromUrl (NSUrl url);
 
-#if NET
 		[return: NullAllowed]
 		[Protected]
 		[Export ("propertyForKey:"), Override]
@@ -9559,36 +12518,62 @@ namespace Foundation {
 		[Protected]
 		[Export ("setProperty:forKey:"), Override]
 		bool SetProperty ([NullAllowed] NSObject property, NSString key);
-
-#endif
-
 	}
 
-	delegate bool NSEnumerateLinguisticTagsEnumerator (NSString tag, NSRange tokenRange, NSRange sentenceRange, ref bool stop);
+	/// <param name="tag">To be added.</param>
+	/// <param name="tokenRange">To be added.</param>
+	/// <param name="sentenceRange">To be added.</param>
+	/// <param name="stop">To be added.</param>
+	/// <summary>An enumerator to pass to methods in the <see cref="Foundation.NSLinguisticAnalysis" /> class.</summary>
+	/// <returns>To be added.</returns>
+	/// <remarks>To be added.</remarks>
+	delegate bool NSEnumerateLinguisticTagsEnumerator ([NullAllowed] NSString tag, NSRange tokenRange, NSRange sentenceRange, ref bool stop);
 
 	[Category]
 	[BaseType (typeof (NSString))]
 	interface NSLinguisticAnalysis {
-#if NET
+		/// <param name="range">To be added.</param>
+		/// <param name="scheme">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="orthography">To be added.</param>
+		/// <param name="tokenRanges">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[return: BindAs (typeof (NSLinguisticTag []))]
-#else
-		[return: BindAs (typeof (NSLinguisticTagUnit []))]
-#endif
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		[Export ("linguisticTagsInRange:scheme:options:orthography:tokenRanges:")]
 		NSString [] GetLinguisticTags (NSRange range, NSString scheme, NSLinguisticTaggerOptions options, [NullAllowed] NSOrthography orthography, [NullAllowed] out NSValue [] tokenRanges);
 
+		/// <param name="range">To be added.</param>
+		/// <param name="scheme">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="orthography">To be added.</param>
+		/// <param name="tokenRanges">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("GetLinguisticTags (This, range, scheme.GetConstant ()!, options, orthography, out tokenRanges)")]
-#if NET
-		NSLinguisticTag[] GetLinguisticTags (NSRange range, NSLinguisticTagScheme scheme, NSLinguisticTaggerOptions options, [NullAllowed] NSOrthography orthography, [NullAllowed] out NSValue[] tokenRanges);
-#else
-		NSLinguisticTagUnit [] GetLinguisticTags (NSRange range, NSLinguisticTagScheme scheme, NSLinguisticTaggerOptions options, [NullAllowed] NSOrthography orthography, [NullAllowed] out NSValue [] tokenRanges);
-#endif
+		NSLinguisticTag [] GetLinguisticTags (NSRange range, NSLinguisticTagScheme scheme, NSLinguisticTaggerOptions options, [NullAllowed] NSOrthography orthography, [NullAllowed] out NSValue [] tokenRanges);
 
+		/// <param name="range">To be added.</param>
+		/// <param name="scheme">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="orthography">To be added.</param>
+		/// <param name="handler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		[Export ("enumerateLinguisticTagsInRange:scheme:options:orthography:usingBlock:")]
 		void EnumerateLinguisticTags (NSRange range, NSString scheme, NSLinguisticTaggerOptions options, [NullAllowed] NSOrthography orthography, NSEnumerateLinguisticTagsEnumerator handler);
 
+		/// <param name="range">To be added.</param>
+		/// <param name="scheme">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="orthography">To be added.</param>
+		/// <param name="handler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("EnumerateLinguisticTags (This, range, scheme.GetConstant ()!, options, orthography, handler)")]
 		void EnumerateLinguisticTags (NSRange range, NSLinguisticTagScheme scheme, NSLinguisticTaggerOptions options, [NullAllowed] NSOrthography orthography, NSEnumerateLinguisticTagsEnumerator handler);
 	}
@@ -9714,122 +12699,38 @@ namespace Foundation {
 		NSString ChangeNotificationIsPriorKey { get; }
 
 		// Cocoa Bindings added by Kenneth J. Pouncey 2010/11/17
-#if !NET
-		[Sealed]
-#endif
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Export ("valueClassForBinding:")]
 		Class GetBindingValueClass (NSString binding);
 
-#if !NET
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
-		[NoTV]
-		[Obsolete ("Use 'Bind (NSString binding, NSObject observable, string keyPath, [NullAllowed] NSDictionary options)' instead.")]
-		[Export ("bind:toObject:withKeyPath:options:")]
-		void Bind (string binding, NSObject observable, string keyPath, [NullAllowed] NSDictionary options);
-
-		[NoiOS]
-		[NoMacCatalyst]
-		[NoWatch]
-		[NoTV]
-		[Obsolete ("Use 'Unbind (NSString binding)' instead.")]
-		[Export ("unbind:")]
-		void Unbind (string binding);
-
-		[NoiOS]
-		[NoMacCatalyst]
-		[NoWatch]
-		[NoTV]
-		[Obsolete ("Use 'GetBindingValueClass (NSString binding)' instead.")]
-		[Export ("valueClassForBinding:")]
-		Class BindingValueClass (string binding);
-
-		[NoiOS]
-		[NoMacCatalyst]
-		[NoWatch]
-		[NoTV]
-		[Obsolete ("Use 'GetBindingInfo (NSString binding)' instead.")]
-		[Export ("infoForBinding:")]
-		NSDictionary BindingInfo (string binding);
-
-		[NoiOS]
-		[NoMacCatalyst]
-		[NoWatch]
-		[NoTV]
-		[Obsolete ("Use 'GetBindingOptionDescriptions (NSString aBinding)' instead.")]
-		[Export ("optionDescriptionsForBinding:")]
-		NSObject [] BindingOptionDescriptions (string aBinding);
-
-		[Static]
-		[NoiOS]
-		[NoMacCatalyst]
-		[NoWatch]
-		[NoTV]
-		[Wrap ("GetDefaultPlaceholder (marker, (NSString) binding)")]
-		NSObject GetDefaultPlaceholder (NSObject marker, string binding);
-
-		[Static]
-		[NoiOS]
-		[NoMacCatalyst]
-		[NoWatch]
-		[NoTV]
-		[Obsolete ("Use 'SetDefaultPlaceholder (NSObject placeholder, NSObject marker, NSString binding)' instead.")]
-		[Wrap ("SetDefaultPlaceholder (placeholder, marker, (NSString) binding)")]
-		void SetDefaultPlaceholder (NSObject placeholder, NSObject marker, string binding);
-
-		[NoiOS]
-		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Export ("exposedBindings")]
-		NSString [] ExposedBindings ();
-#else
-		[NoiOS][NoMacCatalyst][NoWatch][NoTV]
-		[Export ("exposedBindings")]
-		NSString[] ExposedBindings { get; }
-#endif
+		NSString [] ExposedBindings { get; }
 
-#if !NET
-		[Sealed]
-#endif
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Export ("bind:toObject:withKeyPath:options:")]
 		void Bind (NSString binding, NSObject observable, string keyPath, [NullAllowed] NSDictionary options);
 
-#if !NET
-		[Sealed]
-#endif
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Export ("unbind:")]
 		void Unbind (NSString binding);
 
-#if !NET
-		[Sealed]
-#endif
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Export ("infoForBinding:")]
 		NSDictionary GetBindingInfo (NSString binding);
 
-#if !NET
-		[Sealed]
-#endif
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Export ("optionDescriptionsForBinding:")]
 		NSObject [] GetBindingOptionDescriptions (NSString aBinding);
@@ -9837,7 +12738,6 @@ namespace Foundation {
 		// NSPlaceholders (informal) protocol
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Deprecated (PlatformName.MacOSX, 10, 15)]
 		[Static]
@@ -9846,7 +12746,6 @@ namespace Foundation {
 
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Deprecated (PlatformName.MacOSX, 10, 15)]
 		[Static]
@@ -9855,7 +12754,6 @@ namespace Foundation {
 
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Deprecated (PlatformName.MacOSX, message: "Now on 'NSEditor' protocol.")]
 		[Export ("objectDidEndEditing:")]
@@ -9863,7 +12761,6 @@ namespace Foundation {
 
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Deprecated (PlatformName.MacOSX, message: "Now on 'NSEditor' protocol.")]
 		[Export ("commitEditing")]
@@ -9871,7 +12768,6 @@ namespace Foundation {
 
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Deprecated (PlatformName.MacOSX, message: "Now on 'NSEditor' protocol.")]
 		[Export ("commitEditingWithDelegate:didCommitSelector:contextInfo:")]
@@ -9911,12 +12807,10 @@ namespace Foundation {
 		[Static, Export ("cancelPreviousPerformRequestsWithTarget:selector:object:")]
 		void CancelPreviousPerformRequest (NSObject aTarget, Selector selector, [NullAllowed] NSObject argument);
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Export ("prepareForInterfaceBuilder")]
 		void PrepareForInterfaceBuilder ();
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 #if MONOMAC
 		// comes from NSNibAwaking category and does not requires calling super
@@ -9926,22 +12820,22 @@ namespace Foundation {
 		[Export ("awakeFromNib")]
 		void AwakeFromNib ();
 
-		[NoWatch, TV (13, 0), iOS (13, 0), NoMac]
+		[TV (13, 0), iOS (13, 0), NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("accessibilityRespondsToUserInteraction")]
 		bool AccessibilityRespondsToUserInteraction { get; set; }
 
-		[NoWatch, TV (13, 0), iOS (13, 0), NoMac]
+		[TV (13, 0), iOS (13, 0), NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("accessibilityUserInputLabels", ArgumentSemantic.Strong)]
 		string [] AccessibilityUserInputLabels { get; set; }
 
-		[NoWatch, TV (13, 0), iOS (13, 0), NoMac]
+		[TV (13, 0), iOS (13, 0), NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("accessibilityAttributedUserInputLabels", ArgumentSemantic.Copy)]
 		NSAttributedString [] AccessibilityAttributedUserInputLabels { get; set; }
 
-		[NoWatch, TV (13, 0), iOS (13, 0), NoMac]
+		[TV (13, 0), iOS (13, 0), NoMac]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("accessibilityTextualContext", ArgumentSemantic.Strong)]
 		string AccessibilityTextualContext { get; set; }
@@ -9949,19 +12843,27 @@ namespace Foundation {
 
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	[NoWatch]
 	[NoTV]
 	[NoiOS]
 	[NoMacCatalyst]
 	interface NSBindingSelectionMarker : NSCopying {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("multipleValuesSelectionMarker", ArgumentSemantic.Strong)]
 		NSBindingSelectionMarker MultipleValuesSelectionMarker { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("noSelectionMarker", ArgumentSemantic.Strong)]
 		NSBindingSelectionMarker NoSelectionMarker { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("notApplicableSelectionMarker", ArgumentSemantic.Strong)]
 		NSBindingSelectionMarker NotApplicableSelectionMarker { get; }
@@ -9978,9 +12880,14 @@ namespace Foundation {
 		NSObject GetDefaultPlaceholder ([NullAllowed] NSBindingSelectionMarker marker, Class objectClass, string binding);
 	}
 
+	/// <summary>Base-level object protocol required to be considered a first class Objective-C object.</summary>
+	/// <remarks>To be added.</remarks>
 	[Protocol (Name = "NSObject")] // exists both as a type and a protocol in ObjC, Swift uses NSObjectProtocol
 	interface NSObjectProtocol {
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("description")]
 		string Description { get; }
@@ -9988,6 +12895,9 @@ namespace Foundation {
 		[Export ("debugDescription")]
 		string DebugDescription { get; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		[Export ("superclass")]
@@ -9995,49 +12905,88 @@ namespace Foundation {
 
 		// defined multiple times (method, property and even static), one (not static) is required
 		// and that match Apple's documentation
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		[Export ("hash")]
 		nuint GetNativeHash ();
 
+		/// <param name="anObject">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		[Export ("isEqual:")]
 		bool IsEqual ([NullAllowed] NSObject anObject);
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		[Export ("class")]
 		Class Class { get; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		[Export ("self")]
 		[Transient]
 		NSObject Self { get; }
 
+		/// <param name="aSelector">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("performSelector:")]
 		NSObject PerformSelector (Selector aSelector);
 
+		/// <param name="aSelector">To be added.</param>
+		/// <param name="anObject">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("performSelector:withObject:")]
 		NSObject PerformSelector (Selector aSelector, [NullAllowed] NSObject anObject);
 
+		/// <param name="aSelector">To be added.</param>
+		/// <param name="object1">To be added.</param>
+		/// <param name="object2">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("performSelector:withObject:withObject:")]
 		NSObject PerformSelector (Selector aSelector, [NullAllowed] NSObject object1, [NullAllowed] NSObject object2);
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		[Export ("isProxy")]
 		bool IsProxy { get; }
 
+		/// <param name="aClass">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		[Export ("isKindOfClass:")]
 		bool IsKindOfClass ([NullAllowed] Class aClass);
 
+		/// <param name="aClass">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		[Export ("isMemberOfClass:")]
@@ -10048,30 +12997,48 @@ namespace Foundation {
 		[Export ("conformsToProtocol:")]
 		bool ConformsToProtocol ([NullAllowed] NativeHandle /* Protocol */ aProtocol);
 
+		/// <param name="sel">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		[Export ("respondsToSelector:")]
 		bool RespondsToSelector ([NullAllowed] Selector sel);
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		[Export ("retain")]
 		NSObject DangerousRetain ();
 
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		[Export ("release")]
 		void DangerousRelease ();
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		[Export ("autorelease")]
 		NSObject DangerousAutorelease ();
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("retainCount")]
 		nuint RetainCount { get; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		[Export ("zone")]
@@ -10086,21 +13053,36 @@ namespace Foundation {
 		[Export ("main")]
 		void Main ();
 
+		/// <summary>Whether this NSOperation has been cancelled.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isCancelled")]
 		bool IsCancelled { get; }
 
 		[Export ("cancel")]
 		void Cancel ();
 
+		/// <summary>Whether this operation is currently executing.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isExecuting")]
 		bool IsExecuting { get; }
 
+		/// <summary>Whether this operation is done executing.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isFinished")]
 		bool IsFinished { get; }
 
+		/// <summary>Whether this operation runs asynchronously.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isConcurrent")]
 		bool IsConcurrent { get; }
 
+		/// <summary>Whether this operation can be performed now.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isReady")]
 		bool IsReady { get; }
 
@@ -10119,12 +13101,12 @@ namespace Foundation {
 		[Export ("completionBlock", ArgumentSemantic.Copy)]
 		Action CompletionBlock { get; set; }
 
+		/// <summary>Blocks the current thread until this operation finishes.</summary>
 		[Export ("waitUntilFinished")]
 		void WaitUntilFinished ();
 
 		[Export ("threadPriority")]
 		[Deprecated (PlatformName.iOS, 8, 0)]
-		[Deprecated (PlatformName.WatchOS, 2, 0)]
 		[Deprecated (PlatformName.TvOS, 9, 0)]
 		[Deprecated (PlatformName.MacOSX, 10, 10)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
@@ -10134,6 +13116,9 @@ namespace Foundation {
 		[Export ("queuePriority")]
 		NSOperationQueuePriority QueuePriority { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("asynchronous")]
 		bool Asynchronous { [Bind ("isAsynchronous")] get; }
 
@@ -10176,7 +13161,6 @@ namespace Foundation {
 
 		[Deprecated (PlatformName.MacOSX, 10, 15, 0, message: "This API should not be used as it is subject to race conditions. If synchronization is needed use 'AddBarrier' instead.")]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "This API should not be used as it is subject to race conditions. If synchronization is needed use 'AddBarrier' instead.")]
-		[Deprecated (PlatformName.WatchOS, 6, 0, message: "This API should not be used as it is subject to race conditions. If synchronization is needed use 'AddBarrier' instead.")]
 		[Deprecated (PlatformName.TvOS, 13, 0, message: "This API should not be used as it is subject to race conditions. If synchronization is needed use 'AddBarrier' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "This API should not be used as it is subject to race conditions. If synchronization is needed use 'AddBarrier' instead.")]
 		[Export ("operations")]
@@ -10184,13 +13168,12 @@ namespace Foundation {
 
 		[Deprecated (PlatformName.MacOSX, 10, 15)]
 		[Deprecated (PlatformName.iOS, 13, 0)]
-		[Deprecated (PlatformName.WatchOS, 6, 0)]
 		[Deprecated (PlatformName.TvOS, 13, 0)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 		[Export ("operationCount")]
 		nint OperationCount { get; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("addBarrierBlock:")]
 		void AddBarrier (Action barrier);
@@ -10217,6 +13200,9 @@ namespace Foundation {
 		[Export ("maxConcurrentOperationCount")]
 		nint MaxConcurrentOperationCount { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("suspended")]
 		bool Suspended { [Bind ("isSuspended")] get; set; }
 
@@ -10325,40 +13311,40 @@ namespace Foundation {
 		[Export ("reversedOrderedSet")]
 		NSOrderedSet GetReverseOrderedSet ();
 
-#if false // https://github.com/xamarin/xamarin-macios/issues/15577
-		[Watch (6,0), TV (13,0), iOS (13,0)]
+#if false // https://github.com/dotnet/macios/issues/15577
+		[TV (13,0), iOS (13,0)]
 		[Wrap ("Runtime.GetNSObject <NSOrderedCollectionDifference> (_GetDifference (other, options))")]
 		[return: NullAllowed]
 		NSOrderedCollectionDifference GetDifference (NSOrderedSet other, NSOrderedCollectionDifferenceCalculationOptions options);
 		
 		[Internal]
-		[Watch (6,0), TV (13,0), iOS (13,0)]
+		[TV (13,0), iOS (13,0)]
 		[Export ("differenceFromOrderedSet:withOptions:")]
 		IntPtr _GetDifference (NSOrderedSet other, NSOrderedCollectionDifferenceCalculationOptions options);
 
-		[Watch (6,0), TV (13,0), iOS (13,0)]
+		[TV (13,0), iOS (13,0)]
 		[Wrap ("Runtime.GetNSObject <NSOrderedCollectionDifference> (_GetDifference (other))")]
 		[return: NullAllowed]
 		NSOrderedCollectionDifference GetDifference (NSOrderedSet other);
 		
 		[Internal]
-		[Watch (6,0), TV (13,0), iOS (13,0)]
+		[TV (13,0), iOS (13,0)]
 		[Export ("differenceFromOrderedSet:")]
 		IntPtr _GetDifference (NSOrderedSet other);
 
-		[Watch (6,0), TV (13,0), iOS (13,0)]
+		[TV (13,0), iOS (13,0)]
 		[Wrap ("Runtime.GetNSObject <NSOrderedSet> (_GetOrderedSet (difference))")]
 		[return: NullAllowed]
 		NSOrderedSet GetOrderedSet (NSOrderedCollectionDifference difference);
 		
 		[Internal]
-		[Watch (6,0), TV (13,0), iOS (13,0)]
+		[TV (13,0), iOS (13,0)]
 		[Export ("orderedSetByApplyingDifference:")]
 		[return: NullAllowed]
 		IntPtr _GetOrderedSet (NSOrderedCollectionDifference difference);
 
 		[Internal]
-		[Watch (6,0), TV (13,0), iOS (13,0)]
+		[TV (13,0), iOS (13,0)]
 		[Export ("differenceFromOrderedSet:withOptions:usingEquivalenceTest:")]
 		/* NSOrderedCollectionDifference<NSObject>*/ IntPtr _GetDifference (NSOrderedSet other, NSOrderedCollectionDifferenceCalculationOptions options, /* Func<NSObject, NSObject, bool> */ ref BlockLiteral block);
 #endif
@@ -10378,6 +13364,9 @@ namespace Foundation {
 		[Export ("initWithOrderedSet:")]
 		NativeHandle Constructor (NSOrderedSet source);
 
+		/// <param name="capacity">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithCapacity:")]
 		NativeHandle Constructor (nint capacity);
@@ -10402,9 +13391,16 @@ namespace Foundation {
 		[Export ("insertObject:atIndex:")]
 		void _Insert (IntPtr obj, nint atIndex);
 
+		/// <param name="obj">To be added.</param>
+		/// <param name="atIndex">To be added.</param>
+		/// <summary>Inserts the specified object at the specified index.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("insertObject:atIndex:")]
 		void Insert (NSObject obj, nint atIndex);
 
+		/// <param name="index">To be added.</param>
+		/// <summary>Removes the object at the specified index.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("removeObjectAtIndex:")]
 		void Remove (nint index);
 
@@ -10413,6 +13409,10 @@ namespace Foundation {
 		[Export ("replaceObjectAtIndex:withObject:")]
 		void _Replace (nint objectAtIndex, IntPtr newObject);
 
+		/// <param name="objectAtIndex">To be added.</param>
+		/// <param name="newObject">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("replaceObjectAtIndex:withObject:")]
 		void Replace (nint objectAtIndex, NSObject newObject);
 
@@ -10443,9 +13443,17 @@ namespace Foundation {
 		[Export ("removeObjectsAtIndexes:")]
 		void RemoveObjects (NSIndexSet indexSet);
 
+		/// <param name="first">To be added.</param>
+		/// <param name="second">To be added.</param>
+		/// <summary>Exchanges the objects at the specified indices.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("exchangeObjectAtIndex:withObjectAtIndex:")]
 		void ExchangeObject (nint first, nint second);
 
+		/// <param name="indexSet">To be added.</param>
+		/// <param name="destination">To be added.</param>
+		/// <summary>Moves the objects currently at the specified indices so that they start at the specified destination index.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("moveObjectsAtIndexes:toIndex:")]
 		void MoveObjects (NSIndexSet indexSet, nint destination);
 
@@ -10454,6 +13462,10 @@ namespace Foundation {
 		[Export ("setObject:atIndex:")]
 		void _SetObject (IntPtr obj, nint index);
 
+		/// <param name="obj">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <summary>Appends or replaces the object at the specified index.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("setObject:atIndex:")]
 		void SetObject (NSObject obj, nint index);
 
@@ -10502,14 +13514,14 @@ namespace Foundation {
 		[Export ("sortRange:options:usingComparator:")]
 		void SortRange (NSRange range, NSSortOptions sortOptions, NSComparator comparator);
 
-#if false // https://github.com/xamarin/xamarin-macios/issues/15577
+#if false // https://github.com/dotnet/macios/issues/15577
 		[Internal]
-		[Watch (6,0), TV (13,0), iOS (13,0)]
+		[TV (13,0), iOS (13,0)]
 		[Export ("applyDifference:")]
 		void _ApplyDifference (IntPtr difference);
 
 		[Sealed]
-		[Watch (6,0), TV (13,0), iOS (13,0)]
+		[TV (13,0), iOS (13,0)]
 		[Export ("applyDifference:")]
 		void ApplyDifference (NSOrderedCollectionDifference<NSObject> difference);
 #endif
@@ -10573,7 +13585,6 @@ namespace Foundation {
 		[Export ("outputStreamToFileAtPath:append:")]
 		NSOutputStream CreateFile (string path, bool shouldAppend);
 
-#if NET
 		[return: NullAllowed]
 		[Protected]
 		[Export ("propertyForKey:"), Override]
@@ -10582,8 +13593,6 @@ namespace Foundation {
 		[Protected]
 		[Export ("setProperty:forKey:"), Override]
 		bool SetProperty ([NullAllowed] NSObject property, NSString key);
-
-#endif
 	}
 
 	[BaseType (typeof (NSObject), Name = "NSHTTPCookie")]
@@ -10614,6 +13623,9 @@ namespace Foundation {
 		[Export ("expiresDate")]
 		NSDate ExpiresDate { get; }
 
+		/// <summary>Whether this cookie should be discarded at the end of the session, ignoring the expiration date.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isSessionOnly")]
 		bool IsSessionOnly { get; }
 
@@ -10626,9 +13638,15 @@ namespace Foundation {
 		[Export ("path")]
 		string Path { get; }
 
+		/// <summary>Whether this cookie should only be sent over secure channels.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isSecure")]
 		bool IsSecure { get; }
 
+		/// <summary>Whether this cookie should only be sent to HTTP servers per RFC 2965.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isHTTPOnly")]
 		bool IsHttpOnly { get; }
 
@@ -10641,64 +13659,107 @@ namespace Foundation {
 		[Export ("portList")]
 		NSNumber [] PortList { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSHTTPCookieName")]
 		NSString KeyName { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSHTTPCookieValue")]
 		NSString KeyValue { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSHTTPCookieOriginURL")]
 		NSString KeyOriginUrl { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSHTTPCookieVersion")]
 		NSString KeyVersion { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSHTTPCookieDomain")]
 		NSString KeyDomain { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSHTTPCookiePath")]
 		NSString KeyPath { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSHTTPCookieSecure")]
 		NSString KeySecure { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSHTTPCookieExpires")]
 		NSString KeyExpires { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSHTTPCookieComment")]
 		NSString KeyComment { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSHTTPCookieCommentURL")]
 		NSString KeyCommentUrl { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSHTTPCookieDiscard")]
 		NSString KeyDiscard { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSHTTPCookieMaximumAge")]
 		NSString KeyMaximumAge { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSHTTPCookiePort")]
 		NSString KeyPort { get; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("NSHTTPCookieSameSitePolicy")]
 		NSString KeySameSitePolicy { get; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("NSHTTPCookieSameSiteLax")]
 		NSString KeySameSiteLax { get; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("NSHTTPCookieSameSiteStrict")]
 		NSString KeySameSiteStrict { get; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("sameSitePolicy")]
 		NSString SameSitePolicy { get; }
+
+		[TV (18, 2), iOS (18, 2), MacCatalyst (18, 2), Mac (15, 2)]
+		[Field ("NSHTTPCookieSetByJavaScript")]
+		NSString KeySetByJavaScript { get; }
 	}
 
 	[BaseType (typeof (NSObject), Name = "NSHTTPCookieStorage")]
@@ -10740,7 +13801,17 @@ namespace Foundation {
 		NSHttpCookieStorage GetSharedCookieStorage (string groupContainerIdentifier);
 
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="task">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous GetCookiesForTask operation.  The value of the TResult parameter is of type System.Action&lt;Foundation.NSHttpCookie[]&gt;.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The GetCookiesForTaskAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("getCookiesForTask:completionHandler:")]
 		void GetCookiesForTask (NSUrlSessionTask task, Action<NSHttpCookie []> completionHandler);
 
@@ -10748,10 +13819,12 @@ namespace Foundation {
 		[Export ("storeCookies:forTask:")]
 		void StoreCookies (NSHttpCookie [] cookies, NSUrlSessionTask task);
 
+		/// <include file="../docs/api/Foundation/NSHttpCookieStorage.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSHttpCookieStorage.CookiesChangedNotification']/*" />
 		[Notification]
 		[Field ("NSHTTPCookieManagerAcceptPolicyChangedNotification")]
 		NSString CookiesChangedNotification { get; }
 
+		/// <include file="../docs/api/Foundation/NSHttpCookieStorage.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSHttpCookieStorage.AcceptPolicyChangedNotification']/*" />
 		[Notification]
 		[Field ("NSHTTPCookieManagerCookiesChangedNotification")]
 		NSString AcceptPolicyChangedNotification { get; }
@@ -10759,9 +13832,24 @@ namespace Foundation {
 
 	[BaseType (typeof (NSUrlResponse), Name = "NSHTTPURLResponse")]
 	interface NSHttpUrlResponse {
+		/// <param name="url">To be added.</param>
+		/// <param name="mimetype">To be added.</param>
+		/// <param name="expectedContentLength">To be added.</param>
+		/// <param name="textEncodingName">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithURL:MIMEType:expectedContentLength:textEncodingName:")]
 		NativeHandle Constructor (NSUrl url, string mimetype, nint expectedContentLength, [NullAllowed] string textEncodingName);
 
+		/// <param name="url">To be added.</param>
+		/// <param name="statusCode">To be added.</param>
+		/// <param name="httpVersion">To be added.</param>
+		/// <param name="headerFields">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithURL:statusCode:HTTPVersion:headerFields:")]
 		NativeHandle Constructor (NSUrl url, nint statusCode, [NullAllowed] string httpVersion, [NullAllowed] NSDictionary headerFields);
 
@@ -10771,11 +13859,15 @@ namespace Foundation {
 		[Export ("allHeaderFields")]
 		NSDictionary AllHeaderFields { get; }
 
+		/// <param name="statusCode">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("localizedStringForStatusCode:")]
 		[Static]
 		string LocalizedStringForStatusCode (nint statusCode);
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("valueForHTTPHeaderField:")]
 		[return: NullAllowed]
@@ -10783,9 +13875,7 @@ namespace Foundation {
 	}
 
 	[BaseType (typeof (NSObject))]
-#if MONOMAC
-	[DisableDefaultCtor] // An uncaught exception was raised: -[__NSCFDictionary removeObjectForKey:]: attempt to remove nil key
-#endif
+	[DisableDefaultCtor]
 	partial interface NSBundle {
 		[Export ("mainBundle")]
 		[Static]
@@ -10813,6 +13903,9 @@ namespace Foundation {
 		[Static]
 		NSArray _InternalAllBundles { get; }
 
+		/// <summary>An array of all the application's non-framework bundles.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use the 'AllBundles' property instead.")]
 		[Wrap ("_InternalAllBundles")]
 		[Static]
@@ -10833,6 +13926,9 @@ namespace Foundation {
 		[Export ("load")]
 		bool Load ();
 
+		/// <summary>Whether this bundle is currently loaded.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isLoaded")]
 		bool IsLoaded { get; }
 
@@ -10886,6 +13982,11 @@ namespace Foundation {
 		[Export ("pathForResource:ofType:inDirectory:forLocalization:")]
 		string PathForResource (string name, [NullAllowed] string ofType, string subpath, string localizationName);
 
+		/// <summary>Get a localized version of the string for the specified key in the specified table.</summary>
+		/// <param name="key">The key to lookup</param>
+		/// <param name="value">The value to return if the key is null, or the key was not found on the localization table.</param>
+		/// <param name="table">The table to search, if the value is null, this uses the Localizable.strings table.</param>
+		/// <summary>A localized version of the string for the specified key in the specified table.</summary>
 		[Export ("localizedStringForKey:value:table:")]
 		NSString GetLocalizedString ([NullAllowed] NSString key, [NullAllowed] NSString value, [NullAllowed] NSString table);
 
@@ -10899,54 +14000,86 @@ namespace Foundation {
 		NSDictionary InfoDictionary { get; }
 
 		// Additions from AppKit
+		/// <param name="nibName">To be added.</param>
+		///         <param name="owner">To be added.</param>
+		///         <param name="topLevelObjects">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Export ("loadNibNamed:owner:topLevelObjects:")]
 		bool LoadNibNamed (string nibName, [NullAllowed] NSObject owner, out NSArray topLevelObjects);
 
 		// https://developer.apple.com/library/mac/#documentation/Cocoa/Reference/ApplicationKit/Classes/NSBundle_AppKitAdditions/Reference/Reference.html
+		/// <param name="nibName">To be added.</param>
+		///         <param name="owner">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Static]
 		[Deprecated (PlatformName.MacOSX, 10, 8)]
 		[Export ("loadNibNamed:owner:")]
 		bool LoadNib (string nibName, NSObject owner);
 
+		/// <param name="resource">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Export ("pathForImageResource:")]
 		string PathForImageResource (string resource);
 
+		/// <param name="resource">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Export ("pathForSoundResource:")]
 		string PathForSoundResource (string resource);
 
+		/// <param name="resource">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Export ("URLForImageResource:")]
 		NSUrl GetUrlForImageResource (string resource);
 
+		/// <param name="key">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Export ("contextHelpForKey:")]
 		NSAttributedString GetContextHelp (string key);
 
 		// http://developer.apple.com/library/ios/#documentation/uikit/reference/NSBundle_UIKitAdditions/Introduction/Introduction.html
+		/// <param name="nibName">To be added.</param>
+		///         <param name="owner">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="options">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Loads the specified nib and returns the top-level objects. </summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Export ("loadNibNamed:owner:options:")]
 		NSArray LoadNib (string nibName, [NullAllowed] NSObject owner, [NullAllowed] NSDictionary options);
@@ -11030,13 +14163,18 @@ namespace Foundation {
 		[Export ("setPreservationPriority:forTags:")]
 		void SetPreservationPriority (double priority, NSSet<NSString> tags);
 
-		[Watch (8, 0), TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("localizedAttributedStringForKey:value:table:")]
 		NSAttributedString GetLocalizedAttributedString (string key, [NullAllowed] string value, [NullAllowed] string tableName);
 
 		[Notification]
 		[Field ("NSBundleDidLoadNotification")]
 		NSString BundleDidLoadNotification { get; }
+
+		// bound using NSString instead of string, because often localized NSString has extra information we can't marshal to a C# string
+		[TV (18, 4), iOS (18, 4), MacCatalyst (18, 4), Mac (15, 4)]
+		[Export ("localizedStringForKey:value:table:localizations:")]
+		NSString GetLocalizedString (NSString key, [NullAllowed] NSString value, [NullAllowed] NSString tableName, NSString [] localizations);
 	}
 
 	[NoMac]
@@ -11061,26 +14199,51 @@ namespace Foundation {
 		NSBundle Bundle { get; }
 
 		[Export ("beginAccessingResourcesWithCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>To be added.</summary>
+			<returns>A task that represents the asynchronous BeginAccessingResources operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void BeginAccessingResources (Action<NSError> completionHandler);
 
 		[Export ("conditionallyBeginAccessingResourcesWithCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>To be added.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous ConditionallyBeginAccessingResources operation.  The value of the TResult parameter is of type System.Action&lt;System.Boolean&gt;.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The ConditionallyBeginAccessingResourcesAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void ConditionallyBeginAccessingResources (Action<bool> completionHandler);
 
 		[Export ("endAccessingResources")]
 		void EndAccessingResources ();
 
+		/// <include file="../docs/api/Foundation/NSBundleResourceRequest.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSBundleResourceRequest.LowDiskSpaceNotification']/*" />
 		[Field ("NSBundleResourceRequestLowDiskSpaceNotification")]
 		[Notification]
 		NSString LowDiskSpaceNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSBundleResourceRequestLoadingPriorityUrgent")]
 		double LoadingPriorityUrgent { get; }
 	}
 
 	[BaseType (typeof (NSObject))]
 	interface NSIndexPath : NSCoding, NSSecureCoding, NSCopying {
+		/// <param name="index">
+		/// Object to place in the index-path.
+		///   	   </param>
+		/// <summary>Create a new index-path object with the specified object (not required for use with iOS <see cref="UIKit.UITableView" />).</summary>
+		/// <returns>
+		///         </returns>
+		/// <remarks>
+		///         </remarks>
 		[Export ("indexPathWithIndex:")]
 		[Static]
 		NSIndexPath FromIndex (nuint index);
@@ -11090,12 +14253,34 @@ namespace Foundation {
 		[Static]
 		NSIndexPath _FromIndex (IntPtr indexes, nint len);
 
+		/// <param name="index">
+		/// 
+		/// Index to be appended.
+		///   	   
+		///   	   </param>
+		/// <summary>Returns a new index-path containing those in this object plus the new <paramref name="index" /> (not required for use with iOS <see cref="UIKit.UITableView" />).</summary>
+		/// <returns>
+		///         </returns>
+		/// <remarks>
+		///         </remarks>
 		[Export ("indexPathByAddingIndex:")]
 		NSIndexPath IndexPathByAddingIndex (nuint index);
 
 		[Export ("indexPathByRemovingLastIndex")]
 		NSIndexPath IndexPathByRemovingLastIndex ();
 
+		/// <param name="position">
+		/// 
+		/// 
+		/// Position of index to return.
+		///   	   
+		///   	   
+		///   	   </param>
+		/// <summary>Return the index at the given <paramref name="position" /> in the index-path (not required for use with iOS <see cref="UIKit.UITableView" />).</summary>
+		/// <returns>
+		///         </returns>
+		/// <remarks>
+		///         </remarks>
 		[Export ("indexAtPosition:")]
 		nuint IndexAtPosition (nint position);
 
@@ -11119,19 +14304,33 @@ namespace Foundation {
 
 		// see monotouch/src/UIKit/Addition.cs for int-returning Row/Section properties
 		[NoMac]
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Export ("row")]
 		nint LongRow { get; }
 
+		/// <summary>The index of a section within a <see cref="UIKit.UITableView" /> (read-only).</summary>
+		///         <value>
+		///           <para />
+		///         </value>
+		///         <remarks>
+		///           <para />
+		///         </remarks>
 		[NoMac]
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Export ("section")]
 		nint LongSection { get; }
 
+		/// <param name="row">
+		/// The row index within the corresponding <paramref name="section" /> of a <see cref="UIKit.UITableView" />.
+		///   	   </param>
+		/// <param name="section">
+		/// The index of the section in the <see cref="UIKit.UITableView" /> that contains the <paramref name="row" />.
+		///   	   </param>
+		/// <summary>Returns an index-path object initialized with the given row and section details.</summary>
+		/// <returns>An <see cref="Foundation.NSIndexPath" /> object, or <see langword="null" /> if it could not be created.</returns>
+		/// <remarks>
+		///         </remarks>
 		[NoMac]
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("indexPathForRow:inSection:")]
@@ -11139,27 +14338,47 @@ namespace Foundation {
 
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Export ("section")]
 		nint Section { get; }
 
-		[NoWatch]
+		/// <param name="item">
+		/// Item value.
+		///   	   </param>
+		/// <param name="section">
+		/// Section value.
+		///   	   </param>
+		/// <summary>Creates an NSIndexPath from the given item and section values.</summary>
+		/// <returns>New instance of the NSIndexPath.</returns>
+		/// <remarks>
+		///         </remarks>
 		[Static]
 		[MacCatalyst (13, 1)]
 		[Export ("indexPathForItem:inSection:")]
 		NSIndexPath FromItemSection (nint item, nint section);
 
-		[NoWatch]
+		/// <summary>The item component of this NSIndexPath.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		[Export ("item")]
 		[MacCatalyst (13, 1)]
 		nint Item { get; }
 	}
 
+	/// <param name="range">To be added.</param>
+	/// <param name="stop">To be added.</param>
+	/// <summary>A delegate used to specify the iterator used by <see cref="Foundation.NSIndexSet.EnumerateRanges(Foundation.NSRange,Foundation.NSEnumerationOptions,Foundation.NSRangeIterator)" />.</summary>
+	/// <remarks>To be added.</remarks>
 	delegate void NSRangeIterator (NSRange range, ref bool stop);
 
 	[BaseType (typeof (NSObject))]
 	interface NSIndexSet : NSCoding, NSSecureCoding, NSMutableCopying {
+		/// <param name="idx">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("indexSetWithIndex:")]
 		NSIndexSet FromIndex (nint idx);
 
@@ -11185,18 +14404,38 @@ namespace Foundation {
 		[Export ("lastIndex")]
 		nuint LastIndex { get; }
 
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("indexGreaterThanIndex:")]
 		nuint IndexGreaterThan (nuint index);
 
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("indexLessThanIndex:")]
 		nuint IndexLessThan (nuint index);
 
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("indexGreaterThanOrEqualToIndex:")]
 		nuint IndexGreaterThanOrEqual (nuint index);
 
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("indexLessThanOrEqualToIndex:")]
 		nuint IndexLessThanOrEqual (nuint index);
 
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("containsIndex:")]
 		bool Contains (nuint index);
 
@@ -11276,32 +14515,67 @@ namespace Foundation {
 		[Export ("hasItemConformingToTypeIdentifier:")]
 		bool HasItemConformingTo (string typeIdentifier);
 
-		[Async]
+		[Async (XmlDocs = """
+			<param name="typeIdentifier">To be added.</param>
+			<param name="options">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous LoadItem operation.  The value of the TResult parameter is of type System.Action&lt;Foundation.NSObject,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("loadItemForTypeIdentifier:options:completionHandler:")]
 		void LoadItem (string typeIdentifier, [NullAllowed] NSDictionary options, [NullAllowed] Action<NSObject, NSError> completionHandler);
 
+		/// <summary>Represents the value associated with the constant NSItemProviderPreferredImageSizeKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSItemProviderPreferredImageSizeKey")]
 		NSString PreferredImageSizeKey { get; }
 
+		/// <param name="handler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setPreviewImageHandler:")]
 		void SetPreviewImageHandler (NSItemProviderLoadHandler handler);
 
-		[Async]
+		[Async (XmlDocs = """
+			<param name="options">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous LoadPreviewImage operation.  The value of the TResult parameter is of type System.Action&lt;Foundation.NSObject,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("loadPreviewImageWithOptions:completionHandler:")]
 		void LoadPreviewImage (NSDictionary options, Action<NSObject, NSError> completionHandler);
 
+		/// <summary>Represents the value associated with the constant NSItemProviderErrorDomain</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSItemProviderErrorDomain")]
 		NSString ErrorDomain { get; }
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoiOS, NoTV, NoMacCatalyst]
 		[Export ("sourceFrame")]
 		CGRect SourceFrame { get; }
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoiOS, NoTV, NoMacCatalyst]
 		[Export ("containerFrame")]
 		CGRect ContainerFrame { get; }
 
-		[NoWatch, NoTV]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("preferredPresentationSize")]
 		CGSize PreferredPresentationSize {
@@ -11311,11 +14585,18 @@ namespace Foundation {
 			set;
 		}
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		/// <param name="preparationHandler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
+		[NoiOS, NoTV, NoMacCatalyst]
 		[Export ("registerCloudKitShareWithPreparationHandler:")]
 		void RegisterCloudKitShare (CloudKitRegistrationPreparationAction preparationHandler);
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		/// <param name="share">To be added.</param>
+		///         <param name="container">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
+		[NoiOS, NoTV, NoMacCatalyst]
 		[Export ("registerCloudKitShare:container:")]
 		void RegisterCloudKitShare (CKShare share, CKContainer container);
 
@@ -11336,18 +14617,60 @@ namespace Foundation {
 		bool HasConformingRepresentation (string typeIdentifier, NSItemProviderFileOptions fileOptions);
 
 		[MacCatalyst (13, 1)]
-		[Async, Export ("loadDataRepresentationForTypeIdentifier:completionHandler:")]
+		[Async (XmlDocs = """
+			<param name="typeIdentifier">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous LoadDataRepresentation operation.  The value of the TResult parameter is of type System.Action&lt;Foundation.NSData,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""",
+			XmlDocsWithOutParameter = """
+			<param name="typeIdentifier">To be added.</param>
+			<param name="result">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			"""), Export ("loadDataRepresentationForTypeIdentifier:completionHandler:")]
 		NSProgress LoadDataRepresentation (string typeIdentifier, Action<NSData, NSError> completionHandler);
 
 		[MacCatalyst (13, 1)]
-		[Async, Export ("loadFileRepresentationForTypeIdentifier:completionHandler:")]
+		[Async (XmlDocs = """
+			<param name="typeIdentifier">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous LoadFileRepresentation operation.  The value of the TResult parameter is of type System.Action&lt;Foundation.NSUrl,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""",
+			XmlDocsWithOutParameter = """
+			<param name="typeIdentifier">To be added.</param>
+			<param name="result">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			"""), Export ("loadFileRepresentationForTypeIdentifier:completionHandler:")]
 		NSProgress LoadFileRepresentation (string typeIdentifier, Action<NSUrl, NSError> completionHandler);
 
 		[MacCatalyst (13, 1)]
-		[Async (ResultTypeName = "LoadInPlaceResult"), Export ("loadInPlaceFileRepresentationForTypeIdentifier:completionHandler:")]
+		[Async (ResultTypeName = "LoadInPlaceResult", XmlDocs = """
+			<param name="typeIdentifier">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous LoadInPlaceFileRepresentation operation.   The value of the TResult parameter is of type Foundation.LoadInPlaceResult.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""",
+			XmlDocsWithOutParameter = """
+			<param name="typeIdentifier">To be added.</param>
+			<param name="result">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			"""), Export ("loadInPlaceFileRepresentationForTypeIdentifier:completionHandler:")]
 		NSProgress LoadInPlaceFileRepresentation (string typeIdentifier, LoadInPlaceFileRepresentationHandler completionHandler);
 
-		[NoWatch, NoTV]
+		[NoTV]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("suggestedName")]
 		string SuggestedName { get; set; }
@@ -11364,6 +14687,11 @@ namespace Foundation {
 		[Export ("registerObjectOfClass:visibility:loadHandler:")]
 		void RegisterObject (Class aClass, NSItemProviderRepresentationVisibility visibility, RegisterObjectRepresentationLoadHandler loadHandler);
 
+		/// <param name="type">To be added.</param>
+		///         <param name="visibility">To be added.</param>
+		///         <param name="loadHandler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("RegisterObject (new Class (type), visibility, loadHandler)")]
 		void RegisterObject (Type type, NSItemProviderRepresentationVisibility visibility, RegisterObjectRepresentationLoadHandler loadHandler);
@@ -11372,23 +14700,53 @@ namespace Foundation {
 		[Export ("canLoadObjectOfClass:")]
 		bool CanLoadObject (Class aClass);
 
+		/// <param name="type">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("CanLoadObject (new Class (type))")]
 		bool CanLoadObject (Type type);
 
 		[MacCatalyst (13, 1)]
-		[Async, Export ("loadObjectOfClass:completionHandler:")]
+		[Async (XmlDocs = """
+			<param name="aClass">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous LoadObject operation.  The value of the TResult parameter is of type System.Action&lt;Foundation.INSItemProviderReading,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The LoadObjectAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""",
+			XmlDocsWithOutParameter = """
+			<param name="aClass">To be added.</param>
+			<param name="result">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			"""), Export ("loadObjectOfClass:completionHandler:")]
 		NSProgress LoadObject (Class aClass, Action<INSItemProviderReading, NSError> completionHandler);
 
 		// NSItemProvider_UIKitAdditions category
 
-		[NoWatch, NoTV]
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
+		[NoTV]
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("teamData", ArgumentSemantic.Copy)]
 		NSData TeamData { get; set; }
 
-		[NoWatch, NoTV]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV]
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("preferredPresentationStyle", ArgumentSemantic.Assign)]
@@ -11396,58 +14754,58 @@ namespace Foundation {
 
 		// extension methods from CloudKit
 
-		[NoWatch, NoTV, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[NoTV, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("registerCKShareWithContainer:allowedSharingOptions:preparationHandler:")]
 		void RegisterCKShare (CKContainer container, CKAllowedSharingOptions allowedOptions, Action preparationHandler);
 
-		[NoWatch, NoTV, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[NoTV, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("registerCKShare:container:allowedSharingOptions:")]
 		void RegisterCKShare (CKShare share, CKContainer container, CKAllowedSharingOptions allowedOptions);
 
 		// from interface UTType (NSItemProvider)
 
-		[Watch (9, 0), TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("initWithContentsOfURL:contentType:openInPlace:coordinated:visibility:")]
 		NativeHandle Constructor (NSUrl fileUrl, [NullAllowed] UTType contentType, bool openInPlace, bool coordinated, NSItemProviderRepresentationVisibility visibility);
 
-		[Watch (9, 0), TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("registerDataRepresentationForContentType:visibility:loadHandler:")]
 		void RegisterDataRepresentation (UTType contentType, NSItemProviderRepresentationVisibility visibility, NSItemProviderUTTypeLoadDelegate loadHandler);
 
-		[Watch (9, 0), TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("registerFileRepresentationForContentType:visibility:openInPlace:loadHandler:")]
 		void RegisterFileRepresentation (UTType contentType, NSItemProviderRepresentationVisibility visibility, bool openInPlace, NSItemProviderUTTypeLoadDelegate loadHandler);
 
-		[Watch (9, 0), TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("registeredContentTypes", ArgumentSemantic.Copy)]
 		UTType [] RegisteredContentTypes { get; }
 
-		[Watch (9, 0), TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("registeredContentTypesForOpenInPlace", ArgumentSemantic.Copy)]
 		UTType [] RegisteredContentTypesForOpenInPlace { get; }
 
-		[Watch (9, 0), TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("registeredContentTypesConformingToContentType:")]
 		UTType [] RegisteredContentTypesConforming (UTType contentType);
 
-		[Watch (9, 0), TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("loadDataRepresentationForContentType:completionHandler:")]
 		NSProgress LoadDataRepresentation (UTType contentType, ItemProviderDataCompletionHandler completionHandler);
 
-		[Watch (9, 0), TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("loadFileRepresentationForContentType:openInPlace:completionHandler:")]
 		NSProgress LoadFileRepresentation (UTType contentType, bool openInPlace, LoadFileRepresentationHandler completionHandler);
 	}
 
-	[Watch (9, 0), TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 	delegate NSProgress NSItemProviderUTTypeLoadDelegate ([BlockCallback] ItemProviderDataCompletionHandler completionHandler);
-	[Watch (9, 0), TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
-	delegate void LoadFileRepresentationHandler (NSUrl fileUrl, bool openInPlace, NSError error);
+	[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	delegate void LoadFileRepresentationHandler ([NullAllowed] NSUrl fileUrl, bool openInPlace, [NullAllowed] NSError error);
 	delegate NSProgress RegisterFileRepresentationLoadHandler ([BlockCallback] RegisterFileRepresentationCompletionHandler completionHandler);
 	delegate void RegisterFileRepresentationCompletionHandler (NSUrl fileUrl, bool coordinated, NSError error);
-	delegate void ItemProviderDataCompletionHandler (NSData data, NSError error);
+	delegate void ItemProviderDataCompletionHandler ([NullAllowed] NSData data, [NullAllowed] NSError error);
 	delegate NSProgress RegisterDataRepresentationLoadHandler ([BlockCallback] ItemProviderDataCompletionHandler completionHandler);
-	delegate void LoadInPlaceFileRepresentationHandler (NSUrl fileUrl, bool isInPlace, NSError error);
+	delegate void LoadInPlaceFileRepresentationHandler ([NullAllowed] NSUrl fileUrl, bool isInPlace, [NullAllowed] NSError error);
 	delegate NSProgress RegisterObjectRepresentationLoadHandler ([BlockCallback] RegisterObjectRepresentationCompletionHandler completionHandler);
 	delegate void RegisterObjectRepresentationCompletionHandler (INSItemProviderWriting @object, NSError error);
 
@@ -11463,10 +14821,19 @@ namespace Foundation {
 		// user needs to manually [Export] the selector on a static method, like
 		// they do for the "layer" property on CALayer subclasses.
 		//
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Static, Abstract]
 		[Export ("readableTypeIdentifiersForItemProvider", ArgumentSemantic.Copy)]
 		string [] ReadableTypeIdentifiers { get; }
 
+		/// <param name="data">To be added.</param>
+		/// <param name="typeIdentifier">To be added.</param>
+		/// <param name="outError">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Abstract]
 		[Export ("objectWithItemProviderData:typeIdentifier:error:")]
 		[return: NullAllowed]
@@ -11475,6 +14842,8 @@ namespace Foundation {
 
 	interface INSItemProviderWriting { }
 
+	/// <summary>Interface used by <see cref="Foundation.NSItemProvider" /> for retrieving data from an object.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface NSItemProviderWriting {
@@ -11486,6 +14855,9 @@ namespace Foundation {
 		// user needs to manually [Export] the selector on a static method, like
 		// they do for the "layer" property on CALayer subclasses.
 		//
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Static, Abstract]
 		[Export ("writableTypeIdentifiersForItemProvider", ArgumentSemantic.Copy)]
 		string [] WritableTypeIdentifiers { get; }
@@ -11500,26 +14872,53 @@ namespace Foundation {
 		// [Export ("itemProviderVisibilityForRepresentationWithTypeIdentifier:")]
 		// NSItemProviderRepresentationVisibility GetItemProviderVisibility (string typeIdentifier);
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Export ("writableTypeIdentifiersForItemProvider", ArgumentSemantic.Copy)]
 		// 'WritableTypeIdentifiers' is a nicer name, but there's a static property with that name.
 		string [] WritableTypeIdentifiersForItemProvider { get; }
 
+		/// <param name="typeIdentifier">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("itemProviderVisibilityForRepresentationWithTypeIdentifier:")]
 		// 'GetItemProviderVisibility' is a nicer name, but there's a static method with that name.
 		NSItemProviderRepresentationVisibility GetItemProviderVisibilityForTypeIdentifier (string typeIdentifier);
 
+		/// <param name="typeIdentifier">A Universal Type Identifier (UTI) indicating the type of data to load.</param>
+		/// <param name="completionHandler">The method called after the data is loaded.</param>
+		/// <summary>Implement this method to customize the loading of data by an <see cref="Foundation.NSItemProvider" />.</summary>
+		/// <returns>An <see cref="Monotouch.Foundation.NSProgress" /> object reflecting the data-loading operation.</returns>
+		/// <remarks>
+		///           <para>The <paramref name="typeIdentifier" /> must be in the set of values returned by <see cref="Foundation.NSItemProviderWriting_Extensions.GetWritableTypeIdentifiersForItemProvider(Foundation.INSItemProviderWriting)" />.</para>
+		///         </remarks>
 		[Abstract]
-		[Async, Export ("loadDataWithTypeIdentifier:forItemProviderCompletionHandler:")]
+		[Async (XmlDocs = """
+			<param name="typeIdentifier">A Universal Type Identifier (UTI) indicating the type of data to load.</param>
+			<summary>Asynchronously loads data for the identified type from an item provider, returning a task that contains the data.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			"""), Export ("loadDataWithTypeIdentifier:forItemProviderCompletionHandler:")]
 		[return: NullAllowed]
 		NSProgress LoadData (string typeIdentifier, Action<NSData, NSError> completionHandler);
 	}
 
+	/// <summary>Defines the strings associated with the constants <c>NSExtensionJavaScriptFinalizeArgumentKey</c> and <c>NSExtensionJavaScriptPreprocessingResultsKey</c>.</summary>
+	/// <remarks>To be added.</remarks>
 	[Static]
 	[MacCatalyst (13, 1)]
 	partial interface NSJavaScriptExtension {
+		/// <summary>A key whose value is an <see cref="Foundation.NSDictionary" /> whose contents are the argument to a JavaScript completion function.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSExtensionJavaScriptPreprocessingResultsKey")]
 		NSString PreprocessingResultsKey { get; }
 
+		/// <summary>A key whose value is an <see cref="Foundation.NSDictionary" /> whose contents are the arguments to a JavaScript finalize method.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSExtensionJavaScriptFinalizeArgumentKey")]
 		NSString FinalizeArgumentKey { get; }
 	}
@@ -11558,6 +14957,10 @@ namespace Foundation {
 		[Export ("isOneway")]
 		bool IsOneway { get; }
 
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("getArgumentTypeAtIndex:")]
 		IntPtr GetArgumentType (nuint index);
 
@@ -11593,6 +14996,9 @@ namespace Foundation {
 
 	[BaseType (typeof (NSIndexSet))]
 	interface NSMutableIndexSet : NSSecureCoding {
+		/// <param name="index">To be added.</param>
+		/// <summary>Initializes a new index set from an existing unsigned integer.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithIndex:")]
 		NativeHandle Constructor (nuint index);
 
@@ -11608,12 +15014,22 @@ namespace Foundation {
 		[Export ("removeAllIndexes")]
 		void Clear ();
 
+		/// <param name="index">The index to add.</param>
+		/// <summary>Adds a single index to the existing set.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("addIndex:")]
 		void Add (nuint index);
 
+		/// <param name="index">The index to remove.</param>
+		/// <summary>Removes a single index from the collection.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("removeIndex:")]
 		void Remove (nuint index);
 
+		/// <param name="startIndex">To be added.</param>
+		/// <param name="delta">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("shiftIndexesStartingAtIndex:by:")]
 		void ShiftIndexes (nuint startIndex, nint delta);
 
@@ -11627,7 +15043,6 @@ namespace Foundation {
 	[Deprecated (PlatformName.MacOSX, 12, 0, message: "Use the Network.framework instead.")]
 	[Deprecated (PlatformName.iOS, 15, 0, message: "Use the Network.framework instead.")]
 	[Deprecated (PlatformName.TvOS, 15, 0, message: "Use the Network.framework instead.")]
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 15, 0, message: "Use the Network.framework instead.")]
 	[DisableDefaultCtor] // the instance just crash when trying to call selectors
@@ -11643,27 +15058,34 @@ namespace Foundation {
 		[Export ("delegate", ArgumentSemantic.Assign), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the Foundation.INSNetServiceDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the Foundation.INSNetServiceDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		INSNetServiceDelegate Delegate { get; set; }
 
-#if NET
 		[Export ("scheduleInRunLoop:forMode:")]
 		void Schedule (NSRunLoop aRunLoop, NSString forMode);
 
 		// For consistency with other APIs (NSUrlConnection) we call this Unschedule
 		[Export ("removeFromRunLoop:forMode:")]
 		void Unschedule (NSRunLoop aRunLoop, NSString forMode);
-#else
-		[Export ("scheduleInRunLoop:forMode:")]
-		void Schedule (NSRunLoop aRunLoop, string forMode);
 
-		// For consistency with other APIs (NSUrlConnection) we call this Unschedule
-		[Export ("removeFromRunLoop:forMode:")]
-		void Unschedule (NSRunLoop aRunLoop, string forMode);
-#endif
+		/// <param name="aRunLoop">To be added.</param>
+		///         <param name="forMode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("Schedule (aRunLoop, forMode.GetConstant ()!)")]
 		void Schedule (NSRunLoop aRunLoop, NSRunLoopMode forMode);
 
+		/// <param name="aRunLoop">To be added.</param>
+		///         <param name="forMode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("Unschedule (aRunLoop, forMode.GetConstant ()!)")]
 		void Unschedule (NSRunLoop aRunLoop, NSRunLoopMode forMode);
 
@@ -11692,7 +15114,6 @@ namespace Foundation {
 		[Export ("resolve")]
 		[Deprecated (PlatformName.iOS, 2, 0, message: "Use 'Resolve (double)' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 4, message: "Use 'Resolve (double)' instead.")]
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'Resolve (double)' instead.")]
 		void Resolve ();
@@ -11738,43 +15159,111 @@ namespace Foundation {
 
 	interface INSNetServiceDelegate { }
 
-	[NoWatch]
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Foundation.NSNetServiceDelegate" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Foundation.NSNetServiceDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Foundation.NSNetServiceDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="Foundation.NSNetServiceDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Model, BaseType (typeof (NSObject))]
 	[Protocol]
 	interface NSNetServiceDelegate {
+		/// <param name="sender">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[Export ("netServiceWillPublish:")]
 		void WillPublish (NSNetService sender);
 
+		/// <param name="sender">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[Export ("netServiceDidPublish:")]
 		void Published (NSNetService sender);
 
-		[Export ("netService:didNotPublish:"), EventArgs ("NSNetServiceError")]
+		/// <param name="sender">To be added.</param>
+		/// <param name="errors">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
+		[Export ("netService:didNotPublish:"), EventArgs ("NSNetServiceError", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void PublishFailure (NSNetService sender, NSDictionary errors);
 
+		/// <param name="sender">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[Export ("netServiceWillResolve:")]
 		void WillResolve (NSNetService sender);
 
+		/// <param name="sender">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[Export ("netServiceDidResolveAddress:")]
 		void AddressResolved (NSNetService sender);
 
-		[Export ("netService:didNotResolve:"), EventArgs ("NSNetServiceError")]
+		/// <param name="sender">To be added.</param>
+		/// <param name="errors">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
+		[Export ("netService:didNotResolve:"), EventArgs ("NSNetServiceError", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void ResolveFailure (NSNetService sender, NSDictionary errors);
 
+		/// <param name="sender">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[Export ("netServiceDidStop:")]
 		void Stopped (NSNetService sender);
 
-		[Export ("netService:didUpdateTXTRecordData:"), EventArgs ("NSNetServiceData")]
+		/// <param name="sender">To be added.</param>
+		/// <param name="data">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
+		[Export ("netService:didUpdateTXTRecordData:"), EventArgs ("NSNetServiceData", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void UpdatedTxtRecordData (NSNetService sender, NSData data);
 
-		[Export ("netService:didAcceptConnectionWithInputStream:outputStream:"), EventArgs ("NSNetServiceConnection")]
+		/// <param name="sender">To be added.</param>
+		/// <param name="inputStream">To be added.</param>
+		/// <param name="outputStream">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
+		[Export ("netService:didAcceptConnectionWithInputStream:outputStream:"), EventArgs ("NSNetServiceConnection", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidAcceptConnection (NSNetService sender, NSInputStream inputStream, NSOutputStream outputStream);
 	}
 
 	[Deprecated (PlatformName.MacOSX, 12, 0, message: "Use the Network.framework instead.")]
 	[Deprecated (PlatformName.iOS, 15, 0, message: "Use the Network.framework instead.")]
 	[Deprecated (PlatformName.TvOS, 15, 0, message: "Use the Network.framework instead.")]
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 15, 0, message: "Use the Network.framework instead.")]
 	[BaseType (typeof (NSObject),
@@ -11784,28 +15273,34 @@ namespace Foundation {
 		[Export ("delegate", ArgumentSemantic.Assign), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the Foundation.INSNetServiceBrowserDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the Foundation.INSNetServiceBrowserDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		INSNetServiceBrowserDelegate Delegate { get; set; }
 
-#if NET
 		[Export ("scheduleInRunLoop:forMode:")]
 		void Schedule (NSRunLoop aRunLoop, NSString forMode);
 
 		// For consistency with other APIs (NSUrlConnection) we call this Unschedule
 		[Export ("removeFromRunLoop:forMode:")]
 		void Unschedule (NSRunLoop aRunLoop, NSString forMode);
-#else
-		[Export ("scheduleInRunLoop:forMode:")]
-		void Schedule (NSRunLoop aRunLoop, string forMode);
 
-		// For consistency with other APIs (NSUrlConnection) we call this Unschedule
-		[Export ("removeFromRunLoop:forMode:")]
-		void Unschedule (NSRunLoop aRunLoop, string forMode);
-#endif
-
+		/// <param name="aRunLoop">To be added.</param>
+		///         <param name="forMode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("Schedule (aRunLoop, forMode.GetConstant ()!)")]
 		void Schedule (NSRunLoop aRunLoop, NSRunLoopMode forMode);
 
+		/// <param name="aRunLoop">To be added.</param>
+		///         <param name="forMode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("Unschedule (aRunLoop, forMode.GetConstant ()!)")]
 		void Unschedule (NSRunLoop aRunLoop, NSRunLoopMode forMode);
 
@@ -11828,30 +15323,88 @@ namespace Foundation {
 
 	interface INSNetServiceBrowserDelegate { }
 
-	[NoWatch]
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Foundation.NSNetServiceBrowserDelegate" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Foundation.NSNetServiceBrowserDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Foundation.NSNetServiceBrowserDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="Foundation.NSNetServiceBrowserDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Model, BaseType (typeof (NSObject))]
 	[Protocol]
 	interface NSNetServiceBrowserDelegate {
+		/// <param name="sender">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[Export ("netServiceBrowserWillSearch:")]
 		void SearchStarted (NSNetServiceBrowser sender);
 
+		/// <param name="sender">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[Export ("netServiceBrowserDidStopSearch:")]
 		void SearchStopped (NSNetServiceBrowser sender);
 
-		[Export ("netServiceBrowser:didNotSearch:"), EventArgs ("NSNetServiceError")]
+		/// <param name="sender">To be added.</param>
+		/// <param name="errors">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
+		[Export ("netServiceBrowser:didNotSearch:"), EventArgs ("NSNetServiceError", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void NotSearched (NSNetServiceBrowser sender, NSDictionary errors);
 
-		[Export ("netServiceBrowser:didFindDomain:moreComing:"), EventArgs ("NSNetDomain")]
+		/// <param name="sender">To be added.</param>
+		/// <param name="domain">To be added.</param>
+		/// <param name="moreComing">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
+		[Export ("netServiceBrowser:didFindDomain:moreComing:"), EventArgs ("NSNetDomain", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void FoundDomain (NSNetServiceBrowser sender, string domain, bool moreComing);
 
-		[Export ("netServiceBrowser:didFindService:moreComing:"), EventArgs ("NSNetService")]
+		/// <param name="sender">To be added.</param>
+		/// <param name="service">To be added.</param>
+		/// <param name="moreComing">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
+		[Export ("netServiceBrowser:didFindService:moreComing:"), EventArgs ("NSNetService", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void FoundService (NSNetServiceBrowser sender, NSNetService service, bool moreComing);
 
-		[Export ("netServiceBrowser:didRemoveDomain:moreComing:"), EventArgs ("NSNetDomain")]
+		/// <param name="sender">To be added.</param>
+		/// <param name="domain">To be added.</param>
+		/// <param name="moreComing">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
+		[Export ("netServiceBrowser:didRemoveDomain:moreComing:"), EventArgs ("NSNetDomain", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DomainRemoved (NSNetServiceBrowser sender, string domain, bool moreComing);
 
-		[Export ("netServiceBrowser:didRemoveService:moreComing:"), EventArgs ("NSNetService")]
+		/// <param name="sender">To be added.</param>
+		/// <param name="service">To be added.</param>
+		/// <param name="moreComing">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
+		[Export ("netServiceBrowser:didRemoveService:moreComing:"), EventArgs ("NSNetService", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void ServiceRemoved (NSNetServiceBrowser sender, NSNetService service, bool moreComing);
 	}
 
@@ -11914,7 +15467,6 @@ namespace Foundation {
 
 	[NoiOS]
 	[NoTV]
-	[NoWatch]
 	[MacCatalyst (15, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -11944,22 +15496,12 @@ namespace Foundation {
 	/// <summary>Allows notifications to be sent to objects in other tasks.</summary>
 	[NoiOS]
 	[NoTV]
-	[NoWatch]
 	[MacCatalyst (15, 0)]
 	[BaseType (typeof (NSNotificationCenter))]
 	interface NSDistributedNotificationCenter {
 		[Static]
 		[Export ("defaultCenter")]
-#if NET
 		NSDistributedNotificationCenter DefaultCenter { get; }
-#else
-		NSDistributedNotificationCenter GetDefaultCenter ();
-
-		[Static]
-		[Advice ("Use 'GetDefaultCenter ()' for a strongly typed version.")]
-		[Wrap ("GetDefaultCenter ()")]
-		NSObject DefaultCenter { get; }
-#endif
 
 		[Export ("addObserver:selector:name:object:suspensionBehavior:")]
 		void AddObserver (NSObject observer, Selector selector, [NullAllowed] string notificationName, [NullAllowed] string notificationSenderc, NSNotificationSuspensionBehavior suspensionBehavior);
@@ -11986,6 +15528,9 @@ namespace Foundation {
 		[Export ("suspended")]
 		bool Suspended { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSLocalNotificationCenterType")]
 		NSString NSLocalNotificationCenterType { get; }
 	}
@@ -12005,14 +15550,10 @@ namespace Foundation {
 		void EnqueueNotification (NSNotification notification, NSPostingStyle postingStyle);
 
 		[Export ("enqueueNotification:postingStyle:coalesceMask:forModes:")]
-#if !NET
-		void EnqueueNotification (NSNotification notification, NSPostingStyle postingStyle, NSNotificationCoalescing coalesceMask, [NullAllowed] string [] modes);
-#else
 		void EnqueueNotification (NSNotification notification, NSPostingStyle postingStyle, NSNotificationCoalescing coalesceMask, [NullAllowed] NSString [] modes);
 
 		[Wrap ("EnqueueNotification (notification, postingStyle, coalesceMask, modes?.GetConstants ())")]
 		void EnqueueNotification (NSNotification notification, NSPostingStyle postingStyle, NSNotificationCoalescing coalesceMask, [NullAllowed] NSRunLoopMode [] modes);
-#endif
 
 		[Export ("dequeueNotificationsMatching:coalesceMask:")]
 		void DequeueNotificationsMatchingcoalesceMask (NSNotification notification, NSNotificationCoalescing coalesceMask);
@@ -12025,7 +15566,6 @@ namespace Foundation {
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Potential for buffer overruns. Use 'StoreValueAtAddress (IntPtr, nuint)' instead.")]
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Potential for buffer overruns. Use 'StoreValueAtAddress (IntPtr, nuint)' instead.")]
 		[Deprecated (PlatformName.TvOS, 11, 0, message: "Potential for buffer overruns. Use 'StoreValueAtAddress (IntPtr, nuint)' instead.")]
-		[Deprecated (PlatformName.WatchOS, 4, 0, message: "Potential for buffer overruns. Use 'StoreValueAtAddress (IntPtr, nuint)' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Potential for buffer overruns. Use 'StoreValueAtAddress (IntPtr, nuint)' instead.")]
 		[Export ("getValue:")]
 		void StoreValueAtAddress (IntPtr value);
@@ -12070,32 +15610,47 @@ namespace Foundation {
 		[Export ("rangeValue")]
 		NSRange RangeValue { get; }
 
-		[Watch (6, 0)]
+		/// <param name="time">To be added.</param>
+		///         <summary>Creates an NSValue that wraps a CMTime object..</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static, Export ("valueWithCMTime:")]
 		NSValue FromCMTime (CMTime time);
 
-		[Watch (6, 0)]
+		/// <summary>Returns the CMTime value wrapped by this NSValue object.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("CMTimeValue")]
 		CMTime CMTimeValue { get; }
 
-		[Watch (6, 0)]
+		/// <param name="timeMapping">To be added.</param>
+		///         <summary>Creates an NSValue that wraps a CMTimeMapping object.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static, Export ("valueWithCMTimeMapping:")]
 		NSValue FromCMTimeMapping (CMTimeMapping timeMapping);
 
-		[Watch (6, 0)]
+		/// <summary>Returns the CMTimeMapping value wrapped by this NSValue object.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("CMTimeMappingValue")]
 		CMTimeMapping CMTimeMappingValue { get; }
 
-		[Watch (6, 0)]
+		/// <param name="timeRange">To be added.</param>
+		///         <summary>Creates an NSValue that wraps a CMTimeRange object.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static, Export ("valueWithCMTimeRange:")]
 		NSValue FromCMTimeRange (CMTimeRange timeRange);
 
-		[Watch (6, 0)]
+		/// <summary>Returns the CMTimeRange value wrapped by this NSValue object.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("CMTimeRangeValue")]
 		CMTimeRange CMTimeRangeValue { get; }
@@ -12148,45 +15703,81 @@ namespace Foundation {
 #endif
 		CGPoint CGPointValue { get; }
 
+		/// <summary>Returns the CGAffineTransform value wrapped by this NSValue object.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("CGAffineTransformValue")]
 		CoreGraphics.CGAffineTransform CGAffineTransformValue { get; }
 
+		/// <summary>Returns the UIEdgeInsets value wrapped by this NSValue object.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("UIEdgeInsetsValue")]
 		UIEdgeInsets UIEdgeInsetsValue { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("directionalEdgeInsetsValue")]
 		NSDirectionalEdgeInsets DirectionalEdgeInsetsValue { get; }
 
+		/// <param name="tran">To be added.</param>
+		///         <summary>Creates an NSValue that wraps a CGAffineTransform object..</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("valueWithCGAffineTransform:")]
 		[Static]
 		NSValue FromCGAffineTransform (CoreGraphics.CGAffineTransform tran);
 
+		/// <param name="insets">To be added.</param>
+		///         <summary>Creates an NSValue that wraps a UIEdgeInsets object.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("valueWithUIEdgeInsets:")]
 		[Static]
 		NSValue FromUIEdgeInsets (UIEdgeInsets insets);
 
+		/// <param name="insets">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("valueWithDirectionalEdgeInsets:")]
 		NSValue FromDirectionalEdgeInsets (NSDirectionalEdgeInsets insets);
 
+		/// <param name="insets">The UIOffset instance</param>
+		///         <summary>Creates an NSValue that wraps an UIOffset structure.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		[Export ("valueWithUIOffset:")]
 		[Static]
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		NSValue FromUIOffset (UIOffset insets);
 
+		/// <summary>Returns the UIOffset value wrapped by in this NSValue.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		[Export ("UIOffsetValue")]
 		[NoMac]
 		[MacCatalyst (13, 1)]
@@ -12194,47 +15785,72 @@ namespace Foundation {
 		// from UIGeometry.h - those are in iOS8 only (even if the header is silent about them)
 		// and not in OSX 10.10
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("CGVectorValue")]
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		CGVector CGVectorValue { get; }
 
+		/// <param name="vector">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static, Export ("valueWithCGVector:")]
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		NSValue FromCGVector (CGVector vector);
 
 		// Maybe we should include this inside mapkit.cs instead (it's a partial interface, so that's trivial)?
+		/// <param name="coordinate">To be added.</param>
+		///         <summary>Creates an NSValue that stores a CLLocationCoordinate2D.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static, Export ("valueWithMKCoordinate:")]
 		NSValue FromMKCoordinate (CoreLocation.CLLocationCoordinate2D coordinate);
 
+		/// <param name="coordinateSpan">To be added.</param>
+		///         <summary>Creates an NSValue that stores an MKCoordinateSpan.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static, Export ("valueWithMKCoordinateSpan:")]
 		NSValue FromMKCoordinateSpan (MapKit.MKCoordinateSpan coordinateSpan);
 
+		/// <summary>The CLLocationCoordinate2D stored in this NSValue.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("MKCoordinateValue")]
 		CoreLocation.CLLocationCoordinate2D CoordinateValue { get; }
 
+		/// <summary>The MKCoordinateSpan stored in this NSValue.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("MKCoordinateSpanValue")]
 		MapKit.MKCoordinateSpan CoordinateSpanValue { get; }
 
-#if !WATCH
+		/// <param name="transform">To be added.</param>
+		///         <summary>Creates an NSValue that wraps a CATransform3D object.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("valueWithCATransform3D:")]
 		[Static]
 		NSValue FromCATransform3D (CoreAnimation.CATransform3D transform);
 
+		/// <summary>Returns the CATransform3D value wrapped by this NSValue object.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("CATransform3DValue")]
 		CoreAnimation.CATransform3D CATransform3DValue { get; }
-#endif
 
 		[iOS (16, 0)]
 		[Mac (13, 0)]
 		[MacCatalyst (16, 0)]
 		[TV (16, 0)]
-		[Watch (9, 0)]
 		[Export ("CMVideoDimensionsValue")]
 		CMVideoDimensions CMVideoDimensionsValue { get; }
 
@@ -12242,33 +15858,53 @@ namespace Foundation {
 		[Mac (13, 0)]
 		[MacCatalyst (16, 0)]
 		[TV (16, 0)]
-		[Watch (9, 0)]
 		[Export ("valueWithCMVideoDimensions:")]
 		[Static]
 		NSValue FromCMVideoDimensions (CMVideoDimensions value);
 
 		#region SceneKit Additions
 
+		/// <param name="vector">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static, Export ("valueWithSCNVector3:")]
 		NSValue FromVector (SCNVector3 vector);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("SCNVector3Value")]
 		SCNVector3 Vector3Value { get; }
 
+		/// <param name="vector">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static, Export ("valueWithSCNVector4:")]
 		NSValue FromVector (SCNVector4 vector);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("SCNVector4Value")]
 		SCNVector4 Vector4Value { get; }
 
+		/// <param name="matrix">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static, Export ("valueWithSCNMatrix4:")]
 		NSValue FromSCNMatrix4 (SCNMatrix4 matrix);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("SCNMatrix4Value")]
 		SCNMatrix4 SCNMatrix4Value { get; }
@@ -12308,60 +15944,52 @@ namespace Foundation {
 		[return: NullAllowed]
 		NSObject ReverseTransformedValue ([NullAllowed] NSObject value);
 
-#if IOS && !NET
-		[Notification]
-		[Obsolete ("Use 'NSUserDefaults.SizeLimitExceededNotification' instead.")]
-		[Field ("NSUserDefaultsSizeLimitExceededNotification")]
-		NSString SizeLimitExceededNotification { get; }
-
-		[Notification]
-		[Obsolete ("Use 'NSUserDefaults.DidChangeAccountsNotification' instead.")]
-		[Field ("NSUbiquitousUserDefaultsDidChangeAccountsNotification")]
-		NSString DidChangeAccountsNotification { get; }
-
-		[Notification]
-		[Obsolete ("Use 'NSUserDefaults.CompletedInitialSyncNotification' instead.")]
-		[Field ("NSUbiquitousUserDefaultsCompletedInitialSyncNotification")]
-		NSString CompletedInitialSyncNotification { get; }
-
-		[Notification]
-		[Obsolete ("Use 'NSUserDefaults.DidChangeNotification' instead.")]
-		[Field ("NSUserDefaultsDidChangeNotification")]
-		NSString UserDefaultsDidChangeNotification { get; }
-#endif
-
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSNegateBooleanTransformerName")]
 		NSString BooleanTransformerName { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSIsNilTransformerName")]
 		NSString IsNilTransformerName { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSIsNotNilTransformerName")]
 		NSString IsNotNilTransformerName { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.TvOS, 12, 0, message: "Use 'SecureUnarchiveFromDataTransformerName' instead.")]
-		[Deprecated (PlatformName.WatchOS, 5, 0, message: "Use 'SecureUnarchiveFromDataTransformerName' instead.")]
 		[Deprecated (PlatformName.iOS, 12, 0, message: "Use 'SecureUnarchiveFromDataTransformerName' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'SecureUnarchiveFromDataTransformerName' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'SecureUnarchiveFromDataTransformerName' instead.")]
 		[Field ("NSUnarchiveFromDataTransformerName")]
 		NSString UnarchiveFromDataTransformerName { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.TvOS, 12, 0, message: "Use 'SecureUnarchiveFromDataTransformerName' instead.")]
-		[Deprecated (PlatformName.WatchOS, 5, 0, message: "Use 'SecureUnarchiveFromDataTransformerName' instead.")]
 		[Deprecated (PlatformName.iOS, 12, 0, message: "Use 'SecureUnarchiveFromDataTransformerName' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'SecureUnarchiveFromDataTransformerName' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'SecureUnarchiveFromDataTransformerName' instead.")]
 		[Field ("NSKeyedUnarchiveFromDataTransformerName")]
 		NSString KeyedUnarchiveFromDataTransformerName { get; }
 
-		[Watch (5, 0)]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("NSSecureUnarchiveFromDataTransformerName")]
 		NSString SecureUnarchiveFromDataTransformerName { get; }
 	}
 
-	[Watch (5, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSValueTransformer))]
 	interface NSSecureUnarchiveFromDataTransformer {
@@ -12369,6 +15997,9 @@ namespace Foundation {
 		[Export ("allowedTopLevelClasses", ArgumentSemantic.Copy)]
 		Class [] AllowedTopLevelClasses { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Wrap ("Array.ConvertAll (AllowedTopLevelClasses, c => Class.Lookup (c))")]
 		Type [] AllowedTopLevelTypes { get; }
@@ -12435,9 +16066,6 @@ namespace Foundation {
 		[Export ("isEqualToNumber:")]
 		bool IsEqualTo (IntPtr number);
 
-		[Wrap ("IsEqualTo (number.GetHandle ())")]
-		bool IsEqualTo (NSNumber number);
-
 		[Export ("descriptionWithLocale:")]
 		string DescriptionWithLocale (NSLocale locale);
 
@@ -12491,10 +16119,16 @@ namespace Foundation {
 		[Export ("initWithBool:")]
 		NativeHandle Constructor (bool value);
 
+		/// <param name="value">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithInteger:")]
 		NativeHandle Constructor (nint value);
 
+		/// <param name="value">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithUnsignedInteger:")]
 		NativeHandle Constructor (nuint value);
@@ -12523,10 +16157,18 @@ namespace Foundation {
 		[Export ("numberWithUnsignedInt:")]
 		NSNumber FromUInt32 (uint /* unsigned int, not NSUInteger */ value);
 
+		/// <param name="value">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static]
 		[Export ("numberWithLong:")]
 		NSNumber FromLong (nint value);
 		//
+		/// <param name="value">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static]
 		[Export ("numberWithUnsignedLong:")]
 		NSNumber FromUnsignedLong (nuint value);
@@ -12551,10 +16193,18 @@ namespace Foundation {
 		[Export ("numberWithBool:")]
 		NSNumber FromBoolean (bool value);
 
+		/// <param name="value">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static]
 		[Export ("numberWithInteger:")]
 		NSNumber FromNInt (nint value);
 
+		/// <param name="value">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static]
 		[Export ("numberWithUnsignedInteger:")]
 		NSNumber FromNUInt (nuint value);
@@ -12569,9 +16219,16 @@ namespace Foundation {
 		[Export ("numberFromString:")]
 		NSNumber NumberFromString (string text);
 
+#if !XAMCORE_5_0
+		[Obsolete ("Use 'GetLocalizedString' instead.")]
 		[Static]
 		[Export ("localizedStringFromNumber:numberStyle:")]
 		string LocalizedStringFromNumbernumberStyle (NSNumber num, NSNumberFormatterStyle nstyle);
+#endif
+
+		[Static]
+		[Export ("localizedStringFromNumber:numberStyle:")]
+		string GetLocalizedString (NSNumber number, NSNumberFormatterStyle numberStyle);
 
 		//Detected properties
 		[Export ("numberStyle")]
@@ -12742,6 +16399,9 @@ namespace Foundation {
 		[Export ("currencyGroupingSeparator")]
 		string CurrencyGroupingSeparator { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("lenient")]
 		bool Lenient { [Bind ("isLenient")] get; set; }
 
@@ -12754,10 +16414,13 @@ namespace Foundation {
 		[Export ("maximumSignificantDigits")]
 		nuint MaximumSignificantDigits { get; set; }
 
+		/// <summary>Whether partial string validation is currently enabled.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("partialStringValidationEnabled")]
 		bool PartialStringValidationEnabled { [Bind ("isPartialStringValidationEnabled")] get; set; }
 
-		[Watch (11, 0), TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Export ("minimumGroupingDigits")]
 		nint MinimumGroupingDigits { get; set; }
 	}
@@ -12832,9 +16495,18 @@ namespace Foundation {
 		[Export ("decimalNumberByDividingBy:withBehavior:")]
 		NSDecimalNumber Divide (NSDecimalNumber d, NSObject Behavior);
 
+		/// <param name="power">To be added.</param>
+		/// <summary>Raises this number to the specified power.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("decimalNumberByRaisingToPower:")]
 		NSDecimalNumber RaiseTo (nuint power);
 
+		/// <param name="power">To be added.</param>
+		/// <param name="Behavior">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("decimalNumberByRaisingToPower:withBehavior:")]
 		NSDecimalNumber RaiseTo (nuint power, [NullAllowed] NSObject Behavior);
 
@@ -12912,12 +16584,21 @@ namespace Foundation {
 		[Export ("mainThread", ArgumentSemantic.Strong)]
 		NSThread MainThread { get; }
 
+		/// <summary>Whether this NSThread is executing.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isExecuting")]
 		bool IsExecuting { get; }
 
+		/// <summary>Whether this NSThread has finished processing.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isFinished")]
 		bool IsFinished { get; }
 
+		/// <summary>Whether this NSThread is cancelled.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isCancelled")]
 		bool IsCancelled { get; }
 
@@ -12952,32 +16633,77 @@ namespace Foundation {
 		[Export ("invalidate")]
 		void Invalidate ();
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isValid")]
 		bool IsValid { get; }
 
 		[Export ("delegate", ArgumentSemantic.Assign), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the Foundation.INSPortDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the Foundation.INSPortDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate"), NullAllowed]
 		INSPortDelegate Delegate { get; set; }
 
 		[Export ("scheduleInRunLoop:forMode:")]
 		void ScheduleInRunLoop (NSRunLoop runLoop, NSString runLoopMode);
 
+		/// <param name="runLoop">To be added.</param>
+		///         <param name="runLoopMode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("ScheduleInRunLoop (runLoop, runLoopMode.GetConstant ()!)")]
 		void ScheduleInRunLoop (NSRunLoop runLoop, NSRunLoopMode runLoopMode);
 
 		[Export ("removeFromRunLoop:forMode:")]
 		void RemoveFromRunLoop (NSRunLoop runLoop, NSString runLoopMode);
 
+		/// <param name="runLoop">To be added.</param>
+		///         <param name="runLoopMode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("RemoveFromRunLoop (runLoop, runLoopMode.GetConstant ()!)")]
 		void RemoveFromRunLoop (NSRunLoop runLoop, NSRunLoopMode runLoopMode);
 
 		// Disable warning for NSMutableArray
 #pragma warning disable 618
+		/// <param name="limitDate">To be added.</param>
+		/// <param name="components">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="receivePort">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="headerSpaceReserved">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("sendBeforeDate:components:from:reserved:")]
 		bool SendBeforeDate (NSDate limitDate, [NullAllowed] NSMutableArray components, [NullAllowed] NSPort receivePort, nuint headerSpaceReserved);
 
+		/// <param name="limitDate">To be added.</param>
+		/// <param name="msgID">To be added.</param>
+		/// <param name="components">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="receivePort">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="headerSpaceReserved">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("sendBeforeDate:msgid:components:from:reserved:")]
 		bool SendBeforeDate (NSDate limitDate, nuint msgID, [NullAllowed] NSMutableArray components, [NullAllowed] NSPort receivePort, nuint headerSpaceReserved);
 #pragma warning restore 618
@@ -12989,9 +16715,18 @@ namespace Foundation {
 
 	interface INSPortDelegate { }
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Foundation.NSPortDelegate" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Foundation.NSPortDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Foundation.NSPortDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="Foundation.NSPortDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[Model, BaseType (typeof (NSObject))]
 	[Protocol]
 	interface NSPortDelegate {
+		/// <param name="message">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoMacCatalyst]
 		[Export ("handlePortMessage:")]
 		void MessageReceived (NSPortMessage message);
@@ -13001,7 +16736,6 @@ namespace Foundation {
 	[MacCatalyst (15, 0)]
 	interface NSPortMessage {
 		[NoiOS]
-		[NoWatch]
 		[NoTV]
 		[MacCatalyst (15, 0)]
 		[DesignatedInitializer]
@@ -13010,7 +16744,6 @@ namespace Foundation {
 
 		[NullAllowed]
 		[NoiOS]
-		[NoWatch]
 		[NoTV]
 		[MacCatalyst (15, 0)]
 		[Export ("components")]
@@ -13021,7 +16754,6 @@ namespace Foundation {
 		// but the type is used (from NSPort[Delegate]) but not _itself_ documented
 		// The selectors Apple *currently* dislike are removed from the iOS build
 		[NoiOS]
-		[NoWatch]
 		[NoTV]
 		[MacCatalyst (15, 0)]
 		[Export ("sendBeforeDate:")]
@@ -13029,7 +16761,6 @@ namespace Foundation {
 
 		[NullAllowed]
 		[NoiOS]
-		[NoWatch]
 		[NoTV]
 		[MacCatalyst (15, 0)]
 		[Export ("receivePort")]
@@ -13037,14 +16768,12 @@ namespace Foundation {
 
 		[NullAllowed]
 		[NoiOS]
-		[NoWatch]
 		[NoTV]
 		[MacCatalyst (15, 0)]
 		[Export ("sendPort")]
 		NSPort SendPort { get; }
 
 		[NoiOS]
-		[NoWatch]
 		[NoTV]
 		[MacCatalyst (15, 0)]
 		[Export ("msgid")]
@@ -13086,15 +16815,31 @@ namespace Foundation {
 		[Override]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the Foundation.INSMachPortDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the Foundation.INSMachPortDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate"), NullAllowed]
 		INSMachPortDelegate Delegate { get; set; }
 	}
 
 	interface INSMachPortDelegate { }
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Foundation.NSMachPortDelegate" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Foundation.NSMachPortDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Foundation.NSMachPortDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="Foundation.NSMachPortDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[Model, BaseType (typeof (NSPortDelegate))]
 	[Protocol]
 	interface NSMachPortDelegate {
+		/// <param name="msgHeader">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("handleMachMessage:")]
 		void MachMessageReceived (IntPtr msgHeader);
 	}
@@ -13174,35 +16919,30 @@ namespace Foundation {
 
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Export ("enableSuddenTermination")]
 		void EnableSuddenTermination ();
 
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Export ("disableSuddenTermination")]
 		void DisableSuddenTermination ();
 
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Export ("enableAutomaticTermination:")]
 		void EnableAutomaticTermination (string reason);
 
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Export ("disableAutomaticTermination:")]
 		void DisableAutomaticTermination (string reason);
 
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Export ("automaticTerminationSupportEnabled")]
 		bool AutomaticTerminationSupportEnabled { get; set; }
@@ -13212,11 +16952,15 @@ namespace Foundation {
 		[Export ("performExpiringActivityWithReason:usingBlock:")]
 		void PerformExpiringActivity (string reason, Action<bool> block);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[TV (15, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("lowPowerModeEnabled")]
 		bool LowPowerModeEnabled { [Bind ("isLowPowerModeEnabled")] get; }
 
+		/// <include file="../docs/api/Foundation/NSProcessInfo.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSProcessInfo.PowerStateDidChangeNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("NSProcessInfoPowerStateDidChangeNotification")]
@@ -13226,18 +16970,19 @@ namespace Foundation {
 		[Export ("thermalState")]
 		NSProcessInfoThermalState ThermalState { get; }
 
+		/// <include file="../docs/api/Foundation/NSProcessInfo.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSProcessInfo.ThermalStateDidChangeNotification']/*" />
 		[Field ("NSProcessInfoThermalStateDidChangeNotification")]
 		[MacCatalyst (13, 1)]
 		[Notification]
 		NSString ThermalStateDidChangeNotification { get; }
 
 		#region NSProcessInfoPlatform (NSProcessInfo)
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("macCatalystApp")]
 		bool IsMacCatalystApplication { [Bind ("isMacCatalystApp")] get; }
 
-		[Watch (7, 0), TV (14, 0), iOS (14, 0)]
+		[TV (14, 0), iOS (14, 0)]
 		[MacCatalyst (14, 0)]
 		[Export ("iOSAppOnMac")]
 		bool IsiOSApplicationOnMac { [Bind ("isiOSAppOnMac")] get; }
@@ -13245,20 +16990,25 @@ namespace Foundation {
 
 		[Field ("NSProcessInfoPerformanceProfileDidChangeNotification", "Metal")]
 		[Notification]
-		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0), NoWatch]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		NSString PerformanceProfileDidChangeNotification { get; }
 	}
 
-	[NoWatch]
 	[NoTV]
 	[NoiOS]
 	[NoMacCatalyst]
 	[Category]
 	[BaseType (typeof (NSProcessInfo))]
 	interface NSProcessInfo_NSUserInformation {
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("userName")]
 		string GetUserName ();
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("fullUserName")]
 		string GetFullUserName ();
 	}
@@ -13307,24 +17057,45 @@ namespace Foundation {
 		[Export ("localizedAdditionalDescription", ArgumentSemantic.Copy), NullAllowed]
 		string LocalizedAdditionalDescription { get; set; }
 
+		/// <summary>Whether this is tracking work that can be cancelled.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("cancellable")]
 		bool Cancellable { [Bind ("isCancellable")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("pausable")]
 		bool Pausable { [Bind ("isPausable")] get; set; }
 
+		/// <summary>Whether this is tracking work that was cancelled.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("cancelled")]
 		bool Cancelled { [Bind ("isCancelled")] get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("paused")]
 		bool Paused { [Bind ("isPaused")] get; }
 
+		/// <param name="handler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setCancellationHandler:")]
 		void SetCancellationHandler (Action handler);
 
+		/// <param name="handler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setPausingHandler:")]
 		void SetPauseHandler (Action handler);
 
+		/// <param name="handler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("setResumingHandler:")]
 		void SetResumingHandler (Action handler);
@@ -13332,6 +17103,9 @@ namespace Foundation {
 		[Export ("setUserInfoObject:forKey:")]
 		void SetUserInfo ([NullAllowed] NSObject obj, NSString key);
 
+		/// <summary>Whether the tracked progress is indeterminate. Read-only.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("indeterminate")]
 		bool Indeterminate { [Bind ("isIndeterminate")] get; }
 
@@ -13357,120 +17131,184 @@ namespace Foundation {
 
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Export ("publish")]
 		void Publish ();
 
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Export ("unpublish")]
 		void Unpublish ();
 
+		/// <param name="acknowledgementHandler">To be added.</param>
+		///         <param name="appBundleIdentifier">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Export ("setAcknowledgementHandler:forAppBundleIdentifier:")]
 		void SetAcknowledgementHandler (Action<bool> acknowledgementHandler, string appBundleIdentifier);
 
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Static, Export ("addSubscriberForFileURL:withPublishingHandler:")]
 		NSObject AddSubscriberForFile (NSUrl url, Action<NSProgress> publishingHandler);
 
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Static, Export ("removeSubscriber:")]
 		void RemoveSubscriber (NSObject subscriber);
 
+		/// <param name="success">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Export ("acknowledgeWithSuccess:")]
 		void AcknowledgeWithSuccess (bool success);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Export ("old")]
 		bool Old { [Bind ("isOld")] get; }
 
+		/// <summary>Represents the value associated with the constant NSProgressKindFile</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSProgressKindFile")]
 		NSString KindFile { get; }
 
+		/// <summary>Represents the value associated with the constant NSProgressEstimatedTimeRemainingKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSProgressEstimatedTimeRemainingKey")]
 		NSString EstimatedTimeRemainingKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSProgressThroughputKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSProgressThroughputKey")]
 		NSString ThroughputKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSProgressFileOperationKindKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSProgressFileOperationKindKey")]
 		NSString FileOperationKindKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSProgressFileOperationKindDownloading</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSProgressFileOperationKindDownloading")]
 		NSString FileOperationKindDownloading { get; }
 
+		/// <summary>Represents the value associated with the constant NSProgressFileOperationKindDecompressingAfterDownloading</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSProgressFileOperationKindDecompressingAfterDownloading")]
 		NSString FileOperationKindDecompressingAfterDownloading { get; }
 
+		/// <summary>Represents the value associated with the constant NSProgressFileOperationKindReceiving</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSProgressFileOperationKindReceiving")]
 		NSString FileOperationKindReceiving { get; }
 
+		/// <summary>Represents the value associated with the constant NSProgressFileOperationKindCopying</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSProgressFileOperationKindCopying")]
 		NSString FileOperationKindCopying { get; }
 
-		[Watch (7, 4), TV (14, 5), iOS (14, 5)]
+		[TV (14, 5), iOS (14, 5)]
 		[MacCatalyst (14, 5)]
 		[Field ("NSProgressFileOperationKindUploading")]
 		NSString FileOperationKindUploading { get; }
 
+		/// <summary>Represents the value associated with the constant NSProgressFileURLKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSProgressFileURLKey")]
 		NSString FileURLKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSProgressFileTotalCountKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSProgressFileTotalCountKey")]
 		NSString FileTotalCountKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSProgressFileCompletedCountKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSProgressFileCompletedCountKey")]
 		NSString FileCompletedCountKey { get; }
 
-		[Watch (8, 0), TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 		[Field ("NSProgressFileOperationKindDuplicating")]
 		NSString FileOperationKindDuplicatingKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Field ("NSProgressFileAnimationImageKey")]
 		NSString FileAnimationImageKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Field ("NSProgressFileAnimationImageOriginalRectKey")]
 		NSString FileAnimationImageOriginalRectKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Field ("NSProgressFileIconKey")]
 		NSString FileIconKey { get; }
 
 		[MacCatalyst (13, 1)]
-		[Async, Export ("performAsCurrentWithPendingUnitCount:usingBlock:")]
+		[Async (XmlDocs = """
+			<param name="unitCount">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>A task that represents the asynchronous PerformAsCurrent operation</returns>
+			<remarks>
+			          <para copied="true">The PerformAsCurrentAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			"""), Export ("performAsCurrentWithPendingUnitCount:usingBlock:")]
 		void PerformAsCurrent (long unitCount, Action work);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("finished")]
 		bool Finished { [Bind ("isFinished")] get; }
 
@@ -13509,12 +17347,20 @@ namespace Foundation {
 
 	interface INSProgressReporting { }
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Foundation.INSProgressReporting" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Foundation.INSProgressReporting" />.</para>
+	///       <para>If you create objects that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Foundation.INSProgressReporting" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="Foundation.NSProgressReporting_Extensions" /> class as extension methods to the interface, allowing you to invoke any optional methods on the protocol.</para>
+	///     </remarks>
+	/// <summary>Extension methods to the <see cref="Foundation.INSProgressReporting" /> interface to support all the methods from the <see cref="Foundation.INSProgressReporting" /> protocol.</summary>
+	/// <remarks>
+	///       <para>The extension methods for <see cref="Foundation.INSProgressReporting" /> allow developers to treat instances of the interface as having all the optional methods of the original <see cref="Foundation.INSProgressReporting" /> protocol.   Since the interface only contains the required members, these extension methods allow developers to call the optional members of the protocol.</para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface NSProgressReporting {
-#if NET
 		[Abstract]
-#endif
 		[Export ("progress")]
 		NSProgress Progress { get; }
 	}
@@ -13523,25 +17369,43 @@ namespace Foundation {
 	interface NSPurgeableData : NSSecureCoding, NSMutableCopying, NSDiscardableContent {
 	}
 
+	/// <summary>Interface for a class that can save memory by discarding some of its subcomponents when they are not in use.</summary>
+	/// <remarks>To be added.</remarks>
 	[Protocol]
 	interface NSDiscardableContent {
+		/// <summary>Requests access to the content, and returns <see langword="true" /> if the contents are available and were successfully accessed. (Otherwise, returns <see langword="false" />.)</summary>
+		/// <returns>
+		///           <see langword="true" /> if the contents can be retrieved.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("beginContentAccess")]
 		bool BeginContentAccess ();
 
+		/// <summary>Indicates that access to the content is no longer needed.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("endContentAccess")]
 		void EndContentAccess ();
 
+		/// <summary>Discards the content if it is not being accessed.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("discardContentIfPossible")]
 		void DiscardContentIfPossible ();
 
+		/// <summary>Gets a Boolean value that tells whether the content has been discarded.</summary>
+		/// <value>
+		///           <see langword="true" /> if the content has been discarded.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("isContentDiscarded")]
 		bool IsContentDiscarded { get; }
 	}
 
+	/// <param name="newReadingUrl">To be added.</param>
+	/// <param name="newWritingUrl">To be added.</param>
+	/// <summary>A delegate that used with a number of coordinated read-and-write functions in <see cref="Foundation.NSFileCoordinator" />.</summary>
+	/// <remarks>To be added.</remarks>
 	delegate void NSFileCoordinatorWorkerRW (NSUrl newReadingUrl, NSUrl newWritingUrl);
 
 	interface INSFilePresenter { }
@@ -13565,12 +17429,6 @@ namespace Foundation {
 		[Export ("initWithFilePresenter:")]
 		NativeHandle Constructor ([NullAllowed] INSFilePresenter filePresenterOrNil);
 
-#if !NET
-		[Obsolete ("Use '.ctor(INSFilePresenter)' instead.")]
-		[Wrap ("this (filePresenterOrNil as INSFilePresenter)")]
-		NativeHandle Constructor ([NullAllowed] NSFilePresenter filePresenterOrNil);
-#endif
-
 		[Export ("coordinateReadingItemAtURL:options:error:byAccessor:")]
 		void CoordinateRead (NSUrl itemUrl, NSFileCoordinatorReadingOptions options, out NSError error, /* non null */ Action<NSUrl> worker);
 
@@ -13582,12 +17440,6 @@ namespace Foundation {
 
 		[Export ("coordinateWritingItemAtURL:options:writingItemAtURL:options:error:byAccessor:")]
 		void CoordinateWriteWrite (NSUrl writingURL, NSFileCoordinatorWritingOptions writingOptions, NSUrl writingURL2, NSFileCoordinatorWritingOptions writingOptions2, out NSError error, /* non null */ NSFileCoordinatorWorkerRW writeWriteWorker);
-
-#if !NET
-		[Obsolete ("Use 'CoordinateBatch' instead.")]
-		[Wrap ("CoordinateBatch (readingURLs, readingOptions, writingURLs, writingOptions, out error, batchHandler)", IsVirtual = true)]
-		void CoordinateBatc (NSUrl [] readingURLs, NSFileCoordinatorReadingOptions readingOptions, NSUrl [] writingURLs, NSFileCoordinatorWritingOptions writingOptions, out NSError error, /* non null */ Action batchHandler);
-#endif
 
 		[Export ("prepareForReadingItemsAtURLs:options:writingItemsAtURLs:options:error:byAccessor:")]
 		void CoordinateBatch (NSUrl [] readingURLs, NSFileCoordinatorReadingOptions readingOptions, NSUrl [] writingURLs, NSFileCoordinatorWritingOptions writingOptions, out NSError error, /* non null */ Action batchHandler);
@@ -13608,7 +17460,7 @@ namespace Foundation {
 		[Export ("purposeIdentifier")]
 		string PurposeIdentifier { get; set; }
 
-		[NoWatch, NoTV]
+		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("itemAtURL:didChangeUbiquityAttributes:")]
 		void ItemUbiquityAttributesChanged (NSUrl url, NSSet<NSString> attributes);
@@ -13630,117 +17482,257 @@ namespace Foundation {
 
 	[BaseType (typeof (NSObject))]
 	partial interface NSFileManager {
+		/// <summary>Represents the value associated with the constant NSFileType</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileType")]
 		NSString NSFileType { get; }
 
+		/// <summary>Represents the value associated with the constant NSFileTypeDirectory</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileTypeDirectory")]
 		NSString TypeDirectory { get; }
 
+		/// <summary>Represents the value associated with the constant NSFileTypeRegular</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileTypeRegular")]
 		NSString TypeRegular { get; }
 
+		/// <summary>Represents the value associated with the constant NSFileTypeSymbolicLink</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileTypeSymbolicLink")]
 		NSString TypeSymbolicLink { get; }
 
+		/// <summary>Represents the value associated with the constant NSFileTypeSocket</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileTypeSocket")]
 		NSString TypeSocket { get; }
 
+		/// <summary>Represents the value associated with the constant NSFileTypeCharacterSpecial</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileTypeCharacterSpecial")]
 		NSString TypeCharacterSpecial { get; }
 
+		/// <summary>Represents the value associated with the constant NSFileTypeBlockSpecial</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileTypeBlockSpecial")]
 		NSString TypeBlockSpecial { get; }
 
+		/// <summary>Represents the value associated with the constant NSFileTypeUnknown</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileTypeUnknown")]
 		NSString TypeUnknown { get; }
 
+		/// <summary>Represents the value associated with the constant NSFileSize</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileSize")]
 		NSString Size { get; }
 
+		/// <summary>Represents the value associated with the constant NSFileModificationDate</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileModificationDate")]
 		NSString ModificationDate { get; }
 
+		/// <summary>Represents the value associated with the constant NSFileReferenceCount</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileReferenceCount")]
 		NSString ReferenceCount { get; }
 
+		/// <summary>Represents the value associated with the constant NSFileDeviceIdentifier</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileDeviceIdentifier")]
 		NSString DeviceIdentifier { get; }
 
+		/// <summary>Represents the value associated with the constant NSFileOwnerAccountName</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileOwnerAccountName")]
 		NSString OwnerAccountName { get; }
 
+		/// <summary>Represents the value associated with the constant NSFileGroupOwnerAccountName</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileGroupOwnerAccountName")]
 		NSString GroupOwnerAccountName { get; }
 
+		/// <summary>Represents the value associated with the constant NSFilePosixPermissions</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFilePosixPermissions")]
 		NSString PosixPermissions { get; }
 
+		/// <summary>Represents the value associated with the constant NSFileSystemNumber</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileSystemNumber")]
 		NSString SystemNumber { get; }
 
+		/// <summary>Represents the value associated with the constant NSFileSystemFileNumber</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileSystemFileNumber")]
 		NSString SystemFileNumber { get; }
 
+		/// <summary>Represents the value associated with the constant NSFileExtensionHidden</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileExtensionHidden")]
 		NSString ExtensionHidden { get; }
 
+		/// <summary>Represents the value associated with the constant NSFileHFSCreatorCode</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileHFSCreatorCode")]
 		NSString HfsCreatorCode { get; }
 
+		/// <summary>Represents the value associated with the constant NSFileHFSTypeCode</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileHFSTypeCode")]
 		NSString HfsTypeCode { get; }
 
+		/// <summary>Represents the value associated with the constant NSFileImmutable</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileImmutable")]
 		NSString Immutable { get; }
 
+		/// <summary>Represents the value associated with the constant NSFileAppendOnly</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileAppendOnly")]
 		NSString AppendOnly { get; }
 
+		/// <summary>Represents the value associated with the constant NSFileCreationDate</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileCreationDate")]
 		NSString CreationDate { get; }
 
+		/// <summary>Represents the value associated with the constant NSFileOwnerAccountID</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileOwnerAccountID")]
 		NSString OwnerAccountID { get; }
 
+		/// <summary>Represents the value associated with the constant NSFileGroupOwnerAccountID</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileGroupOwnerAccountID")]
 		NSString GroupOwnerAccountID { get; }
 
+		/// <summary>Represents the value associated with the constant NSFileBusy</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileBusy")]
 		NSString Busy { get; }
 
+		/// <summary>Represents the value associated with the constant NSFileProtectionKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("NSFileProtectionKey")]
 		NSString FileProtectionKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSFileProtectionNone</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use the 'NSFileProtectionType' instead.")]
 		[MacCatalyst (13, 1)]
 		[Field ("NSFileProtectionNone")]
 		NSString FileProtectionNone { get; }
 
+		/// <summary>Represents the value associated with the constant NSFileProtectionComplete</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use the 'NSFileProtectionType' instead.")]
 		[MacCatalyst (13, 1)]
 		[Field ("NSFileProtectionComplete")]
 		NSString FileProtectionComplete { get; }
 
+		/// <summary>Represents the value associated with the constant NSFileProtectionCompleteUnlessOpen</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use the 'NSFileProtectionType' instead.")]
 		[MacCatalyst (13, 1)]
 		[Field ("NSFileProtectionCompleteUnlessOpen")]
 		NSString FileProtectionCompleteUnlessOpen { get; }
 
+		/// <summary>Represents the value associated with the constant NSFileProtectionCompleteUntilFirstUserAuthentication</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use the 'NSFileProtectionType' instead.")]
 		[MacCatalyst (13, 1)]
 		[Field ("NSFileProtectionCompleteUntilFirstUserAuthentication")]
 		NSString FileProtectionCompleteUntilFirstUserAuthentication { get; }
 
+		/// <summary>Represents the value associated with the constant NSFileSystemSize</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileSystemSize")]
 		NSString SystemSize { get; }
 
+		/// <summary>Represents the value associated with the constant NSFileSystemFreeSize</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileSystemFreeSize")]
 		NSString SystemFreeSize { get; }
 
+		/// <summary>Represents the value associated with the constant NSFileSystemNodes</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileSystemNodes")]
 		NSString SystemNodes { get; }
 
+		/// <summary>Represents the value associated with the constant NSFileSystemFreeNodes</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileSystemFreeNodes")]
 		NSString SystemFreeNodes { get; }
 
@@ -13751,6 +17743,13 @@ namespace Foundation {
 		[NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the Foundation.INSFileManagerDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the Foundation.INSFileManagerDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		[NullAllowed]
 		INSFileManagerDelegate Delegate { get; set; }
@@ -13918,6 +17917,7 @@ namespace Foundation {
 		[Export ("ubiquityIdentityToken")]
 		NSObject UbiquityIdentityToken { get; }
 
+		/// <include file="../docs/api/Foundation/NSFileManager.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSFileManager.UbiquityIdentityDidChangeNotification']/*" />
 		[Field ("NSUbiquityIdentityDidChangeNotification")]
 		[Notification]
 		NSString UbiquityIdentityDidChangeNotification { get; }
@@ -13933,87 +17933,208 @@ namespace Foundation {
 		[Export ("getRelationship:ofDirectoryAtURL:toItemAtURL:error:")]
 		bool GetRelationship (out NSUrlRelationship outRelationship, NSUrl directoryURL, NSUrl otherURL, out NSError error);
 
-		[NoWatch]
 		[NoTV]
 		[NoiOS]
 		[NoMacCatalyst]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="url">To be added.</param>
+			<param name="mask">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("unmountVolumeAtURL:options:completionHandler:")]
 		void UnmountVolume (NSUrl url, NSFileManagerUnmountOptions mask, Action<NSError> completionHandler);
 
-		[NoWatch, NoTV]
+		[NoTV]
 		[MacCatalyst (13, 1)]
-		[Async, Export ("getFileProviderServicesForItemAtURL:completionHandler:")]
+		[Async (XmlDocs = """
+			<param name="url">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous GetFileProviderServices operation.  The value of the TResult parameter is of type System.Action&lt;Foundation.NSDictionary&lt;Foundation.NSString,Foundation.NSFileProviderService&gt;,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The GetFileProviderServicesAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			"""), Export ("getFileProviderServicesForItemAtURL:completionHandler:")]
 		void GetFileProviderServices (NSUrl url, Action<NSDictionary<NSString, NSFileProviderService>, NSError> completionHandler);
 	}
 
 	interface INSFileManagerDelegate { }
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Foundation.NSFileManagerDelegate" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Foundation.NSFileManagerDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Foundation.NSFileManagerDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="Foundation.NSFileManagerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[BaseType (typeof (NSObject))]
 	[Model]
 	[Protocol]
 	interface NSFileManagerDelegate {
+		/// <param name="fm">To be added.</param>
+		/// <param name="srcPath">To be added.</param>
+		/// <param name="dstPath">To be added.</param>
+		/// <summary>Creates a copy of this object, allocating memory from the specified zone or from the default zone if the argument is null.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("fileManager:shouldCopyItemAtPath:toPath:")]
 		bool ShouldCopyItemAtPath (NSFileManager fm, NSString srcPath, NSString dstPath);
 
+		/// <param name="fm">To be added.</param>
+		/// <param name="srcUrl">To be added.</param>
+		/// <param name="dstUrl">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("fileManager:shouldCopyItemAtURL:toURL:")]
 		bool ShouldCopyItemAtUrl (NSFileManager fm, NSUrl srcUrl, NSUrl dstUrl);
 
+		/// <param name="fileManager">To be added.</param>
+		/// <param name="srcUrl">To be added.</param>
+		/// <param name="dstUrl">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("fileManager:shouldLinkItemAtURL:toURL:")]
 		bool ShouldLinkItemAtUrl (NSFileManager fileManager, NSUrl srcUrl, NSUrl dstUrl);
 
+		/// <param name="fileManager">To be added.</param>
+		/// <param name="srcUrl">To be added.</param>
+		/// <param name="dstUrl">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("fileManager:shouldMoveItemAtURL:toURL:")]
 		bool ShouldMoveItemAtUrl (NSFileManager fileManager, NSUrl srcUrl, NSUrl dstUrl);
 
+		/// <param name="fileManager">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <param name="srcUrl">To be added.</param>
+		/// <param name="dstUrl">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("fileManager:shouldProceedAfterError:copyingItemAtURL:toURL:")]
 		bool ShouldProceedAfterErrorCopyingItem (NSFileManager fileManager, NSError error, NSUrl srcUrl, NSUrl dstUrl);
 
+		/// <param name="fileManager">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <param name="srcUrl">To be added.</param>
+		/// <param name="dstUrl">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("fileManager:shouldProceedAfterError:linkingItemAtURL:toURL:")]
 		bool ShouldProceedAfterErrorLinkingItem (NSFileManager fileManager, NSError error, NSUrl srcUrl, NSUrl dstUrl);
 
+		/// <param name="fileManager">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <param name="srcUrl">To be added.</param>
+		/// <param name="dstUrl">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("fileManager:shouldProceedAfterError:movingItemAtURL:toURL:")]
 		bool ShouldProceedAfterErrorMovingItem (NSFileManager fileManager, NSError error, NSUrl srcUrl, NSUrl dstUrl);
 
+		/// <param name="fileManager">To be added.</param>
+		/// <param name="url">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("fileManager:shouldRemoveItemAtURL:")]
 		bool ShouldRemoveItemAtUrl (NSFileManager fileManager, NSUrl url);
 
+		/// <param name="fileManager">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <param name="url">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("fileManager:shouldProceedAfterError:removingItemAtURL:")]
 		bool ShouldProceedAfterErrorRemovingItem (NSFileManager fileManager, NSError error, NSUrl url);
 
+		/// <param name="fileManager">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <param name="srcPath">To be added.</param>
+		/// <param name="dstPath">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("fileManager:shouldProceedAfterError:copyingItemAtPath:toPath:")]
 		bool ShouldProceedAfterErrorCopyingItem (NSFileManager fileManager, NSError error, string srcPath, string dstPath);
 
+		/// <param name="fileManager">To be added.</param>
+		/// <param name="srcPath">To be added.</param>
+		/// <param name="dstPath">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("fileManager:shouldMoveItemAtPath:toPath:")]
 		bool ShouldMoveItemAtPath (NSFileManager fileManager, string srcPath, string dstPath);
 
+		/// <param name="fileManager">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <param name="srcPath">To be added.</param>
+		/// <param name="dstPath">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("fileManager:shouldProceedAfterError:movingItemAtPath:toPath:")]
 		bool ShouldProceedAfterErrorMovingItem (NSFileManager fileManager, NSError error, string srcPath, string dstPath);
 
+		/// <param name="fileManager">To be added.</param>
+		/// <param name="srcPath">To be added.</param>
+		/// <param name="dstPath">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("fileManager:shouldLinkItemAtPath:toPath:")]
 		bool ShouldLinkItemAtPath (NSFileManager fileManager, string srcPath, string dstPath);
 
+		/// <param name="fileManager">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <param name="srcPath">To be added.</param>
+		/// <param name="dstPath">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("fileManager:shouldProceedAfterError:linkingItemAtPath:toPath:")]
 		bool ShouldProceedAfterErrorLinkingItem (NSFileManager fileManager, NSError error, string srcPath, string dstPath);
 
+		/// <param name="fileManager">To be added.</param>
+		/// <param name="path">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("fileManager:shouldRemoveItemAtPath:")]
 		bool ShouldRemoveItemAtPath (NSFileManager fileManager, string path);
 
+		/// <param name="fileManager">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <param name="path">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("fileManager:shouldProceedAfterError:removingItemAtPath:")]
 		bool ShouldProceedAfterErrorRemovingItem (NSFileManager fileManager, NSError error, string path);
 	}
@@ -14022,18 +18143,26 @@ namespace Foundation {
 	[BaseType (typeof (NSFileManager))]
 	interface NSFileManager_NSUserInformation {
 
-		[NoWatch]
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[NoiOS]
 		[NoMacCatalyst]
 		[Export ("homeDirectoryForCurrentUser")]
 		NSUrl GetHomeDirectoryForCurrentUser ();
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("temporaryDirectory")]
 		NSUrl GetTemporaryDirectory ();
 
-		[NoWatch]
+		/// <param name="userName">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[NoiOS]
 		[NoMacCatalyst]
@@ -14042,87 +18171,157 @@ namespace Foundation {
 		NSUrl GetHomeDirectory (string userName);
 	}
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Foundation.NSFilePresenter" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Foundation.NSFilePresenter" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Foundation.NSFilePresenter" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="Foundation.NSFilePresenter_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[BaseType (typeof (NSObject))]
 	[Model]
 	[Protocol]
 	partial interface NSFilePresenter {
+		/// <summary>Gets URL of presented item.</summary>
+		/// <value>
+		///         </value>
+		/// <remarks>
+		///           <para>
+		///           </para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[Abstract]
 		[Export ("presentedItemURL", ArgumentSemantic.Retain)]
 		[NullAllowed]
-#if NET
 		NSUrl PresentedItemUrl { get; }
-#else
-		NSUrl PresentedItemURL { get; }
-#endif
 
+		/// <summary>Gets the <see cref="Monotouch.Foundation.NSOperationQueue" /> on which presenter-related methods are executed.</summary>
+		/// <value>The <see cref="Monotouch.Foundation.NSOperationQueue" /> on which methods are executed.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("presentedItemOperationQueue", ArgumentSemantic.Retain)]
-#if NET
 		NSOperationQueue PresentedItemOperationQueue { get; }
-#else
-		NSOperationQueue PesentedItemOperationQueue { get; }
-#endif
 
 #if DOUBLE_BLOCKS
+		/// <param name="readerAction">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("relinquishPresentedItemToReader:")]
 		void RelinquishPresentedItemToReader (NSFilePresenterReacquirer readerAction);
 
+		/// <param name="writerAction">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("relinquishPresentedItemToWriter:")]
 		void RelinquishPresentedItemToWriter (NSFilePresenterReacquirer writerAction);
 #endif
 
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("savePresentedItemChangesWithCompletionHandler:")]
 		void SavePresentedItemChanges (Action<NSError> completionHandler);
 
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("accommodatePresentedItemDeletionWithCompletionHandler:")]
 		void AccommodatePresentedItemDeletion (Action<NSError> completionHandler);
 
-		[NoWatch, NoTV, Mac (14, 4), iOS (17, 4), MacCatalyst (17, 4)]
+		[NoTV, Mac (14, 4), iOS (17, 4), MacCatalyst (17, 4)]
 		[Export ("accommodatePresentedItemEvictionWithCompletionHandler:")]
 		void AccommodatePresentedItemEviction (Action<NSError> completionHandler);
 
+		/// <param name="newURL">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("presentedItemDidMoveToURL:")]
 		void PresentedItemMoved (NSUrl newURL);
 
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("presentedItemDidChange")]
 		void PresentedItemChanged ();
 
+		/// <param name="version">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("presentedItemDidGainVersion:")]
 		void PresentedItemGainedVersion (NSFileVersion version);
 
+		/// <param name="version">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("presentedItemDidLoseVersion:")]
 		void PresentedItemLostVersion (NSFileVersion version);
 
+		/// <param name="version">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("presentedItemDidResolveConflictVersion:")]
 		void PresentedItemResolveConflictVersion (NSFileVersion version);
 
+		/// <param name="url">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("accommodatePresentedSubitemDeletionAtURL:completionHandler:")]
 		void AccommodatePresentedSubitemDeletion (NSUrl url, Action<NSError> completionHandler);
 
+		/// <param name="atUrl">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("presentedSubitemDidAppearAtURL:")]
 		void PresentedSubitemAppeared (NSUrl atUrl);
 
+		/// <param name="oldURL">To be added.</param>
+		/// <param name="newURL">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("presentedSubitemAtURL:didMoveToURL:")]
 		void PresentedSubitemMoved (NSUrl oldURL, NSUrl newURL);
 
+		/// <param name="url">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("presentedSubitemDidChangeAtURL:")]
 		void PresentedSubitemChanged (NSUrl url);
 
+		/// <param name="url">To be added.</param>
+		/// <param name="version">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("presentedSubitemAtURL:didGainVersion:")]
 		void PresentedSubitemGainedVersion (NSUrl url, NSFileVersion version);
 
+		/// <param name="url">To be added.</param>
+		/// <param name="version">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("presentedSubitemAtURL:didLoseVersion:")]
 		void PresentedSubitemLostVersion (NSUrl url, NSFileVersion version);
 
+		/// <param name="url">To be added.</param>
+		/// <param name="version">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("presentedSubitemAtURL:didResolveConflictVersion:")]
 		void PresentedSubitemResolvedConflictVersion (NSUrl url, NSFileVersion version);
 
-		[NoWatch, NoTV]
+		/// <param name="attributes">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
+		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("presentedItemDidChangeUbiquityAttributes:")]
 		void PresentedItemChangedUbiquityAttributes (NSSet<NSString> attributes);
 
-		[NoWatch, NoTV]
+		/// <summary>Gets the set of ubiquity attributes that will generate notifications if they are modified.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
+		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("observedPresentedItemUbiquityAttributes", ArgumentSemantic.Strong)]
 		NSSet<NSString> PresentedItemObservedUbiquityAttributes { get; }
@@ -14149,15 +18348,23 @@ namespace Foundation {
 		[Export ("persistentIdentifier", ArgumentSemantic.Retain)]
 		NSObject PersistentIdentifier { get; }
 
+		/// <summary>Whether this NSFileVersion is in conflict with another NSFileVersion. Read-only.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("conflict")]
 		bool IsConflict { [Bind ("isConflict")] get; }
 
+		/// <summary>True if this version is not in conflict with another version. App devs should not assign the value false to this property.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("resolved")]
 		bool Resolved { [Bind ("isResolved")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Export ("discardable")]
 		bool Discardable { [Bind ("isDiscardable")] get; set; }
@@ -14176,7 +18383,17 @@ namespace Foundation {
 
 		[MacCatalyst (13, 1)]
 		[Static]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="url">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous GetNonlocalVersions operation.   The value of the TResult parameter is a <see cref="Foundation.NSFileVersionNonlocalVersionsCompletionHandler" />.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The GetNonlocalVersionsAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("getNonlocalVersionsOfItemAtURL:completionHandler:")]
 		void GetNonlocalVersions (NSUrl url, NSFileVersionNonlocalVersionsCompletionHandler completionHandler);
 
@@ -14194,7 +18411,6 @@ namespace Foundation {
 
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[return: NullAllowed]
 		[Static]
@@ -14203,7 +18419,6 @@ namespace Foundation {
 
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Static]
 		[Export ("temporaryDirectoryURLForNewVersionOfItemAtURL:")]
@@ -14219,7 +18434,7 @@ namespace Foundation {
 		[Export ("removeOtherVersionsOfItemAtURL:error:")]
 		bool RemoveOtherVersions (NSUrl url, out NSError outError);
 
-		[NoWatch, NoTV]
+		[NoTV]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("originatorNameComponents", ArgumentSemantic.Copy)]
 		NSPersonNameComponents OriginatorNameComponents { get; }
@@ -14247,12 +18462,21 @@ namespace Foundation {
 		//[Export ("initWithSerializedRepresentation:")]
 		//NativeHandle Constructor (NSData serializeRepresentation);
 
+		/// <summary>Whether this is a directory file wrapper.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isDirectory")]
 		bool IsDirectory { get; }
 
+		/// <summary>Whether this is a regular file wrapper.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isRegularFile")]
 		bool IsRegularFile { get; }
 
+		/// <summary>Whether this is a file wrapper for a symbolic link.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isSymbolicLink")]
 		bool IsSymbolicLink { get; }
 
@@ -14302,9 +18526,11 @@ namespace Foundation {
 		[Export ("fileAttributes", ArgumentSemantic.Copy)]
 		NSDictionary FileAttributes { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Export ("icon", ArgumentSemantic.Retain)]
 		NSImage Icon { get; set; }
@@ -14326,13 +18552,18 @@ namespace Foundation {
 		[Export ("level")]
 		nint Level { get; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("isEnumeratingDirectoryPostOrder")]
 		bool IsEnumeratingDirectoryPostOrder { get; }
 	}
 
-	delegate bool NSPredicateEvaluator (NSObject evaluatedObject, NSDictionary bindings);
+	/// <param name="evaluatedObject">To be added.</param>
+	/// <param name="bindings">To be added.</param>
+	/// <summary>A delegate that represents the expression to use with <see cref="Foundation.NSPredicate.FromExpression(Foundation.NSPredicateEvaluator)" />.</summary>
+	/// <returns>To be added.</returns>
+	/// <remarks>To be added.</remarks>
+	delegate bool NSPredicateEvaluator ([NullAllowed] NSObject evaluatedObject, [NullAllowed] NSDictionary bindings);
 
 	[BaseType (typeof (NSObject))]
 	// 'init' returns NIL
@@ -14365,7 +18596,6 @@ namespace Foundation {
 		[Static]
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Export ("predicateFromMetadataQueryString:")]
 		NSPredicate FromMetadataQueryString (string query);
@@ -14375,47 +18605,86 @@ namespace Foundation {
 		void AllowEvaluation ();
 	}
 
+	/// <summary>Defines an extension method for <see cref="Foundation.NSOrderedSet" /> objects allowing them to be filtered via an <see cref="Foundation.NSPredicate" />.</summary>
+	/// <remarks>To be added.</remarks>
 	[Category, BaseType (typeof (NSOrderedSet))]
 	partial interface NSPredicateSupport_NSOrderedSet {
+		/// <param name="p">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("filteredOrderedSetUsingPredicate:")]
 		NSOrderedSet FilterUsingPredicate (NSPredicate p);
 	}
 
+	/// <summary>Defines an extension method for <see cref="Foundation.NSMutableOrderedSet" /> objects allowing them to be filtered using a <see cref="Foundation.NSPredicate" />.</summary>
+	/// <remarks>To be added.</remarks>
 	[Category, BaseType (typeof (NSMutableOrderedSet))]
 	partial interface NSPredicateSupport_NSMutableOrderedSet {
+		/// <param name="p">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("filterUsingPredicate:")]
 		void FilterUsingPredicate (NSPredicate p);
 	}
 
+	/// <summary>Extension method for <see cref="Foundation.NSArray" /> objects, allowing them to be filtered with a <see cref="Foundation.NSPredicate" />.</summary>
+	/// <remarks>To be added.</remarks>
 	[Category, BaseType (typeof (NSArray))]
 	partial interface NSPredicateSupport_NSArray {
+		/// <param name="array">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("filteredArrayUsingPredicate:")]
 		NSArray FilterUsingPredicate (NSArray array);
 	}
 
 #pragma warning disable 618
+	/// <summary>Helper metohds for applying predicates to mutable arrays.</summary>
+	/// <remarks>
+	///     </remarks>
 	[Category, BaseType (typeof (NSMutableArray))]
 #pragma warning restore 618
 	partial interface NSPredicateSupport_NSMutableArray {
+		/// <param name="predicate">The predicate used to filter the
+		/// 	elements of the array.</param>
+		/// <summary>Filters the element of the array in place, by keeping
+		/// 	only the elements that match.</summary>
+		/// <remarks>
+		///         </remarks>
 		[Export ("filterUsingPredicate:")]
 		void FilterUsingPredicate (NSPredicate predicate);
 	}
 
+	/// <summary>Helper methods for applying predicates to sets.</summary>
+	/// <remarks>To be added.</remarks>
 	[Category, BaseType (typeof (NSSet))]
 	partial interface NSPredicateSupport_NSSet {
+		/// <param name="predicate">The predicate used to filter the
+		/// 	elements of the set.</param>
+		/// <summary>Returns a new set that contains the elements that
+		/// 	match the predicate.</summary>
+		/// <returns>A new immutable set.</returns>
+		/// <remarks>
+		///         </remarks>
 		[Export ("filteredSetUsingPredicate:")]
 		NSSet FilterUsingPredicate (NSPredicate predicate);
 	}
 
+	/// <summary>Extension method for <see cref="Foundation.NSMutableSet" /> objects, allowing them to be filtered with a <see cref="Foundation.NSPredicate" />.</summary>
+	/// <remarks>To be added.</remarks>
 	[Category, BaseType (typeof (NSMutableSet))]
 	partial interface NSPredicateSupport_NSMutableSet {
+		/// <param name="predicate">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("filterUsingPredicate:")]
 		void FilterUsingPredicate (NSPredicate predicate);
 	}
 
 	[NoiOS]
 	[NoMacCatalyst]
-	[NoWatch]
 	[NoTV]
 	[BaseType (typeof (NSObject), Name = "NSURLDownload")]
 	interface NSUrlDownload {
@@ -14449,83 +18718,167 @@ namespace Foundation {
 
 	[NoiOS]
 	[NoMacCatalyst]
-	[NoWatch]
 	[NoTV]
 	[BaseType (typeof (NSObject))]
 	[Model]
 	[Protocol (Name = "NSURLDownloadDelegate")]
 	interface NSUrlDownloadDelegate {
+		/// <param name="download">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("downloadDidBegin:")]
 		void DownloadBegan (NSUrlDownload download);
 
+		/// <param name="download">To be added.</param>
+		/// <param name="request">To be added.</param>
+		/// <param name="redirectResponse">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("download:willSendRequest:redirectResponse:")]
 		NSUrlRequest WillSendRequest (NSUrlDownload download, NSUrlRequest request, NSUrlResponse redirectResponse);
 
+		/// <param name="download">To be added.</param>
+		/// <param name="challenge">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("download:didReceiveAuthenticationChallenge:")]
 		void ReceivedAuthenticationChallenge (NSUrlDownload download, NSUrlAuthenticationChallenge challenge);
 
+		/// <param name="download">To be added.</param>
+		/// <param name="challenge">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("download:didCancelAuthenticationChallenge:")]
 		void CanceledAuthenticationChallenge (NSUrlDownload download, NSUrlAuthenticationChallenge challenge);
 
+		/// <param name="download">To be added.</param>
+		/// <param name="response">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("download:didReceiveResponse:")]
 		void ReceivedResponse (NSUrlDownload download, NSUrlResponse response);
 
 		//- (void)download:(NSUrlDownload *)download willResumeWithResponse:(NSUrlResponse *)response fromByte:(long long)startingByte;
+		/// <param name="download">To be added.</param>
+		/// <param name="response">To be added.</param>
+		/// <param name="startingByte">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("download:willResumeWithResponse:fromByte:")]
 		void Resume (NSUrlDownload download, NSUrlResponse response, long startingByte);
 
 		//- (void)download:(NSUrlDownload *)download didReceiveDataOfLength:(NSUInteger)length;
+		/// <param name="download">To be added.</param>
+		/// <param name="length">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("download:didReceiveDataOfLength:")]
 		void ReceivedData (NSUrlDownload download, nuint length);
 
+		/// <param name="download">To be added.</param>
+		/// <param name="encodingType">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("download:shouldDecodeSourceDataOfMIMEType:")]
 		bool DecodeSourceData (NSUrlDownload download, string encodingType);
 
+		/// <param name="download">To be added.</param>
+		/// <param name="suggestedFilename">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("download:decideDestinationWithSuggestedFilename:")]
 		void DecideDestination (NSUrlDownload download, string suggestedFilename);
 
+		/// <param name="download">To be added.</param>
+		/// <param name="path">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("download:didCreateDestination:")]
 		void CreatedDestination (NSUrlDownload download, string path);
 
+		/// <param name="download">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("downloadDidFinish:")]
 		void Finished (NSUrlDownload download);
 
+		/// <param name="download">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("download:didFailWithError:")]
 		void FailedWithError (NSUrlDownload download, NSError error);
 	}
 
 	// Users are not supposed to implement the NSUrlProtocolClient protocol, they're 
 	// only supposed to consume it. This is why there's no model for this protocol.
+	/// <summary>The URL protocol client category.</summary>
+	/// <remarks>To be added.</remarks>
 	[Protocol (Name = "NSURLProtocolClient")]
 	interface NSUrlProtocolClient {
+		/// <param name="protocol">To be added.</param>
+		/// <param name="redirectedToEequest">To be added.</param>
+		/// <param name="redirectResponse">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("URLProtocol:wasRedirectedToRequest:redirectResponse:")]
 		void Redirected (NSUrlProtocol protocol, NSUrlRequest redirectedToEequest, NSUrlResponse redirectResponse);
 
+		/// <param name="protocol">To be added.</param>
+		/// <param name="cachedResponse">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("URLProtocol:cachedResponseIsValid:")]
 		void CachedResponseIsValid (NSUrlProtocol protocol, NSCachedUrlResponse cachedResponse);
 
+		/// <param name="protocol">To be added.</param>
+		/// <param name="response">To be added.</param>
+		/// <param name="policy">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("URLProtocol:didReceiveResponse:cacheStoragePolicy:")]
 		void ReceivedResponse (NSUrlProtocol protocol, NSUrlResponse response, NSUrlCacheStoragePolicy policy);
 
+		/// <param name="protocol">To be added.</param>
+		/// <param name="data">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("URLProtocol:didLoadData:")]
 		void DataLoaded (NSUrlProtocol protocol, NSData data);
 
+		/// <param name="protocol">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("URLProtocolDidFinishLoading:")]
 		void FinishedLoading (NSUrlProtocol protocol);
 
+		/// <param name="protocol">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("URLProtocol:didFailWithError:")]
 		void FailedWithError (NSUrlProtocol protocol, NSError error);
 
+		/// <param name="protocol">To be added.</param>
+		/// <param name="challenge">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("URLProtocol:didReceiveAuthenticationChallenge:")]
 		void ReceivedAuthenticationChallenge (NSUrlProtocol protocol, NSUrlAuthenticationChallenge challenge);
 
+		/// <param name="protocol">To be added.</param>
+		/// <param name="challenge">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("URLProtocol:didCancelAuthenticationChallenge:")]
 		void CancelledAuthenticationChallenge (NSUrlProtocol protocol, NSUrlAuthenticationChallenge challenge);
@@ -14636,23 +18989,35 @@ namespace Foundation {
 
 	interface INSExtensionRequestHandling { }
 
+	/// <include file="../docs/api/Foundation/INSExtensionRequestHandling.xml" path="/Documentation/Docs[@DocId='T:Foundation.INSExtensionRequestHandling']/*" />
 	[MacCatalyst (13, 1)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface NSExtensionRequestHandling {
+		/// <param name="context">The <see cref="Monotouch.Foundation.NSExtensionContext" /> containing extension-relevant data.</param>
+		/// <summary>Developers can implement this method to prepare their extension for the host application request.</summary>
+		/// <remarks>
+		///           <para>Developers who implement this method must call <c>base.BeginRequestWithExtensionContext(context)</c> within their implementation.</para>
+		///         </remarks>
 		[Abstract]
 		// @required - (void)beginRequestWithExtensionContext:(NSExtensionContext *)context;
 		[Export ("beginRequestWithExtensionContext:")]
 		void BeginRequestWithExtensionContext (NSExtensionContext context);
 	}
 
+	/// <summary>Interface that, together with the <see cref="Foundation.NSLocking_Extensions" /> class, comprise the NSLocking protocol.</summary>
+	/// <remarks>To be added.</remarks>
 	[Protocol]
 	interface NSLocking {
 
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("lock")]
 		void Lock ();
 
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("unlock")]
 		void Unlock ();
@@ -14687,6 +19052,9 @@ namespace Foundation {
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		NSDictionary WeakComponents { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakComponents")]
 		NSTextCheckingTransitComponents Components { get; }
 
@@ -14711,15 +19079,26 @@ namespace Foundation {
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		NSDictionary WeakAddressComponents { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakAddressComponents")]
 		NSTextCheckingAddressComponents AddressComponents { get; }
 
 		[Export ("numberOfRanges")]
 		nuint NumberOfRanges { get; }
 
+		/// <param name="idx">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("rangeAtIndex:")]
 		NSRange RangeAtIndex (nuint idx);
 
+		/// <param name="offset">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("resultByAdjustingRangesWithOffset:")]
 		NSTextCheckingResult ResultByAdjustingRanges (nint offset);
 
@@ -14750,6 +19129,11 @@ namespace Foundation {
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		NSTextCheckingResult AddressCheckingResult (NSRange range, NSDictionary components);
 
+		/// <param name="range">To be added.</param>
+		///         <param name="components">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Wrap ("AddressCheckingResult (range, components.GetDictionary ()!)")]
 		NSTextCheckingResult AddressCheckingResult (NSRange range, NSTextCheckingAddressComponents components);
@@ -14793,6 +19177,11 @@ namespace Foundation {
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		NSTextCheckingResult TransitInformationCheckingResult (NSRange range, NSDictionary components);
 
+		/// <param name="range">To be added.</param>
+		///         <param name="components">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Wrap ("TransitInformationCheckingResult (range, components.GetDictionary ()!)")]
 		NSTextCheckingResult TransitInformationCheckingResult (NSRange range, NSTextCheckingTransitComponents components);
@@ -14803,67 +19192,139 @@ namespace Foundation {
 
 	}
 
+	/// <summary>Contains the components of a recognized travel data.</summary>
+	/// <remarks>To be added.</remarks>
 	[StrongDictionary ("NSTextChecking")]
 	interface NSTextCheckingTransitComponents {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		string Airline { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		string Flight { get; }
 	}
 
+	/// <summary>Contains the components of a recognized address.</summary>
+	/// <remarks>To be added.</remarks>
 	[StrongDictionary ("NSTextChecking")]
 	interface NSTextCheckingAddressComponents {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		string Name { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		string JobTitle { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		string Organization { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		string Street { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		string City { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		string State { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("ZipKey")]
 		string ZIP { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		string Country { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		string Phone { get; }
 	}
 
+	/// <summary>Contains keys that identify text checking results.</summary>
+	/// <remarks>To be added.</remarks>
 	[Static]
 	interface NSTextChecking {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSTextCheckingNameKey")]
 		NSString NameKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSTextCheckingJobTitleKey")]
 		NSString JobTitleKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSTextCheckingOrganizationKey")]
 		NSString OrganizationKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSTextCheckingStreetKey")]
 		NSString StreetKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSTextCheckingCityKey")]
 		NSString CityKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSTextCheckingStateKey")]
 		NSString StateKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSTextCheckingZIPKey")]
 		NSString ZipKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSTextCheckingCountryKey")]
 		NSString CountryKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSTextCheckingPhoneKey")]
 		NSString PhoneKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSTextCheckingAirlineKey")]
 		NSString AirlineKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSTextCheckingFlightKey")]
 		NSString FlightKey { get; }
 	}
@@ -14884,6 +19345,9 @@ namespace Foundation {
 	[BaseType (typeof (NSObject))]
 	interface NSConditionLock : NSLocking {
 
+		/// <param name="condition">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithCondition:")]
 		NativeHandle Constructor (nint condition);
@@ -14891,21 +19355,36 @@ namespace Foundation {
 		[Export ("condition")]
 		nint Condition { get; }
 
+		/// <param name="condition">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("lockWhenCondition:")]
 		void LockWhenCondition (nint condition);
 
 		[Export ("tryLock")]
 		bool TryLock ();
 
+		/// <param name="condition">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("tryLockWhenCondition:")]
 		bool TryLockWhenCondition (nint condition);
 
+		/// <param name="condition">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("unlockWithCondition:")]
 		void UnlockWithCondition (nint condition);
 
 		[Export ("lockBeforeDate:")]
 		bool LockBeforeDate (NSDate limit);
 
+		/// <param name="condition">To be added.</param>
+		/// <param name="limit">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("lockWhenCondition:beforeDate:")]
 		bool LockWhenCondition (nint condition, NSDate limit);
 
@@ -14959,9 +19438,12 @@ namespace Foundation {
 
 	partial interface NSBundle {
 		// - (NSImage *)imageForResource:(NSString *)name NS_AVAILABLE_MAC(10_7);
+		/// <param name="name">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Export ("imageForResource:")]
 		NSImage ImageForResource (string name);
@@ -15003,7 +19485,7 @@ namespace Foundation {
 		bool ContainsDate (NSDate date);
 	}
 
-	[DisableDefaultCtor] // -init should never be called on NSUnit!
+	[DisableDefaultCtor]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface NSUnit : NSCopying, NSSecureCoding {
@@ -15097,21 +19579,24 @@ namespace Foundation {
 
 	partial interface NSFileManager {
 
-		[NoTV, NoWatch]
+		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("trashItemAtURL:resultingItemURL:error:")]
 		bool TrashItem (NSUrl url, out NSUrl resultingItemUrl, out NSError error);
 
+		/// <param name="authorization">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Static]
 		[Export ("fileManagerWithAuthorization:")]
 		NSFileManager FromAuthorization (NSWorkspaceAuthorization authorization);
 	}
 
-	[NoWatch, NoTV]
+	[NoTV]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -15126,20 +19611,27 @@ namespace Foundation {
 
 #if MONOMAC
 	partial interface NSFilePresenter {
-		[NoiOS][NoMacCatalyst][NoWatch][NoTV]
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
+		[NoiOS]
+		[NoMacCatalyst]
+		[NoTV]
 		[NullAllowed]
 		[Export ("primaryPresentedItemURL")]
 		NSUrl PrimaryPresentedItemUrl { get; }
 	}
 
-	[NoiOS][NoMacCatalyst][NoWatch][NoTV]
-	[Deprecated (PlatformName.MacOSX, 12, 0, message : "Use the Network.framework instead.")]
+	[NoiOS]
+	[NoMacCatalyst]
+	[NoTV]
+	[Deprecated (PlatformName.MacOSX, 12, 0, message: "Use the Network.framework instead.")]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	partial interface NSHost {
 
 		[Static, Internal, Export ("currentHost")]
-		NSHost _Current { get;}
+		NSHost _Current { get; }
 
 		[Static, Internal, Export ("hostWithName:")]
 		NSHost _FromName ([NullAllowed] string name);
@@ -15166,7 +19658,7 @@ namespace Foundation {
 		string _Address { get; }
 
 		[Internal, Export ("addresses")]
-		string [] _Addresses  { get; }
+		string [] _Addresses { get; }
 
 		[Export ("hash"), Internal]
 		nuint _Hash { get; }
@@ -15193,7 +19685,6 @@ namespace Foundation {
 	[MacCatalyst (15, 0)]
 	[NoiOS]
 	[NoTV]
-	[NoWatch]
 	partial interface NSScriptCommand : NSCoding {
 
 		[Internal]
@@ -15220,32 +19711,56 @@ namespace Foundation {
 
 	[NoiOS]
 	[NoTV]
-	[NoWatch]
 	[MacCatalyst (15, 0)]
 	[StrongDictionary ("NSScriptCommandArgumentDescriptionKeys")]
 	partial interface NSScriptCommandArgumentDescription {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		string AppleEventCode { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		string Type { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		string Optional { get; set; }
 	}
 
 	[NoiOS]
 	[NoTV]
-	[NoWatch]
 	[MacCatalyst (15, 0)]
 	[StrongDictionary ("NSScriptCommandDescriptionDictionaryKeys")]
 	partial interface NSScriptCommandDescriptionDictionary {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		string CommandClass { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		string AppleEventCode { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		string AppleEventClassCode { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		string Type { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		string ResultAppleEventCode { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		NSMutableDictionary Arguments { get; set; }
 	}
 
 	[NoiOS]
 	[NoTV]
-	[NoWatch]
 	[MacCatalyst (15, 0)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (NSObject))]
@@ -15302,7 +19817,7 @@ namespace Foundation {
 		IntPtr CreateCommandInstancePtr ();
 	}
 
-	[NoiOS, NoTV, NoWatch]
+	[NoiOS, NoTV]
 	[BaseType (typeof (NSObject))]
 	[DesignatedDefaultCtor]
 	[MacCatalyst (13, 1)]
@@ -15310,18 +19825,35 @@ namespace Foundation {
 		[Export ("initWithTransform:")]
 		NativeHandle Constructor (NSAffineTransform transform);
 
+		/// <param name="deltaX">To be added.</param>
+		/// <param name="deltaY">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("translateXBy:yBy:")]
 		void Translate (nfloat deltaX, nfloat deltaY);
 
+		/// <param name="angle">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("rotateByDegrees:")]
 		void RotateByDegrees (nfloat angle);
 
+		/// <param name="angle">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("rotateByRadians:")]
 		void RotateByRadians (nfloat angle);
 
+		/// <param name="scale">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("scaleBy:")]
 		void Scale (nfloat scale);
 
+		/// <param name="scaleX">To be added.</param>
+		/// <param name="scaleY">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("scaleXBy:yBy:")]
 		void Scale (nfloat scaleX, nfloat scaleY);
 
@@ -15340,6 +19872,10 @@ namespace Foundation {
 		[Export ("transformSize:")]
 		CGSize TransformSize (CGSize aSize);
 
+		/// <param name="path">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoMacCatalyst]
 		[Export ("transformBezierPath:")]
 		NSBezierPath TransformBezierPath (NSBezierPath path);
@@ -15347,6 +19883,8 @@ namespace Foundation {
 		[Export ("set")]
 		void Set ();
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("concat")]
 		void Concat ();
 
@@ -15356,7 +19894,7 @@ namespace Foundation {
 
 	[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'NSXpcConnection' instead.")]
 	[NoMacCatalyst]
-	[NoiOS, NoTV, NoWatch]
+	[NoiOS, NoTV]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSConnection {
@@ -15444,6 +19982,9 @@ namespace Foundation {
 		[Export ("invalidate")]
 		void Invalidate ();
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isValid")]
 		bool IsValid { get; }
 
@@ -15462,6 +20003,9 @@ namespace Foundation {
 		[Export ("delegate", ArgumentSemantic.Assign), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakDelegate")]
 		INSConnectionDelegate Delegate { get; set; }
 	}
@@ -15470,33 +20014,61 @@ namespace Foundation {
 
 	[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'NSXpcConnection' instead.")]
 	[NoMacCatalyst]
-	[NoiOS, NoTV, NoWatch]
+	[NoiOS, NoTV]
 	[BaseType (typeof (NSObject))]
 	[Model]
 	[Protocol]
 	interface NSConnectionDelegate {
+		/// <param name="components">To be added.</param>
+		/// <param name="authenticationData">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("authenticateComponents:withData:")]
 		bool AuthenticateComponents (NSArray components, NSData authenticationData);
 
+		/// <param name="components">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("authenticationDataForComponents:")]
 		NSData GetAuthenticationData (NSArray components);
 
+		/// <param name="parentConnection">To be added.</param>
+		/// <param name="newConnection">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("connection:shouldMakeNewConnection:")]
 		bool ShouldMakeNewConnection (NSConnection parentConnection, NSConnection newConnection);
 
+		/// <param name="connection">To be added.</param>
+		/// <param name="request">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("connection:handleRequest:")]
 		bool HandleRequest (NSConnection connection, NSDistantObjectRequest request);
 
+		/// <param name="connection">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("createConversationForConnection:")]
 		NSObject CreateConversation (NSConnection connection);
 
+		/// <param name="newConnection">To be added.</param>
+		/// <param name="parentConnection">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("makeNewConnection:sender:")]
 		bool AllowNewConnection (NSConnection newConnection, NSConnection parentConnection);
 	}
 
 	[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'NSXpcConnection' instead.")]
 	[NoMacCatalyst]
-	[NoiOS, NoTV, NoWatch]
+	[NoiOS, NoTV]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSDistantObjectRequest {
@@ -15514,7 +20086,7 @@ namespace Foundation {
 	}
 
 	[NoMacCatalyst]
-	[NoiOS, NoTV, NoWatch]
+	[NoiOS, NoTV]
 	[Deprecated (PlatformName.MacOSX, 10, 13)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -15537,7 +20109,7 @@ namespace Foundation {
 		bool RemovePort (string portName);
 	}
 
-	[NoiOS, NoTV, NoWatch]
+	[NoiOS, NoTV]
 	[MacCatalyst (15, 0)]
 	[BaseType (typeof (NSObject))]
 	interface NSAppleEventDescriptor : NSSecureCoding, NSCopying {
@@ -15607,16 +20179,6 @@ namespace Foundation {
 		[Export ("initRecordDescriptor")]
 		IntPtr _InitRecordDescriptor ();
 
-#if !XAMCORE_3_0
-		[Obsolete ("Use the constructor instead.")]
-		[Export ("initListDescriptor")]
-		NSObject InitListDescriptor ();
-
-		[Obsolete ("Use the constructor instead.")]
-		[Export ("initRecordDescriptor")]
-		NSObject InitRecordDescriptor ();
-#endif
-
 		/*[Export ("aeDesc")]
 		const AEDesc AeDesc ();
 
@@ -15674,13 +20236,24 @@ namespace Foundation {
 		[Export ("numberOfItems")]
 		nint NumberOfItems { get; }
 
+		/// <param name="descriptor">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("insertDescriptor:atIndex:")]
 		void InsertDescriptoratIndex (NSAppleEventDescriptor descriptor, nint index);
 
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[return: NullAllowed]
 		[Export ("descriptorAtIndex:")]
 		NSAppleEventDescriptor DescriptorAtIndex (nint index);
 
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("removeDescriptorAtIndex:")]
 		void RemoveDescriptorAtIndex (nint index);
 
@@ -15694,6 +20267,10 @@ namespace Foundation {
 		[Export ("removeDescriptorWithKeyword:")]
 		void RemoveDescriptorWithKeyword (AEKeyword keyword);
 
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("keywordForDescriptorAtIndex:")]
 		AEKeyword KeywordForDescriptorAtIndex (nint index);
 
@@ -15757,7 +20334,7 @@ namespace Foundation {
 		NSUrl FileURLValue { get; }
 	}
 
-	[NoiOS, NoTV, NoWatch]
+	[NoiOS, NoTV]
 	[MacCatalyst (15, 0)]
 	[BaseType (typeof (NSObject))]
 	interface NSAppleEventManager {
@@ -15799,7 +20376,7 @@ namespace Foundation {
 		NSString WillProcessFirstEventNotification { get; }
 	}
 
-	[NoiOS, NoTV, NoWatch]
+	[NoiOS, NoTV]
 	[MacCatalyst (15, 0)]
 	[BaseType (typeof (NSObject))]
 	[DesignatedDefaultCtor]
@@ -15897,6 +20474,9 @@ namespace Foundation {
 		[Export ("qualityOfService")]
 		NSQualityOfService QualityOfService { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isRunning")]
 		bool IsRunning { get; }
 
@@ -15915,17 +20495,15 @@ namespace Foundation {
 		[Export ("terminationReason")]
 		NSTaskTerminationReason TerminationReason { get; }
 
-#if !NET && MONOMAC
-		[Field ("NSTaskDidTerminateNotification")]
-		NSString NSTaskDidTerminateNotification { get; }
-#endif
-
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSTaskDidTerminateNotification")]
 		[Notification]
 		NSString DidTerminateNotification { get; }
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
 	[DesignatedDefaultCtor]
 	[Advice ("'NSUserNotification' usages should be replaced with 'UserNotifications' framework.")]
@@ -15965,9 +20543,15 @@ namespace Foundation {
 		[Export ("actualDeliveryDate")]
 		NSDate ActualDeliveryDate { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("presented")]
 		bool Presented { [Bind ("isPresented")] get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("remote")]
 		bool Remote { [Bind ("isRemote")] get; }
 
@@ -15984,6 +20568,9 @@ namespace Foundation {
 		[Export ("otherButtonTitle", ArgumentSemantic.Copy)]
 		string OtherButtonTitle { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSUserNotificationDefaultSoundName")]
 		NSString NSUserNotificationDefaultSoundName { get; }
 
@@ -16009,7 +20596,7 @@ namespace Foundation {
 		NSUserNotificationAction AdditionalActivationAction { get; }
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
 	[Advice ("'NSUserNotification' usages should be replaced with 'UserNotifications' framework.")]
 	interface NSUserNotificationAction : NSCopying {
@@ -16024,7 +20611,7 @@ namespace Foundation {
 		string Title { get; }
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[BaseType (typeof (NSObject),
 			   Delegates = new string [] { "WeakDelegate" },
 	Events = new Type [] { typeof (NSUserNotificationCenterDelegate) })]
@@ -16039,6 +20626,9 @@ namespace Foundation {
 		[NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakDelegate")]
 		[NullAllowed]
 		INSUserNotificationCenterDelegate Delegate { get; set; }
@@ -16072,23 +20662,47 @@ namespace Foundation {
 
 	interface INSUserNotificationCenterDelegate { }
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
 	[Model]
 	[Protocol]
 	[Deprecated (PlatformName.MacOSX, 11, 0, message: "Use 'UserNotifications.*' API instead.")]
 	interface NSUserNotificationCenterDelegate {
-		[Export ("userNotificationCenter:didDeliverNotification:"), EventArgs ("UNCDidDeliverNotification")]
+		/// <param name="center">To be added.</param>
+		/// <param name="notification">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
+		[Export ("userNotificationCenter:didDeliverNotification:"), EventArgs ("UNCDidDeliverNotification", XmlDocs = """
+			<summary>To be added.</summary>
+			<remarks>To be added.</remarks>
+			""")]
 		void DidDeliverNotification (NSUserNotificationCenter center, NSUserNotification notification);
 
-		[Export ("userNotificationCenter:didActivateNotification:"), EventArgs ("UNCDidActivateNotification")]
+		/// <param name="center">To be added.</param>
+		/// <param name="notification">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
+		[Export ("userNotificationCenter:didActivateNotification:"), EventArgs ("UNCDidActivateNotification", XmlDocs = """
+			<summary>To be added.</summary>
+			<remarks>To be added.</remarks>
+			""")]
 		void DidActivateNotification (NSUserNotificationCenter center, NSUserNotification notification);
 
+		/// <param name="center">To be added.</param>
+		/// <param name="notification">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>To be added.</summary>
+			<value>To be added.</value>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("userNotificationCenter:shouldPresentNotification:"), DelegateName ("UNCShouldPresentNotification"), DefaultValue (false)]
 		bool ShouldPresentNotification (NSUserNotificationCenter center, NSUserNotification notification);
 	}
 
-	[NoiOS, NoTV, NoWatch]
+	[NoiOS, NoTV]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -16110,6 +20724,9 @@ namespace Foundation {
 		string Source { get; }
 
 		// @property (readonly, getter = isCompiled) BOOL compiled;
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("compiled")]
 		bool Compiled { [Bind ("isCompiled")] get; }
 
@@ -16125,6 +20742,9 @@ namespace Foundation {
 		[Export ("executeAppleEvent:error:")]
 		NSAppleEventDescriptor ExecuteAppleEvent (NSAppleEventDescriptor eventDescriptor, out NSDictionary errorInfo);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("richTextSource", ArgumentSemantic.Retain)]
 		NSAttributedString RichTextSource { get; }
@@ -16160,7 +20780,6 @@ namespace Foundation {
 
 		[Deprecated (PlatformName.MacOSX, 10, 15, message: "This type is not meant to be user created.")]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "This type is not meant to be user created.")]
-		[Deprecated (PlatformName.WatchOS, 6, 0, message: "This type is not meant to be user created.")]
 		[Deprecated (PlatformName.TvOS, 13, 0, message: "This type is not meant to be user created.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "This type is not meant to be user created.")]
 		[Export ("init")]
@@ -16208,108 +20827,112 @@ namespace Foundation {
 		[NullAllowed, Export ("networkProtocolName")]
 		string NetworkProtocolName { get; }
 
+		/// <summary>
+		///           <see langword="true" /> if a proxy was used to retrieve the resource.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("proxyConnection")]
 		bool ProxyConnection { [Bind ("isProxyConnection")] get; }
 
+		/// <summary>
+		///           <see langword="true" /> if the resource was retrieved via a persistent connection.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("reusedConnection")]
 		bool ReusedConnection { [Bind ("isReusedConnection")] get; }
 
 		[Export ("resourceFetchType", ArgumentSemantic.Assign)]
 		NSUrlSessionTaskMetricsResourceFetchType ResourceFetchType { get; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("countOfRequestHeaderBytesSent")]
 		long CountOfRequestHeaderBytesSent { get; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("countOfRequestBodyBytesSent")]
 		long CountOfRequestBodyBytesSent { get; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("countOfRequestBodyBytesBeforeEncoding")]
 		long CountOfRequestBodyBytesBeforeEncoding { get; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("countOfResponseHeaderBytesReceived")]
 		long CountOfResponseHeaderBytesReceived { get; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("countOfResponseBodyBytesReceived")]
 		long CountOfResponseBodyBytesReceived { get; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("countOfResponseBodyBytesAfterDecoding")]
 		long CountOfResponseBodyBytesAfterDecoding { get; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("localAddress")]
 		string LocalAddress { get; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("localPort", ArgumentSemantic.Copy)]
 		// 0-1023
 		[BindAs (typeof (ushort?))]
 		NSNumber LocalPort { get; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("remoteAddress")]
 		string RemoteAddress { get; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("remotePort", ArgumentSemantic.Copy)]
 		// 0-1023
 		[BindAs (typeof (ushort?))]
 		NSNumber RemotePort { get; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("negotiatedTLSProtocolVersion", ArgumentSemantic.Copy)]
 		// <quote>It is a 2-byte sequence in host byte order.</quote> but it refers to (nicer) `tls_protocol_version_t`
 		[BindAs (typeof (SslProtocol?))]
 		NSNumber NegotiatedTlsProtocolVersion { get; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("negotiatedTLSCipherSuite", ArgumentSemantic.Copy)]
 		// <quote>It is a 2-byte sequence in host byte order.</quote> but it refers to (nicer) `tls_ciphersuite_t`
-#if NET
 		[BindAs (typeof (TlsCipherSuite?))]
-#else
-		[BindAs (typeof (SslCipherSuite?))]
-#endif
 		NSNumber NegotiatedTlsCipherSuite { get; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("cellular")]
 		bool Cellular { [Bind ("isCellular")] get; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("expensive")]
 		bool Expensive { [Bind ("isExpensive")] get; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("constrained")]
 		bool Constrained { [Bind ("isConstrained")] get; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("multipath")]
 		bool Multipath { [Bind ("isMultipath")] get; }
 
-		[Watch (7, 0), TV (14, 0), iOS (14, 0)]
+		[TV (14, 0), iOS (14, 0)]
 		[MacCatalyst (14, 0)]
 		[Export ("domainResolutionProtocol")]
 		NSUrlSessionTaskMetricsDomainResolutionProtocol DomainResolutionProtocol { get; }
@@ -16322,7 +20945,6 @@ namespace Foundation {
 
 		[Deprecated (PlatformName.MacOSX, 10, 15, message: "This type is not meant to be user created.")]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "This type is not meant to be user created.")]
-		[Deprecated (PlatformName.WatchOS, 6, 0, message: "This type is not meant to be user created.")]
 		[Deprecated (PlatformName.TvOS, 13, 0, message: "This type is not meant to be user created.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "This type is not meant to be user created.")]
 		[Export ("init")]
@@ -16543,25 +21165,25 @@ namespace Foundation {
 		[Export ("baseUnit")]
 		NSDimension BaseUnit { get; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("milliseconds", ArgumentSemantic.Copy)]
 		NSUnitDuration Milliseconds { get; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("microseconds", ArgumentSemantic.Copy)]
 		NSUnitDuration Microseconds { get; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("nanoseconds", ArgumentSemantic.Copy)]
 		NSUnitDuration Nanoseconds { get; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("picoseconds", ArgumentSemantic.Copy)]
@@ -16793,7 +21415,7 @@ namespace Foundation {
 		[Export ("baseUnit")]
 		NSDimension BaseUnit { get; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("framesPerSecond", ArgumentSemantic.Copy)]
@@ -17368,7 +21990,6 @@ namespace Foundation {
 	interface NSXpcConnection {
 		[Export ("initWithServiceName:")]
 		[NoiOS]
-		[NoWatch]
 		[NoTV]
 		[NoMacCatalyst]
 		NativeHandle Constructor (string xpcServiceName);
@@ -17378,7 +21999,6 @@ namespace Foundation {
 
 		[Export ("initWithMachServiceName:options:")]
 		[NoiOS]
-		[NoWatch]
 		[NoTV]
 		[NoMacCatalyst]
 		NativeHandle Constructor (string machServiceName, NSXpcConnectionOptions options);
@@ -17435,7 +22055,6 @@ namespace Foundation {
 
 		[Export ("scheduleSendBarrierBlock:")]
 		[iOS (13, 0)]
-		[Watch (6, 0)]
 		[TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		void ScheduleSendBarrier (Action block);
@@ -17450,12 +22069,12 @@ namespace Foundation {
 		[Export ("synchronousRemoteObjectProxyWithErrorHandler:"), Internal]
 		IntPtr _CreateSynchronousRemoteObjectProxy ([BlockCallback] Action<NSError> errorHandler);
 
-		[Watch (7, 0), TV (14, 0), iOS (14, 0)]
+		[TV (14, 0), iOS (14, 0)]
 		[MacCatalyst (14, 0)]
 		[Export ("activate")]
 		void Activate ();
 
-		[NoWatch, NoTV, NoiOS, Mac (13, 0)]
+		[NoTV, NoiOS, Mac (13, 0)]
 		[NoMacCatalyst]
 		[Export ("setCodeSigningRequirement:")]
 		void SetCodeSigningRequirement (string requirement);
@@ -17478,7 +22097,6 @@ namespace Foundation {
 		[DesignatedInitializer]
 		[NoiOS]
 		[NoTV]
-		[NoWatch]
 		[NoMacCatalyst]
 		NativeHandle Constructor (string machServiceName);
 
@@ -17502,23 +22120,19 @@ namespace Foundation {
 		[Export ("invalidate")]
 		void Invalidate ();
 
-		[Watch (7, 0), TV (14, 0), iOS (14, 0)]
+		[TV (14, 0), iOS (14, 0)]
 		[MacCatalyst (14, 0)]
 		[Export ("activate")]
 		void Activate ();
 
-		[NoWatch, NoTV, NoiOS, Mac (13, 0)]
+		[NoTV, NoiOS, Mac (13, 0)]
 		[NoMacCatalyst]
 		[Export ("setConnectionCodeSigningRequirement:")]
 		void SetConnectionCodeSigningRequirement (string requirement);
 	}
 
 	[BaseType (typeof (NSObject), Name = "NSXPCListenerDelegate")]
-#if NET
 	[Protocol, Model]
-#else
-	[Model (AutoGeneratedName = true), Protocol]
-#endif
 	interface NSXpcListenerDelegate {
 		[Export ("listener:shouldAcceptNewConnection:")]
 		bool ShouldAcceptConnection (NSXpcListener listener, NSXpcConnection newConnection);
@@ -17548,7 +22162,7 @@ namespace Foundation {
 	interface NSXpcListenerEndpoint : NSSecureCoding {
 	}
 
-	[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSFormatter))]
 	interface NSListFormatter {
@@ -17573,7 +22187,7 @@ namespace Foundation {
 		string GetString ([NullAllowed] NSObject obj);
 	}
 
-	[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	enum NSRelativeDateTimeFormatterStyle : long {
@@ -17581,7 +22195,7 @@ namespace Foundation {
 		Named,
 	}
 
-	[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	enum NSRelativeDateTimeFormatterUnitsStyle : long {
@@ -17591,7 +22205,7 @@ namespace Foundation {
 		Abbreviated,
 	}
 
-	[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSFormatter))]
 	interface NSRelativeDateTimeFormatter {
@@ -17625,7 +22239,7 @@ namespace Foundation {
 		string GetString ([NullAllowed] NSObject obj);
 	}
 
-	[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	enum NSCollectionChangeType : long {
@@ -17633,7 +22247,7 @@ namespace Foundation {
 		Remove,
 	}
 
-	[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	enum NSOrderedCollectionDifferenceCalculationOptions : ulong {
@@ -17642,7 +22256,7 @@ namespace Foundation {
 		InferMoves = (1uL << 2),
 	}
 
-	[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSDimension))]
 	[DisableDefaultCtor] // NSGenericException Reason: -init should never be called on NSUnit!
@@ -17799,7 +22413,7 @@ namespace Foundation {
 		NSUnitInformationStorage Kibibits { get; }
 	}
 
-	[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	enum NSUrlSessionWebSocketMessageType : long {
@@ -17807,7 +22421,7 @@ namespace Foundation {
 		String = 1,
 	}
 
-	[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject), Name = "NSURLSessionWebSocketMessage")]
 	[DisableDefaultCtor]
@@ -17831,7 +22445,7 @@ namespace Foundation {
 		string String { get; }
 	}
 
-	[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	enum NSUrlSessionWebSocketCloseCode : long {
@@ -17850,7 +22464,7 @@ namespace Foundation {
 		TlsHandshakeFailure = 1015,
 	}
 
-	[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSUrlSessionTask), Name = "NSURLSessionWebSocketTask")]
 	[DisableDefaultCtor]
@@ -17881,14 +22495,10 @@ namespace Foundation {
 		NSData CloseReason { get; }
 	}
 
-	[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
-#if NET
-	[Protocol][Model]
-#else
 	[Protocol]
-	[Model (AutoGeneratedName = true)]
-#endif
+	[Model]
 	[BaseType (typeof (NSUrlSessionTaskDelegate), Name = "NSURLSessionWebSocketDelegate")]
 	interface NSUrlSessionWebSocketDelegate {
 
@@ -17899,7 +22509,7 @@ namespace Foundation {
 		void DidClose (NSUrlSession session, NSUrlSessionWebSocketTask webSocketTask, NSUrlSessionWebSocketCloseCode closeCode, [NullAllowed] NSData reason);
 	}
 
-	[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	enum NSUrlErrorNetworkUnavailableReason : long {
@@ -17908,7 +22518,7 @@ namespace Foundation {
 		Constrained = 2,
 	}
 
-	[NoWatch, NoTV, NoiOS]
+	[NoTV, NoiOS]
 	[NoMacCatalyst]
 	[Native]
 	public enum NSBackgroundActivityResult : long {
@@ -17920,7 +22530,7 @@ namespace Foundation {
 
 	delegate void NSBackgroundActivityCompletionAction ([BlockCallback] NSBackgroundActivityCompletionHandler handler);
 
-	[NoWatch, NoTV, NoiOS]
+	[NoTV, NoiOS]
 	[NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -17954,7 +22564,7 @@ namespace Foundation {
 		bool ShouldDefer { get; }
 	}
 
-	[Watch (7, 0), TV (14, 0), iOS (14, 0)]
+	[TV (14, 0), iOS (14, 0)]
 	[MacCatalyst (14, 0)]
 	[Native]
 	public enum NSUrlSessionTaskMetricsDomainResolutionProtocol : long {
@@ -17967,39 +22577,44 @@ namespace Foundation {
 
 	[NoiOS]
 	[NoTV]
-	[NoWatch]
 	[MacCatalyst (15, 0)]
 	[Native]
 	public enum NSNotificationSuspensionBehavior : ulong {
+		/// <summary>To be added.</summary>
 		Drop = 1,
+		/// <summary>To be added.</summary>
 		Coalesce = 2,
+		/// <summary>To be added.</summary>
 		Hold = 3,
+		/// <summary>To be added.</summary>
 		DeliverImmediately = 4,
 	}
 
 	[NoiOS]
 	[NoTV]
-	[NoWatch]
 	[MacCatalyst (15, 0)]
 	[Flags]
 	[Native]
 	public enum NSNotificationFlags : ulong {
+		/// <summary>To be added.</summary>
 		DeliverImmediately = (1 << 0),
+		/// <summary>To be added.</summary>
 		PostToAllSessions = (1 << 1),
 	}
 
-	[NoWatch]
 	[NoTV]
 	[NoiOS]
 	[NoMacCatalyst]
 	[Native]
 	[Flags]
 	public enum NSFileManagerUnmountOptions : ulong {
+		/// <summary>To be added.</summary>
 		AllPartitionsAndEjectDisk = 1 << 0,
+		/// <summary>To be added.</summary>
 		WithoutUI = 1 << 1,
 	}
 
-	[Watch (8, 0), TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSPresentationIntent : NSCopying, NSSecureCoding {
@@ -18088,7 +22703,7 @@ namespace Foundation {
 		bool IsEquivalent (NSPresentationIntent other);
 	}
 
-	[Watch (8, 0), TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 	[BaseType (typeof (NSObject))]
 	interface NSAttributedStringMarkdownParsingOptions : NSCopying {
 		[Export ("allowsExtendedAttributes")]
@@ -18103,13 +22718,13 @@ namespace Foundation {
 		[NullAllowed, Export ("languageCode")]
 		string LanguageCode { get; set; }
 
-		[Watch (9, 0), TV (16, 0), Mac (13, 0), iOS (16, 0)]
+		[TV (16, 0), Mac (13, 0), iOS (16, 0)]
 		[MacCatalyst (16, 0)]
 		[Export ("appliesSourcePositionAttributes")]
 		bool AppliesSourcePositionAttributes { get; set; }
 	}
 
-	[Watch (8, 0), TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSInflectionRule : NSCopying, NSSecureCoding {
@@ -18117,20 +22732,20 @@ namespace Foundation {
 		[Export ("automaticRule")]
 		NSInflectionRule AutomaticRule { get; }
 
-		[Watch (8, 0), TV (15, 0), iOS (15, 0)]
+		[TV (15, 0), iOS (15, 0)]
 		[MacCatalyst (15, 0)]
 		[Static]
 		[Export ("canInflectLanguage:")]
 		bool CanInflectLanguage (string language);
 
-		[Watch (8, 0), TV (15, 0), iOS (15, 0)]
+		[TV (15, 0), iOS (15, 0)]
 		[MacCatalyst (15, 0)]
 		[Static]
 		[Export ("canInflectPreferredLocalization")]
 		bool CanInflectPreferredLocalization { get; }
 	}
 
-	[Watch (8, 0), TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 	[BaseType (typeof (NSInflectionRule))]
 	interface NSInflectionRuleExplicit {
 		[Export ("initWithMorphology:")]
@@ -18141,7 +22756,7 @@ namespace Foundation {
 		NSMorphology Morphology { get; }
 	}
 
-	[Watch (8, 0), TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 	[BaseType (typeof (NSObject))]
 	interface NSMorphology : NSCopying, NSSecureCoding {
 		[Export ("grammaticalGender", ArgumentSemantic.Assign)]
@@ -18157,7 +22772,6 @@ namespace Foundation {
 		[Obsoleted (PlatformName.iOS, 17, 0, message: "Use 'NSTermOfAddress' instead.")]
 		[Obsoleted (PlatformName.MacCatalyst, 17, 0, message: "Use 'NSTermOfAddress' instead.")]
 		[Obsoleted (PlatformName.TvOS, 17, 0, message: "Use 'NSTermOfAddress' instead.")]
-		[Obsoleted (PlatformName.WatchOS, 10, 0, message: "Use 'NSTermOfAddress' instead.")]
 		[Export ("customPronounForLanguage:")]
 		[return: NullAllowed]
 		NSMorphologyCustomPronoun GetCustomPronoun (string language);
@@ -18166,7 +22780,6 @@ namespace Foundation {
 		[Obsoleted (PlatformName.iOS, 17, 0, message: "Use 'NSTermOfAddress' instead.")]
 		[Obsoleted (PlatformName.MacCatalyst, 17, 0, message: "Use 'NSTermOfAddress' instead.")]
 		[Obsoleted (PlatformName.TvOS, 17, 0, message: "Use 'NSTermOfAddress' instead.")]
-		[Obsoleted (PlatformName.WatchOS, 10, 0, message: "Use 'NSTermOfAddress' instead.")]
 		[Export ("setCustomPronoun:forLanguage:error:")]
 		bool SetCustomPronoun ([NullAllowed] NSMorphologyCustomPronoun features, string language, [NullAllowed] out NSError error);
 
@@ -18177,23 +22790,23 @@ namespace Foundation {
 		[Export ("userMorphology")]
 		NSMorphology UserMorphology { get; }
 
-		[Watch (10, 0), TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("grammaticalCase", ArgumentSemantic.Assign)]
 		NSGrammaticalCase GrammaticalCase { get; set; }
 
-		[Watch (10, 0), TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("determination", ArgumentSemantic.Assign)]
 		NSGrammaticalDetermination Determination { get; set; }
 
-		[Watch (10, 0), TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("grammaticalPerson", ArgumentSemantic.Assign)]
 		NSGrammaticalPerson GrammaticalPerson { get; set; }
 
-		[Watch (10, 0), TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("pronounType", ArgumentSemantic.Assign)]
 		NSGrammaticalPronounType PronounType { get; set; }
 
-		[Watch (10, 0), TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("definiteness", ArgumentSemantic.Assign)]
 		NSGrammaticalDefiniteness Definiteness { get; set; }
 	}
@@ -18202,8 +22815,7 @@ namespace Foundation {
 	[Obsoleted (PlatformName.iOS, 17, 0, message: "Use 'NSTermOfAddress' instead.")]
 	[Obsoleted (PlatformName.MacCatalyst, 17, 0, message: "Use 'NSTermOfAddress' instead.")]
 	[Obsoleted (PlatformName.TvOS, 17, 0, message: "Use 'NSTermOfAddress' instead.")]
-	[Obsoleted (PlatformName.WatchOS, 10, 0, message: "Use 'NSTermOfAddress' instead.")]
-	[Watch (8, 0), TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 	[BaseType (typeof (NSObject))]
 	interface NSMorphologyCustomPronoun : NSCopying, NSSecureCoding {
 		[Static]
@@ -18230,10 +22842,10 @@ namespace Foundation {
 		string ReflexiveForm { get; set; }
 	}
 
-#if false // https://github.com/xamarin/xamarin-macios/issues/15577
+#if false // https://github.com/dotnet/macios/issues/15577
 	interface NSOrderedCollectionChange <TKey> : NSOrderedCollectionChange {}
 	
-	[Watch (6,0), TV (13,0), iOS (13,0)]
+	[TV (13,0), iOS (13,0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSOrderedCollectionChange
@@ -18280,7 +22892,7 @@ namespace Foundation {
 
 	interface NSOrderedCollectionDifference <TKey> : NSOrderedCollectionDifference {}
 	
-	[Watch (6,0), TV (13,0), iOS (13,0)]
+	[TV (13,0), iOS (13,0)]
 	[BaseType (typeof (NSObject))]
 	interface NSOrderedCollectionDifference : INSFastEnumeration
 	{
@@ -18318,13 +22930,13 @@ namespace Foundation {
 		NativeHandle _GetDifference (/* Func<NSOrderedCollectionChange<NSObject>, NSOrderedCollectionChange<NSObject>>*/ ref BlockLiteral block); 
 
 		[Internal]
-		[Watch (6,0), TV (13,0), iOS (13,0)]
+		[TV (13,0), iOS (13,0)]
 		[Export ("inverseDifference")]
 		NativeHandle _InverseDifference ();
 	}
 #endif
 
-	[Watch (9, 0), TV (16, 0), Mac (13, 0), iOS (16, 0)]
+	[TV (16, 0), Mac (13, 0), iOS (16, 0)]
 	[MacCatalyst (16, 0)]
 	[BaseType (typeof (NSObject))]
 	interface NSAttributedStringMarkdownSourcePosition : NSCopying, NSSecureCoding {
@@ -18347,7 +22959,7 @@ namespace Foundation {
 		NSRange RangeInString (string @string);
 	}
 
-	[Watch (10, 0), TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSTermOfAddress : NSCopying, NSSecureCoding {
@@ -18375,11 +22987,11 @@ namespace Foundation {
 
 		[Static]
 		[Export ("currentUser")]
-		[Watch (11, 0), TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		NSTermOfAddress CurrentUser { get; }
 	}
 
-	[Watch (10, 0), TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSMorphologyPronoun : NSCopying, NSSecureCoding {
@@ -18407,15 +23019,30 @@ namespace Foundation {
 
 		NSAttributedStringDocumentAttributes DefaultAttributes { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		CGSize PaperSize { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		UIEdgeInsets PaperMargin { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		CGSize ViewSize { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		float ViewZoom { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		NSDocumentViewMode ViewMode { get; set; }
 
 		// The definition for this boolean is very specific in the header file:
@@ -18427,14 +23054,23 @@ namespace Foundation {
 		// bool ReadOnly { get; set; }
 		// #endif
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		NSColor BackgroundColor { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		float HyphenationFactor {
 			get;
 			[PreSnippet ("if (value < 0 || value > 1.0f) throw new ArgumentOutOfRangeException (nameof (value), value, \"Value must be between 0 and 1\");")]
 			set;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		float DefaultTabInterval {
 			get;
 			[PreSnippet ("if (value < 0 || value > 1.0f) throw new ArgumentOutOfRangeException (nameof (value), value, \"Value must be between 0 and 1\");")]
@@ -18454,80 +23090,83 @@ namespace Foundation {
 		[iOS (13, 0)]
 		float CocoaVersion { get; set; }
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		int Converted { get; set; }
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		string FileType { get; set; }
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		string Title { get; set; }
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		string Company { get; set; }
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		string Copyright { get; set; }
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		string Subject { get; set; }
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		string Author { get; set; }
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		string [] Keywords { get; set; }
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		string Comment { get; set; }
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		string Editor { get; set; }
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		NSDate CreationTime { get; set; }
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		NSDate ModificationTime { get; set; }
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		string Manager { get; set; }
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		string Category { get; set; }
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		NSAppearance Appearance { get; set; }
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		float LeftMargin { get; set; }
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		float RightMargin { get; set; }
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		float TopMargin { get; set; }
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		float BottomMargin { get; set; }
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		string [] ExcludedElements { get; set; }
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoiOS, NoTV, NoMacCatalyst]
 		string TextEncodingName { get; set; }
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		int PrefixSpaces { get; set; }
 	}
 
-	[Watch (11, 0), TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+	[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSKeyValueSharedObserversSnapshot {
 	}
 
-	[Watch (11, 0), TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+	[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSKeyValueSharedObservers {
@@ -18545,14 +23184,14 @@ namespace Foundation {
 	}
 
 	[Category, BaseType (typeof (NSObject))]
-	[Watch (11, 0), TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+	[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 	interface NSKeyValueSharedObserverRegistration_NSObject {
 		[Export ("setSharedObservers:")]
 		void SetSharedObservers ([NullAllowed] NSKeyValueSharedObserversSnapshot sharedObservers);
 	}
 
 	[BaseType (typeof (NSObject))]
-	[Watch (11, 0), TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+	[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 	[DisableDefaultCtor]
 	interface NSLocalizedNumberFormatRule : NSCopying, NSSecureCoding {
 		[Static]

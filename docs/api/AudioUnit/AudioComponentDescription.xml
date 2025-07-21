@@ -1,0 +1,103 @@
+<Documentation>
+  <Docs DocId="F:AudioUnit.AudioComponentDescription.ComponentSubType">
+    <summary>Audio Unit component subtype, depending on the <see cref="AudioComponentDescription.ComponentSubType" /> value you should use one of the values from <see cref="AudioTypeOutput" />, <see cref="AudioTypeMusicDevice" />, <see cref="AudioTypeConverter" />, <see cref="AudioTypeEffect" />, <see cref="AudioTypeMixer" />, <see cref="AudioTypePanner" /> and <see cref="AudioTypeGenerator" /></summary>
+    <remarks>
+      <para>Audio Unit component subtype, depending on the <see cref="AudioComponentDescription.ComponentType" /> you should use one of the values from <see cref="AudioTypeOutput" />, <see cref="AudioTypeMusicDevice" />, <see cref="AudioTypeConverter" />, <see cref="AudioTypeEffect" />, <see cref="AudioTypeMixer" />, <see cref="AudioTypePanner" /> and <see cref="AudioTypeGenerator" />.</para>
+      <para />
+      <para>Since this is an integer, and the values on those enumerations are strongly typed, you typically need to cast.   The following example shows this:</para>
+      <para />
+      <para />
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[var processingGraph = new AUGraph ();
+
+int samplerNode, ioNode;
+
+var musicSampler = new AudioComponentDescription () {
+        ComponentManufacturer = AudioComponentManufacturerType.Apple,
+        ComponentType = AudioComponentType.MusicDevice,
+        ComponentSubType = (int)AudioTypeMusicDevice.Sampler
+};
+samplerNode = processingGraph.AddNode (musicSampler);
+
+var remoteOutput = new AudioComponentDescription () {
+        ComponentManufacturer = AudioComponentManufacturerType.Apple,
+        ComponentType = AudioComponentType.Output,
+        ComponentSubType = (int)AudioTypeOutput.Remote
+};
+ioNode = processingGraph.AddNode (remoteOutput);
+
+processingGraph.Open ();]]></code>
+      </example>.</remarks>
+  </Docs>
+  <Docs DocId="F:AudioUnit.AudioComponentDescription.ComponentSubType">
+    <summary>Audio Unit component subtype, depending on the <see cref="AudioComponentDescription.ComponentSubType" /> value you should use one of the values from <see cref="AudioTypeOutput" />, <see cref="AudioTypeMusicDevice" />, <see cref="AudioTypeConverter" />, <see cref="AudioTypeEffect" />, <see cref="AudioTypeMixer" />, <see cref="AudioTypePanner" /> and <see cref="AudioTypeGenerator" /></summary>
+    <remarks>
+      <para>Audio Unit component subtype, depending on the <see cref="AudioComponentDescription.ComponentType" /> you should use one of the values from <see cref="AudioTypeOutput" />, <see cref="AudioTypeMusicDevice" />, <see cref="AudioTypeConverter" />, <see cref="AudioTypeEffect" />, <see cref="AudioTypeMixer" />, <see cref="AudioTypePanner" /> and <see cref="AudioTypeGenerator" />.</para>
+      <para />
+      <para>Since this is an integer, and the values on those enumerations are strongly typed, you typically need to cast.   The following example shows this:</para>
+      <para />
+      <para />
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[var processingGraph = new AUGraph ();
+
+int samplerNode, ioNode;
+
+var musicSampler = new AudioComponentDescription () {
+        ComponentManufacturer = AudioComponentManufacturerType.Apple,
+        ComponentType = AudioComponentType.MusicDevice,
+        ComponentSubType = (int)AudioTypeMusicDevice.Sampler
+};
+samplerNode = processingGraph.AddNode (musicSampler);
+
+var remoteOutput = new AudioComponentDescription () {
+        ComponentManufacturer = AudioComponentManufacturerType.Apple,
+        ComponentType = AudioComponentType.Output,
+        ComponentSubType = (int)AudioTypeOutput.Remote
+};
+ioNode = processingGraph.AddNode (remoteOutput);
+
+processingGraph.Open ();]]></code>
+      </example>.</remarks>
+  </Docs>
+  <Docs DocId="T:AudioUnit.AudioComponentDescription">
+    <summary>Identifiers for a <see cref="AudioComponent" />.</summary>
+    <remarks>
+      <para>You can either create <see cref="AudioComponentDescription" /> using the empty constructor and setting all of the fields for the audio component, or you can use one of the convenience factory method that provide strongly typed ways of instantiating the structure.</para>
+      <para>
+      </para>
+      <para>The following example shows how to use the various Create methods:</para>
+      <para>
+      </para>
+      <para>
+      </para>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[auGraph = new AUGraph ();
+auGraph.Open ();
+int effectNode = auGraph.AddNode (AudioComponentDescription.CreateConverter (AudioTypeConverter.NewTimePitch));
+effectUnit = auGraph.GetNodeInfo (effectNode);
+
+int convertToEffectNode = auGraph.AddNode (AudioComponentDescription.CreateConverter (AudioTypeConverter.AU));
+convertToEffectUnit = auGraph.GetNodeInfo (convertToEffectNode);
+
+int convertFromEffectNode = auGraph.AddNode (AudioComponentDescription.CreateConverter (AudioTypeConverter.AU));
+convertFromEffectUnit = auGraph.GetNodeInfo (convertFromEffectNode);
+
+int genericOutputNode = auGraph.AddNode (AudioComponentDescription.CreateOutput (AudioTypeOutput.Generic));
+genericOutputUnit = auGraph.GetNodeInfo (genericOutputNode);
+
+// set the format conversions throughout the graph
+AudioStreamBasicDescription effectFormat = effectUnit.GetAudioFormat (AudioUnitScopeType.Output);
+var tapFormat = aqTap.ProcessingFormat;
+
+convertToEffectUnit.SetAudioFormat (tapFormat, AudioUnitScopeType.Input);
+convertToEffectUnit.SetAudioFormat (effectFormat, AudioUnitScopeType.Output);
+
+convertFromEffectUnit.SetAudioFormat (effectFormat, AudioUnitScopeType.Input);
+convertFromEffectUnit.SetAudioFormat (tapFormat, AudioUnitScopeType.Output);
+
+genericOutputUnit.SetAudioFormat (tapFormat, AudioUnitScopeType.Input);
+genericOutputUnit.SetAudioFormat (tapFormat, AudioUnitScopeType.Output);]]></code>
+      </example>
+    </remarks>
+  </Docs>
+</Documentation>

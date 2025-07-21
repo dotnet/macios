@@ -14,9 +14,8 @@ namespace Cecil.Tests {
 	[TestFixture]
 	public class Test {
 
-		[TestCaseSource (typeof (Helper), nameof (Helper.PlatformAssemblyDefinitions))]
 		[TestCaseSource (typeof (Helper), nameof (Helper.NetPlatformImplementationAssemblyDefinitions))]
-		// ref: https://github.com/xamarin/xamarin-macios/pull/7760
+		// ref: https://github.com/dotnet/macios/pull/7760
 		public void IdentifyBackingFieldAssignation (AssemblyInfo info)
 		{
 			var assembly = info.Assembly;
@@ -50,9 +49,8 @@ namespace Cecil.Tests {
 			}
 		}
 
-		[TestCaseSource (typeof (Helper), nameof (Helper.PlatformAssemblyDefinitions))]
 		[TestCaseSource (typeof (Helper), nameof (Helper.NetPlatformImplementationAssemblyDefinitions))]
-		// ref: https://github.com/xamarin/xamarin-macios/issues/8249
+		// ref: https://github.com/dotnet/macios/issues/8249
 		public void EnsureUIThreadOnInit (AssemblyInfo info)
 		{
 			var assembly = info.Assembly;
@@ -85,7 +83,6 @@ namespace Cecil.Tests {
 			}
 		}
 
-		[TestCaseSource (typeof (Helper), nameof (Helper.PlatformAssemblyDefinitions))]
 		[TestCaseSource (typeof (Helper), nameof (Helper.NetPlatformAssemblyDefinitions))]
 		public void NoSystemConsoleReference (AssemblyInfo info)
 		{
@@ -127,7 +124,6 @@ namespace Cecil.Tests {
 			// keep up-to-date with the 'bannedCApi' list in tests/mtouch/MiscTests.cs
 		};
 
-		[TestCaseSource (typeof (Helper), nameof (Helper.PlatformAssemblyDefinitions))]
 		[TestCaseSource (typeof (Helper), nameof (Helper.NetPlatformAssemblyDefinitions))]
 		public void NoBannedApi (AssemblyInfo info)
 		{
@@ -148,32 +144,24 @@ namespace Cecil.Tests {
 			None,
 			MacOSX,
 			iOS,
-			WatchOS,
 			TvOS,
 			MacCatalyst,
 		}
 
-		[TestCaseSource (typeof (Helper), nameof (Helper.PlatformAssemblyDefinitions))]
 		[TestCaseSource (typeof (Helper), nameof (Helper.NetPlatformAssemblyDefinitions))]
-		// ref: https://github.com/xamarin/xamarin-macios/issues/4835
+		// ref: https://github.com/dotnet/macios/issues/4835
 		public void Unavailable (AssemblyInfo info)
 		{
 			var assembly = info.Assembly;
 
 			var platform = PlatformName.None;
 			switch (assembly.Name.Name) {
-			case "Xamarin.Mac":
 			case "Microsoft.macOS":
 				platform = PlatformName.MacOSX;
 				break;
-			case "Xamarin.iOS":
 			case "Microsoft.iOS":
 				platform = PlatformName.iOS;
 				break;
-			case "Xamarin.WatchOS":
-				platform = PlatformName.WatchOS;
-				break;
-			case "Xamarin.TVOS":
 			case "Microsoft.tvOS":
 				platform = PlatformName.TvOS;
 				break;
@@ -217,7 +205,7 @@ namespace Cecil.Tests {
 		}
 
 		// UnavailableAttribute and it's subclasses
-		// NoMacAttribute (1), NoiOSAttribute (2), NoWatchAttribute (3), NoTVAttribute (4)
+		// NoMacAttribute (1), NoiOSAttribute (2), NoTVAttribute (4)
 		// MacCatalyst (5) does not have an attribute right now (but [Unavailable] is possible on the PlatformName)
 		bool IsUnavailable (ICustomAttributeProvider cap, PlatformName platform)
 		{
@@ -235,9 +223,6 @@ namespace Cecil.Tests {
 					break;
 				case "ObjCRuntime.NoiOSAttribute":
 					unavailable = platform == PlatformName.iOS;
-					break;
-				case "ObjCRuntime.NoWatchAttribute":
-					unavailable = platform == PlatformName.WatchOS;
 					break;
 				case "ObjCRuntime.NoTVAttribute":
 					unavailable = platform == PlatformName.TvOS;

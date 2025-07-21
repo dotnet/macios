@@ -10,25 +10,26 @@
 
 using System;
 
-namespace Foundation 
-{
-	public partial class NSThread
-	{
-		class ActionThread : NSThread
-		{
+namespace Foundation {
+	public partial class NSThread {
+		class ActionThread : NSThread {
 			Action action;
-		
+
 			public ActionThread (Action action)
 			{
 				this.action = action;
 			}
-	
+
 			public override void Main ()
 			{
 				action ();
 			}
 		}
 
+		/// <param name="action">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSThread Start (Action action)
 		{
 			if (action is null) {

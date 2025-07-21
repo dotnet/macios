@@ -156,9 +156,6 @@
 !extra-enum-value! Managed value 45 for UIViewAutoresizing.FlexibleMargins not found in native headers
 !extra-enum-value! Managed value 63 for UIViewAutoresizing.All not found in native headers
 
-## it's a `ref` on a struct, which xtro assumes nullable
-!extra-null-allowed! 'System.Void UIKit.UIScrollViewDelegate::WillEndDragging(UIKit.UIScrollView,CoreGraphics.CGPoint,CoreGraphics.CGPoint&)' has a extraneous [NullAllowed] on parameter #2
-
 ## added in xcode 14 and is between a #if XAMCORE_5_0
 !incorrect-protocol-member! UISearchSuggestion::representedObject is REQUIRED and should be abstract
 !incorrect-protocol-member! UISearchSuggestion::setRepresentedObject: is REQUIRED and should be abstract
@@ -184,6 +181,10 @@
 !missing-selector! UICollectionViewDiffableDataSourceSectionSnapshotHandlers::willCollapseItemHandler not bound
 !missing-selector! UICollectionViewDiffableDataSourceSectionSnapshotHandlers::willExpandItemHandler not bound
 
-# no bound due to issues with foundation https://github.com/xamarin/xamarin-macios/issues/15577
+# no bound due to issues with foundation https://github.com/dotnet/macios/issues/15577
 !missing-selector! NSDiffableDataSourceSectionTransaction::difference not bound
 !missing-selector! NSDiffableDataSourceTransaction::difference not bound
+
+# empirical evidence shows the UIView parameter can be null for UITableViewDelegate::WillDisplay[Header|Footer]View: https://github.com/dotnet/macios/issues/9814
+!extra-null-allowed! 'System.Void UIKit.UITableViewDelegate::WillDisplayFooterView(UIKit.UITableView,UIKit.UIView,System.IntPtr)' has a extraneous [NullAllowed] on parameter #1
+!extra-null-allowed! 'System.Void UIKit.UITableViewDelegate::WillDisplayHeaderView(UIKit.UITableView,UIKit.UIView,System.IntPtr)' has a extraneous [NullAllowed] on parameter #1

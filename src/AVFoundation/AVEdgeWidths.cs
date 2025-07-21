@@ -31,18 +31,25 @@ using System.Runtime.Versioning;
 #nullable enable
 
 namespace AVFoundation {
-
-#if NET
+	/// <summary>A class that encapsulates the edge-widths used by an <see cref="AVFoundation.AVVideoCompositionRenderContext" />.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AVEdgeWidths {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public nfloat /* CGFloat */ Left;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public nfloat /* CGFloat */ Top;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public nfloat /* CGFloat */ Right;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public nfloat /* CGFloat */ Bottom;
 
 		public AVEdgeWidths (nfloat left, nfloat top, nfloat right, nfloat bottom)
@@ -53,6 +60,9 @@ namespace AVFoundation {
 			Bottom = bottom;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override string ToString ()
 		{
 			return string.Format ("(left={0},top={1},right={2},bottom={3})", Left, Top, Right, Bottom);
@@ -76,11 +86,18 @@ namespace AVFoundation {
 				left.Bottom != right.Bottom;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override int GetHashCode ()
 		{
 			return HashCode.Combine (Left, Top, Right, Bottom);
 		}
 
+		/// <param name="other">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override bool Equals (object? other)
 		{
 			if (other is AVEdgeWidths) {

@@ -42,18 +42,17 @@ namespace AudioToolbox {
 		Vibrate = 0x00000FFF,
 	}
 
-#if NET
+	/// <include file="../../docs/api/AudioToolbox/SystemSound.xml" path="/Documentation/Docs[@DocId='T:AudioToolbox.SystemSound']/*" />
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	public class SystemSound : IDisposable {
-#else
-	public class SystemSound : INativeObject, IDisposable {
-#endif
 #if MONOMAC
 		// TODO:
 #else
+		/// <summary>A special system sound that can be used to make the device vibrate.</summary>
+		///         <remarks>This system sound does nothing on iPod touches.</remarks>
 		public static readonly SystemSound Vibrate = new SystemSound ((uint) SystemSoundId.Vibrate, false);
 #endif
 
@@ -63,16 +62,15 @@ namespace AudioToolbox {
 		Action? completionRoutine;
 		GCHandle gc_handle;
 
-#if !NET
-		static readonly AddSystemSoundCompletionCallback SoundCompletionCallback = SoundCompletionShared;
-#endif
-
 		internal SystemSound (uint soundId, bool ownsHandle)
 		{
 			this.soundId = soundId;
 			this.ownsHandle = ownsHandle;
 		}
 
+		/// <param name="soundId">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public SystemSound (uint soundId) : this (soundId, false) { }
 
 
@@ -81,22 +79,16 @@ namespace AudioToolbox {
 			Dispose (false);
 		}
 
-#if NET
 		public uint SoundId {
 			get {
 				AssertNotDisposed ();
 				return soundId;
 			}
 		}
-#else
-		public IntPtr Handle {
-			get {
-				AssertNotDisposed ();
-				return (IntPtr) soundId;
-			}
-		}
-#endif
 
+		/// <summary>Gets or sets whether to override user preferences when calling <see cref="PlaySystemSound()" /> or <see cref="PlaySystemSound(Action)" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool IsUISound {
 			get {
 				uint out_size = sizeof (uint);
@@ -126,6 +118,9 @@ namespace AudioToolbox {
 			}
 		}
 
+		/// <summary>Controls whether the sound will complete playing, even if the application dies.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool CompletePlaybackIfAppDies {
 			get {
 				uint out_size = sizeof (uint);
@@ -159,12 +154,18 @@ namespace AudioToolbox {
 				throw new ObjectDisposedException ("SystemSound");
 		}
 
+		/// <summary>Releases the resources used by the SystemSound object.</summary>
+		///         <remarks>
+		///           <para>The Dispose method releases the resources used by the SystemSound class.</para>
+		///           <para>Calling the Dispose method when the application is finished using the SystemSound ensures that all external resources used by this managed object are released as soon as possible.  Once developers have invoked the Dispose method, the object is no longer useful and developers should no longer make any calls to it.  For more information on releasing resources see ``Cleaning up Unmananaged Resources'' at https://msdn.microsoft.com/en-us/library/498928w2.aspx</para>
+		///         </remarks>
 		public void Dispose ()
 		{
 			Dispose (true);
 			GC.SuppressFinalize (this);
 		}
 
+		/// <include file="../../docs/api/AudioToolbox/SystemSound.xml" path="/Documentation/Docs[@DocId='M:AudioToolbox.SystemSound.Dispose(System.Boolean)']/*" />
 		protected virtual void Dispose (bool disposing)
 		{
 			Cleanup (false);
@@ -195,6 +196,8 @@ namespace AudioToolbox {
 			}
 		}
 
+		/// <summary>Closes this system sound.</summary>
+		///         <remarks>To be added.</remarks>
 		public void Close ()
 		{
 			Cleanup (true);
@@ -202,6 +205,8 @@ namespace AudioToolbox {
 
 		[DllImport (Constants.AudioToolboxLibrary)]
 		static extern void AudioServicesPlayAlertSound (uint inSystemSoundID);
+		/// <summary>Plays a sound or alert.</summary>
+		///         <remarks>The actual behavior of this method depends on the device (iPhone, iPod touch) and the vibrate settings.</remarks>
 		public void PlayAlertSound ()
 		{
 			AssertNotDisposed ();
@@ -210,18 +215,21 @@ namespace AudioToolbox {
 
 		[DllImport (Constants.AudioToolboxLibrary)]
 		static extern void AudioServicesPlaySystemSound (uint inSystemSoundID);
+		/// <summary>Plays the system sound.</summary>
+		///         <remarks>The system sound is played asynchronously, but it is also limited to 30 seconds or less.</remarks>
 		public void PlaySystemSound ()
 		{
 			AssertNotDisposed ();
 			AudioServicesPlaySystemSound (soundId);
 		}
 
-#if NET
+		/// <param name="onCompletion">To be added.</param>
+		///         <summary>Plays a sound or alert and then calls the <paramref name="onCompletion" /> handler.</summary>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public void PlayAlertSound (Action onCompletion)
 		{
@@ -236,12 +244,13 @@ namespace AudioToolbox {
 			}
 		}
 
-#if NET
+		/// <summary>Asynchronously plays a sound or alert, returning a <see cref="Task" /> that completes after the sound ends.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public Task PlayAlertSoundAsync ()
 		{
 			var tcs = new TaskCompletionSource<bool> ();
@@ -251,12 +260,13 @@ namespace AudioToolbox {
 			return tcs.Task;
 		}
 
-#if NET
+		/// <param name="onCompletion">To be added.</param>
+		///         <summary>Plays the system sound and calls <paramref name="onCompletion" /> afterwards.</summary>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public void PlaySystemSound (Action onCompletion)
 		{
@@ -271,12 +281,13 @@ namespace AudioToolbox {
 			}
 		}
 
-#if NET
+		/// <summary>Asynchronously plays a system sound and returns a <see cref="System.Threading.Tasks.Task" /> that is completed when the sound ends.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public Task PlaySystemSoundAsync ()
 		{
 			var tcs = new TaskCompletionSource<bool> ();
@@ -286,21 +297,17 @@ namespace AudioToolbox {
 			return tcs.Task;
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		[DllImport (Constants.AudioToolboxLibrary)]
 		unsafe static extern void AudioServicesPlayAlertSoundWithCompletion (uint inSystemSoundID, BlockLiteral* inCompletionBlock);
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		[DllImport (Constants.AudioToolboxLibrary)]
 		unsafe static extern void AudioServicesPlaySystemSoundWithCompletion (uint inSystemSoundID, BlockLiteral* inCompletionBlock);
 
@@ -317,6 +324,7 @@ namespace AudioToolbox {
 
 			unsafe {
 				error = AudioServicesCreateSystemSoundID (fileUrl.Handle, &soundId);
+				GC.KeepAlive (fileUrl);
 			}
 
 			if (error != AudioServicesError.None)
@@ -325,11 +333,18 @@ namespace AudioToolbox {
 			return soundId;
 		}
 
+		/// <param name="fileUrl">The url to the local file.</param>
+		///         <summary>Create a system sound from a local file.</summary>
+		///         <remarks>The system sounds are limited to 30 seconds or less.   If there is an error, this constructor will throw an exception.   If you want to avoid exceptions, and instead get a null on error, call the FromFile methods.</remarks>
 		public SystemSound (NSUrl fileUrl)
 			: this (Create (fileUrl))
 		{
 		}
 
+		/// <param name="fileUrl">A SystemSound instance, or null on error.</param>
+		///         <summary>Creates a system sound from a file.</summary>
+		///         <returns>The system sound object, or null on error.</returns>
+		///         <remarks>SystemSounds are limited to 30 seconds or less.</remarks>
 		public static SystemSound? FromFile (NSUrl fileUrl)
 		{
 			AudioServicesError error;
@@ -340,12 +355,17 @@ namespace AudioToolbox {
 
 			unsafe {
 				error = AudioServicesCreateSystemSoundID (fileUrl.Handle, &soundId);
+				GC.KeepAlive (fileUrl);
 			}
 			if (error != AudioServicesError.None)
 				return null;
 			return new SystemSound (soundId, true);
 		}
 
+		/// <param name="filename">The file that contains the audio.</param>
+		///         <summary>An array of packet descriptions that describe the contents of the buffer.</summary>
+		///         <returns>A SystemSound instance or null on error.</returns>
+		///         <remarks>SystemSounds are limited to 30 seconds or less.</remarks>
 		public static SystemSound? FromFile (string filename)
 		{
 			AudioServicesError error;
@@ -357,6 +377,7 @@ namespace AudioToolbox {
 			using (var url = new NSUrl (filename)) {
 				unsafe {
 					error = AudioServicesCreateSystemSoundID (url.Handle, &soundId);
+					GC.KeepAlive (url);
 				}
 				if (error != AudioServicesError.None)
 					return null;
@@ -364,22 +385,10 @@ namespace AudioToolbox {
 			}
 		}
 
-#if !NET
-		delegate void AddSystemSoundCompletionCallback (SystemSoundId id, IntPtr clientData);
-#endif
-
 		[DllImport (Constants.AudioToolboxLibrary)]
-#if NET
 		unsafe static extern AudioServicesError AudioServicesAddSystemSoundCompletion (uint soundId, IntPtr runLoop, IntPtr runLoopMode, delegate* unmanaged<SystemSoundId, IntPtr, void> completionRoutine, IntPtr clientData);
-#else
-		static extern AudioServicesError AudioServicesAddSystemSoundCompletion (uint soundId, IntPtr runLoop, IntPtr runLoopMode, AddSystemSoundCompletionCallback completionRoutine, IntPtr clientData);
-#endif
 
-#if NET
 		[UnmanagedCallersOnly]
-#else
-		[MonoPInvokeCallback (typeof (Action<SystemSoundId, IntPtr>))]
-#endif
 		static void SoundCompletionShared (SystemSoundId id, IntPtr clientData)
 		{
 			GCHandle gch = GCHandle.FromIntPtr (clientData);
@@ -389,6 +398,12 @@ namespace AudioToolbox {
 				ss.completionRoutine ();
 		}
 
+		/// <param name="routine">Method to invoke upon completion.</param>
+		///         <param name="runLoop">Runloop on which the completion will be invoked, this parameter can be null to invoke on the main loop.</param>
+		///         <summary>Method to invoke when this sound completes playing.</summary>
+		///         <returns>Status code.</returns>
+		///         <remarks>
+		///         </remarks>
 		public AudioServicesError AddSystemSoundCompletion (Action routine, CFRunLoop? runLoop = null)
 		{
 			if (gc_handle.IsAllocated)
@@ -398,21 +413,23 @@ namespace AudioToolbox {
 			completionRoutine = routine;
 
 			unsafe {
-				return AudioServicesAddSystemSoundCompletion (soundId,
+				AudioServicesError result = AudioServicesAddSystemSoundCompletion (
+														  soundId,
 														  runLoop.GetHandle (),
 														  IntPtr.Zero, // runLoopMode should be enum runLoopMode.GetHandle (),
-#if NET
-			                                              &SoundCompletionShared,
-#else
-														  SoundCompletionCallback,
-#endif
+														  &SoundCompletionShared,
 														  GCHandle.ToIntPtr (gc_handle));
+				GC.KeepAlive (runLoop);
+				return result;
 			}
 		}
 
 		[DllImport (Constants.AudioToolboxLibrary)]
 		static extern void AudioServicesRemoveSystemSoundCompletion (uint soundId);
 
+		/// <summary>Removes the previously registered completion method.</summary>
+		///         <remarks>
+		///         </remarks>
 		public void RemoveSystemSoundCompletion ()
 		{
 			completionRoutine = null;

@@ -5,24 +5,13 @@ using Foundation;
 using ObjCRuntime;
 using SceneKit;
 
-#if NET
 using MatrixFloat2x2 = global::CoreGraphics.NMatrix2;
 using MatrixFloat3x3 = global::CoreGraphics.NMatrix3;
 using MatrixFloat4x3 = global::CoreGraphics.NMatrix4x3;
 using MatrixFloat4x4 = global::CoreGraphics.NMatrix4;
-#else
-using MatrixFloat2x2 = global::OpenTK.NMatrix2;
-using MatrixFloat3x3 = global::OpenTK.NMatrix3;
-using MatrixFloat4x3 = global::OpenTK.NMatrix4x3;
-using MatrixFloat4x4 = global::OpenTK.NMatrix4;
-#endif
 
 #if __MACOS__
-#if NET
 using pfloat = System.Runtime.InteropServices.NFloat;
-#else
-using pfloat = System.nfloat;
-#endif
 #else
 using pfloat = System.Single;
 #endif
@@ -96,7 +85,6 @@ namespace Bindings.Test {
 				r2c0, r2c1, r2c2, r2c3);
 		}
 
-#if !__WATCHOS__
 		[DllImport ("__Internal")]
 		public static extern void x_mdltransformcomponent_get_local_transform (IntPtr self, double time, out float r0c0, out float r0c1, out float r0c2, out float r0c3, out float r1c0, out float r1c1, out float r1c2, out float r1c3, out float r2c0, out float r2c1, out float r2c2, out float r2c3, out float r3c0, out float r3c1, out float r3c2, out float r3c3);
 
@@ -138,7 +126,6 @@ namespace Bindings.Test {
 				r2c0, r2c1, r2c2, r2c3,
 				r3c0, r3c1, r3c2, r3c3);
 		}
-#endif
 
 		[DllImport ("__Internal")]
 		public static extern SCNMatrix4 x_SCNMatrix4MakeTranslation (pfloat tx, pfloat ty, pfloat tz);

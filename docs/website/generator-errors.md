@@ -4,7 +4,7 @@ title: "Binding errors"
 dateupdated: 2017-06-26
 ---
 
-[//]: # (The original file resides under https://github.com/xamarin/xamarin-macios/tree/main/docs/website/)
+[//]: # (The original file resides under https://github.com/dotnet/macios/tree/main/docs/website/)
 [//]: # (This allows all contributors (including external) to submit, using a PR, updates to the documentation that match the tools changes)
 [//]: # (Modifications outside of xamarin-macios/main will be lost on future updates)
 
@@ -13,13 +13,13 @@ dateupdated: 2017-06-26
 E.g. parameters, environment
 
 <!-- 0xxx: the generator itself, e.g. parameters, environment -->
-### <a name="BI0000"/>BI0000: Unexpected error - Please fill a bug report at https://github.com/xamarin/xamarin-macios/issues/new
+### <a name="BI0000"/>BI0000: Unexpected error - Please fill a bug report at https://github.com/dotnet/macios/issues/new
 
-An unexpected error condition occurred. Please [file a bug report](https://github.com/xamarin/xamarin-macios/issues/new) with as much information as possible, including:
+An unexpected error condition occurred. Please [file a bug report](https://github.com/dotnet/macios/issues/new) with as much information as possible, including:
 
-* A [binary build log](https://github.com/xamarin/xamarin-macios/wiki/Diagnosis#binary-build-logs).
+* A [binary build log](https://github.com/dotnet/macios/wiki/Diagnosis#binary-build-logs).
 * A minimal test case that reproduces the error.
-* Complete [version information](https://github.com/xamarin/xamarin-macios/wiki/Diagnosis#version-information).
+* Complete [version information](https://github.com/dotnet/macios/wiki/Diagnosis#version-information).
 
 ### <a name='BI0001'/>BI0001: The .NET runtime could not load the \* type. Message: \*
 
@@ -39,7 +39,7 @@ An invalid target framework was passed using the --target-framework argument. Pl
 
 ### <a name='BI0086'/>BI0086: A target framework (--target-framework) must be specified when building for \*.
 
-This usually indicates a bug in the product; please [file a bug report](https://github.com/xamarin/xamarin-macios/issues/new) with a test case.
+This usually indicates a bug in the product; please [file a bug report](https://github.com/dotnet/macios/issues/new) with a test case.
 
 ### <a name='BI0087'/>BI0087: Xamarin.Mac Classic binding projects are not supported anymore. Please upgrade the binding project to a Xamarin.Mac Unified binding project.
 
@@ -59,11 +59,11 @@ The project must be [migrated to a Xamarin.iOS (Unified) project](https://docs.m
 > [!NOTE]
 > This error is only reported in legacy Xamarin projects, not in .NET binding projects.
 
-### <a name='BI0099'/>BI0099: Internal error \*. Please file a bug report with a test case (https://github.com/xamarin/xamarin-macios/issues/new).
+### <a name='BI0099'/>BI0099: Internal error \*. Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new).
 
 This error message is reported when an internal consistency check fails.
 
-This usually indicates a bug in the binding generator; please file a new issue on [GitHub](https://github.com/xamarin/xamarin-macios/issues/new) with a test case.
+This usually indicates a bug in the binding generator; please file a new issue on [GitHub](https://github.com/dotnet/macios/issues/new) with a test case.
 
 # BI1xxx: code generation
 
@@ -72,7 +72,7 @@ This usually indicates a bug in the binding generator; please file a new issue o
 
 ### <a name='BI1000'/>BI1000: Could not compile the generated API bindings.
 
-This indicates a bug in product itself; please file a new issue on [GitHub](https://github.com/xamarin/xamarin-macios/issues/new) with a test case.
+This indicates a bug in product itself; please file a new issue on [GitHub](https://github.com/dotnet/macios/issues/new) with a test case.
 
 ### <a name='BI1001'/>BI1001: Do not know how to make a trampoline for \*
 
@@ -130,13 +130,13 @@ Please go to [[FieldAttribute]](https://developer.xamarin.com/guides/cross-platf
 
 ### <a name='BI1027'/>BI1027: Support for ZeroCopy strings is not implemented. Strings will be marshalled as NSStrings.
 
-### <a name='BI1028'/>BI1028: Internal sanity check failed, please file a bug report (https://github.com/xamarin/xamarin-macios/issues/new) with a test case.
+### <a name='BI1028'/>BI1028: Internal sanity check failed, please file a bug report (https://github.com/dotnet/macios/issues/new) with a test case.
 
-This usually indicates a bug in the product; please [file a bug report](https://github.com/xamarin/xamarin-macios/issues/new) with a test case.
+This usually indicates a bug in the product; please [file a bug report](https://github.com/dotnet/macios/issues/new) with a test case.
 
 ### <a name='BI1029'/>BI1029: Internal error: invalid enum mode for type '\*'
 
-This usually indicates a bug in the product; please [file a bug report](https://github.com/xamarin/xamarin-macios/issues/new) with a test case.
+This usually indicates a bug in the product; please [file a bug report](https://github.com/dotnet/macios/issues/new) with a test case.
 
 ### <a name='BI1030'/>BI1030: \* cannot have [BaseType(typeof(\*))] as it creates a circular dependency
 
@@ -170,9 +170,9 @@ This error is no longer shown.
 
 ### <a name='BI1046'/>BI1046: The [Field] constant \* cannot only be used once inside enum \*.
 
-### <a name='BI1047'/>BI1047: Unsupported platform: \*. Please file a bug report (https://github.com/xamarin/xamarin-macios/issues/new) with a test case.
+### <a name='BI1047'/>BI1047: Unsupported platform: \*. Please file a bug report (https://github.com/dotnet/macios/issues/new) with a test case.
 
-This usually indicates a bug in the product; please [file a bug report](https://github.com/xamarin/xamarin-macios/issues/new) with a test case.
+This usually indicates a bug in the product; please [file a bug report](https://github.com/dotnet/macios/issues/new) with a test case.
 
 ### <a name='BI1048'/>BI1048: Unsupported type \* decorated with [BindAs].
 
@@ -180,37 +180,37 @@ This usually indicates a bug in the product; please [file a bug report](https://
 
 ### <a name='BI1050'/>BI1050: [BindAs] cannot be used inside Protocol or Model types. Type: \*
 
-### <a name='BI1051'/>BI1051: Internal error: Don't know how to get attributes for \*. Please file a bug report (https://github.com/xamarin/xamarin-macios/issues/new) with a test case.
+### <a name='BI1051'/>BI1051: Internal error: Don't know how to get attributes for \*. Please file a bug report (https://github.com/dotnet/macios/issues/new) with a test case.
 
-This usually indicates a bug in the product; please [file a bug report](https://github.com/xamarin/xamarin-macios/issues/new) with a test case.
+This usually indicates a bug in the product; please [file a bug report](https://github.com/dotnet/macios/issues/new) with a test case.
 
-### <a name='BI1052'/>BI1052: Internal error: Could not find the type \* in the assembly \*. Please file a bug report (https://github.com/xamarin/xamarin-macios/issues/new) with a test case.
+### <a name='BI1052'/>BI1052: Internal error: Could not find the type \* in the assembly \*. Please file a bug report (https://github.com/dotnet/macios/issues/new) with a test case.
 
-This usually indicates a bug in the product; please [file a bug report](https://github.com/xamarin/xamarin-macios/issues/new) with a test case.
+This usually indicates a bug in the product; please [file a bug report](https://github.com/dotnet/macios/issues/new) with a test case.
 
 ### <a name='BI1053'/>BI1053: Internal error: unknown target framework '\*'.
 
-This usually indicates a bug in the product; please [file a bug report](https://github.com/xamarin/xamarin-macios/issues/new) with a test case.
+This usually indicates a bug in the product; please [file a bug report](https://github.com/dotnet/macios/issues/new) with a test case.
 
-### <a name='BI1054'/>BI1054: Internal error: can't convert type '\*' (unknown assembly). Please file a bug report (https://github.com/xamarin/xamarin-macios/issues/new) with a test case.
+### <a name='BI1054'/>BI1054: Internal error: can't convert type '\*' (unknown assembly). Please file a bug report (https://github.com/dotnet/macios/issues/new) with a test case.
 
-This usually indicates a bug in the product; please [file a bug report](https://github.com/xamarin/xamarin-macios/issues/new) with a test case.
+This usually indicates a bug in the product; please [file a bug report](https://github.com/dotnet/macios/issues/new) with a test case.
 
-### <a name='BI1055'/>BI1055: Internal error: failed to convert type '\*'. Please file a bug report (https://github.com/xamarin/xamarin-macios/issues/new) with a test case.
+### <a name='BI1055'/>BI1055: Internal error: failed to convert type '\*'. Please file a bug report (https://github.com/dotnet/macios/issues/new) with a test case.
 
-This usually indicates a bug in the product; please [file a bug report](https://github.com/xamarin/xamarin-macios/issues/new) with a test case.
+This usually indicates a bug in the product; please [file a bug report](https://github.com/dotnet/macios/issues/new) with a test case.
 
-### <a name='BI1056'/>BI1056: Internal error: failed to instantiate mock attribute '\*' (could not convert type constructor argument #\*). Please file a bug report (https://github.com/xamarin/xamarin-macios/issues/new) with a test case.
+### <a name='BI1056'/>BI1056: Internal error: failed to instantiate mock attribute '\*' (could not convert type constructor argument #\*). Please file a bug report (https://github.com/dotnet/macios/issues/new) with a test case.
 
-This usually indicates a bug in the product; please [file a bug report](https://github.com/xamarin/xamarin-macios/issues/new) with a test case.
+This usually indicates a bug in the product; please [file a bug report](https://github.com/dotnet/macios/issues/new) with a test case.
 
-### <a name='BI1057'/>BI1057: Internal error: failed to instantiate mock attribute '\*' (could not convert constructor type #\* (\*)). Please file a bug report (https://github.com/xamarin/xamarin-macios/issues/new) with a test case.
+### <a name='BI1057'/>BI1057: Internal error: failed to instantiate mock attribute '\*' (could not convert constructor type #\* (\*)). Please file a bug report (https://github.com/dotnet/macios/issues/new) with a test case.
 
-This usually indicates a bug in the product; please [file a bug report](https://github.com/xamarin/xamarin-macios/issues/new) with a test case.
+This usually indicates a bug in the product; please [file a bug report](https://github.com/dotnet/macios/issues/new) with a test case.
 
-### <a name='BI1058'/>BI1058: Internal error: could not find a constructor for the mock attribute '\*'. Please file a bug report (https://github.com/xamarin/xamarin-macios/issues/new) with a test case.
+### <a name='BI1058'/>BI1058: Internal error: could not find a constructor for the mock attribute '\*'. Please file a bug report (https://github.com/dotnet/macios/issues/new) with a test case.
 
-This usually indicates a bug in the product; please [file a bug report](https://github.com/xamarin/xamarin-macios/issues/new) with a test case.
+This usually indicates a bug in the product; please [file a bug report](https://github.com/dotnet/macios/issues/new) with a test case.
 
 ### <a name='BI1059'/>BI1059: Found \* \* attributes on the member \*. At most one was expected.
 

@@ -28,10 +28,6 @@ using System.ComponentModel;
 using CoreFoundation;
 using ObjCRuntime;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 // Disable until we get around to enable + fix any issues.
 #nullable disable
 
@@ -47,6 +43,11 @@ namespace Foundation {
 				DangerousRelease ();
 		}
 
+		/// <param name="objects">To be added.</param>
+		///         <param name="keys">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSMutableDictionary FromObjectsAndKeys (NSObject [] objects, NSObject [] keys)
 		{
 			if (objects is null)
@@ -61,6 +62,11 @@ namespace Foundation {
 				return FromObjectsAndKeysInternal (no, nk);
 		}
 
+		/// <param name="objects">To be added.</param>
+		///         <param name="keys">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSMutableDictionary FromObjectsAndKeys (object [] objects, object [] keys)
 		{
 			if (objects is null)
@@ -75,6 +81,12 @@ namespace Foundation {
 				return FromObjectsAndKeysInternal (no, nk);
 		}
 
+		/// <param name="objects">To be added.</param>
+		/// <param name="keys">To be added.</param>
+		/// <param name="count">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		public static NSMutableDictionary FromObjectsAndKeys (NSObject [] objects, NSObject [] keys, nint count)
 		{
 			if (objects is null)
@@ -91,6 +103,12 @@ namespace Foundation {
 				return FromObjectsAndKeysInternal (no, nk);
 		}
 
+		/// <param name="objects">To be added.</param>
+		/// <param name="keys">To be added.</param>
+		/// <param name="count">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		public static NSMutableDictionary FromObjectsAndKeys (object [] objects, object [] keys, nint count)
 		{
 			if (objects is null)
@@ -113,6 +131,8 @@ namespace Foundation {
 			SetObject (item.Value, item.Key);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void Clear ()
 		{
 			RemoveAllObjects ();
@@ -157,6 +177,10 @@ namespace Foundation {
 		#endregion
 
 		#region IDictionary
+		/// <param name="key">To be added.</param>
+		///         <param name="value">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		void IDictionary.Add (object key, object value)
 		{
 			var nsokey = key as NSObject;
@@ -169,6 +193,10 @@ namespace Foundation {
 			SetObject (nsovalue, nsokey);
 		}
 
+		/// <param name="key">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		bool IDictionary.Contains (object key)
 		{
 			if (key is null)
@@ -176,14 +204,22 @@ namespace Foundation {
 			var _key = key as INativeObject;
 			if (_key is null)
 				return false;
-			return ContainsKey (_key.Handle);
+			bool result = ContainsKey (_key.Handle);
+			GC.KeepAlive (_key);
+			return result;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		IDictionaryEnumerator IDictionary.GetEnumerator ()
 		{
 			return (IDictionaryEnumerator) ((IEnumerable<KeyValuePair<NSObject, NSObject>>) this).GetEnumerator ();
 		}
 
+		/// <param name="key">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		void IDictionary.Remove (object key)
 		{
 			if (key is null)
@@ -193,12 +229,19 @@ namespace Foundation {
 				throw new ArgumentException ("The key must be an INativeObject");
 
 			_RemoveObjectForKey (nskey.Handle);
+			GC.KeepAlive (nskey);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		bool IDictionary.IsFixedSize {
 			get { return false; }
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		bool IDictionary.IsReadOnly {
 			get { return false; }
 		}
@@ -208,7 +251,9 @@ namespace Foundation {
 				var _key = key as INativeObject;
 				if (_key is null)
 					return null;
-				return _ObjectForKey (_key.Handle);
+				object result = _ObjectForKey (_key.Handle);
+				GC.KeepAlive (_key);
+				return result;
 			}
 			set {
 				var nsokey = key as INativeObject;
@@ -218,25 +263,41 @@ namespace Foundation {
 					throw new ArgumentException ("You can only use INativeObjects for keys and values in an NSMutableDictionary");
 
 				_SetObject (nsovalue.Handle, nsokey.Handle);
+				GC.KeepAlive (nsovalue);
+				GC.KeepAlive (nsokey);
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		ICollection IDictionary.Keys {
 			get { return Keys; }
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		ICollection IDictionary.Values {
 			get { return Values; }
 		}
 		#endregion
 
 		#region IDictionary<NSObject, NSObject>
+		/// <param name="key">To be added.</param>
+		///         <param name="value">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void Add (NSObject key, NSObject value)
 		{
 			// Inverted args.
 			SetObject (value, key);
 		}
 
+		/// <param name="key">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool Remove (NSObject key)
 		{
 			if (key is null)
@@ -247,6 +308,11 @@ namespace Foundation {
 			return last != Count;
 		}
 
+		/// <param name="key">To be added.</param>
+		///         <param name="value">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool TryGetValue (NSObject key, out NSObject value)
 		{
 			// Can't put null in NSDictionaries, so if null is returned, the key wasn't found.
@@ -304,6 +370,9 @@ namespace Foundation {
 		#endregion
 
 		#region IEnumerable
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		IEnumerator IEnumerable.GetEnumerator ()
 		{
 			return ((IEnumerable<KeyValuePair<NSObject, NSObject>>) this).GetEnumerator ();
@@ -321,6 +390,11 @@ namespace Foundation {
 		}
 		#endregion
 
+		/// <param name="obj">To be added.</param>
+		///         <param name="key">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSMutableDictionary LowlevelFromObjectAndKey (IntPtr obj, IntPtr key)
 		{
 #if MONOMAC
@@ -330,6 +404,10 @@ namespace Foundation {
 #endif
 		}
 
+		/// <param name="obj">To be added.</param>
+		///         <param name="key">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void LowlevelSetObject (IntPtr obj, IntPtr key)
 		{
 #if MONOMAC
@@ -339,12 +417,17 @@ namespace Foundation {
 #endif
 		}
 
+		/// <param name="obj">To be added.</param>
+		///         <param name="key">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void LowlevelSetObject (NSObject obj, IntPtr key)
 		{
 			if (obj is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (obj));
 
 			LowlevelSetObject (obj.Handle, key);
+			GC.KeepAlive (obj);
 		}
 
 		public void LowlevelSetObject (string str, IntPtr key)

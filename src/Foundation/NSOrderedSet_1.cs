@@ -15,25 +15,28 @@ using System.Runtime.Versioning;
 
 using ObjCRuntime;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace Foundation {
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	[Register ("NSOrderedSet", SkipRegistration = true)]
 	public sealed partial class NSOrderedSet<TKey> : NSOrderedSet, IEnumerable<TKey>
 		where TKey : class, INativeObject {
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSOrderedSet ()
 		{
 		}
 
+		/// <param name="coder">The unarchiver object.</param>
+		///         <summary>A constructor that initializes the object from the data stored in the unarchiver object.</summary>
+		///         <remarks>
+		///           <para>This constructor is provided to allow the class to be initialized from an unarchiver (for example, during NIB deserialization).   This is part of the <see cref="Foundation.NSCoding" />  protocol.</para>
+		///           <para>If developers want to create a subclass of this object and continue to support deserialization from an archive, they should implement a constructor with an identical signature: taking a single parameter of type <see cref="Foundation.NSCoder" /> and decorate it with the [Export("initWithCoder:"] attribute declaration.</para>
+		///           <para>The state of this object can also be serialized by using the companion method, EncodeTo.</para>
+		///         </remarks>
 		public NSOrderedSet (NSCoder coder) : base (coder)
 		{
 		}
@@ -42,22 +45,37 @@ namespace Foundation {
 		{
 		}
 
+		/// <param name="start">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSOrderedSet (TKey start) : base (start)
 		{
 		}
 
+		/// <param name="objs">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSOrderedSet (params TKey [] objs) : base (objs)
 		{
 		}
 
+		/// <param name="source">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSOrderedSet (NSSet<TKey> source) : base (source)
 		{
 		}
 
+		/// <param name="other">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSOrderedSet (NSOrderedSet<TKey> other) : base (other)
 		{
 		}
 
+		/// <param name="other">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSOrderedSet (NSMutableOrderedSet<TKey> other) : base (other)
 		{
 		}
@@ -69,39 +87,63 @@ namespace Foundation {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public TKey [] ToArray ()
 		{
 			return base.ToArray<TKey> ();
 		}
 
+		/// <param name="obj">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool Contains (TKey obj)
 		{
 			if (obj is null)
 				throw new ArgumentNullException (nameof (obj));
 
-			return _Contains (obj.Handle);
+			bool result = _Contains (obj.Handle);
+			GC.KeepAlive (obj);
+			return result;
 		}
 
+		/// <param name="obj">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public nint IndexOf (TKey obj)
 		{
 			if (obj is null)
 				throw new ArgumentNullException (nameof (obj));
 
-			return _IndexOf (obj.Handle);
+			nint result = _IndexOf (obj.Handle);
+			GC.KeepAlive (obj);
+			return result;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public TKey? FirstObject ()
 		{
 			var ret = _FirstObject ();
 			return Runtime.GetINativeObject<TKey> (ret, false);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public TKey? LastObject ()
 		{
 			var ret = _LastObject ();
 			return Runtime.GetINativeObject<TKey> (ret, false);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public NSSet<TKey>? AsSet ()
 		{
 			var ret = _AsSet ();
@@ -118,6 +160,9 @@ namespace Foundation {
 		#endregion
 
 		#region IEnumerable implementation
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		IEnumerator IEnumerable.GetEnumerator ()
 		{
 			return new NSFastEnumerator<TKey> (this);
@@ -194,6 +239,10 @@ namespace Foundation {
 			return !first.IsEqualToOrderedSet (second);
 		}
 
+		/// <param name="other">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override bool Equals (object other)
 		{
 			var o = other as NSOrderedSet<TKey>;
@@ -202,34 +251,25 @@ namespace Foundation {
 			return IsEqualToOrderedSet (o);
 		}
 
+		/// <summary>Generates a hash code for the current instance.</summary>
+		///         <returns>A int containing the hash code for this instance.</returns>
+		///         <remarks>The algorithm used to generate the hash code is unspecified.</remarks>
 		public override int GetHashCode ()
 		{
 			return (int) GetNativeHash ();
 		}
 
-#if false // https://github.com/xamarin/xamarin-macios/issues/15577
+#if false // https://github.com/dotnet/macios/issues/15577
 
-#if !NET
-		[Watch (6,0), TV (13,0), iOS (13,0)]
-#else
 		[SupportedOSPlatform ("ios13.0"), SupportedOSPlatform ("tvos13.0"), SupportedOSPlatform ("macos")]
-#endif
 		public NSOrderedCollectionDifference<TKey> GetDifference (NSOrderedSet<TKey> other, NSOrderedCollectionDifferenceCalculationOptions options)
 			=> new NSOrderedCollectionDifference<TKey> (_GetDifference (other, options));
 
-#if !NET
-		[Watch (6,0), TV (13,0), iOS (13,0)]
-#else
 		[SupportedOSPlatform ("ios13.0"), SupportedOSPlatform ("tvos13.0"), SupportedOSPlatform ("macos")]
-#endif
 		public NSOrderedCollectionDifference<TKey> GetDifference (NSOrderedSet other)
 			=> new NSOrderedCollectionDifference<TKey> (_GetDifference (other));
 
-#if !NET
-		[Watch (6,0), TV (13,0), iOS (13,0)]
-#else
 		[SupportedOSPlatform ("ios13.0"), SupportedOSPlatform ("tvos13.0"), SupportedOSPlatform ("macos")]
-#endif
 		public NSOrderedSet<TKey>? GetOrderedSet (NSOrderedCollectionDifference difference)
 		{
 			var ptr = _GetOrderedSet (difference); 
@@ -250,11 +290,7 @@ namespace Foundation {
 			return false;
 		}
 
-#if !NET
-		[Watch (6,0), TV (13,0), iOS (13,0)]
-#else
 		[SupportedOSPlatform ("ios13.0"), SupportedOSPlatform ("tvos13.0"), SupportedOSPlatform ("macos")]
-#endif
 		public NSOrderedCollectionDifference<TKey>? GetDifference (NSOrderedSet<TKey> other, NSOrderedCollectionDifferenceCalculationOptions options, NSOrderedCollectionDifferenceEquivalenceTest<TKey> equivalenceTest) 
 		{
 			if (equivalenceTest is null)

@@ -18,14 +18,10 @@ using CoreGraphics;
 #nullable enable
 
 namespace MediaPlayer {
+	/// <summary>A graphic, such as an album cover, associated with a <see cref="MediaPlayer.MPMediaItem" />.</summary>
+	///     <remarks>To be added.</remarks>
+	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPMediaItemArtwork_ClassReference/index.html">Apple documentation for <c>MPMediaItemArtwork</c></related>
 	public partial class MPMediaItemArtwork {
-#if !XAMCORE_3_0 && !NET
-		[Obsolete ("Use the (UIImage) constructor instead, iOS9 does not allow creating an empty instance.")]
-		public MPMediaItemArtwork ()
-		{
-
-		}
-#endif
 	}
 }
 

@@ -15,15 +15,18 @@ using Xamarin.Utils;
 
 namespace Xamarin.Linker.Steps {
 	public class ListExportedSymbols : BaseStep {
+#if !MMP && !MTOUCH
 		PInvokeWrapperGenerator state;
+#endif
 		bool is_product_assembly;
-#if !NET
+#if !NET || LEGACY_TOOLS
 		bool skip_sdk_assemblies;
 #endif
 
+#if !MMP && !MTOUCH
 		PInvokeWrapperGenerator State {
 			get {
-#if NET
+#if NET && !LEGACY_TOOLS
 				if (state is null && DerivedLinkContext.App.RequiresPInvokeWrappers) {
 					Configuration.PInvokeWrapperGenerationState = new PInvokeWrapperGenerator () {
 						App = DerivedLinkContext.App,
@@ -37,8 +40,9 @@ namespace Xamarin.Linker.Steps {
 				return state;
 			}
 		}
+#endif
 
-#if NET
+#if NET && !LEGACY_TOOLS
 		protected override void EndProcess ()
 		{
 			if (state?.Started == true) {
@@ -50,7 +54,7 @@ namespace Xamarin.Linker.Steps {
 		}
 #endif
 
-#if NET
+#if NET && !LEGACY_TOOLS
 		public LinkerConfiguration Configuration {
 			get {
 				return LinkerConfiguration.GetInstance (Context);
@@ -60,7 +64,7 @@ namespace Xamarin.Linker.Steps {
 
 		public DerivedLinkContext DerivedLinkContext {
 			get {
-#if NET
+#if NET && !LEGACY_TOOLS
 				return Configuration.DerivedLinkContext;
 #else
 				return (DerivedLinkContext) Context;
@@ -68,17 +72,9 @@ namespace Xamarin.Linker.Steps {
 			}
 		}
 
-#if NET
 		public ListExportedSymbols ()
 		{
 		}
-#else
-		internal ListExportedSymbols (PInvokeWrapperGenerator state, bool skip_sdk_assemblies = false)
-		{
-			this.state = state;
-			this.skip_sdk_assemblies = skip_sdk_assemblies;
-		}
-#endif
 
 		protected override void ProcessAssembly (AssemblyDefinition assembly)
 		{
@@ -87,7 +83,7 @@ namespace Xamarin.Linker.Steps {
 			if (Annotations.GetAction (assembly) == AssemblyAction.Delete)
 				return;
 
-#if !NET
+#if !NET || LEGACY_TOOLS
 			if (skip_sdk_assemblies && Profile.IsSdkAssembly (assembly))
 				return;
 #endif
@@ -104,7 +100,7 @@ namespace Xamarin.Linker.Steps {
 			if (!hasSymbols)
 				return;
 
-#if NET
+#if NET && !LEGACY_TOOLS
 			is_product_assembly = Configuration.Profile.IsProductAssembly (assembly);
 #else
 			is_product_assembly = Profile.IsProductAssembly (assembly);
@@ -135,16 +131,23 @@ namespace Xamarin.Linker.Steps {
 					modified |= ProcessMethod (method);
 			}
 
-			// There are no Objective-C classes we need to keep from the platform assembly,
-			// so just skip in that case.
-			if (!is_product_assembly)
-				AddRequiredObjectiveCType (type);
+			AddRequiredObjectiveCType (type);
 
 			return modified;
 		}
 
 		void AddRequiredObjectiveCType (TypeDefinition type)
 		{
+			// The product assembly only has one type we may need to keep: XamarinSwiftFunctions
+			if (is_product_assembly) {
+				switch (type.Name) {
+				case "XamarinSwiftFunctions":
+					break;
+				default:
+					return;
+				}
+			}
+
 			var registerAttribute = DerivedLinkContext.StaticRegistrar?.GetRegisterAttribute (type);
 			if (registerAttribute is null)
 				return;
@@ -191,7 +194,7 @@ namespace Xamarin.Linker.Steps {
 					}
 				}
 
-#if NET
+#if NET && !LEGACY_TOOLS
 				// Create a list of all the libraries from Mono that we'll link with
 				// We add 4 different variations for each library:
 				// * with and without a "lib" prefix

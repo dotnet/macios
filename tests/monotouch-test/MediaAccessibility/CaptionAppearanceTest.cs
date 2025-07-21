@@ -7,8 +7,6 @@
 // Copyright 2013 Xamarin Inc.
 //
 
-#if !__WATCHOS__
-
 using System;
 using Foundation;
 using MediaAccessibility;
@@ -20,23 +18,6 @@ namespace MonoTouchFixtures.MediaAccessibility {
 	// we want the test to be availble if we use the linker
 	[Preserve (AllMembers = true)]
 	public class CaptionAppearanceTest {
-
-#if !XAMCORE_3_0
-		[Test]
-		public void Fields ()
-		{
-			if (TestRuntime.CheckXcodeVersion (5, 0, 1)) {
-				Assert.NotNull (MACaptionAppearance.MediaCharacteristicDescribesMusicAndSoundForAccessibility, "MediaCharacteristicDescribesMusicAndSoundForAccessibility");
-				Assert.NotNull (MACaptionAppearance.MediaCharacteristicTranscribesSpokenDialogForAccessibility, "MediaCharacteristicTranscribesSpokenDialogForAccessibility");
-				Assert.NotNull (MACaptionAppearance.SettingsChangedNotification, "SettingsChangedNotification");
-			} else {
-				Assert.Null (MACaptionAppearance.MediaCharacteristicDescribesMusicAndSoundForAccessibility, "MediaCharacteristicDescribesMusicAndSoundForAccessibility");
-				Assert.Null (MACaptionAppearance.MediaCharacteristicTranscribesSpokenDialogForAccessibility, "MediaCharacteristicTranscribesSpokenDialogForAccessibility");
-				Assert.Null (MACaptionAppearance.SettingsChangedNotification, "SettingsChangedNotification");
-			}
-		}
-#endif // !XAMCORE_3_0
-
 		[Test]
 		[Culture ("en")] // this setting depends on locale of the device according to apple docs on MACaptionAppearanceGetDisplayType, we know english works
 		public void GetDisplayType ()
@@ -67,7 +48,6 @@ namespace MonoTouchFixtures.MediaAccessibility {
 			MACaptionAppearance.DidDisplayCaptions (a);
 		}
 
-#if NET
 		[Test]
 		public void IsCustomized ()
 		{
@@ -77,8 +57,5 @@ namespace MonoTouchFixtures.MediaAccessibility {
 				Assert.That (MACaptionAppearance.IsCustomized (value), Is.EqualTo (true).Or.EqualTo (false), value.ToString ());
 			}
 		}
-#endif // NET
 	}
 }
-
-#endif // !__WATCHOS__

@@ -42,10 +42,7 @@ namespace MonoTouchFixtures.Foundation {
 			Assert.Fail (message);
 		}
 
-		// FIXME all test cases are failing on bots with Xcode 8 / watchOS 3
-#if !__WATCHOS__
 		[Test]
-#endif
 		public void CreateDataTaskAsync ()
 		{
 			TestRuntime.AssertXcodeVersion (5, 0);

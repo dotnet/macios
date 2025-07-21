@@ -7,7 +7,7 @@
 // Copyright 2013 Xamarin Inc.
 //
 
-#if !__WATCHOS__ && !MONOMAC
+#if !MONOMAC
 
 using System;
 using System.Collections.Generic;
@@ -44,7 +44,7 @@ namespace MonoTouchFixtures.UIKit {
 		}
 
 		[Test]
-		[Ignore ("Issue: https://github.com/xamarin/maccore/issues/1345 && WIP PR: https://github.com/xamarin/xamarin-macios/pull/5462")]
+		[Ignore ("Issue: https://github.com/xamarin/maccore/issues/1345 && WIP PR: https://github.com/dotnet/macios/pull/5462")]
 		public void NoStrongCycles ()
 		{
 			bool finalizedAnyCtor = false;
@@ -131,4 +131,4 @@ namespace MonoTouchFixtures.UIKit {
 	} //end of class
 } //end of namespace
 
-#endif // !__WATCHOS__
+#endif // !MONOMAC

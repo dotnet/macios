@@ -3,11 +3,11 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>Xamarin.Tests.FrameworksInRuntimesNativeDirectory</PackageId>
     <PackageVersion>1.0.0</PackageVersion>
-    <RepositoryUrl>https://github.com/xamarin/xamarin-macios</RepositoryUrl>
+    <RepositoryUrl>https://github.com/dotnet/macios</RepositoryUrl>
     <RepositoryBranch>main</RepositoryBranch>
     <Authors>Microsoft</Authors>
     <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
-    <PackageProjectUrl>https://github.com/xamarin/xamarin-macios</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/dotnet/macios</PackageProjectUrl>
     <RootTestDirectory>../../..</RootTestDirectory>
     <TestFrameworksDirectory>$(RootTestDirectory)/test-libraries/frameworks</TestFrameworksDirectory>
   </PropertyGroup>

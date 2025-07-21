@@ -14,11 +14,7 @@ using CoreGraphics;
 using UIKit;
 using NUnit.Framework;
 
-#if XAMCORE_3_0
 using TextAttributes = UIKit.UIStringAttributes;
-#else
-using TextAttributes = UIKit.UITextAttributes;
-#endif
 
 namespace MonoTouchFixtures.UIKit {
 
@@ -98,38 +94,29 @@ namespace MonoTouchFixtures.UIKit {
 			sa.Link = u;
 			Assert.That (u.RetainCount, Is.EqualTo ((nuint) 2), "Link-set");
 
-#if !__WATCHOS__
 			var ta = new NSTextAttachment ();
 			Assert.That (ta.RetainCount, Is.EqualTo ((nuint) 1), "TextAttachment-new");
 			sa.TextAttachment = ta;
 			Assert.That (ta.RetainCount, Is.EqualTo ((nuint) 2), "TextAttachment-set");
-#endif // !__WATCHOS__
 
 			for (int i = 0; i < 16; i++) {
 				Assert.NotNull (sa.UnderlineColor, "UnderlineColor-get");
 				Assert.NotNull (sa.StrikethroughColor, "StrikethroughColor-get");
 				Assert.NotNull (sa.Link, "Link-get");
-#if !__WATCHOS__
 				Assert.NotNull (sa.TextAttachment, "TextAttachment-get");
-#endif
 			}
 
 			Assert.That (sa.UnderlineColor.RetainCount, Is.EqualTo ((nuint) 3), "UnderlineColor");
 			Assert.That (sa.StrikethroughColor.RetainCount, Is.EqualTo ((nuint) 3), "StrikethroughColor");
 			Assert.That (sa.Link.RetainCount, Is.EqualTo ((nuint) 2), "Link");
-#if !__WATCHOS__
 			Assert.That (sa.TextAttachment.RetainCount, Is.EqualTo ((nuint) 2), "TextAttachment");
-#endif
 
 			GC.KeepAlive (uc);
 			GC.KeepAlive (sc);
 			GC.KeepAlive (u);
-#if !__WATCHOS__
 			GC.KeepAlive (ta);
-#endif
 		}
 
-#if !__WATCHOS__
 		[Test]
 		public void MutableStringAttributesTest ()
 		{
@@ -148,13 +135,11 @@ namespace MonoTouchFixtures.UIKit {
 				Assert.AreSame (UIColor.Red, nb.TitleTextAttributes.ForegroundColor, "TitleTextAttributes.ForegroundColor should match");
 			}
 		}
-#endif // !__WATCHOS__
 
-#if !__WATCHOS__
 		[Test]
 		public void PrematureDisposal_SegmentedControl ()
 		{
-			// https://github.com/xamarin/xamarin-macios/issues/20409
+			// https://github.com/dotnet/macios/issues/20409
 			using var control = new UISegmentedControl ();
 			var attrs = new TextAttributes ();
 			control.SetTitleTextAttributes (attrs, UIControlState.Normal);
@@ -164,7 +149,7 @@ namespace MonoTouchFixtures.UIKit {
 		[Test]
 		public void PrematureDisposal_BarItem ()
 		{
-			// https://github.com/xamarin/xamarin-macios/issues/20409
+			// https://github.com/dotnet/macios/issues/20409
 			using var control = new UIBarButtonItem (); // UIBarItem is abstract, so use a derived class.
 			var attrs = new TextAttributes ();
 			control.SetTitleTextAttributes (attrs, UIControlState.Normal);
@@ -175,14 +160,13 @@ namespace MonoTouchFixtures.UIKit {
 		[Test]
 		public void PrematureDisposal_SearchBar ()
 		{
-			// https://github.com/xamarin/xamarin-macios/issues/20409
+			// https://github.com/dotnet/macios/issues/20409
 			using var control = new UISearchBar (new CGRect (0, 0, 42, 42));
 			var attrs = new TextAttributes ();
 			control.SetScopeBarButtonTitle (attrs, UIControlState.Normal);
 			control.SetScopeBarButtonTitle (attrs, UIControlState.Selected);
 		}
 #endif // !__TVOS__
-#endif // !__WATCHOS__
 	}
 }
 #endif

@@ -1,5 +1,3 @@
-#if !WATCH
-
 using System;
 
 using Foundation;
@@ -9,15 +7,13 @@ using ObjCRuntime;
 
 namespace AVFoundation {
 	public partial class AVPlayerItem {
-
-#if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[NoWatch]
-#endif
 		public AVVideoApertureMode VideoApertureMode {
 			get { return AVVideoApertureModeExtensions.GetValue (_VideoApertureMode); }
 			set {
@@ -28,5 +24,3 @@ namespace AVFoundation {
 		}
 	}
 }
-
-#endif

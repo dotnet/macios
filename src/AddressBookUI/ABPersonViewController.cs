@@ -15,13 +15,22 @@ using Foundation;
 using ObjCRuntime;
 
 namespace AddressBookUI {
-#if NET
+	/// <summary>Provides data for the <see cref="AddressBookUI.ABUnknownPersonViewController.PerformDefaultAction" /> and <see cref="AddressBookUI.ABPersonViewController.PerformDefaultAction" /> events.</summary>
+	///     <remarks>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
-	[ObsoletedOSPlatform ("ios9.0", "Use the 'Contacts' API instead.")]
-#else
-	[Deprecated (PlatformName.iOS, 9, 0, message: "Use the 'Contacts' API instead.")]
-#endif
+	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
+	[SupportedOSPlatform ("maccatalyst")]
+	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
+	[UnsupportedOSPlatform ("macos")]
+	[UnsupportedOSPlatform ("tvos")]
 	public class ABPersonViewPerformDefaultActionEventArgs : EventArgs {
+		/// <param name="person">To be added.</param>
+		///         <param name="property">To be added.</param>
+		///         <param name="identifier">To be added.</param>
+		///         <summary>Initializes a new instance of the ABPersonViewPerformDefaultActionEventArgs class.</summary>
+		///         <remarks>
+		///         </remarks>
 		public ABPersonViewPerformDefaultActionEventArgs (ABPerson person, ABPersonProperty property, int? identifier)
 		{
 			Person = person;
@@ -29,13 +38,31 @@ namespace AddressBookUI {
 			Identifier = identifier;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public ABPerson Person { get; private set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public ABPersonProperty Property { get; private set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public int? Identifier { get; private set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool ShouldPerformDefaultAction { get; set; }
 	}
 
+	[SupportedOSPlatform ("ios")]
+	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
+	[SupportedOSPlatform ("maccatalyst")]
+	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
+	[UnsupportedOSPlatform ("macos")]
+	[UnsupportedOSPlatform ("tvos")]
 	class InternalABPersonViewControllerDelegate : ABPersonViewControllerDelegate {
 
 		internal EventHandler<ABPersonViewPerformDefaultActionEventArgs>? performDefaultAction;
@@ -60,6 +87,9 @@ namespace AddressBookUI {
 	partial class ABPersonViewController {
 
 		ABPerson? displayedPerson;
+		/// <summary>Returns the <see cref="AddressBook.ABPerson" /> associated with the displayed data.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public ABPerson? DisplayedPerson {
 			get {
 				MarkDirty ();
@@ -72,6 +102,9 @@ namespace AddressBookUI {
 		}
 
 		DisplayedPropertiesCollection? displayedProperties;
+		/// <summary>Gets the collection of properties that are displayed about the <see cref="AddressBookUI.ABPersonViewController.DisplayedPerson" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public DisplayedPropertiesCollection? DisplayedProperties {
 			get {
 				if (displayedProperties is null) {
@@ -85,6 +118,9 @@ namespace AddressBookUI {
 		}
 
 		ABAddressBook? addressBook;
+		/// <summary>Gets or sets the <see cref="AddressBook.ABAddressBook" /> that is the store for the data.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public ABAddressBook? AddressBook {
 			get {
 				MarkDirty ();
@@ -96,6 +132,10 @@ namespace AddressBookUI {
 			}
 		}
 
+		/// <param name="property">To be added.</param>
+		///         <param name="identifier">To be added.</param>
+		///         <summary>Highlights the item indexed by <paramref name="identifier" /> in the specified <paramref name="property" />.</summary>
+		///         <remarks>To be added.</remarks>
 		public void SetHighlightedItemForProperty (ABPersonProperty property, int? identifier)
 		{
 			SetHighlightedItemForProperty (
@@ -103,6 +143,9 @@ namespace AddressBookUI {
 					identifier ?? ABRecord.InvalidPropertyId);
 		}
 
+		/// <param name="property">To be added.</param>
+		///         <summary>Highlights the specified <paramref name="property" />.</summary>
+		///         <remarks>To be added.</remarks>
 		public void SetHighlightedProperty (ABPersonProperty property)
 		{
 			SetHighlightedItemForProperty (
@@ -120,6 +163,9 @@ namespace AddressBookUI {
 			return d;
 		}
 
+		/// <param name="e">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected internal virtual void OnPerformDefaultAction (ABPersonViewPerformDefaultActionEventArgs e)
 		{
 			var h = EnsureEventDelegate ().performDefaultAction;
@@ -127,6 +173,8 @@ namespace AddressBookUI {
 				h (this, e);
 		}
 
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		public event EventHandler<ABPersonViewPerformDefaultActionEventArgs> PerformDefaultAction {
 			add { EnsureEventDelegate ().performDefaultAction += value; }
 			remove { EnsureEventDelegate ().performDefaultAction -= value; }

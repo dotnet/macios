@@ -26,16 +26,35 @@ using System;
 
 namespace Foundation {
 
+	/// <summary>Exposes a property as an Interface Builder Outlet.</summary>
+	///     <remarks>
+	///       <para>
+	/// 	This property must be applied to properties that represent an
+	/// 	Interface Builder Outlet on a XIB file to properly support
+	/// 	loading XIB files.  The name of the property must match the
+	/// 	name of the outlet declared in Interface Builder.
+	///       </para>
+	///       <para>
+	/// 	This attribute and the property that it is applied to are automatically added by Xamarin Studio to any outlets in use that have been exposed in a class.</para>
+	///     </remarks>
 	[AttributeUsage (AttributeTargets.Property)]
 	public sealed class ConnectAttribute : Attribute {
 		string? name;
 
+		/// <summary>Default constructor, uses the name of the property as the name of the outlet.</summary>
+		///         <remarks>To be added.</remarks>
 		public ConnectAttribute () { }
+		/// <param name="name">The name on the Inteface Builder file.</param>
+		///         <summary>Use this constructor to specify the name of the underlying outlet to map to, instead of defaulting to the name of the property.</summary>
+		///         <remarks>To be added.</remarks>
 		public ConnectAttribute (string name)
 		{
 			this.name = name;
 		}
 
+		/// <summary>The name of the outlet.</summary>
+		///         <value>The name of the outlet if specified, or null if it should default to the property name to which it is applied.</value>
+		///         <remarks>To be added.</remarks>
 		public string? Name {
 			get { return this.name; }
 			set { this.name = value; }

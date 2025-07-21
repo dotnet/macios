@@ -7,18 +7,10 @@ using ObjCRuntime;
 #nullable enable
 
 namespace CoreAnimation {
-
-#if NET
 	[SupportedOSPlatform ("tvos15.0")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios15.0")]
 	[SupportedOSPlatform ("maccatalyst")]
-#else
-	[Watch (8, 0)]
-	[TV (15, 0)]
-	[iOS (15, 0)]
-	[MacCatalyst (15, 0)]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct CAFrameRateRange {
 		public float Minimum;

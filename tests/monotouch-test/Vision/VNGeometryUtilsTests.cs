@@ -7,8 +7,6 @@
 // Copyright (c) Microsoft Corporation.
 //
 
-#if !__WATCHOS__
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -18,11 +16,7 @@ using CoreGraphics;
 using Foundation;
 using Vision;
 
-#if NET
 using System.Numerics;
-#else
-using OpenTK;
-#endif
 
 namespace MonoTouchFixtures.Vision {
 
@@ -63,4 +57,3 @@ namespace MonoTouchFixtures.Vision {
 		}
 	}
 }
-#endif

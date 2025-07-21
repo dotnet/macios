@@ -1,0 +1,236 @@
+<Documentation>
+  <Docs DocId="M:AddressBook.ABPerson.System#IComparable#CompareTo(System.Object)">
+    <param name="o">
+          The <see cref="System.Object" /> to compare
+          to this instance.
+        </param>
+    <summary>
+          Compares this instance with the specified
+          <see cref="AddressBook.ABPerson" /> and returns an
+          integer that indicates whether this instance precedes, follows,
+          or appears in the same position in the sort order as
+          <paramref name="o" />.
+        </summary>
+    <returns>
+      <para>
+            A <see cref="System.Int32" /> that indicates
+            whether this instance precedes, follows,
+            or appears in the same position in the sort order as
+            <paramref name="o" />.
+          </para>
+      <list type="table">
+        <listheader>
+          <term>Value</term>
+          <description>Condition</description>
+        </listheader>
+        <item>
+          <term>Less than zero</term>
+          <description>
+                This instance precedes <paramref name="o" />.
+              </description>
+        </item>
+        <item>
+          <term>Zero</term>
+          <description>
+                This instance has the same position in the sort order as
+                <paramref name="o" />.
+              </description>
+        </item>
+        <item>
+          <term>Greater than zero</term>
+          <description>
+                This instance follows <paramref name="o" />.
+              </description>
+        </item>
+      </list>
+    </returns>
+    <remarks>
+    </remarks>
+  </Docs>
+  <Docs DocId="M:AddressBook.ABPerson.CompareTo(AddressBook.ABPerson)">
+    <param name="other">
+          The <see cref="AddressBook.ABPerson" /> to compare
+          to this instance.
+        </param>
+    <summary>
+          Compares this instance with the specified
+          <see cref="AddressBook.ABPerson" /> and returns an
+          integer that indicates whether this instance precedes, follows,
+          or appears in the same position in the sort order as
+          <paramref name="other" />.
+        </summary>
+    <returns>
+      <para>
+            A <see cref="System.Int32" /> that indicates
+            whether this instance precedes, follows,
+            or appears in the same position in the sort order as
+            <paramref name="other" />.
+          </para>
+      <list type="table">
+        <listheader>
+          <term>Value</term>
+          <description>Condition</description>
+        </listheader>
+        <item>
+          <term>Less than zero</term>
+          <description>
+                This instance precedes <paramref name="other" />.
+              </description>
+        </item>
+        <item>
+          <term>Zero</term>
+          <description>
+                This instance has the same position in the sort order as
+                <paramref name="other" />.
+              </description>
+        </item>
+        <item>
+          <term>Greater than zero</term>
+          <description>
+                This instance follows <paramref name="other" />.
+              </description>
+        </item>
+      </list>
+    </returns>
+    <remarks>
+    </remarks>
+  </Docs>
+  <Docs DocId="M:AddressBook.ABPerson.CompareTo(AddressBook.ABPerson,AddressBook.ABPersonSortBy)">
+    <param name="other">
+          The <see cref="AddressBook.ABPerson" /> to compare
+          to this instance.
+        </param>
+    <param name="ordering">
+          A <see cref="AddressBook.ABPersonSortBy" /> which
+          is used to specify whether ordering should be done by
+          <see cref="AddressBook.ABPersonSortBy.FirstName" />
+          or
+          <see cref="AddressBook.ABPersonSortBy.LastName" />.
+        </param>
+    <summary>
+          Compares this instance with the specified
+          <see cref="AddressBook.ABPerson" /> and returns an
+          integer that indicates whether this instance precedes, follows,
+          or appears in the same position in the sort order as
+          <paramref name="other" /> (as controlled by <paramref name="ordering" />).
+        </summary>
+    <returns>
+      <para>
+            A <see cref="System.Int32" /> that indicates
+            whether this instance precedes, follows,
+            or appears in the same position in the sort order as
+            <paramref name="other" />.
+          </para>
+      <list type="table">
+        <listheader>
+          <term>Value</term>
+          <description>Condition</description>
+        </listheader>
+        <item>
+          <term>Less than zero</term>
+          <description>
+                This instance precedes <paramref name="other" />.
+              </description>
+        </item>
+        <item>
+          <term>Zero</term>
+          <description>
+                This instance has the same position in the sort order as
+                <paramref name="other" />.
+              </description>
+        </item>
+        <item>
+          <term>Greater than zero</term>
+          <description>
+                This instance follows <paramref name="other" />.
+              </description>
+        </item>
+      </list>
+    </returns>
+    <remarks>
+    </remarks>
+  </Docs>
+  <Docs DocId="T:AddressBook.ABPerson">
+    <summary>
+      Information about a person.
+    </summary>
+    <remarks>
+      <para>
+        Supported operations:
+      </para>
+      <list type="bullet">
+        <item>
+          <term>
+            Creating Persons:
+            <see cref="AddressBook.ABPerson" />.
+          </term>
+        </item>
+        <item>
+          <term>
+            Sorting Persons:
+            <see cref="AddressBook.ABPerson.CompareTo(AddressBook.ABPerson)" />,
+            <see cref="AddressBook.ABPerson.CompareTo(AddressBook.ABPerson,AddressBook.ABPersonSortBy)" />.
+          </term>
+        </item>
+        <item>
+          <term>
+            Getting Person Property Information:
+            <see cref="AddressBook.ABPerson.GetVCards(AddressBook.ABPerson[])" />,
+            <see cref="AddressBook.ABPerson.GetDates" />,
+            <see cref="AddressBook.ABPerson.GetEmails" />,
+            <see cref="AddressBook.ABPerson.GetInstantMessages" />,
+            <see cref="AddressBook.ABPerson.GetPhones" />,
+            <see cref="AddressBook.ABPerson.GetProperty(AddressBook.ABPersonProperty)" />,
+            <see cref="AddressBook.ABPerson.GetPropertyType(AddressBook.ABPersonProperty)" />,
+            <see cref="AddressBook.ABPerson.GetRelatedNames" />,
+            <see cref="AddressBook.ABPerson.GetUrls" />,
+            <see cref="AddressBook.ABPerson.LocalizedPropertyName(AddressBook.ABPersonProperty)" />,
+            <see cref="AddressBook.ABPerson.SetAddresses(AddressBook.ABMultiValue{AddressBook.PersonAddress})" />,
+            <see cref="AddressBook.ABPerson.SetDates(AddressBook.ABMultiValue{Foundation.NSDate})" />,
+            <see cref="AddressBook.ABPerson.SetEmails(AddressBook.ABMultiValue{System.String})" />,
+            <see cref="AddressBook.ABPerson.SetInstantMessages(AddressBook.ABMultiValue{AddressBook.InstantMessageService})" />,
+            <see cref="AddressBook.ABPerson.SetPhones(AddressBook.ABMultiValue{System.String})" />,
+            <see cref="AddressBook.ABPerson.SetRelatedNames(AddressBook.ABMultiValue{System.String})" />,
+            <see cref="AddressBook.ABPerson.SetUrls(AddressBook.ABMultiValue{System.String})" />,
+            <see cref="AddressBook.ABPerson.Birthday" />,
+            <see cref="AddressBook.ABPerson.CreationDate" />,
+            <see cref="AddressBook.ABPerson.Department" />,
+            <see cref="AddressBook.ABPerson.FirstName" />,
+            <see cref="AddressBook.ABPerson.FirstNamePhonetic" />,
+            <see cref="AddressBook.ABPerson.JobTitle" />,
+            <see cref="AddressBook.ABPerson.LastName" />,
+            <see cref="AddressBook.ABPerson.LastNamePhonetic" />,
+            <see cref="AddressBook.ABPerson.MiddleName" />,
+            <see cref="AddressBook.ABPerson.MiddleNamePhonetic" />,
+            <see cref="AddressBook.ABPerson.ModificationDate" />,
+            <see cref="AddressBook.ABPerson.Nickname" />,
+            <see cref="AddressBook.ABPerson.Note" />,
+            <see cref="AddressBook.ABPerson.Organization" />,
+            <see cref="AddressBook.ABPerson.PersonKind" />,
+            <see cref="AddressBook.ABPerson.Prefix" />,
+            <see cref="AddressBook.ABPerson.Suffix" />,
+          </term>
+        </item>
+        <item>
+          <term>
+            Managing Pictures:
+            <see cref="AddressBook.ABPerson.Image" />,
+            <see cref="AddressBook.ABPerson.HasImage" />,
+            <see cref="AddressBook.ABPerson.RemoveImage" />.
+          </term>
+        </item>
+        <item>
+          <term>
+            Getting Name Format And Sort Preferences:
+            <see cref="AddressBook.ABPerson.CompositeNameFormat" />,
+            <see cref="AddressBook.ABPerson.SortOrdering" />.
+          </term>
+        </item>
+      </list>
+    </remarks>
+    <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/MonoCatalog-MonoDevelop/">monocatalog</related>
+    <related type="recipe" href="https://developer.xamarin.com/ios/Recipes/Shared_Resources/Contacts/Choose_a_Contact">Choose a Contact</related>
+    <related type="recipe" href="https://developer.xamarin.com/ios/Recipes/Shared_Resources/Contacts/Create_a_new_Contact">Create a New Contact</related>
+    <related type="recipe" href="https://developer.xamarin.com/ios/Recipes/Shared_Resources/Contacts/Find_a_Contact">Find a Contact</related>
+  </Docs>
+</Documentation>

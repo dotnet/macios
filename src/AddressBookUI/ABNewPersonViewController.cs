@@ -16,25 +16,44 @@ using ObjCRuntime;
 
 namespace AddressBookUI {
 
-#if NET
+	/// <summary>Provides data for the <see cref="AddressBookUI.ABNewPersonViewController.NewPersonComplete" /> event.</summary>
+	///     <remarks>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
-	[ObsoletedOSPlatform ("ios9.0", "Use the 'Contacts' API instead.")]
-#else
-	[Deprecated (PlatformName.iOS, 9, 0, message: "Use the 'Contacts' API instead.")]
-#endif
+	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
+	[SupportedOSPlatform ("maccatalyst")]
+	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
+	[UnsupportedOSPlatform ("macos")]
+	[UnsupportedOSPlatform ("tvos")]
 	public class ABNewPersonCompleteEventArgs : EventArgs {
 
+		/// <param name="person">To be added.</param>
+		///         <summary>Initializes a new instance of the ABNewPersonCompleteEventArgs class.</summary>
+		///         <remarks>
+		///         </remarks>
 		public ABNewPersonCompleteEventArgs (ABPerson? person)
 		{
 			Person = person;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public ABPerson? Person { get; private set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool Completed {
 			get { return Person is not null; }
 		}
 	}
 
+	[SupportedOSPlatform ("ios")]
+	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
+	[SupportedOSPlatform ("maccatalyst")]
+	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
+	[UnsupportedOSPlatform ("macos")]
+	[UnsupportedOSPlatform ("tvos")]
 	class InternalABNewPersonViewControllerDelegate : ABNewPersonViewControllerDelegate {
 
 		internal EventHandler<ABNewPersonCompleteEventArgs>? newPersonComplete;
@@ -54,6 +73,9 @@ namespace AddressBookUI {
 	partial class ABNewPersonViewController {
 
 		ABPerson? displayedPerson;
+		/// <summary>Gets or sets the <see cref="AddressBook.ABPerson" /> whose data is used to prepopulate the <see cref="AddressBookUI.ABNewPersonViewController" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public ABPerson? DisplayedPerson {
 			get {
 				MarkDirty ();
@@ -66,6 +88,9 @@ namespace AddressBookUI {
 		}
 
 		ABAddressBook? addressBook;
+		/// <summary>Gets or sets the <see cref="AddressBook.ABAddressBook" /> to which the contact will be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public ABAddressBook? AddressBook {
 			get {
 				MarkDirty ();
@@ -78,6 +103,9 @@ namespace AddressBookUI {
 		}
 
 		ABGroup? parentGroup;
+		/// <summary>Gets or sets the <see cref="AddressBook.ABGroup" /> to which the new contact should be saved.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public ABGroup? ParentGroup {
 			get {
 				MarkDirty ();
@@ -99,6 +127,9 @@ namespace AddressBookUI {
 			return d;
 		}
 
+		/// <param name="e">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected internal virtual void OnNewPersonComplete (ABNewPersonCompleteEventArgs e)
 		{
 			var h = EnsureEventDelegate ().newPersonComplete;
@@ -106,6 +137,8 @@ namespace AddressBookUI {
 				h (this, e);
 		}
 
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		public event EventHandler<ABNewPersonCompleteEventArgs> NewPersonComplete {
 			add { EnsureEventDelegate ().newPersonComplete += value; }
 			remove { EnsureEventDelegate ().newPersonComplete -= value; }

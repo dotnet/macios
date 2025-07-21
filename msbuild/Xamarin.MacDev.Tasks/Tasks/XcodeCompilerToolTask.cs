@@ -18,9 +18,8 @@ using Xamarin.Utils;
 #nullable enable
 
 namespace Xamarin.MacDev.Tasks {
-	public abstract class XcodeCompilerToolTask : XamarinTask {
+	public abstract class XcodeCompilerToolTask : XamarinTask, IHasProjectDir, IHasResourcePrefix {
 		protected bool Link { get; set; }
-		IList<string>? prefixes;
 		string? toolExe;
 
 		#region Inputs
@@ -110,15 +109,6 @@ namespace Xamarin.MacDev.Tasks {
 			get { return Path.Combine (SdkDevPath, "usr", "bin"); }
 		}
 
-		protected IList<string> ResourcePrefixes {
-			get {
-				if (prefixes is null)
-					prefixes = BundleResource.SplitResourcePrefixes (ResourcePrefix);
-
-				return prefixes;
-			}
-		}
-
 		protected abstract string ToolName { get; }
 
 		protected virtual bool UseCompilationDirectory {
@@ -171,7 +161,7 @@ namespace Xamarin.MacDev.Tasks {
 			yield break;
 		}
 
-		protected abstract void AppendCommandLineArguments (IDictionary<string, string?> environment, CommandLineArgumentBuilder args, ITaskItem [] items);
+		protected abstract void AppendCommandLineArguments (IDictionary<string, string?> environment, List<string> args, ITaskItem [] items);
 
 		static bool? translated;
 
@@ -192,7 +182,7 @@ namespace Xamarin.MacDev.Tasks {
 		protected int Compile (ITaskItem [] items, string output, ITaskItem manifest)
 		{
 			var environment = new Dictionary<string, string?> ();
-			var args = new CommandLineArgumentBuilder ();
+			var args = new List<string> ();
 
 			if (!string.IsNullOrEmpty (SdkBinPath))
 				environment.Add ("PATH", SdkBinPath);
@@ -208,14 +198,18 @@ namespace Xamarin.MacDev.Tasks {
 			if (IsTranslated ()) {
 				// we force the Intel (translated) msbuild process to launch ibtool as "Apple"
 				tool = "arch";
-				args.Add ("-arch", "arm64e");
+				args.Add ("-arch");
+				args.Add ("arm64e");
 				args.Add ("/usr/bin/xcrun");
 			} else {
 				tool = "/usr/bin/xcrun";
 			}
 			args.Add (ToolName);
-			args.Add ("--errors", "--warnings", "--notices");
-			args.Add ("--output-format", "xml1");
+			args.Add ("--errors");
+			args.Add ("--warnings");
+			args.Add ("--notices");
+			args.Add ("--output-format");
+			args.Add ("xml1");
 
 			AppendCommandLineArguments (environment, args, items);
 
@@ -226,13 +220,16 @@ namespace Xamarin.MacDev.Tasks {
 			else
 				args.Add ("--compile");
 
-			args.AddQuoted (Path.GetFullPath (output));
+			args.Add (Path.GetFullPath (output));
 
 			foreach (var item in items)
-				args.AddQuoted (item.GetMetadata ("FullPath"));
+				args.Add (item.GetMetadata ("FullPath"));
 
-			var arguments = args.ToList ();
-			var rv = ExecuteAsync (tool, arguments, sdkDevPath, environment: environment, mergeOutput: false).Result;
+			// don't bother executing the tool if we've already looged errors.
+			if (Log.HasLoggedErrors)
+				return 1;
+
+			var rv = ExecuteAsync (tool, args, sdkDevPath, environment: environment, mergeOutput: false).Result;
 			var exitCode = rv.ExitCode;
 			var messages = rv.StandardOutput!.ToString ();
 			File.WriteAllText (manifest.ItemSpec, messages);

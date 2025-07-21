@@ -13,7 +13,7 @@
 #include "bindings.h"
 #include <dlfcn.h>
 
-#if !TARGET_OS_OSX && !TARGET_OS_WATCH
+#if !TARGET_OS_OSX
 #include <UIKit/UIKit.h>
 #endif
 
@@ -28,11 +28,7 @@ xm_nfloat_t
 xamarin_nfloat_objc_msgSend_exception (id self, SEL sel, GCHandle *exception_gchandle)
 {
 	@try {
-#if defined(__i386__)
-		return ((nfloat_send) objc_msgSend_fpret) (self, sel);
-#else
 		return ((nfloat_send) objc_msgSend) (self, sel);
-#endif
 	} @catch (NSException *e) {
 		xamarin_process_nsexception_using_mode (e, true, exception_gchandle);
 		return 0;
@@ -118,7 +114,7 @@ xamarin_CGPoint__VNImagePointForFaceLandmarkPoint_Vector2_CGRect_nuint_nuint_str
 }
 
 /* UIKit bindings */
-#if !TARGET_OS_OSX && !TARGET_OS_WATCH
+#if !TARGET_OS_OSX
 int xamarin_UIApplicationMain (int argc, char * _Nullable argv[_Nonnull], NSString * _Nullable principalClassName, NSString * _Nullable delegateClassName, GCHandle *exception_gchandle)
 {
 	@try {

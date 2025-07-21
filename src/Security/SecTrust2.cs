@@ -21,42 +21,38 @@ using ObjCRuntime;
 using Foundation;
 using CoreFoundation;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace Security {
-
-#if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-#else
-	[Watch (5, 0)]
-#endif
 	public class SecTrust2 : NativeObject {
 		[Preserve (Conditional = true)]
-#if NET
-		internal SecTrust2 (NativeHandle handle, bool owns) : base (handle, owns) {}
-#else
-		public SecTrust2 (NativeHandle handle, bool owns) : base (handle, owns) { }
-#endif
+		internal SecTrust2 (NativeHandle handle, bool owns) : base (handle, owns) { }
 
 		[DllImport (Constants.SecurityLibrary)]
 		extern static IntPtr sec_trust_create (IntPtr sectrustHandle);
 
+		/// <param name="trust">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public SecTrust2 (SecTrust trust)
 		{
 			if (trust is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (trust));
 
-			Handle = sec_trust_create (trust.Handle);
+			InitializeHandle (sec_trust_create (trust.Handle));
+			GC.KeepAlive (trust);
 		}
 
 		[DllImport (Constants.SecurityLibrary)]
 		extern static IntPtr sec_trust_copy_ref (IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public SecTrust Trust => new SecTrust (sec_trust_copy_ref (GetCheckedHandle ()), owns: true);
 	}
 }

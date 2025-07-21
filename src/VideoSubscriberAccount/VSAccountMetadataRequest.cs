@@ -8,13 +8,13 @@ using ObjCRuntime;
 namespace VideoSubscriberAccount {
 
 	public partial class VSAccountMetadataRequest {
-
-#if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
-#endif
 		public VSAccountProviderAuthenticationScheme [] SupportedAuthenticationSchemes {
 			get {
 				return VSAccountProviderAuthenticationSchemeExtensions.GetValues (SupportedAuthenticationSchemesString);

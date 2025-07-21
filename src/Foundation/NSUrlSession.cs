@@ -6,6 +6,10 @@ using System.IO;
 #nullable disable
 
 namespace Foundation {
+	/// <summary>This class holds the return values from the asynchronous methods <see cref="Foundation.NSUrlSession.CreateDownloadTaskFromResumeDataAsync(Foundation.NSData,out Foundation.NSUrlSessionDownloadTask)" />, <see cref="Foundation.NSUrlSession.CreateDownloadTaskFromResumeDataAsync(Foundation.NSData,out Foundation.NSUrlSessionDownloadTask)" />, <see cref="Foundation.NSUrlSession.CreateDownloadTaskFromResumeDataAsync(Foundation.NSData,out Foundation.NSUrlSessionDownloadTask)" />.</summary>
+	///     <remarks>
+	///       <para>This class holds the return values from the asynchronous methods <see cref="Foundation.NSUrlSession.CreateDownloadTaskFromResumeDataAsync(Foundation.NSData,out Foundation.NSUrlSessionDownloadTask)" />, <see cref="Foundation.NSUrlSession.CreateDownloadTaskFromResumeDataAsync(Foundation.NSData,out Foundation.NSUrlSessionDownloadTask)" />, <see cref="Foundation.NSUrlSession.CreateDownloadTaskFromResumeDataAsync(Foundation.NSData,out Foundation.NSUrlSessionDownloadTask)" />.</para>
+	///     </remarks>
 	public partial class NSUrlSessionDownloadTaskRequest : IDisposable {
 		string tmpfile;
 
@@ -38,12 +42,18 @@ namespace Foundation {
 			Dispose (false);
 		}
 
+		/// <summary>Releases the resources used by the NSUrlSessionDownloadTaskRequest object.</summary>
+		///         <remarks>
+		///           <para>The Dispose method releases the resources used by the NSUrlSessionDownloadTaskRequest class.</para>
+		///           <para>Calling the Dispose method when the application is finished using the NSUrlSessionDownloadTaskRequest ensures that all external resources used by this managed object are released as soon as possible.  Once developers have invoked the Dispose method, the object is no longer useful and developers should no longer make any calls to it.  For more information on releasing resources see ``Cleaning up Unmananaged Resources'' at https://msdn.microsoft.com/en-us/library/498928w2.aspx</para>
+		///         </remarks>
 		public void Dispose ()
 		{
 			Dispose (true);
 			GC.SuppressFinalize (this);
 		}
 
+		/// <include file="../../docs/api/Foundation/NSUrlSessionDownloadTaskRequest.xml" path="/Documentation/Docs[@DocId='M:Foundation.NSUrlSessionDownloadTaskRequest.Dispose(System.Boolean)']/*" />
 		protected void Dispose (bool disposing)
 		{
 			if (tmpfile is not null) {

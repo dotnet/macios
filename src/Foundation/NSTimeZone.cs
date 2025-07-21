@@ -11,6 +11,9 @@ namespace Foundation {
 		static ReadOnlyCollection<string> known_time_zone_names;
 
 		// avoid exposing an array - it's too easy to break
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public static ReadOnlyCollection<string> KnownTimeZoneNames {
 			get {
 				if (known_time_zone_names is null)
@@ -19,6 +22,11 @@ namespace Foundation {
 			}
 		}
 
+		/// <summary>Returns a string representation of the value of the current instance.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public override string ToString ()
 		{
 			return Name;

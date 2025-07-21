@@ -33,6 +33,10 @@ namespace Foundation {
 
 	public partial class NSKeyedArchiver {
 
+		/// <param name="name">To be added.</param>
+		///         <param name="kls">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static void GlobalSetClassName (string name, Class kls)
 		{
 			if (name is null)
@@ -42,26 +46,22 @@ namespace Foundation {
 
 			var ptr = CFString.CreateNative (name);
 			ObjCRuntime.Messaging.void_objc_msgSend_IntPtr_IntPtr (class_ptr, Selector.GetHandle ("setClassName:forClass:"), ptr, kls.Handle);
+			GC.KeepAlive (kls);
 			CFString.ReleaseNative (ptr);
 		}
 
+		/// <param name="kls">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static string GlobalGetClassName (Class kls)
 		{
 			if (kls is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (kls));
 
-			return CFString.FromHandle (ObjCRuntime.Messaging.IntPtr_objc_msgSend_IntPtr (class_ptr, Selector.GetHandle ("classNameForClass:"), kls.Handle));
+			string result = CFString.FromHandle (ObjCRuntime.Messaging.IntPtr_objc_msgSend_IntPtr (class_ptr, Selector.GetHandle ("classNameForClass:"), kls.Handle));
+			GC.KeepAlive (kls);
+			return result;
 		}
-
-#if !NET
-		public bool RequiresSecureCoding {
-			get {
-				return GetRequiresSecureCoding ();
-			}
-			set {
-				SetRequiresSecureCoding (value);
-			}
-		}
-#endif
 	}
 }

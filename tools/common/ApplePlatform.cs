@@ -5,14 +5,19 @@
 
 #nullable enable
 
+using System;
+using System.Text;
+
 namespace Xamarin.Utils {
+	[Flags]
 	public enum ApplePlatform {
 		None,
-		MacOSX,
-		iOS,
-		WatchOS,
-		TVOS,
-		MacCatalyst,
+		MacOSX = 1,
+		iOS = 2,
+		[System.Obsolete ("Do not use")]
+		WatchOS = 4,
+		TVOS = 8,
+		MacCatalyst = 16,
 	}
 
 	public static class ApplePlatformExtensions {
@@ -23,8 +28,6 @@ namespace Xamarin.Utils {
 				return "iOS";
 			case ApplePlatform.MacOSX:
 				return "macOS";
-			case ApplePlatform.WatchOS:
-				return "watchOS";
 			case ApplePlatform.TVOS:
 				return "tvOS";
 			case ApplePlatform.MacCatalyst:
@@ -32,8 +35,42 @@ namespace Xamarin.Utils {
 			case ApplePlatform.None:
 				return "None";
 			default:
-				return "Unknown";
+				if (PopCount (unchecked((uint) @this)) == 1)
+					return "Unknown";
+
+				var value = @this;
+				var sb = new StringBuilder ();
+#if NET
+				foreach (var e in Enum.GetValues<ApplePlatform> ()) {
+#else
+				foreach (var e in Enum.GetValues (typeof (ApplePlatform))) {
+#endif
+					var element = (ApplePlatform) e;
+					if (element == ApplePlatform.None)
+						continue;
+					if ((value & element) == element) {
+						if (sb.Length > 0)
+							sb.Append (", ");
+						sb.Append (element.AsString ());
+						value &= ~element;
+					}
+				}
+				return sb.ToString ();
 			}
+		}
+
+		static int PopCount (uint value)
+		{
+#if NET
+			return System.Numerics.BitOperations.PopCount (value);
+#else
+			int rv = 0;
+			while (value != 0) {
+				rv++;
+				value &= value - 1;
+			}
+			return rv;
+#endif
 		}
 
 		public static string ToFramework (this ApplePlatform @this, string? netVersion = null)
@@ -46,8 +83,6 @@ namespace Xamarin.Utils {
 				return netVersion + "-ios";
 			case ApplePlatform.MacOSX:
 				return netVersion + "-macos";
-			case ApplePlatform.WatchOS:
-				return netVersion + "-watchos";
 			case ApplePlatform.TVOS:
 				return netVersion + "-tvos";
 			case ApplePlatform.MacCatalyst:
@@ -66,12 +101,24 @@ namespace Xamarin.Utils {
 				return ApplePlatform.TVOS;
 			case "macos":
 				return ApplePlatform.MacOSX;
-			case "watchos":
-				return ApplePlatform.WatchOS;
 			case "maccatalyst":
 				return ApplePlatform.MacCatalyst;
 			default:
 				throw new System.InvalidOperationException ($"Unknown platform: {platform}");
+			}
+		}
+
+		public static bool IsDesktop (this ApplePlatform @this)
+		{
+			switch (@this) {
+			case ApplePlatform.iOS:
+			case ApplePlatform.TVOS:
+				return false;
+			case ApplePlatform.MacOSX:
+			case ApplePlatform.MacCatalyst:
+				return true;
+			default:
+				throw new System.InvalidOperationException ($"Unknown platform: {@this}");
 			}
 		}
 	}

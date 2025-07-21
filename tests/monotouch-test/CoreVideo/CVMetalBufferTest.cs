@@ -2,8 +2,6 @@
 // Unit tests for CVMetalBuffer
 //
 
-#if !__WATCHOS__
-
 using System;
 using System.Collections.Generic;
 
@@ -35,11 +33,9 @@ namespace MonoTouchFixtures.CoreVideo {
 		{
 			TestRuntime.AssertXcodeVersion (16, 0);
 			TestRuntime.AssertNotSimulator (); // metal api not supported in the simulator
+			CVMetalBufferCacheTests.AssertSupported ();
 
 			using var device = MTLDevice.SystemDefault;
-			if (device is null)
-				Assert.Ignore ("Metal is not supported on this device.");
-
 			using var cache = new CVMetalBufferCache (device, (CVMetalBufferCacheAttributes) null);
 			var dict = new CVPixelBufferAttributes () {
 				MetalCompatibility = true,
@@ -53,4 +49,3 @@ namespace MonoTouchFixtures.CoreVideo {
 #endif // !MONOMAC
 	}
 }
-#endif

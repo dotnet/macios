@@ -41,14 +41,16 @@ using Foundation;
 using System.Runtime.Versioning;
 
 namespace AudioToolbox {
-
-#if NET
+	/// <summary>Encapsulates global audio-file information.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public unsafe static class AudioFileGlobalInfo {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public static AudioFileType []? ReadableTypes {
 			get {
 				uint size;
@@ -62,6 +64,9 @@ namespace AudioToolbox {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public static AudioFileType []? WritableTypes {
 			get {
 				uint size;
@@ -75,6 +80,10 @@ namespace AudioToolbox {
 			}
 		}
 
+		/// <param name="fileType">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static string? GetFileTypeName (AudioFileType fileType)
 		{
 			if (!TryGetGlobalInfo (AudioFileGlobalProperty.FileTypeName, fileType, out var ptr))
@@ -83,6 +92,10 @@ namespace AudioToolbox {
 			return CFString.FromHandle (ptr);
 		}
 
+		/// <param name="fileType">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static AudioFormatType []? GetAvailableFormats (AudioFileType fileType)
 		{
 			if (!TryGetGlobalInfoSize (AudioFileGlobalProperty.AvailableFormatIDs, fileType, out var size))
@@ -94,6 +107,11 @@ namespace AudioToolbox {
 			return data;
 		}
 
+		/// <param name="fileType">To be added.</param>
+		///         <param name="formatType">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static AudioStreamBasicDescription []? GetAvailableStreamDescriptions (AudioFileType fileType, AudioFormatType formatType)
 		{
 			AudioFileTypeAndFormatID input;
@@ -109,6 +127,9 @@ namespace AudioToolbox {
 			return data;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public static string? []? AllExtensions {
 			get {
 				if (!TryGetGlobalInfo (AudioFileGlobalProperty.AllExtensions, out var ptr))
@@ -118,6 +139,9 @@ namespace AudioToolbox {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public static string? []? AllUTIs {
 			get {
 				if (!TryGetGlobalInfo (AudioFileGlobalProperty.AllUTIs, out var ptr))
@@ -127,6 +151,9 @@ namespace AudioToolbox {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public static string? []? AllMIMETypes {
 			get {
 				if (!TryGetGlobalInfo (AudioFileGlobalProperty.AllMIMETypes, out var ptr))
@@ -156,6 +183,10 @@ namespace AudioToolbox {
 		}
 		*/
 
+		/// <param name="fileType">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static string? []? GetExtensions (AudioFileType fileType)
 		{
 			if (!TryGetGlobalInfo (AudioFileGlobalProperty.ExtensionsForType, fileType, out var ptr))
@@ -164,6 +195,10 @@ namespace AudioToolbox {
 			return NSArray.ArrayFromHandleFunc (ptr, l => CFString.FromHandle (l));
 		}
 
+		/// <param name="fileType">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static string? []? GetUTIs (AudioFileType fileType)
 		{
 			if (!TryGetGlobalInfo (AudioFileGlobalProperty.UTIsForType, fileType, out var ptr))
@@ -172,6 +207,10 @@ namespace AudioToolbox {
 			return NSArray.ArrayFromHandleFunc (ptr, l => CFString.FromHandle (l));
 		}
 
+		/// <param name="fileType">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static string? []? GetMIMETypes (AudioFileType fileType)
 		{
 			if (!TryGetGlobalInfo (AudioFileGlobalProperty.MIMETypesForType, fileType, out var ptr))

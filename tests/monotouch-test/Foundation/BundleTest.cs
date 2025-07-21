@@ -18,10 +18,6 @@ using UIKit;
 using ObjCRuntime;
 using NUnit.Framework;
 
-#if !NET && !MONOMAC
-using ObjCException = Foundation.MonoTouchException;
-#endif
-
 namespace MonoTouchFixtures.Foundation {
 
 	[TestFixture]
@@ -33,13 +29,8 @@ namespace MonoTouchFixtures.Foundation {
 		[Test]
 		public void LocalizedString2 ()
 		{
-#if NET
 			string s = main.GetLocalizedString (null, "value");
 			Assert.That (s, Is.EqualTo ("value"), "key");
-#else
-			string s = main.LocalizedString (null, "comment");
-			Assert.That (s, Is.Empty, "key");
-#endif
 
 			s = main.GetLocalizedString ("key", null);
 			Assert.That (s, Is.EqualTo ("key"), "key");
@@ -64,31 +55,9 @@ namespace MonoTouchFixtures.Foundation {
 			Assert.That (s, Is.Empty, "all-null");
 		}
 
-#if !NET
-		[Test]
-		public void LocalizedString4 ()
-		{
-			string s = main.LocalizedString (null, "value", "table", "comment");
-			Assert.That (s, Is.EqualTo ("value"), "key");
-
-			s = NSBundle.MainBundle.LocalizedString ("key", null, "table", "comment");
-			Assert.That (s, Is.EqualTo ("key"), "value");
-
-			s = NSBundle.MainBundle.LocalizedString ("key", "value", null, "comment");
-			Assert.That (s, Is.EqualTo ("value"), "table");
-
-			s = NSBundle.MainBundle.LocalizedString ("key", "value", "table", null);
-			Assert.That (s, Is.EqualTo ("value"), "comment");
-
-			s = main.LocalizedString (null, null, null, null);
-			Assert.That (s, Is.Empty, "all-null");
-		}
-#endif
-
 		// http://developer.apple.com/library/ios/#documentation/uikit/reference/NSBundle_UIKitAdditions/Introduction/Introduction.html
 
 #if false // Disabling for now due to Xcode 9 does not support nibs if deployment target == 6.0
-#if !__WATCHOS__
 		[Test]
 		public void LoadNibWithOptions ()
 		{
@@ -99,7 +68,6 @@ namespace MonoTouchFixtures.Foundation {
 			Assert.NotNull (main.LoadNib ("EmptyNib", main, null));
 #endif
 		}
-#endif // !__WATCHOS__
 #endif
 
 #if false
@@ -137,8 +105,9 @@ namespace MonoTouchFixtures.Foundation {
 		public void PreferredLocalizations ()
 		{
 			string [] locz = main.PreferredLocalizations;
+			var localizations = new string [] { "en-AU", "en-UK", "es", "es-AR", "es-ES" };
 			Assert.That (locz.Length, Is.GreaterThanOrEqualTo (1), "Length");
-			Assert.That (locz, Contains.Item ("Base"), "Base");
+			Assert.That (localizations, Contains.Item (locz [0]), $"PreferredLocalizations: {string.Join (";", locz)}");
 		}
 
 		[Test]
@@ -155,36 +124,6 @@ namespace MonoTouchFixtures.Foundation {
 			Assert.That (main.AppStoreReceiptUrl.AbsoluteString, Does.EndWith ("eceipt"), "AppStoreReceiptUrl");
 		}
 
-#if !NET
-		[Test]
-		public void LocalizedString ()
-		{
-			// null values are fine
-			var l2 = main.LocalizedString (null, null);
-			Assert.That (l2.Length, Is.EqualTo (0), "null,null");
-			var l3 = main.LocalizedString (null, null, null);
-			Assert.That (l3.Length, Is.EqualTo (0), "null,null,null");
-			var l4 = main.LocalizedString (null, null, null, null);
-			Assert.That (l4.Length, Is.EqualTo (0), "null,null,null,null");
-
-			// NoKey does not exists so the same string is returned
-			l2 = main.LocalizedString ("NoKey", null);
-			Assert.That (l2, Is.EqualTo ("NoKey"), "string,null");
-			l3 = main.LocalizedString ("NoKey", null, null);
-			Assert.That (l3, Is.EqualTo ("NoKey"), "string,null,null");
-			l4 = main.LocalizedString ("NoKey", null, null, null);
-			Assert.That (l4, Is.EqualTo ("NoKey"), "string,null,null,null");
-
-			// TestKey exists (Localizable.strings) and returns TestValue
-			l2 = main.LocalizedString ("TestKey", null);
-			Assert.That (l2, Is.EqualTo ("TestValue"), "string,null-2");
-			l3 = main.LocalizedString ("TestKey", null, null);
-			Assert.That (l3, Is.EqualTo ("TestValue"), "string,null,null-2");
-			l4 = main.LocalizedString ("TestKey", null, null, null);
-			Assert.That (l4, Is.EqualTo ("TestValue"), "string,null,null,null-2");
-		}
-#endif
-
 		[Test]
 		public void GetLocalizedString ()
 		{
@@ -200,10 +139,10 @@ namespace MonoTouchFixtures.Foundation {
 				Assert.That (l.ToString (), Is.EqualTo ("NoKey"), "NString,null,null");
 
 			// TestKey exists (Localizable.strings) and returns TestValue
-			using (var l = main.GetLocalizedString ("TestKey", null, null))
+			using (var l = main.GetLocalizedString ("TestKey", null, "Localizable"))
 				Assert.That (l.ToString (), Is.EqualTo ("TestValue"), "string,null,null-2");
 			using (var key = new NSString ("TestKey"))
-			using (var l = main.GetLocalizedString (key, null, null))
+			using (var l = main.GetLocalizedString (key, null, "Localizable"))
 				Assert.That (l.ToString (), Is.EqualTo ("TestValue"), "NString,null,null-2");
 		}
 	}

@@ -12,32 +12,45 @@ namespace AppKit {
 
 	public partial class NSWorkspace {
 
-#if NET
+		/// <param name="urls">To be added.</param>
+		///         <param name="bundleIdentifier">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <param name="descriptor">To be added.</param>
+		///         <param name="identifiers">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos11.0", "Use 'NSWorkspace.OpenUrls' with completion handler.")]
 		[UnsupportedOSPlatform ("maccatalyst")]
-#else
-		[Deprecated (PlatformName.MacOSX, 11, 0, message: "Use 'NSWorkspace.OpenUrls' with completion handler.")]
-#endif
 		public virtual bool OpenUrls (NSUrl [] urls, string bundleIdentifier, NSWorkspaceLaunchOptions options, NSAppleEventDescriptor descriptor, string [] identifiers)
 		{
 			// Ignore the passed in argument, because if you pass it in we will crash on cleanup.
 			return _OpenUrls (urls, bundleIdentifier, options, descriptor, null);
 		}
 
-#if NET
+		/// <param name="urls">To be added.</param>
+		///         <param name="bundleIdentifier">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <param name="descriptor">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos11.0", "Use 'NSWorkspace.OpenUrls' with completion handler.")]
 		[UnsupportedOSPlatform ("maccatalyst")]
-#else
-		[Deprecated (PlatformName.MacOSX, 11, 0, message: "Use 'NSWorkspace.OpenUrls' with completion handler.")]
-#endif
 		public virtual bool OpenUrls (NSUrl [] urls, string bundleIdentifier, NSWorkspaceLaunchOptions options, NSAppleEventDescriptor descriptor)
 		{
 			return _OpenUrls (urls, bundleIdentifier, options, descriptor, null);
 		}
 
-		[Advice ("Use 'NSWorkSpace.IconForContentType' instead.")]
+		/// <param name="fileType">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
+		[ObsoletedOSPlatform ("macos", "Use 'NSWorkspace.GetIcon' instead.")]
+		[UnsupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
 		public virtual NSImage IconForFileType (string fileType)
 		{
 			var nsFileType = NSString.CreateNative (fileType);
@@ -48,7 +61,9 @@ namespace AppKit {
 			}
 		}
 
-		[Advice ("Use 'NSWorkSpace.IconForContentType' instead.")]
+		[ObsoletedOSPlatform ("macos", "Use 'NSWorkspace.GetIcon' instead.")]
+		[UnsupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
 		public virtual NSImage IconForFileType (HfsTypeCode typeCode)
 		{
 			var nsFileType = GetNSFileType ((uint) typeCode);
@@ -62,14 +77,6 @@ namespace AppKit {
 		{
 			return NSFileTypeForHFSTypeCode (fourCcTypeCode);
 		}
-
-#if !NET
-		[Obsolete ("Use the overload that takes 'out NSError' instead.")]
-		public virtual NSRunningApplication LaunchApplication (NSUrl url, NSWorkspaceLaunchOptions options, NSDictionary configuration, NSError error)
-		{
-			return LaunchApplication (url, options, configuration, out error);
-		}
-#endif
 	}
 }
 #endif // !__MACCATALYST__

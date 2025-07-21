@@ -8,19 +8,18 @@ using Xamarin.Messaging;
 using Xamarin.Messaging.Build.Client;
 using Xamarin.Messaging.Ssh;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Xamarin.MacDev.Tasks {
 	public class CopyArchiveFiles : XamarinTask, ICancelableTask {
 		[Required]
-		public string ArchivePath { get; set; }
+		public string ArchivePath { get; set; } = "";
 
 		[Required]
-		public string AppName { get; set; }
+		public string AppName { get; set; } = "";
 
 		[Required]
-		public string TargetPath { get; set; }
+		public string TargetPath { get; set; } = "";
 
 		public override bool Execute ()
 		{
@@ -70,8 +69,7 @@ namespace Xamarin.MacDev.Tasks {
 
 		async System.Threading.Tasks.Task CopyArchiveAsync (ISshCommands sshCommands)
 		{
-			var serverHomeDirectory = await sshCommands.GetHomeDirectoryAsync ().ConfigureAwait (continueOnCapturedContext: false);
-			var buildPath = PlatformPath.GetServerBuildPath (serverHomeDirectory, AppName, SessionId, TargetPath);
+			var buildPath = PlatformPath.GetServerBuildPath (AppName, SessionId, TargetPath);
 
 			if (!Directory.Exists (buildPath)) {
 				await sshCommands.CreateDirectoryAsync (buildPath).ConfigureAwait (continueOnCapturedContext: false);

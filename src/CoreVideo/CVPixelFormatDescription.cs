@@ -39,143 +39,195 @@ using CVFillExtendedPixelsCallBackDataStruct = CoreVideo.CVFillExtendedPixelsCal
 #nullable enable
 
 namespace CoreVideo {
+	/// <summary>A class that supports the definition of customer pixel formats.</summary>
+	///     <remarks>To be added.</remarks>
 	public partial class CVPixelFormatDescription {
 #if !COREBUILD
 #if !XAMCORE_5_0
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use 'CVPixelFormatKeys.Name' instead.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		public static readonly NSString NameKey;
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use 'CVPixelFormatKeys.Constant' instead.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		public static readonly NSString ConstantKey;
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use 'CVPixelFormatKeys.CodecType' instead.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		public static readonly NSString CodecTypeKey;
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use 'CVPixelFormatKeys.FourCCKey' instead.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		public static readonly NSString FourCCKey;
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use 'CVPixelFormatKeys.Planes' instead.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		public static readonly NSString PlanesKey;
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use 'CVPixelFormatKeys.BlockWidth' instead.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		public static readonly NSString BlockWidthKey;
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use 'CVPixelFormatKeys.BlockHeight' instead.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		public static readonly NSString BlockHeightKey;
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use 'CVPixelFormatKeys.BitsPerBlock' instead.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		public static readonly NSString BitsPerBlockKey;
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use 'CVPixelFormatKeys.BlockHorizontalAlignment' instead.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		public static readonly NSString BlockHorizontalAlignmentKey;
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use 'CVPixelFormatKeys.BlockVerticalAlignment' instead.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		public static readonly NSString BlockVerticalAlignmentKey;
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use 'CVPixelFormatKeys.BlackBlock' instead.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		public static readonly NSString BlackBlockKey;
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use 'CVPixelFormatKeys.HorizontalSubsampling' instead.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		public static readonly NSString HorizontalSubsamplingKey;
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use 'CVPixelFormatKeys.VerticalSubsampling' instead.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		public static readonly NSString VerticalSubsamplingKey;
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use 'CVPixelFormatKeys.OpenGLFormat' instead.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		public static readonly NSString OpenGLFormatKey;
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use 'CVPixelFormatKeys.OpenGLType' instead.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		public static readonly NSString OpenGLTypeKey;
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use 'CVPixelFormatKeys.OpenGLInternalFormat' instead.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		public static readonly NSString OpenGLInternalFormatKey;
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use 'CVPixelFormatKeys.CGBitmapInfo' instead.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		public static readonly NSString CGBitmapInfoKey;
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use 'CVPixelFormatKeys.QDCompatibility' instead.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		public static readonly NSString QDCompatibilityKey;
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use 'CVPixelFormatKeys.CGBitmapContextCompatibility' instead.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		public static readonly NSString CGBitmapContextCompatibilityKey;
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use 'CVPixelFormatKeys.CGImageCompatibility' instead.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		public static readonly NSString CGImageCompatibilityKey;
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use 'CVPixelFormatKeys.OpenGLCompatibility' instead.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		public static readonly NSString OpenGLCompatibilityKey;
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use 'CVPixelFormatKeys.FillExtendedPixelsCallback' instead.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		public static readonly NSString FillExtendedPixelsCallbackKey;
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use 'CVPixelFormatKeys.ContainsRgb' instead.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		public static readonly NSString ContainsRgb;
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use 'CVPixelFormatKeys.ContainsYCbCr' instead.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		public static readonly NSString ContainsYCbCr;
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use 'CVPixelFormatKeys.ComponentRange' instead.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		public static readonly NSString ComponentRangeKey;
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use 'CVPixelFormatComponentRangeKeys.FullRange' instead.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		public static readonly NSString ComponentRangeFullRangeKey;
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use 'CVPixelFormatComponentRangeKeys.VideoRange' instead.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		public static readonly NSString ComponentRangeVideoRangeKey;
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use 'CVPixelFormatComponentRangeKeys.WideRange' instead.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		public static readonly NSString ComponentRangeWideRangeKey;
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use 'CVPixelFormatKeys.ContainsGrayscale' instead.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[Watch (5, 0)]
-#endif
 		public static readonly NSString ContainsGrayscaleKey;
 
 		[Obsolete ("Use 'CVPixelFormatKeys.ContainsSenselArray' instead.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
-#if NET
 		[SupportedOSPlatform ("ios16.0")]
 		[SupportedOSPlatform ("maccatalyst16.0")]
 		[SupportedOSPlatform ("macos13.0")]
 		[SupportedOSPlatform ("tvos16.0")]
-#else
-		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
-#endif
 		public static readonly NSString ContainsSenselArray;
 #endif // !XAMCORE_5_0
 
@@ -219,7 +271,9 @@ namespace CoreVideo {
 			ContainsGrayscaleKey = CVPixelFormatKeys.ContainsGrayscale;
 
 			// Xcode 14
+#pragma warning disable CA1416 // This call site is reachable on: 'ios' 12.2 and later, 'maccatalyst' 12.2 and later, 'macOS/OSX' 12.0 and later, 'tvos' 12.2 and later. 'CVPixelFormatKeys.ContainsSenselArray.get' is only supported on: 'ios' 16.0 and later, 'maccatalyst' 16.0 and later, 'macOS/OSX' 13.0 and later, 'tvos' 16.0 and later.
 			ContainsSenselArray = CVPixelFormatKeys.ContainsSenselArray;
+#pragma warning restore CA1416
 		}
 #endif
 
@@ -250,13 +304,6 @@ namespace CoreVideo {
 		extern static /* CFDictionaryRef __nullable */ IntPtr CVPixelFormatDescriptionCreateWithPixelFormatType (
 			/* CFAllocatorRef __nullable */ IntPtr allocator, int /* OSType = int32_t */ pixelFormat);
 
-#if !XAMCORE_3_0
-		public static NSDictionary? Create (int pixelFormat)
-		{
-			return Runtime.GetNSObject<NSDictionary> (CVPixelFormatDescriptionCreateWithPixelFormatType (IntPtr.Zero, pixelFormat));
-		}
-#endif
-
 		/// <summary>Create a description of the specified pixel format.</summary>
 		/// <param name="pixelFormat">The pixel format to create a description of.</param>
 		public static NSDictionary? Create (CVPixelFormatType pixelFormat)
@@ -278,16 +325,6 @@ namespace CoreVideo {
 		extern static void CVPixelFormatDescriptionRegisterDescriptionWithPixelFormatType (
 			/* CFDictionaryRef __nonnull */ IntPtr description, int /* OSType = int32_t */ pixelFormat);
 
-#if !XAMCORE_3_0
-		public static void Register (NSDictionary description, int pixelFormat)
-		{
-			if (description is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (description));
-
-			CVPixelFormatDescriptionRegisterDescriptionWithPixelFormatType (description.Handle, pixelFormat);
-		}
-#endif
-
 		/// <summary>Register a new pixel format with CoreVideo.</summary>
 		/// <param name="description">The pixel format description for the pixel format to register.</param>
 		/// <param name="pixelFormat">The pixel format to register.</param>
@@ -297,6 +334,7 @@ namespace CoreVideo {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (description));
 
 			CVPixelFormatDescriptionRegisterDescriptionWithPixelFormatType (description.Handle, (int) pixelFormat);
+			GC.KeepAlive (description);
 		}
 
 		/// <summary>Register a new pixel format with CoreVideo.</summary>
@@ -307,34 +345,25 @@ namespace CoreVideo {
 			Register (description?.Dictionary!, pixelFormat);
 		}
 
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos15.0")]
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[iOS (15, 0), MacCatalyst (15, 0), TV (15, 0), Mac (12, 0), Watch (8, 0)]
-#endif
 		[DllImport (Constants.CoreVideoLibrary)]
 		extern static byte CVIsCompressedPixelFormatAvailable (int /* OSType = int32_t */ pixelFormat);
 
 		/// <summary>Check if the specified pixel format is supported on this platform.</summary>
 		/// <param name="pixelFormat">The pixel format to check.</param>
 		/// <returns>Whether the specified pixel format is supported or not.</returns>
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos15.0")]
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[iOS (15, 0), MacCatalyst (15, 0), TV (15, 0), Mac (12, 0), Watch (8, 0)]
-#endif
 		public static bool IsPixelFormatAvailable (CVPixelFormatType pixelFormat)
 		{
 			return CVIsCompressedPixelFormatAvailable ((int) pixelFormat) != 0;
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -348,7 +377,7 @@ namespace CoreVideo {
 				unsafe {
 					if (bytes.Length < sizeof (CVFillExtendedPixelsCallBackDataStruct))
 						throw new InvalidOperationException ($"The size of the callback data structure is smaller than expected (got {bytes.Length} bytes, expected at least {sizeof (CVFillExtendedPixelsCallBackDataStruct)} bytes)");
-					fixed (byte *ptr = bytes)
+					fixed (byte* ptr = bytes)
 						return Marshal.PtrToStructure<CVFillExtendedPixelsCallBackDataStruct> ((IntPtr) ptr);
 				}
 			}
@@ -365,8 +394,6 @@ namespace CoreVideo {
 				FillExtendedPixelsCallback = data;
 			}
 		}
-#endif
-
 #endif // !COREBUILD
 	}
 }

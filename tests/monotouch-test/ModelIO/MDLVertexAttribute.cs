@@ -7,8 +7,6 @@
 // Copyright 2015 Xamarin Inc.
 //
 
-#if !__WATCHOS__
-
 using System;
 using Foundation;
 #if !MONOMAC
@@ -21,12 +19,7 @@ using ModelIO;
 using ObjCRuntime;
 using NUnit.Framework;
 
-#if NET
 using System.Numerics;
-#else
-using CoreGraphics;
-using OpenTK;
-#endif
 
 namespace MonoTouchFixtures.ModelIO {
 
@@ -79,5 +72,3 @@ namespace MonoTouchFixtures.ModelIO {
 		}
 	}
 }
-
-#endif // !__WATCHOS__

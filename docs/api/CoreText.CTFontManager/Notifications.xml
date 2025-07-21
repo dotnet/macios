@@ -1,0 +1,26 @@
+<Documentation>
+  <Docs DocId="M:CoreText.CTFontManager.Notifications.ObserveRegisteredFontsChanged(System.EventHandler{Foundation.NSNotificationEventArgs})">
+    <param name="handler">Method to invoke when the notification is posted.</param>
+    <summary>Strongly typed notification for the <see cref="CoreText.CTFontManager.RegisteredFontsChangedNotification" /> constant.</summary>
+    <returns>Token object that can be used to stop receiving notifications by either disposing it or passing it to <see cref="Foundation.NSNotificationCenter.RemoveObservers(System.Collections.Generic.IEnumerable{Foundation.NSObject})" /></returns>
+    <remarks>
+      <para id="tool-remark">This method can be used to subscribe for <see cref="CoreText.CTFontManager.RegisteredFontsChangedNotification" /> notifications.</para>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
+// Listen to all notifications posted for any object
+var token = CTFontManager.Notifications.ObserveRegisteredFontsChanged ((notification) => {
+	Console.WriteLine ("Observed RegisteredFontsChangedNotification!");
+};
+
+// Listen to all notifications posted for a single object
+var token = CTFontManager.Notifications.ObserveRegisteredFontsChanged (objectToObserve, (notification) => {
+	Console.WriteLine ($"Observed RegisteredFontsChangedNotification for {nameof (objectToObserve)}!");
+};
+
+// Stop listening for notifications
+token.Dispose ();
+]]></code>
+      </example>
+    </remarks>
+  </Docs>
+</Documentation>

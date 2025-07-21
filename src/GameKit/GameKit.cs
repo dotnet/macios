@@ -21,20 +21,21 @@ namespace GameKit {
 	// NSUInteger -> GKPeerPickerController.h
 	/// <summary>An enumeration whose values specify acceptable ping for peer-to-peer connections.</summary>
 	[NoMac]
-	[NoWatch]
-#if NET
 	[NoTV]
-#endif
 	[Deprecated (PlatformName.iOS, 7, 0)]
 	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 	[Native]
 	public enum GKPeerPickerConnectionType : ulong {
+		/// <summary>To be added.</summary>
 		Online = 1 << 0,
-		Nearby = 1 << 1
+		/// <summary>To be added.</summary>
+		Nearby = 1 << 1,
 	}
 
 	// untyped enum -> GKPublicConstants.h
+	/// <summary>Errors returned by the GKVoiceChatService.</summary>
+	/// <remarks>To be added.</remarks>
 	[NoMac]
 	[Deprecated (PlatformName.iOS, 7, 0)]
 	[Deprecated (PlatformName.TvOS, 9, 0)]
@@ -42,109 +43,185 @@ namespace GameKit {
 	[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 	[ErrorDomain ("GKVoiceChatServiceErrorDomain")]
 	public enum GKVoiceChatServiceError {
+		/// <summary>An internal error occurred.</summary>
 		Internal = 32000,
+		/// <summary>Remote packets stopped.</summary>
 		NoRemotePackets = 32001,
+		/// <summary>The client was unable to connect to the service.</summary>
 		UnableToConnect = 32002,
+		/// <summary>The remote participant ended the voice chat.</summary>
 		RemoteParticipantHangup = 32003,
+		/// <summary>The call ID was not valid.</summary>
 		InvalidCallID = 32004,
+		/// <summary>The service cannot access audio hardware.</summary>
 		AudioUnavailable = 32005,
+		/// <summary>The client was not initialized.</summary>
 		UninitializedClient = 32006,
+		/// <summary>The client is missing a required method.</summary>
 		ClientMissingRequiredMethods = 32007,
+		/// <summary>The remote participant was already in a voice chat.</summary>
 		RemoteParticipantBusy = 32008,
+		/// <summary>The remote participant cancelled the call before it started.</summary>
 		RemoteParticipantCancelled = 32009,
+		/// <summary>An invalid response was received from the remote participant.</summary>
 		RemoteParticipantResponseInvalid = 32010,
+		/// <summary>The remote participant did not accept the invitation.</summary>
 		RemoteParticipantDeclinedInvite = 32011,
+		/// <summary>The specified method was not valid when it was called.</summary>
 		MethodCurrentlyInvalid = 32012,
+		/// <summary>The network could not be accessed.</summary>
 		NetworkConfiguration = 32013,
+		/// <summary>The remote client version was not supported.</summary>
 		UnsupportedRemoteVersion = 32014,
+		/// <summary>The client is out of memory.</summary>
 		OutOfMemory = 32015,
-		InvalidParameter = 32016
+		/// <summary>A parameter was not valid.</summary>
+		InvalidParameter = 32016,
 	}
 
 	// untyped enum -> GKPublicConstants.h
+	/// <summary>An enumeration that allows data transmission to trade off speed for reliability.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <altmember cref="GameKit.GKMatchSendDataMode" />
 	[Deprecated (PlatformName.iOS, 7, 0)]
 	[Deprecated (PlatformName.TvOS, 9, 0)]
 	[Deprecated (PlatformName.MacOSX, 10, 10)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 	public enum GKSendDataMode {
+		/// <summary>Slower, but rebroadcast until received. Reliable data is guaranteed to arrive in order of transmission.</summary>
 		Reliable,
+		/// <summary>Fast, but not guaranteed to arrive and may arrive out of order.</summary>
 		Unreliable,
 	}
 
 	// untyped enum -> GKPublicConstants.h
+	/// <summary>The session mode.</summary>
+	/// <remarks>To be added.</remarks>
 	[Deprecated (PlatformName.iOS, 7, 0)]
 	[Deprecated (PlatformName.TvOS, 9, 0)]
 	[Deprecated (PlatformName.MacOSX, 10, 10)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 	public enum GKSessionMode {
+		/// <summary>Acting as a server.</summary>
 		Server,
+		/// <summary>Acting as a client.</summary>
 		Client,
+		/// <summary>Acting as a peer.</summary>
 		Peer,
 	}
 
 	// untyped enum -> GKPublicConstants.h
+	/// <summary>An enumeration whose values specify the state of a peer-to-peer connection.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <altmember cref="GameKit.GKSession.PeersWithConnectionState" />
+	/// <altmember cref="GameKit.GKSessionDelegate.PeerChangedState" />
 	[Deprecated (PlatformName.iOS, 7, 0)]
 	[Deprecated (PlatformName.TvOS, 9, 0)]
 	[Deprecated (PlatformName.MacOSX, 10, 10)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 	public enum GKPeerConnectionState {
+		/// <summary>To be added.</summary>
 		Available,
+		/// <summary>To be added.</summary>
 		Unavailable,
+		/// <summary>To be added.</summary>
 		Connected,
+		/// <summary>To be added.</summary>
 		Disconnected,
+		/// <summary>To be added.</summary>
 		Connecting,
 		ConnectedRelay = 5,
 	}
 
 	// NSInteger -> GKLeaderboard.h
+	/// <summary>An enumeration whose values specify the amount of time to which a player's best score is restricted.</summary>
+	/// <remarks>To be added.</remarks>
 	[Native]
 	public enum GKLeaderboardTimeScope : long {
-		Today, Week, AllTime
+		/// <summary>To be added.</summary>
+		Today,
+		/// <summary>To be added.</summary>
+		Week,
+		/// <summary>To be added.</summary>
+		AllTime,
 	}
 
 	// NSInteger -> GKLeaderboard.h
+	/// <summary>An enumeration whose values specify whether a <see cref="GameKit.GKLeaderboard" /> should display global results or only for friends.</summary>
+	/// <remarks>To be added.</remarks>
 	[Native]
 	public enum GKLeaderboardPlayerScope : long {
-		Global, FriendsOnly
+		/// <summary>To be added.</summary>
+		Global,
+		/// <summary>To be added.</summary>
+		FriendsOnly,
 	}
 
 	// NSInteger -> GKError.h
+	/// <summary>An enumeration whose values specify Game Kit errors.</summary>
+	/// <remarks>To be added.</remarks>
 	[Native ("GKErrorCode")]
 	[ErrorDomain ("GKErrorDomain")]
 	public enum GKError : long {
+		/// <summary>No error occurred.</summary>
 		None = 0,
+		/// <summary>An unknown error occurred.</summary>
 		Unknown = 1,
+		/// <summary>The user cancelled the operation.</summary>
 		Cancelled,
+		/// <summary>There was an error in communicating with the game server.</summary>
 		CommunicationsFailure,
+		/// <summary>The user denied an operation.</summary>
 		UserDenied,
+		/// <summary>The user name or password was invalid.</summary>
 		InvalidCredentials,
+		/// <summary>The player is not authenticated.</summary>
 		NotAuthenticated,
+		/// <summary>The player is authenticating.</summary>
 		AuthenticationInProgress,
+		/// <summary>The in-game representation of a player was invalid.</summary>
 		InvalidPlayer,
+		/// <summary>The score is not set.</summary>
 		ScoreNotSet,
+		/// <summary>The requested item or service is blocked.</summary>
 		ParentalControlsBlocked,
+		/// <summary>The player's status message is longer than allowed.</summary>
 		PlayerStatusExceedsMaximumLength,
+		/// <summary>The player's status message is not valid.</summary>
 		PlayerStatusInvalid,
+		/// <summary>The match request is logically impossible.</summary>
 		MatchRequestInvalid = 13,
+		/// <summary>The player is not old enough to access the item or service.</summary>
 		Underage,
+		/// <summary>The game center did not recognize the app or game. This can be caused by an invalid bundle identifier.</summary>
 		GameUnrecognized,
+		/// <summary>The Game Center is not supported by the device.</summary>
 		NotSupported,
+		/// <summary>A parameter was incorrect or miscategorized.</summary>
 		InvalidParameter,
+		/// <summary>There was a connection from an unexpected player.</summary>
 		UnexpectedConnection,
+		/// <summary>The challenge was invalid.</summary>
 		ChallengeInvalid = 19,
+		/// <summary>The match data was too large.</summary>
 		TurnBasedMatchDataTooLarge,
+		/// <summary>The maximum number of sessions was reached before the operation was requested.</summary>
 		TurnBasedTooManySessions,
+		/// <summary>The in-game representation of a player in a turn-based game was invalid.</summary>
 		TurnBasedInvalidParticipant,
+		/// <summary>An attempt was made to play out of turn.</summary>
 		TurnBasedInvalidTurn,
+		/// <summary>The session for a turn-based game was in an invalid state.</summary>
 		TurnBasedInvalidState,
-#if MONOMAC && !NET
-		[Obsolete ("This value was re-used on macOS only and removed later.")]
-		Offline = 25,
-#endif
+		/// <summary>The receiver is not currently receiving invitations.</summary>
 		InvitationsDisabled = 25, // iOS 7.0
+		/// <summary>The player's photo could not be retrieved.</summary>
 		PlayerPhotoFailure = 26,  // iOS 8.0
+		/// <summary>The iCloud container was unavailable.</summary>
 		UbiquityContainerUnavailable = 27, // iOS 8.0
+		/// <summary>The match is not connected.</summary>
 		MatchNotConnected = 28,
+		/// <summary>The session request was not valid.</summary>
 		GameSessionRequestInvalid = 29,
 		RestrictedToAutomatch = 30,
 		ApiNotAvailable = 31,
@@ -154,6 +231,7 @@ namespace GameKit {
 		ICloudUnavailable = 35,
 		LockdownMode = 36,
 		AppUnlisted = 37,
+		DebugMode = 38,
 		FriendListDescriptionMissing = 100,
 		FriendListRestricted = 101,
 		FriendListDenied = 102,
@@ -163,14 +241,18 @@ namespace GameKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum GKConnectionState : long {
+		/// <summary>To be added.</summary>
 		NotConnected,
+		/// <summary>To be added.</summary>
 		Connected,
 	}
 
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum GKTransportType : long {
+		/// <summary>To be added.</summary>
 		Unreliable,
+		/// <summary>To be added.</summary>
 		Reliable,
 	}
 
@@ -178,106 +260,196 @@ namespace GameKit {
 	[Deprecated (PlatformName.TvOS, 12, 0)]
 	[Deprecated (PlatformName.iOS, 12, 0)]
 	[Native]
-#if WATCH
-	// removed in Xcode 10 but a breaking change (for us) to remove
-	[Obsolete ("Not used in watchOS.")]
-#else
-	[Unavailable (PlatformName.WatchOS)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 	[ErrorDomain ("GKGameSessionErrorDomain")]
-#endif
 	public enum GKGameSessionErrorCode : long {
+		/// <summary>To be added.</summary>
 		Unknown = 1,
+		/// <summary>To be added.</summary>
 		NotAuthenticated = 2,
+		/// <summary>To be added.</summary>
 		SessionConflict = 3,
+		/// <summary>To be added.</summary>
 		SessionNotShared = 4,
+		/// <summary>To be added.</summary>
 		ConnectionCancelledByUser = 5,
+		/// <summary>To be added.</summary>
 		ConnectionFailed = 6,
+		/// <summary>To be added.</summary>
 		SessionHasMaxConnectedPlayers = 7,
+		/// <summary>To be added.</summary>
 		SendDataNotConnected = 8,
+		/// <summary>To be added.</summary>
 		SendDataNoRecipients = 9,
+		/// <summary>To be added.</summary>
 		SendDataNotReachable = 10,
+		/// <summary>To be added.</summary>
 		SendRateLimitReached = 11,
+		/// <summary>To be added.</summary>
 		BadContainer = 12,
+		/// <summary>To be added.</summary>
 		CloudQuotaExceeded = 13,
+		/// <summary>To be added.</summary>
 		NetworkFailure = 14,
+		/// <summary>To be added.</summary>
 		CloudDriveDisabled = 15,
+		/// <summary>To be added.</summary>
 		InvalidSession = 16,
 	}
 
 	// NSInteger -> GKMatch.h
+	/// <summary>An enumeration that allows data transmission to trade off speed for reliability.</summary>
+	/// <remarks>To be added.</remarks>
 	[Deprecated (PlatformName.iOS, 7, 0)]
 	[Deprecated (PlatformName.TvOS, 9, 0)]
 	[Deprecated (PlatformName.MacOSX, 10, 10)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 	[Native]
 	public enum GKMatchSendDataMode : long {
-		Reliable, Unreliable
+		/// <summary>Slower, but rebroadcast until received. Reliable data is guaranteed to arrive in order of transmission.</summary>
+		///         <altmember cref="GameKit.GKSendDataMode" />
+		Reliable,
+		/// <summary>Fast, but not guaranteed to arrive and may arrive out of order.</summary>
+		Unreliable,
 	}
 
 	// NSInteger -> GKMatch.h
+	/// <summary>An enumeration whose values specify the connection state of a <see cref="GameKit.GKPlayer" />.</summary>
+	/// <remarks>To be added.</remarks>
 	[Native]
 	public enum GKPlayerConnectionState : long {
-		Unknown, Connected, Disconnected
+		/// <summary>To be added.</summary>
+		Unknown,
+		/// <summary>To be added.</summary>
+		Connected,
+		/// <summary>To be added.</summary>
+		Disconnected,
 	}
 
 	// NSInteger -> GKVoiceChat.h
+	/// <summary>An enumeration whose values specify the state of a <see cref="GameKit.GKVoiceChat" /> channel. (See <see cref="GameKit.GKPlayerStateUpdateHandler" />.)</summary>
+	/// <remarks>To be added.</remarks>
 	[Deprecated (PlatformName.iOS, 18, 0, message: "No longer supported.")]
 	[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "No longer supported.")]
 	[Deprecated (PlatformName.TvOS, 18, 0, message: "No longer supported.")]
 	[Deprecated (PlatformName.MacOSX, 15, 0, message: "No longer supported.")]
 	[Native]
 	public enum GKVoiceChatPlayerState : long {
+		/// <summary>To be added.</summary>
 		Connected,
+		/// <summary>To be added.</summary>
 		Disconnected,
+		/// <summary>To be added.</summary>
 		Speaking,
+		/// <summary>To be added.</summary>
 		Silent,
-		Connecting
+		/// <summary>To be added.</summary>
+		Connecting,
 	}
 
 	// NSInteger -> GKPlayer.h
+	/// <summary>An enumeration whose values specify the size of a photo being loaded by <see cref="GameKit.GKPlayer.LoadPhoto(GameKit.GKPhotoSize,GameKit.GKPlayerPhotoLoaded)" />.</summary>
+	/// <remarks>To be added.</remarks>
 	[Native]
 	public enum GKPhotoSize : long {
-		Small, Normal
+		/// <summary>To be added.</summary>
+		Small,
+		/// <summary>To be added.</summary>
+		Normal,
 	}
 
 	// NSInteger -> GKTurnBasedMatch.h
+	/// <summary>An eumeration whose values specify the status of a turn-based match. (See <see cref="GameKit.GKTurnBasedMatch.Status" />.)</summary>
+	/// <remarks>To be added.</remarks>
 	[Native]
 	public enum GKTurnBasedMatchStatus : long {
-		Unknown, Open, Ended, Matching
+		/// <summary>To be added.</summary>
+		Unknown,
+		/// <summary>To be added.</summary>
+		Open,
+		/// <summary>To be added.</summary>
+		Ended,
+		/// <summary>To be added.</summary>
+		Matching,
 	}
 
 	// NSInteger -> GKTurnBasedMatch.h
+	/// <summary>An enumeration whose values specify the status of turn-based participants. (See <see cref="GameKit.GKTurnBasedParticipant.Status" />.)</summary>
+	/// <remarks>To be added.</remarks>
 	[Native]
 	public enum GKTurnBasedParticipantStatus : long {
-		Unknown, Invited, Declined, Matching, Active, Done
+		/// <summary>To be added.</summary>
+		Unknown,
+		/// <summary>To be added.</summary>
+		Invited,
+		/// <summary>To be added.</summary>
+		Declined,
+		/// <summary>To be added.</summary>
+		Matching,
+		/// <summary>To be added.</summary>
+		Active,
+		/// <summary>To be added.</summary>
+		Done,
 	}
 
 	// NSInteger -> GKTurnBasedMatch.h
+	/// <summary>An enumeration whose values specify valid outcomes of turn-based matches.</summary>
+	/// <remarks>To be added.</remarks>
 	[Native]
 	public enum GKTurnBasedMatchOutcome : long {
-		None, Quit, Won, Lost, Tied, TimeExpired,
-		First, Second, Third, Fourth, CustomRange = 0xff0000
+		/// <summary>To be added.</summary>
+		None,
+		/// <summary>To be added.</summary>
+		Quit,
+		/// <summary>To be added.</summary>
+		Won,
+		/// <summary>To be added.</summary>
+		Lost,
+		/// <summary>To be added.</summary>
+		Tied,
+		/// <summary>To be added.</summary>
+		TimeExpired,
+		/// <summary>To be added.</summary>
+		First,
+		/// <summary>To be added.</summary>
+		Second,
+		/// <summary>To be added.</summary>
+		Third,
+		/// <summary>To be added.</summary>
+		Fourth,
+		/// <summary>To be added.</summary>
+		CustomRange = 0xff0000,
 	}
 
 	// NSInteger -> GKChallenge.h
+	/// <summary>An enumeration whose values specify the states of a <see cref="GameKit.GKChallenge" />.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum GKChallengeState : long {
+		/// <summary>To be added.</summary>
 		Invalid = 0,
+		/// <summary>To be added.</summary>
 		Pending,
+		/// <summary>To be added.</summary>
 		Completed,
-		Declined
+		/// <summary>To be added.</summary>
+		Declined,
 	}
 
 	// NSInteger -> GKGameCenterViewController.h
-	[NoWatch]
+	/// <summary>An enumeration whose values specify the current <see cref="GameKit.GKGameCenterViewController.ViewState" /> of a <see cref="GameKit.GKGameCenterViewController" />.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum GKGameCenterViewControllerState : long {
+		/// <summary>To be added.</summary>
 		Default = -1,
+		/// <summary>To be added.</summary>
 		Leaderboards,
+		/// <summary>To be added.</summary>
 		Achievements,
+		/// <summary>To be added.</summary>
 		Challenges,
 		[iOS (14, 0)]
 		[TV (14, 0)]
@@ -290,63 +462,81 @@ namespace GameKit {
 		[iOS (15, 0)]
 		[MacCatalyst (15, 0)]
 		[TV (15, 0)]
-		[NoWatch]
 		LocalPlayerFriendsList = 5,
 	}
 
 	// NSInteger -> GKMatchmaker.h
+	/// <summary>An enumeration whose values specify the possible responses of a remote player to a <see cref="GameKit.GKInvite" />.</summary>
+	/// <remarks>To be added.</remarks>
 	[Native]
+	[Deprecated (PlatformName.iOS, 18, 4, message: "Use 'GKInviteRecipientResponse' instead.")]
+	[Deprecated (PlatformName.MacOSX, 15, 4, message: "Use 'GKInviteRecipientResponse' instead.")]
+	[Deprecated (PlatformName.TvOS, 18, 4, message: "Use 'GKInviteRecipientResponse' instead.")]
+	[Deprecated (PlatformName.MacCatalyst, 18, 4, message: "Use 'GKInviteRecipientResponse' instead.")]
 	public enum GKInviteeResponse : long {
+		/// <summary>To be added.</summary>
 		Accepted = 0,
+		/// <summary>To be added.</summary>
 		Declined = 1,
+		/// <summary>To be added.</summary>
 		Failed = 2,
+		/// <summary>To be added.</summary>
 		Incompatible = 3,
+		/// <summary>To be added.</summary>
 		UnableToConnect = 4,
+		/// <summary>To be added.</summary>
 		NoAnswer = 5,
 	}
 
 	// NSUInteger -> GKMatchmaker.h
+	/// <summary>An enumeration whose values specify the form of a match.</summary>
+	/// <remarks>To be added.</remarks>
 	[Native]
 	public enum GKMatchType : ulong {
+		/// <summary>To be added.</summary>
 		PeerToPeer,
+		/// <summary>To be added.</summary>
 		Hosted,
-		TurnBased
+		/// <summary>To be added.</summary>
+		TurnBased,
 	}
 
 	// uint8_t -> GKTurnBasedMatch.h
+	/// <summary>Enumerates turn status information.</summary>
+	/// <remarks>To be added.</remarks>
 	public enum GKTurnBasedExchangeStatus : sbyte {
+		/// <summary>To be added.</summary>
 		Unknown,
+		/// <summary>To be added.</summary>
 		Active,
+		/// <summary>To be added.</summary>
 		Complete,
+		/// <summary>To be added.</summary>
 		Resolved,
-		Canceled
+		/// <summary>To be added.</summary>
+		Canceled,
 	}
 
+	/// <summary>Enumerates responses to game play invitations.</summary>
+	/// <remarks>To be added.</remarks>
 	[Native]
 	public enum GKInviteRecipientResponse : long {
+		/// <summary>The recipient accepted.</summary>
 		Accepted = 0,
+		/// <summary>The recipient declined.</summary>
 		Declined = 1,
+		/// <summary>The request failed.</summary>
 		Failed = 2,
+		/// <summary>The versions of the game that are owned by the host and recipient are incompatible.</summary>
 		Incompatible = 3,
+		/// <summary>To be added.</summary>
 		UnableToConnect = 4,
+		/// <summary>The recipient did not answer.</summary>
 		NoAnswer = 5,
 	}
 
-#if !NET
-	[Deprecated (PlatformName.iOS, 14, 0, message: "Do not use; this API was removed.")]
-	[Deprecated (PlatformName.MacOSX, 11, 0, message: "Do not use; this API was removed.")]
-	[Deprecated (PlatformName.TvOS, 14, 0, message: "Do not use; this API was removed.")]
-	[Native]
-	public enum GKAuthenticationType : ulong {
-		WithoutUI = 0,
-		GreenBuddyUI = 1,
-		AuthKitInvocation = 2,
-	}
-#endif
-
 	[TV (14, 0)]
 	[iOS (14, 0)]
-	[NoWatch]
 	[MacCatalyst (14, 0)]
 	[Native]
 	public enum GKAccessPointLocation : long {
@@ -358,7 +548,6 @@ namespace GameKit {
 
 	[TV (14, 0)]
 	[iOS (14, 0)]
-	[Watch (7, 0)]
 	[MacCatalyst (14, 0)]
 	[Native]
 	public enum GKLeaderboardType : long {
@@ -368,7 +557,6 @@ namespace GameKit {
 
 	[TV (14, 0)]
 	[iOS (14, 0)]
-	[NoWatch]
 	[MacCatalyst (14, 0)]
 	[Native]
 	public enum GKMatchmakingMode : long {
@@ -381,7 +569,6 @@ namespace GameKit {
 		InviteOnly = 3,
 	}
 
-	[Watch (7, 4)]
 	[TV (14, 5)]
 	[iOS (14, 5)]
 	[MacCatalyst (14, 5)]

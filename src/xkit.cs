@@ -5,9 +5,7 @@ using System.Diagnostics;
 using System.ComponentModel;
 using Foundation;
 using ObjCRuntime;
-#if !WATCH
 using CoreAnimation;
-#endif
 using CoreGraphics;
 using CoreText;
 using UniformTypeIdentifiers;
@@ -45,29 +43,22 @@ using NSTypesetter = System.Object;
 using NSTypesetterBehavior = System.Object;
 using NSView = System.Object;
 using NSWindow = System.Object;
-#if WATCH
-using CATransform3D=System.Object;
-using NSTextContainer=System.Object;
-using NSTextStorage=System.Object;
-using UIDynamicItem=System.Object;
-using UITraitCollection = Foundation.NSObject;
-#endif // WATCH
 #else
-using UICollectionLayoutListConfiguration=System.Object;
-using UIContentInsetsReference=System.Object;
-using UIEdgeInsets=System.Object;
-using UITraitCollection=System.Object;
+using UICollectionLayoutListConfiguration = System.Object;
+using UIContentInsetsReference = System.Object;
+using UIEdgeInsets = System.Object;
+using UITraitCollection = System.Object;
 #endif // !MONOMAC
 
 #if MONOMAC
-using BezierPath=AppKit.NSBezierPath;
-using Image=AppKit.NSImage;
-using TextAlignment=AppKit.NSTextAlignment;
-using LineBreakMode=AppKit.NSLineBreakMode;
-using CollectionLayoutSectionOrthogonalScrollingBehavior=AppKit.NSCollectionLayoutSectionOrthogonalScrollingBehavior;
-using CollectionElementCategory=AppKit.NSCollectionElementCategory;
-using StringAttributes=AppKit.NSStringAttributes;
-using View=AppKit.NSView;
+using BezierPath = AppKit.NSBezierPath;
+using Image = AppKit.NSImage;
+using TextAlignment = AppKit.NSTextAlignment;
+using LineBreakMode = AppKit.NSLineBreakMode;
+using CollectionLayoutSectionOrthogonalScrollingBehavior = AppKit.NSCollectionLayoutSectionOrthogonalScrollingBehavior;
+using CollectionElementCategory = AppKit.NSCollectionElementCategory;
+using StringAttributes = AppKit.NSStringAttributes;
+using View = AppKit.NSView;
 using UICollectionLayoutSectionOrthogonalScrollingProperties = System.Object;
 #else
 using BezierPath = UIKit.UIBezierPath;
@@ -77,15 +68,51 @@ using LineBreakMode = UIKit.UILineBreakMode;
 using CollectionLayoutSectionOrthogonalScrollingBehavior = UIKit.UICollectionLayoutSectionOrthogonalScrollingBehavior;
 using CollectionElementCategory = UIKit.UICollectionElementCategory;
 using StringAttributes = UIKit.UIStringAttributes;
-#if WATCH
-using View=System.Object;
-#else
 using View = UIKit.UIView;
 #endif
-#endif
 
-#if !NET
-using NativeHandle = System.IntPtr;
+#if MONOMAC
+using IXWritingToolsCoordinatorDelegate = AppKit.INSWritingToolsCoordinatorDelegate;
+using XWritingToolsBehavior = AppKit.NSWritingToolsBehavior;
+using XWritingToolsCoordinator = AppKit.NSWritingToolsCoordinator;
+using XWritingToolsCoordinatorAnimationParameters = AppKit.NSWritingToolsCoordinatorAnimationParameters;
+using XWritingToolsCoordinatorContext = AppKit.NSWritingToolsCoordinatorContext;
+using XWritingToolsCoordinatorContextScope = AppKit.NSWritingToolsCoordinatorContextScope;
+using XWritingToolsCoordinatorDelegate = AppKit.NSWritingToolsCoordinatorDelegate;
+using XWritingToolsCoordinatorDelegateReplaceRangeCallback = AppKit.NSWritingToolsCoordinatorDelegateReplaceRangeCallback;
+using XWritingToolsCoordinatorDelegateRequestsBoundingBezierPathsCallback = AppKit.NSWritingToolsCoordinatorDelegateRequestsBoundingBezierPathsCallback;
+using XWritingToolsCoordinatorDelegateRequestsContextsCallback = AppKit.NSWritingToolsCoordinatorDelegateRequestsContextsCallback;
+using XWritingToolsCoordinatorDelegateRequestsDecorationContainerViewCallback = AppKit.NSWritingToolsCoordinatorDelegateRequestsDecorationContainerViewCallback;
+using XWritingToolsCoordinatorDelegateRequestsPreviewForTextAnimationCallback = AppKit.NSWritingToolsCoordinatorDelegateRequestsPreviewForTextAnimationCallback;
+using XWritingToolsCoordinatorDelegateRequestsRangeCallback = AppKit.NSWritingToolsCoordinatorDelegateRequestsRangeCallback;
+using XWritingToolsCoordinatorDelegateRequestsSingleContainerSubrangesCallback = AppKit.NSWritingToolsCoordinatorDelegateRequestsSingleContainerSubrangesCallback;
+using XWritingToolsCoordinatorDelegateRequestsUnderlinePathsCallback = AppKit.NSWritingToolsCoordinatorDelegateRequestsUnderlinePathsCallback;
+using XWritingToolsCoordinatorState = AppKit.NSWritingToolsCoordinatorState;
+using XWritingToolsCoordinatorTextAnimation = AppKit.NSWritingToolsCoordinatorTextAnimation;
+using XWritingToolsCoordinatorTextReplacementReason = AppKit.NSWritingToolsCoordinatorTextReplacementReason;
+using XWritingToolsCoordinatorTextUpdateReason = AppKit.NSWritingToolsCoordinatorTextUpdateReason;
+using XWritingToolsResultOptions = AppKit.NSWritingToolsResultOptions;
+#else
+using IXWritingToolsCoordinatorDelegate = UIKit.IUIWritingToolsCoordinatorDelegate;
+using XWritingToolsBehavior = UIKit.UIWritingToolsBehavior;
+using XWritingToolsCoordinator = UIKit.UIWritingToolsCoordinator;
+using XWritingToolsCoordinatorAnimationParameters = UIKit.UIWritingToolsCoordinatorAnimationParameters;
+using XWritingToolsCoordinatorContext = UIKit.UIWritingToolsCoordinatorContext;
+using XWritingToolsCoordinatorContextScope = UIKit.UIWritingToolsCoordinatorContextScope;
+using XWritingToolsCoordinatorDelegate = UIKit.UIWritingToolsCoordinatorDelegate;
+using XWritingToolsCoordinatorDelegateReplaceRangeCallback = UIKit.UIWritingToolsCoordinatorDelegateReplaceRangeCallback;
+using XWritingToolsCoordinatorDelegateRequestsBoundingBezierPathsCallback = UIKit.UIWritingToolsCoordinatorDelegateRequestsBoundingBezierPathsCallback;
+using XWritingToolsCoordinatorDelegateRequestsContextsCallback = UIKit.UIWritingToolsCoordinatorDelegateRequestsContextsCallback;
+using XWritingToolsCoordinatorDelegateRequestsDecorationContainerViewCallback = UIKit.UIWritingToolsCoordinatorDelegateRequestsDecorationContainerViewCallback;
+using XWritingToolsCoordinatorDelegateRequestsPreviewForTextAnimationCallback = UIKit.UIWritingToolsCoordinatorDelegateRequestsPreviewForTextAnimationCallback;
+using XWritingToolsCoordinatorDelegateRequestsRangeCallback = UIKit.UIWritingToolsCoordinatorDelegateRequestsRangeCallback;
+using XWritingToolsCoordinatorDelegateRequestsSingleContainerSubrangesCallback = UIKit.UIWritingToolsCoordinatorDelegateRequestsSingleContainerSubrangesCallback;
+using XWritingToolsCoordinatorDelegateRequestsUnderlinePathsCallback = UIKit.UIWritingToolsCoordinatorDelegateRequestsUnderlinePathsCallback;
+using XWritingToolsCoordinatorState = UIKit.UIWritingToolsCoordinatorState;
+using XWritingToolsCoordinatorTextAnimation = UIKit.UIWritingToolsCoordinatorTextAnimation;
+using XWritingToolsCoordinatorTextReplacementReason = UIKit.UIWritingToolsCoordinatorTextReplacementReason;
+using XWritingToolsCoordinatorTextUpdateReason = UIKit.UIWritingToolsCoordinatorTextUpdateReason;
+using XWritingToolsResultOptions = UIKit.UIWritingToolsResultOptions;
 #endif
 
 #if MONOMAC
@@ -94,47 +121,32 @@ namespace AppKit {
 namespace UIKit {
 #endif
 
-#if NET || MONOMAC
-	/// <summary>A delegate used as the callback in <see cref="M:UIKit.NSLayoutManager.EnumerateLineFragments(Foundation.NSRange,UIKit.NSTextLayoutEnumerateLineFragments)" />.</summary>
+	/// <summary>A delegate used as the callback in <see cref="UIKit.NSLayoutManager.EnumerateLineFragments(Foundation.NSRange,UIKit.NSTextLayoutEnumerateLineFragments)" />.</summary>
 	delegate void NSTextLayoutEnumerateLineFragments (CGRect rect, CGRect usedRectangle, NSTextContainer textContainer, NSRange glyphRange, out bool stop);
-	/// <summary>A delegate used as the callback in <see cref="M:UIKit.NSLayoutManager.EnumerateEnclosingRects(Foundation.NSRange,Foundation.NSRange,UIKit.NSTextContainer,UIKit.NSTextLayoutEnumerateEnclosingRects)" />.</summary>
+	/// <summary>A delegate used as the callback in <see cref="UIKit.NSLayoutManager.EnumerateEnclosingRects(Foundation.NSRange,Foundation.NSRange,UIKit.NSTextContainer,UIKit.NSTextLayoutEnumerateEnclosingRects)" />.</summary>
 	delegate void NSTextLayoutEnumerateEnclosingRects (CGRect rect, out bool stop);
-#else
-	delegate void NSTextLayoutEnumerateLineFragments (CGRect rect, CGRect usedRectangle, NSTextContainer textContainer, NSRange glyphRange, ref bool stop);
-	delegate void NSTextLayoutEnumerateEnclosingRects (CGRect rect, ref bool stop);
-#endif
 
 	// NSInteger -> NSLayoutManager.h
 	/// <summary>An enumeration whose values specify actions caused by control characters.</summary>
 	[Native]
 	[Flags]
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	public enum NSControlCharacterAction : long {
+		/// <summary>Glyphs with this action are filtered from the layout.</summary>
 		ZeroAdvancement = (1 << 0),
+		/// <summary>Uses <see cref="NSLayoutManagerDelegate.ShouldUseAction" /> or, if not overridden, <see cref="ZeroAdvancement" />.</summary>
 		Whitespace = (1 << 1),
+		/// <summary>Treated as a tab character.</summary>
 		HorizontalTab = (1 << 2),
+		/// <summary>Causes a line break.</summary>
 		LineBreak = (1 << 3),
+		/// <summary>Causes a paragraph break.</summary>
 		ParagraphBreak = (1 << 4),
+		/// <summary>Causes container break.</summary>
 		ContainerBreak = (1 << 5),
-
-#if !NET && !__MACCATALYST__ && !MONOMAC
-		[Obsolete ("Use 'ZeroAdvancement' instead.")]
-		ZeroAdvancementAction = ZeroAdvancement,
-		[Obsolete ("Use 'Whitespace' instead.")]
-		WhitespaceAction = Whitespace,
-		[Obsolete ("Use 'HorizontalTab' instead.")]
-		HorizontalTabAction = HorizontalTab,
-		[Obsolete ("Use 'LineBreak' instead.")]
-		LineBreakAction = LineBreak,
-		[Obsolete ("Use 'ParagraphBreak' instead.")]
-		ParagraphBreakAction = ParagraphBreak,
-		[Obsolete ("Use 'ContainerBreak' instead.")]
-		ContainerBreakAction = ContainerBreak,
-#endif
 	}
 
-	[Watch (6, 0), TV (13, 0), iOS (13, 0), MacCatalyst (13, 0)]
+	[TV (13, 0), iOS (13, 0), MacCatalyst (13, 0)]
 	[Flags]
 	[Native]
 	public enum NSDirectionalRectEdge : ulong {
@@ -148,61 +160,85 @@ namespace UIKit {
 
 	// NSInteger -> NSLayoutManager.h
 	/// <summary>An enumeration whose values specify characteristics of a glyph.</summary>
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSGlyphProperty : long {
+		/// <summary>Null glyph; ignored for layout and display.</summary>
 		Null = (1 << 0),
+		/// <summary>A control character such as tab, that has associated special behavior.</summary>
 		ControlCharacter = (1 << 1),
+		/// <summary>Glyphs such as whitespace that have elastic width behavior.</summary>
 		Elastic = (1 << 2),
+		/// <summary>Glyphs with combining properties, often characters in Unicode Mn class.</summary>
 		NonBaseCharacter = (1 << 3),
 	}
 
 	// NSInteger -> NSLayoutConstraint.h
 	/// <summary>An enumeration of attributes for use with constraint-based layouts.</summary>
-	///     <remarks>Values used to specify particular constraint attributes in constraint-based layouts. These values are primarily used by methods in the <see cref="T:UIKit.NSLayoutConstraint" /> class. </remarks>
+	///     <remarks>Values used to specify particular constraint attributes in constraint-based layouts. These values are primarily used by methods in the <see cref="UIKit.NSLayoutConstraint" /> class. </remarks>
 	[Native]
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	public enum NSLayoutAttribute : long {
+		/// <summary>Indicates no attribute.</summary>
 		NoAttribute = 0,
+		/// <summary>The left-most X value of the element.</summary>
 		Left = 1,
+		/// <summary>The right-most X value of the element.</summary>
 		Right,
+		/// <summary>The top-most Y value of the element.</summary>
 		Top,
+		/// <summary>The bottom of the element.</summary>
 		Bottom,
+		/// <summary>In locales with right-to-left text, this value is equal to <see cref="UIKit.NSLayoutAttribute.Left" />. In locales such as Hebrew or Arabic, equal to <see cref="UIKit.NSLayoutAttribute.Right" />.</summary>
 		Leading,
+		/// <summary>In locales with right-to-left text, this value is equal to <see cref="UIKit.NSLayoutAttribute.Right" />. In locales such as Hebrew or Arabic, equal to <see cref="UIKit.NSLayoutAttribute.Left" />.</summary>
 		Trailing,
+		/// <summary>The size of the element along the X axis.</summary>
 		Width,
+		/// <summary>The size of the element along the Y axis.</summary>
 		Height,
+		/// <summary>The left-to-right midpoint of the element.</summary>
 		CenterX,
+		/// <summary>The top-to-bottom midpoint of the element.</summary>
 		CenterY,
+		/// <summary>The line on which text without descenders sits.</summary>
 		Baseline,
+		/// <summary>The element's last baseline.</summary>
 		[MacCatalyst (13, 1)]
 		LastBaseline = Baseline,
+		/// <summary>The element's first baseline.</summary>
 		[MacCatalyst (13, 1)]
 		FirstBaseline,
 
+		/// <summary>The left margin of the element.</summary>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		LeftMargin,
+		/// <summary>The right margin of the element.</summary>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		RightMargin,
+		/// <summary>The top margin of the element.</summary>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		TopMargin,
+		/// <summary>The margin from the bottom of the element.</summary>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		BottomMargin,
+		/// <summary>The leading edge of the element's margin.</summary>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		LeadingMargin,
+		/// <summary>The trailing margin of the element.</summary>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		TrailingMargin,
+		/// <summary>The X-center of the region bounded by the element's margins.</summary>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		CenterXWithinMargins,
+		/// <summary>The Y-center of the region bounded by the element's margins.</summary>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		CenterYWithinMargins,
@@ -212,55 +248,76 @@ namespace UIKit {
 	/// <include file="../docs/api/UIKit/NSLayoutFormatOptions.xml" path="/Documentation/Docs[@DocId='T:UIKit.NSLayoutFormatOptions']/*" />
 	[Native]
 	[Flags]
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	public enum NSLayoutFormatOptions : ulong {
+		/// <summary>To be added.</summary>
 		None = 0,
 
+		/// <summary>Aligns all elements using their <see cref="UIKit.NSLayoutAttribute.Left" /> properties.</summary>
 		AlignAllLeft = (1 << (int) NSLayoutAttribute.Left),
+		/// <summary>Aligns all elements using their <see cref="UIKit.NSLayoutAttribute.Right" /> properties.</summary>
 		AlignAllRight = (1 << (int) NSLayoutAttribute.Right),
+		/// <summary>Aligns all attributes using their <see cref="UIKit.NSLayoutAttribute.Top" />s.</summary>
 		AlignAllTop = (1 << (int) NSLayoutAttribute.Top),
+		/// <summary>Aligns all elements using their <see cref="UIKit.NSLayoutAttribute.Bottom" />s.</summary>
 		AlignAllBottom = (1 << (int) NSLayoutAttribute.Bottom),
+		/// <summary>Aligns all elements using their <see cref="UIKit.NSLayoutAttribute.Leading" />s.</summary>
 		AlignAllLeading = (1 << (int) NSLayoutAttribute.Leading),
+		/// <summary>Aligns all attributes using their <see cref="UIKit.NSLayoutAttribute.Trailing" />s.</summary>
 		AlignAllTrailing = (1 << (int) NSLayoutAttribute.Trailing),
+		/// <summary>Aligns all elements using their <see cref="UIKit.NSLayoutAttribute.CenterX" />s.</summary>
 		AlignAllCenterX = (1 << (int) NSLayoutAttribute.CenterX),
+		/// <summary>Aligns all elements using their <see cref="UIKit.NSLayoutAttribute.CenterY" />s.</summary>
 		AlignAllCenterY = (1 << (int) NSLayoutAttribute.CenterY),
+		/// <summary>Aligns all elements using their <see cref="UIKit.NSLayoutAttribute.Baseline" />s.</summary>
 		AlignAllBaseline = (1 << (int) NSLayoutAttribute.Baseline),
+		/// <summary>Align all elements by using their last baselines.</summary>
 		[MacCatalyst (13, 1)]
 		AlignAllLastBaseline = (1 << (int) NSLayoutAttribute.LastBaseline),
+		/// <summary>Align all elements by using their first baselines.</summary>
 		[MacCatalyst (13, 1)]
 		AlignAllFirstBaseline = (1 << (int) NSLayoutAttribute.FirstBaseline),
 
+		/// <summary>Mask that can be applied to return only the alignment portion of the format options.</summary>
 		AlignmentMask = 0xFFFF,
 
 		/* choose only one of these three
 		 */
+		/// <summary>Arranges objects in the normal direction of text. In most languages this is left-to-right.</summary>
 		DirectionLeadingToTrailing = 0 << 16, // default
+		/// <summary>Arranges objects so that the first object is left-most.</summary>
 		DirectionLeftToRight = 1 << 16,
+		/// <summary>Arranges objects so that the first object is right-most.</summary>
 		DirectionRightToLeft = 2 << 16,
 
+		/// <summary>Arrange objects edge to edge.</summary>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		SpacingEdgeToEdge = 0 << 19,
+		/// <summary>Arrange objects to that their baselines align.</summary>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		SpacingBaselineToBaseline = 1 << 19,
+		/// <summary>A mask that selects only spacing bits of the format options.</summary>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		SpacingMask = 1 << 19,
 
+		/// <summary>Mask that can be applied to return only the directional component of the format options.</summary>
 		DirectionMask = 0x3 << 16,
 	}
 
 	// NSInteger -> UITextInput.h
-	/// <summary>An enumeration that specifies the relation between two attributes in a <see cref="T:UIKit.NSLayoutConstraint" /></summary>
-	///     <remarks>Constraint-based layouts are based on relationships between the values of two <see cref="T:UIKit.NSLayoutAttribute" />s. Constraints can be made more flexible by allowing relationships other than strict equality, that is, <see cref="F:UIKit.NSLayoutRelation.GreaterThanOrEqual" /> or <see cref="F:UIKit.NSLayoutRelation.LessThanOrEqual" />. With relations other than <see cref="F:UIKit.NSLayoutRelation.Equal" /> the constraint solver will attempt to minimize the difference in attributes. If <see cref="F:UIKit.NSLayoutRelation.Equal" /> is specified and the constraint solver cannot solve the system of constraints, the constraint solver will throw an exception. </remarks>
+	/// <summary>An enumeration that specifies the relation between two attributes in a <see cref="UIKit.NSLayoutConstraint" /></summary>
+	///     <remarks>Constraint-based layouts are based on relationships between the values of two <see cref="UIKit.NSLayoutAttribute" />s. Constraints can be made more flexible by allowing relationships other than strict equality, that is, <see cref="UIKit.NSLayoutRelation.GreaterThanOrEqual" /> or <see cref="UIKit.NSLayoutRelation.LessThanOrEqual" />. With relations other than <see cref="UIKit.NSLayoutRelation.Equal" /> the constraint solver will attempt to minimize the difference in attributes. If <see cref="UIKit.NSLayoutRelation.Equal" /> is specified and the constraint solver cannot solve the system of constraints, the constraint solver will throw an exception. </remarks>
 	[Native]
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	public enum NSLayoutRelation : long {
+		/// <summary>A less-than-or-equal relationship.</summary>
 		LessThanOrEqual = -1,
+		/// <summary>An equality relationship.</summary>
 		Equal = 0,
+		/// <summary>A greater-than-or-equal relationship.</summary>
 		GreaterThanOrEqual = 1,
 	}
 
@@ -268,16 +325,16 @@ namespace UIKit {
 	[Flags]
 	[Native]
 	public enum NSLineBreakStrategy : ulong {
-		[iOS (14, 0), TV (14, 0), Watch (7, 0), MacCatalyst (14, 0)]
+		[iOS (14, 0), TV (14, 0), MacCatalyst (14, 0)]
 		None = 0x0,
 		PushOut = 1uL << 0,
-		[iOS (14, 0), TV (14, 0), Watch (7, 0), MacCatalyst (14, 0)]
+		[iOS (14, 0), TV (14, 0), MacCatalyst (14, 0)]
 		HangulWordPriority = 1uL << 1,
-		[iOS (14, 0), TV (14, 0), Watch (7, 0), MacCatalyst (14, 0)]
+		[iOS (14, 0), TV (14, 0), MacCatalyst (14, 0)]
 		Standard = 0xffff,
 	}
 
-	[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSRectAlignment : long {
@@ -301,12 +358,13 @@ namespace UIKit {
 	}
 
 	// NSInteger -> NSLayoutManager.h
-	/// <summary>An enumeration whose values specify the direction in which text is laid out. Used with <see cref="P:UIKit.NSTextContainer.LayoutOrientation" />.</summary>
+	/// <summary>An enumeration whose values specify the direction in which text is laid out. Used with <see cref="UIKit.NSTextContainer.LayoutOrientation" />.</summary>
 	[Native]
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	public enum NSTextLayoutOrientation : long {
+		/// <summary>To be added.</summary>
 		Horizontal,
+		/// <summary>Lines are rendered vertically, extending from right to left.</summary>
 		Vertical,
 	}
 
@@ -314,41 +372,53 @@ namespace UIKit {
 	/// <summary>A flagging enumeration whose values are used by Text Kit to specify whether actions pertain to attributes, characters, or both.</summary>
 	[Native]
 	[Flags]
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	public enum NSTextStorageEditActions : ulong {
+		/// <summary>Attributes were modified.</summary>
 		Attributes = 1,
+		/// <summary>Characters were modified.</summary>
 		Characters = 2,
 	}
 
 	/// <include file="../docs/api/UIKit/NSLayoutManager.xml" path="/Documentation/Docs[@DocId='T:UIKit.NSLayoutManager']/*" />
 	[MacCatalyst (13, 1)]
-	[NoWatch] // Header is not present in watchOS SDK.
 	[DesignatedDefaultCtor]
 	[BaseType (typeof (NSObject))]
 	partial interface NSLayoutManager : NSSecureCoding {
-
-#if !NET
-		// This was removed in the headers in the macOS 10.11 SDK
-		[NoiOS]
-		[NoTV]
-		[Deprecated (PlatformName.MacOSX, 10, 11, message: "Use 'TextStorage' instead.")]
-		[Export ("attributedString")]
-		NSAttributedString AttributedString { get; }
-#endif
-
+		/// <summary>An array of <see cref="UIKit.NSTextContainer" />s that model the geometric layout of a document.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>The <see cref="UIKit.NSLayoutManager" /> lays out the text in its <see cref="UIKit.NSLayoutManager.TextStorage" /> property in the <see cref="UIKit.NSTextContainer" />s of this property, starting with the <see cref="UIKit.NSTextContainer" /> at index 0. </para>
+		///         </remarks>
 		[Export ("textContainers")]
 		NSTextContainer [] TextContainers { get; }
 
+		/// <param name="container">An <see cref="UIKit.NSTextContainer" /> to be appended to the <see cref="UIKit.NSLayoutManager.TextContainers" /> property.</param>
+		///         <summary>Appends a <see cref="UIKit.NSTextContainer" /> to the <see cref="UIKit.NSLayoutManager.TextContainers" /> property.</summary>
+		///         <remarks>To be added.</remarks>
+		///         <altmember cref="UIKit.NSLayoutManager.InsertTextContainer" />
 		[Export ("addTextContainer:")]
 		void AddTextContainer (NSTextContainer container);
 
+		/// <param name="container">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <summary>Inserts the specified <see cref="UIKit.NSTextContainer" /> into <see cref="UIKit.NSLayoutManager.TextContainers" /> at the specified <paramref name="index" />.</summary>
+		/// <remarks>To be added.</remarks>
+		/// <altmember cref="UIKit.NSLayoutManager.AddTextContainer" />
 		[Export ("insertTextContainer:atIndex:")]
 		void InsertTextContainer (NSTextContainer container, /* NSUInteger */ nint index);
 
+		/// <param name="index">To be added.</param>
+		/// <summary>Removes the specified <see cref="UIKit.NSTextContainer" /> from the <see cref="UIKit.NSLayoutManager.TextContainers" /> array. Invalidates layout as necessary.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("removeTextContainerAtIndex:")]
 		void RemoveTextContainer (/* NSUInteger */ nint index);
 
+		/// <param name="container">To be added.</param>
+		///         <summary>Invalidates the layout information and glyphs for the specified <see cref="UIKit.NSTextContainer" /> and any following.</summary>
+		///         <remarks>
+		///           <para>Application developers will typically not need to call this method unless they have subclassed <see cref="UIKit.NSTextContainer" /> (for example, creating a <see cref="UIKit.NSTextContainer" /> subclass that changes shape to accomodate placed graphics).</para>
+		///         </remarks>
 		[Export ("textContainerChangedGeometry:")]
 		void TextContainerChangedGeometry (NSTextContainer container);
 
@@ -358,384 +428,361 @@ namespace UIKit {
 		[Export ("textContainerChangedTextView:")]
 		void TextContainerChangedTextView (NSTextContainer container);
 
-#if !NET
-		// This was removed in the headers in the macOS 10.11 SDK
-		[NoiOS]
-		[NoTV]
-		[NoMacCatalyst]
-		[Deprecated (PlatformName.MacOSX, 10, 11)]
-		[Export ("layoutOptions")]
-		NSGlyphStorageOptions LayoutOptions { get; }
-#endif
-
+		/// <summary>Whether the <see cref="UIKit.NSLayoutManager" /> currently contains any areas of noncontiguous layout.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>Even if <see cref="UIKit.NSLayoutManager.AllowsNonContinguousLayout" /> is <see langword="true" />, this method may return <see langword="false" />, for instance, if layout is complete.</para>
+		///         </remarks>
 		[Export ("hasNonContiguousLayout")]
 		bool HasNonContiguousLayout { get; }
 
 		/* InvalidateGlyphs */
-#if NET || MONOMAC
 		[Protected]
-#else
-		[Internal]
-		[Sealed]
-#endif
 		[Export ("invalidateGlyphsForCharacterRange:changeInLength:actualCharacterRange:")]
 		void InvalidateGlyphs (NSRange characterRange, /* NSInteger */ nint delta, /* nullable NSRangePointer */ IntPtr actualCharacterRange);
 
+		/// <param name="characterRange">To be added.</param>
+		/// <param name="delta">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("InvalidateGlyphs (characterRange, delta, IntPtr.Zero)")]
 		void InvalidateGlyphs (NSRange characterRange, /* NSInteger */ nint delta);
 
-#if NET || MONOMAC
+		/// <param name="characterRange">To be added.</param>
+		/// <param name="delta">To be added.</param>
+		/// <param name="actualCharacterRange">To be added.</param>
+		/// <summary>Invalidates the glyphs in the  <paramref name="characterRange" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Sealed]
-#endif
 		[Export ("invalidateGlyphsForCharacterRange:changeInLength:actualCharacterRange:")]
-#if NET || MONOMAC
 		void InvalidateGlyphs (NSRange characterRange, /* NSInteger */ nint delta, /* nullable NSRangePointer */ out NSRange actualCharacterRange);
-#else
-		void InvalidateGlyphs (NSRange charRange, /* NSInteger */ nint delta, /* nullable NSRangePointer */ out NSRange actualCharRange);
-#endif
 
 		/* InvalidateLayout */
-#if NET || MONOMAC
 		[Protected]
-#else
-		[Internal]
-		[Sealed]
-#endif
 		[Export ("invalidateLayoutForCharacterRange:actualCharacterRange:")]
 		void InvalidateLayout (NSRange characterRange, /* nullable NSRangePointer */ IntPtr actualCharacterRange);
 
+		/// <param name="characterRange">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("InvalidateLayout (characterRange, IntPtr.Zero)")]
 		void InvalidateLayout (NSRange characterRange);
 
-#if NET || MONOMAC
+		/// <param name="actualCharacterRange">If not <see langword="null" />, on output holds the actual range invalidated.</param>
+		///         <summary>Invalidates the layout for the specified character range. Does not automatically trigger re-layout.</summary>
+		///         <remarks>
+		///           <para>This method does not trigger either glyph generation or layout. Application developers will not normally need to call this method.</para>
+		///         </remarks>
+		///         <param name="characterRange">To be added.</param>
 		[Sealed]
-#endif
 		[Export ("invalidateLayoutForCharacterRange:actualCharacterRange:")]
-#if NET || MONOMAC
 		void InvalidateLayout (NSRange characterRange, /* nullable NSRangePointer */ out NSRange actualCharacterRange);
-#else
-		void InvalidateLayout (NSRange charRange, /* nullable NSRangePointer */ out NSRange actualCharRange);
-#endif
 
+		/// <param name="characterRange">To be added.</param>
+		///         <summary>Invalidates the display for the given character range.</summary>
+		///         <remarks>
+		///           <para>This method does not automatically trigger layout.</para>
+		///         </remarks>
 		[Export ("invalidateDisplayForCharacterRange:")]
-#if NET
 		void InvalidateDisplayForCharacterRange (NSRange characterRange);
-#else
-		void InvalidateDisplayForCharacterRange (NSRange charRange);
-#endif
 
+		/// <param name="glyphRange">To be added.</param>
+		///         <summary>Invalidates the display for the given glyph range.</summary>
+		///         <remarks>
+		///           <para>This method does not automatically trigger layout.</para>
+		///         </remarks>
 		[Export ("invalidateDisplayForGlyphRange:")]
 		void InvalidateDisplayForGlyphRange (NSRange glyphRange);
 
-#if !NET
-		[NoiOS]
-		[NoTV]
-		[NoMacCatalyst]
-		[Deprecated (PlatformName.MacOSX, 10, 11, message: "Use ProcessEditing (NSTextStorage textStorage, NSTextStorageEditActions editMask, NSRange newCharacterRange, nint delta, NSRange invalidatedCharacterRange) instead).")]
-		[Export ("textStorage:edited:range:changeInLength:invalidatedRange:")]
-		void TextStorageEdited (NSTextStorage str, NSTextStorageEditedFlags editedMask, NSRange newCharRange, nint changeInLength, NSRange invalidatedCharRange);
-#endif
-
+		/// <param name="characterRange">To be added.</param>
+		///         <summary>Forces the <see cref="UIKit.NSLayoutManager" /> to generate glyphs for the specified characters, if it has not already done so.</summary>
+		///         <remarks>
+		///           <para>The <see cref="UIKit.NSLayoutManager" /> may calculate glyphs for a range larger than the <paramref name="characterRange" />. If <see cref="UIKit.NSLayoutManager.AllowsNonContinguousLayout" /> is <see langword="false" />, the range will always extend to the beginning of the text.</para>
+		///         </remarks>
 		[Export ("ensureGlyphsForCharacterRange:")]
-#if NET
 		void EnsureGlyphsForCharacterRange (NSRange characterRange);
-#else
-		void EnsureGlyphsForCharacterRange (NSRange charRange);
-#endif
 
+		/// <param name="glyphRange">To be added.</param>
+		///         <summary>Forces the <see cref="UIKit.NSLayoutManager" /> to generate glyphs for the specified glyph range, if it has not already done so.</summary>
+		///         <remarks>
+		///           <para>The <see cref="UIKit.NSLayoutManager" /> may calculate glyphs for a range larger than the <paramref name="glyphRange" />. If <see cref="UIKit.NSLayoutManager.AllowsNonContinguousLayout" /> is <see langword="false" />, the range will always extend to the beginning of the text.</para>
+		///         </remarks>
 		[Export ("ensureGlyphsForGlyphRange:")]
 		void EnsureGlyphsForGlyphRange (NSRange glyphRange);
 
+		/// <param name="characterRange">To be added.</param>
+		///         <summary>Forces the <see cref="UIKit.NSLayoutManager" /> to layout the specified characters, if it has not already done so.</summary>
+		///         <remarks>
+		///           <para>The <see cref="UIKit.NSLayoutManager" /> may layout an area larger than the <paramref name="characterRange" />. If <see cref="UIKit.NSLayoutManager.AllowsNonContinguousLayout" /> is <see langword="false" />, the range will always extend to the beginning of the text.</para>
+		///         </remarks>
 		[Export ("ensureLayoutForCharacterRange:")]
-#if NET
 		void EnsureLayoutForCharacterRange (NSRange characterRange);
-#else
-		void EnsureLayoutForCharacterRange (NSRange charRange);
-#endif
 
+		/// <param name="glyphRange">To be added.</param>
+		///         <summary>Forces the <see cref="UIKit.NSLayoutManager" /> to layout the specified glyphs, if it has not already done so.</summary>
+		///         <remarks>
+		///           <para>The <see cref="UIKit.NSLayoutManager" /> may layout a larger range than the specified <paramref name="glyphRange" />. If <see cref="UIKit.NSLayoutManager.AllowsNonContinguousLayout" /> is <see langword="false" />, the range will always extend to the beginning of the text.</para>
+		///         </remarks>
 		[Export ("ensureLayoutForGlyphRange:")]
 		void EnsureLayoutForGlyphRange (NSRange glyphRange);
 
+		/// <param name="container">To be added.</param>
+		///         <summary>Forces the <see cref="UIKit.NSLayoutManager" /> to layout the specified <see cref="UIKit.NSTextContainer" />, if it has not already done so.</summary>
+		///         <remarks>
+		///           <para>The <see cref="UIKit.NSLayoutManager" /> may layout more than the specified <paramref name="container" />. If <see cref="UIKit.NSLayoutManager.AllowsNonContinguousLayout" /> is <see langword="false" />, the range will always extend to the beginning of the text.</para>
+		///         </remarks>
 		[Export ("ensureLayoutForTextContainer:")]
 		void EnsureLayoutForTextContainer (NSTextContainer container);
 
+		/// <param name="bounds">To be added.</param>
+		///         <param name="container">To be added.</param>
+		///         <summary>Forces the layout manager to perform layout on <paramref name="bounds" /> within <paramref name="container" />.</summary>
+		///         <remarks>
+		///           <para>The layout manager may lay out areas larger than <paramref name="bounds" />.</para>
+		///         </remarks>
 		[Export ("ensureLayoutForBoundingRect:inTextContainer:")]
 		void EnsureLayoutForBoundingRect (CGRect bounds, NSTextContainer container);
 
-#if !NET
-		[NoiOS]
-		[NoTV]
-		[NoMacCatalyst]
-		[Deprecated (PlatformName.MacOSX, 10, 11, message: "Use 'SetGlyphs' instead.")]
-		[Export ("insertGlyph:atGlyphIndex:characterIndex:")]
-		void InsertGlyph (NSGlyph glyph, nint glyphIndex, nint charIndex);
-#endif
-
-#if !NET
-		[NoiOS]
-		[NoTV]
-		[NoMacCatalyst]
-		[Deprecated (PlatformName.MacOSX, 10, 11, message: "Use 'SetGlyphs' instead.")]
-		[Export ("replaceGlyphAtIndex:withGlyph:")]
-		void ReplaceGlyphAtIndex (nint glyphIndex, NSGlyph newGlyph);
-#endif
-
-#if !NET
-		[NoiOS]
-		[NoTV]
-		[NoMacCatalyst]
-		[Deprecated (PlatformName.MacOSX, 10, 11, message: "Use 'SetGlyphs' instead.")]
-		[Export ("deleteGlyphsInRange:")]
-		void DeleteGlyphs (NSRange glyphRange);
-#endif
-
-#if !NET
-		[NoiOS]
-		[NoTV]
-		[NoMacCatalyst]
-		[Deprecated (PlatformName.MacOSX, 10, 11, message: "Use 'SetGlyphs' instead.")]
-		[Export ("setCharacterIndex:forGlyphAtIndex:")]
-		void SetCharacterIndex (nint charIndex, nint glyphIndex);
-#endif
-
-#if !NET
-		[NoiOS]
-		[NoTV]
-		[NoMacCatalyst]
-		[Deprecated (PlatformName.MacOSX, 10, 11, message: "Use 'SetGlyphs' instead.")]
-		[Export ("setIntAttribute:value:forGlyphAtIndex:")]
-		void SetIntAttribute (nint attributeTag, nint value, nint glyphIndex);
-#endif
-
-#if !NET
-		[NoiOS]
-		[NoTV]
-		[NoMacCatalyst]
-		[Deprecated (PlatformName.MacOSX, 10, 11, message: "Use 'SetGlyphs' instead.")]
-		[Export ("invalidateGlyphsOnLayoutInvalidationForGlyphRange:")]
-		void InvalidateGlyphsOnLayoutInvalidation (NSRange glyphRange);
-#endif
-
+		/// <summary>The number of glyphs in the <see cref="UIKit.NSLayoutManager" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>If <see cref="UIKit.NSLayoutManager.AllowsNonContinuousLayout" /> is <see langword="false" />, this method will force glyph generation for all characters.</para>
+		///         </remarks>
 		[Export ("numberOfGlyphs")]
-#if NET || !MONOMAC
-		/* NSUInteger */
 		nuint NumberOfGlyphs { get; }
-#else
-		/* NSUInteger */ nint NumberOfGlyphs { get; }
-#endif
 
+		/// <param name="glyphIndex">To be added.</param>
+		/// <param name="isValidIndex">To be added.</param>
+		/// <summary>Developers should use <see cref="UIKit.NSLayoutManager.GetGlyph" /> rather than this deprecated method.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("glyphAtIndex:isValidIndex:")]
 		[Deprecated (PlatformName.MacOSX, 10, 11, message: "Use 'GetCGGlyph' instead).")]
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'GetGlyph' instead.")]
 		[Deprecated (PlatformName.TvOS, 9, 0, message: "Use 'GetGlyph' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'GetGlyph' instead.")]
 #if MONOMAC
-#if NET
 		NSGlyph GlyphAtIndex (nuint glyphIndex, ref bool isValidIndex);
-#else
-		NSGlyph GlyphAtIndex (nint glyphIndex, ref bool isValidIndex);
-#endif
 #else
 		CGGlyph GlyphAtIndex (nuint glyphIndex, ref bool isValidIndex);
 #endif // MONOMAC
 
+		/// <param name="glyphIndex">To be added.</param>
+		/// <summary>Developers should not use this deprecated method. Developers should use <see cref="UIKit.NSLayoutManager.GetGlyph" /> instead.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("glyphAtIndex:")]
 		[Deprecated (PlatformName.MacOSX, 10, 11, message: "Use 'GetCGGlyph' instead).")]
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'GetGlyph' instead.")]
 		[Deprecated (PlatformName.TvOS, 9, 0, message: "Use 'GetGlyph' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'GetGlyph' instead.")]
 #if MONOMAC
-#if NET
 		NSGlyph GlyphAtIndex (nuint glyphIndex);
-#else
-		NSGlyph GlyphAtIndex (nint glyphIndex);
-#endif
 #else
 		CGGlyph GlyphAtIndex (nuint glyphIndex);
 #endif // MONOMAC
 
+		/// <param name="glyphIndex">To be added.</param>
+		/// <summary>Whether the <paramref name="glyphIndex" /> specifies a valid glyph.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("isValidGlyphIndex:")]
-#if NET
 		bool IsValidGlyph (nuint glyphIndex);
-#elif MONOMAC
-		bool IsValidGlyphIndex (nint glyphIndex);
-#else
-		bool IsValidGlyphIndex (nuint glyphIndex);
-#endif
 
+		/// <param name="glyphIndex">To be added.</param>
+		/// <summary>The index of the first character associated with the glyph at the specified index.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>
+		///           <para>If <see cref="UIKit.NSLayoutManager.AllowsNonContiguousLayout" /> is <see langword="false" />, calling this method will result in generating all glyphs up to and including <paramref name="glyphIndex" />.</para>
+		///         </remarks>
 		[Export ("characterIndexForGlyphAtIndex:")]
-#if NET
 		nuint GetCharacterIndex (nuint glyphIndex);
-#elif MONOMAC
-		nuint CharacterIndexForGlyphAtIndex (nint glyphIndex);
-#else
-		nuint CharacterIndexForGlyphAtIndex (nuint glyphIndex);
-#endif
 
+		/// <param name="characterIndex">To be added.</param>
+		/// <summary>The glyph index for the character at the specified index.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("glyphIndexForCharacterAtIndex:")]
-#if NET
 		nuint GetGlyphIndex (nuint characterIndex);
-#elif MONOMAC
-		nuint GlyphIndexForCharacterAtIndex (nint charIndex);
-#else
-		nuint GlyphIndexForCharacterAtIndex (nuint charIndex);
-#endif
 
-#if !NET
-		[NoiOS]
-		[NoTV]
-		[Deprecated (PlatformName.MacOSX, 10, 11, message: "Use 'GetGlyphs' instead).")]
-		[Export ("intAttribute:forGlyphAtIndex:")]
-		nint GetIntAttribute (nint attributeTag, nint glyphIndex);
-#endif
-
+		/// <param name="container">To be added.</param>
+		///         <param name="glyphRange">To be added.</param>
+		///         <summary>Sets the NSTextContainer for the specified glyph range.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setTextContainer:forGlyphRange:")]
-#if NET || !MONOMAC
 		void SetTextContainer (NSTextContainer container, NSRange glyphRange);
-#else
-		void SetTextContainerForRange (NSTextContainer container, NSRange glyphRange);
-#endif
 
+		/// <param name="fragmentRect">To be added.</param>
+		/// <param name="glyphRange">To be added.</param>
+		/// <param name="usedRect">To be added.</param>
+		/// <summary>Associated the line fragment with bounds <paramref name="fragmentRect" /> with the glyphs in <paramref name="glyphRange" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("setLineFragmentRect:forGlyphRange:usedRect:")]
-#if NET
 		void SetLineFragment (CGRect fragmentRect, NSRange glyphRange, CGRect usedRect);
-#else
-		void SetLineFragmentRect (CGRect fragmentRect, NSRange glyphRange, CGRect usedRect);
-#endif
 
+		/// <param name="fragmentRect">To be added.</param>
+		/// <param name="usedRect">To be added.</param>
+		/// <param name="container">To be added.</param>
+		/// <summary>Sets the details for the extra line fragment required when the text back is either totally empty or ends with a hard line break.</summary>
+		/// <remarks>
+		///           <para>Developers should only call this method when implementing custom typesetting.</para>
+		///         </remarks>
 		[Export ("setExtraLineFragmentRect:usedRect:textContainer:")]
-#if NET
 		void SetExtraLineFragment (CGRect fragmentRect, CGRect usedRect, NSTextContainer container);
-#else
-		void SetExtraLineFragmentRect (CGRect fragmentRect, CGRect usedRect, NSTextContainer container);
-#endif
 
+		/// <param name="location">To be added.</param>
+		///         <param name="forStartOfGlyphRange">To be added.</param>
+		///         <summary>Sets the <paramref name="location" /> for the first glyph in <paramref name="forStartOfGlyphRange" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setLocation:forStartOfGlyphRange:")]
-#if MONOMAC || NET
 		void SetLocation (CGPoint location, NSRange forStartOfGlyphRange);
-#else
-		void SetLocation (CGPoint location, NSRange glyphRange);
-#endif
 
+		/// <param name="flag">To be added.</param>
+		/// <param name="glyphIndex">To be added.</param>
+		/// <summary>Specifies that the glyph at the specified index should be marked as not shown.</summary>
+		/// <remarks>
+		///           <para>This method is generally only called by custom typesetters.</para>
+		///         </remarks>
 		[Export ("setNotShownAttribute:forGlyphAtIndex:")]
-#if NET || !MONOMAC
 		void SetNotShownAttribute (bool flag, nuint glyphIndex);
-#else
-		void SetNotShownAttribute (bool flag, nint glyphIndex);
-#endif
 
+		/// <param name="flag">To be added.</param>
+		/// <param name="glyphIndex">To be added.</param>
+		/// <summary>Specifies whether the glyph at the specified index draws outside the bounds of its line segment.</summary>
+		/// <remarks>
+		///           <para>This method is generally only called by custom typesetters.</para>
+		///         </remarks>
 		[Export ("setDrawsOutsideLineFragment:forGlyphAtIndex:")]
-#if NET || !MONOMAC
 		void SetDrawsOutsideLineFragment (bool flag, nuint glyphIndex);
-#else
-		void SetDrawsOutsideLineFragment (bool flag, nint glyphIndex);
-#endif
 
+		/// <param name="attachmentSize">To be added.</param>
+		///         <param name="glyphRange">To be added.</param>
+		///         <summary>Sets the size for the glyph to draw within the <paramref name="glyphRange" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setAttachmentSize:forGlyphRange:")]
 		void SetAttachmentSize (CGSize attachmentSize, NSRange glyphRange);
 
+		/// <param name="characterIndex">To be added.</param>
+		/// <param name="glyphIndex">To be added.</param>
+		/// <summary>The indices of the first character and glyph that are not laid out.</summary>
+		/// <remarks>
+		///           <para>Application developers should be aware that <paramref name="characterIndex" /> and <paramref name="glyphIndex" /> may be <see langword="null" /> if the text is fully laid out.</para>
+		///         </remarks>
 		[Export ("getFirstUnlaidCharacterIndex:glyphIndex:")]
-#if NET
 		void GetFirstUnlaidCharacterIndex (out nuint characterIndex, out nuint glyphIndex);
-#else
-		void GetFirstUnlaidCharacterIndex (ref nuint charIndex, ref nuint glyphIndex);
-#endif
 
+		/// <summary>The index of the first character that has not been laid out.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("firstUnlaidCharacterIndex")]
-#if NET || !MONOMAC
 		nuint FirstUnlaidCharacterIndex { get; }
-#else
-		nint FirstUnlaidCharacterIndex { get; }
-#endif
 
+		/// <summary>The index of the first glyph that has not been laid out.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("firstUnlaidGlyphIndex")]
-#if NET || !MONOMAC
 		nuint FirstUnlaidGlyphIndex { get; }
-#else
-		nint FirstUnlaidGlyphIndex { get; }
-#endif
 
 		/* GetTextContainer */
-#if NET || MONOMAC
 		[Protected]
-#else
-		[Sealed]
-		[Internal]
-#endif
 		[return: NullAllowed]
 		[Export ("textContainerForGlyphAtIndex:effectiveRange:")]
 		NSTextContainer GetTextContainer (nuint glyphIndex, /* nullable NSRangePointer */ IntPtr effectiveGlyphRange);
 
+		/// <param name="glyphIndex">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[return: NullAllowed]
 		[Wrap ("GetTextContainer (glyphIndex, IntPtr.Zero)")]
 		NSTextContainer GetTextContainer (nuint glyphIndex);
 
-#if NET || MONOMAC
+		/// <param name="glyphIndex">To be added.</param>
+		/// <param name="effectiveGlyphRange">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Sealed]
-#endif
 		[return: NullAllowed]
 		[Export ("textContainerForGlyphAtIndex:effectiveRange:")]
 		NSTextContainer GetTextContainer (nuint glyphIndex, /* nullable NSRangePointer */ out NSRange effectiveGlyphRange);
 
-#if NET || MONOMAC
 		[Protected]
-#else
-		[Sealed]
-		[Internal]
-#endif
 		[return: NullAllowed]
 		[Export ("textContainerForGlyphAtIndex:effectiveRange:withoutAdditionalLayout:")]
 		NSTextContainer GetTextContainer (nuint glyphIndex, IntPtr effectiveGlyphRange, bool withoutAdditionalLayout);
 
+		/// <param name="glyphIndex">To be added.</param>
+		/// <param name="flag">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[return: NullAllowed]
 		[Wrap ("GetTextContainer (glyphIndex, IntPtr.Zero, flag)")]
 		NSTextContainer GetTextContainer (nuint glyphIndex, bool flag);
 
-#if NET || MONOMAC
+		/// <param name="glyphIndex">The index of the glyph for which the rect is requested.</param>
+		/// <param name="effectiveGlyphRange">If not <see langword="null" />, the range of all glyphs in the line fragment.</param>
+		/// <param name="withoutAdditionalLayout">If <see langword="true" />, glyph generation and layout are not performed.</param>
+		/// <summary>Gets the <see cref="UIKit.NSTextContainer" /> containing the glyph at <paramref name="glyphIndex" />, with the option of not triggering layout.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Sealed]
-#endif
 		[return: NullAllowed]
 		[Export ("textContainerForGlyphAtIndex:effectiveRange:withoutAdditionalLayout:")]
 		NSTextContainer GetTextContainer (nuint glyphIndex, /* nullable NSRangePointer */ out NSRange effectiveGlyphRange, bool withoutAdditionalLayout);
 
+		/// <param name="container">To be added.</param>
+		/// <summary>The bounding rectangle in the <see cref="UIKit.NSTextContainer" />'s coordinates of the laid out glyphs in the <see cref="UIKit.NSTextContainer" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("usedRectForTextContainer:")]
-#if NET
 		CGRect GetUsedRect (NSTextContainer container);
-#else
-		CGRect GetUsedRectForTextContainer (NSTextContainer container);
-#endif
 
 		/* GetLineFragmentRect (NSUInteger, NSRangePointer) */
 		[Protected]
 		[Export ("lineFragmentRectForGlyphAtIndex:effectiveRange:")]
 		CGRect GetLineFragmentRect (nuint glyphIndex, /* nullable NSRangePointer */ IntPtr effectiveGlyphRange);
 
+		/// <param name="glyphIndex">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("GetLineFragmentRect (glyphIndex, IntPtr.Zero)")]
 		CGRect GetLineFragmentRect (nuint glyphIndex);
 
+		/// <param name="glyphIndex">To be added.</param>
+		/// <param name="effectiveGlyphRange">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Sealed]
 		[Export ("lineFragmentRectForGlyphAtIndex:effectiveRange:")]
 		CGRect GetLineFragmentRect (nuint glyphIndex, out /* nullable NSRangePointer */ NSRange effectiveGlyphRange);
 
 		/* GetLineFragmentRect (NSUInteger, NSRangePointer, bool) */
 		[MacCatalyst (13, 1)]
-#if MONOMAC || NET
 		[Protected]
-#else
-		[Sealed]
-		[Internal]
-#endif
 		[Export ("lineFragmentRectForGlyphAtIndex:effectiveRange:withoutAdditionalLayout:")]
 		CGRect GetLineFragmentRect (nuint glyphIndex, /* nullable NSRangePointer */ IntPtr effectiveGlyphRange, bool withoutAdditionalLayout);
 
+		/// <param name="glyphIndex">To be added.</param>
+		/// <param name="withoutAdditionalLayout">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("GetLineFragmentRect (glyphIndex, IntPtr.Zero)")]
 		CGRect GetLineFragmentRect (nuint glyphIndex, bool withoutAdditionalLayout);
 
+		/// <param name="glyphIndex">The index of the glyph for which the rect is requested.</param>
+		/// <param name="effectiveGlyphRange">If not <see langword="null" />, the range of all glyphs in the line fragment.</param>
+		/// <param name="withoutAdditionalLayout">If <see langword="true" />, glyph generation and layout are not performed.</param>
+		/// <summary>Gets the line fragment <see cref="CoreGraphics.CGRect" /> containing the glyph at <paramref name="glyphIndex" />, with the option of not triggering layout.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
-#if MONOMAC || NET
 		[Sealed]
-#endif
 		[Export ("lineFragmentRectForGlyphAtIndex:effectiveRange:withoutAdditionalLayout:")]
 		CGRect GetLineFragmentRect (nuint glyphIndex, out /* nullable NSRangePointer */ NSRange effectiveGlyphRange, bool withoutAdditionalLayout);
 
@@ -744,79 +791,98 @@ namespace UIKit {
 		[Export ("lineFragmentUsedRectForGlyphAtIndex:effectiveRange:")]
 		CGRect GetLineFragmentUsedRect (nuint glyphIndex, /* nullable NSRangePointer */ IntPtr effectiveGlyphRange);
 
+		/// <param name="glyphIndex">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("GetLineFragmentUsedRect (glyphIndex, IntPtr.Zero)")]
 		CGRect GetLineFragmentUsedRect (nuint glyphIndex);
 
+		/// <param name="glyphIndex">To be added.</param>
+		/// <param name="effectiveGlyphRange">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Sealed]
 		[Export ("lineFragmentUsedRectForGlyphAtIndex:effectiveRange:")]
 		CGRect GetLineFragmentUsedRect (nuint glyphIndex, out /* nullable NSRangePointer */ NSRange effectiveGlyphRange);
 
 		/* GetLineFragmentUsedRect (NSUInteger, NSRangePointer, bool) */
 		[MacCatalyst (13, 1)]
-#if MONOMAC || NET
 		[Protected]
-#else
-		[Sealed]
-		[Internal]
-#endif
 		[Export ("lineFragmentUsedRectForGlyphAtIndex:effectiveRange:withoutAdditionalLayout:")]
 		CGRect GetLineFragmentUsedRect (nuint glyphIndex, /* nullable NSRangePointer */ IntPtr effectiveGlyphRange, bool withoutAdditionalLayout);
 
+		/// <param name="glyphIndex">To be added.</param>
+		/// <param name="withoutAdditionalLayout">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("GetLineFragmentUsedRect (glyphIndex, IntPtr.Zero)")]
 		CGRect GetLineFragmentUsedRect (nuint glyphIndex, bool withoutAdditionalLayout);
 
+		/// <param name="glyphIndex">The index of the glyph for which the rect is requested.</param>
+		/// <param name="effectiveGlyphRange">If not <see langword="null" />, the range of all glyphs in the line fragment.</param>
+		/// <param name="withoutAdditionalLayout">If <see langword="true" />, glyph generation and layout are not performed.</param>
+		/// <summary>Gets the usage <see cref="CoreGraphics.CGRect" /> containing the glyph at <paramref name="glyphIndex" />, with the option of not triggering layout.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
-#if MONOMAC || NET
 		[Sealed]
-#endif
 		[Export ("lineFragmentUsedRectForGlyphAtIndex:effectiveRange:withoutAdditionalLayout:")]
 		CGRect GetLineFragmentUsedRect (nuint glyphIndex, out /* nullable NSRangePointer */ NSRange effectiveGlyphRange, bool withoutAdditionalLayout);
 
+		/// <summary>The <see cref="CGRect" /> needed for the insertion point.</summary>
+		///         <value>Returns the rectangle defining the extra line fragment for the insertion point or {0,0,0,0} if there is no such retangle.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("extraLineFragmentRect")]
 		CGRect ExtraLineFragmentRect { get; }
 
+		/// <summary>The rectangle enclosing the insertion point.</summary>
+		///         <value>Twice the <see cref="UIKit.NSTextContainer.LineFragmentPadding" />, with the insertion point in the middle.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("extraLineFragmentUsedRect")]
 		CGRect ExtraLineFragmentUsedRect { get; }
 
+		/// <summary>The <see cref="UIKit.NSTextContainer" /> containing the <see cref="UIKit.NSLayoutManager.ExtraLineFragmentRect" />.</summary>
+		///         <value>Returns <see langword="null" /> if the <see cref="UIKit.NSLayoutManager.ExtraLineFragmentRect" /> does not exist (is {0,0,0,0}).</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("extraLineFragmentTextContainer")]
 		NSTextContainer ExtraLineFragmentTextContainer { get; }
 
+		/// <param name="glyphIndex">To be added.</param>
+		/// <summary>The location of the glyph at the specified index, relative to the containing line fragment's origin.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>
+		///           <para>This method will layout and generate glyphs for the line fragment containing the glyph at <paramref name="glyphIndex" />.</para>
+		///         </remarks>
 		[Export ("locationForGlyphAtIndex:")]
-#if NET
 		CGPoint GetLocationForGlyph (nuint glyphIndex);
-#elif MONOMAC
-		CGPoint LocationForGlyphAtIndex (nint glyphIndex);
-#else
-		CGPoint LocationForGlyphAtIndex (nuint glyphIndex);
-#endif
 
+		/// <param name="glyphIndex">To be added.</param>
+		/// <summary>Whether the glyph at the specified index is shown.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>
+		///           <para>Glyphs such as tabs and newlines are not typically shown, but effect layout. Spaces are considered shown, as they "show" a characteristic displacement.</para>
+		///           <para>This method will cause layout up to the specified index. If <see cref="UIKit.NSLayoutManager.AllowsNonContiguousLayout" /> is <see langword="true" />, the layout will be confined to the containing line fragment.</para>
+		///         </remarks>
 		[Export ("notShownAttributeForGlyphAtIndex:")]
-#if NET
 		bool IsNotShownAttributeForGlyph (nuint glyphIndex);
-#elif MONOMAC
-		bool NotShownAttributeForGlyphAtIndex (nint glyphIndex);
-#else
-		bool NotShownAttributeForGlyphAtIndex (nuint glyphIndex);
-#endif
 
+		/// <param name="glyphIndex">To be added.</param>
+		/// <summary>Returns <see langword="true" /> if the specified glyph draws outside of its line fragment rectangle.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("drawsOutsideLineFragmentForGlyphAtIndex:")]
-#if NET
 		bool DrawsOutsideLineFragmentForGlyph (nuint glyphIndex);
-#elif MONOMAC
-		bool DrawsOutsideLineFragmentForGlyphAt (nint glyphIndex);
-#else
-		bool DrawsOutsideLineFragmentForGlyphAtIndex (nuint glyphIndex);
-#endif
 
+		/// <param name="glyphIndex">To be added.</param>
+		/// <summary>The size of the attachment cell associated with the glyph at the specified index</summary>
+		/// <returns>The size of attachment cell at the glyph at <paramref name="glyphIndex" />. Returns {-1.0f, -1.0f} if there is no attachment at the specified glyph.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("attachmentSizeForGlyphAtIndex:")]
-#if NET
 		CGSize GetAttachmentSizeForGlyph (nuint glyphIndex);
-#elif MONOMAC
-		CGSize AttachmentSizeForGlyphAt (nint glyphIndex);
-#else
-		CGSize AttachmentSizeForGlyphAtIndex (nuint glyphIndex);
-#endif
 
 		[NoiOS]
 		[NoTV]
@@ -834,21 +900,13 @@ namespace UIKit {
 		[NoTV]
 		[NoMacCatalyst]
 		[Export ("layoutRectForTextBlock:glyphRange:")]
-#if NET
 		CGRect GetLayoutRect (NSTextBlock block, NSRange glyphRange);
-#else
-		CGRect LayoutRect (NSTextBlock block, NSRange glyphRange);
-#endif
 
 		[NoiOS]
 		[NoTV]
 		[NoMacCatalyst]
 		[Export ("boundsRectForTextBlock:glyphRange:")]
-#if NET
 		CGRect GetBoundsRect (NSTextBlock block, NSRange glyphRange);
-#else
-		CGRect BoundsRect (NSTextBlock block, NSRange glyphRange);
-#endif
 
 		/* GetLayoutRect (NSTextBlock, NSUInteger, nullable NSRangePointer) */
 
@@ -896,63 +954,70 @@ namespace UIKit {
 
 		/* GetGlyphRange (NSRange, nullable NSRangePointer) */
 
-#if NET || !MONOMAC
+		/// <param name="characterRange">To be added.</param>
+		///         <param name="actualCharacterRange">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Protected]
-#else
-		[Internal][Sealed]
-#endif
 		[Export ("glyphRangeForCharacterRange:actualCharacterRange:")]
 		NSRange GetGlyphRange (NSRange characterRange, IntPtr actualCharacterRange);
 
+		/// <param name="characterRange">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("GetGlyphRange (characterRange, IntPtr.Zero)")]
 		NSRange GetGlyphRange (NSRange characterRange);
 
+		/// <param name="characterRange">To be added.</param>
+		///         <param name="actualCharacterRange">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Sealed]
 		[Export ("glyphRangeForCharacterRange:actualCharacterRange:")]
 		NSRange GetGlyphRange (NSRange characterRange, out NSRange actualCharacterRange);
 
-#if !NET
-		[NoiOS]
-		[NoTV]
-		[NoMacCatalyst]
-		[Obsolete ("Use 'GetGlyphRange' instead.")]
-		[Export ("glyphRangeForCharacterRange:actualCharacterRange:")]
-		NSRange GlyphRangeForCharacterRange (NSRange charRange, out NSRange actualCharRange);
-#endif
-
 		/* GetCharacterRange (NSRange, nullable NSRangePointer) */
-#if NET || !MONOMAC
+		/// <param name="glyphRange">To be added.</param>
+		///         <param name="actualGlyphRange">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Protected]
-#else
-		[Internal][Sealed]
-#endif
 		[Export ("characterRangeForGlyphRange:actualGlyphRange:")]
 		NSRange GetCharacterRange (NSRange glyphRange, IntPtr actualGlyphRange);
 
+		/// <param name="glyphRange">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("GetCharacterRange (glyphRange, IntPtr.Zero)")]
 		NSRange GetCharacterRange (NSRange glyphRange);
 
+		/// <param name="glyphRange">To be added.</param>
+		///         <param name="actualGlyphRange">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Sealed]
 		[Export ("characterRangeForGlyphRange:actualGlyphRange:")]
 		NSRange GetCharacterRange (NSRange glyphRange, out NSRange actualGlyphRange);
 
-#if MONOMAC && !NET
-		[Obsolete ("Use 'GetCharacterRange' instead.")]
-		[Export ("characterRangeForGlyphRange:actualGlyphRange:")]
-		NSRange CharacterRangeForGlyphRange (NSRange glyphRange, out NSRange actualGlyphRange);
-#endif
-
+		/// <param name="container">To be added.</param>
+		///         <summary>The range of glyph indices contained in the specified <see cref="UIKit.NSTextContainer" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("glyphRangeForTextContainer:")]
 		NSRange GetGlyphRange (NSTextContainer container);
 
+		/// <param name="glyphIndex">To be added.</param>
+		/// <summary>The largest range of glyphs surrounding the glyph at the specified index that can be displayed using only advancement, not pairwise kerning or other adjustments.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("rangeOfNominallySpacedGlyphsContainingIndex:")]
-#if NET
 		NSRange GetRangeOfNominallySpacedGlyphsContainingIndex (nuint glyphIndex);
-#elif MONOMAC
-		NSRange RangeOfNominallySpacedGlyphsContainingIndex (nint glyphIndex);
-#else
-		NSRange RangeOfNominallySpacedGlyphsContainingIndex (nuint glyphIndex);
-#endif
 
 		[Internal]
 		[NoiOS]
@@ -962,86 +1027,87 @@ namespace UIKit {
 		[Deprecated (PlatformName.MacOSX, 10, 11)]
 		IntPtr GetRectArray (NSRange glyphRange, NSRange selectedGlyphRange, IntPtr textContainerHandle, out nuint rectCount);
 
+		/// <param name="glyphRange">To be added.</param>
+		/// <param name="container">To be added.</param>
+		/// <summary>The bounding rectangle, in container coordinates, for the glyphs in the specified range.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>
+		///           <para>The returned <see cref="CGRect" /> includes the area needed for all marks associated with the glyphs, including the area needed for glyphs that draw outside of their line fragment rectangle and for marks such as underlining.</para>
+		///         </remarks>
 		[Export ("boundingRectForGlyphRange:inTextContainer:")]
-#if NET
 		CGRect GetBoundingRect (NSRange glyphRange, NSTextContainer container);
-#else
-		CGRect BoundingRectForGlyphRange (NSRange glyphRange, NSTextContainer container);
-#endif
 
+		/// <param name="bounds">To be added.</param>
+		/// <param name="container">To be added.</param>
+		/// <summary>Returns the range of glyph indices that are at least partially in the <paramref name="bounds" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("glyphRangeForBoundingRect:inTextContainer:")]
-#if NET
 		NSRange GetGlyphRangeForBoundingRect (CGRect bounds, NSTextContainer container);
-#else
-		NSRange GlyphRangeForBoundingRect (CGRect bounds, NSTextContainer container);
-#endif
 
+		/// <param name="bounds">To be added.</param>
+		/// <param name="container">To be added.</param>
+		/// <summary>Returns the range of glyph indices that are at least partially in the <paramref name="bounds" /> without glyph production or layout.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("glyphRangeForBoundingRectWithoutAdditionalLayout:inTextContainer:")]
-#if NET
 		NSRange GetGlyphRangeForBoundingRectWithoutAdditionalLayout (CGRect bounds, NSTextContainer container);
-#else
-		NSRange GlyphRangeForBoundingRectWithoutAdditionalLayout (CGRect bounds, NSTextContainer container);
-#endif
 
+		/// <param name="point">To be added.</param>
+		/// <param name="container">To be added.</param>
+		/// <param name="fractionOfDistanceThroughGlyph">To be added.</param>
+		/// <summary>The glyph index for the glyph at <paramref name="point" />, in the <paramref name="container" /> object's coordinate system.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("glyphIndexForPoint:inTextContainer:fractionOfDistanceThroughGlyph:")]
-#if NET
 		nuint GetGlyphIndex (CGPoint point, NSTextContainer container, /* nullable CGFloat */ out nfloat fractionOfDistanceThroughGlyph);
-#elif MONOMAC
-		nuint GlyphIndexForPointInTextContainer (CGPoint point, NSTextContainer container, ref nfloat fractionOfDistanceThroughGlyph);
-#else
-		nuint GlyphIndexForPoint (CGPoint point, NSTextContainer container, ref nfloat partialFraction);
-#endif
 
+		/// <param name="point">To be added.</param>
+		/// <param name="container">To be added.</param>
+		/// <summary>Developers should call <see cref="UIKit.NSLayoutManager.GetGlyphIndex(CoreGraphics.CGPoint,UIKit.NSTextContainer,out System.Runtime.InteropServices.NFloat)" /> rather than this primitive method.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>
+		///           <para>This method is public for overriding purposes. Developers should call <see cref="UIKit.NSLayoutManager.GetGlyphIndex(CoreGraphics.CGPoint,UIKit.NSTextContainer,ref System.Runtime.InteropServices.NFloat)" />  rather than this primitive method.</para>
+		///         </remarks>
 		[Export ("glyphIndexForPoint:inTextContainer:")]
-#if NET
 		nuint GetGlyphIndex (CGPoint point, NSTextContainer container);
-#else
-		nuint GlyphIndexForPoint (CGPoint point, NSTextContainer container);
-#endif
 
+		/// <param name="point">To be added.</param>
+		/// <param name="container">To be added.</param>
+		/// <summary>Developers should call <see cref="UIKit.NSLayoutManager.GetGlyphIndex(CoreGraphics.CGPoint,UIKit.NSTextContainer)" /> rather than this primitive function.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>
+		///           <para>This method is <c>public</c> for overriding purposes but is not intended for developers to call.</para>
+		///         </remarks>
 		[Export ("fractionOfDistanceThroughGlyphForPoint:inTextContainer:")]
-#if NET
 		nfloat GetFractionOfDistanceThroughGlyph (CGPoint point, NSTextContainer container);
-#else
-		nfloat FractionOfDistanceThroughGlyphForPoint (CGPoint point, NSTextContainer container);
-#endif
 
 		// GetCharacterIndex (CGPoint, NSTextContainer, nullable CGFloat*)
-#if NET
 		[Protected]
-#else
-		[Sealed]
-		[Internal]
-#endif
 		[Export ("characterIndexForPoint:inTextContainer:fractionOfDistanceBetweenInsertionPoints:")]
 		nuint GetCharacterIndex (CGPoint point, NSTextContainer container, IntPtr fractionOfDistanceBetweenInsertionPoints);
 
+		/// <param name="point">To be added.</param>
+		///         <param name="container">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("GetCharacterIndex (point, container, IntPtr.Zero)")]
 		nuint GetCharacterIndex (CGPoint point, NSTextContainer container);
 
+		/// <param name="point">To be added.</param>
+		/// <param name="container">To be added.</param>
+		/// <param name="fractionOfDistanceBetweenInsertionPoints">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Sealed]
 		[Export ("characterIndexForPoint:inTextContainer:fractionOfDistanceBetweenInsertionPoints:")]
 		nuint GetCharacterIndex (CGPoint point, NSTextContainer container, out nfloat fractionOfDistanceBetweenInsertionPoints);
 
-#if !NET
-		[Obsolete ("Use 'GetCharacterIndex' instead.")]
-		[Export ("characterIndexForPoint:inTextContainer:fractionOfDistanceBetweenInsertionPoints:")]
-#if MONOMAC
-		nuint CharacterIndexForPoint (CGPoint point, NSTextContainer container, ref nfloat fractionOfDistanceBetweenInsertionPoints);
-#else
-		nuint CharacterIndexForPoint (CGPoint point, NSTextContainer container, ref nfloat partialFraction);
-#endif
-#endif
-
-#if NET || !MONOMAC
 		[Protected]
-#endif
 		[Export ("getLineFragmentInsertionPointsForCharacterAtIndex:alternatePositions:inDisplayOrder:positions:characterIndexes:")]
-#if NET || !MONOMAC
 		nuint GetLineFragmentInsertionPoints (nuint characterIndex, bool alternatePositions, bool inDisplayOrder, IntPtr positions, IntPtr characterIndexes);
-#else
-		nuint GetLineFragmentInsertionPoints (nuint charIndex, bool aFlag, bool dFlag, IntPtr positions, IntPtr charIndexes);
-#endif
 
 		/* GetTemporaryAttributes (NSUInteger, nullable NSRangePointer) */
 
@@ -1065,7 +1131,7 @@ namespace UIKit {
 		[Export ("temporaryAttributesAtCharacterIndex:effectiveRange:")]
 		NSDictionary<NSString, NSObject> GetTemporaryAttributes (nuint characterIndex, out NSRange effectiveCharacterRange);
 
-		[NoiOS, NoTV, NoWatch]
+		[NoiOS, NoTV]
 		[NoMacCatalyst]
 		[Export ("setTemporaryAttributes:forCharacterRange:")]
 		void SetTemporaryAttributes (NSDictionary attrs, NSRange charRange);
@@ -1074,36 +1140,27 @@ namespace UIKit {
 		[NoTV]
 		[NoMacCatalyst]
 		[Export ("addTemporaryAttributes:forCharacterRange:")]
-#if NET
 		void AddTemporaryAttributes (NSDictionary<NSString, NSObject> attributes, NSRange characterRange);
-#else
-		void AddTemporaryAttributes (NSDictionary attrs, NSRange charRange);
-#endif
 
 		// This API can take an NSString or managed string, but some related API
 		// takes a generic dictionary that can't use a managed string, so for symmetry
 		// provide an NSString overload as well.
-#if !NET
-		[Sealed]
-#endif
 		[NoiOS]
 		[NoTV]
 		[NoMacCatalyst]
 		[Export ("removeTemporaryAttribute:forCharacterRange:")]
 		void RemoveTemporaryAttribute (NSString attributeName, NSRange characterRange);
 
-#if NET
+		/// <param name="attributeName">To be added.</param>
+		///         <param name="characterRange">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Sealed]
-#endif
 		[NoiOS]
 		[NoTV]
 		[NoMacCatalyst]
 		[Export ("removeTemporaryAttribute:forCharacterRange:")]
-#if NET
 		void RemoveTemporaryAttribute (string attributeName, NSRange characterRange);
-#else
-		void RemoveTemporaryAttribute (string attrName, NSRange charRange);
-#endif
 
 		/* GetTemporaryAttribute (NSString, NSUInteger, nullable NSRangePointer) */
 		[Protected]
@@ -1173,56 +1230,35 @@ namespace UIKit {
 		// This method can take an NSString or managed string, but some related API
 		// takes a generic dictionary that can't use a managed string, so for symmetry
 		// provide an NSString overload as well.
-#if !NET
-		[Sealed]
-#endif
 		[NoiOS]
 		[NoTV]
 		[NoMacCatalyst]
 		[Export ("addTemporaryAttribute:value:forCharacterRange:")]
 		void AddTemporaryAttribute (NSString attributeName, NSObject value, NSRange characterRange);
 
-#if NET
+		/// <param name="attributeName">To be added.</param>
+		///         <param name="value">To be added.</param>
+		///         <param name="characterRange">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Sealed]
-#endif
 		[NoiOS]
 		[NoTV]
 		[NoMacCatalyst]
 		[Export ("addTemporaryAttribute:value:forCharacterRange:")]
-#if NET
 		void AddTemporaryAttribute (string attributeName, NSObject value, NSRange characterRange);
-#else
-		void AddTemporaryAttribute (string attrName, NSObject value, NSRange charRange);
-#endif
-
-#if !NET
-		[NoiOS]
-		[NoTV]
-		[NoMacCatalyst]
-		[Deprecated (PlatformName.MacOSX, 10, 11)]
-		[Export ("substituteFontForFont:")]
-		NSFont SubstituteFontForFont (NSFont originalFont);
-#endif
 
 		[NoiOS]
 		[NoTV]
 		[NoMacCatalyst]
 		[Export ("defaultLineHeightForFont:")]
-#if NET
 		nfloat GetDefaultLineHeight (NSFont font);
-#else
-		nfloat DefaultLineHeightForFont (NSFont theFont);
-#endif
 
 		[NoiOS]
 		[NoTV]
 		[NoMacCatalyst]
 		[Export ("defaultBaselineOffsetForFont:")]
-#if NET
 		nfloat GetDefaultBaselineOffset (NSFont font);
-#else
-		nfloat DefaultBaselineOffsetForFont (NSFont theFont);
-#endif
 
 		[NullAllowed]
 		[Export ("textStorage", ArgumentSemantic.Assign)]
@@ -1245,6 +1281,13 @@ namespace UIKit {
 		[NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the UIKit.INSLayoutManagerDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the UIKit.INSLayoutManagerDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		INSLayoutManagerDelegate Delegate { get; set; }
 
@@ -1261,15 +1304,25 @@ namespace UIKit {
 		[Export ("usesScreenFonts")]
 		bool UsesScreenFonts { get; set; }
 
+		/// <summary>Specifies whether normally-invisible characters such as whitespace should have visible glyphs.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("showsInvisibleCharacters")]
 		bool ShowsInvisibleCharacters { get; set; }
 
+		/// <summary>Specifies whether control characters should be shown or not.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("showsControlCharacters")]
 		bool ShowsControlCharacters { get; set; }
 
+		/// <summary>The hyphenation threshold.</summary>
+		///         <value>A value in the range 0 to 1. 0 indicates hyphenation is off, 1.0 causes hyphenation to always be attempted.</value>
+		///         <remarks>
+		///           <para>Application developers should prefer to set this value to 0.0, because hyphenation is slow and consumes memory.</para>
+		///         </remarks>
 		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Please use 'UsesDefaultHyphenation' or 'NSParagraphStyle.HyphenationFactor' instead.")]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Please use 'UsesDefaultHyphenation' or 'NSParagraphStyle.HyphenationFactor' instead.")]
-		[Deprecated (PlatformName.WatchOS, 6, 0, message: "Please use 'UsesDefaultHyphenation' or 'NSParagraphStyle.HyphenationFactor' instead.")]
 		[Deprecated (PlatformName.TvOS, 13, 0, message: "Please use 'UsesDefaultHyphenation' or 'NSParagraphStyle.HyphenationFactor' instead.")]
 		[NoMacCatalyst]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Please use 'UsesDefaultHyphenation' or 'NSParagraphStyle.HyphenationFactor' instead.")]
@@ -1292,71 +1345,88 @@ namespace UIKit {
 		[Export ("typesetterBehavior")]
 		NSTypesetterBehavior TypesetterBehavior { get; set; }
 
+		/// <include file="../docs/api/UIKit/NSLayoutManager.xml" path="/Documentation/Docs[@DocId='P:UIKit.NSLayoutManager.AllowsNonContiguousLayout']/*" />
 		[Export ("allowsNonContiguousLayout")]
 		bool AllowsNonContiguousLayout { get; set; }
 
+		/// <summary>Whether the <see cref="UIKit.NSLayoutManager" /> should use the leading provided in the font.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("usesFontLeading")]
 		bool UsesFontLeading { get; set; }
 
+		/// <param name="glyphsToShow">To be added.</param>
+		/// <param name="origin">To be added.</param>
+		/// <summary>Draws background marks for the given glyph range.</summary>
+		/// <remarks>
+		///           <para>Background marks include text background color, highlighting, and table backgrounds and borders. Application developers can override this function in subclasses to fully customize background drawing.</para>
+		///           <para>
+		///             <paramref name="glyphsToShow" /> must specify glyphs within a single <see cref="UIKit.NSTextContainer" />.</para>
+		///         </remarks>
 		[Export ("drawBackgroundForGlyphRange:atPoint:")]
-#if NET
 		void DrawBackground (NSRange glyphsToShow, CGPoint origin);
-#else
-		void DrawBackgroundForGlyphRange (NSRange glyphsToShow, CGPoint origin);
-#endif
 
+		/// <param name="glyphsToShow">To be added.</param>
+		///         <param name="origin">To be added.</param>
+		///         <summary>Draws the specified glyph range.</summary>
+		///         <remarks>
+		///           <para>This method causes glyph generation and layout, if needed.</para>
+		///           <para>
+		///             <paramref name="glyphsToShow" /> must specify glyphs within a single <see cref="UIKit.NSTextContainer" />.</para>
+		///         </remarks>
 		[Export ("drawGlyphsForGlyphRange:atPoint:")]
-#if NET || !MONOMAC
 		void DrawGlyphs (NSRange glyphsToShow, CGPoint origin);
-#else
-		void DrawGlyphsForGlyphRange (NSRange glyphsToShow, CGPoint origin);
-#endif
 
+		/// <param name="glyphRange">To be added.</param>
+		///         <param name="glyphBuffer">To be added.</param>
+		///         <param name="properties">To be added.</param>
+		///         <param name="characterIndexBuffer">To be added.</param>
+		///         <param name="bidiLevelBuffer">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Protected] // Class can be subclassed, and most methods can be overridden.
 		[MacCatalyst (13, 1)]
 		[Export ("getGlyphsInRange:glyphs:properties:characterIndexes:bidiLevels:")]
 		nuint GetGlyphs (NSRange glyphRange, IntPtr glyphBuffer, IntPtr properties, IntPtr characterIndexBuffer, IntPtr bidiLevelBuffer);
 
-#if !NET && !MONOMAC
-		[Sealed]
-#endif
+		/// <param name="glyphIndex">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("propertyForGlyphAtIndex:")]
 		NSGlyphProperty GetProperty (nuint glyphIndex);
 
-#if !NET && !MONOMAC
-		[Obsolete ("Use 'GetProperty' instead.")]
-		[Export ("propertyForGlyphAtIndex:")]
-		NSGlyphProperty PropertyForGlyphAtIndex (nuint glyphIndex);
-#endif
-
+		/// <param name="glyphIndex">To be added.</param>
+		/// <param name="isValidIndex">To be added.</param>
+		/// <summary>Retrieves the glyph as <paramref name="glyphIndex" />, setting <paramref name="isValidIndex" /> to <see langword="true" /> if the index is valid.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("CGGlyphAtIndex:isValidIndex:")]
-#if NET
 		CGGlyph GetGlyph (nuint glyphIndex, out bool isValidIndex);
-#elif MONOMAC
-		CGGlyph GetCGGlyph (nuint glyphIndex, out bool isValidIndex);
-#else
-		CGGlyph GetGlyph (nuint glyphIndex, ref bool isValidIndex);
-#endif
 
+		/// <param name="glyphIndex">To be added.</param>
+		/// <summary>Retrieves the glyph at <paramref name="glyphIndex" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>
+		///           <para>Calling this method generates all glyphs up to and including the glyph at <paramref name="glyphIndex" />.</para>
+		///         </remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("CGGlyphAtIndex:")]
-#if NET
 		CGGlyph GetGlyph (nuint glyphIndex);
-#elif MONOMAC
-		CGGlyph GetCGGlyph (nuint glyphIndex);
-#else
-		CGGlyph GetGlyph (nuint glyphIndex);
-#endif
 
+		/// <param name="textStorage">To be added.</param>
+		/// <param name="editMask">To be added.</param>
+		/// <param name="newCharacterRange">To be added.</param>
+		/// <param name="delta">To be added.</param>
+		/// <param name="invalidatedCharacterRange">To be added.</param>
+		/// <summary>Notifies the <see cref="UIKit.NSLayoutManager" /> of an edit action.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("processEditingForTextStorage:edited:range:changeInLength:invalidatedRange:")]
-#if NET
 		void ProcessEditing (NSTextStorage textStorage, NSTextStorageEditActions editMask, NSRange newCharacterRange, /* NSInteger */ nint delta, NSRange invalidatedCharacterRange);
-#else
-		void ProcessEditing (NSTextStorage textStorage, NSTextStorageEditActions editMask, NSRange newCharRange, /* NSInteger */ nint delta, NSRange invalidatedCharRange);
-#endif
 
 		// This method can only be called from
 		// NSLayoutManagerDelegate.ShouldGenerateGlyphs, and that method takes
@@ -1365,38 +1435,45 @@ namespace UIKit {
 		// IntPtr) is useless, since what the caller has is IntPtrs (from the
 		// ShouldGenerateGlyphs parameters). We can revisit this if we ever
 		// fix the generator to have support for C-style arrays.
+		/// <param name="glyphs">To be added.</param>
+		///         <param name="properties">To be added.</param>
+		///         <param name="characterIndexes">To be added.</param>
+		///         <param name="font">To be added.</param>
+		///         <param name="glyphRange">To be added.</param>
+		///         <summary>Specifies the initial glyphs and glyph properties for the specified character range.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("setGlyphs:properties:characterIndexes:font:forGlyphRange:")]
-#if NET
 		void SetGlyphs (IntPtr glyphs, IntPtr properties, IntPtr characterIndexes, NSFont font, NSRange glyphRange);
-#else
-		void SetGlyphs (IntPtr glyphs, IntPtr props, IntPtr charIndexes, NSFont aFont, NSRange glyphRange);
-#endif
 
-#if !(NET || MONOMAC)
-		[Sealed]
-#endif
+		/// <param name="glyphIndex">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("truncatedGlyphRangeInLineFragmentForGlyphAtIndex:")]
 		NSRange GetTruncatedGlyphRangeInLineFragment (nuint glyphIndex);
 
-#if !(NET || MONOMAC)
-		[Obsolete ("Use 'GetTruncatedGlyphRangeInLineFragment' instead.")]
-		[Export ("truncatedGlyphRangeInLineFragmentForGlyphAtIndex:")]
-		NSRange TruncatedGlyphRangeInLineFragmentForGlyphAtIndex (nuint glyphIndex);
-#endif
-
+		/// <param name="glyphRange">To be added.</param>
+		///         <param name="callback">To be added.</param>
+		///         <summary>Enumerate the line fragments intersecting with the specified glyph range.|Enumerate the line fragments intersecting with the specified glyph rane.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("enumerateLineFragmentsForGlyphRange:usingBlock:")]
 		void EnumerateLineFragments (NSRange glyphRange, NSTextLayoutEnumerateLineFragments callback);
 
+		/// <param name="glyphRange">To be added.</param>
+		///         <param name="selectedRange">To be added.</param>
+		///         <param name="textContainer">To be added.</param>
+		///         <param name="callback">To be added.</param>
+		///         <summary>Enumerates the enclosing rectangles for the specified glyph range.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("enumerateEnclosingRectsForGlyphRange:withinSelectedGlyphRange:inTextContainer:usingBlock:")]
 		void EnumerateEnclosingRects (NSRange glyphRange, NSRange selectedRange, NSTextContainer textContainer, NSTextLayoutEnumerateEnclosingRects callback);
 
 		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use the overload that takes 'nint glyphCount' instead.")]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use the overload that takes 'nint glyphCount' instead.")]
-		[Deprecated (PlatformName.WatchOS, 6, 0, message: "Use the overload that takes 'nint glyphCount' instead.")]
 		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use the overload that takes 'nint glyphCount' instead.")]
 		[NoMacCatalyst]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use the overload that takes 'nint glyphCount' instead.")]
@@ -1404,7 +1481,7 @@ namespace UIKit {
 		[Export ("showCGGlyphs:positions:count:font:matrix:attributes:inContext:")]
 		void ShowGlyphs (IntPtr glyphs, IntPtr positions, nuint glyphCount, NSFont font, CGAffineTransform textMatrix, NSDictionary attributes, CGContext graphicsContext);
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Protected] // Can be overridden
 		[Export ("showCGGlyphs:positions:count:font:textMatrix:attributes:inContext:")]
@@ -1417,15 +1494,40 @@ namespace UIKit {
 		[Export ("fillBackgroundRectArray:count:forCharacterRange:color:")]
 		void FillBackground (IntPtr rectArray, nuint rectCount, NSRange characterRange, NSColor color);
 
+		/// <param name="glyphRange">The range of glyphs to be underlined.</param>
+		/// <param name="underlineVal">The drawing style of the underline.</param>
+		/// <param name="baselineOffset">The distance from the baseline to draw the underline.</param>
+		/// <param name="lineRect">The line fragment rectangle containing <paramref name="glyphRange" />.</param>
+		/// <param name="lineGlyphRange">All glyphs within <paramref name="lineRect" />.</param>
+		/// <param name="containerOrigin">The origin of the <paramref name="lineRect" /> objects containing <see cref="UIKit.NSTextContainer" />.</param>
+		/// <summary>Underlines the glyphs in <paramref name="glyphRange" />.</summary>
+		/// <remarks>
+		///           <para>Developers should generally use the simpler <see cref="UIKit.NSLayoutManager.Underline(Foundation.NSRange,Foundation.NSUnderlineStyle,CoreGraphics.CGRect,Foundation.NSRange,CoreGraphics.CGPoint)" /> method.</para>
+		///         </remarks>
 		[Export ("drawUnderlineForGlyphRange:underlineType:baselineOffset:lineFragmentRect:lineFragmentGlyphRange:containerOrigin:")]
 		void DrawUnderline (NSRange glyphRange, NSUnderlineStyle underlineVal, nfloat baselineOffset, CGRect lineRect, NSRange lineGlyphRange, CGPoint containerOrigin);
 
+		/// <param name="glyphRange">To be added.</param>
+		///         <param name="underlineVal">To be added.</param>
+		///         <param name="lineRect">To be added.</param>
+		///         <param name="lineGlyphRange">To be added.</param>
+		///         <param name="containerOrigin">To be added.</param>
+		///         <summary>Underlines the glyphs in <paramref name="glyphRange" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("underlineGlyphRange:underlineType:lineFragmentRect:lineFragmentGlyphRange:containerOrigin:")]
 		void Underline (NSRange glyphRange, NSUnderlineStyle underlineVal, CGRect lineRect, NSRange lineGlyphRange, CGPoint containerOrigin);
 
+		/// <include file="../docs/api/UIKit/NSLayoutManager.xml" path="/Documentation/Docs[@DocId='M:UIKit.NSLayoutManager.DrawStrikethrough(Foundation.NSRange,Foundation.NSUnderlineStyle,System.Runtime.InteropServices.NFloat,CoreGraphics.CGRect,Foundation.NSRange,CoreGraphics.CGPoint)']/*" />
 		[Export ("drawStrikethroughForGlyphRange:strikethroughType:baselineOffset:lineFragmentRect:lineFragmentGlyphRange:containerOrigin:")]
 		void DrawStrikethrough (NSRange glyphRange, NSUnderlineStyle strikethroughVal, nfloat baselineOffset, CGRect lineRect, NSRange lineGlyphRange, CGPoint containerOrigin);
 
+		/// <param name="glyphRange">To be added.</param>
+		///         <param name="strikethroughVal">To be added.</param>
+		///         <param name="lineRect">To be added.</param>
+		///         <param name="lineGlyphRange">To be added.</param>
+		///         <param name="containerOrigin">To be added.</param>
+		///         <summary>Draws a strikethrough through the glyphs at <paramref name="glyphRange" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("strikethroughGlyphRange:strikethroughType:lineFragmentRect:lineFragmentGlyphRange:containerOrigin:")]
 		void Strikethrough (NSRange glyphRange, NSUnderlineStyle strikethroughVal, CGRect lineRect, NSRange lineGlyphRange, CGPoint containerOrigin);
 
@@ -1435,6 +1537,9 @@ namespace UIKit {
 		[Export ("showAttachmentCell:inRect:characterIndex:")]
 		void ShowAttachmentCell (NSCell cell, CGRect rect, nuint characterIndex);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("limitsLayoutForSuspiciousContents")]
 		bool LimitsLayoutForSuspiciousContents { get; set; }
@@ -1446,7 +1551,6 @@ namespace UIKit {
 	}
 
 	[NoiOS]
-	[NoWatch]
 	[NoTV]
 	[NoMacCatalyst]
 	[Category]
@@ -1471,124 +1575,151 @@ namespace UIKit {
 		NSTextView GetTextViewForBeginningOfSelection ();
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:UIKit.NSLayoutManagerDelegate" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UIKit.NSLayoutManagerDelegate" />.</summary>
 	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:UIKit.NSLayoutManagerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:UIKit.NSLayoutManagerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:UIKit.NSLayoutManagerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UIKit.NSLayoutManagerDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UIKit.NSLayoutManagerDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="UIKit.NSLayoutManagerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	interface INSLayoutManagerDelegate { }
 
-	/// <summary>A delegate object that exposes events for <see cref="T:UIKit.NSLayoutManager" />s.</summary>
+	/// <summary>A delegate object that exposes events for <see cref="UIKit.NSLayoutManager" />s.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/NSLayoutManagerDelegate_Protocol_TextKit/index.html">Apple documentation for <c>NSLayoutManagerDelegate</c></related>
-	[NoWatch] // Header not present in watchOS SDK.
 	[BaseType (typeof (NSObject))]
 	[Model]
 	[Protocol]
 	[MacCatalyst (13, 1)]
 	interface NSLayoutManagerDelegate {
+		/// <param name="sender">To be added.</param>
+		///         <summary>Indicates that the NSLayoutManager has invalidated layout information (not glyph information).</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("layoutManagerDidInvalidateLayout:")]
-#if MONOMAC && !NET
-		void LayoutInvalidated (NSLayoutManager sender);
-#else
 		void DidInvalidatedLayout (NSLayoutManager sender);
-#endif
 
+		/// <param name="layoutManager">To be added.</param>
+		///         <param name="textContainer">To be added.</param>
+		///         <param name="layoutFinishedFlag">To be added.</param>
+		///         <summary>Indicates that the specified NSLayoutManager has finished laying out text in the specified text container.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("layoutManager:didCompleteLayoutForTextContainer:atEnd:")]
-#if NET || !MONOMAC
 		void DidCompleteLayout (NSLayoutManager layoutManager, [NullAllowed] NSTextContainer textContainer, bool layoutFinishedFlag);
-#else
-		void LayoutCompleted (NSLayoutManager layoutManager, NSTextContainer textContainer, bool layoutFinishedFlag);
-#endif
 
 		[NoiOS]
 		[NoTV]
 		[NoMacCatalyst]
 		[Export ("layoutManager:shouldUseTemporaryAttributes:forDrawingToScreen:atCharacterIndex:effectiveRange:")]
 		[return: NullAllowed]
-#if NET
 		NSDictionary<NSString, NSObject> ShouldUseTemporaryAttributes (NSLayoutManager layoutManager, NSDictionary<NSString, NSObject> temporaryAttributes, bool drawingToScreen, nuint characterIndex, ref NSRange effectiveCharacterRange);
-#else
-		NSDictionary ShouldUseTemporaryAttributes (NSLayoutManager layoutManager, NSDictionary temporaryAttributes, bool drawingToScreen, nint charIndex, IntPtr effectiveCharRange);
-#endif
 
+		/// <param name="layoutManager">To be added.</param>
+		///         <param name="glyphBuffer">To be added.</param>
+		///         <param name="properties">To be added.</param>
+		///         <param name="characterIndexes">To be added.</param>
+		///         <param name="font">To be added.</param>
+		///         <param name="glyphRange">To be added.</param>
+		///         <summary>When overridden, allows the app developer to customize the initial glyph generation process.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("layoutManager:shouldGenerateGlyphs:properties:characterIndexes:font:forGlyphRange:")]
-#if NET
 		nuint ShouldGenerateGlyphs (NSLayoutManager layoutManager, IntPtr glyphBuffer, IntPtr properties, IntPtr characterIndexes, NSFont font, NSRange glyphRange);
-#else
-		nuint ShouldGenerateGlyphs (NSLayoutManager layoutManager, IntPtr glyphBuffer, IntPtr props, IntPtr charIndexes, NSFont aFont, NSRange glyphRange);
-#endif
 
+		/// <param name="layoutManager">To be added.</param>
+		/// <param name="glyphIndex">To be added.</param>
+		/// <param name="rect">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("layoutManager:lineSpacingAfterGlyphAtIndex:withProposedLineFragmentRect:")]
-#if NET || MONOMAC
 		nfloat GetLineSpacingAfterGlyph (NSLayoutManager layoutManager, nuint glyphIndex, CGRect rect);
-#else
-		nfloat LineSpacingAfterGlyphAtIndex (NSLayoutManager layoutManager, nuint glyphIndex, CGRect rect);
-#endif
 
+		/// <param name="layoutManager">To be added.</param>
+		/// <param name="glyphIndex">To be added.</param>
+		/// <param name="rect">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("layoutManager:paragraphSpacingBeforeGlyphAtIndex:withProposedLineFragmentRect:")]
-#if NET || MONOMAC
 		nfloat GetParagraphSpacingBeforeGlyph (NSLayoutManager layoutManager, nuint glyphIndex, CGRect rect);
-#else
-		nfloat ParagraphSpacingBeforeGlyphAtIndex (NSLayoutManager layoutManager, nuint glyphIndex, CGRect rect);
-#endif
 
+		/// <param name="layoutManager">To be added.</param>
+		/// <param name="glyphIndex">To be added.</param>
+		/// <param name="rect">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("layoutManager:paragraphSpacingAfterGlyphAtIndex:withProposedLineFragmentRect:")]
-#if NET || MONOMAC
 		nfloat GetParagraphSpacingAfterGlyph (NSLayoutManager layoutManager, nuint glyphIndex, CGRect rect);
-#else
-		nfloat ParagraphSpacingAfterGlyphAtIndex (NSLayoutManager layoutManager, nuint glyphIndex, CGRect rect);
-#endif
 
+		/// <param name="layoutManager">To be added.</param>
+		/// <param name="action">To be added.</param>
+		/// <param name="characterIndex">To be added.</param>
+		/// <summary>The control character action for the control character at the specified index.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("layoutManager:shouldUseAction:forControlCharacterAtIndex:")]
-#if NET
 		NSControlCharacterAction ShouldUseAction (NSLayoutManager layoutManager, NSControlCharacterAction action, nuint characterIndex);
-#else
-		NSControlCharacterAction ShouldUseAction (NSLayoutManager layoutManager, NSControlCharacterAction action, nuint charIndex);
-#endif
 
+		/// <param name="layoutManager">To be added.</param>
+		/// <param name="characterIndex">To be added.</param>
+		/// <summary>Whether a line should have a soft line break. Called frequently.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("layoutManager:shouldBreakLineByWordBeforeCharacterAtIndex:")]
-#if NET
 		bool ShouldBreakLineByWordBeforeCharacter (NSLayoutManager layoutManager, nuint characterIndex);
-#else
-		bool ShouldBreakLineByWordBeforeCharacter (NSLayoutManager layoutManager, nuint charIndex);
-#endif
 
+		/// <param name="layoutManager">To be added.</param>
+		/// <param name="characterIndex">To be added.</param>
+		/// <summary>Whether a line should break with a hyphen at the specified point. Called frequently.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("layoutManager:shouldBreakLineByHyphenatingBeforeCharacterAtIndex:")]
-#if NET
 		bool ShouldBreakLineByHyphenatingBeforeCharacter (NSLayoutManager layoutManager, nuint characterIndex);
-#else
-		bool ShouldBreakLineByHyphenatingBeforeCharacter (NSLayoutManager layoutManager, nuint charIndex);
-#endif
 
+		/// <param name="layoutManager">To be added.</param>
+		/// <param name="glyphIndex">To be added.</param>
+		/// <param name="textContainer">To be added.</param>
+		/// <param name="proposedRect">To be added.</param>
+		/// <param name="glyphPosition">To be added.</param>
+		/// <param name="characterIndex">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("layoutManager:boundingBoxForControlGlyphAtIndex:forTextContainer:proposedLineFragment:glyphPosition:characterIndex:")]
-#if NET
 		CGRect GetBoundingBox (NSLayoutManager layoutManager, nuint glyphIndex, NSTextContainer textContainer, CGRect proposedRect, CGPoint glyphPosition, nuint characterIndex);
-#elif MONOMAC
-		CGRect GetBoundingBox (NSLayoutManager layoutManager, nuint glyphIndex, NSTextContainer textContainer, CGRect proposedRect, CGPoint glyphPosition, nuint charIndex);
-#else
-		CGRect BoundingBoxForControlGlyph (NSLayoutManager layoutManager, nuint glyphIndex, NSTextContainer textContainer, CGRect proposedRect, CGPoint glyphPosition, nuint charIndex);
-#endif
 
+		/// <param name="layoutManager">To be added.</param>
+		///         <param name="textContainer">To be added.</param>
+		///         <param name="oldSize">To be added.</param>
+		///         <summary>The geometry of <paramref name="textContainer" /> changed from <paramref name="oldSize" />, and <paramref name="layoutManager" /> will invalidate the layout.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("layoutManager:textContainer:didChangeGeometryFromSize:")]
 		void DidChangeGeometry (NSLayoutManager layoutManager, NSTextContainer textContainer, CGSize oldSize);
 
+		/// <param name="layoutManager">To be added.</param>
+		/// <param name="lineFragmentRect">To be added.</param>
+		/// <param name="lineFragmentUsedRect">To be added.</param>
+		/// <param name="baselineOffset">To be added.</param>
+		/// <param name="textContainer">To be added.</param>
+		/// <param name="glyphRange">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("layoutManager:shouldSetLineFragmentRect:lineFragmentUsedRect:baselineOffset:inTextContainer:forGlyphRange:")]
 		bool ShouldSetLineFragmentRect (NSLayoutManager layoutManager, ref CGRect lineFragmentRect, ref CGRect lineFragmentUsedRect, ref nfloat baselineOffset, NSTextContainer textContainer, NSRange glyphRange);
 	}
 
-	[NoWatch, TV (13, 0), iOS (13, 0)]
+	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface NSDiffableDataSourceSnapshot<SectionIdentifierType, ItemIdentifierType> : NSCopying
@@ -1688,81 +1819,158 @@ namespace UIKit {
 		void ReloadSections (SectionIdentifierType [] sectionIdentifiers);
 	}
 
-	/// <summary>A class that specifies paragraph-relevant attributes of an <see cref="T:Foundation.NSAttributedString" />.</summary>
-	///     <remarks>An immutable set of attributes associated with the display of an <see cref="T:Foundation.NSAttributedString" />. Important: the application developer must use the subtype <see cref="T:UIKit.NSMutableParagraphStyle" /> if they modify the paragraph style after assignment to a <see cref="T:Foundation.NSAttributedString" />. Modifying an attribute of an assigned <see cref="T:UIKit.NSParagraphStyle" /> may result in a program crash.<para tool="threads">The members of this class can be used from a background thread.</para></remarks>
+	/// <summary>A class that specifies paragraph-relevant attributes of an <see cref="Foundation.NSAttributedString" />.</summary>
+	///     <remarks>An immutable set of attributes associated with the display of an <see cref="Foundation.NSAttributedString" />. Important: the application developer must use the subtype <see cref="UIKit.NSMutableParagraphStyle" /> if they modify the paragraph style after assignment to a <see cref="Foundation.NSAttributedString" />. Modifying an attribute of an assigned <see cref="UIKit.NSParagraphStyle" /> may result in a program crash.<para tool="threads">The members of this class can be used from a background thread.</para></remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/ApplicationKit/Classes/NSParagraphStyle_Class/index.html">Apple documentation for <c>NSParagraphStyle</c></related>
 	[ThreadSafe]
 	[BaseType (typeof (NSObject))]
 	[MacCatalyst (13, 1)]
 	interface NSParagraphStyle : NSSecureCoding, NSMutableCopying {
+		/// <summary>The distance, in points, between the bottom of one line fragment and the top of the next.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[Export ("lineSpacing")]
 		nfloat LineSpacing { get; [NotImplemented] set; }
 
+		/// <summary>Distance, in points, after the paragraph.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[Export ("paragraphSpacing")]
 		nfloat ParagraphSpacing { get; [NotImplemented] set; }
 
 		[Export ("alignment")]
 		TextAlignment Alignment { get; [NotImplemented] set; }
 
+		/// <summary>The indentation of the paragraph's lines, other than the first. (See <see cref="UIKit.NSParagraphStyle.FirstLineHeadIndent" />.)</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[Export ("headIndent")]
 		nfloat HeadIndent { get; [NotImplemented] set; }
 
+		/// <summary>The distance, in points, from the margin of a text container to the end of lines.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[Export ("tailIndent")]
 		nfloat TailIndent { get; [NotImplemented] set; }
 
+		/// <summary>The indentation of the paragraph's first line.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[Export ("firstLineHeadIndent")]
 		nfloat FirstLineHeadIndent { get; [NotImplemented] set; }
 
+		/// <summary>The minimum height, in points, of lines in the paragraph.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[Export ("minimumLineHeight")]
 		nfloat MinimumLineHeight { get; [NotImplemented] set; }
 
+		/// <summary>The paragraph's maximum line height, in points.</summary>
+		///         <value>The default of 0 indicates no limit.</value>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[Export ("maximumLineHeight")]
 		nfloat MaximumLineHeight { get; [NotImplemented] set; }
 
 		[Export ("lineBreakMode")]
 		LineBreakMode LineBreakMode { get; [NotImplemented] set; }
 
+		/// <summary>The normal writing direction.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[Export ("baseWritingDirection")]
 		NSWritingDirection BaseWritingDirection { get; [NotImplemented] set; }
 
+		/// <summary>The natural line height of the paragraph is multiplied by this factor before constraint to minimum and maximum.</summary>
+		///         <value>Default is 0.</value>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[Export ("lineHeightMultiple")]
 		nfloat LineHeightMultiple { get; [NotImplemented] set; }
 
+		/// <summary>Distance, in points, between a paragraph's top and its first line.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[Export ("paragraphSpacingBefore")]
 		nfloat ParagraphSpacingBefore { get; [NotImplemented] set; }
 
+		/// <summary>The paragraph's threshold for hyphenation.</summary>
+		///         <value>Ranges from 0 to 1, indicating ratio of text width to the width of line fragment. Default is 0, indicating that the layout manager's hyphenation factor is used.</value>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[Export ("hyphenationFactor")]
 		float HyphenationFactor { get; [NotImplemented] set; } // Returns a float, not nfloat.
 
-		[Watch (8, 0), TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("usesDefaultHyphenation")]
 		bool UsesDefaultHyphenation { get; }
 
+		/// <param name="languageName">To be added.</param>
+		///         <summary>The default writing direction for the specified ISO language identifier.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[Static]
 		[Export ("defaultWritingDirectionForLanguage:")]
 		NSWritingDirection GetDefaultWritingDirection ([NullAllowed] string languageName);
 
-#if MONOMAC && !NET
-		[Obsolete ("Use the 'GetDefaultWritingDirection' method instead.")]
-		[Static]
-		[Export ("defaultWritingDirectionForLanguage:")]
-		NSWritingDirection DefaultWritingDirection ([NullAllowed] string languageName);
-#endif
-
+		/// <summary>The default text style.</summary>
+		///         <value>Defaults are: natural text alignment, 12 28pt left-aligned tabs, word-wrapping line breaks.</value>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[Static]
 		[Export ("defaultParagraphStyle", ArgumentSemantic.Copy)]
 		NSParagraphStyle Default { get; }
 
-#if MONOMAC && !NET
-		[Obsolete ("Use the 'Default' property instead.")]
-		[Static]
-		[Export ("defaultParagraphStyle", ArgumentSemantic.Copy)]
-		NSParagraphStyle DefaultParagraphStyle { get; [NotImplemented] set; }
-#endif
-
+		/// <summary>The value, in points, of tab intervals.</summary>
+		///         <value>Default is 0.</value>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[Export ("defaultTabInterval")]
 		nfloat DefaultTabInterval { get; [NotImplemented] set; }
 
+		/// <summary>The paragraph's tab stops, sorted by location.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[Export ("tabStops", ArgumentSemantic.Copy)]
 		[NullAllowed]
 		NSTextTab [] TabStops { get; [NotImplemented] set; }
@@ -1771,25 +1979,21 @@ namespace UIKit {
 		[Export ("allowsDefaultTighteningForTruncation")]
 		bool AllowsDefaultTighteningForTruncation { get; [NotImplemented] set; }
 
-		[NoiOS, NoTV, NoWatch]
+		[NoiOS, NoTV]
 		[NoMacCatalyst]
 		[Export ("textBlocks")]
-#if NET
 		NSTextBlock [] TextBlocks { get; [NotImplemented] set; }
-#else
-		NSTextTableBlock [] TextBlocks { get; [NotImplemented] set; }
-#endif
 
-		[NoWatch, MacCatalyst (13, 1)]
+		[MacCatalyst (13, 1)]
 		[Export ("textLists")]
 		NSTextList [] TextLists { get; [NotImplemented] set; }
 
-		[NoiOS, NoTV, NoWatch]
+		[NoiOS, NoTV]
 		[NoMacCatalyst]
 		[Export ("tighteningFactorForTruncation")]
 		float TighteningFactorForTruncation { get; [NotImplemented] set; } /* float, not CGFloat */
 
-		[NoiOS, NoTV, NoWatch]
+		[NoiOS, NoTV]
 		[NoMacCatalyst]
 		[Export ("headerLevel")]
 		nint HeaderLevel { get; [NotImplemented] set; }
@@ -1799,7 +2003,7 @@ namespace UIKit {
 		NSLineBreakStrategy LineBreakStrategy { get; [NotImplemented] set; }
 	}
 
-	/// <summary>A class that extends <see cref="T:UIKit.NSParagraphStyle" /> to allow changing subattributes.</summary>
+	/// <summary>A class that extends <see cref="UIKit.NSParagraphStyle" /> to allow changing subattributes.</summary>
 	///     <remarks>
 	///       <para>
 	///       </para>
@@ -1810,6 +2014,12 @@ namespace UIKit {
 	[BaseType (typeof (NSParagraphStyle))]
 	[MacCatalyst (13, 1)]
 	interface NSMutableParagraphStyle {
+		/// <summary>The distance, in points, between the bottom of one line fragment and the top of the next.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[Export ("lineSpacing")]
 		[Override]
 		nfloat LineSpacing { get; set; }
@@ -1818,22 +2028,52 @@ namespace UIKit {
 		[Override]
 		TextAlignment Alignment { get; set; }
 
+		/// <summary>The indentation of the paragraph's lines, other than the first. (See <see cref="UIKit.NSMutableParagraphStyle.FirstLineHeadIndent" />.)</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[Export ("headIndent")]
 		[Override]
 		nfloat HeadIndent { get; set; }
 
+		/// <summary>The distance, in points, from the margin of a text container to the end of lines.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[Export ("tailIndent")]
 		[Override]
 		nfloat TailIndent { get; set; }
 
+		/// <summary>The indentation of the paragraph's first line.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[Export ("firstLineHeadIndent")]
 		[Override]
 		nfloat FirstLineHeadIndent { get; set; }
 
+		/// <summary>The minimum height, in points, of lines in the paragraph.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[Export ("minimumLineHeight")]
 		[Override]
 		nfloat MinimumLineHeight { get; set; }
 
+		/// <summary>The paragraph's maximum line height, in points.</summary>
+		///         <value>The default of 0 indicates no limit.</value>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[Export ("maximumLineHeight")]
 		[Override]
 		nfloat MaximumLineHeight { get; set; }
@@ -1842,34 +2082,76 @@ namespace UIKit {
 		[Override]
 		LineBreakMode LineBreakMode { get; set; }
 
+		/// <summary>The norml writing direction.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[Export ("baseWritingDirection")]
 		[Override]
 		NSWritingDirection BaseWritingDirection { get; set; }
 
+		/// <summary>The natural line height of the paragraph is multiplied by this factor before constraint to minimum and maximum.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[Export ("lineHeightMultiple")]
 		[Override]
 		nfloat LineHeightMultiple { get; set; }
 
+		/// <summary>Distance, in points, after the paragraph.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[Export ("paragraphSpacing")]
 		[Override]
 		nfloat ParagraphSpacing { get; set; }
 
+		/// <summary>Distance, in points, between a paragraph's top and its first line.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[Export ("paragraphSpacingBefore")]
 		[Override]
 		nfloat ParagraphSpacingBefore { get; set; }
 
+		/// <summary>The paragraph's threshold for hyphenation.</summary>
+		///         <value>Ranges from 0 to 1, indicating ratio of text width to the width of line fragment. Default is 0, indicating that the layout manager's hyphenation factor is used.</value>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[Export ("hyphenationFactor")]
 		[Override]
 		float HyphenationFactor { get; set; } // Returns a float, not nfloat.
 
-		[Watch (8, 0), TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("usesDefaultHyphenation")]
 		bool UsesDefaultHyphenation { get; set; }
 
+		/// <summary>The value, in points, of tab intervals.</summary>
+		///         <value>The default is 0.</value>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[Export ("defaultTabInterval")]
 		[Override]
 		nfloat DefaultTabInterval { get; set; }
 
+		/// <summary>The paragraph's tab stops, sorted by location.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[Export ("tabStops", ArgumentSemantic.Copy)]
 		[Override]
 		[NullAllowed]
@@ -1880,40 +2162,54 @@ namespace UIKit {
 		[Export ("allowsDefaultTighteningForTruncation")]
 		bool AllowsDefaultTighteningForTruncation { get; set; }
 
+		/// <param name="textTab">To be added.</param>
+		///         <summary>Adds the specified <see cref="UIKit.NSTextTab" /> to the pargraph style.</summary>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("addTabStop:")]
 		void AddTabStop (NSTextTab textTab);
 
+		/// <param name="textTab">To be added.</param>
+		///         <summary>Removes the tab stop <paramref name="textTab" />.</summary>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("removeTabStop:")]
 		void RemoveTabStop (NSTextTab textTab);
 
+		/// <param name="paragraphStyle">To be added.</param>
+		///         <summary>Replaces the existing style with <paramref name="paragraphStyle" />.</summary>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("setParagraphStyle:")]
 		void SetParagraphStyle (NSParagraphStyle paragraphStyle);
 
-		[NoiOS, NoTV, NoWatch]
+		[NoiOS, NoTV]
 		[NoMacCatalyst]
 		[Override]
 		[Export ("textBlocks")]
-#if NET
 		NSTextBlock [] TextBlocks { get; set; }
-#else
-		NSTextTableBlock [] TextBlocks { get; set; }
-#endif
 
-		[NoWatch, MacCatalyst (13, 1)]
+		[MacCatalyst (13, 1)]
 		[Override]
 		[Export ("textLists")]
 		NSTextList [] TextLists { get; set; }
 
-		[NoiOS, NoTV, NoWatch]
+		[NoiOS, NoTV]
 		[NoMacCatalyst]
 		[Export ("tighteningFactorForTruncation")]
 		[Override]
 		float TighteningFactorForTruncation { get; set; } /* float, not CGFloat */
 
-		[NoiOS, NoTV, NoWatch]
+		[NoiOS, NoTV]
 		[NoMacCatalyst]
 		[Export ("headerLevel")]
 		[Override]
@@ -1925,11 +2221,11 @@ namespace UIKit {
 		NSLineBreakStrategy LineBreakStrategy { get; set; }
 	}
 
-	[NoWatch, TV (13, 0), iOS (13, 0)]
+	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	delegate NSCollectionLayoutGroupCustomItem [] NSCollectionLayoutGroupCustomItemProvider (INSCollectionLayoutEnvironment layoutEnvironment);
 
-	[NoWatch, TV (13, 0), iOS (13, 0)]
+	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSCollectionLayoutItem))]
 	[DisableDefaultCtor]
@@ -1937,43 +2233,23 @@ namespace UIKit {
 
 		[Static]
 		[Export ("horizontalGroupWithLayoutSize:subitem:count:")]
-#if MONOMAC && !NET
-		NSCollectionLayoutGroup CreateHorizontalGroup (NSCollectionLayoutSize layoutSize, NSCollectionLayoutItem subitem, nint count);
-#else
 		NSCollectionLayoutGroup CreateHorizontal (NSCollectionLayoutSize layoutSize, NSCollectionLayoutItem subitem, nint count);
-#endif
 
 		[Static]
 		[Export ("horizontalGroupWithLayoutSize:subitems:")]
-#if MONOMAC && !NET
-		NSCollectionLayoutGroup CreateHorizontalGroup (NSCollectionLayoutSize layoutSize, NSCollectionLayoutItem [] subitems);
-#else
 		NSCollectionLayoutGroup CreateHorizontal (NSCollectionLayoutSize layoutSize, params NSCollectionLayoutItem [] subitems);
-#endif
 
 		[Static]
 		[Export ("verticalGroupWithLayoutSize:subitem:count:")]
-#if MONOMAC && !NET
-		NSCollectionLayoutGroup CreateVerticalGroup (NSCollectionLayoutSize layoutSize, NSCollectionLayoutItem subitem, nint count);
-#else
 		NSCollectionLayoutGroup CreateVertical (NSCollectionLayoutSize layoutSize, NSCollectionLayoutItem subitem, nint count);
-#endif
 
 		[Static]
 		[Export ("verticalGroupWithLayoutSize:subitems:")]
-#if MONOMAC && !NET
-		NSCollectionLayoutGroup CreateVerticalGroup (NSCollectionLayoutSize layoutSize, NSCollectionLayoutItem [] subitems);
-#else
 		NSCollectionLayoutGroup CreateVertical (NSCollectionLayoutSize layoutSize, params NSCollectionLayoutItem [] subitems);
-#endif
 
 		[Static]
 		[Export ("customGroupWithLayoutSize:itemProvider:")]
-#if MONOMAC && !NET
-		NSCollectionLayoutGroup CreateCustomGroup (NSCollectionLayoutSize layoutSize, NSCollectionLayoutGroupCustomItemProvider itemProvider);
-#else
 		NSCollectionLayoutGroup CreateCustom (NSCollectionLayoutSize layoutSize, NSCollectionLayoutGroupCustomItemProvider itemProvider);
-#endif
 
 		[Export ("supplementaryItems", ArgumentSemantic.Copy)]
 		NSCollectionLayoutSupplementaryItem [] SupplementaryItems { get; set; }
@@ -1987,22 +2263,22 @@ namespace UIKit {
 		[Export ("visualDescription")]
 		string VisualDescription { get; }
 
-		[Watch (9, 0), TV (16, 0), iOS (16, 0), MacCatalyst (16, 0), Mac (13, 0)]
+		[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0), Mac (13, 0)]
 		[Static]
 		[Export ("horizontalGroupWithLayoutSize:repeatingSubitem:count:")]
 		NSCollectionLayoutGroup GetHorizontalGroup (NSCollectionLayoutSize layoutSize, NSCollectionLayoutItem repeatingSubitem, nint count);
 
-		[Watch (9, 0), TV (16, 0), iOS (16, 0), MacCatalyst (16, 0), Mac (13, 0)]
+		[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0), Mac (13, 0)]
 		[Static]
 		[Export ("verticalGroupWithLayoutSize:repeatingSubitem:count:")]
 		NSCollectionLayoutGroup GetVerticalGroup (NSCollectionLayoutSize layoutSize, NSCollectionLayoutItem repeatingSubitem, nint count);
 	}
 
-	[NoWatch, TV (13, 0), iOS (13, 0)]
+	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	delegate void NSCollectionLayoutSectionVisibleItemsInvalidationHandler (INSCollectionLayoutVisibleItem [] visibleItems, CGPoint contentOffset, INSCollectionLayoutEnvironment layoutEnvironment);
 
-	[NoWatch, TV (13, 0), iOS (13, 0)]
+	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -2033,7 +2309,6 @@ namespace UIKit {
 		[Deprecated (PlatformName.iOS, 16, 0)]
 		[Deprecated (PlatformName.TvOS, 16, 0)]
 		[Deprecated (PlatformName.MacCatalyst, 16, 0)]
-		[Deprecated (PlatformName.WatchOS, 9, 0)]
 		[Export ("supplementariesFollowContentInsets")]
 		bool SupplementariesFollowContentInsets { get; set; }
 
@@ -2052,22 +2327,22 @@ namespace UIKit {
 		NSCollectionLayoutSection GetSection (UICollectionLayoutListConfiguration listConfiguration, INSCollectionLayoutEnvironment layoutEnvironment);
 
 		// NSCollectionLayoutSection (TVMediaItemContentConfiguration) category
-		[TV (15, 0), NoWatch, NoMac, NoiOS, NoMacCatalyst]
+		[TV (15, 0), NoMac, NoiOS, NoMacCatalyst]
 		[Static]
 		[Export ("orthogonalLayoutSectionForMediaItems")]
 		NSCollectionLayoutSection GetOrthogonalLayoutSectionForMediaItems ();
 
-		[Watch (9, 0), TV (16, 0), iOS (16, 0), NoMac]
+		[TV (16, 0), iOS (16, 0), NoMac]
 		[MacCatalyst (16, 0)]
 		[Export ("supplementaryContentInsetsReference", ArgumentSemantic.Assign)]
 		UIContentInsetsReference SupplementaryContentInsetsReference { get; set; }
 
-		[Watch (10, 0), TV (17, 0), iOS (17, 0), MacCatalyst (17, 0), NoMac]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0), NoMac]
 		[Export ("orthogonalScrollingProperties")]
 		UICollectionLayoutSectionOrthogonalScrollingProperties OrthogonalScrollingProperties { get; }
 	}
 
-	[NoWatch, TV (13, 0), iOS (13, 0)]
+	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -2089,7 +2364,7 @@ namespace UIKit {
 
 	interface INSCollectionLayoutContainer { }
 
-	[NoWatch, TV (13, 0), iOS (13, 0)]
+	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface NSCollectionLayoutContainer {
@@ -2112,7 +2387,7 @@ namespace UIKit {
 
 	interface INSCollectionLayoutEnvironment { }
 
-	[NoWatch, TV (13, 0), iOS (13, 0)]
+	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface NSCollectionLayoutEnvironment {
@@ -2130,11 +2405,11 @@ namespace UIKit {
 
 	interface INSCollectionLayoutVisibleItem { }
 
-	[NoWatch, TV (13, 0), iOS (13, 0)]
+	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface NSCollectionLayoutVisibleItem
-#if !MONOMAC && !WATCH
+#if !MONOMAC
 	: UIDynamicItem
 #endif
 	{
@@ -2155,7 +2430,6 @@ namespace UIKit {
 		// Inherited from UIDynamicItem for !MONOMAC
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Abstract]
 		[Export ("center", ArgumentSemantic.Assign)]
@@ -2165,7 +2439,6 @@ namespace UIKit {
 #pragma warning disable 0109 // warning CS0109: The member 'NSCollectionLayoutVisibleItem.Bounds' does not hide an accessible member. The new keyword is not required.
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Abstract]
 		[Export ("bounds")]
@@ -2202,214 +2475,281 @@ namespace UIKit {
 	}
 
 	/// <include file="../docs/api/UIKit/NSLayoutAnchor`1.xml" path="/Documentation/Docs[@DocId='T:UIKit.NSLayoutAnchor`1']/*" />
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // Handle is nil
 	interface NSLayoutAnchor<AnchorType> : NSCopying, NSCoding {
+		/// <param name="anchor">The <see cref="UIKit.NSLayoutAnchor{AnchorType}" /> whose constraint value should be copied.</param>
+		///         <summary>Creates a <see cref="UIKit.NSLayoutConstraint" /> whose value is equal to that of the constraint of the <paramref name="anchor" />.</summary>
+		///         <returns>A new <see cref="UIKit.NSLayoutConstraint" />.</returns>
+		///         <remarks>
+		///           <para>As with other methods of this class, this method returns a new <see cref="UIKit.NSLayoutConstraint" /> but does not add and activate it to the current <see cref="UIKit.UIView" />.</para>
+		///         </remarks>
 		[Export ("constraintEqualToAnchor:")]
-#if MONOMAC && !NET
-		NSLayoutConstraint ConstraintEqualToAnchor (NSLayoutAnchor<AnchorType> anchor);
-#else
 		NSLayoutConstraint ConstraintEqualTo (NSLayoutAnchor<AnchorType> anchor);
-#endif
 
+		/// <param name="anchor">The <see cref="UIKit.NSLayoutAnchor{AnchorType}" /> whose constraint value should be used.</param>
+		///         <summary>Creates a <see cref="UIKit.NSLayoutConstraint" /> whose value is at least equal to that of the constraint of the <paramref name="anchor" />.</summary>
+		///         <returns>A new <see cref="UIKit.NSLayoutConstraint" />.</returns>
+		///         <remarks>
+		///           <para>As with other methods of this class, this method returns a new <see cref="UIKit.NSLayoutConstraint" /> but does not add and activate it to the current <see cref="UIKit.UIView" />.</para>
+		///         </remarks>
 		[Export ("constraintGreaterThanOrEqualToAnchor:")]
-#if MONOMAC && !NET
-		NSLayoutConstraint ConstraintGreaterThanOrEqualToAnchor (NSLayoutAnchor<AnchorType> anchor);
-#else
 		NSLayoutConstraint ConstraintGreaterThanOrEqualTo (NSLayoutAnchor<AnchorType> anchor);
-#endif
 
+		/// <param name="anchor">The <see cref="UIKit.NSLayoutAnchor{AnchorType}" /> whose constraint value should be used.</param>
+		///         <summary>Creates a <see cref="UIKit.NSLayoutConstraint" /> whose value is at most equal to that of the constraint of the <paramref name="anchor" />.</summary>
+		///         <returns>A new <see cref="UIKit.NSLayoutConstraint" />.</returns>
+		///         <remarks>
+		///           <para>As with other methods of this class, this method returns a new <see cref="UIKit.NSLayoutConstraint" /> but does not add and activate it to the current <see cref="UIKit.UIView" />.</para>
+		///         </remarks>
 		[Export ("constraintLessThanOrEqualToAnchor:")]
-#if MONOMAC && !NET
-		NSLayoutConstraint ConstraintLessThanOrEqualToAnchor (NSLayoutAnchor<AnchorType> anchor);
-#else
 		NSLayoutConstraint ConstraintLessThanOrEqualTo (NSLayoutAnchor<AnchorType> anchor);
-#endif
 
+		/// <param name="anchor">The <see cref="UIKit.NSLayoutAnchor{AnchorType}" /> whose constraint value should be used.</param>
+		/// <param name="constant">The number of logical pixels to add to the value of <paramref name="anchor" />.</param>
+		/// <summary>Creates a <see cref="UIKit.NSLayoutConstraint" /> whose value is equal to that of the constraint of the <paramref name="anchor" /> plus <paramref name="constant" /> pixels.</summary>
+		/// <returns>
+		///         </returns>
+		/// <remarks>
+		///           <para>As with other methods of this class, this method returns a new <see cref="UIKit.NSLayoutConstraint" /> but does not add and activate it to the current <see cref="UIKit.UIView" />.</para>
+		///         </remarks>
 		[Export ("constraintEqualToAnchor:constant:")]
-#if MONOMAC && !NET
-		NSLayoutConstraint ConstraintEqualToAnchor (NSLayoutAnchor<AnchorType> anchor, nfloat constant);
-#else
 		NSLayoutConstraint ConstraintEqualTo (NSLayoutAnchor<AnchorType> anchor, nfloat constant);
-#endif
 
+		/// <param name="anchor">The <see cref="UIKit.NSLayoutAnchor{AnchorType}" /> whose constraint value should be used.</param>
+		/// <param name="constant">The number of logical pixels to add to the value of <paramref name="anchor" />.</param>
+		/// <summary>Creates a <see cref="UIKit.NSLayoutConstraint" /> whose value is at least equal to that of the constraint of the <paramref name="anchor" /> plus <paramref name="constant" /> pixels.</summary>
+		/// <returns>A new <see cref="UIKit.NSLayoutConstraint" />.</returns>
+		/// <remarks>
+		///           <para>As with other methods of this class, this method returns a new <see cref="UIKit.NSLayoutConstraint" /> but does not add and activate it to the current <see cref="UIKit.UIView" />.</para>
+		///         </remarks>
 		[Export ("constraintGreaterThanOrEqualToAnchor:constant:")]
-#if MONOMAC && !NET
-		NSLayoutConstraint ConstraintGreaterThanOrEqualToAnchor (NSLayoutAnchor<AnchorType> anchor, nfloat constant);
-#else
 		NSLayoutConstraint ConstraintGreaterThanOrEqualTo (NSLayoutAnchor<AnchorType> anchor, nfloat constant);
-#endif
 
+		/// <param name="anchor">The <see cref="UIKit.NSLayoutAnchor{AnchorType}" /> whose constraint value should be used.</param>
+		/// <param name="constant">The number of logical pixels to add to the value of <paramref name="anchor" />.</param>
+		/// <summary>Creates a <see cref="UIKit.NSLayoutConstraint" /> whose value is at most equal to that of the constraint of the <paramref name="anchor" /> plus <paramref name="constant" /> pixels.</summary>
+		/// <returns>A new <see cref="UIKit.NSLayoutConstraint" />.</returns>
+		/// <remarks>
+		///           <para>As with other methods of this class, this method returns a new <see cref="UIKit.NSLayoutConstraint" /> but does not add and activate it to the current <see cref="UIKit.UIView" />.</para>
+		///         </remarks>
 		[Export ("constraintLessThanOrEqualToAnchor:constant:")]
-#if MONOMAC && !NET
-		NSLayoutConstraint ConstraintLessThanOrEqualToAnchor (NSLayoutAnchor<AnchorType> anchor, nfloat constant);
-#else
 		NSLayoutConstraint ConstraintLessThanOrEqualTo (NSLayoutAnchor<AnchorType> anchor, nfloat constant);
-#endif
 
 		[NoiOS]
 		[NoMacCatalyst]
 		[NoTV]
-		[NoWatch]
 		[Export ("name")]
 		string Name { get; }
 
 		[NoiOS]
 		[NoMacCatalyst]
 		[NoTV]
-		[NoWatch]
 		[NullAllowed, Export ("item", ArgumentSemantic.Weak)]
 		NSObject Item { get; }
 
 		[NoiOS]
 		[NoMacCatalyst]
 		[NoTV]
-		[NoWatch]
 		[Export ("hasAmbiguousLayout")]
 		bool HasAmbiguousLayout { get; }
 
 		[NoiOS]
 		[NoMacCatalyst]
 		[NoTV]
-		[NoWatch]
 		[Export ("constraintsAffectingLayout")]
 		NSLayoutConstraint [] ConstraintsAffectingLayout { get; }
 	}
 
-	/// <summary>An <see cref="T:UIKit.NSLayoutAnchor`1" /> whose methods create horizontal <see cref="T:UIKit.NSLayoutConstraint" /> objects.</summary>
+	/// <summary>An <see cref="UIKit.NSLayoutAnchor{AnchorType}" /> whose methods create horizontal <see cref="UIKit.NSLayoutConstraint" /> objects.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AppKit/Reference/NSLayoutXAxisAnchor/index.html">Apple documentation for <c>NSLayoutXAxisAnchor</c></related>
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSLayoutAnchor<NSLayoutXAxisAnchor>))]
 	[DisableDefaultCtor] // Handle is nil
 	interface NSLayoutXAxisAnchor {
+		/// <param name="otherAnchor">To be added.</param>
+		///         <summary>Returns a layout dimension for the distance between the current anchor and <paramref name="otherAnchor" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("anchorWithOffsetToAnchor:")]
-#if MONOMAC && !NET
-		NSLayoutDimension GetAnchorWithOffset (NSLayoutXAxisAnchor otherAnchor);
-#else
 		NSLayoutDimension CreateAnchorWithOffset (NSLayoutXAxisAnchor otherAnchor);
-#endif
 
+		/// <param name="anchor">The reference anchor.</param>
+		/// <param name="multiplier">The multiplier for the spacing.</param>
+		/// <summary>Returns a constraint for the distance from the current anchor to the specified <paramref name="anchor" />, scaled by the specified <paramref name="multiplier" /> over system spacing.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("constraintEqualToSystemSpacingAfterAnchor:multiplier:")]
 		NSLayoutConstraint ConstraintEqualToSystemSpacingAfterAnchor (NSLayoutXAxisAnchor anchor, nfloat multiplier);
 
+		/// <param name="anchor">The reference anchor.</param>
+		/// <param name="multiplier">The multiplier for the spacing.</param>
+		/// <summary>Returns a constraint for at least the distance from the current anchor to the specified <paramref name="anchor" />, scaled by the specified <paramref name="multiplier" /> over system spacing.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("constraintGreaterThanOrEqualToSystemSpacingAfterAnchor:multiplier:")]
 		NSLayoutConstraint ConstraintGreaterThanOrEqualToSystemSpacingAfterAnchor (NSLayoutXAxisAnchor anchor, nfloat multiplier);
 
+		/// <param name="anchor">The reference anchor.</param>
+		/// <param name="multiplier">The multiplier for the spacing.</param>
+		/// <summary>Returns a constraint for at most the distance from the current anchor to the specified <paramref name="anchor" />, scaled by the specified <paramref name="multiplier" /> over system spacing.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("constraintLessThanOrEqualToSystemSpacingAfterAnchor:multiplier:")]
 		NSLayoutConstraint ConstraintLessThanOrEqualToSystemSpacingAfterAnchor (NSLayoutXAxisAnchor anchor, nfloat multiplier);
 	}
 
-	/// <summary>An <see cref="T:UIKit.NSLayoutAnchor`1" /> whose methods create vertical <see cref="T:UIKit.NSLayoutConstraint" /> objects.</summary>
+	/// <summary>An <see cref="UIKit.NSLayoutAnchor{AnchorType}" /> whose methods create vertical <see cref="UIKit.NSLayoutConstraint" /> objects.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AppKit/Reference/NSLayoutYAxisAnchor/index.html">Apple documentation for <c>NSLayoutYAxisAnchor</c></related>
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSLayoutAnchor<NSLayoutYAxisAnchor>))]
 	[DisableDefaultCtor] // Handle is nil
 	interface NSLayoutYAxisAnchor {
+		/// <param name="otherAnchor">To be added.</param>
+		///         <summary>Returns a layout dimension for the distance between the current anchor and <paramref name="otherAnchor" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("anchorWithOffsetToAnchor:")]
-#if MONOMAC && !NET
-		NSLayoutDimension GetAnchorWithOffset (NSLayoutYAxisAnchor otherAnchor);
-#else
 		NSLayoutDimension CreateAnchorWithOffset (NSLayoutYAxisAnchor otherAnchor);
-#endif
 
+		/// <param name="anchor">The reference anchor.</param>
+		/// <param name="multiplier">The multiplier for the spacing.</param>
+		/// <summary>Returns a constraint for the distance from the current anchor to the specified <paramref name="anchor" />, scaled by the specified <paramref name="multiplier" /> over system spacing.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("constraintEqualToSystemSpacingBelowAnchor:multiplier:")]
 		NSLayoutConstraint ConstraintEqualToSystemSpacingBelowAnchor (NSLayoutYAxisAnchor anchor, nfloat multiplier);
 
+		/// <param name="anchor">The reference anchor.</param>
+		/// <param name="multiplier">The multiplier for the spacing.</param>
+		/// <summary>Returns a constraint for at least the distance from the current anchor to the specified <paramref name="anchor" />, scaled by the specified <paramref name="multiplier" /> over system spacing.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("constraintGreaterThanOrEqualToSystemSpacingBelowAnchor:multiplier:")]
 		NSLayoutConstraint ConstraintGreaterThanOrEqualToSystemSpacingBelowAnchor (NSLayoutYAxisAnchor anchor, nfloat multiplier);
 
+		/// <param name="anchor">The reference anchor.</param>
+		/// <param name="multiplier">The multiplier for the spacing.</param>
+		/// <summary>Returns a constraint for at most the distance from the current anchor to the specified <paramref name="anchor" />, scaled by the specified <paramref name="multiplier" /> over system spacing.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("constraintLessThanOrEqualToSystemSpacingBelowAnchor:multiplier:")]
 		NSLayoutConstraint ConstraintLessThanOrEqualToSystemSpacingBelowAnchor (NSLayoutYAxisAnchor anchor, nfloat multiplier);
 	}
 
-	/// <summary>An <see cref="T:UIKit.NSLayoutAnchor`1" /> whose methods create dimensional <see cref="T:UIKit.NSLayoutConstraint" /> objects.</summary>
+	/// <summary>An <see cref="UIKit.NSLayoutAnchor{AnchorType}" /> whose methods create dimensional <see cref="UIKit.NSLayoutConstraint" /> objects.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AppKit/Reference/NSLayoutDimension_ClassReference/index.html">Apple documentation for <c>NSLayoutDimension</c></related>
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSLayoutAnchor<NSLayoutDimension>))]
 	[DisableDefaultCtor] // Handle is nil
 	interface NSLayoutDimension {
+		/// <param name="constant">An <see cref="nfloat" /> specifying the desired constant value.</param>
+		/// <summary>Creates a <see cref="UIKit.NSLayoutConstraint" /> whose value is equal to that of the constraint of the <paramref name="constant" /> in logical pixels.</summary>
+		/// <returns>
+		///         </returns>
+		/// <remarks>
+		///           <para>As with other methods of this class, this method returns a new <see cref="UIKit.NSLayoutConstraint" /> but does not add and activate it to the current <see cref="UIKit.UIView" />.</para>
+		///         </remarks>
 		[Export ("constraintEqualToConstant:")]
-#if MONOMAC && !NET
-		NSLayoutConstraint ConstraintEqualToConstant (nfloat constant);
-#else
 		NSLayoutConstraint ConstraintEqualTo (nfloat constant);
-#endif
 
+		/// <param name="constant">The number of logical pixels to add.</param>
+		/// <summary>Creates a <see cref="UIKit.NSLayoutConstraint" /> whose value is at least equal to that of the <paramref name="constant" />.</summary>
+		/// <returns>A new <see cref="UIKit.NSLayoutConstraint" />.</returns>
+		/// <remarks>
+		///           <para>As with other methods of this class, this method returns a new <see cref="UIKit.NSLayoutConstraint" /> but does not add and activate it to the current <see cref="UIKit.UIView" />.</para>
+		///         </remarks>
 		[Export ("constraintGreaterThanOrEqualToConstant:")]
-#if MONOMAC && !NET
-		NSLayoutConstraint ConstraintGreaterThanOrEqualToConstant (nfloat constant);
-#else
 		NSLayoutConstraint ConstraintGreaterThanOrEqualTo (nfloat constant);
-#endif
 
+		/// <param name="constant">The number of logical pixels to add.</param>
+		/// <summary>Creates a <see cref="UIKit.NSLayoutConstraint" /> whose value is at at most <paramref name="constant" />.</summary>
+		/// <returns>A new <see cref="UIKit.NSLayoutConstraint" />.</returns>
+		/// <remarks>
+		///           <para>As with other methods of this class, this method returns a new <see cref="UIKit.NSLayoutConstraint" /> but does not add and activate it to the current <see cref="UIKit.UIView" />.</para>
+		///         </remarks>
 		[Export ("constraintLessThanOrEqualToConstant:")]
-#if MONOMAC && !NET
-		NSLayoutConstraint ConstraintLessThanOrEqualToConstant (nfloat constant);
-#else
 		NSLayoutConstraint ConstraintLessThanOrEqualTo (nfloat constant);
-#endif
 
+		/// <param name="anchor">The <see cref="UIKit.NSLayoutAnchor{AnchorType}" /> whose constraint value should be copied.</param>
+		/// <param name="multiplier">The value by which to multiply the <paramref name="anchor" />.</param>
+		/// <summary>Creates a <see cref="UIKit.NSLayoutConstraint" /> whose value is equal to that of the constraint of the <paramref name="anchor" /> multiplied by <paramref name="multiplier" />.</summary>
+		/// <returns>
+		///         </returns>
+		/// <remarks>
+		///           <para>As with other methods of this class, this method returns a new <see cref="UIKit.NSLayoutConstraint" /> but does not add and activate it to the current <see cref="UIKit.UIView" />.</para>
+		///         </remarks>
 		[Export ("constraintEqualToAnchor:multiplier:")]
-#if MONOMAC && !NET
-		NSLayoutConstraint ConstraintEqualToAnchor (NSLayoutDimension anchor, nfloat multiplier);
-#else
 		NSLayoutConstraint ConstraintEqualTo (NSLayoutDimension anchor, nfloat multiplier);
-#endif
 
+		/// <param name="anchor">The <see cref="UIKit.NSLayoutAnchor{AnchorType}" /> whose constraint value should be copied.</param>
+		/// <param name="multiplier">To be added.</param>
+		/// <summary>Creates a <see cref="UIKit.NSLayoutConstraint" /> whose value is at least equal to that of the constraint of the <paramref name="anchor" /> multiplied by <paramref name="multiplier" />.</summary>
+		/// <returns>A new <see cref="UIKit.NSLayoutConstraint" />.</returns>
+		/// <remarks>
+		///           <para>As with other methods of this class, this method returns a new <see cref="UIKit.NSLayoutConstraint" /> but does not add and activate it to the current <see cref="UIKit.UIView" />.</para>
+		///         </remarks>
 		[Export ("constraintGreaterThanOrEqualToAnchor:multiplier:")]
-#if MONOMAC && !NET
-		NSLayoutConstraint ConstraintGreaterThanOrEqualToAnchor (NSLayoutDimension anchor, nfloat multiplier);
-#else
 		NSLayoutConstraint ConstraintGreaterThanOrEqualTo (NSLayoutDimension anchor, nfloat multiplier);
-#endif
 
+		/// <param name="anchor">The <see cref="UIKit.NSLayoutAnchor{AnchorType}" /> whose constraint value should be copied.</param>
+		/// <param name="multiplier">To be added.</param>
+		/// <summary>Creates a <see cref="UIKit.NSLayoutConstraint" /> whose value is at most equal to that of the constraint of the <paramref name="anchor" /> times <paramref name="multiplier" />.</summary>
+		/// <returns>A new <see cref="UIKit.NSLayoutConstraint" />.</returns>
+		/// <remarks>
+		///           <para>As with other methods of this class, this method returns a new <see cref="UIKit.NSLayoutConstraint" /> but does not add and activate it to the current <see cref="UIKit.UIView" />.</para>
+		///         </remarks>
 		[Export ("constraintLessThanOrEqualToAnchor:multiplier:")]
-#if MONOMAC && !NET
-		NSLayoutConstraint ConstraintLessThanOrEqualToAnchor (NSLayoutDimension anchor, nfloat multiplier);
-#else
 		NSLayoutConstraint ConstraintLessThanOrEqualTo (NSLayoutDimension anchor, nfloat multiplier);
-#endif
 
+		/// <param name="anchor">The <see cref="UIKit.NSLayoutAnchor{AnchorType}" /> whose constraint value should be copied.</param>
+		/// <param name="multiplier">The value by which to multiply the <paramref name="anchor" />.</param>
+		/// <param name="constant">The number of logical pixels to add to the value of <paramref name="anchor" />.</param>
+		/// <summary>Creates a <see cref="UIKit.NSLayoutConstraint" /> whose value is equal to that of the constraint of the <paramref name="anchor" /> multiplied by <paramref name="multiplier" /> plus <paramref name="constant" /> pixels.</summary>
+		/// <returns>
+		///         </returns>
+		/// <remarks>
+		///           <para>As with other methods of this class, this method returns a new <see cref="UIKit.NSLayoutConstraint" /> but does not add and activate it to the current <see cref="UIKit.UIView" />.</para>
+		///         </remarks>
 		[Export ("constraintEqualToAnchor:multiplier:constant:")]
-#if MONOMAC && !NET
-		NSLayoutConstraint ConstraintEqualToAnchor (NSLayoutDimension anchor, nfloat multiplier, nfloat constant);
-#else
 		NSLayoutConstraint ConstraintEqualTo (NSLayoutDimension anchor, nfloat multiplier, nfloat constant);
-#endif
 
+		/// <param name="anchor">The <see cref="UIKit.NSLayoutAnchor{AnchorType}" /> whose constraint value should be copied.</param>
+		/// <param name="multiplier">To be added.</param>
+		/// <param name="constant">The number of logical pixels to add.</param>
+		/// <summary>Creates a <see cref="UIKit.NSLayoutConstraint" /> whose value is at least equal to that of the constraint of the <paramref name="anchor" /> multiplied by <paramref name="multiplier" /> and adding <paramref name="constant" /> logical pixels.</summary>
+		/// <returns>A new <see cref="UIKit.NSLayoutConstraint" />.</returns>
+		/// <remarks>
+		///           <para>As with other methods of this class, this method returns a new <see cref="UIKit.NSLayoutConstraint" /> but does not add and activate it to the current <see cref="UIKit.UIView" />.</para>
+		///         </remarks>
 		[Export ("constraintGreaterThanOrEqualToAnchor:multiplier:constant:")]
-#if MONOMAC && !NET
-		NSLayoutConstraint ConstraintGreaterThanOrEqualToAnchor (NSLayoutDimension anchor, nfloat multiplier, nfloat constant);
-#else
 		NSLayoutConstraint ConstraintGreaterThanOrEqualTo (NSLayoutDimension anchor, nfloat multiplier, nfloat constant);
-#endif
 
+		/// <param name="anchor">The <see cref="UIKit.NSLayoutAnchor{AnchorType}" /> whose constraint value should be copied.</param>
+		/// <param name="multiplier">To be added.</param>
+		/// <param name="constant">The number of logical pixels to add.</param>
+		/// <summary>Creates a <see cref="UIKit.NSLayoutConstraint" /> whose value is at most equal to that of the constraint of the <paramref name="anchor" /> times the <paramref name="multiplier" /> plus <paramref name="constant" /> logical pixels.</summary>
+		/// <returns>A new <see cref="UIKit.NSLayoutConstraint" />.</returns>
+		/// <remarks>
+		///           <para>As with other methods of this class, this method returns a new <see cref="UIKit.NSLayoutConstraint" /> but does not add and activate it to the current <see cref="UIKit.UIView" />.</para>
+		///         </remarks>
 		[Export ("constraintLessThanOrEqualToAnchor:multiplier:constant:")]
-#if MONOMAC && !NET
-		NSLayoutConstraint ConstraintLessThanOrEqualToAnchor (NSLayoutDimension anchor, nfloat multiplier, nfloat constant);
-#else
 		NSLayoutConstraint ConstraintLessThanOrEqualTo (NSLayoutDimension anchor, nfloat multiplier, nfloat constant);
-#endif
 	}
 
 	/// <include file="../docs/api/UIKit/NSLayoutConstraint.xml" path="/Documentation/Docs[@DocId='T:UIKit.NSLayoutConstraint']/*" />
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface NSLayoutConstraint
@@ -2417,116 +2757,173 @@ namespace UIKit {
 		: NSAnimatablePropertyContainer
 #endif
 {
+		/// <include file="../docs/api/UIKit/NSLayoutConstraint.xml" path="/Documentation/Docs[@DocId='M:UIKit.NSLayoutConstraint.FromVisualFormat(System.String,UIKit.NSLayoutFormatOptions,Foundation.NSDictionary,Foundation.NSDictionary)']/*" />
 		[Static]
 		[Export ("constraintsWithVisualFormat:options:metrics:views:")]
 		NSLayoutConstraint [] FromVisualFormat (string format, NSLayoutFormatOptions formatOptions, [NullAllowed] NSDictionary metrics, NSDictionary views);
 
+		/// <include file="../docs/api/UIKit/NSLayoutConstraint.xml" path="/Documentation/Docs[@DocId='M:UIKit.NSLayoutConstraint.Create(ObjCRuntime.INativeObject,UIKit.NSLayoutAttribute,UIKit.NSLayoutRelation,ObjCRuntime.INativeObject,UIKit.NSLayoutAttribute,System.Runtime.InteropServices.NFloat,System.Runtime.InteropServices.NFloat)']/*" />
 		[Static]
 		[Export ("constraintWithItem:attribute:relatedBy:toItem:attribute:multiplier:constant:")]
 		NSLayoutConstraint Create (INativeObject view1, NSLayoutAttribute attribute1, NSLayoutRelation relation, [NullAllowed] INativeObject view2, NSLayoutAttribute attribute2, nfloat multiplier, nfloat constant);
 
+		/// <summary>The priority of the constraint. Must be in range [0, UILayoutPriority.Required].</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("priority")]
 		float Priority { get; set; } // Returns a float, not nfloat.
 
+		/// <summary>Whether the constraint should be archived by its owning UIView.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("shouldBeArchived")]
 		bool ShouldBeArchived { get; set; }
 
+		/// <summary>The first item participating in the constraint.</summary>
+		///         <value>
+		///           <para />
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>
+		///           <para />
+		///         </remarks>
 		[NullAllowed, Export ("firstItem", ArgumentSemantic.Assign)]
 		NSObject FirstItem { get; }
 
+		/// <summary>The attribute of the first item participating in the constraint.</summary>
+		///         <value>
+		///           <para />
+		///         </value>
+		///         <remarks>
+		///           <para />
+		///         </remarks>
 		[Export ("firstAttribute")]
 		NSLayoutAttribute FirstAttribute { get; }
 
+		/// <summary>The NSRelation that holds between the two items in the constraint.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("relation")]
 		NSLayoutRelation Relation { get; }
 
+		/// <summary>The second item participating in the constraint.</summary>
+		///         <value>
+		///           <para />
+		///         </value>
+		///         <remarks>
+		///           <para />
+		///         </remarks>
 		[Export ("secondItem", ArgumentSemantic.Assign)]
 		[NullAllowed]
 		NSObject SecondItem { get; }
 
+		/// <summary>The attribute of the second item participating in the constraint.</summary>
+		///         <value>
+		///           <para />
+		///         </value>
+		///         <remarks>
+		///           <para />
+		///         </remarks>
 		[Export ("secondAttribute")]
 		NSLayoutAttribute SecondAttribute { get; }
 
+		/// <summary>Applied to the second attribute participating in the constraint.</summary>
+		///         <value>
+		///           <para />
+		///         </value>
+		///         <remarks>
+		///           <para />
+		///         </remarks>
 		[Export ("multiplier")]
 		nfloat Multiplier { get; }
 
+		/// <summary>Indicates the constant float applied to the constraint.</summary>
+		///         <value>
+		///           <para />
+		///         </value>
+		///         <remarks>
+		///           <para />
+		///         </remarks>
 		[Export ("constant")]
 		nfloat Constant { get; set; }
 
+		/// <summary>Controls whether the constraint is active.  Active constraints are used as part of the auto-layout process, those that are not are ignored.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("active")]
 		bool Active { [Bind ("isActive")] get; set; }
 
+		/// <include file="../docs/api/UIKit/NSLayoutConstraint.xml" path="/Documentation/Docs[@DocId='M:UIKit.NSLayoutConstraint.ActivateConstraints(UIKit.NSLayoutConstraint[])']/*" />
 		[MacCatalyst (13, 1)]
 		[Static, Export ("activateConstraints:")]
 		void ActivateConstraints (NSLayoutConstraint [] constraints);
 
+		/// <param name="constraints">Constraints to deactivate.</param>
+		///         <summary>Deactivates all of the constraints passed.</summary>
+		///         <remarks>This method has the same effect as setting the <see cref="UIKit.NSLayoutConstraint.Active" /> property to <see langword="false" />.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static, Export ("deactivateConstraints:")]
 		void DeactivateConstraints (NSLayoutConstraint [] constraints);
 
 		[MacCatalyst (13, 1)]
 		[Export ("firstAnchor", ArgumentSemantic.Copy)]
-#if MONOMAC && !NET
-		NSLayoutAnchor<NSObject> FirstAnchor { get; }
-#else
 		[Internal]
 		IntPtr _FirstAnchor<AnchorType> ();
-#endif
 
 		[MacCatalyst (13, 1)]
 		[Export ("secondAnchor", ArgumentSemantic.Copy)]
-#if MONOMAC && !NET
-		[NullAllowed]
-		NSLayoutAnchor<NSObject> SecondAnchor { get; }
-#else
 		[Internal]
 		IntPtr _SecondAnchor<AnchorType> ();
-#endif
 
 		[NullAllowed, Export ("identifier")]
 		string Identifier { get; set; }
 	}
 
-	/// <summary>Defines the relationship between <see cref="T:UIKit.NSTextAttachment" />s and a <see cref="T:UIKit.NSLayoutManager" />.</summary>
+	/// <summary>Defines the relationship between <see cref="UIKit.NSTextAttachment" />s and a <see cref="UIKit.NSLayoutManager" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/NSTextAttachmentContainer_Protocol/index.html">Apple documentation for <c>NSTextAttachmentContainer</c></related>
-	[NoWatch]
 	[Introduced (PlatformName.iOS)]
 	[MacCatalyst (13, 1)]
 	[Model]
 	[Protocol]
 	[BaseType (typeof (NSObject))]
 	partial interface NSTextAttachmentContainer {
-		[NoWatch]
+		/// <param name="bounds">To be added.</param>
+		/// <param name="textContainer">To be added.</param>
+		/// <param name="characterIndex">To be added.</param>
+		/// <summary>Returns an image rendered in <paramref name="bounds" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("imageForBounds:textContainer:characterIndex:")]
 		[return: NullAllowed]
-#if MONOMAC && !NET
-		Image GetImage (CGRect imageBounds, [NullAllowed] NSTextContainer textContainer, nuint charIndex);
-#else
 		Image GetImageForBounds (CGRect bounds, [NullAllowed] NSTextContainer textContainer, nuint characterIndex);
-#endif
 
-		[NoWatch]
+		/// <param name="textContainer">To be added.</param>
+		/// <param name="proposedLineFragment">To be added.</param>
+		/// <param name="glyphPosition">To be added.</param>
+		/// <param name="characterIndex">To be added.</param>
+		/// <summary>Returns the bounds of the text attachment.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("attachmentBoundsForTextContainer:proposedLineFragment:glyphPosition:characterIndex:")]
 		CGRect GetAttachmentBounds ([NullAllowed] NSTextContainer textContainer, CGRect proposedLineFragment, CGPoint glyphPosition, nuint characterIndex);
 	}
 
-	/// <summary>An attachment to a <see cref="T:Foundation.NSAttributedString" />.</summary>
+	/// <summary>An attachment to a <see cref="Foundation.NSAttributedString" />.</summary>
 	///     
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/NSTextAttachment_Class_TextKit/index.html">Apple documentation for <c>NSTextAttachment</c></related>
 	[MacCatalyst (13, 1)]
-	[NoWatch]
 	[BaseType (typeof (NSObject))]
 	partial interface NSTextAttachment : NSTextAttachmentContainer, NSSecureCoding, NSTextAttachmentLayout
-#if !WATCH && !MONOMAC
+#if !MONOMAC
 	, UIAccessibilityContentSizeCategoryImageAdjusting
-#endif // !WATCH
+#endif // !MONOMAC
 	{
 		[NoiOS]
 		[NoTV]
@@ -2534,12 +2931,28 @@ namespace UIKit {
 		[Export ("initWithFileWrapper:")]
 		NativeHandle Constructor (NSFileWrapper fileWrapper);
 
+		/// <param name="contentData">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="uti">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Creates a new <see cref="UIKit.NSTextAttachment" /> with the specified <paramref name="contentData" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[DesignatedInitializer]
 		[Export ("initWithData:ofType:")]
 		[PostGet ("Contents")]
 		NativeHandle Constructor ([NullAllowed] NSData contentData, [NullAllowed] string uti);
 
+		/// <summary>The contents of the text attachment. Modification invalidates the Image property.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[NullAllowed]
 		[Export ("contents", ArgumentSemantic.Retain)]
@@ -2559,6 +2972,12 @@ namespace UIKit {
 		[Export ("bounds")]
 		CGRect Bounds { get; set; }
 
+		/// <summary>The file wrapper associated with this NSTextAttachment.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("fileWrapper", ArgumentSemantic.Retain)]
 		NSFileWrapper FileWrapper { get; set; }
@@ -2570,55 +2989,52 @@ namespace UIKit {
 		NSTextAttachmentCell AttachmentCell { get; set; }
 
 		[NoMac]
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("textAttachmentWithImage:")]
 		NSTextAttachment Create (Image image);
 
-		[TV (15, 0), NoWatch, iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("lineLayoutPadding")]
 		nfloat LineLayoutPadding { get; set; }
 
-		[TV (15, 0), NoWatch, iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 		[Static]
 		[Export ("textAttachmentViewProviderClassForFileType:")]
 		[return: NullAllowed]
 		Class GetTextAttachmentViewProviderClass (string fileType);
 
-		[TV (15, 0), NoWatch, iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 		[Static]
 		[Export ("registerTextAttachmentViewProviderClass:forFileType:")]
 		void RegisterViewProviderClass (Class textAttachmentViewProviderClass, string fileType);
 
-		[TV (15, 0), NoWatch, iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("allowsTextAttachmentView")]
 		bool AllowsTextAttachmentView { get; set; }
 
-		[TV (15, 0), NoWatch, iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("usesTextAttachmentView")]
 		bool UsesTextAttachmentView { get; }
 	}
 
-	[TV (15, 0), Watch (9, 0), iOS (15, 0)]
+	[TV (15, 0), iOS (15, 0)]
 	[MacCatalyst (15, 0)]
 	[Protocol]
 	interface NSTextAttachmentLayout {
 
-		[NoWatch]
 		[MacCatalyst (15, 0)]
 		[Abstract]
 		[Export ("imageForBounds:attributes:location:textContainer:")]
 		[return: NullAllowed]
 		Image GetImageForBounds (CGRect bounds, NSDictionary<NSString, NSObject> attributes, INSTextLocation location, [NullAllowed] NSTextContainer textContainer);
 
-		[NoWatch]
 		[MacCatalyst (15, 0)]
 		[Abstract]
 		[Export ("attachmentBoundsForAttributes:location:textContainer:proposedLineFragment:position:")]
 		CGRect GetAttachmentBounds (NSDictionary<NSString, NSObject> attributes, INSTextLocation location, [NullAllowed] NSTextContainer textContainer, CGRect proposedLineFragment, CGPoint position);
 
-		[NoWatch]
 		[MacCatalyst (15, 0)]
 		[Abstract]
 		[Export ("viewProviderForParentView:location:textContainer:")]
@@ -2627,95 +3043,113 @@ namespace UIKit {
 	}
 
 	/// <include file="../docs/api/UIKit/NSTextStorage.xml" path="/Documentation/Docs[@DocId='T:UIKit.NSTextStorage']/*" />
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSMutableAttributedString), Delegates = new string [] { "Delegate" }, Events = new Type [] { typeof (NSTextStorageDelegate) })]
 	partial interface NSTextStorage : NSSecureCoding {
 		[Export ("initWithString:")]
 		NativeHandle Constructor (string str);
 
+		/// <summary>The NSLayoutManagers associated with this NSTextStorage. Read-only.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("layoutManagers")]
-#if MONOMAC || NET
 		NSLayoutManager [] LayoutManagers { get; }
-#else
-		NSObject [] LayoutManagers { get; }
-#endif
 
+		/// <param name="aLayoutManager">To be added.</param>
+		///         <summary>Adds an NSLayoutManager to this NSTextStorage.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("addLayoutManager:")]
 		[PostGet ("LayoutManagers")]
 		void AddLayoutManager (NSLayoutManager aLayoutManager);
 
+		/// <param name="aLayoutManager">To be added.</param>
+		///         <summary>Removes an NSLayoutManager from this NSTextStorage's LayoutManagers collection.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("removeLayoutManager:")]
 		[PostGet ("LayoutManagers")]
 		void RemoveLayoutManager (NSLayoutManager aLayoutManager);
 
+		/// <summary>The kinds of edits pending for this NSTextStorage.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("editedMask")]
-#if MONOMAC && !NET
-		NSTextStorageEditedFlags EditedMask {
-#else
 		NSTextStorageEditActions EditedMask {
-#endif
 			get;
-#if !NET && !MONOMAC && !__MACCATALYST__
-			[NotImplemented]
-			set;
-#endif
 		}
 
+		/// <summary>The range in this NSTextStorage in which pending changes have been made.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("editedRange")]
 		NSRange EditedRange {
 			get;
-#if !XAMCORE_3_0 && !MONOMAC && !__MACCATALYST__
-			[NotImplemented]
-			set;
-#endif
 		}
 
+		/// <summary>The change in length for the pending changes.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("changeInLength")]
 		nint ChangeInLength {
 			get;
-#if !XAMCORE_3_0 && !MONOMAC && !__MACCATALYST__
-			[NotImplemented]
-			set;
-#endif
 		}
 
 		[NullAllowed]
 		[Export ("delegate", ArgumentSemantic.Assign)]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the UIKit.INSTextStorageDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the UIKit.INSTextStorageDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		INSTextStorageDelegate Delegate { get; set; }
 
+		/// <param name="editedMask">To be added.</param>
+		/// <param name="editedRange">To be added.</param>
+		/// <param name="delta">To be added.</param>
+		/// <summary>Indicates a change.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("edited:range:changeInLength:")]
-#if MONOMAC && !NET
-		void Edited (nuint editedMask, NSRange editedRange, nint delta);
-#else
 		void Edited (NSTextStorageEditActions editedMask, NSRange editedRange, nint delta);
-#endif
 
+		/// <summary>Activates post-editing operations.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("processEditing")]
 		void ProcessEditing ();
 
+		/// <summary>Whether this NSTextStorage fixes attributes lazily. Read-only.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("fixesAttributesLazily")]
 		bool FixesAttributesLazily { get; }
 
+		/// <param name="range">To be added.</param>
+		///         <summary>Invalidates attributes in the specified range.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("invalidateAttributesInRange:")]
 		void InvalidateAttributes (NSRange range);
 
+		/// <param name="range">To be added.</param>
+		///         <summary>Ensures that attributes have been fixed in the given range.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("ensureAttributesAreFixedInRange:")]
 		void EnsureAttributesAreFixed (NSRange range);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSTextStorageWillProcessEditingNotification")]
-#if !MONOMAC || NET
 		[Internal]
-#endif
 		NSString WillProcessEditingNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSTextStorageDidProcessEditingNotification")]
-#if !MONOMAC || NET
 		[Internal]
-#endif
 		NSString DidProcessEditingNotification { get; }
 
 		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
@@ -2724,23 +3158,29 @@ namespace UIKit {
 		INSTextStorageObserving TextStorageObserver { get; set; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:UIKit.NSTextStorageDelegate" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UIKit.NSTextStorageDelegate" />.</summary>
 	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:UIKit.NSTextStorageDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:UIKit.NSTextStorageDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:UIKit.NSTextStorageDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UIKit.NSTextStorageDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UIKit.NSTextStorageDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="UIKit.NSTextStorageDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	interface INSTextStorageDelegate { }
 
-	/// <summary>A delegate object that provides events relating to processing editing for <see cref="T:UIKit.NSTextStorage" />.</summary>
+	/// <summary>A delegate object that provides events relating to processing editing for <see cref="UIKit.NSTextStorage" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/NSTextStorageDelegate_Protocol_TextKit/index.html">Apple documentation for <c>NSTextStorageDelegate</c></related>
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	[Model]
 	[BaseType (typeof (NSObject))]
 	[Protocol]
 	partial interface NSTextStorageDelegate {
+		/// <param name="notification">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>To be added.</summary>
+			<remarks>To be added.</remarks>
+			""")]
 		[NoiOS]
 		[NoTV]
 		[NoMacCatalyst]
@@ -2748,6 +3188,13 @@ namespace UIKit {
 		[Export ("textStorageWillProcessEditing:")]
 		void TextStorageWillProcessEditing (NSNotification notification);
 
+		/// <param name="notification">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>To be added.</summary>
+			<remarks>To be added.</remarks>
+			""")]
 		[NoiOS]
 		[NoTV]
 		[NoMacCatalyst]
@@ -2755,18 +3202,36 @@ namespace UIKit {
 		[Export ("textStorageDidProcessEditing:")]
 		void TextStorageDidProcessEditing (NSNotification notification);
 
+		/// <param name="textStorage">To be added.</param>
+		/// <param name="editedMask">To be added.</param>
+		/// <param name="editedRange">To be added.</param>
+		/// <param name="delta">To be added.</param>
+		/// <summary>Indicates that processing of the editing on the specified editedRange is about to start.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("textStorage:willProcessEditing:range:changeInLength:")]
-		[EventArgs ("NSTextStorage")]
+		[EventArgs ("NSTextStorage", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the Delegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void WillProcessEditing (NSTextStorage textStorage, NSTextStorageEditActions editedMask, NSRange editedRange, nint delta);
 
+		/// <param name="textStorage">To be added.</param>
+		/// <param name="editedMask">To be added.</param>
+		/// <param name="editedRange">To be added.</param>
+		/// <param name="delta">To be added.</param>
+		/// <summary>Indicates that editing has completed for the specified editedRange.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("textStorage:didProcessEditing:range:changeInLength:")]
-		[EventArgs ("NSTextStorage")]
+		[EventArgs ("NSTextStorage", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the Delegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidProcessEditing (NSTextStorage textStorage, NSTextStorageEditActions editedMask, NSRange editedRange, nint delta);
 	}
 
-	[NoWatch, TV (13, 0), iOS (13, 0)]
+	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -2796,42 +3261,26 @@ namespace UIKit {
 		bool IsFractionalOffset { get; }
 	}
 
-	[NoWatch, TV (13, 0), iOS (13, 0)]
+	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSCollectionLayoutDimension : NSCopying {
 		[Static]
 		[Export ("fractionalWidthDimension:")]
-#if MONOMAC && !NET
-		NSCollectionLayoutDimension CreateFractionalWidthDimension (nfloat fractionalWidth);
-#else
 		NSCollectionLayoutDimension CreateFractionalWidth (nfloat fractionalWidth);
-#endif
 
 		[Static]
 		[Export ("fractionalHeightDimension:")]
-#if MONOMAC && !NET
-		NSCollectionLayoutDimension CreateFractionalHeightDimension (nfloat fractionalHeight);
-#else
 		NSCollectionLayoutDimension CreateFractionalHeight (nfloat fractionalHeight);
-#endif
 
 		[Static]
 		[Export ("absoluteDimension:")]
-#if MONOMAC && !NET
-		NSCollectionLayoutDimension CreateAbsoluteDimension (nfloat absoluteDimension);
-#else
 		NSCollectionLayoutDimension CreateAbsolute (nfloat absoluteDimension);
-#endif
 
 		[Static]
 		[Export ("estimatedDimension:")]
-#if MONOMAC && !NET
-		NSCollectionLayoutDimension CreateEstimatedDimension (nfloat estimatedDimension);
-#else
 		NSCollectionLayoutDimension CreateEstimated (nfloat estimatedDimension);
-#endif
 
 		[Export ("isFractionalWidth")]
 		bool IsFractionalWidth { get; }
@@ -2848,18 +3297,18 @@ namespace UIKit {
 		[Export ("dimension")]
 		nfloat Dimension { get; }
 
-		[Watch (10, 0), TV (17, 0), iOS (17, 0), NoMac, MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), NoMac, MacCatalyst (17, 0)]
 		[Static]
 		[Export ("uniformAcrossSiblingsWithEstimate:")]
 		NSCollectionLayoutDimension CreateUniformAcrossSiblings (nfloat estimatedDimension);
 
-		[Watch (10, 0), TV (17, 0), iOS (17, 0), MacCatalyst (17, 0), NoMac]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0), NoMac]
 		[Export ("isUniformAcrossSiblings")]
 		bool IsUniformAcrossSiblings { get; }
 	}
 
 
-	[NoWatch, TV (13, 0), iOS (13, 0)]
+	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -2875,26 +3324,18 @@ namespace UIKit {
 		NSCollectionLayoutDimension HeightDimension { get; }
 	}
 
-	[NoWatch, TV (13, 0), iOS (13, 0)]
+	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSCollectionLayoutSpacing : NSCopying {
 		[Static]
 		[Export ("flexibleSpacing:")]
-#if MONOMAC && !NET
-		NSCollectionLayoutSpacing CreateFlexibleSpacing (nfloat flexibleSpacing);
-#else
 		NSCollectionLayoutSpacing CreateFlexible (nfloat flexibleSpacing);
-#endif
 
 		[Static]
 		[Export ("fixedSpacing:")]
-#if MONOMAC && !NET
-		NSCollectionLayoutSpacing CreateFixedSpacing (nfloat fixedSpacing);
-#else
 		NSCollectionLayoutSpacing CreateFixed (nfloat fixedSpacing);
-#endif
 
 		[Export ("spacing")]
 		nfloat Spacing { get; }
@@ -2906,18 +3347,14 @@ namespace UIKit {
 		bool IsFixedSpacing { get; }
 	}
 
-	[NoWatch, TV (13, 0), iOS (13, 0)]
+	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSCollectionLayoutEdgeSpacing : NSCopying {
 		[Static]
 		[Export ("spacingForLeading:top:trailing:bottom:")]
-#if MONOMAC && !NET
-		NSCollectionLayoutEdgeSpacing CreateSpacing ([NullAllowed] NSCollectionLayoutSpacing leading, [NullAllowed] NSCollectionLayoutSpacing top, [NullAllowed] NSCollectionLayoutSpacing trailing, [NullAllowed] NSCollectionLayoutSpacing bottom);
-#else
 		NSCollectionLayoutEdgeSpacing Create ([NullAllowed] NSCollectionLayoutSpacing leading, [NullAllowed] NSCollectionLayoutSpacing top, [NullAllowed] NSCollectionLayoutSpacing trailing, [NullAllowed] NSCollectionLayoutSpacing bottom);
-#endif
 
 		[NullAllowed, Export ("leading")]
 		NSCollectionLayoutSpacing Leading { get; }
@@ -2932,7 +3369,7 @@ namespace UIKit {
 		NSCollectionLayoutSpacing Bottom { get; }
 	}
 
-	[NoWatch, TV (13, 0), iOS (13, 0)]
+	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSCollectionLayoutItem))]
 	[DisableDefaultCtor]
@@ -2958,7 +3395,7 @@ namespace UIKit {
 		NSCollectionLayoutAnchor ItemAnchor { get; }
 	}
 
-	[NoWatch, TV (13, 0), iOS (13, 0)]
+	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -2984,7 +3421,7 @@ namespace UIKit {
 		NSCollectionLayoutSupplementaryItem [] SupplementaryItems { get; }
 	}
 
-	[NoWatch, TV (13, 0), iOS (13, 0)]
+	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSCollectionLayoutSupplementaryItem))]
 	[DisableDefaultCtor]
@@ -3011,7 +3448,7 @@ namespace UIKit {
 	}
 
 	[MacCatalyst (13, 1)]
-	[NoWatch, TV (13, 0), iOS (13, 0)]
+	[TV (13, 0), iOS (13, 0)]
 	[BaseType (typeof (NSCollectionLayoutItem))]
 	[DisableDefaultCtor]
 	interface NSCollectionLayoutDecorationItem : NSCopying {
@@ -3031,9 +3468,26 @@ namespace UIKit {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // - (instancetype)init NS_UNAVAILABLE;
 	interface NSDataAsset : NSCopying {
+		/// <param name="name">The name of the dataset folder within the asset catalog, without the ".dataset" extension.</param>
+		/// <summary>Returns the data specified in the <paramref name="name" /> folder's "Contents.json" file.</summary>
+		/// <remarks>
+		///           <para>For instance, call <c>new NSDataAsset("FolderName")</c> for:</para>
+		///           <para>
+		///             <img href="~/UIKit/_images/UIKit.NSDataAsset_FolderStructure.png" alt="Image showing the folder structure." />
+		///           </para>
+		///         </remarks>
 		[Export ("initWithName:")]
 		NativeHandle Constructor (string name);
 
+		/// <param name="name">The name of the dataset folder within the asset catalog, without the ".dataset" extension.</param>
+		/// <param name="bundle">The bundle containing the asset catalog.</param>
+		/// <summary>Returns the data specified in the <paramref name="name" /> folder's "Contents.json" file.</summary>
+		/// <remarks>
+		///           <para>For instance, call <c>new NSDataAsset("FolderName", NSBundle.MainBundle)</c> for:</para>
+		///           <para>
+		///             <img href="~/UIKit/_images/UIKit.NSDataAsset_FolderStructure.png" alt="Image showing the folder structure." />
+		///           </para>
+		///         </remarks>
 		[Export ("initWithName:bundle:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (string name, NSBundle bundle);
@@ -3044,30 +3498,34 @@ namespace UIKit {
 		[Export ("data", ArgumentSemantic.Copy)]
 		NSData Data { get; }
 
+		/// <summary>The UTI of the <see cref="UIKit.NSDataAsset.Data" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("typeIdentifier")] // Uniform Type Identifier
 		NSString TypeIdentifier { get; }
 	}
 
 	/// <summary>The visual attributes associated with a drop shadow.</summary>
 	///     <remarks>
-	///       <para>The <see cref="T:UIKit.NSShadow" /> class encapsulates the visual attributes of a drop shadow.</para>
+	///       <para>The <see cref="UIKit.NSShadow" /> class encapsulates the visual attributes of a drop shadow.</para>
 	///     </remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/ApplicationKit/Classes/NSShadow_Class/index.html">Apple documentation for <c>NSShadow</c></related>
 	[MacCatalyst (13, 1)]
-	[Watch (6, 0)]
 	[BaseType (typeof (NSObject))]
 	[DesignatedDefaultCtor]
 	interface NSShadow : NSSecureCoding, NSCopying {
 		[NoiOS]
 		[NoMacCatalyst]
 		[NoTV]
-		[NoWatch]
 		[Export ("set")]
 		void Set ();
 
 		[Export ("shadowOffset", ArgumentSemantic.Assign)]
 		CGSize ShadowOffset { get; set; }
 
+		/// <summary>The radius of the shadow blur.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("shadowBlurRadius", ArgumentSemantic.Assign)]
 		nfloat ShadowBlurRadius { get; set; }
 
@@ -3085,6 +3543,14 @@ namespace UIKit {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface NSTextTab : NSSecureCoding, NSCopying {
+		/// <param name="alignment">To be added.</param>
+		/// <param name="location">To be added.</param>
+		/// <param name="options">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithTextAlignment:location:options:")]
 		[PostGet ("Options")]
@@ -3093,7 +3559,6 @@ namespace UIKit {
 		[NoiOS]
 		[NoMacCatalyst]
 		[NoTV]
-		[NoWatch]
 		[Export ("initWithType:location:")]
 		NativeHandle Constructor (NSTextTabType type, nfloat location);
 
@@ -3109,60 +3574,69 @@ namespace UIKit {
 		[NoiOS]
 		[NoMacCatalyst]
 		[NoTV]
-		[NoWatch]
 		[Export ("tabStopType")]
 		NSTextTabType TabStopType { get; }
 
+		/// <param name="locale">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>The column terminators for the specified locale. Passing null returns the system locale.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("columnTerminatorsForLocale:")]
 		NSCharacterSet GetColumnTerminators ([NullAllowed] NSLocale locale);
 
+		/// <summary>Represents the value associated with the constant NSTabColumnTerminatorsAttributeName</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSTabColumnTerminatorsAttributeName")]
 		NSString ColumnTerminatorsAttributeName { get; }
 	}
 
+	/// <summary>Interface that, together with the <see cref="UIKit.NSTextLayoutOrientationProvider_Extensions" /> class, comprise the NSTextLayoutOrientationProvider protocol.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
-	[NoWatch]
 	[Protocol]
 	// no [Model] since it's not exposed in any API
 	// only NSTextContainer conforms to it but it's only queried by iOS itself
 	interface NSTextLayoutOrientationProvider {
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("layoutOrientation")]
 		NSTextLayoutOrientation LayoutOrientation {
 			get;
-#if !XAMCORE_3_0 && !MONOMAC
-			[NotImplemented]
-			set;
-#endif
 		}
 	}
 
 	/// <include file="../docs/api/UIKit/NSTextContainer.xml" path="/Documentation/Docs[@DocId='T:UIKit.NSTextContainer']/*" />
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	partial interface NSTextContainer : NSTextLayoutOrientationProvider, NSSecureCoding {
-		[NoMac]
 		[MacCatalyst (13, 1)]
 		[DesignatedInitializer]
 		[Export ("initWithSize:")]
 		NativeHandle Constructor (CGSize size);
 
+		[Deprecated (PlatformName.MacOSX, 10, 11, "Use 'new NSTextContainer (CGSize)' instead.")]
 		[NoiOS]
 		[NoMacCatalyst]
 		[NoTV]
 		[Export ("initWithContainerSize:"), Internal]
 		[Sealed]
-		IntPtr InitWithContainerSize (CGSize size);
+		IntPtr _InitWithContainerSize (CGSize size);
 
 		[NoiOS]
 		[NoMacCatalyst]
 		[NoTV]
 		[Export ("initWithSize:"), Internal]
 		[Sealed]
-		IntPtr InitWithSize (CGSize size);
+		IntPtr _InitWithSize (CGSize size);
 
 		[NullAllowed] // by default this property is null
 		[Export ("layoutManager", ArgumentSemantic.Assign)]
@@ -3172,6 +3646,14 @@ namespace UIKit {
 		[Export ("size")]
 		CGSize Size { get; set; }
 
+		/// <summary>An array of <see cref="UIKit.UIBezierPath" />s from which text will be excluded.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>
+		///           <para>Exclusion paths are defined in the <see cref="UIKit.NSTextContainer" />'s coordinate system (see <see cref="UIKit.UIView.ConvertRectFromView(CoreGraphics.CGRect,UIKit.UIView)" />).</para>
+		///         </remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("exclusionPaths", ArgumentSemantic.Copy)]
 		BezierPath [] ExclusionPaths { get; set; }
@@ -3180,31 +3662,52 @@ namespace UIKit {
 		[Export ("lineBreakMode")]
 		LineBreakMode LineBreakMode { get; set; }
 
+		/// <summary>The amount, in points, by which text is inset within line fragment rectangles. Default is 5.0 points.</summary>
+		///         <value>The default value is 5.0.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("lineFragmentPadding")]
 		nfloat LineFragmentPadding { get; set; }
 
+		/// <summary>The maximum number of lines that can be stored in the receiver.</summary>
+		///         <value>The default value of 0 indicates no limit.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("maximumNumberOfLines")]
 		nuint MaximumNumberOfLines { get; set; }
 
+		/// <param name="proposedRect">To be added.</param>
+		/// <param name="characterIndex">To be added.</param>
+		/// <param name="baseWritingDirection">To be added.</param>
+		/// <param name="remainingRect">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("lineFragmentRectForProposedRect:atIndex:writingDirection:remainingRect:")]
-#if MONOMAC && !NET
-		CGRect GetLineFragmentRect (CGRect proposedRect, nuint characterIndex, NSWritingDirection baseWritingDirection, ref CGRect remainingRect);
-#else
 		CGRect GetLineFragmentRect (CGRect proposedRect, nuint characterIndex, NSWritingDirection baseWritingDirection, out CGRect remainingRect);
-#endif
 
+		/// <summary>Whether the <see cref="UIKit.NSTextContainer" /> changes its <see cref="UIKit.NSTextContainer.Size" /> as its associated <see cref="UIKit.UITextView" /> is resized.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("widthTracksTextView")]
 		bool WidthTracksTextView { get; set; }
 
+		/// <summary>Whether the <see cref="UIKit.NSTextContainer" /> changes its <see cref="UIKit.NSTextContainer.Size" /> as its associated <see cref="UIKit.UITextView" /> is resized.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("heightTracksTextView")]
 		bool HeightTracksTextView { get; set; }
 
+		/// <param name="newLayoutManager">The new <see cref="UIKit.NSLayoutManager" />.</param>
+		///         <summary>Replaces the current <see cref="UIKit.NSLayoutManager" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("replaceLayoutManager:")]
 		void ReplaceLayoutManager (NSLayoutManager newLayoutManager);
 
+		/// <summary>Gets a Boolean value that tells whether the receiver's text container is a simply connected rectangular region that has the exact orientation of the text view.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("simpleRectangularTextContainer")]
 		bool IsSimpleRectangularTextContainer { [Bind ("isSimpleRectangularTextContainer")] get; }
@@ -3234,33 +3737,61 @@ namespace UIKit {
 		NSTextLayoutManager TextLayoutManager { get; }
 	}
 
-	/// <summary>String drawing extension methods for <see cref="T:Foundation.NSString" />.</summary>
+	/// <summary>String drawing extension methods for <see cref="Foundation.NSString" />.</summary>
 	[ThreadSafe]
 	[Category, BaseType (typeof (NSString))]
 	interface NSExtendedStringDrawing {
+		/// <param name="rect">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="attributes">To be added.</param>
+		/// <param name="context">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("drawWithRect:options:attributes:context:")]
 		void WeakDrawString (CGRect rect, NSStringDrawingOptions options, [NullAllowed] NSDictionary attributes, [NullAllowed] NSStringDrawingContext context);
 
+		/// <param name="rect">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="attributes">To be added.</param>
+		/// <param name="context">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("WeakDrawString (This, rect, options, attributes.GetDictionary (), context)")]
 		void DrawString (CGRect rect, NSStringDrawingOptions options, StringAttributes attributes, [NullAllowed] NSStringDrawingContext context);
 
+		/// <param name="size">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="attributes">To be added.</param>
+		/// <param name="context">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("boundingRectWithSize:options:attributes:context:")]
 		CGRect WeakGetBoundingRect (CGSize size, NSStringDrawingOptions options, [NullAllowed] NSDictionary attributes, [NullAllowed] NSStringDrawingContext context);
 
+		/// <param name="size">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="attributes">To be added.</param>
+		/// <param name="context">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("WeakGetBoundingRect (This, size, options, attributes.GetDictionary (), context)")]
 		CGRect GetBoundingRect (CGSize size, NSStringDrawingOptions options, StringAttributes attributes, [NullAllowed] NSStringDrawingContext context);
 	}
 
-	[TV (15, 0), NoWatch, iOS (15, 0), MacCatalyst (15, 0)]
-#if NET
+	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 	[Protocol, Model]
-#else
-	[Protocol, Model (AutoGeneratedName = true)]
-#endif
 	[BaseType (typeof (NSObject))]
 	interface NSTextLayoutManagerDelegate {
 		[Export ("textLayoutManager:textLayoutFragmentForLocation:inTextElement:")]
@@ -3274,7 +3805,7 @@ namespace UIKit {
 		NSDictionary<NSString, NSObject> GetRenderingAttributes (NSTextLayoutManager textLayoutManager, NSObject link, INSTextLocation location, NSDictionary<NSString, NSObject> renderingAttributes);
 	}
 
-	[TV (15, 0), NoWatch, iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 	[Native]
 	public enum NSTextLayoutManagerSegmentType : long {
 		Standard = 0,
@@ -3282,7 +3813,7 @@ namespace UIKit {
 		Highlight = 2,
 	}
 
-	[TV (15, 0), NoWatch, iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 	[Flags]
 	[Native]
 	public enum NSTextLayoutManagerSegmentOptions : ulong {
@@ -3294,7 +3825,7 @@ namespace UIKit {
 		UpstreamAffinity = (1uL << 4),
 	}
 
-	[TV (15, 0), NoWatch, iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 	[Flags]
 	[Native]
 	public enum NSTextLayoutFragmentEnumerationOptions : ulong {
@@ -3307,13 +3838,13 @@ namespace UIKit {
 
 	interface INSTextLayoutManagerDelegate { }
 
-	[TV (15, 0), NoWatch, iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 	delegate bool NSTextLayoutManagerEnumerateRenderingAttributesDelegate (NSTextLayoutManager textLayoutManager, NSDictionary<NSString, NSObject> attributes, NSTextRange textRange);
 
-	[TV (15, 0), NoWatch, iOS (15, 0), MacCatalyst (15, 0)]
-	delegate bool NSTextLayoutManagerEnumerateTextSegmentsDelegate (NSTextRange textSegmentRange, CGRect textSegmentFrame, nfloat baselinePosition, NSTextContainer textContainer);
+	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+	delegate bool NSTextLayoutManagerEnumerateTextSegmentsDelegate ([NullAllowed] NSTextRange textSegmentRange, CGRect textSegmentFrame, nfloat baselinePosition, NSTextContainer textContainer);
 
-	[TV (15, 0), NoWatch, iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 	[DesignatedDefaultCtor]
 	[BaseType (typeof (NSObject))]
 	interface NSTextLayoutManager : NSSecureCoding, NSTextSelectionDataSource {
@@ -3413,7 +3944,7 @@ namespace UIKit {
 		void ReplaceContents (NSTextRange range, NSAttributedString attributedString);
 	}
 
-	[TV (15, 0), NoWatch, iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 	[Flags]
 	[Native]
 	public enum NSTextContentManagerEnumerationOptions : ulong {
@@ -3421,12 +3952,8 @@ namespace UIKit {
 		Reverse = (1uL << 0),
 	}
 
-	[TV (15, 0), NoWatch, iOS (15, 0), MacCatalyst (15, 0)]
-#if NET
+	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 	[Protocol, Model]
-#else
-	[Protocol, Model (AutoGeneratedName = true)]
-#endif
 	[BaseType (typeof (NSObject))]
 	interface NSTextContentManagerDelegate {
 		[Export ("textContentManager:textElementAtLocation:")]
@@ -3437,7 +3964,7 @@ namespace UIKit {
 		bool ShouldEnumerateTextElement (NSTextContentManager textContentManager, NSTextElement textElement, NSTextContentManagerEnumerationOptions options);
 	}
 
-	[TV (15, 0), NoWatch, iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 	[Protocol]
 	interface NSTextElementProvider {
 		[Abstract]
@@ -3471,7 +3998,7 @@ namespace UIKit {
 
 	interface INSTextContentManagerDelegate { }
 
-	[TV (15, 0), NoWatch, iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSTextContentManager : NSTextElementProvider, NSSecureCoding {
@@ -3528,7 +4055,7 @@ namespace UIKit {
 
 	interface INSTextLocation { }
 
-	[TV (15, 0), NoWatch, iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 	[Protocol]
 	interface NSTextLocation {
 		[Abstract]
@@ -3536,7 +4063,7 @@ namespace UIKit {
 		NSComparisonResult Compare (INSTextLocation location);
 	}
 
-	[TV (15, 0), NoWatch, iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 	[BaseType (typeof (NSObject))]
 	interface NSTextElement {
 		[Export ("initWithTextContentManager:")]
@@ -3549,20 +4076,20 @@ namespace UIKit {
 		[NullAllowed, Export ("elementRange", ArgumentSemantic.Strong)]
 		NSTextRange ElementRange { get; set; }
 
-		[TV (16, 0), NoWatch, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("childElements", ArgumentSemantic.Copy)]
 		NSTextElement [] ChildElements { get; }
 
-		[TV (16, 0), NoWatch, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[NullAllowed, Export ("parentElement", ArgumentSemantic.Weak)]
 		NSTextElement ParentElement { get; }
 
-		[TV (16, 0), NoWatch, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("isRepresentedElement")]
 		bool IsRepresentedElement { get; }
 	}
 
-	[TV (15, 0), NoWatch, iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 	[BaseType (typeof (NSTextElement))]
 	interface NSTextParagraph {
 		[Export ("initWithAttributedString:")]
@@ -3583,7 +4110,7 @@ namespace UIKit {
 		NSTextRange ParagraphSeparatorRange { get; }
 	}
 
-	[TV (15, 0), NoWatch, iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSTextLineFragment : NSSecureCoding {
@@ -3619,7 +4146,7 @@ namespace UIKit {
 		nfloat GetFractionOfDistanceThroughGlyph (CGPoint point);
 	}
 
-	[TV (15, 0), NoWatch, iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 	[Native]
 	public enum NSTextLayoutFragmentState : ulong {
 		None = 0,
@@ -3628,7 +4155,7 @@ namespace UIKit {
 		LayoutAvailable = 3,
 	}
 
-	[TV (15, 0), NoWatch, iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSTextAttachmentViewProvider {
@@ -3658,7 +4185,7 @@ namespace UIKit {
 		CGRect GetAttachmentBounds (NSDictionary<NSString, NSObject> attributes, INSTextLocation location, [NullAllowed] NSTextContainer textContainer, CGRect proposedLineFragment, CGPoint position);
 	}
 
-	[TV (15, 0), NoWatch, iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSTextLayoutFragment : NSSecureCoding {
@@ -3725,7 +4252,7 @@ namespace UIKit {
 		NSTextLineFragment GetTextLineFragment (INSTextLocation textLocation, bool isUpstreamAffinity);
 	}
 
-	[TV (15, 0), NoWatch, iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSTextRange {
@@ -3767,13 +4294,9 @@ namespace UIKit {
 
 	interface INSTextViewportLayoutControllerDelegate { }
 
-	[TV (15, 0), NoWatch, iOS (15, 0)]
+	[TV (15, 0), iOS (15, 0)]
 	[MacCatalyst (15, 0)]
-#if NET
 	[Protocol, Model]
-#else
-	[Protocol, Model (AutoGeneratedName = true)]
-#endif
 	[BaseType (typeof (NSObject))]
 	interface NSTextViewportLayoutControllerDelegate {
 		[Abstract]
@@ -3791,7 +4314,7 @@ namespace UIKit {
 		void DidLayout (NSTextViewportLayoutController textViewportLayoutController);
 	}
 
-	[TV (15, 0), NoWatch, iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSTextViewportLayoutController {
@@ -3825,7 +4348,7 @@ namespace UIKit {
 		void AdjustViewport (nfloat verticalOffset);
 	}
 
-	[TV (15, 0), NoWatch, iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 	[Native]
 	public enum NSTextSelectionGranularity : long {
 		Character,
@@ -3835,7 +4358,7 @@ namespace UIKit {
 		Sentence,
 	}
 
-	[TV (15, 0), NoWatch, iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 	[Native]
 	public enum NSTextSelectionAffinity : long {
 		Upstream = 0,
@@ -3843,7 +4366,7 @@ namespace UIKit {
 	}
 
 
-	[TV (15, 0), NoWatch, iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSTextSelection : NSSecureCoding {
@@ -3885,35 +4408,31 @@ namespace UIKit {
 		NSTextSelection GetTextSelection (NSTextRange [] textRanges);
 	}
 
-	[TV (15, 0), NoWatch, iOS (15, 0), MacCatalyst (15, 0)]
-	delegate void NSTextSelectionDataSourceEnumerateSubstringsDelegate (NSString substring, NSTextRange substringRange, NSTextRange enclodingRange, out bool stop);
+	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+	delegate void NSTextSelectionDataSourceEnumerateSubstringsDelegate ([NullAllowed] NSString substring, NSTextRange substringRange, [NullAllowed] NSTextRange enclodingRange, out bool stop);
 
-	[TV (15, 0), NoWatch, iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 	delegate void NSTextSelectionDataSourceEnumerateCaretOffsetsDelegate (nfloat caretOffset, INSTextLocation location, bool leadingEdge, out bool stop);
 
-	[TV (15, 0), NoWatch, iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 	delegate void NSTextSelectionDataSourceEnumerateContainerBoundariesDelegate (INSTextLocation location, out bool stop);
 
-	[TV (15, 0), NoWatch, iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 	[Native]
 	public enum NSTextSelectionNavigationLayoutOrientation : long {
 		Horizontal = 0,
 		Vertical = 1,
 	}
 
-	[TV (15, 0), NoWatch, iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 	[Native]
 	public enum NSTextSelectionNavigationWritingDirection : long {
 		LeftToRight = 0,
 		RightToLeft = 1,
 	}
 
-	[TV (15, 0), NoWatch, iOS (15, 0), MacCatalyst (15, 0)]
-#if NET
+	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 	[Protocol, Model]
-#else
-	[Protocol, Model (AutoGeneratedName = true)]
-#endif
 	[BaseType (typeof (NSObject))]
 	interface NSTextSelectionDataSource {
 		[Abstract]
@@ -3958,7 +4477,7 @@ namespace UIKit {
 		NSTextSelectionNavigationLayoutOrientation GetTextLayoutOrientation (INSTextLocation location);
 	}
 
-	[TV (15, 0), NoWatch, iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 	[Native]
 	public enum NSTextSelectionNavigationDirection : long {
 		Forward,
@@ -3969,7 +4488,7 @@ namespace UIKit {
 		Down,
 	}
 
-	[TV (15, 0), NoWatch, iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 	[Native]
 	public enum NSTextSelectionNavigationDestination : long {
 		Character,
@@ -3981,7 +4500,7 @@ namespace UIKit {
 		Document,
 	}
 
-	[TV (15, 0), NoWatch, iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 	[Flags]
 	[Native]
 	public enum NSTextSelectionNavigationModifier : ulong {
@@ -3992,7 +4511,7 @@ namespace UIKit {
 
 	interface INSTextSelectionDataSource { }
 
-	[TV (15, 0), NoWatch, iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSTextSelectionNavigation {
@@ -4038,12 +4557,8 @@ namespace UIKit {
 		NSTextRange [] GetDeletionRanges (NSTextSelection textSelection, NSTextSelectionNavigationDirection direction, NSTextSelectionNavigationDestination destination, bool allowsDecomposition);
 	}
 
-	[TV (15, 0), NoWatch, iOS (15, 0), MacCatalyst (15, 0)]
-#if NET
+	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 	[Protocol, Model]
-#else
-	[Protocol, Model (AutoGeneratedName = true)]
-#endif
 	[BaseType (typeof (NSObject))]
 	interface NSTextContentStorageDelegate : NSTextContentManagerDelegate {
 		[Export ("textContentStorage:textParagraphWithRange:")]
@@ -4055,7 +4570,7 @@ namespace UIKit {
 
 	interface INSTextStorageObserving { }
 
-	[TV (15, 0), NoWatch, iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 	[Protocol]
 	interface NSTextStorageObserving {
 		[Abstract]
@@ -4071,90 +4586,108 @@ namespace UIKit {
 		void PerformEditingTransaction (NSTextStorage textStorage, Action transaction);
 	}
 
-	[NoWatch, TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
 	enum NSTextListMarkerFormats {
 		[DefaultEnumValue]
 		[Field (null)]
 		CustomString = -1,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSTextListMarkerBox")]
 		Box,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSTextListMarkerCheck")]
 		Check,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSTextListMarkerCircle")]
 		Circle,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSTextListMarkerDiamond")]
 		Diamond,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSTextListMarkerDisc")]
 		Disc,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSTextListMarkerHyphen")]
 		Hyphen,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSTextListMarkerSquare")]
 		Square,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSTextListMarkerLowercaseHexadecimal")]
 		LowercaseHexadecimal,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSTextListMarkerUppercaseHexadecimal")]
 		UppercaseHexadecimal,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSTextListMarkerOctal")]
 		Octal,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSTextListMarkerLowercaseAlpha")]
 		LowercaseAlpha,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSTextListMarkerUppercaseAlpha")]
 		UppercaseAlpha,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSTextListMarkerLowercaseLatin")]
 		LowercaseLatin,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSTextListMarkerUppercaseLatin")]
 		UppercaseLatin,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSTextListMarkerLowercaseRoman")]
 		LowercaseRoman,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSTextListMarkerUppercaseRoman")]
 		UppercaseRoman,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSTextListMarkerDecimal")]
 		Decimal,
 	}
 
-	[NoWatch, TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
 	[Flags]
 	[Native]
 	public enum NSTextListOptions : ulong {
 		None = 0,
+		/// <summary>To be added.</summary>
 		PrependEnclosingMarker = 1,
 	}
 
-	[TV (15, 0), NoWatch, iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 	[BaseType (typeof (NSTextContentManager))]
 	interface NSTextContentStorage : NSTextStorageObserving {
 		[Wrap ("WeakDelegate")]
@@ -4187,7 +4720,7 @@ namespace UIKit {
 		NSTextRange GetAdjustedRange (NSTextRange textRange, bool forEditingTextSelection);
 	}
 
-	[NoWatch, MacCatalyst (13, 0)]
+	[MacCatalyst (13, 0)]
 	[BaseType (typeof (NSObject))]
 	interface NSTextList : NSCoding, NSCopying, NSSecureCoding {
 		[Export ("initWithMarkerFormat:options:")]
@@ -4196,29 +4729,25 @@ namespace UIKit {
 		[Wrap ("this (format, NSTextListOptions.None)")]
 		NativeHandle Constructor (string format);
 
-		[Wrap ("this (format.GetConstant(), mask)")]
+		/// <param name="format">To be added.</param>
+		/// <param name="mask">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
+		[Wrap ("this (format.GetConstant ()!, mask)")]
 		NativeHandle Constructor (NSTextListMarkerFormats format, NSTextListOptions mask);
 
-		[Wrap ("this (format.GetConstant(), NSTextListOptions.None)")]
+		[Wrap ("this (format.GetConstant ()!, NSTextListOptions.None)")]
 		NativeHandle Constructor (NSTextListMarkerFormats format);
 
-#if NET
-		[BindAs (typeof (NSTextListMarkerFormats))] 
-#endif
+		[BindAs (typeof (NSTextListMarkerFormats))]
 		[Export ("markerFormat")]
-#if NET
 		NSString MarkerFormat { get; }
-#else
-		[Obsolete ("Use 'CustomMarkerFormat' instead.")]
-		[EditorBrowsable (EditorBrowsableState.Never)]
-		string MarkerFormat { get; }
-#endif
 
 		[Sealed]
 		[Export ("markerFormat")]
 		string CustomMarkerFormat { get; }
 
-		[TV (16, 0), NoWatch, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("initWithMarkerFormat:options:startingItemNumber:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (string markerFormat, NSTextListOptions options, nint startingItemNumber);
@@ -4233,13 +4762,13 @@ namespace UIKit {
 		[Export ("startingItemNumber")]
 		nint StartingItemNumber { get; set; }
 
-		[TV (16, 0), NoWatch, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("ordered")]
 		bool Ordered { [Bind ("isOrdered")] get; }
 
 	}
 
-	[TV (16, 0), NoWatch, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 	[BaseType (typeof (NSTextParagraph))]
 	interface NSTextListElement {
 		[Export ("initWithAttributedString:")]
@@ -4299,27 +4828,27 @@ namespace UIKit {
 		[Field ("NSHTMLTextDocumentType")]
 		Html = NSDocumentType.HTML,
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		[Field ("NSMacSimpleTextDocumentType")]
 		MacSimple = NSDocumentType.MacSimpleText,
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		[Field ("NSDocFormatTextDocumentType")]
 		DocFormat = NSDocumentType.DocFormat,
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		[Field ("NSWordMLTextDocumentType")]
 		WordML = NSDocumentType.WordML,
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		[Field ("NSWebArchiveTextDocumentType")]
 		WebArchive = NSDocumentType.WebArchive,
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		[Field ("NSOfficeOpenXMLTextDocumentType")]
 		OfficeOpenXml = NSDocumentType.OfficeOpenXml,
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		[Field ("NSOpenDocumentTextDocumentType")]
 		OpenDocument = NSDocumentType.OpenDocument,
 	}
@@ -4330,63 +4859,63 @@ namespace UIKit {
 		[Field ("NSDocumentTypeDocumentAttribute")]
 		NSString DocumentTypeDocumentAttribute { get; }
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		[Field ("NSConvertedDocumentAttribute")]
 		NSString ConvertedDocumentAttribute { get; }
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		[Field ("NSFileTypeDocumentAttribute")]
 		NSString FileTypeDocumentAttribute { get; }
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		[Field ("NSTitleDocumentAttribute")]
 		NSString TitleDocumentAttribute { get; }
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		[Field ("NSCompanyDocumentAttribute")]
 		NSString CompanyDocumentAttribute { get; }
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		[Field ("NSCopyrightDocumentAttribute")]
 		NSString CopyrightDocumentAttribute { get; }
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		[Field ("NSSubjectDocumentAttribute")]
 		NSString SubjectDocumentAttribute { get; }
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		[Field ("NSAuthorDocumentAttribute")]
 		NSString AuthorDocumentAttribute { get; }
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		[Field ("NSKeywordsDocumentAttribute")]
 		NSString KeywordsDocumentAttribute { get; }
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		[Field ("NSCommentDocumentAttribute")]
 		NSString CommentDocumentAttribute { get; }
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		[Field ("NSEditorDocumentAttribute")]
 		NSString EditorDocumentAttribute { get; }
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		[Field ("NSCreationTimeDocumentAttribute")]
 		NSString CreationTimeDocumentAttribute { get; }
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		[Field ("NSModificationTimeDocumentAttribute")]
 		NSString ModificationTimeDocumentAttribute { get; }
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		[Field ("NSManagerDocumentAttribute")]
 		NSString ManagerDocumentAttribute { get; }
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		[Field ("NSCategoryDocumentAttribute")]
 		NSString CategoryDocumentAttribute { get; }
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		[Field ("NSAppearanceDocumentAttribute")]
 		NSString AppearanceDocumentAttribute { get; }
 
@@ -4404,19 +4933,19 @@ namespace UIKit {
 		[Field ("NSPaperMarginDocumentAttribute")]
 		NSString PaperMarginDocumentAttribute { get; }
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		[Field ("NSLeftMarginDocumentAttribute")]
 		NSString LeftMarginDocumentAttribute { get; }
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		[Field ("NSRightMarginDocumentAttribute")]
 		NSString RightMarginDocumentAttribute { get; }
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		[Field ("NSTopMarginDocumentAttribute")]
 		NSString TopMarginDocumentAttribute { get; }
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		[Field ("NSBottomMarginDocumentAttribute")]
 		NSString BottomMarginDocumentAttribute { get; }
 
@@ -4444,35 +4973,35 @@ namespace UIKit {
 		[Field ("NSTextLayoutSectionsAttribute")]
 		NSString TextLayoutSectionsAttribute { get; }
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		[Field ("NSExcludedElementsDocumentAttribute")]
 		NSString ExcludedElementsDocumentAttribute { get; }
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		[Field ("NSTextEncodingNameDocumentAttribute")]
 		NSString TextEncodingNameDocumentAttribute { get; }
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		[Field ("NSPrefixSpacesDocumentAttribute")]
 		NSString PrefixSpacesDocumentAttribute { get; }
 
 		[Field ("NSTextScalingDocumentAttribute")]
-		[iOS (13, 0), TV (13, 0), Watch (6, 0)]
+		[iOS (13, 0), TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		NSString TextScalingDocumentAttribute { get; }
 
 		[Field ("NSSourceTextScalingDocumentAttribute")]
-		[iOS (13, 0), TV (13, 0), Watch (6, 0)]
+		[iOS (13, 0), TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		NSString SourceTextScalingDocumentAttribute { get; }
 
 		[Field ("NSCocoaVersionDocumentAttribute")]
-		[iOS (13, 0), TV (13, 0), Watch (6, 0)]
+		[iOS (13, 0), TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		NSString CocoaVersionDocumentAttribute { get; }
 
 		[Field ("NSDefaultFontExcludedDocumentAttribute")]
-		[Watch (10, 0), TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		NSString DefaultFontExcludedDocumentAttribute { get; }
 	}
 
@@ -4490,35 +5019,33 @@ namespace UIKit {
 
 		NSStringEncoding CharacterEncoding { get; set; }
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		WebPreferences WebPreferences { get; set; }
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		NSObject WebResourceLoadDelegate { get; set; }
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		NSUrl BaseUrl { get; set; }
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		string TextEncodingName { get; set; }
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		float TextSizeMultiplier { get; set; }
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		float Timeout { get; set; }
 
 		[iOS (13, 0)]
 		[TV (13, 0)]
-		[Watch (6, 0)]
 		NSTextScalingType TargetTextScaling { get; set; }
 
 		[iOS (13, 0)]
 		[TV (13, 0)]
-		[Watch (6, 0)]
 		NSTextScalingType SourceTextScaling { get; set; }
 
-		[Watch (11, 0), TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		bool TextKit1ListMarkerFormat { get; set; }
 	}
 
@@ -4537,51 +5064,51 @@ namespace UIKit {
 		[Field ("NSCharacterEncodingDocumentOption")]
 		NSString CharacterEncodingDocumentOption { get; }
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		[Field ("NSWebPreferencesDocumentOption")]
 		NSString WebPreferencesDocumentOption { get; }
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		[Field ("NSWebResourceLoadDelegateDocumentOption")]
 		NSString WebResourceLoadDelegateDocumentOption { get; }
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		[Field ("NSBaseURLDocumentOption")]
 		NSString BaseUrlDocumentOption { get; }
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		[Field ("NSTextEncodingNameDocumentOption")]
 		NSString TextEncodingNameDocumentOption { get; }
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		[Field ("NSTextSizeMultiplierDocumentOption")]
 		NSString TextSizeMultiplierDocumentOption { get; }
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		[Field ("NSTimeoutDocumentOption")]
 		NSString TimeoutDocumentOption { get; }
 
-		[iOS (13, 0), TV (13, 0), Watch (6, 0)]
+		[iOS (13, 0), TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("NSTargetTextScalingDocumentOption")]
 		NSString TargetTextScalingDocumentOption { get; }
 
-		[iOS (13, 0), TV (13, 0), Watch (6, 0)]
+		[iOS (13, 0), TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("NSSourceTextScalingDocumentOption")]
 		NSString SourceTextScalingDocumentOption { get; }
 
 		// comes from webkit
-		[iOS (13, 0), MacCatalyst (13, 1), NoTV, NoWatch]
+		[iOS (13, 0), MacCatalyst (13, 1), NoTV]
 		[Field ("NSReadAccessURLDocumentOption", "WebKit")]
 		NSString ReadAccessUrlDocumentOption { get; }
 
-		[Watch (11, 0), TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Field ("NSTextKit1ListMarkerFormatDocumentOption")]
 		NSString TextKit1ListMarkerFormatDocumentOption { get; }
 	}
 
-	[Watch (11, 0), TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+	[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSAdaptiveImageGlyph : NSCopying, NSSecureCoding, CTAdaptiveImageProviding {
@@ -4603,14 +5130,14 @@ namespace UIKit {
 		UTType ContentType { get; }
 	}
 
-	[Watch (11, 0), TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+	[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 	enum NSTextHighlightStyle {
 		[DefaultEnumValue]
 		[Field ("NSTextHighlightStyleDefault")]
 		Default,
 	}
 
-	[Watch (11, 0), TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+	[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 	enum NSTextHighlightColorScheme {
 		[DefaultEnumValue]
 		[Field ("NSTextHighlightColorSchemeDefault")]
@@ -4627,4 +5154,269 @@ namespace UIKit {
 		Blue,
 
 	}
+
+	[NoTV, MacCatalyst (18, 2), iOS (18, 2), Mac (15, 2)]
+	[Native]
+#if MONOMAC
+	public enum NSWritingToolsCoordinatorTextUpdateReason : long
+#else
+	public enum UIWritingToolsCoordinatorTextUpdateReason : long
+#endif
+	{
+		Typing,
+		UndoRedo,
+	}
+
+	[NoTV, MacCatalyst (18, 2), iOS (18, 2), Mac (15, 2)]
+	[Native]
+#if MONOMAC
+	public enum NSWritingToolsCoordinatorState : long
+#else
+	public enum UIWritingToolsCoordinatorState : long
+#endif
+	{
+		Inactive,
+		Noninteractive,
+		InteractiveResting,
+		InteractiveStreaming,
+	}
+
+	[NoTV, MacCatalyst (18, 2), iOS (18, 2), Mac (15, 2)]
+	[Native]
+#if MONOMAC
+	public enum NSWritingToolsCoordinatorTextReplacementReason : long
+#else
+	public enum UIWritingToolsCoordinatorTextReplacementReason : long
+#endif
+	{
+		Interactive,
+		Noninteractive,
+	}
+
+	[NoTV, MacCatalyst (18, 2), iOS (18, 2), Mac (15, 2)]
+	[Native]
+#if MONOMAC
+	public enum NSWritingToolsCoordinatorContextScope : long
+#else
+	public enum UIWritingToolsCoordinatorContextScope : long
+#endif
+	{
+		UserSelection,
+		FullDocument,
+		VisibleArea,
+	}
+
+	[NoTV, MacCatalyst (18, 2), iOS (18, 2), Mac (15, 2)]
+	[Native]
+#if MONOMAC
+	public enum NSWritingToolsCoordinatorTextAnimation : long
+#else
+	public enum UIWritingToolsCoordinatorTextAnimation : long
+#endif
+	{
+		Anticipate,
+		Remove,
+		Insert,
+		[NoiOS, NoMacCatalyst]
+		AnticipateInactive = 8,
+		[NoiOS, NoMacCatalyst]
+		Translate = 9,
+	}
+
+	[NoTV, MacCatalyst (18, 2), iOS (18, 2), Mac (15, 2)]
+	[BaseType (typeof (NSObject))]
+#if MONOMAC
+	interface NSWritingToolsCoordinator
+#else
+	interface UIWritingToolsCoordinator : UIInteraction
+#endif
+	{
+		[Static]
+		[Export ("isWritingToolsAvailable")]
+		bool IsWritingToolsAvailable { get; }
+
+		[Export ("initWithDelegate:")]
+		NativeHandle Constructor ([NullAllowed] IXWritingToolsCoordinatorDelegate @delegate);
+
+		[Wrap ("WeakDelegate")]
+		[NullAllowed]
+		IXWritingToolsCoordinatorDelegate Delegate { get; }
+
+		[NullAllowed, Export ("delegate", ArgumentSemantic.Weak)]
+		NSObject WeakDelegate { get; }
+
+#if MONOMAC
+		[NullAllowed, Export ("view", ArgumentSemantic.Weak)]
+		View View { get; }
+#endif
+
+		[NullAllowed, Export ("effectContainerView", ArgumentSemantic.Weak)]
+		View EffectContainerView { get; set; }
+
+		[NullAllowed, Export ("decorationContainerView", ArgumentSemantic.Weak)]
+		View DecorationContainerView { get; set; }
+
+		[Export ("state")]
+		XWritingToolsCoordinatorState State { get; }
+
+		[Export ("stopWritingTools")]
+		void StopWritingTools ();
+
+		[Export ("preferredBehavior", ArgumentSemantic.Assign)]
+		XWritingToolsBehavior PreferredBehavior { get; set; }
+
+		[Export ("behavior")]
+		XWritingToolsBehavior Behavior { get; }
+
+		[Export ("preferredResultOptions", ArgumentSemantic.Assign)]
+		XWritingToolsResultOptions PreferredResultOptions { get; set; }
+
+		[Export ("resultOptions")]
+		XWritingToolsResultOptions ResultOptions { get; }
+
+		[Export ("updateRange:withText:reason:forContextWithIdentifier:")]
+		void UpdateRange (NSRange range, NSAttributedString replacementText, XWritingToolsCoordinatorTextUpdateReason reason, NSUuid contextId);
+
+		[Export ("updateForReflowedTextInContextWithIdentifier:")]
+		void UpdateForReflowedTextInContext (NSUuid contextId);
+	}
+
+#if MONOMAC
+	interface INSWritingToolsCoordinatorDelegate { }
+#else
+	interface IUIWritingToolsCoordinatorDelegate { }
+#endif
+
+#if MONOMAC
+	delegate void NSWritingToolsCoordinatorDelegateRequestsContextsCallback (XWritingToolsCoordinatorContext [] contexts);
+	delegate void NSWritingToolsCoordinatorDelegateReplaceRangeCallback ([NullAllowed] NSAttributedString replacementText);
+	delegate void NSWritingToolsCoordinatorDelegateRequestsRangeCallback (NSRange range, NSUuid contextId);
+	delegate void NSWritingToolsCoordinatorDelegateRequestsBoundingBezierPathsCallback (BezierPath [] paths);
+	delegate void NSWritingToolsCoordinatorDelegateRequestsUnderlinePathsCallback (BezierPath [] paths);
+	delegate void NSWritingToolsCoordinatorDelegateRequestsPreviewForTextAnimationCallback ([NullAllowed] NSTextPreview [] view); // different signature vs other platforms
+	delegate void NSWritingToolsCoordinatorDelegateRequestsPreviewCallback ([NullAllowed] NSTextPreview textPreview); // doesn't exist on other platforms
+	delegate void NSWritingToolsCoordinatorDelegateRequestsSingleContainerSubrangesCallback (/* [BindAs (typeof (NSRange[]))] */ NSValue [] ranges); // BindAs doesn't work here
+	delegate void NSWritingToolsCoordinatorDelegateRequestsDecorationContainerViewCallback (View view);
+#else
+	delegate void UIWritingToolsCoordinatorDelegateRequestsContextsCallback (XWritingToolsCoordinatorContext [] contexts);
+	delegate void UIWritingToolsCoordinatorDelegateReplaceRangeCallback ([NullAllowed] NSAttributedString replacementText);
+	delegate void UIWritingToolsCoordinatorDelegateRequestsRangeCallback (NSRange range, NSUuid contextId);
+	delegate void UIWritingToolsCoordinatorDelegateRequestsBoundingBezierPathsCallback (BezierPath [] paths);
+	delegate void UIWritingToolsCoordinatorDelegateRequestsUnderlinePathsCallback (BezierPath [] paths);
+	delegate void UIWritingToolsCoordinatorDelegateRequestsPreviewForTextAnimationCallback ([NullAllowed] View view); // different signature vs macOS
+	delegate void UIWritingToolsCoordinatorDelegateRequestsSingleContainerSubrangesCallback (/* [BindAs (typeof (NSRange[]))] */ NSValue [] ranges); // BindAs doesn't work here
+	delegate void UIWritingToolsCoordinatorDelegateRequestsDecorationContainerViewCallback (View view);
+#endif
+
+	[NoTV, MacCatalyst (18, 2), iOS (18, 2), Mac (15, 2)]
+	[Protocol (BackwardsCompatibleCodeGeneration = false), Model]
+	[BaseType (typeof (NSObject))]
+#if MONOMAC
+	interface NSWritingToolsCoordinatorDelegate
+#else
+	interface UIWritingToolsCoordinatorDelegate
+#endif
+	{
+		[Abstract]
+		[Export ("writingToolsCoordinator:requestsContextsForScope:completion:")]
+		void RequestsContexts (XWritingToolsCoordinator writingToolsCoordinator, XWritingToolsCoordinatorContextScope scope, XWritingToolsCoordinatorDelegateRequestsContextsCallback completion);
+
+		[Abstract]
+		[Export ("writingToolsCoordinator:replaceRange:inContext:proposedText:reason:animationParameters:completion:")]
+		void ReplaceRange (XWritingToolsCoordinator writingToolsCoordinator, NSRange range, XWritingToolsCoordinatorContext context, NSAttributedString replacementText, XWritingToolsCoordinatorTextReplacementReason reason, [NullAllowed] XWritingToolsCoordinatorAnimationParameters animationParameters, XWritingToolsCoordinatorDelegateReplaceRangeCallback completion);
+
+		[Abstract]
+		[Export ("writingToolsCoordinator:selectRanges:inContext:completion:")]
+		void SelectRanges (XWritingToolsCoordinator writingToolsCoordinator, NSValue [] ranges, XWritingToolsCoordinatorContext context, Action completion);
+
+		[Deprecated (PlatformName.MacOSX, 15, 4, "Not called anymore.")]
+		[Deprecated (PlatformName.MacCatalyst, 18, 4, "Not called anymore.")]
+		[Deprecated (PlatformName.iOS, 18, 4, "Not called anymore.")]
+		[Export ("writingToolsCoordinator:requestsRangeInContextWithIdentifierForPoint:completion:")]
+		void RequestsRange (XWritingToolsCoordinator writingToolsCoordinator, CGPoint point, XWritingToolsCoordinatorDelegateRequestsRangeCallback completion);
+
+		[Abstract]
+		[Export ("writingToolsCoordinator:requestsBoundingBezierPathsForRange:inContext:completion:")]
+		void RequestsBoundingBezierPaths (XWritingToolsCoordinator writingToolsCoordinator, NSRange range, XWritingToolsCoordinatorContext context, XWritingToolsCoordinatorDelegateRequestsBoundingBezierPathsCallback completion);
+
+		[Abstract]
+		[Export ("writingToolsCoordinator:requestsUnderlinePathsForRange:inContext:completion:")]
+		void RequestsUnderlinePaths (XWritingToolsCoordinator writingToolsCoordinator, NSRange range, XWritingToolsCoordinatorContext context, XWritingToolsCoordinatorDelegateRequestsUnderlinePathsCallback completion);
+
+		[Abstract]
+		[Export ("writingToolsCoordinator:prepareForTextAnimation:forRange:inContext:completion:")]
+		void PrepareForTextAnimation (XWritingToolsCoordinator writingToolsCoordinator, XWritingToolsCoordinatorTextAnimation textAnimation, NSRange range, XWritingToolsCoordinatorContext context, Action completion);
+
+		[Abstract]
+		[Export ("writingToolsCoordinator:requestsPreviewForTextAnimation:ofRange:inContext:completion:")]
+		void RequestsPreviewForTextAnimation (XWritingToolsCoordinator writingToolsCoordinator, XWritingToolsCoordinatorTextAnimation textAnimation, NSRange range, XWritingToolsCoordinatorContext context, XWritingToolsCoordinatorDelegateRequestsPreviewForTextAnimationCallback completion);
+
+#if MONOMAC
+		[Abstract]
+		[Export ("writingToolsCoordinator:requestsPreviewForRect:inContext:completion:")]
+		void RequestsPreview (XWritingToolsCoordinator writingToolsCoordinator, CGRect rect, XWritingToolsCoordinatorContext context, NSWritingToolsCoordinatorDelegateRequestsPreviewCallback completion);
+#endif
+
+		[Abstract]
+		[Export ("writingToolsCoordinator:finishTextAnimation:forRange:inContext:completion:")]
+		void FinishTextAnimation (XWritingToolsCoordinator writingToolsCoordinator, XWritingToolsCoordinatorTextAnimation textAnimation, NSRange range, XWritingToolsCoordinatorContext context, Action completion);
+
+		[Export ("writingToolsCoordinator:requestsSingleContainerSubrangesOfRange:inContext:completion:")]
+		void RequestsSingleContainerSubranges (XWritingToolsCoordinator writingToolsCoordinator, NSRange range, XWritingToolsCoordinatorContext context, XWritingToolsCoordinatorDelegateRequestsSingleContainerSubrangesCallback completion);
+
+		[Export ("writingToolsCoordinator:requestsDecorationContainerViewForRange:inContext:completion:")]
+		void RequestsDecorationContainerView (XWritingToolsCoordinator writingToolsCoordinator, NSRange range, XWritingToolsCoordinatorContext context, XWritingToolsCoordinatorDelegateRequestsDecorationContainerViewCallback completion);
+
+		[Export ("writingToolsCoordinator:willChangeToState:completion:")]
+		void WillChangeToState (XWritingToolsCoordinator writingToolsCoordinator, XWritingToolsCoordinatorState newState, Action completion);
+	}
+
+	[NoTV, MacCatalyst (18, 2), iOS (18, 2), Mac (15, 2)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+#if MONOMAC
+	interface NSWritingToolsCoordinatorAnimationParameters
+#else
+	interface UIWritingToolsCoordinatorAnimationParameters
+#endif
+	{
+		[Export ("duration")]
+		nfloat Duration { get; }
+
+		[Export ("delay")]
+		nfloat Delay { get; }
+
+		[NullAllowed, Export ("progressHandler", ArgumentSemantic.Copy)]
+		Action<float> ProgressHandler { get; set; }
+
+		[NullAllowed, Export ("completionHandler", ArgumentSemantic.Copy)]
+		Action CompletionHandler { get; set; }
+	}
+
+	[NoTV, MacCatalyst (18, 2), iOS (18, 2), Mac (15, 2)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+#if MONOMAC
+	interface NSWritingToolsCoordinatorContext
+#else
+	interface UIWritingToolsCoordinatorContext
+#endif
+	{
+		[Export ("initWithAttributedString:range:")]
+		[DesignatedInitializer]
+		NativeHandle Constructor (NSAttributedString attributedString, NSRange range);
+
+		[Export ("attributedString", ArgumentSemantic.Copy)]
+		NSAttributedString AttributedString { get; }
+
+		[Export ("range")]
+		NSRange Range { get; }
+
+		[Export ("identifier", ArgumentSemantic.Strong)]
+		NSUuid Identifier { get; }
+
+		[Export ("resolvedRange")]
+		NSRange ResolvedRange { get; }
+	}
+
 }

@@ -41,26 +41,18 @@ using Foundation;
 using Xamarin.Bundler;
 using Xamarin.Utils;
 
-#if NET && XAMMACIOS_DEBUGGER
+#if XAMMACIOS_DEBUGGER
 using System.Diagnostics;
 using System.Threading;
 #endif
 
 public class BindingTouch : IDisposable {
-#if NET
 	public static ApplePlatform [] AllPlatforms = new ApplePlatform [] { ApplePlatform.iOS, ApplePlatform.MacOSX, ApplePlatform.TVOS, ApplePlatform.MacCatalyst };
 	public static PlatformName [] AllPlatformNames = new PlatformName [] { PlatformName.iOS, PlatformName.MacOSX, PlatformName.TvOS, PlatformName.MacCatalyst };
-#else
-	public static ApplePlatform [] AllPlatforms = new ApplePlatform [] { ApplePlatform.iOS, ApplePlatform.MacOSX, ApplePlatform.TVOS, ApplePlatform.WatchOS };
-	public static PlatformName [] AllPlatformNames = new PlatformName [] { PlatformName.iOS, PlatformName.MacOSX, PlatformName.TvOS, PlatformName.WatchOS };
-#endif
 	public PlatformName CurrentPlatform;
 	public bool BindThirdPartyLibrary = true;
 	public string? outfile;
 
-#if !NET
-	const string DefaultCompiler = "/Library/Frameworks/Mono.framework/Versions/Current/bin/csc";
-#endif
 	string compiler = string.Empty;
 	string []? compile_command = null;
 	string compiled_api_definition_assembly = string.Empty;
@@ -103,10 +95,6 @@ public class BindingTouch : IDisposable {
 		get { return "bgen"; }
 	}
 
-	internal bool IsDotNet {
-		get { return TargetFramework.IsDotNet; }
-	}
-
 	static void ShowHelp (OptionSet os)
 	{
 		Console.WriteLine ("{0} - Mono Objective-C API binder", ToolName);
@@ -118,7 +106,7 @@ public class BindingTouch : IDisposable {
 	public static int Main (string [] args)
 	{
 		try {
-#if NET && XAMMACIOS_DEBUGGER
+#if XAMMACIOS_DEBUGGER
 			// the following code will only be available for the macios
 			// developers to be able to debug the generator. This will
 			// block the generator until a debugger has attached to it
@@ -264,8 +252,8 @@ public class BindingTouch : IDisposable {
 				config.CoreSources.Insert (i - 1, config.Sources [i]);
 		}
 
-		if (config.ApiSources.Count == 0) {
-			Console.WriteLine ("Error: no api file provided");
+		if (config.ApiSources.Count == 0 && string.IsNullOrEmpty (compiled_api_definition_assembly)) {
+			Console.WriteLine ("Error: no api file provided, nor a compiled api definition assembly");
 			ShowHelp (config.OptionSet);
 			return false;
 		}
@@ -273,8 +261,11 @@ public class BindingTouch : IDisposable {
 		if (config.TemporaryFileDirectory is null)
 			config.TemporaryFileDirectory = GetWorkDir ();
 
-		string firstApiDefinitionName = Path.GetFileNameWithoutExtension (config.ApiSources [0]);
-		firstApiDefinitionName = firstApiDefinitionName.Replace ('-', '_'); // This is not exhaustive, but common.
+		var firstApiDefinitionName = string.Empty;
+		if (config.ApiSources.Count > 0) {
+			firstApiDefinitionName = Path.GetFileNameWithoutExtension (config.ApiSources [0]);
+			firstApiDefinitionName = firstApiDefinitionName.Replace ('-', '_'); // This is not exhaustive, but common.
+		}
 		if (outfile is null)
 			outfile = firstApiDefinitionName + ".dll";
 
@@ -336,8 +327,7 @@ public class BindingTouch : IDisposable {
 			api = TypeManager.ParseApi (apiAssembly, config.ProcessEnums);
 			namespaceCache ??= new NamespaceCache (
 				CurrentPlatform,
-				config.HelperClassNamespace ?? firstApiDefinitionName,
-				LibraryManager.DetermineSkipSystemDrawing (LibraryInfo.TargetFramework)
+				config.HelperClassNamespace ?? firstApiDefinitionName
 			);
 
 
@@ -397,9 +387,7 @@ public class BindingTouch : IDisposable {
 			cargs.Add ("-out:" + outfile);
 			foreach (var def in config.Defines)
 				cargs.Add ("-define:" + def);
-#if NET
 			cargs.Add ("-define:NET");
-#endif
 			cargs.AddRange (g.GeneratedFiles);
 			cargs.AddRange (config.CoreSources);
 			cargs.AddRange (config.ExtraSources);
@@ -435,11 +423,7 @@ public class BindingTouch : IDisposable {
 	bool TestLinkWith (Assembly apiAssembly, BindingTouchConfig config)
 	{
 		foreach (var linkWith in AttributeManager.GetCustomAttributes<LinkWithAttribute> (apiAssembly)) {
-#if NET
 			if (string.IsNullOrEmpty (linkWith.LibraryName))
-#else
-			if (linkWith.LibraryName is null || string.IsNullOrEmpty (linkWith.LibraryName))
-#endif
 				continue;
 
 			if (!config.LinkWith.Contains (linkWith.LibraryName)) {
@@ -469,15 +453,16 @@ public class BindingTouch : IDisposable {
 		cargs.Add ("-unsafe");
 		cargs.Add ("-target:library");
 		cargs.Add ("-nowarn:436");
+		cargs.Add ("-nowarn:CS0419"); // "Ambiguous reference in cref attribute: '...'. Assuming '...', but could have also matched other overloads including '...'." => we want to be able to write xml comments in api definition code for APIs that don't exist until all the code has been generated, so we ignore these warnings.
+		cargs.Add ("-nowarn:CS1574"); // "XML comment has cref attribute '...' that could not be resolved" => we want to be able to write xml comments in api definition code for APIs that don't exist until all the code has been generated, so we ignore these warnings.
+		cargs.Add ("-nowarn:CS1580"); // "Invalid type for parameter '#' in XML comment cref attribute" => we want to be able to write xml comments in api definition code for APIs that don't exist until all the code has been generated, so we ignore these warnings.
 		cargs.Add ("-out:" + tmpass);
 		cargs.Add ("-r:" + LibraryManager.GetAttributeLibraryPath (libraryInfo, CurrentPlatform));
 		cargs.AddRange (config.References);
 		cargs.Add ("-r:" + libraryInfo.BaseLibDll);
 		foreach (var def in defines)
 			cargs.Add ("-define:" + def);
-#if NET
 		cargs.Add ("-define:NET");
-#endif
 		cargs.AddRange (paths);
 		if (nostdlib) {
 			cargs.Add ("-nostdlib");
@@ -506,13 +491,11 @@ public class BindingTouch : IDisposable {
 	{
 		if (tmpdir is null)
 			return;
-#if NET
 		if (noNFloatUsing)
 			return;
 		var tmpusing = Path.Combine (tmpdir, "GlobalUsings.g.cs");
 		File.WriteAllText (tmpusing, "global using nfloat = global::System.Runtime.InteropServices.NFloat;\n");
 		cargs.Add (tmpusing);
-#endif
 	}
 
 	void Compile (List<string> arguments, int errorCode, string? tmpdir)
@@ -531,10 +514,6 @@ public class BindingTouch : IDisposable {
 		arguments.Add ($"@{responseFile}");
 
 		if (compile_command is null || compile_command.Length == 0) {
-#if !NET
-			if (string.IsNullOrEmpty (compiler))
-				compiler = DefaultCompiler;
-#endif
 			if (string.IsNullOrEmpty (compiler))
 				throw ErrorHelper.CreateError (28);
 			compile_command = new string [] { compiler };

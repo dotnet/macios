@@ -1,6 +1,6 @@
 <Documentation>
   <Docs DocId="T:CoreImage.CIStarShineGenerator">
-    <summary>A <see cref="T:CoreImage.CIFilter" /> that simulates lens flare.</summary>
+    <summary>A <see cref="CoreImage.CIFilter" /> that simulates lens flare.</summary>
     <remarks>
       <para>The following example shows this filter in use</para>
       <example>

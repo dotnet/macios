@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Text;
 using System.Globalization;
@@ -7,8 +8,7 @@ using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 using Xamarin.Localization.MSBuild;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Xamarin.MacDev.Tasks {
 	public enum PropertyListEditorAction {
@@ -22,18 +22,18 @@ namespace Xamarin.MacDev.Tasks {
 
 	public class PropertyListEditor : Task {
 		[Required]
-		public string PropertyList { get; set; }
+		public string PropertyList { get; set; } = string.Empty;
 
 		[Required]
-		public string Action { get; set; }
+		public string Action { get; set; } = string.Empty;
 
-		public string Entry { get; set; }
+		public string Entry { get; set; } = string.Empty;
 
-		public string Type { get; set; }
+		public string Type { get; set; } = string.Empty;
 
-		public string Value { get; set; }
+		public string Value { get; set; } = string.Empty;
 
-		static string GetType (PObject value)
+		static string? GetType (PObject value)
 		{
 			switch (value.Type) {
 			case PObjectType.Dictionary: return "dict";
@@ -48,7 +48,7 @@ namespace Xamarin.MacDev.Tasks {
 			}
 		}
 
-		bool CreateValue (string type, string text, out PObject value)
+		bool CreateValue (string type, string text, [NotNullWhen (true)] out PObject? value)
 		{
 			DateTime date = DateTime.Now;
 			bool boolean = false;
@@ -127,9 +127,9 @@ namespace Xamarin.MacDev.Tasks {
 		{
 			var path = GetPropertyPath ();
 			var current = plist;
-			PDictionary dict;
-			PObject value;
-			PArray array;
+			PDictionary? dict;
+			PObject? value;
+			PArray? array;
 			int index;
 			int i = 0;
 
@@ -222,9 +222,9 @@ namespace Xamarin.MacDev.Tasks {
 		bool Delete (PObject plist)
 		{
 			var path = GetPropertyPath ();
-			var current = plist;
-			PDictionary dict;
-			PArray array;
+			PObject? current = plist;
+			PDictionary? dict;
+			PArray? array;
 			int index;
 			int i = 0;
 
@@ -270,10 +270,10 @@ namespace Xamarin.MacDev.Tasks {
 		bool Import (PObject plist)
 		{
 			var path = GetPropertyPath ();
-			var current = plist;
-			PDictionary dict;
-			PObject value;
-			PArray array;
+			PObject? current = plist;
+			PDictionary? dict;
+			PObject? value;
+			PArray? array;
 			int index;
 			int i = 0;
 
@@ -393,10 +393,10 @@ namespace Xamarin.MacDev.Tasks {
 		{
 			if (Entry is not null) {
 				var path = GetPropertyPath ();
-				var current = plist;
-				PDictionary dict;
-				PObject value;
-				PArray array;
+				PObject? current = plist;
+				PDictionary? dict;
+				PObject? value;
+				PArray? array;
 				int index;
 				int i = 0;
 
@@ -431,7 +431,7 @@ namespace Xamarin.MacDev.Tasks {
 
 				dict = current as PDictionary;
 				array = current as PArray;
-				PObject root;
+				PObject? root;
 
 				if (array is not null) {
 					if (i > 0 || path [i].Length > 0) {
@@ -451,7 +451,7 @@ namespace Xamarin.MacDev.Tasks {
 					}
 
 					try {
-						value = PObject.FromFile (Value);
+						value = PObject.FromFile (Value)!;
 					} catch {
 						Log.LogError (7061, PropertyList, MSBStrings.E7061, Value);
 						return false;
@@ -471,7 +471,7 @@ namespace Xamarin.MacDev.Tasks {
 					}
 
 					try {
-						value = PObject.FromFile (Value);
+						value = PObject.FromFile (Value)!;
 					} catch {
 						Log.LogError (7061, PropertyList, MSBStrings.E7061, Value);
 						return false;
@@ -486,7 +486,7 @@ namespace Xamarin.MacDev.Tasks {
 				PObject value;
 
 				try {
-					value = PObject.FromFile (Value);
+					value = PObject.FromFile (Value)!;
 				} catch {
 					Log.LogError (7061, PropertyList, MSBStrings.E7061, Value);
 					return false;
@@ -499,10 +499,10 @@ namespace Xamarin.MacDev.Tasks {
 		bool Set (PObject plist)
 		{
 			var path = GetPropertyPath ();
-			var current = plist;
-			PDictionary dict;
-			PObject value;
-			PArray array;
+			PObject? current = plist;
+			PDictionary? dict;
+			PObject? value;
+			PArray? array;
 			int index;
 			int i = 0;
 
@@ -565,7 +565,7 @@ namespace Xamarin.MacDev.Tasks {
 				}
 
 				// fall back to the existing type if a type was not explicitly specified
-				var type = Type ?? GetType (value);
+				var type = Type ?? GetType (value)!;
 
 				if (!CreateValue (type, Value, out value))
 					return false;
@@ -592,7 +592,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			if (File.Exists (PropertyList)) {
 				try {
-					plist = PObject.FromFile (PropertyList, out binary);
+					plist = PObject.FromFile (PropertyList, out binary)!;
 				} catch (Exception ex) {
 					Log.LogError (7066, PropertyList, $"Error loading '{PropertyList}': {ex.Message}", PropertyList);
 					return false;

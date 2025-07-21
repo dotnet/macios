@@ -1,5 +1,3 @@
-#if NET
-
 using System;
 
 using AVFoundation;
@@ -7,6 +5,7 @@ using CoreAnimation;
 using CoreGraphics;
 using Foundation;
 using ObjCRuntime;
+using UniformTypeIdentifiers;
 #if MONOMAC
 using AppKit;
 #else
@@ -51,11 +50,10 @@ using UITextInputTraits = Foundation.NSObjectProtocol;
 using OS_xpc_object = Foundation.NSObject;
 
 namespace BrowserEngineKit {
-	[NoWatch, NoTV, NoMac, iOS (17,4), MacCatalyst (17, 4)]
-	[BaseType (typeof(NSObject))]
+	[NoTV, NoMac, iOS (17, 4), MacCatalyst (17, 4)]
+	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface BELayerHierarchyHandle : NSSecureCoding
-	{
+	interface BELayerHierarchyHandle : NSSecureCoding {
 		[Static]
 		[Export ("handleWithXPCRepresentation:error:")]
 		[return: NullAllowed]
@@ -65,11 +63,10 @@ namespace BrowserEngineKit {
 		OS_xpc_object CreateXpcRepresentation ();
 	}
 
-	[NoWatch, NoTV, NoMac, iOS (17,4), MacCatalyst (17, 4)]
-	[BaseType (typeof(NSObject))]
+	[NoTV, NoMac, iOS (17, 4), MacCatalyst (17, 4)]
+	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface BELayerHierarchy
-	{
+	interface BELayerHierarchy {
 		[Static]
 		[Export ("layerHierarchyWithError:")]
 		[return: NullAllowed]
@@ -85,19 +82,17 @@ namespace BrowserEngineKit {
 		void Invalidate ();
 	}
 
-	[NoWatch, NoTV, NoMac, iOS (17,4), MacCatalyst (17, 4)]
+	[NoTV, NoMac, iOS (17, 4), MacCatalyst (17, 4)]
 	[BaseType (typeof (UIView))]
-	interface BELayerHierarchyHostingView
-	{
+	interface BELayerHierarchyHostingView {
 		[Export ("handle", ArgumentSemantic.Strong), NullAllowed]
 		BELayerHierarchyHandle LayerHierarchyHandle { get; set; }
 	}
 
-	[NoWatch, NoTV, NoMac, iOS (17,4), MacCatalyst (17, 4)]
-	[BaseType (typeof(NSObject))]
+	[NoTV, NoMac, iOS (17, 4), MacCatalyst (17, 4)]
+	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface BELayerHierarchyHostingTransactionCoordinator : NSSecureCoding
-	{
+	interface BELayerHierarchyHostingTransactionCoordinator : NSSecureCoding {
 		[Static]
 		[Export ("coordinatorWithError:")]
 		[return: NullAllowed]
@@ -122,11 +117,10 @@ namespace BrowserEngineKit {
 		void Commit ();
 	}
 
-	[NoWatch, NoTV, NoMac, iOS (17,4), MacCatalyst (17, 4)]
-	[BaseType (typeof(UIContextMenuConfiguration))]
+	[NoTV, NoMac, iOS (17, 4), MacCatalyst (17, 4)]
+	[BaseType (typeof (UIContextMenuConfiguration))]
 	[DisableDefaultCtor]
-	interface BEContextMenuConfiguration
-	{
+	interface BEContextMenuConfiguration {
 		[DesignatedInitializer]
 		[Export ("init")]
 		NativeHandle Constructor ();
@@ -135,13 +129,12 @@ namespace BrowserEngineKit {
 		bool Fulfill ([NullAllowed] UIContextMenuConfiguration configuration);
 	}
 
-	delegate bool BEDragInteractionDelegateGetDragItemsCallback (UIDragItem[] items);
+	delegate bool BEDragInteractionDelegateGetDragItemsCallback (UIDragItem [] items);
 
-	[NoWatch, NoTV, NoMac, iOS (17,4), MacCatalyst (17, 4)]
+	[NoTV, NoMac, iOS (17, 4), MacCatalyst (17, 4)]
 	[BaseType (typeof (UIDragInteractionDelegate))]
 	[Protocol (BackwardsCompatibleCodeGeneration = false), Model]
-	interface BEDragInteractionDelegate
-	{
+	interface BEDragInteractionDelegate {
 		[Export ("dragInteraction:prepareDragSession:completion:")]
 		void PrepareDragSession (BEDragInteraction dragInteraction, IUIDragSession session, Func<bool> completion);
 
@@ -149,12 +142,11 @@ namespace BrowserEngineKit {
 		void GetDragItems (BEDragInteraction dragInteraction, IUIDragSession session, CGPoint point, BEDragInteractionDelegateGetDragItemsCallback completion);
 	}
 
-	interface IBEDragInteractionDelegate {}
+	interface IBEDragInteractionDelegate { }
 
-	[NoWatch, NoTV, NoMac, iOS (17,4), MacCatalyst (17, 4)]
+	[NoTV, NoMac, iOS (17, 4), MacCatalyst (17, 4)]
 	[BaseType (typeof (UIDragInteraction))]
-	interface BEDragInteraction
-	{
+	interface BEDragInteraction {
 		[Wrap ("WeakDelegate")]
 		[NullAllowed]
 		IBEDragInteractionDelegate Delegate { get; }
@@ -167,11 +159,10 @@ namespace BrowserEngineKit {
 		NativeHandle Constructor (IBEDragInteractionDelegate @delegate);
 	}
 
-	[NoWatch, TV (17, 4), NoMac, iOS (17,4), MacCatalyst (17, 4)]
+	[TV (17, 4), NoMac, iOS (17, 4), MacCatalyst (17, 4)]
 	[BaseType (typeof (UIScrollViewDelegate))]
 	[Protocol (BackwardsCompatibleCodeGeneration = false), Model]
-	interface BEScrollViewDelegate
-	{
+	interface BEScrollViewDelegate {
 		[Export ("scrollView:handleScrollUpdate:completion:")]
 		void HandleScrollUpdate (BEScrollView scrollView, BEScrollViewScrollUpdate scrollUpdate, Action<bool> completion);
 
@@ -180,12 +171,11 @@ namespace BrowserEngineKit {
 		BEScrollView GetParentScrollView (BEScrollView scrollView);
 	}
 
-	interface IBEScrollViewDelegate {}
+	interface IBEScrollViewDelegate { }
 
-	[NoWatch, TV (17, 4), NoMac, iOS (17,4), MacCatalyst (17, 4)]
-	[BaseType (typeof(UIScrollView))]
-	interface BEScrollView
-	{
+	[TV (17, 4), NoMac, iOS (17, 4), MacCatalyst (17, 4)]
+	[BaseType (typeof (UIScrollView))]
+	interface BEScrollView {
 		[Wrap ("WeakDelegate")]
 		[NullAllowed]
 		IBEScrollViewDelegate Delegate { get; set; }
@@ -194,21 +184,19 @@ namespace BrowserEngineKit {
 		NSObject WeakDelegate { get; set; }
 	}
 
-	[NoWatch, TV (17, 4), NoMac, iOS (17,4), MacCatalyst (17, 4)]
+	[TV (17, 4), NoMac, iOS (17, 4), MacCatalyst (17, 4)]
 	[Native]
-	public enum BEScrollViewScrollUpdatePhase : long
-	{
+	public enum BEScrollViewScrollUpdatePhase : long {
 		Began,
 		Changed,
 		Ended,
 		Cancelled,
 	}
 
-	[NoWatch, TV (17, 4), NoMac, iOS (17,4), MacCatalyst (17, 4)]
-	[BaseType (typeof(NSObject))]
+	[TV (17, 4), NoMac, iOS (17, 4), MacCatalyst (17, 4)]
+	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface BEScrollViewScrollUpdate
-	{
+	interface BEScrollViewScrollUpdate {
 		[Export ("timestamp")]
 		double Timestamp { get; }
 
@@ -224,15 +212,19 @@ namespace BrowserEngineKit {
 
 	delegate void BEWebContentProcessCreateCallback ([NullAllowed] BEWebContentProcess proces, [NullAllowed] NSError error);
 
-	[NoWatch, NoTV, Mac (14,3), iOS (17,4), MacCatalyst (17, 4)]
-	[BaseType (typeof(NSObject))]
+	[NoTV, Mac (14, 3), iOS (17, 4), MacCatalyst (17, 4)]
+	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface BEWebContentProcess
-	{
+	interface BEWebContentProcess {
 		[Static]
 		[Export ("webContentProcessWithInterruptionHandler:completion:")]
 		[Async]
 		void Create (Action interruptionHandler, BEWebContentProcessCreateCallback completion);
+
+		[Static]
+		[Export ("webContentProcessWithBundleID:interruptionHandler:completion:")]
+		[Async]
+		void Create (string bundleId, Action interruptionHandler, BEWebContentProcessCreateCallback completion);
 
 		[Export ("invalidate")]
 		void Invalidate ();
@@ -251,7 +243,7 @@ namespace BrowserEngineKit {
 		IBEProcessCapabilityGrant GrantCapability (BEProcessCapability capability, [NullAllowed] out NSError error);
 
 		// Inlined from the CapabilityInvalidationHandler (BEWebContentProcess) category
-		[NoWatch, NoTV, NoMac, iOS (17,6), MacCatalyst (17, 6)]
+		[NoTV, NoMac, iOS (17, 6), MacCatalyst (17, 6)]
 		[Export ("grantCapability:error:invalidationHandler:")]
 		[return: NullAllowed]
 		IBEProcessCapabilityGrant GrantCapability (BEProcessCapability capability, [NullAllowed] out NSError error, Action invalidationHandler);
@@ -259,15 +251,19 @@ namespace BrowserEngineKit {
 
 	delegate void BENetworkingProcessCreateCallback ([NullAllowed] BENetworkingProcess proces, [NullAllowed] NSError error);
 
-	[NoWatch, NoTV, Mac (14,3), iOS (17,4), MacCatalyst (17, 4)]
-	[BaseType (typeof(NSObject))]
+	[NoTV, Mac (14, 3), iOS (17, 4), MacCatalyst (17, 4)]
+	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface BENetworkingProcess
-	{
+	interface BENetworkingProcess {
 		[Static]
 		[Export ("networkProcessWithInterruptionHandler:completion:")]
 		[Async]
 		void Create (Action interruptionHandler, BENetworkingProcessCreateCallback completion);
+
+		[iOS (18, 2), Mac (15, 2), MacCatalyst (18, 2)]
+		[Static]
+		[Export ("networkProcessWithBundleID:interruptionHandler:completion:")]
+		void Create (string bundleId, Action interruptionHandler, BENetworkingProcessCreateCallback completion);
 
 		[Export ("invalidate")]
 		void Invalidate ();
@@ -283,7 +279,7 @@ namespace BrowserEngineKit {
 		IBEProcessCapabilityGrant GrantCapability (BEProcessCapability capability, [NullAllowed] out NSError error);
 
 		// Inlined from the CapabilityInvalidationHandler (BENetworkingProcess) category
-		[NoWatch, NoMac, NoTV, iOS (17, 6), MacCatalyst (17, 6)]
+		[NoMac, NoTV, iOS (17, 6), MacCatalyst (17, 6)]
 		[Export ("grantCapability:error:invalidationHandler:")]
 		[return: NullAllowed]
 		IBEProcessCapabilityGrant GrantCapability (BEProcessCapability capability, [NullAllowed] out NSError error, Action invalidationHandler);
@@ -291,15 +287,19 @@ namespace BrowserEngineKit {
 
 	delegate void BERenderingProcessCreateCallback ([NullAllowed] BERenderingProcess proces, [NullAllowed] NSError error);
 
-	[NoWatch, NoTV, Mac (14, 3), iOS (17,4), MacCatalyst (17, 4)]
-	[BaseType (typeof(NSObject))]
+	[NoTV, Mac (14, 3), iOS (17, 4), MacCatalyst (17, 4)]
+	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface BERenderingProcess
-	{
+	interface BERenderingProcess {
 		[Static]
 		[Export ("renderingProcessWithInterruptionHandler:completion:")]
 		[Async]
 		void Create (Action interruptionHandler, BERenderingProcessCreateCallback completion);
+
+		[Static]
+		[Export ("renderingProcessWithBundleID:interruptionHandler:completion:")]
+		[Async]
+		void Create (string bundleId, Action interruptionHandler, BERenderingProcessCreateCallback completion);
 
 		[Export ("invalidate")]
 		void Invalidate ();
@@ -318,25 +318,24 @@ namespace BrowserEngineKit {
 		IBEProcessCapabilityGrant GrantCapability (BEProcessCapability capability, [NullAllowed] out NSError error);
 
 		// Inlined from the CapabilityInvalidationHandler (BERenderingProcess) category
-		[NoWatch, NoTV, NoMac, iOS (17,6), MacCatalyst (17, 6)]
+		[NoTV, NoMac, iOS (17, 6), MacCatalyst (17, 6)]
 		[Export ("grantCapability:error:invalidationHandler:")]
 		[return: NullAllowed]
 		IBEProcessCapabilityGrant GrantCapability (BEProcessCapability capability, [NullAllowed] out NSError error, Action invalidationHandler);
 	}
 
 	// Headers say this is available on macOS 14.3, but the BETextInput type isn't, so just remove this type from macOS as well.
-	[NoWatch, TV (17, 4), NoMac, iOS (17,4), MacCatalyst (17, 4)]
+	[TV (17, 4), NoMac, iOS (17, 4), MacCatalyst (17, 4)]
 	[BaseType (typeof (NSObject))]
 	[Protocol (BackwardsCompatibleCodeGeneration = false), Model]
-	interface BETextInputDelegate
-	{
+	interface BETextInputDelegate {
 		[Abstract]
 		[Export ("shouldDeferEventHandlingToSystemForTextInput:context:")]
 		bool ShouldDeferEventHandlingToSystem (IBETextInput textInput, BEKeyEntryContext keyEventContext);
 
 		[Abstract]
 		[Export ("textInput:setCandidateSuggestions:")]
-		void SetCandidateSuggestions (IBETextInput textInput, [NullAllowed] BETextSuggestion[] suggestions);
+		void SetCandidateSuggestions (IBETextInput textInput, [NullAllowed] BETextSuggestion [] suggestions);
 
 		[Abstract]
 		[Export ("selectionWillChangeForTextInput:")]
@@ -355,21 +354,19 @@ namespace BrowserEngineKit {
 		void InvalidateTextEntryContext (IBETextInput textInput);
 	}
 
-	interface IBETextInputDelegate {}
+	interface IBETextInputDelegate { }
 
-	[NoWatch, TV (17, 4), NoMac, iOS (17,4), MacCatalyst (17, 4)]
+	[TV (17, 4), NoMac, iOS (17, 4), MacCatalyst (17, 4)]
 	[Native]
-	public enum BEKeyPressState : long
-	{
+	public enum BEKeyPressState : long {
 		Down = 1,
 		Up = 2,
 	}
 
-	[NoWatch, TV (17, 4), NoMac, iOS (17,4), MacCatalyst (17, 4)]
-	[BaseType (typeof(NSObject))]
+	[TV (17, 4), NoMac, iOS (17, 4), MacCatalyst (17, 4)]
+	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface BEKeyEntry
-	{
+	interface BEKeyEntry {
 		[Export ("key")]
 		UIKey Key { get; }
 
@@ -383,10 +380,9 @@ namespace BrowserEngineKit {
 		double Timestamp { get; }
 	}
 
-	[NoWatch, TV (17, 4), Mac (14, 4), iOS (17,4), MacCatalyst (17, 4)]
+	[TV (17, 4), Mac (14, 4), iOS (17, 4), MacCatalyst (17, 4)]
 	[Native]
-	public enum BEGestureType : long
-	{
+	public enum BEGestureType : long {
 		Loupe = 0,
 		OneFingerTap = 1,
 		DoubleTapAndHold = 2,
@@ -399,10 +395,9 @@ namespace BrowserEngineKit {
 		ForceTouch = 15,
 	}
 
-	[NoWatch, TV (17, 4), Mac (14, 4), iOS (17,4), MacCatalyst (17, 4)]
+	[TV (17, 4), Mac (14, 4), iOS (17, 4), MacCatalyst (17, 4)]
 	[Native]
-	public enum BESelectionTouchPhase : long
-	{
+	public enum BESelectionTouchPhase : long {
 		Started,
 		Moved,
 		Ended,
@@ -412,51 +407,46 @@ namespace BrowserEngineKit {
 	}
 
 	[Flags]
-	[NoWatch, TV (17, 4), Mac (14, 4), iOS (17,4), MacCatalyst (17, 4)]
+	[TV (17, 4), Mac (14, 4), iOS (17, 4), MacCatalyst (17, 4)]
 	[Native]
-	public enum BESelectionFlags : ulong
-	{
+	public enum BESelectionFlags : ulong {
 		None = 0x0,
 		WordIsNearTap = 1uL << 0,
 		SelectionFlipped = 1uL << 1,
 		PhraseBoundaryChanged = 1uL << 2,
 	}
 
-	[NoWatch, TV (17, 4), Mac (14, 4), iOS (17,4), MacCatalyst (17, 4)]
-	[BaseType (typeof(NSObject))]
+	[TV (17, 4), Mac (14, 4), iOS (17, 4), MacCatalyst (17, 4)]
+	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface BETextAlternatives
-	{
+	interface BETextAlternatives {
 		[Export ("primaryString")]
 		string PrimaryString { get; }
 
 		[Export ("alternativeStrings")]
-		string[] AlternativeStrings { get; }
+		string [] AlternativeStrings { get; }
 	}
 
-	[NoWatch, TV (17, 4), NoMac, iOS (17,4), MacCatalyst (17, 4)]
+	[TV (17, 4), NoMac, iOS (17, 4), MacCatalyst (17, 4)]
 	[Flags]
 	[Native]
-	public enum BETextReplacementOptions : ulong
-	{
+	public enum BETextReplacementOptions : ulong {
 		None = 0x0,
 		AddUnderline = 1uL << 0,
 	}
 
-	[NoWatch, TV (17, 4), NoMac, iOS (17,4), MacCatalyst (17, 4)]
+	[TV (17, 4), NoMac, iOS (17, 4), MacCatalyst (17, 4)]
 	[Flags]
 	[Native]
-	public enum BEKeyModifierFlags : long
-	{
+	public enum BEKeyModifierFlags : long {
 		None,
 		Shift,
 		CapsLock,
 	}
 
-	[NoWatch, TV (17, 4), NoMac, iOS (17,4), MacCatalyst (17, 4)]
+	[TV (17, 4), NoMac, iOS (17, 4), MacCatalyst (17, 4)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
-	interface BEResponderEditActions : UIResponderStandardEditActions
-	{
+	interface BEResponderEditActions : UIResponderStandardEditActions {
 		[Export ("share:")]
 		void Share ([NullAllowed] NSObject sender);
 
@@ -482,10 +472,9 @@ namespace BrowserEngineKit {
 		void TransliterateChinese ([NullAllowed] NSObject sender);
 	}
 
-	[NoWatch, TV (17, 4), NoMac, iOS (17,4), MacCatalyst (17, 4)]
+	[TV (17, 4), NoMac, iOS (17, 4), MacCatalyst (17, 4)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
-	interface BETextSelectionDirectionNavigation
-	{
+	interface BETextSelectionDirectionNavigation {
 		[Abstract]
 		[Export ("moveInLayoutDirection:")]
 		void MoveInLayoutDirection (UITextLayoutDirection direction);
@@ -503,10 +492,9 @@ namespace BrowserEngineKit {
 		void ExtendInStorageDirection (UITextStorageDirection direction, UITextGranularity granularity);
 	}
 
-	[NoWatch, TV (17, 4), NoMac, iOS (17,4), MacCatalyst (17, 4)]
+	[TV (17, 4), NoMac, iOS (17, 4), MacCatalyst (17, 4)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
-	interface BEExtendedTextInputTraits : UITextInputTraits
-	{
+	interface BEExtendedTextInputTraits : UITextInputTraits {
 		[Export ("singleLineDocument")]
 		bool SingleLineDocument { [Bind ("isSingleLineDocument")] get; }
 
@@ -523,17 +511,16 @@ namespace BrowserEngineKit {
 		UIColor SelectionHighlightColor { get; }
 	}
 
-	interface IBEExtendedTextInputTraits {}
+	interface IBEExtendedTextInputTraits { }
 
 	delegate void BETextInputHandleKeyEntryCallback (BEKeyEntry entry, bool handled);
-	delegate void BETextInputReplaceTextCallback (UITextSelectionRect[] rects);
+	delegate void BETextInputReplaceTextCallback (UITextSelectionRect [] rects);
 	delegate void BETextInputRequestTextContextForAutocorrectionCallback (BETextDocumentContext context);
-	delegate void BETextInputRequestTextRectsCallback (UITextSelectionRect[] rects);
+	delegate void BETextInputRequestTextRectsCallback (UITextSelectionRect [] rects);
 
-	[NoWatch, TV (17, 4), NoMac, iOS (17,4), MacCatalyst (17, 4)]
+	[TV (17, 4), NoMac, iOS (17, 4), MacCatalyst (17, 4)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
-	interface BETextInput : UIKeyInput, BETextSelectionDirectionNavigation, BEResponderEditActions
-	{
+	interface BETextInput : UIKeyInput, BETextSelectionDirectionNavigation, BEResponderEditActions {
 		[Wrap ("WeakAsyncInputDelegate"), Abstract]
 		[NullAllowed]
 		IBETextInputDelegate AsyncInputDelegate { get; set; }
@@ -595,17 +582,17 @@ namespace BrowserEngineKit {
 		[Export ("automaticallyPresentEditMenu")]
 		bool AutomaticallyPresentEditMenu { get; }
 
-		[NoWatch, NoTV]
+		[NoTV]
 		[Abstract]
 		[Export ("requestPreferredArrowDirectionForEditMenuWithCompletionHandler:")]
 		void RequestPreferredArrowDirectionForEditMenuWithCompletionHandler (Action<UIEditMenuArrowDirection> completionHandler);
 
-		[NoWatch, NoTV]
+		[NoTV]
 		[Abstract]
 		[Export ("systemWillPresentEditMenuWithAnimator:")]
 		void SystemWillPresentEditMenu (IUIEditMenuInteractionAnimating animator);
 
-		[NoWatch, NoTV]
+		[NoTV]
 		[Abstract]
 		[Export ("systemWillDismissEditMenuWithAnimator:")]
 		void SystemWillDismissEditMenu (IUIEditMenuInteractionAnimating animator);
@@ -661,7 +648,7 @@ namespace BrowserEngineKit {
 
 		[Abstract]
 		[Export ("selectionRectsForRange:")]
-		UITextSelectionRect[] GetSelectionRects (UITextRange range);
+		UITextSelectionRect [] GetSelectionRects (UITextRange range);
 
 		[Abstract]
 		[Export ("selectWordForReplacement")]
@@ -750,7 +737,7 @@ namespace BrowserEngineKit {
 		[Abstract]
 		[return: NullAllowed]
 		[Export ("alternativesForSelectedText")]
-		BETextAlternatives[] GetAlternativesForSelectedText ();
+		BETextAlternatives [] GetAlternativesForSelectedText ();
 
 		[Abstract]
 		[Export ("addTextAlternatives:")]
@@ -760,7 +747,7 @@ namespace BrowserEngineKit {
 		[Export ("insertTextAlternatives:")]
 		void InsertTextAlternatives (BETextAlternatives alternatives);
 
-		[iOS (18,0), MacCatalyst (18, 0), TV (18, 0)]
+		[iOS (18, 0), MacCatalyst (18, 0), TV (18, 0)]
 		[Export ("removeTextAlternatives")]
 		void RemoveTextAlternatives ();
 
@@ -808,18 +795,17 @@ namespace BrowserEngineKit {
 		[Export ("cancelAutoscroll")]
 		void CancelAutoscroll ();
 
-		[iOS (18,0), MacCatalyst (18, 0), TV (18, 0)]
+		[iOS (18, 0), MacCatalyst (18, 0), TV (18, 0)]
 		[Export ("keyboardWillDismiss")]
 		void KeyboardWillDismiss ();
 	}
 
-	interface IBETextInput {}
+	interface IBETextInput { }
 
-	[NoWatch, TV (17, 4), Mac (14, 4), iOS (17,4), MacCatalyst (17, 4)]
-	[BaseType (typeof(NSObject))]
+	[TV (17, 4), Mac (14, 4), iOS (17, 4), MacCatalyst (17, 4)]
+	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface BETextSuggestion
-	{
+	interface BETextSuggestion {
 		[Export ("initWithInputText:")]
 		NativeHandle Constructor (string inputText);
 
@@ -827,19 +813,17 @@ namespace BrowserEngineKit {
 		string InputText { get; }
 	}
 
-	[NoWatch, TV (17, 4), NoMac, iOS (17,4), MacCatalyst (17, 4)]
-	[BaseType (typeof(BETextSuggestion))]
+	[TV (17, 4), NoMac, iOS (17, 4), MacCatalyst (17, 4)]
+	[BaseType (typeof (BETextSuggestion))]
 	[DisableDefaultCtor]
-	interface BEAutoFillTextSuggestion
-	{
+	interface BEAutoFillTextSuggestion {
 		[Export ("contents", ArgumentSemantic.Copy)]
 		NSDictionary<NSString, NSString> Contents { get; }
 	}
 
-	[NoWatch, TV (17, 4), NoMac, iOS (17,4), MacCatalyst (17, 4)]
-	[BaseType (typeof(NSObject))]
-	interface BETextInteraction : UIInteraction
-	{
+	[TV (17, 4), NoMac, iOS (17, 4), MacCatalyst (17, 4)]
+	[BaseType (typeof (NSObject))]
+	interface BETextInteraction : UIInteraction {
 		[Wrap ("WeakDelegate")]
 		[NullAllowed]
 		IBETextInteractionDelegate Delegate { get; set; }
@@ -885,26 +869,25 @@ namespace BrowserEngineKit {
 		[Export ("textSelectionDisplayInteraction")]
 		UITextSelectionDisplayInteraction TextSelectionDisplayInteraction { get; }
 
-		[NoWatch, NoTV]
+		[NoTV]
 		[Wrap ("WeakContextMenuInteractionDelegate")]
 		[NullAllowed]
 		IUIContextMenuInteractionDelegate ContextMenuInteractionDelegate { get; set; }
 
-		[NoWatch, NoTV]
+		[NoTV]
 		[NullAllowed, Export ("contextMenuInteractionDelegate", ArgumentSemantic.Weak)]
 		NSObject WeakContextMenuInteractionDelegate { get; set; }
 
-		[NoWatch, NoTV]
+		[NoTV]
 		[Export ("contextMenuInteraction")]
 		UIContextMenuInteraction ContextMenuInteraction { get; }
 	}
 
 	// Headers say this is available on macOS 14.3, but the BETextInteraction type isn't, so just remove this type from macOS as well.
-	[NoWatch, TV (17, 4), NoMac, iOS (17,4), MacCatalyst (17, 4)]
+	[TV (17, 4), NoMac, iOS (17, 4), MacCatalyst (17, 4)]
 	[BaseType (typeof (NSObject))]
 	[Protocol (BackwardsCompatibleCodeGeneration = false), Model]
-	interface BETextInteractionDelegate
-	{
+	interface BETextInteractionDelegate {
 		[Abstract]
 		[Export ("systemWillChangeSelectionForInteraction:")]
 		void SystemWillChangeSelection (BETextInteraction textInteraction);
@@ -914,13 +897,12 @@ namespace BrowserEngineKit {
 		void SystemDidChangeSelection (BETextInteraction textInteraction);
 	}
 
-	interface IBETextInteractionDelegate {}
+	interface IBETextInteractionDelegate { }
 
-	[NoWatch, TV (17, 4), NoMac, iOS (17,4), MacCatalyst (17, 4)]
-	[BaseType (typeof(NSObject))]
+	[TV (17, 4), NoMac, iOS (17, 4), MacCatalyst (17, 4)]
+	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface BEKeyEntryContext
-	{
+	interface BEKeyEntryContext {
 		[Export ("keyEntry", ArgumentSemantic.Strong)]
 		BEKeyEntry KeyEntry { get; }
 
@@ -939,10 +921,9 @@ namespace BrowserEngineKit {
 	}
 
 	[Flags]
-	[NoWatch, TV (17, 4), NoMac, iOS (17,4), MacCatalyst (17, 4)]
+	[TV (17, 4), NoMac, iOS (17, 4), MacCatalyst (17, 4)]
 	[Native]
-	public enum BETextDocumentRequestOptions : long
-	{
+	public enum BETextDocumentRequestOptions : long {
 		None = 0x0,
 		Text = 1L << 0,
 		AttributedText = 1L << 1,
@@ -951,11 +932,10 @@ namespace BrowserEngineKit {
 		AutocorrectedRanges = 1L << 7,
 	}
 
-	[NoWatch, TV (17, 4), NoMac, iOS (17,4), MacCatalyst (17, 4)]
-	[BaseType (typeof(NSObject))]
+	[TV (17, 4), NoMac, iOS (17, 4), MacCatalyst (17, 4)]
+	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface BETextDocumentRequest
-	{
+	interface BETextDocumentRequest {
 		[Export ("options", ArgumentSemantic.Assign)]
 		BETextDocumentRequestOptions Options { get; set; }
 
@@ -966,11 +946,10 @@ namespace BrowserEngineKit {
 		nint GranularityCount { get; set; }
 	}
 
-	[NoWatch, TV (17, 4), NoMac, iOS (17,4), MacCatalyst (17, 4)]
-	[BaseType (typeof(NSObject))]
+	[TV (17, 4), NoMac, iOS (17, 4), MacCatalyst (17, 4)]
+	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface BETextDocumentContext
-	{
+	interface BETextDocumentContext {
 		[Export ("initWithSelectedText:contextBefore:contextAfter:markedText:selectedRangeInMarkedText:")]
 		NativeHandle Constructor ([NullAllowed] string selectedText, [NullAllowed] string contextBefore, [NullAllowed] string contextAfter, [NullAllowed] string markedText, NSRange selectedRangeInMarkedText);
 
@@ -981,13 +960,12 @@ namespace BrowserEngineKit {
 		void AddTextRect (CGRect rect, NSRange range);
 
 		[Export ("autocorrectedRanges", ArgumentSemantic.Copy)]
-		NSValue[] AutocorrectedRanges { get; set; }
+		NSValue [] AutocorrectedRanges { get; set; }
 	}
 
-	[NoWatch, NoTV, Mac (14,3), iOS (17,4), MacCatalyst (17, 4)]
+	[NoTV, Mac (14, 3), iOS (17, 4), MacCatalyst (17, 4)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
-	interface BEProcessCapabilityGrant
-	{
+	interface BEProcessCapabilityGrant {
 		[Abstract]
 		[Export ("invalidate")]
 		bool Invalidate ();
@@ -997,13 +975,12 @@ namespace BrowserEngineKit {
 		bool Valid { [Bind ("isValid")] get; }
 	}
 
-	interface IBEProcessCapabilityGrant {}
+	interface IBEProcessCapabilityGrant { }
 
-	[NoWatch, NoTV, NoMac, iOS (17,4), MacCatalyst (17, 4)]
-	[BaseType (typeof(NSObject))]
+	[NoTV, NoMac, iOS (17, 4), MacCatalyst (17, 4)]
+	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface BEMediaEnvironment
-	{
+	interface BEMediaEnvironment {
 		[Export ("initWithWebPageURL:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSUrl url);
@@ -1025,11 +1002,10 @@ namespace BrowserEngineKit {
 		AVCaptureSession MakeCaptureSession ([NullAllowed] out NSError error);
 	}
 
-	[NoWatch, NoTV, Mac (14,3), iOS (17,4), MacCatalyst (17, 4)]
-	[BaseType (typeof(NSObject))]
+	[NoTV, Mac (14, 3), iOS (17, 4), MacCatalyst (17, 4)]
+	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface BEProcessCapability
-	{
+	interface BEProcessCapability {
 		[NoMac]
 		[Static]
 		[Export ("mediaPlaybackAndCaptureWithEnvironment:")]
@@ -1051,11 +1027,10 @@ namespace BrowserEngineKit {
 		IBEProcessCapabilityGrant Request ([NullAllowed] out NSError error);
 	}
 
-	[NoWatch, TV (17, 5), Mac (14, 5), iOS (17,5), MacCatalyst (17, 5)]
-	[BaseType (typeof(NSObject))]
+	[TV (17, 5), Mac (14, 5), iOS (17, 5), MacCatalyst (17, 5)]
+	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface BEWebAppManifest
-	{
+	interface BEWebAppManifest {
 		[Export ("initWithJSONData:manifestURL:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSData jsonData, NSUrl manifestUrl);
@@ -1067,10 +1042,9 @@ namespace BrowserEngineKit {
 		NSUrl ManifestUrl { get; }
 	}
 
-	[NoWatch, TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+	[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 	[Native]
-	public enum BEAccessibilityPressedState : long
-	{
+	public enum BEAccessibilityPressedState : long {
 		Undefined = 0,
 		False,
 		True,
@@ -1078,10 +1052,9 @@ namespace BrowserEngineKit {
 	}
 
 	[Flags]
-	[NoWatch, TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+	[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 	[Native]
-	public enum BEAccessibilityContainerType : ulong
-	{
+	public enum BEAccessibilityContainerType : ulong {
 		None = 0x0,
 		Landmark = 1uL << 0,
 		Table = 1uL << 1,
@@ -1097,11 +1070,10 @@ namespace BrowserEngineKit {
 		DescriptionList = 1uL << 11,
 	}
 
-	[NoWatch, TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+	[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 	[Category]
 	[BaseType (typeof (NSObject))]
-	interface NSObject_BEAccessibility
-	{
+	interface NSObject_BEAccessibility {
 		[Export ("browserAccessibilityCurrentStatus")]
 		[return: NullAllowed]
 		string GetBrowserAccessibilityCurrentStatus ();
@@ -1164,10 +1136,22 @@ namespace BrowserEngineKit {
 
 		[Export ("browserAccessibilityDeleteTextAtCursor:")]
 		void BrowserAccessibilityDeleteTextAtCursor (nint numberOfCharacters);
+
+		[iOS (18, 2), TV (18, 2), MacCatalyst (18, 2), Mac (15, 2)]
+		[Export ("accessibilityLineEndPositionFromCurrentSelection")]
+		nint GetAccessibilityLineEndPositionFromCurrentSelection ();
+
+		[iOS (18, 2), TV (18, 2), MacCatalyst (18, 2), Mac (15, 2)]
+		[Export ("accessibilityLineStartPositionFromCurrentSelection")]
+		nint GetAccessibilityLineStartPositionFromCurrentSelection ();
+
+		[iOS (18, 2), TV (18, 2), MacCatalyst (18, 2), Mac (15, 2)]
+		[Export ("accessibilityLineRangeForPosition:")]
+		NSRange GetAccessibilityLineRangeForPosition (nint position);
 	}
 
 	[BackingFieldType (typeof (ulong))]
-	[iOS (18, 0), TV (18, 0), MacCatalyst (18, 0), NoMac, MacCatalyst (18, 0)]
+	[iOS (18, 0), TV (18, 0), MacCatalyst (18, 0), NoMac]
 	public enum BEAccessibilityTrait : long {
 		[Field ("BEAccessibilityTraitMenuItem")]
 		MenuItem,
@@ -1186,7 +1170,7 @@ namespace BrowserEngineKit {
 	}
 
 	[BackingFieldType (typeof (uint))]
-	[iOS (18, 0), TV (18, 0), MacCatalyst (18, 0), NoMac, MacCatalyst (18, 0)]
+	[iOS (18, 0), TV (18, 0), MacCatalyst (18, 0), NoMac]
 	public enum BEAccessibilityNotification : long {
 		[Field ("BEAccessibilitySelectionChangedNotification")]
 		SelectionChanged,
@@ -1194,5 +1178,128 @@ namespace BrowserEngineKit {
 		[Field ("BEAccessibilityValueChangedNotification")]
 		Changed,
 	}
+
+	[iOS (18, 2), TV (18, 2), Mac (15, 2), MacCatalyst (18, 2)]
+	[BaseType (typeof (NSObject))]
+	interface BEAccessibilityTextMarker : NSCopying, NSSecureCoding {
+	}
+
+	[iOS (18, 2), TV (18, 2), Mac (15, 2), MacCatalyst (18, 2)]
+	[BaseType (typeof (NSObject))]
+	interface BEAccessibilityTextMarkerRange : NSCopying, NSSecureCoding {
+		[Export ("startMarker", ArgumentSemantic.Strong)]
+		BEAccessibilityTextMarker StartMarker { get; set; }
+
+		[Export ("endMarker", ArgumentSemantic.Strong)]
+		BEAccessibilityTextMarker EndMarker { get; set; }
+	}
+
+	[iOS (18, 2), TV (18, 2), Mac (15, 2), MacCatalyst (18, 2)]
+	[Protocol (BackwardsCompatibleCodeGeneration = false)]
+	interface BEAccessibilityTextMarkerSupport {
+		[Abstract]
+		[Export ("accessibilityBoundsForTextMarkerRange:")]
+		CGRect GetAccessibilityBounds (BEAccessibilityTextMarkerRange range);
+
+		[Abstract]
+		[Export ("accessibilityContentForTextMarkerRange:")]
+		[return: NullAllowed]
+		string GetAccessibilityContent (BEAccessibilityTextMarkerRange range);
+
+		[Abstract]
+		[return: NullAllowed]
+		[Export ("accessibilityTextMarkerRangeForCurrentSelection")]
+		BEAccessibilityTextMarkerRange GetAccessibilityTextMarkerRangeForCurrentSelection ();
+
+		[Abstract]
+		[Export ("accessibilityTextMarkerRange")]
+		BEAccessibilityTextMarkerRange GetAccessibilityTextMarkerRange ();
+
+		[Abstract]
+		[Export ("accessibilityNextTextMarker:")]
+		[return: NullAllowed]
+		BEAccessibilityTextMarker GetAccessibilityNextTextMarker (BEAccessibilityTextMarker marker);
+
+		[Abstract]
+		[Export ("accessibilityPreviousTextMarker:")]
+		[return: NullAllowed]
+		BEAccessibilityTextMarker GetAccessibilityPreviousTextMarker (BEAccessibilityTextMarker marker);
+
+		[Abstract]
+		[Export ("accessibilityLineEndMarkerForMarker:")]
+		[return: NullAllowed]
+		BEAccessibilityTextMarker GetAccessibilityLineEndMarker (BEAccessibilityTextMarker marker);
+
+		[Abstract]
+		[Export ("accessibilityLineStartMarkerForMarker:")]
+		[return: NullAllowed]
+		BEAccessibilityTextMarker GetAccessibilityLineStartMarker (BEAccessibilityTextMarker marker);
+
+		[Abstract]
+		[Export ("accessibilityMarkerForPoint:")]
+		[return: NullAllowed]
+		BEAccessibilityTextMarker GetAccessibilityMarker (CGPoint point);
+
+		[Abstract]
+		[Export ("accessibilityTextMarkerForPosition:")]
+		[return: NullAllowed]
+		BEAccessibilityTextMarker GetAccessibilityTextMarker (nint position);
+
+		[Abstract]
+		[Export ("accessibilityTextMarkerRangeForRange:")]
+		[return: NullAllowed]
+		BEAccessibilityTextMarkerRange GetAccessibilityTextMarker (NSRange range);
+
+		[Abstract]
+		[Export ("accessibilityRangeForTextMarkerRange:")]
+		NSRange GetAccessibilityRange (BEAccessibilityTextMarkerRange range);
+	}
+
+	[NoTV, NoMac, iOS (18, 2), MacCatalyst (18, 2)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface BEDownloadMonitorLocation {
+		[Export ("url")]
+		NSUrl Url { get; }
+
+		[Export ("bookmarkData")]
+		NSData BookmarkData { get; }
+	}
+
+	delegate void BEDownloadMonitorUseDownloadsFolderCallback ([NullAllowed] BEDownloadMonitorLocation finalLocation);
+	delegate void BEDownloadMonitorBeginMonitoringCallback ([NullAllowed] BEDownloadMonitorLocation placeholderLocation, [NullAllowed] NSError error);
+	delegate void BEDownloadMonitorResumeMonitoringCallback ([NullAllowed] NSError error);
+
+	[NoTV, NoMac, iOS (18, 2), MacCatalyst (18, 2)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface BEDownloadMonitor {
+		[Export ("initWithSourceURL:destinationURL:observedProgress:liveActivityAccessToken:")]
+		NativeHandle Constructor (NSUrl sourceUrl, NSUrl destinationUrl, NSProgress observedProgress, NSData liveActivityAccessToken);
+
+		[Export ("useDownloadsFolderWithPlaceholderType:finalFileCreatedHandler:")]
+		void UseDownloadsFolder ([NullAllowed] UTType placehodlerType, BEDownloadMonitorUseDownloadsFolderCallback finalFileCreatedHandler);
+
+		[Async]
+		[Export ("beginMonitoring:")]
+		void BeginMonitoring (BEDownloadMonitorBeginMonitoringCallback completion);
+
+		[Async]
+		[Export ("resumeMonitoring:completionHandler:")]
+		void ResumeMonitoring (NSUrl url, BEDownloadMonitorResumeMonitoringCallback completionHandler);
+
+		[Export ("identifier")]
+		NSUuid Identifier { get; }
+
+		[Export ("sourceURL")]
+		NSUrl SourceUrl { get; }
+
+		[Export ("destinationURL")]
+		NSUrl DestinationUrl { get; }
+
+		[Static]
+		[return: NullAllowed]
+		[Export ("createAccessToken")]
+		NSData CreateAccessToken ();
+	}
 }
-#endif

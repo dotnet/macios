@@ -37,29 +37,45 @@ using System.Runtime.Versioning;
 namespace Accounts {
 
 	// XI specific, not part of ObjC (NSString mapping)
+	/// <summary>Specifies target audience for Facebook posts.</summary>
+	///     <remarks>
+	///     </remarks>
 	public enum ACFacebookAudience {
+		/// <summary>Posts are visible to everyone.</summary>
 		Everyone = 1,
+		/// <summary>Posts are visible to friends only.</summary>
 		Friends,
-		OnlyMe
+		/// <summary>Posts are visible to the user only.</summary>
+		OnlyMe,
 	}
 
-#if NET
+	/// <summary>Options available when requesting Facebook access.</summary>
+	///     <remarks>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
-#endif
 	public class AccountStoreOptions : DictionaryContainer {
 #if !COREBUILD
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public AccountStoreOptions ()
 			: base (new NSMutableDictionary ())
 		{
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public AccountStoreOptions (NSDictionary dictionary)
 			: base (dictionary)
 		{
 		}
 
+		/// <summary>Represents Facebook App ID.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>The property uses constant ACFacebookAppIdKey value to access the underlying dictionary.</remarks>
 		public string? FacebookAppId {
 			set {
 				SetStringValue (ACFacebookKey.AppId, value);
@@ -69,6 +85,11 @@ namespace Accounts {
 			}
 		}
 
+		/// <param name="audience">Target audience.</param>
+		///         <param name="permissions">One or more requested permission.</param>
+		///         <summary>Sets message posting permissions.</summary>
+		///         <remarks>
+		///         </remarks>
 		public void SetPermissions (ACFacebookAudience audience, params string [] permissions)
 		{
 			if (permissions is null)
@@ -97,6 +118,9 @@ namespace Accounts {
 			SetNativeValue (ACFacebookKey.Audience, v);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? TencentWeiboAppId {
 			set {
 				SetStringValue (ACTencentWeiboKey.AppId, value);

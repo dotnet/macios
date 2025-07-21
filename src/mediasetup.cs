@@ -3,14 +3,9 @@ using Foundation;
 using ObjCRuntime;
 using UIKit;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace MediaSetup {
 
 	[NoTV]
-	[NoWatch]
 	[NoMac]
 	[iOS (14, 0)]
 	[BaseType (typeof (NSObject))]
@@ -46,7 +41,6 @@ namespace MediaSetup {
 	interface IMSAuthenticationPresentationContext { }
 
 	[NoTV]
-	[NoWatch]
 	[NoMac]
 	[iOS (14, 0)]
 	[Protocol]
@@ -58,7 +52,6 @@ namespace MediaSetup {
 	}
 
 	[NoTV]
-	[NoWatch]
 	[NoMac]
 	[iOS (14, 0)]
 	[BaseType (typeof (NSObject))]

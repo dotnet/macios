@@ -7,9 +7,8 @@
 // Copyright 2012 Xamarin Inc. All rights reserved.
 //
 
-#if !__WATCHOS__
-
 using System;
+using CoreFoundation;
 using Foundation;
 #if !MONOMAC
 using UIKit;
@@ -31,6 +30,7 @@ namespace MonoTouchFixtures.SystemConfiguration {
 				NetworkReachabilityFlags flags;
 
 				Assert.IsTrue (nr.TryGetFlags (out flags));
+				flags &= ~NetworkReachabilityFlags.TransientConnection; // Remove the TransientConnection flag if it's set
 				Assert.That (flags, Is.EqualTo (NetworkReachabilityFlags.Reachable), "Reachable");
 			}
 		}
@@ -138,7 +138,14 @@ namespace MonoTouchFixtures.SystemConfiguration {
 			} catch (ArgumentException) {
 			}
 		}
+
+		[Test]
+		public void Schedule ()
+		{
+			var ip = new IPAddress (0);
+			using var defaultRouteReachability = new NetworkReachability (ip);
+			Assert.IsTrue (defaultRouteReachability.Schedule (CFRunLoop.Main, CFRunLoop.ModeDefault), "Schedule");
+			Assert.IsTrue (defaultRouteReachability.Unschedule (CFRunLoop.Main, CFRunLoop.ModeDefault), "Unschedule");
+		}
 	}
 }
-
-#endif // !__WATCHOS__

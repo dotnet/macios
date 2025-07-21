@@ -1,6 +1,3 @@
-
-#if !__WATCHOS__
-
 using System;
 using Foundation;
 #if !MONOMAC
@@ -12,12 +9,7 @@ using SceneKit;
 using NUnit.Framework;
 using Xamarin.Utils;
 
-#if NET
 using System.Numerics;
-#else
-using CoreGraphics;
-using OpenTK;
-#endif
 
 namespace MonoTouchFixtures.SpriteKit {
 
@@ -67,5 +59,3 @@ namespace MonoTouchFixtures.SpriteKit {
 		}
 	}
 }
-
-#endif // !__WATCHOS__

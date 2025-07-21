@@ -19,38 +19,35 @@ using CoreFoundation;
 using OS_nw_endpoint = System.IntPtr;
 using OS_nw_txt_record = System.IntPtr;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace Network {
-
-#if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-#else
-	[Watch (6, 0)]
-#endif
 
 	public class NWEndpoint : NativeObject {
 		[Preserve (Conditional = true)]
-#if NET
-		internal NWEndpoint (NativeHandle handle, bool owns) : base (handle, owns) {}
-#else
-		public NWEndpoint (NativeHandle handle, bool owns) : base (handle, owns) { }
-#endif
+		internal NWEndpoint (NativeHandle handle, bool owns) : base (handle, owns) { }
 
 #if !COREBUILD
 		[DllImport (Constants.NetworkLibrary)]
 		extern static NWEndpointType nw_endpoint_get_type (OS_nw_endpoint handle);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NWEndpointType Type => nw_endpoint_get_type (GetCheckedHandle ());
 
 		[DllImport (Constants.NetworkLibrary)]
 		extern static OS_nw_endpoint nw_endpoint_create_host (IntPtr hostname, IntPtr port);
 
+		/// <param name="hostname">To be added.</param>
+		///         <param name="port">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NWEndpoint? Create (string hostname, string port)
 		{
 			if (hostname is null)
@@ -68,6 +65,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern IntPtr nw_endpoint_get_hostname (OS_nw_endpoint endpoint);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? Hostname => Marshal.PtrToStringAnsi (nw_endpoint_get_hostname (GetCheckedHandle ()));
 
 		[DllImport (Constants.NetworkLibrary, EntryPoint = "nw_endpoint_copy_port_string")]
@@ -79,11 +79,17 @@ namespace Network {
 			return TransientString.ToStringAndFree (ptr)!;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string Port => nw_endpoint_copy_port_string (GetCheckedHandle ());
 
 		[DllImport (Constants.NetworkLibrary)]
 		static extern ushort nw_endpoint_get_port (OS_nw_endpoint endpoint);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public ushort PortNumber => nw_endpoint_get_port (GetCheckedHandle ());
 
 		[DllImport (Constants.NetworkLibrary)]
@@ -102,6 +108,9 @@ namespace Network {
 			return TransientString.ToStringAndFree (ptr)!;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string Address => nw_endpoint_copy_address_string (GetCheckedHandle ());
 
 #if false
@@ -114,6 +123,12 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern unsafe OS_nw_endpoint nw_endpoint_create_bonjour_service (IntPtr name, IntPtr type, IntPtr domain);
 
+		/// <param name="name">To be added.</param>
+		///         <param name="serviceType">To be added.</param>
+		///         <param name="domain">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NWEndpoint? CreateBonjourService (string name, string serviceType, string domain)
 		{
 			if (serviceType is null)
@@ -130,39 +145,38 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern unsafe IntPtr nw_endpoint_get_bonjour_service_name (OS_nw_endpoint endpoint);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? BonjourServiceName => Marshal.PtrToStringAnsi (nw_endpoint_get_bonjour_service_name (GetCheckedHandle ()));
 
 		[DllImport (Constants.NetworkLibrary)]
 		static extern IntPtr nw_endpoint_get_bonjour_service_type (OS_nw_endpoint endpoint);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? BonjourServiceType => Marshal.PtrToStringAnsi (nw_endpoint_get_bonjour_service_type (GetCheckedHandle ()));
 
 		[DllImport (Constants.NetworkLibrary)]
 		static extern IntPtr nw_endpoint_get_bonjour_service_domain (OS_nw_endpoint endpoint);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? BonjourServiceDomain => Marshal.PtrToStringAnsi (nw_endpoint_get_bonjour_service_domain (GetCheckedHandle ()));
 
-#if NET
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (13, 0)]
-		[iOS (13, 0)]
-#endif
 		[DllImport (Constants.NetworkLibrary, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
 		static extern OS_nw_endpoint nw_endpoint_create_url (IntPtr url);
 
-#if NET
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (13, 0)]
-		[iOS (13, 0)]
-#endif
 		public static NWEndpoint? Create (string url)
 		{
 			if (url is null)
@@ -174,55 +188,30 @@ namespace Network {
 			return new NWEndpoint (handle, owns: true);
 		}
 
-#if NET
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (13, 0)]
-		[iOS (13, 0)]
-#endif
 		[DllImport (Constants.NetworkLibrary, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr nw_endpoint_get_url (OS_nw_endpoint endpoint);
 
-#if NET
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (13, 0)]
-		[iOS (13, 0)]
-#endif
 		public string? Url => Marshal.PtrToStringAnsi (nw_endpoint_get_url (GetCheckedHandle ()));
 
-
-#if NET
 		[SupportedOSPlatform ("tvos16.0")]
 		[SupportedOSPlatform ("macos13.0")]
 		[SupportedOSPlatform ("ios16.0")]
 		[SupportedOSPlatform ("maccatalyst16.0")]
-#else
-		[TV (16, 0)]
-		[Mac (13, 0)]
-		[iOS (16, 0)]
-		[Watch (9, 0)]
-#endif
 		[DllImport (Constants.NetworkLibrary)]
 		static extern unsafe byte* nw_endpoint_get_signature (OS_nw_endpoint endpoint, nuint* out_signature_length);
 
-#if NET
 		[SupportedOSPlatform ("tvos16.0")]
 		[SupportedOSPlatform ("macos13.0")]
 		[SupportedOSPlatform ("ios16.0")]
 		[SupportedOSPlatform ("maccatalyst16.0")]
-#else
-		[TV (16, 0)]
-		[Mac (13, 0)]
-		[iOS (16, 0)]
-		[Watch (9, 0)]
-#endif
 		public ReadOnlySpan<byte> Signature {
 			get {
 				unsafe {
@@ -236,31 +225,17 @@ namespace Network {
 			}
 		}
 
-#if NET
 		[SupportedOSPlatform ("tvos16.0")]
 		[SupportedOSPlatform ("macos13.0")]
 		[SupportedOSPlatform ("ios16.0")]
 		[SupportedOSPlatform ("maccatalyst16.0")]
-#else
-		[TV (16, 0)]
-		[Mac (13, 0)]
-		[iOS (16, 0)]
-		[Watch (9, 0)]
-#endif
 		[DllImport (Constants.NetworkLibrary)]
 		static extern OS_nw_txt_record nw_endpoint_copy_txt_record (OS_nw_endpoint endpoint);
 
-#if NET
 		[SupportedOSPlatform ("tvos16.0")]
 		[SupportedOSPlatform ("macos13.0")]
 		[SupportedOSPlatform ("ios16.0")]
 		[SupportedOSPlatform ("maccatalyst16.0")]
-#else
-		[TV (16, 0)]
-		[Mac (13, 0)]
-		[iOS (16, 0)]
-		[Watch (9, 0)]
-#endif
 		public NWTxtRecord? TxtRecord {
 			get {
 				var record = nw_endpoint_copy_txt_record (GetCheckedHandle ());
@@ -281,9 +256,11 @@ namespace Network {
 			using var rv = NSArray.FromNSObjects (array);
 			if (rv is null)
 				return IntPtr.Zero;
+#pragma warning disable RBI0014
 			rv.DangerousRetain ();
 			rv.DangerousAutorelease ();
 			return rv.Handle;
+#pragma warning restore RBI0014
 		}
 #endif // !COREBUILD
 

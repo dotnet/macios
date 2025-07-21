@@ -15,30 +15,16 @@ using CoreGraphics;
 using Foundation;
 using UniformTypeIdentifiers;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
-#if IOS && !NET && !__MACCATALYST__
-using FileProvider;
-
-// This is the original (iOS 8) location of `NSFileProviderExtension`
-// but it moved into it's own framework later (iOS 11) and it's now
-// shared with macOS...
-namespace UIKit {
-#else
 namespace FileProvider {
-#endif
 	/// <summary>Delegate for handling a thumbnail fetch operation.</summary>
 	delegate void NSFileProviderExtensionFetchThumbnailsHandler (NSString identifier, [NullAllowed] NSData imageData, [NullAllowed] NSError error);
 
-	/// <summary>Subclasses of <see cref="T:UIKit.NSFileProviderExtension" /> implement the move and open functionality for extensions of type <see cref="T:UIKit.UIDocumentPickerViewController" />.</summary>
+	/// <summary>Subclasses of <see cref="UIKit.NSFileProviderExtension" /> implement the move and open functionality for extensions of type <see cref="UIKit.UIDocumentPickerViewController" />.</summary>
 	///     <remarks>
 	///       <para>(More documentation for this node is coming)</para>
 	///       <para tool="threads">The members of this class can be used from a background thread.</para>
 	///     </remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/NSFileProviderExtension_Class/index.html">Apple documentation for <c>NSFileProviderExtension</c></related>
-	[NoWatch]
 	[NoTV]
 	[NoMac]
 	[Unavailable (PlatformName.MacCatalyst)]
@@ -168,12 +154,19 @@ namespace FileProvider {
 	[ErrorDomain ("NSFileProviderErrorDomain")]
 	[Native ("NSFileProviderErrorCode")]
 	enum NSFileProviderError : long {
+		/// <summary>To be added.</summary>
 		NotAuthenticated = -1000,
+		/// <summary>To be added.</summary>
 		FilenameCollision = -1001,
+		/// <summary>To be added.</summary>
 		SyncAnchorExpired = -1002,
+		/// <summary>To be added.</summary>
 		PageExpired = SyncAnchorExpired,
+		/// <summary>To be added.</summary>
 		InsufficientQuota = -1003,
+		/// <summary>To be added.</summary>
 		ServerUnreachable = -1004,
+		/// <summary>To be added.</summary>
 		NoSuchItem = -1005,
 		VersionOutOfDate = -1006,
 		DirectoryNotEmpty = -1007,
@@ -209,12 +202,18 @@ namespace FileProvider {
 	[Static]
 	interface NSFileProviderErrorKeys {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'NSFileProviderErrorItemKey' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'NSFileProviderErrorItemKey' instead.")]
 		[Field ("NSFileProviderErrorCollidingItemKey")]
 		NSString CollidingItemKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileProviderErrorNonExistentItemIdentifierKey")]
 		NSString NonExistentItemIdentifierKey { get; }
 
@@ -228,6 +227,9 @@ namespace FileProvider {
 	[Static]
 	interface NSFileProviderFavoriteRank {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileProviderFavoriteRankUnranked")]
 		ulong Unranked { get; }
 	}
@@ -237,9 +239,15 @@ namespace FileProvider {
 	[Static]
 	interface NSFileProviderItemIdentifier {
 
+		/// <summary>Gets the persistent name of the root directory in the shared hierarchy.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileProviderRootContainerItemIdentifier")]
 		NSString RootContainer { get; }
 
+		/// <summary>Gets the persistent name of the documents and directories.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileProviderWorkingSetContainerItemIdentifier")]
 		NSString WorkingSetContainer { get; }
 
@@ -253,48 +261,46 @@ namespace FileProvider {
 	[Native]
 	[Flags]
 	enum NSFileProviderItemCapabilities : ulong {
+		/// <summary>To be added.</summary>
 		Reading = 1 << 0,
+		/// <summary>To be added.</summary>
 		Writing = 1 << 1,
+		/// <summary>To be added.</summary>
 		Reparenting = 1 << 2,
+		/// <summary>To be added.</summary>
 		Renaming = 1 << 3,
+		/// <summary>To be added.</summary>
 		Trashing = 1 << 4,
+		/// <summary>To be added.</summary>
 		Deleting = 1 << 5,
 		[NoiOS]
 		[NoTV]
-		[NoWatch]
 		[NoMacCatalyst]
 		Evicting = 1 << 6,
 		[NoiOS]
 		[NoTV]
-		[NoWatch]
 		[NoMacCatalyst]
 		ExcludingFromSync = 1 << 7,
+		/// <summary>To be added.</summary>
 		AddingSubItems = Writing,
+		/// <summary>To be added.</summary>
 		ContentEnumerating = Reading,
-#if !NET
-		[Obsolete ("This enum value is not constant across OS and versions.")]
-#if MONOMAC
-		All = Reading | Writing | Reparenting | Renaming | Trashing | Deleting | Evicting,
-#else
-		All = Reading | Writing | Reparenting | Renaming | Trashing | Deleting,
-#endif
-#endif
 	}
 
-	[Flags, NoWatch, NoTV, NoMacCatalyst, NoiOS, Mac (12, 3)]
+	[Flags, NoTV, NoMacCatalyst, NoiOS, Mac (12, 3)]
 	[Native]
 	public enum NSFileProviderMaterializationFlags : ulong {
 		KnownSparseRanges = 1uL << 0,
 	}
 
-	[Flags, NoWatch, NoTV, NoMacCatalyst, NoiOS, Mac (12, 3)]
+	[Flags, NoTV, NoMacCatalyst, NoiOS, Mac (12, 3)]
 	[Native]
 	public enum NSFileProviderFetchContentsOptions : ulong {
 		StrictVersioning = 1uL << 0,
 	}
 
 	[Native]
-	[iOS (16, 0), Mac (13, 0), NoWatch, NoTV, NoMacCatalyst]
+	[iOS (16, 0), Mac (13, 0), NoTV, NoMacCatalyst]
 	public enum NSFileProviderContentPolicy : long {
 		Inherited,
 		[NoiOS, NoMacCatalyst]
@@ -313,6 +319,9 @@ namespace FileProvider {
 		[Field ("NSFileProviderInitialPageSortedByName")]
 		IntPtr _InitialPageSortedByName { get; }
 
+		/// <summary>Gets the first page in name order.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Wrap ("Runtime.GetNSObject<NSData> (_InitialPageSortedByName)")]
 		NSData InitialPageSortedByName { get; }
@@ -321,6 +330,9 @@ namespace FileProvider {
 		[Field ("NSFileProviderInitialPageSortedByDate")]
 		IntPtr _InitialPageSortedByDate { get; }
 
+		/// <summary>Gets the first page in date order.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Wrap ("Runtime.GetNSObject<NSData> (_InitialPageSortedByDate)")]
 		NSData InitialPageSortedByDate { get; }
@@ -333,6 +345,11 @@ namespace FileProvider {
 	[BaseType (typeof (NSObject))]
 	interface NSFileProviderDomain {
 
+		/// <param name="identifier">To be added.</param>
+		/// <param name="displayName">To be added.</param>
+		/// <param name="pathRelativeToDocumentStorage">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoMac]
 		[Export ("initWithIdentifier:displayName:pathRelativeToDocumentStorage:")]
 		NativeHandle Constructor (string identifier, string displayName, string pathRelativeToDocumentStorage);
@@ -345,12 +362,21 @@ namespace FileProvider {
 		[Export ("initWithDisplayName:userInfo:volumeURL:")]
 		NativeHandle Constructor (string displayName, NSDictionary userInfo, [NullAllowed] NSUrl volumeUrl);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("identifier")]
 		string Identifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("displayName")]
 		string DisplayName { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[Export ("pathRelativeToDocumentStorage")]
 		string PathRelativeToDocumentStorage { get; }
@@ -368,7 +394,7 @@ namespace FileProvider {
 		bool Hidden { [Bind ("isHidden")] get; set; }
 
 		[NoMacCatalyst]
-		[NoWatch, NoTV, iOS (16, 0)]
+		[NoTV, iOS (16, 0)]
 		[Export ("testingModes", ArgumentSemantic.Assign)]
 		NSFileProviderDomainTestingModes TestingModes { get; set; }
 
@@ -377,19 +403,19 @@ namespace FileProvider {
 		[Field ("NSFileProviderDomainDidChange")]
 		NSString DidChange { get; }
 
-		[NoWatch, NoTV, iOS (16, 0), NoMacCatalyst]
+		[NoTV, iOS (16, 0), NoMacCatalyst]
 		[NullAllowed, Export ("backingStoreIdentity")]
 		NSData BackingStoreIdentity { get; }
 
-		[NoWatch, NoTV, NoMacCatalyst, Mac (13, 0), iOS (16, 0)]
+		[NoTV, NoMacCatalyst, Mac (13, 0), iOS (16, 0)]
 		[Export ("replicated")]
 		bool Replicated { [Bind ("isReplicated")] get; }
 
-		[NoWatch, NoTV, NoMacCatalyst, iOS (18, 0), Mac (13, 0)]
+		[NoTV, NoMacCatalyst, iOS (18, 0), Mac (13, 0)]
 		[Export ("supportsSyncingTrash")]
 		bool SupportsSyncingTrash { get; set; }
 
-		[NoWatch, NoTV, NoMacCatalyst, Mac (13, 3), iOS (16, 4)]
+		[NoTV, NoMacCatalyst, Mac (13, 3), iOS (16, 4)]
 		[NullAllowed, Export ("volumeUUID")]
 		NSUuid VolumeUuid { get; }
 
@@ -412,14 +438,23 @@ namespace FileProvider {
 	[Protocol]
 	interface NSFileProviderEnumerationObserver {
 
+		/// <param name="updatedItems">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("didEnumerateItems:")]
 		void DidEnumerateItems (INSFileProviderItem [] updatedItems);
 
+		/// <param name="upToPage">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("finishEnumeratingUpToPage:")]
 		void FinishEnumerating ([NullAllowed] NSData upToPage);
 
+		/// <param name="error">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("finishEnumeratingWithError:")]
 		void FinishEnumerating (NSError error);
@@ -431,23 +466,36 @@ namespace FileProvider {
 
 	interface INSFileProviderChangeObserver { }
 
-	/// <summary>Observes changes and deletions of the enumerated files from a <see cref="T:FileProvider.INSFileProviderEnumerator" />.</summary>
+	/// <summary>Observes changes and deletions of the enumerated files from a <see cref="FileProvider.INSFileProviderEnumerator" />.</summary>
 	[NoMacCatalyst]
 	[Protocol]
 	interface NSFileProviderChangeObserver {
 
+		/// <param name="updatedItems">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("didUpdateItems:")]
 		void DidUpdateItems (INSFileProviderItem [] updatedItems);
 
+		/// <param name="deletedItemIdentifiers">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("didDeleteItemsWithIdentifiers:")]
 		void DidDeleteItems (string [] deletedItemIdentifiers);
 
+		/// <param name="anchor">To be added.</param>
+		/// <param name="moreComing">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("finishEnumeratingChangesUpToSyncAnchor:moreComing:")]
 		void FinishEnumeratingChanges (NSData anchor, bool moreComing);
 
+		/// <param name="error">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("finishEnumeratingWithError:")]
 		void FinishEnumerating (NSError error);
@@ -459,49 +507,72 @@ namespace FileProvider {
 
 	interface INSFileProviderEnumerator { }
 
-	/// <summary>Enumerates items from an <see cref="T:FileProvider.INSFileProvider" />.</summary>
+	/// <summary>Enumerates items from an <see cref="FileProvider.INSFileProvider" />.</summary>
 	[NoMacCatalyst]
 	[Protocol]
 	interface NSFileProviderEnumerator {
 
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("invalidate")]
 		void Invalidate ();
 
+		/// <param name="observer">To be added.</param>
+		/// <param name="startPage">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("enumerateItemsForObserver:startingAtPage:")]
 		void EnumerateItems (INSFileProviderEnumerationObserver observer, NSData startPage);
 
+		/// <param name="observer">To be added.</param>
+		/// <param name="syncAnchor">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("enumerateChangesForObserver:fromSyncAnchor:")]
 		void EnumerateChanges (INSFileProviderChangeObserver observer, NSData syncAnchor);
 
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("currentSyncAnchorWithCompletionHandler:")]
 		void CurrentSyncAnchor (Action<NSData> completionHandler);
 	}
 
-	/// <summary>An item provided by an <see cref="T:FileProvider.INSFileProviderItem" />. (A type alias for <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=File%20Provider%20NSFile%20Provider%20Item%20Protocol&amp;scope=Xamarin" title="T:FileProvider.NSFileProviderItemProtocol">T:FileProvider.NSFileProviderItemProtocol</a></format>.)</summary>
+	/// <summary>An item provided by an <see cref="FileProvider.INSFileProviderItem" />. (A type alias for <see cref="FileProvider.NSFileProviderItemProtocol" />.)</summary>
 	interface INSFileProviderItem { }
 
+	/// <summary>An item provided by an <see cref="FileProvider.INSFileProviderItem" />. (A type alias for <see cref="FileProvider.NSFileProviderItemProtocol" />.)</summary>
+	/// <remarks>To be added.</remarks>
 	[NoMacCatalyst]
 	[Protocol]
 	interface NSFileProviderItem {
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("itemIdentifier")]
 		string Identifier { get; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("parentItemIdentifier")]
 		string ParentIdentifier { get; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("filename")]
 		string Filename { get; }
 
-#if !NET
-		// became optional when deprecated
-		[Abstract]
-#endif
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 14, 0, message: "Use 'GetContentType' instead.")]
 		[Deprecated (PlatformName.MacOSX, 11, 0, message: "Use 'GetContentType' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 14, 0, message: "Use 'GetContentType' instead.")]
@@ -512,88 +583,150 @@ namespace FileProvider {
 		[Export ("contentType", ArgumentSemantic.Copy)]
 		UTType GetContentType ();
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("capabilities")]
 		NSFileProviderItemCapabilities GetCapabilities ();
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[return: NullAllowed]
 		[Export ("documentSize", ArgumentSemantic.Copy)]
 		NSNumber GetDocumentSize ();
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[return: NullAllowed]
 		[Export ("childItemCount", ArgumentSemantic.Copy)]
 		NSNumber GetChildItemCount ();
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[return: NullAllowed]
 		[Export ("creationDate", ArgumentSemantic.Copy)]
 		NSDate GetCreationDate ();
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[return: NullAllowed]
 		[Export ("contentModificationDate", ArgumentSemantic.Copy)]
 		NSDate GetContentModificationDate ();
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[return: NullAllowed]
 		[Export ("lastUsedDate", ArgumentSemantic.Copy)]
 		NSDate GetLastUsedDate ();
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[return: NullAllowed]
 		[Export ("tagData", ArgumentSemantic.Copy)]
 		NSData GetTagData ();
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[NoMac]
 		[return: NullAllowed]
 		[Export ("favoriteRank", ArgumentSemantic.Copy)]
 		NSNumber GetFavoriteRank ();
 
-#if NET // Not available in mac
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[NoMac]
-#elif MONOMAC
-		[Obsolete ("'IsTrashed' is not available in macOS and will be removed in the future.")]
-#endif
 		[Export ("isTrashed")]
 		bool IsTrashed ();
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("isUploaded")]
 		bool IsUploaded ();
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("isUploading")]
 		bool IsUploading ();
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[return: NullAllowed]
 		[Export ("uploadingError", ArgumentSemantic.Copy)]
 		NSError GetUploadingError ();
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("isDownloaded")]
 		bool IsDownloaded ();
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("isDownloading")]
 		bool IsDownloading ();
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[return: NullAllowed]
 		[Export ("downloadingError", ArgumentSemantic.Copy)]
 		NSError GetDownloadingError ();
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("isMostRecentVersionDownloaded")]
 		bool IsMostRecentVersionDownloaded ();
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("isShared")]
 		bool IsShared ();
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("isSharedByCurrentUser")]
 		bool IsSharedByCurrentUser ();
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[return: NullAllowed]
 		[Export ("ownerNameComponents")]
 		NSPersonNameComponents GetOwnerNameComponents ();
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[return: NullAllowed]
 		[Export ("mostRecentEditorNameComponents")]
 		NSPersonNameComponents GetMostRecentEditorNameComponents ();
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[NoMac]
 		[return: NullAllowed]
 		[Export ("versionIdentifier")]
 		NSData GetVersionIdentifier ();
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[return: NullAllowed]
 		[Export ("userInfo")]
 		NSDictionary GetUserInfo ();
@@ -618,7 +751,7 @@ namespace FileProvider {
 		[Export ("typeAndCreator")]
 		NSFileProviderTypeAndCreator TypeAndCreator { get; }
 
-		[NoWatch, NoTV, NoMacCatalyst, Mac (13, 0), iOS (16, 0)]
+		[NoTV, NoMacCatalyst, Mac (13, 0), iOS (16, 0)]
 		[Export ("contentPolicy")]
 		NSFileProviderContentPolicy ContentPolicy { get; }
 	}
@@ -630,57 +763,126 @@ namespace FileProvider {
 	[DisableDefaultCtor]
 	interface NSFileProviderManager {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[Static]
 		[Export ("defaultManager", ArgumentSemantic.Strong)]
 		NSFileProviderManager DefaultManager { get; }
 
+		/// <param name="containerItemIdentifier">To be added.</param>
+		///         <param name="completion">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("signalEnumeratorForContainerItemIdentifier:completionHandler:")]
 		// Not Async'ified on purpose, because this can switch from app to extension.
 		void SignalEnumerator (string containerItemIdentifier, Action<NSError> completion);
 
 		// Not Async'ified on purpose, because the task must be accesed while the completion action is performing...
+		/// <param name="task">To be added.</param>
+		///         <param name="identifier">To be added.</param>
+		///         <param name="completion">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("registerURLSessionTask:forItemWithIdentifier:completionHandler:")]
 		void Register (NSUrlSessionTask task, string identifier, Action<NSError> completion);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[Export ("providerIdentifier")]
 		string ProviderIdentifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[Export ("documentStorageURL")]
 		NSUrl DocumentStorageUrl { get; }
 
+		/// <param name="placeholderUrl">To be added.</param>
+		///         <param name="metadata">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[Static]
 		[Export ("writePlaceholderAtURL:withMetadata:error:")]
 		bool WritePlaceholder (NSUrl placeholderUrl, INSFileProviderItem metadata, out NSError error);
 
+		/// <param name="url">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[Static]
 		[Export ("placeholderURLForURL:")]
 		NSUrl GetPlaceholderUrl (NSUrl url);
 
+		/// <param name="domain">To be added.</param>
+		///         <param name="completionHandler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Static]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="domain">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>A task that represents the asynchronous AddDomain operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("addDomain:completionHandler:")]
 		void AddDomain (NSFileProviderDomain domain, Action<NSError> completionHandler);
 
+		/// <param name="domain">To be added.</param>
+		///         <param name="completionHandler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Static]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="domain">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>A task that represents the asynchronous RemoveDomain operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("removeDomain:completionHandler:")]
 		void RemoveDomain (NSFileProviderDomain domain, Action<NSError> completionHandler);
 
+		/// <param name="completionHandler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Static]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>To be added.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous GetDomains operation.  The value of the TResult parameter is of type System.Action&lt;FileProvider.NSFileProviderDomain[],Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("getDomainsWithCompletionHandler:")]
 		void GetDomains (Action<NSFileProviderDomain [], NSError> completionHandler);
 
+		/// <param name="completionHandler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Static]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>To be added.</summary>
+			<returns>A task that represents the asynchronous RemoveAllDomains operation</returns>
+			<remarks>
+			          <para copied="true">The RemoveAllDomainsAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("removeAllDomainsWithCompletionHandler:")]
 		void RemoveAllDomains (Action<NSError> completionHandler);
 
+		/// <param name="domain">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("managerForDomain:")]
 		[return: NullAllowed]
@@ -708,18 +910,18 @@ namespace FileProvider {
 		void SignalErrorResolved (NSError error, Action<NSError> completionHandler);
 
 		[Unavailable (PlatformName.MacCatalyst)]
-		[NoWatch, NoTV, iOS (16, 0)]
+		[NoTV, iOS (16, 0)]
 		[Export ("globalProgressForKind:")]
 		NSProgress GetGlobalProgress (NSString kind); // NSString intended.
 
 		[Unavailable (PlatformName.MacCatalyst)]
-		[NoWatch, NoTV, iOS (16, 0)]
+		[NoTV, iOS (16, 0)]
 		[Field ("NSFileProviderMaterializedSetDidChange")]
 		[Notification]
 		NSString MaterializedSetDidChange { get; }
 
 		[Unavailable (PlatformName.MacCatalyst)]
-		[NoWatch, NoTV, iOS (16, 0)]
+		[NoTV, iOS (16, 0)]
 		[Field ("NSFileProviderPendingSetDidChange")]
 		[Notification]
 		NSString PendingSetDidChange { get; }
@@ -777,20 +979,20 @@ namespace FileProvider {
 		#endregion
 
 		[Unavailable (PlatformName.MacCatalyst)]
-		[NoWatch, NoTV, iOS (16, 0)]
+		[NoTV, iOS (16, 0)]
 		[Export ("enumeratorForPendingItems")]
 		INSFileProviderPendingSetEnumerator GetEnumeratorForPendingItems ();
 
 		// From NSFileProviderManager (TestingModeInteractive) Category
 
 		[Unavailable (PlatformName.MacCatalyst)]
-		[NoWatch, NoTV, iOS (16, 0)]
+		[NoTV, iOS (16, 0)]
 		[Export ("listAvailableTestingOperationsWithError:")]
 		[return: NullAllowed]
 		INSFileProviderTestingOperation [] ListAvailableTestingOperations ([NullAllowed] out NSError error);
 
 		[Unavailable (PlatformName.MacCatalyst)]
-		[NoWatch, NoTV, iOS (16, 0)]
+		[NoTV, iOS (16, 0)]
 		[Export ("runTestingOperations:error:")]
 		[return: NullAllowed]
 		NSDictionary<INSFileProviderTestingOperation, NSError> GetRunTestingOperations (INSFileProviderTestingOperation [] operations, [NullAllowed] out NSError error);
@@ -802,25 +1004,41 @@ namespace FileProvider {
 		void RemoveDomain (NSFileProviderDomain domain, NSFileProviderDomainRemovalMode mode, Action<NSUrl, NSError> completionHandler);
 
 		[Async]
-		[iOS (16, 0), Mac (13, 0), NoWatch, NoTV, NoMacCatalyst]
+		[iOS (16, 0), Mac (13, 0), NoTV, NoMacCatalyst]
 		[Export ("getServiceWithName:itemIdentifier:completionHandler:")]
 		void GetService (string serviceName, string itemIdentifier, Action<NSFileProviderService, NSError> completionHandler);
 
 		[Async]
-		[NoWatch, NoTV, NoMacCatalyst, Mac (13, 0), iOS (16, 0)]
+		[NoTV, NoMacCatalyst, Mac (13, 0), iOS (16, 0)]
 		[Export ("requestModificationOfFields:forItemWithIdentifier:options:completionHandler:")]
 		void RequestModification (NSFileProviderItemFields fields, string itemIdentifier, NSFileProviderModifyItemOptions options, Action<NSError> completionHandler);
 
 		[Async]
-		[NoWatch, NoTV, NoMacCatalyst, NoiOS, Mac (13, 0)]
+		[NoTV, NoMacCatalyst, NoiOS, Mac (13, 0)]
 		[Export ("requestDownloadForItemWithIdentifier:requestedRange:completionHandler:")]
 		void RequestDownload (string itemIdentifier, NSRange rangeToMaterialize, Action<NSError> completionHandler);
+
+		// From NSFileProviderManager (ExternalDomain) Category
+		[NoTV, NoiOS, NoMacCatalyst, Mac (15, 0)]
+		[Export ("checkDomainsCanBeStored:onVolumeAtURL:unsupportedReason:error:")]
+		[Static]
+		bool CheckDomainsCanBeStored (out bool eligible, NSUrl volumeAtUrl, out NSFileProviderVolumeUnsupportedReason unsupportedReason, [NullAllowed] out NSError error);
 	}
 
 	interface INSFileProviderPendingSetEnumerator { }
 
+	[Category]
+	[BaseType (typeof (NSFileProviderManager))]
+	[NoTV, NoMacCatalyst, NoiOS, Mac (15, 4)]
+	interface NSFileProviderManager_Diagnostics {
+		[Export ("requestDiagnosticCollectionForItemWithIdentifier:errorReason:completionHandler:")]
+		void RequestDiagnosticCollection (string itemIdentifier, NSError errorReason, NSFileProviderManagerRequestDiagnosticCollectionCallback completionHandler);
+	}
+
+	delegate void NSFileProviderManagerRequestDiagnosticCollectionCallback ([NullAllowed] NSError error);
+
 	[NoMacCatalyst]
-	[NoWatch, NoTV, iOS (16, 0)]
+	[NoTV, iOS (16, 0)]
 	[Protocol]
 	interface NSFileProviderPendingSetEnumerator : NSFileProviderEnumerator {
 
@@ -835,13 +1053,13 @@ namespace FileProvider {
 #if XAMCORE_5_0
 		[Abstract]
 #endif
-		[NoWatch, NoTV, NoMacCatalyst, Mac (13, 0), iOS (16, 0)]
+		[NoTV, NoMacCatalyst, Mac (13, 0), iOS (16, 0)]
 		[Export ("maximumSizeReached")]
 		bool MaximumSizeReached { [Bind ("isMaximumSizeReached")] get; }
 	}
 
 	// typedef NSString *NSFileProviderDomainIdentifier NS_EXTENSIBLE_STRING_ENUM
-	delegate void NSFileProviderGetIdentifierHandler (/* /NSFileProviderItemIdentifier */ NSString itemIdentifier, /* NSFileProviderDomainIdentifier */ NSString domainIdentifier, NSError error);
+	delegate void NSFileProviderGetIdentifierHandler (/* /NSFileProviderItemIdentifier */ [NullAllowed] NSString itemIdentifier, /* NSFileProviderDomainIdentifier */ [NullAllowed] NSString domainIdentifier, [NullAllowed] NSError error);
 
 	interface INSFileProviderServiceSource { }
 
@@ -851,16 +1069,23 @@ namespace FileProvider {
 	[Protocol]
 	interface NSFileProviderServiceSource {
 
+		/// <summary>Gets the unique service name.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("serviceName")]
 		string ServiceName { get; }
 
+		/// <param name="error">On failure, contains the error that occurred.</param>
+		/// <summary>Creates and returns an endpoint for communicating with the file provider extension.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("makeListenerEndpointAndReturnError:")]
 		[return: NullAllowed]
 		NSXpcListenerEndpoint MakeListenerEndpoint (out NSError error);
 
-		[NoWatch, NoTV, NoMacCatalyst, Mac (13, 0), iOS (16, 0)]
+		[NoTV, NoMacCatalyst, Mac (13, 0), iOS (16, 0)]
 		[Export ("restricted")]
 		bool Restricted { [Bind ("isRestricted")] get; }
 	}
@@ -880,7 +1105,7 @@ namespace FileProvider {
 		[Export ("metadataVersion")]
 		NSData MetadataVersion { get; }
 
-		[NoWatch, NoTV, NoMacCatalyst, iOS (16, 0)]
+		[NoTV, NoMacCatalyst, iOS (16, 0)]
 		[Static]
 		[Export ("beforeFirstSyncComponent")]
 		NSData BeforeFirstSyncComponent { get; }
@@ -975,7 +1200,7 @@ namespace FileProvider {
 		[Export ("requestingExecutable", ArgumentSemantic.Copy)]
 		NSUrl RequestingExecutable { get; }
 
-		[NoWatch, NoTV, iOS (16, 0)]
+		[NoTV, iOS (16, 0)]
 		[NoMacCatalyst]
 		[NullAllowed, Export ("domainVersion")]
 		NSFileProviderDomainVersion DomainVersion { get; }
@@ -1097,7 +1322,7 @@ namespace FileProvider {
 		void MaterializedItemsDidChange (Action completionHandler);
 
 		[NoMacCatalyst]
-		[NoWatch, NoTV, iOS (16, 0)]
+		[NoTV, iOS (16, 0)]
 		[Export ("pendingItemsDidChangeWithCompletionHandler:")]
 		void PendingItemsDidChange (Action completionHandler);
 	}
@@ -1105,7 +1330,7 @@ namespace FileProvider {
 	interface INSFileProviderDomainState { }
 
 	[NoMacCatalyst]
-	[NoWatch, NoTV, iOS (16, 0)]
+	[NoTV, iOS (16, 0)]
 	[Protocol]
 	interface NSFileProviderDomainState {
 
@@ -1118,7 +1343,7 @@ namespace FileProvider {
 		NSDictionary UserInfo { get; }
 	}
 
-	[NoWatch, NoTV, iOS (15, 0), NoMacCatalyst]
+	[NoTV, iOS (15, 0), NoMacCatalyst]
 	[Flags]
 	[Native]
 	public enum NSFileProviderDomainTestingModes : ulong {
@@ -1127,7 +1352,7 @@ namespace FileProvider {
 	}
 
 	[NoMacCatalyst]
-	[NoWatch, NoTV, iOS (16, 0)]
+	[NoTV, iOS (16, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSFileProviderDomainVersion : NSSecureCoding {
@@ -1140,7 +1365,7 @@ namespace FileProvider {
 	}
 
 	[NoMacCatalyst]
-	[NoWatch, NoTV, iOS (16, 0)]
+	[NoTV, iOS (16, 0)]
 	[Native]
 	public enum NSFileProviderTestingOperationType : long {
 		Ingestion = 0,
@@ -1156,7 +1381,7 @@ namespace FileProvider {
 	interface INSFileProviderTestingOperation : global::ObjCRuntime.INativeObject { }
 
 	[NoMacCatalyst]
-	[NoWatch, NoTV, iOS (16, 0)]
+	[NoTV, iOS (16, 0)]
 	[Protocol]
 	interface NSFileProviderTestingOperation {
 
@@ -1206,7 +1431,7 @@ namespace FileProvider {
 	}
 
 	[NoMacCatalyst]
-	[NoWatch, NoTV, iOS (16, 0)]
+	[NoTV, iOS (16, 0)]
 	[Native]
 	public enum NSFileProviderTestingOperationSide : ulong {
 		Disk = 0,
@@ -1216,7 +1441,7 @@ namespace FileProvider {
 	interface INSFileProviderTestingIngestion { }
 
 	[NoMacCatalyst]
-	[NoWatch, NoTV, iOS (16, 0)]
+	[NoTV, iOS (16, 0)]
 	[Protocol]
 	interface NSFileProviderTestingIngestion : NSFileProviderTestingOperation {
 
@@ -1235,7 +1460,7 @@ namespace FileProvider {
 
 	interface INSFileProviderTestingLookup { }
 
-	[NoWatch, NoTV, iOS (16, 0), NoMacCatalyst]
+	[NoTV, iOS (16, 0), NoMacCatalyst]
 	[Protocol]
 	interface NSFileProviderTestingLookup : NSFileProviderTestingOperation {
 
@@ -1250,7 +1475,7 @@ namespace FileProvider {
 
 	interface INSFileProviderTestingCreation { }
 
-	[NoWatch, NoTV, iOS (16, 0), NoMacCatalyst]
+	[NoTV, iOS (16, 0), NoMacCatalyst]
 	[Protocol]
 	interface NSFileProviderTestingCreation : NSFileProviderTestingOperation {
 
@@ -1270,7 +1495,7 @@ namespace FileProvider {
 	interface INSFileProviderTestingModification { }
 
 	[NoMacCatalyst]
-	[NoWatch, NoTV, iOS (16, 0)]
+	[NoTV, iOS (16, 0)]
 	[Protocol]
 	interface NSFileProviderTestingModification : NSFileProviderTestingOperation {
 
@@ -1302,7 +1527,7 @@ namespace FileProvider {
 	interface INSFileProviderTestingDeletion { }
 
 	[NoMacCatalyst]
-	[NoWatch, NoTV, iOS (16, 0)]
+	[NoTV, iOS (16, 0)]
 	[Protocol]
 	interface NSFileProviderTestingDeletion : NSFileProviderTestingOperation {
 
@@ -1330,7 +1555,7 @@ namespace FileProvider {
 	interface INSFileProviderTestingContentFetch { }
 
 	[NoMacCatalyst]
-	[NoWatch, NoTV, iOS (16, 0)]
+	[NoTV, iOS (16, 0)]
 	[Protocol]
 	interface NSFileProviderTestingContentFetch : NSFileProviderTestingOperation {
 
@@ -1346,7 +1571,7 @@ namespace FileProvider {
 	interface INSFileProviderTestingChildrenEnumeration { }
 
 	[NoMacCatalyst]
-	[NoWatch, NoTV, iOS (16, 0)]
+	[NoTV, iOS (16, 0)]
 	[Protocol]
 	interface NSFileProviderTestingChildrenEnumeration : NSFileProviderTestingOperation {
 
@@ -1362,7 +1587,7 @@ namespace FileProvider {
 	interface INSFileProviderTestingCollisionResolution { }
 
 	[NoMacCatalyst]
-	[NoWatch, NoTV, iOS (16, 0)]
+	[NoTV, iOS (16, 0)]
 	[Protocol]
 	interface NSFileProviderTestingCollisionResolution : NSFileProviderTestingOperation {
 
@@ -1375,7 +1600,7 @@ namespace FileProvider {
 		INSFileProviderItem RenamedItem { get; }
 	}
 
-	[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+	[NoTV, NoiOS, NoMacCatalyst]
 	[Protocol]
 	interface NSFileProviderUserInteractionSuppressing {
 		[Abstract]
@@ -1390,7 +1615,7 @@ namespace FileProvider {
 	interface INSFileProviderPartialContentFetching { }
 	delegate void NSFileProviderPartialContentFetchingCompletionHandler (NSUrl fileContents, INSFileProviderItem item, NSRange retrievedRange, NSFileProviderMaterializationFlags flags, NSError error);
 
-	[NoWatch, NoTV, NoMacCatalyst, NoiOS, Mac (12, 3)]
+	[NoTV, NoMacCatalyst, NoiOS, Mac (12, 3)]
 	[Protocol]
 	interface NSFileProviderPartialContentFetching {
 
@@ -1399,14 +1624,14 @@ namespace FileProvider {
 		NSProgress FetchPartialContents (string itemIdentifier, NSFileProviderItemVersion requestedVersion, NSFileProviderRequest request, NSRange requestedRange, nuint alignment, NSFileProviderFetchContentsOptions options, NSFileProviderPartialContentFetchingCompletionHandler completionHandler);
 	}
 
-	[NoTV, NoWatch, iOS (18, 0), MacCatalyst (18, 0), Mac (15, 0)]
+	[NoTV, iOS (18, 0), MacCatalyst (18, 0), Mac (15, 0)]
 	[Native]
 	public enum NSFileProviderKnownFolders : ulong {
 		Desktop = 1 << 0,
 		Documents = 1 << 1,
 	}
 
-	[NoTV, NoWatch, NoiOS, NoMacCatalyst, Mac (15, 0)]
+	[NoTV, NoiOS, NoMacCatalyst, Mac (15, 0)]
 	[BaseType (typeof (NSObject))]
 	interface NSFileProviderKnownFolderLocation {
 		[Export ("initWithParentItemIdentifier:filename:")]
@@ -1416,7 +1641,7 @@ namespace FileProvider {
 		NativeHandle Constructor (string existing);
 	}
 
-	[NoTV, NoWatch, NoiOS, NoMacCatalyst, Mac (15, 0)]
+	[NoTV, NoiOS, NoMacCatalyst, Mac (15, 0)]
 	[BaseType (typeof (NSObject))]
 	interface NSFileProviderKnownFolderLocations {
 		[Export ("shouldCreateBinaryCompatibilitySymlink", ArgumentSemantic.Assign)]
@@ -1429,10 +1654,10 @@ namespace FileProvider {
 		NSFileProviderKnownFolderLocation DocumentsLocation { get; set; }
 	}
 
-	[NoTV, NoWatch, NoiOS, NoMacCatalyst, Mac (15, 0)]
+	[NoTV, NoiOS, NoMacCatalyst, Mac (15, 0)]
 	delegate void NSFileProviderManagerKnownFoldersCallback ([NullAllowed] NSError error);
 
-	[NoTV, NoWatch, NoiOS, NoMacCatalyst, Mac (15, 0)]
+	[NoTV, NoiOS, NoMacCatalyst, Mac (15, 0)]
 	[Category]
 	[BaseType (typeof (NSFileProviderManager))]
 	interface NSFileProviderManager_KnownFolders {
@@ -1443,10 +1668,10 @@ namespace FileProvider {
 		void ReleaseKnownFolders (NSFileProviderKnownFolderLocations knownFolders, string localizedReason, NSFileProviderManagerKnownFoldersCallback completionHandler);
 	}
 
-	[NoTV, NoWatch, NoiOS, NoMacCatalyst, Mac (15, 0)]
+	[NoTV, NoiOS, NoMacCatalyst, Mac (15, 0)]
 	delegate void NSFileProviderKnownFolderLocationCallback (INSFileProviderKnownFolderSupporting result, [NullAllowed] NSError error);
 
-	[NoTV, NoWatch, NoiOS, NoMacCatalyst, Mac (15, 0)]
+	[NoTV, NoiOS, NoMacCatalyst, Mac (15, 0)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
 	interface NSFileProviderKnownFolderSupporting {
 		[Abstract]
@@ -1456,7 +1681,7 @@ namespace FileProvider {
 
 	interface INSFileProviderKnownFolderSupporting { }
 
-	[NoTV, NoWatch, NoiOS, NoMacCatalyst, Mac (15, 0)]
+	[NoTV, NoiOS, NoMacCatalyst, Mac (15, 0)]
 	[Category]
 	[BaseType (typeof (NSFileProviderManager))]
 	interface NSFileProviderManager_StateDirectory {
@@ -1465,7 +1690,7 @@ namespace FileProvider {
 		NSUrl GetStateDirectoryUrl (out NSError error);
 	}
 
-	[NoTV, NoWatch, NoiOS, NoMacCatalyst, Mac (15, 0)]
+	[NoTV, NoiOS, NoMacCatalyst, Mac (15, 0)]
 	[Native]
 	public enum NSFileProviderVolumeUnsupportedReason : ulong {
 		None = 0,
@@ -1477,11 +1702,24 @@ namespace FileProvider {
 		Quarantined = 1 << 5,
 	}
 
-	[NoTV, NoWatch, NoiOS, NoMacCatalyst, Mac (15, 0)]
+#if !XAMCORE_5_0
+	[NoTV, NoiOS, NoMacCatalyst, Mac (15, 0)]
 	[Category]
 	[BaseType (typeof (NSFileProviderManager))]
 	interface NSFileProviderManager_ExternalDomain {
+		[Obsolete ("Call 'NSFileProviderManager.CheckDomainsCanBeStored' instead.")]
 		[Export ("checkDomainsCanBeStored:onVolumeAtURL:unsupportedReason:error:")]
 		unsafe bool CheckDomainsCanBeStored (out bool eligible, NSUrl volumeAtUrl, NSFileProviderVolumeUnsupportedReason* unsupportedReason, [NullAllowed] out NSError error);
 	}
+#endif
+
+	[NoTV, NoMacCatalyst, NoiOS, Mac (15, 0)]
+	[Protocol (BackwardsCompatibleCodeGeneration = false)]
+	interface NSFileProviderExternalVolumeHandling {
+		[Abstract]
+		[Export ("shouldConnectExternalDomainWithCompletionHandler:")]
+		void ShouldConnectExternalDomain (NSFileProviderExternalVolumeHandlingShouldConnectExternalDomainCallback completionHandler);
+	}
+
+	delegate void NSFileProviderExternalVolumeHandlingShouldConnectExternalDomainCallback ([NullAllowed] NSError connectionError);
 }

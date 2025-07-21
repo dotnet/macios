@@ -10,16 +10,10 @@ using CoreText;
 using Foundation;
 
 namespace MediaAccessibility {
-
-#if NET
 	[SupportedOSPlatform ("tvos13.0")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios13.0")]
 	[SupportedOSPlatform ("maccatalyst")]
-#else
-	[TV (13, 0)]
-	[iOS (13, 0)]
-#endif
 	public static partial class MAImageCaptioning {
 
 		[DllImport (Constants.MediaAccessibilityLibrary)]
@@ -35,6 +29,7 @@ namespace MediaAccessibility {
 			IntPtr e;
 			unsafe {
 				result = MAImageCaptioningCopyCaption (url.Handle, &e);
+				GC.KeepAlive (url);
 			}
 			error = e == IntPtr.Zero ? null : new NSError (e);
 			return CFString.FromHandle (result, releaseHandle: true);
@@ -54,6 +49,7 @@ namespace MediaAccessibility {
 				IntPtr e;
 				unsafe {
 					result = MAImageCaptioningSetCaption (url.Handle, s, &e) != 0;
+					GC.KeepAlive (url);
 				}
 				error = e == IntPtr.Zero ? null : new NSError (e);
 				return result;

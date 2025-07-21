@@ -13,7 +13,6 @@ using Foundation;
 using ObjCRuntime;
 
 #nullable enable
-#if !WATCH
 
 namespace UIKit {
 
@@ -46,19 +45,13 @@ namespace UIKit {
 	// This class bridges native block invocations that call into C#
 	//
 	static internal class SDUIConfigurationColorTransformerHandler {
-#if !NET
-		static internal readonly DUIConfigurationColorTransformerHandler Handler = Invoke;
-
-		[MonoPInvokeCallback (typeof (DUIConfigurationColorTransformerHandler))]
-#else
 		[UnmanagedCallersOnly]
-#endif
 		static unsafe IntPtr Invoke (IntPtr block, IntPtr color)
 		{
 			var descriptor = (BlockLiteral*) block;
 			var del = (UIConfigurationColorTransformerHandler) (descriptor->Target);
 			var retval = del is null ? null : del (Runtime.GetNSObject<UIColor> (color)!);
-			return retval.GetHandle ();
+			return Runtime.RetainAndAutoreleaseNSObject (retval);
 		}
 	} /* class SDUIConfigurationColorTransformerHandler */
 
@@ -84,8 +77,9 @@ namespace UIKit {
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		UIColor Invoke (UIColor color)
 		{
-			return Runtime.GetNSObject<UIColor> (invoker (BlockPointer, color.GetHandle ()))!;
+			var result = Runtime.GetNSObject<UIColor> (invoker (BlockPointer, color.GetHandle ()))!;
+			GC.KeepAlive (color);
+			return result;
 		}
 	} /* class NIDUIConfigurationColorTransformerHandler */
 }
-#endif // WATCH

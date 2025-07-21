@@ -6,10 +6,6 @@ using CoreGraphics;
 using Foundation;
 using ObjCRuntime;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace TVServices {
 
 	[Deprecated (PlatformName.TvOS, 13, 0, message: "Use 'TVTopShelfContentProvider' instead.")]
@@ -390,5 +386,9 @@ namespace TVServices {
 
 		[Field ("TVUserActivityTypeBrowsingChannelGuide")]
 		NSString BrowsingChannelGuide { get; }
+
+		[TV (18, 1)]
+		[Field ("TVUserActivityTypeBrowsingEntertainmentContent")]
+		NSString BrowsingEntertainmentContent { get; }
 	}
 }

@@ -36,49 +36,53 @@ using CoreFoundation;
 using ObjCRuntime;
 using Foundation;
 using CoreGraphics;
-#if !WATCH
 using CoreMedia;
-#endif // !WATCH
 #endif
 
 #if HAS_UIKIT
 using UIKit;
 #endif
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 #nullable enable
 
 namespace Foundation {
 
-#if NET
+	/// <include file="../../docs/api/Foundation/DictionaryContainer.xml" path="/Documentation/Docs[@DocId='T:Foundation.DictionaryContainer']/*" />
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public abstract class DictionaryContainer {
 #if !COREBUILD
+		/// <include file="../../docs/api/Foundation/DictionaryContainer.xml" path="/Documentation/Docs[@DocId='M:Foundation.DictionaryContainer.#ctor']/*" />
 		protected DictionaryContainer ()
 		{
 			Dictionary = new NSMutableDictionary ();
 		}
 
+		/// <include file="../../docs/api/Foundation/DictionaryContainer.xml" path="/Documentation/Docs[@DocId='M:Foundation.DictionaryContainer.#ctor(Foundation.NSDictionary)']/*" />
 		protected DictionaryContainer (NSDictionary? dictionary)
 		{
 			Dictionary = dictionary ?? new NSMutableDictionary ();
 		}
 
+		/// <summary>Gets the wrapped <see cref="Foundation.NSDictionary" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSDictionary Dictionary { get; private set; }
 
+		/// <typeparam name="T">The type of values stored in the array identified by <paramref name="key" />.</typeparam>
+		///         <param name="key">The identifier of the array.</param>
+		///         <summary>Retrieves the array of type <c>T</c> associated with <paramref name="key" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		protected T []? GetArray<T> (NSString key) where T : NSObject
 		{
 			if (key is null)
 				throw new ArgumentNullException (nameof (key));
 
 			var value = CFDictionary.GetValue (Dictionary.Handle, key.Handle);
+			GC.KeepAlive (key);
 			return NSArray.ArrayFromHandle<T> (value);
 		}
 
@@ -88,9 +92,14 @@ namespace Foundation {
 				throw new ArgumentNullException (nameof (key));
 
 			var value = CFDictionary.GetValue (Dictionary.Handle, key.Handle);
+			GC.KeepAlive (key);
 			return NSArray.ArrayFromHandleFunc<T> (value, creator);
 		}
 
+		/// <param name="key">The identifier of the int.</param>
+		///         <summary>Returns the nullable int associated with <paramref name="key" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		protected int? GetInt32Value (NSString key)
 		{
 			if (key is null)
@@ -103,6 +112,10 @@ namespace Foundation {
 			return ((NSNumber) value).Int32Value;
 		}
 
+		/// <param name="key">The identifier of the <see cref="System.UInt32" />.</param>
+		///         <summary>Returns the nullable <see cref="System.UInt32" /> associated with <paramref name="key" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		protected uint? GetUInt32Value (NSString key)
 		{
 			if (key is null)
@@ -115,6 +128,10 @@ namespace Foundation {
 			return ((NSNumber) value).UInt32Value;
 		}
 
+		/// <param name="key">The identifier of the native integer.</param>
+		///         <summary>Returns the nullable native integer associated with <paramref name="key" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		protected nint? GetNIntValue (NSString key)
 		{
 			if (key is null)
@@ -127,6 +144,10 @@ namespace Foundation {
 			return ((NSNumber) value).NIntValue;
 		}
 
+		/// <param name="key">The identifier of the nuint</param>
+		///         <summary>Returns the nullable native unsigned int associated with <paramref name="key" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		protected nuint? GetNUIntValue (NSString key)
 		{
 			if (key is null)
@@ -139,6 +160,10 @@ namespace Foundation {
 			return ((NSNumber) value).NUIntValue;
 		}
 
+		/// <param name="key">The identifier of the long.</param>
+		///         <summary>Returns the nullable long associated with <paramref name="key" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		protected long? GetLongValue (NSString key)
 		{
 			if (key is null)
@@ -162,6 +187,10 @@ namespace Foundation {
 			return ((NSNumber) value).UInt64Value;
 		}
 
+		/// <param name="key">The identifier of the <see cref="System.UInt32" />.</param>
+		///         <summary>Returns the nullable <see cref="System.UInt32" /> associated with <paramref name="key" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		protected uint? GetUIntValue (NSString key)
 		{
 			if (key is null)
@@ -174,6 +203,10 @@ namespace Foundation {
 			return ((NSNumber) value).UInt32Value;
 		}
 
+		/// <param name="key">The identifier of the float.</param>
+		///         <summary>Returns the nullable float associated with <paramref name="key" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		protected float? GetFloatValue (NSString key)
 		{
 			if (key is null)
@@ -186,6 +219,10 @@ namespace Foundation {
 			return ((NSNumber) value).FloatValue;
 		}
 
+		/// <param name="key">The identifier of the double.</param>
+		///         <summary>Returns the nullable double associated with <paramref name="key" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		protected double? GetDoubleValue (NSString key)
 		{
 			if (key is null)
@@ -198,24 +235,36 @@ namespace Foundation {
 			return ((NSNumber) value).DoubleValue;
 		}
 
+		/// <param name="key">The identifier of the bool.</param>
+		///         <summary>Returns the nullable Boolean associated with <paramref name="key" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		protected bool? GetBoolValue (NSString key)
 		{
 			if (key is null)
 				throw new ArgumentNullException (nameof (key));
 
 			var value = CFDictionary.GetValue (Dictionary.Handle, key.Handle);
+			GC.KeepAlive (key);
 			if (value == IntPtr.Zero)
 				return null;
 
 			return CFBoolean.GetValue (value);
 		}
 
+		/// <typeparam name="T">The <see cref="ObjCRuntime.INativeObject" /> type associated with <paramref name="key" />.</typeparam>
+		///         <param name="key">The identifier of the reference.</param>
+		///         <summary>Returns the native object associated with <paramref name="key" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		protected T? GetNativeValue<T> (NSString key) where T : class, INativeObject
 		{
 			if (key is null)
 				throw new ArgumentNullException (nameof (key));
 
-			return Runtime.GetINativeObject<T> (Dictionary.LowlevelObjectForKey (key.Handle), false);
+			T? result = Runtime.GetINativeObject<T> (Dictionary.LowlevelObjectForKey (key.Handle), false);
+			GC.KeepAlive (key);
+			return result;
 		}
 
 		protected string []? GetStringArrayValue (NSString key)
@@ -224,9 +273,14 @@ namespace Foundation {
 				throw new ArgumentNullException (nameof (key));
 
 			var array = Dictionary.LowlevelObjectForKey (key.Handle);
+			GC.KeepAlive (key);
 			return CFArray.StringArrayFromHandle (array)!;
 		}
 
+		/// <param name="key">The identifier of the <see cref="Foundation.NSDictionary" />.</param>
+		///         <summary>Returns the <see cref="Foundation.NSDictionary" /> associated with <paramref name="key" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		protected NSDictionary? GetNSDictionary (NSString key)
 		{
 			if (key is null)
@@ -237,6 +291,12 @@ namespace Foundation {
 			return value as NSDictionary;
 		}
 
+		/// <typeparam name="TKey">The type of keys in the stored dictionary.</typeparam>
+		///         <typeparam name="TValue">The type of values in the stored dictionary.</typeparam>
+		///         <param name="key">The identifier of the <see cref="Foundation.NSDictionary" />.</param>
+		///         <summary>Returns the <see cref="Foundation.NSDictionary" /> associated with <paramref name="key" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		protected NSDictionary<TKey, TValue>? GetNSDictionary<TKey, TValue> (NSString key)
 			where TKey : class, INativeObject
 			where TValue : class, INativeObject
@@ -249,11 +309,12 @@ namespace Foundation {
 			return value as NSDictionary<TKey, TValue>;
 		}
 
-#if NET
+		/// <typeparam name="T">The type of <see cref="Foundation.DictionaryContainer" /> associated with <paramref name="key" />.</typeparam>
+		///         <param name="key">The identifier of the <see cref="Foundation.DictionaryContainer" />.</param>
+		///         <summary>Returns the <see cref="Foundation.DictionaryContainer" /> associated with <paramref name="key" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		protected T? GetStrongDictionary<[DynamicallyAccessedMembers (DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)] T> (NSString key)
-#else
-		protected T? GetStrongDictionary<T> (NSString key)
-#endif
 			where T : DictionaryContainer
 		{
 			return GetStrongDictionary (key, dict =>
@@ -273,6 +334,10 @@ namespace Foundation {
 			return createStrongDictionary (dict);
 		}
 
+		/// <param name="key">The identifier of the <see cref="Foundation.NSString" />.</param>
+		///         <summary>Returns the <see cref="Foundation.NSString" /> associated with <paramref name="key" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		protected NSString? GetNSStringValue (NSString key)
 		{
 			if (key is null)
@@ -283,6 +348,10 @@ namespace Foundation {
 			return value as NSString;
 		}
 
+		/// <param name="key">The identifier of the string.</param>
+		///         <summary>Returns the string associated with <paramref name="key" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		protected string? GetStringValue (NSString key)
 		{
 			if (key is null)
@@ -292,9 +361,15 @@ namespace Foundation {
 			if (!Dictionary.TryGetValue (key, out value))
 				return null;
 
-			return CFString.FromHandle (value.Handle);
+			var result = CFString.FromHandle (value.Handle);
+			GC.KeepAlive (value);
+			return result;
 		}
 
+		/// <param name="key">The identifier of the string.</param>
+		///         <summary>Returns the string associated with <paramref name="key" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		protected string? GetStringValue (string key)
 		{
 			if (key is null)
@@ -308,6 +383,10 @@ namespace Foundation {
 			}
 		}
 
+		/// <param name="key">The identifier of the <see cref="Foundation.NSString" />.</param>
+		///         <summary>Returns the nullable <see cref="Foundation.NSString" /> associated with <paramref name="key" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		protected CGRect? GetCGRectValue (NSString key)
 		{
 			var dictValue = GetNSDictionary (key);
@@ -318,6 +397,10 @@ namespace Foundation {
 			return value;
 		}
 
+		/// <param name="key">The identifier of the <see cref="CoreGraphics.CGSize" />.</param>
+		///         <summary>Returns the nullable <see cref="CoreGraphics.CGSize" /> associated with <paramref name="key" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		protected CGSize? GetCGSizeValue (NSString key)
 		{
 			var dictValue = GetNSDictionary (key);
@@ -328,6 +411,10 @@ namespace Foundation {
 			return value;
 		}
 
+		/// <param name="key">The identifier of the <see cref="CoreGraphics.CGPoint" />.</param>
+		///         <summary>Returns the nullable <see cref="CoreGraphics.CGPoint" /> associated with <paramref name="key" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		protected CGPoint? GetCGPointValue (NSString key)
 		{
 			var dictValue = GetNSDictionary (key);
@@ -338,7 +425,10 @@ namespace Foundation {
 			return value;
 		}
 
-#if !WATCH
+		/// <param name="key">The identifier of the <see cref="CoreMedia.CMTime" />.</param>
+		///         <summary>Returns the nullable <see cref="CoreMedia.CMTime" /> associated with <paramref name="key" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		protected CMTime? GetCMTimeValue (NSString key)
 		{
 			var dictValue = GetNSDictionary (key);
@@ -350,7 +440,6 @@ namespace Foundation {
 
 			return value;
 		}
-#endif // !WATCH
 
 #if HAS_UIKIT
 		protected UIEdgeInsets? GetUIEdgeInsets (NSString key)
@@ -379,12 +468,21 @@ namespace Foundation {
 			return !removeEntry;
 		}
 
+		/// <param name="key">The identifier to be associated with the array.</param>
+		///         <param name="values">The <see cref="Foundation.NSNumber" /> array to be associated with <paramref name="key" />.</param>
+		///         <summary>Associates the <see cref="Foundation.NSNumber" /> array <paramref name="values" /> with <paramref name="key" />.</summary>
+		///         <remarks>To be added.</remarks>
 		protected void SetArrayValue (NSString key, NSNumber []? values)
 		{
 			if (NullCheckAndRemoveKey (key, values is null))
 				Dictionary [key] = NSArray.FromNSObjects (values);
 		}
 
+		/// <typeparam name="T">The type stored by the array.</typeparam>
+		///         <param name="key">The identifier to be associated with the array.</param>
+		///         <param name="values">The array of type <typeparamref name="T" /> to be associated with <paramref name="key" />.</param>
+		///         <summary>Associates the array <paramref name="values" /> of type <typeparamref name="T" /> with <paramref name="key" />.</summary>
+		///         <remarks>To be added.</remarks>
 		protected void SetArrayValue<T> (NSString key, T []? values)
 		{
 			if (NullCheckAndRemoveKey (key, values is null)) {
@@ -395,36 +493,62 @@ namespace Foundation {
 			}
 		}
 
+		/// <param name="key">The identifier to be associated with the array.</param>
+		///         <param name="values">The <see cref="System.String" /> array to be associated with <paramref name="key" />.</param>
+		///         <summary>Associates the <see cref="System.String" /> array <paramref name="values" /> with <paramref name="key" />.</summary>
+		///         <remarks>To be added.</remarks>
 		protected void SetArrayValue (NSString key, string []? values)
 		{
 			if (NullCheckAndRemoveKey (key, values is null))
 				Dictionary [key] = NSArray.FromStrings (values);
 		}
 
+		/// <param name="key">The identifier to be associated with the array.</param>
+		///         <param name="values">The <see cref="ObjCRuntime.INativeObject" /> array to be associated with <paramref name="key" />.</param>
+		///         <summary>Associates the <see cref="ObjCRuntime.INativeObject" /> array <paramref name="values" /> with <paramref name="key" />.</summary>
+		///         <remarks>To be added.</remarks>
 		protected void SetArrayValue (NSString key, INativeObject []? values)
 		{
-			if (NullCheckAndRemoveKey (key, values is null))
-				CFMutableDictionary.SetValue (Dictionary.Handle, key.Handle, CFArray.FromNativeObjects (values!).Handle);
+			if (NullCheckAndRemoveKey (key, values is null)) {
+				var array = CFArray.FromNativeObjects (values!);
+				CFMutableDictionary.SetValue (Dictionary.Handle, key.Handle, array.Handle);
+				GC.KeepAlive (key);
+				GC.KeepAlive (array);
+			}
 		}
 
 		#region Sets CFBoolean value
 
+		/// <param name="key">The identifier associated with the Boolean.</param>
+		///         <param name="value">The nullable Boolean to be associated with <paramref name="key" />.</param>
+		///         <summary>Stores the Boolean <paramref name="value" /> and associates it with the <paramref name="key" />.</summary>
+		///         <remarks>To be added.</remarks>
 		protected void SetBooleanValue (NSString key, bool? value)
 		{
-			if (NullCheckAndRemoveKey (key, !value.HasValue))
+			if (NullCheckAndRemoveKey (key, !value.HasValue)) {
 				CFMutableDictionary.SetValue (Dictionary.Handle, key.Handle, value!.Value ? CFBoolean.TrueHandle : CFBoolean.FalseHandle);
+				GC.KeepAlive (key);
+			}
 		}
 
 		#endregion
 
 		#region Sets NSNumber value
 
+		/// <param name="key">The identifier associated with the int.</param>
+		///         <param name="value">The nullable int to be associated with <paramref name="key" />.</param>
+		///         <summary>Stores the int <paramref name="value" /> (or <see langword="null" />) and associates it with the <paramref name="key" />.</summary>
+		///         <remarks>To be added.</remarks>
 		protected void SetNumberValue (NSString key, int? value)
 		{
 			if (NullCheckAndRemoveKey (key, !value.HasValue))
 				Dictionary [key] = new NSNumber (value!.Value);
 		}
 
+		/// <param name="key">The identifier associated with the uint.</param>
+		///         <param name="value">The nullable unsigned int to be associated with <paramref name="key" />.</param>
+		///         <summary>Stores the unsigned int <paramref name="value" /> (or <see langword="null" />) and associates it with the <paramref name="key" />.</summary>
+		///         <remarks>To be added.</remarks>
 		protected void SetNumberValue (NSString key, uint? value)
 		{
 			if (NullCheckAndRemoveKey (key, !value.HasValue))
@@ -443,18 +567,30 @@ namespace Foundation {
 				Dictionary [key] = new NSNumber (value!.Value);
 		}
 
+		/// <param name="key">The identifier associated with the long.</param>
+		///         <param name="value">The nullable long to be associated with <paramref name="key" />.</param>
+		///         <summary>Stores the long <paramref name="value" /> (or <see langword="null" />) and associates it with the <paramref name="key" />.</summary>
+		///         <remarks>To be added.</remarks>
 		protected void SetNumberValue (NSString key, long? value)
 		{
 			if (NullCheckAndRemoveKey (key, !value.HasValue))
 				Dictionary [key] = new NSNumber (value!.Value);
 		}
 
+		/// <param name="key">The identifier associated with the float.</param>
+		///         <param name="value">The nullable float to be associated with <paramref name="key" />.</param>
+		///         <summary>Stores the float <paramref name="value" /> (or <see langword="null" />) and associates it with the <paramref name="key" />.</summary>
+		///         <remarks>To be added.</remarks>
 		protected void SetNumberValue (NSString key, float? value)
 		{
 			if (NullCheckAndRemoveKey (key, !value.HasValue))
 				Dictionary [key] = new NSNumber (value!.Value);
 		}
 
+		/// <param name="key">The identifier associated with the double.</param>
+		///         <param name="value">The nullable double to be associated with <paramref name="key" />.</param>
+		///         <summary>Stores the double <paramref name="value" /> (or <see langword="null" />) and associates it with the <paramref name="key" />.</summary>
+		///         <remarks>To be added.</remarks>
 		protected void SetNumberValue (NSString key, double? value)
 		{
 			if (NullCheckAndRemoveKey (key, !value.HasValue))
@@ -465,11 +601,19 @@ namespace Foundation {
 
 		#region Sets NSString value
 
+		/// <param name="key">The identifier associated with the string.</param>
+		///         <param name="value">The string to be associated with <paramref name="key" />.</param>
+		///         <summary>Stores the string <paramref name="value" /> and associates it with the <paramref name="key" />.</summary>
+		///         <remarks>To be added.</remarks>
 		protected void SetStringValue (NSString key, string? value)
 		{
 			SetStringValue (key, value is null ? (NSString) null! : new NSString (value));
 		}
 
+		/// <param name="key">The identifier associated with the string.</param>
+		///         <param name="value">The string to be associated with <paramref name="key" />.</param>
+		///         <summary>Stores the string <paramref name="value" /> and associates it with the <paramref name="key" />.</summary>
+		///         <remarks>To be added.</remarks>
 		protected void SetStringValue (NSString key, NSString? value)
 		{
 			if (NullCheckAndRemoveKey (key, value is null))
@@ -480,14 +624,25 @@ namespace Foundation {
 
 		#region Sets Native value
 
+		/// <param name="key">To be added.</param>
+		///         <param name="value">To be added.</param>
+		///         <param name="removeNullValue">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected void SetNativeValue (NSString key, INativeObject? value, bool removeNullValue = true)
 		{
-			if (NullCheckAndRemoveKey (key, removeNullValue && value is null))
+			if (NullCheckAndRemoveKey (key, removeNullValue && value is null)) {
 				CFMutableDictionary.SetValue (Dictionary.Handle, key.Handle, value.GetHandle ());
+				GC.KeepAlive (key);
+				GC.KeepAlive (value);
+			}
 		}
 
 		#endregion
 
+		/// <param name="key">The identifier of the value to be removed.</param>
+		///         <summary>Removes from the dictionary the value associated with <paramref name="key" />.</summary>
+		///         <remarks>To be added.</remarks>
 		protected void RemoveValue (NSString key)
 		{
 			if (key is null)
@@ -498,31 +653,45 @@ namespace Foundation {
 
 		#region Sets structs values
 
+		/// <param name="key">The identifier associated with the <see cref="CoreGraphics.CGRect" />.</param>
+		///         <param name="value">The <see cref="CoreGraphics.CGRect" /> to be associated with <paramref name="key" />.</param>
+		///         <summary>Stores the <see cref="CoreGraphics.CGRect" /><paramref name="value" /> and associates it with the <paramref name="key" />.</summary>
+		///         <remarks>To be added.</remarks>
 		protected void SetCGRectValue (NSString key, CGRect? value)
 		{
 			if (NullCheckAndRemoveKey (key, !value.HasValue))
 				Dictionary [key] = value!.Value.ToDictionary ();
 		}
 
+		/// <param name="key">The identifier associated with the <see cref="CoreGraphics.CGSize" />.</param>
+		///         <param name="value">The <see cref="CoreGraphics.CGSize" /> to be associated with <paramref name="key" />.</param>
+		///         <summary>Stores the <see cref="CoreGraphics.CGSize" /><paramref name="value" /> and associates it with the <paramref name="key" />.</summary>
+		///         <remarks>To be added.</remarks>
 		protected void SetCGSizeValue (NSString key, CGSize? value)
 		{
 			if (NullCheckAndRemoveKey (key, !value.HasValue))
 				Dictionary [key] = value!.Value.ToDictionary ();
 		}
 
+		/// <param name="key">The identifier associated with the <see cref="CoreGraphics.CGPoint" />.</param>
+		///         <param name="value">The <see cref="CoreGraphics.CGPoint" /> to be associated with <paramref name="key" />.</param>
+		///         <summary>Stores the <see cref="CoreGraphics.CGPoint" /><paramref name="value" /> and associates it with the <paramref name="key" />.</summary>
+		///         <remarks>To be added.</remarks>
 		protected void SetCGPointValue (NSString key, CGPoint? value)
 		{
 			if (NullCheckAndRemoveKey (key, !value.HasValue))
 				Dictionary [key] = value!.Value.ToDictionary ();
 		}
 
-#if !WATCH
+		/// <param name="key">The identifier associated with the <see cref="CoreMedia.CMTime" />.</param>
+		///         <param name="value">The <see cref="CoreMedia.CMTime" /> to be associated with <paramref name="key" />.</param>
+		///         <summary>Stores the <see cref="CoreMedia.CMTime" /><paramref name="value" /> and associates it with the <paramref name="key" />.</summary>
+		///         <remarks>To be added.</remarks>
 		protected void SetCMTimeValue (NSString key, CMTime? value)
 		{
 			if (NullCheckAndRemoveKey (key, !value.HasValue))
 				Dictionary [key] = value!.Value.ToDictionary ();
 		}
-#endif //!WATCH
 
 #if HAS_UIKIT
 		protected void SetUIEdgeInsets (NSString key, UIEdgeInsets? value)

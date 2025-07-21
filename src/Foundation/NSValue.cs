@@ -29,14 +29,15 @@ using System.Drawing;
 #endif
 using System.Runtime.InteropServices;
 
-using CoreGraphics;
-
 // Disable until we get around to enable + fix any issues.
 #nullable disable
 
 namespace Foundation {
 	public partial class NSValue : NSObject {
 #if !COREBUILD
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string ObjCType {
 			get {
 				return Marshal.PtrToStringAnsi (ObjCTypePtr ());
@@ -44,58 +45,57 @@ namespace Foundation {
 		}
 
 #if !NO_SYSTEM_DRAWING
+		/// <param name="rect">To be added.</param>
+		///         <summary>Creates an NSValue that wraps a RectangleF object.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSValue FromRectangleF (RectangleF rect)
 		{
 			return FromCGRect (rect);
 		}
 
+		/// <param name="size">To be added.</param>
+		///         <summary>Creates an NSValue that wraps a SizeF object.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSValue FromSizeF (SizeF size)
 		{
 			return FromCGSize (size);
 		}
 
+		/// <param name="point">To be added.</param>
+		///         <summary>Creates an NSValue that wraps a PointF object.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSValue FromPointF (PointF point)
 		{
 			return FromCGPoint (point);
 		}
 
+		/// <summary>Returns the RectangleF value wrapped by this NSValue object.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public RectangleF RectangleFValue {
 			get { return (RectangleF) CGRectValue; }
 		}
 
+		/// <summary>Returns the SizeF value wrapped by this NSValue object.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public SizeF SizeFValue {
 			get { return (SizeF) CGSizeValue; }
 		}
 
+		/// <summary>Returns the PointF value wrapped by this NSValue object.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public PointF PointFValue {
 			get { return (PointF) CGPointValue; }
 		}
 #endif
 
-#if MONOMAC
-		// @encode(CGAffineTransform) -> "{CGAffineTransform=dddddd}" but...
-		// using a C string crash on macOS (while it works fine on iOS)
-		[DllImport ("__Internal")]
-		extern static IntPtr xamarin_encode_CGAffineTransform ();
-
-		// The `+valueWithCGAffineTransform:` selector comes from UIKit and is not available on macOS
-		public unsafe static NSValue FromCGAffineTransform (CGAffineTransform tran)
-		{
-			return Create ((IntPtr) (void*) &tran, xamarin_encode_CGAffineTransform ());
-		}
-
-		// The `CGAffineTransformValue` selector comes from UIKit and is not available on macOS
-		public unsafe virtual CGAffineTransform CGAffineTransformValue {
-			get {
-				var result = new CGAffineTransform ();
-				// avoid potential buffer overflow since we use the older `getValue:` API to cover all platforms
-				// and we can cheat here with the actual string comparison (since we are the one doing it)
-				if (ObjCType == "{CGAffineTransform=dddddd}")
-					StoreValueAtAddress ((IntPtr) (void*) &result);
-				return result;
-			}
-		}
-#endif
 #endif
 	}
 }

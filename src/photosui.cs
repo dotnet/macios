@@ -19,44 +19,51 @@ using MapKit;
 using Photos;
 using System;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace PhotosUI {
+	/// <include file="../docs/api/PhotosUI/IPHContentEditingController.xml" path="/Documentation/Docs[@DocId='T:PhotosUI.IPHContentEditingController']/*" />
 	[NoTV]
 	[MacCatalyst (14, 0)]
 	[Protocol]
-#if !NET && !TVOS && !MONOMAC
-	// According to documentation you're supposed to implement this protocol in a UIViewController subclass,
-	// which means a model (which does not inherit from UIViewController) is not useful.
-	[Model]
-	[BaseType (typeof (NSObject))]
-#endif
 	interface PHContentEditingController {
 
+		/// <param name="adjustmentData">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("canHandleAdjustmentData:")]
 		bool CanHandleAdjustmentData (PHAdjustmentData adjustmentData);
 
+		/// <param name="contentEditingInput">To be added.</param>
+		/// <param name="placeholderImage">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("startContentEditingWithInput:placeholderImage:")]
 		void StartContentEditing (PHContentEditingInput contentEditingInput, UIImage placeholderImage);
 
+		/// <param name="completionHandler">To be added. This parameter can be <see langword="null" />.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("finishContentEditingWithCompletionHandler:")]
 		void FinishContentEditing (Action<PHContentEditingOutput> completionHandler);
 
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("cancelContentEditing")]
 		void CancelContentEditing ();
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("shouldShowCancelConfirmation")]
 		bool ShouldShowCancelConfirmation { get; }
 	}
 
-	/// <summary>A <see cref="T:UIKit.UIView" /> that displays a <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:Photo.PHLivePhoto&amp;scope=Xamarin" title="T:Photo.PHLivePhoto">T:Photo.PHLivePhoto</a></format>.</summary>
+	/// <summary>A <see cref="UIKit.UIView" /> that displays a <see cref="Photo.PHLivePhoto" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/PhotosUI/PHLivePhotoView">Apple documentation for <c>PHLivePhotoView</c></related>
 	[MacCatalyst (13, 1)]
@@ -68,6 +75,12 @@ namespace PhotosUI {
 	interface PHLivePhotoView {
 
 		// inlined (designated initializer)
+		/// <param name="frame">Frame used by the view, expressed in iOS points.</param>
+		/// <summary>Initializes the PHLivePhotoView with the specified frame.</summary>
+		/// <remarks>
+		///           <para>This constructor is used to programmatically create a new instance of PHLivePhotoView with the specified dimension in the frame.   The object will only be displayed once it has been added to a view hierarchy by calling AddSubview in a containing view.</para>
+		///           <para>This constructor is not invoked when deserializing objects from storyboards or XIB filesinstead the constructor that takes an NSCoder parameter is invoked.</para>
+		///         </remarks>
 		[Export ("initWithFrame:")]
 		NativeHandle Constructor (CGRect frame);
 
@@ -77,6 +90,13 @@ namespace PhotosUI {
 		[Export ("livePhotoBadgeImageWithOptions:")]
 		UIImage GetLivePhotoBadgeImage (PHLivePhotoBadgeOptions badgeOptions);
 
+		/// <summary>An instance of the PhotosUI.IPHLivePhotoViewDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the PhotosUI.IPHLivePhotoViewDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		[NullAllowed]
 		IPHLivePhotoViewDelegate Delegate { get; set; }
@@ -92,6 +112,9 @@ namespace PhotosUI {
 		[Export ("playbackGestureRecognizer", ArgumentSemantic.Strong)]
 		UIGestureRecognizer PlaybackGestureRecognizer { get; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether sound is muted for the Live Photo. Default is <see langword="false" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("muted")]
 		bool Muted { [Bind ("isMuted")] get; set; }
 
@@ -130,15 +153,15 @@ namespace PhotosUI {
 		CGRect ContentsRect { get; set; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:PhotosUI.PHLivePhotoViewDelegate" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="PhotosUI.PHLivePhotoViewDelegate" />.</summary>
 	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:PhotosUI.PHLivePhotoViewDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:PhotosUI.PHLivePhotoViewDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:PhotosUI.PHLivePhotoViewDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="PhotosUI.PHLivePhotoViewDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="PhotosUI.PHLivePhotoViewDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="PhotosUI.PHLivePhotoViewDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	interface IPHLivePhotoViewDelegate { }
 
-	/// <summary>Delegate object for <see cref="T:PhotosUI.PHLivePhotoView" /> objects that adds methods for responding to playback beginning and ending.</summary>
+	/// <summary>Delegate object for <see cref="PhotosUI.PHLivePhotoView" /> objects that adds methods for responding to playback beginning and ending.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/PhotosUI/PHLivePhotoViewDelegate">Apple documentation for <c>PHLivePhotoViewDelegate</c></related>
 	[MacCatalyst (13, 1)]
@@ -149,9 +172,17 @@ namespace PhotosUI {
 		[Export ("livePhotoView:canBeginPlaybackWithStyle:")]
 		bool CanBeginPlayback (PHLivePhotoView livePhotoView, PHLivePhotoViewPlaybackStyle playbackStyle);
 
+		/// <param name="livePhotoView">To be added.</param>
+		/// <param name="playbackStyle">To be added.</param>
+		/// <summary>Method that is called just before playback begins.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("livePhotoView:willBeginPlaybackWithStyle:")]
 		void WillBeginPlayback (PHLivePhotoView livePhotoView, PHLivePhotoViewPlaybackStyle playbackStyle);
 
+		/// <param name="livePhotoView">To be added.</param>
+		/// <param name="playbackStyle">To be added.</param>
+		/// <summary>Method that is called aftr playback ends.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("livePhotoView:didEndPlaybackWithStyle:")]
 		void DidEndPlayback (PHLivePhotoView livePhotoView, PHLivePhotoViewPlaybackStyle playbackStyle);
 
@@ -163,10 +194,12 @@ namespace PhotosUI {
 
 	[NoiOS]
 	[NoTV]
-	[NoWatch]
 	[NoMacCatalyst]
 	[Static]
 	interface PHProjectType {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("PHProjectTypeUndefined")]
 		NSString Undefined { get; }
 	}
@@ -233,22 +266,42 @@ namespace PhotosUI {
 	[Protocol]
 	interface PHProjectExtensionController {
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.MacOSX, 10, 14)]
 		[Export ("supportedProjectTypes", ArgumentSemantic.Copy)]
 		PHProjectTypeDescription [] GetSupportedProjectTypes ();
 
+		/// <param name="extensionContext">To be added.</param>
+		/// <param name="projectInfo">To be added.</param>
+		/// <param name="completion">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("beginProjectWithExtensionContext:projectInfo:completion:")]
 		void BeginProject (PHProjectExtensionContext extensionContext, PHProjectInfo projectInfo, Action<NSError> completion);
 
+		/// <param name="extensionContext">To be added.</param>
+		/// <param name="completion">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("resumeProjectWithExtensionContext:completion:")]
 		void ResumeProject (PHProjectExtensionContext extensionContext, Action<NSError> completion);
 
+		/// <param name="completion">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("finishProjectWithCompletionHandler:")]
 		void FinishProject (Action completion);
 
+		/// <param name="category">To be added.</param>
+		/// <param name="invalidator">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Protected]
 		[NoMacCatalyst]
 		[Export ("typeDescriptionDataSourceForCategory:invalidator:")]
@@ -480,20 +533,34 @@ namespace PhotosUI {
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface PHProjectTypeDescriptionDataSource {
+		/// <param name="projectType">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("subtypesForProjectType:")]
 		PHProjectTypeDescription [] GetSubtypes (NSString projectType);
 
+		/// <param name="projectType">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("typeDescriptionForProjectType:")]
 		[return: NullAllowed]
 		PHProjectTypeDescription GetTypeDescription (NSString projectType);
 
+		/// <param name="projectType">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("footerTextForSubtypesOfProjectType:")]
 		[return: NullAllowed]
 		NSAttributedString GetFooterTextForSubtypes (NSString projectType);
 
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("extensionWillDiscardDataSource")]
 		void WillDiscardDataSource ();
 	}
@@ -504,10 +571,16 @@ namespace PhotosUI {
 	[NoMacCatalyst]
 	[Protocol]
 	interface PHProjectTypeDescriptionInvalidator {
+		/// <param name="projectType">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("invalidateTypeDescriptionForProjectType:")]
 		void InvalidateTypeDescription (NSString projectType);
 
+		/// <param name="projectType">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("invalidateFooterTextForSubtypesOfProjectType:")]
 		void InvalidateFooterTextForSubtypes (NSString projectType);
@@ -517,9 +590,6 @@ namespace PhotosUI {
 	[NoTV]
 	[DisableDefaultCtor]
 	[NoMacCatalyst]
-#if !NET // Can't apply Deprecated and Obsoleted to same element
-	[Deprecated (PlatformName.iOS, 13, 0)]
-#endif
 	[Obsoleted (PlatformName.iOS, 14, 0)] // Removed from headers completely
 	[BaseType (typeof (NSExtensionContext))]
 	interface PHEditingExtensionContext {
@@ -527,13 +597,9 @@ namespace PhotosUI {
 
 	interface IPHPickerViewControllerDelegate { }
 
-	[NoWatch, NoTV, Mac (13, 0), iOS (14, 0)]
+	[NoTV, Mac (13, 0), iOS (14, 0)]
 	[MacCatalyst (14, 0)]
-#if NET
 	[Protocol, Model]
-#else
-	[Protocol, Model (AutoGeneratedName = true)]
-#endif
 	[BaseType (typeof (NSObject))]
 	interface PHPickerViewControllerDelegate {
 		[Abstract]
@@ -541,7 +607,7 @@ namespace PhotosUI {
 		void DidFinishPicking (PHPickerViewController picker, PHPickerResult [] results);
 	}
 
-	[NoWatch, NoTV, Mac (13, 0), iOS (14, 0)]
+	[NoTV, Mac (13, 0), iOS (14, 0)]
 	[MacCatalyst (14, 0)]
 	[BaseType (typeof (UIViewController))]
 	[Advice ("This type should not be subclassed.")]
@@ -560,34 +626,34 @@ namespace PhotosUI {
 		[DesignatedInitializer]
 		NativeHandle Constructor (PHPickerConfiguration configuration);
 
-		[NoWatch, NoTV, Mac (13, 0), iOS (16, 0)]
+		[NoTV, Mac (13, 0), iOS (16, 0)]
 		[MacCatalyst (16, 0)]
 		[Export ("deselectAssetsWithIdentifiers:")]
 		void DeselectAssets (string [] identifiers);
 
-		[NoWatch, NoTV, Mac (13, 0), iOS (16, 0)]
+		[NoTV, Mac (13, 0), iOS (16, 0)]
 		[MacCatalyst (16, 0)]
 		[Export ("moveAssetWithIdentifier:afterAssetWithIdentifier:")]
 		void MoveAsset (string identifier, [NullAllowed] string afterIdentifier);
 
-		[NoWatch, NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("updatePickerUsingConfiguration:")]
 		void UpdatePicker (PHPickerUpdateConfiguration configuration);
 
-		[NoWatch, NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("scrollToInitialPosition")]
 		void ScrollToInitialPosition ();
 
-		[NoWatch, NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("zoomIn")]
 		void ZoomIn ();
 
-		[NoWatch, NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("zoomOut")]
 		void ZoomOut ();
 	}
 
-	[NoWatch, NoTV, Mac (13, 0), iOS (14, 0)]
+	[NoTV, Mac (13, 0), iOS (14, 0)]
 	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[Advice ("This type should not be subclassed.")]
@@ -625,7 +691,7 @@ namespace PhotosUI {
 		PHPickerCapabilities DisabledCapabilities { get; set; }
 	}
 
-	[NoWatch, NoTV, Mac (13, 0), iOS (14, 0)]
+	[NoTV, Mac (13, 0), iOS (14, 0)]
 	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[Advice ("This type should not be subclassed.")]
@@ -647,79 +713,79 @@ namespace PhotosUI {
 		[Export ("anyFilterMatchingSubfilters:")]
 		PHPickerFilter GetAnyFilterMatchingSubfilters (PHPickerFilter [] subfilters);
 
-		[NoWatch, NoTV, Mac (13, 0), iOS (16, 0)]
+		[NoTV, Mac (13, 0), iOS (16, 0)]
 		[MacCatalyst (16, 0)]
 		[Static]
 		[Export ("depthEffectPhotosFilter")]
 		PHPickerFilter DepthEffectPhotosFilter { get; }
 
-		[NoWatch, NoTV, Mac (13, 0), iOS (16, 0)]
+		[NoTV, Mac (13, 0), iOS (16, 0)]
 		[MacCatalyst (16, 0)]
 		[Static]
 		[Export ("burstsFilter")]
 		PHPickerFilter BurstsFilter { get; }
 
-		[NoWatch, NoTV, Mac (13, 0), iOS (15, 0)]
+		[NoTV, Mac (13, 0), iOS (15, 0)]
 		[MacCatalyst (15, 0)]
 		[Static]
 		[Export ("panoramasFilter")]
 		PHPickerFilter PanoramasFilter { get; }
 
-		[NoWatch, NoTV, Mac (13, 0), iOS (15, 0)]
+		[NoTV, Mac (13, 0), iOS (15, 0)]
 		[MacCatalyst (15, 0)]
 		[Static]
 		[Export ("screenshotsFilter")]
 		PHPickerFilter ScreenshotsFilter { get; }
 
-		[NoWatch, NoTV, Mac (13, 0), iOS (15, 0)]
+		[NoTV, Mac (13, 0), iOS (15, 0)]
 		[MacCatalyst (15, 0)]
 		[Static]
 		[Export ("screenRecordingsFilter")]
 		PHPickerFilter ScreenRecordingsFilter { get; }
 
-		[NoWatch, NoTV, Mac (13, 0), iOS (16, 0)]
+		[NoTV, Mac (13, 0), iOS (16, 0)]
 		[MacCatalyst (16, 0)]
 		[Static]
 		[Export ("cinematicVideosFilter")]
 		PHPickerFilter CinematicVideosFilter { get; }
 
-		[NoWatch, NoTV, Mac (13, 0), iOS (15, 0)]
+		[NoTV, Mac (13, 0), iOS (15, 0)]
 		[MacCatalyst (15, 0)]
 		[Static]
 		[Export ("slomoVideosFilter")]
 		PHPickerFilter SlomoVideosFilter { get; }
 
-		[NoWatch, NoTV, Mac (13, 0), iOS (15, 0)]
+		[NoTV, Mac (13, 0), iOS (15, 0)]
 		[MacCatalyst (15, 0)]
 		[Static]
 		[Export ("timelapseVideosFilter")]
 		PHPickerFilter TimelapseVideosFilter { get; }
 
-		[NoWatch, NoTV, Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[NoTV, Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Static]
 		[Export ("spatialMediaFilter")]
 		PHPickerFilter SpatialMediaFilter { get; }
 
-		[NoWatch, NoTV, Mac (13, 0), iOS (15, 0)]
+		[NoTV, Mac (13, 0), iOS (15, 0)]
 		[MacCatalyst (15, 0)]
 		[Static]
 		[Export ("playbackStyleFilter:")]
 		PHPickerFilter GetPlaybackStyleFilter (PHAssetPlaybackStyle playbackStyle);
 
-		[NoWatch, NoTV, Mac (13, 0), iOS (15, 0)]
+		[NoTV, Mac (13, 0), iOS (15, 0)]
 		[MacCatalyst (15, 0)]
 		[Static]
 		[Export ("allFilterMatchingSubfilters:")]
 		PHPickerFilter GetAllFilterMatchingSubfilters (PHPickerFilter [] subfilters);
 
-		[NoWatch, NoTV, Mac (13, 0), iOS (15, 0)]
+		[NoTV, Mac (13, 0), iOS (15, 0)]
 		[MacCatalyst (15, 0)]
 		[Static]
 		[Export ("notFilterOfSubfilter:")]
 		PHPickerFilter GetNotFilterOfSubfilter (PHPickerFilter subfilter);
 	}
 
-	[NoWatch, NoTV, Mac (13, 0), iOS (14, 0)]
+	[NoTV, Mac (13, 0), iOS (14, 0)]
 	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[Advice ("This type should not be subclassed.")]
@@ -732,7 +798,7 @@ namespace PhotosUI {
 		string AssetIdentifier { get; }
 	}
 
-	[NoWatch, NoTV, NoMac, iOS (14, 0)]
+	[NoTV, NoMac, iOS (14, 0)]
 	[MacCatalyst (14, 0)]
 	[Category]
 	[BaseType (typeof (PHPhotoLibrary))]
@@ -746,7 +812,7 @@ namespace PhotosUI {
 		void PresentLimitedLibraryPicker (UIViewController controller, Action<string []> completionHandler);
 	}
 
-	[NoWatch, NoTV, Mac (13, 0), iOS (15, 0), MacCatalyst (15, 0)]
+	[NoTV, Mac (13, 0), iOS (15, 0), MacCatalyst (15, 0)]
 	[Native]
 	public enum PHPickerConfigurationSelection : long {
 		Default = 0,
@@ -757,7 +823,7 @@ namespace PhotosUI {
 		ContinuousAndOrdered = 3,
 	}
 
-	[NoWatch, NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSObject))]
 	interface PHPickerUpdateConfiguration : NSCopying, NSSecureCoding {
 		[Export ("selectionLimit")]

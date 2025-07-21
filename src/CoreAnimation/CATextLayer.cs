@@ -45,46 +45,88 @@ namespace CoreAnimation {
 
 	public partial class CATextLayer {
 
+		/// <summary>Sets the attributed string to display.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///           <para>
+		/// 	    This sets the attributed string to display on the layer.   The attributed string should contain CoreText attributes.
+		/// 	  </para>
+		///           <example>
+		///             <code lang="csharp lang-csharp"><![CDATA[
+		/// void DrawHelloWorld (CATextLayer myTextLayer)
+		/// {
+		///     var hello = new NSAttributedString ("Hello, world",
+		///            new CTStringAttributes () {
+		///                   ForegroundColorFromContext =  true,
+		///                   Font = new CTFont ("Arial", 24)
+		///            });
+		///
+		///     myTextLayer.AttributedString = hello;
+		/// }    
+		/// ]]></code>
+		///           </example>
+		///         </remarks>
 		public NSAttributedString? AttributedString {
 			get {
 				return Runtime.GetNSObject (_AttributedString) as NSAttributedString;
 			}
 			set {
 				_AttributedString = value.GetHandle ();
+				GC.KeepAlive (value);
 			}
 		}
 
+		/// <param name="fontName">To be added.</param>
+		///         <summary>Sets the font.</summary>
+		///         <remarks>To be added.</remarks>
 		public void SetFont (string fontName)
 		{
 			if (fontName is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (fontName));
-			using (var nss = new NSString (fontName))
+			using (var nss = new NSString (fontName)) {
 				_Font = nss.Handle;
+			}
 		}
 
+		/// <param name="font">To be added.</param>
+		///         <summary>Sets the font.</summary>
+		///         <remarks>To be added.</remarks>
 		public void SetFont (CGFont font)
 		{
 			if (font is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (font));
 			_Font = font.Handle;
+			GC.KeepAlive (font);
 		}
 
+		/// <param name="font">To be added.</param>
+		///         <summary>Sets the font.</summary>
+		///         <remarks>To be added.</remarks>
 		public void SetFont (CTFont font)
 		{
 			if (font is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (font));
 			_Font = font.Handle;
+			GC.KeepAlive (font);
 		}
 
 #if MONOMAC
+		/// <param name="font">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void SetFont (NSFont font)
 		{
 			if (font is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (font));
 			_Font = font.Handle;
+			GC.KeepAlive (font);
 		}
 #endif
 
+		/// <summary>Gets or sets a weak reference to the font.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public object? WeakFont {
 			get {
 				var handle = _Font;
@@ -106,51 +148,46 @@ namespace CoreAnimation {
 			set {
 #if MONOMAC
 				var ns = value as NSFont;
-				if (ns is not null){
+				if (ns is not null) {
 					_Font = ns.Handle;
+					GC.KeepAlive (ns);
 					return;
 				}
 #endif
 				var ct = value as CTFont;
 				if (ct is not null) {
 					_Font = ct.Handle;
+					GC.KeepAlive (ct);
 					return;
 				}
 				var cg = value as CGFont;
 				if (cg is not null) {
 					_Font = cg.Handle;
+					GC.KeepAlive (cg);
 					return;
 				}
 				var nss = value as NSString;
 				if (nss is not null) {
 					_Font = nss.Handle;
+					GC.KeepAlive (nss);
 					return;
 				}
 				var str = value as string;
 				if (str is not null) {
 					nss = new NSString (str);
 					_Font = nss.Handle;
+					GC.KeepAlive (nss);
 				}
 			}
 		}
-#if !NET
-		[Obsolete ("Use 'TextTruncationMode' instead.")]
-		public virtual string TruncationMode {
-			get { return (string) WeakTruncationMode; }
-			set { WeakTruncationMode = (NSString) value; }
-		}
 
-		[Obsolete ("Use 'TextAlignmentMode' instead.")]
-		public virtual string AlignmentMode {
-			get { return (string) WeakAlignmentMode; }
-			set { WeakAlignmentMode = (NSString) value; }
-		}
-#endif // !NET
+		/// <summary>Gets or sets a value that controls how text will be truncated, if necessary, for display.</summary>
 		public CATextLayerTruncationMode TextTruncationMode {
 			get { return CATextLayerTruncationModeExtensions.GetValue (WeakTruncationMode); }
 			set { WeakTruncationMode = value.GetConstant ()!; }
 		}
 
+		/// <summary>Gets or sets the text alignment mode.</summary>
 		public CATextLayerAlignmentMode TextAlignmentMode {
 			get { return CATextLayerAlignmentModeExtensions.GetValue (WeakAlignmentMode); }
 			set { WeakAlignmentMode = value.GetConstant ()!; }

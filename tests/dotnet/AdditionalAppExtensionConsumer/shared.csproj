@@ -19,6 +19,7 @@
         <AdditionalAppExtensions Include="$(AdditionalAppExtensionPath)">
             <Name>NativeIntentsExtension</Name>
             <BuildOutput>$(AdditionalAppExtensionBuildOutput)</BuildOutput>
+            <CodesignEntitlements Condition="'$(AdditionalAppExtensionEntitlements)' != ''">$(AdditionalAppExtensionEntitlements)</CodesignEntitlements>
         </AdditionalAppExtensions>
     </ItemGroup>
 </Project>

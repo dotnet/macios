@@ -7,7 +7,7 @@
 // Copyright 2016 Xamarin Inc. All rights reserved.
 //
 
-#if !__WATCHOS__ && !__TVOS__
+#if !__TVOS__
 
 using Foundation;
 using CoreAudioKit;
@@ -38,4 +38,4 @@ namespace MonoTouchFixtures.CoreAudioKit {
 	}
 }
 
-#endif // !__WATCHOS__ && !__TVOS__
+#endif // !__TVOS__

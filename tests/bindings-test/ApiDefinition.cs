@@ -316,6 +316,9 @@ namespace Bindings.Test {
 
 		[Export ("methodEncodings:obj2:obj3:obj4:obj5:obj6:obj7:")]
 		void GetMethodEncodings (ref NSObject obj1, ref NSObject obj2, ref NSObject obj3, ref NSObject obj4, ref NSObject obj5, ref NSObject obj6, ref NSObject obj7);
+
+		[Export ("setPtrPropertyCGRect:p2:p3:p4:p5:p6:")]
+		void SetPtrPropertyCGRect (nint p1, nint p2, nint p3, nint p4, ref global::CoreGraphics.CGRect p5, nint p6);
 	}
 
 	[Protocol]
@@ -431,7 +434,6 @@ namespace Bindings.Test {
 	delegate void InnerBlock (int magic_number);
 	delegate void OuterBlock ([BlockCallback] InnerBlock callback);
 
-#if NET
 	[Protocol]
 	interface ConstructorProtocol {
 		[Abstract]
@@ -457,7 +459,6 @@ namespace Bindings.Test {
 		[Export ("dateValue")]
 		NSDate DateValue { get; set; }
 	}
-#endif
 
 	[BaseType (typeof (NSObject))]
 	interface EvilDeallocator {
@@ -487,7 +488,6 @@ namespace Bindings.Test {
 	}
 	interface IProtocolWithBlockProperties { }
 
-#if NET
 	[BaseType (typeof (NSObject))]
 	interface SwiftTestClass {
 		[Export ("SayHello")]
@@ -508,5 +508,69 @@ namespace Bindings.Test {
 		// provide an actual argument when calling the method.
 		void DoSomethingComplexAsync (string message, IntPtr complexParameter, Action<NSString> completionHandler);
 	}
-#endif
+
+	[BaseType (typeof (SwiftTestClass), IsStubClass = true)]
+	interface SwiftTestClass2 {
+		[Export ("SayHello2")]
+		string SayHello2 ();
+	}
+
+	[Protocol]
+	interface VeryGenericElementProtocol {
+		[Export ("when", ArgumentSemantic.Retain)]
+		NSDate When { get; }
+	}
+
+	interface IVeryGenericElementProtocol : INativeObject { }
+
+	[Protocol]
+	interface VeryGenericElementProtocol1 : VeryGenericElementProtocol {
+		[Export ("number")]
+		nint Number { get; }
+	}
+
+	interface IVeryGenericElementProtocol1 : IVeryGenericElementProtocol { }
+
+	[Protocol]
+	interface VeryGenericElementProtocol2 : VeryGenericElementProtocol {
+		[Export ("animal", ArgumentSemantic.Retain)]
+		string Animal { get; }
+	}
+
+	interface IVeryGenericElementProtocol2 : IVeryGenericElementProtocol { }
+
+	[BaseType (typeof (NSObject))]
+	interface VeryGenericCollection<Key, Element>
+		where Key : NSString
+		where Element : IVeryGenericElementProtocol {
+		[Export ("count")]
+		nuint Count { get; }
+
+		[Export ("getElement:"), NullAllowed]
+		Element GetElement (Key key);
+
+		[Export ("elementEnumerator"), NullAllowed]
+		NSEnumerator<Element> GetEnumerator ();
+
+		[Export ("add:")]
+		void Add (Element element);
+	}
+
+	[Protocol]
+	interface VeryGenericConsumerProtocol {
+		[Export ("first", ArgumentSemantic.Retain)]
+		VeryGenericCollection<NSString, IVeryGenericElementProtocol1> First { get; }
+
+		[Export ("second", ArgumentSemantic.Retain)]
+		VeryGenericCollection<NSString, IVeryGenericElementProtocol2> Second { get; }
+	}
+
+	interface IVeryGenericConsumerProtocol { }
+
+	[BaseType (typeof (NSObject))]
+	interface VeryGenericFactory {
+		[Export ("getConsumer")]
+		[Static]
+		IVeryGenericConsumerProtocol GetConsumer ();
+	}
 }

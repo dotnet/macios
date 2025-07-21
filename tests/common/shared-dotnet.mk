@@ -23,6 +23,10 @@ include $(TOP)/mk/colors.mk
 #         usually the best option for desktop platforms, since it will
 #         print stdout/stderr from the test app to the terminal.
 #
+# ➡️ run-old
+#
+#         Runs in the oldest simulator we can (only applicable for iOS and tvOS).
+#
 # ➡️ reload
 #
 #         Rebuilds all of xamarin-macios, and cleans up some stuff, so that
@@ -31,11 +35,16 @@ include $(TOP)/mk/colors.mk
 #         ⚠️ This target may hang for reasons I haven't been able to figure ⚠️
 #         ⚠️ out yet, in which case just cancel (Ctrl-C) and try again      ⚠️
 #
+# ➡️ list-variations
+#
+#         Lists all the test variations for the current test project.
+#
 # Options:
 #
 # ➡️ UNIVERSAL=1: build a universal app instead of whatever the default is.
 # ➡️ RUNTIMEIDENTIFIERS=...: list the runtime identifiers to build for.
 # ➡️ CONFIG=configuration: the configuration to use (defaults to Debug)
+# ➡️ TEST_VARIATION=variation: the test variation to use. Run 'make list-variations' to get a list of all the valid test variations.
 #
 # Example to run monotouch-test on Mac Catalyst:
 #
@@ -71,6 +80,7 @@ endif
 ifeq ($(PLATFORM),)
 PLATFORM=$(shell basename "$(CURDIR)")
 endif
+PLATFORM_UPPERCASE:=$(shell echo $(PLATFORM) | tr 'a-z' 'A-Z')
 
 ifneq ($(RUNTIMEIDENTIFIERS)$(RUNTIMEIDENTIFIER),)
 $(error "Don't set RUNTIMEIDENTIFIER or RUNTIMEIDENTIFIERS, set RID instead (RUNTIMEIDENTIFIER=$(RUNTIMEIDENTIFIER), RUNTIMEIDENTIFIERS=$(RUNTIMEIDENTIFIERS))")
@@ -118,6 +128,9 @@ PATH_RID=$(RID)/
 export RUNTIMEIDENTIFIER=$(RID)
 endif
 
+ifneq ($(TEST_VARIATION),)
+TEST_VARIATION_ARGUMENT=/p:TestVariation=$(TEST_VARIATION)
+endif
 
 ifeq ($(PLATFORM),iOS)
 EXECUTABLE="$(abspath .)/bin/$(CONFIG)/$(TEST_TFM)-ios/$(PATH_RID)$(TESTNAME).app/$(TESTNAME)"
@@ -153,13 +166,22 @@ reload-and-run:
 	$(Q) $(MAKE) run
 
 build: prepare
-	$(Q) $(DOTNET) build "/bl:$(abspath $@-$(BINLOG_TIMESTAMP).binlog)" *.?sproj $(DOTNET_BUILD_VERBOSITY) $(BUILD_ARGUMENTS) $(CONFIG_ARGUMENT) $(UNIVERSAL_ARGUMENT) $(NATIVEAOT_ARGUMENTS)
+	$(Q) $(DOTNET) build "/bl:$(abspath $@-$(BINLOG_TIMESTAMP).binlog)" *.?sproj $(DOTNET_BUILD_VERBOSITY) $(BUILD_ARGUMENTS) $(CONFIG_ARGUMENT) $(UNIVERSAL_ARGUMENT) $(NATIVEAOT_ARGUMENTS) $(TEST_VARIATION_ARGUMENT)
 
+run: export SIMCTL_CHILD_NUNIT_AUTOSTART=true
+run: export SIMCTL_CHILD_NUNIT_AUTOEXIT=true
 run: prepare
-	$(Q) $(DOTNET) build "/bl:$(abspath $@-$(BINLOG_TIMESTAMP).binlog)" *.?sproj $(DOTNET_BUILD_VERBOSITY) $(BUILD_ARGUMENTS) $(CONFIG_ARGUMENT) $(UNIVERSAL_ARGUMENT) $(NATIVEAOT_ARGUMENTS) -t:Run
+	$(Q) $(DOTNET) build "/bl:$(abspath $@-$(BINLOG_TIMESTAMP).binlog)" *.?sproj $(DOTNET_BUILD_VERBOSITY) $(BUILD_ARGUMENTS) $(CONFIG_ARGUMENT) $(UNIVERSAL_ARGUMENT) $(NATIVEAOT_ARGUMENTS) $(TEST_VARIATION_ARGUMENT) -t:Run $(RUN_ARGUMENTS) -tl:off
 
 run-bare:
 	$(Q) $(EXECUTABLE) --autostart --autoexit $(RUN_ARGUMENTS)
+
+# Get the list of applicable simulators, and pick the first in the list.
+# Make sure to have a matching simulator runtime installed, otherwise this won't work.
+run-old: RUN_ARGUMENTS=-p:_DeviceName=$(shell xcrun simctl list devices "$(PLATFORM) $(MIN_$(PLATFORM_UPPERCASE)_SIMULATOR_VERSION)" -j | jq -c '.[][][].udid' | head -1 | sed 's/"//g')
+run-old: export RUNTIMEIDENTIFIER=
+run-old:
+	$(MAKE) run
 
 print-executable:
 	@echo $(EXECUTABLE)
@@ -185,6 +207,14 @@ diag: prepare
 		echo "Choose your binlog to print:"; \
 		select binlog in $(BINLOGS); do $(DOTNET) build /v:diag $$binlog; break; done \
 	fi
+
+list-variations listvariations show-variations showvariations variations:
+	$(Q) if ! command -v jq > /dev/null; then echo "$(shell tput setaf 9)jq isn't installed. Install by doing 'brew install jq'$(shell tput sgr0)"; exit 1; fi
+	$(Q) echo "Test variations for $(shell tput setaf 6)$(TESTNAME)$(shell tput sgr0):"
+	$(Q) echo ""
+	$(Q) $(DOTNET) build -getItem:TestVariations | jq '.Items.TestVariations[] | "\(.Identity): \(.Description)"' | sed -e 's/^"/    /' -e 's/"$$//'
+	$(Q) echo ""
+	$(Q) echo "Build and run a specific variation by doing $(shell tput setaf 6)make build TEST_VARIATION=variation$(shell tput sgr0)"
 
 clean:
 	rm -Rf bin obj *.binlog

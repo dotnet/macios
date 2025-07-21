@@ -24,22 +24,11 @@ using OS_nw_protocol_options = System.IntPtr;
 using OS_nw_endpoint = System.IntPtr;
 using OS_nw_parameters = System.IntPtr;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace Network {
-
-#if NET
 	[SupportedOSPlatform ("tvos13.0")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios13.0")]
 	[SupportedOSPlatform ("maccatalyst")]
-#else
-	[TV (13, 0)]
-	[iOS (13, 0)]
-	[Watch (6, 0)]
-#endif
 	public class NWFramerMessage : NWProtocolMetadata {
 		[Preserve (Conditional = true)]
 		internal NWFramerMessage (NativeHandle handle, bool owns) : base (handle, owns) { }
@@ -49,24 +38,20 @@ namespace Network {
 
 		// nw_framer_protocol can be condisered to be a nw_framer which is a protocol and is mapped to NWFramer, for a
 		// detailed explanation of the reasoning behind the naming please read the following discussion:
-		// https://github.com/xamarin/xamarin-macios/pull/7256#discussion_r337066971
+		// https://github.com/dotnet/macios/pull/7256#discussion_r337066971
 		public static NWFramerMessage Create (NWProtocolDefinition protocolDefinition)
 		{
 			if (protocolDefinition is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (protocolDefinition));
-			return new NWFramerMessage (nw_framer_protocol_create_message (protocolDefinition.Handle), owns: true);
+			var result = new NWFramerMessage (nw_framer_protocol_create_message (protocolDefinition.Handle), owns: true);
+			GC.KeepAlive (protocolDefinition);
+			return result;
 		}
 
 		[DllImport (Constants.NetworkLibrary)]
 		unsafe static extern void nw_framer_message_set_value (OS_nw_protocol_metadata message, IntPtr key, IntPtr value, BlockLiteral* dispose_value);
-#if !NET
-		delegate void nw_framer_message_set_value_t (IntPtr block, IntPtr data);
-		static nw_framer_message_set_value_t static_SetDataHandler = TrampolineSetDataHandler;
 
-		[MonoPInvokeCallback (typeof (nw_framer_message_set_value_t))]
-#else
 		[UnmanagedCallersOnly]
-#endif
 		static void TrampolineSetDataHandler (IntPtr block, IntPtr data)
 		{
 			// get and call, this is internal and we are trying to do all the magic in the call
@@ -89,13 +74,8 @@ namespace Network {
 				pinned.Free ();
 			};
 			unsafe {
-#if NET
 				delegate* unmanaged<IntPtr, IntPtr, void> trampoline = &TrampolineSetDataHandler;
 				using var block = new BlockLiteral (trampoline, callback, typeof (NWFramerMessage), nameof (TrampolineSetDataHandler));
-#else
-				using var block = new BlockLiteral ();
-				block.SetupBlockUnsafe (static_SetDataHandler, callback);
-#endif
 				using var keyPtr = new TransientString (key);
 				nw_framer_message_set_value (GetCheckedHandle (), keyPtr, pinned.AddrOfPinnedObject (), &block);
 			}
@@ -103,15 +83,8 @@ namespace Network {
 
 		[DllImport (Constants.NetworkLibrary)]
 		unsafe static extern byte nw_framer_message_access_value (OS_nw_protocol_metadata message, IntPtr key, BlockLiteral* access_value);
-#if !NET
-		delegate byte nw_framer_message_access_value_t (IntPtr block, IntPtr data);
-		static nw_framer_message_access_value_t static_AccessValueHandler = TrampolineAccessValueHandler;
 
-
-		[MonoPInvokeCallback (typeof (nw_framer_message_access_value_t))]
-#else
 		[UnmanagedCallersOnly]
-#endif
 		static byte TrampolineAccessValueHandler (IntPtr block, IntPtr data)
 		{
 			// get and call, this is internal and we are trying to do all the magic in the call
@@ -137,13 +110,8 @@ namespace Network {
 			};
 
 			unsafe {
-#if NET
 				delegate* unmanaged<IntPtr, IntPtr, byte> trampoline = &TrampolineAccessValueHandler;
 				using var block = new BlockLiteral (trampoline, callback, typeof (NWFramerMessage), nameof (TrampolineAccessValueHandler));
-#else
-				using var block = new BlockLiteral ();
-				block.SetupBlockUnsafe (static_AccessValueHandler, callback);
-#endif
 				// the callback is inlined!!!
 				using var keyPtr = new TransientString (key);
 				var found = nw_framer_message_access_value (GetCheckedHandle (), keyPtr, &block) != 0;
@@ -168,7 +136,10 @@ namespace Network {
 		}
 
 		public void SetObject (string key, NSObject value)
-			=> nw_framer_message_set_object_value (GetCheckedHandle (), key, value.GetHandle ());
+		{
+			nw_framer_message_set_object_value (GetCheckedHandle (), key, value.GetHandle ());
+			GC.KeepAlive (value);
+		}
 
 		[DllImport (Constants.NetworkLibrary)]
 		static extern IntPtr nw_framer_message_copy_object_value (OS_nw_protocol_metadata message, IntPtr key);

@@ -7,7 +7,7 @@
 // Copyright 2022 Microsoft Corp. All rights reserved.
 //
 
-#if __MACOS__ && NET
+#if __MACOS__
 
 using System;
 using System.Threading;
@@ -28,6 +28,8 @@ namespace MonoTouchFixtures.AudioToolbox {
 		[Test]
 		public void Callbacks ()
 		{
+			TestRuntime.IgnoreIfLockedScreen ();
+
 			var audioComponent = AudioComponent.FindComponent (AudioTypeOutput.VoiceProcessingIO);
 			using var audioUnit = new global::AudioUnit.AudioUnit (audioComponent);
 
@@ -52,4 +54,4 @@ namespace MonoTouchFixtures.AudioToolbox {
 	}
 }
 
-#endif // __MACOS__ && NET
+#endif // __MACOS__

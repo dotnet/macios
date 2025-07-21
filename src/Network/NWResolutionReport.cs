@@ -9,25 +9,13 @@ using OS_nw_resolution_report = System.IntPtr;
 using OS_nw_endpoint = System.IntPtr;
 using nw_report_resolution_protocol_t = System.IntPtr;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 #nullable enable
 
 namespace Network {
-
-#if NET
 	[SupportedOSPlatform ("tvos15.0")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios15.0")]
 	[SupportedOSPlatform ("maccatalyst")]
-#else
-	[Watch (8, 0)]
-	[TV (15, 0)]
-	[iOS (15, 0)]
-	[MacCatalyst (15, 0)]
-#endif
 	public class NWResolutionReport : NativeObject {
 
 		[Preserve (Conditional = true)]

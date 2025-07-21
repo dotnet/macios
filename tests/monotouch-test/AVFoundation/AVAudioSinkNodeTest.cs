@@ -9,19 +9,12 @@ using AudioToolbox;
 using AVFoundation;
 using Foundation;
 
+using Xamarin.Tests;
+
 namespace MonoTouchFixtures.AVFoundation {
 	[TestFixture]
 	[Preserve (AllMembers = true)]
 	public class AVAudioSinkNodeTest {
-#if __WATCHOS__
-		[SetUp]
-		public void SetUp ()
-		{
-			// Looks like this test broke in the watchOS simulator, so just skip it there.
-			TestRuntime.AssertNotSimulator ();
-		}
-#endif
-
 		[Test]
 		public void SinkNodeCallback ()
 		{
@@ -61,6 +54,7 @@ namespace MonoTouchFixtures.AVFoundation {
 		void SinkNodeCallbackTest (ManualResetEvent callbackEvent, Func<AVAudioSinkNode> createSinkNode)
 		{
 			TestRuntime.AssertNotVirtualMachine ();
+			TestRuntime.IgnoreIfLockedScreen ();
 
 #if __MACOS__
 			var defaultCaptureDevice = AVCaptureDevice.GetDefaultDevice (AVMediaTypes.Audio);
@@ -73,14 +67,12 @@ namespace MonoTouchFixtures.AVFoundation {
 
 			session.SetCategory (AVAudioSessionCategory.PlayAndRecord, AVAudioSessionCategoryOptions.DefaultToSpeaker, out var categoryError);
 			Assert.IsNull (categoryError, "Category Error");
-#if !__WATCHOS__
 			session.SetPreferredSampleRate (48000, out var sampleRateError);
 			Assert.IsNull (sampleRateError, "Sample Rate Error");
 			if (session.MaximumInputNumberOfChannels == 0)
 				Assert.Ignore ("The current system doesn't support any input channels");
 			session.SetPreferredInputNumberOfChannels (1, out var inputChannelCountError);
 			Assert.IsNull (inputChannelCountError, "Input Channel Count Error");
-#endif // !__WATCHOS__
 			session.SetActive (true);
 #endif // __MACOS__
 

@@ -5,8 +5,7 @@ using System.Collections.Generic;
 
 using Microsoft.Build.Framework;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Xamarin.MacDev.Tasks {
 	public static class AssetPackUtils {
@@ -79,7 +78,7 @@ namespace Xamarin.MacDev.Tasks {
 			return value.Split (new [] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select (tag => tag.Trim ()).ToArray ();
 		}
 
-		public static IList<string> GetResourceTags (ITaskItem item)
+		public static IList<string>? GetResourceTags (ITaskItem item)
 		{
 			var tags = ParseTags (item.GetMetadata ("ResourceTags"));
 

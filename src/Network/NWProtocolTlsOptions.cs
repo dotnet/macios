@@ -19,20 +19,11 @@ using Security;
 using OS_nw_protocol_definition = System.IntPtr;
 using IntPtr = System.IntPtr;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace Network {
-
-#if NET
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-#else
-	[Watch (6, 0)]
-#endif
 	public class NWProtocolTlsOptions : NWProtocolOptions {
 		[Preserve (Conditional = true)]
 		internal NWProtocolTlsOptions (NativeHandle handle, bool owns) : base (handle, owns) { }

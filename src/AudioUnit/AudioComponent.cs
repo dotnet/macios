@@ -43,43 +43,40 @@ using UIKit;
 #else
 using AppKit;
 #if !COREBUILD
-using UIImage=AppKit.NSImage;
+using UIImage = AppKit.NSImage;
 #endif
-#endif
-
-#if !NET
-using NativeHandle = System.IntPtr;
 #endif
 
 namespace AudioUnit {
 
 #if !COREBUILD
 
-#if (!WATCH && !TVOS) || ((WATCH || TVOS) && !NET)
-
+#if !TVOS
 	// keys are not constants and had to be found in AudioToolbox.framework/Headers/AudioComponent.h
-#if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[UnsupportedOSPlatform ("tvos")]
-#else
-	[NoWatch]
-	[NoTV]
-#endif
-#if ((WATCH || TVOS) && !NET)
-	[Obsolete ("This API is not available on this platform.")]
-#endif
 	public partial class ResourceUsageInfo : DictionaryContainer {
 		static NSString userClientK = new NSString ("iokit.user-client");
 		static NSString globalNameK = new NSString ("mach-lookup.global-name");
 		static NSString networkClientK = new NSString ("network.client");
 		static NSString exceptionK = new NSString ("temporary-exception.files.all.read-write");
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public ResourceUsageInfo () : base () { }
 
+		/// <param name="dic">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public ResourceUsageInfo (NSDictionary dic) : base (dic) { }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string []? IOKitUserClient {
 			get {
 				return GetStringArrayValue (userClientK);
@@ -92,6 +89,9 @@ namespace AudioUnit {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string []? MachLookUpGlobalName {
 			get {
 				return GetStringArrayValue (globalNameK);
@@ -104,6 +104,9 @@ namespace AudioUnit {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool? NetworkClient {
 			get {
 				return GetBoolValue (networkClientK);
@@ -113,6 +116,9 @@ namespace AudioUnit {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool? TemporaryExceptionReadWrite {
 			get {
 				return GetBoolValue (exceptionK);
@@ -124,18 +130,12 @@ namespace AudioUnit {
 	}
 
 	// keys are not constants and had to be found in AudioToolbox.framework/Headers/AudioComponent.h
-#if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[UnsupportedOSPlatform ("tvos")]
-#else
-	[NoWatch]
-	[NoTV]
-#endif
-#if ((WATCH || TVOS) && !NET)
-	[Obsolete ("This API is not available on this platform.")]
-#endif
 	public partial class AudioComponentInfo : DictionaryContainer {
 		static NSString typeK = new NSString ("type");
 		static NSString subtypeK = new NSString ("subtype");
@@ -147,10 +147,18 @@ namespace AudioUnit {
 		static NSString resourceUsageK = new NSString ("resourceUsage");
 		static NSString tagsK = new NSString ("tags");
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public AudioComponentInfo () : base () { }
 
+		/// <param name="dic">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public AudioComponentInfo (NSDictionary dic) : base (dic) { }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? Type {
 			get {
 				return GetStringValue (typeK);
@@ -160,6 +168,9 @@ namespace AudioUnit {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? Subtype {
 			get {
 				return GetStringValue (subtypeK);
@@ -169,6 +180,9 @@ namespace AudioUnit {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? Manufacturer {
 			get {
 				return GetStringValue (manufacturerK);
@@ -178,6 +192,9 @@ namespace AudioUnit {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? Name {
 			get {
 				return GetStringValue (nameK);
@@ -187,6 +204,9 @@ namespace AudioUnit {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nuint? Version {
 			get {
 				return GetNUIntValue (versionK);
@@ -196,6 +216,9 @@ namespace AudioUnit {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? FactoryFunction {
 			get {
 				return GetStringValue (factoryFunctionK);
@@ -205,6 +228,9 @@ namespace AudioUnit {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool? SandboxSafe {
 			get {
 				return GetBoolValue (sandboxSafeK);
@@ -214,6 +240,9 @@ namespace AudioUnit {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public ResourceUsageInfo? ResourceUsage {
 			get {
 				return GetStrongDictionary<ResourceUsageInfo> (resourceUsageK, (dict) => new ResourceUsageInfo (dict));
@@ -223,6 +252,9 @@ namespace AudioUnit {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string []? Tags {
 			get {
 				return GetStringArrayValue (tagsK);
@@ -235,17 +267,17 @@ namespace AudioUnit {
 			}
 		}
 	}
-#endif // (!WATCH && !TVOS) || ((WATCH || TVOS) && !NET)
+#endif // !TVOS
 
 #endif // !COREBUILD
 
 
-#if NET
+	/// <summary>An audio component.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class AudioComponent : DisposableObject {
 #if !COREBUILD
 		[Preserve (Conditional = true)]
@@ -254,61 +286,103 @@ namespace AudioUnit {
 		{
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public AudioUnit CreateAudioUnit ()
 		{
 			return new AudioUnit (this);
 		}
 
+		/// <param name="cmp">To be added.</param>
+		///         <param name="cd">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static AudioComponent? FindNextComponent (AudioComponent? cmp, ref AudioComponentDescription cd)
 		{
 			var handle = cmp.GetHandle ();
 			unsafe {
 				handle = AudioComponentFindNext (handle, (AudioComponentDescription*) Unsafe.AsPointer<AudioComponentDescription> (ref cd));
 			}
-			return (handle != IntPtr.Zero) ? new AudioComponent (handle, false) : null;
+			AudioComponent? result = (handle != IntPtr.Zero) ? new AudioComponent (handle, false) : null;
+			GC.KeepAlive (cmp);
+			return result;
 		}
 
+		/// <param name="cd">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static AudioComponent? FindComponent (ref AudioComponentDescription cd)
 		{
 			return FindNextComponent (null, ref cd);
 		}
 
+		/// <param name="output">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static AudioComponent? FindComponent (AudioTypeOutput output)
 		{
 			var cd = AudioComponentDescription.CreateOutput (output);
 			return FindComponent (ref cd);
 		}
 
+		/// <param name="musicDevice">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static AudioComponent? FindComponent (AudioTypeMusicDevice musicDevice)
 		{
 			var cd = AudioComponentDescription.CreateMusicDevice (musicDevice);
 			return FindComponent (ref cd);
 		}
 
+		/// <param name="conveter">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static AudioComponent? FindComponent (AudioTypeConverter conveter)
 		{
 			var cd = AudioComponentDescription.CreateConverter (conveter);
 			return FindComponent (ref cd);
 		}
 
+		/// <param name="effect">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static AudioComponent? FindComponent (AudioTypeEffect effect)
 		{
 			var cd = AudioComponentDescription.CreateEffect (effect);
 			return FindComponent (ref cd);
 		}
 
+		/// <param name="mixer">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static AudioComponent? FindComponent (AudioTypeMixer mixer)
 		{
 			var cd = AudioComponentDescription.CreateMixer (mixer);
 			return FindComponent (ref cd);
 		}
 
+		/// <param name="panner">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static AudioComponent? FindComponent (AudioTypePanner panner)
 		{
 			var cd = AudioComponentDescription.CreatePanner (panner);
 			return FindComponent (ref cd);
 		}
 
+		/// <param name="generator">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static AudioComponent? FindComponent (AudioTypeGenerator generator)
 		{
 			var cd = AudioComponentDescription.CreateGenerator (generator);
@@ -321,6 +395,9 @@ namespace AudioUnit {
 		[DllImport (Constants.AudioUnitLibrary, EntryPoint = "AudioComponentCopyName")]
 		unsafe static extern int /* OSStatus */ AudioComponentCopyName (IntPtr component, IntPtr* cfstr);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? Name {
 			get {
 				IntPtr r;
@@ -335,6 +412,9 @@ namespace AudioUnit {
 		[DllImport (Constants.AudioUnitLibrary)]
 		unsafe static extern int /* OSStatus */ AudioComponentGetDescription (IntPtr component, AudioComponentDescription* desc);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public AudioComponentDescription? Description {
 			get {
 				AudioComponentDescription desc;
@@ -350,6 +430,9 @@ namespace AudioUnit {
 		[DllImport (Constants.AudioUnitLibrary)]
 		unsafe static extern int /* OSStatus */ AudioComponentGetVersion (IntPtr component, int* /* UInt32* */ version);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public Version? Version {
 			get {
 				int ret;
@@ -362,31 +445,17 @@ namespace AudioUnit {
 			}
 		}
 
-#if NET
 		[SupportedOSPlatform ("tvos14.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios14.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[NoWatch]
-		[TV (14, 0)]
-		[iOS (14, 0)]
-		[MacCatalyst (14, 0)]
-#endif
 		[DllImport (Constants.AudioUnitLibrary)]
 		static extern unsafe IntPtr AudioComponentCopyIcon (IntPtr comp);
 
-#if NET
 		[SupportedOSPlatform ("tvos14.0")]
 		[SupportedOSPlatform ("ios14.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[NoWatch]
-		[TV (14, 0)]
-		[iOS (14, 0)]
-		[MacCatalyst (14, 0)]
-#endif
 		public UIImage? CopyIcon ()
 		{
 			var ptr = AudioComponentCopyIcon (Handle);
@@ -395,38 +464,31 @@ namespace AudioUnit {
 
 #if !MONOMAC
 #if !__MACCATALYST__
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("tvos14.0")]
 		[ObsoletedOSPlatform ("ios14.0")]
-#else
-		[Deprecated (PlatformName.iOS, 14, 0)]
-		[Deprecated (PlatformName.TvOS, 14, 0)]
-#endif
 		[DllImport (Constants.AudioUnitLibrary)]
 		static extern IntPtr AudioComponentGetIcon (IntPtr comp, float /* float */ desiredPointSize);
 
-#if NET
+		/// <param name="desiredPointSize">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("tvos14.0", "Use 'CopyIcon' instead.")]
 		[ObsoletedOSPlatform ("ios14.0", "Use 'CopyIcon' instead.")]
-#else
-		[Deprecated (PlatformName.iOS, 14, 0, message: "Use 'CopyIcon' instead.")]
-		[Deprecated (PlatformName.TvOS, 14, 0, message: "Use 'CopyIcon' instead.")]
-#endif
 		public UIKit.UIImage? GetIcon (float desiredPointSize)
 		{
 			return Runtime.GetNSObject<UIKit.UIImage> (AudioComponentGetIcon (Handle, desiredPointSize));
 		}
 #endif // !__MACCATALYST__
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
@@ -434,16 +496,12 @@ namespace AudioUnit {
 		[ObsoletedOSPlatform ("tvos13.0")]
 		[ObsoletedOSPlatform ("maccatalyst14.0")]
 		[ObsoletedOSPlatform ("ios13.0")]
-#else
-		[Deprecated (PlatformName.iOS, 13, 0)]
-		[Deprecated (PlatformName.TvOS, 13, 0)]
-		[MacCatalyst (14, 0)]
-		[Deprecated (PlatformName.MacCatalyst, 14, 0)]
-#endif
 		[DllImport (Constants.AudioUnitLibrary)]
 		static extern double AudioComponentGetLastActiveTime (IntPtr comp);
 
-#if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
@@ -451,12 +509,6 @@ namespace AudioUnit {
 		[ObsoletedOSPlatform ("tvos13.0", "Use 'AudioUnit' instead.")]
 		[ObsoletedOSPlatform ("maccatalyst14.0", "Use 'AudioUnit' instead.")]
 		[ObsoletedOSPlatform ("ios13.0", "Use 'AudioUnit' instead.")]
-#else
-		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'AudioUnit' instead.")]
-		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use 'AudioUnit' instead.")]
-		[MacCatalyst (14, 0)]
-		[Deprecated (PlatformName.MacCatalyst, 14, 0, message: "Use 'AudioUnit' instead.")]
-#endif
 		public double LastActiveTime {
 			get {
 				return AudioComponentGetLastActiveTime (Handle);
@@ -464,27 +516,22 @@ namespace AudioUnit {
 		}
 #else
 		// extern NSImage * __nullable AudioComponentGetIcon (AudioComponent __nonnull comp) __attribute__((availability(macosx, introduced=10.11)));
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("ios")]
 		[UnsupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("tvos")]
 		[ObsoletedOSPlatform ("macos11.0")]
-#else
-		[Deprecated (PlatformName.MacOSX, 11, 0)]
-#endif
 		[DllImport (Constants.AudioUnitLibrary)]
 		static extern IntPtr AudioComponentGetIcon (IntPtr comp);
 
-#if NET
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("ios")]
 		[UnsupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("tvos")]
 		[ObsoletedOSPlatform ("macos11.0")]
-#else
-		[Deprecated (PlatformName.MacOSX, 11, 0)]
-#endif
 		public AppKit.NSImage? GetIcon ()
 		{
 			return Runtime.GetNSObject<AppKit.NSImage> (AudioComponentGetIcon (Handle));
@@ -492,33 +539,19 @@ namespace AudioUnit {
 #endif
 
 #if IOS || MONOMAC
-
-#if NET
 		[SupportedOSPlatform ("macos13.0")]
 		[SupportedOSPlatform ("ios16.0")]
 		[SupportedOSPlatform ("maccatalyst16.0")]
 		[UnsupportedOSPlatform ("tvos")]
-#else
-		[NoWatch]
-		[NoTV]
-		[Mac (13,0)]
-		[iOS (16,0)]
-#endif
 		[DllImport (Constants.AudioUnitLibrary)]
 		unsafe static extern int AudioComponentCopyConfigurationInfo (IntPtr /* AudioComponent */ inComponent, /* CFDictionaryRef** */ IntPtr* outConfigurationInfo);
 
-#if NET
 		[SupportedOSPlatform ("macos13.0")]
 		[SupportedOSPlatform ("ios16.0")]
 		[SupportedOSPlatform ("maccatalyst16.0")]
 		[UnsupportedOSPlatform ("tvos")]
-#else
-		[NoWatch]
-		[NoTV]
-		[Mac (13,0)]
-		[iOS (16,0)]
-#endif
-		public NSDictionary? GetConfigurationInfo (out int resultCode) {
+		public NSDictionary? GetConfigurationInfo (out int resultCode)
+		{
 			IntPtr dictPtr;
 			unsafe {
 				resultCode = AudioComponentCopyConfigurationInfo (GetCheckedHandle (), &dictPtr);
@@ -529,191 +562,111 @@ namespace AudioUnit {
 			return null;
 		}
 
-#if NET
 		[SupportedOSPlatform ("macos13.0")]
 		[SupportedOSPlatform ("ios16.0")]
 		[SupportedOSPlatform ("maccatalyst16.0")]
 		[UnsupportedOSPlatform ("tvos")]
-#else
-		[NoWatch]
-		[NoTV]
-		[Mac (13,0)]
-		[iOS (16,0)]
-#endif
 		public NSDictionary? GetConfigurationInfo () => GetConfigurationInfo (out var _);
 
-#if NET
 		[SupportedOSPlatform ("macos13.0")]
 		[SupportedOSPlatform ("ios16.0")]
 		[SupportedOSPlatform ("maccatalyst16.0")]
 		[UnsupportedOSPlatform ("tvos")]
-#else
-		[NoWatch]
-		[NoTV]
-		[Mac (13,0)]
-		[iOS (16,0)]
-		[MacCatalyst (16,0)]
-#endif
 		[DllImport (Constants.AudioUnitLibrary)]
 		unsafe static extern int AudioComponentValidate (IntPtr /* AudioComponent* */ inComponent, IntPtr /* CFDictionaryRef* */ inValidationParameters,
 				AudioComponentValidationResult* outValidationResult);
 
-#if NET
 		[SupportedOSPlatform ("macos13.0")]
 		[SupportedOSPlatform ("ios16.0")]
 		[SupportedOSPlatform ("maccatalyst16.0")]
 		[UnsupportedOSPlatform ("tvos")]
-#else
-		[NoWatch]
-		[NoTV]
-		[Mac (13,0)]
-		[iOS (16,0)]
-		[MacCatalyst (16,0)]
-#endif
-		public AudioComponentValidationResult Validate (NSDictionary? validationParameters, out int resultCode) {
+		public AudioComponentValidationResult Validate (NSDictionary? validationParameters, out int resultCode)
+		{
 			AudioComponentValidationResult result;
 			unsafe {
 				resultCode = AudioComponentValidate (GetCheckedHandle (), validationParameters.GetHandle (), &result);
+				GC.KeepAlive (validationParameters);
 			}
 			if (resultCode == 0)
 				return result;
 			return AudioComponentValidationResult.Unknown;
 		}
 
-#if NET
 		[SupportedOSPlatform ("macos13.0")]
 		[SupportedOSPlatform ("ios16.0")]
 		[SupportedOSPlatform ("maccatalyst16.0")]
 		[UnsupportedOSPlatform ("tvos")]
-#else
-		[NoWatch]
-		[NoTV]
-		[Mac (13,0)]
-		[iOS (16,0)]
-		[MacCatalyst (16,0)]
-#endif
 		public AudioComponentValidationResult Validate (NSDictionary? validationParameters = null) => Validate (validationParameters, out var _);
 
-#if !NET
-		delegate void TrampolineCallback (IntPtr blockPtr, AudioComponentValidationResult result, IntPtr dictionary);
-
-		static unsafe readonly TrampolineCallback static_action = TrampolineAction;
-
-		[MonoPInvokeCallback (typeof (TrampolineCallback))]
-#else
 		[UnmanagedCallersOnly]
-#endif
 		static void TrampolineAction (IntPtr blockPtr, AudioComponentValidationResult result, IntPtr dictionary)
 		{
 			var del = BlockLiteral.GetTarget<Action<AudioComponentValidationResult, NSDictionary?>> (blockPtr);
 			if (del is not null)
-				del (result, Runtime.GetNSObject<NSDictionary>(dictionary));
+				del (result, Runtime.GetNSObject<NSDictionary> (dictionary));
 		}
 
-#if NET
 		[SupportedOSPlatform ("macos13.0")]
 		[SupportedOSPlatform ("ios16.0")]
 		[SupportedOSPlatform ("maccatalyst16.0")]
 		[UnsupportedOSPlatform ("tvos")]
-#else
-		[NoWatch]
-		[NoTV]
-		[Mac (13,0)]
-		[iOS (16,0)]
-#endif
 		[DllImport (Constants.AudioUnitLibrary)]
 		unsafe static extern int AudioComponentValidateWithResults (IntPtr /* AudioComponent* */ inComponent, IntPtr /* CFDictionaryRef* */ inValidationParameters, BlockLiteral* inCompletionHandler);
 
-#if NET
 		[SupportedOSPlatform ("macos13.0")]
 		[SupportedOSPlatform ("ios16.0")]
 		[SupportedOSPlatform ("maccatalyst16.0")]
 		[UnsupportedOSPlatform ("tvos")]
-#else
-		[NoWatch]
-		[NoTV]
-		[Mac (13,0)]
-		[iOS (16,0)]
-#endif
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public void ValidateAsync (NSDictionary? validationParameters,
-				Action<AudioComponentValidationResult, NSDictionary?> onCompletion, out int resultCode) {
+				Action<AudioComponentValidationResult, NSDictionary?> onCompletion, out int resultCode)
+		{
 			if (onCompletion is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (onCompletion));
-			
+
 			unsafe {
-#if NET
 				delegate* unmanaged<IntPtr, AudioComponentValidationResult, IntPtr, void> trampoline = &TrampolineAction;
 				using var block = new BlockLiteral (trampoline, onCompletion, typeof (AudioComponent), nameof (TrampolineAction));
-#else
-				using var block = new BlockLiteral ();
-				block.SetupBlockUnsafe (static_action, onCompletion);
-#endif
 				resultCode = AudioComponentValidateWithResults (GetCheckedHandle (), validationParameters.GetHandle (), &block);
+				GC.KeepAlive (validationParameters);
 			}
 		}
 
-#if NET
 		[SupportedOSPlatform ("macos13.0")]
 		[SupportedOSPlatform ("ios16.0")]
 		[SupportedOSPlatform ("maccatalyst16.0")]
 		[UnsupportedOSPlatform ("tvos")]
-#else
-		[NoWatch]
-		[NoTV]
-		[Mac (13,0)]
-		[iOS (16,0)]
-#endif
 		public void ValidateAsync (NSDictionary? validationParameters,
 				Action<AudioComponentValidationResult, NSDictionary?> onCompletion) => ValidateAsync (validationParameters, onCompletion, out var _);
 
-#if NET
 		[SupportedOSPlatform ("macos13.0")]
 		[SupportedOSPlatform ("ios16.0")]
 		[SupportedOSPlatform ("maccatalyst16.0")]
 		[UnsupportedOSPlatform ("tvos")]
-#else
-		[NoWatch]
-		[NoTV]
-		[Mac (13,0)]
-		[iOS (16,0)]
-#endif
 		public void ValidateAsync (Action<AudioComponentValidationResult, NSDictionary?> onCompletion) => ValidateAsync (null, onCompletion, out var _);
 
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("tvos")]
-#else
-		[NoWatch]
-		[NoTV]
-#endif
 		[DllImport (Constants.AudioUnitLibrary)]
 		static extern int /* OSStatus */ AudioUnitExtensionSetComponentList (IntPtr /* CFString */ extensionIdentifier, /* CFArrayRef */ IntPtr audioComponentInfo);
 
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("tvos")]
-#else
-		[NoWatch]
-		[NoTV]
-#endif
 		[DllImport (Constants.AudioUnitLibrary)]
 		static extern /* CFArrayRef */ IntPtr AudioUnitExtensionCopyComponentList (IntPtr /* CFString */ extensionIdentifier);
 
-#if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("tvos")]
-#else
-		[NoWatch]
-		[NoTV]
-#endif
-		public AudioComponentInfo[]? ComponentList {
+		public AudioComponentInfo []? ComponentList {
 			get {
 				var nameHandle = CFString.CreateNative (Name);
 				try {
@@ -724,10 +677,10 @@ namespace AudioUnit {
 						if (nsArray is null)
 							return null;
 						// make things easier for developers since we do not know how to have an implicit conversion from NSObject to AudioComponentInfo
-						var dics = NSArray.FromArray <NSDictionary> (nsArray);
+						var dics = NSArray.FromArray<NSDictionary> (nsArray);
 						var result = new AudioComponentInfo [dics.Length];
 						for (var i = 0; i < result.Length; i++) {
-							result [i] = new AudioComponentInfo (dics[i]);
+							result [i] = new AudioComponentInfo (dics [i]);
 						}
 						return result;
 					}
@@ -751,7 +704,6 @@ namespace AudioUnit {
 							return;
 						default:
 							throw new InvalidOperationException ($"ComponentList could not be set, error {result.ToString ()}");
-
 						}
 					}
 				} finally {
@@ -766,40 +718,41 @@ namespace AudioUnit {
 	}
 
 #if !COREBUILD
-#if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public static class AudioComponentValidationParameter {
 		//		#define kAudioComponentValidationParameter_ForceValidation		 "ForceValidation"
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static NSString ForceValidation = new NSString ("ForceValidation");
 
 		//		#define kAudioComponentValidationParameter_LoadOutOfProcess		 "LoadOutOfProcess"
-#if NET
 		[SupportedOSPlatform ("ios14.5")]
 		[SupportedOSPlatform ("tvos14.5")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[iOS (14, 5)]
-		[TV (14, 5)]
-#endif
 		public static NSString LoadOutOfProcess = new NSString ("LoadOutOfProcess");
 
 		//		#define kAudioComponentValidationParameter_TimeOut				"TimeOut"
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static NSString TimeOut = new NSString ("TimeOut");
 	}
 
-#if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public static class AudioComponentConfigurationInfo {
 		//		#define kAudioComponentConfigurationInfo_ValidationResult	"ValidationResult"
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static NSString ValidationResult = new NSString ("ValidationResult");
 	}
 #endif

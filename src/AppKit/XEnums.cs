@@ -16,36 +16,51 @@ namespace AppKit {
 	[NoMacCatalyst]
 	[Native]
 	public enum NSPrintRenderingQuality : long {
+		/// <summary>To be added.</summary>
 		Best,
-		Responsive
+		/// <summary>To be added.</summary>
+		Responsive,
 	}
 
 	[NoMacCatalyst]
 	[Native]
 	public enum NSCorrectionIndicatorType : long {
+		/// <summary>To be added.</summary>
 		Default = 0,
+		/// <summary>To be added.</summary>
 		Reversion,
-		Guesses
+		/// <summary>To be added.</summary>
+		Guesses,
 	}
 
 	[NoMacCatalyst]
 	[Native]
 	public enum NSCorrectionResponse : long {
+		/// <summary>To be added.</summary>
 		None,
+		/// <summary>To be added.</summary>
 		Accepted,
+		/// <summary>To be added.</summary>
 		Rejected,
+		/// <summary>To be added.</summary>
 		Ignored,
+		/// <summary>To be added.</summary>
 		Edited,
-		Reverted
+		/// <summary>To be added.</summary>
+		Reverted,
 	}
 
 	[NoMacCatalyst]
 	[Native]
 	public enum NSTextFinderMatchingType : long {
+		/// <summary>To be added.</summary>
 		Contains = 0,
+		/// <summary>To be added.</summary>
 		StartsWith = 1,
+		/// <summary>To be added.</summary>
 		FullWord = 2,
-		EndsWith = 3
+		/// <summary>To be added.</summary>
+		EndsWith = 3,
 	}
 
 	[NoMacCatalyst]
@@ -67,20 +82,18 @@ namespace AppKit {
 		AdobeJapan2 = 4,
 
 		/// <summary>Adobe-Korea1</summary>
-		AdobeKorea1 = 5
+		AdobeKorea1 = 5,
 	}
 
 	[NoMacCatalyst]
 	[Flags]
-#if NET
 	[Native]
-	public enum NSSpellingState : long
-#else
-	public enum NSSpellingState : int
-#endif
-	{
+	public enum NSSpellingState : long {
+		/// <summary>To be added.</summary>
 		None = 0x0,
+		/// <summary>To be added.</summary>
 		Spelling = 0x1,
-		Grammar = 0x2
+		/// <summary>To be added.</summary>
+		Grammar = 0x2,
 	}
 }

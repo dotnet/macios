@@ -66,9 +66,7 @@ namespace Xamarin {
 			}
 		}
 
-#if NET
 		[UnconditionalSuppressMessage ("Trimming", "IL2026", Justification = "StackFrame.GetMethod might not work, but there's a fallback, so this is trimmer-safe.")]
-#endif
 		public static string CreateTemporaryDirectory (string? name = null)
 		{
 			if (string.IsNullOrEmpty (name)) {

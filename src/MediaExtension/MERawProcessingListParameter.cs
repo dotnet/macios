@@ -1,4 +1,3 @@
-#if NET
 #if MONOMAC
 using System;
 
@@ -23,7 +22,7 @@ namespace MediaExtension {
 		/// <param name="initialValue">The parameter's initial value.</param>
 		/// <param name="neutralOrCameraValue">The parameter's neutral or camera value.</param>
 		/// <param name="option">Specifies whether <paramref name="neutralOrCameraValue" /> is a neutral or a camera value.</param>
-		public MERawProcessingListParameter (string name, string key, string description, MERawProcessingListElementParameter[] listElements, nint initialValue, nint neutralOrCameraValue, MERawProcessingListParameterInitializationOption option)
+		public MERawProcessingListParameter (string name, string key, string description, MERawProcessingListElementParameter [] listElements, nint initialValue, nint neutralOrCameraValue, MERawProcessingListParameterInitializationOption option)
 			: base (NSObjectFlag.Empty)
 		{
 			switch (option) {
@@ -40,4 +39,3 @@ namespace MediaExtension {
 	}
 }
 #endif // MONOMAC
-#endif // NET

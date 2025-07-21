@@ -5,8 +5,6 @@ using Foundation;
 using Surface = IOSurface.IOSurface;
 
 namespace MediaAccessibility {
-
-#if NET
 	/// <summary>Class that contains static methods and fields for accessing and controlling information about the appearance and language of accessibility features on the device.</summary>
 	[Static]
 	interface MACaptionAppearance {
@@ -15,11 +13,13 @@ namespace MediaAccessibility {
 		[Field ("kMACaptionAppearanceSettingsChangedNotification")]
 		NSString SettingsChangedNotification { get; }
 	}
-#endif
 
 	/// <summary>Defines the constant associated with <c>kMAudibleMediaSettingsChangedNotification</c> and accessibility preferred characteristics.</summary>
 	[Static]
 	interface MAAudibleMedia {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("kMAAudibleMediaSettingsChangedNotification")]
@@ -28,14 +28,23 @@ namespace MediaAccessibility {
 
 	[Static]
 	interface MAMediaCharacteristic {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("MAMediaCharacteristicDescribesMusicAndSoundForAccessibility")]
 		NSString DescribesMusicAndSoundForAccessibility { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("MAMediaCharacteristicDescribesVideoForAccessibility")]
 		NSString DescribesVideoForAccessibility { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("MAMediaCharacteristicTranscribesSpokenDialogForAccessibility")]
 		NSString TranscribesSpokenDialogForAccessibility { get; }
@@ -75,7 +84,7 @@ namespace MediaAccessibility {
 	delegate void MAMusicHapticTrackAvailabilityCallback (bool musicHapticsAvailable);
 	delegate void MAMusicHapticTrackStatusObserver (string internationalStandardRecordingCode, bool musicHapticsActive);
 
-	[Watch (11, 0), TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+	[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MAMusicHapticsManager {

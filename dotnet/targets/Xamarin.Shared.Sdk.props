@@ -21,7 +21,7 @@
 	<PropertyGroup>
 		<!-- Set to true when using the Microsoft.<platform>.Sdk NuGet. This is used by pre-existing/shared targets to tweak behavior depending on build system -->
 		<UsingAppleNETSdk>true</UsingAppleNETSdk>
-		<!-- This is the location of the Microsoft.<platform>.Sdk NuGet (/usr/local/share/dotnet/sdk/<version>/Sdks/Microsoft.[iOS/tvOS/watchOS/macOS].Sdk) on the platform the build is running from (Mac or Win) -->
+		<!-- This is the location of the Microsoft.<platform>.Sdk NuGet (/usr/local/share/dotnet/sdk/<version>/Sdks/Microsoft.[iOS/tvOS/MacCatalyst/macOS].Sdk) on the platform the build is running from (Mac or Win) -->
 		<_XamarinSdkRootDirectory>$([MSBuild]::NormalizePath('$(MSBuildThisFileDirectory)', '..'))\</_XamarinSdkRootDirectory>
 		<!-- We used to use '_XamarinRelativeSdkRootDirectory' as the property name, but we've made it public, so it's XamarinRelativeSdkRootDirectory now, but keep setting/supporting the underscored version for a while -->
 		<XamarinRelativeSdkRootDirectory Condition="'$(XamarinRelativeSdkRootDirectory)' == '' And '$(_XamarinRelativeSdkRootDirectory)' != ''">$(_XamarinRelativeSdkRootDirectory)</XamarinRelativeSdkRootDirectory>
@@ -29,8 +29,7 @@
 		<_XamarinRelativeSdkRootDirectory Condition="'$(_XamarinRelativeSdkRootDirectory)' == ''">$(XamarinRelativeSdkRootDirectory)</_XamarinRelativeSdkRootDirectory>
 		<!-- This is the location of the Microsoft.<platform>.Sdk NuGet on macOS, this value will be overriden from Windows  -->
 		<_XamarinSdkRootDirectoryOnMac>$(_XamarinSdkRootDirectory)</_XamarinSdkRootDirectoryOnMac>
-		<_XamarinTaskAssembly Condition="'$(_PlatformName)' != 'macOS'">$(_XamarinSdkRootDirectory)\tools\msbuild\iOS\Xamarin.iOS.Tasks.dll</_XamarinTaskAssembly>
-		<_XamarinTaskAssembly Condition="'$(_PlatformName)' == 'macOS'">$(_XamarinSdkRootDirectory)\tools\msbuild\macOS\Xamarin.Mac.Tasks.dll</_XamarinTaskAssembly>
+		<_XamarinTaskAssembly>$(_XamarinSdkRootDirectory)\tools\msbuild\Xamarin.MacDev.Tasks.dll</_XamarinTaskAssembly>
 
 		<!--
 			PublishAot should only take effect when doing 'dotnet publish', not when doing 'dotnet build'. We distinguish these cases using the '_IsPublishing' property,
@@ -61,7 +60,7 @@
 		<_RuntimeIdentifierIsRequired Condition="'$(OutputType)' == 'Exe' Or '$(IsAppExtension)' == 'true'">true</_RuntimeIdentifierIsRequired>
 
 		<!-- The logic to compute the default value for GenerateSatelliteAssembliesForCore is wrong when building inside Visual Studio (Windows), so make sure it defaults to the correct value -->
-		<!-- Ref: https://github.com/xamarin/xamarin-macios/issues/16193 -->
+		<!-- Ref: https://github.com/dotnet/macios/issues/16193 -->
 		<!-- Ref: https://github.com/dotnet/sdk/issues/28419 -->
 		<GenerateSatelliteAssembliesForCore Condition="'$(GenerateSatelliteAssembliesForCore)' == ''">true</GenerateSatelliteAssembliesForCore>
 
@@ -88,12 +87,19 @@
 		<!-- AutoreleasePoolSupport needs to be set earlier than other switches, so that illink doesn't override it - https://github.com/dotnet/runtime/pull/86753 - so it's set here, instead of in Xamarin.Shared.Sdk.targets -->
 		<AutoreleasePoolSupport Condition="'$(AutoreleasePoolSupport)' == ''">true</AutoreleasePoolSupport>
 
-		<!-- Enable the reflection-based json serializer by default. Ref: https://github.com/xamarin/xamarin-macios/issues/18057 -->
+		<!-- Enable the reflection-based json serializer by default. Ref: https://github.com/dotnet/macios/issues/18057 -->
 		<JsonSerializerIsReflectionEnabledByDefault Condition="'$(JsonSerializerIsReflectionEnabledByDefault)' == ''">true</JsonSerializerIsReflectionEnabledByDefault>
 
 		<!-- Tell .NET to skip sanity checks that trigger too eagerly for builds with multiple RuntimeIdentifiers -->
 		<AllowPublishAotWithoutRuntimeIdentifier Condition="'$(AllowPublishAotWithoutRuntimeIdentifier)' == '' And '$(_UseNativeAot)' == 'true'">true</AllowPublishAotWithoutRuntimeIdentifier>
 		<AllowSelfContainedWithoutRuntimeIdentifier Condition="'$(AllowSelfContainedWithoutRuntimeIdentifier)' == ''">true</AllowSelfContainedWithoutRuntimeIdentifier>
+
+		<!--
+        	Disable Visual Studio build acceleration as our build is not compatible with it.
+        	It skips building the app project depending on changes on the project references, but we need still need to build the app project to generate the app bundle.
+        	https://github.com/dotnet/project-system/blob/main/docs/build-acceleration.md 
+      	-->
+		<AccelerateBuildsInVisualStudio Condition="'$(AccelerateBuildsInVisualStudio)' == ''">false</AccelerateBuildsInVisualStudio>
 	</PropertyGroup>
 
 	<!-- Set the default RuntimeIdentifier if not already specified. -->
@@ -135,6 +141,8 @@
 	<PropertyGroup>
 		<_SdkIsSimulator Condition="$(RuntimeIdentifier.Contains('simulator')) Or $(RuntimeIdentifiers.Contains('simulator'))">true</_SdkIsSimulator>
 		<_SdkIsSimulator Condition="'$(_SdkIsSimulator)' == ''">false</_SdkIsSimulator>
+		<!-- Set a public property that specifies if we're building for the simulator. -->
+		<SdkIsSimulator>$(_SdkIsSimulator)</SdkIsSimulator>
 	</PropertyGroup>
 
 	<PropertyGroup>
@@ -203,5 +211,11 @@
 			we are only setting this flag when we are building executables. (Class libraries do not have a managed Main)
 		-->
 		<CustomNativeMain Condition="'$(OutputType)' == 'Exe'">true</CustomNativeMain>
+	</PropertyGroup>
+
+	<!-- Compute _SdkIsSimulator from the RuntimeIdentifier -->
+	<PropertyGroup>
+		<_SdkIsSimulator Condition="'$(RuntimeIdentifier)' != '' And '$(_SdkIsSimulator)' == ''">$(RuntimeIdentifier.Contains('simulator'))</_SdkIsSimulator>
+		<_SdkIsSimulator Condition="'$(RuntimeIdentifiers)' != '' And '$(_SdkIsSimulator)' == ''">$(RuntimeIdentifiers.Contains('simulator'))</_SdkIsSimulator>
 	</PropertyGroup>
 </Project>

@@ -379,7 +379,7 @@ namespace Xamarin.Linker {
 
 		public void EmitCallToProxyMethod (MethodDefinition method, MethodDefinition callback, MethodDefinition proxyInterfaceMethod)
 		{
-			_ = callback.CreateBody (out var il);
+			var body = callback.CreateBody (out var il);
 
 			// We don't know the generic parameters of the type we're working with but we know it is a NSObject and it
 			// implements the proxy interface. The generic parameters will be resolved in the proxy method through the v-table.
@@ -396,6 +396,8 @@ namespace Xamarin.Linker {
 
 			il.Emit (OpCodes.Callvirt, proxyInterfaceMethod);
 			il.Emit (OpCodes.Ret);
+
+			body.GenerateILOffsets ();
 		}
 
 		public void EmitCallToExportedMethod (MethodDefinition method, MethodDefinition callback)
@@ -459,6 +461,14 @@ namespace Xamarin.Linker {
 					il.Emit (OpCodes.Ldc_I4, 4133);
 					postLeaveBranch.Operand = il.Body.Instructions.Last ();
 					il.Emit (OpCodes.Ldstr, $"Cannot construct an instance of the type '{method.DeclaringType.FullName}' from Objective-C because the type is generic.");
+					il.Emit (OpCodes.Call, abr.Runtime_CreateRuntimeException);
+					il.Emit (OpCodes.Throw);
+					// We're throwing an exception, so there's no need for any more code.
+					skipEverythingAfter = il.Body.Instructions.Last ();
+				} else if (method.DeclaringType.IsAbstract) {
+					il.Emit (OpCodes.Ldc_I4, 4180);
+					postLeaveBranch.Operand = il.Body.Instructions.Last ();
+					il.Emit (OpCodes.Ldstr, $"Cannot construct an instance of the type '{method.DeclaringType.FullName}' from Objective-C because the type is abstract.");
 					il.Emit (OpCodes.Call, abr.Runtime_CreateRuntimeException);
 					il.Emit (OpCodes.Throw);
 					// We're throwing an exception, so there's no need for any more code.
@@ -610,6 +620,8 @@ namespace Xamarin.Linker {
 			foreach (var instr in leaveTryInstructions)
 				instr.Operand = leaveTryInstructionOperand;
 			eh.HandlerEnd = (Instruction) leaveEHInstruction.Operand;
+
+			body.GenerateILOffsets ();
 		}
 
 		void AddExceptionHandler (ILProcessor il, VariableDefinition? returnVariable, Instruction placeholderNextInstruction, bool isGeneric, out ExceptionHandler eh, out Instruction leaveEHInstruction)
@@ -1340,28 +1352,18 @@ namespace Xamarin.Linker {
 			var body = clonedCtor.CreateBody (out var il);
 
 			// ensure visible
-			abr.Foundation_NSObject_HandleField.Resolve ().IsFamily = true;
-#if NET
+			abr.Foundation_NSObject_HandleSetterMethod.Resolve ().IsFamily = true;
 			abr.Foundation_NSObject_FlagsSetterMethod.Resolve ().IsFamily = true;
-#else
-			abr.Foundation_NSObject_FlagsField.Resolve ().IsFamily = true;
-#endif
 
 			// store the handle and flags first
 			il.Emit (OpCodes.Ldarg_0);
 			il.Emit (OpCodes.Ldarg, handleParameter);
-#if NET
 			il.Emit (OpCodes.Call, abr.NativeObject_op_Implicit_NativeHandle);
-#endif
-			il.Emit (OpCodes.Stfld, abr.CurrentAssembly.MainModule.ImportReference (abr.Foundation_NSObject_HandleField));
+			il.Emit (OpCodes.Call, abr.CurrentAssembly.MainModule.ImportReference (abr.Foundation_NSObject_HandleSetterMethod));
 
 			il.Emit (OpCodes.Ldarg_0);
 			il.Emit (OpCodes.Ldc_I4_2); // Flags.NativeRef == 2
-#if NET
-			il.Emit (OpCodes.Call, abr.Foundation_NSObject_FlagsSetterMethod);
-#else
-			il.Emit (OpCodes.Stfld, abr.Foundation_NSObject_FlagsField);
-#endif
+			il.Emit (OpCodes.Call, abr.CurrentAssembly.MainModule.ImportReference (abr.Foundation_NSObject_FlagsSetterMethod));
 
 			// call the original constructor with all of the original parameters
 			il.Emit (OpCodes.Ldarg_0);
@@ -1371,6 +1373,8 @@ namespace Xamarin.Linker {
 
 			il.Emit (OpCodes.Call, ctor);
 			il.Emit (OpCodes.Ret);
+
+			body.GenerateILOffsets ();
 
 			return clonedCtor;
 		}
@@ -1388,8 +1392,9 @@ namespace Xamarin.Linker {
 				registerToggleRef!.IsPublic = false;
 				registerToggleRef!.IsInternalCall = false;
 
-				registerToggleRef!.CreateBody (out var il);
+				var body = registerToggleRef!.CreateBody (out var il);
 				il.Emit (OpCodes.Ret);
+				body.GenerateILOffsets ();
 			}
 		}
 	}

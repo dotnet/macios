@@ -7,7 +7,6 @@ namespace Xamarin.Tests {
 	public class PostBuildTest : TestBaseClass {
 		[Test]
 		[TestCase (ApplePlatform.iOS, "ios-arm64")]
-		[TestCase (ApplePlatform.iOS, "ios-arm64;ios-arm")]
 		[TestCase (ApplePlatform.TVOS, "tvos-arm64")]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64;maccatalyst-x64")]
@@ -51,7 +50,6 @@ namespace Xamarin.Tests {
 
 		[Test]
 		[TestCase (ApplePlatform.iOS, "ios-arm64")]
-		[TestCase (ApplePlatform.iOS, "ios-arm64;ios-arm")]
 		[TestCase (ApplePlatform.TVOS, "tvos-arm64")]
 		public void BuildIpaTest (ApplePlatform platform, string runtimeIdentifiers)
 		{
@@ -100,6 +98,26 @@ namespace Xamarin.Tests {
 		}
 
 		[Test]
+		[TestCase ("MySimpleApp", ApplePlatform.MacCatalyst, "maccatalyst-arm64;maccatalyst-x64")]
+		public void DefaultAssemblyStripping (string project, ApplePlatform platform, string runtimeIdentifiers)
+		{
+			var configuration = "Release";
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+
+			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath, configuration: configuration);
+			Clean (project_path);
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+
+			// Verify value defaults to false when not set
+			properties ["Configuration"] = configuration;
+
+			DotNet.AssertBuild (project_path, properties);
+
+			AssertBundleAssembliesStripStatus (appPath, false);
+		}
+
+		[Test]
 		[TestCase ("MySimpleApp", ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
 		[TestCase ("MySimpleApp", ApplePlatform.MacCatalyst, "maccatalyst-arm64;maccatalyst-x64")]
 		[TestCase ("MySimpleApp", ApplePlatform.MacOSX, "osx-x64")]
@@ -126,7 +144,6 @@ namespace Xamarin.Tests {
 		}
 
 		[TestCase (ApplePlatform.iOS, "ios-arm64")]
-		[TestCase (ApplePlatform.iOS, "ios-arm64;ios-arm")]
 		[TestCase (ApplePlatform.TVOS, "tvos-arm64")]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64;maccatalyst-x64")]
@@ -170,7 +187,6 @@ namespace Xamarin.Tests {
 
 
 		[TestCase (ApplePlatform.iOS, "iossimulator-x64")]
-		[TestCase (ApplePlatform.iOS, "iossimulator-x86")]
 		[TestCase (ApplePlatform.iOS, "iossimulator-x64;iossimulator-x64")]
 		[TestCase (ApplePlatform.TVOS, "tvossimulator-x64")]
 		public void PublishFailureTest (ApplePlatform platform, string runtimeIdentifiers)

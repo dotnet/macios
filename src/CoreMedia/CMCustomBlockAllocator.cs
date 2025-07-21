@@ -18,24 +18,23 @@ using ObjCRuntime;
 
 namespace CoreMedia {
 
-#if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#else
-	[Watch (6, 0)]
-#endif
 	public class CMCustomBlockAllocator : IDisposable {
 
 		GCHandle gch;
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CMCustomBlockAllocator ()
 		{
 			gch = GCHandle.Alloc (this);
 			// kCMBlockBufferCustomBlockSourceVersion = 0 <- this is the only and current value
 			Cblock.Version = 0;
-#if NET
 			unsafe {
 				// Assign function pointers to temporary variable due to https://github.com/dotnet/runtime/issues/107396.
 				delegate* unmanaged<IntPtr, nuint, IntPtr> allocate = &AllocateCallback;
@@ -44,10 +43,6 @@ namespace CoreMedia {
 				Cblock.Allocate = allocate;
 				Cblock.Free = free;
 			}
-#else
-			Cblock.Allocate = Marshal.GetFunctionPointerForDelegate (static_AllocateCallback);
-			Cblock.Free = Marshal.GetFunctionPointerForDelegate (static_FreeCallback);
-#endif
 			Cblock.RefCon = GCHandle.ToIntPtr (gch);
 		}
 
@@ -55,32 +50,13 @@ namespace CoreMedia {
 		[StructLayout (LayoutKind.Sequential, Pack = 4)] // it's 28 bytes (not 32) on 64 bits iOS
 		internal struct CMBlockBufferCustomBlockSource {
 			public uint Version;
-#if NET
 			public unsafe delegate* unmanaged<IntPtr, nuint, IntPtr> Allocate;
 			public unsafe delegate* unmanaged<IntPtr, IntPtr, nuint, void> Free;
-#else
-			public IntPtr Allocate;
-			public IntPtr Free;
-#endif
 			public IntPtr RefCon;
 		}
 		internal CMBlockBufferCustomBlockSource Cblock;
 
-#if !NET
-		internal delegate IntPtr CMAllocateCallback (/* void* */ IntPtr refCon, /* size_t */ nuint sizeInBytes);
-		internal delegate void CMFreeCallback (/* void* */ IntPtr refCon, /* void* */ IntPtr doomedMemoryBlock, /* size_t */ nuint sizeInBytes);
-
-		static CMAllocateCallback static_AllocateCallback = AllocateCallback;
-		static CMFreeCallback static_FreeCallback = FreeCallback;
-#endif
-
-#if NET
 		[UnmanagedCallersOnly]
-#else
-#if !MONOMAC
-		[MonoPInvokeCallback (typeof (CMAllocateCallback))]
-#endif
-#endif
 		static IntPtr AllocateCallback (IntPtr refCon, nuint sizeInBytes)
 		{
 			var gch = GCHandle.FromIntPtr (refCon);
@@ -94,13 +70,7 @@ namespace CoreMedia {
 			return Marshal.AllocHGlobal ((int) sizeInBytes);
 		}
 
-#if NET
 		[UnmanagedCallersOnly]
-#else
-#if !MONOMAC
-		[MonoPInvokeCallback (typeof (CMFreeCallback))]
-#endif
-#endif
 		static void FreeCallback (IntPtr refCon, IntPtr doomedMemoryBlock, nuint sizeInBytes)
 		{
 			var gch = GCHandle.FromIntPtr (refCon);
@@ -118,12 +88,18 @@ namespace CoreMedia {
 			Dispose (false);
 		}
 
+		/// <summary>Releases the resources used by the CMCustomBlockAllocator object.</summary>
+		///         <remarks>
+		///           <para>The Dispose method releases the resources used by the CMCustomBlockAllocator class.</para>
+		///           <para>Calling the Dispose method when the application is finished using the CMCustomBlockAllocator ensures that all external resources used by this managed object are released as soon as possible.  Once developers have invoked the Dispose method, the object is no longer useful and developers should no longer make any calls to it.  For more information on releasing resources see ``Cleaning up Unmananaged Resources'' at https://msdn.microsoft.com/en-us/library/498928w2.aspx</para>
+		///         </remarks>
 		public void Dispose ()
 		{
 			Dispose (true);
 			GC.SuppressFinalize (this);
 		}
 
+		/// <include file="../../docs/api/CoreMedia/CMCustomBlockAllocator.xml" path="/Documentation/Docs[@DocId='M:CoreMedia.CMCustomBlockAllocator.Dispose(System.Boolean)']/*" />
 		protected virtual void Dispose (bool disposing)
 		{
 			if (gch.IsAllocated)
@@ -133,9 +109,6 @@ namespace CoreMedia {
 
 	// This class is used internally by a couple of CMBlockBuffer methods
 	// that take a managed array as input parameter
-#if !NET
-	[Watch (6, 0)]
-#endif
 	internal class CMManagedArrayBlockAllocator : CMCustomBlockAllocator {
 
 		GCHandle dataHandle;

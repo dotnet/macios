@@ -10,9 +10,13 @@
 			interesting ways. So in order to get the exact version, they're
 			enclosed in brackets.
 
+			Lists of versions can be found here:
+
+			https://dev.azure.com/azure-public/vside/_artifacts/feed/xamarin-impl/NuGet/Xamarin.Messaging.Client/
+
 		-->
-		<MessagingVersion>[2.1.15]</MessagingVersion>
-		<HotRestartVersion>[1.1.7]</HotRestartVersion>
+		<MessagingVersion Condition="'$(MessagingVersion)' == ''">[18.0.212-gc9feb66298]</MessagingVersion>
+		<HotRestartVersion>[17.14.133-g001ce2ac7a]</HotRestartVersion>
 	</PropertyGroup>
 	<Import Project="$(MSBuildThisFileDirectory)../Directory.Build.props" />
 </Project>

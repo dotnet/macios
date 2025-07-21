@@ -18,7 +18,7 @@ namespace Cecil.Tests {
 
 	[TestFixture]
 	public class AttributeTest {
-		// https://github.com/xamarin/xamarin-macios/issues/10170
+		// https://github.com/dotnet/macios/issues/10170
 		// Every binding class that has net6 availability attributes on a method/property
 		// must have one matching every platform listed on the availabilities of the class
 		//
@@ -181,19 +181,18 @@ namespace Cecil.Tests {
 				// Walk every class/struct/enum/property/method/enum value/pinvoke/event
 				foreach (var module in assembly.Modules) {
 					foreach (var type in module.Types) {
+						if (!type.IsPubliclyVisible ())
+							continue;
+
 						switch (type.Namespace) {
 						case "AppKit":
 						case "UIKit":
 							// The availability attributes between AppKit and UIKit are quite inconsistent:
-							// https://github.com/xamarin/xamarin-macios/issues/17292
+							// https://github.com/dotnet/macios/issues/17292
 							// So let's just skip these two namespaces for now.
 							continue;
 						}
 						foreach (var member in GetAllTypeMembers (type)) {
-							// If a member is hidden, it's probably because it's broken in some way, so don't consider it.
-							if (ObsoleteTest.HasEditorBrowseableNeverAttribute (member))
-								continue;
-
 							var mentionedPlatforms = GetAvailabilityAttributes (member).ToList ();
 							if (mentionedPlatforms.Any ()) {
 								var claimedPlatforms = GetSupportedAvailabilityAttributes (member).ToList ();
@@ -289,10 +288,6 @@ namespace Cecil.Tests {
 
 					// These methods have different optional/required semantics between platforms.
 					"PassKit.PKPaymentAuthorizationControllerDelegate_Extensions.GetPresentationWindow (PassKit.IPKPaymentAuthorizationControllerDelegate, PassKit.PKPaymentAuthorizationController)",
-					"Metal.MTLTextureWrapper.FirstMipmapInTail",
-					"Metal.MTLTextureWrapper.IsSparse",
-					"Metal.MTLTextureWrapper.TailSizeInBytes",
-
 
 					// HKSeriesBuilder doesn't implement the ISNCopying protocol on all platforms (and shouldn't on any according to the headers, so removed for XAMCORE_5_0).
 					"HealthKit.HKSeriesBuilder.EncodeTo (Foundation.NSCoder)",
@@ -301,22 +296,17 @@ namespace Cecil.Tests {
 					"SceneKit.SCNRenderer.FromContext (OpenGLES.EAGLContext, Foundation.NSDictionary)",
 					"SceneKit.SCNRenderer.FromContext (OpenGL.CGLContext, Foundation.NSDictionary)",
 
-					// For historical reasons, MPMediaItem and MPMediaEntity are wildly different between platforms (https://github.com/xamarin/xamarin-macios/issues/17291).
+					// For historical reasons, MPMediaItem and MPMediaEntity are wildly different between platforms (https://github.com/dotnet/macios/issues/17291).
 					"MediaPlayer.MPMediaEntity.EncodeTo (Foundation.NSCoder)",
 					"MediaPlayer.MPMediaEntity.get_PropertyPersistentID ()",
 					"MediaPlayer.MPMediaEntity.GetObject (Foundation.NSObject)",
 					"MediaPlayer.MPMediaEntity.PropertyPersistentID",
-					"MediaPlayer.MPMediaItem.DateAdded",
 					"MediaPlayer.MPMediaItem.get_PropertyPersistentID ()",
 					"MediaPlayer.MPMediaItem.GetObject (Foundation.NSObject)",
-					"MediaPlayer.MPMediaItem.HasProtectedAsset",
-					"MediaPlayer.MPMediaItem.IsExplicitItem",
-					"MediaPlayer.MPMediaItem.IsPreorder",
-					"MediaPlayer.MPMediaItem.PlaybackStoreID",
 					"MediaPlayer.MPMediaItem.PropertyPersistentID",
 
-					// Despite what headers say, NSAttributedString only implements NSItemProviderReading and NSItemProviderWriting on iOS (headers say tvOS and watchOS as well).
-					// Ref: https://github.com/xamarin/xamarin-macios/pull/17306
+					// Despite what headers say, NSAttributedString only implements NSItemProviderReading and NSItemProviderWriting on iOS (headers say tvOS as well).
+					// Ref: https://github.com/dotnet/macios/pull/17306
 					"Foundation.NSAttributedString.GetItemProviderVisibilityForTypeIdentifier (System.String)",
 					"Foundation.NSAttributedString.GetObject (Foundation.NSData, System.String, Foundation.NSError&)",
 					"Foundation.NSAttributedString.LoadData (System.String, System.Action`2<Foundation.NSData, Foundation.NSError>)",
@@ -325,6 +315,19 @@ namespace Cecil.Tests {
 					"Foundation.NSAttributedString.ReadableTypeIdentifiers",
 					"Foundation.NSAttributedString.WritableTypeIdentifiers",
 					"Foundation.NSAttributedString.WritableTypeIdentifiersForItemProvider",
+
+					// Same method, but different arguments due to platform differences. We should treat this as the same method, so ignore this failure.
+					"StoreKit.AppStore.RequestReview (XKit.XWindowScene)", // iOS, MacCatalyst
+					"StoreKit.AppStore.RequestReview (XKit.XViewController)", // macOS
+
+					// This is from the UIGestureRecognizerDelegate protocol: PdfView does not implement UIGestureRecognizerDelegate on tvOS.
+					"PdfKit.PdfView.ShouldBeRequiredToFailBy (XKit.XGestureRecognizer, XKit.XGestureRecognizer)",
+					"PdfKit.PdfView.ShouldBegin (XKit.XGestureRecognizer)",
+					"PdfKit.PdfView.ShouldReceiveEvent (XKit.XGestureRecognizer, XKit.XEvent)",
+					"PdfKit.PdfView.ShouldReceivePress (XKit.XGestureRecognizer, XKit.XPress)",
+					"PdfKit.PdfView.ShouldReceiveTouch (XKit.XGestureRecognizer, XKit.XTouch)",
+					"PdfKit.PdfView.ShouldRecognizeSimultaneously (XKit.XGestureRecognizer, XKit.XGestureRecognizer)",
+					"PdfKit.PdfView.ShouldRequireFailureOf (XKit.XGestureRecognizer, XKit.XGestureRecognizer)",
 				};
 			}
 		}
@@ -364,7 +367,7 @@ namespace Cecil.Tests {
 			var key = GetMemberLookupKeyInternal (member);
 
 			// The availability attributes between AppKit and UIKit are quite inconsistent:
-			// https://github.com/xamarin/xamarin-macios/issues/17292
+			// https://github.com/dotnet/macios/issues/17292
 			key = key
 				.Replace ("AppKit.NS", "XKit.X")
 				.Replace ("UIKit.NS", "XKit.X")
@@ -434,7 +437,7 @@ namespace Cecil.Tests {
 			}
 		}
 
-		// https://github.com/xamarin/xamarin-macios/issues/10170
+		// https://github.com/dotnet/macios/issues/10170
 		// Every binding class that has net6 any availability attributes on a method/property
 		// must have an introduced for the current platform.
 		//
@@ -508,13 +511,13 @@ namespace Cecil.Tests {
 		string AssemblyToAttributeName (AssemblyDefinition assembly)
 		{
 			var baseName = assembly.Name.Name + ".dll";
-			if (Configuration.GetBaseLibraryName (TargetFramework.DotNet_iOS.Platform, true) == baseName)
+			if (Configuration.GetBaseLibraryName (TargetFramework.DotNet_iOS.Platform) == baseName)
 				return "ios";
-			if (Configuration.GetBaseLibraryName (TargetFramework.DotNet_tvOS.Platform, true) == baseName)
+			if (Configuration.GetBaseLibraryName (TargetFramework.DotNet_tvOS.Platform) == baseName)
 				return "tvos";
-			if (Configuration.GetBaseLibraryName (TargetFramework.DotNet_macOS.Platform, true) == baseName)
+			if (Configuration.GetBaseLibraryName (TargetFramework.DotNet_macOS.Platform) == baseName)
 				return "macos";
-			if (Configuration.GetBaseLibraryName (TargetFramework.DotNet_MacCatalyst.Platform, true) == baseName)
+			if (Configuration.GetBaseLibraryName (TargetFramework.DotNet_MacCatalyst.Platform) == baseName)
 				return "maccatalyst";
 			throw new NotImplementedException ();
 		}
@@ -565,8 +568,6 @@ namespace Cecil.Tests {
 					return "macos";
 				case string s when full.StartsWith ("maccatalyst", StringComparison.Ordinal):
 					return "maccatalyst";
-				case string s when full.StartsWith ("watchos", StringComparison.Ordinal):
-					return null; // WatchOS is ignored for comparision
 				default:
 					throw new System.NotImplementedException ($"Unknown platform kind: {full}");
 				}

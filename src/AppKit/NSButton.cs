@@ -46,15 +46,20 @@ namespace AppKit {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public new NSButtonCell Cell {
 			get { return (NSButtonCell) base.Cell; }
 			set { base.Cell = value; }
 		}
 
-#if NET
-		[SupportedOSPlatform ("macos")]
-		[UnsupportedOSPlatform ("maccatalyst")]
-#endif
+		/// <param name="title">To be added.</param>
+		///         <param name="image">To be added.</param>
+		///         <param name="action">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSButton CreateButton (string title, NSImage image, Action action)
 		{
 			var dispatcher = new NSActionDispatcher (action);
@@ -63,10 +68,11 @@ namespace AppKit {
 			return control;
 		}
 
-#if NET
-		[SupportedOSPlatform ("macos")]
-		[UnsupportedOSPlatform ("maccatalyst")]
-#endif
+		/// <param name="title">To be added.</param>
+		///         <param name="action">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSButton CreateButton (string title, Action action)
 		{
 			var dispatcher = new NSActionDispatcher (action);
@@ -75,10 +81,11 @@ namespace AppKit {
 			return control;
 		}
 
-#if NET
-		[SupportedOSPlatform ("macos")]
-		[UnsupportedOSPlatform ("maccatalyst")]
-#endif
+		/// <param name="image">To be added.</param>
+		///         <param name="action">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSButton CreateButton (NSImage image, Action action)
 		{
 			var dispatcher = new NSActionDispatcher (action);
@@ -87,10 +94,11 @@ namespace AppKit {
 			return control;
 		}
 
-#if NET
-		[SupportedOSPlatform ("macos")]
-		[UnsupportedOSPlatform ("maccatalyst")]
-#endif
+		/// <param name="title">To be added.</param>
+		///         <param name="action">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSButton CreateCheckbox (string title, Action action)
 		{
 			var dispatcher = new NSActionDispatcher (action);
@@ -99,10 +107,11 @@ namespace AppKit {
 			return control;
 		}
 
-#if NET
-		[SupportedOSPlatform ("macos")]
-		[UnsupportedOSPlatform ("maccatalyst")]
-#endif
+		/// <param name="title">To be added.</param>
+		///         <param name="action">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSButton CreateRadioButton (string title, Action action)
 		{
 			var dispatcher = new NSActionDispatcher (action);

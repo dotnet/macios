@@ -13,19 +13,20 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="default" xml:space="preserve">
-		<value>코드 {0}에 대한 오류 메시지를 찾을 수 없습니다. https://github.com/xamarin/xamarin-macios/issues/new의 GitHub에 이 누락된 메시지를 보고하세요.</value>
+		<value>코드 {0}에 대한 오류 메시지를 찾을 수 없습니다. https://github.com/dotnet/macios/issues/new의 GitHub에 이 누락된 메시지를 보고하세요.</value>
 		<comment>
 			This is the default message when an error code can not be found.
 		</comment>
 	</data>
   <data name="MT0000" xml:space="preserve">
-		<value>예기치 않은 오류가 발생했습니다. https://github.com/xamarin/xamarin-macios/issues/new에서 버그 보고서를 작성하세요.
+		<value>예기치 않은 오류가 발생했습니다. https://github.com/dotnet/macios/issues/new에서 버그 보고서를 작성하세요.
 		</value>
 	</data>
   <data name="MT0001" xml:space="preserve">
 		<value>디바이스 관련 작업 없이 '-devname'을 제공했습니다.
 		</value>
 	</data>
+  <!-- legacy only error -->
   <data name="MM0001" xml:space="preserve">
 		<value>이 버전의 Xamarin.Mac에는 Mono {0}이(가) 필요합니다(현재 Mono 버전은 {1}임). http://mono-project.com/Downloads에서 Mono.framework를 업데이트하세요.
 		</value>
@@ -66,6 +67,7 @@
 		<value>명령줄 인수를 구문 분석할 수 없습니다. {0}
 		</value>
 	</data>
+  <!-- legacy only error -->
   <data name="MT0011" xml:space="preserve">
 		<value>{0}은(는) Xamarin.iOS에서 지원하는 버전보다 최신의 런타임({1})을 사용하도록 빌드되었습니다.
 		</value>
@@ -158,10 +160,7 @@
 		<value>'--debug'도 함께 지정하지 않으면 '--debugtrack' 옵션은 무시됩니다.
 		</value>
 	</data>
-  <data name="MT0033" xml:space="preserve">
-		<value>Xamarin.iOS 프로젝트는 monotouch.dll 또는 Xamarin.iOS.dll을 참조해야 합니다.
-		</value>
-	</data>
+  <!-- MT0034 is not in use anymore -->
   <data name="MT0034" xml:space="preserve">
 		<value>{1} 프로젝트에서 '{0}.dll'을(를) 참조할 수 없습니다. '{2}'에서 암시적으로 참조됩니다.
 		</value>
@@ -170,18 +169,9 @@
 		<value>* 앱에 대해 * 시뮬레이터를 시작할 수 없습니다. 프로젝트의 [iOS 빌드] 옵션(고급 페이지)에서 올바른 아키텍처를 사용하도록 설정하세요.
 		</value>
 	</data>
-  <data name="MT0037" xml:space="preserve">
-		<value>monotouch.dll은 64비트와 호환되지 않습니다. Xamarin.iOS.dll을 참조하거나 64비트 아키텍처(ARM64 및/또는 x86_64)에 대해 빌드하지 마세요.
-		</value>
-	</data>
-  <data name="MT0038" xml:space="preserve">
-		<value>Xamarin.iOS.dll을 참조하는 경우 이전 등록자(--registrar:oldstatic|olddynamic)는 지원되지 않습니다.
-		</value>
-	</data>
-  <data name="MT0039" xml:space="preserve">
-		<value>ARMv6을 대상으로 지정하는 애플리케이션은 Xamarin.iOS.dll을 참조할 수 없습니다.
-		</value>
-	</data>
+  <!-- MT0037 is not in use anymore -->
+  <!-- MT0038 is not in use anymore -->
+  <!-- MT0039 is not in use anymore -->
   <data name="MT0040" xml:space="preserve">
 		<value>'\*'에서 참조하는 어셈블리 '\*'를 찾을 수 없습니다.
 		</value>
@@ -190,10 +180,7 @@
 		<value>{1} 앱에서 '{0}'을(를) 참조할 수 없습니다.
 		</value>
 	</data>
-  <data name="MT0042" xml:space="preserve">
-		<value>monotouch.dll 또는 Xamarin.iOS.dll에 대한 참조를 찾을 수 없습니다. monotouch.dll에 대한 참조가 추가됩니다.
-		</value>
-	</data>
+  <!-- MT0042 is not in use anymore -->
   <data name="MX0043" xml:space="preserve">
 		<value>Boehm 가비지 수집기는 지원되지 않습니다. 대신 SGen 가비지 수집기를 선택했습니다.
 		</value>
@@ -270,14 +257,12 @@
 		<value>확장 *에서 실행 파일을 찾을 수 없습니다(해당 info.plist에 CFBundleExecutable 항목 없음).
 		</value>
 	</data>
-  <data name="MT0064" xml:space="preserve">
-		<value>Xamarin.iOS는 통합 프로젝트가 있는 포함된 프레임워크만 지원합니다.
-		</value>
-	</data>
+  <!-- legacy only error -->
   <data name="MT0065" xml:space="preserve">
 		<value>Xamarin.iOS는 배포 대상이 최소 8.0(현재 배포 대상: '{0}', 포함된 프레임워크: '{1}')인 경우에만 포함된 프레임워크를 지원합니다.
 		</value>
 	</data>
+  <!-- legacy only error -->
   <data name="MT0065_A" xml:space="preserve">
 		<value>Xamarin.iOS는 배포 대상이 최소 2.0(현재 배포 대상: '{0}', 포함된 프레임워크: '{1}')인 경우에만 포함된 프레임워크를 지원합니다.
 		</value>
@@ -299,7 +284,7 @@
 		</value>
 	</data>
   <data name="MX0071" xml:space="preserve">
-		<value>알 수 없는 플랫폼 {0}입니다. 일반적으로 {1}의 버그를 나타냅니다. 테스트 사례를 포함하는 버그 보고서를 https://github.com/xamarin/xamarin-macios/issues/new에 제출하세요.
+		<value>알 수 없는 플랫폼 {0}입니다. 일반적으로 {1}의 버그를 나타냅니다. 테스트 사례를 포함하는 버그 보고서를 https://github.com/dotnet/macios/issues/new에 제출하세요.
 		</value>
 	</data>
   <data name="MT0072" xml:space="preserve">
@@ -307,25 +292,25 @@
 		</value>
 	</data>
   <data name="MT0073" xml:space="preserve">
-		<value>{4} {0}은(는) {3}에 대한 {1}의 배포 대상을 지원하지 않습니다(최소 {2}). 프로젝트의 info.plist에서 최신 배포 대상을 선택하세요.
+		<value>{4} {0} does not support a deployment target of {1} for {3} (the minimum is {2}). Please select a newer deployment target in your project's Info.plist or change the SupportedOSPlatformVersion property in your project file.
 		</value>
-		<comment>The following are literal names and should not be translated: SDK, Xcode
-{0} - The version number of the Xamarin product.
+		<comment>The following are literal names and should not be translated: SDK, Xcode, SupportedOSPlatformVersion, Info.plist
+{0} - The version number of the .NET SDK.
 {1} - The name of the deployment target such as a device, simulator, etc.
 {2} - The minimum version number.
 {3} - The platform name, such as 'iOS'.
-{4} - The produce name such as Xamarin.iOS or Xamarin.Mac.
+{4} - The product name such as .NET for iOS or .NET for macOS.
 		</comment>
 	</data>
   <data name="MX0074" xml:space="preserve">
-		<value>{4} {0}은(는) {3}에 대한 {1}의 배포 대상을 지원하지 않습니다(최대 {2}). 프로젝트의 info.plist에서 이전 배포 대상을 선택하거나 {4}의 최신 버전으로 업그레이드하세요.
+		<value>{4} {0} does not support a deployment target of {1} for {3} (the maximum is {2}). Please select an older deployment target in your project's Info.plist or change the SupportedOSPlatformVersion property in your project file, or upgrade to a newer version of {4}.
 		</value>
-		<comment>The following are literal names and should not be translated: SDK, Xcode
-{0} - The version number of the Xamarin product.
+		<comment>The following are literal names and should not be translated: SDK, Xcode, SupportedOSPlatformVersion, Info.plist
+{0} - The version number of the .NET SDK product.
 {1} - The name of the deployment target such as a device, simulator, etc.
 {2} - The maximum version number.
 {3} - The platform name, such as 'iOS'.
-{4} - The produce name such as Xamarin.iOS or Xamarin.Mac.
+{4} - The product name such as .NET for iOS or .NET for macOS.
 		</comment>
 	</data>
   <data name="MT0075" xml:space="preserve">
@@ -336,10 +321,7 @@
 		<value>아키텍처를 지정하지 않았습니다(--abi 인수 사용). {0} 프로젝트에는 아키텍처가 필요합니다.
 		</value>
 	</data>
-  <data name="MT0077" xml:space="preserve">
-		<value>watchOS 프로젝트는 확장이어야 합니다.
-		</value>
-	</data>
+  <!-- MT0077 is not in use anymore -->
   <data name="MT0078" xml:space="preserve">
 		<value>증분 빌드가 8.0보다 낮은 배포 대상 버전으로 사용하도록 설정되었습니다(현재 {0}). 이것은 지원되지 않으므로(결과 애플리케이션이 iOS 9에서 시작되지 않음) 배포 대상이 8.0으로 설정됩니다.
 		</value>
@@ -348,6 +330,7 @@
 		<value>{4} {0}에 대해 권장되는 Xcode 버전은 Xcode {3} 이상입니다. 현재 Xcode 버전({2}에 있음)은 {1}입니다.
 		</value>
 	</data>
+  <!-- legacy only error -->
   <data name="MM0079" xml:space="preserve">
 		<value>실행 파일이 앱 번들로 복사되지 않았습니다. 'support@xamarin.com'에 문의하세요.
 		</value>
@@ -364,10 +347,7 @@
 		<value>REPL(--enable-repl)은 링크가 사용되지 않는 경우에만 지원됩니다(--nolink).
 		</value>
 	</data>
-  <data name="MT0083" xml:space="preserve">
-		<value>Asm 전용 bitcode는 watchOS에서 지원되지 않습니다. --bitcode:marker 또는 --bitcode:full을 사용하세요.
-		</value>
-	</data>
+  <!-- MT0083 is not in use anymore -->
   <data name="MT0084" xml:space="preserve">
 		<value>bitcode는 시뮬레이터에서 지원되지 않습니다. 시뮬레이터용으로 빌드하는 경우 --bitcode를 제공하지 마세요.
 		</value>
@@ -384,14 +364,8 @@
 		<value>증분 빌드(--fastdev)는 Boehm GC에서 지원되지 않습니다. 증분 빌드가 사용하지 않도록 설정됩니다.
 		</value>
 	</data>
-  <data name="MT0088" xml:space="preserve">
-		<value>GC는 watchOS 앱에 대해 협조적 모드여야 합니다. mtouch에 대한 --coop:false 인수를 제거하세요.
-		</value>
-	</data>
-  <data name="MT0089" xml:space="preserve">
-		<value>GC에 대해 협조적 모드를 사용하도록 설정한 경우 '{0}' 옵션에 '{1}' 값을 사용할 수 없습니다.
-		</value>
-	</data>
+  <!-- MT0088 is not in use anymore -->
+  <!-- MT0089 is not in use anymore -->
   <data name="MX0090" xml:space="preserve">
 		<value>대상 프레임워크 '{0}'은(는) 사용되지 않습니다. 대신 '{1}'을(를) 사용합니다.
 		</value>
@@ -415,21 +389,18 @@
 		<value>Aot 파일을 대상 디렉터리 {0}(으)로 복사할 수 없습니다.
 		</value>
 	</data>
-  <data name="MT0096" xml:space="preserve">
-		<value>Xamarin.iOS.dll에 대한 참조를 찾을 수 없습니다.
-		</value>
-	</data>
+  <!-- MT0096 is not in use anymore -->
   <data name="MM0097" xml:space="preserve">
 		<value>machine.config 파일 '{0}'을(를) 찾을 수 없습니다.
 		</value>
 	</data>
   <!-- MM0098 has been used in the past -->
   <data name="MX0099" xml:space="preserve">
-		<value>내부 오류: {0}. https://github.com/xamarin/xamarin-macios/issues/new에 이슈를 제출하세요.
+		<value>내부 오류: {0}. https://github.com/dotnet/macios/issues/new에 이슈를 제출하세요.
 		</value>
 	</data>
   <data name="MT0100" xml:space="preserve">
-		<value>어셈블리 빌드 대상 '{0}'이(가) 잘못되었습니다. 테스트 사례를 포함하는 버그 보고서를 제출하세요(https://github.com/xamarin/xamarin-macios/issues/new).
+		<value>어셈블리 빌드 대상 '{0}'이(가) 잘못되었습니다. 테스트 사례를 포함하는 버그 보고서를 제출하세요(https://github.com/dotnet/macios/issues/new).
 		</value>
 	</data>
   <data name="MT0101" xml:space="preserve">
@@ -464,14 +435,8 @@
 		<value>'{0}' 어셈블리가 제공된 경로와 다른 경로에서 로드되었습니다(제공된 경로: {1}, 실제 경로: {2}).
 		</value>
 	</data>
-  <data name="MT0110" xml:space="preserve">
-		<value>이 버전의 Xamarin.iOS는 타사 바인딩 라이브러리를 포함하는 프로젝트에서 증분 빌드를 지원하지 않아 bitcode로 컴파일되므로 증분 빌드가 사용하지 않도록 설정되었습니다.
-		</value>
-	</data>
-  <data name="MT0111" xml:space="preserve">
-		<value>이 버전의 Xamarin.iOS는 bitcode를 사용하도록 설정하지 않고 LLVM을 사용하여 watchOS 프로젝트를 빌드하도록 지원하지 않으므로 bitcode가 사용하도록 설정되었습니다.
-		</value>
-	</data>
+  <!-- MT0110 is not in use anymore -->
+  <!-- MT0111 is not in use anymore -->
   <data name="MT0112" xml:space="preserve">
 		<value>네이티브 코드 공유를 사용할 수 없습니다(원인: {0}).
 		</value>
@@ -595,7 +560,7 @@
 		</value>
 	</data>
   <data name="MT0127" xml:space="preserve">
-		<value>이 버전의 Xamarin.iOS는 둘 이상의 타사 바인딩 라이브러리를 포함하는 프로젝트에서 증분 빌드를 지원하지 않으므로 증분 빌드가 사용하지 않도록 설정되었습니다.
+		<value>Incremental builds have been disabled because incremental builds are currently not supported in projects that include more than one third-party binding library.
 		</value>
 	</data>
   <data name="MT0128" xml:space="preserve">
@@ -654,14 +619,8 @@
 		<value>32비트 앱 빌드는 더 이상 지원되지 않습니다. 프로젝트의 [Mac 빌드] 옵션의 아키텍처를 'x86_64'로 변경하세요.
 		</value>
 	</data>
-  <data name="MT0145" xml:space="preserve">
-		<value>디버그용으로 빌드하는 경우 watchOS에서 디바이스별 빌드를 사용하세요.
-		</value>
-	</data>
-  <data name="MT0146" xml:space="preserve">
-		<value>ARM64_32 디버그 모드를 사용하려면 --interpreter[=all]이 필요하므로 강제로 지정합니다.
-		</value>
-	</data>
+  <!-- MT0145 is not in use anymore -->
+  <!-- MT0146 is not in use anymore -->
   <data name="MM0147" xml:space="preserve">
 		<value>pkg-config {1}에서 cflags '{0}'을(를) 구문 분석할 수 없습니다.
 		</value>
@@ -679,27 +638,27 @@
 		</value>
 	</data>
   <data name="MT0157" xml:space="preserve">
-		<value>내부 오류: {2}에서 '{0}'을(를) '{1}'(으)로 변환할 수 없습니다. 테스트 사례를 포함하는 버그 보고서를 제출하세요(https://github.com/xamarin/xamarin-macios/issues/new).
+		<value>내부 오류: {2}에서 '{0}'을(를) '{1}'(으)로 변환할 수 없습니다. 테스트 사례를 포함하는 버그 보고서를 제출하세요(https://github.com/dotnet/macios/issues/new).
 		</value>
 	</data>
   <data name="MT0158" xml:space="preserve">
-		<value>내부 오류: 스마트 열거형 {0}이(가) 스마트 열거형이 아닌 것 같습니다. 테스트 사례를 포함하는 버그 보고서를 제출하세요(https://github.com/xamarin/xamarin-macios/issues/new).
+		<value>내부 오류: 스마트 열거형 {0}이(가) 스마트 열거형이 아닌 것 같습니다. 테스트 사례를 포함하는 버그 보고서를 제출하세요(https://github.com/dotnet/macios/issues/new).
 		</value>
 	</data>
   <data name="MT0159" xml:space="preserve">
-		<value>내부 오류: {1}에 대한 tokentype({0})이 지원되지 않습니다. 테스트 사례를 포함하는 버그 보고서를 제출하세요(https://github.com/xamarin/xamarin-macios/issues/new).
+		<value>내부 오류: {1}에 대한 tokentype({0})이 지원되지 않습니다. 테스트 사례를 포함하는 버그 보고서를 제출하세요(https://github.com/dotnet/macios/issues/new).
 		</value>
 	</data>
   <data name="MT0160" xml:space="preserve">
-		<value>내부 오류: 링커가 실행되지 않거나 사용하도록 설정한 경우 정적 등록자를 실행하지 않아야 합니다. 가능한 해결 방법은 '-f'를 추가 {0} 인수로 전달하여 전체 빌드를 강제로 실행하는 것입니다. 테스트 사례를 포함하는 버그 보고서를 제출하세요(https://github.com/xamarin/xamarin-macios/issues/new).
+		<value>내부 오류: 링커가 실행되지 않거나 사용하도록 설정한 경우 정적 등록자를 실행하지 않아야 합니다. 가능한 해결 방법은 '-f'를 추가 {0} 인수로 전달하여 전체 빌드를 강제로 실행하는 것입니다. 테스트 사례를 포함하는 버그 보고서를 제출하세요(https://github.com/dotnet/macios/issues/new).
 		</value>
 	</data>
   <data name="MT0161" xml:space="preserve">
-		<value>내부 오류: 이름이 없는 기호입니다(형식: {0}). 테스트 사례를 포함하는 버그 보고서를 제출하세요(https://github.com/xamarin/xamarin-macios/issues/new).
+		<value>내부 오류: 이름이 없는 기호입니다(형식: {0}). 테스트 사례를 포함하는 버그 보고서를 제출하세요(https://github.com/dotnet/macios/issues/new).
 		</value>
 	</data>
   <data name="MT0168" xml:space="preserve">
-		<value>내부 오류: '프레임워크를 프레임워크 {0}(으)로 변환할 수 없습니다. 테스트 사례를 포함하는 버그 보고서를 제출하세요(https://github.com/xamarin/xamarin-macios/issues/new).
+		<value>내부 오류: '프레임워크를 프레임워크 {0}(으)로 변환할 수 없습니다. 테스트 사례를 포함하는 버그 보고서를 제출하세요(https://github.com/dotnet/macios/issues/new).
 		</value>
 	</data>
   <data name="MT0174_a" xml:space="preserve">
@@ -723,7 +682,7 @@
         </value>
     </data>
   <data name="MX0177" xml:space="preserve">
-		<value>알 수 없는 플랫폼 {0}입니다. 일반적으로 버그를 나타냅니다. 테스트 사례를 포함하는 버그 보고서를 https://github.com/xamarin/xamarin-macios/issues/new에 제출하세요.</value>
+		<value>알 수 없는 플랫폼 {0}입니다. 일반적으로 버그를 나타냅니다. 테스트 사례를 포함하는 버그 보고서를 https://github.com/dotnet/macios/issues/new에 제출하세요.</value>
 	</data>
   <data name="MX0178" xml:space="preserve">
         <value>'{0}'에 대한 디버깅 기호 파일이 잘못되어 무시되었습니다.
@@ -762,7 +721,7 @@
 		</value>
 	</data>
   <data name="MT1013" xml:space="preserve">
-		<value>종속성 추적 오류: 비교할 파일이 없습니다. 테스트 사례를 포함한 버그 보고서를 https://github.com/xamarin/xamarin-macios/issues/new에 제출하세요.
+		<value>종속성 추적 오류: 비교할 파일이 없습니다. 테스트 사례를 포함한 버그 보고서를 https://github.com/dotnet/macios/issues/new에 제출하세요.
 		</value>
 	</data>
   <data name="MT1014" xml:space="preserve">
@@ -846,6 +805,7 @@
 		<value>useFullXamMacFramework는 잘못된 '{0}'이(가) 아니라 항상 프레임워크 .NET 4.5를 대상으로 지정해야 합니다.
 		</value>
 	</data>
+  <!-- legacy only error -->
   <data name="MM1407" xml:space="preserve">
 		<value>Xamarin.Mac 참조 '{0}'과(와) 선택한 대상 프레임워크 '{1}'이(가) 일치하지 않습니다.
 		</value>
@@ -918,6 +878,7 @@
 		<value>'{0}'의 정의를 구문 분석할 수 없습니다.
 		</value>
 	</data>
+  <!-- legacy only error -->
   <data name="MT2006" xml:space="preserve">
 		<value>'{0}'에서 mscorlib.dll을 로드할 수 없습니다. Xamarin.iOS를 다시 설치하세요.
 		</value>
@@ -930,6 +891,7 @@
 		<value>"{1}"에서 "{0}" 참조를 확인하지 못했습니다.
 		</value>
 	</data>
+  <!-- legacy only error -->
   <data name="MM2007" xml:space="preserve">
 		<value>전체 .NET 프레임워크에 대한 Xamarin.Mac Unified API가 연결 SDK 또는 All 어셈블리를 지원하지는 않습니다. '-nolink' 또는 '-linkplatform' 플래그를 제공하세요.
 		</value>
@@ -956,10 +918,7 @@
 		<value>'{0}' 어셈블리는 혼합 모드이므로 연결할 수 없습니다.
 		</value>
 	</data>
-  <data name="MT2015" xml:space="preserve">
-		<value>watchOS에 대한 HttpMessageHandler '{0}'이(가) 잘못되었습니다. 유효한 값은 NSUrlSessionHandler뿐입니다.
-		</value>
-	</data>
+  <!-- MT2015 is not in use anymore -->
   <data name="MX2016" xml:space="preserve">
 		<value>NativeAOT를 사용할 때는 동적 등록 기관이 지원되지 않으므로 '--optimize=-remove-dynamic-registrar'를 전달하여 동적 등록 기관을 유지할 수 없습니다. 동적 등록에 대한 지원은 여전히 제거될 예정입니다.</value>
 	</data>
@@ -1070,6 +1029,7 @@
 		<value>{0}은(는) App Store 제한 사항을 준수하기 위해 {1}을(를) 제외한 아키텍처가 제거되었습니다. 이로 인해 기존 코드 서명 시그니처가 손상될 수 있습니다. lipo를 사용하여 라이브러리를 제거하거나 --optimize=-trim-architectures를 사용하여 라이브러리를 사용하지 않도록 설정하는 것이 좋습니다.
 		</value>
 	</data>
+  <!-- legacy only error -->
   <data name="MM2110" xml:space="preserve">
 		<value>Xamarin.Mac 'Partial Static' 등록자가 연결을 지원하지 않습니다. 연결을 사용하지 않도록 설정하거나 다른 등록자 모드를 사용하세요.
 		</value>
@@ -1078,9 +1038,15 @@
 		<value>로드된 어셈블리 목록에서 corlib 어셈블리 '{0}'을(를) 찾을 수 없습니다.
 		</value>
 	</data>
+  <data name="MX2112_A" xml:space="preserve">
+		<value>Could not optimize the static constructor in the interface {0} because it did not have the expected instruction sequence (found end of method too soon).</value>
+	</data>
+  <data name="MX2112_B" xml:space="preserve">
+		<value>Could not optimize the static constructor in the interface {0} because it had an unexpected instruction {1} at offset {2}.</value>
+	</data>
   <!-- 2200 -> 2299 is used by/reserved for ExceptionalSubStep subclasses in the linker -->
   <!-- 220x: PreserveSmartEnumConversionsSubStep -->
-  <!-- 221x: RemoveBitcodeIncompatibleCodeStep -->
+  <!-- 221x: <unused> -->
   <!-- 222x: RemoveRejectedTypesStep -->
   <!-- 223x: CollectUnmarkedMembersSubStep -->
   <!-- 224x: PreserveBlockCodeSubStep -->
@@ -1132,6 +1098,7 @@
 		<value>'{1}' 어셈블리의 '{0}' 종속성을 찾을 수 없습니다. 프로젝트의 참조를 검토하세요.
 		</value>
 	</data>
+  <!-- legacy only error -->
   <data name="MT3006" xml:space="preserve">
 		<value>프로젝트에 대한 완전한 종속성 맵을 컴퓨팅할 수 없습니다. 이렇게 하면 Xamarin.iOS가 다시 빌드해야 하는 항목과 하지 않아도 되는 항목을 제대로 검색할 수 없기 때문에 빌드 시간이 느려집니다. 자세한 내용은 이전 경고를 검토하세요.
 		</value>
@@ -1157,7 +1124,7 @@
 		</value>
 	</data>
   <data name="MT4002" xml:space="preserve">
-		<value>P/Invoke 메서드에 대해 생성된 코드를 컴파일하지 못했습니다. https://github.com/xamarin/xamarin-macios/issues/new에 버그 보고서를 제출하세요.
+		<value>P/Invoke 메서드에 대해 생성된 코드를 컴파일하지 못했습니다. https://github.com/dotnet/macios/issues/new에 버그 보고서를 제출하세요.
 		</value>
 	</data>
   <data name="MT4101" xml:space="preserve">
@@ -1189,7 +1156,7 @@
 		</value>
 	</data>
   <data name="MT4109" xml:space="preserve">
-		<value>생성된 등록자 코드를 컴파일하지 못했습니다. https://github.com/xamarin/xamarin-macios/issues/new에 버그 보고서를 제출하세요.
+		<value>생성된 등록자 코드를 컴파일하지 못했습니다. https://github.com/dotnet/macios/issues/new에 버그 보고서를 제출하세요.
 		</value>
 	</data>
   <data name="MT4110" xml:space="preserve">
@@ -1205,7 +1172,7 @@
 		</value>
 	</data>
   <data name="MT4114" xml:space="preserve">
-		<value>'{0}.{1}' 메서드의 등록자에서 예기치 않은 오류가 발생했습니다. https://github.com/xamarin/xamarin-macios/issues/new에 버그 보고서를 제출하세요.
+		<value>'{0}.{1}' 메서드의 등록자에서 예기치 않은 오류가 발생했습니다. https://github.com/dotnet/macios/issues/new에 버그 보고서를 제출하세요.
 		</value>
 	</data>
   <data name="MT4116" xml:space="preserve">
@@ -1225,7 +1192,7 @@
 		</value>
 	</data>
   <data name="MT4120" xml:space="preserve">
-		<value>등록자가 '{1}.{2}' 필드에서 알 수 없는 필드 형식 '{0}'을(를) 찾았습니다. https://github.com/xamarin/xamarin-macios/issues/new에 버그 보고서를 제출하세요.
+		<value>등록자가 '{1}.{2}' 필드에서 알 수 없는 필드 형식 '{0}'을(를) 찾았습니다. https://github.com/dotnet/macios/issues/new에 버그 보고서를 제출하세요.
 		</value>
 	</data>
   <data name="MT4121" xml:space="preserve">
@@ -1237,35 +1204,35 @@
 		</value>
 	</data>
   <data name="MT4124" xml:space="preserve">
-		<value>'{1}'에 잘못된 {0}이(가) 있습니다. https://github.com/xamarin/xamarin-macios/issues/new에 버그 보고서를 제출하세요.
+		<value>'{1}'에 잘못된 {0}이(가) 있습니다. https://github.com/dotnet/macios/issues/new에 버그 보고서를 제출하세요.
 		</value>
 	</data>
   <data name="MT4124_A" xml:space="preserve">
-		<value>'{0}'에 잘못된 RegisterAttribute 속성 {1}이(가) 있습니다. https://github.com/xamarin/xamarin-macios/issues/new에서 버그 보고서를 제출하세요.
+		<value>'{0}'에 잘못된 RegisterAttribute 속성 {1}이(가) 있습니다. https://github.com/dotnet/macios/issues/new에서 버그 보고서를 제출하세요.
 		</value>
 	</data>
   <data name="MT4124_B" xml:space="preserve">
-		<value>'{0}'에 잘못된 AdoptsAttribute가 있습니다. 1개의 생성자 인수가 필요한데 {1}개를 가져왔습니다. https://github.com/xamarin/xamarin-macios/issues/new에 버그 보고서를 제출하세요.
+		<value>'{0}'에 잘못된 AdoptsAttribute가 있습니다. 1개의 생성자 인수가 필요한데 {1}개를 가져왔습니다. https://github.com/dotnet/macios/issues/new에 버그 보고서를 제출하세요.
 		</value>
 	</data>
   <data name="MT4124_C" xml:space="preserve">
-		<value>'{0}.{1}'에서 잘못된 BindAsAttribute를 찾았습니다. 알 수 없는 필드 {2}입니다. https://github.com/xamarin/xamarin-macios/issues/new에 버그 보고서를 제출하세요.
+		<value>'{0}.{1}'에서 잘못된 BindAsAttribute를 찾았습니다. 알 수 없는 필드 {2}입니다. https://github.com/dotnet/macios/issues/new에 버그 보고서를 제출하세요.
 		</value>
 	</data>
   <data name="MT4124_D" xml:space="preserve">
-		<value>'{1}.{2}'에 잘못된 {0}이(가) 있습니다. https://github.com/xamarin/xamarin-macios/issues/new에 버그 보고서를 제출하세요.
+		<value>'{1}.{2}'에 잘못된 {0}이(가) 있습니다. https://github.com/dotnet/macios/issues/new에 버그 보고서를 제출하세요.
 		</value>
 	</data>
   <data name="MT4124_E" xml:space="preserve">
-		<value>'{0}'에 잘못된 BindAsAttribute가 있습니다. 생성자 인수가 1개 있어야 하지만 {1}개가 발견되었습니다. https://github.com/xamarin/xamarin-macios/issues/new에 버그 보고서를 제출하세요.
+		<value>'{0}'에 잘못된 BindAsAttribute가 있습니다. 생성자 인수가 1개 있어야 하지만 {1}개가 발견되었습니다. https://github.com/dotnet/macios/issues/new에 버그 보고서를 제출하세요.
 		</value>
 	</data>
   <data name="MT4124_H" xml:space="preserve">
-		<value>'{0}'에 잘못된 BindAsAttribute가 있습니다. {1}의 기본 열거형 형식을 찾을 수 없습니다. https://github.com/xamarin/xamarin-macios/issues/new에 버그 보고서를 제출하세요.
+		<value>'{0}'에 잘못된 BindAsAttribute가 있습니다. {1}의 기본 열거형 형식을 찾을 수 없습니다. https://github.com/dotnet/macios/issues/new에 버그 보고서를 제출하세요.
 		</value>
 	</data>
   <data name="MT4124_I" xml:space="preserve">
-		<value>'{0}'에 잘못된 {1}이(가) 있습니다. https://github.com/xamarin/xamarin-macios/issues/new에 버그 보고서를 제출하세요.</value>
+		<value>'{0}'에 잘못된 {1}이(가) 있습니다. https://github.com/dotnet/macios/issues/new에 버그 보고서를 제출하세요.</value>
 	</data>
   <data name="MT4125" xml:space="preserve">
 		<value>등록자가 '{1}' 메서드의 시그니처에서 잘못된 '{0}' 형식을 찾았습니다. 인터페이스에는 래퍼 형식을 지정하는 Protocol 특성이 있어야 합니다.
@@ -1332,7 +1299,7 @@
 		</value>
 	</data>
   <data name="MT4141" xml:space="preserve">
-		<value>Xamarin.iOS는 이 선택기를 암시적으로 등록하므로 '{1}.{2}' 멤버에 선택기 '{0}'을(를) 등록할 수 없습니다.
+		<value>Cannot register the selector '{0}' on the member '{1}.{2}' because this selector is already implicitly registered.
 		</value>
 	</data>
   <data name="MT4145" xml:space="preserve">
@@ -1347,7 +1314,7 @@
 		</value>
 	</data>
   <data name="MT4147" xml:space="preserve">
-		<value>'{1}'에 잘못된 {0}이(가) 있습니다. https://github.com/xamarin/xamarin-macios/issues/new에 버그 보고서를 제출하세요.
+		<value>'{1}'에 잘못된 {0}이(가) 있습니다. https://github.com/dotnet/macios/issues/new에 버그 보고서를 제출하세요.
 		</value>
 	</data>
   <data name="MT4148" xml:space="preserve">
@@ -1456,15 +1423,15 @@
 		</comment>
 	</data>
   <data name="MT4163" xml:space="preserve">
-		<value>등록자에 내부 오류가 있습니다({1}개 인수가 있는 {0} ctor). https://github.com/xamarin/xamarin-macios/issues/new에 버그 보고서를 제출하세요.
+		<value>등록자에 내부 오류가 있습니다({1}개 인수가 있는 {0} ctor). https://github.com/dotnet/macios/issues/new에 버그 보고서를 제출하세요.
 		</value>
 	</data>
   <data name="MT4163_A" xml:space="preserve">
-		<value>등록자에 내부 오류가 있습니다(알 수 없는 가용성 유형: {0}). https://github.com/xamarin/xamarin-macios/issues/new에 버그 보고서를 제출하세요.
+		<value>등록자에 내부 오류가 있습니다(알 수 없는 가용성 유형: {0}). https://github.com/dotnet/macios/issues/new에 버그 보고서를 제출하세요.
 		</value>
 	</data>
   <data name="MT4163_B" xml:space="preserve">
-		<value>등록자의 내부 오류(BindAs 매개 변수는 ref/out일 수 없음: {0})입니다. https://github.com/xamarin/xamarin-macios/issues/new에 버그 보고서를 제출하세요.
+		<value>등록자의 내부 오류(BindAs 매개 변수는 ref/out일 수 없음: {0})입니다. https://github.com/dotnet/macios/issues/new에 버그 보고서를 제출하세요.
 		</value>
 	</data>
   <data name="MT4164" xml:space="preserve">
@@ -1544,7 +1511,7 @@
 		</value>
 	</data>
   <data name="MT4184" xml:space="preserve">
-		<value>등록자의 내부 오류(BindAs 매개 변수는 ref/out일 수 없음: {0})입니다. https://github.com/xamarin/xamarin-macios/issues/new에 버그 보고서를 제출하세요.
+		<value>등록자의 내부 오류(BindAs 매개 변수는 ref/out일 수 없음: {0})입니다. https://github.com/dotnet/macios/issues/new에 버그 보고서를 제출하세요.
 		</value>
 	</data>
   <data name="MT4185" xml:space="preserve">
@@ -1563,6 +1530,9 @@
   <data name="MX4189" xml:space="preserve">
 		<value>'{0}' 클래스는 {1} SDK에서 제거되었으므로 등록되지 않습니다.</value>
 	</data>
+  <data name="MT4190" xml:space="preserve">
+		<value>The class '{0}' will not be registered because the {1} framework has been deprecated from the {2} SDK.</value>
+	</data>
   <data name="MT5101" xml:space="preserve">
 		<value>'{0}' 컴파일러가 없습니다. Xcode '명령줄 도구' 구성 요소를 설치하세요.
 		</value>
@@ -1572,15 +1542,15 @@
 		</value>
 	</data>
   <data name="MM5103" xml:space="preserve">
-		<value>컴파일하지 못했습니다. 오류 코드는 {0}입니다. https://github.com/xamarin/xamarin-macios/issues/new에 버그 보고서를 제출하세요.
+		<value>컴파일하지 못했습니다. 오류 코드는 {0}입니다. https://github.com/dotnet/macios/issues/new에 버그 보고서를 제출하세요.
 		</value>
 	</data>
   <data name="MT5103_A" xml:space="preserve">
-		<value>'{0}' 파일을 컴파일하지 못했습니다. https://github.com/xamarin/xamarin-macios/issues/new에 버그 보고서를 제출하세요.
+		<value>'{0}' 파일을 컴파일하지 못했습니다. https://github.com/dotnet/macios/issues/new에 버그 보고서를 제출하세요.
 		</value>
 	</data>
   <data name="MT5106" xml:space="preserve">
-		<value>'{0}' 파일을 컴파일할 수 없습니다. https://github.com/xamarin/xamarin-macios/issues/new에 버그 보고서를 제출하세요.
+		<value>'{0}' 파일을 컴파일할 수 없습니다. https://github.com/dotnet/macios/issues/new에 버그 보고서를 제출하세요.
 		</value>
 	</data>
   <data name="MT5107" xml:space="preserve">
@@ -1611,6 +1581,7 @@
 		<value>네이티브 연결 경고: {0}
 		</value>
 	</data>
+  <!-- legacy only error -->
   <data name="MM5203" xml:space="preserve">
 		<value>{0}을(를) 찾을 수 없습니다. Xamarin.Mac 설치가 손상되었기 때문인 것 같습니다. Xamarin.Mac을 다시 설치하세요.
 		</value>
@@ -1652,7 +1623,7 @@
 		</value>
 	</data>
   <data name="MT5216" xml:space="preserve">
-		<value>'{0}'에 대한 네이티브 연결이 실패했습니다. https://github.com/xamarin/xamarin-macios/issues/new에서 버그 보고서를 제출하세요.
+		<value>'{0}'에 대한 네이티브 연결이 실패했습니다. https://github.com/dotnet/macios/issues/new에서 버그 보고서를 제출하세요.
 		</value>
 	</data>
   <data name="MT5217" xml:space="preserve">
@@ -1676,14 +1647,14 @@
 		</value>
 	</data>
   <data name="MX5222" xml:space="preserve">
-		<value>네이티브 링커를 실행하지 못했습니다({0}). https://github.com/xamarin/xamarin-macios/issues/new에서 버그 보고서를 제출하세요.
+		<value>네이티브 링커를 실행하지 못했습니다({0}). https://github.com/dotnet/macios/issues/new에서 버그 보고서를 제출하세요.
  		</value>
 	</data>
   <data name="MX5223" xml:space="preserve">
 		<value>현재 {1} SDK에 시뮬레이터의 이 프레임워크에 대한 지원이 포함되어 있지 않기 때문에 '{0}' 프레임워크와 연결하지 않았습니다.</value>
 		<comment>This is a warning explaining why a native framework won't be referenced from the app when building for the simulator. The following are literal names and should not be translated: SDK
 			{0}: The name of the native framework
-			{1}: The current platform (will be either iOS, tvOS, watchOS or macOS).
+			{1}: The current platform (will be either iOS, tvOS, Mac Catalyst or macOS).
 		</comment>
 	</data>
   <data name="MT5301" xml:space="preserve">
@@ -1748,11 +1719,11 @@
 	</data>
   <!-- The linker says custom linker steps can't use error codes between 1000 and 6000, so we use >= 7000 -->
   <data name="MX7000" xml:space="preserve">
-		<value>사용자 지정 링커 단계를 실행하는 동안 오류가 발생했습니다. 자세한 내용은 빌드 로그를 검토하세요.</value>
+		<value>An error occurred while executing the custom linker steps. Please review the build log for more information.</value>
 	</data>
   <!-- 8XXX are for errors that occur at runtime -->
   <data name="MT8018" xml:space="preserve">
-		<value>내부 일관성 오류입니다. https://github.com/xamarin/xamarin-macios/issues/new에 버그 보고서를 제출하세요.
+		<value>내부 일관성 오류입니다. https://github.com/dotnet/macios/issues/new에 버그 보고서를 제출하세요.
 		</value>
 	</data>
   <!-- 8000 -> 8036 are missing here (except 8018), so skip to 8037 -->
@@ -1807,9 +1778,7 @@
   <data name="MX8046" xml:space="preserve">
 		<value>'{1}' 형식에서 '{0}' 메서드를 찾을 수 없습니다.</value>
 	</data>
-  <data name="MX8047" xml:space="preserve">
-		<value>{0} 트램펄린 메서드가 trampolineMethod 인수의 0x{1} 함수 포인터와 일치하지 않습니다(동일한 메서드를 참조하지 않음).</value>
-	</data>
+  <!-- MX8047: unused -->
   <data name="MX8048" xml:space="preserve">
 		<value>{0} 트램펄린 메서드에는 매개 변수가 한 개 이상 있어야 합니다.</value>
 	</data>
@@ -1836,5 +1805,12 @@
 	</data>
   <data name="MX8056" xml:space="preserve">
 		<value>Objective-C 개체 0x{0}(형식: {1})을 마샬링하지 못했습니다. 이 개체에 대한 기존 관리되는 인스턴스를 찾을 수 없으며 제네릭 형식 {2}의 새 관리되는 인스턴스를 만들 수도 없습니다.</value>
+	</data>
+  <data name="MX8057" xml:space="preserve">
+		<value>.NET for {0} does not support server garbage collection.</value>
+		<comment>{0}: the platform (iOS, macOS, etc.)</comment>
+	</data>
+  <data name="MX8058" xml:space="preserve">
+		<value>The dynamic registrar does not support calling base Objective-C constructors with arguments (type: %s, selector: %s). Please use any of the static registrars.</value>
 	</data>
 </root>

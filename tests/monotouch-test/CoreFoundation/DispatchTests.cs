@@ -156,7 +156,7 @@ namespace MonoTouchFixtures.CoreFoundation {
 #if __IOS__
 			if (TestRuntime.CheckSystemVersion (ApplePlatform.iOS, 8, 0))
 				qname = "com.apple.root.default-qos";
-#elif __WATCHOS__ || __TVOS__
+#elif __TVOS__
 			qname = "com.apple.root.default-qos";
 #elif __MACOS__
 			if (TestRuntime.CheckSystemVersion (ApplePlatform.MacOSX, 10, 10))

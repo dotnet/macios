@@ -4,14 +4,10 @@ using Foundation;
 using ObjCRuntime;
 using AVFoundation;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace ShazamKit {
 
 	[Native]
-	[iOS (15, 0), Watch (8, 0), TV (15, 0), MacCatalyst (15, 0)]
+	[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
 	[ErrorDomain ("SHErrorDomain")]
 	public enum SHErrorCode : long {
 		InvalidAudioFormat = 100,
@@ -26,7 +22,7 @@ namespace ShazamKit {
 		MediaItemFetchFailed = 600,
 	}
 
-	[iOS (15, 0), Watch (8, 0), TV (15, 0), MacCatalyst (15, 0)]
+	[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
 	[Static]
 	enum SHMediaItemProperty {
 		[Field ("SHMediaItemShazamID")]
@@ -57,18 +53,21 @@ namespace ShazamKit {
 		MatchOffset,
 		[Field ("SHMediaItemFrequencySkew")]
 		FrequencySkew,
-		[Watch (9, 0), TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[Field ("SHMediaItemTimeRanges")]
 		TimeRanges,
-		[Watch (9, 0), TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[Field ("SHMediaItemFrequencySkewRanges")]
 		FrequencySkewRanges,
-		[Watch (10, 0), TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Field ("SHMediaItemCreationDate")]
 		CreationDate,
+		[TV (18, 4), Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4)]
+		[Field ("SHMediaItemConfidence")]
+		Confidence,
 	}
 
-	[iOS (15, 0), Watch (8, 0), TV (15, 0), MacCatalyst (15, 0)]
+	[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SHCatalog {
@@ -79,10 +78,10 @@ namespace ShazamKit {
 		double MaximumQuerySignatureDuration { get; }
 	}
 
-	[iOS (15, 0), Watch (8, 0), TV (15, 0), MacCatalyst (15, 0)]
+	[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
 	[BaseType (typeof (SHCatalog))]
 	interface SHCustomCatalog {
-		[Watch (11, 0), TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Export ("initWithDataRepresentation:error:")]
 		NativeHandle Constructor (NSData data, out NSError error);
 
@@ -95,7 +94,6 @@ namespace ShazamKit {
 		[Deprecated (PlatformName.MacOSX, 14, 0, message: "Use 'DataRepresentation' instead.")]
 		[Deprecated (PlatformName.iOS, 17, 0, message: "Use 'DataRepresentation' instead.")]
 		[Deprecated (PlatformName.TvOS, 17, 0, message: "Use 'DataRepresentation' instead.")]
-		[Deprecated (PlatformName.WatchOS, 10, 0, message: "Use 'DataRepresentation' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 17, 0, message: "Use 'DataRepresentation' instead.")]
 		[Export ("writeToURL:error:")]
 		bool Write (NSUrl url, [NullAllowed] out NSError error);
@@ -105,12 +103,12 @@ namespace ShazamKit {
 		[return: Release]
 		SHCustomCatalog Create ();
 
-		[Watch (11, 0), TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Export ("dataRepresentation", ArgumentSemantic.Strong)]
 		NSData DataRepresentation { get; }
 	}
 
-	[iOS (15, 0), Watch (8, 0), TV (15, 0), MacCatalyst (15, 0)]
+	[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SHMatch : NSSecureCoding {
@@ -121,7 +119,7 @@ namespace ShazamKit {
 		SHSignature QuerySignature { get; }
 	}
 
-	[iOS (15, 0), Watch (8, 0), TV (15, 0), MacCatalyst (15, 0)]
+	[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
 	[BaseType (typeof (SHMediaItem))]
 	[DisableDefaultCtor]
 	interface SHMatchedMediaItem : NSSecureCoding {
@@ -133,9 +131,13 @@ namespace ShazamKit {
 
 		[Export ("predictedCurrentMatchOffset")]
 		double PredictedCurrentMatchOffset { get; }
+
+		[TV (18, 4), Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4)]
+		[Export ("confidence")]
+		float Confidence { get; }
 	}
 
-	[iOS (15, 0), Watch (8, 0), TV (15, 0), MacCatalyst (15, 0)]
+	[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SHMediaItem : NSSecureCoding, NSCopying {
@@ -200,24 +202,23 @@ namespace ShazamKit {
 		[Export ("objectForKeyedSubscript:")]
 		NSObject GetObject (string key);
 
-		[Watch (9, 0), TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("timeRanges", ArgumentSemantic.Strong)]
 		SHRange [] TimeRanges { get; }
 
-		[Watch (9, 0), TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("frequencySkewRanges", ArgumentSemantic.Strong)]
 		SHRange [] FrequencySkewRanges { get; }
 
-		[Watch (10, 0), TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[NullAllowed, Export ("creationDate", ArgumentSemantic.Strong)]
 		NSDate CreationDate { get; }
 	}
 
-	[iOS (15, 0), Watch (8, 0), TV (15, 0), MacCatalyst (15, 0)]
+	[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
 	[Deprecated (PlatformName.MacOSX, 14, 0, message: "Use SHLibrary instead.")]
 	[Deprecated (PlatformName.iOS, 17, 0, message: "Use SHLibrary instead.")]
 	[Deprecated (PlatformName.TvOS, 17, 0, message: "Use SHLibrary instead.")]
-	[Deprecated (PlatformName.WatchOS, 10, 0, message: "Use SHLibrary instead.")]
 	[Deprecated (PlatformName.MacCatalyst, 17, 0, message: "Use SHLibrary instead.")]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -231,7 +232,7 @@ namespace ShazamKit {
 		void Add (SHMediaItem [] mediaItems, Action<NSError> completionHandler);
 	}
 
-	[iOS (15, 0), Watch (8, 0), TV (15, 0), MacCatalyst (15, 0)]
+	[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
 	[BaseType (typeof (NSObject))]
 	interface SHSession {
 		[Export ("catalog", ArgumentSemantic.Strong)]
@@ -254,7 +255,7 @@ namespace ShazamKit {
 		void Match (SHSignature signature);
 	}
 
-	[iOS (15, 0), Watch (8, 0), TV (15, 0), MacCatalyst (15, 0)]
+	[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SHSignature : NSSecureCoding, NSCopying {
@@ -274,7 +275,7 @@ namespace ShazamKit {
 		SHSignature GetSignature (NSData dataRepresentation, [NullAllowed] out NSError error);
 	}
 
-	[iOS (15, 0), Watch (8, 0), TV (15, 0), MacCatalyst (15, 0)]
+	[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
 	[BaseType (typeof (NSObject))]
 	interface SHSignatureGenerator {
 		[Export ("appendBuffer:atTime:error:")]
@@ -284,19 +285,15 @@ namespace ShazamKit {
 		SHSignature Signature { get; }
 
 		[Static, Async]
-		[Watch (9, 0), TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("generateSignatureFromAsset:completionHandler:")]
 		void GenerateSignature (AVAsset asset, Action<SHSignature, NSError> completionHandler);
 	}
 
 	interface ISHSessionDelegate { }
 
-	[iOS (15, 0), Watch (8, 0), TV (15, 0), MacCatalyst (15, 0)]
-#if NET
+	[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
 	[Protocol, Model]
-#else
-	[Protocol, Model (AutoGeneratedName = true)]
-#endif
 	[BaseType (typeof (NSObject))]
 	interface SHSessionDelegate {
 		[Export ("session:didFindMatch:")]
@@ -306,7 +303,7 @@ namespace ShazamKit {
 		void DidNotFindMatch (SHSession session, SHSignature signature, [NullAllowed] NSError error);
 	}
 
-	[Watch (9, 0), TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SHRange : NSSecureCoding, NSCopying {

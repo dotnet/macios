@@ -17,7 +17,7 @@
 // Uncomment VERBOSE_LOG to enable verbose logging
 // #define VERBOSE_LOG
 
-#if NET && !COREBUILD
+#if !COREBUILD
 
 #nullable enable
 
@@ -37,10 +37,14 @@ using Foundation;
 
 using Xamarin.Bundler;
 
-using MonoObjectPtr=System.IntPtr;
+using MonoObjectPtr = System.IntPtr;
 
 namespace ObjCRuntime {
 
+	/// <summary>Provides information about the Xamarin.iOS Runtime.</summary>
+	///     <remarks>
+	///     </remarks>
+	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/SysSound/">SysSound</related>
 	public partial class Runtime {
 		// Keep in sync with XamarinLookupTypes in main.h
 		internal enum TypeLookup {
@@ -98,7 +102,7 @@ namespace ObjCRuntime {
 
 		// Define VERBOSE_LOG at the top of this file to get all printfs
 		[System.Diagnostics.Conditional ("VERBOSE_LOG")]
-		static void log_coreclr_render (string message, params object?[] argumentsToRender)
+		static void log_coreclr_render (string message, params object? [] argumentsToRender)
 		{
 			var args = new string [argumentsToRender.Length];
 			for (var i = 0; i < args.Length; i++) {
@@ -113,6 +117,7 @@ namespace ObjCRuntime {
 				} else if (obj is INativeObject inativeobj) {
 					// Don't call ToString on an INativeObject, we may end up with infinite recursion.
 					arg = $"{inativeobj.Handle.ToString ()} ({obj.GetType ()})";
+					GC.KeepAlive (inativeobj);
 				} else {
 					var toString = obj.ToString () ?? string.Empty;
 					// Print one line, and at most 256 characters.
@@ -130,6 +135,7 @@ namespace ObjCRuntime {
 			log_coreclr (string.Format (message, args));
 		}
 
+		[SupportedOSPlatform ("macos")]
 		static unsafe void InitializeCoreCLRBridge (InitializationOptions* options)
 		{
 			if (options->xamarin_objc_msgsend != IntPtr.Zero)
@@ -171,11 +177,9 @@ namespace ObjCRuntime {
 			return path is not null;
 		}
 
-#if NET
 		// Note that this method does not work with NativeAOT, so throw an exception in that case.
 		// IL2026: Using member 'System.Runtime.Loader.AssemblyLoadContext.LoadFromAssemblyPath(String)' which has 'RequiresUnreferencedCodeAttribute' can break functionality when trimming application code. Types and members the loaded assembly depends on might be removed.
 		[UnconditionalSuppressMessage ("", "IL2026", Justification = "The APIs this method tries to access are marked by other means, so this is linker-safe.")]
-#endif
 		static Assembly? ResolvingEventHandler (AssemblyLoadContext sender, AssemblyName assemblyName)
 		{
 			// Note that this method does not work with NativeAOT, so throw an exception in that case.
@@ -201,10 +205,10 @@ namespace ObjCRuntime {
 
 		// Size: 2 pointers
 		internal struct TrackedObjectInfo {
-			public IntPtr Handle;
-			public NSObject.Flags Flags;
+			public unsafe NSObjectData* Data;
 		}
 
+		[SupportedOSPlatform ("macos")]
 		internal static GCHandle CreateTrackingGCHandle (NSObject obj, IntPtr handle)
 		{
 			var gchandle = ObjectiveCMarshal.CreateReferenceTrackingHandle (obj, out var info);
@@ -212,12 +216,10 @@ namespace ObjCRuntime {
 			unsafe {
 				TrackedObjectInfo* tracked_info;
 				fixed (void* ptr = info)
-					tracked_info = (TrackedObjectInfo *) ptr;
-				tracked_info->Handle = handle;
-				tracked_info->Flags = obj.FlagsInternal;
-				obj.tracked_object_info = tracked_info;
+					tracked_info = (TrackedObjectInfo*) ptr;
+				tracked_info->Data = obj.GetData ();
 
-				log_coreclr ($"GetOrCreateTrackingGCHandle ({obj.GetType ().FullName}, 0x{handle.ToString ("x")}) => Info=0x{((IntPtr) tracked_info).ToString ("x")} Flags={tracked_info->Flags} Created new");
+				log_coreclr ($"GetOrCreateTrackingGCHandle ({obj.GetType ().FullName}, 0x{handle.ToString ("x")}) => Info=0x{((IntPtr) tracked_info).ToString ("x")} Data=0x{(IntPtr) tracked_info->Data:x} Created new");
 			}
 
 			return gchandle;
@@ -227,10 +229,7 @@ namespace ObjCRuntime {
 		internal static void RegisterToggleReferenceCoreCLR (NSObject obj, IntPtr handle, bool isCustomType)
 		{
 			unsafe {
-				TrackedObjectInfo* tracked_info = obj.tracked_object_info;
-				tracked_info->Flags = obj.FlagsInternal;
-
-				log_coreclr ($"RegisterToggleReferenceCoreCLR ({obj.GetType ().FullName}, 0x{handle.ToString ("x")}, {isCustomType}) => Info=0x{((IntPtr) tracked_info).ToString ("x")} Flags={tracked_info->Flags}");
+				log_coreclr ($"RegisterToggleReferenceCoreCLR ({obj.GetType ().FullName}, 0x{handle.ToString ("x")}, {isCustomType}) => Data=0x{(IntPtr) obj.GetData ():x}");
 			}
 
 			// Make sure the GCHandle we have is a weak one for custom types.
@@ -264,7 +263,7 @@ namespace ObjCRuntime {
 		}
 
 		// Returns a retained MonoObject. Caller must release.
-		[UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2026:RequiresUnreferencedCode", Justification = "This method is only called to retrieve the assembly where the entry point is, and the entry point is not trimmed away, so this is safe.")]
+		[UnconditionalSuppressMessage ("AssemblyLoadTrimming", "IL2026:RequiresUnreferencedCode", Justification = "This method is only called to retrieve the assembly where the entry point is, and the entry point is not trimmed away, so this is safe.")]
 		static IntPtr FindAssembly (IntPtr assembly_name)
 		{
 			if (IsNativeAOT)
@@ -299,6 +298,7 @@ namespace ObjCRuntime {
 			throw new InvalidOperationException ($"Could not find any assemblies named {name}");
 		}
 
+		[SupportedOSPlatform ("macos")]
 		static unsafe void SetPendingException (MonoObject* exception_obj)
 		{
 			var exc = (Exception?) GetMonoObjectTarget (exception_obj);
@@ -306,7 +306,7 @@ namespace ObjCRuntime {
 			ObjectiveCMarshal.SetMessageSendPendingException (exc);
 		}
 
-		unsafe static sbyte IsClassOfType (MonoObject *typeobj, TypeLookup match)
+		unsafe static sbyte IsClassOfType (MonoObject* typeobj, TypeLookup match)
 		{
 			var rv = IsClassOfType ((Type?) GetMonoObjectTarget (typeobj), match);
 			return (sbyte) (rv ? 1 : 0);
@@ -459,7 +459,7 @@ namespace ObjCRuntime {
 				return null;
 
 			unsafe {
-				MonoObject *monoobj = (MonoObject *) mobj;
+				MonoObject* monoobj = (MonoObject*) mobj;
 				return GetGCHandleTarget (monoobj->GCHandle);
 			}
 		}
@@ -469,7 +469,7 @@ namespace ObjCRuntime {
 		static extern void xamarin_bridge_log_monoobject (IntPtr mono_object, string stack_trace);
 #endif
 
-		static IntPtr MarshalStructure<T> (T value) where T: unmanaged
+		static IntPtr MarshalStructure<T> (T value) where T : unmanaged
 		{
 			var destination = Marshal.AllocHGlobal (Marshal.SizeOf<T> ());
 
@@ -489,7 +489,7 @@ namespace ObjCRuntime {
 				throw CreateNativeAOTNotSupportedException ();
 
 			var structType = obj.GetType ();
-			// Unwrap enums, Marshal.StructureToPtr complains they're not blittable (https://github.com/xamarin/xamarin-macios/issues/15744)
+			// Unwrap enums, Marshal.StructureToPtr complains they're not blittable (https://github.com/dotnet/macios/issues/15744)
 			if (structType.IsEnum) {
 				structType = Enum.GetUnderlyingType (structType);
 				obj = Convert.ChangeType (obj, structType);
@@ -552,22 +552,22 @@ namespace ObjCRuntime {
 			return Marshal.StringToHGlobalAuto (location);
 		}
 
-		static void SetFlagsForNSObject (IntPtr gchandle, byte flags)
+		static void SetFlagsForNSObject (IntPtr gchandle, uint flags)
 		{
 			var obj = (NSObject) GetGCHandleTarget (gchandle)!;
 			obj.FlagsInternal = (NSObject.Flags) flags;
 		}
 
-		static byte GetFlagsForNSObject (IntPtr gchandle)
+		static uint GetFlagsForNSObject (IntPtr gchandle)
 		{
 			var obj = (NSObject) GetGCHandleTarget (gchandle)!;
-			return (byte) obj.FlagsInternal;
+			return (uint) obj.FlagsInternal;
 		}
 
-		static unsafe MonoObject* GetMethodDeclaringType (MonoObject *mobj)
+		static unsafe MonoObject* GetMethodDeclaringType (MonoObject* mobj)
 		{
 			var method = (MethodBase) GetMonoObjectTarget (mobj)!;
-			return (MonoObject *) GetMonoObject (method.DeclaringType);
+			return (MonoObject*) GetMonoObject (method.DeclaringType);
 		}
 
 		static IntPtr ObjectGetType (MonoObjectPtr mobj)
@@ -611,16 +611,16 @@ namespace ObjCRuntime {
 			var parameterCount = parameters.Length;
 			var rv = Marshal.AllocHGlobal (sizeof (MonoMethodSignature) + sizeof (MonoObjectPtr) * parameterCount);
 
-			MonoMethodSignature* signature = (MonoMethodSignature *) rv;
+			MonoMethodSignature* signature = (MonoMethodSignature*) rv;
 			signature->Method = methodobj;
 			xamarin_mono_object_retain (methodobj);
 			signature->ParameterCount = parameterCount;
-			signature->ReturnType = (MonoObject *) GetMonoObject (GetMethodReturnType (method));
+			signature->ReturnType = (MonoObject*) GetMonoObject (GetMethodReturnType (method));
 
 			MonoObject** mparams = &signature->Parameters;
 			for (var i = 0; i < parameterCount; i++) {
 				var p = parameters [i];
-				mparams [i] = (MonoObject *) GetMonoObject (p.ParameterType);
+				mparams [i] = (MonoObject*) GetMonoObject (p.ParameterType);
 			}
 
 			return rv;
@@ -638,14 +638,14 @@ namespace ObjCRuntime {
 			return null;
 		}
 
-		unsafe static IntPtr ClassGetNamespace (MonoObject *typeobj)
+		unsafe static IntPtr ClassGetNamespace (MonoObject* typeobj)
 		{
 			var type = (Type?) GetMonoObjectTarget (typeobj);
 			var rv = type?.Namespace;
 			return Marshal.StringToHGlobalAuto (rv);
 		}
 
-		unsafe static IntPtr ClassGetName (MonoObject *typeobj)
+		unsafe static IntPtr ClassGetName (MonoObject* typeobj)
 		{
 			var type = (Type?) GetMonoObjectTarget (typeobj);
 			var rv = type?.Name;
@@ -658,7 +658,7 @@ namespace ObjCRuntime {
 			var type = (Type?) GetMonoObjectTarget (typeobj);
 			if (type?.IsByRef == true)
 				type = type.GetElementType ();
-			return (MonoObject *) GetMonoObject (type);
+			return (MonoObject*) GetMonoObject (type);
 		}
 
 		static unsafe int SizeOf (MonoObject* typeobj)
@@ -682,7 +682,7 @@ namespace ObjCRuntime {
 			var method = (MethodBase) GetMonoObjectTarget (methodobj)!;
 			var instance = GetMonoObjectTarget (instanceobj)!;
 			var rv = InvokeMethod (method, instance, native_parameters);
-			return (MonoObject *) GetMonoObject (rv);
+			return (MonoObject*) GetMonoObject (rv);
 		}
 
 		// Return value: NULL or a MonoObject* that must be released with xamarin_mono_object_safe_release.
@@ -744,7 +744,7 @@ namespace ObjCRuntime {
 					log_coreclr ($"        IsClass/IsInterface/IsNullable IsByRef: {isByRef} IsOut: {p.IsOut} ParameterType: {paramType}");
 					if (nativeParam != IntPtr.Zero) {
 						unsafe {
-							MonoObject* mono_obj = (MonoObject *) nativeParam;
+							MonoObject* mono_obj = (MonoObject*) nativeParam;
 							// dereference if it's a byref type
 							if (isByRef)
 								mono_obj = *(MonoObject**) mono_obj;
@@ -788,7 +788,7 @@ namespace ObjCRuntime {
 
 			try {
 				rv = method.Invoke (instance, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance, null, parameters, null);
-			} catch (TargetInvocationException tie)	{
+			} catch (TargetInvocationException tie) {
 				var ex = tie.InnerException ?? tie;
 				// This will re-throw the original exception and preserve the stacktrace.
 				ExceptionDispatchInfo.Capture (ex).Throw ();
@@ -855,7 +855,7 @@ namespace ObjCRuntime {
 
 		static unsafe MonoObject* NewString (IntPtr text)
 		{
-			return (MonoObject *) GetMonoObject (Marshal.PtrToStringAuto (text));
+			return (MonoObject*) GetMonoObject (Marshal.PtrToStringAuto (text));
 		}
 
 		static unsafe MonoObject* CreateArray (MonoObject* typeobj, ulong elements)
@@ -874,14 +874,14 @@ namespace ObjCRuntime {
 			return (ulong) array.Length;
 		}
 
-		static unsafe void SetArrayObjectValue (MonoObject *arrayobj, ulong index, MonoObject *mobj)
+		static unsafe void SetArrayObjectValue (MonoObject* arrayobj, ulong index, MonoObject* mobj)
 		{
 			var array = (Array) GetMonoObjectTarget (arrayobj)!;
 			var obj = GetMonoObjectTarget (mobj);
 			array.SetValue (obj, (long) index);
 		}
 
-		static unsafe void SetArrayStructValue (MonoObject *arrayobj, ulong index, MonoObject *typeobj, IntPtr valueptr)
+		static unsafe void SetArrayStructValue (MonoObject* arrayobj, ulong index, MonoObject* typeobj, IntPtr valueptr)
 		{
 			var array = (Array) GetMonoObjectTarget (arrayobj)!;
 			var elementType = (Type) GetMonoObjectTarget (typeobj)!;
@@ -893,14 +893,14 @@ namespace ObjCRuntime {
 		{
 			var array = (Array) GetMonoObjectTarget (arrayobj)!;
 			var obj = array.GetValue ((long) index);
-			return (MonoObject *) GetMonoObject (obj);
+			return (MonoObject*) GetMonoObject (obj);
 		}
 
 		static unsafe MonoObject* Box (MonoObject* typeobj, IntPtr value)
 		{
 			var type = (Type) GetMonoObjectTarget (typeobj)!;
 			var rv = Box (type, value);
-			return (MonoObject *) GetMonoObject (rv);
+			return (MonoObject*) GetMonoObject (rv);
 		}
 
 		static object? Box (Type type, IntPtr value)
@@ -948,21 +948,21 @@ namespace ObjCRuntime {
 			return false;
 		}
 
-		unsafe static sbyte IsByRef (MonoObject *typeobj)
+		unsafe static sbyte IsByRef (MonoObject* typeobj)
 		{
 			var type = (Type) GetMonoObjectTarget (typeobj)!;
 			var rv = type.IsByRef;
 			return (sbyte) (rv ? 1 : 0);
 		}
 
-		unsafe static sbyte IsValueType (MonoObject *typeobj)
+		unsafe static sbyte IsValueType (MonoObject* typeobj)
 		{
 			var type = (Type) GetMonoObjectTarget (typeobj)!;
 			var rv = type.IsValueType;
 			return (sbyte) (rv ? 1 : 0);
 		}
 
-		unsafe static sbyte IsEnum (MonoObject *typeobj)
+		unsafe static sbyte IsEnum (MonoObject* typeobj)
 		{
 			var type = (Type) GetMonoObjectTarget (typeobj)!;
 			var rv = type.IsEnum;
@@ -1105,4 +1105,4 @@ namespace ObjCRuntime {
 	}
 }
 
-#endif // NET && !COREBUILD
+#endif // !COREBUILD

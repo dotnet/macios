@@ -8,9 +8,6 @@ namespace GeneratorTests {
 	[TestFixture ()]
 	[Parallelizable (ParallelScope.All)]
 	public class ProtocolTests : BGenBase {
-#if !NET
-		[Ignore ("This only applies to .NET")]
-#endif
 		[TestCase (Profile.MacCatalyst)]
 		[TestCase (Profile.iOS)]
 		public void Members (Profile profile)

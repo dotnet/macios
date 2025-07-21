@@ -45,9 +45,6 @@
     <Compile Include="..\common\Frameworks.cs">
       <Link>tools\common\Frameworks.cs</Link>
     </Compile>
-    <Compile Include="..\mtouch\Stripper.cs">
-      <Link>external\tools\mtouch\Stripper.cs</Link>
-    </Compile>
     <Compile Include="..\common\Application.cs">
       <Link>external\tools\common\Application.cs</Link>
     </Compile>
@@ -164,9 +161,6 @@
     </Compile>
     <Compile Include="..\..\src\ObjCRuntime\PlatformAvailability2.cs">
       <Link>external\src\ObjCRuntime\PlatformAvailability2.cs</Link>
-    </Compile>
-    <Compile Include="..\..\src\ObjCRuntime\RuntimeOptions.cs">
-      <Link>external\src\ObjCRuntime\RuntimeOptions.cs</Link>
     </Compile>
     <Compile Include="..\linker\ApplyPreserveAttribute.cs">
       <Link>external\tools\linker\ApplyPreserveAttribute.cs</Link>

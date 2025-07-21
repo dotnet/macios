@@ -5,13 +5,13 @@
   <PropertyGroup>
     <TargetPlatformIdentifier Condition="'$(TargetPlatformIdentifier)' == 'ios'">iOS</TargetPlatformIdentifier>
     <TargetPlatformIdentifier Condition="'$(TargetPlatformIdentifier)' == 'tvos'">tvOS</TargetPlatformIdentifier>
-    <TargetPlatformIdentifier Condition="'$(TargetPlatformIdentifier)' == 'watchos'">watchOS</TargetPlatformIdentifier>
     <TargetPlatformIdentifier Condition="'$(TargetPlatformIdentifier)' == 'macos'">macOS</TargetPlatformIdentifier>
     <TargetPlatformIdentifier Condition="'$(TargetPlatformIdentifier)' == 'maccatalyst'">MacCatalyst</TargetPlatformIdentifier>
   </PropertyGroup>
 
   <!-- Set the default TargetPlatformVersion if it wasn't specified in the TargetFramework variable. This must be set after importing Sdk.targets (in Xamarin.Shared.Sdk.targets) -->
   <PropertyGroup>
-    <TargetPlatformVersion Condition="'$(TargetPlatformVersion)' == ''">$(_XamarinTargetPlatformVersion)</TargetPlatformVersion>
+    <TargetPlatformVersion Condition="'$(TargetPlatformVersion)' == '' And ('$(OutputType)' == 'Exe' Or '$(IsAppExtension)' == 'true')">$(_XamarinTargetPlatformVersionExecutable)</TargetPlatformVersion>
+    <TargetPlatformVersion Condition="'$(TargetPlatformVersion)' == ''">$(_XamarinTargetPlatformVersionLibrary)</TargetPlatformVersion>
   </PropertyGroup>
 </Project>

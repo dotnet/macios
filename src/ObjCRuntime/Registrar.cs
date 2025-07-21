@@ -9,10 +9,6 @@
 
 // #define VERBOSE_REGISTRAR
 
-#if IPHONE
-#define MONOTOUCH
-#endif
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -60,10 +56,22 @@ using ProductException = ObjCRuntime.RuntimeException;
 
 #if MONOMAC
 namespace ObjCRuntime {
+	/// <param name="sender">To be added.</param>
+	///     <param name="args">To be added.</param>
+	///     <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public delegate void AssemblyRegistrationHandler (object sender, AssemblyRegistrationEventArgs args);
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public class AssemblyRegistrationEventArgs : EventArgs {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool Register { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public System.Reflection.AssemblyName AssemblyName { get; internal set; }
 	}
 }
@@ -91,10 +99,8 @@ namespace Registrar {
 
 #if MMP || MTOUCH || BUNDLER
 		static string NFloatTypeName { get => Driver.IsDotNet ? "System.Runtime.InteropServices.NFloat" : "System.nfloat"; }
-#elif NET
-		const string NFloatTypeName = "System.Runtime.InteropServices.NFloat";
 #else
-		const string NFloatTypeName = "System.nfloat";
+		const string NFloatTypeName = "System.Runtime.InteropServices.NFloat";
 #endif
 
 		Dictionary<TAssembly, object> assemblies = new Dictionary<TAssembly, object> (); // Use Dictionary instead of HashSet to avoid pulling in System.Core.dll.
@@ -606,8 +612,9 @@ namespace Registrar {
 					case Trampoline.Retain:
 					case Trampoline.GetGCHandle:
 					case Trampoline.SetGCHandle:
-					case Trampoline.GetFlags:
-					case Trampoline.SetFlags:
+					case Trampoline.GetGCHandleFlags:
+					case Trampoline.SetGCHandleFlags:
+					case Trampoline.RetainWeakReference:
 						return true;
 					default:
 						return false;
@@ -664,7 +671,7 @@ namespace Registrar {
 
 				var bindas_count = Marshal.ReadInt32 (desc + IntPtr.Size + 4);
 				if (bindas_count < 1 + Parameters.Length)
-					throw ErrorHelper.CreateError (8018, $"Internal consistency error: BindAs array is not big enough (expected at least {1 + parameters.Length} elements, got {bindas_count} elements) for {method_base.DeclaringType.FullName + "." + method_base.Name}. Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new.");
+					throw ErrorHelper.CreateError (8018, $"Internal consistency error: BindAs array is not big enough (expected at least {1 + parameters.Length} elements, got {bindas_count} elements) for {method_base.DeclaringType.FullName + "." + method_base.Name}. Please file a bug report at https://github.com/dotnet/macios/issues/new.");
 
 				Marshal.WriteIntPtr (desc, Runtime.AllocGCHandle (method_base));
 				Marshal.WriteInt32 (desc + IntPtr.Size, (int) semantic);
@@ -882,13 +889,7 @@ namespace Registrar {
 #else
 					var mi = (System.Reflection.MethodInfo) Method;
 					bool is_stret;
-#if __WATCHOS__
-					if (Runtime.Arch == Arch.DEVICE) {
-						is_stret = Stret.ArmNeedStret (NativeReturnType, null);
-					} else {
-						is_stret = IntPtr.Size == 4 ? Stret.X86NeedStret (NativeReturnType, null) : Stret.X86_64NeedStret (NativeReturnType, null);
-					}
-#elif MONOMAC || __MACCATALYST__
+#if MONOMAC || __MACCATALYST__
 					if (Runtime.IsARM64CallingConvention) {
 						is_stret = false;
 					} else {
@@ -912,11 +913,7 @@ namespace Registrar {
 						throw Registrar.CreateException (4104, Method, "The registrar cannot marshal the return value of type `{0}` in the method `{1}.{2}`.", Registrar.GetTypeFullName (NativeReturnType), Registrar.GetTypeFullName (DeclaringType.Type), Registrar.GetDescriptiveMethodName (Method));
 
 					if (is_stret) {
-						if (Registrar.IsSimulatorOrDesktop && !Registrar.Is64Bits) {
-							trampoline = is_static_trampoline ? Trampoline.X86_DoubleABI_StaticStretTrampoline : Trampoline.X86_DoubleABI_StretTrampoline;
-						} else {
-							trampoline = is_static_trampoline ? Trampoline.StaticStret : Trampoline.Stret;
-						}
+						trampoline = is_static_trampoline ? Trampoline.StaticStret : Trampoline.Stret;
 					} else {
 						switch (Signature [0]) {
 						case 'Q':
@@ -1147,7 +1144,6 @@ namespace Registrar {
 		protected abstract TType GetFieldType (TField field);
 		protected abstract int GetValueTypeSize (TType type);
 		protected abstract bool IsSimulatorOrDesktop { get; }
-		protected abstract bool Is64Bits { get; }
 		protected abstract bool IsARM64 { get; }
 		protected abstract Exception CreateExceptionImpl (int code, bool error, Exception innerException, TMethod method, string message, params object [] args);
 		protected abstract Exception CreateExceptionImpl (int code, bool error, Exception innerException, TType type, string message, params object [] args);
@@ -1341,8 +1337,6 @@ namespace Registrar {
 				switch (App.Platform) {
 				case ApplePlatform.iOS:
 					return Driver.IsDotNet ? "Microsoft.iOS" : "Xamarin.iOS";
-				case ApplePlatform.WatchOS:
-					return Driver.IsDotNet ? "Microsoft.watchOS" : "Xamarin.WatchOS";
 				case ApplePlatform.TVOS:
 					return Driver.IsDotNet ? "Microsoft.tvOS" : "Xamarin.TVOS";
 				case ApplePlatform.MacOSX:
@@ -1355,35 +1349,13 @@ namespace Registrar {
 			}
 		}
 #elif MONOMAC
-#if NET
 		internal const string AssemblyName = "Microsoft.macOS";
-#else
-		internal const string AssemblyName = "Xamarin.Mac";
-#endif
-#elif WATCH
-#if NET
-		internal const string AssemblyName = "Microsoft.watchOS";
-#else
-		internal const string AssemblyName = "Xamarin.WatchOS";
-#endif
 #elif TVOS
-#if NET
 		internal const string AssemblyName = "Microsoft.tvOS";
-#else
-		internal const string AssemblyName = "Xamarin.TVOS";
-#endif
 #elif __MACCATALYST__
-#if NET
 		internal const string AssemblyName = "Microsoft.MacCatalyst";
-#else
-		internal const string AssemblyName = "Xamarin.MacCatalyst";
-#endif
 #elif IOS
-#if NET
 		internal const string AssemblyName = "Microsoft.iOS";
-#else
-		internal const string AssemblyName = "Xamarin.iOS";
-#endif
 #else
 #error Unknown platform
 #endif
@@ -2121,23 +2093,30 @@ namespace Registrar {
 					}, ref exceptions);
 
 					objcType.Add (new ObjCMethod (this, objcType, null) {
-						Selector = "xamarinSetGCHandle:flags:",
+						Selector = "xamarinSetGCHandle:flags:data:",
 						Trampoline = Trampoline.SetGCHandle,
-						Signature = "v@:^vi",
+						Signature = "v@:^vi^v",
 						IsStatic = false,
 					}, ref exceptions);
 
 					objcType.Add (new ObjCMethod (this, objcType, null) {
-						Selector = "xamarinGetFlags",
-						Trampoline = Trampoline.GetFlags,
+						Selector = "xamarinGetGCHandleFlags",
+						Trampoline = Trampoline.GetGCHandleFlags,
 						Signature = "i@:",
 						IsStatic = false,
 					}, ref exceptions);
 
 					objcType.Add (new ObjCMethod (this, objcType, null) {
-						Selector = "xamarinSetFlags:",
-						Trampoline = Trampoline.SetFlags,
+						Selector = "xamarinSetGCHandleFlags:",
+						Trampoline = Trampoline.SetGCHandleFlags,
 						Signature = "v@:i",
+						IsStatic = false,
+					}, ref exceptions);
+
+					objcType.Add (new ObjCMethod (this, objcType, null) {
+						Selector = "retainWeakReference",
+						Trampoline = Trampoline.RetainWeakReference,
+						Signature = $"{GetBoolEncoding ()}@:",
 						IsStatic = false,
 					}, ref exceptions);
 				}
@@ -2276,8 +2255,8 @@ namespace Registrar {
 							DeclaringType = objcType,
 							Name = ca.Name ?? GetPropertyName (property),
 #if !MTOUCH && !MMP && !BUNDLER
-							Size = Is64Bits ? 8 : 4,
-							Alignment = (byte) (Is64Bits ? 3 : 2),
+							Size = 8,
+							Alignment = (byte) 3,
 #endif
 							FieldType = "@",
 							IsProperty = true,
@@ -2675,6 +2654,29 @@ namespace Registrar {
 			return GetExportedTypeName (type, GetRegisterAttribute (type));
 		}
 
+		string GetBoolEncoding ()
+		{
+			// map managed 'bool' to ObjC BOOL = 'unsigned char' in OSX and 32bit iOS architectures and 'bool' in 64bit iOS architectures
+#if MTOUCH || MMP || BUNDLER
+			switch (App.Platform) {
+			case ApplePlatform.iOS:
+			case ApplePlatform.TVOS:
+				return "B";
+			case ApplePlatform.MacOSX:
+			case ApplePlatform.MacCatalyst:
+				return IsARM64 ? "B" : "c";
+			default:
+				throw ErrorHelper.CreateError (71, Errors.MX0071, App.Platform, App.ProductName);
+			}
+#else
+#if MONOMAC || __MACCATALYST__
+			return IsARM64 ? "B" : "c";
+#else
+			return "B";
+#endif
+#endif
+		}
+
 		protected string ToSignature (TType type, ObjCMember member, ref bool success, bool forProperty = false)
 		{
 			bool isNativeEnum;
@@ -2695,40 +2697,20 @@ namespace Registrar {
 			case "System.UInt64": return "Q";
 			case "System.Single": return "f";
 			case "System.Double": return "d";
-			case "System.Boolean":
-				// map managed 'bool' to ObjC BOOL = 'unsigned char' in OSX and 32bit iOS architectures and 'bool' in 64bit iOS architectures
-#if MTOUCH || MMP || BUNDLER
-				switch (App.Platform) {
-				case ApplePlatform.iOS:
-				case ApplePlatform.WatchOS:
-				case ApplePlatform.TVOS:
-					return Is64Bits ? "B" : "c";
-				case ApplePlatform.MacOSX:
-				case ApplePlatform.MacCatalyst:
-					return IsARM64 ? "B" : "c";
-				default:
-					throw ErrorHelper.CreateError (71, Errors.MX0071, App.Platform, App.ProductName);
-				}
-#else
-#if MONOMAC || __MACCATALYST__
-				return IsARM64 ? "B" : "c";
-#else
-				return Is64Bits ? "B" : "c";
-#endif
-#endif
+			case "System.Boolean": return GetBoolEncoding ();
 			case "System.Void": return "v";
 			case "System.String":
 				return forProperty ? "@\"NSString\"" : "@";
 			case "System.nint":
-				return Is64Bits ? "q" : "i";
+				return "q";
 			case "System.nuint":
-				return Is64Bits ? "Q" : "I";
+				return "Q";
 			case "System.DateTime":
 				throw CreateException (4102, member, Errors.MT4102, "System.DateTime", "Foundation.NSDate", member.FullName);
 			}
 
 			if (typeFullName == NFloatTypeName)
-				return Is64Bits ? "d" : "f";
+				return "d";
 
 			if (Is (type, ObjCRuntime, "Selector"))
 				return ":";
@@ -2750,18 +2732,7 @@ namespace Registrar {
 				return "^v";
 
 			if (IsEnum (type, out isNativeEnum)) {
-				if (isNativeEnum && !Is64Bits) {
-					switch (GetEnumUnderlyingType (type).FullName) {
-					case "System.Int64":
-						return "i";
-					case "System.UInt64":
-						return "I";
-					default:
-						throw CreateException (4145, Errors.MT4145, GetTypeFullName (type));
-					}
-				} else {
-					return ToSignature (GetEnumUnderlyingType (type), member, ref success);
-				}
+				return ToSignature (GetEnumUnderlyingType (type), member, ref success);
 			}
 
 			if (IsValueType (type))
@@ -2876,13 +2847,12 @@ namespace Registrar {
 		Constructor,
 		Long,
 		StaticLong,
-		X86_DoubleABI_StaticStretTrampoline,
-		X86_DoubleABI_StretTrampoline,
 		CopyWithZone1,
 		CopyWithZone2,
 		GetGCHandle,
 		SetGCHandle,
-		GetFlags,
-		SetFlags,
+		GetGCHandleFlags,
+		SetGCHandleFlags,
+		RetainWeakReference,
 	}
 }

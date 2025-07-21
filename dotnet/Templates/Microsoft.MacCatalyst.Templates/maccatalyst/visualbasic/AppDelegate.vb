@@ -14,7 +14,7 @@ Namespace MacCatalystApp1
 		Public Overrides Function GetConfiguration(ByVal application As UIApplication, ByVal connectingSceneSession As UISceneSession, ByVal options As UISceneConnectionOptions) As UISceneConfiguration
 			' Called when a new scene session is being created.
 			' Use this method to select a configuration to create the new scene with.
-			' "Default Configuration" is defined in the info.plist's 'UISceneConfigurationName' key.
+			' "Default Configuration" is defined in the Info.plist's 'UISceneConfigurationName' key.
 			Return New UISceneConfiguration("Default Configuration", connectingSceneSession.Role)
 		End Function
 

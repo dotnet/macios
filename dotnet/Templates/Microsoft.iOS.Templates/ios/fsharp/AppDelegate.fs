@@ -14,7 +14,7 @@ type AppDelegate() =
     override this.GetConfiguration(application: UIApplication, connectingSceneSession: UISceneSession, options: UISceneConnectionOptions) =
         // Called when a new scene session is being created.
         // Use this method to select a configuration to create the new scene with.
-        // "Default Configuration" is defined in the info.plist's 'UISceneConfigurationName' key.
+        // "Default Configuration" is defined in the Info.plist's 'UISceneConfigurationName' key.
         new UISceneConfiguration("Default Configuration", connectingSceneSession.Role)
 
     override this.DidDiscardSceneSessions(application: UIApplication, sceneSessions: NSSet<UISceneSession>) =

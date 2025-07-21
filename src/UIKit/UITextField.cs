@@ -47,13 +47,13 @@ namespace UIKit {
 
 	/// <summary>Delegate that determines whether text changes should be allowed in a UITextField for multiple ranges.</summary>
 	/// <param name="textField">The text field that contains the text to be modified.</param>
-	/// <param name="ranges">An array of NSValue objects containing NSRange values representing the character ranges to be replaced.</param>
+	/// <param name="ranges">An array of <see cref="NSValue" /> objects containing <see cref="NSRange" /> values representing the character ranges to be replaced.</param>
 	/// <param name="replacementString">The replacement text for the specified ranges. When typing, this typically contains the single new character entered, but may contain multiple characters if pasting. An empty string indicates character deletion.</param>
 	/// <returns>Returns true if the text changes should be allowed; otherwise, false to prevent the modification.</returns>
 	/// <remarks>
 	/// <para>This delegate method is called when the text field needs to validate text changes across multiple ranges simultaneously.</para>
 	/// <para>Use this method to implement custom text validation logic, such as restricting input to specific formats or preventing certain types of content.</para>
-	/// <para>This is the multiple-range version of the standard shouldChangeCharactersInRange method.</para>
+	/// <para>This is the multiple-range version of the standard <see cref="ShouldChangeCharacters" /> method.</para>
 	/// </remarks>
 	public delegate bool UITextFieldChanges (UITextField textField, NSValue [] ranges, string replacementString);
 

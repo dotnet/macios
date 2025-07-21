@@ -44,7 +44,7 @@ static class ParameterFormatter {
 			modifiers = TokenList (Token (SyntaxKind.ThisKeyword));
 		} else {
 			// modifiers come from two situations, we have the params keyword or not. We cannot have params + a ref modifier
-			// so we build them based on that. If you call WithModifiers twice, you will me stepping on the previous collection
+			// so we build them based on that. If you call WithModifiers twice, you will be stepping on the previous collection
 			// it won't be a merge
 			modifiers = parameter.IsParams
 				? TokenList (Token (SyntaxKind.ParamsKeyword))

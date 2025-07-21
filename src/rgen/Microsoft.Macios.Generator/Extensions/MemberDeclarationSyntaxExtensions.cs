@@ -78,21 +78,20 @@ static class MemberDeclarationSyntaxExtensions {
 	public static BindingType GetBindingType (this ClassDeclarationSyntax self, SemanticModel semanticModel)
 	{
 		foreach (AttributeListSyntax attributeListSyntax in self.AttributeLists)
-		foreach (AttributeSyntax attributeSyntax in attributeListSyntax.Attributes) {
-			if (semanticModel.GetSymbolInfo (attributeSyntax).Symbol is not IMethodSymbol attributeSymbol)
-				continue; // if we can't get the symbol, ignore it
+			foreach (AttributeSyntax attributeSyntax in attributeListSyntax.Attributes) {
+				if (semanticModel.GetSymbolInfo (attributeSyntax).Symbol is not IMethodSymbol attributeSymbol)
+					continue; // if we can't get the symbol, ignore it
 
-			var currentName = attributeSymbol.ContainingType.ToDisplayString ();
-			switch (currentName)
-			{
+				var currentName = attributeSymbol.ContainingType.ToDisplayString ();
+				switch (currentName) {
 				case AttributesNames.CategoryAttribute:
 					return BindingType.Category;
 				case AttributesNames.ClassAttribute:
 					return BindingType.Class;
 				case AttributesNames.StrongDictionaryAttribute:
 					return BindingType.StrongDictionary;
+				}
 			}
-		}
 		return BindingType.Unknown;
 	}
 }

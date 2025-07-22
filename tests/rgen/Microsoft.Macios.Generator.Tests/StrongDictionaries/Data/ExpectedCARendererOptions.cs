@@ -8,4 +8,21 @@ using Metal;
 using ObjCBindings;
 using System;
 using System.Runtime.Versioning;
-// TODO: implement emitter.
+
+namespace TestNamespace;
+
+public partial class CARendererOptions : DictionaryContainer
+{
+
+	// TODO: implement default constructors.
+
+
+	// TODO: implement properties.
+
+
+	// Emit code for property: ColorSpace
+
+
+	// Emit code for property: MetalCommandQueue
+
+}

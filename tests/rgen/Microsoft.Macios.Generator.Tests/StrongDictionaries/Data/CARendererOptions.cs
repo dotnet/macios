@@ -28,4 +28,7 @@ public partial class CARendererOptions : DictionaryContainer {
 
 	[Export<StrongDictionaryProperty> (nameof (Keys.MetalCommandQueue), StrongDictionaryKeyClass = typeof (Keys))]
 	public partial IMTLCommandQueue MetalCommandQueue { get; set; }
+	
+	// this is a random property to test the generator's handling of properties that are not marked as StrongDictionaryProperty.
+	public string int Radom => Int32.MaxValue;
 }

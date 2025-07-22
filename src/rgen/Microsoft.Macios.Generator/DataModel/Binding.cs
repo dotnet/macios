@@ -153,12 +153,38 @@ readonly partial struct Binding {
 			}
 		}
 	}
-
+	
 	/// <summary>
 	/// Returns all the selectors for the properties.
 	/// </summary>
 	public ImmutableArray<string> PropertySelectors => [.. propertyIndex.Keys];
+	
+	readonly Dictionary<string, int> strongDictPropertyIndex = new ();
+	readonly ImmutableArray<Property> strongDictproperties = [];
 
+	/// <summary>
+	/// Changes to the properties of the symbol that is a StrongDictionary.
+	/// </summary>
+	public ImmutableArray<Property> StrongDictionaryProperties {
+		get => strongDictproperties;
+		init {
+			strongDictproperties = value;
+			// populate the property index for fast lookup using the symbol name
+			for (var index = 0; index < strongDictproperties.Length; index++) {
+				var property = strongDictproperties [index];
+				// there are two type of properties, those that are fields and those that are properties
+				if (property.Selector is null)
+					continue;
+				strongDictPropertyIndex[property.Selector!] = index;
+			}
+		}
+	}
+	
+	/// <summary>
+	/// Returns all the strings that are used as keys in the StrongDictionary properties.
+	/// </summary>
+	public ImmutableArray<string> StrongDictionaryKeys => [.. strongDictPropertyIndex.Keys];
+	
 	readonly Dictionary<string, int> constructorIndex = new ();
 	readonly ImmutableArray<Constructor> constructors = [];
 

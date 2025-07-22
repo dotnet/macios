@@ -240,7 +240,7 @@ readonly struct ExportData<T> : IEquatable<ExportData<T>> where T : Enum {
 				}
 				break;
 			// strong dictionary related data
-			case "StrongDictionaryProperty":
+			case "StrongDictionaryKeyClass":
 				if (isStrongDictionaryProperty) {
 					strongDictionaryKeyClass = new ((INamedTypeSymbol) value!);
 				}

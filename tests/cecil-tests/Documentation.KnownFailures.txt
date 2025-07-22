@@ -2588,8 +2588,11 @@ F:DeviceDiscoveryExtension.DDDeviceState.Activating
 F:DeviceDiscoveryExtension.DDDeviceState.Authorized
 F:DeviceDiscoveryExtension.DDDeviceState.Invalid
 F:DeviceDiscoveryExtension.DDDeviceState.Invalidating
+F:DeviceDiscoveryExtension.DDDeviceSupports.BluetoothHid
 F:DeviceDiscoveryExtension.DDDeviceSupports.BluetoothPairingLE
 F:DeviceDiscoveryExtension.DDDeviceSupports.BluetoothTransportBridging
+F:DeviceDiscoveryExtension.DDDeviceWiFiAwareServiceRole.Publisher
+F:DeviceDiscoveryExtension.DDDeviceWiFiAwareServiceRole.Subscriber
 F:DeviceDiscoveryExtension.DDErrorCode.BadParameter
 F:DeviceDiscoveryExtension.DDErrorCode.Internal
 F:DeviceDiscoveryExtension.DDErrorCode.MissingEntitlement
@@ -20499,6 +20502,10 @@ P:Darwin.Message.Item(System.String)
 P:DataDetection.DDMatchCalendarEvent.AllDay
 P:DeviceCheck.DCAppAttestService.Supported
 P:DeviceDiscoveryExtension.DDDevice.NetworkEndpoint
+P:DeviceDiscoveryExtension.DDDevice.WifiAwareModelName
+P:DeviceDiscoveryExtension.DDDevice.WifiAwareServiceName
+P:DeviceDiscoveryExtension.DDDevice.WifiAwareServiceRole
+P:DeviceDiscoveryExtension.DDDevice.WifiAwareVendorName
 P:EventKitUI.EKEventEditEventArgs.Action
 P:EventKitUI.EKEventViewEventArgs.Action
 P:ExecutionPolicy.EPDeveloperTool.AuthorizationStatus
@@ -27082,6 +27089,7 @@ T:DeviceDiscoveryExtension.DDDeviceProtocol
 T:DeviceDiscoveryExtension.DDDeviceProtocolStrings
 T:DeviceDiscoveryExtension.DDDeviceState
 T:DeviceDiscoveryExtension.DDDeviceSupports
+T:DeviceDiscoveryExtension.DDDeviceWiFiAwareServiceRole
 T:DeviceDiscoveryExtension.DDErrorCode
 T:DeviceDiscoveryExtension.DDEventType
 T:EventKit.EKAlarmType

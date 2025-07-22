@@ -506,6 +506,6 @@ using (var m3 = new MemoryStream())
 
 		Assert.Equal (expectedString, baseBlock.ToCode ());
 	}
-	
-	
+
+
 }

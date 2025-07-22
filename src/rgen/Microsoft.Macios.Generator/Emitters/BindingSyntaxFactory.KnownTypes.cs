@@ -166,14 +166,14 @@ static partial class BindingSyntaxFactory {
 	public readonly static TypeSyntax NSErrorException = StringExtensions.GetIdentifierName (
 		@namespace: ["Foundation"],
 		@class: "NSErrorException");
-	
+
 	/// <summary>
 	/// TypeSyntax for Foundation.NSDictionary.
 	/// </summary>
 	public static readonly TypeSyntax NSDictionary = StringExtensions.GetIdentifierName (
 		@namespace: ["Foundation"],
 		@class: "NSDictionary");
-	
+
 	/// <summary>
 	/// TypeSyntax for Foundation.NSMutableDictionary.
 	/// </summary>

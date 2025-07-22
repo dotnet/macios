@@ -45,22 +45,22 @@ class StrongDictionaryEmitter : IClassEmitter {
 			var getter = property.GetAccessor (AccessorKind.Getter);
 			if (getter is null)
 				continue;
-			
+
 			classBlock.WriteLine ();
 			classBlock.AppendMemberAvailability (property.SymbolAvailability);
 			var (getCall, setCall) = GetStrongDictionaryInvocations (property);
 			using (var propertyBlock = classBlock.CreateBlock (property.ToDeclaration ().ToString (), block: true)) {
-				
+
 				propertyBlock.AppendMemberAvailability (getter.Value.SymbolAvailability);
 				using (var getterBlock = propertyBlock.CreateBlock ("get", block: true)) {
 					getterBlock.WriteLine ($"{getCall}");
 				}
-				
+
 				var setter = property.GetAccessor (AccessorKind.Setter);
 				if (setter is null)
 					// we are done with the current property
 					continue;
-				
+
 				propertyBlock.WriteLine (); // add space between getter and setter since we have the attrs
 				propertyBlock.AppendMemberAvailability (setter.Value.SymbolAvailability);
 				using (var setterBlock = propertyBlock.CreateBlock ("set", block: true)) {

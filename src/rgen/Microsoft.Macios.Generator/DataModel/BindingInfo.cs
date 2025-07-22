@@ -20,6 +20,7 @@ readonly struct BindingInfo : IEquatable<BindingInfo> {
 	[FieldOffset (8)] readonly BindingTypeData<ObjCBindings.Category> categoryData;
 	[FieldOffset (8)] readonly BindingTypeData<ObjCBindings.CoreImageFilter> coreImageFilterData;
 	[FieldOffset (8)] readonly BindingTypeData<ObjCBindings.SmartEnum> smartEnumData;
+	[FieldOffset (8)] readonly BindingTypeData<ObjCBindings.StrongDictionary> strongDictionaryData;
 
 	public BindingType BindingType => bindingType;
 
@@ -72,6 +73,12 @@ readonly struct BindingInfo : IEquatable<BindingInfo> {
 		bindingType = BindingType.SmartEnum;
 		smartEnumData = data;
 	}
+	
+	public BindingInfo (BindingTypeData<ObjCBindings.StrongDictionary> data)
+	{
+		bindingType = BindingType.StrongDictionary;
+		strongDictionaryData = data;
+	}
 
 	public static implicit operator BindingTypeData (BindingInfo info) => info.bindingTypeData;
 
@@ -109,6 +116,13 @@ readonly struct BindingInfo : IEquatable<BindingInfo> {
 			throw new InvalidCastException ($"Invalid cast to ObjCBindings.SmartEnum for binding type {info.BindingType}");
 		return info.smartEnumData;
 	}
+	
+	public static implicit operator BindingTypeData<ObjCBindings.StrongDictionary> (BindingInfo info)
+	{
+		if (info.BindingType != BindingType.StrongDictionary)
+			throw new InvalidCastException ($"Invalid cast to ObjCBindings.SmartEnum for binding type {info.BindingType}");
+		return info.strongDictionaryData;
+	}
 
 	public static implicit operator BindingInfo (BindingTypeData data) => new (BindingType.Unknown, data);
 	public static implicit operator BindingInfo (BindingTypeData<ObjCBindings.Class> data) => new (data);
@@ -116,6 +130,7 @@ readonly struct BindingInfo : IEquatable<BindingInfo> {
 	public static implicit operator BindingInfo (BindingTypeData<ObjCBindings.Category> data) => new (data);
 	public static implicit operator BindingInfo (BindingTypeData<ObjCBindings.CoreImageFilter> data) => new (data);
 	public static implicit operator BindingInfo (BindingTypeData<ObjCBindings.SmartEnum> data) => new (data);
+	public static implicit operator BindingInfo (BindingTypeData<ObjCBindings.StrongDictionary> data) => new (data);
 
 	/// <inheritdoc />
 	public bool Equals (BindingInfo other)
@@ -133,6 +148,8 @@ readonly struct BindingInfo : IEquatable<BindingInfo> {
 			return protocolData == other.protocolData;
 		case BindingType.Category:
 			return categoryData == other.categoryData;
+		case BindingType.StrongDictionary:
+			return strongDictionaryData == other.strongDictionaryData;
 		}
 		return false;
 	}
@@ -149,6 +166,7 @@ readonly struct BindingInfo : IEquatable<BindingInfo> {
 		BindingType.Class => HashCode.Combine (bindingType, classData),
 		BindingType.Protocol => HashCode.Combine (bindingType, protocolData),
 		BindingType.Category => HashCode.Combine (bindingType, categoryData),
+		BindingType.StrongDictionary => HashCode.Combine (bindingType, strongDictionaryData),
 		_ => HashCode.Combine (bindingType, bindingTypeData)
 	};
 
@@ -169,6 +187,7 @@ readonly struct BindingInfo : IEquatable<BindingInfo> {
 		BindingType.Category => $"{{ BindingType: {bindingType}, BindingData: {categoryData} }}",
 		BindingType.CoreImageFilter => $"{{ BindingType: {bindingType}, BindingData: {coreImageFilterData} }}",
 		BindingType.SmartEnum => $"{{ BindingType: {bindingType}, BindingData: {smartEnumData} }}",
+		BindingType.StrongDictionary => $"{{ BindingType: {bindingType}, BindingData: {strongDictionaryData} }}",
 		_ => throw new NotImplementedException ()
 	};
 }

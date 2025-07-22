@@ -441,6 +441,9 @@ namespace Introspection {
 				case "CKSyncEnginePendingDatabaseChange":
 				case "NSCursor":
 					return true;
+				// Xcode 26.0
+				case "UISceneDestructionCondition": // Conformance not in headers
+					return true;
 				}
 				break;
 			case "NSSecureCoding":
@@ -639,6 +642,9 @@ namespace Introspection {
 				case "CKSyncEngineState":
 				case "NSCursor":
 					return true;
+				// Xcode 26.0
+				case "UISceneDestructionCondition": // Conformance not in headers
+					return true;
 				}
 				break;
 			case "NSCopying":
@@ -738,6 +744,7 @@ namespace Introspection {
 				case "SRMessagesUsageReport":
 				case "SRPhoneUsageReport":
 				case "SRWristDetection":
+				case "UIMenuSystemFindElementGroupConfiguration": // conformance not in headers
 					return true;
 				}
 				break;

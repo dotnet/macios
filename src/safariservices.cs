@@ -912,8 +912,7 @@ namespace SafariServices {
 	[NoTV, NoMacCatalyst, iOS (26, 0), NoMac]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface SFSafariSettings
-	{
+	interface SFSafariSettings {
 		[Async]
 		[Static]
 		[Export ("openExportBrowsingDataSettingsWithCompletionHandler:")]

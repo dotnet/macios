@@ -24,7 +24,10 @@ public class StrongDictionaryTests : BaseGeneratorTestClass {
 		readonly List<ClassGenerationData> _data = new ()
 		{
 			// trampoline tests
+			new (ApplePlatform.iOS, "CARendererOptions", "CARendererOptions.cs", "ExpectedCARendererOptions.cs"),
 			new (ApplePlatform.TVOS, "CARendererOptions", "CARendererOptions.cs", "ExpectedCARendererOptions.cs"),
+			new (ApplePlatform.MacCatalyst, "CARendererOptions", "CARendererOptions.cs", "ExpectedCARendererOptions.cs"),
+			new (ApplePlatform.MacOSX, "CARendererOptions", "CARendererOptions.cs", "ExpectedCARendererOptions.cs"),
 		};
 
 		public IEnumerator<object []> GetEnumerator ()

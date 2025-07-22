@@ -14,8 +14,14 @@ namespace TestNamespace;
 public partial class CARendererOptions : DictionaryContainer
 {
 
-	// TODO: implement default constructors.
+	/// <summary>Creates a new <see cref="CARendererOptions" /> with default (empty) values.</summary>
+	[Preserve (Conditional = true)]
+	public CARendererOptions () : base (new global::Foundation.NSMutableDictionary ()) {}
 
+	/// <summary>Creates a new <see cref="CARendererOptions" /> from the values that are specified in <paramref name="dictionary" />.</summary>
+	/// <param name="dictionary">The dictionary to use to populate the properties of this type.</param>
+	[Preserve (Conditional = true)]
+	public CARendererOptions (global::Foundation.NSDictionary? dictionary) : base (dictionary) {}
 
 	// TODO: implement properties.
 

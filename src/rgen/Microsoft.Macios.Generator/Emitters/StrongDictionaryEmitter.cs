@@ -9,6 +9,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.Macios.Generator.Context;
 using Microsoft.Macios.Generator.DataModel;
 using Microsoft.Macios.Generator.IO;
+using static Microsoft.Macios.Generator.Emitters.BindingSyntaxFactory;
 
 namespace Microsoft.Macios.Generator.Emitters;
 
@@ -24,9 +25,15 @@ class StrongDictionaryEmitter : IClassEmitter {
 
 	void EmitDefaultConstructors (in BindingContext bindingContext, TabbedWriter<StringWriter> classBlock)
 	{
+		// Emit default constructors, which are required for strong dictionaries. And their needed docs
 		classBlock.WriteLine ();
-		classBlock.WriteLine ("// TODO: implement default constructors.");
+		classBlock.WriteDocumentation (Documentation.StrongDictionary.EmptyConstructor (bindingContext.Changes.Name));
+		classBlock.AppendPreserveAttribute (conditional: true);
+		classBlock.WriteLine ($"public {bindingContext.Changes.Name} () : base (new {NSMutableDictionary} ()) {{}}");
 		classBlock.WriteLine ();
+		classBlock.WriteDocumentation (Documentation.StrongDictionary.InitWithDictionary (bindingContext.Changes.Name));
+		classBlock.AppendPreserveAttribute (conditional: true);
+		classBlock.WriteLine ($"public {bindingContext.Changes.Name} ({NSDictionary}? dictionary) : base (dictionary) {{}}");
 	}
 
 	void EmitProperties (in BindingContext context, TabbedWriter<StringWriter> classBlock)

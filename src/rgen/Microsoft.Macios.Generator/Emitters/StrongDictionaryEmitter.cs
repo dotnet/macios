@@ -5,9 +5,11 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.Macios.Generator.Context;
 using Microsoft.Macios.Generator.DataModel;
+using Microsoft.Macios.Generator.Formatters;
 using Microsoft.Macios.Generator.IO;
 using static Microsoft.Macios.Generator.Emitters.BindingSyntaxFactory;
 
@@ -38,14 +40,33 @@ class StrongDictionaryEmitter : IClassEmitter {
 
 	void EmitProperties (in BindingContext context, TabbedWriter<StringWriter> classBlock)
 	{
-		classBlock.WriteLine ();
-		classBlock.WriteLine ("// TODO: implement properties.");
-		classBlock.WriteLine ();
-
-		foreach (var property in context.Changes.StrongDictionaryProperties) {
+		foreach (var property in context.Changes.StrongDictionaryProperties.OrderBy (p => p.Name)) {
+			// make sure that the user did not forget to add the getter
+			var getter = property.GetAccessor (AccessorKind.Getter);
+			if (getter is null)
+				continue;
+			
 			classBlock.WriteLine ();
-			classBlock.WriteLine ($"// Emit code for property: {property.Name}");
-			classBlock.WriteLine ();
+			classBlock.AppendMemberAvailability (property.SymbolAvailability);
+			var (getCall, setCall) = GetStrongDictionaryInvocations (property);
+			using (var propertyBlock = classBlock.CreateBlock (property.ToDeclaration ().ToString (), block: true)) {
+				
+				propertyBlock.AppendMemberAvailability (getter.Value.SymbolAvailability);
+				using (var getterBlock = propertyBlock.CreateBlock ("get", block: true)) {
+					getterBlock.WriteLine ($"{getCall}");
+				}
+				
+				var setter = property.GetAccessor (AccessorKind.Setter);
+				if (setter is null)
+					// we are done with the current property
+					continue;
+				
+				propertyBlock.WriteLine (); // add space between getter and setter since we have the attrs
+				propertyBlock.AppendMemberAvailability (setter.Value.SymbolAvailability);
+				using (var setterBlock = propertyBlock.CreateBlock ("set", block: true)) {
+					setterBlock.WriteLine ($"{setCall}");
+				}
+			}
 		}
 	}
 
@@ -67,6 +88,7 @@ class StrongDictionaryEmitter : IClassEmitter {
 		bindingContext.Builder.WriteLine ($"namespace {string.Join (".", bindingContext.Changes.Namespace)};");
 		bindingContext.Builder.WriteLine ();
 
+		bindingContext.Builder.AppendMemberAvailability (bindingContext.Changes.SymbolAvailability);
 		var modifiers = $"{string.Join (' ', bindingContext.Changes.Modifiers)} ";
 		using (var classBlock = bindingContext.Builder.CreateBlock (
 				   $"{(string.IsNullOrWhiteSpace (modifiers) ? string.Empty : modifiers)}class {bindingContext.Changes.Name} : DictionaryContainer",

@@ -11,6 +11,10 @@ using System.Runtime.Versioning;
 
 namespace TestNamespace;
 
+[SupportedOSPlatform ("macos")]
+[SupportedOSPlatform ("ios")]
+[SupportedOSPlatform ("tvos")]
+[SupportedOSPlatform ("maccatalyst13.1")]
 public partial class CARendererOptions : DictionaryContainer
 {
 
@@ -23,12 +27,53 @@ public partial class CARendererOptions : DictionaryContainer
 	[Preserve (Conditional = true)]
 	public CARendererOptions (global::Foundation.NSDictionary? dictionary) : base (dictionary) {}
 
-	// TODO: implement properties.
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("maccatalyst13.1")]
+	public partial global::CoreGraphics.CGColorSpace? ColorSpace
+	{
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("maccatalyst13.1")]
+		get
+		{
+			throw new NotImplementedException()
+		}
 
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("maccatalyst13.1")]
+		set
+		{
+			throw new NotImplementedException()
+		}
+	}
 
-	// Emit code for property: ColorSpace
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("maccatalyst13.1")]
+	public partial global::Metal.IMTLCommandQueue? MetalCommandQueue
+	{
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("maccatalyst13.1")]
+		get
+		{
+			throw new NotImplementedException()
+		}
 
-
-	// Emit code for property: MetalCommandQueue
-
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("maccatalyst13.1")]
+		set
+		{
+			throw new NotImplementedException()
+		}
+	}
 }

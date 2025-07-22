@@ -358,6 +358,8 @@ readonly struct ExportData<T> : IEquatable<ExportData<T>> where T : Enum {
 		sb.Append (PostNonResultSnippet ?? "null");
 		sb.Append ("', StrongDelegateType: '");
 		sb.Append (StrongDelegateType?.FullyQualifiedName ?? "null");
+		sb.Append ("', StrongDictionaryKeysClass: '");
+		sb.Append (StrongDictionaryKeyClass?.FullyQualifiedName ?? "null");
 		sb.Append ("' }");
 		return sb.ToString ();
 	}

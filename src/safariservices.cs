@@ -914,6 +914,7 @@ namespace SafariServices {
 	[DisableDefaultCtor]
 	interface SFSafariSettings
 	{
+		[Async]
 		[Static]
 		[Export ("openExportBrowsingDataSettingsWithCompletionHandler:")]
 		void OpenExportBrowsingDataSettingsWithCompletionHandler ([NullAllowed] SFSafariSettingsOpenExportBrowsingDataSettingsCompletionHandler completionHandler);

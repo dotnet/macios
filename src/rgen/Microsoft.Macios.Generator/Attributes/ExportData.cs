@@ -84,7 +84,7 @@ readonly struct ExportData<T> : IEquatable<ExportData<T>> where T : Enum {
 	/// The name of the strong delegate for a weak delegate property.
 	/// </summary>
 	public string? StrongDelegateName { get; init; }
-	
+
 	/// <summary>
 	/// The type of the dictionary key class for strong dictionary properties.
 	/// </summary>
@@ -184,7 +184,7 @@ readonly struct ExportData<T> : IEquatable<ExportData<T>> where T : Enum {
 		// from this point we have to check the name of the argument AND if the export method is an Async method.
 		var isAsync = typeof (T) == typeof (ObjCBindings.Method) && flags is not null && flags.HasFlag (ObjCBindings.Method.Async);
 		var isWeakDelegate = typeof (T) == typeof (ObjCBindings.Property) && flags is not null && flags.HasFlag (ObjCBindings.Property.WeakDelegate);
-		var isStrongDictionaryProperty  = typeof (T) == typeof (ObjCBindings.StrongDictionaryProperty);
+		var isStrongDictionaryProperty = typeof (T) == typeof (ObjCBindings.StrongDictionaryProperty);
 
 		// loop over all the named arguments and set the data accordingly, ignore the Flags one since we already set it
 		foreach (var (name, value) in attrsDict) {

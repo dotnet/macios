@@ -22,10 +22,10 @@ public partial class CARendererOptions : DictionaryContainer {
 		[Field<Property> ("kCARendererMetalCommandQueue")]
 		public static partial NSString MetalCommandQueue { get; }
 	}
-    
-	[Export<StrongDictionaryProperty> (nameof (Keys.ColorSpace), StrongDictionaryKeyClass = typeof(Keys))]
+
+	[Export<StrongDictionaryProperty> (nameof (Keys.ColorSpace), StrongDictionaryKeyClass = typeof (Keys))]
 	public partial CGColorSpace ColorSpace { get; set; }
 
-	[Export<StrongDictionaryProperty> (nameof (Keys.MetalCommandQueue), StrongDictionaryKeyClass = typeof(Keys))]
+	[Export<StrongDictionaryProperty> (nameof (Keys.MetalCommandQueue), StrongDictionaryKeyClass = typeof (Keys))]
 	public partial IMTLCommandQueue MetalCommandQueue { get; set; }
 }

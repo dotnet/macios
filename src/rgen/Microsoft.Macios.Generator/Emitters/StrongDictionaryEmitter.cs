@@ -16,12 +16,12 @@ namespace Microsoft.Macios.Generator.Emitters;
 class StrongDictionaryEmitter : IClassEmitter {
 	/// <inheritdoc />
 	public string GetSymbolName (in Binding binding) => binding.Name;
-	
+
 	/// <inheritdoc />
 	public IEnumerable<string> UsingStatements { get; } = [];
 
 	/// <inheritdoc />
-	public bool TryEmit (in BindingContext bindingContext, [NotNullWhen(false)] out ImmutableArray<Diagnostic>? diagnostics)
+	public bool TryEmit (in BindingContext bindingContext, [NotNullWhen (false)] out ImmutableArray<Diagnostic>? diagnostics)
 	{
 		diagnostics = null;
 		bindingContext.Builder.WriteLine ("// TODO: implement emitter.");

@@ -25,7 +25,7 @@ class StrongDictionaryEmitter : IClassEmitter {
 	void EmitDefaultConstructors (in BindingContext bindingContext, TabbedWriter<StringWriter> classBlock)
 	{
 		classBlock.WriteLine ();
-		classBlock.WriteLine("// TODO: implement default constructors.");
+		classBlock.WriteLine ("// TODO: implement default constructors.");
 		classBlock.WriteLine ();
 	}
 
@@ -34,7 +34,7 @@ class StrongDictionaryEmitter : IClassEmitter {
 		classBlock.WriteLine ();
 		classBlock.WriteLine ("// TODO: implement properties.");
 		classBlock.WriteLine ();
-		
+
 		foreach (var property in context.Changes.StrongDictionaryProperties) {
 			classBlock.WriteLine ();
 			classBlock.WriteLine ($"// Emit code for property: {property.Name}");
@@ -54,16 +54,16 @@ class StrongDictionaryEmitter : IClassEmitter {
 				bindingContext.Changes.FullyQualifiedSymbol)];
 			return false;
 		}
-		
+
 		// namespace declaration
 		bindingContext.Builder.WriteLine ();
 		bindingContext.Builder.WriteLine ($"namespace {string.Join (".", bindingContext.Changes.Namespace)};");
 		bindingContext.Builder.WriteLine ();
-		
+
 		var modifiers = $"{string.Join (' ', bindingContext.Changes.Modifiers)} ";
 		using (var classBlock = bindingContext.Builder.CreateBlock (
-			       $"{(string.IsNullOrWhiteSpace (modifiers) ? string.Empty : modifiers)}class {bindingContext.Changes.Name} : DictionaryContainer",
-			       true)) {
+				   $"{(string.IsNullOrWhiteSpace (modifiers) ? string.Empty : modifiers)}class {bindingContext.Changes.Name} : DictionaryContainer",
+				   true)) {
 			// we care about two specific things, the constructors and the strong dictionary properties
 			EmitDefaultConstructors (bindingContext, classBlock);
 			EmitProperties (bindingContext, classBlock);

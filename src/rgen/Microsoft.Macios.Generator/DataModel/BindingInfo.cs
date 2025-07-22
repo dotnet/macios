@@ -120,7 +120,7 @@ readonly struct BindingInfo : IEquatable<BindingInfo> {
 	public static implicit operator BindingTypeData<ObjCBindings.StrongDictionary> (BindingInfo info)
 	{
 		if (info.BindingType != BindingType.StrongDictionary)
-			throw new InvalidCastException ($"Invalid cast to ObjCBindings.SmartEnum for binding type {info.BindingType}");
+			throw new InvalidCastException ($"Invalid cast to ObjCBindings.StrongDictionary for binding type {info.BindingType}");
 		return info.strongDictionaryData;
 	}
 

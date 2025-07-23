@@ -1238,17 +1238,14 @@ namespace StoreKit {
 		[Export ("requestUserTokenForDeveloperToken:completionHandler:")]
 		void RequestUserToken (string developerToken, Action<NSString, NSError> completionHandler);
 
-		/// <include file="../docs/api/StoreKit/SKCloudServiceController.xml" path="/Documentation/Docs[@DocId='P:StoreKit.SKCloudServiceController.StorefrontIdentifierDidChangeNotification']/*" />
 		[Notification]
 		[Field ("SKStorefrontIdentifierDidChangeNotification")]
 		NSString StorefrontIdentifierDidChangeNotification { get; }
 
-		/// <include file="../docs/api/StoreKit/SKCloudServiceController.xml" path="/Documentation/Docs[@DocId='P:StoreKit.SKCloudServiceController.CloudServiceCapabilitiesDidChangeNotification']/*" />
 		[Notification]
 		[Field ("SKCloudServiceCapabilitiesDidChangeNotification")]
 		NSString CloudServiceCapabilitiesDidChangeNotification { get; }
 
-		/// <include file="../docs/api/StoreKit/SKCloudServiceController.xml" path="/Documentation/Docs[@DocId='P:StoreKit.SKCloudServiceController.StorefrontCountryCodeDidChangeNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("SKStorefrontCountryCodeDidChangeNotification")]

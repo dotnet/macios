@@ -31,4 +31,5 @@ public partial class CARendererOptions : DictionaryContainer {
 
 	// this is a random property to test the generator's handling of properties that are not marked as StrongDictionaryProperty.
 	public int Random => Int32.MaxValue;
+
 }

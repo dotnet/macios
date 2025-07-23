@@ -420,7 +420,7 @@ namespace AudioToolbox {
 		[SupportedOSPlatform ("maccatalyst26.0")]
 		[SupportedOSPlatform ("macos26.0")]
 		[SupportedOSPlatform ("tvos26.0")]
-		public float[]? ChannelMixMap {
+		public float []? ChannelMixMap {
 			get {
 				return GetArray<float> (AudioConverterPropertyID.ChannelMixMap);
 			}
@@ -799,7 +799,7 @@ namespace AudioToolbox {
 			}
 		}
 
-		unsafe void SetArray<T> (AudioConverterPropertyID propertyId, T []? value) where T: unmanaged
+		unsafe void SetArray<T> (AudioConverterPropertyID propertyId, T []? value) where T : unmanaged
 		{
 			// 'inPropertyData' is nullable because the properties are declared as nullable, which is because the getters can return null.
 			if (value is null)
@@ -812,7 +812,7 @@ namespace AudioToolbox {
 				throw new ArgumentException (res.ToString ());
 		}
 
-		unsafe T GetProperty<T> (AudioConverterPropertyID propertyID) where T: unmanaged
+		unsafe T GetProperty<T> (AudioConverterPropertyID propertyID) where T : unmanaged
 		{
 			T value;
 			var size = sizeof (T);
@@ -823,7 +823,7 @@ namespace AudioToolbox {
 			return value;
 		}
 
-		unsafe void SetProperty<T> (AudioConverterPropertyID propertyID, T value) where T: unmanaged
+		unsafe void SetProperty<T> (AudioConverterPropertyID propertyID, T value) where T : unmanaged
 		{
 			var res = AudioConverterSetProperty (Handle, propertyID, sizeof (T), &value);
 			if (res != AudioConverterError.None)
@@ -844,7 +844,7 @@ namespace AudioToolbox {
 				return res;
 
 			memory = Marshal.AllocHGlobal (size);
-			return AudioConverterGetProperty (Handle, AudioConverterPropertyID.InputChannelLayout, &size, (void *) memory);
+			return AudioConverterGetProperty (Handle, AudioConverterPropertyID.InputChannelLayout, &size, (void*) memory);
 		}
 
 		[DllImport (Constants.AudioToolboxLibrary)]
@@ -981,7 +981,7 @@ namespace AudioToolbox {
 								GetCheckedHandle (),
 								&FillComplexBufferShared,
 								(IntPtr) this_handle,
-								(uint *) Unsafe.AsPointer<int> (ref outputDataPacketSize),
+								(uint*) Unsafe.AsPointer<int> (ref outputDataPacketSize),
 								(IntPtr) outputData,
 								packetDescriptionPtr,
 								packetDependenciesPtr);

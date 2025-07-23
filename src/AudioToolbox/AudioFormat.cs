@@ -440,7 +440,7 @@ namespace AudioToolbox {
 		FirstPlayableFormatFromList = 0x6670666c,   // 'fpfl'
 		FormatIsVBR = 0x66766272,   // 'fvbr'
 		FormatIsExternallyFramed = 0x66657866,  // 'fexf'
-		FormatEmploysDependentPackets  = 0x66646570, // 'fdep'
+		FormatEmploysDependentPackets = 0x66646570, // 'fdep'
 		FormatIsEncrypted = 0x63727970, // 'cryp'
 		Encoders = 0x6176656e,  // 'aven'	
 		Decoders = 0x61766465,  // 'avde'

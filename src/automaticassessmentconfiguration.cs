@@ -85,6 +85,11 @@ namespace AutomaticAssessmentConfiguration {
 		[Export ("allowsAccessibilitySpeech")]
 		bool AllowsAccessibilitySpeech { get; set; }
 
+		[NoMac, iOS (26, 0)]
+		[NoMacCatalyst]
+		[Export ("allowsAccessibilityTypingFeedback")]
+		bool AllowsAccessibilityTypingFeedback { get; set; }
+
 		[NoMac, iOS (14, 0)]
 		[MacCatalyst (14, 0)]
 		[Export ("allowsPasswordAutoFill")]

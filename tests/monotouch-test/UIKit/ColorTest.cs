@@ -302,6 +302,40 @@ namespace MonoTouchFixtures.UIKit {
 			var grayColor = transformer (redColor);
 			Assert.NotNull (grayColor, "Not null");
 		}
+
+		// nfloat red, nfloat green, nfloat blue, nfloat alpha, nfloat linearExposure
+		// Exposure adjustment value. Must be >= 0 for exponential exposure or >= 1 for linear exposure.
+		[TestCase (0.5, 0.0, 0.0, 0.5, 0.5, false)]
+		[TestCase (0.5, 0.0, 0.0, 0.5, 1.5, true)]
+		[TestCase (0.0, 0.5, 0.0, 0.5, 0.5, false)]
+		[TestCase (0.0, 0.5, 0.0, 0.5, 1.5, true)]
+		[TestCase (0.0, 0.0, 0.5, 0.5, 0.5, false)]
+		[TestCase (0.0, 0.0, 0.5, 0.5, 1.5, true)]
+		[TestCase (0.5, 0.5, 0.5, 0.5, 0.5, false)]
+		[TestCase (0.5, 0.5, 0.5, 0.5, 1.5, true)]
+		public void ColorExposureCtorTest (double red, double green, double blue, double alpha, double exposure, bool isLinearExposure)
+		{
+			TestRuntime.AssertXcodeVersion (26, 0);
+
+			var nr = (nfloat) red;
+			var ng = (nfloat) green;
+			var nb = (nfloat) blue;
+			var na = (nfloat) alpha;
+			var ne = (nfloat) exposure;
+			if (isLinearExposure) {
+				// Linear exposure
+				var c = UIColor.FromRgbaLinearExposure (nr, ng, nb, na, ne);
+				var r = new UIColor (nr, ng, nb, na, ne, isLinearExposure);
+				Assert.That (r.ToString (), Is.EqualTo (c.ToString ()), c.ToString ());
+				Assert.AreEqual (c.LinearExposure, r.LinearExposure, $"LinearExposure: r:{nr}, g:{ng}, b:{nb}, a:{na}, e:{ne}");
+			} else {
+				// Exponential exposure
+				var c = UIColor.FromRgbaExposure (nr, ng, nb, na, ne);
+				var r = new UIColor (nr, ng, nb, na, ne, isLinearExposure);
+				Assert.That (r.ToString (), Is.EqualTo (c.ToString ()), c.ToString ());
+				Assert.AreEqual (c.LinearExposure, r.LinearExposure, $"ExponentialExposure: r:{nr}, g:{ng}, b:{nb}, a:{na}, e:{ne}");
+			}
+		}
 	}
 }
 #endif

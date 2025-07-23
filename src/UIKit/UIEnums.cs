@@ -1811,6 +1811,10 @@ namespace UIKit {
 		/// <summary>Constant that indicates that 30 frames per second are preferred for animations.</summary>
 		[MacCatalyst (13, 1)]
 		PreferredFramesPerSecond30 = 7 << 24,
+
+		/// <summary>Forces layout updates to flush immediately after animation changes.</summary>
+		[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		FlushUpdates = 1 << 28,
 	}
 
 	// untyped (and unamed) enum -> UIPrintError.h
@@ -3905,6 +3909,10 @@ namespace UIKit {
 		[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[Field ("UIWindowSceneSessionRoleExternalDisplayNonInteractive")]
 		ExternalDisplayNonInteractive,
+
+		[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Field ("UIWindowSceneSessionRoleAssistiveAccessApplication")]
+		AssistiveAccessApplication,
 	}
 
 	[iOS (13, 0), TV (13, 0)]
@@ -3935,6 +3943,9 @@ namespace UIKit {
 		Hide,
 		[Field ("UIMenuQuit")]
 		Quit,
+		[Deprecated (PlatformName.iOS, 26, 0, message: "Use 'UIMenuNewItem' instead.")]
+		[Deprecated (PlatformName.TvOS, 26, 0, message: "Use 'UIMenuNewItem' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, message: "Use 'UIMenuNewItem' instead.")]
 		[Field ("UIMenuNewScene")]
 		NewScene,
 		[Field ("UIMenuClose")]
@@ -4018,6 +4029,14 @@ namespace UIKit {
 		[TV (18, 1), iOS (18, 1), MacCatalyst (18, 1)]
 		[Field ("UIMenuOpen")]
 		Open,
+
+		[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Field ("UIMenuFindPanel")]
+		FindPanel,
+
+		[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Field ("UIMenuNewItem")]
+		NewItem,
 	}
 
 	[iOS (13, 0), TV (13, 0)]
@@ -4648,6 +4667,8 @@ namespace UIKit {
 		Supplementary,
 		Secondary,
 		Compact,
+		[NoTV, iOS (26, 0), MacCatalyst (26, 0)]
+		Inspector,
 	}
 
 	[TV (14, 0), iOS (14, 0)]
@@ -4727,6 +4748,10 @@ namespace UIKit {
 
 		[Field ("UIActionPasteAndSearch")]
 		PasteAndSearch,
+
+		[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Field ("UIActionNewFromPasteboard")]
+		NewFromPasteboard,
 	}
 
 	[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
@@ -4820,5 +4845,96 @@ namespace UIKit {
 		Automatic,
 		Standard,
 		Prominent,
+	}
+
+	[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+	[Native]
+	public enum UIHdrHeadroomUsageLimit : long {
+		Unspecified = -1,
+	}
+
+	[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+	[Native]
+	public enum UIImageSymbolColorRenderingMode : long {
+		Automatic = 0,
+		Flat,
+		Gradient,
+	}
+
+	[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+	[Native]
+	public enum UIImageSymbolVariableValueMode : long {
+		Automatic = 0,
+		Color,
+		Draw,
+	}
+
+	[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+	[Native]
+	public enum UIMenuElementRepeatBehavior : long {
+		Automatic = 0,
+		Repeatable,
+		NonRepeatable,
+	}
+
+	[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+	[Native]
+	public enum UIMenuSystemElementGroupPreference : long {
+		Automatic = 0,
+		Removed,
+		Included,
+	}
+
+	[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+	[Native]
+	public enum UIMenuSystemFindElementGroupConfigurationStyle : long {
+		Automatic = 0,
+		Search,
+		NonEditableText,
+		EditableText,
+	}
+
+	[NoTV, iOS (26, 0), MacCatalyst (26, 0)]
+	[Native]
+	public enum UISliderStyle : long {
+		Default,
+		Thumbless,
+	}
+
+	[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+	[Native]
+	public enum UISplitViewControllerLayoutEnvironment : long {
+		None,
+		Expanded,
+		Collapsed,
+	}
+
+	[NoTV, iOS (26, 0), MacCatalyst (26, 0)]
+	[Native]
+	public enum UITabAccessoryEnvironment : long {
+		Unspecified,
+		None,
+		Regular,
+		Inline,
+	}
+
+	[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+	[Native]
+	public enum UITabBarMinimizeBehavior : long {
+		Automatic = 0,
+		[NoTV]
+		Never,
+		[NoTV]
+		OnScrollDown,
+		[NoTV]
+		OnScrollUp,
+	}
+
+	[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+	[Native]
+	public enum UIViewLayoutRegionAdaptivityAxis : long {
+		None,
+		Horizontal,
+		Vertical,
 	}
 }

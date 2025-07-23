@@ -421,23 +421,14 @@ namespace ImageKit {
 		void Finish (NSObject sender);
 
 		//Check - Do we need Notifications strings?
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification]
 		[Field ("IKFilterBrowserFilterSelectedNotification")]
 		NSString FilterSelectedNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification]
 		[Field ("IKFilterBrowserFilterDoubleClickNotification")]
 		NSString FilterDoubleClickNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification]
 		[Field ("IKFilterBrowserWillPreviewFilterNotification")]
 		NSString WillPreviewFilterNotification { get; }

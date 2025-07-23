@@ -1,4 +1,5 @@
 ifdef ENABLE_XAMARIN
+ifdef ENABLE_ADR
 NEEDED_ADR_VERSION := 4eaa26dc8a9df5638ed133529224dd697a2f7755
 NEEDED_ADR_BRANCH := xcode26
 
@@ -6,6 +7,7 @@ ADR_DIRECTORY := macios-adr
 ADR_MODULE    := https://devdiv@dev.azure.com/devdiv/DevDiv/_git/macios-adr
 ADR_VERSION   := $(shell cd $(ADR_PATH) 2> /dev/null && git rev-parse HEAD 2> /dev/null)
 ADR_BRANCH    := $(shell cd $(ADR_PATH) 2> /dev/null && git symbolic-ref --short HEAD 2> /dev/null)
+endif
 endif
 
 # Available versions can be seen here:

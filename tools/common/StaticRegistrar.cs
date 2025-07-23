@@ -3310,6 +3310,7 @@ namespace Registrar {
 						switch (p.Protocol.ProtocolName) {
 						case "CAMetalDrawable": // The header isn't available for the simulator.
 						case "MTLResourceViewPool":
+						case "MTLTensor":
 						case "MTLTensorBinding":
 						case "MTLTextureViewPool":
 						case var protocolName when protocolName.StartsWith ("MTL4", StringComparison.Ordinal): // Metal 4 isn't available in the simulator

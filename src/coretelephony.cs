@@ -213,9 +213,6 @@ namespace CoreTelephony {
 		[Export ("serviceSubscriberCellularProvidersDidUpdateNotifier", ArgumentSemantic.Copy)]
 		Action<NSString> ServiceSubscriberCellularProvidersDidUpdateNotifier { get; set; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[MacCatalyst (14, 0)]
 		[Notification]
 		[Field ("CTServiceRadioAccessTechnologyDidChangeNotification")]

@@ -1,16 +1,17 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
+
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Macios.Generator.Availability;
 using Microsoft.Macios.Generator.Context;
+using TypeInfo = Microsoft.Macios.Generator.DataModel.TypeInfo;
 
 namespace Microsoft.Macios.Generator.DataModel;
 
@@ -32,6 +33,13 @@ readonly partial struct Binding {
 	/// The namespace that contains the named type that generated the code change.
 	/// </summary>
 	public ImmutableArray<string> Namespace => namespaces;
+
+	readonly ImmutableArray<OuterClass> outerClasses = ImmutableArray<OuterClass>.Empty;
+
+	/// <summary>
+	/// The containing classes of the type, if it's a nested type.
+	/// </summary>
+	public ImmutableArray<OuterClass> OuterClasses => outerClasses;
 
 	readonly ImmutableArray<string> interfaces = ImmutableArray<string>.Empty;
 	/// <summary>

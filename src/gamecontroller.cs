@@ -643,11 +643,9 @@ namespace GameController {
 		[Static, Export ("stopWirelessControllerDiscovery")]
 		void StopWirelessControllerDiscovery ();
 
-		/// <include file="../docs/api/GameController/GCController.xml" path="/Documentation/Docs[@DocId='P:GameController.GCController.DidConnectNotification']/*" />
 		[Notification, Field ("GCControllerDidConnectNotification")]
 		NSString DidConnectNotification { get; }
 
-		/// <include file="../docs/api/GameController/GCController.xml" path="/Documentation/Docs[@DocId='P:GameController.GCController.DidDisconnectNotification']/*" />
 		[Notification, Field ("GCControllerDidDisconnectNotification")]
 		NSString DidDisconnectNotification { get; }
 

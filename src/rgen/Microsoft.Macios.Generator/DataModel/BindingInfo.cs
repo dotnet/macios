@@ -22,6 +22,9 @@ readonly struct BindingInfo : IEquatable<BindingInfo> {
 	[FieldOffset (8)] readonly BindingTypeData<ObjCBindings.SmartEnum> smartEnumData;
 	[FieldOffset (8)] readonly BindingTypeData<ObjCBindings.StrongDictionary> strongDictionaryData;
 
+	/// <summary>
+	/// The type of the binding.
+	/// </summary>
 	public BindingType BindingType => bindingType;
 
 	/// <summary>
@@ -38,50 +41,88 @@ readonly struct BindingInfo : IEquatable<BindingInfo> {
 		}
 	}
 
+	/// <summary>
+	/// Initializes a new instance of the <see cref="BindingInfo"/> struct.
+	/// </summary>
+	/// <param name="type">The binding type.</param>
+	/// <param name="data">The binding data.</param>
 	public BindingInfo (BindingType type, BindingTypeData data)
 	{
 		bindingType = type;
 		bindingTypeData = data;
 	}
 
+	/// <summary>
+	/// Initializes a new instance of the <see cref="BindingInfo"/> struct for a class binding.
+	/// </summary>
+	/// <param name="data">The class binding data.</param>
 	public BindingInfo (BindingTypeData<ObjCBindings.Class> data)
 	{
 		bindingType = BindingType.Class;
 		classData = data;
 	}
 
+	/// <summary>
+	/// Initializes a new instance of the <see cref="BindingInfo"/> struct for a protocol binding.
+	/// </summary>
+	/// <param name="data">The protocol binding data.</param>
 	public BindingInfo (BindingTypeData<ObjCBindings.Protocol> data)
 	{
 		bindingType = BindingType.Protocol;
 		protocolData = data;
 	}
 
+	/// <summary>
+	/// Initializes a new instance of the <see cref="BindingInfo"/> struct for a category binding.
+	/// </summary>
+	/// <param name="data">The category binding data.</param>
 	public BindingInfo (BindingTypeData<ObjCBindings.Category> data)
 	{
 		bindingType = BindingType.Category;
 		categoryData = data;
 	}
 
+	/// <summary>
+	/// Initializes a new instance of the <see cref="BindingInfo"/> struct for a Core Image filter binding.
+	/// </summary>
+	/// <param name="data">The Core Image filter binding data.</param>
 	public BindingInfo (BindingTypeData<ObjCBindings.CoreImageFilter> data)
 	{
 		bindingType = BindingType.CoreImageFilter;
 		coreImageFilterData = data;
 	}
 
+	/// <summary>
+	/// Initializes a new instance of the <see cref="BindingInfo"/> struct for a smart enum binding.
+	/// </summary>
+	/// <param name="data">The smart enum binding data.</param>
 	public BindingInfo (BindingTypeData<ObjCBindings.SmartEnum> data)
 	{
 		bindingType = BindingType.SmartEnum;
 		smartEnumData = data;
 	}
 
+	/// <summary>
+	/// Initializes a new instance of the <see cref="BindingInfo"/> struct for a strong dictionary binding.
+	/// </summary>
+	/// <param name="data">The strong dictionary binding data.</param>
 	public BindingInfo (BindingTypeData<ObjCBindings.StrongDictionary> data)
 	{
 		bindingType = BindingType.StrongDictionary;
 		strongDictionaryData = data;
 	}
 
+	/// <summary>
+	/// Implicitly converts a <see cref="BindingInfo"/> to a <see cref="BindingTypeData"/>.
+	/// </summary>
+	/// <param name="info">The <see cref="BindingInfo"/> to convert.</param>
 	public static implicit operator BindingTypeData (BindingInfo info) => info.bindingTypeData;
 
+	/// <summary>
+	/// Implicitly converts a <see cref="BindingInfo"/> to a <see cref="BindingTypeData{T}"/> for a class.
+	/// </summary>
+	/// <param name="info">The <see cref="BindingInfo"/> to convert.</param>
+	/// <exception cref="InvalidCastException">Thrown if the binding type is not <see cref="BindingType.Class"/>.</exception>
 	public static implicit operator BindingTypeData<ObjCBindings.Class> (BindingInfo info)
 	{
 		if (info.BindingType != BindingType.Class)
@@ -89,6 +130,11 @@ readonly struct BindingInfo : IEquatable<BindingInfo> {
 		return info.classData;
 	}
 
+	/// <summary>
+	/// Implicitly converts a <see cref="BindingInfo"/> to a <see cref="BindingTypeData{T}"/> for a protocol.
+	/// </summary>
+	/// <param name="info">The <see cref="BindingInfo"/> to convert.</param>
+	/// <exception cref="InvalidCastException">Thrown if the binding type is not <see cref="BindingType.Protocol"/>.</exception>
 	public static implicit operator BindingTypeData<ObjCBindings.Protocol> (BindingInfo info)
 	{
 		if (info.BindingType != BindingType.Protocol)
@@ -96,6 +142,11 @@ readonly struct BindingInfo : IEquatable<BindingInfo> {
 		return info.protocolData;
 	}
 
+	/// <summary>
+	/// Implicitly converts a <see cref="BindingInfo"/> to a <see cref="BindingTypeData{T}"/> for a category.
+	/// </summary>
+	/// <param name="info">The <see cref="BindingInfo"/> to convert.</param>
+	/// <exception cref="InvalidCastException">Thrown if the binding type is not <see cref="BindingType.Category"/>.</exception>
 	public static implicit operator BindingTypeData<ObjCBindings.Category> (BindingInfo info)
 	{
 		if (info.BindingType != BindingType.Category)
@@ -103,6 +154,11 @@ readonly struct BindingInfo : IEquatable<BindingInfo> {
 		return info.categoryData;
 	}
 
+	/// <summary>
+	/// Implicitly converts a <see cref="BindingInfo"/> to a <see cref="BindingTypeData{T}"/> for a Core Image filter.
+	/// </summary>
+	/// <param name="info">The <see cref="BindingInfo"/> to convert.</param>
+	/// <exception cref="InvalidCastException">Thrown if the binding type is not <see cref="BindingType.CoreImageFilter"/>.</exception>
 	public static implicit operator BindingTypeData<ObjCBindings.CoreImageFilter> (BindingInfo info)
 	{
 		if (info.BindingType != BindingType.CoreImageFilter)
@@ -110,6 +166,11 @@ readonly struct BindingInfo : IEquatable<BindingInfo> {
 		return info.coreImageFilterData;
 	}
 
+	/// <summary>
+	/// Implicitly converts a <see cref="BindingInfo"/> to a <see cref="BindingTypeData{T}"/> for a smart enum.
+	/// </summary>
+	/// <param name="info">The <see cref="BindingInfo"/> to convert.</param>
+	/// <exception cref="InvalidCastException">Thrown if the binding type is not <see cref="BindingType.SmartEnum"/>.</exception>
 	public static implicit operator BindingTypeData<ObjCBindings.SmartEnum> (BindingInfo info)
 	{
 		if (info.BindingType != BindingType.SmartEnum)
@@ -117,6 +178,11 @@ readonly struct BindingInfo : IEquatable<BindingInfo> {
 		return info.smartEnumData;
 	}
 
+	/// <summary>
+	/// Implicitly converts a <see cref="BindingInfo"/> to a <see cref="BindingTypeData{T}"/> for a strong dictionary.
+	/// </summary>
+	/// <param name="info">The <see cref="BindingInfo"/> to convert.</param>
+	/// <exception cref="InvalidCastException">Thrown if the binding type is not <see cref="BindingType.StrongDictionary"/>.</exception>
 	public static implicit operator BindingTypeData<ObjCBindings.StrongDictionary> (BindingInfo info)
 	{
 		if (info.BindingType != BindingType.StrongDictionary)
@@ -124,12 +190,40 @@ readonly struct BindingInfo : IEquatable<BindingInfo> {
 		return info.strongDictionaryData;
 	}
 
+	/// <summary>
+	/// Implicitly converts a <see cref="BindingTypeData"/> to a <see cref="BindingInfo"/>.
+	/// </summary>
+	/// <param name="data">The <see cref="BindingTypeData"/> to convert.</param>
 	public static implicit operator BindingInfo (BindingTypeData data) => new (BindingType.Unknown, data);
+	/// <summary>
+	/// Implicitly converts a <see cref="BindingTypeData{T}"/> for a class to a <see cref="BindingInfo"/>.
+	/// </summary>
+	/// <param name="data">The <see cref="BindingTypeData{T}"/> to convert.</param>
 	public static implicit operator BindingInfo (BindingTypeData<ObjCBindings.Class> data) => new (data);
+	/// <summary>
+	/// Implicitly converts a <see cref="BindingTypeData{T}"/> for a protocol to a <see cref="BindingInfo"/>.
+	/// </summary>
+	/// <param name="data">The <see cref="BindingTypeData{T}"/> to convert.</param>
 	public static implicit operator BindingInfo (BindingTypeData<ObjCBindings.Protocol> data) => new (data);
+	/// <summary>
+	/// Implicitly converts a <see cref="BindingTypeData{T}"/> for a category to a <see cref="BindingInfo"/>.
+	/// </summary>
+	/// <param name="data">The <see cref="BindingTypeData{T}"/> to convert.</param>
 	public static implicit operator BindingInfo (BindingTypeData<ObjCBindings.Category> data) => new (data);
+	/// <summary>
+	/// Implicitly converts a <see cref="BindingTypeData{T}"/> for a Core Image filter to a <see cref="BindingInfo"/>.
+	/// </summary>
+	/// <param name="data">The <see cref="BindingTypeData{T}"/> to convert.</param>
 	public static implicit operator BindingInfo (BindingTypeData<ObjCBindings.CoreImageFilter> data) => new (data);
+	/// <summary>
+	/// Implicitly converts a <see cref="BindingTypeData{T}"/> for a smart enum to a <see cref="BindingInfo"/>.
+	/// </summary>
+	/// <param name="data">The <see cref="BindingTypeData{T}"/> to convert.</param>
 	public static implicit operator BindingInfo (BindingTypeData<ObjCBindings.SmartEnum> data) => new (data);
+	/// <summary>
+	/// Implicitly converts a <see cref="BindingTypeData{T}"/> for a strong dictionary to a <see cref="BindingInfo"/>.
+	/// </summary>
+	/// <param name="data">The <see cref="BindingTypeData{T}"/> to convert.</param>
 	public static implicit operator BindingInfo (BindingTypeData<ObjCBindings.StrongDictionary> data) => new (data);
 
 	/// <inheritdoc />
@@ -170,11 +264,23 @@ readonly struct BindingInfo : IEquatable<BindingInfo> {
 		_ => HashCode.Combine (bindingType, bindingTypeData)
 	};
 
+	/// <summary>
+	/// Compares two <see cref="BindingInfo"/> instances for equality.
+	/// </summary>
+	/// <param name="x">The first instance to compare.</param>
+	/// <param name="y">The second instance to compare.</param>
+	/// <returns><c>true</c> if the instances are equal; otherwise, <c>false</c>.</returns>
 	public static bool operator == (BindingInfo x, BindingInfo y)
 	{
 		return x.Equals (y);
 	}
 
+	/// <summary>
+	/// Compares two <see cref="BindingInfo"/> instances for inequality.
+	/// </summary>
+	/// <param name="x">The first instance to compare.</param>
+	/// <param name="y">The second instance to compare.</param>
+	/// <returns><c>true</c> if the instances are not equal; otherwise, <c>false</c>.</returns>
 	public static bool operator != (BindingInfo x, BindingInfo y)
 	{
 		return !(x == y);

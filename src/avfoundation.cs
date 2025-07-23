@@ -1238,7 +1238,6 @@ namespace AVFoundation {
 		[Export ("outputConnectionPointsForNode:outputBus:")]
 		AVAudioConnectionPoint [] OutputConnectionPoints (AVAudioNode node, nuint bus);
 
-		/// <include file="../docs/api/AVFoundation/AVAudioEngine.xml" path="/Documentation/Docs[@DocId='P:AVFoundation.AVAudioEngine.ConfigurationChangeNotification']/*" />
 		[Notification]
 		[Field ("AVAudioEngineConfigurationChangeNotification")]
 		NSString ConfigurationChangeNotification { get; }
@@ -3558,12 +3557,10 @@ namespace AVFoundation {
 #if XAMCORE_5_0
 		[NoMac]
 #endif
-		/// <include file="../docs/api/AVFoundation/AVAudioSession.xml" path="/Documentation/Docs[@DocId='P:AVFoundation.AVAudioSession.InterruptionNotification']/*" />
 		[Field ("AVAudioSessionInterruptionNotification")]
 		[Notification (typeof (AVAudioSessionInterruptionEventArgs))]
 		NSString InterruptionNotification { get; }
 
-		/// <include file="../docs/api/AVFoundation/AVAudioSession.xml" path="/Documentation/Docs[@DocId='P:AVFoundation.AVAudioSession.RouteChangeNotification']/*" />
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Field ("AVAudioSessionRouteChangeNotification")]
@@ -3573,7 +3570,6 @@ namespace AVFoundation {
 #if XAMCORE_5_0
 		[NoMac]
 #endif
-		/// <include file="../docs/api/AVFoundation/AVAudioSession.xml" path="/Documentation/Docs[@DocId='P:AVFoundation.AVAudioSession.MediaServicesWereResetNotification']/*" />
 		[Field ("AVAudioSessionMediaServicesWereResetNotification")]
 		[Notification]
 		NSString MediaServicesWereResetNotification { get; }
@@ -3581,7 +3577,6 @@ namespace AVFoundation {
 #if XAMCORE_5_0
 		[NoMac]
 #endif
-		/// <include file="../docs/api/AVFoundation/AVAudioSession.xml" path="/Documentation/Docs[@DocId='P:AVFoundation.AVAudioSession.MediaServicesWereLostNotification']/*" />
 		[Notification, Field ("AVAudioSessionMediaServicesWereLostNotification")]
 		NSString MediaServicesWereLostNotification { get; }
 
@@ -4011,7 +4006,6 @@ namespace AVFoundation {
 		[Export ("secondaryAudioShouldBeSilencedHint")]
 		bool SecondaryAudioShouldBeSilencedHint { get; }
 
-		/// <include file="../docs/api/AVFoundation/AVAudioSession.xml" path="/Documentation/Docs[@DocId='P:AVFoundation.AVAudioSession.SilenceSecondaryAudioHintNotification']/*" />
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Field ("AVAudioSessionSilenceSecondaryAudioHintNotification")]
@@ -5558,30 +5552,25 @@ namespace AVFoundation {
 		[Export ("compatibleWithAirPlayVideo")]
 		bool CompatibleWithAirPlayVideo { [Bind ("isCompatibleWithAirPlayVideo")] get; }
 
-		/// <include file="../docs/api/AVFoundation/AVAsset.xml" path="/Documentation/Docs[@DocId='P:AVFoundation.AVAsset.DurationDidChangeNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Field ("AVAssetDurationDidChangeNotification")]
 		[Notification]
 		NSString DurationDidChangeNotification { get; }
 
-		/// <include file="../docs/api/AVFoundation/AVAsset.xml" path="/Documentation/Docs[@DocId='P:AVFoundation.AVAsset.ChapterMetadataGroupsDidChangeNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Field ("AVAssetChapterMetadataGroupsDidChangeNotification")]
 		[Notification]
 		NSString ChapterMetadataGroupsDidChangeNotification { get; }
 
-		/// <include file="../docs/api/AVFoundation/AVAsset.xml" path="/Documentation/Docs[@DocId='P:AVFoundation.AVAsset.MediaSelectionGroupsDidChangeNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Notification, Field ("AVAssetMediaSelectionGroupsDidChangeNotification")]
 		NSString MediaSelectionGroupsDidChangeNotification { get; }
 
-		/// <include file="../docs/api/AVFoundation/AVAsset.xml" path="/Documentation/Docs[@DocId='P:AVFoundation.AVAsset.ContainsFragmentsDidChangeNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Field ("AVAssetContainsFragmentsDidChangeNotification")]
 		[Notification]
 		NSString ContainsFragmentsDidChangeNotification { get; }
 
-		/// <include file="../docs/api/AVFoundation/AVAsset.xml" path="/Documentation/Docs[@DocId='P:AVFoundation.AVAsset.WasDefragmentedNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Field ("AVAssetWasDefragmentedNotification")]
 		[Notification]
@@ -6002,7 +5991,6 @@ namespace AVFoundation {
 		[Export ("flushFromSourceTime:completionHandler:")]
 		void Flush (CMTime time, Action<bool> completionHandler);
 
-		/// <include file="../docs/api/AVFoundation/AVSampleBufferAudioRenderer.xml" path="/Documentation/Docs[@DocId='P:AVFoundation.AVSampleBufferAudioRenderer.AudioRendererWasFlushedAutomaticallyNotification']/*" />
 		[Notification (typeof (AudioRendererWasFlushedAutomaticallyEventArgs))]
 		[Field ("AVSampleBufferAudioRendererWasFlushedAutomaticallyNotification")]
 		NSString AudioRendererWasFlushedAutomaticallyNotification { get; }
@@ -6030,9 +6018,6 @@ namespace AVFoundation {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface AVSampleBufferRenderSynchronizer {
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("AVSampleBufferRenderSynchronizerRateDidChangeNotification")]
 		[Notification]
@@ -7570,19 +7555,16 @@ namespace AVFoundation {
 		[Export ("requiresFrameReordering")]
 		bool RequiresFrameReordering { get; }
 
-		/// <include file="../docs/api/AVFoundation/AVAssetTrack.xml" path="/Documentation/Docs[@DocId='P:AVFoundation.AVAssetTrack.TimeRangeDidChangeNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Field ("AVAssetTrackTimeRangeDidChangeNotification")]
 		[Notification]
 		NSString TimeRangeDidChangeNotification { get; }
 
-		/// <include file="../docs/api/AVFoundation/AVAssetTrack.xml" path="/Documentation/Docs[@DocId='P:AVFoundation.AVAssetTrack.SegmentsDidChangeNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Field ("AVAssetTrackSegmentsDidChangeNotification")]
 		[Notification]
 		NSString SegmentsDidChangeNotification { get; }
 
-		/// <include file="../docs/api/AVFoundation/AVAssetTrack.xml" path="/Documentation/Docs[@DocId='P:AVFoundation.AVAssetTrack.TrackAssociationsDidChangeNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Field ("AVAssetTrackTrackAssociationsDidChangeNotification")]
 		[Notification]
@@ -12661,23 +12643,14 @@ namespace AVFoundation {
 		[Export ("tracks")]
 		AVFragmentedMovieTrack [] Tracks { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification]
 		[Field ("AVFragmentedMovieContainsMovieFragmentsDidChangeNotification")]
 		NSString ContainsMovieFragmentsDidChangeNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification]
 		[Field ("AVFragmentedMovieDurationDidChangeNotification")]
 		NSString DurationDidChangeNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification]
 		[Field ("AVFragmentedMovieWasDefragmentedNotification")]
 		NSString WasDefragmentedNotification { get; }
@@ -12964,23 +12937,14 @@ namespace AVFoundation {
 	[BaseType (typeof (AVMovieTrack))]
 	[DisableDefaultCtor]
 	interface AVFragmentedMovieTrack {
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Field ("AVFragmentedMovieTrackTimeRangeDidChangeNotification")]
 		[Notification]
 		NSString TimeRangeDidChangeNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification]
 		[Field ("AVFragmentedMovieTrackSegmentsDidChangeNotification")]
 		NSString SegmentsDidChangeNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[Deprecated (PlatformName.MacOSX, 10, 11, message: "Use either 'AVFragmentedMovieTrackTimeRangeDidChangeNotification' or 'AVFragmentedMovieTrackSegmentsDidChangeNotification' instead. In either case, you can assume that the sender's 'TotalSampleDataLength' has changed.")]
 		[NoMacCatalyst]
@@ -14599,7 +14563,6 @@ namespace AVFoundation {
 		[Field ("AVCaptureSessionPreset960x540")]
 		NSString Preset960x540 { get; }
 
-		/// <include file="../docs/api/AVFoundation/AVCaptureSession.xml" path="/Documentation/Docs[@DocId='P:AVFoundation.AVCaptureSession.RuntimeErrorNotification']/*" />
 		[Field ("AVCaptureSessionRuntimeErrorNotification")]
 		[Notification (typeof (AVCaptureSessionRuntimeErrorEventArgs))]
 		NSString RuntimeErrorNotification { get; }
@@ -14611,23 +14574,19 @@ namespace AVFoundation {
 		[Field ("AVCaptureSessionErrorKey")]
 		NSString ErrorKey { get; }
 
-		/// <include file="../docs/api/AVFoundation/AVCaptureSession.xml" path="/Documentation/Docs[@DocId='P:AVFoundation.AVCaptureSession.DidStartRunningNotification']/*" />
 		[Field ("AVCaptureSessionDidStartRunningNotification")]
 		[Notification]
 		NSString DidStartRunningNotification { get; }
 
-		/// <include file="../docs/api/AVFoundation/AVCaptureSession.xml" path="/Documentation/Docs[@DocId='P:AVFoundation.AVCaptureSession.DidStopRunningNotification']/*" />
 		[Field ("AVCaptureSessionDidStopRunningNotification")]
 		[Notification]
 		NSString DidStopRunningNotification { get; }
 
-		/// <include file="../docs/api/AVFoundation/AVCaptureSession.xml" path="/Documentation/Docs[@DocId='P:AVFoundation.AVCaptureSession.InterruptionEndedNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Field ("AVCaptureSessionInterruptionEndedNotification")]
 		[Notification]
 		NSString InterruptionEndedNotification { get; }
 
-		/// <include file="../docs/api/AVFoundation/AVCaptureSession.xml" path="/Documentation/Docs[@DocId='P:AVFoundation.AVCaptureSession.WasInterruptedNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Field ("AVCaptureSessionWasInterruptedNotification")]
 		[Notification]
@@ -15005,7 +14964,6 @@ namespace AVFoundation {
 		[Export ("ports")]
 		AVCaptureInputPort [] Ports { get; }
 
-		/// <include file="../docs/api/AVFoundation/AVCaptureInput.xml" path="/Documentation/Docs[@DocId='P:AVFoundation.AVCaptureInput.PortFormatDescriptionDidChangeNotification']/*" />
 		[Field ("AVCaptureInputPortFormatDescriptionDidChangeNotification")]
 		[Notification]
 		NSString PortFormatDescriptionDidChangeNotification { get; }
@@ -17383,13 +17341,11 @@ namespace AVFoundation {
 		[Export ("position")]
 		AVCaptureDevicePosition Position { get; }
 
-		/// <include file="../docs/api/AVFoundation/AVCaptureDevice.xml" path="/Documentation/Docs[@DocId='P:AVFoundation.AVCaptureDevice.WasConnectedNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Field ("AVCaptureDeviceWasConnectedNotification")]
 		[Notification]
 		NSString WasConnectedNotification { get; }
 
-		/// <include file="../docs/api/AVFoundation/AVCaptureDevice.xml" path="/Documentation/Docs[@DocId='P:AVFoundation.AVCaptureDevice.WasDisconnectedNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Field ("AVCaptureDeviceWasDisconnectedNotification")]
 		[Notification]
@@ -17407,7 +17363,6 @@ namespace AVFoundation {
 		[Field ("AVCaptureMaxAvailableTorchLevel")]
 		float MaxAvailableTorchLevel { get; } // defined as 'float'
 
-		/// <include file="../docs/api/AVFoundation/AVCaptureDevice.xml" path="/Documentation/Docs[@DocId='P:AVFoundation.AVCaptureDevice.SubjectAreaDidChangeNotification']/*" />
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Field ("AVCaptureDeviceSubjectAreaDidChangeNotification")]
@@ -18854,7 +18809,6 @@ namespace AVFoundation {
 		[Export ("availableHDRModes")]
 		AVPlayerHdrMode AvailableHdrModes { get; }
 
-		/// <include file="../docs/api/AVFoundation/AVPlayer.xml" path="/Documentation/Docs[@DocId='P:AVFoundation.AVPlayer.AvailableHdrModesDidChangeNotification']/*" />
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Field ("AVPlayerAvailableHDRModesDidChangeNotification")]
@@ -19193,12 +19147,10 @@ namespace AVFoundation {
 		[Export ("error"), NullAllowed]
 		NSError Error { get; }
 
-		/// <include file="../docs/api/AVFoundation/AVPlayerItem.xml" path="/Documentation/Docs[@DocId='P:AVFoundation.AVPlayerItem.DidPlayToEndTimeNotification']/*" />
 		[Field ("AVPlayerItemDidPlayToEndTimeNotification")]
 		[Notification]
 		NSString DidPlayToEndTimeNotification { get; }
 
-		/// <include file="../docs/api/AVFoundation/AVPlayerItem.xml" path="/Documentation/Docs[@DocId='P:AVFoundation.AVPlayerItem.ItemFailedToPlayToEndTimeNotification']/*" />
 		[Field ("AVPlayerItemFailedToPlayToEndTimeNotification")]
 		[Notification (typeof (AVPlayerItemErrorEventArgs))]
 		NSString ItemFailedToPlayToEndTimeNotification { get; }
@@ -19228,7 +19180,6 @@ namespace AVFoundation {
 		[Export ("canPlayFastForward")]
 		bool CanPlayFastForward { get; }
 
-		/// <include file="../docs/api/AVFoundation/AVPlayerItem.xml" path="/Documentation/Docs[@DocId='P:AVFoundation.AVPlayerItem.TimeJumpedNotification']/*" />
 		[Field ("AVPlayerItemTimeJumpedNotification")]
 		[Notification (typeof (AVPlayerItemTimeJumpedEventArgs))]
 		NSString TimeJumpedNotification { get; }
@@ -19331,19 +19282,16 @@ namespace AVFoundation {
 		[Export ("textStyleRules", ArgumentSemantic.Copy), NullAllowed]
 		AVTextStyleRule [] TextStyleRules { get; set; }
 
-		/// <include file="../docs/api/AVFoundation/AVPlayerItem.xml" path="/Documentation/Docs[@DocId='P:AVFoundation.AVPlayerItem.PlaybackStalledNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Field ("AVPlayerItemPlaybackStalledNotification")]
 		[Notification]
 		NSString PlaybackStalledNotification { get; }
 
-		/// <include file="../docs/api/AVFoundation/AVPlayerItem.xml" path="/Documentation/Docs[@DocId='P:AVFoundation.AVPlayerItem.NewAccessLogEntryNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Field ("AVPlayerItemNewAccessLogEntryNotification")]
 		[Notification]
 		NSString NewAccessLogEntryNotification { get; }
 
-		/// <include file="../docs/api/AVFoundation/AVPlayerItem.xml" path="/Documentation/Docs[@DocId='P:AVFoundation.AVPlayerItem.NewErrorLogEntryNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Field ("AVPlayerItemNewErrorLogEntryNotification")]
 		[Notification]
@@ -21022,7 +20970,6 @@ namespace AVFoundation {
 		[Export ("timebase", ArgumentSemantic.Retain)]
 		CMTimebase Timebase { get; }
 
-		/// <include file="../docs/api/AVFoundation/AVSampleBufferDisplayLayer.xml" path="/Documentation/Docs[@DocId='P:AVFoundation.AVSampleBufferDisplayLayer.FailedToDecodeNotification']/*" />
 		[Field ("AVSampleBufferDisplayLayerFailedToDecodeNotification")]
 		[Notification]
 		NSString FailedToDecodeNotification { get; }
@@ -22381,7 +22328,6 @@ namespace AVFoundation {
 		[Export ("audioComponentDescription")]
 		AudioComponentDescription AudioComponentDescription { get; }
 
-		/// <include file="../docs/api/AVFoundation/AVAudioUnitComponent.xml" path="/Documentation/Docs[@DocId='P:AVFoundation.AVAudioUnitComponent.TagsDidChangeNotification']/*" />
 		[Field ("AVAudioUnitComponentTagsDidChangeNotification")]
 		[Notification]
 		NSString TagsDidChangeNotification { get; }
@@ -23006,9 +22952,6 @@ namespace AVFoundation {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface AVRouteDetector {
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification]
 		[Field ("AVRouteDetectorMultipleRoutesDetectedDidChangeNotification")]
 		NSString MultipleRoutesDetectedDidChange { get; }

@@ -7,3 +7,4 @@
 !missing-selector! ASCredentialProviderViewController::reportPublicKeyCredentialUpdateForRelyingParty:userHandle:newName: not bound
 !missing-selector! ASCredentialProviderViewController::reportUnknownPublicKeyCredentialForRelyingParty:credentialID: not bound
 !missing-selector! ASCredentialProviderViewController::reportUnusedPasswordCredentialForDomain:userName: not bound
+!missing-selector! ASAuthorizationProviderExtensionLoginManager::authenticationMethod not bound

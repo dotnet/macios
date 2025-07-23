@@ -1,1 +1,2 @@
+# header says this ctor is available in Mac Catalyst, Apple's documentation + xtro says it's not, so don't add it for now.
 !missing-selector! AEAssessmentApplication::initWithBundleIdentifier:teamIdentifier: not bound

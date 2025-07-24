@@ -41,7 +41,7 @@ public class TestClass {
 				"GetStringValue (Test.TestClass.Keys.ColorSpace)",
 				"SetStringValue (Test.TestClass.Keys.ColorSpace, value)",
 			];
-			
+
 			const string nsstringGetter = @"
 using System;
 using Foundation;
@@ -353,7 +353,7 @@ public class TestClass {
 				"GetCGPointValue (Test.TestClass.Keys.SomePoint)",
 				"SetCGPointValue (Test.TestClass.Keys.SomePoint, value)",
 			];
-			
+
 			const string nativeEnumGetter = @"
 using System;
 using ObjCBindings;
@@ -383,7 +383,7 @@ public class TestClass {
 				"GetNIntValue (Test.TestClass.Keys.SomeEnumValue)",
 				"SetNumberValue (Test.TestClass.Keys.SomeEnumValue, value)",
 			];
-			
+
 			const string nativeEnumUlongGetter = @"
 using System;
 using ObjCBindings;
@@ -413,7 +413,7 @@ public class TestClass {
 				"GetNUIntValue (Test.TestClass.Keys.SomeEnumValue)",
 				"SetNumberValue (Test.TestClass.Keys.SomeEnumValue, value)",
 			];
-			
+
 			const string nsDictionaryGetter = @"
 using System;
 using Foundation;
@@ -459,7 +459,7 @@ public class TestClass {
 				"GetNSDictionary<global::Foundation.NSString, global::Foundation.NSObject> (Test.TestClass.Keys.SomeDictionary)",
 				"SetNativeValue (Test.TestClass.Keys.SomeDictionary, value)",
 			];
-			
+
 			const string strongDictionaryGetter = @"
 using System;
 using Foundation;
@@ -486,7 +486,7 @@ public class TestClass {
 				"GetStrongDictionary<global::Test.MyStrongDictionary> (Test.TestClass.Keys.SomeStrongDictionary, (dict) => new global::Test.MyStrongDictionary (dict))",
 				"SetNativeValue (Test.TestClass.Keys.SomeStrongDictionary, value)",
 			];
-			
+
 			const string nsValueGetter = @"
 using System;
 using Foundation;
@@ -509,7 +509,7 @@ public class TestClass {
 				"Dictionary [Test.TestClass.Keys.SomeValue] as global::Foundation.NSValue",
 				"SetNativeValue (Test.TestClass.Keys.SomeValue, value)",
 			];
-			
+
 			const string imtlCommandQueueGetter = @"
 using System;
 using Foundation;
@@ -708,7 +708,7 @@ public class TestClass {
 		IEnumerator IEnumerable.GetEnumerator ()
 			=> GetEnumerator ();
 	}
-	
+
 	[Theory]
 	[AllSupportedPlatformsClassData<TestDataGetInvocations>]
 	void GetInvocationsTests (ApplePlatform platform, string inputText, string expectedGetter, string expectedSetter)
@@ -735,7 +735,7 @@ public class TestClass {
 	[PlatformInlineData (ApplePlatform.TVOS)]
 	void GetInvocationsUIKitTests (ApplePlatform platform)
 	{
-		
+
 		const string uiEdgeInsetsGetter = @"
 using System;
 using ObjCBindings;

@@ -133,7 +133,7 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 	/// True if the type represents a Task.
 	/// </summary>
 	public bool IsTask { get; init; }
-	
+
 	/// <summary>
 	/// True if the type represents a strong dictionary.
 	/// </summary>
@@ -143,21 +143,21 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 	/// Returns, if the type is an array, if its elements are a wrapped object from the objc world.
 	/// </summary>
 	public bool ArrayElementTypeIsWrapped { get; init; }
-	
+
 	/// <summary>
 	/// Returns, if the type is an array, if its elements implement the INativeObject interface.
 	/// </summary>
 	public bool ArrayElementIsINativeObject { get; init; }
-	
+
 	/// <summary>
 	/// If the type is an array of enums, it returns the special type of the underlying enum type.
 	/// </summary>
 	public SpecialType? ArrayElementEnumUnderlyingType { get; init; }
-	
+
 	/// <summary>
 	/// Returns true if the type is an array of enums.
 	/// </summary>
-	public bool ArrayElementTypeIsEnum => ArrayElementEnumUnderlyingType != null; 
+	public bool ArrayElementTypeIsEnum => ArrayElementEnumUnderlyingType is not null;
 
 	readonly bool isNSObject = false;
 

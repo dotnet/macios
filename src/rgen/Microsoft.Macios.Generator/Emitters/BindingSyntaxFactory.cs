@@ -77,8 +77,8 @@ static partial class BindingSyntaxFactory {
 	static InvocationExpressionSyntax MemberInvocationExpression (TypeSyntax? instanceVariable, string methodName,
 		ImmutableArray<ArgumentSyntax> arguments)
 	{
-		var invocation = instanceVariable is null 
-			? InvocationExpression(IdentifierName (methodName).WithTrailingTrivia (Space))
+		var invocation = instanceVariable is null
+			? InvocationExpression (IdentifierName (methodName).WithTrailingTrivia (Space))
 			: InvocationExpression (MemberAccessExpression (
 				SyntaxKind.SimpleMemberAccessExpression,
 				instanceVariable,
@@ -90,7 +90,7 @@ static partial class BindingSyntaxFactory {
 		}
 		return invocation;
 	}
-	
+
 	/// <summary>
 	/// Creates an invocation expression for calling a method on an instance variable with no arguments.
 	/// </summary>
@@ -129,7 +129,7 @@ static partial class BindingSyntaxFactory {
 	static InvocationExpressionSyntax MemberInvocationExpression (string methodName,
 		ImmutableArray<ArgumentSyntax> arguments)
 		=> MemberInvocationExpression ((TypeSyntax?) null, methodName, arguments);
-	
+
 	static InvocationExpressionSyntax GenericMemberInvocationExpression (TypeSyntax? instanceVariable,
 		string methodName, ImmutableArray<TypeSyntax> typeArguments, ImmutableArray<ArgumentSyntax> arguments)
 	{
@@ -138,8 +138,8 @@ static partial class BindingSyntaxFactory {
 		var genericName = GenericName (Identifier (methodName))
 			.WithTypeArgumentList (typeArgumentList)
 			.WithTrailingTrivia (Space);
-		
-		var invocation = instanceVariable is null 
+
+		var invocation = instanceVariable is null
 			? InvocationExpression (genericName)
 			: InvocationExpression (MemberAccessExpression (
 				SyntaxKind.SimpleMemberAccessExpression,

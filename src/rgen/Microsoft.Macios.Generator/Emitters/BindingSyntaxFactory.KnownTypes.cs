@@ -198,14 +198,14 @@ static partial class BindingSyntaxFactory {
 		@class: "CMSampleBuffer");
 
 	// CoreText types
-	
+
 	/// <summary>
 	/// TypeSyntax for CoreText.CTFontDescriptor.
 	/// </summary>
 	public static readonly TypeSyntax CTFontDescriptor = StringExtensions.GetIdentifierName (
 		@namespace: ["CoreText"],
 		@class: "CTFontDescriptor");
-	
+
 	// System types
 
 	/// <summary>

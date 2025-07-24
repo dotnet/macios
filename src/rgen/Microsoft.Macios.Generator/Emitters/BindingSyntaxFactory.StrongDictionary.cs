@@ -13,7 +13,7 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 namespace Microsoft.Macios.Generator.Emitters;
 
 static partial class BindingSyntaxFactory {
-	
+
 	/// <summary>
 	/// Gets the getter and setter invocations for a strong dictionary property based on its type.
 	/// </summary>
@@ -164,7 +164,7 @@ static partial class BindingSyntaxFactory {
 		ExpressionSyntax Getter (string method, ImmutableArray<ArgumentSyntax> arguments = default)
 			=> MemberInvocationExpression (
 				methodName: method,
-				arguments: arguments.IsDefaultOrEmpty 
+				arguments: arguments.IsDefaultOrEmpty
 					? [Argument (IdentifierName (dictionaryKey))]
 					: arguments.Insert (0, Argument (IdentifierName (dictionaryKey)))
 			);
@@ -185,7 +185,7 @@ static partial class BindingSyntaxFactory {
 				types = [propertyTypeSyntax];
 			}
 			return GenericMemberInvocationExpression (
-				methodName: method, 
+				methodName: method,
 				typeArguments: types,
 				arguments: arguments.Insert (0, Argument (IdentifierName (dictionaryKey)))
 			);
@@ -233,7 +233,7 @@ static partial class BindingSyntaxFactory {
 							SingletonSeparatedList (Parameter (Identifier (lambdaVariable))))).NormalizeWhitespace ()
 					.WithExpressionBody (
 						New (
-							propertyTypeSyntax, 
+							propertyTypeSyntax,
 							[Argument (IdentifierName (lambdaVariable))]
 						).WithLeadingTrivia (Space)
 					));
@@ -268,7 +268,7 @@ static partial class BindingSyntaxFactory {
 							Parameter (Identifier (lambdaVariable))))).NormalizeWhitespace ()
 				.WithExpressionBody (
 					New (
-						CTFontDescriptor, 
+						CTFontDescriptor,
 						[Argument (IdentifierName (lambdaVariable)), BoolArgument (false)]
 						).WithLeadingTrivia (Space)
 				)
@@ -281,8 +281,8 @@ static partial class BindingSyntaxFactory {
 		{
 			var lambdaVariable = "ptr";
 			// using var num = Runtime.GetNSObject<NSNumber> (ptr)!);
-			var declaration = Using ( 
-				VariableInitialization ("num", 
+			var declaration = Using (
+				VariableInitialization ("num",
 					GetNSObject (NSNumber, [Argument (IdentifierName (lambdaVariable))], true)
 					)
 				);
@@ -296,7 +296,7 @@ static partial class BindingSyntaxFactory {
 						IdentifierName (GetNSNumberValue (propertyType.ArrayElementEnumUnderlyingType!.Value))).WithLeadingTrivia (Space)
 					).WithLeadingTrivia (Space)
 				);
-			
+
 			return Argument (ParenthesizedLambdaExpression ()
 				.WithParameterList (
 					ParameterList (
@@ -313,14 +313,14 @@ static partial class BindingSyntaxFactory {
 		// Returns: An expression that accesses a dictionary value by key and casts it to the property type.
 		ExpressionSyntax DictionaryIndex ()
 		{
-			return BinaryExpression(
+			return BinaryExpression (
 				SyntaxKind.AsExpression,
 				ElementAccessExpression (IdentifierName ("Dictionary").WithTrailingTrivia (Space))
-					.WithArgumentList(
-						BracketedArgumentList(
-							SingletonSeparatedList(
+					.WithArgumentList (
+						BracketedArgumentList (
+							SingletonSeparatedList (
 								Argument (IdentifierName (dictionaryKey))
-								))).WithTrailingTrivia (Space), 
+								))).WithTrailingTrivia (Space),
 				propertyTypeSyntax.WithLeadingTrivia (Space));
 		}
 	}

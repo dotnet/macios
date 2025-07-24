@@ -1703,7 +1703,7 @@ namespace AudioToolbox {
 		[SupportedOSPlatform ("tvos26.0")]
 		[SupportedOSPlatform ("maccatalyst26.0")]
 		[SupportedOSPlatform ("macos26.0")]
-		public AudioFileError WritePackets (bool useCache, AudioStreamPacketDescription []? packetDescriptions, AudioStreamPacketDependencyDescription [] packetDependencies, long startingPacket, ref int numPackets, byte[] buffer, int offset, int numBytes)
+		public AudioFileError WritePackets (bool useCache, AudioStreamPacketDescription []? packetDescriptions, AudioStreamPacketDependencyDescription [] packetDependencies, long startingPacket, ref int numPackets, byte [] buffer, int offset, int numBytes)
 		{
 			if (buffer is null)
 				ThrowHelper.ThrowArgumentNullException (nameof (buffer));

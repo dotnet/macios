@@ -39,7 +39,7 @@ public partial class CARendererOptions : DictionaryContainer
 		[SupportedOSPlatform ("maccatalyst13.1")]
 		get
 		{
-			throw new NotImplementedException()
+			return GetNativeValue<global::CoreGraphics.CGColorSpace> (TestNamespace.CARendererOptions.Keys.ColorSpace);
 		}
 
 		[SupportedOSPlatform ("macos")]
@@ -48,7 +48,7 @@ public partial class CARendererOptions : DictionaryContainer
 		[SupportedOSPlatform ("maccatalyst13.1")]
 		set
 		{
-			throw new NotImplementedException()
+			SetNativeValue (TestNamespace.CARendererOptions.Keys.ColorSpace, value);
 		}
 	}
 
@@ -64,7 +64,7 @@ public partial class CARendererOptions : DictionaryContainer
 		[SupportedOSPlatform ("maccatalyst13.1")]
 		get
 		{
-			throw new NotImplementedException()
+			return Dictionary [TestNamespace.CARendererOptions.Keys.MetalCommandQueue] as global::Metal.IMTLCommandQueue;
 		}
 
 		[SupportedOSPlatform ("macos")]
@@ -73,7 +73,7 @@ public partial class CARendererOptions : DictionaryContainer
 		[SupportedOSPlatform ("maccatalyst13.1")]
 		set
 		{
-			throw new NotImplementedException()
+			SetNativeValue (TestNamespace.CARendererOptions.Keys.MetalCommandQueue, value);
 		}
 	}
 }

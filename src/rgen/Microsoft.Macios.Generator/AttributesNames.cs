@@ -89,6 +89,9 @@ static class AttributesNames {
 		if (type == typeof (ObjCBindings.Constructor)) {
 			return ExportConstructorAttribute;
 		}
+		if (type == typeof (ObjCBindings.StrongDictionaryProperty)) {
+			return ExportStrongDictionaryPropertyAttribute;
+		}
 		return null;
 	}
 

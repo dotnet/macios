@@ -12,6 +12,7 @@ using Microsoft.Macios.Generator.DataModel;
 using Microsoft.Macios.Generator.Formatters;
 using Microsoft.Macios.Generator.IO;
 using static Microsoft.Macios.Generator.Emitters.BindingSyntaxFactory;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Microsoft.Macios.Generator.Emitters;
 
@@ -53,7 +54,7 @@ class StrongDictionaryEmitter : IClassEmitter {
 
 				propertyBlock.AppendMemberAvailability (getter.Value.SymbolAvailability);
 				using (var getterBlock = propertyBlock.CreateBlock ("get", block: true)) {
-					getterBlock.WriteLine ($"{getCall}");
+					getterBlock.WriteLine ($"return {ExpressionStatement (getCall)}");
 				}
 
 				var setter = property.GetAccessor (AccessorKind.Setter);
@@ -64,7 +65,7 @@ class StrongDictionaryEmitter : IClassEmitter {
 				propertyBlock.WriteLine (); // add space between getter and setter since we have the attrs
 				propertyBlock.AppendMemberAvailability (setter.Value.SymbolAvailability);
 				using (var setterBlock = propertyBlock.CreateBlock ("set", block: true)) {
-					setterBlock.WriteLine ($"{setCall}");
+					setterBlock.WriteLine ($"{ExpressionStatement (setCall)}");
 				}
 			}
 		}

@@ -197,6 +197,15 @@ static partial class BindingSyntaxFactory {
 		@namespace: ["CoreMedia"],
 		@class: "CMSampleBuffer");
 
+	// CoreText types
+	
+	/// <summary>
+	/// TypeSyntax for CoreText.CTFontDescriptor.
+	/// </summary>
+	public static readonly TypeSyntax CTFontDescriptor = StringExtensions.GetIdentifierName (
+		@namespace: ["CoreText"],
+		@class: "CTFontDescriptor");
+	
 	// System types
 
 	/// <summary>
@@ -233,6 +242,5 @@ static partial class BindingSyntaxFactory {
 	public readonly static TypeSyntax Unsafe = StringExtensions.GetIdentifierName (
 		@namespace: ["System", "Runtime", "CompilerServices"],
 		@class: "Unsafe");
-
 
 }

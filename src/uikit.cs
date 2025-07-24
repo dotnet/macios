@@ -17344,7 +17344,7 @@ namespace UIKit {
 
 		[MacCatalyst (26, 0), TV (26, 0), iOS (26, 0)]
 		[Export ("searchBar:shouldChangeTextInRanges:replacementText:"), IgnoredInDelegate]
-		bool ShouldChangeTextInRanges (UISearchBar searchBar, NSValue[] ranges, string replacementText);
+		bool ShouldChangeTextInRanges (UISearchBar searchBar, NSValue [] ranges, string replacementText);
 	}
 
 	[MacCatalyst (13, 1)]

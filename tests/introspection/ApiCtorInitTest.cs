@@ -176,10 +176,10 @@ namespace Introspection {
 				if (TestRuntime.IsSimulator && !TestRuntime.CheckXcodeVersion (14, 1))
 					return true;
 				break;
+			case "CIPersonSegmentation": // removed in Xcode 26?
+			case "CISaliencyMapFilter": // removed in Xcode 26?
+				return TestRuntime.CheckXcodeVersion (26, 0);
 #endif
-			case "CIPersonSegmentation": // removed in Xcode 26 beta 1/2?
-			case "CISaliencyMapFilter": // removed in Xcode 26 beta 1/2?
-				return TestRuntime.CheckExactXcodeVersion (26, 0, 1) || TestRuntime.CheckExactXcodeVersion (26, 0, 2) || TestRuntime.CheckExactXcodeVersion (26, 0, 3);
 			case "PhaseConeDirectivityModelParameters":
 				return !TestRuntime.IsSimulator; // fails on device
 			}

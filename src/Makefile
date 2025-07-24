@@ -483,7 +483,11 @@ $(DOTNET_DESTDIR)/$($(2)_NUGET_REF_NAME)/ref/$(DOTNET_TFM)/Microsoft.$(1).xml: $
 
 $($(2)_DOTNET_BUILD_DIR)/doc/Microsoft.$(1).xml: $($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1).xml $($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1).dll build/.build-adr-stamp | $($(2)_DOTNET_BUILD_DIR)/doc
 ifdef ENABLE_XAMARIN
+ifdef ENABLE_ADR
 	$(Q) $(MAKE) run -C $(ADR_PATH) ASSEMBLY="$(abspath $($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1).dll)" INPUT="$(abspath $($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1).xml)" OUTPUT="$(abspath $$@)"
+else
+	$$(Q) $$(CP) $($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1).xml $$@
+endif
 else
 	$$(Q) $$(CP) $($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1).xml $$@
 endif
@@ -491,8 +495,10 @@ endef
 
 build/.build-adr-stamp:
 ifdef ENABLE_XAMARIN
+ifdef ENABLE_ADR
 	$(Q) $(MAKE) build -C $(ADR_PATH)
 	$(Q) $(MAKE) create -C $(ADR_PATH)
+endif
 endif
 	$(Q) touch $@
 

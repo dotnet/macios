@@ -76,6 +76,12 @@ public class ClassGenerationTests : BaseGeneratorTestClass {
 			new (ApplePlatform.MacCatalyst, "ConstructorTests", "ConstructorTests.cs", "ExpectedConstructorTests.cs"),
 			new (ApplePlatform.MacOSX, "ConstructorTests", "ConstructorTests.cs", "ExpectedConstructorTests.cs"),
 			
+			// nested classes
+			new (ApplePlatform.iOS, "NestedClasses", "NestedClasses.cs", "ExpectedNestedClasses.cs"),
+			new (ApplePlatform.TVOS, "NestedClasses", "NestedClasses.cs", "ExpectedNestedClasses.cs"),
+			new (ApplePlatform.MacCatalyst, "NestedClasses", "NestedClasses.cs", "ExpectedNestedClasses.cs"),
+			new (ApplePlatform.MacOSX, "NestedClasses", "NestedClasses.cs", "ExpectedNestedClasses.cs"),
+			
 			// trampoline tests
 			new (ApplePlatform.iOS, "TrampolinePropertyTests", "TrampolinePropertyTests.cs", "ExpectedTrampolinePropertyTests.cs"){ TrampolinesFile = "ExpectedTrampolinePropertyTestsTrampolines.cs"},
 			new (ApplePlatform.TVOS, "TrampolinePropertyTests", "TrampolinePropertyTests.cs", "ExpectedTrampolinePropertyTests.cs"){ TrampolinesFile = "ExpectedTrampolinePropertyTestsTrampolines.cs"},

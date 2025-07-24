@@ -3138,16 +3138,10 @@ namespace UIKit {
 		[Export ("ensureAttributesAreFixedInRange:")]
 		void EnsureAttributesAreFixed (NSRange range);
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSTextStorageWillProcessEditingNotification")]
 		[Internal]
 		NSString WillProcessEditingNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSTextStorageDidProcessEditingNotification")]
 		[Internal]
 		NSString DidProcessEditingNotification { get; }

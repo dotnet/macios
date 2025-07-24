@@ -88,7 +88,7 @@ class StrongDictionaryEmitter : IClassEmitter {
 		bindingContext.Builder.WriteLine ($"namespace {string.Join (".", bindingContext.Changes.Namespace)};");
 		bindingContext.Builder.WriteLine ();
 
-		bindingContext.Builder.AppendMemberAvailability (bindingContext.Changes.SymbolAvailability);
+		bindingContext.Builder.AppendMemberAvailability (bindingContext.Changes.SymbolAvailability)
 		var modifiers = $"{string.Join (' ', bindingContext.Changes.Modifiers)} ";
 		using (var classBlock = bindingContext.Builder.CreateBlock (
 				   $"{(string.IsNullOrWhiteSpace (modifiers) ? string.Empty : modifiers)}class {bindingContext.Changes.Name} : DictionaryContainer",

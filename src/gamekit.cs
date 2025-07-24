@@ -741,7 +741,6 @@ namespace GameKit {
 			""")]
 		void LoadPlayersForIdentifiers (string [] identifiers, [NullAllowed] GKPlayersHandler completionHandler);
 
-		/// <include file="../docs/api/GameKit/GKPlayer.xml" path="/Documentation/Docs[@DocId='P:GameKit.GKPlayer.DidChangeNotificationNameNotification']/*" />
 		[Field ("GKPlayerDidChangeNotificationName")]
 		[Notification]
 		// This name looks wrong, see the "Notification" at the end.
@@ -1104,7 +1103,6 @@ namespace GameKit {
 			""")]
 		void LoadFriends ([NullAllowed] GKFriendsHandler handler);
 
-		/// <include file="../docs/api/GameKit/GKLocalPlayer.xml" path="/Documentation/Docs[@DocId='P:GameKit.GKLocalPlayer.AuthenticationDidChangeNotificationName']/*" />
 		[Field ("GKPlayerAuthenticationDidChangeNotificationName")]
 		[Notification]
 		NSString AuthenticationDidChangeNotificationName { get; }

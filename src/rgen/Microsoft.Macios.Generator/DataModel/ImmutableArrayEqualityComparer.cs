@@ -12,8 +12,8 @@ namespace Microsoft.Macios.Generator.DataModel;
 /// </summary>
 /// <typeparam name="T">The type of the elements in the array.</typeparam>
 /// <typeparam name="TR">The type of the elements in the sorted array.</typeparam>
-abstract class ImmutableArrayEqualityComparer<T, TR> : EqualityComparer<ImmutableArray<T>> 
-	where T : IEquatable<T> 
+abstract class ImmutableArrayEqualityComparer<T, TR> : EqualityComparer<ImmutableArray<T>>
+	where T : IEquatable<T>
 	where TR : IEquatable<TR> {
 
 	/// <summary>
@@ -21,8 +21,8 @@ abstract class ImmutableArrayEqualityComparer<T, TR> : EqualityComparer<Immutabl
 	/// </summary>
 	/// <param name="array">The array to sort.</param>
 	/// <returns>A sorted array.</returns>
-	protected abstract TR[] Sort (ImmutableArray<T> array);
-	
+	protected abstract TR [] Sort (ImmutableArray<T> array);
+
 	/// <inheritdoc/>
 	public override bool Equals (ImmutableArray<T> x, ImmutableArray<T> y)
 	{

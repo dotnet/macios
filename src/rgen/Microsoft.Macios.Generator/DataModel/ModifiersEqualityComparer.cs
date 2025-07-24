@@ -11,8 +11,8 @@ namespace Microsoft.Macios.Generator.DataModel;
 /// Compares two `ImmutableArray&lt;SyntaxToken&gt;` instances representing modifiers.
 /// </summary>
 class ModifiersEqualityComparer : ImmutableArrayEqualityComparer<SyntaxToken, string> {
-	
+
 	/// <inheritdoc/>
-	protected override string[] Sort (ImmutableArray<SyntaxToken> array) 
+	protected override string [] Sort (ImmutableArray<SyntaxToken> array)
 		=> array.Select (t => t.Text).Order ().ToArray ();
 }

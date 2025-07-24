@@ -38,8 +38,8 @@ class AttributeComparer : IComparer<AttributeCodeChange> {
 /// </summary>
 class AttributesEqualityComparer : ImmutableArrayEqualityComparer<AttributeCodeChange, AttributeCodeChange> {
 	readonly AttributeComparer comparer = new ();
-	
+
 	/// <inheritdoc/>
-	protected override AttributeCodeChange[] Sort (ImmutableArray<AttributeCodeChange> array) 
+	protected override AttributeCodeChange [] Sort (ImmutableArray<AttributeCodeChange> array)
 		=> array.Sort (comparer).ToArray ();
 }

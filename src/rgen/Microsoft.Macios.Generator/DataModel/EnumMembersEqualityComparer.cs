@@ -10,8 +10,8 @@ namespace Microsoft.Macios.Generator.DataModel;
 /// Compares two `ImmutableArray&lt;EnumMember&gt;` instances.
 /// </summary>
 class EnumMembersEqualityComparer : ImmutableArrayEqualityComparer<EnumMember, EnumMember> {
-	
+
 	/// <inheritdoc/>
-	protected override EnumMember[] Sort (ImmutableArray<EnumMember> array) 
+	protected override EnumMember [] Sort (ImmutableArray<EnumMember> array)
 		=> array.OrderBy (x => x.Name).ToArray ();
 }

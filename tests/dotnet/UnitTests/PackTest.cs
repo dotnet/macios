@@ -502,6 +502,9 @@ namespace Xamarin.Tests {
 			var properties = GetDefaultProperties ();
 			properties ["cmdline:AllTheTargetFrameworks"] = targetFrameworks;
 
+			// If any of the api versions we support are higher than the api version we're built for, we need to ignore any XCODE_*_PREVIEW warnings.
+			AddNoWarnForPreviewVersions (platform, supportedApiVersion, properties);
+
 			DotNet.AssertPack (project_path, properties);
 
 			var nupkg = Path.Combine (Path.GetDirectoryName (project_path)!, "bin", configuration, project + ".1.0.0.nupkg");

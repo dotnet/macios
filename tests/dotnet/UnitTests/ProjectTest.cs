@@ -2587,6 +2587,10 @@ namespace Xamarin.Tests {
 			var project_path = GetProjectPath (project, platform: platform);
 			Clean (project_path);
 			var properties = GetDefaultProperties ();
+
+			// If any of the api versions we support are higher than the api version we're built for, we need to ignore any XCODE_*_PREVIEW warnings.
+			AddNoWarnForPreviewVersions (platform, supportedApiVersion, properties);
+
 			properties ["cmdline:AllTheTargetFrameworks"] = targetFrameworks;
 			var rv = DotNet.AssertBuild (project_path, properties);
 			rv.AssertNoWarnings ();

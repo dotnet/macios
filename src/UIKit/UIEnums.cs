@@ -4937,4 +4937,11 @@ namespace UIKit {
 		Horizontal,
 		Vertical,
 	}
+
+	[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+	[Native]
+	public enum UIGlassEffectStyle : long {
+		Regular,
+		Clear,
+	}
 }

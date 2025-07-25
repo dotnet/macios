@@ -35312,7 +35312,7 @@ namespace AppKit {
 		Color TintColor { get; set; }
 	}
 
-	[NoMacCatalyst, Mac (26,0)]
+	[NoMacCatalyst, Mac (26, 0)]
 	[BaseType (typeof (NSViewController))]
 	interface NSSplitViewItemAccessoryViewController : NSAnimatablePropertyContainer {
 

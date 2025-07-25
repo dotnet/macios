@@ -759,7 +759,7 @@ namespace AppKit {
 		DirectTouch = 1UL << (int) NSEventType.DirectTouch, // 10.10
 		ChangeMode = 1UL << (int) NSEventType.ChangeMode,
 		[Mac (26, 0)]
-		MouseCancelled = 1uL << (int) NSEventType.MouseCancelled,
+		MouseCancelled = 1UL << (int) NSEventType.MouseCancelled,
 		/// <summary>To be added.</summary>
 		AnyEvent = unchecked((ulong) UInt64.MaxValue),
 	}

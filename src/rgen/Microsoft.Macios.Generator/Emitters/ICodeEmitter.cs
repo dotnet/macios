@@ -40,12 +40,12 @@ interface ICodeEmitter {
 }
 
 static class ICodeEmitterExtensions {
-	
+
 	/// <summary>
 	/// Helper class to manage the disposal of the writers for the outer classes.
 	/// </summary>
 	class Blocks (LinkedList<TabbedWriter<StringWriter>> blocks) : IDisposable {
-		public void Dispose()
+		public void Dispose ()
 		{
 			// close the outer classes since we used a LinkedList to store them and insert them at the head, we can
 			// simply dispose them in current order, which is the reverse of the creation order
@@ -54,13 +54,13 @@ static class ICodeEmitterExtensions {
 			}
 		}
 	}
-	
+
 	/// <summary>
 	/// Emits the namespace declaration for the binding.
 	/// </summary>
 	/// <param name="self">The code emitter.</param>
 	/// <param name="bindingContext">The context for the binding.</param>
-	public static void EmitNamespace (this ICodeEmitter self, in BindingContext bindingContext) 
+	public static void EmitNamespace (this ICodeEmitter self, in BindingContext bindingContext)
 	{
 		bindingContext.Builder.WriteLine ();
 		bindingContext.Builder.WriteLine ($"namespace {string.Join (".", bindingContext.Changes.Namespace)};");

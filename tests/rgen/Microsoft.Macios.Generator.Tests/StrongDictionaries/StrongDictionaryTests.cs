@@ -27,7 +27,7 @@ public class StrongDictionaryTests : BaseGeneratorTestClass {
 			new (ApplePlatform.TVOS, "CARendererOptions", "CARendererOptions.cs", "ExpectedCARendererOptions.cs"),
 			new (ApplePlatform.MacCatalyst, "CARendererOptions", "CARendererOptions.cs", "ExpectedCARendererOptions.cs"),
 			new (ApplePlatform.MacOSX, "CARendererOptions", "CARendererOptions.cs", "ExpectedCARendererOptions.cs"),
-			
+
 			new (ApplePlatform.iOS, "NestedStrongDictionary", "NestedStrongDictionary.cs", "ExpectedNestedStrongDictionary.cs"),
 			new (ApplePlatform.TVOS, "CARendererOptions", "CARendererOptions.cs", "ExpectedCARendererOptions.cs"),
 			new (ApplePlatform.MacCatalyst, "CARendererOptions", "CARendererOptions.cs", "ExpectedCARendererOptions.cs"),

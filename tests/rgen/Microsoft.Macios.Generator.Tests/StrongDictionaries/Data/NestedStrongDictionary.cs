@@ -43,14 +43,14 @@ public partial class OuterClass {
 			[SupportedOSPlatform ("ios")]
 			[SupportedOSPlatform ("tvos")]
 			[SupportedOSPlatform ("maccatalyst13.1")]
-			[Export<StrongDictionaryProperty> (nameof(Keys.ColorSpace), StrongDictionaryKeyClass = typeof(Keys))]
+			[Export<StrongDictionaryProperty> (nameof (Keys.ColorSpace), StrongDictionaryKeyClass = typeof (Keys))]
 			public partial CGColorSpace? ColorSpace { get; set; }
 
 			[SupportedOSPlatform ("macos")]
 			[SupportedOSPlatform ("ios")]
 			[SupportedOSPlatform ("tvos")]
 			[SupportedOSPlatform ("maccatalyst13.1")]
-			[Export<StrongDictionaryProperty> (nameof(Keys.MetalCommandQueue), StrongDictionaryKeyClass = typeof(Keys))]
+			[Export<StrongDictionaryProperty> (nameof (Keys.MetalCommandQueue), StrongDictionaryKeyClass = typeof (Keys))]
 			public partial IMTLCommandQueue? MetalCommandQueue { get; set; }
 
 			// this is a random property to test the generator's handling of properties that are not marked as StrongDictionaryProperty.

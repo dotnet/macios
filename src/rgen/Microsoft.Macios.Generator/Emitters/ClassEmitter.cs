@@ -418,9 +418,9 @@ public static NSObject {name} ({NSObject} objectToObserve, {EventHandler}<{event
 
 			var modifiers = $"{string.Join (' ', bindingContext.Changes.Modifiers)} ";
 			using (var classBlock =
-			       builder.CreateBlock (
-				       $"{(string.IsNullOrWhiteSpace (modifiers) ? string.Empty : modifiers)}class {bindingContext.Changes.Name}",
-				       true)) {
+				   builder.CreateBlock (
+					   $"{(string.IsNullOrWhiteSpace (modifiers) ? string.Empty : modifiers)}class {bindingContext.Changes.Name}",
+					   true)) {
 				// emit the fields for the selectors before we register the class or anything
 				this.EmitSelectorFields (bindingContext, classBlock);
 

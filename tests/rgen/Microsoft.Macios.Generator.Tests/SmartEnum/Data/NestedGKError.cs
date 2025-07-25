@@ -7,7 +7,7 @@ namespace GameKit;
 public partial class OuterClass {
 
 	public partial class InnerClass {
-		
+
 		[Native ("GKErrorCode")]
 		[BindingType<SmartEnum> (Flags = SmartEnum.ErrorCode, ErrorDomain = "GKErrorDomain")]
 		public enum NestedGKError : long {

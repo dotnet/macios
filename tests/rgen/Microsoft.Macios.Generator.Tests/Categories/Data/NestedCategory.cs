@@ -21,7 +21,7 @@ public partial class OuterClass {
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst13.1")]
-		[BindingType<Category> (typeof(NSObject))]
+		[BindingType<Category> (typeof (NSObject))]
 		public static partial class NestedCategory {
 
 			[SupportedOSPlatform ("ios")]
@@ -95,7 +95,7 @@ public partial class OuterClass {
 			[SupportedOSPlatform ("maccatalyst13.1")]
 			[Export<Method> ("completeRequestReturningItems:completionHandler:",
 				Flags = ObjCBindings.Method.Async,
-				ResultType = typeof((bool Success, string Name, string? Surname)))]
+				ResultType = typeof ((bool Success, string Name, string? Surname)))]
 			public static unsafe partial void CompleteRequest (this NSObject self, NSExtensionItem [] returningItems,
 				Action<bool, string, string?>? completionHandler);
 

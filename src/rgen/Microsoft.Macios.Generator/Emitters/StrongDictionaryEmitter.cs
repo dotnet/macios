@@ -91,8 +91,8 @@ class StrongDictionaryEmitter : IClassEmitter {
 			builder.AppendMemberAvailability (bindingContext.Changes.SymbolAvailability);
 			var modifiers = $"{string.Join (' ', bindingContext.Changes.Modifiers)} ";
 			using (var classBlock = builder.CreateBlock (
-				       $"{(string.IsNullOrWhiteSpace (modifiers) ? string.Empty : modifiers)}class {bindingContext.Changes.Name} : DictionaryContainer",
-				       true)) {
+					   $"{(string.IsNullOrWhiteSpace (modifiers) ? string.Empty : modifiers)}class {bindingContext.Changes.Name} : DictionaryContainer",
+					   true)) {
 				// we care about two specific things, the constructors and the strong dictionary properties
 				EmitDefaultConstructors (bindingContext, classBlock);
 				EmitProperties (bindingContext, classBlock);

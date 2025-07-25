@@ -65,8 +65,8 @@ class CategoryEmitter : IClassEmitter {
 			var modifiers = $"{string.Join (' ', bindingContext.Changes.Modifiers)} ";
 			// class declaration, the analyzer should ensure that the class is static, otherwise it will fail to compile with an error.
 			using (var classBlock = builder.CreateBlock (
-				       $"{(string.IsNullOrWhiteSpace (modifiers) ? string.Empty : modifiers)}class {bindingContext.Changes.Name}",
-				       true)) {
+					   $"{(string.IsNullOrWhiteSpace (modifiers) ? string.Empty : modifiers)}class {bindingContext.Changes.Name}",
+					   true)) {
 				// emit the fields for the selectors before we register the class or anything
 				this.EmitSelectorFields (bindingContext, classBlock);
 

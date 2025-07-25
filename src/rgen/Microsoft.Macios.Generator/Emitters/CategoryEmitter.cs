@@ -56,25 +56,28 @@ class CategoryEmitter : IClassEmitter {
 		var registrationName = bindingData.CategoryType.Value.Name;
 
 		// namespace declaration
-		bindingContext.Builder.WriteLine ();
-		bindingContext.Builder.WriteLine ($"namespace {string.Join (".", bindingContext.Changes.Namespace)};");
-		bindingContext.Builder.WriteLine ();
+		this.EmitNamespace (bindingContext);
 
-		// append the class availability, this will add the necessary attributes to the class
-		bindingContext.Builder.AppendMemberAvailability (bindingContext.Changes.SymbolAvailability);
+		using (var _ = this.EmitOuterClasses (bindingContext, out var builder)) {
+			// append the class availability, this will add the necessary attributes to the class
+			builder.AppendMemberAvailability (bindingContext.Changes.SymbolAvailability);
 
-		var modifiers = $"{string.Join (' ', bindingContext.Changes.Modifiers)} ";
-		// class declaration, the analyzer should ensure that the class is static, otherwise it will fail to compile with an error.
-		using (var classBlock = bindingContext.Builder.CreateBlock ($"{(string.IsNullOrWhiteSpace (modifiers) ? string.Empty : modifiers)}class {bindingContext.Changes.Name}", true)) {
-			// emit the fields for the selectors before we register the class or anything
-			this.EmitSelectorFields (bindingContext, classBlock);
+			var modifiers = $"{string.Join (' ', bindingContext.Changes.Modifiers)} ";
+			// class declaration, the analyzer should ensure that the class is static, otherwise it will fail to compile with an error.
+			using (var classBlock = builder.CreateBlock (
+				       $"{(string.IsNullOrWhiteSpace (modifiers) ? string.Empty : modifiers)}class {bindingContext.Changes.Name}",
+				       true)) {
+				// emit the fields for the selectors before we register the class or anything
+				this.EmitSelectorFields (bindingContext, classBlock);
 
-			classBlock.WriteLine ($"static readonly {NativeHandle} {ClassPtr} = {BindingSyntaxFactory.Class}.GetHandle (\"{registrationName}\");");
+				classBlock.WriteLine (
+					$"static readonly {NativeHandle} {ClassPtr} = {BindingSyntaxFactory.Class}.GetHandle (\"{registrationName}\");");
 
-			// categories only have methods since we cannot have extensions properties in C#.
-			this.EmitMethods (bindingContext, classBlock);
+				// categories only have methods since we cannot have extensions properties in C#.
+				this.EmitMethods (bindingContext, classBlock);
+			}
+
+			return true;
 		}
-
-		return true;
 	}
 }

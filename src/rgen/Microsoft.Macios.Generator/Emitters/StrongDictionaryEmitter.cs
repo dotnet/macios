@@ -85,20 +85,20 @@ class StrongDictionaryEmitter : IClassEmitter {
 		}
 
 		// namespace declaration
-		bindingContext.Builder.WriteLine ();
-		bindingContext.Builder.WriteLine ($"namespace {string.Join (".", bindingContext.Changes.Namespace)};");
-		bindingContext.Builder.WriteLine ();
+		this.EmitNamespace (bindingContext);
 
-		bindingContext.Builder.AppendMemberAvailability (bindingContext.Changes.SymbolAvailability);
-		var modifiers = $"{string.Join (' ', bindingContext.Changes.Modifiers)} ";
-		using (var classBlock = bindingContext.Builder.CreateBlock (
-				   $"{(string.IsNullOrWhiteSpace (modifiers) ? string.Empty : modifiers)}class {bindingContext.Changes.Name} : DictionaryContainer",
-				   true)) {
-			// we care about two specific things, the constructors and the strong dictionary properties
-			EmitDefaultConstructors (bindingContext, classBlock);
-			EmitProperties (bindingContext, classBlock);
+		using (var _ = this.EmitOuterClasses (bindingContext, out var builder)) {
+			builder.AppendMemberAvailability (bindingContext.Changes.SymbolAvailability);
+			var modifiers = $"{string.Join (' ', bindingContext.Changes.Modifiers)} ";
+			using (var classBlock = builder.CreateBlock (
+				       $"{(string.IsNullOrWhiteSpace (modifiers) ? string.Empty : modifiers)}class {bindingContext.Changes.Name} : DictionaryContainer",
+				       true)) {
+				// we care about two specific things, the constructors and the strong dictionary properties
+				EmitDefaultConstructors (bindingContext, classBlock);
+				EmitProperties (bindingContext, classBlock);
+			}
+
+			return true;
 		}
-
-		return true;
 	}
 }

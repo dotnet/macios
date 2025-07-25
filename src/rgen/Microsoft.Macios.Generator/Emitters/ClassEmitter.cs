@@ -400,72 +400,57 @@ public static NSObject {name} ({NSObject} objectToObserve, {EventHandler}<{event
 		}
 
 		// namespace declaration
-		bindingContext.Builder.WriteLine ();
-		bindingContext.Builder.WriteLine ($"namespace {string.Join (".", bindingContext.Changes.Namespace)};");
-		bindingContext.Builder.WriteLine ();
+		this.EmitNamespace (bindingContext);
 
-		// if the type of the change contains outer classes, we need to emit the outer classes first
-		TabbedWriter<StringWriter> builder = bindingContext.Builder;
-		// create a list for the outer classes builders so that we can dispose them later, we are using a linked list
-		// because AddFirst is O(1) and we need to dispose them in the reverse order of creation
-		var outerClassesBuilders = new LinkedList<TabbedWriter<StringWriter>> ();
-		if (bindingContext.Changes.OuterClasses.Length > 0) {
-			// emit the outer classes and set the builder to the innermost class
-			foreach (var outerClass in bindingContext.Changes.OuterClasses) {
-				var outerModifiers = $"{string.Join (' ', outerClass.Modifiers)} ";
-				builder = builder.CreateBlock ($"{(string.IsNullOrWhiteSpace (outerModifiers) ? string.Empty : outerModifiers)}class {outerClass.Name}", true);
-				// add the current builder to the list so that we can dispose it later, we add it to the head of the
-				// list so that we can dispose it in the reverse order of creation
-				outerClassesBuilders.AddFirst (builder);
-			}
-		}
+		using (var _ = this.EmitOuterClasses (bindingContext, out var builder)) {
 
-		// register the class only if we are not dealing with a static class
-		var bindingData = (BindingTypeData<Class>) bindingContext.Changes.BindingInfo;
-		// Registration depends on the class name. If the binding data contains a name, we use that one, else
-		// we use the name of the class
-		var registrationName = bindingData.Name ?? bindingContext.Changes.Name;
+			// register the class only if we are not dealing with a static class
+			var bindingData = (BindingTypeData<Class>) bindingContext.Changes.BindingInfo;
+			// Registration depends on the class name. If the binding data contains a name, we use that one, else
+			// we use the name of the class
+			var registrationName = bindingData.Name ?? bindingContext.Changes.Name;
 
-		// append the class availability, this will add the necessary attributes to the class
-		bindingContext.Builder.AppendMemberAvailability (bindingContext.Changes.SymbolAvailability);
-		if (!bindingContext.Changes.IsStatic) {
-			builder.WriteLine ($"[Register (\"{registrationName}\", true)]");
-		}
-		var modifiers = $"{string.Join (' ', bindingContext.Changes.Modifiers)} ";
-		using (var classBlock = builder.CreateBlock ($"{(string.IsNullOrWhiteSpace (modifiers) ? string.Empty : modifiers)}class {bindingContext.Changes.Name}", true)) {
-			// emit the fields for the selectors before we register the class or anything
-			this.EmitSelectorFields (bindingContext, classBlock);
-
+			// append the class availability, this will add the necessary attributes to the class
+			bindingContext.Builder.AppendMemberAvailability (bindingContext.Changes.SymbolAvailability);
 			if (!bindingContext.Changes.IsStatic) {
-				classBlock.AppendGeneratedCodeAttribute (optimizable: true);
-				classBlock.WriteLine ($"static readonly {NativeHandle} {ClassPtr} = {BindingSyntaxFactory.Class}.GetHandle (\"{registrationName}\");");
-				classBlock.WriteLine ();
-				classBlock.WriteDocumentation (Documentation.Class.ClassHandle (bindingContext.Changes.Name));
-				classBlock.WriteLine ($"public override {NativeHandle} ClassHandle => {ClassPtr};");
-				classBlock.WriteLine ();
-
-				EmitDefaultConstructors (bindingContext: bindingContext,
-					classBlock: classBlock,
-					disableDefaultCtor: bindingData.Flags.HasFlag (ObjCBindings.Class.DisableDefaultCtor));
-
-				// emit any other constructor that is not the default one
-				EmitConstructors (bindingContext, classBlock);
+				builder.WriteLine ($"[Register (\"{registrationName}\", true)]");
 			}
 
-			EmitFields (bindingContext.Changes.Name, bindingContext.Changes.Properties, classBlock,
-				out var notificationProperties);
-			EmitProperties (bindingContext, classBlock);
-			this.EmitMethods (bindingContext, classBlock);
+			var modifiers = $"{string.Join (' ', bindingContext.Changes.Modifiers)} ";
+			using (var classBlock =
+			       builder.CreateBlock (
+				       $"{(string.IsNullOrWhiteSpace (modifiers) ? string.Empty : modifiers)}class {bindingContext.Changes.Name}",
+				       true)) {
+				// emit the fields for the selectors before we register the class or anything
+				this.EmitSelectorFields (bindingContext, classBlock);
 
-			// emit the notification helper classes, leave this for the very bottom of the class
-			EmitNotifications (notificationProperties, classBlock);
-		}
+				if (!bindingContext.Changes.IsStatic) {
+					classBlock.AppendGeneratedCodeAttribute (optimizable: true);
+					classBlock.WriteLine (
+						$"static readonly {NativeHandle} {ClassPtr} = {BindingSyntaxFactory.Class}.GetHandle (\"{registrationName}\");");
+					classBlock.WriteLine ();
+					classBlock.WriteDocumentation (Documentation.Class.ClassHandle (bindingContext.Changes.Name));
+					classBlock.WriteLine ($"public override {NativeHandle} ClassHandle => {ClassPtr};");
+					classBlock.WriteLine ();
 
-		// close the outer classes since we used a LinkedList to store them and insert them at the head, we can
-		// simply dispose them in current order, which is the reverse of the creation order
-		foreach (var outerClassesBuilder in outerClassesBuilders) {
-			outerClassesBuilder.Dispose ();
+					EmitDefaultConstructors (bindingContext: bindingContext,
+						classBlock: classBlock,
+						disableDefaultCtor: bindingData.Flags.HasFlag (ObjCBindings.Class.DisableDefaultCtor));
+
+					// emit any other constructor that is not the default one
+					EmitConstructors (bindingContext, classBlock);
+				}
+
+				EmitFields (bindingContext.Changes.Name, bindingContext.Changes.Properties, classBlock,
+					out var notificationProperties);
+				EmitProperties (bindingContext, classBlock);
+				this.EmitMethods (bindingContext, classBlock);
+
+				// emit the notification helper classes, leave this for the very bottom of the class
+				EmitNotifications (notificationProperties, classBlock);
+			}
+
+			return true;
 		}
-		return true;
 	}
 }

@@ -17,6 +17,12 @@ public class CategoryGenerationTests : BaseGeneratorTestClass {
 			(ApplePlatform.TVOS, "MethodTests", "MethodTests.cs", "tvOSExpectedMethodTests.cs", null),
 			(ApplePlatform.MacCatalyst, "MethodTests", "MethodTests.cs", "ExpectedMethodTests.cs", null),
 			(ApplePlatform.MacOSX, "MethodTests", "MethodTests.cs", "ExpectedMethodTests.cs", null),
+			
+			// nested tests
+			(ApplePlatform.iOS, "NestedCategory", "NestedCategory.cs", "ExpectedNestedCategory.cs", null),
+			(ApplePlatform.TVOS, "NestedCategory", "NestedCategory.cs", "ExpectedNestedCategory.cs", null),
+			(ApplePlatform.MacCatalyst, "NestedCategory", "NestedCategory.cs", "ExpectedNestedCategory.cs", null),
+			(ApplePlatform.MacOSX, "NestedCategory", "NestedCategory.cs", "ExpectedNestedCategory.cs", null),
 		};
 
 		public IEnumerator<object []> GetEnumerator ()

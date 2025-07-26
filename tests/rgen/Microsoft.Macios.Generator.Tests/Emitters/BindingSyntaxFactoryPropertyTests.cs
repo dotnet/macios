@@ -6,7 +6,6 @@ using System.Collections;
 using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
 using Microsoft.Macios.Generator.DataModel;
-using Microsoft.Macios.Generator.Emitters;
 using ObjCRuntime;
 using Xunit;
 using static Microsoft.Macios.Generator.Emitters.BindingSyntaxFactory;

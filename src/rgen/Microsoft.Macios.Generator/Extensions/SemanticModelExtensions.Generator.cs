@@ -6,6 +6,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Macios.Generator.Availability;
 using Microsoft.Macios.Generator.DataModel;
+using TypeInfo = Microsoft.Macios.Generator.DataModel.TypeInfo;
 
 namespace Microsoft.Macios.Generator.Extensions;
 
@@ -16,12 +17,13 @@ static partial class SemanticModelExtensions {
 		out string name,
 		out string? baseClass,
 		out ImmutableArray<string> interfaces,
+		out ImmutableArray<OuterClass> outerClasses,
 		out ImmutableArray<string> namespaces,
 		out SymbolAvailability symbolAvailability,
 		out BindingInfo bindingInfo)
 	{
 		var symbol = self.GetDeclaredSymbol (declaration);
-		GetSymbolData (symbol, out name, out baseClass, out interfaces, out namespaces, out symbolAvailability);
+		GetSymbolData (symbol, out name, out baseClass, out interfaces, out outerClasses, out namespaces, out symbolAvailability);
 		if (symbol is null)
 			bindingInfo = default;
 		else {
@@ -30,6 +32,7 @@ static partial class SemanticModelExtensions {
 				BindingType.Class => new BindingInfo (symbol.GetBindingData<ObjCBindings.Class> ()),
 				BindingType.Protocol => new BindingInfo (symbol.GetBindingData<ObjCBindings.Protocol> ()),
 				BindingType.SmartEnum => new BindingInfo (symbol.GetBindingData<ObjCBindings.SmartEnum> ()),
+				BindingType.StrongDictionary => new BindingInfo (symbol.GetBindingData<ObjCBindings.StrongDictionary> ()),
 				_ => default,
 			};
 		}

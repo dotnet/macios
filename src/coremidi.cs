@@ -412,12 +412,10 @@ namespace CoreMidi {
 	[MacCatalyst (13, 1)]
 	[Static]
 	interface Midi {
-		/// <include file="../docs/api/CoreMidi/Midi.xml" path="/Documentation/Docs[@DocId='P:CoreMidi.Midi.NetworkNotificationContactsDidChange']/*" />
 		[Field ("MIDINetworkNotificationContactsDidChange")]
 		[Notification]
 		NSString NetworkNotificationContactsDidChange { get; }
 
-		/// <include file="../docs/api/CoreMidi/Midi.xml" path="/Documentation/Docs[@DocId='P:CoreMidi.Midi.NetworkNotificationSessionDidChange']/*" />
 		[Field ("MIDINetworkNotificationSessionDidChange")]
 		[Notification]
 		NSString NetworkNotificationSessionDidChange { get; }

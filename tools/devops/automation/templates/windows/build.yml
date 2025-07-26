@@ -236,10 +236,13 @@ steps:
   timeoutInMinutes: 10
 
 - pwsh: |
-    & $(Build.SourcesDirectory)\$(BUILD_REPOSITORY_TITLE)\tests\dotnet\Windows\bin\dotnet\dotnet.exe `
-        nuget push `
-        "$(Build.SourcesDirectory)\$(BUILD_REPOSITORY_TITLE)\tests\test-libraries\nugets\FrameworksInRuntimesNativeDirectory\bin\Release\Xamarin.Tests.FrameworksInRuntimesNativeDirectory.1.0.0.nupkg" `
-        --source "$(Build.SourcesDirectory)\$(BUILD_REPOSITORY_TITLE)\tests\.nuget\packages"
+    foreach ($nupkg in Get-ChildItem -Path "$(Build.SourcesDirectory)\$(BUILD_REPOSITORY_TITLE)\tests\test-libraries\nugets" -Recurse -Include *.nupkg -Exclude *.symbols.nupkg) {
+      Write-Host "Installing: $nupkg"
+      & $(Build.SourcesDirectory)\$(BUILD_REPOSITORY_TITLE)\tests\dotnet\Windows\bin\dotnet\dotnet.exe `
+          nuget push `
+          "$nupkg" `
+          --source "$(Build.SourcesDirectory)\$(BUILD_REPOSITORY_TITLE)\tests\.nuget\packages"
+    }
   displayName: 'Build dependencies for .NET tests'
   continueOnError: true
 

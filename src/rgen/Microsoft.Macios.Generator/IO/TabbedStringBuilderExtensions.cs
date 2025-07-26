@@ -117,4 +117,17 @@ static class TabbedStringBuilderExtensions {
 		self.WriteLine ($"[param: BlockProxy (typeof ({Trampolines}.{nativeInvoker}))]");
 		return self;
 	}
+
+	/// <summary>
+	/// Appends a `[Preserve]` attribute to the current writer.
+	/// </summary>
+	/// <param name="self">A tabbed string writer.</param>
+	/// <param name="conditional">A value indicating whether the preservation is conditional.</param>
+	/// <returns>The current writer.</returns>
+	public static TabbedWriter<StringWriter> AppendPreserveAttribute (this TabbedWriter<StringWriter> self,
+		bool conditional = true)
+	{
+		self.WriteLine ($"[Preserve (Conditional = {conditional.ToString ().ToLower ()})]");
+		return self;
+	}
 }

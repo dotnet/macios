@@ -214,4 +214,16 @@ namespace ObjCBindings {
 		/// </summary>
 		WeakDelegate = 1 << 15,
 	}
+
+	/// <summary>
+	/// Export flag that states that the field is used as a StrongDictionary property.
+	/// </summary>
+	[Flags]
+	[Experimental ("APL0003")]
+	public enum StrongDictionaryProperty {
+		/// <summary>
+		/// Use the default values.
+		/// </summary>
+		Default = 0,
+	}
 }

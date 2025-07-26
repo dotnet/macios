@@ -12,8 +12,12 @@ using Microsoft.Macios.Generator.IO;
 
 namespace Microsoft.Macios.Generator.Emitters;
 
+/// <summary>
+/// Emitter responsible for generating strong dictionary keys classes.
+/// </summary>
 class StrongDictionaryKeysEmitter : IClassEmitter {
 
+	/// <inheritdoc />
 	public string GetSymbolName (in Binding binding)
 	{
 		var outerClasses = binding.OuterClasses.Select (x => x.Name);
@@ -23,9 +27,10 @@ class StrongDictionaryKeysEmitter : IClassEmitter {
 			: $"{prefix}.{binding.Name}";
 	}
 
+	/// <inheritdoc />
 	public IEnumerable<string> UsingStatements { get; } = [];
 	
-
+	/// <inheritdoc />
 	public bool TryEmit (in BindingContext bindingContext, [NotNullWhen(false)] out ImmutableArray<Diagnostic>? diagnostics)
 	{
 		diagnostics = null;

@@ -14,7 +14,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
-using System.Threading.Tasks;
 
 namespace Microsoft.Macios.Generator.Tests.Classes.Data;
 

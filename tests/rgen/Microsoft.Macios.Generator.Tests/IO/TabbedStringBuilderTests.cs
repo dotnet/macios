@@ -283,6 +283,25 @@ Because we are using a raw string  we expected:
 	}
 
 	[Theory]
+	[InlineData (true, 0, "")]
+	[InlineData (true, 1, "\t")]
+	[InlineData (true, 5, "\t\t\t\t\t")]
+	[InlineData (false, 0, "")]
+	[InlineData (false, 1, "\t")]
+	[InlineData (false, 5, "\t\t\t\t\t")]
+	public void AppendPreserveAttribute (bool conditional, int tabCount, string expectedTabs)
+	{
+		var expected = $"{expectedTabs}[Preserve (Conditional = {conditional.ToString ().ToLower ()})]\n";
+		string result;
+		using (var block = new TabbedStringBuilder (sb, tabCount)) {
+			block.AppendPreserveAttribute (conditional);
+			result = block.ToCode ();
+		}
+
+		Assert.Equal (expected, result);
+	}
+
+	[Theory]
 	[InlineData (0, "")]
 	[InlineData (1, "\t")]
 	[InlineData (5, "\t\t\t\t\t")]
@@ -487,4 +506,6 @@ using (var m3 = new MemoryStream())
 
 		Assert.Equal (expectedString, baseBlock.ToCode ());
 	}
+
+
 }

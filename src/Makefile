@@ -560,6 +560,20 @@ MinimumVersions.cs: MinimumVersions.cs.in Makefile $(TOP)/Make.config
 		-e 's/@DOTNET_MIN_MACCATALYST_SDK_VERSION@/$(DOTNET_MIN_MACCATALYST_SDK_VERSION)/g' \
 		$< > $@
 
+# Some validations
+
+SOURCE_FILES_IN_GIT:=$(shell git ls-files -- */*.cs DotNetGlobals.cs MinimumVersions.cs MonoNativeFunctionWrapperAttribute.cs MonoPInvokeCallbackAttribute.cs | grep -v '^bgen/' | sort -u)
+SOURCE_FILES_IN_MK:=$(shell grep '[.]cs' frameworks.sources | grep -v '\#' | grep -v ':=' | grep -v 'MinimumVersions.cs' | grep -v ../runtime/Delegates.generated.cs | sed -e 's/\\//' -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$$//' | sort -u)
+
+SOURCE_FILES_ONLY_IN_MK:=$(filter-out $(SOURCE_FILES_IN_GIT),$(SOURCE_FILES_IN_MK))
+SOURCE_FILES_ONLY_IN_GIT:=$(filter-out $(SOURCE_FILES_IN_MK),$(SOURCE_FILES_IN_GIT))
+
+all-local:: verify
+verify:
+	@if [[ "$(words $(SOURCE_FILES_ONLY_IN_MK))" != "0" ]]; then echo "Found $(words $(SOURCE_FILES_ONLY_IN_MK)) file(s) in frameworks.sources not in source control: $(SOURCE_FILES_ONLY_IN_MK) (if you just added these files, commit them to fix this error)"; fi
+	@if [[ "$(words $(SOURCE_FILES_ONLY_IN_GIT))" != "0" ]]; then echo "Found $(words $(SOURCE_FILES_ONLY_IN_GIT)) file(s) in source control, but not in frameworks.sources: : $(SOURCE_FILES_ONLY_IN_GIT) (did you add this files, but forget to add them to frameworks.sources?)"; fi
+	@if [[ "$(words $(SOURCE_FILES_ONLY_IN_MK))$(words $(SOURCE_FILES_ONLY_IN_GIT))" != "00" ]]; then exit 1; fi
+
 # Using .SECONDARY can cause make to go into an infinite loop.
 # See https://github.com/xamarin/maccore/issues/762.
 #.SECONDARY:

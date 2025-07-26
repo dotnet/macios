@@ -17,9 +17,6 @@ namespace MediaAccessibility {
 	/// <summary>Defines the constant associated with <c>kMAudibleMediaSettingsChangedNotification</c> and accessibility preferred characteristics.</summary>
 	[Static]
 	interface MAAudibleMedia {
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("kMAAudibleMediaSettingsChangedNotification")]

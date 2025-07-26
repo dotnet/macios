@@ -14,10 +14,13 @@ using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
-using System.Threading.Tasks;
 
 namespace TestNamespace;
 
+[SupportedOSPlatform ("macos")]
+[SupportedOSPlatform ("ios")]
+[SupportedOSPlatform ("tvos")]
+[SupportedOSPlatform ("maccatalyst13.1")]
 [Register ("PropertyTests", true)]
 public partial class PropertyTests
 {

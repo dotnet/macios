@@ -25,6 +25,16 @@ readonly partial struct Method : IEquatable<Method> {
 	public string Name { get; init; }
 
 	/// <summary>
+	/// True if the method is an extension method.
+	/// </summary>
+	public bool IsExtension => Parameters.Length > 0 && Parameters [0].IsThis;
+
+	/// <summary>
+	/// The name of the 'this' parameter for an extension method, or "this" for an instance method.
+	/// </summary>
+	public string This => IsExtension ? Parameters [0].Name : "this";
+
+	/// <summary>
 	/// Method return type.
 	/// </summary>
 	public TypeInfo ReturnType { get; init; }

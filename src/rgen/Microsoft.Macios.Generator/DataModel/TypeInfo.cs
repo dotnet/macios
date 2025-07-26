@@ -135,6 +135,11 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 	public bool IsTask { get; init; }
 
 	/// <summary>
+	/// True if the type represents a strong dictionary.
+	/// </summary>
+	public bool IsStrongDictionary { get; init; }
+
+	/// <summary>
 	/// Returns, if the type is an array, if its elements are a wrapped object from the objc world.
 	/// </summary>
 	public bool ArrayElementTypeIsWrapped { get; init; }
@@ -143,6 +148,16 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 	/// Returns, if the type is an array, if its elements implement the INativeObject interface.
 	/// </summary>
 	public bool ArrayElementIsINativeObject { get; init; }
+
+	/// <summary>
+	/// If the type is an array of enums, it returns the special type of the underlying enum type.
+	/// </summary>
+	public SpecialType? ArrayElementEnumUnderlyingType { get; init; }
+
+	/// <summary>
+	/// Returns true if the type is an array of enums.
+	/// </summary>
+	public bool ArrayElementTypeIsEnum => ArrayElementEnumUnderlyingType is not null;
 
 	readonly bool isNSObject = false;
 
@@ -345,6 +360,7 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		IsNativeIntegerType = symbol.IsNativeIntegerType;
 		IsNativeEnum = symbol.HasAttribute (AttributesNames.NativeAttribute);
 		IsProtocol = symbol.HasAttribute (AttributesNames.ProtocolAttribute);
+		IsStrongDictionary = symbol.HasAttribute (AttributesNames.StrongDictionaryAttribute);
 
 		// data that we can get from the symbol without being INamedType
 		symbol.GetInheritance (
@@ -361,6 +377,7 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 			FullyQualifiedName = arraySymbol.ElementType.ToDisplayString ();
 			IsArray = true;
 			ArrayElementType = arraySymbol.ElementType.SpecialType;
+			ArrayElementEnumUnderlyingType = arraySymbol.ElementType is INamedTypeSymbol enumType ? enumType.EnumUnderlyingType?.SpecialType : null;
 			ArrayElementTypeIsWrapped = arraySymbol.ElementType.IsWrapped ();
 			ArrayElementIsINativeObject = arraySymbol.ElementType.IsINativeObject ();
 		}
@@ -459,6 +476,8 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 			return false;
 		if (IsProtocol != other.IsProtocol)
 			return false;
+		if (IsStrongDictionary != other.IsStrongDictionary)
+			return false;
 
 		// compare base classes and interfaces, order does not matter at all
 		var listComparer = new CollectionComparer<string> ();
@@ -496,6 +515,7 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		hashCode.Add (IsNativeEnum);
 		hashCode.Add (Delegate);
 		hashCode.Add (IsProtocol);
+		hashCode.Add (IsStrongDictionary);
 		foreach (var parent in parents) {
 			hashCode.Add (parent);
 		}
@@ -764,6 +784,7 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		sb.Append ($"IsNativeIntegerType: {IsNativeIntegerType}, ");
 		sb.Append ($"IsNativeEnum: {IsNativeEnum}, ");
 		sb.Append ($"IsProtocol: {IsProtocol}, ");
+		sb.Append ($"IsStrongDictionary: {IsStrongDictionary}, ");
 		sb.Append ($"Delegate: {Delegate?.ToString () ?? "null"}, ");
 		sb.Append ($"EnumUnderlyingType: '{EnumUnderlyingType?.ToString () ?? "null"}', ");
 		sb.Append ("Parents: [");

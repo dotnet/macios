@@ -274,7 +274,6 @@ namespace MessageUI {
 		[Export ("disableUserAttachments")]
 		void DisableUserAttachments ();
 
-		/// <include file="../docs/api/MessageUI/MFMessageComposeViewController.xml" path="/Documentation/Docs[@DocId='P:MessageUI.MFMessageComposeViewController.TextMessageAvailabilityDidChangeNotification']/*" />
 		[Field ("MFMessageComposeViewControllerTextMessageAvailabilityDidChangeNotification")]
 		[Notification (typeof (MFMessageAvailabilityChangedEventArgs))]
 		NSString TextMessageAvailabilityDidChangeNotification { get; }

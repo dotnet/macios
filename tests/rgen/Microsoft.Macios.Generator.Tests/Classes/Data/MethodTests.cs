@@ -13,6 +13,10 @@ using nfloat = System.Runtime.InteropServices.NFloat;
 
 namespace TestNamespace;
 
+[SupportedOSPlatform ("macos")]
+[SupportedOSPlatform ("ios")]
+[SupportedOSPlatform ("tvos")]
+[SupportedOSPlatform ("maccatalyst13.1")]
 [BindingType<Class>]
 public partial class MethodTests {
 

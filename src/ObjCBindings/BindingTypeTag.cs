@@ -74,6 +74,23 @@ namespace ObjCBindings {
 	}
 
 	/// <summary>
+	/// Flags to be used on strong dictionary keys bindings.
+	/// </summary>
+	[Flags]
+	[Experimental ("APL0003")]
+	public enum StrongDictionaryKeys : Int64 {
+		/// <summary>
+		/// Use the default values.
+		/// </summary>
+		Default = 0,
+
+		/// <summary>
+		/// Flags that a backward compatible strong dictionary keys should be generated. 
+		/// </summary>
+		BackwardCompatible = 1 << 2,
+	}
+
+	/// <summary>
 	/// Flags to be used on core image filter bindings.
 	/// </summary>
 	[Flags]

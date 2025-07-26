@@ -90,7 +90,7 @@ public class TestClass {
 		Assert.True (EmitterFactory.TryCreate (changes, out var secondEmitter));
 		Assert.Same (emitter, secondEmitter);
 	}
-	
+
 	[Theory]
 	[AllSupportedPlatforms]
 	public void TryCreateEmitterStrongDictionary (ApplePlatform platform)
@@ -111,7 +111,7 @@ public class TestClass {
 		Assert.True (EmitterFactory.TryCreate (changes, out var secondEmitter));
 		Assert.Same (emitter, secondEmitter);
 	}
-	
+
 	[Theory]
 	[AllSupportedPlatforms]
 	public void TryCreateEmitterStrongDictionaryKeys (ApplePlatform platform)

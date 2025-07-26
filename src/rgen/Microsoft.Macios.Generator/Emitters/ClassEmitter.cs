@@ -29,8 +29,8 @@ class ClassEmitter : IClassEmitter {
 	{
 		var outerClasses = binding.OuterClasses.Select (x => x.Name);
 		var prefix = string.Join ('.', outerClasses);
-		return string.IsNullOrEmpty (prefix) 
-			? binding.Name 
+		return string.IsNullOrEmpty (prefix)
+			? binding.Name
 			: $"{prefix}.{binding.Name}";
 	}
 
@@ -130,7 +130,7 @@ $@"if (IsDirectBinding) {{
 			}
 		}
 	}
-	
+
 	/// <summary>
 	/// Emit the code for all the properties in the class.
 	/// </summary>

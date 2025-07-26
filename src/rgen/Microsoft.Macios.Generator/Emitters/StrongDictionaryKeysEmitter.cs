@@ -29,9 +29,9 @@ class StrongDictionaryKeysEmitter : IClassEmitter {
 
 	/// <inheritdoc />
 	public IEnumerable<string> UsingStatements { get; } = [];
-	
+
 	/// <inheritdoc />
-	public bool TryEmit (in BindingContext bindingContext, [NotNullWhen(false)] out ImmutableArray<Diagnostic>? diagnostics)
+	public bool TryEmit (in BindingContext bindingContext, [NotNullWhen (false)] out ImmutableArray<Diagnostic>? diagnostics)
 	{
 		diagnostics = null;
 		if (bindingContext.Changes.BindingType != BindingType.StrongDictionaryKeys) {
@@ -50,8 +50,8 @@ class StrongDictionaryKeysEmitter : IClassEmitter {
 			builder.AppendMemberAvailability (bindingContext.Changes.SymbolAvailability);
 			var modifiers = $"{string.Join (' ', bindingContext.Changes.Modifiers)} ";
 			using (var classBlock = builder.CreateBlock (
-				       $"{(string.IsNullOrWhiteSpace (modifiers) ? string.Empty : modifiers)}class {bindingContext.Changes.Name}",
-				       true)) {
+					   $"{(string.IsNullOrWhiteSpace (modifiers) ? string.Empty : modifiers)}class {bindingContext.Changes.Name}",
+					   true)) {
 				// the only thing we care about is the keys, so we emit the keys
 				this.EmitFields (bindingContext.Changes.Name, bindingContext.Changes.Properties, classBlock,
 					out var _);

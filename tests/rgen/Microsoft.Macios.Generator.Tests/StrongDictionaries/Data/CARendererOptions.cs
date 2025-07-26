@@ -17,7 +17,7 @@ namespace TestNamespace;
 [BindingType<StrongDictionary> ()]
 public partial class CARendererOptions : DictionaryContainer {
 
-	[Binding<StrongDictionaryKeys> (Name = "CARendererOptionKeys", Flags = StrongDictionaryKeys.BackwardCompatible)]
+	[BindingType<StrongDictionaryKeys> (Name = "CARendererOptionKeys", Flags = StrongDictionaryKeys.BackwardCompatible)]
 	public static partial class Keys {
 
 		[SupportedOSPlatform ("macos")]

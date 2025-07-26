@@ -16,7 +16,8 @@ static class EmitterFactory {
 		{ BindingType.SmartEnum, new EnumEmitter () },
 		{ BindingType.Protocol, new InterfaceEmitter () },
 		{ BindingType.Category, new CategoryEmitter () },
-		{ BindingType.StrongDictionary, new StrongDictionaryEmitter () }
+		{ BindingType.StrongDictionary, new StrongDictionaryEmitter () },
+		{ BindingType.StrongDictionaryKeys, new StrongDictionaryKeysEmitter () }
 	};
 	public static bool TryCreate (Binding changes, [NotNullWhen (true)] out ICodeEmitter? emitter)
 		=> emitters.TryGetValue (changes.BindingType, out emitter);

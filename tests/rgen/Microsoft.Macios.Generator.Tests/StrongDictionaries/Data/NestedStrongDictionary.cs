@@ -20,7 +20,7 @@ public partial class OuterClass {
 		[BindingType<StrongDictionary> ()]
 		public partial class NestedStrongDictionary : DictionaryContainer {
 
-			[Binding<StrongDictionaryKeys> (Name = "CARendererOptionKeys",
+			[BindingType<StrongDictionaryKeys> (Name = "CARendererOptionKeys",
 				Flags = StrongDictionaryKeys.BackwardCompatible)]
 			public static partial class Keys {
 

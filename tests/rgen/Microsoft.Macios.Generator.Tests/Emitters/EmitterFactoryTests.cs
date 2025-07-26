@@ -90,6 +90,48 @@ public class TestClass {
 		Assert.True (EmitterFactory.TryCreate (changes, out var secondEmitter));
 		Assert.Same (emitter, secondEmitter);
 	}
+	
+	[Theory]
+	[AllSupportedPlatforms]
+	public void TryCreateEmitterStrongDictionary (ApplePlatform platform)
+	{
+		const string inputText = @"
+using Foundation;
+using ObjCBindings;
+
+namespace Test;
+
+[BindingType<StrongDictionary> ()]
+public class TestClass {
+}
+";
+		var changes = CreateSymbol<ClassDeclarationSyntax> (platform, inputText);
+		Assert.True (EmitterFactory.TryCreate (changes, out var emitter));
+		Assert.IsType<StrongDictionaryEmitter> (emitter);
+		Assert.True (EmitterFactory.TryCreate (changes, out var secondEmitter));
+		Assert.Same (emitter, secondEmitter);
+	}
+	
+	[Theory]
+	[AllSupportedPlatforms]
+	public void TryCreateEmitterStrongDictionaryKeys (ApplePlatform platform)
+	{
+		const string inputText = @"
+using Foundation;
+using ObjCBindings;
+
+namespace Test;
+
+[BindingType<StrongDictionaryKeys> ()]
+public class TestClass {
+}
+";
+		var changes = CreateSymbol<ClassDeclarationSyntax> (platform, inputText);
+		Assert.True (EmitterFactory.TryCreate (changes, out var emitter));
+		Assert.IsType<StrongDictionaryKeysEmitter> (emitter);
+		Assert.True (EmitterFactory.TryCreate (changes, out var secondEmitter));
+		Assert.Same (emitter, secondEmitter);
+	}
 
 	[Theory]
 	[AllSupportedPlatforms]

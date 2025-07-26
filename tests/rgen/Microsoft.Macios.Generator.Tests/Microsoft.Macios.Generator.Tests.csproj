@@ -62,10 +62,14 @@
         <Compile Remove="SmartEnum\Data\*.cs" />
         <Compile Remove="Classes\Data\*.cs" />
         <Compile Remove="Classes\Data\Trampolines\*.cs" />
+        <Compile Remove="Categories\Data\*.cs" />
+        <Compile Remove="StrongDictionaries\Data\*.cs" />
         
         <None Include="SmartEnum\Data\*.cs" />
         <None Include="Classes\Data\*.cs" />
         <None Include="Classes\Data\Trampolines\*.cs" />
+        <None Include="Categories\Data\*.cs" />
+        <None Include="StrongDictionaries\Data\*.cs" />
     </ItemGroup>
 
 

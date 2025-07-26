@@ -46,6 +46,31 @@ readonly partial struct Property {
 	public bool IsProperty => ExportPropertyData is not null;
 
 	/// <summary>
+	/// The data of the export attribute used to mark the value as a strong dictionary property binding.
+	/// </summary>
+	public ExportData<ObjCBindings.StrongDictionaryProperty>? ExportStrongPropertyData { get; init; }
+
+	/// <summary>
+	/// True if the property represents a strong dictionary property.
+	/// </summary>
+	[MemberNotNullWhen (true, nameof (ExportStrongPropertyData))]
+	public bool IsStrongDictionaryProperty => ExportStrongPropertyData is not null;
+
+	/// <summary>
+	/// Gets the strong dictionary key for the property, combining the class key and field name when applicable.
+	/// </summary>
+	public string? StrongDictionaryKey {
+		get {
+			if (!IsStrongDictionaryProperty)
+				return null;
+			// return the combination of the class key and the field name
+			return ExportStrongPropertyData.Value.StrongDictionaryKeyClass is null
+				? ExportStrongPropertyData.Value.Selector
+				: $"{ExportStrongPropertyData.Value.StrongDictionaryKeyClass.Value.FullyQualifiedName}.{ExportStrongPropertyData.Value.Selector}";
+		}
+	}
+
+	/// <summary>
 	/// Returns if the property was marked as thread safe.
 	/// </summary>
 	public bool IsThreadSafe =>
@@ -238,7 +263,6 @@ readonly partial struct Property {
 				modifiers: [])
 			];
 		}
-
 		change = new (
 			name: memberName,
 			returnType: new (propertySymbol.Type, context.Compilation),
@@ -250,6 +274,7 @@ readonly partial struct Property {
 			ForcedType = propertySymbol.GetForceTypeData (),
 			ExportFieldData = GetFieldInfo (context, propertySymbol),
 			ExportPropertyData = propertySymbol.GetExportData<ObjCBindings.Property> (),
+			ExportStrongPropertyData = propertySymbol.GetExportData<ObjCBindings.StrongDictionaryProperty> (),
 		};
 		return true;
 	}

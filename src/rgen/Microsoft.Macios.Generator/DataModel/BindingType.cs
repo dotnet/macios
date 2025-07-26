@@ -32,7 +32,7 @@ enum BindingType : ulong {
 	/// </summary>
 	StrongDictionary,
 	/// <summary>
-	/// Binding type for a string dictionary keys.
+	/// Binding type for strong dictionary keys.
 	/// </summary>
 	StrongDictionaryKeys,
 	/// <summary>

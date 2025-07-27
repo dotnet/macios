@@ -49,7 +49,7 @@ class BGenStrongDictionaryKeysEmitter : IClassEmitter {
 		// bgen does not have the keys as a nester class, we are going to ignore the outer classes.
 		this.EmitNamespace (bindingContext);
 
-		// add an obsolte attribute to the class so that it is clear that this is a bgen generated class and the new nested
+		// add an obsolete attribute to the class so that it is clear that this is a bgen generated class and the new nested
 		// strong dictionary keys should be used instead.
 		var outerClasses = string.Join ('.', bindingContext.Changes.OuterClasses.Select (x => x.Name));
 		bindingContext.Builder.WriteLine ($"[Obsolete (\"Use '{outerClasses}.{bindingContext.Changes.Name}' class instead.\", false)]");

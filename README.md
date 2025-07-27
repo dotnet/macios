@@ -31,6 +31,18 @@ Support for Xamarin.iOS and Xamarin.Mac ended on **May 1, 2024** as per the [Xam
 [maui-support-policy]: https://dotnet.microsoft.com/en-us/platform/support/policy/maui
 [xamarin-support-policy]: https://dotnet.microsoft.com/en-us/platform/support/policy/xamarin
 
+## Release Notes Process (NEW!)
+
+We've implemented automated release notes generation following the same approach as [dotnet/android](https://github.com/dotnet/android/releases)! 🎉
+
+When you create pull requests, they will automatically be included in release notes. To help with categorization:
+
+- Use descriptive PR titles (these become line items in release notes)
+- Apply appropriate labels (`area-ios`, `bug`, `feature`, etc.)
+- Reference issues with "Fixes #123" to link related issues
+
+For detailed information, see [Release Notes Documentation](docs/guides/RELEASE_NOTES.md).
+
 ## Contributing
 
 If you are interested in fixing issues and contributing directly to the code base, please see the document [How to Contribute](https://github.com/dotnet/macios/wiki/How-to-Contribute), which covers the following:

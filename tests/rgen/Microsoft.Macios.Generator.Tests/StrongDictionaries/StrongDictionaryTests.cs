@@ -47,7 +47,7 @@ public class StrongDictionaryTests : BaseGeneratorTestClass {
 					{"CARendererOptionKeys.g.cs", "ExpectedBGenKeys.cs"},
 				}
 			},
-			
+
 			new (ApplePlatform.iOS, "NestedStrongDictionary", "NestedStrongDictionary.cs", "ExpectedNestedStrongDictionary.cs") {
 				ExtraFiles = new () {
 					{"NestedStrongDictionary.Keys.g.cs", "ExpectedNestedNestedStrongDictionaryKeys.cs"},

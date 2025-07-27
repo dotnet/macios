@@ -17,7 +17,7 @@ namespace Microsoft.Macios.Generator.Emitters;
 /// Emitter responsible for generating strong dictionary keys classes compatible with bgen output.
 /// This emitter mimics the behavior of bgen for strong dictionary keys generation.
 /// </summary>
-class BGenStrongDictionaryKeysEmitter: IClassEmitter {
+class BGenStrongDictionaryKeysEmitter : IClassEmitter {
 
 	/// <inheritdoc />
 	public string GetSymbolName (in Binding binding)
@@ -31,7 +31,7 @@ class BGenStrongDictionaryKeysEmitter: IClassEmitter {
 	public IEnumerable<string> UsingStatements { get; } = [];
 
 	/// <inheritdoc />
-	public bool TryEmit (in BindingContext bindingContext, [NotNullWhen(false)] out ImmutableArray<Diagnostic>? diagnostics)
+	public bool TryEmit (in BindingContext bindingContext, [NotNullWhen (false)] out ImmutableArray<Diagnostic>? diagnostics)
 	{
 		diagnostics = null;
 		if (bindingContext.Changes.BindingType != BindingType.StrongDictionaryKeys) {
@@ -44,11 +44,11 @@ class BGenStrongDictionaryKeysEmitter: IClassEmitter {
 		}
 		// emit a preprocessor directive so that we do not include the file if we are in XAMCORE_5
 		bindingContext.Builder.WriteLine ("#if !XAMCORE_5_0");
-		
+
 		// this code emitter is trying to copy what bgen generates, we will use the namespace of the type, but because
 		// bgen does not have the keys as a nester class, we are going to ignore the outer classes.
 		this.EmitNamespace (bindingContext);
-		
+
 		// add an obsolte attribute to the class so that it is clear that this is a bgen generated class and the new nested
 		// strong dictionary keys should be used instead.
 		var outerClasses = string.Join ('.', bindingContext.Changes.OuterClasses.Select (x => x.Name));
@@ -57,8 +57,8 @@ class BGenStrongDictionaryKeysEmitter: IClassEmitter {
 		var modifiers = $"{string.Join (' ', bindingContext.Changes.Modifiers)} ";
 		var bindingTypeData = (BindingTypeData<ObjCBindings.StrongDictionaryKeys>) bindingContext.Changes.BindingInfo;
 		using (var classBlock = bindingContext.Builder.CreateBlock (
-			       $"{(string.IsNullOrWhiteSpace (modifiers) ? string.Empty : modifiers)}class {bindingTypeData.Name}",
-			       true)) {
+				   $"{(string.IsNullOrWhiteSpace (modifiers) ? string.Empty : modifiers)}class {bindingTypeData.Name}",
+				   true)) {
 			// the only thing we care about is the keys, so we emit the keys
 			this.EmitFields (bindingContext.Changes.Name, bindingContext.Changes.Properties, classBlock,
 				out var _);

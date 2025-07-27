@@ -77,17 +77,17 @@ public class BindingSourceGeneratorGenerator : IIncrementalGenerator {
 
 		if (GeneratorConfiguration.BGenCompatible) {
 			// the following code generations will only be used when the generator is compatible with bgen.
-			
+
 			var strongDictionaryKeysProvider = provider
 				.Where (t => {
-					if (t.Bindings.BindingType != BindingType.StrongDictionaryKeys) 
+					if (t.Bindings.BindingType != BindingType.StrongDictionaryKeys)
 						return false;
 					// only want those kyes that we need to make backwards compatible with bgen
 					var bindingInfo = (BindingTypeData<ObjCBindings.StrongDictionaryKeys>) t.Bindings.BindingInfo;
 					return bindingInfo.Flags.HasFlag (ObjCBindings.StrongDictionaryKeys.BackwardCompatible);
 				})
 				.Select ((tuple, _) => (tuple.RootBindingContext, tuple.Bindings));
-			
+
 			context.RegisterSourceOutput (context.CompilationProvider.Combine (strongDictionaryKeysProvider.Collect ()),
 				((ctx, t) => GenerateBGenStrongDictionaryKeys (ctx, t.Right)));
 		}
@@ -286,7 +286,7 @@ public class BindingSourceGeneratorGenerator : IIncrementalGenerator {
 	/// </summary>
 	/// <param name="context">Source production context.</param>
 	/// <param name="bindingsList">The bindings that need backward-compatible strong dictionary keys generation.</param>
-	static void GenerateBGenStrongDictionaryKeys (SourceProductionContext context, 
+	static void GenerateBGenStrongDictionaryKeys (SourceProductionContext context,
 		in ImmutableArray<(RootContext Context, Binding Binding)> bindingsList)
 	{
 		if (bindingsList.Length == 0)

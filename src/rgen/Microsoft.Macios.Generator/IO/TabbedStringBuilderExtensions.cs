@@ -141,7 +141,7 @@ static class TabbedStringBuilderExtensions {
 	public static TabbedWriter<StringWriter> AppendDynamicDependencyAttribute (this TabbedWriter<StringWriter> self,
 		string member)
 	{
-		
+
 		self.WriteLine ($"[DynamicDependency ({member})]");
 		return self;
 	}

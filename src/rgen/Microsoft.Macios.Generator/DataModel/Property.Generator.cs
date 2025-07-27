@@ -6,12 +6,14 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Macios.Generator.Attributes;
 using Microsoft.Macios.Generator.Availability;
 using Microsoft.Macios.Generator.Context;
 using Microsoft.Macios.Generator.Extensions;
 using ObjCRuntime;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Microsoft.Macios.Generator.DataModel;
 
@@ -291,6 +293,11 @@ readonly partial struct Property {
 		return RequiresDirtyCheck == other.RequiresDirtyCheck;
 	}
 
+	/// <summary>
+	/// Converts a weak delegate property to its strong delegate equivalent.
+	/// Updates the property name and return type to reference the strong delegate type instead of the weak delegate.
+	/// </summary>
+	/// <returns>A new <see cref="Property"/> instance representing the strong delegate, or the current instance if not applicable.</returns>
 	public Property ToStrongDelegate ()
 	{
 		// has to be a property, weak delegate and have its strong delegate type set
@@ -302,6 +309,52 @@ readonly partial struct Property {
 			Name = ExportPropertyData.Value.StrongDelegateName ?? Name.Remove (0, 4 /* "Weak".Length */),
 			ReturnType = ExportPropertyData.Value.StrongDelegateType.Value.WithNullable (true),
 		};
+	}
+	
+	/// <summary>
+	/// Converts the property to extension methods for getter and optionally setter.
+	/// Creates internal static methods that can be used to access the property from extension methods.
+	/// </summary>
+	/// <param name="typeInfo">The type information for the 'this' parameter of the extension methods.</param>
+	/// <returns>A tuple containing the getter method and an optional setter method (null if the property is read-only).</returns>
+	public (Method Getter, Method? Setter) ToExtensionMethods (TypeInfo typeInfo)
+	{
+		// create the parameter with the provided type info
+		var thisParameter = new Parameter (0, typeInfo, "self") { IsThis = true, };
+		
+		// we need to return a method struct per present accessor, but we know we always have a getter
+		var getter = GetAccessor (AccessorKind.Getter)!;
+		var getterMethod = new Method (
+			type: typeInfo.FullyQualifiedName,
+			name: $"_Get{Name}",
+			returnType: ReturnType,
+			symbolAvailability: getter.Value.SymbolAvailability,
+			exportMethodData: new (getter.Value.GetSelector (this)),
+			attributes: [],
+			modifiers: [Token (SyntaxKind.InternalKeyword), Token (SyntaxKind.StaticKeyword)],
+			parameters: [thisParameter])
+		{
+			BindAs = BindAs // return bindas is the same as the property bindas
+		};
+		
+		var setter = GetAccessor (AccessorKind.Setter);
+		Method? setterMethod = null;
+		if (setter is not null) {
+			// we need a second parameter for the setter
+			var valueParameter = new Parameter (1, ReturnType, "value") {
+				BindAs = BindAs // parameter bindas is the same as the property bindas
+			};
+			setterMethod = new Method (
+				type: typeInfo.FullyQualifiedName,
+				name: $"_Set{Name}",
+				returnType: TypeInfo.Void,
+				symbolAvailability: setter.Value.SymbolAvailability,
+				exportMethodData: new(setter.Value.GetSelector (this)),
+				attributes: [],
+				modifiers: [Token (SyntaxKind.InternalKeyword), Token (SyntaxKind.StaticKeyword)],
+				parameters: [thisParameter, valueParameter]);
+		}
+		return (getterMethod, setterMethod);
 	}
 
 	/// <inheritdoc />

@@ -310,7 +310,7 @@ readonly partial struct Property {
 			ReturnType = ExportPropertyData.Value.StrongDelegateType.Value.WithNullable (true),
 		};
 	}
-	
+
 	/// <summary>
 	/// Converts the property to extension methods for getter and optionally setter.
 	/// Creates internal static methods that can be used to access the property from extension methods.
@@ -321,7 +321,7 @@ readonly partial struct Property {
 	{
 		// create the parameter with the provided type info
 		var thisParameter = new Parameter (0, typeInfo, "self") { IsThis = true, };
-		
+
 		// we need to return a method struct per present accessor, but we know we always have a getter
 		var getter = GetAccessor (AccessorKind.Getter)!;
 		var getterMethod = new Method (
@@ -332,11 +332,10 @@ readonly partial struct Property {
 			exportMethodData: new (getter.Value.GetSelector (this)),
 			attributes: [],
 			modifiers: [Token (SyntaxKind.InternalKeyword), Token (SyntaxKind.StaticKeyword)],
-			parameters: [thisParameter])
-		{
+			parameters: [thisParameter]) {
 			BindAs = BindAs // return bindas is the same as the property bindas
 		};
-		
+
 		var setter = GetAccessor (AccessorKind.Setter);
 		Method? setterMethod = null;
 		if (setter is not null) {
@@ -349,7 +348,7 @@ readonly partial struct Property {
 				name: $"_Set{Name}",
 				returnType: TypeInfo.Void,
 				symbolAvailability: setter.Value.SymbolAvailability,
-				exportMethodData: new(setter.Value.GetSelector (this)),
+				exportMethodData: new (setter.Value.GetSelector (this)),
 				attributes: [],
 				modifiers: [Token (SyntaxKind.InternalKeyword), Token (SyntaxKind.StaticKeyword)],
 				parameters: [thisParameter, valueParameter]);

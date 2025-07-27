@@ -1110,7 +1110,7 @@ public class TestClass {
 		Assert.NotNull (changes);
 		Assert.Equal (expected, changes);
 	}
-	
+
 	class TestDataToExtensionMethods : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()
 		{
@@ -1149,7 +1149,7 @@ public class TestClass {
 				),
 				null!
 			];
-			
+
 			const string getterSetter = @"
 using System;
 using ObjCBindings;
@@ -1185,7 +1185,7 @@ public class TestClass {
 				new Method (
 					type: extensionType.FullyQualifiedName,
 					name: "_SetName",
-					returnType: TypeInfo.Void, 
+					returnType: TypeInfo.Void,
 					symbolAvailability: new (),
 					exportMethodData: new ("setName:"),
 					attributes: [],
@@ -1201,7 +1201,7 @@ public class TestClass {
 					]
 				),
 			];
-			
+
 			const string getterSetterCustomSelector = @"
 using System;
 using ObjCBindings;
@@ -1242,7 +1242,7 @@ public class TestClass {
 				new Method (
 					type: extensionType.FullyQualifiedName,
 					name: "_SetName",
-					returnType: TypeInfo.Void, 
+					returnType: TypeInfo.Void,
 					symbolAvailability: new (),
 					exportMethodData: new ("setMyName:"),
 					attributes: [],
@@ -1258,7 +1258,7 @@ public class TestClass {
 					]
 				),
 			];
-			
+
 			const string getterSetterCustomSelectorAvailability = @"
 using System;
 using System.Runtime.Versioning;
@@ -1283,7 +1283,7 @@ public class TestClass {
 			getterAvailabilityBuilder.Add (supportedPlatform: new SupportedOSPlatformData (platformName: "ios"));
 			var setterAvailabilityBuilder = SymbolAvailability.CreateBuilder ();
 			setterAvailabilityBuilder.Add (supportedPlatform: new SupportedOSPlatformData (platformName: "ios17.0"));
-			
+
 			yield return [
 				getterSetterCustomSelectorAvailability,
 				extensionType,
@@ -1307,7 +1307,7 @@ public class TestClass {
 				new Method (
 					type: extensionType.FullyQualifiedName,
 					name: "_SetName",
-					returnType: TypeInfo.Void, 
+					returnType: TypeInfo.Void,
 					symbolAvailability: setterAvailabilityBuilder.ToImmutable (),
 					exportMethodData: new ("setMyName:"),
 					attributes: [],

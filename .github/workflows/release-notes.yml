@@ -1,0 +1,208 @@
+---
+name: Generate Release Notes
+
+on:
+  push:
+    tags:
+      - 'xamarin-*'
+      - 'v*'
+  release:
+    types: [created, published]
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: 'Tag name for the release'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: read
+
+jobs:
+  generate-release-notes:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get previous tag
+        id: previous_tag
+        run: |
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            CURRENT_TAG="${{ github.event.inputs.tag_name }}"
+          else
+            CURRENT_TAG="${{ github.ref_name }}"
+          fi
+
+          echo "current_tag=$CURRENT_TAG" >> $GITHUB_OUTPUT
+
+          # Get all tags and sort them
+          git fetch --tags
+
+          # For xamarin-mac tags, sort by version number properly
+          if [[ "$CURRENT_TAG" == xamarin-mac-* ]]; then
+            # Extract version and find previous xamarin-mac tag
+            ALL_TAGS=$(git tag -l "xamarin-mac-*" | sort -V)
+            PREVIOUS_TAG=$(echo "$ALL_TAGS" | grep -B1 "^$CURRENT_TAG$" | \
+              head -n1)
+
+            # If no previous xamarin-mac tag, try to find any previous tag
+            if [ -z "$PREVIOUS_TAG" ] || [ "$PREVIOUS_TAG" == "$CURRENT_TAG" ]
+            then
+              PREVIOUS_TAG=$(git tag --sort=-version:refname | head -n 2 | \
+                tail -n 1)
+            fi
+          else
+            # For other tag patterns, use version sort
+            PREVIOUS_TAG=$(git tag --sort=-version:refname | \
+              grep -A 1 "^$CURRENT_TAG$" | tail -n 1)
+            if [ -z "$PREVIOUS_TAG" ] || [ "$PREVIOUS_TAG" == "$CURRENT_TAG" ]
+            then
+              PREVIOUS_TAG=$(git tag --sort=-version:refname | head -n 2 | \
+                tail -n 1)
+            fi
+          fi
+
+          echo "previous_tag=$PREVIOUS_TAG" >> $GITHUB_OUTPUT
+          echo "Previous tag: $PREVIOUS_TAG"
+          echo "Current tag: $CURRENT_TAG"
+
+      - name: Generate release notes
+        id: release_notes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          CURRENT_TAG="${{ steps.previous_tag.outputs.current_tag }}"
+          PREVIOUS_TAG="${{ steps.previous_tag.outputs.previous_tag }}"
+
+          # Create release notes
+          cat > release_notes.md << EOF
+          ## What's Changed
+
+          EOF
+
+          # Get merged PRs between tags
+          if [ -n "$PREVIOUS_TAG" ] && [ "$PREVIOUS_TAG" != "$CURRENT_TAG" ]; then
+            echo "### Changes since $PREVIOUS_TAG" >> release_notes.md
+            echo "" >> release_notes.md
+
+            # Get commits between tags and extract PR numbers
+            git log --oneline --merges --grep="Merge pull request" \
+              "$PREVIOUS_TAG..$CURRENT_TAG" | while read -r line; do
+              # Extract PR number from merge commit message
+              PR_NUM=$(echo "$line" | grep -o '#[0-9]\+' | head -1 | \
+                sed 's/#//')
+              if [ -n "$PR_NUM" ]; then
+                # Get PR title and author using GitHub CLI
+                if command -v gh &> /dev/null; then
+                  PR_INFO=$(gh pr view "$PR_NUM" --json title,author \
+                    --template '{{.title}} by @{{.author.login}}' \
+                    2>/dev/null || echo "")
+                  if [ -n "$PR_INFO" ]; then
+                    echo "- $PR_INFO (#$PR_NUM)" >> release_notes.md
+                  else
+                    # Fallback to commit message
+                    COMMIT_MSG=$(echo "$line" | sed 's/^[a-f0-9]\+ //' | \
+                      sed 's/Merge pull request #[0-9]\+ from [^\/]*\///')
+                    echo "- $COMMIT_MSG (#$PR_NUM)" >> release_notes.md
+                  fi
+                else
+                  # Fallback to commit message
+                  COMMIT_MSG=$(echo "$line" | sed 's/^[a-f0-9]\+ //' | \
+                    sed 's/Merge pull request #[0-9]\+ from [^\/]*\///')
+                  echo "- $COMMIT_MSG (#$PR_NUM)" >> release_notes.md
+                fi
+              fi
+            done
+
+            # Also check for squashed merges or direct commits with PR refs
+            git log --oneline --no-merges --grep="#[0-9]" \
+              "$PREVIOUS_TAG..$CURRENT_TAG" | while read -r line; do
+              # Extract PR number from commit message
+              PR_NUM=$(echo "$line" | grep -o '#[0-9]\+' | head -1 | \
+                sed 's/#//')
+              if [ -n "$PR_NUM" ]; then
+                # Check if we already processed this PR
+                if ! grep -q "#$PR_NUM)" release_notes.md; then
+                  if command -v gh &> /dev/null; then
+                    PR_INFO=$(gh pr view "$PR_NUM" --json title,author \
+                      --template '{{.title}} by @{{.author.login}}' \
+                      2>/dev/null || echo "")
+                    if [ -n "$PR_INFO" ]; then
+                      echo "- $PR_INFO (#$PR_NUM)" >> release_notes.md
+                    else
+                      # Fallback to commit message
+                      COMMIT_MSG=$(echo "$line" | sed 's/^[a-f0-9]\+ //')
+                      echo "- $COMMIT_MSG" >> release_notes.md
+                    fi
+                  else
+                    # Fallback to commit message
+                    COMMIT_MSG=$(echo "$line" | sed 's/^[a-f0-9]\+ //')
+                    echo "- $COMMIT_MSG" >> release_notes.md
+                  fi
+                fi
+              fi
+            done
+          else
+            echo "- Initial release" >> release_notes.md
+          fi
+
+          echo "" >> release_notes.md
+
+          # Add contributors section if we have GitHub CLI
+          if command -v gh &> /dev/null && [ -n "$PREVIOUS_TAG" ] && \
+            [ "$PREVIOUS_TAG" != "$CURRENT_TAG" ]; then
+            echo "## New Contributors" >> release_notes.md
+            echo "" >> release_notes.md
+
+            # Get unique contributors between tags
+            git log --format='%ae' "$PREVIOUS_TAG..$CURRENT_TAG" | \
+              sort -u | while read -r email; do
+              AUTHOR=$(git log --format='%an' --author="$email" -1 \
+                2>/dev/null || echo "")
+              if [ -n "$AUTHOR" ]; then
+                # Try to get GitHub username
+                GH_USER=$(gh api search/users -q ".items[0].login" \
+                  --field "q=$email" 2>/dev/null || echo "")
+                if [ -n "$GH_USER" ] && [ "$GH_USER" != "null" ]; then
+                  echo "- @$GH_USER" >> release_notes.md
+                else
+                  echo "- $AUTHOR" >> release_notes.md
+                fi
+              fi
+            done
+            echo "" >> release_notes.md
+          fi
+
+          echo "**Full Changelog**: https://github.com/${{ github.repository }}/compare/$PREVIOUS_TAG...$CURRENT_TAG" >> release_notes.md
+
+          # Read the generated notes
+          RELEASE_NOTES=$(cat release_notes.md)
+          echo "Generated release notes:"
+          echo "$RELEASE_NOTES"
+
+          # Save for next step (handle multiline)
+          {
+            echo 'RELEASE_NOTES<<EOF'
+            cat release_notes.md
+            echo EOF
+          } >> $GITHUB_OUTPUT
+
+      - name: Create or update release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          CURRENT_TAG="${{ steps.previous_tag.outputs.current_tag }}"
+
+          # Check if release already exists
+          if gh release view "$CURRENT_TAG" &>/dev/null; then
+            echo "Release $CURRENT_TAG already exists, updating it..."
+            gh release edit "$CURRENT_TAG" --notes-file release_notes.md
+          else
+            echo "Creating new release $CURRENT_TAG..."
+            gh release create "$CURRENT_TAG" --title "$CURRENT_TAG" \
+              --notes-file release_notes.md
+          fi

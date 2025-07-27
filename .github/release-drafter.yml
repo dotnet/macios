@@ -1,0 +1,114 @@
+# Configuration for Release Drafter: https://github.com/release-drafter/release-drafter
+name-template: 'xamarin-mac-$RESOLVED_VERSION'
+tag-template: 'xamarin-mac-$RESOLVED_VERSION'
+
+categories:
+  - title: '🚀 New Features'
+    labels:
+      - 'feature'
+      - 'enhancement'
+      - 'area-bindings'
+  - title: '🐛 Bug Fixes'
+    labels:
+      - 'bug'
+      - 'bugfix'
+      - 'regression'
+  - title: '📱 Platform Support'
+    labels:
+      - 'area-ios'
+      - 'area-macos'
+      - 'area-tvos'
+      - 'area-maccatalyst'
+  - title: '🛠️ Tools & Infrastructure'
+    labels:
+      - 'area-tools'
+      - 'area-build'
+      - 'area-ci'
+      - 'infrastructure'
+  - title: '🧰 Dependencies & Maintenance'
+    labels:
+      - 'dependencies'
+      - 'maintenance'
+      - 'area-msbuild'
+  - title: '📚 Documentation'
+    labels:
+      - 'documentation'
+      - 'area-docs'
+  - title: '🔒 Security'
+    labels:
+      - 'security'
+
+change-template: '- $TITLE by @$AUTHOR in #$NUMBER'
+change-title-escapes: '\<*_&'
+
+# Exclude certain types of PRs from release notes
+exclude-labels:
+  - 'not-for-changelog'
+  - 'skip-changelog'
+  - 'backport'
+
+version-resolver:
+  major:
+    labels:
+      - 'major'
+      - 'breaking-change'
+  minor:
+    labels:
+      - 'minor'
+  patch:
+    labels:
+      - 'patch'
+  default: patch
+
+autolabeler:
+  - label: 'area-ios'
+    title:
+      - '/\b(ios|iphone|ipad)\b/i'
+  - label: 'area-macos'
+    title:
+      - '/\b(macos|mac)\b/i'
+  - label: 'area-tvos'
+    title:
+      - '/\btvos\b/i'
+  - label: 'area-maccatalyst'
+    title:
+      - '/\b(maccatalyst|catalyst)\b/i'
+  - label: 'area-bindings'
+    title:
+      - '/\b(binding|bindings|api)\b/i'
+    files:
+      - 'src/**/*.cs'
+  - label: 'area-tools'
+    files:
+      - 'tools/**/*'
+  - label: 'area-build'
+    files:
+      - 'Makefile'
+      - 'Make.*'
+      - '*.mk'
+      - 'configure'
+  - label: 'area-msbuild'
+    files:
+      - 'msbuild/**/*'
+  - label: 'area-docs'
+    files:
+      - 'docs/**/*'
+      - '*.md'
+  - label: 'bug'
+    title:
+      - '/\b(fix|bug|issue)\b/i'
+  - label: 'feature'
+    title:
+      - '/\b(feat|feature|add|implement)\b/i'
+  - label: 'documentation'
+    title:
+      - '/\b(doc|docs|documentation)\b/i'
+
+template: |
+  ## What's Changed
+
+  $CHANGES
+
+  $CONTRIBUTORS
+
+  **Full Changelog**: https://github.com/$OWNER/$REPOSITORY/compare/$PREVIOUS_TAG...$TAG

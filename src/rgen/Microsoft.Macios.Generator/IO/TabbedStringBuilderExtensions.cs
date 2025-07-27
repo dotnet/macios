@@ -130,4 +130,19 @@ static class TabbedStringBuilderExtensions {
 		self.WriteLine ($"[Preserve (Conditional = {conditional.ToString ().ToLower ()})]");
 		return self;
 	}
+
+	/// <summary>
+	/// Appends a `[DynamicDependency]` attribute to the current writer.
+	/// This attribute is used to indicate that a member has a dynamic dependency on another member.
+	/// </summary>
+	/// <param name="self">A tabbed string writer.</param>
+	/// <param name="member">The member that is dynamically depended upon.</param>
+	/// <returns>The current writer.</returns>
+	public static TabbedWriter<StringWriter> AppendDynamicDependencyAttribute (this TabbedWriter<StringWriter> self,
+		string member)
+	{
+		
+		self.WriteLine ($"[DynamicDependency ({member})]");
+		return self;
+	}
 }

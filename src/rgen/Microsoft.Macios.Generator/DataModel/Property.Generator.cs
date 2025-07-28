@@ -334,8 +334,8 @@ readonly partial struct Property {
 				attributes: [],
 				modifiers: [Token (SyntaxKind.InternalKeyword), Token (SyntaxKind.StaticKeyword)],
 				parameters: [thisParameter]) {
-					BindAs = BindAs // return bindas is the same as the property bindas
-				};
+				BindAs = BindAs // return bindas is the same as the property bindas
+			};
 
 		var setter = GetAccessor (AccessorKind.Setter);
 		Method? setterMethod = null;

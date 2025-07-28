@@ -390,6 +390,12 @@ namespace Foundation {
 		Calendar = (1 << 20),
 		/// <summary>To be added.</summary>
 		TimeZone = (1 << 21),
+
+		[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		IsLeapMonth = (1 << 30),
+
+		[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		IsRepeatedDay = (1UL << 31),
 	}
 
 	/// <summary>Flags that determine how NSData loads files.</summary>

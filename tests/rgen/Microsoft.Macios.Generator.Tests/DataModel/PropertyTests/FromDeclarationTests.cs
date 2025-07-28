@@ -1331,7 +1331,7 @@ public class TestClass {
 
 	[Theory]
 	[AllSupportedPlatformsClassData<TestDataToExtensionMethods>]
-	void ToExtensionMethods (ApplePlatform platform, string inputText, TypeInfo protocolType, Method expectedGetter, Method? expectedSetter)
+	void ToExtensionMethods (ApplePlatform platform, string inputText, TypeInfo protocolType, Method? expectedGetter, Method? expectedSetter)
 	{
 		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
 		Assert.Single (syntaxTrees);
@@ -1343,8 +1343,14 @@ public class TestClass {
 		Assert.True (Property.TryCreate (declaration, semanticModel, out var changes));
 		Assert.NotNull (changes);
 		var (getter, setter) = changes.Value.ToExtensionMethods (protocolType);
-		Assert.True (getter.IsExtension);
-		Assert.Equal (expectedGetter, getter);
+		if (expectedGetter is null) {
+			Assert.Null (getter);
+		} else {
+			Assert.NotNull (getter);
+			Assert.True (getter.Value.IsExtension);
+			Assert.Equal (expectedGetter.Value, getter.Value);
+		}
+
 		if (expectedSetter is null) {
 			Assert.Null (setter);
 		} else {

@@ -312,29 +312,30 @@ readonly partial struct Property {
 	}
 
 	/// <summary>
-	/// Converts the property to extension methods for getter and optionally setter.
+	/// Converts the property to extension methods for optional getter and optional setter.
 	/// Creates internal static methods that can be used to access the property from extension methods.
 	/// </summary>
 	/// <param name="typeInfo">The type information for the 'this' parameter of the extension methods.</param>
 	/// <returns>A tuple containing the getter method and an optional setter method (null if the property is read-only).</returns>
-	public (Method Getter, Method? Setter) ToExtensionMethods (TypeInfo typeInfo)
+	public (Method? Getter, Method? Setter) ToExtensionMethods (TypeInfo typeInfo)
 	{
 		// create the parameter with the provided type info
 		var thisParameter = new Parameter (0, typeInfo, "self") { IsThis = true, };
 
-		// we need to return a method struct per present accessor, but we know we always have a getter
-		var getter = GetAccessor (AccessorKind.Getter)!;
-		var getterMethod = new Method (
-			type: typeInfo.FullyQualifiedName,
-			name: $"_Get{Name}",
-			returnType: ReturnType,
-			symbolAvailability: getter.Value.SymbolAvailability,
-			exportMethodData: new (getter.Value.GetSelector (this)),
-			attributes: [],
-			modifiers: [Token (SyntaxKind.InternalKeyword), Token (SyntaxKind.StaticKeyword)],
-			parameters: [thisParameter]) {
-			BindAs = BindAs // return bindas is the same as the property bindas
-		};
+		var getter = GetAccessor (AccessorKind.Getter);
+		Method? getterMethod = null;
+		if (getter is not null)
+			getterMethod = new Method (
+				type: typeInfo.FullyQualifiedName,
+				name: $"_Get{Name}",
+				returnType: ReturnType,
+				symbolAvailability: getter.Value.SymbolAvailability,
+				exportMethodData: new (getter.Value.GetSelector (this)),
+				attributes: [],
+				modifiers: [Token (SyntaxKind.InternalKeyword), Token (SyntaxKind.StaticKeyword)],
+				parameters: [thisParameter]) {
+					BindAs = BindAs // return bindas is the same as the property bindas
+				};
 
 		var setter = GetAccessor (AccessorKind.Setter);
 		Method? setterMethod = null;

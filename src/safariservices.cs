@@ -916,7 +916,7 @@ namespace SafariServices {
 		[Async]
 		[Static]
 		[Export ("openExportBrowsingDataSettingsWithCompletionHandler:")]
-		void OpenExportBrowsingDataSettingsWithCompletionHandler ([NullAllowed] SFSafariSettingsOpenExportBrowsingDataSettingsCompletionHandler completionHandler);
+		void OpenExportBrowsingDataSettings ([NullAllowed] SFSafariSettingsOpenExportBrowsingDataSettingsCompletionHandler completionHandler);
 	}
 
 }

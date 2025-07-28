@@ -2296,6 +2296,10 @@ namespace MetalPerformanceShadersGraph {
 		[Export ("initWithMTLBuffer:shape:dataType:rowBytes:")]
 		NativeHandle Constructor (IMTLBuffer buffer, [BindAs (typeof (int []))] NSNumber [] shape, MPSDataType dataType, nuint rowBytes);
 
+		[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0), Mac (26, 0)]
+		[Export ("initWithMTLTensor:")]
+		NativeHandle Constructor (IMTLTensor tensor);
+
 		// -(MPSNDArray * _Nonnull)mpsndarray;
 		[Export ("mpsndarray")]
 		MPSNDArray MPSNDArray { get; }

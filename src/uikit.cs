@@ -8108,6 +8108,11 @@ namespace UIKit {
 		[Notification]
 		NSString StateChangedNotification { get; }
 
+		[MacCatalyst (26, 0), NoTV, iOS (26, 0)]
+		[Notification]
+		[Field ("UIDocumentDidMoveToWritableLocationNotification")]
+		NSString DidMoveToWritableLocationNotification { get; }
+
 		// ActivityContinuation Category
 		[MacCatalyst (13, 1)]
 		[Export ("userActivity", ArgumentSemantic.Retain)]
@@ -8127,6 +8132,9 @@ namespace UIKit {
 		[Field ("NSUserActivityDocumentURLKey")]
 		NSString UserActivityDocumentUrlKey { get; }
 
+		[MacCatalyst (26, 0), NoTV, iOS (26, 0)]
+		[Field ("UIDocumentDidMoveToWritableLocationOldURLKey")]
+		NSString DidMoveToWritableLocationOldUrlKey { get; }
 	}
 
 	interface IUIDynamicAnimatorDelegate { }
@@ -17333,6 +17341,10 @@ namespace UIKit {
 			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
 			""")]
 		void ListButtonClicked (UISearchBar searchBar);
+
+		[MacCatalyst (26, 0), TV (26, 0), iOS (26, 0)]
+		[Export ("searchBar:shouldChangeTextInRanges:replacementText:"), IgnoredInDelegate]
+		bool ShouldChangeText (UISearchBar searchBar, NSValue [] ranges, string replacementText);
 	}
 
 	[MacCatalyst (13, 1)]
@@ -22959,6 +22971,14 @@ namespace UIKit {
 		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 		[Export ("layoutGuideForLayoutRegion:")]
 		UILayoutGuide GetLayoutGuide (UIViewLayoutRegion layoutRegion);
+
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Export ("cornerConfiguration", ArgumentSemantic.Copy)]
+		UICornerConfiguration CornerConfiguration { get; set; }
+
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Export ("effectiveRadiusForCorner:")]
+		nfloat SetEffectiveRadius (UIRectCorner corner);
 	}
 
 	/// <summary>Class that implements a text field in a view.</summary>
@@ -27101,6 +27121,10 @@ namespace UIKit {
 
 		[NullAllowed, Export ("tintColor", ArgumentSemantic.Copy)]
 		UIColor TintColor { get; set; }
+
+		[Static]
+		[Export ("effectWithStyle:")]
+		UIGlassEffect Create (UIGlassEffectStyle style);
 	}
 
 	[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
@@ -35046,6 +35070,21 @@ namespace UIKit {
 		[Export ("symbolContentTransition", ArgumentSemantic.Strong)]
 		[NullAllowed]
 		NSSymbolContentTransition SymbolContentTransition { get; set; }
+
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Static]
+		[Export ("clearGlassButtonConfiguration")]
+		UIButtonConfiguration ClearGlassButtonConfiguration { get; }
+
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Static]
+		[Export ("prominentClearGlassButtonConfiguration")]
+		UIButtonConfiguration ProminentClearGlassButtonConfiguration { get; }
+
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Static]
+		[Export ("prominentGlassButtonConfiguration")]
+		UIButtonConfiguration ProminentGlassButtonConfiguration { get; }
 	}
 
 	[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
@@ -38939,5 +38978,74 @@ namespace UIKit {
 	[BaseType (typeof (NSObject))]
 	interface UITraitTabAccessoryEnvironment : UINSIntegerTraitDefinition {
 
+	}
+
+	[TV (26, 0), MacCatalyst (26, 0), iOS (26, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface UICornerConfiguration : NSCopying {
+		// Following Swift naming suggestions in all of these methods below.
+
+		[Static]
+		[Export ("configurationWithRadius:")]
+		UICornerConfiguration CreateCorners (UICornerRadius radius);
+
+		[Static]
+		[Export ("configurationWithTopLeftRadius:topRightRadius:bottomLeftRadius:bottomRightRadius:")]
+		UICornerConfiguration CreateCorners ([NullAllowed] UICornerRadius topLeftRadius, [NullAllowed] UICornerRadius topRightRadius, [NullAllowed] UICornerRadius bottomLeftRadius, [NullAllowed] UICornerRadius bottomRightRadius);
+
+		[Static]
+		[Export ("capsuleConfiguration")]
+		UICornerConfiguration CreateCapsule ();
+
+		[Static]
+		[Export ("capsuleConfigurationWithMaximumRadius:")]
+		UICornerConfiguration CreateCapsule (nfloat maximumRadius);
+
+		[Static]
+		[Export ("configurationWithUniformRadius:")]
+		UICornerConfiguration CreateUniformCorners (UICornerRadius radius);
+
+		[Static]
+		[Export ("configurationWithUniformTopRadius:uniformBottomRadius:")]
+		UICornerConfiguration CreateUniformEdgesTopBottom (UICornerRadius topRadius, UICornerRadius bottomRadius);
+
+		[Static]
+		[Export ("configurationWithUniformLeftRadius:uniformRightRadius:")]
+		UICornerConfiguration CreateUniformEdgesLeftRight (UICornerRadius leftRadius, UICornerRadius rightRadius);
+
+		[Static]
+		[Export ("configurationWithUniformTopRadius:bottomLeftRadius:bottomRightRadius:")]
+		UICornerConfiguration CreateUniformTopRadius (UICornerRadius topRadius, [NullAllowed] UICornerRadius bottomLeftRadius, [NullAllowed] UICornerRadius bottomRightRadius);
+
+		[Static]
+		[Export ("configurationWithUniformBottomRadius:topLeftRadius:topRightRadius:")]
+		UICornerConfiguration CreateUniformBottomRadius (UICornerRadius bottomRadius, [NullAllowed] UICornerRadius topLeftRadius, [NullAllowed] UICornerRadius topRightRadius);
+
+		[Static]
+		[Export ("configurationWithUniformLeftRadius:topRightRadius:bottomRightRadius:")]
+		UICornerConfiguration CreateUniformLeftRadius (UICornerRadius leftRadius, [NullAllowed] UICornerRadius topRightRadius, [NullAllowed] UICornerRadius bottomRightRadius);
+
+		[Static]
+		[Export ("configurationWithUniformRightRadius:topLeftRadius:bottomLeftRadius:")]
+		UICornerConfiguration CreateUniformRightRadius (UICornerRadius rightRadius, [NullAllowed] UICornerRadius topLeftRadius, [NullAllowed] UICornerRadius bottomLeftRadius);
+	}
+
+	[TV (26, 0), MacCatalyst (26, 0), iOS (26, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface UICornerRadius : NSCopying {
+
+		[Static]
+		[Export ("fixedRadius:")]
+		UICornerRadius CreateFixed (nfloat radius);
+
+		[Static]
+		[Export ("containerConcentricRadius")]
+		UICornerRadius CreateContainerConcentric ();
+
+		[Static]
+		[Export ("containerConcentricRadiusWithMinimum:")]
+		UICornerRadius CreateContainerConcentric (nfloat minimum);
 	}
 }

@@ -1157,6 +1157,14 @@ METAL_CORE_SOURCES = \
 	Metal/Defs.cs \
 
 METAL_SOURCES = \
+	Metal/MTL4CommandBuffer.cs \
+	Metal/MTL4CommandQueue.cs \
+	Metal/MTL4CopySparseBufferMappingOperation.cs \
+	Metal/MTL4CopySparseTextureMappingOperation.cs \
+	Metal/MTL4RenderCommandEncoder.cs \
+	Metal/MTL4RenderPassDescriptor.cs \
+	Metal/MTL4UpdateSparseBufferMappingOperation.cs \
+	Metal/MTL4UpdateSparseTextureMappingOperation.cs \
 	Metal/MTLArgumentEncoder.cs \
 	Metal/MTLBlitPassSampleBufferAttachmentDescriptorArray.cs \
 	Metal/MTLCommandBuffer.cs \
@@ -1174,6 +1182,7 @@ METAL_SOURCES = \
 	Metal/MTLResidencySet.cs \
 	Metal/MTLResourceStateCommandEncoder.cs \
 	Metal/MTLResourceStatePassSampleBufferAttachmentDescriptorArray.cs \
+	Metal/MTLTensorExtents.cs \
 	Metal/MTLVertexDescriptor.cs \
 
 # MetalFX

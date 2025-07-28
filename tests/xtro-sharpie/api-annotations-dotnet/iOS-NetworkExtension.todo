@@ -13,3 +13,5 @@
 !missing-selector! NEVPNProtocolIKEv2::allowPostQuantumKeyExchangeFallback not bound
 !missing-selector! NEVPNProtocolIKEv2::setAllowPostQuantumKeyExchangeFallback: not bound
 !missing-type! NEURLFilter not bound
+!deprecated-attribute-missing! NEHotspotHelper missing a [Deprecated] attribute
+!deprecated-attribute-missing! NEHotspotHelperResponse::deliver missing a [Deprecated] attribute

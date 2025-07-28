@@ -112,6 +112,56 @@ namespace Introspection {
 					return true;
 				goto default;
 #endif
+			case "MTL4AccelerationStructureBoundingBoxGeometryDescriptor":
+			case "MTL4AccelerationStructureCurveGeometryDescriptor":
+			case "MTL4AccelerationStructureDescriptor":
+			case "MTL4AccelerationStructureGeometryDescriptor":
+			case "MTL4AccelerationStructureMotionBoundingBoxGeometryDescriptor":
+			case "MTL4AccelerationStructureMotionCurveGeometryDescriptor":
+			case "MTL4AccelerationStructureMotionTriangleGeometryDescriptor":
+			case "MTL4AccelerationStructureTriangleGeometryDescriptor":
+			case "MTL4ArgumentTableDescriptor":
+			case "MTL4BinaryFunctionDescriptor":
+			case "MTL4CommandAllocatorDescriptor":
+			case "MTL4CommandBufferOptions":
+			case "MTL4CommandQueueDescriptor":
+			case "MTL4CommitOptions":
+			case "MTL4CompilerDescriptor":
+			case "MTL4CompilerTaskOptions":
+			case "MTL4ComputePipelineDescriptor":
+			case "MTL4CounterHeapDescriptor":
+			case "MTL4FunctionDescriptor":
+			case "MTL4IndirectInstanceAccelerationStructureDescriptor":
+			case "MTL4InstanceAccelerationStructureDescriptor":
+			case "MTL4LibraryDescriptor":
+			case "MTL4LibraryFunctionDescriptor":
+			case "MTL4MachineLearningPipelineDescriptor":
+			case "MTL4MachineLearningPipelineReflection":
+			case "MTL4MeshRenderPipelineDescriptor":
+			case "MTL4PipelineDataSetSerializerDescriptor":
+			case "MTL4PipelineDescriptor":
+			case "MTL4PipelineOptions":
+			case "MTL4PipelineStageDynamicLinkingDescriptor":
+			case "MTL4PrimitiveAccelerationStructureDescriptor":
+			case "MTL4RenderPassDescriptor":
+			case "MTL4RenderPipelineBinaryFunctionsDescriptor":
+			case "MTL4RenderPipelineColorAttachmentDescriptor":
+			case "MTL4RenderPipelineColorAttachmentDescriptorArray":
+			case "MTL4RenderPipelineDescriptor":
+			case "MTL4RenderPipelineDynamicLinkingDescriptor":
+			case "MTL4SpecializedFunctionDescriptor":
+			case "MTL4StaticLinkingDescriptor":
+			case "MTL4StitchedFunctionDescriptor":
+			case "MTL4TileRenderPipelineDescriptor":
+			case "MTLLogicalToPhysicalColorAttachmentMap":
+			case "MTLResourceViewPoolDescriptor":
+			case "MTLTensorDescriptor":
+			case "MTLTensorExtents":
+			case "MTLTensorReferenceType":
+			case "MTLTextureViewDescriptor":
+				if (TestRuntime.IsSimulator)
+					return true;
+				goto default;
 			default:
 				return SkipDueToAttribute (type);
 			}

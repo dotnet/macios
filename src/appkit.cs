@@ -143,6 +143,8 @@ namespace AppKit {
 		RichText = 1 << 1,
 		List = 1 << 2,
 		Table = 1 << 3,
+		[Mac (26, 0)]
+		PresentationIntent = 1uL << 4,
 	}
 
 	[NoMacCatalyst]
@@ -1009,6 +1011,14 @@ namespace AppKit {
 		[Notification, Field ("NSApplicationDidChangeScreenParametersNotification")]
 		NSString DidChangeScreenParametersNotification { get; }
 
+		[Mac (26, 0)]
+		[Notification, Field ("NSApplicationShouldBeginSuppressingHighDynamicRangeContentNotification")]
+		NSString ShouldBeginSuppressingHighDynamicRangeContentNotification { get; }
+
+		[Mac (26, 0)]
+		[Notification, Field ("NSApplicationShouldEndSuppressingHighDynamicRangeContentNotification")]
+		NSString ShouldEndSuppressingHighDynamicRangeContentNotification { get; }
+
 		[Notification, Mac (12, 1)]
 		[Field ("NSApplicationProtectedDataWillBecomeUnavailableNotification")]
 		NSString ProtectedDataWillBecomeUnavailableNotification { get; }
@@ -1084,6 +1094,10 @@ namespace AppKit {
 
 		[Export ("searchString:inUserInterfaceItemString:searchRange:foundRange:")]
 		bool SearchStringInUserInterface (string searchString, string stringToSearch, NSRange searchRange, out NSRange foundRange);
+
+		[Mac (26, 0)]
+		[Export ("applicationShouldSuppressHighDynamicRangeContent")]
+		bool ApplicationShouldSuppressHighDynamicRangeContent { get; set; }
 
 		// From the NSApplicationHelpExtension category
 		[Export ("activateContextHelpMode:")]
@@ -3176,6 +3190,14 @@ namespace AppKit {
 
 		[Export ("hasDestructiveAction")]
 		bool HasDestructiveAction { get; set; }
+
+		[Mac (26, 0)]
+		[Export ("borderShape", ArgumentSemantic.Assign)]
+		NSControlBorderShape BorderShape { get; set; }
+
+		[Mac (26, 0)]
+		[Export ("tintProminence", ArgumentSemantic.Assign)]
+		NSTintProminence TintProminence { get; set; }
 	}
 
 	[NoMacCatalyst]
@@ -9500,6 +9522,19 @@ namespace AppKit {
 
 		[Export ("touchesCancelledWithEvent:")]
 		void TouchesCancelled (NSEvent touchEvent);
+
+		[Mac (26, 0)]
+		[Export ("modifierFlags")]
+		NSEventModifierMask ModifierFlags { get; }
+
+		[Mac (26, 0)]
+		[Export ("mouseCancelled:")]
+		void MouseCancelled (NSEvent mouseEvent);
+
+		[Mac (26, 0)]
+		[NullAllowed]
+		[Export ("name")]
+		string Name { get; set; }
 	}
 
 	interface INSGestureRecognizerDelegate { }
@@ -15736,6 +15771,10 @@ namespace AppKit {
 		[Export ("touchesCancelledWithEvent:")]
 		void TouchesCancelledWithEvent (NSEvent theEvent);
 
+		[Mac (26, 0)]
+		[Export ("mouseCancelled:")]
+		void MouseCancelled (NSEvent mouseEvent);
+
 		[Export ("noResponderFor:")]
 		void NoResponderFor (Selector eventSelector);
 
@@ -16292,6 +16331,11 @@ namespace AppKit {
 		[Mac (14, 0)]
 		[Export ("displayLinkWithTarget:selector:")]
 		CADisplayLink GetDisplayLink (NSObject target, Selector selector);
+
+		// CGDirectDisplayID = uint32_t
+		[Mac (26, 0)]
+		[Export ("CGDirectDisplayID")]
+		uint CGDirectDisplayId { get; }
 	}
 
 	[NoMacCatalyst]
@@ -16835,6 +16879,10 @@ namespace AppKit {
 
 		[Export ("segmentDistribution", ArgumentSemantic.Assign)]
 		NSSegmentDistribution SegmentDistribution { get; set; }
+
+		[Mac (26, 0)]
+		[Export ("borderShape", ArgumentSemantic.Assign)]
+		NSControlBorderShape BorderShape { get; set; }
 	}
 
 	[NoMacCatalyst]
@@ -17011,6 +17059,14 @@ namespace AppKit {
 
 		[NullAllowed, Export ("trackFillColor", ArgumentSemantic.Copy)]
 		NSColor TrackFillColor { get; set; }
+
+		[Mac (26, 0)]
+		[Export ("tintProminence", ArgumentSemantic.Assign)]
+		NSTintProminence TintProminence { get; set; }
+
+		[Mac (26, 0)]
+		[Export ("neutralValue")]
+		double NeutralValue { get; set; }
 	}
 
 	[NoMacCatalyst]
@@ -17918,6 +17974,42 @@ namespace AppKit {
 		[Static]
 		[Export ("inspectorWithViewController:")]
 		NSSplitViewItem CreateInspector (NSViewController viewController);
+
+		[Mac (26, 0)]
+		[Export ("automaticallyAdjustsSafeAreaInsets")]
+		bool AutomaticallyAdjustsSafeAreaInsets { get; set; }
+
+		[Mac (26, 0)]
+		[Export ("topAlignedAccessoryViewControllers", ArgumentSemantic.Copy)]
+		NSSplitViewItemAccessoryViewController [] TopAlignedAccessoryViewControllers { get; set; }
+
+		[Mac (26, 0)]
+		[Export ("bottomAlignedAccessoryViewControllers", ArgumentSemantic.Copy)]
+		NSSplitViewItemAccessoryViewController [] BottomAlignedAccessoryViewControllers { get; set; }
+
+		[Mac (26, 0)]
+		[Export ("addTopAlignedAccessoryViewController:")]
+		void AddTopAlignedAccessoryViewController (NSSplitViewItemAccessoryViewController childViewController);
+
+		[Mac (26, 0)]
+		[Export ("addBottomAlignedAccessoryViewController:")]
+		void AddBottomAlignedAccessoryViewController (NSSplitViewItemAccessoryViewController childViewController);
+
+		[Mac (26, 0)]
+		[Export ("insertTopAlignedAccessoryViewController:atIndex:")]
+		void InsertTopAlignedAccessoryViewController (NSSplitViewItemAccessoryViewController childViewController, nint index);
+
+		[Mac (26, 0)]
+		[Export ("insertBottomAlignedAccessoryViewController:atIndex:")]
+		void InsertBottomAlignedAccessoryViewController (NSSplitViewItemAccessoryViewController childViewController, nint index);
+
+		[Mac (26, 0)]
+		[Export ("removeTopAlignedAccessoryViewControllerAtIndex:")]
+		void RemoveTopAlignedAccessoryViewController (nint index);
+
+		[Mac (26, 0)]
+		[Export ("removeBottomAlignedAccessoryViewControllerAtIndex:")]
+		void RemoveBottomAlignedAccessoryViewController (nint index);
 	}
 
 	[NoMacCatalyst]
@@ -19778,6 +19870,10 @@ namespace AppKit {
 		[Mac (15, 2)]
 		NSWritingToolsCoordinator WritingToolsCoordinator { get; set; }
 #endif
+
+		[Mac (26, 0)]
+		[Export ("prefersCompactControlSizeMetrics")]
+		bool PrefersCompactControlSizeMetrics { get; set; }
 	}
 
 	[NoMacCatalyst]
@@ -22173,6 +22269,18 @@ namespace AppKit {
 		[Mac (15, 4)]
 		[Export ("allowsWritingToolsAffordance")]
 		bool AllowsWritingToolsAffordance { get; set; }
+
+		[Mac (26, 0)]
+		[Export ("placeholderAttributedStrings", ArgumentSemantic.Copy)]
+		NSAttributedString [] PlaceholderAttributedStrings { get; set; }
+
+		[Mac (26, 0)]
+		[Export ("placeholderStrings", ArgumentSemantic.Copy)]
+		string [] PlaceholderStrings { get; set; }
+
+		[Mac (26, 0)]
+		[Export ("resolvesNaturalAlignmentWithBaseWritingDirection")]
+		bool ResolvesNaturalAlignmentWithBaseWritingDirection { get; set; }
 	}
 
 	[NoMacCatalyst]
@@ -24518,6 +24626,42 @@ namespace AppKit {
 		[MacCatalyst (13, 1)]
 		[Export ("itemWithItemIdentifier:barButtonItem:")]
 		NSToolbarItem Create (string itemIdentifier, UIBarButtonItem barButtonItem);
+
+		[MacCatalyst (26, 0), Mac (26, 0)]
+		[NullAllowed]
+		[Export ("backgroundTintColor", ArgumentSemantic.Copy)]
+		Color BackgroundTintColor { get; set; }
+
+		[MacCatalyst (26, 0), Mac (26, 0)]
+		[Export ("style", ArgumentSemantic.Assign)]
+		NSToolbarItemStyle Style { get; set; }
+
+		[MacCatalyst (26, 0), Mac (26, 0)]
+		[NullAllowed]
+		[Export ("badge", ArgumentSemantic.Copy)]
+		NSItemBadge Badge { get; set; }
+	}
+
+	[MacCatalyst (26, 0), Mac (26, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface NSItemBadge {
+
+		[Static]
+		[Export ("badgeWithCount:")]
+		NSItemBadge Create (nint count);
+
+		[Static]
+		[Export ("badgeWithText:")]
+		NSItemBadge Create (string text);
+
+		// Returns new instance so not a property.
+		[Static]
+		[Export ("indicatorBadge")]
+		NSItemBadge CreateIndicatorBadge ();
+
+		[Export ("text")]
+		string Text { get; }
 	}
 
 	[MacCatalyst (13, 1)]
@@ -30402,6 +30546,51 @@ namespace AppKit {
 		[Field ("NSAccessibilityRowCollapsedNotification")]
 		NSString RowCollapsedNotification { get; }
 
+		[Mac (26, 0)]
+		[Notification]
+		[Field ("NSAccessibilityAutocorrectionOccurredNotification")]
+		NSString AutocorrectionOccurredNotification { get; }
+
+		[Mac (26, 0)]
+		[Notification]
+		[Field ("NSAccessibilityTextInputMarkingSessionBeganNotification")]
+		NSString TextInputMarkingSessionBeganNotification { get; }
+
+		[Mac (26, 0)]
+		[Notification]
+		[Field ("NSAccessibilityTextInputMarkingSessionEndedNotification")]
+		NSString TextInputMarkingSessionEndedNotification { get; }
+
+		[Mac (26, 0)]
+		[Notification]
+		[Field ("NSAccessibilityDraggingSourceDragBeganNotification")]
+		NSString DraggingSourceDragBeganNotification { get; }
+
+		[Mac (26, 0)]
+		[Notification]
+		[Field ("NSAccessibilityDraggingSourceDragEndedNotification")]
+		NSString DraggingSourceDragEndedNotification { get; }
+
+		[Mac (26, 0)]
+		[Notification]
+		[Field ("NSAccessibilityDraggingDestinationDropAllowedNotification")]
+		NSString DraggingDestinationDropAllowedNotification { get; }
+
+		[Mac (26, 0)]
+		[Notification]
+		[Field ("NSAccessibilityDraggingDestinationDropNotAllowedNotification")]
+		NSString DraggingDestinationDropNotAllowedNotification { get; }
+
+		[Mac (26, 0)]
+		[Notification]
+		[Field ("NSAccessibilityDraggingDestinationDragAcceptedNotification")]
+		NSString DraggingDestinationDragAcceptedNotification { get; }
+
+		[Mac (26, 0)]
+		[Notification]
+		[Field ("NSAccessibilityDraggingDestinationDragNotAcceptedNotification")]
+		NSString DraggingDestinationDragNotAcceptedNotification { get; }
+
 		[Notification]
 		[Field ("NSAccessibilitySelectedCellsChangedNotification")]
 		NSString SelectedCellsChangedNotification { get; }
@@ -31399,6 +31588,74 @@ namespace AppKit {
 		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityAnnotationTextAttribute")]
 		NSString AnnotationTextAttribute { get; }
+
+		[Mac (26, 0)]
+		[Field ("NSAccessibilityAutoInteractableAttribute")]
+		NSString AutoInteractableAttribute { get; }
+
+		[Mac (26, 0)]
+		[Field ("NSAccessibilityDateTimeComponentsAttribute")]
+		NSString DateTimeComponentsAttribute { get; }
+
+		[Mac (26, 0)]
+		[Field ("NSAccessibilityEmbeddedImageDescriptionAttribute")]
+		NSString EmbeddedImageDescriptionAttribute { get; }
+
+		[Mac (26, 0)]
+		[Field ("NSAccessibilityPathAttribute")]
+		NSString PathAttribute { get; }
+
+		[Mac (26, 0)]
+		[Field ("NSAccessibilityTextInputMarkedRangeAttribute")]
+		NSString TextInputMarkedRangeAttribute { get; }
+
+		[Mac (26, 0)]
+		[Field ("NSAccessibilityBlockQuoteLevelAttribute")]
+		NSString BlockQuoteLevelAttribute { get; }
+
+		[Mac (26, 0)]
+		[Field ("NSAccessibilityHeadingLevelAttribute")]
+		NSString HeadingLevelAttribute { get; }
+
+		[Mac (26, 0)]
+		[Field ("NSAccessibilityLanguageAttribute")]
+		NSString LanguageAttribute { get; }
+
+		[Mac (26, 0)]
+		[Field ("NSAccessibilityVisitedAttribute")]
+		NSString VisitedAttribute { get; }
+
+		[Mac (26, 0)]
+		[Field ("NSAccessibilityFontBoldAttribute")]
+		NSString FontBoldAttribute { get; }
+
+		[Mac (26, 0)]
+		[Field ("NSAccessibilityFontItalicAttribute")]
+		NSString FontItalicAttribute { get; }
+
+		[Mac (26, 0)]
+		[Field ("NSAccessibilityChildrenInNavigationOrderAttribute")]
+		NSString ChildrenInNavigationOrderAttribute { get; }
+
+		[Mac (26, 0)]
+		[Field ("NSAccessibilityIndexForChildUIElementAttribute")]
+		NSString IndexForChildUIElementAttribute { get; }
+
+		[Mac (26, 0)]
+		[Field ("NSAccessibilityIndexForChildUIElementInNavigationOrderAttribute")]
+		NSString IndexForChildUIElementInNavigationOrderAttribute { get; }
+
+		[Mac (26, 0)]
+		[Field ("NSAccessibilityTextCompletionAttribute")]
+		NSString TextCompletionAttribute { get; }
+
+		[Mac (26, 0)]
+		[Field ("NSAccessibilityUIElementsForSearchPredicateParameterizedAttribute")]
+		NSString UIElementsForSearchPredicateParameterizedAttribute { get; }
+
+		[Mac (26, 0)]
+		[Field ("NSAccessibilityResultsForSearchPredicateParameterizedAttribute")]
+		NSString ResultsForSearchPredicateParameterizedAttribute { get; }
 	}
 
 	[Static]
@@ -31783,6 +32040,22 @@ namespace AppKit {
 		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityPageRole")]
 		NSString PageRole { get; }
+
+		[Mac (26, 0)]
+		[Field ("NSAccessibilityDateTimeAreaRole")]
+		NSString DateTimeAreaRole { get; }
+
+		[Mac (26, 0)]
+		[Field ("NSAccessibilityHeadingRole")]
+		NSString HeadingRole { get; }
+
+		[Mac (26, 0)]
+		[Field ("NSAccessibilityListMarkerRole")]
+		NSString ListMarkerRole { get; }
+
+		[Mac (26, 0)]
+		[Field ("NSAccessibilityWebAreaRole")]
+		NSString WebAreaRole { get; }
 	}
 
 	[Static]
@@ -31979,6 +32252,10 @@ namespace AppKit {
 		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilitySectionListSubrole")]
 		NSString SectionListSubrole { get; }
+
+		[Mac (26, 0)]
+		[Field ("NSAccessibilitySuggestionSubrole")]
+		NSString SuggestionSubrole { get; }
 	}
 
 	[Static]
@@ -32071,6 +32348,10 @@ namespace AppKit {
 		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityShowDefaultUIAction")]
 		NSString ShowDefaultUIAction { get; }
+
+		[Mac (26, 0)]
+		[Field ("NSAccessibilityScrollToVisibleAction")]
+		NSString ScrollToVisibleAction { get; }
 	}
 
 	[NoMacCatalyst]
@@ -34696,6 +34977,16 @@ namespace AppKit {
 		[Static]
 		[Export ("configurationPreferringHierarchical")]
 		NSImageSymbolConfiguration CreateConfigurationPreferringHierarchical ();
+
+		[Mac (26, 0)]
+		[Static]
+		[Export ("configurationWithColorRenderingMode:")]
+		NSImageSymbolConfiguration Create (NSImageSymbolColorRenderingMode colorRenderingMode);
+
+		[Mac (26, 0)]
+		[Static]
+		[Export ("configurationWithVariableValueMode:")]
+		NSImageSymbolConfiguration Create (NSImageSymbolVariableValueMode variableValueMode);
 	}
 
 	[NoMacCatalyst, Mac (13, 0)]
@@ -34974,5 +35265,253 @@ namespace AppKit {
 		[Export ("candidateRects")]
 		[BindAs (typeof (CGRect []))]
 		NSValue [] CandidateRects { get; }
+	}
+
+	[NoMacCatalyst, Mac (26, 0)]
+	[BaseType (typeof (NSView))]
+	interface NSBackgroundExtensionView {
+
+		[Export ("initWithFrame:")]
+		NativeHandle Constructor (CGRect frameRect);
+
+		[NullAllowed, Export ("contentView", ArgumentSemantic.Strong)]
+		NSView ContentView { get; set; }
+
+		[Export ("automaticallyPlacesContentView")]
+		bool AutomaticallyPlacesContentView { get; set; }
+	}
+
+	[NoMacCatalyst, Mac (26, 0)]
+	[BaseType (typeof (NSView))]
+	interface NSGlassEffectContainerView {
+
+		[Export ("initWithFrame:")]
+		NativeHandle Constructor (CGRect frameRect);
+
+		[NullAllowed, Export ("contentView", ArgumentSemantic.Strong)]
+		NSView ContentView { get; set; }
+
+		[Export ("spacing")]
+		nfloat Spacing { get; set; }
+	}
+
+	[NoMacCatalyst, Mac (26, 0)]
+	[BaseType (typeof (NSView))]
+	interface NSGlassEffectView {
+
+		[Export ("initWithFrame:")]
+		NativeHandle Constructor (CGRect frameRect);
+
+		[NullAllowed, Export ("contentView", ArgumentSemantic.Strong)]
+		NSView ContentView { get; set; }
+
+		[Export ("cornerRadius")]
+		nfloat CornerRadius { get; set; }
+
+		[NullAllowed, Export ("tintColor", ArgumentSemantic.Copy)]
+		Color TintColor { get; set; }
+	}
+
+	[NoMacCatalyst, Mac (26, 0)]
+	[BaseType (typeof (NSViewController))]
+	interface NSSplitViewItemAccessoryViewController : NSAnimatablePropertyContainer {
+
+		[Export ("initWithNibName:bundle:")]
+		NativeHandle Constructor ([NullAllowed] string nibNameOrNull, [NullAllowed] NSBundle nibBundleOrNull);
+
+		[Export ("hidden")]
+		bool Hidden { [Bind ("isHidden")] get; set; }
+
+		[Export ("automaticallyAppliesContentInsets")]
+		bool AutomaticallyAppliesContentInsets { get; set; }
+
+		[Export ("viewWillAppear")]
+		[RequiresSuper]
+		void ViewWillAppear ();
+
+		[Export ("viewDidAppear")]
+		[RequiresSuper]
+		void ViewDidAppear ();
+
+		[Export ("viewWillDisappear")]
+		[RequiresSuper]
+		void ViewWillDisappear ();
+
+		[Export ("viewDidDisappear")]
+		[RequiresSuper]
+		void ViewDidDisappear ();
+	}
+
+	// Not using smart enum intentionally as they would complicate the API
+	[NoMacCatalyst, Mac (26, 0)]
+	[Static]
+	interface NSAccessibilitySearchKey {
+
+		[Field ("NSAccessibilityAnyTypeSearchKey")]
+		NSString AnyType { get; }
+
+		[Field ("NSAccessibilityArticleSearchKey")]
+		NSString Article { get; }
+
+		[Field ("NSAccessibilityBlockquoteSameLevelSearchKey")]
+		NSString BlockquoteSameLevel { get; }
+
+		[Field ("NSAccessibilityBlockquoteSearchKey")]
+		NSString Blockquote { get; }
+
+		[Field ("NSAccessibilityBoldFontSearchKey")]
+		NSString BoldFont { get; }
+
+		[Field ("NSAccessibilityButtonSearchKey")]
+		NSString Button { get; }
+
+		[Field ("NSAccessibilityCheckBoxSearchKey")]
+		NSString CheckBox { get; }
+
+		[Field ("NSAccessibilityControlSearchKey")]
+		NSString Control { get; }
+
+		[Field ("NSAccessibilityDifferentTypeSearchKey")]
+		NSString DifferentType { get; }
+
+		[Field ("NSAccessibilityFontChangeSearchKey")]
+		NSString FontChange { get; }
+
+		[Field ("NSAccessibilityFontColorChangeSearchKey")]
+		NSString FontColorChange { get; }
+
+		[Field ("NSAccessibilityFrameSearchKey")]
+		NSString Frame { get; }
+
+		[Field ("NSAccessibilityGraphicSearchKey")]
+		NSString Graphic { get; }
+
+		[Field ("NSAccessibilityHeadingLevel1SearchKey")]
+		NSString HeadingLevel1 { get; }
+
+		[Field ("NSAccessibilityHeadingLevel2SearchKey")]
+		NSString HeadingLevel2 { get; }
+
+		[Field ("NSAccessibilityHeadingLevel3SearchKey")]
+		NSString HeadingLevel3 { get; }
+
+		[Field ("NSAccessibilityHeadingLevel4SearchKey")]
+		NSString HeadingLevel4 { get; }
+
+		[Field ("NSAccessibilityHeadingLevel5SearchKey")]
+		NSString HeadingLevel5 { get; }
+
+		[Field ("NSAccessibilityHeadingLevel6SearchKey")]
+		NSString HeadingLevel6 { get; }
+
+		[Field ("NSAccessibilityHeadingSameLevelSearchKey")]
+		NSString HeadingSameLevel { get; }
+
+		[Field ("NSAccessibilityHeadingSearchKey")]
+		NSString Heading { get; }
+
+		[Field ("NSAccessibilityItalicFontSearchKey")]
+		NSString ItalicFont { get; }
+
+		[Field ("NSAccessibilityKeyboardFocusableSearchKey")]
+		NSString KeyboardFocusable { get; }
+
+		[Field ("NSAccessibilityLandmarkSearchKey")]
+		NSString Landmark { get; }
+
+		[Field ("NSAccessibilityLinkSearchKey")]
+		NSString Link { get; }
+
+		[Field ("NSAccessibilityListSearchKey")]
+		NSString List { get; }
+
+		[Field ("NSAccessibilityLiveRegionSearchKey")]
+		NSString LiveRegion { get; }
+
+		[Field ("NSAccessibilityMisspelledWordSearchKey")]
+		NSString MisspelledWord { get; }
+
+		[Field ("NSAccessibilityOutlineSearchKey")]
+		NSString Outline { get; }
+
+		[Field ("NSAccessibilityPlainTextSearchKey")]
+		NSString PlainText { get; }
+
+		[Field ("NSAccessibilityRadioGroupSearchKey")]
+		NSString RadioGroup { get; }
+
+		[Field ("NSAccessibilitySameTypeSearchKey")]
+		NSString SameType { get; }
+
+		[Field ("NSAccessibilityStaticTextSearchKey")]
+		NSString StaticText { get; }
+
+		[Field ("NSAccessibilityStyleChangeSearchKey")]
+		NSString StyleChange { get; }
+
+		[Field ("NSAccessibilityTableSameLevelSearchKey")]
+		NSString TableSameLevel { get; }
+
+		[Field ("NSAccessibilityTableSearchKey")]
+		NSString Table { get; }
+
+		[Field ("NSAccessibilityTextFieldSearchKey")]
+		NSString TextField { get; }
+
+		[Field ("NSAccessibilityTextStateChangeTypeKey")]
+		NSString TextStateChan { get; }
+
+		[Field ("NSAccessibilityTextStateSyncKey")]
+		NSString TextSta { get; }
+
+		[Field ("NSAccessibilityUnderlineSearchKey")]
+		NSString Underline { get; }
+
+		[Field ("NSAccessibilityUnvisitedLinkSearchKey")]
+		NSString UnvisitedLink { get; }
+
+		[Field ("NSAccessibilityVisitedLinkSearchKey")]
+		NSString VisitedLink { get; }
+	}
+
+	[NoMacCatalyst, Mac (26, 0)]
+	[Static]
+	interface NSAccessibilityForSearchPredicateKey {
+
+		[Field ("NSAccessibilitySearchIdentifiersKey")]
+		NSString Identifiers { get; }
+
+		[Field ("NSAccessibilitySearchCurrentElementKey")]
+		NSString CurrentElement { get; }
+
+		[Field ("NSAccessibilitySearchCurrentRangeKey")]
+		NSString CurrentRange { get; }
+
+		[Field ("NSAccessibilitySearchDirectionKey")]
+		NSString Direction { get; }
+
+		[Field ("NSAccessibilitySearchResultsLimitKey")]
+		NSString ResultsLimit { get; }
+
+		[Field ("NSAccessibilitySearchTextKey")]
+		NSString Text { get; }
+
+		[Field ("NSAccessibilitySearchDirectionNext")]
+		NSString DirectionNext { get; }
+
+		[Field ("NSAccessibilitySearchDirectionPrevious")]
+		NSString DirectionPrevious { get; }
+
+		[Field ("NSAccessibilitySearchResultElementKey")]
+		NSString ResultElement { get; }
+
+		[Field ("NSAccessibilitySearchResultRangeKey")]
+		NSString ResultRange { get; }
+
+		[Field ("NSAccessibilitySearchResultDescriptionOverrideKey")]
+		NSString ResultDescriptionOverride { get; }
+
+		[Field ("NSAccessibilitySearchResultLoaderKey")]
+		NSString ResultLoader { get; }
 	}
 }

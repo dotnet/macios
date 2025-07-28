@@ -148,3 +148,5 @@
 !missing-selector! VTTemporalNoiseFilterParameters::hasDiscontinuity not bound
 !missing-selector! VTTemporalNoiseFilterParameters::initWithSourceFrame:nextFrames:previousFrames:destinationFrame:filterStrength:hasDiscontinuity: not bound
 !missing-selector! VTTemporalNoiseFilterParameters::setHasDiscontinuity: not bound
+!deprecated-attribute-missing! VTRAWProcessingSessionSetParameterChangedHander missing a [Deprecated] attribute
+!missing-pinvoke! VTRAWProcessingSessionSetParameterChangedHandler is not bound

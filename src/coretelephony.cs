@@ -460,7 +460,8 @@ namespace CoreTelephony {
 		bool SupportsEmbeddedSim { get; }
 
 		[Async]
-		[NoTV, NoMac, iOS (26, 0), MacCatalyst (26, 0)]
+		[NoMacCatalyst] /* headers say yes, but introspection says no, so keep it out of Mac Catalyst for now */
+		[NoTV, NoMac, iOS (26, 0)]
 		[Export ("addPlanWithRequest:properties:completionHandler:")]
 		void AddPlan (CTCellularPlanProvisioningRequest request, [NullAllowed] CTCellularPlanProperties properties, CTCellularPlanProvisioningAddPlanCompletionHandler completionHandler);
 

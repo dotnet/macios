@@ -15,3 +15,7 @@
 !missing-field! NSURLUbiquitousItemSupportedSyncControlsKey not bound
 !missing-selector! NSURLSessionConfiguration::enablesEarlyData not bound
 !missing-selector! NSURLSessionConfiguration::setEnablesEarlyData: not bound
+!missing-enum-value! NSCalendarUnit native value NSCalendarUnitIsLeapMonth = 1073741824 not bound
+!missing-enum-value! NSCalendarUnit native value NSCalendarUnitIsRepeatedDay = 2147483648 not bound
+!missing-selector! NSDateComponents::isRepeatedDay not bound
+!missing-selector! NSDateComponents::setRepeatedDay: not bound

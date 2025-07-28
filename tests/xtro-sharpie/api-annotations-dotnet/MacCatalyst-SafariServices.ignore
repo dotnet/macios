@@ -3,3 +3,7 @@
 
 ## this member references a framework which isn't available on Mac Catalyst
 !missing-protocol-member! SFAddToHomeScreenActivityItem::getWebAppManifestWithCompletionHandler: not found
+
+# the headers clearly say these two enum values are available on Mac Catalyst, so not sure why xtro doesn't think they are
+!missing-enum-value! SFErrorCode native value SFErrorInternalError = 4 not bound
+!missing-enum-value! SFErrorCode native value SFErrorMissingEntitlement = 5 not bound

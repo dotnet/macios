@@ -190,7 +190,7 @@ public class TestClass {
 			.FirstOrDefault ();
 		Assert.NotNull (node);
 		var semanticModel = compilation.GetSemanticModel (sourceTrees [0]);
-		Assert.Equal (expected, Binding.Skip (node, semanticModel));
+		Assert.Equal (expected, Binding.PropertySkip (node, semanticModel));
 	}
 
 	class TestDataSkipMethodDeclaration : IEnumerable<object []> {

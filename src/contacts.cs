@@ -1918,7 +1918,6 @@ namespace Contacts {
 		[NullAllowed]
 		string DefaultContainerIdentifier { get; }
 
-		/// <include file="../docs/api/Contacts/CNContactStore.xml" path="/Documentation/Docs[@DocId='P:Contacts.CNContactStore.NotificationDidChange']/*" />
 		[Notification]
 		[Field ("CNContactStoreDidChangeNotification")]
 		NSString NotificationDidChange { get; }

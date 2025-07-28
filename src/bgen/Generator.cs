@@ -1001,7 +1001,7 @@ public partial class Generator : IMemberGatherer {
 		try {
 			sb.Append (ParameterGetMarshalType (new MarshalInfo (this, mi) { IsAligned = aligned }));
 		} catch (BindingException ex) {
-			throw new BindingException (1078, ex.Error, ex, ex.Message, mi.Name);
+			throw new BindingException (1078, ex.Error, ex, ex.Message, $"{mi.DeclaringType}.{mi.Name}");
 		}
 
 		sb.Append ("_");
@@ -4826,7 +4826,13 @@ public partial class Generator : IMemberGatherer {
 		// disable CS1573, which can happen when the original member in the api definition has xml comments and we copy that xml comment into the generated interface - because we may add parameters to method signatures, and the new parameters won't have an xml comment.
 		print ("#pragma warning disable CS1573"); // Parameter 'This' has no matching param tag in the XML comment for '...' (but other parameters do)
 
-		WriteDocumentation (type);
+		if (!WriteDocumentation (type)) {
+			print ($"/// <summary>This interface represents the Objective-C protocol <c>{protocol_name}</c>.</summary>");
+			print ($"/// <remarks>");
+			print ($"///   <para>A class that implements this interface (and subclasses <see cref=\"NSObject\" />) will be exported to Objective-C as implementing the Objective-C protocol this interface represents.</para>");
+			print ($"///   <para>A class may also implement members from this interface to implement members from the protocol.</para>");
+			print ($"/// </remarks>");
+		}
 
 		PrintAttributes (type, platform: true, preserve: true, advice: true);
 		print ("[Protocol (Name = \"{1}\", WrapperType = typeof ({0}Wrapper){2}{3}{4})]",
@@ -6157,8 +6163,96 @@ public partial class Generator : IMemberGatherer {
 						print ("static {0}? _{1};", fieldTypeName, field_pi.Name);
 					}
 
-					if (!WriteDocumentation (field_pi) && BindingTouch.SupportsXmlDocumentation) {
-						print ($"/// <summary>Represents the value associated with the constant '{fieldAttr.SymbolName}'.</summary>");
+					if (BindingTouch.SupportsXmlDocumentation) {
+						if (!WriteDocumentation (field_pi)) {
+							var anyNotifications = AttributeManager.GetCustomAttributes<NotificationAttribute> (field_pi);
+							if (anyNotifications.Any ()) {
+								var notification = anyNotifications.First ();
+								var eventArgsTypeName = notification.Type?.Name ?? "NSNotificationEventArgs";
+								var notificationName = GetNotificationName (field_pi);
+								print (
+		$$"""
+		/// <summary>Notification constant for {{notificationName}}</summary>
+		/// <value><see cref="NSString" /> constant, should be used as a token to <see cref="NSNotificationCenter" />.</value>
+		/// <remarks>
+		///   <para>
+		///     This constant can be used with <see cref="NSNotificationCenter" /> to register a listener for this notification.
+		///     This is an <see cref="NSString" /> instead of a string, because these values can be used as tokens in some native
+		///     libraries instead of being used purely for their actual string content. The 'notification' parameter to the callback
+		///     contains extra information that is specific to the notification type.
+		///   </para>
+		///   <para>
+		///     To subscribe to this notification, developers can use the convenience <see cref="Notifications.Observe{{notificationName}}(NSObject,EventHandler{{"{" + eventArgsTypeName + "}"}})" />
+		///     or <see cref="Notifications.Observe{{notificationName}}(EventHandler{{"{" + eventArgsTypeName + "}"}})" /> methods,
+		///     which offers strongly typed access to the parameters of the notification.
+		///   </para>
+		///   <para>
+		///     The following example shows how to use the strongly typed <see cref="Notifications" /> class, to take the guesswork
+		///     out of the available properties in the notification:
+		///   </para>
+		///   <example>
+		///     <code lang="csharp lang-csharp"><![CDATA[
+		/// //
+		/// // Lambda style
+		/// //
+		///
+		/// // listening
+		/// notification = {{TypeName}}.Notifications.Observe{{notificationName}} ((sender, args) => {
+		/// /* Access strongly typed args */
+		/// Console.WriteLine ("Notification: {0}", args.Notification);
+		/// });
+		///
+		/// // To stop listening:
+		/// notification.Dispose ();
+		///
+		/// //
+		/// // Method style
+		/// //
+		/// NSObject notification;
+		/// void Callback (object sender, {{TypeName}}.{{eventArgsTypeName}} args)
+		/// {
+		///     // Access strongly typed args
+		///     Console.WriteLine ("Notification: {0}", args.Notification);
+		/// }
+		///
+		/// void Setup ()
+		/// {
+		///     notification = {{TypeName}}.Notifications.Observe{{notificationName}} (Callback);
+		/// }
+		///
+		/// void Teardown ()
+		/// {
+		///     notification.Dispose ();
+		/// }]]></code>
+		///   </example>
+		///   <para>
+		///     The following example shows how to use the notification with the DefaultCenter API:
+		///   </para>
+		///   <example>
+		///     <code lang="csharp lang-csharp"><![CDATA[
+		/// // Lambda style
+		/// NSNotificationCenter.DefaultCenter.AddObserver (
+		///     {{TypeName}}.{{notificationName}}Notification, (notification) => { Console.WriteLine ("Received the notification {{notificationName}}", notification); }
+		/// );
+		///
+		/// // Method style
+		/// void Callback (NSNotification notification)
+		/// {
+		///     Console.WriteLine ("Received the notification {{notificationName}}", notification);
+		/// }
+		///
+		/// void Setup ()
+		/// {
+		///     NSNotificationCenter.DefaultCenter.AddObserver ({{TypeName}}.{{notificationName}}Notification, Callback);
+		/// }
+		/// ]]></code>
+		///   </example>
+		/// </remarks>
+		""");
+							} else {
+								print ($"/// <summary>Represents the value associated with the constant '{fieldAttr.SymbolName}'.</summary>");
+							}
+						}
 					}
 					PrintAttributes (field_pi, preserve: true, advice: true);
 					PrintObsoleteAttributes (field_pi);

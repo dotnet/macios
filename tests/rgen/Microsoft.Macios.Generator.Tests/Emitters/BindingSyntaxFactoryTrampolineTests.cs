@@ -2842,7 +2842,7 @@ namespace NS {
 		var parameter = changes.Value.Parameters [0];
 		// assert it is indeed a delegate
 		Assert.NotNull (parameter.Type.Delegate);
-		var argumentSyntax = GetTrampolineInvokeArguments (trampolineName, parameter.Type.Delegate);
+		var (argumentSyntax, _) = GetTrampolineInvokeArguments (trampolineName, parameter.Type.Delegate);
 		var invocation = CallTrampolineDelegate (parameter.Type.Delegate, argumentSyntax);
 		var x = invocation.ToFullString ();
 		Assert.Equal (expectedExpression, invocation.ToFullString ());
@@ -4539,7 +4539,7 @@ namespace NS {
 		var parameter = changes.Value.Parameters [0];
 		// assert it is indeed a delegate
 		Assert.NotNull (parameter.Type.Delegate);
-		var argumentSyntax = GetTrampolineNativeInvokeArguments (parameter.Type.Delegate);
+		var (argumentSyntax, _) = GetTrampolineNativeInvokeArguments (parameter.Type.Delegate);
 		var invocation = CallNativeInvokerDelegate (parameter.Type.Delegate, argumentSyntax);
 		var x = invocation.ToFullString ();
 		Assert.Equal (expectedExpression, invocation.ToFullString ());

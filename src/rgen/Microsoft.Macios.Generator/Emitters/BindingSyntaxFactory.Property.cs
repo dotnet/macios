@@ -71,8 +71,8 @@ static partial class BindingSyntaxFactory {
 			return (ThrowNotImplementedException (), ThrowNotImplementedException ());
 		}
 
-		var getterSend = ConvertToManaged (property, MessagingInvocation (sendMethod, selector, []));
-		var getterSuperSend = ConvertToManaged (property, MessagingInvocation (superSendMethod, selector, []));
+		var getterSend = ConvertToManaged (property, MessagingInvocation (sendMethod, selector, [], isSuper: false));
+		var getterSuperSend = ConvertToManaged (property, MessagingInvocation (superSendMethod, selector, [], isSuper: true));
 		// if we cannot get the methods, throw a runtime exception 
 		if (getterSend is null || getterSuperSend is null) {
 			return (ThrowNotImplementedException (), ThrowNotImplementedException ());
@@ -93,11 +93,13 @@ static partial class BindingSyntaxFactory {
 	/// <param name="sendMethod">The name of the `objc_msgSend` method for the setter.</param>
 	/// <param name="superSendMethod">The name of the `objc_msgSend` method for the superclass setter.</param>
 	/// <returns>A tuple containing the argument syntax, and the expressions for the normal and superclass setter invocations.</returns>
-	internal static (TrampolineArgumentSyntax Argument, ExpressionSyntax Send, ExpressionSyntax SendSuper) GetSetterInvocations (
+	internal static (ArgumentConversions Argument, ExpressionSyntax Send, ExpressionSyntax SendSuper) GetSetterInvocations (
 		in Property property, string? selector, string? sendMethod, string? superSendMethod)
 	{
-		var argument = new TrampolineArgumentSyntax (GetNativeInvokeArgument (property)) {
+		var syntax = GetNativeInvokeArgument (property);
+		var argument = new ArgumentConversions {
 			Initializers = GetNativeInvokeArgumentInitializations (property),
+			Validations = GetNativeInvokeArgumentValidations (property),
 			PreCallConversion = GetPreNativeInvokeArgumentConversions (property),
 			PostCallConversion = GetPostNativeInvokeArgumentConversions (property),
 		};
@@ -106,8 +108,8 @@ static partial class BindingSyntaxFactory {
 			return (argument, ThrowNotImplementedException (), ThrowNotImplementedException ());
 		}
 
-		var setterSend = MessagingInvocation (sendMethod, selector, [argument.ArgumentSyntax]);
-		var setterSuperSend = MessagingInvocation (superSendMethod, selector, [argument.ArgumentSyntax]);
+		var setterSend = MessagingInvocation (sendMethod, selector, [syntax], isSuper: false);
+		var setterSuperSend = MessagingInvocation (superSendMethod, selector, [syntax], isSuper: true);
 
 		return (
 			Argument: argument,
@@ -129,7 +131,7 @@ static partial class BindingSyntaxFactory {
 		var getterSelector = property.GetAccessor (AccessorKind.Getter)?.GetSelector (property);
 		var getterInvocations = GetGetterInvocations (property, getterSelector, getter, superGetter);
 
-		(TrampolineArgumentSyntax Argument, ExpressionSyntax Send, ExpressionSyntax SendSuper)? setterInvocations = null;
+		(ArgumentConversions Argument, ExpressionSyntax Send, ExpressionSyntax SendSuper)? setterInvocations = null;
 		var setterAccessor = property.GetAccessor (AccessorKind.Setter);
 		if (setterAccessor is not null) {
 			var setterSelector = setterAccessor.Value.GetSelector (property);

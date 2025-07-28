@@ -55,14 +55,38 @@ public enum TestEnum {
 	public void TryCreateEmitterClass (ApplePlatform platform)
 	{
 		const string inputText = @"
+using ObjCBindings;
+
 namespace Test;
 
+[BindingType<Class> ()]
 public class TestClass {
 }
 ";
 		var changes = CreateSymbol<ClassDeclarationSyntax> (platform, inputText);
 		Assert.True (EmitterFactory.TryCreate (changes, out var emitter));
 		Assert.IsType<ClassEmitter> (emitter);
+		Assert.True (EmitterFactory.TryCreate (changes, out var secondEmitter));
+		Assert.Same (emitter, secondEmitter);
+	}
+
+	[Theory]
+	[AllSupportedPlatforms]
+	public void TryCreateEmitterCategory (ApplePlatform platform)
+	{
+		const string inputText = @"
+using Foundation;
+using ObjCBindings;
+
+namespace Test;
+
+[BindingType<Category> (typeof (NSObject))]
+public class TestClass {
+}
+";
+		var changes = CreateSymbol<ClassDeclarationSyntax> (platform, inputText);
+		Assert.True (EmitterFactory.TryCreate (changes, out var emitter));
+		Assert.IsType<CategoryEmitter> (emitter);
 		Assert.True (EmitterFactory.TryCreate (changes, out var secondEmitter));
 		Assert.Same (emitter, secondEmitter);
 	}

@@ -17,19 +17,19 @@
     <!-- Manually updated versions -->
     <MicrosoftDotnetSdkInternalPackageVersion>$(MicrosoftNETSdkPackageVersion)</MicrosoftDotnetSdkInternalPackageVersion>
     <!-- This is a subscription of the .NET 9 latest stable versions of our packages -->
-    <MicrosoftMacCatalystSdknet90_185PackageVersion>18.5.9214</MicrosoftMacCatalystSdknet90_185PackageVersion>
-    <MicrosoftmacOSSdknet90_155PackageVersion>15.5.9214</MicrosoftmacOSSdknet90_155PackageVersion>
-    <MicrosoftiOSSdknet90_185PackageVersion>18.5.9214</MicrosoftiOSSdknet90_185PackageVersion>
-    <MicrosofttvOSSdknet90_185PackageVersion>18.5.9214</MicrosofttvOSSdknet90_185PackageVersion>
+    <MicrosoftMacCatalystSdknet90_185PackageVersion>18.5.9215</MicrosoftMacCatalystSdknet90_185PackageVersion>
+    <MicrosoftmacOSSdknet90_155PackageVersion>15.5.9215</MicrosoftmacOSSdknet90_155PackageVersion>
+    <MicrosoftiOSSdknet90_185PackageVersion>18.5.9215</MicrosoftiOSSdknet90_185PackageVersion>
+    <MicrosofttvOSSdknet90_185PackageVersion>18.5.9215</MicrosofttvOSSdknet90_185PackageVersion>
     <!-- This is a subscription to the .NET 9/Xcode 16.0 versions of our packages -->
     <MicrosoftMacCatalystSdknet90_180PackageVersion>18.0.9617</MicrosoftMacCatalystSdknet90_180PackageVersion>
     <MicrosoftmacOSSdknet90_150PackageVersion>15.0.9617</MicrosoftmacOSSdknet90_150PackageVersion>
     <MicrosoftiOSSdknet90_180PackageVersion>18.0.9617</MicrosoftiOSSdknet90_180PackageVersion>
     <MicrosofttvOSSdknet90_180PackageVersion>18.0.9617</MicrosofttvOSSdknet90_180PackageVersion>
     <!-- This is a subscription to the .NET 9/Xcode 26.0 versions of our packages -->
-    <MicrosoftMacCatalystSdknet90_260PackageVersion>26.0.9246-xcode26.0</MicrosoftMacCatalystSdknet90_260PackageVersion>
-    <MicrosoftmacOSSdknet90_260PackageVersion>26.0.9246-xcode26.0</MicrosoftmacOSSdknet90_260PackageVersion>
-    <MicrosoftiOSSdknet90_260PackageVersion>26.0.9246-xcode26.0</MicrosoftiOSSdknet90_260PackageVersion>
-    <MicrosofttvOSSdknet90_260PackageVersion>26.0.9246-xcode26.0</MicrosofttvOSSdknet90_260PackageVersion>
+    <MicrosoftMacCatalystSdknet90_260PackageVersion>26.0.9251-xcode26.0</MicrosoftMacCatalystSdknet90_260PackageVersion>
+    <MicrosoftmacOSSdknet90_260PackageVersion>26.0.9251-xcode26.0</MicrosoftmacOSSdknet90_260PackageVersion>
+    <MicrosoftiOSSdknet90_260PackageVersion>26.0.9251-xcode26.0</MicrosoftiOSSdknet90_260PackageVersion>
+    <MicrosofttvOSSdknet90_260PackageVersion>26.0.9251-xcode26.0</MicrosofttvOSSdknet90_260PackageVersion>
   </PropertyGroup>
 </Project>

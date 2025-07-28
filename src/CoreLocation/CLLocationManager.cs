@@ -49,28 +49,26 @@ namespace CoreLocation {
 #endif
 	public partial class CLLocationManager : NSObject {
 
-#if IOS
+#if !__TVOS__
+		/// <summary>Determines whether the device supports region monitoring for the specified kind of <see cref="CLRegion" />.</summary>
 		/// <param name="t">Type of the class, must derive from CLRegion.</param>
-		///         <summary>Determines whether the device supports region monitoring for the specified kind of CLRegion.</summary>
-		///         <returns>True if the device supports it, false otherwise.</returns>
-		///         <remarks>
-		///           <para>
-		///             This method merely determines whether region monitoring is
-		///             available in the hardware, it does not determine whether the
-		///             user has enabled location services or whether the
-		///             application has been granted permission to use this.  You
-		///             must request permission separately.
-		///           </para>
-		///           <para>
-		///             To determine whether you have permission to access
-		///             location services, use <see cref="CoreLocation.CLLocationManager" />.
-		///           </para>
-		///         </remarks>
+		/// <returns>True if the device supports it, false otherwise.</returns>
+		/// <remarks>
+		///   <para>
+		///     This method merely determines whether region monitoring is
+		///     available in the hardware, it does not determine whether the
+		///     user has enabled location services or whether the
+		///     application has been granted permission to use this.  You
+		///     must request permission separately.
+		///   </para>
+		///   <para>
+		///     To determine whether you have permission to access
+		///     location services, use <see cref="CLLocationManager" />.
+		///   </para>
+		/// </remarks>
 		public static bool IsMonitoringAvailable (Type t)
 		{
-			if (SystemVersion.CheckiOS (7, 0))
-				return IsMonitoringAvailable (new Class (t));
-			return false;
+			return IsMonitoringAvailable (new Class (t));
 		}
 #endif
 	}

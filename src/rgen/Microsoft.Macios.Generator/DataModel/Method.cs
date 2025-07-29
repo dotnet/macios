@@ -6,8 +6,9 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using Microsoft.CodeAnalysis;
-using Microsoft.Macios.Generator.Attributes;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.Macios.Generator.Availability;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Microsoft.Macios.Generator.DataModel;
 
@@ -49,10 +50,24 @@ readonly partial struct Method : IEquatable<Method> {
 	/// </summary>
 	public ImmutableArray<AttributeCodeChange> Attributes { get; } = [];
 
+	readonly bool isStatic;
+
+	/// <summary>
+	/// Returns if the method is static.
+	/// </summary>
+	public bool IsStatic => isStatic;
+
+	readonly ImmutableArray<SyntaxToken> modifiers = [];
 	/// <summary>
 	/// Modifiers list.
 	/// </summary>
-	public ImmutableArray<SyntaxToken> Modifiers { get; init; } = [];
+	public ImmutableArray<SyntaxToken> Modifiers {
+		get => modifiers;
+		init {
+			modifiers = value;
+			isStatic = modifiers.Any (x => x.IsKind (SyntaxKind.StaticKeyword));
+		}
+	}
 
 	/// <summary>
 	/// Parameters list.
@@ -75,6 +90,10 @@ readonly partial struct Method : IEquatable<Method> {
 		if (BindAs != other.BindAs)
 			return false;
 		if (ForcedType != other.ForcedType)
+			return false;
+		if (IsVariadic != other.IsVariadic)
+			return false;
+		if (IsOptional != other.IsOptional)
 			return false;
 
 		var attrsComparer = new AttributesEqualityComparer ();
@@ -137,6 +156,10 @@ readonly partial struct Method : IEquatable<Method> {
 		sb.Append ($"ExportMethodData: {ExportMethodData}, ");
 		sb.Append ($"BindAs: {BindAs?.ToString () ?? "null"}, ");
 		sb.Append ($"ForcedType: {ForcedType?.ToString () ?? "null"}, ");
+		sb.Append ($"IsStatic: {IsStatic}, ");
+		sb.Append ($"IsExtension: {IsExtension}, ");
+		sb.Append ($"IsVariadic: {IsVariadic}, ");
+		sb.Append ($"IsOptional: {IsOptional}, ");
 		sb.Append ("Attributes: [");
 		sb.AppendJoin (", ", Attributes);
 		sb.Append ("], Modifiers: [");

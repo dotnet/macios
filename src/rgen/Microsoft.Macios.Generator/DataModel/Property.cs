@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 using System;
 using System.Collections.Immutable;
+using System.Linq;
 using System.Runtime.InteropServices;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -92,7 +93,7 @@ readonly partial struct Property : IEquatable<Property> {
 		get => modifiers;
 		init {
 			modifiers = value;
-			isStatic = modifiers.Contains (Token (SyntaxKind.StaticKeyword));
+			isStatic = modifiers.Any (x => x.IsKind (SyntaxKind.StaticKeyword));
 		}
 	}
 

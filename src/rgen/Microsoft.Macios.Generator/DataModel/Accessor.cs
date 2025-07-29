@@ -10,7 +10,7 @@ namespace Microsoft.Macios.Generator.DataModel;
 
 [StructLayout (LayoutKind.Auto)]
 readonly partial struct Accessor : IEquatable<Accessor> {
-	
+
 	/// <summary>
 	/// The initialization state of the struct.
 	/// </summary>
@@ -20,12 +20,12 @@ readonly partial struct Accessor : IEquatable<Accessor> {
 	/// Gets the default, uninitialized instance of <see cref="Accessor"/>.
 	/// </summary>
 	public static Accessor Default { get; } = new (StructState.Default);
-	
+
 	/// <summary>
 	/// Gets a value indicating whether the instance is the default, uninitialized instance.
 	/// </summary>
 	public bool IsNullOrDefault => State == StructState.Default;
-	
+
 	/// <summary>
 	/// The kind of accessor.
 	/// </summary>

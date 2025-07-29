@@ -66,9 +66,9 @@ readonly partial struct Property {
 			if (!IsStrongDictionaryProperty)
 				return null;
 			// return the combination of the class key and the field name
-			return ExportStrongPropertyData.Value.StrongDictionaryKeyClass is null
+			return ExportStrongPropertyData.Value.StrongDictionaryKeyClass.IsNullOrDefault
 				? ExportStrongPropertyData.Value.Selector
-				: $"{ExportStrongPropertyData.Value.StrongDictionaryKeyClass.Value.FullyQualifiedName}.{ExportStrongPropertyData.Value.Selector}";
+				: $"{ExportStrongPropertyData.Value.StrongDictionaryKeyClass.FullyQualifiedName}.{ExportStrongPropertyData.Value.Selector}";
 		}
 	}
 
@@ -301,13 +301,13 @@ readonly partial struct Property {
 	public Property ToStrongDelegate ()
 	{
 		// has to be a property, weak delegate and have its strong delegate type set
-		if (!IsProperty || !IsWeakDelegate || ExportPropertyData.Value.StrongDelegateType is null)
+		if (!IsProperty || !IsWeakDelegate || ExportPropertyData.Value.StrongDelegateType.IsNullOrDefault)
 			return this;
 
 		// update the return type, all the rest is the same
 		return this with {
 			Name = ExportPropertyData.Value.StrongDelegateName ?? Name.Remove (0, 4 /* "Weak".Length */),
-			ReturnType = ExportPropertyData.Value.StrongDelegateType.Value.WithNullable (true),
+			ReturnType = ExportPropertyData.Value.StrongDelegateType.WithNullable (true),
 		};
 	}
 

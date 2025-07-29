@@ -248,7 +248,7 @@ $@"if (IsDirectBinding) {{
 			// if the property is a weak delegate and has the strong delegate type set, we need to emit the
 			// strong delegate property
 			if (property is { IsProperty: true, IsWeakDelegate: true }
-				&& property.ExportPropertyData.Value.StrongDelegateType is not null) {
+				&& !property.ExportPropertyData.Value.StrongDelegateType.IsNullOrDefault) {
 				classBlock.WriteLine ();
 				var strongDelegate = property.ToStrongDelegate ();
 				using (var propertyBlock =

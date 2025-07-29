@@ -72,6 +72,9 @@
         <Compile Include="../Microsoft.Macios.Generator/Attributes/UnsupportedOSPlatformData.cs" >
             <Link>Generator/Attributes/UnsupportedOSPlatformData.cs</Link>
         </Compile>
+        <Compile Include="../Microsoft.Macios.Generator/DataModel/StructState.cs" >
+            <Link>DataModel/StructState.cs</Link>
+        </Compile>
         <Compile Include="../Microsoft.Macios.Generator/DataModel/AttributeCodeChange.cs" >
             <Link>DataModel/AttributeCodeChange.cs</Link>
         </Compile>

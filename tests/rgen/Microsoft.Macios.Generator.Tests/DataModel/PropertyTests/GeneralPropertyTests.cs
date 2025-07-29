@@ -475,7 +475,7 @@ public class GeneralPropertyTests {
 	[InlineData (true, true, false, false)]
 	public void ToStrongDelegate (bool isProperty, bool isWeakDelegate, bool hasStrongDelegateType, bool shouldChange)
 	{
-		TypeInfo? strongDelegateType = hasStrongDelegateType ? ReturnTypeForNSObject ("StrongDelegate") : null;
+		TypeInfo strongDelegateType = hasStrongDelegateType ? ReturnTypeForNSObject ("StrongDelegate") : TypeInfo.Default;
 		var flags = isWeakDelegate ? ObjCBindings.Property.WeakDelegate : ObjCBindings.Property.Default;
 		var property = new Property (
 			name: "Test",
@@ -506,7 +506,7 @@ public class GeneralPropertyTests {
 
 		if (shouldChange) {
 			Assert.NotEqual (property, newProperty);
-			Assert.Equal (strongDelegateType!.Value.WithNullable (true), newProperty.ReturnType);
+			Assert.Equal (strongDelegateType.WithNullable (true), newProperty.ReturnType);
 		} else {
 			Assert.Equal (property, newProperty);
 		}

@@ -158,8 +158,8 @@ readonly partial struct Method {
 		var resultType = Parameters [^1].Type.ToTask ();
 
 		// if the user provided a result type, we need to update the calculated result type to a task
-		if (ExportMethodData.ResultType is not null) {
-			resultType = resultType.ToTask (ExportMethodData.ResultType.Value.GetIdentifierSyntax ().ToString ());
+		if (!ExportMethodData.ResultType.IsNullOrDefault) {
+			resultType = resultType.ToTask (ExportMethodData.ResultType.GetIdentifierSyntax ().ToString ());
 		}
 
 		if (ExportMethodData.ResultTypeName is not null) {

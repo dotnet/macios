@@ -57,30 +57,30 @@ public partial class AppDelegate : UIApplicationDelegate {
 }
 
 #if !__MACOS__
-	[Register ("SceneDelegate")]
-	public partial class SceneDelegate : UIResponder, IUIWindowSceneDelegate {
+[Register ("SceneDelegate")]
+public partial class SceneDelegate : UIResponder, IUIWindowSceneDelegate {
 
-		[Export ("window")]
-		public UIWindow Window { get; set; }
+	[Export ("window")]
+	public UIWindow Window { get; set; }
 
-		[Export ("scene:willConnectToSession:options:")]
-		public void WillConnect (UIScene scene, UISceneSession session, UISceneConnectionOptions connectionOptions)
-		{
-			if (scene is UIWindowScene windowScene) {
-				Window ??= new UIWindow (windowScene);
+	[Export ("scene:willConnectToSession:options:")]
+	public void WillConnect (UIScene scene, UISceneSession session, UISceneConnectionOptions connectionOptions)
+	{
+		if (scene is UIWindowScene windowScene) {
+			Window ??= new UIWindow (windowScene);
 
-				var runner = new TouchRunner (Window);
-				foreach (var assembly in TestLoader.GetTestAssemblies ())
-					runner.Add (assembly);
+			var runner = new TouchRunner (Window);
+			foreach (var assembly in TestLoader.GetTestAssemblies ())
+				runner.Add (assembly);
 
-				AppDelegate.Runner = runner;
-				AppDelegate.MainWindow = Window;
+			AppDelegate.Runner = runner;
+			AppDelegate.MainWindow = Window;
 
-				Window.RootViewController = new UINavigationController (runner.GetViewController ());
-				Window.MakeKeyAndVisible ();
-			}
+			Window.RootViewController = new UINavigationController (runner.GetViewController ());
+			Window.MakeKeyAndVisible ();
 		}
 	}
+}
 #endif
 
 public static class MainClass {

@@ -11,10 +11,9 @@ using MonoTouch.NUnit.UI;
 using NUnit.Framework.Internal;
 using MonoTouchFixtures.BackgroundTasks;
 
-public partial class AppDelegate : UIApplicationDelegate {
+public partial class SceneDelegate : UIResponder, IUIWindowSceneDelegate {
 	// class-level declarations
-	static UIWindow window;
-	TouchRunner runner => Runner;
+	TouchRunner runner => AppDelegate.Runner;
 
 #if __IOS__ && !__MACCATALYST__
 	public override bool AccessibilityPerformMagicTap ()
@@ -28,22 +27,23 @@ public partial class AppDelegate : UIApplicationDelegate {
 		return true;
 	}
 #endif
+}
 
+public partial class AppDelegate : UIApplicationDelegate {
 	partial void PostFinishedLaunching ()
 	{
 		// required for the background tasks tests, we can only register the tasks in this method
 		BGTaskSchedulerTest.RegisterTestTasks ();
-		window = Window;
 	}
 
 	public static void PresentModalViewController (UIViewController vc, double duration)
 	{
-		var bckp = window.RootViewController;
-		window.RootViewController = vc;
+		var bckp = MainWindow.RootViewController;
+		MainWindow.RootViewController = vc;
 		try {
 			NSRunLoop.Main.RunUntil (NSDate.Now.AddSeconds (duration));
 		} finally {
-			window.RootViewController = bckp;
+			MainWindow.RootViewController = bckp;
 		}
 	}
 }

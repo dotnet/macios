@@ -51,6 +51,16 @@ readonly partial struct Method {
 	/// </summary>
 	public bool IsConstructor => Name == constructorName;
 
+	/// <summary>
+	/// True if the method is variadic.
+	/// </summary>
+	public bool IsVariadic => ExportMethodData?.IsVariadic ?? false;
+
+	/// <summary>
+	/// States if a method is optional in a protocol definition.
+	/// </summary>
+	public bool IsOptional => false;
+
 	public Method (string type,
 		string name,
 		TypeInfo returnType,

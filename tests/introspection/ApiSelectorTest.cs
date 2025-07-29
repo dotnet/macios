@@ -77,6 +77,12 @@ namespace Introspection {
 			// These concrete (wrapper) subclasses do not implement all of those optional members, but we
 			// still need to provide a binding for them, so that user subclasses can implement those members.
 			switch (type.Name) {
+			case "AVCaptureDevice":
+				switch (selectorName) {
+				case "cinematicVideoCaptureSceneMonitoringStatuses": // works in Xcode
+					return true;
+				}
+				break;
 			case "AVAggregateAssetDownloadTask":
 				switch (selectorName) {
 				case "URLAsset": // added in Xcode 9 and it is present.
@@ -418,6 +424,12 @@ namespace Introspection {
 				case "initWithOutputSettings:":
 				case "initWithPixelBufferAttributes:":
 					return true;
+				}
+				break;
+			case "AVDeviceCapture":
+				switch (selectorName) {
+				case "cinematicVideoCaptureSceneMonitoringStatuses":
+					return true; // works in an Xcode project
 				}
 				break;
 			case "MTLBufferLayoutDescriptor": // We do have unit tests under monotouch-tests for this properties

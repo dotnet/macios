@@ -789,7 +789,7 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 	public override string ToString ()
 	{
 		var sb = new StringBuilder ("{");
-		sb.Append ($"StructSate: '{State}', ");
+		sb.Append ($"StructState: '{State}', ");
 		sb.Append ($"Name: '{FullyQualifiedName}', ");
 		sb.Append ($"MetadataName: '{MetadataName}', ");
 		sb.Append ($"SpecialType: '{SpecialType}', ");

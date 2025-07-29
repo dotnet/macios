@@ -2577,7 +2577,8 @@ namespace Foundation {
 		[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
 		[Export ("repeatedDay")]
 		bool IsRepeatedDay {
-			[Bind ("isRepeatedDay")] get;
+			[Bind ("isRepeatedDay")]
+			get;
 			set;
 		}
 	}
@@ -23346,16 +23347,14 @@ namespace Foundation {
 
 	[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
 	[Native]
-	public enum NSFileManagerSupportedSyncControls : ulong
-	{
+	public enum NSFileManagerSupportedSyncControls : ulong {
 		PauseSync = 1uL << 0,
 		FailUploadOnConflict = 1uL << 1,
 	}
 
 	[MacCatalyst (26, 0), NoTV, Mac (26, 0), iOS (26, 0)]
 	[Native]
-	public enum NSFileManagerResumeSyncBehavior : long
-	{
+	public enum NSFileManagerResumeSyncBehavior : long {
 		PreserveLocalChanges = 0,
 		AfterUploadWithFailOnConflict = 1,
 		DropLocalChanges = 2,
@@ -23363,8 +23362,7 @@ namespace Foundation {
 
 	[MacCatalyst (26, 0), NoTV, Mac (26, 0), iOS (26, 0)]
 	[Native]
-	public enum NSFileManagerUploadLocalVersionConflictPolicy : long
-	{
+	public enum NSFileManagerUploadLocalVersionConflictPolicy : long {
 		Default = 0,
 		FailOnConflict = 1,
 	}

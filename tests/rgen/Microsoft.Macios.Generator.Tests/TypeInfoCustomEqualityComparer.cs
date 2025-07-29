@@ -12,8 +12,8 @@ namespace Microsoft.Macios.Generator.Tests;
 /// Custom equality comparer for <see cref="TypeInfo"/> used in tests.
 /// Performs comparison based on the fully qualified names of types rather than reference equality.
 /// </summary>
-class TypeInfoCustomEqualityComparer : IEqualityComparer<TypeInfo?>{
-	
+class TypeInfoCustomEqualityComparer : IEqualityComparer<TypeInfo?> {
+
 	/// <summary>
 	/// Determines whether the specified <see cref="TypeInfo"/> objects are equal.
 	/// </summary>
@@ -28,7 +28,7 @@ class TypeInfoCustomEqualityComparer : IEqualityComparer<TypeInfo?>{
 			return false;
 		if (x.Value.SpecialType == SpecialType.System_Void)
 			return y.Value.SpecialType == SpecialType.System_Void;
-		
+
 		return x?.FullyQualifiedName == y?.FullyQualifiedName;
 	}
 
@@ -41,7 +41,7 @@ class TypeInfoCustomEqualityComparer : IEqualityComparer<TypeInfo?>{
 	{
 		if (obj.Value.SpecialType == SpecialType.System_Void)
 			return SpecialType.System_Void.GetHashCode ();
-		
+
 		return obj.Value.FullyQualifiedName?.GetHashCode () ?? 0;
 	}
 }

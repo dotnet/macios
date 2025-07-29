@@ -18,7 +18,7 @@ readonly record struct ExportData {
 	/// Argument semantics to use with the selector.
 	/// </summary>
 	public ArgumentSemantic ArgumentSemantic { get; } = ArgumentSemantic.None;
-	
+
 	/// <summary>
 	/// Gets a value indicating whether the method is variadic.
 	/// </summary>

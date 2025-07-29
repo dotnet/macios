@@ -17,7 +17,7 @@ namespace Microsoft.Macios.Generator.Attributes;
 readonly struct ProtocolMemberData : IEquatable<ProtocolMemberData> {
 
 	// general properties
-	
+
 	/// <summary>
 	/// Gets a value indicating whether the protocol member is required.
 	/// </summary>
@@ -38,9 +38,9 @@ readonly struct ProtocolMemberData : IEquatable<ProtocolMemberData> {
 	/// Gets the selector of the protocol member.
 	/// </summary>
 	public string? Selector { get; init; }
-	
+
 	// method properties
-	
+
 	/// <summary>
 	/// Gets the return type of the method. Null for properties.
 	/// </summary>
@@ -100,7 +100,7 @@ readonly struct ProtocolMemberData : IEquatable<ProtocolMemberData> {
 		Name = name;
 		Selector = selector;
 	}
-	
+
 	/// <summary>
 	/// Initializes a new instance of the <see cref="ProtocolMemberData"/> struct for a property.
 	/// </summary>
@@ -116,7 +116,7 @@ readonly struct ProtocolMemberData : IEquatable<ProtocolMemberData> {
 		SetterSelector = setter?.Selector;
 		ArgumentSemantic = property.ExportPropertyData?.ArgumentSemantic ?? ArgumentSemantic.None;
 		ReturnTypeDelegateProxy = property.ReturnType.IsDelegate
-			? TypeInfo.CreateDelegateProxy (property.ReturnType) 
+			? TypeInfo.CreateDelegateProxy (property.ReturnType)
 			: null;
 		ParameterBlockProxy = property.ReturnType.IsDelegate
 			? [TypeInfo.CreateDelegateProxy (property.ReturnType)]
@@ -133,11 +133,11 @@ readonly struct ProtocolMemberData : IEquatable<ProtocolMemberData> {
 		// set the method specific data
 		ReturnType = method.ReturnType.WithNullable (isNullable: false);
 		ReturnTypeDelegateProxy = method.ReturnType.IsDelegate
-			? TypeInfo.CreateDelegateProxy (method.ReturnType) 
+			? TypeInfo.CreateDelegateProxy (method.ReturnType)
 			: null;
-		ParameterType = [..method.Parameters.Select (p => p.Type.WithNullable (isNullable: false))];
-		ParameterByRef = [..method.Parameters.Select (p => p.IsByRef)];
-		ParameterBlockProxy = [..method.Parameters.Select (p => {
+		ParameterType = [.. method.Parameters.Select (p => p.Type.WithNullable (isNullable: false))];
+		ParameterByRef = [.. method.Parameters.Select (p => p.IsByRef)];
+		ParameterBlockProxy = [.. method.Parameters.Select (p => {
 			return (TypeInfo?) (p.Type.IsDelegate ? TypeInfo.CreateDelegateProxy (p.Type) : null);
 		})];
 		IsVariadic = method.IsVariadic;
@@ -183,29 +183,29 @@ readonly struct ProtocolMemberData : IEquatable<ProtocolMemberData> {
 	/// <inheritdoc />
 	public override bool Equals (object? obj)
 	{
-		return obj is ProtocolMemberData other && Equals(other);
+		return obj is ProtocolMemberData other && Equals (other);
 	}
 
 	/// <inheritdoc />
 	public override int GetHashCode ()
 	{
-		var hashCode = new HashCode();
-		hashCode.Add(IsRequired);
-		hashCode.Add(IsProperty);
-		hashCode.Add(IsStatic);
-		hashCode.Add(Name);
-		hashCode.Add(Selector);
-		hashCode.Add(ReturnType);
-		hashCode.Add(ReturnTypeDelegateProxy);
-		hashCode.Add(ParameterType);
-		hashCode.Add(ParameterByRef);
-		hashCode.Add(ParameterBlockProxy);
-		hashCode.Add(IsVariadic);
-		hashCode.Add(PropertyType);
-		hashCode.Add(GetterSelector);
-		hashCode.Add(SetterSelector);
-		hashCode.Add((int)ArgumentSemantic);
-		return hashCode.ToHashCode();
+		var hashCode = new HashCode ();
+		hashCode.Add (IsRequired);
+		hashCode.Add (IsProperty);
+		hashCode.Add (IsStatic);
+		hashCode.Add (Name);
+		hashCode.Add (Selector);
+		hashCode.Add (ReturnType);
+		hashCode.Add (ReturnTypeDelegateProxy);
+		hashCode.Add (ParameterType);
+		hashCode.Add (ParameterByRef);
+		hashCode.Add (ParameterBlockProxy);
+		hashCode.Add (IsVariadic);
+		hashCode.Add (PropertyType);
+		hashCode.Add (GetterSelector);
+		hashCode.Add (SetterSelector);
+		hashCode.Add ((int) ArgumentSemantic);
+		return hashCode.ToHashCode ();
 	}
 
 	/// <summary>
@@ -214,9 +214,9 @@ readonly struct ProtocolMemberData : IEquatable<ProtocolMemberData> {
 	/// <param name="left">The first instance to compare.</param>
 	/// <param name="right">The second instance to compare.</param>
 	/// <returns><c>true</c> if the instances are equal; otherwise, <c>false</c>.</returns>
-	public static bool operator ==(ProtocolMemberData left, ProtocolMemberData right)
+	public static bool operator == (ProtocolMemberData left, ProtocolMemberData right)
 	{
-		return left.Equals(right);
+		return left.Equals (right);
 	}
 
 	/// <summary>
@@ -225,9 +225,9 @@ readonly struct ProtocolMemberData : IEquatable<ProtocolMemberData> {
 	/// <param name="left">The first instance to compare.</param>
 	/// <param name="right">The second instance to compare.</param>
 	/// <returns><c>true</c> if the instances are not equal; otherwise, <c>false</c>.</returns>
-	public static bool operator !=(ProtocolMemberData left, ProtocolMemberData right)
+	public static bool operator != (ProtocolMemberData left, ProtocolMemberData right)
 	{
-		return !left.Equals(right);
+		return !left.Equals (right);
 	}
 
 	/// <inheritdoc />

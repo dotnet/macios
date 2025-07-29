@@ -960,7 +960,7 @@ namespace NS {
 		Assert.True (asyncMethod.ReturnType.IsTask);
 		Assert.Equal (changes.Value.Parameters.Length - 1, asyncMethod.Parameters.Length);
 	}
-	
+
 	class TestDataFromMethodDeclarationIsOptional : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()
 		{
@@ -1000,10 +1000,10 @@ namespace NS {
 
 		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
 	}
-	
+
 	[Theory]
 	[AllSupportedPlatformsClassData<TestDataFromMethodDeclarationIsOptional>]
-	void FromMethodDeclarationIsOptional(ApplePlatform platform, string inputText, bool expectedIsOptional)
+	void FromMethodDeclarationIsOptional (ApplePlatform platform, string inputText, bool expectedIsOptional)
 	{
 		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
 		Assert.Single (syntaxTrees);
@@ -1014,10 +1014,10 @@ namespace NS {
 		Assert.NotNull (declaration);
 		Assert.True (Method.TryCreate (declaration, semanticModel, out var changes));
 		Assert.NotNull (changes);
-		Assert.Equal(expectedIsOptional, changes.Value.IsOptional);
+		Assert.Equal (expectedIsOptional, changes.Value.IsOptional);
 	}
-	
-	class TestDataFromMethodDeclarationIsVariadic: IEnumerable<object []> {
+
+	class TestDataFromMethodDeclarationIsVariadic : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()
 		{
 			const string variadicMethod = @"
@@ -1056,10 +1056,10 @@ namespace NS {
 
 		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
 	}
-	
+
 	[Theory]
 	[AllSupportedPlatformsClassData<TestDataFromMethodDeclarationIsVariadic>]
-	void FromMethodDeclarationIsVariadic(ApplePlatform platform, string inputText, bool expectedIsVariadic)
+	void FromMethodDeclarationIsVariadic (ApplePlatform platform, string inputText, bool expectedIsVariadic)
 	{
 		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
 		Assert.Single (syntaxTrees);
@@ -1070,6 +1070,6 @@ namespace NS {
 		Assert.NotNull (declaration);
 		Assert.True (Method.TryCreate (declaration, semanticModel, out var changes));
 		Assert.NotNull (changes);
-		Assert.Equal(expectedIsVariadic, changes.Value.IsVariadic);
+		Assert.Equal (expectedIsVariadic, changes.Value.IsVariadic);
 	}
 }

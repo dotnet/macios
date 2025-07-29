@@ -545,7 +545,7 @@ static class TestDataFactory {
 		) {
 			IsDelegate = true,
 			IsGenericType = parameters.Length > 0,
-			TypeArguments = [..parameters],
+			TypeArguments = [.. parameters],
 			Delegate = delegateInfo,
 			Parents = [
 				"System.MulticastDelegate",

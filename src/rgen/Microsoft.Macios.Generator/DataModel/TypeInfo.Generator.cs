@@ -27,12 +27,12 @@ readonly partial struct TypeInfo {
 	{
 		if (!delegateType.IsDelegate)
 			return delegateType;
-		
+
 		// build a new type info that is a delegate proxy
 		var trampolineName = Nomenclator.GetTrampolineName (delegateType);
 		var proxyName = Nomenclator.GetTrampolineClassName (
 			trampolineName, Nomenclator.TrampolineClassType.StaticBridgeClass);
-		
+
 		var trampolineInfo = new TypeInfo (
 			name: $"ObjCRuntime.Trampolines.{proxyName}",
 			specialType: SpecialType.None,

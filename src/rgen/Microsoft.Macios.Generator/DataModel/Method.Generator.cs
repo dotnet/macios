@@ -84,12 +84,12 @@ readonly partial struct Method {
 	/// True if the method was marked to be generated as an async method.
 	/// </summary>
 	public bool IsAsync => ExportMethodData.Flags.HasFlag (ObjCBindings.Method.Async);
-	
+
 	/// <summary>
 	/// True if the method is variadic.
 	/// </summary>
 	public bool IsVariadic => ExportMethodData.Flags.HasFlag (ObjCBindings.Method.IsVariadic);
-	
+
 	/// <summary>
 	/// States if a method is optional in a protocol definition.
 	/// </summary>

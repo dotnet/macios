@@ -49,7 +49,7 @@ readonly partial struct Method : IEquatable<Method> {
 	/// Get the attributes added to the constructor.
 	/// </summary>
 	public ImmutableArray<AttributeCodeChange> Attributes { get; } = [];
-	
+
 	readonly bool isStatic;
 
 	/// <summary>

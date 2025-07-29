@@ -441,7 +441,7 @@ Because we are using a raw string  we expected:
 		var result = block.ToCode ();
 		Assert.Equal (expectedString, result);
 	}
-	
+
 	public static IEnumerable<object []> AppendProtocolMemberDataTestData {
 		get {
 			yield return [
@@ -461,7 +461,7 @@ Because we are using a raw string  we expected:
 				},
 				"[ProtocolMember (IsRequired = true, IsProperty = true, IsStatic = false, Name = \"Name\", Selector = \"name\", PropertyType = typeof (string), GetterSelector = \"name\", SetterSelector = null, ArgumentSemantic = ArgumentSemantic.None)]\n"
 			];
-			
+
 			yield return [
 				new ProtocolMemberData (
 					isRequired: false,
@@ -761,7 +761,7 @@ Because we are using a raw string  we expected:
 			];
 		}
 	}
-	
+
 	[Theory]
 	[MemberData (nameof (AppendProtocolMemberDataTestData))]
 	void AppendProtocolMemberDataTest (ProtocolMemberData protocolMemberData, string expectedString)

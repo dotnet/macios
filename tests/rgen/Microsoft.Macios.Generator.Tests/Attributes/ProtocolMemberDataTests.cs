@@ -17,8 +17,8 @@ namespace Microsoft.Macios.Generator.Tests.Attributes;
 
 public class ProtocolMemberDataTests : BaseGeneratorTestClass {
 
-	ProtocolMemberCustomEqualityComparer comparer = new();
-	
+	ProtocolMemberCustomEqualityComparer comparer = new ();
+
 	class TestDataFromPropertyDeclaration : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()
 		{
@@ -51,7 +51,7 @@ public class TestClass {
 					ParameterBlockProxy = [],
 				}
 			];
-			
+
 			const string optionalProperty = @"
 using System;
 using ObjCBindings;
@@ -111,7 +111,7 @@ public class TestClass {
 					ParameterBlockProxy = [],
 				}
 			];
-			
+
 			const string getterSetterProperty = @"
 using System;
 using ObjCBindings;
@@ -141,7 +141,7 @@ public class TestClass {
 					ParameterBlockProxy = [],
 				}
 			];
-			
+
 			const string customSelectorsProperty = @"
 using System;
 using ObjCBindings;
@@ -176,7 +176,7 @@ public class TestClass {
 					ParameterBlockProxy = [],
 				}
 			];
-			
+
 			const string argumentSemantic = @"
 using System;
 using ObjCRuntime;
@@ -207,7 +207,7 @@ public class TestClass {
 					ParameterBlockProxy = [],
 				}
 			];
-			
+
 			const string actionProperty = @"
 using System;
 using ObjCRuntime;
@@ -238,7 +238,7 @@ public class TestClass {
 					ParameterBlockProxy = [TypeInfo.CreateDelegateProxy (ReturnTypeForAction ())],
 				}
 			];
-			
+
 			const string genericActionProperty = @"
 using System;
 using ObjCRuntime;
@@ -274,7 +274,7 @@ public class TestClass {
 		IEnumerator IEnumerable.GetEnumerator ()
 			=> GetEnumerator ();
 	}
-	
+
 	[Theory]
 	[AllSupportedPlatformsClassData<TestDataFromPropertyDeclaration>]
 	void FromPropertyDeclaration (ApplePlatform platform, string inputText, ProtocolMemberData expectedAttributeData)
@@ -293,7 +293,7 @@ public class TestClass {
 		var attr = new ProtocolMemberData (changes.Value, getter, setter);
 		Assert.Equal (expectedAttributeData, attr, comparer);
 	}
-	
+
 	class TestDataFromMethodDeclaration : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()
 		{
@@ -317,7 +317,7 @@ namespace NS {
 					isProperty: false,
 					isStatic: false,
 					name: "MyMethod",
-					selector: "completeRequestReturningItems:completionHandler:" 
+					selector: "completeRequestReturningItems:completionHandler:"
 				) {
 					ReturnType = TypeInfo.Void,
 					ParameterType = [ReturnTypeForString ()],
@@ -326,7 +326,7 @@ namespace NS {
 					ParameterBlockProxy = [null],
 				}
 			];
-			
+
 			const string staticVoidMethod = @"
 using System;
 using ObjCBindings;
@@ -347,7 +347,7 @@ namespace NS {
 					isProperty: false,
 					isStatic: true,
 					name: "MyMethod",
-					selector: "completeRequestReturningItems:completionHandler:" 
+					selector: "completeRequestReturningItems:completionHandler:"
 				) {
 					ReturnType = TypeInfo.Void,
 					ParameterType = [ReturnTypeForString ()],
@@ -356,7 +356,7 @@ namespace NS {
 					ParameterBlockProxy = [null],
 				}
 			];
-			
+
 			const string simpleIntMethod = @"
 using System;
 using ObjCBindings;
@@ -377,7 +377,7 @@ namespace NS {
 					isProperty: false,
 					isStatic: false,
 					name: "MyMethod",
-					selector: "completeRequestReturningItems:completionHandler:" 
+					selector: "completeRequestReturningItems:completionHandler:"
 				) {
 					ReturnType = ReturnTypeForInt (),
 					ParameterType = [ReturnTypeForString ()],
@@ -386,7 +386,7 @@ namespace NS {
 					ParameterBlockProxy = [null],
 				}
 			];
-			
+
 			const string intMethodMultiParameter = @"
 using System;
 using ObjCBindings;
@@ -407,7 +407,7 @@ namespace NS {
 					isProperty: false,
 					isStatic: false,
 					name: "MyMethod",
-					selector: "completeRequestReturningItems:completionHandler:" 
+					selector: "completeRequestReturningItems:completionHandler:"
 				) {
 					ReturnType = ReturnTypeForInt (),
 					ParameterType = [ReturnTypeForString (), ReturnTypeForString ()],
@@ -416,7 +416,7 @@ namespace NS {
 					ParameterBlockProxy = [null, null],
 				}
 			];
-			
+
 			const string nullableParameter = @"
 using System;
 using ObjCBindings;
@@ -437,7 +437,7 @@ namespace NS {
 					isProperty: false,
 					isStatic: false,
 					name: "MyMethod",
-					selector: "completeRequestReturningItems:completionHandler:" 
+					selector: "completeRequestReturningItems:completionHandler:"
 				) {
 					ReturnType = ReturnTypeForInt (),
 					ParameterType = [ReturnTypeForString ()],
@@ -446,7 +446,7 @@ namespace NS {
 					ParameterBlockProxy = [null],
 				}
 			];
-			
+
 			const string intMethodRefParameter = @"
 using System;
 using ObjCBindings;
@@ -467,7 +467,7 @@ namespace NS {
 					isProperty: false,
 					isStatic: false,
 					name: "MyMethod",
-					selector: "completeRequestReturningItems:completionHandler:" 
+					selector: "completeRequestReturningItems:completionHandler:"
 				) {
 					ReturnType = ReturnTypeForInt (),
 					ParameterType = [ReturnTypeForString (), ReturnTypeForString ()],
@@ -476,7 +476,7 @@ namespace NS {
 					ParameterBlockProxy = [null, null],
 				}
 			];
-			
+
 			const string variadicVoidMethod = @"
 using System;
 using ObjCBindings;
@@ -497,7 +497,7 @@ namespace NS {
 					isProperty: false,
 					isStatic: false,
 					name: "MyMethod",
-					selector: "completeRequestReturningItems:completionHandler:" 
+					selector: "completeRequestReturningItems:completionHandler:"
 				) {
 					ReturnType = TypeInfo.Void,
 					ParameterType = [ReturnTypeForString ()],
@@ -507,7 +507,7 @@ namespace NS {
 					IsVariadic = true,
 				}
 			];
-			
+
 			const string simpleActionMethod = @"
 using System;
 using ObjCBindings;
@@ -528,7 +528,7 @@ namespace NS {
 					isProperty: false,
 					isStatic: false,
 					name: "MyMethod",
-					selector: "completeRequestReturningItems:completionHandler:" 
+					selector: "completeRequestReturningItems:completionHandler:"
 				) {
 					ReturnType = ReturnTypeForAction (),
 					ParameterType = [ReturnTypeForString ()],
@@ -537,7 +537,7 @@ namespace NS {
 					ParameterBlockProxy = [null],
 				}
 			];
-			
+
 			const string intMethodActionParameter = @"
 using System;
 using ObjCBindings;
@@ -558,7 +558,7 @@ namespace NS {
 					isProperty: false,
 					isStatic: false,
 					name: "MyMethod",
-					selector: "completeRequestReturningItems:completionHandler:" 
+					selector: "completeRequestReturningItems:completionHandler:"
 				) {
 					ReturnType = ReturnTypeForInt (),
 					ParameterType = [ReturnTypeForString (), ReturnTypeForAction ()],
@@ -567,7 +567,7 @@ namespace NS {
 					ParameterBlockProxy = [null, TypeInfo.CreateDelegateProxy (ReturnTypeForAction ())],
 				}
 			];
-			
+
 			const string optionalVoidMethod = @"
 using System;
 using ObjCBindings;
@@ -588,7 +588,7 @@ namespace NS {
 					isProperty: false,
 					isStatic: false,
 					name: "MyMethod",
-					selector: "completeRequestReturningItems:completionHandler:" 
+					selector: "completeRequestReturningItems:completionHandler:"
 				) {
 					ReturnType = TypeInfo.Void,
 					ParameterType = [ReturnTypeForString ()],
@@ -603,7 +603,7 @@ namespace NS {
 		IEnumerator IEnumerable.GetEnumerator ()
 			=> GetEnumerator ();
 	}
-	
+
 	[Theory]
 	[AllSupportedPlatformsClassData<TestDataFromMethodDeclaration>]
 	void FromMethodDeclaration (ApplePlatform platform, string inputText, ProtocolMemberData expectedAttributeData)

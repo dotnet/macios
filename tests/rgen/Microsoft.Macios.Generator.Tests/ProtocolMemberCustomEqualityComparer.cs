@@ -12,8 +12,7 @@ namespace Microsoft.Macios.Generator.Tests;
 /// Custom equality comparer for <see cref="ProtocolMemberData"/> used in tests.
 /// Performs comparison based on the fully qualified names of type infos rather than reference equality.
 /// </summary>
-class ProtocolMemberCustomEqualityComparer : IEqualityComparer<ProtocolMemberData>
-{
+class ProtocolMemberCustomEqualityComparer : IEqualityComparer<ProtocolMemberData> {
 	TypeInfoCustomEqualityComparer typeComparer = new ();
 	/// <summary>
 	/// Determines whether the specified <see cref="ProtocolMemberData"/> objects are equal.
@@ -37,11 +36,11 @@ class ProtocolMemberCustomEqualityComparer : IEqualityComparer<ProtocolMemberDat
 			return false;
 		if (x.ReturnTypeDelegateProxy?.FullyQualifiedName != y.ReturnTypeDelegateProxy?.FullyQualifiedName)
 			return false;
-		if (!x.ParameterType.SequenceEqual (y.ParameterType, (l , r) => typeComparer.Equals (l, r)))
+		if (!x.ParameterType.SequenceEqual (y.ParameterType, (l, r) => typeComparer.Equals (l, r)))
 			return false;
 		if (!x.ParameterByRef.SequenceEqual (y.ParameterByRef))
 			return false;
-		if (!x.ParameterBlockProxy.SequenceEqual (y.ParameterBlockProxy, (l , r) => typeComparer.Equals (l, r)))
+		if (!x.ParameterBlockProxy.SequenceEqual (y.ParameterBlockProxy, (l, r) => typeComparer.Equals (l, r)))
 			return false;
 		if (x.IsVariadic != y.IsVariadic)
 			return false;
@@ -61,24 +60,24 @@ class ProtocolMemberCustomEqualityComparer : IEqualityComparer<ProtocolMemberDat
 	/// </summary>
 	/// <param name="obj">The <see cref="ProtocolMemberData"/> for which a hash code is to be returned.</param>
 	/// <returns>A hash code for the specified object.</returns>
-	public int GetHashCode(ProtocolMemberData obj)
+	public int GetHashCode (ProtocolMemberData obj)
 	{
-		var hashCode = new HashCode();
-		hashCode.Add(obj.IsRequired);
-		hashCode.Add(obj.IsProperty);
-		hashCode.Add(obj.IsStatic);
-		hashCode.Add(obj.Name);
-		hashCode.Add(obj.Selector);
-		hashCode.Add(obj.ReturnType);
-		hashCode.Add(obj.ReturnTypeDelegateProxy);
-		hashCode.Add(obj.ParameterType);
-		hashCode.Add(obj.ParameterByRef);
-		hashCode.Add(obj.ParameterBlockProxy);
-		hashCode.Add(obj.IsVariadic);
-		hashCode.Add(obj.PropertyType);
-		hashCode.Add(obj.GetterSelector);
-		hashCode.Add(obj.SetterSelector);
-		hashCode.Add((int)obj.ArgumentSemantic);
-		return hashCode.ToHashCode();
+		var hashCode = new HashCode ();
+		hashCode.Add (obj.IsRequired);
+		hashCode.Add (obj.IsProperty);
+		hashCode.Add (obj.IsStatic);
+		hashCode.Add (obj.Name);
+		hashCode.Add (obj.Selector);
+		hashCode.Add (obj.ReturnType);
+		hashCode.Add (obj.ReturnTypeDelegateProxy);
+		hashCode.Add (obj.ParameterType);
+		hashCode.Add (obj.ParameterByRef);
+		hashCode.Add (obj.ParameterBlockProxy);
+		hashCode.Add (obj.IsVariadic);
+		hashCode.Add (obj.PropertyType);
+		hashCode.Add (obj.GetterSelector);
+		hashCode.Add (obj.SetterSelector);
+		hashCode.Add ((int) obj.ArgumentSemantic);
+		return hashCode.ToHashCode ();
 	}
 }

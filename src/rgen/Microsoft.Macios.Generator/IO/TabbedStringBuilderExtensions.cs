@@ -149,7 +149,7 @@ static class TabbedStringBuilderExtensions {
 		self.WriteLine ($"[DynamicDependency ({member})]");
 		return self;
 	}
-	
+
 	/// <summary>
 	/// Appends a `[ProtocolMember]` attribute to the current writer.
 	/// This attribute contains metadata about a protocol member (method or property).
@@ -178,13 +178,13 @@ static class TabbedStringBuilderExtensions {
 			var paramTypes = string.Join (", ",
 				protocolMemberData.ParameterType.Select (x => $"typeof ({x.GetIdentifierSyntax ()})"));
 			sb.Append ($"ParameterType = new Type [] {{ {paramTypes} }}, ");
-			
+
 			// build the parameters ref array
 			var parametersRef = string.Join (", ",
 				protocolMemberData.ParameterByRef.Select (x => x ? "true" : "false"));
 			sb.Append ($"ParameterByRef = new bool [] {{ {parametersRef} }}");
 		}
-		
+
 		// the following are optional since we might not have a proxy for a callback but are used in both cases (methods and properties)
 		if (protocolMemberData.ReturnTypeDelegateProxy is not null) {
 			sb.Append ($", ReturnTypeDelegateProxy = typeof ({protocolMemberData.ReturnTypeDelegateProxy.Value.GetIdentifierSyntax ()})");
@@ -196,7 +196,7 @@ static class TabbedStringBuilderExtensions {
 				protocolMemberData.ParameterBlockProxy.Select (x => x is null ? "null" : $"typeof ({x.Value.GetIdentifierSyntax ()})"));
 			sb.Append ($", ParameterBlockProxy = new Type? [] {{ {blockProxies} }}");
 		}
-		
+
 		sb.Append (")]");
 		self.WriteLine (sb.ToString ());
 		return self;

@@ -220,7 +220,7 @@ namespace ObjCBindings {
 		WeakDelegate = 1 << 15,
 
 		/// <summary>
-		/// Use this flag on a method to mark it as optional in a protocol defintion.
+		/// Use this flag on a method to mark it as optional in a protocol definition.
 		/// </summary>
 		Optional = 1 << 16,
 	}

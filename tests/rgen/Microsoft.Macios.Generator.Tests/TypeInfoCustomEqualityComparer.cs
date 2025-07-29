@@ -8,8 +8,18 @@ using TypeInfo = Microsoft.Macios.Generator.DataModel.TypeInfo;
 
 namespace Microsoft.Macios.Generator.Tests;
 
+/// <summary>
+/// Custom equality comparer for <see cref="TypeInfo"/> used in tests.
+/// Performs comparison based on the fully qualified names of types rather than reference equality.
+/// </summary>
 class TypeInfoCustomEqualityComparer : IEqualityComparer<TypeInfo?>{
 	
+	/// <summary>
+	/// Determines whether the specified <see cref="TypeInfo"/> objects are equal.
+	/// </summary>
+	/// <param name="x">The first <see cref="TypeInfo"/> to compare.</param>
+	/// <param name="y">The second <see cref="TypeInfo"/> to compare.</param>
+	/// <returns><c>true</c> if the specified objects are equal; otherwise, <c>false</c>.</returns>
 	public bool Equals (TypeInfo? x, TypeInfo? y)
 	{
 		if (x is null)
@@ -22,8 +32,16 @@ class TypeInfoCustomEqualityComparer : IEqualityComparer<TypeInfo?>{
 		return x?.FullyQualifiedName == y?.FullyQualifiedName;
 	}
 
+	/// <summary>
+	/// Returns a hash code for the specified <see cref="TypeInfo"/>.
+	/// </summary>
+	/// <param name="obj">The <see cref="TypeInfo"/> for which a hash code is to be returned.</param>
+	/// <returns>A hash code for the specified object.</returns>
 	public int GetHashCode ([DisallowNull] TypeInfo? obj)
 	{
-		throw new System.NotImplementedException();
+		if (obj.Value.SpecialType == SpecialType.System_Void)
+			return SpecialType.System_Void.GetHashCode ();
+		
+		return obj.Value.FullyQualifiedName?.GetHashCode () ?? 0;
 	}
 }

@@ -197,7 +197,7 @@ static class TabbedStringBuilderExtensions {
 			sb.Append ($", ParameterBlockProxy = new Type? [] {{ {blockProxies} }}");
 		}
 		
-		sb.Append (']');
+		sb.Append (")]");
 		self.WriteLine (sb.ToString ());
 		return self;
 

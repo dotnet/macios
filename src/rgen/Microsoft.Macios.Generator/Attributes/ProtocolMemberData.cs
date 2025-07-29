@@ -158,7 +158,7 @@ readonly struct ProtocolMemberData : IEquatable<ProtocolMemberData> {
 			return false;
 		if (!Nullable.Equals (ReturnType, other.ReturnType))
 			return false;
-		if (Equals (ReturnTypeDelegateProxy, other.ReturnTypeDelegateProxy))
+		if (!Nullable.Equals (ReturnTypeDelegateProxy, other.ReturnTypeDelegateProxy))
 			return false;
 		if (!ParameterType.SequenceEqual (other.ParameterType))
 			return false;

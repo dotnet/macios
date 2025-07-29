@@ -459,7 +459,7 @@ Because we are using a raw string  we expected:
 					ReturnTypeDelegateProxy = null,
 					ParameterBlockProxy = [],
 				},
-				"[ProtocolMember (IsRequired = true, IsProperty = true, IsStatic = false, Name = \"Name\", Selector = \"name\", PropertyType = typeof (string), GetterSelector = \"name\", SetterSelector = null, ArgumentSemantic = ArgumentSemantic.None]\n"
+				"[ProtocolMember (IsRequired = true, IsProperty = true, IsStatic = false, Name = \"Name\", Selector = \"name\", PropertyType = typeof (string), GetterSelector = \"name\", SetterSelector = null, ArgumentSemantic = ArgumentSemantic.None)]\n"
 			];
 			
 			yield return [
@@ -477,7 +477,7 @@ Because we are using a raw string  we expected:
 					ReturnTypeDelegateProxy = null,
 					ParameterBlockProxy = [],
 				},
-				"[ProtocolMember (IsRequired = false, IsProperty = true, IsStatic = false, Name = \"Name\", Selector = \"name\", PropertyType = typeof (string), GetterSelector = \"name\", SetterSelector = null, ArgumentSemantic = ArgumentSemantic.None]\n"
+				"[ProtocolMember (IsRequired = false, IsProperty = true, IsStatic = false, Name = \"Name\", Selector = \"name\", PropertyType = typeof (string), GetterSelector = \"name\", SetterSelector = null, ArgumentSemantic = ArgumentSemantic.None)]\n"
 			];
 
 			yield return [
@@ -495,7 +495,7 @@ Because we are using a raw string  we expected:
 					ReturnTypeDelegateProxy = null,
 					ParameterBlockProxy = [],
 				},
-				"[ProtocolMember (IsRequired = true, IsProperty = true, IsStatic = true, Name = \"Name\", Selector = \"name\", PropertyType = typeof (string), GetterSelector = \"name\", SetterSelector = null, ArgumentSemantic = ArgumentSemantic.None]\n"
+				"[ProtocolMember (IsRequired = true, IsProperty = true, IsStatic = true, Name = \"Name\", Selector = \"name\", PropertyType = typeof (string), GetterSelector = \"name\", SetterSelector = null, ArgumentSemantic = ArgumentSemantic.None)]\n"
 			];
 
 			yield return [
@@ -513,7 +513,7 @@ Because we are using a raw string  we expected:
 					ReturnTypeDelegateProxy = null,
 					ParameterBlockProxy = [],
 				},
-				"[ProtocolMember (IsRequired = true, IsProperty = true, IsStatic = false, Name = \"Name\", Selector = \"name\", PropertyType = typeof (string), GetterSelector = \"name\", SetterSelector = \"setName:\", ArgumentSemantic = ArgumentSemantic.None]\n"
+				"[ProtocolMember (IsRequired = true, IsProperty = true, IsStatic = false, Name = \"Name\", Selector = \"name\", PropertyType = typeof (string), GetterSelector = \"name\", SetterSelector = \"setName:\", ArgumentSemantic = ArgumentSemantic.None)]\n"
 			];
 
 			yield return [
@@ -531,7 +531,7 @@ Because we are using a raw string  we expected:
 					ReturnTypeDelegateProxy = null,
 					ParameterBlockProxy = [],
 				},
-				"[ProtocolMember (IsRequired = true, IsProperty = true, IsStatic = false, Name = \"Name\", Selector = \"name\", PropertyType = typeof (string), GetterSelector = \"myName\", SetterSelector = \"setMyName:\", ArgumentSemantic = ArgumentSemantic.None]\n"
+				"[ProtocolMember (IsRequired = true, IsProperty = true, IsStatic = false, Name = \"Name\", Selector = \"name\", PropertyType = typeof (string), GetterSelector = \"myName\", SetterSelector = \"setMyName:\", ArgumentSemantic = ArgumentSemantic.None)]\n"
 			];
 
 			yield return [
@@ -549,7 +549,7 @@ Because we are using a raw string  we expected:
 					ReturnTypeDelegateProxy = null,
 					ParameterBlockProxy = [],
 				},
-				"[ProtocolMember (IsRequired = true, IsProperty = true, IsStatic = false, Name = \"Name\", Selector = \"name\", PropertyType = typeof (string), GetterSelector = \"name\", SetterSelector = \"setName:\", ArgumentSemantic = ArgumentSemantic.Copy]\n"
+				"[ProtocolMember (IsRequired = true, IsProperty = true, IsStatic = false, Name = \"Name\", Selector = \"name\", PropertyType = typeof (string), GetterSelector = \"name\", SetterSelector = \"setName:\", ArgumentSemantic = ArgumentSemantic.Copy)]\n"
 			];
 
 			yield return [
@@ -567,7 +567,7 @@ Because we are using a raw string  we expected:
 					ReturnTypeDelegateProxy = TypeInfo.CreateDelegateProxy (ReturnTypeForAction ()),
 					ParameterBlockProxy = [TypeInfo.CreateDelegateProxy (ReturnTypeForAction ())],
 				},
-				"[ProtocolMember (IsRequired = true, IsProperty = true, IsStatic = false, Name = \"Name\", Selector = \"callback\", PropertyType = typeof (global::System.Action), GetterSelector = \"callback\", SetterSelector = \"setCallback:\", ArgumentSemantic = ArgumentSemantic.None, ReturnTypeDelegateProxy = typeof (global::ObjCRuntime.Trampolines.SDAction), ParameterBlockProxy = new Type? [] { typeof (global::ObjCRuntime.Trampolines.SDAction) }]\n"
+				"[ProtocolMember (IsRequired = true, IsProperty = true, IsStatic = false, Name = \"Name\", Selector = \"callback\", PropertyType = typeof (global::System.Action), GetterSelector = \"callback\", SetterSelector = \"setCallback:\", ArgumentSemantic = ArgumentSemantic.None, ReturnTypeDelegateProxy = typeof (global::ObjCRuntime.Trampolines.SDAction), ParameterBlockProxy = new Type? [] { typeof (global::ObjCRuntime.Trampolines.SDAction) })]\n"
 			];
 
 			yield return [
@@ -585,7 +585,7 @@ Because we are using a raw string  we expected:
 					ReturnTypeDelegateProxy = TypeInfo.CreateDelegateProxy (ReturnTypeForAction (null, "string", "string")),
 					ParameterBlockProxy = [TypeInfo.CreateDelegateProxy (ReturnTypeForAction (null, "string", "string"))],
 				},
-				"[ProtocolMember (IsRequired = true, IsProperty = true, IsStatic = false, Name = \"Name\", Selector = \"callback\", PropertyType = typeof (global::System.Action<string, string>), GetterSelector = \"callback\", SetterSelector = \"setCallback:\", ArgumentSemantic = ArgumentSemantic.None, ReturnTypeDelegateProxy = typeof (global::ObjCRuntime.Trampolines.SDActionArity2stringstring), ParameterBlockProxy = new Type? [] { typeof (global::ObjCRuntime.Trampolines.SDActionArity2stringstring) }]\n"
+				"[ProtocolMember (IsRequired = true, IsProperty = true, IsStatic = false, Name = \"Name\", Selector = \"callback\", PropertyType = typeof (global::System.Action<string, string>), GetterSelector = \"callback\", SetterSelector = \"setCallback:\", ArgumentSemantic = ArgumentSemantic.None, ReturnTypeDelegateProxy = typeof (global::ObjCRuntime.Trampolines.SDActionArity2stringstring), ParameterBlockProxy = new Type? [] { typeof (global::ObjCRuntime.Trampolines.SDActionArity2stringstring) })]\n"
 			];
 
 			yield return [
@@ -602,7 +602,7 @@ Because we are using a raw string  we expected:
 					ReturnTypeDelegateProxy = null,
 					ParameterBlockProxy = [null],
 				},
-				"[ProtocolMember (IsRequired = true, IsProperty = false, IsStatic = false, Name = \"MyMethod\", Selector = \"completeRequestReturningItems:completionHandler:\", ReturnType = typeof (global::System.void), ParameterType = new Type [] { typeof (string) }, ParameterByRef = new bool [] { false }, ParameterBlockProxy = new Type? [] { null }]\n"
+				"[ProtocolMember (IsRequired = true, IsProperty = false, IsStatic = false, Name = \"MyMethod\", Selector = \"completeRequestReturningItems:completionHandler:\", ReturnType = typeof (global::System.void), ParameterType = new Type [] { typeof (string) }, ParameterByRef = new bool [] { false }, ParameterBlockProxy = new Type? [] { null })]\n"
 			];
 
 			yield return [
@@ -619,7 +619,7 @@ Because we are using a raw string  we expected:
 					ReturnTypeDelegateProxy = null,
 					ParameterBlockProxy = [null],
 				},
-				"[ProtocolMember (IsRequired = true, IsProperty = false, IsStatic = true, Name = \"MyMethod\", Selector = \"completeRequestReturningItems:completionHandler:\", ReturnType = typeof (global::System.void), ParameterType = new Type [] { typeof (string) }, ParameterByRef = new bool [] { false }, ParameterBlockProxy = new Type? [] { null }]\n"
+				"[ProtocolMember (IsRequired = true, IsProperty = false, IsStatic = true, Name = \"MyMethod\", Selector = \"completeRequestReturningItems:completionHandler:\", ReturnType = typeof (global::System.void), ParameterType = new Type [] { typeof (string) }, ParameterByRef = new bool [] { false }, ParameterBlockProxy = new Type? [] { null })]\n"
 			];
 
 			yield return [
@@ -636,7 +636,7 @@ Because we are using a raw string  we expected:
 					ReturnTypeDelegateProxy = null,
 					ParameterBlockProxy = [null],
 				},
-				"[ProtocolMember (IsRequired = true, IsProperty = false, IsStatic = false, Name = \"MyMethod\", Selector = \"completeRequestReturningItems:completionHandler:\", ReturnType = typeof (int), ParameterType = new Type [] { typeof (string) }, ParameterByRef = new bool [] { false }, ParameterBlockProxy = new Type? [] { null }]\n"
+				"[ProtocolMember (IsRequired = true, IsProperty = false, IsStatic = false, Name = \"MyMethod\", Selector = \"completeRequestReturningItems:completionHandler:\", ReturnType = typeof (int), ParameterType = new Type [] { typeof (string) }, ParameterByRef = new bool [] { false }, ParameterBlockProxy = new Type? [] { null })]\n"
 			];
 
 			yield return [
@@ -653,7 +653,7 @@ Because we are using a raw string  we expected:
 					ReturnTypeDelegateProxy = null,
 					ParameterBlockProxy = [null, null],
 				},
-				"[ProtocolMember (IsRequired = true, IsProperty = false, IsStatic = false, Name = \"MyMethod\", Selector = \"completeRequestReturningItems:completionHandler:\", ReturnType = typeof (int), ParameterType = new Type [] { typeof (string), typeof (string) }, ParameterByRef = new bool [] { false, false }, ParameterBlockProxy = new Type? [] { null, null }]\n"
+				"[ProtocolMember (IsRequired = true, IsProperty = false, IsStatic = false, Name = \"MyMethod\", Selector = \"completeRequestReturningItems:completionHandler:\", ReturnType = typeof (int), ParameterType = new Type [] { typeof (string), typeof (string) }, ParameterByRef = new bool [] { false, false }, ParameterBlockProxy = new Type? [] { null, null })]\n"
 			];
 
 			yield return [
@@ -670,7 +670,7 @@ Because we are using a raw string  we expected:
 					ReturnTypeDelegateProxy = null,
 					ParameterBlockProxy = [null],
 				},
-				"[ProtocolMember (IsRequired = true, IsProperty = false, IsStatic = false, Name = \"MyMethod\", Selector = \"completeRequestReturningItems:completionHandler:\", ReturnType = typeof (int), ParameterType = new Type [] { typeof (string) }, ParameterByRef = new bool [] { false }, ParameterBlockProxy = new Type? [] { null }]\n"
+				"[ProtocolMember (IsRequired = true, IsProperty = false, IsStatic = false, Name = \"MyMethod\", Selector = \"completeRequestReturningItems:completionHandler:\", ReturnType = typeof (int), ParameterType = new Type [] { typeof (string) }, ParameterByRef = new bool [] { false }, ParameterBlockProxy = new Type? [] { null })]\n"
 			];
 
 			yield return [
@@ -687,7 +687,7 @@ Because we are using a raw string  we expected:
 					ReturnTypeDelegateProxy = null,
 					ParameterBlockProxy = [null, null],
 				},
-				"[ProtocolMember (IsRequired = true, IsProperty = false, IsStatic = false, Name = \"MyMethod\", Selector = \"completeRequestReturningItems:completionHandler:\", ReturnType = typeof (int), ParameterType = new Type [] { typeof (string), typeof (string) }, ParameterByRef = new bool [] { false, true }, ParameterBlockProxy = new Type? [] { null, null }]\n"
+				"[ProtocolMember (IsRequired = true, IsProperty = false, IsStatic = false, Name = \"MyMethod\", Selector = \"completeRequestReturningItems:completionHandler:\", ReturnType = typeof (int), ParameterType = new Type [] { typeof (string), typeof (string) }, ParameterByRef = new bool [] { false, true }, ParameterBlockProxy = new Type? [] { null, null })]\n"
 			];
 
 			yield return [
@@ -705,7 +705,7 @@ Because we are using a raw string  we expected:
 					ParameterBlockProxy = [null],
 					IsVariadic = true,
 				},
-				"[ProtocolMember (IsRequired = true, IsProperty = false, IsStatic = false, Name = \"MyMethod\", Selector = \"completeRequestReturningItems:completionHandler:\", ReturnType = typeof (global::System.void), ParameterType = new Type [] { typeof (string) }, ParameterByRef = new bool [] { false }, ParameterBlockProxy = new Type? [] { null }]\n"
+				"[ProtocolMember (IsRequired = true, IsProperty = false, IsStatic = false, Name = \"MyMethod\", Selector = \"completeRequestReturningItems:completionHandler:\", ReturnType = typeof (global::System.void), ParameterType = new Type [] { typeof (string) }, ParameterByRef = new bool [] { false }, ParameterBlockProxy = new Type? [] { null })]\n"
 			];
 
 			yield return [
@@ -722,7 +722,7 @@ Because we are using a raw string  we expected:
 					ReturnTypeDelegateProxy = TypeInfo.CreateDelegateProxy (ReturnTypeForAction ()),
 					ParameterBlockProxy = [null],
 				},
-				"[ProtocolMember (IsRequired = true, IsProperty = false, IsStatic = false, Name = \"MyMethod\", Selector = \"completeRequestReturningItems:completionHandler:\", ReturnType = typeof (global::System.Action), ParameterType = new Type [] { typeof (string) }, ParameterByRef = new bool [] { false }, ReturnTypeDelegateProxy = typeof (global::ObjCRuntime.Trampolines.SDAction), ParameterBlockProxy = new Type? [] { null }]\n"
+				"[ProtocolMember (IsRequired = true, IsProperty = false, IsStatic = false, Name = \"MyMethod\", Selector = \"completeRequestReturningItems:completionHandler:\", ReturnType = typeof (global::System.Action), ParameterType = new Type [] { typeof (string) }, ParameterByRef = new bool [] { false }, ReturnTypeDelegateProxy = typeof (global::ObjCRuntime.Trampolines.SDAction), ParameterBlockProxy = new Type? [] { null })]\n"
 			];
 
 			yield return [
@@ -739,7 +739,7 @@ Because we are using a raw string  we expected:
 					ReturnTypeDelegateProxy = null,
 					ParameterBlockProxy = [null, TypeInfo.CreateDelegateProxy (ReturnTypeForAction ())],
 				},
-				"[ProtocolMember (IsRequired = true, IsProperty = false, IsStatic = false, Name = \"MyMethod\", Selector = \"completeRequestReturningItems:completionHandler:\", ReturnType = typeof (int), ParameterType = new Type [] { typeof (string), typeof (global::System.Action) }, ParameterByRef = new bool [] { false, false }, ParameterBlockProxy = new Type? [] { null, typeof (global::ObjCRuntime.Trampolines.SDAction) }]\n"
+				"[ProtocolMember (IsRequired = true, IsProperty = false, IsStatic = false, Name = \"MyMethod\", Selector = \"completeRequestReturningItems:completionHandler:\", ReturnType = typeof (int), ParameterType = new Type [] { typeof (string), typeof (global::System.Action) }, ParameterByRef = new bool [] { false, false }, ParameterBlockProxy = new Type? [] { null, typeof (global::ObjCRuntime.Trampolines.SDAction) })]\n"
 			];
 
 			yield return [
@@ -757,7 +757,7 @@ Because we are using a raw string  we expected:
 					ParameterBlockProxy = [null],
 					IsVariadic = false,
 				},
-				"[ProtocolMember (IsRequired = false, IsProperty = false, IsStatic = false, Name = \"MyMethod\", Selector = \"completeRequestReturningItems:completionHandler:\", ReturnType = typeof (global::System.void), ParameterType = new Type [] { typeof (string) }, ParameterByRef = new bool [] { false }, ParameterBlockProxy = new Type? [] { null }]\n"
+				"[ProtocolMember (IsRequired = false, IsProperty = false, IsStatic = false, Name = \"MyMethod\", Selector = \"completeRequestReturningItems:completionHandler:\", ReturnType = typeof (global::System.void), ParameterType = new Type [] { typeof (string) }, ParameterByRef = new bool [] { false }, ParameterBlockProxy = new Type? [] { null })]\n"
 			];
 		}
 	}

@@ -59,7 +59,7 @@ readonly partial struct Method {
 	/// <summary>
 	/// States if a method is optional in a protocol definition.
 	/// </summary>
-	public bool IsOptional => !HasAbstractFlag;
+	public bool IsOptional => false;
 
 	public Method (string type,
 		string name,

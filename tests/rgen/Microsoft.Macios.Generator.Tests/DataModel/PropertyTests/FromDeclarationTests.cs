@@ -1147,7 +1147,7 @@ public class TestClass {
 						},
 					]
 				),
-				null!
+				Method.Default,
 			];
 
 			const string getterSetter = @"
@@ -1331,7 +1331,7 @@ public class TestClass {
 
 	[Theory]
 	[AllSupportedPlatformsClassData<TestDataToExtensionMethods>]
-	void ToExtensionMethods (ApplePlatform platform, string inputText, TypeInfo protocolType, Method? expectedGetter, Method? expectedSetter)
+	void ToExtensionMethods (ApplePlatform platform, string inputText, TypeInfo protocolType, Method expectedGetter, Method expectedSetter)
 	{
 		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
 		Assert.Single (syntaxTrees);
@@ -1343,20 +1343,20 @@ public class TestClass {
 		Assert.True (Property.TryCreate (declaration, semanticModel, out var changes));
 		Assert.NotNull (changes);
 		var (getter, setter) = changes.Value.ToExtensionMethods (protocolType);
-		if (expectedGetter is null) {
-			Assert.Null (getter);
+		if (expectedGetter.IsNullOrDefault) {
+			Assert.True (getter.IsNullOrDefault);
 		} else {
-			Assert.NotNull (getter);
-			Assert.True (getter.Value.IsExtension);
-			Assert.Equal (expectedGetter.Value, getter.Value);
+			Assert.False (getter.IsNullOrDefault);
+			Assert.True (getter.IsExtension);
+			Assert.Equal (expectedGetter, getter);
 		}
 
-		if (expectedSetter is null) {
-			Assert.Null (setter);
+		if (expectedSetter.IsNullOrDefault) {
+			Assert.True (setter.IsNullOrDefault);
 		} else {
-			Assert.NotNull (setter);
-			Assert.True (setter.Value.IsExtension);
-			Assert.Equal (expectedSetter.Value, setter.Value);
+			Assert.False (setter.IsNullOrDefault);
+			Assert.True (setter.IsExtension);
+			Assert.Equal (expectedSetter, setter);
 		}
 	}
 }

@@ -18,7 +18,7 @@ namespace Microsoft.Macios.Generator.DataModel;
 /// </summary>
 [StructLayout (LayoutKind.Auto)]
 readonly partial struct TypeInfo : IEquatable<TypeInfo> {
-	
+
 	/// <summary>
 	/// Represents the `void` type.
 	/// </summary>
@@ -39,7 +39,7 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 	/// </summary>
 	public static TypeInfo Default { get; } =
 		new (string.Empty, SpecialType.None) { State = StructState.Default };
-	
+
 	/// <summary>
 	/// Gets a value indicating whether the instance is the default, uninitialized instance.
 	/// </summary>
@@ -270,7 +270,7 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 	{
 		State = state;
 	}
-	
+
 	internal TypeInfo (string name, SpecialType specialType) : this (StructState.Initialized)
 	{
 		FullyQualifiedName = name;

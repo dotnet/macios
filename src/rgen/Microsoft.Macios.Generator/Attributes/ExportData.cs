@@ -337,7 +337,7 @@ readonly struct ExportData<T> : IEquatable<ExportData<T>> where T : Enum {
 		var resultTypeName = ResultType.IsNullOrDefault ? "null" : ResultType.FullyQualifiedName;
 		var strongDelegateTypeName = StrongDelegateType.IsNullOrDefault ? "null" : StrongDelegateType.FullyQualifiedName;
 		var strongDictionaryKeyClassName = StrongDictionaryKeyClass.IsNullOrDefault ? "null" : StrongDictionaryKeyClass.FullyQualifiedName;
-		
+
 		var sb = new StringBuilder ("{ Type: '");
 		sb.Append (typeof (T).FullName);
 		sb.Append ("', Selector: '");

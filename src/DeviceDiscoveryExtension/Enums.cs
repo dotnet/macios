@@ -89,8 +89,7 @@ namespace DeviceDiscoveryExtension {
 
 	[Native]
 	[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0), NoTV]
-	public enum DDDeviceWiFiAwareServiceRole : long
-	{
+	public enum DDDeviceWiFiAwareServiceRole : long {
 		Subscriber = 10,
 		Publisher = 20,
 	}

@@ -3,7 +3,11 @@
 
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
+using System.Text;
+using Microsoft.Macios.Generator.Attributes;
 using Microsoft.Macios.Generator.DataModel;
+using Microsoft.Macios.Generator.Formatters;
 using static Microsoft.Macios.Generator.Emitters.BindingSyntaxFactory;
 
 namespace Microsoft.Macios.Generator.IO;
@@ -144,5 +148,62 @@ static class TabbedStringBuilderExtensions {
 
 		self.WriteLine ($"[DynamicDependency ({member})]");
 		return self;
+	}
+
+	/// <summary>
+	/// Appends a `[ProtocolMember]` attribute to the current writer.
+	/// This attribute contains metadata about a protocol member (method or property).
+	/// </summary>
+	/// <param name="self">A tabbed string writer.</param>
+	/// <param name="protocolMemberData">The protocol member metadata to emit.</param>
+	/// <returns>The current writer.</returns>
+	public static TabbedWriter<StringWriter> AppendProtocolMemberData (this TabbedWriter<StringWriter> self,
+		in ProtocolMemberData protocolMemberData)
+	{
+		// shared properties 
+		var sb = new StringBuilder ("[ProtocolMember (");
+		sb.Append ($"IsRequired = {protocolMemberData.IsRequired.ToString ().ToLower ()}, ");
+		sb.Append ($"IsProperty = {protocolMemberData.IsProperty.ToString ().ToLower ()}, ");
+		sb.Append ($"IsStatic = {protocolMemberData.IsStatic.ToString ().ToLower ()}, ");
+		sb.Append ($"Name = \"{protocolMemberData.Name}\", ");
+		sb.Append ($"Selector = \"{protocolMemberData.Selector}\", ");
+		if (protocolMemberData.IsProperty) {
+			sb.Append ($"PropertyType = typeof ({protocolMemberData.PropertyType!.Value.GetIdentifierSyntax ()}), ");
+			sb.Append ($"GetterSelector = {Quoted (protocolMemberData.GetterSelector)}, ");
+			sb.Append ($"SetterSelector = {Quoted (protocolMemberData.SetterSelector)}, ");
+			sb.Append ($"ArgumentSemantic = ArgumentSemantic.{protocolMemberData.ArgumentSemantic}");
+		} else {
+			sb.Append ($"ReturnType = typeof ({protocolMemberData.ReturnType!.Value.GetIdentifierSyntax ()}), ");
+			// build the parameter types string array
+			var paramTypes = string.Join (", ",
+				protocolMemberData.ParameterType.Select (x => $"typeof ({x.GetIdentifierSyntax ()})"));
+			sb.Append ($"ParameterType = new Type [] {{ {paramTypes} }}, ");
+
+			// build the parameters ref array
+			var parametersRef = string.Join (", ",
+				protocolMemberData.ParameterByRef.Select (x => x ? "true" : "false"));
+			sb.Append ($"ParameterByRef = new bool [] {{ {parametersRef} }}");
+		}
+
+		// the following are optional since we might not have a proxy for a callback but are used in both cases (methods and properties)
+		if (protocolMemberData.ReturnTypeDelegateProxy is not null) {
+			sb.Append ($", ReturnTypeDelegateProxy = typeof ({protocolMemberData.ReturnTypeDelegateProxy.Value.GetIdentifierSyntax ()})");
+		}
+
+		if (protocolMemberData.ParameterBlockProxy.Length > 0) {
+			// build the parameter block proxy string array
+			var blockProxies = string.Join (", ",
+				protocolMemberData.ParameterBlockProxy.Select (x => x is null ? "null" : $"typeof ({x.Value.GetIdentifierSyntax ()})"));
+			sb.Append ($", ParameterBlockProxy = new Type? [] {{ {blockProxies} }}");
+		}
+
+		sb.Append (")]");
+		self.WriteLine (sb.ToString ());
+		return self;
+
+		string Quoted (string? str)
+		{
+			return str is null ? "null" : $"\"{str}\"";
+		}
 	}
 }

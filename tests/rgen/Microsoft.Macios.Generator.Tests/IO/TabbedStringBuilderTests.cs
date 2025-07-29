@@ -11,8 +11,11 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Macios.Generator.Attributes;
 using Microsoft.Macios.Generator.Availability;
 using Microsoft.Macios.Generator.IO;
+using ObjCRuntime;
 using Xunit;
+using static Microsoft.Macios.Generator.Tests.TestDataFactory;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using TypeInfo = Microsoft.Macios.Generator.DataModel.TypeInfo;
 
 namespace Microsoft.Macios.Generator.Tests.IO;
 
@@ -435,6 +438,336 @@ Because we are using a raw string  we expected:
 	{
 		var block = new TabbedStringBuilder (sb);
 		block.AppendMemberAvailability (availability);
+		var result = block.ToCode ();
+		Assert.Equal (expectedString, result);
+	}
+
+	public static IEnumerable<object []> AppendProtocolMemberDataTestData {
+		get {
+			yield return [
+				new ProtocolMemberData (
+					isRequired: true,
+					isProperty: true,
+					isStatic: false,
+					name: "Name",
+					selector: "name"
+				) {
+					PropertyType = ReturnTypeForString (),
+					GetterSelector = "name",
+					SetterSelector = null,
+					ArgumentSemantic = ArgumentSemantic.None,
+					ReturnTypeDelegateProxy = null,
+					ParameterBlockProxy = [],
+				},
+				"[ProtocolMember (IsRequired = true, IsProperty = true, IsStatic = false, Name = \"Name\", Selector = \"name\", PropertyType = typeof (string), GetterSelector = \"name\", SetterSelector = null, ArgumentSemantic = ArgumentSemantic.None)]\n"
+			];
+
+			yield return [
+				new ProtocolMemberData (
+					isRequired: false,
+					isProperty: true,
+					isStatic: false,
+					name: "Name",
+					selector: "name"
+				) {
+					PropertyType = ReturnTypeForString (),
+					GetterSelector = "name",
+					SetterSelector = null,
+					ArgumentSemantic = ArgumentSemantic.None,
+					ReturnTypeDelegateProxy = null,
+					ParameterBlockProxy = [],
+				},
+				"[ProtocolMember (IsRequired = false, IsProperty = true, IsStatic = false, Name = \"Name\", Selector = \"name\", PropertyType = typeof (string), GetterSelector = \"name\", SetterSelector = null, ArgumentSemantic = ArgumentSemantic.None)]\n"
+			];
+
+			yield return [
+				new ProtocolMemberData (
+					isRequired: true,
+					isProperty: true,
+					isStatic: true,
+					name: "Name",
+					selector: "name"
+				) {
+					PropertyType = ReturnTypeForString (),
+					GetterSelector = "name",
+					SetterSelector = null,
+					ArgumentSemantic = ArgumentSemantic.None,
+					ReturnTypeDelegateProxy = null,
+					ParameterBlockProxy = [],
+				},
+				"[ProtocolMember (IsRequired = true, IsProperty = true, IsStatic = true, Name = \"Name\", Selector = \"name\", PropertyType = typeof (string), GetterSelector = \"name\", SetterSelector = null, ArgumentSemantic = ArgumentSemantic.None)]\n"
+			];
+
+			yield return [
+				new ProtocolMemberData (
+					isRequired: true,
+					isProperty: true,
+					isStatic: false,
+					name: "Name",
+					selector: "name"
+				) {
+					PropertyType = ReturnTypeForString (),
+					GetterSelector = "name",
+					SetterSelector = "setName:",
+					ArgumentSemantic = ArgumentSemantic.None,
+					ReturnTypeDelegateProxy = null,
+					ParameterBlockProxy = [],
+				},
+				"[ProtocolMember (IsRequired = true, IsProperty = true, IsStatic = false, Name = \"Name\", Selector = \"name\", PropertyType = typeof (string), GetterSelector = \"name\", SetterSelector = \"setName:\", ArgumentSemantic = ArgumentSemantic.None)]\n"
+			];
+
+			yield return [
+				new ProtocolMemberData (
+					isRequired: true,
+					isProperty: true,
+					isStatic: false,
+					name: "Name",
+					selector: "name"
+				) {
+					PropertyType = ReturnTypeForString (),
+					GetterSelector = "myName",
+					SetterSelector = "setMyName:",
+					ArgumentSemantic = ArgumentSemantic.None,
+					ReturnTypeDelegateProxy = null,
+					ParameterBlockProxy = [],
+				},
+				"[ProtocolMember (IsRequired = true, IsProperty = true, IsStatic = false, Name = \"Name\", Selector = \"name\", PropertyType = typeof (string), GetterSelector = \"myName\", SetterSelector = \"setMyName:\", ArgumentSemantic = ArgumentSemantic.None)]\n"
+			];
+
+			yield return [
+				new ProtocolMemberData (
+					isRequired: true,
+					isProperty: true,
+					isStatic: false,
+					name: "Name",
+					selector: "name"
+				) {
+					PropertyType = ReturnTypeForString (),
+					GetterSelector = "name",
+					SetterSelector = "setName:",
+					ArgumentSemantic = ArgumentSemantic.Copy,
+					ReturnTypeDelegateProxy = null,
+					ParameterBlockProxy = [],
+				},
+				"[ProtocolMember (IsRequired = true, IsProperty = true, IsStatic = false, Name = \"Name\", Selector = \"name\", PropertyType = typeof (string), GetterSelector = \"name\", SetterSelector = \"setName:\", ArgumentSemantic = ArgumentSemantic.Copy)]\n"
+			];
+
+			yield return [
+				new ProtocolMemberData (
+					isRequired: true,
+					isProperty: true,
+					isStatic: false,
+					name: "Name",
+					selector: "callback"
+				) {
+					PropertyType = ReturnTypeForAction (),
+					GetterSelector = "callback",
+					SetterSelector = "setCallback:",
+					ArgumentSemantic = ArgumentSemantic.None,
+					ReturnTypeDelegateProxy = TypeInfo.CreateDelegateProxy (ReturnTypeForAction ()),
+					ParameterBlockProxy = [TypeInfo.CreateDelegateProxy (ReturnTypeForAction ())],
+				},
+				"[ProtocolMember (IsRequired = true, IsProperty = true, IsStatic = false, Name = \"Name\", Selector = \"callback\", PropertyType = typeof (global::System.Action), GetterSelector = \"callback\", SetterSelector = \"setCallback:\", ArgumentSemantic = ArgumentSemantic.None, ReturnTypeDelegateProxy = typeof (global::ObjCRuntime.Trampolines.SDAction), ParameterBlockProxy = new Type? [] { typeof (global::ObjCRuntime.Trampolines.SDAction) })]\n"
+			];
+
+			yield return [
+				new ProtocolMemberData (
+					isRequired: true,
+					isProperty: true,
+					isStatic: false,
+					name: "Name",
+					selector: "callback"
+				) {
+					PropertyType = ReturnTypeForAction (null, "string", "string"),
+					GetterSelector = "callback",
+					SetterSelector = "setCallback:",
+					ArgumentSemantic = ArgumentSemantic.None,
+					ReturnTypeDelegateProxy = TypeInfo.CreateDelegateProxy (ReturnTypeForAction (null, "string", "string")),
+					ParameterBlockProxy = [TypeInfo.CreateDelegateProxy (ReturnTypeForAction (null, "string", "string"))],
+				},
+				"[ProtocolMember (IsRequired = true, IsProperty = true, IsStatic = false, Name = \"Name\", Selector = \"callback\", PropertyType = typeof (global::System.Action<string, string>), GetterSelector = \"callback\", SetterSelector = \"setCallback:\", ArgumentSemantic = ArgumentSemantic.None, ReturnTypeDelegateProxy = typeof (global::ObjCRuntime.Trampolines.SDActionArity2stringstring), ParameterBlockProxy = new Type? [] { typeof (global::ObjCRuntime.Trampolines.SDActionArity2stringstring) })]\n"
+			];
+
+			yield return [
+				new ProtocolMemberData (
+					isRequired: true,
+					isProperty: false,
+					isStatic: false,
+					name: "MyMethod",
+					selector: "completeRequestReturningItems:completionHandler:"
+				) {
+					ReturnType = TypeInfo.Void,
+					ParameterType = [ReturnTypeForString ()],
+					ParameterByRef = [false],
+					ReturnTypeDelegateProxy = null,
+					ParameterBlockProxy = [null],
+				},
+				"[ProtocolMember (IsRequired = true, IsProperty = false, IsStatic = false, Name = \"MyMethod\", Selector = \"completeRequestReturningItems:completionHandler:\", ReturnType = typeof (global::System.void), ParameterType = new Type [] { typeof (string) }, ParameterByRef = new bool [] { false }, ParameterBlockProxy = new Type? [] { null })]\n"
+			];
+
+			yield return [
+				new ProtocolMemberData (
+					isRequired: true,
+					isProperty: false,
+					isStatic: true,
+					name: "MyMethod",
+					selector: "completeRequestReturningItems:completionHandler:"
+				) {
+					ReturnType = TypeInfo.Void,
+					ParameterType = [ReturnTypeForString ()],
+					ParameterByRef = [false],
+					ReturnTypeDelegateProxy = null,
+					ParameterBlockProxy = [null],
+				},
+				"[ProtocolMember (IsRequired = true, IsProperty = false, IsStatic = true, Name = \"MyMethod\", Selector = \"completeRequestReturningItems:completionHandler:\", ReturnType = typeof (global::System.void), ParameterType = new Type [] { typeof (string) }, ParameterByRef = new bool [] { false }, ParameterBlockProxy = new Type? [] { null })]\n"
+			];
+
+			yield return [
+				new ProtocolMemberData (
+					isRequired: true,
+					isProperty: false,
+					isStatic: false,
+					name: "MyMethod",
+					selector: "completeRequestReturningItems:completionHandler:"
+				) {
+					ReturnType = ReturnTypeForInt (),
+					ParameterType = [ReturnTypeForString ()],
+					ParameterByRef = [false],
+					ReturnTypeDelegateProxy = null,
+					ParameterBlockProxy = [null],
+				},
+				"[ProtocolMember (IsRequired = true, IsProperty = false, IsStatic = false, Name = \"MyMethod\", Selector = \"completeRequestReturningItems:completionHandler:\", ReturnType = typeof (int), ParameterType = new Type [] { typeof (string) }, ParameterByRef = new bool [] { false }, ParameterBlockProxy = new Type? [] { null })]\n"
+			];
+
+			yield return [
+				new ProtocolMemberData (
+					isRequired: true,
+					isProperty: false,
+					isStatic: false,
+					name: "MyMethod",
+					selector: "completeRequestReturningItems:completionHandler:"
+				) {
+					ReturnType = ReturnTypeForInt (),
+					ParameterType = [ReturnTypeForString (), ReturnTypeForString ()],
+					ParameterByRef = [false, false],
+					ReturnTypeDelegateProxy = null,
+					ParameterBlockProxy = [null, null],
+				},
+				"[ProtocolMember (IsRequired = true, IsProperty = false, IsStatic = false, Name = \"MyMethod\", Selector = \"completeRequestReturningItems:completionHandler:\", ReturnType = typeof (int), ParameterType = new Type [] { typeof (string), typeof (string) }, ParameterByRef = new bool [] { false, false }, ParameterBlockProxy = new Type? [] { null, null })]\n"
+			];
+
+			yield return [
+				new ProtocolMemberData (
+					isRequired: true,
+					isProperty: false,
+					isStatic: false,
+					name: "MyMethod",
+					selector: "completeRequestReturningItems:completionHandler:"
+				) {
+					ReturnType = ReturnTypeForInt (),
+					ParameterType = [ReturnTypeForString ()],
+					ParameterByRef = [false],
+					ReturnTypeDelegateProxy = null,
+					ParameterBlockProxy = [null],
+				},
+				"[ProtocolMember (IsRequired = true, IsProperty = false, IsStatic = false, Name = \"MyMethod\", Selector = \"completeRequestReturningItems:completionHandler:\", ReturnType = typeof (int), ParameterType = new Type [] { typeof (string) }, ParameterByRef = new bool [] { false }, ParameterBlockProxy = new Type? [] { null })]\n"
+			];
+
+			yield return [
+				new ProtocolMemberData (
+					isRequired: true,
+					isProperty: false,
+					isStatic: false,
+					name: "MyMethod",
+					selector: "completeRequestReturningItems:completionHandler:"
+				) {
+					ReturnType = ReturnTypeForInt (),
+					ParameterType = [ReturnTypeForString (), ReturnTypeForString ()],
+					ParameterByRef = [false, true],
+					ReturnTypeDelegateProxy = null,
+					ParameterBlockProxy = [null, null],
+				},
+				"[ProtocolMember (IsRequired = true, IsProperty = false, IsStatic = false, Name = \"MyMethod\", Selector = \"completeRequestReturningItems:completionHandler:\", ReturnType = typeof (int), ParameterType = new Type [] { typeof (string), typeof (string) }, ParameterByRef = new bool [] { false, true }, ParameterBlockProxy = new Type? [] { null, null })]\n"
+			];
+
+			yield return [
+				new ProtocolMemberData (
+					isRequired: true,
+					isProperty: false,
+					isStatic: false,
+					name: "MyMethod",
+					selector: "completeRequestReturningItems:completionHandler:"
+				) {
+					ReturnType = TypeInfo.Void,
+					ParameterType = [ReturnTypeForString ()],
+					ParameterByRef = [false],
+					ReturnTypeDelegateProxy = null,
+					ParameterBlockProxy = [null],
+					IsVariadic = true,
+				},
+				"[ProtocolMember (IsRequired = true, IsProperty = false, IsStatic = false, Name = \"MyMethod\", Selector = \"completeRequestReturningItems:completionHandler:\", ReturnType = typeof (global::System.void), ParameterType = new Type [] { typeof (string) }, ParameterByRef = new bool [] { false }, ParameterBlockProxy = new Type? [] { null })]\n"
+			];
+
+			yield return [
+				new ProtocolMemberData (
+					isRequired: true,
+					isProperty: false,
+					isStatic: false,
+					name: "MyMethod",
+					selector: "completeRequestReturningItems:completionHandler:"
+				) {
+					ReturnType = ReturnTypeForAction (),
+					ParameterType = [ReturnTypeForString ()],
+					ParameterByRef = [false],
+					ReturnTypeDelegateProxy = TypeInfo.CreateDelegateProxy (ReturnTypeForAction ()),
+					ParameterBlockProxy = [null],
+				},
+				"[ProtocolMember (IsRequired = true, IsProperty = false, IsStatic = false, Name = \"MyMethod\", Selector = \"completeRequestReturningItems:completionHandler:\", ReturnType = typeof (global::System.Action), ParameterType = new Type [] { typeof (string) }, ParameterByRef = new bool [] { false }, ReturnTypeDelegateProxy = typeof (global::ObjCRuntime.Trampolines.SDAction), ParameterBlockProxy = new Type? [] { null })]\n"
+			];
+
+			yield return [
+				new ProtocolMemberData (
+					isRequired: true,
+					isProperty: false,
+					isStatic: false,
+					name: "MyMethod",
+					selector: "completeRequestReturningItems:completionHandler:"
+				) {
+					ReturnType = ReturnTypeForInt (),
+					ParameterType = [ReturnTypeForString (), ReturnTypeForAction ()],
+					ParameterByRef = [false, false],
+					ReturnTypeDelegateProxy = null,
+					ParameterBlockProxy = [null, TypeInfo.CreateDelegateProxy (ReturnTypeForAction ())],
+				},
+				"[ProtocolMember (IsRequired = true, IsProperty = false, IsStatic = false, Name = \"MyMethod\", Selector = \"completeRequestReturningItems:completionHandler:\", ReturnType = typeof (int), ParameterType = new Type [] { typeof (string), typeof (global::System.Action) }, ParameterByRef = new bool [] { false, false }, ParameterBlockProxy = new Type? [] { null, typeof (global::ObjCRuntime.Trampolines.SDAction) })]\n"
+			];
+
+			yield return [
+				new ProtocolMemberData (
+					isRequired: false,
+					isProperty: false,
+					isStatic: false,
+					name: "MyMethod",
+					selector: "completeRequestReturningItems:completionHandler:"
+				) {
+					ReturnType = TypeInfo.Void,
+					ParameterType = [ReturnTypeForString ()],
+					ParameterByRef = [false],
+					ReturnTypeDelegateProxy = null,
+					ParameterBlockProxy = [null],
+					IsVariadic = false,
+				},
+				"[ProtocolMember (IsRequired = false, IsProperty = false, IsStatic = false, Name = \"MyMethod\", Selector = \"completeRequestReturningItems:completionHandler:\", ReturnType = typeof (global::System.void), ParameterType = new Type [] { typeof (string) }, ParameterByRef = new bool [] { false }, ParameterBlockProxy = new Type? [] { null })]\n"
+			];
+		}
+	}
+
+	[Theory]
+	[MemberData (nameof (AppendProtocolMemberDataTestData))]
+	void AppendProtocolMemberDataTest (ProtocolMemberData protocolMemberData, string expectedString)
+	{
+		var block = new TabbedStringBuilder (sb);
+		block.AppendProtocolMemberData (protocolMemberData);
 		var result = block.ToCode ();
 		Assert.Equal (expectedString, result);
 	}

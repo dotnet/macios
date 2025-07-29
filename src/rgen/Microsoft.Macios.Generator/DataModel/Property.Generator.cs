@@ -138,6 +138,11 @@ readonly partial struct Property {
 	/// </summary>
 	public bool IsWeakDelegate => IsProperty && ExportPropertyData.Value.Flags.HasFlag (ObjCBindings.Property.WeakDelegate);
 
+	/// <summary>
+	/// States if a property is optional in a protocol definition.
+	/// </summary>
+	public bool IsOptional => IsProperty && ExportPropertyData.Value.Flags.HasFlag (ObjCBindings.Property.Optional);
+
 	readonly bool? needsBackingField = null;
 	/// <summary>
 	/// States if the property, when generated, needs a backing field.

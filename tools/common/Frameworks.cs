@@ -589,6 +589,8 @@ public class Frameworks : Dictionary<string, Framework> {
 					{ "BackgroundAssets", "BackgroundAssets", 18, 4 },
 					{ "MetalFX", "MetalFX", new Version (18, 4), NotAvailableInSimulator },
 					{ "SecurityUI", "SecurityUI", 18, 4 },
+
+					{ "AVRouting", "AVRouting", 26, 0 },
 				};
 			}
 			return tvos_frameworks;

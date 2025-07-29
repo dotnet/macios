@@ -2205,6 +2205,7 @@ TVOS_FRAMEWORKS =           \
 	AppTrackingTransparency \
 	AudioToolbox            \
 	AudioUnit               \
+	AVRouting               \
 	BackgroundAssets        \
 	BackgroundTasks         \
 	BrowserEngineKit        \

@@ -112,7 +112,7 @@ namespace ObjCBindings {
 		Async = 1 << 13,
 
 		/// <summary>
-		/// Use this flag on a method to mark it as optional in a protocol defintion.
+		/// Use this flag on a method to mark it as optional in a protocol definition.
 		/// </summary>
 		Optional = 1 << 14,
 

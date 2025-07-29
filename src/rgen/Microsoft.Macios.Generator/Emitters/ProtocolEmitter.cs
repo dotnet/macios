@@ -24,7 +24,7 @@ namespace Microsoft.Macios.Generator.Emitters;
 class ProtocolEmitter : ICodeEmitter {
 	/// <inheritdoc />
 	public string GetSymbolName (in Binding binding) => binding.Name;
-	
+
 	/// <inheritdoc />
 	public IEnumerable<string> UsingStatements => [];
 
@@ -48,7 +48,7 @@ $@"static {bindingContext.Changes.Name} ()
 }}
 ");
 	}
-	
+
 	/// <summary>
 	/// Gets the properties from the binding context and their corresponding extension methods.
 	/// Returns a collection of tuples containing the property and its optional getter/setter methods.
@@ -61,13 +61,13 @@ $@"static {bindingContext.Changes.Name} ()
 		// member data and later the extension methods.
 		var propertiesBucket = ImmutableArray.CreateBuilder<(Property Property, Method? Getter, Method? Setter)> (bindingContext.Changes.Properties.Length);
 		foreach (var property in bindingContext.Changes.Properties.OrderBy (p => p.Name)) {
-			var (getter, setter) = property.ToExtensionMethods (new(bindingContext.Changes.Name, SpecialType.None));
+			var (getter, setter) = property.ToExtensionMethods (new (bindingContext.Changes.Name, SpecialType.None));
 			propertiesBucket.Add ((property, getter, setter));
 		}
-		var properties = propertiesBucket.ToImmutable();
+		var properties = propertiesBucket.ToImmutable ();
 		return properties;
 	}
-	
+
 	/// <inheritdoc />
 	public bool TryEmit (in BindingContext bindingContext, [NotNullWhen (false)] out ImmutableArray<Diagnostic>? diagnostics)
 	{
@@ -80,7 +80,7 @@ $@"static {bindingContext.Changes.Name} ()
 				bindingContext.Changes.FullyQualifiedSymbol)];
 			return false;
 		}
-		
+
 		var bindingData = (BindingTypeData<Protocol>) bindingContext.Changes.BindingInfo;
 		// namespace declaration
 		this.EmitNamespace (bindingContext);
@@ -88,29 +88,29 @@ $@"static {bindingContext.Changes.Name} ()
 		using (var _ = this.EmitOuterClasses (bindingContext, out var builder)) {
 			// append the class availability, this will add the necessary attributes to the class
 			builder.AppendMemberAvailability (bindingContext.Changes.SymbolAvailability);
-			
+
 			// Protocol registration
-			var protocolName = bindingData.Name ?? bindingContext.Changes.Name[1..];
+			var protocolName = bindingData.Name ?? bindingContext.Changes.Name [1..];
 			builder.AppendProtocolAttribute (protocolName, Nomenclator.GetProtocolWrapperName (protocolName));
-			
+
 			// we need to collect the properties extension methods, we do that with a helper method
 			// that will return the properties and their getters/setters.
 			var properties = GetProperties (bindingContext);
-			
+
 			// append the properties to the protocol member data
 			foreach (var (property, getter, setter) in properties) {
 				var protocolMember = new ProtocolMemberData (property, getter, setter);
 				builder.AppendProtocolMemberData (protocolMember);
 			}
-			
+
 			var modifiers = $"{string.Join (' ', bindingContext.Changes.Modifiers)} ";
 			// class declaration, the analyzer should ensure that the class is static, otherwise it will fail to compile with an error.
 			using (var interfaceBlock = builder.CreateBlock (
-				       $"{(string.IsNullOrWhiteSpace (modifiers) ? string.Empty : modifiers)}interface {bindingContext.Changes.Name} : INativeObject, IDisposable",
-				       true)) {
+					   $"{(string.IsNullOrWhiteSpace (modifiers) ? string.Empty : modifiers)}interface {bindingContext.Changes.Name} : INativeObject, IDisposable",
+					   true)) {
 				// space for readability
 				interfaceBlock.WriteLine ();
-				
+
 				// emit static constructor
 				EmitDefaultConstructors (in bindingContext, interfaceBlock);
 			}

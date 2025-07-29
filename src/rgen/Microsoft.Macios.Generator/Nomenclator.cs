@@ -247,7 +247,7 @@ static class Nomenclator {
 	/// </summary>
 	/// <returns>The name of the TaskCompletionSource variable.</returns>
 	public static string GetTaskCompletionSourceName () => "_tcs";
-	
+
 	/// <summary>
 	/// Generates the name for a protocol wrapper class.
 	/// The wrapper name is created by appending 'Wrapper' to the protocol name,

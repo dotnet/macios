@@ -13,7 +13,7 @@ namespace Microsoft.Macios.Generator.DataModel;
 
 [StructLayout (LayoutKind.Auto)]
 readonly partial struct Method : IEquatable<Method> {
-	
+
 	/// <summary>
 	/// The initialization state of the struct.
 	/// </summary>

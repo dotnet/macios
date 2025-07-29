@@ -112,7 +112,7 @@ readonly struct BindingInfo : IEquatable<BindingInfo> {
 		bindingType = BindingType.StrongDictionary;
 		strongDictionaryData = data;
 	}
-	
+
 	/// <summary>
 	/// Initializes a new instance of the <see cref="BindingInfo"/> struct for a strong dictionary keys binding.
 	/// </summary>
@@ -200,7 +200,7 @@ readonly struct BindingInfo : IEquatable<BindingInfo> {
 			throw new InvalidCastException ($"Invalid cast to ObjCBindings.StrongDictionary for binding type {info.BindingType}");
 		return info.strongDictionaryData;
 	}
-	
+
 	/// <summary>
 	/// Implicitly converts a <see cref="BindingInfo"/> to a <see cref="BindingTypeData{T}"/> for a strong dictionary keys.
 	/// </summary>

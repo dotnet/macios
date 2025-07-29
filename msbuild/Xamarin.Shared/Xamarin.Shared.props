@@ -226,6 +226,19 @@ Copyright (C) 2020 Microsoft. All rights reserved.
 		<_NativeExecutableName Condition="'$(_NativeExecutableName)' == ''">$(AssemblyName)</_NativeExecutableName>
 	</PropertyGroup>
 
+	<PropertyGroup Condition="'$(EnableDiagnostics)' == 'true' And '$(DiagnosticConfiguration)' == ''">
+		<DiagnosticAddress Condition="'$(DiagnosticAddress)' == ''">127.0.0.1</DiagnosticAddress>
+		<DiagnosticPort Condition="'$(DiagnosticPort)' == ''">9000</DiagnosticPort>
+		<DiagnosticSuspend Condition="'$(DiagnosticSuspend)' == ''">true</DiagnosticSuspend>
+		<DiagnosticListenMode Condition="'$(DiagnosticListenMode)' == ''">connect</DiagnosticListenMode>
+		<DiagnosticConfiguration>$(DiagnosticAddress):$(DiagnosticPort),$(DiagnosticListenMode)</DiagnosticConfiguration>
+		<DiagnosticConfiguration Condition="'$(DiagnosticSuspend)' == 'true'">$(DiagnosticConfiguration),suspend</DiagnosticConfiguration>
+		<DiagnosticConfiguration Condition="'$(DiagnosticSuspend)' == 'false'">$(DiagnosticConfiguration),nosuspend</DiagnosticConfiguration>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(EnableDiagnostics)' == 'true' And '$(DiagnosticConfiguration)' != '' And '$(DiagnosticConfiguration)' != 'disable'">
+		<AppBundleExtraOptions>$(AppBundleExtraOptions) --setenv=DOTNET_DiagnosticPorts=$(DiagnosticConfiguration)</AppBundleExtraOptions>
+	</PropertyGroup>
+
 	<PropertyGroup Condition="'$(IsBindingProject)' == 'true'">
 		<GeneratedSourcesDir Condition="'$(GeneratedSourcesDir)' == ''">$(IntermediateOutputPath)$(_PlatformName)</GeneratedSourcesDir>
 		<GeneratedSourcesDir Condition="'$(GeneratedSourcesDir)' != '' and !HasTrailingSlash ('$(GeneratedSourcesDir)')">$(GeneratedSourcesDir)\</GeneratedSourcesDir>

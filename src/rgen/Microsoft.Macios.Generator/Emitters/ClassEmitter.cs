@@ -152,7 +152,7 @@ $@"if (IsDirectBinding) {{
 
 			// we expect to always at least have a getter
 			var getter = property.GetAccessor (AccessorKind.Getter);
-			if (getter is null)
+			if (getter.IsNullOrDefault)
 				continue;
 
 			// add backing variable for the property if it is needed
@@ -168,7 +168,7 @@ $@"if (IsDirectBinding) {{
 
 			using (var propertyBlock = classBlock.CreateBlock (property.ToDeclaration ().ToString (), block: true)) {
 				// be very verbose with the availability, makes the life easier to the dotnet analyzer
-				propertyBlock.AppendMemberAvailability (getter.Value.SymbolAvailability);
+				propertyBlock.AppendMemberAvailability (getter.SymbolAvailability);
 				// if we deal with a delegate, include the attr:
 				// [return: DelegateProxy (typeof ({staticBridge}))]
 				if (property.ReturnType.IsDelegate)
@@ -202,12 +202,12 @@ if (IsDirectBinding) {{
 				}
 
 				var setter = property.GetAccessor (AccessorKind.Setter);
-				if (setter is null || invocations.Setter is null)
+				if (setter.IsNullOrDefault || invocations.Setter is null)
 					// we are done with the current property
 					continue;
 
 				propertyBlock.WriteLine (); // add space between getter and setter since we have the attrs
-				propertyBlock.AppendMemberAvailability (setter.Value.SymbolAvailability);
+				propertyBlock.AppendMemberAvailability (setter.SymbolAvailability);
 				// if we deal with a delegate, include the attr:
 				// [param: BlockProxy (typeof ({nativeInvoker}))]
 				if (property.ReturnType.IsDelegate)

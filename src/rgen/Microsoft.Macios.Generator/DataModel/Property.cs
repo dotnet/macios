@@ -103,14 +103,14 @@ readonly partial struct Property : IEquatable<Property> {
 
 	public Parameter ValueParameter { get; private init; }
 
-	public Accessor? GetAccessor (AccessorKind accessorKind)
+	public Accessor GetAccessor (AccessorKind accessorKind)
 	{
 		// careful, do not use FirstOrDefault from LINQ because we are using structs!
 		foreach (var accessor in Accessors) {
 			if (accessor.Kind == accessorKind)
 				return accessor;
 		}
-		return null;
+		return Accessor.Default;
 	}
 
 	bool CoreEquals (Property other)

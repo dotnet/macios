@@ -324,13 +324,13 @@ readonly partial struct Property {
 
 		var getter = GetAccessor (AccessorKind.Getter);
 		Method? getterMethod = null;
-		if (getter is not null)
+		if (!getter.IsNullOrDefault)
 			getterMethod = new Method (
 				type: typeInfo.FullyQualifiedName,
 				name: $"_Get{Name}",
 				returnType: ReturnType,
-				symbolAvailability: getter.Value.SymbolAvailability,
-				exportMethodData: new (getter.Value.GetSelector (this)),
+				symbolAvailability: getter.SymbolAvailability,
+				exportMethodData: new (getter.GetSelector (this)),
 				attributes: [],
 				modifiers: [Token (SyntaxKind.InternalKeyword), Token (SyntaxKind.StaticKeyword)],
 				parameters: [thisParameter]) {
@@ -339,7 +339,7 @@ readonly partial struct Property {
 
 		var setter = GetAccessor (AccessorKind.Setter);
 		Method? setterMethod = null;
-		if (setter is not null) {
+		if (!setter.IsNullOrDefault) {
 			// we need a second parameter for the setter
 			var valueParameter = new Parameter (1, ReturnType, "value") {
 				BindAs = BindAs // parameter bindas is the same as the property bindas
@@ -348,8 +348,8 @@ readonly partial struct Property {
 				type: typeInfo.FullyQualifiedName,
 				name: $"_Set{Name}",
 				returnType: TypeInfo.Void,
-				symbolAvailability: setter.Value.SymbolAvailability,
-				exportMethodData: new (setter.Value.GetSelector (this)),
+				symbolAvailability: setter.SymbolAvailability,
+				exportMethodData: new (setter.GetSelector (this)),
 				attributes: [],
 				modifiers: [Token (SyntaxKind.InternalKeyword), Token (SyntaxKind.StaticKeyword)],
 				parameters: [thisParameter, valueParameter]);

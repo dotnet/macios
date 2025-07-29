@@ -50,8 +50,8 @@ static class ClassEmitterExtensions {
 				// ignore fields
 				continue;
 			var getter = property.GetAccessor (AccessorKind.Getter);
-			if (getter is not null) {
-				var selector = getter.Value.GetSelector (property)!;
+			if (!getter.IsNullOrDefault) {
+				var selector = getter.GetSelector (property)!;
 				var selectorName = selector.GetSelectorFieldName ();
 				if (bindingContext.SelectorNames.TryAdd (selector, selectorName)) {
 					EmitField (selector, selectorName);
@@ -59,8 +59,8 @@ static class ClassEmitterExtensions {
 			}
 
 			var setter = property.GetAccessor (AccessorKind.Setter);
-			if (setter is not null) {
-				var selector = setter.Value.GetSelector (property)!;
+			if (!setter.IsNullOrDefault) {
+				var selector = setter.GetSelector (property)!;
 				var selectorName = selector.GetSelectorFieldName ();
 				if (bindingContext.SelectorNames.TryAdd (selector, selectorName)) {
 					EmitField (selector, selectorName);
@@ -242,7 +242,7 @@ return {tcsName}.Task;
 			classBlock.WriteLine ();
 			// a field should always have a getter, if it does not, we do not generate the property
 			var getter = property.GetAccessor (AccessorKind.Getter);
-			if (getter is null)
+			if (getter.IsNullOrDefault)
 				continue;
 
 			// provide a backing variable for the property if and only if we are dealing with a reference type
@@ -266,7 +266,7 @@ return {tcsName}.Task;
 				var backingField = property.BackingField;
 
 				// be very verbose with the availability, makes the life easier to the dotnet analyzer
-				propertyBlock.AppendMemberAvailability (getter.Value.SymbolAvailability);
+				propertyBlock.AppendMemberAvailability (getter.SymbolAvailability);
 				using (var getterBlock = propertyBlock.CreateBlock ("get", block: true)) {
 					// fields with a reference type have a backing fields, while value types do not
 					if (property.IsReferenceType) {
@@ -282,12 +282,12 @@ return {backingField};
 				}
 
 				var setter = property.GetAccessor (AccessorKind.Setter);
-				if (setter is null)
+				if (setter.IsNullOrDefault)
 					// we are done with the current property
 					continue;
 
 				propertyBlock.WriteLine (); // add space between getter and setter since we have the attrs
-				propertyBlock.AppendMemberAvailability (setter.Value.SymbolAvailability);
+				propertyBlock.AppendMemberAvailability (setter.SymbolAvailability);
 				using (var setterBlock = propertyBlock.CreateBlock ("set", block: true)) {
 					if (property.IsReferenceType) {
 						// set the backing field

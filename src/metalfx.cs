@@ -170,8 +170,7 @@ namespace MetalFX {
 
 	[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0), TV (26, 0)]
 	[BaseType (typeof (NSObject))]
-	interface MTLFXFrameInterpolatorDescriptor : NSCopying
-	{
+	interface MTLFXFrameInterpolatorDescriptor : NSCopying {
 		[Export ("colorTextureFormat", ArgumentSemantic.Assign)]
 		MTLPixelFormat ColorTextureFormat { get; set; }
 
@@ -221,12 +220,11 @@ namespace MetalFX {
 		bool SupportsDevice (IMTLDevice device);
 	}
 
-	interface IMTLFXFrameInterpolatorBase {}
+	interface IMTLFXFrameInterpolatorBase { }
 
 	[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0), TV (26, 0)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
-	interface MTLFXFrameInterpolatorBase
-	{
+	interface MTLFXFrameInterpolatorBase {
 		[Abstract]
 		[Export ("colorTextureUsage")]
 		MTLTextureUsage ColorTextureUsage { get; }
@@ -360,56 +358,51 @@ namespace MetalFX {
 		bool DepthReversed { [Bind ("isDepthReversed")] get; set; }
 	}
 
-	interface IMTLFXFrameInterpolator {}
+	interface IMTLFXFrameInterpolator { }
 
 	[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0), TV (26, 0)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
-	interface MTLFXFrameInterpolator : MTLFXFrameInterpolatorBase
-	{
+	interface MTLFXFrameInterpolator : MTLFXFrameInterpolatorBase {
 		[Abstract]
 		[Export ("encodeToCommandBuffer:")]
 		void Encode (IMTLCommandBuffer commandBuffer);
 	}
 
-	interface IMTL4FXSpatialScaler {}
+	interface IMTL4FXSpatialScaler { }
 
 	[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0), TV (26, 0)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
-	interface MTL4FXSpatialScaler : MTLFXSpatialScalerBase
-	{
+	interface MTL4FXSpatialScaler : MTLFXSpatialScalerBase {
 		[Abstract]
 		[Export ("encodeToCommandBuffer:")]
 		void Encode (IMTL4CommandBuffer commandBuffer);
 	}
 
-	interface IMTL4FXTemporalScaler {}
+	interface IMTL4FXTemporalScaler { }
 
 	[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0), TV (26, 0)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
-	interface MTL4FXTemporalScaler : MTLFXTemporalScalerBase
-	{
+	interface MTL4FXTemporalScaler : MTLFXTemporalScalerBase {
 		[Abstract]
 		[Export ("encodeToCommandBuffer:")]
 		void Encode (IMTL4CommandBuffer commandBuffer);
 	}
 
-	interface IMTL4FXTemporalDenoisedScaler {}
+	interface IMTL4FXTemporalDenoisedScaler { }
 
 	[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0), TV (26, 0)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
-	interface MTL4FXTemporalDenoisedScaler : MTLFXTemporalDenoisedScalerBase
-	{
+	interface MTL4FXTemporalDenoisedScaler : MTLFXTemporalDenoisedScalerBase {
 		[Abstract]
 		[Export ("encodeToCommandBuffer:")]
 		void Encode (IMTL4CommandBuffer commandBuffer);
 	}
 
-	interface IMTL4FXFrameInterpolator {}
+	interface IMTL4FXFrameInterpolator { }
 
 	[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0), TV (26, 0)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
-	interface MTL4FXFrameInterpolator : MTLFXFrameInterpolatorBase
-	{
+	interface MTL4FXFrameInterpolator : MTLFXFrameInterpolatorBase {
 		[Abstract]
 		[Export ("encodeToCommandBuffer:")]
 		void Encode (IMTL4CommandBuffer commandBuffer);
@@ -417,8 +410,7 @@ namespace MetalFX {
 
 	[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0), TV (26, 0)]
 	[BaseType (typeof (NSObject))]
-	interface MTLFXTemporalDenoisedScalerDescriptor : NSCopying
-	{
+	interface MTLFXTemporalDenoisedScalerDescriptor : NSCopying {
 		[Export ("colorTextureFormat", ArgumentSemantic.Assign)]
 		MTLPixelFormat ColorTextureFormat { get; set; }
 
@@ -512,12 +504,11 @@ namespace MetalFX {
 		bool SupportsDevice (IMTLDevice device);
 	}
 
-	interface IMTLFXTemporalDenoisedScalerBase {}
+	interface IMTLFXTemporalDenoisedScalerBase { }
 
 	[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0), TV (26, 0)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
-	interface MTLFXTemporalDenoisedScalerBase : MTLFXFrameInterpolatableScaler
-	{
+	interface MTLFXTemporalDenoisedScalerBase : MTLFXFrameInterpolatableScaler {
 		[Abstract]
 		[Export ("colorTextureUsage")]
 		MTLTextureUsage ColorTextureUsage { get; }
@@ -720,7 +711,8 @@ namespace MetalFX {
 
 		[Abstract]
 		[Export ("worldToViewMatrix", ArgumentSemantic.Assign)]
-		/* simd_float4x4 */ NMatrix4 WorldToViewMatrix {
+		/* simd_float4x4 */
+		NMatrix4 WorldToViewMatrix {
 			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 			get;
 			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
@@ -729,7 +721,8 @@ namespace MetalFX {
 
 		[Abstract]
 		[Export ("viewToClipMatrix", ArgumentSemantic.Assign)]
-		/* simd_float4x4 */ NMatrix4 ViewToClipMatrix {
+		/* simd_float4x4 */
+		NMatrix4 ViewToClipMatrix {
 			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 			get;
 			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
@@ -741,23 +734,21 @@ namespace MetalFX {
 		IMTLFence Fence { get; set; }
 	}
 
-	interface IMTLFXTemporalDenoisedScaler {}
+	interface IMTLFXTemporalDenoisedScaler { }
 
 	[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0), TV (26, 0)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
-	interface MTLFXTemporalDenoisedScaler : MTLFXTemporalDenoisedScalerBase
-	{
+	interface MTLFXTemporalDenoisedScaler : MTLFXTemporalDenoisedScalerBase {
 		[Abstract]
 		[Export ("encodeToCommandBuffer:")]
 		void Encode (IMTLCommandBuffer commandBuffer);
 	}
 
-	interface IMTLFXTemporalScalerBase {}
+	interface IMTLFXTemporalScalerBase { }
 
 	[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0), TV (26, 0)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
-	interface MTLFXTemporalScalerBase : MTLFXFrameInterpolatableScaler
-	{
+	interface MTLFXTemporalScalerBase : MTLFXFrameInterpolatableScaler {
 		[Abstract]
 		[Export ("colorTextureUsage")]
 		MTLTextureUsage ColorTextureUsage { get; }
@@ -887,18 +878,16 @@ namespace MetalFX {
 		IMTLFence Fence { get; set; }
 	}
 
-	interface IMTLFXFrameInterpolatableScaler {}
+	interface IMTLFXFrameInterpolatableScaler { }
 
 	[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0), TV (26, 0)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
-	interface MTLFXFrameInterpolatableScaler
-	{
+	interface MTLFXFrameInterpolatableScaler {
 	}
 
 	[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0), TV (26, 0)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
-	interface MTLFXSpatialScalerBase
-	{
+	interface MTLFXSpatialScalerBase {
 		[Abstract]
 		[Export ("colorTextureUsage")]
 		MTLTextureUsage ColorTextureUsage { get; }

@@ -340,6 +340,22 @@ Because we are using a raw string  we expected:
 	[InlineData (0, "")]
 	[InlineData (1, "\t")]
 	[InlineData (5, "\t\t\t\t\t")]
+	public void AppendRequiredMemberAttributeTests (int tabCount, string expectedTabs)
+	{
+		var expected = $"{expectedTabs}[global::Foundation.RequiredMember]\n";
+		string result;
+		using (var block = new TabbedStringBuilder (sb, tabCount)) {
+			block.AppendRequiredMemberAttribute ();
+			result = block.ToCode ();
+		}
+
+		Assert.Equal (expected, result);
+	}
+
+	[Theory]
+	[InlineData (0, "")]
+	[InlineData (1, "\t")]
+	[InlineData (5, "\t\t\t\t\t")]
 	public void CreateEmptyBlockTest (int tabCount, string expectedTabs)
 	{
 		var blockContent = "// the test";
@@ -618,7 +634,7 @@ Because we are using a raw string  we expected:
 					ReturnTypeDelegateProxy = null,
 					ParameterBlockProxy = [null],
 				},
-				"[ProtocolMember (IsRequired = true, IsProperty = false, IsStatic = false, Name = \"MyMethod\", Selector = \"completeRequestReturningItems:completionHandler:\", ReturnType = typeof (global::System.void), ParameterType = new Type [] { typeof (string) }, ParameterByRef = new bool [] { false }, ParameterBlockProxy = new Type? [] { null })]\n"
+				"[ProtocolMember (IsRequired = true, IsProperty = false, IsStatic = false, Name = \"MyMethod\", Selector = \"completeRequestReturningItems:completionHandler:\", ReturnType = typeof (void), ParameterType = new Type [] { typeof (string) }, ParameterByRef = new bool [] { false }, ParameterBlockProxy = new Type? [] { null })]\n"
 			];
 
 			yield return [
@@ -635,7 +651,7 @@ Because we are using a raw string  we expected:
 					ReturnTypeDelegateProxy = null,
 					ParameterBlockProxy = [null],
 				},
-				"[ProtocolMember (IsRequired = true, IsProperty = false, IsStatic = true, Name = \"MyMethod\", Selector = \"completeRequestReturningItems:completionHandler:\", ReturnType = typeof (global::System.void), ParameterType = new Type [] { typeof (string) }, ParameterByRef = new bool [] { false }, ParameterBlockProxy = new Type? [] { null })]\n"
+				"[ProtocolMember (IsRequired = true, IsProperty = false, IsStatic = true, Name = \"MyMethod\", Selector = \"completeRequestReturningItems:completionHandler:\", ReturnType = typeof (void), ParameterType = new Type [] { typeof (string) }, ParameterByRef = new bool [] { false }, ParameterBlockProxy = new Type? [] { null })]\n"
 			];
 
 			yield return [
@@ -721,7 +737,7 @@ Because we are using a raw string  we expected:
 					ParameterBlockProxy = [null],
 					IsVariadic = true,
 				},
-				"[ProtocolMember (IsRequired = true, IsProperty = false, IsStatic = false, Name = \"MyMethod\", Selector = \"completeRequestReturningItems:completionHandler:\", ReturnType = typeof (global::System.void), ParameterType = new Type [] { typeof (string) }, ParameterByRef = new bool [] { false }, ParameterBlockProxy = new Type? [] { null })]\n"
+				"[ProtocolMember (IsRequired = true, IsProperty = false, IsStatic = false, Name = \"MyMethod\", Selector = \"completeRequestReturningItems:completionHandler:\", ReturnType = typeof (void), ParameterType = new Type [] { typeof (string) }, ParameterByRef = new bool [] { false }, ParameterBlockProxy = new Type? [] { null })]\n"
 			];
 
 			yield return [
@@ -773,7 +789,7 @@ Because we are using a raw string  we expected:
 					ParameterBlockProxy = [null],
 					IsVariadic = false,
 				},
-				"[ProtocolMember (IsRequired = false, IsProperty = false, IsStatic = false, Name = \"MyMethod\", Selector = \"completeRequestReturningItems:completionHandler:\", ReturnType = typeof (global::System.void), ParameterType = new Type [] { typeof (string) }, ParameterByRef = new bool [] { false }, ParameterBlockProxy = new Type? [] { null })]\n"
+				"[ProtocolMember (IsRequired = false, IsProperty = false, IsStatic = false, Name = \"MyMethod\", Selector = \"completeRequestReturningItems:completionHandler:\", ReturnType = typeof (void), ParameterType = new Type [] { typeof (string) }, ParameterByRef = new bool [] { false }, ParameterBlockProxy = new Type? [] { null })]\n"
 			];
 		}
 	}

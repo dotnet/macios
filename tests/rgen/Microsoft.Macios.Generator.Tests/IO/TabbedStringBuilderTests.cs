@@ -310,10 +310,26 @@ Because we are using a raw string  we expected:
 	[InlineData ("nameof(MyProperty)", 5, "\t\t\t\t\t")]
 	public void AppendDynamicDependencyAttributeTests (string member, int tabCount, string expectedTabs)
 	{
-		var expected = $"{expectedTabs}[DynamicDependency ({member})]\n";
+		var expected = $"{expectedTabs}[DynamicDependency (\"{member}\")]\n";
 		string result;
 		using (var block = new TabbedStringBuilder (sb, tabCount)) {
 			block.AppendDynamicDependencyAttribute (member);
+			result = block.ToCode ();
+		}
+
+		Assert.Equal (expected, result);
+	}
+
+	[Theory]
+	[InlineData ("MyProtocol", "MyProtocolWrapper", 0, "")]
+	[InlineData ("AnotherProtocol", "AnotherProtocolWrapper", 1, "\t")]
+	[InlineData ("ThirdProtocol", "ThirdProtocolWrapper", 5, "\t\t\t\t\t")]
+	public void AppendProtocolAttributeTests (string name, string wrapperName, int tabCount, string expectedTabs)
+	{
+		var expected = $"{expectedTabs}[Protocol (Name = \"{name}\", WrapperType = typeof ({wrapperName}))]\n";
+		string result;
+		using (var block = new TabbedStringBuilder (sb, tabCount)) {
+			block.AppendProtocolAttribute (name, wrapperName);
 			result = block.ToCode ();
 		}
 

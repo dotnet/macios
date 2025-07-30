@@ -146,7 +146,7 @@ static class TabbedStringBuilderExtensions {
 		string member)
 	{
 
-		self.WriteLine ($"[DynamicDependency ({member})]");
+		self.WriteLine ($"[DynamicDependency (\"{member}\")]");
 		return self;
 	}
 
@@ -205,5 +205,20 @@ static class TabbedStringBuilderExtensions {
 		{
 			return str is null ? "null" : $"\"{str}\"";
 		}
+	}
+
+	/// <summary>
+	/// Appends a `[Protocol]` attribute to the current writer.
+	/// This attribute is used to mark an interface as representing an Objective-C protocol.
+	/// </summary>
+	/// <param name="self">A tabbed string writer.</param>
+	/// <param name="name">The name of the Objective-C protocol.</param>
+	/// <param name="wrapperName">The name of the wrapper type for the protocol.</param>
+	/// <returns>The current writer.</returns>
+	public static TabbedWriter<StringWriter> AppendProtocolAttribute (this TabbedWriter<StringWriter> self,
+		string name, string wrapperName)
+	{
+		self.WriteLine ($"[Protocol (Name = \"{name}\", WrapperType = typeof ({wrapperName}))]");
+		return self;
 	}
 }

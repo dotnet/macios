@@ -18,7 +18,7 @@ readonly struct FieldInfo<T> : IEquatable<FieldInfo<T>> where T : Enum {
 	StructState State { get; init; } = StructState.Default;
 
 	/// <summary>
-	/// Gets the default, uninitialized instance of <see cref="TypeInfo"/>.
+	/// Gets the default, uninitialized instance of <see cref="FieldInfo{T}"/>.
 	/// </summary>
 	public static FieldInfo<T> Default { get; } = new (StructState.Default);
 

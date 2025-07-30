@@ -14,7 +14,7 @@ static class EmitterFactory {
 	static readonly Dictionary<BindingType, ICodeEmitter> emitters = new () {
 		{ BindingType.Class, new ClassEmitter () },
 		{ BindingType.SmartEnum, new EnumEmitter () },
-		{ BindingType.Protocol, new InterfaceEmitter () },
+		{ BindingType.Protocol, new ProtocolEmitter () },
 		{ BindingType.Category, new CategoryEmitter () },
 		{ BindingType.StrongDictionary, new StrongDictionaryEmitter () },
 		{ BindingType.StrongDictionaryKeys, new StrongDictionaryKeysEmitter () }

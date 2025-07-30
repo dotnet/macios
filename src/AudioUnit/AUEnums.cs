@@ -1479,7 +1479,17 @@ namespace AudioUnit {
 		ScheduledSoundPlayer = 0x7373706C, // 'sspl'
 		/// <summary>To be added.</summary>
 		AudioFilePlayer = 0x6166706C, // 'afpl'
-
+		/// <summary>A light reverb.</summary>
+		/// <remarks>The FourCC value for 'rvb2', for the native constant kAudioUnitSubType_Reverb2.</remarks>
+		Revert2 = 0x72766232, // 'rvb2'
+		/// <summary>An audio unit that can be used to isolate a sound type.</summary>
+		/// <remarks>The FourCC value for 'vois', for the native constant kAudioUnitSubType_AUSoundIsolation.</remarks>
+		[iOS (16, 0), Mac (13, 0), MacCatalyst (16, 0), NoTV]
+		AUSoundIsolation = 0x766f6973, // 'vois'
+		/// <summary>An audio unit that supports AudioMix separate-and-remix.</summary>
+		/// <remarks>The FourCC value for 'amix', for the native constant kAudioUnitSubType_AUAudioMix.</remarks>
+		[iOS (26, 0), Mac (26, 0), MacCatalyst (26, 0), NoTV]
+		AUAudioMix = 0x616d6978, // 'amix'
 #if MONOMAC
 		/// <summary>To be added.</summary>
 		HALOutput = 0x6168616C, // 'ahal'

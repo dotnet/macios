@@ -45,6 +45,9 @@
         <Compile Include="../Microsoft.Macios.Generator/DictionaryComparer.cs" >
             <Link>Generator/DictionaryComparer.cs</Link>
         </Compile>
+        <Compile Include="../Microsoft.Macios.Generator/StructState.cs" >
+            <Link>Generator/StructState.cs</Link>
+        </Compile>
         <Compile Include="../Microsoft.Macios.Generator/Attributes/BindFromData.cs" >
             <Link>Generator/Attributes/BindFromData.cs</Link>
         </Compile>
@@ -71,9 +74,6 @@
         </Compile>
         <Compile Include="../Microsoft.Macios.Generator/Attributes/UnsupportedOSPlatformData.cs" >
             <Link>Generator/Attributes/UnsupportedOSPlatformData.cs</Link>
-        </Compile>
-        <Compile Include="../Microsoft.Macios.Generator/DataModel/StructState.cs" >
-            <Link>DataModel/StructState.cs</Link>
         </Compile>
         <Compile Include="../Microsoft.Macios.Generator/DataModel/AttributeCodeChange.cs" >
             <Link>DataModel/AttributeCodeChange.cs</Link>

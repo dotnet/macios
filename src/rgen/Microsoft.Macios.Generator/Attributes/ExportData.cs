@@ -15,7 +15,7 @@ namespace Microsoft.Macios.Generator.Attributes;
 /// </summary>
 /// <typeparam name="T">The configuration flags used on the exported element.</typeparam>
 readonly struct ExportData<T> : IEquatable<ExportData<T>> where T : Enum {
-	
+
 	/// <summary>
 	/// The initialization state of the struct.
 	/// </summary>

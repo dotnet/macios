@@ -37,7 +37,7 @@ readonly partial struct Event {
 				accessorsBucket.Add (new (
 					accessorKind: kind,
 					symbolAvailability: accessorSymbol.GetSupportedPlatforms (),
-					exportPropertyData: ExportData<ObjCBindings.Property>.Default, 
+					exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 					attributes: accessorAttributeChanges,
 					modifiers: [.. accessorDeclaration.Modifiers]));
 			}

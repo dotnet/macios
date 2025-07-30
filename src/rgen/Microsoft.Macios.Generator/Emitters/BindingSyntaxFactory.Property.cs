@@ -27,8 +27,8 @@ static partial class BindingSyntaxFactory {
 			var getter = property.GetAccessor (AccessorKind.Getter);
 			string? getterMsgSend = null;
 			if (!getter.IsNullOrDefault) {
-				var getterExportData = getter.ExportPropertyData.IsNullOrDefault 
-					? property.ExportPropertyData 
+				var getterExportData = getter.ExportPropertyData.IsNullOrDefault
+					? property.ExportPropertyData
 					: getter.ExportPropertyData;
 				if (!getterExportData.IsNullOrDefault) {
 					getterMsgSend = GetObjCMessageSendMethodName (getterExportData, property.BindAs?.Type ?? property.ReturnType, [],
@@ -44,8 +44,8 @@ static partial class BindingSyntaxFactory {
 				var valueParameter = property.BindAs is null
 					? property.ValueParameter
 					: new Parameter (0, property.BindAs.Value.Type, "value");
-				var setterExportData = setter.ExportPropertyData.IsNullOrDefault 
-					? property.ExportPropertyData 
+				var setterExportData = setter.ExportPropertyData.IsNullOrDefault
+					? property.ExportPropertyData
 					: setter.ExportPropertyData;
 				if (!setterExportData.IsNullOrDefault) {
 					setterMsgSend = GetObjCMessageSendMethodName (setterExportData, TypeInfo.Void,

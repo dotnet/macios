@@ -43,7 +43,7 @@ readonly partial struct Property {
 	/// <summary>
 	/// True if the property represents a Objc property.
 	/// </summary>
-	[MemberNotNullWhen (true, nameof(ExportPropertyData))]
+	[MemberNotNullWhen (true, nameof (ExportPropertyData))]
 	public bool IsProperty => !ExportPropertyData.IsNullOrDefault;
 
 	/// <summary>
@@ -264,7 +264,7 @@ readonly partial struct Property {
 			accessorCodeChanges = [new (
 				accessorKind: AccessorKind.Getter,
 				symbolAvailability: propertySupportedPlatforms,
-				exportPropertyData: ExportData<ObjCBindings.Property>.Default, 
+				exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 				attributes: [],
 				modifiers: [])
 			];

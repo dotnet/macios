@@ -50,6 +50,12 @@ $@"static {bindingContext.Changes.Name} ()
 ");
 	}
 
+	/// <summary>
+	/// Emits the properties for the protocol interface, including their getter and setter methods.
+	/// </summary>
+	/// <param name="context">The binding context containing protocol information.</param>
+	/// <param name="properties">A collection of properties to emit, along with their getter and setter methods.</param>
+	/// <param name="classBlock">The writer for the class block.</param>
 	void EmitProperties (in BindingContext context, in ImmutableArray<(Property Property, Method Getter, Method Setter)> properties, TabbedWriter<StringWriter> classBlock)
 	{
 		var uiThreadCheck = (context.NeedsThreadChecks)

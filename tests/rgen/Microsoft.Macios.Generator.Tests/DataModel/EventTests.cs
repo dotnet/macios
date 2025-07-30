@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
+#pragma warning disable APL0003
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,13 +44,13 @@ public class TestClass {
 						new (
 							accessorKind: AccessorKind.Add,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [],
 							modifiers: []),
 						new (
 							accessorKind: AccessorKind.Remove,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [],
 							modifiers: []
 						),
@@ -82,7 +83,7 @@ public class TestClass {
 						new (
 							accessorKind: AccessorKind.Add,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [],
 							modifiers: []
 						),
@@ -115,14 +116,14 @@ public class TestClass {
 						new (
 							accessorKind: AccessorKind.Add,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [],
 							modifiers: []
 						),
 						new (
 							accessorKind: AccessorKind.Remove,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [],
 							modifiers: [
 								SyntaxFactory.Token (SyntaxKind.InternalKeyword)
@@ -164,14 +165,14 @@ public class TestClass {
 						new (
 							accessorKind: AccessorKind.Add,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [],
 							modifiers: []
 						),
 						new (
 							accessorKind: AccessorKind.Remove,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [],
 							modifiers: [
 								SyntaxFactory.Token (SyntaxKind.InternalKeyword)
@@ -212,7 +213,7 @@ public class TestClass {
 						new (
 							accessorKind: AccessorKind.Add,
 							symbolAvailability: eventAvailabilityBuilder.ToImmutable (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [],
 							modifiers: []
 						),
@@ -259,7 +260,7 @@ public class TestClass {
 						new (
 							accessorKind: AccessorKind.Add,
 							symbolAvailability: accessorAvailabilityBuilder.ToImmutable (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [
 								new ("System.Runtime.Versioning.SupportedOSPlatformAttribute", ["ios17.0"]),
 							],
@@ -268,7 +269,7 @@ public class TestClass {
 						new (
 							accessorKind: AccessorKind.Remove,
 							symbolAvailability: accessorAvailabilityBuilder.ToImmutable (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [
 								new ("System.Runtime.Versioning.SupportedOSPlatformAttribute", ["ios17.0"]),
 							],

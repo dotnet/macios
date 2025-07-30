@@ -51,7 +51,7 @@ public class TestClass {
 						new (
 							accessorKind: AccessorKind.Getter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [],
 							modifiers: []
 						)
@@ -89,7 +89,7 @@ public class TestClass {
 						new (
 							accessorKind: AccessorKind.Getter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [],
 							modifiers: []
 						)
@@ -127,7 +127,7 @@ public class TestClass {
 						new (
 							accessorKind: AccessorKind.Getter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [],
 							modifiers: []
 						)
@@ -209,14 +209,14 @@ public class TestClass {
 						new (
 							accessorKind: AccessorKind.Getter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [],
 							modifiers: []
 						),
 						new (
 							accessorKind: AccessorKind.Setter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [],
 							modifiers: []
 						)
@@ -302,7 +302,7 @@ public class TestClass {
 						new (
 							accessorKind: AccessorKind.Getter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [],
 							modifiers: []
 						),
@@ -332,7 +332,7 @@ public class TestClass {
 						new (
 							accessorKind: AccessorKind.Getter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [],
 							modifiers: []
 						),
@@ -364,14 +364,14 @@ public class TestClass {
 						new (
 							accessorKind: AccessorKind.Getter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [],
 							modifiers: []
 						),
 						new (
 							accessorKind: AccessorKind.Setter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [],
 							modifiers: []
 						),
@@ -404,14 +404,14 @@ public class TestClass {
 						new (
 							accessorKind: AccessorKind.Getter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [],
 							modifiers: []
 						),
 						new (
 							accessorKind: AccessorKind.Setter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [],
 							modifiers: []
 						),
@@ -443,14 +443,14 @@ public class TestClass {
 						new (
 							accessorKind: AccessorKind.Getter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [],
 							modifiers: []
 						),
 						new (
 							accessorKind: AccessorKind.Setter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [],
 							modifiers: [
 								SyntaxFactory.Token (kind: SyntaxKind.InternalKeyword),
@@ -495,14 +495,14 @@ public class TestClass {
 						new (
 							accessorKind: AccessorKind.Getter,
 							symbolAvailability: propertyAvailabilityBuilder.ToImmutable (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [],
 							modifiers: []
 						),
 						new (
 							accessorKind: AccessorKind.Setter,
 							symbolAvailability: propertyAvailabilityBuilder.ToImmutable (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [],
 							modifiers: []
 						),
@@ -546,7 +546,7 @@ public class TestClass {
 						new (
 							accessorKind: AccessorKind.Getter,
 							symbolAvailability: getterAvailabilityBuilder.ToImmutable (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [
 								new (name: "System.Runtime.Versioning.SupportedOSPlatformAttribute", arguments: ["ios17.0"]),
 							],
@@ -555,7 +555,7 @@ public class TestClass {
 						new (
 							accessorKind: AccessorKind.Setter,
 							symbolAvailability: propertyAvailabilityBuilder.ToImmutable (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [],
 							modifiers: []
 						),
@@ -602,7 +602,7 @@ public class TestClass {
 						new (
 							accessorKind: AccessorKind.Getter,
 							symbolAvailability: getterAvailabilityBuilder.ToImmutable (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [
 								new (name: "System.Runtime.Versioning.SupportedOSPlatformAttribute", arguments: ["ios17.0"]),
 							],
@@ -611,7 +611,7 @@ public class TestClass {
 						new (
 							accessorKind: AccessorKind.Setter,
 							symbolAvailability: setterAvailabilityBuilder.ToImmutable (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [
 								new (name: "System.Runtime.Versioning.SupportedOSPlatformAttribute", arguments: ["ios18.0"]),
 							],
@@ -663,7 +663,7 @@ namespace Test {
 						new (
 							accessorKind: AccessorKind.Getter,
 							symbolAvailability: getterAvailabilityBuilder.ToImmutable (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [
 								new (name: "System.Runtime.Versioning.SupportedOSPlatformAttribute", arguments: ["ios17.0"]),
 							],
@@ -672,7 +672,7 @@ namespace Test {
 						new (
 							accessorKind: AccessorKind.Setter,
 							symbolAvailability: setterAvailabilityBuilder.ToImmutable (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [
 								new (name: "System.Runtime.Versioning.SupportedOSPlatformAttribute", arguments: ["ios18.0"]),
 							],
@@ -716,7 +716,7 @@ public class TestClass {
 						new (
 							accessorKind: AccessorKind.Getter,
 							symbolAvailability: getterAvailabilityBuilder.ToImmutable (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [
 								new (name: "System.Runtime.Versioning.SupportedOSPlatformAttribute", arguments: ["ios17.0"]),
 							],
@@ -725,7 +725,7 @@ public class TestClass {
 						new (
 							accessorKind: AccessorKind.Setter,
 							symbolAvailability: propertyAvailabilityBuilder.ToImmutable (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [],
 							modifiers: []
 						),
@@ -768,7 +768,7 @@ public class TestClass {
 						new (
 							accessorKind: AccessorKind.Getter,
 							symbolAvailability: getterAvailabilityBuilder.ToImmutable (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [
 								new (name: "System.Runtime.Versioning.SupportedOSPlatformAttribute", arguments: ["ios17.0"]),
 							],
@@ -777,7 +777,7 @@ public class TestClass {
 						new (
 							accessorKind: AccessorKind.Setter,
 							symbolAvailability: propertyAvailabilityBuilder.ToImmutable (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [],
 							modifiers: []
 						),
@@ -821,7 +821,7 @@ public class TestClass {
 						new (
 							accessorKind: AccessorKind.Getter,
 							symbolAvailability: getterAvailabilityBuilder.ToImmutable (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [
 								new (name: "System.Runtime.Versioning.SupportedOSPlatformAttribute", arguments: ["ios17.0"]),
 							],
@@ -830,7 +830,7 @@ public class TestClass {
 						new (
 							accessorKind: AccessorKind.Setter,
 							symbolAvailability: propertyAvailabilityBuilder.ToImmutable (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [],
 							modifiers: []
 						),
@@ -866,7 +866,7 @@ public class TestClass {
 						new (
 							accessorKind: AccessorKind.Getter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [],
 							modifiers: []
 						)
@@ -907,7 +907,7 @@ public class TestClass {
 						new (
 							accessorKind: AccessorKind.Getter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [],
 							modifiers: []
 						)
@@ -949,7 +949,7 @@ public class TestClass {
 						new (
 							accessorKind: AccessorKind.Getter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [],
 							modifiers: []
 						)
@@ -996,7 +996,7 @@ public class TestClass {
 						new (
 							accessorKind: AccessorKind.Getter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [],
 							modifiers: []
 						)
@@ -1038,7 +1038,7 @@ public class TestClass {
 						new (
 							accessorKind: AccessorKind.Getter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [],
 							modifiers: []
 						)
@@ -1079,7 +1079,7 @@ public class TestClass {
 						new (
 							accessorKind: AccessorKind.Getter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [],
 							modifiers: []
 						)

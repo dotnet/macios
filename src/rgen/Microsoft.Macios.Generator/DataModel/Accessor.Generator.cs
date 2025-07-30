@@ -15,13 +15,13 @@ readonly partial struct Accessor {
 	/// <summary>
 	/// The data of the field attribute used to mark the value as a property binding. 
 	/// </summary>
-	public ExportData<ObjCBindings.Property>? ExportPropertyData { get; init; }
+	public ExportData<ObjCBindings.Property> ExportPropertyData { get; init; } = ExportData<ObjCBindings.Property>.Default;
 
 	/// <summary>
 	/// State if we should marshal native exceptions when generating the accessor.
 	/// </summary>
 	public bool MarshalNativeExceptions
-		=> ExportPropertyData is not null && ExportPropertyData.Value.Flags.HasFlag (ObjCBindings.Property.MarshalNativeExceptions);
+		=> !ExportPropertyData.IsNullOrDefault && ExportPropertyData.Flags.HasFlag (ObjCBindings.Property.MarshalNativeExceptions);
 
 	/// <summary>
 	/// Create a new code change in a property accessor.
@@ -33,7 +33,7 @@ readonly partial struct Accessor {
 	/// <param name="modifiers">The list of visibility modifiers of the accessor.</param>
 	public Accessor (AccessorKind accessorKind,
 		SymbolAvailability symbolAvailability,
-		ExportData<ObjCBindings.Property>? exportPropertyData,
+		ExportData<ObjCBindings.Property> exportPropertyData,
 		ImmutableArray<AttributeCodeChange> attributes,
 		ImmutableArray<SyntaxToken> modifiers) : this (StructState.Initialized)
 	{
@@ -60,13 +60,13 @@ readonly partial struct Accessor {
 		//
 		// * getter: return the property selector.
 		// * setter: use the registrar code (it has the right logic) to get the setter.
-		if (ExportPropertyData is null) {
+		if (ExportPropertyData.IsNullOrDefault) {
 			return Kind == AccessorKind.Getter
-				? associatedProperty.ExportPropertyData.Value.Selector
-				: Registrar.Registrar.CreateSetterSelector (associatedProperty.ExportPropertyData.Value.Selector);
+				? associatedProperty.ExportPropertyData.Selector
+				: Registrar.Registrar.CreateSetterSelector (associatedProperty.ExportPropertyData.Selector);
 		}
 
-		return ExportPropertyData.Value.Selector;
+		return ExportPropertyData.Selector;
 	}
 
 	/// <summary>
@@ -80,9 +80,10 @@ readonly partial struct Accessor {
 	/// <inheritdoc />
 	public override string ToString ()
 	{
+		var exportData = ExportPropertyData.IsNullOrDefault ? "null" : ExportPropertyData.ToString ();
 		var sb = new StringBuilder ($"{{ Kind: {Kind}, ");
 		sb.Append ($"Supported Platforms: {SymbolAvailability}, ");
-		sb.Append ($"ExportData: {ExportPropertyData?.ToString () ?? "null"} Modifiers: [");
+		sb.Append ($"ExportData: {exportData} Modifiers: [");
 		sb.AppendJoin (",", Modifiers.Select (x => x.Text));
 		sb.Append ("], Attributes: [");
 		sb.AppendJoin (", ", Attributes);

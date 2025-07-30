@@ -139,8 +139,7 @@ namespace AVRouting {
 	[TV (26, 0), MacCatalyst (26, 0), NoMac, iOS (26, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface AVRoutingPlaybackArbiter
-	{
+	interface AVRoutingPlaybackArbiter {
 		[Static]
 		[Export ("sharedRoutingPlaybackArbiter")]
 		AVRoutingPlaybackArbiter SharedInstance { get; }
@@ -155,7 +154,7 @@ namespace AVRouting {
 		IAVRoutingPlaybackParticipant PreferredParticipantForExternalPlayback { get; set; }
 	}
 
-	interface IAVRoutingPlaybackParticipant {}
+	interface IAVRoutingPlaybackParticipant { }
 
 	[TV (26, 0), MacCatalyst (26, 0), NoMac, iOS (26, 0)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]

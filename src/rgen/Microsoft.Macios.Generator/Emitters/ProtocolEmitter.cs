@@ -104,7 +104,7 @@ $@"static {bindingContext.Changes.Name} ()
 	/// </summary>
 	/// <param name="bindingContext">The binding context containing the properties.</param>
 	/// <returns>An immutable array of tuples containing properties and their extension methods.</returns>
-	static ImmutableArray<(Property Property, Method Getter, Method Setter)> GetProperties (in BindingContext bindingContext)
+	static ImmutableArray<(Property Property, Method Getter, Method Setter)> CreatePropertyExtensionMethods (in BindingContext bindingContext)
 	{
 		// collect all properties and generate the extension methods, this will be used to generate the protocol
 		// member data and later the extension methods.
@@ -144,7 +144,7 @@ $@"static {bindingContext.Changes.Name} ()
 
 			// we need to collect the properties extension methods, we do that with a helper method
 			// that will return the properties and their getters/setters.
-			var properties = GetProperties (bindingContext);
+			var properties = CreatePropertyExtensionMethods (bindingContext);
 
 			// append the properties to the protocol member data
 			foreach (var (property, getter, setter) in properties) {

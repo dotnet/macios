@@ -233,7 +233,7 @@ Copyright (C) 2020 Microsoft. All rights reserved.
 		<DiagnosticListenMode Condition="'$(DiagnosticListenMode)' == ''">connect</DiagnosticListenMode>
 		<DiagnosticConfiguration>$(DiagnosticAddress):$(DiagnosticPort),$(DiagnosticListenMode)</DiagnosticConfiguration>
 		<DiagnosticConfiguration Condition="'$(DiagnosticSuspend)' == 'true'">$(DiagnosticConfiguration),suspend</DiagnosticConfiguration>
-		<DiagnosticConfiguration Condition="'$(DiagnosticSuspend)' == 'false'">$(DiagnosticConfiguration),nosuspend</DiagnosticConfiguration>
+		<DiagnosticConfiguration Condition="'$(DiagnosticSuspend)' != 'true'">$(DiagnosticConfiguration),nosuspend</DiagnosticConfiguration>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(EnableDiagnostics)' == 'true' And '$(DiagnosticConfiguration)' != '' And '$(DiagnosticConfiguration)' != 'disable'">
 		<AppBundleExtraOptions>$(AppBundleExtraOptions) --setenv=DOTNET_DiagnosticPorts=$(DiagnosticConfiguration)</AppBundleExtraOptions>

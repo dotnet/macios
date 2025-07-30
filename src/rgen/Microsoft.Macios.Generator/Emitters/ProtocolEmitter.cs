@@ -70,11 +70,11 @@ $@"static {bindingContext.Changes.Name} ()
 			if (!getter.IsNullOrDefault) {
 				this.EmitMethod (context, getter, classBlock, uiThreadCheck);
 			}
-			
+
 			if (!setter.IsNullOrDefault) {
 				this.EmitMethod (context, setter, classBlock, uiThreadCheck);
 			}
-			
+
 			// write the property declarations
 			classBlock.WriteLine ();
 			classBlock.AppendMemberAvailability (property.SymbolAvailability);
@@ -92,7 +92,7 @@ $@"static {bindingContext.Changes.Name} ()
 
 				if (!setter.IsNullOrDefault) {
 					propertyBlock.AppendMemberAvailability (setter.SymbolAvailability);
-					propertyBlock.WriteLine($"set => {setter.Name} (this, value);");
+					propertyBlock.WriteLine ($"set => {setter.Name} (this, value);");
 				}
 			}
 		}
@@ -162,7 +162,7 @@ $@"static {bindingContext.Changes.Name} ()
 
 				// emit static constructor
 				EmitDefaultConstructors (in bindingContext, interfaceBlock);
-				
+
 				// emit the properties, this will generate the getters/setters and the properties themselves
 				EmitProperties (in bindingContext, in properties, interfaceBlock);
 			}

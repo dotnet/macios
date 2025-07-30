@@ -338,7 +338,7 @@ readonly partial struct Property {
 				exportMethodData: new (getter.GetSelector (this)),
 				attributes: [],
 				modifiers: [
-					Token (SyntaxKind.InternalKeyword).WithTrailingTrivia (Space), 
+					Token (SyntaxKind.InternalKeyword).WithTrailingTrivia (Space),
 					Token (SyntaxKind.StaticKeyword).WithTrailingTrivia (Space)
 				],
 				parameters: [thisParameter]) {
@@ -360,7 +360,7 @@ readonly partial struct Property {
 				exportMethodData: new (setter.GetSelector (this)),
 				attributes: [],
 				modifiers: [
-					Token (SyntaxKind.InternalKeyword).WithTrailingTrivia (Space), 
+					Token (SyntaxKind.InternalKeyword).WithTrailingTrivia (Space),
 					Token (SyntaxKind.StaticKeyword).WithTrailingTrivia (Space)
 				],
 				parameters: [thisParameter, valueParameter]);

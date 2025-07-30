@@ -16,23 +16,23 @@ namespace Microsoft.Macios.Generator.Tests.Protocols.Data;
 public interface IAVAudio3DMixing {
 
 	[Export<Property> ("renderingAlgorithm")]
-	public partial AVAudio3DMixingRenderingAlgorithm RenderingAlgorithm { get; set; }
+	public virtual partial AVAudio3DMixingRenderingAlgorithm RenderingAlgorithm { get; set; }
 
 	[Export<Property> ("rate")]
-	public partial float Rate { get; set; }
+	public virtual partial float Rate { get; set; }
 
 	[Export<Property> ("reverbBlend")]
-	public partial float ReverbBlend { get; set; }
+	public virtual partial float ReverbBlend { get; set; }
 
 	[Export<Property> ("obstruction")]
-	public partial float Obstruction { get; set; }
+	public virtual partial float Obstruction { get; set; }
 
 	[Export<Property> ("occlusion")]
-	public partial float Occlusion { get; set; }
+	public virtual partial float Occlusion { get; set; }
 
 	[Export<Property> ("sourceMode", ArgumentSemantic.Assign)]
-	public partial AVAudio3DMixingSourceMode SourceMode { get; set; }
+	public virtual partial AVAudio3DMixingSourceMode SourceMode { get; set; }
 
 	[Export<Property> ("pointSourceInHeadMode", ArgumentSemantic.Assign)]
-	public partial AVAudio3DMixingPointSourceInHeadMode PointSourceInHeadMode { get; set; }
+	public virtual partial AVAudio3DMixingPointSourceInHeadMode PointSourceInHeadMode { get; set; }
 }

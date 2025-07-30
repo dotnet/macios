@@ -337,7 +337,10 @@ readonly partial struct Property {
 				symbolAvailability: getter.SymbolAvailability,
 				exportMethodData: new (getter.GetSelector (this)),
 				attributes: [],
-				modifiers: [Token (SyntaxKind.InternalKeyword), Token (SyntaxKind.StaticKeyword)],
+				modifiers: [
+					Token (SyntaxKind.InternalKeyword).WithTrailingTrivia (Space),
+					Token (SyntaxKind.StaticKeyword).WithTrailingTrivia (Space)
+				],
 				parameters: [thisParameter]) {
 				BindAs = BindAs // return bindas is the same as the property bindas
 			};
@@ -356,7 +359,10 @@ readonly partial struct Property {
 				symbolAvailability: setter.SymbolAvailability,
 				exportMethodData: new (setter.GetSelector (this)),
 				attributes: [],
-				modifiers: [Token (SyntaxKind.InternalKeyword), Token (SyntaxKind.StaticKeyword)],
+				modifiers: [
+					Token (SyntaxKind.InternalKeyword).WithTrailingTrivia (Space),
+					Token (SyntaxKind.StaticKeyword).WithTrailingTrivia (Space)
+				],
 				parameters: [thisParameter, valueParameter]);
 		}
 		return (getterMethod, setterMethod);

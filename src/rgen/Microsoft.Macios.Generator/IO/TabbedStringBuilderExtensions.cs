@@ -221,4 +221,16 @@ static class TabbedStringBuilderExtensions {
 		self.WriteLine ($"[Protocol (Name = \"{name}\", WrapperType = typeof ({wrapperName}))]");
 		return self;
 	}
+
+	/// <summary>
+	/// Appends a `[Foundation.RequiredMember]` attribute to the current writer.
+	/// This attribute is used to mark a member as required.
+	/// </summary>
+	/// <param name="self">A tabbed string writer.</param>
+	/// <returns>The current writer.</returns>
+	public static TabbedWriter<StringWriter> AppendRequiredMemberAttribute (this TabbedWriter<StringWriter> self)
+	{
+		self.WriteLine ($"[{RequiredMember}]");
+		return self;
+	}
 }

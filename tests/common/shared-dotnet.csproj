@@ -62,7 +62,9 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PartialAppManifest Include="$(RootTestsDirectory)/common/shared-dotnet.plist" Condition="'$(_PlatformName)' != 'macOS'" />
+		<PartialAppManifest Include="$(RootTestsDirectory)/common/shared-dotnet.plist" Condition="'$(_PlatformName)' != 'macOS'">
+			<Link>shared-dotnet.plist</Link>
+		</PartialAppManifest>
 	</ItemGroup>
 
 	<!-- Logic for NativeAOT -->

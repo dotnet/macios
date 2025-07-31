@@ -66,7 +66,7 @@ static class NamedTypeSymbolExtensions {
 		fields = fieldBucket.ToImmutable ();
 		return true;
 	}
-	
+
 	/// <summary>
 	/// Gets all members from all interfaces implemented by the specified symbol.
 	/// </summary>

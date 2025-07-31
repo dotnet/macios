@@ -124,13 +124,12 @@ readonly partial struct Method {
 		[NotNullWhen (true)] out Method? change)
 	{
 		change = null;
-		if (method.DeclaringSyntaxReferences.FirstOrDefault()?.GetSyntax() is MethodDeclarationSyntax methodDeclarationSyntax)
-		{
+		if (method.DeclaringSyntaxReferences.FirstOrDefault ()?.GetSyntax () is MethodDeclarationSyntax methodDeclarationSyntax) {
 			return TryCreate (methodDeclarationSyntax, context, out change, method);
 		}
 		return false;
 	}
-	
+
 	/// <summary>
 	/// Tries to create a <see cref="Method"/> instance from the given <see cref="MethodDeclarationSyntax"/>.
 	/// </summary>

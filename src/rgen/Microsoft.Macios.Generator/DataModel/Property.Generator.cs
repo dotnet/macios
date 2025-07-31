@@ -235,13 +235,12 @@ readonly partial struct Property {
 		[NotNullWhen (true)] out Property? change)
 	{
 		change = null;
-		if (propertySymbol.DeclaringSyntaxReferences.FirstOrDefault()?.GetSyntax() is PropertyDeclarationSyntax propertyDeclaration)
-		{
+		if (propertySymbol.DeclaringSyntaxReferences.FirstOrDefault ()?.GetSyntax () is PropertyDeclarationSyntax propertyDeclaration) {
 			return TryCreate (propertyDeclaration, context, out change, propertySymbol);
 		}
 		return false;
 	}
-	
+
 	/// <summary>
 	/// Tries to create a <see cref="Property"/> instance from the given <see cref="PropertyDeclarationSyntax"/>.
 	/// </summary>

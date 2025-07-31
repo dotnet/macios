@@ -70,7 +70,7 @@ class BindingEqualityComparer : EqualityComparer<Binding> {
 		var propertyComparer = new PropertiesEqualityComparer ();
 		if (!propertyComparer.Equals (x.Properties, y.Properties))
 			return false;
-		
+
 		if (!propertyComparer.Equals (x.ParentProtocolProperties, y.ParentProtocolProperties))
 			return false;
 
@@ -88,7 +88,7 @@ class BindingEqualityComparer : EqualityComparer<Binding> {
 		var methodComparer = new MethodsEqualityComparer ();
 		if (!methodComparer.Equals (x.Methods, y.Methods))
 			return false;
-		
+
 		return methodComparer.Equals (x.ParentProtocolMethods, y.ParentProtocolMethods);
 	}
 

@@ -321,13 +321,13 @@ readonly partial struct Property {
 	/// </summary>
 	/// <param name="typeInfo">The type information for the 'this' parameter of the extension methods.</param>
 	/// <returns>A tuple containing the getter method and an optional setter method (null if the property is read-only).</returns>
-	public (Method? Getter, Method? Setter) ToExtensionMethods (TypeInfo typeInfo)
+	public (Method Getter, Method Setter) ToExtensionMethods (TypeInfo typeInfo)
 	{
 		// create the parameter with the provided type info
 		var thisParameter = new Parameter (0, typeInfo, "self") { IsThis = true, };
 
 		var getter = GetAccessor (AccessorKind.Getter);
-		Method? getterMethod = null;
+		Method getterMethod = Method.Default;
 		if (!getter.IsNullOrDefault)
 			getterMethod = new Method (
 				type: typeInfo.FullyQualifiedName,
@@ -336,13 +336,16 @@ readonly partial struct Property {
 				symbolAvailability: getter.SymbolAvailability,
 				exportMethodData: new (getter.GetSelector (this)),
 				attributes: [],
-				modifiers: [Token (SyntaxKind.InternalKeyword), Token (SyntaxKind.StaticKeyword)],
+				modifiers: [
+					Token (SyntaxKind.InternalKeyword).WithTrailingTrivia (Space),
+					Token (SyntaxKind.StaticKeyword).WithTrailingTrivia (Space)
+				],
 				parameters: [thisParameter]) {
 				BindAs = BindAs // return bindas is the same as the property bindas
 			};
 
 		var setter = GetAccessor (AccessorKind.Setter);
-		Method? setterMethod = null;
+		Method setterMethod = Method.Default;
 		if (!setter.IsNullOrDefault) {
 			// we need a second parameter for the setter
 			var valueParameter = new Parameter (1, ReturnType, "value") {
@@ -355,7 +358,10 @@ readonly partial struct Property {
 				symbolAvailability: setter.SymbolAvailability,
 				exportMethodData: new (setter.GetSelector (this)),
 				attributes: [],
-				modifiers: [Token (SyntaxKind.InternalKeyword), Token (SyntaxKind.StaticKeyword)],
+				modifiers: [
+					Token (SyntaxKind.InternalKeyword).WithTrailingTrivia (Space),
+					Token (SyntaxKind.StaticKeyword).WithTrailingTrivia (Space)
+				],
 				parameters: [thisParameter, valueParameter]);
 		}
 		return (getterMethod, setterMethod);

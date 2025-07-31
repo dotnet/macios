@@ -16,14 +16,29 @@ namespace Microsoft.Macios.Generator.DataModel;
 readonly partial struct Method : IEquatable<Method> {
 
 	/// <summary>
+	/// The initialization state of the struct.
+	/// </summary>
+	StructState State { get; init; } = StructState.Default;
+
+	/// <summary>
+	/// Gets the default, uninitialized instance of <see cref="Method"/>.
+	/// </summary>
+	public static Method Default { get; } = new (StructState.Default);
+
+	/// <summary>
+	/// Gets a value indicating whether the instance is the default, uninitialized instance.
+	/// </summary>
+	public bool IsNullOrDefault => State == StructState.Default;
+
+	/// <summary>
 	/// Type name that owns the method.
 	/// </summary>
-	public string Type { get; }
+	public string Type { get; } = string.Empty;
 
 	/// <summary>
 	/// Method name.
 	/// </summary>
-	public string Name { get; init; }
+	public string Name { get; init; } = string.Empty;
 
 	/// <summary>
 	/// True if the method is an extension method.
@@ -74,9 +89,16 @@ readonly partial struct Method : IEquatable<Method> {
 	/// </summary>
 	public ImmutableArray<Parameter> Parameters { get; init; } = [];
 
+	internal Method (StructState state)
+	{
+		State = state;
+	}
+
 	/// <inheritdoc/>
 	public bool Equals (Method other)
 	{
+		if (State == StructState.Default && other.State == StructState.Default)
+			return true;
 		if (Type != other.Type)
 			return false;
 		if (Name != other.Name)

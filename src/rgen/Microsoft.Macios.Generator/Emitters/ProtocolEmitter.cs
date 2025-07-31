@@ -9,6 +9,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.Macios.Generator.Attributes;
 using Microsoft.Macios.Generator.Context;
 using Microsoft.Macios.Generator.DataModel;
+using Microsoft.Macios.Generator.Formatters;
 using Microsoft.Macios.Generator.IO;
 using ObjCBindings;
 using static Microsoft.Macios.Generator.Emitters.BindingSyntaxFactory;
@@ -21,7 +22,7 @@ namespace Microsoft.Macios.Generator.Emitters;
 /// Emitter responsible for generating protocol interfaces.
 /// Generates C# interfaces that represent Objective-C protocols with proper protocol member attributes.
 /// </summary>
-class ProtocolEmitter : ICodeEmitter {
+class ProtocolEmitter : IClassEmitter {
 	/// <inheritdoc />
 	public string GetSymbolName (in Binding binding) => binding.Name;
 
@@ -50,16 +51,64 @@ $@"static {bindingContext.Changes.Name} ()
 	}
 
 	/// <summary>
+	/// Emits the properties for the protocol interface, including their getter and setter methods.
+	/// </summary>
+	/// <param name="context">The binding context containing protocol information.</param>
+	/// <param name="properties">A collection of properties to emit, along with their getter and setter methods.</param>
+	/// <param name="classBlock">The writer for the class block.</param>
+	void EmitProperties (in BindingContext context, in ImmutableArray<(Property Property, Method Getter, Method Setter)> properties, TabbedWriter<StringWriter> classBlock)
+	{
+		var uiThreadCheck = (context.NeedsThreadChecks)
+			? EnsureUiThread (context.RootContext.CurrentPlatform)
+			: null;
+		foreach (var (property, getter, setter) in properties) {
+			// protocol properties are emitted in the following format:
+			// - _GetFoo method if the property has a getter
+			// - _SetFoo method if the property has a setter
+			// - Foo property that uses the getter/setter methods
+
+			if (!getter.IsNullOrDefault) {
+				this.EmitMethod (context, getter, classBlock, uiThreadCheck);
+			}
+
+			if (!setter.IsNullOrDefault) {
+				this.EmitMethod (context, setter, classBlock, uiThreadCheck);
+			}
+
+			// write the property declarations
+			classBlock.WriteLine ();
+			classBlock.AppendMemberAvailability (property.SymbolAvailability);
+			classBlock.AppendGeneratedCodeAttribute (optimizable: true);
+			if (!property.IsOptional) {
+				classBlock.AppendRequiredMemberAttribute ();
+			}
+			using (var propertyBlock = classBlock.CreateBlock (property.ToDeclaration ().ToString (), block: true)) {
+				// we do not need to get the property accessors since we already have the getters/setters, we can
+				// decide what needs to be added based on those methods
+				if (!getter.IsNullOrDefault) {
+					propertyBlock.AppendMemberAvailability (getter.SymbolAvailability);
+					propertyBlock.WriteLine ($"get => {getter.Name} (this);");
+				}
+
+				if (!setter.IsNullOrDefault) {
+					propertyBlock.AppendMemberAvailability (setter.SymbolAvailability);
+					propertyBlock.WriteLine ($"set => {setter.Name} (this, value);");
+				}
+			}
+		}
+	}
+
+	/// <summary>
 	/// Gets the properties from the binding context and their corresponding extension methods.
 	/// Returns a collection of tuples containing the property and its optional getter/setter methods.
 	/// </summary>
 	/// <param name="bindingContext">The binding context containing the properties.</param>
 	/// <returns>An immutable array of tuples containing properties and their extension methods.</returns>
-	static ImmutableArray<(Property Property, Method? Getter, Method? Setter)> GetProperties (in BindingContext bindingContext)
+	static ImmutableArray<(Property Property, Method Getter, Method Setter)> CreatePropertyExtensionMethods (in BindingContext bindingContext)
 	{
 		// collect all properties and generate the extension methods, this will be used to generate the protocol
 		// member data and later the extension methods.
-		var propertiesBucket = ImmutableArray.CreateBuilder<(Property Property, Method? Getter, Method? Setter)> (bindingContext.Changes.Properties.Length);
+		var propertiesBucket = ImmutableArray.CreateBuilder<(Property Property, Method Getter, Method Setter)> (bindingContext.Changes.Properties.Length);
 		foreach (var property in bindingContext.Changes.Properties.OrderBy (p => p.Name)) {
 			var (getter, setter) = property.ToExtensionMethods (new (bindingContext.Changes.Name, SpecialType.None));
 			propertiesBucket.Add ((property, getter, setter));
@@ -95,7 +144,7 @@ $@"static {bindingContext.Changes.Name} ()
 
 			// we need to collect the properties extension methods, we do that with a helper method
 			// that will return the properties and their getters/setters.
-			var properties = GetProperties (bindingContext);
+			var properties = CreatePropertyExtensionMethods (bindingContext);
 
 			// append the properties to the protocol member data
 			foreach (var (property, getter, setter) in properties) {
@@ -113,6 +162,9 @@ $@"static {bindingContext.Changes.Name} ()
 
 				// emit static constructor
 				EmitDefaultConstructors (in bindingContext, interfaceBlock);
+
+				// emit the properties, this will generate the getters/setters and the properties themselves
+				EmitProperties (in bindingContext, in properties, interfaceBlock);
 			}
 		}
 		return true;

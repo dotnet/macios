@@ -100,7 +100,7 @@ readonly partial struct Method {
 		ExportData<ObjCBindings.Method> exportMethodData,
 		ImmutableArray<AttributeCodeChange> attributes,
 		ImmutableArray<SyntaxToken> modifiers,
-		ImmutableArray<Parameter> parameters)
+		ImmutableArray<Parameter> parameters) : this (StructState.Initialized)
 	{
 		Type = type;
 		Name = name;

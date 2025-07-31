@@ -64,4 +64,23 @@ public class ParameterTests {
 	[ClassData (typeof (TestDataNeedsNullCheckTests))]
 	void NeedsNullCheckTests (Parameter parameter, bool expectedNeedsNullCheck)
 		=> Assert.Equal (expectedNeedsNullCheck, parameter.NeedsNullCheck);
+
+	[Theory]
+	[InlineData (0, 10)]
+	[InlineData (5, 0)]
+	[InlineData (1, 1)]
+	public void ToPositionTests (int initialPosition, int newPosition)
+	{
+		var initialParameter = new Parameter (initialPosition, ReturnTypeForInt (), "testParam") {
+			IsOptional = true,
+			DefaultValue = "42"
+		};
+		var newParameter = initialParameter.WithPosition (newPosition);
+
+		Assert.Equal (newPosition, newParameter.Position);
+		Assert.Equal (initialParameter.Name, newParameter.Name);
+		Assert.Equal (initialParameter.Type, newParameter.Type);
+		Assert.Equal (initialParameter.IsOptional, newParameter.IsOptional);
+		Assert.Equal (initialParameter.DefaultValue, newParameter.DefaultValue);
+	}
 }

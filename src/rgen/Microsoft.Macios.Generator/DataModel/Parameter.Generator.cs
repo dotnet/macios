@@ -51,4 +51,14 @@ readonly partial struct Parameter {
 		};
 		return true;
 	}
+
+	/// <summary>
+	/// Creates a new <see cref="Parameter"/> instance with an updated position.
+	/// </summary>
+	/// <param name="position">The new position for the parameter.</param>
+	/// <returns>A new <see cref="Parameter"/> instance with the specified position.</returns>
+	public Parameter WithPosition (int position)
+	{
+		return this with { Position = position };
+	}
 }

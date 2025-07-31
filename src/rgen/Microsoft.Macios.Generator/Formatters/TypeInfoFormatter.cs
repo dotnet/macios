@@ -11,13 +11,13 @@ using TypeInfo = Microsoft.Macios.Generator.DataModel.TypeInfo;
 namespace Microsoft.Macios.Generator.Formatters;
 
 static class TypeInfoFormatter {
-
 	/// <summary>
 	/// Converts a TypeInfo to a TypeSyntax, handling arrays, named tuples, generic types, pointers, and nullable types.
 	/// </summary>
 	/// <param name="typeInfo">The TypeInfo to convert to syntax.</param>
+	/// <param name="useGlobalNamespace">True if the global alias has to be used.</param>
 	/// <returns>A TypeSyntax representing the type with proper namespace qualification and nullability.</returns>
-	public static TypeSyntax GetIdentifierSyntax (this in TypeInfo typeInfo)
+	public static TypeSyntax GetIdentifierSyntax (this in TypeInfo typeInfo, bool useGlobalNamespace = true)
 	{
 		TypeSyntax classSyntax;
 		// the type info already provides the correct name, but we need to build the actual class for arrays and 
@@ -70,7 +70,7 @@ static class TypeInfoFormatter {
 
 		// build the full type name using the namespace and the class name
 		if (!typeInfo.IsNamedTuple)
-			classSyntax = classSyntax.ToString ().GetIdentifierName (typeInfo.Namespace);
+			classSyntax = classSyntax.ToString ().GetIdentifierName (typeInfo.Namespace, useGlobalNamespace);
 		// we still need to check if the type is nullable
 		return typeInfo.IsNullable ? NullableType (classSyntax) : classSyntax;
 	}

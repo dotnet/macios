@@ -1,5 +1,0 @@
-!missing-field! MPNowPlayingInfoProperty1x1AnimatedArtwork not bound
-!missing-field! MPNowPlayingInfoProperty3x4AnimatedArtwork not bound
-!missing-selector! +MPNowPlayingInfoCenter::supportedAnimatedArtworkKeys not bound
-!missing-selector! MPMediaItemAnimatedArtwork::initWithArtworkID:previewImageRequestHandler:videoAssetFileURLRequestHandler: not bound
-!missing-type! MPMediaItemAnimatedArtwork not bound

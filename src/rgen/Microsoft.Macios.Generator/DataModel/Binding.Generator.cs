@@ -330,7 +330,7 @@ readonly partial struct Binding {
 			out methods);
 		
 		// models are a special case, we need to be able to retrieve the parent properties and methods to be added to the
-		// wrapper classes. We will do that by accessing the parents, gettting their symbol infor and creating the 
+		// wrapper classes. We will do that by accessing the parents, getting their symbol info and creating the 
 		// properties and methods from that.
 		if (context.SemanticModel.GetDeclaredSymbol (interfaceDeclaration) is INamedTypeSymbol symbol) {
 			// build the parent properties and methods

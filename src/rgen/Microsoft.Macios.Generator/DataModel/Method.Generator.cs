@@ -208,7 +208,7 @@ readonly partial struct Method {
 			// update the position of the parameter to be one more than the current index
 			newParameters.Add (parameter.WithPosition (index + 1));
 		}
-		
+
 		return this with {
 			Name = $"_{Name}",
 			Parameters = newParameters.ToImmutableArray (),

@@ -120,9 +120,9 @@ $@"static {bindingContext.Changes.Name} ()
 			: null;
 		foreach (var method in context.Changes.Methods.OrderBy (m => m.Name)) {
 			var protocolMethod = method.ToProtocolMethod (protocolType);
-			
+
 			this.EmitMethod (context, protocolMethod, classBlock, uiThreadCheck);
-			
+
 			// emit the method that will be used as the default implementation for the protocol.
 			classBlock.WriteLine ();
 			classBlock.AppendMemberAvailability (method.SymbolAvailability);
@@ -137,7 +137,7 @@ $@"static {bindingContext.Changes.Name} ()
 			}
 		}
 	}
-	
+
 	/// <summary>
 	/// Gets the properties from the binding context and their corresponding extension methods.
 	/// Returns a collection of tuples containing the property and its optional getter/setter methods.
@@ -205,7 +205,7 @@ $@"static {bindingContext.Changes.Name} ()
 
 				// emit the properties, this will generate the getters/setters and the properties themselves
 				EmitProperties (in bindingContext, in properties, interfaceBlock);
-				
+
 				// emit the methods for the protocol
 				EmitMethods (in bindingContext, interfaceBlock);
 			}

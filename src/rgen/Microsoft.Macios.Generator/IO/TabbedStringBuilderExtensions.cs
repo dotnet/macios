@@ -165,7 +165,7 @@ static class TabbedStringBuilderExtensions {
 		sb.Append ('(');
 		sb.AppendJoin (',', method.Parameters.Select (p => p.Type.GetIdentifierSyntax (useGlobalNamespace: false)));
 		sb.Append (')');
-		self.WriteLine ($"[DynamicDependency (\"{sb.ToString()}\")]");
+		self.WriteLine ($"[DynamicDependency (\"{sb.ToString ()}\")]");
 		return self;
 	}
 

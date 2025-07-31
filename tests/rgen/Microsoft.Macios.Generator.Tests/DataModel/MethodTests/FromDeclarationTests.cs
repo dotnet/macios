@@ -1072,9 +1072,9 @@ namespace NS {
 		Assert.NotNull (changes);
 		Assert.Equal (expectedIsVariadic, changes.Value.IsVariadic);
 	}
-	
+
 	[Theory]
-	[AllSupportedPlatforms]	
+	[AllSupportedPlatforms]
 	void ToProtocolMethodTests (ApplePlatform platform)
 	{
 		var inputText = @"
@@ -1097,7 +1097,7 @@ interface IAVAudioMixing {
 	public virtual AVAudioMixingDestination? DestinationForMixer (AVAudioNode mixer, nuint bus);
 }
 ";
-		
+
 		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
 		Assert.Single (syntaxTrees);
 		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
@@ -1112,5 +1112,5 @@ interface IAVAudioMixing {
 		Assert.True (protocolMethod.IsStatic);
 		Assert.True (protocolMethod.IsExtension);
 	}
-	
+
 }

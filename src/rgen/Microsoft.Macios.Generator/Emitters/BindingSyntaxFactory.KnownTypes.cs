@@ -187,14 +187,14 @@ static partial class BindingSyntaxFactory {
 	public static readonly TypeSyntax RequiredMember = StringExtensions.GetIdentifierName (
 		@namespace: ["Foundation"],
 		@class: "RequiredMember");
-	
+
 	/// <summary>
 	/// TypeSyntax for Foundation.ModelNotImplementedException.
 	/// </summary>
 	public static readonly TypeSyntax ModelNotImplementedException = StringExtensions.GetIdentifierName (
 		@namespace: ["Foundation"],
 		@class: "ModelNotImplementedException");
-	
+
 	/// <summary>
 	/// TypeSyntax for Foundation.You_Should_Not_Call_base_In_This_Method.
 	/// </summary>

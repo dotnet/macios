@@ -133,7 +133,7 @@ $@"static {bindingContext.Changes.Name} ()
 
 			using (var methodBlock = classBlock.CreateBlock (method.ToDeclaration ().ToString (), block: true)) {
 				// we don't need to use the factory to generate the method since it is onlye throwing an exception.
-				methodBlock.WriteLine ($"throw new {You_Should_Not_Call_base_In_This_Method} ()");
+				methodBlock.WriteLine ($"throw new {You_Should_Not_Call_base_In_This_Method} ();");
 			}
 		}
 	}

@@ -94,6 +94,6 @@ public partial interface IAVAudioMixing : INativeObject, IDisposable
 	[global::Foundation.RequiredMember]
 	public virtual partial global::AVFoundation.AVAudioMixingDestination? DestinationForMixer (global::AVFoundation.AVAudioNode mixer, global::System.UIntPtr bus)
 	{
-		throw new global::Foundation.You_Should_Not_Call_base_In_This_Method ()
+		throw new global::Foundation.You_Should_Not_Call_base_In_This_Method ();
 	}
 }

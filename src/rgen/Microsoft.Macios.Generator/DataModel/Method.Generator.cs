@@ -113,12 +113,52 @@ readonly partial struct Method {
 		Parameters = parameters;
 	}
 
-	public static bool TryCreate (MethodDeclarationSyntax declaration, RootContext context,
+	/// <summary>
+	/// Tries to create a <see cref="Method"/> instance from the given <see cref="IMethodSymbol"/>.
+	/// </summary>
+	/// <param name="method">The method symbol to process.</param>
+	/// <param name="context">The root context for the generation.</param>
+	/// <param name="change">When this method returns, contains the created <see cref="Method"/> instance if the creation succeeds, or null if it fails.</param>
+	/// <returns><c>true</c> if the <see cref="Method"/> instance was created successfully; otherwise, <c>false</c>.</returns>
+	public static bool TryCreate (IMethodSymbol method, RootContext context,
 		[NotNullWhen (true)] out Method? change)
 	{
-		if (ModelExtensions.GetDeclaredSymbol (context.SemanticModel, declaration) is not IMethodSymbol method) {
-			change = null;
-			return false;
+		change = null;
+		if (method.DeclaringSyntaxReferences.FirstOrDefault()?.GetSyntax() is MethodDeclarationSyntax methodDeclarationSyntax)
+		{
+			return TryCreate (methodDeclarationSyntax, context, out change, method);
+		}
+		return false;
+	}
+	
+	/// <summary>
+	/// Tries to create a <see cref="Method"/> instance from the given <see cref="MethodDeclarationSyntax"/>.
+	/// </summary>
+	/// <param name="declaration">The method declaration syntax to process.</param>
+	/// <param name="context">The root context for the generation.</param>
+	/// <param name="change">When this method returns, contains the created <see cref="Method"/> instance if the creation succeeds, or null if it fails.</param>
+	/// <returns><c>true</c> if the <see cref="Method"/> instance was created successfully; otherwise, <c>false</c>.</returns>
+	public static bool TryCreate (MethodDeclarationSyntax declaration, RootContext context,
+		[NotNullWhen (true)] out Method? change)
+			=> TryCreate (declaration, context, out change, null);
+
+	/// <summary>
+	/// Tries to create a <see cref="Method"/> instance from the given <see cref="MethodDeclarationSyntax"/>.
+	/// </summary>
+	/// <param name="declaration">The method declaration syntax to process.</param>
+	/// <param name="context">The root context for the generation.</param>
+	/// <param name="change">When this method returns, contains the created <see cref="Method"/> instance if the creation succeeds, or null if it fails.</param>
+	/// <param name="method">Optional symbol to avoid querying the SemanticModel if the symbol is known.</param>
+	/// <returns><c>true</c> if the <see cref="Method"/> instance was created successfully; otherwise, <c>false</c>.</returns>
+	public static bool TryCreate (MethodDeclarationSyntax declaration, RootContext context,
+		[NotNullWhen (true)] out Method? change, IMethodSymbol? method)
+	{
+		change = null;
+		if (method is null) {
+			if (ModelExtensions.GetDeclaredSymbol (context.SemanticModel, declaration) is not IMethodSymbol methodSymbol) {
+				return false;
+			}
+			method = methodSymbol;
 		}
 
 		var attributes = declaration.GetAttributeCodeChanges (context.SemanticModel);

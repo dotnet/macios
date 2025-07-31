@@ -224,17 +224,57 @@ readonly partial struct Property {
 		Accessors = accessors;
 	}
 
-	public static bool TryCreate (PropertyDeclarationSyntax declaration, RootContext context,
+	/// <summary>
+	/// Tries to create a <see cref="Property"/> instance from the given <see cref="IPropertySymbol"/>.
+	/// </summary>
+	/// <param name="propertySymbol">The property symbol to process.</param>
+	/// <param name="context">The root context for the generation.</param>
+	/// <param name="change">When this method returns, contains the created <see cref="Property"/> instance if the creation succeeds, or null if it fails.</param>
+	/// <returns><c>true</c> if the <see cref="Property"/> instance was created successfully; otherwise, <c>false</c>.</returns>
+	public static bool TryCreate (IPropertySymbol propertySymbol, RootContext context,
 		[NotNullWhen (true)] out Property? change)
 	{
+		change = null;
+		if (propertySymbol.DeclaringSyntaxReferences.FirstOrDefault()?.GetSyntax() is PropertyDeclarationSyntax propertyDeclaration)
+		{
+			return TryCreate (propertyDeclaration, context, out change, propertySymbol);
+		}
+		return false;
+	}
+	
+	/// <summary>
+	/// Tries to create a <see cref="Property"/> instance from the given <see cref="PropertyDeclarationSyntax"/>.
+	/// </summary>
+	/// <param name="declaration">The property declaration syntax to process.</param>
+	/// <param name="context">The root context for the generation.</param>
+	/// <param name="change">When this method returns, contains the created <see cref="Property"/> instance if the creation succeeds, or null if it fails.</param>
+	/// <returns><c>true</c> if the <see cref="Property"/> instance was created successfully; otherwise, <c>false</c>.</returns>
+	public static bool TryCreate (PropertyDeclarationSyntax declaration, RootContext context,
+		[NotNullWhen (true)] out Property? change)
+			=> TryCreate (declaration, context, out change, null);
+
+	/// <summary>
+	/// Tries to create a <see cref="Property"/> instance from the given <see cref="PropertyDeclarationSyntax"/>.
+	/// </summary>
+	/// <param name="declaration">The property declaration syntax to process.</param>
+	/// <param name="context">The root context for the generation.</param>
+	/// <param name="change">When this method returns, contains the created <see cref="Property"/> instance if the creation succeeds, or null if it fails.</param>
+	/// <param name="property">Optional symbol to avoid querying the SemanticModel if the symbol is known.</param>
+	/// <returns><c>true</c> if the <see cref="Property"/> instance was created successfully; otherwise, <c>false</c>.</returns>
+	public static bool TryCreate (PropertyDeclarationSyntax declaration, RootContext context,
+		[NotNullWhen (true)] out Property? change, IPropertySymbol? property)
+	{
+		change = null;
 		var memberName = declaration.Identifier.ToFullString ().Trim ();
 		// get the symbol from the property declaration
-		if (context.SemanticModel.GetDeclaredSymbol (declaration) is not IPropertySymbol propertySymbol) {
-			change = null;
-			return false;
+		if (property is null) {
+			if (context.SemanticModel.GetDeclaredSymbol (declaration) is not IPropertySymbol propertySymbol) {
+				return false;
+			}
+			property = propertySymbol;
 		}
 
-		var propertySupportedPlatforms = propertySymbol.GetSupportedPlatforms ();
+		var propertySupportedPlatforms = property.GetSupportedPlatforms ();
 		var attributes = declaration.GetAttributeCodeChanges (context.SemanticModel);
 
 		ImmutableArray<Accessor> accessorCodeChanges = [];
@@ -271,16 +311,16 @@ readonly partial struct Property {
 		}
 		change = new (
 			name: memberName,
-			returnType: new (propertySymbol.Type, context.Compilation),
+			returnType: new (property.Type, context.Compilation),
 			symbolAvailability: propertySupportedPlatforms,
 			attributes: attributes,
 			modifiers: [.. declaration.Modifiers],
 			accessors: accessorCodeChanges) {
-			BindAs = propertySymbol.GetBindFromData (),
-			ForcedType = propertySymbol.GetForceTypeData (),
-			ExportFieldData = GetFieldInfo (context, propertySymbol) ?? FieldInfo<ObjCBindings.Property>.Default,
-			ExportPropertyData = propertySymbol.GetExportData<ObjCBindings.Property> () ?? ExportData<ObjCBindings.Property>.Default,
-			ExportStrongPropertyData = propertySymbol.GetExportData<ObjCBindings.StrongDictionaryProperty> (),
+			BindAs = property.GetBindFromData (),
+			ForcedType = property.GetForceTypeData (),
+			ExportFieldData = GetFieldInfo (context, property) ?? FieldInfo<ObjCBindings.Property>.Default,
+			ExportPropertyData = property.GetExportData<ObjCBindings.Property> () ?? ExportData<ObjCBindings.Property>.Default,
+			ExportStrongPropertyData = property.GetExportData<ObjCBindings.StrongDictionaryProperty> (),
 		};
 		return true;
 	}

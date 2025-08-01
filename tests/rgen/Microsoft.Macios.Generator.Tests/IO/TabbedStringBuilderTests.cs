@@ -878,6 +878,32 @@ Because we are using a raw string  we expected:
 		Assert.Equal (expectedString, result);
 	}
 
+	public static IEnumerable<object []> AppendExportAttributeTestData {
+		get {
+			// Simple selector
+			yield return [new ExportData<ObjCBindings.Method> ("mySelector:"), "[Export<Method> (\"mySelector:\")]\n"];
+
+			// Selector with multiple parts
+			yield return [new ExportData<ObjCBindings.Method> ("mySelector:withObject:"), "[Export<Method> (\"mySelector:withObject:\")]\n"];
+
+			// Selector with no parameters
+			yield return [new ExportData<ObjCBindings.Method> ("mySelector"), "[Export<Method> (\"mySelector\")]\n"];
+
+			// Null selector
+			yield return [new ExportData<ObjCBindings.Method> (null), "[Export<Method> (\"\")]\n"];
+		}
+	}
+
+	[Theory]
+	[MemberData (nameof (AppendExportAttributeTestData))]
+	void AppendExportAttributeTests (ExportData<ObjCBindings.Method> exportData, string expectedString)
+	{
+		var block = new TabbedStringBuilder (sb);
+		block.AppendExportAttribute (exportData);
+		var result = block.ToCode ();
+		Assert.Equal (expectedString, result);
+	}
+
 	[Fact]
 	public void ClearTests ()
 	{

@@ -16,6 +16,7 @@ namespace Microsoft.Macios.Generator.Tests.Protocols.Data;
 [SupportedOSPlatform ("maccatalyst13.1")]
 [Protocol (Name = "AVAudioMixing", WrapperType = typeof (AVAudioMixingWrapper))]
 [ProtocolMember (IsRequired = true, IsProperty = true, IsStatic = false, Name = "Volume", Selector = "volume", PropertyType = typeof (float), GetterSelector = "volume", SetterSelector = "setVolume:", ArgumentSemantic = ArgumentSemantic.None)]
+[ProtocolMember (IsRequired = true, IsProperty = false, IsStatic = false, Name = "DestinationForMixer", Selector = "destinationForMixer:bus:", ReturnType = typeof (global::AVFoundation.AVAudioMixingDestination), ParameterType = new Type [] { typeof (global::AVFoundation.AVAudioNode), typeof (global::System.UIntPtr) }, ParameterByRef = new bool [] { false, false }, ParameterBlockProxy = new Type? [] { null, null })]
 public partial interface IAVAudioMixing : INativeObject, IDisposable
 {
 
@@ -100,6 +101,7 @@ public partial interface IAVAudioMixing : INativeObject, IDisposable
 
 internal unsafe sealed class AVAudioMixingWrapper : BaseWrapper, IAVAudioMixing
 {
+
 	// Implement default constructor
 
 	// Implement property: Obstruction
@@ -118,6 +120,20 @@ internal unsafe sealed class AVAudioMixingWrapper : BaseWrapper, IAVAudioMixing
 
 	// Implement property: Volume
 
-	// Implement method: DestinationForMixer
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("maccatalyst13.1")]
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Export<Method> ("destinationForMixer:bus:")]
+	public global::AVFoundation.AVAudioMixingDestination? DestinationForMixer (global::AVFoundation.AVAudioNode mixer, global::System.UIntPtr bus)
+	{
+		var mixer__handle__ = mixer!.GetNonNullHandle (nameof (mixer));
+		global::AVFoundation.AVAudioMixingDestination? ret;
+		ret = global::ObjCRuntime.Runtime.GetNSObject<global::AVFoundation.AVAudioMixingDestination> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend_NativeHandle_UIntPtr (this.Handle, global::ObjCRuntime.Selector.GetHandle ("destinationForMixer:bus:"), mixer__handle__, bus));
+		global::System.GC.KeepAlive (this);
+		global::System.GC.KeepAlive (mixer);
+		return ret;
+	}
 
 }

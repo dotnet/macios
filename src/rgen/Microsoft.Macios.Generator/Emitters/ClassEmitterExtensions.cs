@@ -82,10 +82,11 @@ static class ClassEmitterExtensions {
 	/// <summary>
 	/// Emits the body for a method that does not return a value.
 	/// </summary>
+	/// <param name="context">Current binding context.</param>
 	/// <param name="method">The method for which to generate the body.</param>
 	/// <param name="invocations">The method invocations and argument transformations.</param>
 	/// <param name="methodBlock">The writer for the method block.</param>
-	static void EmitVoidMethodBody (in Method method, in MethodInvocations invocations, TabbedWriter<StringWriter> methodBlock)
+	static void EmitVoidMethodBody (in BindingContext context, in Method method, in MethodInvocations invocations, TabbedWriter<StringWriter> methodBlock)
 	{
 		// validate and init the needed temp variables
 		foreach (var argument in invocations.Arguments) {
@@ -98,7 +99,8 @@ static class ClassEmitterExtensions {
 			methodBlock.Write (argument.PreCallConversion, verifyTrivia: false);
 		}
 
-		if (method.IsExtension) {
+		// if we are dealing with a protocol or an extension method, we need to call send directly
+		if (context.Changes.BindingType == BindingType.Protocol || method.IsExtension) {
 			methodBlock.WriteRaw (
 $@"{ExpressionStatement (invocations.Send)}
 {ExpressionStatement (KeepAlive (method.This))}
@@ -127,7 +129,7 @@ $@"if (IsDirectBinding) {{
 	/// <param name="method">The method for which to generate the body.</param>
 	/// <param name="invocations">The method invocations and argument transformations.</param>
 	/// <param name="methodBlock">The writer for the method block.</param>
-	static void EmitReturnMethodBody (in Method method, in MethodInvocations invocations, TabbedWriter<StringWriter> methodBlock)
+	static void EmitReturnMethodBody (in BindingContext context, in Method method, in MethodInvocations invocations, TabbedWriter<StringWriter> methodBlock)
 	{
 		// similar to the void method but we need to create a temp variable to store the return value
 		// and do any conversions that might be needed for the return value, for example byte to bool
@@ -144,7 +146,8 @@ $@"if (IsDirectBinding) {{
 			methodBlock.Write (argument.PreCallConversion, verifyTrivia: false);
 		}
 
-		if (method.IsExtension) {
+		// if we are dealing with a protocol or an extension method, we need to call send directly
+		if (context.Changes.BindingType == BindingType.Protocol || method.IsExtension) {
 			methodBlock.WriteRaw (
 $@"{tempDeclaration}
 {ExpressionStatement (invocations.Send)}
@@ -191,6 +194,12 @@ if (IsDirectBinding) {{
 		classBlock.AppendMemberAvailability (method.SymbolAvailability);
 		classBlock.AppendGeneratedCodeAttribute (optimizable: true);
 
+		// append the export attribute to the method just in case it is a protocol method in a wrapper class,
+		// that is when the method is not an extension method and the binding type is protocol.
+		if (context.Changes.BindingType == BindingType.Protocol && !method.IsExtension) {
+			classBlock.AppendExportAttribute (method.ExportMethodData);
+		}
+
 		using (var methodBlock = classBlock.CreateBlock (method.ToDeclaration ().ToString (), block: true)) {
 			// write any possible thread check at the beginning of the method
 			if (uiThreadCheck is not null) {
@@ -203,9 +212,9 @@ if (IsDirectBinding) {{
 			var invocations = GetInvocations (method);
 
 			if (method.ReturnType.IsVoid) {
-				EmitVoidMethodBody (method, invocations, methodBlock);
+				EmitVoidMethodBody (context, method, invocations, methodBlock);
 			} else {
-				EmitReturnMethodBody (method, invocations, methodBlock);
+				EmitReturnMethodBody (context, method, invocations, methodBlock);
 			}
 		}
 

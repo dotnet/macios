@@ -294,8 +294,12 @@ if (!(value is null) && rvalue is null) {{
 			foreach (var notification in properties) {
 				var count = 12; // == "Notification".Length;
 				var name = $"Observe{notification.Name [..^count]}";
-				var notificationCenter = notification.ExportFieldData?.FieldData.NotificationCenter ?? $"{NotificationCenter}.DefaultCenter";
-				var eventType = notification.ExportFieldData?.FieldData.Type ?? NSNotificationEventArgs.ToString ();
+				var notificationCenter = notification.ExportFieldData.IsNullOrDefault || notification.ExportFieldData.FieldData.NotificationCenter is null
+					? $"{NotificationCenter}.DefaultCenter"
+					: notification.ExportFieldData.FieldData.NotificationCenter;
+				var eventType = notification.ExportFieldData.IsNullOrDefault || notification.ExportFieldData.FieldData.Type is null
+					? NSNotificationEventArgs.ToString ()
+					: notification.ExportFieldData.FieldData.Type;
 				// use the raw writer which makes it easier to read in this case
 				notificationClass.WriteRaw (
 @$"public static {NSObject} {name} ({EventHandler}<{eventType}> handler)

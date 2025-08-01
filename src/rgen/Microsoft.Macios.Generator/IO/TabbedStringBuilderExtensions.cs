@@ -272,7 +272,7 @@ static class TabbedStringBuilderExtensions {
 		self.WriteLine ($"[Export<Method> (\"{exportData.Selector}\")]");
 		return self;
 	}
-	
+
 	/// <summary>
 	/// Appends an `[Export<Property>]` attribute to the current writer.
 	/// This is a simplified version that only includes the selector, as required by the registrar.

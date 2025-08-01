@@ -351,7 +351,7 @@ return {backingField};
 				? EnsureUiThread (context.RootContext.CurrentPlatform)
 				: null;
 		}
-		
+
 		if (property.IsField)
 			// ignore fields
 			return;
@@ -433,7 +433,7 @@ if (IsDirectBinding) {{
 			// [param: BlockProxy (typeof ({nativeInvoker}))]
 			if (property.ReturnType.IsDelegate)
 				propertyBlock.AppendDelegateParameter (property.ReturnType);
-			if (context.Changes.BindingType == BindingType.Protocol && !setter.ExportPropertyData.IsNullOrDefault) 
+			if (context.Changes.BindingType == BindingType.Protocol && !setter.ExportPropertyData.IsNullOrDefault)
 				propertyBlock.AppendExportAttribute (setter.ExportPropertyData);
 			using (var setterBlock = propertyBlock.CreateBlock ("set", block: true)) {
 				if (uiThreadCheck is not null) {
@@ -478,19 +478,19 @@ $@"if (IsDirectBinding) {{
 		// if the property is a weak delegate and has the strong delegate type set, we need to emit the
 		// strong delegate property
 		if (property is { IsProperty: true, IsWeakDelegate: true }
-		    && !property.ExportPropertyData.StrongDelegateType.IsNullOrDefault) {
+			&& !property.ExportPropertyData.StrongDelegateType.IsNullOrDefault) {
 			classBlock.WriteLine ();
 			var strongDelegate = property.ToStrongDelegate ();
 			using (var propertyBlock =
-			       classBlock.CreateBlock (strongDelegate.ToDeclaration ().ToString (), block: true)) {
+				   classBlock.CreateBlock (strongDelegate.ToDeclaration ().ToString (), block: true)) {
 				using (var getterBlock =
-				       propertyBlock.CreateBlock ("get", block: true)) {
+					   propertyBlock.CreateBlock ("get", block: true)) {
 					getterBlock.WriteLine (
 						$"return {property.Name} as {strongDelegate.ReturnType.WithNullable (isNullable: false).GetIdentifierSyntax ()};");
 				}
 
 				using (var setterBlock =
-				       propertyBlock.CreateBlock ("set", block: true)) {
+					   propertyBlock.CreateBlock ("set", block: true)) {
 					setterBlock.WriteRaw (
 $@"var rvalue = value as NSObject;
 if (!(value is null) && rvalue is null) {{

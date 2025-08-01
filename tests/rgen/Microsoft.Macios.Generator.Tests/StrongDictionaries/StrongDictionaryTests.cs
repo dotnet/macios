@@ -23,8 +23,55 @@ public class StrongDictionaryTests : BaseGeneratorTestClass {
 	public class TestDataGenerator : BaseTestDataGenerator, IEnumerable<object []> {
 		readonly List<ClassGenerationData> _data = new ()
 		{
-			// trampoline tests
-			new (ApplePlatform.TVOS, "CARendererOptions", "CARendererOptions.cs", "ExpectedCARendererOptions.cs"),
+			new (ApplePlatform.iOS, "CARendererOptions", "CARendererOptions.cs", "ExpectedCARendererOptions.cs") {
+				ExtraFiles = new () {
+					{"CARendererOptions.Keys.g.cs", "ExpectedCARendererOptionsKeys.cs"},
+					{"CARendererOptionKeys.g.cs", "ExpectedBGenKeys.cs"},
+				}
+			},
+			new (ApplePlatform.TVOS, "CARendererOptions", "CARendererOptions.cs", "ExpectedCARendererOptions.cs") {
+				ExtraFiles = new () {
+					{"CARendererOptions.Keys.g.cs", "ExpectedCARendererOptionsKeys.cs"},
+					{"CARendererOptionKeys.g.cs", "ExpectedBGenKeys.cs"},
+				}
+			},
+			new (ApplePlatform.MacCatalyst, "CARendererOptions", "CARendererOptions.cs", "ExpectedCARendererOptions.cs") {
+				ExtraFiles = new () {
+					{"CARendererOptions.Keys.g.cs", "ExpectedCARendererOptionsKeys.cs"},
+					{"CARendererOptionKeys.g.cs", "ExpectedBGenKeys.cs"},
+				}
+			},
+			new (ApplePlatform.MacOSX, "CARendererOptions", "CARendererOptions.cs", "ExpectedCARendererOptions.cs") {
+				ExtraFiles = new () {
+					{"CARendererOptions.Keys.g.cs", "ExpectedCARendererOptionsKeys.cs"},
+					{"CARendererOptionKeys.g.cs", "ExpectedBGenKeys.cs"},
+				}
+			},
+
+			new (ApplePlatform.iOS, "NestedStrongDictionary", "NestedStrongDictionary.cs", "ExpectedNestedStrongDictionary.cs") {
+				ExtraFiles = new () {
+					{"NestedStrongDictionary.Keys.g.cs", "ExpectedNestedNestedStrongDictionaryKeys.cs"},
+					{"CARendererOptionKeys.g.cs", "ExpectedNestedBGenKeys.cs"},
+				}
+			},
+			new (ApplePlatform.TVOS, "NestedStrongDictionary", "NestedStrongDictionary.cs", "ExpectedNestedStrongDictionary.cs") {
+				ExtraFiles = new () {
+					{"NestedStrongDictionary.Keys.g.cs", "ExpectedNestedNestedStrongDictionaryKeys.cs"},
+					{"CARendererOptionKeys.g.cs", "ExpectedNestedBGenKeys.cs"},
+				}
+			},
+			new (ApplePlatform.MacCatalyst, "NestedStrongDictionary", "NestedStrongDictionary.cs", "ExpectedNestedStrongDictionary.cs") {
+				ExtraFiles = new () {
+					{"NestedStrongDictionary.Keys.g.cs", "ExpectedNestedNestedStrongDictionaryKeys.cs"},
+					{"CARendererOptionKeys.g.cs", "ExpectedNestedBGenKeys.cs"},
+				}
+			},
+			new (ApplePlatform.MacOSX, "NestedStrongDictionary", "NestedStrongDictionary.cs", "ExpectedNestedStrongDictionary.cs") {
+				ExtraFiles = new () {
+					{"NestedStrongDictionary.Keys.g.cs", "ExpectedNestedNestedStrongDictionaryKeys.cs"},
+					{"CARendererOptionKeys.g.cs", "ExpectedNestedBGenKeys.cs"},
+				}
+			},
 		};
 
 		public IEnumerator<object []> GetEnumerator ()

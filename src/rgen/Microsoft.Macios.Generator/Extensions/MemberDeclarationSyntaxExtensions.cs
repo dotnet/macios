@@ -90,6 +90,8 @@ static class MemberDeclarationSyntaxExtensions {
 					return BindingType.Class;
 				case AttributesNames.StrongDictionaryAttribute:
 					return BindingType.StrongDictionary;
+				case AttributesNames.StrongDictionaryKeysAttribute:
+					return BindingType.StrongDictionaryKeys;
 				}
 			}
 		return BindingType.Unknown;

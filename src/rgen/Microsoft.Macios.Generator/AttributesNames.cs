@@ -16,6 +16,7 @@ static class AttributesNames {
 	public const string BindFromAttribute = "ObjCBindings.BindFromAttribute";
 	public const string ProtocolAttribute = "ObjCBindings.BindingTypeAttribute<ObjCBindings.Protocol>";
 	public const string StrongDictionaryAttribute = "ObjCBindings.BindingTypeAttribute<ObjCBindings.StrongDictionary>";
+	public const string StrongDictionaryKeysAttribute = "ObjCBindings.BindingTypeAttribute<ObjCBindings.StrongDictionaryKeys>";
 	public const string FieldAttribute = "ObjCBindings.FieldAttribute";
 	public const string EnumFieldAttribute = "ObjCBindings.FieldAttribute<ObjCBindings.EnumValue>";
 	public const string FieldPropertyAttribute = "ObjCBindings.FieldAttribute<ObjCBindings.Property>";
@@ -36,6 +37,7 @@ static class AttributesNames {
 		ClassAttribute,
 		ProtocolAttribute,
 		StrongDictionaryAttribute,
+		StrongDictionaryKeysAttribute,
 		CoreImageFilterAttribute,
 		SmartEnumAttribute,
 	];
@@ -55,6 +57,9 @@ static class AttributesNames {
 		}
 		if (type == typeof (ObjCBindings.StrongDictionary)) {
 			return StrongDictionaryAttribute;
+		}
+		if (type == typeof (ObjCBindings.StrongDictionaryKeys)) {
+			return StrongDictionaryKeysAttribute;
 		}
 		if (type == typeof (ObjCBindings.SmartEnum)) {
 			return SmartEnumAttribute;
@@ -88,6 +93,9 @@ static class AttributesNames {
 		}
 		if (type == typeof (ObjCBindings.Constructor)) {
 			return ExportConstructorAttribute;
+		}
+		if (type == typeof (ObjCBindings.StrongDictionaryProperty)) {
+			return ExportStrongDictionaryPropertyAttribute;
 		}
 		return null;
 	}

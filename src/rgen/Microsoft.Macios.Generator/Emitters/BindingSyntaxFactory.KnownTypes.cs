@@ -167,6 +167,27 @@ static partial class BindingSyntaxFactory {
 		@namespace: ["Foundation"],
 		@class: "NSErrorException");
 
+	/// <summary>
+	/// TypeSyntax for Foundation.NSDictionary.
+	/// </summary>
+	public static readonly TypeSyntax NSDictionary = StringExtensions.GetIdentifierName (
+		@namespace: ["Foundation"],
+		@class: "NSDictionary");
+
+	/// <summary>
+	/// TypeSyntax for Foundation.NSMutableDictionary.
+	/// </summary>
+	public static readonly TypeSyntax NSMutableDictionary = StringExtensions.GetIdentifierName (
+		@namespace: ["Foundation"],
+		@class: "NSMutableDictionary");
+
+	/// <summary>
+	/// TypeSyntax for Foundation.RequiredMember.
+	/// </summary>
+	public static readonly TypeSyntax RequiredMember = StringExtensions.GetIdentifierName (
+		@namespace: ["Foundation"],
+		@class: "RequiredMember");
+
 	// CoreMedia types
 
 	/// <summary>
@@ -182,6 +203,15 @@ static partial class BindingSyntaxFactory {
 	public static readonly TypeSyntax CMSampleBuffer = StringExtensions.GetIdentifierName (
 		@namespace: ["CoreMedia"],
 		@class: "CMSampleBuffer");
+
+	// CoreText types
+
+	/// <summary>
+	/// TypeSyntax for CoreText.CTFontDescriptor.
+	/// </summary>
+	public static readonly TypeSyntax CTFontDescriptor = StringExtensions.GetIdentifierName (
+		@namespace: ["CoreText"],
+		@class: "CTFontDescriptor");
 
 	// System types
 
@@ -219,6 +249,5 @@ static partial class BindingSyntaxFactory {
 	public readonly static TypeSyntax Unsafe = StringExtensions.GetIdentifierName (
 		@namespace: ["System", "Runtime", "CompilerServices"],
 		@class: "Unsafe");
-
 
 }

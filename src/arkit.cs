@@ -2290,22 +2290,6 @@ namespace ARKit {
 	[iOS (13, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface ARQuickLookPreviewItem : QLPreviewItem {
-
-		[Export ("initWithFileAtURL:")]
-		[DesignatedInitializer]
-		NativeHandle Constructor (NSUrl url);
-
-		[NullAllowed, Export ("canonicalWebPageURL", ArgumentSemantic.Strong)]
-		NSUrl CanonicalWebPageUrl { get; set; }
-
-		[Export ("allowsContentScaling")]
-		bool AllowsContentScaling { get; set; }
-	}
-
-	[iOS (13, 0)]
-	[BaseType (typeof (NSObject))]
-	[DisableDefaultCtor]
 	interface ARRaycastQuery {
 
 		[Export ("initWithOrigin:direction:allowingTarget:alignment:")]

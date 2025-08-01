@@ -268,8 +268,8 @@ readonly partial struct Method {
 		// contains the exact same data but the modifiers are updated to remove virtual and partial if they are present
 		return this with {
 			Modifiers = [
-				.. Modifiers.Where (m => 
-					!m.IsKind (SyntaxKind.PartialKeyword) && 
+				.. Modifiers.Where (m =>
+					!m.IsKind (SyntaxKind.PartialKeyword) &&
 					!m.IsKind (SyntaxKind.VirtualKeyword)),
 			]
 		};

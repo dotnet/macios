@@ -283,7 +283,7 @@ static class TabbedStringBuilderExtensions {
 	public static TabbedWriter<StringWriter> AppendExportAttribute (this TabbedWriter<StringWriter> self,
 		ExportData<ObjCBindings.Property> exportData)
 	{
-		// the resitrar does not care about other flags but the selector, so we can just use the selector
+		// the registrar does not care about other flags but the selector, so we can just use the selector
 		self.WriteLine ($"[Export<Property> (\"{exportData.Selector}\")]");
 		return self;
 	}

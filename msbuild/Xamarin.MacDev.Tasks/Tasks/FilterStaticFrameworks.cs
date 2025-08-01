@@ -20,7 +20,7 @@ namespace Xamarin.MacDev.Tasks {
 		[Output]
 		public ITaskItem []? FrameworkToPublish { get; set; }
 
-		static string GetFrameworkExecutablePath (string frameworkPath)
+		static string GetFrameworkExecutablePath (string frameworkPath, TaskLoggingHelper? log = null)
 		{
 			if (!(frameworkPath.EndsWith (".framework", StringComparison.OrdinalIgnoreCase) && Directory.Exists (frameworkPath)))
 				return frameworkPath;
@@ -44,7 +44,7 @@ namespace Xamarin.MacDev.Tasks {
 						}
 					} catch (Exception ex) {
 						// Log exceptions from malformed plist files and fall back to default behavior
-						Log.LogMessage (MessageImportance.Low, $"Failed to parse Info.plist for framework '{frameworkPath}': {ex.Message}");
+						log?.LogMessage (MessageImportance.Low, $"Failed to parse Info.plist for framework '{frameworkPath}': {ex.Message}");
 					}
 					break; // Found Info.plist but no CFBundleExecutable, stop looking
 				}
@@ -66,7 +66,7 @@ namespace Xamarin.MacDev.Tasks {
 					var frameworkExecutablePath = PathUtils.ConvertToMacPath (item.ItemSpec);
 					try {
 						if (frameworkExecutablePath.EndsWith (".framework", StringComparison.OrdinalIgnoreCase) && Directory.Exists (frameworkExecutablePath)) {
-							frameworkExecutablePath = GetFrameworkExecutablePath (frameworkExecutablePath);
+							frameworkExecutablePath = GetFrameworkExecutablePath (frameworkExecutablePath, Log);
 						}
 
 						if (OnlyFilterFrameworks && !Path.GetDirectoryName (frameworkExecutablePath).EndsWith (".framework", StringComparison.OrdinalIgnoreCase)) {

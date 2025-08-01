@@ -58,6 +58,7 @@ partial class Frameworks {
 		"DataDetection",
 		"DeviceCheck",
 		"DeviceDiscoveryExtension",
+		"DeviceDiscoveryUI",
 		"EventKit",
 		"EventKitUI",
 		"ExternalAccessory",

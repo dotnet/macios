@@ -2120,6 +2120,7 @@ IOS_FRAMEWORKS =         \
 	CoreTelephony \
 	CoreText \
 	DeviceDiscoveryExtension \
+	DeviceDiscoveryUI \
 	EventKit \
 	EventKitUI \
 	ExternalAccessory \

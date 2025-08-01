@@ -16,11 +16,9 @@ using NUnit.Framework.Internal;
 
 [Register ("AppDelegate")]
 public partial class AppDelegate : UIApplicationDelegate {
-	public static TouchRunner Runner { get; set; }
 
-#if !__MACOS__
-	public override UIWindow Window { get; set; }
-#endif
+	static internal UIWindow MainWindow;
+	public static TouchRunner Runner { get; set; }
 
 	partial void PostFinishedLaunching ();
 
@@ -29,9 +27,9 @@ public partial class AppDelegate : UIApplicationDelegate {
 #if __MACCATALYST__ || __MACOS__
 		TestRuntime.NotifyLaunchCompleted ();
 #endif
-#pragma warning disable CA1422
+
+#if __MACOS__
 		var window = new UIWindow (UIScreen.MainScreen.Bounds);
-#pragma warning restore CA1422
 
 		var runner = new TouchRunner (window);
 		foreach (var assembly in TestLoader.GetTestAssemblies ())
@@ -42,12 +40,48 @@ public partial class AppDelegate : UIApplicationDelegate {
 
 		window.RootViewController = new UINavigationController (runner.GetViewController ());
 		window.MakeKeyAndVisible ();
+#endif
 
 		PostFinishedLaunching ();
 
 		return true;
 	}
+
+#if !__MACOS__
+	public override UISceneConfiguration GetConfiguration (UIApplication application, UISceneSession connectingSceneSession,
+		UISceneConnectionOptions options)
+	{
+		return new UISceneConfiguration ("Default Configuration", connectingSceneSession.Role);
+	}
+#endif
 }
+
+#if !__MACOS__
+[Register ("SceneDelegate")]
+public partial class SceneDelegate : UIResponder, IUIWindowSceneDelegate {
+
+	[Export ("window")]
+	public UIWindow Window { get; set; }
+
+	[Export ("scene:willConnectToSession:options:")]
+	public void WillConnect (UIScene scene, UISceneSession session, UISceneConnectionOptions connectionOptions)
+	{
+		if (scene is UIWindowScene windowScene) {
+			Window ??= new UIWindow (windowScene);
+
+			var runner = new TouchRunner (Window);
+			foreach (var assembly in TestLoader.GetTestAssemblies ())
+				runner.Add (assembly);
+
+			AppDelegate.Runner = runner;
+			AppDelegate.MainWindow = Window;
+
+			Window.RootViewController = new UINavigationController (runner.GetViewController ());
+			Window.MakeKeyAndVisible ();
+		}
+	}
+}
+#endif
 
 public static class MainClass {
 	static void Main (string [] args)

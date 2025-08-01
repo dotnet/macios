@@ -35,7 +35,7 @@ readonly partial struct Accessor {
 		SymbolAvailability symbolAvailability,
 		ExportData<ObjCBindings.Property>? exportPropertyData,
 		ImmutableArray<AttributeCodeChange> attributes,
-		ImmutableArray<SyntaxToken> modifiers)
+		ImmutableArray<SyntaxToken> modifiers) : this (StructState.Initialized)
 	{
 		Kind = accessorKind;
 		SymbolAvailability = symbolAvailability;

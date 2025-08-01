@@ -233,4 +233,32 @@ static class Nomenclator {
 	/// <returns>The name of the backing field for the property.</returns>
 	public static string GetPropertyBackingFieldName (string propertyName, bool isStatic)
 		=> $"__mt_{propertyName}_var{(isStatic ? "_static" : "")}";
+
+	/// <summary>
+	/// Generates the name for a parameter in a task-based async method's callback.
+	/// </summary>
+	/// <param name="parameterName">The original name of the parameter.</param>
+	/// <returns>The name for the callback parameter.</returns>
+	public static string GetTaskCallbackParameterName (string parameterName)
+		=> $"_cb{parameterName}";
+
+	/// <summary>
+	/// Gets the name for the TaskCompletionSource variable used in async methods.
+	/// </summary>
+	/// <returns>The name of the TaskCompletionSource variable.</returns>
+	public static string GetTaskCompletionSourceName () => "_tcs";
+
+	/// <summary>
+	/// Generates the name for a protocol wrapper class.
+	/// The wrapper name is created by appending 'Wrapper' to the protocol name,
+	/// with dots replaced by underscores to ensure valid identifier names for nested classes.
+	/// </summary>
+	/// <param name="protocolName">The name of the protocol.</param>
+	/// <returns>The name of the protocol wrapper class.</returns>
+	public static string GetProtocolWrapperName (string protocolName)
+	{
+		// we will use the name of the protocol with a 'Wrapper' suffix
+		// we will replace any . with _ to ensure that the name is valid when working with nested classes.
+		return $"{protocolName.Replace ('.', '_')}Wrapper";
+	}
 }

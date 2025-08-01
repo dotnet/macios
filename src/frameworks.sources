@@ -1414,10 +1414,6 @@ PASSKIT_SOURCES = \
 	PassKit/PKPaymentRequest.cs	\
 	PassKit/PKShareablePassMetadata.cs \
 
-# PencilKit
-PENCILKIT_API_SOURCEs = \
-	PencilKit/Indexers.cs
-
 # PdfKit
 
 PDFKIT_API_SOURCES = \
@@ -1890,6 +1886,7 @@ SHARED_CORE_SOURCES = \
 
 SHARED_SOURCES = \
 	../runtime/Delegates.generated.cs \
+	Foundation/NSUrlSessionHandler.cs \
 	MonoNativeFunctionWrapperAttribute.cs \
 	NativeTypes/NMath.cs \
 	ObjCRuntime/AdoptsAttribute.cs \
@@ -1925,7 +1922,9 @@ SHARED_SOURCES = \
 	ObjCRuntime/TrampolineBlockBase.cs \
 	ObjCRuntime/TransientAttribute.cs \
 	ObjCRuntime/TypeConverter.cs \
-	ObjCRuntime/UserDelegateTypeAttribute.cs
+	ObjCRuntime/UserDelegateTypeAttribute.cs \
+	System.Net.Http/CFContentStream.cs \
+	System.Net.Http/CFNetworkHandler.cs \
 
 #
 # Here we list the frameworks each platform contains.

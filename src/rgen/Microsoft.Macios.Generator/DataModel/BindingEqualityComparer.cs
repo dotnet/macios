@@ -30,6 +30,9 @@ class BindingEqualityComparer : EqualityComparer<Binding> {
 		var namespaceComparer = new CollectionComparer<string> ();
 		if (!namespaceComparer.Equals (x.Namespace, y.Namespace))
 			return false;
+		var outerClassComparer = new OuterClassEqualityComparer ();
+		if (!outerClassComparer.Equals (x.OuterClasses, y.OuterClasses))
+			return false;
 		if (x.FullyQualifiedSymbol != y.FullyQualifiedSymbol)
 			return false;
 		if (x.Base != y.Base)

@@ -1667,7 +1667,6 @@ namespace Foundation {
 		[MacCatalyst (13, 1)]
 		NSDate StartOfDayForDate (NSDate date);
 
-		/// <include file="../docs/api/Foundation/NSCalendar.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSCalendar.DayChangedNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("NSCalendarDayChangedNotification")]
@@ -3168,22 +3167,18 @@ namespace Foundation {
 		[Field ("NSFileHandleOperationException")]
 		NSString OperationException { get; }
 
-		/// <include file="../docs/api/Foundation/NSFileHandle.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSFileHandle.ReadCompletionNotification']/*" />
 		[Field ("NSFileHandleReadCompletionNotification")]
 		[Notification (typeof (NSFileHandleReadEventArgs))]
 		NSString ReadCompletionNotification { get; }
 
-		/// <include file="../docs/api/Foundation/NSFileHandle.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSFileHandle.ReadToEndOfFileCompletionNotification']/*" />
 		[Field ("NSFileHandleReadToEndOfFileCompletionNotification")]
 		[Notification (typeof (NSFileHandleReadEventArgs))]
 		NSString ReadToEndOfFileCompletionNotification { get; }
 
-		/// <include file="../docs/api/Foundation/NSFileHandle.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSFileHandle.ConnectionAcceptedNotification']/*" />
 		[Field ("NSFileHandleConnectionAcceptedNotification")]
 		[Notification (typeof (NSFileHandleConnectionAcceptedEventArgs))]
 		NSString ConnectionAcceptedNotification { get; }
 
-		/// <include file="../docs/api/Foundation/NSFileHandle.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSFileHandle.DataAvailableNotification']/*" />
 		[Field ("NSFileHandleDataAvailableNotification")]
 		[Notification]
 		NSString DataAvailableNotification { get; }
@@ -3908,22 +3903,18 @@ namespace Foundation {
 		NSObject [] SearchScopes { get; set; }
 
 		// There is no info associated with these notifications
-		/// <include file="../docs/api/Foundation/NSMetadataQuery.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSMetadataQuery.DidStartGatheringNotification']/*" />
 		[Field ("NSMetadataQueryDidStartGatheringNotification")]
 		[Notification]
 		NSString DidStartGatheringNotification { get; }
 
-		/// <include file="../docs/api/Foundation/NSMetadataQuery.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSMetadataQuery.GatheringProgressNotification']/*" />
 		[Field ("NSMetadataQueryGatheringProgressNotification")]
 		[Notification]
 		NSString GatheringProgressNotification { get; }
 
-		/// <include file="../docs/api/Foundation/NSMetadataQuery.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSMetadataQuery.DidFinishGatheringNotification']/*" />
 		[Field ("NSMetadataQueryDidFinishGatheringNotification")]
 		[Notification]
 		NSString DidFinishGatheringNotification { get; }
 
-		/// <include file="../docs/api/Foundation/NSMetadataQuery.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSMetadataQuery.DidUpdateNotification']/*" />
 		[Field ("NSMetadataQueryDidUpdateNotification")]
 		[Notification]
 		NSString DidUpdateNotification { get; }
@@ -6474,28 +6465,24 @@ namespace Foundation {
 		[Field ("NSExtensionItemsAndErrorsKey")]
 		NSString ItemsAndErrorsKey { get; }
 
-		/// <include file="../docs/api/Foundation/NSExtensionContext.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSExtensionContext.HostWillEnterForegroundNotification']/*" />
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("NSExtensionHostWillEnterForegroundNotification")]
 		NSString HostWillEnterForegroundNotification { get; }
 
-		/// <include file="../docs/api/Foundation/NSExtensionContext.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSExtensionContext.HostDidEnterBackgroundNotification']/*" />
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("NSExtensionHostDidEnterBackgroundNotification")]
 		NSString HostDidEnterBackgroundNotification { get; }
 
-		/// <include file="../docs/api/Foundation/NSExtensionContext.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSExtensionContext.HostWillResignActiveNotification']/*" />
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("NSExtensionHostWillResignActiveNotification")]
 		NSString HostWillResignActiveNotification { get; }
 
-		/// <include file="../docs/api/Foundation/NSExtensionContext.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSExtensionContext.HostDidBecomeActiveNotification']/*" />
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Notification]
@@ -6816,7 +6803,6 @@ namespace Foundation {
 		[Export ("localeWithLocaleIdentifier:")]
 		NSLocale FromLocaleIdentifier (string ident);
 
-		/// <include file="../docs/api/Foundation/NSLocale.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSLocale.CurrentLocaleDidChangeNotification']/*" />
 		[Field ("NSCurrentLocaleDidChangeNotification")]
 		[Notification]
 		NSString CurrentLocaleDidChangeNotification { get; }
@@ -7437,7 +7423,6 @@ namespace Foundation {
 		[Export ("synchronize")]
 		bool Synchronize ();
 
-		/// <include file="../docs/api/Foundation/NSUbiquitousKeyValueStore.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSUbiquitousKeyValueStore.DidChangeExternallyNotification']/*" />
 		[Field ("NSUbiquitousKeyValueStoreDidChangeExternallyNotification")]
 		[Notification (typeof (NSUbiquitousKeyValueStoreChangeEventArgs))]
 		NSString DidChangeExternallyNotification { get; }
@@ -7933,14 +7918,12 @@ namespace Foundation {
 		[Field ("NSRegistrationDomain")]
 		NSString RegistrationDomain { get; }
 
-		/// <include file="../docs/api/Foundation/NSUserDefaults.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSUserDefaults.SizeLimitExceededNotification']/*" />
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("NSUserDefaultsSizeLimitExceededNotification")]
 		NSString SizeLimitExceededNotification { get; }
 
-		/// <include file="../docs/api/Foundation/NSUserDefaults.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSUserDefaults.NoCloudAccountNotification']/*" />
 		[Deprecated (PlatformName.iOS, 9, 3, "This notification is never posted.")]
 		[Deprecated (PlatformName.TvOS, 9, 3, "This notification is never posted.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, "This notification is never posted.")]
@@ -7950,7 +7933,6 @@ namespace Foundation {
 		[Field ("NSUbiquitousUserDefaultsNoCloudAccountNotification")]
 		NSString NoCloudAccountNotification { get; }
 
-		/// <include file="../docs/api/Foundation/NSUserDefaults.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSUserDefaults.DidChangeAccountsNotification']/*" />
 		[Deprecated (PlatformName.iOS, 9, 3, "This notification is never posted.")]
 		[Deprecated (PlatformName.TvOS, 9, 3, "This notification is never posted.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, "This notification is never posted.")]
@@ -7960,7 +7942,6 @@ namespace Foundation {
 		[Field ("NSUbiquitousUserDefaultsDidChangeAccountsNotification")]
 		NSString DidChangeAccountsNotification { get; }
 
-		/// <include file="../docs/api/Foundation/NSUserDefaults.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSUserDefaults.CompletedInitialSyncNotification']/*" />
 		[Deprecated (PlatformName.iOS, 9, 3, "This notification is never posted.")]
 		[Deprecated (PlatformName.TvOS, 9, 3, "This notification is never posted.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, "This notification is never posted.")]
@@ -7970,7 +7951,6 @@ namespace Foundation {
 		[Field ("NSUbiquitousUserDefaultsCompletedInitialSyncNotification")]
 		NSString CompletedInitialSyncNotification { get; }
 
-		/// <include file="../docs/api/Foundation/NSUserDefaults.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSUserDefaults.DidChangeNotification']/*" />
 		[Notification]
 		[Field ("NSUserDefaultsDidChangeNotification")]
 		NSString DidChangeNotification { get; }
@@ -10028,7 +10008,6 @@ namespace Foundation {
 		[Field ("NSURLCredentialStorageRemoveSynchronizableCredentials")]
 		NSString RemoveSynchronizableCredentials { get; }
 
-		/// <include file="../docs/api/Foundation/NSUrlCredentialStorage.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSUrlCredentialStorage.ChangedNotification']/*" />
 		[Deprecated (PlatformName.MacOSX, 10, 14, "This notification is never posted.")]
 		[Deprecated (PlatformName.iOS, 12, 0, "This notification is never posted.")]
 		[Deprecated (PlatformName.TvOS, 12, 0, "This notification is never posted.")]
@@ -11275,37 +11254,30 @@ namespace Foundation {
 		[Export ("redoMenuTitleForUndoActionName:")]
 		string RedoMenuTitleForUndoActionName (string name);
 
-		/// <include file="../docs/api/Foundation/NSUndoManager.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSUndoManager.CheckpointNotification']/*" />
 		[Field ("NSUndoManagerCheckpointNotification")]
 		[Notification]
 		NSString CheckpointNotification { get; }
 
-		/// <include file="../docs/api/Foundation/NSUndoManager.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSUndoManager.DidOpenUndoGroupNotification']/*" />
 		[Field ("NSUndoManagerDidOpenUndoGroupNotification")]
 		[Notification]
 		NSString DidOpenUndoGroupNotification { get; }
 
-		/// <include file="../docs/api/Foundation/NSUndoManager.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSUndoManager.DidRedoChangeNotification']/*" />
 		[Field ("NSUndoManagerDidRedoChangeNotification")]
 		[Notification]
 		NSString DidRedoChangeNotification { get; }
 
-		/// <include file="../docs/api/Foundation/NSUndoManager.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSUndoManager.DidUndoChangeNotification']/*" />
 		[Field ("NSUndoManagerDidUndoChangeNotification")]
 		[Notification]
 		NSString DidUndoChangeNotification { get; }
 
-		/// <include file="../docs/api/Foundation/NSUndoManager.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSUndoManager.WillCloseUndoGroupNotification']/*" />
 		[Field ("NSUndoManagerWillCloseUndoGroupNotification")]
 		[Notification (typeof (NSUndoManagerCloseUndoGroupEventArgs))]
 		NSString WillCloseUndoGroupNotification { get; }
 
-		/// <include file="../docs/api/Foundation/NSUndoManager.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSUndoManager.WillRedoChangeNotification']/*" />
 		[Field ("NSUndoManagerWillRedoChangeNotification")]
 		[Notification]
 		NSString WillRedoChangeNotification { get; }
 
-		/// <include file="../docs/api/Foundation/NSUndoManager.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSUndoManager.WillUndoChangeNotification']/*" />
 		[Field ("NSUndoManagerWillUndoChangeNotification")]
 		[Notification]
 		NSString WillUndoChangeNotification { get; }
@@ -11326,7 +11298,6 @@ namespace Foundation {
 		[Field ("NSUndoManagerGroupIsDiscardableKey")]
 		NSString GroupIsDiscardableKey { get; }
 
-		/// <include file="../docs/api/Foundation/NSUndoManager.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSUndoManager.DidCloseUndoGroupNotification']/*" />
 		[Field ("NSUndoManagerDidCloseUndoGroupNotification")]
 		[Notification (typeof (NSUndoManagerCloseUndoGroupEventArgs))]
 		NSString DidCloseUndoGroupNotification { get; }
@@ -13929,12 +13900,10 @@ namespace Foundation {
 		[Export ("storeCookies:forTask:")]
 		void StoreCookies (NSHttpCookie [] cookies, NSUrlSessionTask task);
 
-		/// <include file="../docs/api/Foundation/NSHttpCookieStorage.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSHttpCookieStorage.AcceptPolicyChangedNotification']/*" />
 		[Notification]
 		[Field ("NSHTTPCookieManagerAcceptPolicyChangedNotification")]
 		NSString CookiesChangedNotification { get; }
 
-		/// <include file="../docs/api/Foundation/NSHttpCookieStorage.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSHttpCookieStorage.CookiesChangedNotification']/*" />
 		[Deprecated (PlatformName.MacOSX, 10, 11, "This notification is never posted.")]
 		[Deprecated (PlatformName.iOS, 9, 0, "This notification is never posted.")]
 		[Deprecated (PlatformName.TvOS, 9, 0, "This notification is never posted.")]
@@ -14336,7 +14305,6 @@ namespace Foundation {
 		[Export ("endAccessingResources")]
 		void EndAccessingResources ();
 
-		/// <include file="../docs/api/Foundation/NSBundleResourceRequest.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSBundleResourceRequest.LowDiskSpaceNotification']/*" />
 		[Field ("NSBundleResourceRequestLowDiskSpaceNotification")]
 		[Notification]
 		NSString LowDiskSpaceNotification { get; }
@@ -17082,7 +17050,6 @@ namespace Foundation {
 		[Export ("lowPowerModeEnabled")]
 		bool LowPowerModeEnabled { [Bind ("isLowPowerModeEnabled")] get; }
 
-		/// <include file="../docs/api/Foundation/NSProcessInfo.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSProcessInfo.PowerStateDidChangeNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("NSProcessInfoPowerStateDidChangeNotification")]
@@ -17092,7 +17059,6 @@ namespace Foundation {
 		[Export ("thermalState")]
 		NSProcessInfoThermalState ThermalState { get; }
 
-		/// <include file="../docs/api/Foundation/NSProcessInfo.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSProcessInfo.ThermalStateDidChangeNotification']/*" />
 		[Field ("NSProcessInfoThermalStateDidChangeNotification")]
 		[MacCatalyst (13, 1)]
 		[Notification]
@@ -18039,7 +18005,6 @@ namespace Foundation {
 		[Export ("ubiquityIdentityToken")]
 		NSObject UbiquityIdentityToken { get; }
 
-		/// <include file="../docs/api/Foundation/NSFileManager.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSFileManager.UbiquityIdentityDidChangeNotification']/*" />
 		[Field ("NSUbiquityIdentityDidChangeNotification")]
 		[Notification]
 		NSString UbiquityIdentityDidChangeNotification { get; }
@@ -20641,9 +20606,6 @@ namespace Foundation {
 		[Export ("terminationReason")]
 		NSTaskTerminationReason TerminationReason { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Field ("NSTaskDidTerminateNotification")]
 		[Notification]
 		NSString DidTerminateNotification { get; }

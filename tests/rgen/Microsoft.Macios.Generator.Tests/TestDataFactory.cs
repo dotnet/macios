@@ -544,6 +544,8 @@ static class TestDataFactory {
 			isReferenceType: true
 		) {
 			IsDelegate = true,
+			IsGenericType = parameters.Length > 0,
+			TypeArguments = [.. parameters],
 			Delegate = delegateInfo,
 			Parents = [
 				"System.MulticastDelegate",
@@ -553,7 +555,7 @@ static class TestDataFactory {
 			Interfaces = [
 				"System.ICloneable",
 				"System.Runtime.Serialization.ISerializable",
-			]
+			],
 		};
 
 	public static TypeInfo ReturnTypeForFunc (DelegateInfo? delegateInfo = null, params string [] parameters)

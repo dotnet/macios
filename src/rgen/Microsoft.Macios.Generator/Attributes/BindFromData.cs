@@ -11,14 +11,14 @@ namespace Microsoft.Macios.Generator.Attributes;
 readonly struct BindFromData : IEquatable<BindFromData> {
 
 	public TypeInfo Type { get; }
-	public TypeInfo? OriginalType { get; }
+	public TypeInfo OriginalType { get; } = TypeInfo.Default;
 
 	public BindFromData (TypeInfo type)
 	{
 		Type = type;
 	}
 
-	public BindFromData (TypeInfo type, TypeInfo? originalType)
+	public BindFromData (TypeInfo type, TypeInfo originalType)
 	{
 		Type = type;
 		OriginalType = originalType;
@@ -31,7 +31,7 @@ readonly struct BindFromData : IEquatable<BindFromData> {
 		data = null;
 		var count = attributeData.ConstructorArguments.Length;
 		TypeInfo type;
-		TypeInfo? originalType = null;
+		TypeInfo originalType = TypeInfo.Default;
 
 		switch (count) {
 		case 1:
@@ -68,7 +68,7 @@ readonly struct BindFromData : IEquatable<BindFromData> {
 	public bool Equals (BindFromData other)
 	{
 		return Type.FullyQualifiedName == other.Type.FullyQualifiedName
-			   && OriginalType?.FullyQualifiedName == other.OriginalType?.FullyQualifiedName;
+			   && OriginalType.FullyQualifiedName == other.OriginalType.FullyQualifiedName;
 	}
 
 	/// <inheritdoc />
@@ -95,6 +95,7 @@ readonly struct BindFromData : IEquatable<BindFromData> {
 
 	public override string ToString ()
 	{
-		return $"{{ Type: '{Type.FullyQualifiedName}', OriginalType: '{OriginalType?.FullyQualifiedName ?? "null"}' }}";
+		var originalType = OriginalType.IsNullOrDefault ? "null" : OriginalType.FullyQualifiedName;
+		return $"{{ Type: '{Type.FullyQualifiedName}', OriginalType: '{originalType}' }}";
 	}
 }

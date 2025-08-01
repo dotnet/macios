@@ -34,13 +34,13 @@ class ProtocolAndModelEmitter : ICodeEmitter {
 	}
 
 	/// <inheritdoc />
-	public bool TryEmit (in BindingContext bindingContext, [NotNullWhen(false)] out ImmutableArray<Diagnostic>? diagnostics)
+	public bool TryEmit (in BindingContext bindingContext, [NotNullWhen (false)] out ImmutableArray<Diagnostic>? diagnostics)
 	{
 		// try to emit the protocol first
 		if (!protocolEmitter.TryEmit (bindingContext, out diagnostics)) {
 			return false;
 		}
-		
+
 		// add space and add the wrapper emitter
 		bindingContext.Builder.WriteLine ();
 

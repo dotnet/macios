@@ -21,7 +21,7 @@ namespace Microsoft.Macios.Generator.Emitters;
 class ProtocolWrapperEmitter : ICodeEmitter {
 	/// <inheritdoc />
 	public string GetSymbolName (in Binding binding) => Nomenclator.GetProtocolWrapperName (binding.Name);
-	
+
 	/// <inheritdoc />
 	public IEnumerable<string> UsingStatements { get; } = [];
 
@@ -52,7 +52,7 @@ class ProtocolWrapperEmitter : ICodeEmitter {
 			classBlock.WriteLine ();
 		}
 	}
-	
+
 	/// <summary>
 	/// Emits the methods for the protocol wrapper class.
 	/// </summary>
@@ -71,17 +71,17 @@ class ProtocolWrapperEmitter : ICodeEmitter {
 	}
 
 	/// <inheritdoc />
-	public bool TryEmit (in BindingContext bindingContext, [NotNullWhen(false)] out ImmutableArray<Diagnostic>? diagnostics)
+	public bool TryEmit (in BindingContext bindingContext, [NotNullWhen (false)] out ImmutableArray<Diagnostic>? diagnostics)
 	{
 		diagnostics = null;
 		var bindingData = (BindingTypeData<Protocol>) bindingContext.Changes.BindingInfo;
 		var protocolName = bindingData.Name ?? bindingContext.Changes.Name [1..];
 		var wrapperName = Nomenclator.GetProtocolWrapperName (protocolName);
-		
+
 		// we do not emit outer classes for protocol wrappers
 		using (var classBlock = bindingContext.Builder.CreateBlock (
-			       $"internal unsafe sealed class {wrapperName} : BaseWrapper, {bindingContext.Changes.Name}",
-			       true)) {
+				   $"internal unsafe sealed class {wrapperName} : BaseWrapper, {bindingContext.Changes.Name}",
+				   true)) {
 			EmitDefaultConstructors (bindingContext, classBlock);
 			EmitProperties (bindingContext, classBlock);
 			EmitMethods (bindingContext, classBlock);

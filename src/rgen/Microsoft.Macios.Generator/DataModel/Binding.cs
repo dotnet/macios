@@ -161,7 +161,7 @@ readonly partial struct Binding {
 			}
 		}
 	}
-	
+
 	readonly Dictionary<string, int> parentPropertyIndex = new ();
 	readonly ImmutableArray<Property> parentProperties = [];
 
@@ -281,10 +281,10 @@ readonly partial struct Binding {
 			}
 		}
 	}
-	
+
 	readonly Dictionary<string, int> parentMethodIndex = new ();
 	readonly ImmutableArray<Method> parentMethods = [];
-	
+
 	/// <summary>
 	/// Gets the methods inherited from parent protocols.
 	/// </summary>

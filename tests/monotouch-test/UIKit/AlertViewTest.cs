@@ -16,6 +16,14 @@ namespace MonoTouchFixtures.UIKit {
 	[Preserve (AllMembers = true)]
 	public class AlertViewTest {
 
+		[SetUp]
+		public void Setup ()
+		{
+			// Throws an exception if the test is run on a UIScene based application
+			// Objective-C exception thrown.  Name: NSObjectNotAvailableException Reason: UIAlertView is deprecated and unavailable for UIScene based applications, please use UIAlertController!
+			Assert.Ignore ("UIAlertView is deprecated and unavailable for UIScene based applications. We moved to use UISceneDelegate in Xcode 26.");
+		}
+
 		[Test]
 		public void InitWithFrame ()
 		{

@@ -88,15 +88,29 @@ static partial class BindingSyntaxFactory {
 		);
 
 	/// <summary>
-	/// Generates the "this.Handle" expression.
+	/// Generates the "this.Handle" expression, or "parameter.Handle" if a parameter name is provided.
 	/// </summary>
-	/// <returns></returns>
-	public static MemberAccessExpressionSyntax ThisHandle ()
+	/// <param name="thisParameter">The name of the 'this' parameter if the method is an extension method. If null, 'this' is used.</param>
+	/// <returns>A member access expression for the handle.</returns>
+	public static MemberAccessExpressionSyntax ThisHandle (string? thisParameter = null)
 	{
 		return MemberAccessExpression (
 			SyntaxKind.SimpleMemberAccessExpression,
-			ThisExpression (),
+			thisParameter is null ? ThisExpression () : IdentifierName (thisParameter),
 			IdentifierName ("Handle"));
+	}
+
+	/// <summary>
+	/// Generates the "this.SuperHandle" expression, or "parameter.SuperHandle" if a parameter name is provided.
+	/// </summary>
+	/// <param name="thisParameter">The name of the 'this' parameter if the method is an extension method. If null, 'this' is used.</param>
+	/// <returns>A member access expression for the super handle.</returns>
+	public static MemberAccessExpressionSyntax ThisSuperHandle (string? thisParameter = null)
+	{
+		return MemberAccessExpression (
+			SyntaxKind.SimpleMemberAccessExpression,
+			thisParameter is null ? ThisExpression () : IdentifierName (thisParameter),
+			IdentifierName ("SuperHandle"));
 	}
 
 	/// <summary>
@@ -105,9 +119,11 @@ static partial class BindingSyntaxFactory {
 	/// <param name="objcMsgSendMethod">The name of the method in the messaging namespace.</param>
 	/// <param name="selector">The selector.</param>
 	/// <param name="parameters">An optional argument list.</param>
+	/// <param name="isSuper">A value indicating whether to call the base implementation (`super`).</param>
+	/// <param name="thisParameter">The name of the 'this' parameter if the method is an extension method.</param>
 	/// <returns>The expression needed to call a specific messaging method.</returns>
 	public static InvocationExpressionSyntax MessagingInvocation (string objcMsgSendMethod, string selector,
-		ImmutableArray<ArgumentSyntax> parameters)
+		ImmutableArray<ArgumentSyntax> parameters, bool isSuper, string? thisParameter = null)
 	{
 		// the size of the arguments is 2 + the optional arguments
 		// [0] = the handle
@@ -117,8 +133,9 @@ static partial class BindingSyntaxFactory {
 		// except for the last one, so we need to add parametersCount - 1 commas
 		var parametersCount = 2 + parameters.Length;
 		var args = new SyntaxNodeOrToken [(2 * parametersCount) - 1];
-		// the first two arguments are the selector and the handle, we add those by hand
-		args [0] = Argument (ThisHandle ());
+		// the first two arguments are the selector and the handle, we add those by hand, if the call added a thisParameter
+		// it means we are dealing with an extension
+		args [0] = Argument (isSuper ? ThisSuperHandle (thisParameter) : ThisHandle (thisParameter));
 		args [1] = Token (SyntaxKind.CommaToken).WithTrailingTrivia (Space);
 		args [2] = Argument (SelectorGetHandle (selector));
 
@@ -159,7 +176,7 @@ static partial class BindingSyntaxFactory {
 	/// Generates the expression to call the CFArray.StringArrayFromHandle method.
 	/// </summary>
 	/// <param name="arguments">The argument list for the invocation.</param>
-	/// <returns>The expression to call CFArray.StringArrayFromHandle method with the provided args.</returns>
+	/// <returns>The expression to call the CFArray.StringArrayFromHandle method with the provided args.</returns>
 	internal static InvocationExpressionSyntax StringArrayFromHandle (ImmutableArray<ArgumentSyntax> arguments)
 		=> MemberInvocationExpression (CFArray, "StringArrayFromHandle", arguments);
 
@@ -428,12 +445,24 @@ static partial class BindingSyntaxFactory {
 		);
 
 	/// <summary>
+	/// Generate an implicit object creation expression using the provided arguments.
+	/// </summary>
+	/// <param name="arguments">The argument list for the object creation expression.</param>
+	/// <returns>An implicit object creation expression.</returns>
+	internal static BaseObjectCreationExpressionSyntax New (ImmutableArray<ArgumentSyntax> arguments)
+	{
+		var argumentList = ArgumentList (
+			SeparatedList<ArgumentSyntax> (arguments.ToSyntaxNodeOrTokenArray ()));
+		return ImplicitObjectCreationExpression ().WithArgumentList (argumentList.WithLeadingTrivia (Space));
+	}
+
+	/// <summary>
 	/// Generate an object creation expressing for the given type info using the provided arguments.
 	/// </summary>
 	/// <param name="type">The information of the type of object to be created.</param>
 	/// <param name="arguments">The argument list for the object creation expression.</param>
 	/// <returns>An object creation expression.</returns>
-	internal static ObjectCreationExpressionSyntax New (TypeSyntax type, ImmutableArray<ArgumentSyntax> arguments)
+	internal static BaseObjectCreationExpressionSyntax New (TypeSyntax type, ImmutableArray<ArgumentSyntax> arguments)
 	{
 		var argumentList = ArgumentList (
 			SeparatedList<ArgumentSyntax> (arguments.ToSyntaxNodeOrTokenArray ()));

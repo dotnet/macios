@@ -3,7 +3,11 @@
 
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
+using System.Text;
+using Microsoft.Macios.Generator.Attributes;
 using Microsoft.Macios.Generator.DataModel;
+using Microsoft.Macios.Generator.Formatters;
 using static Microsoft.Macios.Generator.Emitters.BindingSyntaxFactory;
 
 namespace Microsoft.Macios.Generator.IO;
@@ -115,6 +119,118 @@ static class TabbedStringBuilderExtensions {
 		var nativeInvoker =
 			Nomenclator.GetTrampolineClassName (typeInfo, Nomenclator.TrampolineClassType.NativeInvocationClass);
 		self.WriteLine ($"[param: BlockProxy (typeof ({Trampolines}.{nativeInvoker}))]");
+		return self;
+	}
+
+	/// <summary>
+	/// Appends a `[Preserve]` attribute to the current writer.
+	/// </summary>
+	/// <param name="self">A tabbed string writer.</param>
+	/// <param name="conditional">A value indicating whether the preservation is conditional.</param>
+	/// <returns>The current writer.</returns>
+	public static TabbedWriter<StringWriter> AppendPreserveAttribute (this TabbedWriter<StringWriter> self,
+		bool conditional = true)
+	{
+		self.WriteLine ($"[Preserve (Conditional = {conditional.ToString ().ToLower ()})]");
+		return self;
+	}
+
+	/// <summary>
+	/// Appends a `[DynamicDependency]` attribute to the current writer.
+	/// This attribute is used to indicate that a member has a dynamic dependency on another member.
+	/// </summary>
+	/// <param name="self">A tabbed string writer.</param>
+	/// <param name="member">The member that is dynamically depended upon.</param>
+	/// <returns>The current writer.</returns>
+	public static TabbedWriter<StringWriter> AppendDynamicDependencyAttribute (this TabbedWriter<StringWriter> self,
+		string member)
+	{
+
+		self.WriteLine ($"[DynamicDependency (\"{member}\")]");
+		return self;
+	}
+
+	/// <summary>
+	/// Appends a `[ProtocolMember]` attribute to the current writer.
+	/// This attribute contains metadata about a protocol member (method or property).
+	/// </summary>
+	/// <param name="self">A tabbed string writer.</param>
+	/// <param name="protocolMemberData">The protocol member metadata to emit.</param>
+	/// <returns>The current writer.</returns>
+	public static TabbedWriter<StringWriter> AppendProtocolMemberData (this TabbedWriter<StringWriter> self,
+		in ProtocolMemberData protocolMemberData)
+	{
+		// shared properties 
+		var sb = new StringBuilder ("[ProtocolMember (");
+		sb.Append ($"IsRequired = {protocolMemberData.IsRequired.ToString ().ToLower ()}, ");
+		sb.Append ($"IsProperty = {protocolMemberData.IsProperty.ToString ().ToLower ()}, ");
+		sb.Append ($"IsStatic = {protocolMemberData.IsStatic.ToString ().ToLower ()}, ");
+		sb.Append ($"Name = \"{protocolMemberData.Name}\", ");
+		sb.Append ($"Selector = \"{protocolMemberData.Selector}\", ");
+		if (protocolMemberData.IsProperty) {
+			sb.Append ($"PropertyType = typeof ({protocolMemberData.PropertyType!.Value.GetIdentifierSyntax ()}), ");
+			sb.Append ($"GetterSelector = {Quoted (protocolMemberData.GetterSelector)}, ");
+			sb.Append ($"SetterSelector = {Quoted (protocolMemberData.SetterSelector)}, ");
+			sb.Append ($"ArgumentSemantic = ArgumentSemantic.{protocolMemberData.ArgumentSemantic}");
+		} else {
+			sb.Append ($"ReturnType = typeof ({protocolMemberData.ReturnType!.Value.GetIdentifierSyntax ()}), ");
+			// build the parameter types string array
+			var paramTypes = string.Join (", ",
+				protocolMemberData.ParameterType.Select (x => $"typeof ({x.GetIdentifierSyntax ()})"));
+			sb.Append ($"ParameterType = new Type [] {{ {paramTypes} }}, ");
+
+			// build the parameters ref array
+			var parametersRef = string.Join (", ",
+				protocolMemberData.ParameterByRef.Select (x => x ? "true" : "false"));
+			sb.Append ($"ParameterByRef = new bool [] {{ {parametersRef} }}");
+		}
+
+		// the following are optional since we might not have a proxy for a callback but are used in both cases (methods and properties)
+		if (protocolMemberData.ReturnTypeDelegateProxy is not null) {
+			sb.Append ($", ReturnTypeDelegateProxy = typeof ({protocolMemberData.ReturnTypeDelegateProxy.Value.GetIdentifierSyntax ()})");
+		}
+
+		if (protocolMemberData.ParameterBlockProxy.Length > 0) {
+			// build the parameter block proxy string array
+			var blockProxies = string.Join (", ",
+				protocolMemberData.ParameterBlockProxy.Select (x => x is null ? "null" : $"typeof ({x.Value.GetIdentifierSyntax ()})"));
+			sb.Append ($", ParameterBlockProxy = new Type? [] {{ {blockProxies} }}");
+		}
+
+		sb.Append (")]");
+		self.WriteLine (sb.ToString ());
+		return self;
+
+		string Quoted (string? str)
+		{
+			return str is null ? "null" : $"\"{str}\"";
+		}
+	}
+
+	/// <summary>
+	/// Appends a `[Protocol]` attribute to the current writer.
+	/// This attribute is used to mark an interface as representing an Objective-C protocol.
+	/// </summary>
+	/// <param name="self">A tabbed string writer.</param>
+	/// <param name="name">The name of the Objective-C protocol.</param>
+	/// <param name="wrapperName">The name of the wrapper type for the protocol.</param>
+	/// <returns>The current writer.</returns>
+	public static TabbedWriter<StringWriter> AppendProtocolAttribute (this TabbedWriter<StringWriter> self,
+		string name, string wrapperName)
+	{
+		self.WriteLine ($"[Protocol (Name = \"{name}\", WrapperType = typeof ({wrapperName}))]");
+		return self;
+	}
+
+	/// <summary>
+	/// Appends a `[Foundation.RequiredMember]` attribute to the current writer.
+	/// This attribute is used to mark a member as required.
+	/// </summary>
+	/// <param name="self">A tabbed string writer.</param>
+	/// <returns>The current writer.</returns>
+	public static TabbedWriter<StringWriter> AppendRequiredMemberAttribute (this TabbedWriter<StringWriter> self)
+	{
+		self.WriteLine ($"[{RequiredMember}]");
 		return self;
 	}
 }

@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 using System;
 using System.Collections.Immutable;
+using System.Linq;
 using System.Runtime.InteropServices;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -92,7 +93,7 @@ readonly partial struct Property : IEquatable<Property> {
 		get => modifiers;
 		init {
 			modifiers = value;
-			isStatic = modifiers.Contains (Token (SyntaxKind.StaticKeyword));
+			isStatic = modifiers.Any (x => x.IsKind (SyntaxKind.StaticKeyword));
 		}
 	}
 
@@ -103,14 +104,14 @@ readonly partial struct Property : IEquatable<Property> {
 
 	public Parameter ValueParameter { get; private init; }
 
-	public Accessor? GetAccessor (AccessorKind accessorKind)
+	public Accessor GetAccessor (AccessorKind accessorKind)
 	{
 		// careful, do not use FirstOrDefault from LINQ because we are using structs!
 		foreach (var accessor in Accessors) {
 			if (accessor.Kind == accessorKind)
 				return accessor;
 		}
-		return null;
+		return Accessor.Default;
 	}
 
 	bool CoreEquals (Property other)

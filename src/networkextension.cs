@@ -1089,7 +1089,6 @@ namespace NetworkExtension {
 		[Export ("enabled")]
 		bool Enabled { [Bind ("isEnabled")] get; set; }
 
-		/// <include file="../docs/api/NetworkExtension/NEFilterManager.xml" path="/Documentation/Docs[@DocId='P:NetworkExtension.NEFilterManager.ConfigurationDidChangeNotification']/*" />
 		[Field ("NEFilterConfigurationDidChangeNotification")]
 		[Notification]
 		NSString ConfigurationDidChangeNotification { get; }
@@ -2349,7 +2348,6 @@ namespace NetworkExtension {
 		[Export ("setAuthorization:")]
 		void _SetAuthorization (IntPtr auth);
 
-		/// <include file="../docs/api/NetworkExtension/NEVpnManager.xml" path="/Documentation/Docs[@DocId='P:NetworkExtension.NEVpnManager.ConfigurationChangeNotification']/*" />
 		[Notification]
 		[Field ("NEVPNConfigurationChangeNotification")]
 		NSString ConfigurationChangeNotification { get; }
@@ -2411,7 +2409,6 @@ namespace NetworkExtension {
 		[Export ("manager")]
 		NEVpnManager Manager { get; }
 
-		/// <include file="../docs/api/NetworkExtension/NEVpnConnection.xml" path="/Documentation/Docs[@DocId='P:NetworkExtension.NEVpnConnection.StatusDidChangeNotification']/*" />
 		[Notification]
 		[Field ("NEVPNStatusDidChangeNotification")]
 		NSString StatusDidChangeNotification { get; }
@@ -4044,7 +4041,6 @@ namespace NetworkExtension {
 	[BaseType (typeof (NSObject), Name = "NEDNSProxyManager")]
 	interface NEDnsProxyManager {
 
-		/// <include file="../docs/api/NetworkExtension/NEDnsProxyManager.xml" path="/Documentation/Docs[@DocId='P:NetworkExtension.NEDnsProxyManager.ProxyConfigurationDidChangeNotification']/*" />
 		[Notification]
 		[Field ("NEDNSProxyConfigurationDidChangeNotification")]
 		NSString ProxyConfigurationDidChangeNotification { get; }

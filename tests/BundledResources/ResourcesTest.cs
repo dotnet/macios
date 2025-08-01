@@ -33,7 +33,13 @@ namespace BundledResources {
 
 			// resources are removed by the linker or an extra step (e.g. "link sdk" or "don't link") but that
 			// extra step is done only on device (to keep the simulator builds as fast as possible)
-			var resources = typeof (ResourcesTest).Assembly.GetManifestResourceNames ();
+			// Note: Also we need to remove the shared-dotnet.plist file from the list of resources if present
+			// since normally it has been embedded in the app bundle manifest (and not as a resource)
+			// unless we are running under the context of (bundle original resources).
+			var resources = typeof (ResourcesTest).Assembly.GetManifestResourceNames ()
+				.Where (r => !r.Contains ("shared-dotnet.plist"))
+				.ToArray ();
+
 #if __MACOS__ || __MACCATALYST__
 			var hasResources = false;
 #else

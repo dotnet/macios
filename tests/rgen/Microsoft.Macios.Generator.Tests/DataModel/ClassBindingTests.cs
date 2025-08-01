@@ -263,6 +263,7 @@ namespace NS;
 public partial class MyClass {
 	string name = string.Empty;
 
+	[Export<Constructor> (""initWithScheme:host:path:"")]
 	public MyClass () {}
 }
 ";
@@ -290,7 +291,10 @@ public partial class MyClass {
 						new (
 							type: "MyClass",
 							symbolAvailability: new (),
-							attributes: [],
+							exportData: new ("initWithScheme:host:path:", ArgumentSemantic.None),
+							attributes: [
+								new ("ObjCBindings.ExportAttribute<ObjCBindings.Constructor>", ["initWithScheme:host:path:"])
+							],
 							modifiers: [
 								SyntaxFactory.Token (SyntaxKind.PublicKeyword)
 							],
@@ -309,8 +313,10 @@ namespace NS;
 public partial class MyClass {
 	string name = string.Empty;
 
+	[Export<Constructor> (""init"")]
 	public MyClass () {}
 
+	[Export<Constructor> (""initWithName:"")]
 	public MyClass(string name) {
 		name = name;
 	}
@@ -340,7 +346,10 @@ public partial class MyClass {
 						new (
 							type: "MyClass",
 							symbolAvailability: new (),
-							attributes: [],
+							exportData: new ("init", ArgumentSemantic.None),
+							attributes: [
+								new ("ObjCBindings.ExportAttribute<ObjCBindings.Constructor>", ["init"])
+							],
 							modifiers: [
 								SyntaxFactory.Token (SyntaxKind.PublicKeyword)
 							],
@@ -349,7 +358,10 @@ public partial class MyClass {
 						new (
 							type: "MyClass",
 							symbolAvailability: new (),
-							attributes: [],
+							exportData: new ("initWithName:", ArgumentSemantic.None),
+							attributes: [
+								new ("ObjCBindings.ExportAttribute<ObjCBindings.Constructor>", ["initWithName:"])
+							],
 							modifiers: [
 								SyntaxFactory.Token (SyntaxKind.PublicKeyword)
 							],

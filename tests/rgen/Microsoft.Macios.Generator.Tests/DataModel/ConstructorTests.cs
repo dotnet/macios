@@ -8,6 +8,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Macios.Generator.Attributes;
 using Microsoft.Macios.Generator.Availability;
 using Microsoft.Macios.Generator.DataModel;
+using ObjCRuntime;
 using Xamarin.Tests;
 using Xamarin.Utils;
 using Xunit;
@@ -21,10 +22,15 @@ public class ConstructorTests : BaseGeneratorTestClass {
 		{
 			const string emptyConstructor = @"
 using System;
+using ObjCBindings;
+using ObjCRuntime;
 
 namespace NS {
+	[BindingType<Class>]
 	public class TestClass {
 		string name;	
+
+		[Export<Constructor> (""init"")]
 		public TestClass () {
 			name = ""Test"";
 		}
@@ -37,7 +43,10 @@ namespace NS {
 				new Constructor (
 					type: "TestClass",
 					symbolAvailability: new (),
-					attributes: [],
+					exportData: new ("init", ArgumentSemantic.None),
+					attributes: [
+						new ("ObjCBindings.ExportAttribute<ObjCBindings.Constructor>", ["init"])
+					],
 					modifiers: [
 						SyntaxFactory.Token (SyntaxKind.PublicKeyword),
 					],
@@ -47,10 +56,14 @@ namespace NS {
 
 			const string singleParameter = @"
 using System;
+using ObjCBindings;
+using ObjCRuntime;
 
 namespace NS {
+	[BindingType<Class>]
 	public class TestClass {
 		string name;	
+		[Export<Constructor> (""initWithName:"")]
 		public TestClass (string inName) {
 			name = inName;
 		}
@@ -62,7 +75,10 @@ namespace NS {
 				new Constructor (
 					type: "TestClass",
 					symbolAvailability: new (),
-					attributes: [],
+					exportData: new ("initWithName:", ArgumentSemantic.None),
+					attributes: [
+						new ("ObjCBindings.ExportAttribute<ObjCBindings.Constructor>", ["initWithName:"])
+					],
 					modifiers: [
 						SyntaxFactory.Token (SyntaxKind.PublicKeyword),
 					],
@@ -74,11 +90,15 @@ namespace NS {
 
 			const string multiParameter = @"
 using System;
+using ObjCBindings;
+using ObjCRuntime;
 
 namespace NS {
+	[BindingType<Class>]
 	public class TestClass {
-		string name;	
+		string name;
 		int age;
+		[Export<Constructor> (""initWithName:withAge:"")]
 		public TestClass (string inName, int inAge) {
 			name = inName;
 			age = inAge;
@@ -92,7 +112,10 @@ namespace NS {
 				new Constructor (
 					type: "TestClass",
 					symbolAvailability: new (),
-					attributes: [],
+					exportData: new ("initWithName:withAge:", ArgumentSemantic.None),
+					attributes: [
+						new ("ObjCBindings.ExportAttribute<ObjCBindings.Constructor>", ["initWithName:withAge:"])
+					],
 					modifiers: [
 						SyntaxFactory.Token (SyntaxKind.PublicKeyword),
 					],
@@ -105,11 +128,15 @@ namespace NS {
 
 			const string nullableParameter = @"
 using System;
+using ObjCBindings;
+using ObjCRuntime;
 
 namespace NS {
+	[BindingType<Class>]
 	public class TestClass {
-		string name;	
+		string name;
 		int age;
+		[Export<Constructor> (""initWithName:withAge:"")]
 		public TestClass (string? inName, int inAge) {
 			name = inName ?? string.Empty;
 			age = inAge;
@@ -123,7 +150,10 @@ namespace NS {
 				new Constructor (
 					type: "TestClass",
 					symbolAvailability: new (),
-					attributes: [],
+					exportData: new ("initWithName:withAge:", ArgumentSemantic.None),
+					attributes: [
+						new ("ObjCBindings.ExportAttribute<ObjCBindings.Constructor>", ["initWithName:withAge:"])
+					],
 					modifiers: [
 						SyntaxFactory.Token (SyntaxKind.PublicKeyword),
 					],
@@ -136,17 +166,21 @@ namespace NS {
 
 			const string paramsCollectionParameter = @"
 using System;
+using ObjCBindings;
+using ObjCRuntime;
 
 namespace NS {
+	[BindingType<Class>]
 	public class TestClass {
-		string name;	
+		string name;
 		int age;
 		string [] surnames;
 
+		[Export<Constructor> (""initWithName:withAge:withSurnames:"")]
 		public TestClass (string? inName, int inAge, params string[] inSurnames) {
 			name = inName ?? string.Empty;
 			age = inAge;
-			surnames = inSurnames;	
+			surnames = inSurnames;
 		}
 	}
 }
@@ -157,7 +191,10 @@ namespace NS {
 				new Constructor (
 					type: "TestClass",
 					symbolAvailability: new (),
-					attributes: [],
+					exportData: new ("initWithName:withAge:withSurnames:", ArgumentSemantic.None),
+					attributes: [
+						new ("ObjCBindings.ExportAttribute<ObjCBindings.Constructor>", ["initWithName:withAge:withSurnames:"])
+					],
 					modifiers: [
 						SyntaxFactory.Token (SyntaxKind.PublicKeyword),
 					],
@@ -173,17 +210,21 @@ namespace NS {
 
 			const string arrayParameter = @"
 using System;
+using ObjCBindings;
+using ObjCRuntime;
 
 namespace NS {
+	[BindingType<Class>]
 	public class TestClass {
-		string name;	
+		string name;
 		int age;
 		string [] surnames;
 
+		[Export<Constructor> (""initWithName:withAge:withSurnames:"")]
 		public TestClass (string? inName, int inAge, string[] inSurnames) {
 			name = inName ?? string.Empty;
 			age = inAge;
-			surnames = inSurnames;	
+			surnames = inSurnames;
 		}
 	}
 }
@@ -194,7 +235,10 @@ namespace NS {
 				new Constructor (
 					type: "TestClass",
 					symbolAvailability: new (),
-					attributes: [],
+					exportData: new ("initWithName:withAge:withSurnames:", ArgumentSemantic.None),
+					attributes: [
+						new ("ObjCBindings.ExportAttribute<ObjCBindings.Constructor>", ["initWithName:withAge:withSurnames:"])
+					],
 					modifiers: [
 						SyntaxFactory.Token (SyntaxKind.PublicKeyword),
 					],
@@ -210,17 +254,21 @@ namespace NS {
 
 			const string nullableArrayParameter = @"
 using System;
+using ObjCBindings;
+using ObjCRuntime;
 
 namespace NS {
+	[BindingType<Class>]
 	public class TestClass {
-		string name;	
+		string name;
 		int age;
 		string [] surnames;
 
+		[Export<Constructor> (""initWithName:withAge:withSurnames:"")]
 		public TestClass (string? inName, int inAge, string[]? inSurnames) {
 			name = inName ?? string.Empty;
 			age = inAge;
-			surnames = inSurnames;	
+			surnames = inSurnames;
 		}
 	}
 }
@@ -231,7 +279,10 @@ namespace NS {
 				new Constructor (
 					type: "TestClass",
 					symbolAvailability: new (),
-					attributes: [],
+					exportData: new ("initWithName:withAge:withSurnames:", ArgumentSemantic.None),
+					attributes: [
+						new ("ObjCBindings.ExportAttribute<ObjCBindings.Constructor>", ["initWithName:withAge:withSurnames:"])
+					],
 					modifiers: [
 						SyntaxFactory.Token (SyntaxKind.PublicKeyword),
 					],
@@ -245,17 +296,21 @@ namespace NS {
 
 			const string arrayOfNullableParameter = @"
 using System;
+using ObjCBindings;
+using ObjCRuntime;
 
 namespace NS {
+	[BindingType<Class>]
 	public class TestClass {
-		string name;	
+		string name;
 		int age;
 		string [] surnames;
 
+		[Export<Constructor> (""initWithName:withAge:withSurnames:"")]
 		public TestClass (string? inName, int inAge, string?[] inSurnames) {
 			name = inName ?? string.Empty;
 			age = inAge;
-			surnames = inSurnames;	
+			surnames = inSurnames;
 		}
 	}
 }
@@ -266,7 +321,10 @@ namespace NS {
 				new Constructor (
 					type: "TestClass",
 					symbolAvailability: new (),
-					attributes: [],
+					exportData: new ("initWithName:withAge:withSurnames:", ArgumentSemantic.None),
+					attributes: [
+						new ("ObjCBindings.ExportAttribute<ObjCBindings.Constructor>", ["initWithName:withAge:withSurnames:"])
+					],
 					modifiers: [
 						SyntaxFactory.Token (SyntaxKind.PublicKeyword),
 					],
@@ -280,17 +338,21 @@ namespace NS {
 
 			const string nullableArrayOfNullableParameter = @"
 using System;
+using ObjCBindings;
+using ObjCRuntime;
 
 namespace NS {
+	[BindingType<Class>]
 	public class TestClass {
-		string name;	
+		string name;
 		int age;
 		string [] surnames;
 
+		[Export<Constructor> (""initWithName:withAge:withSurnames:"")]
 		public TestClass (string? inName, int inAge, string?[]? inSurnames) {
 			name = inName ?? string.Empty;
 			age = inAge;
-			surnames = inSurnames;	
+			surnames = inSurnames;
 		}
 	}
 }
@@ -301,7 +363,10 @@ namespace NS {
 				new Constructor (
 					type: "TestClass",
 					symbolAvailability: new (),
-					attributes: [],
+					exportData: new ("initWithName:withAge:withSurnames:", ArgumentSemantic.None),
+					attributes: [
+						new ("ObjCBindings.ExportAttribute<ObjCBindings.Constructor>", ["initWithName:withAge:withSurnames:"])
+					],
 					modifiers: [
 						SyntaxFactory.Token (SyntaxKind.PublicKeyword),
 					],
@@ -315,17 +380,21 @@ namespace NS {
 
 			const string twoDimensionalArrayParameter = @"
 using System;
+using ObjCBindings;
+using ObjCRuntime;
 
 namespace NS {
+	[BindingType<Class>]
 	public class TestClass {
-		string name;	
+		string name;
 		int age;
 		string [] surnames;
 
+		[Export<Constructor> (""initWithName:withAge:withSurnames:"")]
 		public TestClass (string? inName, int inAge, string[][] inSurnames) {
 			name = inName ?? string.Empty;
 			age = inAge;
-			surnames = inSurnames;	
+			surnames = inSurnames;
 		}
 	}
 }
@@ -336,7 +405,10 @@ namespace NS {
 				new Constructor (
 					type: "TestClass",
 					symbolAvailability: new (),
-					attributes: [],
+					exportData: new ("initWithName:withAge:withSurnames:", ArgumentSemantic.None),
+					attributes: [
+						new ("ObjCBindings.ExportAttribute<ObjCBindings.Constructor>", ["initWithName:withAge:withSurnames:"])
+					],
 					modifiers: [
 						SyntaxFactory.Token (SyntaxKind.PublicKeyword),
 					],
@@ -352,10 +424,14 @@ namespace NS {
 
 			const string optionalParameter = @"
 using System;
+using ObjCBindings;
+using ObjCRuntime;
 
 namespace NS {
+	[BindingType<Class>]
 	public class TestClass {
-		string name;	
+		string name;
+		[Export<Constructor> (""initWithName:"")]
 		public TestClass (string? inName = null) {
 			name = inName ?? string.Empty;
 		}
@@ -368,7 +444,10 @@ namespace NS {
 				new Constructor (
 					type: "TestClass",
 					symbolAvailability: new (),
-					attributes: [],
+					exportData: new ("initWithName:", ArgumentSemantic.None),
+					attributes: [
+						new ("ObjCBindings.ExportAttribute<ObjCBindings.Constructor>", ["initWithName:"])
+					],
 					modifiers: [
 						SyntaxFactory.Token (SyntaxKind.PublicKeyword),
 					],
@@ -382,12 +461,16 @@ namespace NS {
 
 			const string genericParameter = @"
 using System;
+using ObjCBindings;
+using ObjCRuntime;
 
 namespace NS {
+	[BindingType<Class>]
 	public class TestClass<T> {
-		T name;	
+		T name;
+		[Export<Constructor> (""initWithName:"")]
 		public TestClass (T? inName = null) {
-			name = T; 
+			name = T;
 		}
 	}
 }
@@ -398,7 +481,10 @@ namespace NS {
 				new Constructor (
 					type: "TestClass",
 					symbolAvailability: new (),
-					attributes: [],
+					exportData: new ("initWithName:", ArgumentSemantic.None),
+					attributes: [
+						new ("ObjCBindings.ExportAttribute<ObjCBindings.Constructor>", ["initWithName:"])
+					],
 					modifiers: [
 						SyntaxFactory.Token (SyntaxKind.PublicKeyword),
 					],
@@ -413,12 +499,16 @@ namespace NS {
 			const string availabilityPresent = @"
 using System.Runtime.Versioning;
 using System;
+using ObjCBindings;
+using ObjCRuntime;
 
 namespace NS {
 	[SupportedOSPlatform (""ios"")]
 	[SupportedOSPlatform (""tvos"")]
+	[BindingType<Class>]
 	public class TestClass {
-		string name;	
+		string name;
+		[Export<Constructor> (""initWithName:"")]
 		public TestClass (string? inName = null) {
 			name = inName ?? string.Empty;
 		}
@@ -434,7 +524,10 @@ namespace NS {
 				new Constructor (
 					type: "TestClass",
 					symbolAvailability: builder.ToImmutable (),
-					attributes: [],
+					exportData: new ("initWithName:", ArgumentSemantic.None),
+					attributes: [
+						new ("ObjCBindings.ExportAttribute<ObjCBindings.Constructor>", ["initWithName:"])
+					],
 					modifiers: [
 						SyntaxFactory.Token (SyntaxKind.PublicKeyword),
 					],

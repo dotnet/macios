@@ -605,7 +605,6 @@ namespace MediaPlayer {
 		[Export ("endGeneratingLibraryChangeNotifications")]
 		void EndGeneratingLibraryChangeNotifications ();
 
-		/// <include file="../docs/api/MediaPlayer/MPMediaLibrary.xml" path="/Documentation/Docs[@DocId='P:MediaPlayer.MPMediaLibrary.DidChangeNotification']/*" />
 		[Field ("MPMediaLibraryDidChangeNotification")]
 		[Notification]
 		NSString DidChangeNotification { get; }
@@ -1743,7 +1742,6 @@ namespace MediaPlayer {
 		[Export ("timedMetadata")]
 		MPTimedMetadata [] TimedMetadata { get; }
 
-		/// <include file="../docs/api/MediaPlayer/MPMoviePlayerController.xml" path="/Documentation/Docs[@DocId='P:MediaPlayer.MPMoviePlayerController.ScalingModeDidChangeNotification']/*" />
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
@@ -1751,7 +1749,6 @@ namespace MediaPlayer {
 		[Notification]
 		NSString ScalingModeDidChangeNotification { get; }
 
-		/// <include file="../docs/api/MediaPlayer/MPMoviePlayerController.xml" path="/Documentation/Docs[@DocId='P:MediaPlayer.MPMoviePlayerController.PlaybackDidFinishNotification']/*" />
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
@@ -1769,7 +1766,6 @@ namespace MediaPlayer {
 		[Field ("MPMoviePlayerPlaybackDidFinishReasonUserInfoKey")] // NSNumber (MPMovieFinishReason)
 		NSString PlaybackDidFinishReasonUserInfoKey { get; }
 
-		/// <include file="../docs/api/MediaPlayer/MPMoviePlayerController.xml" path="/Documentation/Docs[@DocId='P:MediaPlayer.MPMoviePlayerController.PlaybackStateDidChangeNotification']/*" />
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
@@ -1777,7 +1773,6 @@ namespace MediaPlayer {
 		[Notification]
 		NSString PlaybackStateDidChangeNotification { get; }
 
-		/// <include file="../docs/api/MediaPlayer/MPMoviePlayerController.xml" path="/Documentation/Docs[@DocId='P:MediaPlayer.MPMoviePlayerController.LoadStateDidChangeNotification']/*" />
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
@@ -1785,7 +1780,6 @@ namespace MediaPlayer {
 		[Notification]
 		NSString LoadStateDidChangeNotification { get; }
 
-		/// <include file="../docs/api/MediaPlayer/MPMoviePlayerController.xml" path="/Documentation/Docs[@DocId='P:MediaPlayer.MPMoviePlayerController.NowPlayingMovieDidChangeNotification']/*" />
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
@@ -1793,7 +1787,6 @@ namespace MediaPlayer {
 		[Notification]
 		NSString NowPlayingMovieDidChangeNotification { get; }
 
-		/// <include file="../docs/api/MediaPlayer/MPMoviePlayerController.xml" path="/Documentation/Docs[@DocId='P:MediaPlayer.MPMoviePlayerController.WillEnterFullscreenNotification']/*" />
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
@@ -1802,7 +1795,6 @@ namespace MediaPlayer {
 		[Notification]
 		NSString WillEnterFullscreenNotification { get; }
 
-		/// <include file="../docs/api/MediaPlayer/MPMoviePlayerController.xml" path="/Documentation/Docs[@DocId='P:MediaPlayer.MPMoviePlayerController.DidEnterFullscreenNotification']/*" />
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
@@ -1810,7 +1802,6 @@ namespace MediaPlayer {
 		[Notification]
 		NSString DidEnterFullscreenNotification { get; }
 
-		/// <include file="../docs/api/MediaPlayer/MPMoviePlayerController.xml" path="/Documentation/Docs[@DocId='P:MediaPlayer.MPMoviePlayerController.WillExitFullscreenNotification']/*" />
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
@@ -1818,7 +1809,6 @@ namespace MediaPlayer {
 		[Notification (typeof (MPMoviePlayerFullScreenEventArgs))]
 		NSString WillExitFullscreenNotification { get; }
 
-		/// <include file="../docs/api/MediaPlayer/MPMoviePlayerController.xml" path="/Documentation/Docs[@DocId='P:MediaPlayer.MPMoviePlayerController.DidExitFullscreenNotification']/*" />
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
@@ -1846,7 +1836,6 @@ namespace MediaPlayer {
 		[Field ("MPMoviePlayerFullscreenAnimationCurveUserInfoKey")]
 		NSString FullscreenAnimationCurveUserInfoKey { get; }
 
-		/// <include file="../docs/api/MediaPlayer/MPMoviePlayerController.xml" path="/Documentation/Docs[@DocId='P:MediaPlayer.MPMoviePlayerController.TypesAvailableNotification']/*" />
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
@@ -1854,7 +1843,6 @@ namespace MediaPlayer {
 		[Notification]
 		NSString TypesAvailableNotification { get; }
 
-		/// <include file="../docs/api/MediaPlayer/MPMoviePlayerController.xml" path="/Documentation/Docs[@DocId='P:MediaPlayer.MPMoviePlayerController.SourceTypeAvailableNotification']/*" />
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
@@ -1862,7 +1850,6 @@ namespace MediaPlayer {
 		[Notification]
 		NSString SourceTypeAvailableNotification { get; }
 
-		/// <include file="../docs/api/MediaPlayer/MPMoviePlayerController.xml" path="/Documentation/Docs[@DocId='P:MediaPlayer.MPMoviePlayerController.DurationAvailableNotification']/*" />
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
@@ -1870,7 +1857,6 @@ namespace MediaPlayer {
 		[Notification]
 		NSString DurationAvailableNotification { get; }
 
-		/// <include file="../docs/api/MediaPlayer/MPMoviePlayerController.xml" path="/Documentation/Docs[@DocId='P:MediaPlayer.MPMoviePlayerController.NaturalSizeAvailableNotification']/*" />
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
@@ -1878,7 +1864,6 @@ namespace MediaPlayer {
 		[Notification]
 		NSString NaturalSizeAvailableNotification { get; }
 
-		/// <include file="../docs/api/MediaPlayer/MPMoviePlayerController.xml" path="/Documentation/Docs[@DocId='P:MediaPlayer.MPMoviePlayerController.ThumbnailImageRequestDidFinishNotification']/*" />
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
@@ -1916,7 +1901,6 @@ namespace MediaPlayer {
 		[Field ("MPMoviePlayerThumbnailErrorKey")]
 		NSString ThumbnailErrorKey { get; }
 
-		/// <include file="../docs/api/MediaPlayer/MPMoviePlayerController.xml" path="/Documentation/Docs[@DocId='P:MediaPlayer.MPMoviePlayerController.TimedMetadataUpdatedNotification']/*" />
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
@@ -1984,7 +1968,6 @@ namespace MediaPlayer {
 		[Field ("MPMoviePlayerTimedMetadataKeyLanguageCode")]
 		NSString TimedMetadataKeyLanguageCode { get; }
 
-		/// <include file="../docs/api/MediaPlayer/MPMoviePlayerController.xml" path="/Documentation/Docs[@DocId='P:MediaPlayer.MPMoviePlayerController.MediaPlaybackIsPreparedToPlayDidChangeNotification']/*" />
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
@@ -1999,7 +1982,6 @@ namespace MediaPlayer {
 		[Export ("readyForDisplay")]
 		bool ReadyForDisplay { get; }
 
-		/// <include file="../docs/api/MediaPlayer/MPMoviePlayerController.xml" path="/Documentation/Docs[@DocId='P:MediaPlayer.MPMoviePlayerController.MoviePlayerReadyForDisplayDidChangeNotification']/*" />
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
@@ -2007,7 +1989,6 @@ namespace MediaPlayer {
 		[Notification]
 		NSString MoviePlayerReadyForDisplayDidChangeNotification { get; }
 
-		/// <include file="../docs/api/MediaPlayer/MPMoviePlayerController.xml" path="/Documentation/Docs[@DocId='P:MediaPlayer.MPMoviePlayerController.MPMoviePlayerIsAirPlayVideoActiveDidChangeNotification']/*" />
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
@@ -2264,17 +2245,14 @@ namespace MediaPlayer {
 		[Export ("endGeneratingPlaybackNotifications")]
 		void EndGeneratingPlaybackNotifications ();
 
-		/// <include file="../docs/api/MediaPlayer/MPMusicPlayerController.xml" path="/Documentation/Docs[@DocId='P:MediaPlayer.MPMusicPlayerController.PlaybackStateDidChangeNotification']/*" />
 		[Field ("MPMusicPlayerControllerPlaybackStateDidChangeNotification")]
 		[Notification]
 		NSString PlaybackStateDidChangeNotification { get; }
 
-		/// <include file="../docs/api/MediaPlayer/MPMusicPlayerController.xml" path="/Documentation/Docs[@DocId='P:MediaPlayer.MPMusicPlayerController.NowPlayingItemDidChangeNotification']/*" />
 		[Field ("MPMusicPlayerControllerNowPlayingItemDidChangeNotification")]
 		[Notification]
 		NSString NowPlayingItemDidChangeNotification { get; }
 
-		/// <include file="../docs/api/MediaPlayer/MPMusicPlayerController.xml" path="/Documentation/Docs[@DocId='P:MediaPlayer.MPMusicPlayerController.VolumeDidChangeNotification']/*" />
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Field ("MPMusicPlayerControllerVolumeDidChangeNotification")]
@@ -2455,7 +2433,6 @@ namespace MediaPlayer {
 		[Export ("volumeWarningSliderImage", ArgumentSemantic.Retain)]
 		UIImage VolumeWarningSliderImage { get; set; }
 
-		/// <include file="../docs/api/MediaPlayer/MPVolumeView.xml" path="/Documentation/Docs[@DocId='P:MediaPlayer.MPVolumeView.WirelessRoutesAvailableDidChangeNotification']/*" />
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'AVRouteDetector.MultipleRoutesDetectedDidChange' instead.")]
 		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use 'AVRouteDetector.MultipleRoutesDetectedDidChange' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'AVRouteDetector.MultipleRoutesDetectedDidChange' instead.")]
@@ -2463,7 +2440,6 @@ namespace MediaPlayer {
 		[Field ("MPVolumeViewWirelessRoutesAvailableDidChangeNotification")]
 		NSString WirelessRoutesAvailableDidChangeNotification { get; }
 
-		/// <include file="../docs/api/MediaPlayer/MPVolumeView.xml" path="/Documentation/Docs[@DocId='P:MediaPlayer.MPVolumeView.WirelessRouteActiveDidChangeNotification']/*" />
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'AVPlayer.ExternalPlaybackActive' KVO instead.")]
 		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use 'AVPlayer.ExternalPlaybackActive' KVO instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'AVPlayer.ExternalPlaybackActive' KVO instead.")]
@@ -3800,7 +3776,6 @@ namespace MediaPlayer {
 		[Export ("items", ArgumentSemantic.Copy)]
 		MPMediaItem [] Items { get; }
 
-		/// <include file="../docs/api/MediaPlayer/MPMusicPlayerControllerQueue.xml" path="/Documentation/Docs[@DocId='P:MediaPlayer.MPMusicPlayerControllerQueue.DidChangeNotification']/*" />
 		[Field ("MPMusicPlayerControllerQueueDidChangeNotification")]
 		[Notification]
 		NSString DidChangeNotification { get; }

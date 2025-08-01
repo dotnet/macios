@@ -138,5 +138,16 @@ public static class Documentation {
 
 		public static string TrampolineStaticClass (string name) =>
 "/// <summary>This class bridges native block invocations that call into C#</summary>";
+
+	}
+
+	public static class StrongDictionary {
+
+		public static string EmptyConstructor (string name) =>
+$"/// <summary>Creates a new <see cref=\"{name}\" /> with default (empty) values.</summary>";
+
+		public static string InitWithDictionary (string name) =>
+$@"/// <summary>Creates a new <see cref=""{name}"" /> from the values that are specified in <paramref name=""dictionary"" />.</summary>
+/// <param name=""dictionary"">The dictionary to use to populate the properties of this type.</param>";
 	}
 }

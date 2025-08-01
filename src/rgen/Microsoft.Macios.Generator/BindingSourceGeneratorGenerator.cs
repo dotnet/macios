@@ -9,6 +9,7 @@ using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
+using Microsoft.Macios.Generator.Attributes;
 using Microsoft.Macios.Generator.Context;
 using Microsoft.Macios.Generator.DataModel;
 using Microsoft.Macios.Generator.Emitters;
@@ -73,6 +74,23 @@ public class BindingSourceGeneratorGenerator : IIncrementalGenerator {
 
 		context.RegisterSourceOutput (context.CompilationProvider.Combine (asyncResultsProvider.Collect ()),
 			((ctx, t) => GenerateAsyncResultCode (ctx, t.Right)));
+
+		if (GeneratorConfiguration.BGenCompatible) {
+			// the following code generations will only be used when the generator is compatible with bgen.
+
+			var strongDictionaryKeysProvider = provider
+				.Where (t => {
+					if (t.Bindings.BindingType != BindingType.StrongDictionaryKeys)
+						return false;
+					// only want those kyes that we need to make backwards compatible with bgen
+					var bindingInfo = (BindingTypeData<ObjCBindings.StrongDictionaryKeys>) t.Bindings.BindingInfo;
+					return bindingInfo.Flags.HasFlag (ObjCBindings.StrongDictionaryKeys.BackwardCompatible);
+				})
+				.Select ((tuple, _) => (tuple.RootBindingContext, tuple.Bindings));
+
+			context.RegisterSourceOutput (context.CompilationProvider.Combine (strongDictionaryKeysProvider.Collect ()),
+				((ctx, t) => GenerateBGenStrongDictionaryKeys (ctx, t.Right)));
+		}
 	}
 
 	/// <summary>
@@ -263,6 +281,43 @@ public class BindingSourceGeneratorGenerator : IIncrementalGenerator {
 	}
 
 	/// <summary>
+	/// Code generator that emits strong dictionary keys classes compatible with bgen output.
+	/// This generates backward-compatible strong dictionary keys when the BackwardCompatible flag is set.
+	/// </summary>
+	/// <param name="context">Source production context.</param>
+	/// <param name="bindingsList">The bindings that need backward-compatible strong dictionary keys generation.</param>
+	static void GenerateBGenStrongDictionaryKeys (SourceProductionContext context,
+		in ImmutableArray<(RootContext Context, Binding Binding)> bindingsList)
+	{
+		if (bindingsList.Length == 0)
+			return;
+		// all items contain the same root context, we can get it from the first item
+		var rootBindingContext = bindingsList [0].Context;
+
+		// loop over all the bindings that have to be backwards compatible with bgen
+		// and generate the code for them.
+		var sb = new TabbedStringBuilder (new ());
+		var emitter = new BGenStrongDictionaryKeysEmitter ();
+		foreach (var (_, binding) in bindingsList) {
+			// init sb and add the header
+			sb.Clear ();
+			sb.WriteHeader ();
+			var bindingContext = new BindingContext (rootBindingContext, sb, binding);
+			if (emitter.TryEmit (bindingContext, out var diagnostics)) {
+				// only add a file when we do generate code
+				var code = sb.ToCode ();
+				var namespacePath = Path.Combine (binding.Namespace.ToArray ());
+				var fileName = emitter.GetSymbolName (binding);
+				context.AddSource ($"{Path.Combine (namespacePath, fileName)}.g.cs",
+					SourceText.From (code, Encoding.UTF8));
+			} else {
+				// add to the diagnostics and continue to the next possible candidate
+				context.ReportDiagnostics (diagnostics);
+			}
+		}
+	}
+
+	/// <summary>
 	/// Collect the using statements from the named ype code changes and add them to the string builder
 	/// that will be used to generate the code. This way we ensure that we have all the namespaces needed by the
 	/// generated code.
@@ -277,6 +332,12 @@ public class BindingSourceGeneratorGenerator : IIncrementalGenerator {
 		var usingDirectivesToKeep = new SortedSet<string> (binding.UsingDirectives) {
 			// add the using statements that we know we need and print them to the sb
 		};
+
+		// if there is at least one method that is async, we need to add the threading
+		// namespace.
+		if (binding.Methods.Any (m => m.IsAsync)) {
+			usingDirectivesToKeep.Add ("System.Threading.Tasks");
+		}
 
 		// add those using statements needed by the emitter
 		foreach (var ns in emitter.UsingStatements) {

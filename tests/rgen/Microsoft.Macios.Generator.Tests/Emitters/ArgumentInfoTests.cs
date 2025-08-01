@@ -22,6 +22,7 @@ public class ArgumentInfoTests {
 		var argumentInfo = new ArgumentInfo (parameter);
 
 		Assert.Equal (parameter.Name, argumentInfo.Name);
+		Assert.Equal (parameter.Position, argumentInfo.Position);
 		Assert.Equal (parameter.Type, argumentInfo.Type);
 		Assert.Equal (parameter.BindAs, argumentInfo.BindAs);
 		Assert.Equal (parameter.IsByRef, argumentInfo.IsByRef);
@@ -40,6 +41,7 @@ public class ArgumentInfoTests {
 		var argumentInfo = new ArgumentInfo (delegateParameter);
 
 		Assert.Equal (delegateParameter.Name, argumentInfo.Name);
+		Assert.Equal (delegateParameter.Position, argumentInfo.Position);
 		Assert.Equal (delegateParameter.Type, argumentInfo.Type);
 		Assert.Equal (delegateParameter.BindAs, argumentInfo.BindAs);
 		Assert.Equal (delegateParameter.IsByRef, argumentInfo.IsByRef);
@@ -58,6 +60,7 @@ public class ArgumentInfoTests {
 		ArgumentInfo argumentInfo = parameter;
 
 		Assert.Equal (parameter.Name, argumentInfo.Name);
+		Assert.Equal (parameter.Position, argumentInfo.Position);
 		Assert.Equal (parameter.Type, argumentInfo.Type);
 		Assert.Equal (parameter.BindAs, argumentInfo.BindAs);
 		Assert.Equal (parameter.IsByRef, argumentInfo.IsByRef);
@@ -76,6 +79,7 @@ public class ArgumentInfoTests {
 		ArgumentInfo argumentInfo = delegateParameter;
 
 		Assert.Equal (delegateParameter.Name, argumentInfo.Name);
+		Assert.Equal (delegateParameter.Position, argumentInfo.Position);
 		Assert.Equal (delegateParameter.Type, argumentInfo.Type);
 		Assert.Equal (delegateParameter.BindAs, argumentInfo.BindAs);
 		Assert.Equal (delegateParameter.IsByRef, argumentInfo.IsByRef);
@@ -102,6 +106,7 @@ public class ArgumentInfoTests {
 		var argumentInfo = new ArgumentInfo (property);
 
 		Assert.Equal ("value", argumentInfo.Name);
+		Assert.Equal (0, argumentInfo.Position);
 		Assert.Equal (property.ReturnType, argumentInfo.Type);
 		Assert.NotNull (argumentInfo.BindAs);
 		Assert.Equal (property.BindAs, argumentInfo.BindAs);
@@ -130,6 +135,7 @@ public class ArgumentInfoTests {
 		ArgumentInfo argumentInfo = property;
 
 		Assert.Equal ("value", argumentInfo.Name);
+		Assert.Equal (0, argumentInfo.Position);
 		Assert.Equal (property.ReturnType, argumentInfo.Type);
 		Assert.NotNull (argumentInfo.BindAs);
 		Assert.Equal (property.BindAs, argumentInfo.BindAs);

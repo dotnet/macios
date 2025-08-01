@@ -247,4 +247,18 @@ static class Nomenclator {
 	/// </summary>
 	/// <returns>The name of the TaskCompletionSource variable.</returns>
 	public static string GetTaskCompletionSourceName () => "_tcs";
+
+	/// <summary>
+	/// Generates the name for a protocol wrapper class.
+	/// The wrapper name is created by appending 'Wrapper' to the protocol name,
+	/// with dots replaced by underscores to ensure valid identifier names for nested classes.
+	/// </summary>
+	/// <param name="protocolName">The name of the protocol.</param>
+	/// <returns>The name of the protocol wrapper class.</returns>
+	public static string GetProtocolWrapperName (string protocolName)
+	{
+		// we will use the name of the protocol with a 'Wrapper' suffix
+		// we will replace any . with _ to ensure that the name is valid when working with nested classes.
+		return $"{protocolName.Replace ('.', '_')}Wrapper";
+	}
 }

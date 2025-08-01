@@ -670,8 +670,8 @@ static partial class BindingSyntaxFactory {
 			throw new NotSupportedException ("Cannot retrieve getter for non field property.");
 
 		// retrieve all the necessary data from the info field of the property
-		var libraryName = property.ExportFieldData.Value.LibraryName;
-		var symbolName = property.ExportFieldData.Value.FieldData.SymbolName;
+		var libraryName = property.ExportFieldData.LibraryName;
+		var symbolName = property.ExportFieldData.FieldData.SymbolName;
 		return FieldConstantGetterSetter (property).Getter (libraryName, symbolName);
 	}
 
@@ -692,8 +692,8 @@ static partial class BindingSyntaxFactory {
 			throw new NotSupportedException ("Cannot retrieve getter for non field property.");
 
 		// retrieve all the necessary data from the info field of the property
-		var libraryName = property.ExportFieldData.Value.LibraryName;
-		var symbolName = property.ExportFieldData.Value.FieldData.SymbolName;
+		var libraryName = property.ExportFieldData.LibraryName;
+		var symbolName = property.ExportFieldData.FieldData.SymbolName;
 		return FieldConstantGetterSetter (property).Setter (libraryName, symbolName, variableName);
 	}
 }

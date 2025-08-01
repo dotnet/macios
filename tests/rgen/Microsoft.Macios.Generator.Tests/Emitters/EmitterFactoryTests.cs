@@ -55,14 +55,80 @@ public enum TestEnum {
 	public void TryCreateEmitterClass (ApplePlatform platform)
 	{
 		const string inputText = @"
+using ObjCBindings;
+
 namespace Test;
 
+[BindingType<Class> ()]
 public class TestClass {
 }
 ";
 		var changes = CreateSymbol<ClassDeclarationSyntax> (platform, inputText);
 		Assert.True (EmitterFactory.TryCreate (changes, out var emitter));
 		Assert.IsType<ClassEmitter> (emitter);
+		Assert.True (EmitterFactory.TryCreate (changes, out var secondEmitter));
+		Assert.Same (emitter, secondEmitter);
+	}
+
+	[Theory]
+	[AllSupportedPlatforms]
+	public void TryCreateEmitterCategory (ApplePlatform platform)
+	{
+		const string inputText = @"
+using Foundation;
+using ObjCBindings;
+
+namespace Test;
+
+[BindingType<Category> (typeof (NSObject))]
+public class TestClass {
+}
+";
+		var changes = CreateSymbol<ClassDeclarationSyntax> (platform, inputText);
+		Assert.True (EmitterFactory.TryCreate (changes, out var emitter));
+		Assert.IsType<CategoryEmitter> (emitter);
+		Assert.True (EmitterFactory.TryCreate (changes, out var secondEmitter));
+		Assert.Same (emitter, secondEmitter);
+	}
+
+	[Theory]
+	[AllSupportedPlatforms]
+	public void TryCreateEmitterStrongDictionary (ApplePlatform platform)
+	{
+		const string inputText = @"
+using Foundation;
+using ObjCBindings;
+
+namespace Test;
+
+[BindingType<StrongDictionary> ()]
+public class TestClass {
+}
+";
+		var changes = CreateSymbol<ClassDeclarationSyntax> (platform, inputText);
+		Assert.True (EmitterFactory.TryCreate (changes, out var emitter));
+		Assert.IsType<StrongDictionaryEmitter> (emitter);
+		Assert.True (EmitterFactory.TryCreate (changes, out var secondEmitter));
+		Assert.Same (emitter, secondEmitter);
+	}
+
+	[Theory]
+	[AllSupportedPlatforms]
+	public void TryCreateEmitterStrongDictionaryKeys (ApplePlatform platform)
+	{
+		const string inputText = @"
+using Foundation;
+using ObjCBindings;
+
+namespace Test;
+
+[BindingType<StrongDictionaryKeys> ()]
+public class TestClass {
+}
+";
+		var changes = CreateSymbol<ClassDeclarationSyntax> (platform, inputText);
+		Assert.True (EmitterFactory.TryCreate (changes, out var emitter));
+		Assert.IsType<StrongDictionaryKeysEmitter> (emitter);
 		Assert.True (EmitterFactory.TryCreate (changes, out var secondEmitter));
 		Assert.Same (emitter, secondEmitter);
 	}
@@ -79,7 +145,7 @@ public interface ITestInterface {
 ";
 		var changes = CreateSymbol<InterfaceDeclarationSyntax> (platform, inputText);
 		Assert.True (EmitterFactory.TryCreate (changes, out var emitter));
-		Assert.IsType<InterfaceEmitter> (emitter);
+		Assert.IsType<ProtocolEmitter> (emitter);
 		Assert.True (EmitterFactory.TryCreate (changes, out var secondEmitter));
 		Assert.Same (emitter, secondEmitter);
 	}

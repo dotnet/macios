@@ -43,4 +43,65 @@ public class GeneralMethodTests {
 		);
 		Assert.False (method.IsThreadSafe);
 	}
+
+	[Fact]
+	public void IsExtension_IsTrue_WhenFirstParameterIsThis ()
+	{
+		var method = new Method (
+			type: "NS.MyClass",
+			name: "MyMethod",
+			returnType: ReturnTypeForVoid (),
+			symbolAvailability: new (),
+			exportMethodData: new ("selector", ArgumentSemantic.None, ObjCBindings.Method.Default),
+			attributes: [],
+			modifiers: [
+				SyntaxFactory.Token (SyntaxKind.PublicKeyword),
+			],
+			parameters: [
+				new Parameter (0, ReturnTypeForInt (), "self") { IsThis = true },
+				new Parameter (1, ReturnTypeForInt (), "p1")
+			]
+		);
+		Assert.True (method.IsExtension);
+		Assert.Equal ("self", method.This);
+	}
+
+	[Fact]
+	public void IsExtension_IsFalse_WhenNoParameterIsThis ()
+	{
+		var method = new Method (
+			type: "NS.MyClass",
+			name: "MyMethod",
+			returnType: ReturnTypeForVoid (),
+			symbolAvailability: new (),
+			exportMethodData: new ("selector", ArgumentSemantic.None, ObjCBindings.Method.Default),
+			attributes: [],
+			modifiers: [
+				SyntaxFactory.Token (SyntaxKind.PublicKeyword),
+			],
+			parameters: [
+				new Parameter (0, ReturnTypeForInt (), "p1")
+			]
+		);
+		Assert.False (method.IsExtension);
+		Assert.Equal ("this", method.This);
+
+		// Not an extension method (has one parameter, but it is not marked as 'this')
+		method = new Method (
+			type: "NS.MyClass",
+			name: "MyMethod",
+			returnType: ReturnTypeForVoid (),
+			symbolAvailability: new (),
+			exportMethodData: new ("selector", ArgumentSemantic.None, ObjCBindings.Method.Default),
+			attributes: [],
+			modifiers: [
+				SyntaxFactory.Token (SyntaxKind.PublicKeyword),
+			],
+			parameters: [
+				new Parameter (0, ReturnTypeForInt (), "p1")
+			]
+		);
+		Assert.False (method.IsExtension);
+		Assert.Equal ("this", method.This);
+	}
 }

@@ -350,7 +350,11 @@ public interface IAVAudio3DMixing : INativeObject, IDisposable
 internal unsafe sealed class AVAudio3DMixingWrapper : BaseWrapper, IAVAudio3DMixing
 {
 
-	// Implement default constructor
+	[Preserve (Conditional = true)]
+	public AVAudio3DMixingWrapper (NativeHandle handle, bool owns)
+		: base (handle, owns)
+	{
+	}
 
 	// Implement property: Obstruction
 

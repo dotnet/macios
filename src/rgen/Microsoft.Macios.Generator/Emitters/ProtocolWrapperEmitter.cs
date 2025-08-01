@@ -29,11 +29,19 @@ class ProtocolWrapperEmitter : IClassEmitter {
 	/// Emits the default constructors for the protocol wrapper class.
 	/// </summary>
 	/// <param name="bindingContext">The binding context.</param>
+	/// <param name="wrapperClassName">The protocol wrapper class name.</param>
 	/// <param name="classBlock">The writer for the class block.</param>
-	void EmitDefaultConstructors (in BindingContext bindingContext, TabbedWriter<StringWriter> classBlock)
+	void EmitDefaultConstructors (in BindingContext bindingContext, string wrapperClassName, TabbedWriter<StringWriter> classBlock)
 	{
 		classBlock.WriteLine ();
-		classBlock.WriteLine ("// Implement default constructor");
+		classBlock.AppendPreserveAttribute ();
+		classBlock.WriteRaw (
+$@"public {wrapperClassName} (NativeHandle handle, bool owns)
+	: base (handle, owns)
+{{
+}}
+"
+);
 	}
 
 	/// <summary>
@@ -82,7 +90,7 @@ class ProtocolWrapperEmitter : IClassEmitter {
 		using (var classBlock = bindingContext.Builder.CreateBlock (
 				   $"internal unsafe sealed class {wrapperName} : BaseWrapper, {bindingContext.Changes.Name}",
 				   true)) {
-			EmitDefaultConstructors (bindingContext, classBlock);
+			EmitDefaultConstructors (bindingContext, wrapperName, classBlock);
 			EmitProperties (bindingContext, classBlock);
 			EmitMethods (bindingContext, classBlock);
 		}

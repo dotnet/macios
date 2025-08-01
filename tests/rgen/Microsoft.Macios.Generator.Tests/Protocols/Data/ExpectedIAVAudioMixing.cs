@@ -102,7 +102,11 @@ public partial interface IAVAudioMixing : INativeObject, IDisposable
 internal unsafe sealed class AVAudioMixingWrapper : BaseWrapper, IAVAudioMixing
 {
 
-	// Implement default constructor
+	[Preserve (Conditional = true)]
+	public AVAudioMixingWrapper (NativeHandle handle, bool owns)
+		: base (handle, owns)
+	{
+	}
 
 	// Implement property: Obstruction
 

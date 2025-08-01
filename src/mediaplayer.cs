@@ -2519,7 +2519,7 @@ namespace MediaPlayer {
 		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
 		[Static]
 		[Export ("supportedAnimatedArtworkKeys")]
-		string[] SupportedAnimatedArtworkKeys { get; }
+		string [] SupportedAnimatedArtworkKeys { get; }
 
 		[Internal]
 		[Field ("MPNowPlayingInfoPropertyElapsedPlaybackTime")]
@@ -4064,8 +4064,7 @@ namespace MediaPlayer {
 	[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface MPMediaItemAnimatedArtwork
-	{
+	interface MPMediaItemAnimatedArtwork {
 		[Export ("initWithArtworkID:previewImageRequestHandler:videoAssetFileURLRequestHandler:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (string artworkId, MPMediaItemAnimatedArtworkPreviewImageRequestHandler previewImageRequestHandler, MPMediaItemAnimatedArtworkVideoAssetFileUrlRequestHandler videoAssetFileUrlRequestHandler);

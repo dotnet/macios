@@ -1,16 +1,17 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
+
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Macios.Generator.Availability;
 using Microsoft.Macios.Generator.Context;
+using TypeInfo = Microsoft.Macios.Generator.DataModel.TypeInfo;
 
 namespace Microsoft.Macios.Generator.DataModel;
 
@@ -32,6 +33,13 @@ readonly partial struct Binding {
 	/// The namespace that contains the named type that generated the code change.
 	/// </summary>
 	public ImmutableArray<string> Namespace => namespaces;
+
+	readonly ImmutableArray<OuterClass> outerClasses = ImmutableArray<OuterClass>.Empty;
+
+	/// <summary>
+	/// The containing classes of the type, if it's a nested type.
+	/// </summary>
+	public ImmutableArray<OuterClass> OuterClasses => outerClasses;
 
 	readonly ImmutableArray<string> interfaces = ImmutableArray<string>.Empty;
 	/// <summary>
@@ -158,6 +166,32 @@ readonly partial struct Binding {
 	/// Returns all the selectors for the properties.
 	/// </summary>
 	public ImmutableArray<string> PropertySelectors => [.. propertyIndex.Keys];
+
+	readonly Dictionary<string, int> strongDictPropertyIndex = new ();
+	readonly ImmutableArray<Property> strongDictproperties = [];
+
+	/// <summary>
+	/// Changes to the properties of the symbol that is a StrongDictionary.
+	/// </summary>
+	public ImmutableArray<Property> StrongDictionaryProperties {
+		get => strongDictproperties;
+		init {
+			strongDictproperties = value;
+			// populate the property index for fast lookup using the symbol name
+			for (var index = 0; index < strongDictproperties.Length; index++) {
+				var property = strongDictproperties [index];
+				// there are two type of properties, those that are fields and those that are properties
+				if (property.Selector is null)
+					continue;
+				strongDictPropertyIndex [property.Selector!] = index;
+			}
+		}
+	}
+
+	/// <summary>
+	/// Returns all the strings that are used as keys in the StrongDictionary properties.
+	/// </summary>
+	public ImmutableArray<string> StrongDictionaryKeys => [.. strongDictPropertyIndex.Keys];
 
 	readonly Dictionary<string, int> constructorIndex = new ();
 	readonly ImmutableArray<Constructor> constructors = [];

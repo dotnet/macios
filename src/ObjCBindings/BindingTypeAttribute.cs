@@ -20,6 +20,11 @@ namespace ObjCBindings {
 		/// </summary >
 		public T? Flags { get; set; } = default (T);
 
+		/// <summary>
+		/// The type of the class that a category is extending.
+		/// </summary>
+		public Type? CategoryType { get; set; } = null;
+
 
 		/// <summary>
 		/// Get/set the error domain for an error enumerator. This has to be used with the SmartEnum flag.
@@ -73,6 +78,25 @@ namespace ObjCBindings {
 		public BindingTypeAttribute (string name, T flags)
 		{
 			Name = name;
+			Flags = flags;
+		}
+
+		/// <summary>
+		/// Creates a binding type attribute with the specified category type.
+		/// </summary>
+		public BindingTypeAttribute (Type categoryType)
+		{
+			Name = categoryType.Name;
+			CategoryType = categoryType;
+		}
+
+		/// <summary>
+		/// Creates a binding type attribute with the specified category type and flags.
+		/// </summary>
+		public BindingTypeAttribute (Type categoryType, T flags)
+		{
+			Name = categoryType.Name;
+			CategoryType = categoryType;
 			Flags = flags;
 		}
 	}

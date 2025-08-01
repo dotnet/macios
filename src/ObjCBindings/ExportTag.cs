@@ -111,6 +111,11 @@ namespace ObjCBindings {
 		/// </summary>
 		Async = 1 << 13,
 
+		/// <summary>
+		/// Use this flag on a method to mark it as optional in a protocol definition.
+		/// </summary>
+		Optional = 1 << 14,
+
 	}
 
 	/// <summary>
@@ -213,5 +218,22 @@ namespace ObjCBindings {
 		/// Use this flag on a property to mark it as a weak delegate.
 		/// </summary>
 		WeakDelegate = 1 << 15,
+
+		/// <summary>
+		/// Use this flag on a method to mark it as optional in a protocol definition.
+		/// </summary>
+		Optional = 1 << 16,
+	}
+
+	/// <summary>
+	/// Export flag that states that the field is used as a StrongDictionary property.
+	/// </summary>
+	[Flags]
+	[Experimental ("APL0003")]
+	public enum StrongDictionaryProperty {
+		/// <summary>
+		/// Use the default values.
+		/// </summary>
+		Default = 0,
 	}
 }

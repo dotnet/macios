@@ -2173,9 +2173,10 @@
 
 		<!-- This task is executed on Windows as well, for hotrestart builds -->
 		<!-- resolve any .xcframeworks and binding resource packages -->
+		<!-- Skip doing this when not building on macOS if we're not a remoteable platform (i.e. iOS), because we want such builds to succeed (even if they produce non-working output), and ResolveNativeReferences will fail if running into symlinks (which happens for macOS and Mac Catalyst builds) -->
 		<ResolveNativeReferences
 			SessionId="$(BuildSessionId)"
-			Condition="'$(IsMacEnabled)' == 'true' Or '$(IsHotRestartBuild)' == 'true'"
+			Condition="('$(IsMacEnabled)' == 'true' Or '$(IsHotRestartBuild)' == 'true') And '$(_IsNonMacOSBuildForNonRemotablePlatform)' != 'true'"
 			Architectures="$(TargetArchitectures)"
 			FrameworksDirectory="$(_AppFrameworksRelativePath)"
 			IntermediateOutputPath="$(DeviceSpecificIntermediateOutputPath)"

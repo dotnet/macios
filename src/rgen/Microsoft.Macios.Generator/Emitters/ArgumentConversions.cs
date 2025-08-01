@@ -1,0 +1,35 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
+using System.Collections.Immutable;
+using Microsoft.CodeAnalysis;
+
+namespace Microsoft.Macios.Generator.Emitters;
+
+/// <summary>
+/// Represents the conversions needed for a trampoline argument.
+/// </summary>
+readonly record struct ArgumentConversions () {
+
+	/// <summary>
+	/// Collection of initializers that need to be executed before the delegate call and the
+	/// conversion of the argument syntax.
+	/// </summary>
+	public ImmutableArray<SyntaxNode> Initializers { get; init; } = [];
+
+	/// <summary>
+	/// Collection of validations that need to be executed before the delegate call and the
+	/// conversion of the argument syntax.
+	/// </summary>
+	public ImmutableArray<SyntaxNode> Validations { get; init; } = [];
+
+	/// <summary>
+	/// Collection of expressions that need to be called before the delegate call.
+	/// </summary>
+	public ImmutableArray<SyntaxNode> PreCallConversion { get; init; } = [];
+
+	/// <summary>
+	/// Collection of expressions that need to be called after the delegate call.
+	/// </summary>
+	public ImmutableArray<SyntaxNode> PostCallConversion { get; init; } = [];
+}

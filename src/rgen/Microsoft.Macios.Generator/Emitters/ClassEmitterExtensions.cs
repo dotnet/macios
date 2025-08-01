@@ -397,6 +397,7 @@ return {backingField};
 				var (tempVar, tempDeclaration) = GetReturnValueAuxVariable (property.ReturnType);
 				// if the binding is a protocol, we need to call send directly
 				if (context.Changes.BindingType == BindingType.Protocol) {
+					getterBlock.WriteLine ($"{tempDeclaration}");
 					getterBlock.WriteLine ($"{ExpressionStatement (invocations.Getter.Send)}");
 					getterBlock.WriteLine ($"{ExpressionStatement (KeepAlive ("this"))}");
 				} else {

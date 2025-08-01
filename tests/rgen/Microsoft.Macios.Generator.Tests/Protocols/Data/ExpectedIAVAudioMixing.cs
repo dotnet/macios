@@ -122,6 +122,7 @@ internal unsafe sealed class AVAudioMixingWrapper : BaseWrapper, IAVAudioMixing
 		[SupportedOSPlatform ("maccatalyst13.1")]
 		get
 		{
+			float ret;
 			ret = global::ObjCRuntime.Messaging.float_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("obstruction"));
 			global::System.GC.KeepAlive (this);
 			return ret;
@@ -152,6 +153,7 @@ internal unsafe sealed class AVAudioMixingWrapper : BaseWrapper, IAVAudioMixing
 		[SupportedOSPlatform ("maccatalyst13.1")]
 		get
 		{
+			float ret;
 			ret = global::ObjCRuntime.Messaging.float_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("occlusion"));
 			global::System.GC.KeepAlive (this);
 			return ret;
@@ -182,6 +184,7 @@ internal unsafe sealed class AVAudioMixingWrapper : BaseWrapper, IAVAudioMixing
 		[SupportedOSPlatform ("maccatalyst13.1")]
 		get
 		{
+			global::AVFoundation.AVAudio3DMixingPointSourceInHeadMode ret;
 			ret = (global::AVFoundation.AVAudio3DMixingPointSourceInHeadMode) (long) global::ObjCRuntime.Messaging.IntPtr_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("pointSourceInHeadMode"));
 			global::System.GC.KeepAlive (this);
 			return ret;
@@ -212,6 +215,7 @@ internal unsafe sealed class AVAudioMixingWrapper : BaseWrapper, IAVAudioMixing
 		[SupportedOSPlatform ("maccatalyst13.1")]
 		get
 		{
+			float ret;
 			ret = global::ObjCRuntime.Messaging.float_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("rate"));
 			global::System.GC.KeepAlive (this);
 			return ret;
@@ -242,6 +246,7 @@ internal unsafe sealed class AVAudioMixingWrapper : BaseWrapper, IAVAudioMixing
 		[SupportedOSPlatform ("maccatalyst13.1")]
 		get
 		{
+			global::AVFoundation.AVAudio3DMixingRenderingAlgorithm ret;
 			ret = (global::AVFoundation.AVAudio3DMixingRenderingAlgorithm) (long) global::ObjCRuntime.Messaging.IntPtr_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("renderingAlgorithm"));
 			global::System.GC.KeepAlive (this);
 			return ret;
@@ -272,6 +277,7 @@ internal unsafe sealed class AVAudioMixingWrapper : BaseWrapper, IAVAudioMixing
 		[SupportedOSPlatform ("maccatalyst13.1")]
 		get
 		{
+			float ret;
 			ret = global::ObjCRuntime.Messaging.float_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("reverbBlend"));
 			global::System.GC.KeepAlive (this);
 			return ret;
@@ -302,6 +308,7 @@ internal unsafe sealed class AVAudioMixingWrapper : BaseWrapper, IAVAudioMixing
 		[SupportedOSPlatform ("maccatalyst13.1")]
 		get
 		{
+			global::AVFoundation.AVAudio3DMixingSourceMode ret;
 			ret = (global::AVFoundation.AVAudio3DMixingSourceMode) (long) global::ObjCRuntime.Messaging.IntPtr_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("sourceMode"));
 			global::System.GC.KeepAlive (this);
 			return ret;
@@ -332,6 +339,7 @@ internal unsafe sealed class AVAudioMixingWrapper : BaseWrapper, IAVAudioMixing
 		[SupportedOSPlatform ("maccatalyst13.1")]
 		get
 		{
+			float ret;
 			ret = global::ObjCRuntime.Messaging.float_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("volume"));
 			global::System.GC.KeepAlive (this);
 			return ret;

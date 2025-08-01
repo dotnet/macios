@@ -1016,23 +1016,28 @@ static partial class BindingSyntaxFactory {
 			{ Name: "nint" } => "NIntValue",
 			{ Name: "nuint" } => "NUIntValue",
 			{ Name: "nfloat" or "NFloat" } => "NFloatValue",
-			{ SpecialType: SpecialType.System_Boolean } => "BooleanValue",
-			{ SpecialType: SpecialType.System_Byte } => "ByteValue",
-			{ SpecialType: SpecialType.System_Double } => "DoubleValue",
-			{ SpecialType: SpecialType.System_Single } => "FloatValue",
-			{ SpecialType: SpecialType.System_Int16 } => "Int16Value",
-			{ SpecialType: SpecialType.System_Int32 } => "Int32Value",
-			{ SpecialType: SpecialType.System_Int64 } => "Int64Value",
-			{ SpecialType: SpecialType.System_SByte } => "SByteValue",
-			{ SpecialType: SpecialType.System_UInt16 } => "UInt16Value",
-			{ SpecialType: SpecialType.System_UInt32 } => "UInt32Value",
-			{ SpecialType: SpecialType.System_UInt64 } => "UInt64Value",
-			{ SpecialType: SpecialType.System_IntPtr } => "NIntValue",
-			{ SpecialType: SpecialType.System_UIntPtr } => "NUIntValue",
-			_ => string.Empty,
+			_ => GetNSNumberValue (type.SpecialType),
 		};
 #pragma warning restore format
 	}
+
+	internal static string GetNSNumberValue (SpecialType type)
+		=> type switch {
+			SpecialType.System_Boolean => "BooleanValue",
+			SpecialType.System_Byte => "ByteValue",
+			SpecialType.System_Double => "DoubleValue",
+			SpecialType.System_Single => "FloatValue",
+			SpecialType.System_Int16 => "Int16Value",
+			SpecialType.System_Int32 => "Int32Value",
+			SpecialType.System_Int64 => "Int64Value",
+			SpecialType.System_SByte => "SByteValue",
+			SpecialType.System_UInt16 => "UInt16Value",
+			SpecialType.System_UInt32 => "UInt32Value",
+			SpecialType.System_UInt64 => "UInt64Value",
+			SpecialType.System_IntPtr => "NIntValue",
+			SpecialType.System_UIntPtr => "NUIntValue",
+			_ => string.Empty,
+		};
 
 	/// <summary>
 	/// Generates an if-statement that throws an <see cref="ArgumentNullException"/> if the specified variable is null.

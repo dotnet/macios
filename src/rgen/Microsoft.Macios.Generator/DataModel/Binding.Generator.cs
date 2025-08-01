@@ -55,9 +55,9 @@ readonly partial struct Binding {
 
 			// return those libs needed by field properties
 			foreach (var property in Properties) {
-				if (property.ExportFieldData is null)
+				if (property.ExportFieldData.IsNullOrDefault)
 					continue;
-				var (_, libraryName, libraryPath) = property.ExportFieldData.Value;
+				var (_, libraryName, libraryPath) = property.ExportFieldData;
 				if (visited.Add (libraryName)) // if already visited, we cannot add it
 					yield return (libraryName, libraryPath);
 			}
@@ -130,7 +130,7 @@ readonly partial struct Binding {
 	/// <param name="propertyDeclarationSyntax">The property declaration under test.</param>
 	/// <param name="semanticModel">The semantic model of the compilation.</param>
 	/// <returns>True if the property should be ignored. False otherwise.</returns>
-	internal static bool Skip (PropertyDeclarationSyntax propertyDeclarationSyntax, SemanticModel semanticModel)
+	internal static bool PropertySkip (PropertyDeclarationSyntax propertyDeclarationSyntax, SemanticModel semanticModel)
 	{
 		// valid properties are: 
 		// 1. Partial
@@ -142,6 +142,25 @@ readonly partial struct Binding {
 				AttributesNames.FieldPropertyAttribute, AttributesNames.ExportPropertyAttribute);
 		}
 
+		return true;
+	}
+
+	/// <summary>
+	/// Decide if a property in a strong dictionary should be ignored as a change.
+	/// </summary>
+	/// <param name="propertyDeclarationSyntax">The property declaration under test.</param>
+	/// <param name="semanticModel">The semantic model of the compilation.</param>
+	/// <returns>True if the property should be ignored. False otherwise.</returns>
+	internal static bool StrongDictionarySkip (PropertyDeclarationSyntax propertyDeclarationSyntax,
+		SemanticModel semanticModel)
+	{
+		// valid properties for strong dictionaries are:
+		// 1. Partial
+		// 2. Exported properties as dictionary properties
+		if (propertyDeclarationSyntax.Modifiers.Any (SyntaxKind.PartialKeyword)) {
+			return !propertyDeclarationSyntax.HasAttribute (semanticModel,
+				AttributesNames.ExportStrongDictionaryPropertyAttribute);
+		}
 		return true;
 	}
 
@@ -201,10 +220,11 @@ readonly partial struct Binding {
 			name: out name,
 			baseClass: out baseClass,
 			interfaces: out interfaces,
+			outerClasses: out outerClasses,
 			namespaces: out namespaces,
 			symbolAvailability: out availability,
 			bindingInfo: out bindingInfo);
-		FullyQualifiedSymbol = enumDeclaration.GetFullyQualifiedIdentifier ();
+		FullyQualifiedSymbol = enumDeclaration.GetFullyQualifiedIdentifier (context.SemanticModel);
 		Attributes = enumDeclaration.GetAttributeCodeChanges (context.SemanticModel);
 		UsingDirectives = enumDeclaration.SyntaxTree.CollectUsingStatements ();
 		Modifiers = [.. enumDeclaration.Modifiers];
@@ -247,14 +267,15 @@ readonly partial struct Binding {
 	{
 		context.SemanticModel.GetSymbolData (
 			declaration: classDeclaration,
-			bindingType: BindingType.Class,
+			bindingType: classDeclaration.GetBindingType (context.SemanticModel),
 			name: out name,
 			baseClass: out baseClass,
 			interfaces: out interfaces,
+			outerClasses: out outerClasses,
 			namespaces: out namespaces,
 			symbolAvailability: out availability,
 			bindingInfo: out bindingInfo);
-		FullyQualifiedSymbol = classDeclaration.GetFullyQualifiedIdentifier ();
+		FullyQualifiedSymbol = classDeclaration.GetFullyQualifiedIdentifier (context.SemanticModel);
 		Attributes = classDeclaration.GetAttributeCodeChanges (context.SemanticModel);
 		UsingDirectives = classDeclaration.SyntaxTree.CollectUsingStatements ();
 		Modifiers = [.. classDeclaration.Modifiers];
@@ -263,11 +284,19 @@ readonly partial struct Binding {
 		// the value types are copied
 		GetMembers<ConstructorDeclarationSyntax, Constructor> (classDeclaration, context, Skip,
 			Constructor.TryCreate, out constructors);
-		GetMembers<PropertyDeclarationSyntax, Property> (classDeclaration, context, Skip, Property.TryCreate,
-			out properties);
 		GetMembers<EventDeclarationSyntax, Event> (classDeclaration, context, Skip, Event.TryCreate, out events);
 		GetMembers<MethodDeclarationSyntax, Method> (classDeclaration, context, Skip, Method.TryCreate,
 			out methods);
+
+		// if an only if the class declaration is a strong dictionary we will retrieve strong dictionary properties, else
+		// we will retrieve the properties as normal properties.
+		if (bindingInfo.BindingType == BindingType.StrongDictionary) {
+			GetMembers<PropertyDeclarationSyntax, Property> (classDeclaration, context, StrongDictionarySkip, Property.TryCreate,
+				out strongDictproperties);
+		} else {
+			GetMembers<PropertyDeclarationSyntax, Property> (classDeclaration, context, PropertySkip, Property.TryCreate,
+				out properties);
+		}
 	}
 
 	/// <summary>
@@ -283,16 +312,17 @@ readonly partial struct Binding {
 			name: out name,
 			baseClass: out baseClass,
 			interfaces: out interfaces,
+			outerClasses: out outerClasses,
 			namespaces: out namespaces,
 			symbolAvailability: out availability,
 			bindingInfo: out bindingInfo);
-		FullyQualifiedSymbol = interfaceDeclaration.GetFullyQualifiedIdentifier ();
+		FullyQualifiedSymbol = interfaceDeclaration.GetFullyQualifiedIdentifier (context.SemanticModel);
 		Attributes = interfaceDeclaration.GetAttributeCodeChanges (context.SemanticModel);
 		UsingDirectives = interfaceDeclaration.SyntaxTree.CollectUsingStatements ();
 		Modifiers = [.. interfaceDeclaration.Modifiers];
 		// we do not init the constructors, we use the default empty array
 
-		GetMembers<PropertyDeclarationSyntax, Property> (interfaceDeclaration, context.SemanticModel, Skip, Property.TryCreate,
+		GetMembers<PropertyDeclarationSyntax, Property> (interfaceDeclaration, context.SemanticModel, PropertySkip, Property.TryCreate,
 			out properties);
 		GetMembers<EventDeclarationSyntax, Event> (interfaceDeclaration, context.SemanticModel, Skip, Event.TryCreate,
 			out events);

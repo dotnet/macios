@@ -18,6 +18,11 @@ readonly record struct ArgumentInfo {
 	public string Name { get; init; }
 
 	/// <summary>
+	/// The position of the argument in the parameter list.
+	/// </summary>
+	public int Position { get; init; } = -1;
+
+	/// <summary>
 	/// The type information of the argument.
 	/// </summary>
 	public TypeInfo Type { get; init; }
@@ -54,6 +59,7 @@ readonly record struct ArgumentInfo {
 	public ArgumentInfo (in Parameter parameter)
 	{
 		Name = parameter.Name;
+		Position = parameter.Position;
 		Type = parameter.Type;
 		BindAs = parameter.BindAs;
 		IsByRef = parameter.IsByRef;
@@ -69,6 +75,7 @@ readonly record struct ArgumentInfo {
 	public ArgumentInfo (in DelegateParameter parameter)
 	{
 		Name = parameter.Name;
+		Position = parameter.Position;
 		Type = parameter.Type;
 		BindAs = parameter.BindAs;
 		IsByRef = parameter.IsByRef;
@@ -85,6 +92,7 @@ readonly record struct ArgumentInfo {
 	public ArgumentInfo (in Property property)
 	{
 		Name = "value";
+		Position = 0; // Properties typically have a single setter argument at position 0.
 		Type = property.ReturnType;
 		BindAs = property.BindAs;
 		IsByRef = false;

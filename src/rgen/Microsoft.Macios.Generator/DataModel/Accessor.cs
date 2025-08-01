@@ -2,9 +2,7 @@
 // Licensed under the MIT License.
 using System;
 using System.Collections.Immutable;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.Macios.Generator.Availability;
 
@@ -12,6 +10,22 @@ namespace Microsoft.Macios.Generator.DataModel;
 
 [StructLayout (LayoutKind.Auto)]
 readonly partial struct Accessor : IEquatable<Accessor> {
+
+	/// <summary>
+	/// The initialization state of the struct.
+	/// </summary>
+	StructState State { get; init; } = StructState.Default;
+
+	/// <summary>
+	/// Gets the default, uninitialized instance of <see cref="Accessor"/>.
+	/// </summary>
+	public static Accessor Default { get; } = new (StructState.Default);
+
+	/// <summary>
+	/// Gets a value indicating whether the instance is the default, uninitialized instance.
+	/// </summary>
+	public bool IsNullOrDefault => State == StructState.Default;
+
 	/// <summary>
 	/// The kind of accessor.
 	/// </summary>
@@ -32,9 +46,21 @@ readonly partial struct Accessor : IEquatable<Accessor> {
 	/// </summary>
 	public ImmutableArray<SyntaxToken> Modifiers { get; }
 
+	/// <summary>
+	/// Initializes a new instance of the <see cref="Accessor"/> struct with a specific state.
+	/// Used to create the default, uninitialized instance.
+	/// </summary>
+	/// <param name="state">The initialization state of the struct.</param>
+	Accessor (StructState state)
+	{
+		State = state;
+	}
+
 	/// <inheritdoc />
 	public bool Equals (Accessor other)
 	{
+		if (State == StructState.Default && other.State == StructState.Default)
+			return true;
 		if (Kind != other.Kind)
 			return false;
 		if (SymbolAvailability != other.SymbolAvailability)

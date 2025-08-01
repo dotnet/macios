@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Macios.Generator.Attributes;
 using Microsoft.Macios.Generator.Availability;
@@ -15,6 +16,7 @@ using ObjCBindings;
 using Xamarin.Tests;
 using Xamarin.Utils;
 using Xunit;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Microsoft.Macios.Generator.Tests.Extensions;
 
@@ -43,27 +45,7 @@ public class Foo {
 				"Foo",
 				"object",
 				ImmutableArray<string>.Empty,
-				ns,
-				builder.ToImmutable (),
-				bindingData];
-
-			const string filescopedNamespaceNestedClass = @"
-using ObjCBindings;
-
-namespace Test;
-
-[BindingType<Class>]
-public class Foo {
-	public class Bar {
-	}	
-}
-";
-			yield return [
-				BindingType.Class,
-				filescopedNamespaceNestedClass,
-				"Bar",
-				"object",
-				ImmutableArray<string>.Empty,
+				ImmutableArray<OuterClass>.Empty,
 				ns,
 				builder.ToImmutable (),
 				bindingData];
@@ -85,6 +67,7 @@ namespace Test {
 				"Foo",
 				"object",
 				ImmutableArray<string>.Empty,
+				ImmutableArray<OuterClass>.Empty,
 				ns,
 				builder.ToImmutable (),
 				bindingData];
@@ -106,6 +89,7 @@ namespace Foo {
 				"Test",
 				"object",
 				ImmutableArray<string>.Empty,
+				ImmutableArray<OuterClass>.Empty,
 				ns,
 				builder.ToImmutable (),
 				bindingData];
@@ -143,32 +127,7 @@ public class Foo {
 				"Foo",
 				"object",
 				ImmutableArray<string>.Empty,
-				ns,
-				builder.ToImmutable (),
-				bindingData];
-
-			const string filescopedNamespaceNestedClass = @"
-using System.Runtime.Versioning;
-using ObjCBindings;
-
-namespace Test;
-
-[BindingType<Class>]
-public class Foo {
-
-	[SupportedOSPlatform (""ios17.0"")]
-	[SupportedOSPlatform (""tvos17.0"")]
-	[UnsupportedOSPlatform (""macos"")]
-	public class Bar {
-	}	
-}
-";
-			yield return [
-				BindingType.Class,
-				filescopedNamespaceNestedClass,
-				"Bar",
-				"object",
-				ImmutableArray<string>.Empty,
+				ImmutableArray<OuterClass>.Empty,
 				ns,
 				builder.ToImmutable (),
 				bindingData];
@@ -194,6 +153,7 @@ namespace Test {
 				"Foo",
 				"object",
 				ImmutableArray<string>.Empty,
+				ImmutableArray<OuterClass>.Empty,
 				ns,
 				builder.ToImmutable (),
 				bindingData];
@@ -220,6 +180,7 @@ namespace Foo {
 				"Test",
 				"object",
 				ImmutableArray<string>.Empty,
+				ImmutableArray<OuterClass>.Empty,
 				ns,
 				builder.ToImmutable (),
 				bindingData];
@@ -249,6 +210,7 @@ public class Foo {
 				"Foo",
 				"object",
 				ImmutableArray<string>.Empty,
+				ImmutableArray<OuterClass>.Empty,
 				ns,
 				builder.ToImmutable (),
 				new BindingInfo (new BindingTypeData<Class> ())];
@@ -267,6 +229,7 @@ public class Foo {
 				"Foo",
 				"object",
 				ImmutableArray<string>.Empty,
+				ImmutableArray<OuterClass>.Empty,
 				ns,
 				builder.ToImmutable (),
 				new BindingInfo (new BindingTypeData<Class> (Class.DisableDefaultCtor))];
@@ -285,6 +248,7 @@ public class Foo {
 				"Foo",
 				"object",
 				ImmutableArray<string>.Empty,
+				ImmutableArray<OuterClass>.Empty,
 				ns,
 				builder.ToImmutable (),
 				new BindingInfo (new BindingTypeData<Class> ("ObjcFoo"))];
@@ -303,6 +267,7 @@ public class Foo {
 				"Foo",
 				"object",
 				ImmutableArray<string>.Empty,
+				ImmutableArray<OuterClass>.Empty,
 				ns,
 				builder.ToImmutable (),
 				new BindingInfo (new BindingTypeData<Class> ("ObjcFoo", Class.DisableDefaultCtor))];
@@ -321,6 +286,7 @@ public static class Foo {
 				"Foo",
 				"object",
 				ImmutableArray<string>.Empty,
+				ImmutableArray<OuterClass>.Empty,
 				ns,
 				builder.ToImmutable (),
 				new BindingInfo (new BindingTypeData<Category> ())];
@@ -339,6 +305,7 @@ public interface IFoo {
 				"IFoo",
 				null!,
 				ImmutableArray<string>.Empty,
+				ImmutableArray<OuterClass>.Empty,
 				ns,
 				builder.ToImmutable (),
 				new BindingInfo (new BindingTypeData<Protocol> ())];
@@ -358,6 +325,7 @@ public enum Foo {
 				"Foo",
 				"System.Enum",
 				ImmutableArray<string>.Empty,
+				ImmutableArray<OuterClass>.Empty,
 				ns,
 				builder.ToImmutable (),
 				new BindingInfo (BindingType.SmartEnum, new ())];
@@ -391,6 +359,7 @@ public class Foo {
 				"Foo",
 				"object",
 				ImmutableArray<string>.Empty,
+				ImmutableArray<OuterClass>.Empty,
 				ns,
 				builder.ToImmutable (),
 				classBindingData
@@ -414,6 +383,7 @@ public class Foo : IFoo {
 				"Foo",
 				"object",
 				ImmutableArray.Create ("Test.IFoo"),
+				ImmutableArray<OuterClass>.Empty,
 				ns,
 				builder.ToImmutable (),
 				classBindingData
@@ -439,6 +409,7 @@ public class Foo : IFoo, IBar {
 				"Foo",
 				"object",
 				ImmutableArray.Create ("Test.IFoo", "Test.IBar"),
+				ImmutableArray<OuterClass>.Empty,
 				ns,
 				builder.ToImmutable (),
 				classBindingData
@@ -460,6 +431,7 @@ public class Foo : NSObject {
 				"Foo",
 				"Foundation.NSObject",
 				ImmutableArray<string>.Empty,
+				ImmutableArray<OuterClass>.Empty,
 				ns,
 				builder.ToImmutable (),
 				classBindingData
@@ -483,6 +455,7 @@ public class Foo : NSObject, IFoo {
 				"Foo",
 				"Foundation.NSObject",
 				ImmutableArray.Create ("Test.IFoo"),
+				ImmutableArray<OuterClass>.Empty,
 				ns,
 				builder.ToImmutable (),
 				classBindingData
@@ -508,6 +481,7 @@ public class Foo : NSObject, IFoo, IBar {
 				"Foo",
 				"Foundation.NSObject",
 				ImmutableArray.Create ("Test.IFoo", "Test.IBar"),
+				ImmutableArray<OuterClass>.Empty,
 				ns,
 				builder.ToImmutable (),
 				classBindingData
@@ -529,6 +503,7 @@ public interface IFoo {
 				"IFoo",
 				null!,
 				ImmutableArray<string>.Empty,
+				ImmutableArray<OuterClass>.Empty,
 				ns,
 				builder.ToImmutable (),
 				protocolBindingData
@@ -552,6 +527,7 @@ public interface IFoo : IBar {
 				"IFoo",
 				null!,
 				ImmutableArray.Create ("Test.IBar"),
+				ImmutableArray<OuterClass>.Empty,
 				ns,
 				builder.ToImmutable (),
 				protocolBindingData
@@ -576,6 +552,7 @@ public interface IFoo : IBar, IBaz {
 				"IFoo",
 				null!,
 				ImmutableArray.Create ("Test.IBar", "Test.IBaz"),
+				ImmutableArray<OuterClass>.Empty,
 				ns,
 				builder.ToImmutable (),
 				protocolBindingData
@@ -599,10 +576,122 @@ public interface IFoo : IList<string> {
 				"IFoo",
 				null!,
 				ImmutableArray.Create ("System.Collections.Generic.IList<string>"),
+				ImmutableArray<OuterClass>.Empty,
 				ns,
 				builder.ToImmutable (),
 				protocolBindingData
 			];
+		}
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
+	}
+
+	class TestDataGetNameAndNamespaceNestedClasses : IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
+		{
+			var builder = SymbolAvailability.CreateBuilder ();
+			ImmutableArray<string> ns = ImmutableArray.Create ("Test");
+			var bindingData = new BindingInfo (new BindingTypeData<Class> ());
+
+			const string filescopedNamespaceNestedClass = @"
+using ObjCBindings;
+
+namespace Test;
+
+[BindingType<Class>]
+public class Foo {
+	public class Bar {
+	}	
+}
+";
+			yield return [
+				BindingType.Class,
+				filescopedNamespaceNestedClass,
+				"Bar",
+				"object",
+				ImmutableArray<string>.Empty,
+				ImmutableArray.Create (
+					new OuterClass (
+						name: "Foo",
+						modifiers: ImmutableArray.Create (
+							Token (SyntaxKind.PublicKeyword),
+							Token (SyntaxKind.PartialKeyword)
+						)
+					)
+				),
+				ns,
+				builder.ToImmutable (),
+				bindingData];
+
+			const string staticFilescopedNamespaceNestedClass = @"
+using ObjCBindings;
+
+namespace Test;
+
+[BindingType<Class>]
+public static class Foo {
+	public class Bar {
+	}	
+}
+";
+			yield return [
+				BindingType.Class,
+				staticFilescopedNamespaceNestedClass,
+				"Bar",
+				"object",
+				ImmutableArray<string>.Empty,
+				ImmutableArray.Create (
+					new OuterClass (
+						name: "Foo",
+						modifiers: ImmutableArray.Create (
+							Token (SyntaxKind.PublicKeyword),
+							Token (SyntaxKind.StaticKeyword),
+							Token (SyntaxKind.PartialKeyword)
+						)
+					)
+				),
+				ns,
+				builder.ToImmutable (),
+				bindingData];
+
+			const string filescopedNamespaceMultipleNestedClass = @"
+using ObjCBindings;
+
+namespace Test;
+
+[BindingType<Class>]
+public class Foo {
+	public class Bar {
+		public class Baz {
+		}	
+	}	
+}
+";
+			yield return [
+				BindingType.Class,
+				filescopedNamespaceMultipleNestedClass,
+				"Baz",
+				"object",
+				ImmutableArray<string>.Empty,
+				ImmutableArray.Create (
+					new OuterClass (
+						name: "Foo",
+						modifiers: ImmutableArray.Create (
+							Token (SyntaxKind.PublicKeyword),
+							Token (SyntaxKind.PartialKeyword)
+						)
+					),
+					new OuterClass (
+						name: "Bar",
+						modifiers: ImmutableArray.Create (
+							Token (SyntaxKind.PublicKeyword),
+							Token (SyntaxKind.PartialKeyword)
+						)
+					)
+				),
+				ns,
+				builder.ToImmutable (),
+				bindingData];
+
 		}
 		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
 	}
@@ -612,9 +701,11 @@ public interface IFoo : IList<string> {
 	[AllSupportedPlatformsClassData<TestDataGetNameAndNamespaceAndAvailabilityTests>]
 	[AllSupportedPlatformsClassData<TestDataGetNameAndNamespaceDiffBindingType>]
 	[AllSupportedPlatformsClassData<TestDataGetNameAndNamespaceInheritanceTests>]
+	[AllSupportedPlatformsClassData<TestDataGetNameAndNamespaceNestedClasses>]
 	internal void GetNameAndNamespaceTests (ApplePlatform platform, BindingType bindingType,
 		string inputText, string expectedName, string? expectedBaseClass, ImmutableArray<string> expectedInterfaces,
-		ImmutableArray<string> expectedNamespace, SymbolAvailability expectedAvailability, BindingInfo expectedInfo)
+		ImmutableArray<OuterClass> expectedOuterClasses, ImmutableArray<string> expectedNamespace,
+		SymbolAvailability expectedAvailability, BindingInfo expectedInfo)
 	{
 		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
 		Assert.Single (syntaxTrees);
@@ -630,12 +721,14 @@ public interface IFoo : IList<string> {
 			name: out var name,
 			baseClass: out var baseClass,
 			interfaces: out var interfaces,
+			outerClasses: out var outerClasses,
 			namespaces: out var @namespace,
 			symbolAvailability: out var symbolAvailability,
 			bindingInfo: out var bindingData);
 		Assert.Equal (expectedName, name);
 		Assert.Equal (expectedBaseClass, baseClass);
 		Assert.Equal (expectedInterfaces, interfaces, interfacesComparer);
+		Assert.Equal (expectedOuterClasses, outerClasses, new OuterClassEqualityComparer ());
 		Assert.Equal (expectedNamespace, @namespace, nameSpaceComparer);
 		Assert.Equal (expectedAvailability, symbolAvailability);
 		Assert.Equal (expectedInfo, bindingData);

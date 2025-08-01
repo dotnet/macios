@@ -16,11 +16,14 @@ static class AttributesNames {
 	public const string BindFromAttribute = "ObjCBindings.BindFromAttribute";
 	public const string ProtocolAttribute = "ObjCBindings.BindingTypeAttribute<ObjCBindings.Protocol>";
 	public const string StrongDictionaryAttribute = "ObjCBindings.BindingTypeAttribute<ObjCBindings.StrongDictionary>";
+	public const string StrongDictionaryKeysAttribute = "ObjCBindings.BindingTypeAttribute<ObjCBindings.StrongDictionaryKeys>";
 	public const string FieldAttribute = "ObjCBindings.FieldAttribute";
 	public const string EnumFieldAttribute = "ObjCBindings.FieldAttribute<ObjCBindings.EnumValue>";
 	public const string FieldPropertyAttribute = "ObjCBindings.FieldAttribute<ObjCBindings.Property>";
 	public const string ExportPropertyAttribute = "ObjCBindings.ExportAttribute<ObjCBindings.Property>";
+	public const string ExportStrongDictionaryPropertyAttribute = "ObjCBindings.ExportAttribute<ObjCBindings.StrongDictionaryProperty>";
 	public const string ExportMethodAttribute = "ObjCBindings.ExportAttribute<ObjCBindings.Method>";
+	public const string ExportConstructorAttribute = "ObjCBindings.ExportAttribute<ObjCBindings.Constructor>";
 	public const string SupportedOSPlatformAttribute = "System.Runtime.Versioning.SupportedOSPlatformAttribute";
 	public const string UnsupportedOSPlatformAttribute = "System.Runtime.Versioning.UnsupportedOSPlatformAttribute";
 	public const string ObsoletedOSPlatformAttribute = "System.Runtime.Versioning.ObsoletedOSPlatformAttribute";
@@ -34,6 +37,7 @@ static class AttributesNames {
 		ClassAttribute,
 		ProtocolAttribute,
 		StrongDictionaryAttribute,
+		StrongDictionaryKeysAttribute,
 		CoreImageFilterAttribute,
 		SmartEnumAttribute,
 	];
@@ -53,6 +57,9 @@ static class AttributesNames {
 		}
 		if (type == typeof (ObjCBindings.StrongDictionary)) {
 			return StrongDictionaryAttribute;
+		}
+		if (type == typeof (ObjCBindings.StrongDictionaryKeys)) {
+			return StrongDictionaryKeysAttribute;
 		}
 		if (type == typeof (ObjCBindings.SmartEnum)) {
 			return SmartEnumAttribute;
@@ -83,6 +90,12 @@ static class AttributesNames {
 		}
 		if (type == typeof (ObjCBindings.Method)) {
 			return ExportMethodAttribute;
+		}
+		if (type == typeof (ObjCBindings.Constructor)) {
+			return ExportConstructorAttribute;
+		}
+		if (type == typeof (ObjCBindings.StrongDictionaryProperty)) {
+			return ExportStrongDictionaryPropertyAttribute;
 		}
 		return null;
 	}

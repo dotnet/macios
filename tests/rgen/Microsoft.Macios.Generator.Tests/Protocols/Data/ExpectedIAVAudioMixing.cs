@@ -97,3 +97,27 @@ public partial interface IAVAudioMixing : INativeObject, IDisposable
 		throw new global::Foundation.You_Should_Not_Call_base_In_This_Method ();
 	}
 }
+
+internal unsafe sealed class AVAudioMixingWrapper : BaseWrapper, IAVAudioMixing
+{
+	// Implement default constructor
+
+	// Implement property: Obstruction
+
+	// Implement property: Occlusion
+
+	// Implement property: PointSourceInHeadMode
+
+	// Implement property: Rate
+
+	// Implement property: RenderingAlgorithm
+
+	// Implement property: ReverbBlend
+
+	// Implement property: SourceMode
+
+	// Implement property: Volume
+
+	// Implement method: DestinationForMixer
+
+}

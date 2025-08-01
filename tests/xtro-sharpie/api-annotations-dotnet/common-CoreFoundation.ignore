@@ -60,8 +60,10 @@
 !missing-field! kCFURLUbiquitousItemHasUnresolvedConflictsKey not bound
 !missing-field! kCFURLUbiquitousItemIsDownloadingKey not bound
 !missing-field! kCFURLUbiquitousItemIsExcludedFromSyncKey not bound
+!missing-field! kCFURLUbiquitousItemIsSyncPausedKey not bound
 !missing-field! kCFURLUbiquitousItemIsUploadedKey not bound
 !missing-field! kCFURLUbiquitousItemIsUploadingKey not bound
+!missing-field! kCFURLUbiquitousItemSupportedSyncControlsKey not bound
 !missing-field! kCFURLUbiquitousItemUploadingErrorKey not bound
 
 ## We haven't bound most of the CFAllocator APIs, because they're rarely needed.

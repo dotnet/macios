@@ -1110,4 +1110,253 @@ public class TestClass {
 		Assert.NotNull (changes);
 		Assert.Equal (expected, changes);
 	}
+
+	class TestDataToExtensionMethods : IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
+		{
+			var extensionType = ReturnTypeForInterface ("Tests.ITestClass", isProtocol: true);
+			const string onlyGetter = @"
+using System;
+using ObjCBindings;
+
+namespace Test;
+
+public class TestClass {
+
+	[Export<Property>(""name"")]
+	public string Name { get; }
+}
+";
+			yield return [
+				onlyGetter,
+				extensionType,
+				new Method (
+					type: extensionType.FullyQualifiedName,
+					name: "_GetName",
+					returnType: ReturnTypeForString (),
+					symbolAvailability: new (),
+					exportMethodData: new ("name"),
+					attributes: [],
+					modifiers: [
+						SyntaxFactory.Token (SyntaxKind.InternalKeyword),
+						SyntaxFactory.Token (SyntaxKind.StaticKeyword),
+					],
+					parameters: [
+						new (0, extensionType, "self") {
+							IsThis = true
+						},
+					]
+				),
+				Method.Default,
+			];
+
+			const string getterSetter = @"
+using System;
+using ObjCBindings;
+
+namespace Test;
+
+public class TestClass {
+
+	[Export<Property>(""name"")]
+	public string Name { get; set; }
+}
+";
+			yield return [
+				getterSetter,
+				extensionType,
+				new Method (
+					type: extensionType.FullyQualifiedName,
+					name: "_GetName",
+					returnType: ReturnTypeForString (),
+					symbolAvailability: new (),
+					exportMethodData: new ("name"),
+					attributes: [],
+					modifiers: [
+						SyntaxFactory.Token (SyntaxKind.InternalKeyword),
+						SyntaxFactory.Token (SyntaxKind.StaticKeyword),
+					],
+					parameters: [
+						new (0, extensionType, "self") {
+							IsThis = true
+						},
+					]
+				),
+				new Method (
+					type: extensionType.FullyQualifiedName,
+					name: "_SetName",
+					returnType: TypeInfo.Void,
+					symbolAvailability: new (),
+					exportMethodData: new ("setName:"),
+					attributes: [],
+					modifiers: [
+						SyntaxFactory.Token (SyntaxKind.InternalKeyword),
+						SyntaxFactory.Token (SyntaxKind.StaticKeyword),
+					],
+					parameters: [
+						new (0, extensionType, "self") {
+							IsThis = true
+						},
+						new (1, ReturnTypeForString (), "value"),
+					]
+				),
+			];
+
+			const string getterSetterCustomSelector = @"
+using System;
+using ObjCBindings;
+
+namespace Test;
+
+public class TestClass {
+
+	[Export<Property>(""name"")]
+	public string Name { 
+	    [Export<Property>(""myName"")]
+		get; 
+	    [Export<Property>(""setMyName:"")]
+		set; 
+	}
+}
+";
+			yield return [
+				getterSetterCustomSelector,
+				extensionType,
+				new Method (
+					type: extensionType.FullyQualifiedName,
+					name: "_GetName",
+					returnType: ReturnTypeForString (),
+					symbolAvailability: new (),
+					exportMethodData: new ("myName"),
+					attributes: [],
+					modifiers: [
+						SyntaxFactory.Token (SyntaxKind.InternalKeyword),
+						SyntaxFactory.Token (SyntaxKind.StaticKeyword),
+					],
+					parameters: [
+						new (0, extensionType, "self") {
+							IsThis = true
+						},
+					]
+				),
+				new Method (
+					type: extensionType.FullyQualifiedName,
+					name: "_SetName",
+					returnType: TypeInfo.Void,
+					symbolAvailability: new (),
+					exportMethodData: new ("setMyName:"),
+					attributes: [],
+					modifiers: [
+						SyntaxFactory.Token (SyntaxKind.InternalKeyword),
+						SyntaxFactory.Token (SyntaxKind.StaticKeyword),
+					],
+					parameters: [
+						new (0, extensionType, "self") {
+							IsThis = true
+						},
+						new (1, ReturnTypeForString (), "value"),
+					]
+				),
+			];
+
+			const string getterSetterCustomSelectorAvailability = @"
+using System;
+using System.Runtime.Versioning;
+using ObjCBindings;
+
+namespace Test;
+
+public class TestClass {
+
+	[SupportedOSPlatform (""ios"")]
+	[Export<Property>(""name"")]
+	public string Name { 
+	    [Export<Property>(""myName"")]
+		get; 
+		[SupportedOSPlatform (""ios17.0"")]
+	    [Export<Property>(""setMyName:"")]
+		set; 
+	}
+}
+";
+			var getterAvailabilityBuilder = SymbolAvailability.CreateBuilder ();
+			getterAvailabilityBuilder.Add (supportedPlatform: new SupportedOSPlatformData (platformName: "ios"));
+			var setterAvailabilityBuilder = SymbolAvailability.CreateBuilder ();
+			setterAvailabilityBuilder.Add (supportedPlatform: new SupportedOSPlatformData (platformName: "ios17.0"));
+
+			yield return [
+				getterSetterCustomSelectorAvailability,
+				extensionType,
+				new Method (
+					type: extensionType.FullyQualifiedName,
+					name: "_GetName",
+					returnType: ReturnTypeForString (),
+					symbolAvailability: getterAvailabilityBuilder.ToImmutable (),
+					exportMethodData: new ("myName"),
+					attributes: [],
+					modifiers: [
+						SyntaxFactory.Token (SyntaxKind.InternalKeyword),
+						SyntaxFactory.Token (SyntaxKind.StaticKeyword),
+					],
+					parameters: [
+						new (0, extensionType, "self") {
+							IsThis = true
+						},
+					]
+				),
+				new Method (
+					type: extensionType.FullyQualifiedName,
+					name: "_SetName",
+					returnType: TypeInfo.Void,
+					symbolAvailability: setterAvailabilityBuilder.ToImmutable (),
+					exportMethodData: new ("setMyName:"),
+					attributes: [],
+					modifiers: [
+						SyntaxFactory.Token (SyntaxKind.InternalKeyword),
+						SyntaxFactory.Token (SyntaxKind.StaticKeyword),
+					],
+					parameters: [
+						new (0, extensionType, "self") {
+							IsThis = true
+						},
+						new (1, ReturnTypeForString (), "value"),
+					]
+				),
+			];
+		}
+
+		IEnumerator IEnumerable.GetEnumerator ()
+			=> GetEnumerator ();
+	}
+
+	[Theory]
+	[AllSupportedPlatformsClassData<TestDataToExtensionMethods>]
+	void ToExtensionMethods (ApplePlatform platform, string inputText, TypeInfo protocolType, Method expectedGetter, Method expectedSetter)
+	{
+		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
+		Assert.Single (syntaxTrees);
+		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
+		var declaration = syntaxTrees [0].GetRoot ()
+			.DescendantNodes ().OfType<PropertyDeclarationSyntax> ()
+			.FirstOrDefault ();
+		Assert.NotNull (declaration);
+		Assert.True (Property.TryCreate (declaration, semanticModel, out var changes));
+		Assert.NotNull (changes);
+		var (getter, setter) = changes.Value.ToExtensionMethods (protocolType);
+		if (expectedGetter.IsNullOrDefault) {
+			Assert.True (getter.IsNullOrDefault);
+		} else {
+			Assert.False (getter.IsNullOrDefault);
+			Assert.True (getter.IsExtension);
+			Assert.Equal (expectedGetter, getter);
+		}
+
+		if (expectedSetter.IsNullOrDefault) {
+			Assert.True (setter.IsNullOrDefault);
+		} else {
+			Assert.False (setter.IsNullOrDefault);
+			Assert.True (setter.IsExtension);
+			Assert.Equal (expectedSetter, setter);
+		}
+	}
 }

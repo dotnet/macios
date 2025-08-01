@@ -45,6 +45,9 @@
         <Compile Include="../Microsoft.Macios.Generator/DictionaryComparer.cs" >
             <Link>Generator/DictionaryComparer.cs</Link>
         </Compile>
+        <Compile Include="../Microsoft.Macios.Generator/StructState.cs" >
+            <Link>Generator/StructState.cs</Link>
+        </Compile>
         <Compile Include="../Microsoft.Macios.Generator/Attributes/BindFromData.cs" >
             <Link>Generator/Attributes/BindFromData.cs</Link>
         </Compile>
@@ -90,6 +93,9 @@
         </Compile>
         <Compile Include="../Microsoft.Macios.Generator/DataModel/DelegateParameter.Generator.cs" >
             <Link>DataModel/DelegateParameter.Generator.cs</Link>
+        </Compile>
+        <Compile Include="../Microsoft.Macios.Generator/DataModel/ImmutableArrayEqualityComparer.cs" >
+            <Link>DataModel/ImmutableArrayEqualityComparer.cs</Link>
         </Compile>
         <Compile Include="../Microsoft.Macios.Generator/DataModel/Parameter.cs" >
             <Link>DataModel/Parameter.cs</Link>

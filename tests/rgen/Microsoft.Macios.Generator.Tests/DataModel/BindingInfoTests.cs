@@ -178,27 +178,27 @@ public class BindingInfoTests {
 		{
 			yield return [
 				new BindingInfo (new BindingTypeData<ObjCBindings.SmartEnum> ("Name")),
-				"{ BindingType: SmartEnum, BindingData: { Name: 'Name', Flags: 'Default' } }",
+				"{ BindingType: SmartEnum, BindingData: { Name: 'Name', CategoryType: 'null', Flags: 'Default' } }",
 			];
 
 			yield return [
 				new BindingInfo (new BindingTypeData<ObjCBindings.Class> ("Name")),
-				"{ BindingType: Class, BindingData: { Name: 'Name', Flags: 'Default' } }"
+				"{ BindingType: Class, BindingData: { Name: 'Name', CategoryType: 'null', Flags: 'Default' } }"
 			];
 
 			yield return [
 				new BindingInfo (new BindingTypeData<ObjCBindings.Class> ("Name", Class.DisableDefaultCtor)),
-				"{ BindingType: Class, BindingData: { Name: 'Name', Flags: 'DisableDefaultCtor' } }"
+				"{ BindingType: Class, BindingData: { Name: 'Name', CategoryType: 'null', Flags: 'DisableDefaultCtor' } }"
 			];
 
 			yield return [
 				new BindingInfo (new BindingTypeData<ObjCBindings.Protocol> ("Name")),
-				"{ BindingType: Protocol, BindingData: { Name: 'Name', Flags: 'Default' } }"
+				"{ BindingType: Protocol, BindingData: { Name: 'Name', CategoryType: 'null', Flags: 'Default' } }"
 			];
 
 			yield return [
 				new BindingInfo (new BindingTypeData<ObjCBindings.Category> ("Name")),
-				"{ BindingType: Category, BindingData: { Name: 'Name', Flags: 'Default' } }"
+				"{ BindingType: Category, BindingData: { Name: 'Name', CategoryType: 'null', Flags: 'Default' } }"
 			];
 		}
 

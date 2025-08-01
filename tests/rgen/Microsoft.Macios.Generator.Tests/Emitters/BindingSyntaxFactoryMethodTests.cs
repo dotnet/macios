@@ -33,7 +33,7 @@ namespace NS {
 			yield return [
 				voidMethodNoParamsExportData,
 				$"{Global ("ObjCRuntime")}.Messaging.void_objc_msgSend (this.Handle, {Global ("ObjCRuntime")}.Selector.GetHandle (\"myMethod\"))",
-				$"{Global ("ObjCRuntime")}.Messaging.void_objc_msgSendSuper (this.Handle, {Global ("ObjCRuntime")}.Selector.GetHandle (\"myMethod\"))"
+				$"{Global ("ObjCRuntime")}.Messaging.void_objc_msgSendSuper (this.SuperHandle, {Global ("ObjCRuntime")}.Selector.GetHandle (\"myMethod\"))"
 			];
 
 			const string asyncVoidMethodNoParamsExportDataMisingFlag = @"
@@ -51,7 +51,7 @@ namespace NS {
 			yield return [
 				asyncVoidMethodNoParamsExportDataMisingFlag,
 				$"{Global ("ObjCRuntime")}.Messaging.void_objc_msgSend_NativeHandle (this.Handle, {Global ("ObjCRuntime")}.Selector.GetHandle (\"myMethod\"), ({Global ("ObjCRuntime")}.NativeHandle) block_ptr_completionHandler)",
-				$"{Global ("ObjCRuntime")}.Messaging.void_objc_msgSendSuper_NativeHandle (this.Handle, {Global ("ObjCRuntime")}.Selector.GetHandle (\"myMethod\"), ({Global ("ObjCRuntime")}.NativeHandle) block_ptr_completionHandler)",
+				$"{Global ("ObjCRuntime")}.Messaging.void_objc_msgSendSuper_NativeHandle (this.SuperHandle, {Global ("ObjCRuntime")}.Selector.GetHandle (\"myMethod\"), ({Global ("ObjCRuntime")}.NativeHandle) block_ptr_completionHandler)",
 			];
 
 			const string asyncVoidMethodNoParamsExportDataAsyncFlag = @"
@@ -71,7 +71,7 @@ namespace NS {
 			yield return [
 				asyncVoidMethodNoParamsExportDataAsyncFlag,
 				$"{Global ("ObjCRuntime")}.Messaging.void_objc_msgSend_NativeHandle (this.Handle, {Global ("ObjCRuntime")}.Selector.GetHandle (\"myMethod\"), ({Global ("ObjCRuntime")}.NativeHandle) block_ptr_completionHandler)",
-				$"{Global ("ObjCRuntime")}.Messaging.void_objc_msgSendSuper_NativeHandle (this.Handle, {Global ("ObjCRuntime")}.Selector.GetHandle (\"myMethod\"), ({Global ("ObjCRuntime")}.NativeHandle) block_ptr_completionHandler)"
+				$"{Global ("ObjCRuntime")}.Messaging.void_objc_msgSendSuper_NativeHandle (this.SuperHandle, {Global ("ObjCRuntime")}.Selector.GetHandle (\"myMethod\"), ({Global ("ObjCRuntime")}.NativeHandle) block_ptr_completionHandler)"
 			];
 
 			const string stringMethodNoParams = @"
@@ -90,7 +90,7 @@ namespace NS {
 			yield return [
 				stringMethodNoParams,
 				$"ret = {Global ("CoreFoundation")}.CFString.FromHandle ({Global ("ObjCRuntime")}.Messaging.NativeHandle_objc_msgSend (this.Handle, {Global ("ObjCRuntime")}.Selector.GetHandle (\"myMethod\")), false)!",
-				$"ret = {Global ("CoreFoundation")}.CFString.FromHandle ({Global ("ObjCRuntime")}.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, {Global ("ObjCRuntime")}.Selector.GetHandle (\"myMethod\")), false)!"
+				$"ret = {Global ("CoreFoundation")}.CFString.FromHandle ({Global ("ObjCRuntime")}.Messaging.NativeHandle_objc_msgSendSuper (this.SuperHandle, {Global ("ObjCRuntime")}.Selector.GetHandle (\"myMethod\")), false)!"
 			];
 
 			const string customTypeNoParams = @"
@@ -113,7 +113,7 @@ namespace NS {
 			yield return [
 				customTypeNoParams,
 				$"ret = {Global ("ObjCRuntime")}.Runtime.GetNSObject<{Global ("NS")}.CustomType> ({Global ("ObjCRuntime")}.Messaging.NativeHandle_objc_msgSend (this.Handle, {Global ("ObjCRuntime")}.Selector.GetHandle (\"myMethod\")))!",
-				$"ret = {Global ("ObjCRuntime")}.Runtime.GetNSObject<{Global ("NS")}.CustomType> ({Global ("ObjCRuntime")}.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, {Global ("ObjCRuntime")}.Selector.GetHandle (\"myMethod\")))!"
+				$"ret = {Global ("ObjCRuntime")}.Runtime.GetNSObject<{Global ("NS")}.CustomType> ({Global ("ObjCRuntime")}.Messaging.NativeHandle_objc_msgSendSuper (this.SuperHandle, {Global ("ObjCRuntime")}.Selector.GetHandle (\"myMethod\")))!"
 			];
 
 			const string singleParameterMethod = @"
@@ -131,7 +131,7 @@ namespace NS {
 			yield return [
 				singleParameterMethod,
 				$"ret = {Global ("CoreFoundation")}.CFString.FromHandle ({Global ("ObjCRuntime")}.Messaging.NativeHandle_objc_msgSend_NativeHandle (this.Handle, {Global ("ObjCRuntime")}.Selector.GetHandle (\"myMethod:\"), nsinput), false)!",
-				$"ret = {Global ("CoreFoundation")}.CFString.FromHandle ({Global ("ObjCRuntime")}.Messaging.NativeHandle_objc_msgSendSuper_NativeHandle (this.Handle, {Global ("ObjCRuntime")}.Selector.GetHandle (\"myMethod:\"), nsinput), false)!"
+				$"ret = {Global ("CoreFoundation")}.CFString.FromHandle ({Global ("ObjCRuntime")}.Messaging.NativeHandle_objc_msgSendSuper_NativeHandle (this.SuperHandle, {Global ("ObjCRuntime")}.Selector.GetHandle (\"myMethod:\"), nsinput), false)!"
 			];
 
 			const string singleParameterKeywordNameMethod = @"
@@ -149,7 +149,7 @@ namespace NS {
 			yield return [
 				singleParameterKeywordNameMethod,
 				$"ret = {Global ("CoreFoundation")}.CFString.FromHandle ({Global ("ObjCRuntime")}.Messaging.NativeHandle_objc_msgSend_NativeHandle (this.Handle, {Global ("ObjCRuntime")}.Selector.GetHandle (\"myMethod:\"), nsevent), false)!",
-				$"ret = {Global ("CoreFoundation")}.CFString.FromHandle ({Global ("ObjCRuntime")}.Messaging.NativeHandle_objc_msgSendSuper_NativeHandle (this.Handle, {Global ("ObjCRuntime")}.Selector.GetHandle (\"myMethod:\"), nsevent), false)!"
+				$"ret = {Global ("CoreFoundation")}.CFString.FromHandle ({Global ("ObjCRuntime")}.Messaging.NativeHandle_objc_msgSendSuper_NativeHandle (this.SuperHandle, {Global ("ObjCRuntime")}.Selector.GetHandle (\"myMethod:\"), nsevent), false)!"
 			];
 
 			const string singleArrayParameterMethod = @"
@@ -167,7 +167,7 @@ namespace NS {
 			yield return [
 				singleArrayParameterMethod,
 				$"ret = {Global ("CoreFoundation")}.CFString.FromHandle ({Global ("ObjCRuntime")}.Messaging.NativeHandle_objc_msgSend_NativeHandle (this.Handle, {Global ("ObjCRuntime")}.Selector.GetHandle (\"myMethod:\"), nsa_input.Handle), false)!",
-				$"ret = {Global ("CoreFoundation")}.CFString.FromHandle ({Global ("ObjCRuntime")}.Messaging.NativeHandle_objc_msgSendSuper_NativeHandle (this.Handle, {Global ("ObjCRuntime")}.Selector.GetHandle (\"myMethod:\"), nsa_input.Handle), false)!"
+				$"ret = {Global ("CoreFoundation")}.CFString.FromHandle ({Global ("ObjCRuntime")}.Messaging.NativeHandle_objc_msgSendSuper_NativeHandle (this.SuperHandle, {Global ("ObjCRuntime")}.Selector.GetHandle (\"myMethod:\"), nsa_input.Handle), false)!"
 			];
 
 			const string nullableSingleArrayParameterMethod = @"
@@ -185,7 +185,7 @@ namespace NS {
 			yield return [
 				nullableSingleArrayParameterMethod,
 				$"ret = {Global ("CoreFoundation")}.CFString.FromHandle ({Global ("ObjCRuntime")}.Messaging.NativeHandle_objc_msgSend_NativeHandle (this.Handle, {Global ("ObjCRuntime")}.Selector.GetHandle (\"myMethod:\"), nsa_input.Handle), false)!",
-				$"ret = {Global ("CoreFoundation")}.CFString.FromHandle ({Global ("ObjCRuntime")}.Messaging.NativeHandle_objc_msgSendSuper_NativeHandle (this.Handle, {Global ("ObjCRuntime")}.Selector.GetHandle (\"myMethod:\"), nsa_input.Handle), false)!"
+				$"ret = {Global ("CoreFoundation")}.CFString.FromHandle ({Global ("ObjCRuntime")}.Messaging.NativeHandle_objc_msgSendSuper_NativeHandle (this.SuperHandle, {Global ("ObjCRuntime")}.Selector.GetHandle (\"myMethod:\"), nsa_input.Handle), false)!"
 			];
 
 			const string customTypeParameter = @"
@@ -207,7 +207,7 @@ namespace NS {
 			yield return [
 				customTypeParameter,
 				$"{Global ("ObjCRuntime")}.Messaging.void_objc_msgSend_NativeHandle (this.Handle, {Global ("ObjCRuntime")}.Selector.GetHandle (\"myMethod:\"), input__handle__)",
-				$"{Global ("ObjCRuntime")}.Messaging.void_objc_msgSendSuper_NativeHandle (this.Handle, {Global ("ObjCRuntime")}.Selector.GetHandle (\"myMethod:\"), input__handle__)"
+				$"{Global ("ObjCRuntime")}.Messaging.void_objc_msgSendSuper_NativeHandle (this.SuperHandle, {Global ("ObjCRuntime")}.Selector.GetHandle (\"myMethod:\"), input__handle__)"
 			];
 
 			const string severalParametersMethod = @"
@@ -225,7 +225,7 @@ namespace NS {
 			yield return [
 				severalParametersMethod,
 				$"ret = {Global ("CoreFoundation")}.CFString.FromHandle ({Global ("ObjCRuntime")}.Messaging.NativeHandle_objc_msgSend_NativeHandle_NativeHandle (this.Handle, {Global ("ObjCRuntime")}.Selector.GetHandle (\"myMethod:withOption:\"), nsinput, nssecond), false)!",
-				$"ret = {Global ("CoreFoundation")}.CFString.FromHandle ({Global ("ObjCRuntime")}.Messaging.NativeHandle_objc_msgSendSuper_NativeHandle_NativeHandle (this.Handle, {Global ("ObjCRuntime")}.Selector.GetHandle (\"myMethod:withOption:\"), nsinput, nssecond), false)!"
+				$"ret = {Global ("CoreFoundation")}.CFString.FromHandle ({Global ("ObjCRuntime")}.Messaging.NativeHandle_objc_msgSendSuper_NativeHandle_NativeHandle (this.SuperHandle, {Global ("ObjCRuntime")}.Selector.GetHandle (\"myMethod:withOption:\"), nsinput, nssecond), false)!"
 			];
 
 			const string outParameterMethod = @"
@@ -246,7 +246,7 @@ namespace NS {
 			yield return [
 				outParameterMethod,
 				$"ret = {Global ("ObjCRuntime")}.Messaging.bool_objc_msgSend_NativeHandle (this.Handle, {Global ("ObjCRuntime")}.Selector.GetHandle (\"tryGet:\"), &nsexample) != 0",
-				$"ret = {Global ("ObjCRuntime")}.Messaging.bool_objc_msgSendSuper_NativeHandle (this.Handle, {Global ("ObjCRuntime")}.Selector.GetHandle (\"tryGet:\"), &nsexample) != 0"
+				$"ret = {Global ("ObjCRuntime")}.Messaging.bool_objc_msgSendSuper_NativeHandle (this.SuperHandle, {Global ("ObjCRuntime")}.Selector.GetHandle (\"tryGet:\"), &nsexample) != 0"
 			];
 
 			const string outStructParameter = @"
@@ -272,7 +272,7 @@ namespace NS {
 			yield return [
 				outStructParameter,
 				$"{Global ("ObjCRuntime")}.Messaging.void_objc_msgSend_MyStruct (this.Handle, {Global ("ObjCRuntime")}.Selector.GetHandle (\"myMethod:\"), ({Global ("NS")}.MyStruct*) {Global ("System")}.Runtime.CompilerServices.Unsafe.AsPointer<{Global ("NS")}.MyStruct> (ref data))",
-				$"{Global ("ObjCRuntime")}.Messaging.void_objc_msgSendSuper_MyStruct (this.Handle, {Global ("ObjCRuntime")}.Selector.GetHandle (\"myMethod:\"), ({Global ("NS")}.MyStruct*) {Global ("System")}.Runtime.CompilerServices.Unsafe.AsPointer<{Global ("NS")}.MyStruct> (ref data))"
+				$"{Global ("ObjCRuntime")}.Messaging.void_objc_msgSendSuper_MyStruct (this.SuperHandle, {Global ("ObjCRuntime")}.Selector.GetHandle (\"myMethod:\"), ({Global ("NS")}.MyStruct*) {Global ("System")}.Runtime.CompilerServices.Unsafe.AsPointer<{Global ("NS")}.MyStruct> (ref data))"
 			];
 
 			const string outNSErrorMethod = @"
@@ -294,7 +294,7 @@ namespace NS {
 			yield return [
 				outNSErrorMethod,
 				$"ret = {Global ("ObjCRuntime")}.Messaging.bool_objc_msgSend_NativeHandle_NativeHandle (this.Handle, {Global ("ObjCRuntime")}.Selector.GetHandle (\"tryGet:withError:\"), nsdata, &example__handle__) != 0",
-				$"ret = {Global ("ObjCRuntime")}.Messaging.bool_objc_msgSendSuper_NativeHandle_NativeHandle (this.Handle, {Global ("ObjCRuntime")}.Selector.GetHandle (\"tryGet:withError:\"), nsdata, &example__handle__) != 0",
+				$"ret = {Global ("ObjCRuntime")}.Messaging.bool_objc_msgSendSuper_NativeHandle_NativeHandle (this.SuperHandle, {Global ("ObjCRuntime")}.Selector.GetHandle (\"tryGet:withError:\"), nsdata, &example__handle__) != 0",
 			];
 
 			const string returnTypeBindFromAttribute = @"
@@ -314,7 +314,7 @@ namespace NS {
 			yield return [
 				returnTypeBindFromAttribute,
 				$"ret = {Global ("Foundation")}.NSNumber.ToInt32 ({Global ("ObjCRuntime")}.Messaging.NativeHandle_objc_msgSend (this.Handle, {Global ("ObjCRuntime")}.Selector.GetHandle (\"myMethod\")))",
-				$"ret = {Global ("Foundation")}.NSNumber.ToInt32 ({Global ("ObjCRuntime")}.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, {Global ("ObjCRuntime")}.Selector.GetHandle (\"myMethod\")))",
+				$"ret = {Global ("Foundation")}.NSNumber.ToInt32 ({Global ("ObjCRuntime")}.Messaging.NativeHandle_objc_msgSendSuper (this.SuperHandle, {Global ("ObjCRuntime")}.Selector.GetHandle (\"myMethod\")))",
 			];
 
 			const string parameterBindFromAttr = @"
@@ -333,7 +333,7 @@ namespace NS {
 			yield return [
 				parameterBindFromAttr,
 				$"{Global ("ObjCRuntime")}.Messaging.void_objc_msgSend_int (this.Handle, {Global ("ObjCRuntime")}.Selector.GetHandle (\"myMethod:\"), nsb_value__handle__)",
-				$"{Global ("ObjCRuntime")}.Messaging.void_objc_msgSendSuper_int (this.Handle, {Global ("ObjCRuntime")}.Selector.GetHandle (\"myMethod:\"), nsb_value__handle__)"
+				$"{Global ("ObjCRuntime")}.Messaging.void_objc_msgSendSuper_int (this.SuperHandle, {Global ("ObjCRuntime")}.Selector.GetHandle (\"myMethod:\"), nsb_value__handle__)"
 			];
 		}
 

@@ -960,4 +960,116 @@ namespace NS {
 		Assert.True (asyncMethod.ReturnType.IsTask);
 		Assert.Equal (changes.Value.Parameters.Length - 1, asyncMethod.Parameters.Length);
 	}
+
+	class TestDataFromMethodDeclarationIsOptional : IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
+		{
+			const string optionalMethod = @"
+using System;
+using ObjCBindings;
+using ObjCRuntime;
+
+namespace NS {
+	public class MyClass {
+
+		[Export<Method> (""completeRequestReturningItems:completionHandler:"", Flags = ObjCBindings.Method.Optional)] 
+		public void MyMethod (string[]? input) { }
+	}
+}
+";
+
+			yield return [optionalMethod, true];
+
+			const string notOptionalMethod = @"
+using System;
+using ObjCBindings;
+using ObjCRuntime;
+
+namespace NS {
+	public class MyClass {
+
+		[Export<Method> (""completeRequestReturningItems:completionHandler:"", Flags = ObjCBindings.Method.Default)] 
+		public void MyMethod (string[]? input) { }
+	}
+}
+";
+
+			yield return [notOptionalMethod, false];
+
+		}
+
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
+	}
+
+	[Theory]
+	[AllSupportedPlatformsClassData<TestDataFromMethodDeclarationIsOptional>]
+	void FromMethodDeclarationIsOptional (ApplePlatform platform, string inputText, bool expectedIsOptional)
+	{
+		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
+		Assert.Single (syntaxTrees);
+		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
+		var declaration = syntaxTrees [0].GetRoot ()
+			.DescendantNodes ().OfType<MethodDeclarationSyntax> ()
+			.FirstOrDefault ();
+		Assert.NotNull (declaration);
+		Assert.True (Method.TryCreate (declaration, semanticModel, out var changes));
+		Assert.NotNull (changes);
+		Assert.Equal (expectedIsOptional, changes.Value.IsOptional);
+	}
+
+	class TestDataFromMethodDeclarationIsVariadic : IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
+		{
+			const string variadicMethod = @"
+using System;
+using ObjCBindings;
+using ObjCRuntime;
+
+namespace NS {
+	public class MyClass {
+
+		[Export<Method> (""completeRequestReturningItems:completionHandler:"", Flags = ObjCBindings.Method.IsVariadic)] 
+		public void MyMethod (string[]? input) { }
+	}
+}
+";
+
+			yield return [variadicMethod, true];
+
+			const string notVariadicMethod = @"
+using System;
+using ObjCBindings;
+using ObjCRuntime;
+
+namespace NS {
+	public class MyClass {
+
+		[Export<Method> (""completeRequestReturningItems:completionHandler:"", Flags = ObjCBindings.Method.Default)] 
+		public void MyMethod (string[]? input) { }
+	}
+}
+";
+
+			yield return [notVariadicMethod, false];
+
+		}
+
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
+	}
+
+	[Theory]
+	[AllSupportedPlatformsClassData<TestDataFromMethodDeclarationIsVariadic>]
+	void FromMethodDeclarationIsVariadic (ApplePlatform platform, string inputText, bool expectedIsVariadic)
+	{
+		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
+		Assert.Single (syntaxTrees);
+		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
+		var declaration = syntaxTrees [0].GetRoot ()
+			.DescendantNodes ().OfType<MethodDeclarationSyntax> ()
+			.FirstOrDefault ();
+		Assert.NotNull (declaration);
+		Assert.True (Method.TryCreate (declaration, semanticModel, out var changes));
+		Assert.NotNull (changes);
+		Assert.Equal (expectedIsVariadic, changes.Value.IsVariadic);
+	}
 }

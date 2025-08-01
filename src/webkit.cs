@@ -2379,9 +2379,6 @@ namespace WebKit {
 		[Export ("alternateTitle")]
 		string AlternateTitle { get; set; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Field ("WebHistoryItemChangedNotification")]
 		[Notification]
 		NSString ChangedNotification { get; }

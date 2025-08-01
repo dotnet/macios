@@ -6,8 +6,9 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using Microsoft.CodeAnalysis;
-using Microsoft.Macios.Generator.Attributes;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.Macios.Generator.Availability;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Microsoft.Macios.Generator.DataModel;
 
@@ -15,14 +16,39 @@ namespace Microsoft.Macios.Generator.DataModel;
 readonly partial struct Method : IEquatable<Method> {
 
 	/// <summary>
+	/// The initialization state of the struct.
+	/// </summary>
+	StructState State { get; init; } = StructState.Default;
+
+	/// <summary>
+	/// Gets the default, uninitialized instance of <see cref="Method"/>.
+	/// </summary>
+	public static Method Default { get; } = new (StructState.Default);
+
+	/// <summary>
+	/// Gets a value indicating whether the instance is the default, uninitialized instance.
+	/// </summary>
+	public bool IsNullOrDefault => State == StructState.Default;
+
+	/// <summary>
 	/// Type name that owns the method.
 	/// </summary>
-	public string Type { get; }
+	public string Type { get; } = string.Empty;
 
 	/// <summary>
 	/// Method name.
 	/// </summary>
-	public string Name { get; init; }
+	public string Name { get; init; } = string.Empty;
+
+	/// <summary>
+	/// True if the method is an extension method.
+	/// </summary>
+	public bool IsExtension => Parameters.Length > 0 && Parameters [0].IsThis;
+
+	/// <summary>
+	/// The name of the 'this' parameter for an extension method, or "this" for an instance method.
+	/// </summary>
+	public string This => IsExtension ? Parameters [0].Name : "this";
 
 	/// <summary>
 	/// Method return type.
@@ -39,19 +65,40 @@ readonly partial struct Method : IEquatable<Method> {
 	/// </summary>
 	public ImmutableArray<AttributeCodeChange> Attributes { get; } = [];
 
+	readonly bool isStatic;
+
+	/// <summary>
+	/// Returns if the method is static.
+	/// </summary>
+	public bool IsStatic => isStatic;
+
+	readonly ImmutableArray<SyntaxToken> modifiers = [];
 	/// <summary>
 	/// Modifiers list.
 	/// </summary>
-	public ImmutableArray<SyntaxToken> Modifiers { get; init; } = [];
+	public ImmutableArray<SyntaxToken> Modifiers {
+		get => modifiers;
+		init {
+			modifiers = value;
+			isStatic = modifiers.Any (x => x.IsKind (SyntaxKind.StaticKeyword));
+		}
+	}
 
 	/// <summary>
 	/// Parameters list.
 	/// </summary>
 	public ImmutableArray<Parameter> Parameters { get; init; } = [];
 
+	internal Method (StructState state)
+	{
+		State = state;
+	}
+
 	/// <inheritdoc/>
 	public bool Equals (Method other)
 	{
+		if (State == StructState.Default && other.State == StructState.Default)
+			return true;
 		if (Type != other.Type)
 			return false;
 		if (Name != other.Name)
@@ -65,6 +112,10 @@ readonly partial struct Method : IEquatable<Method> {
 		if (BindAs != other.BindAs)
 			return false;
 		if (ForcedType != other.ForcedType)
+			return false;
+		if (IsVariadic != other.IsVariadic)
+			return false;
+		if (IsOptional != other.IsOptional)
 			return false;
 
 		var attrsComparer = new AttributesEqualityComparer ();
@@ -127,6 +178,10 @@ readonly partial struct Method : IEquatable<Method> {
 		sb.Append ($"ExportMethodData: {ExportMethodData}, ");
 		sb.Append ($"BindAs: {BindAs?.ToString () ?? "null"}, ");
 		sb.Append ($"ForcedType: {ForcedType?.ToString () ?? "null"}, ");
+		sb.Append ($"IsStatic: {IsStatic}, ");
+		sb.Append ($"IsExtension: {IsExtension}, ");
+		sb.Append ($"IsVariadic: {IsVariadic}, ");
+		sb.Append ($"IsOptional: {IsOptional}, ");
 		sb.Append ("Attributes: [");
 		sb.AppendJoin (", ", Attributes);
 		sb.Append ("], Modifiers: [");

@@ -374,6 +374,10 @@ return {backingField};
 		classBlock.AppendMemberAvailability (property.SymbolAvailability);
 		classBlock.AppendGeneratedCodeAttribute (optimizable: true);
 
+		if (context.Changes.BindingType == BindingType.Protocol) {
+			// add the export method for the property, this is needed for the protocol wrapper
+			classBlock.AppendExportAttribute (property.ExportPropertyData);
+		}
 		using (var propertyBlock = classBlock.CreateBlock (property.ToDeclaration ().ToString (), block: true)) {
 			// be very verbose with the availability, makes the life easier to the dotnet analyzer
 			propertyBlock.AppendMemberAvailability (getter.SymbolAvailability);
@@ -381,6 +385,8 @@ return {backingField};
 			// [return: DelegateProxy (typeof ({staticBridge}))]
 			if (property.ReturnType.IsDelegate)
 				propertyBlock.AppendDelegateProxyReturn (property.ReturnType);
+			if (context.Changes.BindingType == BindingType.Protocol && !getter.ExportPropertyData.IsNullOrDefault)
+				propertyBlock.AppendExportAttribute (getter.ExportPropertyData);
 			using (var getterBlock = propertyBlock.CreateBlock ("get", block: true)) {
 				if (uiThreadCheck is not null) {
 					getterBlock.WriteLine (uiThreadCheck.ToString ());
@@ -389,8 +395,13 @@ return {backingField};
 				// depending on the property definition, we might need a temp variable to store
 				// the return value
 				var (tempVar, tempDeclaration) = GetReturnValueAuxVariable (property.ReturnType);
-				getterBlock.WriteRaw (
-					$@"{tempDeclaration}
+				// if the binding is a protocol, we need to call send directly
+				if (context.Changes.BindingType == BindingType.Protocol) {
+					getterBlock.WriteLine ($"{ExpressionStatement (invocations.Getter.Send)}");
+					getterBlock.WriteLine ($"{ExpressionStatement (KeepAlive ("this"))}");
+				} else {
+					getterBlock.WriteRaw (
+$@"{tempDeclaration}
 if (IsDirectBinding) {{
 	{ExpressionStatement (invocations.Getter.Send)}
 }} else {{
@@ -398,6 +409,8 @@ if (IsDirectBinding) {{
 }}
 {ExpressionStatement (KeepAlive ("this"))}
 ");
+				}
+
 				if (property.RequiresDirtyCheck || property.IsWeakDelegate) {
 					getterBlock.WriteLine ("MarkDirty ();");
 				}
@@ -420,6 +433,8 @@ if (IsDirectBinding) {{
 			// [param: BlockProxy (typeof ({nativeInvoker}))]
 			if (property.ReturnType.IsDelegate)
 				propertyBlock.AppendDelegateParameter (property.ReturnType);
+			if (context.Changes.BindingType == BindingType.Protocol && !setter.ExportPropertyData.IsNullOrDefault) 
+				propertyBlock.AppendExportAttribute (setter.ExportPropertyData);
 			using (var setterBlock = propertyBlock.CreateBlock ("set", block: true)) {
 				if (uiThreadCheck is not null) {
 					setterBlock.WriteLine (uiThreadCheck.ToString ());
@@ -431,7 +446,12 @@ if (IsDirectBinding) {{
 				setterBlock.Write (invocations.Setter.Value.Argument.PreCallConversion, verifyTrivia: false);
 
 				// perform the invocation
-				setterBlock.WriteRaw (
+				// if the binding is a protocol, we need to call send directly
+				if (context.Changes.BindingType == BindingType.Protocol) {
+					setterBlock.WriteLine ($"{ExpressionStatement (invocations.Setter.Value.Send)}");
+					setterBlock.WriteLine ($"{ExpressionStatement (KeepAlive ("this"))}");
+				} else {
+					setterBlock.WriteRaw (
 $@"if (IsDirectBinding) {{
 	{ExpressionStatement (invocations.Setter.Value.Send)}
 }} else {{
@@ -439,6 +459,8 @@ $@"if (IsDirectBinding) {{
 }}
 {ExpressionStatement (KeepAlive ("this"))}
 ");
+				}
+
 				// perform the post delegate call conversion, this might include the GC.KeepAlive calls to keep
 				// the native object alive
 				setterBlock.Write (invocations.Setter.Value.Argument.PostCallConversion, verifyTrivia: false);

@@ -56,8 +56,7 @@ $@"public {wrapperClassName} (NativeHandle handle, bool owns)
 			.OrderBy (p => p.Name);
 
 		foreach (var property in allProperties) {
-			classBlock.WriteLine ();
-			classBlock.WriteLine ($"// Implement property: {property.Name}");
+			this.EmitProperty (context, property.ToProtocolWrapperProperty (), classBlock);
 		}
 	}
 

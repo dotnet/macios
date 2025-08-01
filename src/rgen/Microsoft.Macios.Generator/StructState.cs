@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-namespace Microsoft.Macios.Generator.DataModel;
+namespace Microsoft.Macios.Generator;
 
 /// <summary>
 /// Represents the initialization state of a struct.

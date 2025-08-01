@@ -28,7 +28,7 @@ public class GeneralPropertyTests {
 			modifiers: [Token (SyntaxKind.StaticKeyword)],
 			accessors: []
 		) {
-			ExportFieldData = new ()
+			ExportFieldData = new (StructState.Initialized)
 		};
 		Assert.Equal ($"_{propertyName}", property.BackingField);
 	}
@@ -47,7 +47,7 @@ public class GeneralPropertyTests {
 			modifiers: isStatic ? [Token (SyntaxKind.StaticKeyword)] : [],
 			accessors: []
 		) {
-			ExportFieldData = null,
+			ExportFieldData = FieldInfo<ObjCBindings.Property>.Default,
 		};
 		Assert.Equal (Nomenclator.GetPropertyBackingFieldName (propertyName, isStatic), property.BackingField);
 	}

@@ -22,19 +22,18 @@ readonly partial struct Property {
 	/// <summary>
 	/// The data of the field attribute used to mark the value as a field binding. 
 	/// </summary>
-	public FieldInfo<ObjCBindings.Property>? ExportFieldData { get; init; }
+	public FieldInfo<ObjCBindings.Property> ExportFieldData { get; init; } = FieldInfo<ObjCBindings.Property>.Default;
 
 	/// <summary>
 	/// True if the property represents a Objc field.
 	/// </summary>
-	[MemberNotNullWhen (true, nameof (ExportFieldData))]
-	public bool IsField => ExportFieldData is not null;
+	public bool IsField => !ExportFieldData.IsNullOrDefault;
 
 	/// <summary>
 	/// Returns if the field was marked as a notification.
 	/// </summary>
 	public bool IsNotification
-		=> IsField && ExportFieldData.Value.FieldData.Flags.HasFlag (ObjCBindings.Property.Notification);
+		=> IsField && ExportFieldData.FieldData.Flags.HasFlag (ObjCBindings.Property.Notification);
 
 	/// <summary>
 	/// The data of the field attribute used to mark the value as a property binding. 
@@ -188,7 +187,7 @@ readonly partial struct Property {
 	public string? Selector {
 		get {
 			if (IsField) {
-				return ExportFieldData.Value.FieldData.SymbolName;
+				return ExportFieldData.FieldData.SymbolName;
 			}
 			if (IsProperty) {
 				return ExportPropertyData.Value.Selector;
@@ -279,7 +278,7 @@ readonly partial struct Property {
 			accessors: accessorCodeChanges) {
 			BindAs = propertySymbol.GetBindFromData (),
 			ForcedType = propertySymbol.GetForceTypeData (),
-			ExportFieldData = GetFieldInfo (context, propertySymbol),
+			ExportFieldData = GetFieldInfo (context, propertySymbol) ?? FieldInfo<ObjCBindings.Property>.Default,
 			ExportPropertyData = propertySymbol.GetExportData<ObjCBindings.Property> (),
 			ExportStrongPropertyData = propertySymbol.GetExportData<ObjCBindings.StrongDictionaryProperty> (),
 		};
@@ -371,8 +370,9 @@ readonly partial struct Property {
 	/// <inheritdoc />
 	public override string ToString ()
 	{
+		var fieldInfo = ExportFieldData.IsNullOrDefault ? "null" : ExportFieldData.ToString ();
 		var sb = new StringBuilder (
-			$"Name: '{Name}', Type: {ReturnType}, Supported Platforms: {SymbolAvailability}, ExportFieldData: '{ExportFieldData?.ToString () ?? "null"}', ExportPropertyData: '{ExportPropertyData?.ToString () ?? "null"}', ");
+			$"Name: '{Name}', Type: {ReturnType}, Supported Platforms: {SymbolAvailability}, ExportFieldData: '{fieldInfo}', ExportPropertyData: '{ExportPropertyData?.ToString () ?? "null"}', ");
 		sb.Append ($"IsTransient: '{IsTransient}', ");
 		sb.Append ($"NeedsBackingField: '{NeedsBackingField}', ");
 		sb.Append ($"RequiresDirtyCheck: '{RequiresDirtyCheck}', ");

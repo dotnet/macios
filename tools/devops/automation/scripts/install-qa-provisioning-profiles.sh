@@ -1,4 +1,4 @@
-#!/bin/bash -eux
+#!/bin/bash -eu
 
 WHITE=$(tput setaf 7 2>/dev/null || true)
 BLUE=$(tput setaf 6 2>/dev/null || true)
@@ -40,17 +40,7 @@ done
 
 echo "${BLUE}Installing certificates and provisioning profiles to the keychain '${WHITE}${KEYCHAIN}${BLUE}'${CLEAR}"
 
-IFS="." read -r -a VERSIONS <<< "$(sw_vers -productVersion)"
-majorVersion="${VERSIONS[0]}"
-minorVersion="${VERSIONS[1]}"
-echo "macOS version: ${majorVersion}.${minorVersion}"
-if [[ "$majorVersion" -gt 10 || ("$majorVersion" -eq 10 && "$minorVersion" -gt 11) ]]; then
-	echo "keychain file format: Sierra (10.12) and above"
-	KEYCHAIN_FILE=~/Library/Keychains/$KEYCHAIN.keychain-db
-else
-	echo "keychain file format: El Capitan (10.11) and below"
-	KEYCHAIN_FILE=~/Library/Keychains/$KEYCHAIN.keychain
-fi
+KEYCHAIN_FILE=~/Library/Keychains/$KEYCHAIN.keychain-db
 
 if test -f "$KEYCHAIN_FILE"; then
 	echo "${BLUE}Deleting previous keychain '${WHITE}$KEYCHAIN_FILE${BLUE}'${CLEAR}"
@@ -102,6 +92,8 @@ if test -z "$ONLY_CREATE_KEYCHAIN"; then
 	shopt -s nullglob
 	for p12 in provisioning-profiles/certificates-and-profiles/*.p12; do
 		echo "${BLUE}Installing the certificate '${WHITE}$p12${BLUE}'${CLEAR}"
+		openssl pkcs12 -nodes -in "$p12" -passin pass:1234 2>/dev/null | grep friendlyName | sed 's/^[[:space:]]*//' | sed 's/^/    /' || true
+		openssl pkcs12 -nodes -in "$p12" -passin pass:1234 2>/dev/null | openssl x509 -noout -dates -subject -fingerprint | sed 's/^/    /' || true
 		security import "$p12" -P "${AUTH_TOKEN_LA_DEV_APPLE_P12}" -A -t cert -f pkcs12 -k "$KEYCHAIN_FILE"
 	done
 

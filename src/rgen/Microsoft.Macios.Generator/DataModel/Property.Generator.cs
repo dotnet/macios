@@ -22,19 +22,18 @@ readonly partial struct Property {
 	/// <summary>
 	/// The data of the field attribute used to mark the value as a field binding. 
 	/// </summary>
-	public FieldInfo<ObjCBindings.Property>? ExportFieldData { get; init; }
+	public FieldInfo<ObjCBindings.Property> ExportFieldData { get; init; } = FieldInfo<ObjCBindings.Property>.Default;
 
 	/// <summary>
 	/// True if the property represents a Objc field.
 	/// </summary>
-	[MemberNotNullWhen (true, nameof (ExportFieldData))]
-	public bool IsField => ExportFieldData is not null;
+	public bool IsField => !ExportFieldData.IsNullOrDefault;
 
 	/// <summary>
 	/// Returns if the field was marked as a notification.
 	/// </summary>
 	public bool IsNotification
-		=> IsField && ExportFieldData.Value.FieldData.Flags.HasFlag (ObjCBindings.Property.Notification);
+		=> IsField && ExportFieldData.FieldData.Flags.HasFlag (ObjCBindings.Property.Notification);
 
 	/// <summary>
 	/// The data of the field attribute used to mark the value as a property binding. 
@@ -66,9 +65,9 @@ readonly partial struct Property {
 			if (!IsStrongDictionaryProperty)
 				return null;
 			// return the combination of the class key and the field name
-			return ExportStrongPropertyData.Value.StrongDictionaryKeyClass is null
+			return ExportStrongPropertyData.Value.StrongDictionaryKeyClass.IsNullOrDefault
 				? ExportStrongPropertyData.Value.Selector
-				: $"{ExportStrongPropertyData.Value.StrongDictionaryKeyClass.Value.FullyQualifiedName}.{ExportStrongPropertyData.Value.Selector}";
+				: $"{ExportStrongPropertyData.Value.StrongDictionaryKeyClass.FullyQualifiedName}.{ExportStrongPropertyData.Value.Selector}";
 		}
 	}
 
@@ -138,6 +137,11 @@ readonly partial struct Property {
 	/// </summary>
 	public bool IsWeakDelegate => IsProperty && ExportPropertyData.Value.Flags.HasFlag (ObjCBindings.Property.WeakDelegate);
 
+	/// <summary>
+	/// States if a property is optional in a protocol definition.
+	/// </summary>
+	public bool IsOptional => IsProperty && ExportPropertyData.Value.Flags.HasFlag (ObjCBindings.Property.Optional);
+
 	readonly bool? needsBackingField = null;
 	/// <summary>
 	/// States if the property, when generated, needs a backing field.
@@ -183,7 +187,7 @@ readonly partial struct Property {
 	public string? Selector {
 		get {
 			if (IsField) {
-				return ExportFieldData.Value.FieldData.SymbolName;
+				return ExportFieldData.FieldData.SymbolName;
 			}
 			if (IsProperty) {
 				return ExportPropertyData.Value.Selector;
@@ -274,7 +278,7 @@ readonly partial struct Property {
 			accessors: accessorCodeChanges) {
 			BindAs = propertySymbol.GetBindFromData (),
 			ForcedType = propertySymbol.GetForceTypeData (),
-			ExportFieldData = GetFieldInfo (context, propertySymbol),
+			ExportFieldData = GetFieldInfo (context, propertySymbol) ?? FieldInfo<ObjCBindings.Property>.Default,
 			ExportPropertyData = propertySymbol.GetExportData<ObjCBindings.Property> (),
 			ExportStrongPropertyData = propertySymbol.GetExportData<ObjCBindings.StrongDictionaryProperty> (),
 		};
@@ -301,13 +305,13 @@ readonly partial struct Property {
 	public Property ToStrongDelegate ()
 	{
 		// has to be a property, weak delegate and have its strong delegate type set
-		if (!IsProperty || !IsWeakDelegate || ExportPropertyData.Value.StrongDelegateType is null)
+		if (!IsProperty || !IsWeakDelegate || ExportPropertyData.Value.StrongDelegateType.IsNullOrDefault)
 			return this;
 
 		// update the return type, all the rest is the same
 		return this with {
 			Name = ExportPropertyData.Value.StrongDelegateName ?? Name.Remove (0, 4 /* "Weak".Length */),
-			ReturnType = ExportPropertyData.Value.StrongDelegateType.Value.WithNullable (true),
+			ReturnType = ExportPropertyData.Value.StrongDelegateType.WithNullable (true),
 		};
 	}
 
@@ -317,29 +321,32 @@ readonly partial struct Property {
 	/// </summary>
 	/// <param name="typeInfo">The type information for the 'this' parameter of the extension methods.</param>
 	/// <returns>A tuple containing the getter method and an optional setter method (null if the property is read-only).</returns>
-	public (Method? Getter, Method? Setter) ToExtensionMethods (TypeInfo typeInfo)
+	public (Method Getter, Method Setter) ToExtensionMethods (TypeInfo typeInfo)
 	{
 		// create the parameter with the provided type info
 		var thisParameter = new Parameter (0, typeInfo, "self") { IsThis = true, };
 
 		var getter = GetAccessor (AccessorKind.Getter);
-		Method? getterMethod = null;
-		if (getter is not null)
+		Method getterMethod = Method.Default;
+		if (!getter.IsNullOrDefault)
 			getterMethod = new Method (
 				type: typeInfo.FullyQualifiedName,
 				name: $"_Get{Name}",
 				returnType: ReturnType,
-				symbolAvailability: getter.Value.SymbolAvailability,
-				exportMethodData: new (getter.Value.GetSelector (this)),
+				symbolAvailability: getter.SymbolAvailability,
+				exportMethodData: new (getter.GetSelector (this)),
 				attributes: [],
-				modifiers: [Token (SyntaxKind.InternalKeyword), Token (SyntaxKind.StaticKeyword)],
+				modifiers: [
+					Token (SyntaxKind.InternalKeyword).WithTrailingTrivia (Space),
+					Token (SyntaxKind.StaticKeyword).WithTrailingTrivia (Space)
+				],
 				parameters: [thisParameter]) {
 				BindAs = BindAs // return bindas is the same as the property bindas
 			};
 
 		var setter = GetAccessor (AccessorKind.Setter);
-		Method? setterMethod = null;
-		if (setter is not null) {
+		Method setterMethod = Method.Default;
+		if (!setter.IsNullOrDefault) {
 			// we need a second parameter for the setter
 			var valueParameter = new Parameter (1, ReturnType, "value") {
 				BindAs = BindAs // parameter bindas is the same as the property bindas
@@ -348,10 +355,13 @@ readonly partial struct Property {
 				type: typeInfo.FullyQualifiedName,
 				name: $"_Set{Name}",
 				returnType: TypeInfo.Void,
-				symbolAvailability: setter.Value.SymbolAvailability,
-				exportMethodData: new (setter.Value.GetSelector (this)),
+				symbolAvailability: setter.SymbolAvailability,
+				exportMethodData: new (setter.GetSelector (this)),
 				attributes: [],
-				modifiers: [Token (SyntaxKind.InternalKeyword), Token (SyntaxKind.StaticKeyword)],
+				modifiers: [
+					Token (SyntaxKind.InternalKeyword).WithTrailingTrivia (Space),
+					Token (SyntaxKind.StaticKeyword).WithTrailingTrivia (Space)
+				],
 				parameters: [thisParameter, valueParameter]);
 		}
 		return (getterMethod, setterMethod);
@@ -360,8 +370,9 @@ readonly partial struct Property {
 	/// <inheritdoc />
 	public override string ToString ()
 	{
+		var fieldInfo = ExportFieldData.IsNullOrDefault ? "null" : ExportFieldData.ToString ();
 		var sb = new StringBuilder (
-			$"Name: '{Name}', Type: {ReturnType}, Supported Platforms: {SymbolAvailability}, ExportFieldData: '{ExportFieldData?.ToString () ?? "null"}', ExportPropertyData: '{ExportPropertyData?.ToString () ?? "null"}', ");
+			$"Name: '{Name}', Type: {ReturnType}, Supported Platforms: {SymbolAvailability}, ExportFieldData: '{fieldInfo}', ExportPropertyData: '{ExportPropertyData?.ToString () ?? "null"}', ");
 		sb.Append ($"IsTransient: '{IsTransient}', ");
 		sb.Append ($"NeedsBackingField: '{NeedsBackingField}', ");
 		sb.Append ($"RequiresDirtyCheck: '{RequiresDirtyCheck}', ");

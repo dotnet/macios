@@ -279,7 +279,7 @@ public class EnumMemberCodeChangesTests {
 				attributes: []);
 			yield return [
 				fieldDataEnum,
-				"{ Name: 'EnumValue' SymbolAvailability: [] FieldInfo: FieldData = { SymbolName: 'x', LibraryName: 'libName', Type: 'null', NotificationCenter: 'null', Flags: 'Default' }, LibraryName = Test, LibraryPath = /path/to/library Attributes: [] }",
+				"{ Name: 'EnumValue' SymbolAvailability: [] FieldInfo: { State = Initialized, FieldData = { SymbolName: 'x', LibraryName: 'libName', Type: 'null', NotificationCenter: 'null', Flags: 'Default' }, LibraryName = Test, LibraryPath = /path/to/library } Attributes: [] }",
 			];
 
 			var builder = SymbolAvailability.CreateBuilder ();
@@ -294,7 +294,7 @@ public class EnumMemberCodeChangesTests {
 				attributes: []);
 			yield return [
 				availabilityEnum,
-				"{ Name: 'EnumValue' SymbolAvailability: [{ Platform: 'iOS', Supported: '0.0', Unsupported: [], Obsoleted: [] }] FieldInfo: FieldData = { SymbolName: 'x', LibraryName: 'libName', Type: 'null', NotificationCenter: 'null', Flags: 'Default' }, LibraryName = Test, LibraryPath = /path/to/library Attributes: [] }",
+				"{ Name: 'EnumValue' SymbolAvailability: [{ Platform: 'iOS', Supported: '0.0', Unsupported: [], Obsoleted: [] }] FieldInfo: { State = Initialized, FieldData = { SymbolName: 'x', LibraryName: 'libName', Type: 'null', NotificationCenter: 'null', Flags: 'Default' }, LibraryName = Test, LibraryPath = /path/to/library } Attributes: [] }",
 			];
 
 			var attrsEnum = new EnumMember (
@@ -309,7 +309,7 @@ public class EnumMemberCodeChangesTests {
 				]);
 			yield return [
 				attrsEnum,
-				"{ Name: 'EnumValue' SymbolAvailability: [{ Platform: 'iOS', Supported: '0.0', Unsupported: [], Obsoleted: [] }] FieldInfo: FieldData = { SymbolName: 'x', LibraryName: 'libName', Type: 'null', NotificationCenter: 'null', Flags: 'Default' }, LibraryName = Test, LibraryPath = /path/to/library Attributes: [{ Name: Attribute1, Arguments: [] }, { Name: Attribute2, Arguments: [] }] }",
+				"{ Name: 'EnumValue' SymbolAvailability: [{ Platform: 'iOS', Supported: '0.0', Unsupported: [], Obsoleted: [] }] FieldInfo: { State = Initialized, FieldData = { SymbolName: 'x', LibraryName: 'libName', Type: 'null', NotificationCenter: 'null', Flags: 'Default' }, LibraryName = Test, LibraryPath = /path/to/library } Attributes: [{ Name: Attribute1, Arguments: [] }, { Name: Attribute2, Arguments: [] }] }",
 			];
 		}
 

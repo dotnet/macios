@@ -152,7 +152,7 @@ $@"if (IsDirectBinding) {{
 
 			// we expect to always at least have a getter
 			var getter = property.GetAccessor (AccessorKind.Getter);
-			if (getter is null)
+			if (getter.IsNullOrDefault)
 				continue;
 
 			// add backing variable for the property if it is needed
@@ -168,7 +168,7 @@ $@"if (IsDirectBinding) {{
 
 			using (var propertyBlock = classBlock.CreateBlock (property.ToDeclaration ().ToString (), block: true)) {
 				// be very verbose with the availability, makes the life easier to the dotnet analyzer
-				propertyBlock.AppendMemberAvailability (getter.Value.SymbolAvailability);
+				propertyBlock.AppendMemberAvailability (getter.SymbolAvailability);
 				// if we deal with a delegate, include the attr:
 				// [return: DelegateProxy (typeof ({staticBridge}))]
 				if (property.ReturnType.IsDelegate)
@@ -202,12 +202,12 @@ if (IsDirectBinding) {{
 				}
 
 				var setter = property.GetAccessor (AccessorKind.Setter);
-				if (setter is null || invocations.Setter is null)
+				if (setter.IsNullOrDefault || invocations.Setter is null)
 					// we are done with the current property
 					continue;
 
 				propertyBlock.WriteLine (); // add space between getter and setter since we have the attrs
-				propertyBlock.AppendMemberAvailability (setter.Value.SymbolAvailability);
+				propertyBlock.AppendMemberAvailability (setter.SymbolAvailability);
 				// if we deal with a delegate, include the attr:
 				// [param: BlockProxy (typeof ({nativeInvoker}))]
 				if (property.ReturnType.IsDelegate)
@@ -248,7 +248,7 @@ $@"if (IsDirectBinding) {{
 			// if the property is a weak delegate and has the strong delegate type set, we need to emit the
 			// strong delegate property
 			if (property is { IsProperty: true, IsWeakDelegate: true }
-				&& property.ExportPropertyData.Value.StrongDelegateType is not null) {
+				&& !property.ExportPropertyData.Value.StrongDelegateType.IsNullOrDefault) {
 				classBlock.WriteLine ();
 				var strongDelegate = property.ToStrongDelegate ();
 				using (var propertyBlock =
@@ -294,8 +294,12 @@ if (!(value is null) && rvalue is null) {{
 			foreach (var notification in properties) {
 				var count = 12; // == "Notification".Length;
 				var name = $"Observe{notification.Name [..^count]}";
-				var notificationCenter = notification.ExportFieldData?.FieldData.NotificationCenter ?? $"{NotificationCenter}.DefaultCenter";
-				var eventType = notification.ExportFieldData?.FieldData.Type ?? NSNotificationEventArgs.ToString ();
+				var notificationCenter = notification.ExportFieldData.IsNullOrDefault || notification.ExportFieldData.FieldData.NotificationCenter is null
+					? $"{NotificationCenter}.DefaultCenter"
+					: notification.ExportFieldData.FieldData.NotificationCenter;
+				var eventType = notification.ExportFieldData.IsNullOrDefault || notification.ExportFieldData.FieldData.Type is null
+					? NSNotificationEventArgs.ToString ()
+					: notification.ExportFieldData.FieldData.Type;
 				// use the raw writer which makes it easier to read in this case
 				notificationClass.WriteRaw (
 @$"public static {NSObject} {name} ({EventHandler}<{eventType}> handler)

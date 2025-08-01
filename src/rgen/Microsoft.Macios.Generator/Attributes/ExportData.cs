@@ -58,7 +58,7 @@ readonly struct ExportData<T> : IEquatable<ExportData<T>> where T : Enum {
 	/// <summary>
 	/// The type of the result for an async method.
 	/// </summary>
-	public TypeInfo? ResultType { get; init; }
+	public TypeInfo ResultType { get; init; } = TypeInfo.Default;
 
 	/// <summary>
 	/// The name of the generated async method.
@@ -78,7 +78,7 @@ readonly struct ExportData<T> : IEquatable<ExportData<T>> where T : Enum {
 	/// <summary>
 	/// The type of the strong delegate for a weak delegate property.
 	/// </summary>
-	public TypeInfo? StrongDelegateType { get; init; }
+	public TypeInfo StrongDelegateType { get; init; } = TypeInfo.Default;
 
 	/// <summary>
 	/// The name of the strong delegate for a weak delegate property.
@@ -88,7 +88,7 @@ readonly struct ExportData<T> : IEquatable<ExportData<T>> where T : Enum {
 	/// <summary>
 	/// The type of the dictionary key class for strong dictionary properties.
 	/// </summary>
-	public TypeInfo? StrongDictionaryKeyClass { get; init; }
+	public TypeInfo StrongDictionaryKeyClass { get; init; } = TypeInfo.Default;
 
 	public ExportData () { }
 
@@ -130,15 +130,15 @@ readonly struct ExportData<T> : IEquatable<ExportData<T>> where T : Enum {
 		string? nativeSuffix = null;
 		string? library = null;
 		// async related data
-		TypeInfo? resultType = null;
+		TypeInfo resultType = TypeInfo.Default;
 		string? methodName = null;
 		string? resultTypeName = null;
 		string? postNonResultSnippet = null;
 		// weak delegate related data
-		TypeInfo? strongDelegateType = null;
+		TypeInfo strongDelegateType = TypeInfo.Default;
 		string? strongDelegateName = null;
 		// strong dictionary related data
-		TypeInfo? strongDictionaryKeyClass = null;
+		TypeInfo strongDictionaryKeyClass = TypeInfo.Default;
 
 		switch (count) {
 		case 1:
@@ -257,15 +257,15 @@ readonly struct ExportData<T> : IEquatable<ExportData<T>> where T : Enum {
 				NativeSuffix = nativeSuffix,
 				Library = library,
 				// set the data for async methods only if the flags are set
-				ResultType = isAsync ? resultType : null,
+				ResultType = isAsync ? resultType : TypeInfo.Default,
 				MethodName = isAsync ? methodName : null,
 				ResultTypeName = isAsync ? resultTypeName : null,
 				PostNonResultSnippet = isAsync ? postNonResultSnippet : null,
 				// we set the data for the weak delegate only if the flags are set
-				StrongDelegateType = isWeakDelegate ? strongDelegateType : null,
+				StrongDelegateType = isWeakDelegate ? strongDelegateType : TypeInfo.Default,
 				StrongDelegateName = isWeakDelegate ? strongDelegateName : null,
 				// we set the data for the strong dictionary only if the flags are set
-				StrongDictionaryKeyClass = isStrongDictionaryProperty ? strongDictionaryKeyClass : null,
+				StrongDictionaryKeyClass = isStrongDictionaryProperty ? strongDictionaryKeyClass : TypeInfo.Default,
 			};
 			return true;
 		}
@@ -334,6 +334,10 @@ readonly struct ExportData<T> : IEquatable<ExportData<T>> where T : Enum {
 	/// <inheritdoc />
 	public override string ToString ()
 	{
+		var resultTypeName = ResultType.IsNullOrDefault ? "null" : ResultType.FullyQualifiedName;
+		var strongDelegateTypeName = StrongDelegateType.IsNullOrDefault ? "null" : StrongDelegateType.FullyQualifiedName;
+		var strongDictionaryKeyClassName = StrongDictionaryKeyClass.IsNullOrDefault ? "null" : StrongDictionaryKeyClass.FullyQualifiedName;
+
 		var sb = new StringBuilder ("{ Type: '");
 		sb.Append (typeof (T).FullName);
 		sb.Append ("', Selector: '");
@@ -349,7 +353,7 @@ readonly struct ExportData<T> : IEquatable<ExportData<T>> where T : Enum {
 		sb.Append ("', Library: '");
 		sb.Append (Library ?? "null");
 		sb.Append ("', ResultType: '");
-		sb.Append (ResultType?.FullyQualifiedName ?? "null");
+		sb.Append (resultTypeName);
 		sb.Append ("', MethodName: '");
 		sb.Append (MethodName ?? "null");
 		sb.Append ("', ResultTypeName: '");
@@ -357,9 +361,9 @@ readonly struct ExportData<T> : IEquatable<ExportData<T>> where T : Enum {
 		sb.Append ("', PostNonResultSnippet: '");
 		sb.Append (PostNonResultSnippet ?? "null");
 		sb.Append ("', StrongDelegateType: '");
-		sb.Append (StrongDelegateType?.FullyQualifiedName ?? "null");
+		sb.Append (strongDelegateTypeName);
 		sb.Append ("', StrongDictionaryKeysClass: '");
-		sb.Append (StrongDictionaryKeyClass?.FullyQualifiedName ?? "null");
+		sb.Append (strongDictionaryKeyClassName);
 		sb.Append ("' }");
 		return sb.ToString ();
 	}

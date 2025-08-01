@@ -181,6 +181,13 @@ static partial class BindingSyntaxFactory {
 		@namespace: ["Foundation"],
 		@class: "NSMutableDictionary");
 
+	/// <summary>
+	/// TypeSyntax for Foundation.RequiredMember.
+	/// </summary>
+	public static readonly TypeSyntax RequiredMember = StringExtensions.GetIdentifierName (
+		@namespace: ["Foundation"],
+		@class: "RequiredMember");
+
 	// CoreMedia types
 
 	/// <summary>

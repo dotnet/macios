@@ -45,7 +45,7 @@ class CategoryEmitter : IClassEmitter {
 		}
 
 		var bindingData = (BindingTypeData<Category>) bindingContext.Changes.BindingInfo;
-		if (bindingData.CategoryType is null) {
+		if (bindingData.CategoryType.IsNullOrDefault) {
 			diagnostics = [Diagnostic.Create (
 				Diagnostics
 					.RBI0000, // An unexpected error occurred while processing '{0}'. Please fill a bug report at https://github.com/dotnet/macios/issues/new.
@@ -53,7 +53,7 @@ class CategoryEmitter : IClassEmitter {
 				bindingContext.Changes.FullyQualifiedSymbol)];
 			return false;
 		}
-		var registrationName = bindingData.CategoryType.Value.Name;
+		var registrationName = bindingData.CategoryType.Name;
 
 		// namespace declaration
 		this.EmitNamespace (bindingContext);

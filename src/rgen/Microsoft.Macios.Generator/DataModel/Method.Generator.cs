@@ -85,12 +85,22 @@ readonly partial struct Method {
 	/// </summary>
 	public bool IsAsync => ExportMethodData.Flags.HasFlag (ObjCBindings.Method.Async);
 
+	/// <summary>
+	/// True if the method is variadic.
+	/// </summary>
+	public bool IsVariadic => ExportMethodData.Flags.HasFlag (ObjCBindings.Method.IsVariadic);
+
+	/// <summary>
+	/// States if a method is optional in a protocol definition.
+	/// </summary>
+	public bool IsOptional => ExportMethodData.Flags.HasFlag (ObjCBindings.Method.Optional);
+
 	public Method (string type, string name, TypeInfo returnType,
 		SymbolAvailability symbolAvailability,
 		ExportData<ObjCBindings.Method> exportMethodData,
 		ImmutableArray<AttributeCodeChange> attributes,
 		ImmutableArray<SyntaxToken> modifiers,
-		ImmutableArray<Parameter> parameters)
+		ImmutableArray<Parameter> parameters) : this (StructState.Initialized)
 	{
 		Type = type;
 		Name = name;
@@ -158,8 +168,8 @@ readonly partial struct Method {
 		var resultType = Parameters [^1].Type.ToTask ();
 
 		// if the user provided a result type, we need to update the calculated result type to a task
-		if (ExportMethodData.ResultType is not null) {
-			resultType = resultType.ToTask (ExportMethodData.ResultType.Value.GetIdentifierSyntax ().ToString ());
+		if (!ExportMethodData.ResultType.IsNullOrDefault) {
+			resultType = resultType.ToTask (ExportMethodData.ResultType.GetIdentifierSyntax ().ToString ());
 		}
 
 		if (ExportMethodData.ResultTypeName is not null) {

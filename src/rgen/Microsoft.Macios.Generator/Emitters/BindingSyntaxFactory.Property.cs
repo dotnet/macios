@@ -26,8 +26,8 @@ static partial class BindingSyntaxFactory {
 			// export attribute attached
 			var getter = property.GetAccessor (AccessorKind.Getter);
 			string? getterMsgSend = null;
-			if (getter is not null) {
-				var getterExportData = getter.Value.ExportPropertyData ?? property.ExportPropertyData;
+			if (!getter.IsNullOrDefault) {
+				var getterExportData = getter.ExportPropertyData ?? property.ExportPropertyData;
 				if (getterExportData is not null) {
 					getterMsgSend = GetObjCMessageSendMethodName (getterExportData.Value, property.BindAs?.Type ?? property.ReturnType, [],
 						isSuper, isStret);
@@ -36,13 +36,13 @@ static partial class BindingSyntaxFactory {
 
 			var setter = property.GetAccessor (AccessorKind.Setter);
 			string? setterMsgSend = null;
-			if (setter is not null) {
+			if (!setter.IsNullOrDefault) {
 				// the setter also depends on if we have a bindas attribute or not. If present, the parameter of the
 				// setter will be that indicated by the bind as attribute
 				var valueParameter = property.BindAs is null
 					? property.ValueParameter
 					: new Parameter (0, property.BindAs.Value.Type, "value");
-				var setterExportData = setter.Value.ExportPropertyData ?? property.ExportPropertyData;
+				var setterExportData = setter.ExportPropertyData ?? property.ExportPropertyData;
 				if (setterExportData is not null) {
 					setterMsgSend = GetObjCMessageSendMethodName (setterExportData.Value, TypeInfo.Void,
 						[valueParameter], isSuper, isStret);
@@ -128,13 +128,13 @@ static partial class BindingSyntaxFactory {
 		// retrieve the objc_msgSend methods
 		var (getter, setter) = GetObjCMessageSendMethods (property, isStret: property.ReturnType.NeedsStret);
 		var (superGetter, superSetter) = GetObjCMessageSendMethods (property, isSuper: true, isStret: property.ReturnType.NeedsStret);
-		var getterSelector = property.GetAccessor (AccessorKind.Getter)?.GetSelector (property);
+		var getterSelector = property.GetAccessor (AccessorKind.Getter).GetSelector (property);
 		var getterInvocations = GetGetterInvocations (property, getterSelector, getter, superGetter);
 
 		(ArgumentConversions Argument, ExpressionSyntax Send, ExpressionSyntax SendSuper)? setterInvocations = null;
 		var setterAccessor = property.GetAccessor (AccessorKind.Setter);
-		if (setterAccessor is not null) {
-			var setterSelector = setterAccessor.Value.GetSelector (property);
+		if (!setterAccessor.IsNullOrDefault) {
+			var setterSelector = setterAccessor.GetSelector (property);
 			setterInvocations = GetSetterInvocations (property, setterSelector, setter, superSetter);
 		}
 

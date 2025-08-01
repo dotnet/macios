@@ -22,12 +22,28 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 	/// <summary>
 	/// Represents the `void` type.
 	/// </summary>
-	public static TypeInfo Void = new ("void", SpecialType.System_Void) { Parents = ["System.ValueType", "object"], };
+	public static TypeInfo Void = new ("System.void", SpecialType.System_Void) { Parents = ["System.ValueType", "object"], };
 
 	/// <summary>
 	/// Represents a `System.NativeHandle` type.
 	/// </summary>
 	public static TypeInfo NativeHandle = new ("System.NativeHandle", SpecialType.System_IntPtr) { Parents = ["System.ValueType", "object"], };
+
+	/// <summary>
+	/// The initialization state of the struct.
+	/// </summary>
+	StructState State { get; init; } = StructState.Default;
+
+	/// <summary>
+	/// Gets the default, uninitialized instance of <see cref="TypeInfo"/>.
+	/// </summary>
+	public static TypeInfo Default { get; } =
+		new (string.Empty, SpecialType.None) { State = StructState.Default };
+
+	/// <summary>
+	/// Gets a value indicating whether the instance is the default, uninitialized instance.
+	/// </summary>
+	public bool IsNullOrDefault => State == StructState.Default;
 
 	/// <summary>
 	/// The fully qualified name of the type.
@@ -135,6 +151,11 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 	public bool IsTask { get; init; }
 
 	/// <summary>
+	/// True if the type represents a strong dictionary.
+	/// </summary>
+	public bool IsStrongDictionary { get; init; }
+
+	/// <summary>
 	/// Returns, if the type is an array, if its elements are a wrapped object from the objc world.
 	/// </summary>
 	public bool ArrayElementTypeIsWrapped { get; init; }
@@ -143,6 +164,16 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 	/// Returns, if the type is an array, if its elements implement the INativeObject interface.
 	/// </summary>
 	public bool ArrayElementIsINativeObject { get; init; }
+
+	/// <summary>
+	/// If the type is an array of enums, it returns the special type of the underlying enum type.
+	/// </summary>
+	public SpecialType? ArrayElementEnumUnderlyingType { get; init; }
+
+	/// <summary>
+	/// Returns true if the type is an array of enums.
+	/// </summary>
+	public bool ArrayElementTypeIsEnum => ArrayElementEnumUnderlyingType is not null;
 
 	readonly bool isNSObject = false;
 
@@ -230,13 +261,17 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		init => interfaces = value;
 	}
 
-
 	/// <summary>
 	/// The type arguments of the generic type.
 	/// </summary>
 	public ImmutableArray<string> TypeArguments { get; init; } = [];
 
-	internal TypeInfo (string name, SpecialType specialType)
+	internal TypeInfo (StructState state)
+	{
+		State = state;
+	}
+
+	internal TypeInfo (string name, SpecialType specialType) : this (StructState.Initialized)
 	{
 		FullyQualifiedName = name;
 		SpecialType = specialType;
@@ -328,7 +363,7 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		return components.ToImmutableArray ();
 	}
 
-	internal TypeInfo (ITypeSymbol symbol)
+	internal TypeInfo (ITypeSymbol symbol) : this (StructState.Initialized)
 	{
 		// general case, get the name and namespace. If we are dealing with a generic type or an array type
 		// the name will be later overwritten with the generic name or the array name
@@ -345,6 +380,7 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		IsNativeIntegerType = symbol.IsNativeIntegerType;
 		IsNativeEnum = symbol.HasAttribute (AttributesNames.NativeAttribute);
 		IsProtocol = symbol.HasAttribute (AttributesNames.ProtocolAttribute);
+		IsStrongDictionary = symbol.HasAttribute (AttributesNames.StrongDictionaryAttribute);
 
 		// data that we can get from the symbol without being INamedType
 		symbol.GetInheritance (
@@ -361,6 +397,7 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 			FullyQualifiedName = arraySymbol.ElementType.ToDisplayString ();
 			IsArray = true;
 			ArrayElementType = arraySymbol.ElementType.SpecialType;
+			ArrayElementEnumUnderlyingType = arraySymbol.ElementType is INamedTypeSymbol enumType ? enumType.EnumUnderlyingType?.SpecialType : null;
 			ArrayElementTypeIsWrapped = arraySymbol.ElementType.IsWrapped ();
 			ArrayElementIsINativeObject = arraySymbol.ElementType.IsINativeObject ();
 		}
@@ -427,6 +464,8 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 	/// <inheritdoc/>
 	public bool Equals (TypeInfo other)
 	{
+		if (State == StructState.Default && other.State == StructState.Default)
+			return true;
 		if (FullyQualifiedName != other.FullyQualifiedName)
 			return false;
 		if (SpecialType != other.SpecialType)
@@ -458,6 +497,8 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		if (Delegate != other.Delegate)
 			return false;
 		if (IsProtocol != other.IsProtocol)
+			return false;
+		if (IsStrongDictionary != other.IsStrongDictionary)
 			return false;
 
 		// compare base classes and interfaces, order does not matter at all
@@ -496,6 +537,7 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		hashCode.Add (IsNativeEnum);
 		hashCode.Add (Delegate);
 		hashCode.Add (IsProtocol);
+		hashCode.Add (IsStrongDictionary);
 		foreach (var parent in parents) {
 			hashCode.Add (parent);
 		}
@@ -747,6 +789,7 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 	public override string ToString ()
 	{
 		var sb = new StringBuilder ("{");
+		sb.Append ($"StructState: '{State}', ");
 		sb.Append ($"Name: '{FullyQualifiedName}', ");
 		sb.Append ($"MetadataName: '{MetadataName}', ");
 		sb.Append ($"SpecialType: '{SpecialType}', ");
@@ -764,6 +807,7 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		sb.Append ($"IsNativeIntegerType: {IsNativeIntegerType}, ");
 		sb.Append ($"IsNativeEnum: {IsNativeEnum}, ");
 		sb.Append ($"IsProtocol: {IsProtocol}, ");
+		sb.Append ($"IsStrongDictionary: {IsStrongDictionary}, ");
 		sb.Append ($"Delegate: {Delegate?.ToString () ?? "null"}, ");
 		sb.Append ($"EnumUnderlyingType: '{EnumUnderlyingType?.ToString () ?? "null"}', ");
 		sb.Append ("Parents: [");

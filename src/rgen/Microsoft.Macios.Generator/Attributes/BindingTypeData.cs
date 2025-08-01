@@ -152,7 +152,7 @@ readonly struct BindingTypeData<T> : IEquatable<BindingTypeData<T>> where T : En
 	/// <summary>
 	/// The type that the category extends.
 	/// </summary>
-	public TypeInfo? CategoryType { get; init; } = null;
+	public TypeInfo CategoryType { get; init; } = TypeInfo.Default;
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="BindingTypeData{T}"/> struct.
@@ -188,9 +188,9 @@ readonly struct BindingTypeData<T> : IEquatable<BindingTypeData<T>> where T : En
 	/// Initializes a new instance of the <see cref="BindingTypeData"/> struct for a category.
 	/// </summary>
 	/// <param name="categoryType">The type that the category extends.</param>
-	public BindingTypeData (TypeInfo? categoryType)
+	public BindingTypeData (TypeInfo categoryType)
 	{
-		Name = categoryType?.Name;
+		Name = categoryType.IsNullOrDefault ? null : categoryType.Name;
 		CategoryType = categoryType;
 	}
 
@@ -199,9 +199,9 @@ readonly struct BindingTypeData<T> : IEquatable<BindingTypeData<T>> where T : En
 	/// </summary>
 	/// <param name="categoryType">The type that the category extends.</param>
 	/// <param name="flags">The configuration flags.</param>
-	public BindingTypeData (TypeInfo? categoryType, T? flags)
+	public BindingTypeData (TypeInfo categoryType, T? flags)
 	{
-		Name = categoryType?.Name;
+		Name = categoryType.IsNullOrDefault ? null : categoryType.Name;
 		CategoryType = categoryType;
 		Flags = flags;
 	}
@@ -220,7 +220,7 @@ readonly struct BindingTypeData<T> : IEquatable<BindingTypeData<T>> where T : En
 		string? name = null;
 		T? flags = default;
 		// category related data
-		TypeInfo? categoryType = null;
+		TypeInfo categoryType = TypeInfo.Default;
 
 		// check if we have a category type, we can do that by checking the type of the flag
 		var isCategory = typeof (T) == typeof (ObjCBindings.Category);
@@ -235,7 +235,7 @@ readonly struct BindingTypeData<T> : IEquatable<BindingTypeData<T>> where T : En
 			var value = attributeData.ConstructorArguments [0].Value;
 			if (isCategory && value is INamedTypeSymbol typeSymbol) {
 				categoryType = new (typeSymbol);
-				name = categoryType.Value.Name;
+				name = categoryType.Name;
 			} else if (!isCategory && value is string str) {
 				name = str;
 			} else if (value is not null) {
@@ -245,7 +245,7 @@ readonly struct BindingTypeData<T> : IEquatable<BindingTypeData<T>> where T : En
 		case 2:
 			if (isCategory) {
 				categoryType = new ((INamedTypeSymbol) attributeData.ConstructorArguments [0].Value!);
-				name = categoryType.Value.Name;
+				name = categoryType.Name;
 			} else {
 				// we have the name and the config flags present
 				name = (string?) attributeData.ConstructorArguments [0].Value!;
@@ -317,7 +317,7 @@ readonly struct BindingTypeData<T> : IEquatable<BindingTypeData<T>> where T : En
 	/// <param name="flags">The configuration flags.</param>
 	/// <param name="categoryType">The type that the category extends.</param>
 	/// <returns>A new instance of <see cref="BindingTypeData{T}"/>.</returns>
-	static BindingTypeData<T> CreateCategoryBindingData (T? flags, TypeInfo? categoryType)
+	static BindingTypeData<T> CreateCategoryBindingData (T? flags, TypeInfo categoryType)
 	{
 		return flags is not null
 			? new (categoryType, flags)
@@ -387,10 +387,10 @@ readonly struct BindingTypeData<T> : IEquatable<BindingTypeData<T>> where T : En
 	/// <param name="flags">The configuration flags.</param>
 	/// <param name="categoryType">The type that the category extends.</param>
 	/// <returns>True if the data was parsed.</returns>
-	static bool TryExtractCategoryNamedParameters (AttributeData attributeData, out string? name, ref T? flags, out TypeInfo? categoryType)
+	static bool TryExtractCategoryNamedParameters (AttributeData attributeData, out string? name, ref T? flags, out TypeInfo categoryType)
 	{
 		name = null;
-		categoryType = null;
+		categoryType = TypeInfo.Default;
 		foreach (var (paramName, value) in attributeData.NamedArguments) {
 			switch (paramName) {
 			case "Name":
@@ -460,6 +460,7 @@ readonly struct BindingTypeData<T> : IEquatable<BindingTypeData<T>> where T : En
 	/// <inheritdoc />
 	public override string ToString ()
 	{
-		return $"{{ Name: '{Name}', CategoryType: '{CategoryType?.ToString () ?? "null"}', Flags: '{Flags}' }}";
+		var category = CategoryType.IsNullOrDefault ? "null" : CategoryType.FullyQualifiedName;
+		return $"{{ Name: '{Name}', CategoryType: '{category}', Flags: '{Flags}' }}";
 	}
 }

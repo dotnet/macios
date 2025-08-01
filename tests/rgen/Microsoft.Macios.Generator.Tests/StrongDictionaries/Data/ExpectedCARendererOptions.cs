@@ -11,18 +11,69 @@ using System.Runtime.Versioning;
 
 namespace TestNamespace;
 
+[SupportedOSPlatform ("macos")]
+[SupportedOSPlatform ("ios")]
+[SupportedOSPlatform ("tvos")]
+[SupportedOSPlatform ("maccatalyst13.1")]
 public partial class CARendererOptions : DictionaryContainer
 {
 
-	// TODO: implement default constructors.
+	/// <summary>Creates a new <see cref="CARendererOptions" /> with default (empty) values.</summary>
+	[Preserve (Conditional = true)]
+	public CARendererOptions () : base (new global::Foundation.NSMutableDictionary ()) {}
 
+	/// <summary>Creates a new <see cref="CARendererOptions" /> from the values that are specified in <paramref name="dictionary" />.</summary>
+	/// <param name="dictionary">The dictionary to use to populate the properties of this type.</param>
+	[Preserve (Conditional = true)]
+	public CARendererOptions (global::Foundation.NSDictionary? dictionary) : base (dictionary) {}
 
-	// TODO: implement properties.
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("maccatalyst13.1")]
+	public partial global::CoreGraphics.CGColorSpace? ColorSpace
+	{
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("maccatalyst13.1")]
+		get
+		{
+			return GetNativeValue<global::CoreGraphics.CGColorSpace> (TestNamespace.CARendererOptions.Keys.ColorSpace);
+		}
 
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("maccatalyst13.1")]
+		set
+		{
+			SetNativeValue (TestNamespace.CARendererOptions.Keys.ColorSpace, value);
+		}
+	}
 
-	// Emit code for property: ColorSpace
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("maccatalyst13.1")]
+	public partial global::Metal.IMTLCommandQueue? MetalCommandQueue
+	{
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("maccatalyst13.1")]
+		get
+		{
+			return Dictionary [TestNamespace.CARendererOptions.Keys.MetalCommandQueue] as global::Metal.IMTLCommandQueue;
+		}
 
-
-	// Emit code for property: MetalCommandQueue
-
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("maccatalyst13.1")]
+		set
+		{
+			SetNativeValue (TestNamespace.CARendererOptions.Keys.MetalCommandQueue, value);
+		}
+	}
 }

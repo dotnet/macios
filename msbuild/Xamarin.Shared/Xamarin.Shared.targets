@@ -123,6 +123,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<IsHotRestartBuild Condition="'$(IsHotRestartBuild)' == 'True' And '$(_PlatformName)' != 'iOS'">False</IsHotRestartBuild>
 			<IsRemoteBuild Condition="'$(IsHotRestartBuild)' == 'True'">False</IsRemoteBuild>
 			<IsRemoteBuild Condition="'$(BundleOriginalResources)' == 'true' And '$(OutputType)' != 'Exe' And '$(BuildBindingProjectLocally)' != 'false'">False</IsRemoteBuild>
+			<_IsNonMacOSBuildForNonRemotablePlatform Condition="'$(_IsNonMacOSBuildForNonRemotablePlatform)' == '' And !$([System.OperatingSystem]::IsMacOS()) And '$(_PlatformName)' != 'iOS'">true</_IsNonMacOSBuildForNonRemotablePlatform>
 		</PropertyGroup>
 	</Target>
 
@@ -144,7 +145,11 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		@(NativeReference) are not safe to use as an Input to a task, as frameworks are a directory and will appears unbuilt every time.
 		So we split it into two camps as a prebuild step
 	-->
-	<Target Name="_ExpandNativeReferences" Condition="'$(_DisableBindingProjectBuild)' != 'true'" DependsOnTargets="_DetectSdkLocations;_ComputeTargetArchitectures;_GenerateBundleName;_SanitizeNativeReferences">
+	<Target
+		Name="_ExpandNativeReferences"
+		Condition="'$(_DisableBindingProjectBuild)' != 'true' And '$(_IsNonMacOSBuildForNonRemotablePlatform)' != 'true'"
+		DependsOnTargets="_DetectSdkLocations;_ComputeTargetArchitectures;_GenerateBundleName;_SanitizeNativeReferences"
+		>
 		<ItemGroup>
 			<_XCFrameworkNativeReference Include="@(NativeReference -> '%(Identity)/.')" Condition="'%(Extension)' == '.xcframework' Or $([MSBuild]::ValueOrDefault('%(FileName)%(Extension)', '').EndsWith('.xcframework.zip'))" />
 			<_FrameworkNativeReference Include="@(NativeReference -> '%(Identity)/%(Filename)')" Condition="'%(Extension)' == '.framework'" />
@@ -2170,10 +2175,15 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		>
 
 		<!-- If any assemblies is newer than the stamp file, we delete the stamp file and items so that _UnpackLibraryResources runs again -->
+		<ItemGroup>
+			<_UnpackLibraryResourceToDelete Include="@(_UnpackLibraryResourceItems->'%(StampFile)')" />
+			<_UnpackLibraryResourceToDelete Include="@(_UnpackLibraryResourceItems->'%(ItemsFile)')" />
+		</ItemGroup>
+
 		<Delete
 			Condition="'$(IsMacEnabled)' == 'true' Or '$(IsHotRestartBuild)' == 'true'"
 			SessionId="$(BuildSessionId)"
-			Files="%(_UnpackLibraryResourceItems.StampFile);%(_UnpackLibraryResourceItems.ItemsFile)"
+			Files="@(_UnpackLibraryResourceToDelete)"
 			/>
 	</Target>
 

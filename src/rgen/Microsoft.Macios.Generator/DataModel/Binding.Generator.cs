@@ -55,9 +55,9 @@ readonly partial struct Binding {
 
 			// return those libs needed by field properties
 			foreach (var property in Properties) {
-				if (property.ExportFieldData is null)
+				if (property.ExportFieldData.IsNullOrDefault)
 					continue;
-				var (_, libraryName, libraryPath) = property.ExportFieldData.Value;
+				var (_, libraryName, libraryPath) = property.ExportFieldData;
 				if (visited.Add (libraryName)) // if already visited, we cannot add it
 					yield return (libraryName, libraryPath);
 			}

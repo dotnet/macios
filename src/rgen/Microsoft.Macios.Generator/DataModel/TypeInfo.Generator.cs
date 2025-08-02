@@ -18,4 +18,38 @@ readonly partial struct TypeInfo {
 		NeedsStret = symbol.NeedsStret (compilation);
 	}
 
+	/// <summary>
+	/// Creates a <see cref="TypeInfo"/> for a delegate proxy (trampoline).
+	/// </summary>
+	/// <param name="delegateType">The <see cref="TypeInfo"/> of the delegate.</param>
+	/// <returns>A new <see cref="TypeInfo"/> representing the delegate proxy, or the original <paramref name="delegateType"/> if it's not a delegate.</returns>
+	public static TypeInfo CreateDelegateProxy (TypeInfo delegateType)
+	{
+		if (!delegateType.IsDelegate)
+			return delegateType;
+
+		// build a new type info that is a delegate proxy
+		var trampolineName = Nomenclator.GetTrampolineName (delegateType);
+		var proxyName = Nomenclator.GetTrampolineClassName (
+			trampolineName, Nomenclator.TrampolineClassType.StaticBridgeClass);
+
+		var trampolineInfo = new TypeInfo (
+			name: $"ObjCRuntime.Trampolines.{proxyName}",
+			specialType: SpecialType.None,
+			isNullable: false,
+			isBlittable: false,
+			isSmartEnum: false,
+			isArray: false,
+			isReferenceType: true,
+			isStruct: false
+		) {
+			Delegate = null,
+			EnumUnderlyingType = null,
+			IsGenericType = false,
+			IsTask = false,
+			TypeArguments = []
+		};
+		return trampolineInfo;
+	}
+
 }

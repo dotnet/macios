@@ -6,12 +6,14 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Macios.Generator.Attributes;
 using Microsoft.Macios.Generator.Availability;
 using Microsoft.Macios.Generator.Context;
 using Microsoft.Macios.Generator.Extensions;
 using ObjCRuntime;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Microsoft.Macios.Generator.DataModel;
 
@@ -20,30 +22,29 @@ readonly partial struct Property {
 	/// <summary>
 	/// The data of the field attribute used to mark the value as a field binding. 
 	/// </summary>
-	public FieldInfo<ObjCBindings.Property>? ExportFieldData { get; init; }
+	public FieldInfo<ObjCBindings.Property> ExportFieldData { get; init; } = FieldInfo<ObjCBindings.Property>.Default;
 
 	/// <summary>
 	/// True if the property represents a Objc field.
 	/// </summary>
-	[MemberNotNullWhen (true, nameof (ExportFieldData))]
-	public bool IsField => ExportFieldData is not null;
+	public bool IsField => !ExportFieldData.IsNullOrDefault;
 
 	/// <summary>
 	/// Returns if the field was marked as a notification.
 	/// </summary>
 	public bool IsNotification
-		=> IsField && ExportFieldData.Value.FieldData.Flags.HasFlag (ObjCBindings.Property.Notification);
+		=> IsField && ExportFieldData.FieldData.Flags.HasFlag (ObjCBindings.Property.Notification);
 
 	/// <summary>
 	/// The data of the field attribute used to mark the value as a property binding. 
 	/// </summary>
-	public ExportData<ObjCBindings.Property>? ExportPropertyData { get; init; }
+	public ExportData<ObjCBindings.Property> ExportPropertyData { get; init; } = ExportData<ObjCBindings.Property>.Default;
 
 	/// <summary>
 	/// True if the property represents a Objc property.
 	/// </summary>
 	[MemberNotNullWhen (true, nameof (ExportPropertyData))]
-	public bool IsProperty => ExportPropertyData is not null;
+	public bool IsProperty => !ExportPropertyData.IsNullOrDefault;
 
 	/// <summary>
 	/// The data of the export attribute used to mark the value as a strong dictionary property binding.
@@ -64,9 +65,9 @@ readonly partial struct Property {
 			if (!IsStrongDictionaryProperty)
 				return null;
 			// return the combination of the class key and the field name
-			return ExportStrongPropertyData.Value.StrongDictionaryKeyClass is null
+			return ExportStrongPropertyData.Value.StrongDictionaryKeyClass.IsNullOrDefault
 				? ExportStrongPropertyData.Value.Selector
-				: $"{ExportStrongPropertyData.Value.StrongDictionaryKeyClass.Value.FullyQualifiedName}.{ExportStrongPropertyData.Value.Selector}";
+				: $"{ExportStrongPropertyData.Value.StrongDictionaryKeyClass.FullyQualifiedName}.{ExportStrongPropertyData.Value.Selector}";
 		}
 	}
 
@@ -74,13 +75,13 @@ readonly partial struct Property {
 	/// Returns if the property was marked as thread safe.
 	/// </summary>
 	public bool IsThreadSafe =>
-		IsProperty && ExportPropertyData.Value.Flags.HasFlag (ObjCBindings.Property.IsThreadSafe);
+		IsProperty && ExportPropertyData.Flags.HasFlag (ObjCBindings.Property.IsThreadSafe);
 
 	/// <summary>
 	/// True if the method was exported with the MarshalNativeExceptions flag allowing it to support native exceptions.
 	/// </summary>
 	public bool MarshalNativeExceptions
-		=> IsProperty && ExportPropertyData.Value.Flags.HasFlag (ObjCBindings.Property.MarshalNativeExceptions);
+		=> IsProperty && ExportPropertyData.Flags.HasFlag (ObjCBindings.Property.MarshalNativeExceptions);
 
 	/// <summary>
 	/// Returns the bind from data if present in the binding.
@@ -95,46 +96,51 @@ readonly partial struct Property {
 	/// <summary>
 	/// True if the property should be generated without a backing field.
 	/// </summary>
-	public bool IsTransient => IsProperty && ExportPropertyData.Value.Flags.HasFlag (ObjCBindings.Property.Transient);
+	public bool IsTransient => IsProperty && ExportPropertyData.Flags.HasFlag (ObjCBindings.Property.Transient);
 
 	/// <summary>
 	/// True if the property was marked to DisableZeroCopy.
 	/// </summary>
 	public bool DisableZeroCopy
-		=> IsProperty && ExportPropertyData.Value.Flags.HasFlag (ObjCBindings.Property.DisableZeroCopy);
+		=> IsProperty && ExportPropertyData.Flags.HasFlag (ObjCBindings.Property.DisableZeroCopy);
 
 	/// <summary>
 	/// True if the generator should not use a NSString for marshalling.
 	/// </summary>
 	public bool UsePlainString
-		=> IsProperty && ExportPropertyData.Value.Flags.HasFlag (ObjCBindings.Property.PlainString);
+		=> IsProperty && ExportPropertyData.Flags.HasFlag (ObjCBindings.Property.PlainString);
 
 	/// <summary>
 	/// Return if the method invocation should be wrapped by a NSAutoReleasePool.
 	/// </summary>
-	public bool AutoRelease => IsProperty && ExportPropertyData.Value.Flags.HasFlag (ObjCBindings.Property.AutoRelease);
+	public bool AutoRelease => IsProperty && ExportPropertyData.Flags.HasFlag (ObjCBindings.Property.AutoRelease);
 
 	/// <summary>
 	/// True if the generated code should retain the return value.
 	/// </summary>
 	public bool RetainReturnValue
-		=> IsProperty && ExportPropertyData.Value.Flags.HasFlag (ObjCBindings.Property.RetainReturnValue);
+		=> IsProperty && ExportPropertyData.Flags.HasFlag (ObjCBindings.Property.RetainReturnValue);
 
 	/// <summary>
 	/// True if the generated code should release the return value.
 	/// </summary>
 	public bool ReleaseReturnValue
-		=> IsProperty && ExportPropertyData.Value.Flags.HasFlag (ObjCBindings.Property.ReleaseReturnValue);
+		=> IsProperty && ExportPropertyData.Flags.HasFlag (ObjCBindings.Property.ReleaseReturnValue);
 
 	/// <summary>
 	/// True if the return type of the method was returned as a proxy object.
 	/// </summary>
-	public bool IsProxy => IsProperty && ExportPropertyData.Value.Flags.HasFlag (ObjCBindings.Property.Proxy);
+	public bool IsProxy => IsProperty && ExportPropertyData.Flags.HasFlag (ObjCBindings.Property.Proxy);
 
 	/// <summary>
 	/// True if the property was marked as a weak delegate.
 	/// </summary>
-	public bool IsWeakDelegate => IsProperty && ExportPropertyData.Value.Flags.HasFlag (ObjCBindings.Property.WeakDelegate);
+	public bool IsWeakDelegate => IsProperty && ExportPropertyData.Flags.HasFlag (ObjCBindings.Property.WeakDelegate);
+
+	/// <summary>
+	/// States if a property is optional in a protocol definition.
+	/// </summary>
+	public bool IsOptional => IsProperty && ExportPropertyData.Flags.HasFlag (ObjCBindings.Property.Optional);
 
 	readonly bool? needsBackingField = null;
 	/// <summary>
@@ -162,7 +168,7 @@ readonly partial struct Property {
 				return requiresDirtyCheck.Value;
 			if (!IsProperty)
 				return false;
-			switch (ExportPropertyData.Value.ArgumentSemantic) {
+			switch (ExportPropertyData.ArgumentSemantic) {
 			case ArgumentSemantic.Copy:
 			case ArgumentSemantic.Retain:
 			case ArgumentSemantic.None:
@@ -181,10 +187,10 @@ readonly partial struct Property {
 	public string? Selector {
 		get {
 			if (IsField) {
-				return ExportFieldData.Value.FieldData.SymbolName;
+				return ExportFieldData.FieldData.SymbolName;
 			}
 			if (IsProperty) {
-				return ExportPropertyData.Value.Selector;
+				return ExportPropertyData.Selector;
 			}
 			return null;
 		}
@@ -243,7 +249,7 @@ readonly partial struct Property {
 					accessorDeclaration.GetAttributeCodeChanges (context.SemanticModel);
 				accessorsBucket.Add (new (
 					accessorKind: kind,
-					exportPropertyData: accessorSymbol.GetExportData<ObjCBindings.Property> (),
+					exportPropertyData: accessorSymbol.GetExportData<ObjCBindings.Property> () ?? ExportData<ObjCBindings.Property>.Default,
 					symbolAvailability: accessorSymbol.GetSupportedPlatforms (),
 					attributes: accessorAttributeChanges,
 					modifiers: [.. accessorDeclaration.Modifiers]));
@@ -258,7 +264,7 @@ readonly partial struct Property {
 			accessorCodeChanges = [new (
 				accessorKind: AccessorKind.Getter,
 				symbolAvailability: propertySupportedPlatforms,
-				exportPropertyData: null,
+				exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 				attributes: [],
 				modifiers: [])
 			];
@@ -272,8 +278,8 @@ readonly partial struct Property {
 			accessors: accessorCodeChanges) {
 			BindAs = propertySymbol.GetBindFromData (),
 			ForcedType = propertySymbol.GetForceTypeData (),
-			ExportFieldData = GetFieldInfo (context, propertySymbol),
-			ExportPropertyData = propertySymbol.GetExportData<ObjCBindings.Property> (),
+			ExportFieldData = GetFieldInfo (context, propertySymbol) ?? FieldInfo<ObjCBindings.Property>.Default,
+			ExportPropertyData = propertySymbol.GetExportData<ObjCBindings.Property> () ?? ExportData<ObjCBindings.Property>.Default,
 			ExportStrongPropertyData = propertySymbol.GetExportData<ObjCBindings.StrongDictionaryProperty> (),
 		};
 		return true;
@@ -291,24 +297,83 @@ readonly partial struct Property {
 		return RequiresDirtyCheck == other.RequiresDirtyCheck;
 	}
 
+	/// <summary>
+	/// Converts a weak delegate property to its strong delegate equivalent.
+	/// Updates the property name and return type to reference the strong delegate type instead of the weak delegate.
+	/// </summary>
+	/// <returns>A new <see cref="Property"/> instance representing the strong delegate, or the current instance if not applicable.</returns>
 	public Property ToStrongDelegate ()
 	{
 		// has to be a property, weak delegate and have its strong delegate type set
-		if (!IsProperty || !IsWeakDelegate || ExportPropertyData.Value.StrongDelegateType is null)
+		if (!IsProperty || !IsWeakDelegate || ExportPropertyData.StrongDelegateType.IsNullOrDefault)
 			return this;
 
 		// update the return type, all the rest is the same
 		return this with {
-			Name = ExportPropertyData.Value.StrongDelegateName ?? Name.Remove (0, 4 /* "Weak".Length */),
-			ReturnType = ExportPropertyData.Value.StrongDelegateType.Value.WithNullable (true),
+			Name = ExportPropertyData.StrongDelegateName ?? Name.Remove (0, 4 /* "Weak".Length */),
+			ReturnType = ExportPropertyData.StrongDelegateType.WithNullable (true),
 		};
+	}
+
+	/// <summary>
+	/// Converts the property to extension methods for optional getter and optional setter.
+	/// Creates internal static methods that can be used to access the property from extension methods.
+	/// </summary>
+	/// <param name="typeInfo">The type information for the 'this' parameter of the extension methods.</param>
+	/// <returns>A tuple containing the getter method and an optional setter method (null if the property is read-only).</returns>
+	public (Method Getter, Method Setter) ToExtensionMethods (TypeInfo typeInfo)
+	{
+		// create the parameter with the provided type info
+		var thisParameter = new Parameter (0, typeInfo, "self") { IsThis = true, };
+
+		var getter = GetAccessor (AccessorKind.Getter);
+		Method getterMethod = Method.Default;
+		if (!getter.IsNullOrDefault)
+			getterMethod = new Method (
+				type: typeInfo.FullyQualifiedName,
+				name: $"_Get{Name}",
+				returnType: ReturnType,
+				symbolAvailability: getter.SymbolAvailability,
+				exportMethodData: new (getter.GetSelector (this)),
+				attributes: [],
+				modifiers: [
+					Token (SyntaxKind.InternalKeyword).WithTrailingTrivia (Space),
+					Token (SyntaxKind.StaticKeyword).WithTrailingTrivia (Space)
+				],
+				parameters: [thisParameter]) {
+				BindAs = BindAs // return bindas is the same as the property bindas
+			};
+
+		var setter = GetAccessor (AccessorKind.Setter);
+		Method setterMethod = Method.Default;
+		if (!setter.IsNullOrDefault) {
+			// we need a second parameter for the setter
+			var valueParameter = new Parameter (1, ReturnType, "value") {
+				BindAs = BindAs // parameter bindas is the same as the property bindas
+			};
+			setterMethod = new Method (
+				type: typeInfo.FullyQualifiedName,
+				name: $"_Set{Name}",
+				returnType: TypeInfo.Void,
+				symbolAvailability: setter.SymbolAvailability,
+				exportMethodData: new (setter.GetSelector (this)),
+				attributes: [],
+				modifiers: [
+					Token (SyntaxKind.InternalKeyword).WithTrailingTrivia (Space),
+					Token (SyntaxKind.StaticKeyword).WithTrailingTrivia (Space)
+				],
+				parameters: [thisParameter, valueParameter]);
+		}
+		return (getterMethod, setterMethod);
 	}
 
 	/// <inheritdoc />
 	public override string ToString ()
 	{
+		var fieldInfo = ExportFieldData.IsNullOrDefault ? "null" : ExportFieldData.ToString ();
+		var propertyInfo = ExportPropertyData.IsNullOrDefault ? "null" : ExportPropertyData.ToString ();
 		var sb = new StringBuilder (
-			$"Name: '{Name}', Type: {ReturnType}, Supported Platforms: {SymbolAvailability}, ExportFieldData: '{ExportFieldData?.ToString () ?? "null"}', ExportPropertyData: '{ExportPropertyData?.ToString () ?? "null"}', ");
+			$"Name: '{Name}', Type: {ReturnType}, Supported Platforms: {SymbolAvailability}, ExportFieldData: '{fieldInfo}', ExportPropertyData: '{propertyInfo}', ");
 		sb.Append ($"IsTransient: '{IsTransient}', ");
 		sb.Append ($"NeedsBackingField: '{NeedsBackingField}', ");
 		sb.Append ($"RequiresDirtyCheck: '{RequiresDirtyCheck}', ");

@@ -45,6 +45,9 @@
         <Compile Include="../Microsoft.Macios.Generator/DictionaryComparer.cs" >
             <Link>Generator/DictionaryComparer.cs</Link>
         </Compile>
+        <Compile Include="../Microsoft.Macios.Generator/StructState.cs" >
+            <Link>Generator/StructState.cs</Link>
+        </Compile>
         <Compile Include="../Microsoft.Macios.Generator/Attributes/BindFromData.cs" >
             <Link>Generator/Attributes/BindFromData.cs</Link>
         </Compile>

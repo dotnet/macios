@@ -5,6 +5,7 @@ using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.Macios.Generator.Attributes;
 using Microsoft.Macios.Generator.Context;
 using Microsoft.Macios.Generator.Extensions;
 
@@ -36,7 +37,7 @@ readonly partial struct Event {
 				accessorsBucket.Add (new (
 					accessorKind: kind,
 					symbolAvailability: accessorSymbol.GetSupportedPlatforms (),
-					exportPropertyData: null,
+					exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 					attributes: accessorAttributeChanges,
 					modifiers: [.. accessorDeclaration.Modifiers]));
 			}

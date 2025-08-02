@@ -238,7 +238,7 @@ public partial class PropertyTests
 	protected internal PropertyTests (global::ObjCRuntime.NativeHandle handle) : base (handle) {}
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	object? __mt_Alphanumerics_var = null;
+	object? __mt_Alphanumerics_var_static = null;
 
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
@@ -261,7 +261,7 @@ public partial class PropertyTests
 			}
 			global::System.GC.KeepAlive (this);
 			MarkDirty ();
-			__mt_Alphanumerics_var = ret;
+			__mt_Alphanumerics_var_static = ret;
 			return ret;
 		}
 
@@ -280,7 +280,7 @@ public partial class PropertyTests
 			global::System.GC.KeepAlive (this);
 			global::System.GC.KeepAlive (value);
 			MarkDirty ();
-			__mt_Alphanumerics_var = value;
+			__mt_Alphanumerics_var_static = value;
 		}
 	}
 

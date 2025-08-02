@@ -178,14 +178,14 @@ public partial interface IProtocol {
 								new (
 									accessorKind: AccessorKind.Getter,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								),
 								new (
 									accessorKind: AccessorKind.Setter,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								),
@@ -247,14 +247,14 @@ public partial interface IProtocol {
 								new (
 									accessorKind: AccessorKind.Getter,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								),
 								new (
 									accessorKind: AccessorKind.Setter,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								),
@@ -315,14 +315,14 @@ public partial interface IProtocol {
 								new (
 									accessorKind: AccessorKind.Getter,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								),
 								new (
 									accessorKind: AccessorKind.Setter,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								),
@@ -379,14 +379,14 @@ public partial interface IProtocol {
 								new (
 									accessorKind: AccessorKind.Getter,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								),
 								new (
 									accessorKind: AccessorKind.Setter,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								),
@@ -447,14 +447,14 @@ public partial interface IProtocol {
 								new (
 									accessorKind: AccessorKind.Getter,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								),
 								new (
 									accessorKind: AccessorKind.Setter,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								),
@@ -513,14 +513,14 @@ public partial interface MyClass {
 								new (
 									accessorKind: AccessorKind.Getter,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								),
 								new (
 									accessorKind: AccessorKind.Setter,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								),
@@ -586,14 +586,14 @@ public partial interface IProtocol {
 								new (
 									accessorKind: AccessorKind.Getter,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								),
 								new (
 									accessorKind: AccessorKind.Setter,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								),
@@ -616,14 +616,14 @@ public partial interface IProtocol {
 								new (
 									accessorKind: AccessorKind.Getter,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								),
 								new (
 									accessorKind: AccessorKind.Setter,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								),
@@ -853,14 +853,14 @@ public partial interface IProtocol {
 								new (
 									accessorKind: AccessorKind.Add,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								),
 								new (
 									accessorKind: AccessorKind.Remove,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								)
@@ -914,14 +914,14 @@ public partial interface IProtocol {
 								new (
 									accessorKind: AccessorKind.Add,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								),
 								new (
 									accessorKind: AccessorKind.Remove,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								)
@@ -939,14 +939,14 @@ public partial interface IProtocol {
 								new (
 									accessorKind: AccessorKind.Add,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								),
 								new (
 									accessorKind: AccessorKind.Remove,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								)

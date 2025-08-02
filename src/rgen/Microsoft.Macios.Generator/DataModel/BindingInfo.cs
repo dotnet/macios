@@ -21,6 +21,7 @@ readonly struct BindingInfo : IEquatable<BindingInfo> {
 	[FieldOffset (8)] readonly BindingTypeData<ObjCBindings.CoreImageFilter> coreImageFilterData;
 	[FieldOffset (8)] readonly BindingTypeData<ObjCBindings.SmartEnum> smartEnumData;
 	[FieldOffset (8)] readonly BindingTypeData<ObjCBindings.StrongDictionary> strongDictionaryData;
+	[FieldOffset (8)] readonly BindingTypeData<ObjCBindings.StrongDictionaryKeys> strongDictionaryKeysData;
 
 	/// <summary>
 	/// The type of the binding.
@@ -113,6 +114,16 @@ readonly struct BindingInfo : IEquatable<BindingInfo> {
 	}
 
 	/// <summary>
+	/// Initializes a new instance of the <see cref="BindingInfo"/> struct for a strong dictionary keys binding.
+	/// </summary>
+	/// <param name="data">The strong dictionary keys binding data.</param>
+	public BindingInfo (BindingTypeData<ObjCBindings.StrongDictionaryKeys> data)
+	{
+		bindingType = BindingType.StrongDictionaryKeys;
+		strongDictionaryKeysData = data;
+	}
+
+	/// <summary>
 	/// Implicitly converts a <see cref="BindingInfo"/> to a <see cref="BindingTypeData"/>.
 	/// </summary>
 	/// <param name="info">The <see cref="BindingInfo"/> to convert.</param>
@@ -191,6 +202,18 @@ readonly struct BindingInfo : IEquatable<BindingInfo> {
 	}
 
 	/// <summary>
+	/// Implicitly converts a <see cref="BindingInfo"/> to a <see cref="BindingTypeData{T}"/> for a strong dictionary keys.
+	/// </summary>
+	/// <param name="info">The <see cref="BindingInfo"/> to convert.</param>
+	/// <exception cref="InvalidCastException">Thrown if the binding type is not <see cref="BindingType.StrongDictionaryKeys"/>.</exception>
+	public static implicit operator BindingTypeData<ObjCBindings.StrongDictionaryKeys> (BindingInfo info)
+	{
+		if (info.BindingType != BindingType.StrongDictionaryKeys)
+			throw new InvalidCastException ($"Invalid cast to ObjCBindings.StrongDictionaryKeys for binding type {info.BindingType}");
+		return info.strongDictionaryKeysData;
+	}
+
+	/// <summary>
 	/// Implicitly converts a <see cref="BindingTypeData"/> to a <see cref="BindingInfo"/>.
 	/// </summary>
 	/// <param name="data">The <see cref="BindingTypeData"/> to convert.</param>
@@ -225,6 +248,11 @@ readonly struct BindingInfo : IEquatable<BindingInfo> {
 	/// </summary>
 	/// <param name="data">The <see cref="BindingTypeData{T}"/> to convert.</param>
 	public static implicit operator BindingInfo (BindingTypeData<ObjCBindings.StrongDictionary> data) => new (data);
+	/// <summary>
+	/// Implicitly converts a <see cref="BindingTypeData{T}"/> for a strong dictionary keys to a <see cref="BindingInfo"/>.
+	/// </summary>
+	/// <param name="data">The <see cref="BindingTypeData{T}"/> to convert.</param>
+	public static implicit operator BindingInfo (BindingTypeData<ObjCBindings.StrongDictionaryKeys> data) => new (data);
 
 	/// <inheritdoc />
 	public bool Equals (BindingInfo other)
@@ -244,6 +272,8 @@ readonly struct BindingInfo : IEquatable<BindingInfo> {
 			return categoryData == other.categoryData;
 		case BindingType.StrongDictionary:
 			return strongDictionaryData == other.strongDictionaryData;
+		case BindingType.StrongDictionaryKeys:
+			return strongDictionaryKeysData == other.strongDictionaryKeysData;
 		}
 		return false;
 	}
@@ -261,6 +291,7 @@ readonly struct BindingInfo : IEquatable<BindingInfo> {
 		BindingType.Protocol => HashCode.Combine (bindingType, protocolData),
 		BindingType.Category => HashCode.Combine (bindingType, categoryData),
 		BindingType.StrongDictionary => HashCode.Combine (bindingType, strongDictionaryData),
+		BindingType.StrongDictionaryKeys => HashCode.Combine (bindingType, strongDictionaryKeysData),
 		_ => HashCode.Combine (bindingType, bindingTypeData)
 	};
 
@@ -294,6 +325,7 @@ readonly struct BindingInfo : IEquatable<BindingInfo> {
 		BindingType.CoreImageFilter => $"{{ BindingType: {bindingType}, BindingData: {coreImageFilterData} }}",
 		BindingType.SmartEnum => $"{{ BindingType: {bindingType}, BindingData: {smartEnumData} }}",
 		BindingType.StrongDictionary => $"{{ BindingType: {bindingType}, BindingData: {strongDictionaryData} }}",
+		BindingType.StrongDictionaryKeys => $"{{ BindingType: {bindingType}, BindingData: {strongDictionaryKeysData} }}",
 		_ => throw new NotImplementedException ()
 	};
 }

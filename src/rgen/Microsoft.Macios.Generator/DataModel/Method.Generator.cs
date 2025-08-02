@@ -13,6 +13,7 @@ using Microsoft.Macios.Generator.Context;
 using Microsoft.Macios.Generator.Extensions;
 using Microsoft.Macios.Generator.Formatters;
 using ObjCRuntime;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Microsoft.Macios.Generator.DataModel;
 
@@ -85,12 +86,22 @@ readonly partial struct Method {
 	/// </summary>
 	public bool IsAsync => ExportMethodData.Flags.HasFlag (ObjCBindings.Method.Async);
 
+	/// <summary>
+	/// True if the method is variadic.
+	/// </summary>
+	public bool IsVariadic => ExportMethodData.Flags.HasFlag (ObjCBindings.Method.IsVariadic);
+
+	/// <summary>
+	/// States if a method is optional in a protocol definition.
+	/// </summary>
+	public bool IsOptional => ExportMethodData.Flags.HasFlag (ObjCBindings.Method.Optional);
+
 	public Method (string type, string name, TypeInfo returnType,
 		SymbolAvailability symbolAvailability,
 		ExportData<ObjCBindings.Method> exportMethodData,
 		ImmutableArray<AttributeCodeChange> attributes,
 		ImmutableArray<SyntaxToken> modifiers,
-		ImmutableArray<Parameter> parameters)
+		ImmutableArray<Parameter> parameters) : this (StructState.Initialized)
 	{
 		Type = type;
 		Name = name;
@@ -158,8 +169,8 @@ readonly partial struct Method {
 		var resultType = Parameters [^1].Type.ToTask ();
 
 		// if the user provided a result type, we need to update the calculated result type to a task
-		if (ExportMethodData.ResultType is not null) {
-			resultType = resultType.ToTask (ExportMethodData.ResultType.Value.GetIdentifierSyntax ().ToString ());
+		if (!ExportMethodData.ResultType.IsNullOrDefault) {
+			resultType = resultType.ToTask (ExportMethodData.ResultType.GetIdentifierSyntax ().ToString ());
 		}
 
 		if (ExportMethodData.ResultTypeName is not null) {
@@ -177,6 +188,34 @@ readonly partial struct Method {
 			Modifiers = [
 				.. Modifiers.Where (m => !m.IsKind (SyntaxKind.UnsafeKeyword) && !m.IsKind (SyntaxKind.PartialKeyword)),
 			]
+		};
+	}
+
+	/// <summary>
+	/// Converts the current method into a static helper method for a protocol.
+	/// </summary>
+	/// <param name="protocol">The protocol for which the helper method is being created.</param>
+	/// <returns>A new <see cref="Method"/> instance representing the protocol helper method.</returns>
+	public Method ToProtocolMethod (TypeInfo protocol)
+	{
+		// we need to create the same method but update the name and insert a 'this' parameter and use the correct tokens
+		var thisParameter = new Parameter (0, protocol, "self") { IsThis = true };
+		var newParameters = ImmutableArray.CreateBuilder<Parameter> (Parameters.Length + 1);
+		newParameters.Add (thisParameter);
+		// add the rest of the parameters BUT update the position of each parameter
+		for (var index = 0; index < Parameters.Length; index++) {
+			var parameter = Parameters [index];
+			// update the position of the parameter to be one more than the current index
+			newParameters.Add (parameter.WithPosition (index + 1));
+		}
+
+		return this with {
+			Name = $"_{Name}",
+			Parameters = newParameters.ToImmutableArray (),
+			Modifiers = [
+				Token (SyntaxKind.InternalKeyword).WithTrailingTrivia (Space),
+				Token (SyntaxKind.StaticKeyword).WithTrailingTrivia (Space),
+			],
 		};
 	}
 }

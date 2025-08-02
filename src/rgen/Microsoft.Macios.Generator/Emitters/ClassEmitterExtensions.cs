@@ -1,8 +1,10 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Macios.Generator.Context;
 using Microsoft.Macios.Generator.DataModel;
 using Microsoft.Macios.Generator.Extensions;
@@ -49,8 +51,8 @@ static class ClassEmitterExtensions {
 				// ignore fields
 				continue;
 			var getter = property.GetAccessor (AccessorKind.Getter);
-			if (getter is not null) {
-				var selector = getter.Value.GetSelector (property)!;
+			if (!getter.IsNullOrDefault) {
+				var selector = getter.GetSelector (property)!;
 				var selectorName = selector.GetSelectorFieldName ();
 				if (bindingContext.SelectorNames.TryAdd (selector, selectorName)) {
 					EmitField (selector, selectorName);
@@ -58,8 +60,8 @@ static class ClassEmitterExtensions {
 			}
 
 			var setter = property.GetAccessor (AccessorKind.Setter);
-			if (setter is not null) {
-				var selector = setter.Value.GetSelector (property)!;
+			if (!setter.IsNullOrDefault) {
+				var selector = setter.GetSelector (property)!;
 				var selectorName = selector.GetSelectorFieldName ();
 				if (bindingContext.SelectorNames.TryAdd (selector, selectorName)) {
 					EmitField (selector, selectorName);
@@ -167,6 +169,68 @@ if (IsDirectBinding) {{
 	}
 
 	/// <summary>
+	/// Emits the code for a given method, including its async version if applicable.
+	/// </summary>
+	/// <param name="self">The class emitter.</param>
+	/// <param name="context">The current binding context.</param>
+	/// <param name="method">The method to emit.</param>
+	/// <param name="classBlock">The current class block writer.</param>
+	/// <param name="uiThreadCheck">An optional UI thread check expression. If not provided, it will be created based on the context.</param>
+	public static void EmitMethod (this IClassEmitter self, in BindingContext context, in Method method,
+		TabbedWriter<StringWriter> classBlock, ExpressionStatementSyntax? uiThreadCheck = null)
+	{
+
+		// if not passed as an argument, we will create the ui thread check based on the context
+		if (uiThreadCheck is null) {
+			uiThreadCheck = (context.NeedsThreadChecks)
+				? EnsureUiThread (context.RootContext.CurrentPlatform)
+				: null;
+		}
+
+		classBlock.WriteLine ();
+		classBlock.AppendMemberAvailability (method.SymbolAvailability);
+		classBlock.AppendGeneratedCodeAttribute (optimizable: true);
+
+		using (var methodBlock = classBlock.CreateBlock (method.ToDeclaration ().ToString (), block: true)) {
+			// write any possible thread check at the beginning of the method
+			if (uiThreadCheck is not null) {
+				methodBlock.WriteLine (uiThreadCheck.ToString ());
+				methodBlock.WriteLine ();
+			}
+
+			// retrieve the method invocation via the factory, this will generate the necessary arguments
+			// transformations and the invocation
+			var invocations = GetInvocations (method);
+
+			if (method.ReturnType.IsVoid) {
+				EmitVoidMethodBody (method, invocations, methodBlock);
+			} else {
+				EmitReturnMethodBody (method, invocations, methodBlock);
+			}
+		}
+
+		if (!method.IsAsync)
+			return;
+
+		// if the method is an async method, generate its async version
+		classBlock.WriteLine ();
+		classBlock.AppendMemberAvailability (method.SymbolAvailability);
+		classBlock.AppendGeneratedCodeAttribute (optimizable: true);
+
+		var asyncMethod = method.ToAsync ();
+		using (var methodBlock = classBlock.CreateBlock (asyncMethod.ToDeclaration ().ToString (), block: true)) {
+			// we need to create the tcs for the the async method
+			var tcsType = asyncMethod.ReturnType.ToTaskCompletionSource ();
+			var tcsName = Nomenclator.GetTaskCompletionSourceName ();
+			methodBlock.WriteRaw (
+$@"{tcsType.GetIdentifierSyntax ()} {tcsName} = new ();
+{ExpressionStatement (ExecuteSyncCall (method))}
+return {tcsName}.Task;
+");
+		}
+	}
+
+	/// <summary>
 	/// Emit the code for all the methods in the class.
 	/// </summary>
 	/// <param name="context">The current binding context.</param>
@@ -176,48 +240,87 @@ if (IsDirectBinding) {{
 		var uiThreadCheck = (context.NeedsThreadChecks)
 			? EnsureUiThread (context.RootContext.CurrentPlatform) : null;
 		foreach (var method in context.Changes.Methods.OrderBy (m => m.Name)) {
-			classBlock.WriteLine ();
-			classBlock.AppendMemberAvailability (method.SymbolAvailability);
-			classBlock.AppendGeneratedCodeAttribute (optimizable: true);
-
-			using (var methodBlock = classBlock.CreateBlock (method.ToDeclaration ().ToString (), block: true)) {
-				// write any possible thread check at the beginning of the method
-				if (uiThreadCheck is not null) {
-					methodBlock.WriteLine (uiThreadCheck.ToString ());
-					methodBlock.WriteLine ();
-				}
-
-				// retrieve the method invocation via the factory, this will generate the necessary arguments
-				// transformations and the invocation
-				var invocations = GetInvocations (method);
-
-				if (method.ReturnType.IsVoid) {
-					EmitVoidMethodBody (method, invocations, methodBlock);
-				} else {
-					EmitReturnMethodBody (method, invocations, methodBlock);
-				}
-			}
-
-			if (!method.IsAsync)
-				continue;
-
-			// if the method is an async method, generate its async version
-			classBlock.WriteLine ();
-			classBlock.AppendMemberAvailability (method.SymbolAvailability);
-			classBlock.AppendGeneratedCodeAttribute (optimizable: true);
-
-			var asyncMethod = method.ToAsync ();
-			using (var methodBlock = classBlock.CreateBlock (asyncMethod.ToDeclaration ().ToString (), block: true)) {
-				// we need to create the tcs for the the async method
-				var tcsType = asyncMethod.ReturnType.ToTaskCompletionSource ();
-				var tcsName = Nomenclator.GetTaskCompletionSourceName ();
-				methodBlock.WriteRaw (
-$@"{tcsType.GetIdentifierSyntax ()} {tcsName} = new ();
-{ExpressionStatement (ExecuteSyncCall (method))}
-return {tcsName}.Task;
-");
-			}
+			EmitMethod (self, context, method, classBlock, uiThreadCheck);
 		}
 	}
 
+	/// <summary>
+	/// Emit the code for all the field properties in the class. The code will add any necessary backing fields and
+	/// will return all properties that are notifications.
+	/// </summary>
+	/// <param name="self"></param>
+	/// <param name="className">The current class name.</param>
+	/// <param name="properties">All properties of the class, the method will filter those that are fields.</param>
+	/// <param name="classBlock">Current class block.</param>
+	/// <param name="notificationProperties">An immutable array with all the properties that are marked as notifications
+	/// and that need a helper class to be generated.</param>
+	public static void EmitFields (this IClassEmitter self, string className, in ImmutableArray<Property> properties, TabbedWriter<StringWriter> classBlock,
+		out ImmutableArray<Property> notificationProperties)
+	{
+		var notificationsBuilder = ImmutableArray.CreateBuilder<Property> ();
+		foreach (var property in properties.OrderBy (p => p.Name)) {
+			if (!property.IsField)
+				continue;
+
+			classBlock.WriteLine ();
+			// a field should always have a getter, if it does not, we do not generate the property
+			var getter = property.GetAccessor (AccessorKind.Getter);
+			if (getter.IsNullOrDefault)
+				continue;
+
+			// provide a backing variable for the property if and only if we are dealing with a reference type
+			if (property.IsReferenceType) {
+				classBlock.WriteLine (FieldPropertyBackingVariable (property).ToString ());
+			}
+
+			classBlock.WriteLine ();
+			classBlock.AppendMemberAvailability (property.SymbolAvailability);
+			classBlock.AppendGeneratedCodeAttribute (optimizable: true);
+			if (property.IsNotification) {
+				// add it to the bucket so that we can later generate the necessary partial class for the 
+				// notifications
+				notificationsBuilder.Add (property);
+				classBlock.AppendNotificationAdvice (className, property.Name);
+			}
+
+			using (var propertyBlock = classBlock.CreateBlock (property.ToDeclaration ().ToString (), block: true)) {
+				// generate the accessors, we will always have a get, a set is optional depending on the type
+				// if the symbol availability of the accessor is different of the one from the property, write it
+				var backingField = property.BackingField;
+
+				// be very verbose with the availability, makes the life easier to the dotnet analyzer
+				propertyBlock.AppendMemberAvailability (getter.SymbolAvailability);
+				using (var getterBlock = propertyBlock.CreateBlock ("get", block: true)) {
+					// fields with a reference type have a backing fields, while value types do not
+					if (property.IsReferenceType) {
+						getterBlock.WriteRaw (
+$@"if ({backingField} is null)
+	{backingField} = {ExpressionStatement (FieldConstantGetter (property))}
+return {backingField};
+");
+					} else {
+						// directly return the call from the getter
+						getterBlock.WriteLine ($"return {ExpressionStatement (FieldConstantGetter (property))}");
+					}
+				}
+
+				var setter = property.GetAccessor (AccessorKind.Setter);
+				if (setter.IsNullOrDefault)
+					// we are done with the current property
+					continue;
+
+				propertyBlock.WriteLine (); // add space between getter and setter since we have the attrs
+				propertyBlock.AppendMemberAvailability (setter.SymbolAvailability);
+				using (var setterBlock = propertyBlock.CreateBlock ("set", block: true)) {
+					if (property.IsReferenceType) {
+						// set the backing field
+						setterBlock.WriteLine ($"{backingField} = value;");
+					}
+					// call the native code
+					setterBlock.WriteLine ($"{ExpressionStatement (FieldConstantSetter (property, "value"))}");
+				}
+			}
+		}
+		notificationProperties = notificationsBuilder.ToImmutable ();
+	}
 }

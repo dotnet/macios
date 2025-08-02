@@ -909,15 +909,11 @@ static partial class BindingSyntaxFactory {
 				withType: NativeHandle.WithTrailingTrivia ((Space))).WithModifiers (modifiers);
 	}
 
-	static string? GetObjCMessageSendMethodName<T> (ExportData<T> exportData,
+	static string GetObjCMessageSendMethodName<T> (ExportData<T> exportData,
 		in TypeInfo returnType, ImmutableArray<Parameter> parameters, bool isSuper = false, bool isStret = false)
 		where T : Enum
 	{
 		var flags = exportData.Flags;
-		if (flags is null)
-			// flags are not set, should be a bug, but we will return null
-			return null;
-
 		// the name of the objcSend method is calculated in the following way	
 		// {CustomMarshallPrefix}_{MarshallTypeOfReturnType}_{objcSendMsg}{stret?_stret}_{string.Join('_', MarshallTypeArgs)}{nativeException?_exception}{CustomMarsahllPostfix}
 		// we will use a sb to make things easy to follow

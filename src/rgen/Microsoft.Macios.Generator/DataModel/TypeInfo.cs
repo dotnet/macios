@@ -22,12 +22,28 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 	/// <summary>
 	/// Represents the `void` type.
 	/// </summary>
-	public static TypeInfo Void = new ("void", SpecialType.System_Void) { Parents = ["System.ValueType", "object"], };
+	public static TypeInfo Void = new ("System.void", SpecialType.System_Void) { Parents = ["System.ValueType", "object"], };
 
 	/// <summary>
 	/// Represents a `System.NativeHandle` type.
 	/// </summary>
 	public static TypeInfo NativeHandle = new ("System.NativeHandle", SpecialType.System_IntPtr) { Parents = ["System.ValueType", "object"], };
+
+	/// <summary>
+	/// The initialization state of the struct.
+	/// </summary>
+	StructState State { get; init; } = StructState.Default;
+
+	/// <summary>
+	/// Gets the default, uninitialized instance of <see cref="TypeInfo"/>.
+	/// </summary>
+	public static TypeInfo Default { get; } =
+		new (string.Empty, SpecialType.None) { State = StructState.Default };
+
+	/// <summary>
+	/// Gets a value indicating whether the instance is the default, uninitialized instance.
+	/// </summary>
+	public bool IsNullOrDefault => State == StructState.Default;
 
 	/// <summary>
 	/// The fully qualified name of the type.
@@ -245,13 +261,17 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		init => interfaces = value;
 	}
 
-
 	/// <summary>
 	/// The type arguments of the generic type.
 	/// </summary>
 	public ImmutableArray<string> TypeArguments { get; init; } = [];
 
-	internal TypeInfo (string name, SpecialType specialType)
+	internal TypeInfo (StructState state)
+	{
+		State = state;
+	}
+
+	internal TypeInfo (string name, SpecialType specialType) : this (StructState.Initialized)
 	{
 		FullyQualifiedName = name;
 		SpecialType = specialType;
@@ -343,7 +363,7 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		return components.ToImmutableArray ();
 	}
 
-	internal TypeInfo (ITypeSymbol symbol)
+	internal TypeInfo (ITypeSymbol symbol) : this (StructState.Initialized)
 	{
 		// general case, get the name and namespace. If we are dealing with a generic type or an array type
 		// the name will be later overwritten with the generic name or the array name
@@ -444,6 +464,8 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 	/// <inheritdoc/>
 	public bool Equals (TypeInfo other)
 	{
+		if (State == StructState.Default && other.State == StructState.Default)
+			return true;
 		if (FullyQualifiedName != other.FullyQualifiedName)
 			return false;
 		if (SpecialType != other.SpecialType)
@@ -767,6 +789,7 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 	public override string ToString ()
 	{
 		var sb = new StringBuilder ("{");
+		sb.Append ($"StructState: '{State}', ");
 		sb.Append ($"Name: '{FullyQualifiedName}', ");
 		sb.Append ($"MetadataName: '{MetadataName}', ");
 		sb.Append ($"SpecialType: '{SpecialType}', ");

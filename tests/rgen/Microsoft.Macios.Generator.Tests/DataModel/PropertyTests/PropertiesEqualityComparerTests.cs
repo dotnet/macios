@@ -1,8 +1,10 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+#pragma warning disable APL0003
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.Macios.Generator.Attributes;
 using Microsoft.Macios.Generator.DataModel;
 using Xunit;
 
@@ -36,7 +38,7 @@ public class PropertiesEqualityComparerTests {
 					new (
 						accessorKind: AccessorKind.Getter,
 						symbolAvailability: new (),
-						exportPropertyData: null,
+						exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 						attributes: [],
 						modifiers: []
 					)
@@ -53,7 +55,7 @@ public class PropertiesEqualityComparerTests {
 					new (
 						accessorKind: AccessorKind.Getter,
 						symbolAvailability: new (),
-						exportPropertyData: null,
+						exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 						attributes: [],
 						modifiers: []
 					)
@@ -72,7 +74,7 @@ public class PropertiesEqualityComparerTests {
 					new (
 						accessorKind: AccessorKind.Getter,
 						symbolAvailability: new (),
-						exportPropertyData: null,
+						exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 						attributes: [],
 						modifiers: []
 					)
@@ -98,7 +100,7 @@ public class PropertiesEqualityComparerTests {
 					new (
 						accessorKind: AccessorKind.Getter,
 						symbolAvailability: new (),
-						exportPropertyData: null,
+						exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 						attributes: [],
 						modifiers: []
 					)
@@ -117,7 +119,7 @@ public class PropertiesEqualityComparerTests {
 					new (
 						accessorKind: AccessorKind.Getter,
 						symbolAvailability: new (),
-						exportPropertyData: null,
+						exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 						attributes: [],
 						modifiers: []
 					)
@@ -143,7 +145,7 @@ public class PropertiesEqualityComparerTests {
 					new (
 						accessorKind: AccessorKind.Getter,
 						symbolAvailability: new (),
-						exportPropertyData: null,
+						exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 						attributes: [],
 						modifiers: []
 					)
@@ -162,7 +164,7 @@ public class PropertiesEqualityComparerTests {
 					new (
 						accessorKind: AccessorKind.Getter,
 						symbolAvailability: new (),
-						exportPropertyData: null,
+						exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 						attributes: [],
 						modifiers: []
 					)
@@ -188,7 +190,7 @@ public class PropertiesEqualityComparerTests {
 					new (
 						accessorKind: AccessorKind.Getter,
 						symbolAvailability: new (),
-						exportPropertyData: null,
+						exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 						attributes: [],
 						modifiers: []
 					)
@@ -207,7 +209,7 @@ public class PropertiesEqualityComparerTests {
 					new (
 						accessorKind: AccessorKind.Getter,
 						symbolAvailability: new (),
-						exportPropertyData: null,
+						exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 						attributes: [],
 						modifiers: []
 					)

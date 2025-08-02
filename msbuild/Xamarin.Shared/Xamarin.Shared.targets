@@ -2118,10 +2118,15 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		>
 
 		<!-- If any assemblies is newer than the stamp file, we delete the stamp file and items so that _UnpackLibraryResources runs again -->
+		<ItemGroup>
+			<_UnpackLibraryResourceToDelete Include="@(_UnpackLibraryResourceItems->'%(StampFile)')" />
+			<_UnpackLibraryResourceToDelete Include="@(_UnpackLibraryResourceItems->'%(ItemsFile)')" />
+		</ItemGroup>
+
 		<Delete
 			Condition="'$(IsMacEnabled)' == 'true' Or '$(IsHotRestartBuild)' == 'true'"
 			SessionId="$(BuildSessionId)"
-			Files="%(_UnpackLibraryResourceItems.StampFile);%(_UnpackLibraryResourceItems.ItemsFile)"
+			Files="@(_UnpackLibraryResourceToDelete)"
 			/>
 	</Target>
 

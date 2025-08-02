@@ -44,7 +44,7 @@ class StrongDictionaryEmitter : IClassEmitter {
 		foreach (var property in context.Changes.StrongDictionaryProperties.OrderBy (p => p.Name)) {
 			// make sure that the user did not forget to add the getter
 			var getter = property.GetAccessor (AccessorKind.Getter);
-			if (getter is null)
+			if (getter.IsNullOrDefault)
 				continue;
 
 			classBlock.WriteLine ();
@@ -52,18 +52,18 @@ class StrongDictionaryEmitter : IClassEmitter {
 			var (getCall, setCall) = GetStrongDictionaryInvocations (property);
 			using (var propertyBlock = classBlock.CreateBlock (property.ToDeclaration ().ToString (), block: true)) {
 
-				propertyBlock.AppendMemberAvailability (getter.Value.SymbolAvailability);
+				propertyBlock.AppendMemberAvailability (getter.SymbolAvailability);
 				using (var getterBlock = propertyBlock.CreateBlock ("get", block: true)) {
 					getterBlock.WriteLine ($"return {ExpressionStatement (getCall)}");
 				}
 
 				var setter = property.GetAccessor (AccessorKind.Setter);
-				if (setter is null)
+				if (setter.IsNullOrDefault)
 					// we are done with the current property
 					continue;
 
 				propertyBlock.WriteLine (); // add space between getter and setter since we have the attrs
-				propertyBlock.AppendMemberAvailability (setter.Value.SymbolAvailability);
+				propertyBlock.AppendMemberAvailability (setter.SymbolAvailability);
 				using (var setterBlock = propertyBlock.CreateBlock ("set", block: true)) {
 					setterBlock.WriteLine ($"{ExpressionStatement (setCall)}");
 				}
@@ -85,20 +85,20 @@ class StrongDictionaryEmitter : IClassEmitter {
 		}
 
 		// namespace declaration
-		bindingContext.Builder.WriteLine ();
-		bindingContext.Builder.WriteLine ($"namespace {string.Join (".", bindingContext.Changes.Namespace)};");
-		bindingContext.Builder.WriteLine ();
+		this.EmitNamespace (bindingContext);
 
-		bindingContext.Builder.AppendMemberAvailability (bindingContext.Changes.SymbolAvailability);
-		var modifiers = $"{string.Join (' ', bindingContext.Changes.Modifiers)} ";
-		using (var classBlock = bindingContext.Builder.CreateBlock (
-				   $"{(string.IsNullOrWhiteSpace (modifiers) ? string.Empty : modifiers)}class {bindingContext.Changes.Name} : DictionaryContainer",
-				   true)) {
-			// we care about two specific things, the constructors and the strong dictionary properties
-			EmitDefaultConstructors (bindingContext, classBlock);
-			EmitProperties (bindingContext, classBlock);
+		using (var _ = this.EmitOuterClasses (bindingContext, out var builder)) {
+			builder.AppendMemberAvailability (bindingContext.Changes.SymbolAvailability);
+			var modifiers = $"{string.Join (' ', bindingContext.Changes.Modifiers)} ";
+			using (var classBlock = builder.CreateBlock (
+					   $"{(string.IsNullOrWhiteSpace (modifiers) ? string.Empty : modifiers)}class {bindingContext.Changes.Name} : DictionaryContainer",
+					   true)) {
+				// we care about two specific things, the constructors and the strong dictionary properties
+				EmitDefaultConstructors (bindingContext, classBlock);
+				EmitProperties (bindingContext, classBlock);
+			}
+
+			return true;
 		}
-
-		return true;
 	}
 }

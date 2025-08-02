@@ -18422,12 +18422,57 @@ namespace AppKit {
 		[NullAllowed, Export ("mainStoryboard", ArgumentSemantic.Strong)]
 		NSStoryboard MainStoryboard { get; }
 
+#if !XAMCORE_5_0
+		// Bound using the wrong return type, fix like this so that consuming code will work through breaking changes as long as warnings are fixed:
+		// * Add a '2' variant for !XAMCORE_5_0 with the correct return type
+		// * Obsolete the original variant in !XAMCORE_5_0 (with the wrong return type)
+		// * Obsolete the '2' variant for XAMCORE_5_0 (with the correct return type, but ugly name)
+		// * Make the original variant have the correct return type in XAMCORE_5_0
+		// * Remove the '2' variant in XAMCORE_6_0
+		[Obsolete ("Use 'InstantiateInitialController2' instead.")]
+#endif
 		[Export ("instantiateInitialControllerWithCreator:")]
 		[return: NullAllowed]
+#if XAMCORE_5_0
+		NSObject InstantiateInitialController ([NullAllowed] NSStoryboardControllerCreator handler);
+#else
 		NSViewController InstantiateInitialController ([NullAllowed] NSStoryboardControllerCreator handler);
+#endif
 
+#if !XAMCORE_5_0
+		// Bound using the wrong return type, fix like this so that consuming code will work through breaking changes as long as warnings are fixed:
+		// * Add a '2' variant for !XAMCORE_5_0 with the correct return type
+		// * Obsolete the original variant in !XAMCORE_5_0 (with the wrong return type)
+		// * Obsolete the '2' variant for XAMCORE_5_0 (with the correct return type, but ugly name)
+		// * Make the original variant have the correct return type in XAMCORE_5_0
+		// * Remove the '2' variant in XAMCORE_6_0
+		[Obsolete ("Use 'InstantiateController2' instead.")]
+#endif // !XAMCORE_5_0
 		[Export ("instantiateControllerWithIdentifier:creator:")]
+#if XAMCORE_5_0
+		NSObject InstantiateController (string identifier, [NullAllowed] NSStoryboardControllerCreator handler);
+#else
 		NSViewController InstantiateController (string identifier, [NullAllowed] NSStoryboardControllerCreator handler);
+#endif
+
+#if !XAMCORE_6_0
+#if XAMCORE_5_0
+		[Obsolete ("Use 'InstantiateController' instead.")]
+#else
+		[Sealed]
+#endif // XAMCORE_5_0
+		[Export ("instantiateInitialControllerWithCreator:")]
+		[return: NullAllowed]
+		NSObject InstantiateInitialController2 ([NullAllowed] NSStoryboardControllerCreator handler);
+
+#if XAMCORE_5_0
+		[Obsolete ("Use 'InstantiateController' instead.")]
+#else
+		[Sealed]
+#endif // XAMCORE_5_0
+		[Export ("instantiateControllerWithIdentifier:creator:")]
+		NSObject InstantiateController2 (string identifier, [NullAllowed] NSStoryboardControllerCreator handler);
+#endif // XAMCORE_6_0
 	}
 
 	[NoMacCatalyst]

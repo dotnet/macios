@@ -4651,7 +4651,9 @@ public partial class Generator : IMemberGatherer {
 				if (shortName.StartsWith ("Func<", StringComparison.Ordinal))
 					continue;
 
-				WriteDocumentation (mi.DeclaringType);
+				// we might get "delegates" from DelegateName attributes, and in that case the declaring type doesn't have xml docs for the delegate (the declaring type is the container type for the member with the DelegateName attribute, and its documentation has nothing to do with the delegate type)
+				if (mi.DeclaringType.IsSubclassOf (TypeCache.System_Delegate))
+					WriteDocumentation (mi.DeclaringType);
 
 				var del = mi.DeclaringType;
 

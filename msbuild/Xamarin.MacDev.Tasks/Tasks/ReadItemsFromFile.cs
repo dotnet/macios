@@ -69,7 +69,7 @@ namespace Xamarin.MacDev.Tasks {
 			}
 
 			// Set the SourceFile metadata to the file from which this item was read.
-			item.SetMetadata ("SourceFile", sourceFile);
+			item.SetMetadata ("SourceFile", Path.GetFileName (sourceFile));
 
 			return item;
 		}

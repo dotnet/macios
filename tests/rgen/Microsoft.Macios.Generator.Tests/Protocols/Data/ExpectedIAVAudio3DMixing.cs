@@ -573,3 +573,209 @@ internal unsafe sealed class AVAudio3DMixingWrapper : BaseWrapper, IAVAudio3DMix
 		}
 	}
 }
+
+[Register ("Microsoft_Macios_Generator_Tests_Protocols_Data_AVAudio3DMixing", false)]
+[Model]
+[SupportedOSPlatform ("macos")]
+[SupportedOSPlatform ("ios")]
+[SupportedOSPlatform ("tvos")]
+[SupportedOSPlatform ("maccatalyst13.1")]
+public unsafe abstract partial class AVAudio3DMixing : NSObject, IAVAudio3DMixing
+{
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("maccatalyst13.1")]
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Export<Property> ("obstruction")]
+	public virtual partial float Obstruction
+	{
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("maccatalyst13.1")]
+		[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+		get
+		{
+			throw new global::Foundation.ModelNotImplementedException ();
+		}
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("maccatalyst13.1")]
+		[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+		set
+		{
+			throw new global::Foundation.ModelNotImplementedException ();
+		}
+	}
+
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("maccatalyst13.1")]
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Export<Property> ("occlusion")]
+	public virtual partial float Occlusion
+	{
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("maccatalyst13.1")]
+		[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+		get
+		{
+			throw new global::Foundation.ModelNotImplementedException ();
+		}
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("maccatalyst13.1")]
+		[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+		set
+		{
+			throw new global::Foundation.ModelNotImplementedException ();
+		}
+	}
+
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("maccatalyst13.1")]
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Export<Property> ("pointSourceInHeadMode")]
+	public virtual partial global::AVFoundation.AVAudio3DMixingPointSourceInHeadMode PointSourceInHeadMode
+	{
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("maccatalyst13.1")]
+		[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+		get
+		{
+			throw new global::Foundation.ModelNotImplementedException ();
+		}
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("maccatalyst13.1")]
+		[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+		set
+		{
+			throw new global::Foundation.ModelNotImplementedException ();
+		}
+	}
+
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("maccatalyst13.1")]
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Export<Property> ("rate")]
+	public virtual partial float Rate
+	{
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("maccatalyst13.1")]
+		[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+		get
+		{
+			throw new global::Foundation.ModelNotImplementedException ();
+		}
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("maccatalyst13.1")]
+		[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+		set
+		{
+			throw new global::Foundation.ModelNotImplementedException ();
+		}
+	}
+
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("maccatalyst13.1")]
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Export<Property> ("renderingAlgorithm")]
+	public virtual partial global::AVFoundation.AVAudio3DMixingRenderingAlgorithm RenderingAlgorithm
+	{
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("maccatalyst13.1")]
+		[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+		get
+		{
+			throw new global::Foundation.ModelNotImplementedException ();
+		}
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("maccatalyst13.1")]
+		[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+		set
+		{
+			throw new global::Foundation.ModelNotImplementedException ();
+		}
+	}
+
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("maccatalyst13.1")]
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Export<Property> ("reverbBlend")]
+	public virtual partial float ReverbBlend
+	{
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("maccatalyst13.1")]
+		[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+		get
+		{
+			throw new global::Foundation.ModelNotImplementedException ();
+		}
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("maccatalyst13.1")]
+		[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+		set
+		{
+			throw new global::Foundation.ModelNotImplementedException ();
+		}
+	}
+
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("maccatalyst13.1")]
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Export<Property> ("sourceMode")]
+	public virtual partial global::AVFoundation.AVAudio3DMixingSourceMode SourceMode
+	{
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("maccatalyst13.1")]
+		[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+		get
+		{
+			throw new global::Foundation.ModelNotImplementedException ();
+		}
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("maccatalyst13.1")]
+		[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+		set
+		{
+			throw new global::Foundation.ModelNotImplementedException ();
+		}
+	}
+
+}

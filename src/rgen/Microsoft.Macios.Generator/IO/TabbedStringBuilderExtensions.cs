@@ -287,4 +287,11 @@ static class TabbedStringBuilderExtensions {
 		self.WriteLine ($"[Export<Property> (\"{exportData.Selector}\")]");
 		return self;
 	}
+
+	public static TabbedWriter<StringWriter> AppendRegisterAttribute (this TabbedWriter<StringWriter> self,
+		string regitrationName, bool isWrapper)
+	{
+		self.WriteLine ($"[Register (\"{regitrationName}\", {isWrapper.ToString().ToLower()})]");
+		return self;
+	}
 }

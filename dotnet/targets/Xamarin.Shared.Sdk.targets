@@ -1714,6 +1714,8 @@
 
 			<_AllLinkerFlags Condition="'$(_UseClassicLinker)' == 'true'" Include="-Xlinker" />
 			<_AllLinkerFlags Condition="'$(_UseClassicLinker)' == 'true'" Include="-ld_classic" />
+
+			<_AllLinkerFlags Include="@(LinkerArgument)" />
 		</ItemGroup>
 
 		<!-- write a hash of all the relevant input so that we can force a re-link if necessary -->

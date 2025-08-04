@@ -20,17 +20,37 @@ namespace Xamarin.MacDev.Tasks {
 		[Output]
 		public ITaskItem []? FrameworkToPublish { get; set; }
 
-		static string GetFrameworkExecutablePath (string frameworkPath, TaskLoggingHelper? log = null)
+		static string [] GetFrameworkInfoPlistPaths (string frameworkPath, ApplePlatform platform)
+		{
+			switch (platform) {
+			case ApplePlatform.iOS:
+			case ApplePlatform.TVOS:
+				return new string [] {
+					Path.Combine (frameworkPath, "Info.plist")
+				};
+			case ApplePlatform.MacOSX:
+			case ApplePlatform.MacCatalyst:
+				return new string [] {
+					Path.Combine (frameworkPath, "Resources", "Info.plist"), // Check symlink first
+					Path.Combine (frameworkPath, "Versions", "A", "Resources", "Info.plist") // Fallback to actual location
+				};
+			default:
+				// For unknown platforms, try both common locations
+				return new string [] {
+					Path.Combine (frameworkPath, "Info.plist"),
+					Path.Combine (frameworkPath, "Resources", "Info.plist")
+				};
+			}
+		}
+
+		static string GetFrameworkExecutablePath (string frameworkPath, ApplePlatform platform, TaskLoggingHelper? log = null)
 		{
 			if (!(frameworkPath.EndsWith (".framework", StringComparison.OrdinalIgnoreCase) && Directory.Exists (frameworkPath)))
 				return frameworkPath;
 
 			// Try to read the CFBundleExecutable from Info.plist
-			// Check multiple locations where Info.plist might be located
-			var infoPlistPaths = new string [] {
-				Path.Combine (frameworkPath, "Info.plist"), // iOS, tvOS
-				Path.Combine (frameworkPath, "Resources", "Info.plist") // macOS, MacCatalyst
-			};
+			// Use platform-specific Info.plist locations for frameworks
+			var infoPlistPaths = GetFrameworkInfoPlistPaths (frameworkPath, platform);
 
 			foreach (var infoPlistPath in infoPlistPaths) {
 				if (File.Exists (infoPlistPath)) {
@@ -66,7 +86,7 @@ namespace Xamarin.MacDev.Tasks {
 					var frameworkExecutablePath = PathUtils.ConvertToMacPath (item.ItemSpec);
 					try {
 						if (frameworkExecutablePath.EndsWith (".framework", StringComparison.OrdinalIgnoreCase) && Directory.Exists (frameworkExecutablePath)) {
-							frameworkExecutablePath = GetFrameworkExecutablePath (frameworkExecutablePath, Log);
+							frameworkExecutablePath = GetFrameworkExecutablePath (frameworkExecutablePath, Platform, Log);
 						}
 
 						if (OnlyFilterFrameworks && !Path.GetDirectoryName (frameworkExecutablePath).EndsWith (".framework", StringComparison.OrdinalIgnoreCase)) {

@@ -44,6 +44,9 @@
         <Compile Include="../Microsoft.Macios.Generator/CollectionComparer.cs">
             <Link>CollectionComparer.cs</Link>
         </Compile>
+        <Compile Include="../Microsoft.Macios.Generator/StructState.cs" >
+            <Link>Generator/StructState.cs</Link>
+        </Compile>
         <Compile Include="../Microsoft.Macios.Generator/IO/TabbedWriter.cs">
             <Link>IO/TabbedWriter.cs</Link>
         </Compile>

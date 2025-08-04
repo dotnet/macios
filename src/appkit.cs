@@ -29,6 +29,8 @@
 
 // TODO: turn NSAnimatablePropertyCOntainer into a system similar to UIAppearance
 
+#nullable enable
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -300,9 +302,6 @@ namespace AppKit {
 		[Export ("runLoopModesForAnimating")]
 		NSString [] RunLoopModesForAnimating { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification (typeof (NSAnimationProgressMarkEventArgs)), Field ("NSAnimationProgressMarkNotification")]
 		NSString ProgressMarkNotification { get; }
 
@@ -927,87 +926,45 @@ namespace AppKit {
 		[Export ("registeredForRemoteNotifications")]
 		bool IsRegisteredForRemoteNotifications { [Bind ("isRegisteredForRemoteNotifications")] get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSApplicationDidBecomeActiveNotification")]
 		NSString DidBecomeActiveNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSApplicationDidHideNotification")]
 		NSString DidHideNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification (typeof (NSApplicationDidFinishLaunchingEventArgs)), Field ("NSApplicationDidFinishLaunchingNotification")]
 		NSString DidFinishLaunchingNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSApplicationDidResignActiveNotification")]
 		NSString DidResignActiveNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSApplicationDidUnhideNotification")]
 		NSString DidUnhideNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSApplicationDidUpdateNotification")]
 		NSString DidUpdateNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSApplicationWillBecomeActiveNotification")]
 		NSString WillBecomeActiveNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSApplicationWillHideNotification")]
 		NSString WillHideNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSApplicationWillFinishLaunchingNotification")]
 		NSString WillFinishLaunchingNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSApplicationWillResignActiveNotification")]
 		NSString WillResignActiveNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSApplicationWillUnhideNotification")]
 		NSString WillUnhideNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSApplicationWillUpdateNotification")]
 		NSString WillUpdateNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSApplicationWillTerminateNotification")]
 		NSString WillTerminateNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSApplicationDidChangeScreenParametersNotification")]
 		NSString DidChangeScreenParametersNotification { get; }
 
@@ -1045,9 +1002,6 @@ namespace AppKit {
 		[Field ("NSApplicationLaunchUserNotificationKey")]
 		NSString LaunchUserNotificationKey { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSApplicationDidFinishRestoringWindowsNotification")]
 		NSString DidFinishRestoringWindowsNotification { get; }
 
@@ -3367,9 +3321,6 @@ namespace AppKit {
 		[Export ("controlTint")]
 		NSControlTint ControlTint { get; set; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Implement 'ViewDidChangeEffectiveAppearance' on NSView or observe 'NSApplication.EffectiveAppearance'.")]
 		[Notification, Field ("NSControlTintDidChangeNotification")]
 		NSString ControlTintChangedNotification { get; }
@@ -5668,27 +5619,15 @@ namespace AppKit {
 		[Export ("objectValues")]
 		NSObject [] Values { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSComboBoxSelectionDidChangeNotification")]
 		NSString SelectionDidChangeNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSComboBoxSelectionIsChangingNotification")]
 		NSString SelectionIsChangingNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSComboBoxWillDismissNotification")]
 		NSString WillDismissNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSComboBoxWillPopUpNotification")]
 		NSString WillPopUpNotification { get; }
 	}
@@ -8076,9 +8015,6 @@ namespace AppKit {
 		[Field ("NSFontCollectionDisallowAutoActivationOption")]
 		NSString DisallowAutoActivationOption { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification (typeof (NSFontCollectionChangedEventArgs)), Field ("NSFontCollectionDidChangeNotification")]
 		NSString ChangedNotification { get; }
 
@@ -14331,27 +14267,15 @@ namespace AppKit {
 		[Field ("NSPopoverCloseReasonDetachToWindow")]
 		NSString CloseReasonDetachToWindow { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSPopoverWillShowNotification")]
 		NSString WillShowNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSPopoverDidShowNotification")]
 		NSString DidShowNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification (typeof (NSPopoverCloseEventArgs)), Field ("NSPopoverWillCloseNotification")]
 		NSString WillCloseNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification (typeof (NSPopoverCloseEventArgs)), Field ("NSPopoverDidCloseNotification")]
 		NSString DidCloseNotification { get; }
 
@@ -16430,9 +16354,6 @@ namespace AppKit {
 		[Export ("scrollerWidthForControlSize:scrollerStyle:")]
 		nfloat GetScrollerWidth (NSControlSize forControlSize, NSScrollerStyle scrollerStyle);
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSPreferredScrollerStyleDidChangeNotification")]
 		NSString PreferredStyleChangedNotification { get; }
 
@@ -16587,30 +16508,18 @@ namespace AppKit {
 		[Export ("setMagnification:centeredAtPoint:")]
 		void SetMagnification (nfloat magnification, CGPoint centeredAtPoint);
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSScrollViewWillStartLiveMagnifyNotification")]
 		NSString WillStartLiveMagnifyNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSScrollViewDidEndLiveMagnifyNotification")]
 		NSString DidEndLiveMagnifyNotification { get; }
 
 		[Notification, Field ("NSScrollViewWillStartLiveScrollNotification")]
 		NSString WillStartLiveScrollNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSScrollViewDidLiveScrollNotification")]
 		NSString DidLiveScrollNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSScrollViewDidEndLiveScrollNotification")]
 		NSString DidEndLiveScrollNotification { get; }
 
@@ -17821,16 +17730,10 @@ namespace AppKit {
 		[Export ("setHoldingPriority:forSubviewAtIndex:")]
 		void SetHoldingPriority (float /*NSLayoutPriority*/ priority, nint subviewIndex);
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification (typeof (NSSplitViewDividerIndexEventArgs))]
 		[Field ("NSSplitViewWillResizeSubviewsNotification")]
 		NSString NSSplitViewWillResizeSubviewsNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification (typeof (NSSplitViewDividerIndexEventArgs))]
 		[Field ("NSSplitViewDidResizeSubviewsNotification")]
 		NSString NSSplitViewDidResizeSubviewsNotification { get; }
@@ -18611,12 +18514,57 @@ namespace AppKit {
 		[NullAllowed, Export ("mainStoryboard", ArgumentSemantic.Strong)]
 		NSStoryboard MainStoryboard { get; }
 
+#if !XAMCORE_5_0
+		// Bound using the wrong return type, fix like this so that consuming code will work through breaking changes as long as warnings are fixed:
+		// * Add a '2' variant for !XAMCORE_5_0 with the correct return type
+		// * Obsolete the original variant in !XAMCORE_5_0 (with the wrong return type)
+		// * Obsolete the '2' variant for XAMCORE_5_0 (with the correct return type, but ugly name)
+		// * Make the original variant have the correct return type in XAMCORE_5_0
+		// * Remove the '2' variant in XAMCORE_6_0
+		[Obsolete ("Use 'InstantiateInitialController2' instead.")]
+#endif
 		[Export ("instantiateInitialControllerWithCreator:")]
 		[return: NullAllowed]
+#if XAMCORE_5_0
+		NSObject InstantiateInitialController ([NullAllowed] NSStoryboardControllerCreator handler);
+#else
 		NSViewController InstantiateInitialController ([NullAllowed] NSStoryboardControllerCreator handler);
+#endif
 
+#if !XAMCORE_5_0
+		// Bound using the wrong return type, fix like this so that consuming code will work through breaking changes as long as warnings are fixed:
+		// * Add a '2' variant for !XAMCORE_5_0 with the correct return type
+		// * Obsolete the original variant in !XAMCORE_5_0 (with the wrong return type)
+		// * Obsolete the '2' variant for XAMCORE_5_0 (with the correct return type, but ugly name)
+		// * Make the original variant have the correct return type in XAMCORE_5_0
+		// * Remove the '2' variant in XAMCORE_6_0
+		[Obsolete ("Use 'InstantiateController2' instead.")]
+#endif // !XAMCORE_5_0
 		[Export ("instantiateControllerWithIdentifier:creator:")]
+#if XAMCORE_5_0
+		NSObject InstantiateController (string identifier, [NullAllowed] NSStoryboardControllerCreator handler);
+#else
 		NSViewController InstantiateController (string identifier, [NullAllowed] NSStoryboardControllerCreator handler);
+#endif
+
+#if !XAMCORE_6_0
+#if XAMCORE_5_0
+		[Obsolete ("Use 'InstantiateController' instead.")]
+#else
+		[Sealed]
+#endif // XAMCORE_5_0
+		[Export ("instantiateInitialControllerWithCreator:")]
+		[return: NullAllowed]
+		NSObject InstantiateInitialController2 ([NullAllowed] NSStoryboardControllerCreator handler);
+
+#if XAMCORE_5_0
+		[Obsolete ("Use 'InstantiateController' instead.")]
+#else
+		[Sealed]
+#endif // XAMCORE_5_0
+		[Export ("instantiateControllerWithIdentifier:creator:")]
+		NSObject InstantiateController2 (string identifier, [NullAllowed] NSStoryboardControllerCreator handler);
+#endif // XAMCORE_6_0
 	}
 
 	[NoMacCatalyst]
@@ -19451,35 +19399,20 @@ namespace AppKit {
 		[Field ("NSFullScreenModeWindowLevel")]
 		NSString NSFullScreenModeWindowLevel { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSViewFrameDidChangeNotification")]
 		NSString FrameChangedNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSViewFocusDidChangeNotification")]
 		[Deprecated (PlatformName.MacOSX, 10, 4)]
 		NSString FocusChangedNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSViewBoundsDidChangeNotification")]
 		NSString BoundsChangedNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'Metal' instead.")]
 		[Notification, Field ("NSViewGlobalFrameDidChangeNotification")]
 		NSString GlobalFrameChangedNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSViewDidUpdateTrackingAreasNotification")]
 		NSString UpdatedTrackingAreasNotification { get; }
 
@@ -25906,198 +25839,114 @@ namespace AppKit {
 		// Fields
 		//
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Field ("NSWindowDidBecomeKeyNotification")]
 		[Notification]
 		NSString DidBecomeKeyNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Field ("NSWindowDidBecomeMainNotification")]
 		[Notification]
 		NSString DidBecomeMainNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Field ("NSWindowDidChangeScreenNotification")]
 		[Notification]
 		NSString DidChangeScreenNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Field ("NSWindowDidDeminiaturizeNotification")]
 		[Notification]
 		NSString DidDeminiaturizeNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Field ("NSWindowDidExposeNotification")]
 		[Notification (typeof (NSWindowExposeEventArgs))]
 		NSString DidExposeNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Field ("NSWindowDidMiniaturizeNotification")]
 		[Notification]
 		NSString DidMiniaturizeNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Field ("NSWindowDidMoveNotification")]
 		[Notification]
 		NSString DidMoveNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Field ("NSWindowDidResignKeyNotification")]
 		[Notification]
 		NSString DidResignKeyNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Field ("NSWindowDidResignMainNotification")]
 		[Notification]
 		NSString DidResignMainNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Field ("NSWindowDidResizeNotification")]
 		[Notification]
 		NSString DidResizeNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Field ("NSWindowDidUpdateNotification")]
 		[Notification]
 		NSString DidUpdateNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Field ("NSWindowWillCloseNotification")]
 		[Notification]
 		NSString WillCloseNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Field ("NSWindowWillMiniaturizeNotification")]
 		[Notification]
 		NSString WillMiniaturizeNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Field ("NSWindowWillMoveNotification")]
 		[Notification]
 		NSString WillMoveNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Field ("NSWindowWillBeginSheetNotification")]
 		[Notification]
 		NSString WillBeginSheetNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Field ("NSWindowDidEndSheetNotification")]
 		[Notification]
 		NSString DidEndSheetNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Field ("NSWindowDidChangeScreenProfileNotification")]
 		[Notification]
 		NSString DidChangeScreenProfileNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Field ("NSWindowWillStartLiveResizeNotification")]
 		[Notification]
 		NSString WillStartLiveResizeNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Field ("NSWindowDidEndLiveResizeNotification")]
 		[Notification]
 		NSString DidEndLiveResizeNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Field ("NSWindowWillEnterFullScreenNotification")]
 		[Notification]
 		NSString WillEnterFullScreenNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Field ("NSWindowDidEnterFullScreenNotification")]
 		[Notification]
 		NSString DidEnterFullScreenNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Field ("NSWindowWillExitFullScreenNotification")]
 		[Notification]
 		NSString WillExitFullScreenNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Field ("NSWindowDidExitFullScreenNotification")]
 		[Notification]
 		NSString DidExitFullScreenNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Field ("NSWindowWillEnterVersionBrowserNotification")]
 		[Notification]
 		NSString WillEnterVersionBrowserNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Field ("NSWindowDidEnterVersionBrowserNotification")]
 		[Notification]
 		NSString DidEnterVersionBrowserNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Field ("NSWindowWillExitVersionBrowserNotification")]
 		[Notification]
 		NSString WillExitVersionBrowserNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Field ("NSWindowDidExitVersionBrowserNotification")]
 		[Notification]
 		NSString DidExitVersionBrowserNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Field ("NSWindowDidChangeBackingPropertiesNotification")]
 		[Notification (typeof (NSWindowBackingPropertiesEventArgs))]
 		NSString DidChangeBackingPropertiesNotification { get; }
@@ -27085,15 +26934,15 @@ namespace AppKit {
 
 		[Async]
 		[Export ("setDefaultApplicationAtURL:toOpenContentTypeOfFileAtURL:completionHandler:")]
-		void SetDefaultApplicationToOpenContentType (NSUrl applicationUrl, NSUrl url, [NullAllowed] Action<NSError> completionHandler);
+		void SetDefaultApplicationToOpenContentType (NSUrl applicationUrl, NSUrl url, [NullAllowed] Action<NSError?> completionHandler);
 
 		[Async]
 		[Export ("setDefaultApplicationAtURL:toOpenURLsWithScheme:completionHandler:")]
-		void SetDefaultApplicationToOpenUrls (NSUrl applicationUrl, string urlScheme, [NullAllowed] Action<NSError> completionHandler);
+		void SetDefaultApplicationToOpenUrls (NSUrl applicationUrl, string urlScheme, [NullAllowed] Action<NSError?> completionHandler);
 
 		[Async]
 		[Export ("setDefaultApplicationAtURL:toOpenFileAtURL:completionHandler:")]
-		void SetDefaultApplicationToOpenFile (NSUrl applicationUrl, NSUrl url, [NullAllowed] Action<NSError> completionHandler);
+		void SetDefaultApplicationToOpenFile (NSUrl applicationUrl, NSUrl url, [NullAllowed] Action<NSError?> completionHandler);
 
 		[Export ("URLForApplicationToOpenContentType:")]
 		[return: NullAllowed]
@@ -27104,7 +26953,7 @@ namespace AppKit {
 
 		[Async]
 		[Export ("setDefaultApplicationAtURL:toOpenContentType:completionHandler:")]
-		void SetDefaultApplicationToOpenContentType (NSUrl applicationUrl, UTType contentType, [NullAllowed] Action<NSError> completionHandler);
+		void SetDefaultApplicationToOpenContentType (NSUrl applicationUrl, UTType contentType, [NullAllowed] Action<NSError?> completionHandler);
 
 		[Export ("absolutePathForAppBundleWithIdentifier:"), ThreadSafe]
 		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use the 'UrlForApplication' method instead.")]
@@ -27165,149 +27014,86 @@ namespace AppKit {
 		[Export ("menuBarOwningApplication")]
 		NSRunningApplication MenuBarOwningApplication { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Field ("NSWorkspaceWillPowerOffNotification")]
 		[Notification ("SharedWorkspace.NotificationCenter")]
 		NSString WillPowerOffNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Field ("NSWorkspaceWillSleepNotification")]
 		[Notification ("SharedWorkspace.NotificationCenter")]
 		NSString WillSleepNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Field ("NSWorkspaceDidWakeNotification")]
 		[Notification ("SharedWorkspace.NotificationCenter")]
 		NSString DidWakeNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Field ("NSWorkspaceScreensDidSleepNotification")]
 		[Notification ("SharedWorkspace.NotificationCenter")]
 		NSString ScreensDidSleepNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Field ("NSWorkspaceScreensDidWakeNotification")]
 		[Notification ("SharedWorkspace.NotificationCenter")]
 		NSString ScreensDidWakeNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Field ("NSWorkspaceSessionDidBecomeActiveNotification")]
 		[Notification ("SharedWorkspace.NotificationCenter")]
 		NSString SessionDidBecomeActiveNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Field ("NSWorkspaceSessionDidResignActiveNotification")]
 		[Notification ("SharedWorkspace.NotificationCenter")]
 		NSString SessionDidResignActiveNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Field ("NSWorkspaceDidRenameVolumeNotification")]
 		[Notification (typeof (NSWorkspaceRenamedEventArgs), "SharedWorkspace.NotificationCenter")]
 		NSString DidRenameVolumeNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Field ("NSWorkspaceDidMountNotification")]
 		[Notification (typeof (NSWorkspaceMountEventArgs), "SharedWorkspace.NotificationCenter")]
 		NSString DidMountNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Field ("NSWorkspaceDidUnmountNotification")]
 		[Notification (typeof (NSWorkspaceMountEventArgs), "SharedWorkspace.NotificationCenter")]
 		NSString DidUnmountNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Field ("NSWorkspaceWillUnmountNotification")]
 		[Notification (typeof (NSWorkspaceMountEventArgs), "SharedWorkspace.NotificationCenter")]
 		NSString WillUnmountNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Field ("NSWorkspaceWillLaunchApplicationNotification")]
 		[Notification (typeof (NSWorkspaceApplicationEventArgs), "SharedWorkspace.NotificationCenter")]
 		NSString WillLaunchApplication { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Field ("NSWorkspaceDidLaunchApplicationNotification")]
 		[Notification (typeof (NSWorkspaceApplicationEventArgs), "SharedWorkspace.NotificationCenter")]
 		NSString DidLaunchApplicationNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Field ("NSWorkspaceDidTerminateApplicationNotification")]
 		[Notification (typeof (NSWorkspaceApplicationEventArgs), "SharedWorkspace.NotificationCenter")]
 		NSString DidTerminateApplicationNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Field ("NSWorkspaceDidHideApplicationNotification")]
 		[Notification (typeof (NSWorkspaceApplicationEventArgs), "SharedWorkspace.NotificationCenter")]
 		NSString DidHideApplicationNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Field ("NSWorkspaceDidUnhideApplicationNotification")]
 		[Notification (typeof (NSWorkspaceApplicationEventArgs), "SharedWorkspace.NotificationCenter")]
 		NSString DidUnhideApplicationNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Field ("NSWorkspaceDidActivateApplicationNotification")]
 		[Notification (typeof (NSWorkspaceApplicationEventArgs), "SharedWorkspace.NotificationCenter")]
 		NSString DidActivateApplicationNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Field ("NSWorkspaceDidDeactivateApplicationNotification")]
 		[Notification (typeof (NSWorkspaceApplicationEventArgs), "SharedWorkspace.NotificationCenter")]
 		NSString DidDeactivateApplicationNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Field ("NSWorkspaceDidPerformFileOperationNotification")]
 		[Notification (typeof (NSWorkspaceFileOperationEventArgs), "SharedWorkspace.NotificationCenter")]
 		NSString DidPerformFileOperationNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Field ("NSWorkspaceDidChangeFileLabelsNotification")]
 		[Notification ("SharedWorkspace.NotificationCenter")]
 		NSString DidChangeFileLabelsNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Field ("NSWorkspaceActiveSpaceDidChangeNotification")]
 		[Notification ("SharedWorkspace.NotificationCenter")]
 		NSString ActiveSpaceDidChangeNotification { get; }
@@ -27387,27 +27173,24 @@ namespace AppKit {
 		[return: NullAllowed]
 		NSRunningApplication OpenUrls (NSUrl [] urls, NSUrl applicationURL, NSWorkspaceLaunchOptions options, NSDictionary configuration, out NSError error);
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Field ("NSWorkspaceAccessibilityDisplayOptionsDidChangeNotification")]
 		[Notification]
 		NSString DisplayOptionsDidChangeNotification { get; }
 
 		[Export ("requestAuthorizationOfType:completionHandler:")]
-		void RequestAuthorization (NSWorkspaceAuthorizationType type, Action<NSWorkspaceAuthorization, NSError> completionHandler);
+		void RequestAuthorization (NSWorkspaceAuthorizationType type, Action<NSWorkspaceAuthorization?, NSError?> completionHandler);
 
 		[Async]
 		[Export ("openApplicationAtURL:configuration:completionHandler:")]
-		void OpenApplication (NSUrl applicationUrl, NSWorkspaceOpenConfiguration configuration, [NullAllowed] Action<NSRunningApplication, NSError> completionHandler);
+		void OpenApplication (NSUrl applicationUrl, NSWorkspaceOpenConfiguration configuration, [NullAllowed] Action<NSRunningApplication?, NSError?> completionHandler);
 
 		[Async]
 		[Export ("openURL:configuration:completionHandler:")]
-		void OpenUrl (NSUrl url, NSWorkspaceOpenConfiguration configuration, [NullAllowed] Action<NSRunningApplication, NSError> completionHandler);
+		void OpenUrl (NSUrl url, NSWorkspaceOpenConfiguration configuration, [NullAllowed] Action<NSRunningApplication?, NSError?> completionHandler);
 
 		[Async]
 		[Export ("openURLs:withApplicationAtURL:configuration:completionHandler:")]
-		void OpenUrls (NSUrl [] urls, NSUrl applicationUrl, NSWorkspaceOpenConfiguration configuration, [NullAllowed] Action<NSRunningApplication, NSError> completionHandler);
+		void OpenUrls (NSUrl [] urls, NSUrl applicationUrl, NSWorkspaceOpenConfiguration configuration, [NullAllowed] Action<NSRunningApplication?, NSError?> completionHandler);
 
 		[Export ("iconForContentType:")]
 		NSImage GetIcon (UTType contentType);
@@ -28470,9 +28253,6 @@ namespace AppKit {
 		[Static, Export ("colorWithSRGBRed:green:blue:alpha:")]
 		NSColor FromSrgb (nfloat red, nfloat green, nfloat blue, nfloat alpha);
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSSystemColorsDidChangeNotification")]
 		NSString SystemColorsChanged { get; }
 	}
@@ -28525,56 +28305,32 @@ namespace AppKit {
 
 	partial interface NSOutlineView : NSAccessibilityOutline {
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSOutlineViewSelectionDidChangeNotification")]
 		NSString SelectionDidChangeNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSOutlineViewSelectionIsChangingNotification")]
 		NSString SelectionIsChangingNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification (typeof (NSViewColumnMoveEventArgs))]
 		[Field ("NSOutlineViewColumnDidMoveNotification")]
 		NSString ColumnDidMoveNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification (typeof (NSViewColumnResizeEventArgs))]
 		[Field ("NSOutlineViewColumnDidResizeNotification")]
 		NSString ColumnDidResizeNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification (typeof (NSOutlineViewItemEventArgs))]
 		[Field ("NSOutlineViewItemWillExpandNotification")]
 		NSString ItemWillExpandNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification (typeof (NSOutlineViewItemEventArgs))]
 		[Field ("NSOutlineViewItemDidExpandNotification")]
 		NSString ItemDidExpandNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification (typeof (NSOutlineViewItemEventArgs))]
 		[Field ("NSOutlineViewItemWillCollapseNotification")]
 		NSString ItemWillCollapseNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification (typeof (NSOutlineViewItemEventArgs))]
 		[Field ("NSOutlineViewItemDidCollapseNotification")]
 		NSString ItemDidCollapseNotification { get; }
@@ -28723,7 +28479,7 @@ namespace AppKit {
 		[Mac (13, 3), MacCatalyst (16, 4)]
 		[Async]
 		[Export ("transferWindowSharingToWindow:completionHandler:")]
-		void TransferWindowSharing (NSWindow window, Action<NSError> completionHandler);
+		void TransferWindowSharing (NSWindow window, Action<NSError?> completionHandler);
 
 		[Mac (13, 3), MacCatalyst (16, 4)]
 		[Export ("hasActiveWindowSharingSession")]
@@ -28732,12 +28488,12 @@ namespace AppKit {
 		[Async]
 		[Mac (15, 0), NoMacCatalyst]
 		[Export ("requestSharingOfWindow:completionHandler:")]
-		void RequestSharingOfWindow (NSWindow window, Action<NSError> completionHandler);
+		void RequestSharingOfWindow (NSWindow window, Action<NSError?> completionHandler);
 
 		[Async]
 		[Mac (15, 0), NoMacCatalyst]
 		[Export ("requestSharingOfWindowUsingPreview:title:completionHandler:")]
-		void RequestSharingOfWindow (NSImage previewImage, string title, Action<NSError> completionHandler);
+		void RequestSharingOfWindow (NSImage previewImage, string title, Action<NSError?> completionHandler);
 	}
 
 	partial interface NSPrintOperation {
@@ -28898,15 +28654,9 @@ namespace AppKit {
 		[Field ("NSTextCheckingRegularExpressionsKey")]
 		NSString TextCheckingRegularExpressionsKey { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSSpellCheckerDidChangeAutomaticSpellingCorrectionNotification")]
 		NSString DidChangeAutomaticSpellingCorrectionNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSSpellCheckerDidChangeAutomaticTextReplacementNotification")]
 		NSString DidChangeAutomaticTextReplacementNotification { get; }
 
@@ -28917,25 +28667,16 @@ namespace AppKit {
 		[Field ("NSTextCheckingSelectedRangeKey")]
 		NSString TextCheckingSelectedRangeKey { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("NSSpellCheckerDidChangeAutomaticCapitalizationNotification")]
 		[Notification]
 		NSString DidChangeAutomaticCapitalizationNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("NSSpellCheckerDidChangeAutomaticPeriodSubstitutionNotification")]
 		[Notification]
 		NSString DidChangeAutomaticPeriodSubstitutionNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("NSSpellCheckerDidChangeAutomaticTextCompletionNotification")]
 		[Notification]
@@ -28999,23 +28740,14 @@ namespace AppKit {
 		[Export ("updateQuickLookPreviewPanel")]
 		void UpdateQuickLookPreviewPanel ();
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification (typeof (NSTextViewWillChangeNotifyingTextViewEventArgs))]
 		[Field ("NSTextViewWillChangeNotifyingTextViewNotification")]
 		NSString WillChangeNotifyingTextViewNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification (typeof (NSTextViewDidChangeSelectionEventArgs))]
 		[Field ("NSTextViewDidChangeSelectionNotification")]
 		NSString DidChangeSelectionNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSTextViewDidChangeTypingAttributesNotification")]
 		NSString DidChangeTypingAttributesNotification { get; }
 
@@ -29053,24 +28785,14 @@ namespace AppKit {
 	}
 
 	partial interface NSControl {
-
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification (typeof (NSControlTextEditingEventArgs))]
 		[Field ("NSControlTextDidBeginEditingNotification")]
 		NSString TextDidBeginEditingNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification (typeof (NSControlTextEditingEventArgs))]
 		[Field ("NSControlTextDidEndEditingNotification")]
 		NSString TextDidEndEditingNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification (typeof (NSControlTextEditingEventArgs))]
 		[Field ("NSControlTextDidChangeNotification")]
 		NSString TextDidChangeNotification { get; }
@@ -29376,9 +29098,6 @@ namespace AppKit {
 		[Export ("noteSelectedAlternativeString:")]
 		void NoteSelectedAlternativeString (string alternativeString);
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification (typeof (NSTextAlternativesSelectedAlternativeStringEventArgs)),
 			Field ("NSTextAlternativesSelectedAlternativeStringNotification")]
 		NSString SelectedAlternativeStringNotification { get; }
@@ -29447,74 +29166,44 @@ namespace AppKit {
 	}
 
 	partial interface NSBrowser {
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSBrowserColumnConfigurationDidChangeNotification")]
 		NSString ColumnConfigurationChangedNotification { get; }
 	}
 
 	partial interface NSColorPanel {
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSColorPanelColorDidChangeNotification")]
 		NSString ColorChangedNotification { get; }
 	}
 
 	partial interface NSFont {
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSAntialiasThresholdChangedNotification")]
 		NSString AntialiasThresholdChangedNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSFontSetChangedNotification")]
 		NSString FontSetChangedNotification { get; }
 	}
 
 	partial interface NSHelpManager {
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSContextHelpModeDidActivateNotification")]
 		NSString ContextHelpModeDidActivateNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSContextHelpModeDidDeactivateNotification")]
 		NSString ContextHelpModeDidDeactivateNotification { get; }
 	}
 
 	partial interface NSDrawer {
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'NSSplitViewController' instead.")]
 		[Notification, Field ("NSDrawerWillOpenNotification")]
 		NSString WillOpenNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'NSSplitViewController' instead.")]
 		[Notification, Field ("NSDrawerDidOpenNotification")]
 		NSString DidOpenNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'NSSplitViewController' instead.")]
 		[Notification, Field ("NSDrawerWillCloseNotification")]
 		NSString WillCloseNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'NSSplitViewController' instead.")]
 		[Notification, Field ("NSDrawerDidCloseNotification")]
 		NSString DidCloseNotification { get; }
@@ -29537,109 +29226,64 @@ namespace AppKit {
 	}
 
 	partial interface NSMenu {
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification (typeof (NSMenuItemEventArgs))]
 		[Field ("NSMenuWillSendActionNotification")]
 		NSString WillSendActionNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification (typeof (NSMenuItemEventArgs))]
 		[Field ("NSMenuDidSendActionNotification")]
 		NSString DidSendActionNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification (typeof (NSMenuItemIndexEventArgs))]
 		[Field ("NSMenuDidAddItemNotification")]
 		NSString DidAddItemNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification (typeof (NSMenuItemIndexEventArgs))]
 		[Field ("NSMenuDidRemoveItemNotification")]
 		NSString DidRemoveItemNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification (typeof (NSMenuItemIndexEventArgs))]
 		[Field ("NSMenuDidChangeItemNotification")]
 		NSString DidChangeItemNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSMenuDidBeginTrackingNotification")]
 		NSString DidBeginTrackingNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSMenuDidEndTrackingNotification")]
 		NSString DidEndTrackingNotification { get; }
 	}
 
 	partial interface NSPopUpButtonCell : NSMenuItemValidation {
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSPopUpButtonCellWillPopUpNotification")]
 		NSString WillPopUpNotification { get; }
 	}
 
 	partial interface NSPopUpButton {
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSPopUpButtonWillPopUpNotification")]
 		NSString WillPopUpNotification { get; }
 	}
 
 	partial interface NSRuleEditor {
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSRuleEditorRowsDidChangeNotification")]
 		NSString RowsDidChangeNotification { get; }
 	}
 
 	partial interface NSScreen {
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSScreenColorSpaceDidChangeNotification")]
 		NSString ColorSpaceDidChangeNotification { get; }
 	}
 
 	partial interface NSTableView : NSUserInterfaceValidations {
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSTableViewSelectionDidChangeNotification")]
 		NSString SelectionDidChangeNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSTableViewSelectionIsChangingNotification")]
 		NSString SelectionIsChangingNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification (typeof (NSViewColumnMoveEventArgs))]
 		[Field ("NSTableViewColumnDidMoveNotification")]
 		NSString ColumnDidMoveNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification (typeof (NSViewColumnResizeEventArgs))]
 		[Field ("NSTableViewColumnDidResizeNotification")]
 		NSString ColumnDidResizeNotification { get; }
@@ -29658,22 +29302,13 @@ namespace AppKit {
 	}
 
 	partial interface NSText {
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSTextDidBeginEditingNotification")]
 		NSString DidBeginEditingNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification (typeof (NSTextDidEndEditingEventArgs))]
 		[Field ("NSTextDidEndEditingNotification")]
 		NSString DidEndEditingNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSTextDidChangeNotification")]
 		NSString DidChangeNotification { get; }
 
@@ -29686,9 +29321,6 @@ namespace AppKit {
 	}
 
 	partial interface NSTextInputContext {
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSTextInputContextKeyboardSelectionDidChangeNotification")]
 		NSString KeyboardSelectionDidChangeNotification { get; }
 	}
@@ -29702,25 +29334,16 @@ namespace AppKit {
 	}
 
 	partial interface NSToolbar {
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification (typeof (NSToolbarItemEventArgs))]
 		[Field ("NSToolbarWillAddItemNotification")]
 		NSString NSToolbarWillAddItemNotification { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification (typeof (NSToolbarItemEventArgs))]
 		[Field ("NSToolbarDidRemoveItemNotification")]
 		NSString NSToolbarDidRemoveItemNotification { get; }
 	}
 
 	partial interface NSImageRep {
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSImageRepRegistryDidChangeNotification")]
 		NSString RegistryDidChangeNotification { get; }
 	}
@@ -32856,7 +32479,7 @@ namespace AppKit {
 
 		[Abstract]
 		[Export ("filePromiseProvider:writePromiseToURL:completionHandler:")]
-		void WritePromiseToUrl (NSFilePromiseProvider filePromiseProvider, NSUrl url, [NullAllowed] Action<NSError> completionHandler);
+		void WritePromiseToUrl (NSFilePromiseProvider filePromiseProvider, NSUrl url, [NullAllowed] Action<NSError?> completionHandler);
 
 		/// <param name="filePromiseProvider">To be added.</param>
 		/// <summary>To be added.</summary>
@@ -32880,7 +32503,7 @@ namespace AppKit {
 		string [] FileNames { get; }
 
 		[Export ("receivePromisedFilesAtDestination:options:operationQueue:reader:")]
-		void ReceivePromisedFiles (NSUrl destinationDir, NSDictionary options, NSOperationQueue operationQueue, Action<NSUrl, NSError> reader);
+		void ReceivePromisedFiles (NSUrl destinationDir, NSDictionary options, NSOperationQueue operationQueue, Action<NSUrl?, NSError?> reader);
 	}
 
 	interface INSValidatedUserInterfaceItem { }

@@ -74,19 +74,20 @@ static partial class BindingSyntaxFactory {
 	/// <param name="methodName">The name of the method to call.</param>
 	/// <param name="arguments">The arguments to pass to the method.</param>
 	/// <returns>An invocation expression for the method call.</returns>
-	static InvocationExpressionSyntax MemberInvocationExpression (TypeSyntax instanceVariable, string methodName,
+	static InvocationExpressionSyntax MemberInvocationExpression (TypeSyntax? instanceVariable, string methodName,
 		ImmutableArray<ArgumentSyntax> arguments)
 	{
-		var argumentList = ArgumentList (
-			SeparatedList<ArgumentSyntax> (arguments.ToSyntaxNodeOrTokenArray ()));
-		var invocation = InvocationExpression (
-			MemberAccessExpression (
+		var invocation = instanceVariable is null
+			? InvocationExpression (IdentifierName (methodName).WithTrailingTrivia (Space))
+			: InvocationExpression (MemberAccessExpression (
 				SyntaxKind.SimpleMemberAccessExpression,
 				instanceVariable,
 				IdentifierName (methodName).WithTrailingTrivia (Space)));
-
-		if (arguments.Length != 0)
+		if (arguments.Length != 0) {
+			var argumentList = ArgumentList (
+				SeparatedList<ArgumentSyntax> (arguments.ToSyntaxNodeOrTokenArray ()));
 			invocation = invocation.WithArgumentList (argumentList);
+		}
 		return invocation;
 	}
 
@@ -119,6 +120,57 @@ static partial class BindingSyntaxFactory {
 	static InvocationExpressionSyntax MemberInvocationExpression (string instanceVariable, string methodName)
 		=> MemberInvocationExpression (IdentifierName (instanceVariable), methodName, ImmutableArray<ArgumentSyntax>.Empty);
 
+	/// <summary>
+	/// Creates an invocation expression for calling a method with no instance variable.
+	/// </summary>
+	/// <param name="methodName">The name of the method to call.</param>
+	/// <param name="arguments">The arguments to pass to the method.</param>
+	/// <returns>An invocation expression for the method call.</returns>
+	static InvocationExpressionSyntax MemberInvocationExpression (string methodName,
+		ImmutableArray<ArgumentSyntax> arguments)
+		=> MemberInvocationExpression ((TypeSyntax?) null, methodName, arguments);
+
+	static InvocationExpressionSyntax GenericMemberInvocationExpression (TypeSyntax? instanceVariable,
+		string methodName, ImmutableArray<TypeSyntax> typeArguments, ImmutableArray<ArgumentSyntax> arguments)
+	{
+		var typeArgumentList = TypeArgumentList (
+			SeparatedList<TypeSyntax> (typeArguments.ToSyntaxNodeOrTokenArray ()));
+		var genericName = GenericName (Identifier (methodName))
+			.WithTypeArgumentList (typeArgumentList)
+			.WithTrailingTrivia (Space);
+
+		var invocation = instanceVariable is null
+			? InvocationExpression (genericName)
+			: InvocationExpression (MemberAccessExpression (
+				SyntaxKind.SimpleMemberAccessExpression,
+				instanceVariable,
+				genericName));
+		if (arguments.Length != 0) {
+			var argumentList = ArgumentList (
+				SeparatedList<ArgumentSyntax> (arguments.ToSyntaxNodeOrTokenArray ()));
+			invocation = invocation.WithArgumentList (argumentList);
+		}
+
+		return invocation;
+	}
+
+	/// <summary>
+	/// Creates an invocation expression for calling a generic method with no instance variable.
+	/// </summary>
+	/// <param name="methodName">The name of the method to call.</param>
+	/// <param name="typeArguments">The type arguments for the generic method.</param>
+	/// <param name="arguments">The arguments to pass to the method.</param>
+	/// <returns>An invocation expression for the generic method call.</returns>
+	static InvocationExpressionSyntax GenericMemberInvocationExpression (string methodName,
+		ImmutableArray<TypeSyntax> typeArguments, ImmutableArray<ArgumentSyntax> arguments)
+		=> GenericMemberInvocationExpression (null, methodName, typeArguments, arguments);
+
+	/// <summary>
+	/// Creates an expression statement for a variable assignment.
+	/// </summary>
+	/// <param name="variableName">The name of the variable.</param>
+	/// <param name="value">The expression to assign to the variable.</param>
+	/// <returns>An expression statement syntax for the assignment.</returns>
 	static ExpressionStatementSyntax VariableAssignment (string variableName, ExpressionSyntax value)
 		=> ExpressionStatement (AssignmentExpression (SyntaxKind.SimpleAssignmentExpression,
 				IdentifierName (variableName).WithTrailingTrivia (Space),
@@ -178,6 +230,12 @@ static partial class BindingSyntaxFactory {
 		=> LocalDeclarationStatement (VariableDeclaration (type.WithTrailingTrivia (Space))
 				.WithVariables (SingletonSeparatedList (VariableDeclarator (Identifier (variableName)))));
 
+	/// <summary>
+	/// Creates a throw expression for a specific exception type.
+	/// </summary>
+	/// <param name="type">The type of the exception to throw.</param>
+	/// <param name="message">An optional message for the exception.</param>
+	/// <returns>A throw expression syntax.</returns>
 	static ExpressionSyntax ThrowException (string type, string? message = null)
 	{
 		var throwExpression = ObjectCreationExpression (IdentifierName (type));
@@ -195,9 +253,18 @@ static partial class BindingSyntaxFactory {
 		return ThrowExpression (throwExpression).NormalizeWhitespace ();
 	}
 
+	/// <summary>
+	/// Creates a throw expression for a NotSupportedException.
+	/// </summary>
+	/// <param name="message">The message for the exception.</param>
+	/// <returns>A throw expression syntax.</returns>
 	static ExpressionSyntax ThrowNotSupportedException (string message)
 		=> ThrowException (type: "NotSupportedException", message: message);
 
+	/// <summary>
+	/// Creates a throw expression for a NotImplementedException.
+	/// </summary>
+	/// <returns>A throw expression syntax.</returns>
 	static ExpressionSyntax ThrowNotImplementedException ()
 		=> ThrowException (type: "NotImplementedException");
 
@@ -426,5 +493,16 @@ static partial class BindingSyntaxFactory {
 	internal static InvocationExpressionSyntax TcsSetResult (string tcsVariableName,
 		ImmutableArray<ArgumentSyntax> arguments)
 		=> MemberInvocationExpression (tcsVariableName, "SetResult", arguments);
+
+	/// <summary>
+	/// Creates an expression to check if a variable is not null.
+	/// </summary>
+	/// <param name="variableName">The name of the variable to check.</param>
+	/// <returns>An is-pattern expression to check for not-null.</returns>
+	internal static ExpressionSyntax IsNotNull (string variableName)
+		=> IsPatternExpression (IdentifierName (variableName).WithTrailingTrivia (Space),
+			UnaryPattern (ConstantPattern (
+				LiteralExpression (SyntaxKind.NullLiteralExpression).WithLeadingTrivia (Space)))
+				.WithLeadingTrivia (Space));
 
 }

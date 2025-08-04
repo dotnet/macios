@@ -164,6 +164,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			References="@(ReferencePath)"
 			SdkIsSimulator="$(_SdkIsSimulator)"
 			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
+			UseExperimentalIntermediateDirectory="$(_UseExperimentalIntermediateDirectory)"
 			>
 			<Output TaskParameter="NativeFrameworks" ItemName="_ResolvedNativeReference" />
 		</ResolveNativeReferences>

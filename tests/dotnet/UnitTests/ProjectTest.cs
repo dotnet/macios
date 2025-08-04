@@ -2437,6 +2437,43 @@ namespace Xamarin.Tests {
 			var appExecutable = GetNativeExecutable (platform, appPath);
 			Assert.That (appExecutable, Does.Exist, "There is an executable");
 
+			var objDir = GetObjDir (project_path, platform, runtimeIdentifiers);
+			var sidecarDir = Path.Combine (objDir, "BindingWithCompressedXCFramework.resources");
+			var frameworks = new string [] {
+				"XStaticArTest",
+				"XStaticObjectTest",
+				"XTest",
+			};
+			foreach (var fw in frameworks) {
+				var fwDir = Path.Combine (sidecarDir, $"{fw}.framework");
+				var stampFile = Path.Combine (sidecarDir, $"{fw}.framework.stamp");
+				Assert.That (stampFile, Does.Exist.IgnoreDirectories, "Stamp file");
+				Assert.That (fwDir, Does.Exist.IgnoreFiles, "Framework directory");
+				// assert the maximum length of any file extracted from the compressed sidecar (we don't want the max length to be too high, because we run into MAX_PATH issues on Windows)
+				var allFilesInFrameworkDirectory = Directory.GetFileSystemEntries (fwDir, "*", SearchOption.AllDirectories);
+				var maxLength = allFilesInFrameworkDirectory.Select (v => v.Length).Max ();
+				foreach (var fw2 in allFilesInFrameworkDirectory.OrderBy (v => v))
+					Console.WriteLine ($"{fw2.Length}: {fw2}");
+				maxLength -= fwDir.Length;
+				maxLength -= fw.Length;
+				maxLength -= 1; // directory separator
+				Console.WriteLine ($"fwDir: {fwDir}");
+				Console.WriteLine ($"fw: {fw} {fw.Length}");
+				Assert.That (maxLength, Is.GreaterThanOrEqualTo (0), "Length A");
+				switch (platform) {
+				case ApplePlatform.MacCatalyst:
+				case ApplePlatform.MacOSX:
+				Assert.That (maxLength, Is.LessThanOrEqualTo ("/Versions/A/Resources/Info.plist".Length), "Length B");
+					break;
+				case ApplePlatform.iOS:
+				case ApplePlatform.TVOS:
+					Assert.That (maxLength, Is.LessThanOrEqualTo ("/Info.plist".Length), "Length B");
+					break;
+				default:
+					throw new NotImplementedException ();
+				}
+			}
+
 			if (CanExecute (platform, properties)) {
 				ExecuteWithMagicWordAndAssert (appExecutable);
 			}

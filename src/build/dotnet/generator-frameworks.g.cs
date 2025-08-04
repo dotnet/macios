@@ -406,6 +406,7 @@ partial class Frameworks {
 		"BusinessChat",
 		"CallKit",
 		"CFNetwork",
+		"Cinematic",
 		"ClassKit",
 		"CloudKit",
 		"Compression",

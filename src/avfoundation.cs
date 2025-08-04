@@ -41,15 +41,8 @@ using CoreAnimation;
 using CoreImage;
 using MediaToolbox;
 
-// cinematic is not present in certain platforms
-#if __MACCATALYST__
-using CNAssetInfo = Foundation.NSObject;
-using CNCompositionInfo = Foundation.NSObject;
-#else
-using Cinematic;
-#endif
-
 using AudioToolbox;
+using Cinematic;
 using CoreMedia;
 using ObjCRuntime;
 using Foundation;
@@ -13347,7 +13340,7 @@ namespace AVFoundation {
 		CGSize NaturalSize { get; set; }
 
 		// from @interface CNComposition (AVMutableComposition)
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), NoMacCatalyst]
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (26, 0)]
 		[Export ("addTracksForCinematicAssetInfo:preferredStartingTrackID:")]
 		CNCompositionInfo AddTracks (CNAssetInfo assetInfo, int preferredStartingTrackID);
 

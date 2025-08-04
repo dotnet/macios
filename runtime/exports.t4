@@ -603,15 +603,14 @@
 			XamarinRuntime = RuntimeMode.MonoVM,
 		},
 
-		new Export ("MonoDomain *", "mono_jit_init_version",
-			"const char *", "root_domain_name",
-			"const char *", "runtime_version"
+		new Export ("MonoDomain *", "mono_jit_init",
+			"const char *", "file"
 		) {
 			XamarinRuntime = RuntimeMode.MonoVM,
 		},
 
-		new Export ("MonoDomain *", "mono_jit_init",
-			"const char *", "file"
+		new Export ("MonoDomain *", "mono_jit_cleanup",
+			"MonoDomain *", "domain"
 		) {
 			XamarinRuntime = RuntimeMode.MonoVM,
 		},

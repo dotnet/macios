@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+#pragma warning disable APL0003
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.Macios.Generator.Attributes;
@@ -27,7 +28,7 @@ public class ReturnInfoTests {
 				new (
 					accessorKind: AccessorKind.Getter,
 					symbolAvailability: new (),
-					exportPropertyData: null,
+					exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 					attributes: [],
 					modifiers: []
 				)
@@ -58,7 +59,7 @@ public class ReturnInfoTests {
 				new (
 					accessorKind: AccessorKind.Getter,
 					symbolAvailability: new (),
-					exportPropertyData: null,
+					exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 					attributes: [],
 					modifiers: []
 				)

@@ -13,6 +13,7 @@ using Microsoft.Macios.Generator.Context;
 using Microsoft.Macios.Generator.Extensions;
 using Microsoft.Macios.Generator.Formatters;
 using ObjCRuntime;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Microsoft.Macios.Generator.DataModel;
 
@@ -187,6 +188,34 @@ readonly partial struct Method {
 			Modifiers = [
 				.. Modifiers.Where (m => !m.IsKind (SyntaxKind.UnsafeKeyword) && !m.IsKind (SyntaxKind.PartialKeyword)),
 			]
+		};
+	}
+
+	/// <summary>
+	/// Converts the current method into a static helper method for a protocol.
+	/// </summary>
+	/// <param name="protocol">The protocol for which the helper method is being created.</param>
+	/// <returns>A new <see cref="Method"/> instance representing the protocol helper method.</returns>
+	public Method ToProtocolMethod (TypeInfo protocol)
+	{
+		// we need to create the same method but update the name and insert a 'this' parameter and use the correct tokens
+		var thisParameter = new Parameter (0, protocol, "self") { IsThis = true };
+		var newParameters = ImmutableArray.CreateBuilder<Parameter> (Parameters.Length + 1);
+		newParameters.Add (thisParameter);
+		// add the rest of the parameters BUT update the position of each parameter
+		for (var index = 0; index < Parameters.Length; index++) {
+			var parameter = Parameters [index];
+			// update the position of the parameter to be one more than the current index
+			newParameters.Add (parameter.WithPosition (index + 1));
+		}
+
+		return this with {
+			Name = $"_{Name}",
+			Parameters = newParameters.ToImmutableArray (),
+			Modifiers = [
+				Token (SyntaxKind.InternalKeyword).WithTrailingTrivia (Space),
+				Token (SyntaxKind.StaticKeyword).WithTrailingTrivia (Space),
+			],
 		};
 	}
 }

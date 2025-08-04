@@ -99,7 +99,6 @@ namespace Xamarin.Tests {
 					"libSystem.Native.dylib",
 					"libSystem.Net.Security.Native.dylib",
 					"libSystem.Security.Cryptography.Native.Apple.dylib",
-					"libSystem.Security.Cryptography.Native.OpenSsl.dylib",
 				});
 			}
 		}

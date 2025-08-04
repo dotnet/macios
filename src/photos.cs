@@ -177,6 +177,14 @@ namespace Photos {
 		[MacCatalyst (15, 0)]
 		[Export ("hasAdjustments")]
 		bool HasAdjustments { get; }
+
+		[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("contentType", ArgumentSemantic.Copy)]
+		UTType ContentType { get; }
+
+		[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("addedDate", ArgumentSemantic.Strong)]
+		NSDate AddedDate { get; }
 	}
 
 	/// <summary>Used within a Photos change block to create, update, or delete <see cref="Photos.PHAsset" /> objects.</summary>
@@ -283,6 +291,10 @@ namespace Photos {
 		[Export ("assetLocalIdentifier")]
 		string AssetLocalIdentifier { get; }
 
+		[Deprecated (PlatformName.iOS, 26, 0, message: "Use 'ContentType' instead.")]
+		[Deprecated (PlatformName.MacOSX, 26, 0, message: "Use 'ContentType' instead.")]
+		[Deprecated (PlatformName.TvOS, 26, 0, message: "Use 'ContentType' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, message: "Use 'ContentType' instead.")]
 		[Export ("uniformTypeIdentifier")]
 		string UniformTypeIdentifier { get; }
 
@@ -307,6 +319,10 @@ namespace Photos {
 		[MacCatalyst (16, 0)]
 		[Export ("pixelHeight")]
 		nint PixelHeight { get; }
+
+		[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("contentType", ArgumentSemantic.Copy)]
+		UTType ContentType { get; }
 	}
 
 	/// <summary>Options when creating assets from data resources.</summary>
@@ -318,11 +334,19 @@ namespace Photos {
 		[NullAllowed, Export ("originalFilename")]
 		string OriginalFilename { get; set; }
 
+		[Deprecated (PlatformName.iOS, 26, 0, message: "Use 'ContentType' instead.")]
+		[Deprecated (PlatformName.MacOSX, 26, 0, message: "Use 'ContentType' instead.")]
+		[Deprecated (PlatformName.TvOS, 26, 0, message: "Use 'ContentType' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, message: "Use 'ContentType' instead.")]
 		[NullAllowed, Export ("uniformTypeIdentifier")]
 		string UniformTypeIdentifier { get; set; }
 
 		[Export ("shouldMoveFile")]
 		bool ShouldMoveFile { get; set; }
+
+		[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[NullAllowed, Export ("contentType", ArgumentSemantic.Copy)]
+		UTType ContentType { get; set; }
 	}
 
 	/// <summary>Options used when requesting to edit an <see cref="Photos.PHAsset" />.</summary>
@@ -854,6 +878,10 @@ namespace Photos {
 		[NullAllowed]
 		CLLocation Location { get; }
 
+		[Deprecated (PlatformName.iOS, 26, 0, message: "Use 'ContentType' instead.")]
+		[Deprecated (PlatformName.MacOSX, 26, 0, message: "Use 'ContentType' instead.")]
+		[Deprecated (PlatformName.TvOS, 26, 0, message: "Use 'ContentType' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, message: "Use 'ContentType' instead.")]
 		[Export ("uniformTypeIdentifier")]
 		[NullAllowed]
 		string UniformTypeIdentifier { get; }
@@ -896,6 +924,10 @@ namespace Photos {
 		[MacCatalyst (13, 1)]
 		[Export ("playbackStyle", ArgumentSemantic.Assign)]
 		PHAssetPlaybackStyle PlaybackStyle { get; }
+
+		[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[NullAllowed, Export ("contentType", ArgumentSemantic.Copy)]
+		UTType ContentType { get; }
 	}
 
 	/// <summary>Describes the result of editing a <see cref="Photos.PHAsset" />.</summary>
@@ -1233,6 +1265,10 @@ namespace Photos {
 	[BaseType (typeof (PHImageManager))]
 	interface PHCachingImageManager {
 
+		[Deprecated (PlatformName.iOS, 26, 0, message: "Do not use; this property will be removed in a future release.")]
+		[Deprecated (PlatformName.MacOSX, 26, 0, message: "Do not use; this property will be removed in a future release.")]
+		[Deprecated (PlatformName.TvOS, 26, 0, message: "Do not use; this property will be removed in a future release.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, message: "Do not use; this property will be removed in a future release.")]
 		[Export ("allowsCachingHighQualityImages", ArgumentSemantic.Assign)]
 		bool AllowsCachingHighQualityImages { get; set; }
 

@@ -877,6 +877,14 @@ namespace Introspection {
 					return true;
 				}
 				break;
+			case "BEExtensionProcess":
+				switch (type.Name) {
+				case "BENetworkingProcess": // conforming using a categeory in headers
+				case "BERenderingProcess": // conforming using a categeory in headers
+				case "BEWebContentProcess": // conforming using a categeory in headers
+					return true;
+				}
+				break;
 			}
 			return false;
 		}
@@ -1109,7 +1117,7 @@ namespace Introspection {
 
 					if (t.IsPublic && !ConformTo (klass.Handle, protocol)) {
 						// note: some internal types, e.g. like UIAppearance subclasses, return false (and there's not much value in changing this)
-						var msg = $"Type {t.FullName} (native: {klass.Name}) does not conform {protocolName}";
+						var msg = $"Type {t.FullName} (native: {klass.Name}) does not conform to {protocolName}";
 						list.Add (msg);
 						ReportError (msg);
 					}

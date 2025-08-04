@@ -4448,7 +4448,7 @@ namespace GameKit {
 	delegate void GKGameActivityDefinitionLoadGameActivityDefinitionsHandler ([NullAllowed] GKGameActivityDefinition [] definitions, [NullAllowed] NSError error);
 
 	[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
-	[BaseType (typeof(NSObject))]
+	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface GKGameActivityDefinition {
 
@@ -4663,7 +4663,7 @@ namespace GameKit {
 	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
 	interface GKGameActivityListener {
-		
+
 		[Export ("player:wantsToPlayGameActivity:completionHandler:")]
 		void WantsToPlayGameActivity (GKPlayer player, GKGameActivity activity, Action<bool> completionHandler);
 	}

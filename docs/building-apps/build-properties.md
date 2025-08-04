@@ -399,7 +399,7 @@ This corresponds with the `suspend/nosuspend` value in
 
 Implicitly sets [EnableDiagnostics](#enablediagnostics) to `true`.
 
-Defaults to `true`.
+Defaults to `false`.
 
 ## DittoPath
 

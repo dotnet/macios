@@ -220,7 +220,7 @@ Copyright (C) 2020 Microsoft. All rights reserved.
 		<!-- that also encapsulates whether we're a library or not (this makes conditions simpler) -->
 		<_BundleOriginalResources Condition="'$(OutputType)' == 'Library' And '$(IsAppExtension)' != 'true' And '$(BundleOriginalResources)' == 'true'">true</_BundleOriginalResources>
 
-		<EnableDiagnostics Condition="'$(EnableDiagnostics)' == '' And ('$(DiagnosticConfiguration)' != '' Or '$(DiagnosticAddress)' != '' Or '$(DiagnosticPort)' != '' Or $(DiagnosticSuspend)' != '' Or '$(DiagnosticListenMode)' != '')">true</EnableDiagnostics>
+		<EnableDiagnostics Condition="'$(EnableDiagnostics)' == '' And ('$(DiagnosticConfiguration)' != '' Or '$(DiagnosticAddress)' != '' Or '$(DiagnosticPort)' != '' Or '$(DiagnosticSuspend)' != '' Or '$(DiagnosticListenMode)' != '')">true</EnableDiagnostics>
 
 		<!-- Set the name of the native executable -->
 		<_NativeExecutableName Condition="'$(_NativeExecutableName)' == ''">$(AssemblyName)</_NativeExecutableName>

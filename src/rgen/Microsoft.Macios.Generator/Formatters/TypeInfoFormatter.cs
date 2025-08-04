@@ -22,6 +22,9 @@ static class TypeInfoFormatter {
 		TypeSyntax classSyntax;
 		// the type info already provides the correct name, but we need to build the actual class for arrays and 
 		// generic types
+		if (typeInfo.IsVoid) {
+			return IdentifierName ("void");
+		}
 		if (typeInfo.IsArray) {
 			// could be a params array or simply an array
 			classSyntax = ArrayType (IdentifierName (typeInfo.Name))

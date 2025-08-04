@@ -81,6 +81,11 @@ namespace ObjCBindings {
 		/// </summary>
 		public string? StrongDelegateName { get; set; } = null;
 
+		/// <summary>
+		/// Get/Set the type of the strong dictionary key class.
+		/// </summary>
+		public Type? StrongDictionaryKeyClass { get; set; } = null;
+
 		protected ExportAttribute () { }
 
 		/// <summary>

@@ -32,6 +32,10 @@ enum BindingType : ulong {
 	/// </summary>
 	StrongDictionary,
 	/// <summary>
+	/// Binding type for strong dictionary keys.
+	/// </summary>
+	StrongDictionaryKeys,
+	/// <summary>
 	/// Binding type for a core image filter.
 	/// </summary>
 	CoreImageFilter,

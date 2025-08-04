@@ -14,7 +14,7 @@ readonly record struct MethodInvocations {
 	/// <summary>
 	/// Gets the transformations and initializations for the method arguments.
 	/// </summary>
-	public ImmutableArray<TrampolineArgumentSyntax> Arguments { get; init; }
+	public ImmutableArray<ArgumentConversions> Arguments { get; init; }
 
 	/// <summary>
 	/// Gets the expression syntax for a standard message send invocation.

@@ -204,4 +204,16 @@ public class Example {
 	[InlineData ("AnotherProperty", false, "__mt_AnotherProperty_var")]
 	public void GetPropertyBackingFieldNameTests (string propertyName, bool isStatic, string expectedName)
 		=> Assert.Equal (expectedName, Nomenclator.GetPropertyBackingFieldName (propertyName, isStatic));
+
+	[Theory]
+	[InlineData ("result", "_cbresult")]
+	[InlineData ("error", "_cberror")]
+	public void GetTaskCallbackParameterNameTests (string parameterName, string expectedName)
+		=> Assert.Equal (expectedName, Nomenclator.GetTaskCallbackParameterName (parameterName));
+
+	[Theory]
+	[InlineData ("MyProtocol", "MyProtocolWrapper")]
+	[InlineData ("My.Nested.Protocol", "My_Nested_ProtocolWrapper")]
+	public void GetProtocolWrapperNameTests (string protocolName, string expectedName)
+		=> Assert.Equal (expectedName, Nomenclator.GetProtocolWrapperName (protocolName));
 }

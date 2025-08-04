@@ -26,8 +26,8 @@ static partial class BindingSyntaxFactory {
 			// export attribute attached
 			var getter = property.GetAccessor (AccessorKind.Getter);
 			string? getterMsgSend = null;
-			if (getter is not null) {
-				var getterExportData = getter.Value.ExportPropertyData ?? property.ExportPropertyData;
+			if (!getter.IsNullOrDefault) {
+				var getterExportData = getter.ExportPropertyData ?? property.ExportPropertyData;
 				if (getterExportData is not null) {
 					getterMsgSend = GetObjCMessageSendMethodName (getterExportData.Value, property.BindAs?.Type ?? property.ReturnType, [],
 						isSuper, isStret);
@@ -36,13 +36,13 @@ static partial class BindingSyntaxFactory {
 
 			var setter = property.GetAccessor (AccessorKind.Setter);
 			string? setterMsgSend = null;
-			if (setter is not null) {
+			if (!setter.IsNullOrDefault) {
 				// the setter also depends on if we have a bindas attribute or not. If present, the parameter of the
 				// setter will be that indicated by the bind as attribute
 				var valueParameter = property.BindAs is null
 					? property.ValueParameter
 					: new Parameter (0, property.BindAs.Value.Type, "value");
-				var setterExportData = setter.Value.ExportPropertyData ?? property.ExportPropertyData;
+				var setterExportData = setter.ExportPropertyData ?? property.ExportPropertyData;
 				if (setterExportData is not null) {
 					setterMsgSend = GetObjCMessageSendMethodName (setterExportData.Value, TypeInfo.Void,
 						[valueParameter], isSuper, isStret);
@@ -71,8 +71,8 @@ static partial class BindingSyntaxFactory {
 			return (ThrowNotImplementedException (), ThrowNotImplementedException ());
 		}
 
-		var getterSend = ConvertToManaged (property, MessagingInvocation (sendMethod, selector, []));
-		var getterSuperSend = ConvertToManaged (property, MessagingInvocation (superSendMethod, selector, []));
+		var getterSend = ConvertToManaged (property, MessagingInvocation (sendMethod, selector, [], isSuper: false));
+		var getterSuperSend = ConvertToManaged (property, MessagingInvocation (superSendMethod, selector, [], isSuper: true));
 		// if we cannot get the methods, throw a runtime exception 
 		if (getterSend is null || getterSuperSend is null) {
 			return (ThrowNotImplementedException (), ThrowNotImplementedException ());
@@ -93,11 +93,13 @@ static partial class BindingSyntaxFactory {
 	/// <param name="sendMethod">The name of the `objc_msgSend` method for the setter.</param>
 	/// <param name="superSendMethod">The name of the `objc_msgSend` method for the superclass setter.</param>
 	/// <returns>A tuple containing the argument syntax, and the expressions for the normal and superclass setter invocations.</returns>
-	internal static (TrampolineArgumentSyntax Argument, ExpressionSyntax Send, ExpressionSyntax SendSuper) GetSetterInvocations (
+	internal static (ArgumentConversions Argument, ExpressionSyntax Send, ExpressionSyntax SendSuper) GetSetterInvocations (
 		in Property property, string? selector, string? sendMethod, string? superSendMethod)
 	{
-		var argument = new TrampolineArgumentSyntax (GetNativeInvokeArgument (property)) {
+		var syntax = GetNativeInvokeArgument (property);
+		var argument = new ArgumentConversions {
 			Initializers = GetNativeInvokeArgumentInitializations (property),
+			Validations = GetNativeInvokeArgumentValidations (property),
 			PreCallConversion = GetPreNativeInvokeArgumentConversions (property),
 			PostCallConversion = GetPostNativeInvokeArgumentConversions (property),
 		};
@@ -106,8 +108,8 @@ static partial class BindingSyntaxFactory {
 			return (argument, ThrowNotImplementedException (), ThrowNotImplementedException ());
 		}
 
-		var setterSend = MessagingInvocation (sendMethod, selector, [argument.ArgumentSyntax]);
-		var setterSuperSend = MessagingInvocation (superSendMethod, selector, [argument.ArgumentSyntax]);
+		var setterSend = MessagingInvocation (sendMethod, selector, [syntax], isSuper: false);
+		var setterSuperSend = MessagingInvocation (superSendMethod, selector, [syntax], isSuper: true);
 
 		return (
 			Argument: argument,
@@ -126,13 +128,13 @@ static partial class BindingSyntaxFactory {
 		// retrieve the objc_msgSend methods
 		var (getter, setter) = GetObjCMessageSendMethods (property, isStret: property.ReturnType.NeedsStret);
 		var (superGetter, superSetter) = GetObjCMessageSendMethods (property, isSuper: true, isStret: property.ReturnType.NeedsStret);
-		var getterSelector = property.GetAccessor (AccessorKind.Getter)?.GetSelector (property);
+		var getterSelector = property.GetAccessor (AccessorKind.Getter).GetSelector (property);
 		var getterInvocations = GetGetterInvocations (property, getterSelector, getter, superGetter);
 
-		(TrampolineArgumentSyntax Argument, ExpressionSyntax Send, ExpressionSyntax SendSuper)? setterInvocations = null;
+		(ArgumentConversions Argument, ExpressionSyntax Send, ExpressionSyntax SendSuper)? setterInvocations = null;
 		var setterAccessor = property.GetAccessor (AccessorKind.Setter);
-		if (setterAccessor is not null) {
-			var setterSelector = setterAccessor.Value.GetSelector (property);
+		if (!setterAccessor.IsNullOrDefault) {
+			var setterSelector = setterAccessor.GetSelector (property);
 			setterInvocations = GetSetterInvocations (property, setterSelector, setter, superSetter);
 		}
 

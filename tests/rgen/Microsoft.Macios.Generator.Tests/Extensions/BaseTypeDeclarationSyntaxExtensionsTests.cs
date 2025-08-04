@@ -3,6 +3,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Macios.Generator.Extensions;
 using Xamarin.Tests;
@@ -62,32 +63,39 @@ namespace Foo {
 	}
 }
 ";
-	T GetDeclaration<T> (ApplePlatform platform, string inputText) where T : BaseTypeDeclarationSyntax
+	T GetDeclaration<T> (ApplePlatform platform, string inputText, out SemanticModel semanticModel) where T : BaseTypeDeclarationSyntax
 	{
-		var (_, sourceTrees) = CreateCompilation (platform, sources: inputText);
+		var (compilation, sourceTrees) = CreateCompilation (platform, sources: inputText);
 		Assert.Single (sourceTrees);
 		var declaration = sourceTrees [0].GetRoot ()
 			.DescendantNodes ()
 			.OfType<T> ()
 			.FirstOrDefault ();
 		Assert.NotNull (declaration);
+		semanticModel = compilation.GetSemanticModel (sourceTrees [0]);
 		return declaration;
 	}
 
 	public IEnumerator<object []> GetEnumerator ()
 	{
 		foreach (var platform in Configuration.GetIncludedPlatforms ()) {
-			yield return [GetDeclaration<ClassDeclarationSyntax> (platform, filescopedNamespaceClass),
+			yield return [GetDeclaration<ClassDeclarationSyntax> (platform, filescopedNamespaceClass, out SemanticModel semanticModel),
+				semanticModel,
 				"Test.Foo"];
-			yield return [GetDeclaration<EnumDeclarationSyntax> (platform, filescopedNamespaceNestedEnum),
+			yield return [GetDeclaration<EnumDeclarationSyntax> (platform, filescopedNamespaceNestedEnum, out semanticModel),
+				semanticModel,
 				"Test.Foo.Bar"];
-			yield return [GetDeclaration<ClassDeclarationSyntax> (platform, namespaceClass),
+			yield return [GetDeclaration<ClassDeclarationSyntax> (platform, namespaceClass, out semanticModel),
+				semanticModel,
 				"Test.Foo"];
-			yield return [GetDeclaration<ClassDeclarationSyntax> (platform, severalNamespaces),
+			yield return [GetDeclaration<ClassDeclarationSyntax> (platform, severalNamespaces, out semanticModel),
+				semanticModel,
 				"Test.Foo"];
-			yield return [GetDeclaration<ClassDeclarationSyntax> (platform, nestedNamespaces),
+			yield return [GetDeclaration<ClassDeclarationSyntax> (platform, nestedNamespaces, out semanticModel),
+				semanticModel,
 				"Foo.Bar.Test"];
-			yield return [GetDeclaration<EnumDeclarationSyntax> (platform, nestedEnum),
+			yield return [GetDeclaration<EnumDeclarationSyntax> (platform, nestedEnum, out semanticModel),
+				semanticModel,
 				"Foo.Bar.Test.Final"];
 		}
 	}
@@ -96,9 +104,9 @@ namespace Foo {
 
 	[Theory]
 	[ClassData (typeof (BaseTypeDeclarationSyntaxExtensionsTests))]
-	public void GetFullyQualifiedIdentifier<T> (T declaration, string expected)
+	public void GetFullyQualifiedIdentifier<T> (T declaration, SemanticModel semanticModel, string expected)
 		where T : BaseTypeDeclarationSyntax
 	{
-		Assert.Equal (expected, declaration.GetFullyQualifiedIdentifier ());
+		Assert.Equal (expected, declaration.GetFullyQualifiedIdentifier (semanticModel));
 	}
 }

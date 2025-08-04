@@ -67,6 +67,7 @@ partial class Frameworks {
 		"GameController",
 		"GameKit",
 		"GameplayKit",
+		"GameSave",
 		"GLKit",
 		"HealthKit",
 		"HealthKitUI",
@@ -210,6 +211,7 @@ partial class Frameworks {
 		"GameController",
 		"GameKit",
 		"GameplayKit",
+		"GameSave",
 		"GLKit",
 		"HealthKit",
 		"ImageCaptureCore",
@@ -444,6 +446,7 @@ partial class Frameworks {
 		"GameController",
 		"GameKit",
 		"GameplayKit",
+		"GameSave",
 		"HealthKit",
 		"HealthKitUI",
 		"HomeKit",
@@ -589,6 +592,7 @@ partial class Frameworks {
 	bool? _GameController;
 	bool? _GameKit;
 	bool? _GameplayKit;
+	bool? _GameSave;
 	bool? _GLKit;
 	bool? _HealthKit;
 	bool? _HealthKitUI;
@@ -760,6 +764,7 @@ partial class Frameworks {
 	public bool HaveGameController { get { if (!_GameController.HasValue) _GameController = GetValue ("GameController"); return _GameController.Value; } }
 	public bool HaveGameKit { get { if (!_GameKit.HasValue) _GameKit = GetValue ("GameKit"); return _GameKit.Value; } }
 	public bool HaveGameplayKit { get { if (!_GameplayKit.HasValue) _GameplayKit = GetValue ("GameplayKit"); return _GameplayKit.Value; } }
+	public bool HaveGameSave { get { if (!_GameSave.HasValue) _GameSave = GetValue ("GameSave"); return _GameSave.Value; } }
 	public bool HaveGLKit { get { if (!_GLKit.HasValue) _GLKit = GetValue ("GLKit"); return _GLKit.Value; } }
 	public bool HaveHealthKit { get { if (!_HealthKit.HasValue) _HealthKit = GetValue ("HealthKit"); return _HealthKit.Value; } }
 	public bool HaveHealthKitUI { get { if (!_HealthKitUI.HasValue) _HealthKitUI = GetValue ("HealthKitUI"); return _HealthKitUI.Value; } }

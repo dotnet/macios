@@ -261,7 +261,7 @@ static class Nomenclator {
 		// we will replace any . with _ to ensure that the name is valid when working with nested classes.
 		return $"{protocolName.Replace ('.', '_')}Wrapper";
 	}
-	
+
 	public static string GetProtocolModelRegistrationName (ImmutableArray<string> ns, string modelName)
 	{
 		var nsString = string.Join ("_", ns);

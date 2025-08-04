@@ -291,7 +291,7 @@ static class TabbedStringBuilderExtensions {
 	public static TabbedWriter<StringWriter> AppendRegisterAttribute (this TabbedWriter<StringWriter> self,
 		string regitrationName, bool isWrapper)
 	{
-		self.WriteLine ($"[Register (\"{regitrationName}\", {isWrapper.ToString().ToLower()})]");
+		self.WriteLine ($"[Register (\"{regitrationName}\", {isWrapper.ToString ().ToLower ()})]");
 		return self;
 	}
 }

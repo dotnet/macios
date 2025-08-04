@@ -19,8 +19,8 @@ public partial interface IAVAudioPlayerDelegate {
 
 	[Export<Method> ("audioPlayerDecodeErrorDidOccur:error:")]
 	public virtual partial void DecoderError (AVAudioPlayer player, NSError? error);
-	
-#if !__MACOS__	
+
+#if !__MACOS__
 	[UnsupportedOSPlatform ("macos")]
 	[Export<Method> ("audioPlayerBeginInterruption:")]
 	public virtual partial void BeginInterruption (AVAudioPlayer player);

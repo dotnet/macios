@@ -42,7 +42,7 @@ namespace ObjCBindings {
 		/// Flags the object as being thread safe.
 		/// </summary>
 		IsThreadSafe = 1 << 2,
-		
+
 		/// <summary>
 		/// Flags the protocol as needing a model wrapper. This will generate a model class
 		/// for the protocol.

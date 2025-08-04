@@ -21,7 +21,7 @@ namespace Microsoft.Macios.Generator.Emitters;
 /// Emits the model class for a protocol.
 /// </summary>
 class ModelEmitter : ICodeEmitter {
-	
+
 	/// <inheritdoc />
 	public string GetSymbolName (in Binding binding)
 	{
@@ -36,7 +36,7 @@ class ModelEmitter : ICodeEmitter {
 	void EmitDefaultConstructors (in BindingContext bindingContext, string wrapperClassName,
 		TabbedWriter<StringWriter> classBlock)
 	{
-		
+
 	}
 
 
@@ -58,7 +58,7 @@ class ModelEmitter : ICodeEmitter {
 			using (var propertyBlock = classBlock.CreateBlock (property.ToDeclaration ().ToString (), block: true)) {
 				var getter = property.GetAccessor (AccessorKind.Getter);
 				if (!getter.IsNullOrDefault) {
-					propertyBlock.AppendMemberAvailability (getter.SymbolAvailability);	
+					propertyBlock.AppendMemberAvailability (getter.SymbolAvailability);
 					propertyBlock.AppendGeneratedCodeAttribute ();
 					if (!getter.ExportPropertyData.IsNullOrDefault)
 						propertyBlock.AppendExportAttribute (getter.ExportPropertyData);
@@ -66,10 +66,10 @@ class ModelEmitter : ICodeEmitter {
 						getterBlock.WriteLine ($"throw new {ModelNotImplementedException} ();");
 					}
 				}
-				
+
 				var setter = property.GetAccessor (AccessorKind.Setter);
 				if (!setter.IsNullOrDefault) {
-					propertyBlock.AppendMemberAvailability (setter.SymbolAvailability);	
+					propertyBlock.AppendMemberAvailability (setter.SymbolAvailability);
 					propertyBlock.AppendGeneratedCodeAttribute ();
 					if (!getter.ExportPropertyData.IsNullOrDefault)
 						propertyBlock.AppendExportAttribute (setter.ExportPropertyData);
@@ -77,7 +77,7 @@ class ModelEmitter : ICodeEmitter {
 						setterBlock.WriteLine ($"throw new {ModelNotImplementedException} ();");
 					}
 				}
-				
+
 			}
 
 			classBlock.WriteLine ();
@@ -107,7 +107,7 @@ class ModelEmitter : ICodeEmitter {
 	}
 
 	/// <inheritdoc />
-	public bool TryEmit (in BindingContext bindingContext, [NotNullWhen(false)] out ImmutableArray<Diagnostic>? diagnostics)
+	public bool TryEmit (in BindingContext bindingContext, [NotNullWhen (false)] out ImmutableArray<Diagnostic>? diagnostics)
 	{
 		diagnostics = null;
 		var modelName = GetSymbolName (bindingContext.Changes);
@@ -119,9 +119,9 @@ class ModelEmitter : ICodeEmitter {
 
 
 		using (var classBlock = bindingContext.Builder.CreateBlock (
-			       $"public unsafe abstract partial class {modelName} : NSObject, {bindingContext.Changes.Name}",
-			       true)) {
-	
+				   $"public unsafe abstract partial class {modelName} : NSObject, {bindingContext.Changes.Name}",
+				   true)) {
+
 			EmitDefaultConstructors (bindingContext, modelName, classBlock);
 			EmitProperties (bindingContext, classBlock);
 			EmitMethods (bindingContext, classBlock);

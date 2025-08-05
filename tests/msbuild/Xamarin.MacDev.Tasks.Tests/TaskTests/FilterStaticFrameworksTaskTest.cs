@@ -92,6 +92,7 @@ namespace Xamarin.MacDev.Tasks.Tests {
 
 			// Act: Create and execute the task
 			var task = CreateTask<FilterStaticFrameworks> ();
+			task.TargetFrameworkMoniker = TargetFramework.GetTargetFramework (platform).ToString ();
 			task.FrameworkToPublish = new ITaskItem [] { new TaskItem (frameworkDir) };
 			task.OnlyFilterFrameworks = true;
 
@@ -137,6 +138,7 @@ namespace Xamarin.MacDev.Tasks.Tests {
 
 			// Act: Create and execute the task
 			var task = CreateTask<FilterStaticFrameworks> ();
+			task.TargetFrameworkMoniker = TargetFramework.GetTargetFramework (platform).ToString ();
 			task.FrameworkToPublish = new ITaskItem [] { new TaskItem (frameworkDir) };
 			task.OnlyFilterFrameworks = true;
 
@@ -158,6 +160,7 @@ namespace Xamarin.MacDev.Tasks.Tests {
 
 			// Act: Create and execute the task
 			var task = CreateTask<FilterStaticFrameworks> ();
+			task.TargetFrameworkMoniker = TargetFramework.GetTargetFramework (ApplePlatform.iOS).ToString ();
 			task.FrameworkToPublish = new ITaskItem [] { new TaskItem (nonFrameworkPath) };
 			task.OnlyFilterFrameworks = false; // Don't filter non-frameworks
 
@@ -211,6 +214,7 @@ namespace Xamarin.MacDev.Tasks.Tests {
 
 			// Act: Create and execute the task
 			var task = CreateTask<FilterStaticFrameworks> ();
+			task.TargetFrameworkMoniker = TargetFramework.GetTargetFramework (platform).ToString ();
 			task.FrameworkToPublish = new ITaskItem [] { new TaskItem (frameworkDir) };
 			task.OnlyFilterFrameworks = true;
 

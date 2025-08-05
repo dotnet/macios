@@ -35,11 +35,7 @@ namespace Xamarin.MacDev.Tasks {
 					Path.Combine (frameworkPath, "Versions", "A", "Resources", "Info.plist") // Fallback to actual location
 				};
 			default:
-				// For unknown platforms, try both common locations
-				return new string [] {
-					Path.Combine (frameworkPath, "Info.plist"),
-					Path.Combine (frameworkPath, "Resources", "Info.plist")
-				};
+				throw new InvalidOperationException (string.Format (MSBStrings.InvalidPlatform, platform));
 			}
 		}
 

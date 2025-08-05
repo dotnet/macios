@@ -3082,6 +3082,15 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";M7159" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Skipping {0} - {1} is empty.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[{0} atlanıyor - {1} boş.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";W0016" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Can only fake the watchOS 4.3 SDK when building for watchOS.]]></Val>

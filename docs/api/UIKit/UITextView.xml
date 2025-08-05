@@ -87,9 +87,6 @@ public class MyView : UIView
             ]]></code>
       </example>
       <para>iOS 6 added multiple text-style capability to <see cref="UIKit.UITextView" />. To use multiple styles, application developers must use the <see cref="UIKit.UITextView.AttributedText" /> property. The <see cref="UIKit.UITextView.Font" />, <see cref="UIKit.UITextView.TextColor" />, and <see cref="UIKit.UITextView.TextAlignment" /> properties apply to all the text in the <see cref="UIKit.UITextView" />.</para>
-      <format type="text/html">
-        <br />
-      </format>
     </remarks>
     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UITextView_Class/index.html">Apple documentation for <c>UITextView</c></related>
   </Docs>

@@ -548,7 +548,9 @@ COREIMAGE_SOURCES = \
 	CoreImage/CIFilter.cs \
 	CoreImage/CIImage.cs \
 	CoreImage/CISampler.cs \
+	CoreImage/CISystemToneMap.cs \
 	CoreImage/CIVector.cs \
+	CoreImage/ICISystemToneMapProtocol.cs \
 
 # CoreLocation
 

@@ -5600,7 +5600,15 @@ public partial class Generator : IMemberGatherer {
 				indent++;
 			}
 
-			WriteDocumentation (type);
+			if (!WriteDocumentation (type)) {
+				if (is_model && !AttributeManager.HasAttribute<SyntheticAttribute> (type)) {
+					print ($"/// <summary>");
+					print ($"///   <para>This is a class that implements the interface <see cref=\"I{TypeName}\" /> (for the protocol <c>{(protocol?.Name ?? objc_type_name)}</c>).</para>");
+					print ($"///   <para>Subclass this class to easily create a type that implements the protocol.</para>");
+					print ($"///   <para>An alternative is to create a subclass of <see cref=\"NSObject\" /> and then implemented the interface <see cref=\"I{TypeName}\" />.</para>");
+					print ($"/// </summary>");
+				}
+			}
 
 			bool core_image_filter = false;
 			string class_mod = null;

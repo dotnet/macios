@@ -998,58 +998,45 @@
 
 
 	<Target Name="_LoadLinkerOutput" DependsOnTargets="ComputeFilesToPublish" Condition="'$(IsMacEnabled)' == 'true'">
-		<!-- Load _MainFile -->
-		<ReadItemsFromFile SessionId="$(BuildSessionId)" File="$(_LinkerItemsDirectory)/_MainFile.items" Condition="Exists('$(_LinkerItemsDirectory)/_MainFile.items')">
-			<Output TaskParameter="Items" ItemName="_MainFile" />
+		<ItemGroup>
+			<_LinkerItemFiles Include="$(_LinkerItemsDirectory)/_MainFile.items" />
+			<_LinkerItemFiles Include="$(_LinkerItemsDirectory)/_MainLinkWith.items" />
+			<_LinkerItemFiles Include="$(_LinkerItemsDirectory)/_LinkerFrameworks.items" />
+			<_LinkerItemFiles Include="$(_LinkerItemsDirectory)/_BindingLibraryLinkWith.items" />
+			<_LinkerItemFiles Include="$(_LinkerItemsDirectory)/_AssemblyLinkerFlags.items" />
+			<_LinkerItemFiles Include="$(_LinkerItemsDirectory)/_MainLinkerFlags.items" />
+			<_LinkerItemFiles Include="$(_LinkerItemsDirectory)/_BindingLibraryFrameworks.items" />
+			<_LinkerItemFiles Include="$(_LinkerItemsDirectory)/_RegistrarFile.items" />
+			<_LinkerItemFiles Include="$(_LinkerItemsDirectory)/_ReferencesFile.items" />
+			<_LinkerItemFiles Include="$(_LinkerItemsDirectory)/ReferenceNativeSymbol.items" />
+			<_LinkerItemFiles Include="$(_LinkerItemsDirectory)/_AssembliesToAOT.items" />
+			<_LinkerItemFiles Include="$(_LinkerItemsDirectory)/_FrameworkToPublish.items" />
+			<_LinkerItemFiles Include="$(_LinkerItemsDirectory)/_DynamicLibraryToPublish.items" />
+		</ItemGroup>
+
+		<ItemGroup>
+			<_ExistingLinkerItemFiles Include="@(_LinkerItemFiles)" Condition="Exists('%(Identity)')" />
+		</ItemGroup>
+
+		<ReadItemsFromFile SessionId="$(BuildSessionId)" File="@(_ExistingLinkerItemFiles)" Condition="'@(_ExistingLinkerItemFiles)' != ''">
+			<Output TaskParameter="Items" ItemName="_AllLinkerItems" />
 		</ReadItemsFromFile>
-		<!-- Load _MainLinkWith -->
-		<ReadItemsFromFile SessionId="$(BuildSessionId)" File="$(_LinkerItemsDirectory)/_MainLinkWith.items" Condition="Exists('$(_LinkerItemsDirectory)/_MainLinkWith.items')">
-			<Output TaskParameter="Items" ItemName="_MainLinkWith" />
-		</ReadItemsFromFile>
-		<!-- Load _LinkerFrameworks -->
-		<ReadItemsFromFile SessionId="$(BuildSessionId)" File="$(_LinkerItemsDirectory)/_LinkerFrameworks.items" Condition="Exists('$(_LinkerItemsDirectory)/_LinkerFrameworks.items')">
-			<Output TaskParameter="Items" ItemName="_LinkerFrameworks" />
-		</ReadItemsFromFile>
-		<!-- Load _BindingLibraryLinkWith -->
-		<ReadItemsFromFile SessionId="$(BuildSessionId)" File="$(_LinkerItemsDirectory)/_BindingLibraryLinkWith.items" Condition="Exists('$(_LinkerItemsDirectory)/_BindingLibraryLinkWith.items')">
-			<Output TaskParameter="Items" ItemName="_BindingLibraryLinkWith" />
-		</ReadItemsFromFile>
-		<!-- Load _AssemblyLinkerFlags -->
-		<ReadItemsFromFile SessionId="$(BuildSessionId)" File="$(_LinkerItemsDirectory)/_AssemblyLinkerFlags.items" Condition="Exists('$(_LinkerItemsDirectory)/_AssemblyLinkerFlags.items')">
-			<Output TaskParameter="Items" ItemName="_AssemblyLinkerFlags" />
-		</ReadItemsFromFile>
-		<!-- Load _MainLinkerFlags -->
-		<ReadItemsFromFile SessionId="$(BuildSessionId)" File="$(_LinkerItemsDirectory)/_MainLinkerFlags.items" Condition="Exists('$(_LinkerItemsDirectory)/_MainLinkerFlags.items')">
-			<Output TaskParameter="Items" ItemName="_MainLinkerFlags" />
-		</ReadItemsFromFile>
-		<!-- Load _BindingLibraryFrameworks -->
-		<ReadItemsFromFile SessionId="$(BuildSessionId)" File="$(_LinkerItemsDirectory)/_BindingLibraryFrameworks.items" Condition="Exists('$(_LinkerItemsDirectory)/_BindingLibraryFrameworks.items')">
-			<Output TaskParameter="Items" ItemName="_BindingLibraryFrameworks" />
-		</ReadItemsFromFile>
-		<!-- Load _RegistrarFile -->
-		<ReadItemsFromFile SessionId="$(BuildSessionId)" File="$(_LinkerItemsDirectory)/_RegistrarFile.items" Condition="Exists('$(_LinkerItemsDirectory)/_RegistrarFile.items')">
-			<Output TaskParameter="Items" ItemName="_RegistrarFile" />
-		</ReadItemsFromFile>
-		<!-- Load _ReferencesFile -->
-		<ReadItemsFromFile SessionId="$(BuildSessionId)" File="$(_LinkerItemsDirectory)/_ReferencesFile.items" Condition="Exists('$(_LinkerItemsDirectory)/_ReferencesFile.items')">
-			<Output TaskParameter="Items" ItemName="_ReferencesFile" />
-		</ReadItemsFromFile>
-		<!-- Load ReferenceNativeSymbol -->
-		<ReadItemsFromFile SessionId="$(BuildSessionId)" File="$(_LinkerItemsDirectory)/ReferenceNativeSymbol.items" Condition="Exists('$(_LinkerItemsDirectory)/ReferenceNativeSymbol.items')">
-			<Output TaskParameter="Items" ItemName="_ProcessedReferenceNativeSymbol" />
-		</ReadItemsFromFile>
-		<!-- Load _AssembliesToAOT -->
-		<ReadItemsFromFile SessionId="$(BuildSessionId)" File="$(_LinkerItemsDirectory)/_AssembliesToAOT.items" Condition="Exists('$(_LinkerItemsDirectory)/_AssembliesToAOT.items')">
-			<Output TaskParameter="Items" ItemName="_AssembliesToAOT" />
-		</ReadItemsFromFile>
-		<!-- Load _FrameworkToPublish -->
-		<ReadItemsFromFile SessionId="$(BuildSessionId)" File="$(_LinkerItemsDirectory)/_FrameworkToPublish.items" Condition="Exists('$(_LinkerItemsDirectory)/_FrameworkToPublish.items')">
-			<Output TaskParameter="Items" ItemName="_FrameworkToPublish" />
-		</ReadItemsFromFile>
-		<!-- Load _DynamicLibraryToPublish -->
-		<ReadItemsFromFile SessionId="$(BuildSessionId)" File="$(_LinkerItemsDirectory)/_DynamicLibraryToPublish.items" Condition="Exists('$(_LinkerItemsDirectory)/_DynamicLibraryToPublish.items')">
-			<Output TaskParameter="Items" ItemName="_DynamicLibraryToPublish" />
-		</ReadItemsFromFile>
+
+		<ItemGroup>
+			<_MainFile Include="@(_AllLinkerItems)" Condition="'%(_AllLinkerItems.SourceFile)' == '_MainFile.items'" />
+			<_MainLinkWith Include="@(_AllLinkerItems)" Condition="'%(_AllLinkerItems.SourceFile)' == '_MainLinkWith.items'" />
+			<_LinkerFrameworks Include="@(_AllLinkerItems)" Condition="'%(_AllLinkerItems.SourceFile)' == '_LinkerFrameworks.items'" />
+			<_BindingLibraryLinkWith Include="@(_AllLinkerItems)" Condition="'%(_AllLinkerItems.SourceFile)' == '_BindingLibraryLinkWith.items'" />
+			<_AssemblyLinkerFlags Include="@(_AllLinkerItems)" Condition="'%(_AllLinkerItems.SourceFile)' == '_AssemblyLinkerFlags.items'" />
+			<_MainLinkerFlags Include="@(_AllLinkerItems)" Condition="'%(_AllLinkerItems.SourceFile)' == '_MainLinkerFlags.items'" />
+			<_BindingLibraryFrameworks Include="@(_AllLinkerItems)" Condition="'%(_AllLinkerItems.SourceFile)' == '_BindingLibraryFrameworks.items'" />
+			<_RegistrarFile Include="@(_AllLinkerItems)" Condition="'%(_AllLinkerItems.SourceFile)' == '_RegistrarFile.items'" />
+			<_ReferencesFile Include="@(_AllLinkerItems)" Condition="'%(_AllLinkerItems.SourceFile)' == '_ReferencesFile.items'" />
+			<_ProcessedReferenceNativeSymbol Include="@(_AllLinkerItems)" Condition="'%(_AllLinkerItems.SourceFile)' == 'ReferenceNativeSymbol.items'" />
+			<_AssembliesToAOT Include="@(_AllLinkerItems)" Condition="'%(_AllLinkerItems.SourceFile)' == '_AssembliesToAOT.items'" />
+			<_FrameworkToPublish Include="@(_AllLinkerItems)" Condition="'%(_AllLinkerItems.SourceFile)' == '_FrameworkToPublish.items'" />
+			<_DynamicLibraryToPublish Include="@(_AllLinkerItems)" Condition="'%(_AllLinkerItems.SourceFile)' == '_DynamicLibraryToPublish.items'" />
+		</ItemGroup>
 	</Target>
 
 	<!-- Native code -->
@@ -1714,6 +1701,8 @@
 
 			<_AllLinkerFlags Condition="'$(_UseClassicLinker)' == 'true'" Include="-Xlinker" />
 			<_AllLinkerFlags Condition="'$(_UseClassicLinker)' == 'true'" Include="-ld_classic" />
+
+			<_AllLinkerFlags Include="@(LinkerArgument)" />
 		</ItemGroup>
 
 		<!-- write a hash of all the relevant input so that we can force a re-link if necessary -->

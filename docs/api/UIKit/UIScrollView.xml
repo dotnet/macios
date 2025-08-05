@@ -271,9 +271,6 @@ else
       <para>
                 In iOS 6 or later, if the <see cref="UIKit.UIView.RestorationIdentifier" /> property is set, on restoration the <see cref="UIKit.UIScrollView" />'s <see cref="UIKit.UIScrollView.ZoomScale" />, <see cref="UIKit.UIScrollView.ContentOffset" />, and <see cref="UIKit.UIScrollView.ContentInset" /> properties will be restored. 
             </para>
-      <format type="text/html">
-        <h2>Event-handling</h2>
-      </format>
     </remarks>
     <related type="recipe" href="https://developer.xamarin.com/ios/Recipes/Content_Controls/Scroll_View/Implement_Tap-to-Zoom">Implement Tap-to-Zoom Recipe</related>
     <related type="recipe" href="https://developer.xamarin.com/ios/Recipes/Content_Controls/Scroll_View/Create_a_Horizontal_Scrolling_Button_List">Create a Horizontal Scrolling Button List</related>

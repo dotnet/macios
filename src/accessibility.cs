@@ -638,10 +638,9 @@ namespace Accessibility {
 	}
 
 	[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
-	[BaseType (typeof(NSObject))]
+	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface AXBrailleTable : NSCopying, NSCoding
-	{
+	interface AXBrailleTable : NSCopying, NSCoding {
 		[Export ("identifier")]
 		string Identifier { get; }
 
@@ -687,21 +686,19 @@ namespace Accessibility {
 	[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface AXBrailleTranslationResult : NSCopying, NSCoding
-	{
+	interface AXBrailleTranslationResult : NSCopying, NSCoding {
 		[Export ("resultString")]
 		string ResultString { get; }
 
 		[Export ("locationMap")]
-		[BindAs (typeof (nint[]))]
-		NSNumber[] LocationMap { get; }
+		[BindAs (typeof (nint []))]
+		NSNumber [] LocationMap { get; }
 	}
 
 	[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface AXBrailleTranslator
-	{
+	interface AXBrailleTranslator {
 		[Export ("initWithBrailleTable:")]
 		NativeHandle Constructor (AXBrailleTable brailleTable);
 

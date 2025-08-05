@@ -178,14 +178,14 @@ public partial interface IProtocol {
 								new (
 									accessorKind: AccessorKind.Getter,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								),
 								new (
 									accessorKind: AccessorKind.Setter,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								),
@@ -247,14 +247,14 @@ public partial interface IProtocol {
 								new (
 									accessorKind: AccessorKind.Getter,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								),
 								new (
 									accessorKind: AccessorKind.Setter,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								),
@@ -315,14 +315,14 @@ public partial interface IProtocol {
 								new (
 									accessorKind: AccessorKind.Getter,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								),
 								new (
 									accessorKind: AccessorKind.Setter,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								),
@@ -379,14 +379,14 @@ public partial interface IProtocol {
 								new (
 									accessorKind: AccessorKind.Getter,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								),
 								new (
 									accessorKind: AccessorKind.Setter,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								),
@@ -447,14 +447,14 @@ public partial interface IProtocol {
 								new (
 									accessorKind: AccessorKind.Getter,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								),
 								new (
 									accessorKind: AccessorKind.Setter,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								),
@@ -513,14 +513,14 @@ public partial interface MyClass {
 								new (
 									accessorKind: AccessorKind.Getter,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								),
 								new (
 									accessorKind: AccessorKind.Setter,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								),
@@ -586,14 +586,14 @@ public partial interface IProtocol {
 								new (
 									accessorKind: AccessorKind.Getter,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								),
 								new (
 									accessorKind: AccessorKind.Setter,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								),
@@ -616,14 +616,14 @@ public partial interface IProtocol {
 								new (
 									accessorKind: AccessorKind.Getter,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								),
 								new (
 									accessorKind: AccessorKind.Setter,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								),
@@ -853,14 +853,14 @@ public partial interface IProtocol {
 								new (
 									accessorKind: AccessorKind.Add,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								),
 								new (
 									accessorKind: AccessorKind.Remove,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								)
@@ -914,14 +914,14 @@ public partial interface IProtocol {
 								new (
 									accessorKind: AccessorKind.Add,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								),
 								new (
 									accessorKind: AccessorKind.Remove,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								)
@@ -939,20 +939,300 @@ public partial interface IProtocol {
 								new (
 									accessorKind: AccessorKind.Add,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								),
 								new (
 									accessorKind: AccessorKind.Remove,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								)
 							]
 						),
 					],
+				}
+			];
+
+			const string inheritedProtocolInterface = @"
+using ObjCBindings;
+
+namespace NS;
+
+[BindingType<Protocol>]
+public partial interface IFoo {
+	[Export<Property> (""fooProp"")]
+	public partial string FooProp { get; set; }
+}
+
+[BindingType<Protocol>]
+public partial interface IBar : IFoo {
+	[Export<Property> (""barProp"")]
+	public partial string BarProp { get; set; }
+}
+";
+
+			yield return [
+				inheritedProtocolInterface,
+				new Binding (
+					bindingInfo: new (new BindingTypeData<Protocol> ()),
+					name: "IBar",
+					@namespace: ["NS"],
+					fullyQualifiedSymbol: "NS.IBar",
+					symbolAvailability: new ()
+				) {
+					Interfaces = ["NS.IFoo"],
+					Attributes = [
+						new ("ObjCBindings.BindingTypeAttribute<ObjCBindings.Protocol>")
+					],
+					UsingDirectives = new HashSet<string> { "ObjCBindings" },
+					Modifiers = [
+						SyntaxFactory.Token (SyntaxKind.PublicKeyword),
+						SyntaxFactory.Token (SyntaxKind.PartialKeyword)
+					],
+					Properties = [
+						new (
+							name: "BarProp",
+							returnType: ReturnTypeForString (),
+							symbolAvailability: new (),
+							attributes: [
+								new ("ObjCBindings.ExportAttribute<ObjCBindings.Property>", ["barProp"])
+							],
+							modifiers: [
+								SyntaxFactory.Token (SyntaxKind.PublicKeyword),
+								SyntaxFactory.Token (SyntaxKind.PartialKeyword),
+							],
+							accessors: [
+								new (
+									accessorKind: AccessorKind.Getter,
+									symbolAvailability: new (),
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
+									attributes: [],
+									modifiers: []
+								),
+								new (
+									accessorKind: AccessorKind.Setter,
+									symbolAvailability: new (),
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
+									attributes: [],
+									modifiers: []
+								),
+							]
+						) {
+							ExportPropertyData = new ("barProp")
+						}
+					],
+					ParentProtocolProperties = [
+						new (
+							name: "FooProp",
+							returnType: ReturnTypeForString (),
+							symbolAvailability: new (),
+							attributes: [
+								new ("ObjCBindings.ExportAttribute<ObjCBindings.Property>", ["fooProp"])
+							],
+							modifiers: [
+								SyntaxFactory.Token (SyntaxKind.PublicKeyword),
+								SyntaxFactory.Token (SyntaxKind.PartialKeyword),
+							],
+							accessors: [
+								new (
+									accessorKind: AccessorKind.Getter,
+									symbolAvailability: new (),
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
+									attributes: [],
+									modifiers: []
+								),
+								new (
+									accessorKind: AccessorKind.Setter,
+									symbolAvailability: new (),
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
+									attributes: [],
+									modifiers: []
+								),
+							]
+						) {
+							ExportPropertyData = new ("fooProp")
+						}
+					]
+				}
+			];
+
+			const string inheritedProtocolInterfaceWithMethods = @"
+using ObjCBindings;
+
+namespace NS;
+
+[BindingType<Protocol>]
+public partial interface IFoo {
+	[Export<Method> (""fooMethod:"")]
+	public partial void FooMethod (string foo);
+}
+
+[BindingType<Protocol>]
+public partial interface IBar : IFoo {
+	[Export<Method> (""barMethod:"")]
+	public partial void BarMethod (string bar);
+}
+";
+
+			yield return [
+				inheritedProtocolInterfaceWithMethods,
+				new Binding (
+					bindingInfo: new (new BindingTypeData<Protocol> ()),
+					name: "IBar",
+					@namespace: ["NS"],
+					fullyQualifiedSymbol: "NS.IBar",
+					symbolAvailability: new ()
+				) {
+					Interfaces = ["NS.IFoo"],
+					Attributes = [
+						new ("ObjCBindings.BindingTypeAttribute<ObjCBindings.Protocol>")
+					],
+					UsingDirectives = new HashSet<string> { "ObjCBindings" },
+					Modifiers = [
+						SyntaxFactory.Token (SyntaxKind.PublicKeyword),
+						SyntaxFactory.Token (SyntaxKind.PartialKeyword)
+					],
+					Methods = [
+						new (
+							type: "NS.IBar",
+							name: "BarMethod",
+							returnType: ReturnTypeForVoid (),
+							symbolAvailability: new (),
+							exportMethodData: new ("barMethod:"),
+							attributes: [
+								new ("ObjCBindings.ExportAttribute<ObjCBindings.Method>", ["barMethod:"])
+							],
+							modifiers: [
+								SyntaxFactory.Token (SyntaxKind.PublicKeyword),
+								SyntaxFactory.Token (SyntaxKind.PartialKeyword),
+							],
+							parameters: [
+								new (position: 0, type: ReturnTypeForString (), name: "bar"),
+							]
+						),
+					],
+					ParentProtocolMethods = [
+						new (
+							type: "NS.IFoo",
+							name: "FooMethod",
+							returnType: ReturnTypeForVoid (),
+							symbolAvailability: new (),
+							exportMethodData: new ("fooMethod:"),
+							attributes: [
+								new ("ObjCBindings.ExportAttribute<ObjCBindings.Method>", ["fooMethod:"])
+							],
+							modifiers: [
+								SyntaxFactory.Token (SyntaxKind.PublicKeyword),
+								SyntaxFactory.Token (SyntaxKind.PartialKeyword),
+							],
+							parameters: [
+								new (position: 0, type: ReturnTypeForString (), name: "foo"),
+							]
+						),
+					]
+				}
+			];
+
+			const string multiLevelInheritedProtocolInterfaceWithMethods = @"
+using ObjCBindings;
+
+namespace NS;
+
+[BindingType<Protocol>]
+public partial interface IFoo {
+	[Export<Method> (""fooMethod:"")]
+	public partial void FooMethod (string foo);
+}
+
+[BindingType<Protocol>]
+public partial interface IBar : IFoo {
+	[Export<Method> (""barMethod:"")]
+	public partial void BarMethod (string bar);
+}
+
+[BindingType<Protocol>]
+public partial interface IBaz : IBar {
+	[Export<Method> (""bazMethod:"")]
+	public partial void BazMethod (string baz);
+}
+";
+
+			yield return [
+				multiLevelInheritedProtocolInterfaceWithMethods,
+				new Binding (
+					bindingInfo: new (new BindingTypeData<Protocol> ()),
+					name: "IBaz",
+					@namespace: ["NS"],
+					fullyQualifiedSymbol: "NS.IBaz",
+					symbolAvailability: new ()
+				) {
+					Interfaces = ["NS.IBar"],
+					Attributes = [
+						new ("ObjCBindings.BindingTypeAttribute<ObjCBindings.Protocol>")
+					],
+					UsingDirectives = new HashSet<string> { "ObjCBindings" },
+					Modifiers = [
+						SyntaxFactory.Token (SyntaxKind.PublicKeyword),
+						SyntaxFactory.Token (SyntaxKind.PartialKeyword)
+					],
+					Methods = [
+						new (
+							type: "NS.IBaz",
+							name: "BazMethod",
+							returnType: ReturnTypeForVoid (),
+							symbolAvailability: new (),
+							exportMethodData: new ("bazMethod:"),
+							attributes: [
+								new ("ObjCBindings.ExportAttribute<ObjCBindings.Method>", ["bazMethod:"])
+							],
+							modifiers: [
+								SyntaxFactory.Token (SyntaxKind.PublicKeyword),
+								SyntaxFactory.Token (SyntaxKind.PartialKeyword),
+							],
+							parameters: [
+								new (position: 0, type: ReturnTypeForString (), name: "baz"),
+							]
+						),
+					],
+					ParentProtocolMethods = [
+						new (
+							type: "NS.IFoo",
+							name: "FooMethod",
+							returnType: ReturnTypeForVoid (),
+							symbolAvailability: new (),
+							exportMethodData: new ("fooMethod:"),
+							attributes: [
+								new ("ObjCBindings.ExportAttribute<ObjCBindings.Method>", ["fooMethod:"])
+							],
+							modifiers: [
+								SyntaxFactory.Token (SyntaxKind.PublicKeyword),
+								SyntaxFactory.Token (SyntaxKind.PartialKeyword),
+							],
+							parameters: [
+								new (position: 0, type: ReturnTypeForString (), name: "foo"),
+							]
+						),
+						new (
+							type: "NS.IBar",
+							name: "BarMethod",
+							returnType: ReturnTypeForVoid (),
+							symbolAvailability: new (),
+							exportMethodData: new ("barMethod:"),
+							attributes: [
+								new ("ObjCBindings.ExportAttribute<ObjCBindings.Method>", ["barMethod:"])
+							],
+							modifiers: [
+								SyntaxFactory.Token (SyntaxKind.PublicKeyword),
+								SyntaxFactory.Token (SyntaxKind.PartialKeyword),
+							],
+							parameters: [
+								new (position: 0, type: ReturnTypeForString (), name: "bar"),
+							]
+						),
+					]
 				}
 			];
 		}
@@ -971,7 +1251,7 @@ public partial interface IProtocol {
 		var node = sourceTrees [0].GetRoot ()
 			.DescendantNodes ()
 			.OfType<InterfaceDeclarationSyntax> ()
-			.FirstOrDefault ();
+			.LastOrDefault (); // always get the last one so that inheritance tests are correct
 		Assert.NotNull (node);
 		var semanticModel = compilation.GetSemanticModel (sourceTrees [0]);
 		var changes = Binding.FromDeclaration (node, semanticModel);

@@ -151,6 +151,25 @@ static class TabbedStringBuilderExtensions {
 	}
 
 	/// <summary>
+	/// Appends a `[DynamicDependency]` attribute to the current writer.
+	/// This attribute is used to indicate that a member has a dynamic dependency on another member.
+	/// </summary>
+	/// <param name="self">A tabbed string writer.</param>
+	/// <param name="method">The method that is dynamically depended upon.</param>
+	/// <returns>The current writer.</returns>
+	public static TabbedWriter<StringWriter> AppendDynamicDependencyAttribute (this TabbedWriter<StringWriter> self,
+		in Method method)
+	{
+		var sb = new StringBuilder ();
+		sb.Append (method.Name);
+		sb.Append ('(');
+		sb.AppendJoin (',', method.Parameters.Select (p => p.Type.GetIdentifierSyntax (useGlobalNamespace: false)));
+		sb.Append (')');
+		self.WriteLine ($"[DynamicDependency (\"{sb.ToString ()}\")]");
+		return self;
+	}
+
+	/// <summary>
 	/// Appends a `[ProtocolMember]` attribute to the current writer.
 	/// This attribute contains metadata about a protocol member (method or property).
 	/// </summary>

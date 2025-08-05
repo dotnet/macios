@@ -424,14 +424,14 @@ public partial class MyClass {
 								new (
 									accessorKind: AccessorKind.Getter,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								),
 								new (
 									accessorKind: AccessorKind.Setter,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								),
@@ -495,14 +495,14 @@ public partial class MyClass {
 								new (
 									accessorKind: AccessorKind.Getter,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								),
 								new (
 									accessorKind: AccessorKind.Setter,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								),
@@ -565,14 +565,14 @@ public partial class MyClass {
 								new (
 									accessorKind: AccessorKind.Getter,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								),
 								new (
 									accessorKind: AccessorKind.Setter,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								),
@@ -631,14 +631,14 @@ public partial class MyClass {
 								new (
 									accessorKind: AccessorKind.Getter,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								),
 								new (
 									accessorKind: AccessorKind.Setter,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								),
@@ -700,14 +700,14 @@ public partial class MyClass {
 								new (
 									accessorKind: AccessorKind.Getter,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								),
 								new (
 									accessorKind: AccessorKind.Setter,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								),
@@ -773,14 +773,14 @@ public class UIApplicationLaunchEventArgs {}
 								new (
 									accessorKind: AccessorKind.Getter,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								),
 								new (
 									accessorKind: AccessorKind.Setter,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								),
@@ -845,14 +845,14 @@ public partial class MyClass {
 								new (
 									accessorKind: AccessorKind.Getter,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								),
 								new (
 									accessorKind: AccessorKind.Setter,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								),
@@ -916,14 +916,14 @@ public partial class MyClass {
 								new (
 									accessorKind: AccessorKind.Getter,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								),
 								new (
 									accessorKind: AccessorKind.Setter,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								),
@@ -982,14 +982,14 @@ public partial class MyClass {
 								new (
 									accessorKind: AccessorKind.Getter,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								),
 								new (
 									accessorKind: AccessorKind.Setter,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								),
@@ -1057,14 +1057,14 @@ public partial class MyClass {
 								new (
 									accessorKind: AccessorKind.Getter,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								),
 								new (
 									accessorKind: AccessorKind.Setter,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								),
@@ -1087,14 +1087,14 @@ public partial class MyClass {
 								new (
 									accessorKind: AccessorKind.Getter,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								),
 								new (
 									accessorKind: AccessorKind.Setter,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								),
@@ -1332,14 +1332,14 @@ public partial class MyClass {
 								new (
 									accessorKind: AccessorKind.Add,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								),
 								new (
 									accessorKind: AccessorKind.Remove,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								)
@@ -1395,14 +1395,14 @@ public partial class MyClass {
 								new (
 									accessorKind: AccessorKind.Add,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								),
 								new (
 									accessorKind: AccessorKind.Remove,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								)
@@ -1420,14 +1420,14 @@ public partial class MyClass {
 								new (
 									accessorKind: AccessorKind.Add,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								),
 								new (
 									accessorKind: AccessorKind.Remove,
 									symbolAvailability: new (),
-									exportPropertyData: null,
+									exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 									attributes: [],
 									modifiers: []
 								)

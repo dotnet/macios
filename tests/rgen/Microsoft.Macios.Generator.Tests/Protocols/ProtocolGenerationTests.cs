@@ -17,6 +17,11 @@ public class ProtocolGenerationTests : BaseGeneratorTestClass {
 			(ApplePlatform.TVOS, "IAVAudio3DMixing", "IAVAudio3DMixing.cs", "ExpectedIAVAudio3DMixing.cs", null),
 			(ApplePlatform.MacCatalyst, "IAVAudio3DMixing", "IAVAudio3DMixing.cs", "ExpectedIAVAudio3DMixing.cs", null),
 			(ApplePlatform.MacOSX, "IAVAudio3DMixing", "IAVAudio3DMixing.cs", "ExpectedIAVAudio3DMixing.cs", null),
+
+			(ApplePlatform.iOS, "IAVAudioMixing", "IAVAudioMixing.cs", "ExpectedIAVAudioMixing.cs", null),
+			(ApplePlatform.TVOS, "IAVAudio3DMixing", "IAVAudio3DMixing.cs", "ExpectedIAVAudio3DMixing.cs", null),
+			(ApplePlatform.MacCatalyst, "IAVAudio3DMixing", "IAVAudio3DMixing.cs", "ExpectedIAVAudio3DMixing.cs", null),
+			(ApplePlatform.MacOSX, "IAVAudio3DMixing", "IAVAudio3DMixing.cs", "ExpectedIAVAudio3DMixing.cs", null),
 		};
 
 		public IEnumerator<object []> GetEnumerator ()

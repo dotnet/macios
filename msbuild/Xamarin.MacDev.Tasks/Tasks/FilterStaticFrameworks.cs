@@ -22,6 +22,11 @@ namespace Xamarin.MacDev.Tasks {
 
 		public override bool Execute ()
 		{
+			if (FrameworkToPublish?.Any () != true) {
+				Log.LogMessage (MessageImportance.Low, MSBStrings.M7159 /* Skipping {0} - {1} is empty. */, nameof (FilterStaticFrameworks), nameof (FrameworkToPublish));
+				return true;
+			}
+
 			if (ShouldExecuteRemotely ())
 				return new TaskRunner (SessionId, BuildEngine4).RunAsync (this).Result;
 

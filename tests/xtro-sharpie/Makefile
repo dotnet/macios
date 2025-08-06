@@ -60,6 +60,7 @@ SWIFT_FRAMEWORKS = \
 COMMON_IGNORED_FRAMEWORKS = \
 	$(SWIFT_FRAMEWORKS) \
 	_CoreNFC_UIKit \
+	Accelerate \
 	AssetsLibrary \
 	BrowserEngineCore \
 	BrowserKit \

@@ -35,7 +35,7 @@ myImageView.Image = UIImage.FromImage (cgimage);
         ]]></code>
       </example>
       <para>
-        <img href="~/CoreImage/_images/CoreImage.CIConstantColorGenerator.png" alt="Result of applying the filter." />
+        <img href="~/xml/CoreImage/_images/CoreImage.CIConstantColorGenerator.png" alt="Result of applying the filter." />
       </para>
     </remarks>
   </Docs>

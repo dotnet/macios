@@ -24,7 +24,7 @@ var a2f = graph.FindPath (a, f); // [ a, b, f ]
           ]]></code>
       </example>
       <para>
-        <img href="~/GameplayKit/_images/GKPathFindPath.png" alt="Illustration of the path finding algorithm" />
+        <img href="~/xml/GameplayKit/_images/GKPathFindPath.png" alt="Illustration of the path finding algorithm" />
       </para>
     </remarks>
     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GameplayKit/Reference/GKGraph_Class/index.html">Apple documentation for <c>GKGraph</c></related>

@@ -3467,7 +3467,7 @@ namespace UIKit {
 		/// <remarks>
 		///           <para>For instance, call <c>new NSDataAsset("FolderName")</c> for:</para>
 		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.NSDataAsset_FolderStructure.png" alt="Image showing the folder structure." />
+		///             <img href="~/xml/UIKit/_images/UIKit.NSDataAsset_FolderStructure.png" alt="Image showing the folder structure." />
 		///           </para>
 		///         </remarks>
 		[Export ("initWithName:")]
@@ -3479,7 +3479,7 @@ namespace UIKit {
 		/// <remarks>
 		///           <para>For instance, call <c>new NSDataAsset("FolderName", NSBundle.MainBundle)</c> for:</para>
 		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.NSDataAsset_FolderStructure.png" alt="Image showing the folder structure." />
+		///             <img href="~/xml/UIKit/_images/UIKit.NSDataAsset_FolderStructure.png" alt="Image showing the folder structure." />
 		///           </para>
 		///         </remarks>
 		[Export ("initWithName:bundle:")]

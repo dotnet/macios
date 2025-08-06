@@ -107,7 +107,7 @@ webView.LoadRequest(NSUrlRequest.FromUrl(new NSUrl("MyHtmlFile.html", false)));
       </example>
       <para>In order to export a C# object so that it is visible to JavaScript, the developer must add the <c>--registrar:static</c> argument to the arguments used by <c>mtouch</c>. In Xamarin Studio, this is done in the Project Options dialog, in the Build Options / iOS Build pane:</para>
       <para>
-        <img href="~/JavaScriptCore/_images/JSContext.StaticRegistrar.png" alt="Screenshot of compiler options" />
+        <img href="~/xml/JavaScriptCore/_images/JSContext.StaticRegistrar.png" alt="Screenshot of compiler options" />
       </para>
       <para>Another technique for calling C# code from Xamarin.iOS is to use REST, as shown in the  following: </para>
       <para>In the JavaScript code, use <c>XMLHttpRequest</c> and standard JSON techniques to post and parse a query to a REST service running on the local device:</para>

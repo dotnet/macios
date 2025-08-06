@@ -12,7 +12,7 @@ textField.InputView = inputView;
           ]]></code>
       </example>
       <para>
-        <img href="~/UIKit/_images/UITextView.InputView.png" alt="Ilustration of a UIView with an input view" />
+        <img href="~/xml/UIKit/_images/UITextView.InputView.png" alt="Ilustration of a UIView with an input view" />
       </para>
       <para>Notifications relating to keyboard display (<see cref="UIKit.UIKeyboard.Notifications.ObserveWillShow" />, <see cref="UIKit.UIKeyboard.Notifications.ObserveDidShow" />, <see cref="UIKit.UIKeyboard.Notifications.ObserveWillHide" />, <see cref="UIKit.UIKeyboard.Notifications.ObserveDidHide" /> ) will continue to be sent for custom input views. The <c>Frame</c> value in those methods accounts for both the <see cref="UIKit.UIInputView" /> and the <see cref="UIKit.UITextField.InputAccessoryView" /> (if one is assigned).</para>
     </remarks>

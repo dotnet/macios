@@ -65,7 +65,6 @@ public static partial class MethodTests
 	static readonly global::ObjCRuntime.NativeHandle selBookmarkDataWithContentsOfURL_Subdomain_Error_XHandle = global::ObjCRuntime.Selector.GetHandle ("bookmarkDataWithContentsOfURL:subdomain:error:");
 
 	static readonly global::ObjCRuntime.NativeHandle class_ptr = global::ObjCRuntime.Class.GetHandle ("NSObject");
-
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("tvos")]
@@ -309,4 +308,5 @@ public static partial class MethodTests
 		global::CoreFoundation.CFString.ReleaseNative (nspath);
 		return ret;
 	}
+
 }

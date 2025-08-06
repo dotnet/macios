@@ -20,7 +20,7 @@ namespace Microsoft.Macios.Generator.Emitters;
 /// <summary>
 /// Emits the model class for a protocol.
 /// </summary>
-class ModelEmitter : ICodeEmitter {
+class ModelEmitter : IClassEmitter {
 
 	/// <inheritdoc />
 	public string GetSymbolName (in Binding binding)
@@ -32,13 +32,6 @@ class ModelEmitter : ICodeEmitter {
 
 	/// <inheritdoc />
 	public IEnumerable<string> UsingStatements { get; } = [];
-
-	void EmitDefaultConstructors (in BindingContext bindingContext, string wrapperClassName,
-		TabbedWriter<StringWriter> classBlock)
-	{
-
-	}
-
 
 	/// <summary>
 	/// Emits the properties for the model class.
@@ -117,12 +110,12 @@ class ModelEmitter : ICodeEmitter {
 		bindingContext.Builder.WriteLine ("[Model]");
 		bindingContext.Builder.AppendMemberAvailability (bindingContext.Changes.SymbolAvailability);
 
-
 		using (var classBlock = bindingContext.Builder.CreateBlock (
 				   $"public unsafe abstract partial class {modelName} : NSObject, {bindingContext.Changes.Name}",
 				   true)) {
 
-			EmitDefaultConstructors (bindingContext, modelName, classBlock);
+			this.EmitDefaultNSObjectConstructors (
+				className: modelName, classBlock: classBlock, disableDefaultCtor: false);
 			EmitProperties (bindingContext, classBlock);
 			EmitMethods (bindingContext, classBlock);
 		}

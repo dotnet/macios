@@ -57,6 +57,7 @@ $@"public {wrapperClassName} (NativeHandle handle, bool owns)
 
 		foreach (var property in allProperties) {
 			this.EmitProperty (context, property.ToProtocolWrapperProperty (), classBlock);
+			classBlock.WriteLine ();
 		}
 	}
 
@@ -90,6 +91,7 @@ $@"public {wrapperClassName} (NativeHandle handle, bool owns)
 				   $"internal unsafe sealed class {wrapperName} : BaseWrapper, {bindingContext.Changes.Name}",
 				   true)) {
 			EmitDefaultConstructors (bindingContext, wrapperName, classBlock);
+			classBlock.WriteLine ();
 			EmitProperties (bindingContext, classBlock);
 			EmitMethods (bindingContext, classBlock);
 		}

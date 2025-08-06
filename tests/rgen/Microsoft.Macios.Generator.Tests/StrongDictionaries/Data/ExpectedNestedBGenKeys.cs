@@ -13,7 +13,6 @@ namespace TestNamespace;
 [SupportedOSPlatform ("maccatalyst13.1")]
 public static partial class CARendererOptionKeys
 {
-
 	static global::Foundation.NSString? _ColorSpace;
 
 	[SupportedOSPlatform ("macos")]
@@ -55,5 +54,6 @@ public static partial class CARendererOptionKeys
 			return _MetalCommandQueue;
 		}
 	}
+
 }
 #endif

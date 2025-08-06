@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using System.Collections.Immutable;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -190,7 +191,6 @@ if (IsDirectBinding) {{
 				: null;
 		}
 
-		classBlock.WriteLine ();
 		classBlock.AppendMemberAvailability (method.SymbolAvailability);
 		classBlock.AppendGeneratedCodeAttribute (optimizable: true);
 
@@ -250,6 +250,7 @@ return {tcsName}.Task;
 			? EnsureUiThread (context.RootContext.CurrentPlatform) : null;
 		foreach (var method in context.Changes.Methods.OrderBy (m => m.Name)) {
 			EmitMethod (self, context, method, classBlock, uiThreadCheck);
+			classBlock.WriteLine ();
 		}
 	}
 
@@ -271,7 +272,6 @@ return {tcsName}.Task;
 			if (!property.IsField)
 				continue;
 
-			classBlock.WriteLine ();
 			// a field should always have a getter, if it does not, we do not generate the property
 			var getter = property.GetAccessor (AccessorKind.Getter);
 			if (getter.IsNullOrDefault)
@@ -280,9 +280,9 @@ return {tcsName}.Task;
 			// provide a backing variable for the property if and only if we are dealing with a reference type
 			if (property.IsReferenceType) {
 				classBlock.WriteLine (FieldPropertyBackingVariable (property).ToString ());
+				classBlock.WriteLine ();
 			}
 
-			classBlock.WriteLine ();
 			classBlock.AppendMemberAvailability (property.SymbolAvailability);
 			classBlock.AppendGeneratedCodeAttribute (optimizable: true);
 			if (property.IsNotification) {
@@ -314,21 +314,21 @@ return {backingField};
 				}
 
 				var setter = property.GetAccessor (AccessorKind.Setter);
-				if (setter.IsNullOrDefault)
-					// we are done with the current property
-					continue;
+				if (!setter.IsNullOrDefault) {
+					propertyBlock.WriteLine (); // add space between getter and setter since we have the attrs
+					propertyBlock.AppendMemberAvailability (setter.SymbolAvailability);
+					using (var setterBlock = propertyBlock.CreateBlock ("set", block: true)) {
+						if (property.IsReferenceType) {
+							// set the backing field
+							setterBlock.WriteLine ($"{backingField} = value;");
+						}
 
-				propertyBlock.WriteLine (); // add space between getter and setter since we have the attrs
-				propertyBlock.AppendMemberAvailability (setter.SymbolAvailability);
-				using (var setterBlock = propertyBlock.CreateBlock ("set", block: true)) {
-					if (property.IsReferenceType) {
-						// set the backing field
-						setterBlock.WriteLine ($"{backingField} = value;");
+						// call the native code
+						setterBlock.WriteLine ($"{ExpressionStatement (FieldConstantSetter (property, "value"))}");
 					}
-					// call the native code
-					setterBlock.WriteLine ($"{ExpressionStatement (FieldConstantSetter (property, "value"))}");
 				}
 			}
+			classBlock.WriteLine ();
 		}
 		notificationProperties = notificationsBuilder.ToImmutable ();
 	}
@@ -365,12 +365,11 @@ return {backingField};
 
 		// add backing variable for the property if it is needed
 		if (property.NeedsBackingField) {
-			classBlock.WriteLine ();
 			classBlock.AppendGeneratedCodeAttribute (optimizable: true);
 			classBlock.WriteLine ($"object? {property.BackingField} = null;");
+			classBlock.WriteLine ();
 		}
 
-		classBlock.WriteLine ();
 		classBlock.AppendMemberAvailability (property.SymbolAvailability);
 		classBlock.AppendGeneratedCodeAttribute (optimizable: true);
 
@@ -517,7 +516,48 @@ if (!(value is null) && rvalue is null) {{
 			? EnsureUiThread (context.RootContext.CurrentPlatform) : null;
 
 		foreach (var property in context.Changes.Properties.OrderBy (p => p.Name)) {
+			if (property.IsField)
+				continue;
 			EmitProperty (self, in context, property, classBlock, uiThreadCheck);
+			classBlock.WriteLine ();
 		}
+	}
+
+	/// <summary>
+	/// Emit the default constructors for the class.
+	/// </summary>
+	/// <param name="className">The name of the class whose constructors are going to be generated.</param>
+	/// <param name="classBlock">Current class block.</param>
+	/// <param name="disableDefaultCtor">A value indicating whether to disable the default constructor.</param>
+	public static void EmitDefaultNSObjectConstructors (this IClassEmitter self, string className, TabbedWriter<StringWriter> classBlock, bool disableDefaultCtor)
+	{
+		if (!disableDefaultCtor) {
+			classBlock.WriteDocumentation (Documentation.Class.DefaultInit (className));
+			classBlock.AppendGeneratedCodeAttribute ();
+			classBlock.AppendDesignatedInitializer ();
+			classBlock.WriteRaw (
+$@"[Export (""init"")]
+public {className} () : base ({NSObjectFlag}.Empty)
+{{
+	if (IsDirectBinding)
+		InitializeHandle (global::ObjCRuntime.Messaging.IntPtr_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle (""init"")), ""init"");
+	else
+		InitializeHandle (global::ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle (""init"")), ""init"");
+}}
+");
+			classBlock.WriteLine ();
+		}
+
+		classBlock.WriteDocumentation (Documentation.Class.DefaultInitWithFlag (className));
+		classBlock.AppendGeneratedCodeAttribute ();
+		classBlock.AppendEditorBrowsableAttribute (EditorBrowsableState.Advanced);
+		classBlock.WriteLine ($"protected {className} ({NSObjectFlag} t) : base (t) {{}}");
+
+		classBlock.WriteLine ();
+		classBlock.WriteDocumentation (Documentation.Class.DefaultInitWithHandle (className));
+		classBlock.AppendGeneratedCodeAttribute ();
+		classBlock.AppendEditorBrowsableAttribute (EditorBrowsableState.Advanced);
+		classBlock.WriteLine ($"protected internal {className} ({NativeHandle} handle) : base (handle) {{}}");
+		classBlock.WriteLine ();
 	}
 }

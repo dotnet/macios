@@ -18,7 +18,7 @@ namespace Microsoft.Macios.Generator.Emitters;
 /// <summary>
 /// Emits the wrapper class for a protocol.
 /// </summary>
-class ProtocolWrapperEmitter : ICodeEmitter {
+class ProtocolWrapperEmitter : IClassEmitter {
 	/// <inheritdoc />
 	public string GetSymbolName (in Binding binding) => Nomenclator.GetProtocolWrapperName (binding.Name);
 
@@ -32,8 +32,8 @@ class ProtocolWrapperEmitter : ICodeEmitter {
 	/// <param name="classBlock">The writer for the class block.</param>
 	void EmitDefaultConstructors (in BindingContext bindingContext, TabbedWriter<StringWriter> classBlock)
 	{
-		classBlock.WriteLine ("// Implement default constructor");
 		classBlock.WriteLine ();
+		classBlock.WriteLine ("// Implement default constructor");
 	}
 
 	/// <summary>
@@ -48,8 +48,8 @@ class ProtocolWrapperEmitter : ICodeEmitter {
 			.OrderBy (p => p.Name);
 
 		foreach (var property in allProperties) {
-			classBlock.WriteLine ($"// Implement property: {property.Name}");
 			classBlock.WriteLine ();
+			classBlock.WriteLine ($"// Implement property: {property.Name}");
 		}
 	}
 
@@ -65,7 +65,7 @@ class ProtocolWrapperEmitter : ICodeEmitter {
 			.OrderBy (m => m.Name);
 
 		foreach (var method in allMethods) {
-			classBlock.WriteLine ($"// Implement method: {method.Name}");
+			this.EmitMethod (context, method.ToProtocolWrapperMethod (), classBlock);
 			classBlock.WriteLine ();
 		}
 	}

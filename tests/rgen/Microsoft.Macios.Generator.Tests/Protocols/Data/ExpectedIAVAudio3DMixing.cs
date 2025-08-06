@@ -349,6 +349,7 @@ public interface IAVAudio3DMixing : INativeObject, IDisposable
 
 internal unsafe sealed class AVAudio3DMixingWrapper : BaseWrapper, IAVAudio3DMixing
 {
+
 	// Implement default constructor
 
 	// Implement property: Obstruction
@@ -364,5 +365,4 @@ internal unsafe sealed class AVAudio3DMixingWrapper : BaseWrapper, IAVAudio3DMix
 	// Implement property: ReverbBlend
 
 	// Implement property: SourceMode
-
 }

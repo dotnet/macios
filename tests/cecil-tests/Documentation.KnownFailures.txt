@@ -6275,7 +6275,8 @@ F:SoundAnalysis.SNTimeDurationConstraintType.Range
 F:Speech.SFSpeechErrorCode.AudioReadFailed
 F:Speech.SFSpeechErrorCode.InternalServiceError
 F:Speech.SFSpeechErrorCode.MalformedSupplementalModel
-F:Speech.SFSpeechErrorCode.Timeout
+F:Speech.SFSpeechErrorCode.MissingParameter
+F:Speech.SFSpeechErrorCode.Timeout2
 F:Speech.SFSpeechErrorCode.UndefinedTemplateClassName
 F:StoreKit.SKAdNetworkCoarseConversionValue.High
 F:StoreKit.SKAdNetworkCoarseConversionValue.Low
@@ -16586,6 +16587,8 @@ M:SoundAnalysis.SNTimeDurationConstraint.#ctor(CoreMedia.CMTime[])
 M:SoundAnalysis.SNTimeDurationConstraint.#ctor(CoreMedia.CMTimeRange)
 M:Speech.ISFSpeechRecognitionTaskDelegate.DidProcessAudioDuration(Speech.SFSpeechRecognitionTask,System.Double)
 M:Speech.SFAnalysisContextTag.#ctor
+M:Speech.SFSpeechLanguageModel.PrepareCustomModelAsync(Foundation.NSUrl,Speech.SFSpeechLanguageModelConfiguration,System.Boolean)
+M:Speech.SFSpeechLanguageModel.PrepareCustomModelAsync(Foundation.NSUrl,Speech.SFSpeechLanguageModelConfiguration)
 M:Speech.SFSpeechLanguageModel.PrepareCustomModelAsync(Foundation.NSUrl,System.String,Speech.SFSpeechLanguageModelConfiguration,System.Boolean)
 M:Speech.SFSpeechLanguageModel.PrepareCustomModelAsync(Foundation.NSUrl,System.String,Speech.SFSpeechLanguageModelConfiguration)
 M:Speech.SFSpeechRecognitionTaskDelegate_Extensions.DidProcessAudioDuration(Speech.ISFSpeechRecognitionTaskDelegate,Speech.SFSpeechRecognitionTask,System.Double)
@@ -29207,6 +29210,7 @@ T:SoundAnalysis.SNErrorCode
 T:SoundAnalysis.SNTimeDurationConstraint
 T:SoundAnalysis.SNTimeDurationConstraintType
 T:Speech.SFSpeechErrorCode
+T:Speech.SFSpeechLanguageModelPrepareCustomModelHandler
 T:Speech.SFSpeechRecognitionTaskHint
 T:SpriteKit.SKNodeEvent_NSEvent
 T:SpriteKit.SKTextureAtlasLoadCallback

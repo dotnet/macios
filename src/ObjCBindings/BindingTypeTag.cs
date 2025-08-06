@@ -47,7 +47,7 @@ namespace ObjCBindings {
 		/// Flags the protocol as needing a model wrapper. This will generate a model class
 		/// for the protocol.
 		/// </summary>
-		NeedsModel = 1 << 3,
+		CreateModel = 1 << 3,
 	}
 
 	/// <summary>

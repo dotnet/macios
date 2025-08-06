@@ -53,7 +53,7 @@ class ProtocolAndModelEmitter : ICodeEmitter {
 		var bindingData = (BindingTypeData<ObjCBindings.Protocol>) bindingContext.Changes.BindingInfo;
 
 		// check if the protocol was marked to have a model
-		if (!bindingData.Flags.HasFlag (ObjCBindings.Protocol.NeedsModel))
+		if (!bindingData.Flags.HasFlag (ObjCBindings.Protocol.CreateModel))
 			return true;
 
 		bindingContext.Builder.WriteLine ();

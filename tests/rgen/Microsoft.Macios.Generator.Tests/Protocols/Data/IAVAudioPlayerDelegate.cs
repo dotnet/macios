@@ -12,7 +12,7 @@ namespace Microsoft.Macios.Generator.Tests.Protocols.Data;
 [SupportedOSPlatform ("tvos")]
 [SupportedOSPlatform ("macos")]
 [SupportedOSPlatform ("maccatalyst13.1")]
-[BindingType<ObjCBindings.Protocol> (ObjCBindings.Protocol.NeedsModel)]
+[BindingType<ObjCBindings.Protocol> (ObjCBindings.Protocol.CreateModel)]
 public partial interface IAVAudioPlayerDelegate {
 	[Export<Method> ("audioPlayerDidFinishPlaying:successfully:")]
 	public virtual partial void FinishedPlaying (AVAudioPlayer player, bool flag);

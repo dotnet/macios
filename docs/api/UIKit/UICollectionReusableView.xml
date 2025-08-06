@@ -9,7 +9,7 @@
         For example, a Supplementary View could be used to present a header for a particular section, as shown in this figure taken from the "Introduction to Collection Views" guide:
       </para>
       <para>
-        <img href="~/UIKit/_images/UIKit.UICollectionReusableView.png" alt="Screenshot of the app" />
+        <img href="~/xml/UIKit/_images/UIKit.UICollectionReusableView.png" alt="Screenshot of the app" />
       </para>
       <para>
         However, Supplementary Views are more generic than just headers and footers. They can be positioned anywhere in the collection view and can be comprised of any views, making their appearance fully customizable.

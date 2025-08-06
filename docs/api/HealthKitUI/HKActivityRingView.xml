@@ -22,7 +22,7 @@ summary.AppleStandHoursGoal = HKQuantity.FromQuantity (HKUnit.Count, 8);
     ]]></code>
       </example>
       <para>
-        <img href="~/HealthKitUI/_images/HealthKitUI.HKActivityRingView.png" alt="Screenshot showing the HKActivityRingView" />
+        <img href="~/xml/HealthKitUI/_images/HealthKitUI.HKActivityRingView.png" alt="Screenshot showing the HKActivityRingView" />
       </para>
     </remarks>
     <related type="externalDocumentation" href="https://developer.apple.com/reference/HealthKitUI/HKActivityRingView">Apple documentation for <c>HKActivityRingView</c></related>

@@ -1053,7 +1053,7 @@ namespace CoreLocation {
 	/// <remarks>
 	///       <para>Application developers should use a subtype, either <see cref="CoreLocation.CLCircularRegion" /> or <see cref="CoreLocation.CLBeaconRegion" />:</para>
 	///       <para>
-	///         <img href="~/CoreLocation/_images/CoreLocation.CLBeacon.Hierarchy.png" alt="Class diagram showing CLBeaconRegion and CLCircularRegion are subclasses of CLRegion" />
+	///         <img href="~/xml/CoreLocation/_images/CoreLocation.CLBeacon.Hierarchy.png" alt="Class diagram showing CLBeaconRegion and CLCircularRegion are subclasses of CLRegion" />
 	///       </para>
 	///     </remarks>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CoreLocation/Reference/CLRegion_class/index.html">Apple documentation for <c>CLRegion</c></related>

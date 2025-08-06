@@ -42,7 +42,7 @@
                 set to too small a <see cref="CGRect" />, one doesn't (however, <see cref="UIKit.UIScrollView.AlwaysBounceVertical" /> and <see cref="UIKit.UIScrollView.AlwaysBounceHorizontal" /> can be used to allow dragging even in this situation.)
             </para>
       <para>
-        <img href="~/UIKit/_images/UIKit.UIScrollView.Slide2.png" alt="Diagram of content size in a scroll view" />
+        <img href="~/xml/UIKit/_images/UIKit.UIScrollView.Slide2.png" alt="Diagram of content size in a scroll view" />
       </para>
       <para>
                 As the following code shows, it's straightforward to create and use a <see cref="UIKit.UIScrollView" /> in this manner. The
@@ -87,7 +87,7 @@ scrollView.ViewForZoomingInScrollView += (UIScrollView sv) => { return imageView
                 the application in the middle of a swiping animation; portions of both the white and gray subviews are visible. 
             </para>
       <para>
-        <img href="~/UIKit/_images/UIKit.UIScrollView.Slide1.png" alt="Sequence diagram of user actions and UIScrollView events" />
+        <img href="~/xml/UIKit/_images/UIKit.UIScrollView.Slide1.png" alt="Sequence diagram of user actions and UIScrollView events" />
       </para>
       <para>
                 If <see cref="UIKit.UIScrollView.PagingEnabled" /> is set to <see langword="true" /> or if the gesture attempts to scroll to an area
@@ -229,7 +229,7 @@ else
         </item>
       </list>
       <para>
-        <img href="~/UIKit/_images/UIKit.UIScrollView.DragEventSequence.png" alt="Diagram of events relating to dragging in a UIScrollView" />
+        <img href="~/xml/UIKit/_images/UIKit.UIScrollView.DragEventSequence.png" alt="Diagram of events relating to dragging in a UIScrollView" />
       </para>
       <para>
                 The following illustration shows the user actions and resulting <see cref="UIKit.UIScrollView" /> event sequence associated with a pinch-to-zoom gesture:</para>
@@ -263,7 +263,7 @@ else
         </item>
       </list>
       <para>
-        <img href="~/UIKit/_images/UIKit.UIScrollView.ZoomEventSequence.png" alt="Sequence of events related to zooming" />
+        <img href="~/xml/UIKit/_images/UIKit.UIScrollView.ZoomEventSequence.png" alt="Sequence of events related to zooming" />
       </para>
       <format type="text/html">
         <h2>State Preservation and Restoration</h2>
@@ -309,7 +309,7 @@ else
                         partially visible. If it were <see langword="true" />, the closest view would "snap" into alignment (in this case, the white view).
                     </para>
           <para>
-            <img href="~/UIKit/_images/UIKit.UIScrollView.Slide1.png" alt="Sequence diagram of user actions and UIScrollView events" />
+            <img href="~/xml/UIKit/_images/UIKit.UIScrollView.Slide1.png" alt="Sequence diagram of user actions and UIScrollView events" />
           </para>
         </remarks>
         <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/FrogScroller">iOS Standard Controls</related>

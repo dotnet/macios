@@ -62,7 +62,7 @@ namespace CoreText {
 	/// 	The following image shows the effect that the options have on measuring text.
 	///       </para>
 	///       <para>
-	///         <img href="~/CoreText/_images/CoreTextBoundOptions.png" alt="Illustration of the area defined by the various bounds options" />
+	///         <img href="~/xml/CoreText/_images/CoreTextBoundOptions.png" alt="Illustration of the area defined by the various bounds options" />
 	///       </para>
 	///     </remarks>
 	[Native]
@@ -232,7 +232,7 @@ namespace CoreText {
 		/// 	    This function can return different bounds based on the options passed.    
 		/// 	  </para>
 		///           <para>
-		///             <img href="~/CoreText/_images/CoreTextBoundOptions.png" alt="Illustration of the area defined by the various bounds options" />
+		///             <img href="~/xml/CoreText/_images/CoreTextBoundOptions.png" alt="Illustration of the area defined by the various bounds options" />
 		///           </para>
 		///         </remarks>
 		public CGRect GetBounds (CTLineBoundsOptions options)

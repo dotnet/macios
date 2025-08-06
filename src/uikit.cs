@@ -8246,7 +8246,7 @@ namespace UIKit {
 		/// <remarks>
 		///           <para>The field vectors of a noise field are dynamic. The following is a snapshot:</para>
 		///           <para>
-		///             <img href="~/UIKit/_images/UIFieldBehavior.CreateNoiseField.png" alt="Image showing the specified field." />
+		///             <img href="~/xml/UIKit/_images/UIFieldBehavior.CreateNoiseField.png" alt="Image showing the specified field." />
 		///           </para>
 		///         </remarks>
 		[Static]

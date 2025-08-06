@@ -443,6 +443,8 @@ namespace Introspection {
 					return true;
 				// Xcode 26.0
 				case "UISceneDestructionCondition": // Conformance not in headers
+				case "UICornerConfiguration": // Conformance not in headers
+				case "UICornerRadius": // Conformance not in headers
 					return true;
 				}
 				break;
@@ -644,6 +646,8 @@ namespace Introspection {
 					return true;
 				// Xcode 26.0
 				case "UISceneDestructionCondition": // Conformance not in headers
+				case "UICornerConfiguration": // Conformance not in headers
+				case "UICornerRadius": // Conformance not in headers
 					return true;
 				}
 				break;

@@ -45,7 +45,7 @@ class ClassEmitter : IClassEmitter {
 		"System.Diagnostics.CodeAnalysis",
 		"ObjCRuntime",
 	];
-	
+
 	/// <summary>
 	/// Emit the code for all the constructors in the class.
 	/// </summary>

@@ -5,5 +5,77 @@ Do not edit it manually, as it will get overwritten by automation.
 This file should be imported by eng/Versions.props
 -->
 <Project>
-	<!-- will get filled in the next maestro bump -->
+  <PropertyGroup>
+    <!-- dotnet/sdk dependencies -->
+    <MicrosoftNETSdkPackageVersion>9.0.109-servicing.25365.26</MicrosoftNETSdkPackageVersion>
+    <!-- dotnet/runtime dependencies -->
+    <MicrosoftNETILLinkPackageVersion>9.0.0-alpha.1.23556.4</MicrosoftNETILLinkPackageVersion>
+    <MicrosoftNETRuntimeMonoTargetsSdkPackageVersion>9.0.0-rc.2.24462.10</MicrosoftNETRuntimeMonoTargetsSdkPackageVersion>
+    <!-- _git/dotnet-runtime dependencies -->
+    <MicrosoftNETILLinkTasksPackageVersion>9.0.7</MicrosoftNETILLinkTasksPackageVersion>
+    <MicrosoftNETCoreAppRefPackageVersion>9.0.7</MicrosoftNETCoreAppRefPackageVersion>
+    <!-- _git/dotnet-aspnetcore dependencies -->
+    <MicrosoftAspNetCoreAppRefPackageVersion>9.0.7</MicrosoftAspNetCoreAppRefPackageVersion>
+    <!-- dotnet/emsdk dependencies -->
+    <MicrosoftNETWorkloadEmscriptenCurrentManifest90100TransportPackageVersion>9.0.7-servicing.25304.2</MicrosoftNETWorkloadEmscriptenCurrentManifest90100TransportPackageVersion>
+    <!-- dotnet/cecil dependencies -->
+    <MicrosoftDotNetCecilPackageVersion>0.11.5-alpha.25275.2</MicrosoftDotNetCecilPackageVersion>
+    <!-- dotnet/macios dependencies -->
+    <MicrosoftiOSSdknet80_170PackageVersion>17.0.8523</MicrosoftiOSSdknet80_170PackageVersion>
+    <MicrosoftiOSSdknet80_180PackageVersion>18.0.8324</MicrosoftiOSSdknet80_180PackageVersion>
+    <MicrosoftiOSSdknet90_180PackageVersion>18.0.9617</MicrosoftiOSSdknet90_180PackageVersion>
+    <MicrosoftMacCatalystSdknet80_170PackageVersion>17.0.8523</MicrosoftMacCatalystSdknet80_170PackageVersion>
+    <MicrosoftMacCatalystSdknet80_180PackageVersion>18.0.8324</MicrosoftMacCatalystSdknet80_180PackageVersion>
+    <MicrosoftMacCatalystSdknet90_180PackageVersion>18.0.9617</MicrosoftMacCatalystSdknet90_180PackageVersion>
+    <MicrosoftmacOSSdknet80_140PackageVersion>14.0.8523</MicrosoftmacOSSdknet80_140PackageVersion>
+    <MicrosoftmacOSSdknet80_150PackageVersion>15.0.8324</MicrosoftmacOSSdknet80_150PackageVersion>
+    <MicrosoftmacOSSdknet90_150PackageVersion>15.0.9617</MicrosoftmacOSSdknet90_150PackageVersion>
+    <MicrosofttvOSSdknet80_170PackageVersion>17.0.8523</MicrosofttvOSSdknet80_170PackageVersion>
+    <MicrosofttvOSSdknet80_180PackageVersion>18.0.8324</MicrosofttvOSSdknet80_180PackageVersion>
+    <MicrosofttvOSSdknet90_180PackageVersion>18.0.9617</MicrosofttvOSSdknet90_180PackageVersion>
+    <!-- dotnet/arcade dependencies -->
+    <MicrosoftDotNetArcadeSdkPackageVersion>9.0.0-beta.25380.1</MicrosoftDotNetArcadeSdkPackageVersion>
+    <MicrosoftDotNetBuildTasksFeedPackageVersion>9.0.0-beta.25380.1</MicrosoftDotNetBuildTasksFeedPackageVersion>
+    <!-- dotnet/templating dependencies -->
+    <MicrosoftTemplateEngineTasksPackageVersion>7.0.100-alpha.1.21601.1</MicrosoftTemplateEngineTasksPackageVersion>
+    <!-- dotnet/xharness dependencies -->
+    <MicrosoftDotNetXHarnessiOSSharedPackageVersion>10.0.0-prerelease.25405.1</MicrosoftDotNetXHarnessiOSSharedPackageVersion>
+  </PropertyGroup>
+  <!--Property group for alternate package version names-->
+  <PropertyGroup>
+    <!-- dotnet/sdk dependencies -->
+    <MicrosoftNETSdkVersion>$(MicrosoftNETSdkPackageVersion)</MicrosoftNETSdkVersion>
+    <!-- dotnet/runtime dependencies -->
+    <MicrosoftNETILLinkVersion>$(MicrosoftNETILLinkPackageVersion)</MicrosoftNETILLinkVersion>
+    <MicrosoftNETRuntimeMonoTargetsSdkVersion>$(MicrosoftNETRuntimeMonoTargetsSdkPackageVersion)</MicrosoftNETRuntimeMonoTargetsSdkVersion>
+    <!-- _git/dotnet-runtime dependencies -->
+    <MicrosoftNETILLinkTasksVersion>$(MicrosoftNETILLinkTasksPackageVersion)</MicrosoftNETILLinkTasksVersion>
+    <MicrosoftNETCoreAppRefVersion>$(MicrosoftNETCoreAppRefPackageVersion)</MicrosoftNETCoreAppRefVersion>
+    <!-- _git/dotnet-aspnetcore dependencies -->
+    <MicrosoftAspNetCoreAppRefVersion>$(MicrosoftAspNetCoreAppRefPackageVersion)</MicrosoftAspNetCoreAppRefVersion>
+    <!-- dotnet/emsdk dependencies -->
+    <MicrosoftNETWorkloadEmscriptenCurrentManifest90100TransportVersion>$(MicrosoftNETWorkloadEmscriptenCurrentManifest90100TransportPackageVersion)</MicrosoftNETWorkloadEmscriptenCurrentManifest90100TransportVersion>
+    <!-- dotnet/cecil dependencies -->
+    <MicrosoftDotNetCecilVersion>$(MicrosoftDotNetCecilPackageVersion)</MicrosoftDotNetCecilVersion>
+    <!-- dotnet/macios dependencies -->
+    <MicrosoftiOSSdknet80_170Version>$(MicrosoftiOSSdknet80_170PackageVersion)</MicrosoftiOSSdknet80_170Version>
+    <MicrosoftiOSSdknet80_180Version>$(MicrosoftiOSSdknet80_180PackageVersion)</MicrosoftiOSSdknet80_180Version>
+    <MicrosoftiOSSdknet90_180Version>$(MicrosoftiOSSdknet90_180PackageVersion)</MicrosoftiOSSdknet90_180Version>
+    <MicrosoftMacCatalystSdknet80_170Version>$(MicrosoftMacCatalystSdknet80_170PackageVersion)</MicrosoftMacCatalystSdknet80_170Version>
+    <MicrosoftMacCatalystSdknet80_180Version>$(MicrosoftMacCatalystSdknet80_180PackageVersion)</MicrosoftMacCatalystSdknet80_180Version>
+    <MicrosoftMacCatalystSdknet90_180Version>$(MicrosoftMacCatalystSdknet90_180PackageVersion)</MicrosoftMacCatalystSdknet90_180Version>
+    <MicrosoftmacOSSdknet80_140Version>$(MicrosoftmacOSSdknet80_140PackageVersion)</MicrosoftmacOSSdknet80_140Version>
+    <MicrosoftmacOSSdknet80_150Version>$(MicrosoftmacOSSdknet80_150PackageVersion)</MicrosoftmacOSSdknet80_150Version>
+    <MicrosoftmacOSSdknet90_150Version>$(MicrosoftmacOSSdknet90_150PackageVersion)</MicrosoftmacOSSdknet90_150Version>
+    <MicrosofttvOSSdknet80_170Version>$(MicrosofttvOSSdknet80_170PackageVersion)</MicrosofttvOSSdknet80_170Version>
+    <MicrosofttvOSSdknet80_180Version>$(MicrosofttvOSSdknet80_180PackageVersion)</MicrosofttvOSSdknet80_180Version>
+    <MicrosofttvOSSdknet90_180Version>$(MicrosofttvOSSdknet90_180PackageVersion)</MicrosofttvOSSdknet90_180Version>
+    <!-- dotnet/arcade dependencies -->
+    <MicrosoftDotNetArcadeSdkVersion>$(MicrosoftDotNetArcadeSdkPackageVersion)</MicrosoftDotNetArcadeSdkVersion>
+    <MicrosoftDotNetBuildTasksFeedVersion>$(MicrosoftDotNetBuildTasksFeedPackageVersion)</MicrosoftDotNetBuildTasksFeedVersion>
+    <!-- dotnet/templating dependencies -->
+    <MicrosoftTemplateEngineTasksVersion>$(MicrosoftTemplateEngineTasksPackageVersion)</MicrosoftTemplateEngineTasksVersion>
+    <!-- dotnet/xharness dependencies -->
+    <MicrosoftDotNetXHarnessiOSSharedVersion>$(MicrosoftDotNetXHarnessiOSSharedPackageVersion)</MicrosoftDotNetXHarnessiOSSharedVersion>
+  </PropertyGroup>
 </Project>

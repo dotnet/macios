@@ -751,12 +751,6 @@ namespace MediaPlayer {
 		bool ShowsItemsWithProtectedAssets { get; set; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="MediaPlayer.MPMediaPickerControllerDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="MediaPlayer.MPMediaPickerControllerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="MediaPlayer.MPMediaPickerControllerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="MediaPlayer.MPMediaPickerControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IMPMediaPickerControllerDelegate { }
 
 	/// <summary>A delegate object for the <see cref="MediaPlayer.MPMediaPickerController" /> class. Application developers can use this deelegate to respond to events relating to media-item selection.</summary>
@@ -2746,21 +2740,9 @@ namespace MediaPlayer {
 		void GetContentItem (string identifier, Action<MPContentItem, NSError> completionHandler);
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="MediaPlayer.MPPlayableContentDataSource" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="MediaPlayer.MPPlayableContentDataSource" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="MediaPlayer.MPPlayableContentDataSource" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="MediaPlayer.MPPlayableContentDataSource_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IMPPlayableContentDataSource {
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="MediaPlayer.MPPlayableContentDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="MediaPlayer.MPPlayableContentDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="MediaPlayer.MPPlayableContentDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="MediaPlayer.MPPlayableContentDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IMPPlayableContentDelegate { }
 
 	/// <summary>Delegate object providing methods for external media players to send playback commands to the app.</summary>

@@ -3880,7 +3880,7 @@ namespace CoreImage {
 		///         <remarks>
 		///           <para>The 2D Gaussian is defined as:</para>
 		///           <para>
-		///             <img href="~/CoreImage/_images/CoreImage.GaussianEq.png" alt="Result of applying the filter." />
+		///             <img href="~/xml/CoreImage/_images/CoreImage.GaussianEq.png" alt="Result of applying the filter." />
 		///           </para>
 		///           <para>Where zeta (<c>z</c>) is a vector holding the pixel coordinates and mu (μ) is a vector holding the mean of the Gaussian in either direction.</para>
 		///           <para>The <paramref name="sigma" /> defines the rate of falloff of the Gaussian. Smaller <paramref name="sigma" /> values blur over fewer pixels.</para>
@@ -6763,7 +6763,7 @@ namespace CoreImage {
 	/// };          
 	///           ]]></code>
 	///       </example>
-	///       <para>Which results in the following histogram: <img href="~/CoreImage/_images/CoreImage.CIHistogramDisplayFilter.png" alt="Result of applying the filter." />.</para>
+	///       <para>Which results in the following histogram: <img href="~/xml/CoreImage/_images/CoreImage.CIHistogramDisplayFilter.png" alt="Result of applying the filter." />.</para>
 	///     </remarks>
 	[CoreImageFilter]
 	[MacCatalyst (13, 1)]

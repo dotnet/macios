@@ -432,12 +432,6 @@ namespace StoreKit {
 
 	interface ISKPaymentTransactionObserver { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="StoreKit.SKPaymentTransactionObserver" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="StoreKit.SKPaymentTransactionObserver" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="StoreKit.SKPaymentTransactionObserver" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="StoreKit.SKPaymentTransactionObserver_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Model]
@@ -585,12 +579,6 @@ namespace StoreKit {
 
 	interface ISKRequestDelegate { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="StoreKit.SKRequestDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="StoreKit.SKRequestDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="StoreKit.SKRequestDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="StoreKit.SKRequestDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[Deprecated (PlatformName.iOS, 18, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.MacCatalyst, 18, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.MacOSX, 15, 0 /* Apple's replacement requires Swift */ )]
@@ -709,12 +697,6 @@ namespace StoreKit {
 
 	interface ISKProductsRequestDelegate { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="StoreKit.SKProductsRequestDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="StoreKit.SKProductsRequestDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="StoreKit.SKProductsRequestDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="StoreKit.SKProductsRequestDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[Deprecated (PlatformName.iOS, 18, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.MacCatalyst, 18, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.MacOSX, 15, 0 /* Apple's replacement requires Swift */ )]
@@ -790,12 +772,6 @@ namespace StoreKit {
 		void LoadProduct (StoreProductParameters parameters, SKAdImpression impression, [NullAllowed] Action<bool, NSError> callback);
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="StoreKit.SKStoreProductViewControllerDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="StoreKit.SKStoreProductViewControllerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="StoreKit.SKStoreProductViewControllerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="StoreKit.SKStoreProductViewControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface ISKStoreProductViewControllerDelegate { }
 
 	/// <summary>A delegate object that allows the application developer to customize the behavior of a <see cref="StoreKit.SKStoreProductViewController" />.</summary>
@@ -1032,12 +1008,6 @@ namespace StoreKit {
 		void Load (SKCloudServiceSetupOptions options, Action<bool, NSError> completionHandler);
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="StoreKit.SKCloudServiceSetupViewControllerDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="StoreKit.SKCloudServiceSetupViewControllerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="StoreKit.SKCloudServiceSetupViewControllerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="StoreKit.SKCloudServiceSetupViewControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[NoMac]
 	[MacCatalyst (13, 1)]
 	interface ISKCloudServiceSetupViewControllerDelegate { }

@@ -56,12 +56,6 @@ namespace ReplayKit {
 		RPPreviewViewControllerMode Mode { get; set; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="ReplayKit.RPPreviewViewControllerDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="ReplayKit.RPPreviewViewControllerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="ReplayKit.RPPreviewViewControllerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="ReplayKit.RPPreviewViewControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IRPPreviewViewControllerDelegate { }
 
 	/// <summary>The view controller protocol for previewing and editing a ReplayKit recording.</summary>
@@ -233,12 +227,6 @@ namespace ReplayKit {
 		void StopClipBuffering ([NullAllowed] Action<NSError> completionHandler);
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="ReplayKit.RPScreenRecorderDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="ReplayKit.RPScreenRecorderDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="ReplayKit.RPScreenRecorderDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="ReplayKit.RPScreenRecorderDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IRPScreenRecorderDelegate { }
 
 	/// <summary>Protocol for enabling the user to record visual and audio output of applications, with simultaneous recorded audio (screencasts)..</summary>
@@ -338,7 +326,6 @@ namespace ReplayKit {
 		void LoadBroadcastActivityViewController ([NullAllowed] string preferredExtension, Action<RPBroadcastActivityViewController, NSError> handler);
 	}
 
-	/// <include file="../docs/api/ReplayKit/IRPBroadcastActivityViewControllerDelegate.xml" path="/Documentation/Docs[@DocId='T:ReplayKit.IRPBroadcastActivityViewControllerDelegate']/*" />
 	interface IRPBroadcastActivityViewControllerDelegate { }
 
 	/// <summary>Responds to changes in the UI that is presented by a <see cref="ReplayKit.RPBroadcastActivityViewController" />.</summary>
@@ -424,12 +411,6 @@ namespace ReplayKit {
 		void FinishBroadcast (Action<NSError> handler);
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="ReplayKit.RPBroadcastControllerDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="ReplayKit.RPBroadcastControllerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="ReplayKit.RPBroadcastControllerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="ReplayKit.RPBroadcastControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IRPBroadcastControllerDelegate { }
 
 	/// <summary>Delegate object that responds to changes in a broadcast.</summary>

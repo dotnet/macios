@@ -262,6 +262,12 @@ static class Nomenclator {
 		return $"{protocolName.Replace ('.', '_')}Wrapper";
 	}
 
+	/// <summary>
+	/// Generates a unique registration name for a protocol's model class.
+	/// </summary>
+	/// <param name="ns">The namespace of the model class.</param>
+	/// <param name="modelName">The name of the model class.</param>
+	/// <returns>A unique registration name for the model class.</returns>
 	public static string GetProtocolModelRegistrationName (ImmutableArray<string> ns, string modelName)
 	{
 		var nsString = string.Join ("_", ns);

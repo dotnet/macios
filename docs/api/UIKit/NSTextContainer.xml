@@ -31,10 +31,10 @@ AddSubview(rightHandView);
           ]]></code>
       </example>
       <para>
-        <img href="~/UIKit/_images/UIKit.NSTextContainer.TwoColumn.png" alt="Screenshot showing two-column layout" />
+        <img href="~/xml/UIKit/_images/UIKit.NSTextContainer.TwoColumn.png" alt="Screenshot showing two-column layout" />
       </para>
       <para>
-        <img href="~/UIKit/_images/UIKit.NSTextContainer.TwoColumnCommunication.png" alt="UML class diagram showing classes related to showing text in two columns" />
+        <img href="~/xml/UIKit/_images/UIKit.NSTextContainer.TwoColumnCommunication.png" alt="UML class diagram showing classes related to showing text in two columns" />
       </para>
       <para>The preceding diagram illustrates the objects directly involved in the two-column layout. The <see cref="UIKit.NSTextStorage" /> is the responsibility of some external model class and the two-column user-interface is specified by a custom <see cref="UIKit.UIView" /> (<c>TwoColumnView</c>). </para>
       <para>A <see cref="UIKit.NSTextContainer" /> contains an array of zero or more <see cref="UIKit.UIBezierPath" /> objects in its <see cref="UIKit.NSTextContainer.ExclusionPaths" /> property. Text will not be placed within these paths.</para>

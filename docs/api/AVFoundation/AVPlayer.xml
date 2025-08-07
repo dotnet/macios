@@ -5,7 +5,7 @@
       <para>An <see cref="AVFoundation.AVPlayer" /> links the visual presentation, control, and dynamic state of one or more <see cref="AVFoundation.AVAsset" />s.</para>
       <para>The visual element of the display is done by a <see cref="AVFoundation.AVPlayerLayer" />, while it's current state (current time, etc.) is held in an <see cref="AVFoundation.AVPlayerItem" />, which in turn references an <see cref="AVFoundation.AVAsset" />.</para>
       <para>
-        <img href="~/AVFoundation/_images/AVFoundation.AssetPlayerItemPlayer.png" alt="Class diagram showing the important classes related to AssetPlayerItemPlayer" />
+        <img href="~/xml/AVFoundation/_images/AVFoundation.AssetPlayerItemPlayer.png" alt="Class diagram showing the important classes related to AssetPlayerItemPlayer" />
       </para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[

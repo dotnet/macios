@@ -90,7 +90,7 @@
       </list>
       <para>The relationship between these three types of views is shown in the following image, based on the "Introduction to Collection Views" article. The cells are the orange-and-white rectangles and are laid out in a line. An instance of a supplementary view with a <see cref="UIKit.UIView.BackgroundColor" /> of <see cref="UIKit.UIColor.Yellow" /> separates sections, while a single decoration view provides a background for the entire <see cref="UIKit.UICollectionView" />.</para>
       <para>
-        <img href="~/UIKit/_images/UIKit.UICollectionView.Components.png" alt="Image with the various components of a UICollectionView labeled" />
+        <img href="~/xml/UIKit/_images/UIKit.UICollectionView.Components.png" alt="Image with the various components of a UICollectionView labeled" />
       </para>
       <para>(Background image by NASA, https://visibleearth.nasa.gov/)</para>
       <para>
@@ -100,7 +100,7 @@
       </para>
       <para>The <see cref="UIKit.UICollectionView" /> is designed to work with large datasets. The two major attributes of this design are the "reuse queue" for component views and the <see cref="UIKit.UICollectionViewDataSource" /> interface. The reuse queue is a system-managed collection of component views that minimizes memory consumption by only allocating those views that are on-screen and a handful of "next visible" screens. The following illustration, based on a variation of the code from the "Introduction to Collection Views" sample, shows how efficient this reuse queue is: 204 views are visible but the reuse queue only consists of 217 instances of the <c>AnimalCell</c> subtype of <see cref="UIKit.UICollectionViewCell" />. The dataset numbers in the thousands, but the number of actually allocated view components is minimal.</para>
       <para>
-        <img href="~/UIKit/_images/UIKit.UICollectionView.ReuseQueue.png" alt="Screenshot of an app using the reuse queue" />
+        <img href="~/xml/UIKit/_images/UIKit.UICollectionView.ReuseQueue.png" alt="Screenshot of an app using the reuse queue" />
       </para>
       <para>Not only does the reuse queue only have a minimal number of component views, it reuses component views rather than allocating and releasing off-screen views. This helps greatly with performance, but has important consequences for the application developer:</para>
       <para>
@@ -273,7 +273,7 @@ public class SimpleCollectionViewController : UICollectionViewController
         </item>
       </list>
       <para>
-        <img href="~/UIKit/_images/UIKit.UICollectionView.HighlightAndSelect.png" alt="Sequence diagram showing user actions, UICollectionViewDelegate events, and UICollectionView Cell properties" />
+        <img href="~/xml/UIKit/_images/UIKit.UICollectionView.HighlightAndSelect.png" alt="Sequence diagram showing user actions, UICollectionViewDelegate events, and UICollectionView Cell properties" />
       </para>
       <para>Deselecting a <see cref="UIKit.UICollectionViewCell" /> follows a similar sequence:</para>
       <list type="table">

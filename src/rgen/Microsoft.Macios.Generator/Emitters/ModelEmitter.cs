@@ -26,6 +26,8 @@ class ModelEmitter : IClassEmitter {
 	public string GetSymbolName (in Binding binding)
 	{
 		var bindingData = (BindingTypeData<Protocol>) binding.BindingInfo;
+		if (bindingData.ModelName is not null)
+			return bindingData.ModelName;
 		var protocolName = bindingData.Name ?? binding.Name [1..];
 		return protocolName;
 	}

@@ -25,7 +25,6 @@ namespace ObjCBindings {
 		/// </summary>
 		public Type? CategoryType { get; set; } = null;
 
-
 		/// <summary>
 		/// Get/set the error domain for an error enumerator. This has to be used with the SmartEnum flag.
 		/// </summary >
@@ -55,6 +54,11 @@ namespace ObjCBindings {
 		/// Creates a binding type attribute with the default flag value;
 		/// </summary>
 		public BindingTypeAttribute () { }
+
+		/// <summary>
+		/// Get/set the model name for a protocol model class.
+		/// </summary>
+		public string ModelName { get; set; } = string.Empty;
 
 		/// <summary>
 		/// Creates a binding type attribute with the specified flags.

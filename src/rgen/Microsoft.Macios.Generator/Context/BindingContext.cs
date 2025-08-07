@@ -58,8 +58,8 @@ readonly struct BindingContext {
 	/// <returns>The name of the protocol wrapper class, or an empty string if the binding is not a protocol.</returns>
 	public string GetProtocolWrapperName ()
 	{
-		return Changes.BindingType == BindingType.Protocol 
-			? Nomenclator.GetProtocolWrapperName (Changes.Name [1..]) 
+		return Changes.BindingType == BindingType.Protocol
+			? Nomenclator.GetProtocolWrapperName (Changes.Name [1..])
 			: string.Empty;
 	}
 

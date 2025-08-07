@@ -82,7 +82,7 @@ $@"public {wrapperClassName} (NativeHandle handle, bool owns)
 	public bool TryEmit (in BindingContext bindingContext, [NotNullWhen (false)] out ImmutableArray<Diagnostic>? diagnostics)
 	{
 		diagnostics = null;
-		
+
 		var wrapperName = bindingContext.GetProtocolWrapperName ();
 		// we do not emit outer classes for protocol wrappers
 		using (var classBlock = bindingContext.Builder.CreateBlock (

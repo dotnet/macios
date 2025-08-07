@@ -31,8 +31,7 @@ namespace Xamarin.MacDev.Tasks {
 			case ApplePlatform.MacOSX:
 			case ApplePlatform.MacCatalyst:
 				return new string [] {
-					Path.Combine (frameworkPath, "Resources", "Info.plist"), // Check symlink first
-					Path.Combine (frameworkPath, "Versions", "A", "Resources", "Info.plist") // Fallback to actual location
+					Path.Combine (frameworkPath, "Resources", "Info.plist")
 				};
 			default:
 				throw new InvalidOperationException (string.Format (MSBStrings.InvalidPlatform, platform));

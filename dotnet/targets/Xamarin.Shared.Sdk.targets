@@ -1903,7 +1903,6 @@
 	<!-- When we're building a universal app, we need to collect the list of user frameworks we need to run dsymutil on -->
 	<Target Name="_CollectRidSpecificUserFrameworksWithoutDebugSymbols">
 		<ReadItemsFromFile
-			SessionId="$(BuildSessionId)"
 			File="%(_RidSpecificUserFrameworksWithoutDebugSymbolsPath.Identity)"
 			Condition="Exists('%(_RidSpecificUserFrameworksWithoutDebugSymbolsPath.Identity)')"
 		>
@@ -1924,9 +1923,8 @@
 
 		<!-- Read the stored list of files to sign if we're an outer build of a multi-rid build -->
 		<ReadItemsFromFile
-			SessionId="$(BuildSessionId)"
 			File="%(_RidSpecificCodesignItemsPath.Identity)"
-			Condition="@(_RidSpecificCodesignItemsPath->Count()) &gt; 0 And '$(IsMacEnabled)' == 'true'"
+			Condition="@(_RidSpecificCodesignItemsPath->Count()) &gt; 0"
 		>
 			<Output TaskParameter="Items" ItemName="_RidSpecificCodesignItems" />
 		</ReadItemsFromFile>
@@ -2236,8 +2234,7 @@
 
 		<!-- Write a list of files to sign if we're not an outer build of a multi-rid build -->
 		<WriteItemsToFile
-			SessionId="$(BuildSessionId)"
-			Condition="'$(IsMacEnabled)' == 'true' And '$(_CodesignItemsPath)' != ''"
+			Condition="'$(_CodesignItemsPath)' != ''"
 			Items="@(_CreateDumpExecutableToSign)"
 			ItemName="_CodesignItems"
 			File="$(_CodesignItemsPath)"

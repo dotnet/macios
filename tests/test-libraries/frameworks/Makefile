@@ -25,7 +25,7 @@ iphoneos_DYLIB_FLAGS=$(COMMON_DYLIB_ARGS) -miphoneos-version-min=$(DOTNET_MIN_IO
 tvsimulator_DYLIB_FLAGS=$(COMMON_DYLIB_ARGS) -mtvos-simulator-version-min=$(DOTNET_MIN_TVOS_SDK_VERSION) -isysroot $(tvossimulator_SDK)
 tvos_DYLIB_FLAGS=$(COMMON_DYLIB_ARGS) -mtvos-version-min=$(DOTNET_MIN_TVOS_SDK_VERSION) -isysroot $(tvos_SDK)
 maccatalyst_DYLIB_FLAGS=$(COMMON_DYLIB_ARGS) $(maccatalyst_CFLAGS)
-mac_DYLIB_FLAGS=$(COMMON_DYLIB_ARGS) -mmacosx-version-min=$(MIN_OSX_VERSION_FOR_MAC) -isysroot $(XCODE_DEVELOPER_ROOT)/Platforms/MacOSX.platform/Developer/SDKs/MacOSX$(OSX_SDK_VERSION).sdk
+mac_DYLIB_FLAGS=$(COMMON_DYLIB_ARGS) -mmacosx-version-min=$(DOTNET_MIN_MACOS_SDK_VERSION) -isysroot $(XCODE_DEVELOPER_ROOT)/Platforms/MacOSX.platform/Developer/SDKs/MacOSX$(OSX_SDK_VERSION).sdk
 
 maccatalyst-x64_DYLIB_FLAGS=$(maccatalyst-x64_CFLAGS)
 maccatalyst-arm64_DYLIB_FLAGS=$(maccatalyst-arm64_CFLAGS)

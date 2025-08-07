@@ -1310,12 +1310,6 @@ namespace Foundation {
 
 	interface INSCacheDelegate { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Foundation.NSCacheDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Foundation.NSCacheDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Foundation.NSCacheDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="Foundation.NSCacheDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[BaseType (typeof (NSObject))]
 	[Model]
 	[Protocol]
@@ -3272,12 +3266,6 @@ namespace Foundation {
 	}
 
 #if !XAMCORE_5_0
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Foundation.NSCoding" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Foundation.NSCoding" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Foundation.NSCoding" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="Foundation.NSCoding_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[BaseType (typeof (NSObject))]
 	[Model]
 #endif
@@ -3315,12 +3303,6 @@ namespace Foundation {
 	}
 
 #if !XAMCORE_5_0
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Foundation.NSCopying" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Foundation.NSCopying" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Foundation.NSCopying" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="Foundation.NSCopying_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[BaseType (typeof (NSObject))]
 	[Model]
 #endif
@@ -3339,12 +3321,6 @@ namespace Foundation {
 	}
 
 #if !XAMCORE_5_0
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Foundation.NSMutableCopying" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Foundation.NSMutableCopying" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Foundation.NSMutableCopying" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="Foundation.NSMutableCopying_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[BaseType (typeof (NSObject))]
 	[Model]
 #endif
@@ -3428,12 +3404,6 @@ namespace Foundation {
 
 	interface INSKeyedUnarchiverDelegate { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Foundation.NSKeyedUnarchiverDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Foundation.NSKeyedUnarchiverDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Foundation.NSKeyedUnarchiverDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="Foundation.NSKeyedUnarchiverDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[BaseType (typeof (NSObject))]
 	[Model]
 	[Protocol]
@@ -9514,12 +9484,6 @@ namespace Foundation {
 		NSUrlConnection Sender { get; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Foundation.NSURLAuthenticationChallengeSender" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Foundation.NSURLAuthenticationChallengeSender" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Foundation.NSURLAuthenticationChallengeSender" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="Foundation.NSURLAuthenticationChallengeSender_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[Protocol (Name = "NSURLAuthenticationChallengeSender")]
 	interface NSUrlAuthenticationChallengeSender {
 		[Abstract]
@@ -9652,12 +9616,6 @@ namespace Foundation {
 
 	interface INSUrlConnectionDelegate { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Foundation.NSUrlConnectionDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Foundation.NSUrlConnectionDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Foundation.NSUrlConnectionDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="Foundation.NSUrlConnectionDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[BaseType (typeof (NSObject), Name = "NSURLConnectionDelegate")]
 	[Model]
 	[Protocol]
@@ -9718,12 +9676,6 @@ namespace Foundation {
 		void WillSendRequestForAuthenticationChallenge (NSUrlConnection connection, NSUrlAuthenticationChallenge challenge);
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Foundation.NSUrlConnectionDataDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Foundation.NSUrlConnectionDataDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Foundation.NSUrlConnectionDataDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="Foundation.NSUrlConnectionDataDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[BaseType (typeof (NSUrlConnectionDelegate), Name = "NSURLConnectionDataDelegate")]
 	[Protocol, Model]
 	interface NSUrlConnectionDataDelegate {
@@ -9783,12 +9735,6 @@ namespace Foundation {
 		void FinishedLoading (NSUrlConnection connection);
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Foundation.NSUrlConnectionDownloadDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Foundation.NSUrlConnectionDownloadDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Foundation.NSUrlConnectionDownloadDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="Foundation.NSUrlConnectionDownloadDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[BaseType (typeof (NSUrlConnectionDelegate), Name = "NSURLConnectionDownloadDelegate")]
 	[Model]
 	[Protocol]
@@ -10795,12 +10741,6 @@ namespace Foundation {
 		bool UsesClassicLoadingMode { get; set; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Foundation.NSUrlSessionDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Foundation.NSUrlSessionDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Foundation.NSUrlSessionDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="Foundation.NSUrlSessionDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Model, BaseType (typeof (NSObject), Name = "NSURLSessionDelegate")]
 	[Protocol]
@@ -10830,12 +10770,6 @@ namespace Foundation {
 
 	public interface INSUrlSessionTaskDelegate { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Foundation.NSUrlSessionTaskDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Foundation.NSUrlSessionTaskDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Foundation.NSUrlSessionTaskDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="Foundation.NSUrlSessionTaskDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Model]
 	[BaseType (typeof (NSUrlSessionDelegate), Name = "NSURLSessionTaskDelegate")]
@@ -10928,12 +10862,6 @@ namespace Foundation {
 		void NeedNewBodyStream (NSUrlSession session, NSUrlSessionTask task, long offset, Action<NSInputStream> completionHandler);
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Foundation.NSUrlSessionDataDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Foundation.NSUrlSessionDataDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Foundation.NSUrlSessionDataDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="Foundation.NSUrlSessionDataDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Model]
 	[BaseType (typeof (NSUrlSessionTaskDelegate), Name = "NSURLSessionDataDelegate")]
@@ -10983,12 +10911,6 @@ namespace Foundation {
 		void DidBecomeStreamTask (NSUrlSession session, NSUrlSessionDataTask dataTask, NSUrlSessionStreamTask streamTask);
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Foundation.NSUrlSessionDownloadDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Foundation.NSUrlSessionDownloadDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Foundation.NSUrlSessionDownloadDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="Foundation.NSUrlSessionDownloadDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Model]
 	[BaseType (typeof (NSUrlSessionTaskDelegate), Name = "NSURLSessionDownloadDelegate")]
@@ -11955,12 +11877,6 @@ namespace Foundation {
 
 	interface INSStreamDelegate { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Foundation.NSStreamDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Foundation.NSStreamDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Foundation.NSStreamDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="Foundation.NSStreamDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[BaseType (typeof (NSObject))]
 	[Model]
 	[Protocol]
@@ -15127,12 +15043,6 @@ namespace Foundation {
 
 	interface INSNetServiceDelegate { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Foundation.NSNetServiceDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Foundation.NSNetServiceDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Foundation.NSNetServiceDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="Foundation.NSNetServiceDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Model, BaseType (typeof (NSObject))]
 	[Protocol]
@@ -15291,12 +15201,6 @@ namespace Foundation {
 
 	interface INSNetServiceBrowserDelegate { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Foundation.NSNetServiceBrowserDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Foundation.NSNetServiceBrowserDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Foundation.NSNetServiceBrowserDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="Foundation.NSNetServiceBrowserDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Model, BaseType (typeof (NSObject))]
 	[Protocol]
@@ -16683,12 +16587,6 @@ namespace Foundation {
 
 	interface INSPortDelegate { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Foundation.NSPortDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Foundation.NSPortDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Foundation.NSPortDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="Foundation.NSPortDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[Model, BaseType (typeof (NSObject))]
 	[Protocol]
 	interface NSPortDelegate {
@@ -16796,12 +16694,6 @@ namespace Foundation {
 
 	interface INSMachPortDelegate { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Foundation.NSMachPortDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Foundation.NSMachPortDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Foundation.NSMachPortDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="Foundation.NSMachPortDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[Model, BaseType (typeof (NSPortDelegate))]
 	[Protocol]
 	interface NSMachPortDelegate {
@@ -17313,16 +17205,6 @@ namespace Foundation {
 
 	interface INSProgressReporting { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Foundation.INSProgressReporting" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Foundation.INSProgressReporting" />.</para>
-	///       <para>If you create objects that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Foundation.INSProgressReporting" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="Foundation.NSProgressReporting_Extensions" /> class as extension methods to the interface, allowing you to invoke any optional methods on the protocol.</para>
-	///     </remarks>
-	/// <summary>Extension methods to the <see cref="Foundation.INSProgressReporting" /> interface to support all the methods from the <see cref="Foundation.INSProgressReporting" /> protocol.</summary>
-	/// <remarks>
-	///       <para>The extension methods for <see cref="Foundation.INSProgressReporting" /> allow developers to treat instances of the interface as having all the optional methods of the original <see cref="Foundation.INSProgressReporting" /> protocol.   Since the interface only contains the required members, these extension methods allow developers to call the optional members of the protocol.</para>
-	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface NSProgressReporting {
@@ -17929,12 +17811,6 @@ namespace Foundation {
 
 	interface INSFileManagerDelegate { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Foundation.NSFileManagerDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Foundation.NSFileManagerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Foundation.NSFileManagerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="Foundation.NSFileManagerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[BaseType (typeof (NSObject))]
 	[Model]
 	[Protocol]
@@ -18136,12 +18012,6 @@ namespace Foundation {
 		NSUrl GetHomeDirectory (string userName);
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Foundation.NSFilePresenter" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Foundation.NSFilePresenter" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Foundation.NSFilePresenter" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="Foundation.NSFilePresenter_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[BaseType (typeof (NSObject))]
 	[Model]
 	[Protocol]
@@ -18954,7 +18824,6 @@ namespace Foundation {
 
 	interface INSExtensionRequestHandling { }
 
-	/// <include file="../docs/api/Foundation/INSExtensionRequestHandling.xml" path="/Documentation/Docs[@DocId='T:Foundation.INSExtensionRequestHandling']/*" />
 	[MacCatalyst (13, 1)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
@@ -18970,8 +18839,6 @@ namespace Foundation {
 		void BeginRequestWithExtensionContext (NSExtensionContext context);
 	}
 
-	/// <summary>Interface that, together with the <see cref="Foundation.NSLocking_Extensions" /> class, comprise the NSLocking protocol.</summary>
-	/// <remarks>To be added.</remarks>
 	[Protocol]
 	interface NSLocking {
 

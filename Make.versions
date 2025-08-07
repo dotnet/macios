@@ -98,7 +98,7 @@ MACCATALYST_TARGET_PLATFORM_VERSION_LIBRARY=18.0
 #     <NoWarn>XCODE_16_0_PREVIEW;$(NoWarn)</NoWarn>
 #
 # Note that any SUPPORTED_API_VERSIONS entry below for older OS versions need a corresponding entry in
-# the eng/Version.Details.xml and eng/Versions.props files.
+# the eng/Version.Details.xml file.
 #
 
 # First add the versions for the current branch. DO NOT TOUCH THIS. Add older branches below.

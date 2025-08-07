@@ -431,12 +431,6 @@ namespace ModelIO {
 		MDLLightProbe [] PlaceLightProbes (float density, MDLProbePlacement type, IMDLLightProbeIrradianceDataSource dataSource);
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="ModelIO.MDLLightProbeIrradianceDataSource" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="ModelIO.MDLLightProbeIrradianceDataSource" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="ModelIO.MDLLightProbeIrradianceDataSource" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="ModelIO.MDLLightProbeIrradianceDataSource_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IMDLLightProbeIrradianceDataSource { }
 
 	// Added in iOS 10 SDK but it is supposed to be present in iOS 9.
@@ -1807,27 +1801,8 @@ namespace ModelIO {
 		MDLMesh FromGeometry (SCNGeometry geometry, [NullAllowed] IMDLMeshBufferAllocator bufferAllocator);
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="ModelIO.IMDLMeshBuffer" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="ModelIO.IMDLMeshBuffer" />.</para>
-	///       <para>If you create objects that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="ModelIO.IMDLMeshBuffer" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="ModelIO.MDLMeshBuffer_Extensions" /> class as extension methods to the interface, allowing you to invoke any optional methods on the protocol.</para>
-	///     </remarks>
-	/// <summary>Extension methods to the <see cref="ModelIO.IMDLMeshBuffer" /> interface to support all the methods from the <see cref="ModelIO.IMDLMeshBuffer" /> protocol.</summary>
-	///     <remarks>
-	///       <para>The extension methods for <see cref="ModelIO.IMDLMeshBuffer" /> allow developers to treat instances of the interface as having all the optional methods of the original <see cref="ModelIO.IMDLMeshBuffer" /> protocol.   Since the interface only contains the required members, these extension methods allow developers to call the optional members of the protocol.</para>
-	///     </remarks>
 	interface IMDLMeshBuffer { }
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="ModelIO.IMDLMeshBuffer" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="ModelIO.IMDLMeshBuffer" />.</para>
-	///       <para>If you create objects that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="ModelIO.IMDLMeshBuffer" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="ModelIO.MDLMeshBuffer_Extensions" /> class as extension methods to the interface, allowing you to invoke any optional methods on the protocol.</para>
-	///     </remarks>
-	/// <summary>Extension methods to the <see cref="ModelIO.IMDLMeshBuffer" /> interface to support all the methods from the <see cref="ModelIO.IMDLMeshBuffer" /> protocol.</summary>
-	/// <remarks>
-	///       <para>The extension methods for <see cref="ModelIO.IMDLMeshBuffer" /> allow developers to treat instances of the interface as having all the optional methods of the original <see cref="ModelIO.IMDLMeshBuffer" /> protocol.   Since the interface only contains the required members, these extension methods allow developers to call the optional members of the protocol.</para>
-	///     </remarks>
+
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface MDLMeshBuffer : NSCopying {
@@ -1876,9 +1851,8 @@ namespace ModelIO {
 		MDLMeshBufferType Type { get; }
 	}
 
-	/// <include file="../docs/api/ModelIO/IMDLMeshBufferAllocator.xml" path="/Documentation/Docs[@DocId='T:ModelIO.IMDLMeshBufferAllocator']/*" />
 	interface IMDLMeshBufferAllocator { }
-	/// <include file="../docs/api/ModelIO/IMDLMeshBufferAllocator.xml" path="/Documentation/Docs[@DocId='T:ModelIO.IMDLMeshBufferAllocator']/*" />
+
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface MDLMeshBufferAllocator {
@@ -1993,27 +1967,8 @@ namespace ModelIO {
 		NSData Data { get; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="ModelIO.IMDLMeshBufferZone" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="ModelIO.IMDLMeshBufferZone" />.</para>
-	///       <para>If you create objects that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="ModelIO.IMDLMeshBufferZone" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="ModelIO.MDLMeshBufferZone_Extensions" /> class as extension methods to the interface, allowing you to invoke any optional methods on the protocol.</para>
-	///     </remarks>
-	/// <summary>Extension methods to the <see cref="ModelIO.IMDLMeshBufferZone" /> interface to support all the methods from the <see cref="ModelIO.IMDLMeshBufferZone" /> protocol.</summary>
-	///     <remarks>
-	///       <para>The extension methods for <see cref="ModelIO.IMDLMeshBufferZone" /> allow developers to treat instances of the interface as having all the optional methods of the original <see cref="ModelIO.IMDLMeshBufferZone" /> protocol.   Since the interface only contains the required members, these extension methods allow developers to call the optional members of the protocol.</para>
-	///     </remarks>
 	interface IMDLMeshBufferZone { }
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="ModelIO.IMDLMeshBufferZone" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="ModelIO.IMDLMeshBufferZone" />.</para>
-	///       <para>If you create objects that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="ModelIO.IMDLMeshBufferZone" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="ModelIO.MDLMeshBufferZone_Extensions" /> class as extension methods to the interface, allowing you to invoke any optional methods on the protocol.</para>
-	///     </remarks>
-	/// <summary>Extension methods to the <see cref="ModelIO.IMDLMeshBufferZone" /> interface to support all the methods from the <see cref="ModelIO.IMDLMeshBufferZone" /> protocol.</summary>
-	/// <remarks>
-	///       <para>The extension methods for <see cref="ModelIO.IMDLMeshBufferZone" /> allow developers to treat instances of the interface as having all the optional methods of the original <see cref="ModelIO.IMDLMeshBufferZone" /> protocol.   Since the interface only contains the required members, these extension methods allow developers to call the optional members of the protocol.</para>
-	///     </remarks>
+
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface MDLMeshBufferZone {
@@ -2295,27 +2250,8 @@ namespace ModelIO {
 	interface MDLObjectContainer : MDLObjectContainerComponent {
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="ModelIO.IMDLObjectContainerComponent" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="ModelIO.IMDLObjectContainerComponent" />.</para>
-	///       <para>If you create objects that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="ModelIO.IMDLObjectContainerComponent" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="ModelIO.MDLObjectContainerComponent_Extensions" /> class as extension methods to the interface, allowing you to invoke any optional methods on the protocol.</para>
-	///     </remarks>
-	/// <summary>Extension methods to the <see cref="ModelIO.IMDLObjectContainerComponent" /> interface to support all the methods from the <see cref="ModelIO.IMDLObjectContainerComponent" /> protocol.</summary>
-	///     <remarks>
-	///       <para>The extension methods for <see cref="ModelIO.IMDLObjectContainerComponent" /> allow developers to treat instances of the interface as having all the optional methods of the original <see cref="ModelIO.IMDLObjectContainerComponent" /> protocol.   Since the interface only contains the required members, these extension methods allow developers to call the optional members of the protocol.</para>
-	///     </remarks>
 	interface IMDLObjectContainerComponent { }
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="ModelIO.IMDLObjectContainerComponent" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="ModelIO.IMDLObjectContainerComponent" />.</para>
-	///       <para>If you create objects that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="ModelIO.IMDLObjectContainerComponent" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="ModelIO.MDLObjectContainerComponent_Extensions" /> class as extension methods to the interface, allowing you to invoke any optional methods on the protocol.</para>
-	///     </remarks>
-	/// <summary>Extension methods to the <see cref="ModelIO.IMDLObjectContainerComponent" /> interface to support all the methods from the <see cref="ModelIO.IMDLObjectContainerComponent" /> protocol.</summary>
-	/// <remarks>
-	///       <para>The extension methods for <see cref="ModelIO.IMDLObjectContainerComponent" /> allow developers to treat instances of the interface as having all the optional methods of the original <see cref="ModelIO.IMDLObjectContainerComponent" /> protocol.   Since the interface only contains the required members, these extension methods allow developers to call the optional members of the protocol.</para>
-	///     </remarks>
+
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface MDLObjectContainerComponent : MDLComponent, INSFastEnumeration {
@@ -2358,20 +2294,8 @@ namespace ModelIO {
 		MDLObject [] Objects { get; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="ModelIO.IMDLComponent" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="ModelIO.IMDLComponent" />.</para>
-	///       <para>If you create objects that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="ModelIO.IMDLComponent" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="ModelIO.MDLComponent_Extensions" /> class as extension methods to the interface, allowing you to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IMDLComponent { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="ModelIO.IMDLComponent" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="ModelIO.IMDLComponent" />.</para>
-	///       <para>If you create objects that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="ModelIO.IMDLComponent" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="ModelIO.MDLComponent_Extensions" /> class as extension methods to the interface, allowing you to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface MDLComponent {
@@ -3431,19 +3355,8 @@ namespace ModelIO {
 		}
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="ModelIO.IMDLTransformComponent" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="ModelIO.IMDLTransformComponent" />.</para>
-	///       <para>If you create objects that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="ModelIO.IMDLTransformComponent" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="ModelIO.MDLTransformComponent_Extensions" /> class as extension methods to the interface, allowing you to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IMDLTransformComponent { }
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="ModelIO.IMDLTransformComponent" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="ModelIO.IMDLTransformComponent" />.</para>
-	///       <para>If you create objects that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="ModelIO.IMDLTransformComponent" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="ModelIO.MDLTransformComponent_Extensions" /> class as extension methods to the interface, allowing you to invoke any optional methods on the protocol.</para>
-	///     </remarks>
+
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface MDLTransformComponent : MDLComponent {

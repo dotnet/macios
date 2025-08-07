@@ -54,12 +54,6 @@ namespace GameplayKit {
 		ReduceOverlap = 3,
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="GameplayKit.GKAgentDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="GameplayKit.GKAgentDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="GameplayKit.GKAgentDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="GameplayKit.GKAgentDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IGKAgentDelegate { }
 
 	/// <summary>Delegate object that provides methods relating to synchronizing the state of a <see cref="GameplayKit.GKAgent" /> with external constraints, goals, and representations.</summary>
@@ -466,14 +460,7 @@ namespace GameplayKit {
 
 	interface IGKGameModelPlayer { }
 
-	/// <summary>A uniquely-identified player of a game. Developers must implement <see cref="GameplayKit.GKGameModelPlayer_Extensions.GetPlayerId(GameplayKit.IGKGameModelPlayer)" />.</summary>
-	///     <remarks>
-	///       <para>Developers who implement this interface must implement <see cref="GameplayKit.GKGameModelPlayer_Extensions.GetPlayerId(GameplayKit.IGKGameModelPlayer)" />. It is incorrectly marked as optional but is, in fact, mandatory and must be implemented.</para>
-	///     </remarks>
-	/// <summary>Extension methods to the <see cref="GameplayKit.IGKGameModelPlayer" /> interface to support all the methods from the <see cref="GameplayKit.IGKGameModelPlayer" /> protocol.</summary>
-	///     <remarks>
-	///       <para>The extension methods for <see cref="GameplayKit.IGKGameModelPlayer" /> allow developers to treat instances of the interface as having all the optional methods of the original <see cref="GameplayKit.IGKGameModelPlayer" /> protocol.   Since the interface only contains the required members, these extension methods allow developers to call the optional members of the protocol.</para>
-	///     </remarks>
+	/// <summary>A uniquely-identified player of a game.</summary>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface GKGameModelPlayer {

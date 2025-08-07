@@ -17,7 +17,7 @@
       <para>
         When a touch takes place, the operating system packages the
         event and processes it like this:
-        <img href="~/UIKit/_images/UIResponderChain.png" alt="Illustration of the UIResponder response hierarchy" /></para>
+        <img href="~/xml/UIKit/_images/UIResponderChain.png" alt="Illustration of the UIResponder response hierarchy" /></para>
       <list type="number">
         <item>
           <term>

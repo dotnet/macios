@@ -10,7 +10,7 @@
           </term>
           <description>A pill-shaped capsule with adjustable end caps</description>
           <description>
-            <img href="~/SceneKit/_images/SceneKit.SCNCapsule.png" alt="Scene showing SCNCapsule geometry" />
+            <img href="~/xml/SceneKit/_images/SceneKit.SCNCapsule.png" alt="Scene showing SCNCapsule geometry" />
           </description>
         </item>
         <item>
@@ -19,7 +19,7 @@
           </term>
           <description>A cone whose top can be truncated</description>
           <description>
-            <img href="~/SceneKit/_images/SceneKit.SCNCone.png" alt="Scene showing SCNCone geometry" />
+            <img href="~/xml/SceneKit/_images/SceneKit.SCNCone.png" alt="Scene showing SCNCone geometry" />
           </description>
         </item>
         <item>
@@ -28,7 +28,7 @@
           </term>
           <description>A rectangular box.</description>
           <description>
-            <img href="~/SceneKit/_images/SceneKit.SCNBox.png" alt="Scene showing SCNBox geometry" />
+            <img href="~/xml/SceneKit/_images/SceneKit.SCNBox.png" alt="Scene showing SCNBox geometry" />
           </description>
         </item>
         <item>
@@ -37,7 +37,7 @@
           </term>
           <description>A cylinder.</description>
           <description>
-            <img href="~/SceneKit/_images/SceneKit.SCNCylinder.png" alt="Image showing a SceneKit cylinder." />
+            <img href="~/xml/SceneKit/_images/SceneKit.SCNCylinder.png" alt="Image showing a SceneKit cylinder." />
           </description>
         </item>
         <item>
@@ -46,7 +46,7 @@
           </term>
           <description>An infinite plane with the ability to reflect the geometry above it.</description>
           <description>
-            <img href="~/SceneKit/_images/SceneKit.SCNFloor.png" alt="Scene showing SCNFloor geometry" />
+            <img href="~/xml/SceneKit/_images/SceneKit.SCNFloor.png" alt="Scene showing SCNFloor geometry" />
           </description>
         </item>
         <item>
@@ -55,7 +55,7 @@
           </term>
           <description>A one-sided rectangle.</description>
           <description>
-            <img href="~/SceneKit/_images/SceneKit.SCNPlane.png" alt="Scene showing SCNPlane geometry" />
+            <img href="~/xml/SceneKit/_images/SceneKit.SCNPlane.png" alt="Scene showing SCNPlane geometry" />
           </description>
         </item>
         <item>
@@ -64,7 +64,7 @@
           </term>
           <description>A tetrahedron.</description>
           <description>
-            <img href="~/SceneKit/_images/SceneKit.SCNPyramid.png" alt="Scene showing SCNPyramid geometry" />
+            <img href="~/xml/SceneKit/_images/SceneKit.SCNPyramid.png" alt="Scene showing SCNPyramid geometry" />
           </description>
         </item>
         <item>
@@ -73,7 +73,7 @@
           </term>
           <description>A 2D shape that has been extruded into the 3rd dimension.</description>
           <description>
-            <img href="~/SceneKit/_images/SceneKit.SCNShape.png" alt="Scene showing SCNShape geometry" />
+            <img href="~/xml/SceneKit/_images/SceneKit.SCNShape.png" alt="Scene showing SCNShape geometry" />
           </description>
         </item>
         <item>
@@ -82,7 +82,7 @@
           </term>
           <description>A sphere.</description>
           <description>
-            <img href="~/SceneKit/_images/SceneKit.SCNSphere.png" alt="Scene showing SCNSphere geometry" />
+            <img href="~/xml/SceneKit/_images/SceneKit.SCNSphere.png" alt="Scene showing SCNSphere geometry" />
           </description>
         </item>
         <item>
@@ -91,7 +91,7 @@
           </term>
           <description>Extruded text.</description>
           <description>
-            <img href="~/SceneKit/_images/SceneKit.SCNText.png" alt="Scene showing SCNText geometry" />
+            <img href="~/xml/SceneKit/_images/SceneKit.SCNText.png" alt="Scene showing SCNText geometry" />
           </description>
         </item>
         <item>
@@ -100,7 +100,7 @@
           </term>
           <description>A donut shape.</description>
           <description>
-            <img href="~/SceneKit/_images/SceneKit.SCNTorus.png" alt="Scene showing SCNTorus geometry" />
+            <img href="~/xml/SceneKit/_images/SceneKit.SCNTorus.png" alt="Scene showing SCNTorus geometry" />
           </description>
         </item>
         <item>
@@ -109,7 +109,7 @@
           </term>
           <description>An uncapped cylinder.</description>
           <description>
-            <img href="~/SceneKit/_images/SceneKit.SCNCylinder.png" alt="Scene showing SCNCylinder geometry" />
+            <img href="~/xml/SceneKit/_images/SceneKit.SCNCylinder.png" alt="Scene showing SCNCylinder geometry" />
           </description>
         </item>
       </list>
@@ -184,7 +184,7 @@ var geometry = SCNGeometry.Create(new [] { locSource, normSource, txCoordsSource
     ]]></code>
       </example>
       <para>
-        <img href="~/SceneKit/_images/SceneKit.CustomGeometry.png" alt="An example of custom geometry." />
+        <img href="~/xml/SceneKit/_images/SceneKit.CustomGeometry.png" alt="An example of custom geometry." />
       </para>
     </remarks>
     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNGeometry_Class/index.html">Apple documentation for <c>SCNGeometry</c></related>

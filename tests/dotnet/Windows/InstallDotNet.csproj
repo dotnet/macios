@@ -119,6 +119,7 @@
     <_Inputs>
       $(MSBuildThisFile);
       $(RootSourceDirectory)/eng/Versions.props;
+      $(RootSourceDirectory)/eng/Version.Details.props;
     </_Inputs>
   </PropertyGroup>
 

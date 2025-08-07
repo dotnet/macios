@@ -18,15 +18,15 @@ PresentViewController (alert, animated: true, completionHandler: null);
       </example>
       <para>When using the <see cref="UIKit.UIAlertControllerStyle.Alert" /> style, the message would be centered in the screen and look like this:</para>
       <para>
-        <img href="~/UIKit/_images/actioncontroller-alert.png" alt="Image of the alert dialog" />
+        <img href="~/xml/UIKit/_images/actioncontroller-alert.png" alt="Image of the alert dialog" />
       </para>
       <para>When using the <see cref="UIKit.UIAlertControllerStyle.ActionSheet" /> style, the message would show at the bottom of the screen, and look like this:</para>
       <para>
-        <img href="~/UIKit/_images/action-controller-asheet.png" alt="Screen shot of the action sheet" />
+        <img href="~/xml/UIKit/_images/action-controller-asheet.png" alt="Screen shot of the action sheet" />
       </para>
       <para>When the <see cref="UIKit.UIViewController.PopoverPresentationController" /> is not <see langword="null" />, this means that the action sheet is being presented in a way that will require you to specify an anchor point, to produce something like this:</para>
       <para>
-        <img href="~/UIKit/_images/action-ipad.png" alt="Screenshot showing the location of the action sheet on an iPad" />
+        <img href="~/xml/UIKit/_images/action-ipad.png" alt="Screenshot showing the location of the action sheet on an iPad" />
       </para>
       <para>To achieve this, you must set one of the following properties to a value:</para>
       <list type="bullet">

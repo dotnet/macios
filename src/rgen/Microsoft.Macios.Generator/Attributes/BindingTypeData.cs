@@ -153,7 +153,7 @@ readonly struct BindingTypeData<T> : IEquatable<BindingTypeData<T>> where T : En
 	/// The type that the category extends.
 	/// </summary>
 	public TypeInfo CategoryType { get; init; } = TypeInfo.Default;
-	
+
 	/// <summary>
 	/// The name of the model class for the protocol.
 	/// </summary>
@@ -231,7 +231,7 @@ readonly struct BindingTypeData<T> : IEquatable<BindingTypeData<T>> where T : En
 
 		// check if we have a category type, we can do that by checking the type of the flag
 		var isCategory = typeof (T) == typeof (ObjCBindings.Category);
-		var isProtocol = typeof(T) == typeof (ObjCBindings.Protocol);
+		var isProtocol = typeof (T) == typeof (ObjCBindings.Protocol);
 
 		switch (count) {
 		case 0:
@@ -279,7 +279,7 @@ readonly struct BindingTypeData<T> : IEquatable<BindingTypeData<T>> where T : En
 		if (isCategory && TryExtractCategoryNamedParameters (attributeData, out name, ref flags, out categoryType)) {
 			data = CreateCategoryBindingData (flags, categoryType);
 			return true;
-		} else if (isProtocol && TryExtractProtocolNamedParameters (attributeData, out name, ref flags, out modelName)) {	
+		} else if (isProtocol && TryExtractProtocolNamedParameters (attributeData, out name, ref flags, out modelName)) {
 			data = CreateProtocolBindingData (flags, name, modelName);
 			return true;
 		} else if (TryExtractClassNamedParameters (attributeData, out name, ref flags, out string? errorDomain, out string? libraryName, out MethodAttributes defaultCtorVisibility, out MethodAttributes intPtrCtorVisibility, out MethodAttributes stringCtorVisibility)) {
@@ -438,7 +438,7 @@ readonly struct BindingTypeData<T> : IEquatable<BindingTypeData<T>> where T : En
 
 		return true;
 	}
-	
+
 	/// <summary>
 	/// Tries to extract the named parameters for a protocol from the attribute data.
 	/// </summary>

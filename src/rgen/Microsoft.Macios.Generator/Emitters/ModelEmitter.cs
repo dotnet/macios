@@ -26,7 +26,7 @@ class ModelEmitter : IClassEmitter {
 	public string GetSymbolName (in Binding binding)
 	{
 		var bindingData = (BindingTypeData<Protocol>) binding.BindingInfo;
-		// for the model we will always use the name of the calss, not the register protocol
+		// for the model we will always use the name of the class, not the register protocol
 		return bindingData.ModelName ?? binding.Name [1..];
 	}
 

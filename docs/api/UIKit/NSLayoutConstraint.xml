@@ -75,7 +75,7 @@ NSLayoutConstraint.ActivateConstraints(blueConstraints);
     ]]></code>
       </example>
       <para>
-        <img href="~/UIKit/_images/UIKit.NSLayoutAnchor.png" alt="Screenshot showing the resulting layout" />
+        <img href="~/xml/UIKit/_images/UIKit.NSLayoutAnchor.png" alt="Screenshot showing the resulting layout" />
       </para>
     </remarks>
   </Docs>

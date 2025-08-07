@@ -137,26 +137,26 @@
 			HasCoreCLRBridgeFunction = true,
 		},
 
-		new Export ("uint32_t", "mono_gchandle_new",
+		new Export ("GCHandle", "mono_gchandle_new_v2",
 			"MonoObject *", "obj",
 			"mono_bool", "pinned"
 		) {
 			XamarinRuntime = RuntimeMode.MonoVM,
 		},
 
-		new Export ("MonoObject *", "mono_gchandle_get_target",
-			"uint32_t", "gchandle"
+		new Export ("MonoObject *", "mono_gchandle_get_target_v2",
+			"GCHandle", "gchandle"
 		) {
 			XamarinRuntime = RuntimeMode.MonoVM,
 		},
 
-		new Export ("void", "mono_gchandle_free",
-			"uint32_t", "gchandle"
+		new Export ("void", "mono_gchandle_free_v2",
+			"GCHandle", "gchandle"
 		) {
 			XamarinRuntime = RuntimeMode.MonoVM,
 		},
 
-		new Export ("uint32_t", "mono_gchandle_new_weakref",
+		new Export ("GCHandle", "mono_gchandle_new_weakref_v2",
 			"MonoObject *", "obj",
 			"mono_bool", "track_resurrection"
 		) {
@@ -603,15 +603,14 @@
 			XamarinRuntime = RuntimeMode.MonoVM,
 		},
 
-		new Export ("MonoDomain *", "mono_jit_init_version",
-			"const char *", "root_domain_name",
-			"const char *", "runtime_version"
+		new Export ("MonoDomain *", "mono_jit_init",
+			"const char *", "file"
 		) {
 			XamarinRuntime = RuntimeMode.MonoVM,
 		},
 
-		new Export ("MonoDomain *", "mono_jit_init",
-			"const char *", "file"
+		new Export ("MonoDomain *", "mono_jit_cleanup",
+			"MonoDomain *", "domain"
 		) {
 			XamarinRuntime = RuntimeMode.MonoVM,
 		},

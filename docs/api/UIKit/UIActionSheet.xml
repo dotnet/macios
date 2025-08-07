@@ -27,7 +27,7 @@ protected void HandleBtnActionSheetWithOtherButtonsTouchUpInside (object sender,
           ]]></code>
       </example>
       <para>
-        <img href="~/UIKit/_images/UIKit.UIActionSheet.png" alt="Screenshot showing the UIActionSheet" />
+        <img href="~/xml/UIKit/_images/UIKit.UIActionSheet.png" alt="Screenshot showing the UIActionSheet" />
       </para>
       <para>
    The Xamarin API supports two styles of event notification: the Objective-C style that uses a delegate class or the C# style using event notifications.  

@@ -20,19 +20,15 @@ namespace Xamarin.MacDev.Tasks {
 		[Output]
 		public ITaskItem []? FrameworkToPublish { get; set; }
 
-		static string [] GetFrameworkInfoPlistPaths (string frameworkPath, ApplePlatform platform)
+		static string GetFrameworkInfoPlistPath (string frameworkPath, ApplePlatform platform)
 		{
 			switch (platform) {
 			case ApplePlatform.iOS:
 			case ApplePlatform.TVOS:
-				return new string [] {
-					Path.Combine (frameworkPath, "Info.plist")
-				};
+				return Path.Combine (frameworkPath, "Info.plist");
 			case ApplePlatform.MacOSX:
 			case ApplePlatform.MacCatalyst:
-				return new string [] {
-					Path.Combine (frameworkPath, "Resources", "Info.plist")
-				};
+				return Path.Combine (frameworkPath, "Resources", "Info.plist");
 			default:
 				throw new InvalidOperationException (string.Format (MSBStrings.InvalidPlatform, platform));
 			}
@@ -45,23 +41,20 @@ namespace Xamarin.MacDev.Tasks {
 
 			// Try to read the CFBundleExecutable from Info.plist
 			// Use platform-specific Info.plist locations for frameworks
-			var infoPlistPaths = GetFrameworkInfoPlistPaths (frameworkPath, platform);
+			var infoPlistPath = GetFrameworkInfoPlistPath (frameworkPath, platform);
 
-			foreach (var infoPlistPath in infoPlistPaths) {
-				if (File.Exists (infoPlistPath)) {
-					try {
-						var plist = PDictionary.FromFile (infoPlistPath);
-						if (plist is not null) {
-							var bundleExecutable = plist.GetCFBundleExecutable ();
-							if (!string.IsNullOrEmpty (bundleExecutable)) {
-								return Path.Combine (frameworkPath, bundleExecutable);
-							}
+			if (File.Exists (infoPlistPath)) {
+				try {
+					var plist = PDictionary.FromFile (infoPlistPath);
+					if (plist is not null) {
+						var bundleExecutable = plist.GetCFBundleExecutable ();
+						if (!string.IsNullOrEmpty (bundleExecutable)) {
+							return Path.Combine (frameworkPath, bundleExecutable);
 						}
-					} catch (Exception ex) {
-						// Log exceptions from malformed plist files and fall back to default behavior
-						log?.LogMessage (MessageImportance.Low, $"Failed to parse Info.plist for framework '{frameworkPath}': {ex.Message}");
 					}
-					break; // Found Info.plist but no CFBundleExecutable, stop looking
+				} catch (Exception ex) {
+					// Log exceptions from malformed plist files and fall back to default behavior
+					log?.LogMessage (MessageImportance.Low, $"Failed to parse Info.plist for framework '{frameworkPath}': {ex.Message}");
 				}
 			}
 

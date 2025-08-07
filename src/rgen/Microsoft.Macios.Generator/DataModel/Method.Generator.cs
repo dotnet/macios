@@ -257,4 +257,21 @@ readonly partial struct Method {
 			],
 		};
 	}
+
+	/// <summary>
+	/// Converts the current method into a method suitable for a protocol wrapper class.
+	/// This involves removing modifiers like 'unsafe', 'partial', and 'virtual'.
+	/// </summary>
+	/// <returns>A new <see cref="Method"/> instance with updated modifiers for the protocol wrapper.</returns>
+	public Method ToProtocolWrapperMethod ()
+	{
+		// contains the exact same data but the modifiers are updated to remove virtual and partial if they are present
+		return this with {
+			Modifiers = [
+				.. Modifiers.Where (m =>
+					!m.IsKind (SyntaxKind.PartialKeyword) &&
+					!m.IsKind (SyntaxKind.VirtualKeyword)),
+			]
+		};
+	}
 }

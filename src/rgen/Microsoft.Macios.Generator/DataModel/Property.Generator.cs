@@ -406,6 +406,23 @@ readonly partial struct Property {
 		return (getterMethod, setterMethod);
 	}
 
+	/// <summary>
+	/// Converts the current property into a property suitable for a protocol wrapper class.
+	/// This involves removing modifiers like 'virtual' and 'partial'.
+	/// </summary>
+	/// <returns>A new <see cref="Property"/> instance with updated modifiers for the protocol wrapper.</returns>
+	public Property ToProtocolWrapperProperty ()
+	{
+		// contains the exact same data but the modifiers are updated to remove virtual and partial.
+		return this with {
+			Modifiers = [
+				.. Modifiers.Where (m =>
+					!m.IsKind (SyntaxKind.PartialKeyword) &&
+					!m.IsKind (SyntaxKind.VirtualKeyword)),
+			]
+		};
+	}
+
 	/// <inheritdoc />
 	public override string ToString ()
 	{

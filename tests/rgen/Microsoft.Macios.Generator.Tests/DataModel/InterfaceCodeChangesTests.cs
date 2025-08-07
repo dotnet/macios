@@ -1251,7 +1251,7 @@ public partial interface IBaz : IBar {
 		var node = sourceTrees [0].GetRoot ()
 			.DescendantNodes ()
 			.OfType<InterfaceDeclarationSyntax> ()
-			.LastOrDefault (); // always get the last one so that inheritance tests are correct
+			.LastOrDefault (); // always get the last one so that inherirance tests are correct
 		Assert.NotNull (node);
 		var semanticModel = compilation.GetSemanticModel (sourceTrees [0]);
 		var changes = Binding.FromDeclaration (node, semanticModel);

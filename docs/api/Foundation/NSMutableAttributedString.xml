@@ -9,7 +9,7 @@
 
       </para>
       <para>
-        <img href="~/Foundation/_images/NSMutableAttributedString.png" alt="Diagram showing elements within a mutated attributed string." />
+        <img href="~/xml/Foundation/_images/NSMutableAttributedString.png" alt="Diagram showing elements within a mutated attributed string." />
       </para>
       <para>
 	Unlike the <see cref="Foundation.NSAttributedString" /> both the

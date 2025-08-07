@@ -192,6 +192,12 @@ $@"static {bindingContext.Changes.Name} ()
 				builder.AppendProtocolMemberData (protocolMember);
 			}
 
+			// append the methods to the protocol member data 
+			foreach (var method in bindingContext.Changes.Methods.OrderBy (m => m.Name)) {
+				var protocolMember = new ProtocolMemberData (method);
+				builder.AppendProtocolMemberData (protocolMember);
+			}
+
 			var modifiers = $"{string.Join (' ', bindingContext.Changes.Modifiers)} ";
 			// class declaration, the analyzer should ensure that the class is static, otherwise it will fail to compile with an error.
 			using (var interfaceBlock = builder.CreateBlock (

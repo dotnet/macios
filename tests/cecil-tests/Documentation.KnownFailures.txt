@@ -28380,6 +28380,7 @@ T:VideoSubscriberAccount.VSAccountApplicationProvider
 T:VideoSubscriberAccount.VSAccountProviderAuthenticationScheme
 T:VideoSubscriberAccount.VSAccountProviderResponse
 T:VideoSubscriberAccount.VSAppleSubscription
+T:VideoSubscriberAccount.VSCheckAccessOptionKeys
 T:VideoSubscriberAccount.VSErrorInfo
 T:VideoSubscriberAccount.VSOriginatingDeviceCategory
 T:VideoSubscriberAccount.VSSubscription

@@ -145,7 +145,7 @@ public interface ITestInterface {
 ";
 		var changes = CreateSymbol<InterfaceDeclarationSyntax> (platform, inputText);
 		Assert.True (EmitterFactory.TryCreate (changes, out var emitter));
-		Assert.IsType<ProtocolEmitter> (emitter);
+		Assert.IsType<ProtocolAndModelEmitter> (emitter);
 		Assert.True (EmitterFactory.TryCreate (changes, out var secondEmitter));
 		Assert.Same (emitter, secondEmitter);
 	}

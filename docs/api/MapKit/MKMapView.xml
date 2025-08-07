@@ -17,7 +17,7 @@ mapView.Camera = camera;
           ]]></code>
       </example>
       <para>
-        <img href="~/MapKit/_images/MKMapCamera.png" alt="Image showing 3D map mode" />
+        <img href="~/xml/MapKit/_images/MKMapCamera.png" alt="Image showing 3D map mode" />
       </para>
       <format type="text/html">
         <h3>Overlays</h3>
@@ -34,7 +34,7 @@ mkMap.OverlayRenderer = (view, overlay) => renderer;
           ]]></code>
       </example>
       <para>
-        <img href="~/MapKit/_images/MKOverlayRenderer.png" alt="Screenshot showing a custom overlay" />
+        <img href="~/xml/MapKit/_images/MKOverlayRenderer.png" alt="Screenshot showing a custom overlay" />
       </para>
     </remarks>
     <related type="recipe" href="https://developer.xamarin.com/ios/Recipes/Content_Controls/Map_View/Add_an_Annotation_to_a_Map">Add an Annotation to a Map</related>

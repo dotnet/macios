@@ -426,7 +426,7 @@ namespace ARKit {
 #else
 namespace QuickLook {
 #endif
-	[iOS (13, 0), MacCatalyst (13, 1), NoTV, NoMac]
+	[iOS (13, 0), MacCatalyst (26, 0), NoTV, NoMac]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface ARQuickLookPreviewItem : QLPreviewItem {

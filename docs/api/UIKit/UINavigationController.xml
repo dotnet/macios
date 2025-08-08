@@ -2,18 +2,10 @@
   <Docs DocId="T:UIKit.UINavigationController">
     <summary>A UIViewController for managing hierarchical navigation.</summary>
     <remarks>
-      <para>
-   The Xamarin API supports two styles of event notification: the Objective-C style that uses a delegate class or the C# style using event notifications.  
-</para>
-      <para>
-   The C# style allows the user to add or remove event handlers at runtime by assigning to the events of properties of this class.    Event handlers can be anyone of a method, an anonymous methods or a lambda expression.  Using the C# style events or properties will override any manual settings to the Objective-C Delegate or WeakDelegate settings.
-</para>
-      <para>The Objective-C style requires the user to create a new class derived from <see cref="UIKit.UINavigationControllerDelegate" /> class and assign it to the <see cref="UIKit.Delegate" /> property.   Alternatively, for low-level control, by creating a class derived from <see cref="Foundation.NSObject" /> which has every entry point properly decorated with an [Export] attribute.   The instance of this object can then be assigned to the <see cref="UIKit.UINavigationController.WeakDelegate" /> property.   
-      </para>
       <para>Prior to iOS 7, the screen area covered by the <see cref="UIKit.UINavigationController.NavigationBar" /> and <see cref="UIKit.UINavigationController.Toolbar" /> was excluded from the area of the <see cref="UIKit.UINavigationController.VisibleViewController" />. In iOS 7, the <see cref="UIKit.UINavigationController.NavigationBar" /> and <see cref="UIKit.UINavigationController.Toolbar" /> float over the child controllers' <see cref="UIKit.UIViewController.View" />. Application developers who wish to modify this behavior should manipulate the <see cref="UIKit.UIViewController.EdgesForExtendedLayout" /> property.</para>
       <para>The following illustration shows how layout of a <see cref="UIKit.UINavigationController" /> is affected with <see cref="UIKit.UIViewController.EdgesForExtendedLayout" />. With the default value of <see cref="UIKit.UIRectEdge.All" />, the <see cref="UIKit.UIView.Frame" /> of the <see cref="UIKit.UINavigationController" />'s <see cref="UIKit.UIViewController.View" /> includes the whole screen, extending beneath the toolbar at the bottom, the navigation bar, and even the status bar. The second image shows the <see cref="UIKit.UIView.Frame" /> property when <see cref="UIKit.UIViewController.EdgesForExtendedLayout" /> is set to <see cref="UIKit.UIRectEdge.None" />.</para>
       <para>
-        <img href="~/UIKit/_images/UIKit.UIViewController.EdgesForExtendedLayout.png" alt="Illustration of the layout for the EdgesForExtendedLayout values" />
+        <img href="~/xml/UIKit/_images/UIKit.UIViewController.EdgesForExtendedLayout.png" alt="Illustration of the layout for the EdgesForExtendedLayout values" />
       </para>
       <para>Layout can also be modified by setting the <see cref="UIKit.UINavigationBar.Translucent" /> property of the <see cref="UIKit.UINavigationController.NavigationBar" /> to <see langword="true" />.</para>
     </remarks>

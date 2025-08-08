@@ -10,12 +10,6 @@ using ObjCRuntime;
 namespace GameKit {
 #if !XAMCORE_5_0
 #if __IOS__ || __MACCATALYST__
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="GameKit.GKPeerPickerControllerDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="GameKit.GKPeerPickerControllerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="GameKit.GKPeerPickerControllerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="GameKit.GKPeerPickerControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[EditorBrowsable (EditorBrowsableState.Never)]
 	[Obsolete ("Use 'MCBrowserViewController' from the 'MultipeerConnectivity' framework instead.")]
 	[UnsupportedOSPlatform ("macos")]
@@ -25,10 +19,6 @@ namespace GameKit {
 	public interface IGKPeerPickerControllerDelegate : INativeObject, IDisposable {
 	}
 
-	/// <summary>Extension methods to the <see cref="GameKit.IGKPeerPickerControllerDelegate" /> interface to support all the methods from the <see cref="GameKit.GKPeerPickerControllerDelegate" /> protocol.</summary>
-	///     <remarks>
-	///       <para>The extension methods for <see cref="GameKit.IGKPeerPickerControllerDelegate" /> allow developers to treat instances of the interface as having all the optional methods of the original <see cref="GameKit.GKPeerPickerControllerDelegate" /> protocol.   Since the interface only contains the required members, these extension methods allow developers to call the optional members of the protocol.</para>
-	///     </remarks>
 	[EditorBrowsable (EditorBrowsableState.Never)]
 	[Obsolete ("Use 'MCBrowserViewController' from the 'MultipeerConnectivity' framework instead.")]
 	[UnsupportedOSPlatform ("macos")]

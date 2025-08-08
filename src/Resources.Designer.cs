@@ -863,7 +863,7 @@ namespace bgen {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unimplemented CoreImage property type {0}.
+        ///   Looks up a localized string similar to Unimplemented CoreImage property type {0} for the property {1}.{2}..
         /// </summary>
         internal static string BI1075 {
             get {

@@ -87,17 +87,6 @@ public class MyView : UIView
             ]]></code>
       </example>
       <para>iOS 6 added multiple text-style capability to <see cref="UIKit.UITextView" />. To use multiple styles, application developers must use the <see cref="UIKit.UITextView.AttributedText" /> property. The <see cref="UIKit.UITextView.Font" />, <see cref="UIKit.UITextView.TextColor" />, and <see cref="UIKit.UITextView.TextAlignment" /> properties apply to all the text in the <see cref="UIKit.UITextView" />.</para>
-      <format type="text/html">
-        <br />
-      </format>
-      <para>
-        The Xamarin API supports two styles of event notification: the Objective-C style that uses a delegate class or the C# style using event notifications.  
-      </para>
-      <para>
-        The C# style allows the user to add or remove event handlers at runtime by assigning to the events of properties of this class.    Event handlers can be anyone of a method, an anonymous methods or a lambda expression.  Using the C# style events or properties will override any manual settings to the Objective-C Delegate or WeakDelegate settings.
-      </para>
-      <para>The Objective-C style requires the user to create a new class derived from <see cref="UIKit.UITextViewDelegate" /> class and assign it to the <see cref="UIKit.Delegate" /> property.   Alternatively, for low-level control, by creating a class derived from <see cref="Foundation.NSObject" /> which has every entry point properly decorated with an [Export] attribute.   The instance of this object can then be assigned to the <see cref="UIKit.UITextView.WeakDelegate" /> property.   
-      </para>
     </remarks>
     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UITextView_Class/index.html">Apple documentation for <c>UITextView</c></related>
   </Docs>

@@ -149,6 +149,7 @@ stages:
         inputs:
           version: $(DotNetSdkVersion).x
           includePreviewVersions: true
+          installationPath: $(Agent.TempDirectory)/dotnet
 
       - task: DownloadPipelineArtifact@2
         inputs:

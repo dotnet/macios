@@ -1,8 +1,0 @@
-!missing-enum-value! SFErrorCode native value SFErrorInternalError = 4 not bound
-!missing-enum-value! SFErrorCode native value SFErrorMissingEntitlement = 5 not bound
-!missing-selector! +SFSafariSettings::openExportBrowsingDataSettingsWithCompletionHandler: not bound
-!missing-type! SFSafariSettings not bound
-!deprecated-attribute-missing! SFSafariViewController::preferredBarTintColor missing a [Deprecated] attribute
-!deprecated-attribute-missing! SFSafariViewController::preferredControlTintColor missing a [Deprecated] attribute
-!deprecated-attribute-missing! SFSafariViewController::setPreferredBarTintColor: missing a [Deprecated] attribute
-!deprecated-attribute-missing! SFSafariViewController::setPreferredControlTintColor: missing a [Deprecated] attribute

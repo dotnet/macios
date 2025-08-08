@@ -220,25 +220,17 @@ namespace SafariServices {
 		[Wrap ("WeakDelegate")]
 		ISFSafariViewControllerDelegate Delegate { get; set; }
 
-		/// <summary>To be added.</summary>
-		///         <value>
-		///           <para>(More documentation for this node is coming)</para>
-		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		[Deprecated (PlatformName.iOS, 26, 0, message: "Interferes with system-provided background effects")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, message: "Interferes with system-provided background effects")]
 		[MacCatalyst (13, 1)]
 		[NullAllowed]
 		[Export ("preferredBarTintColor", ArgumentSemantic.Assign)]
 		UIColor PreferredBarTintColor { get; set; }
 
-		/// <summary>To be added.</summary>
-		///         <value>
-		///           <para>(More documentation for this node is coming)</para>
-		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
-		///         </value>
-		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[NullAllowed]
+		[Deprecated (PlatformName.iOS, 26, 0, message: "Interferes with system-provided background effects")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, message: "Interferes with system-provided background effects")]
 		[Export ("preferredControlTintColor", ArgumentSemantic.Assign)]
 		UIColor PreferredControlTintColor { get; set; }
 
@@ -914,4 +906,17 @@ namespace SafariServices {
 		[Export ("websiteCookies", ArgumentSemantic.Copy)]
 		NSHttpCookie [] WebsiteCookies { get; set; }
 	}
+
+	delegate void SFSafariSettingsOpenExportBrowsingDataSettingsCompletionHandler ([NullAllowed] NSError error);
+
+	[NoTV, NoMacCatalyst, iOS (26, 0), NoMac]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface SFSafariSettings {
+		[Async]
+		[Static]
+		[Export ("openExportBrowsingDataSettingsWithCompletionHandler:")]
+		void OpenExportBrowsingDataSettings ([NullAllowed] SFSafariSettingsOpenExportBrowsingDataSettingsCompletionHandler completionHandler);
+	}
+
 }

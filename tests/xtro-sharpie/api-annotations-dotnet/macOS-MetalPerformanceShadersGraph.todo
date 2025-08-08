@@ -1,1 +1,4 @@
 !missing-selector! MPSGraphTensorData::initWithMTLTensor: not bound
+!missing-enum! MPSGraphReducedPrecisionFastMath not bound
+!missing-selector! MPSGraphCompilationDescriptor::reducedPrecisionFastMath not bound
+!missing-selector! MPSGraphCompilationDescriptor::setReducedPrecisionFastMath: not bound

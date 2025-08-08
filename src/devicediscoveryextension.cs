@@ -92,6 +92,22 @@ namespace DeviceDiscoveryExtension {
 		[NullAllowed]
 		[Export ("SSID", ArgumentSemantic.Copy)]
 		string Ssid { get; set; }
+
+		[iOS (26, 0), MacCatalyst (26, 0), Mac (26, 0)]
+		[Export ("wifiAwareServiceName"), NullAllowed]
+		string WifiAwareServiceName { get; set; }
+
+		[iOS (26, 0), MacCatalyst (26, 0), Mac (26, 0)]
+		[Export ("wifiAwareServiceRole", ArgumentSemantic.Assign)]
+		DDDeviceWiFiAwareServiceRole WifiAwareServiceRole { get; set; }
+
+		[iOS (26, 0), MacCatalyst (26, 0), Mac (26, 0)]
+		[Export ("wifiAwareModelName"), NullAllowed]
+		string WifiAwareModelName { get; set; }
+
+		[iOS (26, 0), MacCatalyst (26, 0), Mac (26, 0)]
+		[Export ("wifiAwareVendorName"), NullAllowed]
+		string WifiAwareVendorName { get; set; }
 	}
 
 	[Mac (15, 0), iOS (16, 0), MacCatalyst (18, 0), NoTV]

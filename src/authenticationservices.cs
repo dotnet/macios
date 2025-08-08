@@ -524,7 +524,7 @@ namespace AuthenticationServices {
 
 		[iOS (26, 0), Mac (26, 0), MacCatalyst (26, 0), NoTV]
 		[Export ("reportAllAcceptedPublicKeyCredentialsForRelyingParty:userHandle:acceptedCredentialIDs:")]
-		void ReportAllAcceptedPublicKeyCredentials (string relyingParty, NSData userHandle, NSData[] acceptedCredentialIds);
+		void ReportAllAcceptedPublicKeyCredentials (string relyingParty, NSData userHandle, NSData [] acceptedCredentialIds);
 
 		[iOS (26, 0), Mac (26, 0), MacCatalyst (26, 0), NoTV]
 		[Export ("reportUnusedPasswordCredentialForDomain:userName:")]
@@ -2331,11 +2331,11 @@ namespace AuthenticationServices {
 		[Export ("keyWillRotateForKeyType:newKey:loginManager:completion:")]
 		void KeyWillRotateForKeyType (ASAuthorizationProviderExtensionKeyType keyType, SecKey newKey, ASAuthorizationProviderExtensionLoginManager loginManager, Action<bool> completion);
 
-		[Mac (26,0)]
+		[Mac (26, 0)]
 		[Export ("displayNamesForGroups:loginManager:completion:")]
-		void GetDisplayNames (string[] groups, ASAuthorizationProviderExtensionLoginManager loginManager, ASAuthorizationProviderExtensionRegistrationHandlerGetDisplayNamesCallback completion);
+		void GetDisplayNames (string [] groups, ASAuthorizationProviderExtensionLoginManager loginManager, ASAuthorizationProviderExtensionRegistrationHandlerGetDisplayNamesCallback completion);
 
-		[Mac (26,0)]
+		[Mac (26, 0)]
 		[Export ("profilePictureForUserUsingLoginManager:completion:")]
 		void GetProfilePictureForUser (ASAuthorizationProviderExtensionLoginManager loginManager, ASAuthorizationProviderExtensionRegistrationHandlerGetProfilePictureForUserCallback completion);
 	}

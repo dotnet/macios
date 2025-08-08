@@ -1051,7 +1051,7 @@ namespace AppKit {
 
 		[Mac (26, 0)]
 		[Export ("applicationShouldSuppressHighDynamicRangeContent")]
-		bool ApplicationShouldSuppressHighDynamicRangeContent { get; set; }
+		bool ApplicationShouldSuppressHighDynamicRangeContent { get; }
 
 		// From the NSApplicationHelpExtension category
 		[Export ("activateContextHelpMode:")]

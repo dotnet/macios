@@ -123,7 +123,6 @@
 !missing-selector! VTTemporalNoiseFilterConfiguration::frameHeight not bound
 !missing-selector! VTTemporalNoiseFilterConfiguration::frameSupportedPixelFormats not bound
 !missing-selector! VTTemporalNoiseFilterConfiguration::frameWidth not bound
-!missing-selector! VTTemporalNoiseFilterConfiguration::initWithFrameWidth:frameHeight: not bound
 !missing-selector! VTTemporalNoiseFilterConfiguration::nextFrameCount not bound
 !missing-selector! VTTemporalNoiseFilterConfiguration::previousFrameCount not bound
 !missing-selector! VTTemporalNoiseFilterConfiguration::sourcePixelBufferAttributes not bound
@@ -150,3 +149,5 @@
 !missing-selector! VTTemporalNoiseFilterParameters::setHasDiscontinuity: not bound
 !deprecated-attribute-missing! VTRAWProcessingSessionSetParameterChangedHander missing a [Deprecated] attribute
 !missing-pinvoke! VTRAWProcessingSessionSetParameterChangedHandler is not bound
+!missing-selector! +VTTemporalNoiseFilterConfiguration::supportedSourcePixelFormats not bound
+!missing-selector! VTTemporalNoiseFilterConfiguration::initWithFrameWidth:frameHeight:sourcePixelFormat: not bound

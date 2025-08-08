@@ -21,3 +21,4 @@
 !missing-type! PKToolPickerEraserItem not bound
 !missing-type! PKToolPickerInkingItem not bound
 !missing-type! PKToolPickerItem not bound
+!missing-selector! +PKInkingTool::invertColor: not bound

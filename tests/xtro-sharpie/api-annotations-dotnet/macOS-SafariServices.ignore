@@ -5,3 +5,7 @@
 !missing-selector! SFSafariExtensionState::isEnabled not bound
 !missing-type! SFSafariExtensionManager not bound
 !missing-type! SFSafariExtensionState not bound
+
+# these values are not listed in the macOS headers, but it's an error enum, so we're keeping the same values across all platforms.
+!extra-enum-value! Managed value 4 for SFErrorCode.InternalError not found in native headers
+!extra-enum-value! Managed value 5 for SFErrorCode.MissingEntitlement not found in native headers

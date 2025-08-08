@@ -159,6 +159,11 @@ namespace MetalKit {
 		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Export ("depthStencilStorageMode", ArgumentSemantic.Assign)]
 		MTLStorageMode DepthStencilStorageMode { get; set; }
+
+		// Header says this property is not available in the simulator.
+		[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Export ("currentMTL4RenderPassDescriptor"), NullAllowed]
+		MTL4RenderPassDescriptor CurrentMtl4RenderPassDescriptor { get; }
 	}
 
 	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="MetalKit.MTKViewDelegate" />.</summary>

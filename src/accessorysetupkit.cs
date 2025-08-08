@@ -300,8 +300,7 @@ namespace AccessorySetupKit {
 	[iOS (26, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface ASPropertyCompareString
-	{
+	interface ASPropertyCompareString {
 		[Export ("string")]
 		string String { get; }
 
@@ -315,16 +314,14 @@ namespace AccessorySetupKit {
 
 	[iOS (26, 0)]
 	[Native]
-	public enum ASDiscoveryDescriptorWiFiAwareServiceRole : long
-	{
+	public enum ASDiscoveryDescriptorWiFiAwareServiceRole : long {
 		Subscriber = 10,
 		Publisher = 20,
 	}
 
 	[iOS (26, 0)]
 	[BaseType (typeof (NSObject))]
-	interface ASPickerDisplaySettings
-	{
+	interface ASPickerDisplaySettings {
 		[Static]
 		[Export ("defaultSettings")]
 		ASPickerDisplaySettings DefaultSettings { get; }
@@ -334,8 +331,7 @@ namespace AccessorySetupKit {
 	}
 
 	[Static]
-	partial interface ASPickerDisplaySettingsDiscoveryTimeout
-	{
+	partial interface ASPickerDisplaySettingsDiscoveryTimeout {
 		[iOS (26, 0)]
 		[Field ("ASPickerDisplaySettingsDiscoveryTimeoutShort")]
 		double Short { get; }

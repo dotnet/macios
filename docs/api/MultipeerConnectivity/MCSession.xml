@@ -7,7 +7,7 @@
       <para> Advertising is managed by either the stock <see cref="MultipeerConnectivity.MCAdvertiserAssistant" /> or custom controller that uses a <see cref="MultipeerConnectivity.MCNearbyServiceAdvertiser" />. Similarly, browsing is managed by a  <see cref="MultipeerConnectivity.UIViewController" />, either the stock <see cref="MultipeerConnectivity.MCBrowserViewController" /> or a custom controller that uses a <see cref="MultipeerConnectivity.MCNearbyServiceBrowser" /> object to programmatically discover peers. Once a peer is discovered, an invitation is sent with <see cref="MultipeerConnectivity.MCNearbyServiceBrowser.InvitePeer(MultipeerConnectivity.MCPeerID,MultipeerConnectivity.MCSession,Foundation.NSData,System.Double)" />). The application user interacts with a system dialog informing them of the invitation. If they accept, the <see cref="MultipeerConnectivity.MCSession" /> connects.</para>
       <para>The following image shows the sequence of functions with programmatic advertising and browsing:</para>
       <para>
-        <img href="~/MultipeerConnectivity/_images/MultipeerConnectivity.ProgrammaticAdvertisingAndDiscovery.png" alt="Sequence diagram showing advertising and discovery" />
+        <img href="~/xml/MultipeerConnectivity/_images/MultipeerConnectivity.ProgrammaticAdvertisingAndDiscovery.png" alt="Sequence diagram showing advertising and discovery" />
       </para>
       <para>
         <list type="table">

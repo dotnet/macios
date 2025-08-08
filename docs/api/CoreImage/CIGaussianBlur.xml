@@ -35,13 +35,13 @@ myImageView.Image = UIImage.FromImage (cgimage);
         With the following image input:
       </para>
       <para>
-        <img href="~/CoreImage/_images/clouds.jpg" alt="Photograph of clouds and sunbeams." />
+        <img href="~/xml/CoreImage/_images/clouds.jpg" alt="Photograph of clouds and sunbeams." />
       </para>
       <para>
          Produces the following output:
       </para>
       <para>
-        <img href="~/CoreImage/_images/gaussian_blur.png" alt="Result of applying the filter." />
+        <img href="~/xml/CoreImage/_images/gaussian_blur.png" alt="Result of applying the filter." />
       </para>
       <para>
       	"Sunrise near Atkeison Plateau" © 2012 Charles Atkeison, used under a Creative Commons Attribution-ShareAlike license: https://creativecommons.org/licenses/by-sa/3.0/ 

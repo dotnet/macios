@@ -10,7 +10,7 @@
         Each cell is an instance of the <see cref="UIKit.UICollectionViewCell" /> class, which is comprised of three different views, as shown in the figure below, taken from the "Introduction to Collection Views" guide:
       </para>
       <para>
-        <img href="~/UIKit/_images/UIKit.UICollectionViewCell.png" alt="Diagram showing the structure of a UICollectionViewCell" />
+        <img href="~/xml/UIKit/_images/UIKit.UICollectionViewCell.png" alt="Diagram showing the structure of a UICollectionViewCell" />
       </para>
       <para>
         The Cells in the screenshot above are created by inheriting from <see cref="UIKit.UICollectionView" /> and setting the <see cref="UIKit.UICollectionViewCell.ContentView" />, <see cref="UIKit.UICollectionViewCell.ContentView" />, and <see cref="UIKit.UICollectionView.BackgroundView" /> properties as shown in the following code:

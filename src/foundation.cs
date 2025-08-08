@@ -1186,6 +1186,10 @@ namespace Foundation {
 		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Field ("NSLocalizedNumberFormatAttributeName")]
 		LocalizedNumberFormat,
+
+		[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Field ("NSListItemDelimiterAttributeName")]
+		ListItemDelimiter,
 	}
 
 	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
@@ -1361,6 +1365,9 @@ namespace Foundation {
 		[Export ("initWithCalendarIdentifier:")]
 		NativeHandle Constructor (NSString identifier);
 
+		[Wrap ("this (calendarType.GetConstant ()!)")]
+		NativeHandle Constructor (NSCalendarType calendarType);
+
 		[Export ("calendarIdentifier")]
 		string Identifier { get; }
 
@@ -1391,56 +1398,6 @@ namespace Foundation {
 
 		[Export ("dateFromComponents:")]
 		NSDate DateFromComponents (NSDateComponents comps);
-
-		[Field ("NSCalendarIdentifierGregorian"), Internal]
-		NSString NSGregorianCalendar { get; }
-
-		[Field ("NSCalendarIdentifierBuddhist"), Internal]
-		NSString NSBuddhistCalendar { get; }
-
-		[Field ("NSCalendarIdentifierChinese"), Internal]
-		NSString NSChineseCalendar { get; }
-
-		[Field ("NSCalendarIdentifierHebrew"), Internal]
-		NSString NSHebrewCalendar { get; }
-
-		[Field ("NSIslamicCalendar"), Internal]
-		NSString NSIslamicCalendar { get; }
-
-		[Field ("NSCalendarIdentifierIslamicCivil"), Internal]
-		NSString NSIslamicCivilCalendar { get; }
-
-		[Field ("NSCalendarIdentifierJapanese"), Internal]
-		NSString NSJapaneseCalendar { get; }
-
-		[Field ("NSCalendarIdentifierRepublicOfChina"), Internal]
-		NSString NSRepublicOfChinaCalendar { get; }
-
-		[Field ("NSCalendarIdentifierPersian"), Internal]
-		NSString NSPersianCalendar { get; }
-
-		[Field ("NSCalendarIdentifierIndian"), Internal]
-		NSString NSIndianCalendar { get; }
-
-		[Field ("NSCalendarIdentifierISO8601"), Internal]
-		NSString NSISO8601Calendar { get; }
-
-		[Field ("NSCalendarIdentifierCoptic"), Internal]
-		NSString CopticCalendar { get; }
-
-		[Field ("NSCalendarIdentifierEthiopicAmeteAlem"), Internal]
-		NSString EthiopicAmeteAlemCalendar { get; }
-
-		[Field ("NSCalendarIdentifierEthiopicAmeteMihret"), Internal]
-		NSString EthiopicAmeteMihretCalendar { get; }
-
-		[MacCatalyst (13, 1)]
-		[Field ("NSCalendarIdentifierIslamicTabular"), Internal]
-		NSString IslamicTabularCalendar { get; }
-
-		[MacCatalyst (13, 1)]
-		[Field ("NSCalendarIdentifierIslamicUmmAlQura"), Internal]
-		NSString IslamicUmmAlQuraCalendar { get; }
 
 		[Export ("eraSymbols")]
 		string [] EraSymbols { get; }
@@ -1714,6 +1671,126 @@ namespace Foundation {
 		[Notification]
 		[Field ("NSCalendarDayChangedNotification")]
 		NSString DayChangedNotification { get; }
+	}
+
+	/// <summary>Calendar types that can be used with the NSCalendar constructor.</summary>
+	enum NSCalendarType {
+		/// <summary>Gregorian calendar.</summary>
+		[Field ("NSCalendarIdentifierGregorian")]
+		Gregorian = 0,
+
+		/// <summary>Buddhist calendar.</summary>
+		[Field ("NSCalendarIdentifierBuddhist")]
+		Buddhist = 1,
+
+		/// <summary>Chinese calendar.</summary>
+		[Field ("NSCalendarIdentifierChinese")]
+		Chinese = 2,
+
+		/// <summary>Hebrew calendar.</summary>
+		[Field ("NSCalendarIdentifierHebrew")]
+		Hebrew = 3,
+
+		/// <summary>Islamic calendar.</summary>
+		[Field ("NSIslamicCalendar")]
+		Islamic = 4,
+
+		/// <summary>IslamicCivil calendar.</summary>
+		[Field ("NSCalendarIdentifierIslamicCivil")]
+		IslamicCivil = 5,
+
+		/// <summary>Japanese calendar.</summary>
+		[Field ("NSCalendarIdentifierJapanese")]
+		Japanese = 6,
+
+#if !XAMCORE_5_0
+		/// <summary>Calendar for Taiwan.</summary>
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Obsolete ("Use 'RepublicOfChina' instead.")]
+		Taiwan = 7,
+#endif
+
+		/// <summary>Calendar for the Republic of China.</summary>
+		[Field ("NSCalendarIdentifierRepublicOfChina")]
+		RepublicOfChina = 7,
+
+		/// <summary>Persian calendar.</summary>
+		[Field ("NSCalendarIdentifierPersian")]
+		Persian = 8,
+
+		/// <summary>Indian calendar.</summary>
+		[Field ("NSCalendarIdentifierIndian")]
+		Indian = 9,
+
+		/// <summary>ISO8601 calendar.</summary>
+		[Field ("NSCalendarIdentifierISO8601")]
+		ISO8601 = 10,
+
+		/// <summary>Coptic calendar.</summary>
+		[Field ("NSCalendarIdentifierCoptic")]
+		Coptic = 11,
+
+		/// <summary>Ethiopic (Amete Alem) calendar.</summary>
+		[Field ("NSCalendarIdentifierEthiopicAmeteAlem")]
+		EthiopicAmeteAlem = 12,
+
+		/// <summary>Ethiopic (Amete Mihret) calendar.</summary>
+		[Field ("NSCalendarIdentifierEthiopicAmeteMihret")]
+		EthiopicAmeteMihret = 13,
+
+		/// <summary>Tabular Islamic calendar.</summary>
+		[MacCatalyst (13, 1)]
+		[Field ("NSCalendarIdentifierIslamicTabular")]
+		IslamicTabular = 14,
+
+		/// <summary>Islamic Umm al-Qura calendar.</summary>
+		[MacCatalyst (13, 1)]
+		[Field ("NSCalendarIdentifierIslamicUmmAlQura")]
+		IslamicUmmAlQura = 15,
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("NSCalendarIdentifierBangla")]
+		Bangla,
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("NSCalendarIdentifierGujarati")]
+		Gujarati,
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("NSCalendarIdentifierKannada")]
+		Kannada,
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("NSCalendarIdentifierMalayalam")]
+		Malayalam,
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("NSCalendarIdentifierMarathi")]
+		Marathi,
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("NSCalendarIdentifierOdia")]
+		Odia,
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("NSCalendarIdentifierTamil")]
+		Tamil,
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("NSCalendarIdentifierTelugu")]
+		Telugu,
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("NSCalendarIdentifierVikram")]
+		Vikram,
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("NSCalendarIdentifierDangi")]
+		Dangi,
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("NSCalendarIdentifierVietnamese")]
+		Vietnamese,
 	}
 
 	// Obsolete, but the only API surfaced by WebKit.WebHistory.
@@ -2495,6 +2572,14 @@ namespace Foundation {
 		[Export ("valueForComponent:")]
 		[MacCatalyst (13, 1)]
 		nint GetValueForComponent (NSCalendarUnit unit);
+
+		[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("repeatedDay")]
+		bool IsRepeatedDay {
+			[Bind ("isRepeatedDay")]
+			get;
+			set;
+		}
 	}
 
 	[BaseType (typeof (NSFormatter))]
@@ -7839,18 +7924,27 @@ namespace Foundation {
 		[Field ("NSUserDefaultsSizeLimitExceededNotification")]
 		NSString SizeLimitExceededNotification { get; }
 
+		[Deprecated (PlatformName.iOS, 9, 3, "This notification is never posted.")]
+		[Deprecated (PlatformName.TvOS, 9, 3, "This notification is never posted.")]
+		[Deprecated (PlatformName.MacCatalyst, 13, 1, "This notification is never posted.")]
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("NSUbiquitousUserDefaultsNoCloudAccountNotification")]
 		NSString NoCloudAccountNotification { get; }
 
+		[Deprecated (PlatformName.iOS, 9, 3, "This notification is never posted.")]
+		[Deprecated (PlatformName.TvOS, 9, 3, "This notification is never posted.")]
+		[Deprecated (PlatformName.MacCatalyst, 13, 1, "This notification is never posted.")]
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("NSUbiquitousUserDefaultsDidChangeAccountsNotification")]
 		NSString DidChangeAccountsNotification { get; }
 
+		[Deprecated (PlatformName.iOS, 9, 3, "This notification is never posted.")]
+		[Deprecated (PlatformName.TvOS, 9, 3, "This notification is never posted.")]
+		[Deprecated (PlatformName.MacCatalyst, 13, 1, "This notification is never posted.")]
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Notification]
@@ -8885,6 +8979,14 @@ namespace Foundation {
 		[Field ("NSURLUbiquitousSharedItemPermissionsReadWrite")]
 		NSString UbiquitousSharedItemPermissionsReadWrite { get; }
 
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("NSURLUbiquitousItemSupportedSyncControlsKey")]
+		NSString UbiquitousItemSupportedSyncControlsKey { get; }
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("NSURLUbiquitousItemIsSyncPausedKey")]
+		NSString UbiquitousItemIsSyncPausedKey { get; }
+
 		/// <summary>Represents the value associated with the constant NSURLIsExcludedFromBackupKey</summary>
 		///         <value>
 		///         </value>
@@ -9906,6 +10008,10 @@ namespace Foundation {
 		[Field ("NSURLCredentialStorageRemoveSynchronizableCredentials")]
 		NSString RemoveSynchronizableCredentials { get; }
 
+		[Deprecated (PlatformName.MacOSX, 10, 14, "This notification is never posted.")]
+		[Deprecated (PlatformName.iOS, 12, 0, "This notification is never posted.")]
+		[Deprecated (PlatformName.TvOS, 12, 0, "This notification is never posted.")]
+		[Deprecated (PlatformName.MacCatalyst, 13, 1, "This notification is never posted.")]
 		[Field ("NSURLCredentialStorageChangedNotification")]
 		[Notification]
 		NSString ChangedNotification { get; }
@@ -10793,6 +10899,10 @@ namespace Foundation {
 		[iOS (18, 4), TV (18, 4), MacCatalyst (18, 4), Mac (15, 4)]
 		[Export ("usesClassicLoadingMode")]
 		bool UsesClassicLoadingMode { get; set; }
+
+		[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("enablesEarlyData")]
+		bool EnablesEarlyData { get; set; }
 	}
 
 	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Foundation.NSUrlSessionDelegate" />.</summary>
@@ -13794,6 +13904,10 @@ namespace Foundation {
 		[Field ("NSHTTPCookieManagerAcceptPolicyChangedNotification")]
 		NSString CookiesChangedNotification { get; }
 
+		[Deprecated (PlatformName.MacOSX, 10, 11, "This notification is never posted.")]
+		[Deprecated (PlatformName.iOS, 9, 0, "This notification is never posted.")]
+		[Deprecated (PlatformName.TvOS, 9, 0, "This notification is never posted.")]
+		[Deprecated (PlatformName.MacCatalyst, 13, 1, "This notification is never posted.")]
 		[Notification]
 		[Field ("NSHTTPCookieManagerCookiesChangedNotification")]
 		NSString AcceptPolicyChangedNotification { get; }
@@ -16583,10 +16697,18 @@ namespace Foundation {
 		[Export ("qualityOfService")]
 		NSQualityOfService QualityOfService { get; set; }
 
+		[Deprecated (PlatformName.MacOSX, 26, 0, "This notification does not protect against race conditions.")]
+		[Deprecated (PlatformName.iOS, 26, 0, "This notification does not protect against race conditions.")]
+		[Deprecated (PlatformName.TvOS, 26, 0, "This notification does not protect against race conditions.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, "This notification does not protect against race conditions.")]
 		[Notification]
 		[Field ("NSThreadWillExitNotification")]
 		NSString ThreadWillExitNotification { get; }
 
+		[Deprecated (PlatformName.MacOSX, 26, 0, "This notification does not protect against race conditions.")]
+		[Deprecated (PlatformName.iOS, 26, 0, "This notification does not protect against race conditions.")]
+		[Deprecated (PlatformName.TvOS, 26, 0, "This notification does not protect against race conditions.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, "This notification does not protect against race conditions.")]
 		[Notification]
 		[Field ("NSWillBecomeMultiThreadedNotification")]
 		NSString WillBecomeMultiThreadedNotification { get; }
@@ -17925,7 +18047,31 @@ namespace Foundation {
 			        </remarks>
 			"""), Export ("getFileProviderServicesForItemAtURL:completionHandler:")]
 		void GetFileProviderServices (NSUrl url, Action<NSDictionary<NSString, NSFileProviderService>, NSError> completionHandler);
+
+		[Async]
+		[MacCatalyst (26, 0), NoTV, Mac (26, 0), iOS (26, 0)]
+		[Export ("pauseSyncForUbiquitousItemAtURL:completionHandler:")]
+		void PauseSyncForUbiquitousItem (NSUrl url, NSFileManagerSyncForUbiquitousItemHandler completionHandler);
+
+		[Async]
+		[MacCatalyst (26, 0), NoTV, Mac (26, 0), iOS (26, 0)]
+		[Export ("resumeSyncForUbiquitousItemAtURL:withBehavior:completionHandler:")]
+		void ResumeSyncForUbiquitousItem (NSUrl url, NSFileManagerResumeSyncBehavior behavior, NSFileManagerSyncForUbiquitousItemHandler completionHandler);
+
+		[Async]
+		[MacCatalyst (26, 0), NoTV, Mac (26, 0), iOS (26, 0)]
+		[Export ("fetchLatestRemoteVersionOfItemAtURL:completionHandler:")]
+		void FetchLatestRemoteVersionOfItem (NSUrl url, NSFileManagerFetchLatestRemoteVersionOfItemHandler completionHandler);
+
+		[Async]
+		[MacCatalyst (26, 0), NoTV, Mac (26, 0), iOS (26, 0)]
+		[Export ("uploadLocalVersionOfUbiquitousItemAtURL:withConflictResolutionPolicy:completionHandler:")]
+		void UploadLocalVersionOfUbiquitousItem (NSUrl url, NSFileManagerUploadLocalVersionConflictPolicy conflictResolutionPolicy, NSFileManagerUploadLocalVersionOfUbiquitousItemHandler completionHandler);
 	}
+
+	delegate void NSFileManagerSyncForUbiquitousItemHandler ([NullAllowed] NSError error);
+	delegate void NSFileManagerFetchLatestRemoteVersionOfItemHandler ([NullAllowed] NSFileVersion latestRemoteVersion, [NullAllowed] NSError error);
+	delegate void NSFileManagerUploadLocalVersionOfUbiquitousItemHandler ([NullAllowed] NSFileVersion uploadedVersion, [NullAllowed] NSError error);
 
 	interface INSFileManagerDelegate { }
 
@@ -23160,4 +23306,27 @@ namespace Foundation {
 		[Export ("automatic")]
 		NSLocalizedNumberFormatRule Automatic { get; }
 	}
+
+	[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+	[Native]
+	public enum NSFileManagerSupportedSyncControls : ulong {
+		PauseSync = 1uL << 0,
+		FailUploadOnConflict = 1uL << 1,
+	}
+
+	[MacCatalyst (26, 0), NoTV, Mac (26, 0), iOS (26, 0)]
+	[Native]
+	public enum NSFileManagerResumeSyncBehavior : long {
+		PreserveLocalChanges = 0,
+		AfterUploadWithFailOnConflict = 1,
+		DropLocalChanges = 2,
+	}
+
+	[MacCatalyst (26, 0), NoTV, Mac (26, 0), iOS (26, 0)]
+	[Native]
+	public enum NSFileManagerUploadLocalVersionConflictPolicy : long {
+		Default = 0,
+		FailOnConflict = 1,
+	}
+
 }

@@ -816,7 +816,6 @@ FOUNDATION_SOURCES = \
 	Foundation/NSAttributedString.mac.cs \
 	Foundation/NSBundle.cs \
 	Foundation/NSBundleResourceRequest.cs \
-	Foundation/NSCalendar.cs \
 	Foundation/NSCoder.cs \
 	Foundation/NSOrderedCollectionChange.cs \
 	Foundation/NSOrderedCollectionChange_1.cs \

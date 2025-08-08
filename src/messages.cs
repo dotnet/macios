@@ -99,6 +99,11 @@ namespace Messages {
 
 		[iOS (26, 0), MacCatalyst (26, 0)]
 		[Abstract]
+		[Export ("messageCornerRadius")]
+		nfloat MessageCornerRadius { get; }
+
+		[iOS (26, 0), MacCatalyst (26, 0)]
+		[Abstract]
 		[Export ("invalidateMessageTintColor")]
 		void InvalidateMessageTintColor ();
 	}

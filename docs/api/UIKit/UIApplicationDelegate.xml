@@ -33,7 +33,7 @@ public partial class AppDelegate : UIApplicationDelegate
       <block subset="none" type="behaviors">UIApplicationDelegate and the Application Lifecycle</block>
       <para>The <see cref="UIKit.UIApplicationDelegate" /> provides overridable methods for the entire application lifecycle:</para>
       <para>
-        <img href="~/UIKit/_images/UIApplicationDelegate.Lifecycle.png" alt="Sequence diagram showing the UIApplicationDelegate lifecycle" />
+        <img href="~/xml/UIKit/_images/UIApplicationDelegate.Lifecycle.png" alt="Sequence diagram showing the UIApplicationDelegate lifecycle" />
       </para>
       <para>Applications have four major modes:</para>
       <list type="bullet">

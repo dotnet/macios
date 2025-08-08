@@ -346,3 +346,27 @@ public interface IAVAudio3DMixing : INativeObject, IDisposable
 		set => _SetSourceMode (this, value);
 	}
 }
+
+internal unsafe sealed class AVAudio3DMixingWrapper : BaseWrapper, IAVAudio3DMixing
+{
+
+	[Preserve (Conditional = true)]
+	public AVAudio3DMixingWrapper (NativeHandle handle, bool owns)
+		: base (handle, owns)
+	{
+	}
+
+	// Implement property: Obstruction
+
+	// Implement property: Occlusion
+
+	// Implement property: PointSourceInHeadMode
+
+	// Implement property: Rate
+
+	// Implement property: RenderingAlgorithm
+
+	// Implement property: ReverbBlend
+
+	// Implement property: SourceMode
+}

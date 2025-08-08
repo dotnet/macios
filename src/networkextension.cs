@@ -3280,12 +3280,6 @@ namespace NetworkExtension {
 
 	interface INWTcpConnectionAuthenticationDelegate { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="NetworkExtension.NWTcpConnectionAuthenticationDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="NetworkExtension.NWTcpConnectionAuthenticationDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="NetworkExtension.NWTcpConnectionAuthenticationDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="NetworkExtension.NWTcpConnectionAuthenticationDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'Security.SecProtocolOptions' instead.")]
 	[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'Security.SecProtocolOptions' instead.")]
 	[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'Security.SecProtocolOptions' instead.")]

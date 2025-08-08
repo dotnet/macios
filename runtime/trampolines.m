@@ -771,7 +771,7 @@ xamarin_notify_dealloc (id self, GCHandle gchandle)
 #if defined(DEBUG_REF_COUNTING)
 	PRINT ("xamarin_notify_dealloc (%p, %i)\n", self, gchandle);
 #endif
-	xamarin_unregister_nsobject (self, GINT_TO_POINTER (gchandle), &exception_gchandle);
+	xamarin_unregister_nsobject (self, gchandle, &exception_gchandle);
 	xamarin_free_gchandle (self, gchandle);
 
 	MONO_THREAD_DETACH;

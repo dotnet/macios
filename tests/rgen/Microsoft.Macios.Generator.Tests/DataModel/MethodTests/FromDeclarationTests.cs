@@ -5,6 +5,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Macios.Generator.Attributes;
@@ -1071,5 +1072,85 @@ namespace NS {
 		Assert.True (Method.TryCreate (declaration, semanticModel, out var changes));
 		Assert.NotNull (changes);
 		Assert.Equal (expectedIsVariadic, changes.Value.IsVariadic);
+	}
+
+	[Theory]
+	[AllSupportedPlatforms]
+	void ToProtocolMethodTests (ApplePlatform platform)
+	{
+		var inputText = @"
+using AVFoundation;
+using Foundation;
+using ObjCBindings;
+using ObjCRuntime;
+using System.Runtime.Versioning;
+
+namespace Microsoft.Macios.Generator.Tests.Protocols.Data;
+
+[SupportedOSPlatform (""ios"")]
+[SupportedOSPlatform (""tvos"")]
+[SupportedOSPlatform (""macos"")]
+[SupportedOSPlatform (""maccatalyst13.1"")]
+[BindingType<Protocol>]
+interface IAVAudioMixing {
+
+	[Export<Method> (""destinationForMixer:bus:"")]
+	public virtual AVAudioMixingDestination? DestinationForMixer (AVAudioNode mixer, nuint bus);
+}
+";
+
+		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
+		Assert.Single (syntaxTrees);
+		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
+		var declaration = syntaxTrees [0].GetRoot ()
+			.DescendantNodes ().OfType<MethodDeclarationSyntax> ()
+			.FirstOrDefault ();
+		Assert.NotNull (declaration);
+		Assert.True (Method.TryCreate (declaration, semanticModel, out var changes));
+		Assert.NotNull (changes);
+		var protocolMethod = changes.Value.ToProtocolMethod (new ("NS.IMyProtocol"));
+		Assert.Equal ("_DestinationForMixer", protocolMethod.Name);
+		Assert.True (protocolMethod.IsStatic);
+		Assert.True (protocolMethod.IsExtension);
+	}
+
+	[Theory]
+	[AllSupportedPlatforms]
+	void ToProtocolWrapperMethodTests (ApplePlatform platform)
+	{
+		var inputText = @"
+using AVFoundation;
+using Foundation;
+using ObjCBindings;
+using ObjCRuntime;
+using System.Runtime.Versioning;
+
+namespace Microsoft.Macios.Generator.Tests.Protocols.Data;
+
+[SupportedOSPlatform (""ios"")]
+[SupportedOSPlatform (""tvos"")]
+[SupportedOSPlatform (""macos"")]
+[SupportedOSPlatform (""maccatalyst13.1"")]
+[BindingType<Protocol>]
+interface IAVAudioMixing {
+
+	[Export<Method> (""destinationForMixer:bus:"")]
+	public virtual unsafe partial AVAudioMixingDestination? DestinationForMixer (AVAudioNode mixer, nuint bus);
+}
+";
+
+		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
+		Assert.Single (syntaxTrees);
+		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
+		var declaration = syntaxTrees [0].GetRoot ()
+			.DescendantNodes ().OfType<MethodDeclarationSyntax> ()
+			.FirstOrDefault ();
+		Assert.NotNull (declaration);
+		Assert.True (Method.TryCreate (declaration, semanticModel, out var changes));
+		Assert.NotNull (changes);
+		var protocolWrapperMethod = changes.Value.ToProtocolWrapperMethod ();
+		Assert.DoesNotContain (protocolWrapperMethod.Modifiers, m => m.IsKind (SyntaxKind.VirtualKeyword));
+		Assert.DoesNotContain (protocolWrapperMethod.Modifiers, m => m.IsKind (SyntaxKind.PartialKeyword));
+		Assert.Contains (protocolWrapperMethod.Modifiers, m => m.IsKind (SyntaxKind.PublicKeyword));
 	}
 }

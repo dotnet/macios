@@ -5,6 +5,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
+using Microsoft.Macios.Generator.Attributes;
 using Microsoft.Macios.Generator.DataModel;
 using ObjCRuntime;
 using Xunit;
@@ -30,14 +31,14 @@ public class BindingSyntaxFactoryPropertyTests {
 					new (
 						accessorKind: AccessorKind.Getter,
 						symbolAvailability: new (),
-						exportPropertyData: null,
+						exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 						attributes: [],
 						modifiers: []
 					),
 					new (
 						accessorKind: AccessorKind.Setter,
 						symbolAvailability: new (),
-						exportPropertyData: null,
+						exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 						attributes: [],
 						modifiers: []
 					)
@@ -64,14 +65,14 @@ public class BindingSyntaxFactoryPropertyTests {
 					new (
 						accessorKind: AccessorKind.Getter,
 						symbolAvailability: new (),
-						exportPropertyData: null,
+						exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 						attributes: [],
 						modifiers: []
 					),
 					new (
 						accessorKind: AccessorKind.Setter,
 						symbolAvailability: new (),
-						exportPropertyData: null,
+						exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 						attributes: [],
 						modifiers: []
 					)
@@ -98,14 +99,14 @@ public class BindingSyntaxFactoryPropertyTests {
 					new (
 						accessorKind: AccessorKind.Getter,
 						symbolAvailability: new (),
-						exportPropertyData: null,
+						exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 						attributes: [],
 						modifiers: []
 					),
 					new (
 						accessorKind: AccessorKind.Setter,
 						symbolAvailability: new (),
-						exportPropertyData: null,
+						exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 						attributes: [],
 						modifiers: []
 					)
@@ -132,14 +133,14 @@ public class BindingSyntaxFactoryPropertyTests {
 					new (
 						accessorKind: AccessorKind.Getter,
 						symbolAvailability: new (),
-						exportPropertyData: null,
+						exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 						attributes: [],
 						modifiers: []
 					),
 					new (
 						accessorKind: AccessorKind.Setter,
 						symbolAvailability: new (),
-						exportPropertyData: null,
+						exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 						attributes: [],
 						modifiers: []
 					)
@@ -166,14 +167,14 @@ public class BindingSyntaxFactoryPropertyTests {
 					new (
 						accessorKind: AccessorKind.Getter,
 						symbolAvailability: new (),
-						exportPropertyData: null,
+						exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 						attributes: [],
 						modifiers: []
 					),
 					new (
 						accessorKind: AccessorKind.Setter,
 						symbolAvailability: new (),
-						exportPropertyData: null,
+						exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 						attributes: [],
 						modifiers: []
 					)
@@ -200,14 +201,14 @@ public class BindingSyntaxFactoryPropertyTests {
 					new (
 						accessorKind: AccessorKind.Getter,
 						symbolAvailability: new (),
-						exportPropertyData: null,
+						exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 						attributes: [],
 						modifiers: []
 					),
 					new (
 						accessorKind: AccessorKind.Setter,
 						symbolAvailability: new (),
-						exportPropertyData: null,
+						exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 						attributes: [],
 						modifiers: []
 					)
@@ -234,14 +235,14 @@ public class BindingSyntaxFactoryPropertyTests {
 					new (
 						accessorKind: AccessorKind.Getter,
 						symbolAvailability: new (),
-						exportPropertyData: null,
+						exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 						attributes: [],
 						modifiers: []
 					),
 					new (
 						accessorKind: AccessorKind.Setter,
 						symbolAvailability: new (),
-						exportPropertyData: null,
+						exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 						attributes: [],
 						modifiers: []
 					)
@@ -268,14 +269,14 @@ public class BindingSyntaxFactoryPropertyTests {
 					new (
 						accessorKind: AccessorKind.Getter,
 						symbolAvailability: new (),
-						exportPropertyData: null,
+						exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 						attributes: [],
 						modifiers: []
 					),
 					new (
 						accessorKind: AccessorKind.Setter,
 						symbolAvailability: new (),
-						exportPropertyData: null,
+						exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 						attributes: [],
 						modifiers: []
 					)
@@ -302,14 +303,14 @@ public class BindingSyntaxFactoryPropertyTests {
 					new (
 						accessorKind: AccessorKind.Getter,
 						symbolAvailability: new (),
-						exportPropertyData: null,
+						exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 						attributes: [],
 						modifiers: []
 					),
 					new (
 						accessorKind: AccessorKind.Setter,
 						symbolAvailability: new (),
-						exportPropertyData: null,
+						exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 						attributes: [],
 						modifiers: []
 					)
@@ -336,14 +337,14 @@ public class BindingSyntaxFactoryPropertyTests {
 					new (
 						accessorKind: AccessorKind.Getter,
 						symbolAvailability: new (),
-						exportPropertyData: null,
+						exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 						attributes: [],
 						modifiers: []
 					),
 					new (
 						accessorKind: AccessorKind.Setter,
 						symbolAvailability: new (),
-						exportPropertyData: null,
+						exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 						attributes: [],
 						modifiers: []
 					)
@@ -370,14 +371,14 @@ public class BindingSyntaxFactoryPropertyTests {
 					new (
 						accessorKind: AccessorKind.Getter,
 						symbolAvailability: new (),
-						exportPropertyData: null,
+						exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 						attributes: [],
 						modifiers: []
 					),
 					new (
 						accessorKind: AccessorKind.Setter,
 						symbolAvailability: new (),
-						exportPropertyData: null,
+						exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 						attributes: [],
 						modifiers: []
 					)
@@ -405,14 +406,14 @@ public class BindingSyntaxFactoryPropertyTests {
 					new (
 						accessorKind: AccessorKind.Getter,
 						symbolAvailability: new (),
-						exportPropertyData: null,
+						exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 						attributes: [],
 						modifiers: []
 					),
 					new (
 						accessorKind: AccessorKind.Setter,
 						symbolAvailability: new (),
-						exportPropertyData: null,
+						exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 						attributes: [],
 						modifiers: []
 					)
@@ -440,14 +441,14 @@ public class BindingSyntaxFactoryPropertyTests {
 					new (
 						accessorKind: AccessorKind.Getter,
 						symbolAvailability: new (),
-						exportPropertyData: null,
+						exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 						attributes: [],
 						modifiers: []
 					),
 					new (
 						accessorKind: AccessorKind.Setter,
 						symbolAvailability: new (),
-						exportPropertyData: null,
+						exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 						attributes: [],
 						modifiers: []
 					)
@@ -475,14 +476,14 @@ public class BindingSyntaxFactoryPropertyTests {
 					new (
 						accessorKind: AccessorKind.Getter,
 						symbolAvailability: new (),
-						exportPropertyData: null,
+						exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 						attributes: [],
 						modifiers: []
 					),
 					new (
 						accessorKind: AccessorKind.Setter,
 						symbolAvailability: new (),
-						exportPropertyData: null,
+						exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 						attributes: [],
 						modifiers: []
 					)
@@ -510,14 +511,14 @@ public class BindingSyntaxFactoryPropertyTests {
 					new (
 						accessorKind: AccessorKind.Getter,
 						symbolAvailability: new (),
-						exportPropertyData: null,
+						exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 						attributes: [],
 						modifiers: []
 					),
 					new (
 						accessorKind: AccessorKind.Setter,
 						symbolAvailability: new (),
-						exportPropertyData: null,
+						exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 						attributes: [],
 						modifiers: []
 					),
@@ -545,14 +546,14 @@ public class BindingSyntaxFactoryPropertyTests {
 					new (
 						accessorKind: AccessorKind.Getter,
 						symbolAvailability: new (),
-						exportPropertyData: null,
+						exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 						attributes: [],
 						modifiers: []
 					),
 					new (
 						accessorKind: AccessorKind.Setter,
 						symbolAvailability: new (),
-						exportPropertyData: null,
+						exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 						attributes: [],
 						modifiers: []
 					),
@@ -580,14 +581,14 @@ public class BindingSyntaxFactoryPropertyTests {
 					new (
 						accessorKind: AccessorKind.Getter,
 						symbolAvailability: new (),
-						exportPropertyData: null,
+						exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 						attributes: [],
 						modifiers: []
 					),
 					new (
 						accessorKind: AccessorKind.Setter,
 						symbolAvailability: new (),
-						exportPropertyData: null,
+						exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 						attributes: [],
 						modifiers: []
 					),
@@ -615,14 +616,14 @@ public class BindingSyntaxFactoryPropertyTests {
 					new (
 						accessorKind: AccessorKind.Getter,
 						symbolAvailability: new (),
-						exportPropertyData: null,
+						exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 						attributes: [],
 						modifiers: []
 					),
 					new (
 						accessorKind: AccessorKind.Setter,
 						symbolAvailability: new (),
-						exportPropertyData: null,
+						exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 						attributes: [],
 						modifiers: []
 					),
@@ -650,14 +651,14 @@ public class BindingSyntaxFactoryPropertyTests {
 					new (
 						accessorKind: AccessorKind.Getter,
 						symbolAvailability: new (),
-						exportPropertyData: null,
+						exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 						attributes: [],
 						modifiers: []
 					),
 					new (
 						accessorKind: AccessorKind.Setter,
 						symbolAvailability: new (),
-						exportPropertyData: null,
+						exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 						attributes: [],
 						modifiers: []
 					),
@@ -686,7 +687,7 @@ public class BindingSyntaxFactoryPropertyTests {
 					new (
 						accessorKind: AccessorKind.Getter,
 						symbolAvailability: new (),
-						exportPropertyData: null,
+						exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 						attributes: [],
 						modifiers: []
 					),

@@ -27,9 +27,11 @@ static partial class BindingSyntaxFactory {
 			var getter = property.GetAccessor (AccessorKind.Getter);
 			string? getterMsgSend = null;
 			if (!getter.IsNullOrDefault) {
-				var getterExportData = getter.ExportPropertyData ?? property.ExportPropertyData;
-				if (getterExportData is not null) {
-					getterMsgSend = GetObjCMessageSendMethodName (getterExportData.Value, property.BindAs?.Type ?? property.ReturnType, [],
+				var getterExportData = getter.ExportPropertyData.IsNullOrDefault
+					? property.ExportPropertyData
+					: getter.ExportPropertyData;
+				if (!getterExportData.IsNullOrDefault) {
+					getterMsgSend = GetObjCMessageSendMethodName (getterExportData, property.BindAs?.Type ?? property.ReturnType, [],
 						isSuper, isStret);
 				}
 			}
@@ -42,9 +44,11 @@ static partial class BindingSyntaxFactory {
 				var valueParameter = property.BindAs is null
 					? property.ValueParameter
 					: new Parameter (0, property.BindAs.Value.Type, "value");
-				var setterExportData = setter.ExportPropertyData ?? property.ExportPropertyData;
-				if (setterExportData is not null) {
-					setterMsgSend = GetObjCMessageSendMethodName (setterExportData.Value, TypeInfo.Void,
+				var setterExportData = setter.ExportPropertyData.IsNullOrDefault
+					? property.ExportPropertyData
+					: setter.ExportPropertyData;
+				if (!setterExportData.IsNullOrDefault) {
+					setterMsgSend = GetObjCMessageSendMethodName (setterExportData, TypeInfo.Void,
 						[valueParameter], isSuper, isStret);
 				}
 			}

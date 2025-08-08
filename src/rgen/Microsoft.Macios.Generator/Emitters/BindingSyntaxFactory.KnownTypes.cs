@@ -188,6 +188,20 @@ static partial class BindingSyntaxFactory {
 		@namespace: ["Foundation"],
 		@class: "RequiredMember");
 
+	/// <summary>
+	/// TypeSyntax for Foundation.ModelNotImplementedException.
+	/// </summary>
+	public static readonly TypeSyntax ModelNotImplementedException = StringExtensions.GetIdentifierName (
+		@namespace: ["Foundation"],
+		@class: "ModelNotImplementedException");
+
+	/// <summary>
+	/// TypeSyntax for Foundation.You_Should_Not_Call_base_In_This_Method.
+	/// </summary>
+	public static readonly TypeSyntax You_Should_Not_Call_base_In_This_Method = StringExtensions.GetIdentifierName (
+		@namespace: ["Foundation"],
+		@class: "You_Should_Not_Call_base_In_This_Method");
+
 	// CoreMedia types
 
 	/// <summary>

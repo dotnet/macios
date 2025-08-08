@@ -19,7 +19,8 @@ static class TabbedStringBuilderExtensions {
 	/// <param name="self">A tabbed string builder.</param>
 	/// <param name="optimizable">If the binding is Optimizable or not.</param>
 	/// <returns>The current builder.</returns>
-	public static TabbedWriter<StringWriter> AppendGeneratedCodeAttribute (this TabbedWriter<StringWriter> self, bool optimizable = true)
+	public static TabbedWriter<StringWriter> AppendGeneratedCodeAttribute (this TabbedWriter<StringWriter> self,
+		bool optimizable = true)
 	{
 		if (optimizable) {
 			const string attr = "[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]";
@@ -39,7 +40,8 @@ static class TabbedStringBuilderExtensions {
 	/// <param name="className">The class that contains the notification.</param>
 	/// <param name="notification">The name of the notification.</param>
 	/// <returns></returns>
-	public static TabbedWriter<StringWriter> AppendNotificationAdvice (this TabbedWriter<StringWriter> self, in string className, in string notification)
+	public static TabbedWriter<StringWriter> AppendNotificationAdvice (this TabbedWriter<StringWriter> self,
+		in string className, in string notification)
 	{
 		string attr =
 			$"[Advice (\"Use '{className}.Notifications.{notification}' helper method instead.\")]";
@@ -52,7 +54,8 @@ static class TabbedStringBuilderExtensions {
 	/// </summary>
 	/// <param name="self">A tabbed string builder.</param>
 	/// <returns>The current builder.</returns>
-	public static TabbedWriter<StringWriter> AppendEditorBrowsableAttribute (this TabbedWriter<StringWriter> self, EditorBrowsableState state)
+	public static TabbedWriter<StringWriter> AppendEditorBrowsableAttribute (this TabbedWriter<StringWriter> self,
+		EditorBrowsableState state)
 	{
 		string attr = $"[EditorBrowsable (EditorBrowsableState.{state})]";
 		self.WriteLine (attr);
@@ -151,6 +154,25 @@ static class TabbedStringBuilderExtensions {
 	}
 
 	/// <summary>
+	/// Appends a `[DynamicDependency]` attribute to the current writer.
+	/// This attribute is used to indicate that a member has a dynamic dependency on another member.
+	/// </summary>
+	/// <param name="self">A tabbed string writer.</param>
+	/// <param name="method">The method that is dynamically depended upon.</param>
+	/// <returns>The current writer.</returns>
+	public static TabbedWriter<StringWriter> AppendDynamicDependencyAttribute (this TabbedWriter<StringWriter> self,
+		in Method method)
+	{
+		var sb = new StringBuilder ();
+		sb.Append (method.Name);
+		sb.Append ('(');
+		sb.AppendJoin (',', method.Parameters.Select (p => p.Type.GetIdentifierSyntax (useGlobalNamespace: false)));
+		sb.Append (')');
+		self.WriteLine ($"[DynamicDependency (\"{sb.ToString ()}\")]");
+		return self;
+	}
+
+	/// <summary>
 	/// Appends a `[ProtocolMember]` attribute to the current writer.
 	/// This attribute contains metadata about a protocol member (method or property).
 	/// </summary>
@@ -187,13 +209,15 @@ static class TabbedStringBuilderExtensions {
 
 		// the following are optional since we might not have a proxy for a callback but are used in both cases (methods and properties)
 		if (protocolMemberData.ReturnTypeDelegateProxy is not null) {
-			sb.Append ($", ReturnTypeDelegateProxy = typeof ({protocolMemberData.ReturnTypeDelegateProxy.Value.GetIdentifierSyntax ()})");
+			sb.Append (
+				$", ReturnTypeDelegateProxy = typeof ({protocolMemberData.ReturnTypeDelegateProxy.Value.GetIdentifierSyntax ()})");
 		}
 
 		if (protocolMemberData.ParameterBlockProxy.Length > 0) {
 			// build the parameter block proxy string array
 			var blockProxies = string.Join (", ",
-				protocolMemberData.ParameterBlockProxy.Select (x => x is null ? "null" : $"typeof ({x.Value.GetIdentifierSyntax ()})"));
+				protocolMemberData.ParameterBlockProxy.Select (x =>
+					x is null ? "null" : $"typeof ({x.Value.GetIdentifierSyntax ()})"));
 			sb.Append ($", ParameterBlockProxy = new Type? [] {{ {blockProxies} }}");
 		}
 
@@ -231,6 +255,21 @@ static class TabbedStringBuilderExtensions {
 	public static TabbedWriter<StringWriter> AppendRequiredMemberAttribute (this TabbedWriter<StringWriter> self)
 	{
 		self.WriteLine ($"[{RequiredMember}]");
+		return self;
+	}
+
+	/// <summary>
+	/// Appends an `[Export<Method>]` attribute to the current writer.
+	/// This is a simplified version that only includes the selector, as required by the registrar.
+	/// </summary>
+	/// <param name="self">A tabbed string writer.</param>
+	/// <param name="exportData">The export data for the method, from which the selector is extracted.</param>
+	/// <returns>The current writer.</returns>
+	public static TabbedWriter<StringWriter> AppendExportAttribute (this TabbedWriter<StringWriter> self,
+		ExportData<ObjCBindings.Method> exportData)
+	{
+		// the resitrar does not care about other flags but the selector, so we can just use the selector
+		self.WriteLine ($"[Export<Method> (\"{exportData.Selector}\")]");
 		return self;
 	}
 }

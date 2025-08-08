@@ -17,6 +17,21 @@ namespace Microsoft.Macios.Generator.Attributes;
 readonly struct ExportData<T> : IEquatable<ExportData<T>> where T : Enum {
 
 	/// <summary>
+	/// The initialization state of the struct.
+	/// </summary>
+	StructState State { get; init; } = StructState.Default;
+
+	/// <summary>
+	/// Gets the default, uninitialized instance of <see cref="ExportData{T}"/>.
+	/// </summary>
+	public static ExportData<T> Default { get; } = new (StructState.Default);
+
+	/// <summary>
+	/// Gets a value indicating whether the instance is the default, uninitialized instance.
+	/// </summary>
+	public bool IsNullOrDefault => State == StructState.Default;
+
+	/// <summary>
 	/// The exported native selector.
 	/// </summary>
 	public string? Selector { get; }
@@ -24,7 +39,7 @@ readonly struct ExportData<T> : IEquatable<ExportData<T>> where T : Enum {
 	/// <summary>
 	/// The configuration flags used on the exported member.
 	/// </summary>
-	public T? Flags { get; init; }
+	public T Flags { get; init; }
 
 	/// <summary>
 	/// Argument semantics to use with the selector.
@@ -90,20 +105,50 @@ readonly struct ExportData<T> : IEquatable<ExportData<T>> where T : Enum {
 	/// </summary>
 	public TypeInfo StrongDictionaryKeyClass { get; init; } = TypeInfo.Default;
 
-	public ExportData () { }
+	/// <summary>
+	/// Initializes a new instance of the <see cref="ExportData{T}"/> struct.
+	/// </summary>
+	public ExportData () : this (StructState.Initialized) { }
 
-	public ExportData (string? selector)
+	/// <summary>
+	/// Initializes a new instance of the <see cref="ExportData{T}"/> struct.
+	/// </summary>
+	/// <param name="state">The initialization state.</param>
+	public ExportData (StructState state)
 	{
-		Selector = selector;
+		State = state;
+		Flags = default!;
 	}
 
-	public ExportData (string? selector, ArgumentSemantic argumentSemantic)
+	/// <summary>
+	/// Initializes a new instance of the <see cref="ExportData{T}"/> struct.
+	/// </summary>
+	/// <param name="selector">The exported native selector.</param>
+	public ExportData (string? selector) : this (StructState.Initialized)
+	{
+		Selector = selector;
+		Flags = default!;
+	}
+
+	/// <summary>
+	/// Initializes a new instance of the <see cref="ExportData{T}"/> struct.
+	/// </summary>
+	/// <param name="selector">The exported native selector.</param>
+	/// <param name="argumentSemantic">Argument semantics to use with the selector.</param>
+	public ExportData (string? selector, ArgumentSemantic argumentSemantic) : this (StructState.Initialized)
 	{
 		Selector = selector;
 		ArgumentSemantic = argumentSemantic;
+		Flags = default!;
 	}
 
-	public ExportData (string? selector, ArgumentSemantic argumentSemantic, T flags)
+	/// <summary>
+	/// Initializes a new instance of the <see cref="ExportData{T}"/> struct.
+	/// </summary>
+	/// <param name="selector">The exported native selector.</param>
+	/// <param name="argumentSemantic">Argument semantics to use with the selector.</param>
+	/// <param name="flags">The configuration flags used on the exported member.</param>
+	public ExportData (string? selector, ArgumentSemantic argumentSemantic, T flags) : this (StructState.Initialized)
 	{
 		Selector = selector;
 		ArgumentSemantic = argumentSemantic;
@@ -121,7 +166,7 @@ readonly struct ExportData<T> : IEquatable<ExportData<T>> where T : Enum {
 	{
 		data = null;
 		var count = attributeData.ConstructorArguments.Length;
-		string? selector = null;
+		string? selector;
 		ArgumentSemantic argumentSemantic = ArgumentSemantic.None;
 		T? flags = default;
 
@@ -281,6 +326,8 @@ readonly struct ExportData<T> : IEquatable<ExportData<T>> where T : Enum {
 	/// <inheritdoc />
 	public bool Equals (ExportData<T> other)
 	{
+		if (State == StructState.Default && other.State == StructState.Default)
+			return true;
 		if (Selector != other.Selector)
 			return false;
 		if (ArgumentSemantic != other.ArgumentSemantic)
@@ -305,7 +352,7 @@ readonly struct ExportData<T> : IEquatable<ExportData<T>> where T : Enum {
 			(null, null) => true,
 			(null, _) => false,
 			(_, null) => false,
-			(_, _) => Flags!.Equals (other.Flags)
+			(_, _) => Flags.Equals (other.Flags)
 		};
 	}
 
@@ -321,11 +368,23 @@ readonly struct ExportData<T> : IEquatable<ExportData<T>> where T : Enum {
 		return HashCode.Combine (Selector, Flags);
 	}
 
+	/// <summary>
+	/// Compares two <see cref="ExportData{T}"/> instances for equality.
+	/// </summary>
+	/// <param name="x">The first instance.</param>
+	/// <param name="y">The second instance.</param>
+	/// <returns><c>true</c> if the instances are equal, <c>false</c> otherwise.</returns>
 	public static bool operator == (ExportData<T> x, ExportData<T> y)
 	{
 		return x.Equals (y);
 	}
 
+	/// <summary>
+	/// Compares two <see cref="ExportData{T}"/> instances for inequality.
+	/// </summary>
+	/// <param name="x">The first instance.</param>
+	/// <param name="y">The second instance.</param>
+	/// <returns><c>true</c> if the instances are not equal, <c>false</c> otherwise.</returns>
 	public static bool operator != (ExportData<T> x, ExportData<T> y)
 	{
 		return !(x == y);

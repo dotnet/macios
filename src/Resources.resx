@@ -489,7 +489,7 @@
 	</data>
 	
 	<data name="BI1075" xml:space="preserve">
-		<value>Unimplemented CoreImage property type {0}</value>
+		<value>Unimplemented CoreImage property type {0} for the property {1}.{2}.</value>
 	</data>
 	
 	<data name="BI1076" xml:space="preserve">

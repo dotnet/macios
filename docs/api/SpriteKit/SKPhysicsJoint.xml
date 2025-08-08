@@ -5,7 +5,7 @@
       <para>Joints must be added to the <see cref="SpriteKit.SKScene" />'s <see cref="SpriteKit.SKScene.PhysicsWorld" /> after the <see cref="SpriteKit.SKPhysicsBody" />s of the <see cref="SpriteKit.SKPhysicsJoint" />. Adding the joint prior to adding the <see cref="SpriteKit.SKPhysicsBody" />s will result in a segfault.</para>
       <para>Subclasses of <see cref="SpriteKit.SKPhysicsJoint" /> have a <c>Create</c> static method that should be used to construct instances.</para>
       <para>
-        <img href="~/SpriteKit/_images/SKPhysicsJoint.Hierarchy.png" alt="Class diagram of the SKPhysicsJoint hierarchy" />
+        <img href="~/xml/SpriteKit/_images/SKPhysicsJoint.Hierarchy.png" alt="Class diagram of the SKPhysicsJoint hierarchy" />
       </para>
       <para>
         <list type="table">

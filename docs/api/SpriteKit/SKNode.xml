@@ -3,7 +3,7 @@
     <summary>The building block out of which scene-graphs are made. The root of the tree is an <see cref="SpriteKit.SKScene" />.</summary>
     <remarks>
       <para>
-        <img href="~/SpriteKit/_images/SKNode.Hierarchy.png" alt="Class diagram of the SKNode hierarchy" />
+        <img href="~/xml/SpriteKit/_images/SKNode.Hierarchy.png" alt="Class diagram of the SKNode hierarchy" />
       </para>
       <para>
         <list type="table">

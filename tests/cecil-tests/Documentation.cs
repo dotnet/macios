@@ -66,11 +66,12 @@ namespace Cecil.Tests {
 							continue;
 						}
 						switch (cref [0]) {
-						case 'T':
-						case 'M':
-						case 'P':
-						case 'F':
-						case 'E':
+						case 'T': // type
+						case 'M': // method
+						case 'P': // property
+						case 'F': // field
+						case 'E': // event
+						case 'N': // namespace
 							// Valid cref
 							break;
 						default:

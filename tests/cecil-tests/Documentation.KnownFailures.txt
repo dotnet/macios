@@ -15803,6 +15803,8 @@ M:SafariServices.SFSafariPage.GetContainingTabAsync
 M:SafariServices.SFSafariPage.GetPagePropertiesAsync
 M:SafariServices.SFSafariPage.GetScreenshotOfVisibleArea(System.Action{AppKit.NSImage})
 M:SafariServices.SFSafariPage.GetScreenshotOfVisibleAreaAsync
+M:SafariServices.SFSafariSettings.OpenExportBrowsingDataSettingsWithCompletionHandler(SafariServices.SFSafariSettingsOpenExportBrowsingDataSettingsCompletionHandler)
+M:SafariServices.SFSafariSettings.OpenExportBrowsingDataSettingsWithCompletionHandlerAsync
 M:SafariServices.SFSafariTab.ActivateAsync
 M:SafariServices.SFSafariTab.Close
 M:SafariServices.SFSafariTab.GetActivePageAsync
@@ -23985,6 +23987,8 @@ P:SafariServices.ISFAddToHomeScreenActivityItem.Title
 P:SafariServices.ISFAddToHomeScreenActivityItem.Url
 P:SafariServices.SFAddToHomeScreenInfo.Manifest
 P:SafariServices.SFAddToHomeScreenInfo.WebsiteCookies
+P:SafariServices.SFSafariViewController.PreferredBarTintColor
+P:SafariServices.SFSafariViewController.PreferredControlTintColor
 P:SafariServices.SFSafariViewControllerActivityButton.ExtensionIdentifier
 P:SafariServices.SFSafariViewControllerActivityButton.TemplateImage
 P:SafariServices.SFSafariViewControllerConfiguration.ActivityButton
@@ -28573,6 +28577,8 @@ T:SafariServices.SFSafariExtensionHandler
 T:SafariServices.SFSafariExtensionViewController
 T:SafariServices.SFSafariPage
 T:SafariServices.SFSafariPageProperties
+T:SafariServices.SFSafariSettings
+T:SafariServices.SFSafariSettingsOpenExportBrowsingDataSettingsCompletionHandler
 T:SafariServices.SFSafariTab
 T:SafariServices.SFSafariToolbarItem
 T:SafariServices.SFSafariViewControllerActivityButton

@@ -878,6 +878,55 @@ Because we are using a raw string  we expected:
 		Assert.Equal (expectedString, result);
 	}
 
+	public static IEnumerable<object []> AppendExportMethodAttributeTestData {
+		get {
+			// Simple selector
+			yield return [new ExportData<ObjCBindings.Method> ("mySelector:"), "[Export<Method> (\"mySelector:\")]\n"];
+
+			// Selector with multiple parts
+			yield return [new ExportData<ObjCBindings.Method> ("mySelector:withObject:"), "[Export<Method> (\"mySelector:withObject:\")]\n"];
+
+			// Selector with no parameters
+			yield return [new ExportData<ObjCBindings.Method> ("mySelector"), "[Export<Method> (\"mySelector\")]\n"];
+
+			// Null selector
+			yield return [new ExportData<ObjCBindings.Method> (null), "[Export<Method> (\"\")]\n"];
+		}
+	}
+
+	[Theory]
+	[MemberData (nameof (AppendExportMethodAttributeTestData))]
+	void AppendExportMethodAttributeTests (ExportData<ObjCBindings.Method> exportData, string expectedString)
+	{
+		var block = new TabbedStringBuilder (sb);
+		block.AppendExportAttribute (exportData);
+		var result = block.ToCode ();
+		Assert.Equal (expectedString, result);
+	}
+
+	public static IEnumerable<object []> AppendExportPropertyAttributeTestData {
+		get {
+			// Simple selector
+			yield return [new ExportData<ObjCBindings.Property> ("myProperty"), "[Export<Property> (\"myProperty\")]\n"];
+
+			// Selector with underscore
+			yield return [new ExportData<ObjCBindings.Property> ("_myProperty"), "[Export<Property> (\"_myProperty\")]\n"];
+
+			// Null selector
+			yield return [new ExportData<ObjCBindings.Property> (null), "[Export<Property> (\"\")]\n"];
+		}
+	}
+
+	[Theory]
+	[MemberData (nameof (AppendExportPropertyAttributeTestData))]
+	void AppendExportPropertyAttributeTests (ExportData<ObjCBindings.Property> exportData, string expectedString)
+	{
+		var block = new TabbedStringBuilder (sb);
+		block.AppendExportAttribute (exportData);
+		var result = block.ToCode ();
+		Assert.Equal (expectedString, result);
+	}
+
 	[Fact]
 	public void ClearTests ()
 	{

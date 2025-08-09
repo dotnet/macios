@@ -9,7 +9,7 @@
       <para>The application developer can use various methods of <see cref="UIKit.UICollectionViewDelegateFlowLayout" /> to modify the exact spacing and size of cells within a <see cref="UIKit.UICollectionViewFlowLayout" />.</para>
       <para>The direction of the flow layout is at right angles to the direction of the <see cref="UIKit.UICollectionViewFlowLayout.ScrollDirection" /> property. In the following image, the flow layout is left-to-right and the <see cref="UIKit.UICollectionViewFlowLayout.ScrollDirection" /> is <see cref="UIKit.UICollectionViewScrollDirection.Vertical" />.</para>
       <para>
-        <img href="~/UIKit/_images/UIKit.UICollectionViewFlowLayout.ScrollDirection.png" alt="Diagram showing the scrolling dynamics of a UICollectionView" />
+        <img href="~/xml/UIKit/_images/UIKit.UICollectionViewFlowLayout.ScrollDirection.png" alt="Diagram showing the scrolling dynamics of a UICollectionView" />
       </para>
     </remarks>
     

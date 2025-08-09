@@ -235,12 +235,6 @@ namespace MultipeerConnectivity {
 		#endregion
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="MultipeerConnectivity.MCSessionDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="MultipeerConnectivity.MCSessionDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="MultipeerConnectivity.MCSessionDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="MultipeerConnectivity.MCSessionDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IMCSessionDelegate { }
 
 	/// <summary>A delegate object whose functions relate to events in the <see cref="MultipeerConnectivity.MCSession" /> life-cycle, such as connection status changes and data reception.</summary>
@@ -403,12 +397,6 @@ namespace MultipeerConnectivity {
 	///     <summary>The delegate that serves as the invitation handler in calls to <see cref="MultipeerConnectivity.MCNearbyServiceAdvertiserDelegate.DidReceiveInvitationFromPeer(MultipeerConnectivity.MCNearbyServiceAdvertiser,MultipeerConnectivity.MCPeerID,Foundation.NSData,MultipeerConnectivity.MCNearbyServiceAdvertiserInvitationHandler)" />.</summary>
 	delegate void MCNearbyServiceAdvertiserInvitationHandler (bool accept, [NullAllowed] MCSession session);
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="MultipeerConnectivity.MCNearbyServiceAdvertiserDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="MultipeerConnectivity.MCNearbyServiceAdvertiserDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="MultipeerConnectivity.MCNearbyServiceAdvertiserDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="MultipeerConnectivity.MCNearbyServiceAdvertiserDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IMCNearbyServiceAdvertiserDelegate { }
 
 	/// <summary>A delegate object that exposes events relating to advertising and invitations for multipeer connectivity for a <see cref="MultipeerConnectivity.MCNearbyServiceAdvertiser" /> object.</summary>
@@ -552,12 +540,6 @@ namespace MultipeerConnectivity {
 		void DidNotStartBrowsingForPeers (MCNearbyServiceBrowser browser, NSError error);
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="MultipeerConnectivity.MCNearbyServiceBrowserDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="MultipeerConnectivity.MCNearbyServiceBrowserDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="MultipeerConnectivity.MCNearbyServiceBrowserDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="MultipeerConnectivity.MCNearbyServiceBrowserDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IMCNearbyServiceBrowserDelegate { }
 
 	/// <include file="../docs/api/MultipeerConnectivity/MCBrowserViewController.xml" path="/Documentation/Docs[@DocId='T:MultipeerConnectivity.MCBrowserViewController']/*" />
@@ -644,12 +626,6 @@ namespace MultipeerConnectivity {
 		MCSession Session { get; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="MultipeerConnectivity.MCBrowserViewControllerDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="MultipeerConnectivity.MCBrowserViewControllerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="MultipeerConnectivity.MCBrowserViewControllerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="MultipeerConnectivity.MCBrowserViewControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IMCBrowserViewControllerDelegate { }
 
 	/// <summary>A delegate object that provides events relating to the presentation of discovered peers and the application user's selection or cancellation of them.</summary>
@@ -764,12 +740,6 @@ namespace MultipeerConnectivity {
 		void Stop ();
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="MultipeerConnectivity.MCAdvertiserAssistantDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="MultipeerConnectivity.MCAdvertiserAssistantDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="MultipeerConnectivity.MCAdvertiserAssistantDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="MultipeerConnectivity.MCAdvertiserAssistantDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IMCAdvertiserAssistantDelegate { }
 
 	/// <summary>A delegate object that provides events for the presentation or dismissal of an invitation by a <see cref="MultipeerConnectivity.MCAdvertiserAssistant" />.</summary>

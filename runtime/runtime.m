@@ -2813,7 +2813,7 @@ xamarin_gchandle_new (MonoObject *obj, bool pinned)
 #if defined (CORECLR_RUNTIME)
 	return xamarin_bridge_create_gchandle (obj == NULL ? INVALID_GCHANDLE : obj->gchandle, pinned ? XamarinGCHandleTypePinned : XamarinGCHandleTypeNormal);
 #else
-	return GINT_TO_POINTER (mono_gchandle_new (obj, pinned));
+	return mono_gchandle_new_v2 (obj, pinned);
 #endif
 }
 
@@ -2823,7 +2823,7 @@ xamarin_gchandle_new_weakref (MonoObject *obj, bool track_resurrection)
 #if defined (CORECLR_RUNTIME)
 	return xamarin_bridge_create_gchandle (obj == NULL ? INVALID_GCHANDLE : obj->gchandle, track_resurrection ? XamarinGCHandleTypeWeakTrackResurrection : XamarinGCHandleTypeWeak);
 #else
-	return GINT_TO_POINTER (mono_gchandle_new_weakref (obj, track_resurrection));
+	return mono_gchandle_new_weakref_v2 (obj, track_resurrection);
 #endif
 }
 
@@ -2836,7 +2836,7 @@ xamarin_gchandle_get_target (GCHandle handle)
 #if defined (CORECLR_RUNTIME)
 	return xamarin_bridge_get_monoobject (handle);
 #else
-	return mono_gchandle_get_target (GPOINTER_TO_UINT (handle));
+	return mono_gchandle_get_target_v2 (handle);
 #endif
 }
 
@@ -2848,7 +2848,7 @@ xamarin_gchandle_free (GCHandle handle)
 #if defined (CORECLR_RUNTIME)
 	xamarin_bridge_free_gchandle (handle);
 #else
-	mono_gchandle_free (GPOINTER_TO_UINT (handle));
+	mono_gchandle_free_v2 (handle);
 #endif
 }
 

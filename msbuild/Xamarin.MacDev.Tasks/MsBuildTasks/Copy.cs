@@ -1,11 +1,10 @@
 extern alias Microsoft_Build_Tasks_Core;
 
-using System;
-using System.IO;
 using System.Linq;
 
 using Microsoft.Build.Framework;
 
+using Xamarin.Localization.MSBuild;
 using Xamarin.Messaging.Build.Client;
 
 namespace Microsoft.Build.Tasks {
@@ -13,6 +12,11 @@ namespace Microsoft.Build.Tasks {
 		public string SessionId { get; set; } = string.Empty;
 		public override bool Execute ()
 		{
+			if (SourceFiles?.Any () != true) {
+				Log.LogMessage (MessageImportance.Low, MSBStrings.M7159 /* Skipping {0} - {1} is empty. */, nameof (Copy), nameof (SourceFiles));
+				return true;
+			}
+
 			if (!this.ShouldExecuteRemotely (SessionId))
 				return base.Execute ();
 

@@ -15,7 +15,7 @@ mkMap.OverlayRenderer = (view, overlay) => renderer;
           ]]></code>
       </example>
       <para>
-        <img href="~/MapKit/_images/MKOverlayRenderer.png" alt="Screenshot showing a custom overlay" />
+        <img href="~/xml/MapKit/_images/MKOverlayRenderer.png" alt="Screenshot showing a custom overlay" />
       </para>
     </remarks>
     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MapKit/Reference/MKOverlayRenderer_class/index.html">Apple documentation for <c>MKOverlayRenderer</c></related>

@@ -23,7 +23,6 @@ public partial class OuterClass
 			[SupportedOSPlatform ("maccatalyst13.1")]
 			public static partial class Keys
 			{
-
 				static global::Foundation.NSString? _ColorSpace;
 
 				[SupportedOSPlatform ("macos")]
@@ -65,6 +64,7 @@ public partial class OuterClass
 						return _MetalCommandQueue;
 					}
 				}
+
 			}
 		}
 	}

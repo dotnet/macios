@@ -67,14 +67,14 @@ namespace Xamarin.MacDev.Tasks {
 				.Select (file => {
 					var fileInfo = new FileInfo (file);
 					var item = new TaskItem (file);
-					
+
 					// Check if file was created or modified during this execution
-					var wasModified = fileInfo.CreationTimeUtc >= executionStartTime || 
-					                  fileInfo.LastWriteTimeUtc >= executionStartTime;
-					
+					var wasModified = fileInfo.CreationTimeUtc >= executionStartTime ||
+									  fileInfo.LastWriteTimeUtc >= executionStartTime;
+
 					// Tag files that were modified during this execution
 					item.SetMetadata ("Modified", wasModified.ToString ());
-					
+
 					return item;
 				})
 				.ToArray ();
@@ -87,19 +87,19 @@ namespace Xamarin.MacDev.Tasks {
 		{
 			var modifiedMetadata = item.GetMetadata ("Modified");
 			var wasModified = bool.TryParse (modifiedMetadata, out var modified) && modified;
-			
+
 			// Create output file if it was modified during this execution
 			if (wasModified) {
 				Log.LogMessage (MessageImportance.Low, "Output file '{0}' was modified during execution", item.ItemSpec);
 				return true;
 			}
-			
+
 			// Create output file if it doesn't exist on Windows. We assume if it exists on the Mac we also need it on Windows.
 			if (!File.Exists (item.ItemSpec)) {
 				Log.LogMessage (MessageImportance.Low, "Output file '{0}' does not exist", item.ItemSpec);
 				return true;
 			}
-			
+
 			return false;
 		}
 

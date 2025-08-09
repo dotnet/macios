@@ -162,6 +162,27 @@ readonly partial struct Binding {
 		}
 	}
 
+	readonly Dictionary<string, int> parentPropertyIndex = new ();
+	readonly ImmutableArray<Property> parentProperties = [];
+
+	/// <summary>
+	/// Gets the properties inherited from parent protocols.
+	/// </summary>
+	public ImmutableArray<Property> ParentProtocolProperties {
+		get => parentProperties;
+		init {
+			parentProperties = value;
+			// populate the property index for fast lookup using the symbol name
+			for (var index = 0; index < parentProperties.Length; index++) {
+				var property = parentProperties [index];
+				// there are two type of properties, those that are fields and those that are properties
+				if (property.Selector is null)
+					continue;
+				parentPropertyIndex [property.Selector!] = index;
+			}
+		}
+	}
+
 	/// <summary>
 	/// Returns all the selectors for the properties.
 	/// </summary>
@@ -257,6 +278,26 @@ readonly partial struct Binding {
 				if (method.Selector is null)
 					continue;
 				methodIndex [method.Selector] = index;
+			}
+		}
+	}
+
+	readonly Dictionary<string, int> parentMethodIndex = new ();
+	readonly ImmutableArray<Method> parentMethods = [];
+
+	/// <summary>
+	/// Gets the methods inherited from parent protocols.
+	/// </summary>
+	public ImmutableArray<Method> ParentProtocolMethods {
+		get => parentMethods;
+		init {
+			parentMethods = value;
+			// populate the method index for fast lookup using the symbol name
+			for (var index = 0; index < parentMethods.Length; index++) {
+				var method = parentMethods [index];
+				if (method.Selector is null)
+					continue;
+				parentMethodIndex [method.Selector] = index;
 			}
 		}
 	}

@@ -397,7 +397,7 @@
 		<value> Missing [CoreImageFilterProperty] attribute on {0} property {1}</value>
 	</data>
   <data name="BI1075" xml:space="preserve">
-		<value>Unimplemented CoreImage property type {0}</value>
+		<value>Unimplemented CoreImage property type {0} for the property {1}.{2}.</value>
 	</data>
   <data name="BI1076" xml:space="preserve">
 		<value>Unable to find selector for {0} on {1} on self or base class</value>

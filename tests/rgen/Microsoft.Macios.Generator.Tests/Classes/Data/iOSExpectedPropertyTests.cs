@@ -1044,4 +1044,5 @@ public partial class PropertyTests
 			WeakDelegate = rvalue;
 		}
 	}
+
 }

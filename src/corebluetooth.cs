@@ -457,12 +457,6 @@ namespace CoreBluetooth {
 		NSString ScanOptionsKey { get; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="CoreBluetooth.CBCentralManagerDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="CoreBluetooth.CBCentralManagerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="CoreBluetooth.CBCentralManagerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="CoreBluetooth.CBCentralManagerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface ICBCentralManagerDelegate { }
 
 	/// <summary>Delegate objects for <see cref="CoreBluetooth.CBCentralManager" /> objects.</summary>
@@ -935,12 +929,6 @@ namespace CoreBluetooth {
 		bool AncsAuthorized { get; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="CoreBluetooth.CBPeripheralDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="CoreBluetooth.CBPeripheralDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="CoreBluetooth.CBPeripheralDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="CoreBluetooth.CBPeripheralDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface ICBPeripheralDelegate { }
 
 	/// <summary>Delegate object for <see cref="CoreBluetooth.CBPeripheral" />. Provides methods called on events relating to discovery, exploration, and interaction with a remote peripheral.</summary>
@@ -1574,12 +1562,6 @@ namespace CoreBluetooth {
 		NSString RestoredStateAdvertisementDataKey { get; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="CoreBluetooth.CBPeripheralManagerDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="CoreBluetooth.CBPeripheralManagerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="CoreBluetooth.CBPeripheralManagerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="CoreBluetooth.CBPeripheralManagerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface ICBPeripheralManagerDelegate { }
 
 	/// <summary>Delegate object for <see cref="CoreBluetooth.CBPeripheralManager" />. Adds methods for events relating to availability, publishing, advertising, and subscription.</summary>

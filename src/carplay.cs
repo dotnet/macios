@@ -621,7 +621,6 @@ namespace CarPlay {
 		void TemplateDidDisappear (CPTemplate aTemplate, bool animated);
 	}
 
-	/// <summary>Application delegate for the required methods of the <see cref="CarPlay.CPApplicationDelegate" /> protocol.</summary>
 	interface ICPApplicationDelegate { }
 
 	/// <summary>The application delegate for CarPlay applications.</summary>

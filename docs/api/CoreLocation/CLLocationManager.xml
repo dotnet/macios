@@ -184,7 +184,7 @@ locationManager.StartRangingBeacons(beaconRegion)
         </format>
         <para>Locations can be updated while the application is in the background. This requires that the <c>info.plist</c> be modified using either Xamarin Studio's visual editor:</para>
         <para>
-          <img href="~/CoreLocation/_images/CoreLocation.CLLocationManager.BackgroundModesEnabled.png" alt="Screenshot of configuration dialog showing Enable Background Modes option" />
+          <img href="~/xml/CoreLocation/_images/CoreLocation.CLLocationManager.BackgroundModesEnabled.png" alt="Screenshot of configuration dialog showing Enable Background Modes option" />
         </para>
         <para>Or by adding the key manually:</para>
         <example>
@@ -405,7 +405,7 @@ locationManager.StartRangingBeacons(beaconRegion)
         </format>
         <para>Locations can be updated while the application is in the background. This requires that the <c>info.plist</c> be modified using either Xamarin Studio's visual editor:</para>
         <para>
-          <img href="~/CoreLocation/_images/CoreLocation.CLLocationManager.BackgroundModesEnabled.png" alt="Screenshot of configuration dialog showing Enable Background Modes option" />
+          <img href="~/xml/CoreLocation/_images/CoreLocation.CLLocationManager.BackgroundModesEnabled.png" alt="Screenshot of configuration dialog showing Enable Background Modes option" />
         </para>
         <para>Or by adding the key manually:</para>
         <example>
@@ -522,7 +522,7 @@ type MyLocationDelegate () = inherit CLLocationManagerDelegate()
         </format>
         <para>Locations can be updated while the application is in the background. This requires that the <c>info.plist</c> be modified using either Xamarin Studio's visual editor:</para>
         <para>
-          <img href="~/CoreLocation/_images/CoreLocation.CLLocationManager.BackgroundModesEnabled.png" alt="Screenshot of configuration dialog showing Enable Background Modes option" />
+          <img href="~/xml/CoreLocation/_images/CoreLocation.CLLocationManager.BackgroundModesEnabled.png" alt="Screenshot of configuration dialog showing Enable Background Modes option" />
         </para>
         <para>Or by adding the key manually:</para>
         <example>

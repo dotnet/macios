@@ -832,12 +832,6 @@ namespace CoreLocation {
 
 	interface ICLLocationManagerDelegate { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="CoreLocation.CLLocationManagerDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="CoreLocation.CLLocationManagerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="CoreLocation.CLLocationManagerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="CoreLocation.CLLocationManagerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[BaseType (typeof (NSObject))]
 	[Model]
 	[Protocol]
@@ -1053,7 +1047,7 @@ namespace CoreLocation {
 	/// <remarks>
 	///       <para>Application developers should use a subtype, either <see cref="CoreLocation.CLCircularRegion" /> or <see cref="CoreLocation.CLBeaconRegion" />:</para>
 	///       <para>
-	///         <img href="~/CoreLocation/_images/CoreLocation.CLBeacon.Hierarchy.png" alt="Class diagram showing CLBeaconRegion and CLCircularRegion are subclasses of CLRegion" />
+	///         <img href="~/xml/CoreLocation/_images/CoreLocation.CLBeacon.Hierarchy.png" alt="Class diagram showing CLBeaconRegion and CLCircularRegion are subclasses of CLRegion" />
 	///       </para>
 	///     </remarks>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CoreLocation/Reference/CLRegion_class/index.html">Apple documentation for <c>CLRegion</c></related>

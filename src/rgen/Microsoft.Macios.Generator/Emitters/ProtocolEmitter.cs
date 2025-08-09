@@ -74,14 +74,15 @@ $@"static {bindingContext.Changes.Name} ()
 
 			if (!getter.IsNullOrDefault) {
 				this.EmitMethod (context, getter, classBlock, uiThreadCheck);
+				classBlock.WriteLine ();
 			}
 
 			if (!setter.IsNullOrDefault) {
 				this.EmitMethod (context, setter, classBlock, uiThreadCheck);
+				classBlock.WriteLine ();
 			}
 
 			// write the property declarations
-			classBlock.WriteLine ();
 			classBlock.AppendMemberAvailability (property.SymbolAvailability);
 			classBlock.AppendGeneratedCodeAttribute (optimizable: true);
 			if (!property.IsOptional) {
@@ -100,6 +101,7 @@ $@"static {bindingContext.Changes.Name} ()
 					propertyBlock.WriteLine ($"set => {setter.Name} (this, value);");
 				}
 			}
+			classBlock.WriteLine ();
 		}
 	}
 
@@ -135,6 +137,7 @@ $@"static {bindingContext.Changes.Name} ()
 				// we don't need to use the factory to generate the method since it is onlye throwing an exception.
 				methodBlock.WriteLine ($"throw new {You_Should_Not_Call_base_In_This_Method} ();");
 			}
+			classBlock.WriteLine ();
 		}
 	}
 
@@ -192,6 +195,12 @@ $@"static {bindingContext.Changes.Name} ()
 				builder.AppendProtocolMemberData (protocolMember);
 			}
 
+			// append the methods to the protocol member data 
+			foreach (var method in bindingContext.Changes.Methods.OrderBy (m => m.Name)) {
+				var protocolMember = new ProtocolMemberData (method);
+				builder.AppendProtocolMemberData (protocolMember);
+			}
+
 			var modifiers = $"{string.Join (' ', bindingContext.Changes.Modifiers)} ";
 			// class declaration, the analyzer should ensure that the class is static, otherwise it will fail to compile with an error.
 			using (var interfaceBlock = builder.CreateBlock (
@@ -202,6 +211,7 @@ $@"static {bindingContext.Changes.Name} ()
 
 				// emit static constructor
 				EmitDefaultConstructors (in bindingContext, interfaceBlock);
+				interfaceBlock.WriteLine ();
 
 				// emit the properties, this will generate the getters/setters and the properties themselves
 				EmitProperties (in bindingContext, in properties, interfaceBlock);

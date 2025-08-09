@@ -4,7 +4,7 @@
     <remarks>
       <para>This class describes the attitude of the device (see <see cref="CoreMotion.CMAttitude" />) relative to an initial attitude (see <see cref="CoreMotion.CMMotionManager.StartDeviceMotionUpdates(CMAttitudeReferenceFrame)" />). The axes of rotation are defined as:</para>
       <para>
-        <img href="~/CoreMotion/_images/CoreMotion.CMAttitude.Axes.png" alt="Illustration of the axes relative to device orientation" />
+        <img href="~/xml/CoreMotion/_images/CoreMotion.CMAttitude.Axes.png" alt="Illustration of the axes relative to device orientation" />
       </para>
       <para>If a device's original orientation is lying flat on a table, with the bottom of the device facing the user:</para>
       <list type="table">

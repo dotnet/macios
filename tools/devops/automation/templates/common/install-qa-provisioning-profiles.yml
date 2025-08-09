@@ -6,6 +6,9 @@ parameters:
   type: string
   default: $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)
 
+# How to renew certificates and provisioning profiles:
+# https://dev.azure.com/devdiv/DevDiv/_git/macios-appstoresubmissiontests?path=/docs/provisioning-profiles/EXPIRED.md&_a=preview
+
 steps:
 - pwsh: |
     New-Item $(Build.SourcesDirectory)/maccore/tools/provisioning-profiles/certificates-and-profiles -ItemType Directory -Force

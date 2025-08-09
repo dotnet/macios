@@ -38,7 +38,7 @@ dir.CalculateDirections((response, error) => {
 ]]></code>
       </example>
       <para>
-        <img href="~/MapKit/_images/MKDirections.png" alt="Screenshot showing map routing" />
+        <img href="~/xml/MapKit/_images/MKDirections.png" alt="Screenshot showing map routing" />
       </para>
     </remarks>
     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MapKit/Reference/MKDirections_class/index.html">Apple documentation for <c>MKDirections</c></related>

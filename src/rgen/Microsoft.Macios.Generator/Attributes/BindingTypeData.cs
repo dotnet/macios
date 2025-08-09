@@ -155,6 +155,11 @@ readonly struct BindingTypeData<T> : IEquatable<BindingTypeData<T>> where T : En
 	public TypeInfo CategoryType { get; init; } = TypeInfo.Default;
 
 	/// <summary>
+	/// The name of the model class for the protocol.
+	/// </summary>
+	public string? ModelName { get; init; }
+
+	/// <summary>
 	/// Initializes a new instance of the <see cref="BindingTypeData{T}"/> struct.
 	/// </summary>
 	/// <param name="name">The original name of the ObjC class or protocol.</param>
@@ -221,9 +226,12 @@ readonly struct BindingTypeData<T> : IEquatable<BindingTypeData<T>> where T : En
 		T? flags = default;
 		// category related data
 		TypeInfo categoryType = TypeInfo.Default;
+		// protocol related data
+		string? modelName = null;
 
 		// check if we have a category type, we can do that by checking the type of the flag
 		var isCategory = typeof (T) == typeof (ObjCBindings.Category);
+		var isProtocol = typeof (T) == typeof (ObjCBindings.Protocol);
 
 		switch (count) {
 		case 0:
@@ -271,6 +279,9 @@ readonly struct BindingTypeData<T> : IEquatable<BindingTypeData<T>> where T : En
 		if (isCategory && TryExtractCategoryNamedParameters (attributeData, out name, ref flags, out categoryType)) {
 			data = CreateCategoryBindingData (flags, categoryType);
 			return true;
+		} else if (isProtocol && TryExtractProtocolNamedParameters (attributeData, out name, ref flags, out modelName)) {
+			data = CreateProtocolBindingData (flags, name, modelName);
+			return true;
 		} else if (TryExtractClassNamedParameters (attributeData, out name, ref flags, out string? errorDomain, out string? libraryName, out MethodAttributes defaultCtorVisibility, out MethodAttributes intPtrCtorVisibility, out MethodAttributes stringCtorVisibility)) {
 			data = CreateClassBindingData (flags, name, errorDomain, libraryName, defaultCtorVisibility, intPtrCtorVisibility, stringCtorVisibility);
 			return true;
@@ -308,6 +319,24 @@ readonly struct BindingTypeData<T> : IEquatable<BindingTypeData<T>> where T : En
 				DefaultCtorVisibility = defaultCtorVisibility,
 				IntPtrCtorVisibility = intPtrCtorVisibility,
 				StringCtorVisibility = stringCtorVisibility,
+			};
+	}
+
+	/// <summary>
+	/// Creates a new instance of <see cref="BindingTypeData{T}"/> for a protocol.
+	/// </summary>
+	/// <param name="flags">The configuration flags.</param>
+	/// <param name="name">The original name of the ObjC protocol.</param>
+	/// <param name="modelName">The name of the model class for the protocol.</param>
+	/// <returns>A new instance of <see cref="BindingTypeData{T}"/>.</returns>
+	static BindingTypeData<T> CreateProtocolBindingData (T? flags, string? name, string? modelName)
+	{
+		return flags is not null
+			? new (name, flags) {
+				ModelName = modelName,
+			}
+			: new (name) {
+				ModelName = modelName,
 			};
 	}
 
@@ -401,6 +430,37 @@ readonly struct BindingTypeData<T> : IEquatable<BindingTypeData<T>> where T : En
 				break;
 			case "CategoryType":
 				categoryType = new ((INamedTypeSymbol) value.Value!);
+				break;
+			default:
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	/// <summary>
+	/// Tries to extract the named parameters for a protocol from the attribute data.
+	/// </summary>
+	/// <param name="attributeData">The attribute data to be parsed.</param>
+	/// <param name="name">The original name of the ObjC protocol.</param>
+	/// <param name="flags">The configuration flags.</param>
+	/// <param name="modelName">The name of the model class for the protocol.</param>
+	/// <returns>True if the data was parsed.</returns>
+	static bool TryExtractProtocolNamedParameters (AttributeData attributeData, out string? name, ref T? flags, out string? modelName)
+	{
+		name = null;
+		modelName = null;
+		foreach (var (paramName, value) in attributeData.NamedArguments) {
+			switch (paramName) {
+			case "Name":
+				name = (string?) value.Value!;
+				break;
+			case "Flags":
+				flags = (T) value.Value!;
+				break;
+			case "ModelName":
+				modelName = (string?) value.Value!;
 				break;
 			default:
 				return false;

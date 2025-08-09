@@ -235,10 +235,10 @@ public class TestClass {
 	}
 
 	[Theory]
-	[ClassData (typeof (GetBindingTypeTestData))]
-	void GetBindingType (string input, BindingType expectedBindingType)
+	[AllSupportedPlatformsClassData<GetBindingTypeTestData>]
+	void GetBindingType (ApplePlatform platform, string input, BindingType expectedBindingType)
 	{
-		var (compilation, sourceTrees) = CreateCompilation (ApplePlatform.iOS, sources: [input]);
+		var (compilation, sourceTrees) = CreateCompilation (platform, sources: [input]);
 		Assert.Single (sourceTrees);
 		var classDeclaration = sourceTrees [0].GetRoot ()
 			.DescendantNodes ()

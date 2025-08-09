@@ -131,13 +131,6 @@ namespace Xamarin {
 		}
 	}
 
-#if MMP
-	static class MonoVersions {
-		public static string MinimumMono = "@MIN_XM_MONO_VERSION@";
-		public static Version MinimumMonoVersion { get { return new Version (MinimumMono); } }
-	}
-#endif
-
 	static class DotNetVersions {
 		public const string Tfm = "@DOTNET_TFM@";
 		public const string Version = "@DOTNET_VERSION@";

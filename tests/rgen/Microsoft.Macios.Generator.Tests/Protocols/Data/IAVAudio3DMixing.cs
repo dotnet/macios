@@ -12,7 +12,7 @@ namespace Microsoft.Macios.Generator.Tests.Protocols.Data;
 [SupportedOSPlatform ("tvos")]
 [SupportedOSPlatform ("macos")]
 [SupportedOSPlatform ("maccatalyst13.1")]
-[BindingType<Protocol>]
+[BindingType<ObjCBindings.Protocol> (ObjCBindings.Protocol.CreateModel)]
 public interface IAVAudio3DMixing {
 
 	[Export<Property> ("renderingAlgorithm")]

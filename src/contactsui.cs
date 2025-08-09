@@ -97,12 +97,6 @@ namespace ContactsUI {
 	}
 #endif
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="ContactsUI.CNContactPickerDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="ContactsUI.CNContactPickerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="ContactsUI.CNContactPickerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="ContactsUI.CNContactPickerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface ICNContactPickerDelegate { }
 
 #if MONOMAC
@@ -391,12 +385,6 @@ namespace ContactsUI {
 		void HighlightProperty (NSString key, [NullAllowed] string identifier);
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="ContactsUI.CNContactViewControllerDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="ContactsUI.CNContactViewControllerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="ContactsUI.CNContactViewControllerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="ContactsUI.CNContactViewControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface ICNContactViewControllerDelegate { }
 
 	/// <summary>Delegate object that provides methods relating to viewing or editing a contact with a <see cref="ContactsUI.CNContactViewController" />.</summary>

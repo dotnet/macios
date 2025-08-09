@@ -328,6 +328,35 @@ readonly partial struct Binding {
 			out events);
 		GetMembers<MethodDeclarationSyntax, Method> (interfaceDeclaration, context.SemanticModel, Skip, Method.TryCreate,
 			out methods);
+
+		// models are a special case, we need to be able to retrieve the parent properties and methods to be added to the
+		// wrapper classes. We will do that by accessing the parents, getting their symbol info and creating the 
+		// properties and methods from that.
+		if (context.SemanticModel.GetDeclaredSymbol (interfaceDeclaration) is INamedTypeSymbol symbol) {
+			// build the parent properties and methods
+			var parentPropertiesBucket = ImmutableArray.CreateBuilder<Property> ();
+			var parentMethodsBucket = ImmutableArray.CreateBuilder<Method> ();
+			foreach (var member in symbol.GetAllInterfaceMembers ()) {
+				switch (member) {
+				case IPropertySymbol propertySymbol:
+					if (Property.TryCreate (propertySymbol, context, out var property)
+							&& !property.Value.ExportPropertyData.IsNullOrDefault) // only decorated properties
+						parentPropertiesBucket.Add (property.Value);
+					break;
+				case IMethodSymbol methodSymbol:
+					if (Method.TryCreate (methodSymbol, context, out var method)
+							&& !method.Value.ExportMethodData.IsNullOrDefault)
+						parentMethodsBucket.Add (method.Value);
+					break;
+				}
+			}
+			ParentProtocolProperties = parentPropertiesBucket.ToImmutable ();
+			ParentProtocolMethods = parentMethodsBucket.ToImmutable ();
+		} else {
+			ParentProtocolProperties = [];
+			ParentProtocolMethods = [];
+		}
+
 	}
 
 	/// <summary>
@@ -368,6 +397,8 @@ readonly partial struct Binding {
 		sb.AppendJoin (", ", Constructors);
 		sb.Append ("], Properties: [");
 		sb.AppendJoin (", ", Properties);
+		sb.Append ("], ParentProtocolProperties: [");
+		sb.AppendJoin (", ", ParentProtocolProperties);
 		sb.Append ("], Methods: [");
 		sb.AppendJoin (", ", Methods);
 		sb.Append ("], Events: [");

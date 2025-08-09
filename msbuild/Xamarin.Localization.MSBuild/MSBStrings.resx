@@ -1621,4 +1621,12 @@
             {2} and {3}: the different LogicalName metadata
         </comment>
     </data>
+
+    <data name="M7159" xml:space="preserve">
+        <value>Skipping {0} - {1} is empty.</value>
+        <comment>
+            {0}: the name of the MSBuild task that's being skipped (Copy, GetFullPaths, FilterStaticFrameworks, etc.).
+            {1}: the name of the property that is empty (SourceFiles, Items, FrameworkToPublish, etc.).
+        </comment>
+    </data>
 </root>

@@ -206,12 +206,6 @@ namespace WatchConnectivity {
 		bool CompanionAppInstalled { [Bind ("isCompanionAppInstalled")] get; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="WatchConnectivity.WCSessionDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="WatchConnectivity.WCSessionDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="WatchConnectivity.WCSessionDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="WatchConnectivity.WCSessionDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IWCSessionDelegate { }
 
 	/// <summary>Delegate object whose methods, when overridden, allow the app developer to respond to messages sent between a WatchKit extension app and it's container app.</summary>

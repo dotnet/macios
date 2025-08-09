@@ -349,21 +349,21 @@ namespace UIKit {
 	/// <remarks>To be added.</remarks>
 	[Native]
 	public enum UIImageOrientation : long {
-		/// <summary>Default orientation. <img href="~/UIKit/_images/UIKit.UIImageOrientation_Up.png" alt="Image showing the specified image orientation." /></summary>
+		/// <summary>Default orientation. <img href="~/xml/UIKit/_images/UIKit.UIImageOrientation_Up.png" alt="Image showing the specified image orientation." /></summary>
 		Up,
-		/// <summary>Rotated 180 degrees. <img href="~/UIKit/_images/UIKit.UIImageOrientation_Down.png" alt="Image showing the specified image orientation." /></summary>
+		/// <summary>Rotated 180 degrees. <img href="~/xml/UIKit/_images/UIKit.UIImageOrientation_Down.png" alt="Image showing the specified image orientation." /></summary>
 		Down,
-		/// <summary>Rotated 90 degrees counterclockwise. <img href="~/UIKit/_images/UIKit.UIImageOrientation_Left.png" alt="Image showing the specified image orientation." /></summary>
+		/// <summary>Rotated 90 degrees counterclockwise. <img href="~/xml/UIKit/_images/UIKit.UIImageOrientation_Left.png" alt="Image showing the specified image orientation." /></summary>
 		Left,
-		/// <summary>Rotated 90 degrees clockwise. <img href="~/UIKit/_images/UIKit.UIImageOrientation_Right.png" alt="Image showing the specified image orientation." /></summary>
+		/// <summary>Rotated 90 degrees clockwise. <img href="~/xml/UIKit/_images/UIKit.UIImageOrientation_Right.png" alt="Image showing the specified image orientation." /></summary>
 		Right,
-		/// <summary>Flipped about its vertical axis. <img href="~/UIKit/_images/UIKit.UIImageOrientation_UpMirrored.png" alt="Image showing the specified image orientation." /></summary>
+		/// <summary>Flipped about its vertical axis. <img href="~/xml/UIKit/_images/UIKit.UIImageOrientation_UpMirrored.png" alt="Image showing the specified image orientation." /></summary>
 		UpMirrored,
-		/// <summary>Flipped about its vertical axis and then rotated 180 degrees. <img href="~/UIKit/_images/UIKit.UIImage_DownMirrored.png" alt="Image showing the orientation for down and mirrored" /></summary>
+		/// <summary>Flipped about its vertical axis and then rotated 180 degrees. <img href="~/xml/UIKit/_images/UIKit.UIImage_DownMirrored.png" alt="Image showing the orientation for down and mirrored" /></summary>
 		DownMirrored,
-		/// <summary>Flipped about its horizontal axis and then rotated 90 degrees counterclockwise. <img href="~/UIKit/_images/UIKit.UIImageOrientation_LeftMirrored.png" alt="Image showing the specified image orientation." /></summary>
+		/// <summary>Flipped about its horizontal axis and then rotated 90 degrees counterclockwise. <img href="~/xml/UIKit/_images/UIKit.UIImageOrientation_LeftMirrored.png" alt="Image showing the specified image orientation." /></summary>
 		LeftMirrored,
-		/// <summary>Flipped about its horizontal axis and then rotated 90 degrees clockwise. <img href="~/UIKit/_images/UIKit.UIImageOrientation_RightMirrored.png" alt="Image showing the specified image orientation." /></summary>
+		/// <summary>Flipped about its horizontal axis and then rotated 90 degrees clockwise. <img href="~/xml/UIKit/_images/UIKit.UIImageOrientation_RightMirrored.png" alt="Image showing the specified image orientation." /></summary>
 		RightMirrored,
 	}
 
@@ -1412,7 +1412,7 @@ namespace UIKit {
 	///       <para>The values of <see cref="UIKit.UIActionSheetStyle.Automatic" /> and <see cref="UIKit.UIActionSheetStyle.Default" /> are the same.</para>
 	///       <para>In this image, the left phone is displaying with <see cref="UIKit.UIActionSheetStyle.BlackTranslucent" /> style and the right with <see cref="UIKit.UIActionSheetStyle.BlackOpaque" /> style.</para>
 	///       <para>
-	///         <img href="~/UIKit/_images/UIKit.UIActionSheetStyle.png" alt="Screenshot showing alternate styles for the UIActionSheet" />
+	///         <img href="~/xml/UIKit/_images/UIKit.UIActionSheetStyle.png" alt="Screenshot showing alternate styles for the UIActionSheet" />
 	///       </para>
 	///     </remarks>
 	[Native]
@@ -2678,13 +2678,13 @@ namespace UIKit {
 	/// <remarks>
 	///       <para>This is how an action sheet is displayed:</para>
 	///       <para>
-	///         <img href="~/UIKit/_images/actioncontroller-action-sheet.png" alt="Screenshot of the action sheet." />
+	///         <img href="~/xml/UIKit/_images/actioncontroller-action-sheet.png" alt="Screenshot of the action sheet." />
 	///       </para>
 	///       <para>
 	///       </para>
 	///       <para>This is how an alert is displayed:</para>
 	///       <para>
-	///         <img href="~/UIKit/_images/actioncontroller-alert.png" alt="Image of the alert dialog" />
+	///         <img href="~/xml/UIKit/_images/actioncontroller-alert.png" alt="Image of the alert dialog" />
 	///       </para>
 	///     </remarks>
 	[Native]
@@ -3125,7 +3125,7 @@ namespace UIKit {
 	///       <para>
 	///         <see cref="UIKit.UIPress" /> objects model not just digital presses but, for instance, trackpads, so a <see cref="UIKit.UIPress" /> may have both location and force data. Additionally, the system may cancel tracking of a button press at any time. This leads to the following state-machine:</para>
 	///       <para>
-	///         <img href="~/UIKit/_images/UIKit.UIPressPhase_States.png" alt="Statechart showing states and transitions occuring during a press" />
+	///         <img href="~/xml/UIKit/_images/UIKit.UIPressPhase_States.png" alt="Statechart showing states and transitions occuring during a press" />
 	///       </para>
 	///     </remarks>
 	[MacCatalyst (13, 1)]

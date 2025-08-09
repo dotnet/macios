@@ -20,6 +20,73 @@ using Xamarin.Utils;
 namespace Cecil.Tests {
 	[TestFixture]
 	public partial class Documentation {
+		[Test]
+		public void VerifyNoUnresolvedCrefs ()
+		{
+			// We join all the APIs from all the platforms, so we can only run this test when all platforms are enabled.
+			Configuration.IgnoreIfAnyIgnoredPlatforms ();
+
+			var allFailures = new HashSet<string> ();
+			foreach (var info in Helper.NetPlatformAssemblyDefinitions) {
+				var xml = Path.ChangeExtension (info.Path, ".xml");
+				var reader = XmlReader.Create (xml);
+				string? currentType = null;
+				string? currentMember = null;
+				var failures = new HashSet<string> ();
+				while (reader.Read ()) {
+					if (reader.NodeType != XmlNodeType.Element)
+						continue;
+
+					switch (reader.Name) {
+					case "member":
+						currentMember = reader.GetAttribute ("name") ?? string.Empty;
+						break;
+					case "type":
+						currentMember = null;
+						currentType = reader.GetAttribute ("name") ?? string.Empty;
+						break;
+					case "cref":
+						failures.Add ($"{currentMember ?? currentType}: Found element 'cref', should be element 'see' with attribute 'cref' (i.e. instead of <cref ... /> do <see cref=... />).");
+						break;
+					case "see": {
+						var cref = reader.GetAttribute ("cref");
+						if (string.IsNullOrEmpty (cref)) {
+							if (!string.IsNullOrEmpty (reader.GetAttribute ("langword")))
+								continue; // '<see langword=... />' is allowed
+							if (!string.IsNullOrEmpty (reader.GetAttribute ("href")))
+								continue; // '<see href==... />' is allowed
+
+							failures.Add ($"{currentMember ?? currentType}: Found element 'see' element with no 'cref' nor 'langword' attribute.");
+							continue;
+						} else if (cref.Length < 2) {
+							failures.Add ($"{currentMember ?? currentType}: Found element 'see' with unexpectedly short 'name' attribute: '{cref}'.");
+							continue;
+						} else if (cref [1] != ':') {
+							failures.Add ($"{currentMember ?? currentType}: Found element 'see' with unexpected format for the 'cref' attribute (second character isn't ':'): '{cref}'.");
+							continue;
+						}
+						switch (cref [0]) {
+						case 'T':
+						case 'M':
+						case 'P':
+						case 'F':
+						case 'E':
+							// Valid cref
+							break;
+						default:
+							failures.Add ($"{currentMember ?? currentType}: Invalid cref '{cref}'");
+							break;
+						}
+						continue;
+					}
+					}
+				}
+
+				allFailures.UnionWith (failures);
+			}
+			Helper.AssertFailures (allFailures, KnownCrefFailures, nameof (KnownCrefFailures), "Cref failures");
+		}
+
 		// Verify that all our publicly visible APIs are documented.
 		// This is obviously not true, so we have a rather huge list of known failures.
 		// However, this will prevent us from adding more undocumented APIs by accident.

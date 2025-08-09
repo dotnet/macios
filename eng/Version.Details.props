@@ -19,13 +19,13 @@ This file should be imported by eng/Versions.props
     <MicrosoftTemplateEngineAuthoringTasksPackageVersion>10.0.100-rc.1.25406.102</MicrosoftTemplateEngineAuthoringTasksPackageVersion>
     <!-- dotnet/macios dependencies -->
     <MicrosoftiOSSdknet90_185PackageVersion>18.5.9216</MicrosoftiOSSdknet90_185PackageVersion>
-    <MicrosoftiOSSdknet90_260PackageVersion>26.0.9330-xcode26.0</MicrosoftiOSSdknet90_260PackageVersion>
+    <MicrosoftiOSSdknet90_260PackageVersion>26.0.9331-xcode26.0</MicrosoftiOSSdknet90_260PackageVersion>
     <MicrosoftMacCatalystSdknet90_185PackageVersion>18.5.9216</MicrosoftMacCatalystSdknet90_185PackageVersion>
-    <MicrosoftMacCatalystSdknet90_260PackageVersion>26.0.9330-xcode26.0</MicrosoftMacCatalystSdknet90_260PackageVersion>
+    <MicrosoftMacCatalystSdknet90_260PackageVersion>26.0.9331-xcode26.0</MicrosoftMacCatalystSdknet90_260PackageVersion>
     <MicrosoftmacOSSdknet90_155PackageVersion>15.5.9216</MicrosoftmacOSSdknet90_155PackageVersion>
-    <MicrosoftmacOSSdknet90_260PackageVersion>26.0.9330-xcode26.0</MicrosoftmacOSSdknet90_260PackageVersion>
+    <MicrosoftmacOSSdknet90_260PackageVersion>26.0.9331-xcode26.0</MicrosoftmacOSSdknet90_260PackageVersion>
     <MicrosofttvOSSdknet90_185PackageVersion>18.5.9216</MicrosofttvOSSdknet90_185PackageVersion>
-    <MicrosofttvOSSdknet90_260PackageVersion>26.0.9330-xcode26.0</MicrosofttvOSSdknet90_260PackageVersion>
+    <MicrosofttvOSSdknet90_260PackageVersion>26.0.9331-xcode26.0</MicrosofttvOSSdknet90_260PackageVersion>
     <!-- xamarin/xamarin-macios dependencies -->
     <MicrosoftiOSSdknet90_180PackageVersion>18.0.9617</MicrosoftiOSSdknet90_180PackageVersion>
     <MicrosoftMacCatalystSdknet90_180PackageVersion>18.0.9617</MicrosoftMacCatalystSdknet90_180PackageVersion>

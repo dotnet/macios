@@ -445,6 +445,13 @@ namespace Introspection {
 				case "UISceneDestructionCondition": // Conformance not in headers
 				case "UICornerConfiguration": // Conformance not in headers
 				case "UICornerRadius": // Conformance not in headers
+				case "CPListImageRowItemCardElement": // Conformance not in headers
+				case "CPListImageRowItemCondensedElement": // Conformance not in headers
+				case "CPListImageRowItemElement": // Conformance not in headers
+				case "CPListImageRowItemGridElement": // Conformance not in headers
+				case "CPListImageRowItemImageGridElement": // Conformance not in headers
+				case "CPListImageRowItemRowElement": // Conformance not in headers
+				case "CPMessageGridItemConfiguration": // Conformance not in headers
 					return true;
 				}
 				break;
@@ -648,6 +655,13 @@ namespace Introspection {
 				case "UISceneDestructionCondition": // Conformance not in headers
 				case "UICornerConfiguration": // Conformance not in headers
 				case "UICornerRadius": // Conformance not in headers
+				case "CPListImageRowItemCardElement": // Conformance not in headers
+				case "CPListImageRowItemCondensedElement": // Conformance not in headers
+				case "CPListImageRowItemElement": // Conformance not in headers
+				case "CPListImageRowItemGridElement": // Conformance not in headers
+				case "CPListImageRowItemImageGridElement": // Conformance not in headers
+				case "CPListImageRowItemRowElement": // Conformance not in headers
+				case "CPMessageGridItemConfiguration": // Conformance not in headers
 					return true;
 				}
 				break;

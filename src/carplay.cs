@@ -2155,7 +2155,6 @@ namespace CarPlay {
 		void UpdateImages (UIImage [] gridImages);
 
 		[Deprecated (PlatformName.iOS, 26, 0, "Use Elements property instead.")]
-		[Deprecated (PlatformName.MacCatalyst, 26, 0, "Use Elements property instead.")]
 		[iOS (17, 4)]
 		[Export ("imageTitles", ArgumentSemantic.Copy)]
 		string [] ImageTitles {

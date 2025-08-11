@@ -46,12 +46,12 @@ public class ClassGenerationTests : BaseGeneratorTestClass {
 			new (ApplePlatform.MacCatalyst, "ThreadSafeUIKitPropertyTests", "ThreadSafeUIKitPropertyTests.cs", "ExpectedThreadSafeUIKitPropertyTests.cs"),
 			new (ApplePlatform.MacOSX, "AppKitPropertyTests", "AppKitPropertyTests.cs", "ExpectedAppKitPropertyTests.cs"),
 			new (ApplePlatform.MacOSX, "ThreadSafeAppKitPropertyTests", "ThreadSafeAppKitPropertyTests.cs", "ExpectedThreadSafeAppKitPropertyTests.cs"),
-
+			
 			new (ApplePlatform.iOS, "NSUserDefaults", "NSUserDefaults.cs", "ExpectedNSUserDefaults.cs"),
 			new (ApplePlatform.TVOS, "NSUserDefaults", "NSUserDefaults.cs", "ExpectedNSUserDefaults.cs"),
 			new (ApplePlatform.MacCatalyst, "NSUserDefaults", "NSUserDefaults.cs", "ExpectedNSUserDefaults.cs"),
 			new (ApplePlatform.MacOSX, "NSUserDefaults", "NSUserDefaults.cs", "ExpectedNSUserDefaults.cs"),
-
+			
 			new (ApplePlatform.iOS, "MethodTests", "MethodTests.cs", "ExpectedMethodsTests.cs")
 			{
 				ExtraFiles = new () {
@@ -89,10 +89,30 @@ public class ClassGenerationTests : BaseGeneratorTestClass {
 			new (ApplePlatform.MacOSX, "TrampolinePropertyTests", "TrampolinePropertyTests.cs", "ExpectedTrampolinePropertyTests.cs"){ TrampolinesFile = "ExpectedTrampolinePropertyTestsTrampolines.cs"},
 			
 			// event tests
-			new (ApplePlatform.iOS, "EventTests", "EventTests.cs", "ExpectedEventTests.cs"),
-			new (ApplePlatform.TVOS, "EventTests", "EventTests.cs", "ExpectedEventTests.cs"),
-			new (ApplePlatform.MacCatalyst, "EventTests", "EventTests.cs", "ExpectedEventTests.cs"),
-			new (ApplePlatform.MacOSX, "EventTests", "EventTests.cs", "ExpectedEventTests.cs"),
+			new (ApplePlatform.iOS, "EventTests", "EventTests.cs", "ExpectedEventTests.cs")
+			{
+				ExtraFiles = new () {
+					{"NSArchiveReplace.g.cs", "ExpectedNSArchiveReplace.cs"},
+				}
+			},
+			new (ApplePlatform.TVOS, "EventTests", "EventTests.cs", "ExpectedEventTests.cs")
+			{
+				ExtraFiles = new () {
+					{"NSArchiveReplace.g.cs", "ExpectedNSArchiveReplace.cs"},
+				}
+			},
+			new (ApplePlatform.MacCatalyst, "EventTests", "EventTests.cs", "ExpectedEventTests.cs")
+			{
+				ExtraFiles = new () {
+					{"NSArchiveReplace.g.cs", "ExpectedNSArchiveReplace.cs"},
+				}
+			},
+			new (ApplePlatform.MacOSX, "EventTests", "EventTests.cs", "ExpectedEventTests.cs")
+			{
+				ExtraFiles = new () {
+					{"NSArchiveReplace.g.cs", "ExpectedNSArchiveReplace.cs"},
+				}
+			},
 		};
 
 		public IEnumerator<object []> GetEnumerator ()

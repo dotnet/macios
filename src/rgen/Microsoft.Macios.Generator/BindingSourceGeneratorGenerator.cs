@@ -63,6 +63,9 @@ public class BindingSourceGeneratorGenerator : IIncrementalGenerator {
 		var asyncResultsProvider = provider
 			.Select ((tuple, _) => (tuple.RootBindingContext, tuple.Bindings.AsyncResults));
 
+		var eventArgsProvider = provider
+			.Select ((tuple, _) => (tuple.RootBindingContext, tuple.Bindings.WeakDelegateEvents));
+
 		context.RegisterSourceOutput (context.CompilationProvider.Combine (bindings.Collect ()),
 			((ctx, t) => GenerateCode (ctx, t.Right)));
 
@@ -74,6 +77,9 @@ public class BindingSourceGeneratorGenerator : IIncrementalGenerator {
 
 		context.RegisterSourceOutput (context.CompilationProvider.Combine (asyncResultsProvider.Collect ()),
 			((ctx, t) => GenerateAsyncResultCode (ctx, t.Right)));
+		
+		context.RegisterSourceOutput (context.CompilationProvider.Combine (eventArgsProvider.Collect ()),
+			((ctx, t) => GenerateEventArgTypes (ctx, t.Right)));
 
 		if (GeneratorConfiguration.BGenCompatible) {
 			// the following code generations will only be used when the generator is compatible with bgen.
@@ -272,6 +278,48 @@ public class BindingSourceGeneratorGenerator : IIncrementalGenerator {
 				var code = sb.ToCode ();
 				var namespacePath = Path.Combine (asyncResult.Namespace.ToArray ());
 				context.AddSource ($"{Path.Combine (namespacePath, asyncResult.Name)}.g.cs",
+					SourceText.From (code, Encoding.UTF8));
+			} else {
+				// add to the diagnostics and continue to the next possible candidate
+				context.ReportDiagnostics (diagnostics);
+			}
+		}
+	}
+
+	/// <summary>
+	/// Code generator that emits event argument types for weak delegates.
+	/// </summary>
+	/// <param name="context">Source production context.</param>
+	/// <param name="eventInfoChanges">The event info for which event argument types will be generated.</param>
+	static void GenerateEventArgTypes (SourceProductionContext context,
+		ImmutableArray<(RootContext RootBindingContext, IEnumerable<EventInfo>
+			EventInfos)> eventInfoChanges)
+	{
+		// we don't have what to generate, so we can return
+		if (eventInfoChanges.Length == 0)
+			return;
+
+		// it might be the case that we have several async results with the same name and namespace, so we need to
+		// ensure that we do not have duplicates. We do so by using a dict.
+		var infos = new Dictionary<string, EventInfo> ();
+		foreach (var (_, eventInfos) in eventInfoChanges) {
+			foreach (var info in eventInfos) {
+				infos.Add (info.EventArgsFullyQualifiedName, info);
+			}
+		}
+
+		var sb = new TabbedStringBuilder (new ());
+		foreach (var (_, eventInfo) in infos) {
+			if (!eventInfo.ToGenerate)
+				continue;
+			// init sb and add the header
+			sb.Clear ();
+			sb.WriteHeader ();
+			var emitter = new EventTypeEmitter (sb);
+			if (emitter.TryEmit (eventInfo, out var diagnostics)) {
+				// only add a file when we do generate code
+				var code = sb.ToCode ();
+				context.AddSource ($"{Path.Combine (eventInfo.Namespace, eventInfo.EventArgsType)}.g.cs",
 					SourceText.From (code, Encoding.UTF8));
 			} else {
 				// add to the diagnostics and continue to the next possible candidate

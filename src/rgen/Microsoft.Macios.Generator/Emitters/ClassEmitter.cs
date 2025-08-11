@@ -147,10 +147,12 @@ public static NSObject {name} ({NSObject} objectToObserve, {EventHandler}<{event
 				continue;
 
 			// loop over the events, those should be present in the property for the delegate
-			foreach (var (name, eventArgs) in property.ExportPropertyData.StrongDelegateType.Events) {
+			foreach (var eventInfo in property.ExportPropertyData.StrongDelegateType.Events) {
 				// create the event args type name
-				var eventHandler = eventArgs is null ? EventHandler.ToString () : $"{EventHandler}<{eventArgs}>";
-				classBlock.WriteLine ($"// Generate event for delegate: {name} with args: {eventHandler}");
+				var eventHandler = eventInfo.EventArgsType is null 
+					? EventHandler.ToString () 
+					: $"{EventHandler}<{eventInfo.EventArgsType}>";
+				classBlock.WriteLine ($"// Generate event for delegate: {eventInfo.Name} with args: {eventHandler}");
 			}
 		}
 	}

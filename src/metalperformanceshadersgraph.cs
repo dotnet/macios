@@ -2950,7 +2950,7 @@ namespace MetalPerformanceShadersGraph {
 
 	[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0), Mac (26, 0)]
 	[Native]
-	enum MPSGraphReducedPrecisionFastMath : ulong
+	enum MPSGraphReducedPrecisionFastMath : ulong {
 		None = 0,
 		AllowFP16Conv2DWinogradTransformIntermediate = 1 << 1,
 		AllowFP16Intermediates = AllowFP16Conv2DWinogradTransformIntermediate,

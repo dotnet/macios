@@ -2154,10 +2154,10 @@ namespace CarPlay {
 		[Export ("updateImages:")]
 		void UpdateImages (UIImage [] gridImages);
 
-		[Deprecated (PlatformName.iOS, 26, 0, "Use Elements property instead.")]
 		[iOS (17, 4)]
 		[Export ("imageTitles", ArgumentSemantic.Copy)]
 		string [] ImageTitles {
+			[Deprecated (PlatformName.iOS, 26, 0, "Use Elements property instead.")]
 			get;
 			// Apple removed the setter in Xcode 26 beta 1
 			[Obsoleted (PlatformName.iOS, 26, 0, "No longer supported.")]

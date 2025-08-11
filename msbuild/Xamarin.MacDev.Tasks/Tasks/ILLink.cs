@@ -63,7 +63,7 @@ namespace Xamarin.MacDev.Tasks {
 			if (string.IsNullOrEmpty (directory) || !Directory.Exists (directory))
 				return Array.Empty<ITaskItem> ();
 
-			return Directory.EnumerateFiles (directory)
+			return Directory.EnumerateFiles (directory, "*", SearchOption.AllDirectories)
 				.Select (file => {
 					var fileInfo = new FileInfo (file);
 					var item = new TaskItem (file);

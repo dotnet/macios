@@ -100,6 +100,7 @@ namespace Xamarin.MacDev.Tasks {
 				return true;
 			}
 
+			Log.LogMessage (MessageImportance.Low, "Output file '{0}' exists and was not modified", item.ItemSpec);
 			return false;
 		}
 

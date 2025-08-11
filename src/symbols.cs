@@ -383,8 +383,7 @@ namespace Symbols {
 	[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
 	[BaseType (typeof (NSSymbolEffect))]
 	[DisableDefaultCtor]
-	interface NSSymbolDrawOnEffect
-	{
+	interface NSSymbolDrawOnEffect {
 		[Static]
 		[Export ("effect")]
 		NSSymbolDrawOnEffect Create ();
@@ -402,8 +401,7 @@ namespace Symbols {
 	[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
 	[BaseType (typeof (NSSymbolEffect))]
 	[DisableDefaultCtor]
-	interface NSSymbolDrawOffEffect
-	{
+	interface NSSymbolDrawOffEffect {
 		[Static]
 		[Export ("effect")]
 		NSSymbolDrawOffEffect Create ();

@@ -510,7 +510,7 @@ if (!(value is null) && rvalue is null) {{
 	/// <param name="context">The current binding context.</param>
 	/// <param name="classBlock">Current class block.</param>
 	/// <param name="strongDelegates">List of properties who generates events.</param>
-	public static void EmitProperties (this IClassEmitter self, in BindingContext context, 
+	public static void EmitProperties (this IClassEmitter self, in BindingContext context,
 		TabbedWriter<StringWriter> classBlock, out ImmutableArray<Property> strongDelegates)
 	{
 		var strongDelegatesBuilder = ImmutableArray.CreateBuilder<Property> ();

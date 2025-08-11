@@ -105,7 +105,7 @@ readonly struct ExportData<T> : IEquatable<ExportData<T>> where T : Enum {
 	/// The type of the dictionary key class for strong dictionary properties.
 	/// </summary>
 	public TypeInfo StrongDictionaryKeyClass { get; init; } = TypeInfo.Default;
-	
+
 	/// <summary>
 	/// The type of the event arguments for an event.
 	/// </summary>

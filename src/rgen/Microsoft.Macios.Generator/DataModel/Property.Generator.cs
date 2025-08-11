@@ -136,7 +136,7 @@ readonly partial struct Property {
 	/// True if the property was marked as a weak delegate.
 	/// </summary>
 	public bool IsWeakDelegate => IsProperty && ExportPropertyData.Flags.HasFlag (ObjCBindings.Property.WeakDelegate);
-	
+
 	/// <summary>
 	/// True if events should be created for the weak delegate.
 	/// </summary>

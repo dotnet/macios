@@ -40,15 +40,15 @@ public partial interface IRgenNSKeyedArchiverDelegate {
 	void Finishing (NSKeyedArchiver archiver);
 
 	// use a name, the class should be generated with the two NSObjects as properties
-	[Export<Method> ("archiver:willReplaceObject:withObject:", Flags = ObjCBindings.Method.Event, EventArgsTypeName = "NSArchiveReplace")] 
+	[Export<Method> ("archiver:willReplaceObject:withObject:", Flags = ObjCBindings.Method.Event, EventArgsTypeName = "NSArchiveReplace")]
 	void ReplacingObject (NSKeyedArchiver archiver, NSObject oldObject, NSObject newObject);
-	
+
 	// use a typeof named tuple
-	[Export<Method> ("archiver:willReplaceObject:withObject:", Flags = ObjCBindings.Method.Event, EventArgsType = typeof((NSObject OldObject, NSObject NewObject)))] 
+	[Export<Method> ("archiver:willReplaceObject:withObject:", Flags = ObjCBindings.Method.Event, EventArgsType = typeof ((NSObject OldObject, NSObject NewObject)))]
 	void ReplacingObject2 (NSKeyedArchiver archiver, NSObject oldObject, NSObject newObject);
-	
+
 	// use a nameless tuple
-	[Export<Method> ("archiver:willReplaceObject:withObject:", Flags = ObjCBindings.Method.Event, EventArgsType = typeof((NSObject, NSObject)))] 
+	[Export<Method> ("archiver:willReplaceObject:withObject:", Flags = ObjCBindings.Method.Event, EventArgsType = typeof ((NSObject, NSObject)))]
 	void ReplacingObject3 (NSKeyedArchiver archiver, NSObject oldObject, NSObject newObject);
 }
 

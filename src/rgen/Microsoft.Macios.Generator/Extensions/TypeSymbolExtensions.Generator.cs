@@ -75,7 +75,7 @@ static partial class TypeSymbolExtensions {
 		return symbol.TypeKind == TypeKind.Enum
 			   && symbol.HasAttribute (AttributesNames.SmartEnumAttribute);
 	}
-	
+
 	/// <summary>
 	/// Returns if a symbol represents a protocol.
 	/// </summary>

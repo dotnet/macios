@@ -29,36 +29,34 @@ readonly partial struct TypeInfo {
 	/// <param name="context">The root context.</param>
 	/// <param name="eventData">When this method returns, contains the event data if the member is an event; otherwise, null.</param>
 	/// <returns><c>true</c> if the member is an event and event data was retrieved; otherwise, <c>false</c>.</returns>
-	static bool TryGetEventForMember (ISymbol member, RootContext context, 
-		[NotNullWhen (true)]out (string Name, string? EventArgs)? eventData)
+	static bool TryGetEventForMember (ISymbol member, RootContext context,
+		[NotNullWhen (true)] out (string Name, string? EventArgs)? eventData)
 	{
 		eventData = null;
 		// if the member is not a method, we will return false
-		if (member is not IMethodSymbol methodSymbol) 
+		if (member is not IMethodSymbol methodSymbol)
 			return false;
-		
+
 		// if the method does not have a ExportAttribute, we will skip it
-		if (!methodSymbol.HasAttribute (AttributesNames.ExportMethodAttribute)) 
+		if (!methodSymbol.HasAttribute (AttributesNames.ExportMethodAttribute))
 			return false;
-		
+
 		// at this point we need to know if the method is a event or not, if it is we will add it to the list
-		if (!Method.TryCreate (methodSymbol, context, out var method) || !method.Value.IsEvent) 
+		if (!Method.TryCreate (methodSymbol, context, out var method) || !method.Value.IsEvent)
 			return false;
-		
+
 		// we need to calculate the event args type, if any.
-		string? eventArgs = method switch {
-			{ ExportMethodData.EventArgsType.IsNullOrDefault: false } 
-				// get the type string for the event args type
-				=> method.Value.ExportMethodData.EventArgsType.GetIdentifierSyntax().ToString (),
-			{ ExportMethodData.EventArgsTypeName: not null } 
-				// use the given type name, we will generate those too
-				=> method.Value.ExportMethodData.EventArgsTypeName,
+		string? eventArgs = method switch { { ExportMethodData.EventArgsType.IsNullOrDefault: false }
+												// get the type string for the event args type
+												=> method.Value.ExportMethodData.EventArgsType.GetIdentifierSyntax ().ToString (), { ExportMethodData.EventArgsTypeName: not null }
+																																	   // use the given type name, we will generate those too
+																																	   => method.Value.ExportMethodData.EventArgsTypeName,
 			_ => null,
 		};
 		eventData = (method.Value.Name, eventArgs);
 		return true;
 	}
-	
+
 	/// <summary>
 	/// Gets the events for a given interface symbol.
 	/// </summary>
@@ -67,14 +65,14 @@ readonly partial struct TypeInfo {
 	/// <returns>An immutable array of tuples containing the event name and its event arguments type name.</returns>
 	static ImmutableArray<(string Name, string? ReturnType)> GetInterfaceEvents (ITypeSymbol symbol, RootContext context)
 	{
-		var parentMethodsBucket = ImmutableArray.CreateBuilder<(string Name, string? EventArgs)>();
+		var parentMethodsBucket = ImmutableArray.CreateBuilder<(string Name, string? EventArgs)> ();
 		// add the events for the current symbol
-		foreach (var member in symbol.GetMembers()) {
+		foreach (var member in symbol.GetMembers ()) {
 			if (TryGetEventForMember (member, context, out var data)) {
 				parentMethodsBucket.Add (data.Value);
 			}
 		}
-		
+
 		// add the events from the parent interfaces
 		foreach (var i in symbol.AllInterfaces) {
 			foreach (var member in i.GetMembers ()) {
@@ -85,7 +83,7 @@ readonly partial struct TypeInfo {
 		}
 		return parentMethodsBucket.ToImmutable ();
 	}
-	
+
 	internal TypeInfo (ITypeSymbol symbol, RootContext context) : this (symbol)
 	{
 		NeedsStret = symbol.NeedsStret (context.Compilation);

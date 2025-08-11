@@ -145,7 +145,7 @@ public static NSObject {name} ({NSObject} objectToObserve, {EventHandler}<{event
 			// see if we have a strong type
 			if (property.ExportPropertyData.StrongDelegateType.IsNullOrDefault)
 				continue;
-			
+
 			// loop over the events, those should be present in the property for the delegate
 			foreach (var (name, eventArgs) in property.ExportPropertyData.StrongDelegateType.Events) {
 				// create the event args type name
@@ -214,7 +214,7 @@ public static NSObject {name} ({NSObject} objectToObserve, {EventHandler}<{event
 					out var notificationProperties);
 				this.EmitProperties (bindingContext, classBlock, out var strongDelegates);
 				this.EmitMethods (bindingContext, classBlock);
-				
+
 				// emit the events for the delegates
 				EmitEvents (strongDelegates, classBlock);
 

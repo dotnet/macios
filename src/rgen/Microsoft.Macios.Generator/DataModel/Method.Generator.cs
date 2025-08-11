@@ -95,7 +95,7 @@ readonly partial struct Method {
 	/// States if a method is optional in a protocol definition.
 	/// </summary>
 	public bool IsOptional => ExportMethodData.Flags.HasFlag (ObjCBindings.Method.Optional);
-	
+
 	/// <summary>
 	/// True if the method is an event.
 	/// </summary>

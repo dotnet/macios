@@ -817,7 +817,7 @@ namespace NS {
 		var completionSource = task.ToTaskCompletionSource ();
 		Assert.Equal ($"{Global ("System.Threading")}.Tasks.TaskCompletionSource<(string Name, string Surname)>", completionSource.GetIdentifierSyntax ().ToString ());
 	}
-	
+
 	[Theory]
 	[AllSupportedPlatforms]
 	void TypeInfoEvents (ApplePlatform platform)
@@ -888,14 +888,14 @@ public partial class EventTests {
 		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
 		var declaration = syntaxTrees [0].GetRoot ()
 			.DescendantNodes ().OfType<PropertyDeclarationSyntax> ()
-			.LastOrDefault();
+			.LastOrDefault ();
 		Assert.NotNull (declaration);
 		Assert.True (Property.TryCreate (declaration, semanticModel, out var changes));
 		Assert.NotNull (changes);
 		Assert.True (changes.Value.IsProperty);
 		// get the weak delegate property strong type
 		var type = changes.Value.ExportPropertyData.StrongDelegateType;
-		Assert.False(type.IsNullOrDefault);
+		Assert.False (type.IsNullOrDefault);
 		// assert the number of events
 		Assert.Equal (7, type.Events.Length);
 	}

@@ -7128,7 +7128,7 @@ public partial class Generator : IMemberGatherer {
 						print ("\t\treturn {0}.AddObserver ({1}, notification => handler (null, new {2} (notification)));", notification_center, property.Name, event_name);
 						print ("\t}");
 
-						print ($"\t/// <summary>Strongly typed notification for the {constantReference}constant.</summary>");
+						print ($"\t/// <summary>Strongly typed notification for the {constantReference} constant.</summary>");
 						print ($"\t/// <param name=\"objectToObserve\">The specific object to observe.</param>");
 						print ($"\t/// <param name=\"handler\">The handler that responds to the notification when it occurs.</param>");
 						print ($"\t/// <returns>Token object that can be used to stop receiving notifications by either disposing it or passing it to <see cref=\"Foundation.NSNotificationCenter.RemoveObservers(System.Collections.Generic.IEnumerable{{Foundation.NSObject}})\" />.</returns>");

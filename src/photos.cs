@@ -1080,7 +1080,7 @@ namespace Photos {
 	/// <summary>Delegate type used with <see cref="Photos.PHVideoRequestOptions.ProgressHandler" />.</summary>
 	delegate void PHAssetVideoProgressHandler (double progress, [NullAllowed] NSError error, out bool stop, [NullAllowed] NSDictionary info);
 
-	/// <summary>Options used when retrieiving videos with the <see cref="Photos.PHPhotoManager" /> singleton.</summary>
+	/// <summary>Options used when retrieiving videos with the <see cref="PHImageManager" /> singleton.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Photos/Reference/PHVideoRequestOptions_Class/index.html">Apple documentation for <c>PHVideoRequestOptions</c></related>
 	[MacCatalyst (13, 1)]
@@ -1158,7 +1158,7 @@ namespace Photos {
 	delegate void PHImageManagerRequestPlayerHandler ([NullAllowed] AVPlayerItem playerItem, [NullAllowed] NSDictionary info);
 	/// <summary>Completion handler for the <see cref="Photos.PHImageManager.RequestExportSession(Photos.PHAsset,Photos.PHVideoRequestOptions,System.String,Photos.PHImageManagerRequestExportHandler)" /> method.</summary>
 	delegate void PHImageManagerRequestExportHandler ([NullAllowed] AVAssetExportSession exportSession, [NullAllowed] NSDictionary info);
-	/// <summary>Completion handle for the <see cref="Photos.PHImageManager.RequestAvAsset(Photos.PHAsset,Photos.PHVideoRequestOptions,Photos.PHImageManagerRequestAvAssetHandler)" /> method.</summary>
+	/// <summary>Completion handler for the <see cref="PHImageManager.RequestAVAsset(PHAsset,PHVideoRequestOptions,PHImageManagerRequestAVAssetHandler)" /> method.</summary>
 	delegate void PHImageManagerRequestAVAssetHandler ([NullAllowed] AVAsset asset, [NullAllowed] AVAudioMix audioMix, [NullAllowed] NSDictionary info);
 	/// <summary>The result handler delegate for calls to <see cref="Photos.PHImageManager.RequestLivePhoto(Photos.PHAsset,CoreGraphics.CGSize,Photos.PHImageContentMode,Photos.PHLivePhotoRequestOptions,Photos.PHImageManagerRequestLivePhoto)" />.</summary>
 	delegate void PHImageManagerRequestLivePhoto ([NullAllowed] PHLivePhoto livePhoto, [NullAllowed] NSDictionary info);
@@ -1487,7 +1487,7 @@ namespace Photos {
 		PHImageRequestOptionsVersion Version { get; set; }
 	}
 
-	/// <summary>Defines keys for the <c>info</c> dictionary passed to the result handler in <see cref="Photos.PHLivePhoto.RequestLivePhoto(Foundation.NSUrl[],UIKit.UIImage,CoreGraphics.CGSize,Photos.PHImageContentMode,System.Action{Photos.PHLivePhoto,Foundation.NSDictionary})" />.</summary>
+	/// <summary>Defines keys for the <c>info</c> dictionary passed to the result handler in <see cref="Photos.PHLivePhoto.RequestLivePhoto(Foundation.NSUrl[],UIImage,CoreGraphics.CGSize,Photos.PHImageContentMode,System.Action{Photos.PHLivePhoto,Foundation.NSDictionary})" />.</summary>
 	[MacCatalyst (13, 1)]
 	[Static]
 	interface PHLivePhotoInfo {

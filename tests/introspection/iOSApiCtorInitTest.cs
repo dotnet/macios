@@ -342,10 +342,10 @@ namespace Introspection {
 		{
 			string name = obj.GetType ().Name;
 			switch (name) {
-			// crash at at MonoTouch.Foundation.NSObject.get_Description () [0x0000b] in /mono/ios/monotouch-ios7/monotouch/src/Foundation/NSObject.g.cs:500
+			// crash at at Foundation.NSObject.get_Description () [0x0000b] in /mono/ios/monotouch-ios7/monotouch/src/Foundation/NSObject.g.cs:500
 			case "SKTexture":
 			case "MCSession":
-			// crash at at MonoTouch.Foundation.NSObject.get_Description () [0x0000b] in /Developer/MonoTouch/Source/monotouch/src/Foundation/NSObject.g.cs:554
+			// crash at at Foundation.NSObject.get_Description () [0x0000b] in /Developer/MonoTouch/Source/monotouch/src/Foundation/NSObject.g.cs:554
 			case "AVPlayerItemTrack":
 			case "AVCaptureConnection":
 				return;

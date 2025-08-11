@@ -3,7 +3,7 @@
     <summary>Modifies properties on a <see cref="SpriteKit.SKNode" />, often animating the changes. Sometimes reversible.</summary>
     <remarks>
       <para>Application developers use the static methods of <see cref="SpriteKit.SKAction" /> to create actions that can be applied to the <see cref="SpriteKit.SKNode" />s of a <see cref="SpriteKit.SKScene" />. Generally, animations are animated.</para>
-      <para>The <see cref="SpriteKit.SKAction.Group(SpriteKit.SKAction[])" />, <see cref="SpriteKit.MKAction.RepeatAction" /> and <see cref="SpriteKit.SKAction.RepeatActionForever(SpriteKit.SKAction)" />, and <see cref="SpriteKit.SKAction.Sequence(SpriteKit.SKAction[])" /> methods are composite actions that take, as parameters, children <see cref="SpriteKit.SKAction" />s. </para>
+      <para>The <see cref="SpriteKit.SKAction.Group(SpriteKit.SKAction[])" />, <see cref="SKAction.RepeatAction" /> and <see cref="SpriteKit.SKAction.RepeatActionForever(SpriteKit.SKAction)" />, and <see cref="SpriteKit.SKAction.Sequence(SpriteKit.SKAction[])" /> methods are composite actions that take, as parameters, children <see cref="SpriteKit.SKAction" />s. </para>
       <para>Once a <see cref="SpriteKit.SKAction" /> is created, application developers run it with the <see cref="SpriteKit.SKNode.RunActionAsync(SpriteKit.SKAction)" /> method, as shown in this example:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[

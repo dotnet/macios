@@ -35,7 +35,7 @@
             return animals.Count / SectionCount;
           }
           
-          public override UICollectionViewCell GetCell (UICollectionView collectionView, MonoTouch.Foundation.NSIndexPath indexPath)
+          public override UICollectionViewCell GetCell (UICollectionView collectionView, Foundation.NSIndexPath indexPath)
           {
             var animalCell = (AnimalCell)collectionView.DequeueReusableCell (animalCellId, indexPath);
           

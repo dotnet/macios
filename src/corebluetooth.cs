@@ -759,9 +759,8 @@ namespace CoreBluetooth {
 		CBCharacteristic Characteristic { get; }
 	}
 
-	/// <summary>A mutable <see cref="Corebluetooth.CBDescriptor" />.</summary>
-	///     
-	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CoreBluetooth/Reference/CBMutableDescriptor_Class/index.html">Apple documentation for <c>CBMutableDescriptor</c></related>
+	/// <summary>A mutable <see cref="CBDescriptor" />.</summary>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CoreBluetooth/Reference/CBMutableDescriptor_Class/index.html">Apple documentation for <c>CBMutableDescriptor</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CBDescriptor))]
 	[DisableDefaultCtor]
@@ -1140,12 +1139,12 @@ namespace CoreBluetooth {
 		CBService [] IncludedServices { get; [NotImplemented ("Not available on 'CBService', only available on CBMutableService.")] set; }
 
 		/// <summary>The list of characteristics discovered by this service.</summary>
-		///         <value>Array of CBCharacteristic objects.</value>
-		///         <remarks>
-		/// 	  The contents of this property are only updated after you
-		/// 	  have initiated a characteristic discovery using the <see cref="CoreBluetooth.CBPeripheral.DiscoverCharacteristic" />
-		/// 	  method.
-		/// 	</remarks>
+		/// <value>Array of CBCharacteristic objects.</value>
+		/// <remarks>
+		///   The contents of this property are only updated after you
+		///   have initiated a characteristic discovery using the <see cref="CoreBluetooth.CBPeripheral.DiscoverCharacteristics(CBUUID[],CBService)" />
+		///   method.
+		/// </remarks>
 		[Export ("characteristics", ArgumentSemantic.Retain)]
 		[NullAllowed]
 		CBCharacteristic [] Characteristics { get; [NotImplemented ("Not available on 'CBService', only available on CBMutableService.")] set; }
@@ -1381,9 +1380,8 @@ namespace CoreBluetooth {
 		nuint MaximumUpdateValueLength { get; }
 	}
 
-	/// <summary>Manages published services per the <see cref="Coreblutooth.CBPeripheral" /> device's GATT database.</summary>
-	///     
-	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CoreBluetooth/Reference/CBPeripheralManager_Class/index.html">Apple documentation for <c>CBPeripheralManager</c></related>
+	/// <summary>Manages published services per the <see cref="CBPeripheral" /> device's GATT database.</summary>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CoreBluetooth/Reference/CBPeripheralManager_Class/index.html">Apple documentation for <c>CBPeripheralManager</c></related>
 	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (CBManager), Delegates = new [] { "WeakDelegate" }, Events = new [] { typeof (CBPeripheralManagerDelegate) })]

@@ -79,7 +79,6 @@ namespace Xamarin.MacDev.Tasks {
 
 			for (var i = 0; i < compileInfo.Length; i++) {
 				var info = compileInfo [i];
-				var src = Path.GetFullPath (info.ItemSpec);
 				var arguments = new List<string> ();
 
 				arguments.Add ("clang");
@@ -130,10 +129,12 @@ namespace Xamarin.MacDev.Tasks {
 				arguments.AddRange (parsed_args);
 
 
+				var src = info.ItemSpec;
 				var outputFile = info.GetMetadata ("OutputFile");
 				if (string.IsNullOrEmpty (outputFile))
 					outputFile = Path.ChangeExtension (src, ".o");
 				outputFiles [i] = outputFile; // We keep the relative path for remote builds
+				src = Path.GetFullPath (src);
 				outputFile = Path.GetFullPath (outputFile);
 				arguments.Add ("-o");
 				arguments.Add (outputFile);

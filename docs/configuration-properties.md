@@ -32,6 +32,7 @@ These are options that are set when the `Optimize` property is `true` (which hap
 
 | **Property**                   | **Value**  |
 |--------------------------------|------------|
+| EventSourceSupport             | false      |
 | HttpActivityPropagationSupport | false      |
 | MetricsSupport                 | false      |
 

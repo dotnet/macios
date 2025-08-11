@@ -113,9 +113,9 @@
 		<EnableUnsafeBinaryFormatterInDesigntimeLicenseContextSerialization Condition="'$(EnableUnsafeBinaryFormatterInDesigntimeLicenseContextSerialization)' == ''">false</EnableUnsafeBinaryFormatterInDesigntimeLicenseContextSerialization>
 		<EnableUnsafeBinaryFormatterSerialization Condition="'$(EnableUnsafeBinaryFormatterSerialization)' == ''">false</EnableUnsafeBinaryFormatterSerialization>
 		<EnableUnsafeUTF7Encoding Condition="'$(EnableUnsafeUTF7Encoding)' == ''">false</EnableUnsafeUTF7Encoding>
-		<EventSourceSupport Condition="'$(EventSourceSupport)' == ''">false</EventSourceSupport>
+		<EventSourceSupport Condition="'$(EventSourceSupport)' == '' And '$(Optimize)' == 'true' And '$(EnableDiagnostics)' != 'true'">false</EventSourceSupport>
 		<HttpActivityPropagationSupport Condition="'$(HttpActivityPropagationSupport)' == '' and '$(Optimize)' == 'true'">false</HttpActivityPropagationSupport>
-		<MetricsSupport Condition="'$(MetricsSupport)' == '' And '$(Optimize)' == 'true'">false</MetricsSupport>
+		<MetricsSupport Condition="'$(MetricsSupport)' == '' And '$(Optimize)' == 'true' And '$(EnableDiagnostics)' != 'true'">false</MetricsSupport>
 		<Http3Support Condition="'$(Http3Support)' == ''">false</Http3Support>
 		<InvariantGlobalization Condition="'$(InvariantGlobalization)' == ''">false</InvariantGlobalization>
 		<!-- Enable HybridGlobalization by default-->

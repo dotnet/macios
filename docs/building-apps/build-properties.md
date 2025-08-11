@@ -386,6 +386,18 @@ Enables the concurrent mode for the SGen garbage collector.
 
 Only applicable to iOS, tvOS and Mac Catalyst (when not using NativeAOT).
 
+## EventSourceSupport
+
+When set to `false`, disables .NET's [EventSource][eventsource] support from
+trimmed applications. Disabling this feature would prevent .NET diagnostic
+tools like `dotnet-counters` from functioning, but at the benefit of reduced
+application size.
+
+Default: set to `false` when `Optimize` is set to `true` (which is the default
+for `Release` builds), unless `$(EnableDiagnostics)` is enabled.
+
+[eventsource]: https://learn.microsoft.com/dotnet/core/diagnostics/eventsource
+
 ## GenerateApplicationManifest
 
 If an application manifest (`Info.plist`) should be generated.
@@ -582,6 +594,18 @@ The default behavior is to use `xcrun metallib`.
 The full path to the Metal compiler.
 
 The default behavior is to use `xcrun metal`.
+
+## MetricsSupport
+
+When set to `false`, disables .NET's [Metrics][dotnetmetrics] support from
+trimmed applications. Disabling this feature would prevent APIs such as
+`System.Diagnostics.Metrics` from functioning, but at the benefit of reduced
+application size.
+
+Default: set to `false` when `Optimize` is set to `true` (which is the default
+for `Release` builds), unless `$(EnableDiagnostics)` is enabled.
+
+[dotnetmetrics]: https://learn.microsoft.com/dotnet/core/diagnostics/metrics
 
 ## MmpDebug
 

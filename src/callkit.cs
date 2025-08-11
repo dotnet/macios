@@ -923,11 +923,10 @@ namespace CallKit {
 		void AddAction (CXAction action);
 	}
 
-	[NoTV, NoMacCatalyst, NoMac, iOS (26,0)]
+	[NoTV, NoMacCatalyst, NoMac, iOS (26, 0)]
 	[BaseType (typeof (CXCallAction))]
 	[DisableDefaultCtor]
-	interface CXSetTranslatingCallAction : NSSecureCoding
-	{
+	interface CXSetTranslatingCallAction : NSSecureCoding {
 		[Export ("isTranslating")]
 		bool IsTranslating { get; }
 
@@ -947,8 +946,7 @@ namespace CallKit {
 
 	[iOS (26, 0), NoMacCatalyst, NoMac]
 	[Native]
-	public enum CXTranslationEngine : long
-	{
+	public enum CXTranslationEngine : long {
 		Default,
 		Custom,
 	}

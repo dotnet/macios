@@ -446,7 +446,7 @@ namespace AVKit {
 		[TV (26, 0), MacCatalyst (26, 0), NoMac, iOS (26, 0)]
 		[Static]
 		[Export ("mediaCharacteristicsForSupportedCustomMediaSelectionSchemes")]
-		string[] MediaCharacteristicsForSupportedCustomMediaSelectionSchemes { get; }
+		string [] MediaCharacteristicsForSupportedCustomMediaSelectionSchemes { get; }
 	}
 
 	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="AVKit.AVPlayerViewControllerDelegate" />.</summary>
@@ -1272,7 +1272,7 @@ namespace AVKit {
 		[Export ("phase")]
 		AVCaptureEventPhase Phase { get; }
 
-		[NoTV, NoMacCatalyst, NoMac, iOS (26,0)]
+		[NoTV, NoMacCatalyst, NoMac, iOS (26, 0)]
 		[Export ("playSound:")]
 		bool PlaySound (AVCaptureEventSound sound);
 
@@ -1342,10 +1342,9 @@ namespace AVKit {
 	interface IAVContinuityDevicePickerViewControllerDelegate { }
 
 	[NoTV, NoMacCatalyst, NoMac, iOS (26, 0)]
-	[BaseType (typeof(NSObject))]
+	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface AVCaptureEventSound
-	{
+	interface AVCaptureEventSound {
 		[Export ("initWithURL:error:")]
 		[Internal]
 		NativeHandle _InitWithUrl (NSUrl url, [NullAllowed] out NSError error);
@@ -1368,8 +1367,7 @@ namespace AVKit {
 	[NoTV, NoMacCatalyst, NoMac, iOS (26, 0)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false), Model]
 	[BaseType (typeof (NSObject))]
-	interface AVInputPickerInteractionDelegate
-	{
+	interface AVInputPickerInteractionDelegate {
 		[Export ("inputPickerInteractionWillBeginPresenting:")]
 		void WillBeginPresenting (AVInputPickerInteraction inputPickerInteraction);
 
@@ -1385,8 +1383,7 @@ namespace AVKit {
 
 	[NoTV, NoMacCatalyst, NoMac, iOS (26, 0)]
 	[BaseType (typeof (NSObject))]
-	interface AVInputPickerInteraction : UIInteraction
-	{
+	interface AVInputPickerInteraction : UIInteraction {
 		[Wrap ("WeakDelegate")]
 		[NullAllowed]
 		IAVInputPickerInteractionDelegate Delegate { get; set; }
@@ -1410,10 +1407,9 @@ namespace AVKit {
 		NativeHandle Constructor ([NullAllowed] AVAudioSession audioSession);
 	}
 
-	[MacCatalyst (26, 0), NoTV, Mac (26,0), iOS (26,0)]
+	[MacCatalyst (26, 0), NoTV, Mac (26, 0), iOS (26, 0)]
 	[Native]
-	public enum AVDisplayDynamicRange : long
-	{
+	public enum AVDisplayDynamicRange : long {
 		Automatic = 0,
 		Standard = 1,
 		ConstrainedHigh = 2,

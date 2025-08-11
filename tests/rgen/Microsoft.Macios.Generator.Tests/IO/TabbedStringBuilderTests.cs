@@ -878,7 +878,7 @@ Because we are using a raw string  we expected:
 		Assert.Equal (expectedString, result);
 	}
 
-	public static IEnumerable<object []> AppendExportAttributeTestData {
+	public static IEnumerable<object []> AppendExportMethodAttributeTestData {
 		get {
 			// Simple selector
 			yield return [new ExportData<ObjCBindings.Method> ("mySelector:"), "[Export<Method> (\"mySelector:\")]\n"];
@@ -895,8 +895,31 @@ Because we are using a raw string  we expected:
 	}
 
 	[Theory]
-	[MemberData (nameof (AppendExportAttributeTestData))]
-	void AppendExportAttributeTests (ExportData<ObjCBindings.Method> exportData, string expectedString)
+	[MemberData (nameof (AppendExportMethodAttributeTestData))]
+	void AppendExportMethodAttributeTests (ExportData<ObjCBindings.Method> exportData, string expectedString)
+	{
+		var block = new TabbedStringBuilder (sb);
+		block.AppendExportAttribute (exportData);
+		var result = block.ToCode ();
+		Assert.Equal (expectedString, result);
+	}
+
+	public static IEnumerable<object []> AppendExportPropertyAttributeTestData {
+		get {
+			// Simple selector
+			yield return [new ExportData<ObjCBindings.Property> ("myProperty"), "[Export<Property> (\"myProperty\")]\n"];
+
+			// Selector with underscore
+			yield return [new ExportData<ObjCBindings.Property> ("_myProperty"), "[Export<Property> (\"_myProperty\")]\n"];
+
+			// Null selector
+			yield return [new ExportData<ObjCBindings.Property> (null), "[Export<Property> (\"\")]\n"];
+		}
+	}
+
+	[Theory]
+	[MemberData (nameof (AppendExportPropertyAttributeTestData))]
+	void AppendExportPropertyAttributeTests (ExportData<ObjCBindings.Property> exportData, string expectedString)
 	{
 		var block = new TabbedStringBuilder (sb);
 		block.AppendExportAttribute (exportData);

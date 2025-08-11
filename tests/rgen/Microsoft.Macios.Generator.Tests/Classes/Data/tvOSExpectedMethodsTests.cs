@@ -441,4 +441,5 @@ public partial class MethodTests
 		global::CoreFoundation.CFString.ReleaseNative (nspath);
 		return ret;
 	}
+
 }

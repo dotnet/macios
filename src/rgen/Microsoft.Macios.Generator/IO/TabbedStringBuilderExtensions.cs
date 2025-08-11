@@ -272,4 +272,26 @@ static class TabbedStringBuilderExtensions {
 		self.WriteLine ($"[Export<Method> (\"{exportData.Selector}\")]");
 		return self;
 	}
+
+	/// <summary>
+	/// Appends an `[Export<Property>]` attribute to the current writer.
+	/// This is a simplified version that only includes the selector, as required by the registrar.
+	/// </summary>
+	/// <param name="self">A tabbed string writer.</param>
+	/// <param name="exportData">The export data for the property, from which the selector is extracted.</param>
+	/// <returns>The current writer.</returns>
+	public static TabbedWriter<StringWriter> AppendExportAttribute (this TabbedWriter<StringWriter> self,
+		ExportData<ObjCBindings.Property> exportData)
+	{
+		// the registrar does not care about other flags but the selector, so we can just use the selector
+		self.WriteLine ($"[Export<Property> (\"{exportData.Selector}\")]");
+		return self;
+	}
+
+	public static TabbedWriter<StringWriter> AppendRegisterAttribute (this TabbedWriter<StringWriter> self,
+		string regitrationName, bool isWrapper)
+	{
+		self.WriteLine ($"[Register (\"{regitrationName}\", {isWrapper.ToString ().ToLower ()})]");
+		return self;
+	}
 }

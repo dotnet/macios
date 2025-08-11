@@ -128,7 +128,6 @@ public partial class CIImage
 		}
 	}
 
-
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios11.0")]
 	[SupportedOSPlatform ("tvos11.0")]
@@ -145,7 +144,6 @@ public partial class CIImage
 			return global::ObjCRuntime.Dlfcn.GetInt32 (global::ObjCRuntime.Libraries.TestNamespace.Handle, "kCIFormatABGR8");
 		}
 	}
-
 
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios11.0")]
@@ -172,7 +170,6 @@ public partial class CIImage
 			global::ObjCRuntime.Dlfcn.SetInt32 (global::ObjCRuntime.Libraries.TestNamespace.Handle, "kCIFormatLA8", value);
 		}
 	}
-
 
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios11.0")]

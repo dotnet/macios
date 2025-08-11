@@ -46,45 +46,6 @@ class ClassEmitter : IClassEmitter {
 		"ObjCRuntime",
 	];
 
-
-	/// <summary>
-	/// Emit the default constructors for the class.
-	/// </summary>
-	/// <param name="bindingContext">The current binding context.</param>
-	/// <param name="classBlock">Current class block.</param>
-	/// <param name="disableDefaultCtor">A value indicating whether to disable the default constructor.</param>
-	void EmitDefaultConstructors (in BindingContext bindingContext, TabbedWriter<StringWriter> classBlock, bool disableDefaultCtor)
-	{
-
-		if (!disableDefaultCtor) {
-			classBlock.WriteDocumentation (Documentation.Class.DefaultInit (bindingContext.Changes.Name));
-			classBlock.AppendGeneratedCodeAttribute ();
-			classBlock.AppendDesignatedInitializer ();
-			classBlock.WriteRaw (
-$@"[Export (""init"")]
-public {bindingContext.Changes.Name} () : base ({NSObjectFlag}.Empty)
-{{
-	if (IsDirectBinding)
-		InitializeHandle (global::ObjCRuntime.Messaging.IntPtr_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle (""init"")), ""init"");
-	else
-		InitializeHandle (global::ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle (""init"")), ""init"");
-}}
-");
-			classBlock.WriteLine ();
-		}
-
-		classBlock.WriteDocumentation (Documentation.Class.DefaultInitWithFlag (bindingContext.Changes.Name));
-		classBlock.AppendGeneratedCodeAttribute ();
-		classBlock.AppendEditorBrowsableAttribute (EditorBrowsableState.Advanced);
-		classBlock.WriteLine ($"protected {bindingContext.Changes.Name} ({NSObjectFlag} t) : base (t) {{}}");
-
-		classBlock.WriteLine ();
-		classBlock.WriteDocumentation (Documentation.Class.DefaultInitWithHandle (bindingContext.Changes.Name));
-		classBlock.AppendGeneratedCodeAttribute ();
-		classBlock.AppendEditorBrowsableAttribute (EditorBrowsableState.Advanced);
-		classBlock.WriteLine ($"protected internal {bindingContext.Changes.Name} ({NativeHandle} handle) : base (handle) {{}}");
-	}
-
 	/// <summary>
 	/// Emit the code for all the constructors in the class.
 	/// </summary>
@@ -95,7 +56,6 @@ public {bindingContext.Changes.Name} () : base ({NSObjectFlag}.Empty)
 		// When dealing with constructors we cannot sort them by name because the name is always the same as the class
 		// instead we will sort them by the selector name so that we will always generate the constructors in the same order
 		foreach (var constructor in context.Changes.Constructors.OrderBy (c => c.ExportMethodData.Selector)) {
-			classBlock.WriteLine ();
 			classBlock.AppendMemberAvailability (constructor.SymbolAvailability);
 			classBlock.AppendGeneratedCodeAttribute (optimizable: true);
 			if (constructor.ExportMethodData.Flags.HasFlag (Constructor.DesignatedInitializer)) {
@@ -128,6 +88,7 @@ $@"if (IsDirectBinding) {{
 					constructorBlock.Write (argument.PostCallConversion, verifyTrivia: false);
 				}
 			}
+			classBlock.WriteLine ();
 		}
 	}
 
@@ -140,9 +101,6 @@ $@"if (IsDirectBinding) {{
 	{
 		if (properties.Length == 0)
 			return;
-
-		// add a space just to make it nicer to read
-		classBlock.WriteLine ();
 
 		// create a nested static class with the notification helpers
 		using (var notificationClass = classBlock.CreateBlock ("public static partial class Notifications", true)) {
@@ -222,7 +180,7 @@ public static NSObject {name} ({NSObject} objectToObserve, {EventHandler}<{event
 					classBlock.WriteLine ($"public override {NativeHandle} ClassHandle => {ClassPtr};");
 					classBlock.WriteLine ();
 
-					EmitDefaultConstructors (bindingContext: bindingContext,
+					this.EmitDefaultNSObjectConstructors (className: bindingContext.Changes.Name,
 						classBlock: classBlock,
 						disableDefaultCtor: bindingData.Flags.HasFlag (ObjCBindings.Class.DisableDefaultCtor));
 

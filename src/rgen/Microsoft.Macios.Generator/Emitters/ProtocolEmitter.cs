@@ -74,14 +74,15 @@ $@"static {bindingContext.Changes.Name} ()
 
 			if (!getter.IsNullOrDefault) {
 				this.EmitMethod (context, getter, classBlock, uiThreadCheck);
+				classBlock.WriteLine ();
 			}
 
 			if (!setter.IsNullOrDefault) {
 				this.EmitMethod (context, setter, classBlock, uiThreadCheck);
+				classBlock.WriteLine ();
 			}
 
 			// write the property declarations
-			classBlock.WriteLine ();
 			classBlock.AppendMemberAvailability (property.SymbolAvailability);
 			classBlock.AppendGeneratedCodeAttribute (optimizable: true);
 			if (!property.IsOptional) {
@@ -100,6 +101,7 @@ $@"static {bindingContext.Changes.Name} ()
 					propertyBlock.WriteLine ($"set => {setter.Name} (this, value);");
 				}
 			}
+			classBlock.WriteLine ();
 		}
 	}
 
@@ -135,6 +137,7 @@ $@"static {bindingContext.Changes.Name} ()
 				// we don't need to use the factory to generate the method since it is onlye throwing an exception.
 				methodBlock.WriteLine ($"throw new {You_Should_Not_Call_base_In_This_Method} ();");
 			}
+			classBlock.WriteLine ();
 		}
 	}
 
@@ -208,6 +211,7 @@ $@"static {bindingContext.Changes.Name} ()
 
 				// emit static constructor
 				EmitDefaultConstructors (in bindingContext, interfaceBlock);
+				interfaceBlock.WriteLine ();
 
 				// emit the properties, this will generate the getters/setters and the properties themselves
 				EmitProperties (in bindingContext, in properties, interfaceBlock);

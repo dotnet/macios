@@ -486,10 +486,12 @@ if [ -z ${DOTNET_TFM+x} ]; then DOTNET_TFM=$(make -C "$ROOT_DIR"/tools/devops pr
 
 # Create the GH comment
 
+EXITCODE=0
 if test -n "$ENABLE_API_DIFF"; then
 	if grep BreakingChangesDetected "$APIDIFF_RESULTS_DIR/api-diff.md" >/dev/null 2>&1; then
 		EMOJII=":heavy_exclamation_mark:"
 		MSG=" (Breaking changes)"
+		EXITCODE=1
 	else
 		EMOJII=":white_check_mark:"
 		MSG=""
@@ -504,6 +506,7 @@ if test -n "$ENABLE_STABLE_API_COMPARISON"; then
 	if grep BreakingChangesDetected "$STABLE_API_COMPARISON_RESULTS_DIR/api-diff.md" >/dev/null 2>&1; then
 		EMOJII=":heavy_exclamation_mark:"
 		MSG=" (Breaking changes)"
+		EXITCODE=1
 	else
 		EMOJII=":white_check_mark:"
 		MSG=""
@@ -526,3 +529,4 @@ if test -n "$ENABLE_GENERATOR_DIFF"; then
 	fi
 fi
 
+exit $EXITCODE

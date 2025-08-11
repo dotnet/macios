@@ -72,7 +72,7 @@ namespace Cecil.Tests {
 						case 'F': // field
 						case 'E': // event
 						case 'N': // namespace
-							// Valid cref
+								  // Valid cref
 							break;
 						default:
 							failures.Add ($"{currentMember ?? currentType}: Invalid cref '{cref}'");

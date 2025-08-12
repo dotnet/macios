@@ -421,7 +421,7 @@ namespace QuickLook {
 #if !MONOMAC
 // Apple moved ARQuickLookPreviewItem from the ARKit framework to the QuickLook framework in Xcode 26,
 // and also added it to Mac Catalyst.
-#if XAMCORE_5_0
+#if !XAMCORE_5_0
 namespace ARKit {
 #else
 namespace QuickLook {

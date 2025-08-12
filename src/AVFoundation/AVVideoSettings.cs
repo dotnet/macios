@@ -51,11 +51,9 @@ namespace AVFoundation {
 	///     <remarks>
 	///     </remarks>
 	public enum AVVideoScalingMode : int {
-		/// <summary>Crop to remove edge processing region.</summary>
-		///         <remarks>Preserves aspect ratio of cropped source by reducing specified width or height if necessary. This mode does not scale a small source up to larger dimensions.</remarks>
+		/// <summary>Crop to remove edge processing region. Preserves aspect ratio of cropped source by reducing specified width or height if necessary. This mode does not scale a small source up to larger dimensions.</summary>
 		Fit,
-		/// <summary>Crop to remove edge processing region and scales remaining area to fit destination area.</summary>
-		///         <remarks>This mode does not preserve the aspect ratio.</remarks>
+		/// <summary>Crop to remove edge processing region and scales remaining area to fit destination area. This mode does not preserve the aspect ratio.</summary>
 		Resize,
 		/// <summary>Preserves aspect ratio of the source and fills remaining areas with black to fit destination dimensions.</summary>
 		ResizeAspect,

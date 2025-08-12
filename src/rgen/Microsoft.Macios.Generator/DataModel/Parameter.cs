@@ -20,7 +20,7 @@ readonly partial struct Parameter : IEquatable<Parameter> {
 	/// <summary>
 	/// Parameter position in the method.
 	/// </summary>
-	public int Position { get; }
+	public int Position { get; init; }
 
 	/// <summary>
 	/// Type of the parameter.

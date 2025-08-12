@@ -566,4 +566,5 @@ public partial class TrampolinePropertyTests
 			global::System.GC.KeepAlive (this);
 		}
 	}
+
 }

@@ -20,7 +20,7 @@ namespace CarPlay {
 	interface NSUnitLength : NSUnit { }
 	interface NSUnitAngle : NSUnit { }
 
-	/// <summary>Enumerates the styles for a <see cref="CarPlay.CPAlert" /> object's action button.</summary>
+	/// <summary>Enumerates the styles for a <see cref="CarPlay.CPAlertAction" /> object's action button.</summary>
 	[NoTV, NoMac]
 	[Native]
 	enum CPAlertActionStyle : ulong {
@@ -621,7 +621,6 @@ namespace CarPlay {
 		void TemplateDidDisappear (CPTemplate aTemplate, bool animated);
 	}
 
-	/// <summary>Application delegate for the required methods of the <see cref="CarPlay.CPApplicationDelegate" /> protocol.</summary>
 	interface ICPApplicationDelegate { }
 
 	/// <summary>The application delegate for CarPlay applications.</summary>
@@ -1493,7 +1492,7 @@ namespace CarPlay {
 	/// <summary>Delegate object used by <see cref="CarPlay.CPSessionConfiguration" />.</summary>
 	interface ICPSessionConfigurationDelegate { }
 
-	/// <summary>Abstract implementation of <see cref="Carlay.ICPSessionConfigurationDelegate" />.</summary>
+	/// <summary>Abstract implementation of <see cref="CarPlay.ICPSessionConfigurationDelegate" />.</summary>
 	[NoTV, NoMac]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]

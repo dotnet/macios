@@ -114,7 +114,9 @@ readonly struct ProtocolMemberData : IEquatable<ProtocolMemberData> {
 		PropertyType = property.ReturnType.WithNullable (isNullable: false);
 		GetterSelector = getter?.Selector;
 		SetterSelector = setter?.Selector;
-		ArgumentSemantic = property.ExportPropertyData?.ArgumentSemantic ?? ArgumentSemantic.None;
+		ArgumentSemantic = property.ExportPropertyData.IsNullOrDefault
+			? ArgumentSemantic.None
+			: property.ExportPropertyData.ArgumentSemantic;
 		ReturnTypeDelegateProxy = property.ReturnType.IsDelegate
 			? TypeInfo.CreateDelegateProxy (property.ReturnType)
 			: null;

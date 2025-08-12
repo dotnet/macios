@@ -93,7 +93,7 @@ namespace Messages {
 		CGSize GetContentSizeThatFits (CGSize size);
 	}
 
-	/// <summary>A <see cref="Speech.UIViewController" /> that, when extended by the developer, is used to present a custom user-experience within the Messages app.</summary>
+	/// <summary>A <see cref="UIViewController" /> that, when extended by the developer, is used to present a custom user-experience within the Messages app.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Messages/MSMessagesAppViewController">Apple documentation for <c>MSMessagesAppViewController</c></related>
 	[MacCatalyst (14, 0)]
@@ -320,7 +320,7 @@ namespace Messages {
 	///     <remarks>
 	///       <para>The layout of a message template is:</para>
 	///       <para>
-	///         <img href="~/Messages/_images/Messages.MSMessageTemplateLayout.png" alt="Image showing the layout of the message template" />
+	///         <img href="~/xml/Messages/_images/Messages.MSMessageTemplateLayout.png" alt="Image showing the layout of the message template" />
 	///       </para>
 	///     </remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Messages/MSMessageTemplateLayout">Apple documentation for <c>MSMessageTemplateLayout</c></related>
@@ -411,7 +411,6 @@ namespace Messages {
 		bool IsAnimating { get; }
 	}
 
-	/// <include file="../docs/api/Messages/IMSStickerBrowserViewDataSource.xml" path="/Documentation/Docs[@DocId='T:Messages.IMSStickerBrowserViewDataSource']/*" />
 	interface IMSStickerBrowserViewDataSource { }
 
 	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/Messages/MSStickerBrowserViewDataSource">Apple documentation for <c>MSStickerBrowserViewDataSource</c></related>

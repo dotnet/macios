@@ -37,19 +37,19 @@ myImageView.Image = UIImage.FromImage (cgimage);
 	With the following background, image and mask inputs:
       </para>
       <para>
-        <img href="~/CoreImage/_images/clouds.jpg" alt="Photograph of clouds and sunbeams." />
+        <img href="~/xml/CoreImage/_images/clouds.jpg" alt="Photograph of clouds and sunbeams." />
       </para>
       <para>
-        <img href="~/CoreImage/_images/flower.png" alt="Photograph of a sunflower." />
+        <img href="~/xml/CoreImage/_images/flower.png" alt="Photograph of a sunflower." />
       </para>
       <para>
-        <img href="~/CoreImage/_images/XamarinAlpha.png" alt="Image with alpha channel" />
+        <img href="~/xml/CoreImage/_images/XamarinAlpha.png" alt="Image with alpha channel" />
       </para>
       <para>
          Produces the following output:
       </para>
       <para>
-        <img href="~/CoreImage/_images/blend_with_alpha_mask.png" alt="Result of applying the filter." />
+        <img href="~/xml/CoreImage/_images/blend_with_alpha_mask.png" alt="Result of applying the filter." />
       </para>
       <para>
         "Sunrise near Atkeison Plateau" © 2012 Charles Atkeison, used under a Creative Commons Attribution-ShareAlike license: https://creativecommons.org/licenses/by-sa/3.0/

@@ -1040,7 +1040,7 @@ namespace AVFoundation {
 		uint ByteLength { get; set; }
 	}
 
-	/// <summary>Associates an <see cref="AVFoundation.AVAudioNodeBus" /> and an optional <see cref="AVFoundation.AVAudioNode" />.</summary>
+	/// <summary>Associates an the index of a bus on an audionode with and an <see cref="AVFoundation.AVAudioNode" />.</summary>
 	/// <remarks>To be added.</remarks>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/AVFoundation/AVAudioConnectionPoint">Apple documentation for <c>AVAudioConnectionPoint</c></related>
 	[MacCatalyst (13, 1)]
@@ -1074,8 +1074,7 @@ namespace AVFoundation {
 	[MacCatalyst (13, 1)]
 	delegate AVAudioEngineManualRenderingStatus AVAudioEngineManualRenderingBlock (/* AVAudioFrameCount = uint */ uint numberOfFrames, AudioBuffers outBuffer, [NullAllowed] /* OSStatus */ ref int outError);
 
-	/// <summary>A group of connected <see cref="AVFounding.AVAudioNode" /> objects, each of which performs a processing or IO task.</summary>
-	/// <remarks>To be added.</remarks>
+	/// <summary>A group of connected <see cref="AVFoundation.AVAudioNode" /> objects, each of which performs a processing or IO task.</summary>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AVFoundation/Reference/AVAudioEngine_Class/index.html">Apple documentation for <c>AVAudioEngine</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
@@ -1725,12 +1724,6 @@ namespace AVFoundation {
 		NSData MagicCookie { get; set; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="AVFoundation.AVAudio3DMixing" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="AVFoundation.AVAudio3DMixing" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="AVFoundation.AVAudio3DMixing" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="AVFoundation.AVAudio3DMixing_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
@@ -1833,7 +1826,6 @@ namespace AVFoundation {
 		AVAudioConnectionPoint ConnectionPoint { get; }
 	}
 
-	/// <include file="../docs/api/AVFoundation/IAVAudioStereoMixing.xml" path="/Documentation/Docs[@DocId='T:AVFoundation.IAVAudioStereoMixing']/*" />
 	[MacCatalyst (13, 1)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
@@ -1975,12 +1967,7 @@ namespace AVFoundation {
 		[Export ("presentationLatency")]
 		double PresentationLatency { get; }
 
-		/// <summary>If not <see langword="null" />, the underlying <see cref="AudioUnit.AudioUnit" />.</summary>
-		///         <value>
-		///           <para>(More documentation for this node is coming)</para>
-		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>If not <see langword="null" />, the underlying <see cref="AudioUnit" />.</summary>
 		[MacCatalyst (13, 1)]
 		[Export ("audioUnit"), NullAllowed]
 		global::AudioUnit.AudioUnit AudioUnit { get; }
@@ -2347,12 +2334,6 @@ namespace AVFoundation {
 
 	interface IAVAudioPlayerDelegate { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="AVFoundation.AVAudioPlayerDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="AVFoundation.AVAudioPlayerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="AVFoundation.AVAudioPlayerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="AVFoundation.AVAudioPlayerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Model]
@@ -2817,12 +2798,6 @@ namespace AVFoundation {
 		AVAudioFormat Format { get; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="AVFoundation.AVAudioRecorderDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="AVFoundation.AVAudioRecorderDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="AVFoundation.AVAudioRecorderDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="AVFoundation.AVAudioRecorderDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IAVAudioRecorderDelegate { }
 
 	/// <summary>Delegate for the AVAudioRecorder class.</summary>
@@ -4374,12 +4349,6 @@ namespace AVFoundation {
 		AVAudioSessionRouteDescription PreviousRoute { get; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="AVFoundation.AVAudioSessionDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="AVFoundation.AVAudioSessionDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="AVFoundation.AVAudioSessionDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="AVFoundation.AVAudioSessionDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IAVAudioSessionDelegate { }
 
 	/// <summary>Delegate for the AVAudioSession class.</summary>
@@ -6571,12 +6540,6 @@ namespace AVFoundation {
 
 	interface IAVAssetResourceLoaderDelegate { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="AVFoundation.AVAssetResourceLoaderDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="AVFoundation.AVAssetResourceLoaderDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="AVFoundation.AVAssetResourceLoaderDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="AVFoundation.AVAssetResourceLoaderDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Model]
@@ -7729,7 +7692,7 @@ namespace AVFoundation {
 		NSDictionary CurrentSampleDependencyAttachments { get; }
 	}
 
-	/// <summary>Constants that provide the keys for <see cref="AVFoundation.AVAssetTrack.GetAssociatedTracksOfType(Foundation.NSString)" /></summary>
+	/// <summary>Constants that provide the keys for <see cref="AVAssetTrack.GetAssociatedTracks(Foundation.NSString)" /></summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Category, BaseType (typeof (AVAssetTrack))]
@@ -14066,12 +14029,6 @@ namespace AVFoundation {
 
 	interface IAVVideoCompositionValidationHandling { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="AVFoundation.AVVideoCompositionValidationHandling" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="AVFoundation.AVVideoCompositionValidationHandling" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="AVFoundation.AVVideoCompositionValidationHandling" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="AVFoundation.AVVideoCompositionValidationHandling_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Model]
@@ -15008,12 +14965,6 @@ namespace AVFoundation {
 		AVCaptureDevicePosition SourceDevicePosition { get; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="AVFoundation.AVCaptureDepthDataOutputDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="AVFoundation.AVCaptureDepthDataOutputDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="AVFoundation.AVCaptureDepthDataOutputDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="AVFoundation.AVCaptureDepthDataOutputDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IAVCaptureDepthDataOutputDelegate { }
 
 	/// <summary>Delegate for receiving captured depth data.</summary>
@@ -15546,12 +15497,6 @@ namespace AVFoundation {
 		void DidDropSampleBuffer (AVCaptureOutput captureOutput, CMSampleBuffer sampleBuffer, AVCaptureConnection connection);
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="AVFoundation.AVCaptureVideoDataOutputSampleBufferDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="AVFoundation.AVCaptureVideoDataOutputSampleBufferDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="AVFoundation.AVCaptureVideoDataOutputSampleBufferDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="AVFoundation.AVCaptureVideoDataOutputSampleBufferDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IAVCaptureVideoDataOutputSampleBufferDelegate { }
 
 	/// <summary>A type of <see cref="AVFoundation.AVCaptureOutput" /> whose delegate object can process audio sample buffers being captured.</summary>
@@ -15656,20 +15601,8 @@ namespace AVFoundation {
 		AVCaptureAutoExposureBracketedStillImageSettings Create (float /* float, not CGFloat */ exposureTargetBias);
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="AVFoundation.AVCaptureAudioDataOutputSampleBufferDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="AVFoundation.AVCaptureAudioDataOutputSampleBufferDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="AVFoundation.AVCaptureAudioDataOutputSampleBufferDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="AVFoundation.AVCaptureAudioDataOutputSampleBufferDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IAVCaptureAudioDataOutputSampleBufferDelegate { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="AVFoundation.AVCaptureFileOutputRecordingDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="AVFoundation.AVCaptureFileOutputRecordingDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="AVFoundation.AVCaptureFileOutputRecordingDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="AVFoundation.AVCaptureFileOutputRecordingDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IAVCaptureFileOutputRecordingDelegate { }
 
 	/// <summary>A class that represents a file-based <see cref="AVFoundation.AVCaptureOutput" />. Application developers should use concrete subtypes <see cref="AVFoundation.AVCaptureMovieFileOutput" /> or <see cref="AVFoundation.AVCaptureAudioDataOutput" />.</summary>
@@ -15824,12 +15757,6 @@ namespace AVFoundation {
 
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="AVFoundation.AVCaptureMetadataOutputObjectsDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="AVFoundation.AVCaptureMetadataOutputObjectsDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="AVFoundation.AVCaptureMetadataOutputObjectsDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="AVFoundation.AVCaptureMetadataOutputObjectsDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IAVCaptureMetadataOutputObjectsDelegate { }
 
 	/// <summary>A delegate object that allows the application developer to respond to the arrival of metadata capture objects.</summary>
@@ -16278,13 +16205,6 @@ namespace AVFoundation {
 		bool FastCapturePrioritizationEnabled { [Bind ("isFastCapturePrioritizationEnabled")] get; }
 	}
 
-
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="AVFoundation.AVCapturePhotoCaptureDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="AVFoundation.AVCapturePhotoCaptureDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="AVFoundation.AVCapturePhotoCaptureDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="AVFoundation.AVCapturePhotoCaptureDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IAVCapturePhotoCaptureDelegate { }
 
 	/// <summary>Delegate object that receives notifications when capturing photos with the <see cref="AVFoundation.AVCapturePhotoOutput" /> class.</summary>
@@ -17471,9 +17391,7 @@ namespace AVFoundation {
 		void CancelVideoZoomRamp ();
 
 		/// <summary>Whether the device's autofocus can be restricted to specified ranges.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		///         <altmember cref="AVFoundation.AutoFocusRangeRestriction" />
+		/// <altmember cref="AutoFocusRangeRestriction" />
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("autoFocusRangeRestrictionSupported")]
@@ -19607,12 +19525,6 @@ namespace AVFoundation {
 
 	interface IAVPlayerItemMetadataOutputPushDelegate { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="AVFoundation.AVPlayerItemMetadataOutputPushDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="AVFoundation.AVPlayerItemMetadataOutputPushDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="AVFoundation.AVPlayerItemMetadataOutputPushDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="AVFoundation.AVPlayerItemMetadataOutputPushDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[BaseType (typeof (NSObject))]
 	[MacCatalyst (13, 1)]
 	[Protocol, Model]
@@ -20012,12 +19924,6 @@ namespace AVFoundation {
 
 	interface IAVPlayerItemOutputPullDelegate { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="AVFoundation.AVPlayerItemOutputPullDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="AVFoundation.AVPlayerItemOutputPullDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="AVFoundation.AVPlayerItemOutputPullDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="AVFoundation.AVPlayerItemOutputPullDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Model]
@@ -20036,12 +19942,6 @@ namespace AVFoundation {
 		void OutputSequenceWasFlushed (AVPlayerItemOutput output);
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="AVFoundation.AVPlayerItemOutputPushDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="AVFoundation.AVPlayerItemOutputPushDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="AVFoundation.AVPlayerItemOutputPushDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="AVFoundation.AVPlayerItemOutputPushDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Model]
@@ -20056,12 +19956,6 @@ namespace AVFoundation {
 
 	interface IAVPlayerItemLegibleOutputPushDelegate { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="AVFoundation.AVPlayerItemLegibleOutputPushDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="AVFoundation.AVPlayerItemLegibleOutputPushDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="AVFoundation.AVPlayerItemLegibleOutputPushDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="AVFoundation.AVPlayerItemLegibleOutputPushDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (AVPlayerItemOutputPushDelegate))]
 	[Model]
@@ -20697,7 +20591,6 @@ namespace AVFoundation {
 		void CancelCurrentEvent (CMTime resumptionOffset);
 	}
 
-	/// <include file="../docs/api/AVFoundation/IAVAsynchronousKeyValueLoading.xml" path="/Documentation/Docs[@DocId='T:AVFoundation.IAVAsynchronousKeyValueLoading']/*" />
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Model]
@@ -21193,12 +21086,7 @@ namespace AVFoundation {
 		NativeHandle _InitWithSsmlRepresentation (string @string);
 
 		/// <summary>The <see cref="AVFoundation.AVSpeechSynthesisVoice" /> to be used for synthesis.</summary>
-		///         <value>
-		///           <para>(More documentation for this node is coming)</para>
-		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
-		///         </value>
-		///         <remarks>To be added.</remarks>
-		///         <altmember cref="AVFoundation.AVSpeechSynthesisVoice.GetVoices" />
+		/// <altmember cref="AVFoundation.AVSpeechSynthesisVoice.GetSpeechVoices" />
 		[NullAllowed] // by default this property is null
 		[Export ("voice", ArgumentSemantic.Retain)]
 		AVSpeechSynthesisVoice Voice { get; set; }
@@ -21659,12 +21547,6 @@ namespace AVFoundation {
 		AVAssetDownloadTask GetAssetDownloadTask (AVAssetDownloadConfiguration downloadConfiguration);
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="AVFoundation.AVAssetDownloadDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="AVFoundation.AVAssetDownloadDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="AVFoundation.AVAssetDownloadDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="AVFoundation.AVAssetDownloadDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IAVAssetDownloadDelegate { }
 
 	/// <summary>Delegate that handles events that can be encountered while downloading an asset.</summary>
@@ -21770,15 +21652,11 @@ namespace AVFoundation {
 		[Export ("videoSettings", ArgumentSemantic.Copy), NullAllowed]
 		NSDictionary WeakVideoSettings { get; }
 
-		/// <summary>Gets or sets the compressed video settings to use when creating a <see cref="onoTouch.AVFoundation.AVAssetWriterInput" /> object.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the compressed video settings to use when creating a <see cref="AVFoundation.AVAssetWriterInput" /> object.</summary>
 		[Wrap ("WeakVideoSettings")]
 		AVVideoSettingsCompressed CompressedVideoSettings { get; }
 
-		/// <summary>Gets or sets the uncompressed video settings to use when creating a <see cref="onoTouch.AVFoundation.AVAssetWriterInput" /> object.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the uncompressed video settings to use when creating a <see cref="AVFoundation.AVAssetWriterInput" /> object.</summary>
 		[Wrap ("WeakVideoSettings")]
 		AVVideoSettingsUncompressed UnCompressedVideoSettings { get; }
 
@@ -22475,12 +22353,6 @@ namespace AVFoundation {
 
 	partial interface IAVContentKeySessionDelegate { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="AVFoundation.AVContentKeySessionDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="AVFoundation.AVContentKeySessionDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="AVFoundation.AVContentKeySessionDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="AVFoundation.AVContentKeySessionDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
@@ -23267,7 +23139,7 @@ namespace AVFoundation {
 		CMFormatDescription ReplacementFormatDescription { get; }
 	}
 
-	/// <summary>The delegate that will be called in a callback from <see cref="AudioToolbox.AVAudioSourceNode" />.</summary>
+	/// <summary>The delegate that will be called in a callback from <see cref="AVAudioSourceNode" />.</summary>
 	/// <returns>An OSStatus result code. Return 0 to indicate success.</returns>
 	/// <param name="isSilence">Indicates whether the supplied audio data only contains silence. This is a pointer to a <see cref="System.Byte" /> value.</param>
 	/// <param name="timestamp">The timestamp the audio renders (HAL time). This is a pointer to an <see cref="AudioToolbox.AudioTimeStamp" /> value.</param>
@@ -23280,13 +23152,13 @@ namespace AVFoundation {
 	[BaseType (typeof (AVAudioNode))]
 	[DisableDefaultCtor]
 	interface AVAudioSourceNode : AVAudioMixing {
-		/// <summary>Creates an <see cref="AudioToolbox.AVAudioSourceNode" /> with the specified callback to render audio.</summary>
+		/// <summary>Creates an <see cref="AVAudioSourceNode" /> with the specified callback to render audio.</summary>
 		/// <param name="renderHandler">The callback that will be called to supply audio data.</param>
 		[Export ("initWithRenderBlock:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (AVAudioSourceNodeRenderHandlerRaw renderHandler);
 
-		/// <summary>Creates an <see cref="AudioToolbox.AVAudioSourceNode" /> with the specified callback to render audio.</summary>
+		/// <summary>Creates an <see cref="AVAudioSourceNode" /> with the specified callback to render audio.</summary>
 		/// <param name="format">The format of the PCM audio data the callback supplies.</param>
 		/// <param name="renderHandler">The callback that will be called to supply audio data.</param>
 		[Export ("initWithFormat:renderBlock:")]

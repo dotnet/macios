@@ -18,7 +18,7 @@ mapView.Camera = camera;
         ]]></code>
       </example>
       <para>
-        <img href="~/MapKit/_images/MKMapCamera.png" alt="Image showing 3D map mode" />
+        <img href="~/xml/MapKit/_images/MKMapCamera.png" alt="Image showing 3D map mode" />
       </para>
     </remarks>
     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MapKit/Reference/MKMapCamera_class/index.html">Apple documentation for <c>MKMapCamera</c></related>

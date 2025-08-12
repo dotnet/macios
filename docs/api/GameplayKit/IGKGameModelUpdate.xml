@@ -3,7 +3,12 @@
         <summary>Equivalent to the value produced by <see cref="GameplayKit.GKGameModel_Extensions.GetScore(GameplayKit.IGKGameModel,GameplayKit.IGKGameModelPlayer)" />.</summary>
         <value>To be added.</value>
         <remarks>
-          <para>This property is determined by the <see cref="GameplayKit.GKGameModel_Extensions.GetScore(GameplayKit.IGKGameModel,GameplayKit.IGKGameModelPlayer)" /> when <c>this</c><see cref="GameplayKit.IGKGameModelUpdate" /> is applied to the game state of the <see cref="GameplayKit.IGKGameModel" />. Ultimately, the <see cref="GameplayKit.GKMinMaxStrategist.GetBestMove(GameplayKit.IGKGameModelPlayer)" /> method returns the <see cref="GameplayKit.IGKGameModelUpdate" /> with the highest <see cref="GameplayKit.IGKGameModelUpdate.Value" />. If multiple <see cref="GameplayKit.IGKGameModelUpdate" /> have the same <see cref="GameplayKit.IGKGameModelUpdate.Value" /> and <see cref="GameplayKit.GKMinMaxStrategist.Random" /> is not <see langword="null" />, the returned <see cref="GameplayKit.IGKGameModelUpdate" /> is chosen randomly among those with the highest <see cref="GameplayKit.IGKGameModelUpdate.Value" />.</para>
+          <para>
+            This property is determined by the <see cref="GameplayKit.GKGameModel_Extensions.GetScore(GameplayKit.IGKGameModel,GameplayKit.IGKGameModelPlayer)" /> when <c>this</c><see cref="GameplayKit.IGKGameModelUpdate" /> is applied to the game state of the <see cref="GameplayKit.IGKGameModel" />.
+            Ultimately, the <see cref="GameplayKit.GKMinMaxStrategist.GetBestMove(GameplayKit.IGKGameModelPlayer)" /> method returns the <see cref="GameplayKit.IGKGameModelUpdate" /> with the highest <see cref="GameplayKit.IGKGameModelUpdate.Value" />.
+            If multiple <see cref="GameplayKit.IGKGameModelUpdate" /> have the same <see cref="GameplayKit.IGKGameModelUpdate.Value" /> and <see cref="GameplayKit.GKMinMaxStrategist.RandomSource" /> is not <see langword="null" />,
+            the returned <see cref="GameplayKit.IGKGameModelUpdate" /> is chosen randomly among those with the highest <see cref="GameplayKit.IGKGameModelUpdate.Value" />.
+          </para>
         </remarks>
       </Docs>
 </Documentation>

@@ -303,14 +303,14 @@ public class GeneralPropertyTests {
 			new (
 				accessorKind: AccessorKind.Getter,
 				symbolAvailability: new (),
-				exportPropertyData: null,
+				exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 				attributes: [],
 				modifiers: []
 			),
 			new (
 				accessorKind: AccessorKind.Setter,
 				symbolAvailability: new (),
-				exportPropertyData: null,
+				exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 				attributes: [],
 				modifiers: []
 			),
@@ -324,7 +324,7 @@ public class GeneralPropertyTests {
 			new (
 				accessorKind: AccessorKind.Getter,
 				symbolAvailability: new (),
-				exportPropertyData: null,
+				exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 				attributes: [],
 				modifiers: []
 			),
@@ -386,14 +386,14 @@ public class GeneralPropertyTests {
 			new (
 				accessorKind: AccessorKind.Getter,
 				symbolAvailability: new (),
-				exportPropertyData: null,
+				exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 				attributes: [],
 				modifiers: []
 			),
 			new (
 				accessorKind: AccessorKind.Setter,
 				symbolAvailability: new (),
-				exportPropertyData: null,
+				exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 				attributes: [],
 				modifiers: []
 			),
@@ -407,14 +407,14 @@ public class GeneralPropertyTests {
 			new (
 				accessorKind: AccessorKind.Getter,
 				symbolAvailability: new (),
-				exportPropertyData: null,
+				exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 				attributes: [],
 				modifiers: []
 			),
 			new (
 				accessorKind: AccessorKind.Setter,
 				symbolAvailability: new (),
-				exportPropertyData: null,
+				exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 				attributes: [],
 				modifiers: []
 			),

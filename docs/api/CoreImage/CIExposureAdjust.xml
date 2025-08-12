@@ -35,13 +35,13 @@ myImageView.Image = UIImage.FromImage (cgimage);
 		With the following source:
       </para>
       <para>
-        <img href="~/CoreImage/_images/flower.png" alt="Photograph of a sunflower." />
+        <img href="~/xml/CoreImage/_images/flower.png" alt="Photograph of a sunflower." />
       </para>
       <para>
          Produces the following output:
       </para>
       <para>
-        <img href="~/CoreImage/_images/ExposureAdjust.png" alt="Result of applying the filter." />
+        <img href="~/xml/CoreImage/_images/ExposureAdjust.png" alt="Result of applying the filter." />
       </para>
       <para>
       	"Flower" © 2012 Milica Sekulic, used under a Creative Commons Attribution-ShareAlike license: https://creativecommons.org/licenses/by-sa/3.0/ 

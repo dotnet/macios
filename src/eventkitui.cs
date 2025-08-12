@@ -78,12 +78,6 @@ namespace EventKitUI {
 		IEKEventViewDelegate Delegate { get; set; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="EventKitUI.EKEventViewDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="EventKitUI.EKEventViewDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="EventKitUI.EKEventViewDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="EventKitUI.EKEventViewDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IEKEventViewDelegate { }
 
 	/// <summary>A delegate object that provides the application developer fine-grained control over events in the life-cycle of a <see cref="EventKitUI.EKEventViewController" /> object.</summary>
@@ -168,12 +162,6 @@ namespace EventKitUI {
 		void CancelEditing ();
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="EventKitUI.EKEventEditViewDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="EventKitUI.EKEventEditViewDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="EventKitUI.EKEventEditViewDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="EventKitUI.EKEventEditViewDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IEKEventEditViewDelegate { }
 
 	/// <summary>Delegate class used to receive notifications from the EKEventEditViewController class.</summary>
@@ -296,12 +284,6 @@ namespace EventKitUI {
 		NSSet SelectedCalendars { get; set; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="EventKitUI.EKCalendarChooserDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="EventKitUI.EKCalendarChooserDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="EventKitUI.EKCalendarChooserDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="EventKitUI.EKCalendarChooserDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IEKCalendarChooserDelegate { }
 
 	/// <summary>A delegate object that provides the application developer fine-grained control over events relating to the lifecycle of a <see cref="EventKitUI.EKCalendarChooser" /> object.</summary>

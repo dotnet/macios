@@ -1,5 +1,8 @@
 #!/bin/bash -eu
 
+# How to renew certificates and provisioning profiles:
+# https://dev.azure.com/devdiv/DevDiv/_git/macios-appstoresubmissiontests?path=/docs/provisioning-profiles/EXPIRED.md&_a=preview
+
 WHITE=$(tput setaf 7 2>/dev/null || true)
 BLUE=$(tput setaf 6 2>/dev/null || true)
 RED=$(tput setaf 9 2>/dev/null || true)

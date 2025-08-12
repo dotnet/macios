@@ -98,12 +98,6 @@ namespace PushKit {
 		NSString FileProvider { get; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="PushKit.PKPushRegistryDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="PushKit.PKPushRegistryDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="PushKit.PKPushRegistryDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="PushKit.PKPushRegistryDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IPKPushRegistryDelegate { }
 
 	/// <summary>Completion handler for registering a push operation.</summary>

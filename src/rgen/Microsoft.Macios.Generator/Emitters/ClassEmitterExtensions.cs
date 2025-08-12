@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using System.Collections.Immutable;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -25,7 +26,7 @@ static class ClassEmitterExtensions {
 	/// Emit the selector fields for the current class. The method will add the fields to the binding context so that
 	/// they can be used later.
 	/// </summary>
-	/// <param name="self"></param>
+	/// <param name="self">The class emitter.</param>
 	/// <param name="bindingContext">The current binding context.</param>
 	/// <param name="classBlock">The current class block.</param>
 	public static void EmitSelectorFields (this IClassEmitter self, in BindingContext bindingContext, TabbedWriter<StringWriter> classBlock)
@@ -82,10 +83,11 @@ static class ClassEmitterExtensions {
 	/// <summary>
 	/// Emits the body for a method that does not return a value.
 	/// </summary>
+	/// <param name="context">Current binding context.</param>
 	/// <param name="method">The method for which to generate the body.</param>
 	/// <param name="invocations">The method invocations and argument transformations.</param>
 	/// <param name="methodBlock">The writer for the method block.</param>
-	static void EmitVoidMethodBody (in Method method, in MethodInvocations invocations, TabbedWriter<StringWriter> methodBlock)
+	static void EmitVoidMethodBody (in BindingContext context, in Method method, in MethodInvocations invocations, TabbedWriter<StringWriter> methodBlock)
 	{
 		// validate and init the needed temp variables
 		foreach (var argument in invocations.Arguments) {
@@ -98,7 +100,8 @@ static class ClassEmitterExtensions {
 			methodBlock.Write (argument.PreCallConversion, verifyTrivia: false);
 		}
 
-		if (method.IsExtension) {
+		// if we are dealing with a protocol or an extension method, we need to call send directly
+		if (context.Changes.BindingType == BindingType.Protocol || method.IsExtension) {
 			methodBlock.WriteRaw (
 $@"{ExpressionStatement (invocations.Send)}
 {ExpressionStatement (KeepAlive (method.This))}
@@ -127,7 +130,7 @@ $@"if (IsDirectBinding) {{
 	/// <param name="method">The method for which to generate the body.</param>
 	/// <param name="invocations">The method invocations and argument transformations.</param>
 	/// <param name="methodBlock">The writer for the method block.</param>
-	static void EmitReturnMethodBody (in Method method, in MethodInvocations invocations, TabbedWriter<StringWriter> methodBlock)
+	static void EmitReturnMethodBody (in BindingContext context, in Method method, in MethodInvocations invocations, TabbedWriter<StringWriter> methodBlock)
 	{
 		// similar to the void method but we need to create a temp variable to store the return value
 		// and do any conversions that might be needed for the return value, for example byte to bool
@@ -144,7 +147,8 @@ $@"if (IsDirectBinding) {{
 			methodBlock.Write (argument.PreCallConversion, verifyTrivia: false);
 		}
 
-		if (method.IsExtension) {
+		// if we are dealing with a protocol or an extension method, we need to call send directly
+		if (context.Changes.BindingType == BindingType.Protocol || method.IsExtension) {
 			methodBlock.WriteRaw (
 $@"{tempDeclaration}
 {ExpressionStatement (invocations.Send)}
@@ -187,9 +191,14 @@ if (IsDirectBinding) {{
 				: null;
 		}
 
-		classBlock.WriteLine ();
 		classBlock.AppendMemberAvailability (method.SymbolAvailability);
 		classBlock.AppendGeneratedCodeAttribute (optimizable: true);
+
+		// append the export attribute to the method just in case it is a protocol method in a wrapper class,
+		// that is when the method is not an extension method and the binding type is protocol.
+		if (context.Changes.BindingType == BindingType.Protocol && !method.IsExtension) {
+			classBlock.AppendExportAttribute (method.ExportMethodData);
+		}
 
 		using (var methodBlock = classBlock.CreateBlock (method.ToDeclaration ().ToString (), block: true)) {
 			// write any possible thread check at the beginning of the method
@@ -203,9 +212,9 @@ if (IsDirectBinding) {{
 			var invocations = GetInvocations (method);
 
 			if (method.ReturnType.IsVoid) {
-				EmitVoidMethodBody (method, invocations, methodBlock);
+				EmitVoidMethodBody (context, method, invocations, methodBlock);
 			} else {
-				EmitReturnMethodBody (method, invocations, methodBlock);
+				EmitReturnMethodBody (context, method, invocations, methodBlock);
 			}
 		}
 
@@ -241,6 +250,7 @@ return {tcsName}.Task;
 			? EnsureUiThread (context.RootContext.CurrentPlatform) : null;
 		foreach (var method in context.Changes.Methods.OrderBy (m => m.Name)) {
 			EmitMethod (self, context, method, classBlock, uiThreadCheck);
+			classBlock.WriteLine ();
 		}
 	}
 
@@ -248,7 +258,7 @@ return {tcsName}.Task;
 	/// Emit the code for all the field properties in the class. The code will add any necessary backing fields and
 	/// will return all properties that are notifications.
 	/// </summary>
-	/// <param name="self"></param>
+	/// <param name="self">The class emitter.</param>
 	/// <param name="className">The current class name.</param>
 	/// <param name="properties">All properties of the class, the method will filter those that are fields.</param>
 	/// <param name="classBlock">Current class block.</param>
@@ -262,7 +272,6 @@ return {tcsName}.Task;
 			if (!property.IsField)
 				continue;
 
-			classBlock.WriteLine ();
 			// a field should always have a getter, if it does not, we do not generate the property
 			var getter = property.GetAccessor (AccessorKind.Getter);
 			if (getter.IsNullOrDefault)
@@ -271,9 +280,9 @@ return {tcsName}.Task;
 			// provide a backing variable for the property if and only if we are dealing with a reference type
 			if (property.IsReferenceType) {
 				classBlock.WriteLine (FieldPropertyBackingVariable (property).ToString ());
+				classBlock.WriteLine ();
 			}
 
-			classBlock.WriteLine ();
 			classBlock.AppendMemberAvailability (property.SymbolAvailability);
 			classBlock.AppendGeneratedCodeAttribute (optimizable: true);
 			if (property.IsNotification) {
@@ -305,22 +314,250 @@ return {backingField};
 				}
 
 				var setter = property.GetAccessor (AccessorKind.Setter);
-				if (setter.IsNullOrDefault)
-					// we are done with the current property
-					continue;
+				if (!setter.IsNullOrDefault) {
+					propertyBlock.WriteLine (); // add space between getter and setter since we have the attrs
+					propertyBlock.AppendMemberAvailability (setter.SymbolAvailability);
+					using (var setterBlock = propertyBlock.CreateBlock ("set", block: true)) {
+						if (property.IsReferenceType) {
+							// set the backing field
+							setterBlock.WriteLine ($"{backingField} = value;");
+						}
 
-				propertyBlock.WriteLine (); // add space between getter and setter since we have the attrs
-				propertyBlock.AppendMemberAvailability (setter.SymbolAvailability);
-				using (var setterBlock = propertyBlock.CreateBlock ("set", block: true)) {
-					if (property.IsReferenceType) {
-						// set the backing field
-						setterBlock.WriteLine ($"{backingField} = value;");
+						// call the native code
+						setterBlock.WriteLine ($"{ExpressionStatement (FieldConstantSetter (property, "value"))}");
 					}
-					// call the native code
-					setterBlock.WriteLine ($"{ExpressionStatement (FieldConstantSetter (property, "value"))}");
+				}
+			}
+			classBlock.WriteLine ();
+		}
+		notificationProperties = notificationsBuilder.ToImmutable ();
+	}
+
+	/// <summary>
+	/// Emits the code for a given property.
+	/// </summary>
+	/// <param name="self">The class emitter.</param>
+	/// <param name="context">The current binding context.</param>
+	/// <param name="property">The property to emit.</param>
+	/// <param name="classBlock">The current class block writer.</param>
+	/// <param name="uiThreadCheck">An optional UI thread check expression. If not provided, it will be created based on the context.</param>
+	public static void EmitProperty (this IClassEmitter self, in BindingContext context, in Property property,
+		TabbedWriter<StringWriter> classBlock, ExpressionStatementSyntax? uiThreadCheck = null)
+	{
+
+		// if not passed as an argument, we will create the ui thread check based on the context
+		if (uiThreadCheck is null) {
+			uiThreadCheck = (context.NeedsThreadChecks)
+				? EnsureUiThread (context.RootContext.CurrentPlatform)
+				: null;
+		}
+
+		if (property.IsField)
+			// ignore fields
+			return;
+		// use the factory to generate all the needed invocations for the current 
+		var invocations = GetInvocations (property);
+
+		// we expect to always at least have a getter
+		var getter = property.GetAccessor (AccessorKind.Getter);
+		if (getter.IsNullOrDefault)
+			return;
+
+		// add backing variable for the property if it is needed
+		if (property.NeedsBackingField) {
+			classBlock.AppendGeneratedCodeAttribute (optimizable: true);
+			classBlock.WriteLine ($"object? {property.BackingField} = null;");
+			classBlock.WriteLine ();
+		}
+
+		classBlock.AppendMemberAvailability (property.SymbolAvailability);
+		classBlock.AppendGeneratedCodeAttribute (optimizable: true);
+
+		if (context.Changes.BindingType == BindingType.Protocol) {
+			// add the export method for the property, this is needed for the protocol wrapper
+			classBlock.AppendExportAttribute (property.ExportPropertyData);
+		}
+		using (var propertyBlock = classBlock.CreateBlock (property.ToDeclaration ().ToString (), block: true)) {
+			// be very verbose with the availability, makes the life easier to the dotnet analyzer
+			propertyBlock.AppendMemberAvailability (getter.SymbolAvailability);
+			// if we deal with a delegate, include the attr:
+			// [return: DelegateProxy (typeof ({staticBridge}))]
+			if (property.ReturnType.IsDelegate)
+				propertyBlock.AppendDelegateProxyReturn (property.ReturnType);
+			if (context.Changes.BindingType == BindingType.Protocol && !getter.ExportPropertyData.IsNullOrDefault)
+				propertyBlock.AppendExportAttribute (getter.ExportPropertyData);
+			using (var getterBlock = propertyBlock.CreateBlock ("get", block: true)) {
+				if (uiThreadCheck is not null) {
+					getterBlock.WriteLine (uiThreadCheck.ToString ());
+					getterBlock.WriteLine ();
+				}
+				// depending on the property definition, we might need a temp variable to store
+				// the return value
+				var (tempVar, tempDeclaration) = GetReturnValueAuxVariable (property.ReturnType);
+				// if the binding is a protocol, we need to call send directly
+				if (context.Changes.BindingType == BindingType.Protocol) {
+					getterBlock.WriteLine ($"{tempDeclaration}");
+					getterBlock.WriteLine ($"{ExpressionStatement (invocations.Getter.Send)}");
+					getterBlock.WriteLine ($"{ExpressionStatement (KeepAlive ("this"))}");
+				} else {
+					getterBlock.WriteRaw (
+$@"{tempDeclaration}
+if (IsDirectBinding) {{
+	{ExpressionStatement (invocations.Getter.Send)}
+}} else {{
+	{ExpressionStatement (invocations.Getter.SendSuper)}
+}}
+{ExpressionStatement (KeepAlive ("this"))}
+");
+				}
+
+				if (property.RequiresDirtyCheck || property.IsWeakDelegate) {
+					getterBlock.WriteLine ("MarkDirty ();");
+				}
+
+				if (property.NeedsBackingField) {
+					getterBlock.WriteLine ($"{property.BackingField} = {tempVar};");
+				}
+
+				getterBlock.WriteLine ($"return {tempVar};");
+			}
+
+			var setter = property.GetAccessor (AccessorKind.Setter);
+			if (setter.IsNullOrDefault || invocations.Setter is null)
+				// we are done with the current property
+				return;
+
+			propertyBlock.WriteLine (); // add space between getter and setter since we have the attrs
+			propertyBlock.AppendMemberAvailability (setter.SymbolAvailability);
+			// if we deal with a delegate, include the attr:
+			// [param: BlockProxy (typeof ({nativeInvoker}))]
+			if (property.ReturnType.IsDelegate)
+				propertyBlock.AppendDelegateParameter (property.ReturnType);
+			if (context.Changes.BindingType == BindingType.Protocol && !setter.ExportPropertyData.IsNullOrDefault)
+				propertyBlock.AppendExportAttribute (setter.ExportPropertyData);
+			using (var setterBlock = propertyBlock.CreateBlock ("set", block: true)) {
+				if (uiThreadCheck is not null) {
+					setterBlock.WriteLine (uiThreadCheck.ToString ());
+					setterBlock.WriteLine ();
+				}
+				// init the needed temp variables
+				setterBlock.Write (invocations.Setter.Value.Argument.Initializers, verifyTrivia: false);
+				setterBlock.Write (invocations.Setter.Value.Argument.Validations, verifyTrivia: false);
+				setterBlock.Write (invocations.Setter.Value.Argument.PreCallConversion, verifyTrivia: false);
+
+				// perform the invocation
+				// if the binding is a protocol, we need to call send directly
+				if (context.Changes.BindingType == BindingType.Protocol) {
+					setterBlock.WriteLine ($"{ExpressionStatement (invocations.Setter.Value.Send)}");
+					setterBlock.WriteLine ($"{ExpressionStatement (KeepAlive ("this"))}");
+				} else {
+					setterBlock.WriteRaw (
+$@"if (IsDirectBinding) {{
+	{ExpressionStatement (invocations.Setter.Value.Send)}
+}} else {{
+	{ExpressionStatement (invocations.Setter.Value.SendSuper)}
+}}
+{ExpressionStatement (KeepAlive ("this"))}
+");
+				}
+
+				// perform the post delegate call conversion, this might include the GC.KeepAlive calls to keep
+				// the native object alive
+				setterBlock.Write (invocations.Setter.Value.Argument.PostCallConversion, verifyTrivia: false);
+				// mark property as dirty if needed
+				if (property.RequiresDirtyCheck || property.IsWeakDelegate) {
+					setterBlock.WriteLine ("MarkDirty ();");
+				}
+
+				if (property.NeedsBackingField) {
+					setterBlock.WriteLine ($"{property.BackingField} = value;");
 				}
 			}
 		}
-		notificationProperties = notificationsBuilder.ToImmutable ();
+
+		// if the property is a weak delegate and has the strong delegate type set, we need to emit the
+		// strong delegate property
+		if (property is { IsProperty: true, IsWeakDelegate: true }
+			&& !property.ExportPropertyData.StrongDelegateType.IsNullOrDefault) {
+			classBlock.WriteLine ();
+			var strongDelegate = property.ToStrongDelegate ();
+			using (var propertyBlock =
+				   classBlock.CreateBlock (strongDelegate.ToDeclaration ().ToString (), block: true)) {
+				using (var getterBlock =
+					   propertyBlock.CreateBlock ("get", block: true)) {
+					getterBlock.WriteLine (
+						$"return {property.Name} as {strongDelegate.ReturnType.WithNullable (isNullable: false).GetIdentifierSyntax ()};");
+				}
+
+				using (var setterBlock =
+					   propertyBlock.CreateBlock ("set", block: true)) {
+					setterBlock.WriteRaw (
+$@"var rvalue = value as NSObject;
+if (!(value is null) && rvalue is null) {{
+	throw new ArgumentException ($""The object passed of type {{value.GetType ()}} does not derive from NSObject"");
+}}
+{property.Name} = rvalue;
+");
+				}
+			}
+		}
+	}
+
+	/// <summary>
+	/// Emit the code for all the properties in the class.
+	/// </summary>
+	/// <param name="self">The class emitter.</param>
+	/// <param name="context">The current binding context.</param>
+	/// <param name="classBlock">Current class block.</param>
+	public static void EmitProperties (this IClassEmitter self, in BindingContext context, TabbedWriter<StringWriter> classBlock)
+	{
+		// use the binding context to decide if we need to insert the ui thread check
+		var uiThreadCheck = (context.NeedsThreadChecks)
+			? EnsureUiThread (context.RootContext.CurrentPlatform) : null;
+
+		foreach (var property in context.Changes.Properties.OrderBy (p => p.Name)) {
+			if (property.IsField)
+				continue;
+			EmitProperty (self, in context, property, classBlock, uiThreadCheck);
+			classBlock.WriteLine ();
+		}
+	}
+
+	/// <summary>
+	/// Emit the default constructors for the class.
+	/// </summary>
+	/// <param name="className">The name of the class whose constructors are going to be generated.</param>
+	/// <param name="classBlock">Current class block.</param>
+	/// <param name="disableDefaultCtor">A value indicating whether to disable the default constructor.</param>
+	public static void EmitDefaultNSObjectConstructors (this IClassEmitter self, string className, TabbedWriter<StringWriter> classBlock, bool disableDefaultCtor)
+	{
+		if (!disableDefaultCtor) {
+			classBlock.WriteDocumentation (Documentation.Class.DefaultInit (className));
+			classBlock.AppendGeneratedCodeAttribute ();
+			classBlock.AppendDesignatedInitializer ();
+			classBlock.WriteRaw (
+$@"[Export (""init"")]
+public {className} () : base ({NSObjectFlag}.Empty)
+{{
+	if (IsDirectBinding)
+		InitializeHandle (global::ObjCRuntime.Messaging.IntPtr_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle (""init"")), ""init"");
+	else
+		InitializeHandle (global::ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle (""init"")), ""init"");
+}}
+");
+			classBlock.WriteLine ();
+		}
+
+		classBlock.WriteDocumentation (Documentation.Class.DefaultInitWithFlag (className));
+		classBlock.AppendGeneratedCodeAttribute ();
+		classBlock.AppendEditorBrowsableAttribute (EditorBrowsableState.Advanced);
+		classBlock.WriteLine ($"protected {className} ({NSObjectFlag} t) : base (t) {{}}");
+
+		classBlock.WriteLine ();
+		classBlock.WriteDocumentation (Documentation.Class.DefaultInitWithHandle (className));
+		classBlock.AppendGeneratedCodeAttribute ();
+		classBlock.AppendEditorBrowsableAttribute (EditorBrowsableState.Advanced);
+		classBlock.WriteLine ($"protected internal {className} ({NativeHandle} handle) : base (handle) {{}}");
+		classBlock.WriteLine ();
 	}
 }

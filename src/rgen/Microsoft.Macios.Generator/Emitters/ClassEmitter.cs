@@ -191,7 +191,7 @@ return del;
 					? EventHandler.ToString ()
 					: $"{EventHandler}<{eventInfo.EventArgsType}>";
 				using (var eventBlock =
-				       classBlock.CreateBlock ($"public event {eventHandler} {eventInfo.Name}", true)) {
+					   classBlock.CreateBlock ($"public event {eventHandler} {eventInfo.Name}", true)) {
 					eventBlock.WriteLine ($"add {{ {ensureMethod} ()!.{eventInfo.Name.Decapitalize ()} += value; }}");
 					eventBlock.WriteLine ($"remove {{ {ensureMethod} ()!.{eventInfo.Name.Decapitalize ()} -= value; }}");
 				}

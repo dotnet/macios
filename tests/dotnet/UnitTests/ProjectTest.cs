@@ -2985,6 +2985,7 @@ namespace Xamarin.Tests {
 			"/System/Library/Frameworks/DataDetection.framework/DataDetection",
 			"/System/Library/Frameworks/DeviceCheck.framework/DeviceCheck",
 			"/System/Library/Frameworks/DeviceDiscoveryExtension.framework/DeviceDiscoveryExtension",
+			"/System/Library/Frameworks/DeviceDiscoveryUI.framework/DeviceDiscoveryUI",
 			"/System/Library/Frameworks/EventKit.framework/EventKit",
 			"/System/Library/Frameworks/EventKitUI.framework/EventKitUI",
 			"/System/Library/Frameworks/ExternalAccessory.framework/ExternalAccessory",

@@ -304,6 +304,10 @@ namespace Introspection {
 				case "SCWindow":
 				case "SCStreamConfiguration":
 					return true;
+				// Xcode 26.0 Conformance not in headers
+				case "ASPickerDisplaySettings":
+				case "ASPropertyCompareString":
+					return true;
 				}
 				break;
 			case "NSMutableCopying":
@@ -529,6 +533,10 @@ namespace Introspection {
 				case "FSMutableFileDataBuffer":
 				case "FSTask":
 				case "FSTaskOptions":
+					return true;
+				// Xcode 26.0 Conformance not in headers
+				case "ASPickerDisplaySettings":
+				case "ASPropertyCompareString":
 					return true;
 				}
 				break;
@@ -758,6 +766,10 @@ namespace Introspection {
 				case "FSMutableFileDataBuffer":
 				case "FSTask":
 				case "FSTaskOptions":
+					return true;
+				// Xcode 26.0 Conformance not in headers
+				case "ASPickerDisplaySettings":
+				case "ASPropertyCompareString":
 					return true;
 				}
 				break;

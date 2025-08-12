@@ -19,14 +19,15 @@ public partial class EventTests
 	{
 		public _RgenNSKeyedArchiverDelegate () { IsDirectBinding = false; }
 
-		internal global::System.EventHandler? encodedObject;
+		internal global::System.EventHandler<global::Foundation.NSObject>? encodedObject;
 		[Preserve (Conditional = true)]
 		[Export<Method> ("archiver:didEncodeObject:")]
 		public void EncodedObject (global::Foundation.NSKeyedArchiver archiver, global::Foundation.NSObject obj)
 		{
 			var handler = encodedObject;
 			if (handler is not null) {
-				handler (archiver, global::System.EventHandler.Empty);
+				global::Foundation.NSObject args = new (obj);
+				handler (archiver, args);
 			}
 		}
 
@@ -41,14 +42,15 @@ public partial class EventTests
 			}
 		}
 
-		internal global::System.EventHandler? willEncode;
+		internal global::System.EventHandler<global::Foundation.NSObject>? willEncode;
 		[Preserve (Conditional = true)]
 		[Export<Method> ("archiverDidFinish:")]
 		public void WillEncode (global::Foundation.NSKeyedArchiver archiver, global::Foundation.NSObject obj)
 		{
 			var handler = willEncode;
 			if (handler is not null) {
-				handler (archiver, global::System.EventHandler.Empty);
+				global::Foundation.NSObject args = new (obj);
+				handler (archiver, args);
 			}
 		}
 
@@ -75,7 +77,7 @@ public partial class EventTests
 			}
 		}
 
-		internal global::System.EventHandler<(global::Foundation.NSObject OldObject, global::Foundation.NSObject NewObject)EventArgs>? replacingObject2;
+		internal global::System.EventHandler<(global::Foundation.NSObject OldObject, global::Foundation.NSObject NewObject)>? replacingObject2;
 		[Preserve (Conditional = true)]
 		[Export<Method> ("archiver:willReplaceObject:withObject:")]
 		public void ReplacingObject2 (global::Foundation.NSKeyedArchiver archiver, global::Foundation.NSObject oldObject, global::Foundation.NSObject newObject)
@@ -87,7 +89,7 @@ public partial class EventTests
 			}
 		}
 
-		internal global::System.EventHandler<(global::Foundation.NSObject Item1, global::Foundation.NSObject Item2)EventArgs>? replacingObject3;
+		internal global::System.EventHandler<(global::Foundation.NSObject Item1, global::Foundation.NSObject Item2)>? replacingObject3;
 		[Preserve (Conditional = true)]
 		[Export<Method> ("archiver:willReplaceObject:withObject:")]
 		public void ReplacingObject3 (global::Foundation.NSKeyedArchiver archiver, global::Foundation.NSObject oldObject, global::Foundation.NSObject newObject)

@@ -51,10 +51,7 @@ class EventTypeEmitter (
 		builder.WriteLine ($"namespace {eventInfo.Namespace};");
 		builder.WriteLine ();
 
-		var argsClassName = eventInfo.EventArgsType.EndsWith ("EventArgs")
-			? eventInfo.EventArgsType
-			: $"{eventInfo.EventArgsType}EventArgs";
-
+		var argsClassName = eventInfo.EventArgsType;
 		using (var classBlock =
 			   builder.CreateBlock ($"public partial class {argsClassName}", true)) {
 

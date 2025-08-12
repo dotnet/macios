@@ -41,10 +41,6 @@ class EventDelegateEmitter (
 	{
 		foreach (var eventInfo in delegateInfo.DelegateType.Events) {
 			var argsClassName = eventInfo.EventArgsType;
-			if (argsClassName is not null && !argsClassName.EndsWith ("EventArgs")) {
-				argsClassName = $"{argsClassName}EventArgs";
-			}
-
 			var handlerName = eventInfo.Name.Decapitalize ();
 			if (argsClassName is null) {
 				classBlock.WriteLine ($"internal {EventHandler}? {handlerName};");

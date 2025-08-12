@@ -24,7 +24,7 @@ namespace TestNamespace;
 public partial interface IRgenNSKeyedArchiverDelegate {
 
 	// not event args, should not be needed
-	[Export<Method> ("archiver:didEncodeObject:", Flags = ObjCBindings.Method.Event)]
+	[Export<Method> ("archiver:didEncodeObject:", Flags = ObjCBindings.Method.Event, EventArgsType = typeof(NSObject))]
 	void EncodedObject (NSKeyedArchiver archiver, NSObject obj);
 
 	// not event args, should not be needed
@@ -32,7 +32,7 @@ public partial interface IRgenNSKeyedArchiverDelegate {
 	void Finished (NSKeyedArchiver archiver);
 
 	// not event args, should not be needed
-	[Export<Method> ("archiverDidFinish:", Flags = ObjCBindings.Method.Event)]
+	[Export<Method> ("archiverDidFinish:", Flags = ObjCBindings.Method.Event, EventArgsType = typeof(NSObject))]
 	void WillEncode (NSKeyedArchiver archiver, NSObject obj);
 
 	// not event args, should not be needed
@@ -40,7 +40,7 @@ public partial interface IRgenNSKeyedArchiverDelegate {
 	void Finishing (NSKeyedArchiver archiver);
 
 	// use a name, the class should be generated with the two NSObjects as properties
-	[Export<Method> ("archiver:willReplaceObject:withObject:", Flags = ObjCBindings.Method.Event, EventArgsTypeName = "NSArchiveReplace")]
+	[Export<Method> ("archiver:willReplaceObject:withObject:", Flags = ObjCBindings.Method.Event, EventArgsTypeName = "NSArchiveReplaceEventArgs")]
 	void ReplacingObject (NSKeyedArchiver archiver, NSObject oldObject, NSObject newObject);
 
 	// use a typeof named tuple

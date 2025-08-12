@@ -176,11 +176,11 @@ public partial class EventTests
 		}
 	}
 
-	// Generate event for delegate: EncodedObject with args: global::System.EventHandler
+	// Generate event for delegate: EncodedObject with args: global::System.EventHandler<global::Foundation.NSObject>
 	// Generate event for delegate: Finished with args: global::System.EventHandler
-	// Generate event for delegate: WillEncode with args: global::System.EventHandler
+	// Generate event for delegate: WillEncode with args: global::System.EventHandler<global::Foundation.NSObject>
 	// Generate event for delegate: Finishing with args: global::System.EventHandler
-	// Generate event for delegate: ReplacingObject with args: global::System.EventHandler<NSArchiveReplace>
+	// Generate event for delegate: ReplacingObject with args: global::System.EventHandler<NSArchiveReplaceEventArgs>
 	// Generate event for delegate: ReplacingObject2 with args: global::System.EventHandler<(global::Foundation.NSObject OldObject, global::Foundation.NSObject NewObject)>
 	// Generate event for delegate: ReplacingObject3 with args: global::System.EventHandler<(global::Foundation.NSObject Item1, global::Foundation.NSObject Item2)>
 }

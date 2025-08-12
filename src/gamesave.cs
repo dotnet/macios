@@ -12,8 +12,7 @@ using XWindow = AppKit.NSWindow;
 namespace GameSave {
 	[iOS (26, 0), Mac (26, 0), MacCatalyst (26, 0)]
 	[Native]
-	public enum GSSyncState : long
-	{
+	public enum GSSyncState : long {
 		Ready,
 		Offline,
 		Local,
@@ -26,8 +25,7 @@ namespace GameSave {
 	[iOS (26, 0), Mac (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface GSSyncedDirectoryVersion
-	{
+	interface GSSyncedDirectoryVersion {
 		[Export ("isLocal")]
 		bool IsLocal { get; }
 
@@ -47,8 +45,7 @@ namespace GameSave {
 	[iOS (26, 0), Mac (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface GSSyncedDirectoryState
-	{
+	interface GSSyncedDirectoryState {
 		[Export ("state")]
 		GSSyncState State { get; }
 
@@ -56,7 +53,7 @@ namespace GameSave {
 		NSUrl Url { get; }
 
 		[NullAllowed, Export ("conflictedVersions")]
-		GSSyncedDirectoryVersion[] ConflictedVersions { get; }
+		GSSyncedDirectoryVersion [] ConflictedVersions { get; }
 
 		[NullAllowed, Export ("error")]
 		NSError Error { get; }
@@ -65,8 +62,7 @@ namespace GameSave {
 	[iOS (26, 0), Mac (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface GSSyncedDirectory
-	{
+	interface GSSyncedDirectory {
 		[Static]
 		[Export ("openDirectoryForContainerIdentifier:")]
 		GSSyncedDirectory OpenDirectory ([NullAllowed] string containerIdentifier);

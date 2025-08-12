@@ -46,12 +46,12 @@ public class ClassGenerationTests : BaseGeneratorTestClass {
 			new (ApplePlatform.MacCatalyst, "ThreadSafeUIKitPropertyTests", "ThreadSafeUIKitPropertyTests.cs", "ExpectedThreadSafeUIKitPropertyTests.cs"),
 			new (ApplePlatform.MacOSX, "AppKitPropertyTests", "AppKitPropertyTests.cs", "ExpectedAppKitPropertyTests.cs"),
 			new (ApplePlatform.MacOSX, "ThreadSafeAppKitPropertyTests", "ThreadSafeAppKitPropertyTests.cs", "ExpectedThreadSafeAppKitPropertyTests.cs"),
-
+			
 			new (ApplePlatform.iOS, "NSUserDefaults", "NSUserDefaults.cs", "ExpectedNSUserDefaults.cs"),
 			new (ApplePlatform.TVOS, "NSUserDefaults", "NSUserDefaults.cs", "ExpectedNSUserDefaults.cs"),
 			new (ApplePlatform.MacCatalyst, "NSUserDefaults", "NSUserDefaults.cs", "ExpectedNSUserDefaults.cs"),
 			new (ApplePlatform.MacOSX, "NSUserDefaults", "NSUserDefaults.cs", "ExpectedNSUserDefaults.cs"),
-
+			
 			new (ApplePlatform.iOS, "MethodTests", "MethodTests.cs", "ExpectedMethodsTests.cs")
 			{
 				ExtraFiles = new () {
@@ -93,24 +93,28 @@ public class ClassGenerationTests : BaseGeneratorTestClass {
 			{
 				ExtraFiles = new () {
 					{"NSArchiveReplace.g.cs", "ExpectedNSArchiveReplace.cs"},
+					{"EventTests_RgenNSKeyedArchiverDelegate.g.cs", "ExpectedEventTests_RgenNSKeyedArchiverDelegate.cs"}
 				}
 			},
 			new (ApplePlatform.TVOS, "EventTests", "EventTests.cs", "ExpectedEventTests.cs")
 			{
 				ExtraFiles = new () {
 					{"NSArchiveReplace.g.cs", "ExpectedNSArchiveReplace.cs"},
+					{"EventTests_RgenNSKeyedArchiverDelegate.g.cs", "ExpectedEventTests_RgenNSKeyedArchiverDelegate.cs"}
 				}
 			},
 			new (ApplePlatform.MacCatalyst, "EventTests", "EventTests.cs", "ExpectedEventTests.cs")
 			{
 				ExtraFiles = new () {
 					{"NSArchiveReplace.g.cs", "ExpectedNSArchiveReplace.cs"},
+					{"EventTests_RgenNSKeyedArchiverDelegate.g.cs", "ExpectedEventTests_RgenNSKeyedArchiverDelegate.cs"}
 				}
 			},
 			new (ApplePlatform.MacOSX, "EventTests", "EventTests.cs", "ExpectedEventTests.cs")
 			{
 				ExtraFiles = new () {
 					{"NSArchiveReplace.g.cs", "ExpectedNSArchiveReplace.cs"},
+					{"EventTests_RgenNSKeyedArchiverDelegate.g.cs", "ExpectedEventTests_RgenNSKeyedArchiverDelegate.cs"}
 				}
 			},
 		};

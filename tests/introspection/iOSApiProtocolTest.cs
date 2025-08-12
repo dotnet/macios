@@ -452,6 +452,7 @@ namespace Introspection {
 				case "CPListImageRowItemImageGridElement": // Conformance not in headers
 				case "CPListImageRowItemRowElement": // Conformance not in headers
 				case "CPMessageGridItemConfiguration": // Conformance not in headers
+				case "PKAddIdentityDocumentMetadata": // Conformance not in headers
 					return true;
 				}
 				break;
@@ -662,6 +663,7 @@ namespace Introspection {
 				case "CPListImageRowItemImageGridElement": // Conformance not in headers
 				case "CPListImageRowItemRowElement": // Conformance not in headers
 				case "CPMessageGridItemConfiguration": // Conformance not in headers
+				case "PKAddIdentityDocumentMetadata": // Conformance not in headers
 					return true;
 				}
 				break;
@@ -763,6 +765,7 @@ namespace Introspection {
 				case "SRPhoneUsageReport":
 				case "SRWristDetection":
 				case "UIMenuSystemFindElementGroupConfiguration": // conformance not in headers
+				case "PKAddIdentityDocumentMetadata": // conformance not in headers
 					return true;
 				}
 				break;

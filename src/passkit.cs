@@ -366,6 +366,15 @@ namespace PassKit {
 		[iOS (16, 0), MacCatalyst (16, 0), Mac (13, 0), NoTV]
 		[Export ("encryptedServiceProviderDataForSecureElementPass:completion:")]
 		void GetEncryptedServiceProviderData (PKSecureElementPass secureElementPass, Action<NSDictionary, NSError> completion);
+
+		[iOS (26, 0), MacCatalyst (26, 0), Mac (26, 0), NoTV]
+		[Export ("authorizationStatusForCapability:")]
+		PKPassLibraryAuthorizationStatus GetAuthorizationStatus (PKPassLibraryCapability capability);
+
+		[iOS (26, 0), MacCatalyst (26, 0), Mac (26, 0), NoTV]
+		[Export ("requestAuthorizationForCapability:completion:")]
+		[Async]
+		void RequestAuthorization (PKPassLibraryCapability capability, Action<PKPassLibraryAuthorizationStatus> completion);
 	}
 
 	/// <summary>A class whose static members represent keys to be used with the <see cref="PassKit.PKPass.GetLocalizedValue(Foundation.NSString)" /> method.</summary>
@@ -1147,6 +1156,11 @@ namespace PassKit {
 		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Export ("merchantCategoryCode", ArgumentSemantic.Assign)]
 		PKMerchantCategoryCode MerchantCategoryCode { get; set; }
+
+		[iOS (26, 0), MacCatalyst (26, 0), Mac (26, 0), NoTV]
+		[NullAllowed]
+		[Export ("attributionIdentifier")]
+		string AttributionIdentifier { get; set; }
 	}
 
 	/// <summary>Enumerates fields for a contact.</summary>
@@ -1994,6 +2008,10 @@ namespace PassKit {
 		[Mac (15, 4), iOS (18, 4), NoTV, MacCatalyst (18, 4)]
 		[Field ("PKPaymentNetworkJaywan")]
 		NSString Jaywan { get; }
+
+		[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0), NoTV]
+		[Field ("PKPaymentNetworkMyDebit")]
+		NSString MyDebit { get; }
 	}
 
 	/// <summary>A button used to activate an Apple Pay payment. Available styles and types are defined by <see cref="PassKit.PKPaymentButtonStyle" /> and <see cref="PassKit.PKPaymentButtonType" />.</summary>
@@ -2029,6 +2047,15 @@ namespace PassKit {
 		[MacCatalyst (13, 1)]
 		[Export ("cornerRadius")]
 		nfloat CornerRadius { get; set; }
+
+		[iOS (26, 0), MacCatalyst (26, 0), NoMac, NoTV]
+		[Static]
+		[Export ("buttonWithType:style:disableCardArt:")]
+		PKPaymentButton FromType (PKPaymentButtonType buttonType, PKPaymentButtonStyle buttonStyle, bool disableCardArt);
+
+		[iOS (26, 0), MacCatalyst (26, 0), NoMac, NoTV]
+		[Export ("initWithPaymentButtonType:paymentButtonStyle:disableCardArt:")]
+		NativeHandle Constructor (PKPaymentButtonType type, PKPaymentButtonStyle style, bool disableCardArt);
 	}
 
 	/// <summary>A button that adds passes to a Wallet.</summary>
@@ -3552,6 +3579,36 @@ namespace PassKit {
 		[Static]
 		[Export ("ageThresholdElementWithAge:")]
 		PKIdentityElement AgeThresholdElementWithAge (nint age);
+
+		[iOS (26, 0), MacCatalyst (26, 0), NoMac, NoTV]
+		[Static]
+		[Export ("heightElement")]
+		PKIdentityElement HeightElement { get; }
+
+		[iOS (26, 0), MacCatalyst (26, 0), NoMac, NoTV]
+		[Static]
+		[Export ("weightElement")]
+		PKIdentityElement WeightElement { get; }
+
+		[iOS (26, 0), MacCatalyst (26, 0), NoMac, NoTV]
+		[Static]
+		[Export ("eyeColorElement")]
+		PKIdentityElement EyeColorElement { get; }
+
+		[iOS (26, 0), MacCatalyst (26, 0), NoMac, NoTV]
+		[Static]
+		[Export ("hairColorElement")]
+		PKIdentityElement HairColorElement { get; }
+
+		[iOS (26, 0), MacCatalyst (26, 0), NoMac, NoTV]
+		[Static]
+		[Export ("organDonorStatusElement")]
+		PKIdentityElement OrganDonorStatusElement { get; }
+
+		[iOS (26, 0), MacCatalyst (26, 0), NoMac, NoTV]
+		[Static]
+		[Export ("veteranStatusElement")]
+		PKIdentityElement VeteranStatusElement { get; }
 	}
 
 	[NoTV, NoMac, iOS (16, 0), MacCatalyst (16, 0)]
@@ -3847,6 +3904,14 @@ namespace PassKit {
 
 		[Export ("serverEnvironmentIdentifier", ArgumentSemantic.Strong)]
 		string ServerEnvironmentIdentifier { get; set; }
+
+		[iOS (26, 0), MacCatalyst (26, 0), Mac (26, 0), NoTV]
+		[Export ("issuingCountryCode", ArgumentSemantic.Strong)]
+		string IssuingCountryCode { get; }
+
+		[iOS (26, 0), MacCatalyst (26, 0), Mac (26, 0), NoTV]
+		[Export ("documentType")]
+		PKAddIdentityDocumentType DocumentType { get; }
 	}
 
 	[NoTV, iOS (18, 0), MacCatalyst (18, 0), Mac (15, 0)]
@@ -3902,6 +3967,36 @@ namespace PassKit {
 
 		[Export ("localizedDescription", ArgumentSemantic.Strong), NullAllowed]
 		string LocalizedDescription { get; }
+	}
+
+	[iOS (26, 0), MacCatalyst (26, 0), Mac (26, 0), NoTV]
+	[BaseType (typeof (PKIdentityDocumentMetadata))]
+	[DisableDefaultCtor]
+	interface PKAddIdentityDocumentMetadata {
+		[Export ("initWithProvisioningCredentialIdentifier:sharingInstanceIdentifier:cardTemplateIdentifier:issuingCountryCode:documentType:preview:")]
+		NativeHandle Constructor (string credentialIdentifier, string sharingInstanceIdentifier, string templateIdentifier, string issuingCountryCode, PKAddIdentityDocumentType documentType, PKAddPassMetadataPreview preview);
+
+		[Export ("preview", ArgumentSemantic.Strong)]
+		PKAddPassMetadataPreview Preview { get; }
+	}
+
+	[iOS (26, 0), MacCatalyst (26, 0), NoMac, NoTV]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface PKIdentityAnyOfDescriptor : PKIdentityDocumentDescriptor {
+		[Export ("descriptors", ArgumentSemantic.Copy)]
+		IPKIdentityDocumentDescriptor [] Descriptors { get; }
+
+		[Export ("initWithDescriptors:")]
+		[DesignatedInitializer]
+		NativeHandle Constructor (IPKIdentityDocumentDescriptor [] descriptors);
+	}
+
+	[iOS (26, 0), MacCatalyst (26, 0), NoMac, NoTV]
+	[BaseType (typeof (NSObject), Name = "PKIdentityPhotoIDDescriptor")]
+	[DisableDefaultCtor]
+	interface PKIdentityPhotoIdDescriptor : PKIdentityDocumentDescriptor {
+
 	}
 
 	[NoTV, iOS (18, 0), MacCatalyst (18, 0), NoMac]

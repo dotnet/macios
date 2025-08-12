@@ -138,6 +138,11 @@ readonly partial struct Property {
 	public bool IsWeakDelegate => IsProperty && ExportPropertyData.Flags.HasFlag (ObjCBindings.Property.WeakDelegate);
 
 	/// <summary>
+	/// True if events should be created for the weak delegate.
+	/// </summary>
+	public bool CreateEvents => IsWeakDelegate && ExportPropertyData.Flags.HasFlag (ObjCBindings.Property.CreateEvents);
+
+	/// <summary>
 	/// States if a property is optional in a protocol definition.
 	/// </summary>
 	public bool IsOptional => IsProperty && ExportPropertyData.Flags.HasFlag (ObjCBindings.Property.Optional);
@@ -288,7 +293,7 @@ readonly partial struct Property {
 					accessorDeclaration.GetAttributeCodeChanges (context.SemanticModel);
 				accessorsBucket.Add (new (
 					accessorKind: kind,
-					exportPropertyData: accessorSymbol.GetExportData<ObjCBindings.Property> () ?? ExportData<ObjCBindings.Property>.Default,
+					exportPropertyData: accessorSymbol.GetExportData<ObjCBindings.Property> (context) ?? ExportData<ObjCBindings.Property>.Default,
 					symbolAvailability: accessorSymbol.GetSupportedPlatforms (),
 					attributes: accessorAttributeChanges,
 					modifiers: [.. accessorDeclaration.Modifiers]));
@@ -310,7 +315,7 @@ readonly partial struct Property {
 		}
 		change = new (
 			name: memberName,
-			returnType: new (property.Type, context.Compilation),
+			returnType: new (property.Type, context),
 			symbolAvailability: propertySupportedPlatforms,
 			attributes: attributes,
 			modifiers: [.. declaration.Modifiers],
@@ -318,8 +323,8 @@ readonly partial struct Property {
 			BindAs = property.GetBindFromData (),
 			ForcedType = property.GetForceTypeData (),
 			ExportFieldData = GetFieldInfo (context, property) ?? FieldInfo<ObjCBindings.Property>.Default,
-			ExportPropertyData = property.GetExportData<ObjCBindings.Property> () ?? ExportData<ObjCBindings.Property>.Default,
-			ExportStrongPropertyData = property.GetExportData<ObjCBindings.StrongDictionaryProperty> (),
+			ExportPropertyData = property.GetExportData<ObjCBindings.Property> (context) ?? ExportData<ObjCBindings.Property>.Default,
+			ExportStrongPropertyData = property.GetExportData<ObjCBindings.StrongDictionaryProperty> (context),
 		};
 		return true;
 	}

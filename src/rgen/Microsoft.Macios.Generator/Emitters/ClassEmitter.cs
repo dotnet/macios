@@ -133,6 +133,28 @@ public static NSObject {name} ({NSObject} objectToObserve, {EventHandler}<{event
 		}
 	}
 
+	/// <summary>
+	/// Emit the events for the given delegates.
+	/// </summary>
+	/// <param name="delegates">The delegate properties.</param>
+	/// <param name="classBlock">Current class block.</param>
+	void EmitEvents (in ImmutableArray<Property> delegates, TabbedWriter<StringWriter> classBlock)
+	{
+		// loop over the delegates
+		foreach (var property in delegates) {
+			// see if we have a strong type
+			if (property.ExportPropertyData.StrongDelegateType.IsNullOrDefault)
+				continue;
+
+			// loop over the events, those should be present in the property for the delegate
+			foreach (var (name, eventArgs) in property.ExportPropertyData.StrongDelegateType.Events) {
+				// create the event args type name
+				var eventHandler = eventArgs is null ? EventHandler.ToString () : $"{EventHandler}<{eventArgs}>";
+				classBlock.WriteLine ($"// Generate event for delegate: {name} with args: {eventHandler}");
+			}
+		}
+	}
+
 	/// <inheritdoc />
 	public bool TryEmit (in BindingContext bindingContext, [NotNullWhen (false)] out ImmutableArray<Diagnostic>? diagnostics)
 	{
@@ -190,8 +212,11 @@ public static NSObject {name} ({NSObject} objectToObserve, {EventHandler}<{event
 
 				this.EmitFields (bindingContext.Changes.Name, bindingContext.Changes.Properties, classBlock,
 					out var notificationProperties);
-				this.EmitProperties (bindingContext, classBlock);
+				this.EmitProperties (bindingContext, classBlock, out var strongDelegates);
 				this.EmitMethods (bindingContext, classBlock);
+
+				// emit the events for the delegates
+				EmitEvents (strongDelegates, classBlock);
 
 				// emit the notification helper classes, leave this for the very bottom of the class
 				EmitNotifications (notificationProperties, classBlock);

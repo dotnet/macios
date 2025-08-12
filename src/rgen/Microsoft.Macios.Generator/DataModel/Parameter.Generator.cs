@@ -39,7 +39,7 @@ readonly partial struct Parameter {
 	public static bool TryCreate (IParameterSymbol symbol, ParameterSyntax declaration, RootContext context,
 		[NotNullWhen (true)] out Parameter? parameter)
 	{
-		parameter = new (symbol.Ordinal, new (symbol.Type, context.Compilation), symbol.GetSafeName ()) {
+		parameter = new (symbol.Ordinal, new (symbol.Type, context), symbol.GetSafeName ()) {
 			BindAs = symbol.GetBindFromData (),
 			ForcedType = symbol.GetForceTypeData (),
 			IsOptional = symbol.IsOptional,

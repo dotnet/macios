@@ -52,8 +52,7 @@ namespace Cinematic {
 
 	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
 	[Native]
-	public enum CNSpatialAudioRenderingStyle : long
-	{
+	public enum CNSpatialAudioRenderingStyle : long {
 		Cinematic = 0,
 		Studio = 1,
 		InFrame = 2,
@@ -68,8 +67,7 @@ namespace Cinematic {
 
 	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
 	[Native]
-	public enum CNSpatialAudioContentType : long
-	{
+	public enum CNSpatialAudioContentType : long {
 		Stereo,
 		Spatial,
 	}
@@ -77,8 +75,7 @@ namespace Cinematic {
 	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface CNAssetSpatialAudioInfo
-	{
+	interface CNAssetSpatialAudioInfo {
 		[Static]
 		[Export ("isSupported")]
 		bool IsSupported { get; }

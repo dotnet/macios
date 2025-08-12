@@ -299,7 +299,7 @@ public class BindingSourceGeneratorGenerator : IIncrementalGenerator {
 		if (eventInfoChanges.Length == 0)
 			return;
 
-		// it might be the case that we have several async results with the same name and namespace, so we need to
+		// it might be the case that we have several event argument types with the same name and namespace, so we need to
 		// ensure that we do not have duplicates. We do so by using a dict.
 		var infos = new Dictionary<string, EventInfo> ();
 		foreach (var (_, eventInfos) in eventInfoChanges) {

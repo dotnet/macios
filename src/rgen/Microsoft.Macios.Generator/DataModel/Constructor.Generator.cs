@@ -58,7 +58,7 @@ readonly partial struct Constructor {
 			parametersBucket.Add (parameterChange.Value);
 		}
 
-		var exportData = constructor.GetExportData<ObjCBindings.Constructor> ()
+		var exportData = constructor.GetExportData<ObjCBindings.Constructor> (context)
 						 ?? new (null, ArgumentSemantic.None, ObjCBindings.Constructor.Default);
 
 		change = new (

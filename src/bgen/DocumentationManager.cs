@@ -55,7 +55,42 @@ public class DocumentationManager {
 		// Remove indentation, make triple-slash comments
 		var lines = node.InnerXml.Split ('\n', '\r');
 		for (var i = 0; i < lines.Length; i++) {
-			lines [i] = "/// " + lines [i].TrimStart (' ');
+			var line = lines [i].TrimStart (' ');
+
+			// We compile code twice:
+			// 1. The API bindings
+			// 2. The final (generated) binding code
+			// Any xml documentation from the API definitions are copied to the generated binding code,
+			// but since the xml docs in the API definitions may refer to APIs that don't exist yet
+			// (they will be generated), we ignore any warnings from the C# compiler about failures to
+			// resolve crefs in API definitions. However, the C# compiler will modify any such cref
+			// attribute, and prefix them with '?:' - which presumably means "unresolved". The problem
+			// is that any such cref are not validated by the C# compiler when we compile the final
+			// bindings, effectively producing crefs that point to supposedly inexistent APIs.
+			// So what we do here is to undo the '?:' prefixing from the compiled API definitions, so
+			// that when we compile the generated bindings, the C# compiler validates all the crefs.
+			var needle = "cref=\"!:";
+			var idx = line.IndexOf (needle);
+			while (idx >= 0) {
+				var idx2 = line.IndexOf ('"', idx + needle.Length);
+				if (idx2 < idx)
+					break;
+				var cref = line [(idx + needle.Length)..idx2];
+
+				// Fixup this:
+				// error CS1584: XML comment has syntactically incorrect cref attribute
+				// UIKit.UIApplication.Notifications.ObserveContentSizeCategoryChanged(EventHandler&amp;lt;UIContentSizeCategoryChangedEventArgs&amp;gt;)
+				cref = cref.Replace ("&amp;lt;", "{");
+				cref = cref.Replace ("&amp;gt;", "}");
+
+				// replace the existing cref with the fixed version
+				line = line [..idx] + "cref=\"" + cref + "\"" + line [(idx2 + 1)..];
+
+				// there can be more than one cref per line, so keep looking
+				idx = line.IndexOf (needle, idx + needle.Length);
+			}
+
+			lines [i] = "/// " + line;
 		}
 
 		documentation = lines;

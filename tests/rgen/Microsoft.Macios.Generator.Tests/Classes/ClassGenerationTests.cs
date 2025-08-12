@@ -110,7 +110,7 @@ public class ClassGenerationTests : BaseGeneratorTestClass {
 					{"EventTests_RgenNSKeyedArchiverDelegate.g.cs", "ExpectedEventTests_RgenNSKeyedArchiverDelegate.cs"}
 				}
 			},
-			new (ApplePlatform.MacOSX, "EventTests", "EventTests.cs", "ExpectedEventTests.cs")
+			new (ApplePlatform.MacOSX, "EventTests", "EventTests.cs", "macOSExpectedEventTests.cs")
 			{
 				ExtraFiles = new () {
 					{"NSArchiveReplaceEventArgs.g.cs", "ExpectedNSArchiveReplace.cs"},

@@ -136,16 +136,51 @@ public static NSObject {name} ({NSObject} objectToObserve, {EventHandler}<{event
 	/// <summary>
 	/// Emit the events for the given delegates.
 	/// </summary>
+	/// <param name="bindingContext">The current binding context.</param>
 	/// <param name="delegates">The delegate properties.</param>
 	/// <param name="classBlock">Current class block.</param>
-	void EmitEvents (in ImmutableArray<Property> delegates, TabbedWriter<StringWriter> classBlock)
+	void EmitEvents (in BindingContext bindingContext, in ImmutableArray<Property> delegates, TabbedWriter<StringWriter> classBlock)
 	{
+		var applicationClass = bindingContext.RootContext.CurrentPlatform == PlatformName.MacOSX 
+			? $"{NSApplication}" : $"{UIApplication}";
 		// loop over the delegates
 		foreach (var property in delegates) {
 			// see if we have a strong type
 			if (property.ExportPropertyData.StrongDelegateType.IsNullOrDefault)
 				continue;
 
+			// the following are the properties that will be used for the events to register to the delegate
+			var strongDelegateType = property.ExportPropertyData.StrongDelegateType.Name[1..];
+			var strongDelegateName = property.ExportPropertyData.StrongDelegateName 
+			                         ?? property.Name[4..]; // remove the 'Weak' prefix
+			var internalType =
+				Nomenclator.GetInternalDelegateForEventName (property.ExportPropertyData.StrongDelegateType);
+			using (var getInternalType =
+			       classBlock.CreateBlock ($"internal virtual Type GetInternalEvent{strongDelegateName}Type", true)) {
+				getInternalType.WriteLine ($"get => typeof ({internalType});");
+			}
+			
+			classBlock.WriteLine ();
+			using (var createInternalType = 
+			       classBlock.CreateBlock ($"internal virtual {internalType} CreateInternalEvent{strongDelegateName}Type ()", true)) {
+				createInternalType.WriteLine ($"return new ();");
+			}
+
+			classBlock.WriteLine ();
+			using (var ensureInternalType = classBlock.CreateBlock (
+				       $"internal {internalType} Ensure{strongDelegateType} ()", true)) {
+				ensureInternalType.WriteRaw (
+$@"if ({property.Name} is not null)
+	{applicationClass}.EnsureEventAndDelegateAreNotMismatched ({property.Name}, GetInternalEvent{strongDelegateName}Type);
+var del = {strongDelegateName} as {internalType};
+if (del is null) {{
+	del = CreateInternalEvent{strongDelegateName}Type ();
+	{strongDelegateName} = ({property.ExportPropertyData.StrongDelegateType.Name})del;
+}}
+return del;
+");
+			}
+			
 			// loop over the events, those should be present in the property for the delegate
 			foreach (var eventInfo in property.ExportPropertyData.StrongDelegateType.Events) {
 				// create the event args type name
@@ -218,7 +253,7 @@ public static NSObject {name} ({NSObject} objectToObserve, {EventHandler}<{event
 				this.EmitMethods (bindingContext, classBlock);
 
 				// emit the events for the delegates
-				EmitEvents (strongDelegates, classBlock);
+				EmitEvents (bindingContext, strongDelegates, classBlock);
 
 				// emit the notification helper classes, leave this for the very bottom of the class
 				EmitNotifications (notificationProperties, classBlock);

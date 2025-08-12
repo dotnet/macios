@@ -281,9 +281,9 @@ static class Nomenclator {
 	/// <returns>The name for the internal event delegate.</returns>
 	public static string GetInternalDelegateForEventName (TypeInfo typeInfo)
 	{
-		if (typeInfo.Name[0] == 'I')
+		if (typeInfo.Name [0] == 'I')
 			// if the type name starts with 'I', we will remove it to avoid confusion with interfaces
-			return $"_{typeInfo.Name[1..]}";
+			return $"_{typeInfo.Name [1..]}";
 		return $"_{typeInfo.Name}";
 	}
 }

@@ -37,7 +37,7 @@ class EventDelegateEmitter (
 	public bool TryEmit (EventDelegateInfo delegateInfo, [NotNullWhen (false)] out ImmutableArray<Diagnostic>? diagnostics)
 	{
 		diagnostics = null;
-		
+
 		// emit the using statements
 		foreach (var ns in delegateInfo.Usings.OrderBy (x => x)) {
 			builder.WriteLine ($"using {ns};");
@@ -45,18 +45,18 @@ class EventDelegateEmitter (
 		// readability
 		if (delegateInfo.Usings.Length > 0)
 			builder.WriteLine ();
-		
+
 		builder.WriteLine ($"namespace {delegateInfo.Namespace};");
 		builder.WriteLine ();
 
 		var delegateClassName = Nomenclator.GetInternalDelegateForEventName (delegateInfo.DelegateType);
-		
+
 		// because the delegate is internal and has an other class, we need to nest it
 		var modifiers = $"{string.Join (' ', delegateInfo.OuterClassModifiers)} ";
-		using (var outerClass=
-		       builder.CreateBlock (
-			       $"{(string.IsNullOrWhiteSpace (modifiers) ? string.Empty : modifiers)}class {delegateInfo.OuterClassName}",
-			       true)) {
+		using (var outerClass =
+			   builder.CreateBlock (
+				   $"{(string.IsNullOrWhiteSpace (modifiers) ? string.Empty : modifiers)}class {delegateInfo.OuterClassName}",
+				   true)) {
 			outerClass.AppendRegisterAttribute ();
 			// actual delegate class to be used for event internally
 			using (var classBlock = outerClass.CreateBlock ($"internal class {delegateClassName}: NSObject, {delegateInfo.DelegateType.Name}", true)) {

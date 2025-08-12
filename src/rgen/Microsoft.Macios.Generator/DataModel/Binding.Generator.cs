@@ -159,10 +159,10 @@ readonly partial struct Binding {
 				if (!property.CreateEvents)
 					continue;
 				if (!property.ExportPropertyData.StrongDelegateType.IsNullOrDefault
-				    && found.Add (property.ExportPropertyData.StrongDelegateType.FullyQualifiedName)) {
+					&& found.Add (property.ExportPropertyData.StrongDelegateType.FullyQualifiedName)) {
 					// create the info for the delegate type
 					yield return new EventDelegateInfo {
-						Usings = [..usingDirectives],
+						Usings = [.. usingDirectives],
 						Namespace = string.Join ('.', Namespace),
 						OuterClassName = Name,
 						OuterClassModifiers = Modifiers,

@@ -65,7 +65,7 @@ public class BindingSourceGeneratorGenerator : IIncrementalGenerator {
 
 		var eventArgsProvider = provider
 			.Select ((tuple, _) => (tuple.RootBindingContext, tuple.Bindings.WeakDelegateEvents));
-		
+
 		var delegatesInfoProvider = provider
 			.Select ((tuple, _) => (tuple.RootBindingContext, tuple.Bindings.WeakDelegatesClasses));
 
@@ -83,7 +83,7 @@ public class BindingSourceGeneratorGenerator : IIncrementalGenerator {
 
 		context.RegisterSourceOutput (context.CompilationProvider.Combine (eventArgsProvider.Collect ()),
 			((ctx, t) => GenerateEventArgTypes (ctx, t.Right)));
-		
+
 		context.RegisterSourceOutput (context.CompilationProvider.Combine (delegatesInfoProvider.Collect ()),
 			((ctx, t) => GenerateDelegateTypes (ctx, t.Right)));
 

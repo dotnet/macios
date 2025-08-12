@@ -10,17 +10,17 @@ namespace Microsoft.Macios.Generator.DataModel;
 /// Represents information about an event delegate.
 /// </summary>
 readonly record struct EventDelegateInfo {
-	
+
 	/// <summary>
 	/// The usings required for the event delegate.
 	/// </summary>
 	public ImmutableArray<string> Usings { get; init; }
-	
+
 	/// <summary>
 	/// The namespace of the event delegate.
 	/// </summary>
 	public string Namespace { get; init; }
-	
+
 	/// <summary>
 	/// The name of the outer class that contains the event delegate.
 	/// </summary>
@@ -39,9 +39,9 @@ readonly record struct EventDelegateInfo {
 	/// <summary>
 	/// The fully qualified name of the delegate type.
 	/// </summary>
-	public string FullyQualifiedDelegateTypeName 
+	public string FullyQualifiedDelegateTypeName
 		=> $"{Namespace}.{OuterClassName}.{Nomenclator.GetInternalDelegateForEventName (DelegateType)}";
-	
+
 
 	/// <inheritdoc />
 	public override string ToString ()

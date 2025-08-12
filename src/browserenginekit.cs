@@ -1337,8 +1337,7 @@ namespace BrowserEngineKit {
 
 	[MacCatalyst (26, 0), NoTV, Mac (26, 0), iOS (26, 0)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
-	interface BEExtensionProcess
-	{
+	interface BEExtensionProcess {
 		[Abstract]
 		[Export ("invalidate")]
 		void Invalidate ();
@@ -1352,8 +1351,7 @@ namespace BrowserEngineKit {
 	[iOS (26, 0), MacCatalyst (26, 0), NoTV, NoMac]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface BEAccessibilityRemoteHostElement
-	{
+	interface BEAccessibilityRemoteHostElement {
 		[Export ("initWithIdentifier:remotePid:")]
 		NativeHandle Constructor (string identifier, int remotePid);
 
@@ -1364,8 +1362,7 @@ namespace BrowserEngineKit {
 	[iOS (26, 0), MacCatalyst (26, 0), NoTV, NoMac]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface BEAccessibilityRemoteElement
-	{
+	interface BEAccessibilityRemoteElement {
 		[Export ("initWithIdentifier:hostPid:")]
 		NativeHandle Constructor (string identifier, int hostPid);
 	}

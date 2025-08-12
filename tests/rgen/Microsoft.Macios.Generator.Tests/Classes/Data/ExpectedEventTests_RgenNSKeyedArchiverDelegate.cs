@@ -44,7 +44,7 @@ public partial class EventTests
 		internal global::System.EventHandler? willEncode;
 		[Preserve (Conditional = true)]
 		[Export<Method> ("archiverDidFinish:")]
-		public global::Foundation.NSObject WillEncode (global::Foundation.NSKeyedArchiver archiver, global::Foundation.NSObject obj)
+		public void WillEncode (global::Foundation.NSKeyedArchiver archiver, global::Foundation.NSObject obj)
 		{
 			var handler = willEncode;
 			if (handler is not null) {

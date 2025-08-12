@@ -33,7 +33,7 @@ public partial interface IRgenNSKeyedArchiverDelegate {
 
 	// not event args, should not be needed
 	[Export<Method> ("archiverDidFinish:", Flags = ObjCBindings.Method.Event)]
-	NSObject WillEncode (NSKeyedArchiver archiver, NSObject obj);
+	void WillEncode (NSKeyedArchiver archiver, NSObject obj);
 
 	// not event args, should not be needed
 	[Export<Method> ("archiverWillFinish:", Flags = ObjCBindings.Method.Event)]

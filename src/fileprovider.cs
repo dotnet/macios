@@ -1719,8 +1719,7 @@ namespace FileProvider {
 
 	[NoTV, NoMacCatalyst, NoiOS, Mac (26, 0)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
-	interface NSFileProviderSearchResult
-	{
+	interface NSFileProviderSearchResult {
 		[Abstract]
 		[Export ("itemIdentifier")]
 		string ItemIdentifier { get; }
@@ -1750,15 +1749,14 @@ namespace FileProvider {
 		NSNumber DocumentSize { get; }
 	}
 
-	interface INSFileProviderSearchEnumerationObserver {}
+	interface INSFileProviderSearchEnumerationObserver { }
 
 	[NoTV, NoMacCatalyst, NoiOS, Mac (26, 0)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
-	interface NSFileProviderSearchEnumerationObserver
-	{
+	interface NSFileProviderSearchEnumerationObserver {
 		[Abstract]
 		[Export ("didEnumerateSearchResults:")]
-		void DidEnumerateSearchResults (INSFileProviderSearchResult[] searchResults);
+		void DidEnumerateSearchResults (INSFileProviderSearchResult [] searchResults);
 
 		[Abstract]
 		[Export ("finishEnumeratingUpToPage:")]
@@ -1773,12 +1771,11 @@ namespace FileProvider {
 		nint MaximumNumberOfResultsPerPage { get; }
 	}
 
-	interface INSFileProviderSearchEnumerator {}
+	interface INSFileProviderSearchEnumerator { }
 
 	[NoTV, NoMacCatalyst, NoiOS, Mac (26, 0)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
-	interface NSFileProviderSearchEnumerator
-	{
+	interface NSFileProviderSearchEnumerator {
 		[Abstract]
 		[Export ("invalidate")]
 		void Invalidate ();
@@ -1790,8 +1787,7 @@ namespace FileProvider {
 
 	[NoTV, NoMacCatalyst, NoiOS, Mac (26, 0)]
 	[BaseType (typeof (NSObject))]
-	interface NSFileProviderStringSearchRequest
-	{
+	interface NSFileProviderStringSearchRequest {
 		[Export ("query")]
 		string Query { get; }
 
@@ -1801,8 +1797,7 @@ namespace FileProvider {
 
 	[NoTV, NoMacCatalyst, NoiOS, Mac (26, 0)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
-	interface NSFileProviderSearching
-	{
+	interface NSFileProviderSearching {
 		[Abstract]
 		[Export ("searchEnumeratorForStringSearchRequest:")]
 		INSFileProviderSearchEnumerator SearchEnumerator (NSFileProviderStringSearchRequest request);

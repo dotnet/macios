@@ -4,12 +4,12 @@
     <remarks>
       <para>iOS 7 introduced "Text Kit," a broad set of APIs and modifications of existing classes, built on <see cref="CoreText" />, that greatly expands the typographical flexibility of iOS.</para>
       <para> 
-	An <see cref="UIKit.NSTextStorage" /> object holds
+	An <see cref="NSTextStorage" /> object holds
 	the text that is to be displayed. As with <see cref="Foundation.NSMutableAttributedString" />,
-	application developers can manipulate text styles using <see cref="Foundation.NSMutableAttributedString.AddAttribute(Foundation.NSString,Foundation.NSObject,Foundation.NSRange)" /> or <see cref="Foundation.NSMutableAttributedString.AddAttributes" />. The key addition to <see cref="UIKit.NSTextStorage" /> is that it maintains
-	references to one or more <see cref="UIKit.NSLayoutManager" />s (<see cref="UIKit.NSTextStorage.LayoutManagers" />) ,
+	application developers can manipulate text styles using <see cref="Foundation.NSMutableAttributedString.AddAttribute(Foundation.NSString,Foundation.NSObject,Foundation.NSRange)" /> or <see cref="Foundation.NSMutableAttributedString.AddAttributes" />. The key addition to <see cref="NSTextStorage" /> is that it maintains
+	references to one or more <see cref="NSLayoutManager" />s (<see cref="NSTextStorage.LayoutManagers" />) ,
 	which are responsible for converting text characters into
-	glyphs and laying them out in accordance with the <see cref="UIKit.NSLayoutManager" />s' associated <see cref="UIKit.UITextView" /> and <see cref="UIKit.NSTextContainer" /> objects.
+	glyphs and laying them out in accordance with the <see cref="NSLayoutManager" />s' associated <see cref="XTextView" /> and <see cref="NSTextContainer" /> objects.
 
       </para>
       <para>

@@ -26463,7 +26463,6 @@ T:HealthKit.HKStateOfMindAssociation
 T:HealthKit.HKStateOfMindKind
 T:HealthKit.HKStateOfMindLabel
 T:HealthKit.HKStateOfMindValenceClassification
-T:HealthKit.HKStatisticsCollectionQueryStatisticsUpdateHandler
 T:HealthKit.HKSwimmingStrokeStyle
 T:HealthKit.HKUserMotionContext
 T:HealthKit.HKVerifiableClinicalRecordCredentialType
@@ -28364,6 +28363,7 @@ T:UIKit.UIUpdateLinkCallback
 T:UIKit.UIUserInterfaceActiveAppearance
 T:UIKit.UIUserInterfaceLevel
 T:UIKit.UIVibrancyEffectStyle
+T:UIKit.UIViewControllerTransitionCoordinatorContext_Extensions
 T:UIKit.UIWebLoaderControl
 T:UIKit.UIWindowSceneActivationActionConfigurationProvider
 T:UIKit.UIWindowSceneActivationInteractionConfigurationProvider

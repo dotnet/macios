@@ -7098,11 +7098,19 @@ public partial class Generator : IMemberGatherer {
 						if (event_args_type is not null)
 							notification_event_arg_types [event_args_type] = event_args_type;
 
-						print ($"\t/// <summary>Strongly typed notification for the <see cref=\"global::{type.FullName}.{property.Name}\" /> constant.</summary>");
+						string constantReference;
+						if (property.IsInternal (this)) {
+							var fieldAttr = AttributeManager.GetCustomAttribute<FieldAttribute> (property);
+							constantReference = $"\"{fieldAttr.SymbolName}\"";
+						} else {
+							constantReference = $"<see cref=\"global::{type.FullName}.{property.Name}\" />";
+						}
+
+						print ($"\t/// <summary>Strongly typed notification for the {constantReference} constant.</summary>");
 						print ($"\t/// <param name=\"handler\">The handler that responds to the notification when it occurs.</param>");
 						print ($"\t/// <returns>Token object that can be used to stop receiving notifications by either disposing it or passing it to <see cref=\"Foundation.NSNotificationCenter.RemoveObservers(System.Collections.Generic.IEnumerable{{Foundation.NSObject}})\" />.</returns>");
 						print ($"\t/// <remarks>");
-						print ($"\t///   <para>This method can be used to subscribe to <see cref=\"global::{type.FullName}.{property.Name}\" /> notifications.</para>");
+						print ($"\t///   <para>This method can be used to subscribe to {constantReference} notifications.</para>");
 						print ($"\t///   <example>");
 						print ($"\t///   <code lang=\"csharp lang-csharp\"><![CDATA[");
 						print ($"\t/// // Listen to all notifications posted for any object");
@@ -7120,12 +7128,12 @@ public partial class Generator : IMemberGatherer {
 						print ("\t\treturn {0}.AddObserver ({1}, notification => handler (null, new {2} (notification)));", notification_center, property.Name, event_name);
 						print ("\t}");
 
-						print ($"\t/// <summary>Strongly typed notification for the <see cref=\"global::{type.FullName}.{property.Name}\" /> constant.</summary>");
+						print ($"\t/// <summary>Strongly typed notification for the {constantReference} constant.</summary>");
 						print ($"\t/// <param name=\"objectToObserve\">The specific object to observe.</param>");
 						print ($"\t/// <param name=\"handler\">The handler that responds to the notification when it occurs.</param>");
 						print ($"\t/// <returns>Token object that can be used to stop receiving notifications by either disposing it or passing it to <see cref=\"Foundation.NSNotificationCenter.RemoveObservers(System.Collections.Generic.IEnumerable{{Foundation.NSObject}})\" />.</returns>");
 						print ($"\t/// <remarks>");
-						print ($"\t///   <para>This method can be used to subscribe to <see cref=\"global::{type.FullName}.{property.Name}\" /> notifications.</para>");
+						print ($"\t///   <para>This method can be used to subscribe to {constantReference} notifications.</para>");
 						print ($"\t///   <example>");
 						print ($"\t///     <code lang=\"csharp lang-csharp\"><![CDATA[");
 						print ($"\t/// // Listen to all notifications posted for a single object");

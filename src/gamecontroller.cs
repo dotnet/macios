@@ -135,7 +135,7 @@ namespace GameController {
 		}
 	}
 
-	/// <summary>Handler that can be passed to the <see cref="GameController.GCControllerButtonInput.SetPressedChangedHandler(GameController.GCControllerButtonValueChanged)" /> method to respond to changes to button states.</summary>
+	/// <summary>Delegate for <see cref="GCControllerButtonInput.ValueChangedHandler" /> and <see cref="GCControllerButtonInput.PressedChangedHandler" />.</summary>
 	delegate void GCControllerButtonValueChanged (GCControllerButtonInput button, float /* float, not CGFloat */ buttonValue, bool pressed);
 	delegate void GCControllerButtonTouchedChanged (GCControllerButtonInput button, float value, bool pressed, bool touched);
 

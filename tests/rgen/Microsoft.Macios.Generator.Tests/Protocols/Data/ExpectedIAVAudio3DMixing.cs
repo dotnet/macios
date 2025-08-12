@@ -22,7 +22,7 @@ namespace Microsoft.Macios.Generator.Tests.Protocols.Data;
 [ProtocolMember (IsRequired = true, IsProperty = true, IsStatic = false, Name = "RenderingAlgorithm", Selector = "renderingAlgorithm", PropertyType = typeof (global::AVFoundation.AVAudio3DMixingRenderingAlgorithm), GetterSelector = "renderingAlgorithm", SetterSelector = "setRenderingAlgorithm:", ArgumentSemantic = ArgumentSemantic.None)]
 [ProtocolMember (IsRequired = true, IsProperty = true, IsStatic = false, Name = "ReverbBlend", Selector = "reverbBlend", PropertyType = typeof (float), GetterSelector = "reverbBlend", SetterSelector = "setReverbBlend:", ArgumentSemantic = ArgumentSemantic.None)]
 [ProtocolMember (IsRequired = true, IsProperty = true, IsStatic = false, Name = "SourceMode", Selector = "sourceMode", PropertyType = typeof (global::AVFoundation.AVAudio3DMixingSourceMode), GetterSelector = "sourceMode", SetterSelector = "setSourceMode:", ArgumentSemantic = ArgumentSemantic.Assign)]
-public interface IAVAudio3DMixing : INativeObject, IDisposable
+public partial interface IAVAudio3DMixing : INativeObject, IDisposable
 {
 
 	[DynamicDependency ("Obstruction")]

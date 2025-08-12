@@ -1040,7 +1040,7 @@ namespace AVFoundation {
 		uint ByteLength { get; set; }
 	}
 
-	/// <summary>Associates an <see cref="AVFoundation.AVAudioNodeBus" /> and an optional <see cref="AVFoundation.AVAudioNode" />.</summary>
+	/// <summary>Associates an the index of a bus on an audionode with and an <see cref="AVFoundation.AVAudioNode" />.</summary>
 	/// <remarks>To be added.</remarks>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/AVFoundation/AVAudioConnectionPoint">Apple documentation for <c>AVAudioConnectionPoint</c></related>
 	[MacCatalyst (13, 1)]
@@ -1074,8 +1074,7 @@ namespace AVFoundation {
 	[MacCatalyst (13, 1)]
 	delegate AVAudioEngineManualRenderingStatus AVAudioEngineManualRenderingBlock (/* AVAudioFrameCount = uint */ uint numberOfFrames, AudioBuffers outBuffer, [NullAllowed] /* OSStatus */ ref int outError);
 
-	/// <summary>A group of connected <see cref="AVFounding.AVAudioNode" /> objects, each of which performs a processing or IO task.</summary>
-	/// <remarks>To be added.</remarks>
+	/// <summary>A group of connected <see cref="AVFoundation.AVAudioNode" /> objects, each of which performs a processing or IO task.</summary>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AVFoundation/Reference/AVAudioEngine_Class/index.html">Apple documentation for <c>AVAudioEngine</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
@@ -1968,12 +1967,7 @@ namespace AVFoundation {
 		[Export ("presentationLatency")]
 		double PresentationLatency { get; }
 
-		/// <summary>If not <see langword="null" />, the underlying <see cref="AudioUnit.AudioUnit" />.</summary>
-		///         <value>
-		///           <para>(More documentation for this node is coming)</para>
-		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>If not <see langword="null" />, the underlying <see cref="AudioUnit" />.</summary>
 		[MacCatalyst (13, 1)]
 		[Export ("audioUnit"), NullAllowed]
 		global::AudioUnit.AudioUnit AudioUnit { get; }
@@ -7698,7 +7692,7 @@ namespace AVFoundation {
 		NSDictionary CurrentSampleDependencyAttachments { get; }
 	}
 
-	/// <summary>Constants that provide the keys for <see cref="AVFoundation.AVAssetTrack.GetAssociatedTracksOfType(Foundation.NSString)" /></summary>
+	/// <summary>Constants that provide the keys for <see cref="AVAssetTrack.GetAssociatedTracks(Foundation.NSString)" /></summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Category, BaseType (typeof (AVAssetTrack))]
@@ -17397,9 +17391,7 @@ namespace AVFoundation {
 		void CancelVideoZoomRamp ();
 
 		/// <summary>Whether the device's autofocus can be restricted to specified ranges.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		///         <altmember cref="AVFoundation.AutoFocusRangeRestriction" />
+		/// <altmember cref="AutoFocusRangeRestriction" />
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("autoFocusRangeRestrictionSupported")]
@@ -21094,12 +21086,7 @@ namespace AVFoundation {
 		NativeHandle _InitWithSsmlRepresentation (string @string);
 
 		/// <summary>The <see cref="AVFoundation.AVSpeechSynthesisVoice" /> to be used for synthesis.</summary>
-		///         <value>
-		///           <para>(More documentation for this node is coming)</para>
-		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
-		///         </value>
-		///         <remarks>To be added.</remarks>
-		///         <altmember cref="AVFoundation.AVSpeechSynthesisVoice.GetVoices" />
+		/// <altmember cref="AVFoundation.AVSpeechSynthesisVoice.GetSpeechVoices" />
 		[NullAllowed] // by default this property is null
 		[Export ("voice", ArgumentSemantic.Retain)]
 		AVSpeechSynthesisVoice Voice { get; set; }
@@ -21665,15 +21652,11 @@ namespace AVFoundation {
 		[Export ("videoSettings", ArgumentSemantic.Copy), NullAllowed]
 		NSDictionary WeakVideoSettings { get; }
 
-		/// <summary>Gets or sets the compressed video settings to use when creating a <see cref="onoTouch.AVFoundation.AVAssetWriterInput" /> object.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the compressed video settings to use when creating a <see cref="AVFoundation.AVAssetWriterInput" /> object.</summary>
 		[Wrap ("WeakVideoSettings")]
 		AVVideoSettingsCompressed CompressedVideoSettings { get; }
 
-		/// <summary>Gets or sets the uncompressed video settings to use when creating a <see cref="onoTouch.AVFoundation.AVAssetWriterInput" /> object.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the uncompressed video settings to use when creating a <see cref="AVFoundation.AVAssetWriterInput" /> object.</summary>
 		[Wrap ("WeakVideoSettings")]
 		AVVideoSettingsUncompressed UnCompressedVideoSettings { get; }
 
@@ -23156,7 +23139,7 @@ namespace AVFoundation {
 		CMFormatDescription ReplacementFormatDescription { get; }
 	}
 
-	/// <summary>The delegate that will be called in a callback from <see cref="AudioToolbox.AVAudioSourceNode" />.</summary>
+	/// <summary>The delegate that will be called in a callback from <see cref="AVAudioSourceNode" />.</summary>
 	/// <returns>An OSStatus result code. Return 0 to indicate success.</returns>
 	/// <param name="isSilence">Indicates whether the supplied audio data only contains silence. This is a pointer to a <see cref="System.Byte" /> value.</param>
 	/// <param name="timestamp">The timestamp the audio renders (HAL time). This is a pointer to an <see cref="AudioToolbox.AudioTimeStamp" /> value.</param>
@@ -23169,13 +23152,13 @@ namespace AVFoundation {
 	[BaseType (typeof (AVAudioNode))]
 	[DisableDefaultCtor]
 	interface AVAudioSourceNode : AVAudioMixing {
-		/// <summary>Creates an <see cref="AudioToolbox.AVAudioSourceNode" /> with the specified callback to render audio.</summary>
+		/// <summary>Creates an <see cref="AVAudioSourceNode" /> with the specified callback to render audio.</summary>
 		/// <param name="renderHandler">The callback that will be called to supply audio data.</param>
 		[Export ("initWithRenderBlock:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (AVAudioSourceNodeRenderHandlerRaw renderHandler);
 
-		/// <summary>Creates an <see cref="AudioToolbox.AVAudioSourceNode" /> with the specified callback to render audio.</summary>
+		/// <summary>Creates an <see cref="AVAudioSourceNode" /> with the specified callback to render audio.</summary>
 		/// <param name="format">The format of the PCM audio data the callback supplies.</param>
 		/// <param name="renderHandler">The callback that will be called to supply audio data.</param>
 		[Export ("initWithFormat:renderBlock:")]

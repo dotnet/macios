@@ -5,6 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using Microsoft.CodeAnalysis;
+using Microsoft.Macios.Generator.Context;
 using ObjCRuntime;
 using TypeInfo = Microsoft.Macios.Generator.DataModel.TypeInfo;
 
@@ -106,6 +107,16 @@ readonly struct ExportData<T> : IEquatable<ExportData<T>> where T : Enum {
 	public TypeInfo StrongDictionaryKeyClass { get; init; } = TypeInfo.Default;
 
 	/// <summary>
+	/// The type of the event arguments for an event.
+	/// </summary>
+	public TypeInfo EventArgsType { get; init; } = TypeInfo.Default;
+
+	/// <summary>
+	/// The name of the event arguments type for an event.
+	/// </summary>
+	public string? EventArgsTypeName { get; init; }
+
+	/// <summary>
 	/// Initializes a new instance of the <see cref="ExportData{T}"/> struct.
 	/// </summary>
 	public ExportData () : this (StructState.Initialized) { }
@@ -159,9 +170,10 @@ readonly struct ExportData<T> : IEquatable<ExportData<T>> where T : Enum {
 	/// Try to parse the attribute data to retrieve the information of an ExportAttribute&lt;T&gt;.
 	/// </summary>
 	/// <param name="attributeData">The attribute data to be parsed.</param>
+	/// <param name="context">The root context.</param>
 	/// <param name="data">The parsed data. Null if we could not parse the attribute data.</param>
 	/// <returns>True if the data was parsed.</returns>
-	public static bool TryParse (AttributeData attributeData,
+	public static bool TryParse (AttributeData attributeData, RootContext context,
 		[NotNullWhen (true)] out ExportData<T>? data)
 	{
 		data = null;
@@ -184,6 +196,9 @@ readonly struct ExportData<T> : IEquatable<ExportData<T>> where T : Enum {
 		string? strongDelegateName = null;
 		// strong dictionary related data
 		TypeInfo strongDictionaryKeyClass = TypeInfo.Default;
+		// event args related data
+		TypeInfo eventArgsType = TypeInfo.Default;
+		string? eventArgsTypeName = null;
 
 		switch (count) {
 		case 1:
@@ -228,6 +243,7 @@ readonly struct ExportData<T> : IEquatable<ExportData<T>> where T : Enum {
 
 		// from this point we have to check the name of the argument AND if the export method is an Async method.
 		var isAsync = typeof (T) == typeof (ObjCBindings.Method) && flags is not null && flags.HasFlag (ObjCBindings.Method.Async);
+		var isEvent = typeof (T) == typeof (ObjCBindings.Method) && flags is not null && flags.HasFlag (ObjCBindings.Method.Event);
 		var isWeakDelegate = typeof (T) == typeof (ObjCBindings.Property) && flags is not null && flags.HasFlag (ObjCBindings.Property.WeakDelegate);
 		var isStrongDictionaryProperty = typeof (T) == typeof (ObjCBindings.StrongDictionaryProperty);
 
@@ -255,7 +271,7 @@ readonly struct ExportData<T> : IEquatable<ExportData<T>> where T : Enum {
 			// async related data
 			case "ResultType":
 				if (isAsync) {
-					resultType = new ((INamedTypeSymbol) value!);
+					resultType = new ((INamedTypeSymbol) value!, context);
 				}
 				break;
 			case "MethodName":
@@ -276,7 +292,7 @@ readonly struct ExportData<T> : IEquatable<ExportData<T>> where T : Enum {
 			// weak delegate related data
 			case "StrongDelegateType":
 				if (isWeakDelegate) {
-					strongDelegateType = new ((INamedTypeSymbol) value!);
+					strongDelegateType = new ((INamedTypeSymbol) value!, context);
 				}
 				break;
 			case "StrongDelegateName":
@@ -287,7 +303,18 @@ readonly struct ExportData<T> : IEquatable<ExportData<T>> where T : Enum {
 			// strong dictionary related data
 			case "StrongDictionaryKeyClass":
 				if (isStrongDictionaryProperty) {
-					strongDictionaryKeyClass = new ((INamedTypeSymbol) value!);
+					strongDictionaryKeyClass = new ((INamedTypeSymbol) value!, context);
+				}
+				break;
+			// event args related data
+			case "EventArgsType":
+				if (isEvent) {
+					eventArgsType = new ((INamedTypeSymbol) value!, context);
+				}
+				break;
+			case "EventArgsTypeName":
+				if (isEvent) {
+					eventArgsTypeName = (string?) value!;
 				}
 				break;
 			default:
@@ -311,6 +338,9 @@ readonly struct ExportData<T> : IEquatable<ExportData<T>> where T : Enum {
 				StrongDelegateName = isWeakDelegate ? strongDelegateName : null,
 				// we set the data for the strong dictionary only if the flags are set
 				StrongDictionaryKeyClass = isStrongDictionaryProperty ? strongDictionaryKeyClass : TypeInfo.Default,
+				// we set the data for the event args only if the flags are set
+				EventArgsType = isEvent ? eventArgsType : TypeInfo.Default,
+				EventArgsTypeName = isEvent ? eventArgsTypeName : null
 			};
 			return true;
 		}

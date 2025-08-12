@@ -229,7 +229,7 @@ namespace CoreMedia {
 			return CMTagEqualToTag (tag1, tag2) != 0;
 		}
 
-		/// <inheritdoc />
+		/// <inheritdoc cref="ValueType.Equals(object)" />
 		public override bool Equals (object? obj)
 		{
 			if (obj is CMTag tag)

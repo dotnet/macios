@@ -163,213 +163,163 @@ namespace CoreGraphics {
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	public enum CGEventField : int {
-		/// <summary>The mouse button event number.</summary>
-		/// <remarks>This is an integer field. Matching mouse-down and mouse-up events will have the same event number.</remarks>
+		/// <summary>The mouse button event number. This is an integer field. Matching mouse-down and mouse-up events will have the same event number.</summary>
 		MouseEventNumber = 0,
 
-		/// <summary>The mouse button click state.</summary>
-		/// <remarks>This is an integer field. A value of 1 is a single click, a value of 2 is a double click, and so on.</remarks>
+		/// <summary>The mouse button click state. This is an integer field. A value of 1 is a single click, a value of 2 is a double click, and so on.</summary>
 		MouseEventClickState = 1,
 
-		/// <summary>The mouse button pressure state, ranging from 0 (mouse being up) to 1.</summary>
-		/// <remarks>This is an integer field.</remarks>
+		/// <summary>The mouse button pressure state, ranging from 0 (mouse being up) to 1. This is an integer field.</summary>
 		MouseEventPressure = 2,
 
-		/// <summary>The mouse button number.</summary>
-		/// <remarks>This is an integer field.</remarks>
+		/// <summary>The mouse button number. This is an integer field.</summary>
 		MouseEventButtonNumber = 3,
 
-		/// <summary>The horizontal delta since the last mouse movement event.</summary>
-		/// <remarks>This is an integer field.</remarks>
+		/// <summary>The horizontal delta since the last mouse movement event. This is an integer field.</summary>
 		MouseEventDeltaX = 4,
 
-		/// <summary>The vertical delta since the last mouse movement event.</summary>
-		/// <remarks>This is an integer field.</remarks>
+		/// <summary>The vertical delta since the last mouse movement event. This is an integer field.</summary>
 		MouseEventDeltaY = 5,
 
-		/// <summary>A value indicating whether the event should be ignored by the Inkwell subsystem.</summary>
-		/// <remarks>This is an integer field. A non-zero indicates the event should be ignored.</remarks>
+		/// <summary>A value indicating whether the event should be ignored by the Inkwell subsystem. This is an integer field. A non-zero indicates the event should be ignored.</summary>
 		MouseEventInstantMouser = 6,
 
-		/// <summary>The mouse event subtype.</summary>
-		/// <remarks>This is an integer field.</remarks>
+		/// <summary>The mouse event subtype. This is an integer field.</summary>
 		MouseEventSubtype = 7,
 
-		/// <summary>A value indicating whether the key-down event is an autorepeat of a previous key-down event.</summary>
-		/// <remarks>This is an integer field. Zero indicates not an autorepeat, non-zero not an autorepeat.</remarks>
+		/// <summary>A value indicating whether the key-down event is an autorepeat of a previous key-down event. This is an integer field. Zero indicates not an autorepeat, non-zero not an autorepeat.</summary>
 		KeyboardEventAutorepeat = 8,
 
-		/// <summary>The virtual keycode of the key-down or key-up event.</summary>
-		/// <remarks>This is an integer field.</remarks>
+		/// <summary>The virtual keycode of the key-down or key-up event. This is an integer field.</summary>
 		KeyboardEventKeycode = 9,
 
-		/// <summary>The keyboard ype identifier</summary>
-		/// <remarks>This is an integer field.</remarks>
+		/// <summary>The keyboard ype identifier This is an integer field.</summary>
 		KeyboardEventKeyboardType = 10,
 
-		/// <summary>A value that represents scrolling data. Typically this is the vertical position change since the last scrolling event.</summary>
-		/// <remarks>This is an integer field.</remarks>
+		/// <summary>A value that represents scrolling data. Typically this is the vertical position change since the last scrolling event. This is an integer field.</summary>
 		ScrollWheelEventDeltaAxis1 = 11,
 
-		/// <summary>A value that represents scrolling data. Typically this is the horizontal position change since the last scrolling event.</summary>
-		/// <remarks>This is an integer field.</remarks>
+		/// <summary>A value that represents scrolling data. Typically this is the horizontal position change since the last scrolling event. This is an integer field.</summary>
 		ScrollWheelEventDeltaAxis2 = 12,
 
 		/// <summary>This value is unused.</summary>
 		ScrollWheelEventDeltaAxis3 = 13,
 
-		/// <summary>A value that represents scrolling data. Typically this is the line-based or pixel-based vertical position change since the last scrolling event.</summary>
-		/// <remarks>This field is a fixed-point 16.16 signed integer, but can also be retrieved as a double and will be automatically converted.</remarks>
+		/// <summary>A value that represents scrolling data. Typically this is the line-based or pixel-based vertical position change since the last scrolling event. This field is a fixed-point 16.16 signed integer, but can also be retrieved as a double and will be automatically converted.</summary>
 		ScrollWheelEventFixedPtDeltaAxis1 = 93,
 
-		/// <summary>A value that represents scrolling data. Typically this is the line-based or pixel-based horizontal position change since the last scrolling event.</summary>
-		/// <remarks>This field is a fixed-point 16.16 signed integer, but can also be retrieved as a double and will be automatically converted.</remarks>
+		/// <summary>A value that represents scrolling data. Typically this is the line-based or pixel-based horizontal position change since the last scrolling event. This field is a fixed-point 16.16 signed integer, but can also be retrieved as a double and will be automatically converted.</summary>
 		ScrollWheelEventFixedPtDeltaAxis2 = 94,
 
 		/// <summary>This value is unused.</summary>
 		ScrollWheelEventFixedPtDeltaAxis3 = 95,
 
-		/// <summary>A value that represents pixel-based scrolling data. Typically this is the vertical position change since the last scrolling event.</summary>
-		/// <remarks>This is an integer field.</remarks>
+		/// <summary>A value that represents pixel-based scrolling data. Typically this is the vertical position change since the last scrolling event. This is an integer field.</summary>
 		ScrollWheelEventPointDeltaAxis1 = 96,
 
-		/// <summary>A value that represents pixel-based scrolling data. Typically this is the horizontal position change since the last scrolling event.</summary>
-		/// <remarks>This is an integer field.</remarks>
+		/// <summary>A value that represents pixel-based scrolling data. Typically this is the horizontal position change since the last scrolling event. This is an integer field.</summary>
 		ScrollWheelEventPointDeltaAxis2 = 97,
 
 		/// <summary>This value is unused.</summary>
 		ScrollWheelEventPointDeltaAxis3 = 98,
 
-		/// <summary>A value indicating whether the event should be ignored by the Inkwell subsystem.</summary>
-		/// <remarks>This is an integer field. A non-zero indicates the event should be ignored.</remarks>
+		/// <summary>A value indicating whether the event should be ignored by the Inkwell subsystem. This is an integer field. A non-zero indicates the event should be ignored.</summary>
 		ScrollWheelEventInstantMouser = 14,
 
-		/// <summary>A value that represents the absolute X coordinate in table space at full tablet resolution.</summary>
-		/// <remarks>This is an integer field.</remarks>
+		/// <summary>A value that represents the absolute X coordinate in table space at full tablet resolution. This is an integer field.</summary>
 		TabletEventPointX = 15,
 
-		/// <summary>A value that represents the absolute Y coordinate in table space at full tablet resolution.</summary>
-		/// <remarks>This is an integer field.</remarks>
+		/// <summary>A value that represents the absolute Y coordinate in table space at full tablet resolution. This is an integer field.</summary>
 		TabletEventPointY = 16,
 
-		/// <summary>A value that represents the absolute Z coordinate in table space at full tablet resolution.</summary>
-		/// <remarks>This is an integer field.</remarks>
+		/// <summary>A value that represents the absolute Z coordinate in table space at full tablet resolution. This is an integer field.</summary>
 		TabletEventPointZ = 17,
 
-		/// <summary>A value that represents the tablet button state.</summary>
-		/// <remarks>This is a bitfield represented by an integer field. Bit 0 is the first button, and a set bit represents a closed or pressed button. A maximum of 16 buttons are supported.</remarks>
+		/// <summary>A value that represents the tablet button state. This is a bitfield represented by an integer field. Bit 0 is the first button, and a set bit represents a closed or pressed button. A maximum of 16 buttons are supported.</summary>
 		TabletEventPointButtons = 18,
 
-		/// <summary>A value that represents the tablet pen pressure.</summary>
-		/// <remarks>This is a double field, with values ranging from 0.0 (no pressure) and 1.0 (maximum pressure).</remarks>
+		/// <summary>A value that represents the tablet pen pressure. This is a double field, with values ranging from 0.0 (no pressure) and 1.0 (maximum pressure).</summary>
 		TabletEventPointPressure = 19,
 
-		/// <summary>A value that represents the horizontal tablet pen tilt.</summary>
-		/// <remarks>This is a double field, with values ranging from 0.0 (no tilt) and 1.0 (maximum tilt).</remarks>
+		/// <summary>A value that represents the horizontal tablet pen tilt. This is a double field, with values ranging from 0.0 (no tilt) and 1.0 (maximum tilt).</summary>
 		TabletEventTiltX = 20,
 
-		/// <summary>A value that represents the vertical tablet pen tilt.</summary>
-		/// <remarks>This is a double field, with values ranging from 0.0 (no tilt) and 1.0 (maximum tilt).</remarks>
+		/// <summary>A value that represents the vertical tablet pen tilt. This is a double field, with values ranging from 0.0 (no tilt) and 1.0 (maximum tilt).</summary>
 		TabletEventTiltY = 21,
 
-		/// <summary>A value that represents the tablet pen rotation.</summary>
-		/// <remarks>This is a double field.</remarks>
+		/// <summary>A value that represents the tablet pen rotation. This is a double field.</summary>
 		TabletEventRotation = 22,
 
-		/// <summary>A value that represents the tangential pressure on a device.</summary>
-		/// <remarks>This is a double field, with values ranging from 0.0 (no pressure) and 1.0 (maximum pressure).</remarks>
+		/// <summary>A value that represents the tangential pressure on a device. This is a double field, with values ranging from 0.0 (no pressure) and 1.0 (maximum pressure).</summary>
 		TabletEventTangentialPressure = 23,
 
-		/// <summary>A value that represents the system-assigned unique device id.</summary>
-		/// <remarks>This is an integer field.</remarks>
+		/// <summary>A value that represents the system-assigned unique device id. This is an integer field.</summary>
 		TabletEventDeviceId = 24,
 
-		/// <summary>This is a vendor-specific value.</summary>
-		/// <remarks>This is an integer field.</remarks>
+		/// <summary>This is a vendor-specific value. This is an integer field.</summary>
 		TabletEventVendor1 = 25,
 
-		/// <summary>This is a vendor-specific value.</summary>
-		/// <remarks>This is an integer field.</remarks>
+		/// <summary>This is a vendor-specific value. This is an integer field.</summary>
 		TabletEventVendor2 = 26,
 
-		/// <summary>This is a vendor-specific value.</summary>
-		/// <remarks>This is an integer field.</remarks>
+		/// <summary>This is a vendor-specific value. This is an integer field.</summary>
 		TabletEventVendor3 = 27,
 
-		/// <summary>A value that represents the vendor-defined id, typically the USB vendor id.</summary>
-		/// <remarks>This is an integer field.</remarks>
+		/// <summary>A value that represents the vendor-defined id, typically the USB vendor id. This is an integer field.</summary>
 		TabletProximityEventVendorId = 28,
 
-		/// <summary>A value that represents the vendor-defined tabled id, typically the USB product id.</summary>
-		/// <remarks>This is an integer field.</remarks>
+		/// <summary>A value that represents the vendor-defined tabled id, typically the USB product id. This is an integer field.</summary>
 		TabletProximityEventTabletId = 29,
 
-		/// <summary>A value that represents the vendor-defined id the pointing device.</summary>
-		/// <remarks>This is an integer field.</remarks>
+		/// <summary>A value that represents the vendor-defined id the pointing device. This is an integer field.</summary>
 		TabletProximityEventPointerId = 30,
 
-		/// <summary>A system-assigned device id for the device.</summary>
-		/// <remarks>This is an integer field.</remarks>
+		/// <summary>A system-assigned device id for the device. This is an integer field.</summary>
 		TabletProximityEventDeviceId = 31,
 
-		/// <summary>A system-assigned unique tablet id for the device.</summary>
-		/// <remarks>This is an integer field.</remarks>
+		/// <summary>A system-assigned unique tablet id for the device. This is an integer field.</summary>
 		TabletProximityEventSystemTabletId = 32,
 
-		/// <summary>The vendor-assigned pointer type.</summary>
-		/// <remarks>This is an integer field.</remarks>
+		/// <summary>The vendor-assigned pointer type. This is an integer field.</summary>
 		TabletProximityEventVendorPointerType = 33,
 
-		/// <summary>The vendor-defined pointer serial number.</summary>
-		/// <remarks>This is an integer field.</remarks>
+		/// <summary>The vendor-defined pointer serial number. This is an integer field.</summary>
 		TabletProximityEventVendorPointerSerialNumber = 34,
 
-		/// <summary>The vendor-defined unique id.</summary>
-		/// <remarks>This is an integer field.</remarks>
+		/// <summary>The vendor-defined unique id. This is an integer field.</summary>
 		TabletProximityEventVendorUniqueId = 35,
 
-		/// <summary>A value that represents the device capabilities mask.</summary>
-		/// <remarks>This is an integer field.</remarks>
+		/// <summary>A value that represents the device capabilities mask. This is an integer field.</summary>
 		TabletProximityEventCapabilityMask = 36,
 
-		/// <summary>A value that represents the pointer type.</summary>
-		/// <remarks>This is an integer field.</remarks>
+		/// <summary>A value that represents the pointer type. This is an integer field.</summary>
 		TabletProximityEventPointerType = 37,
 
-		/// <summary>A value that indicates whether the pen is in proximity to the tablet.</summary>
-		/// <remarks>This is an integer field. The value is non-zero if the pen is in proximity to the tablet, and zero otherwise.</remarks>
+		/// <summary>A value that indicates whether the pen is in proximity to the tablet. This is an integer field. The value is non-zero if the pen is in proximity to the tablet, and zero otherwise.</summary>
 		TabletProximityEventEnterProximity = 38,
 
-		/// <summary>The process serial number for the target process.</summary>
-		/// <remarks>This is an integer field.</remarks>
+		/// <summary>The process serial number for the target process. This is an integer field.</summary>
 		EventTargetProcessSerialNumber = 39,
 
-		/// <summary>The process id (pid) of the target process.</summary>
-		/// <remarks>This is an integer field.</remarks>
+		/// <summary>The process id (pid) of the target process. This is an integer field.</summary>
 		EventTargetUnixProcessId = 40,
 
-		/// <summary>The process id (pid) of the target process.</summary>
-		/// <remarks>This is an integer field.</remarks>
+		/// <summary>The process id (pid) of the target process. This is an integer field.</summary>
 		EventSourceUnixProcessId = 41,
 
-		/// <summary>User-supplied data.</summary>
-		/// <remarks>This is an integer field.</remarks>
+		/// <summary>User-supplied data. This is an integer field.</summary>
 		EventSourceUserData = 42,
 
-		/// <summary>The Unix effective UID for the event source.</summary>
-		/// <remarks>This is an integer field.</remarks>
+		/// <summary>The Unix effective UID for the event source. This is an integer field.</summary>
 		EventSourceUserId = 43,
 
-		/// <summary>The Unix effective GID for the event source.</summary>
-		/// <remarks>This is an integer field.</remarks>
+		/// <summary>The Unix effective GID for the event source. This is an integer field.</summary>
 		EventSourceGroupId = 44,
 
-		/// <summary>The state id for the event source used to create this event.</summary>
-		/// <remarks>This is an integer field.</remarks>
+		/// <summary>The state id for the event source used to create this event. This is an integer field.</summary>
 		EventSourceStateId = 45,
 
-		/// <summary>A value that indicates whether a scrolling event contains continuous, pixel-based scrolling data.</summary>
-		/// <remarks>This is an integer field. The value is non-zero when the scrolling data is continuous and pixel-based, and zero otherwise (when the scrolling data is line-based).</remarks>
+		/// <summary>A value that indicates whether a scrolling event contains continuous, pixel-based scrolling data. This is an integer field. The value is non-zero when the scrolling data is continuous and pixel-based, and zero otherwise (when the scrolling data is line-based).</summary>
 		ScrollWheelEventIsContinuous = 88,
 
 		// no documentation for this value in the header file.

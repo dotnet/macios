@@ -3,7 +3,11 @@
     <summary>Models the geometric layout of a page in Text Kit.</summary>
     <remarks>
       <para>iOS 7 introduced "Text Kit," a broad set of APIs and modifications of existing classes, built on <see cref="CoreText" />, that greatly expands the typographical flexibility of iOS.</para>
-      <para>A <see cref="UIKit.NSLayoutManager" /> maintains a list of one or more <see cref="UIKit.NSTextContainer" />s in its <see cref="UIKit.NSLayoutManager.TextContainers" /> property. The <see cref="UIKit.NSLayoutManager" /> lays out the text through these <see cref="UIKit.NSTextContainer" />s sequentially. Typically, each container will be handed to a <see cref="UIKit.UITextView" /> which will be laid out on the display surface sequentially. For text to flow from one <see cref="UIKit.UITextView" /> to another, the first <see cref="UIKit.UITextView" />'s <see cref="UIKit.UITextView.ScrollEnabled" /> property must be set to <see langword="false" />.</para>
+      <para>
+        A <see cref="NSLayoutManager" /> maintains a list of one or more <see cref="NSTextContainer" />s in its <see cref="NSLayoutManager.TextContainers" /> property.
+        The <see cref="NSLayoutManager" /> lays out the text through these <see cref="NSTextContainer" />s sequentially. Typically, each container will be handed
+        to a <see cref="XTextView" /> which will be laid out on the display surface sequentially.
+      </para>
       <para>The following example shows text laid out in a two-column format. </para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
@@ -36,8 +40,8 @@ AddSubview(rightHandView);
       <para>
         <img href="~/xml/UIKit/_images/UIKit.NSTextContainer.TwoColumnCommunication.png" alt="UML class diagram showing classes related to showing text in two columns" />
       </para>
-      <para>The preceding diagram illustrates the objects directly involved in the two-column layout. The <see cref="UIKit.NSTextStorage" /> is the responsibility of some external model class and the two-column user-interface is specified by a custom <see cref="UIKit.UIView" /> (<c>TwoColumnView</c>). </para>
-      <para>A <see cref="UIKit.NSTextContainer" /> contains an array of zero or more <see cref="UIKit.UIBezierPath" /> objects in its <see cref="UIKit.NSTextContainer.ExclusionPaths" /> property. Text will not be placed within these paths.</para>
+      <para>The preceding diagram illustrates the objects directly involved in the two-column layout. The <see cref="NSTextStorage" /> is the responsibility of some external model class and the two-column user-interface is specified by a custom <see cref="View" /> (<c>TwoColumnView</c>). </para>
+      <para>A <see cref="NSTextContainer" /> contains an array of zero or more <see cref="BezierPath" /> objects in its <see cref="NSTextContainer.ExclusionPaths" /> property. Text will not be placed within these paths.</para>
     </remarks>
     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/NSTextContainer_Class_TextKit/index.html">Apple documentation for <c>NSTextContainer</c></related>
   </Docs>

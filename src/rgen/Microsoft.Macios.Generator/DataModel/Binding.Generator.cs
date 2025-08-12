@@ -148,7 +148,7 @@ readonly partial struct Binding {
 	/// </summary>
 	public IEnumerable<EventDelegateInfo> WeakDelegatesClasses {
 		get {
-			// use a hash set to rach the types of the delegates, it should not be the case that we have the same
+			// use a hash set to reach the types of the delegates, it should not be the case that we have the same
 			// type info for more than one delegate but we do not trust the input from external developers
 			var found = new HashSet<string> ();
 			foreach (var property in Properties) {

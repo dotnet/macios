@@ -1411,8 +1411,7 @@ namespace FSKit {
 	[Mac (26, 0)]
 	[BaseType (typeof (FSResource), Name = "FSGenericURLResource")]
 	[DisableDefaultCtor]
-	interface FSGenericUrlResource
-	{
+	interface FSGenericUrlResource {
 		[Export ("url", ArgumentSemantic.Copy)]
 		NSUrl Url { get; }
 
@@ -1426,8 +1425,7 @@ namespace FSKit {
 	[Mac (26, 0)]
 	[BaseType (typeof (FSResource), Name = "FSPathURLResource")]
 	[DisableDefaultCtor]
-	interface FSPathUrlResource
-	{
+	interface FSPathUrlResource {
 		[Export ("url", ArgumentSemantic.Copy)]
 		NSUrl Url { get; }
 

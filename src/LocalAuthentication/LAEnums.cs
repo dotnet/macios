@@ -41,7 +41,7 @@ namespace LocalAuthentication {
 		[NoiOS]
 #else
 		[iOS (18, 0)]
-#if __IOS__  && !__MACCATALYST__
+#if __IOS__ && !__MACCATALYST__
 		[Obsolete ("This value is not available on this platform.")]
 #endif
 #endif

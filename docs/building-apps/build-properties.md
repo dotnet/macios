@@ -375,7 +375,7 @@ listening mode component of
 
 Implicitly sets [EnableDiagnostics](#enablediagnostics) to `true`.
 
-Defaults to `connect`.
+Defaults to `listen`.
 
 ## DiagnosticPort
 

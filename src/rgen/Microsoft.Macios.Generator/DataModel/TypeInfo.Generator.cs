@@ -58,6 +58,12 @@ readonly partial struct TypeInfo {
 				=> (method.Value.ExportMethodData.EventArgsType.GetIdentifierSyntax ().ToString (), false, method.Value.ExportMethodData.EventArgsType.IsNamedTuple), 
 			{ ExportMethodData.EventArgsTypeName: not null } 
 				=> (method.Value.ExportMethodData.EventArgsTypeName, true, false),
+			{ Parameters.Length: 2 }
+				// return the tye of the second parameter, which is the event args type
+				=> (method.Value.Parameters[1].Type.GetIdentifierSyntax ().ToString (), false, false),
+			{ Parameters.Length: > 2} 
+				// return a unnamed tuple type with the parameters starting from the second one
+				=> ($"({string.Join (", ", method.Value.Parameters.Skip (1).Select (p => p.Type.GetIdentifierSyntax ().ToString ()))})", false, true),
 			// the default is a method that does not required an event args type
 			_ => (null, false, false)
 		};

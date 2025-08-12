@@ -31,6 +31,18 @@ public partial class EventTests
 			}
 		}
 
+		internal global::System.EventHandler<global::Foundation.NSObject>? encodedObject2;
+		[Preserve (Conditional = true)]
+		[Export<Method> ("archiver:didEncodeObject:")]
+		public void EncodedObject2 (global::Foundation.NSKeyedArchiver archiver, global::Foundation.NSObject obj)
+		{
+			var handler = encodedObject2;
+			if (handler is not null) {
+				global::Foundation.NSObject args = new (obj);
+				handler (archiver, args);
+			}
+		}
+
 		internal global::System.EventHandler? finished;
 		[Preserve (Conditional = true)]
 		[Export<Method> ("archiverDidFinish:")]
@@ -95,6 +107,18 @@ public partial class EventTests
 		public void ReplacingObject3 (global::Foundation.NSKeyedArchiver archiver, global::Foundation.NSObject oldObject, global::Foundation.NSObject newObject)
 		{
 			var handler = replacingObject3;
+			if (handler is not null) {
+				var args = (oldObject, newObject);
+				handler (archiver, args);
+			}
+		}
+
+		internal global::System.EventHandler<(global::Foundation.NSObject, global::Foundation.NSObject)>? replacingObject4;
+		[Preserve (Conditional = true)]
+		[Export<Method> ("archiver:willReplaceObject:withObject:")]
+		public void ReplacingObject4 (global::Foundation.NSKeyedArchiver archiver, global::Foundation.NSObject oldObject, global::Foundation.NSObject newObject)
+		{
+			var handler = replacingObject4;
 			if (handler is not null) {
 				var args = (oldObject, newObject);
 				handler (archiver, args);

@@ -22,16 +22,14 @@ namespace ScreenCaptureKit {
 
 	[Mac (26, 0), MacCatalyst (26, 0)]
 	[Native]
-	public enum SCScreenshotDisplayIntent : long
-	{
+	public enum SCScreenshotDisplayIntent : long {
 		Canonical,
 		Local,
 	}
 
 	[Mac (26, 0), MacCatalyst (26, 0)]
 	[Native]
-	public enum SCScreenshotDynamicRange : long
-	{
+	public enum SCScreenshotDynamicRange : long {
 		Sdr,
 		Hdr,
 		SdrAndHdr,
@@ -39,8 +37,7 @@ namespace ScreenCaptureKit {
 
 	[Mac (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
-	interface SCScreenshotConfiguration
-	{
+	interface SCScreenshotConfiguration {
 		[Export ("width")]
 		nint Width { get; set; }
 
@@ -79,13 +76,12 @@ namespace ScreenCaptureKit {
 
 		[Static]
 		[Export ("supportedContentTypes")]
-		UTType[] SupportedContentTypes { get; }
+		UTType [] SupportedContentTypes { get; }
 	}
 
 	[Mac (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
-	interface SCScreenshotOutput
-	{
+	interface SCScreenshotOutput {
 		[NullAllowed, Export ("sdrImage", ArgumentSemantic.Strong)]
 		CGImage SdrImage { get; set; }
 

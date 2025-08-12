@@ -619,7 +619,7 @@ mutation {
     __typename
     minimizeComment(
         input: {
-            subjectId: "$($c.Id)",
+            subjectId: "$commentId",
             clientMutationId: "xamarin-macios-ci"
             classifier: OUTDATED
         }
@@ -646,7 +646,7 @@ mutation {
     [void] MinimizeComments($comments) {
         # we cannot do a mutation with all the comments :/ but we can loop and do it
         foreach($c in $comments) {
-             $this.MinimizeCommentId ($($c.id))
+             $this.MinimizeCommentId($c.id)
         } # foreach
     }
 

@@ -293,13 +293,13 @@ static class TabbedStringBuilderExtensions {
 	/// This attribute is used to register a type with the Objective-C runtime.
 	/// </summary>
 	/// <param name="self">A tabbed string writer.</param>
-	/// <param name="regitrationName">The name to register the type with.</param>
+	/// <param name="registrationName">The name to register the type with.</param>
 	/// <param name="isWrapper">A value indicating whether the type is a wrapper around a native type.</param>
 	/// <returns>The current writer.</returns>
 	public static TabbedWriter<StringWriter> AppendRegisterAttribute (this TabbedWriter<StringWriter> self,
-		string regitrationName, bool isWrapper)
+		string registrationName, bool isWrapper)
 	{
-		self.WriteLine ($"[Register (\"{regitrationName}\", {isWrapper.ToString ().ToLower ()})]");
+		self.WriteLine ($"[Register (\"{registrationName}\", {isWrapper.ToString ().ToLower ()})]");
 		return self;
 	}
 

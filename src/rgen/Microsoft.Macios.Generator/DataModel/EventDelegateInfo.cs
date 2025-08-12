@@ -26,6 +26,9 @@ readonly record struct EventDelegateInfo {
 	/// </summary>
 	public string OuterClassName { get; init; }
 
+	/// <summary>
+	/// The modifiers for the outer class.
+	/// </summary>
 	public ImmutableArray<SyntaxToken> OuterClassModifiers { get; init; }
 
 	/// <summary>

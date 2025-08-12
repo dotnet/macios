@@ -10,6 +10,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.Macios.Generator.Attributes;
 using Microsoft.Macios.Generator.Context;
 using Microsoft.Macios.Generator.DataModel;
+using Microsoft.Macios.Generator.Extensions;
 using Microsoft.Macios.Generator.Formatters;
 using Microsoft.Macios.Generator.IO;
 using ObjCBindings;
@@ -155,6 +156,8 @@ public static NSObject {name} ({NSObject} objectToObserve, {EventHandler}<{event
 									 ?? property.Name [4..]; // remove the 'Weak' prefix
 			var internalType =
 				Nomenclator.GetInternalDelegateForEventName (property.ExportPropertyData.StrongDelegateType);
+			// this method is reused by all elements, so we want to calculate the name only once
+			var ensureMethod = $"Ensure{strongDelegateType}";
 			using (var getInternalType =
 				   classBlock.CreateBlock ($"internal virtual Type GetInternalEvent{strongDelegateName}Type", true)) {
 				getInternalType.WriteLine ($"get => typeof ({internalType});");
@@ -168,7 +171,7 @@ public static NSObject {name} ({NSObject} objectToObserve, {EventHandler}<{event
 
 			classBlock.WriteLine ();
 			using (var ensureInternalType = classBlock.CreateBlock (
-					   $"internal {internalType} Ensure{strongDelegateType} ()", true)) {
+					   $"internal {internalType} {ensureMethod} ()", true)) {
 				ensureInternalType.WriteRaw (
 $@"if ({property.Name} is not null)
 	{applicationClass}.EnsureEventAndDelegateAreNotMismatched ({property.Name}, GetInternalEvent{strongDelegateName}Type);
@@ -187,7 +190,12 @@ return del;
 				var eventHandler = eventInfo.EventArgsType is null
 					? EventHandler.ToString ()
 					: $"{EventHandler}<{eventInfo.EventArgsType}>";
-				classBlock.WriteLine ($"// Generate event for delegate: {eventInfo.Name} with args: {eventHandler}");
+				using (var eventBlock =
+				       classBlock.CreateBlock ($"public event {eventHandler} {eventInfo.Name}", true)) {
+					eventBlock.WriteLine ($"add {{ {ensureMethod} ()!.{eventInfo.Name.Decapitalize ()} += value; }}");
+					eventBlock.WriteLine ($"remove {{ {ensureMethod} ()!.{eventInfo.Name.Decapitalize ()} -= value; }}");
+				}
+				classBlock.WriteLine ();
 			}
 		}
 	}

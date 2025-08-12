@@ -33,8 +33,8 @@ readonly partial struct TypeInfo {
 	/// <param name="context">The root context.</param>
 	/// <param name="eventInfo">When this method returns, contains the event data if the member is an event; otherwise, null.</param>
 	/// <returns><c>true</c> if the member is an event and event data was retrieved; otherwise, <c>false</c>.</returns>
-	static bool TryGetEventForMember (string typeNamespace, ISymbol member, RootContext context, 
-		[NotNullWhen (true)]out EventInfo? eventInfo)
+	static bool TryGetEventForMember (string typeNamespace, ISymbol member, RootContext context,
+		[NotNullWhen (true)] out EventInfo? eventInfo)
 	{
 		eventInfo = null;
 		// if the member is not a method, we will return false
@@ -50,34 +50,32 @@ readonly partial struct TypeInfo {
 			return false;
 
 		// we need to calculate the event args type, if any.
-		var (eventArgs, toGenerate) = method switch {
-			{ ExportMethodData.EventArgsType.IsNullOrDefault: false } 
-				// get the type string for the event args type
-				=> (method.Value.ExportMethodData.EventArgsType.GetIdentifierSyntax().ToString (), false),
-			{ ExportMethodData.EventArgsTypeName: not null }
-				// use the given type name, we will generate those too
-				=> (method.Value.ExportMethodData.EventArgsTypeName, true),
+		var (eventArgs, toGenerate) = method switch { { ExportMethodData.EventArgsType.IsNullOrDefault: false }
+														  // get the type string for the event args type
+														  => (method.Value.ExportMethodData.EventArgsType.GetIdentifierSyntax ().ToString (), false), { ExportMethodData.EventArgsTypeName: not null }
+																																						  // use the given type name, we will generate those too
+																																						  => (method.Value.ExportMethodData.EventArgsTypeName, true),
 			// the default is a method that does not required an event args type
 			_ => (null, false)
 		};
-		
+
 		// gather the parameter info, do not retrieve use a type info since that create a circular structure,
 		// the c# compiler will complain about it.
-		var paramInfo = ImmutableArray.CreateBuilder<(string Name, string Type)>();
-		var usingsInfo = new HashSet<string>();
+		var paramInfo = ImmutableArray.CreateBuilder<(string Name, string Type)> ();
+		var usingsInfo = new HashSet<string> ();
 		for (var index = 1; index < method.Value.Parameters.Length; index++) {
-			var p = method.Value.Parameters[index];
-			paramInfo.Add ((p.Name, p.Type.GetIdentifierSyntax().ToString ()));
+			var p = method.Value.Parameters [index];
+			paramInfo.Add ((p.Name, p.Type.GetIdentifierSyntax ().ToString ()));
 			// collect the namespaces of the parameters, use a set to avoid duplicates
 			var ns = string.Join ('.', p.Type.Namespace);
 			if (!string.IsNullOrEmpty (ns) && ns != typeNamespace) {
 				usingsInfo.Add (ns);
 			}
 		}
-		eventInfo = new() {
+		eventInfo = new () {
 			Namespace = typeNamespace,
 			Name = method.Value.Name,
-			Usings = [..usingsInfo],
+			Usings = [.. usingsInfo],
 			EventArgsType = eventArgs,
 			MethodParameters = paramInfo.ToImmutable (),
 			ToGenerate = toGenerate
@@ -94,9 +92,9 @@ readonly partial struct TypeInfo {
 	/// <returns>An immutable array of tuples containing the event name and its event arguments type name.</returns>
 	static ImmutableArray<EventInfo> GetInterfaceEvents (string typeNamespace, ITypeSymbol symbol, RootContext context)
 	{
-		var parentMethodsBucket = ImmutableArray.CreateBuilder<EventInfo>();
+		var parentMethodsBucket = ImmutableArray.CreateBuilder<EventInfo> ();
 		// add the events for the current symbol
-		foreach (var member in symbol.GetMembers()) {
+		foreach (var member in symbol.GetMembers ()) {
 			if (TryGetEventForMember (typeNamespace, member, context, out var data)) {
 				parentMethodsBucket.Add (data.Value);
 			}

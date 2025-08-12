@@ -17,7 +17,7 @@ namespace Microsoft.Macios.Generator.Emitters;
 /// <param name="builder">The tabbed string builder to use.</param>
 class EventTypeEmitter (
 	TabbedStringBuilder builder) {
-	
+
 	/// <summary>
 	/// Tries to emit the event argument type.
 	/// </summary>
@@ -39,7 +39,7 @@ class EventTypeEmitter (
 			];
 			return false;
 		}
-		
+
 		// emit the using statements
 		foreach (var ns in eventInfo.Usings.OrderBy (x => x)) {
 			builder.WriteLine ($"using {ns};");
@@ -56,19 +56,19 @@ class EventTypeEmitter (
 			: $"{eventInfo.EventArgsType}EventArgs";
 
 		using (var classBlock =
-		       builder.CreateBlock ($"public partial class {argsClassName}", true)) {
-			
+			   builder.CreateBlock ($"public partial class {argsClassName}", true)) {
+
 			// emit a property per parameter
 			foreach (var (name, type) in eventInfo.MethodParameters) {
 				classBlock.WriteLine ($"public {type} {name.Capitalize ()} {{ get; set; }}");
 				classBlock.WriteLine ();
 			}
-			
+
 			// emit a constructor that takes all parameters
 			using (var constructorBlock = classBlock.CreateBlock (
 					   $"public {argsClassName} ({string.Join (", ", eventInfo.MethodParameters.Select (p => $"{p.Type} {p.Name}"))})",
 					   true)) {
-				
+
 				// for each parameter, assign it to the property
 				foreach (var (name, type) in eventInfo.MethodParameters) {
 					constructorBlock.WriteLine ($"this.{name.Capitalize ()} = {name};");

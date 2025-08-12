@@ -126,7 +126,7 @@ readonly partial struct Binding {
 				// CreateEvents is only true for a weak delegate property
 				if (!property.CreateEvents)
 					continue;
-				
+
 				if (!property.ExportPropertyData.StrongDelegateType.IsNullOrDefault) {
 					// loop over all the events, the unique identifier is the namespace + event handler type
 					foreach (var eventInfo in property.ExportPropertyData.StrongDelegateType.Events) {
@@ -141,7 +141,7 @@ readonly partial struct Binding {
 				}
 			}
 		}
-	} 
+	}
 
 	/// <summary>
 	/// Decide if an enum value should be ignored as a change.

@@ -12,7 +12,7 @@ namespace Microsoft.Macios.Generator.DataModel;
 /// Represents information about an event.
 /// </summary>
 readonly record struct EventInfo {
-	
+
 	/// <summary>
 	/// The namespace of the type that contains the event.
 	/// </summary>
@@ -21,12 +21,12 @@ readonly record struct EventInfo {
 	/// The name of the event.
 	/// </summary>
 	public string Name { get; init; }
-	
+
 	/// <summary>
 	/// The usings required for the event.
 	/// </summary>
 	public ImmutableArray<string> Usings { get; init; }
-	
+
 	/// <summary>
 	/// The type name of the event arguments class.
 	/// </summary>
@@ -35,13 +35,13 @@ readonly record struct EventInfo {
 	/// The parameters for the event handler delegate.
 	/// </summary>
 	public ImmutableArray<(string Name, string Type)> MethodParameters { get; init; }
-	
+
 	/// <summary>
 	/// A boolean value indicating whether the event arguments class should be generated.
 	/// </summary>
 	[MemberNotNullWhen (true, nameof (EventArgsType))]
 	public bool ToGenerate { get; init; }
-	
+
 	/// <summary>
 	/// The fully qualified name of the EventArgs for the event.
 	/// </summary>
@@ -49,7 +49,7 @@ readonly record struct EventInfo {
 		get {
 			if (EventArgsType is null)
 				return string.Empty;
-			return string.IsNullOrEmpty (Namespace) 
+			return string.IsNullOrEmpty (Namespace)
 				? EventArgsType : $"{Namespace}.{EventArgsType}";
 		}
 	}
@@ -79,10 +79,10 @@ readonly record struct EventInfo {
 	public bool Equals (EventInfo other)
 	{
 		return Namespace == other.Namespace &&
-		       Name == other.Name &&
-		       Usings.SequenceEqual (other.Usings) &&
-		       EventArgsType == other.EventArgsType &&
-		       MethodParameters.SequenceEqual (other.MethodParameters) &&
-		       ToGenerate == other.ToGenerate;
+			   Name == other.Name &&
+			   Usings.SequenceEqual (other.Usings) &&
+			   EventArgsType == other.EventArgsType &&
+			   MethodParameters.SequenceEqual (other.MethodParameters) &&
+			   ToGenerate == other.ToGenerate;
 	}
 }

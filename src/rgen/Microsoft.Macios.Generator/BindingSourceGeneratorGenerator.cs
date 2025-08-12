@@ -77,7 +77,7 @@ public class BindingSourceGeneratorGenerator : IIncrementalGenerator {
 
 		context.RegisterSourceOutput (context.CompilationProvider.Combine (asyncResultsProvider.Collect ()),
 			((ctx, t) => GenerateAsyncResultCode (ctx, t.Right)));
-		
+
 		context.RegisterSourceOutput (context.CompilationProvider.Combine (eventArgsProvider.Collect ()),
 			((ctx, t) => GenerateEventArgTypes (ctx, t.Right)));
 

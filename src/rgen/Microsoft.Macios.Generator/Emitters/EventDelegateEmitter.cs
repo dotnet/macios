@@ -31,7 +31,7 @@ class EventDelegateEmitter (
 	{
 		classBlock.WriteLine ($"public {delegateClassName} () {{ IsDirectBinding = false; }}");
 	}
-	
+
 	/// <summary>
 	/// Emits the methods for the delegate class.
 	/// </summary>
@@ -65,8 +65,8 @@ if (handler is not null) {{
 					// handle tuple types differently
 					var argsConstructor = eventInfo.EventArgsIsTuple
 						? $"var args = ({string.Join (", ", eventInfo.EventArgParameters.Select (p => p.Name))});"
-						: $"{argsClassName} args = new ({string.Join (", ", eventInfo.EventArgParameters.Select (p => p.Name))});"; 
-					
+						: $"{argsClassName} args = new ({string.Join (", ", eventInfo.EventArgParameters.Select (p => p.Name))});";
+
 					methodBlock.WriteRaw (
 $@"var handler = {handlerName};
 if (handler is not null) {{

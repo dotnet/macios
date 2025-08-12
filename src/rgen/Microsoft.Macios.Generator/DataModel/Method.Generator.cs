@@ -289,7 +289,7 @@ readonly partial struct Method {
 	{
 		return this with {
 			Modifiers = [
-				..newModifiers.Select (m => Token (m).WithTrailingTrivia (Space))
+				.. newModifiers.Select (m => Token (m).WithTrailingTrivia (Space))
 			]
 		};
 	}

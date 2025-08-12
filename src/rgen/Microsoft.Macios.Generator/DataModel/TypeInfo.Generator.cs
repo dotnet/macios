@@ -67,8 +67,7 @@ readonly partial struct TypeInfo {
 		// the c# compiler will complain about it.
 		var paramInfo = ImmutableArray.CreateBuilder<(string Name, string Type)> ();
 		var usingsInfo = new HashSet<string> ();
-		foreach (var p in method.Value.Parameters)
-		{
+		foreach (var p in method.Value.Parameters) {
 			paramInfo.Add ((p.Name, p.Type.GetIdentifierSyntax ().ToString ()));
 			// collect the namespaces of the parameters, use a set to avoid duplicates
 			var ns = string.Join ('.', p.Type.Namespace);
@@ -83,7 +82,7 @@ readonly partial struct TypeInfo {
 			EventArgsType = eventArgs,
 			EventArgsIsTuple = isTuple,
 			// full method signature with params and public
-			MethodSignature = method.Value.WithModifiers (SyntaxKind.PublicKeyword).ToDeclaration ().ToString (), 
+			MethodSignature = method.Value.WithModifiers (SyntaxKind.PublicKeyword).ToDeclaration ().ToString (),
 			MethodSelector = method.Value.ExportMethodData.Selector!,
 			MethodParameters = paramInfo.ToImmutable (),
 			ToGenerate = toGenerate

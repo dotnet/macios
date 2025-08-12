@@ -184,6 +184,7 @@ return del;
 ");
 			}
 
+			classBlock.WriteLine ();
 			// loop over the events, those should be present in the property for the delegate
 			foreach (var eventInfo in property.ExportPropertyData.StrongDelegateType.Events) {
 				// create the event args type name

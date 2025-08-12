@@ -197,6 +197,7 @@ public partial class EventTests
 		}
 		return del;
 	}
+
 	public event global::System.EventHandler<global::Foundation.NSObject> EncodedObject
 	{
 		add { EnsureRgenNSKeyedArchiverDelegate ()!.encodedObject += value; }

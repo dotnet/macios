@@ -109,4 +109,17 @@ static class StringExtensions {
 
 		return char.ToUpper (s [0]) + s [1..];
 	}
+
+	/// <summary>
+	/// Decapitalizes the first letter of the string.
+	/// </summary>
+	/// <param name="s">The string to decapitalize.</param>
+	/// <returns>The decapitalized string.</returns>
+	public static string Decapitalize (this string s)
+	{
+		if (string.IsNullOrEmpty (s))
+			return s;
+
+		return char.ToLower (s [0]) + s [1..];
+	}
 }

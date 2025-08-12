@@ -1153,4 +1153,44 @@ interface IAVAudioMixing {
 		Assert.DoesNotContain (protocolWrapperMethod.Modifiers, m => m.IsKind (SyntaxKind.PartialKeyword));
 		Assert.Contains (protocolWrapperMethod.Modifiers, m => m.IsKind (SyntaxKind.PublicKeyword));
 	}
+
+	[Theory]
+	[AllSupportedPlatforms]
+	void WithModifiersTests (ApplePlatform platform)
+	{
+		var inputText = @"
+using AVFoundation;
+using Foundation;
+using ObjCBindings;
+using ObjCRuntime;
+using System.Runtime.Versioning;
+
+namespace Microsoft.Macios.Generator.Tests.Protocols.Data;
+
+[SupportedOSPlatform (""ios"")]
+[SupportedOSPlatform (""tvos"")]
+[SupportedOSPlatform (""macos"")]
+[SupportedOSPlatform (""maccatalyst13.1"")]
+[BindingType<Protocol>]
+interface IAVAudioMixing {
+
+	[Export<Method> (""destinationForMixer:bus:"")]
+	public virtual unsafe partial AVAudioMixingDestination? DestinationForMixer (AVAudioNode mixer, nuint bus);
+}
+";
+
+		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
+		Assert.Single (syntaxTrees);
+		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
+		var declaration = syntaxTrees [0].GetRoot ()
+			.DescendantNodes ().OfType<MethodDeclarationSyntax> ()
+			.FirstOrDefault ();
+		Assert.NotNull (declaration);
+		Assert.True (Method.TryCreate (declaration, semanticModel, out var changes));
+		Assert.NotNull (changes);
+		var newMethod = changes.Value.WithModifiers (SyntaxKind.InternalKeyword, SyntaxKind.StaticKeyword);
+		Assert.Equal (2, newMethod.Modifiers.Length);
+		Assert.Contains (newMethod.Modifiers, m => m.IsKind (SyntaxKind.InternalKeyword));
+		Assert.Contains (newMethod.Modifiers, m => m.IsKind (SyntaxKind.StaticKeyword));
+	}
 }

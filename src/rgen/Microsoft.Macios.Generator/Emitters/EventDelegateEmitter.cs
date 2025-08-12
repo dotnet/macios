@@ -6,8 +6,12 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using Microsoft.CodeAnalysis;
+using Microsoft.Macios.Generator.Attributes;
 using Microsoft.Macios.Generator.DataModel;
+using Microsoft.Macios.Generator.Extensions;
 using Microsoft.Macios.Generator.IO;
+using Method = ObjCBindings.Method;
+using static Microsoft.Macios.Generator.Emitters.BindingSyntaxFactory;
 
 namespace Microsoft.Macios.Generator.Emitters;
 
@@ -26,6 +30,55 @@ class EventDelegateEmitter (
 	static void EmitDefaultConstructor (TabbedWriter<StringWriter> classBlock, string delegateClassName)
 	{
 		classBlock.WriteLine ($"public {delegateClassName} () {{ IsDirectBinding = false; }}");
+	}
+	
+	/// <summary>
+	/// Emits the methods for the delegate class.
+	/// </summary>
+	/// <param name="delegateInfo">The event delegate info.</param>
+	/// <param name="classBlock">The current class block.</param>
+	static void EmitMethods (in EventDelegateInfo delegateInfo, TabbedWriter<StringWriter> classBlock)
+	{
+		foreach (var eventInfo in delegateInfo.DelegateType.Events) {
+			var argsClassName = eventInfo.EventArgsType;
+			if (argsClassName is not null && !argsClassName.EndsWith ("EventArgs")) {
+				argsClassName = $"{argsClassName}EventArgs";
+			}
+
+			var handlerName = eventInfo.Name.Decapitalize ();
+			if (argsClassName is null) {
+				classBlock.WriteLine ($"internal {EventHandler}? {handlerName};");
+			} else {
+				classBlock.WriteLine ($"internal {EventHandler}<{argsClassName}>? {handlerName};");
+			}
+			classBlock.AppendPreserveAttribute ();
+			classBlock.AppendExportAttribute (new ExportData<Method> (eventInfo.MethodSelector));
+			using (var methodBlock = classBlock.CreateBlock (eventInfo.MethodSignature, true)) {
+				if (eventInfo.EventArgsType is null) {
+					methodBlock.WriteRaw (
+$@"var handler = {handlerName};
+if (handler is not null) {{
+	handler ({eventInfo.MethodParameters [0].Name}, {EventHandler}.Empty);
+}}
+");
+				} else {
+					// handle tuple types differently
+					var argsConstructor = eventInfo.EventArgsIsTuple
+						? $"var args = ({string.Join (", ", eventInfo.EventArgParameters.Select (p => p.Name))});"
+						: $"{argsClassName} args = new ({string.Join (", ", eventInfo.EventArgParameters.Select (p => p.Name))});"; 
+					
+					methodBlock.WriteRaw (
+$@"var handler = {handlerName};
+if (handler is not null) {{
+	{argsConstructor}
+	handler ({eventInfo.MethodParameters [0].Name}, args);
+}}
+");
+				}
+			}
+
+			classBlock.WriteLine ();
+		}
 	}
 
 	/// <summary>
@@ -63,10 +116,11 @@ class EventDelegateEmitter (
 				// emit the constructors
 				EmitDefaultConstructor (classBlock, delegateClassName);
 				classBlock.WriteLine ();
+
+				EmitMethods (delegateInfo, classBlock);
 			}
 		}
 
 		return true;
 	}
-
 }

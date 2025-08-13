@@ -70,7 +70,7 @@ namespace BrowserEngineKit {
 
 		[MacCatalyst (26, 0), NoTV, NoMac, iOS (26, 0)]
 		[Export ("encodeWithBlock:")]
-		void Encode (BELayerHierarchyHandleEncodeCallback block);
+		void Encode (BELayerHierarchyHandleEncodeCallback callback);
 	}
 
 	delegate void BELayerHierarchyHandleEncodeCallback (uint copiedPort, NSData data);
@@ -136,7 +136,7 @@ namespace BrowserEngineKit {
 
 		[MacCatalyst (26, 0), NoTV, NoMac, iOS (26, 0)]
 		[Export ("encodeWithBlock:")]
-		void Encode (BELayerHierarchyHostingTransactionCoordinatorEncodeCallback block);
+		void Encode (BELayerHierarchyHostingTransactionCoordinatorEncodeCallback handler);
 	}
 
 	delegate void BELayerHierarchyHostingTransactionCoordinatorEncodeCallback (uint copiedPort, NSData data);

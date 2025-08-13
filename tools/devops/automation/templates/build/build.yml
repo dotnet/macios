@@ -164,9 +164,9 @@ steps:
     condition: and(succeeded(), ne('${{ parameters.disableCodeQL }}', 'true'), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
 
   - bash: |
-      echo "##vso[task.setvariable variable=DOTNET_DbgEnableMiniDump]1
-      echo "##vso[task.setvariable variable=DOTNET_DbgMiniDumpType]4
-      echo "##vso[task.setvariable variable=DOTNET_DbgMiniDumpName]$(AGENT_TEMPDIRECTORY)/dotnet_%t_%p.minidump
+      echo "##vso[task.setvariable variable=DOTNET_DbgEnableMiniDump]1"
+      echo "##vso[task.setvariable variable=DOTNET_DbgMiniDumpType]4"
+      echo "##vso[task.setvariable variable=DOTNET_DbgMiniDumpName]$(AGENT_TEMPDIRECTORY)/dotnet_%t_%p.minidump"
     displayName: Enable minidumps
     continueOnError: true
 

@@ -183,11 +183,11 @@ namespace CloudKit {
 
 		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
 		[Export ("requesters", ArgumentSemantic.Copy)]
-		CKShareAccessRequester[] Requesters { get; }
+		CKShareAccessRequester [] Requesters { get; }
 
 		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
 		[Export ("blockedIdentities", ArgumentSemantic.Copy)]
-		CKShareBlockedIdentity[] BlockedIdentities { get; }
+		CKShareBlockedIdentity [] BlockedIdentities { get; }
 
 		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
 		[Export ("allowsAccessRequests")]
@@ -195,15 +195,15 @@ namespace CloudKit {
 
 		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
 		[Export ("denyRequesters:")]
-		void DenyRequesters (CKShareAccessRequester[] requesters);
+		void DenyRequesters (CKShareAccessRequester [] requesters);
 
 		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
 		[Export ("blockRequesters:")]
-		void BlockRequesters (CKShareAccessRequester[] requesters);
+		void BlockRequesters (CKShareAccessRequester [] requesters);
 
 		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
 		[Export ("unblockIdentities:")]
-		void UnblockIdentities (CKShareBlockedIdentity[] blockedIdentities);
+		void UnblockIdentities (CKShareBlockedIdentity [] blockedIdentities);
 	}
 
 	/// <summary>Constants used by various CloudKit classes.</summary>
@@ -2826,8 +2826,7 @@ namespace CloudKit {
 	[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface CKShareAccessRequester : NSSecureCoding, NSCopying
-	{
+	interface CKShareAccessRequester : NSSecureCoding, NSCopying {
 		[Export ("userIdentity", ArgumentSemantic.Copy)]
 		CKUserIdentity UserIdentity { get; }
 
@@ -2840,10 +2839,9 @@ namespace CloudKit {
 	}
 
 	[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
-	[BaseType (typeof(NSObject))]
+	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface CKShareBlockedIdentity : NSSecureCoding, NSCopying
-	{
+	interface CKShareBlockedIdentity : NSSecureCoding, NSCopying {
 		[Export ("userIdentity", ArgumentSemantic.Copy)]
 		CKUserIdentity UserIdentity { get; }
 
@@ -2855,17 +2853,16 @@ namespace CloudKit {
 	[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
 	[BaseType (typeof (CKOperation))]
 	[DisableDefaultCtor]
-	interface CKShareRequestAccessOperation
-	{
+	interface CKShareRequestAccessOperation {
 		[DesignatedInitializer]
 		[Export ("init")]
 		NativeHandle Constructor ();
 
 		[Export ("initWithShareURLs:")]
-		NativeHandle Constructor (NSUrl[] shareUrls);
+		NativeHandle Constructor (NSUrl [] shareUrls);
 
 		[NullAllowed, Export ("shareURLs", ArgumentSemantic.Copy)]
-		NSUrl[] ShareUrls { get; set; }
+		NSUrl [] ShareUrls { get; set; }
 
 		[Export ("perShareAccessRequestCompletionBlock", ArgumentSemantic.Copy)]
 		[NullAllowed]

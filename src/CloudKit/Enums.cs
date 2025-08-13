@@ -399,8 +399,7 @@ namespace CloudKit {
 
 	[TV (26, 0), Mac (26, 0), MacCatalyst (26, 0), iOS (26, 0)]
 	[Native]
-	public enum CKRecordZoneEncryptionScope : long
-	{
+	public enum CKRecordZoneEncryptionScope : long {
 		Record,
 		Zone,
 	}

@@ -177,7 +177,7 @@ namespace NearbyInteraction {
 
 		[NoTV, NoMacCatalyst, NoMac, iOS (26, 0)]
 		[Export ("session:didUpdateDLTDOAMeasurements:")]
-		void DidUpdateDlTdoaMeasurements (NISession session, NIDlTdoaMeasurement[] measurements);
+		void DidUpdateDlTdoaMeasurements (NISession session, NIDlTdoaMeasurement [] measurements);
 	}
 
 	[NoTV, NoMac, iOS (15, 0), MacCatalyst (15, 0)]
@@ -257,8 +257,7 @@ namespace NearbyInteraction {
 	[BaseType (typeof (NIConfiguration), Name = "NIDLTDOAConfiguration")]
 	[DisableDefaultCtor]
 	// DLTDOA = Down Link Time Difference of Arrival(DL-TDoA)
-	interface NIDlTdoaConfiguration
-	{
+	interface NIDlTdoaConfiguration {
 		[Export ("networkIdentifier")]
 		nint NetworkIdentifier { get; set; }
 
@@ -270,8 +269,7 @@ namespace NearbyInteraction {
 	[Native]
 	[NativeName ("NIDLTDOACoordinatesType")]
 	// DLTDOA = Down Link Time Difference of Arrival(DL-TDoA)
-	public enum NIDlTdoaCoordinatesType : long
-	{
+	public enum NIDlTdoaCoordinatesType : long {
 		Geodetic = 0,
 		Relative = 1,
 	}
@@ -280,19 +278,17 @@ namespace NearbyInteraction {
 	[Native]
 	[NativeName ("NIDLTDOAMeasurementType")]
 	// DLTDOA = Down Link Time Difference of Arrival(DL-TDoA)
-	public enum NIDlTdoaMeasurementType : long
-	{
+	public enum NIDlTdoaMeasurementType : long {
 		Poll = 0,
 		Response = 1,
 		Final = 2,
 	}
 
-	[NoTV, NoMacCatalyst, NoMac, iOS (26,0)]
+	[NoTV, NoMacCatalyst, NoMac, iOS (26, 0)]
 	[BaseType (typeof (NSObject), Name = "NIDLTDOAMeasurement")]
 	[DisableDefaultCtor]
 	// DLTDOA = Down Link Time Difference of Arrival(DL-TDoA)
-	interface NIDlTdoaMeasurement : NSCopying, NSSecureCoding
-	{
+	interface NIDlTdoaMeasurement : NSCopying, NSSecureCoding {
 		[Export ("address")]
 		nuint Address { get; }
 

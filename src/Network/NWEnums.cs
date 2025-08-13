@@ -353,8 +353,7 @@ namespace Network {
 	}
 
 	[NativeName ("nw_link_quality_t")]
-	public enum NWLinkQuality : uint
-	{
+	public enum NWLinkQuality : uint {
 		Unknown = 0,
 		Minimal = 10,
 		Moderate = 20,

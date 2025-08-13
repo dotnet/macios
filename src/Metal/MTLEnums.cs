@@ -2487,7 +2487,7 @@ namespace Metal {
 
 	[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0), TV (26, 0)]
 	[Native]
-	public enum MTL4CounterHeapType : ulong {
+	public enum MTL4CounterHeapType : long {
 		Invalid,
 		Timestamp,
 	}
@@ -2509,7 +2509,7 @@ namespace Metal {
 	[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0), TV (26, 0)]
 	[Flags]
 	[Native]
-	public enum MTL4PipelineDataSetSerializerConfiguration : long {
+	public enum MTL4PipelineDataSetSerializerConfiguration : ulong {
 		Descriptors = (1 << 0),
 		Binaries = (1 << 1),
 	}
@@ -2539,7 +2539,8 @@ namespace Metal {
 
 	[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0), TV (26, 0)]
 	[Native]
-	public enum MTL4VisibilityOptions : long {
+	[Flags]
+	public enum MTL4VisibilityOptions : ulong {
 		None = 0,
 		Device = 1 << 0,
 		ResourceAlias = 1 << 1,
@@ -2586,7 +2587,7 @@ namespace Metal {
 	[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0), TV (26, 0)]
 	[Native]
 	[ErrorDomain ("MTLTensorDomain")]
-	public enum MTLTensorError : ulong {
+	public enum MTLTensorError : long {
 		None = 0,
 		InternalError = 1,
 		InvalidDescriptor = 2,
@@ -2594,7 +2595,8 @@ namespace Metal {
 
 	[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0), TV (26, 0)]
 	[Native]
-	public enum MTLTensorUsage : long {
+	[Flags]
+	public enum MTLTensorUsage : ulong {
 		Compute = 1L << 0,
 		Render = 1L << 1,
 		MachineLearning = 1L << 2,

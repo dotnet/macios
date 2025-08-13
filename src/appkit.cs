@@ -4629,6 +4629,16 @@ namespace AppKit {
 		[Static, Export ("colorWithRed:green:blue:alpha:")]
 		NSColor FromRgba (nfloat red, nfloat green, nfloat blue, nfloat alpha);
 
+		[Mac (26, 0)]
+		[Static]
+		[Export ("colorWithRed:green:blue:alpha:exposure:")]
+		NSColor FromRgbaExposure (nfloat red, nfloat green, nfloat blue, nfloat alpha, nfloat exposure);
+
+		[Mac (26, 0)]
+		[Static]
+		[Export ("colorWithRed:green:blue:alpha:linearExposure:")]
+		NSColor FromRgbaLinearExposure (nfloat red, nfloat green, nfloat blue, nfloat alpha, nfloat linearExposure);
+
 		[Static, Export ("colorWithHue:saturation:brightness:alpha:")]
 		NSColor FromHsba (nfloat hue, nfloat saturation, nfloat brightness, nfloat alpha);
 
@@ -4877,6 +4887,18 @@ namespace AppKit {
 
 		[Export ("colorWithAlphaComponent:")]
 		NSColor ColorWithAlphaComponent (nfloat alpha);
+
+		[Mac (26, 0)]
+		[Export ("colorByApplyingContentHeadroom:")]
+		NSColor GetColorByApplyingContentHeadroom (nfloat contentHeadroom);
+
+		[Mac (26, 0)]
+		[Export ("linearExposure")]
+		nfloat LinearExposure { get; }
+
+		[Mac (26, 0)]
+		[Export ("standardDynamicRangeColor", ArgumentSemantic.Copy)]
+		NSColor StandardDynamicRangeColor { get; }
 
 		[DebuggerBrowsable (DebuggerBrowsableState.Never)]
 		[Export ("catalogNameComponent")]
@@ -5276,6 +5298,10 @@ namespace AppKit {
 		[Export ("color", ArgumentSemantic.Copy)]
 		NSColor Color { get; set; }
 
+		[Mac (26, 0)]
+		[Export ("maximumLinearExposure")]
+		nfloat MaximumLinearExposure { get; set; }
+
 	}
 
 	[NoMacCatalyst]
@@ -5516,6 +5542,10 @@ namespace AppKit {
 		[Static]
 		[Export ("colorWellWithStyle:")]
 		NSColorWell Create (NSColorWellStyle style);
+
+		[Mac (26, 0)]
+		[Export ("maximumLinearExposure")]
+		nfloat MaximumLinearExposure { get; set; }
 	}
 
 	[NoMacCatalyst]
@@ -13016,6 +13046,28 @@ namespace AppKit {
 		NSLayoutConstraint [] GetConstraintsAffectingLayout (NSLayoutConstraintOrientation orientation);
 	}
 
+	[Mac (26, 0), NoMacCatalyst]
+	[Native]
+	public enum NSViewLayoutRegionAdaptivityAxis : long {
+		None,
+		Horizontal,
+		Vertical,
+	}
+
+	[Mac (26, 0), NoMacCatalyst]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface NSViewLayoutRegion {
+
+		[Static]
+		[Export ("safeAreaLayoutRegionWithCornerAdaptation:")]
+		NSViewLayoutRegion CreateSafeAreaLayoutRegion (NSViewLayoutRegionAdaptivityAxis cornerAdaptivityAxis);
+
+		[Static]
+		[Export ("marginsLayoutRegionWithCornerAdaptation:")]
+		NSViewLayoutRegion CreateMarginsLayoutRegion (NSViewLayoutRegionAdaptivityAxis cornerAdaptivityAxis);
+	}
+
 	[NoMacCatalyst]
 	[BaseType (typeof (NSGestureRecognizer))]
 	interface NSMagnificationGestureRecognizer {
@@ -19807,6 +19859,18 @@ namespace AppKit {
 		[Mac (26, 0)]
 		[Export ("prefersCompactControlSizeMetrics")]
 		bool PrefersCompactControlSizeMetrics { get; set; }
+
+		[Mac (26, 0), NoMacCatalyst]
+		[Export ("edgeInsetsForLayoutRegion:")]
+		NSEdgeInsets GetEdgeInsets (NSViewLayoutRegion layoutRegion);
+
+		[Mac (26, 0), NoMacCatalyst]
+		[Export ("layoutGuideForLayoutRegion:")]
+		NSLayoutGuide GetLayoutGuide (NSViewLayoutRegion layoutRegion);
+
+		[Mac (26, 0), NoMacCatalyst]
+		[Export ("rectForLayoutRegion:")]
+		CGRect GetRect (NSViewLayoutRegion layoutRegion);
 	}
 
 	[NoMacCatalyst]
@@ -34919,6 +34983,13 @@ namespace AppKit {
 	}
 
 	[NoMacCatalyst, Mac (26, 0)]
+	[Native]
+	public enum NSGlassEffectViewStyle : long {
+		Regular,
+		Clear,
+	}
+
+	[NoMacCatalyst, Mac (26, 0)]
 	[BaseType (typeof (NSView))]
 	interface NSGlassEffectView {
 
@@ -34933,6 +35004,9 @@ namespace AppKit {
 
 		[NullAllowed, Export ("tintColor", ArgumentSemantic.Copy)]
 		Color TintColor { get; set; }
+
+		[Export ("style")]
+		NSGlassEffectViewStyle Style { get; set; }
 	}
 
 	[NoMacCatalyst, Mac (26, 0)]

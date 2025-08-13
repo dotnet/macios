@@ -1,4 +1,0 @@
-!missing-enum! AVDisplayDynamicRange not bound
-!missing-selector! +AVPlayerViewController::mediaCharacteristicsForSupportedCustomMediaSelectionSchemes not bound
-!missing-selector! AVPlayerViewController::preferredDisplayDynamicRange not bound
-!missing-selector! AVPlayerViewController::setPreferredDisplayDynamicRange: not bound

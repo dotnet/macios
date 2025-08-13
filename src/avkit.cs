@@ -437,6 +437,16 @@ namespace AVKit {
 		[iOS (17, 0), MacCatalyst (18, 0), NoTV, NoMac]
 		[Export ("toggleLookupAction")]
 		UIAction ToggleLookupAction { get; }
+
+		[MacCatalyst (26, 0), NoMac, NoTV, iOS (26, 0)]
+		[Export ("preferredDisplayDynamicRange", ArgumentSemantic.Assign)]
+		AVDisplayDynamicRange PreferredDisplayDynamicRange { get; set; }
+
+
+		[TV (26, 0), MacCatalyst (26, 0), NoMac, iOS (26, 0)]
+		[Static]
+		[Export ("mediaCharacteristicsForSupportedCustomMediaSelectionSchemes")]
+		string [] MediaCharacteristicsForSupportedCustomMediaSelectionSchemes { get; }
 	}
 
 	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="AVKit.AVPlayerViewControllerDelegate" />.</summary>
@@ -779,6 +789,10 @@ namespace AVKit {
 		[Mac (14, 0)]
 		[Export ("videoFrameAnalysisTypes")]
 		AVVideoFrameAnalysisType VideoFrameAnalysisTypes { get; set; }
+
+		[Mac (26, 0)]
+		[Export ("preferredDisplayDynamicRange", ArgumentSemantic.Assign)]
+		AVDisplayDynamicRange PreferredDisplayDynamicRange { get; set; }
 	}
 
 	interface IAVPlayerViewPictureInPictureDelegate { }
@@ -1257,6 +1271,14 @@ namespace AVKit {
 	interface AVCaptureEvent {
 		[Export ("phase")]
 		AVCaptureEventPhase Phase { get; }
+
+		[NoTV, NoMacCatalyst, NoMac, iOS (26, 0)]
+		[Export ("playSound:")]
+		bool PlaySound (AVCaptureEventSound sound);
+
+		[NoTV, NoMacCatalyst, NoMac, iOS (26, 0)]
+		[Export ("shouldPlaySound")]
+		bool ShouldPlaySound { get; }
 	}
 
 	[iOS (17, 2), NoMac, MacCatalyst (17, 2), NoTV]
@@ -1279,6 +1301,11 @@ namespace AVKit {
 
 		[Export ("enabled")]
 		bool Enabled { [Bind ("isEnabled")] get; set; }
+
+		[NoTV, NoMacCatalyst, NoMac, iOS (26, 0)]
+		[Static]
+		[Export ("defaultCaptureSoundDisabled")]
+		bool DefaultCaptureSoundDisabled { get; set; }
 	}
 
 	[TV (17, 0), NoMac, NoiOS, NoMacCatalyst]
@@ -1313,4 +1340,79 @@ namespace AVKit {
 		void DidEndPresenting (AVContinuityDevicePickerViewController pickerViewController);
 	}
 	interface IAVContinuityDevicePickerViewControllerDelegate { }
+
+	[NoTV, NoMacCatalyst, NoMac, iOS (26, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface AVCaptureEventSound {
+		[Export ("initWithURL:error:")]
+		[Internal]
+		NativeHandle _InitWithUrl (NSUrl url, [NullAllowed] out NSError error);
+
+		[Static]
+		[Export ("cameraShutterSound")]
+		AVCaptureEventSound CameraShutterSound { get; }
+
+		[Static]
+		[Export ("beginVideoRecordingSound")]
+		AVCaptureEventSound BeginVideoRecordingSound { get; }
+
+		[Static]
+		[Export ("endVideoRecordingSound")]
+		AVCaptureEventSound EndVideoRecordingSound { get; }
+	}
+
+	interface IAVInputPickerInteractionDelegate { }
+
+	[NoTV, NoMacCatalyst, NoMac, iOS (26, 0)]
+	[Protocol (BackwardsCompatibleCodeGeneration = false), Model]
+	[BaseType (typeof (NSObject))]
+	interface AVInputPickerInteractionDelegate {
+		[Export ("inputPickerInteractionWillBeginPresenting:")]
+		void WillBeginPresenting (AVInputPickerInteraction inputPickerInteraction);
+
+		[Export ("inputPickerInteractionDidEndPresenting:")]
+		void DidEndPresenting (AVInputPickerInteraction inputPickerInteraction);
+
+		[Export ("inputPickerInteractionWillBeginDismissing:")]
+		void WillBeginDismissing (AVInputPickerInteraction inputPickerInteraction);
+
+		[Export ("inputPickerInteractionDidEndDismissing:")]
+		void DidEndDismissing (AVInputPickerInteraction inputPickerInteraction);
+	}
+
+	[NoTV, NoMacCatalyst, NoMac, iOS (26, 0)]
+	[BaseType (typeof (NSObject))]
+	interface AVInputPickerInteraction : UIInteraction {
+		[Wrap ("WeakDelegate")]
+		[NullAllowed]
+		IAVInputPickerInteractionDelegate Delegate { get; set; }
+
+		[NullAllowed, Export ("delegate", ArgumentSemantic.Weak)]
+		NSObject WeakDelegate { get; set; }
+
+		[Export ("presented")]
+		bool Presented { [Bind ("isPresented")] get; }
+
+		[Export ("audioSession", ArgumentSemantic.Strong)]
+		AVAudioSession AudioSession { get; set; }
+
+		[Export ("present")]
+		void Present ();
+
+		[Export ("dismiss")]
+		void Dismiss ();
+
+		[Export ("initWithAudioSession:")]
+		NativeHandle Constructor ([NullAllowed] AVAudioSession audioSession);
+	}
+
+	[MacCatalyst (26, 0), NoTV, Mac (26, 0), iOS (26, 0)]
+	[Native]
+	public enum AVDisplayDynamicRange : long {
+		Automatic = 0,
+		Standard = 1,
+		ConstrainedHigh = 2,
+		High = 3,
+	}
 }

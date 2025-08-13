@@ -23,7 +23,6 @@ using UIKit;
 using System;
 
 #if MONOMAC
-using UIColor = AppKit.NSImage;
 using UIControlState = Foundation.NSObject;
 using UIImage = AppKit.NSImage;
 using UIInterfaceOrientation = Foundation.NSObject;
@@ -2493,6 +2492,11 @@ namespace MediaPlayer {
 		[Export ("playbackState")]
 		MPNowPlayingPlaybackState PlaybackState { get; set; }
 
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Static]
+		[Export ("supportedAnimatedArtworkKeys")]
+		string [] SupportedAnimatedArtworkKeys { get; }
+
 		[Internal]
 		[Field ("MPNowPlayingInfoPropertyElapsedPlaybackTime")]
 		NSString PropertyElapsedPlaybackTime { get; }
@@ -2608,6 +2612,14 @@ namespace MediaPlayer {
 		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Field ("MPNowPlayingInfoPropertyExcludeFromSuggestions")]
 		NSString PropertyExcludeFromSuggestions { get; }
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("MPNowPlayingInfoProperty1x1AnimatedArtwork")]
+		NSString Property1x1AnimatedArtwork { get; }
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("MPNowPlayingInfoProperty3x4AnimatedArtwork")]
+		NSString Property3x4AnimatedArtwork { get; }
 	}
 
 	/// <summary>User-meaningful information about an <see cref="MediaPlayer.MPMediaItem" />.</summary>
@@ -4024,5 +4036,18 @@ namespace MediaPlayer {
 		NativeHandle Constructor (CMTimeRange timeRange);
 	}
 
+	[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface MPMediaItemAnimatedArtwork {
+		[Export ("initWithArtworkID:previewImageRequestHandler:videoAssetFileURLRequestHandler:")]
+		[DesignatedInitializer]
+		NativeHandle Constructor (string artworkId, MPMediaItemAnimatedArtworkPreviewImageRequestHandler previewImageRequestHandler, MPMediaItemAnimatedArtworkVideoAssetFileUrlRequestHandler videoAssetFileUrlRequestHandler);
+	}
 
+	delegate void MPMediaItemAnimatedArtworkPreviewImageRequestCallback ([NullAllowed] UIImage image);
+	delegate void MPMediaItemAnimatedArtworkPreviewImageRequestHandler (CGSize size, [BlockCallback] MPMediaItemAnimatedArtworkPreviewImageRequestCallback completionHandler);
+
+	delegate void MPMediaItemAnimatedArtworkVideoAssetFileUrlRequestCallback ([NullAllowed] NSUrl image);
+	delegate void MPMediaItemAnimatedArtworkVideoAssetFileUrlRequestHandler (CGSize size, [BlockCallback] MPMediaItemAnimatedArtworkVideoAssetFileUrlRequestCallback completionHandler);
 }

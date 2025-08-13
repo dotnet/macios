@@ -1,2 +1,0 @@
-!missing-null-allowed! 'System.Void Metal.MTL4PipelineDescriptor::set_Options(Metal.MTL4PipelineOptions)' is missing an [NullAllowed] on parameter #0
-!missing-null-allowed! 'System.Void Metal.MTLTensorDescriptor::set_Strides(Metal.MTLTensorExtents)' is missing an [NullAllowed] on parameter #0

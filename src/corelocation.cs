@@ -1250,6 +1250,10 @@ namespace CoreLocation {
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
 		///         </value>
 		///         <remarks>To be added.</remarks>
+		[Deprecated (PlatformName.iOS, 26, 0, "Use 'MapKit' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, "Use 'MapKit' instead.")]
+		[Deprecated (PlatformName.TvOS, 26, 0, "Use 'MapKit' instead.")]
+		[Deprecated (PlatformName.MacOSX, 26, 0, "Use 'MapKit' instead.")]
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("postalAddress")]
@@ -1501,6 +1505,10 @@ namespace CoreLocation {
 	delegate void CLGeocodeCompletionHandler ([NullAllowed] CLPlacemark [] placemarks, [NullAllowed] NSError error);
 
 	/// <include file="../docs/api/CoreLocation/CLGeocoder.xml" path="/Documentation/Docs[@DocId='T:CoreLocation.CLGeocoder']/*" />
+	[Deprecated (PlatformName.iOS, 26, 0, "Use MapKit instead.")]
+	[Deprecated (PlatformName.MacCatalyst, 26, 0, "Use MapKit instead.")]
+	[Deprecated (PlatformName.TvOS, 26, 0, "Use MapKit instead.")]
+	[Deprecated (PlatformName.MacOSX, 26, 0, "Use MapKit instead.")]
 	[BaseType (typeof (NSObject))]
 	interface CLGeocoder {
 		/// <summary>Whether a geocoding request is currently being processed.</summary>
@@ -1515,6 +1523,10 @@ namespace CoreLocation {
 		///         <summary>Requests a longitude/latitude to a human address.</summary>
 		///         <remarks>
 		///         </remarks>
+		[Deprecated (PlatformName.iOS, 26, 0, "Use 'MKReverseGeocodingRequest' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, "Use 'MKReverseGeocodingRequest' instead.")]
+		[Deprecated (PlatformName.TvOS, 26, 0, "Use 'MKReverseGeocodingRequest' instead.")]
+		[Deprecated (PlatformName.MacOSX, 26, 0, "Use 'MKReverseGeocodingRequest' instead.")]
 		[Export ("reverseGeocodeLocation:completionHandler:")]
 		[Async (XmlDocs = """
 			<param name="location">To be added.</param>
@@ -1534,6 +1546,10 @@ namespace CoreLocation {
 		///         <param name="completionHandler">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
+		[Deprecated (PlatformName.iOS, 26, 0, "Use 'MKReverseGeocodingRequest' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, "Use 'MKReverseGeocodingRequest' instead.")]
+		[Deprecated (PlatformName.TvOS, 26, 0, "Use 'MKReverseGeocodingRequest' instead.")]
+		[Deprecated (PlatformName.MacOSX, 26, 0, "Use 'MKReverseGeocodingRequest' instead.")]
 		[MacCatalyst (13, 1)]
 		[Export ("reverseGeocodeLocation:preferredLocale:completionHandler:")]
 		[Async (XmlDocs = """
@@ -1550,10 +1566,10 @@ namespace CoreLocation {
 		///         <summary>Developers should not use this deprecated method. Developers should use 'GeocodeAddress (string, CLRegion, NSLocale, CLGeocodeCompletionHandler)' instead.</summary>
 		///         <remarks>
 		///         </remarks>
-		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'GeocodeAddress (string, CLRegion, NSLocale, CLGeocodeCompletionHandler)' instead.")]
-		[Deprecated (PlatformName.TvOS, 11, 0, message: "Use 'GeocodeAddress (string, CLRegion, NSLocale, CLGeocodeCompletionHandler)' instead.")]
-		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'GeocodeAddress (string, CLRegion, NSLocale, CLGeocodeCompletionHandler)' instead.")]
-		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'GeocodeAddress (string, CLRegion, NSLocale, CLGeocodeCompletionHandler)' instead.")]
+		[Deprecated (PlatformName.iOS, 26, 0, "Use 'MKGeocodingRequest' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, "Use 'MKGeocodingRequest' instead.")]
+		[Deprecated (PlatformName.TvOS, 26, 0, "Use 'MKGeocodingRequest' instead.")]
+		[Deprecated (PlatformName.MacOSX, 26, 0, "Use 'MKGeocodingRequest' instead.")]
 		[Export ("geocodeAddressDictionary:completionHandler:")]
 		[Async (XmlDocs = """
 			<param name="addressDictionary">Addressbook dictionary to submit</param>
@@ -1570,6 +1586,10 @@ namespace CoreLocation {
 		///         <summary>Request a latitude/longitude location from a human readable address.</summary>
 		///         <remarks>
 		///         </remarks>
+		[Deprecated (PlatformName.iOS, 26, 0, "Use 'MKGeocodingRequest' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, "Use 'MKGeocodingRequest' instead.")]
+		[Deprecated (PlatformName.TvOS, 26, 0, "Use 'MKGeocodingRequest' instead.")]
+		[Deprecated (PlatformName.MacOSX, 26, 0, "Use 'MKGeocodingRequest' instead.")]
 		[Export ("geocodeAddressString:completionHandler:")]
 		[Async (XmlDocs = """
 			<param name="addressString">To be added.</param>
@@ -1600,6 +1620,10 @@ namespace CoreLocation {
 		///         <param name="completionHandler">Method to invoke when the request completes.</param>
 		///         <summary>Request a latitude/longitude location from a human readable address and region.</summary>
 		///         <remarks>To be added.</remarks>
+		[Deprecated (PlatformName.iOS, 26, 0, "Use 'MKGeocodingRequest' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, "Use 'MKGeocodingRequest' instead.")]
+		[Deprecated (PlatformName.TvOS, 26, 0, "Use 'MKGeocodingRequest' instead.")]
+		[Deprecated (PlatformName.MacOSX, 26, 0, "Use 'MKGeocodingRequest' instead.")]
 		[Export ("geocodeAddressString:inRegion:completionHandler:")]
 		[Async (XmlDocs = """
 			<param name="addressString">To be added.</param>
@@ -1622,6 +1646,10 @@ namespace CoreLocation {
 		///         <param name="completionHandler">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
+		[Deprecated (PlatformName.iOS, 26, 0, "Use 'MKGeocodingRequest' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, "Use 'MKGeocodingRequest' instead.")]
+		[Deprecated (PlatformName.TvOS, 26, 0, "Use 'MKGeocodingRequest' instead.")]
+		[Deprecated (PlatformName.MacOSX, 26, 0, "Use 'MKGeocodingRequest' instead.")]
 		[MacCatalyst (13, 1)]
 		[Async (XmlDocs = """
 			<param name="addressString">To be added.</param>
@@ -1636,6 +1664,10 @@ namespace CoreLocation {
 
 		/// <summary>Cancels the geocoding attempt.</summary>
 		///         <remarks>To be added.</remarks>
+		[Deprecated (PlatformName.iOS, 26, 0, "Use 'MKGeocodingRequest' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, "Use 'MKGeocodingRequest' instead.")]
+		[Deprecated (PlatformName.TvOS, 26, 0, "Use 'MKGeocodingRequest' instead.")]
+		[Deprecated (PlatformName.MacOSX, 26, 0, "Use 'MKGeocodingRequest' instead.")]
 		[Export ("cancelGeocode")]
 		void CancelGeocode ();
 
@@ -1643,6 +1675,10 @@ namespace CoreLocation {
 		///         <param name="completionHandler">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
+		[Deprecated (PlatformName.iOS, 26, 0, "Use 'MKReverseGeocodingRequest' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, "Use 'MKReverseGeocodingRequest' instead.")]
+		[Deprecated (PlatformName.TvOS, 26, 0, "Use 'MKReverseGeocodingRequest' instead.")]
+		[Deprecated (PlatformName.MacOSX, 26, 0, "Use 'MKReverseGeocodingRequest' instead.")]
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("geocodePostalAddress:completionHandler:")]
@@ -1667,6 +1703,10 @@ namespace CoreLocation {
 		///         <param name="completionHandler">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
+		[Deprecated (PlatformName.iOS, 26, 0, "Use 'MKReverseGeocodingRequest' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, "Use 'MKReverseGeocodingRequest' instead.")]
+		[Deprecated (PlatformName.TvOS, 26, 0, "Use 'MKReverseGeocodingRequest' instead.")]
+		[Deprecated (PlatformName.MacOSX, 26, 0, "Use 'MKReverseGeocodingRequest' instead.")]
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("geocodePostalAddress:preferredLocale:completionHandler:")]
@@ -2041,7 +2081,7 @@ namespace CoreLocation {
 	}
 
 	[Native]
-	[TV (18, 0), NoMac, iOS (18, 0), MacCatalyst (18, 0)]
+	[TV (18, 0), Mac (26, 0), iOS (18, 0), MacCatalyst (18, 0)]
 	public enum CLServiceSessionAuthorizationRequirement : long {
 		None = 0,
 		WhenInUse = 1,

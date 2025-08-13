@@ -8652,6 +8652,7 @@ namespace Metal {
 
 		[Abstract]
 		[Export ("strides")]
+		[NullAllowed]
 		MTLTensorExtents Strides { get; }
 
 		[Abstract]
@@ -9260,6 +9261,7 @@ namespace Metal {
 		string Label { get; set; }
 
 		[Export ("options", ArgumentSemantic.Retain)]
+		[NullAllowed]
 		MTL4PipelineOptions Options { get; set; }
 	}
 
@@ -9610,6 +9612,7 @@ namespace Metal {
 		MTLTensorExtents Dimensions { get; set; }
 
 		[Export ("strides", ArgumentSemantic.Copy)]
+		[NullAllowed]
 		MTLTensorExtents Strides { get; set; }
 
 		[Export ("dataType", ArgumentSemantic.Assign)]

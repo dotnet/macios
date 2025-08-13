@@ -4851,6 +4851,8 @@ namespace UIKit {
 	[Native]
 	public enum UIHdrHeadroomUsageLimit : long {
 		Unspecified = -1,
+		Active,
+		Inactive,
 	}
 
 	[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]

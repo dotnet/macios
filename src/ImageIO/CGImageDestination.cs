@@ -57,92 +57,6 @@ namespace ImageIO {
 		}
 	}
 
-	public partial class CGCopyImageSourceOptions {
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("tvos")]
-		public CGImageMetadata? Metadata { get; set; }
-
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("tvos")]
-		public bool MergeMetadata { get; set; }
-
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("tvos")]
-		public bool ShouldExcludeXMP { get; set; }
-
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("tvos")]
-		public bool ShouldExcludeGPS { get; set; }
-
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("tvos")]
-		public DateTime? DateTime { get; set; }
-
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("tvos")]
-		public int? Orientation { get; set; }
-
-		internal NSMutableDictionary ToDictionary ()
-		{
-			var dict = new NSMutableDictionary ();
-
-			// new in iOS 7 and 10.8
-			if (Metadata is not null) {
-				dict.LowlevelSetObject (Metadata.Handle, kMetadata);
-				// default are false
-				if (MergeMetadata)
-					dict.LowlevelSetObject (CFBoolean.TrueHandle, kMergeMetadata);
-				if (ShouldExcludeXMP)
-					dict.LowlevelSetObject (CFBoolean.TrueHandle, kShouldExcludeXMP);
-			} else {
-				// DateTime is exclusive of metadata (which includes its own)
-				if (DateTime.HasValue)
-					dict.LowlevelSetObject ((NSDate) DateTime, kDateTime);
-			}
-
-			// new in iOS 8 and 10.10 - default is false
-			if (ShouldExcludeGPS && (kShouldExcludeGPS != IntPtr.Zero))
-				dict.LowlevelSetObject (CFBoolean.TrueHandle, kShouldExcludeGPS);
-
-			if (Orientation.HasValue) {
-				using (var n = new NSNumber (Orientation.Value))
-					dict.LowlevelSetObject (n.Handle, kOrientation);
-			}
-
-			return dict;
-		}
-	}
-
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
 	public partial class CGImageAuxiliaryDataInfo {
@@ -475,7 +389,7 @@ namespace ImageIO {
 		[SupportedOSPlatform ("tvos")]
 		public bool CopyImageSource (CGImageSource image, CGCopyImageSourceOptions? options, out NSError? error)
 		{
-			using var o = options?.ToDictionary ();
+			using var o = options?.Dictionary;
 			return CopyImageSource (image, o, out error);
 		}
 

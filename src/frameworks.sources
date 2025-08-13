@@ -287,6 +287,7 @@ AVKIT_API_SOURCES = \
 	AVKit/Enums.cs \
 
 AVKIT_SOURCES = \
+	AVKit/AVCaptureEventSound.cs \
 	AVKit/AVPlayerViewController.cs \
 
 # AVRouting
@@ -1009,6 +1010,7 @@ IMAGEIO_CORE_SOURCES = \
 	ImageIO/CGImageSource.cs \
 
 IMAGEIO_SOURCES = \
+	ImageIO/CGCopyImageSourceOptions.cs \
 	ImageIO/CGImageAnimation.cs \
 	ImageIO/CGImageDestination.cs \
 	ImageIO/CGImageMetadata.cs \
@@ -2120,6 +2122,7 @@ IOS_FRAMEWORKS =         \
 	CoreTelephony \
 	CoreText \
 	DeviceDiscoveryExtension \
+	DeviceDiscoveryUI \
 	EventKit \
 	EventKitUI \
 	ExternalAccessory \
@@ -2205,6 +2208,7 @@ TVOS_FRAMEWORKS =           \
 	AppTrackingTransparency \
 	AudioToolbox            \
 	AudioUnit               \
+	AVRouting               \
 	BackgroundAssets        \
 	BackgroundTasks         \
 	BrowserEngineKit        \

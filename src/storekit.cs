@@ -12,6 +12,7 @@
 
 using System.ComponentModel;
 
+using BackgroundAssets;
 using ObjCRuntime;
 using Foundation;
 using CoreFoundation;
@@ -1755,5 +1756,10 @@ namespace StoreKit {
 		[Export ("version", ArgumentSemantic.Strong)]
 		string Version { get; set; }
 
+	}
+
+	[iOS (26, 0), Mac (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+	[Protocol (BackwardsCompatibleCodeGeneration = false)]
+	interface SKDownloaderExtension : BAManagedDownloaderExtension {
 	}
 }

@@ -6647,6 +6647,10 @@ namespace WebKit {
 		void RestoreData (NSData data, WKWebViewRestoreDataHandler completionHandler);
 
 		[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("obscuredContentInsets", ArgumentSemantic.Assign)]
+		UIEdgeInsets ObscuredContentInsets { get; set; }
+
+		[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
 		[Export ("isBlockedByScreenTime")]
 		bool IsBlockedByScreenTime { get; }
 	}

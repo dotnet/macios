@@ -81,6 +81,7 @@
 !missing-protocol-conformance! NSTitlebarAccessoryViewController should conform to NSAnimatablePropertyContainer
 !missing-protocol-conformance! NSView should conform to NSAnimatablePropertyContainer
 !missing-protocol-conformance! NSWindow should conform to NSAnimatablePropertyContainer
+!missing-protocol-conformance! NSSplitViewItemAccessoryViewController should conform to NSAnimatablePropertyContainer
 !missing-protocol-member! NSApplicationDelegate::applicationDidChangeOcclusionState: not found
 !missing-protocol-member! NSBrowserDelegate::browser:draggingImageForRowsWithIndexes:inColumn:withEvent:offset: not found
 !missing-protocol-member! NSCollectionViewDelegate::collectionView:draggingImageForItemsAtIndexes:withEvent:offset: not found
@@ -1615,3 +1616,5 @@
 # which works fine.
 !missing-selector! NSGradient::initWithColorsAndLocations: not bound
 
+# Likely a mistake '_' denotes internal selector
+!missing-selector! +NSCell::_bulletStringForString:bulletCharacter: not bound

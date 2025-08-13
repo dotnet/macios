@@ -1636,6 +1636,89 @@ namespace AudioToolbox {
 			}
 		}
 
+		[SupportedOSPlatform ("ios26.0")]
+		[SupportedOSPlatform ("tvos26.0")]
+		[SupportedOSPlatform ("maccatalyst26.0")]
+		[SupportedOSPlatform ("macos26.0")]
+		[DllImport (Constants.AudioToolboxLibrary)]
+		unsafe extern static /* OSStatus */ AudioFileError AudioFileWritePacketsWithDependencies (
+			AudioFileID inAudioFile,
+			byte /* Boolean */ inUseCache,
+			uint /* UInt32 */ inNumBytes,
+			AudioStreamPacketDescription* /* const AudioStreamPacketDescription * __nullable */ inPacketDescriptions,
+			AudioStreamPacketDependencyDescription* /* const AudioStreamPacketDependencyDescription * */ inPacketDependencies,
+			long /* SInt64 */ inStartingPacket,
+			uint* /* UInt32 * */ ioNumPackets,
+			IntPtr /* const void * */inBuffer);
+
+		/// <summary>Writes audio packets to the file.</summary>
+		/// <param name="useCache">Whether the data should be kept in the cache.</param>
+		/// <param name="packetDescriptions">An array of packet descriptions that describe the content of the buffer.</param>
+		/// <param name="packetDependencies">An array of packet dependencies for the audio data.</param>
+		/// <param name="startingPacket">The index the first packet in the buffer to write.</param>
+		/// <param name="numPackets">The number of packets to write replaced with the number of packets actually written.</param>
+		/// <param name="buffer">The buffer containing the audio data to write.</param>
+		/// <param name="numBytes">The number of bytes to write.</param>
+		/// <returns><see cref="AudioFileError.Success" /> if successful, otherwise a status error code.</returns>
+		[SupportedOSPlatform ("ios26.0")]
+		[SupportedOSPlatform ("tvos26.0")]
+		[SupportedOSPlatform ("maccatalyst26.0")]
+		[SupportedOSPlatform ("macos26.0")]
+		public AudioFileError WritePackets (bool useCache, AudioStreamPacketDescription []? packetDescriptions, AudioStreamPacketDependencyDescription [] packetDependencies, long startingPacket, ref int numPackets, IntPtr buffer, int numBytes)
+		{
+			if (buffer == IntPtr.Zero)
+				throw new ArgumentException (nameof (buffer));
+
+			if (packetDependencies is null)
+				ThrowHelper.ThrowArgumentNullException (nameof (packetDependencies));
+
+			unsafe {
+				fixed (AudioStreamPacketDescription* packetDescriptionsPtr = packetDescriptions) {
+					fixed (AudioStreamPacketDependencyDescription* packetDependenciesPtr = packetDependencies) {
+						return AudioFileWritePacketsWithDependencies (
+							GetCheckedHandle (),
+							useCache.AsByte (),
+							(uint) numBytes,
+							packetDescriptionsPtr,
+							packetDependenciesPtr,
+							startingPacket,
+							(uint*) Unsafe.AsPointer<int> (ref numPackets),
+							buffer);
+					}
+				}
+			}
+		}
+
+		/// <summary>Writes audio packets to the file.</summary>
+		/// <param name="useCache">Whether the data should be kept in the cache.</param>
+		/// <param name="numBytes">The number of bytes to write.</param>
+		/// <param name="packetDescriptions">An array of packet descriptions that describe the content of the buffer.</param>
+		/// <param name="packetDependencies">An array of packet dependencies for the audio data.</param>
+		/// <param name="startingPacket">The index the first packet in the buffer to write.</param>
+		/// <param name="numPackets">The number of packets to write replaced with the number of packets actually written.</param>
+		/// <param name="buffer">The buffer containing the audio data to write.</param>
+		/// <param name="offset">An offset into <see paramref="buffer" /> where the audio data to write starts.</param>
+		/// <returns><see cref="AudioFileError.Success" /> if successful, otherwise a status error code.</returns>
+		[SupportedOSPlatform ("ios26.0")]
+		[SupportedOSPlatform ("tvos26.0")]
+		[SupportedOSPlatform ("maccatalyst26.0")]
+		[SupportedOSPlatform ("macos26.0")]
+		public AudioFileError WritePackets (bool useCache, AudioStreamPacketDescription []? packetDescriptions, AudioStreamPacketDependencyDescription [] packetDependencies, long startingPacket, ref int numPackets, byte [] buffer, int offset, int numBytes)
+		{
+			if (buffer is null)
+				ThrowHelper.ThrowArgumentNullException (nameof (buffer));
+			if (offset < 0)
+				throw new ArgumentOutOfRangeException (nameof (offset), "< 0");
+			if (numBytes < 0)
+				throw new ArgumentOutOfRangeException (nameof (numBytes), "< 0");
+			if (offset > buffer.Length - numBytes)
+				throw new ArgumentException ("Reading would overrun buffer");
+			unsafe {
+				fixed (byte* bufferPtr = &buffer [offset])
+					return WritePackets (useCache, packetDescriptions, packetDependencies, startingPacket, ref numPackets, (IntPtr) bufferPtr, numBytes);
+			}
+		}
+
 		[DllImport (Constants.AudioToolboxLibrary)]
 		unsafe extern static OSStatus AudioFileCountUserData (AudioFileID handle, uint userData, int* count);
 

@@ -65,6 +65,7 @@ jobs:
       gitHubToken: ${{ parameters.gitHubToken }}
       xqaCertPass: ${{ parameters.xqaCertPass }}
       prID: variables['PrID']
+      xcodeChannel: ${{ parameters.xcodeChannel }}
 
 # Upload results to vsdrops & publish to github
 - job: publish_change_detection_results

@@ -12057,6 +12057,11 @@ namespace CoreImage {
 		[Abstract]
 		[Export ("color", ArgumentSemantic.Retain)]
 		CIColor Color { get; set; }
+
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0), Mac (26, 0)]
+		[Abstract]
+		[Export ("smoothness", ArgumentSemantic.Retain)]
+		float Smoothness { get; set; }
 	}
 
 	[iOS (13, 0)]
@@ -13262,6 +13267,11 @@ namespace CoreImage {
 		[Abstract]
 		[NullAllowed, Export ("color", ArgumentSemantic.Retain)]
 		CIColor Color { get; set; }
+
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0), Mac (26, 0)]
+		[Abstract]
+		[Export ("smoothness", ArgumentSemantic.Retain)]
+		float Smoothness { get; set; }
 	}
 
 	[CoreImageFilter]

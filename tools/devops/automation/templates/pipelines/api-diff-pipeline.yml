@@ -54,7 +54,7 @@ variables:
 stages:
 - template: ../api-diff-stage.yml
   parameters:
-    xcodeChannel: Stable
+    xcodeChannel: Beta
     macOSName: ${{ parameters.macOSName }}
     isPR: ${{ parameters.isPR }}
     provisionatorChannel: ${{ parameters.provisionatorChannel }}

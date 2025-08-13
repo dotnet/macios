@@ -1,0 +1,5 @@
+!missing-enum-value! PhaseAutomaticHeadTrackingFlags native value PHASEAutomaticHeadTrackingFlagPosition = 2 not bound
+!missing-selector! PHASEEngine::lastRenderTime not bound
+!missing-selector! PHASESoundEvent::resumeAtTime: not bound
+!missing-selector! PHASESoundEvent::seekToTime:resumeAtEngineTime:completion: not bound
+!missing-selector! PHASESoundEvent::startAtTime:completion: not bound

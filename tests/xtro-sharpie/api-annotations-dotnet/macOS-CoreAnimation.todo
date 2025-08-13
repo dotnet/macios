@@ -1,0 +1,12 @@
+!deprecated-attribute-missing! CALayer::setWantsExtendedDynamicRangeContent: missing a [Deprecated] attribute
+!deprecated-attribute-missing! CALayer::wantsExtendedDynamicRangeContent missing a [Deprecated] attribute
+!missing-field! CADynamicRangeAutomatic not bound
+!missing-field! CADynamicRangeConstrainedHigh not bound
+!missing-field! CADynamicRangeHigh not bound
+!missing-field! CADynamicRangeStandard not bound
+!missing-field! kCAContentsFormatAutomatic not bound
+!missing-selector! CALayer::contentsHeadroom not bound
+!missing-selector! CALayer::preferredDynamicRange not bound
+!missing-selector! CALayer::setContentsHeadroom: not bound
+!missing-selector! CALayer::setPreferredDynamicRange: not bound
+!missing-selector! CAMetalLayer::residencySet not bound

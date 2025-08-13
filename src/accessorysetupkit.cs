@@ -225,7 +225,13 @@ namespace AccessorySetupKit {
 		UIImage ProductImage { get; }
 
 		[Export ("descriptor", ArgumentSemantic.Copy)]
-		ASDiscoveryDescriptor Descriptor { get; set; }
+		ASDiscoveryDescriptor Descriptor {
+			get;
+#if !XAMCORE_5_0
+			[Obsoleted (PlatformName.iOS, 26, 0, "This property setter is not available.")]
+			set;
+#endif // !XAMCORE_5_0
+		}
 
 		[Export ("renameOptions", ArgumentSemantic.Assign)]
 		ASAccessoryRenameOptions RenameOptions { get; set; }

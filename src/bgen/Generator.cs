@@ -1884,6 +1884,9 @@ public partial class Generator : IMemberGatherer {
 						} else if (fetchType == TypeCache.System_nuint) {
 							getter = "{1} GetNUIntValue ({0})";
 							setter = "SetNumberValue ({0}, {1}value)";
+						} else if (fetchType == TypeCache.System_DateTime) {
+							getter = "GetDateTimeValue ({0})";
+							setter = "SetNativeValue ({0}, (NSDate?) value)";
 						} else if (fetchType == TypeCache.CoreGraphics_CGRect) {
 							getter = "{1} GetCGRectValue ({0})";
 							setter = "SetCGRectValue ({0}, {1}value)";
@@ -1951,17 +1954,11 @@ public partial class Generator : IMemberGatherer {
 							var strType = pi.PropertyType.Name;
 							getter = $"GetStrongDictionary<{strType}>({{0}}, (dict) => new {strType} (dict))";
 							setter = "SetNativeValue ({0}, value.GetDictionary ())";
+						} else if (TypeCache.INativeObject.IsAssignableFrom (pi.PropertyType)) {
+							getter = $"GetNativeValue<{pi.PropertyType}> ({{0}})";
+							setter = "SetNativeValue ({0}, value)";
 						} else if (TypeManager.IsWrappedType (pi.PropertyType)) {
 							getter = "Dictionary [{0}] as " + pi.PropertyType;
-							setter = "SetNativeValue ({0}, value)";
-						} else if (pi.PropertyType.Name == "CGColorSpace") {
-							getter = "GetNativeValue<" + pi.PropertyType + "> ({0})";
-							setter = "SetNativeValue ({0}, value)";
-						} else if (pi.PropertyType.Name == "CGImageSource") {
-							getter = "GetNativeValue<" + pi.PropertyType + "> ({0})";
-							setter = "SetNativeValue ({0}, value)";
-						} else if (pi.PropertyType.Name == "CTFontDescriptor") {
-							getter = "GetNativeValue<" + pi.PropertyType + "> ({0})";
 							setter = "SetNativeValue ({0}, value)";
 						} else {
 							exceptions.Add (new BindingException (1033, true, pi.PropertyType, dictType, pi.Name));

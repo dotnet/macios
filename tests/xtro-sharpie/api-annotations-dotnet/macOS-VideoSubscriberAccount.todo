@@ -1,0 +1,6 @@
+!missing-enum! VSAutoSignInAuthorization not bound
+!missing-selector! VSAutoSignInToken::authorization not bound
+!missing-selector! VSAutoSignInToken::value not bound
+!missing-selector! VSUserAccountManager::deleteAutoSignInTokenWithCompletionHandler: not bound
+!missing-selector! VSUserAccountManager::queryAutoSignInTokenWithCompletionHandler: not bound
+!missing-type! VSAutoSignInToken not bound

@@ -287,6 +287,7 @@ AVKIT_API_SOURCES = \
 	AVKit/Enums.cs \
 
 AVKIT_SOURCES = \
+	AVKit/AVCaptureEventSound.cs \
 	AVKit/AVPlayerViewController.cs \
 
 # AVRouting
@@ -302,6 +303,7 @@ BACKGROUNDTASKS_API_SOURCES = \
 # BackgroundAssets
 
 BACKGROUNDASSETS_SOURCES = \
+	BackgroundAssets/BAAssetPackManifest.cs \
 	BackgroundAssets/BACompat.cs \
 
 # BrowserEngineKit
@@ -815,7 +817,6 @@ FOUNDATION_SOURCES = \
 	Foundation/NSAttributedString.mac.cs \
 	Foundation/NSBundle.cs \
 	Foundation/NSBundleResourceRequest.cs \
-	Foundation/NSCalendar.cs \
 	Foundation/NSCoder.cs \
 	Foundation/NSOrderedCollectionChange.cs \
 	Foundation/NSOrderedCollectionChange_1.cs \
@@ -1009,6 +1010,7 @@ IMAGEIO_CORE_SOURCES = \
 	ImageIO/CGImageSource.cs \
 
 IMAGEIO_SOURCES = \
+	ImageIO/CGCopyImageSourceOptions.cs \
 	ImageIO/CGImageAnimation.cs \
 	ImageIO/CGImageDestination.cs \
 	ImageIO/CGImageMetadata.cs \
@@ -1156,6 +1158,14 @@ METAL_CORE_SOURCES = \
 	Metal/Defs.cs \
 
 METAL_SOURCES = \
+	Metal/MTL4CommandBuffer.cs \
+	Metal/MTL4CommandQueue.cs \
+	Metal/MTL4CopySparseBufferMappingOperation.cs \
+	Metal/MTL4CopySparseTextureMappingOperation.cs \
+	Metal/MTL4RenderCommandEncoder.cs \
+	Metal/MTL4RenderPassDescriptor.cs \
+	Metal/MTL4UpdateSparseBufferMappingOperation.cs \
+	Metal/MTL4UpdateSparseTextureMappingOperation.cs \
 	Metal/MTLArgumentEncoder.cs \
 	Metal/MTLBlitPassSampleBufferAttachmentDescriptorArray.cs \
 	Metal/MTLCommandBuffer.cs \
@@ -1173,6 +1183,7 @@ METAL_SOURCES = \
 	Metal/MTLResidencySet.cs \
 	Metal/MTLResourceStateCommandEncoder.cs \
 	Metal/MTLResourceStatePassSampleBufferAttachmentDescriptorArray.cs \
+	Metal/MTLTensorExtents.cs \
 	Metal/MTLVertexDescriptor.cs \
 
 # MetalFX
@@ -1413,6 +1424,11 @@ PDFKIT_API_SOURCES = \
 PDFKIT_SOURCES = \
 	PdfKit/PdfAnnotation.cs \
 	PdfKit/PdfKit.cs \
+
+# Phase
+
+PHASE_SOURCES = \
+	Phase/PhaseConeDirectivityModelParameters.cs \
 
 # Photos
 
@@ -1799,6 +1815,7 @@ WEBKIT_SOURCES = \
 	WebKit/WebView.cs \
 	WebKit/WKContentRuleList.cs \
 	WebKit/WKContentRuleListStore.cs \
+	WebKit/WKNavigationResponse.cs \
 	WebKit/WKPreferences.cs \
 	WebKit/WKWebExtensionMatchPattern.cs \
 	WebKit/WKWindowFeatures.cs \

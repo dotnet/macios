@@ -1,0 +1,5 @@
+!missing-selector! BEAudioSession::availableOutputs not bound
+!missing-selector! BEAudioSession::initWithAudioSession: not bound
+!missing-selector! BEAudioSession::preferredOutput not bound
+!missing-selector! BEAudioSession::setPreferredOutput:error: not bound
+!missing-type! BEAudioSession not bound

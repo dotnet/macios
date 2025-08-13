@@ -885,6 +885,7 @@ namespace Phase {
 
 	[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
 	[BaseType (typeof (PhaseDirectivityModelParameters), Name = "PHASEConeDirectivityModelParameters")]
+	[DisableDefaultCtor] // doesn't have init itself, and the base class has it marked as unavailable
 	interface PhaseConeDirectivityModelParameters {
 		[Export ("initWithSubbandParameters:")]
 		NativeHandle Constructor (PhaseConeDirectivityModelSubbandParameters [] subbandParameters);

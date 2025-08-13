@@ -1,0 +1,4 @@
+!missing-protocol! BEExtensionProcess not bound
+!missing-protocol-conformance! BENetworkingProcess should conform to BEExtensionProcess (defined in 'BEExtensionProcessConformance' category)
+!missing-protocol-conformance! BERenderingProcess should conform to BEExtensionProcess (defined in 'BEExtensionProcessConformance' category)
+!missing-protocol-conformance! BEWebContentProcess should conform to BEExtensionProcess (defined in 'BEExtensionProcessConformance' category)

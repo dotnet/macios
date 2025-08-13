@@ -1,0 +1,6 @@
+!missing-selector! ARQuickLookPreviewItem::allowsContentScaling not bound
+!missing-selector! ARQuickLookPreviewItem::canonicalWebPageURL not bound
+!missing-selector! ARQuickLookPreviewItem::initWithFileAtURL: not bound
+!missing-selector! ARQuickLookPreviewItem::setAllowsContentScaling: not bound
+!missing-selector! ARQuickLookPreviewItem::setCanonicalWebPageURL: not bound
+!missing-type! ARQuickLookPreviewItem not bound

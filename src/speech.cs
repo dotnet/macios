@@ -456,7 +456,7 @@ namespace Speech {
 
 	[Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0), TV (18, 0)]
 	[BaseType (typeof (NSObject))]
-	interface SFSpeechLanguageModelConfiguration : NSCopying {
+	interface SFSpeechLanguageModelConfiguration : NSCopying, NSSecureCoding {
 		[Export ("initWithLanguageModel:")]
 		NativeHandle Constructor (NSUrl languageModel);
 

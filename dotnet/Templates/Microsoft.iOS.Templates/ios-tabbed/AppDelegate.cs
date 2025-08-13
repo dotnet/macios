@@ -4,9 +4,6 @@ namespace iOSTabbedApp1;
 // User Interface of the application, as well as listening (and optionally responding) to application events from iOS.
 public class AppDelegate : UIResponder, IUIApplicationDelegate {
 
-	[Export ("window")]
-	public UIWindow? Window { get; set; }
-
 	[Export ("application:didFinishLaunchingWithOptions:")]
 	public bool FinishedLaunching (UIApplication application, NSDictionary? launchOptions)
 	{

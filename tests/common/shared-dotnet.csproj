@@ -61,6 +61,12 @@
 		<CustomBeforeMicrosoftCommonTargets>$(CustomBeforeMicrosoftCommonTargets);$(MSBuildThisFileDirectory)SupportedOSPlatformVersions.targets</CustomBeforeMicrosoftCommonTargets>
 	</PropertyGroup>
 
+	<ItemGroup>
+		<PartialAppManifest Include="$(RootTestsDirectory)/common/shared-dotnet.plist" Condition="'$(_PlatformName)' != 'macOS'">
+			<Link>shared-dotnet.plist</Link>
+		</PartialAppManifest>
+	</ItemGroup>
+
 	<!-- Logic for NativeAOT -->
 	<PropertyGroup Condition="'$(PublishAot)' == 'true' And '$(_IsPublishing)' == 'true'">
 		<!-- Define NATIVEAOT when using NativeAOT -->

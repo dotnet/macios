@@ -521,6 +521,11 @@ namespace Introspection {
 				case "maxVertexBufferBindCount":
 				case "setMaxVertexBufferBindCount:":
 					return true;
+				case "supportColorAttachmentMapping":
+				case "setSupportColorAttachmentMapping:":
+					if (TestRuntime.IsSimulator)
+						return true;
+					break;
 				}
 				break;
 			case "MTLPipelineBufferDescriptor":
@@ -1122,6 +1127,18 @@ namespace Introspection {
 					return !TestRuntime.CheckXcodeVersion (15, 0); // it's not in iOS 16, but maybe iOS 17?
 				}
 				break;
+			case "CPListImageRowItem":
+				switch (selectorName) {
+				case "imageTitles":
+					return TestRuntime.CheckXcodeVersion (26, 0); // https://github.com/rolfbjarne/apple-feedback/tree/main/FB18122430
+				}
+				break;
+			case "PhaseSoundEvent":
+				switch (selectorName) {
+				case "startAndReturnError:": // incorrect binding
+					return TestRuntime.CheckXcodeVersion (26, 0);
+				}
+				break;
 			case "NSDate":
 				switch (selectorName) {
 				case "dateWithSRAbsoluteTime:": // This is from a category defined in SensorKit, and SensorKit doesn't exist on iPads
@@ -1132,6 +1149,78 @@ namespace Introspection {
 					break;
 				}
 				break;
+			case "MTLRenderPassDescriptor":
+				switch (selectorName) {
+				case "supportColorAttachmentMapping":
+				case "setSupportColorAttachmentMapping:":
+				case "visibilityResultType":
+				case "setVisibilityResultType:":
+					if (TestRuntime.IsSimulator)
+						return true;
+					break;
+				}
+				break;
+			case "MTLArrayType":
+				switch (selectorName) {
+				case "elementTensorReferenceType":
+					if (TestRuntime.IsSimulator)
+						return true;
+					break;
+				}
+				break;
+			case "MTLCompileOptions":
+				switch (selectorName) {
+				case "requiredThreadsPerThreadgroup":
+				case "setRequiredThreadsPerThreadgroup:":
+					if (TestRuntime.IsSimulator)
+						return true;
+					break;
+				}
+				break;
+			case "MTLComputePipelineDescriptor":
+				switch (selectorName) {
+				case "requiredThreadsPerThreadgroup":
+				case "setRequiredThreadsPerThreadgroup:":
+					if (TestRuntime.IsSimulator)
+						return true;
+					break;
+				}
+				break;
+			case "MTLFunctionReflection":
+				switch (selectorName) {
+				case "bindings":
+					return true;
+				}
+				break;
+			case "MTLMeshRenderPipelineDescriptor":
+				switch (selectorName) {
+				case "requiredThreadsPerMeshThreadgroup":
+				case "setRequiredThreadsPerMeshThreadgroup:":
+				case "requiredThreadsPerObjectThreadgroup":
+				case "setRequiredThreadsPerObjectThreadgroup:":
+					if (TestRuntime.IsSimulator)
+						return true;
+					break;
+				}
+				break;
+			case "MTLStructMember":
+				switch (selectorName) {
+				case "tensorReferenceType":
+					if (TestRuntime.IsSimulator)
+						return true;
+					break;
+				}
+				break;
+			case "MTLTextureDescriptor":
+				switch (selectorName) {
+				case "placementSparsePageSize":
+				case "setPlacementSparsePageSize:":
+					if (TestRuntime.IsSimulator)
+						return true;
+					break;
+				}
+				break;
+
 			}
 
 			// old binding mistake

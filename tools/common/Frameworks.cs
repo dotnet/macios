@@ -582,7 +582,7 @@ public class Frameworks : Dictionary<string, Framework> {
 					{ "Symbols", "Symbols", 17, 0 },
 					{ "NetworkExtension", "NetworkExtension", 17, 0 },
 					{ "Phase", "PHASE", new Version (17,0), NotAvailableInSimulator },
-					{ "BrowserEngineKit", "BrowserEngineKit", new Version (17, 4), NotAvailableInSimulator },
+					{ "BrowserEngineKit", "BrowserEngineKit", new Version (17, 4), new Version (26, 0) },
 
 					{ "PdfKit", "PDFKit", 18, 2 },
 

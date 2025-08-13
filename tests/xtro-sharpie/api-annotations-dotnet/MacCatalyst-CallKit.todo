@@ -1,0 +1,3 @@
+!missing-enum-value! CXErrorCodeIncomingCallError native value CXErrorCodeIncomingCallErrorFilteredBySensitiveParticipants = 7 not bound
+!missing-selector! CXProviderConfiguration::setSupportsAudioTranslation: not bound
+!missing-selector! CXProviderConfiguration::supportsAudioTranslation not bound

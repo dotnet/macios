@@ -1,0 +1,7 @@
+!missing-protocol! AVRoutingPlaybackParticipant not bound
+!missing-selector! +AVRoutingPlaybackArbiter::sharedRoutingPlaybackArbiter not bound
+!missing-selector! AVRoutingPlaybackArbiter::preferredParticipantForExternalPlayback not bound
+!missing-selector! AVRoutingPlaybackArbiter::preferredParticipantForNonMixableAudioRoutes not bound
+!missing-selector! AVRoutingPlaybackArbiter::setPreferredParticipantForExternalPlayback: not bound
+!missing-selector! AVRoutingPlaybackArbiter::setPreferredParticipantForNonMixableAudioRoutes: not bound
+!missing-type! AVRoutingPlaybackArbiter not bound

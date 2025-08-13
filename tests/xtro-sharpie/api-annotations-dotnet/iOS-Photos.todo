@@ -1,0 +1,10 @@
+!deprecated-attribute-missing! PHCachingImageManager::allowsCachingHighQualityImages missing a [Deprecated] attribute
+!deprecated-attribute-missing! PHCachingImageManager::setAllowsCachingHighQualityImages: missing a [Deprecated] attribute
+!missing-enum-value! PHAssetCollectionSubtype native value PHAssetCollectionSubtypeSmartAlbumScreenRecordings = 220 not bound
+!missing-enum-value! PHAssetMediaSubtype native value PHAssetMediaSubtypeVideoScreenRecording = 524288 not bound
+!missing-selector! PHAsset::addedDate not bound
+!missing-selector! PHAsset::contentType not bound
+!missing-selector! PHAssetResource::contentType not bound
+!missing-selector! PHAssetResourceCreationOptions::contentType not bound
+!missing-selector! PHAssetResourceCreationOptions::setContentType: not bound
+!missing-selector! PHContentEditingInput::contentType not bound

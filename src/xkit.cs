@@ -3924,6 +3924,10 @@ namespace UIKit {
 
 		[Export ("replaceContentsInRange:withAttributedString:")]
 		void ReplaceContents (NSTextRange range, NSAttributedString attributedString);
+
+		[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0), Mac (26, 0)]
+		[Export ("resolvesNaturalAlignmentWithBaseWritingDirection")]
+		bool ResolvesNaturalAlignmentWithBaseWritingDirection { get; set; }
 	}
 
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
@@ -4700,6 +4704,10 @@ namespace UIKit {
 		[Export ("adjustedRangeFromRange:forEditingTextSelection:")]
 		[return: NullAllowed]
 		NSTextRange GetAdjustedRange (NSTextRange textRange, bool forEditingTextSelection);
+
+		[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0), Mac (26, 0)]
+		[Export ("includesTextListMarkers")]
+		bool IncludesTextListMarkers { get; set; }
 	}
 
 	[MacCatalyst (13, 0)]
@@ -4748,6 +4756,10 @@ namespace UIKit {
 		[Export ("ordered")]
 		bool Ordered { [Bind ("isOrdered")] get; }
 
+		[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Static]
+		[Export ("includesTextListMarkers")]
+		bool IncludesTextListMarkers { get; }
 	}
 
 	[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
@@ -5261,6 +5273,10 @@ namespace UIKit {
 
 		[Export ("updateForReflowedTextInContextWithIdentifier:")]
 		void UpdateForReflowedTextInContext (NSUuid contextId);
+
+		[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0), Mac (26, 0)]
+		[Export ("includesTextListMarkers")]
+		bool IncludesTextListMarkers { get; set; }
 	}
 
 #if MONOMAC

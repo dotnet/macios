@@ -85,3 +85,4 @@ jobs:
           gitHubToken: ${{ parameters.gitHubToken }}
           xqaCertPass: ${{ parameters.xqaCertPass }}
           use1ES: ${{ parameters.use1ES }}
+          xcodeChannel: ${{ parameters.xcodeChannel }}

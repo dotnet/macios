@@ -1,0 +1,3 @@
+!extra-enum-value! Managed value 3 for LAPolicy.DeviceOwnerAuthenticationWithCompanion is available for the current platform while the value in the native header is not
+!extra-enum-value! Managed value 4 for LAPolicy.DeviceOwnerAuthenticationWithBiometricsOrCompanion is available for the current platform while the value in the native header is not
+!missing-enum-value! LACompanionType native value LACompanionTypeVision = 4 not bound

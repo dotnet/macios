@@ -12,3 +12,6 @@
 !missing-selector! ARVideoFormat::isRecommendedForHighResolutionFrameCapturing not bound
 !missing-selector! ARVideoFormat::isVideoHDRSupported not bound
 !missing-type! ARPlaneExtent not bound
+!missing-selector! ARSession::captureHighResolutionFrameUsingPhotoSettings:completion: not bound
+!missing-selector! ARVideoFormat::defaultColorSpace not bound
+!missing-selector! ARVideoFormat::defaultPhotoSettings not bound

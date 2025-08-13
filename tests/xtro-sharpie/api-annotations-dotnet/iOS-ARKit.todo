@@ -8,3 +8,6 @@
 !wrong-simd-missing-marshaldirective! System.IntPtr ARKit.ARSkeleton2D::get_RawJointLandmarks(): simd type: simd_float2
 !wrong-simd-missing-marshaldirective! System.IntPtr ARKit.ARSkeleton3D::get_RawJointLocalTransforms(): simd type: simd_float4x4
 !wrong-simd-missing-marshaldirective! System.IntPtr ARKit.ARSkeleton3D::get_RawJointModelTransforms(): simd type: simd_float4x4
+!missing-selector! ARSession::captureHighResolutionFrameUsingPhotoSettings:completion: not bound
+!missing-selector! ARVideoFormat::defaultColorSpace not bound
+!missing-selector! ARVideoFormat::defaultPhotoSettings not bound

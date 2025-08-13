@@ -89,7 +89,7 @@ variables:
 stages:
 - template: ../main-stage.yml
   parameters:
-    xcodeChannel: Stable
+    xcodeChannel: Beta
     macOSName: ${{ parameters.macOSName }}
     isPR: ${{ parameters.isPR }}
     provisionatorChannel: ${{ parameters.provisionatorChannel }}

@@ -27,3 +27,7 @@
 !missing-selector! CATapDescription::stream not bound
 !missing-selector! CATapDescription::UUID not bound
 !missing-type! CATapDescription not bound
+!missing-selector! CATapDescription::bundleIDs not bound
+!missing-selector! CATapDescription::isProcessRestoreEnabled not bound
+!missing-selector! CATapDescription::setBundleIDs: not bound
+!missing-selector! CATapDescription::setProcessRestoreEnabled: not bound

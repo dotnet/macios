@@ -1,0 +1,13 @@
+!missing-field! kCVImageBufferDisplayMaskRectangle_LeftEdgePointsKey not bound
+!missing-field! kCVImageBufferDisplayMaskRectangle_RectangleHeightKey not bound
+!missing-field! kCVImageBufferDisplayMaskRectangle_RectangleLeftKey not bound
+!missing-field! kCVImageBufferDisplayMaskRectangle_RectangleTopKey not bound
+!missing-field! kCVImageBufferDisplayMaskRectangle_RectangleWidthKey not bound
+!missing-field! kCVImageBufferDisplayMaskRectangle_ReferenceRasterHeightKey not bound
+!missing-field! kCVImageBufferDisplayMaskRectangle_ReferenceRasterWidthKey not bound
+!missing-field! kCVImageBufferDisplayMaskRectangle_RightEdgePointsKey not bound
+!missing-field! kCVImageBufferDisplayMaskRectangleKey not bound
+!missing-field! kCVImageBufferDisplayMaskRectangleStereoLeftKey not bound
+!missing-field! kCVImageBufferDisplayMaskRectangleStereoRightKey not bound
+!missing-pinvoke! CVPixelBufferIsCompatibleWithAttributes is not bound
+!missing-pinvoke! CVPixelFormatTypeCopyFourCharCodeString is not bound

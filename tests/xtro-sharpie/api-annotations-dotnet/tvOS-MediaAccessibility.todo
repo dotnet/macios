@@ -1,0 +1,5 @@
+!missing-pinvoke! MACaptionAppearanceCopyActiveProfileID is not bound
+!missing-pinvoke! MACaptionAppearanceCopyProfileIDs is not bound
+!missing-pinvoke! MACaptionAppearanceCopyProfileName is not bound
+!missing-pinvoke! MACaptionAppearanceExecuteBlockForProfileID is not bound
+!missing-pinvoke! MACaptionAppearanceSetActiveProfileID is not bound

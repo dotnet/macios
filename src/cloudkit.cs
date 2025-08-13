@@ -2852,11 +2852,8 @@ namespace CloudKit {
 
 	[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
 	[BaseType (typeof (CKOperation))]
-	[DisableDefaultCtor]
+	[DesignatedDefaultCtor]
 	interface CKShareRequestAccessOperation {
-		[DesignatedInitializer]
-		[Export ("init")]
-		NativeHandle Constructor ();
 
 		[Export ("initWithShareURLs:")]
 		NativeHandle Constructor (NSUrl [] shareUrls);

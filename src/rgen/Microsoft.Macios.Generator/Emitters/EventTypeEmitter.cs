@@ -51,7 +51,7 @@ class EventTypeEmitter (
 		builder.WriteLine ($"namespace {eventInfo.Namespace};");
 		builder.WriteLine ();
 
-		var argsClassName = eventInfo.EventArgsType.EndsWith ("EventArgs")
+		var argsClassName = eventInfo.EventArgsType.EndsWith ("EventArgs", StringComparison.Ordinal)
 			? eventInfo.EventArgsType
 			: $"{eventInfo.EventArgsType}EventArgs";
 

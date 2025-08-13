@@ -474,6 +474,7 @@ public class Frameworks : Dictionary<string, Framework> {
 
 				{ "SecurityUI", "SecurityUI", 18, 4 },
 
+				{ "DeviceDiscoveryUI", "DeviceDiscoveryUI", 26, 0 },
 				{ "ExtensionKit", "ExtensionKit", 26, 0 },
 				// the above MUST be kept in sync with simlauncher
 				// see tools/mtouch/Makefile
@@ -633,6 +634,7 @@ public class Frameworks : Dictionary<string, Framework> {
 					f.Version = v18_0;
 					break;
 				// These frameworks are not available on Mac Catalyst
+				case "DeviceDiscoveryUI": // xtro and introspection says it's not in Mac Catalyst, Apple's website says it is. For now, listen to xtro and introspection, until proven otherwise.
 				case "OpenGLES":
 				case "NewsstandKit":
 				case "MediaSetup":

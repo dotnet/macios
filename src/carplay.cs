@@ -422,8 +422,14 @@ namespace CarPlay {
 	interface CPGridButton : NSSecureCoding {
 
 		[Export ("initWithTitleVariants:image:handler:")]
-		[DesignatedInitializer]
+		[Deprecated (PlatformName.iOS, 26, 0, message: "Use 'Constructor (string[], UIImage, CPMessageGridItemConfiguration, Action<CPGridButton>)' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, message: "Use 'Constructor (string[], UIImage, CPMessageGridItemConfiguration, Action<CPGridButton>)' instead.")]
 		NativeHandle Constructor (string [] titleVariants, UIImage image, [NullAllowed] Action<CPGridButton> handler);
+
+		[iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("initWithTitleVariants:image:messageConfiguration:handler:")]
+		[DesignatedInitializer]
+		NativeHandle Constructor (string [] titleVariants, UIImage image, [NullAllowed] CPMessageGridItemConfiguration messageConfiguration, [NullAllowed] Action<CPGridButton> handler);
 
 		/// <summary>Gets or sets whether the button is enabled.</summary>
 		///         <value>To be added.</value>
@@ -436,6 +442,18 @@ namespace CarPlay {
 
 		[Export ("titleVariants")]
 		string [] TitleVariants { get; }
+
+		[iOS (26, 0), MacCatalyst (26, 0)]
+		[NullAllowed, Export ("messageConfiguration", ArgumentSemantic.Strong)]
+		CPMessageGridItemConfiguration MessageConfiguration { get; }
+
+		[iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("updateImage:")]
+		void UpdateImage (UIImage image);
+
+		[iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("updateTitleVariants:")]
+		void UpdateTitleVariants (string [] titleVariants);
 	}
 
 	/// <summary>
@@ -465,6 +483,11 @@ namespace CarPlay {
 		[iOS (15, 0), MacCatalyst (15, 0)]
 		[Field ("CPGridTemplateMaximumItems")]
 		nuint MaximumItems { get; }
+
+		[iOS (26, 0), MacCatalyst (26, 0)]
+		[Static]
+		[Export ("maximumGridButtonImageSize")]
+		CGSize MaximumGridButtonImageSize { get; }
 	}
 
 	/// <summary>A system-created controller object (similar, but not derived from, <see cref="UIKit.UIViewController" />).</summary>
@@ -843,6 +866,10 @@ namespace CarPlay {
 		[Export ("initWithTitle:sections:assistantCellConfiguration:")]
 		NativeHandle Constructor ([NullAllowed] string title, CPListSection [] sections, [NullAllowed] CPAssistantCellConfiguration assistantCellConfiguration);
 
+		[iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("initWithTitle:sections:assistantCellConfiguration:headerGridButtons:")]
+		NativeHandle Constructor ([NullAllowed] string title, CPListSection [] sections, [NullAllowed] CPAssistantCellConfiguration assistantCellConfiguration, [NullAllowed] CPGridButton [] headerGridButtons);
+
 		/// <summary>An instance of the CarPlay.ICPListTemplateDelegate model class which acts as the class delegate.</summary>
 		///         <value>The instance of the CarPlay.ICPListTemplateDelegate model class</value>
 		///         <remarks>
@@ -910,6 +937,21 @@ namespace CarPlay {
 		[iOS (18, 4), MacCatalyst (18, 4)]
 		[Export ("showsSpinnerWhileEmpty", ArgumentSemantic.Assign)]
 		bool ShowsSpinnerWhileEmpty { get; set; }
+
+		[iOS (26, 0), MacCatalyst (26, 0)]
+		[NullAllowed]
+		[Export ("headerGridButtons", ArgumentSemantic.Copy)]
+		CPGridButton [] HeaderGridButtons { get; set; }
+
+		[iOS (26, 0), MacCatalyst (26, 0)]
+		[Static]
+		[Export ("maximumGridButtonImageSize")]
+		CGSize MaximumGridButtonImageSize { get; }
+
+		[iOS (26, 0), MacCatalyst (26, 0)]
+		[Static]
+		[Export ("maximumHeaderGridButtonCount")]
+		nuint MaximumHeaderGridButtonCount { get; }
 	}
 
 	/// <summary>Delegate object for <see cref="CarPlay.CPListTemplate" /> objects.</summary>
@@ -1305,6 +1347,79 @@ namespace CarPlay {
 		/// <remarks>To be added.</remarks>
 		[Export ("mapTemplate:displayStyleForManeuver:")]
 		CPManeuverDisplayStyle GetDisplayStyle (CPMapTemplate mapTemplate, CPManeuver maneuver);
+
+		/// <param name="mapTemplate">The template for the map whose zoom gesture ended.</param>
+		/// <param name="velocity">The zoom velocity at the end of the gesture.</param>
+		/// <summary>Method that is called when a zoom gesture ends.</summary>
+		/// <remarks>To be added.</remarks>
+		[iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("mapTemplate:didEndZoomGestureWithVelocity:")]
+		void DidEndZoomGesture (CPMapTemplate mapTemplate, nfloat velocity);
+
+		/// <param name="mapTemplate">The template for the map that was rotated.</param>
+		/// <param name="center">The center point of the rotation.</param>
+		/// <param name="rotation">The rotation angle in radians.</param>
+		/// <param name="velocity">The rotation velocity.</param>
+		/// <summary>Method that is called when the map is rotated.</summary>
+		/// <remarks>To be added.</remarks>
+		[iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("mapTemplate:didRotateWithCenter:rotation:velocity:")]
+		void DidRotate (CPMapTemplate mapTemplate, CGPoint center, nfloat rotation, nfloat velocity);
+
+		/// <param name="mapTemplate">The template for the map whose zoom gesture was updated.</param>
+		/// <param name="center">The center point of the zoom gesture.</param>
+		/// <param name="scale">The current zoom scale.</param>
+		/// <param name="velocity">The zoom velocity.</param>
+		/// <summary>Method that is called when a zoom gesture is updated.</summary>
+		/// <remarks>To be added.</remarks>
+		[iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("mapTemplate:didUpdateZoomGestureWithCenter:scale:velocity:")]
+		void DidUpdateZoomGesture (CPMapTemplate mapTemplate, CGPoint center, nfloat scale, nfloat velocity);
+
+		/// <param name="mapTemplate">The template for the map whose pitch gesture ended.</param>
+		/// <param name="center">The center point of the pitch gesture.</param>
+		/// <summary>Method that is called when a pitch gesture ends.</summary>
+		/// <remarks>To be added.</remarks>
+		[iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("mapTemplate:pitchEndedWithCenter:")]
+		void PitchEnded (CPMapTemplate mapTemplate, CGPoint center);
+
+		/// <param name="mapTemplate">The template for the map that is being pitched.</param>
+		/// <param name="center">The center point of the pitch gesture.</param>
+		/// <summary>Method that is called when the map is pitched.</summary>
+		/// <remarks>To be added.</remarks>
+		[iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("mapTemplate:pitchWithCenter:")]
+		void Pitch (CPMapTemplate mapTemplate, CGPoint center);
+
+		/// <param name="mapTemplate">The template for the map whose rotation gesture ended.</param>
+		/// <param name="velocity">The rotation velocity at the end of the gesture.</param>
+		/// <summary>Method that is called when a rotation gesture ends.</summary>
+		/// <remarks>To be added.</remarks>
+		[iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("mapTemplate:rotationDidEndWithVelocity:")]
+		void RotationDidEnd (CPMapTemplate mapTemplate, nfloat velocity);
+
+		/// <param name="mapTemplate">The template for the map that began a pitch gesture.</param>
+		/// <summary>Method that is called when a pitch gesture begins.</summary>
+		/// <remarks>To be added.</remarks>
+		[iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("mapTemplateDidBeginPitchGesture:")]
+		void DidBeginPitchGesture (CPMapTemplate mapTemplate);
+
+		/// <param name="mapTemplate">The template for the map that began a rotation gesture.</param>
+		/// <summary>Method that is called when a rotation gesture begins.</summary>
+		/// <remarks>To be added.</remarks>
+		[iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("mapTemplateDidBeginRotationGesture:")]
+		void DidBeginRotationGesture (CPMapTemplate mapTemplate);
+
+		/// <param name="mapTemplate">The template for the map that began a zoom gesture.</param>
+		/// <summary>Method that is called when a zoom gesture begins.</summary>
+		/// <remarks>To be added.</remarks>
+		[iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("mapTemplateDidBeginZoomGesture:")]
+		void DidBeginZoomGesture (CPMapTemplate mapTemplate);
 	}
 
 	/// <summary>A banner displayed with high-priority.</summary>
@@ -1990,22 +2105,59 @@ namespace CarPlay {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CPListImageRowItem : CPSelectableListItem {
+		[Deprecated (PlatformName.iOS, 26, 0, "Use CPListImageRowItem constructor with elements instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, "Use CPListImageRowItem constructor with elements instead.")]
 		[Export ("initWithText:images:")]
 		NativeHandle Constructor (string text, UIImage [] images);
 
+		[Deprecated (PlatformName.iOS, 26, 0, "Use CPListImageRowItem constructor with elements instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, "Use CPListImageRowItem constructor with elements instead.")]
 		[iOS (17, 4), MacCatalyst (17, 4)]
 		[Export ("initWithText:images:imageTitles:")]
 		NativeHandle Constructor (string text, UIImage [] images, string [] imageTitles);
 
+		[iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("initWithText:elements:allowsMultipleLines:")]
+		NativeHandle Constructor ([NullAllowed] string text, CPListImageRowItemElement [] elements, bool allowsMultipleLines);
+
+		[iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("initWithText:cardElements:allowsMultipleLines:")]
+		NativeHandle Constructor ([NullAllowed] string text, CPListImageRowItemCardElement [] cardElements, bool allowsMultipleLines);
+
+		[iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("initWithText:condensedElements:allowsMultipleLines:")]
+		NativeHandle Constructor ([NullAllowed] string text, CPListImageRowItemCondensedElement [] condensedElements, bool allowsMultipleLines);
+
+		[iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("initWithText:gridElements:allowsMultipleLines:")]
+		NativeHandle Constructor ([NullAllowed] string text, CPListImageRowItemGridElement [] gridElements, bool allowsMultipleLines);
+
+		[iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("initWithText:imageGridElements:allowsMultipleLines:")]
+		NativeHandle Constructor ([NullAllowed] string text, CPListImageRowItemImageGridElement [] imageGridElements, bool allowsMultipleLines);
+
+		[iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("allowsMultipleLines")]
+		bool AllowsMultipleLines { get; }
+
+		[iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("elements", ArgumentSemantic.Strong)]
+		CPListImageRowItemElement [] Elements { get; set; }
+
+		[Deprecated (PlatformName.iOS, 26, 0, "Use Elements property instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, "Use Elements property instead.")]
 		[Export ("gridImages", ArgumentSemantic.Strong)]
 		UIImage [] GridImages { get; }
 
+		[Deprecated (PlatformName.iOS, 26, 0, "Use Elements property instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, "Use Elements property instead.")]
 		[Export ("updateImages:")]
 		void UpdateImages (UIImage [] gridImages);
 
 		[iOS (17, 4)]
 		[Export ("imageTitles", ArgumentSemantic.Copy)]
 		string [] ImageTitles {
+			[Deprecated (PlatformName.iOS, 26, 0, "Use Elements property instead.")]
 			get;
 			// Apple removed the setter in Xcode 26 beta 1
 			[Obsoleted (PlatformName.iOS, 26, 0, "No longer supported.")]
@@ -2025,6 +2177,108 @@ namespace CarPlay {
 
 		[NullAllowed, Export ("text")]
 		new string Text { get; set; }
+	}
+
+	[NoTV, NoMac, iOS (26, 0), MacCatalyst (26, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface CPListImageRowItemElement {
+		[Export ("image", ArgumentSemantic.Strong)]
+		UIImage Image { get; set; }
+
+		[Export ("isEnabled")]
+		bool Enabled { [Bind ("isEnabled")] get; [Export ("setEnabled:")] set; }
+
+		[Static]
+		[Export ("maximumImageSize")]
+		CGSize MaximumImageSize { get; }
+	}
+
+	[NoTV, NoMac, iOS (26, 0), MacCatalyst (26, 0)]
+	[BaseType (typeof (CPListImageRowItemElement))]
+	[DisableDefaultCtor]
+	interface CPListImageRowItemCardElement {
+		[Export ("initWithImage:showsImageFullHeight:title:subtitle:tintColor:")]
+		NativeHandle Constructor (UIImage image, bool showsImageFullHeight, [NullAllowed] string title, [NullAllowed] string subtitle, [NullAllowed] UIColor tintColor);
+
+		[Export ("showsImageFullHeight")]
+		bool ShowsImageFullHeight { get; }
+
+		[Export ("title")]
+		string Title { get; set; }
+
+		[NullAllowed, Export ("subtitle")]
+		string Subtitle { get; set; }
+
+		[NullAllowed, Export ("tintColor", ArgumentSemantic.Strong)]
+		UIColor TintColor { get; set; }
+
+		[Static]
+		[Export ("maximumImageSize")]
+		CGSize MaximumImageSize { get; }
+
+		[Static]
+		[Export ("maximumFullHeightImageSize")]
+		CGSize MaximumFullHeightImageSize { get; }
+	}
+
+	[NoTV, NoMac, iOS (26, 0), MacCatalyst (26, 0)]
+	[BaseType (typeof (CPListImageRowItemElement))]
+	[DisableDefaultCtor]
+	interface CPListImageRowItemCondensedElement {
+		[Export ("initWithImage:imageShape:title:subtitle:accessorySymbolName:")]
+		NativeHandle Constructor (UIImage image, CPListImageRowItemCondensedElementShape imageShape, string title, [NullAllowed] string subtitle, [NullAllowed] string accessorySymbolName);
+
+		[Export ("imageShape")]
+		CPListImageRowItemCondensedElementShape ImageShape { get; }
+
+		[Export ("title")]
+		string Title { get; set; }
+
+		[NullAllowed, Export ("subtitle")]
+		string Subtitle { get; set; }
+
+		[NullAllowed, Export ("accessorySymbolName")]
+		string AccessorySymbolName { get; set; }
+	}
+
+	[NoTV, NoMac, iOS (26, 0), MacCatalyst (26, 0)]
+	[BaseType (typeof (CPListImageRowItemElement))]
+	[DisableDefaultCtor]
+	interface CPListImageRowItemGridElement {
+		[Export ("initWithImage:")]
+		NativeHandle Constructor (UIImage image);
+	}
+
+	[NoTV, NoMac, iOS (26, 0), MacCatalyst (26, 0)]
+	[BaseType (typeof (CPListImageRowItemElement))]
+	[DisableDefaultCtor]
+	interface CPListImageRowItemImageGridElement {
+		[Export ("initWithImage:imageShape:title:accessorySymbolName:")]
+		NativeHandle Constructor (UIImage image, CPListImageRowItemImageGridElementShape imageShape, string title, [NullAllowed] string accessorySymbolName);
+
+		[Export ("imageShape")]
+		CPListImageRowItemImageGridElementShape ImageShape { get; }
+
+		[Export ("title")]
+		string Title { get; set; }
+
+		[NullAllowed, Export ("accessorySymbolName")]
+		string AccessorySymbolName { get; set; }
+	}
+
+	[NoTV, NoMac, iOS (26, 0), MacCatalyst (26, 0)]
+	[BaseType (typeof (CPListImageRowItemElement))]
+	[DisableDefaultCtor]
+	interface CPListImageRowItemRowElement {
+		[Export ("initWithImage:title:subtitle:")]
+		NativeHandle Constructor (UIImage image, [NullAllowed] string title, [NullAllowed] string subtitle);
+
+		[NullAllowed, Export ("title")]
+		string Title { get; set; }
+
+		[NullAllowed, Export ("subtitle")]
+		string Subtitle { get; set; }
 	}
 
 	[NoTV, NoMac, iOS (14, 0)]
@@ -2086,8 +2340,16 @@ namespace CarPlay {
 		[Field ("CPMaximumMessageItemImageSize")]
 		CGSize MaximumMessageItemImageSize { get; }
 
+		[iOS (26, 0), MacCatalyst (26, 0)]
+		[Field ("CPMaximumMessageItemLeadingDetailTextImageSize")]
+		CGSize MaximumMessageItemLeadingDetailTextImageSize { get; }
+
 		[NullAllowed, Export ("text")]
 		new string Text { get; set; }
+
+		[iOS (26, 0), MacCatalyst (26, 0)]
+		[NullAllowed, Export ("leadingDetailTextImage", ArgumentSemantic.Strong)]
+		UIImage LeadingDetailTextImage { get; set; }
 	}
 
 	[NoTV, NoMac, iOS (14, 0)]
@@ -2119,6 +2381,20 @@ namespace CarPlay {
 
 		[Export ("initWithTrailingItem:trailingImage:")]
 		NativeHandle Constructor (CPMessageTrailingItem trailingItem, [NullAllowed] UIImage trailingImage);
+	}
+
+	[NoTV, NoMac, iOS (26, 0), MacCatalyst (26, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface CPMessageGridItemConfiguration {
+		[Export ("conversationIdentifier")]
+		string ConversationIdentifier { get; }
+
+		[Export ("initWithConversationIdentifier:unread:")]
+		NativeHandle Constructor (string conversationIdentifier, bool unread);
+
+		[Export ("unread")]
+		bool Unread { [Bind ("isUnread")] get; set; }
 	}
 
 	[NoTV, NoMac, iOS (14, 0)]

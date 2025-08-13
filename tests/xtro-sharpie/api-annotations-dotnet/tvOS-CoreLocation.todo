@@ -1,6 +1,0 @@
-!deprecated-attribute-missing! CLGeocoder missing a [Deprecated] attribute
-!deprecated-attribute-missing! CLGeocoder::cancelGeocode missing a [Deprecated] attribute
-!deprecated-attribute-missing! CLGeocoder::geocodeAddressString:completionHandler: missing a [Deprecated] attribute
-!deprecated-attribute-missing! CLGeocoder::geocodeAddressString:inRegion:preferredLocale:completionHandler: missing a [Deprecated] attribute
-!deprecated-attribute-missing! CLGeocoder::reverseGeocodeLocation:completionHandler: missing a [Deprecated] attribute
-!deprecated-attribute-missing! CLGeocoder::reverseGeocodeLocation:preferredLocale:completionHandler: missing a [Deprecated] attribute

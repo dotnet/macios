@@ -2023,6 +2023,10 @@ namespace MetalPerformanceShadersGraph {
 		[Export ("callables")]
 		[NullAllowed]
 		NSDictionary<NSString, MPSGraphExecutable> Callables { get; set; }
+
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0), Mac (26, 0)]
+		[Export ("reducedPrecisionFastMath")]
+		MPSGraphReducedPrecisionFastMath ReducedPrecisionFastMath { get; set; }
 	}
 
 	// @interface MPSGraphDevice : NSObject
@@ -2295,6 +2299,10 @@ namespace MetalPerformanceShadersGraph {
 		[TV (15, 4), Mac (12, 3), iOS (15, 4), MacCatalyst (15, 4)]
 		[Export ("initWithMTLBuffer:shape:dataType:rowBytes:")]
 		NativeHandle Constructor (IMTLBuffer buffer, [BindAs (typeof (int []))] NSNumber [] shape, MPSDataType dataType, nuint rowBytes);
+
+		[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0), Mac (26, 0)]
+		[Export ("initWithMTLTensor:")]
+		NativeHandle Constructor (IMTLTensor tensor);
 
 		// -(MPSNDArray * _Nonnull)mpsndarray;
 		[Export ("mpsndarray")]
@@ -2940,4 +2948,12 @@ namespace MetalPerformanceShadersGraph {
 		MPSGraphTensor ScatterAlongAxis (MPSGraphTensor axisTensor, MPSGraphTensor dataTensor, MPSGraphTensor updatesTensor, MPSGraphTensor indicesTensor, MPSGraphScatterMode mode, [NullAllowed] string name);
 	}
 
+	[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0), Mac (26, 0)]
+	[Native]
+	enum MPSGraphReducedPrecisionFastMath : ulong {
+		None = 0,
+		AllowFP16Conv2DWinogradTransformIntermediate = 1 << 1,
+		AllowFP16Intermediates = AllowFP16Conv2DWinogradTransformIntermediate,
+		Default = None,
+	}
 }

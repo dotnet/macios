@@ -6,6 +6,8 @@ using Foundation;
 using ObjCRuntime;
 using UIKit;
 
+using ASAccessoryWiFiAwarePairedDeviceId = System.UInt64;
+
 namespace AccessorySetupKit {
 	[Native]
 	[iOS (18, 0)]
@@ -69,6 +71,10 @@ namespace AccessorySetupKit {
 
 		[Export ("bluetoothTransportBridgingIdentifier", ArgumentSemantic.Copy), NullAllowed]
 		NSData BluetoothTransportBridgingIdentifier { get; }
+
+		[iOS (26, 0)]
+		[Export ("wifiAwarePairedDeviceID")]
+		ASAccessoryWiFiAwarePairedDeviceId WifiAwarePairedDeviceId { get; }
 	}
 
 	[Native]
@@ -140,7 +146,19 @@ namespace AccessorySetupKit {
 		[Async]
 		[Export ("failAuthorization:completionHandler:")]
 		void FailAuthorization (ASAccessory accessory, ASAccessorySessionCompletionHandler completionHandler);
+
+		[iOS (26, 0)]
+		[Export ("pickerDisplaySettings", ArgumentSemantic.Copy)]
+		[NullAllowed]
+		ASPickerDisplaySettings PickerDisplaySettings { get; set; }
+
+		[Async]
+		[iOS (26, 0)]
+		[Export ("updateAuthorization:descriptor:completionHandler:")]
+		void UpdateAuthorization (ASAccessory accessory, ASDiscoveryDescriptor descriptor, ASAccessorySessionUpdateAuthorizationHandler completionHandler);
 	}
+
+	delegate void ASAccessorySessionUpdateAuthorizationHandler ([NullAllowed] NSError error);
 
 	[BaseType (typeof (NSObject))]
 	[iOS (18, 0)]
@@ -194,6 +212,25 @@ namespace AccessorySetupKit {
 
 		[Export ("SSIDPrefix", ArgumentSemantic.Copy), NullAllowed]
 		string SsidPrefix { get; set; }
+
+		[iOS (26, 0)]
+		[Export ("wifiAwareServiceName")]
+		[NullAllowed]
+		string WifiAwareServiceName { get; set; }
+
+		[iOS (26, 0)]
+		[Export ("wifiAwareServiceRole", ArgumentSemantic.Assign)]
+		ASDiscoveryDescriptorWiFiAwareServiceRole WifiAwareServiceRole { get; set; }
+
+		[iOS (26, 0)]
+		[Export ("wifiAwareModelNameMatch", ArgumentSemantic.Copy)]
+		[NullAllowed]
+		ASPropertyCompareString WifiAwareModelNameMatch { get; set; }
+
+		[iOS (26, 0)]
+		[Export ("wifiAwareVendorNameMatch", ArgumentSemantic.Copy)]
+		[NullAllowed]
+		ASPropertyCompareString WifiAwareVendorNameMatch { get; set; }
 	}
 
 	[Native]
@@ -258,5 +295,53 @@ namespace AccessorySetupKit {
 		[Export ("initWithName:productImage:descriptor:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (string name, UIImage productImage, ASDiscoveryDescriptor descriptor);
+	}
+
+	[iOS (26, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface ASPropertyCompareString {
+		[Export ("string")]
+		string String { get; }
+
+		[Export ("compareOptions", ArgumentSemantic.Assign)]
+		NSStringCompareOptions CompareOptions { get; }
+
+		[Export ("initWithString:compareOptions:")]
+		[DesignatedInitializer]
+		NativeHandle Constructor (string @string, NSStringCompareOptions compareOptions);
+	}
+
+	[iOS (26, 0)]
+	[Native]
+	public enum ASDiscoveryDescriptorWiFiAwareServiceRole : long {
+		Subscriber = 10,
+		Publisher = 20,
+	}
+
+	[iOS (26, 0)]
+	[BaseType (typeof (NSObject))]
+	interface ASPickerDisplaySettings {
+		[Static]
+		[Export ("defaultSettings")]
+		ASPickerDisplaySettings DefaultSettings { get; }
+
+		[Export ("discoveryTimeout")]
+		double DiscoveryTimeout { get; set; }
+	}
+
+	[Static]
+	partial interface ASPickerDisplaySettingsDiscoveryTimeout {
+		[iOS (26, 0)]
+		[Field ("ASPickerDisplaySettingsDiscoveryTimeoutShort")]
+		double Short { get; }
+
+		[iOS (26, 0)]
+		[Field ("ASPickerDisplaySettingsDiscoveryTimeoutMedium")]
+		double Medium { get; }
+
+		[iOS (26, 0)]
+		[Field ("ASPickerDisplaySettingsDiscoveryTimeoutLong")]
+		double Long { get; }
 	}
 }

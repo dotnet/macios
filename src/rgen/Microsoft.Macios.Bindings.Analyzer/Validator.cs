@@ -495,7 +495,7 @@ public partial class Validator<T> : IValidator {
 		Expression<Func<T, TFlag>> flagSelector,
 		bool exactlyOne = false,
 		bool requireAllFlags = false,
-		TFlag [] requiredFlags = null!,
+		TFlag []? requiredFlags = null,
 		params Expression<Func<T, object?>> [] selectors)
 		where TFlag : Enum
 	{
@@ -558,7 +558,7 @@ public partial class Validator<T> : IValidator {
 		Expression<Func<T, TFlag>> flagSelector,
 		bool exactlyOne = false,
 		bool requireAllFlags = false,
-		TFlag [] requiredFlags = null!,
+		TFlag []? requiredFlags = null,
 		params Expression<Func<T, ValueType?>> [] selectors)
 		where TFlag : Enum
 	{

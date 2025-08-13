@@ -16,7 +16,7 @@ public class LambdaFieldValidationStrategy<T> (
 	ImmutableArray<DiagnosticDescriptor> descriptor,
 	LambdaFieldValidationStrategy<T>.ValidationFunc validationFunc)
 	: IFieldValidationStrategy<T> {
-	
+
 	/// <summary>
 	/// Represents the method that will handle the validation of the data.
 	/// </summary>

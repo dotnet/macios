@@ -10,7 +10,7 @@ using Xunit;
 namespace Microsoft.Macios.Bindings.Analyzer.Tests;
 
 public class ValidatorTests {
-	
+
 	internal static readonly DiagnosticDescriptor TST0001 = new (
 		"TST0001",
 		"Example Diagnostic Title",
@@ -19,7 +19,7 @@ public class ValidatorTests {
 		DiagnosticSeverity.Error,
 		isEnabledByDefault: true
 	);
-	
+
 	[Flags]
 	public enum MyFlag {
 		None = 0,
@@ -82,16 +82,16 @@ public class ValidatorTests {
 		var validator = new Validator<MyData> ();
 		validator.RequireWhen (d => d.OptionalField1, d => d.Flag, requiredFlags: MyFlag.OptionA);
 		validator.AddStrategy (
-			d => d.OptionalField1, 
-			TST0001, 
+			d => d.OptionalField1,
+			TST0001,
 			(MyData data, out System.Collections.Immutable.ImmutableArray<Diagnostic> diagnostics, Location? location) => {
-			diagnostics = [];
-			if (data.OptionalField1 is not null && data.OptionalField1.Length <= 3) {
-				diagnostics = [Diagnostic.Create (TST0001, location, "Field length must be > 3")];
-				return false;
-			}
-			return true;
-		});
+				diagnostics = [];
+				if (data.OptionalField1 is not null && data.OptionalField1.Length <= 3) {
+					diagnostics = [Diagnostic.Create (TST0001, location, "Field length must be > 3")];
+					return false;
+				}
+				return true;
+			});
 
 		var data = new MyData {
 			Flag = flag,
@@ -186,7 +186,7 @@ public class ValidatorTests {
 			d => d.OptionalField1,
 			d => d.OptionalField2
 		);
-		
+
 		validator.MutuallyExclusive (
 			exactlyOne: false,
 			d => d.OptionalField1,
@@ -204,7 +204,7 @@ public class ValidatorTests {
 		if (shouldFail) {
 			Assert.True (errors.ContainsKey (string.Empty)); // Global validation error
 			var diagnostics = errors [string.Empty];
-			Assert.Equal(failureCount, diagnostics.Count);
+			Assert.Equal (failureCount, diagnostics.Count);
 			foreach (var diagnostic in diagnostics) {
 				Assert.Equal ("RBI0016", diagnostic.Id);
 			}
@@ -223,13 +223,13 @@ public class ValidatorTests {
 	public void MultipleValidationsOnSingleFieldTests (string? fieldValue, bool shouldFail, int expectedErrorCount = 0, string? firstDiagnosticId = null)
 	{
 		var validator = new Validator<MyData> ();
-		
+
 		validator.RequireWhen (d => d.OptionalField1, d => d.Flag, requiredFlags: MyFlag.OptionA);
-		
+
 		// Add length validation
 		validator.AddStrategy (
-			d => d.OptionalField1, 
-			TST0001, 
+			d => d.OptionalField1,
+			TST0001,
 			(MyData data, out System.Collections.Immutable.ImmutableArray<Diagnostic> diagnostics, Location? location) => {
 				diagnostics = [];
 				if (data.OptionalField1 is not null && data.OptionalField1.Length <= 2) {
@@ -238,11 +238,11 @@ public class ValidatorTests {
 				}
 				return true;
 			});
-		
+
 		// Add letter validation
 		validator.AddStrategy (
-			d => d.OptionalField1, 
-			TST0001, 
+			d => d.OptionalField1,
+			TST0001,
 			(MyData data, out System.Collections.Immutable.ImmutableArray<Diagnostic> diagnostics, Location? location) => {
 				diagnostics = [];
 				if (data.OptionalField1 is not null && !data.OptionalField1.Any (char.IsLetter)) {

@@ -28,9 +28,9 @@ public interface IValidator {
 /// </summary>
 /// <typeparam name="T">The type of the object to validate.</typeparam>
 public partial class Validator<T> : IValidator {
-	readonly Dictionary<string, List<IFieldValidationStrategy<T>>> strategies = new();
+	readonly Dictionary<string, List<IFieldValidationStrategy<T>>> strategies = new ();
 	List<IFieldValidationStrategy<T>>? globalStrategies;
-	readonly Dictionary<string, IValidator> nestedValidators = new();
+	readonly Dictionary<string, IValidator> nestedValidators = new ();
 
 	/// <summary>
 	/// Gets all the diagnostic descriptors that this validator and its nested validators can produce.
@@ -51,7 +51,7 @@ public partial class Validator<T> : IValidator {
 				}
 			}
 
-			return [..allDescriptors];
+			return [.. allDescriptors];
 		}
 	}
 
@@ -66,11 +66,11 @@ public partial class Validator<T> : IValidator {
 
 	static object? GetFieldValue (T data, string fieldName)
 	{
-		var prop = typeof(T).GetProperty (fieldName);
+		var prop = typeof (T).GetProperty (fieldName);
 		if (prop is not null)
 			return prop.GetValue (data);
 
-		var field = typeof(T).GetField (fieldName);
+		var field = typeof (T).GetField (fieldName);
 		return field?.GetValue (data);
 	}
 
@@ -126,7 +126,7 @@ public partial class Validator<T> : IValidator {
 
 		strategies [fieldName].Add (new LambdaFieldValidationStrategy<T> (descriptor, validation));
 	}
-	
+
 	/// <summary>
 	/// Adds a validation strategy for a specific nullable struct field.
 	/// </summary>
@@ -166,7 +166,7 @@ public partial class Validator<T> : IValidator {
 
 			var nestedErrors = nestedValidator.ValidateAll (nestedValue, location);
 			// flatten the diagnostics
-			diagnostic = [..nestedErrors.SelectMany (x => x.Value)];
+			diagnostic = [.. nestedErrors.SelectMany (x => x.Value)];
 			return nestedErrors.Count == 0;
 		}
 	}
@@ -197,7 +197,7 @@ public partial class Validator<T> : IValidator {
 
 			var nestedErrors = nestedValidator.ValidateAll (nestedValue.Value, location);
 			// flatten the diagnostics
-			diagnostic = [..nestedErrors.SelectMany (x => x.Value)];
+			diagnostic = [.. nestedErrors.SelectMany (x => x.Value)];
 			return nestedErrors.Count == 0;
 		}
 	}
@@ -298,7 +298,7 @@ public partial class Validator<T> : IValidator {
 				diagnostics = [
 					Diagnostic.Create (
 						descriptor: RBI0015, // Field '{0}' is required when one of the following flags is set: '{1}'.
-						location: location, 
+						location: location,
 						messageArgs: [fieldValue, flagNames])
 				];
 			}
@@ -481,7 +481,7 @@ public partial class Validator<T> : IValidator {
 
 			var nestedValue = GetFieldValue (data, fieldName);
 
-			if (nestedValue == null)
+			if (nestedValue is null)
 				continue;
 
 			var nestedErrors = nestedValidatorObj.ValidateAll (nestedValue, location);
@@ -491,7 +491,7 @@ public partial class Validator<T> : IValidator {
 					: $"{fieldName}.{ne.Key}";
 
 				if (!errors.ContainsKey (compositeKey))
-					errors [compositeKey] = new();
+					errors [compositeKey] = new ();
 
 				errors [compositeKey].AddRange (ne.Value);
 			}

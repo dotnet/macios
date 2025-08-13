@@ -434,5 +434,59 @@ namespace Microsoft.Macios.Bindings.Analyzer {
                 return ResourceManager.GetString("RBI0014Title", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to With the provided binding flags in the export methods, the mentioned field cannot be null..
+        /// </summary>
+        internal static string RBI0015Description {
+            get {
+                return ResourceManager.GetString("RBI0015Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Field &apos;{0}&apos; is required when one of the following flags is set: &apos;{1}&apos;.
+        /// </summary>
+        internal static string RBI0015MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0015MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Field value cannot be null.
+        /// </summary>
+        internal static string RBI0015Title {
+            get {
+                return ResourceManager.GetString("RBI0015Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The fields are mutually exclusive which means that at most one of them can be set..
+        /// </summary>
+        internal static string RBI0016Description {
+            get {
+                return ResourceManager.GetString("RBI0016Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fields &apos;{0}&apos; must be mutually exclusive, at most one field can be set.
+        /// </summary>
+        internal static string RBI0016MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0016MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fields are mutually exclusive.
+        /// </summary>
+        internal static string RBI0016Title {
+            get {
+                return ResourceManager.GetString("RBI0016Title", resourceCulture);
+            }
+        }
     }
 }

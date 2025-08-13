@@ -36,7 +36,7 @@ public partial class Validator<T> {
 		description: new LocalizableResourceString (nameof (Resources.RBI0016Description), Resources.ResourceManager,
 			typeof (Resources))
 	);
-	
+
 	/// <summary>
 	/// Diagnostic descriptor for fields that are restricted to specific flag types.
 	/// </summary>

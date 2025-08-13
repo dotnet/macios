@@ -299,7 +299,7 @@ public partial class Validator<T> : IValidator {
 					Diagnostic.Create (
 						descriptor: RBI0015, // Field '{0}' is required when one of the following flags is set: '{1}'.
 						location: location,
-						messageArgs: [fieldValue, flagNames])
+						messageArgs: [GetPropertyName(selector), flagNames])
 				];
 			}
 

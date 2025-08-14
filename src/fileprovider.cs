@@ -19,7 +19,7 @@ namespace FileProvider {
 	/// <summary>Delegate for handling a thumbnail fetch operation.</summary>
 	delegate void NSFileProviderExtensionFetchThumbnailsHandler (NSString identifier, [NullAllowed] NSData imageData, [NullAllowed] NSError error);
 
-	/// <summary>Subclasses of <see cref="UIKit.NSFileProviderExtension" /> implement the move and open functionality for extensions of type <see cref="UIKit.UIDocumentPickerViewController" />.</summary>
+	/// <summary>Subclasses of <see cref="NSFileProviderExtension" /> implement the move and open functionality for extensions of type <see cref="UIKit.UIDocumentPickerViewController" />.</summary>
 	///     <remarks>
 	///       <para>(More documentation for this node is coming)</para>
 	///       <para tool="threads">The members of this class can be used from a background thread.</para>
@@ -507,7 +507,7 @@ namespace FileProvider {
 
 	interface INSFileProviderEnumerator { }
 
-	/// <summary>Enumerates items from an <see cref="FileProvider.INSFileProvider" />.</summary>
+	/// <summary>Enumerates items for an file provider.</summary>
 	[NoMacCatalyst]
 	[Protocol]
 	interface NSFileProviderEnumerator {
@@ -540,10 +540,9 @@ namespace FileProvider {
 		void CurrentSyncAnchor (Action<NSData> completionHandler);
 	}
 
-	/// <summary>An item provided by an <see cref="FileProvider.INSFileProviderItem" />. (A type alias for <see cref="FileProvider.NSFileProviderItemProtocol" />.)</summary>
 	interface INSFileProviderItem { }
 
-	/// <summary>An item provided by an <see cref="FileProvider.INSFileProviderItem" />. (A type alias for <see cref="FileProvider.NSFileProviderItemProtocol" />.)</summary>
+	/// <summary>An item the file provider extension manages.</summary>
 	/// <remarks>To be added.</remarks>
 	[NoMacCatalyst]
 	[Protocol]

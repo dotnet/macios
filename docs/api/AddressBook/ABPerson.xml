@@ -178,7 +178,7 @@
             <see cref="AddressBook.ABPerson.GetVCards(AddressBook.ABPerson[])" />,
             <see cref="AddressBook.ABPerson.GetDates" />,
             <see cref="AddressBook.ABPerson.GetEmails" />,
-            <see cref="AddressBook.ABPerson.GetInstantMessages" />,
+            <see cref="AddressBook.ABPerson.GetInstantMessageServices" />,
             <see cref="AddressBook.ABPerson.GetPhones" />,
             <see cref="AddressBook.ABPerson.GetProperty(AddressBook.ABPersonProperty)" />,
             <see cref="AddressBook.ABPerson.GetPropertyType(AddressBook.ABPersonProperty)" />,

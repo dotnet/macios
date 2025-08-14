@@ -55,9 +55,9 @@ public class _MySampleView : UIView {
         <h2>Objective-C Methods</h2>
       </format>
       <para>
-	In general, MonoTouch classes map one to one to the underlying
+	In general, classes map one to one to the underlying
 	Objective-C classes.  For example, the C# class
-	"MonoTouch.Foundation.NSObject" maps to the Objective-C
+	<see cref="NSObject" /> maps to the Objective-C
 	"NSObject" class.  But methods are different.  The Objective-C
 	methods do not translate well to C# methods, so they have been
 	in general been altered to match both the C# language, the C#

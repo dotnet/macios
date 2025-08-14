@@ -14,10 +14,12 @@ using Contacts;
 using CoreGraphics;
 #if MONOMAC
 using AppKit;
+using XViewController = AppKit.NSViewController;
 #else
 using UIKit;
 using NSView = UIKit.UIView;
 using NSRectEdge = Foundation.NSObject;
+using XViewController = UIKit.UIViewController;
 #endif
 
 namespace ContactsUI {
@@ -178,15 +180,10 @@ namespace ContactsUI {
 	}
 #endif // MONOMAC
 
-	/// <summary>A standard <see cref="UIKit.UIViewController" /> that allows the user to view or edit a <see cref="Contacts.CNContact" />.</summary>
-	///     
-	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ContactsUI/Reference/CNContactViewController_Class/index.html">Apple documentation for <c>CNContactViewController</c></related>
+	/// <summary>A standard <see cref="XViewController" /> that allows the user to view or edit a <see cref="Contacts.CNContact" />.</summary>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ContactsUI/Reference/CNContactViewController_Class/index.html">Apple documentation for <c>CNContactViewController</c></related>
 	[MacCatalyst (13, 1)]
-#if MONOMAC
-	[BaseType (typeof (NSViewController))]
-#else
-	[BaseType (typeof (UIViewController))]
-#endif
+	[BaseType (typeof (XViewController))]
 	interface CNContactViewController {
 		/// <param name="nibName">
 		///           <para>To be added.</para>

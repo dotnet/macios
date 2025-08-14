@@ -2,8 +2,16 @@
   <Docs DocId="T:ARKit.ARSession">
     <summary>Manages the camera capture, motion processing, and image analysis necessary to create a mixed-reality experience.</summary>
     <remarks>
-      <para>An <see cref="ARKit.ARSession" /> object represents the system resources required for a mixed-reality experience. The <see cref="ARKit.ARSession.Run(ARKit.ARConfiguration,ARKit.ARSessionRunOptions)" /> method must be passed an <see cref="ARKit.ARSessionConfiguration" /> object that controls specific ebhaviors. </para>
-      <para>Developers who use the <see cref="ARKit.ARSCNView" /> to present their AR imagery do not need to instantiate their own <see cref="ARKit.ARSession" /> object but instead should call <see cref="ARKit.ARSession.Run(ARKit.ARConfiguration,ARKit.ARSessionRunOptions)" /> on the <see cref="ARKit.ARSCNView.Session" /> property. For example:</para>
+      <para>
+        An <see cref="ARKit.ARSession" /> object represents the system resources required for a mixed-reality experience.
+        The <see cref="ARKit.ARSession.Run(ARKit.ARConfiguration,ARKit.ARSessionRunOptions)" /> method must be passed an
+        <see cref="ARKit.ARConfiguration" /> object that controls specific behaviors.
+      </para>
+      <para>
+        Developers who use the <see cref="ARKit.ARSCNView" /> to present their AR imagery do not need to instantiate their
+        own <see cref="ARKit.ARSession" /> object but instead should call <see cref="ARKit.ARSession.Run(ARKit.ARConfiguration,ARKit.ARSessionRunOptions)" />
+        on the <see cref="ARKit.ARSCNView.Session" /> property. For example:
+      </para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
 var arView = new ARSCNView();

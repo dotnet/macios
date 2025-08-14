@@ -142,7 +142,7 @@ namespace VideoSubscriberAccount {
 
 		/// <param name="accountManager">To be added.</param>
 		///         <param name="viewController">To be added.</param>
-		///         <summary>Developers override this to specify the <see cref="UIKit.UIViewController" /> to be shown when the <see cref="VideoSubscriberAccounts.VSAccountManager" /> requires user interaction.</summary>
+		///         <summary>Developers override this to specify the <see cref="UIKit.UIViewController" /> to be shown when the <see cref="VSAccountManager" /> requires user interaction.</summary>
 		///         <remarks>To be added.</remarks>
 		[Abstract]
 		[NoMac]
@@ -240,14 +240,17 @@ namespace VideoSubscriberAccount {
 		NSString CheckAccessOptionPrompt { get; }
 	}
 
-	/// <summary>A <see cref="Foundation.DictionaryContainer" /> holding keys appropriate to <see cref="VideoSubscriberAccount.VSAccountManager.CheckAccessStatusAsync(VideoSubscriberAccount.VSAccountManagerAccessOptions)" /> and <see cref="VideoSubscriberAccount.VSAccountManager.CheckAccessStatusAsync(VideoSubscriberAccount.VSAccountManagerAccessOptions)" />.</summary>
+#if !__MACOS__
+	/// <summary>
+	///    A <see cref="Foundation.DictionaryContainer" /> holding keys appropriate to <see cref="VSAccountManager.CheckAccessStatus(VSAccountManagerAccessOptions,Action{VSAccountAccessStatus,NSError})" />
+	///    and <see cref="VSAccountManager.CheckAccessStatusAsync(VSAccountManagerAccessOptions)" />.
+	/// </summary>
+#endif
 	[NoMacCatalyst]
 	[StrongDictionary ("VSCheckAccessOptionKeys")]
 	interface VSAccountManagerAccessOptions {
 
 		/// <summary>If not <see langword="null" />, specifies whether the user should be asked for access permission.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Export ("CheckAccessOptionPrompt")]
 		bool CheckAccessOptionPrompt { get; set; }
 	}

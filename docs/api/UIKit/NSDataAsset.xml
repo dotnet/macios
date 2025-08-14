@@ -30,7 +30,7 @@
 }
     ]]></code>
       </example>
-      <para>To load an asset, call <see cref="UIKit.NSDataAsset(String)" /> or <see cref="UIKit.NSDataAsset(String,Foundation.NSBundle)" /> passing the name of the folder. For instance:</para>
+      <para>To load an asset, call <see cref="NSDataAsset.NSDataAsset(String)" /> or <see cref="NSDataAsset.NSDataAsset(String,Foundation.NSBundle)" /> passing the name of the folder. For instance:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
 var assetCatalog = new NSDataAsset ("FolderName");

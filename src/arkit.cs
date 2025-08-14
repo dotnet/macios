@@ -67,7 +67,7 @@ namespace ARKit {
 	[ErrorDomain ("ARErrorDomain")]
 	[Native]
 	public enum ARErrorCode : long {
-		/// <summary>The requested <see cref="ARKit.ARSessionConfiguration" /> is not compatible with the device.</summary>
+		/// <summary>The requested <see cref="ARKit.ARConfiguration" /> is not compatible with the device.</summary>
 		UnsupportedConfiguration = 100,
 		/// <summary>A suitable capture device could not be found.</summary>
 		SensorUnavailable = 101,
@@ -171,15 +171,15 @@ namespace ARKit {
 		Vertical = 1 << 1,
 	}
 
-	/// <summary>Enumerates environmental texturing strategies used with <see cref="ARKit.ARWorldTrackingProbeAnchor" /> objects.</summary>
+	/// <summary>Enumerates environmental texturing strategies used with <see cref="ARKit.AREnvironmentProbeAnchor" /> objects.</summary>
 	[NoTV, NoMac]
 	[Native]
 	public enum AREnvironmentTexturing : long {
 		/// <summary>Environmental texture-map generation is not in use.</summary>
 		None,
-		/// <summary>The developer creates and places <see cref="ARKit.ARWorldTrackingProbeAnchor" /> objects.</summary>
+		/// <summary>The developer creates and places <see cref="ARKit.AREnvironmentProbeAnchor" /> objects.</summary>
 		Manual,
-		/// <summary>The system automatically creates and places <see cref="ARKit.ARWorldTrackingProbeAnchor" /> objects. .</summary>
+		/// <summary>The system automatically creates and places <see cref="ARKit.AREnvironmentProbeAnchor" /> objects. .</summary>
 		Automatic,
 	}
 
@@ -1347,10 +1347,10 @@ namespace ARKit {
 		bool SupportsFrameSemantics (ARFrameSemantics frameSemantics);
 	}
 
-	/// <summary>A <see cref="Foundation.DictionaryContainer" /> that defines the features available in <see cref="ARKit.ARBlendShapeLocation" /> .</summary>
-	///     <remarks>
-	///       <para>All values are in the range [0..1], where 0.0 indicates the neutral state and 1.0 indicates maximum displacement.</para>
-	///     </remarks>
+	/// <summary>A <see cref="Foundation.DictionaryContainer" /> that defines the features available in <see cref="ARFaceGeometry" /> .</summary>
+	/// <remarks>
+	///   <para>All values are in the range [0..1], where 0.0 indicates the neutral state and 1.0 indicates maximum displacement.</para>
+	/// </remarks>
 	[NoTV, NoMac]
 	[StrongDictionary ("ARBlendShapeLocationKeys")]
 	interface ARBlendShapeLocationOptions {

@@ -46,7 +46,7 @@ namespace NetworkExtension {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NEVpnIkeAuthenticationMethod : long {
-		/// <summary>In IKEv2, supports extended authentication if <see cref="NetworkExtension.NEVpnProtocolIpSec.ExtendedAuthentication" /> is <see langword="true" />.</summary>
+		/// <summary>In IKEv2, supports extended authentication if <see cref="NetworkExtension.NEVpnProtocolIpSec.UseExtendedAuthentication" /> is <see langword="true" />.</summary>
 		None = 0,
 		/// <summary>A certificate and private key.</summary>
 		Certificate = 1,

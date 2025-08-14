@@ -116,6 +116,11 @@ namespace ObjCBindings {
 		/// </summary>
 		Optional = 1 << 14,
 
+		/// <summary>
+		/// Use this flag on a method to mark it as an event handler.
+		/// </summary>
+		Event = 1 << 15,
+
 	}
 
 	/// <summary>
@@ -223,6 +228,12 @@ namespace ObjCBindings {
 		/// Use this flag on a method to mark it as optional in a protocol definition.
 		/// </summary>
 		Optional = 1 << 16,
+
+		/// <summary>
+		/// Use this flag on a method to mark a weak delegate property to generate the events realted
+		/// to the delegate.
+		/// </summary>
+		CreateEvents = 1 << 17,
 	}
 
 	/// <summary>

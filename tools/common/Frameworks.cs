@@ -291,6 +291,8 @@ public class Frameworks : Dictionary<string, Framework> {
 
 					{ "FSKit", "FSKit", 15, 4 },
 					{ "SecurityUI", "SecurityUI", 15, 4 },
+
+					{ "GameSave", "GameSave", 26, 0 },
 				};
 			}
 			return mac_frameworks;
@@ -476,6 +478,8 @@ public class Frameworks : Dictionary<string, Framework> {
 
 				{ "DeviceDiscoveryUI", "DeviceDiscoveryUI", 26, 0 },
 				{ "ExtensionKit", "ExtensionKit", 26, 0 },
+				{ "GameSave", "GameSave", 26, 0 },
+
 				// the above MUST be kept in sync with simlauncher
 				// see tools/mtouch/Makefile
 				// please also keep it sorted to ease comparison

@@ -97,6 +97,15 @@ namespace Xamarin.BindingMethods.Generator {
 
 			data.Add (
 				new FunctionData {
+					Comment = " // NVector3d func ()",
+					Prefix = "simd__",
+					Variants = Variants.All,
+					ReturnType = Types.NVector3d,
+				}
+			);
+
+			data.Add (
+				new FunctionData {
 					Comment = " // void func (NVector3)",
 					Prefix = "simd__",
 					Variants = Variants.msgSend | Variants.msgSendSuper,

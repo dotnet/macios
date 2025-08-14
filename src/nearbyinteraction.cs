@@ -10,6 +10,7 @@
 using ObjCRuntime;
 using Foundation;
 using CoreFoundation;
+using CoreGraphics;
 using System;
 using System.Numerics;
 #if __MACCATALYST__ || !IOS
@@ -173,6 +174,10 @@ namespace NearbyInteraction {
 		[NoTV, NoMac, iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("sessionDidStartRunning:")]
 		void DidSessionStartRunning (NISession session);
+
+		[NoTV, NoMacCatalyst, NoMac, iOS (26, 0)]
+		[Export ("session:didUpdateDLTDOAMeasurements:")]
+		void DidUpdateDlTdoaMeasurements (NISession session, NIDlTdoaMeasurement [] measurements);
 	}
 
 	[NoTV, NoMac, iOS (15, 0), MacCatalyst (15, 0)]
@@ -230,6 +235,11 @@ namespace NearbyInteraction {
 		[Abstract (GenerateExtensionMethod = true)]
 		[Export ("supportsExtendedDistanceMeasurement")]
 		bool SupportsExtendedDistanceMeasurement { get; }
+
+		[NoTV, NoMacCatalyst, NoMac, iOS (26, 0)]
+		[Abstract]
+		[Export ("supportsDLTDOAMeasurement")]
+		bool SupportsDlTdoaMeasurement { get; }
 	}
 
 	[NoTV, NoMac, iOS (16, 0), MacCatalyst (16, 0)]
@@ -242,4 +252,69 @@ namespace NearbyInteraction {
 		[Export ("reasons")]
 		string [] Reasons { get; }
 	}
+
+	[NoTV, NoMacCatalyst, NoMac, iOS (26, 0)]
+	[BaseType (typeof (NIConfiguration), Name = "NIDLTDOAConfiguration")]
+	[DisableDefaultCtor]
+	// DLTDOA = Down Link Time Difference of Arrival(DL-TDoA)
+	interface NIDlTdoaConfiguration {
+		[Export ("networkIdentifier")]
+		nint NetworkIdentifier { get; set; }
+
+		[Export ("initWithNetworkIdentifier:")]
+		NativeHandle Constructor (nint networkIdentifier);
+	}
+
+	[NoTV, NoMacCatalyst, NoMac, iOS (26, 0)]
+	[Native]
+	[NativeName ("NIDLTDOACoordinatesType")]
+	// DLTDOA = Down Link Time Difference of Arrival(DL-TDoA)
+	public enum NIDlTdoaCoordinatesType : long {
+		Geodetic = 0,
+		Relative = 1,
+	}
+
+	[NoTV, NoMacCatalyst, NoMac, iOS (26, 0)]
+	[Native]
+	[NativeName ("NIDLTDOAMeasurementType")]
+	// DLTDOA = Down Link Time Difference of Arrival(DL-TDoA)
+	public enum NIDlTdoaMeasurementType : long {
+		Poll = 0,
+		Response = 1,
+		Final = 2,
+	}
+
+	[NoTV, NoMacCatalyst, NoMac, iOS (26, 0)]
+	[BaseType (typeof (NSObject), Name = "NIDLTDOAMeasurement")]
+	[DisableDefaultCtor]
+	// DLTDOA = Down Link Time Difference of Arrival(DL-TDoA)
+	interface NIDlTdoaMeasurement : NSCopying, NSSecureCoding {
+		[Export ("address")]
+		nuint Address { get; }
+
+		[Export ("measurementType", ArgumentSemantic.Assign)]
+		NIDlTdoaMeasurementType MeasurementType { get; }
+
+		[Export ("transmitTime")]
+		double TransmitTime { get; }
+
+		[Export ("receiveTime")]
+		double ReceiveTime { get; }
+
+		[Export ("signalStrength")]
+		double SignalStrength { get; }
+
+		[Export ("carrierFrequencyOffset")]
+		double CarrierFrequencyOffset { get; }
+
+		[Export ("coordinatesType", ArgumentSemantic.Assign)]
+		NIDlTdoaCoordinatesType CoordinatesType { get; }
+
+		[Export ("coordinates", ArgumentSemantic.Assign)]
+		NVector3d Coordinates {
+			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
+			get;
+		}
+	}
+
 }

@@ -3446,6 +3446,7 @@ namespace Xamarin.Tests {
 			"/System/iOSSupport/System/Library/Frameworks/AVKit.framework/Versions/A/AVKit",
 			"/System/iOSSupport/System/Library/Frameworks/BusinessChat.framework/Versions/A/BusinessChat",
 			"/System/iOSSupport/System/Library/Frameworks/ContactsUI.framework/Versions/A/ContactsUI",
+			"/System/iOSSupport/System/Library/Frameworks/Cinematic.framework/Versions/A/Cinematic",
 			"/System/iOSSupport/System/Library/Frameworks/CoreAudioKit.framework/Versions/A/CoreAudioKit",
 			"/System/iOSSupport/System/Library/Frameworks/CoreLocationUI.framework/Versions/A/CoreLocationUI",
 			"/System/iOSSupport/System/Library/Frameworks/CoreNFC.framework/Versions/A/CoreNFC",

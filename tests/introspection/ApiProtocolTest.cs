@@ -307,6 +307,7 @@ namespace Introspection {
 				// Xcode 26.0 Conformance not in headers
 				case "ASPickerDisplaySettings":
 				case "ASPropertyCompareString":
+				case "PKAddIdentityDocumentMetadata":
 					return true;
 				}
 				break;
@@ -537,6 +538,7 @@ namespace Introspection {
 				// Xcode 26.0 Conformance not in headers
 				case "ASPickerDisplaySettings":
 				case "ASPropertyCompareString":
+				case "PKAddIdentityDocumentMetadata":
 					return true;
 				}
 				break;
@@ -770,6 +772,7 @@ namespace Introspection {
 				// Xcode 26.0 Conformance not in headers
 				case "ASPickerDisplaySettings":
 				case "ASPropertyCompareString":
+				case "PKAddIdentityDocumentMetadata":
 					return true;
 				}
 				break;

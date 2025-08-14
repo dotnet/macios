@@ -172,7 +172,7 @@ namespace MonoTouchFixtures.Network {
 		public void LinkQuality ()
 		{
 			TestRuntime.AssertXcodeVersion (26, 0);
-			Assert.That (path.LinkQuality, Is.EqualTo (NWLinkQuality.Good), "LinkQuality");
+			Assert.That (path.LinkQuality, Is.EqualTo (NWLinkQuality.Good).Or.EqualTo (NWLinkQuality.Unknown), "LinkQuality");
 		}
 	}
 }

@@ -72,13 +72,14 @@ trigger:
     include:
       - '*'
     exclude:
-      - refs/heads/locfiles/*
       - refs/heads/dev/*
       - refs/heads/darc-*
       - refs/heads/backport-pr-*
       - refs/heads/lego/*
       - refs/heads/locfiles/*
       - refs/heads/copilot/*
+      - refs/heads/dependabot/*
+
   paths:
     exclude:
       - .github

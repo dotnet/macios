@@ -602,19 +602,24 @@ query{
         return $comments
     }
 
-    [void] MinimizeComments($comments) {
+    <#
+    .SYNOPSIS
+        Minimize (hide) the comment with the specified GitHub id
+
+    .PARAMETER commentId
+        The id of the comment to hide.
+    #>
+    [void] MinimizeCommentId($commentId)
+    {
         $headers = @{
             Authorization = ("Bearer {0}" -f $this.Token)
         }
-        # we cannot do a mutation with all the comments :/ but we can loop and do it
-        foreach($c in $comments) {
-
         $mutation =@"
 mutation {
     __typename
     minimizeComment(
         input: {
-            subjectId: "$($c.Id)",
+            subjectId: "$commentId",
             clientMutationId: "xamarin-macios-ci"
             classifier: OUTDATED
         }
@@ -623,12 +628,25 @@ mutation {
     }
 }
 "@
-            $payload = @{
-                query=$mutation
-            }
-            $body = ConvertTo-Json $payload
-            $url = [GitHubComments]::GitHubGraphQLEndpoint
-            $response= Invoke-RestMethod -Uri $url -Headers $headers -Method "POST" -Body $body
+        $payload = @{
+            query=$mutation
+        }
+        $body = ConvertTo-Json $payload
+        $url = [GitHubComments]::GitHubGraphQLEndpoint
+        $response = Invoke-RestMethod -Uri $url -Headers $headers -Method "POST" -Body $body
+    }
+
+    <#
+    .SYNOPSIS
+        Minimize (hide) the comment with the specified GitHub id
+
+    .PARAMETER comments
+        The comments to hide
+    #>
+    [void] MinimizeComments($comments) {
+        # we cannot do a mutation with all the comments :/ but we can loop and do it
+        foreach($c in $comments) {
+             $this.MinimizeCommentId($c.id)
         } # foreach
     }
 
@@ -653,16 +671,13 @@ mutation {
     
     .PARAMETER result
         The result object from posting the comment, containing the comment ID.
-    
-    .PARAMETER commentId
-        The identifier used to mark the comment.
     #>
-    [void] HandleNewCommentHiding([object] $result, [string] $commentId) {
+    [void] HandleNewCommentHiding([object] $result) {
         if ($this.IsPR() -and -not $this.IsCurrentCommitLatestInPR()) {
             Write-Host "Current commit is not the latest in PR, attempting to hide the new comment"
             try {
                 Start-Sleep -Seconds 2  # Give GitHub a moment to process the comment
-                $this.HideNewlyPostedComment($result.id, $commentId)
+                $this.MinimizeCommentId($result.id)
             } catch {
                 Write-Host "Warning: Failed to hide comment for non-latest commit: $_"
             }
@@ -690,7 +705,7 @@ mutation {
         $result = $this.NewComment($msg)
         
         # If this commit is not the latest in the PR, hide this comment immediately
-        $this.HandleNewCommentHiding($result, $commentId)
+        $this.HandleNewCommentHiding($result)
 
         return $result
     }
@@ -741,46 +756,6 @@ mutation {
             Write-Host "Error checking if current commit is latest in PR: $_"
             # On error, assume it's the latest to avoid hiding valid comments
             return $true
-        }
-    }
-
-    <#
-    .SYNOPSIS
-        Hides a recently posted comment by finding it among recent PR comments.
-    
-    .DESCRIPTION
-        This method searches for a recently posted comment by matching the comment identifier
-        in the comment body and hides it if it belongs to the CI bot and is not already minimized.
-        This is used when building non-latest commits to hide their CI results while preserving
-        the visibility of the most recent CI results.
-    
-    .PARAMETER restCommentId
-        The REST API comment ID of the comment that was just posted.
-    
-    .PARAMETER commentId
-        The identifier used to mark the comment, which will be embedded in the comment body.
-    #>
-    [void] HideNewlyPostedComment([int] $restCommentId, [string] $commentId) {
-        # Get recent comments to find the one we just posted
-        if (-not $this.IsPR()) {
-            return
-        }
-        
-        $prId = $this.PRIds[0]
-        $prComments = $this.GetCommentsForPR($prId)
-        $commentIdentifier = $this.GetCommentIdentifier($commentId)
-        
-        # Find the comment we just posted by matching the comment identifier in the body
-        foreach ($comment in $prComments) {
-            if ($comment.Body.Contains($commentIdentifier)) {
-                # This could be our comment or a previous one, but let's check if it's recent
-                # We'll minimize any comment with our identifier that's from the bot and not already minimized
-                if ($comment.Author -eq "vs-mobiletools-engineering-service2" -and -not $comment.IsMinimized) {
-                    Write-Host "Found recently posted comment to minimize: $($comment.Id)"
-                    $this.MinimizeComments(@($comment))
-                    break
-                }
-            }
         }
     }
 }

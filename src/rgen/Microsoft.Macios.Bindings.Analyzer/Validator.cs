@@ -55,6 +55,13 @@ public partial class Validator<T> : IValidator {
 		}
 	}
 
+	/// <summary>
+	/// Gets the name of the property from a selector expression.
+	/// </summary>
+	/// <typeparam name="TField">The type of the field.</typeparam>
+	/// <param name="selector">The selector expression.</param>
+	/// <returns>The name of the property.</returns>
+	/// <exception cref="ArgumentException">Thrown when the selector is not a valid property selector.</exception>
 	static string GetPropertyName<TField> (Expression<Func<T, TField>> selector)
 	{
 		return selector.Body switch {
@@ -64,6 +71,12 @@ public partial class Validator<T> : IValidator {
 		};
 	}
 
+	/// <summary>
+	/// Gets the value of a field or property from an object using reflection.
+	/// </summary>
+	/// <param name="data">The object to get the value from.</param>
+	/// <param name="fieldName">The name of the field or property.</param>
+	/// <returns>The value of the field or property, or null if it doesn't exist.</returns>
 	static object? GetFieldValue (T data, string fieldName)
 	{
 		var prop = typeof (T).GetProperty (fieldName);
@@ -139,6 +152,19 @@ public partial class Validator<T> : IValidator {
 		DiagnosticDescriptor descriptor,
 		LambdaFieldValidationStrategy<T, TField?>.ValidationFunc validation) where TField : struct
 		=> AddStrategy (selector, [descriptor], validation);
+	
+	/// <summary>
+	/// Adds a validation strategy for a specific field.
+	/// </summary>
+	/// <param name="fieldName">The name of the field.</param>
+	/// <param name="strategy">The validation strategy.</param>
+	void AddStrategy (string fieldName, IFieldValidationStrategy strategy)
+	{
+		if (!strategies.ContainsKey (fieldName))
+			strategies [fieldName] = new List<IFieldValidationStrategy> ();
+
+		strategies [fieldName].Add (strategy);
+	}
 
 	/// <summary>
 	/// Adds a nested validator for a complex field.
@@ -255,14 +281,6 @@ public partial class Validator<T> : IValidator {
 
 			return valid;
 		}
-	}
-
-	void AddStrategy (string fieldName, IFieldValidationStrategy strategy)
-	{
-		if (!strategies.ContainsKey (fieldName))
-			strategies [fieldName] = new List<IFieldValidationStrategy> ();
-
-		strategies [fieldName].Add (strategy);
 	}
 	
 	/// <summary>

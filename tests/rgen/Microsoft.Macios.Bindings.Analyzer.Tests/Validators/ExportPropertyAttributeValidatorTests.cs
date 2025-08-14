@@ -11,7 +11,7 @@ using static Microsoft.Macios.Generator.Tests.TestDataFactory;
 namespace Microsoft.Macios.Bindings.Analyzer.Tests;
 
 public class ExportPropertyAttributeValidatorTests {
-	
+
 	[Fact]
 	public void ResultTypeShouldFailIfNullSelector ()
 	{
@@ -24,7 +24,7 @@ public class ExportPropertyAttributeValidatorTests {
 		Assert.Single (errors [nameof (ExportData<Property>.Selector)]);
 		Assert.Equal ("RBI0018", errors [nameof (ExportData<Property>.Selector)] [0].Id);
 	}
-	
+
 	[Theory]
 	[InlineData (" ")]
 	[InlineData (" test")]
@@ -42,12 +42,12 @@ public class ExportPropertyAttributeValidatorTests {
 		Assert.Single (errors [nameof (ExportData<Property>.Selector)]);
 		Assert.Equal ("RBI0019", errors [nameof (ExportData<Property>.Selector)] [0].Id);
 	}
-	
+
 	[Fact]
 	public void ResultTypeShouldFailIfNotMethod ()
 	{
 		var validator = new ExportPropertyAttributeValidator ();
-		var data = new ExportData<Property> ("test"){
+		var data = new ExportData<Property> ("test") {
 			ResultType = ReturnTypeForInt ()
 		};
 
@@ -62,7 +62,7 @@ public class ExportPropertyAttributeValidatorTests {
 	public void MethodNameShouldFailIfNotMethod ()
 	{
 		var validator = new ExportPropertyAttributeValidator ();
-		var data = new ExportData<Property> ("test"){
+		var data = new ExportData<Property> ("test") {
 			MethodName = "myMethod"
 		};
 
@@ -77,7 +77,7 @@ public class ExportPropertyAttributeValidatorTests {
 	public void ResultTypeNameShouldFailIfNotMethod ()
 	{
 		var validator = new ExportPropertyAttributeValidator ();
-		var data = new ExportData<Property> ("test"){
+		var data = new ExportData<Property> ("test") {
 			ResultTypeName = "MyType"
 		};
 
@@ -92,7 +92,7 @@ public class ExportPropertyAttributeValidatorTests {
 	public void PostNonResultSnippetShouldFailIfNotMethod ()
 	{
 		var validator = new ExportPropertyAttributeValidator ();
-		var data = new ExportData<Property> ("test"){
+		var data = new ExportData<Property> ("test") {
 			PostNonResultSnippet = "return;"
 		};
 
@@ -107,7 +107,7 @@ public class ExportPropertyAttributeValidatorTests {
 	public void StrongDictionaryKeyClassShouldFailIfNotStrongDictionary ()
 	{
 		var validator = new ExportPropertyAttributeValidator ();
-		var data = new ExportData<Property> ("test"){
+		var data = new ExportData<Property> ("test") {
 			StrongDictionaryKeyClass = ReturnTypeForClass ("MyKey")
 		};
 
@@ -122,7 +122,7 @@ public class ExportPropertyAttributeValidatorTests {
 	public void EventArgsTypeShouldFailIfNotMethod ()
 	{
 		var validator = new ExportPropertyAttributeValidator ();
-		var data = new ExportData<Property> ("test"){
+		var data = new ExportData<Property> ("test") {
 			EventArgsType = ReturnTypeForClass ("MyEventArgs")
 		};
 
@@ -132,12 +132,12 @@ public class ExportPropertyAttributeValidatorTests {
 		Assert.Single (errors [nameof (ExportData<Property>.EventArgsType)]);
 		Assert.Equal ("RBI0017", errors [nameof (ExportData<Property>.EventArgsType)] [0].Id);
 	}
-	
+
 	[Fact]
 	public void EventArgsTypeNameShouldFailIfNotMethod ()
 	{
 		var validator = new ExportPropertyAttributeValidator ();
-		var data = new ExportData<Property> ("test"){
+		var data = new ExportData<Property> ("test") {
 			EventArgsTypeName = "MyEventArgs"
 		};
 
@@ -152,7 +152,7 @@ public class ExportPropertyAttributeValidatorTests {
 	public void MultipleInvalidFieldsShouldReturnMultipleDiagnostics ()
 	{
 		var validator = new ExportPropertyAttributeValidator ();
-		var data = new ExportData<Property> ("test"){
+		var data = new ExportData<Property> ("test") {
 			ResultType = ReturnTypeForInt (),
 			MethodName = "myMethod",
 			StrongDictionaryKeyClass = ReturnTypeForClass ("MyKey")

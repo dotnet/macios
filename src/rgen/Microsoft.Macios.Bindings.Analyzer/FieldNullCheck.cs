@@ -37,12 +37,12 @@ public class FieldNullCheck<T, TField> : IFieldNullCheck<T> {
 	/// Gets or sets the function used to determine if the field's value is its default value.
 	/// </summary>
 	public Func<TField, bool> IsDefaultValue { get; init; }
-	
+
 	/// <summary>
 	/// Gets the name of the field being checked.
 	/// </summary>
 	public string FieldName { get; init; }
-		
+
 	/// <summary>
 	/// Initializes a new instance of the <see cref="FieldNullCheck{T, TField}"/> class.
 	/// </summary>
@@ -54,8 +54,8 @@ public class FieldNullCheck<T, TField> : IFieldNullCheck<T> {
 		Selector = selector ?? throw new ArgumentNullException (nameof (selector));
 		IsDefaultValue = isDefaultValue ?? throw new ArgumentNullException (nameof (isDefaultValue));
 		FieldName = fieldName
-		            ?? (Selector.Body as MemberExpression)?.Member.Name  
-		            ?? throw new InvalidOperationException ("Selector is not a member expression");
+					?? (Selector.Body as MemberExpression)?.Member.Name
+					?? throw new InvalidOperationException ("Selector is not a member expression");
 	}
 
 	/// <summary>
@@ -68,5 +68,5 @@ public class FieldNullCheck<T, TField> : IFieldNullCheck<T> {
 		var value = Selector.Compile () (data);
 		return IsDefaultValue (value);
 	}
-	
+
 }

@@ -234,12 +234,12 @@ public class ExportMethodAttributeValidatorTests {
 		Assert.Equal (2, errors.Count);
 		Assert.True (errors.ContainsKey (nameof (ExportData<Method>.Selector)));
 		Assert.True (errors.ContainsKey (string.Empty));
-		Assert.Single(errors [nameof (ExportData<Method>.Selector)]);
+		Assert.Single (errors [nameof (ExportData<Method>.Selector)]);
 		Assert.Equal ("RBI0023", errors [nameof (ExportData<Method>.Selector)] [0].Id);
-		Assert.Single(errors [string.Empty]);
+		Assert.Single (errors [string.Empty]);
 		Assert.Equal ("RBI0021", errors [string.Empty] [0].Id);
 	}
-	
+
 	[Theory]
 	[InlineData (Method.Default, true)]
 	[InlineData (Method.Async, false)]

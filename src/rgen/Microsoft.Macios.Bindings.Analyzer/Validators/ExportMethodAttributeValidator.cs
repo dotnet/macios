@@ -14,7 +14,7 @@ using ExportMethod = ExportData<Method>;
 /// Validates <see cref="ExportData{T}"/> for methods.
 /// </summary>
 class ExportMethodAttributeValidator : Validator<ExportMethod> {
-	
+
 	/// <summary>
 	/// Diagnostic descriptor for when a named parameter is used with an incorrect flag.
 	/// </summary>
@@ -29,7 +29,7 @@ class ExportMethodAttributeValidator : Validator<ExportMethod> {
 		description: new LocalizableResourceString (nameof (Resources.RBI0020Description), Resources.ResourceManager,
 			typeof (Resources))
 	);
-	
+
 	/// <summary>
 	/// Diagnostic descriptor for when an invalid combination of flags is used.
 	/// </summary>
@@ -44,7 +44,7 @@ class ExportMethodAttributeValidator : Validator<ExportMethod> {
 		description: new LocalizableResourceString (nameof (Resources.RBI0021Description), Resources.ResourceManager,
 			typeof (Resources))
 	);
-	
+
 	/// <summary>
 	/// Diagnostic descriptor for when a method export is missing a selector.
 	/// </summary>
@@ -59,7 +59,7 @@ class ExportMethodAttributeValidator : Validator<ExportMethod> {
 		description: new LocalizableResourceString (nameof (Resources.RBI0022Description), Resources.ResourceManager,
 			typeof (Resources))
 	);
-	
+
 	/// <summary>
 	/// Diagnostic descriptor for when a method export selector contains whitespace.
 	/// </summary>
@@ -74,7 +74,7 @@ class ExportMethodAttributeValidator : Validator<ExportMethod> {
 		description: new LocalizableResourceString (nameof (Resources.RBI0023Description), Resources.ResourceManager,
 			typeof (Resources))
 	);
-	
+
 	/// <summary>
 	/// Validates that a string field is only used when a specific flag is present.
 	/// </summary>
@@ -100,13 +100,13 @@ class ExportMethodAttributeValidator : Validator<ExportMethod> {
 					descriptor: RBI0020, // The '{0}' named parameter is only allowed with the {1} flag.
 					location: location,
 					fieldName,
-					$"ObjCBindings.Method.{nameof(expectedFlag)}")
+					$"ObjCBindings.Method.{nameof (expectedFlag)}")
 			];
 			return false;
 		}
 		return true;
 	}
-	
+
 	/// <summary>
 	/// Validates that a TypeInfo field is only used when a specific flag is present.
 	/// </summary>
@@ -132,13 +132,13 @@ class ExportMethodAttributeValidator : Validator<ExportMethod> {
 					descriptor: RBI0020, // The '{0}' named parameter is only allowed with the {1} flag.
 					location: location,
 					fieldName,
-					$"ObjCBindings.Method.{nameof(expectedFlag)}")
+					$"ObjCBindings.Method.{nameof (expectedFlag)}")
 			];
 			return false;
 		}
 		return true;
 	}
-	
+
 	/// <summary>
 	/// Validates that the ResultTypeName field is only used with the Async flag.
 	/// </summary>
@@ -156,7 +156,7 @@ class ExportMethodAttributeValidator : Validator<ExportMethod> {
 			diagnostics: out diagnostics,
 			location: location
 		);
-	
+
 	/// <summary>
 	/// Validates that the ResultType field is only used with the Async flag.
 	/// </summary>
@@ -174,7 +174,7 @@ class ExportMethodAttributeValidator : Validator<ExportMethod> {
 			diagnostics: out diagnostics,
 			location: location
 		);
-	
+
 	/// <summary>
 	/// Validates that the MethodName field is only used with the Async flag.
 	/// </summary>
@@ -192,7 +192,7 @@ class ExportMethodAttributeValidator : Validator<ExportMethod> {
 			diagnostics: out diagnostics,
 			location: location
 		);
-	
+
 	/// <summary>
 	/// Validates that the PostNonResultSnippet field is only used with the Async flag.
 	/// </summary>
@@ -210,7 +210,7 @@ class ExportMethodAttributeValidator : Validator<ExportMethod> {
 			diagnostics: out diagnostics,
 			location: location
 		);
-	
+
 	/// <summary>
 	/// Validates that the EventArgsType field is only used with the Event flag.
 	/// </summary>
@@ -228,7 +228,7 @@ class ExportMethodAttributeValidator : Validator<ExportMethod> {
 			diagnostics: out diagnostics,
 			location: location
 		);
-	
+
 	/// <summary>
 	/// Validates that the EventArgsTypeName field is only used with the Event flag.
 	/// </summary>
@@ -271,7 +271,7 @@ class ExportMethodAttributeValidator : Validator<ExportMethod> {
 		}
 		return true;
 	}
-	
+
 	/// <summary>
 	/// Validates that the selector is not null.
 	/// </summary>
@@ -286,7 +286,7 @@ class ExportMethodAttributeValidator : Validator<ExportMethod> {
 			descriptor: RBI0022, // A export property must have a selector defined
 			diagnostics: out diagnostics,
 			location: location);
-	
+
 	/// <summary>
 	/// Validates that the selector does not contain any whitespace.
 	/// </summary>
@@ -294,7 +294,7 @@ class ExportMethodAttributeValidator : Validator<ExportMethod> {
 	/// <param name="diagnostics">When this method returns, contains an array of diagnostics if the data is invalid; otherwise, an empty array.</param>
 	/// <param name="location">The code location to be used for the diagnostics.</param>
 	/// <returns><c>true</c> if the data is valid; otherwise, <c>false</c>.</returns>
-	internal static bool SelectorHasNoWhitespace (string? selector, out ImmutableArray<Diagnostic> diagnostics, 
+	internal static bool SelectorHasNoWhitespace (string? selector, out ImmutableArray<Diagnostic> diagnostics,
 		Location? location = null)
 		=> Selector.HasNoWhitespace (
 			selector: selector,
@@ -310,27 +310,27 @@ class ExportMethodAttributeValidator : Validator<ExportMethod> {
 	{
 		// validate the flags values
 		AddGlobalStrategy (RBI0021, FlagsAreValid);
-		
+
 		// validate the selector
-		AddStrategy (d=> d.Selector, RBI0022, SelectorIsNotNull);
-		AddStrategy (d=> d.Selector, RBI0023, SelectorHasNoWhitespace);
-		
+		AddStrategy (d => d.Selector, RBI0022, SelectorIsNotNull);
+		AddStrategy (d => d.Selector, RBI0023, SelectorHasNoWhitespace);
+
 		// if async is set, either ResultType or ResultTypeName must be set
 		// but not both
-		AddConditionalMutuallyExclusive (x=>  x.Flags, 
+		AddConditionalMutuallyExclusive (x => x.Flags,
 			exactlyOne: false, // we allow both to be null
 			requireAllFlags: false,
 			requiredFlags: [ObjCBindings.Method.Async],
 			new FieldNullCheck<ExportMethod, TypeInfo> (data => data.ResultType, data => data.IsNullOrDefault),
 			new FieldNullCheck<ExportMethod, string?> (data => data.ResultTypeName, string.IsNullOrWhiteSpace)
 			);
-		
+
 		// ensure that the asycn fields are only used with methods with the async flag
 		AddGlobalStrategy (RBI0020, ResultTypeNameIsAllowed);
 		AddGlobalStrategy (RBI0020, ResultTypeIsAllowed);
 		AddGlobalStrategy (RBI0020, MethodNameIsAllowed);
 		AddGlobalStrategy (RBI0020, PostNonResultSnippetIsAllowed);
-		
+
 		// Strong delegate fields are only allowed in properties
 		RestrictToFlagType (
 			d => d.StrongDelegateType,
@@ -338,13 +338,13 @@ class ExportMethodAttributeValidator : Validator<ExportMethod> {
 			d => d.IsNullOrDefault,
 			typeof (Property)
 		);
-		
+
 		RestrictToFlagType (
 			d => d.StrongDelegateName,
 			d => d.Flags,
 			typeof (Property)
 		);
-		
+
 		// only with strong dictionary keys
 		RestrictToFlagType (
 			d => d.StrongDictionaryKeyClass,
@@ -352,7 +352,7 @@ class ExportMethodAttributeValidator : Validator<ExportMethod> {
 			d => d.IsNullOrDefault,
 			typeof (StrongDictionaryKeys)
 		);
-		
+
 		// ensure that the event fields are used with methods with the event flag
 		AddGlobalStrategy (RBI0020, EventArgsTypeIsAllowed);
 		AddGlobalStrategy (RBI0020, EventArgsTypeNameIsAllowed);

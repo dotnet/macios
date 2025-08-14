@@ -98,7 +98,7 @@ public partial class Validator<T> : IValidator {
 	public void AddStrategy<TField> (
 		Expression<Func<T, TField>> selector,
 		ImmutableArray<DiagnosticDescriptor> descriptor,
-		LambdaFieldValidationStrategy<T, TField>.ValidationFunc validation, 
+		LambdaFieldValidationStrategy<T, TField>.ValidationFunc validation,
 		string? propertyName = null)
 	{
 		var fieldName = propertyName ?? GetPropertyName (selector);
@@ -160,7 +160,7 @@ public partial class Validator<T> : IValidator {
 		LambdaFieldValidationStrategy<T, TField?>.ValidationFunc validation,
 		string? propertyName = null) where TField : struct
 		=> AddStrategy (selector, [descriptor], validation, propertyName);
-	
+
 	/// <summary>
 	/// Adds a validation strategy for a specific field.
 	/// </summary>
@@ -180,7 +180,7 @@ public partial class Validator<T> : IValidator {
 	/// <typeparam name="TField">The type of the field.</typeparam>
 	/// <param name="selector">An expression to select the field.</param>
 	/// <param name="nestedValidator">The validator for the field's type.</param>
-	public void AddNestedValidator <TField> (
+	public void AddNestedValidator<TField> (
 		Expression<Func<T, TField?>> selector,
 		Validator<TField> nestedValidator)
 	{
@@ -290,7 +290,7 @@ public partial class Validator<T> : IValidator {
 			return valid;
 		}
 	}
-	
+
 	/// <summary>
 	/// Adds a validation rule that requires a field to be set when certain flags are present in another field.
 	/// </summary>
@@ -307,8 +307,8 @@ public partial class Validator<T> : IValidator {
 		params TFlag [] requiredFlags)
 		where TFlag : Enum
 	{
-		Expression<Func<T, (TField FieldData, TFlag FlagData)>> tupleSelector = 
-			y => new(selector.Compile () (y), flagSelector.Compile () (y));
+		Expression<Func<T, (TField FieldData, TFlag FlagData)>> tupleSelector =
+			y => new (selector.Compile () (y), flagSelector.Compile () (y));
 
 		var fieldName = GetPropertyName (selector);
 
@@ -365,8 +365,8 @@ public partial class Validator<T> : IValidator {
 		params TFlag [] requiredFlags)
 		where TFlag : Enum
 	{
-		Expression<Func<T, (TField FieldData, TFlag FlagData)>> tupleSelector = 
-			y => new(selector.Compile () (y), flagSelector.Compile () (y));
+		Expression<Func<T, (TField FieldData, TFlag FlagData)>> tupleSelector =
+			y => new (selector.Compile () (y), flagSelector.Compile () (y));
 
 		var fieldName = GetPropertyName (selector);
 
@@ -437,9 +437,9 @@ public partial class Validator<T> : IValidator {
 		where TField : struct
 		where TFlag : Enum
 	{
-		
-		Expression<Func<T, (TField? FieldData, TFlag FlagData)>> tupleSelector = 
-			y => new(selector.Compile () (y), flagSelector.Compile () (y));
+
+		Expression<Func<T, (TField? FieldData, TFlag FlagData)>> tupleSelector =
+			y => new (selector.Compile () (y), flagSelector.Compile () (y));
 
 		var fieldName = GetPropertyName (selector);
 
@@ -489,7 +489,7 @@ public partial class Validator<T> : IValidator {
 		where TField : struct
 		where TFlag : Enum
 		=> AddConditionalStrategy (selector, flagSelector, [descriptor], validation, requireAllFlags, requiredFlags);
-	
+
 	/// <summary>
 	/// Adds a conditional mutually exclusive validation rule that only executes when specific flags are present in another field.
 	/// </summary>
@@ -566,12 +566,12 @@ public partial class Validator<T> : IValidator {
 		where TFlag : Enum
 	{
 		// build IFieldNullCheck<T> from the selectors
-		var fieldChecks = new IFieldNullCheck<T>[selectors.Length];
+		var fieldChecks = new IFieldNullCheck<T> [selectors.Length];
 		for (int i = 0; i < selectors.Length; i++) {
-			fieldChecks[i] = new FieldNullCheck<T, object?> (
-				selector: selectors[i],
+			fieldChecks [i] = new FieldNullCheck<T, object?> (
+				selector: selectors [i],
 				isDefaultValue: x => x is null,
-				fieldName: GetPropertyName (selectors[i]));
+				fieldName: GetPropertyName (selectors [i]));
 		}
 		AddConditionalMutuallyExclusive (flagSelector, exactlyOne, requireAllFlags, requiredFlags, fieldChecks);
 	}
@@ -652,9 +652,9 @@ public partial class Validator<T> : IValidator {
 		Type expectedFlagType)
 		where TFlag : Enum
 	{
-		Expression<Func<T, (TField? FieldData, TFlag FlagData)>> tupleSelector = 
-			y => new(selector.Compile () (y), flagSelector.Compile () (y));
-		
+		Expression<Func<T, (TField? FieldData, TFlag FlagData)>> tupleSelector =
+			y => new (selector.Compile () (y), flagSelector.Compile () (y));
+
 		AddStrategy (tupleSelector, RBI0017, CheckFlagType, GetPropertyName (selector));
 
 		bool CheckFlagType ((TField? FieldData, TFlag FlagData) data, out ImmutableArray<Diagnostic> diagnostics, Location? location = null)
@@ -703,9 +703,9 @@ public partial class Validator<T> : IValidator {
 		where TFlag : Enum
 	{
 
-		Expression<Func<T, (TField? FieldData, TFlag FlagData)>> tupleSelector = 
-			y => new(selector.Compile () (y), flagSelector.Compile () (y));
-		
+		Expression<Func<T, (TField? FieldData, TFlag FlagData)>> tupleSelector =
+			y => new (selector.Compile () (y), flagSelector.Compile () (y));
+
 		AddStrategy (tupleSelector, RBI0017, CheckFlagType, GetPropertyName (selector));
 
 		bool CheckFlagType ((TField? FieldData, TFlag FlagData) data, out ImmutableArray<Diagnostic> diagnostics, Location? location = null)
@@ -756,8 +756,8 @@ public partial class Validator<T> : IValidator {
 		where TField : struct
 		where TFlag : Enum
 	{
-		Expression<Func<T, (TField FieldData, TFlag FlagData)>> tupleSelector = 
-			y => new(selector.Compile () (y), flagSelector.Compile () (y));
+		Expression<Func<T, (TField FieldData, TFlag FlagData)>> tupleSelector =
+			y => new (selector.Compile () (y), flagSelector.Compile () (y));
 
 		AddStrategy (tupleSelector, RBI0017, CheckFlagType, GetPropertyName (selector));
 

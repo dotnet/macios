@@ -7,12 +7,12 @@ using Microsoft.CodeAnalysis;
 namespace Microsoft.Macios.Bindings.Analyzer;
 
 public interface IFieldValidationStrategy {
-	
+
 	/// <summary>
 	/// Gets the diagnostic descriptors that this validation strategy can produce.
 	/// </summary>
 	ImmutableArray<DiagnosticDescriptor> Descriptors { get; }
-	
+
 	/// <summary>
 	/// Validates the given data.
 	/// </summary>
@@ -37,14 +37,14 @@ public interface IFieldValidationStrategy<in T> : IFieldValidationStrategy {
 	/// <param name="location">The code location to be used for the diagnostics.</param>
 	/// <returns><c>true</c> if the data is valid; otherwise, <c>false</c>.</returns>
 	bool IsValid (T data, out ImmutableArray<Diagnostic> diagnostic, Location? location = null);
-	
+
 	bool IFieldValidationStrategy.IsValid (object? data, out ImmutableArray<Diagnostic> diagnostic, Location? location)
 	{
 		if (data is T typedData)
 			return IsValid (typedData, out diagnostic, location);
-		
+
 		diagnostic = ImmutableArray<Diagnostic>.Empty;
 		return false;
 	}
-	
+
 }

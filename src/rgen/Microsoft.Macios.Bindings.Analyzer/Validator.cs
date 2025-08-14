@@ -152,7 +152,7 @@ public partial class Validator<T> : IValidator {
 		DiagnosticDescriptor descriptor,
 		LambdaFieldValidationStrategy<T, TField?>.ValidationFunc validation) where TField : struct
 		=> AddStrategy (selector, [descriptor], validation);
-	
+
 	/// <summary>
 	/// Adds a validation strategy for a specific field.
 	/// </summary>
@@ -172,7 +172,7 @@ public partial class Validator<T> : IValidator {
 	/// <typeparam name="TField">The type of the field.</typeparam>
 	/// <param name="selector">An expression to select the field.</param>
 	/// <param name="nestedValidator">The validator for the field's type.</param>
-	public void AddNestedValidator <TField> (
+	public void AddNestedValidator<TField> (
 		Expression<Func<T, TField?>> selector,
 		Validator<TField> nestedValidator)
 	{
@@ -282,7 +282,7 @@ public partial class Validator<T> : IValidator {
 			return valid;
 		}
 	}
-	
+
 	/// <summary>
 	/// Adds a validation rule that requires a field to be set when certain flags are present in another field.
 	/// </summary>
@@ -299,8 +299,8 @@ public partial class Validator<T> : IValidator {
 		params TFlag [] requiredFlags)
 		where TFlag : Enum
 	{
-		Expression<Func<T, (TField FieldData, TFlag FlagData)>> tupleSelector = 
-			y => new(selector.Compile () (y), flagSelector.Compile () (y));
+		Expression<Func<T, (TField FieldData, TFlag FlagData)>> tupleSelector =
+			y => new (selector.Compile () (y), flagSelector.Compile () (y));
 
 		var fieldName = GetPropertyName (selector);
 
@@ -357,8 +357,8 @@ public partial class Validator<T> : IValidator {
 		params TFlag [] requiredFlags)
 		where TFlag : Enum
 	{
-		Expression<Func<T, (TField FieldData, TFlag FlagData)>> tupleSelector = 
-			y => new(selector.Compile () (y), flagSelector.Compile () (y));
+		Expression<Func<T, (TField FieldData, TFlag FlagData)>> tupleSelector =
+			y => new (selector.Compile () (y), flagSelector.Compile () (y));
 
 		var fieldName = GetPropertyName (selector);
 
@@ -429,9 +429,9 @@ public partial class Validator<T> : IValidator {
 		where TField : struct
 		where TFlag : Enum
 	{
-		
-		Expression<Func<T, (TField? FieldData, TFlag FlagData)>> tupleSelector = 
-			y => new(selector.Compile () (y), flagSelector.Compile () (y));
+
+		Expression<Func<T, (TField? FieldData, TFlag FlagData)>> tupleSelector =
+			y => new (selector.Compile () (y), flagSelector.Compile () (y));
 
 		var fieldName = GetPropertyName (selector);
 

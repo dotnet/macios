@@ -126,7 +126,7 @@
           <term>
             <see cref="UIKit.UIViewContentMode.ScaleAspectFit" />
           </term>
-          <description>Scales the contents so that everything is visible, while preserving the aspect ratio.   Any areas that are not filled become transparent. (In the image, the <see cref="UIKit.UIImage.BackgroundColor" /> was set to black to emphasize the scaling behavior.)</description>
+          <description>Scales the contents so that everything is visible, while preserving the aspect ratio.   Any areas that are not filled become transparent. (In the image, the <see cref="UIView.BackgroundColor" /> property was set to black to emphasize the scaling behavior.)</description>
           <description>
             <img href="~/xml/UIKit/_images/UIViewContentMode.ScaleAspectFit.png" alt="Image layout for the specified content mode" />
           </description>

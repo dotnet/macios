@@ -61,7 +61,7 @@
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
 session = new AVCaptureSession();
-var camera = AVCaptureDevice.DefaultDeviceWithMediaType(AVMediaType.Video);
+var camera = AVCaptureDevice.GetDefaultDevice(AVMediaTypes.Video);
 var input = AVCaptureDeviceInput.FromDevice(camera);
 
 //Add the metadata output channel

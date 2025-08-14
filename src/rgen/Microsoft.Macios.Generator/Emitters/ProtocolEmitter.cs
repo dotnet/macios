@@ -183,7 +183,7 @@ $@"static {bindingContext.Changes.Name} ()
 
 			// Protocol registration
 			var protocolName = bindingData.Name ?? bindingContext.Changes.Name [1..];
-			builder.AppendProtocolAttribute (protocolName, Nomenclator.GetProtocolWrapperName (protocolName));
+			builder.AppendProtocolAttribute (protocolName, bindingContext.GetProtocolWrapperName ());
 
 			// we need to collect the properties extension methods, we do that with a helper method
 			// that will return the properties and their getters/setters.

@@ -27,6 +27,23 @@ public class ProtocolGenerationTests : BaseGeneratorTestClass {
 			(ApplePlatform.TVOS, "IAVAudioPlayerDelegate", "IAVAudioPlayerDelegate.cs", "ExpectedIAVAudioPlayerDelegate.cs", null),
 			(ApplePlatform.MacCatalyst, "IAVAudioPlayerDelegate", "IAVAudioPlayerDelegate.cs", "ExpectedIAVAudioPlayerDelegate.cs", null),
 			(ApplePlatform.MacOSX, "IAVAudioPlayerDelegate", "IAVAudioPlayerDelegate.cs", "macOSExpectedIAVAudioPlayerDelegate.cs", null),
+
+			(ApplePlatform.iOS, "IAVAudio3DMixing", "IAVAudio3DMixingCustomName.cs", "ExpectedIAVAudio3DMixingCustomName.cs", null),
+			(ApplePlatform.TVOS, "IAVAudio3DMixing", "IAVAudio3DMixingCustomName.cs", "ExpectedIAVAudio3DMixingCustomName.cs", null),
+			(ApplePlatform.MacCatalyst, "IAVAudio3DMixing", "IAVAudio3DMixingCustomName.cs", "ExpectedIAVAudio3DMixingCustomName.cs", null),
+			(ApplePlatform.MacOSX, "IAVAudio3DMixing", "IAVAudio3DMixingCustomName.cs", "ExpectedIAVAudio3DMixingCustomName.cs", null),
+			
+			// protocol with custom name
+			(ApplePlatform.iOS, "INSUrlSessionDelegate", "INSUrlSessionDelegate.cs", "ExpectedINSUrlSessionDelegate.cs", null),
+			(ApplePlatform.TVOS, "INSUrlSessionDelegate", "INSUrlSessionDelegate.cs", "ExpectedINSUrlSessionDelegate.cs", null),
+			(ApplePlatform.MacCatalyst, "INSUrlSessionDelegate", "INSUrlSessionDelegate.cs", "ExpectedINSUrlSessionDelegate.cs", null),
+			(ApplePlatform.MacOSX, "INSUrlSessionDelegate", "INSUrlSessionDelegate.cs", "ExpectedINSUrlSessionDelegate.cs", null),
+			
+			// protocol with custom name and model
+			(ApplePlatform.iOS, "INSUrlSessionDelegate", "INSUrlSessionDelegateWithModel.cs", "ExpectedINSUrlSessionDelegateWithModel.cs", null),
+			(ApplePlatform.TVOS, "INSUrlSessionDelegate", "INSUrlSessionDelegateWithModel.cs", "ExpectedINSUrlSessionDelegateWithModel.cs", null),
+			(ApplePlatform.MacCatalyst, "INSUrlSessionDelegate", "INSUrlSessionDelegateWithModel.cs", "ExpectedINSUrlSessionDelegateWithModel.cs", null),
+			(ApplePlatform.MacOSX, "INSUrlSessionDelegate", "INSUrlSessionDelegateWithModel.cs", "ExpectedINSUrlSessionDelegateWithModel.cs", null),
 		};
 
 		public IEnumerator<object []> GetEnumerator ()

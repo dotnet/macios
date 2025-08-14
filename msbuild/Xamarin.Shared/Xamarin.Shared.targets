@@ -1396,7 +1396,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		</PropertyGroup>
 	</Target>
 
-	<Target Name="_CreatePkgInfo" Condition="'$(IsAppExtension)' == 'false'" DependsOnTargets="_ComputePkgInfoPath" Outputs="$(_PkgInfoPath)">
+	<Target Name="_CreatePkgInfo" Condition="'$(IsAppExtension)' == 'false'" DependsOnTargets="_ComputePkgInfoPath" Inputs="$(_PkgInfoPath)" Outputs="$(_PkgInfoPath)">
 		<CreatePkgInfo SessionId="$(BuildSessionId)" Condition="'$(IsMacEnabled)' == 'true'" OutputPath="$(_PkgInfoPath)" />
 	</Target>
 

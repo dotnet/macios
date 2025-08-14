@@ -3,9 +3,12 @@
     <summary>Coordinates a recording session.</summary>
     <remarks>
       <para>
-	The AVCaptureSession object coordinates the recording of video
-	or audio input and passing the recorded information to one or
-	more output objects.  As the iOS line has advanced, different devices have gained multiple capture devices (in particular, gained multiple cameras). Application developers can use <see cref="AVFoundation.AVCaptureDevice.DefaultDeviceWithMediaType(System.String)" /> or <see cref="AVFoundation.AVCaptureDevice.DevicesWithMediaType(System.String)" />, passing in the constants defined in <see cref="AVFoundation.AVMediaType" />.
+    The AVCaptureSession object coordinates the recording of video
+    or audio input and passing the recorded information to one or
+    more output objects.  As the iOS line has advanced, different devices
+    have gained multiple capture devices (in particular, gained multiple cameras).
+    Application developers can use <see cref="AVCaptureDevice.GetDefaultDevice(AVMediaTypes)" /> or
+    <see cref="AVCaptureDevice.DevicesWithMediaType(System.String)" />, passing in the constants defined in <see cref="AVFoundation.AVMediaTypes" />.
       </para>
       <para>
         Configuring capture consists of setting the <see cref="AVFoundation.AVCaptureSession.Inputs" /> and <see cref="AVFoundation.AVCaptureSession.Outputs" /> properties of the <see cref="AVFoundation.AVCaptureSession" />. Notice that multiple <see cref="AVFoundation.AVCaptureInput" />s and <see cref="AVFoundation.AVCaptureOutput" />s are possible. For instance, to capture both audio and video, one would use two capture inputs:</para>
@@ -13,8 +16,8 @@
         <code lang="csharp lang-csharp"><![CDATA[
 var session = new AVCaptureSession();
 
-var camera = AVCaptureDevice.DefaultDeviceWithMediaType(AVMediaType.Video);
-var mic = AVCaptureDevice.DefaultDeviceWithMediaType(AVMediaType.Audio);
+var camera = AVCaptureDevice.GetDefaultDevice(AVMediaType.Video);
+var mic = AVCaptureDevice.GetDefaultDevice(AVMediaType.Audio);
 if(camera == null || mic == null){
     throw new Exception("Can't find devices");
 }
@@ -51,7 +54,11 @@ session.AddOutput (movieFileOutput);
 movieFileOutput.StartRecordingToOutputFile (fileUrl, recordingDelegate);
           ]]></code>
       </example>
-      <para>Application developers should note that the function <see cref="AVFoundation.AVCaptureFileOutput.StopRecording" /> is asynchronous; developers should wait until the <see cref="AVFoundation.AVCaptureFileOutputRecordingDelegate.FinishedRecording(AVFoundation.AVCaptureFileOutput,Foundation.NSUrl,Foundation.NSObject[],Foundation.NSError)" /> delegate method before manipulating the file (for instance, before saving it to the Photos album with <see cref="UIKit.UIVideo.SaveToPhotosAlbum(System.String,UIKit.UIVideo.SaveStatus)" /> or <see cref="AssetsLibrary.ALAssetsLibrary.WriteVideoToSavedPhotosAlbumAsync(Foundation.NSUrl)" />).</para>
+      <para>
+        Application developers should note that the function <see cref="AVFoundation.AVCaptureFileOutput.StopRecording" /> is asynchronous;
+        developers should wait until the <see cref="AVFoundation.AVCaptureFileOutputRecordingDelegate.FinishedRecording(AVFoundation.AVCaptureFileOutput,Foundation.NSUrl,Foundation.NSObject[],Foundation.NSError)" /> delegate method
+        before manipulating the file.
+    </para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
 public class MyRecordingDelegate : AVCaptureFileOutputRecordingDelegate
@@ -106,7 +113,7 @@ void SetupCapture ()
 	};
 	
 	// create a device input and attach it to the session
-	var captureDevice = AVCaptureDevice.DefaultDeviceWithMediaType (AVMediaType.Video);
+	var captureDevice = AVCaptureDevice.GetDefaultDevice (AVMediaTypes.Video);
 	var input = AVCaptureDeviceInput.FromDevice (captureDevice);
 	if (input == null){
 	        Console.WriteLine ("No video input device");

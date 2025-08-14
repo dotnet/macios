@@ -320,7 +320,7 @@ namespace AuthenticationServices {
 		bool SupportsIncrementalUpdates { get; }
 	}
 
-	/// <summary>Delegate object for completion handlers in methods within <see cref="AuthenticationServices.ASCredentialProviderExtension" />.</summary>
+	/// <summary>Delegate object for completion handlers in methods within <see cref="ASCredentialProviderExtensionContext" />.</summary>
 	delegate void ASCredentialProviderExtensionRequestCompletionHandler (bool expired);
 
 	/// <summary>An <see cref="NSExtensionContext" /> subclass that provides context for a credential provider.</summary>
@@ -336,8 +336,7 @@ namespace AuthenticationServices {
 		[Export ("completeRequestWithSelectedCredential:completionHandler:")]
 		void CompleteRequest (ASPasswordCredential credential, [NullAllowed] ASCredentialProviderExtensionRequestCompletionHandler completionHandler);
 
-		/// <summary>Called to complete the request and dismiss the associated <see cref="UIKit.UIViewController" />.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Called to complete the request and dismiss the associated view controller.</summary>
 		[Export ("completeExtensionConfigurationRequest")]
 		void CompleteExtensionConfigurationRequest ();
 
@@ -444,7 +443,7 @@ namespace AuthenticationServices {
 		new nint Rank { get; set; }
 	}
 
-	/// <summary>System-provided standard <see cref="UIKit.UIViewController" /> for presenting a credential provider extension.</summary>
+	/// <summary>System-provided standard <see cref="UIViewController" /> for presenting a credential provider extension.</summary>
 	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[NoTV]
 	[BaseType (typeof (UIViewController))]
@@ -585,10 +584,10 @@ namespace AuthenticationServices {
 		[Export ("start")]
 		bool Start ();
 
-		/// <summary>Developers can call this method to cancel the authentication session and dismiss the associated <see cref="UIKit.UIViewController" />.</summary>
-		///         <remarks>
-		///           <para>After the initial call to this method, subsequent calls have no effect.</para>
-		///         </remarks>
+		/// <summary>Developers can call this method to cancel the authentication session and dismiss the associated view controller.</summary>
+		/// <remarks>
+		///   <para>After the initial call to this method, subsequent calls have no effect.</para>
+		/// </remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("cancel")]

@@ -885,7 +885,9 @@ namespace Security {
 		Skip,
 	}
 
-	/// <summary>Enumeration defining valid options for <see cref="Security.SecRecord.TokenID" />.</summary>
+#if !__MACOS__
+	/// <summary>Enumeration defining valid options for <see cref="SecRecord.TokenID" />.</summary>
+#endif
 	[MacCatalyst (13, 1)]
 	public enum SecTokenID {
 		/// <summary>To be added.</summary>

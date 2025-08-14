@@ -1,6 +1,6 @@
 <Documentation>
   <Docs DocId="T:HealthKitUI.HKActivityRingView">
-    <summary>A <see cref="UIKit.UIView" /> that shows the data in a <see cref="HealthKit.HKSummary" />.</summary>
+    <summary>A <see cref="UIKit.UIView" /> that shows the data in a <see cref="HealthKit.HKActivitySummary" />.</summary>
     <remarks>
       <para>Developers can set the values within the <see cref="HealthKitUI.HKActivityRingView" /> using a <see cref="HealthKit.HKActivitySummary" /> object, as shown in the following example:</para>
       <example>

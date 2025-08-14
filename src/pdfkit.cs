@@ -2703,11 +2703,9 @@ namespace PdfKit {
 		[Export ("transformContext:forBox:")]
 		void TransformContext (CGContext context, PdfDisplayBox box);
 
-		/// <param name="size">To be added.</param>
-		///         <param name="box">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>The return type is <see cref="UIKit.UIImage" /> on iOS and <see cref="AppKit.NSImage" /> on MacOS.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Get a thumbnail for this page of the specified <paramref name="size" />.</summary>
+		/// <param name="size">The size of the returned thumbnail.</param>
+		/// <param name="box">The box type where the thumbnail will be rendered.</param>
 		[MacCatalyst (13, 1)]
 		[Export ("thumbnailOfSize:forBox:")]
 		NSImage GetThumbnail (CGSize size, PdfDisplayBox box);

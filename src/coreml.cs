@@ -249,7 +249,7 @@ namespace CoreML {
 	interface MLFeatureProvider {
 
 		/// <summary>The names of the feature, as defined by the <see cref="CoreML.MLModel" />.</summary>
-		/// <value>The <see cref="Monotouch.Foundation.NSSet" /> of feature names.</value>
+		/// <value>The <see cref="NSSet" /> of feature names.</value>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("featureNames")]

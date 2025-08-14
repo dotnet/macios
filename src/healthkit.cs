@@ -230,7 +230,7 @@ namespace HealthKit {
 		Right = 1,
 	}
 
-	/// <summary>The completion handler for <see cref="HealthKit.HKAnchoredObjectQuery.HKAnchoredObjectQuery(HealthKit.HKSampleType,Foundation.NSPredicate,System.UIntPtr,System.UIntPtr,HealthKit.HKAnchoredObjectResultHandler2)" />.</summary>
+	/// <summary>The completion handler for <see cref="HealthKit.HKAnchoredObjectQuery.HKAnchoredObjectQuery(HealthKit.HKSampleType,Foundation.NSPredicate,System.UIntPtr,System.UIntPtr,HealthKit.HKAnchoredObjectResultHandler)" />.</summary>
 	/// <summary>Completion handler for anchored object queries.</summary>
 	delegate void HKAnchoredObjectResultHandler (HKAnchoredObjectQuery query, [NullAllowed] HKSample [] results, nuint newAnchor, [NullAllowed] NSError error);
 
@@ -2738,8 +2738,9 @@ namespace HealthKit {
 		NSSet Sources { get; }
 	}
 
-	/// <summary>Results handler for <see cref="HealthKit.HKStatisticsCollectionQuery.SetInitialResultsHandler(HealthKit.HKStatisticsCollectionQueryInitialResultsHandler)" /> and <see cref="HealthKit.HKStatisticsCollectionQuery.SetStatisticsUpdateHandler(HealthKit.HKStatisticsCollectionQueryInitialResultsHandler)" />.</summary>
+	/// <summary>The delegate for <see cref="HealthKit.HKStatisticsCollectionQuery.InitialResultsHandler" />.</summary>
 	delegate void HKStatisticsCollectionQueryInitialResultsHandler (HKStatisticsCollectionQuery query, [NullAllowed] HKStatisticsCollection result, [NullAllowed] NSError error);
+	/// <summary>The delegate for <see cref="HealthKit.HKStatisticsCollectionQuery.StatisticsUpdated" />.</summary>
 	delegate void HKStatisticsCollectionQueryStatisticsUpdateHandler (HKStatisticsCollectionQuery query, [NullAllowed] HKStatistics statistics, [NullAllowed] HKStatisticsCollection collection, [NullAllowed] NSError error);
 
 
@@ -3328,7 +3329,7 @@ namespace HealthKit {
 		StateOfMind,
 	}
 
-	/// <summary>Enumerates the types of <see cref="HealthKit.HKCategory" />; currently there is only the one form (Sleep Analysis).</summary>
+	/// <summary>Enumerates the types of <see cref="HKCategoryType" />s.</summary>
 	[Mac (13, 0)]
 	[MacCatalyst (13, 1)]
 	enum HKCategoryTypeIdentifier {
@@ -4766,9 +4767,23 @@ namespace HealthKit {
 		void DidDisconnect (HKWorkoutSession workoutSession, [NullAllowed] NSError error);
 	}
 
+#if MONOMAC
 	/// <summary>Summarizes user activity for a specific day.</summary>
-	///     <remarks>Developers use a <see cref="HealthKit.HKActivitySummaryQuery" /> object to get a <see cref="HealthKit.HKActivitySummary" /> instance for a specific day. While developers can create <see cref="HealthKit.HKActivitySummary" /> themselves, they cannot save these to the store. Developers can display an active summary on iOS with the <see cref="HealthKitUI.HKActivityRingView" /> class.</remarks>
-	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/HealthKit/HKActivitySummary">Apple documentation for <c>HKActivitySummary</c></related>
+	/// <remarks>
+	///   Developers use a <see cref="HealthKit.HKActivitySummaryQuery" /> object to get a <see cref="HealthKit.HKActivitySummary" />
+	///   instance for a specific day. While developers can create <see cref="HealthKit.HKActivitySummary" /> themselves, they cannot
+	///   save these to the store.
+	/// </remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/HealthKit/HKActivitySummary">Apple documentation for <c>HKActivitySummary</c></related>
+#else
+	/// <summary>Summarizes user activity for a specific day.</summary>
+	/// <remarks>
+	///   Developers use a <see cref="HealthKit.HKActivitySummaryQuery" /> object to get a <see cref="HealthKit.HKActivitySummary" />
+	///   instance for a specific day. While developers can create <see cref="HealthKit.HKActivitySummary" /> themselves, they cannot
+	///   save these to the store. Developers can display an active summary on iOS with the <see cref="HealthKitUI.HKActivityRingView" /> class.
+	/// </remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/HealthKit/HKActivitySummary">Apple documentation for <c>HKActivitySummary</c></related>
+#endif
 	[Mac (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]

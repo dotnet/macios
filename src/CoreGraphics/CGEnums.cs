@@ -62,7 +62,7 @@ namespace CoreGraphics {
 
 	// untyped enum -> CGContext.h
 	/// <summary>Text drawing mode used by Quartz.</summary>
-	///     <remarks>These drawing modes are used with the <see cref="CoreGraphics.CGContext.SetDrawingMode" /> method and they specify how the glyphs that make up the text should be drawn.   </remarks>
+	/// <remarks>These drawing modes are used with the <see cref="CGContext.SetTextDrawingMode" /> method and they specify how the glyphs that make up the text should be drawn.</remarks>
 	public enum CGTextDrawingMode : uint {
 		/// <summary>Perform a Fill operation on the text glyphs.</summary>
 		Fill,

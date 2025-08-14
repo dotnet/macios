@@ -78,9 +78,12 @@
 !missing-pinvoke! CFAllocatorReallocateTyped is not bound
 !missing-pinvoke! CFAllocatorSetDefault is not bound
 
+## We've named the CFByteOrder enum slightly differently than it shows up in the headers
+!missing-enum! __CFByteOrder not bound
+!unknown-native-enum! CFByteOrder bound
+
 ## unsorted
 
-!missing-enum! __CFByteOrder not bound
 !missing-enum! CFCalendarUnit not bound
 !missing-enum! CFCharacterSetPredefinedSet not bound
 !missing-enum! CFDataSearchFlags not bound

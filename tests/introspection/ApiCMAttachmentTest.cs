@@ -248,6 +248,7 @@ namespace Introspection {
 #endif
 				return false;
 			case "MTLIOCompressionContext":
+			case "CGRenderingBufferProvider":
 				return true;
 			default:
 				return false;

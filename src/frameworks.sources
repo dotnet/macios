@@ -504,8 +504,12 @@ COREGRAPHICS_CORE_SOURCES = \
 
 COREGRAPHICS_SOURCES = \
 	CoreGraphics/CGBitmapContext.cs \
+	CoreGraphics/CGBitmapInfo.cs \
+	CoreGraphics/CGBitmapParameters.cs \
 	CoreGraphics/CGContextPDF.cs \
 	CoreGraphics/CGColorConversionInfo.cs \
+	CoreGraphics/CGContentInfo.cs \
+	CoreGraphics/CGContentToneMappingInfo.cs \
 	CoreGraphics/CGDataConsumer.cs \
 	CoreGraphics/CGDataProvider.cs \
 	CoreGraphics/CGEventSource.cs \
@@ -523,8 +527,10 @@ COREGRAPHICS_SOURCES = \
 	CoreGraphics/CGPDFStream.cs \
 	CoreGraphics/CGPDFString.cs \
 	CoreGraphics/CGPdfTagType.cs \
+	CoreGraphics/CGRenderingBufferProvider.cs \
 	CoreGraphics/CGSession.cs \
 	CoreGraphics/CGShading.cs \
+	CoreGraphics/CGToneMappingOptions.cs \
 	CoreGraphics/NativeDrawingMethods.cs \
 	CoreGraphics/NSValue.cs \
 

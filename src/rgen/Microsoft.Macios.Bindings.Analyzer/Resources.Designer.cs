@@ -515,5 +515,59 @@ namespace Microsoft.Macios.Bindings.Analyzer {
                 return ResourceManager.GetString("RBI0017Title", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The export attribute must have a nonnull selector..
+        /// </summary>
+        internal static string RBI0018Description {
+            get {
+                return ResourceManager.GetString("RBI0018Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A export property selector must not contain any whitespace.
+        /// </summary>
+        internal static string RBI0018MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0018MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Null selector.
+        /// </summary>
+        internal static string RBI0018Title {
+            get {
+                return ResourceManager.GetString("RBI0018Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The selector string cannot contain any whitespace characters..
+        /// </summary>
+        internal static string RBI0019Description {
+            get {
+                return ResourceManager.GetString("RBI0019Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A export property selector must not contain any whitespace.
+        /// </summary>
+        internal static string RBI0019MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0019MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bad selector format.
+        /// </summary>
+        internal static string RBI0019Title {
+            get {
+                return ResourceManager.GetString("RBI0019Title", resourceCulture);
+            }
+        }
     }
 }

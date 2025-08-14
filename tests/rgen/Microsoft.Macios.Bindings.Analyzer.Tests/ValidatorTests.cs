@@ -40,18 +40,28 @@ public class ValidatorTests {
 		public string? City { get; set; }
 	}
 
+	public struct NonNullableAddress {
+		public string Street { get; set; }
+		public string City { get; set; }
+
+		public static bool IsDefault (NonNullableAddress address) => 
+			string.IsNullOrEmpty (address.Street) && string.IsNullOrEmpty (address.City);
+	}
+
 	public struct MyData {
 		public MyFlag Flag { get; set; }
 		public string? OptionalField1 { get; set; }
 		public int? OptionalField2 { get; set; }
 		public string? OptionalField3 { get; set; }
 		public Address? HomeAddress { get; set; }
+		public NonNullableAddress WorkAddress { get; set; }
 	}
 
 	public struct MyOtherData {
 		public OtherFlag Flag { get; set; }
 		public string? OptionalField1 { get; set; }
 		public Address? HomeAddress { get; set; }
+		public NonNullableAddress WorkAddress { get; set; }
 	}
 
 	[Theory]
@@ -479,9 +489,10 @@ public class ValidatorTests {
 	{
 		// Test with correct flag type - should succeed
 		var validator1 = new Validator<MyData> ();
-		validator1.RestrictToFlagType<string, MyFlag, MyFlag> (
+		validator1.RestrictToFlagType (
 			d => d.OptionalField1,
-			d => d.Flag
+			d => d.Flag,
+			typeof (MyFlag)
 		);
 
 		var data1 = new MyData {
@@ -503,9 +514,10 @@ public class ValidatorTests {
 
 		// Test with wrong flag type - should fail
 		var validator2 = new Validator<MyOtherData> ();
-		validator2.RestrictToFlagType<string, OtherFlag, MyFlag> (
+		validator2.RestrictToFlagType (
 			d => d.OptionalField1,
-			d => d.Flag
+			d => d.Flag,
+			typeof (MyFlag)
 		);
 
 		var data3 = new MyOtherData {
@@ -525,9 +537,10 @@ public class ValidatorTests {
 	{
 		// Test with correct flag type - should succeed
 		var validator1 = new Validator<MyData> ();
-		validator1.RestrictToFlagType<Address, MyFlag, MyFlag> (
+		validator1.RestrictToFlagType (
 			d => d.HomeAddress,
-			d => d.Flag
+			d => d.Flag,
+			typeof (MyFlag)
 		);
 
 		var data1 = new MyData {
@@ -540,9 +553,10 @@ public class ValidatorTests {
 
 		// Test with wrong flag type - should fail
 		var validator2 = new Validator<MyOtherData> ();
-		validator2.RestrictToFlagType<Address, OtherFlag, MyFlag> (
+		validator2.RestrictToFlagType (
 			d => d.HomeAddress,
-			d => d.Flag
+			d => d.Flag,
+			typeof (MyFlag)
 		);
 
 		var data2 = new MyOtherData {
@@ -555,5 +569,64 @@ public class ValidatorTests {
 		var diagnostics2 = errors2 [nameof (MyOtherData.HomeAddress)];
 		Assert.Single (diagnostics2);
 		Assert.Equal ("RBI0017", diagnostics2 [0].Id);
+	}
+
+	[Fact]
+	public void RestrictToFlagTypeNonNullableStructTests ()
+	{
+		// Test with correct flag type and default struct - should succeed
+		var validator1 = new Validator<MyData> ();
+		validator1.RestrictToFlagType (
+			d => d.WorkAddress,
+			d => d.Flag,
+			NonNullableAddress.IsDefault,
+			typeof (MyFlag)
+		);
+
+		var data1 = new MyData {
+			Flag = MyFlag.OptionA,
+			WorkAddress = new NonNullableAddress () // Default struct
+		};
+
+		var errors1 = validator1.ValidateAll (data1);
+		Assert.Empty (errors1);
+
+		// Test with correct flag type and non-default struct - should succeed
+		var data2 = new MyData {
+			Flag = MyFlag.OptionA,
+			WorkAddress = new NonNullableAddress { Street = "Test St", City = "Test City" }
+		};
+
+		var errors2 = validator1.ValidateAll (data2);
+		Assert.Empty (errors2);
+
+		// Test with wrong flag type and non-default struct - should fail
+		var validator2 = new Validator<MyOtherData> ();
+		validator2.RestrictToFlagType (
+			d => d.WorkAddress,
+			d => d.Flag,
+			NonNullableAddress.IsDefault,
+			typeof (MyFlag)
+		);
+
+		var data3 = new MyOtherData {
+			Flag = OtherFlag.OptionX,
+			WorkAddress = new NonNullableAddress { Street = "Test St", City = "Test City" }
+		};
+
+		var errors3 = validator2.ValidateAll (data3);
+		Assert.True (errors3.ContainsKey (nameof (MyOtherData.WorkAddress)));
+		var diagnostics3 = errors3 [nameof (MyOtherData.WorkAddress)];
+		Assert.Single (diagnostics3);
+		Assert.Equal ("RBI0017", diagnostics3 [0].Id);
+
+		// Test with wrong flag type but default struct - should succeed
+		var data4 = new MyOtherData {
+			Flag = OtherFlag.OptionX,
+			WorkAddress = new NonNullableAddress () // Default struct
+		};
+
+		var errors4 = validator2.ValidateAll (data4);
+		Assert.Empty (errors4);
 	}
 }

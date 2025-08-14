@@ -26,7 +26,7 @@
       </para>
       <para>
 	To set the pasteboard contents to an image, use the
-	<see cref="UIKit.UIPasteBoard.Image" />.  
+	<see cref="UIKit.UIPasteboard.Image" />.  
 	property.
       </para>
       <para>
@@ -36,7 +36,7 @@
       </para>
       <para>
 	To set the values to arbitrary data types, use the
-	<see cref="UIKit.UIPasteBoard.SetData" /> method.
+	<see cref="UIKit.UIPasteboard.SetData" /> method.
       </para>
       <para>
 	You can use the convenience properties <see cref="UIKit.UIPasteboard.String" />, <see cref="UIKit.UIPasteboard.Strings" />, <see cref="UIKit.UIPasteboard.Image" />, <see cref="UIKit.UIPasteboard.Images" />, <see cref="UIKit.UIPasteboard.Url" />, <see cref="UIKit.UIPasteboard.Urls" />, <see cref="UIKit.UIPasteboard.Color" /> and <see cref="UIKit.UIPasteboard.Colors" /> to set and get

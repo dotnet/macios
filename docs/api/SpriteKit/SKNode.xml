@@ -3,7 +3,7 @@
     <summary>The building block out of which scene-graphs are made. The root of the tree is an <see cref="SpriteKit.SKScene" />.</summary>
     <remarks>
       <para>
-        <img href="~/SpriteKit/_images/SKNode.Hierarchy.png" alt="Class diagram of the SKNode hierarchy" />
+        <img href="~/xml/SpriteKit/_images/SKNode.Hierarchy.png" alt="Class diagram of the SKNode hierarchy" />
       </para>
       <para>
         <list type="table">
@@ -34,12 +34,6 @@
               <see cref="SpriteKit.SKLabelNode" />
             </term>
             <description>Displays text.</description>
-          </item>
-          <item>
-            <term>
-              <see cref="SpriteKit.SKSceneNode" />
-            </term>
-            <description>Runs an animation loop, including display, actions, and physics.</description>
           </item>
           <item>
             <term>

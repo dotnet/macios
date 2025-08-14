@@ -15,6 +15,7 @@ using ObjCBindings;
 using static Microsoft.Macios.Generator.Emitters.BindingSyntaxFactory;
 using Property = Microsoft.Macios.Generator.DataModel.Property;
 using Method = Microsoft.Macios.Generator.DataModel.Method;
+using TypeInfo = Microsoft.Macios.Generator.DataModel.TypeInfo;
 
 namespace Microsoft.Macios.Generator.Emitters;
 
@@ -40,6 +41,10 @@ class ProtocolEmitter : IClassEmitter {
 		// emit the DynamicDependencyAttribute per property
 		foreach (var property in bindingContext.Changes.Properties.OrderBy (p => p.Name)) {
 			interfaceBlock.AppendDynamicDependencyAttribute (property.Name);
+		}
+
+		foreach (var method in bindingContext.Changes.Methods.OrderBy (m => m.Name)) {
+			interfaceBlock.AppendDynamicDependencyAttribute (method);
 		}
 		interfaceBlock.AppendGeneratedCodeAttribute ();
 		interfaceBlock.WriteRaw (
@@ -69,14 +74,15 @@ $@"static {bindingContext.Changes.Name} ()
 
 			if (!getter.IsNullOrDefault) {
 				this.EmitMethod (context, getter, classBlock, uiThreadCheck);
+				classBlock.WriteLine ();
 			}
 
 			if (!setter.IsNullOrDefault) {
 				this.EmitMethod (context, setter, classBlock, uiThreadCheck);
+				classBlock.WriteLine ();
 			}
 
 			// write the property declarations
-			classBlock.WriteLine ();
 			classBlock.AppendMemberAvailability (property.SymbolAvailability);
 			classBlock.AppendGeneratedCodeAttribute (optimizable: true);
 			if (!property.IsOptional) {
@@ -95,6 +101,43 @@ $@"static {bindingContext.Changes.Name} ()
 					propertyBlock.WriteLine ($"set => {setter.Name} (this, value);");
 				}
 			}
+			classBlock.WriteLine ();
+		}
+	}
+
+	/// <summary>
+	/// Emits the methods for the protocol interface.
+	/// For each method, it generates an extension method for the protocol and a default implementation that throws an exception.
+	/// </summary>
+	/// <param name="context">The binding context containing protocol information.</param>
+	/// <param name="classBlock">The writer for the class block.</param>
+	void EmitMethods (in BindingContext context, TabbedWriter<StringWriter> classBlock)
+	{
+		// loop over all the methods, there are two methods that will be emitted:
+		// - _Foo the extension method for the protocol
+		// - Foo the protocol method that will throw an exception if called directly.
+		var protocolType = new TypeInfo (context.Changes.FullyQualifiedSymbol, SpecialType.None);
+		var uiThreadCheck = (context.NeedsThreadChecks)
+			? EnsureUiThread (context.RootContext.CurrentPlatform)
+			: null;
+		foreach (var method in context.Changes.Methods.OrderBy (m => m.Name)) {
+			var protocolMethod = method.ToProtocolMethod (protocolType);
+
+			this.EmitMethod (context, protocolMethod, classBlock, uiThreadCheck);
+
+			// emit the method that will be used as the default implementation for the protocol.
+			classBlock.WriteLine ();
+			classBlock.AppendMemberAvailability (method.SymbolAvailability);
+			classBlock.AppendGeneratedCodeAttribute (optimizable: true);
+			if (!method.IsOptional) {
+				classBlock.AppendRequiredMemberAttribute ();
+			}
+
+			using (var methodBlock = classBlock.CreateBlock (method.ToDeclaration ().ToString (), block: true)) {
+				// we don't need to use the factory to generate the method since it is onlye throwing an exception.
+				methodBlock.WriteLine ($"throw new {You_Should_Not_Call_base_In_This_Method} ();");
+			}
+			classBlock.WriteLine ();
 		}
 	}
 
@@ -140,7 +183,7 @@ $@"static {bindingContext.Changes.Name} ()
 
 			// Protocol registration
 			var protocolName = bindingData.Name ?? bindingContext.Changes.Name [1..];
-			builder.AppendProtocolAttribute (protocolName, Nomenclator.GetProtocolWrapperName (protocolName));
+			builder.AppendProtocolAttribute (protocolName, bindingContext.GetProtocolWrapperName ());
 
 			// we need to collect the properties extension methods, we do that with a helper method
 			// that will return the properties and their getters/setters.
@@ -149,6 +192,12 @@ $@"static {bindingContext.Changes.Name} ()
 			// append the properties to the protocol member data
 			foreach (var (property, getter, setter) in properties) {
 				var protocolMember = new ProtocolMemberData (property, getter, setter);
+				builder.AppendProtocolMemberData (protocolMember);
+			}
+
+			// append the methods to the protocol member data 
+			foreach (var method in bindingContext.Changes.Methods.OrderBy (m => m.Name)) {
+				var protocolMember = new ProtocolMemberData (method);
 				builder.AppendProtocolMemberData (protocolMember);
 			}
 
@@ -162,9 +211,13 @@ $@"static {bindingContext.Changes.Name} ()
 
 				// emit static constructor
 				EmitDefaultConstructors (in bindingContext, interfaceBlock);
+				interfaceBlock.WriteLine ();
 
 				// emit the properties, this will generate the getters/setters and the properties themselves
 				EmitProperties (in bindingContext, in properties, interfaceBlock);
+
+				// emit the methods for the protocol
+				EmitMethods (in bindingContext, interfaceBlock);
 			}
 		}
 		return true;

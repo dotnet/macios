@@ -1479,7 +1479,7 @@ namespace HomeKit {
 		[Field ("HMAccessoryCategoryTypeFan")]
 		Fan,
 
-		/// <summary>An accessory that controls a <see cref="HomeKit.HMAccessoryCategoryType.DoorOpener" />.</summary>
+		/// <summary>An accessory that controls a garage door.</summary>
 		[Field ("HMAccessoryCategoryTypeGarageDoorOpener")]
 		GarageDoorOpener,
 

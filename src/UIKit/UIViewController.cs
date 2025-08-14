@@ -30,7 +30,7 @@ namespace UIKit {
 			modal.Push (controller);
 		}
 
-		// DismissModalViewControllerAnimated can be called on on any controller in the hierarchy
+		// DismissModalViewController can be called on on any controller in the hierarchy
 		// note: if you dismiss something that is not in the hierarchy then you remove references to everything :(
 		static void PopModal (UIViewController controller)
 		{

@@ -228,6 +228,7 @@ steps:
 - task: UseDotNet@2
   inputs:
     version: $(DotNetSdkVersion).x
+    installationPath: $(Agent.TempDirectory)/dotnet
 
 - bash: |
     set -x

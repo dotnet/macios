@@ -132,12 +132,6 @@ namespace VideoSubscriberAccount {
 		string AccountProviderResponse { get; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="VideoSubscriberAccount.VSAccountManagerDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="VideoSubscriberAccount.VSAccountManagerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="VideoSubscriberAccount.VSAccountManagerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="VideoSubscriberAccount.VSAccountManagerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IVSAccountManagerDelegate { }
 
 	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/VideoSubscriberAccount/VSAccountManagerDelegate">Apple documentation for <c>VSAccountManagerDelegate</c></related>
@@ -148,7 +142,7 @@ namespace VideoSubscriberAccount {
 
 		/// <param name="accountManager">To be added.</param>
 		///         <param name="viewController">To be added.</param>
-		///         <summary>Developers override this to specify the <see cref="UIKit.UIViewController" /> to be shown when the <see cref="VideoSubscriberAccounts.VSAccountManager" /> requires user interaction.</summary>
+		///         <summary>Developers override this to specify the <see cref="UIKit.UIViewController" /> to be shown when the <see cref="VSAccountManager" /> requires user interaction.</summary>
 		///         <remarks>To be added.</remarks>
 		[Abstract]
 		[NoMac]
@@ -190,18 +184,16 @@ namespace VideoSubscriberAccount {
 		[NullAllowed, Export ("delegate", ArgumentSemantic.Weak)]
 		IVSAccountManagerDelegate Delegate { get; set; }
 
+		/// <summary>Checks whether the user has provided permission for the app to access their subscription information.</summary>
 		/// <param name="options">If not empty, may contain the key <see cref="VideoSubscriberAccount.VSCheckAccessOptionKeys" />.</param>
-		///         <param name="completionHandler">Called by the system with the results of the permission check.</param>
-		///         <summary>Checks whether the user has provided permission for the app to access their subscription information.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <param name="completionHandler">Called by the system with the results of the permission check.</param>
 		[NoMac]
 		[Async (XmlDocs = """
-			<param name="options">If not empty, may contain the key .</param>
 			<summary>Checks whether the user has provided permission for the app to access their subscription information.</summary>
+			<param name="options">If not empty, may contain the key <see cref="VideoSubscriberAccount.VSCheckAccessOptionKeys" />.</param>
 			<returns>
-			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous CheckAccessStatus operation.  The value of the TResult parameter is of type System.Action&lt;VideoSubscriberAccount.VSAccountAccessStatus,Foundation.NSError&gt;.</para>
-			        </returns>
-			<remarks>To be added.</remarks>
+			  <para class="improve-task-t-return-type-description">A task that represents the asynchronous CheckAccessStatus operation.  The value of the TResult parameter is of type System.Action&lt;VideoSubscriberAccount.VSAccountAccessStatus,Foundation.NSError&gt;.</para>
+			</returns>
 			""")]
 		[Export ("checkAccessStatusWithOptions:completionHandler:")]
 		void CheckAccessStatus (NSDictionary options, Action<VSAccountAccessStatus, NSError> completionHandler);
@@ -241,7 +233,6 @@ namespace VideoSubscriberAccount {
 	}
 
 	[Static]
-	[Internal]
 	[NoMacCatalyst]
 	interface VSCheckAccessOptionKeys {
 
@@ -249,14 +240,17 @@ namespace VideoSubscriberAccount {
 		NSString CheckAccessOptionPrompt { get; }
 	}
 
-	/// <summary>A <see cref="Foundation.DictionaryContainer" /> holding keys appropriate to <see cref="VideoSubscriberAccount.VSAccountManager.CheckAccessStatusAsync(VideoSubscriberAccount.VSAccountManagerAccessOptions)" /> and <see cref="VideoSubscriberAccount.VSAccountManager.CheckAccessStatusAsync(VideoSubscriberAccount.VSAccountManagerAccessOptions)" />.</summary>
+#if !__MACOS__
+	/// <summary>
+	///    A <see cref="Foundation.DictionaryContainer" /> holding keys appropriate to <see cref="VSAccountManager.CheckAccessStatus(VSAccountManagerAccessOptions,Action{VSAccountAccessStatus,NSError})" />
+	///    and <see cref="VSAccountManager.CheckAccessStatusAsync(VSAccountManagerAccessOptions)" />.
+	/// </summary>
+#endif
 	[NoMacCatalyst]
 	[StrongDictionary ("VSCheckAccessOptionKeys")]
 	interface VSAccountManagerAccessOptions {
 
 		/// <summary>If not <see langword="null" />, specifies whether the user should be asked for access permission.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Export ("CheckAccessOptionPrompt")]
 		bool CheckAccessOptionPrompt { get; set; }
 	}

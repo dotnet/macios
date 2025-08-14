@@ -39,7 +39,7 @@ readonly partial struct Parameter {
 	public static bool TryCreate (IParameterSymbol symbol, ParameterSyntax declaration, RootContext context,
 		[NotNullWhen (true)] out Parameter? parameter)
 	{
-		parameter = new (symbol.Ordinal, new (symbol.Type, context.Compilation), symbol.GetSafeName ()) {
+		parameter = new (symbol.Ordinal, new (symbol.Type, context), symbol.GetSafeName ()) {
 			BindAs = symbol.GetBindFromData (),
 			ForcedType = symbol.GetForceTypeData (),
 			IsOptional = symbol.IsOptional,
@@ -50,5 +50,15 @@ readonly partial struct Parameter {
 			Attributes = declaration.GetAttributeCodeChanges (context.SemanticModel),
 		};
 		return true;
+	}
+
+	/// <summary>
+	/// Creates a new <see cref="Parameter"/> instance with an updated position.
+	/// </summary>
+	/// <param name="position">The new position for the parameter.</param>
+	/// <returns>A new <see cref="Parameter"/> instance with the specified position.</returns>
+	public Parameter WithPosition (int position)
+	{
+		return this with { Position = position };
 	}
 }

@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
+#pragma warning disable APL0003
 
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,6 +11,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Macios.Generator.Attributes;
 using Microsoft.Macios.Generator.Availability;
+using Microsoft.Macios.Generator.DataModel;
 using Microsoft.Macios.Generator.IO;
 using ObjCRuntime;
 using Xunit;
@@ -800,6 +802,127 @@ Because we are using a raw string  we expected:
 	{
 		var block = new TabbedStringBuilder (sb);
 		block.AppendProtocolMemberData (protocolMemberData);
+		var result = block.ToCode ();
+		Assert.Equal (expectedString, result);
+	}
+
+	public static IEnumerable<object []> AppendDynamicDependencyAttributeWithMethodTestData {
+		get {
+			// Method with no parameters
+			var methodNoParams = new Method (
+				type: "NS.MyClass",
+				name: "MyMethod",
+				returnType: ReturnTypeForVoid (),
+				symbolAvailability: new (),
+				exportMethodData: new ("selector", ArgumentSemantic.None, ObjCBindings.Method.Default),
+				attributes: [],
+				modifiers: [Token (SyntaxKind.PublicKeyword)],
+				parameters: []
+			);
+			yield return [methodNoParams, "[DynamicDependency (\"MyMethod()\")]\n"];
+
+			// Method with one parameter
+			var methodOneParam = new Method (
+				type: "NS.MyClass",
+				name: "MyMethod",
+				returnType: ReturnTypeForVoid (),
+				symbolAvailability: new (),
+				exportMethodData: new ("selector", ArgumentSemantic.None, ObjCBindings.Method.Default),
+				attributes: [],
+				modifiers: [Token (SyntaxKind.PublicKeyword)],
+				parameters: [new Parameter (0, ReturnTypeForString (), "param1")]
+			);
+			yield return [methodOneParam, "[DynamicDependency (\"MyMethod(string)\")]\n"];
+
+			// Method with multiple parameters
+			var methodMultipleParams = new Method (
+				type: "NS.MyClass",
+				name: "MyMethod",
+				returnType: ReturnTypeForVoid (),
+				symbolAvailability: new (),
+				exportMethodData: new ("selector", ArgumentSemantic.None, ObjCBindings.Method.Default),
+				attributes: [],
+				modifiers: [Token (SyntaxKind.PublicKeyword)],
+				parameters: [
+					new Parameter (0, ReturnTypeForString (), "param1"),
+					new Parameter (1, ReturnTypeForInt (), "param2")
+				]
+			);
+			yield return [methodMultipleParams, "[DynamicDependency (\"MyMethod(string,int)\")]\n"];
+
+			// Extension method (with 'this' parameter)
+			var extensionMethod = new Method (
+				type: "NS.MyClass",
+				name: "MyExtensionMethod",
+				returnType: ReturnTypeForVoid (),
+				symbolAvailability: new (),
+				exportMethodData: new ("selector", ArgumentSemantic.None, ObjCBindings.Method.Default),
+				attributes: [],
+				modifiers: [SyntaxFactory.Token (SyntaxKind.PublicKeyword)],
+				parameters: [
+					new Parameter (0, ReturnTypeForString (), "self") { IsThis = true },
+					new Parameter (1, ReturnTypeForInt (), "param1")
+				]
+			);
+			yield return [extensionMethod, "[DynamicDependency (\"MyExtensionMethod(string,int)\")]\n"];
+		}
+	}
+
+	[Theory]
+	[MemberData (nameof (AppendDynamicDependencyAttributeWithMethodTestData))]
+	void AppendDynamicDependencyAttributeWithMethodTests (Method method, string expectedString)
+	{
+		var block = new TabbedStringBuilder (sb);
+		block.AppendDynamicDependencyAttribute (method);
+		var result = block.ToCode ();
+		Assert.Equal (expectedString, result);
+	}
+
+	public static IEnumerable<object []> AppendExportMethodAttributeTestData {
+		get {
+			// Simple selector
+			yield return [new ExportData<ObjCBindings.Method> ("mySelector:"), "[Export<Method> (\"mySelector:\")]\n"];
+
+			// Selector with multiple parts
+			yield return [new ExportData<ObjCBindings.Method> ("mySelector:withObject:"), "[Export<Method> (\"mySelector:withObject:\")]\n"];
+
+			// Selector with no parameters
+			yield return [new ExportData<ObjCBindings.Method> ("mySelector"), "[Export<Method> (\"mySelector\")]\n"];
+
+			// Null selector
+			yield return [new ExportData<ObjCBindings.Method> (null), "[Export<Method> (\"\")]\n"];
+		}
+	}
+
+	[Theory]
+	[MemberData (nameof (AppendExportMethodAttributeTestData))]
+	void AppendExportMethodAttributeTests (ExportData<ObjCBindings.Method> exportData, string expectedString)
+	{
+		var block = new TabbedStringBuilder (sb);
+		block.AppendExportAttribute (exportData);
+		var result = block.ToCode ();
+		Assert.Equal (expectedString, result);
+	}
+
+	public static IEnumerable<object []> AppendExportPropertyAttributeTestData {
+		get {
+			// Simple selector
+			yield return [new ExportData<ObjCBindings.Property> ("myProperty"), "[Export<Property> (\"myProperty\")]\n"];
+
+			// Selector with underscore
+			yield return [new ExportData<ObjCBindings.Property> ("_myProperty"), "[Export<Property> (\"_myProperty\")]\n"];
+
+			// Null selector
+			yield return [new ExportData<ObjCBindings.Property> (null), "[Export<Property> (\"\")]\n"];
+		}
+	}
+
+	[Theory]
+	[MemberData (nameof (AppendExportPropertyAttributeTestData))]
+	void AppendExportPropertyAttributeTests (ExportData<ObjCBindings.Property> exportData, string expectedString)
+	{
+		var block = new TabbedStringBuilder (sb);
+		block.AppendExportAttribute (exportData);
 		var result = block.ToCode ();
 		Assert.Equal (expectedString, result);
 	}

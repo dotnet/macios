@@ -55,7 +55,7 @@ namespace CoreSpotlight {
 		Cancelled = -2003,
 	}
 
-	/// <summary>Enumerates file protection options in calls to <see cref="CoreSpotlight.CSSearchableIndex.FromName" />.</summary>
+	/// <summary>Enumerates file protection options in calls to <see cref="CSSearchableIndex.CSSearchableIndex(string,CSFileProtection)" />.</summary>
 	[NoTV]
 	[NoMac]
 	[MacCatalyst (13, 1)]

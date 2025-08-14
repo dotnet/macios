@@ -65,7 +65,7 @@ References:
 * https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.codeanalysis.experimentalattribute?view=net-8.0
 * https://learn.microsoft.com/en-us/dotnet/fundamentals/apicompat/preview-apis#experimentalattribute
 
-## Previws of new API bindings (XCODE_x_y_PREVIEW)
+## Previews of new API bindings (XCODE_x_y_PREVIEW)
 
 We sometimes release previews of new API bindings, and until these are deemed
 stable (by both Apple and us), we mark all our API bindings as preview of the

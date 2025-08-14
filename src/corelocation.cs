@@ -367,10 +367,10 @@ namespace CoreLocation {
 		NSObject WeakDelegate { get; set; }
 
 		/// <summary>The minimum horizontal distance, in meters, the device has to move before issuing a location update.</summary>
-		///         <value>The default value is <see cref="CoreLocation.CLLocationDistance.None" />.</value>
-		///         <remarks>
-		///           <para>If this value is set to <see cref="CoreLocation.CLLocationDistance.None" />, the app will receive all location updates.</para>
-		///         </remarks>
+		/// <value>The default value is <see cref="CoreLocation.CLLocationDistance.FilterNone" />.</value>
+		/// <remarks>
+		///   <para>If this value is set to <see cref="CoreLocation.CLLocationDistance.FilterNone" />, the app will receive all location updates.</para>
+		/// </remarks>
 		[Export ("distanceFilter", ArgumentSemantic.Assign)]
 		double DistanceFilter { get; set; }
 
@@ -474,8 +474,6 @@ namespace CoreLocation {
 		bool SignificantLocationChangeMonitoringAvailable { get; }
 
 		/// <summary>Application developers should use <see cref="CoreLocation.CLLocationManager.IsMonitoringAvailable(System.Type)" /> rather than this deprecated method.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 7, 0, message: "Use 'IsMonitoringAvailable' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 10, message: "Use 'IsMonitoringAvailable' instead.")]
@@ -485,8 +483,6 @@ namespace CoreLocation {
 		bool RegionMonitoringAvailable { get; }
 
 		/// <summary>Application developers should use <see cref="CoreLocation.CLLocationManager.IsMonitoringAvailable(System.Type)" /> rather than this deprecated method.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 6, 0, message: "Use 'IsMonitoringAvailable' and 'AuthorizationStatus' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 10, message: "Use 'IsMonitoringAvailable' and 'AuthorizationStatus' instead.")]
@@ -579,11 +575,11 @@ namespace CoreLocation {
 		CLAuthorizationStatus AuthorizationStatus { get; }
 
 		/// <summary>The authorization status of the app (e.g., if the app is denied access to location services).</summary>
-		///         <value>The value is determined by the user's interaction with the standard permissions dialog.</value>
-		///         <remarks>
-		///           <para>See the "Requesting Authorization" discussion in the class-level remarks: <see cref="CoreLocation.CLLocationManager" />.</para>
-		///         </remarks>
-		///         <altmember cref="CoreLocation.AuthorizationChanged" />
+		/// <value>The value is determined by the user's interaction with the standard permissions dialog.</value>
+		/// <remarks>
+		///   <para>See the "Requesting Authorization" discussion in the class-level remarks: <see cref="CoreLocation.CLLocationManager" />.</para>
+		/// </remarks>
+		/// <altmember cref="CLLocationManager.AuthorizationChanged" />
 		[Deprecated (PlatformName.iOS, 14, 0, message: "Use the instance property 'AuthorizationStatus' instead.")]
 		[Deprecated (PlatformName.MacOSX, 11, 0, message: "Use the instance 'AuthorizationStatus' property instead.")]
 		[Deprecated (PlatformName.TvOS, 14, 0, message: "Use the instance property AuthorizationStatus' instead.")]
@@ -832,12 +828,6 @@ namespace CoreLocation {
 
 	interface ICLLocationManagerDelegate { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="CoreLocation.CLLocationManagerDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="CoreLocation.CLLocationManagerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="CoreLocation.CLLocationManagerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="CoreLocation.CLLocationManagerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[BaseType (typeof (NSObject))]
 	[Model]
 	[Protocol]
@@ -1053,7 +1043,7 @@ namespace CoreLocation {
 	/// <remarks>
 	///       <para>Application developers should use a subtype, either <see cref="CoreLocation.CLCircularRegion" /> or <see cref="CoreLocation.CLBeaconRegion" />:</para>
 	///       <para>
-	///         <img href="~/CoreLocation/_images/CoreLocation.CLBeacon.Hierarchy.png" alt="Class diagram showing CLBeaconRegion and CLCircularRegion are subclasses of CLRegion" />
+	///         <img href="~/xml/CoreLocation/_images/CoreLocation.CLBeacon.Hierarchy.png" alt="Class diagram showing CLBeaconRegion and CLCircularRegion are subclasses of CLRegion" />
 	///       </para>
 	///     </remarks>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CoreLocation/Reference/CLRegion_class/index.html">Apple documentation for <c>CLRegion</c></related>
@@ -1131,7 +1121,7 @@ namespace CoreLocation {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // will crash, see CoreLocation.cs for compatibility stubs
 	interface CLPlacemark : NSSecureCoding, NSCopying {
-		/// <include file="../docs/api/CoreLocation/CLPlacemark.xml" path="/Documentation/Docs[@DocId='P:CoreLocation.CLPlacemark.AddressDictionary']/*" />
+		/// <summary>Developers should not use this deprecated property. Developers should use 'CLPlacemark' properties to access data.</summary>
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'CLPlacemark' properties to access data.")]
 		[Deprecated (PlatformName.TvOS, 11, 0, message: "Use 'CLPlacemark' properties to access data.")]
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'CLPlacemark' properties to access data.")]
@@ -1497,11 +1487,9 @@ namespace CoreLocation {
 		NSDate Timestamp { get; }
 	}
 
+	/// <summary>A delegate that is the <c>completionHandler</c> for various asynchronous methods in <see cref="CLGeocoder" />.</summary>
 	/// <param name="placemarks">Returns null on error, otherwise the list of placemark locations.   Typically one, but could be more than one if the location is known by multiple names.</param>
 	/// <param name="error">Error information.</param>
-	/// <summary>A delegate that is the <c>completionHandler</c> in calls to <see cref="CoreLocation.CLGeocoder.GeocodePostalAddressAsync(Contacts.CNPostalAddress,Foundation.NSLocale)" />.</summary>
-	/// <remarks>
-	///     </remarks>
 	delegate void CLGeocodeCompletionHandler ([NullAllowed] CLPlacemark [] placemarks, [NullAllowed] NSError error);
 
 	/// <include file="../docs/api/CoreLocation/CLGeocoder.xml" path="/Documentation/Docs[@DocId='T:CoreLocation.CLGeocoder']/*" />

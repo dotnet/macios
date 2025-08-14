@@ -84,9 +84,9 @@ public class ValidatorTests {
 		validator.AddStrategy (
 			d => d.OptionalField1,
 			TST0001,
-			(MyData data, out System.Collections.Immutable.ImmutableArray<Diagnostic> diagnostics, Location? location) => {
+			(string? data, out System.Collections.Immutable.ImmutableArray<Diagnostic> diagnostics, Location? location) => {
 				diagnostics = [];
-				if (data.OptionalField1 is not null && data.OptionalField1.Length <= 3) {
+				if (data is not null && data.Length <= 3) {
 					diagnostics = [Diagnostic.Create (TST0001, location, "Field length must be > 3")];
 					return false;
 				}
@@ -122,17 +122,17 @@ public class ValidatorTests {
 	public void RequireWhenWithNestedValidatorTests (MyFlag flag, string? addressParts, bool shouldFail, string? errorKey = null, string? diagnosticId = null)
 	{
 		var addressValidator = new Validator<Address> ();
-		addressValidator.AddStrategy (a => a.Street, TST0001, (Address data, out System.Collections.Immutable.ImmutableArray<Diagnostic> diagnostics, Location? location) => {
+		addressValidator.AddStrategy (a => a.Street, TST0001, (string? data, out System.Collections.Immutable.ImmutableArray<Diagnostic> diagnostics, Location? location) => {
 			diagnostics = [];
-			if (data.Street is null || data.Street.Length <= 3) {
+			if (data is null || data.Length <= 3) {
 				diagnostics = [Diagnostic.Create (TST0001, location, "Street must be longer than 3 chars.")];
 				return false;
 			}
 			return true;
 		});
-		addressValidator.AddStrategy (a => a.City, TST0001, (Address data, out System.Collections.Immutable.ImmutableArray<Diagnostic> diagnostics, Location? location) => {
+		addressValidator.AddStrategy (a => a.City, TST0001, (string? data, out System.Collections.Immutable.ImmutableArray<Diagnostic> diagnostics, Location? location) => {
 			diagnostics = [];
-			if (data.City is null || data.City.Length <= 3) {
+			if (data is null || data.Length <= 3) {
 				diagnostics = [Diagnostic.Create (TST0001, location, "City must be longer than 3 chars.")];
 				return false;
 			}
@@ -230,9 +230,9 @@ public class ValidatorTests {
 		validator.AddStrategy (
 			d => d.OptionalField1,
 			TST0001,
-			(MyData data, out System.Collections.Immutable.ImmutableArray<Diagnostic> diagnostics, Location? location) => {
+			(string? data, out System.Collections.Immutable.ImmutableArray<Diagnostic> diagnostics, Location? location) => {
 				diagnostics = [];
-				if (data.OptionalField1 is not null && data.OptionalField1.Length <= 2) {
+				if (data is not null && data.Length <= 2) {
 					diagnostics = [Diagnostic.Create (TST0001, location, "Field length must be > 2")];
 					return false;
 				}
@@ -243,9 +243,9 @@ public class ValidatorTests {
 		validator.AddStrategy (
 			d => d.OptionalField1,
 			TST0001,
-			(MyData data, out System.Collections.Immutable.ImmutableArray<Diagnostic> diagnostics, Location? location) => {
+			(string? data, out System.Collections.Immutable.ImmutableArray<Diagnostic> diagnostics, Location? location) => {
 				diagnostics = [];
-				if (data.OptionalField1 is not null && !data.OptionalField1.Any (char.IsLetter)) {
+				if (data is not null && !data.Any (char.IsLetter)) {
 					diagnostics = [Diagnostic.Create (TST0001, location, "Field must contain at least one letter")];
 					return false;
 				}
@@ -286,9 +286,9 @@ public class ValidatorTests {
 			d => d.OptionalField1,
 			d => d.Flag,
 			TST0001,
-			(MyData data, out System.Collections.Immutable.ImmutableArray<Diagnostic> diagnostics, Location? location) => {
+			(string? data, out System.Collections.Immutable.ImmutableArray<Diagnostic> diagnostics, Location? location) => {
 				diagnostics = [];
-				if (data.OptionalField1 is null || data.OptionalField1.Length <= 3) {
+				if (data is null || data.Length <= 3) {
 					diagnostics = [Diagnostic.Create (TST0001, location, "Field must be longer than 3 characters")];
 					return false;
 				}
@@ -331,12 +331,12 @@ public class ValidatorTests {
 			d => d.HomeAddress,
 			d => d.Flag,
 			TST0001,
-			(MyData data, out System.Collections.Immutable.ImmutableArray<Diagnostic> diagnostics, Location? location) => {
+			(Address? data, out System.Collections.Immutable.ImmutableArray<Diagnostic> diagnostics, Location? location) => {
 				diagnostics = [];
-				if (data.HomeAddress is null)
+				if (data is null)
 					return true; // null is valid when validation is triggered
 
-				var address = data.HomeAddress.Value;
+				var address = data.Value;
 				if (address.Street is null || address.Street.Length <= 3) {
 					diagnostics = [Diagnostic.Create (TST0001, location, "Street must be longer than 3 characters")];
 					return false;

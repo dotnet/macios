@@ -489,6 +489,64 @@ public partial class Validator<T> : IValidator {
 		where TField : struct
 		where TFlag : Enum
 		=> AddConditionalStrategy (selector, flagSelector, [descriptor], validation, requireAllFlags, requiredFlags);
+	
+	/// <summary>
+	/// Adds a conditional mutually exclusive validation rule that only executes when specific flags are present in another field.
+	/// </summary>
+	/// <typeparam name="TFlag">The type of the enum flag.</typeparam>
+	/// <param name="flagSelector">An expression to select the enum field that contains the flags.</param>
+	/// <param name="exactlyOne">If true, exactly one of the fields must be set when flags are present. If false, at most one can be set.</param>
+	/// <param name="requireAllFlags">If true, all flags in <paramref name="requiredFlags"/> must be present for validation to execute. If false, any flag is sufficient.</param>
+	/// <param name="requiredFlags">The enum flags that trigger the validation.</param>
+	/// <param name="selectors">The fields to check for mutual exclusivity.</param>
+	public void AddConditionalMutuallyExclusive<TFlag> (
+		Expression<Func<T, TFlag>> flagSelector,
+		bool exactlyOne = false,
+		bool requireAllFlags = false,
+		TFlag []? requiredFlags = null,
+		params IFieldNullCheck<T> [] selectors)
+		where TFlag : Enum
+	{
+		if (selectors.Length < 2)
+			throw new ArgumentException ("AddConditionalMutuallyExclusive requires at least 2 fields.");
+
+		if (requiredFlags is null || requiredFlags.Length == 0)
+			throw new ArgumentException ("requiredFlags cannot be null or empty.");
+
+		var flagSelectorCompiled = flagSelector.Compile ();
+
+		AddGlobalStrategy (RBI0016, CheckSelectors);
+
+		bool CheckSelectors (T data, out ImmutableArray<Diagnostic> diagnostics, Location? location = null)
+		{
+			diagnostics = [];
+			var flagValue = flagSelectorCompiled (data);
+
+			bool shouldValidate = requireAllFlags
+				? requiredFlags.All (@enum => flagValue.HasFlag (@enum))
+				: requiredFlags.Any (@enum => flagValue.HasFlag (@enum));
+
+			// If flags are not set, validation passes (no validation needed)
+			if (!shouldValidate)
+				return true;
+
+			int setCount = selectors.Count (sel => !sel.IsNull (data));
+
+			var valid = exactlyOne ? setCount == 1 : setCount <= 1;
+			if (!valid) {
+				var fieldNames = selectors.Select (s => s.FieldName).ToList ();
+				// we will only return a single diagnostic for the whole group
+				diagnostics = [
+					Diagnostic.Create (
+						descriptor: RBI0016, // Fields '{0}' must be mutually exclusive. At most one field can be set.
+						location: location,
+						messageArgs: string.Join (", ", fieldNames))
+				];
+			}
+
+			return valid;
+		}
+	}
 
 	/// <summary>
 	/// Adds a conditional mutually exclusive validation rule that only executes when specific flags are present in another field.
@@ -507,54 +565,19 @@ public partial class Validator<T> : IValidator {
 		params Expression<Func<T, object?>> [] selectors)
 		where TFlag : Enum
 	{
-		if (selectors.Length < 2)
-			throw new ArgumentException ("AddConditionalMutuallyExclusive requires at least 2 fields.");
-
-		if (requiredFlags is null || requiredFlags.Length == 0)
-			throw new ArgumentException ("requiredFlags cannot be null or empty.");
-
-		var compiledSelectors = selectors.Select (s => s.Compile ()).ToArray ();
-		var flagSelectorCompiled = flagSelector.Compile ();
-
-		AddGlobalStrategy (RBI0016, CheckSelectors);
-
-		bool CheckSelectors (T data, out ImmutableArray<Diagnostic> diagnostics, Location? location = null)
-		{
-			diagnostics = [];
-			var flagValue = flagSelectorCompiled (data);
-
-			bool shouldValidate = requireAllFlags
-				? requiredFlags.All (@enum => flagValue.HasFlag (@enum))
-				: requiredFlags.Any (@enum => flagValue.HasFlag (@enum));
-
-			// If flags are not set, validation passes (no validation needed)
-			if (!shouldValidate)
-				return true;
-
-			int setCount = compiledSelectors.Count (sel => {
-				var value = sel (data);
-				return value is not null;
-			});
-
-			var valid = exactlyOne ? setCount == 1 : setCount <= 1;
-			if (!valid) {
-				var fieldNames = selectors.Select (GetPropertyName).ToList ();
-				// we will only return a single diagnostic for the whole group
-				diagnostics = [
-					Diagnostic.Create (
-						descriptor: RBI0016, // Fields '{0}' must be mutually exclusive. At most one field can be set.
-						location: location,
-						messageArgs: fieldNames)
-				];
-			}
-
-			return valid;
+		// build IFieldNullCheck<T> from the selectors
+		var fieldChecks = new IFieldNullCheck<T>[selectors.Length];
+		for (int i = 0; i < selectors.Length; i++) {
+			fieldChecks[i] = new FieldNullCheck<T, object?> (
+				selector: selectors[i],
+				isDefaultValue: x => x is null,
+				fieldName: GetPropertyName (selectors[i]));
 		}
+		AddConditionalMutuallyExclusive (flagSelector, exactlyOne, requireAllFlags, requiredFlags, fieldChecks);
 	}
 
 	/// <summary>
 	/// Adds a conditional mutually exclusive validation rule that only executes when specific flags are present in another field.
-	/// This overload handles nullable struct fields.
 	/// </summary>
 	/// <typeparam name="TFlag">The type of the enum flag.</typeparam>
 	/// <param name="flagSelector">An expression to select the enum field that contains the flags.</param>

@@ -263,4 +263,55 @@
     <data name="RBI0019Title" xml:space="preserve">
         <value>Bad selector format</value>
     </data>
+    
+    <!-- RBI0020 -->
+    
+    <data name="RBI0020Description" xml:space="preserve">
+        <value>The named parameter is only allowed with a specific flag.</value>
+    </data>
+    <data name="RBI0020MessageFormat" xml:space="preserve">
+        <value>The '{0}' named parameter can only be used when '{1}' has been set</value>
+        <comment>'{0}' is the name of the field and {1} is the name of the flag.</comment>
+    </data>
+    <data name="RBI0020Title" xml:space="preserve">
+        <value>Invalid named parameter</value>
+    </data>
+    
+    <!-- RBI0021 -->
+    
+    <data name="RBI0021Description" xml:space="preserve">
+        <value>The flag combination is not allowed.</value>
+    </data>
+    <data name="RBI0021MessageFormat" xml:space="preserve">
+        <value>The combination of flags {0} is not allowed</value>
+        <comment>'{0}' is the list of flags that cannot be combined.</comment>
+    </data>
+    <data name="RBI0021Title" xml:space="preserve">
+        <value>Invalid flag</value>
+    </data>
+    
+    <!-- RBI0022 -->
+    
+    <data name="RBI0022Description" xml:space="preserve">
+        <value>The export attribute must have a nonnull selector.</value>
+    </data>
+    <data name="RBI0022MessageFormat" xml:space="preserve">
+        <value>An export method selector must not contain any whitespace</value>
+    </data>
+    <data name="RBI0022Title" xml:space="preserve">
+        <value>Null selector</value>
+    </data>
+    
+    <!-- RBI0023 -->
+    
+    <data name="RBI0023Description" xml:space="preserve">
+        <value>The selector string cannot contain any whitespace characters.</value>
+    </data>
+    <data name="RBI0023MessageFormat" xml:space="preserve">
+        <value>An export method selector must not contain any whitespace</value>
+    </data>
+    <data name="RBI0023Title" xml:space="preserve">
+        <value>Bad selector format</value>
+    </data>
+    
 </root>

@@ -49,7 +49,7 @@ readonly struct BindFromData : IEquatable<BindFromData> {
 		}
 
 		if (attributeData.NamedArguments.Length == 0) {
-			data = new(type) {
+			data = new (type) {
 				Location = attributeData.GetLocation (),
 			};
 			return true;
@@ -69,7 +69,7 @@ readonly struct BindFromData : IEquatable<BindFromData> {
 			}
 		}
 
-		data = new(type, originalType) {
+		data = new (type, originalType) {
 			Location = attributeData.GetLocation (),
 		};
 		return true;

@@ -97,7 +97,7 @@ readonly struct FieldData<T> : IEquatable<FieldData<T>> where T : Enum {
 		}
 
 		if (attributeData.NamedArguments.Length == 0) {
-			data = new(symbolName, libraryName, flags) {
+			data = new (symbolName, libraryName, flags) {
 				Location = attributeData.GetLocation (),
 			};
 			return true;

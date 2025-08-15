@@ -39,7 +39,7 @@ readonly struct ForcedTypeData : IEquatable<ForcedTypeData> {
 		}
 
 		if (attributeData.NamedArguments.Length == 0) {
-			data = new(owns) {
+			data = new (owns) {
 				Location = attributeData.GetLocation (),
 			};
 			return true;

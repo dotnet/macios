@@ -235,8 +235,8 @@ readonly struct ExportData<T> : IEquatable<ExportData<T>> where T : Enum {
 
 		if (attributeData.NamedArguments.Length == 0) {
 			data = flags is not null
-				? new (selector, argumentSemantic, flags)  {Location = attributeData.GetLocation ()}
-				: new (selector, argumentSemantic) { Location = attributeData.GetLocation ()};
+				? new (selector, argumentSemantic, flags) { Location = attributeData.GetLocation () }
+				: new (selector, argumentSemantic) { Location = attributeData.GetLocation () };
 			return true;
 		}
 

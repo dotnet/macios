@@ -55,7 +55,7 @@ readonly struct BindingTypeData : IEquatable<BindingTypeData> {
 		}
 
 		if (attributeData.NamedArguments.Length == 0) {
-			data = new(name) {
+			data = new (name) {
 				Location = attributeData.GetLocation (),
 			};
 			return true;
@@ -72,7 +72,7 @@ readonly struct BindingTypeData : IEquatable<BindingTypeData> {
 			}
 		}
 
-		data = new(name) {
+		data = new (name) {
 			Location = attributeData.GetLocation (),
 		};
 		return true;

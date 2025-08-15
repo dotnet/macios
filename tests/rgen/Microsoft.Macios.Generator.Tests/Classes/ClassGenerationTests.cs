@@ -89,10 +89,34 @@ public class ClassGenerationTests : BaseGeneratorTestClass {
 			new (ApplePlatform.MacOSX, "TrampolinePropertyTests", "TrampolinePropertyTests.cs", "ExpectedTrampolinePropertyTests.cs"){ TrampolinesFile = "ExpectedTrampolinePropertyTestsTrampolines.cs"},
 			
 			// event tests
-			new (ApplePlatform.iOS, "EventTests", "EventTests.cs", "ExpectedEventTests.cs"),
-			new (ApplePlatform.TVOS, "EventTests", "EventTests.cs", "ExpectedEventTests.cs"),
-			new (ApplePlatform.MacCatalyst, "EventTests", "EventTests.cs", "ExpectedEventTests.cs"),
-			new (ApplePlatform.MacOSX, "EventTests", "EventTests.cs", "ExpectedEventTests.cs"),
+			new (ApplePlatform.iOS, "EventTests", "EventTests.cs", "ExpectedEventTests.cs")
+			{
+				ExtraFiles = new () {
+					{"NSArchiveReplaceEventArgs.g.cs", "ExpectedNSArchiveReplace.cs"},
+					{"EventTests_RgenNSKeyedArchiverDelegate.g.cs", "ExpectedEventTests_RgenNSKeyedArchiverDelegate.cs"}
+				}
+			},
+			new (ApplePlatform.TVOS, "EventTests", "EventTests.cs", "ExpectedEventTests.cs")
+			{
+				ExtraFiles = new () {
+					{"NSArchiveReplaceEventArgs.g.cs", "ExpectedNSArchiveReplace.cs"},
+					{"EventTests_RgenNSKeyedArchiverDelegate.g.cs", "ExpectedEventTests_RgenNSKeyedArchiverDelegate.cs"}
+				}
+			},
+			new (ApplePlatform.MacCatalyst, "EventTests", "EventTests.cs", "ExpectedEventTests.cs")
+			{
+				ExtraFiles = new () {
+					{"NSArchiveReplaceEventArgs.g.cs", "ExpectedNSArchiveReplace.cs"},
+					{"EventTests_RgenNSKeyedArchiverDelegate.g.cs", "ExpectedEventTests_RgenNSKeyedArchiverDelegate.cs"}
+				}
+			},
+			new (ApplePlatform.MacOSX, "EventTests", "EventTests.cs", "macOSExpectedEventTests.cs")
+			{
+				ExtraFiles = new () {
+					{"NSArchiveReplaceEventArgs.g.cs", "ExpectedNSArchiveReplace.cs"},
+					{"EventTests_RgenNSKeyedArchiverDelegate.g.cs", "ExpectedEventTests_RgenNSKeyedArchiverDelegate.cs"}
+				}
+			},
 		};
 
 		public IEnumerator<object []> GetEnumerator ()

@@ -91,10 +91,10 @@ namespace Foundation {
 		}
 
 #nullable enable
-		/// <summary>Create an <cref name="NSSet`1" /> from a collection of items.</summary>
-		/// <param name="items">The items to add to the created <cref name="NSSet`1" />.</param>
+		/// <summary>Create an <see cref="NSSet{TKey}" /> from a collection of items.</summary>
+		/// <param name="items">The items to add to the created <see cref="NSSet{TKey}" />.</param>
 		/// <param name="convertCallback">A callback function to convert from the type of the element into the type to add to the returned set.</param>
-		/// <returns>Null if the collection of items is null, otherwise a new <cref name="NSSet`1" /> with the collection of items.</returns>
+		/// <returns>Null if the collection of items is null, otherwise a new <see cref="NSSet{TKey}" /> with the collection of items.</returns>
 		[return: NotNullIfNotNull (nameof (items))]
 		public static NSSet<TKey>? Create<V> (IEnumerable<V>? items, Func<V, TKey> convertCallback)
 		{
@@ -107,9 +107,9 @@ namespace Foundation {
 			return Runtime.GetNSObject<NSSet<TKey>> (mutableSet.Handle, false)!;
 		}
 
-		/// <summary>Create an <cref name="HashSet`2" /> from this set of items.</summary>
+		/// <summary>Create an <see cref="HashSet{T}" /> from this set of items.</summary>
 		/// <param name="convertCallback">A callback function to convert from the type of each element into the type to add to the returned set.</param>
-		/// <returns>A new <cref name="HashSet`2" /> with this set of items.</returns>
+		/// <returns>A new <see cref="HashSet{T}" /> with this set of items.</returns>
 		public HashSet<T> ToHashSet<T> (Func<TKey, T> convertCallback)
 		{
 			var rv = new HashSet<T> ();

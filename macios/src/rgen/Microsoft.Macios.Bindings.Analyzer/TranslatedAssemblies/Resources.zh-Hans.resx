@@ -170,4 +170,26 @@
   <data name="RBI0014Title" xml:space="preserve">
         <value>INativeObject not kept alive after Handle access</value>
     </data>
+  <!-- RBI0015 -->
+  <data name="RBI0015Description" xml:space="preserve">
+        <value>With the provided binding flags in the export methods, the mentioned field cannot be null.</value>
+    </data>
+  <data name="RBI0015MessageFormat" xml:space="preserve">
+        <value>Field '{0}' is required when one of the following flags is set: '{1}'</value>
+        <comment>'{0}' is the name of the field and '{1}' is a comma separated list of flags</comment>
+    </data>
+  <data name="RBI0015Title" xml:space="preserve">
+        <value>Field value cannot be null</value>
+    </data>
+  <!-- RBI0016 -->
+  <data name="RBI0016Description" xml:space="preserve">
+        <value>The fields are mutually exclusive which means that at most one of them can be set.</value>
+    </data>
+  <data name="RBI0016MessageFormat" xml:space="preserve">
+        <value>Fields '{0}' must be mutually exclusive, at most one field can be set</value>
+        <comment>'{0}' is the name of the fields.</comment>
+    </data>
+  <data name="RBI0016Title" xml:space="preserve">
+        <value>Fields are mutually exclusive</value>
+    </data>
 </root>

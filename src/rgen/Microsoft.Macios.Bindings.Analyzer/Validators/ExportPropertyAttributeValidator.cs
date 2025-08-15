@@ -73,7 +73,7 @@ class ExportPropertyAttributeValidator : Validator<ExportData<Property>> {
 			diagnostics: out diagnostics,
 			location: location
 		);
-	
+
 	/// <summary>
 	/// Initializes a new instance of the <see cref="ExportPropertyAttributeValidator"/> class.
 	/// </summary>
@@ -82,30 +82,30 @@ class ExportPropertyAttributeValidator : Validator<ExportData<Property>> {
 		// add the default rules for this validator
 		AddStrategy (d => d.Selector, RBI0018, SelectorIsNotNull);
 		AddStrategy (d => d.Selector, RBI0019, SelectorHasNoWhitespace);
-		
+
 		// prefix and suffix cannot have whitespaces
 		AddStrategy (
-			selector: d => d.NativePrefix, 
+			selector: d => d.NativePrefix,
 			descriptor: StringStrategies.RBI0024,
-			validation: (string? data, out ImmutableArray<Diagnostic> diagnostics, Location? location) 
+			validation: (string? data, out ImmutableArray<Diagnostic> diagnostics, Location? location)
 				=> StringStrategies.NativeNameHasNoWhitespace (
-					data, 
-					nameof(ExportData<Property>.NativePrefix), 
-					out diagnostics, 
+					data,
+					nameof (ExportData<Property>.NativePrefix),
+					out diagnostics,
 					location)
 				);
-		
+
 		AddStrategy (
-			selector: d => d.NativeSuffix, 
+			selector: d => d.NativeSuffix,
 			descriptor: StringStrategies.RBI0024,
-			validation: (string? data, out ImmutableArray<Diagnostic> diagnostics, Location? location) 
+			validation: (string? data, out ImmutableArray<Diagnostic> diagnostics, Location? location)
 				=> StringStrategies.NativeNameHasNoWhitespace (
-					data, 
-					nameof(ExportData<Property>.NativeSuffix), 
-					out diagnostics, 
+					data,
+					nameof (ExportData<Property>.NativeSuffix),
+					out diagnostics,
 					location)
 		);
-		
+
 		// only with methods
 		RestrictToFlagType (
 			d => d.ResultType,

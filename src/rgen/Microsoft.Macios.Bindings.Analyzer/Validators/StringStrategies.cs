@@ -40,7 +40,7 @@ public static class StringStrategies {
 	/// <param name="messageArgs">Extra args for the diagnostic message.</param>
 	/// <returns><c>true</c> if the data is valid; otherwise, <c>false</c>.</returns>
 	internal static bool HasNoWhitespace (string? stringValue, DiagnosticDescriptor descriptor, out ImmutableArray<Diagnostic> diagnostics,
-		Location? location = null, params object[] messageArgs)
+		Location? location = null, params object [] messageArgs)
 	{
 		diagnostics = ImmutableArray<Diagnostic>.Empty;
 		if (stringValue is null || !stringValue.Any (predicate: char.IsWhiteSpace))
@@ -53,7 +53,7 @@ public static class StringStrategies {
 		];
 		return false;
 	}
-	
+
 	/// <summary>
 	/// Diagnostic descriptor for when a native prefix or suffix contains whitespace.
 	/// </summary>
@@ -68,7 +68,7 @@ public static class StringStrategies {
 		description: new LocalizableResourceString (nameof (Resources.RBI0024Description), Resources.ResourceManager,
 			typeof (Resources))
 	);
-	
+
 	/// <summary>
 	/// Validates that a native name (prefix or suffix) does not contain any whitespace.
 	/// </summary>
@@ -84,9 +84,9 @@ public static class StringStrategies {
 			descriptor: RBI0024,
 			diagnostics: out diagnostics,
 			location: location,
-			messageArgs: fieldName 
+			messageArgs: fieldName
 		);
-	
+
 	/// <summary>
 	/// Diagnostic descriptor for when a type name contains whitespace.
 	/// </summary>
@@ -101,7 +101,7 @@ public static class StringStrategies {
 		description: new LocalizableResourceString (nameof (Resources.RBI0025Description), Resources.ResourceManager,
 			typeof (Resources))
 	);
-	
+
 	/// <summary>
 	/// Validates that a type name does not contain any whitespace.
 	/// </summary>
@@ -111,7 +111,7 @@ public static class StringStrategies {
 	/// <param name="messageArgs">Extra args for the diagnostic message.</param>
 	/// <returns><c>true</c> if the data is valid; otherwise, <c>false</c>.</returns>
 	internal static bool TypeNameHasNoWhitespace (string? typeName, out ImmutableArray<Diagnostic> diagnostics,
-		Location? location = null, params object[] messageArgs)
+		Location? location = null, params object [] messageArgs)
 		=> HasNoWhitespace (
 			stringValue: typeName,
 			descriptor: RBI0025,

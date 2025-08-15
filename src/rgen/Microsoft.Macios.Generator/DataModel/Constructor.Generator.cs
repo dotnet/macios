@@ -72,8 +72,7 @@ readonly partial struct Constructor {
 			exportData: exportData,
 			attributes: attributes,
 			modifiers: [.. declaration.Modifiers],
-			parameters: parametersBucket.ToImmutable ())
-		{
+			parameters: parametersBucket.ToImmutable ()) {
 			Location = declaration.GetLocation (),
 		};
 		return true;

@@ -302,8 +302,8 @@ readonly partial struct Property {
 					symbolAvailability: accessorSymbol.GetSupportedPlatforms (),
 					attributes: accessorAttributeChanges,
 					modifiers: [.. accessorDeclaration.Modifiers]) {
-						Location = accessorDeclaration.GetLocation (),
-					}
+					Location = accessorDeclaration.GetLocation (),
+				}
 				);
 			}
 

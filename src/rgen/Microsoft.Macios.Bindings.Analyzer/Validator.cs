@@ -18,9 +18,8 @@ public interface IValidator {
 	/// Validates the specified data object.
 	/// </summary>
 	/// <param name="data">The object to validate.</param>
-	/// <param name="location">The code location to be used for the diagnostics.</param>
 	/// <returns>A dictionary where the key is the name of the invalid field and the value is a list of diagnostics.</returns>
-	Dictionary<string, List<Diagnostic>> ValidateAll (object data, Location? location = null);
+	Dictionary<string, List<Diagnostic>> ValidateAll (object data);
 }
 
 /// <summary>
@@ -31,6 +30,14 @@ public partial class Validator<T> : IValidator {
 	readonly Dictionary<string, List<IFieldValidationStrategy>> strategies = new ();
 	List<IFieldValidationStrategy>? globalStrategies;
 	readonly Dictionary<string, IValidator> nestedValidators = new ();
+	Func<T, Location>? getLocation;
+
+	public Validator (Expression<Func<T, Location>>? locationSelector = null)
+	{
+		if (locationSelector is not null) {
+			getLocation = locationSelector.Compile ();
+		}
+	}
 
 	/// <summary>
 	/// Gets all the diagnostic descriptors that this validator and its nested validators can produce.
@@ -196,7 +203,7 @@ public partial class Validator<T> : IValidator {
 			if (data is null)
 				return true; // null nested = valid
 
-			var nestedErrors = nestedValidator.ValidateAll (data, location);
+			var nestedErrors = nestedValidator.ValidateAll (data);
 			// flatten the diagnostics
 			diagnostic = [.. nestedErrors.SelectMany (x => x.Value)];
 			return nestedErrors.Count == 0;
@@ -225,7 +232,7 @@ public partial class Validator<T> : IValidator {
 			if (data is null)
 				return true; // null nested = valid
 
-			var nestedErrors = nestedValidator.ValidateAll (data.Value, location);
+			var nestedErrors = nestedValidator.ValidateAll (data.Value);
 			// flatten the diagnostics
 			diagnostic = [.. nestedErrors.SelectMany (x => x.Value)];
 			return nestedErrors.Count == 0;
@@ -792,17 +799,19 @@ public partial class Validator<T> : IValidator {
 	}
 
 	/// <inheritdoc />
-	public Dictionary<string, List<Diagnostic>> ValidateAll (object data, Location? location = null)
-		=> data is not T validData ? [] : ValidateAll (validData, location);
+	public Dictionary<string, List<Diagnostic>> ValidateAll (object data)
+		=> data is not T validData ? [] : ValidateAll (validData);
 
 	/// <summary>
 	/// Validates the given data object against all registered strategies.
 	/// </summary>
 	/// <param name="data">The data object to validate.</param>
-	/// <param name="location">The code location to be used for the diagnostics.</param>
 	/// <returns>A dictionary of validation errors, where the key is the field name and the value is a list of diagnostics.</returns>
-	public Dictionary<string, List<Diagnostic>> ValidateAll (T data, Location? location = null)
+	public Dictionary<string, List<Diagnostic>> ValidateAll (T data)
 	{
+		// if the location is null BUT we have a func that can retrieve it from the data, use data
+		var location = getLocation?.Invoke (data);
+		
 		var errors = new Dictionary<string, List<Diagnostic>> ();
 
 		// Own field strategies
@@ -840,7 +849,7 @@ public partial class Validator<T> : IValidator {
 			if (nestedValue is null)
 				continue;
 
-			var nestedErrors = nestedValidatorObj.ValidateAll (nestedValue, location);
+			var nestedErrors = nestedValidatorObj.ValidateAll (nestedValue);
 			foreach (var ne in nestedErrors) {
 				var compositeKey = string.IsNullOrEmpty (ne.Key)
 					? fieldName

@@ -74,6 +74,21 @@ class ExportMethodAttributeValidator : Validator<ExportMethod> {
 		description: new LocalizableResourceString (nameof (Resources.RBI0023Description), Resources.ResourceManager,
 			typeof (Resources))
 	);
+	
+	/// <summary>
+	/// Diagnostic descriptor for when an async method name contains whitespace.
+	/// </summary>
+	internal static readonly DiagnosticDescriptor RBI0026 = new (
+		"RBI0026",
+		new LocalizableResourceString (nameof (Resources.RBI0026Title), Resources.ResourceManager, typeof (Resources)),
+		new LocalizableResourceString (nameof (Resources.RBI0026MessageFormat), Resources.ResourceManager,
+			typeof (Resources)),
+		"Usage",
+		DiagnosticSeverity.Error,
+		isEnabledByDefault: true,
+		description: new LocalizableResourceString (nameof (Resources.RBI0026Description), Resources.ResourceManager,
+			typeof (Resources))
+	);
 
 	/// <summary>
 	/// Validates that a string field is only used when a specific flag is present.
@@ -281,7 +296,7 @@ class ExportMethodAttributeValidator : Validator<ExportMethod> {
 	/// <returns><c>true</c> if the data is valid; otherwise, <c>false</c>.</returns>
 	internal static bool SelectorIsNotNull (string? selector, out ImmutableArray<Diagnostic> diagnostics,
 		Location? location = null)
-		=> Selector.IsNotNull (
+		=> StringStrategies.IsNotNull (
 			selector: selector,
 			descriptor: RBI0022, // A export property must have a selector defined
 			diagnostics: out diagnostics,
@@ -296,9 +311,25 @@ class ExportMethodAttributeValidator : Validator<ExportMethod> {
 	/// <returns><c>true</c> if the data is valid; otherwise, <c>false</c>.</returns>
 	internal static bool SelectorHasNoWhitespace (string? selector, out ImmutableArray<Diagnostic> diagnostics,
 		Location? location = null)
-		=> Selector.HasNoWhitespace (
-			selector: selector,
+		=> StringStrategies.HasNoWhitespace (
+			stringValue: selector,
 			descriptor: RBI0023, // A export property selector must not contain any whitespace.
+			diagnostics: out diagnostics,
+			location: location
+		);
+	
+	/// <summary>
+	/// Validates that an async method name does not contain any whitespace.
+	/// </summary>
+	/// <param name="selector">The method name to validate.</param>
+	/// <param name="diagnostics">When this method returns, contains an array of diagnostics if the data is invalid; otherwise, an empty array.</param>
+	/// <param name="location">The code location to be used for the diagnostics.</param>
+	/// <returns><c>true</c> if the data is valid; otherwise, <c>false</c>.</returns>
+	internal static bool AsyncMethodNameHasNoWhitespace (string? selector, out ImmutableArray<Diagnostic> diagnostics,
+		Location? location = null)
+		=> StringStrategies.HasNoWhitespace (
+			stringValue: selector,
+			descriptor: RBI0026, // A export property selector must not contain any whitespace.
 			diagnostics: out diagnostics,
 			location: location
 		);
@@ -314,6 +345,29 @@ class ExportMethodAttributeValidator : Validator<ExportMethod> {
 		// validate the selector
 		AddStrategy (d => d.Selector, RBI0022, SelectorIsNotNull);
 		AddStrategy (d => d.Selector, RBI0023, SelectorHasNoWhitespace);
+		
+		// prefix and suffix cannot have whitespaces
+		AddStrategy (
+			selector: d => d.NativePrefix, 
+			descriptor: StringStrategies.RBI0024,
+			validation: (string? data, out ImmutableArray<Diagnostic> diagnostics, Location? location) 
+				=> StringStrategies.NativeNameHasNoWhitespace (
+					data, 
+					nameof(ExportMethod.NativePrefix), 
+					out diagnostics, 
+					location)
+		);
+		
+		AddStrategy (
+			selector: d => d.NativeSuffix, 
+			descriptor: StringStrategies.RBI0024,
+			validation: (string? data, out ImmutableArray<Diagnostic> diagnostics, Location? location) 
+				=> StringStrategies.NativeNameHasNoWhitespace (
+					data, 
+					nameof(ExportMethod.NativeSuffix), 
+					out diagnostics, 
+					location)
+		);
 
 		// if async is set, either ResultType or ResultTypeName must be set
 		// but not both
@@ -330,6 +384,19 @@ class ExportMethodAttributeValidator : Validator<ExportMethod> {
 		AddGlobalStrategy (RBI0020, ResultTypeIsAllowed);
 		AddGlobalStrategy (RBI0020, MethodNameIsAllowed);
 		AddGlobalStrategy (RBI0020, PostNonResultSnippetIsAllowed);
+		
+		// ensure that of the async fields, we do not have spaces in the name
+		AddStrategy (
+			selector: d => d.ResultTypeName, 
+			descriptor: StringStrategies.RBI0025, 
+			validation: (string? data, out ImmutableArray<Diagnostic> diagnostics, Location? location) 
+				=> StringStrategies.TypeNameHasNoWhitespace (
+					data, 
+					out diagnostics, 
+					location, 
+					nameof (ExportMethod.ResultTypeName))
+		);
+		AddStrategy (d => d.MethodName, RBI0026, AsyncMethodNameHasNoWhitespace);
 
 		// Strong delegate fields are only allowed in properties
 		RestrictToFlagType (
@@ -356,5 +423,17 @@ class ExportMethodAttributeValidator : Validator<ExportMethod> {
 		// ensure that the event fields are used with methods with the event flag
 		AddGlobalStrategy (RBI0020, EventArgsTypeIsAllowed);
 		AddGlobalStrategy (RBI0020, EventArgsTypeNameIsAllowed);
+		
+		// ensure that of the event fields, we do not have spaces in the name
+		AddStrategy (
+			selector: d => d.EventArgsTypeName, 
+			descriptor: StringStrategies.RBI0025, 
+			validation: (string? data, out ImmutableArray<Diagnostic> diagnostics, Location? location) 
+				=> StringStrategies.TypeNameHasNoWhitespace (
+					data, 
+					out diagnostics, 
+					location, 
+					nameof (ExportMethod.EventArgsTypeName))
+		);
 	}
 }

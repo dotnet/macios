@@ -811,7 +811,7 @@ public partial class Validator<T> : IValidator {
 	{
 		// if the location is null BUT we have a func that can retrieve it from the data, use data
 		var location = getLocation?.Invoke (data);
-		
+
 		var errors = new Dictionary<string, List<Diagnostic>> ();
 
 		// Own field strategies

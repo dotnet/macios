@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.Macios.Generator.Context;
+using Microsoft.Macios.Generator.Extensions;
 using ObjCRuntime;
 using TypeInfo = Microsoft.Macios.Generator.DataModel.TypeInfo;
 
@@ -115,6 +116,11 @@ readonly struct ExportData<T> : IEquatable<ExportData<T>> where T : Enum {
 	/// The name of the event arguments type for an event.
 	/// </summary>
 	public string? EventArgsTypeName { get; init; }
+
+	/// <summary>
+	/// The location of the attribute in source code.
+	/// </summary>
+	public Location? Location { get; init; }
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="ExportData{T}"/> struct.
@@ -228,8 +234,9 @@ readonly struct ExportData<T> : IEquatable<ExportData<T>> where T : Enum {
 		}
 
 		if (attributeData.NamedArguments.Length == 0) {
-			data = flags is not null ?
-				new (selector, argumentSemantic, flags) : new (selector, argumentSemantic);
+			data = flags is not null
+				? new (selector, argumentSemantic, flags) { Location = attributeData.GetLocation () }
+				: new (selector, argumentSemantic) { Location = attributeData.GetLocation () };
 			return true;
 		}
 
@@ -340,7 +347,8 @@ readonly struct ExportData<T> : IEquatable<ExportData<T>> where T : Enum {
 				StrongDictionaryKeyClass = isStrongDictionaryProperty ? strongDictionaryKeyClass : TypeInfo.Default,
 				// we set the data for the event args only if the flags are set
 				EventArgsType = isEvent ? eventArgsType : TypeInfo.Default,
-				EventArgsTypeName = isEvent ? eventArgsTypeName : null
+				EventArgsTypeName = isEvent ? eventArgsTypeName : null,
+				Location = attributeData.GetLocation (),
 			};
 			return true;
 		}
@@ -348,7 +356,8 @@ readonly struct ExportData<T> : IEquatable<ExportData<T>> where T : Enum {
 		data = new (selector, argumentSemantic) {
 			NativePrefix = nativePrefix,
 			NativeSuffix = nativeSuffix,
-			Library = library
+			Library = library,
+			Location = attributeData.GetLocation (),
 		};
 		return true;
 	}

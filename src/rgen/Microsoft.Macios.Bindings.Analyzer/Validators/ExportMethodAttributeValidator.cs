@@ -329,7 +329,7 @@ class ExportMethodAttributeValidator : Validator<ExportMethod> {
 		Location? location = null)
 		=> StringStrategies.HasNoWhitespace (
 			stringValue: selector,
-			descriptor: RBI0026, // A export property selector must not contain any whitespace.
+			descriptor: RBI0026, // An async method name must not contain any whitespace.
 			diagnostics: out diagnostics,
 			location: location
 		);

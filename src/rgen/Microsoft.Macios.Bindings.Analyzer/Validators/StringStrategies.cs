@@ -43,7 +43,7 @@ public static class StringStrategies {
 		Location? location = null, params object [] messageArgs)
 	{
 		diagnostics = ImmutableArray<Diagnostic>.Empty;
-		if (stringValue is null || !stringValue.Any (predicate: char.IsWhiteSpace))
+		if (stringValue is null || !stringValue.Any (char.IsWhiteSpace))
 			return true;
 		diagnostics = [
 			Diagnostic.Create (

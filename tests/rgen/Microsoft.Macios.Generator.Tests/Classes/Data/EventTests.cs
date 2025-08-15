@@ -24,23 +24,27 @@ namespace TestNamespace;
 public partial interface IRgenNSKeyedArchiverDelegate {
 
 	// not event args, should not be needed
-	[Export<Method> ("archiver:didEncodeObject:", Flags = ObjCBindings.Method.Event)]
+	[Export<Method> ("archiver:didEncodeObject:", Flags = ObjCBindings.Method.Event, EventArgsType = typeof (NSObject))]
 	void EncodedObject (NSKeyedArchiver archiver, NSObject obj);
+
+	// two params, expect to use the second one as the event args type
+	[Export<Method> ("archiver:didEncodeObject:", Flags = ObjCBindings.Method.Event)]
+	void EncodedObject2 (NSKeyedArchiver archiver, NSObject obj);
 
 	// not event args, should not be needed
 	[Export<Method> ("archiverDidFinish:", Flags = ObjCBindings.Method.Event)]
 	void Finished (NSKeyedArchiver archiver);
 
 	// not event args, should not be needed
-	[Export<Method> ("archiverDidFinish:", Flags = ObjCBindings.Method.Event)]
-	NSObject WillEncode (NSKeyedArchiver archiver, NSObject obj);
+	[Export<Method> ("archiverDidFinish:", Flags = ObjCBindings.Method.Event, EventArgsType = typeof (NSObject))]
+	void WillEncode (NSKeyedArchiver archiver, NSObject obj);
 
 	// not event args, should not be needed
 	[Export<Method> ("archiverWillFinish:", Flags = ObjCBindings.Method.Event)]
 	void Finishing (NSKeyedArchiver archiver);
 
 	// use a name, the class should be generated with the two NSObjects as properties
-	[Export<Method> ("archiver:willReplaceObject:withObject:", Flags = ObjCBindings.Method.Event, EventArgsTypeName = "NSArchiveReplace")]
+	[Export<Method> ("archiver:willReplaceObject:withObject:", Flags = ObjCBindings.Method.Event, EventArgsTypeName = "NSArchiveReplaceEventArgs")]
 	void ReplacingObject (NSKeyedArchiver archiver, NSObject oldObject, NSObject newObject);
 
 	// use a typeof named tuple
@@ -50,6 +54,10 @@ public partial interface IRgenNSKeyedArchiverDelegate {
 	// use a nameless tuple
 	[Export<Method> ("archiver:willReplaceObject:withObject:", Flags = ObjCBindings.Method.Event, EventArgsType = typeof ((NSObject, NSObject)))]
 	void ReplacingObject3 (NSKeyedArchiver archiver, NSObject oldObject, NSObject newObject);
+
+	// use a nameless tuple without declaring it
+	[Export<Method> ("archiver:willReplaceObject:withObject:", Flags = ObjCBindings.Method.Event)]
+	void ReplacingObject4 (NSKeyedArchiver archiver, NSObject oldObject, NSObject newObject);
 }
 
 [BindingType<Class>]

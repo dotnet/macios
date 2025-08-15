@@ -279,4 +279,18 @@ readonly partial struct Method {
 			]
 		};
 	}
+
+	/// <summary>
+	/// Creates a new method instance with the specified modifiers.
+	/// </summary>
+	/// <param name="newModifiers">The new modifiers for the method.</param>
+	/// <returns>A new <see cref="Method"/> instance with the specified modifiers.</returns>
+	public Method WithModifiers (params SyntaxKind [] newModifiers)
+	{
+		return this with {
+			Modifiers = [
+				.. newModifiers.Select (m => Token (m).WithTrailingTrivia (Space))
+			]
+		};
+	}
 }

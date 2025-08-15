@@ -91,7 +91,7 @@ namespace Xharness.Jenkins.TestTasks {
 				new DeviceLoaderFactory (testTask.ProcessManager),
 				new CrashSnapshotReporterFactory (testTask.ProcessManager),
 				new CaptureLogFactory (),
-				new DeviceLogCapturerFactory (testTask.ProcessManager),
+				new DeviceLogCapturerFactory (),
 				new TestReporterFactory (testTask.ProcessManager),
 				testTask.AppRunnerTarget,
 				testTask.Harness,

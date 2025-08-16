@@ -189,7 +189,7 @@ public partial class EventTests
 	internal _RgenNSKeyedArchiverDelegate EnsureRgenNSKeyedArchiverDelegate ()
 	{
 		if (WeakDelegate is not null)
-			global::UIKit.UIApplication.EnsureEventAndDelegateAreNotMismatched (WeakDelegate, GetInternalEventDelegateType);
+			global::AppKit.NSApplication.EnsureEventAndDelegateAreNotMismatched (WeakDelegate, GetInternalEventDelegateType);
 		var del = Delegate as _RgenNSKeyedArchiverDelegate;
 		if (del is null) {
 			del = CreateInternalEventDelegateType ();

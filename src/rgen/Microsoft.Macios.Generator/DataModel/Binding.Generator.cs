@@ -112,6 +112,68 @@ readonly partial struct Binding {
 	}
 
 	/// <summary>
+	/// Returns all the events from weak delegates that need to have their event type generated.
+	/// </summary>
+	public IEnumerable<EventInfo> WeakDelegateEvents {
+		get {
+			// weak delegates are those properties that have been marked as a weak delegate and that also have
+			// been marked to generate events. Out of those properties we will only returns the ones that need
+			// to have the event type generated
+			var found = new HashSet<string> (); // used to track the events we already returned
+			foreach (var property in Properties) {
+				if (!property.IsProperty)
+					continue;
+				// CreateEvents is only true for a weak delegate property
+				if (!property.CreateEvents)
+					continue;
+
+				if (!property.ExportPropertyData.StrongDelegateType.IsNullOrDefault) {
+					// loop over all the events, the unique identifier is the namespace + event handler type
+					foreach (var eventInfo in property.ExportPropertyData.StrongDelegateType.Events) {
+						// skip if we do not need to generate the event
+						if (!eventInfo.ToGenerate)
+							continue;
+						if (found.Add (eventInfo.EventArgsFullyQualifiedName)) {
+							// yield the event info of the type that needs to be generated
+							yield return eventInfo;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	/// <summary>
+	/// Returns all the event delegates from weak delegates that need to be generated.
+	/// </summary>
+	public IEnumerable<EventDelegateInfo> WeakDelegatesClasses {
+		get {
+			// use a hash set to reach the types of the delegates, it should not be the case that we have the same
+			// type info for more than one delegate but we do not trust the input from external developers
+			var found = new HashSet<string> ();
+			foreach (var property in Properties) {
+				if (!property.IsProperty)
+					continue;
+				// CreateEvents is only true for a weak delegate property, we do not create the delegate type for a
+				// weak delegate with no events generated
+				if (!property.CreateEvents)
+					continue;
+				if (!property.ExportPropertyData.StrongDelegateType.IsNullOrDefault
+					&& found.Add (property.ExportPropertyData.StrongDelegateType.FullyQualifiedName)) {
+					// create the info for the delegate type
+					yield return new EventDelegateInfo {
+						Usings = [.. usingDirectives],
+						Namespace = string.Join ('.', Namespace),
+						OuterClassName = Name,
+						OuterClassModifiers = Modifiers,
+						DelegateType = property.ExportPropertyData.StrongDelegateType
+					};
+				}
+			}
+		}
+	}
+
+	/// <summary>
 	/// Decide if an enum value should be ignored as a change.
 	/// </summary>
 	/// <param name="enumMemberDeclarationSyntax">The enum declaration under test.</param>

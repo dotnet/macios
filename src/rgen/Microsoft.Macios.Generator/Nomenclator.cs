@@ -273,4 +273,17 @@ static class Nomenclator {
 		var nsString = string.Join ("_", ns);
 		return $"{nsString}_{modelName}";
 	}
+
+	/// <summary>
+	/// Generates the name for the internal delegate of an event.
+	/// </summary>
+	/// <param name="typeInfo">The type information of the delegate.</param>
+	/// <returns>The name for the internal event delegate.</returns>
+	public static string GetInternalDelegateForEventName (TypeInfo typeInfo)
+	{
+		if (typeInfo.Name [0] == 'I')
+			// if the type name starts with 'I', we will remove it to avoid confusion with interfaces
+			return $"_{typeInfo.Name [1..]}";
+		return $"_{typeInfo.Name}";
+	}
 }

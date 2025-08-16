@@ -2,9 +2,8 @@
 // Licensed under the MIT License.
 
 using System.Collections.Immutable;
-using Microsoft.Macios.Generator.DataModel;
 
-namespace Microsoft.Macios.Generator.Emitters;
+namespace Microsoft.Macios.Generator.DataModel;
 
 /// <summary>
 /// Represents information about the result of an asynchronous operation.

@@ -24,6 +24,11 @@ readonly partial struct Parameter {
 	public ForcedTypeData? ForcedType { get; init; }
 
 	/// <summary>
+	/// The location of the attribute in source code.
+	/// </summary>
+	public Location? Location { get; init; }
+
+	/// <summary>
 	/// Returns if the parameter needs a null check when the code is generated.
 	/// </summary>
 	public bool NeedsNullCheck {
@@ -48,6 +53,7 @@ readonly partial struct Parameter {
 			DefaultValue = (symbol.HasExplicitDefaultValue) ? symbol.ExplicitDefaultValue?.ToString () : null,
 			ReferenceKind = symbol.RefKind.ToReferenceKind (),
 			Attributes = declaration.GetAttributeCodeChanges (context.SemanticModel),
+			Location = declaration.GetLocation (),
 		};
 		return true;
 	}

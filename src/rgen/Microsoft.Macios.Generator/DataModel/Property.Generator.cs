@@ -201,6 +201,11 @@ readonly partial struct Property {
 		}
 	}
 
+	/// <summary>
+	/// The location of the attribute in source code.
+	/// </summary>
+	public Location? Location { get; init; }
+
 	static FieldInfo<ObjCBindings.Property>? GetFieldInfo (RootContext context, IPropertySymbol propertySymbol)
 	{
 		// grab the last port of the namespace
@@ -296,7 +301,10 @@ readonly partial struct Property {
 					exportPropertyData: accessorSymbol.GetExportData<ObjCBindings.Property> (context) ?? ExportData<ObjCBindings.Property>.Default,
 					symbolAvailability: accessorSymbol.GetSupportedPlatforms (),
 					attributes: accessorAttributeChanges,
-					modifiers: [.. accessorDeclaration.Modifiers]));
+					modifiers: [.. accessorDeclaration.Modifiers]) {
+					Location = accessorDeclaration.GetLocation (),
+				}
+				);
 			}
 
 			accessorCodeChanges = accessorsBucket.ToImmutable ();
@@ -325,6 +333,7 @@ readonly partial struct Property {
 			ExportFieldData = GetFieldInfo (context, property) ?? FieldInfo<ObjCBindings.Property>.Default,
 			ExportPropertyData = property.GetExportData<ObjCBindings.Property> (context) ?? ExportData<ObjCBindings.Property>.Default,
 			ExportStrongPropertyData = property.GetExportData<ObjCBindings.StrongDictionaryProperty> (context),
+			Location = declaration.GetLocation (),
 		};
 		return true;
 	}

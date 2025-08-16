@@ -375,4 +375,89 @@ public class ValidatorTests {
 			Assert.Empty (errors);
 		}
 	}
+
+	[Theory]
+	[InlineData (MyFlag.OptionA, "field1", "field2", null, true)] // Fails: flag set, OptionalField1 and OptionalField2 are both set
+	[InlineData (MyFlag.OptionA, "field1", null, "field3", true)] // Fails: flag set, OptionalField1 and OptionalField3 are both set
+	[InlineData (MyFlag.OptionA, "field1", null, null, false)] // Succeeds: flag set, only OptionalField1 is set
+	[InlineData (MyFlag.OptionA, null, "field2", null, false)] // Succeeds: flag set, only OptionalField2 is set
+	[InlineData (MyFlag.OptionA, null, null, null, false)] // Succeeds: flag set, no fields are set
+	[InlineData (MyFlag.OptionB, "field1", "field2", null, false)] // Succeeds: flag not set, validation not executed
+	[InlineData (MyFlag.OptionB, "field1", "field2", "field3", false)] // Succeeds: flag not set, validation not executed
+	[InlineData (MyFlag.OptionA | MyFlag.OptionB, "field1", "field2", null, true)] // Fails: flag set, multiple fields are set
+	public void AddConditionalMutuallyExclusiveTests (MyFlag flag, string? field1Value, string? field2Value, string? field3Value, bool shouldFail)
+	{
+		var validator = new Validator<MyData> ();
+		validator.AddConditionalMutuallyExclusive (
+			d => d.Flag,
+			exactlyOne: false,
+			requireAllFlags: false,
+			requiredFlags: [MyFlag.OptionA],
+			d => d.OptionalField1,
+			d => d.OptionalField2,
+			d => d.OptionalField3
+		);
+
+		var data = new MyData {
+			Flag = flag,
+			OptionalField1 = field1Value,
+			OptionalField2 = field2Value == "field2" ? 42 : null,
+			OptionalField3 = field3Value
+		};
+
+		var errors = validator.ValidateAll (data);
+
+		if (shouldFail) {
+			Assert.True (errors.ContainsKey (string.Empty)); // Global validation error
+			var diagnostics = errors [string.Empty];
+			Assert.Single (diagnostics);
+			Assert.Equal ("RBI0016", diagnostics [0].Id);
+		} else {
+			Assert.Empty (errors);
+		}
+	}
+
+	[Theory]
+	[InlineData (MyFlag.OptionA, null, null, false)] // Succeeds: flag set, no nullable structs are set
+	[InlineData (MyFlag.OptionA, "", null, false)] // Succeeds: flag set, only HomeAddress is set
+	[InlineData (MyFlag.OptionA, null, 42, false)] // Succeeds: flag set, only OptionalField2 is set
+	[InlineData (MyFlag.OptionA, "", 42, true)] // Fails: flag set, both nullable structs are set
+	[InlineData (MyFlag.OptionB, "", 42, false)] // Succeeds: flag not set, validation not executed
+	public void AddConditionalMutuallyExclusiveNullableStructTests (MyFlag flag, string? addressParts, int? optionalField2Value, bool shouldFail)
+	{
+		var validator = new Validator<MyData> ();
+		validator.AddConditionalMutuallyExclusive (
+			d => d.Flag,
+			exactlyOne: false,
+			requireAllFlags: false,
+			requiredFlags: [MyFlag.OptionA],
+			d => d.HomeAddress,
+			d => d.OptionalField2
+		);
+
+		Address? homeAddress = null;
+		if (addressParts is not null) {
+			homeAddress = new Address {
+				Street = addressParts == "" ? null : addressParts,
+				City = null
+			};
+		}
+
+		var data = new MyData {
+			Flag = flag,
+			HomeAddress = homeAddress,
+			OptionalField2 = optionalField2Value
+		};
+
+		var errors = validator.ValidateAll (data);
+
+		if (shouldFail) {
+			Assert.True (errors.ContainsKey (string.Empty)); // Global validation error
+			var diagnostics = errors [string.Empty];
+			Assert.Single (diagnostics);
+			Assert.Equal ("RBI0016", diagnostics [0].Id);
+		} else {
+			Assert.Empty (errors);
+		}
+	}
 }

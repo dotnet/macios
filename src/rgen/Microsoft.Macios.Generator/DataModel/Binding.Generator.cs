@@ -33,6 +33,11 @@ readonly partial struct Binding {
 	public bool IsThreadSafe => bindingInfo.IsThreadSafe;
 
 	/// <summary>
+	/// The location of the attribute in source code.
+	/// </summary>
+	public Location? Location { get; init; }
+
+	/// <summary>
 	/// Returns all the library names and paths that are needed by the native code represented by the code change.
 	/// </summary>
 	public IEnumerable<(string LibraryName, string? LibraryPath)> LibraryPaths {
@@ -316,6 +321,7 @@ readonly partial struct Binding {
 		}
 
 		EnumMembers = bucket.ToImmutable ();
+		Location = enumDeclaration.GetLocation ();
 	}
 
 	/// <summary>
@@ -357,6 +363,7 @@ readonly partial struct Binding {
 			GetMembers<PropertyDeclarationSyntax, Property> (classDeclaration, context, PropertySkip, Property.TryCreate,
 				out properties);
 		}
+		Location = classDeclaration.GetLocation ();
 	}
 
 	/// <summary>
@@ -416,7 +423,7 @@ readonly partial struct Binding {
 			ParentProtocolProperties = [];
 			ParentProtocolMethods = [];
 		}
-
+		Location = interfaceDeclaration.GetLocation ();
 	}
 
 	/// <summary>

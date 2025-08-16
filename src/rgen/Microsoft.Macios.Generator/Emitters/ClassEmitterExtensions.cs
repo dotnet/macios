@@ -509,8 +509,11 @@ if (!(value is null) && rvalue is null) {{
 	/// <param name="self">The class emitter.</param>
 	/// <param name="context">The current binding context.</param>
 	/// <param name="classBlock">Current class block.</param>
-	public static void EmitProperties (this IClassEmitter self, in BindingContext context, TabbedWriter<StringWriter> classBlock)
+	/// <param name="strongDelegates">List of properties who generates events.</param>
+	public static void EmitProperties (this IClassEmitter self, in BindingContext context,
+		TabbedWriter<StringWriter> classBlock, out ImmutableArray<Property> strongDelegates)
 	{
+		var strongDelegatesBuilder = ImmutableArray.CreateBuilder<Property> ();
 		// use the binding context to decide if we need to insert the ui thread check
 		var uiThreadCheck = (context.NeedsThreadChecks)
 			? EnsureUiThread (context.RootContext.CurrentPlatform) : null;
@@ -518,9 +521,12 @@ if (!(value is null) && rvalue is null) {{
 		foreach (var property in context.Changes.Properties.OrderBy (p => p.Name)) {
 			if (property.IsField)
 				continue;
+			if (property.CreateEvents)
+				strongDelegatesBuilder.Add (property);
 			EmitProperty (self, in context, property, classBlock, uiThreadCheck);
 			classBlock.WriteLine ();
 		}
+		strongDelegates = strongDelegatesBuilder.ToImmutable ();
 	}
 
 	/// <summary>

@@ -6,6 +6,7 @@ using Foundation;
 using UIKit;
 using NSView = Foundation.NSObject;
 using PHLivePhotoViewContentMode = Foundation.NSObject;
+using XView = UIKit.UIView;
 #else
 using AppKit;
 using UITouch = Foundation.NSObject;
@@ -14,6 +15,7 @@ using UIColor = AppKit.NSColor;
 using UIGestureRecognizer = Foundation.NSObject;
 using PHLivePhotoBadgeOptions = Foundation.NSObject;
 using UIViewController = AppKit.NSViewController;
+using XView = AppKit.NSView;
 #endif
 using MapKit;
 using Photos;
@@ -62,15 +64,10 @@ namespace PhotosUI {
 		bool ShouldShowCancelConfirmation { get; }
 	}
 
-	/// <summary>A <see cref="UIKit.UIView" /> that displays a <see cref="Photo.PHLivePhoto" />.</summary>
-	///     
-	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/PhotosUI/PHLivePhotoView">Apple documentation for <c>PHLivePhotoView</c></related>
+	/// <summary>An <see cref="XView" /> that displays a <see cref="PHLivePhoto" />.</summary>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/PhotosUI/PHLivePhotoView">Apple documentation for <c>PHLivePhotoView</c></related>
 	[MacCatalyst (13, 1)]
-#if MONOMAC
-	[BaseType (typeof (NSView))]
-#else
-	[BaseType (typeof (UIView))]
-#endif
+	[BaseType (typeof (XView))]
 	interface PHLivePhotoView {
 
 		// inlined (designated initializer)

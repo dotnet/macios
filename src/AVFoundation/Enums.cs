@@ -657,7 +657,7 @@ namespace AVFoundation {
 		SessionNotActive = 0x696e6163, // 'inac'
 	}
 
-	/// <summary>An enumeration whose values specify hints to autofocus. Used with <see cref="AVFoundation.AVCaptureDevice.AutoFocusRangeRestriction" />.</summary>
+	/// <summary>An enumeration whose values specify hints to autofocus. Used with <see cref="AVCaptureDevice.AutoFocusRangeRestriction" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[TV (17, 0)]
@@ -687,7 +687,7 @@ namespace AVFoundation {
 	}
 
 	// Convenience enum for native strings (defined in AVAudioSettings.h)
-	/// <summary>An enumeration whose values specify valid rate-converstion algorithms. Used with <see cref="AVFoundation.AVAudioSettings.SampleRateConverterAlgorithm" />.</summary>
+	/// <summary>An enumeration whose values specify valid rate-converstion algorithms. Used with <see cref="AudioSettings.SampleRateConverterAlgorithm" />.</summary>
 	/// <remarks>To be added.</remarks>
 	public enum AVSampleRateConverterAlgorithm : int {
 		/// <summary>To be added.</summary>
@@ -929,7 +929,7 @@ namespace AVFoundation {
 		Linear = 3,
 	}
 
-	/// <summary>Enumerates possible values of the <see cref="AVFoundation.AVSampleBuffer.Status" /> field.</summary>
+	/// <summary>Enumerates possible values of the <see cref="AVSampleBufferAudioRenderer.Status" />, <see cref="AVSampleBufferDisplayLayer.Status" /> and <see cref="AVSampleBufferVideoRenderer.Status" /> fields.</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
@@ -1262,7 +1262,6 @@ namespace AVFoundation {
 
 	// Convience enum for native string values 
 	/// <summary>Enumerates presets for asset export sessions.</summary>
-	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	public enum AVAssetExportSessionPreset {
 		/// <summary>Indicates a low quality QuickTime file.</summary>
@@ -1302,7 +1301,6 @@ namespace AVFoundation {
 		Preset3840x2160 = 7, // AVAssetExportPreset3840x2160
 
 		/// <summary>Indicates an audio-only m4a file with gapless playback data.</summary>
-		/// <remarks>Audio-only, gapless playback for iTunes.</remarks>
 		[Field ("AVAssetExportPresetAppleM4A")]
 		AppleM4A = 8, // AVAssetExportPresetAppleM4A
 

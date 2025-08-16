@@ -4915,7 +4915,7 @@ namespace CoreData {
 		NSFetchRequest FetchRequest { get; }
 	}
 
-	/// <summary>The results of a <see cref="CoreData.NSBatchDeleteQuery" />.</summary>
+	/// <summary>The results of a <see cref="CoreData.NSBatchDeleteRequest" />.</summary>
 	/// <remarks>To be added.</remarks>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/CoreData/NSBatchDeleteResult">Apple documentation for <c>NSBatchDeleteResult</c></related>
 	[MacCatalyst (13, 1)]

@@ -1800,7 +1800,7 @@ namespace SceneKit {
 		NSString ShadowFarClippingKey { get; }
 	}
 
-	/// <summary>Constants for use with the <see cref="SceneKit.SCNMaterial.LightingModel" /> property, which defines the way lights and materials combine to produce a particular rendered color.</summary>
+	/// <summary>Constants for use with the <see cref="SCNMaterial.LightingModelName" /> property, which defines the way lights and materials combine to produce a particular rendered color.</summary>
 	[MacCatalyst (13, 1)]
 	[Static]
 	interface SCNLightingModel {
@@ -2250,7 +2250,7 @@ namespace SceneKit {
 
 	/// <param name="node">The current <see cref="SceneKit.SCNNode" />.</param>
 	///     <param name="stop">An <c>out</c> parameter that, when set to true, stops the enumeration.</param>
-	///     <summary>Delegate for use with <see cref="SceneKit.SCNNode.EnumerateChildNodes(SceneKit.SCNNodePredicate)" />.</summary>
+	///     <summary>Delegate for use with <see cref="SCNNode.FindNodes(SceneKit.SCNNodePredicate)" />.</summary>
 	[MacCatalyst (13, 1)]
 	delegate bool SCNNodePredicate (SCNNode node, out bool stop);
 
@@ -4369,9 +4369,8 @@ namespace SceneKit {
 		bool LowPowerDevice { get; set; }
 	}
 
-	/// <summary>A <see cref="UIKit.UIView" /> that renders <see cref="SceneKit.SCNScene" />s.</summary>
-	///     
-	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNView_Class/index.html">Apple documentation for <c>SCNView</c></related>
+	/// <summary>A <see cref="NSView" /> that renders <see cref="SCNScene" />s.</summary>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNView_Class/index.html">Apple documentation for <c>SCNView</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSView))]
 	[DisableDefaultCtor]
@@ -5615,7 +5614,7 @@ namespace SceneKit {
 		NSValue [] Transforms { get; }
 	}
 
-	/// <summary>Defines valid keys for use with the <c>options</c> dictionary passed to <see cref="SceneKit.SCNPhysicsShape.Create" />.</summary>
+	/// <summary>Defines valid keys for use with the <c>options</c> dictionary passed to <see cref="SCNPhysicsShape.Create(SCNGeometry,SCNPhysicsShapeOptions)" /> and <see cref="SCNPhysicsShape.Create(SCNNode,SCNPhysicsShapeOptions)" /> .</summary>
 	[MacCatalyst (13, 1)]
 	[Static]
 	[EditorBrowsable (EditorBrowsableState.Advanced)]

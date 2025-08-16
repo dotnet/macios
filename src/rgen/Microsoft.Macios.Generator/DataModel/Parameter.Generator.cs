@@ -24,6 +24,11 @@ readonly partial struct Parameter {
 	public ForcedTypeData? ForcedType { get; init; }
 
 	/// <summary>
+	/// The location of the attribute in source code.
+	/// </summary>
+	public Location? Location { get; init; }
+
+	/// <summary>
 	/// Returns if the parameter needs a null check when the code is generated.
 	/// </summary>
 	public bool NeedsNullCheck {
@@ -39,7 +44,7 @@ readonly partial struct Parameter {
 	public static bool TryCreate (IParameterSymbol symbol, ParameterSyntax declaration, RootContext context,
 		[NotNullWhen (true)] out Parameter? parameter)
 	{
-		parameter = new (symbol.Ordinal, new (symbol.Type, context.Compilation), symbol.GetSafeName ()) {
+		parameter = new (symbol.Ordinal, new (symbol.Type, context), symbol.GetSafeName ()) {
 			BindAs = symbol.GetBindFromData (),
 			ForcedType = symbol.GetForceTypeData (),
 			IsOptional = symbol.IsOptional,
@@ -48,6 +53,7 @@ readonly partial struct Parameter {
 			DefaultValue = (symbol.HasExplicitDefaultValue) ? symbol.ExplicitDefaultValue?.ToString () : null,
 			ReferenceKind = symbol.RefKind.ToReferenceKind (),
 			Attributes = declaration.GetAttributeCodeChanges (context.SemanticModel),
+			Location = declaration.GetLocation (),
 		};
 		return true;
 	}

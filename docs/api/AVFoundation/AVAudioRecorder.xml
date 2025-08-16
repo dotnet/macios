@@ -3,21 +3,21 @@
     <summary>Audio recording class.</summary>
     <remarks>
       <para>
-	To create instances of this class use the factory method <see cref="AVFoundation.AVRecorder.ToUrl(Foundation.NSUrl, AVFoundation.AVAudioRecorderSettings,Foundation.NSError)" /></para>
+	To create instances of this class use the factory method <see cref="Create(Foundation.NSUrl,AudioSettings,out Foundation.NSError)" /></para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
-var settings = new AVAudioRecorderSettings () {
+var settings = new AudioSettings () {
 	AudioFormat = AudioFormatType.LinearPCM,
 	AudioQuality = AVAudioQuality.High,
 	SampleRate = 44100f,
-	NumberChannels = 1
+	NumberChannels = 1,
 };
-var recorder = AVAudioRecorder.ToUrl (url, settings, out error);
-if (recorder == null){
+var recorder = AVAudioRecorder.Create (url, settings, out error);
+if (recorder == null) {
     Console.WriteLine (error);
     return;
 }
-recorder.PrepareToRecord ();            
+recorder.PrepareToRecord ();
 recorder.Record ();
 ]]></code>
       </example>

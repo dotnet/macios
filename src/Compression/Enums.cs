@@ -12,20 +12,15 @@ namespace Compression {
 		LZ4 = 0x100,
 		/// <summary>The <see cref="LZ4">LZ4</see> compression format, without block headers.</summary>
 		LZ4Raw = 0x101,
-		/// <summary>The Lempel–Ziv Finite State Entropy (LZFSE) compression format.</summary>
-		/// <remarks>This is the format Apple recommends on Apple platforms.</remarks>
+		/// <summary>The Lempel–Ziv Finite State Entropy (LZFSE) compression format. This is the format Apple recommends on Apple platforms.</summary>
 		Lzfse = 0x801,
-		/// <summary>The Lempel–Ziv–Markov (LZMA) compression format.</summary>
-		/// <remarks>The encoder in the Compression framework only supports level 6. The decoder supports all compression levels.</remarks>
+		/// <summary>The Lempel–Ziv–Markov (LZMA) compression format. The encoder in the Compression framework only supports level 6. The decoder supports all compression levels.</summary>
 		Lzma = 0x306,
-		/// <summary>The zlib compression format. This is the compression format most compatible with other platforms.</summary>
-		/// <remarks>The encoder in the Compression framework only supports level 5. The decoder supports all compression levels.</remarks>
+		/// <summary>The zlib compression format. This is the compression format most compatible with other platforms. The encoder in the Compression framework only supports level 5. The decoder supports all compression levels.</summary>
 		Zlib = 0x205,
-		/// <summary>The Brotli compression format.</summary>
-		/// <remarks>The encoder in the Compression framework only supports the Brotli level 2 encoder. The decoder supports all compression levels.</remarks>
+		/// <summary>The Brotli compression format. The encoder in the Compression framework only supports the Brotli level 2 encoder. The decoder supports all compression levels.</summary>
 		Brotli = 0xB02,
-		/// <summary>The LZBitmap compression format.</summary>
-		/// <remarks>This compression algorithm is only available on Apple devices.</remarks>
+		/// <summary>The LZBitmap compression format. This compression algorithm is only available on Apple devices.</summary>
 		[iOS (15, 0), Mac (12, 0), TV (15, 0), MacCatalyst (15, 0)]
 		LZBitmap = 0x702,
 	}

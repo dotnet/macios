@@ -4,6 +4,7 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.CodeAnalysis;
+using Microsoft.Macios.Generator.Extensions;
 using TypeInfo = Microsoft.Macios.Generator.DataModel.TypeInfo;
 
 namespace Microsoft.Macios.Generator.Attributes;
@@ -12,6 +13,11 @@ readonly struct BindFromData : IEquatable<BindFromData> {
 
 	public TypeInfo Type { get; }
 	public TypeInfo OriginalType { get; } = TypeInfo.Default;
+
+	/// <summary>
+	/// The location of the attribute in source code.
+	/// </summary>
+	public Location? Location { get; init; }
 
 	public BindFromData (TypeInfo type)
 	{
@@ -43,7 +49,9 @@ readonly struct BindFromData : IEquatable<BindFromData> {
 		}
 
 		if (attributeData.NamedArguments.Length == 0) {
-			data = new (type);
+			data = new (type) {
+				Location = attributeData.GetLocation (),
+			};
 			return true;
 		}
 
@@ -60,7 +68,10 @@ readonly struct BindFromData : IEquatable<BindFromData> {
 				return false;
 			}
 		}
-		data = new (type, originalType);
+
+		data = new (type, originalType) {
+			Location = attributeData.GetLocation (),
+		};
 		return true;
 	}
 

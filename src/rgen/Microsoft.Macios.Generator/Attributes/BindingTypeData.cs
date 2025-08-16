@@ -4,6 +4,7 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using Microsoft.CodeAnalysis;
+using Microsoft.Macios.Generator.Extensions;
 using TypeInfo = Microsoft.Macios.Generator.DataModel.TypeInfo;
 
 namespace Microsoft.Macios.Generator.Attributes;
@@ -14,6 +15,11 @@ readonly struct BindingTypeData : IEquatable<BindingTypeData> {
 	/// Original name of the ObjC class or protocol.
 	/// </summary>
 	public string? Name { get; }
+
+	/// <summary>
+	/// The location of the attribute in source code.
+	/// </summary>
+	public Location? Location { get; init; }
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="BindingTypeData"/> struct.
@@ -49,7 +55,9 @@ readonly struct BindingTypeData : IEquatable<BindingTypeData> {
 		}
 
 		if (attributeData.NamedArguments.Length == 0) {
-			data = new (name);
+			data = new (name) {
+				Location = attributeData.GetLocation (),
+			};
 			return true;
 		}
 
@@ -64,7 +72,9 @@ readonly struct BindingTypeData : IEquatable<BindingTypeData> {
 			}
 		}
 
-		data = new (name);
+		data = new (name) {
+			Location = attributeData.GetLocation (),
+		};
 		return true;
 	}
 

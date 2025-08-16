@@ -146,11 +146,11 @@ scrlMain.Frame.Width * controllers.Count, scrlMain.Frame.Height);
         <code lang="csharp lang-csharp"><![CDATA[
 UITapGestureRecognizer doubletap = new UITapGestureRecognizer();
 doubletap.NumberOfTapsRequired = 2; // double tap
-doubletap.AddTarget (this, new MonoTouch.ObjCRuntime.Selector("DoubleTapSelector"));
+doubletap.AddTarget (this, new ObjCRuntime.Selector("DoubleTapSelector"));
 scrollView.AddGestureRecognizer(doubletap); // detect when the scrollView is double-tapped
 //...etc...
 
-[MonoTouch.Foundation.Export("DoubleTapSelector")]
+[Foundation.Export("DoubleTapSelector")]
 public void OnDoubleTap (UIGestureRecognizer sender) {
 if (scrollView.ZoomScale >= 1)
    scrollView.SetZoomScale(0.25f, true);

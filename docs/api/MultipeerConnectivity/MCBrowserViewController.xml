@@ -1,6 +1,6 @@
 <Documentation>
   <Docs DocId="T:MultipeerConnectivity.MCBrowserViewController">
-    <summary>A standard <see cref="MultipeerConnectivity.UIViewController" /> that provides a user experience for browsing for peers.</summary>
+    <summary>A standard <see cref="UIViewController" /> that provides a user experience for browsing for peers.</summary>
     <remarks>
       <para>Multipeer connectivity's discovery phase involves two roles: browsing and advertising. When an application searches for peers with which to connect, it is browsing. Browsing may be controlled by either a <see cref="MultipeerConnectivity.MCBrowserViewController" /> or can be fully customized with a <see cref="MultipeerConnectivity.MCNearbyServiceBrowser" />. For a discussion of the discovery process, see the remarks for <see cref="MultipeerConnectivity.MCSession" />.</para>
     </remarks>

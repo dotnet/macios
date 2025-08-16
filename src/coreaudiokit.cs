@@ -42,10 +42,8 @@ namespace CoreAudioKit {
 		ParametersDisplay = 1u << 2,
 	}
 
-	/// <summary>
-	///       <see cref="UIKit.UIViewController" /> class that handles extension requests to support audio unit extensions that have a UI.</summary>
-	///     
-	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/CoreAudioKit/AUViewController">Apple documentation for <c>AUViewController</c></related>
+	/// <summary>A <see cref="UIViewController" /> class that handles extension requests to support audio unit extensions that have a UI.</summary>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/CoreAudioKit/AUViewController">Apple documentation for <c>AUViewController</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (AUViewControllerBase))]
 	interface AUViewController {

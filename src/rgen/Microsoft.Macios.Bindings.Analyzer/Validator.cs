@@ -621,18 +621,14 @@ public partial class Validator<T> : IValidator {
 		where TFlag : Enum
 		where TExpectedFlag : Enum
 	{
-		var selectorCompiled = selector.Compile ();
-		var flagSelectorCompiled = flagSelector.Compile ();
-
 		AddStrategy (selector, RBI0017, CheckFlagType);
 
-		bool CheckFlagType (T data, out ImmutableArray<Diagnostic> diagnostics, Location? location = null)
+		bool CheckFlagType (TField? data, out ImmutableArray<Diagnostic> diagnostics, Location? location = null)
 		{
 			diagnostics = [];
-			var fieldValue = selectorCompiled (data);
 
 			// If field is null, validation passes
-			if (fieldValue is null)
+			if (data is null)
 				return true;
 
 			// Check if the flag type matches the expected type
@@ -673,17 +669,15 @@ public partial class Validator<T> : IValidator {
 		where TExpectedFlag : Enum
 	{
 		var selectorCompiled = selector.Compile ();
-		var flagSelectorCompiled = flagSelector.Compile ();
 
 		AddStrategy (selector, RBI0017, CheckFlagType);
 
-		bool CheckFlagType (T data, out ImmutableArray<Diagnostic> diagnostics, Location? location = null)
+		bool CheckFlagType (TField? data, out ImmutableArray<Diagnostic> diagnostics, Location? location = null)
 		{
 			diagnostics = [];
-			var fieldValue = selectorCompiled (data);
 
 			// If field is null, validation passes
-			if (fieldValue is null)
+			if (data is null)
 				return true;
 
 			// Check if the flag type matches the expected type

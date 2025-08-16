@@ -526,7 +526,7 @@ namespace Microsoft.Macios.Bindings.Analyzer {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A export property selector must not contain any whitespace.
+        ///   Looks up a localized string similar to An export property selector must not contain any whitespace.
         /// </summary>
         internal static string RBI0018MessageFormat {
             get {
@@ -553,7 +553,7 @@ namespace Microsoft.Macios.Bindings.Analyzer {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A export property selector must not contain any whitespace.
+        ///   Looks up a localized string similar to An export property selector must not contain any whitespace.
         /// </summary>
         internal static string RBI0019MessageFormat {
             get {

@@ -48,7 +48,7 @@
         <item>
           <term>Quaternion</term>
           <description>
-            <see cref="CoreMotion.Quaternion" />
+            <see cref="CoreMotion.CMAttitude.Quaternion" />
           </description>
         </item>
       </list>

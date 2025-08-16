@@ -31,7 +31,8 @@ namespace Xamarin.MacDev.Tasks {
 		public string SdkRoot { get; set; } = string.Empty;
 
 		[Required]
-		public string OutputFile { get; set; } = string.Empty;
+		[Output]
+		public ITaskItem OutputFile { get; set; } = null!;
 
 		[Required]
 		public ITaskItem [] ObjectFiles { get; set; } = Array.Empty<ITaskItem> ();
@@ -56,7 +57,7 @@ namespace Xamarin.MacDev.Tasks {
 		public override bool Execute ()
 		{
 			if (ShouldExecuteRemotely ()) {
-				outputPath = PathUtils.ConvertToMacPath (Path.GetDirectoryName (OutputFile));
+				outputPath = PathUtils.ConvertToMacPath (Path.GetDirectoryName (OutputFile.ItemSpec));
 
 				return new TaskRunner (SessionId, BuildEngine4).RunAsync (this).Result;
 			}
@@ -205,7 +206,7 @@ namespace Xamarin.MacDev.Tasks {
 			arguments.AddRange (GetEmbedEntitlementsWithDerInExecutableLinkerFlags (EntitlementsInExecutable));
 
 			arguments.Add ("-o");
-			arguments.Add (Path.GetFullPath (OutputFile));
+			arguments.Add (Path.GetFullPath (OutputFile.ItemSpec));
 
 			if (LinkerFlags is not null) {
 				foreach (var flag in LinkerFlags)
@@ -306,7 +307,7 @@ namespace Xamarin.MacDev.Tasks {
 		// and the ones on Windows are empty, so we will break the build
 		public bool ShouldCopyToBuildServer (ITaskItem item) => !PathUtils.ConvertToMacPath (item.ItemSpec).StartsWith (outputPath);
 
-		public bool ShouldCreateOutputFile (ITaskItem item) => false;
+		public bool ShouldCreateOutputFile (ITaskItem item) => true;
 
 		public IEnumerable<ITaskItem> GetAdditionalItemsToBeCopied () => Enumerable.Empty<ITaskItem> ();
 	}

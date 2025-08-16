@@ -365,7 +365,11 @@ namespace CoreAnimation {
 	}
 
 
-	/// <include file="../docs/api/CoreAnimation/CALayer.xml" path="/Documentation/Docs[@DocId='T:CoreAnimation.CALayer']/*" />
+#if __MACOS__
+	/// <include file="../docs/api/CoreAnimation/CALayer.xml" path="/Documentation/Docs[@DocId='T:CoreAnimation.CALayer' and contains(@Platforms,'macOS')]/*" />
+#else
+	/// <include file="../docs/api/CoreAnimation/CALayer.xml" path="/Documentation/Docs[@DocId='T:CoreAnimation.CALayer' and not(@Platforms)]/*" />
+#endif
 	[BaseType (typeof (NSObject))]
 	[Dispose ("OnDispose ();", Optimizable = true)]
 	interface CALayer : CAMediaTiming, NSSecureCoding {
@@ -2108,7 +2112,11 @@ namespace CoreAnimation {
 		void RunAction (string eventKey, NSObject obj, [NullAllowed] NSDictionary arguments);
 	}
 
-	/// <include file="../docs/api/CoreAnimation/CAAnimation.xml" path="/Documentation/Docs[@DocId='T:CoreAnimation.CAAnimation']/*" />
+#if __MACOS__
+	/// <include file="../docs/api/CoreAnimation/CAAnimation.xml" path="/Documentation/Docs[@DocId='T:CoreAnimation.CAAnimation' and contains(@Platforms,'macOS')]/*" />
+#else
+	/// <include file="../docs/api/CoreAnimation/CAAnimation.xml" path="/Documentation/Docs[@DocId='T:CoreAnimation.CAAnimation' and not(@Platforms)]/*" />
+#endif
 	[BaseType (typeof (NSObject)
 		, Delegates = new string [] { "WeakDelegate" }, Events = new Type [] { typeof (CAAnimationDelegate) }
 	)]

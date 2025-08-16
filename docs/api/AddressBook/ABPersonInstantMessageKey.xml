@@ -28,7 +28,7 @@ ABMutableDictionaryMultiValue instantMessages = new ABMutableDictionaryMultiValu
 ABPerson person = GetMeSomePerson();
 person.SetInstantMessages(addresses);]]></code>
     </remarks>
-    <altmember cref="AddressBook.ABPerson.GetInstantMessages" />
+    <altmember cref="AddressBook.ABPerson.GetInstantMessageServices" />
     <altmember cref="AddressBook.ABPerson.SetInstantMessages(AddressBook.ABMultiValue{Foundation.NSDictionary})" />
   </Docs>
 </Documentation>

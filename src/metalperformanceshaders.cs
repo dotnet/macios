@@ -8094,7 +8094,7 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (MPSNNImageNode sourceNode);
 	}
 
-	/// <summary>A <see cref="MetalPerformanceShaders.MPSCNNNeuronNode" /> that represents a tanh activation function.</summary>
+	/// <summary>A <see cref="MetalPerformanceShaders.MPSCnnNeuronNode" /> that represents a tanh activation function.</summary>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnNeuronNode), Name = "MPSCNNNeuronTanHNode")]
 	[DisableDefaultCtor] // 'init' is unavailable
@@ -10517,7 +10517,7 @@ namespace MetalPerformanceShaders {
 
 	interface IMPSImageAllocator { }
 
-	/// <summary>Interface defining a factory that generates a <see cref="MetalPerformanceShaders.MPSImage" /> from a <see cref="MetalPerformanceShaders.IMTLCommandBuffer" />, a <see cref="MetalPerformanceShaders.MPSImageDescriptor" />, and a <see cref="MetalPerformanceShaders.MPSKernel" />.</summary>
+	/// <summary>Interface defining a factory that generates a <see cref="MPSImage" /> from a <see cref="IMTLCommandBuffer" />, a <see cref="MPSImageDescriptor" />, and a <see cref="MPSKernel" />.</summary>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface MPSImageAllocator : NSSecureCoding {

@@ -187,10 +187,10 @@ namespace SceneKit {
 		OutsideExtent,
 	}
 
-	/// <summary>Enumeration specifying the order in which particles emitted by a <see cref="SceneKit.SCNParticleScene" /> are rendered.</summary>
-	///     <remarks>
-	///       <para>Along with <see cref="SceneKit.SCNParticleSystem.BlendMode" />, <see cref="SceneKit.SCNParticleSystem.SortingMode" /> affects the appearance of overlapping particles.</para>
-	///     </remarks>
+	/// <summary>Enumeration specifying the order in which particles emitted by a <see cref="SCNParticleSystem" /> are rendered.</summary>
+	/// <remarks>
+	///   <para>Along with <see cref="SCNParticleSystem.BlendMode" />, <see cref="SCNParticleSystem.SortingMode" /> affects the appearance of overlapping particles.</para>
+	/// </remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNParticleSortingMode : long {

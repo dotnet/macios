@@ -44,8 +44,7 @@ using Foundation;
 
 namespace AudioUnit {
 #if !COREBUILD
-	/// <summary>An exception relating to functions in the MonoTouch.AudioUnit namespace.</summary>
-	///     <remarks>To be added.</remarks>
+	/// <summary>An exception relating to functions in the AudioUnit namespace.</summary>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

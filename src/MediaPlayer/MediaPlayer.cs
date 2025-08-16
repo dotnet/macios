@@ -16,7 +16,7 @@ using ObjCRuntime;
 
 namespace MediaPlayer {
 	// NSInteger -> MPMoviePlayerController.h
-	/// <summary>An enumeration of possible states in which the <see cref="MediaPlayer.MPMoviePlayerController" /> may be. Used with the <see cref="MediaPlayer.MPMovieCotnroller.PlaybackState" /> property.</summary>
+	/// <summary>An enumeration of possible states in which the <see cref="MediaPlayer.MPMoviePlayerController" /> may be. Used with the <see cref="MediaPlayer.MPMoviePlayerController.PlaybackState" /> property.</summary>
 	[NoMac]
 	[NoTV]
 	[Deprecated (PlatformName.iOS, 9, 0)]
@@ -348,12 +348,17 @@ namespace MediaPlayer {
 		Albums,
 	}
 
+#if !MONOMAC
 	/// <param name="property">The property kind.</param>
 	/// <param name="value">The value associated with the property</param>
 	/// <param name="stop">Reference value, can be used to stop the enumeration.</param>
-	/// <summary>The delegate to be used as the <c>enumerator</c> argument to <see cref="MediaPlayer.MPMediaItemCollection.EnumerateValues(Foundation.NSSet,MediaPlayer.MPMediaItemEnumerator)" />.</summary>
-	/// <remarks>
-	///     </remarks>
+	/// <summary>The delegate to be used as the <c>enumerator</c> argument to <see cref="MPMediaEntity.EnumerateValues(Foundation.NSSet,MediaPlayer.MPMediaItemEnumerator)" />.</summary>
+#else
+	/// <param name="property">The property kind.</param>
+	/// <param name="value">The value associated with the property</param>
+	/// <param name="stop">Reference value, can be used to stop the enumeration.</param>
+	/// <summary>The delegate to be used as the <c>enumerator</c> argument to <see cref="MPMediaItem.EnumerateValues(Foundation.NSSet,MediaPlayer.MPMediaItemEnumerator)" />.</summary>
+#endif
 	public delegate void MPMediaItemEnumerator (string property, NSObject value, ref bool stop);
 
 	[MacCatalyst (13, 1)]

@@ -28,6 +28,13 @@ public class ValidatorTests {
 		OptionC = 1 << 2
 	}
 
+	[Flags]
+	public enum OtherFlag {
+		None = 0,
+		OptionX = 1 << 0,
+		OptionY = 1 << 1
+	}
+
 	public struct Address {
 		public string? Street { get; set; }
 		public string? City { get; set; }
@@ -38,6 +45,12 @@ public class ValidatorTests {
 		public string? OptionalField1 { get; set; }
 		public int? OptionalField2 { get; set; }
 		public string? OptionalField3 { get; set; }
+		public Address? HomeAddress { get; set; }
+	}
+
+	public struct MyOtherData {
+		public OtherFlag Flag { get; set; }
+		public string? OptionalField1 { get; set; }
 		public Address? HomeAddress { get; set; }
 	}
 
@@ -459,5 +472,88 @@ public class ValidatorTests {
 		} else {
 			Assert.Empty (errors);
 		}
+	}
+
+	[Fact]
+	public void RestrictToFlagTypeTests ()
+	{
+		// Test with correct flag type - should succeed
+		var validator1 = new Validator<MyData> ();
+		validator1.RestrictToFlagType<string, MyFlag, MyFlag> (
+			d => d.OptionalField1,
+			d => d.Flag
+		);
+
+		var data1 = new MyData {
+			Flag = MyFlag.OptionA,
+			OptionalField1 = "test"
+		};
+
+		var errors1 = validator1.ValidateAll (data1);
+		Assert.Empty (errors1);
+
+		// Test with null field - should succeed
+		var data2 = new MyData {
+			Flag = MyFlag.OptionA,
+			OptionalField1 = null
+		};
+
+		var errors2 = validator1.ValidateAll (data2);
+		Assert.Empty (errors2);
+
+		// Test with wrong flag type - should fail
+		var validator2 = new Validator<MyOtherData> ();
+		validator2.RestrictToFlagType<string, OtherFlag, MyFlag> (
+			d => d.OptionalField1,
+			d => d.Flag
+		);
+
+		var data3 = new MyOtherData {
+			Flag = OtherFlag.OptionX,
+			OptionalField1 = "test"
+		};
+
+		var errors3 = validator2.ValidateAll (data3);
+		Assert.True (errors3.ContainsKey (nameof (MyOtherData.OptionalField1)));
+		var diagnostics3 = errors3 [nameof (MyOtherData.OptionalField1)];
+		Assert.Single (diagnostics3);
+		Assert.Equal ("RBI0017", diagnostics3 [0].Id);
+	}
+
+	[Fact]
+	public void RestrictToFlagTypeNullableStructTests ()
+	{
+		// Test with correct flag type - should succeed
+		var validator1 = new Validator<MyData> ();
+		validator1.RestrictToFlagType<Address, MyFlag, MyFlag> (
+			d => d.HomeAddress,
+			d => d.Flag
+		);
+
+		var data1 = new MyData {
+			Flag = MyFlag.OptionA,
+			HomeAddress = new Address { Street = "Test St", City = "Test City" }
+		};
+
+		var errors1 = validator1.ValidateAll (data1);
+		Assert.Empty (errors1);
+
+		// Test with wrong flag type - should fail
+		var validator2 = new Validator<MyOtherData> ();
+		validator2.RestrictToFlagType<Address, OtherFlag, MyFlag> (
+			d => d.HomeAddress,
+			d => d.Flag
+		);
+
+		var data2 = new MyOtherData {
+			Flag = OtherFlag.OptionX,
+			HomeAddress = new Address { Street = "Test St", City = "Test City" }
+		};
+
+		var errors2 = validator2.ValidateAll (data2);
+		Assert.True (errors2.ContainsKey (nameof (MyOtherData.HomeAddress)));
+		var diagnostics2 = errors2 [nameof (MyOtherData.HomeAddress)];
+		Assert.Single (diagnostics2);
+		Assert.Equal ("RBI0017", diagnostics2 [0].Id);
 	}
 }

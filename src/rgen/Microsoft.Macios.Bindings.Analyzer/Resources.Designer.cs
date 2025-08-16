@@ -515,5 +515,32 @@ namespace Microsoft.Macios.Bindings.Analyzer {
                 return ResourceManager.GetString("RBI0016Title", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The field is only allowed when a specific flag is used..
+        /// </summary>
+        internal static string RBI0017Description {
+            get {
+                return ResourceManager.GetString("RBI0017Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fields &apos;{0}&apos; was set with flag {1} when is only allowed with flag {2}.
+        /// </summary>
+        internal static string RBI0017MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0017MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Field used with the wrong flag.
+        /// </summary>
+        internal static string RBI0017Title {
+            get {
+                return ResourceManager.GetString("RBI0017Title", resourceCulture);
+            }
+        }
     }
 }

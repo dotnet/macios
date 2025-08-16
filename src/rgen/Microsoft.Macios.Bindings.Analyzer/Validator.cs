@@ -607,6 +607,101 @@ public partial class Validator<T> : IValidator {
 		}
 	}
 
+	/// <summary>
+	/// Adds a validation rule that restricts a field to only be set when the flag is of a specific type.
+	/// </summary>
+	/// <typeparam name="TField">The type of the field to validate.</typeparam>
+	/// <typeparam name="TFlag">The type of the enum flag.</typeparam>
+	/// <typeparam name="TExpectedFlag">The expected flag type that allows the field to be set.</typeparam>
+	/// <param name="selector">An expression to select the field to validate.</param>
+	/// <param name="flagSelector">An expression to select the enum field.</param>
+	public void RestrictToFlagType<TField, TFlag, TExpectedFlag> (
+		Expression<Func<T, TField?>> selector,
+		Expression<Func<T, TFlag>> flagSelector)
+		where TFlag : Enum
+		where TExpectedFlag : Enum
+	{
+		AddStrategy (selector, RBI0017, CheckFlagType);
+
+		bool CheckFlagType (TField? data, out ImmutableArray<Diagnostic> diagnostics, Location? location = null)
+		{
+			diagnostics = [];
+
+			// If field is null, validation passes
+			if (data is null)
+				return true;
+
+			// Check if the flag type matches the expected type
+			var flagType = typeof (TFlag);
+			var expectedFlagType = typeof (TExpectedFlag);
+			var valid = flagType == expectedFlagType;
+
+			if (!valid) {
+				diagnostics = [
+					Diagnostic.Create (
+						descriptor: RBI0017,
+						location: location,
+						messageArgs: [
+							GetPropertyName (selector),
+							expectedFlagType.Name,
+							flagType.Name
+						])
+				];
+			}
+
+			return valid;
+		}
+	}
+
+	/// <summary>
+	/// Adds a validation rule that restricts a nullable struct field to only be set when the flag is of a specific type.
+	/// </summary>
+	/// <typeparam name="TField">The type of the struct field to validate.</typeparam>
+	/// <typeparam name="TFlag">The type of the enum flag.</typeparam>
+	/// <typeparam name="TExpectedFlag">The expected flag type that allows the field to be set.</typeparam>
+	/// <param name="selector">An expression to select the nullable struct field to validate.</param>
+	/// <param name="flagSelector">An expression to select the enum field.</param>
+	public void RestrictToFlagType<TField, TFlag, TExpectedFlag> (
+		Expression<Func<T, TField?>> selector,
+		Expression<Func<T, TFlag>> flagSelector)
+		where TField : struct
+		where TFlag : Enum
+		where TExpectedFlag : Enum
+	{
+		var selectorCompiled = selector.Compile ();
+
+		AddStrategy (selector, RBI0017, CheckFlagType);
+
+		bool CheckFlagType (TField? data, out ImmutableArray<Diagnostic> diagnostics, Location? location = null)
+		{
+			diagnostics = [];
+
+			// If field is null, validation passes
+			if (data is null)
+				return true;
+
+			// Check if the flag type matches the expected type
+			var flagType = typeof (TFlag);
+			var expectedFlagType = typeof (TExpectedFlag);
+			var valid = flagType == expectedFlagType;
+
+			if (!valid) {
+				diagnostics = [
+					Diagnostic.Create (
+						descriptor: RBI0017,
+						location: location,
+						messageArgs: [
+							GetPropertyName (selector),
+							expectedFlagType.Name,
+							flagType.Name
+						])
+				];
+			}
+
+			return valid;
+		}
+	}
+
 	/// <inheritdoc />
 	public Dictionary<string, List<Diagnostic>> ValidateAll (object data, Location? location = null)
 		=> data is not T validData ? [] : ValidateAll (validData, location);

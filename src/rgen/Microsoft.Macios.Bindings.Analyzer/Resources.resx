@@ -241,4 +241,17 @@
     <data name="RBI0016Title" xml:space="preserve">
         <value>Fields are mutually exclusive</value>
     </data>
+    
+    <!-- RBI0017 -->
+    
+    <data name="RBI0017Description" xml:space="preserve">
+        <value>The field is only allowed when a specific flag is used.</value>
+    </data>
+    <data name="RBI0017MessageFormat" xml:space="preserve">
+        <value>Fields '{0}' was set with flag {1} when is only allowed with flag {2}</value>
+        <comment>'{0}' is the name of the field, {1} is the flag type found and {2} is the flag we should have</comment>
+    </data>
+    <data name="RBI0017Title" xml:space="preserve">
+        <value>Field used with the wrong flag</value>
+    </data>
 </root>

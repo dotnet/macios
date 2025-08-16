@@ -44,7 +44,7 @@ public class ValidatorTests {
 		public string Street { get; set; }
 		public string City { get; set; }
 
-		public static bool IsDefault (NonNullableAddress address) => 
+		public static bool IsDefault (NonNullableAddress address) =>
 			string.IsNullOrEmpty (address.Street) && string.IsNullOrEmpty (address.City);
 	}
 

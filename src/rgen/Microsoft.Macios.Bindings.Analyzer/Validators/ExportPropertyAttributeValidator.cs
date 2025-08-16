@@ -12,7 +12,7 @@ namespace Microsoft.Macios.Bindings.Analyzer.Validators;
 /// Validates <see cref="ExportData{T}"/> for properties.
 /// </summary>
 class ExportPropertyAttributeValidator : Validator<ExportData<Property>> {
-	
+
 	/// <summary>
 	/// Diagnostic descriptor for when a property export is missing a selector.
 	/// </summary>
@@ -27,7 +27,7 @@ class ExportPropertyAttributeValidator : Validator<ExportData<Property>> {
 		description: new LocalizableResourceString (nameof (Resources.RBI0018Description), Resources.ResourceManager,
 			typeof (Resources))
 	);
-	
+
 	/// <summary>
 	/// Diagnostic descriptor for when a property export selector contains whitespace.
 	/// </summary>
@@ -65,7 +65,7 @@ class ExportPropertyAttributeValidator : Validator<ExportData<Property>> {
 	/// <param name="diagnostics">When this method returns, contains an array of diagnostics if the data is invalid; otherwise, an empty array.</param>
 	/// <param name="location">The code location to be used for the diagnostics.</param>
 	/// <returns><c>true</c> if the data is valid; otherwise, <c>false</c>.</returns>
-	internal static bool SelectorHasNoWhitespace (string? selector, out ImmutableArray<Diagnostic> diagnostics, 
+	internal static bool SelectorHasNoWhitespace (string? selector, out ImmutableArray<Diagnostic> diagnostics,
 		Location? location = null)
 		=> Selector.HasNoWhitespace (
 			selector: selector,
@@ -80,8 +80,8 @@ class ExportPropertyAttributeValidator : Validator<ExportData<Property>> {
 	public ExportPropertyAttributeValidator ()
 	{
 		// add the default rules for this validator
-		AddStrategy (d=> d.Selector, RBI0018, SelectorIsNotNull);
-		AddStrategy (d=> d.Selector, RBI0019, SelectorHasNoWhitespace);
+		AddStrategy (d => d.Selector, RBI0018, SelectorIsNotNull);
+		AddStrategy (d => d.Selector, RBI0019, SelectorHasNoWhitespace);
 		// only with methods
 		RestrictToFlagType (
 			d => d.ResultType,
@@ -95,21 +95,21 @@ class ExportPropertyAttributeValidator : Validator<ExportData<Property>> {
 			d => d.Flags,
 			typeof (Method)
 		);
-		
+
 		// only with async methods
 		RestrictToFlagType (
 			d => d.ResultTypeName,
 			d => d.Flags,
 			typeof (Method)
 		);
-		
+
 		// only with async methods
 		RestrictToFlagType (
 			d => d.PostNonResultSnippet,
 			d => d.Flags,
 			typeof (Method)
 		);
-		
+
 		// only with strong dictionary keys
 		RestrictToFlagType (
 			d => d.StrongDictionaryKeyClass,
@@ -117,7 +117,7 @@ class ExportPropertyAttributeValidator : Validator<ExportData<Property>> {
 			d => d.IsNullOrDefault,
 			typeof (StrongDictionaryKeys)
 		);
-		
+
 		// only with methods
 		RestrictToFlagType (
 			d => d.EventArgsType,
@@ -125,13 +125,13 @@ class ExportPropertyAttributeValidator : Validator<ExportData<Property>> {
 			d => d.IsNullOrDefault,
 			typeof (Method)
 		);
-		
+
 		// only with methods
 		RestrictToFlagType (
 			d => d.EventArgsTypeName,
 			d => d.Flags,
 			typeof (Method)
 		);
-		
+
 	}
 }

@@ -176,7 +176,7 @@ return GetValue (str);
 		diagnostics = null;
 		if (bindingContext.Changes.BindingType != BindingType.SmartEnum) {
 			diagnostics = [Diagnostic.Create (
-					Diagnostics
+					RgenDiagnostics
 						.RBI0000, // An unexpected error occurred while processing '{0}'. Please fill a bug report at https://github.com/dotnet/macios/issues/new.
 					null,
 					bindingContext.Changes.FullyQualifiedSymbol)];
@@ -221,7 +221,7 @@ return GetValue (str);
 		diagnostics = null;
 		if (bindingContext.Changes.BindingType != BindingType.SmartEnum) {
 			diagnostics = [Diagnostic.Create (
-					Diagnostics
+					RgenDiagnostics
 						.RBI0000, // An unexpected error occurred while processing '{0}'. Please fill a bug report at https://github.com/dotnet/macios/issues/new.
 					null,
 					bindingContext.Changes.FullyQualifiedSymbol)];
@@ -231,7 +231,7 @@ return GetValue (str);
 		// having ar error domain is a must, else we have a binding error
 		if (bindingTypeData.ErrorDomain is null) {
 			diagnostics = [Diagnostic.Create (
-					Diagnostics
+					RgenDiagnostics
 						.RBI0000, // An unexpected error occurred while processing '{0}'. Please fill a bug report at https://github.com/dotnet/macios/issues/new.
 					null,
 					bindingContext.Changes.FullyQualifiedSymbol)];
@@ -245,7 +245,7 @@ return GetValue (str);
 				out string? libraryName, out string? libraryPath)) {
 			// could not calculate the library name, this is a user error
 			diagnostics = [Diagnostic.Create (
-					Diagnostics
+					RgenDiagnostics
 						.RBI0000, // An unexpected error occurred while processing '{0}'. Please fill a bug report at https://github.com/dotnet/macios/issues/new.
 					null,
 					bindingContext.Changes.FullyQualifiedSymbol)];

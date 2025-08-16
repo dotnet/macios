@@ -25,6 +25,11 @@ readonly partial struct Constructor {
 	/// </summary>
 	public string? Selector => ExportMethodData.Selector;
 
+	/// <summary>
+	/// The location of the attribute in source code.
+	/// </summary>
+	public Location? Location { get; init; }
+
 	public Constructor (string type,
 		SymbolAvailability symbolAvailability,
 		ExportData<ObjCBindings.Constructor> exportData,
@@ -67,7 +72,9 @@ readonly partial struct Constructor {
 			exportData: exportData,
 			attributes: attributes,
 			modifiers: [.. declaration.Modifiers],
-			parameters: parametersBucket.ToImmutable ());
+			parameters: parametersBucket.ToImmutable ()) {
+			Location = declaration.GetLocation (),
+		};
 		return true;
 	}
 }

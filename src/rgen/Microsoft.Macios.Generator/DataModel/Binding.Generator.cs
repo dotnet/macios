@@ -10,7 +10,6 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Macios.Generator.Availability;
 using Microsoft.Macios.Generator.Context;
-using Microsoft.Macios.Generator.Emitters;
 using Microsoft.Macios.Generator.Extensions;
 
 namespace Microsoft.Macios.Generator.DataModel;
@@ -32,6 +31,11 @@ readonly partial struct Binding {
 	/// Returns if the binding has been declared to be thread safe.
 	/// </summary>
 	public bool IsThreadSafe => bindingInfo.IsThreadSafe;
+
+	/// <summary>
+	/// The location of the attribute in source code.
+	/// </summary>
+	public Location? Location { get; init; }
 
 	/// <summary>
 	/// Returns all the library names and paths that are needed by the native code represented by the code change.
@@ -317,6 +321,7 @@ readonly partial struct Binding {
 		}
 
 		EnumMembers = bucket.ToImmutable ();
+		Location = enumDeclaration.GetLocation ();
 	}
 
 	/// <summary>
@@ -358,6 +363,7 @@ readonly partial struct Binding {
 			GetMembers<PropertyDeclarationSyntax, Property> (classDeclaration, context, PropertySkip, Property.TryCreate,
 				out properties);
 		}
+		Location = classDeclaration.GetLocation ();
 	}
 
 	/// <summary>
@@ -417,7 +423,7 @@ readonly partial struct Binding {
 			ParentProtocolProperties = [];
 			ParentProtocolMethods = [];
 		}
-
+		Location = interfaceDeclaration.GetLocation ();
 	}
 
 	/// <summary>

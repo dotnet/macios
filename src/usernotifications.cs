@@ -1265,7 +1265,7 @@ namespace UserNotifications {
 	}
 
 	/// <summary>System-provided class that lets the developer schedule and manage notifications.</summary>
-	/// <remarks>Developers use <see cref="UserNotifications.UNUserNotificationCenter.CurrentNotificationCenter" /> to obtain the singleton that coordinates and schedules notifications.</remarks>
+	/// <remarks>Developers use <see cref="UserNotifications.UNUserNotificationCenter.Current" /> to obtain the singleton that coordinates and schedules notifications.</remarks>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/UserNotifications/UNUserNotificationCenter">Apple documentation for <c>UNUserNotificationCenter</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]

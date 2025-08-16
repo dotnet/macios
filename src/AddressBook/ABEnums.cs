@@ -145,7 +145,7 @@ namespace AddressBook {
 		FirstNamePhonetic,
 		/// <summary>
 		///           The
-		///           <see cref="AddressBook.ABPerson.GetInstantMessages" />
+		///           <see cref="AddressBook.ABPerson.GetInstantMessageServices" />
 		///           multi-value property.
 		///         </summary>
 		InstantMessage,
@@ -199,11 +199,9 @@ namespace AddressBook {
 		///           The <see cref="AddressBook.ABPerson.Prefix" /> property.
 		///         </summary>
 		Prefix,
-		/// <summary>
-		///           The
-		///           <see cref="AddressBookUI.ABPersonPredicateKey.RelatedNames" />
-		///           multi-value property.
-		///         </summary>
+#if !__MACCATALYST__
+		/// <summary>The <see cref="AddressBookUI.ABPersonPredicateKey.RelatedNames" /> multi-value property.</summary>
+#endif
 		RelatedNames,
 		/// <summary>
 		///           The <see cref="AddressBook.ABPerson.Suffix" /> property.

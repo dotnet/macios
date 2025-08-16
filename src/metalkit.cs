@@ -8,6 +8,9 @@ using ObjCRuntime;
 
 #if MONOMAC
 using AppKit;
+using XView = AppKit.NSView;
+#else
+using XView = UIKit.UIView;
 #endif
 
 namespace MetalKit {
@@ -35,15 +38,11 @@ namespace MetalKit {
 		NSString ErrorKey { get; }
 	}
 
-	/// <summary>A <see cref="UIKit.UIView" /> that is Metal-aware.</summary>
+	/// <summary>A <see cref="XView" /> that is Metal-aware.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MetalKit/Reference/MTKView_ClassReference/index.html">Apple documentation for <c>MTKView</c></related>
 	[MacCatalyst (13, 1)]
-#if MONOMAC
-	[BaseType (typeof (AppKit.NSView))]
-#else
-	[BaseType (typeof (UIKit.UIView))]
-#endif
+	[BaseType (typeof (XView))]
 	interface MTKView : NSCoding, CALayerDelegate {
 		[Export ("initWithFrame:device:")]
 		[DesignatedInitializer]

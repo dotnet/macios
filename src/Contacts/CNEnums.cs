@@ -143,7 +143,7 @@ namespace Contacts {
 		ValidationTypeMismatch = 301,
 		/// <summary>The validation attempt was misconfigured.</summary>
 		ValidationConfigurationError = 302,
-		/// <summary>The <see cref="Contacts.CNPredicate" /> is invalid.</summary>
+		/// <summary>The <see cref="NSPredicate" /> is invalid.</summary>
 		PredicateInvalid = 400,
 		/// <summary>A policy validation error.</summary>
 		PolicyViolation = 500,

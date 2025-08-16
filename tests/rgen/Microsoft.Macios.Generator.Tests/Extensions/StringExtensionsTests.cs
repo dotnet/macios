@@ -31,4 +31,14 @@ public class StringExtensionsTests {
 	[InlineData ("1test", "1test")]
 	public void Capitalize (string s, string expected)
 		=> Assert.Equal (expected, s.Capitalize ());
+
+	[Theory]
+	[InlineData ("", "")]
+	[InlineData ("A", "a")]
+	[InlineData ("Test", "test")]
+	[InlineData ("test", "test")]
+	[InlineData ("TEST", "tEST")]
+	[InlineData ("1test", "1test")]
+	public void Decapitalize (string s, string expected)
+		=> Assert.Equal (expected, s.Decapitalize ());
 }

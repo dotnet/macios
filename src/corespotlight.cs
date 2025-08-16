@@ -234,7 +234,7 @@ namespace CoreSpotlight {
 
 	delegate void CSSearchableIndexEndIndexHandler ([NullAllowed] NSError error);
 
-	/// <summary>Extension methods for <see cref="CoreServices.CSSearchableIndex" />.</summary>
+	/// <summary>Extension methods for <see cref="CSSearchableIndex" />.</summary>
 	[NoTV] // CS_TVOS_UNAVAILABLE
 	[MacCatalyst (13, 1)]
 	[Category]
@@ -2570,7 +2570,7 @@ namespace CoreSpotlight {
 		[Export ("start")]
 		void Start ();
 
-		/// <summary>Cancels the current search and calls <see cref="CoreSpotlight.CompletionHandler" />, if present, with <see cref="CoreSpotlight.CSSearchQueryErrorCode.Cancelled" />.</summary>
+		/// <summary>Cancels the current search and calls <see cref="CompletionHandler" />, if present, with <see cref="CoreSpotlight.CSSearchQueryErrorCode.Cancelled" />.</summary>
 		///         <remarks>To be added.</remarks>
 		[Export ("cancel")]
 		void Cancel ();

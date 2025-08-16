@@ -690,7 +690,11 @@ namespace GLKit {
 	///     <summary>Signature used by the asynchrous texture loading methods in <see cref="GLKit.GLKTextureLoader" />.</summary>
 	delegate void GLKTextureLoaderCallback ([NullAllowed] GLKTextureInfo textureInfo, [NullAllowed] NSError error);
 
-	/// <include file="../docs/api/GLKit/GLKTextureLoader.xml" path="/Documentation/Docs[@DocId='T:GLKit.GLKTextureLoader']/*" />
+#if __MACOS__
+	/// <include file="../docs/api/GLKit/GLKTextureLoader.xml" path="/Documentation/Docs[@DocId='T:GLKit.GLKTextureLoader' and contains(@Platforms,'macOS')]/*" />
+#else
+	/// <include file="../docs/api/GLKit/GLKTextureLoader.xml" path="/Documentation/Docs[@DocId='T:GLKit.GLKTextureLoader' and not(@Platforms)]/*" />
+#endif
 	[Deprecated (PlatformName.iOS, 12, 0, message: "Use 'Metal' instead.")]
 	[Deprecated (PlatformName.TvOS, 12, 0, message: "Use 'Metal' instead.")]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'Metal' instead.")]

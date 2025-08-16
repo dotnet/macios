@@ -91,6 +91,17 @@ static partial class TypeSymbolExtensions {
 	}
 
 	/// <summary>
+	/// Returns if a symbol represents a protocol.
+	/// </summary>
+	/// <param name="symbol">The symbol under query.</param>
+	/// <returns>True if the symbol represents a protocol, false otherwise.</returns>
+	public static bool IsProtocol (this ITypeSymbol symbol)
+	{
+		var attributeData = symbol.GetAttributeData ();
+		return attributeData.HasProtocolFlag ();
+	}
+
+	/// <summary>
 	/// Returns the BaseTypeAttribute data that was used for a given symbol.
 	/// </summary>
 	/// <param name="symbol">The symbol under query.</param>

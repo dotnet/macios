@@ -149,7 +149,7 @@ namespace CoreFoundation {
 	}
 
 	/// <summary>String class used by C-only Cocoa APIs.</summary>
-	///     <remarks>Use this class for creating strings that must be passed to methods in the low-level MonoTouch.CoreGraphics API.</remarks>
+	/// <remarks>Use this class for creating strings that must be passed to methods in the low-level CoreGraphics API.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

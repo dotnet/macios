@@ -3,7 +3,7 @@
         
         <param name="collectionView">The collection view that originated the request.</param>
         <param name="context">Metadata for the focus change.</param>
-        <param name="coordinator">The <see cref="UIKit.UIFocusAnimationController" /> coordinating the focus-change animations.</param>
+        <param name="coordinator">The <see cref="UIFocusAnimationCoordinator" /> coordinating the focus-change animations.</param>
         <summary>Indicates that the focus changed as detailed in the <paramref name="context" />.</summary>
         <remarks>
           <para>The values of <see cref="UIKit.UICollectionViewFocusUpdateContext.PreviouslyFocusedIndexPath" /> and <see cref="UIKit.UICollectionViewFocusUpdateContext.NextFocusedIndexPath" /> may be <see langword="null" /> if focus was previously not within, or just departed, the <paramref name="collectionView" />.</para>

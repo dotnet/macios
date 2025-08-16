@@ -505,7 +505,7 @@ public partial class MyClass {
 		Assert.NotNull (semanticModel);
 		var symbol = semanticModel.GetDeclaredSymbol (declaration);
 		Assert.NotNull (symbol);
-		var exportData = symbol.GetExportData<T> ();
+		var exportData = symbol.GetExportData<T> (new (semanticModel));
 		Assert.Equal (expectedData, exportData);
 	}
 

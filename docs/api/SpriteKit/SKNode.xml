@@ -37,12 +37,6 @@
           </item>
           <item>
             <term>
-              <see cref="SpriteKit.SKSceneNode" />
-            </term>
-            <description>Runs an animation loop, including display, actions, and physics.</description>
-          </item>
-          <item>
-            <term>
               <see cref="SpriteKit.SKShapeNode" />
             </term>
             <description>Displays a <see cref="CoreGraphics.CGPath" />-based shape.</description>

@@ -135,6 +135,9 @@
         <Compile Include="../Microsoft.Macios.Generator/Extensions/ApplePlatformExtensions.cs" >
             <Link>Generator/Extensions/ApplePlatformExtensions.cs</Link>
         </Compile>
+        <Compile Include="../Microsoft.Macios.Generator/Extensions/AttributeDataExtensions.cs" >
+            <Link>Generator/Extensions/AttributeDataExtensions.cs</Link>
+        </Compile>
         <Compile Include="../Microsoft.Macios.Generator/Extensions/ArgumentSyntaxExtensions.cs" >
             <Link>Generator/Extensions/ArgumentSyntaxExtensions.cs</Link>
         </Compile>

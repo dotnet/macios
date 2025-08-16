@@ -31,6 +31,11 @@ readonly struct FieldData<T> : IEquatable<FieldData<T>> where T : Enum {
 
 	public T? Flags { get; } = default;
 
+	/// <summary>
+	/// The location of the attribute in source code.
+	/// </summary>
+	public Location? Location { get; init; }
+
 	internal FieldData (string symbolName, string? libraryName, T? flags)
 	{
 		SymbolName = symbolName;
@@ -92,7 +97,9 @@ readonly struct FieldData<T> : IEquatable<FieldData<T>> where T : Enum {
 		}
 
 		if (attributeData.NamedArguments.Length == 0) {
-			data = new (symbolName, libraryName, flags);
+			data = new (symbolName, libraryName, flags) {
+				Location = attributeData.GetLocation (),
+			};
 			return true;
 		}
 
@@ -121,6 +128,7 @@ readonly struct FieldData<T> : IEquatable<FieldData<T>> where T : Enum {
 		data = new (symbolName, libraryName, flags) {
 			Type = notificationType,
 			NotificationCenter = notificationCenter,
+			Location = attributeData.GetLocation (),
 		};
 		return true;
 	}

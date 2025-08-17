@@ -166,7 +166,7 @@ $@"static {bindingContext.Changes.Name} ()
 		diagnostics = null;
 		if (bindingContext.Changes.BindingType != BindingType.Protocol) {
 			diagnostics = [Diagnostic.Create (
-				Diagnostics
+				RgenDiagnostics
 					.RBI0000, // An unexpected error occurred while processing '{0}'. Please fill a bug report at https://github.com/dotnet/macios/issues/new.
 				null,
 				bindingContext.Changes.FullyQualifiedSymbol)];

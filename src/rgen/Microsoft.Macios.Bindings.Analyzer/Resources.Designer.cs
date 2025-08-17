@@ -58,6 +58,33 @@ namespace Microsoft.Macios.Bindings.Analyzer {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to An unexpected error happened while generating the code. No code will be added to the compilation..
+        /// </summary>
+        internal static string RBI0000Description {
+            get {
+                return ResourceManager.GetString("RBI0000Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An unexpected error ocurred while processing &apos;{0}&apos;. Please fill a bug report at https://github.com/dotnet/macios/issues/new..
+        /// </summary>
+        internal static string RBI0000MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0000MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unexpected error.
+        /// </summary>
+        internal static string RBI0000Title {
+            get {
+                return ResourceManager.GetString("RBI0000Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to In order for the code to be generated all binding types have to be declared as partial classes..
         /// </summary>
         internal static string RBI0001Description {

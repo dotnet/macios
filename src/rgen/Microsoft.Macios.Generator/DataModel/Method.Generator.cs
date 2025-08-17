@@ -101,6 +101,11 @@ readonly partial struct Method {
 	/// </summary>
 	public bool IsEvent => ExportMethodData.Flags.HasFlag (ObjCBindings.Method.Event);
 
+	/// <summary>
+	/// The location of the attribute in source code.
+	/// </summary>
+	public Location? Location { get; init; }
+
 	public Method (string type, string name, TypeInfo returnType,
 		SymbolAvailability symbolAvailability,
 		ExportData<ObjCBindings.Method> exportMethodData,
@@ -192,6 +197,7 @@ readonly partial struct Method {
 			parameters: parametersBucket.ToImmutableArray ()) {
 			BindAs = method.GetBindFromData (),
 			ForcedType = method.GetForceTypeData (),
+			Location = declaration.GetLocation (),
 		};
 
 		return true;

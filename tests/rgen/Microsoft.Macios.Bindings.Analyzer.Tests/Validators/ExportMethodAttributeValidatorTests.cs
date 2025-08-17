@@ -44,6 +44,106 @@ public class ExportMethodAttributeValidatorTests {
 		Assert.Equal ("RBI0023", errors [nameof (ExportData<Method>.Selector)] [0].Id);
 	}
 
+	[Theory]
+	[InlineData (" ")]
+	[InlineData (" test")]
+	[InlineData ("test ")]
+	[InlineData ("te st")]
+	[InlineData ("\t")]
+	public void NativePrefixShouldFailIfHasWhitespace (string prefix)
+	{
+		var validator = new ExportMethodAttributeValidator ();
+		var data = new ExportData<Method> ("test") {
+			NativePrefix = prefix
+		};
+
+		var errors = validator.ValidateAll (data);
+
+		Assert.True (errors.ContainsKey (nameof (ExportData<Method>.NativePrefix)));
+		Assert.Single (errors [nameof (ExportData<Method>.NativePrefix)]);
+		Assert.Equal ("RBI0024", errors [nameof (ExportData<Method>.NativePrefix)] [0].Id);
+	}
+
+	[Theory]
+	[InlineData (" ")]
+	[InlineData (" test")]
+	[InlineData ("test ")]
+	[InlineData ("te st")]
+	[InlineData ("\t")]
+	public void NativeSuffixShouldFailIfHasWhitespace (string suffix)
+	{
+		var validator = new ExportMethodAttributeValidator ();
+		var data = new ExportData<Method> ("test") {
+			NativeSuffix = suffix
+		};
+
+		var errors = validator.ValidateAll (data);
+
+		Assert.True (errors.ContainsKey (nameof (ExportData<Method>.NativeSuffix)));
+		Assert.Single (errors [nameof (ExportData<Method>.NativeSuffix)]);
+		Assert.Equal ("RBI0024", errors [nameof (ExportData<Method>.NativeSuffix)] [0].Id);
+	}
+
+	[Theory]
+	[InlineData (" ")]
+	[InlineData (" test")]
+	[InlineData ("test ")]
+	[InlineData ("te st")]
+	[InlineData ("\t")]
+	public void MethodNameShouldFailIfHasWhitespace (string methodName)
+	{
+		var validator = new ExportMethodAttributeValidator ();
+		var data = new ExportData<Method> ("test") {
+			MethodName = methodName
+		};
+
+		var errors = validator.ValidateAll (data);
+
+		Assert.True (errors.ContainsKey (nameof (ExportData<Method>.MethodName)));
+		Assert.Single (errors [nameof (ExportData<Method>.MethodName)]);
+		Assert.Equal ("RBI0026", errors [nameof (ExportData<Method>.MethodName)] [0].Id);
+	}
+
+	[Theory]
+	[InlineData (" ")]
+	[InlineData (" test")]
+	[InlineData ("test ")]
+	[InlineData ("te st")]
+	[InlineData ("\t")]
+	public void ResultTypeNameShouldFailIfHasWhitespace (string resultTypeName)
+	{
+		var validator = new ExportMethodAttributeValidator ();
+		var data = new ExportData<Method> ("test") {
+			ResultTypeName = resultTypeName
+		};
+
+		var errors = validator.ValidateAll (data);
+
+		Assert.True (errors.ContainsKey (nameof (ExportData<Method>.ResultTypeName)));
+		Assert.Single (errors [nameof (ExportData<Method>.ResultTypeName)]);
+		Assert.Equal ("RBI0025", errors [nameof (ExportData<Method>.ResultTypeName)] [0].Id);
+	}
+
+	[Theory]
+	[InlineData (" ")]
+	[InlineData (" test")]
+	[InlineData ("test ")]
+	[InlineData ("te st")]
+	[InlineData ("\t")]
+	public void EventArgsTypeNameShouldFailIfHasWhitespace (string eventArgsTypeName)
+	{
+		var validator = new ExportMethodAttributeValidator ();
+		var data = new ExportData<Method> ("test") {
+			EventArgsTypeName = eventArgsTypeName
+		};
+
+		var errors = validator.ValidateAll (data);
+
+		Assert.True (errors.ContainsKey (nameof (ExportData<Method>.EventArgsTypeName)));
+		Assert.Single (errors [nameof (ExportData<Method>.EventArgsTypeName)]);
+		Assert.Equal ("RBI0025", errors [nameof (ExportData<Method>.EventArgsTypeName)] [0].Id);
+	}
+
 	[Fact]
 	public void FlagsShouldFailIfAsyncAndEvent ()
 	{

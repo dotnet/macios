@@ -329,4 +329,42 @@
         <value>Bad selector format</value>
     </data>
     
+    <!-- RBI0024 -->
+    
+    <data name="RBI0024Description" xml:space="preserve">
+        <value>The native prefix/suffix cannot have white spaces.</value>
+    </data>
+    <data name="RBI0024MessageFormat" xml:space="preserve">
+        <value>The {0} string must not contain any whitespace</value>
+        <comment>The {0} is the name of the field.</comment>
+    </data>
+    <data name="RBI0024Title" xml:space="preserve">
+        <value>Bad native prefix/suffix</value>
+    </data>
+    
+    <!-- RBI0025 -->
+    
+    <data name="RBI0025Description" xml:space="preserve">
+        <value>Names of types to be generated cannot have white spaces.</value>
+    </data>
+    <data name="RBI0025MessageFormat" xml:space="preserve">
+        <value>The {0} type name must not contain any whitespace</value>
+        <comment>The {0} is the name of the field.</comment>
+    </data>
+    <data name="RBI0025Title" xml:space="preserve">
+        <value>Bad type name</value>
+    </data>
+    
+    <!-- RBI0026 -->
+    
+    <data name="RBI0026Description" xml:space="preserve">
+        <value>The async method name cannot have white spaces.</value>
+    </data>
+    <data name="RBI0026MessageFormat" xml:space="preserve">
+        <value>The async method name must not contain any whitespace</value>
+    </data>
+    <data name="RBI0026Title" xml:space="preserve">
+        <value>Bad method name</value>
+    </data>
+    
 </root>

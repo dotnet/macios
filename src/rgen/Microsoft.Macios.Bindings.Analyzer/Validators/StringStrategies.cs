@@ -4,6 +4,7 @@
 using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.CodeAnalysis;
+using static Microsoft.Macios.Generator.RgenDiagnostics;
 
 namespace Microsoft.Macios.Bindings.Analyzer.Validators;
 
@@ -55,21 +56,6 @@ public static class StringStrategies {
 	}
 
 	/// <summary>
-	/// Diagnostic descriptor for when a native prefix or suffix contains whitespace.
-	/// </summary>
-	internal static readonly DiagnosticDescriptor RBI0024 = new (
-		"RBI0024",
-		new LocalizableResourceString (nameof (Resources.RBI0024Title), Resources.ResourceManager, typeof (Resources)),
-		new LocalizableResourceString (nameof (Resources.RBI0024MessageFormat), Resources.ResourceManager,
-			typeof (Resources)),
-		"Usage",
-		DiagnosticSeverity.Error,
-		isEnabledByDefault: true,
-		description: new LocalizableResourceString (nameof (Resources.RBI0024Description), Resources.ResourceManager,
-			typeof (Resources))
-	);
-
-	/// <summary>
 	/// Validates that a native name (prefix or suffix) does not contain any whitespace.
 	/// </summary>
 	/// <param name="suffix">The native name to validate.</param>
@@ -86,21 +72,6 @@ public static class StringStrategies {
 			location: location,
 			messageArgs: fieldName
 		);
-
-	/// <summary>
-	/// Diagnostic descriptor for when a type name contains whitespace.
-	/// </summary>
-	internal static readonly DiagnosticDescriptor RBI0025 = new (
-		"RBI0025",
-		new LocalizableResourceString (nameof (Resources.RBI0025Title), Resources.ResourceManager, typeof (Resources)),
-		new LocalizableResourceString (nameof (Resources.RBI0025MessageFormat), Resources.ResourceManager,
-			typeof (Resources)),
-		"Usage",
-		DiagnosticSeverity.Error,
-		isEnabledByDefault: true,
-		description: new LocalizableResourceString (nameof (Resources.RBI0025Description), Resources.ResourceManager,
-			typeof (Resources))
-	);
 
 	/// <summary>
 	/// Validates that a type name does not contain any whitespace.

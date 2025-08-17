@@ -10,8 +10,10 @@ using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.Macios.Bindings.Analyzer.Extensions;
 using Microsoft.Macios.Generator;
 using Microsoft.Macios.Generator.Attributes;
+using Microsoft.Macios.Generator.Context;
 using Microsoft.Macios.Generator.Extensions;
 using ObjCBindings;
+using static Microsoft.Macios.Generator.RgenDiagnostics;
 
 namespace Microsoft.Macios.Bindings.Analyzer;
 
@@ -19,97 +21,7 @@ namespace Microsoft.Macios.Bindings.Analyzer;
 /// Analyzer to ensure that all enum values in an SmartEnum contains a Field attribute.
 /// </summary>
 [DiagnosticAnalyzer (LanguageNames.CSharp)]
-public class SmartEnumsAnalyzer : DiagnosticAnalyzer, IBindingTypeAnalyzer<EnumDeclarationSyntax> {
-	/// <summary>
-	/// All enum values must have a Field attribute
-	/// </summary>
-	internal static readonly DiagnosticDescriptor RBI0008 = new (
-		"RBI0008",
-		new LocalizableResourceString (nameof (Resources.RBI0008Title), Resources.ResourceManager, typeof (Resources)),
-		new LocalizableResourceString (nameof (Resources.RBI0008MessageFormat), Resources.ResourceManager,
-			typeof (Resources)),
-		"Usage",
-		DiagnosticSeverity.Error,
-		isEnabledByDefault: true,
-		description: new LocalizableResourceString (nameof (Resources.RBI0008Description), Resources.ResourceManager,
-			typeof (Resources))
-	);
-
-	/// <summary>
-	/// Do not allow duplicated backing fields
-	/// </summary>
-	internal static readonly DiagnosticDescriptor RBI0009 = new (
-		"RBI0009",
-		new LocalizableResourceString (nameof (Resources.RBI0009Title), Resources.ResourceManager, typeof (Resources)),
-		new LocalizableResourceString (nameof (Resources.RBI0009MessageFormat), Resources.ResourceManager,
-			typeof (Resources)),
-		"Usage",
-		DiagnosticSeverity.Error,
-		isEnabledByDefault: true,
-		description: new LocalizableResourceString (nameof (Resources.RBI0009Description), Resources.ResourceManager,
-			typeof (Resources))
-	);
-
-	/// <summary>
-	/// Fields must be a valid identifier
-	/// </summary>
-	internal static readonly DiagnosticDescriptor RBI0010 = new (
-		"RBI0010",
-		new LocalizableResourceString (nameof (Resources.RBI0010Title), Resources.ResourceManager, typeof (Resources)),
-		new LocalizableResourceString (nameof (Resources.RBI0010MessageFormat), Resources.ResourceManager,
-			typeof (Resources)),
-		"Usage",
-		DiagnosticSeverity.Error,
-		isEnabledByDefault: true,
-		description: new LocalizableResourceString (nameof (Resources.RBI0010Description), Resources.ResourceManager,
-			typeof (Resources))
-	);
-
-	/// <summary>
-	/// If not an apple framework, we should provide the library path
-	/// </summary>
-	internal static readonly DiagnosticDescriptor RBI0011 = new (
-		"RBI0011",
-		new LocalizableResourceString (nameof (Resources.RBI0011Title), Resources.ResourceManager, typeof (Resources)),
-		new LocalizableResourceString (nameof (Resources.RBI0011MessageFormat), Resources.ResourceManager,
-			typeof (Resources)),
-		"Usage",
-		DiagnosticSeverity.Error,
-		isEnabledByDefault: true,
-		description: new LocalizableResourceString (nameof (Resources.RBI0011Description), Resources.ResourceManager,
-			typeof (Resources))
-	);
-
-	/// <summary>
-	/// if apple framework, the library path should be empty
-	/// </summary>
-	internal static readonly DiagnosticDescriptor RBI0012 = new (
-		"RBI0012",
-		new LocalizableResourceString (nameof (Resources.RBI0012Title), Resources.ResourceManager, typeof (Resources)),
-		new LocalizableResourceString (nameof (Resources.RBI0012MessageFormat), Resources.ResourceManager,
-			typeof (Resources)),
-		"Usage",
-		DiagnosticSeverity.Warning,
-		isEnabledByDefault: true,
-		description: new LocalizableResourceString (nameof (Resources.RBI0012Description), Resources.ResourceManager,
-			typeof (Resources))
-	);
-
-	/// <summary>
-	/// User used the wrong flag for the attribute
-	/// </summary>
-	internal static readonly DiagnosticDescriptor RBI0013 = new (
-		"RBI0013",
-		new LocalizableResourceString (nameof (Resources.RBI0013Title), Resources.ResourceManager, typeof (Resources)),
-		new LocalizableResourceString (nameof (Resources.RBI0013MessageFormat), Resources.ResourceManager,
-			typeof (Resources)),
-		"Usage",
-		DiagnosticSeverity.Error,
-		isEnabledByDefault: true,
-		description: new LocalizableResourceString (nameof (Resources.RBI0013Description), Resources.ResourceManager,
-			typeof (Resources))
-	);
-
+class SmartEnumsAnalyzer : DiagnosticAnalyzer, IBindingTypeAnalyzer<EnumDeclarationSyntax> {
 
 	public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } = [
 		RBI0008,
@@ -133,7 +45,7 @@ public class SmartEnumsAnalyzer : DiagnosticAnalyzer, IBindingTypeAnalyzer<EnumD
 	static readonly HashSet<string> attributes = [AttributesNames.SmartEnumAttribute];
 	public IReadOnlySet<string> AttributeNames => attributes;
 
-	public ImmutableArray<Diagnostic> Analyze (string matchedAttribute, PlatformName platformName, EnumDeclarationSyntax declarationNode,
+	public ImmutableArray<Diagnostic> Analyze (string matchedAttribute, RootContext context, EnumDeclarationSyntax declarationNode,
 		INamedTypeSymbol symbol)
 	{
 		// we want to ensure several things:
@@ -146,6 +58,7 @@ public class SmartEnumsAnalyzer : DiagnosticAnalyzer, IBindingTypeAnalyzer<EnumD
 
 		// based on the platform decide if we are dealing with a known apple framework, we want all, not just the
 		// ones that are part of the simulator
+		var platformName = context.Compilation.GetCurrentPlatform ();
 		if (platformName == PlatformName.None) {
 			// we could not identify the platform, we have a bug or we are not on an apple target, do nothing
 			return [];

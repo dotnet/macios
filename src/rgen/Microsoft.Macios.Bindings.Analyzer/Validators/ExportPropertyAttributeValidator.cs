@@ -6,6 +6,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.Macios.Generator.Attributes;
 using Microsoft.Macios.Generator.Context;
 using ObjCBindings;
+using static Microsoft.Macios.Generator.RgenDiagnostics;
 
 namespace Microsoft.Macios.Bindings.Analyzer.Validators;
 
@@ -13,36 +14,6 @@ namespace Microsoft.Macios.Bindings.Analyzer.Validators;
 /// Validates <see cref="ExportData{T}"/> for properties.
 /// </summary>
 class ExportPropertyAttributeValidator : Validator<ExportData<Property>> {
-
-	/// <summary>
-	/// Diagnostic descriptor for when a property export is missing a selector.
-	/// </summary>
-	internal static readonly DiagnosticDescriptor RBI0018 = new (
-		"RBI0018",
-		new LocalizableResourceString (nameof (Resources.RBI0018Title), Resources.ResourceManager, typeof (Resources)),
-		new LocalizableResourceString (nameof (Resources.RBI0018MessageFormat), Resources.ResourceManager,
-			typeof (Resources)),
-		"Usage",
-		DiagnosticSeverity.Error,
-		isEnabledByDefault: true,
-		description: new LocalizableResourceString (nameof (Resources.RBI0018Description), Resources.ResourceManager,
-			typeof (Resources))
-	);
-
-	/// <summary>
-	/// Diagnostic descriptor for when a property export selector contains whitespace.
-	/// </summary>
-	internal static readonly DiagnosticDescriptor RBI0019 = new (
-		"RBI0019",
-		new LocalizableResourceString (nameof (Resources.RBI0019Title), Resources.ResourceManager, typeof (Resources)),
-		new LocalizableResourceString (nameof (Resources.RBI0018MessageFormat), Resources.ResourceManager,
-			typeof (Resources)),
-		"Usage",
-		DiagnosticSeverity.Error,
-		isEnabledByDefault: true,
-		description: new LocalizableResourceString (nameof (Resources.RBI0019Description), Resources.ResourceManager,
-			typeof (Resources))
-	);
 
 	/// <summary>
 	/// Validates that the selector is not null.
@@ -89,7 +60,7 @@ class ExportPropertyAttributeValidator : Validator<ExportData<Property>> {
 		// prefix and suffix cannot have whitespaces
 		AddStrategy (
 			selector: d => d.NativePrefix,
-			descriptor: StringStrategies.RBI0024,
+			descriptor: RBI0024,
 			validation: (string? data, RootContext _, out ImmutableArray<Diagnostic> diagnostics, Location? location)
 				=> StringStrategies.NativeNameHasNoWhitespace (
 					data,
@@ -100,7 +71,7 @@ class ExportPropertyAttributeValidator : Validator<ExportData<Property>> {
 
 		AddStrategy (
 			selector: d => d.NativeSuffix,
-			descriptor: StringStrategies.RBI0024,
+			descriptor: RBI0024,
 			validation: (string? data, RootContext _, out ImmutableArray<Diagnostic> diagnostics, Location? location)
 				=> StringStrategies.NativeNameHasNoWhitespace (
 					data,

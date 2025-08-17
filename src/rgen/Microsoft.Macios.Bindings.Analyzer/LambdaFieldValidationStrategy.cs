@@ -22,6 +22,9 @@ class LambdaFieldValidationStrategy<T, TField> (
 	LambdaFieldValidationStrategy<T, TField>.ValidationFunc validationFunc)
 	: IFieldValidationStrategy<T> {
 
+	// cache the compilation of the selector expression
+	readonly Func<T, TField> selectorFunc = selector.Compile ();
+
 	/// <summary>
 	/// Represents the method that will handle the validation of the data.
 	/// </summary>
@@ -39,7 +42,7 @@ class LambdaFieldValidationStrategy<T, TField> (
 	public bool IsValid (T data, RootContext context, out ImmutableArray<Diagnostic> diagnostic, Location? location = null)
 	{
 		// use the selector to get the field value
-		var fieldValue = selector.Compile () (data);
+		var fieldValue = selectorFunc (data);
 		return validationFunc (fieldValue, context, out diagnostic, location);
 	}
 }

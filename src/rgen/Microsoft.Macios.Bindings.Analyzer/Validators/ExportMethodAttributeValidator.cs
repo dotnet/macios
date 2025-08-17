@@ -7,6 +7,7 @@ using Microsoft.Macios.Generator.Attributes;
 using Microsoft.Macios.Generator.Context;
 using ObjCBindings;
 using TypeInfo = Microsoft.Macios.Generator.DataModel.TypeInfo;
+using static Microsoft.Macios.Generator.RgenDiagnostics;
 
 namespace Microsoft.Macios.Bindings.Analyzer.Validators;
 using ExportMethod = ExportData<Method>;
@@ -15,81 +16,6 @@ using ExportMethod = ExportData<Method>;
 /// Validates <see cref="ExportData{T}"/> for methods.
 /// </summary>
 class ExportMethodAttributeValidator : Validator<ExportMethod> {
-
-	/// <summary>
-	/// Diagnostic descriptor for when a named parameter is used with an incorrect flag.
-	/// </summary>
-	internal static readonly DiagnosticDescriptor RBI0020 = new (
-		"RBI0020",
-		new LocalizableResourceString (nameof (Resources.RBI0020Title), Resources.ResourceManager, typeof (Resources)),
-		new LocalizableResourceString (nameof (Resources.RBI0020MessageFormat), Resources.ResourceManager,
-			typeof (Resources)),
-		"Usage",
-		DiagnosticSeverity.Error,
-		isEnabledByDefault: true,
-		description: new LocalizableResourceString (nameof (Resources.RBI0020Description), Resources.ResourceManager,
-			typeof (Resources))
-	);
-
-	/// <summary>
-	/// Diagnostic descriptor for when an invalid combination of flags is used.
-	/// </summary>
-	internal static readonly DiagnosticDescriptor RBI0021 = new (
-		"RBI0021",
-		new LocalizableResourceString (nameof (Resources.RBI0021Title), Resources.ResourceManager, typeof (Resources)),
-		new LocalizableResourceString (nameof (Resources.RBI0021MessageFormat), Resources.ResourceManager,
-			typeof (Resources)),
-		"Usage",
-		DiagnosticSeverity.Error,
-		isEnabledByDefault: true,
-		description: new LocalizableResourceString (nameof (Resources.RBI0021Description), Resources.ResourceManager,
-			typeof (Resources))
-	);
-
-	/// <summary>
-	/// Diagnostic descriptor for when a method export is missing a selector.
-	/// </summary>
-	internal static readonly DiagnosticDescriptor RBI0022 = new (
-		"RBI0022",
-		new LocalizableResourceString (nameof (Resources.RBI0022Title), Resources.ResourceManager, typeof (Resources)),
-		new LocalizableResourceString (nameof (Resources.RBI0022MessageFormat), Resources.ResourceManager,
-			typeof (Resources)),
-		"Usage",
-		DiagnosticSeverity.Error,
-		isEnabledByDefault: true,
-		description: new LocalizableResourceString (nameof (Resources.RBI0022Description), Resources.ResourceManager,
-			typeof (Resources))
-	);
-
-	/// <summary>
-	/// Diagnostic descriptor for when a method export selector contains whitespace.
-	/// </summary>
-	internal static readonly DiagnosticDescriptor RBI0023 = new (
-		"RBI0023",
-		new LocalizableResourceString (nameof (Resources.RBI0023Title), Resources.ResourceManager, typeof (Resources)),
-		new LocalizableResourceString (nameof (Resources.RBI0023MessageFormat), Resources.ResourceManager,
-			typeof (Resources)),
-		"Usage",
-		DiagnosticSeverity.Error,
-		isEnabledByDefault: true,
-		description: new LocalizableResourceString (nameof (Resources.RBI0023Description), Resources.ResourceManager,
-			typeof (Resources))
-	);
-
-	/// <summary>
-	/// Diagnostic descriptor for when an async method name contains whitespace.
-	/// </summary>
-	internal static readonly DiagnosticDescriptor RBI0026 = new (
-		"RBI0026",
-		new LocalizableResourceString (nameof (Resources.RBI0026Title), Resources.ResourceManager, typeof (Resources)),
-		new LocalizableResourceString (nameof (Resources.RBI0026MessageFormat), Resources.ResourceManager,
-			typeof (Resources)),
-		"Usage",
-		DiagnosticSeverity.Error,
-		isEnabledByDefault: true,
-		description: new LocalizableResourceString (nameof (Resources.RBI0026Description), Resources.ResourceManager,
-			typeof (Resources))
-	);
 
 	/// <summary>
 	/// Validates that a string field is only used when a specific flag is present.
@@ -360,7 +286,7 @@ class ExportMethodAttributeValidator : Validator<ExportMethod> {
 		// prefix and suffix cannot have whitespaces
 		AddStrategy (
 			selector: d => d.NativePrefix,
-			descriptor: StringStrategies.RBI0024,
+			descriptor: RBI0024,
 			validation: (string? data, RootContext _, out ImmutableArray<Diagnostic> diagnostics, Location? location)
 				=> StringStrategies.NativeNameHasNoWhitespace (
 					data,
@@ -371,7 +297,7 @@ class ExportMethodAttributeValidator : Validator<ExportMethod> {
 
 		AddStrategy (
 			selector: d => d.NativeSuffix,
-			descriptor: StringStrategies.RBI0024,
+			descriptor: RBI0024,
 			validation: (string? data, RootContext _, out ImmutableArray<Diagnostic> diagnostics, Location? location)
 				=> StringStrategies.NativeNameHasNoWhitespace (
 					data,
@@ -399,7 +325,7 @@ class ExportMethodAttributeValidator : Validator<ExportMethod> {
 		// ensure that of the async fields, we do not have spaces in the name
 		AddStrategy (
 			selector: d => d.ResultTypeName,
-			descriptor: StringStrategies.RBI0025,
+			descriptor: RBI0025,
 			validation: (string? data, RootContext _, out ImmutableArray<Diagnostic> diagnostics, Location? location)
 				=> StringStrategies.TypeNameHasNoWhitespace (
 					data,
@@ -438,7 +364,7 @@ class ExportMethodAttributeValidator : Validator<ExportMethod> {
 		// ensure that of the event fields, we do not have spaces in the name
 		AddStrategy (
 			selector: d => d.EventArgsTypeName,
-			descriptor: StringStrategies.RBI0025,
+			descriptor: RBI0025,
 			validation: (string? data, RootContext _, out ImmutableArray<Diagnostic> diagnostics, Location? location)
 				=> StringStrategies.TypeNameHasNoWhitespace (
 					data,

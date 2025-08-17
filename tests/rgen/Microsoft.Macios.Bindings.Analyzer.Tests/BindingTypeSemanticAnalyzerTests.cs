@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
+using Microsoft.Macios.Bindings.Analyzer.Validators;
 using Xamarin.Tests;
 using Xamarin.Utils;
 using Xunit;
@@ -27,7 +28,7 @@ namespace Test {
 ";
 			yield return [
 				nonPartialClassBinding,
-				BindingTypeSemanticAnalyzer.RBI0001.Id,
+				"RBI0001",
 				"The binding type 'Test.Examples' must be declared partial"
 			];
 
@@ -42,7 +43,7 @@ namespace Test {
 ";
 			yield return [
 				classBindingNotClas,
-				BindingTypeSemanticAnalyzer.RBI0002.Id,
+				"RBI0002",
 				"BindingType<Class> can only be used to decorate a class but was found on 'Test.Examples' which is not a class"
 			];
 
@@ -57,7 +58,7 @@ namespace Test {
 ";
 			yield return [
 				nonPartialCategory,
-				BindingTypeSemanticAnalyzer.RBI0001.Id,
+				"RBI0001",
 				"The binding type 'Test.Examples' must be declared partial"
 			];
 
@@ -72,7 +73,7 @@ namespace Test {
 ";
 			yield return [
 				nonClassCategory,
-				BindingTypeSemanticAnalyzer.RBI0003.Id,
+				"RBI0003",
 				"BindingType<Category> can only be used to decorate a class but was found on 'Test.Examples' which is not a class"
 			];
 
@@ -87,7 +88,7 @@ namespace Test {
 ";
 			yield return [
 				nonStaticCategory,
-				BindingTypeSemanticAnalyzer.RBI0004.Id,
+				"RBI0004",
 				"BindingType<Category> can only be used to decorate a static class but was found on 'Test.Examples' which is not static"
 			];
 
@@ -102,7 +103,7 @@ namespace Test {
 ";
 			yield return [
 				nonPartialProtocol,
-				BindingTypeSemanticAnalyzer.RBI0001.Id,
+				"RBI0001",
 				"The binding type 'Test.Examples' must be declared partial"
 			];
 
@@ -117,7 +118,7 @@ namespace Test {
 ";
 			yield return [
 				nonInterfaceProtocol,
-				BindingTypeSemanticAnalyzer.RBI0005.Id,
+				"RBI0005",
 				"BindingType<Protocol> can only be used to decorate an interface but was found on 'Test.Examples' which is not an interface"
 			];
 
@@ -132,7 +133,7 @@ namespace Test {
 ";
 			yield return [
 				nonSmartEnum,
-				BindingTypeSemanticAnalyzer.RBI0006.Id,
+				"RBI0006",
 				"BindingType can only be used to decorate an enumerator but was found on 'Test.Examples' which is not an enumerator"
 			];
 
@@ -147,7 +148,7 @@ namespace Test {
 ";
 			yield return [
 				nonPartialStrongDictionary,
-				BindingTypeSemanticAnalyzer.RBI0001.Id,
+				"RBI0001",
 				"The binding type 'Test.Examples' must be declared partial"
 			];
 
@@ -162,7 +163,7 @@ namespace Test {
 ";
 			yield return [
 				nonClassStrongDictionary,
-				BindingTypeSemanticAnalyzer.RBI0007.Id,
+				"RBI0007",
 				"BindingType<StrongDictionary> can only be used to decorate a class but was found on 'Test.Examples' which is not a class"
 			];
 		}

@@ -43,10 +43,10 @@ public enum AVCaptureSystemPressureExampleLevel {
 		var (compilation, _) = CreateCompilation (platform, sources: inputText);
 		var diagnostics = await RunAnalyzer (new SmartEnumsAnalyzer (), compilation);
 		var analyzerDiagnotics = diagnostics
-			.Where (d => d.Id == SmartEnumsAnalyzer.RBI0008.Id).ToArray ();
+			.Where (d => d.Id == "RBI0008").ToArray ();
 		Assert.Single (analyzerDiagnotics);
 		// verify the diagnostic message
-		VerifyDiagnosticMessage (analyzerDiagnotics [0], SmartEnumsAnalyzer.RBI0008.Id,
+		VerifyDiagnosticMessage (analyzerDiagnotics [0], "RBI0008",
 			DiagnosticSeverity.Error,
 			"The enum value 'AVFoundation.AVCaptureSystemPressureExampleLevel.Shutdown' must be tagged with a Field<EnumValue> attribute");
 	}
@@ -131,9 +131,9 @@ public enum AVCaptureSystemPressureExampleLevel {
 		var (compilation, _) = CreateCompilation (platform, sources: inputText);
 		var diagnostics = await RunAnalyzer (new SmartEnumsAnalyzer (), compilation);
 		var analyzerDiagnotics = diagnostics
-			.Where (d => d.Id == SmartEnumsAnalyzer.RBI0010.Id).ToArray ();
+			.Where (d => d.Id == "RBI0010").ToArray ();
 		Assert.Single (analyzerDiagnotics);
-		VerifyDiagnosticMessage (analyzerDiagnotics [0], SmartEnumsAnalyzer.RBI0010.Id,
+		VerifyDiagnosticMessage (analyzerDiagnotics [0], "RBI0010",
 			DiagnosticSeverity.Error,
 			$"The enum value 'AVFoundation.AVCaptureSystemPressureExampleLevel.Shutdown' backing field '{fieldValue}' is not a valid identifier");
 	}
@@ -199,9 +199,9 @@ public enum AVCaptureSystemPressureExampleLevel {
 		var diagnostics = await RunAnalyzer (new SmartEnumsAnalyzer (), compilation);
 
 		var analyzerDiagnotics = diagnostics
-			.Where (d => d.Id == SmartEnumsAnalyzer.RBI0012.Id).ToArray ();
+			.Where (d => d.Id == "RBI0012").ToArray ();
 		Assert.Single (analyzerDiagnotics);
-		VerifyDiagnosticMessage (analyzerDiagnotics [0], SmartEnumsAnalyzer.RBI0012.Id,
+		VerifyDiagnosticMessage (analyzerDiagnotics [0], "RBI0012",
 			DiagnosticSeverity.Warning,
 			"The Field attribute for the enum value 'AVFoundation.AVCaptureSystemPressureExampleLevel.Shutdown' must not provide a value for 'LibraryName'");
 	}
@@ -278,9 +278,9 @@ public enum CustomLibraryEnum {
 		var (compilation, _) = CreateCompilation (platform, sources: inputText);
 		var diagnostics = await RunAnalyzer (new SmartEnumsAnalyzer (), compilation);
 		var analyzerDiagnotics = diagnostics
-			.Where (d => d.Id == SmartEnumsAnalyzer.RBI0011.Id).ToArray ();
+			.Where (d => d.Id == "RBI0011").ToArray ();
 		Assert.Single (analyzerDiagnotics);
-		VerifyDiagnosticMessage (analyzerDiagnotics [0], SmartEnumsAnalyzer.RBI0011.Id,
+		VerifyDiagnosticMessage (analyzerDiagnotics [0], "RBI0011",
 			DiagnosticSeverity.Error,
 			"The field attribute for the enum value 'CustomLibrary.CustomLibraryEnum.High' must set the property 'LibraryName'");
 	}
@@ -308,7 +308,7 @@ public enum CustomLibraryEnum {
 		var (compilation, _) = CreateCompilation (platform, sources: inputText);
 		var diagnostics = await RunAnalyzer (new SmartEnumsAnalyzer (), compilation);
 		var analyzerDiagnotics = diagnostics
-			.Where (d => d.Id == SmartEnumsAnalyzer.RBI0008.Id).ToArray ();
+			.Where (d => d.Id == "RBI0008").ToArray ();
 		// we should have a diagnostic for each enum value
 		Assert.Equal (3, analyzerDiagnotics.Length);
 	}
@@ -346,9 +346,9 @@ public enum AVCaptureSystemPressureExampleLevel {
 		var (compilation, _) = CreateCompilation (platform, sources: inputText);
 		var diagnostics = await RunAnalyzer (new SmartEnumsAnalyzer (), compilation);
 		var analyzerDiagnotics = diagnostics
-			.Where (d => d.Id == SmartEnumsAnalyzer.RBI0009.Id).ToArray ();
+			.Where (d => d.Id == "RBI0009").ToArray ();
 		Assert.Single (analyzerDiagnotics);
-		VerifyDiagnosticMessage (analyzerDiagnotics [0], SmartEnumsAnalyzer.RBI0009.Id,
+		VerifyDiagnosticMessage (analyzerDiagnotics [0], "RBI0009",
 			DiagnosticSeverity.Error,
 			"The backing field 'AVFoundation.AVCaptureSystemPressureExampleLevel.Fair' for the enum value 'AVCaptureSystemPressureLevelNominal' is already in use for the enum value 'AVFoundation.AVCaptureSystemPressureExampleLevel.Fair'");
 	}
@@ -373,11 +373,11 @@ public enum AVCaptureSystemPressureExampleLevel {
 		var (compilation, _) = CreateCompilation (platform, sources: inputText);
 		var diagnostics = await RunAnalyzer (new SmartEnumsAnalyzer (), compilation);
 		var analyzerDiagnotics = diagnostics
-			.Where (d => d.Id == SmartEnumsAnalyzer.RBI0013.Id).ToArray ();
+			.Where (d => d.Id == "RBI0013").ToArray ();
 		// we should have a diagnostic for each enum value
 		Assert.Single (analyzerDiagnotics);
 
-		VerifyDiagnosticMessage (analyzerDiagnotics [0], SmartEnumsAnalyzer.RBI0013.Id,
+		VerifyDiagnosticMessage (analyzerDiagnotics [0], "RBI0013",
 			DiagnosticSeverity.Error,
 			"Used attribute 'ObjCBindings.FieldAttribute<StringComparison>' on enum value 'AVFoundation.AVCaptureSystemPressureExampleLevel.Shutdown' when 'ObjCBindings.FieldAttribute<ObjCBindings.EnumValue>' was expected");
 	}

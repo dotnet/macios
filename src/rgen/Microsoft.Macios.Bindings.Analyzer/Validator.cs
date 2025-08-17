@@ -8,6 +8,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using Microsoft.CodeAnalysis;
 using Microsoft.Macios.Generator.Context;
+using static Microsoft.Macios.Generator.RgenDiagnostics;
 
 namespace Microsoft.Macios.Bindings.Analyzer;
 

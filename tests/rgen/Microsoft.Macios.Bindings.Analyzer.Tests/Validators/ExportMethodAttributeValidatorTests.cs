@@ -15,6 +15,22 @@ using TypeInfo = Microsoft.Macios.Generator.DataModel.TypeInfo;
 namespace Microsoft.Macios.Bindings.Analyzer.Tests.Validators;
 
 public class ExportMethodAttributeValidatorTests {
+	
+	readonly RootContext context;
+
+	public ExportMethodAttributeValidatorTests ()
+	{
+		// Create a dummy compilation to get a semantic model and RootContext
+		var syntaxTree = CSharpSyntaxTree.ParseText ("namespace Test { }");
+		var compilation = CSharpCompilation.Create (
+			"TestAssembly",
+			[syntaxTree],
+			references: [],
+			options: new CSharpCompilationOptions (OutputKind.DynamicallyLinkedLibrary)
+		);
+		var semanticModel = compilation.GetSemanticModel (syntaxTree);
+		context = new RootContext (semanticModel);
+	}
 
 	readonly RootContext context;
 

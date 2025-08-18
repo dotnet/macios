@@ -178,7 +178,11 @@ namespace Foundation {
 		/// <param name="resultDocumentAttributes">Upon return, any document-specific attributes.</param>
 		/// <returns>A newly created <see cref="NSAttributedString" />, created from a Microsoft Word document</returns>
 		[SupportedOSPlatform ("macos")]
+#if XAMCORE_5_0
 		public static NSAttributedString? CreateWithDocFormat (NSData wordDocFormat, out NSDictionary resultDocumentAttributes)
+#else
+		public static NSAttributedString? CreateWithDocFormat (NSData wordDocFormat, out NSDictionary docAttributes)
+#endif
 		{
 			var rv = new NSAttributedString (NSObjectFlag.Empty);
 			rv.InitializeHandle (rv._InitWithDocFormat (wordDocFormat, out resultDocumentAttributes), "initWithDocFormat:documentAttributes:", false);

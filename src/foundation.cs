@@ -530,6 +530,21 @@ namespace Foundation {
 		[Internal]
 		NativeHandle _InitWithHTML (NSData htmlData, NSUrl baseUrl, out NSDictionary docAttributes);
 
+#if !XAMCORE_5_0
+		/// <param name="htmlData">To be added.</param>
+		/// <param name="baseUrl">To be added.</param>
+		/// <param name="docAttributes">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
+		[NoiOS]
+		[NoMacCatalyst]
+		[NoTV]
+		[Export ("initWithHTML:baseURL:documentAttributes:")]
+		[Sealed]
+		[Obsolete ("Use 'CreateWithHTML' instead.")]
+		NativeHandle Constructor (NSData htmlData, NSUrl baseUrl, out NSDictionary docAttributes);
+#endif
+
 		/// <param name="rect">To be added.</param>
 		///         <param name="options">To be added.</param>
 		///         <summary>To be added.</summary>

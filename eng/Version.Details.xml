@@ -56,21 +56,21 @@
       <Sha>797d30720e5e629d23eb146935da94cb1b61047e</Sha>
     </Dependency>
     <!-- This is a subscription of the .NET 9/Xcode 26.0 versions of our packages -->
-    <Dependency Name="Microsoft.MacCatalyst.Sdk.net9.0_26.0" Version="26.0.9405-xcode26.0">
+    <Dependency Name="Microsoft.MacCatalyst.Sdk.net9.0_26.0" Version="26.0.9446-xcode26.0">
       <Uri>https://github.com/dotnet/macios</Uri>
-      <Sha>78dc4e948310dd5d4d817d97204b632c7d7ee6a4</Sha>
+      <Sha>7b897a2fe3ec7a0ceec3957b7a1006615c4ec916</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.macOS.Sdk.net9.0_26.0" Version="26.0.9405-xcode26.0">
+    <Dependency Name="Microsoft.macOS.Sdk.net9.0_26.0" Version="26.0.9446-xcode26.0">
       <Uri>https://github.com/dotnet/macios</Uri>
-      <Sha>78dc4e948310dd5d4d817d97204b632c7d7ee6a4</Sha>
+      <Sha>7b897a2fe3ec7a0ceec3957b7a1006615c4ec916</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.iOS.Sdk.net9.0_26.0" Version="26.0.9405-xcode26.0">
+    <Dependency Name="Microsoft.iOS.Sdk.net9.0_26.0" Version="26.0.9446-xcode26.0">
       <Uri>https://github.com/dotnet/macios</Uri>
-      <Sha>78dc4e948310dd5d4d817d97204b632c7d7ee6a4</Sha>
+      <Sha>7b897a2fe3ec7a0ceec3957b7a1006615c4ec916</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.tvOS.Sdk.net9.0_26.0" Version="26.0.9405-xcode26.0">
+    <Dependency Name="Microsoft.tvOS.Sdk.net9.0_26.0" Version="26.0.9446-xcode26.0">
       <Uri>https://github.com/dotnet/macios</Uri>
-      <Sha>78dc4e948310dd5d4d817d97204b632c7d7ee6a4</Sha>
+      <Sha>7b897a2fe3ec7a0ceec3957b7a1006615c4ec916</Sha>
     </Dependency>
     <Dependency Name="Microsoft.NET.Runtime.MonoTargets.Sdk" Version="10.0.0-rc.1.25411.109">
       <Uri>https://github.com/dotnet/dotnet</Uri>
@@ -90,9 +90,9 @@
       <Uri>https://github.com/dotnet/dotnet</Uri>
       <Sha>520c71b5277fc1f72dbec14da03ca55205d6c8e5</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.DotNet.XHarness.iOS.Shared" Version="10.0.0-prerelease.25405.1">
+    <Dependency Name="Microsoft.DotNet.XHarness.iOS.Shared" Version="10.0.0-prerelease.25412.1">
       <Uri>https://github.com/dotnet/xharness</Uri>
-      <Sha>4c17e23fcb7575baa9de575e5a96258096cbaea1</Sha>
+      <Sha>fe850ca677efa9ed62009b929f55ff59d5e24c0e</Sha>
     </Dependency>
     <Dependency Name="Microsoft.DotNet.Arcade.Sdk" Version="10.0.0-beta.25411.109">
       <Uri>https://github.com/dotnet/dotnet</Uri>

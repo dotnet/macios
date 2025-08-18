@@ -185,7 +185,11 @@ namespace Foundation {
 #endif
 		{
 			var rv = new NSAttributedString (NSObjectFlag.Empty);
+#if XAMCORE_5_0
 			rv.InitializeHandle (rv._InitWithDocFormat (wordDocFormat, out resultDocumentAttributes), "initWithDocFormat:documentAttributes:", false);
+#else
+			rv.InitializeHandle (rv._InitWithDocFormat (wordDocFormat, out docAttributes), "initWithDocFormat:documentAttributes:", false);
+#endif
 			if (rv.Handle == NativeHandle.Zero) {
 				rv.Dispose ();
 				return null;

@@ -31,10 +31,31 @@ readonly record struct EventInfo {
 	/// The type name of the event arguments class.
 	/// </summary>
 	public string? EventArgsType { get; init; }
+
+	/// <summary>
+	/// A boolean value indicating whether the event arguments are a tuple.
+	/// </summary>
+	public bool EventArgsIsTuple { get; init; }
+
+	/// <summary>
+	/// The signature of the method that this event is based on.
+	/// </summary>
+	public string MethodSignature { get; init; }
+
+	/// <summary>
+	/// The selector of the method that this event is based on.
+	/// </summary>
+	public string MethodSelector { get; init; }
+
+	/// <summary>
+	/// The parameters of the method that this event is based on.
+	/// </summary>
+	public ImmutableArray<(string Name, string Type)> MethodParameters { get; init; }
+
 	/// <summary>
 	/// The parameters for the event handler delegate.
 	/// </summary>
-	public ImmutableArray<(string Name, string Type)> MethodParameters { get; init; }
+	public ImmutableArray<(string Name, string Type)> EventArgParameters => [.. MethodParameters.Skip (1)];
 
 	/// <summary>
 	/// A boolean value indicating whether the event arguments class should be generated.
@@ -82,6 +103,7 @@ readonly record struct EventInfo {
 			   Name == other.Name &&
 			   Usings.SequenceEqual (other.Usings) &&
 			   EventArgsType == other.EventArgsType &&
+			   EventArgsIsTuple == other.EventArgsIsTuple &&
 			   MethodParameters.SequenceEqual (other.MethodParameters) &&
 			   ToGenerate == other.ToGenerate;
 	}

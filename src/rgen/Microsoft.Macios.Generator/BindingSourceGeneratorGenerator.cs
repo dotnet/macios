@@ -66,6 +66,10 @@ public class BindingSourceGeneratorGenerator : IIncrementalGenerator {
 		var eventArgsProvider = provider
 			.Select ((tuple, _) => (tuple.RootBindingContext, tuple.Bindings.WeakDelegateEvents));
 
+		var delegatesInfoProvider = provider
+			.Select ((tuple, _) => (tuple.RootBindingContext, tuple.Bindings.WeakDelegatesClasses));
+
+
 		context.RegisterSourceOutput (context.CompilationProvider.Combine (bindings.Collect ()),
 			((ctx, t) => GenerateCode (ctx, t.Right)));
 
@@ -80,6 +84,9 @@ public class BindingSourceGeneratorGenerator : IIncrementalGenerator {
 
 		context.RegisterSourceOutput (context.CompilationProvider.Combine (eventArgsProvider.Collect ()),
 			((ctx, t) => GenerateEventArgTypes (ctx, t.Right)));
+
+		context.RegisterSourceOutput (context.CompilationProvider.Combine (delegatesInfoProvider.Collect ()),
+			((ctx, t) => GenerateDelegateTypes (ctx, t.Right)));
 
 		if (GeneratorConfiguration.BGenCompatible) {
 			// the following code generations will only be used when the generator is compatible with bgen.
@@ -168,7 +175,7 @@ public class BindingSourceGeneratorGenerator : IIncrementalGenerator {
 				// we don't have an emitter for this type, so we can't generate the code, add a diagnostic letting the
 				// user we do not support what they are trying to do
 				context.ReportDiagnostic (Diagnostic.Create (
-					Diagnostics
+					RgenDiagnostics
 						.RBI0000, // An unexpected error ocurred while processing '{0}'. Please fill a bug report at https://github.com/dotnet/macios/issues/new.
 					null,
 					binding.FullyQualifiedSymbol));
@@ -320,6 +327,48 @@ public class BindingSourceGeneratorGenerator : IIncrementalGenerator {
 				// only add a file when we do generate code
 				var code = sb.ToCode ();
 				context.AddSource ($"{Path.Combine (eventInfo.Namespace, eventInfo.EventArgsType)}.g.cs",
+					SourceText.From (code, Encoding.UTF8));
+			} else {
+				// add to the diagnostics and continue to the next possible candidate
+				context.ReportDiagnostics (diagnostics);
+			}
+		}
+	}
+
+	/// <summary>
+	/// Code generator that emits delegate types for weak delegates.
+	/// </summary>
+	/// <param name="context">Source production context.</param>
+	/// <param name="delegateInfoChanges">The event delegate info for which delegate types will be generated.</param>
+	static void GenerateDelegateTypes (SourceProductionContext context,
+		ImmutableArray<(RootContext RootBindingContext, IEnumerable<EventDelegateInfo>
+			DelegateInfos)> delegateInfoChanges)
+	{
+		// we don't have what to generate, so we can return
+		if (delegateInfoChanges.Length == 0)
+			return;
+
+		// it might be the case that we have several async results with the same name and namespace, so we need to
+		// ensure that we do not have duplicates. We do so by using a dict.
+		var infos = new Dictionary<string, EventDelegateInfo> ();
+		foreach (var (_, delegateInfo) in delegateInfoChanges) {
+			foreach (var info in delegateInfo) {
+				infos.Add (info.FullyQualifiedDelegateTypeName, info);
+			}
+		}
+
+		var sb = new TabbedStringBuilder (new ());
+		foreach (var (_, delegateInfo) in infos) {
+			// init sb and add the header
+			sb.Clear ();
+			sb.WriteHeader ();
+			var emitter = new EventDelegateEmitter (sb);
+			if (emitter.TryEmit (delegateInfo, out var diagnostics)) {
+				// only add a file when we do generate code
+				var code = sb.ToCode ();
+				var delegateClassFileName =
+					$"{delegateInfo.OuterClassName}{Nomenclator.GetInternalDelegateForEventName (delegateInfo.DelegateType)}";
+				context.AddSource ($"{Path.Combine (delegateInfo.Namespace, delegateClassFileName)}.g.cs",
 					SourceText.From (code, Encoding.UTF8));
 			} else {
 				// add to the diagnostics and continue to the next possible candidate

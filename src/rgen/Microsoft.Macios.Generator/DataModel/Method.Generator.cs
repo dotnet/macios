@@ -101,6 +101,11 @@ readonly partial struct Method {
 	/// </summary>
 	public bool IsEvent => ExportMethodData.Flags.HasFlag (ObjCBindings.Method.Event);
 
+	/// <summary>
+	/// The location of the attribute in source code.
+	/// </summary>
+	public Location? Location { get; init; }
+
 	public Method (string type, string name, TypeInfo returnType,
 		SymbolAvailability symbolAvailability,
 		ExportData<ObjCBindings.Method> exportMethodData,
@@ -192,6 +197,7 @@ readonly partial struct Method {
 			parameters: parametersBucket.ToImmutableArray ()) {
 			BindAs = method.GetBindFromData (),
 			ForcedType = method.GetForceTypeData (),
+			Location = declaration.GetLocation (),
 		};
 
 		return true;
@@ -276,6 +282,20 @@ readonly partial struct Method {
 				.. Modifiers.Where (m =>
 					!m.IsKind (SyntaxKind.PartialKeyword) &&
 					!m.IsKind (SyntaxKind.VirtualKeyword)),
+			]
+		};
+	}
+
+	/// <summary>
+	/// Creates a new method instance with the specified modifiers.
+	/// </summary>
+	/// <param name="newModifiers">The new modifiers for the method.</param>
+	/// <returns>A new <see cref="Method"/> instance with the specified modifiers.</returns>
+	public Method WithModifiers (params SyntaxKind [] newModifiers)
+	{
+		return this with {
+			Modifiers = [
+				.. newModifiers.Select (m => Token (m).WithTrailingTrivia (Space))
 			]
 		};
 	}

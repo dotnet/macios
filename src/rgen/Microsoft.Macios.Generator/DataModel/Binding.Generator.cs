@@ -10,7 +10,6 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Macios.Generator.Availability;
 using Microsoft.Macios.Generator.Context;
-using Microsoft.Macios.Generator.Emitters;
 using Microsoft.Macios.Generator.Extensions;
 
 namespace Microsoft.Macios.Generator.DataModel;
@@ -32,6 +31,11 @@ readonly partial struct Binding {
 	/// Returns if the binding has been declared to be thread safe.
 	/// </summary>
 	public bool IsThreadSafe => bindingInfo.IsThreadSafe;
+
+	/// <summary>
+	/// The location of the attribute in source code.
+	/// </summary>
+	public Location? Location { get; init; }
 
 	/// <summary>
 	/// Returns all the library names and paths that are needed by the native code represented by the code change.
@@ -138,6 +142,36 @@ readonly partial struct Binding {
 							yield return eventInfo;
 						}
 					}
+				}
+			}
+		}
+	}
+
+	/// <summary>
+	/// Returns all the event delegates from weak delegates that need to be generated.
+	/// </summary>
+	public IEnumerable<EventDelegateInfo> WeakDelegatesClasses {
+		get {
+			// use a hash set to reach the types of the delegates, it should not be the case that we have the same
+			// type info for more than one delegate but we do not trust the input from external developers
+			var found = new HashSet<string> ();
+			foreach (var property in Properties) {
+				if (!property.IsProperty)
+					continue;
+				// CreateEvents is only true for a weak delegate property, we do not create the delegate type for a
+				// weak delegate with no events generated
+				if (!property.CreateEvents)
+					continue;
+				if (!property.ExportPropertyData.StrongDelegateType.IsNullOrDefault
+					&& found.Add (property.ExportPropertyData.StrongDelegateType.FullyQualifiedName)) {
+					// create the info for the delegate type
+					yield return new EventDelegateInfo {
+						Usings = [.. usingDirectives],
+						Namespace = string.Join ('.', Namespace),
+						OuterClassName = Name,
+						OuterClassModifiers = Modifiers,
+						DelegateType = property.ExportPropertyData.StrongDelegateType
+					};
 				}
 			}
 		}
@@ -287,6 +321,7 @@ readonly partial struct Binding {
 		}
 
 		EnumMembers = bucket.ToImmutable ();
+		Location = enumDeclaration.GetLocation ();
 	}
 
 	/// <summary>
@@ -328,6 +363,7 @@ readonly partial struct Binding {
 			GetMembers<PropertyDeclarationSyntax, Property> (classDeclaration, context, PropertySkip, Property.TryCreate,
 				out properties);
 		}
+		Location = classDeclaration.GetLocation ();
 	}
 
 	/// <summary>
@@ -387,7 +423,7 @@ readonly partial struct Binding {
 			ParentProtocolProperties = [];
 			ParentProtocolMethods = [];
 		}
-
+		Location = interfaceDeclaration.GetLocation ();
 	}
 
 	/// <summary>

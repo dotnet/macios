@@ -7,6 +7,7 @@ using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.Macios.Generator.Context;
 using Microsoft.Macios.Generator.Extensions;
 using Microsoft.Macios.Generator.Formatters;
@@ -50,21 +51,29 @@ readonly partial struct TypeInfo {
 			return false;
 
 		// we need to calculate the event args type, if any.
-		var (eventArgs, toGenerate) = method switch { { ExportMethodData.EventArgsType.IsNullOrDefault: false }
-														  // get the type string for the event args type
-														  => (method.Value.ExportMethodData.EventArgsType.GetIdentifierSyntax ().ToString (), false), { ExportMethodData.EventArgsTypeName: not null }
-																																						  // use the given type name, we will generate those too
-																																						  => (method.Value.ExportMethodData.EventArgsTypeName, true),
+#pragma warning disable format
+		var (eventArgs, toGenerate, isTuple) = method switch { 
+			{ ExportMethodData.EventArgsType.IsNullOrDefault: false }
+				// get the type string for the event args type
+				=> (method.Value.ExportMethodData.EventArgsType.GetIdentifierSyntax ().ToString (), false, method.Value.ExportMethodData.EventArgsType.IsNamedTuple), 
+			{ ExportMethodData.EventArgsTypeName: not null } 
+				=> (method.Value.ExportMethodData.EventArgsTypeName, true, false),
+			{ Parameters.Length: 2 }
+				// return the tye of the second parameter, which is the event args type
+				=> (method.Value.Parameters[1].Type.GetIdentifierSyntax ().ToString (), false, false),
+			{ Parameters.Length: > 2} 
+				// return a unnamed tuple type with the parameters starting from the second one
+				=> ($"({string.Join (", ", method.Value.Parameters.Skip (1).Select (p => p.Type.GetIdentifierSyntax ().ToString ()))})", false, true),
 			// the default is a method that does not required an event args type
-			_ => (null, false)
+			_ => (null, false, false)
 		};
+#pragma warning restore format
 
 		// gather the parameter info, do not retrieve use a type info since that create a circular structure,
 		// the c# compiler will complain about it.
 		var paramInfo = ImmutableArray.CreateBuilder<(string Name, string Type)> ();
 		var usingsInfo = new HashSet<string> ();
-		for (var index = 1; index < method.Value.Parameters.Length; index++) {
-			var p = method.Value.Parameters [index];
+		foreach (var p in method.Value.Parameters) {
 			paramInfo.Add ((p.Name, p.Type.GetIdentifierSyntax ().ToString ()));
 			// collect the namespaces of the parameters, use a set to avoid duplicates
 			var ns = string.Join ('.', p.Type.Namespace);
@@ -77,6 +86,10 @@ readonly partial struct TypeInfo {
 			Name = method.Value.Name,
 			Usings = [.. usingsInfo],
 			EventArgsType = eventArgs,
+			EventArgsIsTuple = isTuple,
+			// full method signature with params and public
+			MethodSignature = method.Value.WithModifiers (SyntaxKind.PublicKeyword).ToDeclaration ().ToString (),
+			MethodSelector = method.Value.ExportMethodData.Selector!,
 			MethodParameters = paramInfo.ToImmutable (),
 			ToGenerate = toGenerate
 		};

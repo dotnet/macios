@@ -14,7 +14,7 @@
 	be created by using the <see cref="UIKit.UITableViewCell.UITableViewCell(UIKit.UITableViewCellStyle,Foundation.NSString)" /> constructor. These predefined styles appear as follows:
       </para>
       <para>
-        <img href="~/UIKit/_images/UIKit.UITableViewCellStyle.png" alt="Image showing the different cell styles." />
+        <img href="~/xml/UIKit/_images/UIKit.UITableViewCellStyle.png" alt="Image showing the different cell styles." />
       </para>
       <para>
 	All of the predefined styles have <see cref="UIKit.UITableViewCell.TextLabel" /> and <see cref="UIKit.UITableViewCell.DetailTextLabel" />
@@ -37,7 +37,7 @@
 	reordering control on the right.
       </para>
       <para>
-        <img href="~/UIKit/_images/UIKit.UITableViewCell.Structure.png" alt="Diagram of the layout structure of a  UITableViewCell" />
+        <img href="~/xml/UIKit/_images/UIKit.UITableViewCell.Structure.png" alt="Diagram of the layout structure of a  UITableViewCell" />
       </para>
       <para>
 	In a non-selected cell, the <see cref="UIKit.UITableViewCell.BackgroundView" /> is

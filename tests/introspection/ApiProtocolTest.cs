@@ -304,6 +304,11 @@ namespace Introspection {
 				case "SCWindow":
 				case "SCStreamConfiguration":
 					return true;
+				// Xcode 26.0 Conformance not in headers
+				case "ASPickerDisplaySettings":
+				case "ASPropertyCompareString":
+				case "PKAddIdentityDocumentMetadata":
+					return true;
 				}
 				break;
 			case "NSMutableCopying":
@@ -529,6 +534,11 @@ namespace Introspection {
 				case "FSMutableFileDataBuffer":
 				case "FSTask":
 				case "FSTaskOptions":
+					return true;
+				// Xcode 26.0 Conformance not in headers
+				case "ASPickerDisplaySettings":
+				case "ASPropertyCompareString":
+				case "PKAddIdentityDocumentMetadata":
 					return true;
 				}
 				break;
@@ -759,6 +769,11 @@ namespace Introspection {
 				case "FSTask":
 				case "FSTaskOptions":
 					return true;
+				// Xcode 26.0 Conformance not in headers
+				case "ASPickerDisplaySettings":
+				case "ASPropertyCompareString":
+				case "PKAddIdentityDocumentMetadata":
+					return true;
 				}
 				break;
 			// conformance added in Xcode 8 (iOS 10 / macOS 10.12)
@@ -874,6 +889,14 @@ namespace Introspection {
 				case "UITab":
 				case "UITabGroup":
 					// These types implement UISpringLoadedInteractionSupporting using category, which we can't detect at runtime.
+					return true;
+				}
+				break;
+			case "BEExtensionProcess":
+				switch (type.Name) {
+				case "BENetworkingProcess": // conforming using a categeory in headers
+				case "BERenderingProcess": // conforming using a categeory in headers
+				case "BEWebContentProcess": // conforming using a categeory in headers
 					return true;
 				}
 				break;
@@ -1109,7 +1132,7 @@ namespace Introspection {
 
 					if (t.IsPublic && !ConformTo (klass.Handle, protocol)) {
 						// note: some internal types, e.g. like UIAppearance subclasses, return false (and there's not much value in changing this)
-						var msg = $"Type {t.FullName} (native: {klass.Name}) does not conform {protocolName}";
+						var msg = $"Type {t.FullName} (native: {klass.Name}) does not conform to {protocolName}";
 						list.Add (msg);
 						ReportError (msg);
 					}

@@ -87,6 +87,12 @@ public class ClassGenerationTests : BaseGeneratorTestClass {
 			new (ApplePlatform.TVOS, "TrampolinePropertyTests", "TrampolinePropertyTests.cs", "ExpectedTrampolinePropertyTests.cs"){ TrampolinesFile = "ExpectedTrampolinePropertyTestsTrampolines.cs"},
 			new (ApplePlatform.MacCatalyst, "TrampolinePropertyTests", "TrampolinePropertyTests.cs", "ExpectedTrampolinePropertyTests.cs"){ TrampolinesFile = "ExpectedTrampolinePropertyTestsTrampolines.cs"},
 			new (ApplePlatform.MacOSX, "TrampolinePropertyTests", "TrampolinePropertyTests.cs", "ExpectedTrampolinePropertyTests.cs"){ TrampolinesFile = "ExpectedTrampolinePropertyTestsTrampolines.cs"},
+			
+			// event tests
+			new (ApplePlatform.iOS, "EventTests", "EventTests.cs", "ExpectedEventTests.cs"),
+			new (ApplePlatform.TVOS, "EventTests", "EventTests.cs", "ExpectedEventTests.cs"),
+			new (ApplePlatform.MacCatalyst, "EventTests", "EventTests.cs", "ExpectedEventTests.cs"),
+			new (ApplePlatform.MacOSX, "EventTests", "EventTests.cs", "ExpectedEventTests.cs"),
 		};
 
 		public IEnumerator<object []> GetEnumerator ()

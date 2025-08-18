@@ -2,10 +2,10 @@
   <Docs DocId="T:AVKit.AVPlayerViewController">
     <summary>A <see cref="UIKit.UIViewController" /> that provides a system-standard AV controller user experience.</summary>
     <remarks>
-      <para>The <see cref="AVKit.AVPlayerViewController" /> provides a simple way of displaying a player (<see cref="AVKit.AVPlayer" />) with some standard controls.</para>
+      <para>The <see cref="AVKit.AVPlayerViewController" /> provides a simple way of displaying a player (<see cref="AVKit.AVPlayerView" />) with some standard controls.</para>
       <para>
       </para>
-      <para>Applications can set the <see cref="AVKit.AVPlayer" /> by setting the <see cref="AVKit.AVPlayerViewController.Player" /> property.</para>
+      <para>Applications can set the <see cref="AVPlayer" /> by setting the <see cref="AVKit.AVPlayerViewController.Player" /> property.</para>
       <para>
       </para>
       <para>Applications can customize the user interface by adding their own user interface elements to the <see cref="AVKit.AVPlayerViewController.ContentOverlayView" />.</para>

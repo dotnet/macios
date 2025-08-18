@@ -1,5 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
+
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -63,5 +65,19 @@ static class NamedTypeSymbolExtensions {
 
 		fields = fieldBucket.ToImmutable ();
 		return true;
+	}
+
+	/// <summary>
+	/// Gets all members from all interfaces implemented by the specified symbol.
+	/// </summary>
+	/// <param name="symbol">The symbol whose interface members are to be retrieved.</param>
+	/// <returns>An enumerable collection of all members from all implemented interfaces.</returns>
+	public static IEnumerable<ISymbol> GetAllInterfaceMembers (this INamedTypeSymbol symbol)
+	{
+		foreach (var i in symbol.AllInterfaces) {
+			foreach (var member in i.GetMembers ()) {
+				yield return member;
+			}
+		}
 	}
 }

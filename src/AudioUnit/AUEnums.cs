@@ -43,7 +43,7 @@ using Foundation;
 #nullable enable
 
 namespace AudioUnit {
-	/// <summary>An enumeration whose values specify the status of an <see cref="AudioUnit.AudioUnit" />.</summary>
+	/// <summary>An enumeration whose values specify the status of an <see cref="AudioUnit" />.</summary>
 	public enum AudioUnitStatus { // Implictly cast to OSType
 		/// <summary>To be added.</summary>
 		NoError = 0,
@@ -100,7 +100,9 @@ namespace AudioUnit {
 		MultipleVoiceProcessors = -66635,
 	}
 
-	/// <summary>Enumerates status values returned by <see cref="AudioUnit.AudioUnit.AudioOutputUnitPublish(AudioUnit.AudioComponentDescription,System.String,System.UInt32)" />.</summary>
+#if !__MACOS__
+	/// <summary>Enumerates status values returned by <see cref="AudioUnit.AudioOutputUnitPublish(AudioComponentDescription,System.String,System.UInt32)" />.</summary>
+#endif
 	public enum AudioComponentStatus { // Implictly cast to OSType
 		/// <summary>To be added.</summary>
 		OK = 0,
@@ -209,7 +211,7 @@ namespace AudioUnit {
 		MIDI2Controller = 27,
 	}
 
-	/// <summary>Flagging enumeration used with <see cref="AudioUnit.AudioUnitParameterInfo.Flags" />.</summary>
+	/// <summary>Flagging enumeration used with <see cref="AudioUnitParameterInfo.Flags" />.</summary>
 	[Flags]
 	public enum AudioUnitParameterFlag : uint // UInt32 in AudioUnitParameterInfo
 	{
@@ -266,7 +268,7 @@ namespace AudioUnit {
 		IsWritable = ((uint) 1 << 31),
 	}
 
-	/// <summary>Enumerates values used by <see cref="AudioUnit.AudioUnitParameterInfo" />. Currenty reserved for system use.</summary>
+	/// <summary>Enumerates values used by <see cref="AudioUnitParameterInfo" />. Currenty reserved for system use.</summary>
 	public enum AudioUnitClumpID // UInt32 in AudioUnitParameterInfo
 	{
 		/// <summary>To be added.</summary>
@@ -368,7 +370,7 @@ namespace AudioUnit {
 		Main = 0, // 0
 	}
 
-	/// <summary>An enumeration whose values specify a kind of <see cref="AudioUnit.AudioUnit" />.</summary>
+	/// <summary>An enumeration whose values specify a kind of <see cref="AudioUnit" />.</summary>
 	[Internal]
 	enum AudioUnitPropertyIDType { // UInt32 AudioUnitPropertyID
 								   // Audio Unit Properties
@@ -1197,7 +1199,7 @@ namespace AudioUnit {
 		Immediate = unchecked((long) 0xffffffff00000000),
 	}
 
-	/// <summary>Enumerates options that can be used while instantiating a <see cref="AudioUnit.AUAudioUnit" />.</summary>
+	/// <summary>Enumerates options that can be used while instantiating a <see cref="AUAudioUnit" />.</summary>
 	[MacCatalyst (13, 1)]
 	public enum AudioComponentInstantiationOptions : uint {
 		/// <summary>To be added.</summary>

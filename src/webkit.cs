@@ -5403,12 +5403,6 @@ namespace WebKit {
 
 	delegate void WKNavigationDelegateShouldGoToBackForwardListItemCallback (bool shouldGoToItem);
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="WebKit.WKNavigationDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="WebKit.WKNavigationDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="WebKit.WKNavigationDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="WebKit.WKNavigationDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IWKNavigationDelegate { }
 
 	/// <summary>Information about a navigation response. Can be used for policy decisions.</summary>
@@ -5530,7 +5524,6 @@ namespace WebKit {
 		WKContentWorld World { get; }
 	}
 
-	/// <include file="../docs/api/WebKit/IWKScriptMessageHandler.xml" path="/Documentation/Docs[@DocId='T:WebKit.IWKScriptMessageHandler']/*" />
 	interface IWKScriptMessageHandler { }
 
 	/// <summary>Allows messages from JavaScript to be handled by the app.</summary>
@@ -6057,12 +6050,6 @@ namespace WebKit {
 		void InsertInputSuggestion (WKWebView webView, UIInputSuggestion inputSuggestion);
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="WebKit.WKUIDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="WebKit.WKUIDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="WebKit.WKUIDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="WebKit.WKUIDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IWKUIDelegate { }
 
 	/// <summary>Allows posting messages and injecting user scripts into a Web page.</summary>

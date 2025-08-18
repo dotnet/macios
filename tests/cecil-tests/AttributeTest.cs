@@ -328,6 +328,14 @@ namespace Cecil.Tests {
 					"PdfKit.PdfView.ShouldReceiveTouch (XKit.XGestureRecognizer, XKit.XTouch)",
 					"PdfKit.PdfView.ShouldRecognizeSimultaneously (XKit.XGestureRecognizer, XKit.XGestureRecognizer)",
 					"PdfKit.PdfView.ShouldRequireFailureOf (XKit.XGestureRecognizer, XKit.XGestureRecognizer)",
+
+#if !XAMCORE_5_0
+					// The ARQuickLookPreviewItem type is in the QuickLook framework for Mac Catalyst, and ARKit for all other platforms.
+					"QuickLook.ARQuickLookPreviewItem.get_PreviewItemTitle ()",
+					"QuickLook.ARQuickLookPreviewItem.get_PreviewItemUrl ()",
+					"QuickLook.ARQuickLookPreviewItem.PreviewItemTitle",
+					"QuickLook.ARQuickLookPreviewItem.PreviewItemUrl",
+#endif
 				};
 			}
 		}

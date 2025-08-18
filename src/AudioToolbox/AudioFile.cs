@@ -1697,7 +1697,7 @@ namespace AudioToolbox {
 		/// <param name="startingPacket">The index the first packet in the buffer to write.</param>
 		/// <param name="numPackets">The number of packets to write replaced with the number of packets actually written.</param>
 		/// <param name="buffer">The buffer containing the audio data to write.</param>
-		/// <param name="offset">An offset into <see paramref="buffer" /> where the audio data to write starts.</param>
+		/// <param name="offset">An offset into <paramref name="buffer" /> where the audio data to write starts.</param>
 		/// <returns><see cref="AudioFileError.Success" /> if successful, otherwise a status error code.</returns>
 		[SupportedOSPlatform ("ios26.0")]
 		[SupportedOSPlatform ("tvos26.0")]

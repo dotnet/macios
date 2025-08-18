@@ -54,12 +54,6 @@ namespace GameplayKit {
 		ReduceOverlap = 3,
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="GameplayKit.GKAgentDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="GameplayKit.GKAgentDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="GameplayKit.GKAgentDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="GameplayKit.GKAgentDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IGKAgentDelegate { }
 
 	/// <summary>Delegate object that provides methods relating to synchronizing the state of a <see cref="GameplayKit.GKAgent" /> with external constraints, goals, and representations.</summary>
@@ -466,14 +460,7 @@ namespace GameplayKit {
 
 	interface IGKGameModelPlayer { }
 
-	/// <summary>A uniquely-identified player of a game. Developers must implement <see cref="GameplayKit.GKGameModelPlayer_Extensions.GetPlayerId(GameplayKit.IGKGameModelPlayer)" />.</summary>
-	///     <remarks>
-	///       <para>Developers who implement this interface must implement <see cref="GameplayKit.GKGameModelPlayer_Extensions.GetPlayerId(GameplayKit.IGKGameModelPlayer)" />. It is incorrectly marked as optional but is, in fact, mandatory and must be implemented.</para>
-	///     </remarks>
-	/// <summary>Extension methods to the <see cref="GameplayKit.IGKGameModelPlayer" /> interface to support all the methods from the <see cref="GameplayKit.IGKGameModelPlayer" /> protocol.</summary>
-	///     <remarks>
-	///       <para>The extension methods for <see cref="GameplayKit.IGKGameModelPlayer" /> allow developers to treat instances of the interface as having all the optional methods of the original <see cref="GameplayKit.IGKGameModelPlayer" /> protocol.   Since the interface only contains the required members, these extension methods allow developers to call the optional members of the protocol.</para>
-	///     </remarks>
+	/// <summary>A uniquely-identified player of a game.</summary>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface GKGameModelPlayer {
@@ -485,9 +472,13 @@ namespace GameplayKit {
 	interface IGKGameModel { }
 
 	/// <summary>The current game state. Particularly useful in conjunction with <see cref="GameplayKit.GKMinMaxStrategist" />.</summary>
-	///     <remarks>
-	///       <para>When <see cref="GameplayKit.GKMinMaxStrategist" /> is used as an AI opponent, it uses <see cref="Gameplay.IGKGameModel" /> objects to describe the game's state and <see cref="GameplayKit.IGKGameModelUpdate" /> objects to describe potential moves. (See the "AI Opponent" section in the remarks at <see cref="GameplayKit" />)</para>
-	///     </remarks>
+	/// <remarks>
+	///   <para>
+	///     When <see cref="GameplayKit.GKMinMaxStrategist" /> is used as an AI opponent, it uses <see cref="IGKGameModel" /> objects to describe the
+	///     game's state and <see cref="GameplayKit.IGKGameModelUpdate" /> objects to describe potential moves.
+	///     (See the "AI Opponent" section in the remarks at <see cref="GameplayKit" />)
+	///   </para>
+	/// </remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface GKGameModel : NSCopying {
@@ -522,11 +513,14 @@ namespace GameplayKit {
 		void SetGameModel (IGKGameModel gameModel);
 
 		/// <param name="player">To be added.</param>
-		/// <summary>The set of legal moves available to the player who's <see cref="GameplayKit.GKGameModelPlayer_Extensions.GetPlayerId(GameplayKit.IGKGameModelPlayer)" /> value is the same as that of <paramref name="player" />.</summary>
+		/// <summary>The set of legal moves available to the player whose <see cref="IGKGameModelPlayer.PlayerId" /> value is the same as that of <paramref name="player" />.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>
-		///           <para>The <see cref="GameplayKit.GKMinMaxStrategist" /> may allocate many <see cref="GameplayKit.IGKGameModelPlayer" /> objects with identical <see cref="GameplayKit.GKGameModelPlayer_Extensions.GetPlayerId(GameplayKit.IGKGameModelPlayer)" /> values. When comparing <see cref="GameplayKit.IGKGameModelPlayer" /> instances, developers should rely on <see cref="GameplayKit.GKGameModelPlayer_Extensions.GetPlayerId(GameplayKit.IGKGameModelPlayer)" /> values, not reference equality.</para>
-		///         </remarks>
+		///   <para>
+		///     The <see cref="GameplayKit.GKMinMaxStrategist" /> may allocate many <see cref="GameplayKit.IGKGameModelPlayer" /> objects with identical <see cref="IGKGameModelPlayer.PlayerId" /> values.
+		///     When comparing <see cref="GameplayKit.IGKGameModelPlayer" /> instances, developers should rely on <see cref="IGKGameModelPlayer.PlayerId" /> values, not reference equality.
+		///   </para>
+		/// </remarks>
 		[Abstract]
 		[Export ("gameModelUpdatesForPlayer:")]
 		[return: NullAllowed]
@@ -1082,7 +1076,7 @@ namespace GameplayKit {
 		NativeHandle Constructor (IntPtr points, nuint numPoints);
 
 		/// <param name="index">To be added.</param>
-		/// <summary>Retrieves the <see cref="OpenTK.Vector2" /> at the specified <paramref name="index" />.</summary>
+		/// <summary>Retrieves the <see cref="Vector2" /> at the specified <paramref name="index" />.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[Export ("vertexAtIndex:")]

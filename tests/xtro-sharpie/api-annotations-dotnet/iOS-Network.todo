@@ -1,5 +1,0 @@
-!missing-field! kNWErrorDomainWiFiAware not bound
-!missing-pinvoke! nw_parameters_get_allow_ultra_constrained is not bound
-!missing-pinvoke! nw_parameters_set_allow_ultra_constrained is not bound
-!missing-pinvoke! nw_path_get_link_quality is not bound
-!missing-pinvoke! nw_path_is_ultra_constrained is not bound

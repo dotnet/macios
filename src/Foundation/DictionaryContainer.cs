@@ -252,6 +252,21 @@ namespace Foundation {
 			return CFBoolean.GetValue (value);
 		}
 
+		/// <summary>Returns the nullable DateTime associated with <paramref name="key" />.</summary>
+		/// <param name="key">The identifier of the DateTime value.</param>
+		protected DateTime? GetDateTimeValue (NSString key)
+		{
+			if (key is null)
+				throw new ArgumentNullException (nameof (key));
+
+			var value = CFDictionary.GetValue (Dictionary.Handle, key.Handle);
+			GC.KeepAlive (key);
+			if (value == IntPtr.Zero)
+				return null;
+
+			return (DateTime) Runtime.GetNSObject<NSDate> (value, false)!;
+		}
+
 		/// <typeparam name="T">The <see cref="ObjCRuntime.INativeObject" /> type associated with <paramref name="key" />.</typeparam>
 		///         <param name="key">The identifier of the reference.</param>
 		///         <summary>Returns the native object associated with <paramref name="key" />.</summary>

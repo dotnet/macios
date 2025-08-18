@@ -367,10 +367,10 @@ namespace CoreLocation {
 		NSObject WeakDelegate { get; set; }
 
 		/// <summary>The minimum horizontal distance, in meters, the device has to move before issuing a location update.</summary>
-		///         <value>The default value is <see cref="CoreLocation.CLLocationDistance.None" />.</value>
-		///         <remarks>
-		///           <para>If this value is set to <see cref="CoreLocation.CLLocationDistance.None" />, the app will receive all location updates.</para>
-		///         </remarks>
+		/// <value>The default value is <see cref="CoreLocation.CLLocationDistance.FilterNone" />.</value>
+		/// <remarks>
+		///   <para>If this value is set to <see cref="CoreLocation.CLLocationDistance.FilterNone" />, the app will receive all location updates.</para>
+		/// </remarks>
 		[Export ("distanceFilter", ArgumentSemantic.Assign)]
 		double DistanceFilter { get; set; }
 
@@ -474,8 +474,6 @@ namespace CoreLocation {
 		bool SignificantLocationChangeMonitoringAvailable { get; }
 
 		/// <summary>Application developers should use <see cref="CoreLocation.CLLocationManager.IsMonitoringAvailable(System.Type)" /> rather than this deprecated method.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 7, 0, message: "Use 'IsMonitoringAvailable' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 10, message: "Use 'IsMonitoringAvailable' instead.")]
@@ -485,8 +483,6 @@ namespace CoreLocation {
 		bool RegionMonitoringAvailable { get; }
 
 		/// <summary>Application developers should use <see cref="CoreLocation.CLLocationManager.IsMonitoringAvailable(System.Type)" /> rather than this deprecated method.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 6, 0, message: "Use 'IsMonitoringAvailable' and 'AuthorizationStatus' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 10, message: "Use 'IsMonitoringAvailable' and 'AuthorizationStatus' instead.")]
@@ -579,11 +575,11 @@ namespace CoreLocation {
 		CLAuthorizationStatus AuthorizationStatus { get; }
 
 		/// <summary>The authorization status of the app (e.g., if the app is denied access to location services).</summary>
-		///         <value>The value is determined by the user's interaction with the standard permissions dialog.</value>
-		///         <remarks>
-		///           <para>See the "Requesting Authorization" discussion in the class-level remarks: <see cref="CoreLocation.CLLocationManager" />.</para>
-		///         </remarks>
-		///         <altmember cref="CoreLocation.AuthorizationChanged" />
+		/// <value>The value is determined by the user's interaction with the standard permissions dialog.</value>
+		/// <remarks>
+		///   <para>See the "Requesting Authorization" discussion in the class-level remarks: <see cref="CoreLocation.CLLocationManager" />.</para>
+		/// </remarks>
+		/// <altmember cref="CLLocationManager.AuthorizationChanged" />
 		[Deprecated (PlatformName.iOS, 14, 0, message: "Use the instance property 'AuthorizationStatus' instead.")]
 		[Deprecated (PlatformName.MacOSX, 11, 0, message: "Use the instance 'AuthorizationStatus' property instead.")]
 		[Deprecated (PlatformName.TvOS, 14, 0, message: "Use the instance property AuthorizationStatus' instead.")]
@@ -832,12 +828,6 @@ namespace CoreLocation {
 
 	interface ICLLocationManagerDelegate { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="CoreLocation.CLLocationManagerDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="CoreLocation.CLLocationManagerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="CoreLocation.CLLocationManagerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="CoreLocation.CLLocationManagerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[BaseType (typeof (NSObject))]
 	[Model]
 	[Protocol]
@@ -1053,7 +1043,7 @@ namespace CoreLocation {
 	/// <remarks>
 	///       <para>Application developers should use a subtype, either <see cref="CoreLocation.CLCircularRegion" /> or <see cref="CoreLocation.CLBeaconRegion" />:</para>
 	///       <para>
-	///         <img href="~/CoreLocation/_images/CoreLocation.CLBeacon.Hierarchy.png" alt="Class diagram showing CLBeaconRegion and CLCircularRegion are subclasses of CLRegion" />
+	///         <img href="~/xml/CoreLocation/_images/CoreLocation.CLBeacon.Hierarchy.png" alt="Class diagram showing CLBeaconRegion and CLCircularRegion are subclasses of CLRegion" />
 	///       </para>
 	///     </remarks>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CoreLocation/Reference/CLRegion_class/index.html">Apple documentation for <c>CLRegion</c></related>
@@ -1131,7 +1121,7 @@ namespace CoreLocation {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // will crash, see CoreLocation.cs for compatibility stubs
 	interface CLPlacemark : NSSecureCoding, NSCopying {
-		/// <include file="../docs/api/CoreLocation/CLPlacemark.xml" path="/Documentation/Docs[@DocId='P:CoreLocation.CLPlacemark.AddressDictionary']/*" />
+		/// <summary>Developers should not use this deprecated property. Developers should use 'CLPlacemark' properties to access data.</summary>
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'CLPlacemark' properties to access data.")]
 		[Deprecated (PlatformName.TvOS, 11, 0, message: "Use 'CLPlacemark' properties to access data.")]
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'CLPlacemark' properties to access data.")]
@@ -1250,6 +1240,10 @@ namespace CoreLocation {
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
 		///         </value>
 		///         <remarks>To be added.</remarks>
+		[Deprecated (PlatformName.iOS, 26, 0, "Use 'MapKit' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, "Use 'MapKit' instead.")]
+		[Deprecated (PlatformName.TvOS, 26, 0, "Use 'MapKit' instead.")]
+		[Deprecated (PlatformName.MacOSX, 26, 0, "Use 'MapKit' instead.")]
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("postalAddress")]
@@ -1493,14 +1487,16 @@ namespace CoreLocation {
 		NSDate Timestamp { get; }
 	}
 
+	/// <summary>A delegate that is the <c>completionHandler</c> for various asynchronous methods in <see cref="CLGeocoder" />.</summary>
 	/// <param name="placemarks">Returns null on error, otherwise the list of placemark locations.   Typically one, but could be more than one if the location is known by multiple names.</param>
 	/// <param name="error">Error information.</param>
-	/// <summary>A delegate that is the <c>completionHandler</c> in calls to <see cref="CoreLocation.CLGeocoder.GeocodePostalAddressAsync(Contacts.CNPostalAddress,Foundation.NSLocale)" />.</summary>
-	/// <remarks>
-	///     </remarks>
 	delegate void CLGeocodeCompletionHandler ([NullAllowed] CLPlacemark [] placemarks, [NullAllowed] NSError error);
 
 	/// <include file="../docs/api/CoreLocation/CLGeocoder.xml" path="/Documentation/Docs[@DocId='T:CoreLocation.CLGeocoder']/*" />
+	[Deprecated (PlatformName.iOS, 26, 0, "Use MapKit instead.")]
+	[Deprecated (PlatformName.MacCatalyst, 26, 0, "Use MapKit instead.")]
+	[Deprecated (PlatformName.TvOS, 26, 0, "Use MapKit instead.")]
+	[Deprecated (PlatformName.MacOSX, 26, 0, "Use MapKit instead.")]
 	[BaseType (typeof (NSObject))]
 	interface CLGeocoder {
 		/// <summary>Whether a geocoding request is currently being processed.</summary>
@@ -1515,6 +1511,10 @@ namespace CoreLocation {
 		///         <summary>Requests a longitude/latitude to a human address.</summary>
 		///         <remarks>
 		///         </remarks>
+		[Deprecated (PlatformName.iOS, 26, 0, "Use 'MKReverseGeocodingRequest' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, "Use 'MKReverseGeocodingRequest' instead.")]
+		[Deprecated (PlatformName.TvOS, 26, 0, "Use 'MKReverseGeocodingRequest' instead.")]
+		[Deprecated (PlatformName.MacOSX, 26, 0, "Use 'MKReverseGeocodingRequest' instead.")]
 		[Export ("reverseGeocodeLocation:completionHandler:")]
 		[Async (XmlDocs = """
 			<param name="location">To be added.</param>
@@ -1534,6 +1534,10 @@ namespace CoreLocation {
 		///         <param name="completionHandler">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
+		[Deprecated (PlatformName.iOS, 26, 0, "Use 'MKReverseGeocodingRequest' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, "Use 'MKReverseGeocodingRequest' instead.")]
+		[Deprecated (PlatformName.TvOS, 26, 0, "Use 'MKReverseGeocodingRequest' instead.")]
+		[Deprecated (PlatformName.MacOSX, 26, 0, "Use 'MKReverseGeocodingRequest' instead.")]
 		[MacCatalyst (13, 1)]
 		[Export ("reverseGeocodeLocation:preferredLocale:completionHandler:")]
 		[Async (XmlDocs = """
@@ -1550,10 +1554,10 @@ namespace CoreLocation {
 		///         <summary>Developers should not use this deprecated method. Developers should use 'GeocodeAddress (string, CLRegion, NSLocale, CLGeocodeCompletionHandler)' instead.</summary>
 		///         <remarks>
 		///         </remarks>
-		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'GeocodeAddress (string, CLRegion, NSLocale, CLGeocodeCompletionHandler)' instead.")]
-		[Deprecated (PlatformName.TvOS, 11, 0, message: "Use 'GeocodeAddress (string, CLRegion, NSLocale, CLGeocodeCompletionHandler)' instead.")]
-		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'GeocodeAddress (string, CLRegion, NSLocale, CLGeocodeCompletionHandler)' instead.")]
-		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'GeocodeAddress (string, CLRegion, NSLocale, CLGeocodeCompletionHandler)' instead.")]
+		[Deprecated (PlatformName.iOS, 26, 0, "Use 'MKGeocodingRequest' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, "Use 'MKGeocodingRequest' instead.")]
+		[Deprecated (PlatformName.TvOS, 26, 0, "Use 'MKGeocodingRequest' instead.")]
+		[Deprecated (PlatformName.MacOSX, 26, 0, "Use 'MKGeocodingRequest' instead.")]
 		[Export ("geocodeAddressDictionary:completionHandler:")]
 		[Async (XmlDocs = """
 			<param name="addressDictionary">Addressbook dictionary to submit</param>
@@ -1570,6 +1574,10 @@ namespace CoreLocation {
 		///         <summary>Request a latitude/longitude location from a human readable address.</summary>
 		///         <remarks>
 		///         </remarks>
+		[Deprecated (PlatformName.iOS, 26, 0, "Use 'MKGeocodingRequest' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, "Use 'MKGeocodingRequest' instead.")]
+		[Deprecated (PlatformName.TvOS, 26, 0, "Use 'MKGeocodingRequest' instead.")]
+		[Deprecated (PlatformName.MacOSX, 26, 0, "Use 'MKGeocodingRequest' instead.")]
 		[Export ("geocodeAddressString:completionHandler:")]
 		[Async (XmlDocs = """
 			<param name="addressString">To be added.</param>
@@ -1600,6 +1608,10 @@ namespace CoreLocation {
 		///         <param name="completionHandler">Method to invoke when the request completes.</param>
 		///         <summary>Request a latitude/longitude location from a human readable address and region.</summary>
 		///         <remarks>To be added.</remarks>
+		[Deprecated (PlatformName.iOS, 26, 0, "Use 'MKGeocodingRequest' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, "Use 'MKGeocodingRequest' instead.")]
+		[Deprecated (PlatformName.TvOS, 26, 0, "Use 'MKGeocodingRequest' instead.")]
+		[Deprecated (PlatformName.MacOSX, 26, 0, "Use 'MKGeocodingRequest' instead.")]
 		[Export ("geocodeAddressString:inRegion:completionHandler:")]
 		[Async (XmlDocs = """
 			<param name="addressString">To be added.</param>
@@ -1622,6 +1634,10 @@ namespace CoreLocation {
 		///         <param name="completionHandler">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
+		[Deprecated (PlatformName.iOS, 26, 0, "Use 'MKGeocodingRequest' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, "Use 'MKGeocodingRequest' instead.")]
+		[Deprecated (PlatformName.TvOS, 26, 0, "Use 'MKGeocodingRequest' instead.")]
+		[Deprecated (PlatformName.MacOSX, 26, 0, "Use 'MKGeocodingRequest' instead.")]
 		[MacCatalyst (13, 1)]
 		[Async (XmlDocs = """
 			<param name="addressString">To be added.</param>
@@ -1636,6 +1652,10 @@ namespace CoreLocation {
 
 		/// <summary>Cancels the geocoding attempt.</summary>
 		///         <remarks>To be added.</remarks>
+		[Deprecated (PlatformName.iOS, 26, 0, "Use 'MKGeocodingRequest' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, "Use 'MKGeocodingRequest' instead.")]
+		[Deprecated (PlatformName.TvOS, 26, 0, "Use 'MKGeocodingRequest' instead.")]
+		[Deprecated (PlatformName.MacOSX, 26, 0, "Use 'MKGeocodingRequest' instead.")]
 		[Export ("cancelGeocode")]
 		void CancelGeocode ();
 
@@ -1643,6 +1663,10 @@ namespace CoreLocation {
 		///         <param name="completionHandler">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
+		[Deprecated (PlatformName.iOS, 26, 0, "Use 'MKReverseGeocodingRequest' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, "Use 'MKReverseGeocodingRequest' instead.")]
+		[Deprecated (PlatformName.TvOS, 26, 0, "Use 'MKReverseGeocodingRequest' instead.")]
+		[Deprecated (PlatformName.MacOSX, 26, 0, "Use 'MKReverseGeocodingRequest' instead.")]
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("geocodePostalAddress:completionHandler:")]
@@ -1667,6 +1691,10 @@ namespace CoreLocation {
 		///         <param name="completionHandler">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
+		[Deprecated (PlatformName.iOS, 26, 0, "Use 'MKReverseGeocodingRequest' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, "Use 'MKReverseGeocodingRequest' instead.")]
+		[Deprecated (PlatformName.TvOS, 26, 0, "Use 'MKReverseGeocodingRequest' instead.")]
+		[Deprecated (PlatformName.MacOSX, 26, 0, "Use 'MKReverseGeocodingRequest' instead.")]
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("geocodePostalAddress:preferredLocale:completionHandler:")]
@@ -2041,7 +2069,7 @@ namespace CoreLocation {
 	}
 
 	[Native]
-	[TV (18, 0), NoMac, iOS (18, 0), MacCatalyst (18, 0)]
+	[TV (18, 0), Mac (26, 0), iOS (18, 0), MacCatalyst (18, 0)]
 	public enum CLServiceSessionAuthorizationRequirement : long {
 		None = 0,
 		WhenInUse = 1,

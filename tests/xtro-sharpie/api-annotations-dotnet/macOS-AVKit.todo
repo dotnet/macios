@@ -1,3 +1,0 @@
-!missing-enum! AVDisplayDynamicRange not bound
-!missing-selector! AVPlayerView::preferredDisplayDynamicRange not bound
-!missing-selector! AVPlayerView::setPreferredDisplayDynamicRange: not bound

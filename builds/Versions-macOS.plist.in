@@ -4,8 +4,6 @@
 <dict>
 	<key>MonoVersion</key>
 	<string>@MONO_VERSION@</string>
-	<key>MinimumSystemMono</key>
-	<string>@MIN_XM_MONO_VERSION@</string>
 	<key>KnownVersions</key>
 	<dict>
 		<key>macOS</key>

@@ -1884,6 +1884,9 @@ public partial class Generator : IMemberGatherer {
 						} else if (fetchType == TypeCache.System_nuint) {
 							getter = "{1} GetNUIntValue ({0})";
 							setter = "SetNumberValue ({0}, {1}value)";
+						} else if (fetchType == TypeCache.System_DateTime) {
+							getter = "GetDateTimeValue ({0})";
+							setter = "SetNativeValue ({0}, (NSDate?) value)";
 						} else if (fetchType == TypeCache.CoreGraphics_CGRect) {
 							getter = "{1} GetCGRectValue ({0})";
 							setter = "SetCGRectValue ({0}, {1}value)";
@@ -1951,17 +1954,11 @@ public partial class Generator : IMemberGatherer {
 							var strType = pi.PropertyType.Name;
 							getter = $"GetStrongDictionary<{strType}>({{0}}, (dict) => new {strType} (dict))";
 							setter = "SetNativeValue ({0}, value.GetDictionary ())";
+						} else if (TypeCache.INativeObject.IsAssignableFrom (pi.PropertyType)) {
+							getter = $"GetNativeValue<{pi.PropertyType}> ({{0}})";
+							setter = "SetNativeValue ({0}, value)";
 						} else if (TypeManager.IsWrappedType (pi.PropertyType)) {
 							getter = "Dictionary [{0}] as " + pi.PropertyType;
-							setter = "SetNativeValue ({0}, value)";
-						} else if (pi.PropertyType.Name == "CGColorSpace") {
-							getter = "GetNativeValue<" + pi.PropertyType + "> ({0})";
-							setter = "SetNativeValue ({0}, value)";
-						} else if (pi.PropertyType.Name == "CGImageSource") {
-							getter = "GetNativeValue<" + pi.PropertyType + "> ({0})";
-							setter = "SetNativeValue ({0}, value)";
-						} else if (pi.PropertyType.Name == "CTFontDescriptor") {
-							getter = "GetNativeValue<" + pi.PropertyType + "> ({0})";
 							setter = "SetNativeValue ({0}, value)";
 						} else {
 							exceptions.Add (new BindingException (1033, true, pi.PropertyType, dictType, pi.Name));
@@ -5600,7 +5597,15 @@ public partial class Generator : IMemberGatherer {
 				indent++;
 			}
 
-			WriteDocumentation (type);
+			if (!WriteDocumentation (type)) {
+				if (is_model && !AttributeManager.HasAttribute<SyntheticAttribute> (type)) {
+					print ($"/// <summary>");
+					print ($"///   <para>This is a class that implements the interface <see cref=\"I{TypeName}\" /> (for the protocol <c>{(protocol?.Name ?? objc_type_name)}</c>).</para>");
+					print ($"///   <para>Subclass this class to easily create a type that implements the protocol.</para>");
+					print ($"///   <para>An alternative is to create a subclass of <see cref=\"NSObject\" /> and then implemented the interface <see cref=\"I{TypeName}\" />.</para>");
+					print ($"/// </summary>");
+				}
+			}
 
 			bool core_image_filter = false;
 			string class_mod = null;
@@ -7090,11 +7095,19 @@ public partial class Generator : IMemberGatherer {
 						if (event_args_type is not null)
 							notification_event_arg_types [event_args_type] = event_args_type;
 
-						print ($"\t/// <summary>Strongly typed notification for the <see cref=\"global::{type.FullName}.{property.Name}\" /> constant.</summary>");
+						string constantReference;
+						if (property.IsInternal (this)) {
+							var fieldAttr = AttributeManager.GetCustomAttribute<FieldAttribute> (property);
+							constantReference = $"\"{fieldAttr.SymbolName}\"";
+						} else {
+							constantReference = $"<see cref=\"global::{type.FullName}.{property.Name}\" />";
+						}
+
+						print ($"\t/// <summary>Strongly typed notification for the {constantReference} constant.</summary>");
 						print ($"\t/// <param name=\"handler\">The handler that responds to the notification when it occurs.</param>");
 						print ($"\t/// <returns>Token object that can be used to stop receiving notifications by either disposing it or passing it to <see cref=\"Foundation.NSNotificationCenter.RemoveObservers(System.Collections.Generic.IEnumerable{{Foundation.NSObject}})\" />.</returns>");
 						print ($"\t/// <remarks>");
-						print ($"\t///   <para>This method can be used to subscribe to <see cref=\"global::{type.FullName}.{property.Name}\" /> notifications.</para>");
+						print ($"\t///   <para>This method can be used to subscribe to {constantReference} notifications.</para>");
 						print ($"\t///   <example>");
 						print ($"\t///   <code lang=\"csharp lang-csharp\"><![CDATA[");
 						print ($"\t/// // Listen to all notifications posted for any object");
@@ -7112,12 +7125,12 @@ public partial class Generator : IMemberGatherer {
 						print ("\t\treturn {0}.AddObserver ({1}, notification => handler (null, new {2} (notification)));", notification_center, property.Name, event_name);
 						print ("\t}");
 
-						print ($"\t/// <summary>Strongly typed notification for the <see cref=\"global::{type.FullName}.{property.Name}\" /> constant.</summary>");
+						print ($"\t/// <summary>Strongly typed notification for the {constantReference} constant.</summary>");
 						print ($"\t/// <param name=\"objectToObserve\">The specific object to observe.</param>");
 						print ($"\t/// <param name=\"handler\">The handler that responds to the notification when it occurs.</param>");
 						print ($"\t/// <returns>Token object that can be used to stop receiving notifications by either disposing it or passing it to <see cref=\"Foundation.NSNotificationCenter.RemoveObservers(System.Collections.Generic.IEnumerable{{Foundation.NSObject}})\" />.</returns>");
 						print ($"\t/// <remarks>");
-						print ($"\t///   <para>This method can be used to subscribe to <see cref=\"global::{type.FullName}.{property.Name}\" /> notifications.</para>");
+						print ($"\t///   <para>This method can be used to subscribe to {constantReference} notifications.</para>");
 						print ($"\t///   <example>");
 						print ($"\t///     <code lang=\"csharp lang-csharp\"><![CDATA[");
 						print ($"\t/// // Listen to all notifications posted for a single object");

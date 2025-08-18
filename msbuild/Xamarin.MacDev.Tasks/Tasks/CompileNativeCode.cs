@@ -37,6 +37,11 @@ namespace Xamarin.MacDev.Tasks {
 		public string DotNetRoot { get; set; } = "";
 		#endregion
 
+		#region Outputs
+		[Output]
+		public ITaskItem [] CompiledOutputFiles { get; set; } = Array.Empty<ITaskItem> ();
+		#endregion
+
 		public override bool Execute ()
 		{
 			if (ShouldExecuteRemotely ()) {
@@ -70,10 +75,10 @@ namespace Xamarin.MacDev.Tasks {
 			var compileInfo = sortedCompileInfo.Select (v => v.Item).ToArray ();
 
 			var processes = new Task<Execution> [compileInfo.Length];
+			var outputFiles = new string [compileInfo.Length];
 
 			for (var i = 0; i < compileInfo.Length; i++) {
 				var info = compileInfo [i];
-				var src = Path.GetFullPath (info.ItemSpec);
 				var arguments = new List<string> ();
 
 				arguments.Add ("clang");
@@ -124,9 +129,12 @@ namespace Xamarin.MacDev.Tasks {
 				arguments.AddRange (parsed_args);
 
 
+				var src = info.ItemSpec;
 				var outputFile = info.GetMetadata ("OutputFile");
 				if (string.IsNullOrEmpty (outputFile))
 					outputFile = Path.ChangeExtension (src, ".o");
+				outputFiles [i] = outputFile; // We keep the relative path for remote builds
+				src = Path.GetFullPath (src);
 				outputFile = Path.GetFullPath (outputFile);
 				arguments.Add ("-o");
 				arguments.Add (outputFile);
@@ -138,6 +146,11 @@ namespace Xamarin.MacDev.Tasks {
 			}
 
 			System.Threading.Tasks.Task.WaitAll (processes);
+
+			// Collect all output files (regardless of compilation success)
+			CompiledOutputFiles = outputFiles
+				.Select (file => new TaskItem (file))
+				.ToArray ();
 
 			return !Log.HasLoggedErrors;
 		}

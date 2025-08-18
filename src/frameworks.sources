@@ -287,6 +287,7 @@ AVKIT_API_SOURCES = \
 	AVKit/Enums.cs \
 
 AVKIT_SOURCES = \
+	AVKit/AVCaptureEventSound.cs \
 	AVKit/AVPlayerViewController.cs \
 
 # AVRouting
@@ -1009,6 +1010,7 @@ IMAGEIO_CORE_SOURCES = \
 	ImageIO/CGImageSource.cs \
 
 IMAGEIO_SOURCES = \
+	ImageIO/CGCopyImageSourceOptions.cs \
 	ImageIO/CGImageAnimation.cs \
 	ImageIO/CGImageDestination.cs \
 	ImageIO/CGImageMetadata.cs \
@@ -1938,6 +1940,7 @@ COMMON_FRAMEWORKS =         \
 	Accelerate              \
 	AuthenticationServices	\
 	AVFoundation            \
+	Cinematic               \
 	CoreBluetooth           \
 	CoreData                \
 	CoreFoundation          \
@@ -1979,7 +1982,6 @@ MACOS_FRAMEWORKS =          \
 	BrowserEngineKit        \
 	CallKit \
 	CFNetwork               \
-	Cinematic              \
 	ClassKit                \
 	CloudKit                \
 	Contacts                \
@@ -2007,6 +2009,7 @@ MACOS_FRAMEWORKS =          \
 	FSKit                   \
 	GameController          \
 	GameplayKit             \
+	GameSave                \
 	GLKit                   \
 	HealthKit               \
 	ImageIO                 \
@@ -2101,7 +2104,6 @@ IOS_FRAMEWORKS =         \
 	CallKit \
 	CarPlay \
 	CFNetwork \
-	Cinematic \
 	ClassKit \
 	CloudKit \
 	Contacts \
@@ -2119,14 +2121,17 @@ IOS_FRAMEWORKS =         \
 	CoreTelephony \
 	CoreText \
 	DeviceDiscoveryExtension \
+	DeviceDiscoveryUI \
 	EventKit \
 	EventKitUI \
+	ExtensionKit \
 	ExternalAccessory \
 	FileProvider \
 	FileProviderUI \
 	GLKit \
 	GameController \
 	GameplayKit \
+	GameSave \
 	HealthKit \
 	HealthKitUI \
 	HomeKit \
@@ -2203,11 +2208,11 @@ TVOS_FRAMEWORKS =           \
 	AppTrackingTransparency \
 	AudioToolbox            \
 	AudioUnit               \
+	AVRouting               \
 	BackgroundAssets        \
 	BackgroundTasks         \
 	BrowserEngineKit        \
 	CFNetwork               \
-	Cinematic              \
 	CloudKit                \
 	CoreAnimation           \
 	CoreGraphics            \
@@ -2300,10 +2305,12 @@ MACCATALYST_FRAMEWORKS = \
 	EventKit \
 	EventKitUI \
 	ExecutionPolicy \
+	ExtensionKit \
 	ExternalAccessory \
 	FileProvider \
 	GameController \
 	GameplayKit \
+	GameSave \
 	HealthKit \
 	HealthKitUI \
 	HomeKit \

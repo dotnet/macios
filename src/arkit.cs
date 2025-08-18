@@ -67,7 +67,7 @@ namespace ARKit {
 	[ErrorDomain ("ARErrorDomain")]
 	[Native]
 	public enum ARErrorCode : long {
-		/// <summary>The requested <see cref="ARKit.ARSessionConfiguration" /> is not compatible with the device.</summary>
+		/// <summary>The requested <see cref="ARKit.ARConfiguration" /> is not compatible with the device.</summary>
 		UnsupportedConfiguration = 100,
 		/// <summary>A suitable capture device could not be found.</summary>
 		SensorUnavailable = 101,
@@ -171,15 +171,15 @@ namespace ARKit {
 		Vertical = 1 << 1,
 	}
 
-	/// <summary>Enumerates environmental texturing strategies used with <see cref="ARKit.ARWorldTrackingProbeAnchor" /> objects.</summary>
+	/// <summary>Enumerates environmental texturing strategies used with <see cref="ARKit.AREnvironmentProbeAnchor" /> objects.</summary>
 	[NoTV, NoMac]
 	[Native]
 	public enum AREnvironmentTexturing : long {
 		/// <summary>Environmental texture-map generation is not in use.</summary>
 		None,
-		/// <summary>The developer creates and places <see cref="ARKit.ARWorldTrackingProbeAnchor" /> objects.</summary>
+		/// <summary>The developer creates and places <see cref="ARKit.AREnvironmentProbeAnchor" /> objects.</summary>
 		Manual,
-		/// <summary>The system automatically creates and places <see cref="ARKit.ARWorldTrackingProbeAnchor" /> objects. .</summary>
+		/// <summary>The system automatically creates and places <see cref="ARKit.AREnvironmentProbeAnchor" /> objects. .</summary>
 		Automatic,
 	}
 
@@ -827,12 +827,6 @@ namespace ARKit {
 		ARRaycastQuery CreateRaycastQuery (CGPoint point, ARRaycastTarget target, ARRaycastTargetAlignment alignment);
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="ARKit.ARSCNViewDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="ARKit.ARSCNViewDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="ARKit.ARSCNViewDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="ARKit.ARSCNViewDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IARSCNViewDelegate { }
 
 	/// <summary>Delegate object for <see cref="ARKit.ARSCNView" /> objects.</summary>
@@ -908,12 +902,6 @@ namespace ARKit {
 		ARHitTestResult [] HitTest (CGPoint point, ARHitTestResultType types);
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="ARKit.ARSKViewDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="ARKit.ARSKViewDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="ARKit.ARSKViewDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="ARKit.ARSKViewDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IARSKViewDelegate { }
 
 	/// <summary>Delegate object allowing the developer to respond to events relating to a <see cref="ARKit.ARSKView" />.</summary>
@@ -1107,12 +1095,6 @@ namespace ARKit {
 		void DidChangeGeoTrackingStatus (ARSession session, ARGeoTrackingStatus geoTrackingStatus);
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="ARKit.ARSessionDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="ARKit.ARSessionDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="ARKit.ARSessionDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="ARKit.ARSessionDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IARSessionDelegate { }
 
 	/// <summary>Delegate object for the <see cref="ARKit.ARSession" /> object, allowing the developer to respond to events relating to the augmented-reality session.</summary>
@@ -1365,10 +1347,10 @@ namespace ARKit {
 		bool SupportsFrameSemantics (ARFrameSemantics frameSemantics);
 	}
 
-	/// <summary>A <see cref="Foundation.DictionaryContainer" /> that defines the features available in <see cref="ARKit.ARBlendShapeLocation" /> .</summary>
-	///     <remarks>
-	///       <para>All values are in the range [0..1], where 0.0 indicates the neutral state and 1.0 indicates maximum displacement.</para>
-	///     </remarks>
+	/// <summary>A <see cref="Foundation.DictionaryContainer" /> that defines the features available in <see cref="ARFaceGeometry" /> .</summary>
+	/// <remarks>
+	///   <para>All values are in the range [0..1], where 0.0 indicates the neutral state and 1.0 indicates maximum displacement.</para>
+	/// </remarks>
 	[NoTV, NoMac]
 	[StrongDictionary ("ARBlendShapeLocationKeys")]
 	interface ARBlendShapeLocationOptions {
@@ -2285,22 +2267,6 @@ namespace ARKit {
 
 		[Export ("generateDilatedDepthFromFrame:commandBuffer:")]
 		IMTLTexture GenerateDilatedDepth (ARFrame frame, IMTLCommandBuffer commandBuffer);
-	}
-
-	[iOS (13, 0)]
-	[BaseType (typeof (NSObject))]
-	[DisableDefaultCtor]
-	interface ARQuickLookPreviewItem : QLPreviewItem {
-
-		[Export ("initWithFileAtURL:")]
-		[DesignatedInitializer]
-		NativeHandle Constructor (NSUrl url);
-
-		[NullAllowed, Export ("canonicalWebPageURL", ArgumentSemantic.Strong)]
-		NSUrl CanonicalWebPageUrl { get; set; }
-
-		[Export ("allowsContentScaling")]
-		bool AllowsContentScaling { get; set; }
 	}
 
 	[iOS (13, 0)]

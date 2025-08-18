@@ -110,6 +110,7 @@ steps:
 - task: UseDotNet@2
   inputs:
     version: $(DotNetSdkVersion).x
+    installationPath: $(Agent.TempDirectory)/dotnet
 
 - bash: $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/system-dependencies.sh --ignore-mono --ignore-visual-studio --ignore-mono --ignore-sharpie --ignore-shellcheck --ignore-yamllint --provision-simulators --ignore-xcode-components
   displayName: 'Provision simulators'

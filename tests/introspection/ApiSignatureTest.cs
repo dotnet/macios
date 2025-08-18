@@ -400,8 +400,8 @@ namespace Introspection {
 		protected virtual bool IsValidStruct (Type type, string structName)
 		{
 			switch (structName) {
-			// MKPolygon 'static MonoTouch.MapKit.MKPolygon _FromPoints(IntPtr, Int32)' selector: polygonWithPoints:count: == @16@0:4^{?=dd}8I12
-			// NSValue 'static MonoTouch.Foundation.NSValue FromCMTime(CMTime)' selector: valueWithCMTime: == @32@0:4{?=qiIq}8
+			// MKPolygon 'static MapKit.MKPolygon _FromPoints(IntPtr, Int32)' selector: polygonWithPoints:count: == @16@0:4^{?=dd}8I12
+			// NSValue 'static Foundation.NSValue FromCMTime(CMTime)' selector: valueWithCMTime: == @32@0:4{?=qiIq}8
 			case "?":
 				return type.IsValueType; // || (type.FullName == "System.IntPtr");
 			case "CGRect":

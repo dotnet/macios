@@ -33,6 +33,7 @@ DOTNET_REFERENCES = \
 	/r:$(DOTNET_BCL_DIR)/System.Linq.dll \
 	/r:$(DOTNET_BCL_DIR)/System.Memory.dll \
 	/r:$(DOTNET_BCL_DIR)/System.Net.Http.dll \
+	/r:$(DOTNET_BCL_DIR)/System.Net.HttpListener.dll \
 	/r:$(DOTNET_BCL_DIR)/System.Net.NameResolution.dll \
 	/r:$(DOTNET_BCL_DIR)/System.Net.Primitives.dll \
 	/r:$(DOTNET_BCL_DIR)/System.Net.Requests.dll \

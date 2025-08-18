@@ -13,21 +13,8 @@ using ObjCRuntime;
 using Foundation;
 
 namespace Contacts {
-
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Contacts.ICNKeyDescriptor" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Contacts.ICNKeyDescriptor" />.</para>
-	///       <para>If you create objects that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Contacts.ICNKeyDescriptor" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="Contacts.CNKeyDescriptor_Extensions" /> class as extension methods to the interface, allowing you to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface ICNKeyDescriptor { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Contacts.ICNKeyDescriptor" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Contacts.ICNKeyDescriptor" />.</para>
-	///       <para>If you create objects that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Contacts.ICNKeyDescriptor" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="Contacts.CNKeyDescriptor_Extensions" /> class as extension methods to the interface, allowing you to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	// Headers say "This protocol is reserved for Contacts framework usage.", so don't create a model
@@ -368,7 +355,7 @@ namespace Contacts {
 		[Field ("CNContactUrlAddressesKey")]
 		NSString UrlAddresses { get; }
 
-		/// <summary>Key identifying the <see cref="Contacts.CNContact.Relations" /> property.</summary>
+		/// <summary>Key identifying the <see cref="Contacts.CNContact.ContactRelations" /> property.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Field ("CNContactRelationsKey")]
@@ -2763,25 +2750,25 @@ namespace Contacts {
 	[EditorBrowsable (EditorBrowsableState.Advanced)]
 	interface CNSocialProfileKey { // Can be used in KVO
 
-		/// <summary>The key associated with <see cref="Contacts.CNSocialService.UrlString" />.</summary>
+		/// <summary>The key associated with <see cref="Contacts.CNSocialProfileOption.UrlString" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Field ("CNSocialProfileURLStringKey")]
 		NSString UrlString { get; }
 
-		/// <summary>The key associated with <see cref="Contacts.CNSocialService.Username" />.</summary>
+		/// <summary>The key associated with <see cref="Contacts.CNSocialProfileOption.Username" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Field ("CNSocialProfileUsernameKey")]
 		NSString Username { get; }
 
-		/// <summary>The key associated with <see cref="Contacts.CNSocialService.UserIdentifier" />.</summary>
+		/// <summary>The key associated with <see cref="Contacts.CNSocialProfileOption.UserIdentifier" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Field ("CNSocialProfileUserIdentifierKey")]
 		NSString UserIdentifier { get; }
 
-		/// <summary>The key associated with <see cref="Contacts.CNSocialProfile.Service" />.</summary>
+		/// <summary>The key associated with <see cref="Contacts.CNSocialProfileOption.Service" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Field ("CNSocialProfileServiceKey")]

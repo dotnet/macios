@@ -98,6 +98,7 @@ steps:
 - task: UseDotNet@2
   inputs:
     version: $(DotNetSdkVersion).x
+    installationPath: $(Agent.TempDirectory)/dotnet
 
 - pwsh: '& "$(Build.SourcesDirectory)/$Env:BUILD_REPOSITORY_TITLE/tools/devops/automation/scripts/initialize-test-output-variables.ps1"'
   displayName: Set output variables

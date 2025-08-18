@@ -351,4 +351,12 @@ namespace Network {
 		[TV (16, 4), Mac (13, 3), iOS (16, 4), MacCatalyst (16, 4)]
 		Datagram = 3,
 	}
+
+	[NativeName ("nw_link_quality_t")]
+	public enum NWLinkQuality : uint {
+		Unknown = 0,
+		Minimal = 10,
+		Moderate = 20,
+		Good = 30,
+	}
 }

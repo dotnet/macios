@@ -52,7 +52,7 @@ class ExportPropertyAttributeValidator : Validator<ExportData<Property>> {
 	/// <returns><c>true</c> if the data is valid; otherwise, <c>false</c>.</returns>
 	internal static bool SelectorIsNotNull (string? selector, out ImmutableArray<Diagnostic> diagnostics,
 		Location? location = null)
-		=> Selector.IsNotNull (
+		=> StringStrategies.IsNotNull (
 			selector: selector,
 			descriptor: RBI0018, // A export property must have a selector defined
 			diagnostics: out diagnostics,
@@ -67,8 +67,8 @@ class ExportPropertyAttributeValidator : Validator<ExportData<Property>> {
 	/// <returns><c>true</c> if the data is valid; otherwise, <c>false</c>.</returns>
 	internal static bool SelectorHasNoWhitespace (string? selector, out ImmutableArray<Diagnostic> diagnostics,
 		Location? location = null)
-		=> Selector.HasNoWhitespace (
-			selector: selector,
+		=> StringStrategies.HasNoWhitespace (
+			stringValue: selector,
 			descriptor: RBI0019, // A export property selector must not contain any whitespace.
 			diagnostics: out diagnostics,
 			location: location
@@ -82,6 +82,30 @@ class ExportPropertyAttributeValidator : Validator<ExportData<Property>> {
 		// add the default rules for this validator
 		AddStrategy (d => d.Selector, RBI0018, SelectorIsNotNull);
 		AddStrategy (d => d.Selector, RBI0019, SelectorHasNoWhitespace);
+
+		// prefix and suffix cannot have whitespaces
+		AddStrategy (
+			selector: d => d.NativePrefix,
+			descriptor: StringStrategies.RBI0024,
+			validation: (string? data, out ImmutableArray<Diagnostic> diagnostics, Location? location)
+				=> StringStrategies.NativeNameHasNoWhitespace (
+					data,
+					nameof (ExportData<Property>.NativePrefix),
+					out diagnostics,
+					location)
+				);
+
+		AddStrategy (
+			selector: d => d.NativeSuffix,
+			descriptor: StringStrategies.RBI0024,
+			validation: (string? data, out ImmutableArray<Diagnostic> diagnostics, Location? location)
+				=> StringStrategies.NativeNameHasNoWhitespace (
+					data,
+					nameof (ExportData<Property>.NativeSuffix),
+					out diagnostics,
+					location)
+		);
+
 		// only with methods
 		RestrictToFlagType (
 			d => d.ResultType,

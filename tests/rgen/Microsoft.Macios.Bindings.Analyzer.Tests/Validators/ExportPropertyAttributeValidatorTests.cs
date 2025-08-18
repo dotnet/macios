@@ -8,7 +8,7 @@ using ObjCBindings;
 using Xunit;
 using static Microsoft.Macios.Generator.Tests.TestDataFactory;
 
-namespace Microsoft.Macios.Bindings.Analyzer.Tests;
+namespace Microsoft.Macios.Bindings.Analyzer.Tests.Validators;
 
 public class ExportPropertyAttributeValidatorTests {
 
@@ -41,6 +41,46 @@ public class ExportPropertyAttributeValidatorTests {
 		Assert.True (errors.ContainsKey (nameof (ExportData<Property>.Selector)));
 		Assert.Single (errors [nameof (ExportData<Property>.Selector)]);
 		Assert.Equal ("RBI0019", errors [nameof (ExportData<Property>.Selector)] [0].Id);
+	}
+
+	[Theory]
+	[InlineData (" ")]
+	[InlineData (" test")]
+	[InlineData ("test ")]
+	[InlineData ("te st")]
+	[InlineData ("\t")]
+	public void NativePrefixShouldFailIfHasWhitespace (string prefix)
+	{
+		var validator = new ExportPropertyAttributeValidator ();
+		var data = new ExportData<Property> ("test") {
+			NativePrefix = prefix
+		};
+
+		var errors = validator.ValidateAll (data);
+
+		Assert.True (errors.ContainsKey (nameof (ExportData<Property>.NativePrefix)));
+		Assert.Single (errors [nameof (ExportData<Property>.NativePrefix)]);
+		Assert.Equal ("RBI0024", errors [nameof (ExportData<Property>.NativePrefix)] [0].Id);
+	}
+
+	[Theory]
+	[InlineData (" ")]
+	[InlineData (" test")]
+	[InlineData ("test ")]
+	[InlineData ("te st")]
+	[InlineData ("\t")]
+	public void NativeSuffixShouldFailIfHasWhitespace (string suffix)
+	{
+		var validator = new ExportPropertyAttributeValidator ();
+		var data = new ExportData<Property> ("test") {
+			NativeSuffix = suffix
+		};
+
+		var errors = validator.ValidateAll (data);
+
+		Assert.True (errors.ContainsKey (nameof (ExportData<Property>.NativeSuffix)));
+		Assert.Single (errors [nameof (ExportData<Property>.NativeSuffix)]);
+		Assert.Equal ("RBI0024", errors [nameof (ExportData<Property>.NativeSuffix)] [0].Id);
 	}
 
 	[Fact]

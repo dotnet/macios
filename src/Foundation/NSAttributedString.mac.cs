@@ -151,7 +151,7 @@ namespace Foundation {
 		/// <param name="resultDocumentAttributes">Upon return, any document-specific attributes.</param>
 		/// <returns>A newly created <see cref="NSAttributedString" />, created from an HTML document</returns>
 		[SupportedOSPlatform ("macos")]
-		public static NSAttributedString? CreateWithHTML (NSData htmlData, NSDictionary? options, out NSDictionary resultDocumentAttributes)
+		public static NSAttributedString? CreateWithHTML (NSData htmlData, NSDictionary options, out NSDictionary resultDocumentAttributes)
 		{
 			var rv = new NSAttributedString (NSObjectFlag.Empty);
 			rv.InitializeHandle (rv._InitWithHTML (htmlData, options, out resultDocumentAttributes), "initWithHTML:options:documentAttributes:", false);
@@ -168,7 +168,7 @@ namespace Foundation {
 		/// <param name="resultDocumentAttributes">Upon return, any document-specific attributes.</param>
 		/// <returns>A newly created <see cref="NSAttributedString" />, created from an HTML document</returns>
 		[SupportedOSPlatform ("macos")]
-		public static NSAttributedString? CreateWithHTML (NSData htmlData, NSAttributedStringDocumentAttributes? options, out NSDictionary resultDocumentAttributes)
+		public static NSAttributedString? CreateWithHTML (NSData htmlData, NSAttributedStringDocumentAttributes options, out NSDictionary resultDocumentAttributes)
 		{
 			return CreateWithHTML (htmlData, options.GetDictionary (), out resultDocumentAttributes);
 		}

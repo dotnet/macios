@@ -615,7 +615,7 @@ namespace Foundation {
 		[NoTV]
 		[Export ("initWithHTML:options:documentAttributes:")]
 		[Internal]
-		NativeHandle _InitWithHTML (NSData data, [NullAllowed] NSDictionary options, out NSDictionary resultDocumentAttributes);
+		NativeHandle _InitWithHTML (NSData data, NSDictionary options, out NSDictionary resultDocumentAttributes);
 
 #if !XAMCORE_5_0
 		/// <param name="data">To be added.</param>

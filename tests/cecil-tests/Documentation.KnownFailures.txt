@@ -15682,7 +15682,6 @@ M:PencilKit.PKCanvasViewDelegate_Extensions.EndUsingTool(PencilKit.IPKCanvasView
 M:PencilKit.PKCanvasViewDelegate.DidRefineStrokes(PencilKit.PKCanvasView,PencilKit.PKStroke[],PencilKit.PKStroke[])
 M:PencilKit.PKInk.#ctor(PencilKit.PKInkType,AppKit.NSColor)
 M:PencilKit.PKInk.#ctor(PencilKit.PKInkType,UIKit.UIColor)
-M:PencilKit.PKInkingTool.InvertColor(CoreGraphics.CGColor)
 M:PencilKit.PKToolPicker.Dispose(System.Boolean)
 M:PencilKit.PKToolPickerInkingItem.#ctor(PencilKit.PKInkType,AppKit.NSColor,System.Runtime.InteropServices.NFloat,System.Runtime.InteropServices.NFloat,System.String)
 M:PencilKit.PKToolPickerInkingItem.#ctor(PencilKit.PKInkType,AppKit.NSColor,System.Runtime.InteropServices.NFloat,System.String)

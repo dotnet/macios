@@ -470,6 +470,7 @@ public class Frameworks : Dictionary<string, Framework> {
 				{ "Cinematic", "Cinematic", new Version (17, 0), NotAvailableInSimulator },
 				{ "Symbols", "Symbols", 17, 0 },
 				{ "SensitiveContentAnalysis", "SensitiveContentAnalysis", 17, 0 },
+				{ "BrowserEngineCore", "BrowserEngineCore", 17, 4},
 				{ "BrowserEngineKit", "BrowserEngineKit", 17, 4},
 
 				{ "AccessorySetupKit", "AccessorySetupKit", 18, 0 },
@@ -659,6 +660,7 @@ public class Frameworks : Dictionary<string, Framework> {
 				case "AddressBookUI":
 				case "ARKit":
 				case "AssetsLibrary":
+				case "BrowserEngineCore":
 				case "CarPlay":
 				case "WatchConnectivity":
 					f.Unavailable = true;

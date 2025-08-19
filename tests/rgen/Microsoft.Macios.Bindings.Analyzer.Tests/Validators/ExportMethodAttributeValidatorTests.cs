@@ -15,7 +15,7 @@ using TypeInfo = Microsoft.Macios.Generator.DataModel.TypeInfo;
 namespace Microsoft.Macios.Bindings.Analyzer.Tests.Validators;
 
 public class ExportMethodAttributeValidatorTests {
-	
+
 	readonly RootContext context;
 
 	public ExportMethodAttributeValidatorTests ()

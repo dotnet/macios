@@ -80,7 +80,7 @@ class ExportPropertyAttributeValidator : Validator<ExportData<Property>> {
 	/// <summary>
 	/// Initializes a new instance of the <see cref="ExportPropertyAttributeValidator"/> class.
 	/// </summary>
-	public ExportPropertyAttributeValidator () : base (d=> d.Location)
+	public ExportPropertyAttributeValidator () : base (d => d.Location)
 	{
 		// add the default rules for this validator
 		AddStrategy (d => d.Selector, RBI0018, SelectorIsNotNull);

@@ -14,7 +14,7 @@ using static Microsoft.Macios.Generator.Tests.TestDataFactory;
 namespace Microsoft.Macios.Bindings.Analyzer.Tests.Validators;
 
 public class ExportPropertyAttributeValidatorTests {
-	
+
 	readonly RootContext context;
 
 	public ExportPropertyAttributeValidatorTests ()

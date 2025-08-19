@@ -8066,9 +8066,6 @@ M:AppKit.NSCollectionViewItem.Dispose(System.Boolean)
 M:AppKit.NSCollectionViewLayout.Dispose(System.Boolean)
 M:AppKit.NSCollectionViewSectionHeaderView_Extensions.GetSectionCollapseButton(AppKit.INSCollectionViewSectionHeaderView)
 M:AppKit.NSCollectionViewSectionHeaderView_Extensions.SetSectionCollapseButton(AppKit.INSCollectionViewSectionHeaderView,AppKit.NSButton)
-M:AppKit.NSColor.FromRgbaExposure(System.Runtime.InteropServices.NFloat,System.Runtime.InteropServices.NFloat,System.Runtime.InteropServices.NFloat,System.Runtime.InteropServices.NFloat,System.Runtime.InteropServices.NFloat)
-M:AppKit.NSColor.FromRgbaLinearExposure(System.Runtime.InteropServices.NFloat,System.Runtime.InteropServices.NFloat,System.Runtime.InteropServices.NFloat,System.Runtime.InteropServices.NFloat,System.Runtime.InteropServices.NFloat)
-M:AppKit.NSColor.GetColorByApplyingContentHeadroom(System.Runtime.InteropServices.NFloat)
 M:AppKit.NSColorPickerTouchBarItem.add_Activated(System.EventHandler)
 M:AppKit.NSColorPickerTouchBarItem.Dispose(System.Boolean)
 M:AppKit.NSColorPickerTouchBarItem.remove_Activated(System.EventHandler)
@@ -8473,15 +8470,10 @@ M:AppKit.NSView.GetAccessibilityHitTest(CoreGraphics.CGPoint)
 M:AppKit.NSView.GetAccessibilityIndexOfChild(Foundation.NSObject)
 M:AppKit.NSView.GetAccessibilityValue(Foundation.NSString,Foundation.NSObject)
 M:AppKit.NSView.GetAccessibilityValue(Foundation.NSString)
-M:AppKit.NSView.GetEdgeInsets(AppKit.NSViewLayoutRegion)
-M:AppKit.NSView.GetLayoutGuide(AppKit.NSViewLayoutRegion)
-M:AppKit.NSView.GetRect(AppKit.NSViewLayoutRegion)
 M:AppKit.NSView.IsAccessibilityAttributeSettable(Foundation.NSString)
 M:AppKit.NSView.SetAccessibilityValue(Foundation.NSString,Foundation.NSObject)
 M:AppKit.NSView.SortSubviews(System.Func{AppKit.NSView,AppKit.NSView,Foundation.NSComparisonResult})
 M:AppKit.NSViewController.Dispose(System.Boolean)
-M:AppKit.NSViewLayoutRegion.CreateMarginsLayoutRegion(AppKit.NSViewLayoutRegionAdaptivityAxis)
-M:AppKit.NSViewLayoutRegion.CreateSafeAreaLayoutRegion(AppKit.NSViewLayoutRegionAdaptivityAxis)
 M:AppKit.NSWindow.add_DidBecomeKey(System.EventHandler)
 M:AppKit.NSWindow.add_DidBecomeMain(System.EventHandler)
 M:AppKit.NSWindow.add_DidChangeBackingProperties(System.EventHandler)
@@ -9567,8 +9559,6 @@ M:CallKit.CXCallDirectoryExtensionContext.Dispose(System.Boolean)
 M:CallKit.CXCallDirectoryManager.OpenSettingsAsync
 M:CallKit.CXProvider.ReportNewIncomingVoIPPushPayloadAsync(Foundation.NSDictionary)
 M:CallKit.CXProviderDelegate_Extensions.PerformSetTranslatingCallAction(CallKit.ICXProviderDelegate,CallKit.CXProvider,CallKit.CXSetTranslatingCallAction)
-M:CallKit.CXSetTranslatingCallAction.#ctor(Foundation.NSUuid,System.Boolean,Foundation.NSLocale,Foundation.NSLocale)
-M:CallKit.CXSetTranslatingCallAction.Fulfill(CallKit.CXTranslationEngine)
 M:CallKit.ICXProviderDelegate.PerformSetTranslatingCallAction(CallKit.CXProvider,CallKit.CXSetTranslatingCallAction)
 M:CarPlay.CPApplicationDelegate.DidDiscardSceneSessions(UIKit.UIApplication,Foundation.NSSet{UIKit.UISceneSession})
 M:CarPlay.CPApplicationDelegate.GetConfiguration(UIKit.UIApplication,UIKit.UISceneSession,UIKit.UISceneConnectionOptions)
@@ -11139,10 +11129,13 @@ M:ExecutionPolicy.EPExecutionPolicy.AddPolicyException(Foundation.NSUrl,Foundati
 M:ExtensionKit.EXAppExtensionBrowserViewController.#ctor(System.String,Foundation.NSBundle)
 M:ExtensionKit.EXHostViewController.#ctor(System.String,Foundation.NSBundle)
 M:ExtensionKit.EXHostViewController.Dispose(System.Boolean)
+M:ExtensionKit.EXHostViewController.MakeXpcConnection(Foundation.NSError@)
 M:ExtensionKit.EXHostViewControllerDelegate_Extensions.DidActivate(ExtensionKit.IEXHostViewControllerDelegate,ExtensionKit.EXHostViewController)
 M:ExtensionKit.EXHostViewControllerDelegate_Extensions.ShouldAcceptXpcConnection(ExtensionKit.IEXHostViewControllerDelegate,Foundation.NSXpcConnection)
 M:ExtensionKit.EXHostViewControllerDelegate_Extensions.WillDeactivate(ExtensionKit.IEXHostViewControllerDelegate,ExtensionKit.EXHostViewController,Foundation.NSError)
+M:ExtensionKit.EXHostViewControllerDelegate.DidActivate(ExtensionKit.EXHostViewController)
 M:ExtensionKit.EXHostViewControllerDelegate.ShouldAcceptXpcConnection(Foundation.NSXpcConnection)
+M:ExtensionKit.EXHostViewControllerDelegate.WillDeactivate(ExtensionKit.EXHostViewController,Foundation.NSError)
 M:ExtensionKit.IEXHostViewControllerDelegate.DidActivate(ExtensionKit.EXHostViewController)
 M:ExtensionKit.IEXHostViewControllerDelegate.ShouldAcceptXpcConnection(Foundation.NSXpcConnection)
 M:ExtensionKit.IEXHostViewControllerDelegate.WillDeactivate(ExtensionKit.EXHostViewController,Foundation.NSError)
@@ -18472,10 +18465,6 @@ P:AppKit.NSCell.AccessibilityIsIgnored
 P:AppKit.NSCell.AccessibilityNotifiesWhenDestroyed
 P:AppKit.NSCell.AccessibilityParameterizedAttributeNames
 P:AppKit.NSCoderEventArgs.State
-P:AppKit.NSColor.LinearExposure
-P:AppKit.NSColor.StandardDynamicRangeColor
-P:AppKit.NSColorPanel.MaximumLinearExposure
-P:AppKit.NSColorWell.MaximumLinearExposure
 P:AppKit.NSComboBox.Item(System.IntPtr)
 P:AppKit.NSControlTextEditingEventArgs.FieldEditor
 P:AppKit.NSControlTextErrorEventArgs.Error
@@ -19277,8 +19266,6 @@ P:BrowserEngineKit.IBETextInput.TextLastRect
 P:BrowserEngineKit.IBETextInput.UnobscuredContentRect
 P:BrowserEngineKit.IBETextInput.UnscaledView
 P:BrowserEngineKit.IBETextInput.WeakAsyncInputDelegate
-P:CallKit.CXSetTranslatingCallAction.LocalLanguage
-P:CallKit.CXSetTranslatingCallAction.RemoteLanguage
 P:CarPlay.CPButton.Enabled
 P:CarPlay.CPInstrumentClusterController.Delegate
 P:CarPlay.CPListImageRowItem.Enabled
@@ -20866,6 +20853,8 @@ P:EventKitUI.EKEventEditEventArgs.Action
 P:EventKitUI.EKEventViewEventArgs.Action
 P:ExecutionPolicy.EPDeveloperTool.AuthorizationStatus
 P:ExtensionKit.EXHostViewController.Delegate
+P:ExtensionKit.EXHostViewController.PlaceholderView
+P:ExtensionKit.EXHostViewController.WeakDelegate
 P:ExternalAccessory.EAAccessoryEventArgs.Accessory
 P:ExternalAccessory.EAAccessoryEventArgs.Selected
 P:ExternalAccessory.EAWiFiUnconfiguredAccessoryBrowserEventArgs.Accessories
@@ -25425,7 +25414,6 @@ P:WebKit.WKWebpagePreferences.LockdownModeEnabled
 P:WebKit.WKWebView.ConversationContext
 P:WebKit.WKWebView.FindInteractionEnabled
 P:WebKit.WKWebView.Inspectable
-P:WebKit.WKWebView.ObscuredContentInsets
 P:WebKit.WKWebView.WritingToolsActive
 T:Accessibility.AXAnimatedImagesUtilities
 T:Accessibility.AXChartDescriptorContentDirection
@@ -25937,7 +25925,6 @@ T:AppKit.NSView_NSTouchBar
 T:AppKit.NSViewControllerTransitionOptions
 T:AppKit.NSViewLayerContentsPlacement
 T:AppKit.NSViewLayerContentsRedrawPolicy
-T:AppKit.NSViewLayoutRegion
 T:AppKit.NSViewLayoutRegionAdaptivityAxis
 T:AppKit.NSViewResizingMask
 T:AppKit.NSVisualEffectBlendingMode
@@ -27010,6 +26997,8 @@ T:ExecutionPolicy.EPDeveloperTool
 T:ExecutionPolicy.EPDeveloperToolStatus
 T:ExecutionPolicy.EPError
 T:ExecutionPolicy.EPExecutionPolicy
+T:ExtensionKit.EXAppExtensionBrowserViewController
+T:ExtensionKit.EXHostViewController
 T:ExternalAccessory.EABluetoothAccessoryPickerError
 T:FileProvider.NSFileProviderContentPolicy
 T:FileProvider.NSFileProviderCreateItemOptions

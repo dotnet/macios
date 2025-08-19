@@ -375,11 +375,11 @@ namespace MediaAccessibility {
 		[SupportedOSPlatform ("macos26.0")]
 		[SupportedOSPlatform ("ios26.0")]
 		[SupportedOSPlatform ("maccatalyst26.0")]
-		public static string[]? GetProfileIds ()
+		public static string []? GetProfileIds ()
 		{
 			var handle = MACaptionAppearanceCopyProfileIDs ();
 			var rv = CFArray.StringArrayFromHandle (handle, releaseHandle: true);
-			return (string[]?) (object?) rv;
+			return (string []?) (object?) rv;
 		}
 
 		[SupportedOSPlatform ("tvos26.0")]

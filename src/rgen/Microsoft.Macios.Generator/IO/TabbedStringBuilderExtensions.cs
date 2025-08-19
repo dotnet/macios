@@ -287,4 +287,31 @@ static class TabbedStringBuilderExtensions {
 		self.WriteLine ($"[Export<Property> (\"{exportData.Selector}\")]");
 		return self;
 	}
+
+	/// <summary>
+	/// Appends a `[Register]` attribute to the current writer.
+	/// This attribute is used to register a type with the Objective-C runtime.
+	/// </summary>
+	/// <param name="self">A tabbed string writer.</param>
+	/// <param name="registrationName">The name to register the type with.</param>
+	/// <param name="isWrapper">A value indicating whether the type is a wrapper around a native type.</param>
+	/// <returns>The current writer.</returns>
+	public static TabbedWriter<StringWriter> AppendRegisterAttribute (this TabbedWriter<StringWriter> self,
+		string registrationName, bool isWrapper)
+	{
+		self.WriteLine ($"[Register (\"{registrationName}\", {isWrapper.ToString ().ToLower ()})]");
+		return self;
+	}
+
+	/// <summary>
+	/// Appends a `[Register]` attribute to the current writer.
+	/// This attribute is used to register a type with the Objective-C runtime using its C# name.
+	/// </summary>
+	/// <param name="self">A tabbed string writer.</param>
+	/// <returns>The current writer.</returns>
+	public static TabbedWriter<StringWriter> AppendRegisterAttribute (this TabbedWriter<StringWriter> self)
+	{
+		self.WriteLine ("[Register]");
+		return self;
+	}
 }

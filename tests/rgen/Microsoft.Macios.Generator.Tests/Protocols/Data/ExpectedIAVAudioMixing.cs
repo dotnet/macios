@@ -97,6 +97,7 @@ public partial interface IAVAudioMixing : INativeObject, IDisposable
 	{
 		throw new global::Foundation.You_Should_Not_Call_base_In_This_Method ();
 	}
+
 }
 
 internal unsafe sealed class AVAudioMixingWrapper : BaseWrapper, IAVAudioMixing

@@ -57,6 +57,7 @@ $@"public {wrapperClassName} (NativeHandle handle, bool owns)
 
 		foreach (var property in allProperties) {
 			this.EmitProperty (context, property.ToProtocolWrapperProperty (), classBlock);
+			classBlock.WriteLine ();
 		}
 	}
 
@@ -81,15 +82,14 @@ $@"public {wrapperClassName} (NativeHandle handle, bool owns)
 	public bool TryEmit (in BindingContext bindingContext, [NotNullWhen (false)] out ImmutableArray<Diagnostic>? diagnostics)
 	{
 		diagnostics = null;
-		var bindingData = (BindingTypeData<Protocol>) bindingContext.Changes.BindingInfo;
-		var protocolName = bindingData.Name ?? bindingContext.Changes.Name [1..];
-		var wrapperName = Nomenclator.GetProtocolWrapperName (protocolName);
 
+		var wrapperName = bindingContext.GetProtocolWrapperName ();
 		// we do not emit outer classes for protocol wrappers
 		using (var classBlock = bindingContext.Builder.CreateBlock (
 				   $"internal unsafe sealed class {wrapperName} : BaseWrapper, {bindingContext.Changes.Name}",
 				   true)) {
 			EmitDefaultConstructors (bindingContext, wrapperName, classBlock);
+			classBlock.WriteLine ();
 			EmitProperties (bindingContext, classBlock);
 			EmitMethods (bindingContext, classBlock);
 		}

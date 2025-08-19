@@ -10,6 +10,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.Macios.Generator.Attributes;
 using Microsoft.Macios.Generator.Context;
 using Microsoft.Macios.Generator.DataModel;
+using Microsoft.Macios.Generator.Extensions;
 using Microsoft.Macios.Generator.Formatters;
 using Microsoft.Macios.Generator.IO;
 using ObjCBindings;
@@ -46,45 +47,6 @@ class ClassEmitter : IClassEmitter {
 		"ObjCRuntime",
 	];
 
-
-	/// <summary>
-	/// Emit the default constructors for the class.
-	/// </summary>
-	/// <param name="bindingContext">The current binding context.</param>
-	/// <param name="classBlock">Current class block.</param>
-	/// <param name="disableDefaultCtor">A value indicating whether to disable the default constructor.</param>
-	void EmitDefaultConstructors (in BindingContext bindingContext, TabbedWriter<StringWriter> classBlock, bool disableDefaultCtor)
-	{
-
-		if (!disableDefaultCtor) {
-			classBlock.WriteDocumentation (Documentation.Class.DefaultInit (bindingContext.Changes.Name));
-			classBlock.AppendGeneratedCodeAttribute ();
-			classBlock.AppendDesignatedInitializer ();
-			classBlock.WriteRaw (
-$@"[Export (""init"")]
-public {bindingContext.Changes.Name} () : base ({NSObjectFlag}.Empty)
-{{
-	if (IsDirectBinding)
-		InitializeHandle (global::ObjCRuntime.Messaging.IntPtr_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle (""init"")), ""init"");
-	else
-		InitializeHandle (global::ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle (""init"")), ""init"");
-}}
-");
-			classBlock.WriteLine ();
-		}
-
-		classBlock.WriteDocumentation (Documentation.Class.DefaultInitWithFlag (bindingContext.Changes.Name));
-		classBlock.AppendGeneratedCodeAttribute ();
-		classBlock.AppendEditorBrowsableAttribute (EditorBrowsableState.Advanced);
-		classBlock.WriteLine ($"protected {bindingContext.Changes.Name} ({NSObjectFlag} t) : base (t) {{}}");
-
-		classBlock.WriteLine ();
-		classBlock.WriteDocumentation (Documentation.Class.DefaultInitWithHandle (bindingContext.Changes.Name));
-		classBlock.AppendGeneratedCodeAttribute ();
-		classBlock.AppendEditorBrowsableAttribute (EditorBrowsableState.Advanced);
-		classBlock.WriteLine ($"protected internal {bindingContext.Changes.Name} ({NativeHandle} handle) : base (handle) {{}}");
-	}
-
 	/// <summary>
 	/// Emit the code for all the constructors in the class.
 	/// </summary>
@@ -95,7 +57,6 @@ public {bindingContext.Changes.Name} () : base ({NSObjectFlag}.Empty)
 		// When dealing with constructors we cannot sort them by name because the name is always the same as the class
 		// instead we will sort them by the selector name so that we will always generate the constructors in the same order
 		foreach (var constructor in context.Changes.Constructors.OrderBy (c => c.ExportMethodData.Selector)) {
-			classBlock.WriteLine ();
 			classBlock.AppendMemberAvailability (constructor.SymbolAvailability);
 			classBlock.AppendGeneratedCodeAttribute (optimizable: true);
 			if (constructor.ExportMethodData.Flags.HasFlag (Constructor.DesignatedInitializer)) {
@@ -128,6 +89,7 @@ $@"if (IsDirectBinding) {{
 					constructorBlock.Write (argument.PostCallConversion, verifyTrivia: false);
 				}
 			}
+			classBlock.WriteLine ();
 		}
 	}
 
@@ -140,9 +102,6 @@ $@"if (IsDirectBinding) {{
 	{
 		if (properties.Length == 0)
 			return;
-
-		// add a space just to make it nicer to read
-		classBlock.WriteLine ();
 
 		// create a nested static class with the notification helpers
 		using (var notificationClass = classBlock.CreateBlock ("public static partial class Notifications", true)) {
@@ -175,13 +134,80 @@ public static NSObject {name} ({NSObject} objectToObserve, {EventHandler}<{event
 		}
 	}
 
+	/// <summary>
+	/// Emit the events for the given delegates.
+	/// </summary>
+	/// <param name="bindingContext">The current binding context.</param>
+	/// <param name="delegates">The delegate properties.</param>
+	/// <param name="classBlock">Current class block.</param>
+	void EmitEvents (in BindingContext bindingContext, in ImmutableArray<Property> delegates, TabbedWriter<StringWriter> classBlock)
+	{
+		var applicationClass = bindingContext.RootContext.CurrentPlatform == PlatformName.MacOSX
+			? $"{NSApplication}" : $"{UIApplication}";
+		// loop over the delegates
+		foreach (var property in delegates) {
+			// see if we have a strong type
+			if (property.ExportPropertyData.StrongDelegateType.IsNullOrDefault)
+				continue;
+
+			// the following are the properties that will be used for the events to register to the delegate
+			var strongDelegateType = property.ExportPropertyData.StrongDelegateType.Name [1..];
+			var strongDelegateName = property.ExportPropertyData.StrongDelegateName
+									 ?? property.Name [4..]; // remove the 'Weak' prefix
+			var internalType =
+				Nomenclator.GetInternalDelegateForEventName (property.ExportPropertyData.StrongDelegateType);
+			// this method is reused by all elements, so we want to calculate the name only once
+			var ensureMethod = $"Ensure{strongDelegateType}";
+			using (var getInternalType =
+				   classBlock.CreateBlock ($"internal virtual Type GetInternalEvent{strongDelegateName}Type", true)) {
+				getInternalType.WriteLine ($"get => typeof ({internalType});");
+			}
+
+			classBlock.WriteLine ();
+			using (var createInternalType =
+				   classBlock.CreateBlock ($"internal virtual {internalType} CreateInternalEvent{strongDelegateName}Type ()", true)) {
+				createInternalType.WriteLine ($"return new ();");
+			}
+
+			classBlock.WriteLine ();
+			using (var ensureInternalType = classBlock.CreateBlock (
+					   $"internal {internalType} {ensureMethod} ()", true)) {
+				ensureInternalType.WriteRaw (
+$@"if ({property.Name} is not null)
+	{applicationClass}.EnsureEventAndDelegateAreNotMismatched ({property.Name}, GetInternalEvent{strongDelegateName}Type);
+var del = {strongDelegateName} as {internalType};
+if (del is null) {{
+	del = CreateInternalEvent{strongDelegateName}Type ();
+	{strongDelegateName} = ({property.ExportPropertyData.StrongDelegateType.Name})del;
+}}
+return del;
+");
+			}
+
+			classBlock.WriteLine ();
+			// loop over the events, those should be present in the property for the delegate
+			foreach (var eventInfo in property.ExportPropertyData.StrongDelegateType.Events) {
+				// create the event args type name
+				var eventHandler = eventInfo.EventArgsType is null
+					? EventHandler.ToString ()
+					: $"{EventHandler}<{eventInfo.EventArgsType}>";
+				using (var eventBlock =
+					   classBlock.CreateBlock ($"public event {eventHandler} {eventInfo.Name}", true)) {
+					eventBlock.WriteLine ($"add {{ {ensureMethod} ()!.{eventInfo.Name.Decapitalize ()} += value; }}");
+					eventBlock.WriteLine ($"remove {{ {ensureMethod} ()!.{eventInfo.Name.Decapitalize ()} -= value; }}");
+				}
+				classBlock.WriteLine ();
+			}
+		}
+	}
+
 	/// <inheritdoc />
 	public bool TryEmit (in BindingContext bindingContext, [NotNullWhen (false)] out ImmutableArray<Diagnostic>? diagnostics)
 	{
 		diagnostics = null;
 		if (bindingContext.Changes.BindingType != BindingType.Class) {
 			diagnostics = [Diagnostic.Create (
-					Diagnostics
+					RgenDiagnostics
 						.RBI0000, // An unexpected error occurred while processing '{0}'. Please fill a bug report at https://github.com/dotnet/macios/issues/new.
 					null,
 					bindingContext.Changes.FullyQualifiedSymbol)];
@@ -222,7 +248,7 @@ public static NSObject {name} ({NSObject} objectToObserve, {EventHandler}<{event
 					classBlock.WriteLine ($"public override {NativeHandle} ClassHandle => {ClassPtr};");
 					classBlock.WriteLine ();
 
-					EmitDefaultConstructors (bindingContext: bindingContext,
+					this.EmitDefaultNSObjectConstructors (className: bindingContext.Changes.Name,
 						classBlock: classBlock,
 						disableDefaultCtor: bindingData.Flags.HasFlag (ObjCBindings.Class.DisableDefaultCtor));
 
@@ -232,8 +258,11 @@ public static NSObject {name} ({NSObject} objectToObserve, {EventHandler}<{event
 
 				this.EmitFields (bindingContext.Changes.Name, bindingContext.Changes.Properties, classBlock,
 					out var notificationProperties);
-				this.EmitProperties (bindingContext, classBlock);
+				this.EmitProperties (bindingContext, classBlock, out var strongDelegates);
 				this.EmitMethods (bindingContext, classBlock);
+
+				// emit the events for the delegates
+				EmitEvents (bindingContext, strongDelegates, classBlock);
 
 				// emit the notification helper classes, leave this for the very bottom of the class
 				EmitNotifications (notificationProperties, classBlock);

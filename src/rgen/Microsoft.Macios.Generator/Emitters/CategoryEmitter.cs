@@ -37,7 +37,7 @@ class CategoryEmitter : IClassEmitter {
 		diagnostics = null;
 		if (bindingContext.Changes.BindingType != BindingType.Category) {
 			diagnostics = [Diagnostic.Create (
-				Diagnostics
+				RgenDiagnostics
 					.RBI0000, // An unexpected error occurred while processing '{0}'. Please fill a bug report at https://github.com/dotnet/macios/issues/new.
 				null,
 				bindingContext.Changes.FullyQualifiedSymbol)];
@@ -47,7 +47,7 @@ class CategoryEmitter : IClassEmitter {
 		var bindingData = (BindingTypeData<Category>) bindingContext.Changes.BindingInfo;
 		if (bindingData.CategoryType.IsNullOrDefault) {
 			diagnostics = [Diagnostic.Create (
-				Diagnostics
+				RgenDiagnostics
 					.RBI0000, // An unexpected error occurred while processing '{0}'. Please fill a bug report at https://github.com/dotnet/macios/issues/new.
 				null,
 				bindingContext.Changes.FullyQualifiedSymbol)];

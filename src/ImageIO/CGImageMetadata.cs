@@ -39,11 +39,7 @@ namespace ImageIO {
 		}
 	}
 
-	/// <param name="path">To be added.</param>
-	///     <param name="tag">To be added.</param>
-	///     <summary>Callback for the &lt;see cref=M:MonoTouch.ImageIO.CGImageMetadata.EnumerateTags/&gt; method.</summary>
-	///     <returns>To be added.</returns>
-	///     <remarks>To be added.</remarks>
+	/// <summary>Callback for the <see cref="CGImageMetadata.EnumerateTags" /> method.</summary>
 	public delegate bool CGImageMetadataTagBlock (NSString path, CGImageMetadataTag tag);
 
 	// CGImageMetadata.h

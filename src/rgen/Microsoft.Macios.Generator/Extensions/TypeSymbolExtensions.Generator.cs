@@ -4,9 +4,11 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.CodeAnalysis;
 using Microsoft.Macios.Generator.Attributes;
 using Microsoft.Macios.Generator.Availability;
+using Microsoft.Macios.Generator.Context;
 
 namespace Microsoft.Macios.Generator.Extensions;
 
@@ -75,6 +77,14 @@ static partial class TypeSymbolExtensions {
 	}
 
 	/// <summary>
+	/// Returns if a symbol represents a protocol.
+	/// </summary>
+	/// <param name="symbol">The symbol under query.</param>
+	/// <returns>True if the symbol represents a protocol, false otherwise.</returns>
+	public static bool IsProtocol (this ITypeSymbol symbol)
+		=> symbol is INamedTypeSymbol { TypeKind: TypeKind.Interface } && symbol.HasAttribute (AttributesNames.ProtocolAttribute);
+
+	/// <summary>
 	/// Retrieves the binding type data from a symbol that represents a binding type.
 	/// </summary>
 	/// <param name="symbol">The symbol under query.</param>
@@ -87,12 +97,21 @@ static partial class TypeSymbolExtensions {
 	/// Retrieve the data of an export attribute on a symbol.
 	/// </summary>
 	/// <param name="symbol">The tagged symbol.</param>
+	/// <param name="context"></param>
 	/// <typeparam name="T">Enum type used in the attribute.</typeparam>
 	/// <returns>The data of the export attribute if present or null if it was not found.</returns>
 	/// <remarks>If the passed enum is unknown or not supported as an enum for the export attribute, null will be
 	/// returned.</remarks>
-	public static ExportData<T>? GetExportData<T> (this ISymbol symbol) where T : Enum
-		=> GetAttribute<ExportData<T>> (symbol, AttributesNames.GetExportAttributeName<T>, ExportData<T>.TryParse);
+	public static ExportData<T>? GetExportData<T> (this ISymbol symbol, RootContext context) where T : Enum
+	{
+		return GetAttribute<ExportData<T>> (symbol, AttributesNames.GetExportAttributeName<T>, TryParseWrapped);
+
+		// helper that will trap the context so that we can reuse the GetAttribute method
+		bool TryParseWrapped (AttributeData attributeData, [NotNullWhen (true)] out ExportData<T>? data)
+		{
+			return ExportData<T>.TryParse (attributeData, context, out data);
+		}
+	}
 
 	/// <summary>
 	/// Retrieve the data of a field attribute on a symbol, usually a property.

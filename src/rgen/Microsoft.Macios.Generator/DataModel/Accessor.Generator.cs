@@ -24,6 +24,11 @@ readonly partial struct Accessor {
 		=> !ExportPropertyData.IsNullOrDefault && ExportPropertyData.Flags.HasFlag (ObjCBindings.Property.MarshalNativeExceptions);
 
 	/// <summary>
+	/// The location of the attribute in source code.
+	/// </summary>
+	public Location? Location { get; init; }
+
+	/// <summary>
 	/// Create a new code change in a property accessor.
 	/// </summary>
 	/// <param name="accessorKind">The kind of accessor.</param>

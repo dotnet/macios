@@ -2,7 +2,7 @@
   <Docs DocId="T:GameplayKit.GKRandomSource">
     <summary>Base class for game-appropriate pseudo-random number generators. Do not use for cryptographic or security purposes.</summary>
     <remarks>
-      <para>GameplayKit provides a number of pseudo-random number generators with a common interface for retrieving randomly-valued booleans, integers, and floats. There are also functions that shuffle properly. A <see cref="GameKit.GKRandomSource" /> instance can be used to construct a <see cref="GameKit.GKRandomDistribution" /> instance with a high-quality uniform, Gaussian, or shuffled distribution. <see cref="GameplayKit.GKRandomSource" /> functions are not appropriate for use in cryptographic or security scenarios.</para>
+      <para>GameplayKit provides a number of pseudo-random number generators with a common interface for retrieving randomly-valued booleans, integers, and floats. There are also functions that shuffle properly. A <see cref="GKRandomSource" /> instance can be used to construct a <see cref="GKRandomDistribution" /> instance with a high-quality uniform, Gaussian, or shuffled distribution. <see cref="GameplayKit.GKRandomSource" /> functions are not appropriate for use in cryptographic or security scenarios.</para>
     </remarks>
     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GameplayKit/Reference/GKRandomSource_Class/index.html">Apple documentation for <c>GKRandomSource</c></related>
   </Docs>

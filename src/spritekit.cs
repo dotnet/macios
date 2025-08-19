@@ -1591,11 +1591,11 @@ namespace SpriteKit {
 		SKNode MaskNode { get; set; }
 	}
 
-	/// <summary>A <see cref="UIKit.UIView" /> that displays a <see cref="SpriteKit.SKScene" />.</summary>
-	///     <remarks>
-	///       <para>Application developers should note the availability of debugging properties, such as <see cref="SpriteKit.SKView.ShowsFPS" />.</para>
-	///     </remarks>
-	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SpriteKit/Reference/SKView/index.html">Apple documentation for <c>SKView</c></related>
+	/// <summary>A <see cref="UIView" /> that displays a <see cref="SKScene" />.</summary>
+	/// <remarks>
+	///   <para>Application developers should note the availability of debugging properties, such as <see cref="SpriteKit.SKView.ShowsFPS" />.</para>
+	/// </remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SpriteKit/Reference/SKView/index.html">Apple documentation for <c>SKView</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (UIView))]
 	[DisableDefaultCtor]

@@ -90,7 +90,7 @@
         </value>
     <remarks>
       <para>
-          The value in the dictionary for this key, contains an array of strings that represent <see cref="Newsstand.NKAssetDownload" /> objects.</para>
+          The value in the dictionary for this key, contains an array of strings that represent <see cref="NewsstandKit.NKAssetDownload" /> objects.</para>
       <para>This key is used with the <see cref="Foundation.NSDictionary" /> passed to <see cref="UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)" /></para>
     </remarks>
   </Docs>

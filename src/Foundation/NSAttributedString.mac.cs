@@ -173,10 +173,17 @@ namespace Foundation {
 			return CreateWithHTML (htmlData, options.GetDictionary (), out resultDocumentAttributes);
 		}
 
+#if XAMCORE_5_0
 		/// <summary>Create an <see cref="NSAttributedString" /> by parsing the <paramref name="wordDocFormat" /> data as a Microsoft Word document.</summary>
 		/// <param name="wordDocFormat">The data to parse, in Microsoft Word format.</param>
 		/// <param name="resultDocumentAttributes">Upon return, any document-specific attributes.</param>
 		/// <returns>A newly created <see cref="NSAttributedString" />, created from a Microsoft Word document</returns>
+#else
+		/// <summary>Create an <see cref="NSAttributedString" /> by parsing the <paramref name="wordDocFormat" /> data as a Microsoft Word document.</summary>
+		/// <param name="wordDocFormat">The data to parse, in Microsoft Word format.</param>
+		/// <param name="docAttributes">Upon return, any document-specific attributes.</param>
+		/// <returns>A newly created <see cref="NSAttributedString" />, created from a Microsoft Word document</returns>
+#endif
 		[SupportedOSPlatform ("macos")]
 #if XAMCORE_5_0
 		public static NSAttributedString? CreateWithDocFormat (NSData wordDocFormat, out NSDictionary resultDocumentAttributes)

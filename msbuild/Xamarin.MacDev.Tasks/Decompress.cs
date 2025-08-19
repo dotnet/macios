@@ -256,14 +256,14 @@ namespace Xamarin.MacDev {
 #endif
 			return true;
 		}
-		
+
 		static bool DecompressFileEntryWithUnzip (TaskLoggingHelper log, string zip, ZipArchiveEntry entry, string targetPath, CancellationToken? cancellationToken)
 		{
 			// Check if the file or directory is a symlink, and show an error if so. Symlinks are only supported
 			// on non-Windows platforms.
 			var entryPath = entry.FullName;
 			var targetDirectory = Path.GetDirectoryName (targetPath);
-			
+
 			var args = new List<string> {
 				"-u", "-o", "-j",
 				"-d", targetDirectory,

@@ -2463,7 +2463,7 @@ namespace Xamarin.Tests {
 				switch (platform) {
 				case ApplePlatform.MacCatalyst:
 				case ApplePlatform.MacOSX:
-				Assert.That (maxLength, Is.LessThanOrEqualTo ("/Versions/A/Resources/Info.plist".Length), "Length B");
+					Assert.That (maxLength, Is.LessThanOrEqualTo ("/Versions/A/Resources/Info.plist".Length), "Length B");
 					break;
 				case ApplePlatform.iOS:
 				case ApplePlatform.TVOS:

@@ -385,7 +385,7 @@ namespace Xamarin.MacDev.Tasks.Tests {
 				return value;
 			return value [(idx + 1)..];
 		}
-	
+
 		[TestCase (ApplePlatform.iOS, false)]
 		[TestCase (ApplePlatform.iOS, true)]
 		[TestCase (ApplePlatform.MacOSX, false)]

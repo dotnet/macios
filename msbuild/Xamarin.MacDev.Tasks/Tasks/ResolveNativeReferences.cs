@@ -384,7 +384,7 @@ namespace Xamarin.MacDev.Tasks {
 		/// <param name="nativeLibraryPath">A full path to the resolved native library within the xcframework. If 'resourcePath' is compressed, this will point to where the native library is decompressed on disk.</param>
 		/// <param name="intermediateDecompressionDir"></param>
 		/// <returns>True if a native library was successfully found. Otherwise false, and an error will have been printed to the log.</returns>
-		public static bool TryResolveXCFramework (TaskLoggingHelper log, string targetFrameworkMoniker, bool isSimulator, string? architectures, string path, string intermediateDecompressionDir, ITaskItem[] filters, List<string> createdFiles, CancellationToken? cancellationToken, [NotNullWhen (true)] out string? nativeLibraryPath)
+		public static bool TryResolveXCFramework (TaskLoggingHelper log, string targetFrameworkMoniker, bool isSimulator, string? architectures, string path, string intermediateDecompressionDir, ITaskItem [] filters, List<string> createdFiles, CancellationToken? cancellationToken, [NotNullWhen (true)] out string? nativeLibraryPath)
 		{
 			string resourcePath;
 			string xcframework;
@@ -411,7 +411,7 @@ namespace Xamarin.MacDev.Tasks {
 		/// <param name="nativeLibraryPath">A full path to the resolved native library within the xcframework. If 'resourcePath' is compressed, this will point to where the native library is decompressed on disk.</param>
 		/// <param name="intermediateDecompressionDir"></param>
 		/// <returns>True if a native library was successfully found. Otherwise false, and an error will have been printed to the log.</returns>
-		public static bool TryResolveXCFramework (TaskLoggingHelper log, string targetFrameworkMoniker, bool isSimulator, string? architectures, string resourcePath, string xcframework, string intermediateDecompressionDir, ITaskItem[] filters, List<string> createdFiles, CancellationToken? cancellationToken, [NotNullWhen (true)] out string? nativeLibraryPath)
+		public static bool TryResolveXCFramework (TaskLoggingHelper log, string targetFrameworkMoniker, bool isSimulator, string? architectures, string resourcePath, string xcframework, string intermediateDecompressionDir, ITaskItem [] filters, List<string> createdFiles, CancellationToken? cancellationToken, [NotNullWhen (true)] out string? nativeLibraryPath)
 		{
 			nativeLibraryPath = null;
 
@@ -573,8 +573,8 @@ namespace Xamarin.MacDev.Tasks {
 				}
 
 				if (string.IsNullOrEmpty (resource) || string.IsNullOrEmpty (decompressionName))
-						return entryPath;
-				
+					return entryPath;
+
 				return Path.Combine (decompressionName, entryPath.Substring (resourceAsDir.Length));
 			});
 

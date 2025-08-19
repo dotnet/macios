@@ -11,3 +11,4 @@
 !missing-field! kCVImageBufferDisplayMaskRectangleStereoRightKey not bound
 !missing-pinvoke! CVPixelBufferIsCompatibleWithAttributes is not bound
 !missing-pinvoke! CVPixelFormatTypeCopyFourCharCodeString is not bound
+!missing-field! kCVPixelBufferIOSurfacePurgeableKey not bound

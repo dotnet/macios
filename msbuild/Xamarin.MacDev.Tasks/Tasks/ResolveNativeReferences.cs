@@ -562,7 +562,7 @@ namespace Xamarin.MacDev.Tasks {
 			if (!string.IsNullOrEmpty (directoryComponentToRemove))
 				directoryComponentToRemove = directoryComponentToRemove.TrimEnd ('\\', '/') + "/";
 
-			var filter = new CompressionHelper.UnzipFilter((entryPath, isDirectory) => {
+			var filter = new CompressionHelper.UnzipFilter ((entryPath, isDirectory) => {
 				if (regexps is not null) {
 					foreach (var exp in regexps) {
 						if (exp.IsMatch (entryPath)) {

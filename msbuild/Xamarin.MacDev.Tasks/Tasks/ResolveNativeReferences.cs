@@ -421,30 +421,30 @@ namespace Xamarin.MacDev.Tasks {
 
 				var isCompressed = CompressionHelper.IsCompressed (resourcePath);
 				var xcframeworkPath = isCompressed ? resourcePath : Path.Combine (resourcePath, xcframework);
-				if (!TryResolveXCFramework (log, plist, xcframeworkPath, targetFrameworkMoniker, isSimulator, architectures!, cancellationToken, out var nativeRelativeExecutablePath, out var nativeRelativePath))
+				if (!TryResolveXCFramework (log, plist, xcframeworkPath, targetFrameworkMoniker, isSimulator, architectures!, cancellationToken, out var nativeRelativePath))
 					return false;
 
 				if (!isCompressed && CompressionHelper.IsCompressed (xcframework)) {
 					var zipPath = Path.Combine (resourcePath, xcframework);
 					var xcframeworkName = Path.GetFileNameWithoutExtension (xcframework);
 					var resource = Path.Combine (xcframeworkName, nativeRelativePath);
-					if (!TryDecompress (log, zipPath, resource, filters, intermediateDecompressionDir, createdFiles, cancellationToken, out var decompresedFrameworkPath))
+					if (!TryDecompress (log, zipPath, resource, filters, intermediateDecompressionDir, createdFiles, cancellationToken, out var decompressedFrameworkPath))
 						return false;
 
-					nativeLibraryPath = Path.Combine (decompresedFrameworkPath, Path.GetFileName (nativeRelativeExecutablePath));
+					nativeLibraryPath = decompressedFrameworkPath;
 					return true;
 				}
 
 				if (!isCompressed) {
-					nativeLibraryPath = Path.Combine (resourcePath, xcframework, nativeRelativeExecutablePath);
+					nativeLibraryPath = Path.Combine (resourcePath, xcframework, nativeRelativePath);
 					return true;
 				}
 
-				var zipResource = Path.Combine (xcframework, Path.GetDirectoryName (nativeRelativeExecutablePath));
+				var zipResource = Path.Combine (xcframework, nativeRelativePath);
 				if (!TryDecompress (log, resourcePath, zipResource, filters, intermediateDecompressionDir, createdFiles, cancellationToken, out var decompressedPath))
 					return false;
 
-				nativeLibraryPath = Path.Combine (intermediateDecompressionDir, xcframework, nativeRelativeExecutablePath);
+				nativeLibraryPath = Path.Combine (intermediateDecompressionDir, Path.GetFileName (zipResource));
 
 				return true;
 			} catch (Exception e) {
@@ -461,16 +461,14 @@ namespace Xamarin.MacDev.Tasks {
 		/// <param name="log">The log to log any errors and/or warnings.</param>
 		/// <param name="plist">The plist inside the xcframework.</param>
 		/// <param name="xcframeworkPath">The path to the xcframework. This is only used for error messages, so it can also point to a compressed xcframework.</param>
-		/// <param name="isSimulator">If we're targeting the simulator</param>
 		/// <param name="targetFrameworkMoniker">The target framework moniker.</param>
-		/// <param name="architectures">The target architectures</param>
-		/// <param name="frameworkPath">A relative path to the resolved native library within the xcframework.</param>
-		/// <param name="nativeRelativeExecutablePath">The name of the native executable, inside the framework if it's a framework, or the dylib/static library if not.</param>
-		/// <param name="nativeRelativePath">The path to the .framework (if a framework), otherwise the dylib/static library.</param>
+		/// <param name="isSimulator">If we're targeting the simulator.</param>
+		/// <param name="architectures">The target architectures.</param>
+		/// <param name="cancellationToken">A cancellation token.</param>
+		/// <param name="nativeRelativePath">The relative path to the library (.framework/.dylib/.a) inside the xcframework.</param>
 		/// <returns>True if a native library was successfully found. Otherwise false, and an error will have been printed to the log.</returns>
-		public static bool TryResolveXCFramework (TaskLoggingHelper log, PDictionary plist, string xcframeworkPath, string targetFrameworkMoniker, bool isSimulator, string architectures, CancellationToken? cancellationToken, [NotNullWhen (true)] out string? nativeRelativeExecutablePath, [NotNullWhen (true)] out string? nativeRelativePath)
+		public static bool TryResolveXCFramework (TaskLoggingHelper log, PDictionary plist, string xcframeworkPath, string targetFrameworkMoniker, bool isSimulator, string architectures, CancellationToken? cancellationToken, [NotNullWhen (true)] out string? nativeRelativePath)
 		{
-			nativeRelativeExecutablePath = null;
 			nativeRelativePath = null;
 
 			var platform = PlatformFrameworkHelper.GetFramework (targetFrameworkMoniker);
@@ -536,10 +534,9 @@ namespace Xamarin.MacDev.Tasks {
 						return false;
 					}
 				}
-				var library_path = (string?) (PString?) item ["LibraryPath"];
+				var library_path = (string) (PString) item ["LibraryPath"]!;
 				var library_identifier = (string?) (PString?) item ["LibraryIdentifier"];
-				nativeRelativePath = Path.Combine (library_identifier!, library_path!);
-				nativeRelativeExecutablePath = GetActualLibrary (nativeRelativePath);
+				nativeRelativePath = Path.Combine (library_identifier!, library_path);
 				return true;
 			}
 

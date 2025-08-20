@@ -43,9 +43,8 @@ namespace Xamarin.MacDev.Tasks.Tests {
 			// on Xcode 12.2+ you get arm64 for all (iOS, tvOS) simulators
 			var path = Path.Combine (Path.GetDirectoryName (GetType ().Assembly.Location)!, "Resources", "xcf-xcode12.2.plist");
 			var plist = PDictionary.FromFile (path)!;
-			var result = ResolveNativeReferences.TryResolveXCFramework (log, plist, "N/A", targetFrameworkMoniker, isSimulator, architecture, null, out var frameworkPath, out var nativeRelativePath);
+			var result = ResolveNativeReferences.TryResolveXCFramework (log, plist, "N/A", targetFrameworkMoniker, isSimulator, architecture, null, out var nativeRelativePath);
 			Assert.AreEqual (result, !string.IsNullOrEmpty (expected), "result");
-			Assert.That (frameworkPath, Is.EqualTo (expected), "frameworkPath");
 			Assert.That (nativeRelativePath, Is.EqualTo (expectedNativeRelativePath), "frameworkPath");
 		}
 
@@ -54,9 +53,8 @@ namespace Xamarin.MacDev.Tasks.Tests {
 		{
 			var path = Path.Combine (Path.GetDirectoryName (GetType ().Assembly.Location)!, "Resources", "xcf-prexcode12.plist");
 			var plist = PDictionary.FromFile (path)!;
-			var result = ResolveNativeReferences.TryResolveXCFramework (log, plist, "N/A", targetFrameworkMoniker, isSimulator, architecture, null, out var frameworkPath, out var nativeRelativePath);
+			var result = ResolveNativeReferences.TryResolveXCFramework (log, plist, "N/A", targetFrameworkMoniker, isSimulator, architecture, null, out var nativeRelativePath);
 			Assert.AreEqual (result, !string.IsNullOrEmpty (expected), "result");
-			Assert.That (frameworkPath, Is.EqualTo (expected), "frameworkPath");
 			Assert.That (nativeRelativePath, Is.EqualTo (expectedNativeRelativePath), "frameworkPath");
 		}
 
@@ -64,7 +62,7 @@ namespace Xamarin.MacDev.Tasks.Tests {
 		public void BadInfoPlist ()
 		{
 			var plist = new PDictionary ();
-			var result = ResolveNativeReferences.TryResolveXCFramework (log, plist, "N/A", TargetFramework.DotNet_iOS_String, false, "x86_64", null, out var frameworkPath, out var nativeRelativePath);
+			var result = ResolveNativeReferences.TryResolveXCFramework (log, plist, "N/A", TargetFramework.DotNet_iOS_String, false, "x86_64", null, out var nativeRelativePath);
 			Assert.IsFalse (result, "Invalid Info.plist");
 		}
 
@@ -74,7 +72,7 @@ namespace Xamarin.MacDev.Tasks.Tests {
 		[TestCase (ApplePlatform.TVOS, false)]
 		[TestCase (ApplePlatform.TVOS, true)]
 		[TestCase (ApplePlatform.MacCatalyst, false)]
-		public void ExtractedPath (ApplePlatform platform, bool useSystemIOCompression)
+		public void CompressedNativeReference (ApplePlatform platform, bool useSystemIOCompression)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 
@@ -153,6 +151,13 @@ namespace Xamarin.MacDev.Tasks.Tests {
 				var expectedFilesSorted = expectedFiles.OrderBy (v => v).ToArray ();
 
 				Assert.That (files, Is.EqualTo (expectedFilesSorted), "Unzipped files");
+
+				var nativeFrameworks = task.NativeFrameworks?.OrderBy (v => v.ItemSpec).ToArray () ?? Array.Empty<TaskItem> ();
+				var nativeFrameworkNames = nativeFrameworks.Select (v => v.ItemSpec).ToArray ();
+				var expectedNativeFrameworkNames = new string [] {
+					Path.Combine (tmpdir, "XTest.xcframework.zip", "XTest.framework/XTest"),
+				};
+				Assert.That (nativeFrameworkNames, Is.EqualTo (expectedNativeFrameworkNames), "Native frameworks");
 			} finally {
 				if (useSystemIOCompression)
 					Environment.SetEnvironmentVariable ("XAMARIN_USE_SYSTEM_IO_COMPRESSION", originalSystemIOCompression);
@@ -165,7 +170,7 @@ namespace Xamarin.MacDev.Tasks.Tests {
 		[TestCase (ApplePlatform.TVOS, false)]
 		[TestCase (ApplePlatform.TVOS, true)]
 		[TestCase (ApplePlatform.MacCatalyst, false)]
-		public void ExtractedPath2 (ApplePlatform platform, bool useSystemIOCompression)
+		public void SidecarFromReferenceWithCompressedNativeReferences (ApplePlatform platform, bool useSystemIOCompression)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 
@@ -309,6 +314,15 @@ namespace Xamarin.MacDev.Tasks.Tests {
 				var expectedFilesSorted = expectedFiles.OrderBy (v => v).ToArray ();
 
 				Assert.That (files, Is.EqualTo (expectedFilesSorted), "Unzipped files");
+
+				var nativeFrameworks = task.NativeFrameworks?.OrderBy (v => v.ItemSpec).ToArray () ?? Array.Empty<TaskItem> ();
+				var nativeFrameworkNames = nativeFrameworks.Select (v => v.ItemSpec).ToArray ();
+				var expectedNativeFrameworkNames = new string [] {
+					Path.Combine (outputdir, "BindingWithCompressedXCFramework.resources", "XStaticArTest.framework/XStaticArTest"),
+					Path.Combine (outputdir, "BindingWithCompressedXCFramework.resources", "XStaticObjectTest.framework/XStaticObjectTest"),
+					Path.Combine (outputdir, "BindingWithCompressedXCFramework.resources", "XTest.framework/XTest"),
+				};
+				Assert.That (nativeFrameworkNames, Is.EqualTo (expectedNativeFrameworkNames), "Native frameworks");
 			} finally {
 				if (useSystemIOCompression)
 					Environment.SetEnvironmentVariable ("XAMARIN_USE_SYSTEM_IO_COMPRESSION", originalSystemIOCompression);
@@ -392,7 +406,7 @@ namespace Xamarin.MacDev.Tasks.Tests {
 		[TestCase (ApplePlatform.TVOS, false)]
 		[TestCase (ApplePlatform.TVOS, true)]
 		[TestCase (ApplePlatform.MacCatalyst, false)]
-		public void FilteredExtraction (ApplePlatform platform, bool useSystemIOCompression)
+		public void SidecarFromReferenceWithCompressedNativeReferencesAndThenFiltered (ApplePlatform platform, bool useSystemIOCompression)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 
@@ -565,6 +579,15 @@ namespace Xamarin.MacDev.Tasks.Tests {
 				var expectedFilesSorted = expectedFiles.OrderBy (v => v).ToArray ();
 
 				Assert.That (files, Is.EqualTo (expectedFilesSorted), "Unzipped files");
+
+				var nativeFrameworks = task.NativeFrameworks?.OrderBy (v => v.ItemSpec).ToArray () ?? Array.Empty<TaskItem> ();
+				var nativeFrameworkNames = nativeFrameworks.Select (v => v.ItemSpec).ToArray ();
+				var expectedNativeFrameworkNames = new string [] {
+					Path.Combine (outputdir, "BindingWithCompressedXCFramework.resources", "XStaticArTest.framework/XStaticArTest"),
+					Path.Combine (outputdir, "BindingWithCompressedXCFramework.resources", "XStaticObjectTest.framework/XStaticObjectTest"),
+					Path.Combine (outputdir, "BindingWithCompressedXCFramework.resources", "XTest.framework/XTest"),
+				};
+				Assert.That (nativeFrameworkNames, Is.EqualTo (expectedNativeFrameworkNames), "Native frameworks");
 			} finally {
 				if (useSystemIOCompression)
 					Environment.SetEnvironmentVariable ("XAMARIN_USE_SYSTEM_IO_COMPRESSION", originalSystemIOCompression);

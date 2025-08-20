@@ -553,7 +553,7 @@ namespace Microsoft.Macios.Bindings.Analyzer {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to An export property selector must not contain any whitespace.
+        ///   Looks up a localized string similar to An export property selector must not have a nonnull or empty selector.
         /// </summary>
         internal static string RBI0018MessageFormat {
             get {
@@ -945,6 +945,60 @@ namespace Microsoft.Macios.Bindings.Analyzer {
         internal static string RBI0032Title {
             get {
                 return ResourceManager.GetString("RBI0032Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A weak delegate has a duplicate strong delegate name..
+        /// </summary>
+        internal static string RBI0033Description {
+            get {
+                return ResourceManager.GetString("RBI0033Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The weak delegate &apos;{0}&apos; strong delegate &apos;{1}&apos; is already used by &apos;{2}&apos;.
+        /// </summary>
+        internal static string RBI0033MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0033MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wrong strong delegate name.
+        /// </summary>
+        internal static string RBI0033Title {
+            get {
+                return ResourceManager.GetString("RBI0033Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A selector is used in more than one symbol..
+        /// </summary>
+        internal static string RBI0034Description {
+            get {
+                return ResourceManager.GetString("RBI0034Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The selector &apos;{0}&apos; used by &apos;{1}&apos; is already used by &apos;{2}&apos;.
+        /// </summary>
+        internal static string RBI0034MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0034MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Duplicate selector.
+        /// </summary>
+        internal static string RBI0034Title {
+            get {
+                return ResourceManager.GetString("RBI0034Title", resourceCulture);
             }
         }
     }

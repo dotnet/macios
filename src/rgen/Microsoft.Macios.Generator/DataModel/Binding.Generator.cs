@@ -277,7 +277,8 @@ readonly partial struct Binding {
 	/// </summary>
 	/// <param name="enumDeclaration">The enum declaration that triggered the change.</param>
 	/// <param name="context">The root binding context of the current compilation.</param>
-	Binding (EnumDeclarationSyntax enumDeclaration, RootContext context)
+	/// <param name="validateMembers">If the struct should validate the members from the declarations. Defaults to true.</param>
+	Binding (EnumDeclarationSyntax enumDeclaration, RootContext context, bool validateMembers = true)
 	{
 		context.SemanticModel.GetSymbolData (
 			declaration: enumDeclaration,
@@ -341,7 +342,8 @@ readonly partial struct Binding {
 	/// </summary>
 	/// <param name="classDeclaration">The class declaration that triggered the change.</param>
 	/// <param name="context">The root binding context of the current compilation.</param>
-	Binding (ClassDeclarationSyntax classDeclaration, RootContext context)
+	/// <param name="validateMembers">If the struct should validate the members from the declarations. Defaults to true.</param>
+	Binding (ClassDeclarationSyntax classDeclaration, RootContext context, bool validateMembers = true)
 	{
 		context.SemanticModel.GetSymbolData (
 			declaration: classDeclaration,
@@ -361,19 +363,19 @@ readonly partial struct Binding {
 		// use the generic method to get the members, we are using an out param to try an minimize the number of times
 		// the value types are copied
 		GetMembers<ConstructorDeclarationSyntax, Constructor> (classDeclaration, context, Skip,
-			Constructor.TryCreate, out constructors);
-		GetMembers<EventDeclarationSyntax, Event> (classDeclaration, context, Skip, Event.TryCreate, out events);
+			Constructor.TryCreate, out constructors, validateMembers);
+		GetMembers<EventDeclarationSyntax, Event> (classDeclaration, context, Skip, Event.TryCreate, out events, validateMembers);
 		GetMembers<MethodDeclarationSyntax, Method> (classDeclaration, context, Skip, Method.TryCreate,
-			out methods);
+			out methods, validateMembers);
 
 		// if an only if the class declaration is a strong dictionary we will retrieve strong dictionary properties, else
 		// we will retrieve the properties as normal properties.
 		if (bindingInfo.BindingType == BindingType.StrongDictionary) {
 			GetMembers<PropertyDeclarationSyntax, Property> (classDeclaration, context, StrongDictionarySkip, Property.TryCreate,
-				out strongDictproperties);
+				out strongDictproperties, validateMembers);
 		} else {
 			GetMembers<PropertyDeclarationSyntax, Property> (classDeclaration, context, PropertySkip, Property.TryCreate,
-				out properties);
+				out properties, validateMembers);
 		}
 		Location = classDeclaration.GetLocation ();
 	}
@@ -383,7 +385,8 @@ readonly partial struct Binding {
 	/// </summary>
 	/// <param name="interfaceDeclaration">The interface declaration that triggered the change.</param>
 	/// <param name="context">The root binding context of the current compilation.</param>
-	Binding (InterfaceDeclarationSyntax interfaceDeclaration, RootContext context)
+	/// <param name="validateMembers">If the struct should validate the members from the declarations. Defaults to true.</param>
+	Binding (InterfaceDeclarationSyntax interfaceDeclaration, RootContext context, bool validateMembers = true)
 	{
 		context.SemanticModel.GetSymbolData (
 			declaration: interfaceDeclaration,
@@ -402,11 +405,11 @@ readonly partial struct Binding {
 		// we do not init the constructors, we use the default empty array
 
 		GetMembers<PropertyDeclarationSyntax, Property> (interfaceDeclaration, context.SemanticModel, PropertySkip, Property.TryCreate,
-			out properties);
+			out properties, validateMembers);
 		GetMembers<EventDeclarationSyntax, Event> (interfaceDeclaration, context.SemanticModel, Skip, Event.TryCreate,
-			out events);
+			out events, validateMembers);
 		GetMembers<MethodDeclarationSyntax, Method> (interfaceDeclaration, context.SemanticModel, Skip, Method.TryCreate,
-			out methods);
+			out methods, validateMembers);
 
 		// models are a special case, we need to be able to retrieve the parent properties and methods to be added to the
 		// wrapper classes. We will do that by accessing the parents, getting their symbol info and creating the 
@@ -444,14 +447,14 @@ readonly partial struct Binding {
 	/// </summary>
 	/// <param name="baseTypeDeclarationSyntax">The declaration syntax whose change we want to calculate.</param>
 	/// <param name="context">The root binding context of the current compilation.</param>
+	/// <param name="validateMembers">If the struct should validate the members from the declarations. Defaults to true.</param>
 	/// <returns>A code change or null if it could not be calculated.</returns>
 	public static Binding? FromDeclaration (BaseTypeDeclarationSyntax baseTypeDeclarationSyntax,
-		RootContext context)
+		RootContext context, bool validateMembers = true)
 		=> baseTypeDeclarationSyntax switch {
-			EnumDeclarationSyntax enumDeclarationSyntax => new Binding (enumDeclarationSyntax, context),
-			InterfaceDeclarationSyntax interfaceDeclarationSyntax => new Binding (interfaceDeclarationSyntax,
-				context),
-			ClassDeclarationSyntax classDeclarationSyntax => new Binding (classDeclarationSyntax, context),
+			EnumDeclarationSyntax enumDeclarationSyntax => new Binding (enumDeclarationSyntax, context, validateMembers),
+			InterfaceDeclarationSyntax interfaceDeclarationSyntax => new Binding (interfaceDeclarationSyntax, context, validateMembers),
+			ClassDeclarationSyntax classDeclarationSyntax => new Binding (classDeclarationSyntax, context, validateMembers),
 			_ => null
 		};
 

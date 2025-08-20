@@ -315,14 +315,14 @@ readonly partial struct Binding {
 		where TR : struct;
 
 	static void GetMembers<T, TR> (TypeDeclarationSyntax baseDeclarationSyntax, RootContext context,
-		SkipDelegate<T> skip, TryCreateDelegate<T, TR> tryCreate, out ImmutableArray<TR> members)
+		SkipDelegate<T> skip, TryCreateDelegate<T, TR> tryCreate, out ImmutableArray<TR> members, bool validateMembers)
 		where T : MemberDeclarationSyntax
 		where TR : struct
 	{
 		var bucket = ImmutableArray.CreateBuilder<TR> ();
 		var declarations = baseDeclarationSyntax.Members.OfType<T> ();
 		foreach (var declaration in declarations) {
-			if (skip (declaration, context.SemanticModel))
+			if (validateMembers && skip (declaration, context.SemanticModel))
 				continue;
 			if (tryCreate (declaration, context, out var change))
 				bucket.Add (change.Value);

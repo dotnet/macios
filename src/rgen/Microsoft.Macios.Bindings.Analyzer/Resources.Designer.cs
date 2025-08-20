@@ -920,5 +920,32 @@ namespace Microsoft.Macios.Bindings.Analyzer {
                 return ResourceManager.GetString("RBI0031Title", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A weak delegate has to have a strong delegate name if it does not start with &apos;Weak&apos;..
+        /// </summary>
+        internal static string RBI0032Description {
+            get {
+                return ResourceManager.GetString("RBI0032Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The weak delegate &apos;{0}&apos; is missing a strong delegate name, provide one or use the &apos;Weak&apos; prefix.
+        /// </summary>
+        internal static string RBI0032MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0032MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wrong weak delegate.
+        /// </summary>
+        internal static string RBI0032Title {
+            get {
+                return ResourceManager.GetString("RBI0032Title", resourceCulture);
+            }
+        }
     }
 }

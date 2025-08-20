@@ -88,4 +88,12 @@ public class PropertyValidatorTests {
 	[InlineData (false, "invalid getter", "invalid setter:", 3)] // Not partial and multiple issues
 	public void CombinedValidationTests (bool isPartial, string? getterSelector, string? setterSelector, int expectedDiagnosticsCount)
 		=> testLogic.CombinedPropertyValidationTestsImpl (isPartial, getterSelector, setterSelector, expectedDiagnosticsCount);
+
+	[Theory]
+	[InlineData ("MyProperty", false, null, 0)] // Not weak, should pass
+	[InlineData ("WeakMyProperty", true, null, 0)] // Weak, starts with "Weak", should pass
+	[InlineData ("MyProperty", true, "StrongDelegateName", 0)] // Weak, doesn't start with "Weak", but has StrongDelegateName, should pass
+	[InlineData ("MyProperty", true, null, 1)] // Weak, doesn't start with "Weak", no StrongDelegateName, should fail
+	public void WeakPropertyNameStartsWithWeakTests (string propertyName, bool isWeak, string? strongDelegateName, int expectedDiagnosticsCount)
+		=> testLogic.WeakPropertyNameStartsWithWeakTestsImpl (propertyName, isWeak, strongDelegateName, expectedDiagnosticsCount);
 }

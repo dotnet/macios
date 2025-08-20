@@ -13,8 +13,8 @@ using Xunit;
 namespace Microsoft.Macios.Bindings.Analyzer.Tests;
 
 public class ClassAnalyzerTests : BaseGeneratorWithAnalyzerTestClass {
-	
-	class TestDataClassAnalyzer: IEnumerable<object []> {
+
+	class TestDataClassAnalyzer : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()
 		{
 			// not partial class
@@ -43,7 +43,7 @@ public class TestClass{
 				"RBI0001",
 				"The binding type 'TestNamespace.TestClass' must be declared partial"
 			];
-			
+
 			// duplicate selector, 2 properties
 			yield return [
 				@"
@@ -84,7 +84,7 @@ public partial class TestClass{
 				"RBI0034",
 				"The selector 'count' used by 'SecondCount' is already used by 'Count'"
 			];
-			
+
 			// duplicate selector, property and method
 			yield return [
 				@"
@@ -125,7 +125,7 @@ public partial class TestClass{
 				"RBI0034",
 				"The selector 'count' used by 'GetCount' is already used by 'Count'"
 			];
-			
+
 			// duplicate selector, 2 methods
 			yield return [
 				@"
@@ -166,7 +166,7 @@ public partial class TestClass{
 				"RBI0034",
 				"The selector 'count' used by 'SecondGetCount' is already used by 'GetCount'"
 			];
-			
+
 			// duplicate strong delegate from removing Weak and setting the strong name
 			yield return [
 				@"
@@ -215,7 +215,7 @@ public partial class TestClass{
 				"RBI0033",
 				"The weak delegate 'WeakSecondDelegate' strong delegate 'Delegate' is already used by 'WeakDelegate'"
 			];
-			
+
 			// duplicate strong delegate from both setting the strong name
 			yield return [
 				@"
@@ -266,7 +266,7 @@ public partial class TestClass{
 				"RBI0033",
 				"The weak delegate 'WeakSecondDelegate' strong delegate 'Delegate' is already used by 'OtherWeakDelegate'"
 			];
-			
+
 			// empty field selector
 			yield return [
 				@"
@@ -295,7 +295,7 @@ public partial class TestClass{
 				"RBI0018",
 				"An export property selector must not have a nonnull or empty selector"
 			];
-			
+
 			// field selector with space
 			yield return [
 				@"
@@ -324,7 +324,7 @@ public partial class TestClass{
 				"RBI0019",
 				"An export property selector must not contain any whitespace"
 			];
-			
+
 			// not static field
 			yield return [
 				@"
@@ -353,7 +353,7 @@ public partial class TestClass{
 				"RBI0030",
 				"Field properties must be declared static"
 			];
-			
+
 			// not static field
 			yield return [
 				@"
@@ -382,7 +382,7 @@ public partial class TestClass{
 				"RBI0031",
 				"Exported properties must be declared partial"
 			];
-			
+
 			// not partial property
 			yield return [
 				@"
@@ -416,7 +416,7 @@ public partial class TestClass{
 				"RBI0031",
 				"Exported properties must be declared partial"
 			];
-			
+
 			// property invalid selector empty
 			yield return [
 				@"
@@ -450,7 +450,7 @@ public partial class TestClass{
 				"RBI0018",
 				"An export property selector must not have a nonnull or empty selector"
 			];
-			
+
 			// property invalid selector has space 
 			yield return [
 				@"
@@ -484,7 +484,7 @@ public partial class TestClass{
 				"RBI0019",
 				"An export property selector must not contain any whitespace"
 			];
-			
+
 			// property invalid selector has extra ':' 
 			yield return [
 				@"
@@ -526,7 +526,7 @@ public partial class TestClass{
 
 		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
 	}
-	
+
 	[Theory]
 	[AllSupportedPlatformsClassData<TestDataClassAnalyzer>]
 	public async Task ClassAnalyzer (ApplePlatform platform, string inputText, string diagnosticId, string diagnosticMessage)

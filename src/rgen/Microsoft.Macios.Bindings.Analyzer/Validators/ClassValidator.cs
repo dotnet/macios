@@ -96,7 +96,7 @@ sealed class ClassValidator : BindingValidator {
 				selectors.Add (property.Selector, [(property.Name, property.Location)]);
 			}
 		}
-		
+
 		// same with the methods
 		foreach (var method in binding.Methods) {
 			if (string.IsNullOrEmpty (method.Selector))
@@ -108,7 +108,7 @@ sealed class ClassValidator : BindingValidator {
 				selectors.Add (method.Selector, [(method.Name, method.Location)]);
 			}
 		}
-		
+
 		// get all the selectors that have more than one property or method
 		var duplicates = selectors.Where (x => x.Value.Count > 1).ToImmutableArray ();
 		if (duplicates.Length == 0) {
@@ -118,9 +118,9 @@ sealed class ClassValidator : BindingValidator {
 		// collect the diagnostics for each duplicate selector
 		var builder = ImmutableArray.CreateBuilder<Diagnostic> ();
 		foreach (var duplicate in duplicates) {
-			var firstSymbol= duplicate.Value.First ();
+			var firstSymbol = duplicate.Value.First ();
 			for (var index = 1; index < duplicate.Value.Count; index++) {
-				var dupSymbol= duplicate.Value [index]; // used for the msg and the location
+				var dupSymbol = duplicate.Value [index]; // used for the msg and the location
 				builder.Add (Diagnostic.Create (
 					descriptor: RBI0034,
 					location: dupSymbol.Location,
@@ -134,7 +134,7 @@ sealed class ClassValidator : BindingValidator {
 		diagnostics = builder.ToImmutable ();
 		return diagnostics.Length == 0;
 	}
-	
+
 	/// <summary>
 	/// Initializes a new instance of the <see cref="ClassValidator"/> class.
 	/// </summary>
@@ -142,13 +142,13 @@ sealed class ClassValidator : BindingValidator {
 	{
 		// class bindings must be partial
 		AddGlobalStrategy (RBI0001, IsPartial);
-		
+
 		// use a nested validator to validate the properties and fields individually
 		AddNestedValidator (b => b.Properties, propertiesValidator);
-		
+
 		// validate that the selectors are not duplicated, this includes properties and methods
 		AddGlobalStrategy ([RBI0034], SelectorsAreUnique);
-		
+
 		// validate that strong delegates are not duplicated, this is only for weak properties
 		AddStrategy (
 			b => b.Properties.Where (p => p.IsWeakDelegate).ToImmutableArray (),

@@ -481,7 +481,7 @@ public static class RgenDiagnostics {
 		description: new LocalizableResourceString (nameof (Resources.RBI0031Description), Resources.ResourceManager,
 			typeof (Resources))
 	);
-	
+
 	/// <summary>
 	/// Diagnostic descriptor for when a weak delegate does not start with "Weak".
 	/// </summary>

@@ -79,13 +79,13 @@ class PropertyValidator : Validator<Property> {
 	/// <param name="diagnostic">When this method returns, contains a diagnostic if the property name is invalid; otherwise, an empty array.</param>
 	/// <param name="location">The code location to be used for the diagnostics.</param>
 	/// <returns><c>true</c> if the property is not a weak delegate or if its name is valid; otherwise, <c>false</c>.</returns>
-	internal static bool WeakPropertyNameStartsWithWeak (Property data, RootContext context, 
+	internal static bool WeakPropertyNameStartsWithWeak (Property data, RootContext context,
 		out ImmutableArray<Diagnostic> diagnostic, Location? location)
 	{
 		diagnostic = ImmutableArray<Diagnostic>.Empty;
-		if (data.IsWeakDelegate 
-		    && !data.Name.StartsWith ("Weak", StringComparison.Ordinal)
-		    && string.IsNullOrEmpty (data.ExportPropertyData.StrongDelegateName)) {
+		if (data.IsWeakDelegate
+			&& !data.Name.StartsWith ("Weak", StringComparison.Ordinal)
+			&& string.IsNullOrEmpty (data.ExportPropertyData.StrongDelegateName)) {
 			// if the property is weak, it must start with Weak
 			diagnostic = [Diagnostic.Create (
 				descriptor: RBI0032,
@@ -123,7 +123,7 @@ class PropertyValidator : Validator<Property> {
 			descriptor: [RBI0018, RBI0019, RBI0029],
 			validation: AccessorIsValid,
 			propertyName: "setter");
-		
+
 		// if a property is weak ensure that it starts the name with Weak or set the strondelegatename in the 
 		// export property data
 		AddGlobalStrategy (RBI0032, WeakPropertyNameStartsWithWeak);

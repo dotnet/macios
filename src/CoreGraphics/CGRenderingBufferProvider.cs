@@ -38,13 +38,13 @@ namespace CoreGraphics {
 			if (lockPointer is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (lockPointer));
 
-			delegate* unmanaged<BlockLiteral *, IntPtr, IntPtr> lockPointerTrampoline = &LockPointerBlock;
+			delegate* unmanaged<BlockLiteral*, IntPtr, IntPtr> lockPointerTrampoline = &LockPointerBlock;
 			using var lockPointerBlock = new BlockLiteral (lockPointerTrampoline, lockPointer, typeof (CGRenderingBufferProvider), nameof (LockPointerBlock));
 
-			delegate* unmanaged<BlockLiteral *, IntPtr, IntPtr, void> unlockPointerTrampoline = &UnlockPointerBlock;
+			delegate* unmanaged<BlockLiteral*, IntPtr, IntPtr, void> unlockPointerTrampoline = &UnlockPointerBlock;
 			using var unlockPointerBlock = unlockPointer is null ? default (BlockLiteral) : new BlockLiteral (unlockPointerTrampoline, unlockPointer, typeof (CGRenderingBufferProvider), nameof (UnlockPointerBlock));
 
-			delegate* unmanaged<BlockLiteral *, IntPtr, void> releaseInfoTrampoline = &ReleaseInfoBlock;
+			delegate* unmanaged<BlockLiteral*, IntPtr, void> releaseInfoTrampoline = &ReleaseInfoBlock;
 			using var releaseInfoBlock = releaseInfo is null ? default (BlockLiteral) : new BlockLiteral (releaseInfoTrampoline, releaseInfo, typeof (CGRenderingBufferProvider), nameof (ReleaseInfoBlock));
 
 			var h = CGRenderingBufferProviderCreate (
@@ -61,7 +61,7 @@ namespace CoreGraphics {
 		public delegate IntPtr LockPointerCallback (IntPtr info);
 
 		[UnmanagedCallersOnly]
-		unsafe static IntPtr LockPointerBlock (BlockLiteral *block, IntPtr info)
+		unsafe static IntPtr LockPointerBlock (BlockLiteral* block, IntPtr info)
 		{
 			var del = BlockLiteral.GetTarget<LockPointerCallback> ((IntPtr) block);
 			if (del is not null)
@@ -72,7 +72,7 @@ namespace CoreGraphics {
 		public delegate void UnlockPointerCallback (IntPtr info, IntPtr pointer);
 
 		[UnmanagedCallersOnly]
-		unsafe static void UnlockPointerBlock (BlockLiteral *block, IntPtr info, IntPtr pointer)
+		unsafe static void UnlockPointerBlock (BlockLiteral* block, IntPtr info, IntPtr pointer)
 		{
 			var del = BlockLiteral.GetTarget<UnlockPointerCallback> ((IntPtr) block);
 			if (del is not null)
@@ -82,7 +82,7 @@ namespace CoreGraphics {
 		public delegate void ReleaseInfoCallback (IntPtr info);
 
 		[UnmanagedCallersOnly]
-		unsafe static void ReleaseInfoBlock (BlockLiteral *block, IntPtr info)
+		unsafe static void ReleaseInfoBlock (BlockLiteral* block, IntPtr info)
 		{
 			var del = BlockLiteral.GetTarget<ReleaseInfoCallback> ((IntPtr) block);
 			if (del is not null)

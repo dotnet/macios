@@ -679,8 +679,7 @@ namespace CoreGraphics {
 
 	[TV (26, 0), Mac (26, 0), MacCatalyst (26, 0), iOS (26, 0)]
 	[Flags]
-	public enum CGColorModel : uint
-	{
+	public enum CGColorModel : uint {
 		NoColorant = 0u << 0,
 		Gray = 1u << 0,
 		Rgb = 1u << 1,
@@ -690,8 +689,7 @@ namespace CoreGraphics {
 	}
 
 	[TV (26, 0), Mac (26, 0), MacCatalyst (26, 0), iOS (26, 0)]
-	public enum CGComponent : uint
-	{
+	public enum CGComponent : uint {
 		Unknown = 0,
 		Integer8Bit = 1,
 		Integer10Bit = 6,
@@ -702,8 +700,7 @@ namespace CoreGraphics {
 	}
 
 	[TV (26, 0), Mac (26, 0), MacCatalyst (26, 0), iOS (26, 0)]
-	public enum CGBitmapLayout : uint
-	{
+	public enum CGBitmapLayout : uint {
 		AlphaOnly,
 		Gray,
 		GrayAlpha,
@@ -719,8 +716,7 @@ namespace CoreGraphics {
 	}
 
 	[Partial]
-	interface CGAdaptiveKeys
-	{
+	interface CGAdaptiveKeys {
 		[Field ("kCGAdaptiveMaximumBitDepth")]
 		NSString MaximumBitDepthKey { get; }
 	}
@@ -730,17 +726,16 @@ namespace CoreGraphics {
 		CGComponent MaximumBitDepth { get; set; }
 	}
 
-	public enum CGImageComponentInfo : uint
-	{
+	public enum CGImageComponentInfo : uint {
 		Integer = (0u << 8),
 		Float = (1u << 8),
 	}
 
 	[Flags]
 	public enum CGBitmapInfo : uint {
-		AlphaInfoMask       = 0x1F,
-		ComponentInfoMask   = 0xF00,
-		ByteOrderInfoMask   = 0x7000,
+		AlphaInfoMask = 0x1F,
+		ComponentInfoMask = 0xF00,
+		ByteOrderInfoMask = 0x7000,
 		PixelFormatInfoMask = 0xF0000,
 	}
 

@@ -102,7 +102,7 @@ namespace CoreGraphics {
 		public static CGShading? CreateRadial (CGColorSpace? colorspace, CGPoint start, nfloat startRadius, CGPoint end, nfloat endRadius,
 							  CGFunction? function, bool extendStart, bool extendEnd)
 		{
-			var handle =CGShadingCreateRadial (colorspace.GetHandle (), start, startRadius, end, endRadius,
+			var handle = CGShadingCreateRadial (colorspace.GetHandle (), start, startRadius, end, endRadius,
 									 function.GetHandle (), extendStart.AsByte (), extendEnd.AsByte ());
 			GC.KeepAlive (colorspace);
 			GC.KeepAlive (function);

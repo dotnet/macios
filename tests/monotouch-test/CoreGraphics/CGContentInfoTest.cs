@@ -15,8 +15,8 @@ namespace MonoTouchFixtures.CoreGraphics {
 		public void DefaultValuesTest ()
 		{
 			var c = new CGContentInfo ();
-			Assert.AreEqual (default(CGComponent), c.DeepestImageComponent, "DeepestImageComponent");
-			Assert.AreEqual (default(CGColorModel), c.ContentColorModels, "ContentColorModels");
+			Assert.AreEqual (default (CGComponent), c.DeepestImageComponent, "DeepestImageComponent");
+			Assert.AreEqual (default (CGColorModel), c.ContentColorModels, "ContentColorModels");
 			Assert.IsFalse (c.HasWideGamut, "HasWideGamut");
 			Assert.IsFalse (c.HasTransparency, "HasTransparency");
 			Assert.AreEqual (0f, c.LargestContentHeadroom, "LargestContentHeadroom");
@@ -26,14 +26,14 @@ namespace MonoTouchFixtures.CoreGraphics {
 		public void PropertySetGetTest ()
 		{
 			var c = new CGContentInfo ();
-			c.DeepestImageComponent = (CGComponent)2;
-			c.ContentColorModels = (CGColorModel)3;
+			c.DeepestImageComponent = (CGComponent) 2;
+			c.ContentColorModels = (CGColorModel) 3;
 			c.HasWideGamut = true;
 			c.HasTransparency = true;
 			c.LargestContentHeadroom = 1.25f;
 
-			Assert.AreEqual ((CGComponent)2, c.DeepestImageComponent, "DeepestImageComponent");
-			Assert.AreEqual ((CGColorModel)3, c.ContentColorModels, "ContentColorModels");
+			Assert.AreEqual ((CGComponent) 2, c.DeepestImageComponent, "DeepestImageComponent");
+			Assert.AreEqual ((CGColorModel) 3, c.ContentColorModels, "ContentColorModels");
 			Assert.IsTrue (c.HasWideGamut, "HasWideGamut");
 			Assert.IsTrue (c.HasTransparency, "HasTransparency");
 			Assert.AreEqual (1.25f, c.LargestContentHeadroom, "LargestContentHeadroom");

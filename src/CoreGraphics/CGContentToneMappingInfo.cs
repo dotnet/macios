@@ -10,8 +10,7 @@ namespace CoreGraphics {
 	[SupportedOSPlatform ("maccatalyst26.0")]
 	[SupportedOSPlatform ("macos26.0")]
 	[StructLayout (LayoutKind.Sequential)]
-	public struct CGContentToneMappingInfo
-	{
+	public struct CGContentToneMappingInfo {
 		CGToneMapping method;
 		IntPtr /* CFDictionaryRef __nullable */ options;
 

@@ -14,44 +14,42 @@ namespace MonoTouchFixtures.CoreGraphics {
 		// FIXME: improve these tests
 
 		[Test]
-		public void CreateWithCFData_ReturnsInstanceOrNull()
+		public void CreateWithCFData_ReturnsInstanceOrNull ()
 		{
-			var data = new NSMutableData(10); // Create a small CFMutableDataRef
-			var provider = CGRenderingBufferProvider.Create(data);
-			Assert.That(provider, Is.Null.Or.InstanceOf<CGRenderingBufferProvider>(), "Should return null or a valid instance");
+			var data = new NSMutableData (10); // Create a small CFMutableDataRef
+			var provider = CGRenderingBufferProvider.Create (data);
+			Assert.That (provider, Is.Null.Or.InstanceOf<CGRenderingBufferProvider> (), "Should return null or a valid instance");
 		}
 
 		[Test]
-		public void SizeProperty_DoesNotThrow()
+		public void SizeProperty_DoesNotThrow ()
 		{
-			var data = new NSMutableData(10);
-			var provider = CGRenderingBufferProvider.Create(data);
-			if (provider != null)
-			{
-				Assert.DoesNotThrow(() => { var size = provider.Size; });
+			var data = new NSMutableData (10);
+			var provider = CGRenderingBufferProvider.Create (data);
+			if (provider is not null) {
+				Assert.DoesNotThrow (() => { var size = provider.Size; });
 			}
 		}
 
 		[Test]
-		public void LockUnlockBytePointer_DoesNotThrow()
+		public void LockUnlockBytePointer_DoesNotThrow ()
 		{
-			var data = new NSMutableData(10);
-			var provider = CGRenderingBufferProvider.Create(data);
-			if (provider != null)
-			{
-				Assert.DoesNotThrow(() => {
-					var ptr = provider.LockBytePointer();
-					provider.UnlockBytePointer();
+			var data = new NSMutableData (10);
+			var provider = CGRenderingBufferProvider.Create (data);
+			if (provider is not null) {
+				Assert.DoesNotThrow (() => {
+					var ptr = provider.LockBytePointer ();
+					provider.UnlockBytePointer ();
 				});
 			}
 		}
 
 		[Test]
-		public void GetTypeId_ReturnsTypeId()
+		public void GetTypeId_ReturnsTypeId ()
 		{
-			Assert.DoesNotThrow(() => {
-				var typeId = CGRenderingBufferProvider.GetTypeId();
-				Assert.GreaterOrEqual(typeId, 0);
+			Assert.DoesNotThrow (() => {
+				var typeId = CGRenderingBufferProvider.GetTypeId ();
+				Assert.GreaterOrEqual (typeId, 0);
 			});
 		}
 	}

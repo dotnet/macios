@@ -223,7 +223,7 @@ namespace CoreGraphics {
 		[SupportedOSPlatform ("tvos26.0")]
 		[SupportedOSPlatform ("maccatalyst26.0")]
 		[SupportedOSPlatform ("macos26.0")]
-		public static CGGradient? Create (float headroom, CGColorSpace? colorSpace, nfloat[]? components, nfloat[]? locations)
+		public static CGGradient? Create (float headroom, CGColorSpace? colorSpace, nfloat []? components, nfloat []? locations)
 		{
 			// "The number of locations is specified by `count'"
 			// "The number of color components is the product of `count' and the number of color components of `space'."

@@ -60,8 +60,7 @@ namespace MonoTouchFixtures.CoreGraphics {
 			Exception? ex = null;
 
 			using var renderer = new UIGraphicsImageRenderer (size);
-			using var img = renderer.CreateImage ((context) =>
-			{
+			using var img = renderer.CreateImage ((context) => {
 				try {
 					using var hdrCapableColorspace = CGColorSpace.CreateWithName (CGColorSpaceNames.DisplayP3_PQ);
 					Assert.IsTrue (hdrCapableColorspace.IsHdr, "IsHdr");

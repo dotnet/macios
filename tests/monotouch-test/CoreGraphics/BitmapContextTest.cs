@@ -132,8 +132,7 @@ namespace MonoTouchFixtures.CoreGraphics {
 				var calledOnFree = false;
 				var calledOnError = false;
 				using var context = CGBitmapContext.Create (width, height, (CGAdaptiveOptions?) null,
-					(ref CGContentInfo info, ref CGBitmapParameters parameters) =>
-					{
+					(ref CGContentInfo info, ref CGBitmapParameters parameters) => {
 						Console.WriteLine ($"CreateAdaptive () OnResolve#2 info={info} parameters={parameters}");
 						calledOnResolve = true;
 						return true;
@@ -173,8 +172,7 @@ namespace MonoTouchFixtures.CoreGraphics {
 					MaximumBitDepth = CGComponent.Float16Bit,
 				};
 				using var context = CGBitmapContext.Create (width, height, options,
-					(ref CGContentInfo info, ref CGBitmapParameters parameters) =>
-					{
+					(ref CGContentInfo info, ref CGBitmapParameters parameters) => {
 						Console.WriteLine ($"CreateAdaptive () OnResolve#3 info={info} parameters={parameters}");
 						calledOnResolve = true;
 						return true;
@@ -239,8 +237,7 @@ namespace MonoTouchFixtures.CoreGraphics {
 					};
 
 					using (var context = CGBitmapContext.Create (width, height, options,
-						(ref CGContentInfo info, ref CGBitmapParameters parameters) =>
-						{
+						(ref CGContentInfo info, ref CGBitmapParameters parameters) => {
 							// Console.WriteLine ($"CreateAdaptive () OnResolve#4 info={info} parameters={parameters}");
 							calledOnResolve = true;
 							return true;

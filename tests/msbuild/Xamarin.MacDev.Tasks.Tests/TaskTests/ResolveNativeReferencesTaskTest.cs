@@ -329,6 +329,182 @@ namespace Xamarin.MacDev.Tasks.Tests {
 			}
 		}
 
+		[TestCase (ApplePlatform.iOS, false)]
+		[TestCase (ApplePlatform.iOS, true)]
+		[TestCase (ApplePlatform.MacOSX, false)]
+		[TestCase (ApplePlatform.TVOS, false)]
+		[TestCase (ApplePlatform.TVOS, true)]
+		[TestCase (ApplePlatform.MacCatalyst, false)]
+		public void CompressedSidecarFromReference (ApplePlatform platform, bool useSystemIOCompression)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+
+			var tmpdir = Cache.CreateTemporaryDirectory ();
+			var inputdir = Path.Combine (tmpdir, "input");
+			var outputdir = Path.Combine (tmpdir, "output");
+
+			var dll = Path.Combine (inputdir, "bindings-test.dll");
+			var sidecar = Path.Combine (inputdir, Path.GetFileNameWithoutExtension (dll) + ".resources.zip");
+			var manifest =
+			$"""
+			<BindingAssembly>
+				<NativeReference Name="libtest.xcframework">
+					<ForceLoad></ForceLoad>
+					<Frameworks>CoreLocation Foundation ModelIO</Frameworks>
+					<IdentityWithoutPathSeparatorSuffix>/Users/rolf/work/dotnet/macios/msbuild/macios/tests/test-libraries/.libs/libtest.xcframework</IdentityWithoutPathSeparatorSuffix>
+					<IsCxx></IsCxx>
+					<Kind>Static</Kind>
+					<LinkerFlags></LinkerFlags>
+					<LinkWithSwiftSystemLibraries></LinkWithSwiftSystemLibraries>
+					<NeedsGccExceptionHandling></NeedsGccExceptionHandling>
+					<SmartLink></SmartLink>
+					<WeakFrameworks></WeakFrameworks>
+				</NativeReference>
+				<NativeReference Name="SwiftTest.xcframework">
+					<ForceLoad></ForceLoad>
+					<Frameworks></Frameworks>
+					<IdentityWithoutPathSeparatorSuffix>/Users/rolf/work/dotnet/macios/msbuild/macios/tests/test-libraries/.libs/SwiftTest.xcframework</IdentityWithoutPathSeparatorSuffix>
+					<IsCxx></IsCxx>
+					<Kind>Framework</Kind>
+					<LinkerFlags></LinkerFlags>
+					<LinkWithSwiftSystemLibraries>true</LinkWithSwiftSystemLibraries>
+					<NeedsGccExceptionHandling></NeedsGccExceptionHandling>
+					<SmartLink></SmartLink>
+					<WeakFrameworks></WeakFrameworks>
+				</NativeReference>
+				<NativeReference Name="SwiftTest2.xcframework">
+					<ForceLoad></ForceLoad>
+					<Frameworks></Frameworks>
+					<IdentityWithoutPathSeparatorSuffix>/Users/rolf/work/dotnet/macios/msbuild/macios/tests/test-libraries/.libs/SwiftTest2.xcframework</IdentityWithoutPathSeparatorSuffix>
+					<IsCxx></IsCxx>
+					<Kind>Framework</Kind>
+					<LinkerFlags></LinkerFlags>
+					<LinkWithSwiftSystemLibraries>true</LinkWithSwiftSystemLibraries>
+					<NeedsGccExceptionHandling></NeedsGccExceptionHandling>
+					<SmartLink></SmartLink>
+					<WeakFrameworks></WeakFrameworks>
+				</NativeReference>
+			</BindingAssembly>
+			""";
+
+			Directory.CreateDirectory (Path.GetDirectoryName (sidecar)!);
+			using var stream = File.OpenWrite (sidecar);
+			using (var archive = new ZipArchive (stream, ZipArchiveMode.Create)) {
+				archive.CreateEntryFromString (manifest, "manifest");
+			} // dispose here to make sure everything is written to disk
+			var rootDirectory = Path.Combine (Configuration.RootPath, "tests", "test-libraries", ".libs");
+			ZipHelpers.AddDirectoryToZipFile (sidecar, Path.Combine (rootDirectory, "libtest.xcframework"), rootDirectory);
+			ZipHelpers.AddDirectoryToZipFile (sidecar, Path.Combine (rootDirectory, "SwiftTest.xcframework"), rootDirectory);
+			ZipHelpers.AddDirectoryToZipFile (sidecar, Path.Combine (rootDirectory, "SwiftTest2.xcframework"), rootDirectory);
+
+			var item = new TaskItem (dll);
+
+			var task = CreateTask<ResolveNativeReferences> ();
+			task.Architectures = "ARM64";
+			switch (platform) {
+			case ApplePlatform.iOS:
+			case ApplePlatform.TVOS:
+				task.FrameworksDirectory = "";
+				break;
+			case ApplePlatform.MacCatalyst:
+			case ApplePlatform.MacOSX:
+				task.FrameworksDirectory = "Contents/Frameworks/";
+				break;
+			default:
+				throw new NotSupportedException ($"Unsupported platform: {platform}");
+			}
+			task.IntermediateOutputPath = outputdir;
+			task.References = new TaskItem [] {
+				item,
+			};
+			task.SdkIsSimulator = false;
+			task.TargetFrameworkMoniker = TargetFramework.GetTargetFramework (platform).ToString ();
+
+			var originalSystemIOCompression = Environment.GetEnvironmentVariable ("XAMARIN_USE_SYSTEM_IO_COMPRESSION");
+			if (useSystemIOCompression)
+				Environment.SetEnvironmentVariable ("XAMARIN_USE_SYSTEM_IO_COMPRESSION", "1");
+
+			try {
+				Assert.IsTrue (task.Execute (), "Execute");
+
+				var expectedFiles = new List<string> ();
+				switch (platform) {
+				case ApplePlatform.iOS:
+				case ApplePlatform.TVOS:
+					expectedFiles.Add (Path.Combine ("bindings-test.resources.zip"));
+					expectedFiles.Add (Path.Combine ("bindings-test.resources.zip", "libtest.a"));
+					expectedFiles.Add (Path.Combine ("bindings-test.resources.zip", "libtest.a.stamp"));
+					expectedFiles.Add (Path.Combine ("bindings-test.resources.zip", "SwiftTest.framework"));
+					expectedFiles.Add (Path.Combine ("bindings-test.resources.zip", "SwiftTest.framework.stamp"));
+					expectedFiles.Add (Path.Combine ("bindings-test.resources.zip", "SwiftTest.framework", "Info.plist"));
+					expectedFiles.Add (Path.Combine ("bindings-test.resources.zip", "SwiftTest.framework", "SwiftTest"));
+					expectedFiles.Add (Path.Combine ("bindings-test.resources.zip", "SwiftTest2.framework"));
+					expectedFiles.Add (Path.Combine ("bindings-test.resources.zip", "SwiftTest2.framework.stamp"));
+					expectedFiles.Add (Path.Combine ("bindings-test.resources.zip", "SwiftTest2.framework", "Info.plist"));
+					expectedFiles.Add (Path.Combine ("bindings-test.resources.zip", "SwiftTest2.framework", "SwiftTest2"));
+					break;
+				case ApplePlatform.MacCatalyst:
+				case ApplePlatform.MacOSX:
+					expectedFiles.Add (Path.Combine ("bindings-test.resources.zip"));
+					expectedFiles.Add (Path.Combine ("bindings-test.resources.zip", "libtest.a"));
+					expectedFiles.Add (Path.Combine ("bindings-test.resources.zip", "libtest.a.stamp"));
+					expectedFiles.Add (Path.Combine ("bindings-test.resources.zip", "SwiftTest.framework"));
+					expectedFiles.Add (Path.Combine ("bindings-test.resources.zip", "SwiftTest.framework.stamp"));
+					expectedFiles.Add (Path.Combine ("bindings-test.resources.zip", "SwiftTest.framework", "Resources"));
+					expectedFiles.Add (Path.Combine ("bindings-test.resources.zip", "SwiftTest.framework", "SwiftTest"));
+					expectedFiles.Add (Path.Combine ("bindings-test.resources.zip", "SwiftTest.framework", "Versions"));
+					expectedFiles.Add (Path.Combine ("bindings-test.resources.zip", "SwiftTest.framework", "Versions", "A"));
+					expectedFiles.Add (Path.Combine ("bindings-test.resources.zip", "SwiftTest.framework", "Versions", "A", "Resources"));
+					expectedFiles.Add (Path.Combine ("bindings-test.resources.zip", "SwiftTest.framework", "Versions", "A", "Resources", "Info.plist"));
+					expectedFiles.Add (Path.Combine ("bindings-test.resources.zip", "SwiftTest.framework", "Versions", "A", "SwiftTest"));
+					expectedFiles.Add (Path.Combine ("bindings-test.resources.zip", "SwiftTest.framework", "Versions", "Current"));
+					expectedFiles.Add (Path.Combine ("bindings-test.resources.zip", "SwiftTest2.framework"));
+					expectedFiles.Add (Path.Combine ("bindings-test.resources.zip", "SwiftTest2.framework.stamp"));
+					expectedFiles.Add (Path.Combine ("bindings-test.resources.zip", "SwiftTest2.framework", "Resources"));
+					expectedFiles.Add (Path.Combine ("bindings-test.resources.zip", "SwiftTest2.framework", "SwiftTest2"));
+					expectedFiles.Add (Path.Combine ("bindings-test.resources.zip", "SwiftTest2.framework", "Versions"));
+					expectedFiles.Add (Path.Combine ("bindings-test.resources.zip", "SwiftTest2.framework", "Versions", "A"));
+					expectedFiles.Add (Path.Combine ("bindings-test.resources.zip", "SwiftTest2.framework", "Versions", "A", "Resources"));
+					expectedFiles.Add (Path.Combine ("bindings-test.resources.zip", "SwiftTest2.framework", "Versions", "A", "Resources", "Info.plist"));
+					expectedFiles.Add (Path.Combine ("bindings-test.resources.zip", "SwiftTest2.framework", "Versions", "A", "SwiftTest2"));
+					expectedFiles.Add (Path.Combine ("bindings-test.resources.zip", "SwiftTest2.framework", "Versions", "Current"));
+					break;
+				default:
+					throw new NotSupportedException ($"Unsupported platform: {platform}");
+				}
+
+				var files = new FileSystemEnumerable<string> (
+					directory: task.IntermediateOutputPath,
+					transform: (ref FileSystemEntry entry) => entry.ToFullPath (),
+					options: new EnumerationOptions {
+						RecurseSubdirectories = true,
+					}) {
+					ShouldRecursePredicate = (ref FileSystemEntry entry) => {
+						return entry.ToFileSystemInfo ().LinkTarget is null;
+					}
+				}
+				.Select (v => v [(task.IntermediateOutputPath.Length + 1)..])
+				.OrderBy (v => v)
+				.ToArray ();
+
+				var expectedFilesSorted = expectedFiles.OrderBy (v => v).ToArray ();
+
+				Assert.That (files, Is.EqualTo (expectedFilesSorted), "Unzipped files");
+
+				var nativeFrameworks = task.NativeFrameworks?.OrderBy (v => v.ItemSpec).ToArray () ?? Array.Empty<TaskItem> ();
+				var nativeFrameworkNames = nativeFrameworks.Select (v => v.ItemSpec).ToArray ();
+				var expectedNativeFrameworkNames = new string [] {
+					Path.Combine (outputdir, "bindings-test.resources.zip", "libtest.a"),
+					Path.Combine (outputdir, "bindings-test.resources.zip", "SwiftTest.framework/SwiftTest"),
+					Path.Combine (outputdir, "bindings-test.resources.zip", "SwiftTest2.framework/SwiftTest2"),
+				};
+				Assert.That (nativeFrameworkNames, Is.EqualTo (expectedNativeFrameworkNames), "Native frameworks");
+			} finally {
+				if (useSystemIOCompression)
+					Environment.SetEnvironmentVariable ("XAMARIN_USE_SYSTEM_IO_COMPRESSION", originalSystemIOCompression);
+			}
+		}
+
 		static void AddFileToZip (ZipArchive archive, string pathInZip, string contents)
 		{
 			var entry = archive.CreateEntry (pathInZip);
@@ -594,5 +770,22 @@ namespace Xamarin.MacDev.Tasks.Tests {
 			}
 		}
 
+	}
+}
+
+static class ZipHelpers {
+	public static void AddDirectoryToZipFile (string zipFile, string sourceDirectory, string rootDirectory)
+	{
+		var task = Execution.RunWithStringBuildersAsync ("zip", [zipFile, "--symlink", "-r", sourceDirectory.Substring (rootDirectory.Length + 1)], workingDirectory: rootDirectory);
+		task.Wait ();
+		Assert.That (task.Result.ExitCode, Is.EqualTo (0), "Zip command failed");
+	}
+
+	public static void CreateEntryFromString (this ZipArchive archive, string content, string entryName)
+	{
+		var entry = archive.CreateEntry (entryName);
+		using var stream = entry.Open ();
+		using var writer = new StreamWriter (stream);
+		writer.Write (content);
 	}
 }

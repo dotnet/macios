@@ -557,13 +557,16 @@ namespace Xamarin.MacDev.Tasks {
 				ToArray ();
 
 			var decompressionName = Path.GetFileName (resource);
-			var resourceAsDir = resource.TrimEnd ('\\', '/') + "/";
+			var directoryComponentToRemove = Path.GetDirectoryName (resource);
 
-			var filter = new CompressionHelper.UnzipFilter ((entryPath, isDirectory) => {
+			if (!string.IsNullOrEmpty (directoryComponentToRemove))
+				directoryComponentToRemove = directoryComponentToRemove.TrimEnd ('\\', '/') + "/";
+
+			var filter = new CompressionHelper.UnzipFilter((entryPath, isDirectory) => {
 				if (regexps is not null) {
 					foreach (var exp in regexps) {
 						if (exp.IsMatch (entryPath)) {
-							log.LogMessage (MessageImportance.Low, "Did not extract {0} because the filter filtered it out.", entryPath);
+							log.LogMessage (MessageImportance.Low, "Did not extract {0} because the filter '{1}' filtered it out.", entryPath, exp);
 							return null;
 						}
 					}
@@ -572,7 +575,8 @@ namespace Xamarin.MacDev.Tasks {
 				if (string.IsNullOrEmpty (resource) || string.IsNullOrEmpty (decompressionName))
 					return entryPath;
 
-				return Path.Combine (decompressionName, entryPath.Substring (resourceAsDir.Length));
+				var targetPath = entryPath.Substring (directoryComponentToRemove.Length);
+				return targetPath;
 			});
 
 			return CompressionHelper.TryDecompress (log, zip, resource, decompressionDir, decompressionName, filter, createdFiles, cancellationToken, out decompressedResource);

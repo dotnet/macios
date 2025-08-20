@@ -1064,7 +1064,8 @@ namespace AVFoundation {
 		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
 		[Export ("packetDependencies")]
 		// This is a pointer to a C array of structs, with no (easy at least) way to get the length, so we can't marshal to a managed array
-		/* unsafe AudioStreamPacketDependencyDescription* */ IntPtr PacketDependencies { get; }
+		/* unsafe AudioStreamPacketDependencyDescription* */
+		IntPtr PacketDependencies { get; }
 	}
 
 	/// <summary>Associates an the index of a bus on an audionode with and an <see cref="AVFoundation.AVAudioNode" />.</summary>

@@ -19933,6 +19933,8 @@ namespace AVFoundation {
 		[Export ("selectedMediaPresentationSettingsForMediaSelectionGroup:")]
 		NSDictionary<AVMediaPresentationSelector, NSObject> GetSelectedMediaPresentationSettings (AVMediaSelectionGroup mediaSelectionGroup);
 
+		// From the AVPlayerItemCustomMediaSelectionScheme (AVPlayerItem) category
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
 		[Export ("effectiveMediaPresentationSettingsForMediaSelectionGroup:")]
 		NSDictionary<AVMediaPresentationSelector, NSObject> GetEffectiveMediaPresentationSettings (AVMediaSelectionGroup mediaSelectionGroup);
 	}
@@ -26465,7 +26467,8 @@ namespace AVFoundation {
 	}
 
 	// Added to headers in Xcode 26, but according to the same headers this selector is available in earlier OS versions.
-	[MacCatalyst (18, 0), TV (18, 0), Mac (15, 0), iOS (18, 0)]
+	// However, introspection can't find this type in earlier OS versions, so using Xcode 26 availability for now.
+	[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
 	[BaseType (typeof (AVMetricEvent))]
 	[DisableDefaultCtor]
 	interface AVMetricDownloadSummaryEvent {

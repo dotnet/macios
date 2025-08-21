@@ -9,13 +9,12 @@ namespace BrowserEngineCore {
 	[NoMacCatalyst, NoTV, NoMac, iOS (26, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface BEAudioSession
-	{
+	interface BEAudioSession {
 		[Export ("initWithAudioSession:")]
 		NativeHandle Constructor (AVAudioSession audioSession);
 
 		[NullAllowed, Export ("availableOutputs")]
-		AVAudioSessionPortDescription[] AvailableOutputs { get; }
+		AVAudioSessionPortDescription [] AvailableOutputs { get; }
 
 		[Export ("setPreferredOutput:error:")]
 		bool SetPreferredOutput ([NullAllowed] AVAudioSessionPortDescription outPort, [NullAllowed] out NSError outError);

@@ -8,6 +8,7 @@
 // Copyright 2014 Xamarin Inc.
 //
 using System;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -34,7 +35,6 @@ namespace VideoToolbox {
 		{
 		}
 
-		/// <include file="../../docs/api/VideoToolbox/VTCompressionSession.xml" path="/Documentation/Docs[@DocId='M:VideoToolbox.VTCompressionSession.Dispose(System.Boolean)']/*" />
 		protected override void Dispose (bool disposing)
 		{
 			if (Handle != IntPtr.Zero)
@@ -46,45 +46,40 @@ namespace VideoToolbox {
 			base.Dispose (disposing);
 		}
 
-		// sourceFrame: It seems it's only used as a parameter to be passed into EncodeFrame so no need to strong type it
-		/// <include file="../../docs/api/VideoToolbox.VTCompressionSession/VTCompressionOutputCallback.xml" path="/Documentation/Docs[@DocId='T:VideoToolbox.VTCompressionSession.VTCompressionOutputCallback']/*" />
+		/// <summary>A delegate that will be called for each compressed frame.</summary>
+		/// <param name="sourceFrame">The token passed starting the encoding operation.</param>
+		/// <param name="status">Status code indicating if the operation was successful or not.</param>
+		/// <param name="flags">Contains information about the encoding operation.</param>
+		/// <param name="buffer">Contains a pointer to the encoded buffer if successful and the frame was not dropped. A <see langword="null" /> value indicates either an error, or that the frame was dropped.</param>
+		/// <remarks>The delegate will be called in the order the frames are decoded, which is not necessarily the same as the display order.</remarks>
 		public delegate void VTCompressionOutputCallback (/* void* */ IntPtr sourceFrame, /* OSStatus */ VTStatus status, VTEncodeInfoFlags flags, CMSampleBuffer? buffer);
 
-		static void CompressionCallback (IntPtr outputCallbackClosure, IntPtr sourceFrame, VTStatus status, VTEncodeInfoFlags infoFlags, IntPtr cmSampleBufferPtr, bool owns)
-		{
-			var gch = GCHandle.FromIntPtr (outputCallbackClosure);
-			var func = (VTCompressionOutputCallback) gch.Target!;
-			if (cmSampleBufferPtr == IntPtr.Zero) {
-				func (sourceFrame, status, infoFlags, null);
-			} else {
-				using (var sampleBuffer = new CMSampleBuffer (cmSampleBufferPtr, owns: owns))
-					func (sourceFrame, status, infoFlags, sampleBuffer);
-			}
-		}
-
+		/// <summary>Create a new compression session</summary>
 		/// <param name="width">Frame width in pixels.</param>
-		///         <param name="height">Frame height in pixels.</param>
-		///         <param name="codecType">Encoder to use to compress the frames.</param>
-		///         <param name="compressionOutputCallback">Method that will be invoked to process a compressed frame.  See the delegate type for more information on the received parameters.</param>
-		///         <param name="encoderSpecification">Parameters to choose the encoder, or null to let VideoToolbox choose it.</param>
-		///         <param name="sourceImageBufferAttributes">The Dictionary property extracted from a <see cref="CoreVideo.CVPixelBufferAttributes" /> type, or an NSDictionary with the desired CoreVideo Pixel Buffer Attributes values.</param>
-		///         <summary>Creates a compression session</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>The <paramref name="compressionOutputCallback" /> will be invoked for each frame in decode order, not necessarily the display order.</remarks>
+		/// <param name="height">Frame height in pixels.</param>
+		/// <param name="codecType">Encoder to use to compress the frames.</param>
+		/// <param name="compressionOutputCallback">A callback that will be invoked to process a compressed frame. See the delegate type for more information on the received parameters.</param>
+		/// <param name="encoderSpecification">Parameters to choose the encoder, or <see langword="null" /> to let VideoToolbox choose it.</param>
+		/// <param name="sourceImageBufferAttributes">Any additional attributes for the compressed data.</param>
+		/// <returns>A new <see cref="VTCompressionSession" /> if successful, <see langword="null" /> otherwise.</returns>
+		/// <remarks>The <paramref name="compressionOutputCallback" /> callback will be invoked for each frame in decode order, not necessarily the display order.</remarks>
 		public static VTCompressionSession? Create (int width, int height, CMVideoCodecType codecType,
 			VTCompressionOutputCallback compressionOutputCallback,
 			VTVideoEncoderSpecification? encoderSpecification = null, // hardware acceleration is default behavior on iOS. no opt-in required.
 			NSDictionary? sourceImageBufferAttributes = null)
 		{
 			unsafe {
-				return Create (width, height, codecType, compressionOutputCallback, encoderSpecification, sourceImageBufferAttributes, &NewCompressionCallback);
+				return Create (width, height, codecType, compressionOutputCallback, encoderSpecification, sourceImageBufferAttributes, &CompressionCallback);
 			}
 		}
 
 		[UnmanagedCallersOnly]
-		static void NewCompressionCallback (IntPtr outputCallbackClosure, IntPtr sourceFrame, VTStatus status, VTEncodeInfoFlags infoFlags, IntPtr cmSampleBufferPtr)
+		static void CompressionCallback (IntPtr outputCallbackClosure, IntPtr sourceFrame, VTStatus status, VTEncodeInfoFlags infoFlags, IntPtr cmSampleBufferPtr)
 		{
-			CompressionCallback (outputCallbackClosure, sourceFrame, status, infoFlags, cmSampleBufferPtr, false);
+			var gch = GCHandle.FromIntPtr (outputCallbackClosure);
+			var func = (VTCompressionOutputCallback) gch.Target!;
+			using var sampleBuffer = cmSampleBufferPtr == IntPtr.Zero ? null : new CMSampleBuffer (cmSampleBufferPtr, owns: false);
+			func (sourceFrame, status, infoFlags, sampleBuffer);
 		}
 
 		[DllImport (Constants.VideoToolboxLibrary)]
@@ -100,24 +95,15 @@ namespace VideoToolbox {
 			/* void* */ IntPtr outputCallbackClosure,
 			/* VTCompressionSessionRef* */ IntPtr* compressionSessionOut);
 
-#if false // Disabling for now until we have some tests on this
-		public static VTCompressionSession? Create (int width, int height, CMVideoCodecType codecType,
-			VTVideoEncoderSpecification? encoderSpecification = null,
-			NSDictionary? sourceImageBufferAttributes = null)
-		{
-			return Create (width, height, codecType, null,
-				encoderSpecification, sourceImageBufferAttributes);
-		}
-#endif
-		/// <param name="width">To be added.</param>
-		///         <param name="height">To be added.</param>
-		///         <param name="codecType">To be added.</param>
-		///         <param name="compressionOutputCallback">To be added.</param>
-		///         <param name="encoderSpecification">To be added.</param>
-		///         <param name="sourceImageBufferAttributes">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Create a new compression session</summary>
+		/// <param name="width">Frame width in pixels.</param>
+		/// <param name="height">Frame height in pixels.</param>
+		/// <param name="codecType">Encoder to use to compress the frames.</param>
+		/// <param name="compressionOutputCallback">A callback that will be invoked to process a compressed frame. See the delegate type for more information on the received parameters.</param>
+		/// <param name="encoderSpecification">Parameters to choose the encoder, or <see langword="null" /> to let VideoToolbox choose it.</param>
+		/// <param name="sourceImageBufferAttributes">Any additional attributes for the compressed data.</param>
+		/// <returns>A new <see cref="VTCompressionSession" /> if successful, <see langword="null" /> otherwise.</returns>
+		/// <remarks>The <paramref name="compressionOutputCallback" /> callback will be invoked for each frame in decode order, not necessarily the display order.</remarks>
 		public static VTCompressionSession? Create (int width, int height, CMVideoCodecType codecType,
 			VTCompressionOutputCallback compressionOutputCallback,
 			VTVideoEncoderSpecification? encoderSpecification, // hardware acceleration is default behavior on iOS. no opt-in required.
@@ -164,9 +150,8 @@ namespace VideoToolbox {
 		[DllImport (Constants.VideoToolboxLibrary)]
 		extern static IntPtr /* cvpixelbufferpoolref */ VTCompressionSessionGetPixelBufferPool (IntPtr handle);
 
-		/// <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Get the pixel buffer pool for this compression session.</summary>
+		/// <returns>The pixel buffer pool for this compression session.</returns>
 		public CVPixelBufferPool? GetPixelBufferPool ()
 		{
 			var ret = VTCompressionSessionGetPixelBufferPool (GetCheckedHandle ());
@@ -184,9 +169,9 @@ namespace VideoToolbox {
 		[DllImport (Constants.VideoToolboxLibrary)]
 		extern static VTStatus VTCompressionSessionPrepareToEncodeFrames (IntPtr handle);
 
-		/// <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Prepare to encode frames.</summary>
+		/// <returns><see cref="VTStatus.Ok" /> if successful, or an error code otherwise.</returns>
+		/// <remarks>Calling this method before starting an encoding operation is optional.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
@@ -206,6 +191,11 @@ namespace VideoToolbox {
 			/* void* */ IntPtr sourceFrame,
 			/* VTEncodeInfoFlags */ VTEncodeInfoFlags* flags);
 
+#if !XAMCORE_5_0
+		// The 'sourceFrame' parameter is just a user-provided value, it's not tied to any particular type/object.
+		// In this overload it's typed as 'CVImageBuffer', which doesn't make much sense - thus remove this overload when we can.
+		[Obsolete ("Call 'EncodeFrame(CVImageBuffer,CMTime,CMTime,NSDictionary,IntPtr,out VTEncodeInfoFlags)' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		public VTStatus EncodeFrame (CVImageBuffer imageBuffer, CMTime presentationTimestamp, CMTime duration,
 			NSDictionary frameProperties, CVImageBuffer sourceFrame, out VTEncodeInfoFlags infoFlags)
 		{
@@ -216,18 +206,18 @@ namespace VideoToolbox {
 			GC.KeepAlive (sourceFrame);
 			return status;
 		}
+#endif
 
-		/// <param name="imageBuffer">To be added.</param>
-		///         <param name="presentationTimestamp">To be added.</param>
-		///         <param name="duration">To be added.</param>
-		///         <param name="frameProperties">To be added.</param>
-		///         <param name="sourceFrame">To be added.</param>
-		///         <param name="infoFlags">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Encode a video frame.</summary>
+		/// <param name="imageBuffer">The image buffer with the image data to compress.</param>
+		/// <param name="presentationTimestamp">The presentation timestamp for this frame.</param>
+		/// <param name="duration">The duration of this frame.</param>
+		/// <param name="frameProperties">Any frame properties for this frame.</param>
+		/// <param name="sourceFrame">This value will be passed to the <see cref="VTCompressionOutputCallback" /> callback that was specified when the compression session was created.</param>
+		/// <param name="infoFlags">Upon return, any information flags from the encoder for this frame.</param>
+		/// <returns><see cref="VTStatus.Ok" /> if successful, or an error code otherwise.</returns>
 		public VTStatus EncodeFrame (CVImageBuffer imageBuffer, CMTime presentationTimestamp, CMTime duration,
-			NSDictionary frameProperties, IntPtr sourceFrame, out VTEncodeInfoFlags infoFlags)
+			NSDictionary? frameProperties, IntPtr sourceFrame, out VTEncodeInfoFlags infoFlags)
 		{
 			if (imageBuffer is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (imageBuffer));
@@ -243,77 +233,12 @@ namespace VideoToolbox {
 			}
 		}
 
-#if false // Disabling for now until we have some tests on this
-		[DllImport (Constants.VideoToolboxLibrary)]
-		extern static VTStatus VTCompressionSessionEncodeFrameWithOutputHandler (
-			/* VTCompressionSessionRef */ IntPtr session,
-			/* CVImageBufferRef */ IntPtr imageBuffer,
-			/* CMTime */ CMTime presentation,
-			/* CMTime */ CMTime duration, // can ve CMTime.Invalid
-			/* CFDictionaryRef */ IntPtr dict, // can be null, undocumented options
-			/* VTEncodeInfoFlags */ out VTEncodeInfoFlags flags,
-			/* VTCompressionOutputHandler */ ref BlockLiteral outputHandler);
-
-		public delegate void VTCompressionOutputHandler (VTStatus status, VTEncodeInfoFlags infoFlags, CMSampleBuffer sampleBuffer);
-
-		unsafe delegate void VTCompressionOutputHandlerProxy (BlockLiteral *block,
-			VTStatus status, VTEncodeInfoFlags infoFlags, IntPtr sampleBuffer);
-
-		static unsafe readonly VTCompressionOutputHandlerProxy compressionOutputHandlerTrampoline = VTCompressionOutputHandlerTrampoline;
-
-		[MonoPInvokeCallback (typeof (VTCompressionOutputHandlerProxy))]
-		static unsafe void VTCompressionOutputHandlerTrampoline (BlockLiteral *block,
-			VTStatus status, VTEncodeInfoFlags infoFlags, IntPtr sampleBuffer)
-		{
-			var del = (VTCompressionOutputHandler)(block->Target);
-			if (del is not null)
-				del (status, infoFlags, new CMSampleBuffer (sampleBuffer));
-		}
-
-		public VTStatus EncodeFrame (CVImageBuffer imageBuffer, CMTime presentationTimestamp, CMTime duration,
-			NSDictionary frameProperties, CVImageBuffer sourceFrame, out VTEncodeInfoFlags infoFlags,
-			VTCompressionOutputHandler outputHandler)
-		{
-			if (sourceFrame is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (sourceFrame));
-
-			VTStatus status = EncodeFrame (imageBuffer, presentationTimestamp, duration, frameProperties, sourceFrame.GetCheckedHandle (), out infoFlags, outputHandler);
-			GC.KeepAlive (sourceFrame);
-			return status;
-		}
-
-		public VTStatus EncodeFrame (CVImageBuffer imageBuffer, CMTime presentationTimestamp, CMTime duration,
-			NSDictionary frameProperties, IntPtr sourceFrame, out VTEncodeInfoFlags infoFlags,
-			VTCompressionOutputHandler outputHandler)
-		{
-			if (imageBuffer is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (imageBuffer));
-			if (outputHandler is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (outputHandler));
-
-			var block = new BlockLiteral ();
-			block.SetupBlockUnsafe (compressionOutputHandlerTrampoline, outputHandler);
-
-			try {
-				VTStatus status = VTCompressionSessionEncodeFrameWithOutputHandler (GetCheckedHandle (),
-					imageBuffer.Handle, presentationTimestamp, duration,
-					frameProperties.GetHandle (),
-					out infoFlags, ref block);
-				GC.KeepAlive (imageBuffer);
-				GC.KeepAlive (frameProperties);
-				return status;
-			} finally {
-				block.CleanupBlock ();
-			}
-		}
-#endif
 		[DllImport (Constants.VideoToolboxLibrary)]
 		extern static VTStatus VTCompressionSessionCompleteFrames (IntPtr session, CMTime completeUntilPresentationTimeStamp);
 
-		/// <param name="completeUntilPresentationTimeStamp">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Finish decoding all frames.</summary>
+		/// <param name="completeUntilPresentationTimeStamp">If this value is numeric, all frames with presentation timestamps lower or equal to this value will be emitted. If this value is not numeric, all frames will be emitted.</param>
+		/// <returns><see cref="VTStatus.Ok" /> if successful, or an error code otherwise.</returns>
 		public VTStatus CompleteFrames (CMTime completeUntilPresentationTimeStamp)
 		{
 			return VTCompressionSessionCompleteFrames (GetCheckedHandle (), completeUntilPresentationTimeStamp);
@@ -326,10 +251,9 @@ namespace VideoToolbox {
 		[DllImport (Constants.VideoToolboxLibrary)]
 		extern static VTStatus VTCompressionSessionBeginPass (IntPtr session, VTCompressionSessionOptionFlags flags, IntPtr reserved);
 
-		/// <param name="flags">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Start a compression pass.</summary>
+		/// <param name="flags">Any flags for this compression pass.</param>
+		/// <returns><see cref="VTStatus.Ok" /> if successful, or an error code otherwise.</returns>
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
@@ -346,10 +270,9 @@ namespace VideoToolbox {
 		[DllImport (Constants.VideoToolboxLibrary)]
 		unsafe extern static VTStatus VTCompressionSessionEndPass (IntPtr session, byte* furtherPassesRequestedOut, IntPtr reserved);
 
-		/// <param name="furtherPassesRequested">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>End a compression pass.</summary>
+		/// <param name="furtherPassesRequested">Will be set to <see langword="true" /> if the decoder requests another pass.</param>
+		/// <returns><see cref="VTStatus.Ok" /> if successful, or an error code otherwise.</returns>
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
@@ -365,10 +288,8 @@ namespace VideoToolbox {
 			return result;
 		}
 
-		// Like EndPass, but this will be the final pass, so the encoder will skip the evaluation.
-		/// <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>End a compression pass, marking this pass as the final pass.</summary>
+		/// <returns><see cref="VTStatus.Ok" /> if successful, or an error code otherwise.</returns>
 		public VTStatus EndPassAsFinal ()
 		{
 			unsafe {
@@ -386,10 +307,9 @@ namespace VideoToolbox {
 			/* CMItemCount* */ int* itemCount,
 			/* const CMTimeRange** */ IntPtr* target);
 
-		/// <param name="timeRanges">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Get the time ranges for the next pass.</summary>
+		/// <param name="timeRanges">Upon return, the time ranges for the next πass.</param>
+		/// <returns><see cref="VTStatus.Ok" /> if successful, or an error code otherwise.</returns>
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
@@ -415,10 +335,9 @@ namespace VideoToolbox {
 			return VTStatus.Ok;
 		}
 
-		/// <param name="options">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Set any compression properties.</summary>
+		/// <param name="options">The compression properties to set.</param>
+		/// <returns><see cref="VTStatus.Ok" /> if successful, or an error code otherwise.</returns>
 		public VTStatus SetCompressionProperties (VTCompressionProperties options)
 		{
 			if (options is null)
@@ -444,5 +363,118 @@ namespace VideoToolbox {
 		{
 			return VTIsStereoMVHEVCEncodeSupported () != 0;
 		}
+
+#if !__TVOS__
+		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("ios17.0")]
+		[UnsupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("maccatalyst17.0")]
+		[DllImport (Constants.VideoToolboxLibrary)]
+		unsafe static extern VTStatus VTCompressionSessionEncodeMultiImageFrame (
+			IntPtr /* CM_NONNULL VTCompressionSessionRef */ session,
+			IntPtr /* CM_NONNULL CMTaggedBufferGroupRef */ taggedBufferGroup,
+			CMTime presentationTimeStamp,
+			CMTime duration, // may be kCMTimeInvalid
+			IntPtr /* CM_NULLABLE CFDictionaryRef */ frameProperties,
+			IntPtr /* void * CM_NULLABLE */ sourceFrameRefcon,
+			VTEncodeInfoFlags* /* VTEncodeInfoFlags * CM_NULLABLE */ infoFlagsOut);
+
+		/// <summary>Encode a multi-image video frame.</summary>
+		/// <param name="taggedBufferGroup">The tagged buffer group with multiple images to compress.</param>
+		/// <param name="presentationTimestamp">The presentation timestamp for this frame.</param>
+		/// <param name="duration">The duration of this frame.</param>
+		/// <param name="frameProperties">Any frame properties for this frame.</param>
+		/// <param name="sourceFrame">This value will be passed to the <see cref="VTCompressionOutputCallback" /> callback that was specified when the compression session was created.</param>
+		/// <param name="infoFlags">Upon return, any information flags from the encoder for this frame.</param>
+		/// <returns><see cref="VTStatus.Ok" /> if successful, or an error code otherwise.</returns>
+		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("ios17.0")]
+		[UnsupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("maccatalyst17.0")]
+		public unsafe VTStatus EncodeMultiImageFrame (CMTaggedBufferGroup taggedBufferGroup, CMTime presentationTimestamp, CMTime duration, NSDictionary? frameProperties, IntPtr sourceFrame, out VTEncodeInfoFlags infoFlags)
+		{
+			infoFlags = default;
+
+			var rv = VTCompressionSessionEncodeMultiImageFrame (
+						GetCheckedHandle (),
+						taggedBufferGroup.GetNonNullHandle (nameof (taggedBufferGroup)),
+						presentationTimestamp,
+						duration,
+						frameProperties.GetHandle (),
+						sourceFrame,
+						(VTEncodeInfoFlags*) Unsafe.AsPointer<VTEncodeInfoFlags> (ref infoFlags));
+
+			GC.KeepAlive (taggedBufferGroup);
+			GC.KeepAlive (frameProperties);
+
+			return rv;
+		}
+
+		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("ios17.0")]
+		[UnsupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("maccatalyst17.0")]
+		[DllImport (Constants.VideoToolboxLibrary)]
+		unsafe static extern VTStatus VTCompressionSessionEncodeMultiImageFrameWithOutputHandler (
+			IntPtr /* CM_NONNULL VTCompressionSessionRef */ session,
+			IntPtr /* CM_NONNULL CMTaggedBufferGroupRef */ taggedBufferGroup,
+			CMTime presentationTimeStamp,
+			CMTime duration, // may be kCMTimeInvalid
+			IntPtr /* CM_NULLABLE CFDictionaryRef */ frameProperties, // may be NULL
+			VTEncodeInfoFlags* /* VTEncodeInfoFlags * CM_NULLABLE */ infoFlagsOut,
+			BlockLiteral* /* CM_NONNULL VTCompressionOutputHandler	*/ outputHandler);
+
+		/// <summary>Encode a multi-image video frame.</summary>
+		/// <param name="taggedBufferGroup">The tagged buffer group with multiple images to compress.</param>
+		/// <param name="presentationTimestamp">The presentation timestamp for this frame.</param>
+		/// <param name="duration">The duration of this frame.</param>
+		/// <param name="frameProperties">Any frame properties for this frame.</param>
+		/// <param name="infoFlags">Upon return, any information flags from the encoder for this frame.</param>
+		/// <param name="outputHandler">A callback that will be invoked to process a compressed frame. See the delegate type for more information on the received parameters.</param>
+		/// <returns><see cref="VTStatus.Ok" /> if successful, or an error code otherwise.</returns>
+		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("ios17.0")]
+		[UnsupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("maccatalyst17.0")]
+		[BindingImpl (BindingImplOptions.Optimizable)]
+		public unsafe VTStatus EncodeMultiImageFrame (CMTaggedBufferGroup taggedBufferGroup, CMTime presentationTimestamp, CMTime duration, NSDictionary? frameProperties, out VTEncodeInfoFlags infoFlags, VTCompressionOutputHandler outputHandler)
+		{
+			delegate* unmanaged<BlockLiteral*, VTStatus, VTEncodeInfoFlags, IntPtr, void> trampoline = &VTCompressionOutputHandlerCallback;
+			using var trampolineBlock = new BlockLiteral (trampoline, outputHandler, typeof (VTCompressionSession), nameof (VTCompressionOutputHandlerCallback));
+
+			infoFlags = default;
+
+			var rv = VTCompressionSessionEncodeMultiImageFrameWithOutputHandler (
+						GetCheckedHandle (),
+						taggedBufferGroup.GetNonNullHandle (nameof (taggedBufferGroup)),
+						presentationTimestamp,
+						duration,
+						frameProperties.GetHandle (),
+						(VTEncodeInfoFlags*) Unsafe.AsPointer<VTEncodeInfoFlags> (ref infoFlags),
+						&trampolineBlock);
+
+			GC.KeepAlive (taggedBufferGroup);
+			GC.KeepAlive (frameProperties);
+
+			return rv;
+		}
+
+		[UnmanagedCallersOnly]
+		unsafe static void VTCompressionOutputHandlerCallback (BlockLiteral* block, VTStatus status, VTEncodeInfoFlags infoFlags, IntPtr sampleBuffer)
+		{
+			var del = BlockLiteral.GetTarget<VTCompressionOutputHandler> ((IntPtr) block);
+			if (del is not null) {
+				var sampleBufferObj = sampleBuffer == IntPtr.Zero ? null : new CMSampleBuffer (sampleBuffer, owns: false);
+				del (status, infoFlags, sampleBufferObj);
+			}
+		}
+
+		/// <summary>A delegate that will be called for each compressed frame.</summary>
+		/// <param name="status">Status code indicating if the operation was successful or not.</param>
+		/// <param name="infoFlags">Contains information about the encoding operation.</param>
+		/// <param name="sampleBuffer">Contains a pointer to the encoded buffer if successful and the frame was not dropped. A <see langword="null" /> value indicates either an error, or that the frame was dropped.</param>
+		/// <remarks>The delegate will be called in the order the frames are decoded, which is not necessarily the same as the display order.</remarks>
+		public delegate void VTCompressionOutputHandler (VTStatus status, VTEncodeInfoFlags infoFlags, CMSampleBuffer? sampleBuffer);
+#endif // !__TVOS__
 	}
 }

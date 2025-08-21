@@ -1,6 +1,11 @@
-### API not marked with unavailable (but without availability for tvOS/iOS)
-!missing-field! kVTVideoDecoderSpecification_PreferredDecoderGPURegistryID not bound
-!missing-field! kVTVideoDecoderSpecification_RequiredDecoderGPURegistryID not bound
+# The headers are quite clear that these enums aren't available on tvOS; so not adding them to tvOS for now
+!missing-enum! VTFrameRateConversionConfigurationQualityPrioritization not bound
+!missing-enum! VTFrameRateConversionConfigurationRevision not bound
+!missing-enum! VTFrameRateConversionParametersSubmissionMode not bound
+!missing-enum! VTMotionBlurConfigurationQualityPrioritization not bound
+!missing-enum! VTMotionBlurConfigurationRevision not bound
+!missing-enum! VTMotionBlurParametersSubmissionMode not bound
+!missing-enum! VTOpticalFlowConfigurationQualityPrioritization not bound
+!missing-enum! VTOpticalFlowConfigurationRevision not bound
+!missing-enum! VTOpticalFlowParametersSubmissionMode not bound
 
-## availability macro says iOS 8.0 but constants are under a #if !TARGET_OS_IPHONE define.
-## introspection does not report them as missing...

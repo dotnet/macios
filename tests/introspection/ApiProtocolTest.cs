@@ -159,6 +159,20 @@ namespace Introspection {
 			case "MTLTensorExtents":
 			case "MTLTensorReferenceType":
 			case "MTLTextureViewDescriptor":
+			case "VTFrameRateConversionConfiguration":
+			case "VTFrameRateConversionParameters":
+			case "VTLowLatencyFrameInterpolationConfiguration":
+			case "VTLowLatencyFrameInterpolationParameters":
+			case "VTLowLatencySuperResolutionScalerConfiguration":
+			case "VTLowLatencySuperResolutionScalerParameters":
+			case "VTMotionBlurConfiguration":
+			case "VTMotionBlurParameters":
+			case "VTOpticalFlowConfiguration":
+			case "VTOpticalFlowParameters":
+			case "VTSuperResolutionScalerConfiguration":
+			case "VTSuperResolutionScalerParameters":
+			case "VTTemporalNoiseFilterConfiguration":
+			case "VTTemporalNoiseFilterParameters":
 				if (TestRuntime.IsSimulator)
 					return true;
 				goto default;

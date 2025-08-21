@@ -770,6 +770,44 @@ namespace CoreMedia {
 
 			return arr;
 		}
+
+		[SupportedOSPlatform ("ios17.0")]
+		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("tvos17.0")]
+		[SupportedOSPlatform ("maccatalyst17.0")]
+		[DllImport (Constants.CoreMediaLibrary)]
+		unsafe static extern /* OSStatus */ CMFormatDescriptionError CMVideoFormatDescriptionCopyTagCollectionArray (
+			IntPtr /* CMVideoFormatDescriptionRef CM_NONNULL */ formatDescription,
+			IntPtr* /* CM_RETURNS_RETAINED_PARAMETER CFArrayRef CM_NULLABLE * */ tagCollectionsOut);
+
+		/// <summary>Get any multi-image properties as an array of <see cref="CMTagCollection" /> values.</summary>
+		/// <param name="tagCollections">Upon output, and if successful, the format description's array of <see cref="CMTagCollection" /> values.</param>
+		/// <returns><see cref="CMFormatDescriptionError.None" /> if succcessful, or an error code otherwise.</returns>
+		public CMFormatDescriptionError GetTagCollections (out CMTagCollection []? tagCollections)
+		{
+			IntPtr array;
+			CMFormatDescriptionError rv;
+
+			tagCollections = null;
+
+			unsafe {
+				rv = CMVideoFormatDescriptionCopyTagCollectionArray (GetCheckedHandle (), &array);
+			}
+
+			if (rv == CMFormatDescriptionError.None)
+				tagCollections = CFArray.ArrayFromHandleFunc<CMTagCollection> (array, (h) => new CMTagCollection (h, false), releaseHandle: true)!;
+
+			return rv;
+		}
+
+		/// <summary>Get any multi-image properties as an array of <see cref="CMTagCollection" /> values.</summary>
+		public CMTagCollection []? TagCollections {
+			get {
+				GetTagCollections (out var tagCollections);
+				return tagCollections;
+			}
+		}
+
 #endif
 	}
 }

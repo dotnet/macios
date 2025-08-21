@@ -1238,7 +1238,73 @@ namespace Introspection {
 					break;
 				}
 				break;
-
+			case "VTLowLatencyFrameInterpolationConfiguration":
+				switch (selectorName) {
+				case "isSupported":
+					if (TestRuntime.IsSimulator)
+						return true;
+					break;
+				}
+				break;
+			case "VTFrameRateConversionConfiguration":
+				switch (selectorName) {
+				case "defaultRevision":
+				case "isSupported":
+				case "supportedRevisions":
+					if (TestRuntime.IsSimulator)
+						return true;
+					break;
+				}
+				break;
+			case "VTLowLatencySuperResolutionScalerConfiguration":
+				switch (selectorName) {
+				case "supportedScaleFactorsForFrameWidth:frameHeight:":
+				case "isSupported":
+					if (TestRuntime.IsSimulator)
+						return true;
+					break;
+				}
+				break;
+			case "VTMotionBlurConfiguration":
+				switch (selectorName) {
+				case "defaultRevision":
+				case "isSupported":
+				case "supportedRevisions":
+					if (TestRuntime.IsSimulator)
+						return true;
+					break;
+				}
+				break;
+			case "VTOpticalFlowConfiguration":
+				switch (selectorName) {
+				case "defaultRevision":
+				case "isSupported":
+				case "supportedRevisions":
+					if (TestRuntime.IsSimulator)
+						return true;
+					break;
+				}
+				break;
+			case "VTSuperResolutionScalerConfiguration":
+				switch (selectorName) {
+				case "defaultRevision":
+				case "isSupported":
+				case "supportedRevisions":
+				case "supportedScaleFactors":
+					if (TestRuntime.IsSimulator)
+						return true;
+					break;
+				}
+				break;
+			case "VTTemporalNoiseFilterConfiguration":
+				switch (selectorName) {
+				case "isSupported":
+				case "supportedSourcePixelFormats":
+					if (TestRuntime.IsSimulator)
+						return true;
+					break;
+				}
+				break;
 			}
 
 			// old binding mistake

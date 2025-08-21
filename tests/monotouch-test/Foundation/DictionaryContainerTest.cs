@@ -15,6 +15,8 @@ using CoreGraphics;
 using CoreMedia;
 using Foundation;
 using ObjCRuntime;
+using VideoToolbox;
+
 using NUnit.Framework;
 
 #if HAS_UIKIT
@@ -622,6 +624,44 @@ namespace MonoTouchFixtures.Foundation {
 				wrapped.UIEdgeInsetsField = null;
 				Assert.IsNull (wrapped.UIEdgeInsetsField, "UIEdgeInsetsField - final");
 #endif // HAS_UIKIT
+			});
+		}
+
+		[Test]
+		public void Matrix ()
+		{
+			TestRuntime.AssertXcodeVersion (26, 0);
+
+			Assert.Multiple (() => {
+				var dict = new VTCompressionPropertyCameraCalibration ();
+
+				Assert.IsNull (dict.IntrinsicMatrix, "IntrinsicMatrix");
+
+				var matrix = new NMatrix3 (1, 2, 3, 4, 5, 6, 7, 8, 9);
+				dict.IntrinsicMatrix = matrix;
+				Assert.AreEqual (matrix, dict.IntrinsicMatrix, "IntrinsicMatrix 2");
+
+				dict.IntrinsicMatrix = null;
+				Assert.IsNull (dict.IntrinsicMatrix, "IntrinsicMatrix 3");
+			});
+		}
+
+		[Test]
+		public void FloatArray ()
+		{
+			TestRuntime.AssertXcodeVersion (26, 0);
+
+			Assert.Multiple (() => {
+				var dict = new VTCompressionPropertyCameraCalibration ();
+
+				Assert.IsNull (dict.LensDistortions, "LensDistortions");
+
+				var array = new float [] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+				dict.LensDistortions = array;
+				Assert.AreEqual (array, dict.LensDistortions, "LensDistortions 2");
+
+				dict.LensDistortions = null;
+				Assert.IsNull (dict.LensDistortions, "LensDistortions 3");
 			});
 		}
 	}

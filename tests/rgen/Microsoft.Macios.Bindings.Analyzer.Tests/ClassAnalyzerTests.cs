@@ -554,8 +554,8 @@ public partial class TestClass{
 		VerifyDiagnosticMessage (analyzerDiagnotics [0], diagnosticId,
 			severity, diagnosticMessage);
 	}
-	
-	class TestDataClassAnalyzerSuccess: IEnumerable<object []> {
+
+	class TestDataClassAnalyzerSuccess : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()
 		{
 			// duplicate selector, 2 properties one sealed
@@ -612,7 +612,7 @@ public partial class TestClass : BaseClass {
 }",
 				"RBI0034"
 			];
-			
+
 			// duplicate selector, 2 methods one sealed
 			yield return [
 				@"
@@ -671,7 +671,7 @@ public partial class TestClass : BaseClass {
 
 		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
 	}
-	
+
 	[Theory]
 	[AllSupportedPlatformsClassData<TestDataClassAnalyzerSuccess>]
 	public async Task ClassAnalyzerSuccess (ApplePlatform platform, string inputText, string diagnosticId)

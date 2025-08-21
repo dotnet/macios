@@ -14,7 +14,7 @@ namespace Microsoft.Macios.Bindings.Analyzer.Tests;
 
 public class ClassAnalyzerTests : BaseGeneratorWithAnalyzerTestClass {
 
-	class TestDataClassAnalyzer : IEnumerable<object []> {
+	class TestDataClassAnalyzerWarnings : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()
 		{
 			// not partial class
@@ -41,6 +41,7 @@ namespace TestNamespace;
 public class TestClass{
 }",
 				"RBI0001",
+				DiagnosticSeverity.Error,
 				"The binding type 'TestNamespace.TestClass' must be declared partial"
 			];
 
@@ -82,6 +83,7 @@ public partial class TestClass{
 	public virtual partial nuint SecondCount { get; set; }
 }",
 				"RBI0034",
+				DiagnosticSeverity.Warning,
 				"The selector 'count' used by 'SecondCount' is already used by 'Count'"
 			];
 
@@ -123,6 +125,7 @@ public partial class TestClass{
 	public virtual partial nuint GetCount ();
 }",
 				"RBI0034",
+				DiagnosticSeverity.Warning,
 				"The selector 'count' used by 'GetCount' is already used by 'Count'"
 			];
 
@@ -164,6 +167,7 @@ public partial class TestClass{
 	public virtual partial nuint SecondGetCount ();
 }",
 				"RBI0034",
+				DiagnosticSeverity.Warning,
 				"The selector 'count' used by 'SecondGetCount' is already used by 'GetCount'"
 			];
 
@@ -213,6 +217,7 @@ public partial class TestClass{
 	public virtual partial NSObject? WeakSecondDelegate { get; set; }
 }",
 				"RBI0033",
+				DiagnosticSeverity.Error,
 				"The weak delegate 'WeakSecondDelegate' strong delegate 'Delegate' is already used by 'WeakDelegate'"
 			];
 
@@ -264,6 +269,7 @@ public partial class TestClass{
 	public virtual partial NSObject? WeakSecondDelegate { get; set; }
 }",
 				"RBI0033",
+				DiagnosticSeverity.Error,
 				"The weak delegate 'WeakSecondDelegate' strong delegate 'Delegate' is already used by 'OtherWeakDelegate'"
 			];
 
@@ -293,6 +299,7 @@ public partial class TestClass{
 	public static partial int FormatRGBA16Int { get; }
 }",
 				"RBI0018",
+				DiagnosticSeverity.Error,
 				"An export property selector must not have a nonnull or empty selector"
 			];
 
@@ -322,6 +329,7 @@ public partial class TestClass{
 	public static partial int FormatRGBA16Int { get; }
 }",
 				"RBI0019",
+				DiagnosticSeverity.Error,
 				"An export property selector must not contain any whitespace"
 			];
 
@@ -351,6 +359,7 @@ public partial class TestClass{
 	public partial int FormatRGBA16Int { get; }
 }",
 				"RBI0030",
+				DiagnosticSeverity.Error,
 				"Field properties must be declared static"
 			];
 
@@ -380,6 +389,7 @@ public partial class TestClass{
 	public static int FormatRGBA16Int { get; }
 }",
 				"RBI0031",
+				DiagnosticSeverity.Error,
 				"Exported properties must be declared partial"
 			];
 
@@ -414,6 +424,7 @@ public partial class TestClass{
 	public virtual NSAttributedString AttributedStringByInflectingString { get; set; }
 }",
 				"RBI0031",
+				DiagnosticSeverity.Error,
 				"Exported properties must be declared partial"
 			];
 
@@ -448,6 +459,7 @@ public partial class TestClass{
 	public virtual partial NSAttributedString AttributedStringByInflectingString { get; set; }
 }",
 				"RBI0018",
+				DiagnosticSeverity.Error,
 				"An export property selector must not have a nonnull or empty selector"
 			];
 
@@ -482,6 +494,7 @@ public partial class TestClass{
 	public virtual partial NSAttributedString AttributedStringByInflectingString { get; set; }
 }",
 				"RBI0019",
+				DiagnosticSeverity.Error,
 				"An export property selector must not contain any whitespace"
 			];
 
@@ -520,6 +533,7 @@ public partial class TestClass{
 	}
 }",
 				"RBI0029",
+				DiagnosticSeverity.Error,
 				"There is a mismatch between the arguments of 'AttributedStringByInflectingString' (found 0) and the selector 'isAttributedStringByInflectingString:' (found 1)"
 			];
 		}
@@ -528,8 +542,8 @@ public partial class TestClass{
 	}
 
 	[Theory]
-	[AllSupportedPlatformsClassData<TestDataClassAnalyzer>]
-	public async Task ClassAnalyzer (ApplePlatform platform, string inputText, string diagnosticId, string diagnosticMessage)
+	[AllSupportedPlatformsClassData<TestDataClassAnalyzerWarnings>]
+	public async Task ClassAnalyzerWarnings (ApplePlatform platform, string inputText, string diagnosticId, DiagnosticSeverity severity, string diagnosticMessage)
 	{
 		var (compilation, _) = CreateCompilation (platform, sources: inputText);
 		var diagnostics = await RunAnalyzer (new BindingTypeSemanticAnalyzer (), compilation);
@@ -538,6 +552,136 @@ public partial class TestClass{
 			.Where (d => d.Id == diagnosticId).ToArray ();
 		Assert.Single (analyzerDiagnotics);
 		VerifyDiagnosticMessage (analyzerDiagnotics [0], diagnosticId,
-			DiagnosticSeverity.Error, diagnosticMessage);
+			severity, diagnosticMessage);
+	}
+	
+	class TestDataClassAnalyzerSuccess: IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
+		{
+			// duplicate selector, 2 properties one sealed
+			yield return [
+				@"
+#pragma warning disable APL0003
+
+using System;
+using System.Runtime.Versioning;
+using AVFoundation;
+using CoreGraphics;
+using Foundation;
+using ObjCBindings;
+using ObjCRuntime;
+using nfloat = System.Runtime.InteropServices.NFloat;
+
+namespace TestNamespace;
+
+[SupportedOSPlatform (""macos"")]
+[SupportedOSPlatform (""ios"")]
+[SupportedOSPlatform (""tvos"")]
+[SupportedOSPlatform (""maccatalyst13.1"")]
+[BindingType<Class>]
+public partial class BaseClass : NSObject {
+
+	[SupportedOSPlatform (""ios"")]
+	[SupportedOSPlatform (""tvos"")]
+	[SupportedOSPlatform (""macos"")]
+	[SupportedOSPlatform (""maccatalyst13.1"")]
+	[Export<Property> (""count"")]
+	public virtual partial nuint Count { get; set; }
+}
+
+[SupportedOSPlatform (""macos"")]
+[SupportedOSPlatform (""ios"")]
+[SupportedOSPlatform (""tvos"")]
+[SupportedOSPlatform (""maccatalyst13.1"")]
+[BindingType<Class>]
+public partial class TestClass : BaseClass {
+
+	[SupportedOSPlatform (""ios"")]
+	[SupportedOSPlatform (""tvos"")]
+	[SupportedOSPlatform (""macos"")]
+	[SupportedOSPlatform (""maccatalyst13.1"")]
+	[Export<Property> (""count"")]
+	public sealed override partial nuint Count { get; set; }
+
+	[SupportedOSPlatform (""ios"")]
+	[SupportedOSPlatform (""tvos"")]
+	[SupportedOSPlatform (""macos"")]
+	[SupportedOSPlatform (""maccatalyst13.1"")]
+	[Export<Property> (""count"")]
+	public virtual partial nuint SecondCount { get; set; }
+}",
+				"RBI0034"
+			];
+			
+			// duplicate selector, 2 methods one sealed
+			yield return [
+				@"
+#pragma warning disable APL0003
+
+using System;
+using System.Runtime.Versioning;
+using AVFoundation;
+using CoreGraphics;
+using Foundation;
+using ObjCBindings;
+using ObjCRuntime;
+using nfloat = System.Runtime.InteropServices.NFloat;
+
+namespace TestNamespace;
+
+[SupportedOSPlatform (""macos"")]
+[SupportedOSPlatform (""ios"")]
+[SupportedOSPlatform (""tvos"")]
+[SupportedOSPlatform (""maccatalyst13.1"")]
+[BindingType<Class>]
+public partial class BaseClass : NSObject {
+
+	[SupportedOSPlatform (""ios"")]
+	[SupportedOSPlatform (""tvos"")]
+	[SupportedOSPlatform (""macos"")]
+	[SupportedOSPlatform (""maccatalyst13.1"")]
+	[Export<Property> (""count"")]
+	public virtual partial nuint GetCount (); 
+}
+
+[SupportedOSPlatform (""macos"")]
+[SupportedOSPlatform (""ios"")]
+[SupportedOSPlatform (""tvos"")]
+[SupportedOSPlatform (""maccatalyst13.1"")]
+[BindingType<Class>]
+public partial class TestClass : BaseClass {
+
+	[SupportedOSPlatform (""ios"")]
+	[SupportedOSPlatform (""tvos"")]
+	[SupportedOSPlatform (""macos"")]
+	[SupportedOSPlatform (""maccatalyst13.1"")]
+	[Export<Property> (""count"")]
+	public sealed override partial nuint GetCount ();
+
+	[SupportedOSPlatform (""ios"")]
+	[SupportedOSPlatform (""tvos"")]
+	[SupportedOSPlatform (""macos"")]
+	[SupportedOSPlatform (""maccatalyst13.1"")]
+	[Export<Property> (""count"")]
+	public virtual partial nuint SecondGetCount ();
+}",
+				"RBI0034"
+			];
+		}
+
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
+	}
+	
+	[Theory]
+	[AllSupportedPlatformsClassData<TestDataClassAnalyzerSuccess>]
+	public async Task ClassAnalyzerSuccess (ApplePlatform platform, string inputText, string diagnosticId)
+	{
+		var (compilation, _) = CreateCompilation (platform, sources: inputText);
+		var diagnostics = await RunAnalyzer (new BindingTypeSemanticAnalyzer (), compilation);
+
+		var analyzerDiagnotics = diagnostics
+			.Where (d => d.Id == diagnosticId).ToArray ();
+		// ensure that the error is not present
+		Assert.Empty (analyzerDiagnotics);
 	}
 }

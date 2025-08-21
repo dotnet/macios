@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.Macios.Generator;
 using Microsoft.Macios.Generator.Context;
 using Microsoft.Macios.Generator.DataModel;
@@ -89,6 +90,10 @@ sealed class ClassValidator : BindingValidator {
 		foreach (var property in binding.Properties) {
 			if (string.IsNullOrEmpty (property.Selector))
 				continue;
+			if (property.Modifiers.Any (x => x.IsKind (SyntaxKind.SealedKeyword)))
+				// special case in which a method was declared as sealed, we don't want to
+				// consider it 
+				continue;
 			if (selectors.TryGetValue (property.Selector, out var list)) {
 				list.Add ((property.Name, property.Location));
 			} else {
@@ -100,6 +105,10 @@ sealed class ClassValidator : BindingValidator {
 		// same with the methods
 		foreach (var method in binding.Methods) {
 			if (string.IsNullOrEmpty (method.Selector))
+				continue;
+			if (method.Modifiers.Any (x => x.IsKind (SyntaxKind.SealedKeyword)))
+				// special case in which a method was declared as sealed, we don't want to
+				// consider it 
 				continue;
 			if (selectors.TryGetValue (method.Selector, out var list)) {
 				list.Add ((method.Name, method.Location));

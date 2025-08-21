@@ -715,6 +715,7 @@ namespace CoreGraphics {
 		Cmyk,
 	}
 
+	[TV (26, 0), Mac (26, 0), MacCatalyst (26, 0), iOS (26, 0)]
 	[Partial]
 	interface CGAdaptiveKeys {
 		[Field ("kCGAdaptiveMaximumBitDepth")]

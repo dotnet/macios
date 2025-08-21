@@ -16,6 +16,8 @@ namespace MonoTouchFixtures.CoreGraphics {
 		[Test]
 		public void CreateWithCFData_ReturnsInstanceOrNull ()
 		{
+			TestRuntime.AssertXcodeVersion (26, 0);
+
 			var data = new NSMutableData (10); // Create a small CFMutableDataRef
 			var provider = CGRenderingBufferProvider.Create (data);
 			Assert.That (provider, Is.Null.Or.InstanceOf<CGRenderingBufferProvider> (), "Should return null or a valid instance");
@@ -24,6 +26,8 @@ namespace MonoTouchFixtures.CoreGraphics {
 		[Test]
 		public void SizeProperty_DoesNotThrow ()
 		{
+			TestRuntime.AssertXcodeVersion (26, 0);
+
 			var data = new NSMutableData (10);
 			var provider = CGRenderingBufferProvider.Create (data);
 			if (provider is not null) {
@@ -34,6 +38,8 @@ namespace MonoTouchFixtures.CoreGraphics {
 		[Test]
 		public void LockUnlockBytePointer_DoesNotThrow ()
 		{
+			TestRuntime.AssertXcodeVersion (26, 0);
+
 			var data = new NSMutableData (10);
 			var provider = CGRenderingBufferProvider.Create (data);
 			if (provider is not null) {
@@ -47,6 +53,8 @@ namespace MonoTouchFixtures.CoreGraphics {
 		[Test]
 		public void GetTypeId_ReturnsTypeId ()
 		{
+			TestRuntime.AssertXcodeVersion (26, 0);
+
 			Assert.DoesNotThrow (() => {
 				var typeId = CGRenderingBufferProvider.GetTypeId ();
 				Assert.GreaterOrEqual (typeId, 0);

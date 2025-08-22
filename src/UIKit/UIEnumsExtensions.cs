@@ -8,10 +8,6 @@
 //  Miguel de Icaza
 //
 
-using System;
-using Foundation;
-using ObjCRuntime;
-
 namespace UIKit {
 
 #if IOS

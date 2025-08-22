@@ -1,10 +1,4 @@
-using System;
 using System.Threading;
-
-using Foundation;
-using ObjCRuntime;
-
-using NUnit.Framework;
 
 using Bindings.Test;
 

@@ -8,12 +8,9 @@
 // Copyright 2009, Novell, Inc.
 // Copyright 2015 Xamarin Inc.
 //
-using ObjCRuntime;
-using Foundation;
 using CoreGraphics;
 using CoreLocation;
 using UIKit;
-using System;
 
 namespace OpenGLES {
 

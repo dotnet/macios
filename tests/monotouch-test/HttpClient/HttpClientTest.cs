@@ -1,14 +1,9 @@
-using System;
 using System.Net.Http;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
-using Foundation;
-using ObjCRuntime;
-using NUnit.Framework;
 using Xamarin.Utils;
-
 
 namespace MonoTouchFixtures.HttpClientTests {
 	[TestFixture]

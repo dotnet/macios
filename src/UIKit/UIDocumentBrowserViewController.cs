@@ -25,10 +25,6 @@
 
 #if IOS
 
-using System;
-using Foundation;
-using ObjCRuntime;
-
 namespace UIKit {
 
 	public partial class UIDocumentBrowserViewController {

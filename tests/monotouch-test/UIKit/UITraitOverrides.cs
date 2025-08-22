@@ -9,16 +9,11 @@
 
 #if !__MACOS__
 
-using System;
 using System.IO;
 using System.Reflection;
 using System.Threading;
 
-using Foundation;
 using UIKit;
-using ObjCRuntime;
-
-using NUnit.Framework;
 
 using Xamarin.Utils;
 

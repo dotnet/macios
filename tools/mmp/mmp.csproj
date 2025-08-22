@@ -16,6 +16,7 @@
     <PackageReference Include="Mono.Options" Version="6.12.0.148" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DotNetGlobals.cs" />
     <Compile Include="Application.mmp.cs" />
     <Compile Include="driver.cs" />
     <Compile Include="resolver.cs" />

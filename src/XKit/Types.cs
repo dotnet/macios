@@ -23,11 +23,6 @@
 
 #nullable enable
 
-using System;
-using System.Runtime.InteropServices;
-
-using ObjCRuntime;
-using Foundation;
 using CoreGraphics;
 
 #if MONOMAC

@@ -7,22 +7,16 @@
 // Copyright 2012-2015 Xamarin Inc. All rights reserved.
 //
 
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Security.Permissions;
 
 using MonoTouch;
-using Foundation;
 #if !__MACOS__
 using UIKit;
 #endif
-using ObjCRuntime;
-using NUnit.Framework;
 
 namespace DontLink {
 	[TestFixture]

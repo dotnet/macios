@@ -2,11 +2,7 @@
 // Mostly notifications for keyboard events
 //
 
-using Foundation;
-using ObjCRuntime;
 using CoreGraphics;
-
-using System;
 
 namespace UIKit {
 	public partial class UIKeyboard {

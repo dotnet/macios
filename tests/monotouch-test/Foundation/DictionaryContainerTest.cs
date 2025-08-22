@@ -7,14 +7,10 @@
 // Copyright 2014 Xamarin Inc. All rights reserved.
 //
 
-using System;
 using System.Linq;
 
-using CoreFoundation;
 using CoreGraphics;
 using CoreMedia;
-using Foundation;
-using ObjCRuntime;
 using VideoToolbox;
 
 using NUnit.Framework;

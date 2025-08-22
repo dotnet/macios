@@ -1,6 +1,3 @@
-using System;
-using Foundation;
-using ObjCRuntime;
 
 using Vector2i = global::CoreGraphics.NVector2i;
 

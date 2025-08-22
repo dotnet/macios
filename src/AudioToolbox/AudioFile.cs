@@ -30,17 +30,13 @@
 
 #nullable enable
 
-using System;
 using System.IO;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 
-using ObjCRuntime;
 using CoreFoundation;
-using Foundation;
 
 using AudioFileID = System.IntPtr;
 

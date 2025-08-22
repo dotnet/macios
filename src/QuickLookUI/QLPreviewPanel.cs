@@ -1,11 +1,8 @@
 #nullable enable
 
-using ObjCRuntime;
-using Foundation;
 using CoreGraphics;
 using AppKit;
 
-using System;
 using System.ComponentModel;
 
 namespace QuickLookUI {

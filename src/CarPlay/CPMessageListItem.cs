@@ -8,10 +8,6 @@
 // Licensed under MIT License.
 //
 
-using System;
-using Foundation;
-using ObjCRuntime;
-
 #nullable enable
 
 namespace CarPlay {

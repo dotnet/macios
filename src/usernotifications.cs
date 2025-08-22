@@ -7,9 +7,6 @@
 // Copyright 2016 Xamarin Inc. All rights reserved.
 //
 
-using System;
-using Foundation;
-using ObjCRuntime;
 using CoreGraphics;
 using CoreLocation;
 using CoreMedia;

@@ -1,5 +1,3 @@
-using Foundation;
-using ObjCRuntime;
 
 namespace MobileCoreServices {
 

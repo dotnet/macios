@@ -1,9 +1,6 @@
 #nullable enable
 
-using System;
 using System.Collections.Generic;
-
-using Foundation;
 
 namespace NaturalLanguage {
 

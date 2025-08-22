@@ -5,10 +5,8 @@
 
 #if !__TVOS__
 
-using Foundation;
 using AudioToolbox;
 using AVFoundation;
-using NUnit.Framework;
 namespace MonoTouchFixtures.AVFoundation {
 
 	[TestFixture]

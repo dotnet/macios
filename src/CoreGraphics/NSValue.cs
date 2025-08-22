@@ -1,10 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
-using System;
-using System.Runtime.InteropServices;
 
 using CoreGraphics;
-using ObjCRuntime;
 
 #nullable enable
 

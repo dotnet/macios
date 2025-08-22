@@ -25,9 +25,6 @@
 
 #nullable enable
 
-using System;
-using System.Runtime.Versioning;
-
 namespace WebKit {
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>

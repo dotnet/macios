@@ -1,9 +1,6 @@
 #if __IOS__ || __TVOS__
-using Foundation;
 using BackgroundTasks;
-using ObjCRuntime;
 
-using NUnit.Framework;
 using System.Threading;
 
 namespace MonoTouchFixtures.BackgroundTasks {

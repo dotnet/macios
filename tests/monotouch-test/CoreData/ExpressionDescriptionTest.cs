@@ -1,7 +1,4 @@
-using System;
-using Foundation;
 using CoreData;
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.CoreData {
 

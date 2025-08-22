@@ -1,9 +1,6 @@
-using System;
 
 using CoreBluetooth;
 using CoreFoundation;
-using Foundation;
-using ObjCRuntime;
 using UIKit;
 
 using ASAccessoryWiFiAwarePairedDeviceId = System.UInt64;

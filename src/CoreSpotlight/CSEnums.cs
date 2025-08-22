@@ -7,10 +7,6 @@
 // Copyright 2015, 2016 Xamarin Inc. All rights reserved.
 //
 
-using System;
-using ObjCRuntime;
-using Foundation;
-
 #nullable enable
 
 namespace CoreSpotlight {

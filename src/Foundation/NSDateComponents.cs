@@ -1,4 +1,3 @@
-using System;
 
 namespace Foundation {
 	public partial class NSDateComponents {

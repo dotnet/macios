@@ -6,14 +6,9 @@
 //
 // Copyright 2013, 2015 Xamarin Inc.
 
-using System;
-using System.Runtime.InteropServices;
-
-using ObjCRuntime;
 using CoreFoundation;
 using CoreGraphics;
 using CoreText;
-using Foundation;
 
 namespace MediaAccessibility {
 

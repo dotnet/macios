@@ -1,7 +1,4 @@
-using ObjCRuntime;
-using Foundation;
 using CoreFoundation;
-using System;
 
 namespace PushKit {
 	/// <summary>Holds the <see cref="PushKit.PKPushCredentials.Token" /> that holds the user's credentials.</summary>

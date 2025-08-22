@@ -8,9 +8,6 @@
 //
 
 #if !MONOMAC
-using System;
-using Foundation;
-using ObjCRuntime;
 using MediaPlayer;
 
 #nullable enable

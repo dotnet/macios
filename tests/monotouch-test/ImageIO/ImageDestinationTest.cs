@@ -7,9 +7,7 @@
 // Copyright 2012-2014 Xamarin Inc. All rights reserved.
 //
 
-using System;
 using System.IO;
-using Foundation;
 #if MONOMAC
 using AppKit;
 #else
@@ -17,7 +15,6 @@ using UIKit;
 #endif
 using CoreGraphics;
 using ImageIO;
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.ImageIO {
 

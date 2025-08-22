@@ -6,8 +6,6 @@
 //
 // Copyright 2015 Xamarin Inc.
 
-using System;
-
 namespace ObjCRuntime {
 
 	// For bindings the attribute is used on interfaces, which means we must be able to decorated methods

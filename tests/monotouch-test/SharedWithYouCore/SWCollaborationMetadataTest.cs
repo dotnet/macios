@@ -9,11 +9,7 @@
 
 #if !__TVOS__
 
-using System;
-using Foundation;
-using ObjCRuntime;
 using SharedWithYouCore;
-using NUnit.Framework;
 using Xamarin.Utils;
 
 namespace MonoTouchFixtures.SharedWithYouCore {

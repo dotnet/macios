@@ -7,22 +7,16 @@
 // Copyright 2013-2015 Xamarin Inc.
 //
 
-using System;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 
-using CoreFoundation;
-using Foundation;
 using Security;
-using ObjCRuntime;
 #if MONOMAC
 using AppKit;
 #else
 using UIKit;
 #endif
-using NUnit.Framework;
 using Xamarin.Utils;
 
 namespace MonoTouchFixtures.Security {

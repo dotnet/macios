@@ -1,14 +1,9 @@
 
-using System;
 using System.Diagnostics;
 
-using Foundation;
-using ObjCRuntime;
 using System.Numerics;
 
 using VectorFloat3 = global::CoreGraphics.NVector3;
-
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.Simd {
 	[TestFixture]

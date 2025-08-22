@@ -69,6 +69,11 @@
 		</PartialAppManifest>
 	</ItemGroup>
 
+	<ItemGroup Condition="'$(Language)' == 'C#'">
+		<Compile Include="$(MSBuildThisFileDirectory)GlobalUsings.cs" />
+		<ObjcBindingCoreSource Include="$(MSBuildThisFileDirectory)GlobalUsings.cs" Condition="'$(IsBindingProject)' == 'true'" />
+	</ItemGroup>
+
 	<!-- Logic for NativeAOT -->
 	<PropertyGroup Condition="'$(PublishAot)' == 'true' And '$(_IsPublishing)' == 'true'">
 		<!-- Define NATIVEAOT when using NativeAOT -->

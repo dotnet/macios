@@ -6,9 +6,6 @@
 //
 // Copyright 2015 Xamarin Inc. All rights reserved.
 
-using Foundation;
-using ObjCRuntime;
-
 #nullable enable
 
 namespace CoreData {

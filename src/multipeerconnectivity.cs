@@ -6,10 +6,6 @@
 //
 // Copyright 2013 Xamarin, Inc.
 
-using System;
-
-using Foundation;
-using ObjCRuntime;
 using Security;
 #if MONOMAC
 using AppKit;

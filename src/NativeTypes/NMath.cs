@@ -9,9 +9,7 @@
 
 #nullable enable
 
-using System;
 using System.Runtime.CompilerServices;
-using System.Runtime.Versioning;
 
 namespace ObjCRuntime {
 	[SupportedOSPlatform ("ios")]

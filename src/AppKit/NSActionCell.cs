@@ -28,10 +28,6 @@
 
 #if !__MACCATALYST__
 
-using System;
-using ObjCRuntime;
-using Foundation;
-
 #nullable enable
 
 namespace AppKit {

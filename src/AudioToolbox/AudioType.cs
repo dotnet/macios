@@ -32,16 +32,12 @@
 
 #nullable enable
 
-using System;
 using System.Text;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using System.Diagnostics;
 using CoreFoundation;
-using ObjCRuntime;
-using Foundation;
 
 namespace AudioToolbox {
 	/// <summary>Audio format identifiers used by <see cref="AudioToolbox.AudioStreamBasicDescription" />.</summary>

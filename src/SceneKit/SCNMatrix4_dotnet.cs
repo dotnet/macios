@@ -20,16 +20,11 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-
  */
 
 #if !MONOMAC
 #define PFLOAT_SINGLE
 #endif
-
-using System;
-using System.Runtime.InteropServices;
-using Foundation;
 
 using Vector3 = global::System.Numerics.Vector3;
 using Vector3d = global::CoreGraphics.NVector3d;

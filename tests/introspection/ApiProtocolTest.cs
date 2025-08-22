@@ -7,14 +7,7 @@
 // Copyright 2013, 2015 Xamarin Inc.
 //
 
-using System;
-using System.Collections.Generic;
 using System.Reflection;
-using System.Runtime.InteropServices;
-using NUnit.Framework;
-
-using Foundation;
-using ObjCRuntime;
 
 namespace Introspection {
 

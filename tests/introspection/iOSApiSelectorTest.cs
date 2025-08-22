@@ -7,16 +7,11 @@
 // Copyright 2012-2013 Xamarin Inc. All rights reserved.
 //
 
-using System;
-using System.Collections.Generic;
 using System.Reflection;
-using Foundation;
-using ObjCRuntime;
 using UIKit;
 #if HAS_WATCHCONNECTIVITY
 using WatchConnectivity;
 #endif
-using NUnit.Framework;
 
 // Disable until we get around to enable + fix any issues.
 #nullable disable

@@ -7,13 +7,8 @@
 // Copyright 2013 Xamarin Inc. All rights reserved.
 //
 
-using System;
 using System.IO;
 using System.Linq;
-using NUnit.Framework;
-
-using Foundation;
-using ObjCRuntime;
 
 namespace BundledResources {
 

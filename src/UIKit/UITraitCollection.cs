@@ -7,11 +7,7 @@
 // Copyright 2016 Xamarin Inc. All rights reserved.
 //
 
-using System;
 using System.ComponentModel;
-
-using ObjCRuntime;
-using Foundation;
 
 // Disable until we get around to enable + fix any issues.
 #nullable disable

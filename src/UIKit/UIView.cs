@@ -8,12 +8,9 @@
 // Copyrigh 2014, Xamarin Inc.
 //
 
-using System;
 using System.Collections;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using Foundation;
-using ObjCRuntime;
 using CoreGraphics;
 
 #nullable enable

@@ -1,10 +1,7 @@
 // This file contains api definitions shared between AppKit and UIKit
 
-using System;
 using System.Diagnostics;
 using System.ComponentModel;
-using Foundation;
-using ObjCRuntime;
 using CoreAnimation;
 using CoreGraphics;
 using CoreText;

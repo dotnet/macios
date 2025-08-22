@@ -7,11 +7,8 @@
 // Copyright 2015 Xamarin Inc. All rights reserved.
 //
 
-using System;
 using System.ComponentModel;
 using System.Numerics;
-using ObjCRuntime;
-using Foundation;
 using SpriteKit;
 using SceneKit;
 

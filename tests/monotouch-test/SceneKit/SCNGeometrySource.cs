@@ -1,9 +1,6 @@
 #if __MACOS__
-using System;
 using System.Threading.Tasks;
-using NUnit.Framework;
 
-using Foundation;
 using SceneKit;
 
 namespace Xamarin.Mac.Tests {

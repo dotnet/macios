@@ -39,7 +39,6 @@
 //     Typically this is necessary for things like NSError.
 //
 
-using System;
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
@@ -53,8 +52,6 @@ using System.Reflection;
 using System.Xml;
 
 using ObjCBindings;
-using ObjCRuntime;
-using Foundation;
 using Xamarin.Utils;
 
 // Disable until we get around to enable + fix any issues.

@@ -6,9 +6,6 @@
 //
 // Copyright 2012-2013 Xamarin Inc
 //
-using System;
-using System.Runtime.InteropServices;
-using ObjCRuntime;
 
 namespace Foundation {
 	partial class NSUuid {

@@ -28,13 +28,7 @@
 
 #nullable enable
 
-using System;
-using System.Runtime.InteropServices;
-
-using ObjCRuntime;
 using CoreFoundation;
-using Foundation;
-using System.Runtime.Versioning;
 
 namespace AudioToolbox {
 	/// <summary>The application developer can use this class to retrieve the properties of available encoders and decoders.</summary>

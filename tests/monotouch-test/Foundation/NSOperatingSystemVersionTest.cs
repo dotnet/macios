@@ -1,10 +1,5 @@
-using NUnit.Framework;
-using System;
 
-using ObjCRuntime;
-using Foundation;
 using System.Collections;
-using System.Collections.Generic;
 
 namespace MonoTouchFixtures.Foundation {
 	[TestFixture]

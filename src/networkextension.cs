@@ -1,16 +1,12 @@
 // Copyright 2014-2015 Xamarin Inc. All rights reserved.
 // Copyright 2019 Microsoft Corporation
 
-using System;
-
 #if IOS && !__MACCATALYST__
 using AccessorySetupKit;
 #else
 using ASAccessory = Foundation.NSObject;
 #endif
 using CoreFoundation;
-using Foundation;
-using ObjCRuntime;
 using Security;
 using Network;
 using OS_nw_parameters = System.IntPtr;

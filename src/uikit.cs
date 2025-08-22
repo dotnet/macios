@@ -10,8 +10,6 @@
 // Copyrigh 2011-2013, Xamarin Inc.
 // Copyrigh 2019, Microsoft Corporation.
 //
-using ObjCRuntime;
-using Foundation;
 using CoreGraphics;
 using CoreLocation;
 using UIKit;
@@ -55,7 +53,6 @@ using NSToolbar = Foundation.NSObject;
 using NSToolbarItem = Foundation.NSObject;
 #endif
 
-using System;
 using System.ComponentModel;
 
 #nullable enable

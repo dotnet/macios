@@ -8,10 +8,6 @@
 //
 
 #if IOS
-using System;
-using System.Runtime.InteropServices;
-using Foundation;
-using ObjCRuntime;
 
 namespace UIKit {
 	public partial class UIListSeparatorConfiguration {

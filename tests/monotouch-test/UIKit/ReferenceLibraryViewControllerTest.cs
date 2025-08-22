@@ -2,11 +2,7 @@
 
 #if !__TVOS__ && !MONOMAC
 
-using System;
-using Foundation;
-using ObjCRuntime;
 using UIKit;
-using NUnit.Framework;
 using Xamarin.Utils;
 
 namespace MonoTouchFixtures.UIKit {

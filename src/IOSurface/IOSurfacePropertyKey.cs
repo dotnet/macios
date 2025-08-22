@@ -25,10 +25,6 @@
 
 #nullable enable
 
-using System;
-using Foundation;
-using ObjCRuntime;
-
 namespace IOSurface {
 
 	internal static partial class IOSurfacePropertyKey {

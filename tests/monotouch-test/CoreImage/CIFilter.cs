@@ -1,10 +1,6 @@
 #if __MACOS__
-using NUnit.Framework;
-using System;
 
 using AppKit;
-using Foundation;
-using ObjCRuntime;
 using CoreImage;
 using CoreGraphics;
 

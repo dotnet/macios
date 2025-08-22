@@ -213,7 +213,7 @@ class MainClass {
 			// Build the first time
 			var rv = DotNet.AssertBuild (project_path, properties);
 			var allTargets = BinLog.GetAllTargets (rv.BinLogPath);
-			
+
 			// Verify these targets executed on first build
 			AssertTargetExecuted (allTargets, "_CompileAppManifest", "A");
 			AssertTargetExecuted (allTargets, "_CreatePkgInfo", "A");

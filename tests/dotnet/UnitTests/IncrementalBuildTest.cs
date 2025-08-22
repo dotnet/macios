@@ -187,5 +187,61 @@ class MainClass {
 			Assert.That (File.GetLastWriteTimeUtc (appExecutable), Is.EqualTo (appExecutableTimestamp), "Modified B");
 		}
 
+		[Test]
+		[TestCase (ApplePlatform.iOS, "ios-arm64")]
+		public void CodeChangeSkipsTargets (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+
+			var project_path = GenerateProject (platform, name: nameof (CodeChangeSkipsTargets), runtimeIdentifiers: runtimeIdentifiers, out var appPath);
+			var properties = new Dictionary<string, string> (verbosity);
+			SetRuntimeIdentifiers (properties, runtimeIdentifiers);
+
+			var mainContents = @"
+class MainClass {
+	static int Main ()
+	{
+		System.Console.WriteLine (""Hello World!"");
+		return 0;
+	}
+}
+";
+			var mainFile = Path.Combine (Path.GetDirectoryName (project_path)!, "Main.cs");
+			File.WriteAllText (mainFile, mainContents);
+
+			// Build the first time
+			var rv = DotNet.AssertBuild (project_path, properties);
+			var allTargets = BinLog.GetAllTargets (rv.BinLogPath);
+			
+			// Verify these targets executed on first build
+			AssertTargetExecuted (allTargets, "_CompileAppManifest", "A");
+			AssertTargetExecuted (allTargets, "_CreatePkgInfo", "A");
+			AssertTargetExecuted (allTargets, "_CompileNativeExecutable", "A");
+			AssertTargetExecuted (allTargets, "_LinkNativeExecutable", "A");
+
+			// Make a small change to the C# file
+			var modifiedMainContents = @"
+class MainClass {
+	static int Main ()
+	{
+		System.Console.WriteLine (""Hello Modified World!"");
+		return 0;
+	}
+}
+";
+			File.WriteAllText (mainFile, modifiedMainContents);
+
+			// Build again after modifying the C# file
+			rv = DotNet.AssertBuild (project_path, properties);
+			allTargets = BinLog.GetAllTargets (rv.BinLogPath);
+
+			// Verify these targets did NOT execute on incremental build after C# change
+			AssertTargetNotExecuted (allTargets, "_CompileAppManifest", "B");
+			AssertTargetNotExecuted (allTargets, "_CreatePkgInfo", "B");
+			AssertTargetNotExecuted (allTargets, "_CompileNativeExecutable", "B");
+			AssertTargetNotExecuted (allTargets, "_LinkNativeExecutable", "B");
+		}
+
 	}
 }

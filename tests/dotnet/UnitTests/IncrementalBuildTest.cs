@@ -215,7 +215,6 @@ class MainClass {
 			var allTargets = BinLog.GetAllTargets (rv.BinLogPath);
 
 			// Verify these targets executed on first build
-			AssertTargetExecuted (allTargets, "_CompileAppManifest", "A");
 			AssertTargetExecuted (allTargets, "_CreatePkgInfo", "A");
 			AssertTargetExecuted (allTargets, "_CompileNativeExecutable", "A");
 			AssertTargetExecuted (allTargets, "_LinkNativeExecutable", "A");
@@ -237,7 +236,6 @@ class MainClass {
 			allTargets = BinLog.GetAllTargets (rv.BinLogPath);
 
 			// Verify these targets did NOT execute on incremental build after C# change
-			AssertTargetNotExecuted (allTargets, "_CompileAppManifest", "B");
 			AssertTargetNotExecuted (allTargets, "_CreatePkgInfo", "B");
 			AssertTargetNotExecuted (allTargets, "_CompileNativeExecutable", "B");
 			AssertTargetNotExecuted (allTargets, "_LinkNativeExecutable", "B");

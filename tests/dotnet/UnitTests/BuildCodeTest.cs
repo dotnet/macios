@@ -9,8 +9,8 @@ namespace Xamarin.Tests {
 				yield return new TestCaseData (ApplePlatform.iOS, "ios-arm64", new string [] {
 					"libmono-component-debugger-static.a",
 					"libmono-component-debugger-static.a",
-					"libmono-component-diagnostics_tracing-static.a",
-					"libmono-component-diagnostics_tracing-static.a",
+					"libmono-component-diagnostics_tracing-stub-static.a",
+					"libmono-component-diagnostics_tracing-stub-static.a",
 					"libmono-component-hot_reload-stub-static.a",
 					"libmono-component-hot_reload-stub-static.a",
 					"libmono-component-marshal-ilgen-static.a",
@@ -25,8 +25,8 @@ namespace Xamarin.Tests {
 				yield return new TestCaseData (ApplePlatform.iOS, "ios-arm64", new string [] {
 					"libmono-component-debugger-static.a",
 					"libmono-component-debugger-static.a",
-					"libmono-component-diagnostics_tracing-static.a",
-					"libmono-component-diagnostics_tracing-static.a",
+					"libmono-component-diagnostics_tracing-stub-static.a",
+					"libmono-component-diagnostics_tracing-stub-static.a",
 					"libmono-component-hot_reload-stub-static.a",
 					"libmono-component-hot_reload-stub-static.a",
 					"libmono-component-marshal-ilgen-static.a",
@@ -53,8 +53,8 @@ namespace Xamarin.Tests {
 				yield return new TestCaseData (ApplePlatform.MacCatalyst, "maccatalyst-arm64", new string [] {
 					"libmono-component-debugger-static.a",
 					"libmono-component-debugger-static.a",
-					"libmono-component-diagnostics_tracing-static.a",
-					"libmono-component-diagnostics_tracing-static.a",
+					"libmono-component-diagnostics_tracing-stub-static.a",
+					"libmono-component-diagnostics_tracing-stub-static.a",
 					"libmono-component-hot_reload-stub-static.a",
 					"libmono-component-hot_reload-stub-static.a",
 					"libmono-component-marshal-ilgen-static.a",
@@ -80,8 +80,8 @@ namespace Xamarin.Tests {
 				yield return new TestCaseData (ApplePlatform.TVOS, "tvos-arm64", new string [] {
 					"libmono-component-debugger-static.a",
 					"libmono-component-debugger-static.a",
-					"libmono-component-diagnostics_tracing-static.a",
-					"libmono-component-diagnostics_tracing-static.a",
+					"libmono-component-diagnostics_tracing-stub-static.a",
+					"libmono-component-diagnostics_tracing-stub-static.a",
 					"libmono-component-hot_reload-stub-static.a",
 					"libmono-component-hot_reload-stub-static.a",
 					"libmono-component-marshal-ilgen-static.a",

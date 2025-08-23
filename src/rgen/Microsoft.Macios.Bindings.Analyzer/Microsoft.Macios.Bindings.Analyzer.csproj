@@ -81,95 +81,11 @@
         <Compile Include="../Microsoft.Macios.Generator/Context/RootContext.cs" >
             <Link>Generator/Context/RootContext.cs</Link>
         </Compile>
-        <Compile Include="../Microsoft.Macios.Generator/DataModel/AttributeCodeChange.cs" >
-            <Link>DataModel/AttributeCodeChange.cs</Link>
+        <Compile Include="../Microsoft.Macios.Generator/DataModel/*.cs" >
+            <Link>DataModel/*.cs</Link>
         </Compile>
-        <Compile Include="../Microsoft.Macios.Generator/DataModel/AttributesEqualityComparer.cs" >
-            <Link>DataModel/AttributesEqualityComparer.cs</Link>
-        </Compile>
-        <Compile Include="../Microsoft.Macios.Generator/DataModel/BindingType.cs" >
-            <Link>DataModel/BindingType.cs</Link>
-        </Compile>
-        <Compile Include="../Microsoft.Macios.Generator/DataModel/Method.cs" >
-            <Link>DataModel/Method.cs</Link>
-        </Compile>
-        <Compile Include="../Microsoft.Macios.Generator/DataModel/Method.Generator.cs" >
-            <Link>DataModel/Method.Generator.cs</Link>
-        </Compile>
-        <Compile Include="../Microsoft.Macios.Generator/DataModel/ModifiersEqualityComparer.cs" >
-            <Link>DataModel/ModifiersEqualityComparer.cs</Link>
-        </Compile>
-        <Compile Include="../Microsoft.Macios.Generator/DataModel/TypeInfo.cs" >
-            <Link>DataModel/TypeInfo.cs</Link>
-        </Compile>
-        <Compile Include="../Microsoft.Macios.Generator/DataModel/TypeInfo.Generator.cs" >
-            <Link>DataModel/TypeInfo.Generator.cs</Link>
-        </Compile>
-        <Compile Include="../Microsoft.Macios.Generator/DataModel/DelegateInfo.cs" >
-            <Link>DataModel/DelegateInfo.cs</Link>
-        </Compile>
-        <Compile Include="../Microsoft.Macios.Generator/DataModel/DelegateParameter.cs" >
-            <Link>DataModel/DelegateParameter.cs</Link>
-        </Compile>
-        <Compile Include="../Microsoft.Macios.Generator/DataModel/DelegateParameter.Generator.cs" >
-            <Link>DataModel/DelegateParameter.Generator.cs</Link>
-        </Compile>
-        <Compile Include="../Microsoft.Macios.Generator/DataModel/EventInfo.cs" >
-            <Link>DataModel/EventInfo.cs</Link>
-        </Compile>
-        <Compile Include="../Microsoft.Macios.Generator/DataModel/ImmutableArrayEqualityComparer.cs" >
-            <Link>DataModel/ImmutableArrayEqualityComparer.cs</Link>
-        </Compile>
-        <Compile Include="../Microsoft.Macios.Generator/DataModel/Parameter.cs" >
-            <Link>DataModel/Parameter.cs</Link>
-        </Compile>
-        <Compile Include="../Microsoft.Macios.Generator/DataModel/Parameter.Generator.cs" >
-            <Link>DataModel/Parameter.Generator.cs</Link>
-        </Compile>
-        <Compile Include="../Microsoft.Macios.Generator/DataModel/ParameterEqualityComparer.cs" >
-            <Link>DataModel/ParameterEqualityComparer.cs</Link>
-        </Compile>
-        <Compile Include="../Microsoft.Macios.Generator/DataModel/ReferenceKind.cs" >
-            <Link>DataModel/ReferenceKind.cs</Link>
-        </Compile>
-        <Compile Include="../Microsoft.Macios.Generator/Extensions/ApplePlatformExtensions.cs" >
-            <Link>Generator/Extensions/ApplePlatformExtensions.cs</Link>
-        </Compile>
-        <Compile Include="../Microsoft.Macios.Generator/Extensions/AttributeDataExtensions.cs" >
-            <Link>Generator/Extensions/AttributeDataExtensions.cs</Link>
-        </Compile>
-        <Compile Include="../Microsoft.Macios.Generator/Extensions/ArgumentSyntaxExtensions.cs" >
-            <Link>Generator/Extensions/ArgumentSyntaxExtensions.cs</Link>
-        </Compile>
-        <Compile Include="../Microsoft.Macios.Generator/Extensions/CompilationExtensions.cs" >
-            <Link>Generator/Extensions/CompilationExtensions.cs</Link>
-        </Compile>
-        <Compile Include="../Microsoft.Macios.Generator/Extensions/Delegates.cs" >
-            <Link>Generator/Extensions/Delegates.cs</Link>
-        </Compile>
-        <Compile Include="../Microsoft.Macios.Generator/Extensions/MemberDeclarationSyntaxExtensions.cs" >
-            <Link>Generator/Extensions/MemberDeclarationSyntaxExtensions.cs</Link>
-        </Compile>
-        <Compile Include="../Microsoft.Macios.Generator/Extensions/ParameterSymbolExtensions.cs" >
-            <Link>Generator/Extensions/ParameterSymbolExtensions.cs</Link>
-        </Compile>
-        <Compile Include="../Microsoft.Macios.Generator/Extensions/ParameterSyntaxExtensions.cs" >
-            <Link>Generator/Extensions/ParameterSyntaxExtensions.cs</Link>
-        </Compile>
-        <Compile Include="../Microsoft.Macios.Generator/Extensions/SpecialTypeExtensions.cs" >
-            <Link>Generator/Extensions/SpecialTypeExtensions.cs</Link>
-        </Compile>
-        <Compile Include="../Microsoft.Macios.Generator/Extensions/TypeSymbolExtensions.Core.cs">
-            <Link>Generator/Extensions/TypeSymbolExtensions.Core.cs</Link>
-        </Compile>
-        <Compile Include="../Microsoft.Macios.Generator/Extensions/TypeSymbolExtensions.Generator.cs">
-            <Link>Generator/Extensions/TypeSymbolExtensions.Generator.cs</Link>
-        </Compile>
-        <Compile Include="../Microsoft.Macios.Generator/Extensions/TypedConstantExtensions.cs" >
-            <Link>Generator/Extensions/TypedConstantExtensions.cs</Link>
-        </Compile>
-        <Compile Include="../Microsoft.Macios.Generator/Extensions/StringExtensions.cs" >
-            <Link>Generator/Extensions/StringExtensions.cs</Link>
+        <Compile Include="../Microsoft.Macios.Generator/Extensions/*.cs" >
+            <Link>Generator/*.cs</Link>
         </Compile>
         <Compile Include="../Microsoft.Macios.Generator/Formatters/TypeInfoFormatter.cs" >
             <Link>Generator/Formatters/TypeInfoFormatter.cs</Link>
@@ -182,6 +98,9 @@
         </Compile>
         <Compile Include="../Microsoft.Macios.Generator/Availability/*.cs" >
             <Link>Generator/Availability/*.cs</Link>
+        </Compile>
+        <Compile Include="../../ObjCRuntime/Registrar.core.cs" >
+            <Link>external\Registrar.core.cs</Link>
         </Compile>
     </ItemGroup>
 

@@ -212,7 +212,7 @@ readonly partial struct Property {
 		var ns = propertySymbol.ContainingNamespace.Name.Split ('.') [^1];
 		var fieldData = propertySymbol.GetFieldData<ObjCBindings.Property> ();
 		FieldInfo<ObjCBindings.Property>? fieldInfo = null;
-		if (fieldData is not null && context.TryComputeLibraryName (fieldData.Value.LibraryName, ns,
+		if (fieldData is not null && context.TryComputeLibraryName (fieldData.Value.LibraryPath, ns,
 				out string? libraryName, out string? libraryPath)) {
 			fieldInfo = new FieldInfo<ObjCBindings.Property> (fieldData.Value, libraryName, libraryPath);
 		}

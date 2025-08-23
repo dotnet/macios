@@ -3,13 +3,32 @@
 #pragma warning disable RS2008
 
 using System;
+using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.Macios.Generator.Context;
 using Xunit;
 
 namespace Microsoft.Macios.Bindings.Analyzer.Tests;
 
 public class ValidatorTests {
+
+	readonly RootContext context;
+
+	public ValidatorTests ()
+	{
+		// Create a dummy compilation to get a semantic model and RootContext
+		var syntaxTree = CSharpSyntaxTree.ParseText ("namespace Test { }");
+		var compilation = CSharpCompilation.Create (
+			"TestAssembly",
+			[syntaxTree],
+			references: [],
+			options: new CSharpCompilationOptions (OutputKind.DynamicallyLinkedLibrary)
+		);
+		var semanticModel = compilation.GetSemanticModel (syntaxTree);
+		context = new RootContext (semanticModel);
+	}
 
 	internal static readonly DiagnosticDescriptor TST0001 = new (
 		"TST0001",
@@ -28,9 +47,24 @@ public class ValidatorTests {
 		OptionC = 1 << 2
 	}
 
+	[Flags]
+	public enum OtherFlag {
+		None = 0,
+		OptionX = 1 << 0,
+		OptionY = 1 << 1
+	}
+
 	public struct Address {
 		public string? Street { get; set; }
 		public string? City { get; set; }
+	}
+
+	public struct NonNullableAddress {
+		public string Street { get; set; }
+		public string City { get; set; }
+
+		public static bool IsDefault (NonNullableAddress address) =>
+			string.IsNullOrEmpty (address.Street) && string.IsNullOrEmpty (address.City);
 	}
 
 	public struct MyData {
@@ -39,6 +73,14 @@ public class ValidatorTests {
 		public int? OptionalField2 { get; set; }
 		public string? OptionalField3 { get; set; }
 		public Address? HomeAddress { get; set; }
+		public NonNullableAddress WorkAddress { get; set; }
+	}
+
+	public struct MyOtherData {
+		public OtherFlag Flag { get; set; }
+		public string? OptionalField1 { get; set; }
+		public Address? HomeAddress { get; set; }
+		public NonNullableAddress WorkAddress { get; set; }
 	}
 
 	[Theory]
@@ -58,7 +100,7 @@ public class ValidatorTests {
 			OptionalField1 = optionalFieldValue
 		};
 
-		var errors = validator.ValidateAll (data);
+		var errors = validator.ValidateAll (data, context);
 
 		if (shouldFail) {
 			Assert.True (errors.ContainsKey (nameof (MyData.OptionalField1)));
@@ -84,7 +126,7 @@ public class ValidatorTests {
 		validator.AddStrategy (
 			d => d.OptionalField1,
 			TST0001,
-			(string? data, out System.Collections.Immutable.ImmutableArray<Diagnostic> diagnostics, Location? location) => {
+			(string? data, RootContext _, out ImmutableArray<Diagnostic> diagnostics, Location? location) => {
 				diagnostics = [];
 				if (data is not null && data.Length <= 3) {
 					diagnostics = [Diagnostic.Create (TST0001, location, "Field length must be > 3")];
@@ -98,7 +140,7 @@ public class ValidatorTests {
 			OptionalField1 = optionalFieldValue
 		};
 
-		var errors = validator.ValidateAll (data);
+		var errors = validator.ValidateAll (data, context);
 
 		if (shouldFail) {
 			Assert.True (errors.ContainsKey (nameof (MyData.OptionalField1)));
@@ -122,7 +164,7 @@ public class ValidatorTests {
 	public void RequireWhenWithNestedValidatorTests (MyFlag flag, string? addressParts, bool shouldFail, string? errorKey = null, string? diagnosticId = null)
 	{
 		var addressValidator = new Validator<Address> ();
-		addressValidator.AddStrategy (a => a.Street, TST0001, (string? data, out System.Collections.Immutable.ImmutableArray<Diagnostic> diagnostics, Location? location) => {
+		addressValidator.AddStrategy (a => a.Street, TST0001, (string? data, RootContext _, out ImmutableArray<Diagnostic> diagnostics, Location? location) => {
 			diagnostics = [];
 			if (data is null || data.Length <= 3) {
 				diagnostics = [Diagnostic.Create (TST0001, location, "Street must be longer than 3 chars.")];
@@ -130,7 +172,7 @@ public class ValidatorTests {
 			}
 			return true;
 		});
-		addressValidator.AddStrategy (a => a.City, TST0001, (string? data, out System.Collections.Immutable.ImmutableArray<Diagnostic> diagnostics, Location? location) => {
+		addressValidator.AddStrategy (a => a.City, TST0001, (string? data, RootContext _, out ImmutableArray<Diagnostic> diagnostics, Location? location) => {
 			diagnostics = [];
 			if (data is null || data.Length <= 3) {
 				diagnostics = [Diagnostic.Create (TST0001, location, "City must be longer than 3 chars.")];
@@ -157,7 +199,7 @@ public class ValidatorTests {
 			HomeAddress = homeAddress
 		};
 
-		var errors = validator.ValidateAll (data);
+		var errors = validator.ValidateAll (data, context);
 
 		if (shouldFail) {
 			Assert.True (errors.ContainsKey (errorKey!));
@@ -199,7 +241,7 @@ public class ValidatorTests {
 			OptionalField3 = field3Value
 		};
 
-		var errors = validator.ValidateAll (data);
+		var errors = validator.ValidateAll (data, context);
 
 		if (shouldFail) {
 			Assert.True (errors.ContainsKey (string.Empty)); // Global validation error
@@ -230,7 +272,7 @@ public class ValidatorTests {
 		validator.AddStrategy (
 			d => d.OptionalField1,
 			TST0001,
-			(string? data, out System.Collections.Immutable.ImmutableArray<Diagnostic> diagnostics, Location? location) => {
+			(string? data, RootContext _, out ImmutableArray<Diagnostic> diagnostics, Location? location) => {
 				diagnostics = [];
 				if (data is not null && data.Length <= 2) {
 					diagnostics = [Diagnostic.Create (TST0001, location, "Field length must be > 2")];
@@ -243,7 +285,7 @@ public class ValidatorTests {
 		validator.AddStrategy (
 			d => d.OptionalField1,
 			TST0001,
-			(string? data, out System.Collections.Immutable.ImmutableArray<Diagnostic> diagnostics, Location? location) => {
+			(string? data, RootContext _, out ImmutableArray<Diagnostic> diagnostics, Location? location) => {
 				diagnostics = [];
 				if (data is not null && !data.Any (char.IsLetter)) {
 					diagnostics = [Diagnostic.Create (TST0001, location, "Field must contain at least one letter")];
@@ -257,7 +299,7 @@ public class ValidatorTests {
 			OptionalField1 = fieldValue
 		};
 
-		var errors = validator.ValidateAll (data);
+		var errors = validator.ValidateAll (data, context);
 
 		if (shouldFail) {
 			Assert.True (errors.ContainsKey (nameof (MyData.OptionalField1)));
@@ -286,7 +328,7 @@ public class ValidatorTests {
 			d => d.OptionalField1,
 			d => d.Flag,
 			TST0001,
-			(string? data, out System.Collections.Immutable.ImmutableArray<Diagnostic> diagnostics, Location? location) => {
+			(string? data, RootContext _, out ImmutableArray<Diagnostic> diagnostics, Location? location) => {
 				diagnostics = [];
 				if (data is null || data.Length <= 3) {
 					diagnostics = [Diagnostic.Create (TST0001, location, "Field must be longer than 3 characters")];
@@ -302,7 +344,7 @@ public class ValidatorTests {
 			OptionalField1 = optionalFieldValue
 		};
 
-		var errors = validator.ValidateAll (data);
+		var errors = validator.ValidateAll (data, context);
 
 		if (shouldFail) {
 			Assert.True (errors.ContainsKey (nameof (MyData.OptionalField1)));
@@ -331,7 +373,7 @@ public class ValidatorTests {
 			d => d.HomeAddress,
 			d => d.Flag,
 			TST0001,
-			(Address? data, out System.Collections.Immutable.ImmutableArray<Diagnostic> diagnostics, Location? location) => {
+			(Address? data, RootContext _, out ImmutableArray<Diagnostic> diagnostics, Location? location) => {
 				diagnostics = [];
 				if (data is null)
 					return true; // null is valid when validation is triggered
@@ -364,7 +406,7 @@ public class ValidatorTests {
 			HomeAddress = homeAddress
 		};
 
-		var errors = validator.ValidateAll (data);
+		var errors = validator.ValidateAll (data, context);
 
 		if (shouldFail) {
 			Assert.True (errors.ContainsKey (nameof (MyData.HomeAddress)));
@@ -405,7 +447,7 @@ public class ValidatorTests {
 			OptionalField3 = field3Value
 		};
 
-		var errors = validator.ValidateAll (data);
+		var errors = validator.ValidateAll (data, context);
 
 		if (shouldFail) {
 			Assert.True (errors.ContainsKey (string.Empty)); // Global validation error
@@ -449,7 +491,7 @@ public class ValidatorTests {
 			OptionalField2 = optionalField2Value
 		};
 
-		var errors = validator.ValidateAll (data);
+		var errors = validator.ValidateAll (data, context);
 
 		if (shouldFail) {
 			Assert.True (errors.ContainsKey (string.Empty)); // Global validation error
@@ -459,5 +501,151 @@ public class ValidatorTests {
 		} else {
 			Assert.Empty (errors);
 		}
+	}
+
+	[Fact]
+	public void RestrictToFlagTypeTests ()
+	{
+		// Test with correct flag type - should succeed
+		var validator1 = new Validator<MyData> ();
+		validator1.RestrictToFlagType (
+			d => d.OptionalField1,
+			d => d.Flag,
+			typeof (MyFlag)
+		);
+
+		var data1 = new MyData {
+			Flag = MyFlag.OptionA,
+			OptionalField1 = "test"
+		};
+
+		var errors1 = validator1.ValidateAll (data1, context);
+		Assert.Empty (errors1);
+
+		// Test with null field - should succeed
+		var data2 = new MyData {
+			Flag = MyFlag.OptionA,
+			OptionalField1 = null
+		};
+
+		var errors2 = validator1.ValidateAll (data2, context);
+		Assert.Empty (errors2);
+
+		// Test with wrong flag type - should fail
+		var validator2 = new Validator<MyOtherData> ();
+		validator2.RestrictToFlagType (
+			d => d.OptionalField1,
+			d => d.Flag,
+			typeof (MyFlag)
+		);
+
+		var data3 = new MyOtherData {
+			Flag = OtherFlag.OptionX,
+			OptionalField1 = "test"
+		};
+
+		var errors3 = validator2.ValidateAll (data3, context);
+		Assert.True (errors3.ContainsKey (nameof (MyOtherData.OptionalField1)));
+		var diagnostics3 = errors3 [nameof (MyOtherData.OptionalField1)];
+		Assert.Single (diagnostics3);
+		Assert.Equal ("RBI0017", diagnostics3 [0].Id);
+	}
+
+	[Fact]
+	public void RestrictToFlagTypeNullableStructTests ()
+	{
+		// Test with correct flag type - should succeed
+		var validator1 = new Validator<MyData> ();
+		validator1.RestrictToFlagType (
+			d => d.HomeAddress,
+			d => d.Flag,
+			typeof (MyFlag)
+		);
+
+		var data1 = new MyData {
+			Flag = MyFlag.OptionA,
+			HomeAddress = new Address { Street = "Test St", City = "Test City" }
+		};
+
+		var errors1 = validator1.ValidateAll (data1, context);
+		Assert.Empty (errors1);
+
+		// Test with wrong flag type - should fail
+		var validator2 = new Validator<MyOtherData> ();
+		validator2.RestrictToFlagType (
+			d => d.HomeAddress,
+			d => d.Flag,
+			typeof (MyFlag)
+		);
+
+		var data2 = new MyOtherData {
+			Flag = OtherFlag.OptionX,
+			HomeAddress = new Address { Street = "Test St", City = "Test City" }
+		};
+
+		var errors2 = validator2.ValidateAll (data2, context);
+		Assert.True (errors2.ContainsKey (nameof (MyOtherData.HomeAddress)));
+		var diagnostics2 = errors2 [nameof (MyOtherData.HomeAddress)];
+		Assert.Single (diagnostics2);
+		Assert.Equal ("RBI0017", diagnostics2 [0].Id);
+	}
+
+	[Fact]
+	public void RestrictToFlagTypeNonNullableStructTests ()
+	{
+		// Test with correct flag type and default struct - should succeed
+		var validator1 = new Validator<MyData> ();
+		validator1.RestrictToFlagType (
+			d => d.WorkAddress,
+			d => d.Flag,
+			NonNullableAddress.IsDefault,
+			typeof (MyFlag)
+		);
+
+		var data1 = new MyData {
+			Flag = MyFlag.OptionA,
+			WorkAddress = new NonNullableAddress () // Default struct
+		};
+
+		var errors1 = validator1.ValidateAll (data1, context);
+		Assert.Empty (errors1);
+
+		// Test with correct flag type and non-default struct - should succeed
+		var data2 = new MyData {
+			Flag = MyFlag.OptionA,
+			WorkAddress = new NonNullableAddress { Street = "Test St", City = "Test City" }
+		};
+
+		var errors2 = validator1.ValidateAll (data2, context);
+		Assert.Empty (errors2);
+
+		// Test with wrong flag type and non-default struct - should fail
+		var validator2 = new Validator<MyOtherData> ();
+		validator2.RestrictToFlagType (
+			d => d.WorkAddress,
+			d => d.Flag,
+			NonNullableAddress.IsDefault,
+			typeof (MyFlag)
+		);
+
+		var data3 = new MyOtherData {
+			Flag = OtherFlag.OptionX,
+			WorkAddress = new NonNullableAddress { Street = "Test St", City = "Test City" }
+		};
+
+		var errors3 = validator2.ValidateAll (data3, context);
+		Assert.True (errors3.ContainsKey (nameof (MyOtherData.WorkAddress)));
+		var diagnostics3 = errors3 [nameof (MyOtherData.WorkAddress)];
+		Assert.Single (diagnostics3);
+		Assert.Equal ("RBI0017", diagnostics3 [0].Id);
+
+		// Test with wrong flag type but default struct - should succeed
+		var data4 = new MyOtherData {
+			Flag = OtherFlag.OptionX,
+			WorkAddress = new NonNullableAddress () // Default struct
+		};
+
+		var errors4 = validator2.ValidateAll (data4, context);
+		Assert.Empty (errors4);
 	}
 }

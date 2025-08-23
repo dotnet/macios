@@ -162,10 +162,9 @@ public enum MyEnum {
 		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
 		var symbol = semanticModel.GetDeclaredSymbol (declaration);
 		Assert.NotNull (symbol);
-		Assert.False (symbol.TryGetEnumFields (out var fields, out var diagnostics));
-		Assert.Null (fields);
-		Assert.NotNull (diagnostics);
-		Assert.Single (diagnostics);
+		Assert.True (symbol.TryGetEnumFields (out var fields, out var diagnostics));
+		Assert.NotNull (fields);
+		Assert.Null (diagnostics);
 	}
 
 	[Theory]

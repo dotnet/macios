@@ -327,6 +327,80 @@ The output path to use when device-specific builds are enabled.
 
 Applicable to all platforms that support device-specific builds (currently iOS and tvOS).
 
+## DiagnosticAddress
+
+The IP address where `dotnet-dsrouter` is executing. This is typcially
+`127.0.0.1` when profiling on the simulator, and the IP address of the machine
+where `dotnet-dsrouter` when profiling on a device.
+
+This is the IP address component of [DiagnosticConfiguration](#diagnosticconfiguration)`.
+
+Implicitly sets [EnableDiagnostics](#enablediagnostics) to `true`.
+
+Defaults to `127.0.0.1`.
+
+## DiagnosticConfiguration
+
+A value provided by `dotnet-dsrouter` for `DOTNET_DiagnosticPorts` such as:
+
+* `127.0.0.1:9000,suspend,connect`
+* `127.0.0.1:9000,nosuspend,connect`
+
+Note that the `,` character will need to be escaped with `%2c` if
+passed in command-line to `dotnet build`:
+
+```dotnetcli
+dotnet build -c Release -p:DiagnosticConfiguration=127.0.0.1:9000%2csuspend%2cconnect
+```
+
+This will automatically set the `DOTNET_DiagnosticPorts` environment variable
+packaged inside the application, so that the environment variable is set when
+the app launches.
+
+Implicitly sets [EnableDiagnostics](#enablediagnostics) to `true`.
+
+The default behavior is to compute this value from the other diagnostics
+properties ([DiagnosticAddress](#diagnosticaddress),
+[DiagnosticPort](#diagnosticport),
+[DiagnosticListenMode](#diagnosticlistenmode), and
+[DiagnosticSuspend](#diagnosticsuspend)).
+
+If set, any of the other diagnostic properties will be ignored.
+
+## DiagnosticListenMode
+
+A value provided by `dotnet-dsrouter` such as `connect` or `listen`, the
+listening mode component of
+[DiagnosticConfiguration](#diagnosticconfiguration)`.
+
+Implicitly sets [EnableDiagnostics](#enablediagnostics) to `true`.
+
+Defaults to `listen`.
+
+## DiagnosticPort
+
+A value provided by `dotnet-dsrouter` such as `9000`, the port
+component of [DiagnosticConfiguration](#diagnosticconfiguration)`.
+
+Implicitly sets [EnableDiagnostics](#enablediagnostics) to `true`.
+
+Defaults to `9000`.
+
+## DiagnosticSuspend
+
+A value that specifies the startup behavior when profiling an application.
+
+Set to `true` to suspend the app at startup (waiting for the diagnostics
+server to connect to the app) or `false` to launch the app as usual (and
+connect the diagnostics server to the app later).
+
+This corresponds with the `suspend/nosuspend` value in
+[DiagnosticConfiguration](#diagnosticconfiguration)`.
+
+Implicitly sets [EnableDiagnostics](#enablediagnostics) to `true`.
+
+Defaults to `false`.
+
 ## DittoPath
 
 The full path to the `ditto` executable.

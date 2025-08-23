@@ -24,4 +24,10 @@
       <ProjectReference Include="..\Microsoft.Macios.Generator.Tests\Microsoft.Macios.Generator.Tests.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+    <Compile Include="..\Microsoft.Macios.Generator.Tests\TestDataFactory.cs" >
+        <Link>TestDataFactory.cs</Link>
+    </Compile>
+    </ItemGroup>
+
 </Project>

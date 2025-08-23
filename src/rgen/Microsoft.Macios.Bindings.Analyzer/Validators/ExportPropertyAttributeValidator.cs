@@ -1,0 +1,135 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
+using System.Collections.Immutable;
+using Microsoft.CodeAnalysis;
+using Microsoft.Macios.Generator.Attributes;
+using Microsoft.Macios.Generator.Context;
+using ObjCBindings;
+using static Microsoft.Macios.Generator.RgenDiagnostics;
+
+namespace Microsoft.Macios.Bindings.Analyzer.Validators;
+
+/// <summary>
+/// Validates <see cref="ExportData{T}"/> for properties.
+/// </summary>
+class ExportPropertyAttributeValidator : Validator<ExportData<Property>> {
+
+	/// <summary>
+	/// Validates that the selector is not null.
+	/// </summary>
+	/// <param name="selector">The data to validate.</param>
+	/// <param name="context">The root context for validation.</param>
+	/// <param name="diagnostics">When this method returns, contains an array of diagnostics if the data is invalid; otherwise, an empty array.</param>
+	/// <param name="location">The code location to be used for the diagnostics.</param>
+	/// <returns><c>true</c> if the data is valid; otherwise, <c>false</c>.</returns>
+	internal static bool SelectorIsNotNull (string? selector, RootContext context, out ImmutableArray<Diagnostic> diagnostics,
+		Location? location = null)
+		=> StringStrategies.IsNotNull (
+			selector: selector,
+			descriptor: RBI0018, // A export property must have a selector defined
+			diagnostics: out diagnostics,
+			location: location);
+
+	/// <summary>
+	/// Validates that the selector does not contain any whitespace.
+	/// </summary>
+	/// <param name="selector">The data to validate.</param>
+	/// <param name="context">The root context for validation.</param>
+	/// <param name="diagnostics">When this method returns, contains an array of diagnostics if the data is invalid; otherwise, an empty array.</param>
+	/// <param name="location">The code location to be used for the diagnostics.</param>
+	/// <returns><c>true</c> if the data is valid; otherwise, <c>false</c>.</returns>
+	internal static bool SelectorHasNoWhitespace (string? selector, RootContext context, out ImmutableArray<Diagnostic> diagnostics,
+		Location? location = null)
+		=> StringStrategies.HasNoWhitespace (
+			stringValue: selector,
+			descriptor: RBI0019, // A export property selector must not contain any whitespace.
+			diagnostics: out diagnostics,
+			location: location
+		);
+
+	/// <summary>
+	/// Initializes a new instance of the <see cref="ExportPropertyAttributeValidator"/> class.
+	/// </summary>
+	public ExportPropertyAttributeValidator () : base (d => d.Location)
+	{
+		// add the default rules for this validator
+		AddStrategy (d => d.Selector, RBI0018, SelectorIsNotNull);
+		AddStrategy (d => d.Selector, RBI0019, SelectorHasNoWhitespace);
+
+		// prefix and suffix cannot have whitespaces
+		AddStrategy (
+			selector: d => d.NativePrefix,
+			descriptor: RBI0024,
+			validation: (string? data, RootContext _, out ImmutableArray<Diagnostic> diagnostics, Location? location)
+				=> StringStrategies.NativeNameHasNoWhitespace (
+					data,
+					nameof (ExportData<Property>.NativePrefix),
+					out diagnostics,
+					location)
+				);
+
+		AddStrategy (
+			selector: d => d.NativeSuffix,
+			descriptor: RBI0024,
+			validation: (string? data, RootContext _, out ImmutableArray<Diagnostic> diagnostics, Location? location)
+				=> StringStrategies.NativeNameHasNoWhitespace (
+					data,
+					nameof (ExportData<Property>.NativeSuffix),
+					out diagnostics,
+					location)
+		);
+
+		// only with methods
+		RestrictToFlagType (
+			d => d.ResultType,
+			d => d.Flags,
+			d => d.IsNullOrDefault,
+			typeof (Method)
+		);
+		// only with async methods
+		RestrictToFlagType (
+			d => d.MethodName,
+			d => d.Flags,
+			typeof (Method)
+		);
+
+		// only with async methods
+		RestrictToFlagType (
+			d => d.ResultTypeName,
+			d => d.Flags,
+			typeof (Method)
+		);
+
+		// only with async methods
+		RestrictToFlagType (
+			d => d.PostNonResultSnippet,
+			d => d.Flags,
+			typeof (Method)
+		);
+
+		// only with strong dictionary keys
+		RestrictToFlagType (
+			d => d.StrongDictionaryKeyClass,
+			d => d.Flags,
+			d => d.IsNullOrDefault,
+			typeof (StrongDictionaryKeys)
+		);
+
+		// only with methods
+		RestrictToFlagType (
+			d => d.EventArgsType,
+			d => d.Flags,
+			d => d.IsNullOrDefault,
+			typeof (Method)
+		);
+
+		// only with methods
+		RestrictToFlagType (
+			d => d.EventArgsTypeName,
+			d => d.Flags,
+			typeof (Method)
+		);
+
+	}
+}

@@ -4,7 +4,7 @@ using Microsoft.CodeAnalysis;
 
 namespace Microsoft.Macios.Generator;
 
-public static class Diagnostics {
+public static class RgenDiagnostics {
 	/// <summary>
 	/// An unexpected error occurred while processing '{0}'. Please fill a bug report at https://github.com/dotnet/macios/issues/new.
 	/// </summary>

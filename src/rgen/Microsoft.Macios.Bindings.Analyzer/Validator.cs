@@ -7,30 +7,40 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Linq.Expressions;
 using Microsoft.CodeAnalysis;
+using Microsoft.Macios.Generator.Context;
+using static Microsoft.Macios.Generator.RgenDiagnostics;
 
 namespace Microsoft.Macios.Bindings.Analyzer;
 
 /// <summary>
 /// Defines a contract for a validator that can validate an object and report diagnostics.
 /// </summary>
-public interface IValidator {
+interface IValidator {
 	/// <summary>
 	/// Validates the specified data object.
 	/// </summary>
 	/// <param name="data">The object to validate.</param>
-	/// <param name="location">The code location to be used for the diagnostics.</param>
+	/// <param name="context">The root context for validation.</param>
 	/// <returns>A dictionary where the key is the name of the invalid field and the value is a list of diagnostics.</returns>
-	Dictionary<string, List<Diagnostic>> ValidateAll (object data, Location? location = null);
+	Dictionary<string, List<Diagnostic>> ValidateAll (object data, RootContext context);
 }
 
 /// <summary>
 /// A generic validator for a specific type <typeparamref name="T"/>.
 /// </summary>
 /// <typeparam name="T">The type of the object to validate.</typeparam>
-public partial class Validator<T> : IValidator {
+partial class Validator<T> : IValidator {
 	readonly Dictionary<string, List<IFieldValidationStrategy>> strategies = new ();
 	List<IFieldValidationStrategy>? globalStrategies;
 	readonly Dictionary<string, IValidator> nestedValidators = new ();
+	Func<T, Location?>? getLocation;
+
+	public Validator (Expression<Func<T, Location?>>? locationSelector = null)
+	{
+		if (locationSelector is not null) {
+			getLocation = locationSelector.Compile ();
+		}
+	}
 
 	/// <summary>
 	/// Gets all the diagnostic descriptors that this validator and its nested validators can produce.
@@ -94,12 +104,14 @@ public partial class Validator<T> : IValidator {
 	/// <param name="selector">An expression to select the field to validate.</param>
 	/// <param name="descriptor">The diagnostic descriptors to use if validation fails.</param>
 	/// <param name="validation">The validation logic.</param>
+	/// <param name="propertyName">The field name under test. If not present it will be deduced from the selector.</param>
 	public void AddStrategy<TField> (
 		Expression<Func<T, TField>> selector,
 		ImmutableArray<DiagnosticDescriptor> descriptor,
-		LambdaFieldValidationStrategy<T, TField>.ValidationFunc validation)
+		LambdaFieldValidationStrategy<T, TField>.ValidationFunc validation,
+		string? propertyName = null)
 	{
-		var fieldName = GetPropertyName (selector);
+		var fieldName = propertyName ?? GetPropertyName (selector);
 
 		if (!strategies.ContainsKey (fieldName))
 			strategies [fieldName] = new List<IFieldValidationStrategy> ();
@@ -114,11 +126,13 @@ public partial class Validator<T> : IValidator {
 	/// <param name="selector">An expression to select the field to validate.</param>
 	/// <param name="descriptor">The diagnostic descriptor to use if validation fails.</param>
 	/// <param name="validation">The validation logic.</param>
+	/// <param name="propertyName">The field name under test. If not present it will be deduced from the selector.</param>
 	public void AddStrategy<TField> (
 		Expression<Func<T, TField>> selector,
 		DiagnosticDescriptor descriptor,
-		LambdaFieldValidationStrategy<T, TField>.ValidationFunc validation)
-		=> AddStrategy (selector, [descriptor], validation);
+		LambdaFieldValidationStrategy<T, TField>.ValidationFunc validation,
+		string? propertyName = null)
+		=> AddStrategy (selector, [descriptor], validation, propertyName);
 
 	/// <summary>
 	/// Adds a validation strategy for a specific nullable struct field.
@@ -127,12 +141,14 @@ public partial class Validator<T> : IValidator {
 	/// <param name="selector">An expression to select the nullable struct field to validate.</param>
 	/// <param name="descriptor">The diagnostic descriptors to use if validation fails.</param>
 	/// <param name="validation">The validation logic.</param>
+	/// <param name="propertyName">The field name under test. If not present it will be deduced from the selector.</param>
 	public void AddStrategy<TField> (
 		Expression<Func<T, TField?>> selector,
 		ImmutableArray<DiagnosticDescriptor> descriptor,
-		LambdaFieldValidationStrategy<T, TField?>.ValidationFunc validation) where TField : struct
+		LambdaFieldValidationStrategy<T, TField?>.ValidationFunc validation,
+		string? propertyName = null) where TField : struct
 	{
-		var fieldName = GetPropertyName (selector);
+		var fieldName = propertyName ?? GetPropertyName (selector);
 
 		if (!strategies.ContainsKey (fieldName))
 			strategies [fieldName] = new List<IFieldValidationStrategy> ();
@@ -147,11 +163,13 @@ public partial class Validator<T> : IValidator {
 	/// <param name="selector">An expression to select the nullable struct field to validate.</param>
 	/// <param name="descriptor">The diagnostic descriptor to use if validation fails.</param>
 	/// <param name="validation">The validation logic.</param>
+	/// <param name="propertyName">The field name under test. If not present it will be deduced from the selector.</param>
 	public void AddStrategy<TField> (
 		Expression<Func<T, TField?>> selector,
 		DiagnosticDescriptor descriptor,
-		LambdaFieldValidationStrategy<T, TField?>.ValidationFunc validation) where TField : struct
-		=> AddStrategy (selector, [descriptor], validation);
+		LambdaFieldValidationStrategy<T, TField?>.ValidationFunc validation,
+		string? propertyName = null) where TField : struct
+		=> AddStrategy (selector, [descriptor], validation, propertyName);
 
 	/// <summary>
 	/// Adds a validation strategy for a specific field.
@@ -182,13 +200,13 @@ public partial class Validator<T> : IValidator {
 
 		AddStrategy (selector, nestedValidator.Descriptors, NestedValidation);
 
-		bool NestedValidation (TField? data, out ImmutableArray<Diagnostic> diagnostic, Location? location = null)
+		bool NestedValidation (TField? data, RootContext context, out ImmutableArray<Diagnostic> diagnostic, Location? location = null)
 		{
 			diagnostic = [];
 			if (data is null)
 				return true; // null nested = valid
 
-			var nestedErrors = nestedValidator.ValidateAll (data, location);
+			var nestedErrors = nestedValidator.ValidateAll (data, context);
 			// flatten the diagnostics
 			diagnostic = [.. nestedErrors.SelectMany (x => x.Value)];
 			return nestedErrors.Count == 0;
@@ -211,13 +229,13 @@ public partial class Validator<T> : IValidator {
 
 		AddStrategy (selector, nestedValidator.Descriptors, NestedValidation);
 
-		bool NestedValidation (TField? data, out ImmutableArray<Diagnostic> diagnostic, Location? location = null)
+		bool NestedValidation (TField? data, RootContext context, out ImmutableArray<Diagnostic> diagnostic, Location? location = null)
 		{
 			diagnostic = [];
 			if (data is null)
 				return true; // null nested = valid
 
-			var nestedErrors = nestedValidator.ValidateAll (data.Value, location);
+			var nestedErrors = nestedValidator.ValidateAll (data.Value, context);
 			// flatten the diagnostics
 			diagnostic = [.. nestedErrors.SelectMany (x => x.Value)];
 			return nestedErrors.Count == 0;
@@ -259,7 +277,7 @@ public partial class Validator<T> : IValidator {
 
 		AddGlobalStrategy (RBI0016, CheckSelectors);
 
-		bool CheckSelectors (T data, out ImmutableArray<Diagnostic> diagnostics, Location? location = null)
+		bool CheckSelectors (T data, RootContext _, out ImmutableArray<Diagnostic> diagnostics, Location? location = null)
 		{
 			diagnostics = [];
 			int setCount = compiledSelectors.Count (sel => {
@@ -311,7 +329,7 @@ public partial class Validator<T> : IValidator {
 
 		AddStrategy (fieldName, strategy);
 
-		bool CheckFlags ((TField FieldData, TFlag FlagData) data, out ImmutableArray<Diagnostic> diagnostics, Location? location = null)
+		bool CheckFlags ((TField FieldData, TFlag FlagData) data, RootContext _, out ImmutableArray<Diagnostic> diagnostics, Location? location = null)
 		{
 			// we do know that we can only get the anonymous type with two properties
 			diagnostics = [];
@@ -369,7 +387,7 @@ public partial class Validator<T> : IValidator {
 
 		AddStrategy (fieldName, strategy);
 
-		bool ConditionalValidation ((TField FieldData, TFlag FlagData) data, out ImmutableArray<Diagnostic> diagnostics, Location? location = null)
+		bool ConditionalValidation ((TField FieldData, TFlag FlagData) data, RootContext context, out ImmutableArray<Diagnostic> diagnostics, Location? location = null)
 		{
 			diagnostics = [];
 			var flagValue = data.FlagData;
@@ -383,7 +401,7 @@ public partial class Validator<T> : IValidator {
 				return true;
 
 			// Execute the actual validation logic
-			return validation (data.FieldData, out diagnostics, location);
+			return validation (data.FieldData, context, out diagnostics, location);
 		}
 	}
 
@@ -442,7 +460,7 @@ public partial class Validator<T> : IValidator {
 
 		AddStrategy (fieldName, strategy);
 
-		bool ConditionalValidation ((TField? FieldData, TFlag FlagData) data, out ImmutableArray<Diagnostic> diagnostics, Location? location = null)
+		bool ConditionalValidation ((TField? FieldData, TFlag FlagData) data, RootContext context, out ImmutableArray<Diagnostic> diagnostics, Location? location = null)
 		{
 			diagnostics = [];
 			var flagValue = data.FlagData;
@@ -456,7 +474,7 @@ public partial class Validator<T> : IValidator {
 				return true;
 
 			// Execute the actual validation logic
-			return validation (data.FieldData, out diagnostics, location);
+			return validation (data.FieldData, context, out diagnostics, location);
 		}
 	}
 
@@ -496,7 +514,7 @@ public partial class Validator<T> : IValidator {
 		bool exactlyOne = false,
 		bool requireAllFlags = false,
 		TFlag []? requiredFlags = null,
-		params Expression<Func<T, object?>> [] selectors)
+		params IFieldNullCheck<T> [] selectors)
 		where TFlag : Enum
 	{
 		if (selectors.Length < 2)
@@ -505,12 +523,11 @@ public partial class Validator<T> : IValidator {
 		if (requiredFlags is null || requiredFlags.Length == 0)
 			throw new ArgumentException ("requiredFlags cannot be null or empty.");
 
-		var compiledSelectors = selectors.Select (s => s.Compile ()).ToArray ();
 		var flagSelectorCompiled = flagSelector.Compile ();
 
 		AddGlobalStrategy (RBI0016, CheckSelectors);
 
-		bool CheckSelectors (T data, out ImmutableArray<Diagnostic> diagnostics, Location? location = null)
+		bool CheckSelectors (T data, RootContext _, out ImmutableArray<Diagnostic> diagnostics, Location? location = null)
 		{
 			diagnostics = [];
 			var flagValue = flagSelectorCompiled (data);
@@ -523,20 +540,17 @@ public partial class Validator<T> : IValidator {
 			if (!shouldValidate)
 				return true;
 
-			int setCount = compiledSelectors.Count (sel => {
-				var value = sel (data);
-				return value is not null;
-			});
+			int setCount = selectors.Count (sel => !sel.IsNull (data));
 
 			var valid = exactlyOne ? setCount == 1 : setCount <= 1;
 			if (!valid) {
-				var fieldNames = selectors.Select (GetPropertyName).ToList ();
+				var fieldNames = selectors.Select (s => s.FieldName).ToList ();
 				// we will only return a single diagnostic for the whole group
 				diagnostics = [
 					Diagnostic.Create (
 						descriptor: RBI0016, // Fields '{0}' must be mutually exclusive. At most one field can be set.
 						location: location,
-						messageArgs: fieldNames)
+						messageArgs: string.Join (", ", fieldNames))
 				];
 			}
 
@@ -546,7 +560,34 @@ public partial class Validator<T> : IValidator {
 
 	/// <summary>
 	/// Adds a conditional mutually exclusive validation rule that only executes when specific flags are present in another field.
-	/// This overload handles nullable struct fields.
+	/// </summary>
+	/// <typeparam name="TFlag">The type of the enum flag.</typeparam>
+	/// <param name="flagSelector">An expression to select the enum field that contains the flags.</param>
+	/// <param name="exactlyOne">If true, exactly one of the fields must be set when flags are present. If false, at most one can be set.</param>
+	/// <param name="requireAllFlags">If true, all flags in <paramref name="requiredFlags"/> must be present for validation to execute. If false, any flag is sufficient.</param>
+	/// <param name="requiredFlags">The enum flags that trigger the validation.</param>
+	/// <param name="selectors">The fields to check for mutual exclusivity.</param>
+	public void AddConditionalMutuallyExclusive<TFlag> (
+		Expression<Func<T, TFlag>> flagSelector,
+		bool exactlyOne = false,
+		bool requireAllFlags = false,
+		TFlag []? requiredFlags = null,
+		params Expression<Func<T, object?>> [] selectors)
+		where TFlag : Enum
+	{
+		// build IFieldNullCheck<T> from the selectors
+		var fieldChecks = new IFieldNullCheck<T> [selectors.Length];
+		for (int i = 0; i < selectors.Length; i++) {
+			fieldChecks [i] = new FieldNullCheck<T, object?> (
+				selector: selectors [i],
+				isDefaultValue: x => x is null,
+				fieldName: GetPropertyName (selectors [i]));
+		}
+		AddConditionalMutuallyExclusive (flagSelector, exactlyOne, requireAllFlags, requiredFlags, fieldChecks);
+	}
+
+	/// <summary>
+	/// Adds a conditional mutually exclusive validation rule that only executes when specific flags are present in another field.
 	/// </summary>
 	/// <typeparam name="TFlag">The type of the enum flag.</typeparam>
 	/// <param name="flagSelector">An expression to select the enum field that contains the flags.</param>
@@ -573,7 +614,7 @@ public partial class Validator<T> : IValidator {
 
 		AddGlobalStrategy (RBI0016, CheckSelectors);
 
-		bool CheckSelectors (T data, out ImmutableArray<Diagnostic> diagnostics, Location? location = null)
+		bool CheckSelectors (T data, RootContext _, out ImmutableArray<Diagnostic> diagnostics, Location? location = null)
 		{
 			diagnostics = [];
 			var flagValue = flagSelectorCompiled (data);
@@ -607,24 +648,180 @@ public partial class Validator<T> : IValidator {
 		}
 	}
 
+	/// <summary>
+	/// Adds a validation rule that restricts a field to only be set when the flag is of a specific type.
+	/// </summary>
+	/// <typeparam name="TField">The type of the field to validate.</typeparam>
+	/// <typeparam name="TFlag">The type of the enum flag.</typeparam>
+	/// <param name="selector">An expression to select the field to validate.</param>
+	/// <param name="flagSelector">An expression to select the enum field.</param>
+	/// <param name="expectedFlagType">The expected flag type that allows the field to be set.</param>
+	public void RestrictToFlagType<TField, TFlag> (
+		Expression<Func<T, TField?>> selector,
+		Expression<Func<T, TFlag>> flagSelector,
+		Type expectedFlagType)
+		where TFlag : Enum
+	{
+		Expression<Func<T, (TField? FieldData, TFlag FlagData)>> tupleSelector =
+			y => new (selector.Compile () (y), flagSelector.Compile () (y));
+
+		AddStrategy (tupleSelector, RBI0017, CheckFlagType, GetPropertyName (selector));
+
+		bool CheckFlagType ((TField? FieldData, TFlag FlagData) data, RootContext _, out ImmutableArray<Diagnostic> diagnostics, Location? location = null)
+		{
+			diagnostics = [];
+			var fieldValue = data.FieldData;
+
+			// If field is null, validation passes
+			if (fieldValue is null)
+				return true;
+
+			// Check if the flag type matches the expected type
+			var flagType = typeof (TFlag);
+			var valid = flagType == expectedFlagType;
+
+			if (!valid) {
+				diagnostics = [
+					Diagnostic.Create (
+						descriptor: RBI0017,
+						location: location,
+						messageArgs: [
+							GetPropertyName (selector),
+							expectedFlagType.Name,
+							flagType.Name
+						])
+				];
+			}
+
+			return valid;
+		}
+	}
+
+	/// <summary>
+	/// Adds a validation rule that restricts a nullable struct field to only be set when the flag is of a specific type.
+	/// </summary>
+	/// <typeparam name="TField">The type of the struct field to validate.</typeparam>
+	/// <typeparam name="TFlag">The type of the enum flag.</typeparam>
+	/// <param name="selector">An expression to select the nullable struct field to validate.</param>
+	/// <param name="flagSelector">An expression to select the enum field.</param>
+	/// <param name="expectedFlagType">The expected flag type that allows the field to be set.</param>
+	public void RestrictToFlagType<TField, TFlag> (
+		Expression<Func<T, TField?>> selector,
+		Expression<Func<T, TFlag>> flagSelector,
+		Type expectedFlagType)
+		where TField : struct
+		where TFlag : Enum
+	{
+
+		Expression<Func<T, (TField? FieldData, TFlag FlagData)>> tupleSelector =
+			y => new (selector.Compile () (y), flagSelector.Compile () (y));
+
+		AddStrategy (tupleSelector, RBI0017, CheckFlagType, GetPropertyName (selector));
+
+		bool CheckFlagType ((TField? FieldData, TFlag FlagData) data, RootContext _, out ImmutableArray<Diagnostic> diagnostics, Location? location = null)
+		{
+			diagnostics = [];
+			var fieldValue = data.FieldData;
+
+			// If field is null, validation passes
+			if (fieldValue is null)
+				return true;
+
+			// Check if the flag type matches the expected type
+			var flagType = typeof (TFlag);
+			var valid = flagType == expectedFlagType;
+
+			if (!valid) {
+				diagnostics = [
+					Diagnostic.Create (
+						descriptor: RBI0017,
+						location: location,
+						messageArgs: [
+							GetPropertyName (selector),
+							expectedFlagType.Name,
+							flagType.Name
+						])
+				];
+			}
+
+			return valid;
+		}
+	}
+
+	/// <summary>
+	/// Adds a validation rule that restricts a non-nullable struct field to only be set when the flag is of a specific type.
+	/// Uses a lambda to determine if the struct is in its default state.
+	/// </summary>
+	/// <typeparam name="TField">The type of the struct field to validate.</typeparam>
+	/// <typeparam name="TFlag">The type of the enum flag.</typeparam>
+	/// <param name="selector">An expression to select the struct field to validate.</param>
+	/// <param name="flagSelector">An expression to select the enum field.</param>
+	/// <param name="isDefaultValue">A function that returns true if the struct field is in its default state.</param>
+	/// <param name="expectedFlagType">The expected flag type that allows the field to be set.</param>
+	public void RestrictToFlagType<TField, TFlag> (
+		Expression<Func<T, TField>> selector,
+		Expression<Func<T, TFlag>> flagSelector,
+		Func<TField, bool> isDefaultValue,
+		Type expectedFlagType)
+		where TField : struct
+		where TFlag : Enum
+	{
+		Expression<Func<T, (TField FieldData, TFlag FlagData)>> tupleSelector =
+			y => new (selector.Compile () (y), flagSelector.Compile () (y));
+
+		AddStrategy (tupleSelector, RBI0017, CheckFlagType, GetPropertyName (selector));
+
+		bool CheckFlagType ((TField FieldData, TFlag FlagData) data, RootContext _, out ImmutableArray<Diagnostic> diagnostics, Location? location = null)
+		{
+			diagnostics = [];
+			var fieldValue = data.FieldData;
+
+			// If field is in default state, validation passes
+			if (isDefaultValue (fieldValue))
+				return true;
+
+			// Check if the flag type matches the expected type
+			var flagType = typeof (TFlag);
+			var valid = flagType == expectedFlagType;
+
+			if (!valid) {
+				diagnostics = [
+					Diagnostic.Create (
+						descriptor: RBI0017,
+						location: location,
+						messageArgs: [
+							GetPropertyName (selector),
+							expectedFlagType.Name,
+							flagType.Name
+						])
+				];
+			}
+
+			return valid;
+		}
+	}
+
 	/// <inheritdoc />
-	public Dictionary<string, List<Diagnostic>> ValidateAll (object data, Location? location = null)
-		=> data is not T validData ? [] : ValidateAll (validData, location);
+	public Dictionary<string, List<Diagnostic>> ValidateAll (object data, RootContext rootContext)
+		=> data is not T validData ? [] : ValidateAll (validData, rootContext);
 
 	/// <summary>
 	/// Validates the given data object against all registered strategies.
 	/// </summary>
 	/// <param name="data">The data object to validate.</param>
-	/// <param name="location">The code location to be used for the diagnostics.</param>
+	/// <param name="rootContext">The root context for validation.</param>
 	/// <returns>A dictionary of validation errors, where the key is the field name and the value is a list of diagnostics.</returns>
-	public Dictionary<string, List<Diagnostic>> ValidateAll (T data, Location? location = null)
+	public Dictionary<string, List<Diagnostic>> ValidateAll (T data, RootContext rootContext)
 	{
+		// if the location is null BUT we have a func that can retrieve it from the data, use data
+		var location = getLocation?.Invoke (data);
+
 		var errors = new Dictionary<string, List<Diagnostic>> ();
 
 		// Own field strategies
 		foreach (var kvp in strategies) {
 			foreach (var strategy in kvp.Value) {
-				if (strategy.IsValid (data, out var diagnostics, location))
+				if (strategy.IsValid (data, rootContext, out var diagnostics, location))
 					continue;
 
 				if (!errors.ContainsKey (kvp.Key))
@@ -637,7 +834,7 @@ public partial class Validator<T> : IValidator {
 		// Global strategies
 		if (globalStrategies is not null) {
 			foreach (var strategy in globalStrategies) {
-				if (!strategy.IsValid (data, out var diagnostics, location)) {
+				if (!strategy.IsValid (data, rootContext, out var diagnostics, location)) {
 					if (!errors.ContainsKey (string.Empty))
 						errors [string.Empty] = [];
 
@@ -656,7 +853,7 @@ public partial class Validator<T> : IValidator {
 			if (nestedValue is null)
 				continue;
 
-			var nestedErrors = nestedValidatorObj.ValidateAll (nestedValue, location);
+			var nestedErrors = nestedValidatorObj.ValidateAll (nestedValue, rootContext);
 			foreach (var ne in nestedErrors) {
 				var compositeKey = string.IsNullOrEmpty (ne.Key)
 					? fieldName

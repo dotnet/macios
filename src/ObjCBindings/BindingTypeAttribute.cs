@@ -33,7 +33,7 @@ namespace ObjCBindings {
 		/// <summary>
 		/// Get/set the library name for an error code. This has to be used with the SmartEnum flag.
 		/// </summary >
-		public string? LibraryName { get; set; } = null;
+		public string? LibraryPath { get; set; } = null;
 
 		/// <summary>
 		/// Get/set the visibility of the default constructor for a core image filter.

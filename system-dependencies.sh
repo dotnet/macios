@@ -304,10 +304,13 @@ function install_mono () {
 
 function xcodebuild_download_selected_platforms ()
 {
-	log "Executing '$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild -downloadPlatform iOS' $1"
-	"$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild" -downloadPlatform iOS
-	log "Executing '$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild -downloadPlatform tvOS' $1"
-	"$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild" -downloadPlatform tvOS
+	IOS_NUGET_OS_VERSION=$(grep '^IOS_NUGET_OS_VERSION=' Make.versions | sed 's/.*=//')
+	log "Executing '$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild -downloadPlatform iOS -buildVersion $IOS_NUGET_OS_VERSION' $1"
+	"$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild" -downloadPlatform iOS -buildVersion $IOS_NUGET_OS_VERSION
+
+	TVOS_NUGET_OS_VERSION=$(grep '^TVOS_NUGET_OS_VERSION=' Make.versions | sed 's/.*=//')
+	log "Executing '$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild -downloadPlatform tvOS -buildVersion $TVOS_NUGET_OS_VERSION' $1"
+	"$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild" -downloadPlatform tvOS -buildVersion $TVOS_NUGET_OS_VERSION
 }
 
 function download_xcode_platforms ()

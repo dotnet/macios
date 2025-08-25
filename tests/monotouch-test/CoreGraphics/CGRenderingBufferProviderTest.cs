@@ -11,16 +11,14 @@ namespace MonoTouchFixtures.CoreGraphics {
 	[TestFixture]
 	[Preserve (AllMembers = true)]
 	public class CGRenderingBufferProviderTest {
-		// FIXME: improve these tests
-
 		[Test]
-		public void CreateWithCFData_ReturnsInstanceOrNull ()
+		public void CreateWithCFData_ReturnsNull ()
 		{
 			TestRuntime.AssertXcodeVersion (26, 0);
 
-			var data = new NSMutableData (10); // Create a small CFMutableDataRef
+			using var data = new NSMutableData (10); // Create a small CFMutableDataRef
 			var provider = CGRenderingBufferProvider.Create (data);
-			Assert.That (provider, Is.Null.Or.InstanceOf<CGRenderingBufferProvider> (), "Should return null or a valid instance");
+			Assert.That (provider, Is.Null, "This shouldn't work"); // doesn't work because I have no idea what to put in the NSData to make it valid
 		}
 
 		[Test]
@@ -28,36 +26,38 @@ namespace MonoTouchFixtures.CoreGraphics {
 		{
 			TestRuntime.AssertXcodeVersion (26, 0);
 
-			var data = new NSMutableData (10);
-			var provider = CGRenderingBufferProvider.Create (data);
-			if (provider is not null) {
-				Assert.DoesNotThrow (() => { var size = provider.Size; });
-			}
-		}
-
-		[Test]
-		public void LockUnlockBytePointer_DoesNotThrow ()
-		{
-			TestRuntime.AssertXcodeVersion (26, 0);
-
-			var data = new NSMutableData (10);
-			var provider = CGRenderingBufferProvider.Create (data);
-			if (provider is not null) {
-				Assert.DoesNotThrow (() => {
-					var ptr = provider.LockBytePointer ();
-					provider.UnlockBytePointer ();
+			var size = 512;
+			var calledOnLockPointer = false;
+			var calledOnUnlockPointer = false;
+			var calledOnReleaseInfo = false;
+			var provider = CGRenderingBufferProvider.Create ((nint) 0xdeadf00d, size,
+				lockPointer: (info) => {
+					calledOnLockPointer = true;
+					var rv = Marshal.AllocHGlobal (renderingBufferProviderSize);
+					// Console.WriteLine ($"CreateAdaptive () OnLockPointer#4 ({info}) => {rv}");
+					return rv;
+				},
+				unlockPointer: (info, pointer) => {
+					// Console.WriteLine ($"CreateAdaptive () OnUnlockPointer#4 ({info}, {pointer})");
+					calledOnUnlockPointer = true;
+					Marshal.FreeHGlobal (pointer);
+				},
+				releaseInfo: (info) => {
+					// Console.WriteLine ($"CreateAdaptive () OnReleaseInfo#4 ({info})");
+					calledOnReleaseInfo = true;
 				});
-			}
+			Assert.That (provider, Is.Not.Null, "provider");
+			Assert.That (provider.Size, Is.EqualTo (size), "size");
 		}
 
 		[Test]
-		public void GetTypeId_ReturnsTypeId ()
+		public void GetTypeId ()
 		{
 			TestRuntime.AssertXcodeVersion (26, 0);
 
 			Assert.DoesNotThrow (() => {
 				var typeId = CGRenderingBufferProvider.GetTypeId ();
-				Assert.GreaterOrEqual (typeId, 0);
+				Assert.That (typeId, Is.GreaterThan (0), "GetTypeId");
 			});
 		}
 	}

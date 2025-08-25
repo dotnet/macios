@@ -173,6 +173,6 @@ namespace CoreFoundation {
 	public enum CFByteOrder : long {
 		Unknown,
 		LittleEndian,
-		BigEndian
+		BigEndian,
 	}
 }

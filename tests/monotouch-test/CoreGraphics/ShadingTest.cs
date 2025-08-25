@@ -1,11 +1,5 @@
-//
-// Unit tests for CGPath
-//
-// Authors:
-//	Sebastien Pouliot <sebastien@xamarin.com>
-//
-// Copyright 2013-2014 Xamarin Inc. All rights reserved.
-//
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using System;
 using System.IO;
@@ -34,8 +28,6 @@ namespace MonoTouchFixtures.CoreGraphics {
 
 				return CGShading.CreateAxial (0.5f, hdrCapableColorspace, start, end, function, true, false);
 			});
-
-			TestRuntime.AssertXcodeVersion (26, 0);
 		}
 
 		[Test]

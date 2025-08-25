@@ -84,6 +84,22 @@ parameters:
       demands: [
         "Agent.OS -equals Darwin",
         "macOS.Name -equals Sequoia",
+        "Agent.OSVersion -equals 15.6",
+        "macOS.Architecture -equals arm64",
+        "Agent.HasDevices -equals False",
+        "Agent.IsPaired -equals False"
+      ]
+    },
+    {
+      stageName: 'mac_26_arm64',
+      displayName: 'arm64 - Mac Tahoe (26)',
+      macPool: 'VSEng-VSMac-Xamarin-Shared',
+      useImage: false,
+      statusContext: 'arm64 - Mac Tahoe (26)',
+      demands: [
+        "Agent.OS -equals Darwin",
+        "macOS.Name -equals Sequoia",
+        "Agent.OSVersion -equals 26.0",
         "macOS.Architecture -equals arm64",
         "Agent.HasDevices -equals False",
         "Agent.IsPaired -equals False"

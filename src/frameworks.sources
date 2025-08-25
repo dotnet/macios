@@ -2098,6 +2098,7 @@ IOS_FRAMEWORKS =         \
 	AutomaticAssessmentConfiguration \
 	BackgroundAssets \
 	BackgroundTasks \
+	BrowserEngineCore \
 	BrowserEngineKit \
 	BusinessChat \
 	CallKit \

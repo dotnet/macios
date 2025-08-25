@@ -24,6 +24,7 @@ partial class Frameworks {
 		"AVRouting",
 		"BackgroundAssets",
 		"BackgroundTasks",
+		"BrowserEngineCore",
 		"BrowserEngineKit",
 		"BusinessChat",
 		"CallKit",
@@ -546,6 +547,7 @@ partial class Frameworks {
 	bool? _AVRouting;
 	bool? _BackgroundAssets;
 	bool? _BackgroundTasks;
+	bool? _BrowserEngineCore;
 	bool? _BrowserEngineKit;
 	bool? _BusinessChat;
 	bool? _CallKit;
@@ -718,6 +720,7 @@ partial class Frameworks {
 	public bool HaveAVRouting { get { if (!_AVRouting.HasValue) _AVRouting = GetValue ("AVRouting"); return _AVRouting.Value; } }
 	public bool HaveBackgroundAssets { get { if (!_BackgroundAssets.HasValue) _BackgroundAssets = GetValue ("BackgroundAssets"); return _BackgroundAssets.Value; } }
 	public bool HaveBackgroundTasks { get { if (!_BackgroundTasks.HasValue) _BackgroundTasks = GetValue ("BackgroundTasks"); return _BackgroundTasks.Value; } }
+	public bool HaveBrowserEngineCore { get { if (!_BrowserEngineCore.HasValue) _BrowserEngineCore = GetValue ("BrowserEngineCore"); return _BrowserEngineCore.Value; } }
 	public bool HaveBrowserEngineKit { get { if (!_BrowserEngineKit.HasValue) _BrowserEngineKit = GetValue ("BrowserEngineKit"); return _BrowserEngineKit.Value; } }
 	public bool HaveBusinessChat { get { if (!_BusinessChat.HasValue) _BusinessChat = GetValue ("BusinessChat"); return _BusinessChat.Value; } }
 	public bool HaveCallKit { get { if (!_CallKit.HasValue) _CallKit = GetValue ("CallKit"); return _CallKit.Value; } }

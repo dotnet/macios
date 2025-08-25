@@ -207,11 +207,11 @@ class MainClass {
 	}
 }
 ";
-            var mainFile = Path.Combine (Path.GetDirectoryName (project_path)!, "Main.cs");
-            File.WriteAllText (mainFile, mainContents);
+			var mainFile = Path.Combine (Path.GetDirectoryName (project_path)!, "Main.cs");
+			File.WriteAllText (mainFile, mainContents);
 
-            // Create a separate helper class file
-            var helperContents = @"
+			// Create a separate helper class file
+			var helperContents = @"
 public class MyHelper {
     public string GetMessage ()
     {
@@ -219,20 +219,20 @@ public class MyHelper {
     }
 }
 ";
-            var helperFile = Path.Combine (Path.GetDirectoryName (project_path)!, "MyHelper.cs");
-            File.WriteAllText (helperFile, helperContents);
+			var helperFile = Path.Combine (Path.GetDirectoryName (project_path)!, "MyHelper.cs");
+			File.WriteAllText (helperFile, helperContents);
 
-            // Build the first time
-            var rv = DotNet.AssertBuild (project_path, properties);
-            var allTargets = BinLog.GetAllTargets (rv.BinLogPath);
-            
-            // Verify these targets executed on first build
-            AssertTargetExecuted (allTargets, "_CreatePkgInfo", "A");
-            AssertTargetExecuted (allTargets, "_LinkNativeExecutable", "A");
-            AssertTargetExecuted (allTargets, "_CompileNativeExecutable", "A");
+			// Build the first time
+			var rv = DotNet.AssertBuild (project_path, properties);
+			var allTargets = BinLog.GetAllTargets (rv.BinLogPath);
 
-            // Make a small change to the helper class file (not the main entry point)
-            var modifiedHelperContents = @"
+			// Verify these targets executed on first build
+			AssertTargetExecuted (allTargets, "_CreatePkgInfo", "A");
+			AssertTargetExecuted (allTargets, "_LinkNativeExecutable", "A");
+			AssertTargetExecuted (allTargets, "_CompileNativeExecutable", "A");
+
+			// Make a small change to the helper class file (not the main entry point)
+			var modifiedHelperContents = @"
 public class MyHelper {
     public string GetMessage ()
     {
@@ -240,17 +240,17 @@ public class MyHelper {
     }
 }
 ";
-            File.WriteAllText (helperFile, modifiedHelperContents);
+			File.WriteAllText (helperFile, modifiedHelperContents);
 
-            // Build again after modifying the helper C# file
-            rv = DotNet.AssertBuild (project_path, properties);
-            allTargets = BinLog.GetAllTargets (rv.BinLogPath);
+			// Build again after modifying the helper C# file
+			rv = DotNet.AssertBuild (project_path, properties);
+			allTargets = BinLog.GetAllTargets (rv.BinLogPath);
 
-            // Verify these targets did NOT execute on incremental build after C# change
-            AssertTargetNotExecuted (allTargets, "_CreatePkgInfo", "B");
-            AssertTargetNotExecuted (allTargets, "_LinkNativeExecutable", "B");
-            AssertTargetNotExecuted (allTargets, "_CompileNativeExecutable", "B");
-        }
+			// Verify these targets did NOT execute on incremental build after C# change
+			AssertTargetNotExecuted (allTargets, "_CreatePkgInfo", "B");
+			AssertTargetNotExecuted (allTargets, "_LinkNativeExecutable", "B");
+			AssertTargetNotExecuted (allTargets, "_CompileNativeExecutable", "B");
+		}
 
 	}
 }

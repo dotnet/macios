@@ -68,7 +68,7 @@ namespace Xamarin.Messaging.Build {
 			}
 
 			//We want to define a custom home for dotnet only if it's the Pair To Mac SDK installation
-			if (xmaDotNetRootPath.StartsWith(MessagingContext.BasePath, StringComparison.OrdinalIgnoreCase)) {
+			if (xmaDotNetRootPath.StartsWith (MessagingContext.BasePath, StringComparison.OrdinalIgnoreCase)) {
 				//The custom home is used for storing caches and not mix them with the global installation (NuGet, dotnet, etc.)
 				Environment.SetEnvironmentVariable ("DOTNET_CUSTOM_HOME", Path.Combine (xmaSdkRootPath, ".home"));
 			}

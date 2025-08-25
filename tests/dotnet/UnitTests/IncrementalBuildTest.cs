@@ -207,39 +207,50 @@ class MainClass {
 	}
 }
 ";
-			var mainFile = Path.Combine (Path.GetDirectoryName (project_path)!, "Main.cs");
-			File.WriteAllText (mainFile, mainContents);
+            var mainFile = Path.Combine (Path.GetDirectoryName (project_path)!, "Main.cs");
+            File.WriteAllText (mainFile, mainContents);
 
-			// Build the first time
-			var rv = DotNet.AssertBuild (project_path, properties);
-			var allTargets = BinLog.GetAllTargets (rv.BinLogPath);
-
-			// Verify these targets executed on first build
-			AssertTargetExecuted (allTargets, "_CreatePkgInfo", "A");
-			AssertTargetExecuted (allTargets, "_CompileNativeExecutable", "A");
-			AssertTargetExecuted (allTargets, "_LinkNativeExecutable", "A");
-
-			// Make a small change to the C# file
-			var modifiedMainContents = @"
-class MainClass {
-	static int Main ()
-	{
-		System.Console.WriteLine (""Hello Modified World!"");
-		return 0;
-	}
+            // Create a separate helper class file
+            var helperContents = @"
+public class MyHelper {
+    public string GetMessage ()
+    {
+        return ""Hello from helper!"";
+    }
 }
 ";
-			File.WriteAllText (mainFile, modifiedMainContents);
+            var helperFile = Path.Combine (Path.GetDirectoryName (project_path)!, "MyHelper.cs");
+            File.WriteAllText (helperFile, helperContents);
 
-			// Build again after modifying the C# file
-			rv = DotNet.AssertBuild (project_path, properties);
-			allTargets = BinLog.GetAllTargets (rv.BinLogPath);
+            // Build the first time
+            var rv = DotNet.AssertBuild (project_path, properties);
+            var allTargets = BinLog.GetAllTargets (rv.BinLogPath);
+            
+            // Verify these targets executed on first build
+            AssertTargetExecuted (allTargets, "_CreatePkgInfo", "A");
+            AssertTargetExecuted (allTargets, "_LinkNativeExecutable", "A");
+            AssertTargetExecuted (allTargets, "_CompileNativeExecutable", "A");
 
-			// Verify these targets did NOT execute on incremental build after C# change
-			AssertTargetNotExecuted (allTargets, "_CreatePkgInfo", "B");
-			AssertTargetNotExecuted (allTargets, "_CompileNativeExecutable", "B");
-			AssertTargetNotExecuted (allTargets, "_LinkNativeExecutable", "B");
-		}
+            // Make a small change to the helper class file (not the main entry point)
+            var modifiedHelperContents = @"
+public class MyHelper {
+    public string GetMessage ()
+    {
+        return ""Hello from modified helper!"";
+    }
+}
+";
+            File.WriteAllText (helperFile, modifiedHelperContents);
+
+            // Build again after modifying the helper C# file
+            rv = DotNet.AssertBuild (project_path, properties);
+            allTargets = BinLog.GetAllTargets (rv.BinLogPath);
+
+            // Verify these targets did NOT execute on incremental build after C# change
+            AssertTargetNotExecuted (allTargets, "_CreatePkgInfo", "B");
+            AssertTargetNotExecuted (allTargets, "_LinkNativeExecutable", "B");
+            AssertTargetNotExecuted (allTargets, "_CompileNativeExecutable", "B");
+        }
 
 	}
 }

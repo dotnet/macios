@@ -111,11 +111,11 @@
         <value>In order for the code to be generated a smart enum value has to have a backing field.</value>
     </data>
   <data name="RBI0008MessageFormat" xml:space="preserve">
-        <value>The enum value '{0}' must be tagged with a Field&lt;EnumValue&gt; attribute</value>
-        <comment>'{0}' is the name of the enumerator value.</comment>
+        <value>The enum '{0}' must have at least one member tagged with a Field&lt;EnumValue&gt; attribute</value>
+        <comment>'{0}' is the name of the enumerator.</comment>
     </data>
   <data name="RBI0008Title" xml:space="preserve">
-        <value>Smart enum values must be tagged with an Field&lt;EnumValue&gt; attribute</value>
+        <value>Smart enum values must have a value tagged with an Field&lt;EnumValue&gt; attribute</value>
     </data>
   <!-- RBI0009 -->
   <data name="RBI0009Description" xml:space="preserve">
@@ -308,6 +308,17 @@
         <value>The async method name must not contain any whitespace</value>
     </data>
   <data name="RBI0026Title" xml:space="preserve">
+        <value>Bad method name</value>
+    </data>
+  <!-- RBI0027 -->
+  <data name="RBI0027Description" xml:space="preserve">
+        <value>The symbol is accessible in a platform where it is not supported..</value>
+    </data>
+  <data name="RBI0027MessageFormat" xml:space="preserve">
+        <value>The symbol '{0}' is accessible on platform '{1}' when it was marked otherwise</value>
+        <comment>The {0} is the name of the enum, property or method, {1} is the name of the platform.</comment>
+    </data>
+  <data name="RBI0027Title" xml:space="preserve">
         <value>Bad method name</value>
     </data>
 </root>

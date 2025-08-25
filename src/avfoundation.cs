@@ -23415,7 +23415,8 @@ namespace AVFoundation {
 		AVContentKey ContentKey { get; }
 
 		// Added to headers in Xcode 26, but according to the same headers this selector is available in earlier OS versions.
-		[MacCatalyst (18, 4), TV (18, 4), Mac (15, 4), iOS (18, 4)]
+		// However, introspection doesn't agree, so use v26.
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
 		[NullAllowed, Export ("originatingRecipient", ArgumentSemantic.Weak)]
 		IAVContentKeyRecipient OriginatingRecipient { get; }
 	}

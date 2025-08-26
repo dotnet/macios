@@ -8645,6 +8645,7 @@ M:ARKit.ARReferenceImage.ValidateAsync
 M:ARKit.ARSCNView.ARSCNViewAppearance.#ctor(System.IntPtr)
 M:ARKit.ARSCNView.Dispose(System.Boolean)
 M:ARKit.ARSession.CaptureHighResolutionFrameAsync
+M:ARKit.ARSession.CaptureHighResolutionFrameAsync(AVFoundation.AVCapturePhotoSettings)
 M:ARKit.ARSession.Dispose(System.Boolean)
 M:ARKit.ARSession.GetGeoLocationAsync(CoreGraphics.NVector3)
 M:ARKit.ARSession.TrackedRaycastAsync(ARKit.ARRaycastQuery,ARKit.ARTrackedRaycast@)
@@ -26118,6 +26119,7 @@ T:ARKit.ARRaycastTarget
 T:ARKit.ARRaycastTargetAlignment
 T:ARKit.ARSceneReconstruction
 T:ARKit.ARSegmentationClass
+T:ARKit.ARSessionCaptureHighResolutionFrame
 T:ARKit.ARSkeletonJointName
 T:ARKit.GetGeolocationCallback
 T:AudioToolbox.AudioCodecContentSource

@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 
 using System;
+using System.Runtime.InteropServices;
+
 using Foundation;
 using CoreGraphics;
 using NUnit.Framework;
@@ -30,7 +32,7 @@ namespace MonoTouchFixtures.CoreGraphics {
 			var calledOnLockPointer = false;
 			var calledOnUnlockPointer = false;
 			var calledOnReleaseInfo = false;
-			var provider = CGRenderingBufferProvider.Create ((nint) 0xdeadf00d, size,
+			var provider = CGRenderingBufferProvider.Create ((nint) 0x0ee1f00d, size,
 				lockPointer: (info) => {
 					calledOnLockPointer = true;
 					var rv = Marshal.AllocHGlobal (renderingBufferProviderSize);

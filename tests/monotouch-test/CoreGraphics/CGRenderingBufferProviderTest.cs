@@ -32,10 +32,10 @@ namespace MonoTouchFixtures.CoreGraphics {
 			var calledOnLockPointer = false;
 			var calledOnUnlockPointer = false;
 			var calledOnReleaseInfo = false;
-			var provider = CGRenderingBufferProvider.Create ((nint) 0x0ee1f00d, size,
+			var provider = CGRenderingBufferProvider.Create ((nint) 0x0ee1f00d, (nuint) size,
 				lockPointer: (info) => {
 					calledOnLockPointer = true;
-					var rv = Marshal.AllocHGlobal (renderingBufferProviderSize);
+					var rv = Marshal.AllocHGlobal (size);
 					// Console.WriteLine ($"CreateAdaptive () OnLockPointer#4 ({info}) => {rv}");
 					return rv;
 				},
@@ -49,7 +49,10 @@ namespace MonoTouchFixtures.CoreGraphics {
 					calledOnReleaseInfo = true;
 				});
 			Assert.That (provider, Is.Not.Null, "provider");
-			Assert.That (provider.Size, Is.EqualTo (size), "size");
+			Assert.That (provider.Size, Is.EqualTo ((nuint) size), "size");
+			Assert.That (calledOnLockPointer, Is.EqualTo (false), "calledOnLockPointer");
+			Assert.That (calledOnUnlockPointer, Is.EqualTo (false), "calledOnUnlockPointer");
+			Assert.That (calledOnReleaseInfo, Is.EqualTo (false), "calledOnReleaseInfo");
 		}
 
 		[Test]
@@ -59,7 +62,7 @@ namespace MonoTouchFixtures.CoreGraphics {
 
 			Assert.DoesNotThrow (() => {
 				var typeId = CGRenderingBufferProvider.GetTypeId ();
-				Assert.That (typeId, Is.GreaterThan (0), "GetTypeId");
+				Assert.That (typeId, Is.GreaterThan ((nint) 0), "GetTypeId");
 			});
 		}
 	}

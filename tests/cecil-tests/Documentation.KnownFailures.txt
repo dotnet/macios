@@ -22703,6 +22703,7 @@ P:MediaAccessibility.MAFlashingLightsProcessorResult.MitigationLevel
 P:MediaAccessibility.MAFlashingLightsProcessorResult.SurfaceProcessed
 P:MediaAccessibility.MAMusicHapticsManager.IsActive
 P:MediaAccessibility.MAMusicHapticsManager.SharedManager
+P:MediaExtension.IMERawProcessor.MetadataForSidecarFile
 P:MediaExtension.IMERawProcessor.MetalDeviceRegistryId
 P:MediaExtension.IMERawProcessor.OutputColorAttachments
 P:MediaExtension.IMERawProcessor.ProcessingParameters

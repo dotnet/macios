@@ -234,11 +234,6 @@ public class MyHelper {
 			AssertTargetExecuted (allTargets, "_CompileNativeExecutable", "A");
 			AssertTargetExecuted (allTargets, "_LinkNativeExecutable", "A");
 
-			// Verify these targets executed on first build
-			AssertTargetExecuted (allTargets, "_CreatePkgInfo", "A");
-			AssertTargetExecuted (allTargets, "_LinkNativeExecutable", "A");
-			AssertTargetExecuted (allTargets, "_CompileNativeExecutable", "A");
-
 			// Make a small change to the helper class file (not the main entry point)
 			var modifiedHelperContents = @"
 public class MyHelper {

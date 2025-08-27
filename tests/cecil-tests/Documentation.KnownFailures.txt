@@ -23261,6 +23261,7 @@ P:MetalPerformanceShadersGraph.MPSGraphTensorData.MPSNDArray
 P:MetalPerformanceShadersGraph.MPSGraphTensorData.Shape
 P:MetalPerformanceShadersGraph.MPSGraphVariableOp.DataType
 P:MetalPerformanceShadersGraph.MPSGraphVariableOp.Shape
+P:MetricKit.MXMetaData.DictionaryRepresentation
 P:MetricKit.MXMetric.DictionaryRepresentation
 P:MetricKit.MXMetricPayload.DictionaryRepresentation
 P:MetricKit.MXUnitAveragePixelLuminance.Symbol

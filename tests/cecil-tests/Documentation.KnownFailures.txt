@@ -1669,6 +1669,11 @@ F:BackgroundAssets.BAErrorCode.SessionDownloadDisallowedByDomain
 F:BackgroundAssets.BAErrorCode.SessionDownloadNotPermittedBeforeAppLaunch
 F:BackgroundAssets.BAManagedErrorCode.AssetPackNotFound
 F:BackgroundAssets.BAManagedErrorCode.FileNotFound
+F:BackgroundTasks.BGContinuedProcessingTaskRequestResources.Default
+F:BackgroundTasks.BGContinuedProcessingTaskRequestResources.Gpu
+F:BackgroundTasks.BGContinuedProcessingTaskRequestSubmissionStrategy.Fail
+F:BackgroundTasks.BGContinuedProcessingTaskRequestSubmissionStrategy.Queue
+F:BackgroundTasks.BGTaskSchedulerErrorCode.ImmediateRunIneligible
 F:BackgroundTasks.BGTaskSchedulerErrorCode.NotPermitted
 F:BackgroundTasks.BGTaskSchedulerErrorCode.TooManyPendingTaskRequests
 F:BackgroundTasks.BGTaskSchedulerErrorCode.Unavailable
@@ -9497,6 +9502,8 @@ M:BackgroundAssets.IBAManagedAssetPackDownloadDelegate.DownloadPaused(Background
 M:BackgroundAssets.IBAManagedAssetPackDownloadDelegate.DownloadProgress(BackgroundAssets.BAAssetPack,Foundation.NSProgress)
 M:BackgroundAssets.IBAManagedDownloaderExtension.ShouldDownload(BackgroundAssets.BAAssetPack)
 M:BackgroundTasks.BGAppRefreshTaskRequest.#ctor(System.String)
+M:BackgroundTasks.BGContinuedProcessingTask.UpdateTitle(System.String,System.String)
+M:BackgroundTasks.BGContinuedProcessingTaskRequest.#ctor(System.String,System.String,System.String)
 M:BackgroundTasks.BGProcessingTaskRequest.#ctor(System.String)
 M:BackgroundTasks.BGTask.SetTaskCompleted(System.Boolean)
 M:BackgroundTasks.BGTaskScheduler.Cancel(System.String)
@@ -19340,6 +19347,13 @@ P:BackgroundAssets.BADownload.UniqueIdentifier
 P:BackgroundAssets.BADownloadManager.Delegate
 P:BackgroundAssets.BADownloadManager.SharedManager
 P:BackgroundAssets.BADownloadManager.WeakDelegate
+P:BackgroundTasks.BGContinuedProcessingTask.Progress
+P:BackgroundTasks.BGContinuedProcessingTask.Subtitle
+P:BackgroundTasks.BGContinuedProcessingTask.Title
+P:BackgroundTasks.BGContinuedProcessingTaskRequest.RequiredResources
+P:BackgroundTasks.BGContinuedProcessingTaskRequest.Strategy
+P:BackgroundTasks.BGContinuedProcessingTaskRequest.Subtitle
+P:BackgroundTasks.BGContinuedProcessingTaskRequest.Title
 P:BackgroundTasks.BGHealthResearchTaskRequest.ProtectionTypeOfRequiredData
 P:BackgroundTasks.BGProcessingTaskRequest.RequiresExternalPower
 P:BackgroundTasks.BGProcessingTaskRequest.RequiresNetworkConnectivity
@@ -19348,6 +19362,7 @@ P:BackgroundTasks.BGTask.Identifier
 P:BackgroundTasks.BGTaskRequest.EarliestBeginDate
 P:BackgroundTasks.BGTaskRequest.Identifier
 P:BackgroundTasks.BGTaskScheduler.Shared
+P:BackgroundTasks.BGTaskScheduler.SupportedResources
 P:BrowserEngineKit.BEDragInteraction.Delegate
 P:BrowserEngineKit.BEKeyEntry.KeyRepeating
 P:BrowserEngineKit.BEKeyEntryContext.DocumentEditable
@@ -26516,6 +26531,10 @@ T:BackgroundAssets.BAManagedErrorCode
 T:BackgroundAssets.BAUrlDownload
 T:BackgroundTasks.BGAppRefreshTask
 T:BackgroundTasks.BGAppRefreshTaskRequest
+T:BackgroundTasks.BGContinuedProcessingTask
+T:BackgroundTasks.BGContinuedProcessingTaskRequest
+T:BackgroundTasks.BGContinuedProcessingTaskRequestResources
+T:BackgroundTasks.BGContinuedProcessingTaskRequestSubmissionStrategy
 T:BackgroundTasks.BGHealthResearchTask
 T:BackgroundTasks.BGHealthResearchTaskRequest
 T:BackgroundTasks.BGProcessingTask

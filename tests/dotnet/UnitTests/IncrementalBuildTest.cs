@@ -192,38 +192,15 @@ class MainClass {
 		[TestCase (ApplePlatform.iOS, "iossimulator-arm64", false)]
 		public void CodeChangeSkipsTargets (ApplePlatform platform, string runtimeIdentifiers, bool interpreterEnabled)
 		{
+			var project = "IncrementalTestApp";
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
 
-			var project_path = GenerateProject (platform, name: nameof (CodeChangeSkipsTargets), runtimeIdentifiers: runtimeIdentifiers, out var appPath);
-			var properties = new Dictionary<string, string> (verbosity);
-			SetRuntimeIdentifiers (properties, runtimeIdentifiers);
+			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath);
+			Clean (project_path);
+			var properties = GetDefaultProperties (runtimeIdentifiers);
 
 			properties ["UseInterpreter"] = interpreterEnabled.ToString ();
-
-			var mainContents = @"
-class MainClass {
-	static int Main ()
-	{
-		System.Console.WriteLine (""Hello World!"");
-		return 0;
-	}
-}
-";
-			var mainFile = Path.Combine (Path.GetDirectoryName (project_path)!, "Main.cs");
-			File.WriteAllText (mainFile, mainContents);
-
-			// Create a separate helper class file
-			var helperContents = @"
-public class MyHelper {
-	public string GetMessage ()
-	{
-		return ""Hello from helper!"";
-	}
-}
-";
-			var helperFile = Path.Combine (Path.GetDirectoryName (project_path)!, "MyHelper.cs");
-			File.WriteAllText (helperFile, helperContents);
 
 			// Build the first time
 			var rv = DotNet.AssertBuild (project_path, properties);
@@ -234,16 +211,8 @@ public class MyHelper {
 			AssertTargetExecuted (allTargets, "_CompileNativeExecutable", "A");
 			AssertTargetExecuted (allTargets, "_LinkNativeExecutable", "A");
 
-			// Make a small change to the helper class file (not the main entry point)
-			var modifiedHelperContents = @"
-public class MyHelper {
-	public string GetMessage ()
-	{
-		return ""Hello from modified helper!"";
-	}
-}
-";
-			File.WriteAllText (helperFile, modifiedHelperContents);
+			// Make a code change
+ 			properties ["AdditionalDefineConstants"] = "INCLUDED_ADDITIONAL_CODE"; 
 
 			// Build again after modifying the helper C# file
 			rv = DotNet.AssertBuild (project_path, properties);

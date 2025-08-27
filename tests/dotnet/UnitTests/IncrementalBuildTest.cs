@@ -228,7 +228,7 @@ public class MyHelper {
 			// Build the first time
 			var rv = DotNet.AssertBuild (project_path, properties);
 			var allTargets = BinLog.GetAllTargets (rv.BinLogPath);
-			
+
 			// Verify these targets executed on first build
 			AssertTargetExecuted (allTargets, "_CreatePkgInfo", "A");
 			AssertTargetExecuted (allTargets, "_CompileNativeExecutable", "A");
@@ -256,10 +256,9 @@ public class MyHelper {
 
 			// Verify these targets did NOT execute on incremental build after C# change
 			AssertTargetNotExecuted (allTargets, "_CreatePkgInfo", "B");
-			if (interpreterEnabled)
-			{
-				AssertTargetNotExecuted(allTargets, "_CompileNativeExecutable", "B");
-				AssertTargetNotExecuted(allTargets, "_LinkNativeExecutable", "B");
+			if (interpreterEnabled) {
+				AssertTargetNotExecuted (allTargets, "_CompileNativeExecutable", "B");
+				AssertTargetNotExecuted (allTargets, "_LinkNativeExecutable", "B");
 			}
 		}
 	}

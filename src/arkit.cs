@@ -1157,7 +1157,7 @@ namespace ARKit {
 
 		[Static]
 		[Export ("supportedVideoFormats")]
-		ARVideoFormat[] SupportedVideoFormats { get; }
+		ARVideoFormat [] SupportedVideoFormats { get; }
 
 		[Export ("videoFormat", ArgumentSemantic.Strong)]
 		ARVideoFormat VideoFormat { get; set; }

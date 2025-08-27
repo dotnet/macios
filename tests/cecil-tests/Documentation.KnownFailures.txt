@@ -5437,6 +5437,9 @@ F:NetworkExtension.NETrafficDirection.Any
 F:NetworkExtension.NETrafficDirection.Inbound
 F:NetworkExtension.NETrafficDirection.Outbound
 F:NetworkExtension.NETunnelProviderRoutingMethod.NetworkRule
+F:NetworkExtension.NEUrlFilterVerdict.Allow
+F:NetworkExtension.NEUrlFilterVerdict.Deny
+F:NetworkExtension.NEUrlFilterVerdict.Unknown
 F:NetworkExtension.NEVpnConnectionError.AuthenticationFailed
 F:NetworkExtension.NEVpnConnectionError.ClientCertificateExpired
 F:NetworkExtension.NEVpnConnectionError.ClientCertificateInvalid
@@ -5461,6 +5464,9 @@ F:NetworkExtension.NEVpnIke2CertificateType.Rsapss
 F:NetworkExtension.NEVpnIke2DiffieHellman.Group31
 F:NetworkExtension.NEVpnIke2DiffieHellman.Group32
 F:NetworkExtension.NEVpnIke2EncryptionAlgorithm.ChaCha20Poly1305
+F:NetworkExtension.NEVpnIkev2PostQuantumKeyExchangeMethod.Method36
+F:NetworkExtension.NEVpnIkev2PostQuantumKeyExchangeMethod.Method37
+F:NetworkExtension.NEVpnIkev2PostQuantumKeyExchangeMethod.None
 F:ObjCRuntime.Dlfcn.Mode.First
 F:ObjCRuntime.Dlfcn.Mode.Global
 F:ObjCRuntime.Dlfcn.Mode.Lazy
@@ -15309,6 +15315,7 @@ M:NetworkExtension.NEAppPushProvider.Start(System.Action{Foundation.NSError})
 M:NetworkExtension.NEAppPushProvider.StartAsync
 M:NetworkExtension.NEAppPushProvider.Stop(NetworkExtension.NEProviderStopReason,System.Action)
 M:NetworkExtension.NEAppPushProvider.StopAsync(NetworkExtension.NEProviderStopReason)
+M:NetworkExtension.NEAppPushProvider.UnmatchEthernet
 M:NetworkExtension.NEDnsProxyProvider.HandleNewUdpFlow(NetworkExtension.NEAppProxyUdpFlow,NetworkExtension.NWEndpoint)
 M:NetworkExtension.NEDnsProxyProvider.HandleNewUdpFlowWithInitialFlowEndPoint(NetworkExtension.NEAppProxyUdpFlow,Network.NWEndpoint)
 M:NetworkExtension.NEDnsSettingsManager.LoadFromPreferences(System.Action{Foundation.NSError})
@@ -15360,6 +15367,8 @@ M:NetworkExtension.NETransparentProxyManager.LoadAllFromPreferences(System.Actio
 M:NetworkExtension.NETransparentProxyManager.LoadAllFromPreferencesAsync
 M:NetworkExtension.NETunnelProviderManager.CopyAppRules
 M:NetworkExtension.NETunnelProviderManager.CreatePerAppVpn
+M:NetworkExtension.NEUrlFilter.GetVerdict(Foundation.NSUrl,System.Action{NetworkExtension.NEUrlFilterVerdict})
+M:NetworkExtension.NEUrlFilter.GetVerdictAsync(Foundation.NSUrl)
 M:NetworkExtension.NEVpnConnection.FetchLastDisconnectError(System.Action{Foundation.NSError})
 M:NetworkExtension.NEVpnConnection.FetchLastDisconnectErrorAsync
 M:NetworkExtension.NEVpnIkev2PpkConfiguration.#ctor(System.String,Foundation.NSData)
@@ -23700,6 +23709,7 @@ P:NetworkExtension.NEAppPushManager.Active
 P:NetworkExtension.NEAppPushManager.Delegate
 P:NetworkExtension.NEAppPushManager.Enabled
 P:NetworkExtension.NEAppPushManager.LocalizedDescription
+P:NetworkExtension.NEAppPushManager.MatchEthernet
 P:NetworkExtension.NEAppPushManager.MatchPrivateLteNetworks
 P:NetworkExtension.NEAppPushManager.MatchSsids
 P:NetworkExtension.NEAppPushManager.ProviderBundleIdentifier
@@ -23711,6 +23721,7 @@ P:NetworkExtension.NEDnsOverHttpsSettings.IdentityReference
 P:NetworkExtension.NEDnsOverHttpsSettings.ServerUrl
 P:NetworkExtension.NEDnsOverTlsSettings.IdentityReference
 P:NetworkExtension.NEDnsOverTlsSettings.ServerName
+P:NetworkExtension.NEDnsSettings.AllowFailover
 P:NetworkExtension.NEDnsSettings.DnsProtocol
 P:NetworkExtension.NEDnsSettingsManager.DnsSettings
 P:NetworkExtension.NEDnsSettingsManager.Enabled
@@ -23770,6 +23781,7 @@ P:NetworkExtension.NERelay.IdentityDataPassword
 P:NetworkExtension.NERelay.RawPublicKeys
 P:NetworkExtension.NERelay.SyntheticDnsAnswerIPv4Prefix
 P:NetworkExtension.NERelay.SyntheticDnsAnswerIPv6Prefix
+P:NetworkExtension.NERelayManager.AllowDNSFailover
 P:NetworkExtension.NERelayManager.Enabled
 P:NetworkExtension.NERelayManager.ExcludedDomains
 P:NetworkExtension.NERelayManager.ExcludedFqdns
@@ -23788,6 +23800,7 @@ P:NetworkExtension.NETunnelProviderManager.ContactsDomains
 P:NetworkExtension.NETunnelProviderManager.ExcludedDomains
 P:NetworkExtension.NETunnelProviderManager.MailDomains
 P:NetworkExtension.NETunnelProviderManager.SafariDomains
+P:NetworkExtension.NEVpnIke2SecurityAssociationParameters.PostQuantumKeyExchangeMethods
 P:NetworkExtension.NEVpnIkev2PpkConfiguration.Identifier
 P:NetworkExtension.NEVpnIkev2PpkConfiguration.IsMandatory
 P:NetworkExtension.NEVpnIkev2PpkConfiguration.KeychainReference
@@ -23798,6 +23811,7 @@ P:NetworkExtension.NEVpnProtocol.ExcludeDeviceCommunication
 P:NetworkExtension.NEVpnProtocol.ExcludeLocalNetworks
 P:NetworkExtension.NEVpnProtocol.IncludeAllNetworks
 P:NetworkExtension.NEVpnProtocol.SliceUuid
+P:NetworkExtension.NEVpnProtocolIke2.AllowPostQuantumKeyExchangeFallback
 P:NetworkExtension.NEVpnProtocolIke2.EnableFallback
 P:NetworkExtension.NEVpnProtocolIke2.Mtu
 P:NetworkExtension.NEVpnProtocolIke2.PpkConfiguration
@@ -28602,7 +28616,10 @@ T:NetworkExtension.NETrafficDirection
 T:NetworkExtension.NETransparentProxyManager
 T:NetworkExtension.NETransparentProxyNetworkSettings
 T:NetworkExtension.NETransparentProxyProvider
+T:NetworkExtension.NEUrlFilter
+T:NetworkExtension.NEUrlFilterVerdict
 T:NetworkExtension.NEVpnConnectionError
+T:NetworkExtension.NEVpnIkev2PostQuantumKeyExchangeMethod
 T:NetworkExtension.NEVpnIkev2PpkConfiguration
 T:NetworkExtension.NEVpnIkev2TlsVersion
 T:NotificationCenter.NCWidgetListViewController

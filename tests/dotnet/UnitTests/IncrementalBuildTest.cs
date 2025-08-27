@@ -188,8 +188,9 @@ class MainClass {
 		}
 
 		[Test]
-		[TestCase (ApplePlatform.iOS, "ios-arm64")]
-		public void CodeChangeSkipsTargets (ApplePlatform platform, string runtimeIdentifiers)
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64", true)]
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64", false)]
+		public void CodeChangeSkipsTargets (ApplePlatform platform, string runtimeIdentifiers, bool interpreterEnabled)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
@@ -197,6 +198,8 @@ class MainClass {
 			var project_path = GenerateProject (platform, name: nameof (CodeChangeSkipsTargets), runtimeIdentifiers: runtimeIdentifiers, out var appPath);
 			var properties = new Dictionary<string, string> (verbosity);
 			SetRuntimeIdentifiers (properties, runtimeIdentifiers);
+
+			properties ["UseInterpreter"] = interpreterEnabled.ToString ();
 
 			var mainContents = @"
 class MainClass {
@@ -213,10 +216,10 @@ class MainClass {
 			// Create a separate helper class file
 			var helperContents = @"
 public class MyHelper {
-    public string GetMessage ()
-    {
-        return ""Hello from helper!"";
-    }
+	public string GetMessage ()
+	{
+		return ""Hello from helper!"";
+	}
 }
 ";
 			var helperFile = Path.Combine (Path.GetDirectoryName (project_path)!, "MyHelper.cs");
@@ -225,6 +228,11 @@ public class MyHelper {
 			// Build the first time
 			var rv = DotNet.AssertBuild (project_path, properties);
 			var allTargets = BinLog.GetAllTargets (rv.BinLogPath);
+			
+			// Verify these targets executed on first build
+			AssertTargetExecuted (allTargets, "_CreatePkgInfo", "A");
+			AssertTargetExecuted (allTargets, "_CompileNativeExecutable", "A");
+			AssertTargetExecuted (allTargets, "_LinkNativeExecutable", "A");
 
 			// Verify these targets executed on first build
 			AssertTargetExecuted (allTargets, "_CreatePkgInfo", "A");
@@ -234,10 +242,10 @@ public class MyHelper {
 			// Make a small change to the helper class file (not the main entry point)
 			var modifiedHelperContents = @"
 public class MyHelper {
-    public string GetMessage ()
-    {
-        return ""Hello from modified helper!"";
-    }
+	public string GetMessage ()
+	{
+		return ""Hello from modified helper!"";
+	}
 }
 ";
 			File.WriteAllText (helperFile, modifiedHelperContents);
@@ -248,9 +256,11 @@ public class MyHelper {
 
 			// Verify these targets did NOT execute on incremental build after C# change
 			AssertTargetNotExecuted (allTargets, "_CreatePkgInfo", "B");
-			AssertTargetNotExecuted (allTargets, "_LinkNativeExecutable", "B");
-			AssertTargetNotExecuted (allTargets, "_CompileNativeExecutable", "B");
+			if (interpreterEnabled)
+			{
+				AssertTargetNotExecuted(allTargets, "_CompileNativeExecutable", "B");
+				AssertTargetNotExecuted(allTargets, "_LinkNativeExecutable", "B");
+			}
 		}
-
 	}
 }

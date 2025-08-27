@@ -489,6 +489,18 @@ namespace CoreVideo {
 		[Mac (15, 0), NoiOS, NoTV, NoMacCatalyst]
 		[Field ("kCVImageBufferPostDecodeProcessingFrameMetadataKey")]
 		NSString PostDecodeProcessingFrameMetadataKey { get; }
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("kCVImageBufferDisplayMaskRectangleKey")]
+		NSString DisplayMaskRectangleKey { get; }
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("kCVImageBufferDisplayMaskRectangleStereoLeftKey")]
+		NSString DisplayMaskRectangleStereoLeftKey { get; }
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("kCVImageBufferDisplayMaskRectangleStereoRightKey")]
+		NSString DisplayMaskRectangleStereoRightKey { get; }
 	}
 
 	[MacCatalyst (13, 1)]
@@ -784,6 +796,10 @@ namespace CoreVideo {
 		[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
 		[Field ("kCVPixelBufferProResRAWKey_MetadataExtension")]
 		NSString MetadataExtension { get; }
+
+		[MacCatalyst (15, 0), TV (15, 0), Mac (12, 0), iOS (15, 0)]
+		[Field ("kCVPixelBufferIOSurfacePurgeableKey")]
+		NSString IOSurfacePurgeableKey { get; }
 	}
 
 	/// <summary>A reusable set of <see cref="CoreVideo.CVPixelBuffer" />s.</summary>
@@ -1091,5 +1107,46 @@ namespace CoreVideo {
 
 		[iOS (18, 0), Mac (15, 0), MacCatalyst (18, 0), TV (18, 0)]
 		int BitsPerComponent { get; set; }
+	}
+
+	[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+	[Static]
+	interface CVImageBufferDisplayMaskRectangleKeys {
+		[Field ("kCVImageBufferDisplayMaskRectangle_ReferenceRasterWidthKey")]
+		NSString ReferenceRasterWidthKey { get; }
+
+		[Field ("kCVImageBufferDisplayMaskRectangle_ReferenceRasterHeightKey")]
+		NSString ReferenceRasterHeightKey { get; }
+
+		[Field ("kCVImageBufferDisplayMaskRectangle_RectangleLeftKey")]
+		NSString RectangleLeftKey { get; }
+
+		[Field ("kCVImageBufferDisplayMaskRectangle_RectangleWidthKey")]
+		NSString RectangleWidthKey { get; }
+
+		[Field ("kCVImageBufferDisplayMaskRectangle_RectangleTopKey")]
+		NSString RectangleTopKey { get; }
+
+		[Field ("kCVImageBufferDisplayMaskRectangle_RectangleHeightKey")]
+		NSString RectangleHeightKey { get; }
+
+		[Field ("kCVImageBufferDisplayMaskRectangle_LeftEdgePointsKey")]
+		NSString LeftEdgePointsKey { get; }
+
+		[Field ("kCVImageBufferDisplayMaskRectangle_RightEdgePointsKey")]
+		NSString RightEdgePointsKey { get; }
+	}
+
+	[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+	[StrongDictionary ("CVImageBufferDisplayMaskRectangleKeys")]
+	interface CVImageBufferDisplayMaskRectangle {
+		ushort ReferenceRasterWidth { get; }
+		ushort ReferenceRasterHeight { get; }
+		ushort RectangleLeft { get; }
+		ushort RectangleWidth { get; }
+		ushort RectangleTop { get; }
+		ushort RectangleHeight { get; }
+		ushort [] LeftEdgePoints { get; }
+		ushort [] RightEdgePoints { get; }
 	}
 }

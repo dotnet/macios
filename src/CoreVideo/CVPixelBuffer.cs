@@ -595,6 +595,27 @@ namespace CoreVideo {
 		{
 			return CVPixelBufferUnlockBaseAddress (Handle, unlockFlags);
 		}
+
+		[DllImport (Constants.CoreVideoLibrary)]
+		static extern byte CVPixelBufferIsCompatibleWithAttributes (IntPtr /* CVPixelBufferRef CV_NONNULL */ pixelBuffer, IntPtr /* CFDictionaryRef CV_NULLABLE */ attributes);
+
+		/// <summary>Check if this pixel buffer is compatible with the specified pixel buffer attributes.</summary>
+		/// <param name="attributes">The attributes to check.</param>
+		/// <returns><see langword="true" /> if this pixel buffer is compatible with the specified pixel buffer attributes, <see langword="false" /> otherwise.</returns>
+		public bool IsCompatibleWithAttributes (NSDictionary? attributes)
+		{
+			var rv = CVPixelBufferIsCompatibleWithAttributes (GetCheckedHandle (), attributes.GetHandle ());
+			GC.KeepAlive (attributes);
+			return rv != 0;
+		}
+
+		/// <summary>Check if this pixel buffer is compatible with the specified pixel buffer attributes.</summary>
+		/// <param name="attributes">The attributes to check.</param>
+		/// <returns><see langword="true" /> if this pixel buffer is compatible with the specified pixel buffer attributes, <see langword="false" /> otherwise.</returns>
+		public bool IsCompatibleWithAttributes (CVPixelBufferAttributes? attributes)
+		{
+			return IsCompatibleWithAttributes (attributes?.Dictionary);
+		}
 #endif // !COREBUILD
 	}
 }

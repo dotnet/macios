@@ -812,7 +812,7 @@ namespace MetricKit {
 	}
 
 	[MacCatalyst (26, 0), NoTV, Mac (26, 0), iOS (26, 0)]
-	[BaseType (typeof(MXMetric))]
+	[BaseType (typeof (MXMetric))]
 	[DisableDefaultCtor]
 	interface MXDiskSpaceUsageMetric {
 		[Export ("totalBinaryFileSize", ArgumentSemantic.Strong)]

@@ -157,12 +157,6 @@ namespace TouchController {
 
 		[NullAllowed, Export ("contents", ArgumentSemantic.Strong)]
 		TCControlContents Contents { get; set; }
-
-		[Export ("highlightDuration")]
-		new double HighlightDuration { get; set; }
-
-		[Export ("colliderShape", ArgumentSemantic.Assign)]
-		new TCColliderShape ColliderShape { get; }
 	}
 
 	[NoMacCatalyst, iOS (26, 0)]
@@ -304,12 +298,6 @@ namespace TouchController {
 		[NullAllowed, Export ("rightContents", ArgumentSemantic.Strong)]
 		TCControlContents RightContents { get; set; }
 
-		[Export ("colliderShape", ArgumentSemantic.Assign)]
-		new TCColliderShape ColliderShape { get; }
-
-		[Export ("highlightDuration")]
-		new double HighlightDuration { get; set; }
-
 		[Export ("radial")]
 		bool Radial { [Bind ("isRadial")] get; set; }
 
@@ -407,12 +395,6 @@ namespace TouchController {
 
 		[Export ("throttleSize", ArgumentSemantic.Assign)]
 		CGSize ThrottleSize { get; set; }
-
-		[Export ("colliderShape", ArgumentSemantic.Assign)]
-		new TCColliderShape ColliderShape { get; }
-
-		[Export ("highlightDuration")]
-		new double HighlightDuration { get; set; }
 	}
 
 	[NoMacCatalyst, iOS (26, 0)]
@@ -481,12 +463,6 @@ namespace TouchController {
 
 		[Export ("stickSize", ArgumentSemantic.Assign)]
 		CGSize StickSize { get; set; }
-
-		[Export ("colliderShape", ArgumentSemantic.Assign)]
-		new TCColliderShape ColliderShape { get; }
-
-		[Export ("highlightDuration")]
-		new double HighlightDuration { get; set; }
 	}
 
 	[NoMacCatalyst, iOS (26, 0)]
@@ -668,12 +644,6 @@ namespace TouchController {
 		[NullAllowed, Export ("contents", ArgumentSemantic.Strong)]
 		TCControlContents Contents { get; set; }
 
-		[Export ("colliderShape", ArgumentSemantic.Assign)]
-		new TCColliderShape ColliderShape { get; }
-
-		[Export ("highlightDuration")]
-		new double HighlightDuration { get; set; }
-
 		[Export ("reportsRelativeValues")]
 		bool ReportsRelativeValues { get; set; }
 	}
@@ -799,14 +769,8 @@ namespace TouchController {
 		[NullAllowed, Export ("switchedOnContents", ArgumentSemantic.Strong)]
 		TCControlContents SwitchedOnContents { get; set; }
 
-		[Export ("highlightDuration")]
-		new double HighlightDuration { get; set; }
-
 		[Export ("switchedOn")]
 		bool SwitchedOn { [Bind ("isSwitchedOn")] get; }
-
-		[Export ("colliderShape", ArgumentSemantic.Assign)]
-		new TCColliderShape ColliderShape { get; }
 	}
 
 	[NoMacCatalyst, iOS (26, 0)]

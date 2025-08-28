@@ -404,3 +404,30 @@ namespace QuickLook {
 #endif
 
 }
+
+#if !MONOMAC
+// Apple moved ARQuickLookPreviewItem from the ARKit framework to the QuickLook framework in Xcode 26,
+// and also added it to Mac Catalyst.
+#if XAMCORE_5_0 || __MACCATALYST__
+namespace QuickLook {
+#else
+namespace ARKit {
+	using QuickLook;
+#endif
+	[iOS (13, 0), MacCatalyst (26, 0), NoTV, NoMac]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface ARQuickLookPreviewItem : QLPreviewItem {
+
+		[Export ("initWithFileAtURL:")]
+		[DesignatedInitializer]
+		NativeHandle Constructor (NSUrl url);
+
+		[NullAllowed, Export ("canonicalWebPageURL", ArgumentSemantic.Strong)]
+		NSUrl CanonicalWebPageUrl { get; set; }
+
+		[Export ("allowsContentScaling")]
+		bool AllowsContentScaling { get; set; }
+	}
+}
+#endif // !MONOMAC

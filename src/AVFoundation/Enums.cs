@@ -378,6 +378,8 @@ namespace AVFoundation {
 		ToneMappingFailed = -11885,
 		MediaExtensionDisabled = -11886,
 		MediaExtensionConflict = -11887,
+		ContentKeyRequestPlaybackDestinationDoesNotSupportDeviceIdentifierRandomization = -11888,
+		ContentKeyInvalid = -11889,
 	}
 
 	/// <summary>An enumeration whose values specify the behavior of the player when it finishes playing.</summary>
@@ -606,6 +608,8 @@ namespace AVFoundation {
 		[iOS (14, 5)]
 		[MacCatalyst (14, 5)]
 		OverrideMutedMicrophoneInterruption = 128,
+		[iOS (26, 0), NoTV, NoMacCatalyst, NoMac]
+		BluetoothHighQualityRecording = 1uL << 19,
 	}
 
 	/// <summary>An enumeration whose values specify the beginning and ending of an audio interruption.</summary>
@@ -997,6 +1001,8 @@ namespace AVFoundation {
 		/// <summary>To be added.</summary>
 		[MacCatalyst (14, 0)]
 		VideoDeviceNotAvailableDueToSystemPressure = 5,
+		[MacCatalyst (26, 0), TV (26, 0), NoMac, iOS (26, 0)]
+		SensitiveContentMitigationActivated = 6,
 	}
 
 	/// <summary>Enumerates the quality of speech synthesis.</summary>
@@ -1346,8 +1352,8 @@ namespace AVFoundation {
 		[Field ("AVAssetExportPresetHEVC3840x2160WithAlpha")]
 		Hevc3840x2160WithAlpha,
 
-		[NoTV, NoiOS, Mac (12, 1)]
-		[NoMacCatalyst]
+		[NoTV, iOS (26, 0), Mac (12, 1)]
+		[MacCatalyst (26, 0)]
 		[Field ("AVAssetExportPresetHEVC7680x4320")]
 		Hevc7680x4320,
 
@@ -1363,6 +1369,19 @@ namespace AVFoundation {
 		[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Field ("AVAssetExportPresetMVHEVC1440x1440")]
 		MvHevc1440x1440,
+
+		[MacCatalyst (26, 0), NoTV, Mac (26, 0), iOS (26, 0)]
+		[Field ("AVAssetExportPresetHEVC4320x2160")]
+		Hevc4320x2160,
+
+		[MacCatalyst (26, 0), NoTV, Mac (26, 0), iOS (26, 0)]
+		[Field ("AVAssetExportPresetMVHEVC4320x4320")]
+		MvHevc4320x4320,
+
+		[MacCatalyst (26, 0), NoTV, Mac (26, 0), iOS (26, 0)]
+		[Field ("AVAssetExportPresetMVHEVC7680x7680")]
+		MvHevc7680x7680,
+
 	}
 
 	[MacCatalyst (13, 1)]
@@ -1405,8 +1424,8 @@ namespace AVFoundation {
 
 		[NoTV]
 		[Mac (12, 1)]
-		[NoiOS]
-		[NoMacCatalyst]
+		[iOS (26, 0)]
+		[MacCatalyst (26, 0)]
 		[Field ("AVOutputSettingsPresetHEVC7680x4320")]
 		PresetHevc7680x4320 = 15,
 
@@ -1417,6 +1436,18 @@ namespace AVFoundation {
 		[TV (17, 0), MacCatalyst (17, 0), Mac (14, 0), iOS (17, 0)]
 		[Field ("AVOutputSettingsPresetMVHEVC1440x1440")]
 		PresetMvHevc1440x1440 = 17,
+
+		[MacCatalyst (26, 0), NoTV, Mac (26, 0), iOS (26, 0)]
+		[Field ("AVOutputSettingsPresetHEVC4320x2160")]
+		Hevc4320x2160 = 18,
+
+		[MacCatalyst (26, 0), NoTV, Mac (26, 0), iOS (26, 0)]
+		[Field ("AVOutputSettingsPresetMVHEVC4320x4320")]
+		MvHevc4320x4320 = 19,
+
+		[MacCatalyst (26, 0), NoTV, Mac (26, 0), iOS (26, 0)]
+		[Field ("AVOutputSettingsPresetMVHEVC7680x7680")]
+		MvHevc7680x7680 = 20,
 	}
 
 	/// <summary>Enumerates depth data accuracy types.</summary>
@@ -1571,6 +1602,10 @@ namespace AVFoundation {
 		/// <summary>To be added.</summary>
 		[Field ("AVAssetWriterInputMediaDataLocationBeforeMainMediaDataNotInterleaved")]
 		BeforeMainMediaDataNotInterleaved = 1,
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("AVAssetWriterInputMediaDataLocationSparselyInterleavedWithMainMediaData")]
+		SparselyInterleavedWithMainMediaData = 2,
 	}
 
 	/// <summary>Constants for known video codecs.</summary>
@@ -1661,6 +1696,9 @@ namespace AVFoundation {
 	[MacCatalyst (13, 1)]
 	[Native]
 	[Flags]
+	[Deprecated (PlatformName.MacCatalyst, 26, 0, "Use 'AVPlayer.EligibleForHdrpPlayback' instead.")]
+	[Deprecated (PlatformName.iOS, 26, 0, "Use 'AVPlayer.EligibleForHdrpPlayback' instead.")]
+	[Deprecated (PlatformName.TvOS, 26, 0, "Use 'AVPlayer.EligibleForHdrpPlayback' instead.")]
 	public enum AVPlayerHdrMode : long {
 		/// <summary>To be added.</summary>
 		Hlg = 0x1,
@@ -2180,6 +2218,14 @@ namespace AVFoundation {
 		[MacCatalyst (18, 0), TV (18, 0), Mac (15, 0), iOS (18, 0)]
 		[Field ("AVAssetPlaybackConfigurationOptionSpatialVideo")]
 		SpatialVideo,
+
+		[MacCatalyst (26, 0), NoTV, Mac (26, 0), iOS (26, 0)]
+		[Field ("AVAssetPlaybackConfigurationOptionNonRectilinearProjection")]
+		NonRectilinearProjection,
+
+		[NoMacCatalyst, NoTV, Mac (26, 0), NoiOS]
+		[Field ("AVAssetPlaybackConfigurationOptionAppleImmersiveVideo")]
+		AppleImmersiveVideo,
 	}
 
 	[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
@@ -2206,5 +2252,59 @@ namespace AVFoundation {
 	public enum CMTagCollectionVideoOutputPreset : uint {
 		Monoscopic,
 		Stereoscopic,
+	}
+
+	[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+	[Native]
+	public enum AVPlayerNetworkResourcePriority : long {
+		Default = 0,
+		Low = 1,
+		High = 2,
+	}
+
+	[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+	[Native]
+	public enum AVPlayerInterstitialEventSkippableEventState : long {
+		NotSkippable = 0,
+		NotYetEligible = 1,
+		Eligible = 2,
+		NoLongerEligible = 3,
+	}
+
+	[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+	[Native]
+	public enum AVAudioContentSource : long {
+		Unspecified = -1,
+		Reserved = 0,
+		AppleCaptureTraditional = 1,
+		AppleCaptureSpatial = 2,
+		AppleCaptureSpatialEnhanced = 3,
+		AppleMusicTraditional = 4,
+		AppleMusicSpatial = 5,
+		AppleAVTraditionalOffline = 6,
+		AppleAVSpatialOffline = 7,
+		AppleAVTraditionalLive = 8,
+		AppleAVSpatialLive = 9,
+		ApplePassthrough = 10,
+		CaptureTraditional = 33,
+		CaptureSpatial = 34,
+		CaptureSpatial_Enhanced = 35,
+		MusicTraditional = 36,
+		MusicSpatial = 37,
+		AVTraditionalOffline = 38,
+		AVSpatialOffline = 39,
+		AVTraditionalLive = 40,
+		AVSpatialLive = 41,
+		Passthrough = 42,
+	}
+
+	[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+	[Native]
+	public enum AVAudioDynamicRangeControlConfiguration : long {
+		None = 0,
+		Music = 1,
+		Speech = 2,
+		Movie = 3,
+		Capture = 4,
 	}
 }

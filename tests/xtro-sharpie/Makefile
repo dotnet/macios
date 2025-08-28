@@ -61,7 +61,6 @@ COMMON_IGNORED_FRAMEWORKS = \
 	$(SWIFT_FRAMEWORKS) \
 	_CoreNFC_UIKit \
 	AssetsLibrary \
-	BrowserEngineCore \
 	BrowserKit \
 	FactoryOTALogger \
 	FactoryOTANetworkUtils \

@@ -1,4 +1,0 @@
-!missing-enum-value! NSFileProviderError native value NSFileProviderErrorLocalVersionConflictingWithServer = -2015 not bound
-!missing-enum-value! NSFileProviderModifyItemOptions native value NSFileProviderModifyItemFailOnConflict = 2 not bound
-!missing-enum-value! NSFileProviderModifyItemOptions native value NSFileProviderModifyItemIsImmediateUploadRequestByPresentingApplication = 4 not bound
-!missing-field! NSFileProviderUserInfoExperimentIDKey not bound

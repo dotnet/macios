@@ -1,3 +1,6 @@
+# We're not exposing BrowserEngineKit on Mac Catalyst for now, because introspection complains
+# about pretty much everything, which makes me question whether it's supposed to be available
+# on Mac Catalyst or not. So for now leave it out of Mac Catalyst.
 !missing-enum! BEGestureType not bound
 !missing-enum! BEKeyModifierFlags not bound
 !missing-enum! BEKeyPressState not bound

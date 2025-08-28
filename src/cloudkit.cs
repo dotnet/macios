@@ -3,8 +3,10 @@ using System.ComponentModel;
 using ObjCRuntime;
 using Foundation;
 using CoreLocation;
-#if !TVOS
+#if HAS_CONTACTS
 using Contacts;
+#else
+using CNContact = Foundation.NSObject;
 #endif
 
 namespace CloudKit {
@@ -173,6 +175,35 @@ namespace CloudKit {
 
 		[Export ("removeParticipant:")]
 		void Remove (CKShareParticipant participant);
+
+		[MacCatalyst (18, 0), TV (18, 0), Mac (15, 0), iOS (18, 0)]
+		[Export ("oneTimeURLForParticipantID:")]
+		[return: NullAllowed]
+		NSUrl GetOneTimeUrl (string participantId);
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Export ("requesters", ArgumentSemantic.Copy)]
+		CKShareAccessRequester [] Requesters { get; }
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Export ("blockedIdentities", ArgumentSemantic.Copy)]
+		CKShareBlockedIdentity [] BlockedIdentities { get; }
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Export ("allowsAccessRequests")]
+		bool AllowsAccessRequests { get; set; }
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Export ("denyRequesters:")]
+		void DenyRequesters (CKShareAccessRequester [] requesters);
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Export ("blockRequesters:")]
+		void BlockRequesters (CKShareAccessRequester [] requesters);
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Export ("unblockIdentities:")]
+		void UnblockIdentities (CKShareBlockedIdentity [] blockedIdentities);
 	}
 
 	/// <summary>Constants used by various CloudKit classes.</summary>
@@ -227,6 +258,19 @@ namespace CloudKit {
 		// This showed up in Xcode 16's b1 headers, but according to the availability attributes it's always been available.
 		[Export ("participantID", ArgumentSemantic.Copy)]
 		string ParticipantId { get; }
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Export ("isApprovedRequester")]
+		bool IsApprovedRequester { get; }
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[NullAllowed, Export ("dateAddedToShare", ArgumentSemantic.Copy)]
+		NSDate DateAddedToShare { get; }
+
+		[MacCatalyst (18, 0), TV (18, 0), Mac (15, 0), iOS (18, 0)]
+		[Static]
+		[Export ("oneTimeURLParticipant")]
+		CKShareParticipant GetOneTimeUrlParticipant ();
 	}
 
 	[MacCatalyst (13, 1)]
@@ -1779,6 +1823,10 @@ namespace CloudKit {
 		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 		[NullAllowed, Export ("share", ArgumentSemantic.Copy)]
 		CKReference Share { get; }
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Export ("encryptionScope", ArgumentSemantic.Assign)]
+		CKRecordZoneEncryptionScope EncryptionScope { get; set; }
 	}
 
 	[MacCatalyst (13, 1)]
@@ -2253,6 +2301,14 @@ namespace CloudKit {
 		[Static]
 		[Export ("standardOptions", ArgumentSemantic.Strong)]
 		CKAllowedSharingOptions StandardOptions { get; }
+
+		[MacCatalyst (26, 0), NoTV, Mac (26, 0), iOS (26, 0)]
+		[Export ("allowsParticipantsToInviteOthers")]
+		bool AllowsParticipantsToInviteOthers { get; set; }
+
+		[MacCatalyst (26, 0), NoTV, Mac (26, 0), iOS (26, 0)]
+		[Export ("allowsAccessRequests")]
+		bool AllowsAccessRequests { get; set; }
 	}
 
 	[NoTV, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
@@ -2760,4 +2816,54 @@ namespace CloudKit {
 		[Export ("initWithZoneID:")]
 		NativeHandle Constructor (CKRecordZoneID zoneId);
 	}
+
+	[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface CKShareAccessRequester : NSSecureCoding, NSCopying {
+		[Export ("userIdentity", ArgumentSemantic.Copy)]
+		CKUserIdentity UserIdentity { get; }
+
+		[Export ("participantLookupInfo", ArgumentSemantic.Copy)]
+		CKUserIdentityLookupInfo ParticipantLookupInfo { get; }
+
+		[NoTV]
+		[Export ("contact", ArgumentSemantic.Copy)]
+		CNContact Contact { get; }
+	}
+
+	[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface CKShareBlockedIdentity : NSSecureCoding, NSCopying {
+		[Export ("userIdentity", ArgumentSemantic.Copy)]
+		CKUserIdentity UserIdentity { get; }
+
+		[NoTV]
+		[Export ("contact", ArgumentSemantic.Copy)]
+		CNContact Contact { get; }
+	}
+
+	[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+	[BaseType (typeof (CKOperation))]
+	[DesignatedDefaultCtor]
+	interface CKShareRequestAccessOperation {
+
+		[Export ("initWithShareURLs:")]
+		NativeHandle Constructor (NSUrl [] shareUrls);
+
+		[NullAllowed, Export ("shareURLs", ArgumentSemantic.Copy)]
+		NSUrl [] ShareUrls { get; set; }
+
+		[Export ("perShareAccessRequestCompletionBlock", ArgumentSemantic.Copy)]
+		[NullAllowed]
+		CKShareRequestAccessOperationPerShareAccessRequestCompletionHandler PerShareAccessRequestCompletionBlock { get; set; }
+
+		[Export ("shareRequestAccessCompletionBlock", ArgumentSemantic.Copy)]
+		[NullAllowed]
+		CKShareRequestAccessOperationShareRequestAccessCompletionHandler ShareRequestAccessCompletionBlock { get; set; }
+	}
+
+	delegate void CKShareRequestAccessOperationPerShareAccessRequestCompletionHandler (NSUrl shareUrl, [NullAllowed] NSError error);
+	delegate void CKShareRequestAccessOperationShareRequestAccessCompletionHandler ([NullAllowed] NSError error);
 }

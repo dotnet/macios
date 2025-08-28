@@ -160,5 +160,19 @@ namespace MonoTouchFixtures.Network {
 			TestRuntime.AssertXcodeVersion (12, 2);
 			Assert.That (path.GetUnsatisfiedReason (), Is.EqualTo (NWPathUnsatisfiedReason.NotAvailable));
 		}
+
+		[Test]
+		public void IsUltraConstrained ()
+		{
+			TestRuntime.AssertXcodeVersion (26, 0);
+			Assert.That (path.IsUltraConstrained, Is.EqualTo (false).Or.EqualTo (true), "IsUltraConstrained");
+		}
+
+		[Test]
+		public void LinkQuality ()
+		{
+			TestRuntime.AssertXcodeVersion (26, 0);
+			Assert.That (path.LinkQuality, Is.EqualTo (NWLinkQuality.Good).Or.EqualTo (NWLinkQuality.Unknown), "LinkQuality");
+		}
 	}
 }

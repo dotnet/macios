@@ -171,7 +171,7 @@ namespace AVKit {
 
 	interface IAVPictureInPictureControllerDelegate { }
 
-	/// <summary>Delegate object providing methods for the application's <see cref="UIKit.UIViewControllerDelegate" /> at the start and stop of picture-in-picture video playback.</summary>
+	/// <summary>Delegate object providing methods for the application's <see cref="AVPictureInPictureController" /> at the start and stop of picture-in-picture video playback.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AVKit/Reference/AVPictureInPictureControllerDelegate_Protocol/index.html">Apple documentation for <c>AVPictureInPictureControllerDelegate</c></related>
 	[TV (14, 0)]

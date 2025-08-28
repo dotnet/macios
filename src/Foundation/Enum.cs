@@ -1034,7 +1034,7 @@ namespace Foundation {
 		ProducesRelativePathUrls = 1 << 4,
 	}
 
-	/// <summary>An enumeration of options for use with <see cref="Foundation.NSFileManager.Replace(Foundation.NSUrl,Foundation.NSUrl,System.String,Foundation.NSFileManagerItemReplacementOptions,ref Foundation.NSUrl,out Foundation.NSError)" />.</summary>
+	/// <summary>An enumeration of options for use with <see cref="Foundation.NSFileManager.Replace(Foundation.NSUrl,Foundation.NSUrl,System.String,Foundation.NSFileManagerItemReplacementOptions,out Foundation.NSUrl,out Foundation.NSError)" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Flags]
 	[Native]
@@ -1047,7 +1047,7 @@ namespace Foundation {
 		WithoutDeletingBackupItem = 1 << 1,
 	}
 
-	/// <summary>An enumeration of special directories for use with <see cref="Foundation.NSFileManager.GetURLs" />.</summary>
+	/// <summary>An enumeration of special directories for use with <see cref="Foundation.NSFileManager.GetUrls" />.</summary>
 	/// <remarks>Some of these constants when used can return more than one value (for example AllApplicationsDirectory).</remarks>
 	[Native]
 	public enum NSSearchPathDirectory : ulong {
@@ -1627,7 +1627,7 @@ namespace Foundation {
 		All,
 	}
 
-	/// <summary>A flagging enumeration whose values specify options in calls to <see cref="NSFoundation.NSCalendar.Components" /> and <see cref="Foundation.NSCalendar.DateByAddingComponents(Foundation.NSDateComponents,Foundation.NSDate,Foundation.NSDateComponentsWrappingBehavior)" />.</summary>
+	/// <summary>A flagging enumeration whose values specify options in calls to <see cref="NSCalendar.Components" /> and <see cref="Foundation.NSCalendar.DateByAddingComponents(Foundation.NSDateComponents,Foundation.NSDate,Foundation.NSCalendarOptions)" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Flags]
 	[Native]
@@ -1695,7 +1695,7 @@ namespace Foundation {
 		CallSignaling = 11,
 	}
 
-	/// <summary>A flagging enumeration that specifies sorting options in calls to <see cref="NSFoundation.NSMutableOrderedSet.Sort" />.</summary>
+	/// <summary>A flagging enumeration that specifies sorting options in calls to <see cref="NSMutableOrderedSet.Sort" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Flags]
 	[Native]
@@ -1750,8 +1750,7 @@ namespace Foundation {
 		RejectProtectionSpace = 3,
 	}
 
-	/// <summary>An enumeration whose values specify the state of a <see cref="Foundation.NSSessionTask" />.</summary>
-	/// <remarks>To be added.</remarks>
+	/// <summary>An enumeration whose values specify the state of a <see cref="NSUrlSessionTask" />.</summary>
 	[Native]
 	public enum NSUrlSessionTaskState : long {
 		/// <summary>To be added.</summary>
@@ -2163,7 +2162,7 @@ namespace Foundation {
 		Abbreviated,
 	}
 
-	/// <summary>Enumerates the manner in which a <see cref="Foundation.NSCoder" /> fails. (See <see cref="Foundation.NSCoder.FailurePolicy" />)</summary>
+	/// <summary>Enumerates the manner in which a <see cref="Foundation.NSCoder" /> fails. (See <see cref="Foundation.NSCoder.DecodingFailurePolicy" />)</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]

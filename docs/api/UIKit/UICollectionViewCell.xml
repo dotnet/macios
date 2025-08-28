@@ -36,7 +36,7 @@
       <para>Since an individual instance of <see cref="UIKit.UICollectionViewCell" /> may be reused without being re-allocated, the application developer may also have to adjust aspects dynamically using the <see cref="UIKit.UICollectionViewSource.GetCell(UIKit.UICollectionView,Foundation.NSIndexPath)" /> method, as shown in the following code, taken from the "Introduction to Collection Views" sample. The <c>animalCell</c> is an instance of a subtype of <see cref="UIKit.UICollectionViewCell" /> while the <c>animal</c> variable refers to an instance of a model class. The <see cref="UIKit.UICollectionViewSource.GetCell(UIKit.UICollectionView,Foundation.NSIndexPath)" /> method sets visual aspects of the <see cref="UIKit.UICollectionViewCell" /> to conform to the <c>animal</c> data, in this case, setting an <c>Image</c> property appropriately.</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
-public override UICollectionViewCell GetCell (UICollectionView collectionView, MonoTouch.Foundation.NSIndexPath indexPath)
+public override UICollectionViewCell GetCell (UICollectionView collectionView, Foundation.NSIndexPath indexPath)
 {
   var animalCell = (AnimalCell) collectionView.DequeueReusableCell (animalCellId, indexPath);
 

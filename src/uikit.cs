@@ -120,208 +120,63 @@ namespace UIKit {
 	[Native]
 	public enum UIApplicationShortcutIconType : long {
 		/// <summary>Icon for a "Compose" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Compose.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Compose,
 		/// <summary>Icon for a "Play" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Play.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Play,
 		/// <summary>Icon for a "Pause" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Pause.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Pause,
 		/// <summary>Icon for a "Add" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Add.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Add,
 		/// <summary>Icon for a "Location" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Location.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Location,
 		/// <summary>Icon for a "Search" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Search.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Search,
 		/// <summary>Icon for a "Share" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Share.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Share,
 		// iOS 9.1 
 		/// <summary>Icon for a "Prohibit" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Prohibit.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Prohibit,
 		/// <summary>Icon for a "Contact" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Contact.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Contact,
 		/// <summary>Icon for a "Home" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Home.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Home,
 		/// <summary>Icon for a "MarkLocation" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.MarkLocation.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		MarkLocation,
 		/// <summary>Icon for a "Favorite" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Favorite.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Favorite,
 		/// <summary>Icon for a "Love" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Love.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Love,
 		/// <summary>Icon for a "Cloud" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Cloud.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Cloud,
 		/// <summary>Icon for a "Invitation" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Invitation.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Invitation,
 		/// <summary>Icon for a "Confirmation" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Confirmation.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Confirmation,
 		/// <summary>Icon for a "Mail" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Mail.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Mail,
 		/// <summary>Icon for a "Message" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Message.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Message,
 		/// <summary>Icon for a "Date" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Date.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Date,
 		/// <summary>Icon for a "Time" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Time.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Time,
 		/// <summary>Icon for a "CapturePhoto" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.CapturePhoto.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		CapturePhoto,
 		/// <summary>Icon for a "CaptureVideo" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.CaptureVideo.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		CaptureVideo,
 		/// <summary>Icon for a "Task" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Task.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Task,
 		/// <summary>Icon for a "TaskCompleted" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.TaskCompleted.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		TaskCompleted,
 		/// <summary>Icon for a "Alarm" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Alarm.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Alarm,
 		/// <summary>Icon for a "Bookmark" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Bookmark.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Bookmark,
 		/// <summary>Icon for a "Shuffle" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Shuffle.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Shuffle,
 		/// <summary>Icon for a "Audio" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Audio.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Audio,
 		/// <summary>Icon for a "Update" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Update.png" alt="Shortcut icon for update" />
-		///           </para>
-		///         </remarks>
 		Update,
 	}
 
@@ -754,7 +609,7 @@ namespace UIKit {
 		void FixAttributesInRange (NSRange range);
 	}
 
-	/// <summary>Defined the <see cref="UIKit.NSIdentifier.Identifier(UIKit.NSLayoutConstraint)" /> extension property on <see cref="UIKit.NSLayoutConstraint" /> objects.</summary>
+	/// <summary>A category that adds identifier support for <see cref="NSLayoutConstraint" /> objects.</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Category, BaseType (typeof (NSLayoutConstraint))]
@@ -2222,13 +2077,12 @@ namespace UIKit {
 		NSString PostToTencentWeibo { get; }
 
 		/// <summary>Makes the provided object available over AirDrop.</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>
-		/// 	  The object must hold an individual <see cref="AssetsLibrary.ALAsset" />, <see cref="Foundation.NSAttributedString" />, <see cref="Foundation.NSString" />, <see cref="Foundation.NSUrl" />, <see cref="UIKit.UIImage" />.  Or you can provide a
-		/// 	  collection of those objects by passing an NSDictionary or an
-		/// 	  NSArray with those objects.
-		/// 	</remarks>
+		/// <remarks>
+		///   The object must hold an individual <see cref="Foundation.NSAttributedString" />, <see cref="Foundation.NSString" />,
+		///   <see cref="Foundation.NSUrl" />, or <see cref="UIKit.UIImage" />.
+		///   Or you can provide a collection of those objects by passing an <see cref="NSDictionary" /> or an <see cref="NSArray" />
+		///   with those objects.
+		/// </remarks>
 		[Field ("UIActivityTypeAirDrop")]
 		NSString AirDrop { get; }
 
@@ -2267,8 +2121,6 @@ namespace UIKit {
 	// You're supposed to implement this protocol in your UIView subclasses, not provide
 	// a implementation for only this protocol, which is why there is no model to subclass.
 	//
-	/// <summary>Interface that, together with the <see cref="UIKit.UIInputViewAudioFeedback_Extensions" /> class, comprise the UIInputViewAudioFeedback protocol.</summary>
-	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface UIInputViewAudioFeedback {
@@ -2716,7 +2568,7 @@ namespace UIKit {
 		[Export ("baselineRelativeArrangement")]
 		bool BaselineRelativeArrangement { [Bind ("isBaselineRelativeArrangement")] get; set; }
 
-		/// <summary>Whether subviews are arranged relative to this <see cref="UIKit.UIStackView" />'s <see cref="UIKit.UIView.LayoutMargin" />.</summary>
+		/// <summary>Whether subviews are arranged relative to this <see cref="UIKit.UIStackView" />'s <see cref="UIKit.UIView.LayoutMargins" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("layoutMarginsRelativeArrangement")]
@@ -3058,8 +2910,6 @@ namespace UIKit {
 		void CommitViewController (IUIViewControllerPreviewing previewingContext, UIViewController viewControllerToCommit);
 	}
 
-	/// <summary>Interface that, together with the <see cref="UIKit.UIViewControllerRestoration_Extensions" /> class, comprise the UIViewControllerRestoration protocol.</summary>
-	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface UIViewControllerRestoration {
@@ -3132,8 +2982,7 @@ namespace UIKit {
 		bool LocationLaunch { get; }
 	}
 
-	/// <summary>A <see cref="Foundation.DictionaryContainer" /> that holds options for use with calls to <see cref="UIApplication.OpenURL" />.</summary>
-	/// <remarks>To be added.</remarks>
+	/// <summary>A <see cref="Foundation.DictionaryContainer" /> that holds options for use with calls to <see cref="UIApplication.OpenUrl(NSUrl)" /> or <see cref="UIApplication.OpenUrl(NSUrl,NSDictionary,Action{bool})" />.</summary>
 	[MacCatalyst (13, 1)]
 	[StrongDictionary ("UIApplicationOpenUrlOptionKeys")]
 	interface UIApplicationOpenUrlOptions {
@@ -3686,7 +3535,9 @@ namespace UIKit {
 		[Export ("setNewsstandIconImage:")]
 		void SetNewsstandIconImage ([NullAllowed] UIImage image);
 
+#if !__MACCATALYST__
 		/// <include file="../docs/api/UIKit/UIApplication.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIApplication.LaunchOptionsNewsstandDownloadsKey']/*" />
+#endif
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Field ("UIApplicationLaunchOptionsNewsstandDownloadsKey")]
@@ -4925,7 +4776,7 @@ namespace UIKit {
 		/// <param name="application">To be added.</param>
 		/// <param name="sessionIdentifier">To be added.</param>
 		/// <param name="completionHandler">To be added.</param>
-		/// <summary>Raised when events relating to a background <see cref="UIKit.NSUrlSession" /> are waiting to be processed.</summary>
+		/// <summary>Raised when events relating to a background <see cref="NSUrlSession" /> are waiting to be processed.</summary>
 		/// <remarks>To be added.</remarks>
 		[Export ("application:handleEventsForBackgroundURLSession:completionHandler:")]
 		void HandleEventsForBackgroundUrl (UIApplication application, string sessionIdentifier, Action completionHandler);
@@ -5037,7 +4888,11 @@ namespace UIKit {
 		/// <param name="application">To be added.</param>
 		/// <param name="shortcutItem">To be added.</param>
 		/// <param name="completionHandler">To be added.</param>
-		/// <summary>Called by the system when the user initiates a Home screen quick action, unless the interaction was handled in <see cref="UIKit.UIApplicationDelegate.WillFinishLaunching(UIKit.UIApplication,Foundation.NSDictionary)" /> or <see cref="UIKit.UIApplicationDelegate.DidFinishLaunching" />.</summary>
+		/// <summary>
+		///   Called by the system when the user initiates a Home screen quick action, unless the interaction was handled
+		///   in <see cref="UIKit.UIApplicationDelegate.WillFinishLaunching(UIKit.UIApplication,Foundation.NSDictionary)" />
+		///   or <see cref="UIKit.UIApplicationDelegate.FinishedLaunching" />.
+		/// </summary>
 		/// <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 26, 0, message: "Use 'UIScene' lifecycle, 'PerformAction' from 'UIWindowSceneDelegate'.")]
 		[Deprecated (PlatformName.MacCatalyst, 26, 0, message: "Use 'UIScene' lifecycle, 'PerformAction' from 'UIWindowSceneDelegate'.")]
@@ -6369,7 +6224,7 @@ namespace UIKit {
 
 		/// <param name="collectionView">The collection view that originated the request.</param>
 		/// <param name="context">Metadata for the focus change.</param>
-		/// <param name="coordinator">The <see cref="UIKit.UIFocusAnimationController" /> coordinating the focus-change animations.</param>
+		/// <param name="coordinator">The <see cref="UIFocusAnimationCoordinator" /> coordinating the focus-change animations.</param>
 		/// <summary>Indicates that the focus changed as detailed in the <paramref name="context" />.</summary>
 		/// <remarks>
 		///           <para>The values of <see cref="UIKit.UICollectionViewFocusUpdateContext.PreviouslyFocusedIndexPath" /> and <see cref="UIKit.UICollectionViewFocusUpdateContext.NextFocusedIndexPath" /> may be <see langword="null" /> if focus was previously not within, or just departed, the <paramref name="collectionView" />.</para>
@@ -9772,8 +9627,6 @@ namespace UIKit {
 
 	interface IUIKeyInput { }
 
-	/// <summary>Interface that, together with the <see cref="UIKit.UIKeyInput_Extensions" /> class, comprise the UIKeyInput protocol.</summary>
-	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface UIKeyInput : UITextInputTraits {
@@ -16384,11 +16237,7 @@ namespace UIKit {
 		[Export ("zooming")]
 		bool Zooming { [Bind ("isZooming")] get; }
 
-		/// <summary>Returns <see langword="true" /> if the scroll view is bouncing back to the zoom scaling limits specified by<see cref="UIKit.UIScrollView.MinimumScrollView" /> and <see cref="UIKit.UIScrollView.MaximumScrollView" />. Read-only.</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>
-		///         </remarks>
+		/// <summary>Returns <see langword="true" /> if the scroll view is bouncing back to the zoom scaling limits specified by<see cref="UIScrollView.MinimumZoomScale" /> and <see cref="UIScrollView.MaximumZoomScale" />. Read-only.</summary>
 		[Export ("zoomBouncing")]
 		bool ZoomBouncing { [Bind ("isZoomBouncing")] get; }
 
@@ -20177,8 +20026,8 @@ namespace UIKit {
 		/// <returns>
 		///         </returns>
 		/// <remarks>
-		///           <para>Note that custom UITableViewCell's do not respect IndentationLevel automatically. Application developers must override <see cref="UIKit.UITableViewController.LayoutSubviews" />.</para>
-		///         </remarks>
+		///   <para>Note that custom <see cref="UITableViewCell" />'s do not respect IndentationLevel automatically. Application developers must override <see cref="UIView.LayoutSubviews" />.</para>
+		/// </remarks>
 		[Export ("tableView:indentationLevelForRowAtIndexPath:")]
 		nint IndentationLevel (UITableView tableView, NSIndexPath indexPath);
 
@@ -20875,19 +20724,14 @@ namespace UIKit {
 		UIColor TextColor { get; set; }
 
 		/// <summary>This property determines if the text view is editable or not.</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>
-		///         </remarks>
-		///         <altmember cref="UIKit.UITextView.AllowsEditingTextAttributes" />
-		///         <altmember cref="UIKit.UITextView.AttributedText" />
-		///         <altmember cref="UIKit.UITextView.DataDetectorTypes" />
-		///         <altmember cref="UIKit.UITextView.Font" />
-		///         <altmember cref="UIKit.UITextView.Text" />
-		///         <altmember cref="UIKit.UITextView.TextAlignment" />
-		///         <altmember cref="UIKit.UITextView.TextContainerInsert" />
-		///         <altmember cref="UIKit.UITextView.TextColor" />
-		///         <altmember cref="UIKit.UITextView.TypingAttributes" />
+		/// <altmember cref="UIKit.UITextView.AllowsEditingTextAttributes" />
+		/// <altmember cref="UIKit.UITextView.AttributedText" />
+		/// <altmember cref="UIKit.UITextView.DataDetectorTypes" />
+		/// <altmember cref="UIKit.UITextView.Font" />
+		/// <altmember cref="UIKit.UITextView.Text" />
+		/// <altmember cref="UIKit.UITextView.TextAlignment" />
+		/// <altmember cref="UIKit.UITextView.TextColor" />
+		/// <altmember cref="UIKit.UITextView.TypingAttributes" />
 		[Export ("editable")]
 		[NoTV]
 		[MacCatalyst (13, 1)]
@@ -24421,10 +24265,6 @@ namespace UIKit {
 	// This protocol is only for consumption (there is no API to set a transition coordinator,
 	// only get an existing one), so we do not provide a model to subclass.
 	//
-	/// <summary>Interface that, together with the <see cref="UIKit.UIViewControllerTransitionCoordinator_Extensions" /> class, comprise the UIViewControllerTransitionCoordinator protocol.</summary>
-	/// <remarks>To be added.</remarks>
-	/// <summary>Extension class that, together with the <see cref="UIKit.IUIViewControllerTransitionCoordinator" /> interface, comprise the UIViewControllerTransitionCoordinator protocol.</summary>
-	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	partial interface UIViewControllerTransitionCoordinator : UIViewControllerTransitionCoordinatorContext {
@@ -25636,8 +25476,6 @@ namespace UIKit {
 		NSObject Sender { get; }
 	}
 
-	/// <summary>Interface that, together with the <see cref="UIKit.UIPopoverBackgroundViewMethods_Extensions" /> class, comprise the UIPopoverBackgroundViewMethods protocol.</summary>
-	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface UIPopoverBackgroundViewMethods {
@@ -26971,7 +26809,7 @@ namespace UIKit {
 		/// <param name="width">To be added.</param>
 		/// <param name="font">To be added.</param>
 		/// <param name="breakMode">To be added.</param>
-		/// <summary>Developers should use <see cref="Foundation.NSString.DrawString(CoreGraphics.CGRect, UIKit.UIStringAttributes)" /> rather than this deprecated method..</summary>
+		/// <summary>Developers should use <see cref="NSStringDrawing.DrawString(NSString,CoreGraphics.CGRect, UIKit.UIStringAttributes)" /> rather than this deprecated method..</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>
 		///           <para>(More documentation for this node is coming)</para>
@@ -27002,7 +26840,7 @@ namespace UIKit {
 		// note: duplicate from maccore's foundation.cs where it's binded on NSString2 (for Classic)
 		/// <param name="rect">To be added.</param>
 		/// <param name="font">To be added.</param>
-		/// <summary>Developers should use <see cref="Foundation.NSString.DrawString(CoreGraphics.CGRect, UIKit.UIStringAttributes)" /> rather than this deprecated method.</summary>
+		/// <summary>Developers should use <see cref="NSStringDrawing.DrawString(NSString,CoreGraphics.CGRect, UIKit.UIStringAttributes)" /> rather than this deprecated method.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>
 		///           <para>(More documentation for this node is coming)</para>
@@ -27018,7 +26856,7 @@ namespace UIKit {
 		/// <param name="rect">To be added.</param>
 		/// <param name="font">To be added.</param>
 		/// <param name="mode">To be added.</param>
-		/// <summary>Developers should use <see cref="Foundation.NSString.DrawString(CoreGraphics.CGRect, UIKit.UIStringAttributes)" /> rather than this deprecated method.</summary>
+		/// <summary>Developers should use <see cref="NSStringDrawing.DrawString(NSString,CoreGraphics.CGRect, UIKit.UIStringAttributes)" /> rather than this deprecated method.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>
 		///           <para>(More documentation for this node is coming)</para>
@@ -27035,7 +26873,7 @@ namespace UIKit {
 		/// <param name="font">To be added.</param>
 		/// <param name="mode">To be added.</param>
 		/// <param name="alignment">To be added.</param>
-		/// <summary>Developers should use <see cref="Foundation.NSString.DrawString(CoreGraphics.CGRect, UIKit.UIStringAttributes)" /> rather than this deprecated method.</summary>
+		/// <summary>Developers should use <see cref="NSStringDrawing.DrawString(NSString,CoreGraphics.CGRect, UIKit.UIStringAttributes)" /> rather than this deprecated method.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>
 		///           <para>(More documentation for this node is coming)</para>
@@ -27049,7 +26887,7 @@ namespace UIKit {
 
 		// note: duplicate from maccore's foundation.cs where it's binded on NSString2 (for Classic)
 		/// <param name="font">To be added.</param>
-		/// <summary>Developers should use <see cref="UIKit.NSStringDrawing.GetSizeUsingAttributes(Foundation.NSString,UIKit.UIStringAttributes)" /> rather than this deprecated method.</summary>
+		/// <summary>Developers should use <see cref="NSStringDrawing.GetSizeUsingAttributes(Foundation.NSString,UIKit.UIStringAttributes)" /> rather than this deprecated method.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>
 		///           <para>(More documentation for this node is coming)</para>
@@ -27854,8 +27692,6 @@ namespace UIKit {
 
 	// note: used (internally, not exposed) by UITableView and UICollectionView for state restoration
 	// user objects must adopt the protocol
-	/// <summary>Interface that, together with the <see cref="UIKit.UIDataSourceModelAssociation_Extensions" /> class, comprise the UIDataSourceModelAssociation protocol.</summary>
-	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface UIDataSourceModelAssociation {
@@ -27879,8 +27715,6 @@ namespace UIKit {
 		NSIndexPath GetIndexPath (string identifier, UIView view);
 	}
 
-	/// <summary>Interface that, together with the <see cref="UIKit.UIAccessibilityReadingContent_Extensions" /> class, comprise the UIAccessibilityReadingContent protocol.</summary>
-	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface UIAccessibilityReadingContent {
@@ -27934,8 +27768,6 @@ namespace UIKit {
 		NSAttributedString GetAccessibilityAttributedPageContent ();
 	}
 
-	/// <summary>Interface that, together with the <see cref="UIKit.UIGuidedAccessRestrictionDelegate_Extensions" /> class, comprise the UIGuidedAccessRestrictionDelegate protocol.</summary>
-	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface UIGuidedAccessRestrictionDelegate {
@@ -28467,7 +28299,7 @@ namespace UIKit {
 		bool ShouldUpdateFocus (UIFocusUpdateContext context);
 
 		/// <param name="context">Metadata for the focus change.</param>
-		/// <param name="coordinator">The <see cref="UIKit.UIFocusAnimationController" /> coordinating the focus-change animations.</param>
+		/// <param name="coordinator">The <see cref="UIFocusAnimationCoordinator" /> coordinating the focus-change animations.</param>
 		/// <summary>Delegate method called shortly after focus has changed to a new <see cref="UIKit.UIView" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]

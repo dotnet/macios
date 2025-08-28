@@ -96,7 +96,6 @@ namespace UIKit {
 		Plain,
 
 		/// <summary>Developers should not use this deprecated field. Developers should use 'UIBarButtonItemStyle.Plain' instead.</summary>
-		///         <remarks>Application developers should instead use <see cref="UIKit.UIBarButtonItemStyle.Plain" />.</remarks>
 		[Deprecated (PlatformName.iOS, 8, 0, message: "Use 'UIBarButtonItemStyle.Plain' instead.")]
 		[Deprecated (PlatformName.TvOS, 9, 0, message: "Use 'UIBarButtonItemStyle.Plain' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'UIBarButtonItemStyle.Plain' instead.")]
@@ -418,95 +417,30 @@ namespace UIKit {
 	[MacCatalyst (13, 1)]
 	public enum UIViewContentMode : long {
 		/// <summary>Scales the contents to fit the new bounds, this might distort the contents.</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIViewContentMode.ScaleToFill.png" alt="Image layout for the specified content mode" />
-		///           </para>
-		///         </remarks>
 		ScaleToFill,
 		/// <summary>Scales the contents so that everything is visible, while preserving the aspect ration.   Any areas that are not filled become transparent.</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIViewContentMode.ScaleAspectFit.png" alt="Image layout for the specified content mode" />
-		///           </para>
-		///         </remarks>
 		ScaleAspectFit,
 		/// <summary>Scales the contents to fill the new bounaries of the view, while preserving the aspect ratio.   This means that the contents might be clipped.</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIViewContentMode.ScaleAspectFill.png" alt="Image layout for the specified content mode" />
-		///           </para>
-		///         </remarks>
 		ScaleAspectFill,
 		/// <summary>This forces a redraw when the <see cref="UIKit.UIView.Frame" /> of an object changes.</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIViewContentMode.Redraw.png" alt="Image layout for the specified content mode" />
-		///           </para>
-		///         </remarks>
 		Redraw,
 		/// <summary>Centers the contents in the view</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIViewContentMode.Center.png" alt="Image layout for the specified content mode" />
-		///           </para>
-		///         </remarks>
 		Center,
 		/// <summary>Aligns the content to the top of the view.</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIViewContentMode.Top.png" alt="Image layout for the specified content mode" />
-		///           </para>
-		///         </remarks>
 		Top,
 		/// <summary>Aligns the content to the bottom of the view.</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIViewContentMode.Bottom.png" alt="Image layout for the specified content mode" />
-		///           </para>
-		///         </remarks>
 		Bottom,
 		/// <summary>Aligns the content to the left of the view.</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIViewContentMode.Left.png" alt="Image layout for the specified content mode" />
-		///           </para>
-		///         </remarks>
 		Left,
 		/// <summary>Aligns the content to the right of the view..</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIViewContentMode.Right.png" alt="Image layout for the specified content mode" />
-		///           </para>
-		///         </remarks>
 		Right,
 		/// <summary>Aligns the content to the top left of the view.</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIViewContentMode.TopLeft.png" alt="Image layout for the specified content mode" />
-		///           </para>
-		///         </remarks>
 		TopLeft,
 		/// <summary>Aligns the content to the top right of the view.</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIViewContentMode.TopRight.png" alt="Image layout for the specified content mode" />
-		///           </para>
-		///         </remarks>
 		TopRight,
 		/// <summary>Aligns the content to the bottom left of the view.</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIViewContentMode.BottomLeft.png" alt="Image layout for the specified content mode" />
-		///           </para>
-		///         </remarks>
 		BottomLeft,
 		/// <summary>Aligns the content to the bottom right side of the view.</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIViewContentMode.BottomRight.png" alt="Image layout for the specified content mode" />
-		///           </para>
-		///         </remarks>
 		BottomRight,
 	}
 
@@ -566,7 +500,6 @@ namespace UIKit {
 		/// <summary>No button style.</summary>
 		Custom,
 		/// <summary>Rounded rectangle style. This style is deprecated as of iOS 7; developers should use <see cref="UIKit.UIButtonType.System" />.</summary>
-		///         <remarks>Application developers should instead use <see cref="UIKit.UIButtonType.System" />.</remarks>
 		RoundedRect,
 		/// <summary>Uses a detail disclosure button (arrow).</summary>
 		DetailDisclosure,
@@ -1444,9 +1377,6 @@ namespace UIKit {
 		Default,
 
 		/// <summary>Application developers should not use this deprecated style.</summary>
-		///         <remarks>
-		///           <para>Application developers should not use this deprecated style. Specifying it will result in a return of <see cref="UIKit.UIStatusBarStyle.LightContent" />.</para>
-		///         </remarks>
 		[Deprecated (PlatformName.iOS, 7, 0, message: "Use 'LightContent' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'LightContent' instead.")]
 		BlackTranslucent = 1,
@@ -1455,9 +1385,6 @@ namespace UIKit {
 		LightContent = 1,
 
 		/// <summary>Developers should not use this deprecated field. Developers should use 'LightContent' instead.</summary>
-		///         <remarks>
-		///           <para>Application developers should not use this deprecated style. Specifying it will result in a return of <see cref="UIKit.UIStatusBarStyle.LightContent" />.</para>
-		///         </remarks>
 		[Deprecated (PlatformName.iOS, 7, 0, message: "Use 'LightContent' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'LightContent' instead.")]
 		BlackOpaque = 2,
@@ -1878,7 +1805,7 @@ namespace UIKit {
 
 	// NSInteger -> UIAccessibility.h
 	/// <summary>An enumeration indicating the scrolling direction desired.</summary>
-	/// <remarks>Used as the argument to <see cref="Foundation.NSObject.AccessibilityScroll" /> to generate a scrolling action.</remarks>
+	/// <remarks>Used as the argument to <see cref="UIResponder.AccessibilityScroll" /> to generate a scrolling action.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UIAccessibilityScrollDirection : long {
@@ -2283,8 +2210,11 @@ namespace UIKit {
 	// NSInteger -> UIImage.h
 	/// <summary>An enumeration whose values specify rendering modes for a <see cref="UIKit.UIImage" />.</summary>
 	/// <remarks>
-	///       <para>A template image is used as a mask to create the final image. A template image inherits the <see cref="UIKit.UIImage.TintColor" /> of its parent. Application developers who do not want this behavior should use <see cref="UIKit.UIImageRenderingMode.AlwaysOriginal" />.</para>
-	///     </remarks>
+	///   <para>
+	///     A template image is used as a mask to create the final image. A template image inherits the <see cref="UIView.TintColor" />
+	///     of its parent. Application developers who do not want this behavior should use <see cref="UIKit.UIImageRenderingMode.AlwaysOriginal" />.
+	///   </para>
+	/// </remarks>
 	[Native]
 	public enum UIImageRenderingMode : long {
 		/// <summary>The default rendering mode for the context.</summary>
@@ -2309,7 +2239,7 @@ namespace UIKit {
 
 	// NSInteger -> UINavigationController.h
 	/// <summary>An enumeration whose values specify operations on <see cref="UIKit.UINavigationController" />.</summary>
-	/// <remarks>This enumeration is used in calls to <see cref="UIKit.UINavigationController.GetAnimationController" />.</remarks>
+	/// <remarks>This enumeration is used in calls to <see cref="UINavigationControllerDelegate.GetAnimationControllerForOperation" />.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UINavigationControllerOperation : long {
@@ -2517,7 +2447,8 @@ namespace UIKit {
 	// NSInteger -> UITabBar.h
 	/// <summary>An enumeration whose values specify how a <see cref="UIKit.UITabBarItem" /> is positioned.</summary>
 	/// <remarks>To be added.</remarks>
-	/// <altmember cref="UIKit.UITabBarItem.ItemPositioning" />
+	/// <altmember cref="UIKit.UITabBar.ItemPositioning" />
+	/// <altmember cref="UIKit.UITabBarAppearance.StackedItemPositioning" />
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UITabBarItemPositioning : long {
@@ -2644,11 +2575,9 @@ namespace UIKit {
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UIInputViewStyle : long {
-		/// <summary>Applies blurring, but not tinting.</summary>
-		///         <remarks>This style is appropriate for <see cref="UIKit.UIInputView" />s that should be themed like, but do not look like, the keyboard.</remarks>
+		/// <summary>Applies blurring, but not tinting. This style is appropriate for <see cref="UIKit.UIInputView" />s that should be themed like, but do not look like, the keyboard.</summary>
 		Default,
-		/// <summary>Applies both blurring and tinting.</summary>
-		///         <remarks>This style is appropriate for <see cref="UIKit.UIInputView" />s that look like the keyboard (extensions or replacements).</remarks>
+		/// <summary>Applies both blurring and tinting. This style is appropriate for <see cref="UIKit.UIInputView" />s that look like the keyboard (extensions or replacements).</summary>
 		Keyboard,
 	}
 
@@ -2927,7 +2856,7 @@ namespace UIKit {
 		PrimaryOverlay = OneOverSecondary,
 	}
 
-	/// <summary>Enumerates characteristics of the button displayed in a table row. Used with the <see cref="UIKit.UITableViewRowAction(UIKit.UITableViewRowActionStyle,string ,Action{T},Foundation.NSIndexPath)" /> constructor.</summary>
+	/// <summary>Enumerates characteristics of the button displayed in a table row. Used with the <see cref="UITableViewRowAction.Create(UITableViewRowActionStyle,string,Action{UITableViewRowAction,NSIndexPath})" /> factory method.</summary>
 	[Native]
 	[NoTV]
 	[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'UIContextualActionStyle' and corresponding APIs instead.")]

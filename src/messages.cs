@@ -108,7 +108,7 @@ namespace Messages {
 		void InvalidateMessageTintColor ();
 	}
 
-	/// <summary>A <see cref="Speech.UIViewController" /> that, when extended by the developer, is used to present a custom user-experience within the Messages app.</summary>
+	/// <summary>A <see cref="UIViewController" /> that, when extended by the developer, is used to present a custom user-experience within the Messages app.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Messages/MSMessagesAppViewController">Apple documentation for <c>MSMessagesAppViewController</c></related>
 	[MacCatalyst (14, 0)]

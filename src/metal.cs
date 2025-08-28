@@ -2305,7 +2305,7 @@ namespace Metal {
 		[NullAllowed, Export ("iosurface")]
 		IOSurface.IOSurface IOSurface { get; }
 
-		/// <summary>Returns the IOSurface plane used by the surface that is returned from <see cref="IOSurface" />.</summary>
+		/// <summary>Returns the IOSurface plane used by the surface that is returned from <see cref="IMTLTexture.IOSurface" />.</summary>
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("iosurfacePlane")]

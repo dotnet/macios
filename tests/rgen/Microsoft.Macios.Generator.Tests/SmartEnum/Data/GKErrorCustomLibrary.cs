@@ -2,10 +2,10 @@ using System;
 using Foundation;
 using ObjCBindings;
 
-namespace GameKit;
+namespace CustomLibrary;
 
 [Native ("GKErrorCode")]
-[BindingType<SmartEnum> (Flags = SmartEnum.ErrorCode, ErrorDomain = "GKErrorDomain", LibraryName = "/path/to/customlibrary.framework")]
+[BindingType<SmartEnum> (Flags = SmartEnum.ErrorCode, ErrorDomain = "GKErrorDomain", LibraryPath = "/path/to/customlibrary.framework")]
 public enum GKCustomError : long {
 	None = 0,
 	Unknown = 1,

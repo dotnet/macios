@@ -110,9 +110,6 @@
         <Compile Include="../Microsoft.Macios.Generator/Formatters/TypeInfoFormatter.cs" >
             <Link>Formatters/TypeInfoFormatter.cs</Link>
         </Compile>
-        <Compile Include="..\..\bgen\Extensions\PlatformNameExtensions.cs" >
-            <Link>external\PlatformNameExtensions.cs</Link>
-        </Compile>
     </ItemGroup>
 
     <ItemGroup>

@@ -1677,7 +1677,7 @@
 			<_NativeReferences Include="@(_FileNativeReference)" Condition="'%(_FileNativeReference.LinkToExecutable)' != 'false'" />
 		</ItemGroup>
 
-		<WriteLinesToFile SessionId="$(BuildSessionId)" File="$(_MtouchSymbolsList)" Lines="@(_ProcessedReferenceNativeSymbol)" Overwrite="true" />
+		<WriteLinesToFile File="$(_MtouchSymbolsList)" Lines="@(_ProcessedReferenceNativeSymbol)" Overwrite="true" />
 
 		<PropertyGroup>
 			<!-- There are known bugs in the classic linker with Xcode 15, so keep use the classic linker in that case -->
@@ -1850,7 +1850,6 @@
 			<Output TaskParameter="Lines" ItemName="_AllExecutableSymbols" />
 		</ReadLinesFromFile>
 		<WriteLinesToFile
-			SessionId="$(BuildSessionId)"
 			File="$(_MtouchSymbolsList)"
 			Lines="@(_AllExecutableSymbols->DistinctWithCase())"
 			Overwrite="true" />

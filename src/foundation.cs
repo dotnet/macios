@@ -501,7 +501,22 @@ namespace Foundation {
 		[NoMacCatalyst]
 		[NoTV]
 		[Export ("initWithDocFormat:documentAttributes:")]
+		[Internal]
+		NativeHandle _InitWithDocFormat (NSData wordDocFormat, out NSDictionary docAttributes);
+
+#if !XAMCORE_5_0
+		/// <param name="wordDocFormat">To be added.</param>
+		/// <param name="docAttributes">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
+		[NoiOS]
+		[NoMacCatalyst]
+		[NoTV]
+		[Export ("initWithDocFormat:documentAttributes:")]
+		[Sealed]
+		[Obsolete ("Use 'CreateWithDocFormat' instead.")]
 		NativeHandle Constructor (NSData wordDocFormat, out NSDictionary docAttributes);
+#endif
 
 		/// <param name="htmlData">To be added.</param>
 		/// <param name="baseUrl">To be added.</param>
@@ -512,7 +527,23 @@ namespace Foundation {
 		[NoMacCatalyst]
 		[NoTV]
 		[Export ("initWithHTML:baseURL:documentAttributes:")]
+		[Internal]
+		NativeHandle _InitWithHTML (NSData htmlData, NSUrl baseUrl, out NSDictionary docAttributes);
+
+#if !XAMCORE_5_0
+		/// <param name="htmlData">To be added.</param>
+		/// <param name="baseUrl">To be added.</param>
+		/// <param name="docAttributes">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
+		[NoiOS]
+		[NoMacCatalyst]
+		[NoTV]
+		[Export ("initWithHTML:baseURL:documentAttributes:")]
+		[Sealed]
+		[Obsolete ("Use 'CreateWithHTML' instead.")]
 		NativeHandle Constructor (NSData htmlData, NSUrl baseUrl, out NSDictionary docAttributes);
+#endif
 
 		/// <param name="rect">To be added.</param>
 		///         <param name="options">To be added.</param>
@@ -531,7 +562,7 @@ namespace Foundation {
 		[NoiOS]
 		[NoMacCatalyst]
 		[NoTV]
-		[Deprecated (PlatformName.MacOSX, 10, 11, message: "Use 'NSAttributedString (NSUrl, NSDictionary, out NSDictionary, ref NSError)' instead.")]
+		[Deprecated (PlatformName.MacOSX, 10, 11, message: "Use 'Create (NSUrl, NSDictionary, out NSDictionary, out NSError)' instead.")]
 		[Export ("initWithPath:documentAttributes:")]
 		NativeHandle Constructor (string path, out NSDictionary resultDocumentAttributes);
 
@@ -542,7 +573,7 @@ namespace Foundation {
 		[NoiOS]
 		[NoMacCatalyst]
 		[NoTV]
-		[Deprecated (PlatformName.MacOSX, 10, 11, message: "Use 'NSAttributedString (NSUrl, NSDictionary, out NSDictionary, ref NSError)' instead.")]
+		[Deprecated (PlatformName.MacOSX, 10, 11, message: "Use 'Create (NSUrl, NSDictionary, out NSDictionary, out NSError)' instead.")]
 		[Export ("initWithURL:documentAttributes:")]
 		NativeHandle Constructor (NSUrl url, out NSDictionary resultDocumentAttributes);
 
@@ -564,6 +595,7 @@ namespace Foundation {
 		[Internal, Export ("initWithHTML:documentAttributes:")]
 		IntPtr _InitWithHTML (NSData data, out NSDictionary resultDocumentAttributes);
 
+#if !XAMCORE_5_0
 		/// <param name="data">To be added.</param>
 		/// <param name="options">To be added.</param>
 		/// <param name="resultDocumentAttributes">To be added.</param>
@@ -573,8 +605,19 @@ namespace Foundation {
 		[NoMacCatalyst]
 		[NoTV]
 		[Export ("initWithHTML:options:documentAttributes:")]
+		[Deprecated (PlatformName.MacOSX, 10, 11, message: "Use 'CreateWithHTML (NSData, NSDictionary, out NSDictionary)' instead.")]
+		[Sealed]
 		NativeHandle Constructor (NSData data, [NullAllowed] NSDictionary options, out NSDictionary resultDocumentAttributes);
+#endif
 
+		[NoiOS]
+		[NoMacCatalyst]
+		[NoTV]
+		[Export ("initWithHTML:options:documentAttributes:")]
+		[Internal]
+		NativeHandle _InitWithHTML (NSData data, NSDictionary options, out NSDictionary resultDocumentAttributes);
+
+#if !XAMCORE_5_0
 		/// <param name="data">To be added.</param>
 		/// <param name="options">To be added.</param>
 		/// <param name="resultDocumentAttributes">To be added.</param>
@@ -584,8 +627,11 @@ namespace Foundation {
 		[NoMacCatalyst]
 		[NoTV]
 		[Wrap ("this (data, options.GetDictionary (), out resultDocumentAttributes)")]
+		[Deprecated (PlatformName.MacOSX, 10, 11, message: "Use 'CreateWithHTML (NSData, NSAttributedStringDocumentAttributes, out NSDictionary)' instead.")]
 		NativeHandle Constructor (NSData data, NSAttributedStringDocumentAttributes options, out NSDictionary resultDocumentAttributes);
+#endif
 
+#if !XAMCORE_5_0
 		/// <param name="wrapper">To be added.</param>
 		/// <param name="resultDocumentAttributes">To be added.</param>
 		/// <summary>To be added.</summary>
@@ -594,7 +640,17 @@ namespace Foundation {
 		[NoMacCatalyst]
 		[NoTV]
 		[Export ("initWithRTFDFileWrapper:documentAttributes:")]
+		[Deprecated (PlatformName.MacOSX, 10, 11, message: "Use 'Create (NSFileWrapper, out NSDictionary)' instead.")]
+		[Sealed]
 		NativeHandle Constructor (NSFileWrapper wrapper, out NSDictionary resultDocumentAttributes);
+#endif
+
+		[NoiOS]
+		[NoMacCatalyst]
+		[NoTV]
+		[Export ("initWithRTFDFileWrapper:documentAttributes:")]
+		[Internal]
+		NativeHandle _InitWithRTFDFileWrapper (NSFileWrapper wrapper, out NSDictionary resultDocumentAttributes);
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
@@ -10318,7 +10374,7 @@ namespace Foundation {
 		[Async (ResultTypeName = "NSUrlSessionCombinedTasks", XmlDocs = """
 			<summary>To be added.</summary>
 			<returns>
-			          <para>A task that represents the asynchronous GetAllTasks operation.   The value of the TResult parameter is an array of MonoTouch.Foundation.NSUrlSessionTask.  The base class for data-transfer tasks created by a .</para>
+			          <para>A task that represents the asynchronous GetAllTasks operation.   The value of the TResult parameter is an array of NSUrlSessionTask.  The base class for data-transfer tasks created by a .</para>
 			        </returns>
 			<remarks>
 			          <para copied="true">The GetAllTasksAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
@@ -14234,14 +14290,8 @@ namespace Foundation {
 
 	[BaseType (typeof (NSObject))]
 	interface NSIndexPath : NSCoding, NSSecureCoding, NSCopying {
-		/// <param name="index">
-		/// Object to place in the index-path.
-		///   	   </param>
-		/// <summary>Create a new index-path object with the specified object (not required for use with iOS <see cref="UIKit.UITableView" />).</summary>
-		/// <returns>
-		///         </returns>
-		/// <remarks>
-		///         </remarks>
+		/// <summary>Create a new index-path object with the specified object.</summary>
+		/// <param name="index">Object to place in the index-path.</param>
 		[Export ("indexPathWithIndex:")]
 		[Static]
 		NSIndexPath FromIndex (nuint index);
@@ -14251,34 +14301,16 @@ namespace Foundation {
 		[Static]
 		NSIndexPath _FromIndex (IntPtr indexes, nint len);
 
-		/// <param name="index">
-		/// 
-		/// Index to be appended.
-		///   	   
-		///   	   </param>
-		/// <summary>Returns a new index-path containing those in this object plus the new <paramref name="index" /> (not required for use with iOS <see cref="UIKit.UITableView" />).</summary>
-		/// <returns>
-		///         </returns>
-		/// <remarks>
-		///         </remarks>
+		/// <summary>Returns a new index-path containing those in this object plus the new <paramref name="index" />.</summary>
+		/// <param name="index">Index to be appended.</param>
 		[Export ("indexPathByAddingIndex:")]
 		NSIndexPath IndexPathByAddingIndex (nuint index);
 
 		[Export ("indexPathByRemovingLastIndex")]
 		NSIndexPath IndexPathByRemovingLastIndex ();
 
-		/// <param name="position">
-		/// 
-		/// 
-		/// Position of index to return.
-		///   	   
-		///   	   
-		///   	   </param>
-		/// <summary>Return the index at the given <paramref name="position" /> in the index-path (not required for use with iOS <see cref="UIKit.UITableView" />).</summary>
-		/// <returns>
-		///         </returns>
-		/// <remarks>
-		///         </remarks>
+		/// <summary>Return the index at the given <paramref name="position" /> in the index-path.</summary>
+		/// <param name="position">Position of index to return.</param>
 		[Export ("indexAtPosition:")]
 		nuint IndexAtPosition (nint position);
 
@@ -14306,28 +14338,16 @@ namespace Foundation {
 		[Export ("row")]
 		nint LongRow { get; }
 
-		/// <summary>The index of a section within a <see cref="UIKit.UITableView" /> (read-only).</summary>
-		///         <value>
-		///           <para />
-		///         </value>
-		///         <remarks>
-		///           <para />
-		///         </remarks>
+		/// <summary>The index of a section within a <see cref="UIKit.UITableView" /> (read-only).</summary>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("section")]
 		nint LongSection { get; }
 
-		/// <param name="row">
-		/// The row index within the corresponding <paramref name="section" /> of a <see cref="UIKit.UITableView" />.
-		///   	   </param>
-		/// <param name="section">
-		/// The index of the section in the <see cref="UIKit.UITableView" /> that contains the <paramref name="row" />.
-		///   	   </param>
 		/// <summary>Returns an index-path object initialized with the given row and section details.</summary>
+		/// <param name="row">The row index within the corresponding <paramref name="section" /> of a <see cref="UIKit.UITableView" />.</param>
+		/// <param name="section">The index of the section in the <see cref="UIKit.UITableView" /> that contains the <paramref name="row" />.</param>
 		/// <returns>An <see cref="Foundation.NSIndexPath" /> object, or <see langword="null" /> if it could not be created.</returns>
-		/// <remarks>
-		///         </remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Static]
@@ -14340,26 +14360,16 @@ namespace Foundation {
 		[Export ("section")]
 		nint Section { get; }
 
-		/// <param name="item">
-		/// Item value.
-		///   	   </param>
-		/// <param name="section">
-		/// Section value.
-		///   	   </param>
-		/// <summary>Creates an NSIndexPath from the given item and section values.</summary>
-		/// <returns>New instance of the NSIndexPath.</returns>
-		/// <remarks>
-		///         </remarks>
+		/// <summary>Creates an <see cref="NSIndexPath" /> from the given item and section values.</summary>
+		/// <param name="item">Item value.</param>
+		/// <param name="section">Section value.</param>
+		/// <returns>New instance of the <see cref="NSIndexPath" />.</returns>
 		[Static]
 		[MacCatalyst (13, 1)]
 		[Export ("indexPathForItem:inSection:")]
 		NSIndexPath FromItemSection (nint item, nint section);
 
-		/// <summary>The item component of this NSIndexPath.</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>
-		///         </remarks>
+		/// <summary>The item component of this <see cref="NSIndexPath" />.</summary>
 		[Export ("item")]
 		[MacCatalyst (13, 1)]
 		nint Item { get; }
@@ -14888,7 +14898,7 @@ namespace Foundation {
 		/// <param name="typeIdentifier">A Universal Type Identifier (UTI) indicating the type of data to load.</param>
 		/// <param name="completionHandler">The method called after the data is loaded.</param>
 		/// <summary>Implement this method to customize the loading of data by an <see cref="Foundation.NSItemProvider" />.</summary>
-		/// <returns>An <see cref="Monotouch.Foundation.NSProgress" /> object reflecting the data-loading operation.</returns>
+		/// <returns>An <see cref="NSProgress" /> object reflecting the data-loading operation.</returns>
 		/// <remarks>
 		///           <para>The <paramref name="typeIdentifier" /> must be in the set of values returned by <see cref="Foundation.NSItemProviderWriting_Extensions.GetWritableTypeIdentifiersForItemProvider(Foundation.INSItemProviderWriting)" />.</para>
 		///         </remarks>
@@ -18175,8 +18185,8 @@ namespace Foundation {
 		[NullAllowed]
 		NSUrl PresentedItemUrl { get; }
 
-		/// <summary>Gets the <see cref="Monotouch.Foundation.NSOperationQueue" /> on which presenter-related methods are executed.</summary>
-		/// <value>The <see cref="Monotouch.Foundation.NSOperationQueue" /> on which methods are executed.</value>
+		/// <summary>Gets the <see cref="NSOperationQueue" /> on which presenter-related methods are executed.</summary>
+		/// <value>The <see cref="NSOperationQueue" /> on which methods are executed.</value>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("presentedItemOperationQueue", ArgumentSemantic.Retain)]
@@ -18974,7 +18984,7 @@ namespace Foundation {
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface NSExtensionRequestHandling {
-		/// <param name="context">The <see cref="Monotouch.Foundation.NSExtensionContext" /> containing extension-relevant data.</param>
+		/// <param name="context">The <see cref="NSExtensionContext" /> containing extension-relevant data.</param>
 		/// <summary>Developers can implement this method to prepare their extension for the host application request.</summary>
 		/// <remarks>
 		///           <para>Developers who implement this method must call <c>base.BeginRequestWithExtensionContext(context)</c> within their implementation.</para>

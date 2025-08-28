@@ -7,32 +7,32 @@ This file should be imported by eng/Versions.props
 <Project>
   <PropertyGroup>
     <!-- dotnet/dotnet dependencies -->
-    <MicrosoftDotNetArcadeSdkPackageVersion>10.0.0-beta.25410.101</MicrosoftDotNetArcadeSdkPackageVersion>
-    <MicrosoftDotNetBuildTasksFeedPackageVersion>10.0.0-beta.25410.101</MicrosoftDotNetBuildTasksFeedPackageVersion>
-    <MicrosoftDotNetCecilPackageVersion>0.11.5-alpha.25410.101</MicrosoftDotNetCecilPackageVersion>
-    <MicrosoftDotNetSharedFrameworkSdkPackageVersion>10.0.0-beta.25410.101</MicrosoftDotNetSharedFrameworkSdkPackageVersion>
-    <MicrosoftNETILLinkPackageVersion>10.0.0-rc.1.25410.101</MicrosoftNETILLinkPackageVersion>
-    <MicrosoftNETILLinkTasksPackageVersion>10.0.0-rc.1.25410.101</MicrosoftNETILLinkTasksPackageVersion>
-    <MicrosoftNETRuntimeMonoTargetsSdkPackageVersion>10.0.0-rc.1.25410.101</MicrosoftNETRuntimeMonoTargetsSdkPackageVersion>
-    <MicrosoftNETSdkPackageVersion>10.0.100-rc.1.25410.101</MicrosoftNETSdkPackageVersion>
-    <MicrosoftNETCoreAppRefPackageVersion>10.0.0-rc.1.25410.101</MicrosoftNETCoreAppRefPackageVersion>
-    <MicrosoftTemplateEngineAuthoringTasksPackageVersion>10.0.100-rc.1.25410.101</MicrosoftTemplateEngineAuthoringTasksPackageVersion>
+    <MicrosoftDotNetArcadeSdkPackageVersion>10.0.0-beta.25420.109</MicrosoftDotNetArcadeSdkPackageVersion>
+    <MicrosoftDotNetBuildTasksFeedPackageVersion>10.0.0-beta.25420.109</MicrosoftDotNetBuildTasksFeedPackageVersion>
+    <MicrosoftDotNetCecilPackageVersion>0.11.5-alpha.25420.109</MicrosoftDotNetCecilPackageVersion>
+    <MicrosoftDotNetSharedFrameworkSdkPackageVersion>10.0.0-beta.25420.109</MicrosoftDotNetSharedFrameworkSdkPackageVersion>
+    <MicrosoftNETILLinkPackageVersion>10.0.0-rc.2.25420.109</MicrosoftNETILLinkPackageVersion>
+    <MicrosoftNETILLinkTasksPackageVersion>10.0.0-rc.2.25420.109</MicrosoftNETILLinkTasksPackageVersion>
+    <MicrosoftNETRuntimeMonoTargetsSdkPackageVersion>10.0.0-rc.2.25420.109</MicrosoftNETRuntimeMonoTargetsSdkPackageVersion>
+    <MicrosoftNETSdkPackageVersion>10.0.100-rc.2.25420.109</MicrosoftNETSdkPackageVersion>
+    <MicrosoftNETCoreAppRefPackageVersion>10.0.0-rc.2.25420.109</MicrosoftNETCoreAppRefPackageVersion>
+    <MicrosoftTemplateEngineAuthoringTasksPackageVersion>10.0.100-rc.2.25420.109</MicrosoftTemplateEngineAuthoringTasksPackageVersion>
     <!-- dotnet/macios dependencies -->
-    <MicrosoftiOSSdknet90_185PackageVersion>18.5.9216</MicrosoftiOSSdknet90_185PackageVersion>
-    <MicrosoftiOSSdknet90_260PackageVersion>26.0.9337-xcode26.0</MicrosoftiOSSdknet90_260PackageVersion>
-    <MicrosoftMacCatalystSdknet90_185PackageVersion>18.5.9216</MicrosoftMacCatalystSdknet90_185PackageVersion>
-    <MicrosoftMacCatalystSdknet90_260PackageVersion>26.0.9337-xcode26.0</MicrosoftMacCatalystSdknet90_260PackageVersion>
-    <MicrosoftmacOSSdknet90_155PackageVersion>15.5.9216</MicrosoftmacOSSdknet90_155PackageVersion>
-    <MicrosoftmacOSSdknet90_260PackageVersion>26.0.9337-xcode26.0</MicrosoftmacOSSdknet90_260PackageVersion>
-    <MicrosofttvOSSdknet90_185PackageVersion>18.5.9216</MicrosofttvOSSdknet90_185PackageVersion>
-    <MicrosofttvOSSdknet90_260PackageVersion>26.0.9337-xcode26.0</MicrosofttvOSSdknet90_260PackageVersion>
+    <MicrosoftiOSSdknet90_185PackageVersion>18.5.9219</MicrosoftiOSSdknet90_185PackageVersion>
+    <MicrosoftiOSSdknet90_260PackageVersion>26.0.9500-xcode26.0</MicrosoftiOSSdknet90_260PackageVersion>
+    <MicrosoftMacCatalystSdknet90_185PackageVersion>18.5.9219</MicrosoftMacCatalystSdknet90_185PackageVersion>
+    <MicrosoftMacCatalystSdknet90_260PackageVersion>26.0.9500-xcode26.0</MicrosoftMacCatalystSdknet90_260PackageVersion>
+    <MicrosoftmacOSSdknet90_155PackageVersion>15.5.9219</MicrosoftmacOSSdknet90_155PackageVersion>
+    <MicrosoftmacOSSdknet90_260PackageVersion>26.0.9500-xcode26.0</MicrosoftmacOSSdknet90_260PackageVersion>
+    <MicrosofttvOSSdknet90_185PackageVersion>18.5.9219</MicrosofttvOSSdknet90_185PackageVersion>
+    <MicrosofttvOSSdknet90_260PackageVersion>26.0.9500-xcode26.0</MicrosofttvOSSdknet90_260PackageVersion>
     <!-- xamarin/xamarin-macios dependencies -->
     <MicrosoftiOSSdknet90_180PackageVersion>18.0.9617</MicrosoftiOSSdknet90_180PackageVersion>
     <MicrosoftMacCatalystSdknet90_180PackageVersion>18.0.9617</MicrosoftMacCatalystSdknet90_180PackageVersion>
     <MicrosoftmacOSSdknet90_150PackageVersion>15.0.9617</MicrosoftmacOSSdknet90_150PackageVersion>
     <MicrosofttvOSSdknet90_180PackageVersion>18.0.9617</MicrosofttvOSSdknet90_180PackageVersion>
     <!-- dotnet/xharness dependencies -->
-    <MicrosoftDotNetXHarnessiOSSharedPackageVersion>10.0.0-prerelease.25405.1</MicrosoftDotNetXHarnessiOSSharedPackageVersion>
+    <MicrosoftDotNetXHarnessiOSSharedPackageVersion>10.0.0-prerelease.25412.1</MicrosoftDotNetXHarnessiOSSharedPackageVersion>
   </PropertyGroup>
   <!--Property group for alternate package version names-->
   <PropertyGroup>

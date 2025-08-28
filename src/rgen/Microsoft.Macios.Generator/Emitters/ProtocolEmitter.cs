@@ -166,7 +166,7 @@ $@"static {bindingContext.Changes.Name} ()
 		diagnostics = null;
 		if (bindingContext.Changes.BindingType != BindingType.Protocol) {
 			diagnostics = [Diagnostic.Create (
-				Diagnostics
+				RgenDiagnostics
 					.RBI0000, // An unexpected error occurred while processing '{0}'. Please fill a bug report at https://github.com/dotnet/macios/issues/new.
 				null,
 				bindingContext.Changes.FullyQualifiedSymbol)];
@@ -183,7 +183,7 @@ $@"static {bindingContext.Changes.Name} ()
 
 			// Protocol registration
 			var protocolName = bindingData.Name ?? bindingContext.Changes.Name [1..];
-			builder.AppendProtocolAttribute (protocolName, Nomenclator.GetProtocolWrapperName (protocolName));
+			builder.AppendProtocolAttribute (protocolName, bindingContext.GetProtocolWrapperName ());
 
 			// we need to collect the properties extension methods, we do that with a helper method
 			// that will return the properties and their getters/setters.

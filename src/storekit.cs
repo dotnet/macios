@@ -720,9 +720,8 @@ namespace StoreKit {
 		void ReceivedResponse (SKProductsRequest request, SKProductsResponse response);
 	}
 
-	/// <summary>A subclass of <see cref="UIKit.UIViewController" /> that presents a store allowing the application user to purchase an item from the App Store.</summary>
-	///     
-	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/StoreKit/Reference/SKITunesProductViewController_Ref/index.html">Apple documentation for <c>SKStoreProductViewController</c></related>
+	/// <summary>A subclass of <see cref="UIViewController" /> that presents a store allowing the application user to purchase an item from the App Store.</summary>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/StoreKit/Reference/SKITunesProductViewController_Ref/index.html">Apple documentation for <c>SKStoreProductViewController</c></related>
 	[NoTV]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (UIViewController),

@@ -96,6 +96,16 @@ readonly partial struct Method {
 	/// </summary>
 	public bool IsOptional => ExportMethodData.Flags.HasFlag (ObjCBindings.Method.Optional);
 
+	/// <summary>
+	/// True if the method is an event.
+	/// </summary>
+	public bool IsEvent => ExportMethodData.Flags.HasFlag (ObjCBindings.Method.Event);
+
+	/// <summary>
+	/// The location of the attribute in source code.
+	/// </summary>
+	public Location? Location { get; init; }
+
 	public Method (string type, string name, TypeInfo returnType,
 		SymbolAvailability symbolAvailability,
 		ExportData<ObjCBindings.Method> exportMethodData,
@@ -173,13 +183,13 @@ readonly partial struct Method {
 		// DO NOT USE default if null, the reason is that it will set the ArgumentSemantics to be value 0, when
 		// none is value 1. The reason for that is that the default of an enum is 0, that was a mistake 
 		// in the old binding code.
-		var exportData = method.GetExportData<ObjCBindings.Method> ()
+		var exportData = method.GetExportData<ObjCBindings.Method> (context)
 						 ?? new (null, ArgumentSemantic.None, ObjCBindings.Method.Default);
 
 		change = new (
 			type: method.ContainingSymbol.ToDisplayString ().Trim (), // we want the full name
 			name: method.Name,
-			returnType: new TypeInfo (method.ReturnType, context.Compilation),
+			returnType: new TypeInfo (method.ReturnType, context),
 			symbolAvailability: method.GetSupportedPlatforms (),
 			exportMethodData: exportData,
 			attributes: attributes,
@@ -187,6 +197,7 @@ readonly partial struct Method {
 			parameters: parametersBucket.ToImmutableArray ()) {
 			BindAs = method.GetBindFromData (),
 			ForcedType = method.GetForceTypeData (),
+			Location = declaration.GetLocation (),
 		};
 
 		return true;
@@ -271,6 +282,20 @@ readonly partial struct Method {
 				.. Modifiers.Where (m =>
 					!m.IsKind (SyntaxKind.PartialKeyword) &&
 					!m.IsKind (SyntaxKind.VirtualKeyword)),
+			]
+		};
+	}
+
+	/// <summary>
+	/// Creates a new method instance with the specified modifiers.
+	/// </summary>
+	/// <param name="newModifiers">The new modifiers for the method.</param>
+	/// <returns>A new <see cref="Method"/> instance with the specified modifiers.</returns>
+	public Method WithModifiers (params SyntaxKind [] newModifiers)
+	{
+		return this with {
+			Modifiers = [
+				.. newModifiers.Select (m => Token (m).WithTrailingTrivia (Space))
 			]
 		};
 	}

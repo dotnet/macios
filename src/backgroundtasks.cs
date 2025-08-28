@@ -125,8 +125,7 @@ namespace BackgroundTasks {
 
 	[NoTV, NoMacCatalyst, NoMac, iOS (26, 0)]
 	[BaseType (typeof (BGTask))]
-	interface BGContinuedProcessingTask : NSProgressReporting
-	{
+	interface BGContinuedProcessingTask : NSProgressReporting {
 		[Export ("title")]
 		string Title { get; }
 
@@ -139,8 +138,7 @@ namespace BackgroundTasks {
 
 	[NoTV, NoMacCatalyst, NoMac, iOS (26, 0)]
 	[BaseType (typeof (BGTaskRequest))]
-	interface BGContinuedProcessingTaskRequest
-	{
+	interface BGContinuedProcessingTaskRequest {
 		[Export ("title")]
 		string Title { get; set; }
 
@@ -159,8 +157,7 @@ namespace BackgroundTasks {
 
 	[NoTV, NoMacCatalyst, NoMac, iOS (26, 0)]
 	[Native]
-	public enum BGContinuedProcessingTaskRequestSubmissionStrategy : long
-	{
+	public enum BGContinuedProcessingTaskRequestSubmissionStrategy : long {
 		Fail,
 		Queue,
 	}
@@ -168,8 +165,7 @@ namespace BackgroundTasks {
 	[NoTV, NoMacCatalyst, NoMac, iOS (26, 0)]
 	[Native]
 	[Flags]
-	public enum BGContinuedProcessingTaskRequestResources : long
-	{
+	public enum BGContinuedProcessingTaskRequestResources : long {
 		Default = 0x0,
 		Gpu = (1L << 0),
 	}

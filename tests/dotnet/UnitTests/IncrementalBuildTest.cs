@@ -204,7 +204,7 @@ class MainClass {
 			Configuration.IgnoreIfNotOnWindows ();
 			CodeChangeSkipsTargetsImpl (platform, runtimeIdentifiers, interpreterEnabled);
 		}
-		
+
 		void CodeChangeSkipsTargetsImpl (ApplePlatform platform, string runtimeIdentifiers, bool interpreterEnabled)
 		{
 			var project = "IncrementalTestApp";
@@ -227,7 +227,7 @@ class MainClass {
 			AssertTargetExecuted (allTargets, "_LinkNativeExecutable", "A");
 
 			// Make a code change
- 			properties ["AdditionalDefineConstants"] = "INCLUDED_ADDITIONAL_CODE"; 
+			properties ["AdditionalDefineConstants"] = "INCLUDED_ADDITIONAL_CODE";
 
 			// Build again after modifying the helper C# file
 			rv = DotNet.AssertBuild (project_path, properties);

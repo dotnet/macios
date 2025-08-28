@@ -105,15 +105,15 @@ namespace TouchController {
 
 		[Abstract]
 		[Export ("handleTouchBeganAtPoint:")]
-		void HandleTouchBeganAtPoint (CGPoint point);
+		void HandleTouchBegan (CGPoint point);
 
 		[Abstract]
 		[Export ("handleTouchMovedAtPoint:")]
-		void HandleTouchMovedAtPoint (CGPoint point);
+		void HandleTouchMoved (CGPoint point);
 
 		[Abstract]
 		[Export ("handleTouchEndedAtPoint:")]
-		void HandleTouchEndedAtPoint (CGPoint point);
+		void HandleTouchEnded (CGPoint point);
 
 		[Export ("highlightDuration")]
 		double HighlightDuration { get; set; }
@@ -615,7 +615,7 @@ namespace TouchController {
 		bool HandleTouchEnded (CGPoint point, nint index);
 
 		[Export ("renderUsingRenderCommandEncoder:")]
-		void RenderUsingRenderCommandEncoder (IMTLRenderCommandEncoder encoder);
+		void Render (IMTLRenderCommandEncoder encoder);
 
 		[Export ("connected")]
 		bool Connected { [Bind ("isConnected")] get; }

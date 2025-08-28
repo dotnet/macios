@@ -3962,10 +3962,9 @@ namespace CoreAnimation {
 	}
 
 	[NoiOS, NoTV]
-	[MacCatalyst (13,1)]
+	[MacCatalyst (13, 1)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
-	interface CALayoutManager
-	{
+	interface CALayoutManager {
 		[Export ("preferredSizeOfLayer:")]
 		CGSize GetPreferredSize (CALayer layer);
 
@@ -3979,8 +3978,7 @@ namespace CoreAnimation {
 	[NoTV, NoiOS, MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface CARemoteLayerClient
-	{
+	interface CARemoteLayerClient {
 		[Export ("initWithServerPort:")]
 		NativeHandle Constructor (uint port);
 
@@ -3997,8 +3995,7 @@ namespace CoreAnimation {
 	[NoTV, NoiOS, MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface CARemoteLayerServer
-	{
+	interface CARemoteLayerServer {
 		[Static]
 		[Export ("sharedServer")]
 		CARemoteLayerServer SharedServer { get; }

@@ -14,14 +14,14 @@ using UIKit;
 
 namespace TouchController {
 
-	[NoMacCatalyst, iOS (26,0)]
+	[NoMacCatalyst, iOS (26, 0)]
 	[Native]
 	public enum TCThrottleOrientation : long {
 		Vertical,
 		Horizontal,
 	}
 
-	[NoMacCatalyst, iOS (26,0)]
+	[NoMacCatalyst, iOS (26, 0)]
 	[Native]
 	public enum TCColliderShape : long {
 		Circle,
@@ -30,14 +30,14 @@ namespace TouchController {
 		RightSide,
 	}
 
-	[NoMacCatalyst, iOS (26,0)]
+	[NoMacCatalyst, iOS (26, 0)]
 	[Native]
 	public enum TCControlContentsButtonShape : long {
 		Circle,
 		Rect,
 	}
 
-	[NoMacCatalyst, iOS (26,0)]
+	[NoMacCatalyst, iOS (26, 0)]
 	[Native]
 	public enum TCControlContentsDpadDirection : long {
 		Up,
@@ -46,21 +46,21 @@ namespace TouchController {
 		Right,
 	}
 
-	[NoMacCatalyst, iOS (26,0)]
+	[NoMacCatalyst, iOS (26, 0)]
 	[Native]
 	public enum TCControlContentsDpadElementStyle : long {
 		Circle,
 		Pentagon,
 	}
 
-	[NoMacCatalyst, iOS (26,0)]
+	[NoMacCatalyst, iOS (26, 0)]
 	[Native]
 	public enum TCControlLabelRole : long {
 		Button,
 		DirectionPad,
 	}
 
-	[NoMacCatalyst, iOS (26,0)]
+	[NoMacCatalyst, iOS (26, 0)]
 	[Native]
 	public enum TCControlLayoutAnchor : long {
 		TopLeft,
@@ -74,7 +74,7 @@ namespace TouchController {
 		BottomRight,
 	}
 
-	[NoMacCatalyst, iOS (26,0)]
+	[NoMacCatalyst, iOS (26, 0)]
 	[Native]
 	public enum TCControlLayoutAnchorCoordinateSystem : long {
 		Relative,
@@ -83,7 +83,7 @@ namespace TouchController {
 
 	interface ITCControl { }
 
-	[NoMacCatalyst, iOS (26,0)]
+	[NoMacCatalyst, iOS (26, 0)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
 	interface TCControl : TCControlLayout {
 
@@ -121,7 +121,7 @@ namespace TouchController {
 
 	interface ITCControlLayout { }
 
-	[NoMacCatalyst, iOS (26,0)]
+	[NoMacCatalyst, iOS (26, 0)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
 	interface TCControlLayout {
 
@@ -150,10 +150,10 @@ namespace TouchController {
 		CGPoint Position { get; }
 	}
 
-	[NoMacCatalyst, iOS (26,0)]
+	[NoMacCatalyst, iOS (26, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface TCButton : TCControl, TCControlLayout{
+	interface TCButton : TCControl, TCControlLayout {
 
 		[NullAllowed, Export ("contents", ArgumentSemantic.Strong)]
 		TCControlContents Contents { get; set; }
@@ -165,7 +165,7 @@ namespace TouchController {
 		new TCColliderShape ColliderShape { get; }
 	}
 
-	[NoMacCatalyst, iOS (26,0)]
+	[NoMacCatalyst, iOS (26, 0)]
 	[BaseType (typeof (NSObject))]
 	interface TCButtonDescriptor {
 
@@ -197,7 +197,7 @@ namespace TouchController {
 		double HighlightDuration { get; set; }
 	}
 
-	[NoMacCatalyst, iOS (26,0)]
+	[NoMacCatalyst, iOS (26, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface TCControlLabel {
@@ -272,7 +272,7 @@ namespace TouchController {
 		TCControlLabelRole Role { get; }
 	}
 
-	[NoMacCatalyst, iOS (26,0)]
+	[NoMacCatalyst, iOS (26, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface TCDirectionPad : TCControl, TCControlLayout {
@@ -320,7 +320,7 @@ namespace TouchController {
 		bool MutuallyExclusiveInput { [Bind ("inputIsMutuallyExclusive")] get; set; }
 	}
 
-	[NoMacCatalyst, iOS (26,0)]
+	[NoMacCatalyst, iOS (26, 0)]
 	[BaseType (typeof (NSObject))]
 	interface TCDirectionPadDescriptor {
 
@@ -382,7 +382,7 @@ namespace TouchController {
 		bool MutuallyExclusiveInput { [Bind ("inputIsMutuallyExclusive")] get; set; }
 	}
 
-	[NoMacCatalyst, iOS (26,0)]
+	[NoMacCatalyst, iOS (26, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface TCThrottle : TCControl, TCControlLayout {
@@ -415,7 +415,7 @@ namespace TouchController {
 		new double HighlightDuration { get; set; }
 	}
 
-	[NoMacCatalyst, iOS (26,0)]
+	[NoMacCatalyst, iOS (26, 0)]
 	[BaseType (typeof (NSObject))]
 	interface TCThrottleDescriptor {
 
@@ -465,7 +465,7 @@ namespace TouchController {
 		double HighlightDuration { get; set; }
 	}
 
-	[NoMacCatalyst, iOS (26,0)]
+	[NoMacCatalyst, iOS (26, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface TCThumbstick : TCControl, TCControlLayout {
@@ -489,7 +489,7 @@ namespace TouchController {
 		new double HighlightDuration { get; set; }
 	}
 
-	[NoMacCatalyst, iOS (26,0)]
+	[NoMacCatalyst, iOS (26, 0)]
 	[BaseType (typeof (NSObject))]
 	interface TCThumbstickDescriptor {
 
@@ -530,7 +530,7 @@ namespace TouchController {
 		double HighlightDuration { get; set; }
 	}
 
-	[NoMacCatalyst, iOS (26,0)]
+	[NoMacCatalyst, iOS (26, 0)]
 	[BaseType (typeof (NSObject))]
 	interface TCTouchController {
 
@@ -630,7 +630,7 @@ namespace TouchController {
 		GCController Controller { get; }
 	}
 
-	[NoMacCatalyst, iOS (26,0)]
+	[NoMacCatalyst, iOS (26, 0)]
 	[BaseType (typeof (NSObject))]
 	[DesignatedDefaultCtor]
 	interface TCTouchControllerDescriptor {
@@ -660,7 +660,7 @@ namespace TouchController {
 		NativeHandle Constructor (MTKView mtkView);
 	}
 
-	[NoMacCatalyst, iOS (26,0)]
+	[NoMacCatalyst, iOS (26, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface TCTouchpad : TCControl, TCControlLayout {
@@ -678,8 +678,8 @@ namespace TouchController {
 		bool ReportsRelativeValues { get; set; }
 	}
 
-	[NoMacCatalyst, iOS (26,0)]
-	[BaseType (typeof(NSObject))]
+	[NoMacCatalyst, iOS (26, 0)]
+	[BaseType (typeof (NSObject))]
 	interface TCTouchpadDescriptor {
 
 		[Export ("label", ArgumentSemantic.Strong)]
@@ -713,11 +713,11 @@ namespace TouchController {
 		bool ReportsRelativeValues { get; set; }
 	}
 
-	[NoMacCatalyst, iOS (26,0)]
+	[NoMacCatalyst, iOS (26, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface TCControlContents {
-		
+
 		[Static]
 		[Export ("contentsWithImages:")]
 		TCControlContents CreateContents (TCControlImage [] images);
@@ -754,7 +754,7 @@ namespace TouchController {
 		TCControlImage [] Images { get; }
 	}
 
-	[NoMacCatalyst, iOS (26,0)]
+	[NoMacCatalyst, iOS (26, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface TCControlImage {
@@ -788,7 +788,7 @@ namespace TouchController {
 		CGColor TintColor { get; set; }
 	}
 
-	[NoMacCatalyst, iOS (26,0)]
+	[NoMacCatalyst, iOS (26, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface TCSwitch : TCControl, TCControlLayout {
@@ -809,7 +809,7 @@ namespace TouchController {
 		new TCColliderShape ColliderShape { get; }
 	}
 
-	[NoMacCatalyst, iOS (26,0)]
+	[NoMacCatalyst, iOS (26, 0)]
 	[BaseType (typeof (NSObject))]
 	interface TCSwitchDescriptor {
 

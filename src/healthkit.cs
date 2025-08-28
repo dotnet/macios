@@ -6366,8 +6366,7 @@ namespace HealthKit {
 	[MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface HKClinicalCoding : NSCopying, NSSecureCoding
-	{
+	interface HKClinicalCoding : NSCopying, NSSecureCoding {
 		[Export ("system")]
 		string System { get; }
 
@@ -6382,8 +6381,7 @@ namespace HealthKit {
 	}
 
 	[MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
-	enum HKHealthConceptDomain
-	{
+	enum HKHealthConceptDomain {
 		[Field ("HKHealthConceptDomainMedication")]
 		Medication,
 	}
@@ -6391,8 +6389,7 @@ namespace HealthKit {
 	[MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface HKHealthConceptIdentifier : NSSecureCoding, NSCopying
-	{
+	interface HKHealthConceptIdentifier : NSSecureCoding, NSCopying {
 		[Export ("domain")]
 		NSString WeakDomain { get; }
 
@@ -6401,8 +6398,7 @@ namespace HealthKit {
 	}
 
 	[MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
-	enum HKMedicationGeneralForm
-	{
+	enum HKMedicationGeneralForm {
 		[Field ("HKMedicationGeneralFormCapsule")]
 		Capsule,
 
@@ -6461,8 +6457,7 @@ namespace HealthKit {
 	[MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface HKMedicationConcept : NSSecureCoding, NSCopying
-	{
+	interface HKMedicationConcept : NSSecureCoding, NSCopying {
 		[Export ("identifier", ArgumentSemantic.Copy)]
 		HKHealthConceptIdentifier Identifier { get; }
 
@@ -6481,8 +6476,7 @@ namespace HealthKit {
 
 	[MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
 	[Native]
-	public enum HKMedicationDoseEventLogStatus : long
-	{
+	public enum HKMedicationDoseEventLogStatus : long {
 		NotInteracted = 1,
 		NotificationNotSent,
 		Snoozed,
@@ -6493,8 +6487,7 @@ namespace HealthKit {
 
 	[MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
 	[Native]
-	public enum HKMedicationDoseEventScheduleType : long
-	{
+	public enum HKMedicationDoseEventScheduleType : long {
 		AsNeeded = 1,
 		Schedule,
 	}
@@ -6502,8 +6495,7 @@ namespace HealthKit {
 	[MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
 	[BaseType (typeof (HKSample))]
 	[DisableDefaultCtor]
-	interface HKMedicationDoseEvent : NSSecureCoding, NSCopying
-	{
+	interface HKMedicationDoseEvent : NSSecureCoding, NSCopying {
 		[Export ("medicationDoseEventType", ArgumentSemantic.Copy)]
 		HKMedicationDoseEventType MedicationDoseEventType { get; }
 
@@ -6537,8 +6529,7 @@ namespace HealthKit {
 	[MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface HKUserAnnotatedMedication : NSSecureCoding, NSCopying
-	{
+	interface HKUserAnnotatedMedication : NSSecureCoding, NSCopying {
 		[NullAllowed, Export ("nickname")]
 		string Nickname { get; }
 
@@ -6553,8 +6544,7 @@ namespace HealthKit {
 	}
 
 	[MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
-	enum HKUserAnnotatedMedicationPredicateKeyPath
-	{
+	enum HKUserAnnotatedMedicationPredicateKeyPath {
 		[Field ("HKUserAnnotatedMedicationPredicateKeyPathIsArchived")]
 		IsArchived,
 
@@ -6565,8 +6555,7 @@ namespace HealthKit {
 	[MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
 	[BaseType (typeof (HKQuery))]
 	[DisableDefaultCtor]
-	interface HKUserAnnotatedMedicationQuery
-	{
+	interface HKUserAnnotatedMedicationQuery {
 		[Export ("initWithPredicate:limit:resultsHandler:")]
 		NativeHandle Constructor ([NullAllowed] NSPredicate predicate, nuint limit, HKUserAnnotatedMedicationQueryCallback resultsHandler);
 	}

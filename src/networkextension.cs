@@ -2644,8 +2644,8 @@ namespace NetworkExtension {
 
 		[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
 		[Export ("postQuantumKeyExchangeMethods", ArgumentSemantic.Copy)]
-		[BindAs (typeof (NEVpnIkev2PostQuantumKeyExchangeMethod[]))]
-		NSNumber[] PostQuantumKeyExchangeMethods { get; set; }
+		[BindAs (typeof (NEVpnIkev2PostQuantumKeyExchangeMethod []))]
+		NSNumber [] PostQuantumKeyExchangeMethods { get; set; }
 	}
 
 	/// <summary>IKEv2 protocol information for VPN connections</summary>
@@ -4727,7 +4727,7 @@ namespace NetworkExtension {
 		[Export ("start")]
 		void Start ();
 
-		[MacCatalyst (26, 0), NoTV, NoMac, iOS (26,0)]
+		[MacCatalyst (26, 0), NoTV, NoMac, iOS (26, 0)]
 		[Export ("unmatchEthernet")]
 		void UnmatchEthernet ();
 	}
@@ -4988,8 +4988,7 @@ namespace NetworkExtension {
 	[MacCatalyst (26, 0), NoTV, Mac (26, 0), iOS (26, 0)]
 	[Native]
 	[NativeName ("NEURLFilterVerdict")]
-	public enum NEUrlFilterVerdict : long
-	{
+	public enum NEUrlFilterVerdict : long {
 		Unknown = 1,
 		Allow = 2,
 		Deny = 3,
@@ -4998,8 +4997,7 @@ namespace NetworkExtension {
 	[MacCatalyst (26, 0), NoTV, Mac (26, 0), iOS (26, 0)]
 	[BaseType (typeof (NSObject), Name = "NEURLFilter")]
 	[DisableDefaultCtor]
-	interface NEUrlFilter
-	{
+	interface NEUrlFilter {
 		[Async]
 		[Static]
 		[Export ("verdictForURL:completionHandler:")]
@@ -5009,8 +5007,7 @@ namespace NetworkExtension {
 	[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
 	[Native]
 	[NativeName ("NEVPNIKEv2PostQuantumKeyExchangeMethod")]
-	public enum NEVpnIkev2PostQuantumKeyExchangeMethod : long
-	{
+	public enum NEVpnIkev2PostQuantumKeyExchangeMethod : long {
 		None = 0,
 		Method36 = 36,
 		Method37 = 37

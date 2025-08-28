@@ -192,6 +192,21 @@ class MainClass {
 		[TestCase (ApplePlatform.iOS, "iossimulator-arm64", false)]
 		public void CodeChangeSkipsTargets (ApplePlatform platform, string runtimeIdentifiers, bool interpreterEnabled)
 		{
+			CodeChangeSkipsTargetsImpl (platform, runtimeIdentifiers, interpreterEnabled);
+		}
+
+		[Test]
+		[Category ("RemoteWindows")]
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64", true)]
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64", false)]
+		public void CodeChangeSkipsTargetsOnRemoteWindows (ApplePlatform platform, string runtimeIdentifiers, bool interpreterEnabled)
+		{
+			Configuration.IgnoreIfNotOnWindows ();
+			CodeChangeSkipsTargetsImpl (platform, runtimeIdentifiers, interpreterEnabled);
+		}
+		
+		void CodeChangeSkipsTargetsImpl (ApplePlatform platform, string runtimeIdentifiers, bool interpreterEnabled)
+		{
 			var project = "IncrementalTestApp";
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);

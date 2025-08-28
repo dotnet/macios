@@ -2190,6 +2190,7 @@ IOS_FRAMEWORKS =         \
 	Speech \
 	SystemConfiguration \
 	ThreadNetwork \
+	TouchController \
 	Twitter \
 	UIKit XKit \
 	UserNotifications \

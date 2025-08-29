@@ -238,6 +238,9 @@ class MainClass {
 			if (interpreterEnabled) {
 				AssertTargetNotExecuted (allTargets, "_CompileNativeExecutable", "B");
 				AssertTargetNotExecuted (allTargets, "_LinkNativeExecutable", "B");
+			} else {
+				AssertTargetExecuted (allTargets, "_CompileNativeExecutable", "B");
+				AssertTargetExecuted (allTargets, "_LinkNativeExecutable", "B");
 			}
 		}
 	}

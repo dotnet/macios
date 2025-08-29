@@ -1377,33 +1377,33 @@ namespace CoreImage {
 	public enum CIRawDecoderVersion : long {
 
 		[Field ("CIRAWDecoderVersionNone")]
-		VersionNone,
+		VersionNone = 0,
 
 		[iOS (26, 0), MacCatalyst (26, 0), TV (26, 0), Mac (26, 0)]
 		[Field ("CIRAWDecoderVersion9")]
-		Version9,
+		Version9 = 7,
 
 		[iOS (26, 0), MacCatalyst (26, 0), TV (26, 0), Mac (26, 0)]
 		[Field ("CIRAWDecoderVersion9DNG")]
-		Version9Dng,
+		Version9Dng = 8,
 
 		[Field ("CIRAWDecoderVersion8")]
-		Version8,
+		Version8 = 1,
 
 		[Field ("CIRAWDecoderVersion8DNG")]
-		Version8Dng,
+		Version8Dng = 2,
 
 		[Field ("CIRAWDecoderVersion7")]
-		Version7,
+		Version7 = 3,
 
 		[Field ("CIRAWDecoderVersion7DNG")]
-		Version7Dng,
+		Version7Dng = 4,
 
 		[Field ("CIRAWDecoderVersion6")]
-		Version6,
+		Version6 = 5,
 
 		[Field ("CIRAWDecoderVersion6DNG")]
-		Version6Dng,
+		Version6Dng = 5,
 	}
 
 	[iOS (15, 0), MacCatalyst (15, 0), TV (15, 0)]

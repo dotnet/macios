@@ -77,6 +77,12 @@ namespace Introspection {
 			// These concrete (wrapper) subclasses do not implement all of those optional members, but we
 			// still need to provide a binding for them, so that user subclasses can implement those members.
 			switch (type.Name) {
+			case "CALayer":
+				switch (selectorName) {
+				case "layerWithRemoteClientId:": // defined in a category
+					return true;
+				}
+				break;
 			case "AVCaptureDevice":
 				switch (selectorName) {
 				case "cinematicVideoCaptureSceneMonitoringStatuses": // works in Xcode

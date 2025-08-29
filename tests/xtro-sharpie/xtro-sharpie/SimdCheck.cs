@@ -117,7 +117,8 @@ namespace Extrospection {
 				return; // Extension methods can't be mapped.
 
 			var invalid_simd_type = false;
-			var contains_simd_types = ContainsSimdTypes (method, ref invalid_simd_type);
+			var only_return_type_is_simd = true;
+			var contains_simd_types = ContainsSimdTypes (method, ref invalid_simd_type, ref only_return_type_is_simd);
 
 			var key = method.GetName ();
 			if (key is null) {
@@ -147,15 +148,17 @@ namespace Extrospection {
 			}
 		}
 
-		bool ContainsSimdTypes (MethodDefinition method, ref bool invalid_for_simd)
+		bool ContainsSimdTypes (MethodDefinition method, ref bool invalid_for_simd, ref bool only_return_type_is_simd)
 		{
 			if (IsSimdType (method.ReturnType, ref invalid_for_simd))
 				return true;
 
 			if (method.HasParameters) {
 				foreach (var param in method.Parameters)
-					if (IsSimdType (param.ParameterType, ref invalid_for_simd))
+					if (IsSimdType (param.ParameterType, ref invalid_for_simd)) {
+						only_return_type_is_simd = false;
 						return true;
+					}
 			}
 
 			return false;
@@ -166,14 +169,18 @@ namespace Extrospection {
 			return managed_simd_types.TryGetValue (td.Name, out invalid_for_simd);
 		}
 
-		bool ContainsSimdTypes (ObjCMethodDecl decl, ref string simd_type, ref bool requires_marshal_directive)
+		bool ContainsSimdTypes (ObjCMethodDecl decl, ref string simd_type, ref bool requires_marshal_directive, ref bool only_return_type_is_simd)
 		{
 			if (IsSimdType (decl, decl.ReturnQualType, ref simd_type, ref requires_marshal_directive))
 				return true;
 
 			var is_simd_type = false;
-			foreach (var param in decl.Parameters)
-				is_simd_type |= IsSimdType (decl, param.QualType, ref simd_type, ref requires_marshal_directive);
+			foreach (var param in decl.Parameters) {
+				if (!IsSimdType (decl, param.QualType, ref simd_type, ref requires_marshal_directive))
+					continue;
+				is_simd_type = true;
+				only_return_type_is_simd = false;
+			}
 
 			return is_simd_type;
 		}
@@ -286,12 +293,16 @@ namespace Extrospection {
 			return false;
 		}
 
-		void CheckMarshalDirective (MethodDefinition method, string simd_type)
+		void CheckMarshalDirective (MethodDefinition method, string simd_type, bool only_return_type_is_simd)
 		{
 			if (!method.HasBody)
 				return;
 
 			if (method.IsObsolete ())
+				return;
+
+			// In some cases we've bound return types as IntPtr, and then we marshal manually. Assuming this is OK.
+			if (only_return_type_is_simd && method.ReturnType.Namespace == "System" && method.ReturnType.Name == "IntPtr")
 				return;
 
 			// The [MarshalDirective] attribute isn't copied to the generated code,
@@ -342,7 +353,8 @@ namespace Extrospection {
 
 			var simd_type = string.Empty;
 			var requires_marshal_directive = false;
-			var native_simd = ContainsSimdTypes (decl, ref simd_type, ref requires_marshal_directive);
+			var only_return_type_is_simd = true;
+			var native_simd = ContainsSimdTypes (decl, ref simd_type, ref requires_marshal_directive, ref only_return_type_is_simd);
 
 			ManagedSimdInfo info;
 			managed_methods.TryGetValue (decl.GetName (), out info);
@@ -391,7 +403,7 @@ namespace Extrospection {
 			if (!info.ContainsInvalidMappingForSimd) {
 				// The managed method does not have any types that are incorrect for Simd.
 				if (requires_marshal_directive)
-					CheckMarshalDirective (method, simd_type);
+					CheckMarshalDirective (method, simd_type, only_return_type_is_simd);
 				return;
 			}
 
@@ -401,7 +413,7 @@ namespace Extrospection {
 			}
 
 			if (requires_marshal_directive)
-				CheckMarshalDirective (method, simd_type);
+				CheckMarshalDirective (method, simd_type, only_return_type_is_simd);
 
 			// We have a potentially broken managed method. This needs fixing/investigation.
 			Log.On (framework).Add ($"!unknown-simd-type-in-signature! {method}: the native signature has a simd type ({simd_type}), while the corresponding managed method is using an incorrect (non-simd) type.");

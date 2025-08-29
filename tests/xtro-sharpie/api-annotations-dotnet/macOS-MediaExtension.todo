@@ -1,3 +1,0 @@
-!missing-protocol-member! MERAWProcessor::metadataForSidecarFile not found
-!missing-selector! MEFileInfo::setSidecarFileName: not bound
-!missing-selector! MEFileInfo::sidecarFileName not bound

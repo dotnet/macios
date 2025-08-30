@@ -237,19 +237,25 @@
       </Item>
       <Item ItemId=";RBI0008MessageFormat" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The enum value '{0}' must be tagged with a Field<EnumValue> attribute]]></Val>
+          <Val><![CDATA[The enum '{0}' must have at least one member tagged with a Field<EnumValue> attribute]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[列挙値 '{0}' は Field<EnumValue> 属性でタグ付けする必要があります]]></Val>
+            <Val><![CDATA[列挙型 '{0}' には、Field<EnumValue> 属性でタグ付けされたメンバーが少なくとも 1 つ必要です]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The enum value '{0}' must be tagged with a Field<EnumValue> attribute]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";RBI0008Title" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Smart enum values must be tagged with an Field<EnumValue> attribute]]></Val>
+          <Val><![CDATA[Smart enum values must have a value tagged with an Field<EnumValue> attribute]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[スマート列挙値には、Field<EnumValue> 属性でタグ付けする必要があります]]></Val>
+            <Val><![CDATA[スマート列挙値には、Field<EnumValue> 属性でタグ付けされた値が必要です]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Smart enum values must be tagged with an Field<EnumValue> attribute]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -735,6 +741,33 @@
           <Val><![CDATA[Bad method name]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[メソッド名]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";RBI0027Description" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The symbol is accessible in a platform where it is not supported..]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[このシンボルは、これがサポートされていないプラットフォーム上でアクセス可能になっています。]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";RBI0027MessageFormat" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The symbol '{0}' is accessible on platform '{1}' when it was marked otherwise]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[シンボル '{0}' は、プラットフォーム '{1}' 上でアクセス可能ですが、そうではないマークが付けられています]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";RBI0027Title" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Bad method name]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[不適切なメソッド名]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

@@ -114,6 +114,7 @@ namespace VideoToolbox {
 
 		/// <summary>Provide a callback that will be called when the VTRawProcessingPlugin changes the set of processing parameters.</summary>
 		/// <param name="handler">The callback that will be called. Set to null to remove the current handler.</param>
+		[BindingImpl (BindingImplOptions.Optimizable)]
 		public unsafe VTStatus SetParameterChangedHandler (VTRawProcessingParameterChangeHandler? handler)
 		{
 			if (handler is null) {
@@ -147,6 +148,7 @@ namespace VideoToolbox {
 		/// <param name="inputPixelBuffer">The input video frame to process.</param>
 		/// <param name="frameOptions">An optional dictionary of options.</param>
 		/// <param name="handler">The callback that will be called when processing is complete.</param>
+		[BindingImpl (BindingImplOptions.Optimizable)]
 		public unsafe VTStatus ProcessFrame (CVPixelBuffer inputPixelBuffer, NSDictionary? frameOptions, VTRawProcessingOutputHandler handler)
 		{
 			delegate* unmanaged<IntPtr, VTStatus, IntPtr, void> trampoline = &VTRawProcessingOutputHandlerCallback;

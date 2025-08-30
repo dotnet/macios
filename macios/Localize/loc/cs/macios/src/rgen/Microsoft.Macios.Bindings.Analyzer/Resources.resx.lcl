@@ -237,19 +237,25 @@
       </Item>
       <Item ItemId=";RBI0008MessageFormat" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The enum value '{0}' must be tagged with a Field<EnumValue> attribute]]></Val>
+          <Val><![CDATA[The enum '{0}' must have at least one member tagged with a Field<EnumValue> attribute]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Hodnota výčtu {0} musí být označena atributem Field<EnumValue>]]></Val>
+            <Val><![CDATA[Výčet {0} musí mít alespoň jeden člen označený atributem Field<EnumValue>]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The enum value '{0}' must be tagged with a Field<EnumValue> attribute]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";RBI0008Title" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Smart enum values must be tagged with an Field<EnumValue> attribute]]></Val>
+          <Val><![CDATA[Smart enum values must have a value tagged with an Field<EnumValue> attribute]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Hodnoty inteligentního výčtu musí být označené atributem Field<EnumValue>]]></Val>
+            <Val><![CDATA[Hodnoty inteligentního výčtu musí mít hodnotu označenou atributem Field<EnumValue>]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Smart enum values must be tagged with an Field<EnumValue> attribute]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -731,6 +737,33 @@
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";RBI0026Title" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Bad method name]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Chybný název metody]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";RBI0027Description" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The symbol is accessible in a platform where it is not supported..]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Symbol je přístupný na platformě, kde se nepodporuje.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";RBI0027MessageFormat" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The symbol '{0}' is accessible on platform '{1}' when it was marked otherwise]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Symbol {0} je přístupný na platformě {1}, pokud byl označen jinak.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";RBI0027Title" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Bad method name]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">

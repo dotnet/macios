@@ -463,6 +463,7 @@ namespace Security {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
+		[BindingImpl (BindingImplOptions.Optimizable)]
 		public void SetChallengeBlock (SecProtocolChallenge challenge, DispatchQueue queue)
 		{
 			unsafe {
@@ -487,6 +488,7 @@ namespace Security {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
+		[BindingImpl (BindingImplOptions.Optimizable)]
 		public void SetVerifyBlock (SecProtocolVerify verify, DispatchQueue queue)
 		{
 			unsafe {
@@ -511,6 +513,7 @@ namespace Security {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
+		[BindingImpl (BindingImplOptions.Optimizable)]
 		public void SetPreSharedKeySelectionBlock (SecProtocolPreSharedKeySelection selection, DispatchQueue queue)
 		{
 			unsafe {

@@ -401,6 +401,6 @@ namespace MonoTouchFixtures.Foundation {
 			});
 		}
 
-		struct EmptyValueType {}
+		struct EmptyValueType { }
 	}
 }

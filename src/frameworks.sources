@@ -522,7 +522,10 @@ COREGRAPHICS_SOURCES = \
 	CoreGraphics/CGPDFStream.cs \
 	CoreGraphics/CGPDFString.cs \
 	CoreGraphics/CGPdfTagType.cs \
+	CoreGraphics/CGPointDictionary.cs \
+	CoreGraphics/CGRectDictionary.cs \
 	CoreGraphics/CGSession.cs \
+	CoreGraphics/CGSizeDictionary.cs \
 	CoreGraphics/CGShading.cs \
 	CoreGraphics/NativeDrawingMethods.cs \
 	CoreGraphics/NSValue.cs \

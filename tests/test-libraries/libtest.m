@@ -9,6 +9,68 @@
 
 NSString *x_GlobalString = @"There's nothing cruvus here!";
 
+// Strong enum
+NSString *StrongEnumA = @"A";
+NSString *StrongEnumB = @"B";
+NSString *StrongEnumC = @"C";
+
+// Strong dictionary keys
+
+// simple types
+NSString *StrongDictionarySByteField = @"StrongDictionarySByteField";
+NSString *StrongDictionaryInt16Field = @"StrongDictionaryInt16Field";
+NSString *StrongDictionaryInt32Field = @"StrongDictionaryInt32Field";
+NSString *StrongDictionaryInt64Field = @"StrongDictionaryInt64Field";
+NSString *StrongDictionaryByteField = @"StrongDictionaryByteField";
+NSString *StrongDictionaryUInt16Field = @"StrongDictionaryUInt16Field";
+NSString *StrongDictionaryUInt32Field = @"StrongDictionaryUInt32Field";
+NSString *StrongDictionaryUInt64Field = @"StrongDictionaryUInt64Field";
+NSString *StrongDictionaryNIntField = @"StrongDictionaryNIntField";
+NSString *StrongDictionaryNUIntField = @"StrongDictionaryNUIntField";
+NSString *StrongDictionarySingleField = @"StrongDictionarySingleField";
+NSString *StrongDictionaryDoubleField = @"StrongDictionaryDoubleField";
+NSString *StrongDictionaryNFloatField = @"StrongDictionaryNFloatField";
+NSString *StrongDictionaryNSObjectField = @"StrongDictionaryNSObjectField";
+NSString *StrongDictionaryBooleanField = @"StrongDictionaryBooleanField";
+NSString *StrongDictionaryNSStringField = @"StrongDictionaryNSStringField";
+NSString *StrongDictionaryNSDateField = @"StrongDictionaryNSDateField";
+NSString *StrongDictionaryNSDictionaryField = @"StrongDictionaryNSDictionaryField";
+NSString *StrongDictionaryStrongDictionaryField = @"StrongDictionaryStrongDictionaryField";
+NSString *StrongDictionaryStrongEnumField = @"StrongDictionaryStrongEnumField";
+// arrays of the above
+NSString *StrongDictionaryArrayOfSByteField = @"StrongDictionaryArrayOfSByteField";
+NSString *StrongDictionaryArrayOfInt16Field = @"StrongDictionaryArrayOfInt16Field";
+NSString *StrongDictionaryArrayOfInt32Field = @"StrongDictionaryArrayOfInt32Field";
+NSString *StrongDictionaryArrayOfInt64Field = @"StrongDictionaryArrayOfInt64Field";
+NSString *StrongDictionaryArrayOfByteField = @"StrongDictionaryArrayOfByteField";
+NSString *StrongDictionaryArrayOfUInt16Field = @"StrongDictionaryArrayOfUInt16Field";
+NSString *StrongDictionaryArrayOfUInt32Field = @"StrongDictionaryArrayOfUInt32Field";
+NSString *StrongDictionaryArrayOfUInt64Field = @"StrongDictionaryArrayOfUInt64Field";
+NSString *StrongDictionaryArrayOfNIntField = @"StrongDictionaryArrayOfNIntField";
+NSString *StrongDictionaryArrayOfNUIntField = @"StrongDictionaryArrayOfNUIntField";
+NSString *StrongDictionaryArrayOfSingleField = @"StrongDictionaryArrayOfSingleField";
+NSString *StrongDictionaryArrayOfDoubleField = @"StrongDictionaryArrayOfDoubleField";
+NSString *StrongDictionaryArrayOfNFloatField = @"StrongDictionaryArrayOfNFloatField";
+NSString *StrongDictionaryArrayOfNSObjectField = @"StrongDictionaryArrayOfNSObjectField";
+NSString *StrongDictionaryArrayOfBooleanField = @"StrongDictionaryArrayOfBooleanField";
+NSString *StrongDictionaryArrayOfNSStringField = @"StrongDictionaryArrayOfNSStringField";
+NSString *StrongDictionaryArrayOfNSDateField = @"StrongDictionaryArrayOfNSDateField";
+NSString *StrongDictionaryArrayOfNSDictionaryField = @"StrongDictionaryArrayOfNSDictionaryField";
+NSString *StrongDictionaryArrayOfStrongDictionaryField = @"StrongDictionaryArrayOfStrongDictionaryField";
+NSString *StrongDictionaryArrayOfStrongEnumField = @"StrongDictionaryArrayOfStrongEnumField";
+// other fields
+NSString *StrongDictionaryStringField = @"StrongDictionaryStringField";
+NSString *StrongDictionaryDateTimeField = @"StrongDictionaryDateTimeField";
+NSString *StrongDictionaryGenericNSDictionaryField = @"StrongDictionaryGenericNSDictionaryField";
+NSString *StrongDictionaryArrayOfStringField = @"StrongDictionaryArrayOfStringField";
+NSString *StrongDictionaryNSDataField = @"StrongDictionaryNSDataField";
+NSString *StrongDictionaryNSDataAsMatrix3Field = @"StrongDictionaryNSDataAsMatrix3Field";
+NSString *StrongDictionaryCGRectField = @"StrongDictionaryCGRectField";
+NSString *StrongDictionaryCGSizeField = @"StrongDictionaryCGSizeField";
+NSString *StrongDictionaryCGPointField = @"StrongDictionaryCGPointField";
+NSString *StrongDictionaryCMTimeField = @"StrongDictionaryCMTimeField";
+NSString *StrongDictionaryUIEdgeInsetsField = @"StrongDictionaryUIEdgeInsetsField";
+
 int
 theUltimateAnswer ()
 {

@@ -44,6 +44,12 @@ namespace BackingField {
 		G,
 	}
 
+	[BackingFieldType (typeof (NSString))]
+	enum NSStringFieldType {
+		[Field ("ZField", "__Internal")]
+		Z,
+	}
+
 	[BaseType (typeof (NSObject))]
 	interface SomeObj {
 		[Export ("nsIntegerField")]
@@ -66,5 +72,8 @@ namespace BackingField {
 
 		[Export ("uint64Field")]
 		UInt64FieldType UInt64Field { get; set; }
+
+		[Export ("nsStringField")]
+		NSStringFieldType NSStringField { get; set; }
 	}
 }

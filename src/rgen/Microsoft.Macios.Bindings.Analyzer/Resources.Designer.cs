@@ -812,5 +812,32 @@ namespace Microsoft.Macios.Bindings.Analyzer {
                 return ResourceManager.GetString("RBI0027Title", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A flag value was used on an attribute that does not support it and will be ignored..
+        /// </summary>
+        internal static string RBI0028Description {
+            get {
+                return ResourceManager.GetString("RBI0028Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The flag &apos;{0}&apos; is no supported on &apos;{1}&apos; and will be ignored.
+        /// </summary>
+        internal static string RBI0028MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0028MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ignored fflag.
+        /// </summary>
+        internal static string RBI0028Title {
+            get {
+                return ResourceManager.GetString("RBI0028Title", resourceCulture);
+            }
+        }
     }
 }

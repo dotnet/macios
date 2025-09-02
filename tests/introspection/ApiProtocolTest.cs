@@ -184,6 +184,13 @@ namespace Introspection {
 			}
 
 			switch (protocolName) {
+			case "AVRoutingPlaybackParticipant":
+				switch (type.Name) {
+				case "AVPlayer": // conformance defined in category
+				case "AVQueuePlayer": // conformance defined in category
+					return true;
+				}
+				break;
 			case "NSCopying":
 				switch (type.Name) {
 				// undocumented conformance (up to 7.0) and conformity varies between iOS versions

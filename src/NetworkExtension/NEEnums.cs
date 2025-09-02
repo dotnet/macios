@@ -61,9 +61,15 @@ namespace NetworkExtension {
 	public enum NEVpnIke2EncryptionAlgorithm : long {
 		/// <summary>To be added.</summary>
 		[NoTV]
+		[Deprecated (PlatformName.iOS, 26, 0, "Not supported anymore.")]
+		[Deprecated (PlatformName.MacOSX, 26, 0, "Not supported anymore.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, "Not supported anymore.")]
 		DES = 1,
 		/// <summary>To be added.</summary>
 		[NoTV]
+		[Deprecated (PlatformName.iOS, 26, 0, "Not supported anymore.")]
+		[Deprecated (PlatformName.MacOSX, 26, 0, "Not supported anymore.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, "Not supported anymore.")]
 		TripleDES = 2,
 		/// <summary>To be added.</summary>
 		AES128 = 3,
@@ -87,9 +93,15 @@ namespace NetworkExtension {
 	public enum NEVpnIke2IntegrityAlgorithm : long {
 		/// <summary>Indicates the SHA-1 96-bit algorithm.</summary>
 		[NoTV]
+		[Deprecated (PlatformName.iOS, 26, 0, "Not supported anymore.")]
+		[Deprecated (PlatformName.MacOSX, 26, 0, "Not supported anymore.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, "Not supported anymore.")]
 		SHA96 = 1,
 		/// <summary>Indicates the SHA-1 160-bit algorithm.</summary>
 		[NoTV]
+		[Deprecated (PlatformName.iOS, 26, 0, "Not supported anymore.")]
+		[Deprecated (PlatformName.MacOSX, 26, 0, "Not supported anymore.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, "Not supported anymore.")]
 		SHA160 = 2,
 		/// <summary>Indicates the SHA-2 256-bit algorithm.</summary>
 		SHA256 = 3,
@@ -125,12 +137,21 @@ namespace NetworkExtension {
 		Group0 = Invalid,
 		/// <summary>To be added.</summary>
 		[NoTV]
+		[Deprecated (PlatformName.iOS, 26, 0, "Groups less than 14 are not supported anymore.")]
+		[Deprecated (PlatformName.MacOSX, 26, 0, "Groups less than 14 are not supported anymore.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, "Groups less than 14 are not supported anymore.")]
 		Group1 = 1,
 		/// <summary>To be added.</summary>
 		[NoTV]
+		[Deprecated (PlatformName.iOS, 26, 0, "Groups less than 14 are not supported anymore.")]
+		[Deprecated (PlatformName.MacOSX, 26, 0, "Groups less than 14 are not supported anymore.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, "Groups less than 14 are not supported anymore.")]
 		Group2 = 2,
 		/// <summary>To be added.</summary>
 		[NoTV]
+		[Deprecated (PlatformName.iOS, 26, 0, "Groups less than 14 are not supported anymore.")]
+		[Deprecated (PlatformName.MacOSX, 26, 0, "Groups less than 14 are not supported anymore.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, "Groups less than 14 are not supported anymore.")]
 		Group5 = 5,
 		/// <summary>To be added.</summary>
 		Group14 = 14,

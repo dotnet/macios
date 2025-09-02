@@ -6348,6 +6348,8 @@ public partial class Generator : IMemberGatherer {
 						print ("return Dlfcn.GetCGSize (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name);
 					} else if (field_pi.PropertyType == TypeCache.CMTag) {
 						print ("return Dlfcn.GetStruct<CoreMedia.CMTag> (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name);
+					} else if (field_pi.PropertyType.Namespace == "Foundation" && field_pi.PropertyType.Name == "NSOperatingSystemVersion") {
+						print ("return Dlfcn.GetStruct<Foundation.NSOperatingSystemVersion> (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name);
 					} else if (field_pi.PropertyType.IsEnum) {
 						var btype = field_pi.PropertyType.GetEnumUnderlyingType ();
 						if (smartEnumTypeName is not null) {

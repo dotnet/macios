@@ -5473,6 +5473,9 @@ F:NetworkExtension.NETrafficDirection.Any
 F:NetworkExtension.NETrafficDirection.Inbound
 F:NetworkExtension.NETrafficDirection.Outbound
 F:NetworkExtension.NETunnelProviderRoutingMethod.NetworkRule
+F:NetworkExtension.NEUrlFilterVerdict.Allow
+F:NetworkExtension.NEUrlFilterVerdict.Deny
+F:NetworkExtension.NEUrlFilterVerdict.Unknown
 F:NetworkExtension.NEVpnConnectionError.AuthenticationFailed
 F:NetworkExtension.NEVpnConnectionError.ClientCertificateExpired
 F:NetworkExtension.NEVpnConnectionError.ClientCertificateInvalid
@@ -5497,6 +5500,9 @@ F:NetworkExtension.NEVpnIke2CertificateType.Rsapss
 F:NetworkExtension.NEVpnIke2DiffieHellman.Group31
 F:NetworkExtension.NEVpnIke2DiffieHellman.Group32
 F:NetworkExtension.NEVpnIke2EncryptionAlgorithm.ChaCha20Poly1305
+F:NetworkExtension.NEVpnIkev2PostQuantumKeyExchangeMethod.Method36
+F:NetworkExtension.NEVpnIkev2PostQuantumKeyExchangeMethod.Method37
+F:NetworkExtension.NEVpnIkev2PostQuantumKeyExchangeMethod.None
 F:ObjCRuntime.Dlfcn.Mode.First
 F:ObjCRuntime.Dlfcn.Mode.Global
 F:ObjCRuntime.Dlfcn.Mode.Lazy
@@ -6269,7 +6275,8 @@ F:SoundAnalysis.SNTimeDurationConstraintType.Range
 F:Speech.SFSpeechErrorCode.AudioReadFailed
 F:Speech.SFSpeechErrorCode.InternalServiceError
 F:Speech.SFSpeechErrorCode.MalformedSupplementalModel
-F:Speech.SFSpeechErrorCode.Timeout
+F:Speech.SFSpeechErrorCode.MissingParameter
+F:Speech.SFSpeechErrorCode.Timeout2
 F:Speech.SFSpeechErrorCode.UndefinedTemplateClassName
 F:StoreKit.SKAdNetworkCoarseConversionValue.High
 F:StoreKit.SKAdNetworkCoarseConversionValue.Low
@@ -7425,6 +7432,9 @@ F:UserNotifications.UNNotificationInterruptionLevel.TimeSensitive2
 F:UserNotifications.UNNotificationPresentationOptions.Banner
 F:UserNotifications.UNNotificationPresentationOptions.List
 F:VideoSubscriberAccount.VSAccountProviderAuthenticationScheme.Api
+F:VideoSubscriberAccount.VSAutoSignInAuthorization.Denied
+F:VideoSubscriberAccount.VSAutoSignInAuthorization.Granted
+F:VideoSubscriberAccount.VSAutoSignInAuthorization.NotDetermined
 F:VideoSubscriberAccount.VSErrorCode.Rejected
 F:VideoSubscriberAccount.VSErrorCode.Unsupported
 F:VideoSubscriberAccount.VSOriginatingDeviceCategory.Mobile
@@ -15381,6 +15391,7 @@ M:NetworkExtension.NEAppPushProvider.Start(System.Action{Foundation.NSError})
 M:NetworkExtension.NEAppPushProvider.StartAsync
 M:NetworkExtension.NEAppPushProvider.Stop(NetworkExtension.NEProviderStopReason,System.Action)
 M:NetworkExtension.NEAppPushProvider.StopAsync(NetworkExtension.NEProviderStopReason)
+M:NetworkExtension.NEAppPushProvider.UnmatchEthernet
 M:NetworkExtension.NEDnsProxyProvider.HandleNewUdpFlow(NetworkExtension.NEAppProxyUdpFlow,NetworkExtension.NWEndpoint)
 M:NetworkExtension.NEDnsProxyProvider.HandleNewUdpFlowWithInitialFlowEndPoint(NetworkExtension.NEAppProxyUdpFlow,Network.NWEndpoint)
 M:NetworkExtension.NEDnsSettingsManager.LoadFromPreferences(System.Action{Foundation.NSError})
@@ -15432,6 +15443,8 @@ M:NetworkExtension.NETransparentProxyManager.LoadAllFromPreferences(System.Actio
 M:NetworkExtension.NETransparentProxyManager.LoadAllFromPreferencesAsync
 M:NetworkExtension.NETunnelProviderManager.CopyAppRules
 M:NetworkExtension.NETunnelProviderManager.CreatePerAppVpn
+M:NetworkExtension.NEUrlFilter.GetVerdict(Foundation.NSUrl,System.Action{NetworkExtension.NEUrlFilterVerdict})
+M:NetworkExtension.NEUrlFilter.GetVerdictAsync(Foundation.NSUrl)
 M:NetworkExtension.NEVpnConnection.FetchLastDisconnectError(System.Action{Foundation.NSError})
 M:NetworkExtension.NEVpnConnection.FetchLastDisconnectErrorAsync
 M:NetworkExtension.NEVpnIkev2PpkConfiguration.#ctor(System.String,Foundation.NSData)
@@ -16601,6 +16614,8 @@ M:SoundAnalysis.SNTimeDurationConstraint.#ctor(CoreMedia.CMTime[])
 M:SoundAnalysis.SNTimeDurationConstraint.#ctor(CoreMedia.CMTimeRange)
 M:Speech.ISFSpeechRecognitionTaskDelegate.DidProcessAudioDuration(Speech.SFSpeechRecognitionTask,System.Double)
 M:Speech.SFAnalysisContextTag.#ctor
+M:Speech.SFSpeechLanguageModel.PrepareCustomModelAsync(Foundation.NSUrl,Speech.SFSpeechLanguageModelConfiguration,System.Boolean)
+M:Speech.SFSpeechLanguageModel.PrepareCustomModelAsync(Foundation.NSUrl,Speech.SFSpeechLanguageModelConfiguration)
 M:Speech.SFSpeechLanguageModel.PrepareCustomModelAsync(Foundation.NSUrl,System.String,Speech.SFSpeechLanguageModelConfiguration,System.Boolean)
 M:Speech.SFSpeechLanguageModel.PrepareCustomModelAsync(Foundation.NSUrl,System.String,Speech.SFSpeechLanguageModelConfiguration)
 M:Speech.SFSpeechRecognitionTaskDelegate_Extensions.DidProcessAudioDuration(Speech.ISFSpeechRecognitionTaskDelegate,Speech.SFSpeechRecognitionTask,System.Double)
@@ -18058,8 +18073,16 @@ M:VideoSubscriberAccount.VSAccountApplicationProvider.#ctor(System.String,System
 M:VideoSubscriberAccount.VSAccountManager.Dispose(System.Boolean)
 M:VideoSubscriberAccount.VSAppleSubscription.#ctor(System.String,System.String[])
 M:VideoSubscriberAccount.VSUserAccount.#ctor(VideoSubscriberAccount.VSUserAccountType,Foundation.NSUrl)
+M:VideoSubscriberAccount.VSUserAccountManager.DeleteAutoSignInToken(VideoSubscriberAccount.VSUserAccountManagerCallback)
+M:VideoSubscriberAccount.VSUserAccountManager.DeleteAutoSignInTokenAsync
+M:VideoSubscriberAccount.VSUserAccountManager.QueryAutoSignInToken(VideoSubscriberAccount.VSUserAccountManagerQueryAutoSignInTokenCallback)
+M:VideoSubscriberAccount.VSUserAccountManager.QueryAutoSignInTokenAsync
 M:VideoSubscriberAccount.VSUserAccountManager.QueryUserAccounts(VideoSubscriberAccount.VSUserAccountQueryOptions,System.Action{Foundation.NSArray{VideoSubscriberAccount.VSUserAccount},Foundation.NSError})
 M:VideoSubscriberAccount.VSUserAccountManager.QueryUserAccountsAsync(VideoSubscriberAccount.VSUserAccountQueryOptions)
+M:VideoSubscriberAccount.VSUserAccountManager.RequestAutoSignInAuthorization(VideoSubscriberAccount.VSUserAccountManagerRequestAutoSignInAuthorizationCallback)
+M:VideoSubscriberAccount.VSUserAccountManager.RequestAutoSignInAuthorizationAsync
+M:VideoSubscriberAccount.VSUserAccountManager.UpdateAutoSignInToken(System.String,VideoSubscriberAccount.VSAutoSignInTokenUpdateContext,VideoSubscriberAccount.VSUserAccountManagerCallback)
+M:VideoSubscriberAccount.VSUserAccountManager.UpdateAutoSignInTokenAsync(System.String,VideoSubscriberAccount.VSAutoSignInTokenUpdateContext)
 M:VideoSubscriberAccount.VSUserAccountManager.UpdateUserAccount(VideoSubscriberAccount.VSUserAccount,System.Action{Foundation.NSError})
 M:VideoSubscriberAccount.VSUserAccountManager.UpdateUserAccountAsync(VideoSubscriberAccount.VSUserAccount)
 M:VideoToolbox.IVTFrameProcessorConfiguration.GetMaximumDimensions``1
@@ -23837,6 +23860,7 @@ P:NetworkExtension.NEAppPushManager.Active
 P:NetworkExtension.NEAppPushManager.Delegate
 P:NetworkExtension.NEAppPushManager.Enabled
 P:NetworkExtension.NEAppPushManager.LocalizedDescription
+P:NetworkExtension.NEAppPushManager.MatchEthernet
 P:NetworkExtension.NEAppPushManager.MatchPrivateLteNetworks
 P:NetworkExtension.NEAppPushManager.MatchSsids
 P:NetworkExtension.NEAppPushManager.ProviderBundleIdentifier
@@ -23848,6 +23872,7 @@ P:NetworkExtension.NEDnsOverHttpsSettings.IdentityReference
 P:NetworkExtension.NEDnsOverHttpsSettings.ServerUrl
 P:NetworkExtension.NEDnsOverTlsSettings.IdentityReference
 P:NetworkExtension.NEDnsOverTlsSettings.ServerName
+P:NetworkExtension.NEDnsSettings.AllowFailover
 P:NetworkExtension.NEDnsSettings.DnsProtocol
 P:NetworkExtension.NEDnsSettingsManager.DnsSettings
 P:NetworkExtension.NEDnsSettingsManager.Enabled
@@ -23907,6 +23932,7 @@ P:NetworkExtension.NERelay.IdentityDataPassword
 P:NetworkExtension.NERelay.RawPublicKeys
 P:NetworkExtension.NERelay.SyntheticDnsAnswerIPv4Prefix
 P:NetworkExtension.NERelay.SyntheticDnsAnswerIPv6Prefix
+P:NetworkExtension.NERelayManager.AllowDNSFailover
 P:NetworkExtension.NERelayManager.Enabled
 P:NetworkExtension.NERelayManager.ExcludedDomains
 P:NetworkExtension.NERelayManager.ExcludedFqdns
@@ -23925,6 +23951,7 @@ P:NetworkExtension.NETunnelProviderManager.ContactsDomains
 P:NetworkExtension.NETunnelProviderManager.ExcludedDomains
 P:NetworkExtension.NETunnelProviderManager.MailDomains
 P:NetworkExtension.NETunnelProviderManager.SafariDomains
+P:NetworkExtension.NEVpnIke2SecurityAssociationParameters.PostQuantumKeyExchangeMethods
 P:NetworkExtension.NEVpnIkev2PpkConfiguration.Identifier
 P:NetworkExtension.NEVpnIkev2PpkConfiguration.IsMandatory
 P:NetworkExtension.NEVpnIkev2PpkConfiguration.KeychainReference
@@ -23935,6 +23962,7 @@ P:NetworkExtension.NEVpnProtocol.ExcludeDeviceCommunication
 P:NetworkExtension.NEVpnProtocol.ExcludeLocalNetworks
 P:NetworkExtension.NEVpnProtocol.IncludeAllNetworks
 P:NetworkExtension.NEVpnProtocol.SliceUuid
+P:NetworkExtension.NEVpnProtocolIke2.AllowPostQuantumKeyExchangeFallback
 P:NetworkExtension.NEVpnProtocolIke2.EnableFallback
 P:NetworkExtension.NEVpnProtocolIke2.Mtu
 P:NetworkExtension.NEVpnProtocolIke2.PpkConfiguration
@@ -25576,6 +25604,9 @@ P:VideoSubscriberAccount.VSAccountMetadataRequest.AccountProviderAuthenticationT
 P:VideoSubscriberAccount.VSAccountMetadataRequest.ApplicationAccountProviders
 P:VideoSubscriberAccount.VSAppleSubscription.CustomerId
 P:VideoSubscriberAccount.VSAppleSubscription.ProductCodes
+P:VideoSubscriberAccount.VSAutoSignInToken.Authorization
+P:VideoSubscriberAccount.VSAutoSignInToken.Value
+P:VideoSubscriberAccount.VSAutoSignInTokenUpdateContext.Authorization
 P:VideoSubscriberAccount.VSUserAccount.AccountProviderIdentifier
 P:VideoSubscriberAccount.VSUserAccount.AccountType
 P:VideoSubscriberAccount.VSUserAccount.AppleSubscription
@@ -28972,7 +29003,10 @@ T:NetworkExtension.NETrafficDirection
 T:NetworkExtension.NETransparentProxyManager
 T:NetworkExtension.NETransparentProxyNetworkSettings
 T:NetworkExtension.NETransparentProxyProvider
+T:NetworkExtension.NEUrlFilter
+T:NetworkExtension.NEUrlFilterVerdict
 T:NetworkExtension.NEVpnConnectionError
+T:NetworkExtension.NEVpnIkev2PostQuantumKeyExchangeMethod
 T:NetworkExtension.NEVpnIkev2PpkConfiguration
 T:NetworkExtension.NEVpnIkev2TlsVersion
 T:NotificationCenter.NCWidgetListViewController
@@ -29479,6 +29513,7 @@ T:SoundAnalysis.SNErrorCode
 T:SoundAnalysis.SNTimeDurationConstraint
 T:SoundAnalysis.SNTimeDurationConstraintType
 T:Speech.SFSpeechErrorCode
+T:Speech.SFSpeechLanguageModelPrepareCustomModelHandler
 T:Speech.SFSpeechRecognitionTaskHint
 T:SpriteKit.SKNodeEvent_NSEvent
 T:SpriteKit.SKTextureAtlasLoadCallback
@@ -29866,6 +29901,9 @@ T:VideoSubscriberAccount.VSAccountApplicationProvider
 T:VideoSubscriberAccount.VSAccountProviderAuthenticationScheme
 T:VideoSubscriberAccount.VSAccountProviderResponse
 T:VideoSubscriberAccount.VSAppleSubscription
+T:VideoSubscriberAccount.VSAutoSignInAuthorization
+T:VideoSubscriberAccount.VSAutoSignInToken
+T:VideoSubscriberAccount.VSAutoSignInTokenUpdateContext
 T:VideoSubscriberAccount.VSCheckAccessOptionKeys
 T:VideoSubscriberAccount.VSErrorInfo
 T:VideoSubscriberAccount.VSOriginatingDeviceCategory
@@ -29874,6 +29912,9 @@ T:VideoSubscriberAccount.VSSubscriptionAccessLevel
 T:VideoSubscriberAccount.VSSubscriptionRegistrationCenter
 T:VideoSubscriberAccount.VSUserAccount
 T:VideoSubscriberAccount.VSUserAccountManager
+T:VideoSubscriberAccount.VSUserAccountManagerCallback
+T:VideoSubscriberAccount.VSUserAccountManagerQueryAutoSignInTokenCallback
+T:VideoSubscriberAccount.VSUserAccountManagerRequestAutoSignInAuthorizationCallback
 T:VideoSubscriberAccount.VSUserAccountQueryOptions
 T:VideoSubscriberAccount.VSUserAccountType
 T:VideoToolbox.HdrMetadataInsertionMode

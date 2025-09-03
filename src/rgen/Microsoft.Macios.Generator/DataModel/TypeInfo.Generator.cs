@@ -1,9 +1,13 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.Macios.Generator.Context;
 using Microsoft.Macios.Generator.Extensions;
 using Microsoft.Macios.Generator.Formatters;
@@ -20,19 +24,20 @@ readonly partial struct TypeInfo {
 	/// <summary>
 	/// The events for the type.
 	/// </summary>
-	public ImmutableArray<(string Name, string? EventArgs)> Events { get; init; } = [];
+	public ImmutableArray<EventInfo> Events { get; init; } = [];
 
 	/// <summary>
 	/// Tries to get the event data for a given member symbol.
 	/// </summary>
+	/// <param name="typeNamespace">The namespace of the types whose events we are collecting.</param>
 	/// <param name="member">The member symbol.</param>
 	/// <param name="context">The root context.</param>
-	/// <param name="eventData">When this method returns, contains the event data if the member is an event; otherwise, null.</param>
+	/// <param name="eventInfo">When this method returns, contains the event data if the member is an event; otherwise, null.</param>
 	/// <returns><c>true</c> if the member is an event and event data was retrieved; otherwise, <c>false</c>.</returns>
-	static bool TryGetEventForMember (ISymbol member, RootContext context,
-		[NotNullWhen (true)] out (string Name, string? EventArgs)? eventData)
+	static bool TryGetEventForMember (string typeNamespace, ISymbol member, RootContext context,
+		[NotNullWhen (true)] out EventInfo? eventInfo)
 	{
-		eventData = null;
+		eventInfo = null;
 		// if the member is not a method, we will return false
 		if (member is not IMethodSymbol methodSymbol)
 			return false;
@@ -46,29 +51,64 @@ readonly partial struct TypeInfo {
 			return false;
 
 		// we need to calculate the event args type, if any.
-		string? eventArgs = method switch { { ExportMethodData.EventArgsType.IsNullOrDefault: false }
-												// get the type string for the event args type
-												=> method.Value.ExportMethodData.EventArgsType.GetIdentifierSyntax ().ToString (), { ExportMethodData.EventArgsTypeName: not null }
-																																	   // use the given type name, we will generate those too
-																																	   => method.Value.ExportMethodData.EventArgsTypeName,
-			_ => null,
+#pragma warning disable format
+		var (eventArgs, toGenerate, isTuple) = method switch { 
+			{ ExportMethodData.EventArgsType.IsNullOrDefault: false }
+				// get the type string for the event args type
+				=> (method.Value.ExportMethodData.EventArgsType.GetIdentifierSyntax ().ToString (), false, method.Value.ExportMethodData.EventArgsType.IsNamedTuple), 
+			{ ExportMethodData.EventArgsTypeName: not null } 
+				=> (method.Value.ExportMethodData.EventArgsTypeName, true, false),
+			{ Parameters.Length: 2 }
+				// return the tye of the second parameter, which is the event args type
+				=> (method.Value.Parameters[1].Type.GetIdentifierSyntax ().ToString (), false, false),
+			{ Parameters.Length: > 2} 
+				// return a unnamed tuple type with the parameters starting from the second one
+				=> ($"({string.Join (", ", method.Value.Parameters.Skip (1).Select (p => p.Type.GetIdentifierSyntax ().ToString ()))})", false, true),
+			// the default is a method that does not required an event args type
+			_ => (null, false, false)
 		};
-		eventData = (method.Value.Name, eventArgs);
+#pragma warning restore format
+
+		// gather the parameter info, do not retrieve use a type info since that create a circular structure,
+		// the c# compiler will complain about it.
+		var paramInfo = ImmutableArray.CreateBuilder<(string Name, string Type)> ();
+		var usingsInfo = new HashSet<string> ();
+		foreach (var p in method.Value.Parameters) {
+			paramInfo.Add ((p.Name, p.Type.GetIdentifierSyntax ().ToString ()));
+			// collect the namespaces of the parameters, use a set to avoid duplicates
+			var ns = string.Join ('.', p.Type.Namespace);
+			if (!string.IsNullOrEmpty (ns) && ns != typeNamespace) {
+				usingsInfo.Add (ns);
+			}
+		}
+		eventInfo = new () {
+			Namespace = typeNamespace,
+			Name = method.Value.Name,
+			Usings = [.. usingsInfo],
+			EventArgsType = eventArgs,
+			EventArgsIsTuple = isTuple,
+			// full method signature with params and public
+			MethodSignature = method.Value.WithModifiers (SyntaxKind.PublicKeyword).ToDeclaration ().ToString (),
+			MethodSelector = method.Value.ExportMethodData.Selector!,
+			MethodParameters = paramInfo.ToImmutable (),
+			ToGenerate = toGenerate
+		};
 		return true;
 	}
 
 	/// <summary>
 	/// Gets the events for a given interface symbol.
 	/// </summary>
+	/// <param name="typeNamespace">The namespace of the types whose events we are collecting.</param>
 	/// <param name="symbol">The interface symbol.</param>
 	/// <param name="context">The root context.</param>
 	/// <returns>An immutable array of tuples containing the event name and its event arguments type name.</returns>
-	static ImmutableArray<(string Name, string? ReturnType)> GetInterfaceEvents (ITypeSymbol symbol, RootContext context)
+	static ImmutableArray<EventInfo> GetInterfaceEvents (string typeNamespace, ITypeSymbol symbol, RootContext context)
 	{
-		var parentMethodsBucket = ImmutableArray.CreateBuilder<(string Name, string? EventArgs)> ();
+		var parentMethodsBucket = ImmutableArray.CreateBuilder<EventInfo> ();
 		// add the events for the current symbol
 		foreach (var member in symbol.GetMembers ()) {
-			if (TryGetEventForMember (member, context, out var data)) {
+			if (TryGetEventForMember (typeNamespace, member, context, out var data)) {
 				parentMethodsBucket.Add (data.Value);
 			}
 		}
@@ -76,7 +116,7 @@ readonly partial struct TypeInfo {
 		// add the events from the parent interfaces
 		foreach (var i in symbol.AllInterfaces) {
 			foreach (var member in i.GetMembers ()) {
-				if (TryGetEventForMember (member, context, out var data)) {
+				if (TryGetEventForMember (typeNamespace, member, context, out var data)) {
 					parentMethodsBucket.Add (data.Value);
 				}
 			}
@@ -88,7 +128,7 @@ readonly partial struct TypeInfo {
 	{
 		NeedsStret = symbol.NeedsStret (context.Compilation);
 		if (symbol.IsProtocol ()) {
-			Events = GetInterfaceEvents (symbol, context);
+			Events = GetInterfaceEvents (string.Join ('.', Namespace), symbol, context);
 		}
 	}
 

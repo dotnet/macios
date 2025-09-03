@@ -68,7 +68,7 @@ class AsyncResultEmitter (
 		// get the parameters based on the completion handler
 		if (asyncResult.CompletionHandler.Type.Delegate is null) {
 			diagnostics = [Diagnostic.Create (
-				Diagnostics
+				RgenDiagnostics
 					.RBI0000, // An unexpected error occurred while processing '{0}'. Please fill a bug report at https://github.com/dotnet/macios/issues/new.
 				null,
 				asyncResult.FullyQualifiedName)];

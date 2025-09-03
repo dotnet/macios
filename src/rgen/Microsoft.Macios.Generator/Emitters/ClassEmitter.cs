@@ -10,6 +10,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.Macios.Generator.Attributes;
 using Microsoft.Macios.Generator.Context;
 using Microsoft.Macios.Generator.DataModel;
+using Microsoft.Macios.Generator.Extensions;
 using Microsoft.Macios.Generator.Formatters;
 using Microsoft.Macios.Generator.IO;
 using ObjCBindings;
@@ -136,21 +137,66 @@ public static NSObject {name} ({NSObject} objectToObserve, {EventHandler}<{event
 	/// <summary>
 	/// Emit the events for the given delegates.
 	/// </summary>
+	/// <param name="bindingContext">The current binding context.</param>
 	/// <param name="delegates">The delegate properties.</param>
 	/// <param name="classBlock">Current class block.</param>
-	void EmitEvents (in ImmutableArray<Property> delegates, TabbedWriter<StringWriter> classBlock)
+	void EmitEvents (in BindingContext bindingContext, in ImmutableArray<Property> delegates, TabbedWriter<StringWriter> classBlock)
 	{
+		var applicationClass = bindingContext.RootContext.CurrentPlatform == PlatformName.MacOSX
+			? $"{NSApplication}" : $"{UIApplication}";
 		// loop over the delegates
 		foreach (var property in delegates) {
 			// see if we have a strong type
 			if (property.ExportPropertyData.StrongDelegateType.IsNullOrDefault)
 				continue;
 
+			// the following are the properties that will be used for the events to register to the delegate
+			var strongDelegateType = property.ExportPropertyData.StrongDelegateType.Name [1..];
+			var strongDelegateName = property.ExportPropertyData.StrongDelegateName
+									 ?? property.Name [4..]; // remove the 'Weak' prefix
+			var internalType =
+				Nomenclator.GetInternalDelegateForEventName (property.ExportPropertyData.StrongDelegateType);
+			// this method is reused by all elements, so we want to calculate the name only once
+			var ensureMethod = $"Ensure{strongDelegateType}";
+			using (var getInternalType =
+				   classBlock.CreateBlock ($"internal virtual Type GetInternalEvent{strongDelegateName}Type", true)) {
+				getInternalType.WriteLine ($"get => typeof ({internalType});");
+			}
+
+			classBlock.WriteLine ();
+			using (var createInternalType =
+				   classBlock.CreateBlock ($"internal virtual {internalType} CreateInternalEvent{strongDelegateName}Type ()", true)) {
+				createInternalType.WriteLine ($"return new ();");
+			}
+
+			classBlock.WriteLine ();
+			using (var ensureInternalType = classBlock.CreateBlock (
+					   $"internal {internalType} {ensureMethod} ()", true)) {
+				ensureInternalType.WriteRaw (
+$@"if ({property.Name} is not null)
+	{applicationClass}.EnsureEventAndDelegateAreNotMismatched ({property.Name}, GetInternalEvent{strongDelegateName}Type);
+var del = {strongDelegateName} as {internalType};
+if (del is null) {{
+	del = CreateInternalEvent{strongDelegateName}Type ();
+	{strongDelegateName} = ({property.ExportPropertyData.StrongDelegateType.Name})del;
+}}
+return del;
+");
+			}
+
+			classBlock.WriteLine ();
 			// loop over the events, those should be present in the property for the delegate
-			foreach (var (name, eventArgs) in property.ExportPropertyData.StrongDelegateType.Events) {
+			foreach (var eventInfo in property.ExportPropertyData.StrongDelegateType.Events) {
 				// create the event args type name
-				var eventHandler = eventArgs is null ? EventHandler.ToString () : $"{EventHandler}<{eventArgs}>";
-				classBlock.WriteLine ($"// Generate event for delegate: {name} with args: {eventHandler}");
+				var eventHandler = eventInfo.EventArgsType is null
+					? EventHandler.ToString ()
+					: $"{EventHandler}<{eventInfo.EventArgsType}>";
+				using (var eventBlock =
+					   classBlock.CreateBlock ($"public event {eventHandler} {eventInfo.Name}", true)) {
+					eventBlock.WriteLine ($"add {{ {ensureMethod} ()!.{eventInfo.Name.Decapitalize ()} += value; }}");
+					eventBlock.WriteLine ($"remove {{ {ensureMethod} ()!.{eventInfo.Name.Decapitalize ()} -= value; }}");
+				}
+				classBlock.WriteLine ();
 			}
 		}
 	}
@@ -161,7 +207,7 @@ public static NSObject {name} ({NSObject} objectToObserve, {EventHandler}<{event
 		diagnostics = null;
 		if (bindingContext.Changes.BindingType != BindingType.Class) {
 			diagnostics = [Diagnostic.Create (
-					Diagnostics
+					RgenDiagnostics
 						.RBI0000, // An unexpected error occurred while processing '{0}'. Please fill a bug report at https://github.com/dotnet/macios/issues/new.
 					null,
 					bindingContext.Changes.FullyQualifiedSymbol)];
@@ -216,7 +262,7 @@ public static NSObject {name} ({NSObject} objectToObserve, {EventHandler}<{event
 				this.EmitMethods (bindingContext, classBlock);
 
 				// emit the events for the delegates
-				EmitEvents (strongDelegates, classBlock);
+				EmitEvents (bindingContext, strongDelegates, classBlock);
 
 				// emit the notification helper classes, leave this for the very bottom of the class
 				EmitNotifications (notificationProperties, classBlock);

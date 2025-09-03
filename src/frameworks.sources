@@ -263,7 +263,6 @@ AVFOUNDATION_SOURCES = \
 	AVFoundation/AVDepthData.cs \
 	AVFoundation/AVLayerVideoGravity.cs \
 	AVFoundation/AVMetadataMachineReadableCodeObject.cs \
-	AVFoundation/AVMetadataObject.cs \
 	AVFoundation/AVOutputSettingsAssistant.cs \
 	AVFoundation/AVPlayerItem.cs \
 	AVFoundation/AVPlayerItemVideoOutput.cs \

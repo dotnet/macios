@@ -10,7 +10,6 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Macios.Generator.Availability;
 using Microsoft.Macios.Generator.Context;
-using Microsoft.Macios.Generator.Emitters;
 using Microsoft.Macios.Generator.Extensions;
 
 namespace Microsoft.Macios.Generator.DataModel;
@@ -32,6 +31,11 @@ readonly partial struct Binding {
 	/// Returns if the binding has been declared to be thread safe.
 	/// </summary>
 	public bool IsThreadSafe => bindingInfo.IsThreadSafe;
+
+	/// <summary>
+	/// The location of the attribute in source code.
+	/// </summary>
+	public Location? Location { get; init; }
 
 	/// <summary>
 	/// Returns all the library names and paths that are needed by the native code represented by the code change.
@@ -105,6 +109,68 @@ readonly partial struct Binding {
 						Namespace = Namespace,
 						Name = method.ExportMethodData.ResultTypeName,
 						CompletionHandler = method.Parameters [^1]
+					};
+				}
+			}
+		}
+	}
+
+	/// <summary>
+	/// Returns all the events from weak delegates that need to have their event type generated.
+	/// </summary>
+	public IEnumerable<EventInfo> WeakDelegateEvents {
+		get {
+			// weak delegates are those properties that have been marked as a weak delegate and that also have
+			// been marked to generate events. Out of those properties we will only returns the ones that need
+			// to have the event type generated
+			var found = new HashSet<string> (); // used to track the events we already returned
+			foreach (var property in Properties) {
+				if (!property.IsProperty)
+					continue;
+				// CreateEvents is only true for a weak delegate property
+				if (!property.CreateEvents)
+					continue;
+
+				if (!property.ExportPropertyData.StrongDelegateType.IsNullOrDefault) {
+					// loop over all the events, the unique identifier is the namespace + event handler type
+					foreach (var eventInfo in property.ExportPropertyData.StrongDelegateType.Events) {
+						// skip if we do not need to generate the event
+						if (!eventInfo.ToGenerate)
+							continue;
+						if (found.Add (eventInfo.EventArgsFullyQualifiedName)) {
+							// yield the event info of the type that needs to be generated
+							yield return eventInfo;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	/// <summary>
+	/// Returns all the event delegates from weak delegates that need to be generated.
+	/// </summary>
+	public IEnumerable<EventDelegateInfo> WeakDelegatesClasses {
+		get {
+			// use a hash set to reach the types of the delegates, it should not be the case that we have the same
+			// type info for more than one delegate but we do not trust the input from external developers
+			var found = new HashSet<string> ();
+			foreach (var property in Properties) {
+				if (!property.IsProperty)
+					continue;
+				// CreateEvents is only true for a weak delegate property, we do not create the delegate type for a
+				// weak delegate with no events generated
+				if (!property.CreateEvents)
+					continue;
+				if (!property.ExportPropertyData.StrongDelegateType.IsNullOrDefault
+					&& found.Add (property.ExportPropertyData.StrongDelegateType.FullyQualifiedName)) {
+					// create the info for the delegate type
+					yield return new EventDelegateInfo {
+						Usings = [.. usingDirectives],
+						Namespace = string.Join ('.', Namespace),
+						OuterClassName = Name,
+						OuterClassModifiers = Modifiers,
+						DelegateType = property.ExportPropertyData.StrongDelegateType
 					};
 				}
 			}
@@ -239,22 +305,35 @@ readonly partial struct Binding {
 
 			var fieldData = enumValueSymbol.GetFieldData ();
 			// try and compute the library for this enum member
-			if (fieldData is null || !context.TryComputeLibraryName (fieldData.Value.LibraryName, Namespace [^1],
-					out string? libraryName, out string? libraryPath))
-				// could not calculate the library for the enum, do not add it
-				continue;
-			var enumMember = new EnumMember (
-				name: enumValueDeclaration.Identifier.ToFullString ().Trim (),
-				libraryName: libraryName,
-				libraryPath: libraryPath,
-				fieldData: enumValueSymbol.GetFieldData (),
-				symbolAvailability: enumValueSymbol.GetSupportedPlatforms (),
-				attributes: enumValueDeclaration.GetAttributeCodeChanges (context.SemanticModel)
-			);
-			bucket.Add (enumMember);
+			if (fieldData is null || !context.TryComputeLibraryName (fieldData.Value.LibraryPath, Namespace [^1],
+					out string? libraryName, out string? libraryPath)) {
+				// could not calculate the library for the enum add it with bad data for the analyzer to pick it up
+				var enumMember = new EnumMember (
+					name: enumValueDeclaration.Identifier.ToFullString ().Trim (),
+					libraryName: string.Empty,
+					libraryPath: null,
+					fieldData: enumValueSymbol.GetFieldData (),
+					symbolAvailability: enumValueSymbol.GetSupportedPlatforms (),
+					attributes: enumValueDeclaration.GetAttributeCodeChanges (context.SemanticModel)
+				) {
+					Location = enumValueDeclaration.GetLocation (),
+				};
+				bucket.Add (enumMember);
+			} else {
+				var enumMember = new EnumMember (
+					name: enumValueDeclaration.Identifier.ToFullString ().Trim (),
+					libraryName: libraryName,
+					libraryPath: libraryPath,
+					fieldData: enumValueSymbol.GetFieldData (),
+					symbolAvailability: enumValueSymbol.GetSupportedPlatforms (),
+					attributes: enumValueDeclaration.GetAttributeCodeChanges (context.SemanticModel)
+				) { Location = enumValueDeclaration.GetLocation (), };
+				bucket.Add (enumMember);
+			}
 		}
 
 		EnumMembers = bucket.ToImmutable ();
+		Location = enumDeclaration.GetLocation ();
 	}
 
 	/// <summary>
@@ -296,6 +375,7 @@ readonly partial struct Binding {
 			GetMembers<PropertyDeclarationSyntax, Property> (classDeclaration, context, PropertySkip, Property.TryCreate,
 				out properties);
 		}
+		Location = classDeclaration.GetLocation ();
 	}
 
 	/// <summary>
@@ -355,7 +435,7 @@ readonly partial struct Binding {
 			ParentProtocolProperties = [];
 			ParentProtocolMethods = [];
 		}
-
+		Location = interfaceDeclaration.GetLocation ();
 	}
 
 	/// <summary>

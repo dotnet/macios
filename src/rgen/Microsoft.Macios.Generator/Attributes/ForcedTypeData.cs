@@ -4,12 +4,18 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.CodeAnalysis;
+using Microsoft.Macios.Generator.Extensions;
 
 namespace Microsoft.Macios.Generator.Attributes;
 
 readonly struct ForcedTypeData : IEquatable<ForcedTypeData> {
 
 	public bool Owns { get; } = false;
+
+	/// <summary>
+	/// The location of the attribute in source code.
+	/// </summary>
+	public Location? Location { get; init; }
 
 	public ForcedTypeData (bool owns)
 	{
@@ -33,7 +39,9 @@ readonly struct ForcedTypeData : IEquatable<ForcedTypeData> {
 		}
 
 		if (attributeData.NamedArguments.Length == 0) {
-			data = new (owns);
+			data = new (owns) {
+				Location = attributeData.GetLocation (),
+			};
 			return true;
 		}
 
@@ -47,7 +55,9 @@ readonly struct ForcedTypeData : IEquatable<ForcedTypeData> {
 				return false;
 			}
 		}
-		data = new (owns);
+		data = new (owns) {
+			Location = attributeData.GetLocation (),
+		};
 		return true;
 	}
 

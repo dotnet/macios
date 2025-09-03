@@ -4,14 +4,16 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.Macios.Generator;
+using Microsoft.Macios.Generator.Context;
 using Microsoft.Macios.Generator.Extensions;
 using Diagnostic = Microsoft.CodeAnalysis.Diagnostic;
 
 namespace Microsoft.Macios.Bindings.Analyzer.Extensions;
 
-public static class BindingTypeAnalyzerExtensions {
+static class BindingTypeAnalyzerExtensions {
 	public static void AnalyzeBindingType<T> (this IBindingTypeAnalyzer<T> self, SyntaxNodeAnalysisContext context) where T : BaseTypeDeclarationSyntax
 	{
+		var rootContext = new RootContext (context.SemanticModel);
 		// calculate the current compilation platform name
 		if (context.Node is not T declarationNode)
 			return;
@@ -34,7 +36,7 @@ public static class BindingTypeAnalyzerExtensions {
 			if (attributeType is null || !self.AttributeNames.Contains (attributeType))
 				continue;
 
-			var diagnostics = self.Analyze (attributeType, context.Compilation.GetCurrentPlatform (),
+			var diagnostics = self.Analyze (attributeType, rootContext,
 				declarationNode, declaredSymbol);
 			foreach (var diagnostic in diagnostics)
 				context.ReportDiagnostic (diagnostic);

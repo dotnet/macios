@@ -176,11 +176,80 @@ public partial class EventTests
 		}
 	}
 
-	// Generate event for delegate: EncodedObject with args: global::System.EventHandler
-	// Generate event for delegate: Finished with args: global::System.EventHandler
-	// Generate event for delegate: WillEncode with args: global::System.EventHandler
-	// Generate event for delegate: Finishing with args: global::System.EventHandler
-	// Generate event for delegate: ReplacingObject with args: global::System.EventHandler<NSArchiveReplace>
-	// Generate event for delegate: ReplacingObject2 with args: global::System.EventHandler<(global::Foundation.NSObject OldObject, global::Foundation.NSObject NewObject)>
-	// Generate event for delegate: ReplacingObject3 with args: global::System.EventHandler<(global::Foundation.NSObject Item1, global::Foundation.NSObject Item2)>
+	internal virtual Type GetInternalEventDelegateType
+	{
+		get => typeof (_RgenNSKeyedArchiverDelegate);
+	}
+
+	internal virtual _RgenNSKeyedArchiverDelegate CreateInternalEventDelegateType ()
+	{
+		return new ();
+	}
+
+	internal _RgenNSKeyedArchiverDelegate EnsureRgenNSKeyedArchiverDelegate ()
+	{
+		if (WeakDelegate is not null)
+			global::UIKit.UIApplication.EnsureEventAndDelegateAreNotMismatched (WeakDelegate, GetInternalEventDelegateType);
+		var del = Delegate as _RgenNSKeyedArchiverDelegate;
+		if (del is null) {
+			del = CreateInternalEventDelegateType ();
+			Delegate = (IRgenNSKeyedArchiverDelegate)del;
+		}
+		return del;
+	}
+
+	public event global::System.EventHandler<global::Foundation.NSObject> EncodedObject
+	{
+		add { EnsureRgenNSKeyedArchiverDelegate ()!.encodedObject += value; }
+		remove { EnsureRgenNSKeyedArchiverDelegate ()!.encodedObject -= value; }
+	}
+
+	public event global::System.EventHandler<global::Foundation.NSObject> EncodedObject2
+	{
+		add { EnsureRgenNSKeyedArchiverDelegate ()!.encodedObject2 += value; }
+		remove { EnsureRgenNSKeyedArchiverDelegate ()!.encodedObject2 -= value; }
+	}
+
+	public event global::System.EventHandler Finished
+	{
+		add { EnsureRgenNSKeyedArchiverDelegate ()!.finished += value; }
+		remove { EnsureRgenNSKeyedArchiverDelegate ()!.finished -= value; }
+	}
+
+	public event global::System.EventHandler<global::Foundation.NSObject> WillEncode
+	{
+		add { EnsureRgenNSKeyedArchiverDelegate ()!.willEncode += value; }
+		remove { EnsureRgenNSKeyedArchiverDelegate ()!.willEncode -= value; }
+	}
+
+	public event global::System.EventHandler Finishing
+	{
+		add { EnsureRgenNSKeyedArchiverDelegate ()!.finishing += value; }
+		remove { EnsureRgenNSKeyedArchiverDelegate ()!.finishing -= value; }
+	}
+
+	public event global::System.EventHandler<NSArchiveReplaceEventArgs> ReplacingObject
+	{
+		add { EnsureRgenNSKeyedArchiverDelegate ()!.replacingObject += value; }
+		remove { EnsureRgenNSKeyedArchiverDelegate ()!.replacingObject -= value; }
+	}
+
+	public event global::System.EventHandler<(global::Foundation.NSObject OldObject, global::Foundation.NSObject NewObject)> ReplacingObject2
+	{
+		add { EnsureRgenNSKeyedArchiverDelegate ()!.replacingObject2 += value; }
+		remove { EnsureRgenNSKeyedArchiverDelegate ()!.replacingObject2 -= value; }
+	}
+
+	public event global::System.EventHandler<(global::Foundation.NSObject Item1, global::Foundation.NSObject Item2)> ReplacingObject3
+	{
+		add { EnsureRgenNSKeyedArchiverDelegate ()!.replacingObject3 += value; }
+		remove { EnsureRgenNSKeyedArchiverDelegate ()!.replacingObject3 -= value; }
+	}
+
+	public event global::System.EventHandler<(global::Foundation.NSObject, global::Foundation.NSObject)> ReplacingObject4
+	{
+		add { EnsureRgenNSKeyedArchiverDelegate ()!.replacingObject4 += value; }
+		remove { EnsureRgenNSKeyedArchiverDelegate ()!.replacingObject4 -= value; }
+	}
+
 }

@@ -3066,6 +3066,7 @@ namespace Xamarin.Tests {
 			"/System/Library/Frameworks/Symbols.framework/Symbols",
 			"/System/Library/Frameworks/SystemConfiguration.framework/SystemConfiguration",
 			"/System/Library/Frameworks/ThreadNetwork.framework/ThreadNetwork",
+			"/System/Library/Frameworks/TouchController.framework/TouchController",
 			"/System/Library/Frameworks/Twitter.framework/Twitter",
 			"/System/Library/Frameworks/UIKit.framework/UIKit",
 			"/System/Library/Frameworks/UniformTypeIdentifiers.framework/UniformTypeIdentifiers",

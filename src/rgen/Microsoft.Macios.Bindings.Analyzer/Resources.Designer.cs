@@ -823,7 +823,7 @@ namespace Microsoft.Macios.Bindings.Analyzer {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The flag &apos;{0}&apos; is no supported on &apos;{1}&apos; and will be ignored.
+        ///   Looks up a localized string similar to The flag &apos;{0}&apos; is not supported on &apos;{1}&apos; and will be ignored.
         /// </summary>
         internal static string RBI0028MessageFormat {
             get {
@@ -832,7 +832,7 @@ namespace Microsoft.Macios.Bindings.Analyzer {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ignored fflag.
+        ///   Looks up a localized string similar to Ignored flag.
         /// </summary>
         internal static string RBI0028Title {
             get {

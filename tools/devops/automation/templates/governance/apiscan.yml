@@ -72,8 +72,8 @@ steps:
     toolVersion: 'Latest'
     verbosityLevel: standard
     preserveLogsFolder: true
+    azureSubscription: 'VSEng-APIScanSC'
   env:
-    AzureServicesAuthConnectionString: RunAs=App;AppId=$(CLIENT_ID)
     SYSTEM_ACCESSTOKEN: $(System.AccessToken)
 
 - task: PublishSecurityAnalysisLogs@3

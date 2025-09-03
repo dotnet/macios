@@ -311,7 +311,7 @@
         <value>The export attribute must have a nonnull selector.</value>
     </data>
     <data name="RBI0022MessageFormat" xml:space="preserve">
-        <value>The export attribute must have a nonnull or empty selector</value>
+        <value>An export method selector must not contain any whitespace</value>
     </data>
     <data name="RBI0022Title" xml:space="preserve">
         <value>Null selector</value>
@@ -386,11 +386,11 @@
         <value>A flag value was used on an attribute that does not support it and will be ignored.</value>
     </data>
     <data name="RBI0028MessageFormat" xml:space="preserve">
-        <value>The flag '{0}' is no supported on '{1}' and will be ignored</value>
+        <value>The flag '{0}' is not supported on '{1}' and will be ignored</value>
         <comment>The {0} is the name of the flag, {1} is the name of the attribute.</comment>
     </data>
     <data name="RBI0028Title" xml:space="preserve">
-        <value>Ignored fflag</value>
+        <value>Ignored flag</value>
     </data>
     
     <!-- RBI0029 -->

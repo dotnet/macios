@@ -224,8 +224,10 @@ public partial class Generator {
 				var field = fields.FirstOrDefault ();
 				var fieldAttr = field.Value;
 
-				if (!TryComputeLibraryName (fieldAttr?.LibraryName, type, out library_name, out var _))
+				if (!TryComputeLibraryName (fieldAttr?.LibraryName, type, out library_name, out var _)) {
 					exceptions.Add (ErrorHelper.CreateError (1042, /* Missing '[Field (LibraryName=value)]' for {0} (e.g."__Internal") */ type.FullName + "." + field.Key?.Name));
+					library_name = "placeholder";
+				}
 			}
 		}
 

@@ -1403,7 +1403,7 @@ namespace CoreImage {
 		Version6 = 5,
 
 		[Field ("CIRAWDecoderVersion6DNG")]
-		Version6Dng = 5,
+		Version6Dng = 6,
 	}
 
 	[iOS (15, 0), MacCatalyst (15, 0), TV (15, 0)]

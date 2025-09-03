@@ -1750,6 +1750,11 @@ namespace ObjCRuntime {
 			return GetNSObject<T> (ptr, sel, method_handle, false, false);
 		}
 
+		static T? GetNSObject<T> (IntPtr ptr, IntPtr sel, RuntimeMethodHandle method_handle, bool evenInFinalizerQueue) where T : NSObject
+		{
+			return GetNSObject<T> (ptr, sel, method_handle, evenInFinalizerQueue, false);
+		}
+
 		static T? GetNSObject<T> (IntPtr ptr, IntPtr sel, RuntimeMethodHandle method_handle, bool evenInFinalizerQueue, bool typeSafe) where T : NSObject
 		{
 			if (ptr == IntPtr.Zero)

@@ -15,7 +15,7 @@ namespace SensitiveContentAnalysis {
 		public static SCVideoStreamAnalyzer? Create (string participantUuid, SCVideoStreamAnalyzerStreamDirection streamDirection, out NSError? error)
 		{
 			var rv = new SCVideoStreamAnalyzer (NSObjectFlag.Empty);
-			rv.InitializeHandle (rv._InitWithParticipantUuid (participantUuid, streamDirection, out error), "initWithParticipantUUID:streamDirection:error:");
+			rv.InitializeHandle (rv._InitWithParticipantUuid (participantUuid, streamDirection, out error), "initWithParticipantUUID:streamDirection:error:", false);
 			if (rv.Handle == NativeHandle.Zero) {
 				rv.Dispose ();
 				return null;

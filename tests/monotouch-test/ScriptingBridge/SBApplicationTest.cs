@@ -37,8 +37,7 @@ namespace Xamarin.Mac.Tests {
 			using (var app1 = SBApplication.GetApplication (knownBundle))
 			using (var app2 = SBApplication.GetApplication<MySBApp> (knownBundle))
 			using (var app3 = SBApplication.GetApplication (unknownBundle))
-			using (var app4 = SBApplication.GetApplication<MySBApp> (unknownBundle))
-			{
+			using (var app4 = SBApplication.GetApplication<MySBApp> (unknownBundle)) {
 				Assert.IsNotNull (app1, "SBApplication from known bundle is null");
 				Assert.IsNotNull (app2, "MySBApp from known bundle is null");
 				Assert.IsNull (app3, "SBApplication from unknown bundle is non-null");
@@ -51,8 +50,7 @@ namespace Xamarin.Mac.Tests {
 		{
 			using (NSUrl knownUrl = new NSUrl ("http://www.xamarin.com"))
 			using (var app1 = SBApplication.GetApplication (knownUrl))
-			using (var app2 = SBApplication.GetApplication<MySBApp> (knownUrl))
-			{
+			using (var app2 = SBApplication.GetApplication<MySBApp> (knownUrl)) {
 				Assert.IsNotNull (app1, "SBApplication from known URL is null");
 				Assert.IsNotNull (app2, "MySBApp from known URL is null");
 			}
@@ -66,8 +64,7 @@ namespace Xamarin.Mac.Tests {
 			using (var app1 = SBApplication.GetApplication (knownPid))
 			using (var app2 = SBApplication.GetApplication<MySBApp> (knownPid))
 			using (var app3 = SBApplication.GetApplication (unknownPid))
-			using (var app4 = SBApplication.GetApplication<MySBApp> (unknownPid))
-			{
+			using (var app4 = SBApplication.GetApplication<MySBApp> (unknownPid)) {
 				Assert.IsNotNull (app1, "SBApplication from known pid is null");
 				Assert.IsNotNull (app2, "MySBApp from known pid is null");
 				Assert.IsNotNull (app3, "SBApplication from unknown pid is null");

@@ -19,8 +19,7 @@ namespace Xamarin.Mac.Tests {
 #pragma warning restore 0219
 		}
 
-		class MyPasteboard : NSObject, INSPasteboardWriting
-		{
+		class MyPasteboard : NSObject, INSPasteboardWriting {
 			NSObject INSPasteboardWriting.GetPasteboardPropertyListForType (string type)
 			{
 				return new NSObject ();

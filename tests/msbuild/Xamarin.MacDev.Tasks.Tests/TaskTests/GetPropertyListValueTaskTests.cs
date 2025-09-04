@@ -7,8 +7,7 @@ using Xamarin.MacDev.Tasks;
 
 namespace Xamarin.MacDev.Tasks {
 	[TestFixture]
-	public class GetPropertyListValueTaskTests : TestBase
-	{
+	public class GetPropertyListValueTaskTests : TestBase {
 
 		void TestExecuteTask (string property, string expected)
 		{
@@ -133,75 +132,91 @@ namespace Xamarin.MacDev.Tasks {
 		}
 
 		[Test]
-		public void TestGetArrayIndexProperty ()
+		public void TestGetArrayIndexOutOfBounds ()
 		{
-			for	(var index = 0; index < 3; index++)
-			{
-				var property = $"KeyArray:{index}";
-				var expected = $"Array Item {index}";
+			var property = $"KeyArray:99";
 
-				TestExecuteTask (property, expected);
-			}
+			TestExecuteTask(property, null);
 		}
 
 		[Test]
-		public void TestGetArrayArrayIndexProperty ()
+		[TestCase(0)]
+		[TestCase(1)]
+		[TestCase(2)]
+		public void TestGetArrayIndexProperty (int index)
 		{
-			for	(var index = 0; index < 3; index++)
-			{
-				var property = $"KeyArray:3:{index}";
-				var expected = $"Array Array Item 3.{index}";
+			var property = $"KeyArray:{index}";
+			var expected = $"Array Item {index}";
 
-				TestExecuteTask (property, expected);
-			}
+			TestExecuteTask(property, expected);
 		}
 
 		[Test]
-		public void TestGetArrayDictionaryKeyProperty ()
+		[TestCase(0)]
+		[TestCase(1)]
+		[TestCase(2)]
+		public void TestGetArrayArrayIndexProperty (int index)
 		{
-			for	(var index = 0; index < 3; index++)
-			{
-				var property = $"KeyArray:4:Item{index}";
-				var expected = $"Array Dictionary Item 4.{index}";
+			var property = $"KeyArray:3:{index}";
+			var expected = $"Array Array Item 3.{index}";
 
-				TestExecuteTask (property, expected);
-			}
+			TestExecuteTask (property, expected);
 		}
 
 		[Test]
-		public void TestGetDictionaryKeyProperty ()
+		[TestCase(0)]
+		[TestCase(1)]
+		[TestCase(2)]
+		public void TestGetArrayDictionaryKeyProperty (int index)
 		{
-			for	(var index = 0; index < 3; index++)
-			{
-				var property = $"KeyDictionary:Item{index}";
-				var expected = $"Dictionary Item {index}";
+			var property = $"KeyArray:4:Item{index}";
+			var expected = $"Array Dictionary Item 4.{index}";
 
-				TestExecuteTask (property, expected);
-			}
+			TestExecuteTask (property, expected);
 		}
 
 		[Test]
-		public void TestGetDictionaryDictionaryKeyProperty ()
+		public void TestGetDictionaryKeyNotFound ()
 		{
-			for	(var index = 0; index < 3; index++)
-			{
-				var property = $"KeyDictionary:Item3:Item{index}";
-				var expected = $"Dictionary Dictionary Item 3.{index}";
+			var property = $"KeyDictionary:ItemKeyNotFound";
 
-				TestExecuteTask (property, expected);
-			}
+			TestExecuteTask (property, null);
 		}
 
 		[Test]
-		public void TestGetDictionaryArrayKeyProperty ()
+		[TestCase(0)]
+		[TestCase(1)]
+		[TestCase(2)]
+		public void TestGetDictionaryKeyProperty (int index)
 		{
-			for	(var index = 0; index < 3; index++)
-			{
-				var property = $"KeyDictionary:Item4:{index}";
-				var expected = $"Dictionary Array Item 4.{index}";
+			var property = $"KeyDictionary:Item{index}";
+			var expected = $"Dictionary Item {index}";
 
-				TestExecuteTask (property, expected);
-			}
+			TestExecuteTask (property, expected);
+		}
+
+		[Test]
+		[TestCase(0)]
+		[TestCase(1)]
+		[TestCase(2)]
+		public void TestGetDictionaryDictionaryKeyProperty (int index)
+		{
+			var property = $"KeyDictionary:Item3:Item{index}";
+			var expected = $"Dictionary Dictionary Item 3.{index}";
+
+			TestExecuteTask (property, expected);
+		}
+
+		[Test]
+		[TestCase(0)]
+		[TestCase(1)]
+		[TestCase(2)]
+		public void TestGetDictionaryArrayKeyProperty (int index)
+		{
+			var property = $"KeyDictionary:Item4:{index}";
+			var expected = $"Dictionary Array Item 4.{index}";
+
+			TestExecuteTask (property, expected);
 		}
 
 	}

@@ -421,4 +421,19 @@ public static class RgenDiagnostics {
 		description: new LocalizableResourceString (nameof (Resources.RBI0027Description), Resources.ResourceManager,
 			typeof (Resources))
 	);
+
+	/// <summary>
+	/// Diagnostic descriptor for when a flag is ignored because the attribute is not used in the right context.
+	/// </summary>
+	internal static readonly DiagnosticDescriptor RBI0028 = new (
+		"RBI0028",
+		new LocalizableResourceString (nameof (Resources.RBI0028Title), Resources.ResourceManager, typeof (Resources)),
+		new LocalizableResourceString (nameof (Resources.RBI0028MessageFormat), Resources.ResourceManager,
+			typeof (Resources)),
+		"Usage",
+		DiagnosticSeverity.Warning,
+		isEnabledByDefault: true,
+		description: new LocalizableResourceString (nameof (Resources.RBI0028Description), Resources.ResourceManager,
+			typeof (Resources))
+	);
 }

@@ -316,13 +316,33 @@ function install_mono () {
 
 function xcodebuild_download_selected_platforms ()
 {
-	IOS_NUGET_OS_VERSION=$(grep '^IOS_NUGET_OS_VERSION=' Make.versions | sed 's/.*=//')
-	log "Executing '$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild -downloadPlatform iOS -buildVersion $IOS_NUGET_OS_VERSION' $1"
-	"$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild" -downloadPlatform iOS -buildVersion $IOS_NUGET_OS_VERSION
+	local XCODE_DEVELOPER_ROOT
+	local XCODE_NAME
+	local XCODE_IS_STABLE
+	local IOS_NUGET_OS_VERSION
+	local IOS_BUILD_VERSION
+	local TVOS_NUGET_OS_VERSION
+	local TVOS_BUILD_VERSION
 
-	TVOS_NUGET_OS_VERSION=$(grep '^TVOS_NUGET_OS_VERSION=' Make.versions | sed 's/.*=//')
-	log "Executing '$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild -downloadPlatform tvOS -buildVersion $TVOS_NUGET_OS_VERSION' $1"
-	"$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild" -downloadPlatform tvOS -buildVersion $TVOS_NUGET_OS_VERSION
+	XCODE_DEVELOPER_ROOT=$(grep XCODE_DEVELOPER_ROOT= Make.config | sed 's/.*=//')
+	XCODE_NAME=$(basename "$(dirname "$(dirname "$XCODE_DEVELOPER_ROOT")")")
+	# we use the same logic here as in Make.config to determine whether we're using a stable version of Xcode or not (search for XCODE_IS_STABLE/XCODE_IS_PREVIEW)
+	XCODE_IS_STABLE=$(echo "$XCODE_NAME" | sed -e 's@^Xcode[_0-9.]*[.]app$@YES@')
+
+	IOS_BUILD_VERSION=
+	TVOS_BUILD_VERSION=
+	if [[ "$XCODE_IS_STABLE" == "YES" ]]; then
+		IOS_NUGET_OS_VERSION=$(grep '^IOS_NUGET_OS_VERSION=' Make.versions | sed 's/.*=//')
+		IOS_BUILD_VERSION=" -buildVersion $IOS_NUGET_OS_VERSION"
+		TVOS_NUGET_OS_VERSION=$(grep '^TVOS_NUGET_OS_VERSION=' Make.versions | sed 's/.*=//')
+		TVOS_BUILD_VERSION=" -buildVersion $TVOS_NUGET_OS_VERSION"
+	fi
+
+	log "Executing '$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild -downloadPlatform iOS$IOS_BUILD_VERSION' $1"
+	"$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild" -downloadPlatform iOS $IOS_BUILD_VERSION
+
+	log "Executing '$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild -downloadPlatform tvOS$TVOS_BUILD_VERSION' $1"
+	"$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild" -downloadPlatform tvOS $TVOS_BUILD_VERSION
 }
 
 function download_xcode_platforms ()
@@ -646,19 +666,8 @@ function check_xcode_components ()
 			fail "The Xcode component ${COLOR_BLUE}$comp${COLOR_RESET} is not installed. Execute ${COLOR_MAGENTA}xcrun xcodebuild -downloadComponent $comp${COLOR_RESET} or ${COLOR_MAGENTA}./system-dependencies.sh --provision-xcode-components${COLOR_RESET} to install."
 			fail "Alternatively you can ${COLOR_MAGENTA}export IGNORE_XCODE_COMPONENTS=1${COLOR_RED} to skip this check."
 		else
-			if [[ "$componentInfo" =~ .*Build" "Version:" "17A5241e.* ]]; then
-				# Xcode 26 beta 1 has a known issue with the MetalToolchain component, this is how Apple says to work around it
-				log "Downloading the Xcode component ${COLOR_BLUE}$comp${COLOR_CLEAR} by executing ${COLOR_BLUE}xcrun xcodebuild -downloadComponent $comp -exportPath /tmp/MyMetalExport${COLOR_CLEAR}..."
-				xcrun xcodebuild -downloadComponent metalToolchain -exportPath /tmp/MyMetalExport/
-				log "Fixing broken Xcode component ${COLOR_BLUE}$comp${COLOR_CLEAR} by executing ${COLOR_BLUE}sed -i '' -e 's/17A5241c/17A5241e/g' /tmp/MyMetalExport/MetalToolchain-17A5241c.exportedBundle/ExportMetadata.plist${COLOR_CLEAR}..."
-				sed -i '' -e 's/17A5241c/17A5241e/g' /tmp/MyMetalExport/MetalToolchain-17A5241c.exportedBundle/ExportMetadata.plist
-				log "Installing the Xcode component ${COLOR_BLUE}$comp${COLOR_CLEAR} by executing ${COLOR_BLUE}xcrun xcodebuild -importComponent metalToolchain -importPath /tmp/MyMetalExport/MetalToolchain-17A5241c.exportedBundle${COLOR_CLEAR}..."
-				xcrun xcodebuild -importComponent metalToolchain -importPath /tmp/MyMetalExport/MetalToolchain-17A5241c.exportedBundle
-				rm -rf /tmp/MyMetalExport
-			else
-				log "Installing the Xcode component ${COLOR_BLUE}$comp${COLOR_CLEAR} by executing ${COLOR_BLUE}xcrun xcodebuild -downloadComponent $comp${COLOR_CLEAR}..."
-				xcrun xcodebuild -downloadComponent "$comp"
-			fi
+			log "Installing the Xcode component ${COLOR_BLUE}$comp${COLOR_CLEAR} by executing ${COLOR_BLUE}xcrun xcodebuild -downloadComponent $comp${COLOR_CLEAR}..."
+			xcrun xcodebuild -downloadComponent "$comp"
 
 			ok "Successfully installed the Xcode component ${COLOR_BLUE}$comp${COLOR_CLEAR}."
 		fi

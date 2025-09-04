@@ -81,7 +81,7 @@ namespace Xamarin.MacDev.Tasks {
 				i++;
 			} while (i < path.Length);
 
-			if (array is not null || dict is not null) {
+			if (array is not null || dict is not null || value.Type is PObjectType.Data) {
 				Log.LogError (MSBStrings.E0157, value.Type.ToString ().ToLowerInvariant ());
 				return false;
 			}

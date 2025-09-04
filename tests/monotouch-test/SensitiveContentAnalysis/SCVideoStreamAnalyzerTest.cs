@@ -5,7 +5,11 @@ using SensitiveContentAnalysis;
 
 using NUnit.Framework;
 
+#if HAS_SENSITIVECONTENTANALYSIS
+
 namespace MonoTouchFixtures.SensitiveContentAnalysis;
+
+#if __IOS__ && !__MACCATALYST__
 
 [TestFixture]
 [Preserve (AllMembers = true)]
@@ -24,3 +28,7 @@ public class SCVideoStreamAnalyzerTests {
 		Assert.That (error, Is.Not.Null, "Error");
 	}
 }
+
+#endif // __IOS__ && !__MACCATALYST__
+
+#endif // HAS_SENSITIVECONTENTANALYSIS

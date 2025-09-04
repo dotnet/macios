@@ -6,6 +6,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.Macios.Bindings.Analyzer.Extensions;
 using Microsoft.Macios.Generator.Availability;
 using Microsoft.Macios.Generator.Context;
+using Xamarin.Utils;
 using static Microsoft.Macios.Generator.RgenDiagnostics;
 
 namespace Microsoft.Macios.Bindings.Analyzer.Validators;
@@ -31,6 +32,9 @@ static class SupportedPlatformStrategies {
 		// retrieve the availability platform of the current platform found in the root context, if the platform is 
 		// not supported, we return false
 		var platform = context.CurrentPlatform.ToApplePlatform ();
+		if (platform == ApplePlatform.None)
+			return true;
+
 		var currentPlatformAvailability = availability [platform];
 		if (currentPlatformAvailability is { IsSupported: true })
 			return true;

@@ -1784,6 +1784,91 @@ public partial class Generator : IMemberGatherer {
 		sw.Close ();
 	}
 
+	bool TryGetNSNumberStrongDictionaryMethods (Type type, [NotNullWhen (true)] out string? getter, [NotNullWhen (true)] out string? setter)
+	{
+		setter = "SetNumberValue";
+		getter = null;
+
+		if (type == TypeCache.System_SByte ||
+				type == TypeCache.System_Byte ||
+				type == TypeCache.System_Int16 ||
+				type == TypeCache.System_UInt16 ||
+				type == TypeCache.System_Int32 ||
+				type == TypeCache.System_UInt32 ||
+				type == TypeCache.System_Double
+				) {
+			getter = "Get" + type.Name + "Value";
+		} else if (type == TypeCache.System_nint) {
+			getter = "GetNIntValue";
+		} else if (type == TypeCache.System_nuint) {
+			getter = "GetNUIntValue";
+		} else if (type == TypeCache.System_Int64) {
+			getter = "GetLongValue";
+		} else if (type == TypeCache.System_UInt64) {
+			getter = "GetULongValue";
+		} else if (type == TypeCache.System_Float) {
+			getter = "GetFloatValue";
+		} else if (type == TypeCache.System_nfloat) {
+			getter = "GetNFloatValue";
+		} else if (type == TypeCache.System_Boolean) {
+			getter = "GetBoolValue";
+			setter = "SetBooleanValue";
+		} else {
+			return false;
+		}
+
+		return true;
+	}
+
+	bool TryGetNSNumberField (Type wrappedNumberType, [NotNullWhen (true)] out string? fieldName)
+	{
+		fieldName = null;
+
+		if (wrappedNumberType == TypeCache.System_Float) {
+			fieldName = "FloatValue";
+		} else if (wrappedNumberType == TypeCache.System_Double) {
+			fieldName = "DoubleValue";
+		} else if (wrappedNumberType == TypeCache.System_nfloat) {
+			fieldName = "NFloatValue";
+		} else if (wrappedNumberType == TypeCache.System_Int32) {
+			fieldName = "Int32Value";
+		} else if (wrappedNumberType == TypeCache.System_UInt32) {
+			fieldName = "UInt32Value";
+		} else if (wrappedNumberType == TypeCache.System_Int64) {
+			fieldName = "Int64Value";
+		} else if (wrappedNumberType == TypeCache.System_UInt64) {
+			fieldName = "UInt64Value";
+		} else if (wrappedNumberType == TypeCache.System_Int16) {
+			fieldName = "Int16Value";
+		} else if (wrappedNumberType == TypeCache.System_UInt16) {
+			fieldName = "UInt16Value";
+		} else if (wrappedNumberType == TypeCache.System_SByte) {
+			fieldName = "SByteValue";
+		} else if (wrappedNumberType == TypeCache.System_Byte) {
+			fieldName = "ByteValue";
+		} else if (wrappedNumberType == TypeCache.System_Boolean) {
+			fieldName = "BoolValue";
+		} else if (wrappedNumberType == TypeCache.System_nint) {
+			fieldName = "NIntValue";
+		} else if (wrappedNumberType == TypeCache.System_nuint) {
+			fieldName = "NUIntValue";
+		} else {
+			return false;
+		}
+
+		return true;
+	}
+
+	void ValidateStrongEnumBackingTypeInStrongDictionaryType (PropertyInfo property, Type enumBackingType)
+	{
+		if (enumBackingType == TypeCache.NSString)
+			return;
+		if (enumBackingType == TypeCache.NSNumber)
+			return;
+
+		exceptions.Add (ErrorHelper.CreateError (1121 /* The strong enum '{0}' is not a valid strong dictionary field for the property '{1}.{2}', because its backing type is '{3}'. Only enums with backing type 'NSString' or 'NSNumber' are supported in strong dictionaries. */, property.PropertyType.Name, property.DeclaringType.FullName, property.Name, enumBackingType.FullName));
+	}
+
 	//
 	// Processes the various StrongDictionaryAttribute interfaces
 	//
@@ -1849,41 +1934,32 @@ public partial class Generator : IMemberGatherer {
 					string castToUnderlying = "";
 					string castToEnum = "";
 					bool isNativeEnum = false;
+					Type? enumBackingType = null;
 
 					if (pi.PropertyType.IsEnum) {
-						fetchType = pi.PropertyType.GetEnumUnderlyingType ();
-						castToUnderlying = "(" + fetchType + "?)";
-						castToEnum = "(" + TypeManager.FormatType (dictType, pi.PropertyType) + "?)";
-						isNativeEnum = IsNativeEnum (pi.PropertyType);
+						if (IsEnumBackedByNativeType (pi.PropertyType, out enumBackingType)) {
+							ValidateStrongEnumBackingTypeInStrongDictionaryType (pi, enumBackingType);
+							fetchType = enumBackingType;
+						} else {
+							fetchType = pi.PropertyType.GetEnumUnderlyingType ();
+							castToUnderlying = "(" + fetchType + "?)";
+							castToEnum = "(" + TypeManager.FormatType (dictType, pi.PropertyType) + "?)";
+							isNativeEnum = IsNativeEnum (pi.PropertyType);
+						}
 					}
 					if (pi.PropertyType.IsValueType) {
-						if (pi.PropertyType == TypeCache.System_Boolean) {
-							getter = "{1} GetBoolValue ({0})";
-							setter = "SetBooleanValue ({0}, {1}value)";
-						} else if (fetchType == TypeCache.System_Int32) {
-							getter = "{1} GetInt32Value ({0})";
+						if (enumBackingType is not null) {
+							getter = "TryGetNativeValue ({0}, out var handle) ? " + TypeManager.FormatType (null, pi.PropertyType) + "Extensions.GetNullableValue (handle) : null";
+							setter = "SetNativeValue ({0}, value.HasValue ? value.Value.GetConstant () : null)";
+						} else if (isNativeEnum && fetchType == TypeCache.System_Int64) {
+							getter = "{1} (long?) GetNIntValue ({0})";
 							setter = "SetNumberValue ({0}, {1}value)";
-						} else if (fetchType == TypeCache.System_nint) {
-							getter = "{1} GetNIntValue ({0})";
+						} else if (isNativeEnum && fetchType == TypeCache.System_UInt64) {
+							getter = "{1} (ulong?) GetNUIntValue ({0})";
 							setter = "SetNumberValue ({0}, {1}value)";
-						} else if (fetchType == TypeCache.System_Int64) {
-							getter = "{1} GetLongValue ({0})";
-							setter = "SetNumberValue ({0}, {1}value)";
-						} else if (fetchType == TypeCache.System_UInt64) {
-							getter = "{1} GetULongValue ({0})";
-							setter = "SetNumberValue ({0}, {1}value)";
-						} else if (pi.PropertyType == TypeCache.System_Float) {
-							getter = "{1} GetFloatValue ({0})";
-							setter = "SetNumberValue ({0}, {1}value)";
-						} else if (pi.PropertyType == TypeCache.System_Double) {
-							getter = "{1} GetDoubleValue ({0})";
-							setter = "SetNumberValue ({0}, {1}value)";
-						} else if (fetchType == TypeCache.System_UInt32) {
-							getter = "{1} GetUInt32Value ({0})";
-							setter = "SetNumberValue ({0}, {1}value)";
-						} else if (fetchType == TypeCache.System_nuint) {
-							getter = "{1} GetNUIntValue ({0})";
-							setter = "SetNumberValue ({0}, {1}value)";
+						} else if (TryGetNSNumberStrongDictionaryMethods (fetchType, out var getNSNumber, out var setNSNumber)) {
+							getter = "{1} " + getNSNumber + " ({0})";
+							setter = setNSNumber + " ({0}, {1}value)";
 						} else if (fetchType == TypeCache.System_DateTime) {
 							getter = "GetDateTimeValue ({0})";
 							setter = "SetNativeValue ({0}, (NSDate?) value)";
@@ -1899,15 +1975,12 @@ public partial class Generator : IMemberGatherer {
 						} else if (Frameworks.HaveCoreMedia && fetchType == TypeCache.CMTime) {
 							getter = "{1} GetCMTimeValue ({0})";
 							setter = "SetCMTimeValue ({0}, {1}value)";
-						} else if (isNativeEnum && fetchType == TypeCache.System_Int64) {
-							getter = "{1} (long?) GetNIntValue ({0})";
-							setter = "SetNumberValue ({0}, {1}value)";
-						} else if (isNativeEnum && fetchType == TypeCache.System_UInt64) {
-							getter = "{1} (ulong?) GetNUIntValue ({0})";
-							setter = "SetNumberValue ({0}, {1}value)";
 						} else if (fetchType == TypeCache.UIEdgeInsets) {
 							getter = "{1} GetUIEdgeInsets ({0})";
 							setter = "SetUIEdgeInsets ({0}, {1}value)";
+						} else if (pi.PropertyType.Name == "NMatrix3") {
+							getter = "{1} GetNSDataAsValueType<" + TypeManager.FormatType (null, pi.PropertyType) + "> ({0})";
+							setter = "SetValueTypeAsNSData ({0}, {1}value)";
 						} else {
 							exceptions.Add (new BindingException (1033, true, pi.PropertyType, dictType, pi.Name));
 							continue;
@@ -1915,22 +1988,39 @@ public partial class Generator : IMemberGatherer {
 					} else {
 						if (pi.PropertyType.IsArray) {
 							var elementType = pi.PropertyType.GetElementType ();
-							if (TypeManager.IsWrappedType (elementType)) {
+							if (TypeManager.IsDictionaryContainerType (elementType)) {
+								var dictElementType = TypeManager.FormatType (dictType, elementType);
+								getter = $"GetArrayOfDictionariesValue<{dictElementType}> ({{0}})";
+								setter = "SetArrayOfDictionariesValue ({0}, value)";
+							} else if (TypeCache.INativeObject.IsAssignableFrom (elementType)) {
+								var dictElementType = TypeManager.FormatType (dictType, elementType);
+								getter = "GetArray<" + dictElementType + "> ({0}, (ptr) => Runtime.GetINativeObject<" + dictElementType + "> (ptr, false)!)";
+								setter = "SetArrayValue ({0}, value)";
+							} else if (TypeManager.IsWrappedType (elementType)) {
 								getter = "GetArray<" + TypeManager.FormatType (dictType, elementType) + "> ({0})";
 								setter = "SetArrayValue ({0}, value)";
-							} else if (elementType.IsEnum) {
-								// Handle arrays of enums as arrays of NSNumbers, casted to the enum
+							} else if (IsEnumBackedByNativeType (elementType, out enumBackingType)) {
+								ValidateStrongEnumBackingTypeInStrongDictionaryType (pi, enumBackingType);
+
 								var enumTypeStr = TypeManager.FormatType (null, elementType);
-								getter = "GetArray<" + enumTypeStr +
-									"> ({0}, (ptr)=> {{\n\tusing (var num = Runtime.GetNSObject<NSNumber> (ptr)!){{\n\t\treturn (" +
-									enumTypeStr + ") num.Int32Value;\n\t}}\n}})";
-								setter = "SetArrayValue<" + enumTypeStr + "> ({0}, value)";
+								getter = "{1} GetArray<" + enumTypeStr + "> ({0}, (ptr) => ptr == NativeHandle.Zero ? default (" + enumTypeStr + ") : " + enumTypeStr + "Extensions.GetValue (ptr))";
+								setter = "SetArrayValue<" + enumTypeStr + "> ({0}, value, (element) => Runtime.RetainAndAutoreleaseNSObject (element.GetConstant ()))";
+							} else if (elementType.IsEnum) {
+								var underlyingEnumType = elementType.GetEnumUnderlyingType ();
+								if (!TryGetNSNumberField (underlyingEnumType, out var fieldName))
+									exceptions.Add (ErrorHelper.CreateError (1122 /* Unable to find the corresponding NSNumber property for the type {0} in {1}.{2} */, underlyingEnumType.FullName, pi.DeclaringType.FullName, pi.Name));
+
+								// Handle arrays of enums as arrays of NSNumbers
+								var enumTypeStr = TypeManager.FormatType (null, elementType);
+								getter = "GetArray<" + enumTypeStr + "> ({0}, (ptr) => (" + enumTypeStr + "?) Runtime.GetNSObjectChecked<NSNumber> (ptr)?." + fieldName + " ?? default (" + enumTypeStr + "))";
+								setter = "SetArrayValue<" + enumTypeStr + "> ({0}, value, (element) => Runtime.RetainAndAutoreleaseNSObject (new NSNumber ((" + TypeManager.FormatType (null, underlyingEnumType) + ") element)))";
 							} else if (elementType == TypeCache.System_String) {
 								getter = "GetArray<string> ({0}, (ptr) => CFString.FromHandle (ptr)!)";
 								setter = "SetArrayValue ({0}, value)";
-							} else if (elementType.Name == "CTFontDescriptor") {
-								getter = "GetArray<CTFontDescriptor> ({0}, (ptr) => new CTFontDescriptor (ptr, false))";
-								setter = "SetArrayValue ({0}, value)";
+							} else if (TryGetNSNumberField (elementType, out var fieldName)) {
+								var renderedElementType = TypeManager.RenderType (elementType);
+								getter = "GetArray<" + renderedElementType + "> ({0}, (ptr) => (" + renderedElementType + "?) Runtime.GetNSObjectChecked<NSNumber> (ptr)?." + fieldName + " ?? default (" + renderedElementType + "))";
+								setter = "SetArrayValue<" + renderedElementType + "> ({0}, value)";
 							} else {
 								exceptions.Add (new BindingException (1033, true, pi.PropertyType, dictType, pi.Name));
 								continue;
@@ -1953,7 +2043,7 @@ public partial class Generator : IMemberGatherer {
 						} else if (TypeManager.IsDictionaryContainerType (pi.PropertyType) || AttributeManager.HasAttribute<StrongDictionaryAttribute> (pi)) {
 							var strType = pi.PropertyType.Name;
 							getter = $"GetStrongDictionary<{strType}>({{0}}, (dict) => new {strType} (dict))";
-							setter = "SetNativeValue ({0}, value.GetDictionary ())";
+							setter = "SetNativeValue ({0}, value?.Dictionary)";
 						} else if (TypeCache.INativeObject.IsAssignableFrom (pi.PropertyType)) {
 							getter = $"GetNativeValue<{pi.PropertyType}> ({{0}})";
 							setter = "SetNativeValue ({0}, value)";
@@ -6151,8 +6241,10 @@ public partial class Generator : IMemberGatherer {
 			if (field_exports.Count != 0) {
 				foreach (var field_pi in field_exports.OrderBy (f => f.Name, StringComparer.Ordinal)) {
 					var fieldAttr = AttributeManager.GetCustomAttribute<FieldAttribute> (field_pi);
-					if (!TryComputeLibraryName (fieldAttr?.LibraryName, type, out string library_name, out string library_path))
-						throw ErrorHelper.CreateError (1042, /* Missing '[Field (LibraryName=value)]' for {0} (e.g."__Internal") */ type.FullName + "." + field_pi.Name);
+					if (!TryComputeLibraryName (fieldAttr?.LibraryName, type, out string library_name, out string library_path)) {
+						exceptions.Add (ErrorHelper.CreateError (1042, /* Missing '[Field (LibraryName=value)]' for {0} (e.g."__Internal") */ type.FullName + "." + field_pi.Name));
+						continue;
+					}
 
 					string fieldTypeName;
 					string smartEnumTypeName = null;

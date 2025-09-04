@@ -1158,5 +1158,23 @@ namespace bgen {
                 return ResourceManager.GetString("BI1120", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The strong enum &apos;{0}&apos; is not a valid strong dictionary field for the property &apos;{1}.{2}&apos;, because its backing type is &apos;{3}&apos;. Only enums with backing type &apos;NSString&apos; or &apos;NSNumber&apos; are supported in strong dictionaries..
+        /// </summary>
+        internal static string BI1121 {
+            get {
+                return ResourceManager.GetString("BI1121", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to find the corresponding NSNumber property for the type {0} in {1}.{2}.
+        /// </summary>
+        internal static string BI1122 {
+            get {
+                return ResourceManager.GetString("BI1122", resourceCulture);
+            }
+        }
     }
 }

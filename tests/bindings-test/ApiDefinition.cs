@@ -1,5 +1,8 @@
 using System;
+using System.Numerics;
 
+using CoreGraphics;
+using CoreMedia;
 using ObjCRuntime;
 using Foundation;
 #if __MACOS__
@@ -572,5 +575,241 @@ namespace Bindings.Test {
 		[Export ("getConsumer")]
 		[Static]
 		IVeryGenericConsumerProtocol GetConsumer ();
+	}
+
+	enum StrongEnum {
+		[Field ("StrongEnumA", LibraryName = "__Internal")]
+		A,
+
+		[Field ("StrongEnumB", LibraryName = "__Internal")]
+		B,
+
+		[Field ("StrongEnumC", LibraryName = "__Internal")]
+		C,
+	}
+
+	[Partial]
+	interface StrongDictionaryKeys {
+		// simple types
+		[Field ("StrongDictionarySByteField", LibraryName = "__Internal")]
+		NSString SByteField { get; }
+
+		[Field ("StrongDictionaryInt16Field", LibraryName = "__Internal")]
+		NSString Int16Field { get; }
+
+		[Field ("StrongDictionaryInt32Field", LibraryName = "__Internal")]
+		NSString Int32Field { get; }
+
+		[Field ("StrongDictionaryInt64Field", LibraryName = "__Internal")]
+		NSString Int64Field { get; }
+
+		[Field ("StrongDictionaryByteField", LibraryName = "__Internal")]
+		NSString ByteField { get; }
+
+		[Field ("StrongDictionaryUInt16Field", LibraryName = "__Internal")]
+		NSString UInt16Field { get; }
+
+		[Field ("StrongDictionaryUInt32Field", LibraryName = "__Internal")]
+		NSString UInt32Field { get; }
+
+		[Field ("StrongDictionaryUInt64Field", LibraryName = "__Internal")]
+		NSString UInt64Field { get; }
+
+		[Field ("StrongDictionaryNIntField", LibraryName = "__Internal")]
+		NSString NIntField { get; }
+
+		[Field ("StrongDictionaryNUIntField", LibraryName = "__Internal")]
+		NSString NUIntField { get; }
+
+		[Field ("StrongDictionarySingleField", LibraryName = "__Internal")]
+		NSString SingleField { get; }
+
+		[Field ("StrongDictionaryDoubleField", LibraryName = "__Internal")]
+		NSString DoubleField { get; }
+
+		[Field ("StrongDictionaryNFloatField", LibraryName = "__Internal")]
+		NSString NFloatField { get; }
+
+		[Field ("StrongDictionaryNSObjectField", LibraryName = "__Internal")]
+		NSString NSObjectField { get; }
+
+		[Field ("StrongDictionaryBooleanField", LibraryName = "__Internal")]
+		NSString BooleanField { get; }
+
+		[Field ("StrongDictionaryNSStringField", LibraryName = "__Internal")]
+		NSString NSStringField { get; }
+
+		[Field ("StrongDictionaryNSDateField", LibraryName = "__Internal")]
+		NSString NSDateField { get; }
+
+		[Field ("StrongDictionaryNSDictionaryField", LibraryName = "__Internal")]
+		NSString NSDictionaryField { get; }
+
+		[Field ("StrongDictionaryStrongDictionaryField", LibraryName = "__Internal")]
+		NSString NSStrongDictionaryField { get; }
+
+		[Field ("StrongDictionaryStrongEnumField", LibraryName = "__Internal")]
+		NSString StrongEnumField { get; }
+
+		// arrays of the above
+
+		[Field ("StrongDictionaryArrayOfSByteField", LibraryName = "__Internal")]
+		NSString ArrayOfSByteField { get; }
+
+		[Field ("StrongDictionaryArrayOfInt16Field", LibraryName = "__Internal")]
+		NSString ArrayOfInt16Field { get; }
+
+		[Field ("StrongDictionaryArrayOfInt32Field", LibraryName = "__Internal")]
+		NSString ArrayOfInt32Field { get; }
+
+		[Field ("StrongDictionaryArrayOfInt64Field", LibraryName = "__Internal")]
+		NSString ArrayOfInt64Field { get; }
+
+		[Field ("StrongDictionaryArrayOfByteField", LibraryName = "__Internal")]
+		NSString ArrayOfByteField { get; }
+
+		[Field ("StrongDictionaryArrayOfUInt16Field", LibraryName = "__Internal")]
+		NSString ArrayOfUInt16Field { get; }
+
+		[Field ("StrongDictionaryArrayOfUInt32Field", LibraryName = "__Internal")]
+		NSString ArrayOfUInt32Field { get; }
+
+		[Field ("StrongDictionaryArrayOfUInt64Field", LibraryName = "__Internal")]
+		NSString ArrayOfUInt64Field { get; }
+
+		[Field ("StrongDictionaryArrayOfNIntField", LibraryName = "__Internal")]
+		NSString ArrayOfNIntField { get; }
+
+		[Field ("StrongDictionaryArrayOfNUIntField", LibraryName = "__Internal")]
+		NSString ArrayOfNUIntField { get; }
+
+		[Field ("StrongDictionaryArrayOfSingleField", LibraryName = "__Internal")]
+		NSString ArrayOfSingleField { get; }
+
+		[Field ("StrongDictionaryArrayOfDoubleField", LibraryName = "__Internal")]
+		NSString ArrayOfDoubleField { get; }
+
+		[Field ("StrongDictionaryArrayOfNFloatField", LibraryName = "__Internal")]
+		NSString ArrayOfNFloatField { get; }
+
+		[Field ("StrongDictionaryArrayOfNSObjectField", LibraryName = "__Internal")]
+		NSString ArrayOfNSObjectField { get; }
+
+		[Field ("StrongDictionaryArrayOfBooleanField", LibraryName = "__Internal")]
+		NSString ArrayOfBooleanField { get; }
+
+		[Field ("StrongDictionaryArrayOfNSStringField", LibraryName = "__Internal")]
+		NSString ArrayOfNSStringField { get; }
+
+		[Field ("StrongDictionaryArrayOfNSDateField", LibraryName = "__Internal")]
+		NSString ArrayOfNSDateField { get; }
+
+		[Field ("StrongDictionaryArrayOfNSDictionaryField", LibraryName = "__Internal")]
+		NSString ArrayOfNSDictionaryField { get; }
+
+		[Field ("StrongDictionaryArrayOfStrongDictionaryField", LibraryName = "__Internal")]
+		NSString ArrayOfStrongDictionaryField { get; }
+
+		[Field ("StrongDictionaryArrayOfStrongEnumField", LibraryName = "__Internal")]
+		NSString ArrayOfStrongEnumField { get; }
+
+		// other fields
+
+		[Field ("StrongDictionaryStringField", LibraryName = "__Internal")]
+		NSString StringField { get; }
+
+		[Field ("StrongDictionaryDateTimeField", LibraryName = "__Internal")]
+		NSString DateTimeField { get; }
+
+		[Field ("StrongDictionaryGenericNSDictionaryField", LibraryName = "__Internal")]
+		NSString GenericNSDictionaryField { get; }
+
+		[Field ("StrongDictionaryArrayOfStringField", LibraryName = "__Internal")]
+		NSString ArrayOfStringField { get; }
+
+		[Field ("StrongDictionaryNSDataField", LibraryName = "__Internal")]
+		NSString NSDataField { get; }
+
+		[Field ("StrongDictionaryNSDataAsMatrix3Field", LibraryName = "__Internal")]
+		NSString NSDataAsMatrix3Field { get; }
+
+		[Field ("StrongDictionaryCGRectField", LibraryName = "__Internal")]
+		NSString CGRectField { get; }
+
+		[Field ("StrongDictionaryCGSizeField", LibraryName = "__Internal")]
+		NSString CGSizeField { get; }
+
+		[Field ("StrongDictionaryCGPointField", LibraryName = "__Internal")]
+		NSString CGPointField { get; }
+
+		[Field ("StrongDictionaryCMTimeField", LibraryName = "__Internal")]
+		NSString CMTimeField { get; }
+
+#if !__MACOS__
+		[Field ("StrongDictionaryUIEdgeInsetsField", LibraryName = "__Internal")]
+		NSString UIEdgeInsetsField { get; }
+#endif // !__MACOS__
+	}
+
+	[StrongDictionary ("StrongDictionaryKeys", Suffix = "")]
+	interface WrappedNSDictionary {
+		// simple types
+		sbyte SByteField { get; set; }
+		short Int16Field { get; set; }
+		int Int32Field { get; set; }
+		long Int64Field { get; set; }
+		byte ByteField { get; set; }
+		ushort UInt16Field { get; set; }
+		uint UInt32Field { get; set; }
+		ulong UInt64Field { get; set; }
+		nint NIntField { get; set; }
+		nuint NUIntField { get; set; }
+		float SingleField { get; set; }
+		double DoubleField { get; set; }
+		nfloat NFloatField { get; set; }
+		NSObject NSObjectField { get; set; }
+		bool BooleanField { get; set; }
+		NSString NSStringField { get; set; }
+		NSDate NSDateField { get; set; }
+		NSDictionary NSDictionaryField { get; set; }
+		WrappedNSDictionary NSStrongDictionaryField { get; set; }
+		StrongEnum StrongEnumField { get; set; }
+
+		// arrays of the above
+		sbyte [] ArrayOfSByteField { get; set; }
+		short [] ArrayOfInt16Field { get; set; }
+		int [] ArrayOfInt32Field { get; set; }
+		long [] ArrayOfInt64Field { get; set; }
+		byte [] ArrayOfByteField { get; set; }
+		ushort [] ArrayOfUInt16Field { get; set; }
+		uint [] ArrayOfUInt32Field { get; set; }
+		ulong [] ArrayOfUInt64Field { get; set; }
+		nint [] ArrayOfNIntField { get; set; }
+		nuint [] ArrayOfNUIntField { get; set; }
+		float [] ArrayOfSingleField { get; set; }
+		double [] ArrayOfDoubleField { get; set; }
+		nfloat [] ArrayOfNFloatField { get; set; }
+		NSObject [] ArrayOfNSObjectField { get; set; }
+		bool [] ArrayOfBooleanField { get; set; }
+		NSString [] ArrayOfNSStringField { get; set; }
+		NSDate [] ArrayOfNSDateField { get; set; }
+		NSDictionary [] ArrayOfNSDictionaryField { get; set; }
+		WrappedNSDictionary [] ArrayOfStrongDictionaryField { get; set; }
+		StrongEnum [] ArrayOfStrongEnumField { get; set; }
+
+		// other fields
+		string StringField { get; set; }
+		DateTime DateTimeField { get; set; }
+		NSDictionary<NSString, NSObject> GenericNSDictionaryField { get; set; }
+		string [] ArrayOfStringField { get; set; }
+		NSData NSDataField { get; set; }
+		NMatrix3 NSDataAsMatrix3Field { get; set; }
+		CGRect CGRectField { get; set; }
+		CGSize CGSizeField { get; set; }
+		CGPoint CGPointField { get; set; }
+		CMTime CMTimeField { get; set; }
+#if !__MACOS__
+		UIEdgeInsets UIEdgeInsetsField { get; set; }
+#endif // !__MACOS____MACOS__
 	}
 }

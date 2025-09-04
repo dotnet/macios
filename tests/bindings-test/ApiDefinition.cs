@@ -588,6 +588,12 @@ namespace Bindings.Test {
 		C,
 	}
 
+	enum NormalEnum {
+		X,
+		Y,
+		Z,
+	}
+
 	[Partial]
 	interface StrongDictionaryKeys {
 		// simple types
@@ -651,6 +657,10 @@ namespace Bindings.Test {
 		[Field ("StrongDictionaryStrongEnumField", LibraryName = "__Internal")]
 		NSString StrongEnumField { get; }
 
+		[Field ("StrongDictionaryNormalEnumField", LibraryName = "__Internal")]
+		NSString NormalEnumField { get; }
+
+
 		// arrays of the above
 
 		[Field ("StrongDictionaryArrayOfSByteField", LibraryName = "__Internal")]
@@ -713,6 +723,9 @@ namespace Bindings.Test {
 		[Field ("StrongDictionaryArrayOfStrongEnumField", LibraryName = "__Internal")]
 		NSString ArrayOfStrongEnumField { get; }
 
+		[Field ("StrongDictionaryArrayOfNormalEnumField", LibraryName = "__Internal")]
+		NSString ArrayOfNormalEnumField { get; }
+
 		// other fields
 
 		[Field ("StrongDictionaryStringField", LibraryName = "__Internal")]
@@ -774,6 +787,7 @@ namespace Bindings.Test {
 		NSDictionary NSDictionaryField { get; set; }
 		WrappedNSDictionary NSStrongDictionaryField { get; set; }
 		StrongEnum StrongEnumField { get; set; }
+		NormalEnum NormalEnumField { get; set; }
 
 		// arrays of the above
 		sbyte [] ArrayOfSByteField { get; set; }
@@ -796,6 +810,7 @@ namespace Bindings.Test {
 		NSDictionary [] ArrayOfNSDictionaryField { get; set; }
 		WrappedNSDictionary [] ArrayOfStrongDictionaryField { get; set; }
 		StrongEnum [] ArrayOfStrongEnumField { get; set; }
+		NormalEnum [] ArrayOfNormalEnumField { get; set; }
 
 		// other fields
 		string StringField { get; set; }

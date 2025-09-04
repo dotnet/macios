@@ -390,6 +390,13 @@ namespace MonoTouchFixtures.Foundation {
 				wrapped.StrongEnumField = null;
 				Assert.IsNull (wrapped.StrongEnumField, "StrongEnumField - final");
 
+				Assert.IsNull (wrapped.NormalEnumField, "NormalEnumField");
+				var valueNormalEnumField = NormalEnum.Z;
+				wrapped.NormalEnumField = valueNormalEnumField;
+				Assert.AreEqual (valueNormalEnumField, wrapped.NormalEnumField, "NormalEnumField - set");
+				wrapped.NormalEnumField = null;
+				Assert.IsNull (wrapped.NormalEnumField, "NormalEnumField - final");
+
 				Assert.IsNull (wrapped.ArrayOfSByteField, "ArrayOfSByteField");
 				var valueArrayOfSByteField = new sbyte [] { 1, 2, 3 };
 				wrapped.ArrayOfSByteField = valueArrayOfSByteField;
@@ -529,6 +536,13 @@ namespace MonoTouchFixtures.Foundation {
 				Assert.AreEqual (valueArrayOfStrongEnumField, wrapped.ArrayOfStrongEnumField, "ArrayOfStrongEnumField - set");
 				wrapped.ArrayOfStrongEnumField = null;
 				Assert.IsNull (wrapped.ArrayOfStrongEnumField, "ArrayOfStrongEnumField - final");
+
+				Assert.IsNull (wrapped.ArrayOfNormalEnumField, "ArrayOfNormalEnumField");
+				var valueArrayOfNormalEnumField = new NormalEnum [] { NormalEnum.X, NormalEnum.Y };
+				wrapped.ArrayOfNormalEnumField = valueArrayOfNormalEnumField;
+				Assert.AreEqual (valueArrayOfNormalEnumField, wrapped.ArrayOfNormalEnumField, "ArrayOfNormalEnumField - set");
+				wrapped.ArrayOfNormalEnumField = null;
+				Assert.IsNull (wrapped.ArrayOfNormalEnumField, "ArrayOfNormalEnumField - final");
 
 				Assert.IsNull (wrapped.StringField, "StringField");
 				var valueStringField = "managed string";

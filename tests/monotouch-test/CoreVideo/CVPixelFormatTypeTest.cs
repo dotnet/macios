@@ -16,6 +16,8 @@ public class CVPixelFormatTypeTest {
 	[Test]
 	public void Extensions ()
 	{
+		TestRuntime.AssertXcodeVersion (26, 0);
+
 		Assert.Multiple (() => {
 			Assert.That (CVPixelFormatType.CV32BGRA.ToFourCharCodeString (), Is.EqualTo ("BGRA"));
 			Assert.That (CVPixelFormatType.CV1Monochrome.ToFourCharCodeString (), Is.EqualTo ("1"));

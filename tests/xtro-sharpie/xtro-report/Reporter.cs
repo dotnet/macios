@@ -89,7 +89,7 @@ namespace Extrospection {
 			var indexPath = Path.Combine (ReportFolder, "index.html");
 			var log = new StreamWriter (indexPath);
 
-#region "Setup HTML Header and styles"
+			#region "Setup HTML Header and styles"
 			log.WriteLine ("<html><head><title>Extrospection results</title>"
 				+ @"<style>
 									:root {
@@ -180,7 +180,7 @@ namespace Extrospection {
 				+ "<span>Dark Mode</span>"
 				+ "</label></div>"
 				+ "<h1>Extrospection results</h1>");
-#endregion "Setup HTML Header and styles"
+			#endregion "Setup HTML Header and styles"
 
 			log.WriteLine ("<table border='0' cellpadding='4' cellspacing='0'>");
 

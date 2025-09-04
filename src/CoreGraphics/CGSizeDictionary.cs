@@ -10,12 +10,12 @@ public class CGSizeDictionary : DictionaryContainer {
 #if !COREBUILD
 	/// <summary>Creates a new <see cref="CGSizeDictionary" /> with default (empty) values.</summary>
 	[Preserve (Conditional = true)]
-	public CGSizeDictionary () : base (new NSMutableDictionary ()) {}
+	public CGSizeDictionary () : base (new NSMutableDictionary ()) { }
 
 	/// <summary>Creates a new <see cref="CGSizeDictionary" /> from the values that are specified in <paramref name="dictionary" />.</summary>
 	/// <param name="dictionary">The dictionary to use to populate the properties of this type.</param>
 	[Preserve (Conditional = true)]
-	public CGSizeDictionary (NSDictionary? dictionary) : base (dictionary) {}
+	public CGSizeDictionary (NSDictionary? dictionary) : base (dictionary) { }
 
 	/// <summary>The width component of the <see cref="CGSize" />.</summary>
 	public nfloat? Width {

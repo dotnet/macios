@@ -10,12 +10,12 @@ public class CGPointDictionary : DictionaryContainer {
 #if !COREBUILD
 	/// <summary>Creates a new <see cref="CGPointDictionary" /> with default (empty) values.</summary>
 	[Preserve (Conditional = true)]
-	public CGPointDictionary () : base (new NSMutableDictionary ()) {}
+	public CGPointDictionary () : base (new NSMutableDictionary ()) { }
 
 	/// <summary>Creates a new <see cref="CGPointDictionary" /> from the values that are specified in <paramref name="dictionary" />.</summary>
 	/// <param name="dictionary">The dictionary to use to populate the properties of this type.</param>
 	[Preserve (Conditional = true)]
-	public CGPointDictionary (NSDictionary? dictionary) : base (dictionary) {}
+	public CGPointDictionary (NSDictionary? dictionary) : base (dictionary) { }
 
 	/// <summary>The X component of the <see cref="CGPoint" />.</summary>
 	public nfloat? X {

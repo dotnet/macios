@@ -14,6 +14,8 @@ namespace MonoTouchFixtures.CoreGraphics {
 		[Test]
 		public void DefaultValuesTest ()
 		{
+			TestRuntime.AssertXcodeVersion (16, 0);
+
 			var t = new CGContentToneMappingInfo ();
 			Assert.AreEqual (CGToneMapping.Default, t.Method, "Method");
 			Assert.IsNull (t.Options, "Options");
@@ -23,6 +25,8 @@ namespace MonoTouchFixtures.CoreGraphics {
 		[Test]
 		public void PropertySetGetTest ()
 		{
+			TestRuntime.AssertXcodeVersion (16, 0);
+
 			var t = new CGContentToneMappingInfo ();
 			t.Method = CGToneMapping.ImageSpecificLumaScaling;
 			Assert.AreEqual (CGToneMapping.ImageSpecificLumaScaling, t.Method, "Method#1");

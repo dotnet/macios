@@ -516,7 +516,6 @@
 !missing-pinvoke! CFDictionaryCreateMutableCopy is not bound
 !missing-pinvoke! CFDictionaryGetCountOfKey is not bound
 !missing-pinvoke! CFDictionaryGetCountOfValue is not bound
-!missing-pinvoke! CFDictionaryGetValueIfPresent is not bound
 !missing-pinvoke! CFDictionaryRemoveAllValues is not bound
 !missing-pinvoke! CFDictionaryRemoveValue is not bound
 !missing-pinvoke! CFDictionaryReplaceValue is not bound

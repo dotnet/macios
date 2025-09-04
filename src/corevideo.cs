@@ -956,6 +956,7 @@ namespace CoreVideo {
 		NSString BitsPerComponent { get; }
 	}
 
+#if !XAMCORE_5_0
 	[Partial]
 	interface CVPixelFormatComponentRangeKeys {
 		[Field ("kCVPixelFormatComponentRange_VideoRange")]
@@ -980,6 +981,23 @@ namespace CoreVideo {
 		// there's no documentation about the type, so binding as NSObject
 		NSObject WideRange { get; set; }
 	}
+#endif // !XAMCORE_5_0
+
+#if XAMCORE_5_0
+	enum CVPixelFormatComponentRange {
+#else
+	enum CVPixelFormatComponentRangeValues {
+#endif
+		[Field ("kCVPixelFormatComponentRange_VideoRange")]
+		VideoRange,
+
+		[Field ("kCVPixelFormatComponentRange_FullRange")]
+		FullRange,
+
+		[Field ("kCVPixelFormatComponentRange_WideRange")]
+		WideRange,
+	}
+
 
 	[StrongDictionary ("CVPixelFormatKeys", Suffix = "")]
 	interface CVPixelFormatDescription {
@@ -1019,7 +1037,17 @@ namespace CoreVideo {
 		bool FormatContainsSenselArray { get; set; }
 #endif
 
+#if XAMCORE_6_0
 		CVPixelFormatComponentRange ComponentRange { get; set; }
+#elif XAMCORE_5_0
+		CVPixelFormatComponentRange ComponentRange { get; set; }
+		[Export ("ComponentRange")]
+		[Obsolete ("Use 'ComponentRange' instead.")]
+		CVPixelFormatComponentRange ComponentRangeValue { get; set; }
+#else
+		[Export ("ComponentRange")]
+		CVPixelFormatComponentRangeValues ComponentRangeValue { get; set; }
+#endif
 
 		// This can be an array of dictionaries, or a single dictionary when there's only one plane, so we have to type as 'NSObject'.
 		NSObject Planes { get; set; }

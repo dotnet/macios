@@ -1,3 +1,5 @@
+#if HAS_SENSITIVECONTENTANALYSIS
+
 using System;
 
 using Foundation;
@@ -5,7 +7,6 @@ using SensitiveContentAnalysis;
 
 using NUnit.Framework;
 
-#if HAS_SENSITIVECONTENTANALYSIS
 
 namespace MonoTouchFixtures.SensitiveContentAnalysis;
 

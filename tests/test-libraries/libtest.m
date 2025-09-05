@@ -37,6 +37,7 @@ NSString *StrongDictionaryNSDateField = @"StrongDictionaryNSDateField";
 NSString *StrongDictionaryNSDictionaryField = @"StrongDictionaryNSDictionaryField";
 NSString *StrongDictionaryStrongDictionaryField = @"StrongDictionaryStrongDictionaryField";
 NSString *StrongDictionaryStrongEnumField = @"StrongDictionaryStrongEnumField";
+NSString *StrongDictionaryNormalEnumField = @"StrongDictionaryNormalEnumField";
 // arrays of the above
 NSString *StrongDictionaryArrayOfSByteField = @"StrongDictionaryArrayOfSByteField";
 NSString *StrongDictionaryArrayOfInt16Field = @"StrongDictionaryArrayOfInt16Field";
@@ -58,6 +59,7 @@ NSString *StrongDictionaryArrayOfNSDateField = @"StrongDictionaryArrayOfNSDateFi
 NSString *StrongDictionaryArrayOfNSDictionaryField = @"StrongDictionaryArrayOfNSDictionaryField";
 NSString *StrongDictionaryArrayOfStrongDictionaryField = @"StrongDictionaryArrayOfStrongDictionaryField";
 NSString *StrongDictionaryArrayOfStrongEnumField = @"StrongDictionaryArrayOfStrongEnumField";
+NSString *StrongDictionaryArrayOfNormalEnumField = @"StrongDictionaryArrayOfNormalEnumField";
 // other fields
 NSString *StrongDictionaryStringField = @"StrongDictionaryStringField";
 NSString *StrongDictionaryDateTimeField = @"StrongDictionaryDateTimeField";

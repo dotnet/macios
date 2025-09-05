@@ -436,4 +436,49 @@ public static class RgenDiagnostics {
 		description: new LocalizableResourceString (nameof (Resources.RBI0028Description), Resources.ResourceManager,
 			typeof (Resources))
 	);
+
+	/// <summary>
+	/// Diagnostic descriptor for when there is a mismatch between the number of arguments in a selector and the expected argument count.
+	/// </summary>
+	internal static readonly DiagnosticDescriptor RBI0029 = new (
+		"RBI0029",
+		new LocalizableResourceString (nameof (Resources.RBI0029Title), Resources.ResourceManager, typeof (Resources)),
+		new LocalizableResourceString (nameof (Resources.RBI0029MessageFormat), Resources.ResourceManager,
+			typeof (Resources)),
+		"Usage",
+		DiagnosticSeverity.Warning,
+		isEnabledByDefault: true,
+		description: new LocalizableResourceString (nameof (Resources.RBI0029Description), Resources.ResourceManager,
+			typeof (Resources))
+	);
+
+	/// <summary>
+	/// Diagnostic descriptor for when a field property has not been marked as static.
+	/// </summary>
+	internal static readonly DiagnosticDescriptor RBI0030 = new (
+		"RBI0030",
+		new LocalizableResourceString (nameof (Resources.RBI0030Title), Resources.ResourceManager, typeof (Resources)),
+		new LocalizableResourceString (nameof (Resources.RBI0030MessageFormat), Resources.ResourceManager,
+			typeof (Resources)),
+		"Usage",
+		DiagnosticSeverity.Warning,
+		isEnabledByDefault: true,
+		description: new LocalizableResourceString (nameof (Resources.RBI0030Description), Resources.ResourceManager,
+			typeof (Resources))
+	);
+
+	/// <summary>
+	/// Diagnostic descriptor for when a property has not been marked as partial.
+	/// </summary>
+	internal static readonly DiagnosticDescriptor RBI0031 = new (
+		"RBI0031",
+		new LocalizableResourceString (nameof (Resources.RBI0031Title), Resources.ResourceManager, typeof (Resources)),
+		new LocalizableResourceString (nameof (Resources.RBI0031MessageFormat), Resources.ResourceManager,
+			typeof (Resources)),
+		"Usage",
+		DiagnosticSeverity.Warning,
+		isEnabledByDefault: true,
+		description: new LocalizableResourceString (nameof (Resources.RBI0031Description), Resources.ResourceManager,
+			typeof (Resources))
+	);
 }

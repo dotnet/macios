@@ -1865,8 +1865,10 @@ public partial class Generator : IMemberGatherer {
 			return;
 		if (enumBackingType == TypeCache.NSNumber)
 			return;
+		if (enumBackingType == TypeCache.System_Int32)
+			return;
 
-		exceptions.Add (ErrorHelper.CreateError (1121 /* The strong enum '{0}' is not a valid strong dictionary field for the property '{1}.{2}', because its backing type is '{3}'. Only enums with backing type 'NSString' or 'NSNumber' are supported in strong dictionaries. */, property.PropertyType.Name, property.DeclaringType.FullName, property.Name, enumBackingType.FullName));
+		exceptions.Add (ErrorHelper.CreateError (1121 /* The strong enum '{0}' is not a valid strong dictionary field for the property '{1}.{2}', because its backing type is '{3}'. Only enums with backing type 'NSString', 'NSNumber' or 'System.Int32' are supported in strong dictionaries. */, property.PropertyType.Name, property.DeclaringType.FullName, property.Name, enumBackingType.FullName));
 	}
 
 	//
@@ -1949,8 +1951,15 @@ public partial class Generator : IMemberGatherer {
 					}
 					if (pi.PropertyType.IsValueType) {
 						if (enumBackingType is not null) {
-							getter = "TryGetNativeValue ({0}, out var handle) ? " + TypeManager.FormatType (null, pi.PropertyType) + "Extensions.GetNullableValue (handle) : null";
-							setter = "SetNativeValue ({0}, value.HasValue ? value.Value.GetConstant () : null)";
+							if (TryGetNSNumberStrongDictionaryMethods (enumBackingType, out var getNSNumber, out var setNSNumber)) {
+								getter = "(" + TypeManager.FormatType (null, pi.PropertyType) + "?) " + getNSNumber + " ({0})";
+								setter = setNSNumber + " ({0}, (" + TypeManager.FormatType (null, enumBackingType) + "?) value)";
+							} else if (enumBackingType == TypeCache.NSString || enumBackingType == TypeCache.NSNumber) {
+								getter = "TryGetNativeValue ({0}, out var handle) ? " + TypeManager.FormatType (null, pi.PropertyType) + "Extensions.GetNullableValue (handle) : null";
+								setter = "SetNativeValue ({0}, value.HasValue ? value.Value.GetConstant () : null)";
+							} else {
+								exceptions.Add (ErrorHelper.CreateError (99, $"Unexpected enum backing type: {enumBackingType}"));
+							}
 						} else if (isNativeEnum && fetchType == TypeCache.System_Int64) {
 							getter = "{1} (long?) GetNIntValue ({0})";
 							setter = "SetNumberValue ({0}, {1}value)";
@@ -2003,8 +2012,15 @@ public partial class Generator : IMemberGatherer {
 								ValidateStrongEnumBackingTypeInStrongDictionaryType (pi, enumBackingType);
 
 								var enumTypeStr = TypeManager.FormatType (null, elementType);
-								getter = "{1} GetArray<" + enumTypeStr + "> ({0}, (ptr) => ptr == NativeHandle.Zero ? default (" + enumTypeStr + ") : " + enumTypeStr + "Extensions.GetValue (ptr))";
-								setter = "SetArrayValue<" + enumTypeStr + "> ({0}, value, (element) => Runtime.RetainAndAutoreleaseNSObject (element.GetConstant ()))";
+								if (TryGetNSNumberField (enumBackingType, out var fieldName)) {
+									getter = "{1} GetArray<" + enumTypeStr + "> ({0}, (ptr) => (" + enumTypeStr + "?) Runtime.GetNSObjectChecked<NSNumber> (ptr)?." + fieldName + " ?? default (" + enumTypeStr + "))";
+									setter = "SetArrayValue<" + enumTypeStr + "> ({0}, value, (element) => Runtime.RetainAndAutoreleaseNSObject (new NSNumber ((" + TypeManager.FormatType (null, enumBackingType) + ") element)))";
+								} else if (enumBackingType == TypeCache.NSString || enumBackingType == TypeCache.NSNumber) {
+									getter = "{1} GetArray<" + enumTypeStr + "> ({0}, (ptr) => ptr == NativeHandle.Zero ? default (" + enumTypeStr + ") : " + enumTypeStr + "Extensions.GetValue (ptr))";
+									setter = "SetArrayValue<" + enumTypeStr + "> ({0}, value, (element) => Runtime.RetainAndAutoreleaseNSObject (element.GetConstant ()))";
+								} else {
+									exceptions.Add (ErrorHelper.CreateError (99, $"Unexpected enum backing type: {enumBackingType}"));
+								}
 							} else if (elementType.IsEnum) {
 								var underlyingEnumType = elementType.GetEnumUnderlyingType ();
 								if (!TryGetNSNumberField (underlyingEnumType, out var fieldName))

@@ -321,4 +321,46 @@
   <data name="RBI0027Title" xml:space="preserve">
         <value>Bad method name</value>
     </data>
+  <!-- RBI0028 -->
+  <data name="RBI0028Description" xml:space="preserve">
+        <value>A flag value was used on an attribute that does not support it and will be ignored.</value>
+    </data>
+  <data name="RBI0028MessageFormat" xml:space="preserve">
+        <value>The flag '{0}' is not supported on '{1}' and will be ignored</value>
+        <comment>The {0} is the name of the flag, {1} is the name of the attribute.</comment>
+    </data>
+  <data name="RBI0028Title" xml:space="preserve">
+        <value>Ignored flag</value>
+    </data>
+  <!-- RBI0029 -->
+  <data name="RBI0029Description" xml:space="preserve">
+        <value>There is a mismatch between the arguments of a method/property and the number of ':' in a selector.</value>
+    </data>
+  <data name="RBI0029MessageFormat" xml:space="preserve">
+        <value>There is a mismatch between the arguments of '{0}' (found {1}) and the selector '{2}' (found {3})</value>
+        <comment>The {0} is the name of the method or property, {1} is the argument count. {2} is the selector and {3} is its argument count</comment>
+    </data>
+  <data name="RBI0029Title" xml:space="preserve">
+        <value>Selector argument mismatch</value>
+    </data>
+  <!-- RBI0030 -->
+  <data name="RBI0030Description" xml:space="preserve">
+        <value>Field properties must be declared static.</value>
+    </data>
+  <data name="RBI0030MessageFormat" xml:space="preserve">
+        <value>Field properties must be declared static</value>
+    </data>
+  <data name="RBI0030Title" xml:space="preserve">
+        <value>Wrong field declaration</value>
+    </data>
+  <!-- RBI0031 -->
+  <data name="RBI0031Description" xml:space="preserve">
+        <value>Exported properties must be declared partial.</value>
+    </data>
+  <data name="RBI0031MessageFormat" xml:space="preserve">
+        <value>Exported properties must be declared partial</value>
+    </data>
+  <data name="RBI0031Title" xml:space="preserve">
+        <value>Wrong property declaration</value>
+    </data>
 </root>

@@ -6,16 +6,15 @@ if (args.Length == 0) {
 	return 1;
 }
 
-if (args.Length > 1)
-{
+if (args.Length > 1) {
 	Console.Error.WriteLine ("Only one assembly is supported.");
 	return 1;
 }
 
-var dll = args[0];
+var dll = args [0];
 
 using var fs = new FileStream (dll, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-using var peReader = new PEReader(fs);
+using var peReader = new PEReader (fs);
 
 var mr = peReader.GetMetadataReader ();
 var version = mr.GetAssemblyDefinition ().Version;

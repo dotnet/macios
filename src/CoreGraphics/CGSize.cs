@@ -156,11 +156,10 @@ namespace CoreGraphics {
 			this.height = size.height;
 		}
 
-		/// <param name="dictionaryRepresentation">To be added.</param>
-		///         <param name="size">To be added.</param>
-		///         <summary>Attempts to parse the contents of an NSDictionary with a serialized CGSize into a CGSize.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Attempts to parse the contents of an <see cref="NSDictionary" /> with a serialized <see cref="CGSize" /> into a <see cref="CGSize" />.</summary>
+		/// <param name="dictionaryRepresentation">The dictionary to parse.</param>
+		/// <param name="size">If successful, the resulting <see cref="CGSize" /> value.</param>
+		/// <returns><see langword="true" /> if the dictionary was serialized successfully, <see langword="false" /> otherwise.</returns>
 		public static bool TryParse (NSDictionary? dictionaryRepresentation, out CGSize size)
 		{
 			if (dictionaryRepresentation is null) {
@@ -175,12 +174,31 @@ namespace CoreGraphics {
 			}
 		}
 
-		/// <summary>Serializes a CGSize into an <see cref="Foundation.NSDictionary" />.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Serializes a <see cref="CGSize" /> into an <see cref="Foundation.NSDictionary" />.</summary>
+		/// <returns>A <see cref="Foundation.NSDictionary" /> with the values from this <see cref="CGSize" />.</returns>
+		/// <remarks>
+		///   <para>
+		///     The returned dictionary conforms to the serialization
+		///     standard of Cocoa and CocoaTouch and can be used to serialize
+		///     the state into objects that can be parsed by other Apple APIs.
+		///   </para>
+		///   <para>
+		///     It is possible to create a <see cref="CGSize" /> from an <see cref="NSDictionary" /> using
+		///     the <see cref="TryParse(NSDictionary,out CGSize)" /> method.
+		///   </para>
+		/// </remarks>
+		/// <seealso cref="ToCGSizeDictionary" />
 		public NSDictionary ToDictionary ()
 		{
 			return new NSDictionary (NativeDrawingMethods.CGSizeCreateDictionaryRepresentation (this));
+		}
+
+		/// <summary>Serializes a <see cref="CGSize" /> into a <see cref="CGSizeDictionary" />.</summary>
+		/// <returns>A <see cref="CGSizeDictionary" /> representing the values from this <see cref="CGSize" />.</returns>
+		/// <seealso cref="ToDictionary" />
+		public CGSizeDictionary ToCGSizeDictionary ()
+		{
+			return new CGSizeDictionary (ToDictionary ());
 		}
 
 		/// <param name="point">To be added.</param>

@@ -273,7 +273,7 @@ namespace MonoTouchFixtures.AudioToolbox {
 				outputPacketDescriptions = new AudioStreamPacketDescription [theOutputBufSize / outputSizePerPacket];
 			}
 			int numOutputPackets = theOutputBufSize / outputSizePerPacket;
-			AudioStreamPacketDependencyDescription[] packetDependencies = null;
+			AudioStreamPacketDependencyDescription [] packetDependencies = null;
 
 			if (withPacketDependencies) {
 				Assert.That (dstFormat.EmploysDependentPackets, Is.True, "EmploysDependentPackets");

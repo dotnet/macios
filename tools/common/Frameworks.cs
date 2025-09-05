@@ -470,6 +470,7 @@ public class Frameworks : Dictionary<string, Framework> {
 				{ "Cinematic", "Cinematic", new Version (17, 0), NotAvailableInSimulator },
 				{ "Symbols", "Symbols", 17, 0 },
 				{ "SensitiveContentAnalysis", "SensitiveContentAnalysis", 17, 0 },
+				{ "BrowserEngineCore", "BrowserEngineCore", 17, 4},
 				{ "BrowserEngineKit", "BrowserEngineKit", 17, 4},
 
 				{ "AccessorySetupKit", "AccessorySetupKit", 18, 0 },
@@ -479,7 +480,7 @@ public class Frameworks : Dictionary<string, Framework> {
 				{ "DeviceDiscoveryUI", "DeviceDiscoveryUI", 26, 0 },
 				{ "ExtensionKit", "ExtensionKit", 26, 0 },
 				{ "GameSave", "GameSave", 26, 0 },
-
+				{ "TouchController", "TouchController", 26, 0 },
 				// the above MUST be kept in sync with simlauncher
 				// see tools/mtouch/Makefile
 				// please also keep it sorted to ease comparison
@@ -659,6 +660,7 @@ public class Frameworks : Dictionary<string, Framework> {
 				case "AddressBookUI":
 				case "ARKit":
 				case "AssetsLibrary":
+				case "BrowserEngineCore":
 				case "CarPlay":
 				case "WatchConnectivity":
 					f.Unavailable = true;

@@ -17,6 +17,9 @@ using Metal;
 
 namespace VideoToolbox {
 
+	interface VTSession : INativeObject { }
+	interface VTDecompressionSession : VTSession { }
+
 	/// <summary>A class that encapsulates keys necessary for compression sessions. Used by <see cref="VideoToolbox.VTCompressionProperties" /></summary>
 	[MacCatalyst (13, 1)]
 	[Static]

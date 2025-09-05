@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using System.Collections.Immutable;
+using Microsoft.CodeAnalysis;
 using Microsoft.Macios.Generator.Attributes;
 using Microsoft.Macios.Generator.Availability;
 using ObjCBindings;
@@ -20,6 +21,10 @@ readonly partial struct EnumMember {
 	/// </summary>
 	public string? Selector => FieldInfo?.FieldData.SymbolName;
 
+	/// <summary>
+	/// The location of the attribute in source code.
+	/// </summary>
+	public Location? Location { get; init; }
 
 	/// <summary>
 	/// Create a new change that happened on a member.

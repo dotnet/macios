@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -42,6 +43,61 @@ public partial class Generator {
 		foreach (var oa in AttributeManager.GetCustomAttributes<NativeNameAttribute> (provider))
 			print ("[NativeName (\"{0}\")]", oa.NativeName);
 	}
+
+#nullable enable
+	bool IsEnumBackedByNativeType (Type type, [NotNullWhen (true)] out Type? backingFieldType)
+	{
+		backingFieldType = null;
+
+		if (!type.IsEnum)
+			return false;
+
+		var backingFieldTypeAttribute = AttributeManager.GetCustomAttribute<BackingFieldTypeAttribute> (type);
+		if (backingFieldTypeAttribute is not null) {
+			backingFieldType = backingFieldTypeAttribute.BackingFieldType;
+			return true;
+		}
+
+		foreach (var f in type.GetFields ()) {
+			var fa = AttributeManager.GetCustomAttribute<FieldAttribute> (f);
+			if (fa is null)
+				continue;
+
+			backingFieldType = TypeCache.NSString;
+			return true;
+		}
+
+		// Checking for Field attributes on the enum only works if the enum is in the current api definition we're processing.
+		// So check for the Extensions type, with GetConstant + GetValue methods, as well.
+
+		var extensionType = type.Assembly.GetType (type.FullName + "Extensions");
+		if (extensionType is null)
+			return false;
+
+		var anyPropertiesWithFields = false;
+		foreach (var p in type.GetProperties (BindingFlags.NonPublic | BindingFlags.Static)) {
+			if (!AttributeManager.HasAttribute<FieldAttribute> (p))
+				continue;
+
+			anyPropertiesWithFields = true;
+			break;
+		}
+		if (!anyPropertiesWithFields)
+			return false;
+
+		var getConstantMethod = type.GetMethod ("GetConstant", BindingFlags.Public | BindingFlags.Static, new Type [] { type });
+		if (getConstantMethod is null)
+			return false;
+
+		backingFieldType = getConstantMethod.ReturnType;
+
+		var getValueMethod = type.GetMethod ("GetValue", BindingFlags.Public | BindingFlags.Static, new Type [] { backingFieldType });
+		if (getValueMethod is null)
+			return false;
+
+		return false;
+	}
+#nullable disable
 
 	// caller already:
 	//	- setup the header and namespace
@@ -168,8 +224,10 @@ public partial class Generator {
 				var field = fields.FirstOrDefault ();
 				var fieldAttr = field.Value;
 
-				if (!TryComputeLibraryName (fieldAttr?.LibraryName, type, out library_name, out var _))
-					throw ErrorHelper.CreateError (1042, /* Missing '[Field (LibraryName=value)]' for {0} (e.g."__Internal") */ type.FullName + "." + field.Key?.Name);
+				if (!TryComputeLibraryName (fieldAttr?.LibraryName, type, out library_name, out var _)) {
+					exceptions.Add (ErrorHelper.CreateError (1042, /* Missing '[Field (LibraryName=value)]' for {0} (e.g."__Internal") */ type.FullName + "." + field.Key?.Name));
+					library_name = "placeholder";
+				}
 			}
 		}
 

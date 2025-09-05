@@ -1,7 +1,9 @@
+# We're not binding CoreAudio for now: https://github.com/dotnet/macios/issues/23689
 !missing-enum! AudioDeviceClockAlgorithmSelector not bound
 !missing-enum! AudioHardwarePowerHint not bound
 !missing-enum! AudioLevelControlTransferFunction not bound
 !missing-enum! AudioServerPlugInIOOperation not bound
+!missing-enum! CATapMuteBehavior not bound
 !missing-pinvoke! AudioConvertHostTimeToNanos is not bound
 !missing-pinvoke! AudioConvertNanosToHostTime is not bound
 !missing-pinvoke! AudioDeviceCreateIOProcID is not bound
@@ -17,7 +19,9 @@
 !missing-pinvoke! AudioGetHostClockFrequency is not bound
 !missing-pinvoke! AudioGetHostClockMinimumTimeDelta is not bound
 !missing-pinvoke! AudioHardwareCreateAggregateDevice is not bound
+!missing-pinvoke! AudioHardwareCreateProcessTap is not bound
 !missing-pinvoke! AudioHardwareDestroyAggregateDevice is not bound
+!missing-pinvoke! AudioHardwareDestroyProcessTap is not bound
 !missing-pinvoke! AudioHardwareUnload is not bound
 !missing-pinvoke! AudioObjectAddPropertyListener is not bound
 !missing-pinvoke! AudioObjectAddPropertyListenerBlock is not bound
@@ -28,3 +32,35 @@
 !missing-pinvoke! AudioObjectRemovePropertyListenerBlock is not bound
 !missing-pinvoke! AudioObjectSetPropertyData is not bound
 !missing-pinvoke! AudioObjectShow is not bound
+!missing-selector! CATapDescription::bundleIDs not bound
+!missing-selector! CATapDescription::deviceUID not bound
+!missing-selector! CATapDescription::init not bound
+!missing-selector! CATapDescription::initExcludingProcesses:andDeviceUID:withStream: not bound
+!missing-selector! CATapDescription::initMonoGlobalTapButExcludeProcesses: not bound
+!missing-selector! CATapDescription::initMonoMixdownOfProcesses: not bound
+!missing-selector! CATapDescription::initStereoGlobalTapButExcludeProcesses: not bound
+!missing-selector! CATapDescription::initStereoMixdownOfProcesses: not bound
+!missing-selector! CATapDescription::initWithProcesses:andDeviceUID:withStream: not bound
+!missing-selector! CATapDescription::isExclusive not bound
+!missing-selector! CATapDescription::isMixdown not bound
+!missing-selector! CATapDescription::isMono not bound
+!missing-selector! CATapDescription::isMuted not bound
+!missing-selector! CATapDescription::isPrivate not bound
+!missing-selector! CATapDescription::isProcessRestoreEnabled not bound
+!missing-selector! CATapDescription::name not bound
+!missing-selector! CATapDescription::processes not bound
+!missing-selector! CATapDescription::setBundleIDs: not bound
+!missing-selector! CATapDescription::setDeviceUID: not bound
+!missing-selector! CATapDescription::setExclusive: not bound
+!missing-selector! CATapDescription::setMixdown: not bound
+!missing-selector! CATapDescription::setMono: not bound
+!missing-selector! CATapDescription::setMuteBehavior: not bound
+!missing-selector! CATapDescription::setName: not bound
+!missing-selector! CATapDescription::setPrivate: not bound
+!missing-selector! CATapDescription::setProcesses: not bound
+!missing-selector! CATapDescription::setProcessRestoreEnabled: not bound
+!missing-selector! CATapDescription::setStream: not bound
+!missing-selector! CATapDescription::setUUID: not bound
+!missing-selector! CATapDescription::stream not bound
+!missing-selector! CATapDescription::UUID not bound
+!missing-type! CATapDescription not bound

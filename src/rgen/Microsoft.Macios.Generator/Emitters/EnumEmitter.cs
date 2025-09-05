@@ -176,7 +176,7 @@ return GetValue (str);
 		diagnostics = null;
 		if (bindingContext.Changes.BindingType != BindingType.SmartEnum) {
 			diagnostics = [Diagnostic.Create (
-					Diagnostics
+					RgenDiagnostics
 						.RBI0000, // An unexpected error occurred while processing '{0}'. Please fill a bug report at https://github.com/dotnet/macios/issues/new.
 					null,
 					bindingContext.Changes.FullyQualifiedSymbol)];
@@ -221,7 +221,7 @@ return GetValue (str);
 		diagnostics = null;
 		if (bindingContext.Changes.BindingType != BindingType.SmartEnum) {
 			diagnostics = [Diagnostic.Create (
-					Diagnostics
+					RgenDiagnostics
 						.RBI0000, // An unexpected error occurred while processing '{0}'. Please fill a bug report at https://github.com/dotnet/macios/issues/new.
 					null,
 					bindingContext.Changes.FullyQualifiedSymbol)];
@@ -231,7 +231,7 @@ return GetValue (str);
 		// having ar error domain is a must, else we have a binding error
 		if (bindingTypeData.ErrorDomain is null) {
 			diagnostics = [Diagnostic.Create (
-					Diagnostics
+					RgenDiagnostics
 						.RBI0000, // An unexpected error occurred while processing '{0}'. Please fill a bug report at https://github.com/dotnet/macios/issues/new.
 					null,
 					bindingContext.Changes.FullyQualifiedSymbol)];
@@ -240,19 +240,17 @@ return GetValue (str);
 
 		const string backingFieldName = "_domain";
 		// compute the library name via the root context
-		if (!bindingContext.RootContext.TryComputeLibraryName (bindingTypeData.LibraryName,
+		if (!bindingContext.RootContext.TryComputeLibraryName (bindingTypeData.LibraryPath,
 				bindingContext.Changes.Namespace [^1],
 				out string? libraryName, out string? libraryPath)) {
 			// could not calculate the library name, this is a user error
 			diagnostics = [Diagnostic.Create (
-					Diagnostics
+					RgenDiagnostics
 						.RBI0000, // An unexpected error occurred while processing '{0}'. Please fill a bug report at https://github.com/dotnet/macios/issues/new.
 					null,
 					bindingContext.Changes.FullyQualifiedSymbol)];
 			return false;
 		}
-
-		var library = libraryPath ?? libraryName;
 
 		this.EmitNamespace (bindingContext);
 
@@ -265,7 +263,7 @@ return GetValue (str);
 			using (var classBlock = builder.CreateBlock (extensionClassDeclaration.ToString (), true)) {
 				classBlock.WriteLine ();
 				// emit the field that holds the error domain
-				classBlock.WriteLine ($"[Field (\"{bindingTypeData.ErrorDomain}\", \"{library}\")]");
+				classBlock.WriteLine ($"[Field (\"{bindingTypeData.ErrorDomain}\", \"{libraryPath ?? libraryName}\")]");
 				classBlock.WriteLine (StaticVariable (backingFieldName, NSString, true).ToString ());
 				classBlock.WriteLine ();
 

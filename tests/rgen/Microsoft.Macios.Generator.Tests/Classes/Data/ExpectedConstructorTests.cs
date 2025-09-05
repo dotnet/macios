@@ -107,6 +107,7 @@ public class ConstructorTests
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[DesignatedInitializer]
+	[Export ("initFileURLWithPath:isDirectory:")]
 	public ConstructorTests (string path, bool isDir) : base (global::Foundation.NSObjectFlag.Empty)
 	{
 		if (path is null)
@@ -121,6 +122,7 @@ public class ConstructorTests
 	}
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Export ("initWithScheme:host:path:")]
 	public ConstructorTests (string scheme, string host, string path) : base (global::Foundation.NSObjectFlag.Empty)
 	{
 		if (scheme is null)
@@ -143,6 +145,7 @@ public class ConstructorTests
 	}
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Export ("initWithString:")]
 	public ConstructorTests (string urlString) : base (global::Foundation.NSObjectFlag.Empty)
 	{
 		if (urlString is null)
@@ -158,6 +161,7 @@ public class ConstructorTests
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[DesignatedInitializer]
+	[Export ("initWithString:relativeToURL:")]
 	public ConstructorTests (string urlString, global::Foundation.NSUrl relativeToUrl) : base (global::Foundation.NSObjectFlag.Empty)
 	{
 		var relativeToUrl__handle__ = relativeToUrl!.GetNonNullHandle (nameof (relativeToUrl));

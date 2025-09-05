@@ -74,6 +74,7 @@ public static partial class MethodTests
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Export ("completeRequestReturningItems:completionHandler:")]
 	public static unsafe partial void CompleteRequest (this global::Foundation.NSObject self, global::Foundation.NSExtensionItem[] returningItems, global::System.Action<bool>? completionHandler)
 	{
 		if (returningItems is null)
@@ -105,6 +106,7 @@ public static partial class MethodTests
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Export ("completeRequestReturningItems:completionHandler:")]
 	public static unsafe partial void CompleteRequest (this global::Foundation.NSObject self, global::Foundation.NSExtensionItem[] returningItems, global::System.Action<bool, string?>? completionHandler)
 	{
 		if (returningItems is null)
@@ -136,6 +138,7 @@ public static partial class MethodTests
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Export ("completeRequestReturningItems:completionHandler:")]
 	public static unsafe partial void CompleteRequest (this global::Foundation.NSObject self, global::Foundation.NSExtensionItem[] returningItems, global::System.Action<bool, string, string?>? completionHandler)
 	{
 		if (returningItems is null)
@@ -167,6 +170,7 @@ public static partial class MethodTests
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Export ("filteredArrayUsingPredicate:")]
 	public static unsafe partial global::Foundation.NSArray Filter (this global::Foundation.NSObject self, global::Foundation.NSPredicate predicate)
 	{
 		var predicate__handle__ = predicate!.GetNonNullHandle (nameof (predicate));
@@ -182,6 +186,7 @@ public static partial class MethodTests
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Export ("filteredArrayUsingStrings:")]
 	public static unsafe partial global::Foundation.NSArray FilterStrings (this global::Foundation.NSObject self, string[] predicate)
 	{
 		if (predicate is null)
@@ -199,6 +204,7 @@ public static partial class MethodTests
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Export ("arrayWithContentsOfFile:")]
 	public static unsafe partial static global::Foundation.NSArray FromFile (this global::Foundation.NSObject self, string path)
 	{
 		if (path is null)
@@ -216,6 +222,7 @@ public static partial class MethodTests
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Export ("bookmarkDataWithContentsOfURL:error:")]
 	public static unsafe partial global::Foundation.NSData GetBookmarkData (this global::Foundation.NSObject self, global::Foundation.NSUrl bookmarkFileUrl, out global::Foundation.NSError? error)
 	{
 		var bookmarkFileUrl__handle__ = bookmarkFileUrl!.GetNonNullHandle (nameof (bookmarkFileUrl));
@@ -233,6 +240,7 @@ public static partial class MethodTests
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Export ("bookmarkDataWithContentsOfURL:subdomain:error:")]
 	public static unsafe partial global::Foundation.NSData GetBookmarkData (this global::Foundation.NSObject self, global::Foundation.NSUrl bookmarkFileUrl, string subdomain, out global::Foundation.NSError? error)
 	{
 		if (subdomain is null)
@@ -254,6 +262,7 @@ public static partial class MethodTests
 	[UnsupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Export ("loadFromHTMLWithRequest:options:completionHandler:")]
 	public partial static void LoadFromHtml (this global::Foundation.NSObject self, global::Foundation.NSUrlRequest request, global::Foundation.NSDictionary options, global::Foundation.NSAttributedStringCompletionHandler completionHandler)
 	{
 		if (completionHandler is null)
@@ -290,6 +299,7 @@ public static partial class MethodTests
 	[UnsupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Export ("loadFromHTMLWithRequest:options:completionHandler:")]
 	public partial static void LoadFromHtmlNoName (this global::Foundation.NSObject self, global::Foundation.NSUrlRequest request, global::Foundation.NSDictionary options, global::Foundation.NSAttributedStringCompletionHandler completionHandler)
 	{
 		if (completionHandler is null)
@@ -326,6 +336,7 @@ public static partial class MethodTests
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Export ("setValue:forKey:")]
 	public static unsafe partial void SetValueForKey (this global::Foundation.NSObject self, global::Foundation.NSObject value, global::Foundation.NSString key)
 	{
 		var value__handle__ = value!.GetNonNullHandle (nameof (value));
@@ -341,6 +352,7 @@ public static partial class MethodTests
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Export ("sortedArrayUsingComparator:")]
 	public static unsafe partial global::Foundation.NSArray Sort (this global::Foundation.NSObject self, global::Foundation.NSComparator cmptr)
 	{
 		if (cmptr is null)
@@ -358,6 +370,7 @@ public static partial class MethodTests
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Export ("valueForKey:")]
 	public static unsafe partial global::Foundation.NSObject ValueForKey (this global::Foundation.NSObject self, global::Foundation.NSString key)
 	{
 		var key__handle__ = key!.GetNonNullHandle (nameof (key));
@@ -373,6 +386,7 @@ public static partial class MethodTests
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Export ("writeToFile:atomically:")]
 	public static unsafe partial bool WriteToFile (this global::Foundation.NSObject self, string path, bool useAuxiliaryFile)
 	{
 		if (path is null)

@@ -64,6 +64,22 @@ namespace MonoTouchFixtures.CoreGraphics {
 				Assert.IsFalse (copy.ContainsImageSpecificToneMappingMetadata, "ContainsImageSpecificToneMappingMetadata B");
 
 				Assert.AreEqual (4.92610836f, CGImage.DefaultHdrImageContentHeadroom, "DefaultHdrImageContentHeadroom");
+
+				if (TestRuntime.CheckXcodeVersion (26, 0)) {
+					Assert.That (copy.CalculatedContentHeadroom, Is.EqualTo (0.0f), "CalculatedContentHeadroom B");
+					Assert.That (copy.ContentAverageLightLevel, Is.EqualTo (0.0f), "ContentAverageLightLevel B");
+					Assert.That (copy.CalculatedContentAverageLightLevel, Is.Not.EqualTo (0.0f), "CalculatedContentAverageLightLevel B");
+
+					using var copy2 = img.CopyWithContentAverageLightLevel (0.75f);
+					Assert.That (copy2.CalculatedContentHeadroom, Is.EqualTo (0.0f), "CalculatedContentHeadroom C");
+					Assert.That (copy2.ContentAverageLightLevel, Is.Not.EqualTo (0.0f), "ContentAverageLightLevel C");
+					Assert.That (copy2.CalculatedContentAverageLightLevel, Is.Not.EqualTo (0.0f), "CalculatedContentAverageLightLevel C");
+
+					using var copy3 = img.CopyWithCalculatedHdrStats ();
+					Assert.That (copy3.CalculatedContentHeadroom, Is.EqualTo (0.0f), "CalculatedContentHeadroom D");
+					Assert.That (copy3.ContentAverageLightLevel, Is.Not.EqualTo (0.0f), "ContentAverageLightLevel D");
+					Assert.That (copy3.CalculatedContentAverageLightLevel, Is.Not.EqualTo (0.0f), "CalculatedContentAverageLightLevel D");
+				}
 			});
 		}
 	}

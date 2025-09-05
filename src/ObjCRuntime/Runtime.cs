@@ -2360,6 +2360,34 @@ namespace ObjCRuntime {
 			return obj.GetHandle ();
 		}
 
+		/// <summary>Retain and autorelease the given object, then return the object's handle.</summary>
+		/// <param name="obj">The object to retain and autorelease.</param>
+		/// <returns>The object's handle (retained and autorelease).</returns>
+		/// <remarks>The behavior is undefined if the handle's type doesn't support the 'retain' and 'autorelease' selectors.</remarks>
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		internal static NativeHandle RetainAndAutoreleaseHandle (INativeObject? obj)
+		{
+			if (obj is null)
+				return NativeHandle.Zero;
+#pragma warning disable RBI0014
+			return RetainAndAutoreleaseHandle (obj.GetHandle ());
+#pragma warning restore RBI0014
+		}
+
+		/// <summary>Retain and autorelease the given handle, then return the handle.</summary>
+		/// <param name="handle">The handle to retain and autorelease.</param>
+		/// <returns>The handle (retained and autorelease).</returns>
+		/// <remarks>The behavior is undefined if the handle's type doesn't support the 'retain' and 'autorelease' selectors.</remarks>
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		internal static NativeHandle RetainAndAutoreleaseHandle (NativeHandle handle)
+		{
+			if (handle == NativeHandle.Zero)
+				return NativeHandle.Zero;
+			NSObject.DangerousRetain (handle);
+			NSObject.DangerousAutorelease (handle);
+			return handle;
+		}
+
 		static IntPtr CopyAndAutorelease (IntPtr ptr)
 		{
 			ptr = Messaging.IntPtr_objc_msgSend (ptr, Selector.GetHandle ("copy"));

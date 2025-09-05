@@ -29,6 +29,7 @@
 #nullable enable
 
 using System;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 
@@ -224,6 +225,175 @@ namespace CoreGraphics {
 			var h = CGBitmapContextCreateImage (Handle);
 			// do not return an invalid instance (null handle) if something went wrong
 			return h == IntPtr.Zero ? null : new CGImage (h, true);
+		}
+
+		[SupportedOSPlatform ("ios26.0")]
+		[SupportedOSPlatform ("tvos26.0")]
+		[SupportedOSPlatform ("maccatalyst26.0")]
+		[SupportedOSPlatform ("macos26.0")]
+		[DllImport (Constants.CoreGraphicsLibrary)]
+		static extern unsafe IntPtr /* CGContextRef */ CGBitmapContextCreateAdaptive (
+				nuint /* size_t */ width,
+				nuint /* size_t */ height,
+				IntPtr /* CFDictionaryRef __nullable */ auxiliaryInfo,
+				BlockLiteral* /* (^__nullable onResolve)(const CGContentInfo* __nonnull, CGBitmapParameters* __nonnull) */ onResolve,
+				BlockLiteral* /* (^__nullable onAllocate)(const CGContentInfo* __nonnull, const CGBitmapParameters* __nonnull) */ onAllocate,
+				BlockLiteral* /* (^__nullable onFree)(CGRenderingBufferProviderRef __nonnull, const CGContentInfo* __nonnull, const CGBitmapParameters* __nonnull) */ onFree,
+				BlockLiteral* /* (^__nullable onError)(CFErrorRef __nonnull, const CGContentInfo* __nonnull, const CGBitmapParameters* __nonnull) */ onError
+		);
+
+		/// <summary>Create a bitmap context designed to choose the optimal bit depth, colorspace and EDR target headroom.</summary>
+		/// <param name="width">The width of the new <see cref="CGBitmapContext" />.</param>
+		/// <param name="height">The height of the new <see cref="CGBitmapContext" />.</param>
+		/// <param name="auxiliaryInfo">Any additional information for the creation of the new <see cref="CGBitmapContext" />.</param>
+		/// <param name="onResolve">A callback to modify the <see cref="CGBitmapParameters" /> used to create the new <see cref="CGBitmapContext" />.</param>
+		/// <param name="onAllocate">A callback to allocate memory for the new <see cref="CGBitmapContext" />.</param>
+		/// <param name="onFree">A callback to free any allocated memory for the new <see cref="CGBitmapContext" />.</param>
+		/// <param name="onError">A callback that is called in case of any errors.</param>
+		/// <returns> A new <see cref="CGBitmapContext" /> if successful, <see langword="null" /> otherwise.</returns>
+		[SupportedOSPlatform ("ios26.0")]
+		[SupportedOSPlatform ("tvos26.0")]
+		[SupportedOSPlatform ("maccatalyst26.0")]
+		[SupportedOSPlatform ("macos26.0")]
+		[BindingImpl (BindingImplOptions.Optimizable)]
+		public unsafe static CGBitmapContext? Create (nuint width, nuint height, NSDictionary? auxiliaryInfo, OnResolveCallback? onResolve, OnAllocateCallback? onAllocate, OnFreeCallback? onFree, OnErrorCallback? onError)
+		{
+			delegate* unmanaged<IntPtr, CGContentInfo*, CGBitmapParameters*, byte> onResolveTrampoline = &CGBitmapContextCreateAdaptive_OnResolve;
+			using var onResolveBlock = onResolve is null ? default (BlockLiteral) : new BlockLiteral (onResolveTrampoline, onResolve, typeof (CGBitmapContext), nameof (CGBitmapContextCreateAdaptive_OnResolve));
+
+			delegate* unmanaged<IntPtr, CGContentInfo*, CGBitmapParameters*, IntPtr> onAllocateTrampoline = &CGBitmapContextCreateAdaptive_OnAllocate;
+			using var onAllocateBlock = onAllocate is null ? default (BlockLiteral) : new BlockLiteral (onAllocateTrampoline, onAllocate, typeof (CGBitmapContext), nameof (CGBitmapContextCreateAdaptive_OnAllocate));
+
+			delegate* unmanaged<IntPtr, IntPtr, CGContentInfo*, CGBitmapParameters*, void> onFreeTrampoline = &CGBitmapContextCreateAdaptive_OnFree;
+			using var onFreeBlock = onFree is null ? default (BlockLiteral) : new BlockLiteral (onFreeTrampoline, onFree, typeof (CGBitmapContext), nameof (CGBitmapContextCreateAdaptive_OnFree));
+
+			delegate* unmanaged<IntPtr, IntPtr, CGContentInfo*, CGBitmapParameters*, void> onErrorTrampoline = &CGBitmapContextCreateAdaptive_OnError;
+			using var onErrorBlock = onError is null ? default (BlockLiteral) : new BlockLiteral (onErrorTrampoline, onError, typeof (CGBitmapContext), nameof (CGBitmapContextCreateAdaptive_OnError));
+
+			var rv = CGBitmapContextCreateAdaptive (
+					width, height,
+					auxiliaryInfo.GetHandle (),
+					onResolve is null ? null : &onResolveBlock,
+					onAllocate is null ? null : &onAllocateBlock,
+					onFree is null ? null : &onFreeBlock,
+					onError is null ? null : &onErrorBlock
+				);
+
+			GC.KeepAlive (auxiliaryInfo);
+
+			if (rv == IntPtr.Zero)
+				return null;
+
+			return new CGBitmapContext (rv, true);
+		}
+
+		/// <summary>Create a bitmap context designed to choose the optimal bit depth, colorspace and EDR target headroom.</summary>
+		/// <param name="width">The width of the new <see cref="CGBitmapContext" />.</param>
+		/// <param name="height">The height of the new <see cref="CGBitmapContext" />.</param>
+		/// <param name="auxiliaryInfo">Any additional information for the creation of the new <see cref="CGBitmapContext" />.</param>
+		/// <param name="onResolve">A callback to modify the <see cref="CGBitmapParameters" /> used to create the new <see cref="CGBitmapContext" />.</param>
+		/// <param name="onAllocate">A callback to allocate memory for the new <see cref="CGBitmapContext" />.</param>
+		/// <param name="onFree">A callback to free any allocated memory for the new <see cref="CGBitmapContext" />.</param>
+		/// <param name="onError">A callback that is called in case of any errors.</param>
+		/// <returns> A new <see cref="CGBitmapContext" /> if successful, <see langword="null" /> otherwise.</returns>
+		[SupportedOSPlatform ("ios26.0")]
+		[SupportedOSPlatform ("tvos26.0")]
+		[SupportedOSPlatform ("maccatalyst26.0")]
+		[SupportedOSPlatform ("macos26.0")]
+		public unsafe static CGBitmapContext? Create (nuint width, nuint height, CGAdaptiveOptions? auxiliaryInfo, OnResolveCallback? onResolve, OnAllocateCallback? onAllocate, OnFreeCallback? onFree, OnErrorCallback? onError)
+		{
+			return Create (width, height, auxiliaryInfo?.Dictionary, onResolve, onAllocate, onFree, onError);
+		}
+
+		public delegate bool OnResolveCallback (ref CGContentInfo contentInfo, ref CGBitmapParameters bitmapParameters);
+
+		[UnmanagedCallersOnly]
+		unsafe static byte CGBitmapContextCreateAdaptive_OnResolve (IntPtr block, CGContentInfo* contentInfo, CGBitmapParameters* bitmapParameters)
+		{
+			var del = BlockLiteral.GetTarget<OnResolveCallback> (block);
+			if (del is not null) {
+				var rv = del (ref Unsafe.AsRef<CGContentInfo> (contentInfo), ref Unsafe.AsRef<CGBitmapParameters> (bitmapParameters));
+				return rv.AsByte ();
+			}
+			return 0;
+		}
+
+		public delegate CGRenderingBufferProvider /* CGRenderingBufferProviderRef */ OnAllocateCallback (ref CGContentInfo contentInfo, ref CGBitmapParameters bitmapParameters);
+
+		[UnmanagedCallersOnly]
+		unsafe static IntPtr CGBitmapContextCreateAdaptive_OnAllocate (IntPtr block, CGContentInfo* contentInfo, CGBitmapParameters* bitmapParameters)
+		{
+			var del = BlockLiteral.GetTarget<OnAllocateCallback> (block);
+			if (del is not null) {
+				var rv = del (ref Unsafe.AsRef<CGContentInfo> (contentInfo), ref Unsafe.AsRef<CGBitmapParameters> (bitmapParameters));
+				return Runtime.RetainAndAutoreleaseHandle (rv);
+			}
+			return IntPtr.Zero;
+		}
+
+		public delegate void OnFreeCallback (CGRenderingBufferProvider /* CGRenderingBufferProviderRef */ renderingBufferProvider, ref CGContentInfo contentInfo, ref CGBitmapParameters bitmapParameters);
+
+		[UnmanagedCallersOnly]
+		unsafe static void CGBitmapContextCreateAdaptive_OnFree (IntPtr block, IntPtr /* CGRenderingBufferProviderRef */ bufferingProviderRef, CGContentInfo* contentInfo, CGBitmapParameters* bitmapParameters)
+		{
+			var del = BlockLiteral.GetTarget<OnFreeCallback> (block);
+			if (del is not null) {
+				using var renderingBufferProvider = new CGRenderingBufferProvider (bufferingProviderRef, false);
+				del (renderingBufferProvider, ref Unsafe.AsRef<CGContentInfo> (contentInfo), ref Unsafe.AsRef<CGBitmapParameters> (bitmapParameters));
+			}
+		}
+
+		public delegate void OnErrorCallback (NSError error, ref CGContentInfo contentInfo, ref CGBitmapParameters bitmapParameters);
+
+		[UnmanagedCallersOnly]
+		unsafe static void CGBitmapContextCreateAdaptive_OnError (IntPtr block, IntPtr errorHandle, CGContentInfo* contentInfo, CGBitmapParameters* bitmapParameters)
+		{
+			var del = BlockLiteral.GetTarget<OnErrorCallback> (block);
+			if (del is not null) {
+				var error = Runtime.GetNSObject<NSError> (errorHandle, false)!;
+				del (error, ref Unsafe.AsRef<CGContentInfo> (contentInfo), ref Unsafe.AsRef<CGBitmapParameters> (bitmapParameters));
+			}
+		}
+
+		[SupportedOSPlatform ("ios26.0")]
+		[SupportedOSPlatform ("tvos26.0")]
+		[SupportedOSPlatform ("maccatalyst26.0")]
+		[SupportedOSPlatform ("macos26.0")]
+		[DllImport (Constants.CoreGraphicsLibrary)]
+		static extern CGContentToneMappingInfo CGContextGetContentToneMappingInfo (IntPtr /* CGContextRef __nonnull */ context);
+
+		[SupportedOSPlatform ("ios26.0")]
+		[SupportedOSPlatform ("tvos26.0")]
+		[SupportedOSPlatform ("maccatalyst26.0")]
+		[SupportedOSPlatform ("macos26.0")]
+		[DllImport (Constants.CoreGraphicsLibrary)]
+		static extern void CGContextSetContentToneMappingInfo (IntPtr /* CGContextRef __nonnull */ context, CGContentToneMappingInfo info);
+
+		/// <summary>Get or set the content tone mapping info.</summary>
+		[SupportedOSPlatform ("ios26.0")]
+		[SupportedOSPlatform ("tvos26.0")]
+		[SupportedOSPlatform ("maccatalyst26.0")]
+		[SupportedOSPlatform ("macos26.0")]
+		public CGContentToneMappingInfo ContentToneMappingInfo {
+			get => CGContextGetContentToneMappingInfo (GetCheckedHandle ());
+			set => CGContextSetContentToneMappingInfo (GetCheckedHandle (), value);
+		}
+
+		[SupportedOSPlatform ("ios26.0")]
+		[SupportedOSPlatform ("tvos26.0")]
+		[SupportedOSPlatform ("maccatalyst26.0")]
+		[SupportedOSPlatform ("macos26.0")]
+		[DllImport (Constants.CoreGraphicsLibrary)]
+		static extern void CGContextSynchronizeAttributes (IntPtr /* CGContextRef */ context);
+
+		/// <summary>Synchronize destination attributes.</summary>
+		[SupportedOSPlatform ("ios26.0")]
+		[SupportedOSPlatform ("tvos26.0")]
+		[SupportedOSPlatform ("maccatalyst26.0")]
+		[SupportedOSPlatform ("macos26.0")]
+		public void SynchronizeAttributes ()
+		{
+			CGContextSynchronizeAttributes (GetCheckedHandle ());
 		}
 #endif // !COREBUILD
 	}

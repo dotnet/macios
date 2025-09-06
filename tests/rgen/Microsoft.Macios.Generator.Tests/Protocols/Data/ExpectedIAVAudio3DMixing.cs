@@ -43,6 +43,7 @@ public partial interface IAVAudio3DMixing : INativeObject, IDisposable
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Export ("obstruction")]
 	internal static float _GetObstruction (this IAVAudio3DMixing self)
 	{
 		float ret;
@@ -56,6 +57,7 @@ public partial interface IAVAudio3DMixing : INativeObject, IDisposable
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Export ("setObstruction:")]
 	internal static void _SetObstruction (this IAVAudio3DMixing self, float value)
 	{
 		global::ObjCRuntime.Messaging.void_objc_msgSend_float (self.Handle, global::ObjCRuntime.Selector.GetHandle ("setObstruction:"), value);
@@ -87,6 +89,7 @@ public partial interface IAVAudio3DMixing : INativeObject, IDisposable
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Export ("occlusion")]
 	internal static float _GetOcclusion (this IAVAudio3DMixing self)
 	{
 		float ret;
@@ -100,6 +103,7 @@ public partial interface IAVAudio3DMixing : INativeObject, IDisposable
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Export ("setOcclusion:")]
 	internal static void _SetOcclusion (this IAVAudio3DMixing self, float value)
 	{
 		global::ObjCRuntime.Messaging.void_objc_msgSend_float (self.Handle, global::ObjCRuntime.Selector.GetHandle ("setOcclusion:"), value);
@@ -131,6 +135,7 @@ public partial interface IAVAudio3DMixing : INativeObject, IDisposable
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Export ("pointSourceInHeadMode")]
 	internal static global::AVFoundation.AVAudio3DMixingPointSourceInHeadMode _GetPointSourceInHeadMode (this IAVAudio3DMixing self)
 	{
 		global::AVFoundation.AVAudio3DMixingPointSourceInHeadMode ret;
@@ -144,6 +149,7 @@ public partial interface IAVAudio3DMixing : INativeObject, IDisposable
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Export ("setPointSourceInHeadMode:")]
 	internal static void _SetPointSourceInHeadMode (this IAVAudio3DMixing self, global::AVFoundation.AVAudio3DMixingPointSourceInHeadMode value)
 	{
 		global::ObjCRuntime.Messaging.void_objc_msgSend_IntPtr (self.Handle, global::ObjCRuntime.Selector.GetHandle ("setPointSourceInHeadMode:"), (global::AVFoundation.AVAudio3DMixingPointSourceInHeadMode) (long) value);
@@ -175,6 +181,7 @@ public partial interface IAVAudio3DMixing : INativeObject, IDisposable
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Export ("rate")]
 	internal static float _GetRate (this IAVAudio3DMixing self)
 	{
 		float ret;
@@ -188,6 +195,7 @@ public partial interface IAVAudio3DMixing : INativeObject, IDisposable
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Export ("setRate:")]
 	internal static void _SetRate (this IAVAudio3DMixing self, float value)
 	{
 		global::ObjCRuntime.Messaging.void_objc_msgSend_float (self.Handle, global::ObjCRuntime.Selector.GetHandle ("setRate:"), value);
@@ -219,6 +227,7 @@ public partial interface IAVAudio3DMixing : INativeObject, IDisposable
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Export ("renderingAlgorithm")]
 	internal static global::AVFoundation.AVAudio3DMixingRenderingAlgorithm _GetRenderingAlgorithm (this IAVAudio3DMixing self)
 	{
 		global::AVFoundation.AVAudio3DMixingRenderingAlgorithm ret;
@@ -232,6 +241,7 @@ public partial interface IAVAudio3DMixing : INativeObject, IDisposable
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Export ("setRenderingAlgorithm:")]
 	internal static void _SetRenderingAlgorithm (this IAVAudio3DMixing self, global::AVFoundation.AVAudio3DMixingRenderingAlgorithm value)
 	{
 		global::ObjCRuntime.Messaging.void_objc_msgSend_IntPtr (self.Handle, global::ObjCRuntime.Selector.GetHandle ("setRenderingAlgorithm:"), (global::AVFoundation.AVAudio3DMixingRenderingAlgorithm) (long) value);
@@ -263,6 +273,7 @@ public partial interface IAVAudio3DMixing : INativeObject, IDisposable
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Export ("reverbBlend")]
 	internal static float _GetReverbBlend (this IAVAudio3DMixing self)
 	{
 		float ret;
@@ -276,6 +287,7 @@ public partial interface IAVAudio3DMixing : INativeObject, IDisposable
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Export ("setReverbBlend:")]
 	internal static void _SetReverbBlend (this IAVAudio3DMixing self, float value)
 	{
 		global::ObjCRuntime.Messaging.void_objc_msgSend_float (self.Handle, global::ObjCRuntime.Selector.GetHandle ("setReverbBlend:"), value);
@@ -307,6 +319,7 @@ public partial interface IAVAudio3DMixing : INativeObject, IDisposable
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Export ("sourceMode")]
 	internal static global::AVFoundation.AVAudio3DMixingSourceMode _GetSourceMode (this IAVAudio3DMixing self)
 	{
 		global::AVFoundation.AVAudio3DMixingSourceMode ret;
@@ -320,6 +333,7 @@ public partial interface IAVAudio3DMixing : INativeObject, IDisposable
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Export ("setSourceMode:")]
 	internal static void _SetSourceMode (this IAVAudio3DMixing self, global::AVFoundation.AVAudio3DMixingSourceMode value)
 	{
 		global::ObjCRuntime.Messaging.void_objc_msgSend_IntPtr (self.Handle, global::ObjCRuntime.Selector.GetHandle ("setSourceMode:"), (global::AVFoundation.AVAudio3DMixingSourceMode) (long) value);
@@ -369,6 +383,7 @@ internal unsafe sealed class AVAudio3DMixingWrapper : BaseWrapper, IAVAudio3DMix
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst13.1")]
+		[Export ("obstruction")]
 		get
 		{
 			float ret;
@@ -381,6 +396,7 @@ internal unsafe sealed class AVAudio3DMixingWrapper : BaseWrapper, IAVAudio3DMix
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst13.1")]
+		[Export ("setObstruction:")]
 		set
 		{
 			global::ObjCRuntime.Messaging.void_objc_msgSend_float (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setObstruction:"), value);
@@ -400,6 +416,7 @@ internal unsafe sealed class AVAudio3DMixingWrapper : BaseWrapper, IAVAudio3DMix
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst13.1")]
+		[Export ("occlusion")]
 		get
 		{
 			float ret;
@@ -412,6 +429,7 @@ internal unsafe sealed class AVAudio3DMixingWrapper : BaseWrapper, IAVAudio3DMix
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst13.1")]
+		[Export ("setOcclusion:")]
 		set
 		{
 			global::ObjCRuntime.Messaging.void_objc_msgSend_float (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setOcclusion:"), value);
@@ -431,6 +449,7 @@ internal unsafe sealed class AVAudio3DMixingWrapper : BaseWrapper, IAVAudio3DMix
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst13.1")]
+		[Export ("pointSourceInHeadMode")]
 		get
 		{
 			global::AVFoundation.AVAudio3DMixingPointSourceInHeadMode ret;
@@ -443,6 +462,7 @@ internal unsafe sealed class AVAudio3DMixingWrapper : BaseWrapper, IAVAudio3DMix
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst13.1")]
+		[Export ("setPointSourceInHeadMode:")]
 		set
 		{
 			global::ObjCRuntime.Messaging.void_objc_msgSend_IntPtr (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setPointSourceInHeadMode:"), (global::AVFoundation.AVAudio3DMixingPointSourceInHeadMode) (long) value);
@@ -462,6 +482,7 @@ internal unsafe sealed class AVAudio3DMixingWrapper : BaseWrapper, IAVAudio3DMix
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst13.1")]
+		[Export ("rate")]
 		get
 		{
 			float ret;
@@ -474,6 +495,7 @@ internal unsafe sealed class AVAudio3DMixingWrapper : BaseWrapper, IAVAudio3DMix
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst13.1")]
+		[Export ("setRate:")]
 		set
 		{
 			global::ObjCRuntime.Messaging.void_objc_msgSend_float (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setRate:"), value);
@@ -493,6 +515,7 @@ internal unsafe sealed class AVAudio3DMixingWrapper : BaseWrapper, IAVAudio3DMix
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst13.1")]
+		[Export ("renderingAlgorithm")]
 		get
 		{
 			global::AVFoundation.AVAudio3DMixingRenderingAlgorithm ret;
@@ -505,6 +528,7 @@ internal unsafe sealed class AVAudio3DMixingWrapper : BaseWrapper, IAVAudio3DMix
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst13.1")]
+		[Export ("setRenderingAlgorithm:")]
 		set
 		{
 			global::ObjCRuntime.Messaging.void_objc_msgSend_IntPtr (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setRenderingAlgorithm:"), (global::AVFoundation.AVAudio3DMixingRenderingAlgorithm) (long) value);
@@ -524,6 +548,7 @@ internal unsafe sealed class AVAudio3DMixingWrapper : BaseWrapper, IAVAudio3DMix
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst13.1")]
+		[Export ("reverbBlend")]
 		get
 		{
 			float ret;
@@ -536,6 +561,7 @@ internal unsafe sealed class AVAudio3DMixingWrapper : BaseWrapper, IAVAudio3DMix
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst13.1")]
+		[Export ("setReverbBlend:")]
 		set
 		{
 			global::ObjCRuntime.Messaging.void_objc_msgSend_float (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setReverbBlend:"), value);
@@ -555,6 +581,7 @@ internal unsafe sealed class AVAudio3DMixingWrapper : BaseWrapper, IAVAudio3DMix
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst13.1")]
+		[Export ("sourceMode")]
 		get
 		{
 			global::AVFoundation.AVAudio3DMixingSourceMode ret;
@@ -567,6 +594,7 @@ internal unsafe sealed class AVAudio3DMixingWrapper : BaseWrapper, IAVAudio3DMix
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst13.1")]
+		[Export ("setSourceMode:")]
 		set
 		{
 			global::ObjCRuntime.Messaging.void_objc_msgSend_IntPtr (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setSourceMode:"), (global::AVFoundation.AVAudio3DMixingSourceMode) (long) value);

@@ -19,16 +19,16 @@ This file should be imported by eng/Versions.props
     <!-- dotnet/macios dependencies -->
     <MicrosoftiOSSdknet100_260PackageVersion>26.0.10770-ci.xcode26-0-net10-0</MicrosoftiOSSdknet100_260PackageVersion>
     <MicrosoftiOSSdknet90_185PackageVersion>18.5.9227</MicrosoftiOSSdknet90_185PackageVersion>
-    <MicrosoftiOSSdknet90_260PackageVersion>26.0.9561-xcode26.0</MicrosoftiOSSdknet90_260PackageVersion>
+    <MicrosoftiOSSdknet90_260PackageVersion>26.0.9566-xcode26.0</MicrosoftiOSSdknet90_260PackageVersion>
     <MicrosoftMacCatalystSdknet100_260PackageVersion>26.0.10770-ci.xcode26-0-net10-0</MicrosoftMacCatalystSdknet100_260PackageVersion>
     <MicrosoftMacCatalystSdknet90_185PackageVersion>18.5.9227</MicrosoftMacCatalystSdknet90_185PackageVersion>
-    <MicrosoftMacCatalystSdknet90_260PackageVersion>26.0.9561-xcode26.0</MicrosoftMacCatalystSdknet90_260PackageVersion>
+    <MicrosoftMacCatalystSdknet90_260PackageVersion>26.0.9566-xcode26.0</MicrosoftMacCatalystSdknet90_260PackageVersion>
     <MicrosoftmacOSSdknet100_260PackageVersion>26.0.10770-ci.xcode26-0-net10-0</MicrosoftmacOSSdknet100_260PackageVersion>
     <MicrosoftmacOSSdknet90_155PackageVersion>15.5.9227</MicrosoftmacOSSdknet90_155PackageVersion>
-    <MicrosoftmacOSSdknet90_260PackageVersion>26.0.9561-xcode26.0</MicrosoftmacOSSdknet90_260PackageVersion>
+    <MicrosoftmacOSSdknet90_260PackageVersion>26.0.9566-xcode26.0</MicrosoftmacOSSdknet90_260PackageVersion>
     <MicrosofttvOSSdknet100_260PackageVersion>26.0.10770-ci.xcode26-0-net10-0</MicrosofttvOSSdknet100_260PackageVersion>
     <MicrosofttvOSSdknet90_185PackageVersion>18.5.9227</MicrosofttvOSSdknet90_185PackageVersion>
-    <MicrosofttvOSSdknet90_260PackageVersion>26.0.9561-xcode26.0</MicrosofttvOSSdknet90_260PackageVersion>
+    <MicrosofttvOSSdknet90_260PackageVersion>26.0.9566-xcode26.0</MicrosofttvOSSdknet90_260PackageVersion>
     <!-- xamarin/xamarin-macios dependencies -->
     <MicrosoftiOSSdknet90_180PackageVersion>18.0.9617</MicrosoftiOSSdknet90_180PackageVersion>
     <MicrosoftMacCatalystSdknet90_180PackageVersion>18.0.9617</MicrosoftMacCatalystSdknet90_180PackageVersion>

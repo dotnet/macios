@@ -22,8 +22,7 @@ namespace Xamarin.Mac.Tests {
 			f.Client = client;
 		}
 
-		class FinderClient : NSObject, INSTextFinderClient
-		{
+		class FinderClient : NSObject, INSTextFinderClient {
 			public bool AllowsMultipleSelection { get { return true; } }
 
 			public bool Editable { get { return true; } }

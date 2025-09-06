@@ -289,6 +289,57 @@ static class TabbedStringBuilderExtensions {
 	}
 
 	/// <summary>
+	/// Appends an `[Export]` attribute to the current writer for bgen compatibility.
+	/// This is a simplified version that only includes the selector.
+	/// </summary>
+	/// <param name="self">A tabbed string writer.</param>
+	/// <param name="exportData">The export data for the method, from which the selector is extracted.</param>
+	/// <returns>The current writer.</returns>
+	public static TabbedWriter<StringWriter> AppendBgenExportAttribute (this TabbedWriter<StringWriter> self,
+		ExportData<ObjCBindings.Method> exportData)
+	{
+		// append the old export attribute for bgen compatibility so that we do not need to update the registrar right
+		// away
+		self.WriteLine ($"[Export (\"{exportData.Selector}\")]");
+		return self;
+	}
+
+	/// <summary>
+	/// Appends an `[Export]` attribute to the current writer for bgen compatibility.
+	/// This is a simplified version that only includes the selector.
+	/// </summary>
+	/// <param name="self">A tabbed string writer.</param>
+	/// <param name="selector">The selector for the export attribute.</param>
+	/// <returns>The current writer.</returns>
+	public static TabbedWriter<StringWriter> AppendBgenExportAttribute (this TabbedWriter<StringWriter> self,
+		string? selector)
+	{
+		if (string.IsNullOrEmpty (selector))
+			return self;
+
+		// append the old export attribute for bgen compatibility so that we do not need to update the registrar right
+		// away
+		self.WriteLine ($"[Export (\"{selector}\")]");
+		return self;
+	}
+
+	/// <summary>
+	/// Appends an `[Export]` attribute to the current writer for bgen compatibility.
+	/// This is a simplified version that only includes the selector.
+	/// </summary>
+	/// <param name="self">A tabbed string writer.</param>
+	/// <param name="exportData">The export data for the property, from which the selector is extracted.</param>
+	/// <returns>The current writer.</returns>
+	public static TabbedWriter<StringWriter> AppendBgenExportAttribute (this TabbedWriter<StringWriter> self,
+		ExportData<ObjCBindings.Property> exportData)
+	{
+		// append the old export attribute for bgen compatibility so that we do not need to update the registrar right
+		// away
+		self.WriteLine ($"[Export (\"{exportData.Selector}\")]");
+		return self;
+	}
+
+	/// <summary>
 	/// Appends a `[Register]` attribute to the current writer.
 	/// This attribute is used to register a type with the Objective-C runtime.
 	/// </summary>

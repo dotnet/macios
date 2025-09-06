@@ -92,6 +92,9 @@ class ModelEmitter : IClassEmitter {
 			classBlock.AppendMemberAvailability (method.SymbolAvailability);
 			classBlock.AppendGeneratedCodeAttribute ();
 			classBlock.AppendExportAttribute (method.ExportMethodData);
+			if (GeneratorConfiguration.BGenCompatible && !method.SkipRegistration) {
+				classBlock.AppendBgenExportAttribute (method.ExportMethodData);
+			}
 			using (var methodBlock = classBlock.CreateBlock (method.ToDeclaration ().ToString (), block: true)) {
 				methodBlock.WriteLine ($"throw new {ModelNotImplementedException} ();");
 			}

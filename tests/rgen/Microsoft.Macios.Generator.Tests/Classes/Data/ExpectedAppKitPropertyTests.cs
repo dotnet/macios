@@ -118,6 +118,7 @@ public partial class AppKitPropertyTests
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst13.1")]
+		[Export ("count")]
 		get
 		{
 			AppKit.NSApplication.EnsureUIThread ();

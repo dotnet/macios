@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using Microsoft.Macios.Generator;
+using static Microsoft.Macios.Generator.RgenDiagnostics;
 
 namespace Microsoft.Macios.Bindings.Analyzer.Validators;
 
@@ -17,8 +18,8 @@ sealed class CategoryValidator : BindingValidator {
 	{
 
 		// all bindings must be partial
-		AddGlobalStrategy (RgenDiagnostics.RBI0001, IsPartial);
+		AddGlobalStrategy (RBI0001, IsPartial);
 		// categories must be static
-		AddGlobalStrategy (RgenDiagnostics.RBI0004, IsStatic);
+		AddGlobalStrategy (RBI0004, IsStatic);
 	}
 }

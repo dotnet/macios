@@ -147,6 +147,11 @@ readonly partial struct Property {
 	/// </summary>
 	public bool IsOptional => IsProperty && ExportPropertyData.Flags.HasFlag (ObjCBindings.Property.Optional);
 
+	/// <summary>
+	/// True if the property was marked to skip its registration.
+	/// </summary>
+	public bool SkipRegistration => IsProperty && ExportPropertyData.Flags.HasFlag (ObjCBindings.Property.SkipRegistration);
+
 	readonly bool? needsBackingField = null;
 	/// <summary>
 	/// States if the property, when generated, needs a backing field.

@@ -84,16 +84,25 @@ sealed class ClassValidator : BindingValidator {
 		out ImmutableArray<Diagnostic> diagnostics, Location? location = null)
 	{
 		diagnostics = ImmutableArray<Diagnostic>.Empty;
-		// go over all the selectors in properties and methods and add the selector to a dictionary, keep track of
-		// the symbol name and location to create the diagnostics later
-		var selectors = new Dictionary<string, List<(string SymbolName, Location? Location)>> ();
+		var builder = ImmutableArray.CreateBuilder<Diagnostic> ();
+		
+		// the logic is as follows:
+		// 1. Collect all selectors that we have decided to register. Those are the ones in properties and methods that
+		// do not have the SkipRegister attribute.
+		// 2. Collect the selectors based on them being static or instance selectors. We can have the same selector
+		// for static and instance methods, but not for two static or two instance methods.
+		
+		var instanceSelectors = new Dictionary<string, List<(string SymbolName, Location? Location)>> ();
+		var staticSelectors = new Dictionary<string, List<(string SymbolName, Location? Location)>> ();
+		// collect property selectors
 		foreach (var property in binding.Properties) {
 			if (string.IsNullOrEmpty (property.Selector))
 				continue;
-			if (property.Modifiers.Any (x => x.IsKind (SyntaxKind.SealedKeyword)))
-				// special case in which a method was declared as sealed, we don't want to
-				// consider it 
+			if (property.SkipRegistration)
+				// user has decided to skip registration for this property, so we don't need to validate it
 				continue;
+			// decide which dictionary to use based on the property being static or instance
+			var selectors = property.IsStatic ? staticSelectors : instanceSelectors;
 			if (selectors.TryGetValue (property.Selector, out var list)) {
 				list.Add ((property.Name, property.Location));
 			} else {
@@ -101,15 +110,15 @@ sealed class ClassValidator : BindingValidator {
 				selectors.Add (property.Selector, [(property.Name, property.Location)]);
 			}
 		}
-
-		// same with the methods
+		
+		// collect method selectors
 		foreach (var method in binding.Methods) {
 			if (string.IsNullOrEmpty (method.Selector))
 				continue;
-			if (method.Modifiers.Any (x => x.IsKind (SyntaxKind.SealedKeyword)))
-				// special case in which a method was declared as sealed, we don't want to
-				// consider it 
+			if (method.SkipRegistration)
+				// user has decided to skip registration for this method, so we don't need to validate it
 				continue;
+			var selectors = method.IsStatic ? staticSelectors : instanceSelectors;
 			if (selectors.TryGetValue (method.Selector, out var list)) {
 				list.Add ((method.Name, method.Location));
 			} else {
@@ -117,31 +126,41 @@ sealed class ClassValidator : BindingValidator {
 				selectors.Add (method.Selector, [(method.Name, method.Location)]);
 			}
 		}
-
 		// get all the selectors that have more than one property or method
-		var duplicates = selectors.Where (x => x.Value.Count > 1).ToImmutableArray ();
-		if (duplicates.Length == 0) {
+		var instanceDuplicates = instanceSelectors.Where (x => x.Value.Count > 1).ToImmutableArray ();
+		var staticDuplicates = staticSelectors.Where (x => x.Value.Count > 1).ToImmutableArray ();
+		
+		if (instanceDuplicates.Length == 0 && staticDuplicates.Length == 0) {
 			// no duplicates, we are good
 			return true;
 		}
-		// collect the diagnostics for each duplicate selector
-		var builder = ImmutableArray.CreateBuilder<Diagnostic> ();
-		foreach (var duplicate in duplicates) {
-			var firstSymbol = duplicate.Value.First ();
-			for (var index = 1; index < duplicate.Value.Count; index++) {
-				var dupSymbol = duplicate.Value [index]; // used for the msg and the location
-				builder.Add (Diagnostic.Create (
-					descriptor: RBI0034,
-					location: dupSymbol.Location,
-					messageArgs: [
-						duplicate.Key,
-						dupSymbol.SymbolName,
-						firstSymbol.SymbolName
-					]));
-			}
-		}
+		// loop over each of the duplicates and create diagnostics for them, we do this separately for instance and
+		// static selectors to make it easier to read the code and to avoid mixing selectors and getting confused about
+		// which one is which.
+		BuildDiagnostics (instanceDuplicates, builder);
+		BuildDiagnostics (staticDuplicates, builder);
+		
 		diagnostics = builder.ToImmutable ();
 		return diagnostics.Length == 0;
+
+		void BuildDiagnostics(ImmutableArray<KeyValuePair<string, List<(string SymbolName, Location? Location)>>> keyValuePairs, 
+			ImmutableArray<Diagnostic>.Builder builder1)
+		{
+			foreach (var duplicate in keyValuePairs) {
+				var firstSymbol = duplicate.Value.First ();
+				for (var index = 1; index < duplicate.Value.Count; index++) {
+					var dupSymbol = duplicate.Value [index]; // used for the msg and the location
+					builder1.Add (Diagnostic.Create (
+						descriptor: RBI0034,
+						location: dupSymbol.Location,
+						messageArgs: [
+							duplicate.Key,
+							dupSymbol.SymbolName,
+							firstSymbol.SymbolName
+						]));
+				}
+			}
+		}
 	}
 
 	/// <summary>

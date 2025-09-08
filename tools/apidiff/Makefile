@@ -251,7 +251,7 @@ define VerifyNoBreakingChanges
 $$(OUTPUT_DIR)/diff/Microsoft.$(platform).txt: export DOTNET_ROOT=
 $$(OUTPUT_DIR)/diff/Microsoft.$(platform).txt: $$(COMPARISON_DLL_$(1)) $(DOTNET_DESTDIR)/$($(1)_NUGET_REF_NAME)/ref/$(DOTNET_TFM)/Microsoft.$(1).dll suppression-files/$(1).xml Makefile assembly-versions-$(1)
 	$$(Q) mkdir -p $$(dir $$@)
-	$$(QF_GEN) ./apicompat.sh "$(1)" "$$(COMPARISON_DLL_$(1))" "$(DOTNET_DESTDIR)/$($(1)_NUGET_REF_NAME)/ref/$(DOTNET_TFM)/Microsoft.$(1).dll" "$(abspath $$@)" "$$(OUTPUT_DIR)" "$$(OUTPUT_DIR)/tmp/left-assembly-version-$(1).txt" "$$(OUTPUT_DIR)/tmp/right-assembly-version-$(1).txt" "$(NUGET_PRERELEASE_IDENTIFIER)"
+	$$(QF_GEN) ./apicompat.sh "$(1)" "$$(COMPARISON_DLL_$(1))" "$(DOTNET_DESTDIR)/$($(1)_NUGET_REF_NAME)/ref/$(DOTNET_TFM)/Microsoft.$(1).dll" "$$(abspath $$@)" "$$(OUTPUT_DIR)" "$$(OUTPUT_DIR)/tmp/left-assembly-version-$(1).txt" "$$(OUTPUT_DIR)/tmp/right-assembly-version-$(1).txt" "$(NUGET_PRERELEASE_IDENTIFIER)"
 
 verify-no-breaking-changes:: $$(OUTPUT_DIR)/diff/Microsoft.$(platform).txt
 endef

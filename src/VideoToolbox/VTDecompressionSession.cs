@@ -314,7 +314,7 @@ namespace VideoToolbox {
 		}
 
 #if !__TVOS__
-		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("macos14.0")]
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
 		[UnsupportedOSPlatform ("tvos")]
@@ -333,7 +333,7 @@ namespace VideoToolbox {
 		/// <param name="multiImageCapableOutputHandler">A callback that will be called when the decoding operation is complete.</param>
 		/// <returns><see cref="VTStatus.Ok" /> if successful, or an error code otherwise.</returns>
 		[BindingImpl (BindingImplOptions.Optimizable)]
-		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("macos14.0")]
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
 		[UnsupportedOSPlatform ("tvos")]
@@ -382,7 +382,7 @@ namespace VideoToolbox {
 #endif // !__TVOS__
 
 #if !__TVOS__
-		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("macos14.0")]
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
 		[UnsupportedOSPlatform ("tvos")]
@@ -396,7 +396,7 @@ namespace VideoToolbox {
 		/// <param name="outputMultiImageCallback">The callback that will be called when a single call to <see cref="DecodeFrame(CMSampleBuffer,VTDecodeFrameFlags,IntPtr,out VTDecodeInfoFlags)" /> produces multiple images.</param>
 		/// <param name="outputMultiImageReference">A user-provided value that is passed to the callback.</param>
 		/// <returns><see cref="VTStatus.Ok" /> if successful, or an error code otherwise.</returns>
-		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("macos14.0")]
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
 		[UnsupportedOSPlatform ("tvos")]
@@ -431,7 +431,7 @@ namespace VideoToolbox {
 #endif // !__TVOS__
 
 
-		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("ios18.0")]
 		[SupportedOSPlatform ("maccatalyst18.0")]
 		[SupportedOSPlatform ("tvos18.0")]
@@ -451,7 +451,7 @@ namespace VideoToolbox {
 		/// <param name="sourceFrameReference">A user-provided value that is passed to any decoding callbacks.</param>
 		/// <param name="infoFlags">Upon return, any informational flags about the decode operation.</param>
 		/// <returns><see cref="VTStatus.Ok" /> if successful, or an error code otherwise.</returns>
-		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("ios18.0")]
 		[SupportedOSPlatform ("maccatalyst18.0")]
 		[SupportedOSPlatform ("tvos18.0")]
@@ -480,7 +480,7 @@ namespace VideoToolbox {
 		/// <param name="sourceFrameReference">A user-provided value that is passed to any decoding callbacks.</param>
 		/// <param name="infoFlags">Upon return, any informational flags about the decode operation.</param>
 		/// <returns><see cref="VTStatus.Ok" /> if successful, or an error code otherwise.</returns>
-		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("ios18.0")]
 		[SupportedOSPlatform ("maccatalyst18.0")]
 		[SupportedOSPlatform ("tvos18.0")]
@@ -489,7 +489,7 @@ namespace VideoToolbox {
 			return DecodeFrame (sampleBuffer, decodeFlags, frameOptions.GetDictionary (), sourceFrameReference, out infoFlags);
 		}
 
-		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("ios18.0")]
 		[SupportedOSPlatform ("maccatalyst18.0")]
 		[SupportedOSPlatform ("tvos18.0")]
@@ -509,7 +509,7 @@ namespace VideoToolbox {
 		/// <param name="infoFlags">Upon return, any informational flags about the decode operation.</param>
 		/// <param name="outputHandler">A callback that will be called when the decoding operation is complete.</param>
 		/// <returns><see cref="VTStatus.Ok" /> if successful, or an error code otherwise.</returns>
-		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("ios18.0")]
 		[SupportedOSPlatform ("maccatalyst18.0")]
 		[SupportedOSPlatform ("tvos18.0")]
@@ -540,7 +540,7 @@ namespace VideoToolbox {
 		/// <param name="infoFlags">Upon return, any informational flags about the decode operation.</param>
 		/// <param name="outputHandler">A callback that will be called when the decoding operation is complete.</param>
 		/// <returns><see cref="VTStatus.Ok" /> if successful, or an error code otherwise.</returns>
-		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("ios18.0")]
 		[SupportedOSPlatform ("maccatalyst18.0")]
 		[SupportedOSPlatform ("tvos18.0")]

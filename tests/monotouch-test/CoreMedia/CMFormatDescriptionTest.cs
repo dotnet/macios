@@ -215,6 +215,8 @@ namespace MonoTouchFixtures.CoreMedia {
 		[Test]
 		public void TagCollections ()
 		{
+			TestRuntime.AssertXcodeVersion (26, 0);
+
 			using var assetUrl = NSBundle.MainBundle.GetUrlForResource ("hummingbird", "mov");
 			using var asset = AVAsset.FromUrl (assetUrl);
 			var videoTracks = asset.TracksWithMediaType (AVMediaTypes.Video.GetConstant ());

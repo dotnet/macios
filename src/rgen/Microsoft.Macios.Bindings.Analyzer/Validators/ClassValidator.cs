@@ -85,13 +85,13 @@ sealed class ClassValidator : BindingValidator {
 	{
 		diagnostics = ImmutableArray<Diagnostic>.Empty;
 		var builder = ImmutableArray.CreateBuilder<Diagnostic> ();
-		
+
 		// the logic is as follows:
 		// 1. Collect all selectors that we have decided to register. Those are the ones in properties and methods that
 		// do not have the SkipRegister attribute.
 		// 2. Collect the selectors based on them being static or instance selectors. We can have the same selector
 		// for static and instance methods, but not for two static or two instance methods.
-		
+
 		var instanceSelectors = new Dictionary<string, List<(string SymbolName, Location? Location)>> ();
 		var staticSelectors = new Dictionary<string, List<(string SymbolName, Location? Location)>> ();
 		// collect property selectors
@@ -110,7 +110,7 @@ sealed class ClassValidator : BindingValidator {
 				selectors.Add (property.Selector, [(property.Name, property.Location)]);
 			}
 		}
-		
+
 		// collect method selectors
 		foreach (var method in binding.Methods) {
 			if (string.IsNullOrEmpty (method.Selector))
@@ -129,7 +129,7 @@ sealed class ClassValidator : BindingValidator {
 		// get all the selectors that have more than one property or method
 		var instanceDuplicates = instanceSelectors.Where (x => x.Value.Count > 1).ToImmutableArray ();
 		var staticDuplicates = staticSelectors.Where (x => x.Value.Count > 1).ToImmutableArray ();
-		
+
 		if (instanceDuplicates.Length == 0 && staticDuplicates.Length == 0) {
 			// no duplicates, we are good
 			return true;
@@ -139,11 +139,11 @@ sealed class ClassValidator : BindingValidator {
 		// which one is which.
 		BuildDiagnostics (instanceDuplicates, builder);
 		BuildDiagnostics (staticDuplicates, builder);
-		
+
 		diagnostics = builder.ToImmutable ();
 		return diagnostics.Length == 0;
 
-		void BuildDiagnostics(ImmutableArray<KeyValuePair<string, List<(string SymbolName, Location? Location)>>> keyValuePairs, 
+		void BuildDiagnostics (ImmutableArray<KeyValuePair<string, List<(string SymbolName, Location? Location)>>> keyValuePairs,
 			ImmutableArray<Diagnostic>.Builder builder1)
 		{
 			foreach (var duplicate in keyValuePairs) {

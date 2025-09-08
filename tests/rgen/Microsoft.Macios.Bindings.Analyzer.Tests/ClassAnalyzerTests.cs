@@ -88,7 +88,7 @@ public partial class TestClass{
 				DiagnosticSeverity.Warning,
 				"The selector 'count' used by 'SecondCount' is already used by 'Count'"
 			];
-			
+
 			// duplicate selector, 2 static properties
 			yield return [
 				@"
@@ -130,7 +130,7 @@ public partial class TestClass{
 				DiagnosticSeverity.Warning,
 				"The selector 'count' used by 'SecondCount' is already used by 'Count'"
 			];
-			
+
 			// duplicate selector, property and method
 			yield return [
 				@"
@@ -214,7 +214,7 @@ public partial class TestClass{
 				DiagnosticSeverity.Warning,
 				"The selector 'count' used by 'SecondGetCount' is already used by 'GetCount'"
 			];
-			
+
 			// duplicate selector, 2 static methods
 			yield return [
 				@"
@@ -683,7 +683,7 @@ public partial class TestClass{
 }",
 				"RBI0034",
 			];
-			
+
 			// duplicate selector, 2 properties, one is static the other is instance
 			yield return [
 				@"
@@ -723,7 +723,7 @@ public partial class TestClass{
 }",
 				"RBI0034",
 			];
-			
+
 			// duplicate selector, 2 methods one is static the other is instance
 			yield return [
 				@"
@@ -763,7 +763,7 @@ public partial class TestClass{
 }",
 				"RBI0034",
 			];
-			
+
 			// duplicate selector, 2 methods one is skipped
 			yield return [
 				@"

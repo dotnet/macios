@@ -23,6 +23,9 @@ public class VTLowLatencyFrameInterpolationConfigurationTest {
 		TestRuntime.AssertXcodeVersion (26, 0);
 		TestRuntime.AssertNotSimulator (); // VTLowLatencyFrameInterpolationConfiguration is not available in the simulator
 
+		if (!VTLowLatencyFrameInterpolationConfiguration.Supported)
+			Assert.Ignore ($"VTLowLatencyFrameInterpolationConfiguration is not supported on this processor");
+
 		Assert.Multiple (() => {
 			using var obj = VTLowLatencyFrameInterpolationConfiguration.CreateWithNumberOfInterpolatedFrames (120, 240, 2);
 			Assert.That (obj, Is.Not.Null, "obj");
@@ -38,6 +41,9 @@ public class VTLowLatencyFrameInterpolationConfigurationTest {
 	{
 		TestRuntime.AssertXcodeVersion (26, 0);
 		TestRuntime.AssertNotSimulator (); // VTLowLatencyFrameInterpolationConfiguration is not available in the simulator
+
+		if (!VTLowLatencyFrameInterpolationConfiguration.Supported)
+			Assert.Ignore ($"VTLowLatencyFrameInterpolationConfiguration is not supported on this processor");
 
 		Assert.Multiple (() => {
 			using var obj = VTLowLatencyFrameInterpolationConfiguration.CreateWithSpatialScaleFactor (120, 240, 2);

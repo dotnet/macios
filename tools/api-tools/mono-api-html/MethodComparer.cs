@@ -68,15 +68,5 @@ namespace Mono.ApiTools {
 				return eGPs.Count () == sGPs.Count ();
 			}
 		}
-
-		protected override bool IsBreakingRemoval (XElement e)
-		{
-			// Removing virtual methods that override another method is not a breaking change.
-			var is_override = e.Attribute ("is-override");
-			if (is_override is not null)
-				return is_override.Value != "true";
-
-			return true; // all other removals are breaking changes
-		}
 	}
 }

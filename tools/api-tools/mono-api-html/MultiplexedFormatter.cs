@@ -74,10 +74,10 @@ namespace Mono.ApiTools {
 				formatter.BeginAttributeModification ();
 		}
 
-		public override void AddAttributeModification (string oldAttributeName, string newAttributeName, bool breaking)
+		public override void AddAttributeModification (string oldAttributeName, string newAttributeName)
 		{
 			foreach (var formatter in formatters)
-				formatter.AddAttributeModification (oldAttributeName, newAttributeName, breaking);
+				formatter.AddAttributeModification (oldAttributeName, newAttributeName);
 		}
 
 		public override void EndAttributeModification ()
@@ -104,10 +104,10 @@ namespace Mono.ApiTools {
 				formatter.BeginTypeModification ();
 		}
 
-		public override void BeginTypeRemoval (bool breaking)
+		public override void BeginTypeRemoval ()
 		{
 			foreach (var formatter in formatters)
-				formatter.BeginTypeRemoval (breaking);
+				formatter.BeginTypeRemoval ();
 		}
 
 		public override void BeginMemberAddition (IEnumerable<XElement> list, MemberComparer member)
@@ -116,10 +116,10 @@ namespace Mono.ApiTools {
 				formatter.BeginMemberAddition (list, member);
 		}
 
-		public override void AddMember (MemberComparer member, bool isInterfaceBreakingChange, string obsolete, string description)
+		public override void AddMember (MemberComparer member, string obsolete, string description)
 		{
 			foreach (var formatter in formatters)
-				formatter.AddMember (member, isInterfaceBreakingChange, Replace (formatter, obsolete), Replace (formatter, description));
+				formatter.AddMember (member, Replace (formatter, obsolete), Replace (formatter, description));
 		}
 
 		public override void EndMemberAddition ()
@@ -140,16 +140,16 @@ namespace Mono.ApiTools {
 				formatter.EndMemberModification ();
 		}
 
-		public override void BeginMemberRemoval (IEnumerable<XElement> list, MemberComparer member, bool breaking)
+		public override void BeginMemberRemoval (IEnumerable<XElement> list, MemberComparer member)
 		{
 			foreach (var formatter in formatters)
-				formatter.BeginMemberRemoval (list, member, breaking);
+				formatter.BeginMemberRemoval (list, member);
 		}
 
-		public override void RemoveMember (MemberComparer member, bool is_breaking, string obsolete, string description)
+		public override void RemoveMember (MemberComparer member, string obsolete, string description)
 		{
 			foreach (var formatter in formatters)
-				formatter.RemoveMember (member, is_breaking, Replace (formatter, obsolete), Replace (formatter, description));
+				formatter.RemoveMember (member, Replace (formatter, obsolete), Replace (formatter, description));
 		}
 
 		public override void EndMemberRemoval ()
@@ -164,28 +164,28 @@ namespace Mono.ApiTools {
 				formatter.RenderObsoleteMessage (chunk, member, Replace (formatter, description), Replace (formatter, optionalObsoleteMessage));
 		}
 
-		public override void RenderAttribute (TextChunk chunk, Comparer member, string attributeName, bool breaking, string description, params string [] attributeArguments)
+		public override void RenderAttribute (TextChunk chunk, Comparer member, string attributeName, string description, params string [] attributeArguments)
 		{
 			foreach (var formatter in formatters)
-				formatter.RenderAttribute (chunk, member, attributeName, breaking, Replace (formatter, description), attributeArguments);
+				formatter.RenderAttribute (chunk, member, attributeName, Replace (formatter, description), attributeArguments);
 		}
 
-		public override void DiffAddition (TextChunk chunk, string text, bool breaking)
+		public override void DiffAddition (TextChunk chunk, string text)
 		{
 			foreach (var formatter in formatters)
-				formatter.DiffAddition (chunk, Replace (formatter, text), breaking);
+				formatter.DiffAddition (chunk, Replace (formatter, text));
 		}
 
-		public override void DiffModification (TextChunk chunk, string old, string @new, bool breaking)
+		public override void DiffModification (TextChunk chunk, string old, string @new)
 		{
 			foreach (var formatter in formatters)
-				formatter.DiffModification (chunk, Replace (formatter, old), Replace (formatter, @new), breaking);
+				formatter.DiffModification (chunk, Replace (formatter, old), Replace (formatter, @new));
 		}
 
-		public override void DiffRemoval (TextChunk chunk, string text, bool breaking)
+		public override void DiffRemoval (TextChunk chunk, string text)
 		{
 			foreach (var formatter in formatters)
-				formatter.DiffRemoval (chunk, Replace (formatter, text), breaking);
+				formatter.DiffRemoval (chunk, Replace (formatter, text));
 		}
 
 		public override void Diff (ApiChange apichange)

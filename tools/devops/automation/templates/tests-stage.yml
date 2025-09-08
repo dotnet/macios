@@ -64,7 +64,7 @@ parameters:
     {
       stageName: 'mac_14_x64',
       displayName: 'X64 - Mac Sonoma (14)',
-      macPool: 'VSEng-Xamarin-RedmondMacBuildPool-iOS-Untrusted',
+      macPool: 'VSEng-VSMac-Xamarin-Shared',
       useImage: false,
       statusContext: 'X64 - Mac Sonoma (14)',
       demands: [

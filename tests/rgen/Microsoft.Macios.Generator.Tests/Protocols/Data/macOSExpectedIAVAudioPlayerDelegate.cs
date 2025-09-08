@@ -33,6 +33,7 @@ public partial interface IAVAudioPlayerDelegate : INativeObject, IDisposable
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Export ("audioPlayerDecodeErrorDidOccur:error:")]
 	internal static void _DecoderError (this global::Microsoft.Macios.Generator.Tests.Protocols.Data.IAVAudioPlayerDelegate self, global::AVFoundation.AVAudioPlayer player, global::Foundation.NSError? error)
 	{
 		var player__handle__ = player!.GetNonNullHandle (nameof (player));
@@ -59,6 +60,7 @@ public partial interface IAVAudioPlayerDelegate : INativeObject, IDisposable
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Export ("audioPlayerDidFinishPlaying:successfully:")]
 	internal static void _FinishedPlaying (this global::Microsoft.Macios.Generator.Tests.Protocols.Data.IAVAudioPlayerDelegate self, global::AVFoundation.AVAudioPlayer player, bool flag)
 	{
 		var player__handle__ = player!.GetNonNullHandle (nameof (player));
@@ -95,6 +97,7 @@ internal unsafe sealed class AVAudioPlayerDelegateWrapper : BaseWrapper, IAVAudi
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[Export<Method> ("audioPlayerDecodeErrorDidOccur:error:")]
+	[Export ("audioPlayerDecodeErrorDidOccur:error:")]
 	public void DecoderError (global::AVFoundation.AVAudioPlayer player, global::Foundation.NSError? error)
 	{
 		var player__handle__ = player!.GetNonNullHandle (nameof (player));
@@ -111,6 +114,7 @@ internal unsafe sealed class AVAudioPlayerDelegateWrapper : BaseWrapper, IAVAudi
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[Export<Method> ("audioPlayerDidFinishPlaying:successfully:")]
+	[Export ("audioPlayerDidFinishPlaying:successfully:")]
 	public void FinishedPlaying (global::AVFoundation.AVAudioPlayer player, bool flag)
 	{
 		var player__handle__ = player!.GetNonNullHandle (nameof (player));
@@ -208,6 +212,7 @@ public unsafe abstract partial class AVAudioPlayerDelegate : NSObject, IAVAudioP
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[Export<Method> ("audioPlayerDecodeErrorDidOccur:error:")]
+	[Export ("audioPlayerDecodeErrorDidOccur:error:")]
 	public virtual partial void DecoderError (global::AVFoundation.AVAudioPlayer player, global::Foundation.NSError? error)
 	{
 		throw new global::Foundation.ModelNotImplementedException ();
@@ -219,6 +224,7 @@ public unsafe abstract partial class AVAudioPlayerDelegate : NSObject, IAVAudioP
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[Export<Method> ("audioPlayerDidFinishPlaying:successfully:")]
+	[Export ("audioPlayerDidFinishPlaying:successfully:")]
 	public virtual partial void FinishedPlaying (global::AVFoundation.AVAudioPlayer player, bool flag)
 	{
 		throw new global::Foundation.ModelNotImplementedException ();

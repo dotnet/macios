@@ -172,6 +172,7 @@ public partial class OuterClass
 				[SupportedOSPlatform ("ios")]
 				[SupportedOSPlatform ("tvos")]
 				[SupportedOSPlatform ("maccatalyst13.1")]
+				[Export ("containsAttachments")]
 				get
 				{
 					bool ret;
@@ -188,6 +189,7 @@ public partial class OuterClass
 				[SupportedOSPlatform ("ios")]
 				[SupportedOSPlatform ("tvos")]
 				[SupportedOSPlatform ("maccatalyst13.1")]
+				[Export ("setContainsAttachments:")]
 				set
 				{
 					if (IsDirectBinding) {
@@ -210,6 +212,7 @@ public partial class OuterClass
 				[SupportedOSPlatform ("ios")]
 				[SupportedOSPlatform ("tvos")]
 				[SupportedOSPlatform ("maccatalyst13.1")]
+				[Export ("count")]
 				get
 				{
 					global::System.UIntPtr ret;
@@ -226,6 +229,7 @@ public partial class OuterClass
 				[SupportedOSPlatform ("ios")]
 				[SupportedOSPlatform ("tvos")]
 				[SupportedOSPlatform ("maccatalyst13.1")]
+				[Export ("setCount:")]
 				set
 				{
 					if (IsDirectBinding) {
@@ -248,6 +252,7 @@ public partial class OuterClass
 				[SupportedOSPlatform ("ios")]
 				[SupportedOSPlatform ("tvos")]
 				[SupportedOSPlatform ("maccatalyst13.1")]
+				[Export ("lineSpacing")]
 				get
 				{
 					global::System.Runtime.InteropServices.NFloat ret;
@@ -264,6 +269,7 @@ public partial class OuterClass
 				[SupportedOSPlatform ("ios")]
 				[SupportedOSPlatform ("tvos")]
 				[SupportedOSPlatform ("maccatalyst13.1")]
+				[Export ("setLineSpacing:")]
 				set
 				{
 					if (IsDirectBinding) {
@@ -286,6 +292,7 @@ public partial class OuterClass
 				[SupportedOSPlatform ("ios")]
 				[SupportedOSPlatform ("tvos")]
 				[SupportedOSPlatform ("maccatalyst13.1")]
+				[Export ("sizes")]
 				get
 				{
 					global::System.UIntPtr[] ret;
@@ -302,6 +309,7 @@ public partial class OuterClass
 				[SupportedOSPlatform ("ios")]
 				[SupportedOSPlatform ("tvos")]
 				[SupportedOSPlatform ("maccatalyst13.1")]
+				[Export ("setSizes:")]
 				set
 				{
 					if (value is null)
@@ -320,6 +328,7 @@ public partial class OuterClass
 			[SupportedOSPlatform ("tvos")]
 			[SupportedOSPlatform ("maccatalyst13.1")]
 			[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+			[Export ("arrayWithContentsOfFile:")]
 			public virtual unsafe partial static global::Foundation.NSArray FromFile (string path)
 			{
 				if (path is null)
@@ -341,6 +350,7 @@ public partial class OuterClass
 			[SupportedOSPlatform ("tvos")]
 			[SupportedOSPlatform ("maccatalyst13.1")]
 			[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+			[Export ("setValue:forKey:")]
 			public virtual unsafe partial void SetValueForKey (global::Foundation.NSObject value, global::Foundation.NSString key)
 			{
 				var value__handle__ = value!.GetNonNullHandle (nameof (value));
@@ -360,6 +370,7 @@ public partial class OuterClass
 			[SupportedOSPlatform ("tvos")]
 			[SupportedOSPlatform ("maccatalyst13.1")]
 			[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+			[Export ("sortedArrayUsingComparator:")]
 			public virtual unsafe partial global::Foundation.NSArray Sort (global::Foundation.NSComparator cmptr)
 			{
 				if (cmptr is null)
@@ -381,6 +392,7 @@ public partial class OuterClass
 			[SupportedOSPlatform ("tvos")]
 			[SupportedOSPlatform ("maccatalyst13.1")]
 			[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+			[Export ("valueForKey:")]
 			public virtual unsafe partial global::Foundation.NSObject ValueForKey (global::Foundation.NSString key)
 			{
 				var key__handle__ = key!.GetNonNullHandle (nameof (key));
@@ -400,6 +412,7 @@ public partial class OuterClass
 			[SupportedOSPlatform ("tvos")]
 			[SupportedOSPlatform ("maccatalyst13.1")]
 			[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+			[Export ("writeToFile:atomically:")]
 			public virtual unsafe partial bool WriteToFile (string path, bool useAuxiliaryFile)
 			{
 				if (path is null)

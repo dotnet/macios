@@ -195,22 +195,7 @@ partial class Validator<T> : IValidator {
 		Validator<TField> nestedValidator)
 	{
 		var fieldName = GetPropertyName (selector);
-
 		nestedValidators [fieldName] = nestedValidator;
-
-		AddStrategy (selector, nestedValidator.Descriptors, NestedValidation);
-
-		bool NestedValidation (TField? data, RootContext context, out ImmutableArray<Diagnostic> diagnostic, Location? location = null)
-		{
-			diagnostic = [];
-			if (data is null)
-				return true; // null nested = valid
-
-			var nestedErrors = nestedValidator.ValidateAll (data, context);
-			// flatten the diagnostics
-			diagnostic = [.. nestedErrors.SelectMany (x => x.Value)];
-			return nestedErrors.Count == 0;
-		}
 	}
 
 	/// <summary>

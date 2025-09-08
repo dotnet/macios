@@ -17,11 +17,11 @@ public static class StringStrategies {
 	/// <param name="diagnostics">When this method returns, contains an array of diagnostics if the data is invalid; otherwise, an empty array.</param>
 	/// <param name="location">The code location to be used for the diagnostics.</param>
 	/// <returns><c>true</c> if the data is valid; otherwise, <c>false</c>.</returns>
-	internal static bool IsNotNull (string? selector, DiagnosticDescriptor descriptor, out ImmutableArray<Diagnostic> diagnostics,
+	internal static bool IsNotNullOrEmpty (string? selector, DiagnosticDescriptor descriptor, out ImmutableArray<Diagnostic> diagnostics,
 		Location? location = null)
 	{
 		diagnostics = ImmutableArray<Diagnostic>.Empty;
-		if (selector is not null)
+		if (!string.IsNullOrEmpty (selector))
 			return true;
 		diagnostics = [
 			Diagnostic.Create (
@@ -90,4 +90,34 @@ public static class StringStrategies {
 			location: location,
 			messageArgs: messageArgs
 		);
+
+	/// <summary>
+	/// Validates that the number of colons in a selector matches the expected argument count.
+	/// </summary>
+	/// <param name="symbol">The symbol name for diagnostic purposes.</param>
+	/// <param name="selector">The selector to validate.</param>
+	/// <param name="argCount">The expected number of arguments.</param>
+	/// <param name="diagnostics">When this method returns, contains an array of diagnostics if the argument count does not match; otherwise, an empty array.</param>
+	/// <param name="location">The code location to be used for the diagnostics.</param>
+	/// <returns><c>true</c> if the selector argument count matches the expected count; otherwise, <c>false</c>.</returns>
+	internal static bool MatchingSelectorArgCount (string symbol, string? selector, int argCount,
+		out ImmutableArray<Diagnostic> diagnostics,
+		Location? location = null)
+	{
+		diagnostics = ImmutableArray<Diagnostic>.Empty;
+		if (selector is null)
+			return true;
+		// the number of ':' in the selector should be equal to the number of arguments
+		var count = selector.Count (c => c == ':');
+		if (count == argCount)
+			return true;
+		diagnostics = [
+			Diagnostic.Create (
+				descriptor: RBI0029, // There is a mismatch between the arguments of '{0}' (found {1}) and the selector '{2}' (found {3})
+				location: location,
+				symbol, argCount, selector, count)
+		];
+		return false;
+	}
+
 }

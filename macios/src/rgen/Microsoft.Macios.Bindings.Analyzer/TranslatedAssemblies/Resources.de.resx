@@ -374,4 +374,26 @@
   <data name="RBI0032Title" xml:space="preserve">
         <value>Wrong weak delegate</value>
     </data>
+  <!-- RBI0033 -->
+  <data name="RBI0033Description" xml:space="preserve">
+        <value>A weak delegate has a duplicate strong delegate name.</value>
+    </data>
+  <data name="RBI0033MessageFormat" xml:space="preserve">
+        <value>The weak delegate '{0}' strong delegate '{1}' is already used by '{2}'</value>
+        <comment>{0} is the name of the property {1} is the name of the strong delegate and {2} is the name of the other property.</comment>
+    </data>
+  <data name="RBI0033Title" xml:space="preserve">
+        <value>Wrong strong delegate name</value>
+    </data>
+  <!-- RBI0034 -->
+  <data name="RBI0034Description" xml:space="preserve">
+        <value>A selector is used in more than one symbol.</value>
+    </data>
+  <data name="RBI0034MessageFormat" xml:space="preserve">
+        <value>The selector '{0}' used by '{1}' is already used by '{2}'</value>
+        <comment>{0} is the selector {1} is the name of the duplicate symbol and {2} is the name of the first user of the selector.</comment>
+    </data>
+  <data name="RBI0034Title" xml:space="preserve">
+        <value>Duplicate selector</value>
+    </data>
 </root>

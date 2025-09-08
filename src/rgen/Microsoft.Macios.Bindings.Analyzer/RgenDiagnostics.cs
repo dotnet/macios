@@ -491,7 +491,7 @@ public static class RgenDiagnostics {
 		new LocalizableResourceString (nameof (Resources.RBI0032MessageFormat), Resources.ResourceManager,
 			typeof (Resources)),
 		"Usage",
-		DiagnosticSeverity.Error,
+		DiagnosticSeverity.Warning,
 		isEnabledByDefault: true,
 		description: new LocalizableResourceString (nameof (Resources.RBI0032Description), Resources.ResourceManager,
 			typeof (Resources))

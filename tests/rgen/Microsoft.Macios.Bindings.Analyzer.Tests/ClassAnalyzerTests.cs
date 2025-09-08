@@ -300,7 +300,7 @@ public partial class TestClass{
 }",
 				"RBI0018",
 				DiagnosticSeverity.Error,
-				"An export property selector must not have a nonnull or empty selector"
+				"An export property selector must not contain any whitespace"
 			];
 
 			// field selector with space
@@ -460,7 +460,7 @@ public partial class TestClass{
 }",
 				"RBI0018",
 				DiagnosticSeverity.Error,
-				"An export property selector must not have a nonnull or empty selector"
+				"An export property selector must not contain any whitespace"
 			];
 
 			// property invalid selector has space 

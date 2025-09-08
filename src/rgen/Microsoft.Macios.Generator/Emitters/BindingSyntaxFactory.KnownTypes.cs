@@ -266,9 +266,9 @@ static partial class BindingSyntaxFactory {
 	public readonly static TypeSyntax Unsafe = StringExtensions.GetIdentifierName (
 		@namespace: ["System", "Runtime", "CompilerServices"],
 		@class: "Unsafe");
-
+	
 	// AppKit
-
+	
 	/// <summary>
 	/// TypeSyntax for AppKit.NSApplication.
 	/// </summary>
@@ -276,9 +276,9 @@ static partial class BindingSyntaxFactory {
 		@namespace: ["AppKit"],
 		@class: "NSApplication");
 
-
+	
 	// UIKit
-
+	
 	/// <summary>
 	/// TypeSyntax for UIKit.UIApplication.
 	/// </summary>

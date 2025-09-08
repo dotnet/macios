@@ -29,8 +29,15 @@ if test -z "$NUGET_PRERELEASE_IDENTIFIER"; then
 	fi
 fi
 
+if test -z "$DOTNET"; then
+	echo "The DOTNET environment variable isn't set."
+	exit 1
+fi
+
+APICOMPAT="$DOTNET tool run apicompat --allow-roll-forward"
+
 if [[ "$MODE" == "verify" ]]; then
-	if ! apicompat --left "$LEFT" --right "$RIGHT" $STRICT_MODE --suppression-file "suppression-files/$PLATFORM.xml" > "${OUTPUT_FILE}.tmp" 2>&1; then
+	if ! $APICOMPAT --left "$LEFT" --right "$RIGHT" $STRICT_MODE --suppression-file "suppression-files/$PLATFORM.xml" > "${OUTPUT_FILE}.tmp" 2>&1; then
 		cat "${OUTPUT_FILE}.tmp"
 		rm -f "${OUTPUT_FILE}.tmp"
 		exit 1
@@ -52,7 +59,7 @@ if [[ "$MODE" == "verify" ]]; then
 	mv "${OUTPUT_FILE}.tmp" "${OUTPUT_FILE}"
 
 elif [[ "$MODE" == "regenerate" ]]; then
-	apicompat --left "$LEFT" --right "$RIGHT" $STRICT_MODE --suppression-output-file "suppression-files/$PLATFORM.xml" --generate-suppression-file
+	$APICOMPAT --left "$LEFT" --right "$RIGHT" $STRICT_MODE --suppression-output-file "suppression-files/$PLATFORM.xml" --generate-suppression-file
 else
 	echo "Invalid mode: $MODE (must be either 'verify' or 'regenerate')"
 	exit 1

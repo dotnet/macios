@@ -247,7 +247,7 @@ endef
 $(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call ComputeAssemblyVersions,$(platform))))
 
 define VerifyNoBreakingChanges
-$$(OUTPUT_DIR)/diff/Microsoft.$(platform).txt: export DOTNET_ROOT=
+$$(OUTPUT_DIR)/diff/Microsoft.$(platform).txt: export DOTNET=$(DOTNET)
 $$(OUTPUT_DIR)/diff/Microsoft.$(platform).txt: $$(COMPARISON_DLL_$(1)) $(DOTNET_DESTDIR)/$($(1)_NUGET_REF_NAME)/ref/$(DOTNET_TFM)/Microsoft.$(1).dll suppression-files/$(1).xml Makefile assembly-versions-$(1) install-apicompat.stamp
 	$$(Q) mkdir -p $$(dir $$@)
 	$$(QF_GEN) ./apicompat.sh verify "$(1)" "$$(COMPARISON_DLL_$(1))" "$(DOTNET_DESTDIR)/$($(1)_NUGET_REF_NAME)/ref/$(DOTNET_TFM)/Microsoft.$(1).dll" "$$(abspath $$@)" "$$(OUTPUT_DIR)" "$$(OUTPUT_DIR)/tmp/left-assembly-version-$(1).txt" "$$(OUTPUT_DIR)/tmp/right-assembly-version-$(1).txt" "$(NUGET_PRERELEASE_IDENTIFIER)"
@@ -257,7 +257,7 @@ endef
 $(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call VerifyNoBreakingChanges,$(platform))))
 
 define RegenerateSuppressionFiles
-regenerate-suppression-files-$(1): export DOTNET_ROOT=
+regenerate-suppression-files-$(1): export DOTNET=$(DOTNET)
 regenerate-suppression-files-$(1): $$(COMPARISON_DLL_$(1)) $(DOTNET_DESTDIR)/$($(1)_NUGET_REF_NAME)/ref/$(DOTNET_TFM)/Microsoft.$(1).dll Makefile assembly-versions-$(1) install-apicompat.stamp
 	$$(QF_GEN) ./apicompat.sh regenerate "$(1)" "$$(COMPARISON_DLL_$(1))" "$(DOTNET_DESTDIR)/$($(1)_NUGET_REF_NAME)/ref/$(DOTNET_TFM)/Microsoft.$(1).dll" "" "$$(OUTPUT_DIR)" "$$(OUTPUT_DIR)/tmp/left-assembly-version-$(1).txt" "$$(OUTPUT_DIR)/tmp/right-assembly-version-$(1).txt" "$(NUGET_PRERELEASE_IDENTIFIER)"
 

@@ -80,6 +80,8 @@ typedef __attribute__((__ext_vector_type__(2))) float vector_float2;
 typedef __attribute__((__ext_vector_type__(3))) float vector_float3;
 typedef __attribute__((__ext_vector_type__(4))) float vector_float4;
 
+typedef __attribute__((__ext_vector_type__(16))) unsigned char vector_uchar16;
+
 typedef struct { vector_float2 columns[2]; } matrix_float2x2;
 typedef struct { vector_float3 columns[3]; } matrix_float3x3;
 typedef struct { vector_float4 columns[4]; } matrix_float4x4;
@@ -250,6 +252,10 @@ struct MDLVoxelIndexExtentWrapper {
 struct MPSAxisAlignedBoundingBoxWrapper {
     Vector3f min;
     Vector3f max;
+};
+
+struct VectorUChar16 {
+	unsigned char values[16];
 };
 
 static_assert (sizeof (MPSImageHistogramInfoWrapper) == sizeof (MPSImageHistogramInfo), "Sizes aren't equal");

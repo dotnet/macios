@@ -224,10 +224,9 @@ update-current-refs:: $(APIDIFF_DIR)/references/current/Microsoft.$(1).xml
 endef
 $(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call GenerateCurrentReferenceXml,$(platform))))
 
-# if we're in a release branch, we don't want any API changes at all, whatsoever
-ifeq ($(NUGET_PRERELEASE_IDENTIFIER),)
-STRICT_MODE=--strict-mode
-endif
+install-apicompat.stamp:
+	$(Q) $(DOTNET) tool restore
+	$(Q) touch $@
 
 include $(TOP)/scripts/get-assembly-version/fragment.mk
 
@@ -249,9 +248,9 @@ $(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call ComputeAssemblyVersions,$(p
 
 define VerifyNoBreakingChanges
 $$(OUTPUT_DIR)/diff/Microsoft.$(platform).txt: export DOTNET_ROOT=
-$$(OUTPUT_DIR)/diff/Microsoft.$(platform).txt: $$(COMPARISON_DLL_$(1)) $(DOTNET_DESTDIR)/$($(1)_NUGET_REF_NAME)/ref/$(DOTNET_TFM)/Microsoft.$(1).dll suppression-files/$(1).xml Makefile assembly-versions-$(1)
+$$(OUTPUT_DIR)/diff/Microsoft.$(platform).txt: $$(COMPARISON_DLL_$(1)) $(DOTNET_DESTDIR)/$($(1)_NUGET_REF_NAME)/ref/$(DOTNET_TFM)/Microsoft.$(1).dll suppression-files/$(1).xml Makefile assembly-versions-$(1) install-apicompat.stamp
 	$$(Q) mkdir -p $$(dir $$@)
-	$$(QF_GEN) ./apicompat.sh "$(1)" "$$(COMPARISON_DLL_$(1))" "$(DOTNET_DESTDIR)/$($(1)_NUGET_REF_NAME)/ref/$(DOTNET_TFM)/Microsoft.$(1).dll" "$$(abspath $$@)" "$$(OUTPUT_DIR)" "$$(OUTPUT_DIR)/tmp/left-assembly-version-$(1).txt" "$$(OUTPUT_DIR)/tmp/right-assembly-version-$(1).txt" "$(NUGET_PRERELEASE_IDENTIFIER)"
+	$$(QF_GEN) ./apicompat.sh verify "$(1)" "$$(COMPARISON_DLL_$(1))" "$(DOTNET_DESTDIR)/$($(1)_NUGET_REF_NAME)/ref/$(DOTNET_TFM)/Microsoft.$(1).dll" "$$(abspath $$@)" "$$(OUTPUT_DIR)" "$$(OUTPUT_DIR)/tmp/left-assembly-version-$(1).txt" "$$(OUTPUT_DIR)/tmp/right-assembly-version-$(1).txt" "$(NUGET_PRERELEASE_IDENTIFIER)"
 
 verify-no-breaking-changes:: $$(OUTPUT_DIR)/diff/Microsoft.$(platform).txt
 endef
@@ -259,8 +258,8 @@ $(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call VerifyNoBreakingChanges,$(p
 
 define RegenerateSuppressionFiles
 regenerate-suppression-files-$(1): export DOTNET_ROOT=
-regenerate-suppression-files-$(1): $$(COMPARISON_DLL_$(1)) $(DOTNET_DESTDIR)/$($(1)_NUGET_REF_NAME)/ref/$(DOTNET_TFM)/Microsoft.$(1).dll Makefile
-	$$(QF_GEN) apicompat --left "$$(COMPARISON_DLL_$(1))" --right "$(DOTNET_DESTDIR)/$($(1)_NUGET_REF_NAME)/ref/$(DOTNET_TFM)/Microsoft.$(1).dll" $(STRICT_MODE) --suppression-output-file "$(abspath suppression-files/$(1).xml)" --generate-suppression-file
+regenerate-suppression-files-$(1): $$(COMPARISON_DLL_$(1)) $(DOTNET_DESTDIR)/$($(1)_NUGET_REF_NAME)/ref/$(DOTNET_TFM)/Microsoft.$(1).dll Makefile assembly-versions-$(1) install-apicompat.stamp
+	$$(QF_GEN) ./apicompat.sh regenerate "$(1)" "$$(COMPARISON_DLL_$(1))" "$(DOTNET_DESTDIR)/$($(1)_NUGET_REF_NAME)/ref/$(DOTNET_TFM)/Microsoft.$(1).dll" "" "$$(OUTPUT_DIR)" "$$(OUTPUT_DIR)/tmp/left-assembly-version-$(1).txt" "$$(OUTPUT_DIR)/tmp/right-assembly-version-$(1).txt" "$(NUGET_PRERELEASE_IDENTIFIER)"
 
 regenerate-suppression-files:: regenerate-suppression-files-$(1)
 endef

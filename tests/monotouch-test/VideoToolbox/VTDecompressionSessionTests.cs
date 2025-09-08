@@ -171,6 +171,8 @@ namespace MonoTouchFixtures.VideoToolbox {
 		[Test]
 		public void DecodeFrameTest ()
 		{
+			TestRuntime.AssertXcodeVersion (26, 0);
+
 			using var url = NSBundle.MainBundle.GetUrlForResource ("xamvideotest", "mp4");
 			Assert.That (url, Is.Not.Null, "Url");
 
@@ -203,6 +205,8 @@ namespace MonoTouchFixtures.VideoToolbox {
 		[Test]
 		public void DecodeFrameMultiImageCallbackTest ()
 		{
+			TestRuntime.AssertXcodeVersion (26, 0);
+
 			if (!VTDecompressionSession.IsStereoMvHevcDecodeSupported ())
 				Assert.Ignore ("Stereo MV-HEVC decoding is not supported on the current system.");
 
@@ -237,6 +241,8 @@ namespace MonoTouchFixtures.VideoToolbox {
 		[Test]
 		public void DecodeFrameSetMultiImageCallbackTest ()
 		{
+			TestRuntime.AssertXcodeVersion (26, 0);
+
 			if (!VTDecompressionSession.IsStereoMvHevcDecodeSupported ())
 				Assert.Ignore ("Stereo MV-HEVC decoding is not supported on the current system.");
 

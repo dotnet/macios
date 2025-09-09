@@ -136,25 +136,25 @@ namespace Xamarin.MacDev.Tasks {
 		{
 			var property = $"KeyArray:99";
 
-			TestExecuteTask(property, null);
+			TestExecuteTask (property, null);
 		}
 
 		[Test]
-		[TestCase(0)]
-		[TestCase(1)]
-		[TestCase(2)]
+		[TestCase (0)]
+		[TestCase (1)]
+		[TestCase (2)]
 		public void TestGetArrayIndexProperty (int index)
 		{
 			var property = $"KeyArray:{index}";
 			var expected = $"Array Item {index}";
 
-			TestExecuteTask(property, expected);
+			TestExecuteTask (property, expected);
 		}
 
 		[Test]
-		[TestCase(0)]
-		[TestCase(1)]
-		[TestCase(2)]
+		[TestCase (0)]
+		[TestCase (1)]
+		[TestCase (2)]
 		public void TestGetArrayArrayIndexProperty (int index)
 		{
 			var property = $"KeyArray:3:{index}";
@@ -164,9 +164,9 @@ namespace Xamarin.MacDev.Tasks {
 		}
 
 		[Test]
-		[TestCase(0)]
-		[TestCase(1)]
-		[TestCase(2)]
+		[TestCase (0)]
+		[TestCase (1)]
+		[TestCase (2)]
 		public void TestGetArrayDictionaryKeyProperty (int index)
 		{
 			var property = $"KeyArray:4:Item{index}";
@@ -184,9 +184,9 @@ namespace Xamarin.MacDev.Tasks {
 		}
 
 		[Test]
-		[TestCase(0)]
-		[TestCase(1)]
-		[TestCase(2)]
+		[TestCase (0)]
+		[TestCase (1)]
+		[TestCase (2)]
 		public void TestGetDictionaryKeyProperty (int index)
 		{
 			var property = $"KeyDictionary:Item{index}";
@@ -196,9 +196,9 @@ namespace Xamarin.MacDev.Tasks {
 		}
 
 		[Test]
-		[TestCase(0)]
-		[TestCase(1)]
-		[TestCase(2)]
+		[TestCase (0)]
+		[TestCase (1)]
+		[TestCase (2)]
 		public void TestGetDictionaryDictionaryKeyProperty (int index)
 		{
 			var property = $"KeyDictionary:Item3:Item{index}";
@@ -208,9 +208,9 @@ namespace Xamarin.MacDev.Tasks {
 		}
 
 		[Test]
-		[TestCase(0)]
-		[TestCase(1)]
-		[TestCase(2)]
+		[TestCase (0)]
+		[TestCase (1)]
+		[TestCase (2)]
 		public void TestGetDictionaryArrayKeyProperty (int index)
 		{
 			var property = $"KeyDictionary:Item4:{index}";

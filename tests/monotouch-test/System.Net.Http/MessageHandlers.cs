@@ -903,16 +903,16 @@ namespace MonoTests.System.Net.Http {
 
 		// https://github.com/dotnet/macios/issues/23764
 		[TestCase ("https://sha256.badssl.com/")]
-		public void SslCertificatesWithoutOCSPEndPointsNSUrlSessionHandler_DisallowByDefault (string url)
+		public void SslCertificatesWithoutOCSPEndPointsNSUrlSessionHandler_AllowByDefault (string url)
 		{
-			SslCertificatesWithoutOCSPEndPointsNSUrlSessionHandler (url, null, SslPolicyErrors.RemoteCertificateChainErrors);
+			SslCertificatesWithoutOCSPEndPointsNSUrlSessionHandler (url, null, SslPolicyErrors.None);
 		}
 
 		// https://github.com/dotnet/macios/issues/23764
 		[TestCase ("https://sha256.badssl.com/")]
-		public void SslCertificatesWithoutOCSPEndPointsNSUrlSessionHandler_Allow (string url)
+		public void SslCertificatesWithoutOCSPEndPointsNSUrlSessionHandler_Disallow (string url)
 		{
-			SslCertificatesWithoutOCSPEndPointsNSUrlSessionHandler (url, X509VerificationFlags.IgnoreEndRevocationUnknown, SslPolicyErrors.None);
+			SslCertificatesWithoutOCSPEndPointsNSUrlSessionHandler (url, (X509VerificationFlags) 0, SslPolicyErrors.RemoteCertificateChainErrors);
 		}
 
 		void SslCertificatesWithoutOCSPEndPointsNSUrlSessionHandler (string url, X509VerificationFlags? verificationFlags, SslPolicyErrors expectedError)

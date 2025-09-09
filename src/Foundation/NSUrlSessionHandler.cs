@@ -615,6 +615,13 @@ namespace Foundation {
 					policy = new X509ChainPolicy () {
 						RevocationMode = X509RevocationMode.Online,
 						RevocationFlag = X509RevocationFlag.ExcludeRoot,
+						// Ignore unknown revocation status, because Apple has a bug where revocation checks fail if the certificate(s)
+						// in question don't support revocation checking via OCSP.
+						// References:
+						// * https://learn.microsoft.com/en-us/dotnet/core/compatibility/networking/10.0/ssl-certificate-revocation-check-default
+						// * https://github.com/dotnet/macios/issues/23764#issuecomment-3264999234
+						// * https://github.com/dotnet/runtime/issues/117195
+						VerificationFlags = X509VerificationFlags.IgnoreEndRevocationUnknown,
 					};
 				}
 				return policy;

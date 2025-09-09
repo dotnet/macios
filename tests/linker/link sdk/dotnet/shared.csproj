@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <DefineConstants>NET;$(DefineConstants)</DefineConstants>
+    <RootNamespace>linksdk</RootNamespace>
+    <AssemblyName>link sdk</AssemblyName>
+    <MtouchLink>SdkOnly</MtouchLink>
+    <LinkMode>$(MtouchLink)</LinkMode>
+    <MtouchExtraArgs>-disable-thread-check "--dlsym:-link sdk" -gcc_flags="-UhoItsB0rken"</MtouchExtraArgs>
+    <MonoBundlingExtraArgs>$(MtouchExtraArgs)</MonoBundlingExtraArgs>
+    <ThisTestDirectory>$(RootTestsDirectory)\linker\link sdk</ThisTestDirectory>
+    <UseNativeHttpHandler>false</UseNativeHttpHandler>
+
+    <!-- warning SYSLIB0014: 'X.Y' is obsolete: 'WebRequest, HttpWebRequest, ServicePoint, and WebClient are obsolete. Use HttpClient instead. -->
+    <!-- We use obsolete APIs all the time, sometimes to test that those APIs work, so ignore this warning. -->
+    <NoWarn>$(NoWarn);SYSLIB0014</NoWarn>
+
+    <!-- warning CA1422: This call site is reachable on: '...': we use APIs that aren't available on a certain OS platform all the time (in some cases to verify any broken behavior), so ignore such warnings -->
+    <NoWarn>$(NoWarn);CA1422</NoWarn>
+
+    <!-- trimmer warnings: the linker tests do a lot of trimmer-unsafe things, so ignore any trimmer warnings -->
+    <NoWarn>$(NoWarn);IL2026;IL2032;IL2057;IL2070;IL2075;IL2080;IL2111</NoWarn>
+
+    <!-- We're warning-free, so let's make sure we stay that way -->
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsAsErrors>Nullable</WarningsAsErrors>
+  </PropertyGroup>
+
+  <Import Project="$(RootTestsDirectory)/common/shared-dotnet.csproj" />
+
+  <ItemGroup>
+    <Reference Include="support">
+      <HintPath>$(ThisTestDirectory)/support.dll</HintPath>
+    </Reference>
+
+    <ProjectReference Include="$(RootTestsDirectory)\BundledResources\dotnet\$(_PlatformName)\BundledResources.csproj" />
+    <ProjectReference Include="$(RootTestsDirectory)\bindings-test\dotnet\$(_PlatformName)\bindings-test.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Info.plist" />
+    <LinkDescription Include="$(ThisTestDirectory)\dotnet\$(_PlatformName)\extra-linker-defs.xml" />
+  </ItemGroup>
+
+  <ItemGroup Condition="$(TargetFramework.EndsWith('-macos'))">
+    <Compile Include="$(RootTestsDirectory)\common\mac\MacMain.cs" Condition="$(TargetFramework.EndsWith('-macos'))" Link="MacMain.cs" />
+  </ItemGroup>
+
+  <ItemGroup Condition="!$(TargetFramework.EndsWith('-macos'))">
+    <Compile Include="$(ThisTestDirectory)\..\AppDelegate.cs" />
+    <Compile Include="$(RootTestsDirectory)\common\AppDelegate.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="$(ThisTestDirectory)\*.cs" />
+    <Compile Include="$(ThisTestDirectory)\..\BaseOptimizeGeneratedCodeTest.cs" />
+    <Compile Include="$(RootTestsDirectory)\common\TestRuntime.cs">
+        <Link>TestRuntime.cs</Link>
+    </Compile>
+    <Compile Include="$(ThisTestDirectory)\..\ILReader.cs">
+      <Link>ILReader.cs</Link>
+    </Compile>
+    <Compile Include="$(ThisTestDirectory)\..\CommonLinkSdkTest.cs">
+      <Link>CommonLinkSdkTest.cs</Link>
+    </Compile>
+    <Compile Include="$(ThisTestDirectory)\..\CommonLinkAnyTest.cs">
+      <Link>CommonLinkAnyTest.cs</Link>
+    </Compile>
+    <Compile Include="$(RootTestsDirectory)\monotouch-test\System.Net.Http\NetworkResources.cs">
+      <Link>NetworkResources.cs</Link>
+    </Compile>
+    <Compile Include="$(RootTestsDirectory)\common\TestAssemblyLoader.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <InterfaceDefinition Include="$(ThisTestDirectory)\LaunchScreen.storyboard" Condition="'$(_PlatformName)' != 'tvOS' And '$(_PlatformName)' != 'MacCatalyst' And '$(_PlatformName)' != 'macOS'" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageAsset Include="$(ThisTestDirectory)\Assets.xcassets\AppIcons.appiconset\Contents.json" />
+    <ImageAsset Include="$(ThisTestDirectory)\Assets.xcassets\AppIcons.appiconset\Icon-app-60%403x.png" />
+    <ImageAsset Include="$(ThisTestDirectory)\Assets.xcassets\AppIcons.appiconset\icon-app-57.png" />
+    <ImageAsset Include="$(ThisTestDirectory)\Assets.xcassets\AppIcons.appiconset\icon-app-57%402x.png" />
+    <ImageAsset Include="$(ThisTestDirectory)\Assets.xcassets\AppIcons.appiconset\icon-app-60%402x.png" />
+    <ImageAsset Include="$(ThisTestDirectory)\Assets.xcassets\AppIcons.appiconset\icon-app-72.png" />
+    <ImageAsset Include="$(ThisTestDirectory)\Assets.xcassets\AppIcons.appiconset\icon-app-72%402x.png" />
+    <ImageAsset Include="$(ThisTestDirectory)\Assets.xcassets\AppIcons.appiconset\icon-app-76.png" />
+    <ImageAsset Include="$(ThisTestDirectory)\Assets.xcassets\AppIcons.appiconset\icon-app-76%402x.png" />
+    <ImageAsset Include="$(ThisTestDirectory)\Assets.xcassets\AppIcons.appiconset\icon-app-83.5%402x.png" />
+  </ItemGroup>
+</Project>

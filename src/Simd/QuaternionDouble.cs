@@ -19,12 +19,9 @@ using System;
 using System.Runtime.InteropServices;
 
 // This type does not come from the CoreGraphics framework; it's defined in /usr/include/simd/quaternion.h
-#if NET
-namespace CoreGraphics
-{
+namespace CoreGraphics {
 	[StructLayout (LayoutKind.Sequential)]
-	public struct NQuaterniond : IEquatable<NQuaterniond>
-	{
+	public struct NQuaterniond : IEquatable<NQuaterniond> {
 		public double X;
 		public double Y;
 		public double Z;
@@ -46,8 +43,7 @@ namespace CoreGraphics
 			W = scalarPart;
 		}
 
-		internal NVector3d Xyz
-		{
+		internal NVector3d Xyz {
 			get => new NVector3d (X, Y, Z);
 			set {
 				X = value.X;
@@ -66,7 +62,7 @@ namespace CoreGraphics
 			$"({X}, {Y}, {Z}, {W})";
 
 		public override int GetHashCode () =>
-			HashCode.Combine(X, Y, Z, W);
+			HashCode.Combine (X, Y, Z, W);
 
 		public override bool Equals (object? obj)
 		{
@@ -100,7 +96,7 @@ namespace CoreGraphics
 		{
 			NQuaterniond q = this;
 			if (q.W > 1.0f)
-				q.Normalize();
+				q.Normalize ();
 
 			NVector4d result = new NVector4d ();
 
@@ -118,4 +114,3 @@ namespace CoreGraphics
 		}
 	}
 }
-#endif // NET

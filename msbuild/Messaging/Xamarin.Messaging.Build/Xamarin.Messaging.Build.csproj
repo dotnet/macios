@@ -1,6 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <!-- When bumping the target framework version here, the VS side must be updated accordingly to make sure VS will install a version of .NET that's capable of running this project's output -->
+    <!-- See 72977a8f50c8acc2290281bb9b6d121084f3e579 in the ClientTools.Platform repository for an example. -->
+    <!-- This should probably never be a preview version of .NET, only stable versions. -->
+    <TargetFramework>net9.0</TargetFramework>
     <OutputType>Exe</OutputType>
     <AssemblyName>Build</AssemblyName>
     <NoWarn>$(NoWarn);NU1603</NoWarn> <!-- Xamarin.Messaging.Build.Common 1.6.24 depends on Merq (>= 1.1.0) but Merq 1.1.0 was not found. An approximate best match of Merq 1.1.4 was resolved. -->
@@ -32,6 +35,10 @@
       <PackageReference Include="Microsoft.Build.Framework" Version="$(MicrosoftBuildFrameworkPackageVersion)" />
       <PackageReference Include="Microsoft.Build.Tasks.Core" Version="$(MicrosoftBuildTasksCorePackageVersion)" />
       <PackageReference Include="Microsoft.Build.Utilities.Core" Version="$(MicrosoftBuildUtilitiesCorePackageVersion)" />
+      <!-- Fix transient dependency issue found by component governance 4.7.0 -> 4.7.2 -->
+      <PackageReference Include="System.Drawing.Common" Version="$(SystemDrawingCommonPackageVersion)" />
+      <!-- Fix transient dependency issue found by component governance 4.7.0 -> 4.7.1 -->
+      <PackageReference Include="System.Security.Cryptography.Xml" Version="$(SystemSecurityCryptographyXmlPackageVersion)" />
       <Compile Include="..\..\Versions.g.cs">
          <Link>Versions.g.cs</Link>
       </Compile>
@@ -56,14 +63,14 @@
   <ItemGroup>
     <!-- The iOS.Tasks assembly was ILRepacked to include MacDev.Tasks, if we use the references from the project we'get both and the types will collide -->
     <!-- We still need the project reference to mantain the build order dependency, but we add a reference to the assembly explicitly -->
-    <ProjectReference Include="..\..\Xamarin.iOS.Tasks\Xamarin.iOS.Tasks.csproj">
+    <ProjectReference Include="..\..\Xamarin.MacDev.Tasks\Xamarin.MacDev.Tasks.csproj">
       <ReferenceOutputAssembly>False</ReferenceOutputAssembly>
       <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Xamarin.iOS.Tasks">
-      <HintPath>..\..\Xamarin.iOS.Tasks\bin\$(Configuration)\netstandard2.0\Xamarin.iOS.Tasks.dll</HintPath>
+    <Reference Include="Xamarin.MacDev.Tasks">
+      <HintPath>..\..\Xamarin.MacDev.Tasks\bin\$(Configuration)\netstandard2.0\Xamarin.MacDev.Tasks.dll</HintPath>
     </Reference>
   </ItemGroup>
 </Project>

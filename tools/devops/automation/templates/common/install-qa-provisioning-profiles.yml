@@ -1,0 +1,45 @@
+parameters:
+- name: env
+  type: object
+
+- name: xamarinMaciosPath
+  type: string
+  default: $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)
+
+# How to renew certificates and provisioning profiles:
+# https://dev.azure.com/devdiv/DevDiv/_git/macios-appstoresubmissiontests?path=/docs/provisioning-profiles/EXPIRED.md&_a=preview
+
+steps:
+- pwsh: |
+    New-Item $(Build.SourcesDirectory)/maccore/tools/provisioning-profiles/certificates-and-profiles -ItemType Directory -Force
+  displayName: 'Create secret files folder'
+
+- task: DownloadSecureFile@1
+  displayName: 'Download macios-certificates-and-provisioning-profiles.zip'
+  inputs:
+    secureFile: macios-certificates-and-provisioning-profiles.zip
+
+- pwsh: |
+    gci $(Agent.TempDirectory)
+    unzip -l $(Agent.TempDirectory)/macios-certificates-and-provisioning-profiles.zip
+  displayName: 'List secure files'
+
+- pwsh: |
+    mkdir -p $Env:BUILD_SOURCESDIRECTORY/maccore/tools/provisioning-profiles/certificates-and-profiles
+    unzip -d $Env:BUILD_SOURCESDIRECTORY/maccore/tools/provisioning-profiles/certificates-and-profiles/ $(Agent.TempDirectory)/macios-certificates-and-provisioning-profiles.zip
+  displayName: 'Copy Certificates and Profiles'
+
+- pwsh: |
+    gci $(Build.SourcesDirectory)/maccore/tools/provisioning-profiles/certificates-and-profiles
+  displayName: 'List Certificates and Profiles'
+
+- bash: ${{ parameters.xamarinMaciosPath }}/tools/devops/automation/scripts/install-qa-provisioning-profiles.sh
+  displayName: 'Install provisioning profiles'
+  workingDirectory: $(Build.SourcesDirectory)/maccore/tools
+  env: ${{ parameters.env }}
+  timeoutInMinutes: 30
+  continueOnError: true  # should not stop the build
+
+- pwsh: |
+    Remove-Item $(Build.SourcesDirectory)/maccore/tools/provisioning-profiles/certificates-and-profiles -Recurse -Force
+  displayName: 'Clean certs and profiles'

@@ -39,11 +39,17 @@ using ObjCRuntime;
 namespace Foundation {
 
 	public partial class NSMutableSet : IEnumerable<NSObject> {
+		/// <param name="objs">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSMutableSet (params NSObject [] objs)
 			: this (NSArray.FromNSObjects (objs))
 		{
 		}
 
+		/// <param name="strings">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSMutableSet (params string [] strings)
 			: this (NSArray.FromStrings (strings))
 		{

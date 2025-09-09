@@ -1,0 +1,49 @@
+<Documentation>
+  <Docs DocId="M:Security.SecRecord.#ctor(Security.SecKind)">
+        <param name="secKind">Determines the class for this record.</param>
+        <summary>Creates a keychain record.</summary>
+        <remarks>
+          <para>
+When you create a SecRecord you need to specify the kind of record that you will be matching using one of the SecKind values, and you must set also:
+
+</para>
+          <list type="bullet">
+            <item>
+              <term>One or more attributes to match (AccessGroup, Accessible, Account, ApplicationLabel, ApplicationTag, AuthenticationType, CanDecrypt, CanDerive, CanEncrypt, CanSign, CanUnwrap, CanVerify, CanWrap, CertificateEncoding, CertificateType, Comment, CreationDate, Creator, CreatorType, Description, EffectiveKeySize, Generic, Invisible, IsNegative, IsPermanent, Issuer, KeyClass, KeySizeInBits, KeyType, Label, ModificationDate, Path, Port, Protocol, PublicKeyHash, SecurityDomain, SerialNumber, Server, Service, Subject, SubjectKeyID)</term>
+            </item>
+            <item>
+              <term>Optional search attributes, used to determine how the search is performed.   You do this by setting any of the Match properties in the class (MatchCaseInsensitive, MatchEmailAddressIfPresent, MatchIssuers, MatchItemList, MatchPolicy, MatchSubjectContains, MatchTrustedOnly, MatchValidOnDate)  </term>
+            </item>
+          </list>
+          <para>
+          </para>
+          <para>
+Once the class is constructed, you can pass this to the Query, Add, Remove or Update methods on the SecKeyChain class.
+</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+var query = new SecRecord (SecKind.InternetPassword) {
+   Sever = "bugzilla.novell.com",
+   Account = "miguel"
+};
+var password = SecKeyChain.QueryAsData (query);
+Console.WriteLine ("The password for the account is: {0}", password);
+
+  ]]></code>
+          </example>
+          <para>Internally this is setting the kSecClass key to one of the kSec* values as specifed by the SecKind.   On MacOS X the only supported value is InternetPassword, while iOS offers a wider range of options.</para>
+        </remarks>
+      </Docs>
+  <Docs DocId="M:Security.SecRecord.Dispose(System.Boolean)">
+        <param name="disposing">
+          <para>If set to <see langword="true" />, the method is invoked directly and will dispose managed and unmanaged resources;   If set to <see langword="false" /> the method is being called by the garbage collector finalizer and should only release unmanaged resources.</para>
+        </param>
+        <summary>Releases the resources used by the SecRecord object.</summary>
+        <remarks>
+          <para>This Dispose method releases the resources used by the SecRecord class.</para>
+          <para>This method is called by both the Dispose() method and the object finalizer (Finalize).    When invoked by the Dispose method, the parameter disposing <paramref name="disposing" /> is set to <see langword="true" /> and any managed object references that this object holds are also disposed or released;  when invoked by the object finalizer, on the finalizer thread the value is set to <see langword="false" />. </para>
+          <para>Calling the Dispose method when the application is finished using the SecRecord ensures that all external resources used by this managed object are released as soon as possible.  Once developers have invoked the Dispose method, the object is no longer useful and developers should no longer make any calls to it.</para>
+          <para>  For more information on how to override this method and on the Dispose/IDisposable pattern, read the ``Implementing a Dispose Method'' document at https://msdn.microsoft.com/en-us/library/fs2xkftw.aspx</para>
+        </remarks>
+      </Docs>
+</Documentation>

@@ -3,7 +3,7 @@
     <summary>Single keyframe based animations.</summary>
     <remarks>
       <para>
-	The animation is created by calling the <see cref="M:CoreAnimation.CABasicAnimation.FromKeyPath(System.String)" />
+	The animation is created by calling the <see cref="CoreAnimation.CABasicAnimation.FromKeyPath(System.String)" />
 	method and providing a keyPath that identifies the property on
 	the target that will be animated.   The animation is performed by using the values on the From, To and By properties applied to the keyPath.
       </para>

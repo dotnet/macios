@@ -25,8 +25,6 @@
 //
 #pragma warning disable 414
 
-#if !WATCH // doesn't show up in watch headers
-
 using System;
 using System.Threading.Tasks;
 using System.Threading;
@@ -37,9 +35,16 @@ using Foundation;
 namespace MapKit {
 	public partial class MKLocalSearch {
 
-		public virtual Task<MKLocalSearchResponse> StartAsync (CancellationToken token)
+		/// <param name="token">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
+		public virtual Task<MKLocalSearchResponse?> StartAsync (CancellationToken token)
 		{
-			var tcs = new TaskCompletionSource<MKLocalSearchResponse> ();
+			var tcs = new TaskCompletionSource<MKLocalSearchResponse?> ();
 
 			if (token.IsCancellationRequested) {
 				tcs.SetCanceled ();
@@ -53,6 +58,7 @@ namespace MapKit {
 						if (error is not null)
 							tcs.SetException (new NSErrorException (error));
 						else
+							// response can be null if the search was cancelled
 							tcs.SetResult (response);
 					}
 				});
@@ -62,4 +68,3 @@ namespace MapKit {
 		}
 	}
 }
-#endif // !WATCH

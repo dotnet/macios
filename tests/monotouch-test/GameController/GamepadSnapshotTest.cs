@@ -7,8 +7,6 @@
 // Copyright 2015 Xamarin Inc. All rights reserved.
 //
 
-#if !__WATCHOS__
-
 using System;
 using Foundation;
 #if !MONOMAC
@@ -46,5 +44,3 @@ namespace MonoTouchFixtures.GameController {
 		}
 	}
 }
-
-#endif // !__WATCHOS__

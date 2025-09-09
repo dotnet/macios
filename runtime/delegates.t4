@@ -123,7 +123,7 @@
 			OnlyDynamicUsage = true,
 		},
 
-		new XDelegate ("int8_t", "sbyte", "xamarin_has_nsobject",
+		new XDelegate ("NSInteger", "nint", "xamarin_has_nsobject",
 			"id", "IntPtr", "obj"
 		) {
 			WrappedManagedFunction = "HasNSObject",
@@ -208,7 +208,7 @@
 			OnlyDynamicUsage = false,
 		},
 
-		new XDelegate ("int8_t", "sbyte", "xamarin_is_parameter_transient",
+		new XDelegate ("NSInteger", "nint", "xamarin_is_parameter_transient",
 			"GCHandle->MonoReflectionMethod *", "IntPtr", "method",
 			"int", "int", "parameter"
 		) {
@@ -216,7 +216,7 @@
 			OnlyDynamicUsage = true,
 		},
 
-		new XDelegate ("int8_t", "sbyte", "xamarin_is_parameter_out",
+		new XDelegate ("NSInteger", "nint", "xamarin_is_parameter_out",
 			"GCHandle->MonoReflectionMethod *", "IntPtr", "method",
 			"int", "int", "parameter"
 		) {
@@ -316,14 +316,14 @@
 
 		new XDelegate ("void", "void", "xamarin_set_flags_for_nsobject",
 			"GCHandle", "IntPtr", "gchandle",
-			"uint8_t", "byte", "flags"
+			"uint32_t", "uint", "flags"
 		) {
 			WrappedManagedFunction = "SetFlagsForNSObject",
 			OnlyDynamicUsage = false,
 			OnlyCoreCLR = true,
 		},
 
-		new XDelegate ("uint8_t", "byte", "xamarin_get_flags_for_nsobject",
+		new XDelegate ("uint32_t", "uint", "xamarin_get_flags_for_nsobject",
 			"GCHandle", "IntPtr", "gchandle"
 		) {
 			WrappedManagedFunction = "GetFlagsForNSObject",
@@ -656,14 +656,15 @@
 			OnlyDynamicUsage = false,
 		},
 
-		new XDelegate ("int8_t", "sbyte", "xamarin_attempt_retain_nsobject",
+		new XDelegate ("NSInteger", "nint", "xamarin_attempt_retain_nsobject",
 			"GCHandle->MonoObject *", "IntPtr", "obj"
 		) {
 			WrappedManagedFunction = "AttemptRetainNSObject",
 			OnlyDynamicUsage = false,
 		},
 
-		new XDelegate ("int8_t", "sbyte", "xamarin_invoke_conforms_to_protocol",
+		new XDelegate ("NSInteger", "nint", "xamarin_invoke_conforms_to_protocol",
+			"GCHandle", "IntPtr", "gchandle",
 			"id", "IntPtr", "obj",
 			"Protocol *", "IntPtr", "protocol"
 		) {
@@ -676,6 +677,14 @@
 			"int32_t", "int", "id"
 		) {
 			WrappedManagedFunction = "LookupUnmanagedFunction",
+		},
+
+		new XDelegate ("void", "void", "xamarin_bridge_raise_appdomain_unhandled_exception_event",
+			"GCHandle", "IntPtr", "gchandle"
+		) {
+			WrappedManagedFunction = "RaiseAppDomainUnhandledExceptionEvent",
+			OnlyDynamicUsage = false,
+			OnlyCoreCLR = true,
 		},
 	};
 	delegates.CalculateLengths ();

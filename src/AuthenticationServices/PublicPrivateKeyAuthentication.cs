@@ -7,7 +7,7 @@
 // Copyright 2021 Microsoft Corporation
 //
 
-#if !TVOS && !WATCH
+#if !TVOS
 
 using System;
 using System.Runtime.InteropServices;
@@ -19,18 +19,10 @@ using System.Linq;
 #nullable enable
 
 namespace AuthenticationServices {
-
-#if NET
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios15.0")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[UnsupportedOSPlatform ("tvos")]
-#else
-	[NoWatch]
-	[NoTV]
-	[iOS (15, 0)]
-	[MacCatalyst (15, 0)]
-#endif
 	public static class PublicPrivateKeyAuthentication {
 		[DllImport (Constants.AuthenticationServicesLibrary)]
 		static extern /* NSString[] */ IntPtr ASAuthorizationAllSupportedPublicKeyCredentialDescriptorTransports ();

@@ -1,0 +1,11 @@
+namespace ObjCRuntime {
+	public static partial class Constants {
+		/// <summary>The version of this Microsoft SDK for tvOS.</summary>
+		public const string Version = "@VERSION@";
+
+		internal const string Revision = "@REVISION@";
+
+		/// <summary>The tvOS version this library is built to support.</summary>
+		public const string SdkVersion = "@TVOS_SDK_VERSION@";
+	}
+}

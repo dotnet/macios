@@ -8,8 +8,6 @@
 // Copyright 2019 Microsoft Corporation.
 //
 
-#if !__WATCHOS__
-
 using System;
 using System.Runtime.InteropServices;
 
@@ -19,11 +17,7 @@ using MetalPerformanceShaders;
 
 using NUnit.Framework;
 
-#if NET
 using CoreGraphics;
-#else
-using OpenTK;
-#endif
 
 namespace MonoTouchFixtures.MetalPerformanceShaders {
 	[TestFixture]
@@ -78,4 +72,3 @@ namespace MonoTouchFixtures.MetalPerformanceShaders {
 		}
 	}
 }
-#endif // !__WATCHOS__

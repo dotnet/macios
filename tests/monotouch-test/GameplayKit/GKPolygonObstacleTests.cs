@@ -8,19 +8,13 @@
 // Copyright 2015 Xamarin Inc. All rights reserved.
 //
 
-#if !__WATCHOS__
-
 using System;
 
 using Foundation;
 using GameplayKit;
 using NUnit.Framework;
 
-#if NET
 using System.Numerics;
-#else
-using OpenTK;
-#endif
 
 namespace MonoTouchFixtures.GamePlayKit {
 
@@ -64,5 +58,3 @@ namespace MonoTouchFixtures.GamePlayKit {
 		}
 	}
 }
-
-#endif // __WATCHOS__

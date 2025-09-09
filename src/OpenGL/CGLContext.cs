@@ -34,26 +34,13 @@ using CoreFoundation;
 using ObjCRuntime;
 using Foundation;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace OpenGL {
-#if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 	[ObsoletedOSPlatform ("macos10.14", "Use 'Metal' Framework instead.")]
-#else
-	[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'Metal' Framework instead.")]
-#endif
 	public class CGLContext : NativeObject {
 #if !COREBUILD
-#if !NET
-		public CGLContext (NativeHandle handle)
-			: base (handle, false, verify: true)
-		{
-		}
-#endif
-
 		[Preserve (Conditional = true)]
 		internal CGLContext (NativeHandle handle, bool owns)
 			: base (handle, owns, true)
@@ -78,6 +65,9 @@ namespace OpenGL {
 
 		[DllImport (Constants.OpenGLLibrary)]
 		extern static CGLErrorCode CGLLockContext (IntPtr ctx);
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CGLErrorCode Lock ()
 		{
 			return CGLLockContext (Handle);
@@ -85,6 +75,9 @@ namespace OpenGL {
 
 		[DllImport (Constants.OpenGLLibrary)]
 		extern static CGLErrorCode CGLUnlockContext (IntPtr ctx);
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CGLErrorCode Unlock ()
 		{
 			return CGLUnlockContext (Handle);
@@ -96,6 +89,9 @@ namespace OpenGL {
 		[DllImport (Constants.OpenGLLibrary)]
 		extern static IntPtr CGLGetCurrentContext ();
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public static CGLContext? CurrentContext {
 			get {
 				IntPtr ctx = CGLGetCurrentContext ();
@@ -107,6 +103,7 @@ namespace OpenGL {
 
 			set {
 				var retValue = CGLSetCurrentContext (value.GetHandle ());
+				GC.KeepAlive (value);
 				if (retValue != CGLErrorCode.NoError)
 					throw new Exception ("Error setting the Current Context");
 			}

@@ -39,21 +39,19 @@ namespace CoreVideo {
 	/// <summary>An enumeration whose values specify whether a buffer attachment should or should not propagate.</summary>
 	[MacCatalyst (13, 1)]
 	public enum CVAttachmentMode : uint {
+		/// <summary>To be added.</summary>
 		ShouldNotPropagate = 0,
+		/// <summary>To be added.</summary>
 		ShouldPropagate = 1,
 	}
 
-	/// <summary>An enumeration that flags whether a <see cref="T:CoreVideo.CVPixelBuffer" /> is read-only or not.</summary>
+	/// <summary>An enumeration that flags whether a <see cref="CoreVideo.CVPixelBuffer" /> is read-only or not.</summary>
 	[Flags]
 	[MacCatalyst (13, 1)]
-#if NET
 	public enum CVPixelBufferLock : ulong {
-#else
-	// before iOS10 beta 2 this was an untyped enum -> CVPixelBuffer.h
-	// note: used as a CVOptionFlags uint64_t (CVBase.h) in the API
-	public enum CVPixelBufferLock : uint {
-#endif
+		/// <summary>To be added.</summary>
 		None = 0x00000000,
+		/// <summary>To be added.</summary>
 		ReadOnly = 0x00000001,
 	}
 
@@ -61,25 +59,45 @@ namespace CoreVideo {
 	/// <summary>Possible status codes for CoreVideo functions.</summary>
 	[MacCatalyst (13, 1)]
 	public enum CVReturn : int {
+		/// <summary>The method executed successfully.</summary>
 		Success = 0,
+		/// <summary>Internal marker</summary>
 		First = -6660,
+		/// <summary>Generic error message.</summary>
 		Error = First,
+		/// <summary>Caller passed an invalid argument.</summary>
 		InvalidArgument = -6661,
+		/// <summary>Allocation failed.</summary>
 		AllocationFailed = -6662,
+		/// <summary>The operation is not supported.</summary>
 		Unsupported = -6663,
+		/// <summary>The specified display is invalid</summary>
 		InvalidDisplay = -6670,
+		/// <summary>The displauy link is already running.</summary>
 		DisplayLinkAlreadyRunning = -6671,
+		/// <summary>The display link is not running</summary>
 		DisplayLinkNotRunning = -6672,
+		/// <summary>There are no callbacks registered for the specified display link.</summary>
 		DisplayLinkCallbacksNotSet = -6673,
+		/// <summary>The specified pixel format is not valid.</summary>
 		InvalidPixelFormat = -6680,
+		/// <summary>Invalid buffer size.</summary>
 		InvalidSize = -6681,
+		/// <summary>The specified pixel buffer attributes are not valid.</summary>
 		InvalidPixelBufferAttributes = -6682,
+		/// <summary>The pixel format is not compatible with OpenGL.</summary>
 		PixelBufferNotOpenGLCompatible = -6683,
+		/// <summary>The pixel buffer is not compatible with Metal.</summary>
 		PixelBufferNotMetalCompatible = -6684,
+		/// <summary>Performing this operation would exceed the allocation threshold.</summary>
 		WouldExceedAllocationThreshold = -6689,
+		/// <summary>Failure to allocate the pool.</summary>
 		PoolAllocationFailed = -6690,
+		/// <summary>It is not possible to create a buffer pool with the specified attributes.</summary>
 		InvalidPoolAttributes = -6691,
+		/// <summary>The method will retry.</summary>
 		Retry = -6692,
+		/// <summary>Internal marker.</summary>
 		Last = -6699,
 	}
 
@@ -88,28 +106,39 @@ namespace CoreVideo {
 	/// <summary>A flagging enumeration. Currently only contains a <c>None</c> value of 0.</summary>
 	[MacCatalyst (13, 1)]
 	public enum CVOptionFlags : long {
+		/// <summary>To be added.</summary>
 		None = 0,
 	}
 
-	/// <summary>An enumeration that can flag whether a <see cref="T:CoreVideo.CVTime" /> is unknown.</summary>
+	/// <summary>An enumeration that can flag whether a <see cref="CoreVideo.CVTime" /> is unknown.</summary>
 	[Flags]
 	[MacCatalyst (13, 1)]
 	public enum CVTimeFlags : int {
+		/// <summary>To be added.</summary>
 		IsIndefinite = 1 << 0,
 	}
 
-	/// <summary>An enumeration whose values can flag validity of a timestamp or field in a <see cref="T:CoreVideo.CVTimeStamp" />.</summary>
+	/// <summary>An enumeration whose values can flag validity of a timestamp or field in a <see cref="CoreVideo.CVTimeStamp" />.</summary>
 	[Flags]
 	[MacCatalyst (13, 1)]
 	public enum CVTimeStampFlags : ulong {
+		/// <summary>To be added.</summary>
 		VideoTimeValid = (1 << 0),
+		/// <summary>To be added.</summary>
 		HostTimeValid = (1 << 1),
+		/// <summary>To be added.</summary>
 		SMPTETimeValid = (1 << 2),
+		/// <summary>To be added.</summary>
 		VideoRefreshPeriodValid = (1 << 3),
+		/// <summary>To be added.</summary>
 		RateScalarValid = (1 << 4),
+		/// <summary>To be added.</summary>
 		TopField = (1 << 16),
+		/// <summary>To be added.</summary>
 		BottomField = (1 << 17),
+		/// <summary>To be added.</summary>
 		VideoHostTimeValid = (VideoTimeValid | HostTimeValid),
+		/// <summary>To be added.</summary>
 		IsInterlaced = (TopField | BottomField),
 	}
 
@@ -117,31 +146,41 @@ namespace CoreVideo {
 	[Flags]
 	[MacCatalyst (13, 1)]
 	public enum CVSMPTETimeFlags : uint {
+		/// <summary>The full time is valid.</summary>
 		Valid = (1 << 0),
-		Running = (1 << 1)
+		/// <summary>Time is running.</summary>
+		Running = (1 << 1),
 	}
 
 	/// <summary>An enumeration whose values specify SMPTE timecode types.</summary>
 	[MacCatalyst (13, 1)]
 	public enum CVSMPTETimeType : uint {
+		/// <summary>To be added.</summary>
 		Type24 = 0,
+		/// <summary>To be added.</summary>
 		Type25 = 1,
+		/// <summary>To be added.</summary>
 		Type30Drop = 2,
+		/// <summary>To be added.</summary>
 		Type30 = 3,
+		/// <summary>To be added.</summary>
 		Type2997 = 4,
+		/// <summary>To be added.</summary>
 		Type2997Drop = 5,
+		/// <summary>To be added.</summary>
 		Type60 = 6,
+		/// <summary>To be added.</summary>
 		Type5994 = 7,
 	}
 
 	// CVOptionFlags (uint64_t) -> CVPixelBufferPool.h
-	/// <summary>Defines an option for <see cref="M:CoreVideo.CVPixelBufferPool.Flush(CoreVideo.CVPixelBufferPoolFlushFlags)" />.</summary>
+	/// <summary>Defines an option for <see cref="CoreVideo.CVPixelBufferPool.Flush(CoreVideo.CVPixelBufferPoolFlushFlags)" />.</summary>
 	[MacCatalyst (13, 1)]
 	public enum CVPixelBufferPoolFlushFlags : ulong {
+		/// <summary>To be added.</summary>
 		FlushExcessBuffers = 1,
 	}
 
-#if !WATCH
 	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	public enum CVImageBufferAlphaChannelMode {
@@ -150,5 +189,4 @@ namespace CoreVideo {
 		[Field ("kCVImageBufferAlphaChannelMode_PremultipliedAlpha")]
 		Premultiplied,
 	}
-#endif
 }

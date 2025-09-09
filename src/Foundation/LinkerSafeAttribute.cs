@@ -29,13 +29,15 @@ using System.ComponentModel;
 
 namespace Foundation {
 
-#if NET
+	/// <include file="../../docs/api/Foundation/LinkerSafeAttribute.xml" path="/Documentation/Docs[@DocId='T:Foundation.LinkerSafeAttribute']/*" />
 	[Obsolete ("Replace with '[assembly: System.Reflection.AssemblyMetadata (\"IsTrimmable\", \"True\")]'.")]
 	[EditorBrowsable (EditorBrowsableState.Never)]
-#endif
 	[AttributeUsage (AttributeTargets.Assembly)]
 	public sealed class LinkerSafeAttribute : Attribute {
 
+		/// <summary>Default attribute constructor.</summary>
+		///         <remarks>
+		///         </remarks>
 		public LinkerSafeAttribute ()
 		{
 		}

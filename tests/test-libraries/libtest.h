@@ -91,6 +91,23 @@ typedef unsigned int (^RegistrarTestBlock) (unsigned int magic);
 
 	@property (nonatomic, retain) NSObject* someObject;
 	@property (nonatomic, retain) NSArray* someArray;
+
+	@property void* VoidArg1;
+	@property void* VoidArg2;
+	@property void* VoidArg3;
+	@property void* VoidArg4;
+	@property void* VoidArg5;
+	@property void* VoidArg6;
+	@property void* VoidArg7;
+	@property void* VoidArg8;
+	@property void* VoidArg9;
+	@property void* VoidArg10;
+	@property void* VoidArg11;
+	@property void* VoidArg12;
+
+	@property float FloatArg1;
+	@property double DoubleArg1;
+
 #include "libtest.properties.h"
 
 	-(void) V;
@@ -180,6 +197,8 @@ typedef unsigned int (^RegistrarTestBlock) (unsigned int magic);
 		obj6: (byref NSObject **) obj6P
 		obj7: (oneway NSObject **) obj7P
 		;
+
+	-(void) setPtrPropertyCGRect: (void *) p1 p2:(void *)p2 p3:(void *)p3 p4:(void *)p4 p5:(CGRect*)p5 p6:(void *)p6;
 @end
 
 // We need this class so that the ObjCProtocolTest protocol
@@ -295,6 +314,38 @@ typedef void (^outerBlock) (innerBlock callback);
 @property (copy) NSString* stringValue;
 @property (copy) NSDate* dateValue;
 
+@end
+
+// VeryGeneric stuff
+
+@protocol VeryGenericElementProtocol <NSObject>
+@property (retain, readonly) NSDate * when;
+@end
+
+@protocol VeryGenericElementProtocol1 <VeryGenericElementProtocol>
+@property (readonly) NSInteger number;
+@end
+
+@protocol VeryGenericElementProtocol2 <VeryGenericElementProtocol>
+@property (retain, readonly) NSString * animal;
+@end
+
+@interface VeryGenericCollection<Key: NSString*, __covariant Element: id<VeryGenericElementProtocol>> : NSObject <NSFastEnumeration>
+@property (retain) Element element;
+@property () NSUInteger count;
+- (Element _Nullable)getElement:(Key)alias;
+- (NSEnumerator<Element> *)elementEnumerator;
+- (void) add: (Element) value;
+@end
+
+@protocol VeryGenericConsumerProtocol <NSObject>
+@property (retain, readonly) VeryGenericCollection<NSString *, id<VeryGenericElementProtocol1>> *first;
+@property (retain, readonly) VeryGenericCollection<NSString *, id<VeryGenericElementProtocol2>> *second;
+@end
+
+@interface VeryGenericFactory : NSObject {
+}
+	+(id<VeryGenericConsumerProtocol>) getConsumer;
 @end
 
 #pragma clang diagnostic pop

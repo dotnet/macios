@@ -14,16 +14,7 @@ parameters:
   - name: macOSName  # comes from the build agent demand named macOS.Name
     displayName: Name of the version of macOS to use
     type: string
-    default: 'Sonoma'
-
-  - name: pool
-    type: string
-    displayName: Bot pool to use
-    default: automatic
-    values:
-      - pr
-      - ci
-      - automatic
+    default: 'Sequoia'
 
   - name: runGovernanceTests
     displayName: Run Governance Checks
@@ -45,87 +36,6 @@ parameters:
     displayName: 'Push Nugets (Maestro)'
     default: true
 
-  - name: testConfigurations
-    displayName: Test configurations to run
-    type: object
-    default: []
-
-  - name: deviceTestsConfigurations
-    displayName: Device test configurations to run
-    type: object
-    default: [
-      {
-        testPrefix: 'iOS64',
-        stageName: 'ios64b_device',
-        displayName: 'iOS64 Device Tests',
-        testPool: 'VSEng-Xamarin-Mac-Devices',
-        testsLabels: '--label=run-ios-tests,run-non-monotouch-tests,run-monotouch-tests,run-mscorlib-tests',
-        statusContext: 'VSTS: device tests iOS',
-        makeTarget: 'vsts-device-tests',
-        extraBotDemands: [
-          'ios',
-        ]
-      },
-      {
-        testPrefix: 'tvos',
-        stageName: 'tvos_device',
-        displayName: 'tvOS Device Tests',
-        testPool: 'VSEng-Xamarin-Mac-Devices',
-        testsLabels: '--label=run-tvos-tests,run-non-monotouch-tests,run-monotouch-tests,run-mscorlib-tests',
-        statusContext: 'VSTS: device tests tvOS',
-        makeTarget: 'vsts-device-tests',
-        extraBotDemands: [
-          'tvos',
-        ]
-      }]
-
-  - name: macTestsConfigurations
-    displayName: macOS test configurations to run
-    type: object
-    default: [
-      {
-        stageName: 'mac_12_m1',
-        displayName: 'M1 - Mac Ventura (12)',
-        macPool: 'VSEng-VSMac-Xamarin-Shared',
-        useImage: false,
-        statusContext: 'M1 - Mac Monterey (12)',
-        demands: [
-          "Agent.OS -equals Darwin",
-          "macOS.Name -equals Monterey",
-          "macOS.Architecture -equals arm64",
-          "Agent.HasDevices -equals False",
-          "Agent.IsPaired -equals False"
-        ]
-      },
-      {
-        stageName: 'mac_13_m1',
-        displayName: 'M1 - Mac Ventura (13)',
-        macPool: 'VSEng-VSMac-Xamarin-Shared',
-        useImage: false,
-        statusContext: 'M1 - Mac Ventura (13)',
-        demands: [
-          "Agent.OS -equals Darwin",
-          "macOS.Name -equals Ventura",
-          "macOS.Architecture -equals arm64",
-          "Agent.HasDevices -equals False",
-          "Agent.IsPaired -equals False"
-        ]
-      },
-      {
-        stageName: 'mac_14_x64',
-        displayName: 'X64 - Mac Sonoma (14)',
-        macPool: 'VSEng-Xamarin-RedmondMacBuildPool-iOS-Untrusted',
-        useImage: false,
-        statusContext: 'X64 - Mac Sonoma (14)',
-        demands: [
-          "Agent.OS -equals Darwin",
-          "macOS.Name -equals Sonoma",
-          "macOS.Architecture -equals x64",
-          "Agent.HasDevices -equals False",
-          "Agent.IsPaired -equals False"
-        ]
-      }]
-
 resources:
   repositories:
     - repository: self
@@ -133,22 +43,14 @@ resources:
         submodules: true
 
     - repository: yaml-templates
-      type: github
-      name: xamarin/yaml-templates
+      type: git
+      name: xamarin.yaml-templates
       ref: refs/heads/main
-      endpoint: xamarin
 
-    - repository: sdk-insertions
-      type: github
-      name: xamarin/sdk-insertions
+    - repository: macios-adr
+      type: git
+      name: macios-adr
       ref: refs/heads/main
-      endpoint: xamarin
-
-    - repository: maccore
-      type: github
-      name: xamarin/maccore
-      ref: refs/heads/main
-      endpoint: xamarin
 
     - repository: CustomPipelineTemplates
       type: git
@@ -157,7 +59,6 @@ resources:
 variables:
   - ${{ if contains(variables['Build.DefinitionName'], 'private') }}:
       - template: templates/vsts-variables.yml
-  - template: templates/common/vs-release-vars.yml@sdk-insertions
   - template: templates/variables/common.yml
   - template: templates/variables/api-scan.yml
   - template: templates/variables/signing.yml
@@ -171,10 +72,14 @@ trigger:
     include:
       - '*'
     exclude:
-      - refs/heads/locfiles/*
       - refs/heads/dev/*
       - refs/heads/darc-*
       - refs/heads/backport-pr-*
+      - refs/heads/lego/*
+      - refs/heads/locfiles/*
+      - refs/heads/copilot/*
+      - refs/heads/dependabot/*
+
   paths:
     exclude:
       - .github
@@ -198,28 +103,28 @@ extends:
       os: windows
     sdl:
       baseline:
-        baselineFile: '$(System.DefaultWorkingDirectory)\\xamarin-macios\\tools\\devops\\governance\\baselines.gdnbaselines'
+        baselineFile: '$(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/governance/baselines.gdnbaselines'
       suppression:
-        suppressionFile: '$(System.DefaultWorkingDirectory)\\xamarin-macios\\tools\\devops\\governance\\suppress.gdnsuppress'
+        suppressionFile: '$(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/governance/suppress.gdnsuppress'
       sourceAnalysisPool:
         name: AzurePipelines-EO
         image: 1ESPT-Windows2022
         os: windows
       tsa:
-        configFile: '$(System.DefaultWorkingDirectory)\\xamarin-macios\\tools\\devops\\governance\\tsa_config.gdntsa'
+        configFile: '$(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/governance/tsa_config.gdntsa'
       sbom:
         enabled: false  # we run our on sbom generation
       credscan:
-        suppressionsFile: '$(System.DefaultWorkingDirectory)\\xamarin-macios\\tools\\devops\\governance\\CredScanSuppressions.json'
+        suppressionsFile: '$(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/governance/CredScanSuppressions.json'
       policheck:
-        exclusionsFile: '$(System.DefaultWorkingDirectory)\\xamarin-macios\\tools\\devops\\governance\\PoliCheckExclusions.xml'
+        exclusionsFile: '$(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/governance/PoliCheckExclusions.xml'
       sourceRepositoriesToScan:
         runInSingleJob: true  # run both maccore and macios in the same job
         include:
-          - repository: maccore
+          - repository: self
         exclude:
           - repository: yaml-templates
-          - repository: sdk-insertions
+          - repository: macios-adr  # macios-adr has it's own build pipeline and should not be included in the source analysis
     stages:
       - template: templates/main-stage.yml
         parameters:
@@ -227,12 +132,37 @@ extends:
           macOSName: ${{ parameters.macOSName }}
           isPR: false
           provisionatorChannel: ${{ parameters.provisionatorChannel }}
-          pool: ${{ parameters.pool }}
+          pool: $(CIBuildPool)
           runGovernanceTests: ${{ parameters.runGovernanceTests }}
           forceInsertion: ${{ parameters.forceInsertion }}
           pushNugets: ${{ parameters.pushNugets }}
           pushNugetsToMaestro: ${{ parameters.pushNugetsToMaestro }}
-          ${{ if ne(length(parameters.testConfigurations), 0)}}:
-            testConfigurations: ${{ parameters.testConfigurations }}
-          deviceTestsConfigurations: ${{ parameters.deviceTestsConfigurations }}
-          macTestsConfigurations: ${{ parameters.macTestsConfigurations }}
+
+      - template: localization/v1.yml@yaml-templates
+        parameters:
+          condition: endsWith(coalesce(variables['System.PullRequest.SourceBranch'], variables['Build.SourceBranch'], 'refs/heads/main'), 'main')
+          preSteps:
+            - template: ../sdk-unified/steps/checkout/v1.yml@yaml-templates
+              parameters:
+                resource: self
+                commit: HEAD
+                clean: true
+                submodules: recursive
+                path: s/$(BUILD_REPOSITORY_TITLE)
+                fetchTags: false
+              
+            - bash: |
+                make LocProject.json              
+              workingDirectory: $(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops
+              displayName: 'Generate LocProject.json'
+                
+          settings:
+            locProjectPath: '$(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)/Localize/LocProject.json'
+            outputPath: '$(Build.ArtifactStagingDirectory)'
+            createPr: true
+            autoCompletePr: false
+            deletePrSourceBranch: false
+            prSourceBranchPrefix: 'locfiles'
+            repoType: gitHub
+            gitHubPatVariable: '$(GitHub.Token)'
+            postLocPowerShellScript: '$(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/automation/scripts/localizationBomRemoval.ps1'

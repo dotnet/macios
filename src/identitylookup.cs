@@ -12,26 +12,20 @@ using System;
 using Foundation;
 using ObjCRuntime;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace IdentityLookup {
 
 	/// <summary>Enumerates actions that can be taken in response to a message.</summary>
 	[NoMac]
-	[NoWatch]
 	[NoTV]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum ILMessageFilterAction : long {
+		/// <summary>Indicates that there is not enough information to choose an action.</summary>
 		None = 0,
+		/// <summary>Indicates that the message will be allowed.</summary>
 		Allow = 1,
+		/// <summary>Indicates that the message will be filtered.</summary>
 		Junk = 2,
-#if !NET
-		[Obsolete ("Use 'Junk' instead.")]
-		Filter = Junk,
-#endif
 		[iOS (14, 0)]
 		[Introduced (PlatformName.MacCatalyst, 14, 0)]
 		Promotion = 3,
@@ -41,33 +35,40 @@ namespace IdentityLookup {
 	}
 
 	[NoMac]
-	[NoWatch]
 	[NoTV]
 	[MacCatalyst (13, 1)]
 	[ErrorDomain ("ILMessageFilterErrorDomain")]
 	[Native]
 	public enum ILMessageFilterError : long {
+		/// <summary>To be added.</summary>
 		System = 1,
+		/// <summary>To be added.</summary>
 		InvalidNetworkUrl = 2,
+		/// <summary>To be added.</summary>
 		NetworkUrlUnauthorized = 3,
+		/// <summary>To be added.</summary>
 		NetworkRequestFailed = 4,
+		/// <summary>To be added.</summary>
 		RedundantNetworkDeferral = 5,
 	}
 
 	/// <summary>Enumerates message classification actions.</summary>
 	[NoMac]
-	[NoWatch]
 	[NoTV]
 	[MacCatalyst (13, 1)]
 	[Native]
 	enum ILClassificationAction : long {
+		/// <summary>Indicates that no action should be taken.</summary>
 		None = 0,
+		/// <summary>Indicates that the user reported that the message is not junk.</summary>
 		ReportNotJunk = 1,
+		/// <summary>Indicates that the user reported that the message is junk.</summary>
 		ReportJunk = 2,
+		/// <summary>Indicates that the user reported that the message is junk, and that they want to block the sender.</summary>
 		ReportJunkAndBlockSender = 3,
 	}
 
-	[NoWatch, NoTV, NoMac, MacCatalyst (16, 0), iOS (16, 0)]
+	[NoTV, NoMac, MacCatalyst (16, 0), iOS (16, 0)]
 	[Native]
 	public enum ILMessageFilterSubAction : long {
 		None = 0,
@@ -87,7 +88,6 @@ namespace IdentityLookup {
 
 	/// <summary>Base class for message filter extensions.</summary>
 	[NoMac]
-	[NoWatch]
 	[NoTV]
 	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor]
@@ -97,7 +97,6 @@ namespace IdentityLookup {
 
 	/// <summary>Represents the extension context for a message filter.</summary>
 	[NoMac]
-	[NoWatch]
 	[NoTV]
 	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor]
@@ -105,7 +104,16 @@ namespace IdentityLookup {
 	interface ILMessageFilterExtensionContext {
 
 		[Export ("deferQueryRequestToNetworkWithCompletion:")]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Defers the query request to the network service for the extension and runs a handler when the operation is complete.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous DeferQueryRequestToNetwork operation.  The value of the TResult parameter is of type System.Action&lt;IdentityLookup.ILNetworkResponse,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The DeferQueryRequestToNetworkAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void DeferQueryRequestToNetwork (Action<ILNetworkResponse, NSError> completion);
 	}
 
@@ -113,12 +121,16 @@ namespace IdentityLookup {
 
 	/// <summary>Interface that is used by a message filter extension to respond to queries.</summary>
 	[NoMac]
-	[NoWatch]
 	[NoTV]
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface ILMessageFilterQueryHandling {
 
+		/// <param name="queryRequest">The query for the message.</param>
+		/// <param name="context">The app extension context for deferring requests.</param>
+		/// <param name="completion">A handler that is run after the operation completes.</param>
+		/// <summary>Evaluates the specified request in the provided context, and runs a handler when the operation is complete.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleQueryRequest:context:completion:")]
 		void HandleQueryRequest (ILMessageFilterQueryRequest queryRequest, ILMessageFilterExtensionContext context, Action<ILMessageFilterQueryResponse> completion);
@@ -126,7 +138,6 @@ namespace IdentityLookup {
 
 	/// <summary>Represents a request to a message filter to examine a message from an unknown sender for filtering.</summary>
 	[NoMac]
-	[NoWatch]
 	[NoTV]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
@@ -139,14 +150,13 @@ namespace IdentityLookup {
 		[NullAllowed, Export ("messageBody")]
 		string MessageBody { get; }
 
-		[NoWatch, NoTV, NoMac, MacCatalyst (16, 0), iOS (16, 0)]
+		[NoTV, NoMac, MacCatalyst (16, 0), iOS (16, 0)]
 		[NullAllowed, Export ("receiverISOCountryCode")]
 		string ReceiverIsoCountryCode { get; }
 	}
 
 	/// <summary>Represents a message query response.</summary>
 	[NoMac]
-	[NoWatch]
 	[NoTV]
 	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor]
@@ -156,14 +166,13 @@ namespace IdentityLookup {
 		[Export ("action", ArgumentSemantic.Assign)]
 		ILMessageFilterAction Action { get; set; }
 
-		[NoWatch, NoTV, NoMac, MacCatalyst (16, 0), iOS (16, 0)]
+		[NoTV, NoMac, MacCatalyst (16, 0), iOS (16, 0)]
 		[Export ("subAction", ArgumentSemantic.Assign)]
 		ILMessageFilterSubAction SubAction { get; set; }
 	}
 
 	/// <summary>Represents a response to a network request by the filter extension.</summary>
 	[NoMac]
-	[NoWatch]
 	[NoTV]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
@@ -179,7 +188,6 @@ namespace IdentityLookup {
 
 	/// <summary>A classification request.</summary>
 	[NoMac]
-	[NoWatch]
 	[NoTV]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (ILClassificationRequest))]
@@ -192,7 +200,6 @@ namespace IdentityLookup {
 
 	/// <summary>An incoming call.</summary>
 	[NoMac]
-	[NoWatch]
 	[NoTV]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (ILCommunication))]
@@ -206,7 +213,6 @@ namespace IdentityLookup {
 	/// <summary>Base class for classes that support users in reporting unwanted communications.</summary>
 	[Abstract]
 	[NoMac]
-	[NoWatch]
 	[NoTV]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
@@ -217,7 +223,6 @@ namespace IdentityLookup {
 
 	/// <summary>Handles the classification of messages to mark them as junk, mark them as not junk, and/or to block the sender.</summary>
 	[NoMac]
-	[NoWatch]
 	[NoTV]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
@@ -243,7 +248,6 @@ namespace IdentityLookup {
 	/// <summary>Base class for incoming calls and messages.</summary>
 	[Abstract]
 	[NoMac]
-	[NoWatch]
 	[NoTV]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
@@ -262,7 +266,6 @@ namespace IdentityLookup {
 
 	/// <summary>A request to report a message.</summary>
 	[NoMac]
-	[NoWatch]
 	[NoTV]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (ILClassificationRequest))]
@@ -275,7 +278,6 @@ namespace IdentityLookup {
 
 	/// <summary>An incoming SMS message.</summary>
 	[NoMac]
-	[NoWatch]
 	[NoTV]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (ILCommunication))]
@@ -289,7 +291,7 @@ namespace IdentityLookup {
 		bool IsEqualTo (ILMessageCommunication communication);
 	}
 
-	[NoWatch, NoTV, NoMac, MacCatalyst (16, 0), iOS (16, 0)]
+	[NoTV, NoMac, MacCatalyst (16, 0), iOS (16, 0)]
 	[Protocol]
 	interface ILMessageFilterCapabilitiesQueryHandling {
 		[Abstract]
@@ -297,7 +299,7 @@ namespace IdentityLookup {
 		void HandleQueryRequest (ILMessageFilterCapabilitiesQueryRequest capabilitiesQueryRequest, ILMessageFilterExtensionContext context, Action<ILMessageFilterCapabilitiesQueryResponse> completion);
 	}
 
-	[NoWatch, NoTV, NoMac, MacCatalyst (16, 0), iOS (16, 0)]
+	[NoTV, NoMac, MacCatalyst (16, 0), iOS (16, 0)]
 	[BaseType (typeof (NSObject))]
 	interface ILMessageFilterCapabilitiesQueryResponse : NSSecureCoding {
 		[BindAs (typeof (ILMessageFilterSubAction []))]
@@ -309,7 +311,7 @@ namespace IdentityLookup {
 		NSNumber [] PromotionalSubActions { get; set; }
 	}
 
-	[NoWatch, NoTV, NoMac, MacCatalyst (16, 0), iOS (16, 0)]
+	[NoTV, NoMac, MacCatalyst (16, 0), iOS (16, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface ILMessageFilterCapabilitiesQueryRequest : NSSecureCoding {

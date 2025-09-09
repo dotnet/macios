@@ -160,7 +160,7 @@ namespace Xamarin.Utils {
 			}
 			AddFramework ("Foundation");
 			AddOtherFlag ("-lz");
-			if (Application.Platform != ApplePlatform.WatchOS && Application.Platform != ApplePlatform.TVOS)
+			if (Application.Platform != ApplePlatform.TVOS)
 				AddFramework ("CFNetwork"); // required by xamarin_start_wwan
 		}
 
@@ -313,7 +313,6 @@ namespace Xamarin.Utils {
 				switch (Application.Platform) {
 				case ApplePlatform.iOS:
 				case ApplePlatform.TVOS:
-				case ApplePlatform.WatchOS:
 					args.Add ("@executable_path/Frameworks");
 					break;
 				case ApplePlatform.MacCatalyst:

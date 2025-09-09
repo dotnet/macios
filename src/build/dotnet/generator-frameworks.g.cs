@@ -29,7 +29,6 @@ partial class Frameworks {
 		"CallKit",
 		"CarPlay",
 		"CFNetwork",
-		"Chip",
 		"Cinematic",
 		"ClassKit",
 		"CloudKit",
@@ -56,6 +55,7 @@ partial class Frameworks {
 		"CoreText",
 		"CoreVideo",
 		"CryptoTokenKit",
+		"DataDetection",
 		"DeviceCheck",
 		"DeviceDiscoveryExtension",
 		"EventKit",
@@ -71,7 +71,6 @@ partial class Frameworks {
 		"HealthKit",
 		"HealthKitUI",
 		"HomeKit",
-		"iAd",
 		"IdentityLookup",
 		"IdentityLookupUI",
 		"ImageIO",
@@ -122,6 +121,7 @@ partial class Frameworks {
 		"SceneKit",
 		"ScreenTime",
 		"Security",
+		"SecurityUI",
 		"SensitiveContentAnalysis",
 		"SensorKit",
 		"SharedWithYou",
@@ -145,7 +145,6 @@ partial class Frameworks {
 		"Vision",
 		"VisionKit",
 		"WatchConnectivity",
-		"WatchKit",
 		"WebKit",
 		"XKit",
 	};
@@ -170,7 +169,6 @@ partial class Frameworks {
 		"BusinessChat",
 		"CallKit",
 		"CFNetwork",
-		"Chip",
 		"Cinematic",
 		"ClassKit",
 		"CloudKit",
@@ -183,6 +181,7 @@ partial class Frameworks {
 		"CoreData",
 		"CoreFoundation",
 		"CoreGraphics",
+		"CoreHaptics",
 		"CoreImage",
 		"CoreLocation",
 		"CoreMedia",
@@ -196,6 +195,7 @@ partial class Frameworks {
 		"CoreWlan",
 		"CryptoTokenKit",
 		"Darwin",
+		"DataDetection",
 		"DeviceCheck",
 		"DeviceDiscoveryExtension",
 		"EventKit",
@@ -206,6 +206,7 @@ partial class Frameworks {
 		"FileProviderUI",
 		"FinderSync",
 		"Foundation",
+		"FSKit",
 		"GameController",
 		"GameKit",
 		"GameplayKit",
@@ -254,7 +255,6 @@ partial class Frameworks {
 		"PhotosUI",
 		"PrintCore",
 		"PushKit",
-		"QTKit",
 		"QuartzComposer",
 		"QuickLook",
 		"QuickLookThumbnailing",
@@ -268,6 +268,7 @@ partial class Frameworks {
 		"ScriptingBridge",
 		"SearchKit",
 		"Security",
+		"SecurityUI",
 		"SensitiveContentAnalysis",
 		"ServiceManagement",
 		"SharedWithYou",
@@ -291,63 +292,6 @@ partial class Frameworks {
 		"XKit",
 	};
 	// GENERATED FILE - DO NOT EDIT
-	internal readonly HashSet<string> watchosframeworks = new HashSet<string> {
-		"Accelerate",
-		"Accessibility",
-		"AuthenticationServices",
-		"AVFoundation",
-		"CallKit",
-		"Chip",
-		"ClockKit",
-		"CloudKit",
-		"Compression",
-		"Contacts",
-		"CoreBluetooth",
-		"CoreData",
-		"CoreFoundation",
-		"CoreGraphics",
-		"CoreLocation",
-		"CoreMedia",
-		"CoreMidi",
-		"CoreML",
-		"CoreMotion",
-		"CoreText",
-		"CoreVideo",
-		"CryptoTokenKit",
-		"DeviceCheck",
-		"EventKit",
-		"Foundation",
-		"GameKit",
-		"HealthKit",
-		"HomeKit",
-		"ImageIO",
-		"Intents",
-		"LocalAuthentication",
-		"MapKit",
-		"MediaPlayer",
-		"MobileCoreServices",
-		"NaturalLanguage",
-		"NearbyInteraction",
-		"Network",
-		"OSLog",
-		"PassKit",
-		"PushKit",
-		"SafetyKit",
-		"SceneKit",
-		"Security",
-		"ShazamKit",
-		"SoundAnalysis",
-		"SpriteKit",
-		"StoreKit",
-		"Symbols",
-		"UIKit",
-		"UniformTypeIdentifiers",
-		"UserNotifications",
-		"WatchConnectivity",
-		"WatchKit",
-		"XKit",
-	};
-	// GENERATED FILE - DO NOT EDIT
 	internal readonly HashSet<string> tvosframeworks = new HashSet<string> {
 		"Accelerate",
 		"Accessibility",
@@ -358,10 +302,10 @@ partial class Frameworks {
 		"AuthenticationServices",
 		"AVFoundation",
 		"AVKit",
+		"BackgroundAssets",
 		"BackgroundTasks",
 		"BrowserEngineKit",
 		"CFNetwork",
-		"Chip",
 		"Cinematic",
 		"CloudKit",
 		"Compression",
@@ -380,6 +324,7 @@ partial class Frameworks {
 		"CoreText",
 		"CoreVideo",
 		"CryptoTokenKit",
+		"DataDetection",
 		"DeviceCheck",
 		"DeviceDiscoveryUI",
 		"ExternalAccessory",
@@ -411,12 +356,14 @@ partial class Frameworks {
 		"NetworkExtension",
 		"OpenGLES",
 		"OSLog",
+		"PdfKit",
 		"Phase",
 		"Photos",
 		"PhotosUI",
 		"ReplayKit",
 		"SceneKit",
 		"Security",
+		"SecurityUI",
 		"SharedWithYou",
 		"SharedWithYouCore",
 		"ShazamKit",
@@ -485,6 +432,7 @@ partial class Frameworks {
 		"CoreVideo",
 		"CoreWlan",
 		"CryptoTokenKit",
+		"DataDetection",
 		"DeviceCheck",
 		"DeviceDiscoveryExtension",
 		"EventKit",
@@ -540,8 +488,10 @@ partial class Frameworks {
 		"ReplayKit",
 		"SafariServices",
 		"SceneKit",
+		"ScreenCaptureKit",
 		"ScreenTime",
 		"Security",
+		"SecurityUI",
 		"SensitiveContentAnalysis",
 		"SensorKit",
 		"ServiceManagement",
@@ -593,10 +543,8 @@ partial class Frameworks {
 	bool? _CallKit;
 	bool? _CarPlay;
 	bool? _CFNetwork;
-	bool? _Chip;
 	bool? _Cinematic;
 	bool? _ClassKit;
-	bool? _ClockKit;
 	bool? _CloudKit;
 	bool? _Compression;
 	bool? _Contacts;
@@ -624,6 +572,7 @@ partial class Frameworks {
 	bool? _CoreWlan;
 	bool? _CryptoTokenKit;
 	bool? _Darwin;
+	bool? _DataDetection;
 	bool? _DeviceCheck;
 	bool? _DeviceDiscoveryExtension;
 	bool? _DeviceDiscoveryUI;
@@ -636,6 +585,7 @@ partial class Frameworks {
 	bool? _FileProviderUI;
 	bool? _FinderSync;
 	bool? _Foundation;
+	bool? _FSKit;
 	bool? _GameController;
 	bool? _GameKit;
 	bool? _GameplayKit;
@@ -643,7 +593,6 @@ partial class Frameworks {
 	bool? _HealthKit;
 	bool? _HealthKitUI;
 	bool? _HomeKit;
-	bool? _iAd;
 	bool? _IdentityLookup;
 	bool? _IdentityLookupUI;
 	bool? _ImageCaptureCore;
@@ -695,7 +644,6 @@ partial class Frameworks {
 	bool? _PrintCore;
 	bool? _PushKit;
 	bool? _PushToTalk;
-	bool? _QTKit;
 	bool? _QuartzComposer;
 	bool? _QuickLook;
 	bool? _QuickLookThumbnailing;
@@ -709,6 +657,7 @@ partial class Frameworks {
 	bool? _ScriptingBridge;
 	bool? _SearchKit;
 	bool? _Security;
+	bool? _SecurityUI;
 	bool? _SensitiveContentAnalysis;
 	bool? _SensorKit;
 	bool? _ServiceManagement;
@@ -736,7 +685,6 @@ partial class Frameworks {
 	bool? _Vision;
 	bool? _VisionKit;
 	bool? _WatchConnectivity;
-	bool? _WatchKit;
 	bool? _WebKit;
 	bool? _XKit;
 	public bool HaveAccelerate { get { if (!_Accelerate.HasValue) _Accelerate = GetValue ("Accelerate"); return _Accelerate.Value; } }
@@ -766,10 +714,8 @@ partial class Frameworks {
 	public bool HaveCallKit { get { if (!_CallKit.HasValue) _CallKit = GetValue ("CallKit"); return _CallKit.Value; } }
 	public bool HaveCarPlay { get { if (!_CarPlay.HasValue) _CarPlay = GetValue ("CarPlay"); return _CarPlay.Value; } }
 	public bool HaveCFNetwork { get { if (!_CFNetwork.HasValue) _CFNetwork = GetValue ("CFNetwork"); return _CFNetwork.Value; } }
-	public bool HaveChip { get { if (!_Chip.HasValue) _Chip = GetValue ("Chip"); return _Chip.Value; } }
 	public bool HaveCinematic { get { if (!_Cinematic.HasValue) _Cinematic = GetValue ("Cinematic"); return _Cinematic.Value; } }
 	public bool HaveClassKit { get { if (!_ClassKit.HasValue) _ClassKit = GetValue ("ClassKit"); return _ClassKit.Value; } }
-	public bool HaveClockKit { get { if (!_ClockKit.HasValue) _ClockKit = GetValue ("ClockKit"); return _ClockKit.Value; } }
 	public bool HaveCloudKit { get { if (!_CloudKit.HasValue) _CloudKit = GetValue ("CloudKit"); return _CloudKit.Value; } }
 	public bool HaveCompression { get { if (!_Compression.HasValue) _Compression = GetValue ("Compression"); return _Compression.Value; } }
 	public bool HaveContacts { get { if (!_Contacts.HasValue) _Contacts = GetValue ("Contacts"); return _Contacts.Value; } }
@@ -797,6 +743,7 @@ partial class Frameworks {
 	public bool HaveCoreWlan { get { if (!_CoreWlan.HasValue) _CoreWlan = GetValue ("CoreWlan"); return _CoreWlan.Value; } }
 	public bool HaveCryptoTokenKit { get { if (!_CryptoTokenKit.HasValue) _CryptoTokenKit = GetValue ("CryptoTokenKit"); return _CryptoTokenKit.Value; } }
 	public bool HaveDarwin { get { if (!_Darwin.HasValue) _Darwin = GetValue ("Darwin"); return _Darwin.Value; } }
+	public bool HaveDataDetection { get { if (!_DataDetection.HasValue) _DataDetection = GetValue ("DataDetection"); return _DataDetection.Value; } }
 	public bool HaveDeviceCheck { get { if (!_DeviceCheck.HasValue) _DeviceCheck = GetValue ("DeviceCheck"); return _DeviceCheck.Value; } }
 	public bool HaveDeviceDiscoveryExtension { get { if (!_DeviceDiscoveryExtension.HasValue) _DeviceDiscoveryExtension = GetValue ("DeviceDiscoveryExtension"); return _DeviceDiscoveryExtension.Value; } }
 	public bool HaveDeviceDiscoveryUI { get { if (!_DeviceDiscoveryUI.HasValue) _DeviceDiscoveryUI = GetValue ("DeviceDiscoveryUI"); return _DeviceDiscoveryUI.Value; } }
@@ -809,6 +756,7 @@ partial class Frameworks {
 	public bool HaveFileProviderUI { get { if (!_FileProviderUI.HasValue) _FileProviderUI = GetValue ("FileProviderUI"); return _FileProviderUI.Value; } }
 	public bool HaveFinderSync { get { if (!_FinderSync.HasValue) _FinderSync = GetValue ("FinderSync"); return _FinderSync.Value; } }
 	public bool HaveFoundation { get { if (!_Foundation.HasValue) _Foundation = GetValue ("Foundation"); return _Foundation.Value; } }
+	public bool HaveFSKit { get { if (!_FSKit.HasValue) _FSKit = GetValue ("FSKit"); return _FSKit.Value; } }
 	public bool HaveGameController { get { if (!_GameController.HasValue) _GameController = GetValue ("GameController"); return _GameController.Value; } }
 	public bool HaveGameKit { get { if (!_GameKit.HasValue) _GameKit = GetValue ("GameKit"); return _GameKit.Value; } }
 	public bool HaveGameplayKit { get { if (!_GameplayKit.HasValue) _GameplayKit = GetValue ("GameplayKit"); return _GameplayKit.Value; } }
@@ -816,7 +764,6 @@ partial class Frameworks {
 	public bool HaveHealthKit { get { if (!_HealthKit.HasValue) _HealthKit = GetValue ("HealthKit"); return _HealthKit.Value; } }
 	public bool HaveHealthKitUI { get { if (!_HealthKitUI.HasValue) _HealthKitUI = GetValue ("HealthKitUI"); return _HealthKitUI.Value; } }
 	public bool HaveHomeKit { get { if (!_HomeKit.HasValue) _HomeKit = GetValue ("HomeKit"); return _HomeKit.Value; } }
-	public bool HaveiAd { get { if (!_iAd.HasValue) _iAd = GetValue ("iAd"); return _iAd.Value; } }
 	public bool HaveIdentityLookup { get { if (!_IdentityLookup.HasValue) _IdentityLookup = GetValue ("IdentityLookup"); return _IdentityLookup.Value; } }
 	public bool HaveIdentityLookupUI { get { if (!_IdentityLookupUI.HasValue) _IdentityLookupUI = GetValue ("IdentityLookupUI"); return _IdentityLookupUI.Value; } }
 	public bool HaveImageCaptureCore { get { if (!_ImageCaptureCore.HasValue) _ImageCaptureCore = GetValue ("ImageCaptureCore"); return _ImageCaptureCore.Value; } }
@@ -868,7 +815,6 @@ partial class Frameworks {
 	public bool HavePrintCore { get { if (!_PrintCore.HasValue) _PrintCore = GetValue ("PrintCore"); return _PrintCore.Value; } }
 	public bool HavePushKit { get { if (!_PushKit.HasValue) _PushKit = GetValue ("PushKit"); return _PushKit.Value; } }
 	public bool HavePushToTalk { get { if (!_PushToTalk.HasValue) _PushToTalk = GetValue ("PushToTalk"); return _PushToTalk.Value; } }
-	public bool HaveQTKit { get { if (!_QTKit.HasValue) _QTKit = GetValue ("QTKit"); return _QTKit.Value; } }
 	public bool HaveQuartzComposer { get { if (!_QuartzComposer.HasValue) _QuartzComposer = GetValue ("QuartzComposer"); return _QuartzComposer.Value; } }
 	public bool HaveQuickLook { get { if (!_QuickLook.HasValue) _QuickLook = GetValue ("QuickLook"); return _QuickLook.Value; } }
 	public bool HaveQuickLookThumbnailing { get { if (!_QuickLookThumbnailing.HasValue) _QuickLookThumbnailing = GetValue ("QuickLookThumbnailing"); return _QuickLookThumbnailing.Value; } }
@@ -882,6 +828,7 @@ partial class Frameworks {
 	public bool HaveScriptingBridge { get { if (!_ScriptingBridge.HasValue) _ScriptingBridge = GetValue ("ScriptingBridge"); return _ScriptingBridge.Value; } }
 	public bool HaveSearchKit { get { if (!_SearchKit.HasValue) _SearchKit = GetValue ("SearchKit"); return _SearchKit.Value; } }
 	public bool HaveSecurity { get { if (!_Security.HasValue) _Security = GetValue ("Security"); return _Security.Value; } }
+	public bool HaveSecurityUI { get { if (!_SecurityUI.HasValue) _SecurityUI = GetValue ("SecurityUI"); return _SecurityUI.Value; } }
 	public bool HaveSensitiveContentAnalysis { get { if (!_SensitiveContentAnalysis.HasValue) _SensitiveContentAnalysis = GetValue ("SensitiveContentAnalysis"); return _SensitiveContentAnalysis.Value; } }
 	public bool HaveSensorKit { get { if (!_SensorKit.HasValue) _SensorKit = GetValue ("SensorKit"); return _SensorKit.Value; } }
 	public bool HaveServiceManagement { get { if (!_ServiceManagement.HasValue) _ServiceManagement = GetValue ("ServiceManagement"); return _ServiceManagement.Value; } }
@@ -909,7 +856,6 @@ partial class Frameworks {
 	public bool HaveVision { get { if (!_Vision.HasValue) _Vision = GetValue ("Vision"); return _Vision.Value; } }
 	public bool HaveVisionKit { get { if (!_VisionKit.HasValue) _VisionKit = GetValue ("VisionKit"); return _VisionKit.Value; } }
 	public bool HaveWatchConnectivity { get { if (!_WatchConnectivity.HasValue) _WatchConnectivity = GetValue ("WatchConnectivity"); return _WatchConnectivity.Value; } }
-	public bool HaveWatchKit { get { if (!_WatchKit.HasValue) _WatchKit = GetValue ("WatchKit"); return _WatchKit.Value; } }
 	public bool HaveWebKit { get { if (!_WebKit.HasValue) _WebKit = GetValue ("WebKit"); return _WebKit.Value; } }
 	public bool HaveXKit { get { if (!_XKit.HasValue) _XKit = GetValue ("XKit"); return _XKit.Value; } }
 }

@@ -15,12 +15,15 @@ using Xamarin.Utils;
 
 namespace Xamarin.Linker.Steps {
 	public class ListExportedSymbols : BaseStep {
+#if !MMP && !MTOUCH
 		PInvokeWrapperGenerator state;
+#endif
 		bool is_product_assembly;
 #if !NET || LEGACY_TOOLS
 		bool skip_sdk_assemblies;
 #endif
 
+#if !MMP && !MTOUCH
 		PInvokeWrapperGenerator State {
 			get {
 #if NET && !LEGACY_TOOLS
@@ -37,6 +40,7 @@ namespace Xamarin.Linker.Steps {
 				return state;
 			}
 		}
+#endif
 
 #if NET && !LEGACY_TOOLS
 		protected override void EndProcess ()
@@ -68,17 +72,9 @@ namespace Xamarin.Linker.Steps {
 			}
 		}
 
-#if NET && !LEGACY_TOOLS
 		public ListExportedSymbols ()
 		{
 		}
-#else
-		internal ListExportedSymbols (PInvokeWrapperGenerator state, bool skip_sdk_assemblies = false)
-		{
-			this.state = state;
-			this.skip_sdk_assemblies = skip_sdk_assemblies;
-		}
-#endif
 
 		protected override void ProcessAssembly (AssemblyDefinition assembly)
 		{
@@ -135,16 +131,23 @@ namespace Xamarin.Linker.Steps {
 					modified |= ProcessMethod (method);
 			}
 
-			// There are no Objective-C classes we need to keep from the platform assembly,
-			// so just skip in that case.
-			if (!is_product_assembly)
-				AddRequiredObjectiveCType (type);
+			AddRequiredObjectiveCType (type);
 
 			return modified;
 		}
 
 		void AddRequiredObjectiveCType (TypeDefinition type)
 		{
+			// The product assembly only has one type we may need to keep: XamarinSwiftFunctions
+			if (is_product_assembly) {
+				switch (type.Name) {
+				case "XamarinSwiftFunctions":
+					break;
+				default:
+					return;
+				}
+			}
+
 			var registerAttribute = DerivedLinkContext.StaticRegistrar?.GetRegisterAttribute (type);
 			if (registerAttribute is null)
 				return;

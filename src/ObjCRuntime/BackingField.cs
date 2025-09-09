@@ -46,8 +46,7 @@ using ObjCRuntime;
 
 namespace ObjCRuntime {
 
-	static class BackingField
-	{
+	static class BackingField {
 		public static T Get<T> (ref T value, IntPtr handle, Converter<IntPtr, T> c)
 			where T : class, INativeObject, IDisposable
 		{
@@ -67,12 +66,14 @@ namespace ObjCRuntime {
 		public static IntPtr Save<T> (ref T value, T newValue)
 			where T : class, INativeObject, IDisposable
 		{
+#pragma warning disable RBI0014
 			if (object.ReferenceEquals (value, newValue))
 				return value is null ? IntPtr.Zero : value.Handle;
 			if (value is not null)
 				value.Dispose ();
 			value = newValue;
 			return value is null ? IntPtr.Zero : value.Handle;
+#pragma warning restore RBI0014
 		}
 	}
 }

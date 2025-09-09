@@ -1,0 +1,17 @@
+<Documentation>
+  <Docs DocId="P:AVFoundation.AVCaptureDevice.VideoHdrEnabled">
+        <summary>Indicates if the device is currently streaming HDR video.</summary>
+        <value>
+          <para />
+        </value>
+        <remarks>
+          <para>Setting this property requires the <see cref="AVFoundation.AVCaptureDevice.ActiveFormat’s" /> IsVideoHdrSupported to be <see langword="true" />, otherwise you will get an exception.</para>
+          <para />
+          <para>Setting the <see cref="AVFoundation.AVCaptureDevice.ActiveFormat" /> property will change this to <see langword="false" />.  </para>
+          <para />
+          <para>This property can only be set if you first set <see cref="AVFoundation.AVCaptureDevice.AutomaticallyAdjustsVideoHdrEnabled" /> to <see langword="false" />.</para>
+          <para />
+          <para>In constrat, setting the <see cref="AVFoundation.AVCaptureSession.SessionPreset" /> will set this property to <see langword="true" /> if the session preset is a good match for HDR video.</para>
+        </remarks>
+      </Docs>
+</Documentation>

@@ -29,6 +29,9 @@ using NUnit.Framework;
 using Foundation;
 using ObjCRuntime;
 
+// Disable until we get around to enable + fix any issues.
+#nullable disable
+
 namespace Introspection {
 
 	[Preserve (AllMembers = true)]
@@ -41,6 +44,13 @@ namespace Introspection {
 		/// <param name="type">Type to be tested</param>
 		protected virtual bool Skip (Type type)
 		{
+			switch (type.Namespace) {
+			case "SensorKit": // SensorKit doesn't exist on iPads
+				if (TestRuntime.IsDevice && TestRuntime.IsiPad)
+					return true;
+				break;
+			}
+
 			return false;
 		}
 
@@ -73,6 +83,14 @@ namespace Introspection {
 				default:
 					return false;
 				}
+			case "CMSampleAttachmentKey": // kCMSampleAttachmentKey_HDR10PlusPerFrameData":
+				switch (property.Name) {
+				case "Hdr10PlusPerFrameDataKey":
+					if (TestRuntime.IsSimulator)
+						return !TestRuntime.CheckXcodeVersion (14, 1); // not available in the iOS 16.0 simulator, but it is in the iOS 16.1 simulator
+					break;
+				}
+				break;
 			}
 			return SkipDueToAttribute (property);
 		}
@@ -155,7 +173,7 @@ namespace Introspection {
 			var failed_fields = new List<string> ();
 
 			Errors = 0;
-			int c = 0, n = 0;
+			int n = 0;
 			foreach (var p in AllProperties ()) {
 				if (p.PropertyType.FullName != NSStringType)
 					continue;

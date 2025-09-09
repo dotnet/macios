@@ -2,12 +2,58 @@
 
 using System.IO;
 using System.IO.Compression;
+using System.Reflection.Metadata;
+using System.Reflection.PortableExecutable;
 
 #nullable enable
 
 namespace Xamarin.Tests {
 	[TestFixture]
 	public class WindowsTest : TestBaseClass {
+
+		[Category ("Windows")]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64")]
+		[TestCase (ApplePlatform.TVOS, "tvossimulator-x64")]
+		public void BundleStructureNonRemotablePlatforms (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.IgnoreIfNotOnWindows ();
+
+			var project = "BundleStructure";
+			var configuration = "Debug";
+			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath, configuration: configuration);
+			var project_dir = Path.GetDirectoryName (Path.GetDirectoryName (project_path))!;
+			Clean (project_path);
+
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+
+			// For any platform other than iOS, all we care about is that project builds, we don't care about the built app.
+			// So assert that the project builds.
+			DotNet.AssertBuild (project_path, properties);
+		}
+
+		[Category ("Windows")]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64")]
+		[TestCase (ApplePlatform.TVOS, "tvossimulator-x64")]
+		public void BuildAppWithXCFrameworkWithSymlinks (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.IgnoreIfNotOnWindows ();
+
+			var project = "AppWithXCFrameworkWithSymlinks";
+			var configuration = "Debug";
+			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath, configuration: configuration);
+			var project_dir = Path.GetDirectoryName (Path.GetDirectoryName (project_path))!;
+			Clean (project_path);
+
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+
+			// For any platform other than iOS, all we care about is that project builds, we don't care about the built app.
+			// So assert that the project builds.
+			DotNet.AssertBuild (project_path, properties);
+		}
 
 		[Category ("Windows")]
 		[TestCase (ApplePlatform.iOS, "ios-arm64")]
@@ -24,16 +70,11 @@ namespace Xamarin.Tests {
 			var project_dir = Path.GetDirectoryName (Path.GetDirectoryName (project_path))!;
 			Clean (project_path);
 
-			var properties = GetDefaultProperties (runtimeIdentifiers, extraProperties: GetHotRestartProperties ());
+			var extraProperties = GetHotRestartProperties (tmpdir, out var hotRestartOutputDir, out var hotRestartAppBundlePath);
+			var properties = GetDefaultProperties (runtimeIdentifiers, extraProperties);
 			if (!string.IsNullOrWhiteSpace (configuration))
 				properties ["Configuration"] = configuration;
 
-			// Redirect hot restart output to a place we can control from here
-			var hotRestartOutputDir = Path.Combine (tmpdir, "out");
-			Directory.CreateDirectory (hotRestartOutputDir);
-			properties ["HotRestartSignedAppOutputDir"] = hotRestartOutputDir + Path.DirectorySeparatorChar;
-			var hotRestartAppBundlePath = Path.Combine (tmpdir, "HotRestartAppBundlePath"); // Do not create this directory, it will be created and populated with default contents if it doesn't exist.
-			properties ["HotRestartAppBundlePath"] = hotRestartAppBundlePath; // no trailing directory separator char for this property.
 			var rv = DotNet.AssertBuild (project_path, properties);
 
 			// Find the files in the prebuilt hot restart app
@@ -126,7 +167,7 @@ namespace Xamarin.Tests {
 			BundleStructureTest.CheckAppBundleContents (platform, merged, rids, BundleStructureTest.CodeSignature.None, configuration == "Release");
 
 			// Assert that no files were copied to the signed directory after the app was signed.
-			// https://github.com/xamarin/xamarin-macios/issues/19278
+			// https://github.com/dotnet/macios/issues/19278
 			var signedAppBundleFilesWithInfo = hotRestartAppBundleFiles.Select (v => new { Name = v, Info = new FileInfo (v) });
 			Console.WriteLine ($"{signedAppBundleFilesWithInfo.Count ()} files in app bundle:");
 			foreach (var fileWithInfo2 in signedAppBundleFilesWithInfo) {
@@ -212,17 +253,6 @@ namespace Xamarin.Tests {
 				expectedWarnings.AddRange (expectedWarnings);
 			}
 
-			var zippedFrameworks = platform == ApplePlatform.MacCatalyst || platform == ApplePlatform.MacOSX;
-			foreach (var rid in rids) {
-				if (zippedFrameworks) {
-					expectedWarnings.Add ($"The framework {Path.Combine ("obj", configuration, tfm, rid, "bindings-xcframework-test.resources.zip", "XStaticObjectTest.framework")} is a framework of static libraries, and will not be copied to the app.");
-					expectedWarnings.Add ($"The framework {Path.Combine ("obj", configuration, tfm, rid, "bindings-xcframework-test.resources.zip", "XStaticArTest.framework")} is a framework of static libraries, and will not be copied to the app.");
-				} else {
-					expectedWarnings.Add ($"The framework {Path.Combine (testsDirectory, "bindings-xcframework-test", "dotnet", platformString, "bin", configuration, tfm, "bindings-framework-test.resources", "XStaticObjectTest.xcframework", runtimeIdentifiers, "XStaticObjectTest.framework")} is a framework of static libraries, and will not be copied to the app.");
-					expectedWarnings.Add ($"The framework {Path.Combine (testsDirectory, "bindings-xcframework-test", "dotnet", platformString, "bin", configuration, tfm, "bindings-framework-test.resources", "XStaticArTest.xcframework", runtimeIdentifiers, "XStaticArTest.framework")} is a framework of static libraries, and will not be copied to the app.");
-				}
-			}
-
 			if (signature == BundleStructureTest.CodeSignature.None && (platform == ApplePlatform.MacCatalyst || platform == ApplePlatform.MacOSX)) {
 				expectedWarnings.Add ($"Found files in the root directory of the app bundle. This will likely cause codesign to fail. Files:\n{Path.Combine ("bin", configuration, tfm, runtimeIdentifiers.IndexOf (';') >= 0 ? string.Empty : runtimeIdentifiers, "BundleStructure.app", "UnknownJ.bin")}");
 			}
@@ -248,11 +278,13 @@ namespace Xamarin.Tests {
 			Configuration.Touch (appDelegatePath);
 
 			rv = DotNet.AssertBuild (project_path, properties);
+			var allTargets = BinLog.GetAllTargets (rv.BinLogPath);
 			warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).ToArray ();
 			warningMessages = BundleStructureTest.FilterWarnings (warnings, canonicalizePaths: true);
 
 			BundleStructureTest.CheckZippedAppBundleContents (platform, zippedAppBundlePath, rids, signature, isReleaseBuild);
 			AssertWarningsEqual (expectedWarnings, warningMessages, "Warnings Rebuild 1");
+			AssertTargetNotExecuted (allTargets, "_CompileAppManifest", "_CompileAppManifest Rebuild 1");
 			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
 
 			// remove the bin directory, and rebuild should succeed and do the right thing
@@ -260,20 +292,24 @@ namespace Xamarin.Tests {
 			Directory.Delete (binDirectory, true);
 
 			rv = DotNet.AssertBuild (project_path, properties);
+			allTargets = BinLog.GetAllTargets (rv.BinLogPath);
 			warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).ToArray ();
 			warningMessages = BundleStructureTest.FilterWarnings (warnings, canonicalizePaths: true);
 
 			BundleStructureTest.CheckZippedAppBundleContents (platform, zippedAppBundlePath, rids, signature, isReleaseBuild);
 			AssertWarningsEqual (expectedWarnings, warningMessages, "Warnings Rebuild 2");
+			AssertTargetNotExecuted (allTargets, "_CompileAppManifest", "_CompileAppManifest Rebuild 2");
 			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
 
 			// a simple rebuild should succeed
 			rv = DotNet.AssertBuild (project_path, properties);
+			allTargets = BinLog.GetAllTargets (rv.BinLogPath);
 			warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).ToArray ();
 			warningMessages = BundleStructureTest.FilterWarnings (warnings, canonicalizePaths: true);
 
 			BundleStructureTest.CheckZippedAppBundleContents (platform, zippedAppBundlePath, rids, signature, isReleaseBuild);
 			AssertWarningsEqual (expectedWarnings, warningMessages, "Warnings Rebuild 3");
+			AssertTargetNotExecuted (allTargets, "_CompileAppManifest", "_CompileAppManifest Rebuild 3");
 			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
 		}
 
@@ -282,8 +318,19 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.iOS, "ios-arm64")]
 		public void PluralRuntimeIdentifiersWithHotRestart (ApplePlatform platform, string runtimeIdentifiers)
 		{
+			Configuration.IgnoreIfNotOnWindows ();
+
 			var properties = GetHotRestartProperties ();
 			DotNetProjectTest.PluralRuntimeIdentifiersImpl (platform, runtimeIdentifiers, properties, isUsingHotRestart: true);
+		}
+
+		[Category ("RemoteWindows")]
+		[TestCase (ApplePlatform.iOS, "ios-arm64")]
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64;iossimulator-x64")]
+		public void PluralRuntimeIdentifiersWithRemoteMac (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			var properties = AddRemoteProperties ();
+			DotNetProjectTest.PluralRuntimeIdentifiersImpl (platform, runtimeIdentifiers, properties);
 		}
 
 		static void AssertWarningsEqual (IList<string> expected, IList<string> actual, string message)
@@ -337,11 +384,16 @@ namespace Xamarin.Tests {
 
 			// Copy the app bundle to Windows so that we can inspect the results.
 			properties ["CopyAppBundleToWindows"] = "true";
+			// Check for updated files on the remote output and update them locally so the app is ready for debug
+			properties ["KeepLocalOutputUpToDate"] = "true";
+			// Don't clean the zip file with the updated files from the remote side so they can be asserted
+			properties ["CleanChangedOutputFilesZipFile"] = "false";
 
 			var result = DotNet.AssertBuild (project_path, properties, timeout: TimeSpan.FromMinutes (15));
 			AssertThatLinkerExecuted (result);
 
 			var objDir = GetObjDir (project_path, platform, runtimeIdentifiers, configuration);
+
 			var zippedAppBundlePath = Path.Combine (objDir, "AppBundle.zip");
 			Assert.That (zippedAppBundlePath, Does.Exist, "AppBundle.zip");
 
@@ -363,18 +415,216 @@ namespace Xamarin.Tests {
 			Assert.AreEqual ("MySimpleApp", infoPlist.GetString ("CFBundleDisplayName").Value, "CFBundleDisplayName");
 			Assert.AreEqual ("3.14", infoPlist.GetString ("CFBundleVersion").Value, "CFBundleVersion");
 			Assert.AreEqual ("3.14", infoPlist.GetString ("CFBundleShortVersionString").Value, "CFBundleShortVersionString");
+
+			//Validate that the output assemblies report file with the list of local assemblies, lengths and MVIDs has been created
+			var outputAssembliesReportFileName = "OutputAssembliesReport.txt";
+			var outputAssembliesReportFile = Path.Combine (objDir, outputAssembliesReportFileName);
+			Assert.That (outputAssembliesReportFile, Does.Exist, outputAssembliesReportFileName);
+
+			//Validate that the file with the updated assemblies to replace locally has been created
+			var zippedChangedOutputFilesFileName = "ChangedOutputFiles.zip";
+			var zippedChangedOutputFiles = Path.Combine (objDir, zippedChangedOutputFilesFileName);
+			Assert.That (zippedChangedOutputFiles, Does.Exist, zippedChangedOutputFilesFileName);
+
+			//Create a directory in the obj to extract the updated assemblies
+			var changedOutputFilesDirectory = Path.Combine (objDir, "ChangedOutputFiles");
+			Directory.CreateDirectory (changedOutputFilesDirectory);
+
+			//Extract the updated assemblies from the zip file
+			using var changedOutputFilesZip = ZipFile.OpenRead (zippedChangedOutputFiles);
+			ZipHelpers.DumpZipFile (changedOutputFilesZip, zippedChangedOutputFiles);
+			changedOutputFilesZip.ExtractToDirectory (changedOutputFilesDirectory, overwriteFiles: true);
+
+			//Reads the output assemblies report file
+			var outputAssembliesReportFileList = GetOutputAssembliesReportFileList (outputAssembliesReportFile);
+			var changedOutputAssemblies = Directory.GetFiles (changedOutputFilesDirectory, "*.dll", SearchOption.TopDirectoryOnly);
+
+			foreach (var file in changedOutputAssemblies) {
+				var fileName = Path.GetFileName (file);
+				var fileInReport = outputAssembliesReportFileList.TryGetValue (fileName, out (long length, Guid mvid) localInfo);
+
+				if (fileInReport) {
+					var fileInfo = new FileInfo (file);
+					using Stream stream = fileInfo.OpenRead ();
+					using var peReader = new PEReader (stream);
+					MetadataReader metadataReader = peReader.GetMetadataReader ();
+					Guid mvid = metadataReader.GetGuid (metadataReader.GetModuleDefinition ().Mvid);
+					var fileWasUpdated = fileInfo.Length != localInfo.length || mvid != localInfo.mvid;
+
+					Assert.IsTrue (fileWasUpdated, $"The file '{fileName}' is identical to the one present in the output assemblies report file '{outputAssembliesReportFile}'");
+				}
+			}
 		}
 
-		protected Dictionary<string, string> GetHotRestartProperties ()
+		IDictionary<string, (long length, Guid mvid)> GetOutputAssembliesReportFileList (string reportFile)
 		{
-			var properties = new Dictionary<string, string> ();
-			properties ["IsHotRestartBuild"] = "true";
-			properties ["IsHotRestartEnvironmentReady"] = "true";
-			properties ["EnableCodeSigning"] = "false"; // Skip code signing, since that would require making sure we have code signing configured on bots.
-			properties ["_IsAppSigned"] = "false";
-			properties ["_AppIdentifier"] = "placeholder_AppIdentifier"; // This needs to be set to a placeholder value because DetectSigningIdentity usually does it (and we've disabled signing)
-			properties ["_BundleIdentifier"] = "placeholder_BundleIdentifier"; // This needs to be set to a placeholder value because DetectSigningIdentity usually does it (and we've disabled signing)
-			return properties;
+			var reportFileList = new Dictionary<string, (long length, Guid mvid)> ();
+
+			//Expected format of the report file lines (defined in the CalculateAssembliesReport task): Foo.dll/23189/768C814C-05C3-4563-9B53-35FEF571968E
+			foreach (var line in File.ReadLines (reportFile)) {
+				string [] lineParts = line.Split (["/"], StringSplitOptions.RemoveEmptyEntries);
+
+				// Skip lines that don't match the expected format
+				if (lineParts.Length == 3 && long.TryParse (lineParts [1], out long fileLength) && Guid.TryParse (lineParts [2], out Guid mvid)) {
+					// Adds file name, length and MVID to the dictionary
+					reportFileList.Add (lineParts [0], (fileLength, mvid));
+				}
+			}
+
+			return reportFileList;
+		}
+
+		[Test]
+		[Category ("Windows")]
+		[TestCase ("NativeFileReferencesApp", ApplePlatform.iOS, "ios-arm64")]
+		public void StaticLibrariesWithHotRestart (string project, ApplePlatform platform, string runtimeIdentifier)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifier);
+			Configuration.IgnoreIfNotOnWindows ();
+
+			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifier, platform: platform, out var _);
+			Clean (project_path);
+			var properties = GetDefaultProperties (runtimeIdentifier, GetHotRestartProperties ());
+			var rv = DotNet.AssertBuildFailure (project_path, properties);
+			var errors = BinLog.GetBuildLogErrors (rv.BinLogPath).ToList ();
+			AssertErrorMessages (errors,
+				$@"The library ..\..\..\test-libraries\.libs\iossimulator\libtest.a is a static library, and static libraries are not supported with Hot Restart. Set 'SkipStaticLibraryValidation=true' in the project file to ignore this error.",
+				$@"The library ..\..\..\test-libraries\.libs\iossimulator\libtest2.a is a static library, and static libraries are not supported with Hot Restart. Set 'SkipStaticLibraryValidation=true' in the project file to ignore this error."
+			);
+		}
+	}
+
+	public class AppBundleInfo {
+		public readonly bool IsRemoteBuild;
+		public readonly bool IsHotRestartBuild;
+		public readonly string AppPath;
+		public readonly string ProjectPath;
+		public readonly ApplePlatform Platform;
+		public readonly string Configuration;
+		public readonly string RuntimeIdentifiers;
+		public readonly string? HotRestartOutputDir;
+		public readonly string? HotRestartAppBundlePath;
+
+		string? zippedAppBundlePath;
+		string ZippedAppBundlePath {
+			get {
+				if (zippedAppBundlePath is null) {
+					if (!IsRemoteBuild)
+						throw new InvalidOperationException ($"Can't get the zipped app bundle path unless it's for a remote build.");
+					var objDir = TestBaseClass.GetObjDir (ProjectPath, Platform, RuntimeIdentifiers, Configuration);
+					zippedAppBundlePath = Path.Combine (objDir, "AppBundle.zip");
+					Assert.That (zippedAppBundlePath, Does.Exist, "AppBundle.zip");
+				}
+				return zippedAppBundlePath;
+			}
+		}
+
+		public AppBundleInfo (ApplePlatform platform, string appPath, string projectPath, bool isRemoteBuild, string runtimeIdentifiers, string configuration, bool isHotRestartBuild, string? hotRestartOutputDir, string? hotRestartAppBundlePath)
+		{
+			Platform = platform;
+			AppPath = appPath;
+			ProjectPath = projectPath;
+			IsRemoteBuild = isRemoteBuild;
+			Configuration = configuration;
+			RuntimeIdentifiers = runtimeIdentifiers;
+			IsHotRestartBuild = isHotRestartBuild;
+			HotRestartOutputDir = hotRestartOutputDir;
+			HotRestartAppBundlePath = hotRestartAppBundlePath;
+		}
+
+		public byte [] GetFile (string appBundleRelativePath)
+		{
+			Assert.That (GetAppBundleFiles (), Does.Contain (appBundleRelativePath), "File does not exist in app bundle");
+			if (IsRemoteBuild) {
+				Console.WriteLine ($"Opening {ZippedAppBundlePath}");
+				using var zip = ZipFile.OpenRead (ZippedAppBundlePath);
+				var entry = zip.GetEntry (appBundleRelativePath.Replace (Path.DirectorySeparatorChar, '/'))!;
+				using var stream = entry.Open ();
+				using var memoryStream = new MemoryStream (stream.CanSeek ? (int) stream.Length : 4096);
+				stream.CopyTo (memoryStream);
+				return memoryStream.ToArray ();
+			} else {
+				return File.ReadAllBytes (Path.Combine (AppPath, appBundleRelativePath));
+			}
+		}
+
+		public IEnumerable<string> GetAppBundleFiles (bool merged = false)
+		{
+			if (IsRemoteBuild) {
+				return ZipHelpers.List (ZippedAppBundlePath);
+			} else {
+				var rv = new HashSet<string> ();
+
+				rv.UnionWith (GetAllFilesInDirectory (AppPath));
+
+				if (!IsHotRestartBuild)
+					return rv;
+
+				rv.UnionWith (GetAllFilesInDirectory (HotRestartOutputDir!, "*.content"));
+				rv.UnionWith (GetAllFilesInDirectory (HotRestartAppBundlePath!));
+				return rv;
+			}
+		}
+
+		static IEnumerable<string> GetAllFilesInDirectory (string? directory, string subdir = "")
+		{
+			if (string.IsNullOrEmpty (directory))
+				return Enumerable.Empty<string> ();
+
+			if (!string.IsNullOrEmpty (subdir)) {
+				var subdirs = Directory.GetDirectories (directory, subdir);
+				if (subdirs.Length != 1)
+					throw new InvalidOperationException ($"Found {subdirs.Length} (expected 1) subdirs for glob '{subdir}' in '{directory}': {string.Join (", ", subdirs)}");
+				directory = subdirs [0];
+			}
+
+			if (!Directory.Exists (directory))
+				return Array.Empty<string> ();
+
+			return Directory
+					.GetFileSystemEntries (directory, "*", SearchOption.AllDirectories)
+					.Select (v => v.Substring (directory.Length + 1));
+		}
+
+		public void DumpAppBundleContents ()
+		{
+			Console.WriteLine ($"App bundle info:");
+			Console.WriteLine ($"    IsRemoteBuild: {IsRemoteBuild}");
+			Console.WriteLine ($"    IsHotRestartBuild: {IsHotRestartBuild}");
+			Console.WriteLine ($"    AppPath: {AppPath}");
+			Console.WriteLine ($"    Platform: {Platform}");
+			Console.WriteLine ($"    Configuration: {Configuration}");
+			Console.WriteLine ($"    RuntimeIdentifiers: {RuntimeIdentifiers}");
+
+			var appBundleContents = GetAppBundleFiles ().OrderBy (v => v).ToArray ();
+			Console.WriteLine ($"    App bundle files ({appBundleContents.Length}):");
+			foreach (var abc in appBundleContents)
+				Console.WriteLine ($"        {abc}");
+
+			if (!string.IsNullOrEmpty (HotRestartOutputDir)) {
+				if (!Directory.Exists (HotRestartOutputDir)) {
+					Console.WriteLine ($"    HotRestartOutputDir: {HotRestartOutputDir} (does not exist)");
+				} else {
+					var entries = Directory.GetFileSystemEntries (HotRestartOutputDir, "*", SearchOption.AllDirectories);
+					Console.WriteLine ($"    HotRestartOutputDir: {HotRestartOutputDir} ({entries}):");
+					foreach (var e in entries.OrderBy (v => v)) Console.WriteLine ($"        {e}");
+				}
+			} else {
+				Console.WriteLine ($"    HotRestartOutputDir: {HotRestartOutputDir} (not set)");
+			}
+
+			if (!string.IsNullOrEmpty (HotRestartAppBundlePath)) {
+				if (!Directory.Exists (HotRestartAppBundlePath)) {
+					Console.WriteLine ($"    HotRestartAppBundlePath: {HotRestartAppBundlePath} (does not exist)");
+				} else {
+					var entries = Directory.GetFileSystemEntries (HotRestartAppBundlePath, "*", SearchOption.AllDirectories);
+					Console.WriteLine ($"    HotRestartAppBundlePath: {HotRestartAppBundlePath} ({entries}):");
+					foreach (var e in entries.OrderBy (v => v)) Console.WriteLine ($"        {e}");
+				}
+			} else {
+				Console.WriteLine ($"    HotRestartAppBundlePath: {HotRestartAppBundlePath} (not set)");
+			}
 		}
 	}
 }

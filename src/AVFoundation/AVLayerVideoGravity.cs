@@ -25,8 +25,6 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-#if !WATCH
-
 using System;
 
 using Foundation;
@@ -37,10 +35,15 @@ using ObjCRuntime;
 
 namespace AVFoundation {
 	// Convenience enum for native strings - AVAnimation.h
+	/// <summary>An enumeration whose values specify how a video should resize itself to display within a layer's <see cref="CoreAnimation.CALayer.Bounds" />.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum AVLayerVideoGravity {
+		/// <summary>To be added.</summary>
 		ResizeAspect,
+		/// <summary>To be added.</summary>
 		ResizeAspectFill,
-		Resize
+		/// <summary>To be added.</summary>
+		Resize,
 	}
 
 	partial class AVPlayerLayer {
@@ -73,6 +76,9 @@ namespace AVFoundation {
 
 
 		// Should be VideoGravity only but previous binding was wrong
+		/// <summary>Gets or sets a value that controls how the visual content is displayed within the bounds of the layer.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public AVLayerVideoGravity VideoGravity {
 			set {
 				WeakVideoGravity = EnumToKey (value);
@@ -86,6 +92,9 @@ namespace AVFoundation {
 #if !TVOS
 	partial class AVCaptureVideoPreviewLayer {
 		// Should be VideoGravity only but previous binding was wrong
+		/// <summary>Gets or sets how the video is displayed within the layer's <see cref="CoreAnimation.CALayer.Bounds" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public AVLayerVideoGravity VideoGravity {
 			set {
 				WeakVideoGravity = AVPlayerLayer.EnumToKey (value);
@@ -98,6 +107,9 @@ namespace AVFoundation {
 #endif
 
 	partial class AVPlayer {
+		/// <summary>The technique used to modify the video playback aspect ratio during external playback.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public AVLayerVideoGravity? ExternalPlaybackVideoGravity {
 			set {
 				WeakExternalPlaybackVideoGravity = AVPlayerLayer.EnumToKey (value);
@@ -111,5 +123,3 @@ namespace AVFoundation {
 		}
 	}
 }
-
-#endif

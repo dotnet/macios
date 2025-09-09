@@ -1,6 +1,8 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.Macios.Generator.Context;
+using Microsoft.Macios.Generator.DataModel;
 
 namespace Microsoft.Macios.Generator.Emitters;
 
@@ -8,16 +10,15 @@ namespace Microsoft.Macios.Generator.Emitters;
 /// Returns the emitter that is related to the provided declaration type.
 /// </summary>
 static class EmitterFactory {
-	public static bool TryCreate<T> (ISymbolBindingContext<T> context, TabbedStringBuilder builder,
-		[NotNullWhen (true)] out ICodeEmitter? emitter)
-		where T : BaseTypeDeclarationSyntax
-	{
-		emitter = context switch {
-			ClassBindingContext classContext => new ClassEmitter (classContext, builder),
-			ISymbolBindingContext<EnumDeclarationSyntax> enumContext => new EnumEmitter (enumContext, builder),
-			ISymbolBindingContext<InterfaceDeclarationSyntax> interfaceContext => new InterfaceEmitter (interfaceContext, builder),
-			_ => null
-		};
-		return emitter is not null;
-	}
+
+	static readonly Dictionary<BindingType, ICodeEmitter> emitters = new () {
+		{ BindingType.Class, new ClassEmitter () },
+		{ BindingType.SmartEnum, new EnumEmitter () },
+		{ BindingType.Protocol, new ProtocolAndModelEmitter () },
+		{ BindingType.Category, new CategoryEmitter () },
+		{ BindingType.StrongDictionary, new StrongDictionaryEmitter () },
+		{ BindingType.StrongDictionaryKeys, new StrongDictionaryKeysEmitter () }
+	};
+	public static bool TryCreate (Binding changes, [NotNullWhen (true)] out ICodeEmitter? emitter)
+		=> emitters.TryGetValue (changes.BindingType, out emitter);
 }

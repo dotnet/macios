@@ -39,10 +39,12 @@ namespace AppKit {
 	public partial class NSSlider {
 		NSActionDispatcher? dispatcher;
 
-#if NET
+		/// <param name="action">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
-#endif
 		public static NSSlider FromTarget (Action action)
 		{
 			var dispatcher = new NSActionDispatcher (action);
@@ -51,10 +53,15 @@ namespace AppKit {
 			return control;
 		}
 
-#if NET
+		/// <param name="value">To be added.</param>
+		///         <param name="minValue">To be added.</param>
+		///         <param name="maxValue">To be added.</param>
+		///         <param name="action">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
-#endif
 		public static NSSlider FromValue (double value, double minValue, double maxValue, Action action)
 		{
 			var dispatcher = new NSActionDispatcher (action);

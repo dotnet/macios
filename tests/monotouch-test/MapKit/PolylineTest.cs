@@ -1,6 +1,6 @@
 // Copyright 2011, 2013 Xamarin Inc. All rights reserved
 
-#if !__TVOS__ && !__WATCHOS__
+#if !__TVOS__
 
 using System;
 using System.Drawing;
@@ -86,11 +86,7 @@ namespace MonoTouchFixtures.MapKit {
 			try {
 				pl.Coordinate = new CLLocationCoordinate2D (10, 20);
 			}
-#if NET
 			catch (ObjCException mte) {
-#else
-			catch (MonoTouchException mte) {
-#endif
 				Assert.True (mte.Message.Contains ("unrecognized selector sent to instance"));
 			}
 			catch {
@@ -101,4 +97,4 @@ namespace MonoTouchFixtures.MapKit {
 	}
 }
 
-#endif // !__TVOS__ && !__WATCHOS__
+#endif // !__TVOS__

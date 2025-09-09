@@ -174,6 +174,10 @@ while ! test -z $1; do
 			IGNORE_SIMULATORS=1
 			shift
 			;;
+		--ignore-old-simulators)
+			IGNORE_OLD_SIMULATORS=1
+			shift
+			;;
 		--enforce-simulators)
 			unset IGNORE_SIMULATORS
 			unset OPTIONAL_SIMULATORS
@@ -300,10 +304,13 @@ function install_mono () {
 
 function xcodebuild_download_selected_platforms ()
 {
-	log "Executing '$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild -downloadPlatform iOS' $1"
-	"$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild" -downloadPlatform iOS
-	log "Executing '$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild -downloadPlatform tvOS' $1"
-	"$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild" -downloadPlatform tvOS
+	IOS_NUGET_OS_VERSION=$(grep '^IOS_NUGET_OS_VERSION=' Make.versions | sed 's/.*=//')
+	log "Executing '$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild -downloadPlatform iOS -buildVersion $IOS_NUGET_OS_VERSION' $1"
+	"$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild" -downloadPlatform iOS -buildVersion $IOS_NUGET_OS_VERSION
+
+	TVOS_NUGET_OS_VERSION=$(grep '^TVOS_NUGET_OS_VERSION=' Make.versions | sed 's/.*=//')
+	log "Executing '$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild -downloadPlatform tvOS -buildVersion $TVOS_NUGET_OS_VERSION' $1"
+	"$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild" -downloadPlatform tvOS -buildVersion $TVOS_NUGET_OS_VERSION
 }
 
 function download_xcode_platforms ()
@@ -508,12 +515,19 @@ function install_coresimulator ()
 		CURRENT_CORESIMULATOR_VERSION=$(otool -L $CURRENT_CORESIMULATOR_PATH | grep "$CURRENT_CORESIMULATOR_PATH.*current version" | sed -e 's/.*current version//' -e 's/)//' -e 's/[[:space:]]//g' | uniq)
 	fi
 
-	# Either version may be composed of either 2 or 3 numbers.
+	# Either version may be composed of either 1, 2 or 3 numbers.
 	# We only care about the first two, so strip off the 3rd number if it exists.
 	# shellcheck disable=SC2001
 	CURRENT_CORESIMULATOR_VERSION=$(echo "$CURRENT_CORESIMULATOR_VERSION" | sed 's/\([0-9]*[.][0-9]*\).*/\1/')
 	# shellcheck disable=SC2001
 	TARGET_CORESIMULATOR_VERSION=$(echo "$TARGET_CORESIMULATOR_VERSION" | sed 's/\([0-9]*[.][0-9]*\).*/\1/')
+	# Add a .0 if we only got one number
+	if [[ "${CURRENT_CORESIMULATOR_VERSION/./}" == "${CURRENT_CORESIMULATOR_VERSION}" ]]; then
+		CURRENT_CORESIMULATOR_VERSION=$CURRENT_CORESIMULATOR_VERSION.0
+	fi
+	if [[ "${TARGET_CORESIMULATOR_VERSION/./}" == "${TARGET_CORESIMULATOR_VERSION}" ]]; then
+		TARGET_CORESIMULATOR_VERSION=$TARGET_CORESIMULATOR_VERSION.0
+	fi
 
 	# Compare versions to see if we got what we need
 	if [[ x"$TARGET_CORESIMULATOR_VERSION" == x"$CURRENT_CORESIMULATOR_VERSION" ]]; then
@@ -582,14 +596,13 @@ function check_xcode () {
 	check_specific_xcode
 	install_coresimulator
 
-	local IOS_SDK_VERSION MACOS_SDK_VERSION WATCH_SDK_VERSION TVOS_SDK_VERSION
+	local IOS_SDK_VERSION MACOS_SDK_VERSION TVOS_SDK_VERSION
 	local XCODE_DEVELOPER_ROOT=`grep ^XCODE_DEVELOPER_ROOT= Make.config | sed 's/.*=//'`
 	IOS_SDK_VERSION=$(grep ^IOS_NUGET_OS_VERSION= Make.versions | sed -e 's/.*=//')
 	MACOS_SDK_VERSION=$(grep ^MACOS_NUGET_OS_VERSION= Make.versions | sed -e 's/.*=//')
-	WATCH_SDK_VERSION=$(grep ^WATCHOS_NUGET_OS_VERSION= Make.versions | sed -e 's/.*=//')
 	TVOS_SDK_VERSION=$(grep ^TVOS_NUGET_OS_VERSION= Make.versions | sed -e 's/.*=//')
 
-	download_xcode_platforms "$XCODE_DEVELOPER_ROOT" "$TVOS_SDK_VERSION" "$WATCH_SDK_VERSION"
+	download_xcode_platforms "$XCODE_DEVELOPER_ROOT" "$TVOS_SDK_VERSION"
 
 	local D=$XCODE_DEVELOPER_ROOT/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator${IOS_SDK_VERSION}.sdk
 	if test ! -d $D -a -z "$FAIL"; then
@@ -604,11 +617,6 @@ function check_xcode () {
 	local D=$XCODE_DEVELOPER_ROOT/Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS${TVOS_SDK_VERSION}.sdk
 	if test ! -d $D -a -z "$FAIL"; then
 		fail "The directory $D does not exist. If you've updated the Xcode location it means you also need to update TVOS_SDK_VERSION in Make.config."
-	fi
-
-	local D=$XCODE_DEVELOPER_ROOT/Platforms/WatchOS.platform/Developer/SDKs/WatchOS${WATCH_SDK_VERSION}.sdk
-	if test ! -d $D -a -z "$FAIL"; then
-		fail "The directory $D does not exist. If you've updated the Xcode location it means you also need to update WATCH_SDK_VERSION in Make.config."
 	fi
 }
 
@@ -907,14 +915,12 @@ function check_old_simulators ()
 
 	local EXTRA_SIMULATORS
 	local XCODE
+	local XCODE_DEVELOPER_ROOT
 
-	EXTRA_SIMULATORS=$(grep ^EXTRA_SIMULATORS= Make.config | sed 's/.*=//')
-	XCODE=$(dirname "$(dirname "$(grep ^XCODE_DEVELOPER_ROOT= Make.config | sed 's/.*=//')")")
+	XCODE_DEVELOPER_ROOT=$(grep XCODE$1_DEVELOPER_ROOT= Make.config | sed 's/.*=//')
 
-	if ! make -C tools/siminstaller >/dev/null; then
-		warn "Can't check if simulators are available, because siminstaller failed to build."
-		return
-	fi
+	IFS=' ' read -r -a EXTRA_SIMULATORS <<< "$(grep ^EXTRA_SIMULATORS= Make.config | sed 's/.*=//')"
+	XCODE=$(dirname "$(dirname "$XCODE_DEVELOPER_ROOT")")
 
 	if ! test -d "$XCODE"; then
 		# can't test unless Xcode is present
@@ -922,38 +928,39 @@ function check_old_simulators ()
 		return
 	fi
 
-	IFS=', ' read -r -a SIMS <<< "$EXTRA_SIMULATORS"
-	arraylength=${#SIMS[@]}
-	INSTALL_SIMULATORS=
-	for (( i=1; i<arraylength+1; i++ ));	do
-		INSTALL_SIMULATORS="$INSTALL_SIMULATORS --install=${SIMS[$i-1]}"
-	done
+	SD_TMP_DIR=$(mktemp -d /tmp/system-dependencies.XXXXXX)
+	trap 'rm -rf -- "$SD_TMP_DIR"' EXIT
+	TMP_FILE=$SD_TMP_DIR/simulator-runtimes.json
+	xcrun simctl list runtimes --json --json-output "$TMP_FILE"
 
-	if ! FAILED_SIMULATORS=$(make -C tools/siminstaller only-check INSTALL_SIMULATORS="$INSTALL_SIMULATORS" 2>/dev/null); then
-		local action=warn
-		if test -z $OPTIONAL_OLD_SIMULATORS; then
-			action=fail
-		fi
-		if [[ "$FAILED_SIMULATORS" =~ "Unknown simulators:" ]]; then
-			$action "${FAILED_SIMULATORS}"
-			$action "    If you just updated the Xcode version, it's possible Apple stopped shipping these simulators with the new version of Xcode."
-			$action "    If that's the case, you can list the available simulators with ${COLOR_MAGENTA}make -C tools/siminstaller print-simulators --xcode $XCODE${COLOR_RESET},"
-			$action "    and then update the ${COLOR_MAGENTA}MIN_<OS>_SIMULATOR_VERSION${COLOR_RESET} and ${COLOR_MAGENTA}EXTRA_SIMULATORS${COLOR_RESET} variables in Make.config to the earliest available simulators."
-			$action "    Another possibility is that Apple is not shipping any simulators (yet?) for the new version of Xcode (if the previous list shows no simulators)."
-		else
-			if ! test -z $PROVISION_OLD_SIMULATORS; then
-				if ! make -C tools/siminstaller install-simulators INSTALL_SIMULATORS="$INSTALL_SIMULATORS"; then
-					$action "Failed to install extra simulators."
-				else
-					ok "Extra simulators installed successfully: '${FAILED_SIMULATORS//$'\n'/', '}'"
-				fi
-			else
-				$action "The simulators '${FAILED_SIMULATORS//$'\n'/', '}' are not installed or need to be upgraded."
-			fi
-		fi
-	else
-		ok "Found all extra simulators: ${EXTRA_SIMULATORS// /, }"
+	local action=warn
+	if test -z $OPTIONAL_OLD_SIMULATORS; then
+		action=fail
 	fi
+
+	local os
+	local versionName
+	local version
+
+	for spec in "${EXTRA_SIMULATORS[@]}"; do
+		os=${spec/:*/}
+		versionName=${spec/*:/}
+		version=$(grep "^${versionName}=" Make.config | sed 's/.*=//')
+
+		OS_TMP_FILE=$SD_TMP_DIR/$os-$version.json
+		jq ".runtimes[] | select(.platform == \"$os\" and .version == \"$version\" and .isAvailable == true and .isInternal == false) | [ { \"version\":.version, \"name\":.name, \"identifier\":.identifier } ]" < "$TMP_FILE" > "$OS_TMP_FILE"
+		#echo $OS_TMP_FILE
+		LENGTH=$(jq length < "$OS_TMP_FILE")
+		if [[ "$LENGTH" != "" && "$LENGTH" -gt 0 ]]; then
+			ok "Found the $os $version simulator."
+		elif test -z "$PROVISION_OLD_SIMULATORS"; then
+			$action "The $os $version simulator is not installed. Execute ${COLOR_MAGENTA}xcodebuild -downloadPlatform $os -buildVersion $version${COLOR_RESET} to install."
+		else
+			warn "The $os $version simulator is not installed. Now executing ${COLOR_BLUE}"$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild" -downloadPlatform $os -buildVersion $version${COLOR_RESET} to install..."
+			"$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild" -downloadPlatform "$os" -buildVersion "$version"
+			warn "Successfully executed ${COLOR_BLUE}"$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild" -downloadPlatform $os -buildVersion $version${COLOR_RESET}."
+		fi
+	done
 }
 
 echo "Checking system..."
@@ -970,8 +977,12 @@ check_7z
 check_objective_sharpie
 check_old_simulators
 if test -z "$IGNORE_DOTNET"; then
-	ok "Installed .NET SDKs:"
-	(IFS=$'\n'; for i in $(/usr/local/share/dotnet/dotnet --list-sdks); do log "$i"; done)
+	if test -f /usr/local/share/dotnet/dotnet; then
+		ok "Installed .NET SDKs:"
+		(IFS=$'\n'; for i in $(/usr/local/share/dotnet/dotnet --list-sdks); do log "$i"; done)
+	else
+		warn ".NET is not installed"
+	fi
 fi
 
 if test -z $FAIL; then

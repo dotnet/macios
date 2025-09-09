@@ -137,26 +137,26 @@
 			HasCoreCLRBridgeFunction = true,
 		},
 
-		new Export ("uint32_t", "mono_gchandle_new",
+		new Export ("GCHandle", "mono_gchandle_new_v2",
 			"MonoObject *", "obj",
 			"mono_bool", "pinned"
 		) {
 			XamarinRuntime = RuntimeMode.MonoVM,
 		},
 
-		new Export ("MonoObject *", "mono_gchandle_get_target",
-			"uint32_t", "gchandle"
+		new Export ("MonoObject *", "mono_gchandle_get_target_v2",
+			"GCHandle", "gchandle"
 		) {
 			XamarinRuntime = RuntimeMode.MonoVM,
 		},
 
-		new Export ("void", "mono_gchandle_free",
-			"uint32_t", "gchandle"
+		new Export ("void", "mono_gchandle_free_v2",
+			"GCHandle", "gchandle"
 		) {
 			XamarinRuntime = RuntimeMode.MonoVM,
 		},
 
-		new Export ("uint32_t", "mono_gchandle_new_weakref",
+		new Export ("GCHandle", "mono_gchandle_new_weakref_v2",
 			"MonoObject *", "obj",
 			"mono_bool", "track_resurrection"
 		) {
@@ -254,14 +254,6 @@
 			"MonoProfileFunc", "shutdown_callback"
 		) {
 			XamarinRuntime = RuntimeMode.MonoVM,
-		},
-
-		new Export ("void", "mono_profiler_install_thread",
-			"MonoProfileThreadFunc", "start",
-			"MonoProfileThreadFunc", "end"
-		) {
-			XamarinRuntime = RuntimeMode.MonoVM,
-			Mode = DotNetMode.OnlyLegacy,
 		},
 
 		new Export ("void", "mono_profiler_install_gc",
@@ -404,13 +396,6 @@
 			XamarinRuntime = RuntimeMode.MonoVM,
 		},
 
-		new Export (true, "void", "mono_dangerous_add_raw_internal_call",
-			"const char *", "name",
-			"const void *", "method"
-		) {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
-
 		new Export ("MonoMethodSignature *", "mono_method_signature",
 			"MonoMethod *", "method"
 		) {
@@ -421,16 +406,6 @@
 			"MonoMethod *", "method"
 		) {
 			HasCoreCLRBridgeFunction = true,
-		},
-
-		new Export ("void", "mono_dllmap_insert",
-			"MonoImage *", "assembly",
-			"const char *", "dll",
-			"const char *", "func",
-			"const char *", "tdll",
-			"const char *", "tfunc"
-		) {
-			Mode = DotNetMode.OnlyLegacy,
 		},
 
 		#endregion
@@ -459,14 +434,6 @@
 
 		new Export ("MonoDomain *", "mono_get_root_domain") {
 			XamarinRuntime = RuntimeMode.MonoVM,
-		},
-
-		new Export ("void", "mono_domain_set_config", 
-			"MonoDomain *", "domain",
-			"const char *", "base_dir",
-			"const char *", "config_file_name"
-		) {
-			Mode = DotNetMode.OnlyLegacy,
 		},
 
 		#endregion
@@ -636,15 +603,14 @@
 			XamarinRuntime = RuntimeMode.MonoVM,
 		},
 
-		new Export ("MonoDomain *", "mono_jit_init_version",
-			"const char *", "root_domain_name",
-			"const char *", "runtime_version"
+		new Export ("MonoDomain *", "mono_jit_init",
+			"const char *", "file"
 		) {
 			XamarinRuntime = RuntimeMode.MonoVM,
 		},
 
-		new Export ("MonoDomain *", "mono_jit_init",
-			"const char *", "file"
+		new Export ("MonoDomain *", "mono_jit_cleanup",
+			"MonoDomain *", "domain"
 		) {
 			XamarinRuntime = RuntimeMode.MonoVM,
 		},
@@ -793,24 +759,6 @@
 		},
 		#endregion
 
-		#region metadata/threads-types.h
-
-		new Export (true, "void *", "mono_threads_attach_coop",
-			"MonoDomain *", "domain",
-			"gpointer*", "dummy"
-		) {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
-
-		new Export (true, "void *", "mono_threads_detach_coop",
-			"gpointer", "cookie",
-			"gpointer*", "dummy"
-		) {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
-
-		#endregion
-
 		#region metadata/marshal.h
 
 		new Export (true, "void", "mono_install_ftnptr_eh_callback",
@@ -839,6 +787,12 @@
 			XamarinRuntime = RuntimeMode.MonoVM,
 		},
 
+		new Export ("void", "mono_debugger_agent_unhandled_exception",
+			"MonoException *", "e"
+		) {
+			XamarinRuntime = RuntimeMode.MonoVM,
+		},
+
 		#endregion
 
 		#region mini/mono-private-unstable.
@@ -848,7 +802,6 @@
 			"const char **", "propertyKeys",
 			"const char **", "propertyValues"
 		) {
-			Mode = DotNetMode.OnlyDotNet,
 		},
 
 		new Export ("int", "monovm_runtimeconfig_initialize",
@@ -856,7 +809,6 @@
 			"MonovmRuntimeConfigArgumentsCleanup", "cleanup_fn",
 			"void *", "user_data"
 		) {
-			Mode = DotNetMode.OnlyDotNet,
 		},
 
 		#endregion
@@ -866,12 +818,6 @@
 	{
 		public string Type;
 		public string Name;
-	}
-
-	enum DotNetMode {
-		Both = 0,
-		OnlyDotNet = 1,
-		OnlyLegacy = 2,
 	}
 
 	enum RuntimeMode {
@@ -887,36 +833,12 @@
 		public string AlternativeExpression;
 		public List<Arg> Arguments;
 		public bool Optional;
-		public DotNetMode Mode;
 		public RuntimeMode XamarinRuntime;
 		public bool HasCoreCLRBridgeFunction;
 
 		public Export (string returnType, string entryPoint, params string [] arguments)
 			: this (false, returnType, entryPoint, arguments)
 		{
-		}
-
-		public string DotNetIf {
-			get {
-				switch (Mode) {
-				case DotNetMode.OnlyLegacy:
-					return "#if !DOTNET\n";
-				case DotNetMode.OnlyDotNet:
-					return "#if DOTNET\n";
-				}
-				return string.Empty;
-			}
-		}
-
-		public string DotNetEndIf {
-			get {
-				switch (Mode) {
-				case DotNetMode.OnlyLegacy:
-				case DotNetMode.OnlyDotNet:
-					return "#endif\n";
-				}
-				return string.Empty;
-			}
 		}
 
 		public string RuntimeIf {

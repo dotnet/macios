@@ -8,12 +8,11 @@ using Microsoft.Build.Utilities;
 using Xamarin.Localization.MSBuild;
 using Xamarin.Messaging.Build.Client;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Xamarin.MacDev.Tasks {
-	public class CoreMLCompiler : XamarinTask, ICancelableTask {
-		string toolExe;
+	public class CoreMLCompiler : XamarinTask, ICancelableTask, IHasProjectDir, IHasResourcePrefix {
+		string? toolExe;
 
 		public string ToolName { get { return "coremlc"; } }
 
@@ -22,18 +21,18 @@ namespace Xamarin.MacDev.Tasks {
 		public bool EnableOnDemandResources { get; set; }
 
 		[Required]
-		public string IntermediateOutputPath { get; set; }
+		public string IntermediateOutputPath { get; set; } = "";
 
 		[Required]
-		public ITaskItem [] Models { get; set; }
+		public ITaskItem [] Models { get; set; } = [];
 
 		[Required]
-		public string ProjectDir { get; set; }
+		public string ProjectDir { get; set; } = "";
 
 		[Required]
-		public string ResourcePrefix { get; set; }
+		public string ResourcePrefix { get; set; } = "";
 
-		string sdkDevPath;
+		string sdkDevPath = "";
 		public string SdkDevPath {
 			get { return string.IsNullOrEmpty (sdkDevPath) ? "/" : sdkDevPath; }
 			set { sdkDevPath = value; }
@@ -44,17 +43,17 @@ namespace Xamarin.MacDev.Tasks {
 			set { toolExe = value; }
 		}
 
-		public string ToolPath { get; set; }
+		public string ToolPath { get; set; } = "";
 
 		#endregion
 
 		#region Outputs
 
 		[Output]
-		public ITaskItem [] BundleResources { get; set; }
+		public ITaskItem [] BundleResources { get; set; } = [];
 
 		[Output]
-		public ITaskItem [] PartialAppManifests { get; set; }
+		public ITaskItem [] PartialAppManifests { get; set; } = [];
 
 		#endregion
 
@@ -86,14 +85,14 @@ namespace Xamarin.MacDev.Tasks {
 
 			var rv = ExecuteAsync (fileName, args, sdkDevPath, mergeOutput: false).Result;
 			var exitCode = rv.ExitCode;
-			var output = rv.StandardOutput.ToString ();
+			var output = rv.StandardOutput!.ToString ();
 			File.WriteAllText (log, output);
 
 			if (exitCode != 0) {
 				// Note: coremlc exited with an error. Dump everything we can to help the user
 				// diagnose the issue and then delete the log file so that rebuilding tries
 				// again.
-				var errors = rv.StandardError.ToString ();
+				var errors = rv.StandardError!.ToString ();
 				if (errors.Length > 0)
 					Log.LogError (null, null, null, item.ItemSpec, 0, 0, 0, 0, "{0}", errors);
 
@@ -128,8 +127,8 @@ namespace Xamarin.MacDev.Tasks {
 		IEnumerable<ITaskItem> GetCompiledOutput (string baseOutputDir, IDictionary<string, IDictionary> mapping)
 		{
 			foreach (var path in Directory.EnumerateFiles (baseOutputDir, "*.*", SearchOption.AllDirectories)) {
-				IDictionary metadata = null;
-				string rpath = null;
+				IDictionary? metadata = null;
+				string? rpath = null;
 
 				foreach (var kvp in mapping) {
 					if (path.StartsWith (kvp.Key, StringComparison.Ordinal)) {
@@ -162,16 +161,16 @@ namespace Xamarin.MacDev.Tasks {
 				return new TaskRunner (SessionId, BuildEngine4).RunAsync (this).Result;
 
 			var coremlcOutputDir = Path.Combine (IntermediateOutputPath, "coremlc");
-			var prefixes = BundleResource.SplitResourcePrefixes (ResourcePrefix);
 			var mapping = new Dictionary<string, IDictionary> ();
 			var bundleResources = new List<ITaskItem> ();
 			var partialPlists = new List<ITaskItem> ();
+			var models = CollectBundleResources.ComputeLogicalNameAndDetectDuplicates (this, Models, ProjectDir, ResourcePrefix, "CoreMLModel");
 
-			if (Models.Length > 0) {
+			if (models.Length > 0) {
 				Directory.CreateDirectory (coremlcOutputDir);
 
-				foreach (var model in Models) {
-					var logicalName = BundleResource.GetLogicalName (ProjectDir, prefixes, model, !string.IsNullOrEmpty (SessionId));
+				foreach (var model in models) {
+					var logicalName = model.GetMetadata ("LogicalName");
 					var bundleName = GetPathWithoutExtension (logicalName) + ".mlmodelc";
 					var outputPath = Path.Combine (coremlcOutputDir, bundleName);
 					var outputDir = Path.GetDirectoryName (outputPath);

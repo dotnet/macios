@@ -259,7 +259,6 @@ namespace Xamarin {
 			case MTouchAction.None:
 				break;
 			case MTouchAction.BuildDev:
-				MTouch.AssertDeviceAvailable ();
 				if (AppPath is null)
 					throw new Exception ("No AppPath specified.");
 				sb.Add ("--dev");

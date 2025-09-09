@@ -13,30 +13,14 @@ using Bindings.Test;
 
 using NUnit.Framework;
 
-#if !NET && !__MACOS__
-using ObjCException = Foundation.MonoTouchException;
-#endif
-
 namespace MonoTouchFixtures.ObjCRuntime {
 
 	[TestFixture]
 	[Preserve (AllMembers = true)]
 	public class ExceptionsTest {
 
-#if NET
 		MarshalObjectiveCExceptionMode defaultObjectiveCExceptionMode = MarshalObjectiveCExceptionMode.ThrowManagedException;
 		MarshalManagedExceptionMode defaultManagedExceptionMode = MarshalManagedExceptionMode.Default;
-#elif __WATCHOS__
-		MarshalObjectiveCExceptionMode defaultObjectiveCExceptionMode = MarshalObjectiveCExceptionMode.ThrowManagedException;
-		MarshalManagedExceptionMode defaultManagedExceptionMode = MarshalManagedExceptionMode.Default;
-#else
-#if (__MACOS__ || __MACCATALYST__) && DEBUG
-		MarshalObjectiveCExceptionMode defaultObjectiveCExceptionMode = MarshalObjectiveCExceptionMode.ThrowManagedException;
-#else
-		MarshalObjectiveCExceptionMode defaultObjectiveCExceptionMode = MarshalObjectiveCExceptionMode.UnwindManagedCode;
-#endif
-		MarshalManagedExceptionMode defaultManagedExceptionMode = MarshalManagedExceptionMode.Default;
-#endif
 
 		static List<MarshalObjectiveCExceptionEventArgs> objcEventArgs;
 		static List<MarshalManagedExceptionEventArgs> managedEventArgs;
@@ -84,16 +68,16 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			Runtime.MarshalObjectiveCException -= ObjExceptionHandler;
 		}
 
-		// Simulator/desktop only (except for watchOS, where it works everywhere)
+		// Simulator/desktop only
 		[Test]
 		public void ObjCException ()
 		{
-#if !__WATCHOS__ && !__MACOS__ && !__MACCATALYST__
+#if !__MACOS__ && !__MACCATALYST__
 			if (Runtime.Arch == Arch.DEVICE)
 				Assert.Ignore ("This test requires wrapper functions, which are not enabled for monotouch-test on device.");
 #endif
 
-#if !DEBUG && !__WATCHOS__
+#if !DEBUG
 			Assert.Ignore ("This test only works in debug mode in the simulator.");
 #endif
 
@@ -130,21 +114,19 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			}
 		}
 
-		// Simulator/desktop only test (except for watchOS, where it works everywhere)
+		// Simulator/desktop only test
 		[Test]
 		public void ManagedExceptionPassthrough ()
 		{
 			Exception thrownException = null;
 
-#if !__WATCHOS__ && !__MACOS__
+#if !__MACOS__
 			TestRuntime.AssertNotDevice ("This test requires wrapper functions, which are not enabled for monotouch-test on device.");
 #endif
 
-#if !DEBUG && !__WATCHOS__
+#if !DEBUG
 			Assert.Ignore ("This test only works in debug mode in the simulator.");
 #endif
-
-			TestRuntime.AssertNotARM64Desktop ("Exception handling doesn't work on ARM64 desktop: https://github.com/xamarin/xamarin-macios/issues/16264");
 
 			var hasDebugger = global::System.Diagnostics.Debugger.IsAttached;
 

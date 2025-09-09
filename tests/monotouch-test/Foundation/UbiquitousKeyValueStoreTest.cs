@@ -16,46 +16,39 @@ namespace MonoTouchFixtures.Foundation {
 	[TestFixture]
 	[Preserve (AllMembers = true)]
 	public class NSUbiquitousKeyValueStoreTest {
-#if !__WATCHOS__
-		// Looks like NSUbiquitousKeyValueStore doesn't work on watchOS:
-		// http://stackoverflow.com/questions/37412775/nsubiquitouskeyvaluestore-is-unavailable-watchos-2
-		// https://forums.developer.apple.com/thread/47564
 		[Test]
 		public void Indexer ()
 		{
 			using (var store = new NSUbiquitousKeyValueStore ()) {
 				using (var key = new NSString ("key")) {
 					using (var value = new NSString ("value")) {
-						store [key] = value;
-#if __TVOS__
-						// broken on appletv devices running tvOS 14, test will fail when fixed
-						if ((Runtime.Arch == Arch.DEVICE) && TestRuntime.CheckXcodeVersion (12, 0))
-							Assert.Null (store [key], "key 1");
-						else
-#elif __MACCATALYST__ || __MACOS__
-						if (TestRuntime.CheckXcodeVersion (13, 0))
-							Assert.Null (store [key], "key 1");
-						else
+						var expectNull = false;
+#if __MACOS__ || __MACCATALYST__
+						// We don't build with the required entitlement (com.apple.developer.ubiquity-kvstore-identifier)
+						// for this to work on desktop.
+						expectNull = true;
+#elif __TVOS__ || __IOS__
+						// On device we don't build with the required entitlement (com.apple.developer.ubiquity-kvstore-identifier),
+						// so we get back a null value.
+						expectNull = TestRuntime.IsDevice;
 #endif
-						Assert.AreEqual (value, store [key], "key 1");
+
+						store [key] = value;
+						if (expectNull) {
+							Assert.Null (store [key], "key 1");
+						} else {
+							Assert.AreEqual (value, store [key], "key 1");
+						}
 
 						store [(string) key] = value;
-#if __TVOS__
-						// broken on appletv devices running tvOS 14, test will fail when fixed
-						if ((Runtime.Arch == Arch.DEVICE) && TestRuntime.CheckXcodeVersion (12, 0))
-							Assert.Null (store [(string) key], "key 2");
-						else
-#elif __MACCATALYST__ || __MACOS__
-						if (TestRuntime.CheckXcodeVersion (13, 0))
-							Assert.Null (store [(string) key], "key 2");
-						else
-#endif
-						Assert.AreEqual (value, store [(string) key], "key 2");
+						if (expectNull) {
+							Assert.Null (store [key], "key 2");
+						} else {
+							Assert.AreEqual (value, store [key], "key 2");
+						}
 					}
-
 				}
 			}
 		}
-#endif
 	}
 }

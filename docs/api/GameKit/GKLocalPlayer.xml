@@ -6,11 +6,11 @@
 	Represents the authenticated player for this device.   
       </para>
       <para>
-	On iOS 6.0 and newer, to authenticate the user, set the <see cref="P:GameKit.GKLocalPlayer.AuthenticateHandler" />
+	On iOS 6.0 and newer, to authenticate the user, set the <see cref="GameKit.GKLocalPlayer.AuthenticateHandler" />
 	property to a delegate that takes both a UIViewController and
 	an NSError parameters.  This will trigger the authentication
 	to take place.  For older versions of iOS, you should call the
-	<see cref="M:GameKit.GKLocalPlayer.Authenticate(System.Action{Foundation.NSError})" />
+	<see cref="GameKit.GKLocalPlayer.Authenticate(System.Action{Foundation.NSError})" />
 	method.  The difference is that with iOS 6.0 your callback
 	receives a UIViewController that you can present to your user,
 	while the old API would present the API and invoke your
@@ -18,7 +18,7 @@
 
       </para>
       <para>
-	GameKit will call <see cref="P:GameKit.GKLocalPlayer.AuthenticateHandler" />
+	GameKit will call <see cref="GameKit.GKLocalPlayer.AuthenticateHandler" />
 	on demand as your application transitions from background and
 	foreground.  It is important that you update any internal
 	state when authenticated as the user might have logged off,

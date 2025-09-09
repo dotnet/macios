@@ -38,25 +38,50 @@ using CoreFoundation;
 using Foundation;
 using ObjCRuntime;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace AddressBook {
 
-#if NET
-	[SupportedOSPlatform ("maccatalyst")]
+	/// <summary>
+	///       Base type for
+	///       <see cref="AddressBook.ABGroup" /> and
+	///       <see cref="AddressBook.ABPerson" />.
+	///     </summary>
+	///     <remarks>
+	///       <para>
+	///         Supported operations:
+	///       </para>
+	///       <list type="bullet">
+	///         <item>
+	///           <term>
+	///             Getting record information:
+	///             <see cref="AddressBook.ABRecord.Id" />,
+	///             <see cref="AddressBook.ABRecord.Type" />.
+	///           </term>
+	///         </item>
+	///       </list>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
-	[ObsoletedOSPlatform ("maccatalyst14.0", "Use the 'Contacts' API instead.")]
-	[ObsoletedOSPlatform ("ios9.0", "Use the 'Contacts' API instead.")]
-#else
-	[Deprecated (PlatformName.iOS, 9, 0, message: "Use the 'Contacts' API instead.")]
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
-	[Deprecated (PlatformName.MacCatalyst, 14, 0, message: "Use the 'Contacts' API instead.")]
-#endif
+	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
+	[SupportedOSPlatform ("maccatalyst")]
+	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
+	[UnsupportedOSPlatform ("macos")]
+	[UnsupportedOSPlatform ("tvos")]
 	public class ABRecord : NativeObject {
 
+		/// <summary>
+		///           An invalid value for a record id.
+		///         </summary>
+		///         <remarks>
+		///           <para>
+		///             <see cref="AddressBook.ABRecord.Id" /> returns this
+		///             value when the record hasn't been saved to the database.
+		///           </para>
+		///         </remarks>
 		public const int InvalidRecordId = -1;
+		/// <summary>
+		///           An invalid value for a property id.
+		///         </summary>
+		///         <remarks>
+		///         </remarks>
 		public const int InvalidPropertyId = -1;
 
 		[Preserve (Conditional = true)]
@@ -65,11 +90,20 @@ namespace AddressBook {
 		{
 		}
 
+		/// <param name="handle">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static ABRecord? FromHandle (IntPtr handle)
+		{
+			return FromHandle (handle, false);
+		}
+
+		internal static ABRecord? FromHandle (IntPtr handle, bool owns)
 		{
 			if (handle == IntPtr.Zero)
 				return null;
-			return FromHandle (handle, null, false);
+			return FromHandle (handle, null, owns);
 		}
 
 		internal static ABRecord FromHandle (IntPtr handle, ABAddressBook? addressbook, bool owns = true)
@@ -99,6 +133,7 @@ namespace AddressBook {
 			return rec;
 		}
 
+		/// <include file="../../docs/api/AddressBook/ABRecord.xml" path="/Documentation/Docs[@DocId='M:AddressBook.ABRecord.Dispose(System.Boolean)']/*" />
 		protected override void Dispose (bool disposing)
 		{
 			AddressBook = null;
@@ -111,18 +146,45 @@ namespace AddressBook {
 
 		[DllImport (Constants.AddressBookLibrary)]
 		extern static int ABRecordGetRecordID (IntPtr record);
+		/// <summary>Gets the unique ID of the record.</summary>
+		///         <value>
+		///           A <see cref="System.Int32" /> which is the unique ID of the record.
+		///         </value>
+		///         <remarks>
+		///           <para>
+		///             If the record hasn't been saved into the database, this is
+		///             <see cref="AddressBook.ABRecord.InvalidRecordId" />.
+		///           </para>
+		///         </remarks>
+		///         <altmember cref="AddressBook.ABAddressBook.Save" />
 		public int Id {
 			get { return ABRecordGetRecordID (Handle); }
 		}
 
 		[DllImport (Constants.AddressBookLibrary)]
 		extern static ABRecordType ABRecordGetRecordType (IntPtr record);
+		/// <summary>Gets the type of the record.</summary>
+		///         <value>
+		///           A <see cref="AddressBook.ABRecordType" /> containing
+		///           the type of the record.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public ABRecordType Type {
 			get { return ABRecordGetRecordType (Handle); }
 		}
 
 		[DllImport (Constants.AddressBookLibrary)]
 		extern static IntPtr ABRecordCopyCompositeName (IntPtr record);
+		/// <summary>
+		///           Returns the composite name of the <see cref="AddressBook.ABRecord" />.
+		///         </summary>
+		///         <returns>
+		///           A <see cref="System.String" /> containing
+		///           the composite name of the <see cref="AddressBook.ABRecord" />.
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public override string? ToString ()
 		{
 			return CFString.FromHandle (ABRecordCopyCompositeName (Handle));
@@ -144,6 +206,7 @@ namespace AddressBook {
 		internal void SetValue (int property, NSObject? value)
 		{
 			SetValue (property, value.GetHandle ());
+			GC.KeepAlive (value);
 		}
 
 		internal void SetValue (int property, string? value)

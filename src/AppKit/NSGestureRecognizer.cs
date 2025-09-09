@@ -23,6 +23,9 @@ namespace AppKit {
 		static Selector tsel = new Selector ("target");
 		internal static Selector ParametrizedSelector = new Selector ("target:");
 
+		/// <param name="action">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSGestureRecognizer (Action action) : this (tsel, new ParameterlessDispatch (action))
 		{
 		}
@@ -30,29 +33,35 @@ namespace AppKit {
 		//
 		// Signature swapped, this is only used so we can store the "token" in recognizers
 		//
+		/// <param name="sel">To be added.</param>
+		///         <param name="token">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSGestureRecognizer (Selector sel, Token token) : this (token, sel)
 		{
 			recognizers = token;
 			MarkDirty ();
 		}
 
-#if NET
+		/// <summary>To be added.</summary>
+		///     <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
-#endif
 		[Register ("__NSGestureRecognizerToken")]
 		[Preserve (Conditional = true)]
 		public class Token : NSObject {
+			/// <summary>To be added.</summary>
+			///         <remarks>To be added.</remarks>
 			public Token ()
 			{
 				IsDirectBinding = false;
 			}
 		}
 
-#if NET
+		/// <summary>To be added.</summary>
+		///     <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
-#endif
 		[Register ("__NSGestureRecognizerParameterlessToken")]
 		[Preserve (Conditional = true)]
 		public class ParameterlessDispatch : Token {
@@ -63,6 +72,8 @@ namespace AppKit {
 				this.action = action;
 			}
 
+			/// <summary>To be added.</summary>
+			///         <remarks>To be added.</remarks>
 			[Export ("target")]
 			[Preserve (Conditional = true)]
 			public void Activated ()
@@ -71,10 +82,10 @@ namespace AppKit {
 			}
 		}
 
-#if NET
+		/// <summary>To be added.</summary>
+		///     <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
-#endif
 		[Register ("__NSGestureRecognizerParametrizedToken")]
 		[Preserve (Conditional = true)]
 		public class ParametrizedDispatch : Token {
@@ -85,6 +96,9 @@ namespace AppKit {
 				this.action = action;
 			}
 
+			/// <param name="sender">To be added.</param>
+			///         <summary>To be added.</summary>
+			///         <remarks>To be added.</remarks>
 			[Export ("target:")]
 			[Preserve (Conditional = true)]
 			public void Activated (NSGestureRecognizer sender)
@@ -95,7 +109,13 @@ namespace AppKit {
 	}
 
 	public partial class NSClickGestureRecognizer : NSGestureRecognizer {
+		/// <param name="action">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSClickGestureRecognizer (Action action) : base (action) { }
+		/// <param name="action">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSClickGestureRecognizer (Action<NSClickGestureRecognizer> action) : base (NSGestureRecognizer.ParametrizedSelector, new Callback (action)) { }
 
 		[Register ("__NSClickGestureRecognizer")]
@@ -118,7 +138,13 @@ namespace AppKit {
 	}
 
 	public partial class NSMagnificationGestureRecognizer : NSGestureRecognizer {
+		/// <param name="action">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSMagnificationGestureRecognizer (Action action) : base (action) { }
+		/// <param name="action">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSMagnificationGestureRecognizer (Action<NSMagnificationGestureRecognizer> action) : base (NSGestureRecognizer.ParametrizedSelector, new Callback (action)) { }
 
 		[Register ("__NSMagnificationGestureRecognizer")]
@@ -141,7 +167,13 @@ namespace AppKit {
 	}
 
 	public partial class NSPanGestureRecognizer : NSGestureRecognizer {
+		/// <param name="action">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSPanGestureRecognizer (Action action) : base (action) { }
+		/// <param name="action">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSPanGestureRecognizer (Action<NSPanGestureRecognizer> action) : base (NSGestureRecognizer.ParametrizedSelector, new Callback (action)) { }
 
 		[Register ("__NSPanGestureRecognizer")]
@@ -164,7 +196,13 @@ namespace AppKit {
 	}
 
 	public partial class NSPressGestureRecognizer : NSGestureRecognizer {
+		/// <param name="action">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSPressGestureRecognizer (Action action) : base (action) { }
+		/// <param name="action">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSPressGestureRecognizer (Action<NSPressGestureRecognizer> action) : base (NSGestureRecognizer.ParametrizedSelector, new Callback (action)) { }
 
 		[Register ("__NSPressGestureRecognizer")]
@@ -187,7 +225,13 @@ namespace AppKit {
 	}
 
 	public partial class NSRotationGestureRecognizer : NSGestureRecognizer {
+		/// <param name="action">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSRotationGestureRecognizer (Action action) : base (action) { }
+		/// <param name="action">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSRotationGestureRecognizer (Action<NSRotationGestureRecognizer> action) : base (NSGestureRecognizer.ParametrizedSelector, new Callback (action)) { }
 
 		[Register ("__NSRotationGestureRecognizer")]

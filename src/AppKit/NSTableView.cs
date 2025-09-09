@@ -35,6 +35,9 @@ using Foundation;
 namespace AppKit {
 
 	public partial class NSTableView {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSTableViewSource? Source {
 			get {
 				var d = WeakDelegate as NSTableViewSource;
@@ -49,11 +52,19 @@ namespace AppKit {
 			}
 		}
 
+		/// <param name="row">To be added.</param>
+		/// <param name="byExtendingSelection">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		public void SelectRow (nint row, bool byExtendingSelection)
 		{
 			SelectRows (NSIndexSet.FromIndex (row), byExtendingSelection);
 		}
 
+		/// <param name="column">To be added.</param>
+		/// <param name="byExtendingSelection">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		public void SelectColumn (nint column, bool byExtendingSelection)
 		{
 			SelectColumns (NSIndexSet.FromIndex (column), byExtendingSelection);

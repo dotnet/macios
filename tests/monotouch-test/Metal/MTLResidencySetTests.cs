@@ -1,4 +1,3 @@
-#if !__WATCHOS__
 using System;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -41,15 +40,14 @@ namespace MonoTouchFixtures.Metal {
 			Assert.IsNotNull (residencySet, "ResidencySet #1");
 
 			residencySet.AddAllocations (heap);
-			Assert.AreEqual (1, residencySet.AllocationCount, "AllocationCount #1");
+			Assert.AreEqual (1, (int) residencySet.AllocationCount, "AllocationCount #1");
 			residencySet.RemoveAllocations (heap);
-			Assert.AreEqual (0, residencySet.AllocationCount, "AllocationCount #2");
+			Assert.AreEqual (0, (int) residencySet.AllocationCount, "AllocationCount #2");
 
 			residencySet.AddAllocations (new IMTLAllocation [] { heap });
-			Assert.AreEqual (1, residencySet.AllocationCount, "AllocationCount #3");
+			Assert.AreEqual (1, (int) residencySet.AllocationCount, "AllocationCount #3");
 			residencySet.RemoveAllocations (new IMTLAllocation [] { heap });
-			Assert.AreEqual (0, residencySet.AllocationCount, "AllocationCount #4");
+			Assert.AreEqual (0, (int) residencySet.AllocationCount, "AllocationCount #4");
 		}
 	}
 }
-#endif // !__WATCHOS__

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
 using System.Text;
 
 using NUnit.Framework;
@@ -14,7 +15,61 @@ using Xamarin.Tests;
 
 namespace Cecil.Tests {
 	[TestFixture]
-	public class ApiAvailabilityTest {
+	public partial class ApiAvailabilityTest {
+		[Test]
+		public void Warnings ()
+		{
+			Configuration.IgnoreIfAnyIgnoredPlatforms ();
+			// Make this test opt-in, it's quite slow.
+			if (string.IsNullOrEmpty (Environment.GetEnvironmentVariable ("RUN_AVAILABILITY_WARNING_TEST")))
+				Assert.Ignore ("The 'RUN_AVAILABILITY_WARNING_TEST' environment variable isn't set.");
+
+			var args = new string [] {
+				"-C", Path.Combine (Configuration.RootPath, "src"),
+				"analyze"
+			};
+			var rv = ExecutionHelper.Execute ("make", args, TimeSpan.FromMinutes (10));
+			Assert.AreEqual (0, rv, "'make analyze' exit code");
+
+			var platforms = Configuration.GetAllPlatforms ().Select (v => v.AsString ());
+			var binlogs = new List<string> ();
+			foreach (var platform in platforms) {
+				binlogs.Add (Path.Combine (Configuration.RootPath, "src", "build", "dotnet", platform.ToLower (), "csproj", "api", $"ApiDefinition.{platform}.csproj-analyze.binlog"));
+				binlogs.Add (Path.Combine (Configuration.RootPath, "src", "build", "dotnet", platform.ToLower (), "csproj", "core", $"Core.{platform}.csproj-analyze.binlog"));
+				binlogs.Add (Path.Combine (Configuration.RootPath, "src", "build", "dotnet", platform.ToLower (), "csproj", "platform", $"Microsoft.{platform}.csproj-analyze.binlog"));
+			}
+
+			foreach (var binlog in binlogs)
+				Assert.That (binlog, Does.Exist, "binlog existence");
+
+			var groupedWarnings = new Dictionary<string, (int Count, string File, string Message)> ();
+			int totalWarnings = 0;
+			foreach (var binlog in binlogs) {
+				var warnings = BinLog.GetBuildLogWarnings (binlog).ToArray ();
+				Console.WriteLine ($"Found {warnings.Length} warnings in {binlog}");
+				foreach (var w in warnings) {
+					var msg = w.Message?.Replace ("only ", ""); // the analyzer flip-flops a bit between two message... 🤷 so unify them.
+					var file = w.File?.Replace (Configuration.RootPath, "")!;
+					var key = $"{file} : {msg}";
+					groupedWarnings.TryGetValue (key, out var value);
+					value.Count++;
+					value.File = file;
+					value.Message = msg!;
+					groupedWarnings [key] = value;
+				}
+				totalWarnings += warnings.Length;
+			}
+
+			var failures = new HashSet<string> ();
+			foreach (var kvp in groupedWarnings)
+				failures.Add ($"{kvp.Value.File} has {kvp.Value.Count} occurrences of {kvp.Value.Message}");
+
+			try {
+				Helper.AssertFailures (failures, knownFailuresAvailabilityWarnings, nameof (knownFailuresAvailabilityWarnings), "Availability warnings.");
+			} finally {
+				Console.WriteLine ($"There's a total of {totalWarnings} warnings.");
+			}
+		}
 
 		public record ObsoletedFailure : IComparable {
 
@@ -120,8 +175,6 @@ namespace Cecil.Tests {
 			"CoreGraphics.CGContext.ShowText(System.Byte[])",
 			"CoreGraphics.CGContext.ShowText(System.String, System.Int32)",
 			"CoreGraphics.CGContext.ShowText(System.String)",
-			"CoreGraphics.CGContext.ShowTextAtPoint(System.Runtime.InteropServices.NFloat, System.Runtime.InteropServices.NFloat, System.String, System.Int32)",
-			"CoreGraphics.CGContext.ShowTextAtPoint(System.Runtime.InteropServices.NFloat, System.Runtime.InteropServices.NFloat, System.String)",
 			"CoreGraphics.CGImage PassKit.PKShareablePassMetadata::PassThumbnailImage()",
 			"CoreLocation.CLAuthorizationStatus CoreLocation.CLAuthorizationStatus::Authorized",
 			"CoreLocation.CLAuthorizationStatus CoreLocation.CLAuthorizationStatus::AuthorizedWhenInUse",
@@ -131,28 +184,14 @@ namespace Cecil.Tests {
 			"CoreMedia.CMTime AVFoundation.AVCaptureConnection::VideoMaxFrameDuration()",
 			"CoreMedia.CMTime AVFoundation.AVCaptureConnection::VideoMinFrameDuration()",
 			"CoreMedia.CMTime AVFoundation.AVCaptureVideoDataOutput::MinFrameDuration()",
-			"CoreMidi.MidiClient.CreateVirtualDestination(System.String, out CoreMidi.MidiError&)",
-			"CoreMidi.MidiClient.CreateVirtualSource(System.String, out CoreMidi.MidiError&)",
-			"CoreMidi.MidiDevice.Add(System.String, System.Boolean, System.UIntPtr, System.UIntPtr, CoreMidi.MidiEntity)",
-			"CoreMidi.MidiEndpoint.Received(CoreMidi.MidiPacket[])",
-			"CoreMidi.MidiPort.Send(CoreMidi.MidiEndpoint, CoreMidi.MidiPacket[])",
-			"CoreText.CTFontFeatureLetterCase",
-			"CoreText.CTFontManager.RegisterFontsForUrl(Foundation.NSUrl[], CoreText.CTFontManagerScope)",
-			"CoreText.CTFontManager.UnregisterFontsForUrl(Foundation.NSUrl[], CoreText.CTFontManagerScope)",
-			"CoreText.CTFontManagerAutoActivation CoreText.CTFontManagerAutoActivation::PromptUser",
-			"CoreText.CTTypesetterOptionKey.get_DisableBidiProcessing()",
-			"CoreText.FontFeatureGroup CoreText.FontFeatureGroup::LetterCase",
 			"Foundation.NSData HealthKit.HKVerifiableClinicalRecord::JwsRepresentation()",
 			"Foundation.NSDate HealthKit.HKWorkoutEvent::Date()",
 			"Foundation.NSString CoreData.NSPersistentStoreCoordinator::DidImportUbiquitousContentChangesNotification()",
 			"Foundation.NSString CoreData.NSPersistentStoreCoordinator::PersistentStoreUbiquitousContentNameKey()",
 			"Foundation.NSString CoreData.NSPersistentStoreCoordinator::PersistentStoreUbiquitousContentUrlKey()",
-			"Foundation.NSString CoreText.CTTypesetterOptionKey::DisableBidiProcessing()",
 			"Foundation.NSString Foundation.NSUrl::UbiquitousItemIsDownloadingKey()",
-			"Foundation.NSTask.LaunchFromPath(System.String, System.String[])",
 			"Foundation.NSUrl.get_UbiquitousItemIsDownloadingKey()",
 			"Foundation.NSUrlSessionConfiguration.BackgroundSessionConfiguration(System.String)",
-			"Foundation.NSUserDefaults..ctor(System.String)",
 			"GameController.GCGamepadSnapShotDataV100",
 			"GameController.GCMicroGamepadSnapshot.TryGetSnapshotData(Foundation.NSData, out GameController.GCMicroGamepadSnapshotData&)",
 			"GameController.GCMicroGamepadSnapshot.TryGetSnapshotData(Foundation.NSData, out GameController.GCMicroGamepadSnapShotDataV100&)",
@@ -176,22 +215,10 @@ namespace Cecil.Tests {
 			"HealthKit.HKWorkoutEvent.Create(HealthKit.HKWorkoutEventType, Foundation.NSDate)",
 			"HomeKit.HMEventTrigger.CreatePredicateForEvaluatingTriggerOccurringAfterSignificantEvent(HomeKit.HMSignificantEvent, Foundation.NSDateComponents)",
 			"HomeKit.HMEventTrigger.CreatePredicateForEvaluatingTriggerOccurringBeforeSignificantEvent(HomeKit.HMSignificantEvent, Foundation.NSDateComponents)",
-			"Intents.INCallRecordType Intents.INStartCallIntent::RecordTypeForRedialing()",
-			"Intents.INCarChargingConnectorType Intents.INCarChargingConnectorType::Tesla",
-			"Intents.INSetClimateSettingsInCarIntent..ctor(System.Nullable`1<System.Boolean>, System.Nullable`1<System.Boolean>, System.Nullable`1<System.Boolean>, System.Nullable`1<System.Boolean>, Intents.INCarAirCirculationMode, Foundation.NSNumber, Foundation.NSNumber, Intents.INRelativeSetting, Foundation.NSMeasurement`1<Foundation.NSUnitTemperature>, Intents.INRelativeSetting, Intents.INCarSeat)",
-			"Intents.INSetDefrosterSettingsInCarIntent..ctor(System.Nullable`1<System.Boolean>, Intents.INCarDefroster)",
-			"Intents.INSetProfileInCarIntent..ctor(Foundation.NSNumber, System.String, Foundation.NSNumber)",
-			"Intents.INSetProfileInCarIntent..ctor(Foundation.NSNumber, System.String, System.Nullable`1<System.Boolean>)",
-			"Intents.INSetSeatSettingsInCarIntent..ctor(System.Nullable`1<System.Boolean>, System.Nullable`1<System.Boolean>, System.Nullable`1<System.Boolean>, Intents.INCarSeat, Foundation.NSNumber, Intents.INRelativeSetting)",
-			"Intents.INStartCallIntent..ctor(Intents.INCallAudioRoute, Intents.INCallDestinationType, Intents.INPerson[], Intents.INCallRecordType, Intents.INCallCapability)",
 			"MapKit.MKOverlayView",
-			"MediaPlayer.MPVolumeSettings.AlertHide()",
-			"MediaPlayer.MPVolumeSettings.AlertShow()",
 			"MetalPerformanceShaders.MPSCnnConvolutionDescriptor.GetConvolutionDescriptor(System.UIntPtr, System.UIntPtr, System.UIntPtr, System.UIntPtr, MetalPerformanceShaders.MPSCnnNeuron)",
-			"MetalPerformanceShaders.MPSCnnFullyConnected..ctor(Metal.IMTLDevice, MetalPerformanceShaders.MPSCnnConvolutionDescriptor, System.Single[], System.Single[], MetalPerformanceShaders.MPSCnnConvolutionFlags)",
 			"MetalPerformanceShaders.MPSCnnNeuron MetalPerformanceShaders.MPSCnnConvolution::Neuron()",
 			"MetalPerformanceShaders.MPSCnnNeuron MetalPerformanceShaders.MPSCnnConvolutionDescriptor::Neuron()",
-			"MetalPerformanceShaders.MPSCnnNeuronPReLU..ctor(Metal.IMTLDevice, System.Single[])",
 			"MetalPerformanceShaders.MPSMatrixDescriptor.Create(System.UIntPtr, System.UIntPtr, System.UIntPtr, MetalPerformanceShaders.MPSDataType)",
 			"MetalPerformanceShaders.MPSMatrixDescriptor.GetRowBytesFromColumns(System.UIntPtr, MetalPerformanceShaders.MPSDataType)",
 			"MobileCoreServices.UTType.CopyAllTags(System.String, System.String)",
@@ -200,31 +227,6 @@ namespace Cecil.Tests {
 			"MobileCoreServices.UTType.IsDynamic(System.String)",
 			"PassKit.PKShareablePassMetadata..ctor(System.String, System.String, CoreGraphics.CGImage, System.String, System.String, System.String, System.String, System.String, System.Boolean)",
 			"PassKit.PKShareablePassMetadata..ctor(System.String, System.String, System.String, CoreGraphics.CGImage, System.String, System.String)",
-			"Security.Authorization.ExecuteWithPrivileges(System.String, Security.AuthorizationFlags, System.String[])",
-			"Security.SecAccessible Security.SecAccessible::Always",
-			"Security.SecAccessible Security.SecAccessible::AlwaysThisDeviceOnly",
-			"Security.SecCertificate.GetSerialNumber()",
-			"Security.SecKey.Decrypt(Security.SecPadding, System.IntPtr, System.IntPtr, System.IntPtr, System.IntPtr&)",
-			"Security.SecKey.Encrypt(Security.SecPadding, System.IntPtr, System.IntPtr, System.IntPtr, System.IntPtr&)",
-			"Security.SecKey.RawSign(Security.SecPadding, System.IntPtr, System.Int32, out System.Byte[]&)",
-			"Security.SecKey.RawVerify(Security.SecPadding, System.IntPtr, System.Int32, System.IntPtr, System.Int32)",
-			"Security.SecProtocolOptions.AddTlsCipherSuiteGroup(Security.SslCipherSuiteGroup)",
-			"Security.SecSharedCredential.RequestSharedWebCredential(System.String, System.String, System.Action`2<Security.SecSharedCredentialInfo[],Foundation.NSError>)",
-			"Security.SecTrust.Evaluate()",
-			"Security.SecTrust.Evaluate(CoreFoundation.DispatchQueue, Security.SecTrustCallback)",
-			"Security.SecTrust.GetPublicKey()",
-			"Security.SslContext.GetAlpnProtocols()",
-			"Security.SslContext.GetAlpnProtocols(out System.Int32&)",
-			"Security.SslContext.GetRequestedPeerName()",
-			"Security.SslContext.ReHandshake()",
-			"Security.SslContext.SetAlpnProtocols(System.String[])",
-			"Security.SslContext.SetEncryptionCertificate(Security.SecIdentity, System.Collections.Generic.IEnumerable`1<Security.SecCertificate>)",
-			"Security.SslContext.SetError(Security.SecStatusCode)",
-			"Security.SslContext.SetOcspResponse(Foundation.NSData)",
-			"Security.SslContext.SetSessionConfig(Foundation.NSString)",
-			"Security.SslContext.SetSessionConfig(Security.SslSessionConfig)",
-			"Security.SslContext.SetSessionTickets(System.Boolean)",
-			"Security.SslProtocol Security.SecProtocolMetadata::NegotiatedProtocolVersion()",
 			"Speech.SFVoiceAnalytics Speech.SFTranscriptionSegment::VoiceAnalytics()",
 			"System.Boolean AVFoundation.AVCaptureConnection::SupportsVideoMaxFrameDuration()",
 			"System.Boolean AVFoundation.AVCaptureConnection::SupportsVideoMinFrameDuration()",
@@ -232,9 +234,7 @@ namespace Cecil.Tests {
 			"System.Boolean AVFoundation.AVCapturePhotoSettings::DualCameraDualPhotoDeliveryEnabled()",
 			"System.Boolean AVFoundation.AVCaptureResolvedPhotoSettings::DualCameraFusionEnabled()",
 			"System.Boolean CoreGraphics.CGColorSpace::IsHdr()",
-			"System.Boolean CoreText.CTTypesetterOptions::DisableBidiProcessing()",
 			"System.Boolean NetworkExtension.NEFilterProviderConfiguration::FilterBrowsers()",
-			"System.Boolean Security.SecRecord::UseNoAuthenticationUI()",
 			"System.Double Speech.SFTranscription::AveragePauseDuration()",
 			"System.Double Speech.SFTranscription::SpeakingRate()",
 			"System.String PassKit.PKAddShareablePassConfiguration::ProvisioningPolicyIdentifier()",
@@ -251,18 +251,6 @@ namespace Cecil.Tests {
 			"SystemConfiguration.CaptiveNetwork.TryGetSupportedInterfaces(out System.String[]&)",
 			"UIKit.UIGestureRecognizer UIKit.UIScrollView::DirectionalPressGestureRecognizer()",
 			"UIKit.UIGraphicsRendererFormat UIKit.UIGraphicsRendererFormat::DefaultFormat()",
-			"UIKit.UIStringDrawing.DrawString(System.String, CoreGraphics.CGPoint, System.Runtime.InteropServices.NFloat, UIKit.UIFont, System.Runtime.InteropServices.NFloat, System.Runtime.InteropServices.NFloat&, UIKit.UILineBreakMode, UIKit.UIBaselineAdjustment)",
-			"UIKit.UIStringDrawing.DrawString(System.String, CoreGraphics.CGPoint, System.Runtime.InteropServices.NFloat, UIKit.UIFont, System.Runtime.InteropServices.NFloat, UIKit.UILineBreakMode, UIKit.UIBaselineAdjustment)",
-			"UIKit.UIStringDrawing.DrawString(System.String, CoreGraphics.CGPoint, System.Runtime.InteropServices.NFloat, UIKit.UIFont, UIKit.UILineBreakMode)",
-			"UIKit.UIStringDrawing.DrawString(System.String, CoreGraphics.CGPoint, UIKit.UIFont)",
-			"UIKit.UIStringDrawing.DrawString(System.String, CoreGraphics.CGRect, UIKit.UIFont, UIKit.UILineBreakMode, UIKit.UITextAlignment)",
-			"UIKit.UIStringDrawing.DrawString(System.String, CoreGraphics.CGRect, UIKit.UIFont, UIKit.UILineBreakMode)",
-			"UIKit.UIStringDrawing.DrawString(System.String, CoreGraphics.CGRect, UIKit.UIFont)",
-			"UIKit.UIStringDrawing.StringSize(System.String, UIKit.UIFont, CoreGraphics.CGSize, UIKit.UILineBreakMode)",
-			"UIKit.UIStringDrawing.StringSize(System.String, UIKit.UIFont, CoreGraphics.CGSize)",
-			"UIKit.UIStringDrawing.StringSize(System.String, UIKit.UIFont, System.Runtime.InteropServices.NFloat, System.Runtime.InteropServices.NFloat&, System.Runtime.InteropServices.NFloat, UIKit.UILineBreakMode)",
-			"UIKit.UIStringDrawing.StringSize(System.String, UIKit.UIFont, System.Runtime.InteropServices.NFloat, UIKit.UILineBreakMode)",
-			"UIKit.UIStringDrawing.StringSize(System.String, UIKit.UIFont)",
 		};
 
 		HashSet<string> knownConsistencyIssues = new HashSet<string> { };
@@ -427,6 +415,9 @@ namespace Cecil.Tests {
 				case "SceneKit.SCNAnimationPlayer.PauseAnimation(Foundation.NSString)":
 				case "SceneKit.SCNAnimationPlayer.RemoveAnimation(Foundation.NSString, System.Runtime.InteropServices.NFloat)":
 				case "SceneKit.SCNAnimationPlayer.ResumeAnimation(Foundation.NSString)":
+				case "System.Boolean PdfKit.PdfView::EnableDataDetectors()": // added in tvOS 18.2, when it was already obsoleted on other platforms.
+				case "System.Boolean AVFoundation.AVCaptureConnection::SupportsVideoOrientation()": // added in tvOS 17.0, when it was already obsoleted on other platforms.
+				case "AVFoundation.AVCapturePhoto.GetFileDataRepresentation(Foundation.NSDictionary`2<Foundation.NSString,Foundation.NSObject>, Foundation.NSDictionary`2<Foundation.NSString,Foundation.NSObject>, CoreVideo.CVPixelBuffer, AVFoundation.AVDepthData)": // added in tvOS 17.0, when it was already obsoleted on other platforms.
 					return true;
 				}
 				break;

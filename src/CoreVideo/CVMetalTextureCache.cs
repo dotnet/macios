@@ -8,18 +8,12 @@
 //
 //
 
-#if !__WATCHOS__
-
 using System;
 using System.Runtime.InteropServices;
 using ObjCRuntime;
 using CoreFoundation;
 using Foundation;
 using Metal;
-
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
 
 #nullable enable
 
@@ -53,6 +47,8 @@ namespace CoreVideo {
 								metalDevice.Handle,
 								textureAttributes.GetHandle (),
 								&handle);
+				GC.KeepAlive (metalDevice);
+				GC.KeepAlive (textureAttributes);
 			}
 			if (err == CVReturn.Success)
 				return handle;
@@ -60,11 +56,18 @@ namespace CoreVideo {
 			throw new Exception ($"Could not create the texture cache, Reason: {err}.");
 		}
 
+		/// <param name="metalDevice">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CVMetalTextureCache (IMTLDevice metalDevice)
 			: base (Create (metalDevice, null), true)
 		{
 		}
 
+		/// <param name="metalDevice">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static CVMetalTextureCache? FromDevice (IMTLDevice metalDevice)
 		{
 			if (metalDevice is null)
@@ -77,17 +80,28 @@ namespace CoreVideo {
 							   metalDevice.Handle,
 							   IntPtr.Zero, /* change one day to support texture attribuets */
 							   &handle);
+				GC.KeepAlive (metalDevice);
 			}
 			if (err == 0)
 				return new CVMetalTextureCache (handle, true);
 			return null;
 		}
 
+		/// <param name="metalDevice">To be added.</param>
+		///         <param name="textureAttributes">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CVMetalTextureCache (IMTLDevice metalDevice, CVMetalTextureAttributes textureAttributes)
 			: base (Create (metalDevice, textureAttributes), true)
 		{
 		}
 
+		/// <param name="metalDevice">To be added.</param>
+		///         <param name="textureAttributes">To be added.</param>
+		///         <param name="creationErr">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static CVMetalTextureCache? FromDevice (IMTLDevice metalDevice, CVMetalTextureAttributes? textureAttributes, out CVReturn creationErr)
 		{
 			if (metalDevice is null)
@@ -99,18 +113,34 @@ namespace CoreVideo {
 								metalDevice.Handle,
 								textureAttributes.GetHandle (),
 								&handle);
+				GC.KeepAlive (metalDevice);
+				GC.KeepAlive (textureAttributes);
 			}
 			if (creationErr == CVReturn.Success)
 				return new CVMetalTextureCache (handle, true);
 			return null;
 		}
 
+		/// <param name="metalDevice">To be added.</param>
+		///         <param name="textureAttributes">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static CVMetalTextureCache? FromDevice (IMTLDevice metalDevice, CVMetalTextureAttributes textureAttributes)
 		{
 			CVReturn creationErr;
 			return FromDevice (metalDevice, textureAttributes, out creationErr);
 		}
 
+		/// <param name="imageBuffer">To be added.</param>
+		/// <param name="format">To be added.</param>
+		/// <param name="width">To be added.</param>
+		/// <param name="height">To be added.</param>
+		/// <param name="planeIndex">To be added.</param>
+		/// <param name="errorCode">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		public CVMetalTexture? TextureFromImage (CVImageBuffer imageBuffer, MTLPixelFormat format, nint width, nint height, nint planeIndex, out CVReturn errorCode)
 		{
 			if (imageBuffer is null)
@@ -128,6 +158,7 @@ namespace CoreVideo {
 					height: height,
 					planeIndex: planeIndex,
 					textureOut: &texture);
+				GC.KeepAlive (imageBuffer);
 			}
 			if (errorCode != 0)
 				return null;
@@ -138,6 +169,9 @@ namespace CoreVideo {
 		extern static void CVMetalTextureCacheFlush (
 			/* CVMetalTextureCacheRef __nonnull */ IntPtr textureCache, CVOptionFlags flags);
 
+		/// <param name="flags">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void Flush (CVOptionFlags flags)
 		{
 			CVMetalTextureCacheFlush (Handle, flags);
@@ -156,5 +190,3 @@ namespace CoreVideo {
 			/* CVMetalTextureRef __nullable * __nonnull */ IntPtr* textureOut);
 	}
 }
-
-#endif // __WATCHOS__

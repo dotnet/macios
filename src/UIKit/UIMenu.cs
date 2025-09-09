@@ -1,4 +1,3 @@
-#if !WATCH
 using System;
 using System.Runtime.InteropServices;
 
@@ -8,15 +7,9 @@ using Foundation;
 namespace UIKit {
 	public partial class UIMenu {
 #if !XAMCORE_5_0
-
-#if NET
 		[SupportedOSPlatform ("tvos15.0")]
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[iOS (15, 0)]
-		[TV (15, 0)]
-#endif
 		public virtual UIMenuElement [] SelectedElements {
 			get {
 				// check if we are on tvos earlier than 15, if so, return and empty array, else return
@@ -35,4 +28,3 @@ namespace UIKit {
 		}
 	}
 }
-#endif

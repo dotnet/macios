@@ -1,24 +1,16 @@
-
-ifneq ($(MONO_BUILD_FROM_SOURCE),)
-# The mono hash/branch + some other variables are specified in mono.mk, which is included from Make.config.
-# Here we only keep what makes sense to disable when not building from source.
-MONO_VERSION   := $(shell cd $(MONO_PATH) 2> /dev/null && git rev-parse HEAD 2> /dev/null)
-MONO_BRANCH    := $(shell cd $(MONO_PATH) 2> /dev/null && git symbolic-ref --short HEAD 2> /dev/null)
-endif
-
 ifdef ENABLE_XAMARIN
-NEEDED_MACCORE_VERSION := 4ebacfa6fcb3737c9fcdd516501fc95582928fbe
-NEEDED_MACCORE_BRANCH := main
+NEEDED_ADR_VERSION := e1e779c10d851a86b548be40e55dd74c497aa11f
+NEEDED_ADR_BRANCH := main
 
-MACCORE_DIRECTORY := maccore
-MACCORE_MODULE    := git@github.com:xamarin/maccore.git
-MACCORE_VERSION   := $(shell cd $(MACCORE_PATH) 2> /dev/null && git rev-parse HEAD 2> /dev/null)
-MACCORE_BRANCH    := $(shell cd $(MACCORE_PATH) 2> /dev/null && git symbolic-ref --short HEAD 2> /dev/null)
+ADR_DIRECTORY := macios-adr
+ADR_MODULE    := https://devdiv@dev.azure.com/devdiv/DevDiv/_git/macios-adr
+ADR_VERSION   := $(shell cd $(ADR_PATH) 2> /dev/null && git rev-parse HEAD 2> /dev/null)
+ADR_BRANCH    := $(shell cd $(ADR_PATH) 2> /dev/null && git symbolic-ref --short HEAD 2> /dev/null)
 endif
 
 # Available versions can be seen here:
 # https://dev.azure.com/dnceng/public/_artifacts/feed/dotnet-eng/NuGet/Microsoft.Tools.Mlaunch/versions
-MLAUNCH_NUGET_VERSION=1.0.264
+MLAUNCH_NUGET_VERSION=1.1.72
 
 define CheckVersionTemplate
 check-$(1)::
@@ -86,22 +78,16 @@ reset-versions-impl:: reset-$(1)
 check-versions:: check-$(1)
 print-versions:: print-$(1)
 
-DEPENDENCY_DIRECTORIES += $($(2)_PATH)
+DEPENDENCY_DIRECTORIES += $$(abspath $($(2)_PATH))
 
 endef
 
-ifneq ($(MONO_BUILD_FROM_SOURCE),)
-$(MONO_PATH):
-	$(Q) git clone --recursive $(MONO_MODULE) $(MONO_PATH)
-	$(Q) $(MAKE) reset-mono
-
-$(eval $(call CheckVersionTemplate,mono,MONO))
-endif
-
 ifdef ENABLE_XAMARIN
 $(MACCORE_PATH):
-	$(Q) git clone --recursive $(MACCORE_MODULE) $(MACCORE_PATH)
-	$(Q) $(MAKE) reset-maccore
 
-$(eval $(call CheckVersionTemplate,maccore,MACCORE))
+$(ADR_PATH):
+	$(Q) git clone --recursive $(ADR_MODULE) $(ADR_PATH)
+	$(Q) $(MAKE) reset-adr
+
+$(eval $(call CheckVersionTemplate,macios-adr,ADR))
 endif

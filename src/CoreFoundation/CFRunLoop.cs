@@ -37,35 +37,32 @@ using ObjCRuntime;
 using Foundation;
 using System.Runtime.Versioning;
 
-#if NET
 using CFIndex = System.IntPtr;
-#else
-using CFIndex = System.nint;
-#endif
-
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
 
 #nullable enable
 
 namespace CoreFoundation {
 
 	// anonymous and typeless native enum - System/Library/Frameworks/CoreFoundation.framework/Headers/CFRunLoop.h
+	/// <summary>The reason for a <see cref="CoreFoundation.CFRunLoop" /> to stop running.</summary>
+	///     <remarks>
+	///       <para>
+	///       </para>
+	///     </remarks>
 	public enum CFRunLoopExitReason : int {
+		/// <summary>The run loop terminated.</summary>
 		Finished = 1,
+		/// <summary>The run loop was stopped by a call to the <see cref="CoreFoundation.CFRunLoop.Stop" /> method.</summary>
 		Stopped = 2,
+		/// <summary>The number of seconds specified in the call to <see cref="CoreFoundation.CFRunLoop.RunInMode(Foundation.NSString,System.Double,System.Boolean)" /> elapsed.</summary>
 		TimedOut = 3,
-		HandledSource = 4
+		/// <summary>An event from a source was handled, and the developer specified that a single source should be processed on the call to <see cref="CoreFoundation.CFRunLoop.RunInMode(Foundation.NSString,System.Double,System.Boolean)" /></summary>
+		HandledSource = 4,
 	}
 
 	// CFRunLoop.h
 	[StructLayout (LayoutKind.Sequential)]
-#if NET
 	internal unsafe struct CFRunLoopSourceContext {
-#else
-	internal struct CFRunLoopSourceContext {
-#endif
 		public CFIndex Version;
 		public IntPtr Info;
 		public IntPtr Retain;
@@ -73,37 +70,20 @@ namespace CoreFoundation {
 		public IntPtr CopyDescription;
 		public IntPtr Equal;
 		public IntPtr Hash;
-#if NET
 		public delegate* unmanaged<IntPtr, IntPtr, IntPtr, void> Schedule;
 		public delegate* unmanaged<IntPtr, IntPtr, IntPtr, void> Cancel;
 		public delegate* unmanaged<IntPtr, void> Perform;
-#else
-		public IntPtr Schedule;
-		public IntPtr Cancel;
-		public IntPtr Perform;
-#endif
 	}
 
-#if NET
+	/// <summary>An input source that generates asynchronous events and is intended to be used with a <see cref="CoreFoundation.CFRunLoop" />.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CFRunLoopSource : NativeObject {
-#if !NET
-		public CFRunLoopSource (NativeHandle handle)
-			: base (handle, false)
-		{
-		}
-#endif
-
 		[Preserve (Conditional = true)]
-#if NET
 		internal CFRunLoopSource (NativeHandle handle, bool owns)
-#else
-		public CFRunLoopSource (NativeHandle handle, bool owns)
-#endif
 			: base (handle, owns)
 		{
 		}
@@ -111,6 +91,9 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static /* CFIndex */ nint CFRunLoopSourceGetOrder (/* CFRunLoopSourceRef */ IntPtr source);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nint Order {
 			get {
 				return CFRunLoopSourceGetOrder (Handle);
@@ -120,6 +103,8 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static void CFRunLoopSourceInvalidate (/* CFRunLoopSourceRef */ IntPtr source);
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void Invalidate ()
 		{
 			CFRunLoopSourceInvalidate (Handle);
@@ -128,6 +113,9 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static /* Boolean */ byte CFRunLoopSourceIsValid (/* CFRunLoopSourceRef */ IntPtr source);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool IsValid {
 			get {
 				return CFRunLoopSourceIsValid (Handle) != 0;
@@ -137,6 +125,8 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static void CFRunLoopSourceSignal (/* CFRunLoopSourceRef */ IntPtr source);
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void Signal ()
 		{
 			CFRunLoopSourceSignal (Handle);
@@ -144,41 +134,31 @@ namespace CoreFoundation {
 	}
 
 #if !COREBUILD
-#if NET
+	/// <summary>An abstract <see cref="CoreFoundation.CFRunLoop" /> that, when extended, gives the application developer fine-grained control over lifecycle events. </summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public abstract class CFRunLoopSourceCustom : CFRunLoopSource {
 		GCHandle gch;
 
 		[DllImport (Constants.CoreFoundationLibrary)]
 		unsafe extern static /* CFRunLoopSourceRef */ IntPtr CFRunLoopSourceCreate (/* CFAllocatorRef */ IntPtr allocator, /* CFIndex */ nint order, /* CFRunLoopSourceContext* */ CFRunLoopSourceContext* context);
 
-#if !NET
-		static ScheduleCallback ScheduleDelegate = (ScheduleCallback) Schedule;
-		static CancelCallback CancelDelegate = (CancelCallback) Cancel;
-		static PerformCallback PerformDelegate = (PerformCallback) Perform;
-#endif
-
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected CFRunLoopSourceCustom ()
 			: base (IntPtr.Zero, true)
 		{
 			gch = GCHandle.Alloc (this);
 			var ctx = new CFRunLoopSourceContext ();
 			ctx.Info = GCHandle.ToIntPtr (gch);
-#if NET
 			unsafe {
 				ctx.Schedule = &Schedule;
 				ctx.Cancel = &Cancel;
 				ctx.Perform = &Perform;
 			}
-#else
-			ctx.Schedule = Marshal.GetFunctionPointerForDelegate (ScheduleDelegate);
-			ctx.Cancel = Marshal.GetFunctionPointerForDelegate (CancelDelegate);
-			ctx.Perform = Marshal.GetFunctionPointerForDelegate (PerformDelegate);
-#endif
 
 			IntPtr handle;
 			unsafe {
@@ -187,15 +167,7 @@ namespace CoreFoundation {
 			InitializeHandle (handle);
 		}
 
-#if !NET
-		delegate void ScheduleCallback (IntPtr info, IntPtr runLoop, IntPtr mode);
-#endif
-
-#if NET
 		[UnmanagedCallersOnly]
-#else
-		[MonoPInvokeCallback (typeof (ScheduleCallback))]
-#endif
 		static void Schedule (IntPtr info, IntPtr runLoop, IntPtr mode)
 		{
 			var source = GCHandle.FromIntPtr (info).Target as CFRunLoopSourceCustom;
@@ -208,17 +180,13 @@ namespace CoreFoundation {
 			}
 		}
 
+		/// <param name="loop">To be added.</param>
+		///         <param name="mode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected abstract void OnSchedule (CFRunLoop loop, NSString mode);
 
-#if !NET
-		delegate void CancelCallback (IntPtr info, IntPtr runLoop, IntPtr mode);
-#endif
-
-#if NET
 		[UnmanagedCallersOnly]
-#else
-		[MonoPInvokeCallback (typeof (CancelCallback))]
-#endif
 		static void Cancel (IntPtr info, IntPtr runLoop, IntPtr mode)
 		{
 			var source = GCHandle.FromIntPtr (info).Target as CFRunLoopSourceCustom;
@@ -231,17 +199,13 @@ namespace CoreFoundation {
 			}
 		}
 
+		/// <param name="loop">To be added.</param>
+		///         <param name="mode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected abstract void OnCancel (CFRunLoop loop, NSString mode);
 
-#if !NET
-		delegate void PerformCallback (IntPtr info);
-#endif
-
-#if NET
 		[UnmanagedCallersOnly]
-#else
-		[MonoPInvokeCallback (typeof (PerformCallback))]
-#endif
 		static void Perform (IntPtr info)
 		{
 			var source = GCHandle.FromIntPtr (info).Target as CFRunLoopSourceCustom;
@@ -251,8 +215,11 @@ namespace CoreFoundation {
 			source.OnPerform ();
 		}
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected abstract void OnPerform ();
 
+		/// <include file="../../docs/api/CoreFoundation/CFRunLoopSourceCustom.xml" path="/Documentation/Docs[@DocId='M:CoreFoundation.CFRunLoopSourceCustom.Dispose(System.Boolean)']/*" />
 		protected override void Dispose (bool disposing)
 		{
 			if (disposing) {
@@ -269,6 +236,15 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static /* CFRunLoopRef */ IntPtr CFRunLoopGetCurrent ();
 
+		/// <summary>Active runloop for the current thread.</summary>
+		///         <value>
+		///           <para>
+		///           </para>
+		///         </value>
+		///         <remarks>
+		///           <para>
+		///           </para>
+		///         </remarks>
 		static public CFRunLoop Current {
 			get {
 				return new CFRunLoop (CFRunLoopGetCurrent (), false);
@@ -278,6 +254,12 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static /* CFRunLoopRef */ IntPtr CFRunLoopGetMain ();
 
+		/// <summary>Main run loop object for the application.</summary>
+		///         <value>The main runloop object for the application.</value>
+		///         <remarks>
+		///           <para>
+		///           </para>
+		///         </remarks>
 		static public CFRunLoop Main {
 			get {
 				return new CFRunLoop (CFRunLoopGetMain (), false);
@@ -287,6 +269,16 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static void CFRunLoopRun ();
 
+		/// <summary>Starts the <see cref="CoreFoundation.CFRunLoop" /> for the current thread.</summary>
+		///         <remarks>
+		///           <para>Run the runloop in the default mode.</para>
+		///           <para>
+		///           </para>
+		///           <para>The run loop can be stopped by calling <see cref="CoreFoundation.CFRunLoop.Stop" />. </para>
+		///           <para>
+		///           </para>
+		///           <para>The run loop can be determinated if all the sources and timers are removed from it.</para>
+		///         </remarks>
 		public void Run ()
 		{
 			CFRunLoopRun ();
@@ -295,6 +287,8 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static void CFRunLoopStop (/* CFRunLoopRef */ IntPtr rl);
 
+		/// <summary>Stops execution of this runloop.</summary>
+		///         <remarks>To be added.</remarks>
 		public void Stop ()
 		{
 			CFRunLoopStop (Handle);
@@ -303,6 +297,8 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static void CFRunLoopWakeUp (/* CFRunLoopRef */ IntPtr rl);
 
+		/// <summary>Wakes up a sleeping runloop.</summary>
+		///         <remarks>To be added.</remarks>
 		public void WakeUp ()
 		{
 			CFRunLoopWakeUp (Handle);
@@ -311,6 +307,13 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static /* Boolean */ byte CFRunLoopIsWaiting (/* CFRunLoopRef */ IntPtr rl);
 
+		/// <summary>Indicates that the run loop is currently waiting for an event.</summary>
+		///         <value>
+		///           <see langword="true" /> if the run loop is waiting for an event, <see langword="false" /> otherwise.</value>
+		///         <remarks>
+		///           <para>
+		///           </para>
+		///         </remarks>
 		public bool IsWaiting {
 			get {
 				return CFRunLoopIsWaiting (Handle) != 0;
@@ -322,12 +325,62 @@ namespace CoreFoundation {
 			/* CFTimeInterval */ double seconds,
 			/* Boolean */ byte returnAfterSourceHandled);
 
+		/// <param name="mode">
+		///
+		///
+		///
+		///
+		///
+		/// Mode to execute the runloop on.   This can be any arbitrary string.
+		///
+		///
+		///
+		///
+		///   	   </param>
+		///         <param name="seconds">
+		///
+		///
+		///
+		///
+		/// Number of seconds to execute the run loop for.   If seconds is zero, the run loop performs a single pass.
+		///
+		///
+		///
+		///
+		///   	   </param>
+		///         <param name="returnAfterSourceHandled">
+		///
+		///
+		///
+		///
+		/// If <see langword="true" />, processing will return after a single source has been processed.   If <see langword="false" />, then execution continues until the number of <see langword="seconds" /> has elapsed.
+		///
+		///
+		///
+		///
+		///   	   </param>
+		///         <summary>Initiates the runloop for a a particular duration of time.</summary>
+		///         <returns>
+		///
+		///
+		///
+		///
+		///
+		/// Status indicating the reason for the run loop to complete executing.
+		///
+		///
+		///
+		///
+		///      </returns>
+		///         <remarks>To be added.</remarks>
 		public CFRunLoopExitReason RunInMode (NSString mode, double seconds, bool returnAfterSourceHandled)
 		{
 			if (mode is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (mode));
 
-			return CFRunLoopRunInMode (mode.Handle, seconds, returnAfterSourceHandled ? (byte) 1 : (byte) 0);
+			CFRunLoopExitReason result = CFRunLoopRunInMode (mode.Handle, seconds, returnAfterSourceHandled ? (byte) 1 : (byte) 0);
+			GC.KeepAlive (mode);
+			return result;
 		}
 
 		public CFRunLoopExitReason RunInMode (string mode, double seconds, bool returnAfterSourceHandled)
@@ -338,6 +391,9 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static void CFRunLoopAddSource (/* CFRunLoopRef */ IntPtr rl, /* CFRunLoopSourceRef */ IntPtr source, /* CFStringRef */ IntPtr mode);
 
+		/// <summary>Adds a new source to the run loop on the specified mode.</summary>
+		/// <param name="source">Source to be added.</param>
+		/// <param name="mode">The mode to add the source to. If you use <see cref="NSRunLoopMode.Common" /> the source is added to all common modes.</param>
 		public void AddSource (CFRunLoopSource source, NSString mode)
 		{
 			if (source is null)
@@ -346,11 +402,21 @@ namespace CoreFoundation {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (mode));
 
 			CFRunLoopAddSource (Handle, source.Handle, mode.Handle);
+			GC.KeepAlive (source);
+			GC.KeepAlive (mode);
 		}
 
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static /* Boolean */ byte CFRunLoopContainsSource (/* CFRunLoopRef */ IntPtr rl, /* CFRunLoopSourceRef */ IntPtr source, /* CFStringRef */ IntPtr mode);
 
+		/// <param name="source">The source to probe.</param>
+		///         <param name="mode">The mode to probe into.</param>
+		///         <summary>Determines whether the run loop contains the specified <see cref="CoreFoundation.CFRunLoopSource" /> on a specific mode.</summary>
+		///         <returns>
+		///           <see langword="true" /> if the runloop contains the specified source in the specified mode.</returns>
+		///         <remarks>
+		///           <para />
+		///         </remarks>
 		public bool ContainsSource (CFRunLoopSource source, NSString mode)
 		{
 			if (source is null)
@@ -358,12 +424,18 @@ namespace CoreFoundation {
 			if (mode is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (mode));
 
-			return CFRunLoopContainsSource (Handle, source.Handle, mode.Handle) != 0;
+			bool result = CFRunLoopContainsSource (Handle, source.Handle, mode.Handle) != 0;
+			GC.KeepAlive (source);
+			GC.KeepAlive (mode);
+			return result;
 		}
 
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static void CFRunLoopRemoveSource (/* CFRunLoopRef */ IntPtr rl, /* CFRunLoopSourceRef */ IntPtr source, /* CFStringRef */ IntPtr mode);
 
+		/// <summary>Removes a source from the runloop.</summary>
+		/// <param name="source">Run loop source to remove.</param>
+		/// <param name="mode">The mode to remove it from. If you use <see cref="NSRunLoopMode.Common" /> the source is removed from all common modes.</param>
 		public void RemoveSource (CFRunLoopSource source, NSString mode)
 		{
 			if (source is null)
@@ -372,6 +444,8 @@ namespace CoreFoundation {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (mode));
 
 			CFRunLoopRemoveSource (Handle, source.Handle, mode.Handle);
+			GC.KeepAlive (source);
+			GC.KeepAlive (mode);
 		}
 
 		[Preserve (Conditional = true)]
@@ -397,43 +471,6 @@ namespace CoreFoundation {
 				return CFString.FromHandle (CFRunLoopCopyCurrentMode (GetCheckedHandle ()), releaseHandle: true);
 			}
 		}
-
-#if !NET
-		public static bool operator == (CFRunLoop? a, CFRunLoop? b)
-		{
-			if (a is null)
-				return b is null;
-			else if (b is null)
-				return false;
-
-			return a.Handle == b.Handle;
-		}
-
-		public static bool operator != (CFRunLoop? a, CFRunLoop? b)
-		{
-			if (a is null)
-				return b is not null;
-			else if (b is null)
-				return true;
-			return a.Handle != b.Handle;
-		}
-
-		// For the .net profile `DisposableObject` implements both
-		// `Equals` and `GetHashCode` based on the Handle property.
-		public override int GetHashCode ()
-		{
-			return Handle.GetHashCode ();
-		}
-
-		public override bool Equals (object? other)
-		{
-			var cfother = other as CFRunLoop;
-			if (cfother is null)
-				return false;
-
-			return cfother.Handle == Handle;
-		}
-#endif
 #endif // !COREBUILD
 	}
 }

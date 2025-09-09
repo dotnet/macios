@@ -39,24 +39,32 @@ namespace CoreBluetooth {
 	// It's intentionally not called AdvertisementDataOptions because different options
 	// are valid in different contexts
 	//
-#if NET
+	/// <summary>Manages access to options used by <see cref="CBPeripheralManager.StartAdvertising(StartAdvertisingOptions)" />.</summary>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class StartAdvertisingOptions : DictionaryContainer {
 #if !COREBUILD
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public StartAdvertisingOptions ()
 			: base (new NSMutableDictionary ())
 		{
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public StartAdvertisingOptions (NSDictionary dictionary)
 			: base (dictionary)
 		{
 		}
 
+		/// <summary>Represents the local name of a peripheral</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>The property uses constant CBAdvertisementDataLocalNameKey value to access the underlying dictionary.</remarks>
 		public string? LocalName {
 			set {
 				SetStringValue (CBAdvertisement.DataLocalNameKey, value);
@@ -66,6 +74,10 @@ namespace CoreBluetooth {
 			}
 		}
 
+		/// <summary>One or more <see cref="CoreBluetooth.CBUUID" /> objects.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>The property uses constant CBAdvertisementDataServiceUUIDsKey value to access the underlying dictionary.</remarks>
 		public CBUUID []? ServicesUUID {
 			get {
 				return GetArray<CBUUID> (CBAdvertisement.DataServiceUUIDsKey);

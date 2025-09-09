@@ -54,7 +54,7 @@ public class MemberInformation {
 	// know whether the code is to call the internal static method implementing a
 	// protocol member (in which case this property is true). See also is_protocol_implementation_method.
 	public bool call_protocol_implementation_method;
-	public string is_forced_owns;
+	public bool is_forced_owns;
 	public bool is_bindAs => Generator.HasBindAsAttribute (mi);
 	public bool generate_is_async_overload;
 
@@ -176,11 +176,7 @@ public class MemberInformation {
 		this.category_extension_type = categoryExtensionType;
 		if (categoryExtensionType is not null) {
 			is_category_extension = true;
-#if NET
 			ignore_category_static_warnings = is_internal || type.IsInternal (generator);
-#else
-			ignore_category_static_warnings = is_internal || type.IsInternal (generator) || Generator.AttributeManager.GetCustomAttribute<CategoryAttribute> (type).AllowStaticMembers;
-#endif
 		}
 
 		if (is_static || is_category_extension || isInterfaceImpl || isExtensionMethod || is_type_sealed)
@@ -248,11 +244,7 @@ public class MemberInformation {
 		} else if (is_protocol_member) {
 			mods += "virtual ";
 		} else if (is_abstract) {
-#if NET
 			mods += "virtual ";
-#else
-			mods += "abstract ";
-#endif
 		} else if (is_virtual_method && !is_type_sealed) {
 			mods += is_override ? "override " : "virtual ";
 		}

@@ -38,49 +38,130 @@ using System.Runtime.Versioning;
 namespace Foundation {
 
 	// This is a convenience enum around a set of native strings.
+	/// <summary>File kind enumeration.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum NSFileType {
-		Directory, Regular, SymbolicLink, Socket, CharacterSpecial, BlockSpecial, Unknown
+		/// <summary>A directory</summary>
+		Directory,
+		/// <summary>A regular file.</summary>
+		Regular,
+		/// <summary>A symbolic link.</summary>
+		SymbolicLink,
+		/// <summary>A Unix file system socket.</summary>
+		Socket,
+		/// <summary>A special system character device.</summary>
+		CharacterSpecial,
+		/// <summary>To be added.</summary>
+		BlockSpecial,
+		/// <summary>Unknown file type.</summary>
+		Unknown,
 	}
 
 #if !MONOMAC
+	/// <summary>Enumerates file protection levels.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum NSFileProtection {
+		/// <summary>To be added.</summary>
 		None,
+		/// <summary>To be added.</summary>
 		Complete,
+		/// <summary>To be added.</summary>
 		CompleteUnlessOpen,
+		/// <summary>To be added.</summary>
 		CompleteUntilFirstUserAuthentication,
 	}
 #endif
 
-#if NET
+	/// <summary>Encapsulates file attributes for use with <see cref="Foundation.NSFileManager" />.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class NSFileAttributes {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool? AppendOnly { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool? Busy { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool? ExtensionHidden { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSDate? CreationDate { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? OwnerAccountName { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? GroupOwnerAccountName { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nint? SystemNumber { get; set; } // NSInteger
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nuint? DeviceIdentifier { get; set; } // unsigned long
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nuint? GroupOwnerAccountID { get; set; } // unsigned long
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool? Immutable { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSDate? ModificationDate { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nuint? OwnerAccountID { get; set; } // unsigned long
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nuint? HfsCreatorCode { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nuint? HfsTypeCode { get; set; } // unsigned long
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public short? PosixPermissions { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nuint? ReferenceCount { get; set; } // unsigned long
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nuint? SystemFileNumber { get; set; } // unsigned long
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public ulong? Size { get; set; } // unsigned long long
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSFileType? Type { get; set; }
 
 #if !MONOMAC
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSFileProtection? ProtectionKey { get; set; }
 #endif
 
@@ -227,6 +308,10 @@ namespace Foundation {
 		}
 		#endregion
 
+		/// <param name="dict">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSFileAttributes? FromDictionary (NSDictionary dict)
 		{
 			if (dict is null)
@@ -295,12 +380,12 @@ namespace Foundation {
 		}
 	}
 
-#if NET
+	/// <summary>File system attributes (size, blocks and free information).</summary>
+	///     <remarks>This is a strong wrapper around the underlying NSDictionary returned by NSFileSystem APIs.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class NSFileSystemAttributes {
 		NSDictionary dict;
 
@@ -310,11 +395,26 @@ namespace Foundation {
 		}
 
 		// The documentation only says these are NSNumbers, it doesn't say which type of number.
+		/// <summary>The volume size in bytes.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public ulong Size { get; internal set; }
+		/// <summary>The number of free bytes in the volume.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public ulong FreeSize { get; internal set; }
+		/// <summary>The total number of nodes in the volume (maximum number of files).</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public long Nodes { get; internal set; }
+		/// <summary>The number of free nodes in the volume.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public long FreeNodes { get; internal set; }
 		// "The value corresponds to the value of st_dev, as returned by stat(2)" => st_dev is defined to be int32_t in all architectures.
+		/// <summary>The device number (corresponds to st_dev on the Unix stat structure).</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public uint Number { get; internal set; }
 
 		internal static NSFileSystemAttributes? FromDictionary (NSDictionary dict)
@@ -391,6 +491,12 @@ namespace Foundation {
 			}
 		}
 
+		/// <param name="attributes">To be added.</param>
+		///         <param name="path">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool SetAttributes (NSFileAttributes attributes, string path, out NSError error)
 		{
 			if (attributes is null)
@@ -398,6 +504,11 @@ namespace Foundation {
 			return SetAttributes (attributes.ToDictionary (), path, out error);
 		}
 
+		/// <param name="attributes">To be added.</param>
+		///         <param name="path">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool SetAttributes (NSFileAttributes attributes, string path)
 		{
 			if (attributes is null)
@@ -406,53 +517,106 @@ namespace Foundation {
 			return SetAttributes (attributes.ToDictionary (), path, out _);
 		}
 
+		/// <param name="path">To be added.</param>
+		///         <param name="createIntermediates">To be added.</param>
+		///         <param name="attributes">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool CreateDirectory (string path, bool createIntermediates, NSFileAttributes? attributes, out NSError error)
 		{
 			return CreateDirectory (path, createIntermediates, attributes?.ToDictionary (), out error);
 		}
 
+		/// <param name="path">To be added.</param>
+		///         <param name="createIntermediates">To be added.</param>
+		///         <param name="attributes">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool CreateDirectory (string path, bool createIntermediates, NSFileAttributes? attributes)
 		{
 			return CreateDirectory (path, createIntermediates, attributes?.ToDictionary (), out var _);
 		}
 
+		/// <param name="path">To be added.</param>
+		///         <param name="data">To be added.</param>
+		///         <param name="attributes">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool CreateFile (string path, NSData data, NSFileAttributes? attributes)
 		{
 			return CreateFile (path, data, attributes?.ToDictionary ());
 		}
 
+		/// <param name="path">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public NSFileAttributes? GetAttributes (string path, out NSError error)
 		{
 			return NSFileAttributes.FromDictionary (_GetAttributes (path, out error));
 		}
 
+		/// <param name="path">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public NSFileAttributes? GetAttributes (string path)
 		{
 			return NSFileAttributes.FromDictionary (_GetAttributes (path, out var _));
 		}
 
+		/// <param name="path">Path to the any file in the volume to probe for information.</param>
+		///         <summary>Returns the file system attributes for a given volume.</summary>
+		///         <returns>A NSFileSystemAttributes object that contains the file system properties or null on error.</returns>
+		///         <remarks>This function returns the file system information associated with the specified path.   The path is any path name that is contained in a volume.</remarks>
 		public NSFileSystemAttributes? GetFileSystemAttributes (string path)
 		{
 			return NSFileSystemAttributes.FromDictionary (_GetFileSystemAttributes (path, out var _));
 		}
 
+		/// <param name="path">Path to the any file in the volume to probe for information.</param>
+		///         <param name="error">Error object, to return any error conditions.</param>
+		///         <summary>Returns the file system attributes for a given volume.</summary>
+		///         <returns>A NSFileSystemAttributes object that contains the file system properties, or null on error.</returns>
+		///         <remarks>This function returns the file system information associated with the specified path.   The path is any path name that is contained in a volume.</remarks>
 		public NSFileSystemAttributes? GetFileSystemAttributes (string path, out NSError error)
 		{
 			return NSFileSystemAttributes.FromDictionary (_GetFileSystemAttributes (path, out error));
 		}
 
+		/// <param name="properties">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public NSUrl [] GetMountedVolumes (NSString [] properties, NSVolumeEnumerationOptions options)
 		{
 			using var array = NSArray.FromNSObjects (properties);
 			return GetMountedVolumes (array, options);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string CurrentDirectory {
 			get { return GetCurrentDirectory (); }
 			// ignore boolean return value
 			set { ChangeCurrentDirectory (value); }
 		}
 
+		/// <param name="filename">Path of file</param>
+		///         <param name="skipBackup">True if you want to flag this file to be skipped for backups or false if you want to have this file backed up to iCloud.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>A null return value will indicate success, while a non-null error will contain an instance of NSError detailing the problem</returns>
+		///         <remarks>If you set the SkipBackup attribute on a file, it will inform the operating system that this file should not be backed up into iCloud.   
+		///         This high-level API automagically adjust itself based on the version of iOS being executed. 
+		///         On iOS 5.0.1 (only) it will use the old setxattr API to set (or remove) the "com.apple.MobileBackup" attribute. 
+		///         On iOS 5.1 (and later) it will use NSUrlIsExcludedFromBackupKey to accomplish the same.</remarks>
 		public static NSError SetSkipBackupAttribute (string filename, bool skipBackup)
 		{
 			if (filename is null)
@@ -464,11 +628,26 @@ namespace Foundation {
 			}
 		}
 
+		/// <param name="filename">Path of the file to probe.</param>
+		///         <summary>Returns the status of the SkipBackup to iCloud attribute is set on the file.</summary>
+		///         <returns>true if the extended attribute is set.</returns>
+		///         <remarks>This returns true if the file is marked not to be backed up by iCloud, otherwise it will return false.
+		///         This high-level API automagically adjust itself based on the version of iOS being executed. 
+		///         On iOS 5.0.1 (only) it will use the old getxattr API to get the value of the "com.apple.MobileBackup" attribute. 
+		///         On iOS 5.1 (and later) it will use NSUrlIsExcludedFromBackupKey to accomplish the same.</remarks>
 		public static bool GetSkipBackupAttribute (string filename)
 		{
 			return GetSkipBackupAttribute (filename, out var _);
 		}
 
+		/// <param name="filename">Path of the file to probe.</param>
+		///         <param name="error">The error will be set to null if there was no error, or it will point to an instance of NSError if there was a problem.</param>
+		///         <summary>Returns the status of the SkipBackup to iCloud attribute is set on the file.</summary>
+		///         <returns>true if the extended attribute is set.</returns>
+		///         <remarks>This returns true if the file is marked not to be backed up by iCloud, otherwise it will return false.
+		///         This high-level API automagically adjust itself based on the version of iOS being executed. 
+		///         On iOS 5.0.1 (only) it will use the old getxattr API to get the value of the "com.apple.MobileBackup" attribute. 
+		///         On iOS 5.1 (and later) it will use NSUrlIsExcludedFromBackupKey to accomplish the same.</remarks>
 		public static bool GetSkipBackupAttribute (string filename, out NSError error)
 		{
 			if (filename is null)

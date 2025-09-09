@@ -6,8 +6,6 @@
 //
 // Copyright 2023 Microsoft Corp
 
-#if NET
-
 #nullable enable
 
 using System;
@@ -37,7 +35,7 @@ namespace ObjCRuntime {
 			return obj;
 		}
 
-		unsafe static T[]? ConvertNSArrayToManagedArray<T> (IntPtr nsarray, delegate*<IntPtr, T> convert) where T: struct
+		unsafe static T []? ConvertNSArrayToManagedArray<T> (IntPtr nsarray, delegate*<IntPtr, T> convert) where T : struct
 		{
 			if (nsarray == IntPtr.Zero)
 				return null;
@@ -45,7 +43,7 @@ namespace ObjCRuntime {
 			return ConvertNSArrayToManagedArray2<T, T> (nsarray, convert, &Identity<T>);
 		}
 
-		unsafe static IntPtr ConvertManagedArrayToNSArray<T> (T[]? array, delegate*<T, IntPtr> convert) where T: struct
+		unsafe static IntPtr ConvertManagedArrayToNSArray<T> (T []? array, delegate*<T, IntPtr> convert) where T : struct
 		{
 			if (array is null)
 				return IntPtr.Zero;
@@ -53,7 +51,7 @@ namespace ObjCRuntime {
 			return ConvertManagedArrayToNSArray2<T, T> (array, &Identity<T>, convert);
 		}
 
-		unsafe static T[]? ConvertNSArrayToManagedArray2<T,U> (IntPtr nsarray, delegate*<IntPtr, U> convert1, delegate*<U, T> convert2) where T: struct
+		unsafe static T []? ConvertNSArrayToManagedArray2<T, U> (IntPtr nsarray, delegate*<IntPtr, U> convert1, delegate*<U, T> convert2) where T : struct
 		{
 			if (nsarray == IntPtr.Zero)
 				return null;
@@ -61,7 +59,7 @@ namespace ObjCRuntime {
 			return NSArray.ArrayFromHandleFunc<T> (nsarray, (ptr) => convert2 (convert1 (ptr)));
 		}
 
-		unsafe static IntPtr ConvertManagedArrayToNSArray2<T,U> (T[]? array, delegate*<T, U> convert1, delegate*<U, IntPtr> convert2) where T: struct
+		unsafe static IntPtr ConvertManagedArrayToNSArray2<T, U> (T []? array, delegate*<T, U> convert1, delegate*<U, IntPtr> convert2) where T : struct
 		{
 			if (array is null)
 				return IntPtr.Zero;
@@ -90,14 +88,14 @@ namespace ObjCRuntime {
 			return rv;
 		}
 
-		unsafe static T? CreateNullable<T> (IntPtr handle, delegate*<IntPtr, T> convert) where T: struct
+		unsafe static T? CreateNullable<T> (IntPtr handle, delegate*<IntPtr, T> convert) where T : struct
 		{
 			if (handle == IntPtr.Zero)
 				return null;
 			return convert (handle);
 		}
 
-		unsafe static T? CreateNullable2<T, U> (IntPtr handle, delegate*<IntPtr, U> convert1, delegate*<U, T> convert2) where T: struct
+		unsafe static T? CreateNullable2<T, U> (IntPtr handle, delegate*<IntPtr, U> convert1, delegate*<U, T> convert2) where T : struct
 		{
 			if (handle == IntPtr.Zero)
 				return null;
@@ -110,6 +108,10 @@ namespace ObjCRuntime {
 		static CoreGraphics.CGRect xamarin_nsvalue_to_cgrect (IntPtr value) { if (value == IntPtr.Zero) return default (CoreGraphics.CGRect); return Runtime.GetNSObject<NSValue> (value)?.CGRectValue ?? default (CoreGraphics.CGRect); }
 		static CoreGraphics.CGSize xamarin_nsvalue_to_cgsize (IntPtr value) { if (value == IntPtr.Zero) return default (CoreGraphics.CGSize); return Runtime.GetNSObject<NSValue> (value)?.CGSizeValue ?? default (CoreGraphics.CGSize); }
 #if !__MACOS__
+		[SupportedOSPlatform ("ios")]
+		[UnsupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("tvos")]
 		static CoreGraphics.CGVector xamarin_nsvalue_to_cgvector (IntPtr value) { if (value == IntPtr.Zero) return default (CoreGraphics.CGVector); return Runtime.GetNSObject<NSValue> (value)?.CGVectorValue ?? default (CoreGraphics.CGVector); }
 #endif
 		static CoreAnimation.CATransform3D xamarin_nsvalue_to_catransform3d (IntPtr value) { if (value == IntPtr.Zero) return default (CoreAnimation.CATransform3D); return Runtime.GetNSObject<NSValue> (value)?.CATransform3DValue ?? default (CoreAnimation.CATransform3D); }
@@ -117,23 +119,44 @@ namespace ObjCRuntime {
 		static CoreMedia.CMTime xamarin_nsvalue_to_cmtime (IntPtr value) { if (value == IntPtr.Zero) return default (CoreMedia.CMTime); return Runtime.GetNSObject<NSValue> (value)?.CMTimeValue ?? default (CoreMedia.CMTime); }
 		static CoreMedia.CMTimeMapping xamarin_nsvalue_to_cmtimemapping (IntPtr value) { if (value == IntPtr.Zero) return default (CoreMedia.CMTimeMapping); return Runtime.GetNSObject<NSValue> (value)?.CMTimeMappingValue ?? default (CoreMedia.CMTimeMapping); }
 		static CoreMedia.CMTimeRange xamarin_nsvalue_to_cmtimerange (IntPtr value) { if (value == IntPtr.Zero) return default (CoreMedia.CMTimeRange); return Runtime.GetNSObject<NSValue> (value)?.CMTimeRangeValue ?? default (CoreMedia.CMTimeRange); }
+		[SupportedOSPlatform ("ios16.0")]
+		[SupportedOSPlatform ("macos13.0")]
+		[SupportedOSPlatform ("maccatalyst16.0")]
+		[SupportedOSPlatform ("tvos16.0")]
 		static CoreMedia.CMVideoDimensions xamarin_nsvalue_to_cmvideodimensions (IntPtr value) { if (value == IntPtr.Zero) return default (CoreMedia.CMVideoDimensions); return Runtime.GetNSObject<NSValue> (value)?.CMVideoDimensionsValue ?? default (CoreMedia.CMVideoDimensions); }
 		static MapKit.MKCoordinateSpan xamarin_nsvalue_to_mkcoordinatespan (IntPtr value) { if (value == IntPtr.Zero) return default (MapKit.MKCoordinateSpan); return Runtime.GetNSObject<NSValue> (value)?.CoordinateSpanValue ?? default (MapKit.MKCoordinateSpan); }
 		static SceneKit.SCNMatrix4 xamarin_nsvalue_to_scnmatrix4 (IntPtr value) { if (value == IntPtr.Zero) return default (SceneKit.SCNMatrix4); return Runtime.GetNSObject<NSValue> (value)?.SCNMatrix4Value ?? default (SceneKit.SCNMatrix4); }
 		static SceneKit.SCNVector3 xamarin_nsvalue_to_scnvector3 (IntPtr value) { if (value == IntPtr.Zero) return default (SceneKit.SCNVector3); return Runtime.GetNSObject<NSValue> (value)?.Vector3Value ?? default (SceneKit.SCNVector3); }
 		static SceneKit.SCNVector4 xamarin_nsvalue_to_scnvector4 (IntPtr value) { if (value == IntPtr.Zero) return default (SceneKit.SCNVector4); return Runtime.GetNSObject<NSValue> (value)?.Vector4Value ?? default (SceneKit.SCNVector4); }
 #if HAS_UIKIT
+		[SupportedOSPlatform ("ios")]
+		[UnsupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("tvos")]
 		static UIKit.UIEdgeInsets xamarin_nsvalue_to_uiedgeinsets (IntPtr value) { if (value == IntPtr.Zero) return default (UIKit.UIEdgeInsets); return Runtime.GetNSObject<NSValue> (value)?.UIEdgeInsetsValue ?? default (UIKit.UIEdgeInsets); }
+		[SupportedOSPlatform ("ios")]
+		[UnsupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("tvos")]
 		static UIKit.UIOffset xamarin_nsvalue_to_uioffset (IntPtr value) { if (value == IntPtr.Zero) return default (UIKit.UIOffset); return Runtime.GetNSObject<NSValue> (value)?.UIOffsetValue ?? default (UIKit.UIOffset); }
+		[SupportedOSPlatform ("ios")]
+		[UnsupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("tvos")]
 		static UIKit.NSDirectionalEdgeInsets xamarin_nsvalue_to_nsdirectionaledgeinsets (IntPtr value) { if (value == IntPtr.Zero) return default (UIKit.NSDirectionalEdgeInsets); return Runtime.GetNSObject<NSValue> (value)?.DirectionalEdgeInsetsValue ?? default (UIKit.NSDirectionalEdgeInsets); }
 #endif
 
+#pragma warning disable RBI0014
 		static IntPtr xamarin_nsrange_to_nsvalue (Foundation.NSRange value) { using var rv = NSValue.FromRange (value); rv.DangerousRetain ().DangerousAutorelease (); return rv.Handle; }
 		static IntPtr xamarin_cgaffinetransform_to_nsvalue (CoreGraphics.CGAffineTransform value) { using var rv = NSValue.FromCGAffineTransform (value); rv.DangerousRetain ().DangerousAutorelease (); return rv.Handle; }
 		static IntPtr xamarin_cgpoint_to_nsvalue (CoreGraphics.CGPoint value) { using var rv = NSValue.FromCGPoint (value); rv.DangerousRetain ().DangerousAutorelease (); return rv.Handle; }
 		static IntPtr xamarin_cgrect_to_nsvalue (CoreGraphics.CGRect value) { using var rv = NSValue.FromCGRect (value); rv.DangerousRetain ().DangerousAutorelease (); return rv.Handle; }
 		static IntPtr xamarin_cgsize_to_nsvalue (CoreGraphics.CGSize value) { using var rv = NSValue.FromCGSize (value); rv.DangerousRetain ().DangerousAutorelease (); return rv.Handle; }
 #if !__MACOS__
+		[SupportedOSPlatform ("ios")]
+		[UnsupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("tvos")]
 		static IntPtr xamarin_cgvector_to_nsvalue (CoreGraphics.CGVector value) { using var rv = NSValue.FromCGVector (value); rv.DangerousRetain ().DangerousAutorelease (); return rv.Handle; }
 #endif
 		static IntPtr xamarin_catransform3d_to_nsvalue (CoreAnimation.CATransform3D value) { using var rv = NSValue.FromCATransform3D (value); rv.DangerousRetain ().DangerousAutorelease (); return rv.Handle; }
@@ -141,16 +164,33 @@ namespace ObjCRuntime {
 		static IntPtr xamarin_cmtime_to_nsvalue (CoreMedia.CMTime value) { using var rv = NSValue.FromCMTime (value); rv.DangerousRetain ().DangerousAutorelease (); return rv.Handle; }
 		static IntPtr xamarin_cmtimemapping_to_nsvalue (CoreMedia.CMTimeMapping value) { using var rv = NSValue.FromCMTimeMapping (value); rv.DangerousRetain ().DangerousAutorelease (); return rv.Handle; }
 		static IntPtr xamarin_cmtimerange_to_nsvalue (CoreMedia.CMTimeRange value) { using var rv = NSValue.FromCMTimeRange (value); rv.DangerousRetain ().DangerousAutorelease (); return rv.Handle; }
+		[SupportedOSPlatform ("ios16.0")]
+		[SupportedOSPlatform ("macos13.0")]
+		[SupportedOSPlatform ("maccatalyst16.0")]
+		[SupportedOSPlatform ("tvos16.0")]
 		static IntPtr xamarin_cmvideodimensions_to_nsvalue (CoreMedia.CMVideoDimensions value) { using var rv = NSValue.FromCMVideoDimensions (value); rv.DangerousRetain ().DangerousAutorelease (); return rv.Handle; }
 		static IntPtr xamarin_mkcoordinatespan_to_nsvalue (MapKit.MKCoordinateSpan value) { using var rv = NSValue.FromMKCoordinateSpan (value); rv.DangerousRetain ().DangerousAutorelease (); return rv.Handle; }
 		static IntPtr xamarin_scnmatrix4_to_nsvalue (SceneKit.SCNMatrix4 value) { using var rv = NSValue.FromSCNMatrix4 (value); rv.DangerousRetain ().DangerousAutorelease (); return rv.Handle; }
 		static IntPtr xamarin_scnvector3_to_nsvalue (SceneKit.SCNVector3 value) { using var rv = NSValue.FromVector (value); rv.DangerousRetain ().DangerousAutorelease (); return rv.Handle; }
 		static IntPtr xamarin_scnvector4_to_nsvalue (SceneKit.SCNVector4 value) { using var rv = NSValue.FromVector (value); rv.DangerousRetain ().DangerousAutorelease (); return rv.Handle; }
 #if HAS_UIKIT
+		[SupportedOSPlatform ("ios")]
+		[UnsupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("tvos")]
 		static IntPtr xamarin_uiedgeinsets_to_nsvalue (UIKit.UIEdgeInsets value) { using var rv = NSValue.FromUIEdgeInsets (value); rv.DangerousRetain ().DangerousAutorelease (); return rv.Handle; }
+		[SupportedOSPlatform ("ios")]
+		[UnsupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("tvos")]
 		static IntPtr xamarin_uioffset_to_nsvalue (UIKit.UIOffset value) { using var rv = NSValue.FromUIOffset (value); rv.DangerousRetain ().DangerousAutorelease (); return rv.Handle; }
+		[SupportedOSPlatform ("ios")]
+		[UnsupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("tvos")]
 		static IntPtr xamarin_nsdirectionaledgeinsets_to_nsvalue (UIKit.NSDirectionalEdgeInsets value) { using var rv = NSValue.FromDirectionalEdgeInsets (value); rv.DangerousRetain ().DangerousAutorelease (); return rv.Handle; }
 #endif
+#pragma warning restore RBI0014
 
 		static System.SByte xamarin_nsnumber_to_sbyte (IntPtr value) { if (value == IntPtr.Zero) return default (System.SByte); return Runtime.GetNSObject<NSNumber> (value)?.SByteValue ?? default (System.SByte); }
 		static System.Byte xamarin_nsnumber_to_byte (IntPtr value) { if (value == IntPtr.Zero) return default (System.Byte); return Runtime.GetNSObject<NSNumber> (value)?.ByteValue ?? default (System.Byte); }
@@ -165,17 +205,7 @@ namespace ObjCRuntime {
 		static System.Single xamarin_nsnumber_to_float (IntPtr value) { if (value == IntPtr.Zero) return default (System.Single); return Runtime.GetNSObject<NSNumber> (value)?.FloatValue ?? default (System.Single); }
 		static System.Double xamarin_nsnumber_to_double (IntPtr value) { if (value == IntPtr.Zero) return default (System.Double); return Runtime.GetNSObject<NSNumber> (value)?.DoubleValue ?? default (System.Double); }
 		static System.Boolean xamarin_nsnumber_to_bool (IntPtr value) { if (value == IntPtr.Zero) return default (System.Boolean); return Runtime.GetNSObject<NSNumber> (value)?.BoolValue ?? default (System.Boolean); }
-		static nfloat xamarin_nsnumber_to_nfloat (IntPtr value)
-		{
-			if (value == IntPtr.Zero)
-				return default (nfloat);
-			var number = Runtime.GetNSObject<NSNumber> (value);
-			if (number is null)
-				return default (nfloat);
-			if (IntPtr.Size == 4)
-				return (nfloat) number.FloatValue;
-			return (nfloat) number.DoubleValue;
-		}
+		static nfloat xamarin_nsnumber_to_nfloat (IntPtr value) { if (value == IntPtr.Zero) return default (nfloat); return (nfloat?) Runtime.GetNSObject<NSNumber> (value)?.DoubleValue ?? default (nfloat); }
 
 		static System.SByte? xamarin_nsnumber_to_nullable_sbyte (IntPtr value) { return Runtime.GetNSObject<NSNumber> (value)?.SByteValue ?? null; }
 		static System.Byte? xamarin_nsnumber_to_nullable_byte (IntPtr value) { return Runtime.GetNSObject<NSNumber> (value)?.ByteValue ?? null; }
@@ -190,17 +220,7 @@ namespace ObjCRuntime {
 		static System.Single? xamarin_nsnumber_to_nullable_float (IntPtr value) { return Runtime.GetNSObject<NSNumber> (value)?.FloatValue ?? null; }
 		static System.Double? xamarin_nsnumber_to_nullable_double (IntPtr value) { return Runtime.GetNSObject<NSNumber> (value)?.DoubleValue ?? null; }
 		static System.Boolean? xamarin_nsnumber_to_nullable_bool (IntPtr value) { return Runtime.GetNSObject<NSNumber> (value)?.BoolValue ?? null; }
-		static nfloat? xamarin_nsnumber_to_nullable_nfloat (IntPtr value)
-		{
-			if (value == IntPtr.Zero)
-				return null;
-			var number = Runtime.GetNSObject<NSNumber> (value);
-			if (number is null)
-				return null;
-			if (IntPtr.Size == 4)
-				return (nfloat) number.FloatValue;
-			return (nfloat) number.DoubleValue;
-		}
+		static nfloat? xamarin_nsnumber_to_nullable_nfloat (IntPtr value) { return (nfloat?) Runtime.GetNSObject<NSNumber> (value)?.DoubleValue ?? null; }
 
 		static IntPtr xamarin_sbyte_to_nsnumber (System.SByte value) { return NSNumber.FromSByte (value).DangerousRetain ().DangerousAutorelease ().Handle; }
 		static IntPtr xamarin_byte_to_nsnumber (System.Byte value) { return NSNumber.FromByte (value).DangerousRetain ().DangerousAutorelease ().Handle; }
@@ -215,12 +235,7 @@ namespace ObjCRuntime {
 		static IntPtr xamarin_float_to_nsnumber (System.Single value) { return NSNumber.FromFloat (value).DangerousRetain ().DangerousAutorelease ().Handle; }
 		static IntPtr xamarin_double_to_nsnumber (System.Double value) { return NSNumber.FromDouble (value).DangerousRetain ().DangerousAutorelease ().Handle; }
 		static IntPtr xamarin_bool_to_nsnumber (System.Boolean value) { return NSNumber.FromBoolean (value).DangerousRetain ().DangerousAutorelease ().Handle; }
-		static IntPtr xamarin_nfloat_to_nsnumber (nfloat value)
-		{
-			if (IntPtr.Size == 4)
-				return NSNumber.FromFloat ((float) value).DangerousRetain ().DangerousAutorelease ().Handle;
-			return NSNumber.FromDouble ((double) value).DangerousRetain ().DangerousAutorelease ().Handle;
-		}
+		static IntPtr xamarin_nfloat_to_nsnumber (nfloat value) { return NSNumber.FromDouble ((double) value).DangerousRetain ().DangerousAutorelease ().Handle; }
 
 		static IntPtr xamarin_nullable_sbyte_to_nsnumber (System.SByte? value) { if (!value.HasValue) return IntPtr.Zero; return NSNumber.FromSByte (value.Value).DangerousRetain ().DangerousAutorelease ().Handle; }
 		static IntPtr xamarin_nullable_byte_to_nsnumber (System.Byte? value) { if (!value.HasValue) return IntPtr.Zero; return NSNumber.FromByte (value.Value).DangerousRetain ().DangerousAutorelease ().Handle; }
@@ -235,15 +250,6 @@ namespace ObjCRuntime {
 		static IntPtr xamarin_nullable_float_to_nsnumber (System.Single? value) { if (!value.HasValue) return IntPtr.Zero; return NSNumber.FromFloat (value.Value).DangerousRetain ().DangerousAutorelease ().Handle; }
 		static IntPtr xamarin_nullable_double_to_nsnumber (System.Double? value) { if (!value.HasValue) return IntPtr.Zero; return NSNumber.FromDouble (value.Value).DangerousRetain ().DangerousAutorelease ().Handle; }
 		static IntPtr xamarin_nullable_bool_to_nsnumber (System.Boolean? value) { if (!value.HasValue) return IntPtr.Zero; return NSNumber.FromBoolean (value.Value).DangerousRetain ().DangerousAutorelease ().Handle; }
-		static IntPtr xamarin_nullable_nfloat_to_nsnumber (nfloat? value)
-		{
-			if (!value.HasValue)
-				return IntPtr.Zero;
-			if (IntPtr.Size == 4)
-				return NSNumber.FromFloat ((float) value.Value).DangerousRetain ().DangerousAutorelease ().Handle;
-			return NSNumber.FromDouble ((double) value.Value).DangerousRetain ().DangerousAutorelease ().Handle;
-		}
+		static IntPtr xamarin_nullable_nfloat_to_nsnumber (nfloat? value) { if (!value.HasValue) return IntPtr.Zero; return NSNumber.FromDouble ((double) value.Value).DangerousRetain ().DangerousAutorelease ().Handle; }
 	}
 }
-
-#endif // NET

@@ -16,20 +16,38 @@ using CoreFoundation;
 #nullable enable
 
 namespace GameKit {
-#if !MONOMAC && !TVOS && !WATCH
+#if !MONOMAC && !TVOS
+	/// <summary>Provides data for the <see cref="GameKit.GKSession.ReceiveData" /> event.</summary>
+	///     <remarks>
+	///     </remarks>
 	public class GKDataReceivedEventArgs : EventArgs {
+		/// <param name="data">To be added.</param>
+		///         <param name="peer">To be added.</param>
+		///         <param name="session">To be added.</param>
+		///         <summary>Initializes a new instance of the GKDataReceivedEventArgs class.</summary>
+		///         <remarks>
+		///         </remarks>
 		public GKDataReceivedEventArgs (NSData data, string peer, GKSession session)
 		{
 			Data = data;
 			PeerID = peer;
 			Session = session;
 		}
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSData Data { get; private set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string PeerID { get; private set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public GKSession Session { get; private set; }
 	}
 
-#if !TVOS && !WATCH
+#if !TVOS
 	public partial class GKSession {
 		[Register ("MonoTouch_GKSession_ReceivedObject")]
 		internal class ReceiverObject : NSObject {
@@ -53,6 +71,8 @@ namespace GameKit {
 		//
 		// This delegate is used by the 
 		ReceiverObject? receiver;
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		public event EventHandler<GKDataReceivedEventArgs>? ReceiveData {
 			add {
 				if (receiver is null) {
@@ -70,6 +90,10 @@ namespace GameKit {
 			}
 		}
 
+		/// <param name="obj">To be added.</param>
+		///         <param name="context">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void SetDataReceiveHandler (NSObject obj, IntPtr context)
 		{
 			receiver = null;
@@ -89,6 +113,8 @@ namespace GameKit {
 			return (Mono_GKSessionDelegate) del;
 		}
 
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		public event EventHandler<GKPeerChangedStateEventArgs> PeerChanged {
 			add {
 				EnsureDelegate ().cbPeerChanged += value;
@@ -99,6 +125,8 @@ namespace GameKit {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		public event EventHandler<GKPeerConnectionEventArgs> ConnectionRequest {
 			add {
 				EnsureDelegate ().cbConnectionRequest += value;
@@ -109,6 +137,8 @@ namespace GameKit {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		public event EventHandler<GKPeerConnectionEventArgs> ConnectionFailed {
 			add {
 				EnsureDelegate ().cbConnectionFailed += value;
@@ -118,6 +148,8 @@ namespace GameKit {
 				EnsureDelegate ().cbConnectionFailed -= value;
 			}
 		}
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		public event EventHandler<GKPeerConnectionEventArgs> Failed {
 			add {
 				EnsureDelegate ().cbFailedWithError += value;
@@ -131,7 +163,9 @@ namespace GameKit {
 
 	class Mono_GKSessionDelegate : GKSessionDelegate {
 		internal EventHandler<GKPeerChangedStateEventArgs>? cbPeerChanged;
-		internal EventHandler<GKPeerConnectionEventArgs>? cbConnectionRequest, cbConnectionFailed, cbFailedWithError;
+		internal EventHandler<GKPeerConnectionEventArgs>? cbConnectionRequest;
+		internal EventHandler<GKPeerConnectionEventArgs>? cbConnectionFailed;
+		internal EventHandler<GKPeerConnectionEventArgs>? cbFailedWithError;
 
 		public Mono_GKSessionDelegate ()
 		{
@@ -169,7 +203,16 @@ namespace GameKit {
 	}
 #endif // !TVOS
 
+	/// <summary>Provides data for the <see cref="GameKit.GKSession.PeerChanged" /> event.</summary>
+	///     <remarks>
+	///     </remarks>
 	public class GKPeerChangedStateEventArgs : EventArgs {
+		/// <param name="session">To be added.</param>
+		///         <param name="peerID">To be added.</param>
+		///         <param name="state">To be added.</param>
+		///         <summary>Initializes a new instance of the GKPeerChangedStateEventArgs class.</summary>
+		///         <remarks>
+		///         </remarks>
 		public GKPeerChangedStateEventArgs (GKSession session, string peerID, GKPeerConnectionState state)
 		{
 			Session = session;
@@ -177,20 +220,47 @@ namespace GameKit {
 			State = state;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public GKSession Session { get; private set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string PeerID { get; private set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public GKPeerConnectionState State { get; private set; }
 	}
 
+	/// <summary>Provides data for the <see cref="GameKit.GKSession.Failed" />, <see cref="GameKit.GKSession.ConnectionRequest" /> and <see cref="GameKit.GKSession.ConnectionFailed" /> events.</summary>
+	///     <remarks>
+	///     </remarks>
 	public class GKPeerConnectionEventArgs : EventArgs {
+		/// <param name="session">To be added.</param>
+		///         <param name="peerID">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>Initializes a new instance of the GKPeerConnectionEventArgs class.</summary>
+		///         <remarks>
+		///         </remarks>
 		public GKPeerConnectionEventArgs (GKSession session, string? peerID, NSError? error)
 		{
 			Session = session;
 			PeerID = peerID;
 			Error = error;
 		}
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public GKSession Session { get; private set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? PeerID { get; private set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSError? Error { get; private set; }
 	}
 #endif
@@ -200,6 +270,11 @@ namespace GameKit {
 
 	public partial class GKTurnBasedExchange {
 
+		/// <summary>Returns a string representation of the value of the current instance.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public override string ToString ()
 		{
 			return "GKTurnBasedExchange";
@@ -208,6 +283,11 @@ namespace GameKit {
 
 	public partial class GKTurnBasedExchangeReply {
 
+		/// <summary>Returns a string representation of the value of the current instance.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public override string ToString ()
 		{
 			return "GKTurnBasedExchangeReply";
@@ -216,6 +296,11 @@ namespace GameKit {
 
 	public partial class GKChallenge {
 
+		/// <summary>Returns a string representation of the value of the current instance.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public override string ToString ()
 		{
 			return GetType ().ToString ();

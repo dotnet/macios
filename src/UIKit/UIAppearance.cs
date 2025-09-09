@@ -7,23 +7,28 @@
 // Copyright 2011, 2015 Xamarin Inc
 //
 
-#if !WATCH
-
 using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using Foundation;
 using ObjCRuntime;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 // Disable until we get around to enable + fix any issues.
 #nullable disable
 
 namespace UIKit {
+#if __TVOS__
+	/// <include file="../../docs/api/UIKit/UIAppearance.xml" path="/Documentation/Docs[@DocId='tvOS:T:UIKit.UIAppearance']/*" />
+#elif __MACCATALYST__
+	/// <include file="../../docs/api/UIKit/UIAppearance.xml" path="/Documentation/Docs[@DocId='MacCatalyst:T:UIKit.UIAppearance']/*" />
+#else
+	/// <include file="../../docs/api/UIKit/UIAppearance.xml" path="/Documentation/Docs[@DocId='T:UIKit.UIAppearance']/*" />
+#endif
 	public partial class UIAppearance {
+		/// <param name="other">To be added.</param>
+		///         <summary>Whether this is equivalent to <paramref name="other" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override bool Equals (object other)
 		{
 			UIAppearance ao = other as UIAppearance;
@@ -32,6 +37,9 @@ namespace UIKit {
 			return ao.Handle == Handle;
 		}
 
+		/// <summary>Generates a hash code for the current instance.</summary>
+		///         <returns>A int containing the hash code for this instance.</returns>
+		///         <remarks>The algorithm used to generate the hash code is unspecified.</remarks>
 		public override int GetHashCode ()
 		{
 			return Handle.GetHashCode ();
@@ -43,7 +51,6 @@ namespace UIKit {
 				return ReferenceEquals (b, null);
 			else if (ReferenceEquals (b, null))
 				return false;
-
 			return a.Handle == b.Handle;
 		}
 
@@ -78,7 +85,7 @@ namespace UIKit {
 		public static IntPtr GetAppearance (IntPtr class_ptr, params Type [] whenFoundIn)
 		{
 			using (var array = NSArray.FromIntPtrs (TypesToPointers (whenFoundIn))) {
-				return Messaging.IntPtr_objc_msgSend_IntPtr (class_ptr, 
+				return Messaging.IntPtr_objc_msgSend_IntPtr (class_ptr,
 					Selector.GetHandle (UIAppearance.selAppearanceWhenContainedInInstancesOfClasses), array.Handle);
 			}
 		}
@@ -92,15 +99,22 @@ namespace UIKit {
 				throw new ArgumentNullException ("traits");
 
 			using (var array = NSArray.FromIntPtrs (TypesToPointers (whenFoundIn))) {
-				return Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr (class_ptr, 
+				IntPtr result = Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr (class_ptr,
 					Selector.GetHandle (UIAppearance.selAppearanceForTraitCollectionWhenContainedInInstancesOfClasses),
 					traits.Handle, array.Handle);
+				GC.KeepAlive (traits);
+				return result;
 			}
 		}
 #else
 		const string selAppearanceWhenContainedIn = "appearanceWhenContainedIn:";
 		const string selAppearanceForTraitCollectionWhenContainedIn = "appearanceForTraitCollection:whenContainedIn:";
 
+		/// <param name="class_ptr">To be added.</param>
+		///         <param name="whenFoundIn">To be added.</param>
+		///         <summary>This object's appearance proxy in the specified containment hierarchy.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public static IntPtr GetAppearance (IntPtr class_ptr, params Type [] whenFoundIn)
 		{
@@ -117,6 +131,12 @@ namespace UIKit {
 				ptrs);
 		}
 
+		/// <param name="class_ptr">To be added.</param>
+		///         <param name="traits">To be added.</param>
+		///         <param name="whenFoundIn">To be added.</param>
+		///         <summary>Returns an appearance proxy for the specified <paramref name="traits" /> when found in the <paramref name="whenFoundIn" /> containment hierarchy.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public static IntPtr GetAppearance (IntPtr class_ptr, UITraitCollection traits, params Type [] whenFoundIn)
 		{
@@ -129,12 +149,14 @@ namespace UIKit {
 			var firstPtr = ptrs [0];
 			Array.Copy (ptrs, 1, ptrs, 0, ptrs.Length - 1);
 			Array.Resize (ref ptrs, ptrs.Length - 1);
-			return Messaging.objc_msgSend_4_vargs (
+			IntPtr result = Messaging.objc_msgSend_4_vargs (
 				class_ptr,
 				Selector.GetHandle (UIAppearance.selAppearanceForTraitCollectionWhenContainedIn),
 				traits.Handle,
 				firstPtr,
 				ptrs);
+			GC.KeepAlive (traits);
+			return result;
 		}
 
 		[DllImport (Messaging.LIBOBJC_DYLIB, EntryPoint = "objc_msgSend")]
@@ -143,14 +165,19 @@ namespace UIKit {
 
 		const string selAppearanceForTraitCollection = "appearanceForTraitCollection:";
 
+		/// <param name="class_ptr">To be added.</param>
+		///         <param name="traits">To be added.</param>
+		///         <summary>Returns an appearance proxy for the specified <paramref name="traits" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static IntPtr GetAppearance (IntPtr class_ptr, UITraitCollection traits)
 		{
 			if (traits is null)
 				throw new ArgumentNullException ("traits");
 
-			return Messaging.IntPtr_objc_msgSend_IntPtr (class_ptr, Selector.GetHandle (UIAppearance.selAppearanceForTraitCollection), traits.Handle);
+			IntPtr result = Messaging.IntPtr_objc_msgSend_IntPtr (class_ptr, Selector.GetHandle (UIAppearance.selAppearanceForTraitCollection), traits.Handle);
+			GC.KeepAlive (traits);
+			return result;
 		}
 	}
 }
-
-#endif // !WATCH

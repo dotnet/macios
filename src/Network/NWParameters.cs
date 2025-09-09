@@ -21,68 +21,36 @@ using OS_nw_parameters = System.IntPtr;
 using nw_parameters_attribution_t = System.IntPtr;
 using OS_nw_privacy_context = System.IntPtr;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace Network {
-
-#if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-#else
-	[Watch (6, 0)]
-#endif
 	public class NWParameters : NativeObject {
 		[Preserve (Conditional = true)]
-#if NET
-		internal NWParameters (NativeHandle handle, bool owns) : base (handle, owns) {}
-#else
-		public NWParameters (NativeHandle handle, bool owns) : base (handle, owns) { }
-#endif
+		internal NWParameters (NativeHandle handle, bool owns) : base (handle, owns) { }
 
 #if !COREBUILD
-#if NET
 		[SupportedOSPlatform ("tvos16.0")]
 		[SupportedOSPlatform ("macos13.0")]
 		[SupportedOSPlatform ("ios16.0")]
 		[SupportedOSPlatform ("maccatalyst16.0")]
-#else
-		[TV (16, 0)]
-		[Mac (13, 0)]
-		[iOS (16, 0)]
-		[Watch (9, 0)]
-#endif
 		[DllImport (Constants.NetworkLibrary)]
 		static extern OS_nw_parameters nw_parameters_create_application_service ();
 
-#if NET
 		[SupportedOSPlatform ("tvos16.0")]
 		[SupportedOSPlatform ("macos13.0")]
 		[SupportedOSPlatform ("ios16.0")]
 		[SupportedOSPlatform ("maccatalyst16.0")]
-#else
-		[TV (16, 0)]
-		[Mac (13, 0)]
-		[iOS (16, 0)]
-		[Watch (9, 0)]
-#endif
 		public static NWParameters CreateApplicationService () => new NWParameters (nw_parameters_create_application_service (), true);
 
 		static unsafe BlockLiteral* DEFAULT_CONFIGURATION () => (BlockLiteral*) NWParametersConstants._DefaultConfiguration;
 
 		static unsafe BlockLiteral* DISABLE_PROTOCOL () => (BlockLiteral*) NWParametersConstants._ProtocolDisable;
 
-#if !NET
-		delegate void nw_parameters_configure_protocol_block_t (IntPtr block, IntPtr iface);
-		static nw_parameters_configure_protocol_block_t static_ConfigureHandler = TrampolineConfigureHandler;
-
-		[MonoPInvokeCallback (typeof (nw_parameters_configure_protocol_block_t))]
-#else
 		[UnmanagedCallersOnly]
-#endif
 		static void TrampolineConfigureHandler (IntPtr block, IntPtr iface)
 		{
 			var del = BlockLiteral.GetTarget<Action<NWProtocolOptions>> (block);
@@ -97,10 +65,14 @@ namespace Network {
 						castedOptions = new NWProtocolUdpOptions (iface, owns: false);
 					} else if (definition.Equals (NWProtocolDefinition.CreateTlsDefinition ())) {
 						castedOptions = new NWProtocolTlsOptions (iface, owns: false);
+#pragma warning disable CA1416 // This call site is reachable on: 'ios' 12.2 and later, 'maccatalyst' 12.2 and later, 'macOS/OSX' 12.0 and later, 'tvos' 12.2 and later. 'NWProtocolIPOptions' is only supported on: 'ios' 13.0 and later, 'maccatalyst' 13.0 and later, 'tvos' 13.0 and later
 					} else if (definition.Equals (NWProtocolDefinition.CreateIPDefinition ())) {
 						castedOptions = new NWProtocolIPOptions (iface, owns: false);
+#pragma warning restore CA1416
+#pragma warning disable CA1416 // This call site is reachable on: 'ios' 12.2 and later, 'maccatalyst' 12.2 and later, 'macOS/OSX' 12.0 and later, 'tvos' 12.2 and later. 'NWWebSocketOptions' is only supported on: 'ios' 13.0 and later, 'maccatalyst' 13.0 and later, 'tvos' 13.0 and later.
 					} else if (definition.Equals (NWProtocolDefinition.CreateWebSocketDefinition ())) {
 						castedOptions = new NWWebSocketOptions (iface, owns: false);
+#pragma warning restore CA1416
 					}
 
 					try {
@@ -123,13 +95,8 @@ namespace Network {
 				return DEFAULT_CONFIGURATION ();
 			}
 
-#if NET
 			delegate* unmanaged<IntPtr, IntPtr, void> trampoline = &TrampolineConfigureHandler;
 			var block = new BlockLiteral (trampoline, callback, typeof (NWParameters), nameof (TrampolineConfigureHandler));
-#else
-			var block = new BlockLiteral ();
-			block.SetupBlockUnsafe (static_ConfigureHandler, callback);
-#endif
 			*callbackBlock = block;
 			disposeReturnValue = true;
 			return callbackBlock;
@@ -138,6 +105,11 @@ namespace Network {
 		//
 		// If you pass null, to either configureTls, or configureTcp they will use the default options
 		//
+		/// <param name="configureTls">To be added.</param>
+		///         <param name="configureTcp">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public unsafe static NWParameters CreateSecureTcp (Action<NWProtocolOptions>? configureTls = null, Action<NWProtocolOptions>? configureTcp = null)
 		{
@@ -158,6 +130,10 @@ namespace Network {
 			return new NWParameters (ptr, owns: true);
 		}
 
+		/// <param name="configureTcp">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		// If you pass null to configureTcp, it will use the default options
 		public unsafe static NWParameters CreateTcp (Action<NWProtocolOptions>? configureTcp = null)
@@ -180,6 +156,11 @@ namespace Network {
 		//
 		// If you pass null, to either configureTls, or configureTcp they will use the default options
 		//
+		/// <param name="configureTls">To be added.</param>
+		///         <param name="configureUdp">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public unsafe static NWParameters CreateSecureUdp (Action<NWProtocolOptions>? configureTls = null, Action<NWProtocolOptions>? configureUdp = null)
 		{
@@ -201,6 +182,10 @@ namespace Network {
 		}
 
 		// If you pass null to configureTcp, it will use the default options
+		/// <param name="configureUdp">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public unsafe static NWParameters CreateUdp (Action<NWProtocolOptions>? configureUdp = null)
 		{
@@ -216,29 +201,17 @@ namespace Network {
 		}
 
 #if MONOMAC
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("ios")]
-#else
-		[NoWatch]
-		[NoTV]
-		[NoiOS]
-#endif
 		[DllImport (Constants.NetworkLibrary)]
-		unsafe static extern IntPtr nw_parameters_create_custom_ip (byte custom_ip_protocol_number, BlockLiteral *configure_ip);
+		unsafe static extern IntPtr nw_parameters_create_custom_ip (byte custom_ip_protocol_number, BlockLiteral* configure_ip);
 
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("ios")]
-#else
-		[NoWatch]
-		[NoTV]
-		[NoiOS]
-#endif
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public unsafe static NWParameters CreateCustomIP (byte protocolNumber, Action<NWProtocolOptions>? configureCustomIP = null)
 		{
@@ -257,6 +230,8 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern nw_parameters_t nw_parameters_create ();
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NWParameters ()
 		{
 			InitializeHandle (nw_parameters_create ());
@@ -265,6 +240,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern nw_parameters_t nw_parameters_copy (nw_parameters_t handle);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public NWParameters Clone ()
 		{
 			return new NWParameters (nw_parameters_copy (GetCheckedHandle ()), owns: true);
@@ -276,6 +254,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern NWMultiPathService nw_parameters_get_multipath_service (nw_parameters_t parameters);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NWMultiPathService MultipathService {
 			get => nw_parameters_get_multipath_service (GetCheckedHandle ());
 			set => nw_parameters_set_multipath_service (GetCheckedHandle (), value);
@@ -284,6 +265,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern IntPtr nw_parameters_copy_default_protocol_stack (nw_parameters_t parameters);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NWProtocolStack ProtocolStack => new NWProtocolStack (nw_parameters_copy_default_protocol_stack (GetCheckedHandle ()), owns: true);
 
 		[DllImport (Constants.NetworkLibrary)]
@@ -292,6 +276,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern byte nw_parameters_get_local_only (nw_parameters_t parameters);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool LocalOnly {
 			get => nw_parameters_get_local_only (GetCheckedHandle ()) != 0;
 			set => nw_parameters_set_local_only (GetCheckedHandle (), value.AsByte ());
@@ -303,6 +290,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern byte nw_parameters_get_prefer_no_proxy (nw_parameters_t parameters);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool PreferNoProxy {
 			get => nw_parameters_get_prefer_no_proxy (GetCheckedHandle ()) != 0;
 			set => nw_parameters_set_prefer_no_proxy (GetCheckedHandle (), value.AsByte ());
@@ -314,6 +304,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern NWParametersExpiredDnsBehavior nw_parameters_get_expired_dns_behavior (nw_parameters_t parameters);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NWParametersExpiredDnsBehavior ExpiredDnsBehavior {
 			get => nw_parameters_get_expired_dns_behavior (GetCheckedHandle ());
 			set => nw_parameters_set_expired_dns_behavior (GetCheckedHandle (), value);
@@ -325,6 +318,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern IntPtr nw_parameters_copy_required_interface (nw_parameters_t parameters);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NWInterface? RequiredInterface {
 			get {
 				var iface = nw_parameters_copy_required_interface (GetCheckedHandle ());
@@ -336,23 +332,30 @@ namespace Network {
 			}
 			set {
 				nw_parameters_require_interface (GetCheckedHandle (), value.GetHandle ());
+				GC.KeepAlive (value);
 			}
 		}
 
 		[DllImport (Constants.NetworkLibrary)]
 		static extern void nw_parameters_prohibit_interface (nw_parameters_t parameters, IntPtr handleInterface);
 
+		/// <param name="iface">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void ProhibitInterface (NWInterface iface)
 		{
 			if (iface is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (iface));
 
 			nw_parameters_prohibit_interface (GetCheckedHandle (), iface.Handle);
+			GC.KeepAlive (iface);
 		}
 
 		[DllImport (Constants.NetworkLibrary)]
 		static extern void nw_parameters_clear_prohibited_interfaces (nw_parameters_t parameters);
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void ClearProhibitedInterfaces ()
 		{
 			nw_parameters_clear_prohibited_interfaces (GetCheckedHandle ());
@@ -364,6 +367,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern NWInterfaceType nw_parameters_get_required_interface_type (nw_parameters_t parameters);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NWInterfaceType RequiredInterfaceType {
 			get => nw_parameters_get_required_interface_type (GetCheckedHandle ());
 			set => nw_parameters_set_required_interface_type (GetCheckedHandle (), value);
@@ -372,6 +378,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern void nw_parameters_prohibit_interface_type (nw_parameters_t parameters, NWInterfaceType type);
 
+		/// <param name="ifaceType">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void ProhibitInterfaceType (NWInterfaceType ifaceType)
 		{
 			nw_parameters_prohibit_interface_type (GetCheckedHandle (), ifaceType);
@@ -380,19 +389,14 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern void nw_parameters_clear_prohibited_interface_types (nw_parameters_t parameters);
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void ClearProhibitedInterfaceTypes ()
 		{
 			nw_parameters_clear_prohibited_interface_types (GetCheckedHandle ());
 		}
 
-#if !NET
-		delegate byte nw_parameters_iterate_interfaces_block_t (IntPtr block, IntPtr iface);
-		static nw_parameters_iterate_interfaces_block_t static_iterateProhibitedHandler = TrampolineIterateProhibitedHandler;
-
-		[MonoPInvokeCallback (typeof (nw_parameters_iterate_interfaces_block_t))]
-#else
 		[UnmanagedCallersOnly]
-#endif
 		static byte TrampolineIterateProhibitedHandler (IntPtr block, IntPtr iface)
 		{
 			var del = BlockLiteral.GetTarget<Func<NWInterface, bool>> (block);
@@ -408,29 +412,20 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		unsafe static extern void nw_parameters_iterate_prohibited_interfaces (nw_parameters_t parameters, BlockLiteral* callback);
 
+		/// <param name="iterationCallback">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public void IterateProhibitedInterfaces (Func<NWInterface, bool> iterationCallback)
 		{
 			unsafe {
-#if NET
 				delegate* unmanaged<IntPtr, IntPtr, byte> trampoline = &TrampolineIterateProhibitedHandler;
 				using var block = new BlockLiteral (trampoline, iterationCallback, typeof (NWParameters), nameof (TrampolineIterateProhibitedHandler));
-#else
-				using var block = new BlockLiteral ();
-				block.SetupBlockUnsafe (static_iterateProhibitedHandler, iterationCallback);
-#endif
 				nw_parameters_iterate_prohibited_interfaces (GetCheckedHandle (), &block);
 			}
 		}
 
-#if !NET
-		delegate byte nw_parameters_iterate_interface_types_block_t (IntPtr block, NWInterfaceType type);
-		static nw_parameters_iterate_interface_types_block_t static_IterateProhibitedTypeHandler = TrampolineIterateProhibitedTypeHandler;
-
-		[MonoPInvokeCallback (typeof (nw_parameters_iterate_interface_types_block_t))]
-#else
 		[UnmanagedCallersOnly]
-#endif
 		static byte TrampolineIterateProhibitedTypeHandler (IntPtr block, NWInterfaceType type)
 		{
 			var del = BlockLiteral.GetTarget<Func<NWInterfaceType, bool>> (block);
@@ -442,17 +437,15 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		unsafe static extern void nw_parameters_iterate_prohibited_interface_types (IntPtr handle, BlockLiteral* callback);
 
+		/// <param name="callback">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public void IterateProhibitedInterfaces (Func<NWInterfaceType, bool> callback)
 		{
 			unsafe {
-#if NET
 				delegate* unmanaged<IntPtr, NWInterfaceType, byte> trampoline = &TrampolineIterateProhibitedTypeHandler;
 				using var block = new BlockLiteral (trampoline, callback, typeof (NWParameters), nameof (TrampolineIterateProhibitedTypeHandler));
-#else
-				using var block = new BlockLiteral ();
-				block.SetupBlockUnsafe (static_IterateProhibitedTypeHandler, callback);
-#endif
 				nw_parameters_iterate_prohibited_interface_types (GetCheckedHandle (), &block);
 			}
 		}
@@ -463,6 +456,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern void nw_parameters_set_prohibit_expensive (IntPtr handle, byte prohibit_expensive);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool ProhibitExpensive {
 			get => nw_parameters_get_prohibit_expensive (GetCheckedHandle ()) != 0;
 			set => nw_parameters_set_prohibit_expensive (GetCheckedHandle (), value.AsByte ());
@@ -474,6 +470,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern void nw_parameters_set_reuse_local_address (IntPtr handle, byte reuse_local_address);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool ReuseLocalAddress {
 			get => nw_parameters_get_reuse_local_address (GetCheckedHandle ()) != 0;
 			set => nw_parameters_set_reuse_local_address (GetCheckedHandle (), value.AsByte ());
@@ -485,6 +484,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern void nw_parameters_set_fast_open_enabled (IntPtr handle, byte fast_open_enabled);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool FastOpenEnabled {
 			get => nw_parameters_get_fast_open_enabled (GetCheckedHandle ()) != 0;
 			set => nw_parameters_set_fast_open_enabled (GetCheckedHandle (), value.AsByte ());
@@ -496,6 +498,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern void nw_parameters_set_service_class (IntPtr handle, NWServiceClass service_class);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NWServiceClass ServiceClass {
 			get => nw_parameters_get_service_class (GetCheckedHandle ());
 			set => nw_parameters_set_service_class (GetCheckedHandle (), value);
@@ -507,6 +512,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern void nw_parameters_set_local_endpoint (IntPtr handle, IntPtr endpoint);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NWEndpoint? LocalEndpoint {
 			get {
 				var x = nw_parameters_copy_local_endpoint (GetCheckedHandle ());
@@ -518,6 +526,7 @@ namespace Network {
 
 			set {
 				nw_parameters_set_local_endpoint (GetCheckedHandle (), value.GetHandle ());
+				GC.KeepAlive (value);
 			}
 		}
 
@@ -528,146 +537,88 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern byte nw_parameters_get_include_peer_to_peer (IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool IncludePeerToPeer {
 			get => nw_parameters_get_include_peer_to_peer (GetCheckedHandle ()) != 0;
 			set => nw_parameters_set_include_peer_to_peer (GetCheckedHandle (), value.AsByte ());
 		}
 
-#if NET
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (13, 0)]
-		[iOS (13, 0)]
-#endif
 		[DllImport (Constants.NetworkLibrary)]
 		static extern byte nw_parameters_get_prohibit_constrained (IntPtr parameters);
 
-#if NET
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (13, 0)]
-		[iOS (13, 0)]
-#endif
 		[DllImport (Constants.NetworkLibrary)]
 		static extern void nw_parameters_set_prohibit_constrained (IntPtr parameters, byte prohibit_constrained);
 
-#if NET
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (13, 0)]
-		[iOS (13, 0)]
-#endif
 		public bool ProhibitConstrained {
 			get => nw_parameters_get_prohibit_constrained (GetCheckedHandle ()) != 0;
 			set => nw_parameters_set_prohibit_constrained (GetCheckedHandle (), value.AsByte ());
 		}
 
-#if NET
 		[SupportedOSPlatform ("tvos15.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[Watch (8, 0)]
-		[TV (15, 0)]
-		[iOS (15, 0)]
-		[MacCatalyst (15, 0)]
-#endif
 		[DllImport (Constants.NetworkLibrary)]
 		static extern void nw_parameters_set_attribution (OS_nw_parameters parameters, NWParametersAttribution attribution);
 
-#if NET
 		[SupportedOSPlatform ("tvos15.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[Watch (8, 0)]
-		[TV (15, 0)]
-		[iOS (15, 0)]
-		[MacCatalyst (15, 0)]
-#endif
 		[DllImport (Constants.NetworkLibrary)]
 		static extern NWParametersAttribution nw_parameters_get_attribution (OS_nw_parameters parameters);
 
-#if NET
 		[SupportedOSPlatform ("tvos15.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[Watch (8, 0)]
-		[TV (15, 0)]
-		[iOS (15, 0)]
-		[MacCatalyst (15, 0)]
-#endif
 		public NWParametersAttribution Attribution {
 			get => nw_parameters_get_attribution (GetCheckedHandle ());
 			set => nw_parameters_set_attribution (GetCheckedHandle (), value);
 		}
 
-#if NET
 		[SupportedOSPlatform ("tvos15.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[Watch (8, 0)]
-		[TV (15, 0)]
-		[iOS (15, 0)]
-		[MacCatalyst (15, 0)]
-#endif
 		[DllImport (Constants.NetworkLibrary)]
 		static extern void nw_parameters_set_privacy_context (OS_nw_parameters parameters, OS_nw_privacy_context privacy_context);
 
-#if NET
 		[SupportedOSPlatform ("tvos15.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[Watch (8, 0)]
-		[TV (15, 0)]
-		[iOS (15, 0)]
-		[MacCatalyst (15, 0)]
-#endif
 		public void SetPrivacyContext (NWPrivacyContext privacyContext)
-			=> nw_parameters_set_privacy_context (GetCheckedHandle (), privacyContext.Handle);
+		{
+			nw_parameters_set_privacy_context (GetCheckedHandle (), privacyContext.Handle);
+			GC.KeepAlive (privacyContext);
+		}
 
-#if NET
 		[SupportedOSPlatform ("tvos15.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[Watch (8, 0)]
-		[TV (15, 0)]
-		[iOS (15, 0)]
-		[MacCatalyst (15, 0)]
-#endif
 		[DllImport (Constants.NetworkLibrary)]
 		static unsafe extern OS_nw_parameters nw_parameters_create_quic (void* configureQuic);
 
-#if NET
 		[SupportedOSPlatform ("tvos15.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[Watch (8, 0)]
-		[TV (15, 0)]
-		[iOS (15, 0)]
-		[MacCatalyst (15, 0)]
-#endif
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public unsafe static NWParameters CreateQuic (Action<NWProtocolOptions>? configureQuic = null)
 		{
@@ -682,45 +633,24 @@ namespace Network {
 			return new NWParameters (ptr, owns: true);
 		}
 
-#if NET
 		[SupportedOSPlatform ("tvos16.0")]
 		[SupportedOSPlatform ("macos13.0")]
 		[SupportedOSPlatform ("ios16.0")]
 		[SupportedOSPlatform ("maccatalyst16.0")]
-#else
-		[TV (16, 0)]
-		[Mac (13, 0)]
-		[iOS (16, 0)]
-		[Watch (9, 0)]
-#endif
 		[DllImport (Constants.NetworkLibrary)]
 		static extern byte nw_parameters_requires_dnssec_validation (OS_nw_parameters parameters);
 
-#if NET
 		[SupportedOSPlatform ("tvos16.0")]
 		[SupportedOSPlatform ("macos13.0")]
 		[SupportedOSPlatform ("ios16.0")]
 		[SupportedOSPlatform ("maccatalyst16.0")]
-#else
-		[TV (16, 0)]
-		[Mac (13, 0)]
-		[iOS (16, 0)]
-		[Watch (9, 0)]
-#endif
 		[DllImport (Constants.NetworkLibrary)]
 		static extern void nw_parameters_set_requires_dnssec_validation (OS_nw_parameters parameters, byte requires_dnssec_validation);
 
-#if NET
 		[SupportedOSPlatform ("tvos16.0")]
 		[SupportedOSPlatform ("macos13.0")]
 		[SupportedOSPlatform ("ios16.0")]
 		[SupportedOSPlatform ("maccatalyst16.0")]
-#else
-		[TV (16, 0)]
-		[Mac (13, 0)]
-		[iOS (16, 0)]
-		[Watch (9, 0)]
-#endif
 		public bool RequiresDnssecValidation {
 			get => nw_parameters_requires_dnssec_validation (GetCheckedHandle ()) != 0;
 			set => nw_parameters_set_requires_dnssec_validation (GetCheckedHandle (), value.AsByte ());

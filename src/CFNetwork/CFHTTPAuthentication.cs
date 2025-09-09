@@ -17,23 +17,13 @@ using Foundation;
 using CoreFoundation;
 using ObjCRuntime;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
-// CFHTTPAuthentication is in CFNetwork.framework, no idea why it ended up in CoreServices when it was bound.
-#if NET
 namespace CFNetwork {
-#else
-namespace CoreServices {
-#endif
-
-#if NET
+	/// <summary>Represents HTTP authentication information for use with <see cref="CFHTTPMessage" />.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CFHTTPAuthentication : CFType {
 		[Preserve (Conditional = true)]
 		internal CFHTTPAuthentication (NativeHandle handle, bool owns)
@@ -56,6 +46,7 @@ namespace CoreServices {
 				throw new InvalidOperationException ();
 
 			var handle = CFHTTPAuthenticationCreateFromResponse (IntPtr.Zero, response.Handle);
+			GC.KeepAlive (response);
 			if (handle == IntPtr.Zero)
 				return null;
 
@@ -80,7 +71,9 @@ namespace CoreServices {
 			if (!request.IsRequest)
 				throw new InvalidOperationException ();
 
-			return CFHTTPAuthenticationAppliesToRequest (Handle, request.Handle) != 0;
+			bool result = CFHTTPAuthenticationAppliesToRequest (Handle, request.Handle) != 0;
+			GC.KeepAlive (request);
+			return result;
 		}
 
 		[DllImport (Constants.CFNetworkLibrary)]

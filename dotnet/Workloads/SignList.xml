@@ -16,8 +16,7 @@
     <Skip Include="tools\msbuild\iOS\ws2_32.dll" />
     <!-- Broker.zip -->
     <Skip Include="Broker\Newtonsoft.Json.dll" />
-    <Skip Include="Broker\System.Net.Mqtt.dll" />
-    <Skip Include="Broker\System.Net.Mqtt.Server.dll" />
+    <Skip Include="Broker\MQTTnet.dll" />
     <Skip Include="Broker\System.Reactive.dll" />
     <Skip Include="Broker\System.Runtime.CompilerServices.Unsafe.dll" />
     <Skip Include="Broker\System.Security.Cryptography.ProtectedData.dll" />
@@ -36,12 +35,13 @@
     <Skip Include="Build\System.Text.Json.dll" />
     <Skip Include="Build\System.Threading.Tasks.Dataflow.dll" />
     <Skip Include="Build\System.Threading.Tasks.Extensions.dll" />
+    <!-- They are now signed by their origin build https://github.com/xamarin/XamarinVS/pull/14522 -->
+    <Skip Include="imobiledevice-*\*.dll" />
+    <Skip Include="imobiledevice-*\*.exe" />
   </ItemGroup>
 
   <ItemGroup>
     <ThirdParty Include="BouncyCastle.Crypto.dll" />
-    <ThirdParty Include="imobiledevice-*\*.dll" />
-    <ThirdParty Include="imobiledevice-*\*.exe" />
     <!-- Build.zip -->
     <ThirdParty Include="Mono.Cecil*.dll" />
 

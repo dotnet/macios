@@ -29,21 +29,13 @@ namespace Xamarin.Tests {
 		public List<string> Sources = new List<string> ();
 		public List<string> ExtraSources = new List<string> ();
 		public List<string> References = new List<string> ();
-#if NET
 		public List<string>? CompileCommand = null;
-#endif
 
 		// If BaseLibrary and AttributeLibrary are null, we calculate a default value
-#if NET
 		public string? BaseLibrary;
 		public string? AttributeLibrary;
 		public bool ReferenceBclByDefault = true;
 		public string? CompiledApiDefinitionAssembly = null;
-#else
-		public string BaseLibrary = None;
-		public string AttributeLibrary = None;
-		public bool ReferenceBclByDefault = false;
-#endif
 		public string []? Defines;
 		public string? TmpDirectory;
 		public string? ResponseFile;
@@ -52,20 +44,13 @@ namespace Xamarin.Tests {
 		public string? Out;
 		public int Verbosity = 1;
 
-		protected override string ToolPath { get { return Profile == Profile.macOSClassic ? Configuration.BGenClassicPath : Configuration.BGenPath; } }
+		protected override string ToolPath { get => throw new InvalidOperationException (); }
 		protected override string MessagePrefix { get { return "BI"; } }
-		protected override string MessageToolName { get { return Profile == Profile.macOSClassic ? "bgen-classic" : "bgen"; } }
+		protected override string MessageToolName { get { return "bgen"; } }
 
 		public BGenTool ()
 		{
-			if (Environment.OSVersion.Platform == PlatformID.Win32NT) {
-				EnvironmentVariables = new Dictionary<string, string> ();
-			} else {
-				EnvironmentVariables = new Dictionary<string, string> {
-					{ "MD_MTOUCH_SDK_ROOT", Configuration.SdkRootXI },
-					{ "XamarinMacFrameworkRoot", Configuration.SdkRootXM },
-				};
-			}
+			EnvironmentVariables = new Dictionary<string, string> ();
 		}
 
 		public void AddTestApiDefinition (string filename)
@@ -92,36 +77,14 @@ namespace Xamarin.Tests {
 		public static string GetTargetFramework (Profile profile)
 		{
 			switch (profile) {
-#if NET
 			case Profile.iOS:
 				return TargetFramework.DotNet_iOS_String;
 			case Profile.tvOS:
 				return TargetFramework.DotNet_tvOS_String;
-			case Profile.watchOS:
-				return TargetFramework.DotNet_watchOS_String;
 			case Profile.MacCatalyst:
 				return TargetFramework.DotNet_MacCatalyst_String;
 			case Profile.macOSMobile:
 				return TargetFramework.DotNet_macOS_String;
-			case Profile.macOSFull:
-			case Profile.macOSSystem:
-				throw new InvalidOperationException ($"Only the Mobile profile can be specified for .NET");
-#else
-			case Profile.iOS:
-				return "Xamarin.iOS,v1.0";
-			case Profile.tvOS:
-				return "Xamarin.TVOS,v1.0";
-			case Profile.watchOS:
-				return "Xamarin.WatchOS,v1.0";
-			case Profile.macOSClassic:
-				return "XamMac,v1.0";
-			case Profile.macOSFull:
-				return "Xamarin.Mac,Version=v4.5,Profile=Full";
-			case Profile.macOSMobile:
-				return "Xamarin.Mac,Version=v2.0,Profile=Mobile";
-			case Profile.macOSSystem:
-				return "Xamarin.Mac,Version=v4.5,Profile=System";
-#endif
 			default:
 				throw new NotImplementedException ($"Profile: {profile}");
 			}
@@ -135,7 +98,6 @@ namespace Xamarin.Tests {
 			if (Profile != Profile.None)
 				targetFramework = GetTargetFramework (Profile);
 
-#if NET
 			if (CompileCommand is null) {
 				if (!StringUtils.TryParseArguments (Configuration.DotNetCscCommand, out var args, out var ex))
 					throw new InvalidOperationException ($"Unable to parse the .NET csc command '{Configuration.DotNetCscCommand}': {ex.Message}");
@@ -152,7 +114,6 @@ namespace Xamarin.Tests {
 				sb.Add ($"--compiled-api-definition-assembly");
 				sb.Add (CompiledApiDefinitionAssembly);
 			}
-#endif
 
 			TargetFramework? tf = null;
 			if (targetFramework is not null)
@@ -187,10 +148,8 @@ namespace Xamarin.Tests {
 			if (ReferenceBclByDefault) {
 				if (tf is null) {
 					// do nothing
-				} else if (tf.Value.IsDotNet == true) {
-					References.AddRange (Directory.GetFiles (Configuration.DotNetBclDir, "*.dll"));
 				} else {
-					throw new NotImplementedException ("ReferenceBclByDefault");
+					References.AddRange (Directory.GetFiles (Configuration.DotNetBclDir, "*.dll"));
 				}
 			}
 
@@ -241,9 +200,7 @@ namespace Xamarin.Tests {
 				argumentList.Add ($"-nowarn:{nw}");
 		}
 
-#if NET
 		[return: NotNullIfNotNull (nameof (existingNowarn))]
-#endif
 		public static string? GetPreviewNoWarn (string? existingNowarn)
 		{
 			if (Configuration.XcodeIsStable)
@@ -270,7 +227,7 @@ namespace Xamarin.Tests {
 		int Execute ()
 		{
 			var arguments = BuildArgumentArray ();
-			var in_process = InProcess && Profile != Profile.macOSClassic;
+			var in_process = InProcess;
 			if (in_process) {
 				int rv;
 				var previous_environment = new Dictionary<string, string?> ();
@@ -435,11 +392,7 @@ namespace Xamarin.Tests {
 			if (assembly is null) {
 				var parameters = new ReaderParameters ();
 				var resolver = new DefaultAssemblyResolver ();
-#if NET
-				var searchdir = Path.GetDirectoryName (Configuration.GetBaseLibrary (Profile.AsPlatform (), true));
-#else
-				var searchdir = Path.GetDirectoryName (Configuration.GetBaseLibrary (Profile));
-#endif
+				var searchdir = Path.GetDirectoryName (Configuration.GetBaseLibrary (Profile.AsPlatform ()));
 				resolver.AddSearchDirectory (searchdir);
 				parameters.AssemblyResolver = resolver;
 				var tmpDirectory = EnsureTempDir ();
@@ -483,18 +436,14 @@ namespace Xamarin.Tests {
 		public static string [] GetDefaultDefines (Profile profile)
 		{
 			switch (profile) {
-			case Profile.macOSFull:
 			case Profile.macOSMobile:
-			case Profile.macOSSystem:
-				return new string [] { "MONOMAC", "XAMCORE_2_0" };
-			case Profile.macOSClassic:
 				return new string [] { "MONOMAC" };
 			case Profile.iOS:
-				return new string [] { "IOS", "XAMCORE_2_0" };
+				return new string [] { "IOS" };
 			case Profile.MacCatalyst:
 				return new string [] { "MACCATALYST" };
 			case Profile.tvOS:
-				return new string [] { "TVOS", "XAMCORE_2_0" };
+				return new string [] { "TVOS" };
 			default:
 				throw new NotImplementedException (profile.ToString ());
 			}

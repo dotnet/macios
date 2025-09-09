@@ -7,7 +7,7 @@
       </format>
       <para>
 	Pasteboards allow information to be shared across
-	applications.  The general pasteboard (accessible via the <see cref="P:UIKit.UIPasteboard.General" /> property) is
+	applications.  The general pasteboard (accessible via the <see cref="UIKit.UIPasteboard.General" /> property) is
 	the system-wide pasteboard that applications use by default.
 	Developers can also transfer information across their own
 	applications (those that share their team ID) by creating
@@ -21,25 +21,25 @@
 	that is currently stored there.
       </para>
       <para>
-	To set the pasteboard contents to <see cref="T:Foundation.NSString" />, <see cref="T:Foundation.NSArray" />, <see cref="T:Foundation.NSDictionary" />, <see cref="T:Foundation.NSDate" />, <see cref="T:Foundation.NSNumber" />, <see cref="T:UIKit.UIImage" /> or <see cref="T:Foundation.NSUrl" /> use
-	the <see cref="M:UIKit.UIPasteboard.SetValue(Foundation.NSObject,System.String)" /> method.
+	To set the pasteboard contents to <see cref="Foundation.NSString" />, <see cref="Foundation.NSArray" />, <see cref="Foundation.NSDictionary" />, <see cref="Foundation.NSDate" />, <see cref="Foundation.NSNumber" />, <see cref="UIKit.UIImage" /> or <see cref="Foundation.NSUrl" /> use
+	the <see cref="UIKit.UIPasteboard.SetValue(Foundation.NSObject,System.String)" /> method.
       </para>
       <para>
 	To set the pasteboard contents to an image, use the
-	<format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UIPaste%20Board%20Image&amp;scope=Xamarin" title="P:UIKit.UIPasteBoard.Image">P:UIKit.UIPasteBoard.Image</a></format>.  
+	<see cref="UIKit.UIPasteboard.Image" />.  
 	property.
       </para>
       <para>
 	To set the pasteboard contents to a set of images, use the
-	<see cref="P:UIKit.UIPasteboard.Images" />.  
+	<see cref="UIKit.UIPasteboard.Images" />.  
 	property.
       </para>
       <para>
 	To set the values to arbitrary data types, use the
-	<format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UIPaste%20Board%20Set%20Data&amp;scope=Xamarin" title="M:UIKit.UIPasteBoard.SetData*">M:UIKit.UIPasteBoard.SetData*</a></format> method.
+	<see cref="UIKit.UIPasteboard.SetData" /> method.
       </para>
       <para>
-	You can use the convenience properties <see cref="P:UIKit.UIPasteboard.String" />, <see cref="P:UIKit.UIPasteboard.Strings" />, <see cref="P:UIKit.UIPasteboard.Image" />, <see cref="P:UIKit.UIPasteboard.Images" />, <see cref="P:UIKit.UIPasteboard.Url" />, <see cref="P:UIKit.UIPasteboard.Urls" />, <see cref="P:UIKit.UIPasteboard.Color" /> and <see cref="P:UIKit.UIPasteboard.Colors" /> to set and get
+	You can use the convenience properties <see cref="UIKit.UIPasteboard.String" />, <see cref="UIKit.UIPasteboard.Strings" />, <see cref="UIKit.UIPasteboard.Image" />, <see cref="UIKit.UIPasteboard.Images" />, <see cref="UIKit.UIPasteboard.Url" />, <see cref="UIKit.UIPasteboard.Urls" />, <see cref="UIKit.UIPasteboard.Color" /> and <see cref="UIKit.UIPasteboard.Colors" /> to set and get
 	strings, images, Urls or Colors on the pasteboard.
       </para>
       <example>
@@ -64,7 +64,7 @@ UIPasteboard.General.String = "So hello";
       <para>
 	Whenever possible, you should use an UTI type to set the type
 	of the information that is being stored on the pasteboard.
-	You can find a list of common iOS/Mac UTI types on the <see cref="T:MobileCoreServices.UTType" /> type.
+	You can find a list of common iOS/Mac UTI types on the <see cref="MobileCoreServices.UTType" /> type.
 
       </para>
       <para>

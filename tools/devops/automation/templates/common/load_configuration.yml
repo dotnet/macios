@@ -10,7 +10,6 @@ parameters:
 
   - name: use1ES
     type: boolean
-    default: false
 
   - name: repositoryAlias
     type: string
@@ -23,18 +22,6 @@ parameters:
   - name: uploadPrefix
     type: string
     default: '$(MaciosUploadPrefix)'
-
-  - name: testConfigurations
-    type: object
-    default: []
-
-  - name: supportedPlatforms
-    type: object
-    default: []
-
-  - name: testsLabels
-    type: string
-    default: ''
 
   - name: statusContext
     type: string
@@ -56,12 +43,12 @@ steps:
     displayName: 'Display downloads'
     timeoutInMinutes: 5
 
-  - bash: ./xamarin-macios/tools/devops/automation/scripts/bash/configure-platforms.sh
+  - bash: ./$(BUILD_REPOSITORY_TITLE)/tools/devops/automation/scripts/bash/configure-platforms.sh
     name: configure_platforms
     displayName: 'Configure platforms'
 
   - pwsh: |
-      Import-Module $Env:SYSTEM_DEFAULTWORKINGDIRECTORY/xamarin-macios/tools/devops/automation/scripts/MaciosCI.psd1
+      Import-Module $Env:SYSTEM_DEFAULTWORKINGDIRECTORY/$Env:BUILD_REPOSITORY_TITLE/tools/devops/automation/scripts/MaciosCI.psd1
       $jsonPath = Join-Path -Path "$(Build.ArtifactStagingDirectory)" -ChildPath "configuration.json"
       Write-Host "##vso[task.setvariable variable=CONFIG_PATH]$jsonPath"
       New-BuildConfiguration -ConfigFile $jsonPath
@@ -71,36 +58,32 @@ steps:
     name: labels
     displayName: 'Configure build'
 
-  - bash: ./xamarin-macios/tools/devops/automation/scripts/bash/configure-decisions.sh
+  - bash: ./$(BUILD_REPOSITORY_TITLE)/tools/devops/automation/scripts/bash/configure-decisions.sh
     name: decisions
     displayName: 'Make decisions'
 
-  - pwsh: '& "$Env:SYSTEM_DEFAULTWORKINGDIRECTORY/$($Env:BUILD_REPOSITORY_NAME.Split(''/'')[1])/tools/devops/automation/scripts/show_bot_info.ps1"'
+  - pwsh: '& "$Env:SYSTEM_DEFAULTWORKINGDIRECTORY/$Env:BUILD_REPOSITORY_TITLE/tools/devops/automation/scripts/show_bot_info.ps1"'
     displayName: 'Show Bot Info'
 
   - pwsh: |
-      Import-Module $Env:SYSTEM_DEFAULTWORKINGDIRECTORY/xamarin-macios/tools/devops/automation/scripts/MaciosCI.psd1
+      Import-Module $Env:SYSTEM_DEFAULTWORKINGDIRECTORY/$Env:BUILD_REPOSITORY_TITLE/tools/devops/automation/scripts/MaciosCI.psd1
       # load the configuration files and set the required variables to be used in the later stages
       $configPath = Get-ChildItem -Path "$(Pipeline.Workspace)/macios/build-configuration/configuration.json" -Recurse -Force
       $config = Import-BuildConfiguration -ConfigFile $configPath
       $testMatrix = $config.TEST_MATRIX
       Write-Host "##vso[task.setvariable variable=TEST_MATRIX;isOutput=true]$testMatrix"
+
+      $simulatorTestMatrix = $config.SIMULATOR_TEST_MATRIX
+      Write-Host "##vso[task.setvariable variable=SIMULATOR_TEST_MATRIX;isOutput=true]$simulatorTestMatrix"
     name: test_matrix
     displayName: 'Create tests strategy matrix'
 
   # upload config to be consumed later
   - ${{ if eq(parameters.uploadArtifacts, true) }}:
-      - ${{ if eq(parameters.use1ES, true) }}:
-          - task: 1ES.PublishPipelineArtifact@1
-            displayName: 'Publish Artifact: configuration.json'
-            inputs:
-              path: '$(Build.ArtifactStagingDirectory)/configuration.json'
-              artifact: '${{ parameters.uploadPrefix }}build-configuration'
-            continueOnError: true
-      - ${{ else }}:
-          - task: PublishPipelineArtifact@1
-            displayName: 'Publish Artifact: configuration.json'
-            inputs:
-              targetPath: '$(Build.ArtifactStagingDirectory)/configuration.json'
-              artifactName: '${{ parameters.uploadPrefix }}build-configuration'
-            continueOnError: true
+      - template: ../common/publish-pipeline-artifact.yml
+        parameters:
+          use1ES: ${{ parameters.use1ES }}
+          displayName: 'Publish Artifact: configuration.json'
+          path: '$(Build.ArtifactStagingDirectory)/configuration.json'
+          artifact: '${{ parameters.uploadPrefix }}build-configuration'
+          continueOnError: true

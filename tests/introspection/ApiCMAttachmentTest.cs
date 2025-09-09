@@ -1,5 +1,3 @@
-#if !__WATCHOS__
-
 using System;
 using System.Drawing;
 using System.IO;
@@ -15,11 +13,7 @@ using CoreMedia;
 using CoreFoundation;
 using CoreGraphics;
 using CoreText;
-#if NET
 using CFNetwork;
-#else
-using CoreServices;
-#endif
 using CoreVideo;
 using Foundation;
 using ImageIO;
@@ -31,9 +25,10 @@ using VideoToolbox;
 using UIKit;
 using Network;
 
-#if NET
 using GColorConversionInfoTriple = CoreGraphics.CGColorConversionInfoTriple;
-#endif
+
+// Disable until we get around to enable + fix any issues.
+#nullable disable
 
 namespace Introspection {
 
@@ -145,12 +140,7 @@ namespace Introspection {
 				nativeObj = obj;
 			}
 
-#if NET
-			public NativeHandle Handle
-#else
-			public IntPtr Handle
-#endif
-			{
+			public NativeHandle Handle {
 				get { return nativeObj.Handle; }
 			}
 		}
@@ -165,6 +155,8 @@ namespace Introspection {
 			switch (nameSpace) {
 			case "Network": // none of the classes support it and they require a lot of setup to confirm it
 				return true;
+			case "VideoToolbox": // some of the VideoToolbox classes cause VideoToolbox to crash internally on device.
+				return TestRuntime.IsDevice;
 			default:
 				return false;
 			}
@@ -419,11 +411,7 @@ namespace Introspection {
 					return Runtime.GetINativeObject<SecIdentity> (array [0].LowlevelObjectForKey (SecImportExport.Identity.Handle), false);
 				}
 			case "SecTrust":
-#if NET
 				X509Certificate x = X509CertificateLoader.LoadCertificate (mail_google_com);
-#else
-				X509Certificate x = new X509Certificate (mail_google_com);
-#endif
 				using (var policy = SecPolicy.CreateSslPolicy (true, "mail.google.com"))
 					return new SecTrust (x, policy);
 			case "SslContext":
@@ -475,6 +463,10 @@ namespace Introspection {
 				return CMClock.HostTimeClock;
 			case "CMTimebase":
 				return new CMTimebase (CMClock.HostTimeClock);
+			case "CMTagCollection":
+				return CMTagCollection.Create ();
+			case "CMTaggedBufferGroup":
+				return CMTaggedBufferGroup.Create (new CMTagCollection [0], new CMSampleBuffer [0], out var _);
 			case "CVPixelBufferPool":
 				return new CVPixelBufferPool (
 					new CVPixelBufferPoolSettings (),
@@ -487,11 +479,7 @@ namespace Introspection {
 				using (var cdata = NSData.FromArray (mail_google_com))
 					return new SecCertificate2 (new SecCertificate (cdata));
 			case "SecTrust2":
-#if NET
 				X509Certificate x2 = X509CertificateLoader.LoadCertificate (mail_google_com);
-#else
-				X509Certificate x2 = new X509Certificate (mail_google_com);
-#endif
 				using (var policy = SecPolicy.CreateSslPolicy (true, "mail.google.com"))
 					return new SecTrust2 (new SecTrust (x2, policy));
 			case "SecIdentity2":
@@ -591,7 +579,9 @@ namespace Introspection {
 			var types = CMClockType.Assembly.GetTypes ()
 				.Where (t => !t.IsNotPublic && !CMAttachmentInterfaceType.IsAssignableFrom (t)
 					&& NativeObjectInterfaceType.IsAssignableFrom (t) && !t.IsSubclassOf (NSObjectType)
-					&& !t.IsSubclassOf (DispatchSourceType) && !t.IsInterface && !t.IsAbstract);
+					&& !t.IsSubclassOf (DispatchSourceType) && !t.IsInterface && !t.IsAbstract
+					&& !t.IsSubclassOf (typeof (BaseWrapper)) // the trimmer can make some BaseWrapper subclasses public, so exclude those.	
+					);
 			foreach (var t in types) {
 				if (Skip (t))
 					continue;
@@ -616,5 +606,3 @@ namespace Introspection {
 		}
 	}
 }
-
-#endif // !__WATCHOS__

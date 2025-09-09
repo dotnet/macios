@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageId>Xamarin.Tests.XCFrameworkWithSymlinks</PackageId>
+    <PackageVersion>1.0.0</PackageVersion>
+    <RepositoryUrl>https://github.com/dotnet/macios</RepositoryUrl>
+    <RepositoryBranch>main</RepositoryBranch>
+    <Authors>Microsoft</Authors>
+    <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
+    <PackageProjectUrl>https://github.com/dotnet/macios</PackageProjectUrl>
+    <RootTestDirectory>../../..</RootTestDirectory>
+    <TestFrameworksDirectory>$(RootTestDirectory)/test-libraries/frameworks</TestFrameworksDirectory>
+  </PropertyGroup>
+
+  <Target Name="ComputeContent">
+    <ItemGroup>
+      <Content Include="XCFrameworkWithSymlinks.resources.zip">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <Pack>true</Pack>
+        <PackagePath>lib/netstandard2.0/XCFrameworkWithSymlinks.resources.zip</PackagePath>
+      </Content>
+    </ItemGroup>
+  </Target>
+
+  <PropertyGroup>
+    <BeforePack>
+      ComputeContent;
+      $(BeforePack);
+    </BeforePack>
+  </PropertyGroup>
+</Project>

@@ -97,8 +97,7 @@ namespace Xharness {
 		[Label ("tvos")]
 		tvOS = 1 << 10,
 		// 1 << 11 is unused
-		[Label ("dotnet")]
-		Dotnet = 1 << 12,
+		// 1 << 12 is unused
 		// 1 << 13 is unused
 		[Label ("all")]
 		All = 0xFFFFFFFF,
@@ -114,11 +113,7 @@ namespace Xharness {
 
 		public static bool TryGetLabel<T> (this string self, out T label) where T : struct, Enum
 		{
-#if NET
 			foreach (var obj in Enum.GetValues<T> ()) {
-#else
-			foreach (var obj in Enum.GetValues (typeof (T))) {
-#endif
 				if (obj is T value && value.GetLabel () == self) {
 					label = value;
 					return true;

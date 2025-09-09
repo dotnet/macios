@@ -1,8 +1,8 @@
 <Documentation>
   <Docs DocId="T:AVFoundation.AVMetadataItem">
-    <summary>An immutable item of metadata for an <see cref="T:AVFoundation.AVAsset" />.</summary>
+    <summary>An immutable item of metadata for an <see cref="AVFoundation.AVAsset" />.</summary>
     <remarks>
-      <para>Metadata uses the concept of a "Key Space" that is a group of related identifiers, something like a programmatic namespace. These key spaces are defined in <see cref="T:AVFoundation.AVMetadata" />:</para>
+      <para>Metadata uses the concept of a "Key Space" that is a group of related identifiers, something like a programmatic namespace. These key spaces are defined in <see cref="AVFoundation.AVMetadata" />:</para>
       <list type="table">
         <listheader>
           <term>Key Space</term>
@@ -11,31 +11,31 @@
         <item>
           <term>Common (contains standard version of most keys in most key spaces)</term>
           <description>
-            <see cref="P:AVFoundation.AVMetadata.KeySpaceCommon" />
+            <see cref="AVFoundation.AVMetadata.KeySpaceCommon" />
           </description>
         </item>
         <item>
           <term>ID 3</term>
           <description>
-            <see cref="P:AVFoundation.AVMetadata.KeySpaceID3" />
+            <see cref="AVFoundation.AVMetadata.KeySpaceID3" />
           </description>
         </item>
         <item>
           <term>iTunes</term>
           <description>
-            <see cref="P:AVFoundation.AVMetadata.KeySpaceiTunes" />
+            <see cref="AVFoundation.AVMetadata.KeySpaceiTunes" />
           </description>
         </item>
         <item>
           <term>QuickTime User Data</term>
           <description>
-            <see cref="P:AVFoundation.AVMetadata.KeySpaceQuickTimeUserData" />
+            <see cref="AVFoundation.AVMetadata.KeySpaceQuickTimeUserData" />
           </description>
         </item>
         <item>
           <term>QuickTime Metadata</term>
           <description>
-            <see cref="P:AVFoundation.AVMetadata.KeySpaceQuickTimeMetadata" />
+            <see cref="AVFoundation.AVMetadata.KeySpaceQuickTimeMetadata" />
           </description>
         </item>
       </list>

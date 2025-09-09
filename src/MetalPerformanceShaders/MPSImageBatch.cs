@@ -16,12 +16,12 @@ using Foundation;
 using Metal;
 
 namespace MetalPerformanceShaders {
-#if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
-#endif
 	public static partial class MPSImageBatch {
 
 		[DllImport (Constants.MetalPerformanceShadersLibrary)]
@@ -33,13 +33,19 @@ namespace MetalPerformanceShaders {
 			if (imageBatch is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (imageBatch));
 
-			return MPSImageBatchIncrementReadCount (imageBatch.Handle, amount);
+			nuint count = MPSImageBatchIncrementReadCount (imageBatch.Handle, amount);
+			GC.KeepAlive (imageBatch);
+			return count;
 		}
 
 		[DllImport (Constants.MetalPerformanceShadersLibrary)]
 		static extern void MPSImageBatchSynchronize (IntPtr batch, IntPtr /* id<MTLCommandBuffer> */ cmdBuf);
 
 		// Using 'NSArray<MPSImage>' instead of `MPSImage[]` because image array 'Handle' matters.
+		/// <param name="imageBatch">To be added.</param>
+		///         <param name="commandBuffer">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static void Synchronize (NSArray<MPSImage> imageBatch, IMTLCommandBuffer commandBuffer)
 		{
 			if (imageBatch is null)
@@ -48,30 +54,34 @@ namespace MetalPerformanceShaders {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (commandBuffer));
 
 			MPSImageBatchSynchronize (imageBatch.Handle, commandBuffer.Handle);
+			GC.KeepAlive (imageBatch);
+			GC.KeepAlive (commandBuffer);
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		[DllImport (Constants.MetalPerformanceShadersLibrary)]
 		static extern nuint MPSImageBatchResourceSize (IntPtr batch);
 
 		// Using 'NSArray<MPSImage>' instead of `MPSImage[]` because image array 'Handle' matters.
-#if NET
+		/// <param name="imageBatch">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public static nuint GetResourceSize (NSArray<MPSImage> imageBatch)
 		{
 			if (imageBatch is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (imageBatch));
 
-			return MPSImageBatchResourceSize (imageBatch.Handle);
+			nuint size = MPSImageBatchResourceSize (imageBatch.Handle);
+			GC.KeepAlive (imageBatch);
+			return size;
 		}
 
 		// TODO: Disabled due to 'MPSImageBatchIterate' is not in the native library rdar://47282304.

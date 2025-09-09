@@ -20,6 +20,74 @@ using Xamarin.Utils;
 namespace Cecil.Tests {
 	[TestFixture]
 	public partial class Documentation {
+		[Test]
+		public void VerifyNoUnresolvedCrefs ()
+		{
+			// We join all the APIs from all the platforms, so we can only run this test when all platforms are enabled.
+			Configuration.IgnoreIfAnyIgnoredPlatforms ();
+
+			var allFailures = new HashSet<string> ();
+			foreach (var info in Helper.NetPlatformAssemblyDefinitions) {
+				var xml = Path.ChangeExtension (info.Path, ".xml");
+				var reader = XmlReader.Create (xml);
+				string? currentType = null;
+				string? currentMember = null;
+				var failures = new HashSet<string> ();
+				while (reader.Read ()) {
+					if (reader.NodeType != XmlNodeType.Element)
+						continue;
+
+					switch (reader.Name) {
+					case "member":
+						currentMember = reader.GetAttribute ("name") ?? string.Empty;
+						break;
+					case "type":
+						currentMember = null;
+						currentType = reader.GetAttribute ("name") ?? string.Empty;
+						break;
+					case "cref":
+						failures.Add ($"{currentMember ?? currentType}: Found element 'cref', should be element 'see' with attribute 'cref' (i.e. instead of <cref ... /> do <see cref=... />).");
+						break;
+					case "see": {
+						var cref = reader.GetAttribute ("cref");
+						if (string.IsNullOrEmpty (cref)) {
+							if (!string.IsNullOrEmpty (reader.GetAttribute ("langword")))
+								continue; // '<see langword=... />' is allowed
+							if (!string.IsNullOrEmpty (reader.GetAttribute ("href")))
+								continue; // '<see href==... />' is allowed
+
+							failures.Add ($"{currentMember ?? currentType}: Found element 'see' element with no 'cref' nor 'langword' attribute.");
+							continue;
+						} else if (cref.Length < 2) {
+							failures.Add ($"{currentMember ?? currentType}: Found element 'see' with unexpectedly short 'name' attribute: '{cref}'.");
+							continue;
+						} else if (cref [1] != ':') {
+							failures.Add ($"{currentMember ?? currentType}: Found element 'see' with unexpected format for the 'cref' attribute (second character isn't ':'): '{cref}'.");
+							continue;
+						}
+						switch (cref [0]) {
+						case 'T': // type
+						case 'M': // method
+						case 'P': // property
+						case 'F': // field
+						case 'E': // event
+						case 'N': // namespace
+								  // Valid cref
+							break;
+						default:
+							failures.Add ($"{currentMember ?? currentType}: Invalid cref '{cref}'");
+							break;
+						}
+						continue;
+					}
+					}
+				}
+
+				allFailures.UnionWith (failures);
+			}
+			Helper.AssertFailures (allFailures, KnownCrefFailures, nameof (KnownCrefFailures), "Cref failures");
+		}
+
 		// Verify that all our publicly visible APIs are documented.
 		// This is obviously not true, so we have a rather huge list of known failures.
 		// However, this will prevent us from adding more undocumented APIs by accident.
@@ -53,6 +121,10 @@ namespace Cecil.Tests {
 
 			var documentedButNotPresent = xmlMembers.Except (dllMembers).ToList ();
 			Assert.Multiple (() => {
+				if (documentedButNotPresent.Any ()) {
+					foreach (var dll in dllMembers)
+						Console.WriteLine (dll.DocId);
+				}
 				foreach (var doc in documentedButNotPresent)
 					Assert.Fail ($"{doc.DocId}: Documented API not found in the platform assembly. This probably indicates that the code to compute the doc name for a given member is incorrect.");
 			});
@@ -185,9 +257,14 @@ namespace Cecil.Tests {
 		// There's already an implementation in Roslyn, but that's a rather heavy dependency,
 		// so we're implementing this in our own code instead.
 
+		static string EscapeName (string name)
+		{
+			return name.Replace ('.', '#').Replace ('<', '{').Replace ('>', '}');
+		}
+
 		static string GetDocId (MethodDefinition md)
 		{
-			var methodName = md.Name.Replace ('.', '#');
+			var methodName = EscapeName (md.Name);
 			var name = GetDocId (md.DeclaringType) + "." + methodName;
 			if (md.HasGenericParameters)
 				name += $"``{md.GenericParameters.Count}";
@@ -206,7 +283,8 @@ namespace Cecil.Tests {
 
 		static string GetDocId (PropertyDefinition pd)
 		{
-			var name = GetDocId (pd.DeclaringType) + "." + pd.Name;
+			var propertyName = EscapeName (pd.Name);
+			var name = GetDocId (pd.DeclaringType) + "." + propertyName;
 			if (pd.HasParameters) {
 				name += "(" + string.Join (",", pd.Parameters.Select (p => GetDocId (p.ParameterType))) + ")";
 			}
@@ -218,11 +296,13 @@ namespace Cecil.Tests {
 			string name = "";
 			if (tr.IsNested) {
 				var decl = tr.DeclaringType;
-				while (decl.IsNested) {
+				while (true) {
 					name = decl.Name + "." + name;
+					if (!decl.IsNested)
+						break;
 					decl = decl.DeclaringType;
 				}
-				name = decl.Namespace + "." + decl.Name + "." + name;
+				name = decl.Namespace + "." + name;
 			} else {
 				name = tr.Namespace + ".";
 			}
@@ -233,9 +313,13 @@ namespace Cecil.Tests {
 			} else if (tr is TypeDefinition td && td.HasGenericParameters) {
 				name += tr.Name;
 			} else if (tr is ByReferenceType brt) {
-				name += brt.ElementType.Name + "@";
+				name = GetDocId (brt.ElementType) + "@";
 			} else if (tr is GenericParameter gp) {
-				name = $"`{gp.Position}";
+				if (gp.DeclaringMethod is not null) {
+					name = $"``{gp.Position}";
+				} else {
+					name = $"`{gp.Position}";
+				}
 			} else if (tr is ArrayType at) {
 				name = GetDocId (at.ElementType);
 				if (at.Rank == 1) {

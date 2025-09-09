@@ -33,12 +33,22 @@ using Foundation;
 namespace CoreImage {
 
 	// convenience enum for CIDetectorAccuracy[High|Low] internal fields in CIDetector (coreimage.cs)
+	/// <summary>An enumeration whose values specify the accuracy of face detection.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum FaceDetectorAccuracy {
+		/// <summary>Low detection accuracy.</summary>
 		High,
-		Low
+		/// <summary>High detection accuracy.</summary>
+		Low,
 	}
 
 	public partial class CIDetector {
+		/// <param name="context">Image context.</param>
+		///         <param name="highAccuracy">If true, it uses a more precise but slower scanning method;   If false, it uses a fast path, but not as precise..</param>
+		///         <summary>Create a new face detector using the specified parameters.</summary>
+		///         <returns>A CIDetector instance.</returns>
+		///         <remarks>
+		///         </remarks>
 		public static CIDetector? CreateFaceDetector (CIContext context, bool highAccuracy)
 		{
 			// TypeFace is the only detector supported now
@@ -47,6 +57,12 @@ namespace CoreImage {
 				return FromType (TypeFace, context, options);
 		}
 
+		/// <param name="context">Image context.</param>
+		///         <param name="highAccuracy">If true, it uses a more precise but slower scanning method;   If false, it uses a fast path, but not as precise..</param>
+		///         <param name="minFeatureSize">Minimum size that the detector will discover as a feature.</param>
+		///         <summary>Create a new face detector using the specified parameters.</summary>
+		///         <returns>A CIDetector instance.</returns>
+		///         <remarks>minFeatureSize is new in iOS 6, it will be ignored in earlier releases.</remarks>
 		public static CIDetector? CreateFaceDetector (CIContext context, bool highAccuracy, float minFeatureSize)
 		{
 			// MinFeatureSize exists only in iOS6+, before this the field is null (and would throw if used)
@@ -59,24 +75,42 @@ namespace CoreImage {
 				return FromType (TypeFace, context, options);
 		}
 
+		/// <param name="context">Image context.</param>
+		///         <param name="accuracy">To be added.</param>
+		///         <param name="minFeatureSize">Minimum size that the detector will discover as a feature.</param>
+		///         <param name="trackingEnabled">Enables feature tracking.</param>
+		///         <summary>Create a new face detector using the specified parameters.</summary>
+		///         <returns>A CIDetector instance.</returns>
+		///         <remarks>Both minFeatureSize and trackingEnabled are new in iOS 6, they will be ignored in earlier releases.</remarks>
 		public static CIDetector? CreateFaceDetector (CIContext context, FaceDetectorAccuracy? accuracy = null, float? minFeatureSize = null, bool? trackingEnabled = null)
 		{
 			CIDetectorOptions dopt = new CIDetectorOptions () {
 				Accuracy = accuracy,
 				MinFeatureSize = minFeatureSize,
-				TrackingEnabled = trackingEnabled
+				TrackingEnabled = trackingEnabled,
 			};
 
 			using (var options = dopt.ToDictionary ())
 				return FromType (TypeFace, context, options);
 		}
 
+		/// <param name="context">Image context.</param>
+		///         <param name="detectorOptions">Options to use for the face detector.</param>
+		///         <summary>Create a new face detector using the specified parameters.</summary>
+		///         <returns>A CIDetector instance.</returns>
+		///         <remarks>
+		///         </remarks>
 		public static CIDetector? CreateFaceDetector (CIContext context, CIDetectorOptions detectorOptions)
 		{
 			using (var options = detectorOptions?.ToDictionary ())
 				return FromType (TypeFace, context, options);
 		}
 
+		/// <param name="context">To be added.</param>
+		///         <param name="detectorOptions">To be added.</param>
+		///         <summary>Create a detector that recognizes rectangular objects in the image.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static CIDetector? CreateRectangleDetector (CIContext context, CIDetectorOptions detectorOptions)
 		{
 			using (var options = detectorOptions?.ToDictionary ())
@@ -84,18 +118,34 @@ namespace CoreImage {
 		}
 
 
+		/// <param name="context">To be added.</param>
+		///         <param name="detectorOptions">To be added.</param>
+		///         <summary>Create a detector that recognizes QR codes.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static CIDetector? CreateQRDetector (CIContext context, CIDetectorOptions detectorOptions)
 		{
 			using (var options = detectorOptions?.ToDictionary ())
 				return FromType (TypeQRCode, context, options);
 		}
 
+		/// <param name="context">To be added.</param>
+		///         <param name="detectorOptions">To be added.</param>
+		///         <summary>Creates a new CIDetector with the specified context and detection options.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static CIDetector? CreateTextDetector (CIContext context, CIDetectorOptions detectorOptions)
 		{
 			using (var options = detectorOptions?.ToDictionary ())
 				return FromType (TypeText, context, options);
 		}
 
+		/// <param name="image">Image to analyze.</param>
+		///         <param name="orientation">Orientation for the image.</param>
+		///         <summary>Analyzes the image and returns a list of features discovered in the image (faces, QR codes, rectangles).</summary>
+		///         <returns>Array of discovered features.</returns>
+		///         <remarks>
+		///         </remarks>
 		public CIFeature [] FeaturesInImage (CIImage image, CIImageOrientation orientation)
 		{
 			using (var options = NSDictionary.FromObjectsAndKeys (new NSObject [] { new NSNumber ((int) orientation) },

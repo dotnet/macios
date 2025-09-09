@@ -7,8 +7,6 @@
 // Copyright 2012 Xamarin Inc. All rights reserved.
 //
 
-#if !__WATCHOS__
-
 using System;
 using System.IO;
 using System.Threading.Tasks;
@@ -108,21 +106,11 @@ namespace MonoTouchFixtures.AudioToolbox {
 			var path = NSBundle.MainBundle.PathForResource ("1", "caf", "AudioToolbox");
 
 			var ss = SystemSound.FromFile (NSUrl.FromFilename (path));
-#if NET
 			Assert.That (ss.SoundId, Is.Not.EqualTo ((uint) 0), "DisposeTest");
-#else
-			Assert.That (ss.Handle, Is.Not.EqualTo (IntPtr.Zero), "DisposeTest");
-#endif
 
 			ss.Dispose ();
 			// Handle prop checks NotDisposed and throws if it is
-#if NET
 			Assert.Throws<ObjectDisposedException> (() => ss.SoundId.ToString (), "DisposeTest");
-#else
-			Assert.Throws<ObjectDisposedException> (() => ss.Handle.ToString (), "DisposeTest");
-#endif
 		}
 	}
 }
-
-#endif // !__WATCHOS__

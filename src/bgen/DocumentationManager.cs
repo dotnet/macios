@@ -22,18 +22,20 @@ public class DocumentationManager {
 		}
 	}
 
-	public void WriteDocumentation (StreamWriter sw, int indent, MemberInfo member)
+	public bool WriteDocumentation (StreamWriter sw, int indent, MemberInfo member, Func<XmlNode, XmlNode>? transformNode = null)
 	{
-		if (!TryGetDocumentation (member, out var docs))
-			return;
+		if (!TryGetDocumentation (member, out var docs, transformNode))
+			return false;
 
 		foreach (var line in docs) {
 			sw.Write ('\t', indent);
 			sw.WriteLine (line);
 		}
+
+		return true;
 	}
 
-	public bool TryGetDocumentation (MemberInfo member, [NotNullWhen (true)] out string []? documentation)
+	public bool TryGetDocumentation (MemberInfo member, [NotNullWhen (true)] out string []? documentation, Func<XmlNode, XmlNode>? transformNode = null)
 	{
 		documentation = null;
 
@@ -47,10 +49,48 @@ public class DocumentationManager {
 		if (node is null)
 			return false;
 
+		if (transformNode is not null)
+			node = transformNode (node);
+
 		// Remove indentation, make triple-slash comments
 		var lines = node.InnerXml.Split ('\n', '\r');
 		for (var i = 0; i < lines.Length; i++) {
-			lines [i] = "/// " + lines [i].TrimStart (' ');
+			var line = lines [i].TrimStart (' ');
+
+			// We compile code twice:
+			// 1. The API bindings
+			// 2. The final (generated) binding code
+			// Any xml documentation from the API definitions are copied to the generated binding code,
+			// but since the xml docs in the API definitions may refer to APIs that don't exist yet
+			// (they will be generated), we ignore any warnings from the C# compiler about failures to
+			// resolve crefs in API definitions. However, the C# compiler will modify any such cref
+			// attribute, and prefix them with '?:' - which presumably means "unresolved". The problem
+			// is that any such cref are not validated by the C# compiler when we compile the final
+			// bindings, effectively producing crefs that point to supposedly inexistent APIs.
+			// So what we do here is to undo the '?:' prefixing from the compiled API definitions, so
+			// that when we compile the generated bindings, the C# compiler validates all the crefs.
+			var needle = "cref=\"!:";
+			var idx = line.IndexOf (needle);
+			while (idx >= 0) {
+				var idx2 = line.IndexOf ('"', idx + needle.Length);
+				if (idx2 < idx)
+					break;
+				var cref = line [(idx + needle.Length)..idx2];
+
+				// Fixup this:
+				// error CS1584: XML comment has syntactically incorrect cref attribute
+				// UIKit.UIApplication.Notifications.ObserveContentSizeCategoryChanged(EventHandler&amp;lt;UIContentSizeCategoryChangedEventArgs&amp;gt;)
+				cref = cref.Replace ("&amp;lt;", "{");
+				cref = cref.Replace ("&amp;gt;", "}");
+
+				// replace the existing cref with the fixed version
+				line = line [..idx] + "cref=\"" + cref + "\"" + line [(idx2 + 1)..];
+
+				// there can be more than one cref per line, so keep looking
+				idx = line.IndexOf (needle, idx + needle.Length);
+			}
+
+			lines [i] = "/// " + line;
 		}
 
 		documentation = lines;
@@ -123,13 +163,13 @@ public class DocumentationManager {
 		var name = new StringBuilder ();
 
 		if (tr.IsGenericParameter) {
-			name.Append ('`');
+			if (tr.DeclaringMethod is not null) {
+				name.Append ("``");
+			} else {
+				name.Append ('`');
+			}
 			name.Append (tr.GenericParameterPosition);
-#if NET
 		} else if (tr.IsSZArray) {
-#else
-		} else if (tr.IsArray && tr.GetArrayRank () == 1) { // Not quite the same as IsSZArray (see https://github.com/dotnet/runtime/issues/20376), but good enough for legacy.
-#endif
 			name.Append (GetDocId (tr.GetElementType ()!));
 			name.Append ("[]");
 		} else if (tr.IsArray) {
@@ -149,10 +189,11 @@ public class DocumentationManager {
 		} else {
 			if (tr.IsNested) {
 				var decl = tr.DeclaringType!;
-				while (decl.IsNested) {
-					name.Append (decl.Name);
-					name.Append ('.');
-					name.Append (name);
+				while (true) {
+					name.Insert (0, '.');
+					name.Insert (0, decl.Name);
+					if (!decl.IsNested)
+						break;
 					decl = decl.DeclaringType!;
 				}
 				name.Insert (0, '.');

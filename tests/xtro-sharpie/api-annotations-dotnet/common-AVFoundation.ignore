@@ -10,8 +10,6 @@
 ## unsorted
 
 !missing-field! AVCoreAnimationBeginTimeAtZero not bound
-!missing-field! AVVideoTransferFunction_ITU_R_2100_HLG not bound
-!missing-field! AVVideoTransferFunction_SMPTE_ST_2084_PQ not bound
 !missing-protocol-conformance! AVAsset should conform to AVAsynchronousKeyValueLoading
 !missing-protocol-conformance! AVAssetTrack should conform to AVAsynchronousKeyValueLoading
 !missing-protocol-conformance! AVMetadataItem should conform to AVAsynchronousKeyValueLoading
@@ -27,12 +25,6 @@
 !missing-selector! NSCoder::encodeCMTimeRange:forKey: not bound
 
 !missing-release-attribute-on-return-value! CoreMedia.CMFormatDescription AVFoundation.AVTimedMetadataGroup::CopyFormatDescription()'s selector's ('copyFormatDescription') Objective-C method family ('copy') indicates that the native method returns a retained object, and as such a '[return: Release]' attribute is required.
-
-# Initial result from new rule extra-null-allowed
-!extra-null-allowed! 'AVFoundation.AVAudioTime AVFoundation.AVAudioTime::FromAudioTimeStamp(AudioToolbox.AudioTimeStamp&,System.Double)' has a extraneous [NullAllowed] on parameter #0
-!extra-null-allowed! 'System.Void AVFoundation.AVAudioFormat::.ctor(AudioToolbox.AudioStreamBasicDescription&)' has a extraneous [NullAllowed] on parameter #0
-!extra-null-allowed! 'System.Void AVFoundation.AVAudioFormat::.ctor(AudioToolbox.AudioStreamBasicDescription&,AVFoundation.AVAudioChannelLayout)' has a extraneous [NullAllowed] on parameter #0
-!extra-null-allowed! 'System.Void AVFoundation.AVAudioTime::.ctor(AudioToolbox.AudioTimeStamp&,System.Double)' has a extraneous [NullAllowed] on parameter #0
 
 # Swift Docs and Obj-C are out of sync
 # https://developer.apple.com/documentation/avfoundation/avvideocompositioninstructionprotocol/1388661-requiredsourcetrackids
@@ -52,3 +44,8 @@
 
 # no tests/samples
 !missing-pinvoke! AVSampleBufferAttachContentKey is not bound
+
+# Missing some MIDI APIs to bind these
+!missing-selector! AVAudioEngine::connectMIDI:to:format:eventListBlock: not bound
+!missing-selector! AVAudioEngine::connectMIDI:toNodes:format:eventListBlock: not bound
+!missing-selector! AVAudioUnitMIDIInstrument::sendMIDIEventList: not bound

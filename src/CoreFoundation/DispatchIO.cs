@@ -40,41 +40,27 @@ using System.Runtime.Versioning;
 using ObjCRuntime;
 using Foundation;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreFoundation {
 
+	/// <param name="data">To be added.</param>
+	///     <param name="error">To be added.</param>
+	///     <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public delegate void DispatchIOHandler (DispatchData? data, int error);
 
-#if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class DispatchIO : DispatchObject {
 		[Preserve (Conditional = true)]
 		internal DispatchIO (NativeHandle handle, bool owns) : base (handle, owns)
 		{
 		}
 
-#if !NET
-		[Preserve (Conditional = true)]
-		internal DispatchIO (NativeHandle handle) : this (handle, false)
-		{
-		}
-#endif
-
-#if !NET
-		delegate void DispatchReadWrite (IntPtr block, IntPtr dispatchData, int error);
-		static DispatchReadWrite static_DispatchReadWriteHandler = Trampoline_DispatchReadWriteHandler;
-
-		[MonoPInvokeCallback (typeof (DispatchReadWrite))]
-#else
 		[UnmanagedCallersOnly]
-#endif
 		static void Trampoline_DispatchReadWriteHandler (IntPtr block, IntPtr dispatchData, int error)
 		{
 			var del = BlockLiteral.GetTarget<DispatchIOHandler> (block);
@@ -99,20 +85,22 @@ namespace CoreFoundation {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (dispatchQueue));
 
 			unsafe {
-#if NET
 				delegate* unmanaged<IntPtr, IntPtr, int, void> trampoline = &Trampoline_DispatchReadWriteHandler;
 				using var block = new BlockLiteral (trampoline, handler, typeof (DispatchIO), nameof (Trampoline_DispatchReadWriteHandler));
-#else
-				using var block = new BlockLiteral ();
-				block.SetupBlockUnsafe (static_DispatchReadWriteHandler, handler);
-#endif
 				dispatch_read (fd, size, dispatchQueue.Handle, &block);
+				GC.KeepAlive (dispatchQueue);
 			}
 		}
 
 		[DllImport (Constants.libcLibrary)]
 		unsafe extern static void dispatch_write (int fd, IntPtr dispatchData, IntPtr dispatchQueue, BlockLiteral* handler);
 
+		/// <param name="fd">To be added.</param>
+		///         <param name="dispatchData">To be added.</param>
+		///         <param name="dispatchQueue">To be added.</param>
+		///         <param name="handler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public static void Write (int fd, DispatchData dispatchData, DispatchQueue dispatchQueue, DispatchIOHandler handler)
 		{
@@ -124,14 +112,11 @@ namespace CoreFoundation {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (dispatchQueue));
 
 			unsafe {
-#if NET
 				delegate* unmanaged<IntPtr, IntPtr, int, void> trampoline = &Trampoline_DispatchReadWriteHandler;
 				using var block = new BlockLiteral (trampoline, handler, typeof (DispatchIO), nameof (Trampoline_DispatchReadWriteHandler));
-#else
-				using var block = new BlockLiteral ();
-				block.SetupBlockUnsafe (static_DispatchReadWriteHandler, handler);
-#endif
 				dispatch_write (fd, dispatchData.Handle, dispatchQueue.Handle, &block);
+				GC.KeepAlive (dispatchData);
+				GC.KeepAlive (dispatchQueue);
 			}
 		}
 	}

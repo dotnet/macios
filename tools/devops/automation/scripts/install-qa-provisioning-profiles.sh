@@ -1,0 +1,149 @@
+#!/bin/bash -eu
+
+# How to renew certificates and provisioning profiles:
+# https://dev.azure.com/devdiv/DevDiv/_git/macios-appstoresubmissiontests?path=/docs/provisioning-profiles/EXPIRED.md&_a=preview
+
+WHITE=$(tput setaf 7 2>/dev/null || true)
+BLUE=$(tput setaf 6 2>/dev/null || true)
+RED=$(tput setaf 9 2>/dev/null || true)
+CLEAR=$(tput sgr0 2>/dev/null || true)
+
+# verify that we have the xamarin-macios.keychain, which is where the certificates will be installed
+KEYCHAIN=xamarin-macios
+ONLY_CREATE_KEYCHAIN=
+VERBOSE=
+
+#cd "$(dirname "${BASH_SOURCE[0]}")"
+
+while ! test -z "${1:-}"; do
+	case "$1" in
+	--keychain=*)
+		KEYCHAIN="${1:11}"
+		shift
+		;;
+	--keychain)
+		KEYCHAIN="$2"
+		shift 2
+		;;
+	--only-create-keychain)
+		ONLY_CREATE_KEYCHAIN=1
+		shift
+		;;
+	-v|--verbose)
+		VERBOSE=-vvvv
+		set -x
+		shift
+		;;
+	*)
+		echo "${RED}Unknown argument: $1${CLEAR}"
+		exit 1
+		;;
+	esac
+done
+
+echo "${BLUE}Installing certificates and provisioning profiles to the keychain '${WHITE}${KEYCHAIN}${BLUE}'${CLEAR}"
+
+KEYCHAIN_FILE=~/Library/Keychains/$KEYCHAIN.keychain-db
+
+if test -f "$KEYCHAIN_FILE"; then
+	echo "${BLUE}Deleting previous keychain '${WHITE}$KEYCHAIN_FILE${BLUE}'${CLEAR}"
+	rm -f "$KEYCHAIN_FILE"
+fi
+
+echo "${BLUE}Creating new keychain${CLEAR}"
+KEYCHAIN_PWD_FILE=~/.config/"$KEYCHAIN"-keychain
+mkdir -p ~/.config
+echo "$(openssl rand -hex 10)_random_password_created_automatically_with_greppable_string" > "$KEYCHAIN_PWD_FILE"
+security create-keychain -p "$(cat "$KEYCHAIN_PWD_FILE")" "$KEYCHAIN.keychain"
+
+# unlock the keychain
+echo "${BLUE}Unlocking keychain${CLEAR}"
+security unlock-keychain -p "$(cat "$KEYCHAIN_PWD_FILE")" "$KEYCHAIN_FILE"
+
+echo "${BLUE}Disable keychain autolock for '${WHITE}$KEYCHAIN_FILE${BLUE}${CLEAR}"
+security set-keychain-settings "$KEYCHAIN_FILE"
+
+echo "${BLUE}Adding certificate(s) to keychain:${CLEAR}"
+for cert in provisioning-profiles/certificates-and-profiles/*.cer; do
+	echo "    $cert"
+	/usr/bin/security import "$cert" -P 1234 -A -t cert -k "$KEYCHAIN.keychain"
+done
+
+if test -z "$ONLY_CREATE_KEYCHAIN"; then
+	if test -z "${IGNORE_LOGIN_KEYCHAIN:-}"; then
+	if ! security list-keychains | grep -q "login.keychain"; then
+		echo "Adding login.keychain to the keychain search list"
+		security list-keychains -s "$(security list-keychains | sed -e s/\"//g)" login.keychain
+	else
+		echo "login.keychain already included in the keychain search list"
+	fi
+	fi
+
+	echo "${BLUE}Provisioning${CLEAR}"
+
+# 	# The provisionator caches downloaded files, assuming they won't change.
+# 	# But we update certificates and provisioning profiles on the server
+# 	# when they expire, which means we always have to download them because
+# 	# we don't know if they've been updated. So force the provisionator to
+# 	# always download by removing any cached content.
+# 	rm -f ~/Library/Caches/com.xamarin.provisionator/Provisions/*p12
+# 	rm -f ~/Library/Caches/com.xamarin.provisionator/Provisions/*mobileprovision
+
+# 	PROVISION_KEYCHAIN=$KEYCHAIN ./provisioning-profiles/provisionator.sh $VERBOSE
+
+	# Install any certificates or provisioning profiles in the provisioning-profiles subdirectory.
+	shopt -s nullglob
+	for p12 in provisioning-profiles/certificates-and-profiles/*.p12; do
+		echo "${BLUE}Installing the certificate '${WHITE}$p12${BLUE}'${CLEAR}"
+		openssl pkcs12 -nodes -in "$p12" -passin pass:1234 2>/dev/null | grep friendlyName | sed 's/^[[:space:]]*//' | sed 's/^/    /' || true
+		openssl pkcs12 -nodes -in "$p12" -passin pass:1234 2>/dev/null | openssl x509 -noout -dates -subject -fingerprint | sed 's/^/    /' || true
+		security import "$p12" -P "${AUTH_TOKEN_LA_DEV_APPLE_P12}" -A -t cert -f pkcs12 -k "$KEYCHAIN_FILE"
+	done
+
+	targetdir="$HOME/Library/MobileDevice/Provisioning Profiles"
+	mkdir -p "$targetdir"
+
+	for source in provisioning-profiles/certificates-and-profiles/*.mobileprovision; do
+		fn="$(basename "$source")"
+		target="$targetdir/$fn"
+		if ! test -f "$target" || ! diff "$source" "$target" >/dev/null 2>&1; then
+			cp "$source" "$target"
+			echo "${BLUE}Installing provisioning profile '${WHITE}$fn${BLUE}'${CLEAR}"
+		else
+			echo "${BLUE}Provisioning profile '${WHITE}$fn${BLUE}' is up-to-date${CLEAR}"
+		fi
+	done
+
+	echo "${BLUE}Setting partition list on all certificates in the keychain to avoid permission dialogs${CLEAR}"
+	security set-key-partition-list -S "apple-tool:,apple:,codesign:,unsigned:" -s -k "$(cat "$KEYCHAIN_PWD_FILE")" "$KEYCHAIN_FILE" >/dev/null 2>&1
+fi
+
+# Include our keychain in the keychain search list and make it the default keychain
+if ! security list-keychains | grep -q "$KEYCHAIN.keychain"; then
+	echo "Adding $KEYCHAIN.keychain to the keychain search list"
+	# shellcheck disable=SC2046
+	security list-keychains -s $(security list-keychains | sed -e s/\"//g) "$KEYCHAIN.keychain"
+else
+	echo "$KEYCHAIN.keychain already included in the keychain search list"
+fi
+
+security default-keychain -s "$KEYCHAIN.keychain"
+
+echo "Keychain search list"
+security list-keychains
+
+# Make sure our cache of the provisioning profile data (in ~/Library/Xamarin/Provisioning Profiles.index) is updated
+if test -d "$HOME/Library/MobileDevice/Provisioning Profiles"; then
+	touch "$HOME/Library/MobileDevice/Provisioning Profiles"
+fi
+
+if test -n "$VERBOSE"; then
+	echo "Provisioning profile index:"
+	ls -la "$HOME/Library/Xamarin/Provisioning Profiles.index" || true
+	echo "Provisionig profiles:"
+	ls -lad "$HOME/Library/MobileDevice/Provisioning Profiles" || true
+	ls -la "$HOME/Library/MobileDevice/Provisioning Profiles" || true
+fi
+
+echo "${BLUE}All done${CLEAR} ✅"
+

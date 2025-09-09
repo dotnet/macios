@@ -1,5 +1,10 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.Macios.Generator.DataModel;
 using Microsoft.Macios.Generator.Extensions;
 using Xamarin.Tests;
 using Xamarin.Utils;
@@ -53,7 +58,7 @@ public interface IInterface {
 ";
 		// create a compilation unit and get the diff syntax node, semantic model and expected attr result
 		var (compilation, sourceTrees) =
-			CreateCompilation (nameof (MemberDeclarationSyntaxExtensionsTests), platform, attrsText, inputText);
+			CreateCompilation (platform, sources: [attrsText, inputText]);
 		Assert.Equal (2, sourceTrees.Length);
 		// get the declarations we want to work with and the semantic model
 		var nodes = sourceTrees [1].GetRoot ().DescendantNodes ().ToArray ();
@@ -119,7 +124,7 @@ public class TestClass {
 } 
 ";
 		var (compilation, sourceTrees) =
-			CreateCompilation (nameof (MemberDeclarationSyntaxExtensionsTests), platform, inputText);
+			CreateCompilation (platform, sources: inputText);
 		Assert.Single (sourceTrees);
 		// get the declarations we want to work with and the semantic model
 		var declarations = sourceTrees [0].GetRoot ()
@@ -170,7 +175,7 @@ public class TestClass {
 ";
 		// create a compilation unit and get the diff syntax node, semantic model and expected attr result
 		var (compilation, sourceTrees) =
-			CreateCompilation (nameof (MemberDeclarationSyntaxExtensionsTests), platform, attrsText, inputText);
+			CreateCompilation (platform, sources: [attrsText, inputText]);
 		Assert.Equal (2, sourceTrees.Length);
 		// get the declarations we want to work with and the semantic model
 		var nodes = sourceTrees [1].GetRoot ().DescendantNodes ().ToArray ();
@@ -183,5 +188,65 @@ public class TestClass {
 		Assert.Single (methodAttrs);
 		Assert.Equal ("ObjCBindings.AttributeWithParams", methodAttrs [0].Name);
 		Assert.Equal ("AVFoundation.TestClass", methodAttrs [0].Arguments [0]);
+	}
+
+	class GetBindingTypeTestData : IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
+		{
+			yield return new object [] {
+@"
+using Foundation;
+using ObjCBindings;
+
+[BindingType<Category> (typeof (NSObject))]
+public class TestClass {
+}",
+				BindingType.Category
+			};
+			yield return new object [] {
+@"
+using Foundation;
+using ObjCBindings;
+
+[BindingType<Class>]
+public class TestClass {
+}",
+				BindingType.Class
+			};
+			yield return new object [] {
+@"
+using Foundation;
+using ObjCBindings;
+
+[BindingType<StrongDictionary>]
+public class TestClass {
+}",
+				BindingType.StrongDictionary
+			};
+			yield return new object [] {
+@"
+public class TestClass {
+}",
+				BindingType.Unknown
+			};
+		}
+
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
+	}
+
+	[Theory]
+	[AllSupportedPlatformsClassData<GetBindingTypeTestData>]
+	void GetBindingType (ApplePlatform platform, string input, BindingType expectedBindingType)
+	{
+		var (compilation, sourceTrees) = CreateCompilation (platform, sources: [input]);
+		Assert.Single (sourceTrees);
+		var classDeclaration = sourceTrees [0].GetRoot ()
+			.DescendantNodes ()
+			.OfType<ClassDeclarationSyntax> ()
+			.FirstOrDefault ();
+		Assert.NotNull (classDeclaration);
+		var semanticModel = compilation.GetSemanticModel (sourceTrees [0]);
+		var bindingType = classDeclaration.GetBindingType (semanticModel);
+		Assert.Equal (expectedBindingType, bindingType);
 	}
 }

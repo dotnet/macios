@@ -24,6 +24,9 @@ namespace Foundation {
 
 		public SessionConfigurationType SessionType { get; private set; } = SessionConfigurationType.Default;
 
+		/// <summary>A copy of the default session configuration.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public static NSUrlSessionConfiguration DefaultSessionConfiguration {
 			get {
 				var config = NSUrlSessionConfiguration._DefaultSessionConfiguration;
@@ -32,6 +35,9 @@ namespace Foundation {
 			}
 		}
 
+		/// <summary>A session configuration that uses no persistent storage for caches, cookies, or credentials.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public static NSUrlSessionConfiguration EphemeralSessionConfiguration {
 			get {
 				var config = NSUrlSessionConfiguration._EphemeralSessionConfiguration;
@@ -40,17 +46,16 @@ namespace Foundation {
 			}
 		}
 
-#if NET
+		/// <param name="identifier">To be added.</param>
+		///         <summary>Developers should not use this deprecated method. Developers should use 'CreateBackgroundSessionConfiguration' instead.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
 		[ObsoletedOSPlatform ("macos10.10", "Use 'CreateBackgroundSessionConfiguration' instead.")]
 		[ObsoletedOSPlatform ("ios8.0", "Use 'CreateBackgroundSessionConfiguration' instead.")]
-#else
-		[Deprecated (PlatformName.iOS, 8, 0, message: "Use 'CreateBackgroundSessionConfiguration' instead.")]
-		[Deprecated (PlatformName.MacOSX, 10, 10, message: "Use 'CreateBackgroundSessionConfiguration' instead.")]
-#endif
 		public static NSUrlSessionConfiguration BackgroundSessionConfiguration (string identifier)
 		{
 			var config = NSUrlSessionConfiguration._BackgroundSessionConfiguration (identifier);
@@ -58,6 +63,10 @@ namespace Foundation {
 			return config;
 		}
 
+		/// <param name="identifier">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSUrlSessionConfiguration CreateBackgroundSessionConfiguration (string identifier)
 		{
 			var config = NSUrlSessionConfiguration._CreateBackgroundSessionConfiguration (identifier);
@@ -65,14 +74,10 @@ namespace Foundation {
 			return config;
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("macos14.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
 		[SupportedOSPlatform ("tvos17.0")]
-#else
-		[TV (17, 0), Watch (10, 0), iOS (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
-#endif
 		public NWProxyConfig [] ProxyConfigurations {
 			get => NSArray.ArrayFromHandleFunc (_ProxyConfigurations, handle => new NWProxyConfig (handle, owns: false));
 			set {

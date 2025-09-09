@@ -227,6 +227,7 @@ class GitHubComments {
     [ValidateNotNullOrEmpty ()][string] $Repo
     [ValidateNotNullOrEmpty ()][string] $Token
     [string] $Hash
+    [string[]] $PRIds
     hidden static [string] $GitHubGraphQLEndpoint = "https://api.github.com/graphql"
 
     GitHubComments (
@@ -238,6 +239,7 @@ class GitHubComments {
         $this.Repo = $githubRepo
         $this.Token = $githubToken
         $this.Hash = $null
+        $this.PRIds = [string[]]@()
     }
 
     GitHubComments (
@@ -250,27 +252,33 @@ class GitHubComments {
         $this.Repo = $githubRepo
         $this.Token = $githubToken
         $this.Hash = $hash
+        $this.PRIds = Get-GitHubPRsForHash -Org $githubOrg -Repo $githubRepo -Token $githubToken -Hash $hash
     }
 
-    static [bool] IsPR() {
-        if ($Env:BUILD_REASON -eq "PullRequest") {
-            return $true;
-        }
-
-        if (($Env:BUILD_REASON -eq "ResourceTrigger")) {
-            $sourceBranch = $Env:BUILD_SOURCEBRANCH
-            if ($sourceBranch.StartsWith("refs/pull/") -and $sourceBranch.EndsWith("/merge")) {
-                return $true
+    [bool] IsPR() {
+        # if the object has a list of pr ids, we are a pr, else check the resource trigger
+        if ($this.PRIds.Length -gt 0) {
+            return $true
+        } else {
+            # we might have gotten here because of the trigger type. This means that we are in a PR BUT
+            # we did not get the PR ids, but those can be found in the diff evirtoment vars
+            if ($Env:BUILD_REASON -eq "PullRequest") {
+                # set the PR ids to the PR we have in the VSTS env vars
+                $this.PRIds = @($Env:SYSTEM_PULLREQUEST_PULLREQUESTNUMBER)
+                return $true;
             }
+
+            if (($Env:BUILD_REASON -eq "ResourceTrigger")) {
+                $sourceBranch = $Env:BUILD_SOURCEBRANCH
+                if ($sourceBranch.StartsWith("refs/pull/") -and $sourceBranch.EndsWith("/merge")) {
+                    # Set the PRs parsing the source branch
+                    $this.PRIds = @($sourceBranch.Replace("refs/pull/", "").Replace("/merge", ""))
+                    return $true
+                }
+            }
+
+            return $false
         }
-
-        return $false
-    }
-
-    static [string] GetPRID() {
-        $buildSourceBranch = $Env:BUILD_SOURCEBRANCH
-        $changeId = $buildSourceBranch.Replace("refs/pull/", "").Replace("/merge", "")
-        return $changeId 
     }
 
     [void] WriteCommentHeader(
@@ -284,9 +292,9 @@ class GitHubComments {
         }
 
         if ([string]::IsNullOrEmpty($Env:PR_ID)) {
-            $prefix = "[CI Build]"
+            $prefix = "[CI Build #$($this.Hash.Substring(0,7))]"
         } else {
-            $prefix = "[PR Build]"
+            $prefix = "[PR Build #$($this.Hash.Substring(0,7))]"
         }
 
         $stringBuilder.AppendLine("# $commentEmoji $prefix $commentTitle $commentEmoji")
@@ -301,8 +309,9 @@ class GitHubComments {
         $stringBuilder.AppendLine("[Pipeline]($targetUrl) on Agent $Env:TESTS_BOT") # Env:TESTS_BOT is added by the pipeline as a variable coming from the execute tests job
         $hashUrl = $null
         $hashSource = $null
-        if ([GitHubComments]::IsPR()) {
-            $changeId = [GitHubComments]::GetPRID()
+        if ($this.IsPR()) {
+            # we should only have a single PR id, don't worry too much about it
+            $changeId = $this.PRIds[0]
             $hashUrl = "https://github.com/$($this.Org)/$($this.Repo)/pull/$changeId/commits/$($this.Hash)"
             $hashSource = " [PR build]"
         } else {
@@ -325,8 +334,9 @@ class GitHubComments {
 
     [string] GetCommentUrl() {
         # if the build was due to PR, we want to write the comment in the PR rather than in the commit 
-        if ([GitHubComments]::IsPR()) {
-            $changeId = [GitHubComments]::GetPRID()
+        if ($this.IsPR()) {
+            # we should only have a single PR id, don't worry too much about it
+            $changeId = $this.PRIds[0]
             $url = "https://api.github.com/repos/$($this.Org)/$($this.Repo)/issues/$changeId/comments"
         } else {
             if ($this.Hash) {
@@ -372,17 +382,23 @@ class GitHubComments {
     [void] HideComments(
         [string] $commentId
     ) {
+        if ($this.PRIds.Length -eq 0) {
+            Write-Host "Not hiding comments, because we're not in a pull request"
+            return
+        }
+
         if (!$commentId) {
             Write-Host "Not hiding comments, because no comment id provided"
             return
         }
 
-        if (![GitHubComments]::IsPR()) {
+        if (!$this.IsPR()) {
             Write-Host "Not hiding comments, because we're not in a pull request"
             return
         }
 
-        $prId = "$Env:BUILD_SOURCEBRANCH".Replace("refs/pull/", "").Replace("/merge", "")
+        # we should only have a single pr id, don't worry too much about it
+        $prId = $this.PRIds[0]
         $prComments = $this.GetCommentsForPR($prId)
 
         $botComments = [System.Collections.ArrayList]@()
@@ -407,7 +423,8 @@ class GitHubComments {
         [object] $commentObject,
         [string] $commentId
     ) {
-        $this.HideComments($commentId)
+        # Check if we should hide previous comments (only if current commit is latest)
+        $this.HandlePreviousCommentHiding($commentId)
 
         # build the message, which will be sent to github, users can use markdown
         $msg = [System.Text.StringBuilder]::new()
@@ -422,7 +439,7 @@ class GitHubComments {
         # footer
         $this.WriteCommentFooter($msg, $commentId)
 
-        return $this.NewComment($msg)
+        return $this.CreateAndPostComment($msg, $commentId)
     }
 
     [object] NewCommentFromFile(
@@ -431,7 +448,8 @@ class GitHubComments {
         [string] $filePath,
         [string] $commentId
     ) {
-        $this.HideComments($commentId)
+        # Check if we should hide previous comments (only if current commit is latest)
+        $this.HandlePreviousCommentHiding($commentId)
 
         # build the message, which will be sent to github, users can use markdown
         $msg = [System.Text.StringBuilder]::new()
@@ -453,7 +471,7 @@ class GitHubComments {
         # footer
         $this.WriteCommentFooter($msg, $commentId)
 
-        return $this.NewComment($msg)
+        return $this.CreateAndPostComment($msg, $commentId)
     }
 
     [object] NewCommentFromMessage(
@@ -462,7 +480,8 @@ class GitHubComments {
         [string] $content,
         [string] $commentId
     ) {
-        $this.HideComments($commentId)
+        # Check if we should hide previous comments (only if current commit is latest)
+        $this.HandlePreviousCommentHiding($commentId)
 
         $msg = [System.Text.StringBuilder]::new()
 
@@ -476,7 +495,7 @@ class GitHubComments {
         # footer
         $this.WriteCommentFooter($msg, $commentId)
 
-        return $this.NewComment($msg)
+        return $this.CreateAndPostComment($msg, $commentId)
     }
 
     [object] GetCommentsForPR ($prId) {
@@ -583,19 +602,24 @@ query{
         return $comments
     }
 
-    [void] MinimizeComments($comments) {
+    <#
+    .SYNOPSIS
+        Minimize (hide) the comment with the specified GitHub id
+
+    .PARAMETER commentId
+        The id of the comment to hide.
+    #>
+    [void] MinimizeCommentId($commentId)
+    {
         $headers = @{
             Authorization = ("Bearer {0}" -f $this.Token)
         }
-        # we cannot do a mutation with all the comments :/ but we can loop and do it
-        foreach($c in $comments) {
-
         $mutation =@"
 mutation {
     __typename
     minimizeComment(
         input: {
-            subjectId: "$($c.Id)",
+            subjectId: "$commentId",
             clientMutationId: "xamarin-macios-ci"
             classifier: OUTDATED
         }
@@ -604,13 +628,135 @@ mutation {
     }
 }
 "@
-            $payload = @{
-                query=$mutation
-            }
-            $body = ConvertTo-Json $payload
-            $url = [GitHubComments]::GitHubGraphQLEndpoint
-            $response= Invoke-RestMethod -Uri $url -Headers $headers -Method "POST" -Body $body
+        $payload = @{
+            query=$mutation
+        }
+        $body = ConvertTo-Json $payload
+        $url = [GitHubComments]::GitHubGraphQLEndpoint
+        $response = Invoke-RestMethod -Uri $url -Headers $headers -Method "POST" -Body $body
+    }
+
+    <#
+    .SYNOPSIS
+        Minimize (hide) the comment with the specified GitHub id
+
+    .PARAMETER comments
+        The comments to hide
+    #>
+    [void] MinimizeComments($comments) {
+        # we cannot do a mutation with all the comments :/ but we can loop and do it
+        foreach($c in $comments) {
+             $this.MinimizeCommentId($c.id)
         } # foreach
+    }
+
+    <#
+    .SYNOPSIS
+        Handles hiding previous comments if the current commit is the latest in the PR.
+    
+    .PARAMETER commentId
+        The identifier used to find and hide previous comments of the same type.
+    #>
+    [void] HandlePreviousCommentHiding([string] $commentId) {
+        if ($this.IsCurrentCommitLatestInPR()) {
+            $this.HideComments($commentId)
+        } else {
+            Write-Host "Not hiding previous comments, because current commit is not the latest in the PR"
+        }
+    }
+
+    <#
+    .SYNOPSIS
+        Handles hiding the newly posted comment if the current commit is not the latest in the PR.
+    
+    .PARAMETER result
+        The result object from posting the comment, containing the comment ID.
+    #>
+    [void] HandleNewCommentHiding([object] $result) {
+        if ($this.IsPR() -and -not $this.IsCurrentCommitLatestInPR()) {
+            Write-Host "Current commit is not the latest in PR, attempting to hide the new comment"
+            try {
+                Start-Sleep -Seconds 2  # Give GitHub a moment to process the comment
+                $this.MinimizeCommentId($result.id)
+            } catch {
+                Write-Host "Warning: Failed to hide comment for non-latest commit: $_"
+            }
+        }
+    }
+
+    <#
+    .SYNOPSIS
+        Creates a comment and handles conditional hiding based on commit status.
+    
+    .DESCRIPTION
+        This helper method consolidates the common pattern of creating a new comment,
+        then conditionally hiding it if the current commit is not the latest in the PR.
+    
+    .PARAMETER msg
+        The message content for the comment (StringBuilder or string).
+    
+    .PARAMETER commentId
+        The identifier used to mark the comment.
+    
+    .OUTPUTS
+        The result object from posting the comment, containing the comment ID.
+    #>
+    [object] CreateAndPostComment([object] $msg, [string] $commentId) {
+        $result = $this.NewComment($msg)
+        
+        # If this commit is not the latest in the PR, hide this comment immediately
+        $this.HandleNewCommentHiding($result)
+
+        return $result
+    }
+
+    <#
+    .SYNOPSIS
+        Checks if the current commit being built matches the head commit of the PR.
+    
+    .DESCRIPTION
+        This method determines whether the commit currently being processed is the latest commit
+        in the pull request. This is used to decide whether to hide previous CI comments or not.
+        If the current commit is not the latest, it means we're building an older commit (possibly
+        due to CI retry or queue delay), and we should not hide previous comments.
+    
+    .OUTPUTS
+        [bool] Returns true if the current commit is the latest in the PR, false otherwise.
+               Also returns true if not in a PR context or if hash comparison cannot be performed.
+    #>
+    [bool] IsCurrentCommitLatestInPR() {
+        # If we're not in a PR context, we can't determine this
+        if (-not $this.IsPR()) {
+            return $true
+        }
+
+        # If we don't have a hash to compare, assume it's latest
+        if (-not $this.Hash) {
+            return $true
+        }
+
+        try {
+            # we should only have a single pr id
+            $prId = $this.PRIds[0]
+            
+            # Get PR information to find the head commit
+            $url = "https://api.github.com/repos/$($this.Org)/$($this.Repo)/pulls/$prId"
+            $headers = @{
+                Authorization = ("token {0}" -f $this.Token)
+            }
+            
+            $prInfo = Invoke-Request -Request { Invoke-RestMethod -Uri $url -Headers $headers -Method "GET" -ContentType 'application/json' }
+            $latestCommit = $prInfo.head.sha
+            
+            Write-Host "Current commit: $($this.Hash)"
+            Write-Host "Latest commit in PR #${prId}: $latestCommit"
+            
+            return $this.Hash -eq $latestCommit
+        } catch {
+            Write-Host "Error checking if current commit is latest in PR: $_"
+            # On error, assume it's the latest to avoid hiding valid comments
+            return $true
+        }
     }
 }
 
@@ -765,9 +911,9 @@ function New-GitHubComment {
         # calcualte the change ID which is the PR number 
         $buildSourceBranch = $Env:BUILD_SOURCEBRANCH
         $changeId = $buildSourceBranch.Replace("refs/pull/", "").Replace("/merge", "")
-        $url = "https://api.github.com/repos/xamarin/xamarin-macios/issues/$changeId/comments"
+        $url = "https://api.github.com/repos/$Env:BUILD_REPOSITORY_NAME/issues/$changeId/comments"
     } else {
-        $url = "https://api.github.com/repos/xamarin/xamarin-macios/commits/$Env:BUILD_SOURCEVERSION/comments"
+        $url = "https://api.github.com/repos/$Env:BUILD_REPOSITORY_NAME/commits/$Env:BUILD_SOURCEVERSION/comments"
     }
 
     # github has a max size for the comments to be added in a PR, it can be the case that because we failed so much, that we
@@ -822,7 +968,7 @@ function Get-GitHubPRInfo {
         }
     }
 
-    $url = "https://api.github.com/repos/xamarin/xamarin-macios/pulls/$ChangeId"
+    $url = "https://api.github.com/repos/$Env:BUILD_REPOSITORY_NAME/pulls/$ChangeId"
 
     $headers = @{
         Authorization = ("token {0}" -f $Env:GITHUB_TOKEN);
@@ -831,6 +977,80 @@ function Get-GitHubPRInfo {
     $request = Invoke-Request -Request { Invoke-RestMethod -Uri $url -Method "GET" -ContentType 'application/json' -Headers $headers }
     Write-Debug $request
     return $request
+}
+
+<#
+    .SYNOPSIS
+        Get the PR Ids related to a commit hash. If the hash has multiple PRs, all of them will be returned.
+        If the commit has landed in main, the PRs will be empty.
+
+    .PARAMETER Org
+        The organization that owns the repository.
+    
+    .PARAMETER Repo
+        The repository where the commit is located.
+    
+    .PARAMETER Token
+        The token to be used to authenticate with the GitHub API.
+
+    .PARAMETER Hash
+        The hash of the commit whose PRs we want to retrieve.
+#>
+function Get-GitHubPRsForHash {
+    param (
+        [String]
+        $Org,
+
+        [String]
+        $Repo,
+
+        [string]
+        $Token,
+
+        [Parameter(Mandatory)]
+        [String]
+        $Hash
+    )
+
+    Write-Host "Getting related PR ids for commit $Hash"
+
+    $prs = [System.Collections.ArrayList]@()
+    if ($Env:IS_PR -eq "false") {
+        Write-Host "This isn't a PR, IS_PR=false"
+        return $prs
+    }
+
+    if ($Org -and $Repo) {
+        $url = "https://api.github.com/repos/$($Org)/$($Repo)/commits/$Hash/pulls"
+    } else {
+        $url = "https://api.github.com/repos/$Env:BUILD_REPOSITORY_NAME/commits/$Hash/pulls"
+    }
+
+    if (-not $Token) {
+        $Token = $Env:GITHUB_TOKEN
+    }
+
+    $headers = @{
+        Authorization = ("token {0}" -f $Token);
+    }
+
+    $request = Invoke-Request -Request { Invoke-RestMethod -Uri $url -Method "GET" -ContentType 'application/json' -Headers $headers }
+    Write-Host "Request result: $request"
+
+    # loop over the result and remove all the extra noise we are not interested in
+    foreach ($prInfo in $request) {
+        $state = $prInfo.state
+        if ($state -ne "open") {
+            Write-Host "Skipping PR #$($prInfo.number) because it is not open"
+            continue
+        }
+        # only returns those PRS whose status is open
+        $number = $prInfo.number
+        Write-Host "Found PR #$number for commit $hash"
+        $prs.Add($number) > $null
+    }
+    Write-Host "Found $($prs.Count) PRs for commit $hash"
+    return $prs
 }
 
 <#
@@ -1088,6 +1308,7 @@ function Convert-Markdown {
 # module exports, any other functions are private and should not be used outside the module.
 Export-ModuleMember -Function New-GitHubComment
 Export-ModuleMember -Function Get-GitHubPRInfo
+Export-ModuleMember -Function Get-GitHubPRsForHash
 Export-ModuleMember -Function New-GistWithFiles 
 Export-ModuleMember -Function New-GistObjectDefinition 
 Export-ModuleMember -Function New-GistWithContent 

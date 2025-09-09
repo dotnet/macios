@@ -1,5 +1,3 @@
-#if !__WATCHOS__
-
 using System;
 using Foundation;
 using Metal;
@@ -47,7 +45,6 @@ namespace MonoTouchFixtures.Metal {
 			encoder = null;
 		}
 
-#if NET
 		[Test]
 		public void SetBuffers ()
 		{
@@ -65,7 +62,5 @@ namespace MonoTouchFixtures.Metal {
 
 			}, "Should not throw");
 		}
-#endif
 	}
 }
-#endif

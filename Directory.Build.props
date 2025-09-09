@@ -4,10 +4,15 @@
 		<DisableTransitiveFrameworkReferenceDownloads>true</DisableTransitiveFrameworkReferenceDownloads>
 		<MonoCecilPackageVersion>0.11.5</MonoCecilPackageVersion>
 		<MSBuildStructuredLoggerPackageVersion>2.2.158</MSBuildStructuredLoggerPackageVersion>
-		<MicrosoftBuildPackageVersion>17.11.4</MicrosoftBuildPackageVersion>
-		<MicrosoftBuildFrameworkPackageVersion>17.11.4</MicrosoftBuildFrameworkPackageVersion>
-		<MicrosoftBuildTasksCorePackageVersion>17.11.4</MicrosoftBuildTasksCorePackageVersion>
-		<MicrosoftBuildUtilitiesCorePackageVersion>17.11.4</MicrosoftBuildUtilitiesCorePackageVersion>
+		<MicrosoftBuildPackageVersion>17.13.26</MicrosoftBuildPackageVersion>
+		<MicrosoftBuildFrameworkPackageVersion>$(MicrosoftBuildPackageVersion)</MicrosoftBuildFrameworkPackageVersion>
+		<MicrosoftBuildTasksCorePackageVersion>$(MicrosoftBuildPackageVersion)</MicrosoftBuildTasksCorePackageVersion>
+		<MicrosoftBuildUtilitiesCorePackageVersion>$(MicrosoftBuildPackageVersion)</MicrosoftBuildUtilitiesCorePackageVersion>
+		<NUnitXmlTestLoggerPackageVersion>3.1.15</NUnitXmlTestLoggerPackageVersion>
+		<!-- Fix transient dependency issue found by component governance 4.7.0 -> 4.7.2 brought by Microsoft.Build package -->
+		<SystemDrawingCommonPackageVersion>4.7.2</SystemDrawingCommonPackageVersion>
+		<!-- Fix transient dependency issue found by component governance 4.7.0 -> 4.7.1 brought by Microsoft.Build.Tasks.Core package -->
+		<SystemSecurityCryptographyXmlPackageVersion>8.0.0</SystemSecurityCryptographyXmlPackageVersion>
 	</PropertyGroup>
 	<Import Project="Build.props" Condition="Exists('Build.props')" />
 </Project>

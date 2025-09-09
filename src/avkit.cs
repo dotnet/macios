@@ -37,7 +37,7 @@ using UIAction = Foundation.NSObject;
 using UIMenuElement = Foundation.NSObject;
 #endif // !MONOMAC
 
-#if TVOS || WATCH
+#if TVOS
 using AVCustomRoutingController = Foundation.NSObject;
 using AVCustomRoutingEvent = Foundation.NSObject;
 using AVCustomRoutingActionItem = Foundation.NSObject;
@@ -45,12 +45,8 @@ using AVCustomRoutingActionItem = Foundation.NSObject;
 using AVRouting;
 #endif
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace AVKit {
-	[NoWatch, NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[Native]
 	enum AVVideoFrameAnalysisType : ulong {
 		AVVideoFrameAnalysisTypeNone = 0,
@@ -69,9 +65,7 @@ namespace AVKit {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-#if NET
 	[Sealed] // Apple docs: Do not subclass AVPictureInPictureController. Overriding this class’s methods is unsupported and results in undefined behavior.
-#endif
 	interface AVPictureInPictureController {
 		[Static]
 		[Export ("isPictureInPictureSupported")]
@@ -80,7 +74,7 @@ namespace AVKit {
 		[Export ("initWithPlayerLayer:")]
 		NativeHandle Constructor (AVPlayerLayer playerLayer);
 
-		[TV (15, 0), NoWatch, iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("initWithContentSource:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (AVPictureInPictureControllerContentSource contentSource);
@@ -88,6 +82,13 @@ namespace AVKit {
 		[Export ("playerLayer")]
 		AVPlayerLayer PlayerLayer { get; }
 
+		/// <summary>An instance of the AVKit.IAVPictureInPictureControllerDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the AVKit.IAVPictureInPictureControllerDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		[NullAllowed]
 		IAVPictureInPictureControllerDelegate Delegate { get; set; }
@@ -101,12 +102,22 @@ namespace AVKit {
 		[Export ("stopPictureInPicture")]
 		void StopPictureInPicture ();
 
+		/// <summary>Gets a value that tells whether Picture in Picture is currently possible on the device.</summary>
+		///         <value>
+		///           <see langword="false" /> if another app is running Picture in Picture.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("pictureInPicturePossible")]
 		bool PictureInPicturePossible { [Bind ("isPictureInPicturePossible")] get; }
 
+		/// <summary>Gets a value that tells whether Picture in Picture is currently displayed.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("pictureInPictureActive")]
 		bool PictureInPictureActive { [Bind ("isPictureInPictureActive")] get; }
 
+		/// <summary>Gets a value that tells whether Picture in Picture playback has been paused and moved off the screen by another application.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("pictureInPictureSuspended")]
 		bool PictureInPictureSuspended { [Bind ("isPictureInPictureSuspended")] get; }
 
@@ -134,39 +145,33 @@ namespace AVKit {
 		[Export ("pictureInPictureButtonStopImageCompatibleWithTraitCollection:")]
 		UIImage CreateStopButton ([NullAllowed] UITraitCollection traitCollection);
 
-		[NoWatch, iOS (14, 0)]
+		[iOS (14, 0)]
 		[MacCatalyst (14, 0)]
 		[Export ("requiresLinearPlayback")]
 		bool RequiresLinearPlayback { get; set; }
 
-		[NoWatch, NoMac, NoiOS, MacCatalyst (15, 0)]
+		[NoMac, NoiOS, MacCatalyst (15, 0)]
 		[Export ("canStopPictureInPicture")]
 		bool CanStopPictureInPicture { get; }
 
 		[iOS (14, 2)]
-		[NoWatch, NoTV, NoMac, MacCatalyst (15, 0)]
+		[NoTV, NoMac, MacCatalyst (15, 0)]
 		[Export ("canStartPictureInPictureAutomaticallyFromInline")]
 		bool CanStartPictureInPictureAutomaticallyFromInline { get; set; }
 
-		[TV (15, 0), NoWatch, iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("invalidatePlaybackState")]
 		void InvalidatePlaybackState ();
 
 		[NullAllowed]
-		[TV (15, 0), NoWatch, iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("contentSource", ArgumentSemantic.Strong)]
 		AVPictureInPictureControllerContentSource ContentSource { get; set; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:AVKit.AVPictureInPictureControllerDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:AVKit.AVPictureInPictureControllerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:AVKit.AVPictureInPictureControllerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:AVKit.AVPictureInPictureControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IAVPictureInPictureControllerDelegate { }
 
-	/// <summary>Delegate object providing methods for the application's <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UIView%20Controller%20Delegate&amp;scope=Xamarin" title="T:UIKit.UIViewControllerDelegate">T:UIKit.UIViewControllerDelegate</a></format> at the start and stop of picture-in-picture video playback.</summary>
+	/// <summary>Delegate object providing methods for the application's <see cref="AVPictureInPictureController" /> at the start and stop of picture-in-picture video playback.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AVKit/Reference/AVPictureInPictureControllerDelegate_Protocol/index.html">Apple documentation for <c>AVPictureInPictureControllerDelegate</c></related>
 	[TV (14, 0)]
@@ -174,21 +179,41 @@ namespace AVKit {
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface AVPictureInPictureControllerDelegate {
+		/// <param name="pictureInPictureController">To be added.</param>
+		/// <summary>Picture In Picture playback is about to start.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("pictureInPictureControllerWillStartPictureInPicture:")]
 		void WillStartPictureInPicture (AVPictureInPictureController pictureInPictureController);
 
+		/// <param name="pictureInPictureController">To be added.</param>
+		/// <summary>Picture In Picture playback has started.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("pictureInPictureControllerDidStartPictureInPicture:")]
 		void DidStartPictureInPicture (AVPictureInPictureController pictureInPictureController);
 
+		/// <param name="pictureInPictureController">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>Picture In Picture playback failed to start.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("pictureInPictureController:failedToStartPictureInPictureWithError:")]
 		void FailedToStartPictureInPicture (AVPictureInPictureController pictureInPictureController, NSError error);
 
+		/// <param name="pictureInPictureController">To be added.</param>
+		/// <summary>Picture In Picture playback is about to stop.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("pictureInPictureControllerWillStopPictureInPicture:")]
 		void WillStopPictureInPicture (AVPictureInPictureController pictureInPictureController);
 
+		/// <param name="pictureInPictureController">To be added.</param>
+		/// <summary>Picture In Picture playback has stopped.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("pictureInPictureControllerDidStopPictureInPicture:")]
 		void DidStopPictureInPicture (AVPictureInPictureController pictureInPictureController);
 
+		/// <param name="pictureInPictureController">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>Picture In Picture playback is about to stop. Called to give the app the opportunity to provide a playback user interface by passing <see langword="true" /> to <paramref name="completionHandler" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("pictureInPictureController:restoreUserInterfaceForPictureInPictureStopWithCompletionHandler:")]
 		void RestoreUserInterfaceForPictureInPicture (AVPictureInPictureController pictureInPictureController, Action<bool> completionHandler);
 	}
@@ -198,6 +223,16 @@ namespace AVKit {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (UIViewController))]
 	interface AVPlayerViewController {
+		/// <param name="nibName">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="bundle">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Creates a new <see cref="AVKit.AVPlayerViewController" /> for the specified NIB name and bundle.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithNibName:bundle:")]
 		[PostGet ("NibBundle")]
 		NativeHandle Constructor ([NullAllowed] string nibName, [NullAllowed] NSBundle bundle);
@@ -212,6 +247,9 @@ namespace AVKit {
 		[Export ("videoGravity")]
 		NSString WeakVideoGravity { get; set; }
 
+		/// <summary>Gets a value that tells whether the first frame of vido is ready to display.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("readyForDisplay")]
 		bool ReadyForDisplay { [Bind ("isReadyForDisplay")] get; }
 
@@ -249,6 +287,13 @@ namespace AVKit {
 		[Export ("exitsFullScreenWhenPlaybackEnds")]
 		bool ExitsFullScreenWhenPlaybackEnds { get; set; }
 
+		/// <summary>An instance of the AVKit.IAVPlayerViewControllerDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the AVKit.IAVPlayerViewControllerDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		[NullAllowed]
 		IAVPlayerViewControllerDelegate Delegate { get; set; }
@@ -278,56 +323,56 @@ namespace AVKit {
 		#endregion
 
 		[NullAllowed]
-		[NoiOS, NoWatch, NoMac]
+		[NoiOS, NoMac]
 		[NoMacCatalyst]
 		[Export ("contentProposalViewController", ArgumentSemantic.Assign)]
 		AVContentProposalViewController ContentProposalViewController { get; set; }
 
-		[NoiOS, NoWatch, NoMac]
+		[NoiOS, NoMac]
 		[NoMacCatalyst]
 		[Export ("skippingBehavior", ArgumentSemantic.Assign)]
 		AVPlayerViewControllerSkippingBehavior SkippingBehavior { get; set; }
 
-		[NoiOS, NoWatch, NoMac]
+		[NoiOS, NoMac]
 		[NoMacCatalyst]
 		[Export ("skipForwardEnabled")]
 		bool SkipForwardEnabled { [Bind ("isSkipForwardEnabled")] get; set; }
 
-		[NoiOS, NoWatch, NoMac]
+		[NoiOS, NoMac]
 		[NoMacCatalyst]
 		[Export ("skipBackwardEnabled")]
 		bool SkipBackwardEnabled { [Bind ("isSkipBackwardEnabled")] get; set; }
 
 		// From AVPlayerViewControllerControls category
 
-		[NoiOS, NoWatch, NoMac]
+		[NoiOS, NoMac]
 		[NoMacCatalyst]
 		[Export ("playbackControlsIncludeTransportBar")]
 		bool PlaybackControlsIncludeTransportBar { get; set; }
 
-		[NoiOS, NoWatch, NoMac]
+		[NoiOS, NoMac]
 		[NoMacCatalyst]
 		[Export ("playbackControlsIncludeInfoViews")]
 		bool PlaybackControlsIncludeInfoViews { get; set; }
 
 		[NullAllowed]
-		[NoiOS, NoWatch, NoMac]
+		[NoiOS, NoMac]
 		[Deprecated (PlatformName.TvOS, 15, 0, message: "Use 'CustomInfoViewControllers' instead.")]
 		[NoMacCatalyst]
 		[Export ("customInfoViewController", ArgumentSemantic.Assign)]
 		UIViewController CustomInfoViewController { get; set; }
 
-		[NoiOS, NoMac, NoWatch]
+		[NoiOS, NoMac]
 		[NoMacCatalyst]
 		[Export ("appliesPreferredDisplayCriteriaAutomatically")]
 		bool AppliesPreferredDisplayCriteriaAutomatically { get; set; }
 
-		[TV (13, 0), NoWatch]
+		[TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("pixelBufferAttributes", ArgumentSemantic.Copy)]
 		NSDictionary<NSString, NSObject> PixelBufferAttributes { get; set; }
 
-		[NoiOS, TV (13, 0), NoWatch]
+		[NoiOS, TV (13, 0)]
 		[NoMacCatalyst]
 		[NullAllowed, Export ("customOverlayViewController", ArgumentSemantic.Strong)]
 		UIViewController CustomOverlayViewController { get; set; }
@@ -338,61 +383,56 @@ namespace AVKit {
 		bool ShowsTimecodes { get; set; }
 
 		[iOS (14, 2)]
-		[NoWatch, NoTV, MacCatalyst (15, 0)]
+		[NoTV, MacCatalyst (15, 0)]
 		[Export ("canStartPictureInPictureAutomaticallyFromInline")]
 		bool CanStartPictureInPictureAutomaticallyFromInline { get; set; }
 
-		[TV (15, 0), NoWatch, NoMac, NoiOS, NoMacCatalyst]
+		[TV (15, 0), NoMac, NoiOS, NoMacCatalyst]
 		[Export ("contextualActions", ArgumentSemantic.Copy)]
 		UIAction [] ContextualActions { get; set; }
 
-		[TV (15, 0), NoWatch, NoMac, NoiOS, NoMacCatalyst]
+		[TV (15, 0), NoMac, NoiOS, NoMacCatalyst]
 		[Export ("infoViewActions", ArgumentSemantic.Copy)]
+		[NullAllowed]
 		UIAction [] InfoViewActions { get; set; }
 
-		[TV (15, 0), NoWatch, NoMac, NoiOS, NoMacCatalyst]
+		[TV (15, 0), NoMac, NoiOS, NoMacCatalyst]
 		[Export ("customInfoViewControllers", ArgumentSemantic.Copy)]
 		UIViewController [] CustomInfoViewControllers { get; set; }
 
-		[TV (15, 0), NoWatch, NoMac, NoiOS, NoMacCatalyst]
+		[TV (15, 0), NoMac, NoiOS, NoMacCatalyst]
 		[Export ("transportBarCustomMenuItems", ArgumentSemantic.Copy)]
 		UIMenuElement [] TransportBarCustomMenuItems { get; set; }
 
-		[TV (15, 0), NoWatch, NoMac, NoiOS, NoMacCatalyst]
+		[TV (15, 0), NoMac, NoiOS, NoMacCatalyst]
 		[Export ("transportBarIncludesTitleView")]
 		bool TransportBarIncludesTitleView { get; set; }
 
-		[NoWatch, NoTV, MacCatalyst (16, 0), NoMac, iOS (16, 0)]
+		[NoTV, MacCatalyst (16, 0), NoMac, iOS (16, 0)]
 		[Export ("allowsVideoFrameAnalysis")]
 		bool AllowsVideoFrameAnalysis { get; set; }
 
-		[iOS (16, 0), MacCatalyst (16, 0), NoMac, NoWatch, TV (16, 0)]
+		[iOS (16, 0), MacCatalyst (16, 0), NoMac, TV (16, 0)]
 		[Export ("speeds", ArgumentSemantic.Copy)]
 		AVPlaybackSpeed [] Speeds { get; set; }
 
-		[iOS (16, 0), MacCatalyst (16, 0), NoMac, NoWatch, TV (16, 0)]
+		[iOS (16, 0), MacCatalyst (16, 0), NoMac, TV (16, 0)]
 		[NullAllowed, Export ("selectedSpeed")]
 		AVPlaybackSpeed SelectedSpeed { get; }
 
-		[iOS (16, 0), MacCatalyst (16, 0), NoMac, NoWatch, TV (16, 0)]
+		[iOS (16, 0), MacCatalyst (16, 0), NoMac, TV (16, 0)]
 		[Export ("selectSpeed:")]
 		void SelectSpeed (AVPlaybackSpeed speed);
 
-		[iOS (17, 0), MacCatalyst (18, 0), NoTV, NoWatch, NoMac]
+		[iOS (17, 0), MacCatalyst (18, 0), NoTV, NoMac]
 		[Export ("videoFrameAnalysisTypes")]
 		AVVideoFrameAnalysisType VideoFrameAnalysisTypes { get; set; }
 
-		[iOS (17, 0), MacCatalyst (18, 0), NoTV, NoWatch, NoMac]
+		[iOS (17, 0), MacCatalyst (18, 0), NoTV, NoMac]
 		[Export ("toggleLookupAction")]
 		UIAction ToggleLookupAction { get; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:AVKit.AVPlayerViewControllerDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:AVKit.AVPlayerViewControllerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:AVKit.AVPlayerViewControllerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:AVKit.AVPlayerViewControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IAVPlayerViewControllerDelegate { }
 
 	/// <summary>Delegate object for the picture-in-picture controller. When overridden, the methods allow the developer to respond to events relating to p-in-p playback.</summary>
@@ -403,36 +443,60 @@ namespace AVKit {
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface AVPlayerViewControllerDelegate {
+		/// <param name="playerViewController">To be added.</param>
+		/// <summary>Picture In Picture playback is about to start.</summary>
+		/// <remarks>To be added.</remarks>
 		[TV (14, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("playerViewControllerWillStartPictureInPicture:")]
 		void WillStartPictureInPicture (AVPlayerViewController playerViewController);
 
+		/// <param name="playerViewController">To be added.</param>
+		/// <summary>Picture In Picture playback has started.</summary>
+		/// <remarks>To be added.</remarks>
 		[TV (14, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("playerViewControllerDidStartPictureInPicture:")]
 		void DidStartPictureInPicture (AVPlayerViewController playerViewController);
 
+		/// <param name="playerViewController">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>Picture In Picture playback failed to start.</summary>
+		/// <remarks>To be added.</remarks>
 		[TV (14, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("playerViewController:failedToStartPictureInPictureWithError:")]
 		void FailedToStartPictureInPicture (AVPlayerViewController playerViewController, NSError error);
 
+		/// <param name="playerViewController">To be added.</param>
+		/// <summary>Picture In Picture playback is about to stop.</summary>
+		/// <remarks>To be added.</remarks>
 		[TV (14, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("playerViewControllerWillStopPictureInPicture:")]
 		void WillStopPictureInPicture (AVPlayerViewController playerViewController);
 
+		/// <param name="playerViewController">To be added.</param>
+		/// <summary>Picture In Picture playback has stopped.</summary>
+		/// <remarks>To be added.</remarks>
 		[TV (14, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("playerViewControllerDidStopPictureInPicture:")]
 		void DidStopPictureInPicture (AVPlayerViewController playerViewController);
 
+		/// <param name="playerViewController">To be added.</param>
+		/// <summary>App developers should return <see langword="true" /> to indicate that the player viewer should dismiss when Picture In Picture playback starts, or <see langword="false" /> to prevent this.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[TV (14, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("playerViewControllerShouldAutomaticallyDismissAtPictureInPictureStart:")]
 		bool ShouldAutomaticallyDismissAtPictureInPictureStart (AVPlayerViewController playerViewController);
 
+		/// <param name="playerViewController">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>Picture In Picture playback is about to stop. Called to give the app the opportunity to provide a playback user interface by passing <see langword="true" /> to <paramref name="completionHandler" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[TV (14, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("playerViewController:restoreUserInterfaceForPictureInPictureStopWithCompletionHandler:")]
@@ -441,7 +505,6 @@ namespace AVKit {
 		[iOS (16, 0)]
 		[NoMac]
 		[NoMacCatalyst]
-		[NoWatch]
 		[Export ("playerViewController:didPresentInterstitialTimeRange:")]
 		void DidPresentInterstitialTimeRange (AVPlayerViewController playerViewController, AVInterstitialTimeRange interstitial);
 
@@ -465,7 +528,6 @@ namespace AVKit {
 
 		[iOS (16, 0)]
 		[NoMac]
-		[NoWatch]
 		[NoMacCatalyst]
 		[Export ("playerViewController:willPresentInterstitialTimeRange:")]
 		void WillPresentInterstitialTimeRange (AVPlayerViewController playerViewController, AVInterstitialTimeRange interstitial);
@@ -488,77 +550,77 @@ namespace AVKit {
 		[Export ("playerViewController:didSelectExternalSubtitleOptionLanguage:")]
 		void DidSelectExternalSubtitleOptionLanguage (AVPlayerViewController playerViewController, string language);
 
-		[NoiOS, NoWatch, NoMac]
+		[NoiOS, NoMac]
 		[NoMacCatalyst]
 		[Export ("playerViewController:timeToSeekAfterUserNavigatedFromTime:toTime:")]
 		CMTime GetTimeToSeekAfterUserNavigated (AVPlayerViewController playerViewController, CMTime oldTime, CMTime targetTime);
 
-		[NoiOS, NoWatch, NoMac]
+		[NoiOS, NoMac]
 		[NoMacCatalyst]
 		[Export ("skipToNextItemForPlayerViewController:")]
 		void SkipToNextItem (AVPlayerViewController playerViewController);
 
-		[NoiOS, NoWatch, NoMac]
+		[NoiOS, NoMac]
 		[NoMacCatalyst]
 		[Export ("skipToPreviousItemForPlayerViewController:")]
 		void SkipToPreviousItem (AVPlayerViewController playerViewController);
 
-		[NoiOS, NoWatch, NoMac]
+		[NoiOS, NoMac]
 		[NoMacCatalyst]
 		[Export ("playerViewController:shouldPresentContentProposal:")]
 		bool ShouldPresentContentProposal (AVPlayerViewController playerViewController, AVContentProposal proposal);
 
-		[NoiOS, NoWatch, NoMac]
+		[NoiOS, NoMac]
 		[NoMacCatalyst]
 		[Export ("playerViewController:didAcceptContentProposal:")]
 		void DidAcceptContentProposal (AVPlayerViewController playerViewController, AVContentProposal proposal);
 
-		[NoiOS, NoWatch, NoMac]
+		[NoiOS, NoMac]
 		[NoMacCatalyst]
 		[Export ("playerViewController:didRejectContentProposal:")]
 		void DidRejectContentProposal (AVPlayerViewController playerViewController, AVContentProposal proposal);
 
-		[NoiOS, NoWatch, NoMac]
+		[NoiOS, NoMac]
 		[NoMacCatalyst]
 		[Export ("playerViewController:willTransitionToVisibilityOfTransportBar:withAnimationCoordinator:")]
 		void WillTransitionToVisibilityOfTransportBar (AVPlayerViewController playerViewController, bool visible, IAVPlayerViewControllerAnimationCoordinator coordinator);
 
-		[iOS (13, 0), NoTV, NoWatch, NoMac]
+		[iOS (13, 0), NoTV, NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("playerViewController:willBeginFullScreenPresentationWithAnimationCoordinator:"), EventArgs ("AVPlayerViewFullScreenPresentationWillBegin")]
 		void WillBeginFullScreenPresentation (AVPlayerViewController playerViewController, IUIViewControllerTransitionCoordinator coordinator);
 
-		[iOS (13, 0), NoTV, NoWatch, NoMac]
+		[iOS (13, 0), NoTV, NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("playerViewController:willEndFullScreenPresentationWithAnimationCoordinator:"), EventArgs ("AVPlayerViewFullScreenPresentationWillEnd")]
 		void WillEndFullScreenPresentation (AVPlayerViewController playerViewController, IUIViewControllerTransitionCoordinator coordinator);
 
-		[TV (13, 0), NoiOS, NoWatch, NoMac]
+		[TV (13, 0), NoiOS, NoMac]
 		[NoMacCatalyst]
 		[Export ("nextChannelInterstitialViewControllerForPlayerViewController:")]
 		UIViewController GetNextChannelInterstitialViewController (AVPlayerViewController playerViewController);
 
-		[TV (13, 0), NoiOS, NoWatch, NoMac]
+		[TV (13, 0), NoiOS, NoMac]
 		[NoMacCatalyst]
 		[Export ("playerViewController:skipToNextChannel:"), EventArgs ("AVPlayerViewSkipToNextChannel")]
 		void SkipToNextChannel (AVPlayerViewController playerViewController, Action<bool> completion);
 
-		[TV (13, 0), NoiOS, NoWatch, NoMac]
+		[TV (13, 0), NoiOS, NoMac]
 		[NoMacCatalyst]
 		[Export ("playerViewController:skipToPreviousChannel:"), EventArgs ("AVPlayerViewSkipToPreviousChannel")]
 		void SkipToPreviousChannel (AVPlayerViewController playerViewController, Action<bool> completion);
 
-		[TV (13, 0), NoiOS, NoWatch, NoMac]
+		[TV (13, 0), NoiOS, NoMac]
 		[NoMacCatalyst]
 		[Export ("previousChannelInterstitialViewControllerForPlayerViewController:")]
 		UIViewController GetPreviousChannelInterstitialViewController (AVPlayerViewController playerViewController);
 
-		[iOS (15, 0), NoTV, NoMac, NoWatch, MacCatalyst (15, 0)]
+		[iOS (15, 0), NoTV, NoMac, MacCatalyst (15, 0)]
 		[Export ("playerViewController:restoreUserInterfaceForFullScreenExitWithCompletionHandler:")]
 		void RestoreUserInterfaceForFullScreenExit (AVPlayerViewController playerViewController, Action<bool> completionHandler);
 	}
 
-	[NoWatch, NoTV, NoMac, iOS (13, 0)]
+	[NoTV, NoMac, iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Category]
 	[BaseType (typeof (AVAudioSession))]
@@ -571,7 +633,7 @@ namespace AVKit {
 
 	interface IAVPlayerViewControllerAnimationCoordinator { }
 
-	[NoiOS, NoWatch, NoMac]
+	[NoiOS, NoMac]
 	[NoMacCatalyst]
 	[Protocol]
 	interface AVPlayerViewControllerAnimationCoordinator {
@@ -581,10 +643,13 @@ namespace AVKit {
 		void AddCoordinatedAnimations (Action animations, Action<bool> completion);
 	}
 
-	[NoiOS, NoWatch, NoTV]
+	[NoiOS, NoTV]
 	[NoMacCatalyst]
 	[BaseType (typeof (NSView))]
 	interface AVPlayerView {
+		/// <param name="frameRect">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithFrame:")]
 		NativeHandle Constructor (CGRect frameRect);
 
@@ -599,6 +664,9 @@ namespace AVKit {
 		[Export ("videoGravity")]
 		string VideoGravity { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMacCatalyst]
 		[Export ("readyForDisplay")]
 		bool ReadyForDisplay { [Bind ("isReadyForDisplay")] get; }
@@ -627,6 +695,10 @@ namespace AVKit {
 		[Export ("canBeginTrimming")]
 		bool CanBeginTrimming { get; }
 
+		/// <param name="chapterNumber">To be added.</param>
+		/// <param name="chapterTitle">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("flashChapterNumber:chapterTitle:")]
 		void FlashChapter (nuint chapterNumber, [NullAllowed] string chapterTitle);
 
@@ -664,44 +736,44 @@ namespace AVKit {
 		[NullAllowed, Export ("delegate", ArgumentSemantic.Weak)]
 		NSObject WeakDelegate { get; set; }
 
-		[Mac (13, 0), NoWatch, NoiOS, NoMacCatalyst, NoTV]
+		[Mac (13, 0), NoiOS, NoMacCatalyst, NoTV]
 		[Export ("speeds", ArgumentSemantic.Copy)]
 		AVPlaybackSpeed [] Speeds { get; set; }
 
-		[Mac (13, 0), NoWatch, NoiOS, NoMacCatalyst, NoTV]
+		[Mac (13, 0), NoiOS, NoMacCatalyst, NoTV]
 		[NullAllowed, Export ("selectedSpeed")]
 		AVPlaybackSpeed SelectedSpeed { get; }
 
-		[Mac (13, 0), NoWatch, NoiOS, NoMacCatalyst, NoTV]
+		[Mac (13, 0), NoiOS, NoMacCatalyst, NoTV]
 		[Export ("selectSpeed:")]
 		void SelectSpeed (AVPlaybackSpeed speed);
 
-		[NoWatch, NoTV, NoMacCatalyst, NoiOS, Mac (13, 0)]
+		[NoTV, NoMacCatalyst, NoiOS, Mac (13, 0)]
 		[Export ("allowsVideoFrameAnalysis")]
 		bool AllowsVideoFrameAnalysis { get; set; }
 
-		[Mac (13, 0), NoWatch, NoiOS, NoMacCatalyst, NoTV]
+		[Mac (13, 0), NoiOS, NoMacCatalyst, NoTV]
 		[Export ("allowsMagnification")]
 		bool AllowsMagnification { get; set; }
 
-		[Mac (13, 0), NoWatch, NoiOS, NoMacCatalyst, NoTV]
+		[Mac (13, 0), NoiOS, NoMacCatalyst, NoTV]
 		[Export ("magnification")]
 		nfloat Magnification { get; set; }
 
-		[Mac (13, 0), NoWatch, NoiOS, NoMacCatalyst, NoTV]
+		[Mac (13, 0), NoiOS, NoMacCatalyst, NoTV]
 		[Export ("setMagnification:centeredAtPoint:")]
 		void SetMagnification (nfloat magnification, CGPoint centeredAtPoint);
+
+		[Mac (14, 0)]
+		[Export ("videoFrameAnalysisTypes")]
+		AVVideoFrameAnalysisType VideoFrameAnalysisTypes { get; set; }
 	}
 
 	interface IAVPlayerViewPictureInPictureDelegate { }
 
-	[NoiOS, NoWatch, NoTV]
+	[NoiOS, NoTV]
 	[NoMacCatalyst]
-#if NET
 	[Protocol, Model]
-#else
-	[Protocol, Model (AutoGeneratedName = true)]
-#endif
 	[BaseType (typeof (NSObject))]
 	interface AVPlayerViewPictureInPictureDelegate {
 
@@ -727,10 +799,13 @@ namespace AVKit {
 		bool ShouldAutomaticallyDismiss (AVPlayerView playerView);
 	}
 
-	[NoiOS, NoWatch, NoTV]
+	[NoiOS, NoTV]
 	[NoMacCatalyst]
 	[BaseType (typeof (NSView))]
 	interface AVCaptureView {
+		/// <param name="frameRect">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithFrame:")]
 		NativeHandle Constructor (CGRect frameRect);
 
@@ -756,11 +831,15 @@ namespace AVKit {
 
 	interface IAVCaptureViewDelegate { }
 
-	[NoiOS, NoWatch, NoTV]
+	[NoiOS, NoTV]
 	[Protocol, Model]
 	[NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
 	interface AVCaptureViewDelegate {
+		/// <param name="captureView">To be added.</param>
+		/// <param name="fileOutput">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("captureView:startRecordingToFileOutput:")]
 		void StartRecording (AVCaptureView captureView, AVCaptureFileOutput fileOutput);
@@ -769,7 +848,6 @@ namespace AVKit {
 	[iOS (16, 0)]
 	[NoMac]
 	[NoMacCatalyst]
-	[NoWatch]
 	[BaseType (typeof (NSObject))]
 	interface AVInterstitialTimeRange : NSCopying, NSSecureCoding {
 		[Export ("initWithTimeRange:")]
@@ -805,7 +883,7 @@ namespace AVKit {
 	}
 
 	[NoMac]
-	[NoiOS, NoWatch]
+	[NoiOS]
 	[NoMacCatalyst]
 	[BaseType (typeof (UIViewController))]
 	interface AVContentProposalViewController {
@@ -834,7 +912,7 @@ namespace AVKit {
 
 	[Static]
 	[NoMac]
-	[NoiOS, NoWatch]
+	[NoiOS]
 	[NoMacCatalyst]
 	interface AVKitMetadataIdentifier {
 
@@ -870,9 +948,22 @@ namespace AVKit {
 	[BaseType (typeof (UIView))]
 	interface AVRoutePickerView {
 
+		/// <param name="frame">Frame used by the view, expressed in iOS points.</param>
+		/// <summary>Initializes the AVRoutePickerView with the specified frame.</summary>
+		/// <remarks>
+		///           <para>This constructor is used to programmatically create a new instance of AVRoutePickerView with the specified dimension in the frame.   The object will only be displayed once it has been added to a view hierarchy by calling AddSubview in a containing view.</para>
+		///           <para>This constructor is not invoked when deserializing objects from storyboards or XIB filesinstead the constructor that takes an NSCoder parameter is invoked.</para>
+		///         </remarks>
 		[Export ("initWithFrame:")]
 		NativeHandle Constructor (CGRect frame);
 
+		/// <summary>An instance of the AVKit.IAVRoutePickerViewDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the AVKit.IAVRoutePickerViewDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate", IsVirtual = true)]
 		[NullAllowed]
 		IAVRoutePickerViewDelegate Delegate { get; set; }
@@ -885,7 +976,7 @@ namespace AVKit {
 		[Export ("activeTintColor", ArgumentSemantic.Assign), NullAllowed]
 		UIColor ActiveTintColor { get; set; }
 
-		[NoiOS, NoMac, NoWatch, NoMacCatalyst]
+		[NoiOS, NoMac, NoMacCatalyst]
 		[Export ("routePickerButtonStyle", ArgumentSemantic.Assign)]
 		AVRoutePickerViewButtonStyle RoutePickerButtonStyle { get; set; }
 
@@ -895,32 +986,32 @@ namespace AVKit {
 		[Export ("prioritizesVideoDevices")]
 		bool PrioritizesVideoDevices { get; set; }
 
-		[NoiOS, NoTV, NoWatch]
+		[NoiOS, NoTV]
 		[NoMacCatalyst]
 		[Export ("routePickerButtonColorForState:")]
 		NSColor GetRoutePickerButtonColor (AVRoutePickerViewButtonState state);
 
-		[NoiOS, NoTV, NoWatch]
+		[NoiOS, NoTV]
 		[NoMacCatalyst]
 		[Export ("setRoutePickerButtonColor:forState:")]
 		void SetRoutePickerButtonColor ([NullAllowed] NSColor color, AVRoutePickerViewButtonState state);
 
-		[NoiOS, NoTV, NoWatch]
+		[NoiOS, NoTV]
 		[NoMacCatalyst]
 		[Export ("routePickerButtonBordered")]
 		bool RoutePickerButtonBordered { [Bind ("isRoutePickerButtonBordered")] get; set; }
 
-		[NoiOS, NoTV, NoWatch]
+		[NoiOS, NoTV]
 		[NoMacCatalyst]
 		[NullAllowed, Export ("player", ArgumentSemantic.Assign)]
 		AVPlayer Player { get; set; }
 
-		[NoTV, NoMac, iOS (16, 0), MacCatalyst (16, 0), NoWatch]
+		[NoTV, NoMac, iOS (16, 0), MacCatalyst (16, 0)]
 		[NullAllowed, Export ("customRoutingController", ArgumentSemantic.Assign)]
 		AVCustomRoutingController CustomRoutingController { get; set; }
 	}
 
-	[NoiOS, NoMac, NoWatch, NoMacCatalyst]
+	[NoiOS, NoMac, NoMacCatalyst]
 	[Native]
 	public enum AVRoutePickerViewButtonStyle : long {
 		System,
@@ -928,12 +1019,6 @@ namespace AVKit {
 		Custom,
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:AVKit.AVRoutePickerViewDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:AVKit.AVRoutePickerViewDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:AVKit.AVRoutePickerViewDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:AVKit.AVRoutePickerViewDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IAVRoutePickerViewDelegate { }
 
 	[MacCatalyst (13, 1)]
@@ -941,14 +1026,20 @@ namespace AVKit {
 	[BaseType (typeof (NSObject))]
 	interface AVRoutePickerViewDelegate {
 
+		/// <param name="routePickerView">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("routePickerViewWillBeginPresentingRoutes:")]
 		void WillBeginPresentingRoutes (AVRoutePickerView routePickerView);
 
+		/// <param name="routePickerView">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("routePickerViewDidEndPresentingRoutes:")]
 		void DidEndPresentingRoutes (AVRoutePickerView routePickerView);
 	}
 
-	[NoiOS, NoMac, NoWatch]
+	[NoiOS, NoMac]
 	[NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -980,7 +1071,7 @@ namespace AVKit {
 		bool DisplayCriteriaMatchingEnabled { [Bind ("isDisplayCriteriaMatchingEnabled")] get; }
 	}
 
-	[NoiOS, NoMac, NoWatch]
+	[NoiOS, NoMac]
 	[NoMacCatalyst]
 	[Category]
 	[BaseType (typeof (UIWindow))]
@@ -990,7 +1081,7 @@ namespace AVKit {
 		AVDisplayManager GetAVDisplayManager ();
 	}
 
-	[NoTV, NoWatch, NoMac, iOS (15, 0), MacCatalyst (15, 0)]
+	[NoTV, NoMac, iOS (15, 0), MacCatalyst (15, 0)]
 	[BaseType (typeof (UIViewController))]
 	interface AVPictureInPictureVideoCallViewController {
 		[DesignatedInitializer]
@@ -998,7 +1089,7 @@ namespace AVKit {
 		NativeHandle Constructor ([NullAllowed] string nibName, [NullAllowed] NSBundle bundle);
 	}
 
-	[TV (15, 0), NoWatch, iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface AVPictureInPictureControllerContentSource {
@@ -1009,19 +1100,16 @@ namespace AVKit {
 		AVPlayerLayer PlayerLayer { get; }
 
 		// interface AVPictureInPictureControllerContentSource_VideoCallSupport
-		[NoWatch, NoTV, NoMac]
-		[NoMacCatalyst] // doc as available, intro fails on macOS 12 beta 6
+		[NoTV, NoMac]
 		[Export ("initWithActiveVideoCallSourceView:contentViewController:")]
 		NativeHandle Constructor (UIView sourceView, AVPictureInPictureVideoCallViewController contentViewController);
 
 		[NullAllowed]
-		[NoWatch, NoTV, NoMac]
-		[NoMacCatalyst] // doc as available, intro fails on macOS 12 beta 6
+		[NoTV, NoMac]
 		[Export ("activeVideoCallSourceView", ArgumentSemantic.Weak)]
 		UIView ActiveVideoCallSourceView { get; }
 
-		[NoWatch, NoTV, NoMac]
-		[NoMacCatalyst] // doc as available, intro fails on macOS 12 beta 6
+		[NoTV, NoMac]
 		[Export ("activeVideoCallContentViewController")]
 		AVPictureInPictureVideoCallViewController ActiveVideoCallContentViewController { get; }
 
@@ -1042,12 +1130,8 @@ namespace AVKit {
 
 	interface IAVPictureInPictureSampleBufferPlaybackDelegate { }
 
-	[TV (15, 0), NoWatch, iOS (15, 0), MacCatalyst (15, 0)]
-#if NET
+	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 	[Protocol, Model]
-#else
-	[Protocol, Model (AutoGeneratedName = true)]
-#endif
 	[BaseType (typeof (NSObject))]
 	interface AVPictureInPictureSampleBufferPlaybackDelegate {
 		[Abstract]
@@ -1077,11 +1161,7 @@ namespace AVKit {
 	interface IAVPlayerViewDelegate { }
 
 	[NoiOS, NoTV, NoMacCatalyst]
-#if NET
 	[Protocol, Model]
-#else
-	[Protocol, Model (AutoGeneratedName = true)]
-#endif
 	[BaseType (typeof (NSObject))]
 	interface AVPlayerViewDelegate {
 		[Export ("playerViewWillEnterFullScreen:")]
@@ -1102,27 +1182,31 @@ namespace AVKit {
 
 	[NoiOS]
 	[NoTV]
-	[NoWatch]
 	[NoMacCatalyst]
 	[Native]
 	public enum AVCaptureViewControlsStyle : long {
+		/// <summary>To be added.</summary>
 		Inline,
+		/// <summary>To be added.</summary>
 		Floating,
+		/// <summary>To be added.</summary>
 		InlineDeviceSelection,
+		/// <summary>To be added.</summary>
 		Default = Inline,
 	}
 
 	[NoiOS]
 	[NoTV]
-	[NoWatch]
 	[NoMacCatalyst]
 	[Native]
 	public enum AVPlayerViewTrimResult : long {
+		/// <summary>To be added.</summary>
 		OKButton,
+		/// <summary>To be added.</summary>
 		CancelButton,
 	}
 
-	[TV (16, 0), NoWatch, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface AVPlaybackSpeed {
@@ -1143,7 +1227,7 @@ namespace AVKit {
 		string LocalizedNumericName { get; }
 	}
 
-	[iOS (17, 2), NoMac, NoMacCatalyst, NoTV, NoWatch]
+	[iOS (17, 2), NoMac, MacCatalyst (17, 2), NoTV]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface AVCaptureEvent {
@@ -1151,7 +1235,7 @@ namespace AVKit {
 		AVCaptureEventPhase Phase { get; }
 	}
 
-	[iOS (17, 2), NoMac, NoMacCatalyst, NoTV, NoWatch]
+	[iOS (17, 2), NoMac, MacCatalyst (17, 2), NoTV]
 	[Native]
 	public enum AVCaptureEventPhase : ulong {
 		Began,
@@ -1159,7 +1243,7 @@ namespace AVKit {
 		Cancelled,
 	}
 
-	[iOS (17, 2), NoMac, NoMacCatalyst, NoTV, NoWatch]
+	[iOS (17, 2), NoMac, MacCatalyst (17, 2), NoTV]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface AVCaptureEventInteraction : UIInteraction {
@@ -1172,4 +1256,37 @@ namespace AVKit {
 		[Export ("enabled")]
 		bool Enabled { [Bind ("isEnabled")] get; set; }
 	}
+
+	[TV (17, 0), NoMac, NoiOS, NoMacCatalyst]
+	[BaseType (typeof (UIViewController))]
+	interface AVContinuityDevicePickerViewController {
+		[Static]
+		[Export ("supported")]
+		bool Supported { [Bind ("isSupported")] get; }
+
+		[Wrap ("WeakDelegate")]
+		[NullAllowed]
+		IAVContinuityDevicePickerViewControllerDelegate Delegate { get; set; }
+
+		[NullAllowed, Export ("delegate", ArgumentSemantic.Weak)]
+		NSObject WeakDelegate { get; set; }
+	}
+
+	[TV (17, 0), NoMac, NoiOS, NoMacCatalyst]
+	[Protocol (BackwardsCompatibleCodeGeneration = false), Model]
+	[BaseType (typeof (NSObject))]
+	interface AVContinuityDevicePickerViewControllerDelegate {
+		[Export ("continuityDevicePickerWillBeginPresenting:")]
+		void WillBeginPresenting (AVContinuityDevicePickerViewController pickerViewController);
+
+		[Export ("continuityDevicePicker:didConnectDevice:")]
+		void DidConnectDevice (AVContinuityDevicePickerViewController pickerViewController, AVContinuityDevice device);
+
+		[Export ("continuityDevicePickerDidCancel:")]
+		void DidCancel (AVContinuityDevicePickerViewController pickerViewController);
+
+		[Export ("continuityDevicePickerDidEndPresenting:")]
+		void DidEndPresenting (AVContinuityDevicePickerViewController pickerViewController);
+	}
+	interface IAVContinuityDevicePickerViewControllerDelegate { }
 }

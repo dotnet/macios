@@ -5,12 +5,8 @@ using ObjCRuntime;
 using AVFoundation;
 using AppKit;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace MailKit {
-	[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+	[NoTV, NoiOS, NoMacCatalyst]
 	[Native]
 	[ErrorDomain ("MEComposeSessionErrorDomain")]
 	public enum MEComposeSessionErrorCode : long {
@@ -19,7 +15,7 @@ namespace MailKit {
 		Body = 2,
 	}
 
-	[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+	[NoTV, NoiOS, NoMacCatalyst]
 	[Native]
 	public enum MEMessageActionMessageColor : long {
 		None,
@@ -32,7 +28,7 @@ namespace MailKit {
 		Gray,
 	}
 
-	[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+	[NoTV, NoiOS, NoMacCatalyst]
 	[Native]
 	public enum MEMessageState : long {
 		Received = 0,
@@ -40,7 +36,7 @@ namespace MailKit {
 		Sending = 2,
 	}
 
-	[NoWatch, NoTV, NoMacCatalyst, NoiOS]
+	[NoTV, NoMacCatalyst, NoiOS]
 	[Native]
 	public enum MEMessageEncryptionState : long {
 		Unknown = 0,
@@ -48,7 +44,7 @@ namespace MailKit {
 		Encrypted = 2,
 	}
 
-	[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+	[NoTV, NoiOS, NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MEMessage : NSSecureCoding {
@@ -94,7 +90,7 @@ namespace MailKit {
 		NSData RawData { get; }
 	}
 
-	[NoWatch, NoTV, NoMacCatalyst, NoiOS]
+	[NoTV, NoMacCatalyst, NoiOS]
 	[Native]
 	public enum MEMessageActionFlag : long {
 		None,
@@ -108,7 +104,7 @@ namespace MailKit {
 		Gray,
 	}
 
-	[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+	[NoTV, NoiOS, NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MEMessageAction : NSSecureCoding {
@@ -141,7 +137,7 @@ namespace MailKit {
 		MEMessageAction SetBackgroundColorAction (MEMessageActionMessageColor color);
 	}
 
-	[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+	[NoTV, NoiOS, NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MEMessageActionDecision : NSSecureCoding {
@@ -158,7 +154,7 @@ namespace MailKit {
 		MEMessageActionDecision Apply (MEMessageAction [] actions);
 	}
 
-	[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+	[NoTV, NoiOS, NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MEMessageEncodingResult : NSSecureCoding {
@@ -176,7 +172,7 @@ namespace MailKit {
 		NSError EncryptionError { get; }
 	}
 
-	[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+	[NoTV, NoiOS, NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MEMessageSecurityInformation : NSSecureCoding {
@@ -205,7 +201,7 @@ namespace MailKit {
 		bool ShouldBlockRemoteContent { get; }
 	}
 
-	[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+	[NoTV, NoiOS, NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MEMessageSigner : NSSecureCoding {
@@ -222,7 +218,7 @@ namespace MailKit {
 		NSData Context { get; }
 	}
 
-	[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+	[NoTV, NoiOS, NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MEOutgoingMessageEncodingStatus : NSSecureCoding {
@@ -242,7 +238,7 @@ namespace MailKit {
 		MEEmailAddress [] AddressesFailingEncryption { get; }
 	}
 
-	[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+	[NoTV, NoiOS, NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MEAddressAnnotation : NSSecureCoding {
@@ -259,7 +255,7 @@ namespace MailKit {
 		MEAddressAnnotation CreateSuccessAnnotation (string localizedDescription);
 	}
 
-	[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+	[NoTV, NoiOS, NoMacCatalyst]
 	[Advice ("'MEComposeSession' is not available in UIKit on macOS.")]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -277,7 +273,7 @@ namespace MailKit {
 		void ReloadSession ();
 	}
 
-	[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+	[NoTV, NoiOS, NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MEDecodedMessage : NSSecureCoding {
@@ -300,7 +296,7 @@ namespace MailKit {
 		NativeHandle Constructor ([NullAllowed] NSData rawData, MEMessageSecurityInformation securityInformation, [NullAllowed] NSData context, [NullAllowed] MEDecodedMessageBanner banner);
 	}
 
-	[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+	[NoTV, NoiOS, NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
 	interface MEEncodedOutgoingMessage : NSSecureCoding {
 		[Export ("initWithRawData:isSigned:isEncrypted:")]
@@ -316,7 +312,7 @@ namespace MailKit {
 		bool IsEncrypted { get; }
 	}
 
-	[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+	[NoTV, NoiOS, NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MEEmailAddress : NSSecureCoding, NSCopying {
@@ -332,7 +328,7 @@ namespace MailKit {
 
 	interface IMEComposeSessionHandler { }
 
-	[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+	[NoTV, NoiOS, NoMacCatalyst]
 	[Protocol]
 	interface MEComposeSessionHandler {
 		[Abstract]
@@ -359,7 +355,7 @@ namespace MailKit {
 
 	interface IMEContentBlocker { }
 
-	[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+	[NoTV, NoiOS, NoMacCatalyst]
 	[Protocol]
 	interface MEContentBlocker {
 		[Abstract]
@@ -367,7 +363,7 @@ namespace MailKit {
 		NSData ContentRulesJson { get; }
 	}
 
-	[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+	[NoTV, NoiOS, NoMacCatalyst]
 	[Protocol]
 	interface MEExtension {
 		[Export ("handlerForComposeSession:")]
@@ -385,7 +381,7 @@ namespace MailKit {
 
 	interface IMEMessageActionHandler { }
 
-	[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+	[NoTV, NoiOS, NoMacCatalyst]
 	[Protocol]
 	interface MEMessageActionHandler {
 		[Abstract]
@@ -396,7 +392,7 @@ namespace MailKit {
 		string [] RequiredHeaders { get; }
 	}
 
-	[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+	[NoTV, NoiOS, NoMacCatalyst]
 	[Protocol]
 	interface MEMessageDecoder {
 		[Abstract]
@@ -405,7 +401,7 @@ namespace MailKit {
 		MEDecodedMessage DecodedMessage (NSData data);
 	}
 
-	[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+	[NoTV, NoiOS, NoMacCatalyst]
 	[Protocol]
 	interface MEMessageEncoder {
 		[Abstract]
@@ -418,7 +414,7 @@ namespace MailKit {
 	}
 
 	[ErrorDomain ("MEMessageSecurityErrorDomain")]
-	[NoWatch, NoTV, NoMacCatalyst, NoiOS]
+	[NoTV, NoMacCatalyst, NoiOS]
 	[Native]
 	public enum MEMessageSecurityErrorCode : long {
 		EncodingError = 0,
@@ -427,7 +423,7 @@ namespace MailKit {
 
 	interface IMEMessageSecurityHandler { }
 
-	[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+	[NoTV, NoiOS, NoMacCatalyst]
 	[Protocol]
 	interface MEMessageSecurityHandler : MEMessageEncoder, MEMessageDecoder {
 		[Abstract]
@@ -445,7 +441,7 @@ namespace MailKit {
 		void SetPrimaryActionClicked (NSData messageContext, Action<MEExtensionViewController> completionHandler);
 	}
 
-	[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+	[NoTV, NoiOS, NoMacCatalyst]
 	[DefaultCtorVisibility (Visibility.Protected)]
 	[BaseType (typeof (NSViewController))]
 	interface MEExtensionViewController {
@@ -455,7 +451,7 @@ namespace MailKit {
 		NativeHandle Constructor ([NullAllowed] string nibNameOrNull, [NullAllowed] NSBundle nibBundleOrNull);
 	}
 
-	[NoWatch, NoTV, NoMacCatalyst, NoiOS]
+	[NoTV, NoMacCatalyst, NoiOS]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MEExtensionManager {
@@ -468,7 +464,7 @@ namespace MailKit {
 		void ReloadVisibleMessages ([NullAllowed] Action<NSError> completionHandler);
 	}
 
-	[NoWatch, NoTV, NoMacCatalyst, NoiOS]
+	[NoTV, NoMacCatalyst, NoiOS]
 	[Native]
 	public enum MEComposeUserAction : long {
 		NewMessage = 1,
@@ -477,7 +473,7 @@ namespace MailKit {
 		Forward = 4,
 	}
 
-	[NoWatch, NoTV, NoMacCatalyst, NoiOS]
+	[NoTV, NoMacCatalyst, NoiOS]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MEComposeContext {
@@ -503,7 +499,7 @@ namespace MailKit {
 		bool ShouldSign { get; }
 	}
 
-	[NoWatch, NoTV, NoMacCatalyst, NoiOS]
+	[NoTV, NoMacCatalyst, NoiOS]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MEDecodedMessageBanner : NSSecureCoding, NSCopying {

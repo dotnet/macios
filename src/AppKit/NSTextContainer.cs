@@ -1,48 +1,50 @@
 #if !__MACCATALYST__ // there's a version in UIKit, use that one instead
 using System;
+
 using CoreGraphics;
+using Foundation;
 using ObjCRuntime;
 
 #nullable enable
 
 namespace AppKit {
 	public partial class NSTextContainer {
-#if !NET
-		[Obsoleted (PlatformName.MacOSX, 10, 11, message: "Use NSTextContainer.FromSize instead.")]
-		public NSTextContainer (CGSize size)
-		{
-			Handle = InitWithContainerSize (size);
-		}
-#endif // !NET
-
-		internal NSTextContainer (CGSize size, bool isContainer)
-		{
-			if (isContainer)
-				Handle = InitWithContainerSize (size);
-			else
-				Handle = InitWithSize (size);
-		}
-
-#if NET
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("tvos")]
-#endif
+		[ObsoletedOSPlatform ("macos", "Use 'new NSTextContainer (CGSize)' instead.")]
+		[UnsupportedOSPlatform ("ios")]
+		[UnsupportedOSPlatform ("maccatalyst")]
+		[UnsupportedOSPlatform ("tvos")]
+		internal NSTextContainer (CGSize size, bool isContainer)
+			: base (NSObjectFlag.Empty)
+		{
+			if (isContainer) {
+				InitializeHandle (_InitWithContainerSize (size), "initWithContainerSize:");
+			} else {
+				InitializeHandle (_InitWithSize (size), "initWithSize:");
+			}
+		}
+
+		/// <summary>Create a new <see cref="NSTextContainer" /> with the specified size.</summary>
+		/// <param name="size">The size of the new <see cref="NSTextContainer" />.</param>
+		/// <returns>A new <see cref="NSTextContainer" /> with the specified size.</returns>
+		[SupportedOSPlatform ("macos")]
+		[UnsupportedOSPlatform ("ios")]
+		[UnsupportedOSPlatform ("maccatalyst")]
+		[UnsupportedOSPlatform ("tvos")]
 		public static NSTextContainer FromSize (CGSize size)
 		{
-			return new NSTextContainer (size, false);
+			return new NSTextContainer (size);
 		}
 
-#if NET
-		[SupportedOSPlatform ("ios")]
+		/// <summary>Create a new <see cref="NSTextContainer" /> with the specified size.</summary>
+		/// <param name="containerSize">The size of the new <see cref="NSTextContainer" />.</param>
+		/// <returns>A new <see cref="NSTextContainer" /> with the specified size.</returns>
+		/// <remarks>This method is deprecated, use <see cref="FromSize" /> instead.</remarks>
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("tvos")]
-		[ObsoletedOSPlatform ("macos10.11", "Use NSTextContainer.FromSize instead.")]
-#else
-		[Deprecated (PlatformName.MacOSX, 10, 11, message: "Use NSTextContainer.FromSize instead.")]
-#endif
+		[ObsoletedOSPlatform ("macos", "Use 'new NSTextContainer (CGSize)' instead.")]
+		[UnsupportedOSPlatform ("ios")]
+		[UnsupportedOSPlatform ("maccatalyst")]
+		[UnsupportedOSPlatform ("tvos")]
 		public static NSTextContainer FromContainerSize (CGSize containerSize)
 		{
 			return new NSTextContainer (containerSize, true);

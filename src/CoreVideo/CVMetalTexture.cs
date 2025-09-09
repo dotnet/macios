@@ -8,8 +8,6 @@
 //
 //
 
-#if !__WATCHOS__
-
 using System;
 using System.Runtime.InteropServices;
 
@@ -18,22 +16,16 @@ using CoreFoundation;
 using Foundation;
 using Metal;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 #nullable enable
 
 namespace CoreVideo {
 
-#if NET
+	/// <summary>This type exposes a CoreVideo buffer as a Metal texture.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("tvos")]
-#else
-	[MacCatalyst (15, 0)]
-#endif
 	public class CVMetalTexture : NativeObject {
 		[Preserve (Conditional = true)]
 		internal CVMetalTexture (NativeHandle handle, bool owns)
@@ -53,18 +45,30 @@ namespace CoreVideo {
 			/* float[2] */ IntPtr lowerLeft, /* float[2] */ IntPtr lowerRight, /* float[2] */ IntPtr upperRight,
 			/* float[2] */ IntPtr upperLeft);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public IMTLTexture? Texture {
 			get {
 				return Runtime.GetINativeObject<IMTLTexture> (CVMetalTextureGetTexture (Handle), owns: false);
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool IsFlipped {
 			get {
 				return CVMetalTextureIsFlipped (Handle) != 0;
 			}
 		}
 
+		/// <param name="lowerLeft">To be added.</param>
+		///         <param name="lowerRight">To be added.</param>
+		///         <param name="upperRight">To be added.</param>
+		///         <param name="upperLeft">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void GetCleanTexCoords (out float [] lowerLeft, out float [] lowerRight, out float [] upperRight, out float [] upperLeft)
 		{
 			lowerLeft = new float [2];
@@ -80,5 +84,3 @@ namespace CoreVideo {
 		}
 	}
 }
-
-#endif // IOS || TVOS

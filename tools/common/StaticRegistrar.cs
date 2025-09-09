@@ -230,7 +230,7 @@ namespace Registrar {
 		public Dictionary<ICustomAttribute, MethodDefinition> ProtocolMemberMethodMap {
 			get {
 				if (protocol_member_method_map is null) {
-					if (App.Platform != ApplePlatform.MacOSX && App.IsExtension && !App.IsWatchExtension && App.IsCodeShared) {
+					if (App.Platform != ApplePlatform.MacOSX && App.IsExtension && App.IsCodeShared) {
 						protocol_member_method_map = Target.ContainerTarget.StaticRegistrar.ProtocolMemberMethodMap;
 					} else {
 						protocol_member_method_map = new Dictionary<ICustomAttribute, MethodDefinition> ();
@@ -329,6 +329,12 @@ namespace Registrar {
 				return !method.HasParameters;
 
 			if (candidate.Parameters.Count != method.Parameters.Count)
+				return false;
+
+			if (candidate.HasGenericParameters != method.HasGenericParameters)
+				return false;
+
+			if (candidate.HasGenericParameters && candidate.GenericParameters.Count != method.GenericParameters.Count)
 				return false;
 
 			for (int i = 0; i < candidate.Parameters.Count; i++)
@@ -625,6 +631,7 @@ namespace Registrar {
 		// Look for linked away attributes as well as attributes on the attribute provider.
 		IEnumerable<ICustomAttribute> GetCustomAttributes (ICustomAttributeProvider provider, string @namespace, string name, bool inherits = false)
 		{
+#if !LEGACY_TOOLS
 			var dict = LinkContext?.Annotations?.GetCustomAnnotations (name);
 			object annotations = null;
 
@@ -635,6 +642,7 @@ namespace Registrar {
 						yield return attrib;
 				}
 			}
+#endif
 
 			if (provider.HasCustomAttributes) {
 				foreach (var attrib in provider.CustomAttributes) {
@@ -739,7 +747,7 @@ namespace Registrar {
 			ErrorHelper.Show (ErrorHelper.CreateWarning (code, message, args));
 		}
 
-		public static int GetValueTypeSize (TypeDefinition type, bool is_64_bits)
+		public static int GetValueTypeSize (TypeDefinition type)
 		{
 			switch (type.FullName) {
 			case "System.Char": return 2;
@@ -756,15 +764,15 @@ namespace Registrar {
 			case "System.UInt64": return 8;
 			case "System.IntPtr":
 			case "System.nuint":
-			case "System.nint": return is_64_bits ? 8 : 4;
+			case "System.nint": return 8;
 			default:
 				if (type.FullName == NFloatTypeName)
-					return is_64_bits ? 8 : 4;
+					return 8;
 				int size = 0;
 				foreach (FieldDefinition field in type.Fields) {
 					if (field.IsStatic)
 						continue;
-					int s = GetValueTypeSize (field.FieldType.Resolve (), is_64_bits);
+					int s = GetValueTypeSize (field.FieldType.Resolve ());
 					if (s == -1)
 						return -1;
 					size += s;
@@ -775,7 +783,7 @@ namespace Registrar {
 
 		protected override int GetValueTypeSize (TypeReference type)
 		{
-			return GetValueTypeSize (type.Resolve (), Is64Bits);
+			return GetValueTypeSize (type.Resolve ());
 		}
 
 		public override bool HasReleaseAttribute (MethodDefinition method)
@@ -796,16 +804,6 @@ namespace Registrar {
 		protected override bool IsSimulatorOrDesktop {
 			get {
 				return App.Platform == ApplePlatform.MacOSX || App.IsSimulatorBuild;
-			}
-		}
-
-		protected override bool Is64Bits {
-			get {
-				if (IsSingleAssembly)
-					return App.Is64Build;
-
-				// Target can be null when mmp is run for multiple assemblies
-				return Target is not null ? Target.Is64Build : App.Is64Build;
 			}
 		}
 
@@ -1189,7 +1187,7 @@ namespace Registrar {
 				if (!gp.HasConstraints)
 					return false;
 				foreach (var c in gp.Constraints) {
-					if (IsNSObject (c.ConstraintType)) {
+					if (IsINativeObject (c.ConstraintType)) {
 						constrained_type = c.ConstraintType;
 						return true;
 					}
@@ -1353,6 +1351,9 @@ namespace Registrar {
 						break;
 					case "SkipRegistration":
 						rv.SkipRegistration = (bool) prop.Argument.Value;
+						break;
+					case "IsStubClass":
+						rv.IsStubClass = (bool) prop.Argument.Value;
 						break;
 					default:
 						throw ErrorHelper.CreateError (4124, Errors.MT4124_A, type.FullName, prop.Name);
@@ -1606,8 +1607,6 @@ namespace Registrar {
 				return global::ObjCRuntime.PlatformName.iOS;
 			case ApplePlatform.TVOS:
 				return global::ObjCRuntime.PlatformName.TvOS;
-			case ApplePlatform.WatchOS:
-				return global::ObjCRuntime.PlatformName.WatchOS;
 			case ApplePlatform.MacOSX:
 				return global::ObjCRuntime.PlatformName.MacOSX;
 			case ApplePlatform.MacCatalyst:
@@ -1774,9 +1773,6 @@ namespace Registrar {
 				break;
 			case ApplePlatform.TVOS:
 				currentPlatform = ApplePlatform.TVOS;
-				break;
-			case ApplePlatform.WatchOS:
-				currentPlatform = ApplePlatform.WatchOS;
 				break;
 			case ApplePlatform.MacOSX:
 				currentPlatform = ApplePlatform.MacOSX;
@@ -2252,40 +2248,21 @@ namespace Registrar {
 			string h;
 			switch (ns) {
 			case "CallKit":
+			case "CoreHaptics":
 				if (App.Platform == ApplePlatform.MacOSX) {
-					// AVFoundation can't be imported before CallKit on macOS
+					// AVFoundation can't be imported before CallKit or CoreHaptics on macOS
 					// Ref: https://github.com/xamarin/maccore/issues/2301
 					// Ref: https://github.com/xamarin/maccore/issues/2257
+					// Ref: https://github.com/xamarin/maccore/issues/2261
 					// The fun part is that other frameworks can import AVFoundation, so we can't check for AVFoundation specifically.
-					// Instead add CallKit before any other imports.
+					// Instead add CallKit/CoreHaptics before any other imports.
 					var firstImport = header.StringBuilder.ToString ().IndexOf ("#import <");
 					if (firstImport >= 0) {
-						header.StringBuilder.Insert (firstImport, "#import <CallKit/CallKit.h>\n");
+						header.StringBuilder.Insert (firstImport, $"#import <{ns}/{ns}.h>\n");
 						return;
 					}
 				}
 				goto default;
-#if !NET || LEGACY_TOOLS
-			case "Chip":
-				switch (App.Platform) {
-				case ApplePlatform.iOS when App.SdkVersion.Major <= 15:
-				case ApplePlatform.TVOS when App.SdkVersion.Major <= 15:
-				case ApplePlatform.MacOSX when App.SdkVersion.Major <= 12:
-				case ApplePlatform.WatchOS when App.SdkVersion.Major <= 8:
-					h = "<CHIP/CHIP.h>";
-					break;
-				default:
-					// The framework has been renamed.
-					header.WriteLine ("@protocol CHIPDevicePairingDelegate <NSObject>");
-					header.WriteLine ("@end");
-					header.WriteLine ("@protocol CHIPKeypair <NSObject>");
-					header.WriteLine ("@end");
-					header.WriteLine ("@protocol CHIPPersistentStorageDelegate <NSObject>");
-					header.WriteLine ("@end");
-					break;
-				}
-				return;
-#endif
 			case "GLKit":
 				// This prevents this warning:
 				//     /Applications/Xcode83.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk/System/Library/Frameworks/OpenGL.framework/Headers/gl.h:5:2: warning: gl.h and gl3.h are both
@@ -2348,12 +2325,6 @@ namespace Registrar {
 					}
 				}
 				goto default;
-#if !NET || LEGACY_TOOLS
-			case "QTKit":
-				if (App.Platform == ApplePlatform.MacOSX && App.SdkVersion >= MacOSTenTwelveVersion)
-					return; // 10.12 removed the header files for QTKit
-				goto default;
-#endif
 			case "IOSurface": // There is no IOSurface.h
 				h = "<IOSurface/IOSurfaceObjC.h>";
 				break;
@@ -2361,20 +2332,6 @@ namespace Registrar {
 				header.WriteLine ("#import <CoreImage/CoreImage.h>");
 				header.WriteLine ("#import <CoreImage/CIFilterBuiltins.h>");
 				return;
-#if !NET || LEGACY_TOOLS
-			case "iAd":
-				if (App.SdkVersion.Major >= 13) {
-					// most of the framework has been obliterated from the headers
-					header.WriteLine ("@class ADBannerView;");
-					header.WriteLine ("@class ADInterstitialAd;");
-					header.WriteLine ("@protocol ADBannerViewDelegate <NSObject>");
-					header.WriteLine ("@end");
-					header.WriteLine ("@protocol ADInterstitialAdDelegate <NSObject>");
-					header.WriteLine ("@end");
-					return;
-				}
-				goto default;
-#endif
 			case "ThreadNetwork":
 				h = "<ThreadNetwork/THClient.h>";
 				break;
@@ -2455,7 +2412,7 @@ namespace Registrar {
 			case "System.UIntPtr":
 				name.Append ('p');
 				body.AppendLine ("void *v{0};", size);
-				size += Is64Bits ? 8 : 4;
+				size += 8;
 				break;
 			default:
 				bool found = false;
@@ -2544,31 +2501,32 @@ namespace Registrar {
 				var sb = new StringBuilder ();
 				var elementType = git.GetElementType ();
 
-				sb.Append (ToObjCParameterType (elementType, descriptiveMethodName, exceptions, inMethod));
-
-				if (sb [sb.Length - 1] != '*') {
-					// I'm not sure if this is possible to hit (I couldn't come up with a test case), but better safe than sorry.
-					AddException (ref exceptions, CreateException (4166, inMethod.Resolve () as MethodDefinition, "Cannot register the method '{0}' because the signature contains a type ({1}) that isn't a reference type.", descriptiveMethodName, GetTypeFullName (elementType)));
-					return "id";
-				}
-
-				sb.Length--; // remove the trailing * of the element type
-
-				sb.Append ('<');
-				for (int i = 0; i < git.GenericArguments.Count; i++) {
-					if (i > 0)
-						sb.Append (", ");
-					var argumentType = git.GenericArguments [i];
-					if (!IsINativeObject (argumentType)) {
-						// I believe the generic constraints we have should make this error impossible to hit, but better safe than sorry.
-						AddException (ref exceptions, CreateException (4167, inMethod.Resolve () as MethodDefinition, "Cannot register the method '{0}' because the signature contains a generic type ({1}) with a generic argument type that doesn't implement INativeObject ({2}).", descriptiveMethodName, GetTypeFullName (type), GetTypeFullName (argumentType)));
+				var objcElementType = ToObjCParameterType (elementType, descriptiveMethodName, exceptions, inMethod);
+				var isId = objcElementType == "id";
+				sb.Append (objcElementType);
+				if (!isId) {
+					if (sb [sb.Length - 1] != '*') {
+						// I'm not sure if this is possible to hit (I couldn't come up with a test case), but better safe than sorry.
+						AddException (ref exceptions, CreateException (4166, inMethod?.Resolve () as MethodDefinition, "Cannot register the method '{0}' because the signature contains a type ({1}) that isn't a reference type: {2}", descriptiveMethodName, GetTypeFullName (elementType), sb.ToString ()));
 						return "id";
 					}
-					sb.Append (ToObjCParameterType (argumentType, descriptiveMethodName, exceptions, inMethod));
-				}
-				sb.Append ('>');
+					sb.Length--; // remove the trailing * of the element type
 
-				sb.Append ('*'); // put back the * from the element type
+					sb.Append ('<');
+					for (int i = 0; i < git.GenericArguments.Count; i++) {
+						if (i > 0)
+							sb.Append (", ");
+						var argumentType = git.GenericArguments [i];
+						if (!IsINativeObject (argumentType)) {
+							// I believe the generic constraints we have should make this error impossible to hit, but better safe than sorry.
+							AddException (ref exceptions, CreateException (4167, inMethod?.Resolve () as MethodDefinition, "Cannot register the method '{0}' because the signature contains a generic type ({1}) with a generic argument type that doesn't implement INativeObject ({2}).", descriptiveMethodName, GetTypeFullName (type), GetTypeFullName (argumentType)));
+							return "id";
+						}
+						sb.Append (ToObjCParameterType (argumentType, descriptiveMethodName, exceptions, inMethod));
+					}
+					sb.Append ('>');
+					sb.Append ('*'); // put back the * from the element type
+				}
 
 				return sb.ToString ();
 			}
@@ -2695,14 +2653,16 @@ namespace Registrar {
 				return "-(void) release";
 			else if (method.CurrentTrampoline == Trampoline.GetGCHandle)
 				return "-(GCHandle) xamarinGetGCHandle";
-			else if (method.CurrentTrampoline == Trampoline.GetFlags)
-				return "-(enum XamarinGCHandleFlags) xamarinGetFlags";
-			else if (method.CurrentTrampoline == Trampoline.SetFlags)
-				return "-(void) xamarinSetFlags: (enum XamarinGCHandleFlags) flags";
+			else if (method.CurrentTrampoline == Trampoline.GetGCHandleFlags)
+				return "-(enum XamarinGCHandleFlags) xamarinGetGCHandleFlags";
+			else if (method.CurrentTrampoline == Trampoline.SetGCHandleFlags)
+				return "-(void) xamarinSetGCHandleFlags: (enum XamarinGCHandleFlags) gchandle_flags";
 			else if (method.CurrentTrampoline == Trampoline.SetGCHandle)
-				return "-(bool) xamarinSetGCHandle: (GCHandle) gchandle flags: (enum XamarinGCHandleFlags) flags";
+				return "-(bool) xamarinSetGCHandle: (GCHandle) gchandle flags: (enum XamarinGCHandleFlags) gchandle_flags data: (NSObjectData *) data";
 			else if (method.CurrentTrampoline == Trampoline.CopyWithZone1 || method.CurrentTrampoline == Trampoline.CopyWithZone2)
 				return "-(id) copyWithZone: (NSZone *)zone";
+			else if (method.CurrentTrampoline == Trampoline.RetainWeakReference)
+				return "-(BOOL) retainWeakReference";
 
 			var sb = new StringBuilder ();
 			var isCtor = method.CurrentTrampoline == Trampoline.Constructor;
@@ -2810,9 +2770,6 @@ namespace Registrar {
 			return ns == nsToMatch;
 		}
 
-#if !NET || LEGACY_TOOLS
-		static bool IsQTKitType (ObjCType type) => IsTypeCore (type, "QTKit");
-#endif
 		static bool IsMapKitType (ObjCType type) => IsTypeCore (type, "MapKit");
 		static bool IsIntentsType (ObjCType type) => IsTypeCore (type, "Intents");
 		static bool IsExternalAccessoryType (ObjCType type) => IsTypeCore (type, "ExternalAccessory");
@@ -2870,20 +2827,7 @@ namespace Registrar {
 						Driver.Log (5, "The static registrar won't generate code for {0} because its framework is not supported in the simulator.", @class.ExportedName);
 						continue; // Some types are not supported in the simulator.
 					}
-				} else {
-#if !NET || LEGACY_TOOLS
-					if (IsQTKitType (@class) && App.SdkVersion >= MacOSTenTwelveVersion)
-						continue; // QTKit header was removed in 10.12 SDK
-#endif
 				}
-
-#if !NET || LEGACY_TOOLS
-				// Xcode 11 removed WatchKit for iOS!
-				if (IsTypeCore (@class, "WatchKit") && App.Platform == Xamarin.Utils.ApplePlatform.iOS) {
-					exceptions.Add (ErrorHelper.CreateWarning (4178, $"The class '{@class.Type.FullName}' will not be registered because the WatchKit framework has been removed from the iOS SDK."));
-					continue;
-				}
-#endif
 
 				// Xcode 15 removed NewsstandKit
 				if (Driver.XcodeVersion.Major >= 15) {
@@ -2927,6 +2871,7 @@ namespace Registrar {
 			return all_types;
 		}
 
+#if NET || LEGACY_TOOLS
 		CSToObjCMap type_map_dictionary;
 		public CSToObjCMap GetTypeMapDictionary (List<Exception> exceptions)
 		{
@@ -2947,6 +2892,7 @@ namespace Registrar {
 			type_map_dictionary = map_dict;
 			return type_map_dictionary;
 		}
+#endif // NET || LEGACY_TOOLS
 
 		public void Rewrite ()
 		{
@@ -2971,7 +2917,9 @@ namespace Registrar {
 
 			var map = new AutoIndentStringBuilder (1);
 			var map_init = new AutoIndentStringBuilder ();
+#if NET && !LEGACY_TOOLS
 			var map_dict = new CSToObjCMap (); // maps CS type to ObjC type name and index
+#endif
 			var protocol_wrapper_map = new Dictionary<uint, Tuple<ObjCType, uint>> ();
 			var protocols = new List<ProtocolInfo> ();
 
@@ -3027,30 +2975,34 @@ namespace Registrar {
 									GetAssemblyQualifiedName (@class.Type), @class.ClassMapIndex,
 									(int) flags, flags);
 
-					bool use_dynamic;
-
-					if (@class.Type.Resolve ().Module.Assembly.Name.Name == PlatformAssembly) {
-						// we don't need to use the static ref to prevent the linker from removing (otherwise unreferenced) code for monotouch.dll types.
-						use_dynamic = true;
-						// be smarter: we don't need to use dynamic refs for types available in the lowest version (target deployment) we building for.
-						// We do need to use dynamic class lookup when the following conditions are all true:
-						// * The class is not available in the target deployment version.
-						// * The class is not in a weakly linked framework (for instance if an existing framework introduces a new class, we don't
-						//   weakly link the framework because it already exists in the target deployment version - but since the class doesn't, we
-						//   must use dynamic class lookup to determine if it's available or not.
-					} else {
+					bool? use_dynamic = null;
+					if (@class.RegisterAttribute?.IsStubClass == true)
 						use_dynamic = false;
-					}
 
-					switch (@class.ExportedName) {
-					case "EKObject":
-						// EKObject's class is a private symbol, so we can't link with it...
-						use_dynamic = true;
-						break;
+					if (!use_dynamic.HasValue) {
+						if (@class.Type.Resolve ().Module.Assembly.Name.Name == PlatformAssembly) {
+							// we don't need to use the static ref to prevent the linker from removing (otherwise unreferenced) code for monotouch.dll types.
+							use_dynamic = true;
+							// be smarter: we don't need to use dynamic refs for types available in the lowest version (target deployment) we building for.
+							// We do need to use dynamic class lookup when the following conditions are all true:
+							// * The class is not available in the target deployment version.
+							// * The class is not in a weakly linked framework (for instance if an existing framework introduces a new class, we don't
+							//   weakly link the framework because it already exists in the target deployment version - but since the class doesn't, we
+							//   must use dynamic class lookup to determine if it's available or not.
+						} else {
+							use_dynamic = false;
+						}
+
+						switch (@class.ExportedName) {
+						case "EKObject":
+							// EKObject's class is a private symbol, so we can't link with it...
+							use_dynamic = true;
+							break;
+						}
 					}
 
 					string get_class;
-					if (use_dynamic) {
+					if (use_dynamic == true) {
 						get_class = string.Format ("objc_getClass (\"{0}\")", @class.ExportedName);
 					} else {
 						get_class = string.Format ("[{0} class]", EncodeNonAsciiCharacters (@class.ExportedName));
@@ -3105,6 +3057,9 @@ namespace Registrar {
 					iface.Write ("@protocol ").Write (exportedName);
 					declarations.AppendFormat ("@protocol {0};\n", exportedName);
 				} else {
+					var is_stub_class = @class.RegisterAttribute?.IsStubClass;
+					if (is_stub_class == true)
+						iface.WriteLine ("__attribute__((objc_class_stub)) __attribute__((objc_subclassing_restricted))");
 					iface.Write ("@interface {0} : {1}", class_name, EncodeNonAsciiCharacters (@class.SuperType.ExportedName));
 					declarations.AppendFormat ("@class {0};\n", class_name);
 				}
@@ -3456,30 +3411,31 @@ namespace Registrar {
 				sb.WriteLine ();
 				return true;
 			case Trampoline.SetGCHandle:
-				sb.WriteLine ("-(bool) xamarinSetGCHandle: (GCHandle) gc_handle flags: (enum XamarinGCHandleFlags) flags");
+				sb.WriteLine ("-(bool) xamarinSetGCHandle: (GCHandle) gc_handle flags: (enum XamarinGCHandleFlags) gchandle_flags data: (NSObjectData *) data");
 				sb.WriteLine ("{");
-				sb.WriteLine ("if (((flags & XamarinGCHandleFlags_InitialSet) == XamarinGCHandleFlags_InitialSet) && __monoObjectGCHandle.gc_handle != INVALID_GCHANDLE) {");
+				sb.WriteLine ("if (((gchandle_flags & XamarinGCHandleFlags_InitialSet) == XamarinGCHandleFlags_InitialSet) && __monoObjectGCHandle.gc_handle != INVALID_GCHANDLE) {");
 				sb.WriteLine ("return false;");
 				sb.WriteLine ("}");
-				sb.WriteLine ("flags = (enum XamarinGCHandleFlags) (flags & ~XamarinGCHandleFlags_InitialSet);"); // Remove the InitialSet flag, we don't want to store it.
+				sb.WriteLine ("gchandle_flags = (enum XamarinGCHandleFlags) (gchandle_flags & ~XamarinGCHandleFlags_InitialSet);"); // Remove the InitialSet flag, we don't want to store it.
 				sb.WriteLine ("__monoObjectGCHandle.gc_handle = gc_handle;");
-				sb.WriteLine ("__monoObjectGCHandle.flags = flags;");
+				sb.WriteLine ("__monoObjectGCHandle.data = data;");
+				sb.WriteLine ("__monoObjectGCHandle.gchandle_flags = gchandle_flags;");
 				sb.WriteLine ("__monoObjectGCHandle.native_object = self;");
 				sb.WriteLine ("return true;");
 				sb.WriteLine ("}");
 				sb.WriteLine ();
 				return true;
-			case Trampoline.GetFlags:
-				sb.WriteLine ("-(enum XamarinGCHandleFlags) xamarinGetFlags");
+			case Trampoline.GetGCHandleFlags:
+				sb.WriteLine ("-(enum XamarinGCHandleFlags) xamarinGetGCHandleFlags");
 				sb.WriteLine ("{");
-				sb.WriteLine ("return __monoObjectGCHandle.flags;");
+				sb.WriteLine ("return __monoObjectGCHandle.gchandle_flags;");
 				sb.WriteLine ("}");
 				sb.WriteLine ();
 				return true;
-			case Trampoline.SetFlags:
-				sb.WriteLine ("-(void) xamarinSetFlags: (enum XamarinGCHandleFlags) flags");
+			case Trampoline.SetGCHandleFlags:
+				sb.WriteLine ("-(void) xamarinSetGCHandleFlags: (enum XamarinGCHandleFlags) gchandle_flags");
 				sb.WriteLine ("{");
-				sb.WriteLine ("__monoObjectGCHandle.flags = flags;");
+				sb.WriteLine ("__monoObjectGCHandle.gchandle_flags = gchandle_flags;");
 				sb.WriteLine ("}");
 				sb.WriteLine ();
 				return true;
@@ -3498,16 +3454,16 @@ namespace Registrar {
 				sb.AppendLine ("{");
 				sb.AppendLine ("id rv;");
 				sb.AppendLine ("GCHandle gchandle;");
-				sb.AppendLine ("enum XamarinGCHandleFlags flags = XamarinGCHandleFlags_None;");
+				sb.AppendLine ("enum XamarinGCHandleFlags gchandle_flags = XamarinGCHandleFlags_None;");
 				sb.AppendLine ();
-				sb.AppendLine ("gchandle = xamarin_get_gchandle_with_flags (self, &flags);");
+				sb.AppendLine ("gchandle = xamarin_get_gchandle_with_flags (self, &gchandle_flags);");
 				sb.AppendLine ("if (gchandle != INVALID_GCHANDLE)");
 				sb.Indent ().AppendLine ("xamarin_set_gchandle_with_flags (self, INVALID_GCHANDLE, XamarinGCHandleFlags_None);").Unindent ();
 				// Call the base class implementation
 				sb.AppendLine ("rv = [super copyWithZone: zone];");
 				sb.AppendLine ();
 				sb.AppendLine ("if (gchandle != INVALID_GCHANDLE)");
-				sb.Indent ().AppendLine ("xamarin_set_gchandle_with_flags (self, gchandle, flags);").Unindent ();
+				sb.Indent ().AppendLine ("xamarin_set_gchandle_with_flags (self, gchandle, gchandle_flags);").Unindent ();
 				sb.AppendLine ();
 				sb.AppendLine ("return rv;");
 				sb.AppendLine ("}");
@@ -3524,6 +3480,13 @@ namespace Registrar {
 				sb.AppendLine ("return xamarin_copyWithZone_trampoline2 (self, _cmd, zone);");
 				sb.AppendLine ("}");
 				return true;
+			case Trampoline.RetainWeakReference:
+				sb.WriteLine ("-(BOOL) retainWeakReference");
+				sb.WriteLine ("{");
+				sb.WriteLine ("\treturn xamarin_retainWeakReference_trampoline (self, _cmd);");
+				sb.WriteLine ("}");
+				sb.WriteLine ();
+				return true;
 			}
 
 			var customConformsToProtocol = method.Selector == "conformsToProtocol:" && method.Method.DeclaringType.Is ("Foundation", "NSObject") && method.Method.Name == "InvokeConformsToProtocol" && method.Parameters.Length == 1;
@@ -3537,7 +3500,8 @@ namespace Registrar {
 					sb.AppendLine ("-(BOOL) conformsToProtocol: (void *) protocol");
 					sb.AppendLine ("{");
 					sb.AppendLine ("GCHandle exception_gchandle;");
-					sb.AppendLine ("BOOL rv = xamarin_invoke_conforms_to_protocol (self, (Protocol *) protocol, &exception_gchandle);");
+					sb.AppendLine ("GCHandle obj_gchandle = xamarin_get_gchandle (self);");
+					sb.AppendLine ("BOOL rv = xamarin_invoke_conforms_to_protocol (obj_gchandle, self, (Protocol *) protocol, &exception_gchandle) != 0;");
 					sb.AppendLine ("xamarin_process_managed_exception_gchandle (exception_gchandle);");
 					sb.AppendLine ("return rv;");
 					sb.AppendLine ("}");
@@ -3563,8 +3527,6 @@ namespace Registrar {
 			case Trampoline.StaticLong:
 			case Trampoline.StaticDouble:
 			case Trampoline.StaticSingle:
-			case Trampoline.X86_DoubleABI_StaticStretTrampoline:
-			case Trampoline.X86_DoubleABI_StretTrampoline:
 			case Trampoline.StaticStret:
 			case Trampoline.Stret:
 			case Trampoline.CopyWithZone2:
@@ -3585,6 +3547,10 @@ namespace Registrar {
 					rettype = ToSimpleObjCParameterType (method.NativeReturnType, descriptiveMethodName, exceptions, method.Method);
 					return true;
 				}
+			case Trampoline.RetainWeakReference:
+				rettype = "BOOL";
+				isCtor = false;
+				return true;
 			case Trampoline.Constructor:
 				rettype = "id";
 				isCtor = true;
@@ -4191,11 +4157,7 @@ namespace Registrar {
 
 			SpecializePrepareReturnValue (sb, method, descriptiveMethodName, rettype, exceptions);
 
-			if (App.Embeddinator)
-				body.WriteLine ("xamarin_embeddinator_initialize ();");
-
-			body.WriteLine ("MONO_ASSERT_GC_SAFE_OR_DETACHED;");
-			body.WriteLine ("MONO_THREAD_ATTACH;"); // COOP: this will switch to GC_UNSAFE
+			body.WriteLine ("MONO_THREAD_ATTACH;");
 			body.WriteLine ();
 
 			// Write out everything
@@ -4283,7 +4245,7 @@ namespace Registrar {
 
 			body.AppendLine (cleanup);
 
-			body.WriteLine ("MONO_THREAD_DETACH;"); // COOP: this will switch to GC_SAFE
+			body.WriteLine ("MONO_THREAD_DETACH;");
 
 			body.AppendLine ("if (exception_gchandle != INVALID_GCHANDLE)");
 			body.Indent ().WriteLine ("xamarin_process_managed_exception_gchandle (exception_gchandle);").Unindent ();
@@ -4571,7 +4533,7 @@ namespace Registrar {
 						// If xamarin_attempt_retain_nsobject returns true, the input is an NSObject, so it's safe to call the 'autorelease' selector on it.
 						// We don't retain retval if it's not an NSObject, because we'd have to immediately release it,
 						// and that serves no purpose.
-						setup_return.AppendLine ("bool retained = xamarin_attempt_retain_nsobject (retval, &exception_gchandle);");
+						setup_return.AppendLine ("bool retained = xamarin_attempt_retain_nsobject (retval, &exception_gchandle) != 0;");
 						setup_return.AppendLine ("if (exception_gchandle != INVALID_GCHANDLE) goto exception_handling;");
 						setup_return.AppendLine ("if (retained) {");
 						setup_return.AppendLine ("[retobj autorelease];");
@@ -5386,6 +5348,7 @@ namespace Registrar {
 			return "__p__" + i.ToString ();
 		}
 
+#if !MMP && !MTOUCH
 		string TryGeneratePInvokeWrapper (PInvokeWrapperGenerator state, MethodDefinition method)
 		{
 			var signatures = state.signatures;
@@ -5516,6 +5479,7 @@ namespace Registrar {
 			pinfo.Module = mr;
 			pinfo.EntryPoint = wrapperName;
 		}
+#endif // MMP
 
 		public void Register (IEnumerable<AssemblyDefinition> assemblies)
 		{
@@ -5537,6 +5501,7 @@ namespace Registrar {
 			}
 		}
 
+#if !MMP && !MTOUCH
 		static bool IsPropertyTrimmed (PropertyDefinition pd, AnnotationStore annotations)
 		{
 			if (pd is null)
@@ -5625,6 +5590,7 @@ namespace Registrar {
 				}
 			}
 		}
+#endif // !MMP && !MTOUCH
 
 		public void GenerateSingleAssembly (PlatformResolver resolver, IEnumerable<AssemblyDefinition> assemblies, string header_path, string source_path, string assembly, out string initialization_method)
 		{
@@ -5674,9 +5640,6 @@ namespace Registrar {
 
 			methods.WriteLine ($"#include \"{Path.GetFileName (header_path)}\"");
 			methods.StringBuilder.AppendLine ("extern \"C\" {");
-
-			if (App.Embeddinator)
-				methods.WriteLine ("void xamarin_embeddinator_initialize ();");
 
 			Specialize (sb, out initialization_method);
 
@@ -5748,6 +5711,7 @@ namespace Registrar {
 			return null;
 		}
 
+#if !MMP && !MTOUCH
 		public MethodReference GetDelegateInvoke (TypeReference delegateType)
 		{
 			var td = delegateType.Resolve ();
@@ -5811,7 +5775,7 @@ namespace Registrar {
 				return false;
 			}
 		}
-
+#endif // !MMP && !MTOUCH
 	}
 
 	// Replicate a few attribute types here, with TypeDefinition instead of Type
@@ -5893,6 +5857,7 @@ namespace Registrar {
 		public string Name { get; set; }
 		public bool IsWrapper { get; set; }
 		public bool SkipRegistration { get; set; }
+		public bool IsStubClass { get; set; }
 	}
 
 	class AdoptsAttribute : Attribute {

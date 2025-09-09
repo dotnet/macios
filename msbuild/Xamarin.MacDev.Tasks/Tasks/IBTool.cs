@@ -52,22 +52,25 @@ namespace Xamarin.MacDev.Tasks {
 			get { return AppleSdkSettings.XcodeVersion.Major > 7 || (AppleSdkSettings.XcodeVersion.Major == 7 && AppleSdkSettings.XcodeVersion.Minor >= 2); }
 		}
 
-		protected override void AppendCommandLineArguments (IDictionary<string, string?> environment, CommandLineArgumentBuilder args, ITaskItem [] items)
+		protected override void AppendCommandLineArguments (IDictionary<string, string?> environment, List<string> args, ITaskItem [] items)
 		{
 			environment.Add ("IBSC_MINIMUM_COMPATIBILITY_VERSION", MinimumOSVersion);
 			environment.Add ("IBC_MINIMUM_COMPATIBILITY_VERSION", MinimumOSVersion);
 
-			args.Add ("--minimum-deployment-target", MinimumOSVersion);
+			args.Add ("--minimum-deployment-target");
+			args.Add (MinimumOSVersion);
 
-			foreach (var targetDevice in GetTargetDevices ())
-				args.Add ("--target-device", targetDevice);
+			foreach (var targetDevice in GetTargetDevices ()) {
+				args.Add ("--target-device");
+				args.Add (targetDevice);
+			}
 
 			if (AppleSdkSettings.XcodeVersion.Major >= 6 && AutoActivateCustomFonts)
 				args.Add ("--auto-activate-custom-fonts");
 
 			if (!string.IsNullOrEmpty (SdkRoot)) {
 				args.Add ("--sdk");
-				args.AddQuoted (SdkRoot);
+				args.Add (SdkRoot);
 			}
 		}
 
@@ -178,7 +181,7 @@ namespace Xamarin.MacDev.Tasks {
 			return !LogExists (log.ItemSpec) || File.GetLastWriteTimeUtc (log.ItemSpec) < File.GetLastWriteTimeUtc (interfaceDefinition.ItemSpec);
 		}
 
-		bool CompileInterfaceDefinitions (string baseManifestDir, string baseOutputDir, List<ITaskItem> compiled, IList<ITaskItem> manifests, out bool changed)
+		bool CompileInterfaceDefinitions (IEnumerable<ITaskItem> interfaceDefinitions, string baseManifestDir, string baseOutputDir, List<ITaskItem> compiled, IList<ITaskItem> manifests, out bool changed)
 		{
 			var mapping = new Dictionary<string, IDictionary> ();
 			var unique = new Dictionary<string, ITaskItem> ();
@@ -186,8 +189,8 @@ namespace Xamarin.MacDev.Tasks {
 
 			changed = false;
 
-			foreach (var item in InterfaceDefinitions) {
-				var bundleName = GetBundleRelativeOutputPath (item);
+			foreach (var item in interfaceDefinitions) {
+				var bundleName = item.GetMetadata ("LogicalName");
 				var manifest = new TaskItem (Path.Combine (baseManifestDir, bundleName));
 				var manifestDir = Path.GetDirectoryName (manifest.ItemSpec);
 				ITaskItem duplicate;
@@ -419,11 +422,18 @@ namespace Xamarin.MacDev.Tasks {
 			var compiled = new List<ITaskItem> ();
 			bool changed;
 
-			if (InterfaceDefinitions.Length > 0) {
+			foreach (var item in InterfaceDefinitions) {
+				// Note: we overwrite any existing LogicalName property, because interface definitions always go in the app bundle's root directory.
+				var bundleName = GetBundleRelativeOutputPath (item);
+				item.SetMetadata ("LogicalName", bundleName);
+			}
+			var interfaceDefinitions = CollectBundleResources.VerifyLogicalNameUniqueness (this, InterfaceDefinitions, "InterfaceDefinition").ToArray ();
+
+			if (interfaceDefinitions.Length > 0) {
 				Directory.CreateDirectory (ibtoolManifestDir);
 				Directory.CreateDirectory (ibtoolOutputDir);
 
-				if (!CompileInterfaceDefinitions (ibtoolManifestDir, ibtoolOutputDir, compiled, outputManifests, out changed))
+				if (!CompileInterfaceDefinitions (interfaceDefinitions, ibtoolManifestDir, ibtoolOutputDir, compiled, outputManifests, out changed))
 					return false;
 
 				if (CanLinkStoryboards) {

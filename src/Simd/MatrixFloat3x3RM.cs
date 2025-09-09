@@ -24,13 +24,10 @@ using System.Runtime.InteropServices;
 using ObjCRuntime;
 
 // This type does not come from the CoreGraphics framework
-#if NET
-namespace CoreGraphics
-{
+namespace CoreGraphics {
 	[NativeName ("GLKMatrix3")]
 	[StructLayout (LayoutKind.Sequential)]
-	public struct RMatrix3 : IEquatable<RMatrix3>
-	{
+	public struct RMatrix3 : IEquatable<RMatrix3> {
 		public float M11;
 		public float M12;
 		public float M13;
@@ -123,7 +120,7 @@ namespace CoreGraphics
 					break;
 				}
 
-				throw new IndexOutOfRangeException();
+				throw new IndexOutOfRangeException ();
 			}
 			set {
 				switch (row) {
@@ -150,7 +147,7 @@ namespace CoreGraphics
 					break;
 				}
 
-				throw new IndexOutOfRangeException();
+				throw new IndexOutOfRangeException ();
 			}
 		}
 
@@ -292,17 +289,17 @@ namespace CoreGraphics
 
 		public override int GetHashCode ()
 		{
-			var hash = new HashCode();
-			hash.Add(M11);
-			hash.Add(M12);
-			hash.Add(M13);
-			hash.Add(M21);
-			hash.Add(M22);
-			hash.Add(M23);
-			hash.Add(M31);
-			hash.Add(M32);
-			hash.Add(M33);
-			return hash.ToHashCode();
+			var hash = new HashCode ();
+			hash.Add (M11);
+			hash.Add (M12);
+			hash.Add (M13);
+			hash.Add (M21);
+			hash.Add (M22);
+			hash.Add (M23);
+			hash.Add (M31);
+			hash.Add (M32);
+			hash.Add (M33);
+			return hash.ToHashCode ();
 		}
 
 		public override bool Equals (object? obj)
@@ -322,4 +319,3 @@ namespace CoreGraphics
 		}
 	}
 }
-#endif // NET

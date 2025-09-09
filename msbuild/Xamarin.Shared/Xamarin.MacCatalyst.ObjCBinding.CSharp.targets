@@ -19,16 +19,10 @@ Copyright (C) 2015-2016 Xamarin Inc. All rights reserved.
 			Condition="Exists('$(MSBuildThisFileDirectory)$(MSBuildThisFileName).Before.targets')"/>
 
 	<PropertyGroup>
-		<!-- Version/fx properties -->
-		<TargetFrameworkIdentifier Condition="'$(TargetFrameworkIdentifier)' == ''">Xamarin.MacCatalyst</TargetFrameworkIdentifier>
-		<TargetFrameworkVersion Condition="'$(TargetFrameworkVersion)' == ''">v1.0</TargetFrameworkVersion>
-	</PropertyGroup>
-
-	<PropertyGroup>
 		<AssetTargetFallback>xamarinios10;$(AssetTargetFallback)</AssetTargetFallback>
 	</PropertyGroup>
 
-	<Import Project="..\iOS\Xamarin.iOS.ObjCBinding.CSharp.targets"/>
+	<Import Project="Xamarin.iOS.ObjCBinding.CSharp.targets"/>
 
 	<Import Project="$(MSBuildThisFileDirectory)$(MSBuildThisFileName).After.targets"
 			Condition="Exists('$(MSBuildThisFileDirectory)$(MSBuildThisFileName).After.targets')"/>

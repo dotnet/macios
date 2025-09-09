@@ -37,6 +37,8 @@ namespace AppKit {
 	public partial class NSWindow {
 
 		// Automatically set ReleaseWhenClosed=false in every constructor.
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Set 'TrackReleasedWhenClosed' and call 'ReleaseWhenClosed()' instead.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		public static bool DisableReleasedWhenClosedInConstructor;
@@ -50,7 +52,7 @@ namespace AppKit {
 		static bool? track_relased_when_closed;
 		public static bool TrackReleasedWhenClosed {
 			get {
-#if NET9_0
+#if NET9_0_OR_GREATER
 				return track_relased_when_closed != false;
 #else
 				return track_relased_when_closed == true;
@@ -61,31 +63,13 @@ namespace AppKit {
 			}
 		}
 
-#if !NET
-		static IntPtr selInitWithWindowRef = Selector.GetHandle ("initWithWindowRef:");
-
-		// Do not actually export because NSObjectFlag is not exportable.
-		// The Objective C method already exists. This is just to allow
-		// access on the managed side via the static method.
-		//[Export ("initWithWindowRef:")]
-		private NSWindow (IntPtr windowRef, NSObjectFlag x) : base (NSObjectFlag.Empty)
-		{
-			if (IsDirectBinding) {
-				Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend (this.Handle, selInitWithWindowRef);
-			} else {
-				Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper (this.SuperHandle, selInitWithWindowRef);
-			}
-			InitializeReleasedWhenClosed ();
-		}
-#endif
-
+		/// <param name="windowRef">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		static public NSWindow FromWindowRef (IntPtr windowRef)
 		{
-#if NET
 			return new NSWindow (windowRef);
-#else
-			return new NSWindow (windowRef, NSObjectFlag.Empty);
-#endif
 		}
 
 		void InitializeReleasedWhenClosed ()
@@ -116,6 +100,8 @@ namespace AppKit {
 			DangerousReleasedWhenClosed = value;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void Close ()
 		{
 			if (TrackReleasedWhenClosed) {
@@ -141,22 +127,40 @@ namespace AppKit {
 		}
 
 		// note: if needed override the protected Get|Set methods
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string FrameAutosaveName {
 			get { return GetFrameAutosaveName (); }
 			// ignore return value (bool)
 			set { SetFrameAutosaveName (value); }
 		}
 
+		/// <param name="mask">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public NSEvent NextEventMatchingMask (NSEventMask mask)
 		{
 			return NextEventMatchingMask ((uint) mask);
 		}
 
+		/// <param name="mask">To be added.</param>
+		///         <param name="expiration">To be added.</param>
+		///         <param name="mode">To be added.</param>
+		///         <param name="deqFlag">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public NSEvent NextEventMatchingMask (NSEventMask mask, NSDate expiration, string mode, bool deqFlag)
 		{
 			return NextEventMatchingMask ((uint) mask, expiration, mode, deqFlag);
 		}
 
+		/// <param name="mask">To be added.</param>
+		///         <param name="beforeLastEvent">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void DiscardEventsMatchingMask (NSEventMask mask, NSEvent beforeLastEvent)
 		{
 			DiscardEventsMatchingMask ((uint) mask, beforeLastEvent);

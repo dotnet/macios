@@ -9,6 +9,9 @@ namespace Foundation {
 		static NSNull _null;
 
 		// helper to avoid all, but one, native calls when called repeatedly
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		static public NSNull Null {
 			get {
 				if (_null is null)

@@ -7,27 +7,42 @@
 // Copyright 2009, Novell, Inc.
 //
 
-#if !WATCH && !COREBUILD
+#if !COREBUILD
 
 using System;
 using Foundation;
 using ObjCRuntime;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace UIKit {
 
+	/// <summary>Provides data for the <see cref="UIKit.UITextField.EndedWithReason" /> event.</summary>
 	public partial class UITextFieldEditingEndedEventArgs : EventArgs {
+		/// <summary>Initializes a new instance of the <see cref="UITextFieldEditingEndedEventArgs" /> class.</summary>
+		/// <param name="reason">The reason the editing ended.</param>
 		public UITextFieldEditingEndedEventArgs (UITextFieldDidEndEditingReason reason)
 		{
 			this.Reason = reason;
 		}
+		/// <summary>Gets or sets the reason why the edit ended.</summary>
 		public UITextFieldDidEndEditingReason Reason { get; set; }
 	}
 
+	/// <param name="textField">To be added.</param>
+	///     <param name="range">To be added.</param>
+	///     <param name="replacementString">To be added.</param>
+	///     <summary>A delegate used to respond to changes on the UITextField.</summary>
+	///     <returns>To be added.</returns>
+	///     <remarks>To be added.</remarks>
 	public delegate bool UITextFieldChange (UITextField textField, NSRange range, string replacementString);
 
+	/// <param name="textField">To be added.</param>
+	///     <summary>A delegate used to get the condition for a UITextField.</summary>
+	///     <returns>To be added.</returns>
+	///     <remarks>To be added.</remarks>
+	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/MapDemo">Example_ContentControls</related>
+	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/MonoCatalog-MonoDevelop/">monocatalog</related>
 	public delegate bool UITextFieldCondition (UITextField textField);
 
 	public partial class UITextField : IUITextInputTraits {
@@ -45,7 +60,7 @@ namespace UIKit {
 		{
 			if (Delegate is not null)
 				UIApplication.EnsureEventAndDelegateAreNotMismatched (Delegate, GetInternalEventDelegateType);
-			_UITextFieldDelegate del = Delegate as _UITextFieldDelegate;
+			var del = Delegate as _UITextFieldDelegate;
 			if (del is null) {
 				del = (_UITextFieldDelegate) CreateInternalEventDelegateType ();
 				Delegate = (IUITextFieldDelegate) del;
@@ -53,22 +68,21 @@ namespace UIKit {
 			return del;
 		}
 
-#pragma warning disable 672
 		[Register]
 		internal class _UITextFieldDelegate : NSObject, IUITextFieldDelegate {
 			public _UITextFieldDelegate () { IsDirectBinding = false; }
 
-			internal EventHandler editingEnded;
+			internal EventHandler? editingEnded;
 			[Preserve (Conditional = true)]
 			[Export ("textFieldDidEndEditing:")]
 			public void EditingEnded (UITextField textField)
 			{
-				EventHandler handler = editingEnded;
+				var handler = editingEnded;
 				if (handler is not null) {
 					handler (textField, EventArgs.Empty);
 				} else {
 					// if this is executed before iOS10 and only the new API is used we'll raise the new event (if set)
-					EventHandler<UITextFieldEditingEndedEventArgs> handler2 = editingEnded1;
+					var handler2 = editingEnded1;
 					if (handler2 is not null) {
 						var args = new UITextFieldEditingEndedEventArgs (UITextFieldDidEndEditingReason.Unknown);
 						handler2 (textField, args);
@@ -76,131 +90,163 @@ namespace UIKit {
 				}
 			}
 
-			internal EventHandler<UITextFieldEditingEndedEventArgs> editingEnded1;
+			internal EventHandler<UITextFieldEditingEndedEventArgs>? editingEnded1;
 			[Preserve (Conditional = true)]
 			[Export ("textFieldDidEndEditing:reason:")]
 			public void EditingEnded (UITextField textField, UITextFieldDidEndEditingReason reason)
 			{
-				EventHandler<UITextFieldEditingEndedEventArgs> handler = editingEnded1;
+				var handler = editingEnded1;
 				if (handler is not null) {
 					var args = new UITextFieldEditingEndedEventArgs (reason);
 					handler (textField, args);
 				} else {
 					// if this is executed on iOS10 (or late) and only the old API is used then we'll raise the old event (if set)
-					EventHandler handler2 = editingEnded;
+					var handler2 = editingEnded;
 					if (handler2 is not null)
 						handler2 (textField, EventArgs.Empty);
 				}
 			}
 
-			internal EventHandler editingStarted;
+			internal EventHandler? editingStarted;
 			[Preserve (Conditional = true)]
 			[Export ("textFieldDidBeginEditing:")]
 			public void EditingStarted (UITextField textField)
 			{
-				EventHandler handler = editingStarted;
+				var handler = editingStarted;
 				if (handler is not null) {
 					handler (textField, EventArgs.Empty);
 				}
 			}
 
-			internal UITextFieldCondition shouldBeginEditing;
+			internal UITextFieldCondition? shouldBeginEditing;
 			[Preserve (Conditional = true)]
 			[Export ("textFieldShouldBeginEditing:")]
 			public bool ShouldBeginEditing (UITextField textField)
 			{
-				UITextFieldCondition handler = shouldBeginEditing;
+				var handler = shouldBeginEditing;
 				if (handler is not null)
 					return handler (textField);
 				return true;
 			}
 
-			internal UITextFieldChange shouldChangeCharacters;
+			internal UITextFieldChange? shouldChangeCharacters;
 			[Preserve (Conditional = true)]
 			[Export ("textField:shouldChangeCharactersInRange:replacementString:")]
 			public bool ShouldChangeCharacters (UITextField textField, NSRange range, string replacementString)
 			{
-				UITextFieldChange handler = shouldChangeCharacters;
+				var handler = shouldChangeCharacters;
 				if (handler is not null)
 					return handler (textField, range, replacementString);
 				return true;
 			}
 
-			internal UITextFieldCondition shouldClear;
+			internal UITextFieldCondition? shouldClear;
 			[Preserve (Conditional = true)]
 			[Export ("textFieldShouldClear:")]
 			public bool ShouldClear (UITextField textField)
 			{
-				UITextFieldCondition handler = shouldClear;
+				var handler = shouldClear;
 				if (handler is not null)
 					return handler (textField);
 				return true;
 			}
 
-			internal UITextFieldCondition shouldEndEditing;
+			internal UITextFieldCondition? shouldEndEditing;
 			[Preserve (Conditional = true)]
 			[Export ("textFieldShouldEndEditing:")]
 			public bool ShouldEndEditing (UITextField textField)
 			{
-				UITextFieldCondition handler = shouldEndEditing;
+				var handler = shouldEndEditing;
 				if (handler is not null)
 					return handler (textField);
 				return true;
 			}
 
-			internal UITextFieldCondition shouldReturn;
+			internal UITextFieldCondition? shouldReturn;
 			[Preserve (Conditional = true)]
 			[Export ("textFieldShouldReturn:")]
 			public bool ShouldReturn (UITextField textField)
 			{
-				UITextFieldCondition handler = shouldReturn;
+				var handler = shouldReturn;
 				if (handler is not null)
 					return handler (textField);
 				return true;
 			}
-		}
-#pragma warning restore 672
 
+			internal EventHandler? didChangeSelection;
+			[Preserve (Conditional = true)]
+			[Export ("textFieldDidChangeSelection:")]
+			public void DidChangeSelection (UITextField textField)
+			{
+				var handler = didChangeSelection;
+				if (handler is not null)
+					handler (textField, EventArgs.Empty);
+			}
+		}
+
+		/// <summary>Raised when editing has ended.</summary>
 		public event EventHandler Ended {
 			add { EnsureUITextFieldDelegate ().editingEnded += value; }
 			remove { EnsureUITextFieldDelegate ().editingEnded -= value; }
 		}
 
+		/// <summary>Event that is raised when editing ends.</summary>
 		public event EventHandler<UITextFieldEditingEndedEventArgs> EndedWithReason {
 			add { EnsureUITextFieldDelegate ().editingEnded1 += value; }
 			remove { EnsureUITextFieldDelegate ().editingEnded1 -= value; }
 		}
 
+		/// <summary>Raised when editing has started.</summary>
 		public event EventHandler Started {
 			add { EnsureUITextFieldDelegate ().editingStarted += value; }
 			remove { EnsureUITextFieldDelegate ().editingStarted -= value; }
 		}
 
-		public UITextFieldCondition ShouldBeginEditing {
+		/// <summary>Raised when the text field wants to know if editing should begin.</summary>
+		public UITextFieldCondition? ShouldBeginEditing {
 			get { return EnsureUITextFieldDelegate ().shouldBeginEditing; }
 			set { EnsureUITextFieldDelegate ().shouldBeginEditing = value; }
 		}
 
-		public UITextFieldChange ShouldChangeCharacters {
+		/// <summary>Raised when the text field wants to know if the text in the text field should be changed.</summary>
+		public UITextFieldChange? ShouldChangeCharacters {
 			get { return EnsureUITextFieldDelegate ().shouldChangeCharacters; }
 			set { EnsureUITextFieldDelegate ().shouldChangeCharacters = value; }
 		}
 
-		public UITextFieldCondition ShouldClear {
+		/// <summary>Raised when the text field wants to know if the text in the text field should be cleared.</summary>
+		public UITextFieldCondition? ShouldClear {
 			get { return EnsureUITextFieldDelegate ().shouldClear; }
 			set { EnsureUITextFieldDelegate ().shouldClear = value; }
 		}
 
-		public UITextFieldCondition ShouldEndEditing {
+		/// <summary>Raised when the text field wants to know if editing should end.</summary>
+		public UITextFieldCondition? ShouldEndEditing {
 			get { return EnsureUITextFieldDelegate ().shouldEndEditing; }
 			set { EnsureUITextFieldDelegate ().shouldEndEditing = value; }
 		}
 
-		public UITextFieldCondition ShouldReturn {
+		/// <summary>Raised when the 'Return' key was pressed, and the text field wants to know whether it should process this key press or not using the default behavior.</summary>
+		public UITextFieldCondition? ShouldReturn {
 			get { return EnsureUITextFieldDelegate ().shouldReturn; }
 			set { EnsureUITextFieldDelegate ().shouldReturn = value; }
 		}
+
+		/// <summary>Raised when the text selection changed.</summary>
+		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("maccatalyst")]
+		public event EventHandler DidChangeSelection {
+			add { EnsureUITextFieldDelegate ().didChangeSelection += value; }
+			remove { EnsureUITextFieldDelegate ().didChangeSelection -= value; }
+		}
+
+		// The following events are already here from the UITextInput protocol, so no need to implement the ones from UITextFieldDelegate:
+		// * WillPresentEditMenu
+		// * WillDismissEditMenu
+		// * GetEditMenu
+		// * InsertInputSuggestion
 	}
 }
 
-#endif // !WATCH
+#endif // !COREBUILD

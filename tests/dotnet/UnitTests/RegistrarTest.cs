@@ -55,7 +55,6 @@ namespace Xamarin.Tests {
 			}
 		}
 
-#if NET
 		[TestCase (ApplePlatform.MacCatalyst, false)]
 		[TestCase (ApplePlatform.MacOSX, false)]
 		[TestCase (ApplePlatform.iOS, false)]
@@ -86,7 +85,7 @@ namespace Xamarin.Tests {
 			var asmDir = Path.Combine (appDir, GetRelativeAssemblyDirectory (platform));
 
 			var appExecutable = Path.Combine (asmDir, project + ".dll");
-			var platformDll = Path.Combine (asmDir, Configuration.GetBaseLibraryName (platform, true));
+			var platformDll = Path.Combine (asmDir, Configuration.GetBaseLibraryName (platform));
 			Assert.That (File.Exists (platformDll), "No platform dll.");
 			var module = ModuleDefinition.ReadModule (platformDll);
 			var classHandlesMaybe = AllTypes (module).FirstOrDefault (t => t.FullName == "ObjCRuntime.Runtime/ClassHandles");
@@ -127,7 +126,6 @@ namespace Xamarin.Tests {
 				}
 			}
 		}
-#endif
 	}
 }
 

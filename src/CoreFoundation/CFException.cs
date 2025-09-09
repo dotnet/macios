@@ -36,18 +36,25 @@ using ObjCRuntime;
 using System.Runtime.Versioning;
 
 namespace CoreFoundation {
-
-#if NET
+	/// <summary>A class whose static fields define error domains for <see cref="CoreFoundation.CFException.Domain" />.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public static class CFErrorDomain {
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static readonly NSString? Cocoa;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static readonly NSString? Mach;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static readonly NSString? OSStatus;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static readonly NSString? Posix;
 
 		static CFErrorDomain ()
@@ -60,18 +67,29 @@ namespace CoreFoundation {
 		}
 	}
 
-#if NET
+	/// <summary>Class that contains keys that identify exception data values.</summary>
+	///     <remarks>To be added.</remarks>
+	///     <!-- TODO: Unused? Couldn't find any references 2013-05-02 -->
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public static class CFExceptionDataKey {
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static readonly NSString? Description;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static readonly NSString? LocalizedDescription;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static readonly NSString? LocalizedFailureReason;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static readonly NSString? LocalizedRecoverySuggestion;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static readonly NSString? UnderlyingError;
 
 		static CFExceptionDataKey ()
@@ -85,12 +103,12 @@ namespace CoreFoundation {
 		}
 	}
 
-#if NET
+	/// <summary>Represents an exception arising from a Core Foundation <c>CFError</c>, having an error domain, a domain-specific error code, and perhaps additional information.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CFException : Exception {
 
 		public CFException (string? description, NSString? domain, nint code, string? failureReason, string? recoverySuggestion)
@@ -102,11 +120,20 @@ namespace CoreFoundation {
 			RecoverySuggestion = recoverySuggestion;
 		}
 
+		/// <param name="cfErrorHandle">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static CFException FromCFError (IntPtr cfErrorHandle)
 		{
 			return FromCFError (cfErrorHandle, true);
 		}
 
+		/// <param name="cfErrorHandle">To be added.</param>
+		///         <param name="release">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static CFException FromCFError (IntPtr cfErrorHandle, bool release)
 		{
 			if (cfErrorHandle == IntPtr.Zero)
@@ -133,9 +160,22 @@ namespace CoreFoundation {
 			return e;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nint Code { get; private set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		///         <altmember cref="CoreFoundation.CFErrorDomain" />
 		public NSString? Domain { get; private set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? FailureReason { get; private set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? RecoverySuggestion { get; private set; }
 
 		[DllImport (Constants.CoreFoundationLibrary)]

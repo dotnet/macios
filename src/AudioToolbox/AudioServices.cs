@@ -36,20 +36,29 @@ using ObjCRuntime;
 
 namespace AudioToolbox {
 
+	/// <summary>An enumeration of values that can be returned by the <see cref="AudioToolbox.SystemSound.AddSystemSoundCompletion(System.Action,CoreFoundation.CFRunLoop)" /> method.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum AudioServicesError { // Implictly cast to OSType
+		/// <summary>To be added.</summary>
 		None = 0,
+		/// <summary>To be added.</summary>
 		UnsupportedProperty = 0x7074793f,       // 'pty?'
+		/// <summary>To be added.</summary>
 		BadPropertySize = 0x2173697a,           // '!siz'
+		/// <summary>To be added.</summary>
 		BadSpecifierSizeError = 0x21737063,     // '!spc'
+		/// <summary>To be added.</summary>
 		SystemSoundUnspecifiedError = -1500,
+		/// <summary>To be added.</summary>
 		SystemSoundClientTimedOutError = -1501,
+		/// <summary>To be added.</summary>
 		SystemSoundExceededMaximumDurationError = -1502,
 	}
 
 	enum AudioServicesPropertyKey : uint // UInt32 AudioServicesPropertyID
 	{
 		IsUISound = 0x69737569, // 'isui'
-		CompletePlaybackIfAppDies = 0x69666469  // 'ifdi'
+		CompletePlaybackIfAppDies = 0x69666469, // 'ifdi'
 	}
 
 	static class AudioServices {

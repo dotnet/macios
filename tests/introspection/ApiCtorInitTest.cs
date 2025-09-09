@@ -32,6 +32,9 @@ using ARKit;
 using Foundation;
 using ObjCRuntime;
 
+// Disable until we get around to enable + fix any issues.
+#nullable disable
+
 namespace Introspection {
 
 	public abstract class ApiCtorInitTest : ApiBaseTest {
@@ -97,10 +100,6 @@ namespace Introspection {
 			case "NSUnitPressure": // -init should never be called on NSUnit!
 			case "NSUnitSpeed": // -init should never be called on NSUnit!
 				return true;
-#if !NET // NSMenuView does not exist in .NET
-			case "NSMenuView":
-				return TestRuntime.IsVM; // skip on vms due to hadware problems
-#endif // !NET
 			case "MPSCnnNeuron": // Cannot directly initialize MPSCNNNeuron. Use one of the sub-classes of MPSCNNNeuron
 			case "MPSCnnNeuronPReLU":
 			case "MPSCnnNeuronHardSigmoid":
@@ -132,11 +131,9 @@ namespace Introspection {
 				return TestRuntime.IsSimulator;
 #endif
 			case "AVSpeechSynthesisVoice": // Calling description crashes the test
-#if __WATCHOS__
-				return TestRuntime.CheckXcodeVersion (12, 2); // CheckExactXcodeVersion is not implemented in watchOS yet but will be covered by iOS parrot below
-#else
 				return TestRuntime.CheckExactXcodeVersion (12, 2, beta: 3);
-#endif
+			case "AVRouteDetector": // only seems to work on device.
+				return TestRuntime.IsSimulator;
 			case "SKView":
 				// Causes a crash later. Filed as radar://18440271.
 				// Apple said they won't fix this ('init' isn't a designated initializer)
@@ -156,18 +153,41 @@ namespace Introspection {
 				// Looking at the stack trace in Xcode, it seems it hits the network and times out waiting for something?
 				// So just skip the testing, it's likely the constructor is bound correctly, but that it only works in some circumstances.
 				return true;
+			case "ASAccountAuthenticationModificationController":
+				return true; // started failing in Xcode 16.3 beta 1 for unknown reasons (it works in an Xcode project).
+#if __TVOS__
+			case "MTLAccelerationStructureDescriptor":
+			case "MTLAccelerationStructureGeometryDescriptor":
+			case "MTLAccelerationStructureMotionBoundingBoxGeometryDescriptor":
+			case "MTLAccelerationStructureMotionTriangleGeometryDescriptor":
+			case "MTLAccelerationStructurePassDescriptor":
+			case "MTLAccelerationStructurePassSampleBufferAttachmentDescriptor":
+			case "MTLAccelerationStructurePassSampleBufferAttachmentDescriptorArray":
+			case "MTLAccelerationStructureTriangleGeometryDescriptor":
+			case "MTLMeshRenderPipelineDescriptor":
+			case "MTLMotionKeyframeData":
+			case "MTLRasterizationRateLayerArray":
+			case "MTLRasterizationRateMapDescriptor":
+			case "MTLRasterizationRateSampleArray":
+			case "MTLRenderPipelineFunctionsDescriptor":
+			case "MTLResourceStatePassSampleBufferAttachmentDescriptor":
+			case "MTLResourceStatePassSampleBufferAttachmentDescriptorArray":
+				// The initial tvOS 16.0 simulator doesn't have these classes, but the tvOS 16.1 simulator doess
+				if (TestRuntime.IsSimulator && !TestRuntime.CheckXcodeVersion (14, 1))
+					return true;
+				break;
+#endif
+			case "PhaseConeDirectivityModelParameters":
+				return !TestRuntime.IsSimulator; // fails on device
 			}
 
 			switch (type.Namespace) {
+			case "SensorKit": // SensorKit doesn't exist on iPads
+				if (TestRuntime.IsDevice && TestRuntime.IsiPad)
+					return true;
+				break;
 			case "SafetyKit":
 				return true; // SafetyKit requires a custom entitlement, and will throw exceptions if it's not present.
-#if __IOS__
-			case "WatchKit":
-				return true; // WatchKit has been removed from iOS.
-#elif MONOMAC
-			case "QTKit":
-				return true; // QTKit has been removed from macos.
-#endif
 			}
 
 			// skip types that we renamed / rewrite since they won't behave correctly (by design)
@@ -199,7 +219,7 @@ namespace Introspection {
 
 		bool GetIsDirectBinding (NSObject obj)
 		{
-			int flags = TestRuntime.GetFlags (obj);
+			var flags = TestRuntime.GetFlags (obj);
 			return (flags & 4) == 4;
 		}
 
@@ -552,6 +572,12 @@ namespace Introspection {
 				// This class uses another overload to get instantiated
 				if (cstr == "Void .ctor(Vision.VNRequestCompletionHandler)")
 					return true;
+				break;
+			case "AVSpeechSynthesisProviderAudioUnit":
+				if (cstr == "Void .ctor(AudioUnit.AudioComponentDescription, AudioUnit.AudioComponentInstantiationOptions, Foundation.NSError ByRef)") {
+					// This constructor is exposed using a factory method.
+					return true;
+				}
 				break;
 			}
 

@@ -19,7 +19,6 @@ namespace MonoTouchFixtures.Foundation {
 	[Preserve (AllMembers = true)]
 	public class NSLayoutConstraintTest {
 
-#if !__WATCHOS__ // FIXME: it looks like this test can be rewritten to not use UIViewController, so that it can run on WatchOS as well.
 		[Test]
 		public void FromVisualFormat ()
 		{
@@ -86,7 +85,6 @@ namespace MonoTouchFixtures.Foundation {
 				View.Add (SecondLabel);
 			}
 		}
-#endif // !__WATCHOS__
 	}
 }
 #endif

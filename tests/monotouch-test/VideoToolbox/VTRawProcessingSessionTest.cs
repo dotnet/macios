@@ -2,8 +2,6 @@
 // Unit tests for VTRawProcessingSession
 //
 
-#if !__WATCHOS__
-#if NET
 #if MONOMAC
 
 using System;
@@ -117,5 +115,3 @@ namespace MonoTouchFixtures.VideoToolbox {
 }
 
 #endif // MONOMAC
-#endif // NET
-#endif // !__WATCHOS__

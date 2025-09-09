@@ -56,10 +56,6 @@ namespace Xamarin.Linker {
 		bool InlineIntPtrSize { get; set; }
 #endif
 
-		public bool IsDualBuild {
-			get { return LinkContext.App.IsDualBuild; }
-		}
-
 		public bool Device {
 			get { return LinkContext.App.IsDeviceBuild; }
 		}
@@ -334,7 +330,7 @@ namespace Xamarin.Linker {
 				case FlowControl.Branch:
 					// Unconditional branch, we continue marking from the instruction that we branch to.
 					var br_target = (Instruction) ins.Operand;
-					return MarkInstructions (method, instructions, reachable, instructions.IndexOf (br_target), end);
+					return MarkInstructions (method, instructions, reachable, instructions.IndexOf (br_target), instructions.Count);
 				case FlowControl.Cond_Branch:
 					// Conditional instruction, we need to check if we can calculate a constant value for the condition
 					var cond_target = ins.Operand as Instruction;
@@ -346,7 +342,7 @@ namespace Xamarin.Linker {
 						// FIXME: calculate the potential constant branch (currently there are no optimizable methods where the switch condition is constant, so this is not needed for now)
 						var targets = ins.Operand as Instruction [];
 						if (targets is null) {
-							Driver.Log (4, $"Can't optimize {0} because of unknown target of branch instruction {1} {2}", method, ins, ins.Operand);
+							Driver.Log (4, "Can't optimize {0} because of unknown target of branch instruction {1} {2}", method, ins, ins.Operand);
 							return false;
 						}
 						foreach (var target in targets) {
@@ -358,7 +354,7 @@ namespace Xamarin.Linker {
 					}
 
 					if (cond_target is null) {
-						Driver.Log (4, $"Can't optimize {0} because of unknown target of branch instruction {1} {2}", method, ins, ins.Operand);
+						Driver.Log (4, "Can't optimize {0} because of unknown target of branch instruction {1} {2}", method, ins, ins.Operand);
 						return false;
 					}
 
@@ -442,7 +438,7 @@ namespace Xamarin.Linker {
 						break;
 					}
 					default:
-						Driver.Log ($"Can't optimize {0} because of unknown branch instruction: {1}", method, ins);
+						Driver.Log ("Can't optimize {0} because of unknown branch instruction: {1}", method, ins);
 						break;
 					}
 
@@ -689,10 +685,8 @@ namespace Xamarin.Linker {
 			// TODO: we could make this an option "optimize for size vs optimize for speed" in the future
 			if (Optimizations.InlineIntPtrSize.HasValue) {
 				inlineIntPtrSize = Optimizations.InlineIntPtrSize.Value;
-			} else if (!IsDualBuild) {
-				inlineIntPtrSize = true;
 			} else {
-				inlineIntPtrSize = (Profile.Current as BaseProfile).ProductAssembly == assembly.Name.Name;
+				inlineIntPtrSize = true;
 			}
 			if (inlineIntPtrSize)
 				Driver.Log (4, "Optimization 'inline-intptr-size' enabled for assembly '{0}'.", assembly.Name);

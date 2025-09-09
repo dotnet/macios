@@ -20,25 +20,13 @@ using Foundation;
 #if MONOMAC
 using AppKit;
 using UIColor = AppKit.NSColor;
-using PlatformException = ObjCRuntime.RuntimeException;
-#if NET
-using NativeException = ObjCRuntime.ObjCException;
-#else
-using NativeException = Foundation.ObjCException;
-#endif
 #else
 using UIKit;
+#endif
 using PlatformException = ObjCRuntime.RuntimeException;
-#if NET
 using NativeException = ObjCRuntime.ObjCException;
-#else
-using NativeException = Foundation.MonoTouchException;
-#endif
-#endif
 using ObjCRuntime;
-#if !__WATCHOS__
 using CoreAnimation;
-#endif
 using CoreGraphics;
 using CoreLocation;
 #if !__TVOS__
@@ -47,7 +35,7 @@ using Contacts;
 #if HAS_COREMIDI
 using CoreMidi;
 #endif
-#if !(__TVOS__ && NET)
+#if !__TVOS__
 using WebKit;
 #endif
 using NUnit.Framework;
@@ -60,10 +48,6 @@ using CategoryAttribute = ObjCRuntime.CategoryAttribute;
 
 using XamarinTests.ObjCRuntime;
 using Xamarin.Utils;
-
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
 
 namespace MonoTouchFixtures.ObjCRuntime {
 
@@ -107,9 +91,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		}
 
 		[Test]
-#if NET
 		[UnconditionalSuppressMessage ("Trimming", "IL2026", Justification = "This test verifies linker behavior, and as such any behavioral difference when the trimmer is enabled is exactly what it's looking for.")]
-#endif
 		public void RegistrarRemoval ()
 		{
 			// define set by xharness when creating test variations.
@@ -304,7 +286,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			Assert.AreEqual (value.Handle, ptr, "#1");
 		}
 
-#if !__TVOS__ && !__WATCHOS__ && !MONOMAC
+#if !__TVOS__ && !MONOMAC
 		[MonoPInvokeCallback (typeof (DActionArity1V1))]
 		static void DActionArity1V1Func (IntPtr block, UIBackgroundFetchResult result)
 		{
@@ -326,7 +308,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 				block.CleanupBlock ();
 			}
 		}
-#endif // !__TVOS__ && !__WATCHOS__
+#endif // !__TVOS__ && !MONOMAC
 
 		class TS1 : NSObject { }
 		class TS2 : NSObject { }
@@ -642,7 +624,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			}
 		}
 
-#if !__WATCHOS__ && !MONOMAC
+#if !MONOMAC
 		[Test]
 		public void TestGenericUIView ()
 		{
@@ -657,17 +639,13 @@ namespace MonoTouchFixtures.ObjCRuntime {
 				}
 			}
 		}
-#endif // !__WATCHOS__
+#endif // !MONOMAC
 
-#if !__WATCHOS__ && !MONOMAC
+#if !MONOMAC
 		[Test]
 		public void TestNativeEnum ()
 		{
-#if NET
 			var nativeEnumValue = NSWritingDirection.RightToLeft;
-#else
-			var nativeEnumValue = UITextWritingDirection.RightToLeft;
-#endif
 			//public virtual void TestNativeEnum1 (UITextWritingDirection twd)
 			using (var obj = new RegistrarTestClass ()) {
 				if (IntPtr.Size == 4) {
@@ -691,7 +669,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 				}
 			}
 		}
-#endif // !__WATCHOS__
+#endif // !MONOMAC
 
 		[Test]
 		public void Bug23289 ()
@@ -759,6 +737,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		extern static void void_objc_msgSend_out_IntPtr_bool (IntPtr receiver, IntPtr selector, out NativeHandle path, bool create);
 
 		[DllImport (LIBOBJC_DYLIB, EntryPoint = "objc_msgSend")]
+		[return: MarshalAs (UnmanagedType.U1)]
 		extern static bool bool_objc_msgSend_ref_intptr (IntPtr receiver, IntPtr selector, ref NativeHandle path);
 
 		[DllImport (LIBOBJC_DYLIB, EntryPoint = "objc_msgSend")]
@@ -960,13 +939,13 @@ namespace MonoTouchFixtures.ObjCRuntime {
 				value = @in;
 			}
 
-#if !__TVOS__ && !__WATCHOS__ && !MONOMAC
+#if !__TVOS__ && !MONOMAC
 			[Export ("testAction:")]
 			public void TestAction ([BlockProxy (typeof (NIDActionArity1V1))] Action<UIBackgroundFetchResult> action)
 			{
 				// bug ?
 			}
-#endif // !__TVOS__ && !__WATCHOS__
+#endif // !__TVOS__ && !MONOMAC
 
 			[return: ReleaseAttribute ()]
 			[Export ("testRetainArray")]
@@ -1009,19 +988,12 @@ namespace MonoTouchFixtures.ObjCRuntime {
 				return new NSObject ();
 			}
 
-#if !__WATCHOS__ && !MONOMAC
+#if !MONOMAC
 			[Export ("testNativeEnum1:")]
-#if NET
 			public virtual void TestNativeEnum1 (NSWritingDirection twd)
 			{
 				Assert.That (Enum.GetValues<NSWritingDirection> (), Contains.Item (twd), "TestNativeEnum1");
 			}
-#else
-			public virtual void TestNativeEnum1 (UITextWritingDirection twd)
-			{
-				Assert.That (Enum.GetValues (typeof (UITextWritingDirection)), Contains.Item (twd), "TestNativeEnum1");
-			}
-#endif // NET
 
 			public virtual UIPopoverArrowDirection TestNativeEnum2 {
 				[Export ("testNativeEnum2")]
@@ -1035,7 +1007,6 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			}
 
 
-#if NET
 			[Export ("testNativeEnum3:a:b:")]
 			public virtual void TestNativeEnum1 (NSWritingDirection twd, int a, long b)
 			{
@@ -1043,20 +1014,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 				Assert.AreEqual (31415, a, "TestNativeEnum3 a");
 				Assert.AreEqual (3141592, b, "TestNativeEnum3 b");
 			}
-#else
-			[Export ("testNativeEnum3:a:b:")]
-			public virtual void TestNativeEnum1 (UITextWritingDirection twd, int a, long b)
-			{
-#if NET
-				Assert.That (Enum.GetValues<UITextWritingDirection> (), Contains.Item (twd), "TestNativeEnum3");
-#else
-				Assert.That (Enum.GetValues (typeof (UITextWritingDirection)), Contains.Item (twd), "TestNativeEnum3");
-#endif
-				Assert.AreEqual (31415, a, "TestNativeEnum3 a");
-				Assert.AreEqual (3141592, b, "TestNativeEnum3 b");
-			}
-#endif // NET
-#endif // !__WATCHOS__
+#endif // !MONOMAC
 
 			[Export ("testCGPoint:out:")]
 			public void TestCGPoint (PointF pnt, ref PointF pnt2)
@@ -1064,10 +1022,10 @@ namespace MonoTouchFixtures.ObjCRuntime {
 				pnt2.X = pnt.X;
 				pnt2.Y = pnt.Y;
 			}
-#if !__WATCHOS__ && !MONOMAC
+#if !MONOMAC
 			[Export ("arrayOfINativeObject")]
 			public IUIKeyInput [] NativeObjects { get { return null; } }
-#endif // !__WATCHOS__
+#endif // !MONOMAC
 
 			[Export ("fetchNSArrayOfNSString:")]
 			NSArray<NSString> FetchNSArrayOfNSString (NSArray<NSNumber> p0)
@@ -1091,7 +1049,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			}
 		}
 
-#if !__TVOS__ && !__WATCHOS__ && !MONOMAC
+#if !__TVOS__ && !MONOMAC
 		[UnmanagedFunctionPointerAttribute (CallingConvention.Cdecl)]
 		internal delegate void DActionArity1V1 (IntPtr block, UIBackgroundFetchResult obj);
 
@@ -1133,7 +1091,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 				invoker (blockPtr, obj);
 			}
 		} /*		 class NIDActionArity1V1 */
-#endif // !__TVOS__
+#endif // !__TVOS__ && !MONOMAC
 
 
 		[Register ("StaticBaseClass")]
@@ -1304,7 +1262,6 @@ namespace MonoTouchFixtures.ObjCRuntime {
 
 		void ThrowsICEIfDebug (TestDelegate code, string message, bool execute_release_mode = true)
 		{
-#if NET
 			if (TestRuntime.IsCoreCLR || global::XamarinTests.ObjCRuntime.Registrar.CurrentRegistrar == Registrars.ManagedStatic) {
 				if (execute_release_mode) {
 					// In CoreCLR will either throw an ArgumentException:
@@ -1331,7 +1288,6 @@ namespace MonoTouchFixtures.ObjCRuntime {
 				}
 				return;
 			}
-#endif
 
 			// The type checks have been disabled for now.
 			//#if DEBUG
@@ -1421,7 +1377,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			}
 		}
 
-#if !__WATCHOS__ && !MONOMAC
+#if !MONOMAC
 		[Test]
 		public void TestCopyWithZone ()
 		{
@@ -1443,7 +1399,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 				return this;
 			}
 		}
-#endif // !__WATCHOS__
+#endif // !MONOMAC
 
 		[Test]
 		public void TestProtocolRegistration ()
@@ -1451,7 +1407,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			var iProtocol = typeof (IProtocol).FullName.Replace (".", "_").Replace ("+", "_");
 			Assert.AreNotEqual (IntPtr.Zero, Runtime.GetProtocol (iProtocol), "IProtocol");
 			Assert.IsTrue (Messaging.bool_objc_msgSend_IntPtr (Class.GetHandle (typeof (MyProtocolImplementation)), Selector.GetHandle ("conformsToProtocol:"), Runtime.GetProtocol (iProtocol)), "Interface/IProtocol");
-#if !__TVOS__ && !__WATCHOS__ && !MONOMAC
+#if !__TVOS__ && !MONOMAC
 			Assert.IsTrue (Messaging.bool_objc_msgSend_IntPtr (Class.GetHandle (typeof (Test24970)), Selector.GetHandle ("conformsToProtocol:"), Protocol.GetHandle ("UIApplicationDelegate")), "UIApplicationDelegate/17669");
 #endif
 			// We don't support [Adopts] (yet at least).
@@ -1491,7 +1447,6 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		}
 
 #if !__TVOS__ // No MapKit in TVOS
-#if !__WATCHOS__ // WatchOS has MapKit, but not MKMapView
 		[Test]
 		public void TestNativeObjectArray ()
 		{
@@ -1536,7 +1491,6 @@ namespace MonoTouchFixtures.ObjCRuntime {
 				this.Annotations = annotations;
 			}
 		}
-#endif // !__WATCHOS__
 #endif // !__TVOS__
 
 		class ConstrainedGenericType<T> : NSObject where T : NSObject {
@@ -1592,7 +1546,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		}
 
 
-#if !__WATCHOS__ && !MONOMAC
+#if !MONOMAC
 		class CustomView<T> : UIView {
 			public object TypeName;
 			public object TypeT;
@@ -1612,7 +1566,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		class NullableIntView : CustomView<int?> {
 			public NullableIntView (RectangleF rect) : base (rect) { }
 		}
-#endif // !__WATCHOS__
+#endif // !MONOMAC
 
 		class GenericConstrainedBase<T> : NSObject where T : NSObject {
 			public T FooT;
@@ -1909,7 +1863,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 
 #endif
 
-#if !__TVOS__ && !__WATCHOS__ && !MONOMAC
+#if !__TVOS__ && !MONOMAC
 		class Test24970 : UIApplicationDelegate {
 			// This method uses the [Transient] attribute.
 			public override UIInterfaceOrientationMask GetSupportedInterfaceOrientations (UIApplication application, UIWindow forWindow)
@@ -2001,7 +1955,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			}
 
 		}
-#endif // !__TVOS__ && !__WATCHOS__
+#endif // !__TVOS__ && !MONOMAC
 
 		[Protocol]
 		[Model]
@@ -2254,20 +2208,14 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		// This test uses Assembly.LoadFrom, which isn't supported with NativeAOT
 #if __MACOS__ && !NATIVEAOT
 		[Test]
-#if NET
 		[UnconditionalSuppressMessage ("Trimming", "IL2026", Justification = "This test loads an assembly dynamically, so it's expected to not be trimmer safe. It works though, so unless something changes, we're going to assume it's trimmer-compatible.")]
 		[UnconditionalSuppressMessage ("Trimming", "IL2072", Justification = "This test loads an assembly dynamically, so it's expected to not be trimmer safe. It works though, so unless something changes, we're going to assume it's trimmer-compatible.")]
-#endif
 		public void CustomUserTypeWithDynamicallyLoadedAssembly ()
 		{
 			if (!global::Xamarin.Tests.Configuration.TryGetRootPath (out var rootPath))
 				Assert.Ignore ("This test must be executed a source checkout.");
 
-#if NET
 			var customTypeAssemblyPath = global::System.IO.Path.Combine (rootPath, "tests", "test-libraries", "custom-type-assembly", ".libs", "dotnet", "macos", "custom-type-assembly.dll");
-#else
-			var customTypeAssemblyPath = global::System.IO.Path.Combine (rootPath, "tests", "test-libraries", "custom-type-assembly", ".libs", "macos", "custom-type-assembly.dll");
-#endif
 			Assert.That (customTypeAssemblyPath, Does.Exist, "existence");
 
 			var size = 10;
@@ -2312,7 +2260,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		}
 #endif
 
-#if !__WATCHOS__ && !MONOMAC
+#if !MONOMAC
 		class Bug28757A : NSObject, IUITableViewDataSource {
 			public virtual nint RowsInSection (UITableView tableView, nint section)
 			{
@@ -2330,9 +2278,9 @@ namespace MonoTouchFixtures.ObjCRuntime {
 				return 2;
 			}
 		}
-#endif // !__WATCHOS__
+#endif // !MONOMAC
 
-#if !__WATCHOS__ && !MONOMAC
+#if !MONOMAC
 		[Test]
 		public void TestInheritedProtocols ()
 		{
@@ -2340,9 +2288,9 @@ namespace MonoTouchFixtures.ObjCRuntime {
 				Assert.AreEqual ((nint) 2, Messaging.nint_objc_msgSend_IntPtr_nint (obj.Handle, Selector.GetHandle ("tableView:numberOfRowsInSection:"), IntPtr.Zero, 0), "#test");
 			}
 		}
-#endif // !__WATCHOS
+#endif // !MONOMAC
 
-#if !__WATCHOS__ && !MONOMAC
+#if !MONOMAC
 		[Test]
 		public void InOutProtocolMethodArgument ()
 		{
@@ -2351,31 +2299,22 @@ namespace MonoTouchFixtures.ObjCRuntime {
 				var targetContentOffset = new CGPoint (3, 4);
 				Messaging.void_objc_msgSend_IntPtr_CGPoint_ref_CGPoint (obj.Handle, Selector.GetHandle ("scrollViewWillEndDragging:withVelocity:targetContentOffset:"), IntPtr.Zero, velocity, ref targetContentOffset);
 				Console.WriteLine (targetContentOffset);
-#if NET
 				Assert.AreEqual ("{123, 345}", targetContentOffset.ToString (), "ref output");
-#else
-				Assert.AreEqual ("{X=123, Y=345}", targetContentOffset.ToString (), "ref output");
-#endif
 			}
 		}
-#endif // !__WATCHOS
+#endif // !MONOMAC
 
-#if !__WATCHOS__ && !MONOMAC
+#if !MONOMAC
 		class Scroller : NSObject, IUIScrollViewDelegate {
 			[Export ("scrollViewWillEndDragging:withVelocity:targetContentOffset:")]
 			public void WillEndDragging (UIScrollView scrollView, PointF velocity, ref PointF targetContentOffset)
 			{
-#if NET
 				Assert.AreEqual ("{1, 2}", velocity.ToString (), "velocity");
 				Assert.AreEqual ("{3, 4}", targetContentOffset.ToString (), "targetContentOffset");
-#else
-				Assert.AreEqual ("{X=1, Y=2}", velocity.ToString (), "velocity");
-				Assert.AreEqual ("{X=3, Y=4}", targetContentOffset.ToString (), "targetContentOffset");
-#endif
 				targetContentOffset = new CGPoint (123, 345);
 			}
 		}
-#endif // !__WATCHOS__
+#endif // !MONOMAC
 
 #if HAS_ADDRESSBOOK && HAS_ADDRESSBOOKUI
 		[Test]
@@ -2575,7 +2514,6 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		[DllImport ("/usr/lib/libobjc.dylib")]
 		static extern IntPtr class_getInstanceMethod (IntPtr cls, IntPtr sel);
 
-#if !MONOMAC || NET // Registrar_OutExportDerivedClass is from fsharp tests
 		[Test]
 		public void OutOverriddenWithoutOutAttribute ()
 		{
@@ -2588,7 +2526,6 @@ namespace MonoTouchFixtures.ObjCRuntime {
 				}
 			}
 		}
-#endif
 
 		class ProtocolArgumentClass : NSObject {
 			[Export ("someMethod:")]
@@ -2778,11 +2715,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		[Test]
 		public void TestStringArray ()
 		{
-#if !__WATCHOS__
 			var items = 10000; // Big enough to make the GC run while we're marshalling.
-#else
-			var items = Runtime.Arch == Arch.DEVICE ? 10 : 10000; // Don't test the GC on device, there's not enough memory.
-#endif
 			var array = new string [items];
 			for (var i = 0; i < array.Length; i++)
 				array [i] = i.ToString ();
@@ -2820,11 +2753,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		[Test]
 		public void TestNSObjectArray ()
 		{
-#if !__WATCHOS__
 			var items = 10000; // Big enough to make the GC run while we're marshalling.
-#else
-			var items = Runtime.Arch == Arch.DEVICE ? 10 : 10000; // Don't test the GC on device, there's not enough memory.
-#endif
 			var array = new NSObject [items];
 			for (var i = 0; i < array.Length; i++)
 				array [i] = NSNumber.FromInt32 (i);
@@ -2862,11 +2791,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		[Test]
 		public void TestINSCodingArray ()
 		{
-#if !__WATCHOS__
 			var items = 10000; // Big enough to make the GC run while we're marshalling.
-#else
-			var items = Runtime.Arch == Arch.DEVICE ? 10 : 10000; // Don't test the GC on device, there's not enough memory.
-#endif
 			var array = new INSCoding [items];
 			for (var i = 0; i < array.Length; i++)
 				array [i] = NSNumber.FromInt32 (i);
@@ -5057,6 +4982,21 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			}
 		}
 
+		[Test]
+		public void MethodEncodings2 ()
+		{
+			using (var met = new MethodEncodingsTests ()) {
+				nint obj1 = 1;
+				nint obj2 = 2;
+				nint obj3 = 3;
+				nint obj4 = 4;
+				CGRect obj5 = new CGRect (1, 2, 3, 4);
+				nint obj6 = 6;
+				Messaging.void_objc_msgSend_IntPtr_IntPtr_IntPtr_IntPtr_CGRect_IntPtr (met.Handle, Selector.GetHandle ("setPtrPropertyCGRect:p2:p3:p4:p5:p6:"), obj1, obj2, obj3, obj4, ref obj5, obj6);
+				Assert.AreEqual (new CGRect (5, 6, 7, 8), obj5, "rv");
+			}
+		}
+
 		class MethodEncodingsTests : NSObject, IObjCProtocolTest {
 			[Export ("methodEncodings:obj2:obj3:obj4:obj5:obj6:obj7:")]
 			public void GetMethodEncodings (ref NSObject obj1, ref NSObject obj2, ref NSObject obj3, ref NSObject obj4, ref NSObject obj5, ref NSObject obj6, ref NSObject obj7)
@@ -5075,6 +5015,19 @@ namespace MonoTouchFixtures.ObjCRuntime {
 				obj5 = new NSObject ();
 				obj6 = new NSObject ();
 				obj7 = new NSObject ();
+			}
+
+			[Export ("setPtrPropertyCGRect:p2:p3:p4:p5:p6:")]
+			void SetPtrPropertyCGRect (nint p1, nint p2, nint p3, nint p4, ref global::CoreGraphics.CGRect p5, nint p6)
+			{
+				Assert.AreEqual ((nint) 1, p1, "1");
+				Assert.AreEqual ((nint) 2, p2, "2");
+				Assert.AreEqual ((nint) 3, p3, "3");
+				Assert.AreEqual ((nint) 4, p4, "4");
+				Assert.AreEqual (new CGRect (1, 2, 3, 4), p5, "5a");
+				Assert.AreEqual ((nint) 6, p6, "6");
+
+				p5 = new CGRect (5, 6, 7, 8);
 			}
 		}
 
@@ -5464,7 +5417,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 
 		}
 
-#if !__WATCHOS__ && !__TVOS__ // No WebKit on watchOS/tvOS
+#if !__TVOS__ // No WebKit on tvOS
 		[Test]
 		public void GenericClassWithUnrelatedGenericDelegate ()
 		{
@@ -5499,7 +5452,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 					del ((WKNavigationActionPolicy) (long) value);
 			}
 		}
-#endif // !__WATCHOS__ && !__TVOS__
+#endif // !__TVOS__
 
 		[Test]
 		public void RefEnumValues ()
@@ -5538,7 +5491,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			}
 		}
 
-#if NET && HAS_UIKIT
+#if HAS_UIKIT
 		[Test]
 		public void ProtocolsTrimmedAway ()
 		{
@@ -5570,10 +5523,18 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		{
 			GC.KeepAlive (obj);
 		}
-#endif // NET && HAS_UIKIT
+#endif // HAS_UIKIT
+
+#if HAS_UIKIT
+		// This is a test case for https://github.com/dotnet/macios/issues/23070.
+		// It only needs to exist in the source code, it doesn't have to do anything.
+		private void Issue23070TestCase (UIView origin, UIView target)
+		{
+			origin.LeftAnchor.ConstraintEqualTo (target.LeftAnchor);
+		}
+#endif // HAS_UIKIT
 	}
 
-#if !__WATCHOS__
 	[Category (typeof (CALayer))]
 	static class CALayerColorsHelpers {
 		[Export ("setBorderUIColor:")]
@@ -5582,7 +5543,6 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			self.BorderColor = borderColor.CGColor;
 		}
 	}
-#endif // !__WATCHOS__
 
 
 	[TestFixture]
@@ -5688,17 +5648,11 @@ namespace MonoTouchFixtures.ObjCRuntime {
 	[ProtocolMember (IsRequired = false, IsProperty = false, IsStatic = false, Name = "DetectPremonition", Selector = "detectPremonition:", ParameterType = new Type [] { typeof (FutureClass) }, ParameterByRef = new bool [] { false })]
 	public interface ISomeDelegate : INativeObject, IDisposable {
 	}
-#if NET
+
 	[SupportedOSPlatform ("macos100.0")]
 	[SupportedOSPlatform ("ios100.0")]
 	[SupportedOSPlatform ("tvos100.0")]
 	[SupportedOSPlatform ("maccatalyst100.0")]
-#else
-	[Introduced (PlatformName.MacOSX, 100, 0)]
-	[Introduced (PlatformName.iOS, 100, 0)]
-	[Introduced (PlatformName.TvOS, 100, 0)]
-	[Introduced (PlatformName.WatchOS, 100, 0)]
-#endif
 	public class FutureClass : NSObject {
 	}
 	[Preserve]
@@ -5707,7 +5661,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 
 	public delegate void ACompletionHandler (string strArg, NSError error);
 
-	// https://github.com/xamarin/xamarin-macios/issues/7733
+	// https://github.com/dotnet/macios/issues/7733
 	[Preserve]
 	public class GHIssue7733 : NSObject {
 		[Export ("doSomeWork:completion:")]
@@ -5717,7 +5671,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		}
 	}
 
-#if !__WATCHOS__ && !__TVOS__ // No WebKit on watchOS/tvOS
+#if !__TVOS__ // No WebKit on tvOS
 	[Preserve]
 	public class GenericWebNavigationThingie<WebViewModel> : NSObject, IWKNavigationDelegate {
 		[Export ("webView:decidePolicyForNavigationAction:decisionHandler:")]
@@ -5728,9 +5682,8 @@ namespace MonoTouchFixtures.ObjCRuntime {
 	}
 #endif
 
-#if !__WATCHOS__ // no MetalKit on watchOS
 	// These classes implement Metal* protocols, so that the generated registrar code includes the corresponding Metal* headers.
-	// https://github.com/xamarin/xamarin-macios/issues/4422
+	// https://github.com/dotnet/macios/issues/4422
 	class MetalKitTypesInTheSimulator : NSObject, MetalKit.IMTKViewDelegate {
 		public void Draw (MetalKit.MTKView view)
 		{
@@ -5753,7 +5706,6 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			throw new NotImplementedException ();
 		}
 
-#if NET
 		public void PresentAfter (double presentationTime)
 		{
 			throw new NotImplementedException ();
@@ -5767,7 +5719,6 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		public double PresentedTime { get => throw new NotImplementedException (); }
 
 		public nuint DrawableId { get => throw new NotImplementedException (); }
-#endif
 	}
 #if !__TVOS__ // MetalPerformanceShaders isn't available in the tvOS simulator either
 	class MetalPerformanceShadersTypesInTheSimulator : NSObject, global::MetalPerformanceShaders.IMPSDeviceProvider {
@@ -5782,7 +5733,6 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		}
 	}
 #endif // !__TVOS__
-#endif // !__WATCHOS__
 
 #if HAS_COREMIDI && !__TVOS__
 	// This type exports methods with 'MidiThruConnectionEndpoint' parameters, which is a struct with different casing in Objective-C ("MIDI...")

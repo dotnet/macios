@@ -20,9 +20,6 @@ parameters:
 - name: vsdropsPrefix
   type: string
 
-- name: testConfigurations
-  type: object
-
 - name: isPR
   type: boolean
 
@@ -49,7 +46,7 @@ steps:
 
 - template: download-artifacts.yml
 
-- pwsh: '& "$Env:SYSTEM_DEFAULTWORKINGDIRECTORY/$($Env:BUILD_REPOSITORY_NAME.Split(''/'')[1])/tools/devops/automation/scripts/show_bot_info.ps1"'
+- pwsh: '& "$Env:SYSTEM_DEFAULTWORKINGDIRECTORY/$Env:BUILD_REPOSITORY_TITLE/tools/devops/automation/scripts/show_bot_info.ps1"'
   displayName: 'Show Bot Info'
 
 # build a message with all the content of all tests, to do so, we get the labels and to pass them to pwsh we do a join with ;
@@ -59,7 +56,7 @@ steps:
         gci env: | format-table -autosize | Out-String -Width 8192
 
         $vsdropsIndex="$Env:VSDROPSPREFIX/$Env:BUILD_BUILDNUMBER/$Env:BUILD_BUILDID/"
-        Import-Module $Env:SYSTEM_DEFAULTWORKINGDIRECTORY\xamarin-macios\tools\devops\automation\scripts\MaciosCI.psd1
+        Import-Module $Env:SYSTEM_DEFAULTWORKINGDIRECTORY\$Env:BUILD_REPOSITORY_TITLE\tools\devops\automation\scripts\MaciosCI.psd1
         $DebugPreference = "Continue" # enable debug messages
 
         $parallelResults = New-ParallelTestsResults `
@@ -90,10 +87,12 @@ steps:
     TESTS_JOBSTATUS: $(TESTS_JOBSTATUS) # set by the runTests step
     TESTS_SUMMARY: $(TEST_SUMMARY_PATH)
     ACCESSTOKEN: $(System.AccessToken)
+    IS_PR: ${{ parameters.isPR }}
     ${{ if eq(parameters.repositoryAlias, 'self') }}:
       COMMENT_HASH: $(fix_commit.GIT_HASH)
     ${{ else }}:
       COMMENT_HASH: $(Build.SourceVersion)
   displayName: 'Add summaries'
+  continueOnError: true
   condition: always()
   timeoutInMinutes: 15

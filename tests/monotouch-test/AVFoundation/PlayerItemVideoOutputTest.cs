@@ -7,8 +7,6 @@
 // Copyright 2016 Xamarin Inc. All rights reserved.
 //
 
-#if !__WATCHOS__
-
 using System;
 using AVFoundation;
 using CoreVideo;
@@ -36,5 +34,3 @@ namespace MonoTouchFixtures.AVFoundation {
 		}
 	}
 }
-
-#endif // !__WATCHOS__

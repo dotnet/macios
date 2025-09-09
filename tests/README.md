@@ -13,7 +13,6 @@ only be available after running `make` once.
 
 * tests.sln: This is the base test solution for Xamarin.iOS, which targets iOS using the Unified API. _Not_ generated.
 * tests-tvos.sln: All the TVOS test projects. Generated.
-* tests-watchos.sln: All the WatchOS test projects. Generated.
 * tests-mac.sln: This is the base test solution for Xamarin.Mac. _Not_ generated.
 
 ### Test solution/project generation
@@ -78,19 +77,6 @@ Con
 
 * The data might not represent the truth (errors, false positives...)
 
-### Xamarin.Mac
-
-Many tests when run for macOS use a integration [hack](https://github.com/xamarin/xamarin-macios/blob/main/tests/common/mac/MacMain.cs) which helps handle a number of issues:
-
-- Allowing command line arguments to tests while excluding "psn" arguments passed in while debugging with Visual Studio for Mac
-- Invoking `_exit` to work around a number of post-test hangs. See the [bug](https://bugzilla.xamarin.com/show_bug.cgi?id=52604) for details.
-
-One very useful "hack" this support adds is the ability to run a single test from the command line via the `XM_TEST_NAME` environmental variable. For example
-
-```
-XM_TEST_NAME=MonoTouchFixtures.Security.KeyTest.CreateRandomKeyWithParametersTests make run-mac-unified-xammac_tests
-```
-
 # Test Suites
 
 ## *-tests : where * is the assembly name, e.g. monotouch
@@ -146,7 +132,6 @@ Run every test on device, using both the compat and the new profile
 
     * -ios-: iOS.
     * -tvos-: TVOS.
-    * -watchos-: WatchOS
 
     If "What" is skipped, all variations are executed sequentially.
 
@@ -158,12 +143,12 @@ Run every test on device, using both the compat and the new profile
     * -sim64-: 64bits iOS simulator using the Unified API. Not applicable to other platforms.
     * -sim-:
         * iOS: Both the -simclassic- and -simunified- versions.
-        * WatchOS/TVOS: The WatchOS/TVOS simulator.
+        * TVOS: The TVOS simulator.
     * -devclassic-: Device using the Classic API. Only applicable when the platform is iOS.
     * -devunified-: Device using the Unified API. The build will contain both an armv7 and an arm64 binary. It's not possible to select a 32/64bit version, you'll run what your device supports. Only applicable when the platform is iOS.
     * -dev-:
         * iOS: Both the -devclassic- and -devunified- versions.
-        * WatchOS/TVOS: A Watch or TV device.
+        * TVOS: A TV device.
 
 * Examples
 

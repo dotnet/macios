@@ -36,12 +36,18 @@ using System.Runtime.CompilerServices;
 
 namespace AVFoundation {
 	public partial class AVMetadataMachineReadableCodeObject {
-		public CGPoint[]? Corners {
+		/// <summary>If not <see langword="null" />, an array of <see cref="CoreGraphics.CGPoint" /> objects of the detected corners.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
+		public CGPoint []? Corners {
 			get {
 				var arr = WeakCorners;
 				if (arr is null)
 					return null;
-				var rv = new CGPoint[arr.Length];
+				var rv = new CGPoint [arr.Length];
 				for (int i = 0; i < rv.Length; i++) {
 					var dict = arr [i];
 					CGPoint pnt;

@@ -14,17 +14,23 @@ using CGGlyph = System.UInt16;
 
 namespace AppKit {
 	public partial class NSFont {
+		/// <param name="font">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSFont? FromCTFont (CTFont? font)
 		{
 			if (font is null)
 				return null;
-			return new NSFont (font.Handle);
+			var result = new NSFont (font.Handle);
+			GC.KeepAlive (font);
+			return result;
 		}
 
-#if NET
-		[SupportedOSPlatform ("macos")]
-		[UnsupportedOSPlatform ("maccatalyst")]
-#endif
+		/// <param name="glyphs">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public unsafe CGRect [] GetBoundingRects (CGGlyph [] glyphs)
 		{
 			if (glyphs is null)
@@ -41,10 +47,10 @@ namespace AppKit {
 			return bounds;
 		}
 
-#if NET
-		[SupportedOSPlatform ("macos")]
-		[UnsupportedOSPlatform ("maccatalyst")]
-#endif
+		/// <param name="glyphs">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public unsafe CGSize [] GetAdvancements (CGGlyph [] glyphs)
 		{
 			if (glyphs is null)
@@ -61,103 +67,165 @@ namespace AppKit {
 			return advancements;
 		}
 
+		/// <param name="fontName">To be added.</param>
+		/// <param name="fontSize">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		public static NSFont? FromFontName (string fontName, nfloat fontSize)
 		{
 			var ptr = _FromFontName (fontName, fontSize);
 			return ptr == IntPtr.Zero ? null : new NSFont (ptr);
 		}
 
+		/// <param name="fontDescriptor">To be added.</param>
+		/// <param name="fontSize">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		public static NSFont? FromDescription (NSFontDescriptor fontDescriptor, nfloat fontSize)
 		{
 			var ptr = _FromDescription (fontDescriptor, fontSize);
 			return ptr == IntPtr.Zero ? null : new NSFont (ptr);
 		}
 
+		/// <param name="fontDescriptor">To be added.</param>
+		///         <param name="textTransform">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSFont? FromDescription (NSFontDescriptor fontDescriptor, NSAffineTransform textTransform)
 		{
 			var ptr = _FromDescription (fontDescriptor, textTransform);
 			return ptr == IntPtr.Zero ? null : new NSFont (ptr);
 		}
 
+		/// <param name="fontSize">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		public static NSFont? UserFontOfSize (nfloat fontSize)
 		{
 			var ptr = _UserFontOfSize (fontSize);
 			return ptr == IntPtr.Zero ? null : new NSFont (ptr);
 		}
 
+		/// <param name="fontSize">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		public static NSFont? UserFixedPitchFontOfSize (nfloat fontSize)
 		{
 			var ptr = _UserFixedPitchFontOfSize (fontSize);
 			return ptr == IntPtr.Zero ? null : new NSFont (ptr);
 		}
 
+		/// <param name="fontSize">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		public static NSFont? SystemFontOfSize (nfloat fontSize)
 		{
 			var ptr = _SystemFontOfSize (fontSize);
 			return ptr == IntPtr.Zero ? null : new NSFont (ptr);
 		}
 
+		/// <param name="fontSize">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		public static NSFont? BoldSystemFontOfSize (nfloat fontSize)
 		{
 			var ptr = _BoldSystemFontOfSize (fontSize);
 			return ptr == IntPtr.Zero ? null : new NSFont (ptr);
 		}
 
+		/// <param name="fontSize">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		public static NSFont? LabelFontOfSize (nfloat fontSize)
 		{
 			var ptr = _LabelFontOfSize (fontSize);
 			return ptr == IntPtr.Zero ? null : new NSFont (ptr);
 		}
 
+		/// <param name="fontSize">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		public static NSFont? TitleBarFontOfSize (nfloat fontSize)
 		{
 			var ptr = _TitleBarFontOfSize (fontSize);
 			return ptr == IntPtr.Zero ? null : new NSFont (ptr);
 		}
 
+		/// <param name="fontSize">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		public static NSFont? MenuFontOfSize (nfloat fontSize)
 		{
 			var ptr = _MenuFontOfSize (fontSize);
 			return ptr == IntPtr.Zero ? null : new NSFont (ptr);
 		}
 
+		/// <param name="fontSize">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		public static NSFont? MenuBarFontOfSize (nfloat fontSize)
 		{
 			var ptr = _MenuBarFontOfSize (fontSize);
 			return ptr == IntPtr.Zero ? null : new NSFont (ptr);
 		}
 
+		/// <param name="fontSize">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		public static NSFont? MessageFontOfSize (nfloat fontSize)
 		{
 			var ptr = _MessageFontOfSize (fontSize);
 			return ptr == IntPtr.Zero ? null : new NSFont (ptr);
 		}
 
+		/// <param name="fontSize">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		public static NSFont? PaletteFontOfSize (nfloat fontSize)
 		{
 			var ptr = _PaletteFontOfSize (fontSize);
 			return ptr == IntPtr.Zero ? null : new NSFont (ptr);
 		}
 
+		/// <param name="fontSize">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		public static NSFont? ToolTipsFontOfSize (nfloat fontSize)
 		{
 			var ptr = _ToolTipsFontOfSize (fontSize);
 			return ptr == IntPtr.Zero ? null : new NSFont (ptr);
 		}
 
+		/// <param name="fontSize">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		public static NSFont? ControlContentFontOfSize (nfloat fontSize)
 		{
 			var ptr = _ControlContentFontOfSize (fontSize);
 			return ptr == IntPtr.Zero ? null : new NSFont (ptr);
 		}
 
-#if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos10.13")]
 		[UnsupportedOSPlatform ("maccatalyst")]
-#else
-		[Deprecated (PlatformName.MacOSX, 10, 13)]
-#endif
 		public virtual NSFont? PrinterFont {
 			get {
 				var ptr = _PrinterFont;
@@ -165,13 +233,12 @@ namespace AppKit {
 			}
 		}
 
-#if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos10.13")]
 		[UnsupportedOSPlatform ("maccatalyst")]
-#else
-		[Deprecated (PlatformName.MacOSX, 10, 13)]
-#endif
 		public virtual NSFont? ScreenFont {
 			get {
 				var ptr = _ScreenFont;
@@ -179,61 +246,60 @@ namespace AppKit {
 			}
 		}
 
-#if NET
+		/// <param name="renderingMode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos10.13")]
 		[UnsupportedOSPlatform ("maccatalyst")]
-#else
-		[Deprecated (PlatformName.MacOSX, 10, 13)]
-#endif
 		public virtual NSFont? ScreenFontWithRenderingMode (NSFontRenderingMode renderingMode)
 		{
 			var ptr = _ScreenFontWithRenderingMode (renderingMode);
 			return ptr == IntPtr.Zero ? null : new NSFont (ptr);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public virtual NSFont? GetVerticalFont ()
 		{
 			var ptr = _GetVerticalFont ();
 			return ptr == IntPtr.Zero ? null : new NSFont (ptr);
 		}
 
-#if NET
+		/// <param name="fontSize">To be added.</param>
+		/// <param name="weight">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
-#endif
 		public static NSFont? SystemFontOfSize (nfloat fontSize, nfloat weight)
 		{
 			var ptr = _SystemFontOfSize (fontSize, weight);
 			return ptr == IntPtr.Zero ? null : new NSFont (ptr);
 		}
 
-#if NET
-		[SupportedOSPlatform ("macos13.0")]
-		[UnsupportedOSPlatform ("maccatalyst")]
-#else
-		[Mac (13, 0)]
-#endif
 		public static NSFont? SystemFontOfSize (nfloat fontSize, nfloat weight, nfloat width)
 		{
 			var ptr = _SystemFontOfSize (fontSize, weight, width);
 			return ptr == IntPtr.Zero ? null : new NSFont (ptr);
 		}
 
-#if NET
+		/// <param name="fontSize">To be added.</param>
+		/// <param name="weight">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
-#endif
 		public static NSFont? MonospacedDigitSystemFontOfSize (nfloat fontSize, nfloat weight)
 		{
 			var ptr = _MonospacedDigitSystemFontOfSize (fontSize, weight);
 			return ptr == IntPtr.Zero ? null : new NSFont (ptr);
 		}
 
-#if NET
-		[SupportedOSPlatform ("macos")]
-		[UnsupportedOSPlatform ("maccatalyst")]
-#endif
 		public static NSFont? MonospacedSystemFont (nfloat fontSize, nfloat weight)
 		{
 			var ptr = _MonospacedSystemFont (fontSize, weight);

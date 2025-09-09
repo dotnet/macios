@@ -30,8 +30,43 @@
 using CoreFoundation;
 
 namespace CoreText {
+	/// <summary>Represents a CoreText Font.</summary>
+	///     <remarks>
+	///       <para>
+	/// 	CoreText does not synthesize font styles (italic and bold).
+	/// 	This means that if you pick a font that has neither a Bolded
+	/// 	or Italicized versions available, CoreText will not create a
+	/// 	dynamic font that is merely a slanted version of the font for
+	/// 	italic, or a boldened version from the original font.  In
+	/// 	those cases, if you want to synthesize the font, you could
+	/// 	apply a Matrix transformation to slant the font (it will still
+	/// 	be wrong, but will look slanted).  For bolding, you could
+	/// 	stroke the font twice, or manually extend the glyph path.
+	///
+	///       </para>
+	///     </remarks>
+	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/SimpleTextInput/">SimpleTextInput</related>
 	public partial class CTFont : NativeObject {
 	}
+	/// <summary>Font Descriptors contain a description of font features that can identify a font.</summary>
+	///     <remarks>
+	///       <para>
+	/// 	Font Descriptors contain a description of font features and can
+	/// 	completely identify a font.  Sometimes the description is not
+	/// 	complete enough, and the system will pick a font that matches
+	/// 	the specified parameters.
+	///       </para>
+	///       <example>
+	///         <code lang="csharp lang-csharp"><![CDATA[
+	/// var attributes = new CTFontDescriptorAttributes () {
+	/// 	FamilyName = "Times New Roman",
+	/// 	Size = 18
+	/// };
+	///
+	/// var fontDescriptor = new CTFontDescriptor (attributes);
+	/// ]]></code>
+	///       </example>
+	///     </remarks>
 	public partial class CTFontDescriptor : NativeObject {
 	}
 }

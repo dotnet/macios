@@ -24,7 +24,6 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-#if !WATCH
 using System;
 using System.Threading.Tasks;
 using System.Threading;
@@ -37,6 +36,10 @@ using CoreLocation;
 
 namespace MapKit {
 	public partial class MKGeodesicPolyline {
+		/// <param name="points">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static unsafe MKGeodesicPolyline FromPoints (MKMapPoint [] points)
 		{
 			if (points is null)
@@ -49,6 +52,10 @@ namespace MapKit {
 			}
 		}
 
+		/// <param name="coords">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static unsafe MKGeodesicPolyline FromCoordinates (CLLocationCoordinate2D [] coords)
 		{
 			if (coords is null)
@@ -62,4 +69,3 @@ namespace MapKit {
 		}
 	}
 }
-#endif // !WATCH

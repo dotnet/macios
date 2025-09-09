@@ -14,6 +14,7 @@ public class TypeManager {
 	TypeCache TypeCache { get { return BindingTouch.TypeCache; } }
 
 	Dictionary<Type, string>? nsnumberReturnMap;
+	Dictionary<Type, string>? nsnumberToValueMap;
 	HashSet<string> typesThatMustAlwaysBeGloballyNamed = new ();
 
 	public void SetTypesThatMustAlwaysBeGloballyNamed (Type [] types)
@@ -57,6 +58,39 @@ public class TypeManager {
 					nsnumberReturnMap [tuple.Item1] = tuple.Item2;
 			}
 			return nsnumberReturnMap;
+		}
+	}
+
+	/// <summary>
+	/// Maps the NSNumber types to the corresponding ToValue function. For example
+	/// int => "ToInt32"
+	/// </summary>
+	public Dictionary<Type, string> NSNumberToValueMap {
+		get {
+			if (nsnumberToValueMap is not null)
+				return nsnumberToValueMap;
+			Tuple<Type?, string> [] typeMap = {
+				new (TypeCache.System_Boolean, "ToBool"),
+				new (TypeCache.System_Byte, "ToByte"),
+				new (TypeCache.System_Double, "ToDouble"),
+				new (TypeCache.System_Float, "ToFloat"),
+				new (TypeCache.System_Int16, "ToInt16"),
+				new (TypeCache.System_Int32, "ToInt32"),
+				new (TypeCache.System_Int64, "ToInt64"),
+				new (TypeCache.System_SByte, "ToSByte"),
+				new (TypeCache.System_UInt16, "ToUInt16"),
+				new (TypeCache.System_UInt32, "ToUInt32"),
+				new (TypeCache.System_UInt64, "ToUInt64"),
+				new (TypeCache.System_nfloat, "ToNFloat"),
+				new (TypeCache.System_nint, "ToNInt"),
+				new (TypeCache.System_nuint, "ToNUInt"),
+			};
+			nsnumberToValueMap = new ();
+			foreach (var tuple in typeMap) {
+				if (tuple.Item1 is not null)
+					nsnumberToValueMap [tuple.Item1] = tuple.Item2;
+			}
+			return nsnumberToValueMap;
 		}
 	}
 
@@ -112,6 +146,61 @@ public class TypeManager {
 			return nsvalueReturnMap;
 		}
 	}
+	
+#pragma warning disable format
+	Dictionary<Type, string>? nsvalueBindAsMap;
+	public Dictionary<Type, string> NSValueBindAsMap {
+		get {
+			if (nsvalueBindAsMap is not null)
+				return nsvalueBindAsMap;
+			Tuple<Type?, string> [] general = {
+				new (TypeCache.CGAffineTransform, "ToCGAffineTransform"),
+				new (TypeCache.NSRange, "ToNSRange"),
+				new (TypeCache.CGVector, "ToCGVector"),
+				new (TypeCache.SCNMatrix4, "ToSCNMatrix4"),
+				new (TypeCache.CLLocationCoordinate2D, "ToCLLocationCoordinate2D"),
+				new (TypeCache.SCNVector3, "ToSCNVector3"),
+				new (TypeCache.SCNVector4, "ToSCNVector4"),
+				new (TypeCache.CoreGraphics_CGPoint, "ToCGPoint"),
+				new (TypeCache.CoreGraphics_CGRect, "ToCGRect"),
+				new (TypeCache.CoreGraphics_CGSize, "ToCGSize"),
+				new (TypeCache.MKCoordinateSpan, "ToMKCoordinateSpan"),
+			};
+
+			Tuple<Type?, string> [] uiKitMap = Array.Empty<Tuple<Type?, string>> ();
+			if (Frameworks.HaveUIKit)
+				uiKitMap = new Tuple<Type?, string> [] {
+					new (TypeCache.UIEdgeInsets, "ToUIEdgeInsets"),
+					new (TypeCache.UIOffset, "ToUIOffset"),
+					new (TypeCache.NSDirectionalEdgeInsets, "ToNSDirectionalEdgeInsets"),
+				};
+
+			Tuple<Type?, string> [] coreMedia = Array.Empty<Tuple<Type?, string>> ();
+			if (Frameworks.HaveCoreMedia)
+				coreMedia = new Tuple<Type?, string> [] {
+					new (TypeCache.CMTimeRange, "ToCMTimeRange"), 
+					new (TypeCache.CMTime, "ToCMTime"),
+					new (TypeCache.CMTimeMapping, "ToCMTimeMapping"),
+					new (TypeCache.CMVideoDimensions, "ToCMVideoDimensions"),
+				};
+
+			Tuple<Type?, string> [] animation = Array.Empty<Tuple<Type?, string>> ();
+			if (Frameworks.HaveCoreAnimation)
+				animation = new Tuple<Type?, string> [] { new(TypeCache.CATransform3D, "ToCATransform3D"), };
+
+			nsvalueBindAsMap = new();
+			foreach (var typeMap in new [] { general, uiKitMap, coreMedia, animation }) {
+				foreach (var tuple in typeMap) {
+					if (tuple.Item1 is not null)
+						nsvalueBindAsMap [tuple.Item1] = tuple.Item2;
+				}
+			}
+
+			return nsvalueBindAsMap;
+		}
+	}
+	
+#pragma warning restore format
 
 	public Type? GetUnderlyingNullableType (Type type)
 	{

@@ -1,4 +1,3 @@
-#if !__WATCHOS__
 using System;
 
 using Foundation;
@@ -82,4 +81,3 @@ namespace MonoTouchFixtures.Network {
 
 	}
 }
-#endif

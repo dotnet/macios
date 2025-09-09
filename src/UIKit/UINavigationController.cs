@@ -1,4 +1,3 @@
-#if !WATCH
 using System;
 using Foundation;
 using ObjCRuntime;
@@ -10,11 +9,13 @@ namespace UIKit {
 			return t is null ? IntPtr.Zero : Class.GetHandle (t);
 		}
 
+		/// <param name="navigationBarType">To be added.</param>
+		///         <param name="toolbarType">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public UINavigationController (Type navigationBarType, Type toolbarType) : this (LookupClass (navigationBarType), LookupClass (toolbarType))
 		{
 		}
 
 	}
 }
-
-#endif // !WATCH

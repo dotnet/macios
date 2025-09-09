@@ -12,18 +12,52 @@ using System;
 #if !MONOMAC
 
 namespace AVFoundation {
+	/// <summary>Enumerates physical locations of data sources on AV devices.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum AVAudioDataSourceLocation {
-		Unknown, Upper, Lower
+		/// <summary>To be added.</summary>
+		Unknown,
+		/// <summary>To be added.</summary>
+		Upper,
+		/// <summary>To be added.</summary>
+		Lower,
 	}
 
+	/// <summary>Enumerates physical orientations of data sources on AV devices.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum AVAudioDataSourceOrientation {
-		Unknown, Top, Bottom, Front, Back, Left, Right
+		/// <summary>To be added.</summary>
+		Unknown,
+		/// <summary>To be added.</summary>
+		Top,
+		/// <summary>To be added.</summary>
+		Bottom,
+		/// <summary>To be added.</summary>
+		Front,
+		/// <summary>To be added.</summary>
+		Back,
+		/// <summary>To be added.</summary>
+		Left,
+		/// <summary>To be added.</summary>
+		Right,
 	}
 
+	/// <summary>Enumerates microphone directivity values.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum AVAudioDataSourcePolarPattern {
-		Unknown, Omnidirectional, Cardioid, Subcardioid
+		/// <summary>To be added.</summary>
+		Unknown,
+		/// <summary>To be added.</summary>
+		Omnidirectional,
+		/// <summary>To be added.</summary>
+		Cardioid,
+		/// <summary>To be added.</summary>
+		Subcardioid,
 	}
 
+	/// <summary>Describes a data source of an <see cref="AVFoundation.AVAudioSession" /> object.</summary>
+	///     <remarks>To be added.</remarks>
+	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AVFoundation/Reference/AVAudioSessionDataSourceDescription_class/index.html">Apple documentation for <c>AVAudioSessionDataSourceDescription</c></related>
 	public partial class AVAudioSessionDataSourceDescription {
 		static internal AVAudioDataSourceLocation ToLocation (NSString? l)
 		{
@@ -73,19 +107,27 @@ namespace AVFoundation {
 			}
 		}
 
+		/// <summary>Indicates the location of the data source on the device.</summary>
+		///         <value>The value can be either LocationUpper or LocationLower from <see cref="AVFoundation.AVAudioSession" />.<para tool="nullallowed">This value can be <see langword="null" />.</para></value>
+		///         <remarks>To be added.</remarks>
 		public AVAudioDataSourceLocation Location {
 			get {
 				return ToLocation (Location_);
 			}
 		}
 
+		/// <summary>Indicates the orientation of the data source on the device.</summary>
+		///         <value>One of the constants in <see cref="AVFoundation.AVAudioSession" />’s Orientation properties (OrientationTop, OrientationBotton, OrientationFront, OrientationBack, OrientationLeft, OrientationRight).<para tool="nullallowed">This value can be <see langword="null" />.</para></value>
+		///         <remarks>The data source can be pointing upwards, downwards, towards the user, away from the user, left or right.</remarks>
 		public AVAudioDataSourceOrientation Orientation {
 			get {
 				return ToOrientation (Orientation_);
 			}
 		}
 
-#if !WATCH
+		/// <summary>The supported polar configurations by this audio data source.</summary>
+		///         <value>Array of strings containing the names of the supported microphone directions for the source, one of PolarPatternOmnidirectional, PolarPatternCardioid, PolarPatternSubcardioid from <see cref="AVFoundation.AVAudioSession" />.</value>
+		///         <remarks>To be added.</remarks>
 		public AVAudioDataSourcePolarPattern []? SupportedPolarPatterns {
 			get {
 				var x = SupportedPolarPatterns_;
@@ -100,23 +142,33 @@ namespace AVFoundation {
 			}
 		}
 
+		/// <summary>Indicates the currenly selected microphone direction.</summary>
+		///         <value>The current setting for the microphone direction, one of PolarPatternOmnidirectional, PolarPatternCardioid, PolarPatternSubcardioid from <see cref="AVFoundation.AVAudioSession" /></value>
+		///         <remarks>To be added.</remarks>
 		public AVAudioDataSourcePolarPattern SelectedPolarPattern {
 			get {
 				return ToPolarPattern (SelectedPolarPattern_);
 			}
 		}
 
+		/// <summary>The preferred microphone direction.</summary>
+		///         <value>The current setting for the microphone direction, one of PolarPatternOmnidirectional, PolarPatternCardioid, PolarPatternSubcardioid from <see cref="AVFoundation.AVAudioSession" /></value>
+		///         <remarks>To change this property, call the <see cref="AVFoundation.AVAudioSessionDataSourceDescription.SetPreferredPolarPattern(AVFoundation.AVAudioDataSourcePolarPattern,out Foundation.NSError)" />.</remarks>
 		public AVAudioDataSourcePolarPattern PreferredPolarPattern {
 			get {
 				return ToPolarPattern (PreferredPolarPattern_);
 			}
 		}
 
+		/// <param name="pattern">To be added.</param>
+		///         <param name="outError">To be added.</param>
+		///         <summary>Sets the preferred directivity for the data source.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool SetPreferredPolarPattern (AVAudioDataSourcePolarPattern pattern, out NSError outError)
 		{
 			return SetPreferredPolarPattern_ (ToToken (pattern), out outError);
 		}
-#endif
 	}
 }
 #endif

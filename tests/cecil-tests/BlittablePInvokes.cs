@@ -57,34 +57,22 @@ namespace Cecil.Tests {
 	//         AssignSomeCallback (SomeCallImpl, someHandle);
 	//    }
 	//    Fix:
-	//    #if NET
 	//    // note that this call is now unsafe in addition to the delegate*
 	//    extern unsafe static void AssignSomeCallback (delegate* unmanaged<int, IntPtr, void>, IntPtr someHandle);
-	//    #else
-	//    ...old pinvoke goes here...
-	//    #endif
 	//    // you have to change the callback decoration. You *must* have a single
 	//    // callback implementation that calls out to the actual callback because
 	//    // the UnmanagedCallersOnly is strict. If you try to call it from C# you
 	//    // get a compiler error.
-	//    #if NET
 	//    [UnmanagedCallersOnly]
-	//    #else   
-	//    [MonoPInvokeCallback (typeof (SomeCall))]
-	//    #endif
 	//    static void SomeCallImpl (int a, IntPtr someHandle)
 	//    { /* ... */ }
 	//    public void SetSomeCallback (SomeCall callMe)
 	//    {
 	//        var handle = GCHandle.Alloc (callMe);
-	//    #if NET
 	//        // calling code is now also unsafe because of the & operator
 	//        unsafe {
 	//            AssignSomeCallback (&SomeCallImpl, someHandle);
 	//        }
-	//    #else
-	//        AssignSomeCallback (SomeCallImpl, someHandle);
-	//    #endif
 	//
 	//    3. ref/out types - these are disallowed. Replace them with pointers and
 	//       make the pinvoke unsafe. Can you use an IntPtr instead of unsafe? Yes.
@@ -99,18 +87,13 @@ namespace Cecil.Tests {
 	//         return new Point (x, y);
 	//    }
 	//    Fix:
-	//    #if NET
 	//    extern unsafe static void TPGetCoordinates (NativeHandle obj, int* x, int* y);
 	//    public Point GetCoordingates ()
 	//    {
 	//        int x = 0, y = 0;
-	//    #if NET
 	//        unsafe {
 	//            TPGetCoordinates (this.GetHandle (), &x, &y);
 	//        }
-	//    #else
-	//        TPGetCoordinates (this.GetHandle (), out x, out y);
-	//    #endif
 	//        return new Point (x, y);
 	//    }
 	//
@@ -455,6 +438,9 @@ namespace Cecil.Tests {
 			foreach (var info in Helper.NetPlatformImplementationAssemblyDefinitions) {
 				var assembly = info.Assembly;
 				foreach (var type in assembly.EnumerateTypes ()) {
+					if (type.Is ("ObjCRuntime", "BlockLiteral"))
+						continue;
+
 					foreach (var method in type.EnumerateMethods (m => m.HasBody)) {
 						var body = method.Body;
 						foreach (var instr in body.Instructions) {
@@ -475,14 +461,25 @@ namespace Cecil.Tests {
 							switch (targetMethod.Name) {
 							case "SetupBlock":
 							case "SetupBlockUnsafe":
-								break;
+								var location = method.RenderLocation (instr);
+								var message = $"The call to {targetMethod.Name} in {method.AsFullName ()} must be converted to new Block syntax.";
+								failures [message] = new (message, location);
+								continue;
+							case ".ctor":
+								if (!method.HasBindingImplAttribute (out var bindingImplOptions)) {
+									var loc = method.RenderLocation (body.Instructions.First ());
+									var msg = $"{method.AsFullName ()}: needs [BindingImpl (BindingImplOptions.Optimizable)] because this method creates a BlockLiteral.";
+									failures [msg] = new (msg, loc);
+								} else if ((bindingImplOptions & BindingImplOptions.Optimizable) != BindingImplOptions.Optimizable) {
+									var loc = method.RenderLocation (body.Instructions.First ());
+									var msg = $"{method.AsFullName ()}: has the required [BindingImpl] attribute (because this method creates a BlockLiteral), but the BindingImplOptions.Optimizable flag isn't set.";
+									failures [msg] = new (msg, loc);
+								}
+								continue;
 							default:
 								continue;
 							}
 
-							var location = method.RenderLocation (instr);
-							var message = $"The call to {targetMethod.Name} in {method.AsFullName ()} must be converted to new Block syntax.";
-							failures [message] = new (message, location);
 						}
 					}
 				}
@@ -492,10 +489,6 @@ namespace Cecil.Tests {
 		}
 
 		static HashSet<string> knownFailuresBlockLiterals = new HashSet<string> {
-			"The call to SetupBlock in ObjCRuntime.BlockLiteral.CreateBlockForDelegate(System.Delegate, System.Delegate, System.String) must be converted to new Block syntax.",
-			"The call to SetupBlock in ObjCRuntime.BlockLiteral.GetBlockForDelegate(System.Reflection.MethodInfo, System.Object, System.UInt32, System.String) must be converted to new Block syntax.",
-			"The call to SetupBlock in ObjCRuntime.BlockLiteral.SetupBlock(System.Delegate, System.Delegate) must be converted to new Block syntax.",
-			"The call to SetupBlock in ObjCRuntime.BlockLiteral.SetupBlockUnsafe(System.Delegate, System.Delegate) must be converted to new Block syntax.",
 		};
 
 		[Test]

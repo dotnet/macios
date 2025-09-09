@@ -4,51 +4,67 @@ using ObjCRuntime;
 
 namespace PhotosUI {
 
-	/// <summary>Enumerates how live photo playback will occur in a <see cref="T:PhotosUI.PHLivePhotoView" />.</summary>
+	/// <summary>Enumerates how live photo playback will occur in a <see cref="PhotosUI.PHLivePhotoView" />.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum PHLivePhotoViewPlaybackStyle : long {
+		/// <summary>This is an invalid value. Do not use.</summary>
 		Undefined = 0,
+		/// <summary>Indicates that the full Live Photo, with sound, will be played.</summary>
 		Full,
-		Hint
+		/// <summary>Indicates that a short teaser, without sound, will be played.</summary>
+		Hint,
 	}
 
 #if MONOMAC
-	[NoiOS][NoTV][NoMacCatalyst]
+	[NoiOS]
+	[NoTV]
+	[NoMacCatalyst]
 	[Native]
 	public enum PHLivePhotoViewContentMode : long {
+		/// <summary>To be added.</summary>
 		AspectFit,
+		/// <summary>To be added.</summary>
 		AspectFill,
 	}
 #else
-	/// <summary>Flagging enumeration that controls appearance of the playback badge on <see cref="T:PhotosUI.PHLivePhotoView" /> objects.</summary>
+	/// <summary>Flagging enumeration that controls appearance of the playback badge on <see cref="PhotosUI.PHLivePhotoView" /> objects.</summary>
 	[NoMac]
 	[MacCatalyst (13, 1)]
 	[Native]
 	[Flags] // NS_OPTIONS
 	public enum PHLivePhotoBadgeOptions : ulong {
+		/// <summary>Indicates no badge.</summary>
 		None = 0,
+		/// <summary>Indicates a badge that will be placed over animated content.</summary>
 		OverContent = 1 << 0,
+		/// <summary>Indicates a badge for assets for which Live Photo content is disabled.</summary>
 		LiveOff = 1 << 1,
 	}
 #endif
 	[NoiOS]
 	[NoTV]
-	[NoWatch]
 	[NoMacCatalyst]
 	public enum PHProjectCategory {
+		/// <summary>To be added.</summary>
 		[Field ("PHProjectCategoryBook")]
 		Book,
+		/// <summary>To be added.</summary>
 		[Field ("PHProjectCategoryCalendar")]
 		Calendar,
+		/// <summary>To be added.</summary>
 		[Field ("PHProjectCategoryCard")]
 		Card,
+		/// <summary>To be added.</summary>
 		[Field ("PHProjectCategoryPrints")]
 		Prints,
+		/// <summary>To be added.</summary>
 		[Field ("PHProjectCategorySlideshow")]
 		Slideshow,
+		/// <summary>To be added.</summary>
 		[Field ("PHProjectCategoryWallDecor")]
 		WallDecor,
+		/// <summary>To be added.</summary>
 		[Field ("PHProjectCategoryOther")]
 		Other,
 		[NoMacCatalyst]
@@ -56,7 +72,7 @@ namespace PhotosUI {
 		Undefined,
 	}
 
-	[NoWatch, NoTV]
+	[NoTV]
 	[iOS (14, 0)]
 	[Mac (13, 0)]
 	[MacCatalyst (14, 0)]
@@ -67,14 +83,14 @@ namespace PhotosUI {
 		Compatible = 2,
 	}
 
-	[NoWatch, NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[Native]
 	public enum PHPickerMode : long {
 		Default = 0,
 		Compact = 1,
 	}
 
-	[Flags, NoWatch, NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[Flags, NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[Native]
 	public enum PHPickerCapabilities : ulong {
 		None = 0,

@@ -1,0 +1,491 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Linq;
+using System.Text;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.Macios.Generator.Availability;
+using Microsoft.Macios.Generator.Context;
+using Microsoft.Macios.Generator.Extensions;
+
+namespace Microsoft.Macios.Generator.DataModel;
+
+readonly partial struct Binding {
+
+	/// <summary>
+	/// Represents the type of binding that the code changes are for.
+	/// </summary>
+	public BindingType BindingType => BindingInfo.BindingType;
+
+	readonly BindingInfo bindingInfo = default;
+	/// <summary>
+	/// Represents the binding data that will be used to generate the code.
+	/// </summary>
+	public BindingInfo BindingInfo => bindingInfo;
+
+	/// <summary>
+	/// Returns if the binding has been declared to be thread safe.
+	/// </summary>
+	public bool IsThreadSafe => bindingInfo.IsThreadSafe;
+
+	/// <summary>
+	/// The location of the attribute in source code.
+	/// </summary>
+	public Location? Location { get; init; }
+
+	/// <summary>
+	/// Returns all the library names and paths that are needed by the native code represented by the code change.
+	/// </summary>
+	public IEnumerable<(string LibraryName, string? LibraryPath)> LibraryPaths {
+		get {
+			// we want to return unique values, A library name should always point to the
+			// same library path (either null or with a value). We keep track of the ones we already
+			// returned in a set and skip if we already returned it.
+			var visited = new HashSet<string> ();
+
+			// return those libs needed by smart enums
+			foreach (var enumMember in EnumMembers) {
+				if (enumMember.FieldInfo is null)
+					continue;
+				var (_, libraryName, libraryPath) = enumMember.FieldInfo.Value;
+				if (visited.Add (libraryName)) // if already visited, we cannot add it
+					yield return (libraryName, libraryPath);
+			}
+
+			// return those libs needed by field properties
+			foreach (var property in Properties) {
+				if (property.ExportFieldData.IsNullOrDefault)
+					continue;
+				var (_, libraryName, libraryPath) = property.ExportFieldData;
+				if (visited.Add (libraryName)) // if already visited, we cannot add it
+					yield return (libraryName, libraryPath);
+			}
+		}
+	}
+
+	/// <summary>
+	/// Return all the types that require to create a trampoline to be generated.
+	/// </summary>
+	public IEnumerable<TypeInfo> Trampolines {
+		get {
+			// retrieve all the type info of properties that are delegates
+			foreach (var property in Properties) {
+				if (property.ReturnType.IsDelegate) {
+					// even when the property is just a getter we need to generate a trampoline
+					yield return property.ReturnType;
+				}
+			}
+
+			// same with methods, but in this case we need to check the return type and all the method parameters
+			foreach (var method in Methods) {
+				if (method.ReturnType.IsDelegate)
+					yield return method.ReturnType;
+				foreach (var parameter in method.Parameters) {
+					if (parameter.Type.IsDelegate)
+						yield return parameter.Type;
+				}
+			}
+		}
+	}
+
+	/// <summary>
+	/// Return all the types that are used as async results and need to be generated.
+	/// </summary>
+	public IEnumerable<AsyncResultInfo> AsyncResults {
+		get {
+			// async results are only present in the methods that have been marked as async and have a return type name
+			// any other cases is either a simple result of the user provided a result type that exists at compilation
+			// time. It might be the case that a result type is used more than once, so we are using a hash set to
+			// ensure that we do not return the same result type more than once.
+			var found = new HashSet<string> ();
+			foreach (var method in Methods) {
+				if (method is { IsAsync: true, ExportMethodData.ResultTypeName: not null }
+					&& found.Add (method.ExportMethodData.ResultTypeName)) {
+					yield return new () {
+						Namespace = Namespace,
+						Name = method.ExportMethodData.ResultTypeName,
+						CompletionHandler = method.Parameters [^1]
+					};
+				}
+			}
+		}
+	}
+
+	/// <summary>
+	/// Returns all the events from weak delegates that need to have their event type generated.
+	/// </summary>
+	public IEnumerable<EventInfo> WeakDelegateEvents {
+		get {
+			// weak delegates are those properties that have been marked as a weak delegate and that also have
+			// been marked to generate events. Out of those properties we will only returns the ones that need
+			// to have the event type generated
+			var found = new HashSet<string> (); // used to track the events we already returned
+			foreach (var property in Properties) {
+				if (!property.IsProperty)
+					continue;
+				// CreateEvents is only true for a weak delegate property
+				if (!property.CreateEvents)
+					continue;
+
+				if (!property.ExportPropertyData.StrongDelegateType.IsNullOrDefault) {
+					// loop over all the events, the unique identifier is the namespace + event handler type
+					foreach (var eventInfo in property.ExportPropertyData.StrongDelegateType.Events) {
+						// skip if we do not need to generate the event
+						if (!eventInfo.ToGenerate)
+							continue;
+						if (found.Add (eventInfo.EventArgsFullyQualifiedName)) {
+							// yield the event info of the type that needs to be generated
+							yield return eventInfo;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	/// <summary>
+	/// Returns all the event delegates from weak delegates that need to be generated.
+	/// </summary>
+	public IEnumerable<EventDelegateInfo> WeakDelegatesClasses {
+		get {
+			// use a hash set to reach the types of the delegates, it should not be the case that we have the same
+			// type info for more than one delegate but we do not trust the input from external developers
+			var found = new HashSet<string> ();
+			foreach (var property in Properties) {
+				if (!property.IsProperty)
+					continue;
+				// CreateEvents is only true for a weak delegate property, we do not create the delegate type for a
+				// weak delegate with no events generated
+				if (!property.CreateEvents)
+					continue;
+				if (!property.ExportPropertyData.StrongDelegateType.IsNullOrDefault
+					&& found.Add (property.ExportPropertyData.StrongDelegateType.FullyQualifiedName)) {
+					// create the info for the delegate type
+					yield return new EventDelegateInfo {
+						Usings = [.. usingDirectives],
+						Namespace = string.Join ('.', Namespace),
+						OuterClassName = Name,
+						OuterClassModifiers = Modifiers,
+						DelegateType = property.ExportPropertyData.StrongDelegateType
+					};
+				}
+			}
+		}
+	}
+
+	/// <summary>
+	/// Decide if an enum value should be ignored as a change.
+	/// </summary>
+	/// <param name="enumMemberDeclarationSyntax">The enum declaration under test.</param>
+	/// <param name="semanticModel">The semantic model of the compilation.</param>
+	/// <returns>True if the enum value should be ignored. False otherwise.</returns>
+	internal static bool Skip (EnumMemberDeclarationSyntax enumMemberDeclarationSyntax, SemanticModel semanticModel)
+	{
+		// for smart enums, we are only interested in the field that has a Field<EnumValue> attribute
+		return !enumMemberDeclarationSyntax.HasAttribute (semanticModel, AttributesNames.EnumFieldAttribute);
+	}
+
+	/// <summary>
+	/// Decide if a property should be ignored as a change.
+	/// </summary>
+	/// <param name="propertyDeclarationSyntax">The property declaration under test.</param>
+	/// <param name="semanticModel">The semantic model of the compilation.</param>
+	/// <returns>True if the property should be ignored. False otherwise.</returns>
+	internal static bool PropertySkip (PropertyDeclarationSyntax propertyDeclarationSyntax, SemanticModel semanticModel)
+	{
+		// valid properties are: 
+		// 1. Partial
+		// 2. One of the following:
+		//	  1. Field properties
+		//    2. Exported properties
+		if (propertyDeclarationSyntax.Modifiers.Any (SyntaxKind.PartialKeyword)) {
+			return !propertyDeclarationSyntax.HasAtLeastOneAttribute (semanticModel,
+				AttributesNames.FieldPropertyAttribute, AttributesNames.ExportPropertyAttribute);
+		}
+
+		return true;
+	}
+
+	/// <summary>
+	/// Decide if a property in a strong dictionary should be ignored as a change.
+	/// </summary>
+	/// <param name="propertyDeclarationSyntax">The property declaration under test.</param>
+	/// <param name="semanticModel">The semantic model of the compilation.</param>
+	/// <returns>True if the property should be ignored. False otherwise.</returns>
+	internal static bool StrongDictionarySkip (PropertyDeclarationSyntax propertyDeclarationSyntax,
+		SemanticModel semanticModel)
+	{
+		// valid properties for strong dictionaries are:
+		// 1. Partial
+		// 2. Exported properties as dictionary properties
+		if (propertyDeclarationSyntax.Modifiers.Any (SyntaxKind.PartialKeyword)) {
+			return !propertyDeclarationSyntax.HasAttribute (semanticModel,
+				AttributesNames.ExportStrongDictionaryPropertyAttribute);
+		}
+		return true;
+	}
+
+	internal static bool Skip (ConstructorDeclarationSyntax constructorDeclarationSyntax, SemanticModel semanticModel)
+	{
+		// TODO: we need to confirm this when we have support from the roslyn team.
+		return false;
+	}
+
+	internal static bool Skip (EventDeclarationSyntax eventDeclarationSyntax, SemanticModel semanticModel)
+	{
+		// TODO: we need to confirm this when we have support from the roslyn team.
+		return false;
+	}
+
+	internal static bool Skip (MethodDeclarationSyntax methodDeclarationSyntax, SemanticModel semanticModel)
+	{
+		// Valid methods are:
+		// 1. Partial
+		// 2. Contain the export attribute
+		if (methodDeclarationSyntax.Modifiers.Any (SyntaxKind.PartialKeyword)) {
+			return !methodDeclarationSyntax.HasAttribute (semanticModel, AttributesNames.ExportMethodAttribute);
+		}
+
+		return true;
+	}
+
+
+	/// <summary>
+	/// Internal constructor added for testing purposes.
+	/// </summary>
+	/// <param name="bindingInfo">The binding data of binding for the given code changes.</param>
+	/// <param name="name">The name of the named type that created the code change.</param>
+	/// <param name="namespace">The namespace that contains the named type.</param>
+	/// <param name="fullyQualifiedSymbol">The fully qualified name of the symbol.</param>
+	/// <param name="symbolAvailability">The platform availability of the named symbol.</param>
+	internal Binding (BindingInfo bindingInfo, string name, ImmutableArray<string> @namespace,
+		string fullyQualifiedSymbol, SymbolAvailability symbolAvailability)
+	{
+		this.bindingInfo = bindingInfo;
+		this.name = name;
+		this.namespaces = @namespace;
+		FullyQualifiedSymbol = fullyQualifiedSymbol;
+		this.availability = symbolAvailability;
+	}
+
+	/// <summary>
+	/// Creates a new instance of the <see cref="Binding"/> struct for a given enum declaration.
+	/// </summary>
+	/// <param name="enumDeclaration">The enum declaration that triggered the change.</param>
+	/// <param name="context">The root binding context of the current compilation.</param>
+	/// <param name="validateMembers">If the struct should validate the members from the declarations. Defaults to true.</param>
+	Binding (EnumDeclarationSyntax enumDeclaration, RootContext context, bool validateMembers = true)
+	{
+		context.SemanticModel.GetSymbolData (
+			declaration: enumDeclaration,
+			bindingType: BindingType.SmartEnum,
+			name: out name,
+			baseClass: out baseClass,
+			interfaces: out interfaces,
+			outerClasses: out outerClasses,
+			namespaces: out namespaces,
+			symbolAvailability: out availability,
+			bindingInfo: out bindingInfo);
+		FullyQualifiedSymbol = enumDeclaration.GetFullyQualifiedIdentifier (context.SemanticModel);
+		Attributes = enumDeclaration.GetAttributeCodeChanges (context.SemanticModel);
+		UsingDirectives = enumDeclaration.SyntaxTree.CollectUsingStatements ();
+		Modifiers = [.. enumDeclaration.Modifiers];
+		var bucket = ImmutableArray.CreateBuilder<EnumMember> ();
+		// loop over the fields and add those that contain a FieldAttribute
+		var enumValueDeclarations = enumDeclaration.Members.OfType<EnumMemberDeclarationSyntax> ();
+		foreach (var enumValueDeclaration in enumValueDeclarations) {
+			if (Skip (enumValueDeclaration, context.SemanticModel))
+				continue;
+			if (context.SemanticModel.GetDeclaredSymbol (enumValueDeclaration) is not IFieldSymbol enumValueSymbol) {
+				continue;
+			}
+
+			var fieldData = enumValueSymbol.GetFieldData ();
+			// try and compute the library for this enum member
+			if (fieldData is null || !context.TryComputeLibraryName (fieldData.Value.LibraryPath, Namespace [^1],
+					out string? libraryName, out string? libraryPath)) {
+				// could not calculate the library for the enum add it with bad data for the analyzer to pick it up
+				var enumMember = new EnumMember (
+					name: enumValueDeclaration.Identifier.ToFullString ().Trim (),
+					libraryName: string.Empty,
+					libraryPath: null,
+					fieldData: enumValueSymbol.GetFieldData (),
+					symbolAvailability: enumValueSymbol.GetSupportedPlatforms (),
+					attributes: enumValueDeclaration.GetAttributeCodeChanges (context.SemanticModel)
+				) {
+					Location = enumValueDeclaration.GetLocation (),
+				};
+				bucket.Add (enumMember);
+			} else {
+				var enumMember = new EnumMember (
+					name: enumValueDeclaration.Identifier.ToFullString ().Trim (),
+					libraryName: libraryName,
+					libraryPath: libraryPath,
+					fieldData: enumValueSymbol.GetFieldData (),
+					symbolAvailability: enumValueSymbol.GetSupportedPlatforms (),
+					attributes: enumValueDeclaration.GetAttributeCodeChanges (context.SemanticModel)
+				) { Location = enumValueDeclaration.GetLocation (), };
+				bucket.Add (enumMember);
+			}
+		}
+
+		EnumMembers = bucket.ToImmutable ();
+		Location = enumDeclaration.GetLocation ();
+	}
+
+	/// <summary>
+	/// Creates a new instance of the <see cref="Binding"/> struct for a given class declaration.
+	/// </summary>
+	/// <param name="classDeclaration">The class declaration that triggered the change.</param>
+	/// <param name="context">The root binding context of the current compilation.</param>
+	/// <param name="validateMembers">If the struct should validate the members from the declarations. Defaults to true.</param>
+	Binding (ClassDeclarationSyntax classDeclaration, RootContext context, bool validateMembers = true)
+	{
+		context.SemanticModel.GetSymbolData (
+			declaration: classDeclaration,
+			bindingType: classDeclaration.GetBindingType (context.SemanticModel),
+			name: out name,
+			baseClass: out baseClass,
+			interfaces: out interfaces,
+			outerClasses: out outerClasses,
+			namespaces: out namespaces,
+			symbolAvailability: out availability,
+			bindingInfo: out bindingInfo);
+		FullyQualifiedSymbol = classDeclaration.GetFullyQualifiedIdentifier (context.SemanticModel);
+		Attributes = classDeclaration.GetAttributeCodeChanges (context.SemanticModel);
+		UsingDirectives = classDeclaration.SyntaxTree.CollectUsingStatements ();
+		Modifiers = [.. classDeclaration.Modifiers];
+
+		// use the generic method to get the members, we are using an out param to try an minimize the number of times
+		// the value types are copied
+		GetMembers<ConstructorDeclarationSyntax, Constructor> (classDeclaration, context, Skip,
+			Constructor.TryCreate, out constructors, validateMembers);
+		GetMembers<EventDeclarationSyntax, Event> (classDeclaration, context, Skip, Event.TryCreate, out events, validateMembers);
+		GetMembers<MethodDeclarationSyntax, Method> (classDeclaration, context, Skip, Method.TryCreate,
+			out methods, validateMembers);
+
+		// if an only if the class declaration is a strong dictionary we will retrieve strong dictionary properties, else
+		// we will retrieve the properties as normal properties.
+		if (bindingInfo.BindingType == BindingType.StrongDictionary) {
+			GetMembers<PropertyDeclarationSyntax, Property> (classDeclaration, context, StrongDictionarySkip, Property.TryCreate,
+				out strongDictproperties, validateMembers);
+		} else {
+			GetMembers<PropertyDeclarationSyntax, Property> (classDeclaration, context, PropertySkip, Property.TryCreate,
+				out properties, validateMembers);
+		}
+		Location = classDeclaration.GetLocation ();
+	}
+
+	/// <summary>
+	/// Creates a new instance of the <see cref="Binding"/> struct for a given interface declaration.
+	/// </summary>
+	/// <param name="interfaceDeclaration">The interface declaration that triggered the change.</param>
+	/// <param name="context">The root binding context of the current compilation.</param>
+	/// <param name="validateMembers">If the struct should validate the members from the declarations. Defaults to true.</param>
+	Binding (InterfaceDeclarationSyntax interfaceDeclaration, RootContext context, bool validateMembers = true)
+	{
+		context.SemanticModel.GetSymbolData (
+			declaration: interfaceDeclaration,
+			bindingType: BindingType.Protocol,
+			name: out name,
+			baseClass: out baseClass,
+			interfaces: out interfaces,
+			outerClasses: out outerClasses,
+			namespaces: out namespaces,
+			symbolAvailability: out availability,
+			bindingInfo: out bindingInfo);
+		FullyQualifiedSymbol = interfaceDeclaration.GetFullyQualifiedIdentifier (context.SemanticModel);
+		Attributes = interfaceDeclaration.GetAttributeCodeChanges (context.SemanticModel);
+		UsingDirectives = interfaceDeclaration.SyntaxTree.CollectUsingStatements ();
+		Modifiers = [.. interfaceDeclaration.Modifiers];
+		// we do not init the constructors, we use the default empty array
+
+		GetMembers<PropertyDeclarationSyntax, Property> (interfaceDeclaration, context.SemanticModel, PropertySkip, Property.TryCreate,
+			out properties, validateMembers);
+		GetMembers<EventDeclarationSyntax, Event> (interfaceDeclaration, context.SemanticModel, Skip, Event.TryCreate,
+			out events, validateMembers);
+		GetMembers<MethodDeclarationSyntax, Method> (interfaceDeclaration, context.SemanticModel, Skip, Method.TryCreate,
+			out methods, validateMembers);
+
+		// models are a special case, we need to be able to retrieve the parent properties and methods to be added to the
+		// wrapper classes. We will do that by accessing the parents, getting their symbol info and creating the 
+		// properties and methods from that.
+		if (context.SemanticModel.GetDeclaredSymbol (interfaceDeclaration) is INamedTypeSymbol symbol) {
+			// build the parent properties and methods
+			var parentPropertiesBucket = ImmutableArray.CreateBuilder<Property> ();
+			var parentMethodsBucket = ImmutableArray.CreateBuilder<Method> ();
+			foreach (var member in symbol.GetAllInterfaceMembers ()) {
+				switch (member) {
+				case IPropertySymbol propertySymbol:
+					if (Property.TryCreate (propertySymbol, context, out var property)
+							&& !property.Value.ExportPropertyData.IsNullOrDefault) // only decorated properties
+						parentPropertiesBucket.Add (property.Value);
+					break;
+				case IMethodSymbol methodSymbol:
+					if (Method.TryCreate (methodSymbol, context, out var method)
+							&& !method.Value.ExportMethodData.IsNullOrDefault)
+						parentMethodsBucket.Add (method.Value);
+					break;
+				}
+			}
+			ParentProtocolProperties = parentPropertiesBucket.ToImmutable ();
+			ParentProtocolMethods = parentMethodsBucket.ToImmutable ();
+		} else {
+			ParentProtocolProperties = [];
+			ParentProtocolMethods = [];
+		}
+		Location = interfaceDeclaration.GetLocation ();
+	}
+
+	/// <summary>
+	/// Create a CodeChange from the provide base type declaration syntax. If the syntax is not supported,
+	/// it will return null.
+	/// </summary>
+	/// <param name="baseTypeDeclarationSyntax">The declaration syntax whose change we want to calculate.</param>
+	/// <param name="context">The root binding context of the current compilation.</param>
+	/// <param name="validateMembers">If the struct should validate the members from the declarations. Defaults to true.</param>
+	/// <returns>A code change or null if it could not be calculated.</returns>
+	public static Binding? FromDeclaration (BaseTypeDeclarationSyntax baseTypeDeclarationSyntax,
+		RootContext context, bool validateMembers = true)
+		=> baseTypeDeclarationSyntax switch {
+			EnumDeclarationSyntax enumDeclarationSyntax => new Binding (enumDeclarationSyntax, context, validateMembers),
+			InterfaceDeclarationSyntax interfaceDeclarationSyntax => new Binding (interfaceDeclarationSyntax, context, validateMembers),
+			ClassDeclarationSyntax classDeclarationSyntax => new Binding (classDeclarationSyntax, context, validateMembers),
+			_ => null
+		};
+
+	/// <inheritdoc/>
+	public override string ToString ()
+	{
+		var sb = new StringBuilder ("Changes: {");
+		sb.Append ($"BindingData: '{BindingInfo}', Name: '{Name}', Namespace: [");
+		sb.AppendJoin (", ", Namespace);
+		sb.Append ($"], FullyQualifiedSymbol: '{FullyQualifiedSymbol}', Base: '{Base ?? "null"}', SymbolAvailability: {SymbolAvailability}, ");
+		sb.Append ("Interfaces: [");
+		sb.AppendJoin (", ", Interfaces);
+		sb.Append ("], Attributes: [");
+		sb.AppendJoin (", ", Attributes);
+		sb.Append ("], UsingDirectives: [");
+		sb.AppendJoin (", ", UsingDirectives);
+		sb.Append ("], Modifiers: [");
+		sb.AppendJoin (", ", Modifiers);
+		sb.Append ("], EnumMembers: [");
+		sb.AppendJoin (", ", EnumMembers);
+		sb.Append ("], Constructors: [");
+		sb.AppendJoin (", ", Constructors);
+		sb.Append ("], Properties: [");
+		sb.AppendJoin (", ", Properties);
+		sb.Append ("], ParentProtocolProperties: [");
+		sb.AppendJoin (", ", ParentProtocolProperties);
+		sb.Append ("], Methods: [");
+		sb.AppendJoin (", ", Methods);
+		sb.Append ("], Events: [");
+		sb.AppendJoin (", ", Events);
+		sb.Append ("] }");
+		return sb.ToString ();
+	}
+}

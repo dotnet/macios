@@ -10,7 +10,7 @@ namespace NS {
 	public interface ISomething {
 		[Introduced (PlatformName.MacCatalyst, 13, 0)] // needed since it's not in iOS
 		[Introduced (PlatformName.MacOSX, 10, 15)]
-		[NoWatch, NoTV, NoiOS]
+		[NoTV, NoiOS]
 		[Export ("isLoadedInProcess")]
 		bool IsLoadedInProcess { get; }
 	}

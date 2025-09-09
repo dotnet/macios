@@ -46,8 +46,6 @@ stages:
 - stage: ${{ parameters.stageName }}
   displayName: ${{ parameters.displayName }}
   dependsOn:
-  - ${{ if eq(parameters.postPipeline, false) }}:
-    - build_macos_tests
   - configure_build
   condition: and(succeeded(), eq(dependencies.configure_build.outputs['configure.decisions.RUN_WINDOWS_TESTS'], 'true'))
 
@@ -56,7 +54,6 @@ stages:
     dependsOn:
     displayName: "Reserve macOS bot for tests"
     timeoutInMinutes: 120
-    condition: ne(stageDependencies.configure_build.configure.outputs['configure_platforms.ENABLE_DOTNET'],'')
     workspace:
       clean: all
     pool:
@@ -65,23 +62,23 @@ stages:
       - agent.os -equals Darwin
       - SSH.Enabled -equals True
       - macOS.Architecture -equals arm64
-      - macOS.Name -equals Sonoma
+      - macOS.Name -equals Sequoia
 
     steps:
     - template: reserve-mac.yml
       parameters:
         repositoryAlias: ${{ parameters.repositoryAlias }}
         commit: ${{ parameters.commit }}
+        isPR: ${{ parameters.isPR }}
         macPool: ${{ parameters.macPool }}
         gitHubToken: ${{ parameters.gitHubToken }}
         xqaCertPass: ${{ parameters.xqaCertPass }}
 
-  - job: run_tests
+  - job: "tests"
     dependsOn:
     - mac_reservation
     displayName: 'Dotnet tests'
     timeoutInMinutes: 120
-    condition: and(succeeded(),ne(stageDependencies.configure_build.configure.outputs['configure_platforms.ENABLE_DOTNET'],''))
     workspace:
       clean: all
 
@@ -112,17 +109,14 @@ stages:
   - job: mac_reenable
     dependsOn:
     - mac_reservation
-    - run_tests
+    - tests
     displayName: "Re-enable macOS bot for tests"
     timeoutInMinutes: 120
-    # the condition must be exactly the same as for the mac_reservation job (or if no condition there, then 'always ()')
-    condition: ne(stageDependencies.configure_build.configure.outputs['configure_platforms.ENABLE_DOTNET'],'')
+    condition: always()
     workspace:
       clean: all
     pool:
-      name: ${{ parameters.windowsPool }}
-      demands:
-      - agent.os -equals Windows_NT
+      vmImage: ubuntu-latest
 
     steps:
     - template: reenable-mac.yml

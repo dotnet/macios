@@ -39,7 +39,7 @@ Describe 'New-GitHubComment' {
             # assert the call and compare the expected parameters to the received ones
             Assert-MockCalled -CommandName Invoke-RestMethod -Times 1 -Scope It -ParameterFilter {
                 # validate each of the params and the payload
-                if ($Uri -ne "https://api.github.com/repos/xamarin/xamarin-macios/commits/BUILD_SOURCEVERSION/comments") {
+                if ($Uri -ne "https://api.github.com/repos/$Env:BUILD_REPOSITORY_NAME/commits/BUILD_SOURCEVERSION/comments") {
                     return $False
                 }
                 if ($Headers.Authorization -ne ("token {0}" -f $envVariables["GITHUB_TOKEN"])) {
@@ -136,7 +136,7 @@ Describe 'Get-GitHubPRInfo' {
             # assert the call and compare the expected parameters to the received ones
             Assert-MockCalled -CommandName Invoke-RestMethod -Times 1 -Scope It -ParameterFilter {
                 # validate each of the params and the payload
-                if ($Uri -ne "https://api.github.com/repos/xamarin/xamarin-macios/pulls/$changeId") {
+                if ($Uri -ne "https://api.github.com/repos/$Env:BUILD_REPOSITORY_NAME/pulls/$changeId") {
                     return $False
                 }
                 if ($Headers.Authorization -ne ("token {0}" -f $envVariables["GITHUB_TOKEN"])) {
@@ -221,6 +221,64 @@ Describe 'Convert-Markdown' {
             $converted | Should -BeExactly "[vsdrops](vsdropsprefix/whatever) --- [gist](https://gist.github.com/somethingsomething) === (could not create gist: file 'root/inexistent/file' does not exist)"
 
             Remove-Item -Path $rootDirectory -Recurse
+        }
+    }
+}
+
+Describe 'IsCurrentCommitLatestInPR' {
+    Context 'when in PR context' {
+        BeforeAll {
+            $Script:envVariables = @{
+                "GITHUB_TOKEN" = "test-token";
+            }
+
+            $Script:envVariables.GetEnumerator() | ForEach-Object { 
+                $key = $_.Key
+                Set-Item -Path "Env:$key" -Value $_.Value
+            }
+        }
+
+        It 'returns true when current commit matches head commit' {
+            Mock Invoke-Request {
+                return @{
+                    "head" = @{
+                        "sha" = "abc123def456"
+                    }
+                }
+            } -ModuleName 'GitHub'
+
+            $githubComments = [GitHubComments]::new("testorg", "testrepo", "test-token", "abc123def456")
+            $githubComments.PRIds = @("123")
+            
+            $result = $githubComments.IsCurrentCommitLatestInPR()
+            
+            $result | Should -Be $true
+        }
+
+        It 'returns false when current commit does not match head commit' {
+            Mock Invoke-Request {
+                return @{
+                    "head" = @{
+                        "sha" = "different123hash"
+                    }
+                }
+            } -ModuleName 'GitHub'
+
+            $githubComments = [GitHubComments]::new("testorg", "testrepo", "test-token", "abc123def456")
+            $githubComments.PRIds = @("123")
+            
+            $result = $githubComments.IsCurrentCommitLatestInPR()
+            
+            $result | Should -Be $false
+        }
+
+        It 'returns true when not in PR context' {
+            $githubComments = [GitHubComments]::new("testorg", "testrepo", "test-token", "abc123def456")
+            $githubComments.PRIds = @()  # Empty array means not in PR
+            
+            $result = $githubComments.IsCurrentCommitLatestInPR()
+            
+            $result | Should -Be $true
         }
     }
 }

@@ -1,4 +1,3 @@
-#if NET
 #if MONOMAC
 using System;
 
@@ -14,7 +13,7 @@ namespace MediaExtension {
 		/// <param name="refinedLocation">Upon return, the exact location of the sample.</param>
 		/// <param name="error">Upon return, null if successful, otherwise an <see cref="NSError" /> instance for the error.</param>
 		/// <returns>True if successful, false otherwise.</returns>
-		public bool RefineSampleLocation (AVSampleCursorStorageRange estimatedSampleLocation, byte	[] refinementData, out AVSampleCursorStorageRange refinedLocation, out NSError? error)
+		public bool RefineSampleLocation (AVSampleCursorStorageRange estimatedSampleLocation, byte [] refinementData, out AVSampleCursorStorageRange refinedLocation, out NSError? error)
 		{
 			unsafe {
 				fixed (byte* refinementDataPtr = refinementData) {
@@ -25,4 +24,3 @@ namespace MediaExtension {
 	}
 }
 #endif // MONOMAC
-#endif // NET

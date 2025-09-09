@@ -7,8 +7,6 @@
 // Copyright 2013, Xamarin Inc
 //
 
-#if !WATCH
-
 using System;
 #if IOS
 using System.Drawing;
@@ -21,7 +19,7 @@ using Foundation;
 using ObjCRuntime;
 
 #if MONOMAC
-using UIFont=AppKit.NSFont;
+using UIFont = AppKit.NSFont;
 #endif
 
 #if MONOMAC
@@ -30,6 +28,14 @@ namespace AppKit {
 namespace UIKit {
 #endif
 	partial class NSLayoutManager {
+		/// <param name="glyphRange">To be added.</param>
+		/// <param name="glyphBuffer">To be added.</param>
+		/// <param name="props">To be added.</param>
+		/// <param name="charIndexBuffer">To be added.</param>
+		/// <param name="bidiLevelBuffer">To be added.</param>
+		/// <summary>Fills <paramref name="glyphBuffer" /> with the glyphs in <paramref name="glyphRange" />.</summary>
+		/// <returns>The number of glyphs in <paramref name="glyphBuffer" />.</returns>
+		/// <remarks>To be added.</remarks>
 		public unsafe nuint GetGlyphs (
 			NSRange glyphRange,
 			short [] /* CGGlyph* = CGFontIndex* = unsigned short* */ glyphBuffer,
@@ -65,46 +71,18 @@ namespace UIKit {
 			}
 		}
 
-#if !NET && !__MACCATALYST__
-#if MONOMAC
-		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use the overload that takes 'nint glyphCount' instead.")]
-		[Deprecated (PlatformName.iOS, 13, 0, message: "Use the overload that takes 'nint glyphCount' instead.")]
-		[Deprecated (PlatformName.WatchOS, 6, 0, message: "Use the overload that takes 'nint glyphCount' instead.")]
-		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use the overload that takes 'nint glyphCount' instead.")]
-		public unsafe void ShowGlyphs (
-#else
-		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use the 'ShowGlyphs' overload that takes 'nint glyphCount' instead.")]
-		[Deprecated (PlatformName.iOS, 13, 0, message: "Use the 'ShowGlyphs' overload that takes 'nint glyphCount' instead.")]
-		[Deprecated (PlatformName.WatchOS, 6, 0, message: "Use the 'ShowGlyphs' overload that takes 'nint glyphCount' instead.")]
-		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use the 'ShowGlyphs' overload that takes 'nint glyphCount' instead.")]
-		public unsafe void ShowCGGlyphs (
-#endif // MONOMAC
-			short [] /* const CGGlyph* = CGFontIndex* = unsigned short* */ glyphs,
-			CGPoint [] /* const CGPoint* */ positions,
-			nuint /* NSUInteger */ glyphCount,
-			UIFont font,
-			CGAffineTransform textMatrix,
-			NSDictionary attributes,
-			CGContext graphicsContext)
-		{
-			fixed (short* gl = glyphs) {
-				fixed (CGPoint* pos = positions) {
-					ShowGlyphs ((IntPtr) gl, (IntPtr) pos, glyphCount, font, textMatrix, attributes, graphicsContext);
-				}
-			}
-		}
-#endif // !NET
-
-#if NET
+		/// <summary>Renders <paramref name="glyphs" /> at <paramref name="positions" /> into <paramref name="graphicsContext" />.</summary>
+		/// <param name="glyphs">To be added.</param>
+		/// <param name="positions">To be added.</param>
+		/// <param name="glyphCount">To be added.</param>
+		/// <param name="font">To be added.</param>
+		/// <param name="textMatrix">To be added.</param>
+		/// <param name="attributes">To be added.</param>
+		/// <param name="graphicsContext">To be added.</param>
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[Watch (6, 0)]
-		[TV (13, 0)]
-		[iOS (13, 0)]
-#endif
 		public unsafe void ShowGlyphs (
 			short [] /* const CGGlyph* = CGFontIndex* = unsigned short* */ glyphs,
 			CGPoint [] /* const CGPoint* */ positions,
@@ -121,73 +99,14 @@ namespace UIKit {
 			}
 		}
 
-#if !NET && !MONOMAC
-		// TextContainerForGlyphAtIndex
-		[Obsolete ("Use 'GetTextContainer' instead.")]
-		public NSTextContainer TextContainerForGlyphAtIndex (nuint glyphIndex)
-		{
-			return GetTextContainer (glyphIndex);
-		}
-
-		[Obsolete ("Use 'GetTextContainer' instead.")]
-		public NSTextContainer TextContainerForGlyphAtIndex (nuint glyphIndex, ref NSRange effectiveGlyphRange)
-		{
-			return GetTextContainer (glyphIndex, out effectiveGlyphRange);
-		}
-
-		// LineFragmentRectForGlyphAtIndex
-		[Obsolete ("Use 'GetLineFragmentRect' instead.")]
-		public CGRect LineFragmentRectForGlyphAtIndex (nuint glyphIndex)
-		{
-			return GetLineFragmentRect (glyphIndex);
-		}
-
-		[Obsolete ("Use 'GetLineFragmentRect' instead.")]
-		public CGRect LineFragmentRectForGlyphAtIndex (nuint glyphIndex, ref NSRange effectiveGlyphRange)
-		{
-			return GetLineFragmentRect (glyphIndex, out effectiveGlyphRange);
-		}
-
-		// LineFragmentUsedRectForGlyphAtIndex
-		[Obsolete ("Use 'GetLineFragmentUsedRect' instead.")]
-		public CGRect LineFragmentUsedRectForGlyphAtIndex (nuint glyphIndex)
-		{
-			return GetLineFragmentUsedRect (glyphIndex);
-		}
-
-		[Obsolete ("Use 'GetLineFragmentUsedRect' instead.")]
-		public CGRect LineFragmentUsedRectForGlyphAtIndex (nuint glyphIndex, ref NSRange effectiveGlyphRange)
-		{
-			return GetLineFragmentUsedRect (glyphIndex, out effectiveGlyphRange);
-		}
-
-		// GlyphRangeForCharacterRange
-		[Obsolete ("Use 'GetGlyphRange' instead.")]
-		public NSRange GlyphRangeForCharacterRange (NSRange charRange)
-		{
-			return GetGlyphRange (charRange);
-		}
-
-		[Obsolete ("Use 'GetGlyphRange' instead.")]
-		public NSRange GlyphRangeForCharacterRange (NSRange charRange, ref NSRange actualCharRange)
-		{
-			return GetGlyphRange (charRange, out actualCharRange);
-		}
-
-		// CharacterRangeForGlyphRange
-		[Obsolete ("Use 'GetCharacterRange' instead.")]
-		public NSRange CharacterRangeForGlyphRange (NSRange charRange)
-		{
-			return GetCharacterRange (charRange);
-		}
-
-		[Obsolete ("Use 'GetCharacterRange' instead.")]
-		public NSRange CharacterRangeForGlyphRange (NSRange charRange, ref NSRange actualCharRange)
-		{
-			return GetCharacterRange (charRange, out actualCharRange);
-		}
-#endif // !NET && !MONOMAC
-
+		/// <param name="charIndex">To be added.</param>
+		/// <param name="alternatePosition">To be added.</param>
+		/// <param name="inDisplayOrder">To be added.</param>
+		/// <param name="positions">To be added.</param>
+		/// <param name="charIndexes">To be added.</param>
+		/// <summary>Fills <paramref name="positions" /> and <paramref name="charIndexes" /> with the positions and indices of the insertion points for a line fragment.</summary>
+		/// <returns>The number of insertion points returned in <paramref name="positions" /> and <paramref name="charIndexes" />.</returns>
+		/// <remarks>To be added.</remarks>
 		public unsafe nuint GetLineFragmentInsertionPoints (
 			nuint /* NSUInteger */ charIndex,
 			bool /* BOOL */ alternatePosition,
@@ -213,5 +132,3 @@ namespace UIKit {
 		}
 	}
 }
-
-#endif // !WATCH

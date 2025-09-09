@@ -37,12 +37,12 @@ using ObjCRuntime;
 
 namespace AppKit {
 	public partial class NSApplication : NSResponder {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static bool CheckForIllegalCrossThreadCalls = true;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static bool CheckForEventAndDelegateMismatches = true;
-
-#if !NET
-		public static bool IgnoreMissingAssembliesDuringRegistration = false;
-#endif
 
 		private static Thread? mainThread;
 
@@ -51,6 +51,8 @@ namespace AppKit {
 
 		static bool initialized;
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Preserve]
 		public static void Init ()
 		{
@@ -62,12 +64,8 @@ namespace AppKit {
 
 			initialized = true;
 
-#if NET
 			if (Runtime.DynamicRegistrationSupported)
 				Runtime.RegisterAssemblies ();
-#else
-			Runtime.RegisterAssemblies ();
-#endif
 
 			// Runtime hosts embedding MonoMac may use a different sync context 
 			// and call NSApplicationMain externally prior to this Init, so only
@@ -86,7 +84,7 @@ namespace AppKit {
 
 			// custom initialization might have happened before native NSApplication code was full ready to be queried
 			// as such it's possible that `class_ptr` might be empty and that will make things fails later
-			// reference: https://github.com/xamarin/xamarin-macios/issues/7932
+			// reference: https://github.com/dotnet/macios/issues/7932
 			if (class_ptr == IntPtr.Zero)
 				ResetHandle ();
 
@@ -101,6 +99,8 @@ namespace AppKit {
 			typeof (NSApplication).GetField ("class_ptr", BindingFlags.Static | BindingFlags.NonPublic)?.SetValue (null, Class.GetHandle ("NSApplication"));
 		}
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static void InitDrawingBridge ()
 		{
 			var UseCocoaDrawableField = Type.GetType ("System.Drawing.GDIPlus, System.Drawing")?.GetField ("UseCocoaDrawable", BindingFlags.Static | BindingFlags.Public);
@@ -110,6 +110,9 @@ namespace AppKit {
 			UseCarbonDrawableField?.SetValue (null, false);
 		}
 
+		/// <param name="args">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static void Main (string [] args)
 		{
 			// Switch to an AppKitSynchronizationContext if Main is invoked
@@ -126,18 +129,29 @@ namespace AppKit {
 				TransientString.FreeStringArray (argsPtr, args.Length);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static void EnsureUIThread ()
 		{
 			if (NSApplication.CheckForIllegalCrossThreadCalls && NSApplication.mainThread != Thread.CurrentThread)
 				throw new AppKitThreadAccessException ();
 		}
 
+		/// <param name="del">To be added.</param>
+		///         <param name="expectedType">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static void EnsureEventAndDelegateAreNotMismatched (object del, Type expectedType)
 		{
 			if (NSApplication.CheckForEventAndDelegateMismatches && !(expectedType.IsAssignableFrom (del.GetType ())))
 				throw new InvalidOperationException (string.Format ("Event registration is overwriting existing delegate. Either just use events or your own delegate: {0} {1}", del.GetType (), expectedType));
 		}
 
+		/// <param name="currentDelegateValue">To be added.</param>
+		///         <param name="newDelegateValue">To be added.</param>
+		///         <param name="internalDelegateType">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static void EnsureDelegateAssignIsNotOverwritingInternalDelegate (object? currentDelegateValue, object? newDelegateValue, Type internalDelegateType)
 		{
 			if (NSApplication.CheckForEventAndDelegateMismatches && currentDelegateValue is not null && newDelegateValue is not null
@@ -146,19 +160,19 @@ namespace AppKit {
 				throw new InvalidOperationException (string.Format ("Event registration is overwriting existing delegate. Either just use events or your own delegate: {0} {1}", newDelegateValue.GetType (), internalDelegateType));
 		}
 
+		/// <param name="mask">To be added.</param>
+		///         <param name="lastEvent">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void DiscardEvents (NSEventMask mask, NSEvent lastEvent)
 		{
 			DiscardEvents ((nuint) (ulong) mask, lastEvent);
 		}
 
-#if !NET
-		[Obsolete ("This method does nothing.")]
-		public static void RestoreWindow (string identifier, Foundation.NSCoder state, NSWindowCompletionHandler onCompletion)
-		{
-		}
-#endif
-
 		// note: if needed override the protected Get|Set methods
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSApplicationActivationPolicy ActivationPolicy {
 			get { return GetActivationPolicy (); }
 			// ignore return value (bool)

@@ -4,8 +4,6 @@
 <dict>
 	<key>MonoVersion</key>
 	<string>@MONO_VERSION@</string>
-	<key>MinimumSystemMono</key>
-	<string>@MIN_XM_MONO_VERSION@</string>
 	<key>KnownVersions</key>
 	<dict>
 		<key>macOS</key>
@@ -22,6 +20,10 @@
 			<string>14.5</string>
 			<string>15.0</string>
 			<string>15.1</string>
+			<string>15.2</string>
+			<string>15.3</string>
+			<string>15.4</string>
+			<string>15.5</string>
 		</array>
 	</dict>
 	<key>SupportedTargetPlatformVersions</key>
@@ -50,6 +52,10 @@
 			<string>14.5</string>
 			<string>15.0</string>
 			<string>15.1</string>
+			<string>15.2</string>
+			<string>15.3</string>
+			<string>15.4</string>
+			<string>15.5</string>
 		</array>
 	</dict>
 	<key>RecommendedXcodeVersion</key>

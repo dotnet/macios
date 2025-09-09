@@ -7,20 +7,24 @@
 // Copyright 2017 Xamarin Inc. All rights reserved.
 //
 
-#if IOS || WATCH
+#if IOS
 using System;
 using Foundation;
 using ObjCRuntime;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Intents {
 	public partial class INInteraction {
 
+		/// <typeparam name="T">To be added.</typeparam>
+		///         <param name="parameter">To be added.</param>
+		///         <summary>Returns the specified <paramref name="parameter" /> as an instance of <typeparamref name="T" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public T GetParameterValue<T> (INParameter parameter) where T : NSObject
 		{
-			return Runtime.GetNSObject<T> (_GetParameterValue (parameter));
+			return Runtime.GetNSObject<T> (_GetParameterValue (parameter))!;
 		}
 	}
 }

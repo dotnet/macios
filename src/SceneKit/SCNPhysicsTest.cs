@@ -13,6 +13,9 @@ using System;
 
 namespace SceneKit {
 	public partial class SCNPhysicsTest {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public SCNPhysicsSearchMode SearchMode {
 			get {
 				var k = _SearchMode;

@@ -1,5 +1,3 @@
-#if !WATCH
-
 using System;
 using System.Runtime.InteropServices;
 
@@ -9,19 +7,20 @@ using Foundation;
 namespace UIKit {
 	static public partial class UIContentSizeCategoryExtensions {
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		[DllImport (Constants.UIKitLibrary)]
 		static extern nint /* NSComparisonResult */ UIContentSizeCategoryCompareToCategory (IntPtr /* NSString */ lhs, IntPtr /* NSString */ rhs);
 
-#if NET
+		/// <param name="category1">To be added.</param>
+		///         <param name="category2">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public static NSComparisonResult Compare (UIContentSizeCategory category1, UIContentSizeCategory category2)
 		{
 			var c1 = category1.GetConstant ();
@@ -32,31 +31,34 @@ namespace UIKit {
 			if (c2 is null)
 				throw new ArgumentException ($"Unknown 'UIContentSizeCategory' value", nameof (category2));
 
-			return (NSComparisonResult) (long) UIContentSizeCategoryCompareToCategory (c1.Handle, c2.Handle);
+			NSComparisonResult result = (NSComparisonResult) (long) UIContentSizeCategoryCompareToCategory (c1.Handle, c2.Handle);
+			GC.KeepAlive (c1);
+			GC.KeepAlive (c2);
+			return result;
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		[DllImport (Constants.UIKitLibrary)]
 		static extern byte UIContentSizeCategoryIsAccessibilityCategory (IntPtr /* NSString */ category);
 
-#if NET
+		/// <param name="self">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		static public bool IsAccessibilityCategory (this UIContentSizeCategory self)
 		{
 			var c1 = self.GetConstant ();
 			if (c1 is null)
 				throw new ArgumentException ($"Unknown 'UIContentSizeCategory' value");
 
-			return UIContentSizeCategoryIsAccessibilityCategory (c1.Handle) != 0;
+			bool result = UIContentSizeCategoryIsAccessibilityCategory (c1.Handle) != 0;
+			GC.KeepAlive (c1);
+			return result;
 		}
 	}
 }
-
-#endif // !WATCH

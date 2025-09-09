@@ -114,7 +114,7 @@ namespace Linker.Shared {
 				//Console.WriteLine ("Speedup: {0}x", unoptimizedWatch.ElapsedTicks / (double) optimizedWatch.ElapsedTicks);
 				// My testing found a 12-16x speedup on device and a 15-20x speedup in the simulator/desktop.
 				// Setting to 6 to have a margin for random stuff happening, but this may still have to be adjusted.
-#if NET && __TVOS__
+#if __TVOS__
 				// Our optimization is correct, but the test case runs into https://github.com/dotnet/runtime/issues/58939 which overpowers most of our optimization gains.
 				var speedup = 1.2; // Seems to be around 1.4/1.5, so let's see if 1.2 is consistently passing.
 #else
@@ -516,10 +516,6 @@ namespace Linker.Shared {
 		public void IsARM64CallingConvention ()
 		{
 			IgnoreIfNotLinkAll ();
-#if __WATCHOS__
-			if (!Runtime.IsARM64CallingConvention && Runtime.Arch == Arch.DEVICE)
-				Assert.Ignore ("Can't inline when running on armv7k.");
-#endif
 
 #if DEBUG // Release builds will strip IL, so any IL checking has to be done in debug builds.
 			MethodInfo method;

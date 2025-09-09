@@ -21,7 +21,6 @@ namespace Xamarin.Bundler {
 				switch (Platform) {
 				case ApplePlatform.iOS:
 				case ApplePlatform.TVOS:
-				case ApplePlatform.WatchOS:
 				case ApplePlatform.MacCatalyst:
 				case ApplePlatform.None: // Return "MT" by default instead of throwing an exception, because any exception here will most likely hide whatever other error we're trying to show.
 					return "MT";
@@ -325,7 +324,7 @@ namespace Xamarin.Bundler {
 				if (Verbosity > 2 && !string.IsNullOrEmpty (e.StackTrace))
 					Console.Error.WriteLine (e.StackTrace);
 			} else if (IsExpectedException is null || !IsExpectedException (e)) {
-				Console.Error.WriteLine ("error " + Prefix + "0000: Unexpected error - Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new");
+				Console.Error.WriteLine ("error " + Prefix + "0000: Unexpected error - Please file a bug report at https://github.com/dotnet/macios/issues/new");
 				Console.Error.WriteLine (e.ToString ());
 			} else {
 				Console.Error.WriteLine (e.ToString ());

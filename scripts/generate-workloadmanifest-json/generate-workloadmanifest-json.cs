@@ -3,7 +3,7 @@
 using System.IO;
 using System.Xml;
 
-var expectedArgumentCount = 9;
+var expectedArgumentCount = 10;
 if (args.Length != expectedArgumentCount) {
 	Console.WriteLine ($"Need {expectedArgumentCount} arguments, got {args.Length}");
 	return 1;
@@ -20,6 +20,7 @@ var hasWindows = Array.IndexOf (windowsPlatforms, platform) >= 0;
 var currentApiVersion = args [argumentIndex++];
 var supportedApiVersions = args [argumentIndex++].Split (new char [] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 var versionsPropsPath = args [argumentIndex++];
+var ridNoArch = args [argumentIndex++];
 
 var platformLowerCase = platform.ToLowerInvariant ();
 
@@ -35,6 +36,19 @@ var versionsPropsTable = File.ReadAllLines (versionsPropsPath).
 					return new Tuple<string, string> (name, value);
 				}).
 				ToDictionary (v => v.Item1, v => v.Item2, StringComparer.OrdinalIgnoreCase);
+
+var sortedAllApiVersions = allApiVersions.
+				Select (v => {
+					v = v.Replace ("net", "");
+					v = v [0..v.IndexOf ('_')];
+					return v;
+				}).
+				Select (Version.Parse).
+				Distinct ().
+				OrderBy (v => v).
+				ToArray ();
+var earliestDotNetVersion = sortedAllApiVersions.First ().Major;
+var latestDotNetVersion = sortedAllApiVersions.Last ().Major;
 
 var failed = false;
 using (TextWriter writer = new StreamWriter (outputPath)) {
@@ -53,6 +67,7 @@ using (TextWriter writer = new StreamWriter (outputPath)) {
 		}
 	}
 	writer.WriteLine ($"				\"Microsoft.{platform}.Ref.{currentApiVersion}\",");
+	writer.WriteLine ($"				\"Microsoft.{platform}.Runtime.{ridNoArch}.{currentApiVersion}\",");
 	foreach (var rid in runtimeIdentifiers) {
 		writer.WriteLine ($"				\"Microsoft.{platform}.Runtime.{rid}.{currentApiVersion}\",");
 	}
@@ -61,10 +76,12 @@ using (TextWriter writer = new StreamWriter (outputPath)) {
 	writer.WriteLine ($"			\"extends\": [");
 	if (platform == "macOS") {
 		writer.WriteLine ($"				\"microsoft-net-runtime-mono-tooling\",");
-		writer.WriteLine ($"				\"microsoft-net-runtime-mono-tooling-net8\",");
+		for (var i = earliestDotNetVersion; i < latestDotNetVersion; i++)
+			writer.WriteLine ($"				\"microsoft-net-runtime-mono-tooling-net{i}\",");
 	} else {
 		writer.WriteLine ($"				\"microsoft-net-runtime-{platformLowerCase}\",");
-		writer.WriteLine ($"				\"microsoft-net-runtime-{platformLowerCase}-net8\",");
+		for (var i = earliestDotNetVersion; i < latestDotNetVersion; i++)
+			writer.WriteLine ($"				\"microsoft-net-runtime-{platformLowerCase}-net{i}\",");
 	}
 	writer.WriteLine ($"			]");
 	writer.WriteLine ($"		}},");
@@ -113,6 +130,10 @@ using (TextWriter writer = new StreamWriter (outputPath)) {
 		}
 	}
 	writer.WriteLine ($"		\"Microsoft.{platform}.Ref.{currentApiVersion}\": {{");
+	writer.WriteLine ($"			\"kind\": \"framework\",");
+	writer.WriteLine ($"			\"version\": \"{version}\"");
+	writer.WriteLine ($"		}},");
+	writer.WriteLine ($"		\"Microsoft.{platform}.Runtime.{ridNoArch}.{currentApiVersion}\": {{");
 	writer.WriteLine ($"			\"kind\": \"framework\",");
 	writer.WriteLine ($"			\"version\": \"{version}\"");
 	writer.WriteLine ($"		}},");

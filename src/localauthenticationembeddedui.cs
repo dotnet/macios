@@ -14,13 +14,9 @@ using AppKit;
 using CoreGraphics;
 using LocalAuthentication;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace LocalAuthenticationEmbeddedUI {
 
-	[NoWatch, NoTV, NoiOS, NoMacCatalyst]
+	[NoTV, NoiOS, NoMacCatalyst]
 	[BaseType (typeof (NSView))]
 	interface LAAuthenticationView {
 		[Export ("initWithFrame:")]

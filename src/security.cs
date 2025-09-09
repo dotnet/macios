@@ -14,82 +14,178 @@ using CoreFoundation;
 
 namespace Security {
 
+	/// <summary>Contains values that represent security policies.</summary>
+	/// <remarks>To be added.</remarks>
 	[Static]
 	interface SecPolicyIdentifier {
 		// they are CFString -> https://github.com/Apple-FOSS-Mirror/libsecurity_keychain/blob/master/lib/SecPolicy.cpp
 
 		// the Apple* prefix was kept since they are Apple-specific (not an RFC) OIDs
 
+		/// <summary>Represents the value associated with the constant kSecPolicyAppleX509Basic</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kSecPolicyAppleX509Basic")]
 		NSString AppleX509Basic { get; }
 
+		/// <summary>Represents the value associated with the constant kSecPolicyAppleSSL</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kSecPolicyAppleSSL")]
 		NSString AppleSSL { get; }
 
+		/// <summary>Represents the value associated with the constant kSecPolicyAppleSMIME</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kSecPolicyAppleSMIME")]
 		NSString AppleSMIME { get; }
 
+		/// <summary>Represents the value associated with the constant kSecPolicyAppleEAP</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kSecPolicyAppleEAP")]
 		NSString AppleEAP { get; }
 
+		/// <summary>Represents the value associated with the constant kSecPolicyAppleIPsec</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kSecPolicyAppleIPsec")]
 		NSString AppleIPsec { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
-		[NoWatch]
 		[NoTV]
 		[NoMacCatalyst]
 		[Field ("kSecPolicyApplePKINITClient")]
 		NSString ApplePKINITClient { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
-		[NoWatch]
 		[NoTV]
 		[NoMacCatalyst]
 		[Field ("kSecPolicyApplePKINITServer")]
 		NSString ApplePKINITServer { get; }
 
+		/// <summary>Represents the value associated with the constant kSecPolicyAppleCodeSigning</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kSecPolicyAppleCodeSigning")]
 		NSString AppleCodeSigning { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("kSecPolicyMacAppStoreReceipt")]
 		NSString MacAppStoreReceipt { get; }
 
+		/// <summary>Represents the value associated with the constant kSecPolicyAppleIDValidation</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kSecPolicyAppleIDValidation")]
 		NSString AppleIDValidation { get; }
 
+		/// <summary>Represents the value associated with the constant kSecPolicyAppleTimeStamping</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kSecPolicyAppleTimeStamping")]
 		NSString AppleTimeStamping { get; }
 
+		/// <summary>Represents the value associated with the constant kSecPolicyAppleRevocation</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("kSecPolicyAppleRevocation")]
 		NSString AppleRevocation { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("kSecPolicyApplePassbookSigning")]
 		NSString ApplePassbookSigning { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("kSecPolicyApplePayIssuerEncryption")]
 		NSString ApplePayIssuerEncryption { get; }
+
+		[iOS (18, 4), TV (18, 4), MacCatalyst (18, 4), Mac (15, 4)]
+		[Field ("kSecPolicyAppleSSLServer")]
+		NSString AppleSslServer { get; }
+
+		[iOS (18, 4), TV (18, 4), MacCatalyst (18, 4), Mac (15, 4)]
+		[Field ("kSecPolicyAppleSSLClient")]
+		NSString AppleSslClient { get; }
+
+		[iOS (18, 4), TV (18, 4), MacCatalyst (18, 4), Mac (15, 4)]
+		[Field ("kSecPolicyAppleEAPServer")]
+		NSString AppleEapServer { get; }
+
+		[iOS (18, 4), TV (18, 4), MacCatalyst (18, 4), Mac (15, 4)]
+		[Field ("kSecPolicyAppleEAPClient")]
+		NSString AppleEapClient { get; }
+
+		[iOS (18, 4), TV (18, 4), MacCatalyst (18, 4), Mac (15, 4)]
+		[Field ("kSecPolicyAppleIPSecServer")]
+		NSString AppleIPSecServer { get; }
+
+		[iOS (18, 4), TV (18, 4), MacCatalyst (18, 4), Mac (15, 4)]
+		[Field ("kSecPolicyAppleIPSecClient")]
+		NSString AppleIPSecClient { get; }
 	}
 
+	/// <summary>Contains keys that index security policy data..</summary>
+	/// <remarks>To be added.</remarks>
 	[Static]
 	interface SecPolicyPropertyKey {
+		/// <summary>Represents the value associated with the constant kSecPolicyOid</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kSecPolicyOid")]
 		NSString Oid { get; }
 
+		/// <summary>Represents the value associated with the constant kSecPolicyName</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kSecPolicyName")]
 		NSString Name { get; }
 
+		/// <summary>Represents the value associated with the constant kSecPolicyClient</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kSecPolicyClient")]
 		NSString Client { get; }
 
+		/// <summary>Represents the value associated with the constant kSecPolicyRevocationFlags</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("kSecPolicyRevocationFlags")]
 		NSString RevocationFlags { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("kSecPolicyTeamIdentifier")]
 		NSString TeamIdentifier { get; }
@@ -97,92 +193,165 @@ namespace Security {
 
 	/// <summary>Represents shared user name and password for a Website.</summary>
 	[Static]
-	[NoWatch]
 	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[NoTV] // removed in tvOS 10
 	interface SecSharedCredential {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kSecSharedPassword")]
 		NSString SharedPassword { get; }
 	}
 
 
+	/// <summary>Contains keys that index certificate data by type.</summary>
+	/// <remarks>To be added.</remarks>
 	[Static]
 	interface SecTrustPropertyKey {
+		/// <summary>Represents the value associated with the constant kSecPropertyTypeTitle</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kSecPropertyTypeTitle")]
 		NSString Title { get; }
 
+		/// <summary>Represents the value associated with the constant kSecPropertyTypeError</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kSecPropertyTypeError")]
 		NSString Error { get; }
 	}
 
+	/// <summary>Contains keys that index trust data.</summary>
+	/// <remarks>To be added.</remarks>
 	[Static]
 	[MacCatalyst (13, 1)]
 	interface SecTrustResultKey {
+		/// <summary>Represents the value associated with the constant kSecTrustEvaluationDate</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kSecTrustEvaluationDate")]
 		NSString EvaluationDate { get; }
 
+		/// <summary>Represents the value associated with the constant kSecTrustExtendedValidation</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kSecTrustExtendedValidation")]
 		NSString ExtendedValidation { get; }
 
+		/// <summary>Represents the value associated with the constant kSecTrustOrganizationName</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kSecTrustOrganizationName")]
 		NSString OrganizationName { get; }
 
+		/// <summary>Represents the value associated with the constant kSecTrustResultValue</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kSecTrustResultValue")]
 		NSString ResultValue { get; }
 
+		/// <summary>Represents the value associated with the constant kSecTrustRevocationChecked</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kSecTrustRevocationChecked")]
 		NSString RevocationChecked { get; }
 
+		/// <summary>Represents the value associated with the constant kSecTrustRevocationValidUntilDate</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kSecTrustRevocationValidUntilDate")]
 		NSString RevocationValidUntilDate { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("kSecTrustCertificateTransparency")]
 		NSString CertificateTransparency { get; }
 
+		/// <summary>Developers should not use this deprecated property. </summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 11, 0)]
 		[Deprecated (PlatformName.MacOSX, 10, 13)]
-		[Deprecated (PlatformName.WatchOS, 4, 0)]
 		[Deprecated (PlatformName.TvOS, 11, 0)]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 		[Field ("kSecTrustCertificateTransparencyWhiteList")]
 		NSString CertificateTransparencyWhiteList { get; }
+
+		// QC = Qualified Certificate
+		[iOS (18, 4), TV (18, 4), MacCatalyst (18, 4), Mac (15, 4)]
+		[Field ("kSecTrustQCStatements")]
+		NSString QCStatements { get; }
+
+		// QWAC = Qualified Website Authentication Certificate.
+		[iOS (18, 4), TV (18, 4), MacCatalyst (18, 4), Mac (15, 4)]
+		[Field ("kSecTrustQWACValidation")]
+		NSString QwacValidation { get; }
 	}
 
+	/// <summary>Keys used to control query results.</summary>
+	/// <remarks>You can use either an NSNumber or one of the values defined in this class when manually querying.</remarks>
 	[Static]
 	interface SecMatchLimit {
+		/// <summary>Return a single match.</summary>
+		///         <value />
+		///         <remarks>To be added.</remarks>
 		[Field ("kSecMatchLimitOne")]
 		IntPtr MatchLimitOne { get; }
 
+		/// <summary>Return all matches.</summary>
+		///         <value />
+		///         <remarks>To be added.</remarks>
 		[Field ("kSecMatchLimitAll")]
 		IntPtr MatchLimitAll { get; }
 	}
 
+	/// <summary>An enumeration whose values specify the <see cref="Security.SecRecord.KeyType" /> property.</summary>
+	/// <remarks>To be added.</remarks>
 	enum SecKeyType {
+		/// <summary>To be added.</summary>
 		Invalid = -1,
 
+		/// <summary>RSA algorithm.</summary>
 		[Field ("kSecAttrKeyTypeRSA")]
 		RSA = 0,
 
+		/// <summary>Elliptic curve DSA algorithm.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("kSecAttrKeyTypeEC")]
 		EC = 1,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("kSecAttrKeyTypeECSECPrimeRandom")]
 		ECSecPrimeRandom = 2,
 	}
 
+	/// <summary>The kind of cryptographic key</summary>
+	/// <remarks>To be added.</remarks>
 	enum SecKeyClass {
+		/// <summary>To be added.</summary>
 		Invalid = -1,
 
+		/// <summary>Public part of a symetric key.</summary>
 		[Field ("kSecAttrKeyClassPublic")]
 		Public = 0,
 
+		/// <summary>Private part of an asymetric key.</summary>
 		[Field ("kSecAttrKeyClassPrivate")]
 		Private = 1,
 
+		/// <summary>A symetric key.</summary>
 		[Field ("kSecAttrKeyClassSymmetric")]
 		Symmetric = 2,
 	}
@@ -344,38 +513,70 @@ namespace Security {
 		IntPtr WhenPasscodeSetThisDeviceOnly { get; }
 	}
 
+	/// <summary>Contains attributes for creating and using public-private key pairs.</summary>
+	/// <remarks>To be added.</remarks>
 	[StrongDictionary ("SecAttributeKeys")]
 	interface SecPublicPrivateKeyAttrs {
+		/// <summary>Gets or sets the label for the key pair.</summary>
+		///         <value>The label for the key pair.</value>
+		///         <remarks>To be added.</remarks>
 		string Label { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the key pair is permanent.</summary>
+		///         <value>A Boolean value that controls whether the key pair is permanent.</value>
+		///         <remarks>To be added.</remarks>
 		bool IsPermanent { get; set; }
 
+		/// <summary>Gets or sets the application's private tag.</summary>
+		///         <value>The application's private tag.</value>
+		///         <remarks>To be added.</remarks>
 		NSData ApplicationTag { get; set; }
 
+		/// <summary>Gets or sets a value that describes the minimum size of attack that can defeat the key pair. This value can be significantly smaller than the actual key size.</summary>
+		///         <value>A value that describes the minimum size of attack that can defeat the key pair. This value can be significantly smaller than the actual key size.</value>
+		///         <remarks>To be added.</remarks>
 		int EffectiveKeySize { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the key pair can be used for encryption.</summary>
+		///         <value>A Boolean value that controls whether the key pair can be used for encryption.</value>
+		///         <remarks>To be added.</remarks>
 #if MONOMAC
 		[Advice ("On macOS when passed to 'GenerateKeyPair', 'false' seems to be the only valid value. Otherwise 'UnsupportedKeyUsageMask' is returned.")]
 #endif
 		bool CanEncrypt { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the key pair can be used for decryption.</summary>
+		///         <value>A  Boolean value that controls whether the key pair can be used for decryption.</value>
+		///         <remarks>To be added.</remarks>
 #if MONOMAC
 		[Advice ("On macOS when passed to 'GenerateKeyPair', 'false' seems to be the only valid value. Otherwise 'UnsupportedKeyUsageMask' is returned.")]
 #endif
 		bool CanDecrypt { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the key pair can be used for key derivation.</summary>
+		///         <value>A  Boolean value that controls whether the key pair can be used for key derivation.</value>
+		///         <remarks>To be added.</remarks>
 		bool CanDerive { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the key pair can be used for signing.</summary>
+		///         <value>A Boolean value that controls whether the key pair can be used for signing.</value>
+		///         <remarks>To be added.</remarks>
 #if MONOMAC
 		[Advice ("On macOS when passed to 'GenerateKeyPair', 'false' seems to be the only valid value. Otherwise 'UnsupportedKeyUsageMask' is returned.")]
 #endif
 		bool CanSign { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the key pair can be used for verifying signatures.</summary>
+		///         <value>A Boolean value that controls whether the key pair can be used for verifying signatures.</value>
+		///         <remarks>To be added.</remarks>
 #if MONOMAC
 		[Advice ("On macOS when passed to 'GenerateKeyPair', 'false' seems to be the only valid value. Otherwise 'UnsupportedKeyUsageMask' is returned.")]
 #endif
 		bool CanVerify { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the key pair can be used for key unwrapping.</summary>
+		///         <value>A Boolean value that controls whether the key pair can be used for key unwrapping.</value>
+		///         <remarks>To be added.</remarks>
 #if MONOMAC
 		[Advice ("On macOS when passed to 'GenerateKeyPair', 'false' seems to be the only valid value. Otherwise 'UnsupportedKeyUsageMask' is returned.")]
 #endif
@@ -445,59 +646,131 @@ namespace Security {
 
 	[StrongDictionary ("SecAttributeKeys")]
 	interface SecKeyParameters {
+		/// <summary>Gets or sets the label for the key.</summary>
+		///         <value>The label for the key.</value>
+		///         <remarks>To be added.</remarks>
 		string Label { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the key is permanent.</summary>
+		///         <value>A Boolean value that controls whether the key is permanent.</value>
+		///         <remarks>To be added.</remarks>
 		bool IsPermanent { get; set; }
 
+		/// <summary>Gets or sets the application's private tag.</summary>
+		///         <value>The application's private tag.</value>
+		///         <remarks>To be added.</remarks>
 		NSData ApplicationTag { get; set; }
 
+		/// <summary>Gets or sets a value that describes the minimum size of attack that can defeat the key. This value can be significantly smaller than the actual key size.</summary>
+		///         <value>A value that describes the minimum size of attack that can defeat the key. This value can be significantly smaller than the actual key size.</value>
+		///         <remarks>To be added.</remarks>
 		int EffectiveKeySize { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the key can be used for encryption.</summary>
+		///         <value>A Boolean value that controls whether the key can be used for encryption.</value>
+		///         <remarks>To be added.</remarks>
 		bool CanEncrypt { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the key can be used for decryption.</summary>
+		///         <value>A  Boolean value that controls whether the key can be used for decryption.</value>
+		///         <remarks>To be added.</remarks>
 		bool CanDecrypt { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the key can be used for key derivation.</summary>
+		///         <value>A  Boolean value that controls whether the key can be used for key derivation.</value>
+		///         <remarks>To be added.</remarks>
 		bool CanDerive { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the key can be used for signing.</summary>
+		///         <value>A Boolean value that controls whether the key can be used for signing.</value>
+		///         <remarks>To be added.</remarks>
 		bool CanSign { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the key can be used for verifying signatures.</summary>
+		///         <value>A Boolean value that controls whether the key can be used for verifying signatures.</value>
+		///         <remarks>To be added.</remarks>
 		bool CanVerify { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the key can be used for key unwrapping.</summary>
+		///         <value>A Boolean value that controls whether the key can be used for key unwrapping.</value>
+		///         <remarks>To be added.</remarks>
 		bool CanUnwrap { get; set; }
 	}
 
 	[StrongDictionary ("SecKeyGenerationAttributeKeys")]
 	interface SecKeyGenerationParameters {
+		/// <summary>Gets or sets the key size, in bits.</summary>
+		///         <value>The key size, in bits.</value>
+		///         <remarks>To be added.</remarks>
 		int KeySizeInBits { get; set; }
 
+		/// <summary>Gets or sets the attributes for the private key.</summary>
+		///         <value>The attributes for the private key.</value>
+		///         <remarks>To be added.</remarks>
 		[StrongDictionary]
 		[Export ("PrivateKeyAttrsKey")]
 		SecKeyParameters PrivateKeyAttrs { get; set; }
 
+		/// <summary>Gets or sets the attributes for the public key.</summary>
+		///         <value>The attributes for the public key.</value>
+		///         <remarks>To be added.</remarks>
 		[StrongDictionary]
 		[Export ("PublicKeyAttrsKey")]
 		SecKeyParameters PublicKeyAttrs { get; set; }
 
+		/// <summary>Gets or sets the label for the key.</summary>
+		///         <value>The label for the key.</value>
+		///         <remarks>To be added.</remarks>
 		string Label { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the key is permanent.</summary>
+		///         <value>A Boolean value that controls whether the key is permanent.</value>
+		///         <remarks>To be added.</remarks>
 		bool IsPermanent { get; set; }
 
+		/// <summary>Gets or sets the application's private tag.</summary>
+		///         <value>The application's private tag.</value>
+		///         <remarks>To be added.</remarks>
 		NSData ApplicationTag { get; set; }
 
+		/// <summary>Gets or sets a value that describes the minimum size of attack that can defeat the key. This value can be significantly smaller than the actual key size.</summary>
+		///         <value>A value that describes the minimum size of attack that can defeat the key. This value can be significantly smaller than the actual key size.</value>
+		///         <remarks>To be added.</remarks>
 		int EffectiveKeySize { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the key can be used for encryption.</summary>
+		///         <value>A Boolean value that controls whether the key can be used for encryption.</value>
+		///         <remarks>To be added.</remarks>
 		bool CanEncrypt { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the key can be used for decryption.</summary>
+		///         <value>A  Boolean value that controls whether the key can be used for decryption.</value>
+		///         <remarks>To be added.</remarks>
 		bool CanDecrypt { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the key can be used for key derivation.</summary>
+		///         <value>A  Boolean value that controls whether the key can be used for key derivation.</value>
+		///         <remarks>To be added.</remarks>
 		bool CanDerive { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the key can be used for signing.</summary>
+		///         <value>A Boolean value that controls whether the key can be used for signing.</value>
+		///         <remarks>To be added.</remarks>
 		bool CanSign { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the key can be used for verifying signatures.</summary>
+		///         <value>A Boolean value that controls whether the key can be used for verifying signatures.</value>
+		///         <remarks>To be added.</remarks>
 		bool CanVerify { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the key can be used for key wrapping.</summary>
+		///         <value>A Boolean value that controls whether the key can be used for key wrapping.</value>
+		///         <remarks>To be added.</remarks>
 		bool CanWrap { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the key can be used for key unwrapping.</summary>
+		///         <value>A Boolean value that controls whether the key can be used for key unwrapping.</value>
+		///         <remarks>To be added.</remarks>
 		bool CanUnwrap { get; set; }
 	}
 
@@ -648,33 +921,57 @@ namespace Security {
 	[DisableDefaultCtor] // not required, nor useful
 	[Partial]
 	interface SecImportExport {
+		/// <summary>Represents the value associated with the constant kSecImportExportPassphrase</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kSecImportExportPassphrase")]
 		NSString Passphrase { get; }
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		[Field ("kSecImportExportKeychain")]
 		NSString Keychain { get; }
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		[Field ("kSecImportExportAccess")]
 		NSString Access { get; }
 
-		[Watch (11, 0), TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Field ("kSecImportToMemoryOnly")]
 		NSString ToMemoryOnly { get; }
 
+		/// <summary>Represents the value associated with the constant kSecImportItemLabel</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kSecImportItemLabel")]
 		NSString Label { get; }
 
+		/// <summary>Represents the value associated with the constant kSecImportItemKeyID</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kSecImportItemKeyID")]
 		NSString KeyId { get; }
 
+		/// <summary>Represents the value associated with the constant kSecImportItemTrust</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kSecImportItemTrust")]
 		NSString Trust { get; }
 
+		/// <summary>Represents the value associated with the constant kSecImportItemCertChain</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kSecImportItemCertChain")]
 		NSString CertChain { get; }
 
+		/// <summary>Represents the value associated with the constant kSecImportItemIdentity</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kSecImportItemIdentity")]
 		NSString Identity { get; }
 	}
@@ -700,19 +997,19 @@ namespace Security {
 		[Field ("kSecMatchSubjectContains")]
 		IntPtr MatchSubjectContains { get; }
 
-		[Watch (11, 0), TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Field ("kSecMatchHostOrSubdomainOfHost")]
 		IntPtr MatchHostOrSubdomainOfHost { get; }
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		[Field ("kSecMatchSubjectStartsWith")]
 		IntPtr MatchSubjectStartsWith { get; }
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		[Field ("kSecMatchSubjectEndsWith")]
 		IntPtr MatchSubjectEndsWith { get; }
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		[Field ("kSecMatchSubjectWholeString")]
 		IntPtr MatchSubjectWholeString { get; }
 
@@ -754,7 +1051,6 @@ namespace Security {
 
 		[iOS (13, 0)]
 		[TV (13, 0)]
-		[Watch (6, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("kSecUseDataProtectionKeychain")]
 		IntPtr UseDataProtectionKeychain { get; }
@@ -762,7 +1058,6 @@ namespace Security {
 		[Deprecated (PlatformName.MacOSX, 11, 0, message: "Use 'LAContext.InteractionNotAllowed' instead.")]
 		[Deprecated (PlatformName.iOS, 14, 0, message: "Use 'LAContext.InteractionNotAllowed' instead.")]
 		[Deprecated (PlatformName.TvOS, 14, 0, message: "Use 'LAContext.InteractionNotAllowed' instead.")]
-		[Deprecated (PlatformName.WatchOS, 7, 0, message: "Use 'LAContext.InteractionNotAllowed' instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 14, 0, message: "Use 'LAContext.InteractionNotAllowed' instead.")]
 		[Field ("kSecUseOperationPrompt")]
@@ -784,14 +1079,13 @@ namespace Security {
 		[Field ("kSecUseAuthenticationContext")]
 		IntPtr UseAuthenticationContext { get; }
 
-		[TV (17, 0), NoWatch, NoMacCatalyst, NoMac, NoiOS]
+		[TV (17, 0), NoMacCatalyst, NoMac, NoiOS]
 		[Field ("kSecUseUserIndependentKeychain")]
 		IntPtr UseUserIndependentKeychain { get; }
 	}
 
 	[NoiOS]
 	[NoTV]
-	[NoWatch]
 	[NoMacCatalyst]
 	[Static]
 	[Internal]
@@ -802,7 +1096,6 @@ namespace Security {
 
 	[NoiOS]
 	[NoTV]
-	[NoWatch]
 	[NoMacCatalyst]
 	[Static]
 	[Internal]
@@ -822,356 +1115,439 @@ namespace Security {
 
 	[MacCatalyst (13, 1)]
 	enum SecKeyAlgorithm {
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmRSASignatureRaw")]
 		RsaSignatureRaw,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmRSASignatureDigestPKCS1v15Raw")]
 		RsaSignatureDigestPkcs1v15Raw,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmRSASignatureDigestPKCS1v15SHA1")]
 		RsaSignatureDigestPkcs1v15Sha1,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmRSASignatureDigestPKCS1v15SHA224")]
 		RsaSignatureDigestPkcs1v15Sha224,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmRSASignatureDigestPKCS1v15SHA256")]
 		RsaSignatureDigestPkcs1v15Sha256,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmRSASignatureDigestPKCS1v15SHA384")]
 		RsaSignatureDigestPkcs1v15Sha384,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmRSASignatureDigestPKCS1v15SHA512")]
 		RsaSignatureDigestPkcs1v15Sha512,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmRSASignatureMessagePKCS1v15SHA1")]
 		RsaSignatureMessagePkcs1v15Sha1,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmRSASignatureMessagePKCS1v15SHA224")]
 		RsaSignatureMessagePkcs1v15Sha224,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmRSASignatureMessagePKCS1v15SHA256")]
 		RsaSignatureMessagePkcs1v15Sha256,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmRSASignatureMessagePKCS1v15SHA384")]
 		RsaSignatureMessagePkcs1v15Sha384,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmRSASignatureMessagePKCS1v15SHA512")]
 		RsaSignatureMessagePkcs1v15Sha512,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmECDSASignatureRFC4754")]
 		EcdsaSignatureRfc4754,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmECDSASignatureDigestX962")]
 		EcdsaSignatureDigestX962,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmECDSASignatureDigestX962SHA1")]
 		EcdsaSignatureDigestX962Sha1,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmECDSASignatureDigestX962SHA224")]
 		EcdsaSignatureDigestX962Sha224,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmECDSASignatureDigestX962SHA256")]
 		EcdsaSignatureDigestX962Sha256,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmECDSASignatureDigestX962SHA384")]
 		EcdsaSignatureDigestX962Sha384,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmECDSASignatureDigestX962SHA512")]
 		EcdsaSignatureDigestX962Sha512,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmECDSASignatureMessageX962SHA1")]
 		EcdsaSignatureMessageX962Sha1,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmECDSASignatureMessageX962SHA224")]
 		EcdsaSignatureMessageX962Sha224,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmECDSASignatureMessageX962SHA256")]
 		EcdsaSignatureMessageX962Sha256,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmECDSASignatureMessageX962SHA384")]
 		EcdsaSignatureMessageX962Sha384,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmECDSASignatureMessageX962SHA512")]
 		EcdsaSignatureMessageX962Sha512,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmRSAEncryptionRaw")]
 		RsaEncryptionRaw,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmRSAEncryptionPKCS1")]
 		RsaEncryptionPkcs1,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmRSAEncryptionOAEPSHA1")]
 		RsaEncryptionOaepSha1,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmRSAEncryptionOAEPSHA224")]
 		RsaEncryptionOaepSha224,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmRSAEncryptionOAEPSHA256")]
 		RsaEncryptionOaepSha256,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmRSAEncryptionOAEPSHA384")]
 		RsaEncryptionOaepSha384,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmRSAEncryptionOAEPSHA512")]
 		RsaEncryptionOaepSha512,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmRSAEncryptionOAEPSHA1AESGCM")]
 		RsaEncryptionOaepSha1AesCgm,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmRSAEncryptionOAEPSHA224AESGCM")]
 		RsaEncryptionOaepSha224AesGcm,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmRSAEncryptionOAEPSHA256AESGCM")]
 		RsaEncryptionOaepSha256AesGcm,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmRSAEncryptionOAEPSHA384AESGCM")]
 		RsaEncryptionOaepSha384AesGcm,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmRSAEncryptionOAEPSHA512AESGCM")]
 		RsaEncryptionOaepSha512AesGcm,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmECIESEncryptionStandardX963SHA1AESGCM")]
 		EciesEncryptionStandardX963Sha1AesGcm,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmECIESEncryptionStandardX963SHA224AESGCM")]
 		EciesEncryptionStandardX963Sha224AesGcm,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmECIESEncryptionStandardX963SHA256AESGCM")]
 		EciesEncryptionStandardX963Sha256AesGcm,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmECIESEncryptionStandardX963SHA384AESGCM")]
 		EciesEncryptionStandardX963Sha384AesGcm,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmECIESEncryptionStandardX963SHA512AESGCM")]
 		EciesEncryptionStandardX963Sha512AesGcm,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmECIESEncryptionCofactorX963SHA1AESGCM")]
 		EciesEncryptionCofactorX963Sha1AesGcm,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmECIESEncryptionCofactorX963SHA224AESGCM")]
 		EciesEncryptionCofactorX963Sha224AesGcm,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmECIESEncryptionCofactorX963SHA256AESGCM")]
 		EciesEncryptionCofactorX963Sha256AesGcm,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmECIESEncryptionCofactorX963SHA384AESGCM")]
 		EciesEncryptionCofactorX963Sha384AesGcm,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmECIESEncryptionCofactorX963SHA512AESGCM")]
 		EciesEncryptionCofactorX963Sha512AesGcm,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmECDHKeyExchangeStandard")]
 		EcdhKeyExchangeStandard,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmECDHKeyExchangeStandardX963SHA1")]
 		EcdhKeyExchangeStandardX963Sha1,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmECDHKeyExchangeStandardX963SHA224")]
 		EcdhKeyExchangeStandardX963Sha224,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmECDHKeyExchangeStandardX963SHA256")]
 		EcdhKeyExchangeStandardX963Sha256,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmECDHKeyExchangeStandardX963SHA384")]
 		EcdhKeyExchangeStandardX963Sha384,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmECDHKeyExchangeStandardX963SHA512")]
 		EcdhKeyExchangeStandardX963Sha512,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmECDHKeyExchangeCofactor")]
 		EcdhKeyExchangeCofactor,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmECDHKeyExchangeCofactorX963SHA1")]
 		EcdhKeyExchangeCofactorX963Sha1,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmECDHKeyExchangeCofactorX963SHA224")]
 		EcdhKeyExchangeCofactorX963Sha224,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmECDHKeyExchangeCofactorX963SHA256")]
 		EcdhKeyExchangeCofactorX963Sha256,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmECDHKeyExchangeCofactorX963SHA384")]
 		EcdhKeyExchangeCofactorX963Sha384,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmECDHKeyExchangeCofactorX963SHA512")]
 		EcdhKeyExchangeCofactorX963Sha512,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("kSecKeyAlgorithmRSASignatureDigestPSSSHA1")]
 		RsaSignatureDigestPssSha1,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("kSecKeyAlgorithmRSASignatureDigestPSSSHA224")]
 		RsaSignatureDigestPssSha224,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("kSecKeyAlgorithmRSASignatureDigestPSSSHA256")]
 		RsaSignatureDigestPssSha256,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("kSecKeyAlgorithmRSASignatureDigestPSSSHA384")]
 		RsaSignatureDigestPssSha384,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("kSecKeyAlgorithmRSASignatureDigestPSSSHA512")]
 		RsaSignatureDigestPssSha512,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("kSecKeyAlgorithmRSASignatureMessagePSSSHA1")]
 		RsaSignatureMessagePssSha1,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("kSecKeyAlgorithmRSASignatureMessagePSSSHA224")]
 		RsaSignatureMessagePssSha224,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("kSecKeyAlgorithmRSASignatureMessagePSSSHA256")]
 		RsaSignatureMessagePssSha256,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("kSecKeyAlgorithmRSASignatureMessagePSSSHA384")]
 		RsaSignatureMessagePssSha384,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("kSecKeyAlgorithmRSASignatureMessagePSSSHA512")]
 		RsaSignatureMessagePssSha512,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("kSecKeyAlgorithmECIESEncryptionStandardVariableIVX963SHA224AESGCM")]
 		EciesEncryptionStandardVariableIvx963Sha224AesGcm,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("kSecKeyAlgorithmECIESEncryptionStandardVariableIVX963SHA256AESGCM")]
 		EciesEncryptionStandardVariableIvx963Sha256AesGcm,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("kSecKeyAlgorithmECIESEncryptionStandardVariableIVX963SHA384AESGCM")]
 		EciesEncryptionStandardVariableIvx963Sha384AesGcm,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("kSecKeyAlgorithmECIESEncryptionStandardVariableIVX963SHA512AESGCM")]
 		EciesEncryptionStandardVariableIvx963Sha512AesGcm,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("kSecKeyAlgorithmECIESEncryptionCofactorVariableIVX963SHA224AESGCM")]
 		EciesEncryptionCofactorVariableIvx963Sha224AesGcm,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("kSecKeyAlgorithmECIESEncryptionCofactorVariableIVX963SHA256AESGCM")]
 		EciesEncryptionCofactorVariableIvx963Sha256AesGcm,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("kSecKeyAlgorithmECIESEncryptionCofactorVariableIVX963SHA384AESGCM")]
 		EciesEncryptionCofactorVariableIvx963Sha384AesGcm,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("kSecKeyAlgorithmECIESEncryptionCofactorVariableIVX963SHA512AESGCM")]
 		EciesEncryptionCofactorVariableIvx963Sha512AesGcm,
 
-		[Watch (10, 0), TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Field ("kSecKeyAlgorithmECDSASignatureDigestRFC4754")]
 		EcdsaSignatureDigestRfc4754,
 
-		[Watch (10, 0), TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Field ("kSecKeyAlgorithmECDSASignatureDigestRFC4754SHA1")]
 		EcdsaSignatureDigestRfc4754Sha1,
 
-		[Watch (10, 0), TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Field ("kSecKeyAlgorithmECDSASignatureDigestRFC4754SHA224")]
 		EcdsaSignatureDigestRfc4754Sha224,
 
-		[Watch (10, 0), TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Field ("kSecKeyAlgorithmECDSASignatureDigestRFC4754SHA256")]
 		EcdsaSignatureDigestRfc4754Sha256,
 
-		[Watch (10, 0), TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Field ("kSecKeyAlgorithmECDSASignatureDigestRFC4754SHA384")]
 		EcdsaSignatureDigestRfc4754Sha384,
 
-		[Watch (10, 0), TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Field ("kSecKeyAlgorithmECDSASignatureDigestRFC4754SHA512")]
 		EcdsaSignatureDigestRfc4754Sha512,
 
-		[Watch (10, 0), TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Field ("kSecKeyAlgorithmECDSASignatureMessageRFC4754SHA1")]
 		EcdsaSignatureMessageRfc4754Sha1,
 
-		[Watch (10, 0), TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Field ("kSecKeyAlgorithmECDSASignatureMessageRFC4754SHA224")]
 		EcdsaSignatureMessageRfc4754Sha224,
 
-		[Watch (10, 0), TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Field ("kSecKeyAlgorithmECDSASignatureMessageRFC4754SHA256")]
 		EcdsaSignatureMessageRfc4754Sha256,
 
-		[Watch (10, 0), TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Field ("kSecKeyAlgorithmECDSASignatureMessageRFC4754SHA384")]
 		EcdsaSignatureMessageRfc4754Sha384,
 
-		[Watch (10, 0), TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Field ("kSecKeyAlgorithmECDSASignatureMessageRFC4754SHA512")]
 		EcdsaSignatureMessageRfc4754Sha512,
 	}
 
 	[MacCatalyst (13, 1)]
 	enum SslSessionConfig {
+		/// <summary>Developers should not use this deprecated field. </summary>
 		[Deprecated (PlatformName.iOS, 11, 0)]
 		[Deprecated (PlatformName.MacOSX, 10, 13)]
-		[Deprecated (PlatformName.WatchOS, 4, 0)]
 		[Deprecated (PlatformName.TvOS, 11, 0)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 		[Field ("kSSLSessionConfig_default")]
 		Default,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSSLSessionConfig_ATSv1")]
 		Ats1,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSSLSessionConfig_ATSv1_noPFS")]
 		Ats1NoPfs,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSSLSessionConfig_standard")]
 		Standard,
 
+		/// <summary>To be added.</summary>
 		[Deprecated (PlatformName.iOS, 11, 0)]
 		[Deprecated (PlatformName.MacOSX, 10, 13)]
-		[Deprecated (PlatformName.WatchOS, 4, 0)]
 		[Deprecated (PlatformName.TvOS, 11, 0)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 		[Field ("kSSLSessionConfig_RC4_fallback")]
 		RC4Fallback,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSSLSessionConfig_TLSv1_fallback")]
 		Tls1Fallback,
 
+		/// <summary>To be added.</summary>
 		[Deprecated (PlatformName.iOS, 11, 0)]
 		[Deprecated (PlatformName.MacOSX, 10, 13)]
-		[Deprecated (PlatformName.WatchOS, 4, 0)]
 		[Deprecated (PlatformName.TvOS, 11, 0)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 		[Field ("kSSLSessionConfig_TLSv1_RC4_fallback")]
 		Tls1RC4Fallback,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSSLSessionConfig_legacy")]
 		Legacy,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSSLSessionConfig_legacy_DHE")]
 		LegacyDhe,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSSLSessionConfig_anonymous")]
 		Anonymous,
 
+		/// <summary>To be added.</summary>
 		[Deprecated (PlatformName.iOS, 11, 0)]
 		[Deprecated (PlatformName.MacOSX, 10, 13)]
-		[Deprecated (PlatformName.WatchOS, 4, 0)]
 		[Deprecated (PlatformName.TvOS, 11, 0)]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 		[Field ("kSSLSessionConfig_3DES_fallback")]
 		ThreeDesFallback,
 
+		/// <summary>To be added.</summary>
 		[Deprecated (PlatformName.iOS, 11, 0)]
 		[Deprecated (PlatformName.MacOSX, 10, 13)]
-		[Deprecated (PlatformName.WatchOS, 4, 0)]
 		[Deprecated (PlatformName.TvOS, 11, 0)]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
@@ -1194,13 +1570,18 @@ namespace Security {
 	[StrongDictionary ("SecKeyKeyExchangeParameterKey")]
 	interface SecKeyKeyExchangeParameter {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		int RequestedSize { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		NSData SharedInfo { get; set; }
 	}
 
 	[NoTV]
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	[Internal]
 	[Static]
@@ -1220,17 +1601,28 @@ namespace Security {
 	}
 
 	[NoTV]
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	[StrongDictionary ("SecSharedCredentialKeys")]
 	interface SecSharedCredentialInfo {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		string Server { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		string Account { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		string Password { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		int Port { get; set; }
 	}
 

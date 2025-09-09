@@ -7,8 +7,6 @@
 // Copyright 2013-2015 Xamarin Inc. All rights reserved.
 //
 
-#if !__WATCHOS__
-
 using System;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -34,11 +32,7 @@ namespace MonoTouchFixtures.CoreImage {
 			using (var url = NSUrl.FromFilename (file))
 			using (var input = CIImage.FromUrl (url))
 			using (var filter = new CIHighlightShadowAdjust ()) {
-#if NET
 				filter.InputImage = input;
-#else
-				filter.Image = input;
-#endif
 				filter.HighlightAmount = 0.75f;
 				filter.ShadowAmount = 1.5f;
 				// https://bugzilla.xamarin.com/show_bug.cgi?id=15465
@@ -61,20 +55,6 @@ namespace MonoTouchFixtures.CoreImage {
 			filter.Input = 10;
 			Assert.AreEqual (10, filter.Input);
 		}
-
-#if !NET
-		[Test]
-		public void UnsupportedInputImage ()
-		{
-			// some filters do not support inputImage (which we bound to the Image property)
-			using (var filter = new CICheckerboardGenerator ()) {
-				// but if we call ObjC then we get a native exception and crash on devices
-				Assert.False (filter.RespondsToSelector (new Selector ("inputImage")), "inputImage");
-				// so we return null in those cases
-				Assert.Null (filter.Image, "Image");
-			}
-		}
-#endif // !NET
 
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static nint CFGetRetainCount (IntPtr handle);
@@ -154,5 +134,3 @@ namespace MonoTouchFixtures.CoreImage {
 		}
 	}
 }
-
-#endif // !__WATCHOS__

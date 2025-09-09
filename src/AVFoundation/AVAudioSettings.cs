@@ -35,27 +35,35 @@ using AudioToolbox;
 #nullable enable
 
 namespace AVFoundation {
-
-
-#if NET
+	/// <summary>Manages audio settings for players and recorders.</summary>
+	///     <remarks>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	// Should be called AVAudioSetting but AVAudioSetting has been already used by keys class
 	public class AudioSettings : DictionaryContainer {
 #if !COREBUILD
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public AudioSettings ()
 			: base (new NSMutableDictionary ())
 		{
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public AudioSettings (NSDictionary dictionary)
 			: base (dictionary)
 		{
 		}
 
+		/// <summary>Represents the audio format.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>The property uses constant AVFormatIDKey value to access the underlying dictionary.</remarks>
 		public AudioFormatType? Format {
 			set {
 				SetNumberValue (AVAudioSettings.AVFormatIDKey, (int?) value);
@@ -65,6 +73,10 @@ namespace AVFoundation {
 			}
 		}
 
+		/// <summary>Represents the sample rate in hertz.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>The property uses constant AVSampleRateKey value to access the underlying dictionary.</remarks>
 		public double? SampleRate {
 			set {
 				SetNumberValue (AVAudioSettings.AVSampleRateKey, value);
@@ -74,6 +86,10 @@ namespace AVFoundation {
 			}
 		}
 
+		/// <summary>Represents the number of channels.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>The property uses constant AVNumberOfChannelsKey value to access the underlying dictionary.</remarks>
 		public int? NumberChannels {
 			set {
 				SetNumberValue (AVAudioSettings.AVNumberOfChannelsKey, value);
@@ -83,6 +99,9 @@ namespace AVFoundation {
 			}
 		}
 
+		/// <summary>Represents the bit depth for a linear PCM audio format.</summary>
+		///         <value>Only values 8, 16, 24, and 32 are allowed</value>
+		///         <remarks>The property uses constant AVLinearPCMBitDepthKey value to access the underlying dictionary.</remarks>
 		public int? LinearPcmBitDepth {
 			set {
 				if (!(value == 8 || value == 16 || value == 24 || value == 32))
@@ -95,6 +114,10 @@ namespace AVFoundation {
 			}
 		}
 
+		/// <summary>Indicates whether the audio format is big endian.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>The property uses constant AVLinearPCMIsBigEndianKey value to access the underlying dictionary.</remarks>
 		public bool? LinearPcmBigEndian {
 			set {
 				SetBooleanValue (AVAudioSettings.AVLinearPCMIsBigEndianKey, value);
@@ -104,6 +127,10 @@ namespace AVFoundation {
 			}
 		}
 
+		/// <summary>Indicates whether the audio format is floating point.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>The property uses constant AVLinearPCMIsFloatKey value to access the underlying dictionary.</remarks>
 		public bool? LinearPcmFloat {
 			set {
 				SetBooleanValue (AVAudioSettings.AVLinearPCMIsFloatKey, value);
@@ -113,6 +140,10 @@ namespace AVFoundation {
 			}
 		}
 
+		/// <summary>Indicates that the audio format is non-interleaved.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>The property uses constant AVLinearPCMIsNonInterleaved value to access the underlying dictionary.</remarks>
 		public bool? LinearPcmNonInterleaved {
 			set {
 				SetBooleanValue (AVAudioSettings.AVLinearPCMIsNonInterleaved, value);
@@ -122,6 +153,10 @@ namespace AVFoundation {
 			}
 		}
 
+		/// <summary>Represents sample rate conversion quality settings.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>The property uses constant AVEncoderAudioQualityKey value to access the underlying dictionary.</remarks>
 		public AVAudioQuality? AudioQuality {
 			set {
 				SetNumberValue (AVAudioSettings.AVEncoderAudioQualityKey, (nint?) (long?) value);
@@ -131,6 +166,10 @@ namespace AVFoundation {
 			}
 		}
 
+		/// <summary>Represents sample rate converter audio quality settings.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>The property uses constant AVSampleRateConverterAudioQualityKey value to access the underlying dictionary.</remarks>
 		public AVAudioQuality? SampleRateConverterAudioQuality {
 			set {
 				SetNumberValue (AVAudioSettings.AVSampleRateConverterAudioQualityKey, (nint?) (long?) value);
@@ -140,6 +179,10 @@ namespace AVFoundation {
 			}
 		}
 
+		/// <summary>Represents the audio bit rate.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>The property uses constant AVEncoderBitRateKey value to access the underlying dictionary.</remarks>
 		public int? EncoderBitRate {
 			set {
 				SetNumberValue (AVAudioSettings.AVEncoderBitRateKey, value);
@@ -149,6 +192,10 @@ namespace AVFoundation {
 			}
 		}
 
+		/// <summary>Represents the audio bit rate per channel.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>The property uses constant AVEncoderBitRatePerChannelKey value to access the underlying dictionary.</remarks>
 		public int? EncoderBitRatePerChannel {
 			set {
 				SetNumberValue (AVAudioSettings.AVEncoderBitRatePerChannelKey, value);
@@ -158,6 +205,9 @@ namespace AVFoundation {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>Value in range between 8 and 32.</value>
+		///         <remarks>The property uses constant AVEncoderBitDepthHintKey value to access the underlying dictionary.</remarks>
 		public int? EncoderBitDepthHint {
 			set {
 				if (value < 8 || value > 32)
@@ -170,12 +220,13 @@ namespace AVFoundation {
 			}
 		}
 
-#if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public AVAudioBitRateStrategy? BitRateStrategy {
 			set {
 				NSString? v = null;
@@ -213,12 +264,13 @@ namespace AVFoundation {
 			}
 		}
 
-#if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public AVSampleRateConverterAlgorithm? SampleRateConverterAlgorithm {
 			get {
 				var k = GetNSStringValue (AVAudioSettings.AVSampleRateConverterAlgorithmKey);
@@ -246,12 +298,13 @@ namespace AVFoundation {
 			}
 		}
 
-#if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public AVAudioQuality? EncoderAudioQualityForVBR {
 			get {
 				return (AVAudioQuality?) (long?) GetNIntValue (AVAudioSettings.AVEncoderAudioQualityForVBRKey);
@@ -261,6 +314,10 @@ namespace AVFoundation {
 			}
 		}
 
+		/// <summary>Represents channel layout information for playback.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>The property uses constant AVChannelLayoutKey value to access the underlying dictionary.</remarks>
 		public AudioChannelLayout ChannelLayout {
 			set {
 				SetNativeValue (AVAudioSettings.AVChannelLayoutKey, value is null ? null : value.AsData ());

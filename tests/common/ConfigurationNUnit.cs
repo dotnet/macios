@@ -45,30 +45,16 @@ namespace Xamarin.Tests {
 
 		public static void AssertiOS32BitAvailable ()
 		{
-			if (iOSSupports32BitArchitectures)
-				return;
 			Assert.Ignore ($"32-bit iOS support is not available in the current build.");
 		}
 #endif // !XAMMAC_TESTS
 
-		public static void AssertDeviceAvailable ()
-		{
-			if (include_device)
-				return;
-			Assert.Ignore ("This build does not include device support.");
-		}
-
 		public static void AssertDotNetAvailable ()
 		{
-			if (include_dotnet)
-				return;
-			Assert.Ignore (".NET tests not enabled");
 		}
 
 		public static void AssertLegacyXamarinAvailable ()
 		{
-			if (include_legacy_xamarin)
-				return;
 			Assert.Ignore ("Legacy xamarin build not enabled");
 		}
 
@@ -103,7 +89,6 @@ namespace Xamarin.Tests {
 			switch (platform.ToLower ()) {
 			case "ios":
 			case "tvos":
-			case "watchos":
 			case "macosx":
 			case "maccatalyst":
 				IgnoreIfIgnoredPlatform ((ApplePlatform) Enum.Parse (typeof (ApplePlatform), platform, true));
@@ -116,22 +101,22 @@ namespace Xamarin.Tests {
 			}
 		}
 
-		public static bool AnyIgnoredPlatforms (bool dotnet = true)
+		public static bool AnyIgnoredPlatforms ()
 		{
-			return AnyIgnoredPlatforms (dotnet, out var _);
+			return AnyIgnoredPlatforms (out var _);
 		}
 
-		public static bool AnyIgnoredPlatforms (bool dotnet, out IEnumerable<ApplePlatform> notIncluded)
+		public static bool AnyIgnoredPlatforms (out IEnumerable<ApplePlatform> notIncluded)
 		{
-			var allPlatforms = GetAllPlatforms (dotnet);
-			var includedPlatforms = GetIncludedPlatforms (dotnet);
+			var allPlatforms = GetAllPlatforms ();
+			var includedPlatforms = GetIncludedPlatforms ();
 			notIncluded = allPlatforms.Where (v => !includedPlatforms.Contains (v)).ToArray ();
 			return notIncluded.Any ();
 		}
 
-		public static void IgnoreIfAnyIgnoredPlatforms (bool dotnet = true)
+		public static void IgnoreIfAnyIgnoredPlatforms ()
 		{
-			if (AnyIgnoredPlatforms (dotnet, out var notIncluded))
+			if (AnyIgnoredPlatforms (out var notIncluded))
 				Assert.Ignore ($"This test requires all platforms to be included, but the following platforms aren't included: {string.Join (", ", notIncluded.Select (v => v.AsString ()))}");
 		}
 

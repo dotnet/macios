@@ -7,7 +7,7 @@
 // Copyright 2012-2013 Xamarin Inc. All rights reserved.
 //
 
-#if !__WATCHOS__ && !__MACCATALYST__
+#if !__MACCATALYST__
 
 using System;
 using System.Threading;
@@ -33,11 +33,7 @@ namespace MonoTouchFixtures.CoreBluetooth {
 			#region implemented abstract members of MonoTouch.CoreBluetooth.CBCentralManagerDelegate
 			public override void UpdatedState (CBCentralManager central)
 			{
-#if NET
 				if (central.State == CBManagerState.PoweredOn)
-#else
-				if (central.State == CBCentralManagerState.PoweredOn)
-#endif
 					PoweredOnEvent.Set ();
 			}
 
@@ -114,4 +110,4 @@ namespace MonoTouchFixtures.CoreBluetooth {
 	}
 }
 
-#endif // !__WATCHOS__ && !__MACCATALYST__
+#endif // !__MACCATALYST__

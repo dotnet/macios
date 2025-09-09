@@ -1,0 +1,33 @@
+<Documentation>
+  <Docs DocId="M:UIKit.UIStringDrawing.DrawString(Foundation.NSString,CoreGraphics.CGPoint,System.Runtime.InteropServices.NFloat,UIKit.UIFont,System.Runtime.InteropServices.NFloat,System.Runtime.InteropServices.NFloat@,UIKit.UILineBreakMode,UIKit.UIBaselineAdjustment)">
+        
+        <param name="point">To be added.</param>
+        <param name="width">To be added.</param>
+        <param name="font">To be added.</param>
+        <param name="minFontSize">To be added.</param>
+        <param name="actualFontSize">To be added.</param>
+        <param name="breakMode">To be added.</param>
+        <param name="adjustment">To be added.</param>
+        <summary>Developers should use <see cref="NSStringDrawing.DrawString(NSString,CoreGraphics.CGRect, UIKit.UIStringAttributes)" /> rather than this deprecated method.</summary>
+        <returns>To be added.</returns>
+        <remarks>
+          <para>(More documentation for this node is coming)</para>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+  <Docs DocId="M:UIKit.UIStringDrawing.DrawString(Foundation.NSString,CoreGraphics.CGPoint,System.Runtime.InteropServices.NFloat,UIKit.UIFont,System.Runtime.InteropServices.NFloat,UIKit.UILineBreakMode,UIKit.UIBaselineAdjustment)">
+        
+        <param name="point">To be added.</param>
+        <param name="width">To be added.</param>
+        <param name="font">To be added.</param>
+        <param name="fontSize">To be added.</param>
+        <param name="breakMode">To be added.</param>
+        <param name="adjustment">To be added.</param>
+        <summary>Developers should use <see cref="NSStringDrawing.DrawString(NSString,CoreGraphics.CGRect, UIKit.UIStringAttributes)" /> rather than this deprecated method.</summary>
+        <returns>To be added.</returns>
+        <remarks>
+          <para>(More documentation for this node is coming)</para>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+</Documentation>

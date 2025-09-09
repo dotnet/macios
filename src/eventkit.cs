@@ -9,7 +9,7 @@
 // Copyright 2012-2015, Xamarin Inc.
 //
 
-#if !WATCH && !MONOMAC
+#if !MONOMAC
 using AddressBook;
 #endif
 using ObjCRuntime;
@@ -24,7 +24,7 @@ using AppKit;
 using UIKit;
 #endif
 
-#if !WATCH && !MONOMAC
+#if !MONOMAC
 using EKAlarmType = Foundation.NSObject;
 #else
 using ABAddressBook = Foundation.NSObject;
@@ -34,22 +34,21 @@ using ABRecord = Foundation.NSObject;
 using NSColor = UIKit.UIColor;
 #endif
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace EventKit {
 
 	/// <summary>The base-class for persistent Event Kit classes.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/EventKit/Reference/EKObjectClassRef/index.html">Apple documentation for <c>EKObject</c></related>
-	[iOS (13, 0), MacCatalyst (13, 1), Watch (6, 0), NoTV]
+	[iOS (13, 0), MacCatalyst (13, 1), NoTV]
 	[BaseType (typeof (NSObject))]
 	[Abstract]
 	interface EKObject {
 		[Export ("hasChanges")]
 		bool HasChanges { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isNew")]
 		bool IsNew { get; }
 
@@ -67,9 +66,7 @@ namespace EventKit {
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/EventKit/Reference/EKCalendarItemClassRef/index.html">Apple documentation for <c>EKCalendarItem</c></related>
 	[BaseType (typeof (EKObject))]
-#if NET
 	[Abstract] // "The EKCalendarItem class is a an abstract superclass ..." from Apple docs.
-#endif
 	interface EKCalendarItem {
 		// Never made avaialble on MonoMac
 		[Export ("UUID")]
@@ -177,7 +174,7 @@ namespace EventKit {
 		[Export ("calendarsForEntityType:")]
 		NSSet GetCalendars (EKEntityType entityType);
 
-		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), Watch (9, 0), NoTV]
+		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]
 		[Export ("isDelegate", ArgumentSemantic.Assign)]
 		bool IsDelegate { get; }
 	}
@@ -207,7 +204,7 @@ namespace EventKit {
 		EKStructuredLocation FromMapItem (MKMapItem mapItem);
 	}
 
-	/// <summary>An alarm in the user's <see cref="T:EventKit.EKCalendar" />.</summary>
+	/// <summary>An alarm in the user's <see cref="EventKit.EKCalendar" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/EventKit/Reference/EKAlarmClassRef/index.html">Apple documentation for <c>EKAlarm</c></related>
 	[BaseType (typeof (EKObject))]
@@ -237,14 +234,12 @@ namespace EventKit {
 
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Export ("type")]
 		EKAlarmType Type { get; }
 
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[NullAllowed]
 		[Export ("emailAddress")]
@@ -252,7 +247,6 @@ namespace EventKit {
 
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[NullAllowed]
 		[Export ("soundName")]
@@ -260,7 +254,6 @@ namespace EventKit {
 
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Deprecated (PlatformName.MacOSX, 10, 9)]
 		[NullAllowed]
@@ -285,7 +278,6 @@ namespace EventKit {
 
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Export ("color", ArgumentSemantic.Copy)]
 		NSColor Color { get; set; }
@@ -300,9 +292,15 @@ namespace EventKit {
 		[Export ("calendarIdentifier")]
 		string CalendarIdentifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("subscribed")]
 		bool Subscribed { [Bind ("isSubscribed")] get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("immutable")]
 		bool Immutable { [Bind ("isImmutable")] get; }
 
@@ -334,6 +332,9 @@ namespace EventKit {
 		[Static, Export ("eventWithEventStore:")]
 		EKEvent FromStore (EKEventStore eventStore);
 
+		/// <summary>Specifies whether or not this is an all-day event.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("allDay")]
 		bool AllDay { [Bind ("isAllDay")] get; set; }
 
@@ -375,7 +376,6 @@ namespace EventKit {
 
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Deprecated (PlatformName.MacOSX, 10, 11, message: "Replaced by 'BirthdayContactIdentifier'.")]
 		[NullAllowed]
@@ -417,7 +417,6 @@ namespace EventKit {
 		EKParticipantType ParticipantType { get; }
 
 		[NoMac]
-		[NoWatch]
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Replaced by 'ContactPredicate'.")]
 		[MacCatalyst (14, 0)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Replaced by 'ContactPredicate'.")]
@@ -425,6 +424,9 @@ namespace EventKit {
 		[Export ("ABRecordWithAddressBook:")]
 		ABRecord GetRecord (ABAddressBook addressBook);
 
+		/// <summary>Gets a Boolean value that tells whether the participant is the account owner.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("isCurrentUser")]
 		bool IsCurrentUser { get; }
@@ -450,6 +452,10 @@ namespace EventKit {
 		[Export ("recurrenceEndWithEndDate:")]
 		EKRecurrenceEnd FromEndDate (NSDate endDate);
 
+		/// <param name="occurrenceCount">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static]
 		[Export ("recurrenceEndWithOccurrenceCount:")]
 		EKRecurrenceEnd FromOccurrenceCount (nint occurrenceCount);
@@ -461,39 +467,21 @@ namespace EventKit {
 	[BaseType (typeof (NSObject))]
 	interface EKRecurrenceDayOfWeek : NSCopying, NSSecureCoding {
 		[Export ("dayOfTheWeek")]
-#if NET
-		EKWeekday DayOfTheWeek { get;  }
-#else
-		nint DayOfTheWeek { get; }
-#endif
+		EKWeekday DayOfTheWeek { get; }
 
 		[Export ("weekNumber")]
 		nint WeekNumber { get; }
 
 		[Static]
 		[Export ("dayOfWeek:")]
-#if NET
 		EKRecurrenceDayOfWeek FromDay (EKWeekday dayOfTheWeek);
-#else
-		[Internal]
-		EKRecurrenceDayOfWeek _FromDay (nint dayOfTheWeek);
-#endif
 
 		[Static]
 		[Export ("dayOfWeek:weekNumber:")]
-#if NET
 		EKRecurrenceDayOfWeek FromDay (EKWeekday dayOfTheWeek, nint weekNumber);
-#else
-		[Internal]
-		EKRecurrenceDayOfWeek _FromDay (nint dayOfTheWeek, nint weekNumber);
-#endif
 
 		[Export ("initWithDayOfTheWeek:weekNumber:")]
-#if NET
 		NativeHandle Constructor (EKWeekday dayOfTheWeek, nint weekNumber);
-#else
-		NativeHandle Constructor (nint dayOfTheWeek, nint weekNumber);
-#endif
 	}
 
 	/// <summary>Describes the recurring rule for an event.</summary>
@@ -515,12 +503,7 @@ namespace EventKit {
 		nint Interval { get; }
 
 		[Export ("firstDayOfTheWeek")]
-#if NET
 		EKWeekday FirstDayOfTheWeek { get; }
-#else
-		[Internal]
-		nint _FirstDayOfTheWeek { get; }
-#endif
 
 		[NullAllowed]
 		[Export ("daysOfTheWeek")]
@@ -544,25 +527,30 @@ namespace EventKit {
 
 		[NullAllowed]
 		[Export ("setPositions")]
-#if NET
 		NSNumber [] SetPositions { get; }
-#else
-		NSObject [] SetPositions { get; }
-#endif
 
+		/// <param name="type">To be added.</param>
+		/// <param name="interval">To be added.</param>
+		/// <param name="end">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initRecurrenceWithFrequency:interval:end:")]
 		NativeHandle Constructor (EKRecurrenceFrequency type, nint interval, [NullAllowed] EKRecurrenceEnd end);
 
+		/// <include file="../docs/api/EventKit/EKRecurrenceRule.xml" path="/Documentation/Docs[@DocId='M:EventKit.EKRecurrenceRule.#ctor(EventKit.EKRecurrenceFrequency,System.IntPtr,EventKit.EKRecurrenceDayOfWeek[],Foundation.NSNumber[],Foundation.NSNumber[],Foundation.NSNumber[],Foundation.NSNumber[],Foundation.NSNumber[],EventKit.EKRecurrenceEnd)']/*" />
 		[Export ("initRecurrenceWithFrequency:interval:daysOfTheWeek:daysOfTheMonth:monthsOfTheYear:weeksOfTheYear:daysOfTheYear:setPositions:end:")]
 		NativeHandle Constructor (EKRecurrenceFrequency type, nint interval, [NullAllowed] EKRecurrenceDayOfWeek [] days, [NullAllowed] NSNumber [] monthDays, [NullAllowed] NSNumber [] months,
-					[NullAllowed] NSNumber [] weeksOfTheYear, [NullAllowed] NSNumber [] daysOfTheYear, [NullAllowed] NSNumber [] setPositions, [NullAllowed] EKRecurrenceEnd end);
+						[NullAllowed] NSNumber [] weeksOfTheYear, [NullAllowed] NSNumber [] daysOfTheYear, [NullAllowed] NSNumber [] setPositions, [NullAllowed] EKRecurrenceEnd end);
 
 	}
 
 	/// <include file="../docs/api/EventKit/EKEventStore.xml" path="/Documentation/Docs[@DocId='T:EventKit.EKEventStore']/*" />
 	[BaseType (typeof (NSObject))]
 	interface EKEventStore {
-		[iOS (16, 0), MacCatalyst (16, 0), Watch (9, 0), NoTV]
+		[iOS (16, 0), MacCatalyst (16, 0), NoTV]
 		[Export ("initWithSources:")]
 		NativeHandle Constructor (EKSource [] sources);
 
@@ -579,12 +567,10 @@ namespace EventKit {
 		[Export ("defaultCalendarForNewEvents"), NullAllowed]
 		EKCalendar DefaultCalendarForNewEvents { get; }
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Export ("saveEvent:span:error:")]
 		bool SaveEvent (EKEvent theEvent, EKSpan span, out NSError error);
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Export ("removeEvent:span:error:")]
 		bool RemoveEvents (EKEvent theEvent, EKSpan span, out NSError error);
@@ -617,27 +603,22 @@ namespace EventKit {
 		[Export ("calendarWithIdentifier:")]
 		EKCalendar GetCalendar (string identifier);
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Export ("saveCalendar:commit:error:")]
 		bool SaveCalendar (EKCalendar calendar, bool commit, out NSError error);
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Export ("removeCalendar:commit:error:")]
 		bool RemoveCalendar (EKCalendar calendar, bool commit, out NSError error);
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Export ("saveEvent:span:commit:error:")]
 		bool SaveEvent (EKEvent ekEvent, EKSpan span, bool commit, out NSError error);
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Export ("removeEvent:span:commit:error:")]
 		bool RemoveEvent (EKEvent ekEvent, EKSpan span, bool commit, out NSError error);
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Export ("commit:")]
 		bool Commit (out NSError error);
@@ -645,7 +626,6 @@ namespace EventKit {
 		[Export ("reset")]
 		void Reset ();
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Export ("refreshSourcesIfNecessary")]
 		void RefreshSourcesIfNecessary ();
@@ -665,7 +645,21 @@ namespace EventKit {
 		EKCalendar DefaultCalendarForNewReminders { get; }
 
 		[Export ("fetchRemindersMatchingPredicate:completion:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="predicate">A predicate for the reminders you want to fetch.</param>
+			<summary>Fetches the reminders that match the specified predicate.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous FetchReminders operation.  The value of the TResult parameter is of type System.Action&lt;EventKit.EKReminder[]&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""",
+			XmlDocsWithOutParameter = """
+			<param name="predicate">To be added.</param>
+			<param name="result">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		IntPtr FetchReminders (NSPredicate predicate, Action<EKReminder []> completion);
 
 		[Export ("cancelFetchRequest:")]
@@ -680,25 +674,21 @@ namespace EventKit {
 		[Export ("predicateForRemindersInCalendars:")]
 		NSPredicate PredicateForReminders ([NullAllowed] EKCalendar [] calendars);
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Export ("removeReminder:commit:error:")]
 		bool RemoveReminder (EKReminder reminder, bool commit, out NSError error);
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Export ("saveReminder:commit:error:")]
 		bool SaveReminder (EKReminder reminder, bool commit, out NSError error);
 
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Deprecated (PlatformName.MacOSX, 10, 9)]
 		[Export ("initWithAccessToEntityTypes:")]
 		NativeHandle Constructor (EKEntityMask accessToEntityTypes);
 
-		[Watch (5, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("delegateSources")]
 		EKSource [] DelegateSources { get; }
@@ -706,23 +696,31 @@ namespace EventKit {
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.iOS, 17, 0, message: "Use RequestFullAccessToEvents, RequestWriteOnlyAccessToEvents, or RequestFullAccessToReminders.")]
 		[Deprecated (PlatformName.MacOSX, 14, 0, message: "Use RequestFullAccessToEvents, RequestWriteOnlyAccessToEvents, or RequestFullAccessToReminders.")]
-		[Deprecated (PlatformName.WatchOS, 10, 0, message: "Use RequestFullAccessToEvents, RequestWriteOnlyAccessToEvents, or RequestFullAccessToReminders.")]
 		[Deprecated (PlatformName.MacCatalyst, 17, 0, message: "Use RequestFullAccessToEvents, RequestWriteOnlyAccessToEvents, or RequestFullAccessToReminders.")]
 		[Export ("requestAccessToEntityType:completion:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="entityType">The  for which access is being requested.</param>
+			<summary>Shows, if necessary, the standard permissions dialog for the specified <paramref name="entityType" />.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous RequestAccess operation.  The value of the TResult parameter is of type System.Action&lt;System.Boolean,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The RequestAccessAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			        </remarks>
+			""")]
 		void RequestAccess (EKEntityType entityType, Action<bool, NSError> completionHandler);
 
-		[Watch (10, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("requestFullAccessToEventsWithCompletion:")]
 		[Async]
 		void RequestFullAccessToEvents (EKEventStoreRequestAccessCompletionHandler completion);
 
-		[Watch (10, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("requestWriteOnlyAccessToEventsWithCompletion:")]
 		[Async]
 		void RequestWriteOnlyAccessToEvents (EKEventStoreRequestAccessCompletionHandler completion);
 
-		[Watch (10, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("requestFullAccessToRemindersWithCompletion:")]
 		[Async]
 		void RequestFullAccessToReminders (EKEventStoreRequestAccessCompletionHandler completion);
@@ -733,10 +731,10 @@ namespace EventKit {
 		EKAuthorizationStatus GetAuthorizationStatus (EKEntityType entityType);
 	}
 
-	delegate void EKEventStoreRequestAccessCompletionHandler (bool didRequestAccess, NSError error);
+	delegate void EKEventStoreRequestAccessCompletionHandler (bool didRequestAccess, [NullAllowed] NSError error);
 	/// <param name="theEvent">The matching event.</param>
 	///     <param name="stop">If you set this ref value to true, the enumeration will stop.</param>
-	///     <summary>Delegate signature for the event enumeration method in <see cref="T:EventKit.EKEventStore" /></summary>
+	///     <summary>Delegate signature for the event enumeration method in <see cref="EventKit.EKEventStore" /></summary>
 	///     <remarks>The method will be invoked repeatedly, once for each event that matches the provided NSPredicate.</remarks>
 	delegate void EKEventSearchCallback (EKEvent theEvent, ref bool stop);
 
@@ -754,6 +752,9 @@ namespace EventKit {
 		[NullAllowed]
 		NSDateComponents DueDateComponents { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("completed")]
 		bool Completed { [Bind ("isCompleted")] get; set; }
 
@@ -771,7 +772,7 @@ namespace EventKit {
 		EKReminder Create (EKEventStore eventStore);
 	}
 
-	[iOS (15, 0), Watch (8, 0), MacCatalyst (15, 0), NoTV]
+	[iOS (15, 0), MacCatalyst (15, 0), NoTV]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface EKVirtualConferenceDescriptor {
@@ -789,10 +790,10 @@ namespace EventKit {
 		string ConferenceDetails { get; }
 	}
 
-	delegate void VirtualConferenceRoomTypeHandler (NSArray<EKVirtualConferenceRoomTypeDescriptor> virtualConferenceRoomTypeDescriptor, NSError error);
-	delegate void VirtualConferenceHandler (EKVirtualConferenceDescriptor virtualConferenceDescriptor, NSError error);
+	delegate void VirtualConferenceRoomTypeHandler ([NullAllowed] NSArray<EKVirtualConferenceRoomTypeDescriptor> virtualConferenceRoomTypeDescriptor, [NullAllowed] NSError error);
+	delegate void VirtualConferenceHandler ([NullAllowed] EKVirtualConferenceDescriptor virtualConferenceDescriptor, [NullAllowed] NSError error);
 
-	[iOS (15, 0), Watch (8, 0), MacCatalyst (15, 0), NoTV]
+	[iOS (15, 0), MacCatalyst (15, 0), NoTV]
 	[BaseType (typeof (NSObject))]
 	interface EKVirtualConferenceProvider : NSExtensionRequestHandling {
 		[Async]
@@ -804,7 +805,7 @@ namespace EventKit {
 		void FetchVirtualConference (string identifier, VirtualConferenceHandler handler);
 	}
 
-	[iOS (15, 0), Watch (8, 0), MacCatalyst (15, 0), NoTV]
+	[iOS (15, 0), MacCatalyst (15, 0), NoTV]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface EKVirtualConferenceRoomTypeDescriptor {
@@ -819,7 +820,7 @@ namespace EventKit {
 		string Identifier { get; }
 	}
 
-	[iOS (15, 0), Watch (8, 0), MacCatalyst (15, 0), NoTV]
+	[iOS (15, 0), MacCatalyst (15, 0), NoTV]
 	[BaseType (typeof (NSObject), Name = "EKVirtualConferenceURLDescriptor")]
 	[DisableDefaultCtor]
 	interface EKVirtualConferenceUrlDescriptor {

@@ -13,7 +13,6 @@ using Foundation;
 using ObjCRuntime;
 
 #nullable enable
-#if !WATCH
 
 namespace UIKit {
 
@@ -29,6 +28,7 @@ namespace UIKit {
 			if (accessoryClass is null)
 				throw new ArgumentNullException (nameof (accessoryClass));
 			var ret = UICellAccessoryPositionBeforeAccessoryOfClass (accessoryClass.Handle);
+			GC.KeepAlive (accessoryClass);
 			return NIDUICellAccessoryPosition.Create (ret)!;
 		}
 
@@ -46,6 +46,7 @@ namespace UIKit {
 			if (accessoryClass is null)
 				throw new ArgumentNullException (nameof (accessoryClass));
 			var ret = UICellAccessoryPositionAfterAccessoryOfClass (accessoryClass.Handle);
+			GC.KeepAlive (accessoryClass);
 			return NIDUICellAccessoryPosition.Create (ret)!;
 		}
 
@@ -61,14 +62,11 @@ namespace UIKit {
 	//
 	// This class bridges native block invocations that call into C#
 	//
+	[SupportedOSPlatform ("tvos14.0")]
+	[SupportedOSPlatform ("ios14.0")]
+	[SupportedOSPlatform ("maccatalyst")]
 	static internal class SDUICellAccessoryPosition {
-#if !NET
-		static internal readonly DUICellAccessoryPosition Handler = Invoke;
-
-		[MonoPInvokeCallback (typeof (DUICellAccessoryPosition))]
-#else
 		[UnmanagedCallersOnly]
-#endif
 		static unsafe nuint Invoke (IntPtr block, IntPtr accessories)
 		{
 			var descriptor = (BlockLiteral*) block;
@@ -78,6 +76,9 @@ namespace UIKit {
 		}
 	} /* class SDUICellAccessoryPosition */
 
+	[SupportedOSPlatform ("tvos14.0")]
+	[SupportedOSPlatform ("ios14.0")]
+	[SupportedOSPlatform ("maccatalyst")]
 	internal sealed class NIDUICellAccessoryPosition : TrampolineBlockBase {
 		DUICellAccessoryPosition invoker;
 
@@ -102,8 +103,9 @@ namespace UIKit {
 		{
 			using var nsa_accessories = accessories is null ? null : NSArray.FromNSObjects (accessories);
 
-			return invoker (BlockPointer, nsa_accessories.GetHandle ());
+			nuint result = invoker (BlockPointer, nsa_accessories.GetHandle ());
+			GC.KeepAlive (nsa_accessories);
+			return result;
 		}
 	} /* class NIDUICellAccessoryPosition */
 }
-#endif // WATCH

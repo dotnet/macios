@@ -34,38 +34,23 @@ using CoreFoundation;
 using Foundation;
 using ObjCRuntime;
 
-#if NET
 using NMatrix4 = global::CoreGraphics.NMatrix4;
 using NVector3 = global::CoreGraphics.NVector3;
 using Vector3 = global::CoreGraphics.NVector3;
 using Vector4 = global::System.Numerics.Vector4;
-#else
-using NMatrix4 = global::OpenTK.NMatrix4;
-using NVector3 = global::OpenTK.NVector3;
-using Vector3 = global::OpenTK.NVector3;
-using Vector4 = global::OpenTK.Vector4;
-#endif
 
-#if !WATCH
 using CoreAnimation;
 using CoreImage;
-#endif
 
-#if WATCH || NET
 using AnimationType = global::SceneKit.ISCNAnimationProtocol;
-#else
-using AnimationType = global::CoreAnimation.CAAnimation;
-#endif
 
 using CoreGraphics;
 using SpriteKit;
-#if !WATCH
 using ModelIO;
 using Metal;
 using GameplayKit;
-#endif
 
-#if MONOMAC || WATCH || __MACCATALYST__
+#if MONOMAC || __MACCATALYST__
 using EAGLContext = System.Object;
 #endif
 
@@ -86,12 +71,7 @@ using GLContext = global::OpenGLES.EAGLContext;
 using GLContext = global::Foundation.NSObject; // won't be used -> but must compile
 #endif
 
-#if WATCH
-using NSView = global::Foundation.NSObject; // won't be used -> [NoWatch] but must compile
-using SCNGeometryTessellator = global::Foundation.NSObject; // won't be used -> [NoWatch] but must compile
-#else
 using NSView = global::UIKit.UIView;
-#endif
 
 using NSColor = global::UIKit.UIColor;
 using NSFont = global::UIKit.UIFont;
@@ -99,67 +79,15 @@ using NSImage = global::UIKit.UIImage;
 using NSBezierPath = global::UIKit.UIBezierPath;
 #endif
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace SceneKit {
-
-#if WATCH
-	// stubs to limit the number of preprocessor directives in the source file
-	interface CAAnimation {}
-	interface CALayer {}
-	interface CAMediaTimingFunction {}
-	interface MDLAsset {}
-	interface MDLCamera {}
-	interface MDLLight {}
-	interface MDLMaterial {}
-	interface MDLMesh {}
-	interface MDLObject {}
-	interface MDLSubmesh {}
-	enum MTLPixelFormat {}
-	enum MTLVertexFormat {}
-	interface IMTLBuffer {}
-	interface IMTLCommandBuffer {}
-	interface IMTLCommandQueue {}
-	interface IMTLDevice {}
-	interface IMTLLibrary {}
-	interface IMTLRenderCommandEncoder {}
-	interface MTLRenderPassDescriptor {}
-#endif
-
-	/// <summary>Callback used to reflect progress during execution of <see cref="M:SceneKit.SCNSceneSource.SceneFromOptions(SceneKit.SCNSceneLoadingOptions,SceneKit.SCNSceneSourceStatusHandler)" />.</summary>
+	/// <summary>Callback used to reflect progress during execution of <see cref="SceneKit.SCNSceneSource.SceneFromOptions(SceneKit.SCNSceneLoadingOptions,SceneKit.SCNSceneSourceStatusHandler)" />.</summary>
 	[MacCatalyst (13, 1)]
-	delegate void SCNSceneSourceStatusHandler (float /* float, not CGFloat */ totalProgress, SCNSceneSourceStatus status, NSError error, ref bool stopLoading);
+	delegate void SCNSceneSourceStatusHandler (float /* float, not CGFloat */ totalProgress, SCNSceneSourceStatus status, [NullAllowed] NSError error, ref bool stopLoading);
 
-#if NET
 	delegate void SCNAnimationDidStartHandler (SCNAnimation animation, ISCNAnimatable receiver);
-#else
-	[Obsolete ("Use 'SCNAnimationDidStartHandler2' instead.")]
-	delegate void SCNAnimationDidStartHandler (SCNAnimation animation, SCNAnimatable receiver);
 
-	delegate void SCNAnimationDidStartHandler2 (SCNAnimation animation, ISCNAnimatable receiver);
-#endif
-
-#if NET
 	delegate void SCNAnimationDidStopHandler (SCNAnimation animation, ISCNAnimatable receiver, bool completed);
-#else
-	[Obsolete ("Use 'SCNAnimationDidStopHandler2' instead.")]
-	delegate void SCNAnimationDidStopHandler (SCNAnimation animation, SCNAnimatable receiver, bool completed);
 
-	delegate void SCNAnimationDidStopHandler2 (SCNAnimation animation, ISCNAnimatable receiver, bool completed);
-#endif
-
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:SceneKit.SCNAnimatable" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:SceneKit.SCNAnimatable" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:SceneKit.SCNAnimatable" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:SceneKit.SCNAnimatable_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
-	/// <summary>Extension methods to the <see cref="T:SceneKit.ISCNAnimatable" /> interface to support all the methods from the <see cref="T:SceneKit.SCNAnimatable" /> protocol.</summary>
-	///     <remarks>
-	///       <para>The extension methods for <see cref="T:SceneKit.ISCNAnimatable" /> allow developers to treat instances of the interface as having all the optional methods of the original <see cref="T:SceneKit.SCNAnimatable" /> protocol.   Since the interface only contains the required members, these extension methods allow developers to call the optional members of the protocol.</para>
-	///     </remarks>
 	interface ISCNAnimatable { }
 
 	/// <summary>Allows animations to be applied.</summary>
@@ -169,63 +97,82 @@ namespace SceneKit {
 	[Model, Protocol]
 	[BaseType (typeof (NSObject))]
 	interface SCNAnimatable {
+		/// <summary>Adds <paramref name="scnAnimation" />, identified with the specified <paramref name="key" />.</summary>
+		/// <param name="scnAnimation">The animation to add.</param>
+		/// <param name="key">The animation key.</param>
+		/// <remarks>
+		///   <para>The following example shows how a rotation animation can be added to a <see cref="SceneKit.SCNGeometry" /> object:</para>
+		///   <example>
+		///     <code lang="csharp lang-csharp"><![CDATA[
+		/// var animation = new CABasicAnimation ();
+		/// animation.KeyPath = "rotation";
+		/// var v = new SCNVector4 (1.0f, 1.0f, 0.0f, (float) (Math.PI * 2.0));
+		/// animation.To = NSValue.FromVector (v);
+		/// animation.Duration = 5.0f;
+		/// animation.RepeatCount = float.MaxValue; //repeat forever
+		/// animatableObject.AddAnimation (animation, (NSString) "rotation");
+		///     ]]></code>
+		///   </example>
+		/// </remarks>
 		[Abstract]
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Export ("addAnimation:forKey:")]
-#if !NET
-		void AddAnimation (CAAnimation animation, [NullAllowed] NSString key);
-#else
 		void AddAnimation (ISCNAnimationProtocol scnAnimation, [NullAllowed] string key);
-#endif
 
-#if NET
 		[Abstract]
-#endif
 		[MacCatalyst (13, 1)]
 		[Export ("addAnimationPlayer:forKey:")]
 		void AddAnimation (SCNAnimationPlayer player, [NullAllowed] NSString key);
 
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("removeAllAnimations")]
 		void RemoveAllAnimations ();
 
-#if NET
 		[Abstract]
-#endif
-		[Watch (8, 0), TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("removeAllAnimationsWithBlendOutDuration:")]
 		void RemoveAllAnimationsWithBlendOutDuration (nfloat duration);
 
+		/// <param name="key">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("removeAnimationForKey:")]
 		void RemoveAnimation (NSString key);
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("animationKeys")]
 		NSString [] GetAnimationKeys ();
 
-#if NET
 		[Abstract]
-#endif
 		[return: NullAllowed]
 		[MacCatalyst (13, 1)]
 		[Export ("animationPlayerForKey:")]
 		SCNAnimationPlayer GetAnimationPlayer (NSString key);
 
+		/// <param name="key">To be added.</param>
+		/// <summary>Developers should not use this deprecated method. Developers should use 'GetAnimationPlayer' instead.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Deprecated (PlatformName.TvOS, 11, 0, message: "Use 'GetAnimationPlayer' instead.")]
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'GetAnimationPlayer' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'GetAnimationPlayer' instead.")]
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'GetAnimationPlayer' instead.")]
 		[Export ("animationForKey:")]
 		[return: NullAllowed]
 		CAAnimation GetAnimation (NSString key);
 
+		/// <param name="key">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
-		[Deprecated (PlatformName.WatchOS, 4, 0, message: "Use 'SCNAnimationPlayer.Paused' instead.")]
 		[Deprecated (PlatformName.TvOS, 11, 0, message: "Use 'SCNAnimationPlayer.Paused' instead.")]
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'SCNAnimationPlayer.Paused' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'SCNAnimationPlayer.Paused' instead.")]
@@ -234,8 +181,10 @@ namespace SceneKit {
 		[Export ("pauseAnimationForKey:")]
 		void PauseAnimation (NSString key);
 
+		/// <param name="key">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
-		[Deprecated (PlatformName.WatchOS, 4, 0, message: "Use 'SCNAnimationPlayer.Paused' instead.")]
 		[Deprecated (PlatformName.TvOS, 11, 0, message: "Use 'SCNAnimationPlayer.Paused' instead.")]
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'SCNAnimationPlayer.Paused' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'SCNAnimationPlayer.Paused' instead.")]
@@ -244,8 +193,11 @@ namespace SceneKit {
 		[Export ("resumeAnimationForKey:")]
 		void ResumeAnimation (NSString key);
 
+		/// <param name="key">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
-		[Deprecated (PlatformName.WatchOS, 4, 0, message: "Use 'SCNAnimationPlayer.Paused' instead.")]
 		[Deprecated (PlatformName.TvOS, 11, 0, message: "Use 'SCNAnimationPlayer.Paused' instead.")]
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'SCNAnimationPlayer.Paused' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'SCNAnimationPlayer.Paused' instead.")]
@@ -254,8 +206,11 @@ namespace SceneKit {
 		[Export ("isAnimationForKeyPaused:")]
 		bool IsAnimationPaused (NSString key);
 
+		/// <param name="key">To be added.</param>
+		/// <param name="duration">To be added.</param>
+		/// <summary>Deprecated. Developers should use <see cref="SceneKit.SCNAnimatable.RemoveAnimationUsingBlendOutDuration(Foundation.NSString,nfloat)" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
-		[Deprecated (PlatformName.WatchOS, 4, 0, message: "Use 'RemoveAnimationUsingBlendOutDuration' instead.")]
 		[Deprecated (PlatformName.TvOS, 11, 0, message: "Use 'RemoveAnimationUsingBlendOutDuration' instead.")]
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'RemoveAnimationUsingBlendOutDuration' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'RemoveAnimationUsingBlendOutDuration' instead.")]
@@ -264,17 +219,20 @@ namespace SceneKit {
 		[Export ("removeAnimationForKey:fadeOutDuration:")]
 		void RemoveAnimation (NSString key, nfloat duration);
 
-#if NET
+		/// <param name="key">The key for the animation to remove.</param>
+		/// <param name="blendOutDuration">The duration, in seconds, over which to blend the animation out.</param>
+		/// <summary>Removes the specified animation, blending it out over the specified duration.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
-#endif
 		[MacCatalyst (13, 1)]
 		[Export ("removeAnimationForKey:blendOutDuration:")]
 		void RemoveAnimationUsingBlendOutDuration (NSString key, nfloat blendOutDuration);
 
-#if NET
+		/// <param name="speed">To be added.</param>
+		/// <param name="key">To be added.</param>
+		/// <summary>Deprecated. Developers should use <see cref="SceneKit.SCNAnimationPlayer.Speed" />, instead.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
-#endif
-		[Deprecated (PlatformName.WatchOS, 4, 0, message: "Use 'SCNAnimationPlayer.Speed' instead.")]
 		[Deprecated (PlatformName.TvOS, 11, 0, message: "Use 'SCNAnimationPlayer.Speed' instead.")]
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'SCNAnimationPlayer.Speed' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'SCNAnimationPlayer.Speed' instead.")]
@@ -284,7 +242,7 @@ namespace SceneKit {
 		void SetSpeed (nfloat speed, NSString key);
 	}
 
-	/// <summary>Holds a <see cref="T:SceneKit.SCNAudioSource" /> or <see cref="T:AVFoundation.AVAudioNode" /> for use with positional audio.</summary>
+	/// <summary>Holds a <see cref="SceneKit.SCNAudioSource" /> or <see cref="AVFoundation.AVAudioNode" /> for use with positional audio.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNAudioPlayer_Class/index.html">Apple documentation for <c>SCNAudioPlayer</c></related>
 	[MacCatalyst (13, 1)]
@@ -341,6 +299,9 @@ namespace SceneKit {
 		[return: NullAllowed]
 		SCNAudioSource FromFile (string fileName);
 
+		/// <summary>Whether the audio uses positional mixing.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("positional")]
 		bool Positional { [Bind ("isPositional")] get; set; }
 
@@ -372,21 +333,35 @@ namespace SceneKit {
 	[Model, Protocol]
 	[BaseType (typeof (NSObject))]
 	interface SCNBoundingVolume {
+		/// <param name="min">To be added.</param>
+		/// <param name="max">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("getBoundingBoxMin:max:")]
 		bool GetBoundingBox (ref SCNVector3 min, ref SCNVector3 max);
 
+		/// <param name="min">To be added.</param>
+		/// <param name="max">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("setBoundingBoxMin:max:")]
 		void SetBoundingBox (ref SCNVector3 min, ref SCNVector3 max);
 
+		/// <param name="center">To be added.</param>
+		/// <param name="radius">To be added.</param>
+		/// <summary>Returns <see langword="true" />, and fills <paramref name="center" /> and <paramref name="radius" /> with the bounding sphere data, if the geometry object has volume. Otherwise, returns <see langword="false" /> and the parameters are undefined.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("getBoundingSphereCenter:radius:")]
 		bool GetBoundingSphere (ref SCNVector3 center, ref nfloat radius);
 	}
 
-	/// <summary>An <see cref="T:SceneKit.SCNGeometry" /> whose faces are all rectangles.</summary>
+	/// <summary>An <see cref="SceneKit.SCNGeometry" /> whose faces are all rectangles.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNBox_Class/index.html">Apple documentation for <c>SCNBox</c></related>
 	[MacCatalyst (13, 1)]
@@ -416,6 +391,13 @@ namespace SceneKit {
 		[Export ("chamferSegmentCount")]
 		nint ChamferSegmentCount { get; set; }
 
+		/// <param name="width">To be added.</param>
+		/// <param name="height">To be added.</param>
+		/// <param name="length">To be added.</param>
+		/// <param name="chamferRadius">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("boxWithWidth:height:length:chamferRadius:")]
 		SCNBox Create (nfloat width, nfloat height, nfloat length, nfloat chamferRadius);
 	}
@@ -433,7 +415,6 @@ namespace SceneKit {
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'FieldOfView' or 'FocalLength' instead.")]
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'FieldOfView' or 'FocalLength' instead.")]
 		[Deprecated (PlatformName.TvOS, 11, 0, message: "Use 'FieldOfView' or 'FocalLength' instead.")]
-		[Deprecated (PlatformName.WatchOS, 4, 0, message: "Use 'FieldOfView' or 'FocalLength' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'FieldOfView' or 'FocalLength' instead.")]
 		[Export ("xFov")]
 		double XFov { get; set; }
@@ -441,7 +422,6 @@ namespace SceneKit {
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'FieldOfView' or 'FocalLength' instead.")]
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'FieldOfView' or 'FocalLength' instead.")]
 		[Deprecated (PlatformName.TvOS, 11, 0, message: "Use 'FieldOfView' or 'FocalLength' instead.")]
-		[Deprecated (PlatformName.WatchOS, 4, 0, message: "Use 'FieldOfView' or 'FocalLength' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'FieldOfView' or 'FocalLength' instead.")]
 		[Export ("yFov")]
 		double YFov { get; set; }
@@ -473,7 +453,6 @@ namespace SceneKit {
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'FocusDistance' instead.")]
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'FocusDistance' instead.")]
 		[Deprecated (PlatformName.TvOS, 11, 0, message: "Use 'FocusDistance' instead.")]
-		[Deprecated (PlatformName.WatchOS, 4, 0, message: "Use 'FocusDistance' instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'FocusDistance' instead.")]
 		[Export ("focalDistance")]
@@ -482,7 +461,6 @@ namespace SceneKit {
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'FocusDistance' instead.")]
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'FocusDistance' instead.")]
 		[Deprecated (PlatformName.TvOS, 11, 0, message: "Use 'FocusDistance' instead.")]
-		[Deprecated (PlatformName.WatchOS, 4, 0, message: "Use 'FocusDistance' instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'FocusDistance' instead.")]
 		[Export ("focalSize")]
@@ -491,7 +469,6 @@ namespace SceneKit {
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'FStop' instead.")]
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'FStop' instead.")]
 		[Deprecated (PlatformName.TvOS, 11, 0, message: "Use 'FStop' instead.")]
-		[Deprecated (PlatformName.WatchOS, 4, 0, message: "Use 'FStop' instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'FStop' instead.")]
 		[Export ("focalBlurRadius")]
@@ -500,7 +477,6 @@ namespace SceneKit {
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'FStop' instead with FStop = SensorHeight / Aperture.")]
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'FStop' instead with FStop = SensorHeight / Aperture.")]
 		[Deprecated (PlatformName.TvOS, 11, 0, message: "Use 'FStop' instead with FStop = SensorHeight / Aperture.")]
-		[Deprecated (PlatformName.WatchOS, 4, 0, message: "Use 'FStop' instead with FStop = SensorHeight / Aperture.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'FStop' instead with FStop = SensorHeight / Aperture.")]
 		[Export ("aperture")]
@@ -590,7 +566,6 @@ namespace SceneKit {
 		[Export ("categoryBitMask")]
 		nuint CategoryBitMask { get; set; }
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("cameraWithMDLCamera:")]
@@ -652,42 +627,42 @@ namespace SceneKit {
 		[Export ("screenSpaceAmbientOcclusionNormalThreshold")]
 		nfloat ScreenSpaceAmbientOcclusionNormalThreshold { get; set; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("projectionTransformWithViewportSize:")]
 		SCNMatrix4 GetProjectionTransform (CGSize viewportSize);
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("bloomIterationCount")]
 		nint BloomIterationCount { get; set; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("bloomIterationSpread")]
 		nfloat BloomIterationSpread { get; set; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("grainIntensity")]
 		nfloat GrainIntensity { get; set; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("grainScale")]
 		nfloat GrainScale { get; set; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("grainIsColored")]
 		bool GrainIsColored { get; set; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("whiteBalanceTemperature")]
 		nfloat WhiteBalanceTemperature { get; set; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("whiteBalanceTint")]
 		nfloat WhiteBalanceTint { get; set; }
@@ -695,41 +670,52 @@ namespace SceneKit {
 
 	interface ISCNCameraControlConfiguration { }
 
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface SCNCameraControlConfiguration {
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("autoSwitchToFreeCamera")]
 		bool AutoSwitchToFreeCamera { get; set; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("allowsTranslation")]
 		bool AllowsTranslation { get; set; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("flyModeVelocity")]
 		nfloat FlyModeVelocity { get; set; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("panSensitivity")]
 		nfloat PanSensitivity { get; set; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("truckSensitivity")]
 		nfloat TruckSensitivity { get; set; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("rotationSensitivity")]
 		nfloat RotationSensitivity { get; set; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:SceneKit.SCNCameraControllerDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:SceneKit.SCNCameraControllerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:SceneKit.SCNCameraControllerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:SceneKit.SCNCameraControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface ISCNCameraControllerDelegate { }
 
 	[MacCatalyst (13, 1)]
@@ -737,9 +723,15 @@ namespace SceneKit {
 	[Model] // Figured I would keep the model for convenience, as all the methods here are optional
 	[BaseType (typeof (NSObject))]
 	interface SCNCameraControllerDelegate {
+		/// <param name="cameraController">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("cameraInertiaWillStartForController:")]
 		void CameraInertiaWillStart (SCNCameraController cameraController);
 
+		/// <param name="cameraController">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("cameraInertiaDidEndForController:")]
 		void CameraInertiaDidEnd (SCNCameraController cameraController);
 	}
@@ -772,6 +764,9 @@ namespace SceneKit {
 		[Export ("inertiaFriction")]
 		float InertiaFriction { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("inertiaRunning")]
 		bool InertiaRunning { [Bind ("isInertiaRunning")] get; }
 
@@ -817,6 +812,11 @@ namespace SceneKit {
 		[Export ("beginInteraction:withViewport:")]
 		void BeginInteraction (CGPoint location, CGSize viewport);
 
+		/// <param name="location">To be added.</param>
+		/// <param name="viewport">To be added.</param>
+		/// <param name="sensitivity">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("continueInteraction:withViewport:sensitivity:")]
 		void ContinueInteraction (CGPoint location, CGSize viewport, nfloat sensitivity);
 
@@ -824,7 +824,7 @@ namespace SceneKit {
 		void EndInteraction (CGPoint location, CGSize viewport, CGPoint velocity);
 	}
 
-	/// <summary>An <see cref="T:SceneKit.SCNGeometry" /> that is a cylinder with capped ends.</summary>
+	/// <summary>An <see cref="SceneKit.SCNGeometry" /> that is a cylinder with capped ends.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNCapsule_Class/index.html">Apple documentation for <c>SCNCapsule</c></related>
 	[MacCatalyst (13, 1)]
@@ -845,11 +845,16 @@ namespace SceneKit {
 		[Export ("capSegmentCount")]
 		nint CapSegmentCount { get; set; }
 
+		/// <param name="capRadius">To be added.</param>
+		/// <param name="height">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("capsuleWithCapRadius:height:")]
 		SCNCapsule Create (nfloat capRadius, nfloat height);
 	}
 
-	/// <summary>An <see cref="T:SceneKit.SCNGeometry" /> that is a circular frustum. Or, a party hat.</summary>
+	/// <summary>An <see cref="SceneKit.SCNGeometry" /> that is a circular frustum. Or, a party hat.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNCone_Class/index.html">Apple documentation for <c>SCNCone</c></related>
 	[MacCatalyst (13, 1)]
@@ -870,11 +875,17 @@ namespace SceneKit {
 		[Export ("heightSegmentCount")]
 		nint HeightSegmentCount { get; set; }
 
+		/// <param name="topRadius">To be added.</param>
+		/// <param name="bottomRadius">To be added.</param>
+		/// <param name="height">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("coneWithTopRadius:bottomRadius:height:")]
 		SCNCone Create (nfloat topRadius, nfloat bottomRadius, nfloat height);
 	}
 
-	/// <summary>An <see cref="T:SceneKit.SCNGeometry" /> that is a right circular cylinder.</summary>
+	/// <summary>An <see cref="SceneKit.SCNGeometry" /> that is a right circular cylinder.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNCylinder_Class/index.html">Apple documentation for <c>SCNCylinder</c></related>
 	[MacCatalyst (13, 1)]
@@ -892,11 +903,16 @@ namespace SceneKit {
 		[Export ("heightSegmentCount")]
 		nint HeightSegmentCount { get; set; }
 
+		/// <param name="radius">To be added.</param>
+		/// <param name="height">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("cylinderWithRadius:height:")]
 		SCNCylinder Create (nfloat radius, nfloat height);
 	}
 
-	/// <summary>An <see cref="T:SceneKit.SCNGeometry" /> that is an infinite plane.</summary>
+	/// <summary>An <see cref="SceneKit.SCNGeometry" /> that is an infinite plane.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNFloor_Class/index.html">Apple documentation for <c>SCNFloor</c></related>
 	[MacCatalyst (13, 1)]
@@ -958,12 +974,23 @@ namespace SceneKit {
 		[Export ("name", ArgumentSemantic.Copy)]
 		string Name { get; set; }
 
+		/// <param name="material">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <summary>Inserts the specified <paramref name="material" /> at the specified <paramref name="index" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("insertMaterial:atIndex:")]
 		void InsertMaterial (SCNMaterial material, nint index);
 
+		/// <param name="index">To be added.</param>
+		/// <summary>Removes the material at the specified index.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("removeMaterialAtIndex:")]
 		void RemoveMaterial (nint index);
 
+		/// <param name="materialIndex">To be added.</param>
+		/// <param name="newMaterial">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("replaceMaterialAtIndex:withMaterial:")]
 		void ReplaceMaterial (nint materialIndex, SCNMaterial newMaterial);
 
@@ -975,7 +1002,7 @@ namespace SceneKit {
 		[Export ("geometryWithSources:elements:")]
 		SCNGeometry Create (SCNGeometrySource [] sources, [NullAllowed] SCNGeometryElement [] elements);
 
-		[Watch (11, 0), TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Static]
 		[Export ("geometryWithSources:elements:sourceChannels:")]
 		SCNGeometry Create (SCNGeometrySource [] sources, [NullAllowed] SCNGeometryElement [] elements, [NullAllowed][BindAs (typeof (int []))] NSNumber [] sourceChannels);
@@ -983,6 +1010,10 @@ namespace SceneKit {
 		[Export ("geometrySourcesForSemantic:")]
 		SCNGeometrySource [] GetGeometrySourcesForSemantic (string semantic);
 
+		/// <param name="elementIndex">To be added.</param>
+		/// <summary>Gets the element at <paramref name="elementIndex" /> in the geometry's list of elements.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("geometryElementAtIndex:")]
 		SCNGeometryElement GetGeometryElement (nint elementIndex);
 
@@ -1013,18 +1044,16 @@ namespace SceneKit {
 		[Export ("wantsAdaptiveSubdivision")]
 		bool WantsAdaptiveSubdivision { get; set; }
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("geometryWithMDLMesh:")]
 		SCNGeometry FromMesh (MDLMesh mesh);
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("tessellator", ArgumentSemantic.Retain)]
 		SCNGeometryTessellator Tessellator { get; set; }
 
-		[Watch (11, 0), TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Export ("geometrySourceChannels"), NullAllowed]
 		[BindAs (typeof (int []))]
 		NSNumber [] GeometrySourceChannels { get; }
@@ -1058,6 +1087,17 @@ namespace SceneKit {
 		[Export ("dataStride")]
 		nint DataStride { get; }
 
+		/// <param name="data">To be added.</param>
+		/// <param name="geometrySourceSemantic">To be added.</param>
+		/// <param name="vectorCount">To be added.</param>
+		/// <param name="floatComponents">To be added.</param>
+		/// <param name="componentsPerVector">To be added.</param>
+		/// <param name="bytesPerComponent">To be added.</param>
+		/// <param name="offset">To be added.</param>
+		/// <param name="stride">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("geometrySourceWithData:semantic:vectorCount:floatComponents:componentsPerVector:bytesPerComponent:dataOffset:dataStride:")]
 		[Static]
 		SCNGeometrySource FromData (NSData data, NSString geometrySourceSemantic, nint vectorCount, bool floatComponents, nint componentsPerVector, nint bytesPerComponent, nint offset, nint stride);
@@ -1074,7 +1114,15 @@ namespace SceneKit {
 		[Export ("geometrySourceWithTextureCoordinates:count:"), Internal]
 		SCNGeometrySource FromTextureCoordinates (IntPtr texcoords, nint count);
 
-		[NoWatch]
+		/// <param name="mtlBuffer">To be added.</param>
+		/// <param name="vertexFormat">To be added.</param>
+		/// <param name="geometrySourceSemantic">To be added.</param>
+		/// <param name="vertexCount">To be added.</param>
+		/// <param name="offset">To be added.</param>
+		/// <param name="stride">To be added.</param>
+		/// <summary>Factory method to create a new <see cref="SceneKit.SCNGeometrySource" /> from a data buffer.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("geometrySourceWithBuffer:vertexFormat:semantic:vertexCount:dataOffset:dataStride:")]
@@ -1085,34 +1133,69 @@ namespace SceneKit {
 	[MacCatalyst (13, 1)]
 	[Static]
 	interface SCNGeometrySourceSemantic {
+		/// <summary>Represents the value associated with the constant SCNGeometrySourceSemanticVertex</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNGeometrySourceSemanticVertex")]
 		NSString Vertex { get; }
 
+		/// <summary>Represents the value associated with the constant SCNGeometrySourceSemanticNormal</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNGeometrySourceSemanticNormal")]
 		NSString Normal { get; }
 
+		/// <summary>Represents the value associated with the constant SCNGeometrySourceSemanticColor</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNGeometrySourceSemanticColor")]
 		NSString Color { get; }
 
+		/// <summary>Represents the value associated with the constant SCNGeometrySourceSemanticTexcoord</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNGeometrySourceSemanticTexcoord")]
 		NSString Texcoord { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNGeometrySourceSemanticTangent")]
 		NSString Tangent { get; }
 
+		/// <summary>Represents the value associated with the constant SCNGeometrySourceSemanticVertexCrease</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNGeometrySourceSemanticVertexCrease")]
 		NSString VertexCrease { get; }
 
+		/// <summary>Represents the value associated with the constant SCNGeometrySourceSemanticEdgeCrease</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNGeometrySourceSemanticEdgeCrease")]
 		NSString EdgeCrease { get; }
 
+		/// <summary>Represents the value associated with the constant SCNGeometrySourceSemanticBoneWeights</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNGeometrySourceSemanticBoneWeights")]
 		NSString BoneWeights { get; }
 
+		/// <summary>Represents the value associated with the constant SCNGeometrySourceSemanticBoneIndices</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNGeometrySourceSemanticBoneIndices")]
 		NSString BoneIndices { get; }
@@ -1136,11 +1219,21 @@ namespace SceneKit {
 		[Export ("bytesPerIndex")]
 		nint BytesPerIndex { get; }
 
+		/// <param name="data">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="primitiveType">To be added.</param>
+		/// <param name="primitiveCount">To be added.</param>
+		/// <param name="bytesPerIndex">To be added.</param>
+		/// <summary>Creates a new geometry element from the provided values.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static]
 		[Export ("geometryElementWithData:primitiveType:primitiveCount:bytesPerIndex:")]
 		SCNGeometryElement FromData ([NullAllowed] NSData data, SCNGeometryPrimitiveType primitiveType, nint primitiveCount, nint bytesPerIndex);
 
-		[Watch (11, 0), TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Static]
 		[Export ("geometryElementWithData:primitiveType:primitiveCount:indicesChannelCount:interleavedIndicesChannels:bytesPerIndex:")]
 		SCNGeometryElement FromData ([NullAllowed] NSData data, SCNGeometryPrimitiveType primitiveType, nint primitiveCount, nint indicesChannelCount, bool interleavedIndicesChannels, nint bytesPerIndex);
@@ -1161,20 +1254,17 @@ namespace SceneKit {
 		[Export ("maximumPointScreenSpaceRadius")]
 		nfloat MaximumPointScreenSpaceRadius { get; set; }
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("geometryElementWithMDLSubmesh:")]
 		SCNGeometryElement FromSubmesh (MDLSubmesh submesh);
 
-		[NoWatch] // marked as 7,0 but there's no Metal support on the platform
 		[TV (14, 0), iOS (14, 0)]
 		[MacCatalyst (14, 0)]
 		[Static]
 		[Export ("geometryElementWithBuffer:primitiveType:primitiveCount:bytesPerIndex:")]
 		SCNGeometryElement FromBuffer (IMTLBuffer buffer, SCNGeometryPrimitiveType primitiveType, nint primitiveCount, nint bytesPerIndex);
 
-		[NoWatch] // marked as 11.0 but there's no Metal support on the platform
 		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Static]
 		[Export ("geometryElementWithBuffer:primitiveType:primitiveCount:indicesChannelCount:interleavedIndicesChannels:bytesPerIndex:")]
@@ -1189,8 +1279,6 @@ namespace SceneKit {
 		nint IndicesChannelCount { get; }
 	}
 
-#if !WATCH
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -1201,9 +1289,15 @@ namespace SceneKit {
 		[Export ("tessellationPartitionMode", ArgumentSemantic.Assign)]
 		MTLTessellationPartitionMode TessellationPartitionMode { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("adaptive")]
 		bool Adaptive { [Bind ("isAdaptive")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("screenSpace")]
 		bool ScreenSpace { [Bind ("isScreenSpace")] get; set; }
 
@@ -1219,52 +1313,83 @@ namespace SceneKit {
 		[Export ("smoothingMode", ArgumentSemantic.Assign)]
 		SCNTessellationSmoothingMode SmoothingMode { get; set; }
 	}
-#endif
 
-	/// <summary>Constants for use with the <c>options</c> argument in <see cref="M:SceneKit.SCNNode.HitTest(SceneKit.SCNVector3,SceneKit.SCNVector3,SceneKit.SCNHitTestOptions)" />.</summary>
+	/// <summary>Constants for use with the <c>options</c> argument in <see cref="SceneKit.SCNNode.HitTest(SceneKit.SCNVector3,SceneKit.SCNVector3,SceneKit.SCNHitTestOptions)" />.</summary>
 	[MacCatalyst (13, 1)]
 	[Static]
 	interface SCNHitTest {
+		/// <summary>Represents the value associated with the constant SCNHitTestFirstFoundOnlyKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNHitTestFirstFoundOnlyKey")]
 		NSString FirstFoundOnlyKey { get; }
 
+		/// <summary>Represents the value associated with the constant SCNHitTestSortResultsKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNHitTestSortResultsKey")]
 		NSString SortResultsKey { get; }
 
+		/// <summary>Represents the value associated with the constant SCNHitTestClipToZRangeKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNHitTestClipToZRangeKey")]
 		NSString ClipToZRangeKey { get; }
 
+		/// <summary>Represents the value associated with the constant SCNHitTestBackFaceCullingKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNHitTestBackFaceCullingKey")]
 		NSString BackFaceCullingKey { get; }
 
+		/// <summary>Represents the value associated with the constant SCNHitTestBoundingBoxOnlyKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNHitTestBoundingBoxOnlyKey")]
 		NSString BoundingBoxOnlyKey { get; }
 
+		/// <summary>Represents the value associated with the constant SCNHitTestIgnoreChildNodesKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNHitTestIgnoreChildNodesKey")]
 		NSString IgnoreChildNodesKey { get; }
 
+		/// <summary>Represents the value associated with the constant SCNHitTestRootNodeKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNHitTestRootNodeKey")]
 		NSString RootNodeKey { get; }
 
+		/// <summary>Represents the value associated with the constant SCNHitTestIgnoreHiddenNodesKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNHitTestIgnoreHiddenNodesKey")]
 		NSString IgnoreHiddenNodesKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNHitTestOptionCategoryBitMask")]
 		NSString OptionCategoryBitMaskKey { get; }
 
-#if !NET
-		[Obsolete ("Use 'SearchModeKey' instead.")]
-		[Field ("SCNHitTestOptionSearchMode")]
-		NSString OptionSearchModeKey { get; }
-#endif
-
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNHitTestOptionSearchMode")]
 		NSString SearchModeKey { get; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("SCNHitTestOptionIgnoreLightArea")]
 		NSString IgnoreLightAreaKey { get; }
@@ -1307,13 +1432,16 @@ namespace SceneKit {
 		[Export ("node")]
 		SCNNode Node { get; }
 
+		/// <param name="channel">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("textureCoordinatesWithMappingChannel:")]
 		CGPoint GetTextureCoordinatesWithMappingChannel (nint channel);
 	}
 
 	[NoiOS]
 	[NoTV]
-	[NoWatch]
 	[NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "Please use Metal instead of OpenGL API.")]
 	[BaseType (typeof (CAOpenGLLayer))]
@@ -1335,6 +1463,9 @@ namespace SceneKit {
 		[Export ("color", ArgumentSemantic.Retain)]
 		NSObject WeakColor { get; set; }
 
+		/// <summary>Gets or sets the color of the light.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakColor")]
 		NSColor Color { get; set; }
 
@@ -1356,6 +1487,9 @@ namespace SceneKit {
 		[Export ("shadowColor", ArgumentSemantic.Retain)]
 		NSObject WeakShadowColor { get; set; }
 
+		/// <summary>Gets or sets the color of shadows that are cast by the light.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakShadowColor")]
 		NSColor ShadowColor { get; set; }
 
@@ -1469,23 +1603,22 @@ namespace SceneKit {
 		[Export ("sphericalHarmonicsCoefficients", ArgumentSemantic.Copy)]
 		NSData SphericalHarmonicsCoefficients { get; }
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("lightWithMDLLight:")]
 		SCNLight FromModelLight (MDLLight mdllight);
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("probeType", ArgumentSemantic.Assign)]
 		SCNLightProbeType ProbeType { get; set; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("probeUpdateType", ArgumentSemantic.Assign)]
 		SCNLightProbeUpdateType ProbeUpdateType { get; set; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("probeExtents", ArgumentSemantic.Assign)]
 		Vector3 ProbeExtents {
@@ -1495,7 +1628,7 @@ namespace SceneKit {
 			set;
 		}
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("probeOffset", ArgumentSemantic.Assign)]
 		Vector3 ProbeOffset {
@@ -1505,12 +1638,12 @@ namespace SceneKit {
 			set;
 		}
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("parallaxCorrectionEnabled")]
 		bool ParallaxCorrectionEnabled { get; set; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("parallaxExtentsFactor", ArgumentSemantic.Assign)]
 		Vector3 ParallaxExtentsFactor {
@@ -1520,7 +1653,7 @@ namespace SceneKit {
 			set;
 		}
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("parallaxCenterOffset", ArgumentSemantic.Assign)]
 		Vector3 ParallaxCenterOffset {
@@ -1530,17 +1663,17 @@ namespace SceneKit {
 			set;
 		}
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("probeEnvironment")]
 		SCNMaterialProperty ProbeEnvironment { get; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("areaType", ArgumentSemantic.Assign)]
 		SCNLightAreaType AreaType { get; set; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("areaExtents", ArgumentSemantic.Assign)]
 		Vector3 AreaExtents {
@@ -1550,47 +1683,69 @@ namespace SceneKit {
 			set;
 		}
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("areaPolygonVertices", ArgumentSemantic.Copy)]
 		NSValue [] AreaPolygonVertices { get; set; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("drawsArea")]
 		bool DrawsArea { get; set; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("doubleSided")]
 		bool DoubleSided { get; set; }
 	}
 
-	/// <summary>Enumerates the types of <see cref="T:SceneKit.SCNLight" />.</summary>
+	/// <summary>Enumerates the types of <see cref="SceneKit.SCNLight" />.</summary>
 	[MacCatalyst (13, 1)]
 	[Static]
 	interface SCNLightType {
+		/// <summary>Represents the value associated with the constant SCNLightTypeAmbient</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNLightTypeAmbient")]
 		NSString Ambient { get; }
 
+		/// <summary>Represents the value associated with the constant SCNLightTypeOmni</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNLightTypeOmni")]
 		NSString Omni { get; }
 
+		/// <summary>Represents the value associated with the constant SCNLightTypeDirectional</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNLightTypeDirectional")]
 		NSString Directional { get; }
 
+		/// <summary>Represents the value associated with the constant SCNLightTypeSpot</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNLightTypeSpot")]
 		NSString Spot { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNLightTypeIES")]
 		NSString Ies { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNLightTypeProbe")]
 		NSString Probe { get; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("SCNLightTypeArea")]
 		NSString Area { get; }
@@ -1598,54 +1753,93 @@ namespace SceneKit {
 
 	[NoiOS]
 	[NoTV]
-	[NoWatch]
 	[NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 10)]
 	[Static]
 	interface SCNLightAttribute {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNLightAttenuationStartKey")]
 		NSString AttenuationStartKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNLightAttenuationEndKey")]
 		NSString AttenuationEndKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNLightAttenuationFalloffExponentKey")]
 		NSString AttenuationFalloffExponentKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNLightSpotInnerAngleKey")]
 		NSString SpotInnerAngleKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNLightSpotOuterAngleKey")]
 		NSString SpotOuterAngleKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNLightShadowNearClippingKey")]
 		NSString ShadowNearClippingKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNLightShadowFarClippingKey")]
 		NSString ShadowFarClippingKey { get; }
 	}
 
-	/// <summary>Constants for use with the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=P:SceneKit.SCNMaterial.LightingModel&amp;scope=Xamarin" title="P:SceneKit.SCNMaterial.LightingModel">P:SceneKit.SCNMaterial.LightingModel</a></format> property, which defines the way lights and materials combine to produce a particular rendered color.</summary>
+	/// <summary>Constants for use with the <see cref="SCNMaterial.LightingModelName" /> property, which defines the way lights and materials combine to produce a particular rendered color.</summary>
 	[MacCatalyst (13, 1)]
 	[Static]
 	interface SCNLightingModel {
+		/// <summary>Represents the value associated with the constant SCNLightingModelPhong</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNLightingModelPhong")]
 		NSString Phong { get; }
 
+		/// <summary>Represents the value associated with the constant SCNLightingModelBlinn</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNLightingModelBlinn")]
 		NSString Blinn { get; }
 
+		/// <summary>Represents the value associated with the constant SCNLightingModelLambert</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNLightingModelLambert")]
 		NSString Lambert { get; }
 
+		/// <summary>Represents the value associated with the constant SCNLightingModelConstant</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNLightingModelConstant")]
 		NSString Constant { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNLightingModelPhysicallyBased")]
 		NSString PhysicallyBased { get; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("SCNLightingModelShadowOnly")]
 		NSString ShadowOnly { get; }
@@ -1694,9 +1888,15 @@ namespace SceneKit {
 		[Export ("lightingModelName", ArgumentSemantic.Copy)]
 		NSString LightingModelName { get; set; }
 
+		/// <summary>Gets or sets a value that controls whether lighting is performed on a per-pixel or per-vertex basis.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("litPerPixel")]
 		bool LitPerPixel { [Bind ("isLitPerPixel")] get; set; }
 
+		/// <summary>Gets or sets a value that controls whether both faces of a surface should be rendered. Default is <see langword="false" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("doubleSided")]
 		bool DoubleSided { [Bind ("isDoubleSided")] get; set; }
 
@@ -1743,7 +1943,6 @@ namespace SceneKit {
 		[Export ("roughness")]
 		SCNMaterialProperty Roughness { get; }
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("materialWithMDLMaterial:")]
@@ -1761,23 +1960,23 @@ namespace SceneKit {
 		[Export ("colorBufferWriteMask", ArgumentSemantic.Assign)]
 		SCNColorMask ColorBufferWriteMask { get; set; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("clearCoat")]
 		SCNMaterialProperty ClearCoat { get; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("clearCoatRoughness")]
 		SCNMaterialProperty ClearCoatRoughness { get; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("clearCoatNormal")]
 		SCNMaterialProperty ClearCoatNormal { get; }
 	}
 
-	/// <summary>Configures the various properties (such as color and texture) of a <see cref="T:SceneKit.SCNMaterial" />.</summary>
+	/// <summary>Configures the various properties (such as color and texture) of a <see cref="SceneKit.SCNMaterial" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNMaterialProperty_Class/index.html">Apple documentation for <c>SCNMaterialProperty</c></related>
 	[MacCatalyst (13, 1)]
@@ -1805,7 +2004,7 @@ namespace SceneKit {
 		[Deprecated (PlatformName.iOS, 10, 0)]
 		[Deprecated (PlatformName.MacOSX, 10, 12)]
 		[NoMacCatalyst]
-		[NoWatch, NoTV]
+		[NoTV]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 		[NullAllowed, Export ("borderColor", ArgumentSemantic.Retain)]
 		NSObject BorderColor { get; set; }
@@ -1816,29 +2015,52 @@ namespace SceneKit {
 		[Export ("contents", ArgumentSemantic.Retain), NullAllowed]
 		NSObject Contents { get; set; }
 
+		/// <summary>Gets or sets the material property's color.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("Contents")]
 		NSColor ContentColor { get; set; }
 
+		/// <summary>Gets or sets the material property's image.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("Contents")]
 		NSImage ContentImage { get; set; }
 
-		[NoWatch]
+		/// <summary>Gets or sets the material property's animation layer.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("Contents")]
 		CALayer ContentLayer { get; set; }
 
+		/// <summary>Gets or sets the path to the image that is used for the material property's contents.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("Contents")]
 		NSString ContentPath { get; set; }
 
+		/// <summary>Gets or sets the URL that specifies the material property's image content.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("Contents")]
 		NSUrl ContentUrl { get; set; }
 
+		/// <summary>Gets or sets the material property's scene.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("Contents")]
 		SKScene ContentScene { get; set; }
 
+		/// <summary>Gets or sets the material property's texture.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("Contents")]
 		SKTexture ContentTexture { get; set; }
 
+		/// <summary>Gets or sets the material property's image cube.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("Contents")]
 		NSImage [] ContentImageCube { get; set; }
 
@@ -1859,34 +2081,33 @@ namespace SceneKit {
 		SCNMaterialProperty Create (NSObject contents);
 
 		[Static]
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0), Watch (10, 0)]
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[return: NullAllowed]
 		[Export ("precomputedLightingEnvironmentContentsWithURL:error:")]
 		NSObject GetPrecomputedLightingEnvironmentContents (NSUrl url, out NSError error);
 
 		[Static]
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0), Watch (10, 0)]
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[return: NullAllowed]
 		[Export ("precomputedLightingEnvironmentContentsWithData:error:")]
 		NSObject GetPrecomputedLightingEnvironmentContents (NSData url, out NSError error);
 
 		[Static]
-		[NoWatch] // headers claim watchOS 10.0, but watchOS doesn't have Metal
 		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[return: NullAllowed]
 		[Export ("precomputedLightingEnvironmentDataForContents:device:error:")]
 		NSData GetPrecomputedLightingEnvironmentData (NSObject contents, [NullAllowed] IMTLDevice device, out NSError error);
 	}
 
-#if !WATCH
-	/// <summary>Defines the <see cref="P:SceneKit.SCNProgramSemanticOptions.MappingChannel" /> for use with <see cref="M:SceneKit.SCNProgram.SetSemantic(Foundation.NSString,System.String,SceneKit.SCNProgramSemanticOptions)" />.</summary>
-	[NoWatch]
+	/// <summary>Defines the <see cref="SceneKit.SCNProgramSemanticOptions.MappingChannel" /> for use with <see cref="SceneKit.SCNProgram.SetSemantic(Foundation.NSString,System.String,SceneKit.SCNProgramSemanticOptions)" />.</summary>
 	[MacCatalyst (13, 1)]
 	[StrongDictionary ("SCNProgram")]
 	interface SCNProgramSemanticOptions {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		nuint MappingChannel { get; set; }
 	}
-#endif
 
 	/// <summary>Configuration options for hit-testing in SCNNode and SCNSceneRenderer</summary>
 	///     <remarks>
@@ -1894,22 +2115,77 @@ namespace SceneKit {
 	/// 	You create an instance of this class to configure how hit-testing should be evaluated by the HitTest methods.
 	///       </para>
 	///       <para>
-	/// 	Hit testing uses two 3D vectors in the case of <see cref="T:SceneKit.SCNNode" /> and a 2D point in the case of the <see cref="T:SceneKit.SCNSceneRenderer" />.
+	/// 	Hit testing uses two 3D vectors in the case of <see cref="SceneKit.SCNNode" /> and a 2D point in the case of the <see cref="SceneKit.SCNSceneRenderer" />.
 	///       </para>
 	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[StrongDictionary ("SCNHitTest")]
 	interface SCNHitTestOptions {
+		/// <summary>Controls whether only the first hit match is returned.   Caveat: the first match returned might not be the nearest object.</summary>
+		///         <value>If not specified, the value assumed is false.</value>
+		///         <remarks>
+		///         </remarks>
 		bool FirstFoundOnly { get; set; }
+		/// <summary>If set, sorts the returned hit-test results from nearest to farthest.</summary>
+		///         <value>If not specified, the value is assumed to be true, so the results are sorted.</value>
+		///         <remarks>
+		///         </remarks>
 		bool SortResults { get; set; }
+		/// <summary>Determines whether to ignore polygons that are not facing the camera for hit-testing.</summary>
+		///         <value>If not specified, the default is to assume that you want back-face culling.</value>
+		///         <remarks>
+		///         </remarks>
 		bool BackFaceCulling { get; set; }
+		/// <summary>Control whether hit-testing uses the node's geometry, or if a bounding-box is used to optmize the hit-testing process speed.</summary>
+		///         <value>If this value is not specified, the value assumed is false.</value>
+		///         <remarks>
+		/// 	  By default, the hit-testing will use the node's geometry
+		/// 	  information to determine whether there was a hit.  This
+		/// 	  process can be slow, so you can set this property to true to
+		/// 	  constraint the search space to the bounxing box of the
+		/// 	  target.
+		/// 	</remarks>
 		bool BoundingBoxOnly { get; set; }
+		/// <summary>Controls whether hit-testing will consider all nodes of the hierarchy, or only the node specified in the RootNode property.</summary>
+		///         <value>If not specified, the value is assumed to be false.</value>
+		///         <remarks>
+		/// 	  By default this will search all the nodes in the hierarchy.
+		/// 	  If you set this value to true, you can limit the search to
+		/// 	  the node specified in <see cref="SceneKit.SCNHitTestOptions.RootNode" />
+		/// 	  property.
+		/// 	</remarks>
 		bool IgnoreChildNodes { get; set; }
+		/// <summary>Controls whether hit-testing will return hidden nodes or not.</summary>
+		///         <value>If not specified, the value is assumed to be true.</value>
+		///         <remarks>
+		/// 	  The default is to skip hidden nodes.   Set this value to false if you want to perform hit-testing including nodes that have set their <see cref="SceneKit.SCNNode.Hidden" /> property to true.
+		/// 	</remarks>
 		bool IgnoreHiddenNodes { get; set; }
+		/// <summary>Limits the hit-testing to this node as well as its children (you must also set IgnoreChildNodes).</summary>
+		///         <value>
+		///           <para>
+		/// 	    The node that will be used as the root node to search for hits.
+		/// 	  </para>
+		///           <para>
+		/// 	    If not specified, when used with a <see cref="SceneKit.SCNSceneRenderer" /> the default
+		/// 	    value would be the presented scene's root node.
+		/// 	  </para>
+		///           <para>
+		/// 	    If not specified, when used with a <see cref="SceneKit.SCNNode" /> the default
+		/// 	    value is the node itself.
+		/// 	  </para>
+		///         </value>
+		///         <remarks>
+		///           <para>
+		///           </para>
+		///         </remarks>
 		[NullAllowed]
 		SCNNode RootNode { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		SCNHitTestSearchMode SearchMode { get; set; }
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		bool IgnoreLightArea { get; set; }
 	}
@@ -1918,25 +2194,53 @@ namespace SceneKit {
 	[MacCatalyst (13, 1)]
 	[StrongDictionary ("SCNSceneSourceLoading")]
 	interface SCNSceneLoadingOptions {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		NSUrl [] AssetDirectoryUrls { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		bool CreateNormalsIfAbsent { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		bool FlattenScene { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		bool CheckConsistency { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		bool OverrideAssetUrls { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		bool StrictConformance { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		bool UseSafeMode { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("SCNSceneSourceLoading.OptionPreserveOriginalTopology")]
 		bool PreserveOriginalTopology { get; set; }
 
 		// note: generator's StrongDictionary does not support No* attributes yet
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		float ConvertUnitsToMeters { get; set; } /* 'floating value encapsulated in a NSNumber' probably a float since it's a graphics framework */
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		bool ConvertToYUp { get; set; }
 
@@ -1944,9 +2248,9 @@ namespace SceneKit {
 		NSString _AnimationImportPolicyKey { get; set; }
 	}
 
-	/// <param name="node">The current <see cref="T:SceneKit.SCNNode" />.</param>
+	/// <param name="node">The current <see cref="SceneKit.SCNNode" />.</param>
 	///     <param name="stop">An <c>out</c> parameter that, when set to true, stops the enumeration.</param>
-	///     <summary>Delegate for use with <see cref="M:SceneKit.SCNNode.EnumerateChildNodes(SceneKit.SCNNodePredicate)" />.</summary>
+	///     <summary>Delegate for use with <see cref="SCNNode.FindNodes(SceneKit.SCNNodePredicate)" />.</summary>
 	[MacCatalyst (13, 1)]
 	delegate bool SCNNodePredicate (SCNNode node, out bool stop);
 
@@ -1988,6 +2292,9 @@ namespace SceneKit {
 			set;
 		}
 
+		/// <summary>Gets or sets a Boolean value that hides or shows the node's contents.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("hidden")]
 		bool Hidden { [Bind ("isHidden")] get; set; }
 
@@ -2020,12 +2327,16 @@ namespace SceneKit {
 		[Export ("name", ArgumentSemantic.Copy)]
 		string Name { get; set; }
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Export ("rendererDelegate", ArgumentSemantic.Assign), NullAllowed]
 		NSObject WeakRendererDelegate { get; set; }
 
-		[NoWatch]
+		/// <summary>Gets or sets the rendering delegate for the node.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("WeakRendererDelegate")]
 		ISCNNodeRendererDelegate RendererDelegate { get; set; }
@@ -2040,6 +2351,10 @@ namespace SceneKit {
 		[Export ("presentationNode")]
 		SCNNode PresentationNode { get; }
 
+		/// <param name="child">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <summary>Inserts the provided <paramref name="child" /> node at the specified <paramref name="index" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("insertChildNode:atIndex:")]
 		void InsertChildNode (SCNNode child, nint index);
 
@@ -2085,7 +2400,6 @@ namespace SceneKit {
 		[NullAllowed]
 		SCNConstraint [] Constraints { get; set; }
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[NullAllowed] // by default this property is null
 		[Export ("filters", ArgumentSemantic.Copy)]
@@ -2124,6 +2438,15 @@ namespace SceneKit {
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		SCNHitTestResult [] HitTest (SCNVector3 pointA, SCNVector3 pointB, [NullAllowed] NSDictionary options);
 
+		/// <param name="pointA">To be added.</param>
+		///         <param name="pointB">To be added.</param>
+		///         <param name="options">
+		///           <para>Strongly typed set of options to perform the hit-test detection.</para>
+		///           <para>This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Returns an array of hit test results for descendant nodes that intersect with a line between <paramref name="pointA" /> and <paramref name="pointB" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("HitTest (pointA, pointB, options.GetDictionary ())")]
 		SCNHitTestResult [] HitTest (SCNVector3 pointA, SCNVector3 pointB, [NullAllowed] SCNHitTestOptions options);
 
@@ -2148,6 +2471,9 @@ namespace SceneKit {
 		[Export ("physicsField", ArgumentSemantic.Retain)]
 		SCNPhysicsField PhysicsField { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether animations on the node's contents are paused.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("paused")]
 		bool Paused { [Bind ("isPaused")] get; set; }
@@ -2209,7 +2535,6 @@ namespace SceneKit {
 
 		#endregion
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("nodeWithMDLObject:")]
@@ -2271,7 +2596,7 @@ namespace SceneKit {
 		// We took the decision to comment the following helpers since they currently do not bring
 		// any benefits over the SCN* versions, actually the SIMD types could potentially be just
 		// a little slower than the SCN* versions due to manual native conversion. If you really
-		// need them please file a bug at https://github.com/xamarin/xamarin-macios/issues/new
+		// need them please file a bug at https://github.com/dotnet/macios/issues/new
 
 		// Please add the following code to runtime/bindings-generator.cs if you reenable the following SIMD methods.
 
@@ -2523,27 +2848,28 @@ namespace SceneKit {
 		//void Rotate (Quaternion worldRotation, NVector3 worldTarget);
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:SceneKit.SCNNodeRendererDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:SceneKit.SCNNodeRendererDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:SceneKit.SCNNodeRendererDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:SceneKit.SCNNodeRendererDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface ISCNNodeRendererDelegate { }
 
 	/// <summary>Interface defining delegate object functions for adding custom OpenGL drawing code.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNNodeRendererDelegate_Protocol/index.html">Apple documentation for <c>SCNNodeRendererDelegate</c></related>
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Model, Protocol]
 	interface SCNNodeRendererDelegate {
+		/// <param name="node">To be added.</param>
+		/// <param name="renderer">To be added.</param>
+		/// <param name="arguments">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("renderNode:renderer:arguments:")]
 		void Render (SCNNode node, SCNRenderer renderer, NSDictionary arguments);
 	}
 
-	/// <summary>An <see cref="T:SceneKit.SCNGeometry" /> that is a rectangular single-sided finite plane.</summary>
+	/// <summary>An <see cref="SceneKit.SCNGeometry" /> that is a rectangular single-sided finite plane.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNPlane_Class/index.html">Apple documentation for <c>SCNPlane</c></related>
 	[MacCatalyst (13, 1)]
@@ -2561,6 +2887,11 @@ namespace SceneKit {
 		[Export ("heightSegmentCount")]
 		nint HeightSegmentCount { get; set; }
 
+		/// <param name="width">To be added.</param>
+		/// <param name="height">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("planeWithWidth:height:")]
 		SCNPlane Create (nfloat width, nfloat height);
 
@@ -2573,19 +2904,11 @@ namespace SceneKit {
 		nint CornerSegmentCount { get; set; }
 	}
 
-#if NET
 	delegate void SCNBufferBindingHandler (ISCNBufferStream buffer, SCNNode node, ISCNShadable shadable, SCNRenderer renderer);
-#else
-	[Obsolete ("Use 'SCNBufferBindingHandler2' instead.")]
-	delegate void SCNBufferBindingHandler (ISCNBufferStream buffer, SCNNode node, SCNShadable shadable, SCNRenderer renderer);
-
-	delegate void SCNBufferBindingHandler2 (ISCNBufferStream buffer, SCNNode node, ISCNShadable shadable, SCNRenderer renderer);
-#endif // NET
 
 	/// <summary>Performs custom rendering using shaders written in OpenGL Shading Language.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNProgram_Class/index.html">Apple documentation for <c>SCNProgram</c></related>
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface SCNProgram : NSCopying, NSSecureCoding {
@@ -2607,23 +2930,20 @@ namespace SceneKit {
 		[Export ("fragmentFunctionName")]
 		string FragmentFunctionName { get; set; }
 
-#if NET
 		[MacCatalyst (13, 1)]
 		[Export ("handleBindingOfBufferNamed:frequency:usingBlock:")]
 		void HandleBinding (string name, SCNBufferFrequency frequency, SCNBufferBindingHandler handler);
-#else
-		[Obsolete ("Use 'HandleBinding' overload with 'SCNBufferBindingHandler2' parameter instead.")]
-		[Export ("handleBindingOfBufferNamed:frequency:usingBlock:")]
-		void HandleBinding (string name, SCNBufferFrequency frequency, SCNBufferBindingHandler handler);
-
-		[Sealed]
-		[Export ("handleBindingOfBufferNamed:frequency:usingBlock:")]
-		void HandleBinding (string name, SCNBufferFrequency frequency, SCNBufferBindingHandler2 handler);
-#endif // NET
 
 		[Export ("delegate", ArgumentSemantic.Assign), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the SceneKit.ISCNProgramDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the SceneKit.ISCNProgramDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		ISCNProgramDelegate Delegate { get; set; }
 
@@ -2634,55 +2954,59 @@ namespace SceneKit {
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		void SetSemantic ([NullAllowed] NSString geometrySourceSemantic, string symbol, [NullAllowed] NSDictionary options);
 
-#if !WATCH
-		[NoWatch]
+		/// <param name="geometrySourceSemantic">To be added.</param>
+		///         <param name="symbol">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>Sets the specified semantic.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("SetSemantic (geometrySourceSemantic, symbol, options.GetDictionary ())")]
 		void SetSemantic (NSString geometrySourceSemantic, string symbol, SCNProgramSemanticOptions options);
-#endif
 
 		[Export ("semanticForSymbol:")]
 		[return: NullAllowed]
-#if NET
 		NSString GetSemantic (string symbol);
-#else
-		NSString GetSemanticForSymbol (string symbol);
-#endif
 
-		[NoWatch]
+		/// <summary>Represents the value associated with the constant SCNProgramMappingChannelKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNProgramMappingChannelKey")]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		NSString MappingChannelKey { get; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the program produces opaque renderings.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("opaque")]
 		bool Opaque { [Bind ("isOpaque")] get; set; }
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[NullAllowed]
 		[Export ("library", ArgumentSemantic.Retain)]
 		IMTLLibrary Library { get; set; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:SceneKit.SCNProgramDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:SceneKit.SCNProgramDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:SceneKit.SCNProgramDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:SceneKit.SCNProgramDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface ISCNProgramDelegate { }
 
 	/// <summary>Delegate object for SCNProgram objects.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNProgramDelegate_Protocol/index.html">Apple documentation for <c>SCNProgramDelegate</c></related>
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Model, Protocol]
 	interface SCNProgramDelegate {
 
+		/// <param name="program">To be added.</param>
+		/// <param name="symbol">To be added.</param>
+		/// <param name="location">To be added.</param>
+		/// <param name="programID">To be added.</param>
+		/// <param name="renderer">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Unavailable (PlatformName.iOS)]
 		[NoTV]
 		[NoMacCatalyst]
@@ -2690,6 +3014,13 @@ namespace SceneKit {
 		[Export ("program:bindValueForSymbol:atLocation:programID:renderer:")]
 		bool BindValue (SCNProgram program, string symbol, uint /* unsigned int */ location, uint /* unsigned int */ programID, SCNRenderer renderer);
 
+		/// <param name="program">To be added.</param>
+		/// <param name="symbol">To be added.</param>
+		/// <param name="location">To be added.</param>
+		/// <param name="programID">To be added.</param>
+		/// <param name="renderer">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Unavailable (PlatformName.iOS)]
 		[NoTV]
 		[NoMacCatalyst]
@@ -2697,18 +3028,26 @@ namespace SceneKit {
 		[Export ("program:unbindValueForSymbol:atLocation:programID:renderer:")]
 		void UnbindValue (SCNProgram program, string symbol, uint /* unsigned int */ location, uint /* unsigned int */ programID, SCNRenderer renderer);
 
+		/// <param name="program">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("program:handleError:")]
 		void HandleError (SCNProgram program, NSError error);
 
+		/// <param name="program">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[NoiOS]
-		[NoTV, NoWatch]
+		[NoTV]
 		[Deprecated (PlatformName.MacOSX, 10, 10, message: "Use the SCNProgram's Opaque property instead.")]
 		[NoMacCatalyst]
 		[Export ("programIsOpaque:")]
 		bool IsProgramOpaque (SCNProgram program);
 	}
 
-	/// <summary>An <see cref="T:SceneKit.SCNGeometry" /> that is a right rectangular pyramid.</summary>
+	/// <summary>An <see cref="SceneKit.SCNGeometry" /> that is a right rectangular pyramid.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNPyramid_Class/index.html">Apple documentation for <c>SCNPyramid</c></related>
 	[MacCatalyst (13, 1)]
@@ -2732,6 +3071,12 @@ namespace SceneKit {
 		[Export ("lengthSegmentCount")]
 		nint LengthSegmentCount { get; set; }
 
+		/// <param name="width">To be added.</param>
+		/// <param name="height">To be added.</param>
+		/// <param name="length">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("pyramidWithWidth:height:length:")]
 		SCNPyramid Create (nfloat width, nfloat height, nfloat length);
 	}
@@ -2739,7 +3084,6 @@ namespace SceneKit {
 	/// <summary>Renders an SCNScene into an OpenGL context.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNRenderer_Class/index.html">Apple documentation for <c>SCNRenderer</c></related>
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // NSInvalidArgumentException Reason: -[SCNRenderer init]: unrecognized selector sent to instance 0x7ce85a30
@@ -2753,15 +3097,7 @@ namespace SceneKit {
 		[Static, Export ("rendererWithContext:options:")]
 		SCNRenderer FromContext (IntPtr context, [NullAllowed] NSDictionary options);
 
-		[NoWatch]
-		[NoMacCatalyst]
-		[Static]
-		[Wrap ("FromContext (context.GetHandle (), options)")]
-		// GetHandle will return IntPtr.Zero is context is null
-		// GLContext == CGLContext on macOS and EAGLContext in iOS and tvOS (using on top of file)
-		SCNRenderer FromContext (GLContext context, [NullAllowed] NSDictionary options);
-
-		[NoWatch, NoTV]
+		[NoTV]
 		[Export ("render")]
 		[Deprecated (PlatformName.MacOSX, 10, 11)]
 		[Deprecated (PlatformName.iOS, 9, 0)]
@@ -2781,13 +3117,11 @@ namespace SceneKit {
 		[Export ("nextFrameTime")]
 		double NextFrameTimeInSeconds { get; }
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("rendererWithDevice:options:")]
 		SCNRenderer FromDevice ([NullAllowed] IMTLDevice device, [NullAllowed] NSDictionary options);
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Export ("renderAtTime:viewport:commandBuffer:passDescriptor:")]
 		void Render (double timeInSeconds, CGRect viewport, IMTLCommandBuffer commandBuffer, MTLRenderPassDescriptor renderPassDescriptor);
@@ -2806,25 +3140,49 @@ namespace SceneKit {
 
 	}
 
-	/// <summary>Defines keys for use with <see cref="M:SceneKit.SCNNodeRendererDelegate.Render(SceneKit.SCNNode,SceneKit.SCNRenderer,Foundation.NSDictionary)" /> and <see cref="M:SceneKit.SCNProgram.SetSemantic(Foundation.NSString,System.String,SceneKit.SCNProgramSemanticOptions)" />.</summary>
+	/// <summary>Defines keys for use with <see cref="SceneKit.SCNNodeRendererDelegate.Render(SceneKit.SCNNode,SceneKit.SCNRenderer,Foundation.NSDictionary)" /> and <see cref="SceneKit.SCNProgram.SetSemantic(Foundation.NSString,System.String,SceneKit.SCNProgramSemanticOptions)" />.</summary>
 	[MacCatalyst (13, 1)]
 	[Static]
 	interface SCNRenderingArguments {
+		/// <summary>Represents the value associated with the constant SCNModelTransform</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNModelTransform")]
 		NSString ModelTransform { get; }
 
+		/// <summary>Represents the value associated with the constant SCNViewTransform</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNViewTransform")]
 		NSString ViewTransform { get; }
 
+		/// <summary>Represents the value associated with the constant SCNProjectionTransform</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNProjectionTransform")]
 		NSString ProjectionTransform { get; }
 
+		/// <summary>Represents the value associated with the constant SCNNormalTransform</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNNormalTransform")]
 		NSString NormalTransform { get; }
 
+		/// <summary>Represents the value associated with the constant SCNModelViewTransform</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNModelViewTransform")]
 		NSString ModelViewTransform { get; }
 
+		/// <summary>Represents the value associated with the constant SCNModelViewProjectionTransform</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNModelViewProjectionTransform")]
 		NSString ModelViewProjectionTransform { get; }
 	}
@@ -2834,7 +3192,7 @@ namespace SceneKit {
 	///     <param name="stop">Developers set this to true to cancel processing.</param>
 	///     <summary>Continuation handler that SceneKit repeatedly calls when exporting a scene.</summary>
 	[MacCatalyst (13, 1)]
-	delegate void SCNSceneExportProgressHandler (float /* float, not CGFloat */ totalProgress, NSError error, out bool stop);
+	delegate void SCNSceneExportProgressHandler (float /* float, not CGFloat */ totalProgress, [NullAllowed] NSError error, out bool stop);
 
 	/// <summary>The highest-level description of a 3D scene.</summary>
 	///     
@@ -2842,9 +3200,7 @@ namespace SceneKit {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface SCNScene :
-#if !WATCH
 		GKSceneRootNodeType,
-#endif
 		NSSecureCoding {
 
 		[Static]
@@ -2867,6 +3223,12 @@ namespace SceneKit {
 		[return: NullAllowed]
 		SCNScene FromUrl (NSUrl url, [NullAllowed] NSDictionary options, out NSError error);
 
+		/// <param name="url">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>Creates and returns a new SceneKit scene with the contents of the file at the provided URL.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Wrap ("FromUrl (url, options.GetDictionary (), out error)")]
 		[return: NullAllowed]
@@ -2874,6 +3236,10 @@ namespace SceneKit {
 
 
 
+		/// <summary>Represents the value associated with the constant SCNSceneExportDestinationURL</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNSceneExportDestinationURL")]
 		NSString ExportDestinationUrl { get; }
 
@@ -2905,6 +3271,9 @@ namespace SceneKit {
 		[Export ("fogColor", ArgumentSemantic.Retain)]
 		NSObject FogColor { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the scene is paused.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("paused")]
 		bool Paused { [Bind ("isPaused")] get; set; }
@@ -2919,6 +3288,12 @@ namespace SceneKit {
 		[return: NullAllowed]
 		SCNScene FromFile (string name, [NullAllowed] string directory, [NullAllowed] NSDictionary options);
 
+		/// <param name="name">To be added.</param>
+		///         <param name="directory">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>Creates and returns a new SceneKit scene with the contents of the specified file in the main bundle for the application.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static, Wrap ("FromFile (name, directory, options.GetDictionary ())")]
 		[return: NullAllowed]
@@ -2926,7 +3301,6 @@ namespace SceneKit {
 
 		// Keeping here the same name WriteToUrl for iOS and friends because it is how it was bound
 		// initialy for macOS and having it named diferently would hurt shared code
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Export ("writeToURL:options:delegate:progressHandler:")]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
@@ -2935,7 +3309,13 @@ namespace SceneKit {
 			[NullAllowed] ISCNSceneExportDelegate aDelegate,
 			[NullAllowed] SCNSceneExportProgressHandler exportProgressHandler);
 
-		[NoWatch]
+		/// <param name="url">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <param name="handler">To be added.</param>
+		///         <param name="exportProgressHandler">To be added.</param>
+		///         <summary>Writes the scene to a URL.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("WriteToUrl (url, options.GetDictionary (), handler, exportProgressHandler)")]
 		bool WriteToUrl (NSUrl url, SCNSceneLoadingOptions options, ISCNSceneExportDelegate handler, SCNSceneExportProgressHandler exportProgressHandler);
@@ -2961,63 +3341,80 @@ namespace SceneKit {
 
 		#endregion
 
+		/// <summary>Represents the value associated with the constant SCNSceneStartTimeAttributeKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNSceneStartTimeAttributeKey")]
 		NSString StartTimeAttributeKey { get; }
 
+		/// <summary>Represents the value associated with the constant SCNSceneEndTimeAttributeKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNSceneEndTimeAttributeKey")]
 		NSString EndTimeAttributeKey { get; }
 
+		/// <summary>Represents the value associated with the constant SCNSceneFrameRateAttributeKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNSceneFrameRateAttributeKey")]
 		NSString FrameRateAttributeKey { get; }
 
+		/// <summary>Represents the value associated with the constant SCNSceneUpAxisAttributeKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNSceneUpAxisAttributeKey")]
 		NSString UpAxisAttributeKey { get; }
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("sceneWithMDLAsset:")]
 		SCNScene FromAsset (MDLAsset asset);
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("wantsScreenSpaceReflection")]
 		bool WantsScreenSpaceReflection { get; set; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("screenSpaceReflectionSampleCount")]
 		nint ScreenSpaceReflectionSampleCount { get; set; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("screenSpaceReflectionMaximumDistance")]
 		nfloat ScreenSpaceReflectionMaximumDistance { get; set; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("screenSpaceReflectionStride")]
 		nfloat ScreenSpaceReflectionStride { get; set; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:SceneKit.SCNSceneExportDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:SceneKit.SCNSceneExportDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:SceneKit.SCNSceneExportDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:SceneKit.SCNSceneExportDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface ISCNSceneExportDelegate { }
 
 	/// <summary>Protocol that defines methods to handle exporting a scene to a file.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/SceneKit/SCNSceneExportDelegate">Apple documentation for <c>SCNSceneExportDelegate</c></related>
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface SCNSceneExportDelegate {
 
+		/// <param name="image">To be added.</param>
+		/// <param name="documentUrl">To be added.</param>
+		/// <param name="originalImageUrl">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("writeImage:withSceneDocumentURL:originalImageURL:")]
 		[return: NullAllowed]
 		NSUrl WriteImage (NSImage image, NSUrl documentUrl, [NullAllowed] NSUrl originalImageUrl);
@@ -3043,6 +3440,11 @@ namespace SceneKit {
 		[return: NullAllowed]
 		SCNSceneSource FromUrl (NSUrl url, [NullAllowed] NSDictionary options);
 
+		/// <param name="url">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>Creates a scene source that reads the graph that is contained in the file that is pointed to by <paramref name="url" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("FromUrl (url, options.GetDictionary ())")]
 		[return: NullAllowed]
 		SCNSceneSource FromUrl (NSUrl url, SCNSceneLoadingOptions options);
@@ -3053,6 +3455,11 @@ namespace SceneKit {
 		[return: NullAllowed]
 		SCNSceneSource FromData (NSData data, [NullAllowed] NSDictionary options);
 
+		/// <param name="data">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>Creates a scene source that reads the graph that is contained in <paramref name="data" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Wrap ("FromData (data, options.GetDictionary ())")]
 		[return: NullAllowed]
@@ -3062,6 +3469,10 @@ namespace SceneKit {
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		NativeHandle Constructor (NSUrl url, [NullAllowed] NSDictionary options);
 
+		/// <param name="url">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (url, options.GetDictionary ())")]
 		NativeHandle Constructor (NSUrl url, SCNSceneLoadingOptions options);
 
@@ -3069,6 +3480,10 @@ namespace SceneKit {
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		NativeHandle Constructor (NSData data, [NullAllowed] NSDictionary options);
 
+		/// <param name="data">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (data, options.GetDictionary ())")]
 		NativeHandle Constructor (NSData data, SCNSceneLoadingOptions options);
 
@@ -3077,6 +3492,11 @@ namespace SceneKit {
 		[return: NullAllowed]
 		SCNScene SceneFromOptions ([NullAllowed] NSDictionary options, [NullAllowed] SCNSceneSourceStatusHandler statusHandler);
 
+		/// <param name="options">To be added.</param>
+		///         <param name="statusHandler">To be added.</param>
+		///         <summary>Creates a new scene from the specified options dictionary, periodically calling <paramref name="statusHandler" /> to report progress.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("SceneFromOptions (options?.GetDictionary (), statusHandler)")]
 		[return: NullAllowed]
 		SCNScene SceneFromOptions ([NullAllowed] SCNSceneLoadingOptions options, [NullAllowed] SCNSceneSourceStatusHandler statusHandler);
@@ -3086,6 +3506,11 @@ namespace SceneKit {
 		[return: NullAllowed]
 		SCNScene SceneWithOption ([NullAllowed] NSDictionary options, out NSError error);
 
+		/// <param name="options">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>Creates a new scene from the specified options dictionary, and reporting any error condtion in <paramref name="error" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("SceneWithOption (options?.GetDictionary (), out error)")]
 		[return: NullAllowed]
 		SCNScene SceneWithOption (SCNSceneLoadingOptions options, out NSError error);
@@ -3112,25 +3537,52 @@ namespace SceneKit {
 	[MacCatalyst (13, 1)]
 	[Static]
 	interface SCNSceneSourceLoading {
+		/// <summary>Represents the value associated with the constant SCNSceneSourceAssetDirectoryURLsKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNSceneSourceAssetDirectoryURLsKey")]
 		NSString AssetDirectoryUrlsKey { get; }
 
+		/// <summary>Represents the value associated with the constant SCNSceneSourceCreateNormalsIfAbsentKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNSceneSourceCreateNormalsIfAbsentKey")]
 		NSString CreateNormalsIfAbsentKey { get; }
 
+		/// <summary>Represents the value associated with the constant SCNSceneSourceFlattenSceneKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNSceneSourceFlattenSceneKey")]
 		NSString FlattenSceneKey { get; }
 
+		/// <summary>Represents the value associated with the constant SCNSceneSourceCheckConsistencyKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNSceneSourceCheckConsistencyKey")]
 		NSString CheckConsistencyKey { get; }
 
+		/// <summary>Represents the value associated with the constant SCNSceneSourceOverrideAssetURLsKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNSceneSourceOverrideAssetURLsKey")]
 		NSString OverrideAssetUrlsKey { get; }
 
+		/// <summary>Represents the value associated with the constant SCNSceneSourceStrictConformanceKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNSceneSourceStrictConformanceKey")]
 		NSString StrictConformanceKey { get; }
 
-		[Deprecated (PlatformName.WatchOS, 4, 0)]
+		/// <summary>Developers should not use this deprecated property. </summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.TvOS, 11, 0)]
 		[Deprecated (PlatformName.iOS, 11, 0)]
 		[Deprecated (PlatformName.MacOSX, 10, 13)]
@@ -3139,348 +3591,479 @@ namespace SceneKit {
 		NSString UseSafeModeKey { get; }
 
 		// header said NA and docs says "Available in iOS 8.0 through iOS 8.2." but it's back on iOS11
+		/// <summary>Represents the value associated with the constant SCNSceneSourceConvertUnitsToMetersKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNSceneSourceConvertUnitsToMetersKey")]
 		NSString ConvertUnitsToMetersKey { get; }
 
 		// header said NA and docs says "Available in iOS 8.0 through iOS 8.2." but it's back on iOS11
+		/// <summary>Represents the value associated with the constant SCNSceneSourceConvertToYUpKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNSceneSourceConvertToYUpKey")]
 		NSString ConvertToYUpKey { get; }
 
+		/// <summary>Represents the value associated with the constant SCNSceneSourceAnimationImportPolicyKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNSceneSourceAnimationImportPolicyKey")]
 		NSString AnimationImportPolicyKey { get; }
 
+		/// <summary>Represents the value associated with the constant SCNSceneSourceAnimationImportPolicyPlay</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNSceneSourceAnimationImportPolicyPlay")]
 		NSString AnimationImportPolicyPlay { get; }
 
+		/// <summary>Represents the value associated with the constant SCNSceneSourceAnimationImportPolicyPlayRepeatedly</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNSceneSourceAnimationImportPolicyPlayRepeatedly")]
 		NSString AnimationImportPolicyPlayRepeatedly { get; }
 
+		/// <summary>Represents the value associated with the constant SCNSceneSourceAnimationImportPolicyDoNotPlay</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNSceneSourceAnimationImportPolicyDoNotPlay")]
 		NSString AnimationImportPolicyDoNotPlay { get; }
 
+		/// <summary>Represents the value associated with the constant SCNSceneSourceAnimationImportPolicyPlayUsingSceneTimeBase</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNSceneSourceAnimationImportPolicyPlayUsingSceneTimeBase")]
 		NSString AnimationImportPolicyPlayUsingSceneTimeBase { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNSceneSourceLoadingOptionPreserveOriginalTopology")]
 		NSString OptionPreserveOriginalTopology { get; }
 	}
 
-	/// <summary>Enumerates error types that can occur while loading <see cref="T:SceneKit.SCNSceneSource" />s.</summary>
+	/// <summary>Enumerates error types that can occur while loading <see cref="SceneKit.SCNSceneSource" />s.</summary>
 	[MacCatalyst (13, 1)]
 	[Static]
 	interface SCNSceneSourceLoadErrors {
+		/// <summary>Represents the value associated with the constant SCNConsistencyElementIDErrorKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNConsistencyElementIDErrorKey")]
 		NSString ConsistencyElementIDErrorKey { get; }
 
+		/// <summary>Represents the value associated with the constant SCNConsistencyElementTypeErrorKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNConsistencyElementTypeErrorKey")]
 		NSString ConsistencyElementTypeErrorKey { get; }
 
+		/// <summary>Represents the value associated with the constant SCNConsistencyLineNumberErrorKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNConsistencyLineNumberErrorKey")]
 		NSString ConsistencyLineNumberErrorKey { get; }
 
+		/// <summary>Represents the value associated with the constant SCNDetailedErrorsKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNDetailedErrorsKey")]
 		NSString DetailedErrorsKey { get; }
 	}
 
-	/// <summary>Metadata keys associated with a scene file. Used with <see cref="M:SceneKit.SCNSceneSource.GetProperty(Foundation.NSString)" />.</summary>
+	/// <summary>Metadata keys associated with a scene file. Used with <see cref="SceneKit.SCNSceneSource.GetProperty(Foundation.NSString)" />.</summary>
 	[MacCatalyst (13, 1)]
 	[Static]
 	interface SCNSceneSourceProperties {
+		/// <summary>Represents the value associated with the constant SCNSceneSourceAssetContributorsKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNSceneSourceAssetContributorsKey")]
 		NSString AssetContributorsKey { get; }
 
+		/// <summary>Represents the value associated with the constant SCNSceneSourceAssetCreatedDateKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNSceneSourceAssetCreatedDateKey")]
 		NSString AssetCreatedDateKey { get; }
 
+		/// <summary>Represents the value associated with the constant SCNSceneSourceAssetModifiedDateKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNSceneSourceAssetModifiedDateKey")]
 		NSString AssetModifiedDateKey { get; }
 
+		/// <summary>Represents the value associated with the constant SCNSceneSourceAssetUpAxisKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNSceneSourceAssetUpAxisKey")]
 		NSString AssetUpAxisKey { get; }
 
+		/// <summary>Represents the value associated with the constant SCNSceneSourceAssetUnitKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNSceneSourceAssetUnitKey")]
 		NSString AssetUnitKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNSceneSourceAssetAuthoringToolKey")]
 		NSString AssetAuthoringToolKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNSceneSourceAssetAuthorKey")]
 		NSString AssetAuthorKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNSceneSourceAssetUnitNameKey")]
 		NSString AssetUnitNameKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNSceneSourceAssetUnitMeterKey")]
 		NSString AssetUnitMeterKey { get; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:SceneKit.SCNSceneRenderer" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:SceneKit.SCNSceneRenderer" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:SceneKit.SCNSceneRenderer" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:SceneKit.SCNSceneRenderer_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface ISCNSceneRenderer { }
 
-	/// <summary>Implementation class of the <see cref="T:SceneKit.ISCNSceneRenderer" /> interface.</summary>
+	/// <summary>Implementation class of the <see cref="SceneKit.ISCNSceneRenderer" /> interface.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNSceneRenderer_Protocol/index.html">Apple documentation for <c>SCNSceneRenderer</c></related>
 	[MacCatalyst (13, 1)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface SCNSceneRenderer {
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("delegate", ArgumentSemantic.Weak), NullAllowed]
 		NSObject WeakSceneRendererDelegate { get; set; }
 
+		/// <summary>Gets or sets the delegate for the renderer.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakSceneRendererDelegate")]
 		ISCNSceneRendererDelegate SceneRendererDelegate { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that starts and stops the scene.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("playing")]
 		bool Playing { [Bind ("isPlaying")] get; set; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("loops")]
 		bool Loops { get; set; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("pointOfView", ArgumentSemantic.Retain)]
 		[NullAllowed]
 		SCNNode PointOfView { get; set; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("autoenablesDefaultLighting")]
 		bool AutoenablesDefaultLighting { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether SceneKit reduces aliasing by jittering the point of view.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("jitteringEnabled")]
 		bool JitteringEnabled { [Bind ("isJitteringEnabled")] get; set; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
-#if NET
-		[Unavailable (PlatformName.WatchOS)]
-#else
-		[Obsoleted (PlatformName.WatchOS, 6, 0, message: "API removed, please do not use.")]
-#endif
 		[NoMacCatalyst]
 		[Export ("context")]
 		IntPtr Context { get; }
 
-#if NET
 		[Abstract]
-#endif
 		[NoTV]
-		[NoWatch]
 		[NoMacCatalyst]
 		[Deprecated (PlatformName.MacOSX, 10, 10)]
 		[NoiOS]
 		[Export ("currentTime")]
 		double CurrentTime { get; set; }
 
+		/// <param name="thePoint">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("hitTest:options:")]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		SCNHitTestResult [] HitTest (CGPoint thePoint, [NullAllowed] NSDictionary options);
 
+		/// <param name="thePoint">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("HitTest (thePoint, options.GetDictionary ())")]
 		SCNHitTestResult [] HitTest (CGPoint thePoint, SCNHitTestOptions options);
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[MacCatalyst (13, 1)]
 		[Export ("showsStatistics")]
 		bool ShowsStatistics { get; set; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[MacCatalyst (13, 1)]
 		[Export ("sceneTime")]
 		double SceneTimeInSeconds { get; set; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[MacCatalyst (13, 1)]
 		[NullAllowed]
 		[Export ("scene", ArgumentSemantic.Retain)]
 		SCNScene Scene { get; set; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		// It seems swift has this property listed as an optional[0] and an Apple sample[1] sets this to null
 		// [0]: https://developer.apple.com/documentation/scenekit/scnscenerenderer/1524051-overlayskscene
-		// [1]: https://github.com/xamarin/xamarin-macios/issues/3392
+		// [1]: https://github.com/dotnet/macios/issues/3392
 		[NullAllowed]
 		[MacCatalyst (13, 1)]
 		[Export ("overlaySKScene", ArgumentSemantic.Retain)]
 		SKScene OverlayScene { get; set; }
 
+		/// <param name="node">To be added.</param>
+		/// <param name="pointOfView">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[MacCatalyst (13, 1)]
 		[Export ("isNodeInsideFrustum:withPointOfView:")]
 		bool IsNodeInsideFrustum (SCNNode node, SCNNode pointOfView);
 
+		/// <param name="point">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[MacCatalyst (13, 1)]
 		[Export ("projectPoint:")]
 		SCNVector3 ProjectPoint (SCNVector3 point);
 
+		/// <param name="point">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[MacCatalyst (13, 1)]
 		[Export ("unprojectPoint:")]
 		SCNVector3 UnprojectPoint (SCNVector3 point);
 
+		/// <param name="obj">To be added.</param>
+		/// <param name="abortHandler">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[MacCatalyst (13, 1)]
 		[Export ("prepareObject:shouldAbortBlock:")]
 		bool Prepare (NSObject obj, [NullAllowed] Func<bool> abortHandler);
 
+		/// <param name="objects">The objects to prepare.</param>
+		/// <param name="completionHandler">A handler that receives <see langword="true" /> if preparation of all scene resources succeeded, or <see langword="false" /> if not.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="objects">The objects to prepare.</param>
+			<summary>Prepares the provided objects for rendering on a background thread.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous Prepare operation.  The value of the TResult parameter is of type System.Action&lt;System.Boolean&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("prepareObjects:withCompletionHandler:")]
 		void Prepare (NSObject [] objects, [NullAllowed] Action<bool> completionHandler);
 
-#if NET
+		/// <summary>Displays the provided scene.</summary>
+		/// <param name="scene">The scene to present.</param>
+		/// <param name="transition">The transistion to use to present the scene.</param>
+		/// <param name="pointOfView">The point of view to which to present the scene.</param>
+		/// <param name="completionHandler">A handler to run after the scene is presented.</param>
 		[Abstract] // this protocol existed before iOS 9 (or OSX 10.11) and we cannot add abstract members to it (breaking changes)
-#endif
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="scene">The scene to present.</param>
+			<param name="transition">The transistion to use to present the scene.</param>
+			<param name="pointOfView">The point of view to which to present the scene.</param>
+			<summary>Displays the provided scene.</summary>
+			<returns>A task that represents the asynchronous PresentScene operation</returns>
+			<remarks>
+			          <para copied="true">The PresentSceneAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("presentScene:withTransition:incomingPointOfView:completionHandler:")]
 		void PresentScene (SCNScene scene, SKTransition transition, [NullAllowed] SCNNode pointOfView, [NullAllowed] Action completionHandler);
 
-#if NET
-		[Abstract] // this protocol existed before iOS 9 (or OSX 10.11) and we cannot add abstract members to it (breaking changes)
-#endif
+		/// <summary>Returns the nodes that are contained in the frustrum that is defined by the provided node.</summary>
+		[Abstract]
 		[MacCatalyst (13, 1)]
 		[Export ("nodesInsideFrustumWithPointOfView:")]
 		SCNNode [] GetNodesInsideFrustum (SCNNode pointOfView);
 
-#if NET
-		[Abstract] // this protocol existed before iOS 9 (or OSX 10.11) and we cannot add abstract members to it (breaking changes)
-#endif
+		/// <summary>A value that controls which, if any, debug overlays to show in the rendered output.</summary>
+		[Abstract]
 		[MacCatalyst (13, 1)]
 		[Export ("debugOptions", ArgumentSemantic.Assign)]
 		SCNDebugOptions DebugOptions { get; set; }
 
-#if NET
-		[Abstract] // this protocol existed before iOS 9 (or OSX 10.11) and we cannot add abstract members to it (breaking changes)
-#endif
+		/// <summary>Returns the rendering API that is used to render the scene.</summary>
+		[Abstract]
 		[MacCatalyst (13, 1)]
 		[Export ("renderingAPI")]
 		SCNRenderingApi RenderingApi { get; }
 
-#if NET
-		[Abstract] // this protocol existed before iOS 9 (or OSX 10.11) and we cannot add abstract members to it (breaking changes)
-#endif
-		[NoWatch]
+		/// <summary>Returns the current command encoder that is used for rendering.</summary>
+		[Abstract]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("currentRenderCommandEncoder")]
 		IMTLRenderCommandEncoder CurrentRenderCommandEncoder { get; }
 
-#if NET
-		[Abstract] // this protocol existed before iOS 9 (or OSX 10.11) and we cannot add abstract members to it (breaking changes)
-#endif
-		[NoWatch]
+		/// <summary>Returns the metal device that is used for rendering.</summary>
+		[Abstract]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("device")]
 		IMTLDevice Device { get; }
 
-#if NET
-		[Abstract] // this protocol existed before iOS 9 (or OSX 10.11) and we cannot add abstract members to it (breaking changes)
-#endif
-		[NoWatch]
+		/// <summary>Returns the format for color pixels.</summary>
+		[Abstract]
 		[MacCatalyst (13, 1)]
 		[Export ("colorPixelFormat")]
 		MTLPixelFormat ColorPixelFormat { get; }
 
-#if NET
-		[Abstract] // this protocol existed before iOS 9 (or OSX 10.11) and we cannot add abstract members to it (breaking changes)
-#endif
-		[NoWatch]
+		/// <summary>Returns the format for depth pixels.</summary>
+		[Abstract]
 		[MacCatalyst (13, 1)]
 		[Export ("depthPixelFormat")]
 		MTLPixelFormat DepthPixelFormat { get; }
 
-#if NET
-		[Abstract] // this protocol existed before iOS 9 (or OSX 10.11) and we cannot add abstract members to it (breaking changes)
-#endif
-		[NoWatch]
+		/// <summary>Returns the format for stencil pixels.</summary>
+		[Abstract]
 		[MacCatalyst (13, 1)]
 		[Export ("stencilPixelFormat")]
 		MTLPixelFormat StencilPixelFormat { get; }
 
-#if NET
-		[Abstract] // this protocol existed before iOS 9 (or OSX 10.11) and we cannot add abstract members to it (breaking changes)
-#endif
-		[NoWatch]
+		/// <summary>Returns the command queue.</summary>
+		[Abstract]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("commandQueue")]
 		IMTLCommandQueue CommandQueue { get; }
 
-#if NET
-		[Abstract] // this protocol existed before iOS 9 (or OSX 10.11) and we cannot add abstract members to it (breaking changes)
-#endif
+		/// <summary>Returns the audio engine that is used to render sounds in the scene</summary>
+		[Abstract]
 		[MacCatalyst (13, 1)]
 		[Export ("audioEngine")]
 		AVAudioEngine AudioEngine { get; }
 
-#if NET
-		[Abstract] // this protocol existed before iOS 9 (or OSX 10.11) and we cannot add abstract members to it (breaking changes)
-#endif
-		[NoWatch]
+		/// <summary>Returns the audio environment node for the scene.</summary>
+		[Abstract]
 		[MacCatalyst (13, 1)]
 		[Export ("audioEnvironmentNode")]
 		[DebuggerBrowsable (DebuggerBrowsableState.Never)]
 		AVAudioEnvironmentNode AudioEnvironmentNode { get; }
 
-#if NET
-		[Abstract] // this protocol existed before iOS 9 (or OSX 10.11) and we cannot add abstract members to it (breaking changes)
-#endif
+		/// <summary>The node that represents the position of the listener in the scene.</summary>
+		[Abstract]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("audioListener", ArgumentSemantic.Retain)]
 		[DebuggerBrowsable (DebuggerBrowsableState.Never)]
 		SCNNode AudioListener { get; set; }
 
-#if NET
-		[Abstract] // this protocol existed before iOS 9 (or OSX 10.11) and we cannot add abstract members to it (breaking changes)
-#endif
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[Abstract]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("temporalAntialiasingEnabled")]
 		bool TemporalAntialiasingEnabled { [Bind ("isTemporalAntialiasingEnabled")] get; set; }
 
-#if NET
-		[Abstract] // this protocol existed before iOS 9 (or OSX 10.11) and we cannot add abstract members to it (breaking changes)
-#endif
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[Abstract]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("currentViewport")]
 		CGRect CurrentViewport { get; }
 
-#if NET
-		[Abstract] // this protocol existed before iOS 9 (or OSX 10.11) and we cannot add abstract members to it (breaking changes)
-#endif
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[Abstract]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("usesReverseZ")]
 		bool UsesReverseZ { get; set; }
 
-		[NoWatch]
 		[TV (14, 0)]
 		[iOS (14, 0)]
 		[MacCatalyst (14, 0)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("currentRenderPassDescriptor")]
 		MTLRenderPassDescriptor CurrentRenderPassDescriptor { get; }
 
-		[Watch (10, 0), TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 #if XAMCORE_5_0
 		[Abstract]
 #endif
@@ -3488,12 +4071,6 @@ namespace SceneKit {
 		CGColorSpace WorkingColorSpace { get; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:SceneKit.SCNSceneRendererDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:SceneKit.SCNSceneRendererDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:SceneKit.SCNSceneRendererDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:SceneKit.SCNSceneRendererDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface ISCNSceneRendererDelegate { }
 
 	/// <summary>Delegate object for the SCNRenderer class, defines methods reflects rendering events.</summary>
@@ -3504,31 +4081,57 @@ namespace SceneKit {
 	[BaseType (typeof (NSObject))]
 	interface SCNSceneRendererDelegate {
 
+		/// <param name="renderer">To be added.</param>
+		/// <param name="scene">To be added.</param>
+		/// <param name="timeInSeconds">To be added.</param>
+		/// <summary>Developers may override this method to do processing immediately prior to the rendering of the scene.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("renderer:willRenderScene:atTime:")]
 		void WillRenderScene (ISCNSceneRenderer renderer, SCNScene scene, double timeInSeconds);
 
+		/// <param name="renderer">To be added.</param>
+		/// <param name="scene">To be added.</param>
+		/// <param name="timeInSeconds">To be added.</param>
+		/// <summary>This method is called shortly after the scene has been rendered.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("renderer:didRenderScene:atTime:")]
 		void DidRenderScene (ISCNSceneRenderer renderer, SCNScene scene, double timeInSeconds);
 
+		/// <param name="renderer">To be added.</param>
+		/// <param name="timeInSeconds">To be added.</param>
+		/// <summary>Developers may override this method to perform processing prior to any actions, animations, or physics simulations.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("renderer:updateAtTime:")]
 		void Update (ISCNSceneRenderer renderer, double timeInSeconds);
 
+		/// <param name="renderer">To be added.</param>
+		/// <param name="timeInSeconds">To be added.</param>
+		/// <summary>Developers may override this method to react to the completion of animations.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("renderer:didApplyAnimationsAtTime:")]
 		void DidApplyAnimations (ISCNSceneRenderer renderer, double timeInSeconds);
 
+		/// <param name="renderer">To be added.</param>
+		/// <param name="timeInSeconds">To be added.</param>
+		/// <summary>This method is called shortly after physics have been simulated.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("renderer:didSimulatePhysicsAtTime:")]
 		void DidSimulatePhysics (ISCNSceneRenderer renderer, double timeInSeconds);
 
+		/// <param name="renderer">To be added.</param>
+		/// <param name="atTime">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("renderer:didApplyConstraintsAtTime:")]
 		void DidApplyConstraints (ISCNSceneRenderer renderer, double atTime);
 
 	}
 
-	/// <summary>An <see cref="T:SceneKit.SCNGeometry" /> that is a sphere.</summary>
+	/// <summary>An <see cref="SceneKit.SCNGeometry" /> that is a sphere.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNSphere_Class/index.html">Apple documentation for <c>SCNSphere</c></related>
 	[MacCatalyst (13, 1)]
@@ -3538,18 +4141,25 @@ namespace SceneKit {
 		[Export ("radius")]
 		nfloat Radius { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("geodesic")]
 		bool Geodesic { [Bind ("isGeodesic")] get; set; }
 
 		[Export ("segmentCount")]
 		nint SegmentCount { get; set; }
 
+		/// <param name="radius">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("sphereWithRadius:")]
 		SCNSphere Create (nfloat radius);
 
 	}
 
-	/// <summary>An <see cref="T:SceneKit.SCNGeometry" /> based on a string, optionally extruded into three dimensions.</summary>
+	/// <summary>An <see cref="SceneKit.SCNGeometry" /> based on a string, optionally extruded into three dimensions.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNText_Class/index.html">Apple documentation for <c>SCNText</c></related>
 	[MacCatalyst (13, 1)]
@@ -3569,7 +4179,6 @@ namespace SceneKit {
 		// removed in iOS8 beta 5 - but it was already existing in 10.8 ?
 		[NoiOS]
 		[NoTV]
-		[NoWatch]
 		[NoMacCatalyst]
 		[Export ("textSize")]
 		CGSize TextSize { get; }
@@ -3583,6 +4192,11 @@ namespace SceneKit {
 		[Export ("chamferRadius")]
 		nfloat ChamferRadius { get; set; }
 
+		/// <param name="str">To be added.</param>
+		/// <param name="extrusionDepth">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("textWithString:extrusionDepth:")]
 		SCNText Create ([NullAllowed] NSObject str, nfloat extrusionDepth);
 
@@ -3590,6 +4204,9 @@ namespace SceneKit {
 		[NullAllowed]
 		NSFont Font { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("wrapped")]
 		bool Wrapped { [Bind ("isWrapped")] get; set; }
 
@@ -3603,7 +4220,7 @@ namespace SceneKit {
 		nfloat Flatness { get; set; }
 	}
 
-	/// <summary>An <see cref="T:SceneKit.SCNGeometry" /> that is a ring-shaped solid.</summary>
+	/// <summary>An <see cref="SceneKit.SCNGeometry" /> that is a ring-shaped solid.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNTorus_Class/index.html">Apple documentation for <c>SCNTorus</c></related>
 	[MacCatalyst (13, 1)]
@@ -3622,6 +4239,11 @@ namespace SceneKit {
 		[Export ("pipeSegmentCount")]
 		nint PipeSegmentCount { get; set; }
 
+		/// <param name="ringRadius">To be added.</param>
+		/// <param name="pipeRadius">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("torusWithRingRadius:pipeRadius:")]
 		SCNTorus Create (nfloat ringRadius, nfloat pipeRadius);
 	}
@@ -3652,6 +4274,12 @@ namespace SceneKit {
 		[Export ("unlock")]
 		void Unlock ();
 
+		/// <param name="completion">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("setCompletionBlock:")]
 		void SetCompletionBlock ([NullAllowed] Action completion);
@@ -3669,7 +4297,6 @@ namespace SceneKit {
 		double AnimationDuration { get; set; }
 
 		[Static]
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[NullAllowed] // by default this property is null
 		[Export ("animationTimingFunction")]
@@ -3680,7 +4307,7 @@ namespace SceneKit {
 		bool DisableActions { get; set; }
 	}
 
-	/// <summary>An <see cref="T:SceneKit.SCNGeometry" /> that is a cylinder with a circular hole along its central axis.</summary>
+	/// <summary>An <see cref="SceneKit.SCNGeometry" /> that is a cylinder with a circular hole along its central axis.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNTube_Class/index.html">Apple documentation for <c>SCNTube</c></related>
 	[MacCatalyst (13, 1)]
@@ -3701,11 +4328,16 @@ namespace SceneKit {
 		[Export ("heightSegmentCount")]
 		nint HeightSegmentCount { get; set; }
 
+		/// <param name="innerRadius">To be added.</param>
+		/// <param name="outerRadius">To be added.</param>
+		/// <param name="height">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("tubeWithInnerRadius:outerRadius:height:")]
 		SCNTube Create (nfloat innerRadius, nfloat outerRadius, nfloat height);
 	}
 
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	[Static]
 	[Internal] // we'll make it public if there's a need for them (beside the strong dictionary we provide)
@@ -3722,22 +4354,23 @@ namespace SceneKit {
 		NSString LowPowerDeviceKey { get; }
 	}
 
-#if !WATCH
-	/// <summary>A <see cref="T:Foundation.DictionaryContainer" /> that defines <c>options</c> when instantiating a <see cref="T:SceneKit.SCNView" />.</summary>
-	[NoWatch]
+	/// <summary>A <see cref="Foundation.DictionaryContainer" /> that defines <c>options</c> when instantiating a <see cref="SceneKit.SCNView" />.</summary>
 	[MacCatalyst (13, 1)]
 	[StrongDictionary ("SCNRenderingOptionsKeys")]
 	interface SCNRenderingOptions {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		IMTLDevice Device { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		bool LowPowerDevice { get; set; }
 	}
-#endif
 
-	/// <summary>A <see cref="T:UIKit.UIView" /> that renders <see cref="T:SceneKit.SCNScene" />s.</summary>
-	///     
-	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNView_Class/index.html">Apple documentation for <c>SCNView</c></related>
-	[NoWatch]
+	/// <summary>A <see cref="NSView" /> that renders <see cref="SCNScene" />s.</summary>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNView_Class/index.html">Apple documentation for <c>SCNView</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSView))]
 	[DisableDefaultCtor]
@@ -3748,7 +4381,6 @@ namespace SceneKit {
 
 		[NoiOS]
 		[NoTV]
-		[NoWatch]
 		[NoMacCatalyst]
 		[Export ("backgroundColor", ArgumentSemantic.Copy)]
 		NSColor BackgroundColor { get; set; }
@@ -3758,7 +4390,6 @@ namespace SceneKit {
 
 		[NoiOS]
 		[NoTV]
-		[NoWatch]
 		[NoMacCatalyst]
 		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Please use Metal instead of OpenGL API.")]
 		[Export ("openGLContext", ArgumentSemantic.Retain)]
@@ -3767,7 +4398,6 @@ namespace SceneKit {
 
 		[NoiOS]
 		[NoTV]
-		[NoWatch]
 		[NoMacCatalyst]
 		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Please use Metal instead of OpenGL API.")]
 		[Export ("pixelFormat", ArgumentSemantic.Retain)]
@@ -3775,7 +4405,6 @@ namespace SceneKit {
 		NSOpenGLPixelFormat PixelFormat { get; set; }
 
 		[NoMac]
-		[NoWatch]
 		[NoMacCatalyst]
 		[Deprecated (PlatformName.iOS, 12, 0, message: "Please use Metal instead of OpenGL API.")]
 		[Deprecated (PlatformName.TvOS, 12, 0, message: "Please use Metal instead of OpenGL API.")]
@@ -3784,15 +4413,23 @@ namespace SceneKit {
 		[NullAllowed]
 		EAGLContext EAGLContext { get; set; }
 
-#if !WATCH
+		/// <param name="frame">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("this (frame, options.GetDictionary ())")]
 		NativeHandle Constructor (CGRect frame, [NullAllowed] SCNRenderingOptions options);
-#endif
 
 		[Export ("initWithFrame:options:")]
 		NativeHandle Constructor (CGRect frame, [NullAllowed] NSDictionary options);
 
+		/// <param name="frame">Frame used by the view, expressed in iOS points.</param>
+		/// <summary>Initializes the SCNView with the specified frame.</summary>
+		/// <remarks>
+		///           <para>This constructor is used to programmatically create a new instance of SCNView with the specified dimension in the frame.   The object will only be displayed once it has been added to a view hierarchy by calling AddSubview in a containing view.</para>
+		///           <para>This constructor is not invoked when deserializing objects from storyboards or XIB filesinstead the constructor that takes an NSCoder parameter is invoked.</para>
+		///         </remarks>
 		[Export ("initWithFrame:")]
 		NativeHandle Constructor (CGRect frame);
 
@@ -3829,17 +4466,15 @@ namespace SceneKit {
 		[Export ("rendersContinuously")]
 		bool RendersContinuously { get; set; }
 
-		[NoWatch, NoTV, NoiOS]
+		[NoTV, NoiOS]
 		[NoMacCatalyst]
 		[Export ("drawableResizesAsynchronously")]
 		bool DrawableResizesAsynchronously { get; set; }
 	}
 
-#if NET
-	/// <summary>Completion handler for use with <see cref="M:SceneKit.SCNAnimationEvent.Create(System.nfloat,SceneKit.SCNAnimationEventHandler)" />.</summary>
+	/// <summary>Completion handler for use with <see cref="SceneKit.SCNAnimationEvent.Create(nfloat,SceneKit.SCNAnimationEventHandler)" />.</summary>
 	[MacCatalyst (13, 1)]
 	delegate void SCNAnimationEventHandler (AnimationType animation, NSObject animatedObject, bool playingBackward);
-#endif
 
 	/// <summary>Performs a function at a specific time during an animation.</summary>
 	///     
@@ -3848,18 +4483,16 @@ namespace SceneKit {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SCNAnimationEvent {
-
-#if NET
+		/// <param name="keyTime">To be added.</param>
+		/// <param name="eventHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("animationEventWithKeyTime:block:")]
 		SCNAnimationEvent Create (nfloat keyTime, SCNAnimationEventHandler eventHandler);
-#else
-		[Internal]
-		[Static, Export ("animationEventWithKeyTime:block:")]
-		SCNAnimationEvent Create (nfloat keyTime, Action<IntPtr, NSObject, bool> handler);
-#endif
 	}
 
-	/// <summary>An <see cref="T:SceneKit.SCNGeometry" /> created from a 2D path, optionally extruded into three dimensions.</summary>
+	/// <summary>An <see cref="SceneKit.SCNGeometry" /> created from a 2D path, optionally extruded into three dimensions.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNShape_Class/index.html">Apple documentation for <c>SCNShape</c></related>
 	[MacCatalyst (13, 1)]
@@ -3882,6 +4515,11 @@ namespace SceneKit {
 		[Export ("chamferProfile", ArgumentSemantic.Copy)]
 		NSBezierPath ChamferProfile { get; set; }
 
+		/// <param name="path">To be added.</param>
+		/// <param name="extrusionDepth">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("shapeWithPath:extrusionDepth:")]
 		SCNShape Create ([NullAllowed] NSBezierPath path, nfloat extrusionDepth);
 	}
@@ -3907,13 +4545,25 @@ namespace SceneKit {
 		[Export ("unifiesNormals")]
 		bool UnifiesNormals { get; set; }
 
+		/// <param name="weight">To be added.</param>
+		/// <param name="targetIndex">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("setWeight:forTargetAtIndex:")]
 		void SetWeight (nfloat weight, nuint targetIndex);
 
+		/// <param name="weight">To be added.</param>
+		/// <param name="targetName">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("setWeight:forTargetNamed:")]
 		void SetWeight (nfloat weight, string targetName);
 
+		/// <param name="targetIndex">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("weightForTargetAtIndex:")]
 		nfloat GetWeight (nuint targetIndex);
 
@@ -3976,16 +4626,22 @@ namespace SceneKit {
 		[Export ("influenceFactor")]
 		nfloat InfluenceFactor { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("enabled")]
 		bool Enabled { [Bind ("isEnabled")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("incremental")]
 		bool Incremental { [Bind ("isIncremental")] get; set; }
 	}
 
-	/// <summary>An <see cref="T:SceneKit.SCNConstraint" /> that applies inverse kinematics.</summary>
+	/// <summary>An <see cref="SceneKit.SCNConstraint" /> that applies inverse kinematics.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNIKConstraint_Class/index.html">Apple documentation for <c>SCNIKConstraint</c></related>
 	[MacCatalyst (13, 1)]
@@ -4002,6 +4658,10 @@ namespace SceneKit {
 		[Static, Export ("inverseKinematicsConstraintWithChainRootNode:")]
 		SCNIKConstraint Create (SCNNode chainRootNode);
 
+		/// <param name="angle">To be added.</param>
+		/// <param name="node">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("setMaxAllowedRotationAngle:forJoint:")]
 		void SetMaxAllowedRotationAnglet (nfloat angle, SCNNode node);
 
@@ -4014,7 +4674,7 @@ namespace SceneKit {
 
 	}
 
-	/// <summary>An <see cref="T:SceneKit.SCNConstraint" /> that orients a node to point towards another node.</summary>
+	/// <summary>An <see cref="SceneKit.SCNConstraint" /> that orients a node to point towards another node.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNLookAtConstraint_Class/index.html">Apple documentation for <c>SCNLookAtConstraint</c></related>
 	[MacCatalyst (13, 1)]
@@ -4046,11 +4706,11 @@ namespace SceneKit {
 		SCNVector3 WorldUp { get; set; }
 	}
 
-	/// <summary>Delegate used in calls to <see cref="M:SceneKit.SCNTransformConstraint.Create(System.Boolean,SceneKit.SCNTransformConstraintHandler)" />.</summary>
+	/// <summary>Delegate used in calls to <see cref="SceneKit.SCNTransformConstraint.Create(System.Boolean,SceneKit.SCNTransformConstraintHandler)" />.</summary>
 	[MacCatalyst (13, 1)]
 	delegate SCNMatrix4 SCNTransformConstraintHandler (SCNNode node, SCNMatrix4 transform);
 
-	/// <summary>An <see cref="T:SceneKit.SCNConstraint" /> that executes a function specifying a change in transformation (position, rotation, and scale) to a node or nodes.</summary>
+	/// <summary>An <see cref="SceneKit.SCNConstraint" /> that executes a function specifying a change in transformation (position, rotation, and scale) to a node or nodes.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNTransformConstraint_Class/index.html">Apple documentation for <c>SCNTransformConstraint</c></related>
 	[MacCatalyst (13, 1)]
@@ -4089,9 +4749,25 @@ namespace SceneKit {
 		[Export ("worldSpaceDistance")]
 		nfloat WorldSpaceDistance { get; }
 
+		/// <param name="geometry">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="screenSpaceRadius">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("levelOfDetailWithGeometry:screenSpaceRadius:")]
 		SCNLevelOfDetail CreateWithScreenSpaceRadius ([NullAllowed] SCNGeometry geometry, nfloat screenSpaceRadius);
 
+		/// <param name="geometry">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="worldSpaceDistance">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("levelOfDetailWithGeometry:worldSpaceDistance:")]
 		SCNLevelOfDetail CreateWithWorldSpaceDistance ([NullAllowed] SCNGeometry geometry, nfloat worldSpaceDistance);
 	}
@@ -4121,52 +4797,90 @@ namespace SceneKit {
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface SCNActionable {
+		/// <param name="action">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("runAction:")]
 		void RunAction (SCNAction action);
 
+		/// <param name="action">To be added.</param>
+		/// <param name="block">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("runAction:completionHandler:")]
 		void RunAction (SCNAction action, [NullAllowed] Action block);
 
+		/// <param name="action">To be added.</param>
+		/// <param name="key">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("runAction:forKey:")]
 		void RunAction (SCNAction action, [NullAllowed] string key);
 
+		/// <param name="action">To be added.</param>
+		/// <param name="key">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="block">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("runAction:forKey:completionHandler:")]
 		void RunAction (SCNAction action, [NullAllowed] string key, [NullAllowed] Action block);
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("hasActions")]
 		bool HasActions ();
 
+		/// <param name="key">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("actionForKey:")]
 		[return: NullAllowed]
 		SCNAction GetAction (string key);
 
+		/// <param name="key">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("removeActionForKey:")]
 		void RemoveAction (string key);
 
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("removeAllActions")]
 		void RemoveAllActions ();
 
-#if NET
 		[Abstract]
-#endif
 		[MacCatalyst (13, 1)]
 		[Export ("actionKeys")]
 		string [] ActionKeys { get; }
 	}
 
-	/// <summary>Completion handler used with <see cref="M:SceneKit.SCNAction.CustomAction(System.Double,SceneKit.SCNActionNodeWithElapsedTimeHandler)" />.</summary>
+	/// <summary>Completion handler used with <see cref="SceneKit.SCNAction.CustomAction(System.Double,SceneKit.SCNActionNodeWithElapsedTimeHandler)" />.</summary>
 	[MacCatalyst (13, 1)]
 	delegate void SCNActionNodeWithElapsedTimeHandler (SCNNode node, nfloat elapsedTime);
 
-	/// <summary>Performs actions on a <see cref="T:SceneKit.SCNNode" />, including changes to appearance, geometry, animations, or arbitrary functions.</summary>
+	/// <summary>Performs actions on a <see cref="SceneKit.SCNNode" />, including changes to appearance, geometry, animations, or arbitrary functions.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNAction_Class/index.html">Apple documentation for <c>SCNAction</c></related>
 	[MacCatalyst (13, 1)]
@@ -4179,12 +4893,9 @@ namespace SceneKit {
 		[Export ("timingMode")]
 		SCNActionTimingMode TimingMode { get; set; }
 
+		/// <summary>Sets the function that transforms the times at which actions occur.</summary>
 		[NullAllowed, Export ("timingFunction", ArgumentSemantic.Assign)]
-#if NET
-		Func<float,float> TimingFunction { get; set; }
-#else
-		Func<float, float> TimingFunction2 { get; set; }
-#endif
+		Func<float, float> TimingFunction { get; set; }
 
 		[Export ("speed")]
 		nfloat Speed { get; set; }
@@ -4192,6 +4903,13 @@ namespace SceneKit {
 		[Export ("reversedAction")]
 		SCNAction ReversedAction ();
 
+		/// <param name="deltaX">To be added.</param>
+		/// <param name="deltaY">To be added.</param>
+		/// <param name="deltaZ">To be added.</param>
+		/// <param name="durationInSeconds">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("moveByX:y:z:duration:")]
 		SCNAction MoveBy (nfloat deltaX, nfloat deltaY, nfloat deltaZ, double durationInSeconds);
 
@@ -4201,24 +4919,62 @@ namespace SceneKit {
 		[Static, Export ("moveTo:duration:")]
 		SCNAction MoveTo (SCNVector3 location, double durationInSeconds);
 
+		/// <param name="xAngle">To be added.</param>
+		/// <param name="yAngle">To be added.</param>
+		/// <param name="zAngle">To be added.</param>
+		/// <param name="durationInSeconds">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("rotateByX:y:z:duration:")]
 		SCNAction RotateBy (nfloat xAngle, nfloat yAngle, nfloat zAngle, double durationInSeconds);
 
+		/// <param name="angle">To be added.</param>
+		/// <param name="axis">To be added.</param>
+		/// <param name="durationInSeconds">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("rotateByAngle:aroundAxis:duration:")]
 		SCNAction RotateBy (nfloat angle, SCNVector3 axis, double durationInSeconds);
 
+		/// <param name="xAngle">To be added.</param>
+		/// <param name="yAngle">To be added.</param>
+		/// <param name="zAngle">To be added.</param>
+		/// <param name="durationInSeconds">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("rotateToX:y:z:duration:")]
 		SCNAction RotateTo (nfloat xAngle, nfloat yAngle, nfloat zAngle, double durationInSeconds);
 
+		/// <param name="xAngle">To be added.</param>
+		/// <param name="yAngle">To be added.</param>
+		/// <param name="zAngle">To be added.</param>
+		/// <param name="durationInSeconds">To be added.</param>
+		/// <param name="shortestUnitArc">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("rotateToX:y:z:duration:shortestUnitArc:")]
 		SCNAction RotateTo (nfloat xAngle, nfloat yAngle, nfloat zAngle, double durationInSeconds, bool shortestUnitArc);
 
 		[Static, Export ("rotateToAxisAngle:duration:")]
 		SCNAction RotateTo (SCNVector4 axisAngle, double durationInSeconds);
 
+		/// <param name="scale">To be added.</param>
+		/// <param name="durationInSeconds">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("scaleBy:duration:")]
 		SCNAction ScaleBy (nfloat scale, double durationInSeconds);
 
+		/// <param name="scale">To be added.</param>
+		/// <param name="durationInSeconds">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("scaleTo:duration:")]
 		SCNAction ScaleTo (nfloat scale, double durationInSeconds);
 
@@ -4228,6 +4984,11 @@ namespace SceneKit {
 		[Static, Export ("group:")]
 		SCNAction Group (SCNAction [] actions);
 
+		/// <param name="action">To be added.</param>
+		/// <param name="count">To be added.</param>
+		/// <summary>Creates an action that repeats <paramref name="action" /> for <paramref name="count" /> number of times.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("repeatAction:count:")]
 		SCNAction RepeatAction (SCNAction action, nuint count);
 
@@ -4240,9 +5001,19 @@ namespace SceneKit {
 		[Static, Export ("fadeOutWithDuration:")]
 		SCNAction FadeOut (double durationInSeconds);
 
+		/// <param name="factor">To be added.</param>
+		/// <param name="durationInSeconds">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("fadeOpacityBy:duration:")]
 		SCNAction FadeOpacityBy (nfloat factor, double durationInSeconds);
 
+		/// <param name="opacity">To be added.</param>
+		/// <param name="durationInSeconds">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("fadeOpacityTo:duration:")]
 		SCNAction FadeOpacityTo (nfloat opacity, double durationInSeconds);
 
@@ -4280,29 +5051,39 @@ namespace SceneKit {
 		SCNAction PlayAudioSource (SCNAudioSource source, bool wait);
 	}
 
-	/// <summary>Completion handler used with <see cref="M:SceneKit.SCNShadable.HandleBinding(System.String,SceneKit.SCNBindingHandler)" />.</summary>
+	/// <summary>Completion handler used with <see cref="SceneKit.SCNShadable.HandleBinding(System.String,SceneKit.SCNBindingHandler)" />.</summary>
 	[MacCatalyst (13, 1)]
-	delegate void SCNBindingHandler (uint /* unsigned int */ programId, uint /* unsigned int */ location, SCNNode renderedNode, SCNRenderer renderer);
+	delegate void SCNBindingHandler (uint /* unsigned int */ programId, uint /* unsigned int */ location, [NullAllowed] SCNNode renderedNode, SCNRenderer renderer);
 
-	/// <summary>A <see cref="T:Foundation.DictionaryContainer" /> containing options for shaders.</summary>
+	/// <summary>A <see cref="Foundation.DictionaryContainer" /> containing options for shaders.</summary>
 	[MacCatalyst (13, 1)]
 	[StrongDictionary ("_SCNShaderModifiers")]
 	interface SCNShaderModifiers {
+		/// <summary>Represents the value associated with the constant SCNShaderModifierEntryPointGeometry</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		string EntryPointGeometry { get; set; }
+		/// <summary>Represents the value associated with the constant SCNShaderModifierEntryPointSurface</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		string EntryPointSurface { get; set; }
+		/// <summary>Represents the value associated with the constant SCNShaderModifierEntryPointLightingModel</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		string EntryPointLightingModel { get; set; }
+		/// <summary>Represents the value associated with the constant SCNShaderModifierEntryPointFragment</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		string EntryPointFragment { get; set; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:SceneKit.SCNShadable" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:SceneKit.SCNShadable" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:SceneKit.SCNShadable" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:SceneKit.SCNShadable_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface ISCNShadable { }
 
-	/// <summary>Implementation of <see cref="T:SceneKit.ISCNShadable" />.</summary>
+	/// <summary>Implementation of <see cref="SceneKit.ISCNShadable" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNShadable_Protocol/index.html">Apple documentation for <c>SCNShadable</c></related>
 	[MacCatalyst (13, 1)]
@@ -4315,32 +5096,40 @@ namespace SceneKit {
 		[Export ("shaderModifiers", ArgumentSemantic.Copy)]
 		NSDictionary WeakShaderModifiers { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[NullAllowed] // by default this property is null
 		[Wrap ("WeakShaderModifiers")]
 		SCNShaderModifiers ShaderModifiers { get; set; }
 
-#if !NET
-		[Watch (8, 0)]
-#endif
 		[iOS (15, 0), TV (15, 0)]
 		[MacCatalyst (15, 0)]
 		[NullAllowed] // by default this property is null
 		[Export ("minimumLanguageVersion", ArgumentSemantic.Retain)]
 		NSNumber MinimumLanguageVersion { get; set; }
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[NullAllowed] // by default this property is null
 		[Export ("program", ArgumentSemantic.Retain)]
 		SCNProgram Program { get; set; }
 
-		[NoWatch]
+		/// <param name="symbol">To be added.</param>
+		/// <param name="handler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("handleBindingOfSymbol:usingBlock:")]
 		void HandleBinding (string symbol, [NullAllowed] SCNBindingHandler handler);
 
-		[NoWatch]
+		/// <param name="symbol">To be added.</param>
+		/// <param name="handler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("handleUnbindingOfSymbol:usingBlock:")]
 		void HandleUnbinding (string symbol, [NullAllowed] SCNBindingHandler handler);
@@ -4365,7 +5154,6 @@ namespace SceneKit {
 		[return: NullAllowed]
 		SCNTechnique Create (SCNTechnique [] techniques);
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Export ("handleBindingOfSymbol:usingBlock:")]
 		void HandleBinding (string symbol, [NullAllowed] SCNBindingHandler handler);
@@ -4379,20 +5167,22 @@ namespace SceneKit {
 		[Internal, Export ("setObject:forKeyedSubscript:")]
 		void _SetObject ([NullAllowed] NSObject obj, INSCopying key);
 
-		[NoWatch]
 		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("library", ArgumentSemantic.Strong)]
 		IMTLLibrary Library { get; set; }
 	}
 
-	/// <summary>Implementation of <see cref="T:SceneKit.ISCNTechniqueSupport" /> that simply holds a reference to the <see cref="T:SceneKit.SCNTechnique" />.</summary>
+	/// <summary>Implementation of <see cref="SceneKit.ISCNTechniqueSupport" /> that simply holds a reference to the <see cref="SceneKit.SCNTechnique" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNTechniqueSupport_Protocol/index.html">Apple documentation for <c>SCNTechniqueSupport</c></related>
 	[MacCatalyst (13, 1)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface SCNTechniqueSupport {
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[MacCatalyst (13, 1)]
 		[Export ("technique", ArgumentSemantic.Copy)]
@@ -4405,12 +5195,24 @@ namespace SceneKit {
 	[Static]
 	interface SCNPhysicsTestKeys {
 
+		/// <summary>Represents the value associated with the constant SCNPhysicsTestCollisionBitMaskKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNPhysicsTestCollisionBitMaskKey")]
 		NSString CollisionBitMaskKey { get; }
 
+		/// <summary>Represents the value associated with the constant SCNPhysicsTestSearchModeKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNPhysicsTestSearchModeKey")]
 		NSString SearchModeKey { get; }
 
+		/// <summary>Represents the value associated with the constant SCNPhysicsTestBackfaceCullingKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNPhysicsTestBackfaceCullingKey")]
 		NSString BackfaceCullingKey { get; }
 	}
@@ -4420,12 +5222,24 @@ namespace SceneKit {
 	[Static]
 	interface SCNPhysicsTestSearchModeKeys {
 
+		/// <summary>Represents the value associated with the constant SCNPhysicsTestSearchModeAny</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNPhysicsTestSearchModeAny")]
 		NSString Any { get; }
 
+		/// <summary>Represents the value associated with the constant SCNPhysicsTestSearchModeClosest</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNPhysicsTestSearchModeClosest")]
 		NSString Closest { get; }
 
+		/// <summary>Represents the value associated with the constant SCNPhysicsTestSearchModeAll</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNPhysicsTestSearchModeAll")]
 		NSString All { get; }
 	}
@@ -4529,37 +5343,35 @@ namespace SceneKit {
 		[Export ("contactTestBitMask", ArgumentSemantic.Assign)]
 		nuint ContactTestBitMask { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the physics body responds to gravitational fields.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("affectedByGravity")]
 		bool AffectedByGravity { [Bind ("isAffectedByGravity")] get; set; }
 
-		[Watch (5, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("setResting:")]
 		void SetResting (bool resting);
 
-		[Watch (5, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("continuousCollisionDetectionThreshold")]
 		nfloat ContinuousCollisionDetectionThreshold { get; set; }
 
-		[Watch (5, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("centerOfMassOffset", ArgumentSemantic.Assign)]
 		SCNVector3 CenterOfMassOffset { get; set; }
 
-		[Watch (5, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("linearRestingThreshold")]
 		nfloat LinearRestingThreshold { get; set; }
 
-		[Watch (5, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("angularRestingThreshold")]
 		nfloat AngularRestingThreshold { get; set; }
 	}
 
-	/// <summary>Delegate for the <see cref="M:SceneKit.SCNPhysicsField.CustomField(SceneKit.SCNFieldForceEvaluator)" /> method.</summary>
+	/// <summary>Delegate for the <see cref="SceneKit.SCNPhysicsField.CustomField(SceneKit.SCNFieldForceEvaluator)" /> method.</summary>
 	[MacCatalyst (13, 1)]
 	delegate SCNVector3 SCNFieldForceEvaluator (SCNVector3 position, SCNVector3 velocity, float /* float, not CGFloat */ mass, float /* float, not CGFloat */ charge, double timeInSeconds);
 
@@ -4583,9 +5395,19 @@ namespace SceneKit {
 		[Static, Export ("linearGravityField")]
 		SCNPhysicsField CreateLinearGravityField ();
 
+		/// <param name="smoothness">To be added.</param>
+		/// <param name="speed">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("noiseFieldWithSmoothness:animationSpeed:")]
 		SCNPhysicsField CreateNoiseField (nfloat smoothness, nfloat speed);
 
+		/// <param name="smoothness">To be added.</param>
+		/// <param name="speed">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("turbulenceFieldWithSmoothness:animationSpeed:")]
 		SCNPhysicsField CreateTurbulenceField (nfloat smoothness, nfloat speed);
 
@@ -4610,9 +5432,15 @@ namespace SceneKit {
 		[Export ("minimumDistance")]
 		nfloat MinimumDistance { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("active")]
 		bool Active { [Bind ("isActive")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("exclusive")]
 		bool Exclusive { [Bind ("isExclusive")] get; set; }
 
@@ -4635,12 +5463,18 @@ namespace SceneKit {
 		nuint CategoryBitMask { get; set; }
 	}
 
-	/// <summary>Valid options for use with <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Scene%20Kit%20SCNPhysics%20World%20Contact%20Test&amp;scope=Xamarin" title="M:SceneKit.SCNPhysicsWorld.ContactTest*">M:SceneKit.SCNPhysicsWorld.ContactTest*</a></format>.</summary>
+	/// <summary>Valid options for use with <see cref="SceneKit.SCNPhysicsWorld.ContactTest" />.</summary>
 	[MacCatalyst (13, 1)]
 	[StrongDictionary ("SCNPhysicsTestKeys")]
 	interface SCNPhysicsTest {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		nuint CollisionBitMask { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		bool BackfaceCulling { get; set; }
 
 		[Internal, Export ("SCNPhysicsTestKeys.SearchModeKey")]
@@ -4671,6 +5505,12 @@ namespace SceneKit {
 		[NullAllowed]
 		NSObject WeakContactDelegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakContactDelegate")]
 		ISCNPhysicsContactDelegate ContactDelegate { get; set; }
 
@@ -4690,6 +5530,12 @@ namespace SceneKit {
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		SCNHitTestResult [] RayTestWithSegmentFromPoint (SCNVector3 origin, SCNVector3 dest, [NullAllowed] NSDictionary options);
 
+		/// <param name="origin">To be added.</param>
+		///         <param name="dest">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("RayTestWithSegmentFromPoint (origin, dest, options.GetDictionary ())")]
 		SCNHitTestResult [] RayTestWithSegmentFromPoint (SCNVector3 origin, SCNVector3 dest, [NullAllowed] SCNPhysicsTest options);
 
@@ -4697,6 +5543,12 @@ namespace SceneKit {
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		SCNPhysicsContact [] ContactTest (SCNPhysicsBody bodyA, SCNPhysicsBody bodyB, [NullAllowed] NSDictionary options);
 
+		/// <param name="bodyA">To be added.</param>
+		///         <param name="bodyB">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("ContactTest (bodyA, bodyB, options.GetDictionary ())")]
 		SCNPhysicsContact [] ContactTest (SCNPhysicsBody bodyA, SCNPhysicsBody bodyB, [NullAllowed] SCNPhysicsTest options);
 
@@ -4704,6 +5556,11 @@ namespace SceneKit {
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		SCNPhysicsContact [] ContactTest (SCNPhysicsBody body, [NullAllowed] NSDictionary options);
 
+		/// <param name="body">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("ContactTest (body, options.GetDictionary ())")]
 		SCNPhysicsContact [] ContactTest (SCNPhysicsBody body, [NullAllowed] SCNPhysicsTest options);
 
@@ -4711,6 +5568,13 @@ namespace SceneKit {
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		SCNPhysicsContact [] ConvexSweepTest (SCNPhysicsShape shape, SCNMatrix4 from, SCNMatrix4 to, [NullAllowed] NSDictionary options);
 
+		/// <param name="shape">To be added.</param>
+		///         <param name="from">To be added.</param>
+		///         <param name="to">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("ConvexSweepTest (shape, from, to, options.GetDictionary ())")]
 		SCNPhysicsContact [] ConvexSweepTest (SCNPhysicsShape shape, SCNMatrix4 from, SCNMatrix4 to, [NullAllowed] SCNPhysicsTest options);
 
@@ -4750,38 +5614,65 @@ namespace SceneKit {
 		NSValue [] Transforms { get; }
 	}
 
-	/// <summary>Defines valid keys for use with the <c>options</c> dictionary passed to <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Scene%20Kit%20SCNPhysics%20Shape%20Create&amp;scope=Xamarin" title="M:SceneKit.SCNPhysicsShape.Create*">M:SceneKit.SCNPhysicsShape.Create*</a></format>.</summary>
+	/// <summary>Defines valid keys for use with the <c>options</c> dictionary passed to <see cref="SCNPhysicsShape.Create(SCNGeometry,SCNPhysicsShapeOptions)" /> and <see cref="SCNPhysicsShape.Create(SCNNode,SCNPhysicsShapeOptions)" /> .</summary>
 	[MacCatalyst (13, 1)]
 	[Static]
 	[EditorBrowsable (EditorBrowsableState.Advanced)]
 	interface SCNPhysicsShapeOptionsKeys {
 
+		/// <summary>Represents the value associated with the constant SCNPhysicsShapeScaleKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNPhysicsShapeScaleKey")]
 		NSString Scale { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNPhysicsShapeOptionCollisionMargin")]
 		NSString CollisionMargin { get; }
 
+		/// <summary>Represents the value associated with the constant SCNPhysicsShapeKeepAsCompoundKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNPhysicsShapeKeepAsCompoundKey")]
 		NSString KeepAsCompound { get; }
 
+		/// <summary>Represents the value associated with the constant SCNPhysicsShapeTypeKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNPhysicsShapeTypeKey")]
 		NSString Type { get; }
 	}
 
-	/// <summary>Geometrical type associated with <see cref="T:SceneKit.SCNPhysicsShape" />s.</summary>
+	/// <summary>Geometrical type associated with <see cref="SceneKit.SCNPhysicsShape" />s.</summary>
 	[MacCatalyst (13, 1)]
 	[Static]
 	[EditorBrowsable (EditorBrowsableState.Advanced)]
 	interface SCNPhysicsShapeOptionsTypes {
 
+		/// <summary>Represents the value associated with the constant SCNPhysicsShapeTypeBoundingBox</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNPhysicsShapeTypeBoundingBox")]
 		NSString BoundingBox { get; }
 
+		/// <summary>Represents the value associated with the constant SCNPhysicsShapeTypeConvexHull</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNPhysicsShapeTypeConvexHull")]
 		NSString ConvexHull { get; }
 
+		/// <summary>Represents the value associated with the constant SCNPhysicsShapeTypeConcavePolyhedron</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNPhysicsShapeTypeConcavePolyhedron")]
 		NSString ConcavePolyhedron { get; }
 	}
@@ -4817,15 +5708,9 @@ namespace SceneKit {
 		nfloat SweepTestFraction { get; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:SceneKit.SCNPhysicsContactDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:SceneKit.SCNPhysicsContactDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:SceneKit.SCNPhysicsContactDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:SceneKit.SCNPhysicsContactDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface ISCNPhysicsContactDelegate { }
 
-	/// <summary>Delegate object functions responding to touches between <see cref="T:SceneKit.SCNPhysicsBody" /> objects..</summary>
+	/// <summary>Delegate object functions responding to touches between <see cref="SceneKit.SCNPhysicsBody" /> objects..</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNPhysicsContactDelegate_Protocol/index.html">Apple documentation for <c>SCNPhysicsContactDelegate</c></related>
 	[MacCatalyst (13, 1)]
@@ -4833,13 +5718,34 @@ namespace SceneKit {
 	[BaseType (typeof (NSObject))]
 	interface SCNPhysicsContactDelegate {
 
-		[Export ("physicsWorld:didBeginContact:"), EventArgs ("SCNPhysicsContact")]
+		/// <param name="world">To be added.</param>
+		/// <param name="contact">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
+		[Export ("physicsWorld:didBeginContact:"), EventArgs ("SCNPhysicsContact", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakContactDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidBeginContact (SCNPhysicsWorld world, SCNPhysicsContact contact);
 
-		[Export ("physicsWorld:didUpdateContact:"), EventArgs ("SCNPhysicsContact")]
+		/// <param name="world">To be added.</param>
+		/// <param name="contact">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
+		[Export ("physicsWorld:didUpdateContact:"), EventArgs ("SCNPhysicsContact", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakContactDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidUpdateContact (SCNPhysicsWorld world, SCNPhysicsContact contact);
 
-		[Export ("physicsWorld:didEndContact:"), EventArgs ("SCNPhysicsContact")]
+		/// <param name="world">To be added.</param>
+		/// <param name="contact">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
+		[Export ("physicsWorld:didEndContact:"), EventArgs ("SCNPhysicsContact", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakContactDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidEndContact (SCNPhysicsWorld world, SCNPhysicsContact contact);
 	}
 
@@ -4996,12 +5902,24 @@ namespace SceneKit {
 		[Export ("chassisBody")]
 		SCNPhysicsBody ChassisBody { get; }
 
+		/// <param name="value">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("applyEngineForce:forWheelAtIndex:")]
 		void ApplyEngineForce (nfloat value, nint index);
 
+		/// <param name="value">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("setSteeringAngle:forWheelAtIndex:")]
 		void SetSteeringAngle (nfloat value, nint index);
 
+		/// <param name="value">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("applyBrakingForce:forWheelAtIndex:")]
 		void ApplyBrakingForce (nfloat value, nint index);
 	}
@@ -5112,6 +6030,9 @@ namespace SceneKit {
 		[Export ("acceleration")]
 		SCNVector3 Acceleration { get; set; }
 
+		/// <summary>Gets or sets a value that controls whether the particle system uses the parent node's coordinate system frame of reference.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("local")]
 		bool Local { [Bind ("isLocal")] get; set; }
 
@@ -5191,6 +6112,9 @@ namespace SceneKit {
 		[Export ("blendMode")]
 		SCNParticleBlendMode BlendMode { get; set; }
 
+		/// <summary>Gets or sets a value that controls whether to increase contrast by rendering particles first in black, and then in their specified color.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("blackPassEnabled")]
 		bool BlackPassEnabled { [Bind ("isBlackPassEnabled")] get; set; }
 
@@ -5200,6 +6124,9 @@ namespace SceneKit {
 		[Export ("sortingMode")]
 		SCNParticleSortingMode SortingMode { get; set; }
 
+		/// <summary>Gets or sets a value that controls whether or not lighting is applied to the scene when rendering.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("lightingEnabled")]
 		bool LightingEnabled { [Bind ("isLightingEnabled")] get; set; }
 
@@ -5253,7 +6180,7 @@ namespace SceneKit {
 		nfloat FresnelExponent { get; set; }
 
 		[Introduced (PlatformName.MacCatalyst, 15, 0)]
-		[Watch (8, 0), TV (15, 0), iOS (15, 0)]
+		[TV (15, 0), iOS (15, 0)]
 		[Export ("writesToDepthBuffer")]
 		bool WritesToDepthBuffer { get; set; }
 
@@ -5291,76 +6218,124 @@ namespace SceneKit {
 	[MacCatalyst (13, 1)]
 	[Static]
 	interface SCNParticleProperty {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNParticlePropertyPosition")]
 		NSString Position { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNParticlePropertyAngle")]
 		NSString Angle { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNParticlePropertyRotationAxis")]
 		NSString RotationAxis { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNParticlePropertyVelocity")]
 		NSString Velocity { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNParticlePropertyAngularVelocity")]
 		NSString AngularVelocity { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNParticlePropertyLife")]
 		NSString Life { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNParticlePropertyColor")]
 		NSString Color { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNParticlePropertyOpacity")]
 		NSString Opacity { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNParticlePropertySize")]
 		NSString Size { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNParticlePropertyFrame")]
 		NSString Frame { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNParticlePropertyFrameRate")]
 		NSString FrameRate { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNParticlePropertyBounce")]
 		NSString Bounce { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNParticlePropertyCharge")]
 		NSString Charge { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNParticlePropertyFriction")]
 		NSString Friction { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNParticlePropertyContactPoint")]
 		NSString ContactPoint { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNParticlePropertyContactNormal")]
 		NSString ContactNormal { get; }
 	}
 
-	/// <summary>Completion handler for use with <see cref="M:SceneKit.SCNParticleSystem.HandleEvent(SceneKit.SCNParticleEvent,Foundation.NSString[],SceneKit.SCNParticleEventHandler)" />.</summary>
+	/// <summary>Completion handler for use with <see cref="SceneKit.SCNParticleSystem.HandleEvent(SceneKit.SCNParticleEvent,Foundation.NSString[],SceneKit.SCNParticleEventHandler)" />.</summary>
 	[MacCatalyst (13, 1)]
 	delegate void SCNParticleEventHandler (IntPtr data, IntPtr dataStride, IntPtr indices, nint count);
 
-	/// <summary>Delegate used as the <c>handler</c> in <see cref="M:SceneKit.SCNParticleSystem.AddModifier(Foundation.NSString[],SceneKit.SCNParticleModifierStage,SceneKit.SCNParticleModifierHandler)" />.</summary>
+	/// <summary>Delegate used as the <c>handler</c> in <see cref="SceneKit.SCNParticleSystem.AddModifier(Foundation.NSString[],SceneKit.SCNParticleModifierStage,SceneKit.SCNParticleModifierHandler)" />.</summary>
 	[MacCatalyst (13, 1)]
 	delegate void SCNParticleModifierHandler (IntPtr data, IntPtr dataStride, nint start, nint end, float /* float, not CGFloat */ deltaTime);
 
@@ -5372,12 +6347,10 @@ namespace SceneKit {
 	[DisableDefaultCtor]
 	interface SCNParticlePropertyController : NSSecureCoding, NSCopying {
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Static, Export ("controllerWithAnimation:")]
 		SCNParticlePropertyController Create (CAAnimation animation);
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Export ("animation", ArgumentSemantic.Retain)]
 		CAAnimation Animation { get; set; }
@@ -5400,7 +6373,7 @@ namespace SceneKit {
 		NSString InputProperty { get; set; }
 	}
 
-	/// <summary>Automatically constrains a <see cref="T:SceneKit.SCNNode" /> so that it always points to the current rendering node.</summary>
+	/// <summary>Automatically constrains a <see cref="SceneKit.SCNNode" /> so that it always points to the current rendering node.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNBillboardConstraint_Class/index.html">Apple documentation for <c>SCNBillboardConstraint</c></related>
 	[MacCatalyst (13, 1)]
@@ -5414,7 +6387,7 @@ namespace SceneKit {
 		SCNBillboardAxis FreeAxes { get; set; }
 	}
 
-	/// <summary>A <see cref="T:SceneKit.SCNNode" /> that loads its content from a scene file.</summary>
+	/// <summary>A <see cref="SceneKit.SCNNode" /> that loads its content from a scene file.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNReferenceNode_Class/index.html">Apple documentation for <c>SCNReferenceNode</c></related>
 	[MacCatalyst (13, 1)]
@@ -5442,6 +6415,9 @@ namespace SceneKit {
 		[Export ("unload")]
 		void Unload ();
 
+		/// <summary>Whether the scene at <see cref="SceneKit.SCNReferenceNode.ReferenceUrl" /> has been loaded.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("loaded")]
 		bool Loaded { [Bind ("isLoaded")] get; }
 	}
@@ -5464,7 +6440,7 @@ namespace SceneKit {
 		[Export ("functionWithTimingMode:")]
 		SCNTimingFunction Create (SCNActionTimingMode timingMode);
 
-		[Static, NoWatch]
+		[Static]
 		[MacCatalyst (13, 1)]
 		[Export ("functionWithCAMediaTimingFunction:")]
 		SCNTimingFunction Create (CAMediaTimingFunction caTimingFunction);
@@ -5488,7 +6464,7 @@ namespace SceneKit {
 		[Export ("animationNamed:")]
 		SCNAnimation FromName (string animationName);
 
-		[Static, NoWatch]
+		[Static]
 		[MacCatalyst (13, 1)]
 		[Export ("animationWithCAAnimation:")]
 		SCNAnimation FromCAAnimation (CAAnimation caAnimation);
@@ -5508,9 +6484,15 @@ namespace SceneKit {
 		[Export ("blendOutDuration")]
 		double BlendOutDuration { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("removedOnCompletion")]
 		bool RemovedOnCompletion { [Bind ("isRemovedOnCompletion")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("appliedOnCompletion")]
 		bool AppliedOnCompletion { [Bind ("isAppliedOnCompletion")] get; set; }
 
@@ -5535,32 +6517,24 @@ namespace SceneKit {
 		[Export ("usesSceneTimeBase")]
 		bool UsesSceneTimeBase { get; set; }
 
-#if !NET
-		[Sealed]
-		[NullAllowed, Export ("animationDidStart", ArgumentSemantic.Copy)]
-		SCNAnimationDidStartHandler2 AnimationDidStart2 { get; set; }
-
-		[Obsolete ("Use 'AnimationDidStart2' instead.")]
-#endif
 		[NullAllowed, Export ("animationDidStart", ArgumentSemantic.Copy)]
 		SCNAnimationDidStartHandler AnimationDidStart { get; set; }
 
-#if !NET
-		[Sealed]
-		[NullAllowed, Export ("animationDidStop", ArgumentSemantic.Copy)]
-		SCNAnimationDidStopHandler2 AnimationDidStop2 { get; set; }
-
-		[Obsolete ("Use 'AnimationDidStop2' instead.")]
-#endif
 		[NullAllowed, Export ("animationDidStop", ArgumentSemantic.Copy)]
 		SCNAnimationDidStopHandler AnimationDidStop { get; set; }
 
 		[NullAllowed, Export ("animationEvents", ArgumentSemantic.Copy)]
 		SCNAnimationEvent [] AnimationEvents { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("additive")]
 		bool Additive { [Bind ("isAdditive")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("cumulative")]
 		bool Cumulative { [Bind ("isCumulative")] get; set; }
 	}
@@ -5681,12 +6655,6 @@ namespace SceneKit {
 		SCNVector3 Offset { get; set; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:SceneKit.SCNAvoidOccluderConstraintDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:SceneKit.SCNAvoidOccluderConstraintDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:SceneKit.SCNAvoidOccluderConstraintDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:SceneKit.SCNAvoidOccluderConstraintDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface ISCNAvoidOccluderConstraintDelegate { }
 
 	[MacCatalyst (13, 1)]
@@ -5694,9 +6662,20 @@ namespace SceneKit {
 	[BaseType (typeof (NSObject))]
 	interface SCNAvoidOccluderConstraintDelegate {
 
+		/// <param name="constraint">To be added.</param>
+		/// <param name="occluder">To be added.</param>
+		/// <param name="node">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("avoidOccluderConstraint:shouldAvoidOccluder:forNode:")]
 		bool ShouldAvoidOccluder (SCNAvoidOccluderConstraint constraint, SCNNode occluder, SCNNode node);
 
+		/// <param name="constraint">To be added.</param>
+		/// <param name="occluder">To be added.</param>
+		/// <param name="node">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("avoidOccluderConstraint:didAvoidOccluder:forNode:")]
 		void DidAvoidOccluder (SCNAvoidOccluderConstraint constraint, SCNNode occluder, SCNNode node);
 	}

@@ -10,54 +10,57 @@
 #nullable enable
 
 using System;
+using System.Numerics;
 using System.Runtime.InteropServices;
 using ObjCRuntime;
 
-#if NET
-using Vector2 = global::System.Numerics.Vector2;
-using Vector3 = global::System.Numerics.Vector3;
-#else
-using Vector2 = global::OpenTK.Vector2;
-using Vector3 = global::OpenTK.Vector3;
-#endif
-
 namespace GameplayKit {
-
-#if NET
+	/// <summary>An axis-aligned rectangular three-dimensional box.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct GKBox {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public Vector3 Min;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public Vector3 Max;
 	}
 
-#if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct GKQuad {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public Vector2 Min;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public Vector2 Max;
 	}
 
-#if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct GKTriangle {
 		Vector3 point1;
 		Vector3 point2;
 		Vector3 point3;
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public Vector3 [] Points {
 			get {
 				return new Vector3 [] { point1, point2, point3 };

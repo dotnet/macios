@@ -21,6 +21,9 @@ using System.Runtime.CompilerServices;
 #nullable enable
 
 namespace AVFoundation {
+	/// <summary>Corresponds to a Core Audio AudioStreamBasicDescription struct.</summary>
+	///     <remarks>To be added.</remarks>
+	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AVFoundation/Reference/AVAudioFormat_Class/index.html">Apple documentation for <c>AVAudioFormat</c></related>
 	public partial class AVAudioFormat {
 		public static bool operator == (AVAudioFormat a, AVAudioFormat b)
 		{
@@ -36,20 +39,19 @@ namespace AVFoundation {
 			return !(a == b);
 		}
 
+		/// <summary>Gets the audio stream description.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("StreamDescription")]
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public virtual AudioStreamBasicDescription StreamDescription {
-#if NET
 			[SupportedOSPlatform ("ios")]
 			[SupportedOSPlatform ("macos")]
 			[SupportedOSPlatform ("tvos")]
 			[SupportedOSPlatform ("maccatalyst")]
-#endif
 			get {
 				var ptr = _StreamDescription;
 				if (ptr == IntPtr.Zero)

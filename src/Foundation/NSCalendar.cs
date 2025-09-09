@@ -32,44 +32,58 @@ using ObjCRuntime;
 using CoreFoundation;
 using Foundation;
 using CoreGraphics;
-#if !WATCH
 using CoreMedia;
-#endif
 
 namespace Foundation {
+	/// <summary>Calendar types that can be used with the NSCalendar constructor.</summary>
+	///     <remarks>
+	///     </remarks>
 	public enum NSCalendarType {
+		/// <summary>Gregorian calendar.</summary>
 		Gregorian,
+		/// <summary>Buddhist calendar.</summary>
 		Buddhist,
+		/// <summary>Chinese calendar.</summary>
 		Chinese,
+		/// <summary>Hebrew calendar.</summary>
 		Hebrew,
+		/// <summary>Islamic calendar.</summary>
 		Islamic,
+		/// <summary>IslamicCivil calendar.</summary>
 		IslamicCivil,
+		/// <summary>Japanese calendar.</summary>
 		Japanese,
+		/// <summary>Calendar for Taiwan.</summary>
 		Taiwan,
 #if !XAMCORE_5_0
+		/// <summary>To be added.</summary>
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		[Obsolete]
 		RepublicOfChina = Taiwan,
 #endif
+		/// <summary>Persian calendar.</summary>
 		Persian,
+		/// <summary>Indian calendar.</summary>
 		Indian,
+		/// <summary>ISO8601 calendar.</summary>
 		ISO8601,
+		/// <summary>To be added.</summary>
 		Coptic,
+		/// <summary>To be added.</summary>
 		EthiopicAmeteAlem,
+		/// <summary>To be added.</summary>
 		EthiopicAmeteMihret,
-#if NET
+		/// <summary>To be added.</summary>
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		IslamicTabular,
-#if NET
+		/// <summary>To be added.</summary>
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		IslamicUmmAlQura,
 	}
 
@@ -116,6 +130,9 @@ namespace Foundation {
 			}
 		}
 
+		/// <param name="calendarType">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSCalendar (NSCalendarType calendarType) : this (GetCalendarIdentifier (calendarType)) { }
 	}
 }

@@ -7,7 +7,7 @@
 // Copyright 2014 Xamarin Inc. All rights reserved.
 //
 
-#if !__TVOS__ && !__WATCHOS__
+#if !__TVOS__
 
 using System;
 using Foundation;
@@ -35,9 +35,6 @@ namespace MonoTouchFixtures.AVFoundation {
 #if !MONOMAC // No Type property for Mac
 				Assert.AreEqual (AVMetadataObjectType.Face, obj.Type, "Type");
 #endif
-#if !NET
-				Assert.AreEqual (AVMetadataObject.TypeFace, obj.WeakType, "WeakType");
-#endif
 			}
 
 #if !MONOMAC // iOS only
@@ -53,4 +50,4 @@ namespace MonoTouchFixtures.AVFoundation {
 	}
 }
 
-#endif // !__TVOS__ && !__WATCHOS__
+#endif // !__TVOS__

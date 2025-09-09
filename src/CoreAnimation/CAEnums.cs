@@ -42,23 +42,33 @@ namespace CoreAnimation {
 	/// <summary>Flags used to determine what side of a layer should be antialiased.</summary>
 	[Flags]
 	public enum CAEdgeAntialiasingMask : uint {
+		/// <summary>Left side of the layer is antialiased.</summary>
 		LeftEdge = 1 << 0,
+		/// <summary>Right side of the layer is antialiased.</summary>
 		RightEdge = 1 << 1,
+		/// <summary>Bottom side of the layer is antialiased.</summary>
 		BottomEdge = 1 << 2,
+		/// <summary>Top side of the layer is antialiased.</summary>
 		TopEdge = 1 << 3,
+		/// <summary>All sides of the layer are antialiased.</summary>
 		All = LeftEdge | RightEdge | BottomEdge | TopEdge,
+		/// <summary>Left and right sides of the layer are antialiased.</summary>
 		LeftRightEdges = LeftEdge | RightEdge,
-		TopBottomEdges = TopEdge | BottomEdge
+		/// <summary>Top and bottom side of the layer are antialiased.</summary>
+		TopBottomEdges = TopEdge | BottomEdge,
 	}
 
-	[NoWatch] // headers not updated
 	[MacCatalyst (13, 1)]
 	[Native]
 	[Flags]
 	public enum CACornerMask : ulong {
+		/// <summary>To be added.</summary>
 		MinXMinYCorner = 1 << 0,
+		/// <summary>To be added.</summary>
 		MaxXMinYCorner = 1 << 1,
+		/// <summary>To be added.</summary>
 		MinXMaxYCorner = 1 << 2,
+		/// <summary>To be added.</summary>
 		MaxXMaxYCorner = 1 << 3,
 	}
 
@@ -67,31 +77,44 @@ namespace CoreAnimation {
 	[Flags]
 	[NoiOS]
 	[NoTV]
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	public enum CAAutoresizingMask : uint {
+		/// <summary>To be added.</summary>
 		NotSizable = 0,
+		/// <summary>To be added.</summary>
 		MinXMargin = 1 << 0,
+		/// <summary>To be added.</summary>
 		WidthSizable = 1 << 1,
+		/// <summary>To be added.</summary>
 		MaxXMargin = 1 << 2,
+		/// <summary>To be added.</summary>
 		MinYMargin = 1 << 3,
+		/// <summary>To be added.</summary>
 		HeightSizable = 1 << 4,
-		MaxYMargin = 1 << 5
+		/// <summary>To be added.</summary>
+		MaxYMargin = 1 << 5,
 	}
 
 	// typedef int -> CAConstraintLayoutManager.h
 	[NoiOS]
 	[NoTV]
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	public enum CAConstraintAttribute {
+		/// <summary>To be added.</summary>
 		MinX,
+		/// <summary>To be added.</summary>
 		MidX,
+		/// <summary>To be added.</summary>
 		MaxX,
+		/// <summary>To be added.</summary>
 		Width,
+		/// <summary>To be added.</summary>
 		MinY,
+		/// <summary>To be added.</summary>
 		MidY,
+		/// <summary>To be added.</summary>
 		MaxY,
+		/// <summary>To be added.</summary>
 		Height,
 	};
 }

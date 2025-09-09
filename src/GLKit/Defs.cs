@@ -37,95 +37,184 @@ using ObjCRuntime;
 namespace GLKit {
 
 	// GLint (32 bits on 64 bit hardware) -> GLKEffects.h
+	/// <summary>An enumeration whose values specify various components of a vertex.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum GLKVertexAttrib {
-		Position, Normal, Color, TexCoord0, TexCoord1
+		/// <summary>To be added.</summary>
+		Position,
+		/// <summary>To be added.</summary>
+		Normal,
+		/// <summary>To be added.</summary>
+		Color,
+		/// <summary>To be added.</summary>
+		TexCoord0,
+		/// <summary>To be added.</summary>
+		TexCoord1,
 	}
 
 	// GLint (32 bits on 64 bit hardware) -> GLKEffectPropertyLight.h
+	/// <summary>An enumeration whose values specify how lighting is calculated by an effect.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum GLKLightingType {
+		/// <summary>To be added.</summary>
 		PerVertex,
-		PerPixel
+		/// <summary>To be added.</summary>
+		PerPixel,
 	}
 
 	// GLint (32 bits on 64 bit hardware) -> GLKEffectPropertyTexture.h
+	/// <summary>An enumeration of ways in which texture can be combined with other color components.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum GLKTextureEnvMode {
-		Replace, Modulate, Decal
+		/// <summary>To be added.</summary>
+		Replace,
+		/// <summary>To be added.</summary>
+		Modulate,
+		/// <summary>To be added.</summary>
+		Decal,
 	}
 
 	// GLenum (32 bits on 64 bit hardware) -> GLKEffectPropertyTexture.h
+	/// <summary>An enumeration whose values specify different kinds of texture.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum GLKTextureTarget {
+		/// <summary>To be added.</summary>
 		Texture2D = 0x0DE1,    // GL_TEXTURE_2D
+		/// <summary>To be added.</summary>
 		CubeMap = 0x8513, // GL_TEXTURE_CUBE_MAP
-		TargetCt = 2
+		/// <summary>To be added.</summary>
+		TargetCt = 2,
 	}
 
 	// GLint (32 bits on 64 bit hardware) -> GLKEffectPropertyFog.h
+	/// <summary>An enumeration whose values specify different types of fog effect.</summary>
+	///     <remarks>In all cases, the fog calculation is clamped to the range 0..1.</remarks>
 	public enum GLKFogMode {
+		/// <summary>The fog is calculated using Math.Exp(-density * distance).</summary>
 		Exp = 0,
+		/// <summary>The fog is calculated using Math.Exp(-(density * distance) ^2).</summary>
 		Exp2,
-		Linear
+		/// <summary>The fog is calculated using (end - distance) / (end - start).</summary>
+		Linear,
 	}
 
 	// GLint (32 bits on 64 bit hardware) -> GLKView.h
+	/// <summary>An enumeration whose values specify the format of the color renderbuffer.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum GLKViewDrawableColorFormat {
+		/// <summary>To be added.</summary>
 		RGBA8888 = 0,
+		/// <summary>To be added.</summary>
 		RGB565,
-		SRGBA8888
+		/// <summary>To be added.</summary>
+		SRGBA8888,
 	}
 
 	// GLint (32 bits on 64 bit hardware) -> GLKView.h
+	/// <summary>An enumeration whose values specify the format of the depth renderbuffer.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum GLKViewDrawableDepthFormat {
-		None, Format16, Format24,
+		/// <summary>To be added.</summary>
+		None,
+		/// <summary>To be added.</summary>
+		Format16,
+		/// <summary>To be added.</summary>
+		Format24,
 	}
 
 	// GLint (32 bits on 64 bit hardware) -> GLKView.h
+	/// <summary>An enumeration whose values specify the format of the stencil renderbuffer.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum GLKViewDrawableStencilFormat {
-		FormatNone, Format8
+		/// <summary>To be added.</summary>
+		FormatNone,
+		/// <summary>To be added.</summary>
+		Format8,
 	}
 
 	// GLint (32 bits on 64 bit hardware) -> GLKView.h
+	/// <summary>An enumeration whose values specify the format of the multisampling buffer.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum GLKViewDrawableMultisample {
-		None, Sample4x
+		/// <summary>To be added.</summary>
+		None,
+		/// <summary>To be added.</summary>
+		Sample4x,
 	}
 
 	// GLint (32 bits on 64 bit hardware) -> GLKTextureLoader.h
+	/// <summary>An enumeration whose values specify the manner in which the alpha information is stored in the source image.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum GLKTextureInfoAlphaState {
-		None, NonPremultiplied, Premultiplied
+		/// <summary>To be added.</summary>
+		None,
+		/// <summary>To be added.</summary>
+		NonPremultiplied,
+		/// <summary>To be added.</summary>
+		Premultiplied,
 	}
 
 	// GLint (32 bits on 64 bit hardware) -> GLKTextureLoader.h
+	/// <summary>An enumeration whose values specify the origin in the original source image.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum GLKTextureInfoOrigin {
+		/// <summary>To be added.</summary>
 		Unknown = 0,
+		/// <summary>To be added.</summary>
 		TopLeft,
-		BottomLeft
+		/// <summary>To be added.</summary>
+		BottomLeft,
 	}
 
 	// GLuint (we'll keep `int` for compatibility) -> GLKTextureLoader.h
+	/// <summary>An enumeration whose values specify errors relating to texture loading.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum GLKTextureLoaderError {
+		/// <summary>To be added.</summary>
 		FileOrURLNotFound = 0,
+		/// <summary>To be added.</summary>
 		InvalidNSData = 1,
+		/// <summary>To be added.</summary>
 		InvalidCGImage = 2,
+		/// <summary>To be added.</summary>
 		UnknownPathType = 3,
+		/// <summary>To be added.</summary>
 		UnknownFileType = 4,
+		/// <summary>To be added.</summary>
 		PVRAtlasUnsupported = 5,
+		/// <summary>To be added.</summary>
 		CubeMapInvalidNumFiles = 6,
+		/// <summary>To be added.</summary>
 		CompressedTextureUpload = 7,
+		/// <summary>To be added.</summary>
 		UncompressedTextureUpload = 8,
+		/// <summary>To be added.</summary>
 		UnsupportedCubeMapDimensions = 9,
+		/// <summary>To be added.</summary>
 		UnsupportedBitDepth = 10,
+		/// <summary>To be added.</summary>
 		UnsupportedPVRFormat = 11,
+		/// <summary>To be added.</summary>
 		DataPreprocessingFailure = 12,
+		/// <summary>To be added.</summary>
 		MipmapUnsupported = 13,
+		/// <summary>To be added.</summary>
 		UnsupportedOrientation = 14,
+		/// <summary>To be added.</summary>
 		ReorientationFailure = 15,
+		/// <summary>To be added.</summary>
 		AlphaPremultiplicationFailure = 16,
+		/// <summary>To be added.</summary>
 		InvalidEAGLContext = 17,
+		/// <summary>To be added.</summary>
 		IncompatibleFormatSRGB = 18,
+		/// <summary>To be added.</summary>
 		UnsupportedTextureTarget = 19,
 	}
 
 	// glVertexAttribPointer structure values, again, problems with definitions being in different namespaces
-#if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -133,14 +222,13 @@ namespace GLKit {
 	[ObsoletedOSPlatform ("tvos12.0", "Use 'Metal' instead.")]
 	[ObsoletedOSPlatform ("macos10.14", "Use 'Metal' instead.")]
 	[ObsoletedOSPlatform ("ios12.0", "Use 'Metal' instead.")]
-#else
-	[Deprecated (PlatformName.iOS, 12, 0, message: "Use 'Metal' instead.")]
-	[Deprecated (PlatformName.TvOS, 12, 0, message: "Use 'Metal' instead.")]
-	[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'Metal' instead.")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct GLKVertexAttributeParameters {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public uint Type;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public uint Size;
 #if XAMCORE_5_0
 		byte normalized;
@@ -149,6 +237,8 @@ namespace GLKit {
 			set => normalized = value.AsByte ();
 		}
 #else
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MarshalAs (UnmanagedType.I1)]
 		public bool Normalized;
 #endif
@@ -161,6 +251,10 @@ namespace GLKit {
 		extern static GLKVertexAttributeParametersInternal FromVertexFormat_ (nuint vertexFormat);
 #endif
 
+		/// <param name="vertexFormat">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static GLKVertexAttributeParameters FromVertexFormat (MDLVertexFormat vertexFormat)
 		{
 #if XAMCORE_5_0

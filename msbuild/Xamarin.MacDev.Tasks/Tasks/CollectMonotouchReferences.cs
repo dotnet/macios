@@ -6,8 +6,7 @@ using System.Collections.Generic;
 using System.Xml;
 using System.Linq;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Xamarin.MacDev.Tasks {
 	public class CollectMonotouchReferences : Task {
@@ -17,12 +16,12 @@ namespace Xamarin.MacDev.Tasks {
 
 		#region Inputs
 
-		public ITaskItem [] References { get; set; }
+		public ITaskItem [] References { get; set; } = [];
 
 		#endregion
 
 		[Output]
-		public ITaskItem [] MonoTouchReferences { get; set; }
+		public ITaskItem [] MonoTouchReferences { get; set; } = [];
 
 		public override bool Execute ()
 		{

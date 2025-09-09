@@ -14,18 +14,17 @@ using Foundation;
 using ObjCRuntime;
 using UIKit;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 #if !MONOMAC
 namespace Messages {
 
 	[MacCatalyst (14, 0)]
 	[Native]
 	public enum MSMessagesAppPresentationStyle : ulong {
+		/// <summary>To be added.</summary>
 		Compact,
+		/// <summary>To be added.</summary>
 		Expanded,
+		/// <summary>To be added.</summary>
 		Transcript,
 	}
 
@@ -33,9 +32,12 @@ namespace Messages {
 	[MacCatalyst (14, 0)]
 	[Native]
 	public enum MSStickerSize : long {
+		/// <summary>100 x 100 points.</summary>
 		Small,
+		/// <summary>136 x 136 points.</summary>
 		Regular,
-		Large
+		/// <summary>206 x 206 points.</summary>
+		Large,
 	}
 
 	/// <summary>Enumerates errors associated with Messages.</summary>
@@ -43,17 +45,29 @@ namespace Messages {
 	[Native]
 	[ErrorDomain ("MSMessagesErrorDomain")]
 	public enum MSMessageErrorCode : long {
+		/// <summary>To be added.</summary>
 		Unknown = -1,
+		/// <summary>A resource file was not found.</summary>
 		FileNotFound = 1,
+		/// <summary>A resource file could not be interpreted.</summary>
 		FileUnreadable,
+		/// <summary>A resource file was for a different type of resource.</summary>
 		ImproperFileType,
+		/// <summary>An error in the format of the File URL for a resource file.</summary>
 		ImproperFileUrl,
+		/// <summary>To be added.</summary>
 		StickerFileImproperFileAttributes,
+		/// <summary>A sticker file was not properly sized.</summary>
 		StickerFileImproperFileSize,
+		/// <summary>A sticker file had an improper format.</summary>
 		StickerFileImproperFileFormat,
+		/// <summary>To be added.</summary>
 		UrlExceedsMaxSize,
+		/// <summary>To be added.</summary>
 		SendWithoutRecentInteraction,
+		/// <summary>To be added.</summary>
 		SendWhileNotVisible,
+		/// <summary>Indicates that an attempt was made to use an API that cannot be used in the current presentation context.</summary>
 		APIUnavailableInPresentationContext,
 	}
 
@@ -61,25 +75,41 @@ namespace Messages {
 	[MacCatalyst (14, 0)]
 	[Native]
 	public enum MSMessagesAppPresentationContext : long {
+		/// <summary>Indicates that iMessage appears in Messages only.</summary>
 		Messages,
+		/// <summary>Indicates that iMessage appears in Messages and FaceTime.</summary>
 		Media,
 	}
 
 	[MacCatalyst (14, 0)]
 	[Protocol]
 	interface MSMessagesAppTranscriptPresentation {
+		/// <param name="size">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("contentSizeThatFits:")]
 		CGSize GetContentSizeThatFits (CGSize size);
 	}
 
-	/// <summary>A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:Speech.UIViewController&amp;scope=Xamarin" title="T:Speech.UIViewController">T:Speech.UIViewController</a></format> that, when extended by the developer, is used to present a custom user-experience within the Messages app.</summary>
+	/// <summary>A <see cref="UIViewController" /> that, when extended by the developer, is used to present a custom user-experience within the Messages app.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Messages/MSMessagesAppViewController">Apple documentation for <c>MSMessagesAppViewController</c></related>
 	[MacCatalyst (14, 0)]
 	[BaseType (typeof (UIViewController))]
 	interface MSMessagesAppViewController : MSMessagesAppTranscriptPresentation {
 		// inlined ctor
+		/// <param name="nibName">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="bundle">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithNibName:bundle:")]
 		NativeHandle Constructor ([NullAllowed] string nibName, [NullAllowed] NSBundle bundle);
 
@@ -149,39 +179,84 @@ namespace Messages {
 		MSMessage SelectedMessage { get; }
 
 		[Export ("insertMessage:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="message">To be added.</param>
+			<summary>Asynchronously adds the <paramref name="message" /> to the conversation.</summary>
+			<returns>A task that represents the asynchronous InsertMessage operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void InsertMessage (MSMessage message, [NullAllowed] Action<NSError> completionHandler);
 
 		[Export ("insertSticker:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="sticker">To be added.</param>
+			<summary>Asynchronously adds the <paramref name="sticker" /> to the conversation.</summary>
+			<returns>A task that represents the asynchronous InsertSticker operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void InsertSticker (MSSticker sticker, [NullAllowed] Action<NSError> completionHandler);
 
 		[Export ("insertText:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="text">To be added.</param>
+			<summary>Asynchronously adds the <paramref name="text" /> to the conversation.</summary>
+			<returns>A task that represents the asynchronous InsertText operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void InsertText (string text, [NullAllowed] Action<NSError> completionHandler);
 
 		[Export ("insertAttachment:withAlternateFilename:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="url">Must be a file URL.</param>
+			<param name="filename">To be added.</param>
+			<summary>Asynchronously inserts the media in the file <paramref name="url" />, describing it in the message as <paramref name="filename" />.</summary>
+			<returns>A task that represents the asynchronous InsertAttachment operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void InsertAttachment (NSUrl url, [NullAllowed] string filename, [NullAllowed] Action<NSError> completionHandler);
 
 		[MacCatalyst (14, 0)]
 		[Export ("sendMessage:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="message">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>A task that represents the asynchronous SendMessage operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void SendMessage (MSMessage message, [NullAllowed] Action<NSError> completionHandler);
 
 		[MacCatalyst (14, 0)]
 		[Export ("sendSticker:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="sticker">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>A task that represents the asynchronous SendSticker operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void SendSticker (MSSticker sticker, [NullAllowed] Action<NSError> completionHandler);
 
 		[MacCatalyst (14, 0)]
 		[Export ("sendText:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="text">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>A task that represents the asynchronous SendText operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void SendText (string text, [NullAllowed] Action<NSError> completionHandler);
 
 		[MacCatalyst (14, 0)]
 		[Export ("sendAttachment:withAlternateFilename:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="url">To be added.</param>
+			<param name="filename">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>A task that represents the asynchronous SendAttachment operation</returns>
+			<remarks>
+			          <para copied="true">The SendAttachmentAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void SendAttachment (NSUrl url, [NullAllowed] string filename, [NullAllowed] Action<NSError> completionHandler);
 	}
 
@@ -203,6 +278,9 @@ namespace Messages {
 		[NullAllowed, Export ("session")]
 		MSSession Session { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (14, 0)]
 		[Export ("pending")]
 		bool Pending { [Bind ("isPending")] get; }
@@ -229,7 +307,7 @@ namespace Messages {
 		NSError Error { get; set; }
 	}
 
-	/// <summary>Abstract base class for defining the appearance of <see cref="T:Messages.MSMessage" /> objects.</summary>
+	/// <summary>Abstract base class for defining the appearance of <see cref="Messages.MSMessage" /> objects.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Messages/MSMessageLayout">Apple documentation for <c>MSMessageLayout</c></related>
 	[MacCatalyst (14, 0)]
@@ -238,11 +316,11 @@ namespace Messages {
 	[DisableDefaultCtor]
 	interface MSMessageLayout : NSCopying { }
 
-	/// <summary>Lays out the display of <see cref="T:Messages.MSMessage" /> objects.</summary>
+	/// <summary>Lays out the display of <see cref="Messages.MSMessage" /> objects.</summary>
 	///     <remarks>
 	///       <para>The layout of a message template is:</para>
 	///       <para>
-	///         <img href="~/Messages/_images/Messages.MSMessageTemplateLayout.png" alt="Image showing the layout of the message template" />
+	///         <img href="~/xml/Messages/_images/Messages.MSMessageTemplateLayout.png" alt="Image showing the layout of the message template" />
 	///       </para>
 	///     </remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Messages/MSMessageTemplateLayout">Apple documentation for <c>MSMessageTemplateLayout</c></related>
@@ -274,7 +352,7 @@ namespace Messages {
 		string ImageSubtitle { get; set; }
 	}
 
-	/// <summary>Represents a messaging session in which <see cref="T:Messages.MSMessage" /> objects can be created and updated.</summary>
+	/// <summary>Represents a messaging session in which <see cref="Messages.MSMessage" /> objects can be created and updated.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Messages/MSSession">Apple documentation for <c>MSSession</c></related>
 	[MacCatalyst (14, 0)]
@@ -304,7 +382,7 @@ namespace Messages {
 		string LocalizedDescription { get; }
 	}
 
-	/// <summary>A <see cref="T:UIKit.UIView" /> that displays a developer-defined Messages sticker.</summary>
+	/// <summary>A <see cref="UIKit.UIView" /> that displays a developer-defined Messages sticker.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Messages/MSStickerView">Apple documentation for <c>MSStickerView</c></related>
 	[MacCatalyst (14, 0)]
@@ -333,7 +411,6 @@ namespace Messages {
 		bool IsAnimating { get; }
 	}
 
-	/// <include file="../docs/api/Messages/IMSStickerBrowserViewDataSource.xml" path="/Documentation/Docs[@DocId='T:Messages.IMSStickerBrowserViewDataSource']/*" />
 	interface IMSStickerBrowserViewDataSource { }
 
 	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/Messages/MSStickerBrowserViewDataSource">Apple documentation for <c>MSStickerBrowserViewDataSource</c></related>
@@ -341,16 +418,25 @@ namespace Messages {
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface MSStickerBrowserViewDataSource {
+		/// <param name="stickerBrowserView">To be added.</param>
+		/// <summary>The number of <see cref="Messages.MSSticker" /> objects held by this data source.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("numberOfStickersInStickerBrowserView:")]
 		nint GetNumberOfStickers (MSStickerBrowserView stickerBrowserView);
 
+		/// <param name="stickerBrowserView">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("stickerBrowserView:stickerAtIndex:")]
 		MSSticker GetSticker (MSStickerBrowserView stickerBrowserView, nint index);
 	}
 
-	/// <summary>A <see cref="T:UIKit.UIView" /> that can be extended to provide a custom sticker-selection experience.</summary>
+	/// <summary>A <see cref="UIKit.UIView" /> that can be extended to provide a custom sticker-selection experience.</summary>
 	///     <remarks>
 	///       <para>Developers who do not need to customize the sticker browsing experience should probably create a "sticker pack" that can be presented by the standard browser. Sticker packs do not require any coding.</para>
 	///     </remarks>
@@ -385,7 +471,7 @@ namespace Messages {
 		void ReloadData ();
 	}
 
-	/// <summary>A standard <see cref="T:UIKit.UIViewController" /> that presents a virtual roll of user-provided stickers.</summary>
+	/// <summary>A standard <see cref="UIKit.UIViewController" /> that presents a virtual roll of user-provided stickers.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Messages/MSStickerBrowserViewController">Apple documentation for <c>MSStickerBrowserViewController</c></related>
 	[MacCatalyst (14, 0)]

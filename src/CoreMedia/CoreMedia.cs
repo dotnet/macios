@@ -19,60 +19,72 @@ using ObjCRuntime;
 namespace CoreMedia {
 
 	// CMSampleBuffer.h
-#if NET
+	/// <summary>Timing information for a <see cref="CoreMedia.CMSampleBuffer" />.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#else
-	[Watch (6, 0)]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct CMSampleTimingInfo {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CMTime Duration;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CMTime PresentationTimeStamp;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CMTime DecodeTimeStamp;
 	}
 
 	// CMTimeRange.h
-#if NET
+	/// <summary>A duration of time.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#else
-	[Watch (6, 0)]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct CMTimeRange {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CMTime Start;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CMTime Duration;
 #if !COREBUILD
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static readonly CMTimeRange Zero;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static readonly CMTimeRange InvalidRange;
 
-#if NET
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public static readonly CMTimeRange InvalidMapping;
 
-#if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public static NSString? TimeMappingSourceKey { get; private set; }
 
-#if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public static NSString? TimeMappingTargetKey { get; private set; }
 
 		static CMTimeRange ()
@@ -95,139 +107,147 @@ namespace CoreMedia {
 	}
 
 	// CMTimeRange.h
-#if NET
+	/// <summary>Specifies a mapping between a source <see cref="CoreMedia.CMTimeRange" /> and a target <see cref="CoreMedia.CMTimeRange" />.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#else
-	[Watch (6, 0)]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct CMTimeMapping {
+		/// <summary>The source time range.</summary>
+		///         <remarks>To be added.</remarks>
 		public CMTimeRange Source;
+		/// <summary>The target time range.</summary>
+		///         <remarks>To be added.</remarks>
 		public CMTimeRange Target;
 
 #if !COREBUILD
-#if NET
+		/// <param name="source">To be added.</param>
+		///         <param name="target">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public static CMTimeMapping Create (CMTimeRange source, CMTimeRange target)
 		{
 			return CMTimeMappingMake (source, target);
 		}
 
-#if NET
+		/// <param name="target">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public static CMTimeMapping CreateEmpty (CMTimeRange target)
 		{
 			return CMTimeMappingMakeEmpty (target);
 		}
 
-#if NET
+		/// <param name="dict">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public static CMTimeMapping CreateFromDictionary (NSDictionary dict)
 		{
-			return CMTimeMappingMakeFromDictionary (dict.Handle);
+			CMTimeMapping result = CMTimeMappingMakeFromDictionary (dict.Handle);
+			GC.KeepAlive (dict);
+			return result;
 		}
 
-#if NET
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public NSDictionary AsDictionary ()
 		{
 			return new NSDictionary (CMTimeMappingCopyAsDictionary (this, IntPtr.Zero), true);
 		}
 
-#if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public string? Description {
 			get {
 				return CFString.FromHandle (CMTimeMappingCopyDescription (IntPtr.Zero, this), true);
 			}
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		[DllImport (Constants.CoreMediaLibrary)]
 		static extern CMTimeMapping CMTimeMappingMake (CMTimeRange source, CMTimeRange target);
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		[DllImport (Constants.CoreMediaLibrary)]
 		static extern CMTimeMapping CMTimeMappingMakeEmpty (CMTimeRange target);
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		[DllImport (Constants.CoreMediaLibrary)]
 		static extern IntPtr /* CFDictionaryRef* */ CMTimeMappingCopyAsDictionary (CMTimeMapping mapping, IntPtr allocator);
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		[DllImport (Constants.CoreMediaLibrary)]
 		static extern CMTimeMapping CMTimeMappingMakeFromDictionary (/* CFDictionaryRef* */ IntPtr dict);
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		[DllImport (Constants.CoreMediaLibrary)]
 		static extern IntPtr /* CFStringRef* */ CMTimeMappingCopyDescription (IntPtr allocator, CMTimeMapping mapping);
 #endif // !COREBUILD
 	}
 
-#if NET
+	/// <summary>A value to be used as a denominator in a <see cref="CoreMedia.CMTime" /> calculation.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#else
-	[Watch (6, 0)]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct CMTimeScale {
 		// CMTime.h
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static readonly CMTimeScale MaxValue = new CMTimeScale (0x7fffffff);
 
 		// int32_t -> CMTime.h
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public int Value;
 
+		/// <param name="value">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CMTimeScale (int value)
 		{
 			if (value < 0 || value > 0x7fffffff)
@@ -238,18 +258,24 @@ namespace CoreMedia {
 	}
 
 	// CMVideoDimensions => int32_t width + int32_t height
-#if NET
+	/// <summary>Struct that contains the width and height of video media.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#else
-	[Watch (6, 0)]
-#endif
 	public struct CMVideoDimensions {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public int Width;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public int Height;
 
+		/// <param name="width">To be added.</param>
+		///         <param name="height">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CMVideoDimensions (int width, int height)
 		{
 			Width = width;

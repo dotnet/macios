@@ -36,28 +36,15 @@ using CoreFoundation;
 using ObjCRuntime;
 using Foundation;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreGraphics {
-
-
-#if NET
+	/// <summary>A class that wraps a data source and exposes it to the CGImage class.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	// CGDataProvider.h
 	public partial class CGDataProvider : NativeObject {
-#if !NET
-		public CGDataProvider (NativeHandle handle)
-			: base (handle, false)
-		{
-		}
-#endif
-
 		[Preserve (Conditional = true)]
 		internal CGDataProvider (NativeHandle handle, bool owns)
 			: base (handle, owns)
@@ -84,6 +71,10 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* CGDataProviderRef */ IntPtr CGDataProviderCreateWithFilename (/* const char* */ IntPtr filename);
 
+		/// <param name="file">File name.</param>
+		///         <summary>Creates a CGDataProvider from an on-disk file.</summary>
+		///         <returns>An initialized CGDataProvider.</returns>
+		///         <remarks>To be added.</remarks>
 		static public CGDataProvider? FromFile (string file)
 		{
 			if (file is null)
@@ -109,6 +100,10 @@ namespace CoreGraphics {
 			return handle;
 		}
 
+		/// <param name="file">The file to load data from.</param>
+		///         <summary>Exposes the contents of the file as a CGDataProvider.</summary>
+		///         <remarks>
+		///         </remarks>
 		public CGDataProvider (string file)
 			: base (Create (file), true)
 		{
@@ -122,9 +117,14 @@ namespace CoreGraphics {
 			// not it's a __nullable parameter but it would return nil (see unit tests) and create an invalid instance
 			if (url is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (url));
-			return CGDataProviderCreateWithURL (url.Handle);
+			IntPtr result = CGDataProviderCreateWithURL (url.Handle);
+			GC.KeepAlive (url);
+			return result;
 		}
 
+		/// <param name="url">To be added.</param>
+		///         <summary>Creates a new <see cref="CoreGraphics.CGDataProvider" /> from the data at the specified <paramref name="url" />.</summary>
+		///         <remarks>To be added.</remarks>
 		public CGDataProvider (NSUrl url)
 			: base (Create (url), true)
 		{
@@ -138,56 +138,37 @@ namespace CoreGraphics {
 			// not it's a __nullable parameter but it would return nil (see unit tests) and create an invalid instance
 			if (data is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (data));
-			return CGDataProviderCreateWithCFData (data.Handle);
+			IntPtr result = CGDataProviderCreateWithCFData (data.Handle);
+			GC.KeepAlive (data);
+			return result;
 		}
 
+		/// <param name="data">To be added.</param>
+		///         <summary>Creates a new <see cref="CoreGraphics.CGDataProvider" /> from the provided <paramref name="data" />.</summary>
+		///         <remarks>To be added.</remarks>
 		public CGDataProvider (NSData data)
 			: base (Create (data), true)
 		{
 		}
 
-#if NET
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static unsafe IntPtr CGDataProviderCreateWithData (/* void* */ IntPtr info, /* const void* */ IntPtr data, /* size_t */ nint size, /* CGDataProviderReleaseDataCallback */ delegate* unmanaged<IntPtr, IntPtr, nint, void> releaseData);
-#else
-		[DllImport (Constants.CoreGraphicsLibrary)]
-		extern static IntPtr CGDataProviderCreateWithData (/* void* */ IntPtr info, /* const void* */ IntPtr data, /* size_t */ nint size, /* CGDataProviderReleaseDataCallback */ CGDataProviderReleaseDataCallback releaseData);
-#endif
 
-#if !NET
-		delegate void CGDataProviderReleaseDataCallback (IntPtr info, IntPtr data, nint size);
-		static CGDataProviderReleaseDataCallback release_gchandle_callback = ReleaseGCHandle;
-		static CGDataProviderReleaseDataCallback release_buffer_callback = ReleaseBuffer;
-		static CGDataProviderReleaseDataCallback release_func_callback = ReleaseFunc;
-#endif
-
-#if NET
 		[UnmanagedCallersOnly]
-#else
-		[MonoPInvokeCallback (typeof (CGDataProviderReleaseDataCallback))]
-#endif
 		private static void ReleaseGCHandle (IntPtr info, IntPtr data, nint size)
 		{
 			var gch = GCHandle.FromIntPtr (info);
 			gch.Free ();
 		}
 
-#if NET
 		[UnmanagedCallersOnly]
-#else
-		[MonoPInvokeCallback (typeof (CGDataProviderReleaseDataCallback))]
-#endif
 		private static void ReleaseBuffer (IntPtr info, IntPtr data, nint size)
 		{
 			if (data != IntPtr.Zero)
 				Marshal.FreeHGlobal (data);
 		}
 
-#if NET
 		[UnmanagedCallersOnly]
-#else
-		[MonoPInvokeCallback (typeof (CGDataProviderReleaseDataCallback))]
-#endif
 		private static void ReleaseFunc (IntPtr info, IntPtr data, nint size)
 		{
 			var gch = GCHandle.FromIntPtr (info);
@@ -200,6 +181,10 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <param name="memoryBlock">Pointer to the memory block.</param>
+		///         <param name="size">Size of the block.</param>
+		///         <summary>Creates a CGDataProvider from an in-memory block.</summary>
+		///         <remarks>To be added.</remarks>
 		public CGDataProvider (IntPtr memoryBlock, int size)
 			: this (memoryBlock, size, false)
 		{
@@ -209,15 +194,16 @@ namespace CoreGraphics {
 		{
 			if (!ownBuffer)
 				memoryBlock = Runtime.CloneMemory (memoryBlock, size);
-#if NET
 			unsafe {
 				return CGDataProviderCreateWithData (IntPtr.Zero, memoryBlock, size, &ReleaseBuffer);
 			}
-#else
-			return CGDataProviderCreateWithData (IntPtr.Zero, memoryBlock, size, release_buffer_callback);
-#endif
 		}
 
+		/// <param name="memoryBlock">Pointer to the memory block.</param>
+		///         <param name="size">Size of the block.</param>
+		///         <param name="ownBuffer">If true this means that the CGDataProvider owns the buffer and will call FreeHGlobal when it is disposed, otherwise it is assumed that the block is owned by another object.</param>
+		///         <summary>Creates a CGDataProvider from an in-memory block.</summary>
+		///         <remarks>To be added.</remarks>
 		public CGDataProvider (IntPtr memoryBlock, int size, bool ownBuffer)
 			: base (Create (memoryBlock, size, ownBuffer), true)
 		{
@@ -229,15 +215,16 @@ namespace CoreGraphics {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (releaseMemoryBlockCallback));
 
 			var gch = GCHandle.Alloc (releaseMemoryBlockCallback);
-#if NET
 			unsafe {
 				return CGDataProviderCreateWithData (GCHandle.ToIntPtr (gch), memoryBlock, size, &ReleaseFunc);
 			}
-#else
-			return CGDataProviderCreateWithData (GCHandle.ToIntPtr (gch), memoryBlock, size, release_func_callback);
-#endif
 		}
 
+		/// <param name="memoryBlock">To be added.</param>
+		///         <param name="size">To be added.</param>
+		///         <param name="releaseMemoryBlockCallback">To be added.</param>
+		///         <summary>Creates a new <see cref="CoreGraphics.CGDataProvider" /> from the data at the specified <paramref name="memoryBlock" />.</summary>
+		///         <remarks>To be added.</remarks>
 		public CGDataProvider (IntPtr memoryBlock, int size, Action<IntPtr> releaseMemoryBlockCallback)
 			: base (Create (memoryBlock, size, releaseMemoryBlockCallback), true)
 		{
@@ -254,20 +241,24 @@ namespace CoreGraphics {
 
 			var gch = GCHandle.Alloc (buffer, GCHandleType.Pinned); // This requires a pinned GCHandle, because unsafe code is scoped to the current block, and the address of the byte array will be used after this function returns.
 			var ptr = gch.AddrOfPinnedObject () + offset;
-#if NET
 			unsafe {
 				return CGDataProviderCreateWithData (GCHandle.ToIntPtr (gch), ptr, count, &ReleaseGCHandle);
 			}
-#else
-			return CGDataProviderCreateWithData (GCHandle.ToIntPtr (gch), ptr, count, release_gchandle_callback);
-#endif
 		}
 
+		/// <param name="buffer">A block of bytes that contains the data to be provided.</param>
+		///         <param name="offset">Offset into the block that is considered part of the data to be provided.</param>
+		///         <param name="count">The number of bytes to consume from the offset start from the block.</param>
+		///         <summary>Creates a CGDataProvider that exposes the byte array starting at the specified offset for the specified amount of bytes.</summary>
+		///         <remarks>To be added.</remarks>
 		public CGDataProvider (byte [] buffer, int offset, int count)
 			: base (Create (buffer, offset, count), true)
 		{
 		}
 
+		/// <param name="buffer">To be added.</param>
+		///         <summary>Creates a new <see cref="CoreGraphics.CGDataProvider" /> from the data in the provided <paramref name="buffer" />.</summary>
+		///         <remarks>To be added.</remarks>
 		public CGDataProvider (byte [] buffer)
 			: this (buffer, 0, buffer.Length)
 		{
@@ -276,6 +267,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* CFDataRef */ IntPtr CGDataProviderCopyData (/* CGDataProviderRef */ IntPtr provider);
 
+		/// <summary>Returns a copy of the provider's data.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public NSData? CopyData ()
 		{
 			return Runtime.GetNSObject<NSData> (CGDataProviderCopyData (Handle), true);

@@ -1,0 +1,194 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+using System;
+using System.Collections.Immutable;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Text;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.Macios.Generator.Availability;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+
+namespace Microsoft.Macios.Generator.DataModel;
+
+[StructLayout (LayoutKind.Auto)]
+readonly partial struct Method : IEquatable<Method> {
+
+	/// <summary>
+	/// The initialization state of the struct.
+	/// </summary>
+	StructState State { get; init; } = StructState.Default;
+
+	/// <summary>
+	/// Gets the default, uninitialized instance of <see cref="Method"/>.
+	/// </summary>
+	public static Method Default { get; } = new (StructState.Default);
+
+	/// <summary>
+	/// Gets a value indicating whether the instance is the default, uninitialized instance.
+	/// </summary>
+	public bool IsNullOrDefault => State == StructState.Default;
+
+	/// <summary>
+	/// Type name that owns the method.
+	/// </summary>
+	public string Type { get; } = string.Empty;
+
+	/// <summary>
+	/// Method name.
+	/// </summary>
+	public string Name { get; init; } = string.Empty;
+
+	/// <summary>
+	/// True if the method is an extension method.
+	/// </summary>
+	public bool IsExtension => Parameters.Length > 0 && Parameters [0].IsThis;
+
+	/// <summary>
+	/// The name of the 'this' parameter for an extension method, or "this" for an instance method.
+	/// </summary>
+	public string This => IsExtension ? Parameters [0].Name : "this";
+
+	/// <summary>
+	/// Method return type.
+	/// </summary>
+	public TypeInfo ReturnType { get; init; }
+
+	/// <summary>
+	/// The platform availability of the method.
+	/// </summary>
+	public SymbolAvailability SymbolAvailability { get; }
+
+	/// <summary>
+	/// Get the attributes added to the constructor.
+	/// </summary>
+	public ImmutableArray<AttributeCodeChange> Attributes { get; } = [];
+
+	readonly bool isStatic;
+
+	/// <summary>
+	/// Returns if the method is static.
+	/// </summary>
+	public bool IsStatic => isStatic;
+
+	readonly ImmutableArray<SyntaxToken> modifiers = [];
+	/// <summary>
+	/// Modifiers list.
+	/// </summary>
+	public ImmutableArray<SyntaxToken> Modifiers {
+		get => modifiers;
+		init {
+			modifiers = value;
+			isStatic = modifiers.Any (x => x.IsKind (SyntaxKind.StaticKeyword));
+		}
+	}
+
+	/// <summary>
+	/// Parameters list.
+	/// </summary>
+	public ImmutableArray<Parameter> Parameters { get; init; } = [];
+
+	internal Method (StructState state)
+	{
+		State = state;
+	}
+
+	/// <inheritdoc/>
+	public bool Equals (Method other)
+	{
+		if (State == StructState.Default && other.State == StructState.Default)
+			return true;
+		if (Type != other.Type)
+			return false;
+		if (Name != other.Name)
+			return false;
+		if (ReturnType != other.ReturnType)
+			return false;
+		if (SymbolAvailability != other.SymbolAvailability)
+			return false;
+		if (ExportMethodData != other.ExportMethodData)
+			return false;
+		if (BindAs != other.BindAs)
+			return false;
+		if (ForcedType != other.ForcedType)
+			return false;
+		if (IsVariadic != other.IsVariadic)
+			return false;
+		if (IsOptional != other.IsOptional)
+			return false;
+
+		var attrsComparer = new AttributesEqualityComparer ();
+		if (!attrsComparer.Equals (Attributes, other.Attributes))
+			return false;
+		var modifiersComparer = new ModifiersEqualityComparer ();
+		if (!modifiersComparer.Equals (Modifiers, other.Modifiers))
+			return false;
+
+		var paramComparer = new MethodParameterEqualityComparer ();
+		return paramComparer.Equals (Parameters, other.Parameters);
+	}
+
+	/// <inheritdoc/>
+	public override bool Equals (object? obj)
+	{
+		return obj is Method other && Equals (other);
+	}
+
+	/// <inheritdoc/>
+	public override int GetHashCode ()
+	{
+		var hashCode = new HashCode ();
+		hashCode.Add (Type);
+		hashCode.Add (Name);
+		hashCode.Add (ReturnType);
+		hashCode.Add (BindAs);
+		foreach (var modifier in Modifiers) {
+			hashCode.Add (modifier);
+		}
+
+		foreach (var attr in Attributes) {
+			hashCode.Add (attr);
+		}
+
+		foreach (var parameter in Parameters) {
+			hashCode.Add (parameter);
+		}
+
+		return hashCode.ToHashCode ();
+	}
+
+	public static bool operator == (Method left, Method right)
+	{
+		return left.Equals (right);
+	}
+
+	public static bool operator != (Method left, Method right)
+	{
+		return !left.Equals (right);
+	}
+
+	/// <inheritdoc/>
+	public override string ToString ()
+	{
+		var sb = new StringBuilder ($"{{ Method: Type: {Type}, ");
+		sb.Append ($"Name: {Name}, ");
+		sb.Append ($"ReturnType: {ReturnType}, ");
+		sb.Append ($"SymbolAvailability: {SymbolAvailability}, ");
+		sb.Append ($"ExportMethodData: {ExportMethodData}, ");
+		sb.Append ($"BindAs: {BindAs?.ToString () ?? "null"}, ");
+		sb.Append ($"ForcedType: {ForcedType?.ToString () ?? "null"}, ");
+		sb.Append ($"IsStatic: {IsStatic}, ");
+		sb.Append ($"IsExtension: {IsExtension}, ");
+		sb.Append ($"IsVariadic: {IsVariadic}, ");
+		sb.Append ($"IsOptional: {IsOptional}, ");
+		sb.Append ("Attributes: [");
+		sb.AppendJoin (", ", Attributes);
+		sb.Append ("], Modifiers: [");
+		sb.AppendJoin (", ", Modifiers.Select (x => x.Text));
+		sb.Append ("], Parameters: [");
+		sb.AppendJoin (", ", Parameters);
+		sb.Append ("] }}");
+		return sb.ToString ();
+	}
+}

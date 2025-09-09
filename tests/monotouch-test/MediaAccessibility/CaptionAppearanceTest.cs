@@ -7,8 +7,6 @@
 // Copyright 2013 Xamarin Inc.
 //
 
-#if !__WATCHOS__
-
 using System;
 using Foundation;
 using MediaAccessibility;
@@ -50,7 +48,6 @@ namespace MonoTouchFixtures.MediaAccessibility {
 			MACaptionAppearance.DidDisplayCaptions (a);
 		}
 
-#if NET
 		[Test]
 		public void IsCustomized ()
 		{
@@ -60,8 +57,5 @@ namespace MonoTouchFixtures.MediaAccessibility {
 				Assert.That (MACaptionAppearance.IsCustomized (value), Is.EqualTo (true).Or.EqualTo (false), value.ToString ());
 			}
 		}
-#endif // NET
 	}
 }
-
-#endif // !__WATCHOS__

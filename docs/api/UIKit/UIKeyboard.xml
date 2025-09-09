@@ -11,7 +11,7 @@
       </para>
       <para>
 	The preferred way of receiving UIKeyboard notification is to
-	use the <see cref="T:UIKit.UIKeyboard.Notifications" /> class,
+	use the <see cref="UIKit.UIKeyboard.Notifications" /> class,
 	which provides a strongly-typed set of APIs to track the
 	changes to the keyboard state and provides strongly-typed
 	accessors to the various parameters of the keyboard changes.

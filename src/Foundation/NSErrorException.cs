@@ -27,15 +27,23 @@ using System;
 using System.Runtime.Versioning;
 
 namespace Foundation {
-#if NET
+	/// <summary>Exception that wraps an Objective-C NSError.</summary>
+	///     <remarks>
+	///       The exception wraps an Objective-C NSError.  These are created
+	///       when using Async programming to set the Task's exception to the
+	///       resulting error, they are not thrown by any APIs in MonoTouch.
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class NSErrorException : Exception {
 		NSError error;
 
+		/// <param name="error">The NSError to wrap.</param>
+		///         <summary>Creates an NSErrorException that encapsulates an NSError.</summary>
+		///         <remarks>
+		///         </remarks>
 		public NSErrorException (NSError error)
 		{
 			if (error is null)
@@ -43,22 +51,45 @@ namespace Foundation {
 			this.error = error;
 		}
 
+		/// <summary>The underlying NSError that is being wrapped.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public NSError Error {
 			get { return error; }
 		}
 
+		/// <summary>The NSError's Domain property.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public string Domain {
 			get { return error.Domain; }
 		}
 
+		/// <summary>The NSError.Code property</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public nint Code {
 			get { return error.Code; }
 		}
 
+		/// <summary>The NSError's UserInfo.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public NSDictionary UserInfo {
 			get { return error.UserInfo; }
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public override string Message {
 			get {
 				return error.Description;

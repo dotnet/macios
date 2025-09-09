@@ -1,6 +1,5 @@
 #nullable enable
 
-#if NET
 namespace CoreGraphics {
 	static class MathHelper {
 		/// <summary>
@@ -16,8 +15,7 @@ namespace CoreGraphics {
 		/// </remarks>
 		internal static float InverseSqrtFast (float x)
 		{
-			unsafe
-			{
+			unsafe {
 				float xhalf = 0.5f * x;
 				int i = *(int*) &x;              // Read bits as integer.
 				i = 0x5f375a86 - (i >> 1);      // Make an initial guess for Newton-Raphson approximation
@@ -44,4 +42,3 @@ namespace CoreGraphics {
 		}
 	}
 }
-#endif // !NET

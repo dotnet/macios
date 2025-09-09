@@ -23,8 +23,6 @@ SOFTWARE.
 
  */
 
-#if NET
-
 #if !MONOMAC
 #define PFLOAT_SINGLE
 #endif
@@ -53,7 +51,7 @@ namespace SceneKit {
 	/// </summary>
 	[Serializable]
 	public struct SCNMatrix4 : IEquatable<SCNMatrix4> {
-#region Fields
+		#region Fields
 
 		/*
 		 * SCNMatrix4 is defined like this for iOS, tvOS and watchOS:
@@ -78,7 +76,7 @@ namespace SceneKit {
 		 *
 		 * It's not obvious from this definitions whether the matrix is row-major or column-major, and neither the documentation
 		 * nor the headers are particularly helpful, but it's possible to do some math to figure it out. See this for more info:
-		 * https://github.com/xamarin/xamarin-macios/issues/15094#issuecomment-1139699662 (result: SCNMatrix4 is using a column-major layout)
+		 * https://github.com/dotnet/macios/issues/15094#issuecomment-1139699662 (result: SCNMatrix4 is using a column-major layout)
 		 *
 		 **/
 
@@ -104,9 +102,9 @@ namespace SceneKit {
 		/// </summary>
 		public readonly static SCNMatrix4 Identity = new SCNMatrix4 (SCNVector4.UnitX, SCNVector4.UnitY, SCNVector4.UnitZ, SCNVector4.UnitW);
 
-#endregion
+		#endregion
 
-#region Constructors
+		#region Constructors
 
 		/// <summary>
 		/// Constructs a new instance.
@@ -154,7 +152,9 @@ namespace SceneKit {
 			Column3 = new SCNVector4 (m03, m13, m23, m33);
 		}
 
-#if !WATCH
+		/// <param name="transform">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public SCNMatrix4 (CoreAnimation.CATransform3D transform)
 		{
 			Column0 = new SCNVector4 ((pfloat) transform.M11, (pfloat) transform.M12, (pfloat) transform.M13, (pfloat) transform.M14);
@@ -162,13 +162,12 @@ namespace SceneKit {
 			Column2 = new SCNVector4 ((pfloat) transform.M31, (pfloat) transform.M32, (pfloat) transform.M33, (pfloat) transform.M34);
 			Column3 = new SCNVector4 ((pfloat) transform.M41, (pfloat) transform.M42, (pfloat) transform.M43, (pfloat) transform.M44);
 		}
-#endif
 
-#endregion
+		#endregion
 
-#region Public Members
+		#region Public Members
 
-#region Properties
+		#region Properties
 
 		/// <summary>
 		/// The determinant of this matrix
@@ -317,11 +316,11 @@ namespace SceneKit {
 		/// </summary>
 		public pfloat M44 { get { return Column3.W; } set { Column3.W = value; } }
 
-#endregion
+		#endregion
 
-#region Instance
+		#region Instance
 
-#region public void Invert()
+		#region public void Invert()
 
 		/// <summary>
 		/// Converts this instance into its inverse.
@@ -331,9 +330,9 @@ namespace SceneKit {
 			this = SCNMatrix4.Invert (this);
 		}
 
-#endregion
+		#endregion
 
-#region public void Transpose()
+		#region public void Transpose()
 
 		/// <summary>
 		/// Converts this instance into its transpose.
@@ -343,13 +342,13 @@ namespace SceneKit {
 			this = SCNMatrix4.Transpose (this);
 		}
 
-#endregion
+		#endregion
 
-#endregion
+		#endregion
 
-#region Static
+		#region Static
 
-#region CreateFromColumns
+		#region CreateFromColumns
 
 		public static SCNMatrix4 CreateFromColumns (SCNVector4 column0, SCNVector4 column1, SCNVector4 column2, SCNVector4 column3)
 		{
@@ -370,9 +369,9 @@ namespace SceneKit {
 			result.Column3 = column3;
 		}
 
-#endregion
+		#endregion
 
-#region CreateFromAxisAngle
+		#region CreateFromAxisAngle
 
 		/// <summary>
 		/// Build a rotation matrix from the specified axis/angle rotation.
@@ -426,9 +425,9 @@ namespace SceneKit {
 			var m33 = t * z * z + cos;
 
 			result = new SCNMatrix4 (
-				 m11,  m21,  m31, 0.0f,
-				 m12,  m22,  m32, 0.0f,
-				 m13,  m23,  m33, 0.0f,
+				 m11, m21, m31, 0.0f,
+				 m12, m22, m32, 0.0f,
+				 m13, m23, m33, 0.0f,
 				0.0f, 0.0f, 0.0f, 1.0f);
 		}
 
@@ -457,9 +456,9 @@ namespace SceneKit {
 			var m33 = (pfloat) (t * z * z + cos);
 
 			result = new SCNMatrix4 (
-				 m11,  m21,  m31, 0.0f,
-				 m12,  m22,  m32, 0.0f,
-				 m13,  m23,  m33, 0.0f,
+				 m11, m21, m31, 0.0f,
+				 m12, m22, m32, 0.0f,
+				 m13, m23, m33, 0.0f,
 				0.0f, 0.0f, 0.0f, 1.0f);
 		}
 
@@ -476,9 +475,9 @@ namespace SceneKit {
 			return result;
 		}
 
-#endregion
+		#endregion
 
-#region CreateRotation[XYZ]
+		#region CreateRotation[XYZ]
 
 		/// <summary>
 		/// Builds a rotation matrix for a rotation around the x-axis.
@@ -491,10 +490,10 @@ namespace SceneKit {
 			pfloat sin = (pfloat) System.Math.Sin (angle);
 
 			result = new SCNMatrix4 (
-				1,    0,    0,    0,
-				0,  cos, -sin,    0,
-				0,  sin,  cos,    0,
-				0,    0,    0,    1);
+				1, 0, 0, 0,
+				0, cos, -sin, 0,
+				0, sin, cos, 0,
+				0, 0, 0, 1);
 		}
 
 		/// <summary>
@@ -520,10 +519,10 @@ namespace SceneKit {
 			pfloat sin = (pfloat) System.Math.Sin (angle);
 
 			result = new SCNMatrix4 (
-				 cos,    0,  sin,    0,
-				   0,    1,    0,    0,
-				-sin,    0,  cos,    0,
-				   0,    0,    0,    1);
+				 cos, 0, sin, 0,
+				   0, 1, 0, 0,
+				-sin, 0, cos, 0,
+				   0, 0, 0, 1);
 		}
 
 		/// <summary>
@@ -549,10 +548,10 @@ namespace SceneKit {
 			pfloat sin = (pfloat) System.Math.Sin (angle);
 
 			result = new SCNMatrix4 (
-				 cos, -sin,    0,    0,
-				 sin,  cos,    0,    0,
-				   0,    0,    1,    0,
-				   0,    0,    0,    1);
+				 cos, -sin, 0, 0,
+				 sin, cos, 0, 0,
+				   0, 0, 1, 0,
+				   0, 0, 0, 1);
 		}
 
 		/// <summary>
@@ -567,9 +566,9 @@ namespace SceneKit {
 			return result;
 		}
 
-#endregion
+		#endregion
 
-#region CreateTranslation
+		#region CreateTranslation
 
 		/// <summary>
 		/// Creates a translation matrix.
@@ -623,9 +622,9 @@ namespace SceneKit {
 			return result;
 		}
 
-#endregion
+		#endregion
 
-#region CreateOrthographic
+		#region CreateOrthographic
 
 		/// <summary>
 		/// Creates an orthographic projection matrix.
@@ -655,9 +654,9 @@ namespace SceneKit {
 			return result;
 		}
 
-#endregion
+		#endregion
 
-#region CreateOrthographicOffCenter
+		#region CreateOrthographicOffCenter
 
 		/// <summary>
 		/// Creates an orthographic projection matrix.
@@ -704,9 +703,9 @@ namespace SceneKit {
 			return result;
 		}
 
-#endregion
+		#endregion
 
-#region CreatePerspectiveFieldOfView
+		#region CreatePerspectiveFieldOfView
 
 		/// <summary>
 		/// Creates a perspective projection matrix.
@@ -772,9 +771,9 @@ namespace SceneKit {
 			return result;
 		}
 
-#endregion
+		#endregion
 
-#region CreatePerspectiveOffCenter
+		#region CreatePerspectiveOffCenter
 
 		/// <summary>
 		/// Creates a perspective projection matrix.
@@ -811,10 +810,10 @@ namespace SceneKit {
 			pfloat d = -(2.0f * zFar * zNear) / (zFar - zNear);
 
 			result = new SCNMatrix4 (
-				x,  0,  a,  0,
-				0,  y,  b,  0,
-				0,  0,  c,  d,
-				0,  0, -1,  0);
+				x, 0, a, 0,
+				0, y, b, 0,
+				0, 0, c, d,
+				0, 0, -1, 0);
 		}
 
 		/// <summary>
@@ -842,9 +841,9 @@ namespace SceneKit {
 			return result;
 		}
 
-#endregion
+		#endregion
 
-#region Scale Functions
+		#region Scale Functions
 
 		/// <summary>
 		/// Build a scaling matrix
@@ -882,9 +881,9 @@ namespace SceneKit {
 				0, 0, 0, 1);
 		}
 
-#endregion
+		#endregion
 
-#region Rotation Functions
+		#region Rotation Functions
 
 		/// <summary>
 		/// Build a rotation matrix from a quaternion
@@ -915,9 +914,9 @@ namespace SceneKit {
 			CreateFromAxisAngle (axis, angle, out result);
 			return result;
 		}
-#endregion
+		#endregion
 
-#region Camera Helper Functions
+		#region Camera Helper Functions
 
 		/// <summary>
 		/// Build a world space to camera space matrix
@@ -933,9 +932,9 @@ namespace SceneKit {
 			SCNVector3 y = SCNVector3.Normalize (SCNVector3.Cross (z, x));
 
 			SCNMatrix4 rot = new SCNMatrix4 (
-					 x.X,  x.Y,  x.Z, 0.0f,
-					 y.X,  y.Y,  y.Z, 0.0f,
-					 z.X,  z.Y,  z.Z, 0.0f,
+					 x.X, x.Y, x.Z, 0.0f,
+					 y.X, y.Y, y.Z, 0.0f,
+					 z.X, z.Y, z.Z, 0.0f,
 					0.0f, 0.0f, 0.0f, 1.0f);
 
 			SCNMatrix4 trans = SCNMatrix4.CreateTranslation (-eye);
@@ -961,9 +960,9 @@ namespace SceneKit {
 			return LookAt (new SCNVector3 (eyeX, eyeY, eyeZ), new SCNVector3 (targetX, targetY, targetZ), new SCNVector3 (upX, upY, upZ));
 		}
 
-#endregion
+		#endregion
 
-#region Multiply Functions
+		#region Multiply Functions
 
 #if XAMCORE_5_0
 		/// <summary>
@@ -989,11 +988,11 @@ namespace SceneKit {
 #if XAMCORE_5_0
 		public static SCNMatrix4 Mult (SCNMatrix4 firstTransformation, SCNMatrix4 secondTransformation)
 #else
-		public static SCNMatrix4 Mult(SCNMatrix4 left, SCNMatrix4 right)
+		public static SCNMatrix4 Mult (SCNMatrix4 left, SCNMatrix4 right)
 #endif
 		{
 			SCNMatrix4 result;
-			// the matrices are reversed: https://github.com/xamarin/xamarin-macios/issues/15094#issuecomment-1139699662
+			// the matrices are reversed: https://github.com/dotnet/macios/issues/15094#issuecomment-1139699662
 #if XAMCORE_5_0
 			MatrixMultiply (ref secondTransformation, ref firstTransformation, out result);
 #else
@@ -1026,10 +1025,10 @@ namespace SceneKit {
 #if XAMCORE_5_0
 		public static void Mult (ref SCNMatrix4 firstTransformation, ref SCNMatrix4 secondTransformation, out SCNMatrix4 result)
 #else
-		public static void Mult(ref SCNMatrix4 left, ref SCNMatrix4 right, out SCNMatrix4 result)
+		public static void Mult (ref SCNMatrix4 left, ref SCNMatrix4 right, out SCNMatrix4 result)
 #endif
 		{
-			// the matrices are reversed: https://github.com/xamarin/xamarin-macios/issues/15094#issuecomment-1139699662
+			// the matrices are reversed: https://github.com/dotnet/macios/issues/15094#issuecomment-1139699662
 #if XAMCORE_5_0
 			MatrixMultiply (ref secondTransformation, ref firstTransformation, out result);
 #else
@@ -1040,7 +1039,7 @@ namespace SceneKit {
 		// Multiply two matrices in the order you'd expect (left * right).
 		static void MatrixMultiply (ref SCNMatrix4 left, ref SCNMatrix4 right, out SCNMatrix4 result)
 		{
-			result = new SCNMatrix4(
+			result = new SCNMatrix4 (
 				left.Column0.X * right.Column0.X + left.Column1.X * right.Column0.Y + left.Column2.X * right.Column0.Z + left.Column3.X * right.Column0.W,
 				left.Column0.X * right.Column1.X + left.Column1.X * right.Column1.Y + left.Column2.X * right.Column1.Z + left.Column3.X * right.Column1.W,
 				left.Column0.X * right.Column2.X + left.Column1.X * right.Column2.Y + left.Column2.X * right.Column2.Z + left.Column3.X * right.Column2.W,
@@ -1062,9 +1061,9 @@ namespace SceneKit {
 				left.Column0.W * right.Column3.X + left.Column1.W * right.Column3.Y + left.Column2.W * right.Column3.Z + left.Column3.W * right.Column3.W);
 		}
 
-#endregion
+		#endregion
 
-#region Invert Functions
+		#region Invert Functions
 
 		static bool InvertSoftware (SCNMatrix4 matrix, out SCNMatrix4 result)
 		{
@@ -1096,9 +1095,9 @@ namespace SceneKit {
 #endif
 			{
 				result = new SCNMatrix4 (pfloat.NaN, pfloat.NaN, pfloat.NaN, pfloat.NaN,
-				                         pfloat.NaN, pfloat.NaN, pfloat.NaN, pfloat.NaN,
-				                         pfloat.NaN, pfloat.NaN, pfloat.NaN, pfloat.NaN,
-				                         pfloat.NaN, pfloat.NaN, pfloat.NaN, pfloat.NaN);
+										 pfloat.NaN, pfloat.NaN, pfloat.NaN, pfloat.NaN,
+										 pfloat.NaN, pfloat.NaN, pfloat.NaN, pfloat.NaN,
+										 pfloat.NaN, pfloat.NaN, pfloat.NaN, pfloat.NaN);
 				return false;
 			}
 
@@ -1156,9 +1155,9 @@ namespace SceneKit {
 			return inverse;
 		}
 
-#endregion
+		#endregion
 
-#region Transpose
+		#region Transpose
 
 		/// <summary>
 		/// Calculate the transpose of the given matrix
@@ -1181,11 +1180,11 @@ namespace SceneKit {
 			result = new SCNMatrix4 (mat.Column0, mat.Column1, mat.Column2, mat.Column3);
 		}
 
-#endregion
+		#endregion
 
-#endregion
+		#endregion
 
-#region Operators
+		#region Operators
 
 		/// <summary>
 		/// Matrix multiplication
@@ -1220,11 +1219,11 @@ namespace SceneKit {
 			return !left.Equals (right);
 		}
 
-#endregion
+		#endregion
 
-#region Overrides
+		#region Overrides
 
-#region public override string ToString()
+		#region public override string ToString()
 
 		/// <summary>
 		/// Returns a System.String that represents the current SCNMatrix4.
@@ -1235,9 +1234,9 @@ namespace SceneKit {
 			return String.Format ("{0}\n{1}\n{2}\n{3}", Row0, Row1, Row2, Row3);
 		}
 
-#endregion
+		#endregion
 
-#region public override int GetHashCode()
+		#region public override int GetHashCode()
 
 		/// <summary>
 		/// Returns the hashcode for this instance.
@@ -1245,12 +1244,12 @@ namespace SceneKit {
 		/// <returns>A System.Int32 containing the unique hashcode for this instance.</returns>
 		public override int GetHashCode ()
 		{
-			return HashCode.Combine(Column0, Column1, Column2, Column3);
+			return HashCode.Combine (Column0, Column1, Column2, Column3);
 		}
 
-#endregion
+		#endregion
 
-#region public override bool Equals(object obj)
+		#region public override bool Equals(object obj)
 
 		/// <summary>
 		/// Indicates whether this instance and a specified object are equal.
@@ -1265,13 +1264,13 @@ namespace SceneKit {
 			return this.Equals ((SCNMatrix4) obj);
 		}
 
-#endregion
+		#endregion
 
-#endregion
+		#endregion
 
-#endregion
+		#endregion
 
-#region IEquatable<SCNMatrix4> Members
+		#region IEquatable<SCNMatrix4> Members
 
 		/// <summary>Indicates whether the current matrix is equal to another matrix.</summary>
 		/// <param name="other">An matrix to compare with this matrix.</param>
@@ -1285,17 +1284,17 @@ namespace SceneKit {
 				Column3 == other.Column3;
 		}
 
-#endregion
+		#endregion
 
 		static void ToAxisAngle (Quaternion q, out Vector3 axis, out float angle)
 		{
 			if (q.W > 1.0f)
-			    q = Quaternion.Normalize (q);
+				q = Quaternion.Normalize (q);
 
 			angle = 2.0f * (float) System.Math.Acos (q.W); // angle
 			var den = (float) System.Math.Sqrt (1.0 - q.W * q.W);
 			if (den > 0.0001f) {
-			        axis = new Vector3(q.X, q.Y, q.Z) / den;
+				axis = new Vector3 (q.X, q.Y, q.Z) / den;
 			} else {
 				// This occurs when the angle is zero.
 				// Not a problem: just set an arbitrary normalized axis.
@@ -1337,6 +1336,3 @@ namespace SceneKit {
 #endif
 	}
 }
-
-#endif // NET
-

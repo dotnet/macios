@@ -29,11 +29,10 @@ using ObjCRuntime;
 
 #nullable enable
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace ObjCRuntime {
+	/// <summary>Represents an Objective-C selector in managed code.</summary>
+	///     <remarks>
+	///     </remarks>
 	public partial class Selector : IEquatable<Selector>, INativeObject {
 		internal const string Alloc = "alloc";
 		internal const string Class = "class";
@@ -61,16 +60,29 @@ namespace ObjCRuntime {
 			this.handle = handle;
 		}
 
+		/// <param name="name">The selector name.</param>
+		///         <summary>Creates a new selector and registers it with the Objective-C runtime.</summary>
+		///         <remarks>
+		///         </remarks>
 		public Selector (string name)
 		{
 			this.name = name;
 			handle = GetHandle (name);
 		}
 
+		/// <summary>Handle (pointer) to the unmanaged selector representation.</summary>
+		///         <value>A pointer to the unmanaged selector representation.</value>
+		///         <remarks>
+		///           <para>This IntPtr is the handle to the underlying unmanaged representation for this selector.</para>
+		///         </remarks>
 		public NativeHandle Handle {
 			get { return handle; }
 		}
 
+		/// <summary>Name of this selector.</summary>
+		///         <value />
+		///         <remarks>
+		///         </remarks>
 		public string Name {
 			get {
 				if (name is null)
@@ -96,11 +108,21 @@ namespace ObjCRuntime {
 			return left.handle == right.handle;
 		}
 
+		/// <param name="right">The other object to compare against.</param>
+		///         <summary>Compares two objects for equality</summary>
+		///         <returns>True if the objects represent the same object</returns>
+		///         <remarks>
+		///         </remarks>
 		public override bool Equals (object? right)
 		{
 			return Equals (right as Selector);
 		}
 
+		/// <param name="right">The other selector to compare against.</param>
+		///         <summary>Compares two selectors for equality.</summary>
+		///         <returns>True if the objects represent the same selector.</returns>
+		///         <remarks>
+		///         </remarks>
 		public bool Equals (Selector? right)
 		{
 			if (right is null)
@@ -109,6 +131,11 @@ namespace ObjCRuntime {
 			return handle == right.handle;
 		}
 
+		/// <summary>Returns the Selector's hash code.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public override int GetHashCode ()
 		{
 			return handle.GetHashCode ();
@@ -129,6 +156,15 @@ namespace ObjCRuntime {
 			return new Selector (sel, false);
 		}
 
+		/// <summary>Creates a managed Selector instance from a native selector.</summary>
+		/// <param name="selector">The native selector handle.</param>
+		/// <param name="owns">Whether the caller owns the native selector handle or not.</param>
+		/// <remarks>It's not possible to free a selector, so the <paramref name="owns" /> parameter is ignored.</remarks>
+		public static Selector? FromHandle (NativeHandle selector, bool owns)
+		{
+			return FromHandle (selector);
+		}
+
 		public static Selector Register (NativeHandle handle)
 		{
 			return new Selector (handle);
@@ -144,6 +180,11 @@ namespace ObjCRuntime {
 
 		// objc/runtime.h
 		// Selector.GetHandle is optimized by the AOT compiler, and the current implementation only supports IntPtr, so we can't switch to NativeHandle quite yet (the AOT compiler crashes).
+		/// <param name="name">Name of a selector</param>
+		///         <summary>Returns the handle to the specified Objective-C selector.</summary>
+		///         <returns>The handle to the specified Objective-C selector.</returns>
+		///         <remarks>
+		///         </remarks>
 		public static IntPtr GetHandle (string name)
 		{
 			var ptr = Marshal.StringToHGlobalAnsi (name);

@@ -14,17 +14,16 @@
         <AssemblyName>Microsoft.Macios.Bindings.Analyzer</AssemblyName>
         <Version>0.1.0</Version>
         <!-- There is a bug in the roslyn analyzer for roslyn analyzers.... -->
-        <NoWarn>RS2007</NoWarn>
+        <NoWarn>RS2007;RS1041;RS1038;APL0003</NoWarn>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4">
+        <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.11">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.9.2" />
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.9.2"/>
-        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.9.2"/>
     </ItemGroup>
 
     <ItemGroup>
@@ -34,23 +33,95 @@
     </ItemGroup>
 
     <ItemGroup>
-        <EmbeddedResource Update="Resources.resx">
-            <Generator>ResXFileCodeGenerator</Generator>
-            <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-        </EmbeddedResource>
-    </ItemGroup>
-
-    <ItemGroup>
-        <Compile Update="Resources.Designer.cs">
-            <DesignTime>True</DesignTime>
-            <AutoGen>True</AutoGen>
-            <DependentUpon>Resources.resx</DependentUpon>
+        <Compile Include="../Microsoft.Macios.Generator/Configuration.cs" >
+            <Link>Generator/Configuration.cs</Link>
+        </Compile>
+        <Compile Include="../Microsoft.Macios.Generator/AttributesNames.cs" >
+            <Link>Generator/AttributesNames.cs</Link>
+        </Compile>
+        <Compile Include="../Microsoft.Macios.Generator/CollectionComparer.cs" >
+            <Link>Generator/CollectionComparer.cs</Link>
+        </Compile>
+        <Compile Include="../Microsoft.Macios.Generator/DictionaryComparer.cs" >
+            <Link>Generator/DictionaryComparer.cs</Link>
+        </Compile>
+        <Compile Include="../Microsoft.Macios.Generator/Nomenclator.cs" >
+            <Link>Generator/Nomenclator.cs</Link>
+        </Compile>
+        <Compile Include="../Microsoft.Macios.Generator/StructState.cs" >
+            <Link>Generator/StructState.cs</Link>
+        </Compile>
+        <Compile Include="../Microsoft.Macios.Generator/Attributes/BindFromData.cs" >
+            <Link>Generator/Attributes/BindFromData.cs</Link>
+        </Compile>
+        <Compile Include="../Microsoft.Macios.Generator/Attributes/FieldData.cs" >
+            <Link>Generator/Attributes/FieldData.cs</Link>
+        </Compile>
+        <Compile Include="../Microsoft.Macios.Generator/Attributes/ExportData.cs" >
+            <Link>Generator/Attributes/ExportData.cs</Link>
+        </Compile>
+        <Compile Include="../Microsoft.Macios.Generator/Attributes/AttributeParsingError.cs" >
+            <Link>Generator/Attributes/AttributeParsingError.cs</Link>
+        </Compile>
+        <Compile Include="../Microsoft.Macios.Generator/Attributes/BindingTypeData.cs" >
+            <Link>Generator/Attributes/BindingTypeData.cs</Link>
+        </Compile>
+        <Compile Include="../Microsoft.Macios.Generator/Attributes/ForcedTypeData.cs" >
+            <Link>Generator/Attributes/ForcedTypeData.cs</Link>
+        </Compile>
+        <Compile Include="../Microsoft.Macios.Generator/Attributes/ObsoletedOSPlatformData.cs" >
+            <Link>Generator/Attributes/ObsoletedOSPlatformData.cs</Link>
+        </Compile>
+        <Compile Include="../Microsoft.Macios.Generator/Attributes/SupportedOSPlatformData.cs" >
+            <Link>Generator/Attributes/SupportedOSPlatformData.cs</Link>
+        </Compile>
+        <Compile Include="../Microsoft.Macios.Generator/Attributes/UnsupportedOSPlatformData.cs" >
+            <Link>Generator/Attributes/UnsupportedOSPlatformData.cs</Link>
+        </Compile>
+        <Compile Include="../Microsoft.Macios.Generator/Context/RootContext.cs" >
+            <Link>Generator/Context/RootContext.cs</Link>
+        </Compile>
+        <Compile Include="../Microsoft.Macios.Generator/DataModel/*.cs" >
+            <Link>DataModel/*.cs</Link>
+        </Compile>
+        <Compile Include="../Microsoft.Macios.Generator/Extensions/*.cs" >
+            <Link>Generator/*.cs</Link>
+        </Compile>
+        <Compile Include="../Microsoft.Macios.Generator/Formatters/TypeInfoFormatter.cs" >
+            <Link>Generator/Formatters/TypeInfoFormatter.cs</Link>
+        </Compile>
+        <Compile Include="../Microsoft.Macios.Generator/Formatters/MethodFormatter.cs" >
+            <Link>Generator/Formatters/MethodFormatter.cs</Link>
+        </Compile>
+        <Compile Include="../Microsoft.Macios.Generator/Formatters/ParameterFormatter.cs" >
+            <Link>Generator/Formatters/ParameterFormatter.cs</Link>
+        </Compile>
+        <Compile Include="../Microsoft.Macios.Generator/Availability/*.cs" >
+            <Link>Generator/Availability/*.cs</Link>
+        </Compile>
+        <Compile Include="../../ObjCRuntime/Registrar.core.cs" >
+            <Link>external\Registrar.core.cs</Link>
         </Compile>
     </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\Microsoft.Macios.Binding.Common\Microsoft.Macios.Binding.Common.csproj" PrivateAssets="all" />
         <None Include="$(OutputPath)\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="Resources.Designer.cs" />
+      <EmbeddedResource Update="Resources.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+        <StronglyTypedFileName>Resources.Designer.cs</StronglyTypedFileName>
+        <StronglyTypedLanguage>CSharp</StronglyTypedLanguage>
+        <StronglyTypedNamespace>$(RootNamespace)</StronglyTypedNamespace>
+        <StronglyTypedClassName>Resources</StronglyTypedClassName>
+        <ManifestResourceName>$(RootNamespace).Resources</ManifestResourceName>
+        <GenerateResource>true</GenerateResource>
+        <PublicClass>false</PublicClass>
+      </EmbeddedResource>
     </ItemGroup>
 
 </Project>

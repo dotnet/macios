@@ -47,16 +47,51 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <CustomEntitlements Include="com.apple.security.network.client" Condition="'$(_PlatformName)' == 'macOS' Or '$(_PlatformName)' == 'MacCatalyst'" Type="boolean" Value="true" />
+    <CustomEntitlements Include="com.apple.security.network.server" Condition="'$(_PlatformName)' == 'macOS' Or '$(_PlatformName)' == 'MacCatalyst'" Type="boolean" Value="true" />
+    <CustomEntitlements Include="com.apple.developer.networking.multicast" Condition="'$(_PlatformName)' == 'iOS' And '$(SdkIsSimulator)' == 'true'" Type="boolean" Value="true" />
+    <CustomEntitlements Include="com.apple.developer.ubiquity-kvstore-identifier" Condition="('$(_PlatformName)' == 'iOS' Or '$(_PlatformName)' == 'tvOS') And '$(SdkIsSimulator)' == 'true'" Type="string" Value="%24(TeamIdentifierPrefix)com.xamarin.monotouch-test" />
+    <CustomEntitlements Include="keychain-access-groups" Condition="('$(_PlatformName)' == 'iOS' Or '$(_PlatformName)' == 'tvOS') And '$(SdkIsSimulator)' == 'true'" Type="stringarray" Value="%24(AppIdentifierPrefix)com.xamarin.monotouch-test" />
+    <CustomEntitlements Include="com.apple.developer.pass-type-identifiers" Condition="('$(_PlatformName)' == 'iOS' Or '$(_PlatformName)' == 'tvOS') And '$(SdkIsSimulator)' == 'true'" Type="stringarray" Value=" A93A5CM278.tests/monotouch-test/Entitlements.plist" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TestVariations Include="static-registrar-all-optimizations" Description="Static registrar + all optimizations" />
+    <TestVariations Include="static-registrar-all-optimizations-linkall" Description="Static registrar + all optimizations + Link all" />
+    <TestVariations Include="static-registrar-optimizations-except-uithread-checks-linkall" Description="Static registrar + all optimizations + Link all" />
+    <TestVariations Include="managed-static-registrar-all-optimizations-linkall" Description="Managed static registrar + all optimizations" />
+  </ItemGroup>
+  <PropertyGroup Condition="'$(TestVariation)' == 'static-registrar-all-optimizations'">
+    <AppBundleExtraOptions>$(AppBundleExtraOptions) --optimize:all</AppBundleExtraOptions>
+    <Registrar>static</Registrar>
+    <DefineConstants>$(DefineConstants);OPTIMIZEALL</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TestVariation)' == 'static-registrar-all-optimizations-linkall'">
+    <AppBundleExtraOptions>$(AppBundleExtraOptions) --optimize:all</AppBundleExtraOptions>
+    <Registrar>static</Registrar>
+    <LinkMode>Full</LinkMode>
+    <DefineConstants>$(DefineConstants);OPTIMIZEALL</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TestVariation)' == 'static-registrar-optimizations-except-uithread-checks-linkall'">
+    <AppBundleExtraOptions>$(AppBundleExtraOptions) --optimize:all,-remove-uithread-checks</AppBundleExtraOptions>
+    <Registrar>static</Registrar>
+    <LinkMode>Full</LinkMode>
+    <DefineConstants>$(DefineConstants);OPTIMIZEALL</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TestVariation)' == 'managed-static-registrar-all-optimizations-linkall'">
+    <AppBundleExtraOptions>$(AppBundleExtraOptions) --optimize:all</AppBundleExtraOptions>
+    <Registrar>managed-static</Registrar>
+    <LinkMode>Full</LinkMode>
+    <DefineConstants>$(DefineConstants);OPTIMIZEALL</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
     <ReferenceNativeSymbol Include="Inexistent" SymbolType="ObjectiveCClass" SymbolMode="Ignore" />
     <ReferenceNativeSymbol Include="x_native_field" SymbolType="Field" />
   </ItemGroup>
 
   <Import Project="$(RootTestsDirectory)/common/shared-dotnet.csproj" />
 
-  <PropertyGroup>
-    <!-- Must be done after importing shared-dotnet.csproj -->
-    <CodesignEntitlements Condition="'$(_IsSimulatorBuild)' == 'true'">$(MonoTouchTestDirectory)\Entitlements.plist</CodesignEntitlements>
-  </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="$(RootTestsDirectory)\EmbeddedResources\dotnet\$(_PlatformName)\EmbeddedResources.csproj" />
@@ -71,7 +106,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="$(MonoTouchTestDirectory)\Entitlements.plist" />
     <None Include="$(MonoTouchTestDirectory)\app.config" />
     <None Include="$(MonoTouchTestDirectory)\EmptyNib.xib" />
   </ItemGroup>
@@ -82,12 +116,6 @@
     </Compile>
     <Compile Include="$(TestLibrariesDirectory)\TrampolineTest.generated.cs" />
     <Compile Include="$(TestLibrariesDirectory)\RegistrarTest.generated.cs" />
-    <Compile Include="$(RootTestsDirectory)\api-shared\ObjCRuntime\RegistrarTest.cs">
-      <Link>shared\ObjCRuntime\RegistrarTest.cs</Link>
-    </Compile>
-    <Compile Include="$(RootTestsDirectory)\api-shared\CoreFoundation\CFNotificationCenterTest.cs">
-      <Link>CoreFoundation\CFNotificationCenterTest.cs</Link>
-    </Compile>
     <Compile Include="$(RootTestsDirectory)\common\TestRuntime.cs">
       <Link>TestRuntime.cs</Link>
     </Compile>
@@ -170,8 +198,8 @@
     <BundleResource Include="$(MonoTouchTestDirectory)\CoreImage\xamarinmonkey.heic">
       <Link>CoreImage\xamarinmonkey.heic</Link>
     </BundleResource>
-    <BundleResource Include="$(MonoTouchTestDirectory)\Resources\Base.lproj\Localizable.strings">
-      <Link>Resources\Base.lproj\Localizable.strings</Link>
+    <BundleResource Include="$(MonoTouchTestDirectory)\Resources\*.lproj\*.strings">
+      <Link>$([MSBuild]::MakeRelative ('$(MonoTouchTestDirectory)', '%(FullPath)'))</Link>
     </BundleResource>
     <BundleResource Include="$(MonoTouchTestDirectory)\Resources\metal-sample.metal">
       <Link>Resources\metal-sample.metal</Link>

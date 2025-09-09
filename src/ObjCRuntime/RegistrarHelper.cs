@@ -9,8 +9,6 @@
 
 // #define TRACE
 
-#if NET
-
 #nullable enable
 
 using System;
@@ -58,7 +56,9 @@ namespace ObjCRuntime {
 		static RuntimeTypeHandleEqualityComparer RuntimeTypeHandleEqualityComparer;
 #pragma warning restore 8618
 
+#pragma warning disable CA2255 // The 'ModuleInitializer' attribute is only intended to be used in application code or advanced source generator scenarios
 		[ModuleInitializer]
+#pragma warning restore CA2255
 		internal static void Initialize ()
 		{
 			StringEqualityComparer = new StringEqualityComparer ();
@@ -67,7 +67,7 @@ namespace ObjCRuntime {
 			wrapper_types = new Dictionary<RuntimeTypeHandle, RuntimeTypeHandle> (RuntimeTypeHandleEqualityComparer);
 		}
 
-		static NativeHandle CreateCFArray (params string[]? values)
+		static NativeHandle CreateCFArray (params string []? values)
 		{
 			if (values is null)
 				return NativeHandle.Zero;
@@ -102,6 +102,25 @@ namespace ObjCRuntime {
 		{
 			if (TryGetMapEntry (assemblyName, out var rv))
 				return rv;
+
+#if TRACE
+			Runtime.NSLog ($"RegistrarHelper.GetMapEntry ({assemblyName}) => failed to find entry, will ensure module constructors are called for all loaded assemblies.");
+#endif
+			// An assembly is only registered if we've (tried to) execute code from it, which is not guaranteed to
+			// happen before we get here (in particular for app extensions, which don't have a managed Main method).
+			// So here we loop over all the assemblies in the current domain, make sure the module constructor
+			// has been called for all of them, and then we try again.
+			var assemblies = AppDomain.CurrentDomain.GetAssemblies ();
+			foreach (var asm in assemblies)
+				RuntimeHelpers.RunModuleConstructor (asm.ManifestModule.ModuleHandle);
+
+			if (TryGetMapEntry (assemblyName, out rv))
+				return rv;
+
+#if TRACE
+			Runtime.NSLog ($"RegistrarHelper.GetMapEntry ({assemblyName}) => failed to find entry for the second time.");
+#endif
+
 			throw ErrorHelper.CreateError (8055, Errors.MX8055 /* Could not find the type 'ObjCRuntime.__Registrar__' in the assembly '{0}' */, assemblyName);
 		}
 
@@ -209,18 +228,18 @@ namespace ObjCRuntime {
 		}
 
 		internal static T? ConstructNSObject<T> (Type type, NativeHandle nativeHandle)
-			where T : class, INativeObject
+			where T : INativeObject
 		{
 			if (!TryGetMapEntry (type.Assembly.GetName ().Name!, out var entry))
-				return null;
+				return default (T);
 			return (T?) entry.Registrar.ConstructNSObject (type.TypeHandle, nativeHandle);
 		}
 
 		internal static T? ConstructINativeObject<T> (Type type, NativeHandle nativeHandle, bool owns)
-			where T : class, INativeObject
+			where T : INativeObject
 		{
 			if (!TryGetMapEntry (type.Assembly.GetName ().Name!, out var entry))
-				return null;
+				return default (T);
 			return (T?) entry.Registrar.ConstructINativeObject (type.TypeHandle, nativeHandle, owns);
 		}
 
@@ -231,9 +250,9 @@ namespace ObjCRuntime {
 				return NativeHandle.Zero;
 
 			NSObject rv;
-			if (array is NSObject[] nsobjs) {
+			if (array is NSObject [] nsobjs) {
 				rv = NSArray.FromNSObjects (nsobjs);
-			} else if (array is INativeObject[] inativeobjs) {
+			} else if (array is INativeObject [] inativeobjs) {
 				rv = NSArray.FromNSObjects (inativeobjs);
 			} else {
 				throw new InvalidOperationException ($"Can't convert {array.GetType ()} to an NSArray."); // FIXME: better error
@@ -244,7 +263,7 @@ namespace ObjCRuntime {
 			return Runtime.RetainAndAutoreleaseNSObject (rv);
 		}
 
-		unsafe static void NSArray_string_native_to_managed (IntPtr* ptr, ref string[]? value, ref string[]? copy)
+		unsafe static void NSArray_string_native_to_managed (IntPtr* ptr, ref string []? value, ref string []? copy)
 		{
 			if (ptr is not null) {
 				value = NSArray.StringArrayFromHandle (*ptr);
@@ -254,7 +273,7 @@ namespace ObjCRuntime {
 			copy = value;
 		}
 
-		unsafe static void NSArray_string_managed_to_native (IntPtr* ptr, string[] value, string[] copy, bool isOut)
+		unsafe static void NSArray_string_managed_to_native (IntPtr* ptr, string [] value, string [] copy, bool isOut)
 		{
 			if (ptr is null)
 				return;
@@ -280,7 +299,7 @@ namespace ObjCRuntime {
 			*ptr = rv;
 		}
 
-		unsafe static void NSArray_native_to_managed<T> (IntPtr* ptr, ref T[]? value, ref T[]? copy) where T: class, INativeObject
+		unsafe static void NSArray_native_to_managed<T> (IntPtr* ptr, ref T []? value, ref T []? copy) where T : class, INativeObject
 		{
 			if (ptr is not null) {
 				value = NSArray.ArrayFromHandle<T> (*ptr);
@@ -290,7 +309,7 @@ namespace ObjCRuntime {
 			copy = value;
 		}
 
-		unsafe static void NSArray_managed_to_native<T> (IntPtr* ptr, T[] value, T[] copy, bool isOut) where T: class, INativeObject
+		unsafe static void NSArray_managed_to_native<T> (IntPtr* ptr, T [] value, T [] copy, bool isOut) where T : class, INativeObject
 		{
 			if (ptr is null) {
 #if TRACE
@@ -319,7 +338,7 @@ namespace ObjCRuntime {
 			*ptr = rv;
 		}
 
-		unsafe static void NSObject_native_to_managed<T> (IntPtr* ptr, ref T? value, ref T? copy) where T: NSObject
+		unsafe static void NSObject_native_to_managed<T> (IntPtr* ptr, ref T? value, ref T? copy) where T : NSObject
 		{
 			if (ptr is not null) {
 				value = Runtime.GetNSObject<T> (*ptr, owns: false);
@@ -350,7 +369,7 @@ namespace ObjCRuntime {
 			*ptr = rv;
 		}
 
-		unsafe static void string_native_to_managed (NativeHandle *ptr, ref string? value, ref string? copy)
+		unsafe static void string_native_to_managed (NativeHandle* ptr, ref string? value, ref string? copy)
 		{
 			if (ptr is not null) {
 				value = CFString.FromHandle (*ptr);
@@ -360,7 +379,7 @@ namespace ObjCRuntime {
 			copy = value;
 		}
 
-		unsafe static void string_managed_to_native (NativeHandle *ptr, string value, string copy, bool isOut)
+		unsafe static void string_managed_to_native (NativeHandle* ptr, string value, string copy, bool isOut)
 		{
 			if (ptr is null) {
 #if TRACE
@@ -381,7 +400,7 @@ namespace ObjCRuntime {
 			*ptr = rv;
 		}
 
-		unsafe static void INativeObject_native_to_managed<T> (IntPtr* ptr, ref T? value, ref T? copy, RuntimeTypeHandle implementationType) where T: class, INativeObject
+		unsafe static void INativeObject_native_to_managed<T> (IntPtr* ptr, ref T? value, ref T? copy, RuntimeTypeHandle implementationType) where T : class, INativeObject
 		{
 			if (ptr is not null) {
 				value = Runtime.GetINativeObject<T> (*ptr, implementation: Type.GetTypeFromHandle (implementationType), forced_type: false, owns: false);
@@ -391,7 +410,7 @@ namespace ObjCRuntime {
 			copy = value;
 		}
 
-		unsafe static void INativeObject_managed_to_native (IntPtr *ptr, INativeObject value, INativeObject copy, bool isOut)
+		unsafe static void INativeObject_managed_to_native (IntPtr* ptr, INativeObject value, INativeObject copy, bool isOut)
 		{
 			if (ptr is null) {
 #if TRACE
@@ -405,13 +424,15 @@ namespace ObjCRuntime {
 #endif
 				return;
 			}
+			// The handle is captured and returned to caller, so the caller is
+			// responsible for keeping the object alive.
+#pragma warning disable RBI0014
 			IntPtr rv = value.GetHandle ();
 #if TRACE
 			Runtime.NSLog ($"INativeObject_managed_to_native (0x{(*ptr).ToString ("x")}, ? != ?): 0x{rv.ToString ("x")} => {value?.GetType ()}");
 #endif
 			*ptr = rv;
+#pragma warning restore RBI0014
 		}
 	}
 }
-
-#endif // NET

@@ -8,7 +8,7 @@
 // Copyright 2019 Microsoft Corporation.
 //
 
-#if !__WATCHOS__ && !MONOMAC
+#if !MONOMAC
 using System;
 using NUnit.Framework;
 using Foundation;
@@ -26,7 +26,7 @@ namespace MonoTouchFixtures.UIKit {
 			TestRuntime.AssertXcodeVersion (11, 0);
 		}
 
-		// https://github.com/xamarin/xamarin-macios/issues/6567
+		// https://github.com/dotnet/macios/issues/6567
 		[Test]
 		public void GHIssue6567Test ()
 		{
@@ -49,4 +49,4 @@ namespace MonoTouchFixtures.UIKit {
 		}
 	}
 }
-#endif // !__WATCHOS__ && !MONOMAC
+#endif // !MONOMAC

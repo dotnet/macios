@@ -1,0 +1,26 @@
+<Documentation>
+  <Docs DocId="M:CoreGraphics.CGColorSpace.CreateIndexed(CoreGraphics.CGColorSpace,System.Int32,System.Byte[])">
+        <param name="baseSpace">The colorspace upon which the indexed color space is based</param>
+        <param name="lastIndex">The maximum number of elements in the indexed colorspace (up to 255)</param>
+        <param name="colorTable">The color table, one byte is allocated for each color component.   </param>
+        <summary>Creates an indexed color space based on the specified colorspace.</summary>
+        <returns>An indexed color space.</returns>
+        <remarks>
+          <para>
+	    An indexed color space allows developers to reprensent
+	    colors with a byte value, the actual color rendered is
+	    computed by looking up the value in the colortable array.
+
+	  </para>
+          <para>
+	    For example, in an 24-bit RGB colorspace, the color index
+	    2 would be looked up as 3-byte values at index 6, 7 and 8
+	    in the colorTable byte array.
+
+	  </para>
+          <para>
+	    The number of elements in this array is the value of lastIndex multiplied by the number of components in the baseSpace.
+	  </para>
+        </remarks>
+      </Docs>
+</Documentation>

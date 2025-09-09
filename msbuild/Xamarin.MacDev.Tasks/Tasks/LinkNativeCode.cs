@@ -31,7 +31,8 @@ namespace Xamarin.MacDev.Tasks {
 		public string SdkRoot { get; set; } = string.Empty;
 
 		[Required]
-		public string OutputFile { get; set; } = string.Empty;
+		[Output]
+		public ITaskItem OutputFile { get; set; } = null!;
 
 		[Required]
 		public ITaskItem [] ObjectFiles { get; set; } = Array.Empty<ITaskItem> ();
@@ -56,7 +57,7 @@ namespace Xamarin.MacDev.Tasks {
 		public override bool Execute ()
 		{
 			if (ShouldExecuteRemotely ()) {
-				outputPath = PathUtils.ConvertToMacPath (Path.GetDirectoryName (OutputFile));
+				outputPath = PathUtils.ConvertToMacPath (Path.GetDirectoryName (OutputFile.ItemSpec));
 
 				return new TaskRunner (SessionId, BuildEngine4).RunAsync (this).Result;
 			}
@@ -111,7 +112,6 @@ namespace Xamarin.MacDev.Tasks {
 
 			switch (Platform) {
 			case ApplePlatform.iOS:
-			case ApplePlatform.WatchOS:
 			case ApplePlatform.TVOS:
 			case ApplePlatform.MacOSX:
 				arguments.Add (PlatformFrameworkHelper.GetMinimumVersionArgument (TargetFrameworkMoniker, SdkIsSimulator, MinimumOSVersion));
@@ -203,10 +203,10 @@ namespace Xamarin.MacDev.Tasks {
 				foreach (var obj in ObjectFiles)
 					arguments.Add (Path.GetFullPath (obj.ItemSpec));
 
-			arguments.AddRange (GetEmbedEntitlementsInExecutableLinkerFlags (EntitlementsInExecutable));
+			arguments.AddRange (GetEmbedEntitlementsWithDerInExecutableLinkerFlags (EntitlementsInExecutable));
 
 			arguments.Add ("-o");
-			arguments.Add (Path.GetFullPath (OutputFile));
+			arguments.Add (Path.GetFullPath (OutputFile.ItemSpec));
 
 			if (LinkerFlags is not null) {
 				foreach (var flag in LinkerFlags)
@@ -243,6 +243,20 @@ namespace Xamarin.MacDev.Tasks {
 			return !Log.HasLoggedErrors;
 		}
 
+		IEnumerable<string> GetEmbedEntitlementsWithDerInExecutableLinkerFlags (string entitlements)
+		{
+			var rv = GetEmbedEntitlementsInExecutableLinkerFlags (entitlements).ToList ();
+			if (rv.Count > 0) {
+				rv.AddRange (new string [] {
+					"-Xlinker", "-sectcreate",
+					"-Xlinker", "__TEXT",
+					"-Xlinker", "__ents_der",
+					"-Xlinker", ConvertEntitlementsToDerEntitlements (Path.GetFullPath (entitlements)),
+				});
+			}
+			return rv;
+		}
+
 		public static string [] GetEmbedEntitlementsInExecutableLinkerFlags (string entitlements)
 		{
 			if (string.IsNullOrEmpty (entitlements))
@@ -257,6 +271,21 @@ namespace Xamarin.MacDev.Tasks {
 				"-Xlinker", "__entitlements",
 				"-Xlinker", Path.GetFullPath (entitlements),
 			};
+		}
+
+		string ConvertEntitlementsToDerEntitlements (string entitlements)
+		{
+			var derEntitlements = entitlements + ".der";
+			var arguments = new List<string> () {
+				"derq",
+				"query",
+				"-f", "xml",
+				"-i", entitlements,
+				"-o", derEntitlements,
+				"--raw",
+			};
+			ExecuteAsync ("xcrun", arguments, sdkDevPath: SdkDevPath).Wait ();
+			return derEntitlements;
 		}
 
 		static bool EntitlementsRequireLinkerFlags (string path)
@@ -278,7 +307,7 @@ namespace Xamarin.MacDev.Tasks {
 		// and the ones on Windows are empty, so we will break the build
 		public bool ShouldCopyToBuildServer (ITaskItem item) => !PathUtils.ConvertToMacPath (item.ItemSpec).StartsWith (outputPath);
 
-		public bool ShouldCreateOutputFile (ITaskItem item) => false;
+		public bool ShouldCreateOutputFile (ITaskItem item) => true;
 
 		public IEnumerable<ITaskItem> GetAdditionalItemsToBeCopied () => Enumerable.Empty<ITaskItem> ();
 	}

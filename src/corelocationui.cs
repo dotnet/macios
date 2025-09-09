@@ -5,13 +5,9 @@ using UIKit;
 
 using System;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreLocationUI {
 
-	[NoTV, NoMac, NoWatch, iOS (15, 0), MacCatalyst (15, 0)]
+	[NoTV, NoMac, iOS (15, 0), MacCatalyst (15, 0)]
 	[Native]
 	public enum CLLocationButtonIcon : long {
 		None = 0,
@@ -19,7 +15,7 @@ namespace CoreLocationUI {
 		ArrowOutline,
 	}
 
-	[NoTV, NoMac, NoWatch, iOS (15, 0), MacCatalyst (15, 0)]
+	[NoTV, NoMac, iOS (15, 0), MacCatalyst (15, 0)]
 	[Native]
 	public enum CLLocationButtonLabel : long {
 		None = 0,
@@ -30,7 +26,7 @@ namespace CoreLocationUI {
 		ShareMyCurrentLocation,
 	}
 
-	[NoTV, NoMac, NoWatch, iOS (15, 0), MacCatalyst (15, 0)]
+	[NoTV, NoMac, iOS (15, 0), MacCatalyst (15, 0)]
 	[BaseType (typeof (UIControl))]
 	interface CLLocationButton : NSSecureCoding {
 

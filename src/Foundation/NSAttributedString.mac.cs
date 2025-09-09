@@ -13,13 +13,12 @@
 using System;
 
 using AppKit;
+using ObjCRuntime;
 using WebKit;
 //using CoreText;
 
-namespace Foundation 
-{
-	public partial class NSAttributedString
-	{
+namespace Foundation {
+	public partial class NSAttributedString {
 		public NSAttributedString (string str,
 			NSFont? font = null,
 			NSColor? foregroundColor = null,
@@ -81,55 +80,163 @@ namespace Foundation
 		{
 		}
 
-		internal NSAttributedString (NSData data, NSAttributedStringDataType type, out NSDictionary resultDocumentAttributes)
+		/// <summary>Create an <see cref="NSAttributedString" /> by parsing the <paramref name="rtfData" /> data as RTF.</summary>
+		/// <param name="rtfData">The data to parse, in RTF format.</param>
+		/// <param name="resultDocumentAttributes">Upon return, any document-specific attributes.</param>
+		/// <returns>A newly created <see cref="NSAttributedString" />, created from an RTF document</returns>
+		[SupportedOSPlatform ("macos")]
+		public static NSAttributedString? CreateWithRTF (NSData rtfData, out NSDictionary resultDocumentAttributes)
 		{
-			switch (type) {
-			case NSAttributedStringDataType.DocFormat:
-				Handle = new NSAttributedString (data, out resultDocumentAttributes).Handle;
-				break;
-			case NSAttributedStringDataType.HTML:
-				Handle = InitWithHTML (data, out resultDocumentAttributes);
-				break;
-			case NSAttributedStringDataType.RTF:
-				Handle = InitWithRtf (data, out resultDocumentAttributes);
-				break;
-			case NSAttributedStringDataType.RTFD:
-				Handle = InitWithRtfd (data, out resultDocumentAttributes);
-				break;
-			default:
-				throw new ArgumentException("Error creating NSAttributedString.");
+			var rv = new NSAttributedString (NSObjectFlag.Empty);
+			rv.InitializeHandle (rv._InitWithRtf (rtfData, out resultDocumentAttributes), "initWithRTF:documentAttributes:", false);
+			if (rv.Handle == NativeHandle.Zero) {
+				rv.Dispose ();
+				return null;
 			}
-
-			if (Handle == IntPtr.Zero)
-				throw new ArgumentException("Error creating NSAttributedString.");
+			return rv;
 		}
 
-		public static NSAttributedString CreateWithRTF (NSData rtfData, out NSDictionary resultDocumentAttributes)
+		/// <summary>Create an <see cref="NSAttributedString" /> by parsing the <paramref name="rtfdData" /> data as RTFD.</summary>
+		/// <param name="rtfdData">The data to parse, in RTFD format.</param>
+		/// <param name="resultDocumentAttributes">Upon return, any document-specific attributes.</param>
+		/// <returns>A newly created <see cref="NSAttributedString" />, created from an RTFD document</returns>
+		[SupportedOSPlatform ("macos")]
+		public static NSAttributedString? CreateWithRTFD (NSData rtfdData, out NSDictionary resultDocumentAttributes)
 		{
-			return new NSAttributedString (rtfData, NSAttributedStringDataType.RTF, out resultDocumentAttributes);
+			var rv = new NSAttributedString (NSObjectFlag.Empty);
+			rv.InitializeHandle (rv._InitWithRtfd (rtfdData, out resultDocumentAttributes), "initWithRTFD:documentAttributes:", false);
+			if (rv.Handle == NativeHandle.Zero) {
+				rv.Dispose ();
+				return null;
+			}
+			return rv;
 		}
 
-		public static NSAttributedString CreateWithRTFD (NSData rtfdData, out NSDictionary resultDocumentAttributes)
+		/// <summary>Create an <see cref="NSAttributedString" /> by parsing the <paramref name="htmlData" /> data as HTML.</summary>
+		/// <param name="htmlData">The data to parse, in HTML format.</param>
+		/// <param name="resultDocumentAttributes">Upon return, any document-specific attributes.</param>
+		/// <returns>A newly created <see cref="NSAttributedString" />, created from an HTML document</returns>
+		[SupportedOSPlatform ("macos")]
+		public static NSAttributedString? CreateWithHTML (NSData htmlData, out NSDictionary resultDocumentAttributes)
 		{
-			return new NSAttributedString (rtfdData, NSAttributedStringDataType.RTFD, out resultDocumentAttributes);
+			var rv = new NSAttributedString (NSObjectFlag.Empty);
+			rv.InitializeHandle (rv._InitWithHTML (htmlData, out resultDocumentAttributes), "initWithHTML:documentAttributes:", false);
+			if (rv.Handle == NativeHandle.Zero) {
+				rv.Dispose ();
+				return null;
+			}
+			return rv;
 		}
 
-		public static NSAttributedString CreateWithHTML (NSData htmlData, out NSDictionary resultDocumentAttributes)
+		/// <summary>Create an <see cref="NSAttributedString" /> by parsing the <paramref name="htmlData" /> data as HTML.</summary>
+		/// <param name="htmlData">The data to parse, in HTML format.</param>
+		/// <param name="baseUrl">The base URL for any links in the HTML content.</param>
+		/// <param name="resultDocumentAttributes">Upon return, any document-specific attributes.</param>
+		/// <returns>A newly created <see cref="NSAttributedString" />, created from an HTML document</returns>
+		[SupportedOSPlatform ("macos")]
+		public static NSAttributedString? CreateWithHTML (NSData htmlData, NSUrl baseUrl, out NSDictionary resultDocumentAttributes)
 		{
-			return new NSAttributedString (htmlData, NSAttributedStringDataType.HTML, out resultDocumentAttributes);
+			var rv = new NSAttributedString (NSObjectFlag.Empty);
+			rv.InitializeHandle (rv._InitWithHTML (htmlData, baseUrl, out resultDocumentAttributes), "initWithHTML:baseURL:documentAttributes:", false);
+			if (rv.Handle == NativeHandle.Zero) {
+				rv.Dispose ();
+				return null;
+			}
+			return rv;
 		}
 
-		public static NSAttributedString CreateWithDocFormat (NSData wordDocFormat, out NSDictionary docAttributes)
+		/// <summary>Create an <see cref="NSAttributedString" /> by parsing the <paramref name="htmlData" /> data as HTML.</summary>
+		/// <param name="htmlData">The data to parse, in HTML format.</param>
+		/// <param name="options">Any additional options when loading the HTML content.</param>
+		/// <param name="resultDocumentAttributes">Upon return, any document-specific attributes.</param>
+		/// <returns>A newly created <see cref="NSAttributedString" />, created from an HTML document</returns>
+		[SupportedOSPlatform ("macos")]
+		public static NSAttributedString? CreateWithHTML (NSData htmlData, NSDictionary options, out NSDictionary resultDocumentAttributes)
 		{
-			return new NSAttributedString (wordDocFormat, NSAttributedStringDataType.DocFormat, out docAttributes);
+			var rv = new NSAttributedString (NSObjectFlag.Empty);
+			rv.InitializeHandle (rv._InitWithHTML (htmlData, options, out resultDocumentAttributes), "initWithHTML:options:documentAttributes:", false);
+			if (rv.Handle == NativeHandle.Zero) {
+				rv.Dispose ();
+				return null;
+			}
+			return rv;
 		}
 
+		/// <summary>Create an <see cref="NSAttributedString" /> by parsing the <paramref name="htmlData" /> data as HTML.</summary>
+		/// <param name="htmlData">The data to parse, in HTML format.</param>
+		/// <param name="options">Any additional options when loading the HTML content.</param>
+		/// <param name="resultDocumentAttributes">Upon return, any document-specific attributes.</param>
+		/// <returns>A newly created <see cref="NSAttributedString" />, created from an HTML document</returns>
+		[SupportedOSPlatform ("macos")]
+		public static NSAttributedString? CreateWithHTML (NSData htmlData, NSAttributedStringDocumentAttributes options, out NSDictionary resultDocumentAttributes)
+		{
+			return CreateWithHTML (htmlData, options.GetDictionary (), out resultDocumentAttributes);
+		}
+
+#if XAMCORE_5_0
+		/// <summary>Create an <see cref="NSAttributedString" /> by parsing the <paramref name="wordDocFormat" /> data as a Microsoft Word document.</summary>
+		/// <param name="wordDocFormat">The data to parse, in Microsoft Word format.</param>
+		/// <param name="resultDocumentAttributes">Upon return, any document-specific attributes.</param>
+		/// <returns>A newly created <see cref="NSAttributedString" />, created from a Microsoft Word document</returns>
+#else
+		/// <summary>Create an <see cref="NSAttributedString" /> by parsing the <paramref name="wordDocFormat" /> data as a Microsoft Word document.</summary>
+		/// <param name="wordDocFormat">The data to parse, in Microsoft Word format.</param>
+		/// <param name="docAttributes">Upon return, any document-specific attributes.</param>
+		/// <returns>A newly created <see cref="NSAttributedString" />, created from a Microsoft Word document</returns>
+#endif
+		[SupportedOSPlatform ("macos")]
+#if XAMCORE_5_0
+		public static NSAttributedString? CreateWithDocFormat (NSData wordDocFormat, out NSDictionary resultDocumentAttributes)
+#else
+		public static NSAttributedString? CreateWithDocFormat (NSData wordDocFormat, out NSDictionary docAttributes)
+#endif
+		{
+			var rv = new NSAttributedString (NSObjectFlag.Empty);
+#if XAMCORE_5_0
+			rv.InitializeHandle (rv._InitWithDocFormat (wordDocFormat, out resultDocumentAttributes), "initWithDocFormat:documentAttributes:", false);
+#else
+			rv.InitializeHandle (rv._InitWithDocFormat (wordDocFormat, out docAttributes), "initWithDocFormat:documentAttributes:", false);
+#endif
+			if (rv.Handle == NativeHandle.Zero) {
+				rv.Dispose ();
+				return null;
+			}
+			return rv;
+		}
+
+		/// <summary>Create an <see cref="NSAttributedString" /> by parsing the <paramref name="wrapper" /> with RTFD data.</summary>
+		/// <param name="wrapper">The data to parse, in RTFD format.</param>
+		/// <param name="resultDocumentAttributes">Upon return, any document-specific attributes.</param>
+		/// <returns>A newly created <see cref="NSAttributedString" />, created from a Microsoft Word document</returns>
+		[SupportedOSPlatform ("macos")]
+		public static NSAttributedString? Create (NSFileWrapper wrapper, out NSDictionary resultDocumentAttributes)
+		{
+			var rv = new NSAttributedString (NSObjectFlag.Empty);
+			rv.InitializeHandle (rv._InitWithRTFDFileWrapper (wrapper, out resultDocumentAttributes), "initWithRTFDFileWrapper:documentAttributes:", false);
+			if (rv.Handle == NativeHandle.Zero) {
+				rv.Dispose ();
+				return null;
+			}
+			return rv;
+		}
+
+		/// <param name="location">To be added.</param>
+		/// <param name="effectiveRange">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		public NSStringAttributes? GetAppKitAttributes (nint location, out NSRange effectiveRange)
 		{
 			var attr = GetAttributes (location, out effectiveRange);
 			return attr is null ? null : new NSStringAttributes (attr);
 		}
 
+		/// <param name="location">To be added.</param>
+		/// <param name="longestEffectiveRange">To be added.</param>
+		/// <param name="rangeLimit">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		public NSStringAttributes? GetAppKitAttributes (nint location, out NSRange longestEffectiveRange, NSRange rangeLimit)
 		{
 			var attr = GetAttributes (location, out longestEffectiveRange, rangeLimit);

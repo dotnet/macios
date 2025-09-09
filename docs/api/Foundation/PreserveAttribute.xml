@@ -1,0 +1,48 @@
+<Documentation>
+  <Docs DocId="T:Foundation.PreserveAttribute">
+    <summary>Prevents the MonoTouch linker from linking the target.</summary>
+    <remarks>
+      <para>
+This attribute is used at link time by the MonoTouch linker to skip certain classes, structures, enumerations or other objects from being linked.   
+</para>
+      <para>
+By applying this attribute all of the members of the target will be kept as if they had been referenced by the code.   
+</para>
+      <para>
+	This attribute is useful for example when using classes that
+	use reflection (for example web services) and that use this
+	information for serialization and deserialization.  </para>
+      <para>
+	Starting with MonoTouch 6.0.9 this attribute can also be used
+	at the assembly level, effectively duplicating the same
+	behaviour as <c>--linkskip=ASSEMBLY</c> but without the need
+	to duplicate the extra argument to every project.
+
+      </para>
+      <para>
+	You do not actually need to take a dependency on the Xamarin
+	assemblies, for example, if you are a third-party developer
+	that is creating a component or nuget package that is safe to
+	be linked, you can just include the LinkerSafe attribute
+	source code in your application, and the Xamarin linker will
+	recognize it.
+
+      </para>
+      <para>
+	To use in an assembly, without taking a dependency in Xamarin's assemblies:
+
+      </para>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
+[System.AttributeUsage(System.AttributeTargets.All)]
+class PreserveAttribute : System.Attribute {
+    public PreserveAttribute () {}
+    public bool Conditional { get; set; }
+}
+
+[assembly:Preserve]
+]]></code>
+      </example>
+    </remarks>
+  </Docs>
+</Documentation>

@@ -33,9 +33,12 @@ using System.Runtime.InteropServices;
 using ObjCRuntime;
 
 namespace Foundation {
-	
+
 	public partial class NSIndexSet : IEnumerable, IEnumerable<nuint> {
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		IEnumerator IEnumerable.GetEnumerator ()
 		{
 			if (this.Count == 0)
@@ -59,8 +62,11 @@ namespace Foundation {
 				i = this.IndexGreaterThan (i);
 			}
 		}
-		
-		public nuint[] ToArray ()
+
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
+		public nuint [] ToArray ()
 		{
 			nuint [] indexes = new nuint [Count];
 
@@ -75,54 +81,90 @@ namespace Foundation {
 			return indexes;
 		}
 
-		public static NSIndexSet FromArray (nuint[] items)
+		internal T [] ToInt64EnumArray<T> () where T: System.Enum
 		{
-			if (items is null)
-				return new NSIndexSet ();
-			
-			var indexSet = new NSMutableIndexSet();
-			foreach (var index in items) 
-				indexSet.Add (index);	
-			return indexSet;
+			var array = ToArray ();
+			var rv = new T [array.Length];
+			for (var i = 0; i < array.Length; i++)
+				rv [i] = (T) (object) (long) array [i];
+			return rv;
 		}
 
-		public static NSIndexSet FromArray (uint[] items)
+		internal HashSet<T> ToInt64EnumHashSet<T> () where T: System.Enum
+		{
+			var array = ToArray ();
+			var rv = new HashSet<T> ();
+			for (var i = 0; i < array.Length; i++)
+				rv.Add ((T) (object) (long) array [i]);
+			return rv;
+		}
+
+		/// <param name="items">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
+		public static NSIndexSet FromArray (nuint [] items)
 		{
 			if (items is null)
 				return new NSIndexSet ();
 
-			var indexSet = new NSMutableIndexSet();
+			var indexSet = new NSMutableIndexSet ();
 			foreach (var index in items)
-				indexSet.Add ((nuint)index);
+				indexSet.Add (index);
 			return indexSet;
 		}
 
-		public static NSIndexSet FromArray (int[] items)
+		/// <param name="items">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
+		public static NSIndexSet FromArray (uint [] items)
 		{
 			if (items is null)
 				return new NSIndexSet ();
-			
-			var indexSet = new NSMutableIndexSet();
-			foreach (var index in items){
+
+			var indexSet = new NSMutableIndexSet ();
+			foreach (var index in items)
+				indexSet.Add ((nuint) index);
+			return indexSet;
+		}
+
+		/// <param name="items">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
+		public static NSIndexSet FromArray (int [] items)
+		{
+			if (items is null)
+				return new NSIndexSet ();
+
+			var indexSet = new NSMutableIndexSet ();
+			foreach (var index in items) {
 				if (index < 0)
 					throw new ArgumentException ("One of the items values is negative");
-				indexSet.Add ((nuint)(uint) index);
+				indexSet.Add ((nuint) (uint) index);
 			}
 			return indexSet;
 		}
 
-		public NSIndexSet (uint value) : this ((nuint)value)
+		/// <param name="value">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
+		public NSIndexSet (uint value) : this ((nuint) value)
 		{
 		}
 
-		public NSIndexSet (nint value) : this ((nuint)value)
+		public NSIndexSet (nint value) : this ((nuint) value)
 		{
 			if (value < 0)
 				throw new ArgumentException ("value must be positive");
 			// init done by the base ctor
 		}
 
-		public NSIndexSet (int value) : this ((nuint)(uint)value)
+		/// <param name="value">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
+		public NSIndexSet (int value) : this ((nuint) (uint) value)
 		{
 			if (value < 0)
 				throw new ArgumentException ("value must be positive");

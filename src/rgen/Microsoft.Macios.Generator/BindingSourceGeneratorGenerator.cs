@@ -1,15 +1,21 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
+using Microsoft.Macios.Generator.Attributes;
 using Microsoft.Macios.Generator.Context;
 using Microsoft.Macios.Generator.DataModel;
 using Microsoft.Macios.Generator.Emitters;
 using Microsoft.Macios.Generator.Extensions;
+using Microsoft.Macios.Generator.IO;
+using TypeInfo = Microsoft.Macios.Generator.DataModel.TypeInfo;
 
 namespace Microsoft.Macios.Generator;
 
@@ -21,17 +27,8 @@ namespace Microsoft.Macios.Generator;
 /// </summary>
 [Generator]
 public class BindingSourceGeneratorGenerator : IIncrementalGenerator {
-	internal static readonly DiagnosticDescriptor RBI0000 = new (
-		"RBI0000",
-		new LocalizableResourceString (nameof (Resources.RBI0000Title), Resources.ResourceManager, typeof (Resources)),
-		new LocalizableResourceString (nameof (Resources.RBI0000MessageFormat), Resources.ResourceManager, typeof (Resources)),
-		"Usage",
-		DiagnosticSeverity.Error,
-		isEnabledByDefault: true,
-		description: new LocalizableResourceString (nameof (Resources.RBI0000Description), Resources.ResourceManager, typeof (Resources))
-	);
+	static readonly RootBindingEqualityComparer equalityComparer = new ();
 
-	static readonly CodeChangesComparer comparer = new ();
 	/// <inheritdoc cref="IIncrementalGenerator"/>
 	public void Initialize (IncrementalGeneratorInitializationContext context)
 	{
@@ -42,80 +39,402 @@ public class BindingSourceGeneratorGenerator : IIncrementalGenerator {
 				fileName, SourceText.From (content, Encoding.UTF8)));
 		}
 
-		// binding can use different 'types'. To be able to generate the code we are going to add a different
-		// function for each of the 'types' we are interested in generating that will be added to the compiler
-		// pipeline
-		AddPipeline<ClassDeclarationSyntax> (context);
-		AddPipeline<InterfaceDeclarationSyntax> (context);
-		AddPipeline<EnumDeclarationSyntax> (context);
-	}
-
-	/// <summary>
-	/// Generic method that adds a provider and a code generator to the pipeline.
-	/// </summary>
-	/// <param name="context">The compilation context</param>
-	/// <typeparam name="T">The base type declaration that we are going to generate.</typeparam>
-	static void AddPipeline<T> (IncrementalGeneratorInitializationContext context) where T : BaseTypeDeclarationSyntax
-	{
+		// our bindings are special. Since we write shared code in the Library.g.cs and the Trampolines.g.cs
+		// we need to listen to all the BaseTypeDeclarationSyntax changes. We do so, generate a data model with the
+		// changes we are interested, and later we transform them. This allows use to be able to use a RootBindingContext
+		// as a bag in which we can add information about libraries and trampolines needed by the bindings.
 		var provider = context.SyntaxProvider
-			.CreateSyntaxProvider (
-				static (s, _) => s is T,
-				(ctx, _) => GetDeclarationForSourceGen<T> (ctx))
-			.Where (t => t.BindingAttributeFound) // get the types with the binding attr
-			.Select ((t, _) => t.Changes)
-			.WithComparer (comparer);
+			.CreateSyntaxProvider (static (node, _) => IsValidNode (node),
+				static (ctx, _) => GetChangesForSourceGen (ctx))
+			.Where (tuple => tuple.BindingAttributeFound);
 
-		context.RegisterSourceOutput (context.CompilationProvider.Combine (provider.Collect ()),
-			((ctx, t) => GenerateCode<T> (ctx, t.Left, t.Right)));
+		var bindings = provider
+			.Select (static (tuple, _) => (tuple.RootBindingContext, tuple.Bindings))
+			.WithComparer (equalityComparer);
+
+		// ideally we could do a distinct, because each code change can return the same libs, this makes the library
+		// generation more common than what we would like, but it is the smallest code generation.
+		var libraryProvider = provider
+			.Select ((tuple, _) => (tuple.RootBindingContext, tuple.Bindings.LibraryPaths));
+
+		var trampolineProvider = provider
+			.Select ((tuple, _) => (tuple.RootBindingContext, tuple.Bindings.Trampolines));
+
+		var asyncResultsProvider = provider
+			.Select ((tuple, _) => (tuple.RootBindingContext, tuple.Bindings.AsyncResults));
+
+		var eventArgsProvider = provider
+			.Select ((tuple, _) => (tuple.RootBindingContext, tuple.Bindings.WeakDelegateEvents));
+
+		var delegatesInfoProvider = provider
+			.Select ((tuple, _) => (tuple.RootBindingContext, tuple.Bindings.WeakDelegatesClasses));
+
+
+		context.RegisterSourceOutput (context.CompilationProvider.Combine (bindings.Collect ()),
+			((ctx, t) => GenerateCode (ctx, t.Right)));
+
+		context.RegisterSourceOutput (context.CompilationProvider.Combine (libraryProvider.Collect ()),
+			((ctx, t) => GenerateLibraryCode (ctx, t.Right)));
+
+		context.RegisterSourceOutput (context.CompilationProvider.Combine (trampolineProvider.Collect ()),
+			((ctx, t) => GenerateTrampolineCode (ctx, t.Right)));
+
+		context.RegisterSourceOutput (context.CompilationProvider.Combine (asyncResultsProvider.Collect ()),
+			((ctx, t) => GenerateAsyncResultCode (ctx, t.Right)));
+
+		context.RegisterSourceOutput (context.CompilationProvider.Combine (eventArgsProvider.Collect ()),
+			((ctx, t) => GenerateEventArgTypes (ctx, t.Right)));
+
+		context.RegisterSourceOutput (context.CompilationProvider.Combine (delegatesInfoProvider.Collect ()),
+			((ctx, t) => GenerateDelegateTypes (ctx, t.Right)));
+
+		if (GeneratorConfiguration.BGenCompatible) {
+			// the following code generations will only be used when the generator is compatible with bgen.
+
+			var strongDictionaryKeysProvider = provider
+				.Where (t => {
+					if (t.Bindings.BindingType != BindingType.StrongDictionaryKeys)
+						return false;
+					// only want those kyes that we need to make backwards compatible with bgen
+					var bindingInfo = (BindingTypeData<ObjCBindings.StrongDictionaryKeys>) t.Bindings.BindingInfo;
+					return bindingInfo.Flags.HasFlag (ObjCBindings.StrongDictionaryKeys.BackwardCompatible);
+				})
+				.Select ((tuple, _) => (tuple.RootBindingContext, tuple.Bindings));
+
+			context.RegisterSourceOutput (context.CompilationProvider.Combine (strongDictionaryKeysProvider.Collect ()),
+				((ctx, t) => GenerateBGenStrongDictionaryKeys (ctx, t.Right)));
+		}
 	}
 
 	/// <summary>
-	/// Generic method that can be used to filter/match a BaseTypeDeclarationSyntax with the BindingTypeAttribute.
-	/// Because our generator is focused only on Enum, Interface and Class declarations we can use a generic method
-	/// that will match the type + the presence of the attribute.
+	/// Returns if the node is a valid node for the binding generator.
 	/// </summary>
-	/// <param name="context">Context used by the generator.</param>
-	/// <typeparam name="T">The BaseTypeDeclarationSyntax we are interested in.</typeparam>
-	/// <returns>A tuple that contains the BaseTypeDeclaration that was processed and a boolean that states if it should be processed or not.</returns>
-	static (CodeChanges Changes, bool BindingAttributeFound) GetDeclarationForSourceGen<T> (GeneratorSyntaxContext context)
-		where T : BaseTypeDeclarationSyntax
+	/// <param name="node">Node modified by the user.</param>
+	/// <returns>True if the binding generator should consider the node for code generation.</returns>
+	static bool IsValidNode (SyntaxNode node) => node switch {
+		EnumDeclarationSyntax or ClassDeclarationSyntax or InterfaceDeclarationSyntax => true,
+		_ => false,
+	};
+
+	static (RootContext RootBindingContext, Binding Bindings, bool BindingAttributeFound) GetChangesForSourceGen (GeneratorSyntaxContext context)
 	{
+		var bindingContext = new RootContext (context.SemanticModel);
 		// we do know that the context node has to be one of the base type declarations
-		var declarationSyntax = Unsafe.As<T> (context.Node);
+		var declarationSyntax = Unsafe.As<BaseTypeDeclarationSyntax> (context.Node);
 
 		// check if we do have the binding attr, else there nothing to retrieve
-		bool isBindingType = declarationSyntax.HasAttribute (context.SemanticModel, AttributesNames.BindingAttribute);
+		bool isBindingType = declarationSyntax.HasAtLeastOneAttribute (context.SemanticModel, AttributesNames.BindingTypes);
 
 		if (!isBindingType) {
-			// return an empty data + false
-			return (default, false);
+			// return empty data + false
+			return (bindingContext, default, false);
 		}
 
-		var codeChanges = CodeChanges.FromDeclaration (context.SemanticModel, declarationSyntax);
+		var binding = Binding.FromDeclaration (declarationSyntax, bindingContext);
 		// if code changes are null, return the default value and a false to later ignore the change
-		return codeChanges is not null ?
-			(codeChanges.Value, isBindingType) : (default, false);
+		return binding is not null
+			? (bindingContext, binding.Value, isBindingType)
+			: (bindingContext, default, false);
+	}
+
+	static void GenerateCode (SourceProductionContext context, in ImmutableArray<(RootContext Context, Binding Binding)> bindingsList)
+	{
+		if (bindingsList.Length == 0)
+			return;
+		// all items contain the same root context, we can get it from the first item
+		var rootBindingContext = bindingsList [0].Context;
+
+		// The process is as follows, get all the changes we have received from the incremental generator,
+		// loop over them, and based on the CodeChange.BindingType we are going to build the symbol context
+		// and emitter. Those are later used to generate the code.
+		//
+		// Once all the enums, classes and interfaces have been processed, we will use the data collected
+		// in the RootBindingContext to generate the library and trampoline code.
+		var sb = new TabbedStringBuilder (new ());
+		foreach (var (_, binding) in bindingsList) {
+			// init sb and add the header
+			sb.Clear ();
+			sb.WriteHeader ();
+			if (EmitterFactory.TryCreate (binding, out var emitter)) {
+				// write the using statements
+				CollectUsingStatements (binding, sb, emitter);
+
+				var bindingContext = new BindingContext (rootBindingContext, sb, binding);
+				if (emitter.TryEmit (bindingContext, out var diagnostics)) {
+					// only add a file when we do generate code
+					var code = sb.ToCode ();
+					var namespacePath = Path.Combine (binding.Namespace.ToArray ());
+					var fileName = emitter.GetSymbolName (binding);
+					context.AddSource ($"{Path.Combine (namespacePath, fileName)}.g.cs",
+						SourceText.From (code, Encoding.UTF8));
+				} else {
+					// add to the diagnostics and continue to the next possible candidate
+					context.ReportDiagnostics (diagnostics);
+				}
+			} else {
+				// we don't have an emitter for this type, so we can't generate the code, add a diagnostic letting the
+				// user we do not support what they are trying to do
+				context.ReportDiagnostic (Diagnostic.Create (
+					RgenDiagnostics
+						.RBI0000, // An unexpected error ocurred while processing '{0}'. Please fill a bug report at https://github.com/dotnet/macios/issues/new.
+					null,
+					binding.FullyQualifiedSymbol));
+			}
+		}
 	}
 
 	/// <summary>
-	/// Collect the using statements from the class declaration root syntaxt tree and add them to the string builder
+	/// Code generator that emits the static classes that contain the pointers to the library used
+	/// by the binding. This is a single generated file.
+	/// </summary>
+	/// <param name="context">Source production context.</param>
+	/// <param name="libraryChanges">The root context of the current generation.</param>
+	static void GenerateLibraryCode (SourceProductionContext context,
+		ImmutableArray<(RootContext RootBindingContext, IEnumerable<(string LibraryName, string? LibraryPath)> LibraryPaths)> libraryChanges)
+	{
+		if (libraryChanges.Length == 0)
+			return;
+		// we have at least one, we can get the root binding changes from it
+		var rootBindingContext = libraryChanges [0].RootBindingContext;
+		var sb = new TabbedStringBuilder (new ());
+		sb.WriteHeader ();
+
+		// Each code change might have returned the same list of libraries, we need to get the distinct ones
+		var libComparer = new LibraryPathsComparer ();
+		var distinctLibraryPaths = libraryChanges
+			.SelectMany (library => library.LibraryPaths)
+			.Distinct (libComparer)
+			.ToImmutableArray ();
+
+		// no need to collect the using statements, this file is completely generated
+		var emitter = new LibraryEmitter (rootBindingContext, sb);
+
+		if (emitter.TryEmit (distinctLibraryPaths, out var diagnostics)) {
+			// only add a file when we do generate code
+			var code = sb.ToCode ();
+			context.AddSource ($"{Path.Combine (emitter.SymbolNamespace, emitter.SymbolName)}.g.cs",
+				SourceText.From (code, Encoding.UTF8));
+		} else {
+			// add to the diagnostics and continue to the next possible candidate
+			context.ReportDiagnostics (diagnostics);
+		}
+	}
+
+	static void GenerateTrampolineCode (SourceProductionContext context,
+		ImmutableArray<(RootContext RootBindingContext, IEnumerable<TypeInfo>
+			Trampolines)> trampolineChanges)
+	{
+		// we don't have any trampolines to generate, so we can return
+		if (trampolineChanges.Length == 0)
+			return;
+
+		// retrieve the root context form the first items since they are all the same
+		var rootBindingContext = trampolineChanges [0].RootBindingContext;
+		var sb = new TabbedStringBuilder (new ());
+		sb.WriteHeader ();
+
+		// trampolines are generated per type, the first thing we are going to do is to create a set
+		// so that we don't have duplicates, the hash code of the TypeInfo class is good for this to work
+		// this is a nested loop because each binding type might have several trampolines
+		var trampolines = new HashSet<TypeInfo> ();
+		foreach (var (_, trampolinesInfos) in trampolineChanges) {
+			foreach (var info in trampolinesInfos) {
+				trampolines.Add (info);
+			}
+		}
+
+		// no need to collect the using statements, this file is completely generated
+		var emitter = new TrampolineEmitter (rootBindingContext, sb);
+
+		if (emitter.TryEmit (trampolines, out var diagnostics)) {
+			// only add a file when we do generate code
+			var code = sb.ToCode ();
+			context.AddSource ($"{Path.Combine (emitter.SymbolNamespace, emitter.SymbolName)}.g.cs",
+				SourceText.From (code, Encoding.UTF8));
+		} else {
+			// add to the diagnostics and continue to the next possible candidate
+			context.ReportDiagnostics (diagnostics);
+		}
+	}
+
+	static void GenerateAsyncResultCode (SourceProductionContext context,
+		ImmutableArray<(RootContext RootBindingContext, IEnumerable<AsyncResultInfo>
+			AsyncResults)> asyncResultsChanges)
+	{
+		// we don't have any async results to generate, so we can return
+		if (asyncResultsChanges.Length == 0)
+			return;
+
+		// it might be the case that we have several async results with the same name and namespace, so we need to
+		// ensure that we do not have duplicates. We do so by using a dict.
+		var infos = new Dictionary<string, AsyncResultInfo> ();
+		foreach (var (_, asyncInfos) in asyncResultsChanges) {
+			foreach (var info in asyncInfos) {
+				infos.Add (info.FullyQualifiedName, info);
+			}
+		}
+
+		var sb = new TabbedStringBuilder (new ());
+		foreach (var (_, asyncResult) in infos) {
+			// init sb and add the header
+			sb.Clear ();
+			sb.WriteHeader ();
+			var emitter = new AsyncResultEmitter (sb);
+			if (emitter.TryEmit (asyncResult, out var diagnostics)) {
+				// only add a file when we do generate code
+				var code = sb.ToCode ();
+				var namespacePath = Path.Combine (asyncResult.Namespace.ToArray ());
+				context.AddSource ($"{Path.Combine (namespacePath, asyncResult.Name)}.g.cs",
+					SourceText.From (code, Encoding.UTF8));
+			} else {
+				// add to the diagnostics and continue to the next possible candidate
+				context.ReportDiagnostics (diagnostics);
+			}
+		}
+	}
+
+	/// <summary>
+	/// Code generator that emits event argument types for weak delegates.
+	/// </summary>
+	/// <param name="context">Source production context.</param>
+	/// <param name="eventInfoChanges">The event info for which event argument types will be generated.</param>
+	static void GenerateEventArgTypes (SourceProductionContext context,
+		ImmutableArray<(RootContext RootBindingContext, IEnumerable<EventInfo>
+			EventInfos)> eventInfoChanges)
+	{
+		// we don't have what to generate, so we can return
+		if (eventInfoChanges.Length == 0)
+			return;
+
+		// it might be the case that we have several event argument types with the same name and namespace, so we need to
+		// ensure that we do not have duplicates. We do so by using a dict.
+		var infos = new Dictionary<string, EventInfo> ();
+		foreach (var (_, eventInfos) in eventInfoChanges) {
+			foreach (var info in eventInfos) {
+				infos.Add (info.EventArgsFullyQualifiedName, info);
+			}
+		}
+
+		var sb = new TabbedStringBuilder (new ());
+		foreach (var (_, eventInfo) in infos) {
+			if (!eventInfo.ToGenerate)
+				continue;
+			// init sb and add the header
+			sb.Clear ();
+			sb.WriteHeader ();
+			var emitter = new EventTypeEmitter (sb);
+			if (emitter.TryEmit (eventInfo, out var diagnostics)) {
+				// only add a file when we do generate code
+				var code = sb.ToCode ();
+				context.AddSource ($"{Path.Combine (eventInfo.Namespace, eventInfo.EventArgsType)}.g.cs",
+					SourceText.From (code, Encoding.UTF8));
+			} else {
+				// add to the diagnostics and continue to the next possible candidate
+				context.ReportDiagnostics (diagnostics);
+			}
+		}
+	}
+
+	/// <summary>
+	/// Code generator that emits delegate types for weak delegates.
+	/// </summary>
+	/// <param name="context">Source production context.</param>
+	/// <param name="delegateInfoChanges">The event delegate info for which delegate types will be generated.</param>
+	static void GenerateDelegateTypes (SourceProductionContext context,
+		ImmutableArray<(RootContext RootBindingContext, IEnumerable<EventDelegateInfo>
+			DelegateInfos)> delegateInfoChanges)
+	{
+		// we don't have what to generate, so we can return
+		if (delegateInfoChanges.Length == 0)
+			return;
+
+		// it might be the case that we have several async results with the same name and namespace, so we need to
+		// ensure that we do not have duplicates. We do so by using a dict.
+		var infos = new Dictionary<string, EventDelegateInfo> ();
+		foreach (var (_, delegateInfo) in delegateInfoChanges) {
+			foreach (var info in delegateInfo) {
+				infos.Add (info.FullyQualifiedDelegateTypeName, info);
+			}
+		}
+
+		var sb = new TabbedStringBuilder (new ());
+		foreach (var (_, delegateInfo) in infos) {
+			// init sb and add the header
+			sb.Clear ();
+			sb.WriteHeader ();
+			var emitter = new EventDelegateEmitter (sb);
+			if (emitter.TryEmit (delegateInfo, out var diagnostics)) {
+				// only add a file when we do generate code
+				var code = sb.ToCode ();
+				var delegateClassFileName =
+					$"{delegateInfo.OuterClassName}{Nomenclator.GetInternalDelegateForEventName (delegateInfo.DelegateType)}";
+				context.AddSource ($"{Path.Combine (delegateInfo.Namespace, delegateClassFileName)}.g.cs",
+					SourceText.From (code, Encoding.UTF8));
+			} else {
+				// add to the diagnostics and continue to the next possible candidate
+				context.ReportDiagnostics (diagnostics);
+			}
+		}
+	}
+
+	/// <summary>
+	/// Code generator that emits strong dictionary keys classes compatible with bgen output.
+	/// This generates backward-compatible strong dictionary keys when the BackwardCompatible flag is set.
+	/// </summary>
+	/// <param name="context">Source production context.</param>
+	/// <param name="bindingsList">The bindings that need backward-compatible strong dictionary keys generation.</param>
+	static void GenerateBGenStrongDictionaryKeys (SourceProductionContext context,
+		in ImmutableArray<(RootContext Context, Binding Binding)> bindingsList)
+	{
+		if (bindingsList.Length == 0)
+			return;
+		// all items contain the same root context, we can get it from the first item
+		var rootBindingContext = bindingsList [0].Context;
+
+		// loop over all the bindings that have to be backwards compatible with bgen
+		// and generate the code for them.
+		var sb = new TabbedStringBuilder (new ());
+		var emitter = new BGenStrongDictionaryKeysEmitter ();
+		foreach (var (_, binding) in bindingsList) {
+			// init sb and add the header
+			sb.Clear ();
+			sb.WriteHeader ();
+			var bindingContext = new BindingContext (rootBindingContext, sb, binding);
+			if (emitter.TryEmit (bindingContext, out var diagnostics)) {
+				// only add a file when we do generate code
+				var code = sb.ToCode ();
+				var namespacePath = Path.Combine (binding.Namespace.ToArray ());
+				var fileName = emitter.GetSymbolName (binding);
+				context.AddSource ($"{Path.Combine (namespacePath, fileName)}.g.cs",
+					SourceText.From (code, Encoding.UTF8));
+			} else {
+				// add to the diagnostics and continue to the next possible candidate
+				context.ReportDiagnostics (diagnostics);
+			}
+		}
+	}
+
+	/// <summary>
+	/// Collect the using statements from the named ype code changes and add them to the string builder
 	/// that will be used to generate the code. This way we ensure that we have all the namespaces needed by the
 	/// generated code.
 	/// </summary>
-	/// <param name="tree">Root syntax tree of the base type declaration.</param>
+	/// <param name="binding">The code changes for a given named type.</param>
 	/// <param name="sb">String builder that will be used for the generated code.</param>
 	/// <param name="emitter">The emitter that will generate the code. Provides any extra needed namespace.</param>
-	static void CollectUsingStatements (SyntaxTree tree, TabbedStringBuilder sb, ICodeEmitter emitter)
+	static void CollectUsingStatements (in Binding binding, TabbedStringBuilder sb, ICodeEmitter emitter)
 	{
 		// collect all using from the syntax tree, add them to a hash to make sure that we don't have duplicates
 		// and add those usings that we do know we need for bindings.
-		var usingDirectives = tree.GetRoot ()
-			.DescendantNodes ()
-			.OfType<UsingDirectiveSyntax> ()
-			.Select (d => d.Name!.ToString ()).ToArray ();
-		var usingDirectivesToKeep = new HashSet<string> (usingDirectives) {
+		var usingDirectivesToKeep = new SortedSet<string> (binding.UsingDirectives) {
 			// add the using statements that we know we need and print them to the sb
 		};
+
+		// if there is at least one method that is async, we need to add the threading
+		// namespace.
+		if (binding.Methods.Any (m => m.IsAsync)) {
+			usingDirectivesToKeep.Add ("System.Threading.Tasks");
+		}
 
 		// add those using statements needed by the emitter
 		foreach (var ns in emitter.UsingStatements) {
@@ -123,64 +442,10 @@ public class BindingSourceGeneratorGenerator : IIncrementalGenerator {
 		}
 
 		// add them sorted so that we have testeable generated code
-		foreach (var ns in usingDirectivesToKeep.OrderBy (s => s)) {
+		foreach (var ns in usingDirectivesToKeep) {
 			if (string.IsNullOrEmpty (ns))
 				continue;
-			sb.AppendLine ($"using {ns};");
-		}
-	}
-
-	/// <summary>
-	/// Generic method that allows to call a emitter for ta type that will emit the binding code. All code generation
-	/// is very similar. Get create a tabbed string builder to write the code with the needed using statemens from
-	/// the original syntax tree and we pass it to the emitter that will generate the code.
-	/// </summary>
-	/// <param name="context">The generator context.</param>
-	/// <param name="compilation">The compilation unit.</param>
-	/// <param name="changesList">The base type declarations marked by the BindingTypeAttribute.</param>
-	/// <typeparam name="T">The type of type declaration.</typeparam>
-	static void GenerateCode<T> (SourceProductionContext context, Compilation compilation,
-		ImmutableArray<CodeChanges> changesList) where T : BaseTypeDeclarationSyntax
-	{
-		var rootContext = new RootBindingContext (compilation);
-		foreach (var change in changesList) {
-			var declaration = Unsafe.As<T> (change.SymbolDeclaration);
-			var semanticModel = compilation.GetSemanticModel (declaration.SyntaxTree);
-			// This is a bug in the roslyn analyzer for roslyn generator https://github.com/dotnet/roslyn-analyzers/issues/7436
-#pragma warning disable RS1039
-			if (semanticModel.GetDeclaredSymbol (declaration) is not INamedTypeSymbol namedTypeSymbol)
-#pragma warning restore RS1039
-				continue;
-
-			// init sb and add all the using statements from the base type declaration
-			var sb = new TabbedStringBuilder (new ());
-			sb.WriteHeader ();
-
-			// delegate semantic model and syntax tree analysis to the emitter who will generate the code and knows
-			// best
-			if (ContextFactory.TryCreate (rootContext, semanticModel, namedTypeSymbol, declaration,
-					out var symbolBindingContext)
-				&& EmitterFactory.TryCreate (symbolBindingContext, sb, out var emitter)) {
-				CollectUsingStatements (change.SymbolDeclaration.SyntaxTree, sb, emitter);
-
-				if (emitter.TryEmit (out var diagnostics)) {
-					// only add file when we do generate code
-					var code = sb.ToString ();
-					context.AddSource ($"{symbolBindingContext.Namespace}/{emitter.SymbolName}.g.cs",
-						SourceText.From (code, Encoding.UTF8));
-				} else {
-					// add to the diagnostics and continue to the next possible candidate
-					foreach (Diagnostic diagnostic in diagnostics) {
-						context.ReportDiagnostic (diagnostic);
-					}
-				}
-			} else {
-				// we don't have a emitter for this type, so we can't generate the code, add a diagnostic letting the
-				// user we do not support what he is trying to do
-				context.ReportDiagnostic (Diagnostic.Create (RBI0000,
-					declaration.GetLocation (),
-					namedTypeSymbol.ToDisplayString ().Trim ()));
-			}
+			sb.WriteLine ($"using {ns};");
 		}
 	}
 }

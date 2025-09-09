@@ -82,6 +82,10 @@ namespace Metal {
 	}
 
 	public partial class MTLPipelineBufferDescriptorArray {
+		/// <param name="index">To be added.</param>
+		/// <summary>Gets or sets the mutability of the buffer descriptor at the specified index.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		public MTLPipelineBufferDescriptor this [nuint index] {
 			get {
 				return GetObject (index);
@@ -94,8 +98,7 @@ namespace Metal {
 
 #if IOS
 	public partial class MTLTileRenderPipelineColorAttachmentDescriptorArray {
-		public MTLTileRenderPipelineColorAttachmentDescriptor this [nuint index]
-		{
+		public MTLTileRenderPipelineColorAttachmentDescriptor this [nuint index] {
 			get {
 				return GetObject (index);
 			}

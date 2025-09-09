@@ -33,24 +33,6 @@ public static class PlatformNameExtensionsBgen {
 		throw new BindingException (1047, currentPlatform);
 	}
 
-	public static int GetXamcoreVersion (this PlatformName currentPlatform)
-	{
-#if NET
-		return 4;
-#else
-		switch (currentPlatform) {
-		case PlatformName.MacOSX:
-		case PlatformName.iOS:
-			return 2;
-		case PlatformName.TvOS:
-		case PlatformName.WatchOS:
-			return 3;
-		default:
-			return 4;
-		}
-#endif
-	}
-
 	public static ApplePlatform AsApplePlatform (this PlatformName platform)
 	{
 		switch (platform) {
@@ -62,41 +44,10 @@ public static class PlatformNameExtensionsBgen {
 			return ApplePlatform.MacCatalyst;
 		case PlatformName.MacOSX:
 			return ApplePlatform.MacOSX;
-		case PlatformName.WatchOS:
-			return ApplePlatform.WatchOS;
 		case PlatformName.None:
 			return ApplePlatform.None;
 		default:
 			throw new ArgumentOutOfRangeException (nameof (platform), platform, $"Unknown platform: {platform}");
 		}
-	}
-
-	static string GetSdkRoot (this PlatformName currentPlatform)
-	{
-		switch (currentPlatform) {
-		case PlatformName.iOS:
-		case PlatformName.WatchOS:
-		case PlatformName.TvOS:
-		case PlatformName.MacCatalyst:
-			var sdkRoot = Environment.GetEnvironmentVariable ("MD_MTOUCH_SDK_ROOT");
-			if (string.IsNullOrEmpty (sdkRoot))
-				sdkRoot = "/Library/Frameworks/Xamarin.iOS.framework/Versions/Current";
-			return sdkRoot;
-		case PlatformName.MacOSX:
-			var macSdkRoot = Environment.GetEnvironmentVariable ("XamarinMacFrameworkRoot");
-			if (string.IsNullOrEmpty (macSdkRoot))
-				macSdkRoot = "/Library/Frameworks/Xamarin.Mac.framework/Versions/Current";
-			return macSdkRoot;
-		default:
-			throw new BindingException (1047, currentPlatform);
-		}
-	}
-
-	public static string GetPath (this PlatformName currentPlatform, params string [] paths)
-	{
-		var fullPaths = new string [paths.Length + 1];
-		fullPaths [0] = currentPlatform.GetSdkRoot ();
-		Array.Copy (paths, 0, fullPaths, 1, paths.Length);
-		return Path.Combine (fullPaths);
 	}
 }

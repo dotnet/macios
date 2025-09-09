@@ -120,13 +120,12 @@ using UIKit;
 
 namespace CoreImage {
 	public partial class CIFilter {
-
-#if NET
+		/// <summary>Creates a new CIFilter with default values.</summary>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		protected CIFilter () : base ()
 		{
 		}
@@ -136,17 +135,28 @@ namespace CoreImage {
 		{
 		}
 
+		/// <param name="categories">To be added.</param>
+		///         <summary>Returns an array of strings that specifies the filters taht the system provides for the specified <paramref name="categories" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static string [] FilterNamesInCategories (params string [] categories)
 		{
 			return _FilterNamesInCategories (categories);
 		}
 
+		/// <param name="key">To be added.</param>
+		/// <summary>Gets the value that is identified by <paramref name="key" />.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		public NSObject? this [NSString key] {
 			get {
-				return ValueForKey (key.GetHandle ());
+				NSObject? result = ValueForKey (key.GetHandle ());
+				GC.KeepAlive (key);
+				return result;
 			}
 			set {
 				SetValueForKey (value, key.GetHandle ());
+				GC.KeepAlive (key);
 			}
 		}
 
@@ -161,6 +171,7 @@ namespace CoreImage {
 		internal void SetValue (string key, NSObject? value)
 		{
 			SetHandle (key, value.GetHandle ());
+			GC.KeepAlive (value);
 		}
 
 		internal static IntPtr CreateFilter (string name)
@@ -293,12 +304,6 @@ namespace CoreImage {
 			var v = Get<CIVector> (key);
 			return v is not null ? new CGRect (v.X, v.Y, v.Z, v.W) : default (CGRect);
 		}
-
-#if MONOMAC
-		public virtual CIImage? OutputImage {
-			get { return ValueForKey (CIFilterOutputKey.Image) as CIImage; }
-		}
-#endif
 
 		// Calls the selName selector for cases where we do not have an instance created
 		static internal string? GetFilterName (IntPtr filterHandle)
@@ -475,6 +480,8 @@ namespace CoreImage {
 			case "CIMinimumComponent":
 				return new CIMinimumComponent (handle);
 			case "CIPersonSegmentation":
+				if (!SystemVersion.IsAtLeastXcode13)
+					throw new PlatformNotSupportedException (string.Format ("The filter '{0}' is not supported on the current version of this platform.", filterName));
 				return new CIPersonSegmentation (handle);
 			case "CIPerspectiveTile":
 				return new CIPerspectiveTile (handle);
@@ -529,14 +536,24 @@ namespace CoreImage {
 			case "CIConvolution9Vertical":
 				return new CIConvolution9Vertical (handle);
 			case "CIConvolutionRGB3X3":
+				if (!SystemVersion.IsAtLeastXcode13)
+					throw new PlatformNotSupportedException (string.Format ("The filter '{0}' is not supported on the current version of this platform.", filterName));
 				return new CIConvolutionRGB3X3 (handle);
 			case "CIConvolutionRGB5X5":
+				if (!SystemVersion.IsAtLeastXcode13)
+					throw new PlatformNotSupportedException (string.Format ("The filter '{0}' is not supported on the current version of this platform.", filterName));
 				return new CIConvolutionRGB5X5 (handle);
 			case "CIConvolutionRGB7X7":
+				if (!SystemVersion.IsAtLeastXcode13)
+					throw new PlatformNotSupportedException (string.Format ("The filter '{0}' is not supported on the current version of this platform.", filterName));
 				return new CIConvolutionRGB7X7 (handle);
 			case "CIConvolutionRGB9Horizontal":
+				if (!SystemVersion.IsAtLeastXcode13)
+					throw new PlatformNotSupportedException (string.Format ("The filter '{0}' is not supported on the current version of this platform.", filterName));
 				return new CIConvolutionRGB9Horizontal (handle);
 			case "CIConvolutionRGB9Vertical":
+				if (!SystemVersion.IsAtLeastXcode13)
+					throw new PlatformNotSupportedException (string.Format ("The filter '{0}' is not supported on the current version of this platform.", filterName));
 				return new CIConvolutionRGB9Vertical (handle);
 			case "CILinearToSRGBToneCurve":
 				return new CILinearToSRGBToneCurve (handle);
@@ -585,6 +602,8 @@ namespace CoreImage {
 			case "CILinearDodgeBlendMode":
 				return new CILinearDodgeBlendMode (handle);
 			case "CILinearLightBlendMode":
+				if (!SystemVersion.IsAtLeastXcode13)
+					throw new PlatformNotSupportedException (string.Format ("The filter '{0}' is not supported on the current version of this platform.", filterName));
 				return new CILinearLightBlendMode (handle);
 			case "CIPerspectiveCorrection":
 				return new CIPerspectiveCorrection (handle);
@@ -593,6 +612,8 @@ namespace CoreImage {
 			case "CISubtractBlendMode":
 				return new CISubtractBlendMode (handle);
 			case "CIVividLightBlendMode":
+				if (!SystemVersion.IsAtLeastXcode13)
+					throw new PlatformNotSupportedException (string.Format ("The filter '{0}' is not supported on the current version of this platform.", filterName));
 				return new CIVividLightBlendMode (handle);
 			case "CIAccordionFoldTransition":
 				return new CIAccordionFoldTransition (handle);
@@ -715,41 +736,20 @@ namespace CoreImage {
 			case "CIBlendWithRedMask":
 				return new CIBlendWithRedMask (handle);
 			case "CIMaximumScaleTransform":
+				if (!SystemVersion.IsAtLeastXcode16)
+					throw new PlatformNotSupportedException (string.Format ("The filter '{0}' is not supported on the current version of this platform.", filterName));
 				return new CIMaximumScaleTransform (handle);
 			case "CIToneMapHeadroom":
+				if (!SystemVersion.IsAtLeastXcode16)
+					throw new PlatformNotSupportedException (string.Format ("The filter '{0}' is not supported on the current version of this platform.", filterName));
 				return new CIToneMapHeadroom (handle);
 			case "CIAreaBoundsRed":
+				if (!SystemVersion.IsAtLeastXcode16)
+					throw new PlatformNotSupportedException (string.Format ("The filter '{0}' is not supported on the current version of this platform.", filterName));
 				return new CIAreaBoundsRed (handle);
 			default:
 				throw new NotImplementedException (String.Format ("Unknown filter type returned: `{0}', returning a default CIFilter", filterName));
 			}
 		}
-
-#if !NET
-		// not every CIFilter supports inputImage, i.e.
-		// NSUnknownKeyException [<CICheckerboardGenerator 0x1648cb20> valueForUndefinedKey:]: this class is not key value coding-compliant for the key inputImage.
-		// and those will crash (on devices) if the property is called - and that includes displaying it in the debugger
-		[Obsolete ("Use 'InputImage' instead. If not available then the filter does not support it.")]
-		public CIImage? Image {
-			get {
-				return SupportsInputImage ? ValueForKey (CIFilterInputKey.Image) as CIImage : null;
-			}
-			set {
-				if (!SupportsInputImage)
-					ObjCRuntime.ThrowHelper.ThrowArgumentException ("inputImage is not supported by this filter");
-				SetValueForKey (value, CIFilterInputKey.Image.GetHandle ());
-			}
-		}
-
-		bool? supportsInputImage;
-
-		bool SupportsInputImage {
-			get {
-				if (!supportsInputImage.HasValue)
-					supportsInputImage = Array.IndexOf (InputKeys, "inputImage") >= 0;
-				return supportsInputImage.Value;
-			}
-		}
-#endif
 	}
 }

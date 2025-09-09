@@ -29,7 +29,7 @@ namespace Xamarin.Messaging.Build {
 
 		internal void LoadTasks (Assembly assembly) => tasks.AddRange (assembly.GetTypes ());
 
-		internal void LoadXamarinTasks () => LoadTasks (typeof (MacDev.Tasks.MTouch).Assembly);
+		internal void LoadXamarinTasks () => LoadTasks (typeof (MacDev.Tasks.XamarinTask).Assembly);
 
 		public ExecuteTaskResult Execute (string taskName, string inputs)
 		{
@@ -55,18 +55,22 @@ namespace Xamarin.Messaging.Build {
 
 		void SetDotNetVariables ()
 		{
-			var xmaSdkRootPath = Path.Combine (MessagingContext.GetXmaPath (), "SDKs");
+			var xmaSdkRootPath = MessagingContext.SdksPath;
 			var xmaDotNetRootPath = Path.Combine (xmaSdkRootPath, "dotnet");
 			var xmaDotNetPath = default (string);
 
 			if (IsValidDotNetInstallation (xmaDotNetRootPath)) {
-				//If the XMA dotnet is already installed, we use it and also declare a custom home for it (for NuGet restore and caches)
-				Environment.SetEnvironmentVariable ("DOTNET_CUSTOM_HOME", Path.Combine (xmaSdkRootPath, ".home"));
 				xmaDotNetPath = GetDotNetPath (xmaDotNetRootPath);
 			} else {
 				//In case the XMA dotnet has not been installed yet, we use the default dotnet installation
 				xmaDotNetPath = GetDefaultDotNetPath ();
 				xmaDotNetRootPath = Path.GetDirectoryName (xmaDotNetPath);
+			}
+
+			//We want to define a custom home for dotnet only if it's the Pair To Mac SDK installation
+			if (xmaDotNetRootPath.StartsWith (MessagingContext.BasePath, StringComparison.OrdinalIgnoreCase)) {
+				//The custom home is used for storing caches and not mix them with the global installation (NuGet, dotnet, etc.)
+				Environment.SetEnvironmentVariable ("DOTNET_CUSTOM_HOME", Path.Combine (xmaSdkRootPath, ".home"));
 			}
 
 			var pathContent = GetPathContent ();

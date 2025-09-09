@@ -4,7 +4,7 @@
     <remarks>
       <para>
 	This is a mapping to the Objective-C NSString class.
-	Generally, in .NET languages you use the native <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20String&amp;scope=Xamarin" title="T:System.String">T:System.String</a></format> type in your code.  In general, it is
+	Generally, in .NET languages you use the native <see cref="System.String" /> type in your code.  In general, it is
 	not worth using NSString in C#/Mono code as the cost of
 	marshalling is higher when creating NSStrings manually from a
 	C# string than letting the runtime marshal it.   
@@ -34,8 +34,6 @@
 	marshaling of .NET strings as NSStrings as well
       </para>
     </remarks>
-    
-    
     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/Classes/NSString_Class/index.html">Apple documentation for <c>NSString</c></related>
   </Docs>
 </Documentation>

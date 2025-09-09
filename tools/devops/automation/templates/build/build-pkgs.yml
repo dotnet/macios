@@ -35,6 +35,9 @@ parameters:
     type: string
     default: '$(MaciosUploadPrefix)'
 
+  - name: use1ES
+    type: boolean
+
 steps:
   - template: build.yml
     parameters:
@@ -45,71 +48,83 @@ steps:
       keyringPass: ${{ parameters.keyringPass }}
       gitHubToken: ${{ parameters.gitHubToken }}
       xqaCertPass: ${{ parameters.xqaCertPass }}
+      use1ES: ${{ parameters.use1ES }}
       buildSteps:
         # build nugets
-        - bash: $(Build.SourcesDirectory)/xamarin-macios/tools/devops/automation/scripts/bash/build-nugets.sh
+        - bash: $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/automation/scripts/bash/build-nugets.sh
           displayName: 'Build Nugets'
-          condition: and(succeeded(), contains(variables['configuration.BuildNugets'], 'True'), ne(variables['ENABLE_DOTNET'], ''))
+          condition: and(succeeded(), contains(variables['configuration.BuildNugets'], 'True'))
           timeoutInMinutes: 180
 
-        - bash: $(System.DefaultWorkingDirectory)/xamarin-macios/tools/devops/automation/scripts/bash/generate-workload-rollback.sh
+        - bash: $(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/automation/scripts/bash/generate-workload-rollback.sh
           name: workload_file
           displayName: 'Generate "WorkloadRollback.json"'
 
-        - task: 1ES.PublishPipelineArtifact@1
-          displayName: 'Publish WorkloadRollback.json'
-          inputs:
+        - template: ../common/publish-pipeline-artifact.yml
+          parameters:
+            use1ES: ${{ parameters.use1ES }}
+            displayName: 'Publish WorkloadRollback.json'
             path: $(Build.SourcesDirectory)/WorkloadRollback.json
             artifact: '${{ parameters.uploadPrefix }}WorkloadRollback'
-          continueOnError: true
+            continueOnError: true
 
         # upload each of the pkgs into the pipeline artifacts
-        - task: 1ES.PublishPipelineArtifact@1
-          displayName: 'Publish Build Artifacts'
-          inputs:
+        - template: ../common/publish-pipeline-artifact.yml
+          parameters:
+            use1ES: ${{ parameters.use1ES }}
+            displayName: 'Publish Build Artifacts'
             path: $(Build.SourcesDirectory)/package
             artifact: '${{ parameters.uploadPrefix }}not-signed-package'
-          continueOnError: true
+
+        - template: ../common/publish-pipeline-artifact.yml
+          parameters:
+            use1ES: ${{ parameters.use1ES }}
+            displayName: Publish Build Artifact Symbols
+            path: $(Build.SourcesDirectory)/symbols
+            artifact: ${{ parameters.uploadPrefix }}not-signed-package-symbols
 
         - bash: |
             set -x
             set -e
 
-            make -C $(Build.SourcesDirectory)/xamarin-macios/tests package-test-libraries.zip
+            make -C $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/tests package-test-libraries.zip
           name: introPkg
           displayName: 'Package test libraries dependencies'
           continueOnError: true  # not a terrible blocking issue
           timeoutInMinutes: 60
 
-        - task: 1ES.PublishPipelineArtifact@1
-          displayName: 'Publish test libraries dependencies'
-          inputs:
-            path: $(Build.SourcesDirectory)/xamarin-macios/tests/package-test-libraries.zip
+        - template: ../common/publish-pipeline-artifact.yml
+          parameters:
+            use1ES: ${{ parameters.use1ES }}
+            displayName: 'Publish test libraries dependencies'
+            path: $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/tests/package-test-libraries.zip
             artifact: '${{ parameters.uploadPrefix }}package-test-libraries'
-          continueOnError: true
+            continueOnError: true
 
-        - task: 1ES.PublishPipelineArtifact@1
-          displayName: 'Publish Build.props'
-          inputs:
-            path: $(Build.SourcesDirectory)/xamarin-macios/Build.props
+        - template: ../common/publish-pipeline-artifact.yml
+          parameters:
+            use1ES: ${{ parameters.use1ES }}
+            displayName: 'Publish Build.props'
+            path: $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/Build.props
             artifact: '${{ parameters.uploadPrefix }}Build.props'
-          continueOnError: true
+            continueOnError: true
 
         - ${{ if eq(parameters.uploadBinlogs, true) }}:
             # Copy all the binlogs to a separate directory, keeping directory structure.
             - script: |
                 set -x
                 mkdir -p $(Build.ArtifactStagingDirectory)/all-binlogs
-                rsync -av --prune-empty-dirs --include '*/' --include '*.binlog' --exclude '*' $(Build.SourcesDirectory)/xamarin-macios $(Build.ArtifactStagingDirectory)/all-binlogs
+                rsync -av --prune-empty-dirs --include '*/' --include '*.binlog' --exclude '*' $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE) $(Build.ArtifactStagingDirectory)/all-binlogs
               displayName: Copy all binlogs
               continueOnError: true
               condition: succeededOrFailed()
 
             # Publish all the binlogs we collected in the previous step
-            - task: 1ES.PublishPipelineArtifact@1
-              displayName: 'Publish Artifact: All binlogs'
-              inputs:
+            - template: ../common/publish-pipeline-artifact.yml
+              parameters:
+                use1ES: ${{ parameters.use1ES }}
+                displayName: 'Publish Artifact: All binlogs'
                 path: $(Build.ArtifactStagingDirectory)/all-binlogs
                 artifact: '${{ parameters.uploadPrefix }}all-binlogs-$(Build.BuildId)-$(System.StageAttempt)-$(System.JobAttempt)'
-              continueOnError: true
-              condition: succeededOrFailed()
+                continueOnError: true
+                condition: succeededOrFailed()

@@ -5,43 +5,25 @@ using Intents;
 using ObjCRuntime;
 using UIKit;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Intents {
 
 	public partial class INSetProfileInCarIntent {
-
-#if NET
+		/// <param name="profileNumber">To be added.</param>
+		///         <param name="profileLabel">To be added.</param>
+		///         <param name="defaultProfile">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[ObsoletedOSPlatform ("ios12.0", "Use the overload that takes 'INSpeakableString carName'.")]
+		[ObsoletedOSPlatform ("maccatalyst13.1", "Use the overload that takes 'INSpeakableString carName'.")]
 		[UnsupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("tvos")]
-#else
-		[Deprecated (PlatformName.iOS, 12, 0, message: "Use the overload that takes 'INSpeakableString carName'.")]
-#endif
 		public INSetProfileInCarIntent (NSNumber profileNumber, string profileLabel, bool? defaultProfile) :
 			this (profileNumber, profileLabel, defaultProfile.HasValue ? new NSNumber (defaultProfile.Value) : null)
 		{
-		}
-
-#if NET
-		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[ObsoletedOSPlatform ("ios12.0", "Use the overload that takes 'INSpeakableString carName'.")]
-		[UnsupportedOSPlatform ("macos")]
-		[UnsupportedOSPlatform ("tvos")]
-#else
-		[Deprecated (PlatformName.iOS, 12, 0, message: "Use the overload that takes 'INSpeakableString carName'.")]
-#endif
-		protected INSetProfileInCarIntent (NSNumber profileNumber, string profileLabel, NSNumber defaultProfile)
-		{
-			// Apple created this change in 10,2
-			if (SystemVersion.CheckiOS (10, 2))
-				InitializeHandle (InitWithProfileNumberName (profileNumber, profileLabel, defaultProfile));
-			else
-				InitializeHandle (InitWithProfileNumberLabel (profileNumber, profileLabel, defaultProfile));
 		}
 	}
 }

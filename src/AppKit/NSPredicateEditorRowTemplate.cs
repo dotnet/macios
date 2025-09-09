@@ -20,11 +20,21 @@ using CoreData;
 
 namespace AppKit {
 	public partial class NSPredicateEditorRowTemplate {
+		/// <param name="compoundTypes">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSPredicateEditorRowTemplate (params NSCompoundPredicateType [] compoundTypes)
 			: this (Array.ConvertAll (compoundTypes, t => NSNumber.FromUInt32 ((uint) t)))
 		{
 		}
 
+		/// <param name="leftExpressions">To be added.</param>
+		///         <param name="rightExpressions">To be added.</param>
+		///         <param name="operators">To be added.</param>
+		///         <param name="modifier">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSPredicateEditorRowTemplate (
 			IEnumerable<NSExpression> leftExpressions,
 			IEnumerable<NSExpression> rightExpressions,
@@ -40,6 +50,13 @@ namespace AppKit {
 		{
 		}
 
+		/// <param name="leftExpressionsFromKeyPaths">To be added.</param>
+		///         <param name="rightExpressionsFromConstants">To be added.</param>
+		///         <param name="operators">To be added.</param>
+		///         <param name="modifier">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSPredicateEditorRowTemplate (
 			IEnumerable<string> leftExpressionsFromKeyPaths,
 			IEnumerable<string> rightExpressionsFromConstants,
@@ -55,6 +72,13 @@ namespace AppKit {
 		{
 		}
 
+		/// <param name="leftExpressionFromKeyPath">To be added.</param>
+		///         <param name="rightExpressionFromConstant">To be added.</param>
+		///         <param name="operators">To be added.</param>
+		///         <param name="modifier">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSPredicateEditorRowTemplate (
 			string leftExpressionFromKeyPath,
 			string rightExpressionFromConstant,
@@ -70,6 +94,13 @@ namespace AppKit {
 		{
 		}
 
+		/// <param name="leftExpressionFromKeyPath">To be added.</param>
+		///         <param name="rightExpressionsFromConstants">To be added.</param>
+		///         <param name="operators">To be added.</param>
+		///         <param name="modifier">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSPredicateEditorRowTemplate (
 			string leftExpressionFromKeyPath,
 			IEnumerable<string> rightExpressionsFromConstants,
@@ -85,6 +116,13 @@ namespace AppKit {
 		{
 		}
 
+		/// <param name="leftExpressions">To be added.</param>
+		///         <param name="attributeType">To be added.</param>
+		///         <param name="operators">To be added.</param>
+		///         <param name="modifier">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSPredicateEditorRowTemplate (
 			IEnumerable<NSExpression> leftExpressions,
 			NSAttributeType attributeType,
@@ -100,6 +138,13 @@ namespace AppKit {
 		{
 		}
 
+		/// <param name="leftExpressionsFromKeyPaths">To be added.</param>
+		///         <param name="attributeType">To be added.</param>
+		///         <param name="operators">To be added.</param>
+		///         <param name="modifier">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSPredicateEditorRowTemplate (
 			IEnumerable<string> leftExpressionsFromKeyPaths,
 			NSAttributeType attributeType,
@@ -115,6 +160,13 @@ namespace AppKit {
 		{
 		}
 
+		/// <param name="leftExpressionFromKeyPath">To be added.</param>
+		///         <param name="attributeType">To be added.</param>
+		///         <param name="operators">To be added.</param>
+		///         <param name="modifier">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSPredicateEditorRowTemplate (
 			string leftExpressionFromKeyPath,
 			NSAttributeType attributeType,

@@ -7,15 +7,9 @@
 // Copyright 2014 Xamarin Inc. All rights reserved.
 //
 
-#if !__WATCHOS__
-
 using System;
 using System.Net;
-#if NET
 using CFNetwork;
-#else
-using CoreServices;
-#endif
 using Foundation;
 using CoreFoundation;
 using NUnit.Framework;
@@ -109,5 +103,3 @@ namespace MonoTouchFixtures.CoreServices {
 		}
 	}
 }
-
-#endif // !__WATCHOS__

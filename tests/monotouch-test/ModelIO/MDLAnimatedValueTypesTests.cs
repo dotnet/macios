@@ -8,8 +8,6 @@
 // Copyright 2017 Xamarin Inc. All rights reserved.
 //
 
-#if !__WATCHOS__
-
 using System;
 using System.Linq;
 using CoreGraphics;
@@ -25,7 +23,6 @@ using ObjCRuntime;
 using NUnit.Framework;
 using System.Runtime.InteropServices;
 
-#if NET
 using System.Numerics;
 using Vector2d = global::CoreGraphics.NVector2d;
 using Vector3d = global::CoreGraphics.NVector3d;
@@ -33,9 +30,6 @@ using Vector4d = global::CoreGraphics.NVector4d;
 using Matrix4d = global::CoreGraphics.NMatrix4d;
 using Quaterniond = global::CoreGraphics.NQuaterniond;
 using Matrix4 = global::System.Numerics.Matrix4x4;
-#else
-using OpenTK;
-#endif
 
 namespace MonoTouchFixtures.ModelIO {
 	[TestFixture]
@@ -739,4 +733,3 @@ namespace MonoTouchFixtures.ModelIO {
 		}
 	}
 }
-#endif

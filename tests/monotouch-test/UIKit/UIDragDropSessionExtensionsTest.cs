@@ -8,7 +8,7 @@
 // Copyright 2017 Microsoft.
 //
 
-#if !__TVOS__ && !__WATCHOS__ && !MONOMAC
+#if !__TVOS__ && !MONOMAC
 
 using System;
 using CoreGraphics;
@@ -67,10 +67,8 @@ namespace MonoTouchFixtures.UIKit {
 			throw new NotImplementedException ();
 		}
 
-#if NET
 		public NSProgress Progress { get { throw new NotImplementedException (); } }
-#endif
 	}
 }
 
-#endif // !__TVOS__ && !__WATCHOS__
+#endif // !__TVOS__ && !MONOMAC

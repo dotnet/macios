@@ -6,13 +6,10 @@ namespace Xharness.Jenkins {
 
 	class TestData {
 		public string Variation;
-		public string AppBundleExtraOptions;
 		public KnownIssue KnownFailure;
 		public bool Debug;
 		public bool Profiling;
 		public string LinkMode;
-		public string Defines;
-		public string Undefines;
 		public bool? Ignored;
 		public bool EnableSGenConc;
 		public bool UseLlvm;
@@ -21,5 +18,6 @@ namespace Xharness.Jenkins {
 		public string RuntimeIdentifier;
 		public string Registrar;
 		public bool PublishAot; // NativeAOT
+		public string TestVariation;
 	}
 }

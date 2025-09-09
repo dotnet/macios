@@ -17,27 +17,42 @@ using System.Runtime.InteropServices;
 using Foundation;
 using CoreFoundation;
 using ObjCRuntime;
-using OSStatus = System.Int32;
 
 namespace CoreMedia {
 
+	/// <param name="buffer">Buffer to probe.</param>
+	///     <summary>Returns the CMTime object for the specified buffer.</summary>
+	///     <returns>
+	///     </returns>
+	///     <remarks>The actual value to return will depend on which callback you have provided.</remarks>
 	public delegate CMTime CMBufferGetTime (INativeObject buffer);
+	/// <param name="buffer">Buffer to probe.</param>
+	///     <summary>Delegate signature to determine if the specified buffer that is about to be dequeued is ready.</summary>
+	///     <returns>
+	///     </returns>
+	///     <remarks>
+	///     </remarks>
 	public delegate bool CMBufferGetBool (INativeObject buffer);
+	/// <param name="first">The first object to compare.</param>
+	///     <param name="second">The second object to compare.</param>
+	///     <summary>Delegate signature to compare two CoreFoundation objects, used to sort objects in a CMBufferQueue.</summary>
+	///     <returns>Zero for the same object, -1 for first being sma</returns>
+	///     <remarks>The objects passed are the same ones that have been added to the CMBufferQueue object, it wont surface arbitrary objects.</remarks>
 	public delegate int CMBufferCompare (INativeObject first, INativeObject second);
 
-#if NET
 	// [SupportedOSPlatform ("ios")] -  SupportedOSPlatform is not valid on this declaration type "delegate" 
-#else
-	[Watch (6, 0)]
-#endif
+	/// <param name="buffer">To be added.</param>
+	///     <summary>Delegate for getting media buffer sizes.</summary>
+	///     <returns>To be added.</returns>
+	///     <remarks>To be added.</remarks>
 	public delegate nint CMBufferGetSize (INativeObject buffer);
 
-#if NET
+	/// <summary>CoreMedia Buffer Queue.</summary>
+	///     <remarks>The CoreMedia queue exposes a thread-safe API to queue and dequeue buffers.   When you construct the CMBufferQueue, you can specific custom functions to sort the buffers by time, or you can use the convenience function CreateUnsorted to create a queue that behaves like a FIFO.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CMBufferQueue : NativeObject {
 #if !COREBUILD
 		GCHandle gch;
@@ -49,37 +64,17 @@ namespace CoreMedia {
 		CMBufferCompare? compare;
 		CMBufferGetSize? getTotalSize;
 
-#if !NET
-		delegate CMTime BufferGetTimeCallback (/* CMBufferRef */ IntPtr buf, /* void* */ IntPtr refcon);
-		[return: MarshalAs (UnmanagedType.I1)]
-		delegate bool BufferGetBooleanCallback (/* CMBufferRef */ IntPtr buf, /* void* */ IntPtr refcon);
-		delegate int BufferCompareCallback (/* CMBufferRef */ IntPtr buf1, /* CMBufferRef */ IntPtr buf2, /* void* */ IntPtr refcon);
-		delegate nint BufferGetSizeCallback (/* CMBufferRef */ IntPtr buffer, /* void* */ IntPtr refcon);
-#endif
-
 		[StructLayout (LayoutKind.Sequential)]
 		struct CMBufferCallbacks {
 			internal uint version;
 			internal IntPtr refcon;
-#if NET
 			internal unsafe delegate* unmanaged<IntPtr, IntPtr, CMTime> XgetDecodeTimeStamp;
 			internal unsafe delegate* unmanaged<IntPtr, IntPtr, CMTime> XgetPresentationTimeStamp;
 			internal unsafe delegate* unmanaged<IntPtr, IntPtr, CMTime> XgetDuration;
 			internal unsafe delegate* unmanaged<IntPtr, IntPtr, byte> XisDataReady;
 			internal unsafe delegate* unmanaged<IntPtr, IntPtr, IntPtr, int> Xcompare;
-#else
-			internal IntPtr XgetDecodeTimeStamp;
-			internal IntPtr XgetPresentationTimeStamp;
-			internal IntPtr XgetDuration;
-			internal IntPtr XisDataReady;
-			internal IntPtr Xcompare;
-#endif
 			internal IntPtr cfStringPtr_dataBecameReadyNotification;
-#if NET
 			internal unsafe delegate* unmanaged<IntPtr, IntPtr, nint> XgetSize;
-#else
-			internal IntPtr XgetSize;
-#endif
 		}
 
 		// A version with no delegates, just native pointers
@@ -96,6 +91,7 @@ namespace CoreMedia {
 			internal IntPtr XgetSize;
 		}
 
+		/// <include file="../../docs/api/CoreMedia/CMBufferQueue.xml" path="/Documentation/Docs[@DocId='M:CoreMedia.CMBufferQueue.Dispose(System.Boolean)']/*" />
 		protected override void Dispose (bool disposing)
 		{
 			queueObjects.Clear ();
@@ -122,6 +118,16 @@ namespace CoreMedia {
 		}
 
 		// for compatibility with 7.0 and earlier
+		/// <param name="count">Number of items in the queue.</param>
+		///         <param name="getDecodeTimeStamp">To be added.</param>
+		///         <param name="getPresentationTimeStamp">To be added.</param>
+		///         <param name="getDuration">To be added.</param>
+		///         <param name="isDataReady">To be added.</param>
+		///         <param name="compare">To be added.</param>
+		///         <param name="dataBecameReadyNotification">To be added.</param>
+		///         <summary>Creates a custom CMBufferQueue that sorts and returns the objects in the queue based on the various callbacks you provide.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static CMBufferQueue? FromCallbacks (int count, CMBufferGetTime? getDecodeTimeStamp, CMBufferGetTime? getPresentationTimeStamp, CMBufferGetTime? getDuration,
 			CMBufferGetBool? isDataReady, CMBufferCompare? compare, NSString dataBecameReadyNotification)
 		{
@@ -129,11 +135,21 @@ namespace CoreMedia {
 				compare, dataBecameReadyNotification, null);
 		}
 
+		/// <param name="count">To be added.</param>
+		///         <param name="getDecodeTimeStamp">To be added.</param>
+		///         <param name="getPresentationTimeStamp">To be added.</param>
+		///         <param name="getDuration">To be added.</param>
+		///         <param name="isDataReady">To be added.</param>
+		///         <param name="compare">To be added.</param>
+		///         <param name="dataBecameReadyNotification">To be added.</param>
+		///         <param name="getTotalSize">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static CMBufferQueue? FromCallbacks (int count, CMBufferGetTime? getDecodeTimeStamp, CMBufferGetTime? getPresentationTimeStamp, CMBufferGetTime? getDuration,
 			CMBufferGetBool? isDataReady, CMBufferCompare? compare, NSString dataBecameReadyNotification, CMBufferGetSize? getTotalSize)
 		{
 			var bq = new CMBufferQueue (count);
-#if NET
 			CMBufferCallbacks cbacks;
 			unsafe {
 				cbacks = new CMBufferCallbacks () {
@@ -145,22 +161,10 @@ namespace CoreMedia {
 					XisDataReady = isDataReady is not null ? &GetDataReady : null,
 					Xcompare = compare is not null ? &Compare : null,
 					cfStringPtr_dataBecameReadyNotification = dataBecameReadyNotification is null ? IntPtr.Zero : dataBecameReadyNotification.Handle,
-					XgetSize = getTotalSize is not null ? &GetTotalSize : null
+					XgetSize = getTotalSize is not null ? &GetTotalSize : null,
 				};
+				GC.KeepAlive (dataBecameReadyNotification);
 			}
-#else
-			var cbacks = new CMBufferCallbacks () {
-				version = (uint) (getTotalSize is null ? 0 : 1),
-				refcon = GCHandle.ToIntPtr (bq.gch),
-				XgetDecodeTimeStamp = getDecodeTimeStamp is not null ? Marshal.GetFunctionPointerForDelegate (GetDecodeTimeStampCallback) : IntPtr.Zero,
-				XgetPresentationTimeStamp = getPresentationTimeStamp is not null ? Marshal.GetFunctionPointerForDelegate (GetPresentationTimeStampCallback) : IntPtr.Zero,
-				XgetDuration = getDuration is not null ? Marshal.GetFunctionPointerForDelegate (GetDurationCallback) : IntPtr.Zero,
-				XisDataReady = isDataReady is not null ? Marshal.GetFunctionPointerForDelegate (GetDataReadyCallback) : IntPtr.Zero,
-				Xcompare = compare is not null ? Marshal.GetFunctionPointerForDelegate (CompareCallback) : IntPtr.Zero,
-				cfStringPtr_dataBecameReadyNotification = dataBecameReadyNotification is null ? IntPtr.Zero : dataBecameReadyNotification.Handle,
-				XgetSize = getTotalSize is not null ? Marshal.GetFunctionPointerForDelegate (GetTotalSizeCallback) : IntPtr.Zero
-			};
-#endif
 
 			bq.getDecodeTimeStamp = getDecodeTimeStamp;
 			bq.getPresentationTimeStamp = getPresentationTimeStamp;
@@ -186,6 +190,10 @@ namespace CoreMedia {
 		[DllImport (Constants.CoreMediaLibrary)]
 		unsafe extern static /* CMBufferCallbacks */ CMBufferCallbacks* CMBufferQueueGetCallbacksForUnsortedSampleBuffers ();
 
+		/// <param name="count">Number of items in the queue.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static CMBufferQueue? CreateUnsorted (int count)
 		{
 			// note: different version of iOS can return a different (size) structure, e.g. iOS 7.1,
@@ -210,6 +218,9 @@ namespace CoreMedia {
 		//
 		// It really should be ICFType, and we should pepper various classes with ICFType
 		//
+		/// <param name="cftypeBuffer">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void Enqueue (INativeObject cftypeBuffer)
 		{
 			if (cftypeBuffer is null)
@@ -225,6 +236,9 @@ namespace CoreMedia {
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static /* CMBufferRef */ IntPtr CMBufferQueueDequeueAndRetain (/* CMBufferQueueRef */ IntPtr queue);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public INativeObject? Dequeue ()
 		{
 			//
@@ -248,6 +262,9 @@ namespace CoreMedia {
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static /* CMBufferRef */ IntPtr CMBufferQueueDequeueIfDataReadyAndRetain (/* CMBufferQueueRef */ IntPtr queue);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public INativeObject? DequeueIfDataReady ()
 		{
 			//
@@ -270,6 +287,9 @@ namespace CoreMedia {
 
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static byte CMBufferQueueIsEmpty (/* CMBufferQueueRef */ IntPtr queue);
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool IsEmpty {
 			get {
 				return CMBufferQueueIsEmpty (Handle) != 0;
@@ -279,6 +299,9 @@ namespace CoreMedia {
 
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static OSStatus CMBufferQueueMarkEndOfData (/* CMBufferQueueRef */ IntPtr queue);
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public int MarkEndOfData ()
 		{
 			return CMBufferQueueMarkEndOfData (Handle);
@@ -286,6 +309,9 @@ namespace CoreMedia {
 
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static byte CMBufferQueueContainsEndOfData (/* CMBufferQueueRef */ IntPtr queue);
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool ContainsEndOfData {
 			get {
 				return CMBufferQueueContainsEndOfData (Handle) != 0;
@@ -294,6 +320,9 @@ namespace CoreMedia {
 
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static byte CMBufferQueueIsAtEndOfData (/* CMBufferQueueRef */ IntPtr queue);
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool IsAtEndOfData {
 			get {
 				return CMBufferQueueIsAtEndOfData (Handle) != 0;
@@ -302,6 +331,9 @@ namespace CoreMedia {
 
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static OSStatus CMBufferQueueReset (/* CMBufferQueueRef */ IntPtr queue);
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public OSStatus Reset ()
 		{
 			return CMBufferQueueReset (Handle);
@@ -309,6 +341,9 @@ namespace CoreMedia {
 
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static nint CMBufferQueueGetBufferCount (/* CMBufferQueueRef */ IntPtr queue);
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nint BufferCount {
 			get {
 				return CMBufferQueueGetBufferCount (Handle);
@@ -317,27 +352,29 @@ namespace CoreMedia {
 
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static CMTime CMBufferQueueGetDuration (/* CMBufferQueueRef */ IntPtr queue);
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CMTime Duration {
 			get {
 				return CMBufferQueueGetDuration (Handle);
 			}
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static /* size_t */ nint CMBufferQueueGetTotalSize (/* CMBufferQueueRef */ IntPtr queue);
 
-#if NET
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public nint GetTotalSize ()
 		{
 			return CMBufferQueueGetTotalSize (Handle);
@@ -350,14 +387,7 @@ namespace CoreMedia {
 			return queueObjects [v];
 		}
 
-#if NET
 		[UnmanagedCallersOnly]
-#else
-		static BufferGetTimeCallback GetDecodeTimeStampCallback = GetDecodeTimeStamp;
-#if !MONOMAC
-		[MonoPInvokeCallback (typeof (BufferGetTimeCallback))]
-#endif
-#endif
 		static CMTime GetDecodeTimeStamp (IntPtr buffer, IntPtr refcon)
 		{
 			var queue = (CMBufferQueue?) GCHandle.FromIntPtr (refcon).Target;
@@ -366,14 +396,7 @@ namespace CoreMedia {
 			return queue.getDecodeTimeStamp (queue.Surface (buffer));
 		}
 
-#if NET
 		[UnmanagedCallersOnly]
-#else
-		static BufferGetTimeCallback GetPresentationTimeStampCallback = GetPresentationTimeStamp;
-#if !MONOMAC
-		[MonoPInvokeCallback (typeof (BufferGetTimeCallback))]
-#endif
-#endif
 		static CMTime GetPresentationTimeStamp (IntPtr buffer, IntPtr refcon)
 		{
 			var queue = (CMBufferQueue?) GCHandle.FromIntPtr (refcon).Target;
@@ -382,14 +405,7 @@ namespace CoreMedia {
 			return queue.getPresentationTimeStamp (queue.Surface (buffer));
 		}
 
-#if NET
 		[UnmanagedCallersOnly]
-#else
-		static BufferGetTimeCallback GetDurationCallback = GetDuration;
-#if !MONOMAC
-		[MonoPInvokeCallback (typeof (BufferGetTimeCallback))]
-#endif
-#endif
 		static CMTime GetDuration (IntPtr buffer, IntPtr refcon)
 		{
 			var queue = (CMBufferQueue?) GCHandle.FromIntPtr (refcon).Target;
@@ -398,36 +414,16 @@ namespace CoreMedia {
 			return queue.getDuration (queue.Surface (buffer));
 		}
 
-#if NET
 		[UnmanagedCallersOnly]
 		static byte GetDataReady (IntPtr buffer, IntPtr refcon)
-#else
-		static BufferGetBooleanCallback GetDataReadyCallback = GetDataReady;
-#if !MONOMAC
-		[MonoPInvokeCallback (typeof (BufferGetBooleanCallback))]
-#endif
-		static bool GetDataReady (IntPtr buffer, IntPtr refcon)
-#endif
 		{
 			var queue = (CMBufferQueue?) GCHandle.FromIntPtr (refcon).Target;
 			if (queue?.isDataReady is null)
-#if NET
 				return 0;
 			return (byte) (queue.isDataReady (queue.Surface (buffer)) ? 1 : 0);
-#else
-				return false;
-			return queue.isDataReady (queue.Surface (buffer));
-#endif
 		}
 
-#if NET
 		[UnmanagedCallersOnly]
-#else
-		static BufferCompareCallback CompareCallback = Compare;
-#if !MONOMAC
-		[MonoPInvokeCallback (typeof (BufferCompareCallback))]
-#endif
-#endif
 		static int Compare (IntPtr buffer1, IntPtr buffer2, IntPtr refcon)
 		{
 			var queue = (CMBufferQueue?) GCHandle.FromIntPtr (refcon).Target;
@@ -436,14 +432,7 @@ namespace CoreMedia {
 			return queue.compare (queue.Surface (buffer1), queue.Surface (buffer2));
 		}
 
-#if NET
 		[UnmanagedCallersOnly]
-#else
-		static BufferGetSizeCallback GetTotalSizeCallback = GetTotalSize;
-#if !MONOMAC
-		[MonoPInvokeCallback (typeof (BufferGetSizeCallback))]
-#endif
-#endif
 		static nint GetTotalSize (IntPtr buffer, IntPtr refcon)
 		{
 			var queue = (CMBufferQueue?) GCHandle.FromIntPtr (refcon).Target;
@@ -453,21 +442,32 @@ namespace CoreMedia {
 		}
 #endif // !COREBUILD
 
-#if !NET
-		[Watch (6, 0)]
-#endif
+		/// <summary>Enumerates trigger conditions for a buffer queue trigger.</summary>
+		///     <remarks>To be added.</remarks>
 		public enum TriggerCondition {
+			/// <summary>The trigger is raised when the elapsed time becomes less than the specified value.</summary>
 			WhenDurationBecomesLessThan = 1,
+			/// <summary>The trigger is raised when the elapsed time becomes less than or equal to the specified value.</summary>
 			WhenDurationBecomesLessThanOrEqualTo = 2,
+			/// <summary>The trigger is raised when the elapsed time is greater than the specified value.</summary>
 			WhenDurationBecomesGreaterThan = 3,
+			/// <summary>The trigger is raised when the elapsed time is greater than or equal to the specified value.</summary>
 			WhenDurationBecomesGreaterThanOrEqualTo = 4,
+			/// <summary>The trigger is raised when the minimum presentation time stamp changes.</summary>
 			WhenMinPresentationTimeStampChanges = 5,
+			/// <summary>The trigger is raised when the maximum presentation time stamp changes.</summary>
 			WhenMaxPresentationTimeStampChanges = 6,
+			/// <summary>The trigger is raised when the data is ready.</summary>
 			WhenDataBecomesReady = 7,
+			/// <summary>The trigger is raised when the end of the data is reached.</summary>
 			WhenEndOfDataReached = 8,
+			/// <summary>The trigger is raised when the buffer queue is reset.</summary>
 			WhenReset = 9,
+			/// <summary>The trigger is raised when the buffer count is less than the specified value.</summary>
 			WhenBufferCountBecomesLessThan = 10,
+			/// <summary>The trigger is raised when the buffer count is greater than the specified value.</summary>
 			WhenBufferCountBecomesGreaterThan = 11,
+			/// <summary>The trigger is raised when the elapsed time is greater than or equal to its specified value and the elapsed time is greater than its specified value.</summary>
 			WhenDurationBecomesGreaterThanOrEqualToAndBufferCountBecomesGreaterThan = 12,
 		}
 	}

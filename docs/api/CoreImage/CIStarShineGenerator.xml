@@ -1,6 +1,6 @@
 <Documentation>
   <Docs DocId="T:CoreImage.CIStarShineGenerator">
-    <summary>A <see cref="T:CoreImage.CIFilter" /> that simulates lens flare.</summary>
+    <summary>A <see cref="CoreImage.CIFilter" /> that simulates lens flare.</summary>
     <remarks>
       <para>The following example shows this filter in use</para>
       <example>
@@ -44,7 +44,7 @@ myImageView.Image = UIImage.FromImage (cgimage);
          Produces the following output:
       </para>
       <para>
-        <img href="~/CoreImage/_images/star_shine_generator.png" alt="Result of applying the filter." />
+        <img href="~/xml/CoreImage/_images/star_shine_generator.png" alt="Result of applying the filter." />
       </para>
     </remarks>
   </Docs>

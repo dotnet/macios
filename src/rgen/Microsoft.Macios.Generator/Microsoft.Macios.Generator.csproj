@@ -14,7 +14,7 @@
         <PackageId>Microsoft.Macios.Generator</PackageId>
         <Version>0.1.0</Version>
         <!-- There is a bug in the roslyn analyzer for roslyn analyzers.... -->
-        <NoWarn>RS2007;RS1041</NoWarn>
+        <NoWarn>RS2007;RS1041;APL0003</NoWarn>
     </PropertyGroup>
 
     <ItemGroup>
@@ -31,20 +31,23 @@
         </AssemblyAttribute>
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="..\..\bgen\Extensions\PlatformNameExtensions.cs" >
-            <Link>external\PlatformNameExtensions.cs</Link>
-        </Compile>
-        <Compile Update="Resources.Designer.cs">
-          <DesignTime>True</DesignTime>
-          <AutoGen>True</AutoGen>
-          <DependentUpon>Resources.resx</DependentUpon>
+        <Compile Include="..\..\ObjCRuntime\Registrar.core.cs" >
+            <Link>external\Registrar.core.cs</Link>
         </Compile>
     </ItemGroup>
 
     <ItemGroup>
+      <Compile Remove="Resources.Designer.cs" />
       <EmbeddedResource Update="Resources.resx">
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>Resources1.Designer.cs</LastGenOutput>
+        <StronglyTypedFileName>Resources.Designer.cs</StronglyTypedFileName>
+        <StronglyTypedLanguage>CSharp</StronglyTypedLanguage>
+        <StronglyTypedNamespace>$(RootNamespace)</StronglyTypedNamespace>
+        <StronglyTypedClassName>Resources</StronglyTypedClassName>
+        <ManifestResourceName>$(RootNamespace).Resources</ManifestResourceName>
+        <GenerateResource>true</GenerateResource>
+        <PublicClass>false</PublicClass>
       </EmbeddedResource>
     </ItemGroup>
 

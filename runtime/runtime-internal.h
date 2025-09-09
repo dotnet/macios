@@ -44,6 +44,32 @@ void xamarin_dyn_objc_msgSend_stret ();
 void xamarin_dyn_objc_msgSendSuper_stret ();
 void xamarin_add_internal_call (const char *name, const void *method);
 
+static inline size_t align_size (size_t target, uint64_t alignment)
+{
+	target = (target + (alignment - 1)) & ~(alignment - 1);
+	return target;
+}
+
+static inline unsigned long align_ulong (unsigned long target, unsigned long alignment)
+{
+	target = (target + (alignment - 1)) & ~(alignment - 1);
+	return target;
+}
+
+static inline int32_t align_int32 (int32_t target, int32_t alignment)
+{
+	target = (target + (alignment - 1)) & ~(alignment - 1);
+	return target;
+}
+
+static inline void* align_ptr (void* target, uint64_t alignment)
+{
+	uint64_t ptr = (uint64_t) target;
+	ptr = (ptr + (alignment - 1)) & ~(alignment - 1);
+	return (void *) ptr;
+}
+
+
 #ifdef __cplusplus
 }
 #endif

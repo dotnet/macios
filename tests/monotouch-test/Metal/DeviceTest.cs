@@ -1,6 +1,3 @@
-
-#if !__WATCHOS__
-
 using System;
 
 using Foundation;
@@ -8,10 +5,6 @@ using Metal;
 using ObjCRuntime;
 
 using NUnit.Framework;
-
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
 
 namespace MonoTouchFixtures.Metal {
 
@@ -41,5 +34,3 @@ namespace MonoTouchFixtures.Metal {
 		}
 	}
 }
-
-#endif // !__WATCHOS__

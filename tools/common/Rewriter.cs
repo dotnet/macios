@@ -235,8 +235,7 @@ namespace ClassRedirector {
 			for (var i = 0; i < body.Instructions.Count; i++) {
 				var old = body.Instructions [i];
 				if (old.OpCode == OpCodes.Ldsfld && old.Operand == classPtr) {
-					var @new = Instruction.Create (OpCodes.Ldsfld, method.Module.ImportReference (classPtrField));
-					ReplaceAndPatch (body, il, i, @new);
+					old.Operand = method.Module.ImportReference (classPtrField);
 				}
 			}
 			body.OptimizeMacros ();
@@ -256,6 +255,28 @@ namespace ClassRedirector {
 							changed = true;
 						}
 					}
+				}
+			}
+			foreach (var eh in body.ExceptionHandlers) {
+				if (eh.TryStart == old) {
+					eh.TryStart = @new;
+					changed = true;
+				}
+				if (eh.TryEnd == old) {
+					eh.TryEnd = @new;
+					changed = true;
+				}
+				if (eh.FilterStart == old) {
+					eh.FilterStart = @new;
+					changed = true;
+				}
+				if (eh.HandlerStart == old) {
+					eh.HandlerStart = @new;
+					changed = true;
+				}
+				if (eh.HandlerEnd == old) {
+					eh.HandlerEnd = @new;
+					changed = true;
 				}
 			}
 			return changed;
@@ -382,6 +403,9 @@ namespace ClassRedirector {
 
 		void MarkForSave (AssemblyDefinition assembly)
 		{
+#if LEGACY_TOOLS
+			throw new NotImplementedException ();
+#else
 			var annotations = derivedLinkContext.Annotations;
 			if (!annotations.HasAction (assembly)) {
 				annotations.SetAction (assembly, AssemblyAction.Link);
@@ -391,6 +415,7 @@ namespace ClassRedirector {
 					annotations.SetAction (assembly, AssemblyAction.Save);
 				}
 			}
+#endif
 		}
 	}
 #endif

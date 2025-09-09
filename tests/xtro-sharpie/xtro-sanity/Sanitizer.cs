@@ -128,7 +128,7 @@ namespace Extrospection {
 						if (!IsEntry (entry))
 							continue;
 						if (!specific.Contains (entry)) {
-							Log ($"?fixed-todo? Entry '{entry}' in '{Path.GetFileName (file)}' is not found in corresponding '{Path.GetFileName (raw)}' file");
+							LogSanitizable ($"?fixed-todo? Entry '{entry}' in '{Path.GetFileName (file)}' is not found in corresponding '{Path.GetFileName (raw)}' file");
 							failures.Add (entry);
 						}
 					}
@@ -137,7 +137,7 @@ namespace Extrospection {
 					foreach (var entry in entries) {
 						if (!IsEntry (entry))
 							continue;
-						Log ($"?fixed-todo? Entry '{entry}' in '{Path.GetFileName (file)}' might be fixed since there's no corresponding '{Path.GetFileName (raw)}' file");
+						LogSanitizable ($"?fixed-todo? Entry '{entry}' in '{Path.GetFileName (file)}' might be fixed since there's no corresponding '{Path.GetFileName (raw)}' file");
 						failures.Add (entry);
 					}
 				}
@@ -160,7 +160,7 @@ namespace Extrospection {
 				if (!IsIncluded (file))
 					continue;
 				if (!(File.ReadLines (file).Count () > 0)) {
-					Log ($"?empty-todo? File '{Path.GetFileName (file)}' is empty. Empty todo files should be removed.");
+					LogSanitizable ($"?empty-todo? File '{Path.GetFileName (file)}' is empty. Empty todo files should be removed.");
 					if (Autosanitize)
 						File.Delete (file);
 				}
@@ -175,6 +175,15 @@ namespace Extrospection {
 		{
 			Console.WriteLine (s);
 			count++;
+		}
+
+		public static void LogSanitizable (string s)
+		{
+			if (Autosanitize) {
+				Console.WriteLine ($"(sanitized) {s}");
+				return;
+			}
+			Log (s);
 		}
 
 		public static int Main (string [] args)
@@ -250,11 +259,11 @@ namespace Extrospection {
 					var foundRaws = raws.Where (v => v.Entries.Contains (entry));
 					var rawCount = foundRaws.Count ();
 					if (rawCount == 0) {
-						Log ($"?unknown-entry? {entry} in '{Path.Combine (directory, $"common-{fx}.ignore")}'");
+						LogSanitizable ($"?unknown-entry? {entry} in '{Path.Combine (directory, $"common-{fx}.ignore")}'");
 						unknownFailures.Add (entry);
 					} else if (rawCount < GetPlatformCount (fx)) {
 						var notFound = raws.Where (v => !v.Entries.Contains (entry));
-						Log ($"?not-common? {entry} in '{Path.Combine (directory, $"common-{fx}.ignore")}': not in {string.Join (", ", notFound.Select (v => v.Platform))}");
+						LogSanitizable ($"?not-common? {entry} in '{Path.Combine (directory, $"common-{fx}.ignore")}': not in {string.Join (", ", notFound.Select (v => v.Platform))}");
 						unknownFailures.Add (entry);
 						if (Autosanitize) {
 							foreach (var nf in foundRaws) {
@@ -294,7 +303,7 @@ namespace Extrospection {
 						continue;
 					if (raws.Contains (entry))
 						continue;
-					Log ($"?unknown-entry? {entry} in '{shortname}'");
+					LogSanitizable ($"?unknown-entry? {entry} in '{shortname}'");
 					failures.Add (entry);
 				}
 				if (failures.Count > 0 && Autosanitize) {
@@ -327,8 +336,7 @@ namespace Extrospection {
 
 			// useful when updating stuff locally - we report but we don't fail
 			var sanitizedOrSkippedSanity =
-				!string.IsNullOrEmpty (Environment.GetEnvironmentVariable ("XTRO_SANITY_SKIP"))
-				|| Autosanitize;
+				!string.IsNullOrEmpty (Environment.GetEnvironmentVariable ("XTRO_SANITY_SKIP"));
 			return sanitizedOrSkippedSanity ? 0 : count;
 		}
 

@@ -15,6 +15,9 @@ using CoreGraphics;
 namespace Vision {
 	public partial class VNFaceLandmarkRegion2D {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public virtual CGPoint []? NormalizedPoints {
 			get {
 				var ret = _GetNormalizedPoints ();
@@ -32,6 +35,10 @@ namespace Vision {
 			}
 		}
 
+		/// <param name="imageSize">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public virtual CGPoint []? GetPointsInImage (CGSize imageSize)
 		{
 			// return the address of the array of pointCount points

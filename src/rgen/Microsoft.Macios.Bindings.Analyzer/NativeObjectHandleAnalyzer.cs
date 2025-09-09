@@ -4,6 +4,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using System.Collections.Immutable;
 using System.Linq;
+using static Microsoft.Macios.Generator.RgenDiagnostics;
 
 namespace Microsoft.Macios.Bindings.Analyzer;
 
@@ -32,17 +33,6 @@ namespace Microsoft.Macios.Bindings.Analyzer;
 /// </remarks>
 [DiagnosticAnalyzer (LanguageNames.CSharp)]
 public class NativeObjectHandleAnalyzer : DiagnosticAnalyzer {
-	internal static readonly DiagnosticDescriptor RBI0014 = new (
-		"RBI0014",
-		new LocalizableResourceString (nameof (Resources.RBI0014Title), Resources.ResourceManager, typeof (Resources)),
-		new LocalizableResourceString (nameof (Resources.RBI0014MessageFormat), Resources.ResourceManager,
-			typeof (Resources)),
-		"Usage",
-		DiagnosticSeverity.Error,
-		isEnabledByDefault: true,
-		description: new LocalizableResourceString (nameof (Resources.RBI0014Description), Resources.ResourceManager,
-			typeof (Resources))
-	);
 
 	public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create (RBI0014);
 

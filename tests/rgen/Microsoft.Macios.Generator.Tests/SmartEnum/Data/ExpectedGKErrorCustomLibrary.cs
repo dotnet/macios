@@ -7,24 +7,24 @@ using ObjCBindings;
 using ObjCRuntime;
 using System;
 
-namespace GameKit;
+namespace CustomLibrary;
 
 [BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 public static partial class GKCustomErrorExtensions
 {
 
 	[Field ("GKErrorDomain", "/path/to/customlibrary.framework")]
-	static $GLOBAL$Foundation.NSString? _domain;
+	static global::Foundation.NSString? _domain;
 
-	/// <summary>Returns the error domain associated with the GameKit.GKCustomError value</summary>
+	/// <summary>Returns the error domain associated with the CustomLibrary.GKCustomError value</summary>
 	/// <param name="self">The enumeration value</param>
 	/// <remarks>
 	///   <para>See the <see cref="global::Foundation.NSError" /> for information on how to use the error domains when reporting errors.</para>
 	/// </remarks>
-	public static $GLOBAL$Foundation.NSString? GetDomain (this $GLOBAL$GameKit.GKCustomError self)
+	public static global::Foundation.NSString? GetDomain (this global::CustomLibrary.GKCustomError self)
 	{
 		if (_domain is null)
-			_domain = $GLOBAL$ObjCRuntime.Dlfcn.GetStringConstant ($GLOBAL$ObjCRuntime.Libraries.customlibrary.Handle, "GKErrorDomain");
+			_domain = global::ObjCRuntime.Dlfcn.GetStringConstant (global::ObjCRuntime.Libraries.customlibrary.Handle, "GKErrorDomain");
 		return _domain;
 	}
 }

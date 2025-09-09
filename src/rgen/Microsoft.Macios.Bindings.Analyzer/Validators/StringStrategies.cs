@@ -4,6 +4,7 @@
 using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.CodeAnalysis;
+using static Microsoft.Macios.Generator.RgenDiagnostics;
 
 namespace Microsoft.Macios.Bindings.Analyzer.Validators;
 
@@ -16,11 +17,11 @@ public static class StringStrategies {
 	/// <param name="diagnostics">When this method returns, contains an array of diagnostics if the data is invalid; otherwise, an empty array.</param>
 	/// <param name="location">The code location to be used for the diagnostics.</param>
 	/// <returns><c>true</c> if the data is valid; otherwise, <c>false</c>.</returns>
-	internal static bool IsNotNull (string? selector, DiagnosticDescriptor descriptor, out ImmutableArray<Diagnostic> diagnostics,
+	internal static bool IsNotNullOrEmpty (string? selector, DiagnosticDescriptor descriptor, out ImmutableArray<Diagnostic> diagnostics,
 		Location? location = null)
 	{
 		diagnostics = ImmutableArray<Diagnostic>.Empty;
-		if (selector is not null)
+		if (!string.IsNullOrEmpty (selector))
 			return true;
 		diagnostics = [
 			Diagnostic.Create (
@@ -55,21 +56,6 @@ public static class StringStrategies {
 	}
 
 	/// <summary>
-	/// Diagnostic descriptor for when a native prefix or suffix contains whitespace.
-	/// </summary>
-	internal static readonly DiagnosticDescriptor RBI0024 = new (
-		"RBI0024",
-		new LocalizableResourceString (nameof (Resources.RBI0024Title), Resources.ResourceManager, typeof (Resources)),
-		new LocalizableResourceString (nameof (Resources.RBI0024MessageFormat), Resources.ResourceManager,
-			typeof (Resources)),
-		"Usage",
-		DiagnosticSeverity.Error,
-		isEnabledByDefault: true,
-		description: new LocalizableResourceString (nameof (Resources.RBI0024Description), Resources.ResourceManager,
-			typeof (Resources))
-	);
-
-	/// <summary>
 	/// Validates that a native name (prefix or suffix) does not contain any whitespace.
 	/// </summary>
 	/// <param name="suffix">The native name to validate.</param>
@@ -88,21 +74,6 @@ public static class StringStrategies {
 		);
 
 	/// <summary>
-	/// Diagnostic descriptor for when a type name contains whitespace.
-	/// </summary>
-	internal static readonly DiagnosticDescriptor RBI0025 = new (
-		"RBI0025",
-		new LocalizableResourceString (nameof (Resources.RBI0025Title), Resources.ResourceManager, typeof (Resources)),
-		new LocalizableResourceString (nameof (Resources.RBI0025MessageFormat), Resources.ResourceManager,
-			typeof (Resources)),
-		"Usage",
-		DiagnosticSeverity.Error,
-		isEnabledByDefault: true,
-		description: new LocalizableResourceString (nameof (Resources.RBI0025Description), Resources.ResourceManager,
-			typeof (Resources))
-	);
-
-	/// <summary>
 	/// Validates that a type name does not contain any whitespace.
 	/// </summary>
 	/// <param name="typeName">The type name to validate.</param>
@@ -119,4 +90,34 @@ public static class StringStrategies {
 			location: location,
 			messageArgs: messageArgs
 		);
+
+	/// <summary>
+	/// Validates that the number of colons in a selector matches the expected argument count.
+	/// </summary>
+	/// <param name="symbol">The symbol name for diagnostic purposes.</param>
+	/// <param name="selector">The selector to validate.</param>
+	/// <param name="argCount">The expected number of arguments.</param>
+	/// <param name="diagnostics">When this method returns, contains an array of diagnostics if the argument count does not match; otherwise, an empty array.</param>
+	/// <param name="location">The code location to be used for the diagnostics.</param>
+	/// <returns><c>true</c> if the selector argument count matches the expected count; otherwise, <c>false</c>.</returns>
+	internal static bool MatchingSelectorArgCount (string symbol, string? selector, int argCount,
+		out ImmutableArray<Diagnostic> diagnostics,
+		Location? location = null)
+	{
+		diagnostics = ImmutableArray<Diagnostic>.Empty;
+		if (selector is null)
+			return true;
+		// the number of ':' in the selector should be equal to the number of arguments
+		var count = selector.Count (c => c == ':');
+		if (count == argCount)
+			return true;
+		diagnostics = [
+			Diagnostic.Create (
+				descriptor: RBI0029, // There is a mismatch between the arguments of '{0}' (found {1}) and the selector '{2}' (found {3})
+				location: location,
+				symbol, argCount, selector, count)
+		];
+		return false;
+	}
+
 }

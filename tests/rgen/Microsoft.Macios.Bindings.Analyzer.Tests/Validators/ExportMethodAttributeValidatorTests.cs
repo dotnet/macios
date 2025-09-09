@@ -2,8 +2,11 @@
 // Licensed under the MIT License.
 
 #pragma warning disable APL0003
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.Macios.Bindings.Analyzer.Validators;
 using Microsoft.Macios.Generator.Attributes;
+using Microsoft.Macios.Generator.Context;
 using Microsoft.Macios.Generator.Tests;
 using ObjCBindings;
 using Xunit;
@@ -13,13 +16,29 @@ namespace Microsoft.Macios.Bindings.Analyzer.Tests.Validators;
 
 public class ExportMethodAttributeValidatorTests {
 
+	readonly RootContext context;
+
+	public ExportMethodAttributeValidatorTests ()
+	{
+		// Create a dummy compilation to get a semantic model and RootContext
+		var syntaxTree = CSharpSyntaxTree.ParseText ("namespace Test { }");
+		var compilation = CSharpCompilation.Create (
+			"TestAssembly",
+			[syntaxTree],
+			references: [],
+			options: new CSharpCompilationOptions (OutputKind.DynamicallyLinkedLibrary)
+		);
+		var semanticModel = compilation.GetSemanticModel (syntaxTree);
+		context = new RootContext (semanticModel);
+	}
+
 	[Fact]
 	public void SelectorShouldFailIfNull ()
 	{
 		var validator = new ExportMethodAttributeValidator ();
 		var data = new ExportData<Method> (null);
 
-		var errors = validator.ValidateAll (data);
+		var errors = validator.ValidateAll (data, context);
 
 		Assert.True (errors.ContainsKey (nameof (ExportData<Method>.Selector)));
 		Assert.Single (errors [nameof (ExportData<Method>.Selector)]);
@@ -37,7 +56,7 @@ public class ExportMethodAttributeValidatorTests {
 		var validator = new ExportMethodAttributeValidator ();
 		var data = new ExportData<Method> (selector);
 
-		var errors = validator.ValidateAll (data);
+		var errors = validator.ValidateAll (data, context);
 
 		Assert.True (errors.ContainsKey (nameof (ExportData<Method>.Selector)));
 		Assert.Single (errors [nameof (ExportData<Method>.Selector)]);
@@ -57,7 +76,7 @@ public class ExportMethodAttributeValidatorTests {
 			NativePrefix = prefix
 		};
 
-		var errors = validator.ValidateAll (data);
+		var errors = validator.ValidateAll (data, context);
 
 		Assert.True (errors.ContainsKey (nameof (ExportData<Method>.NativePrefix)));
 		Assert.Single (errors [nameof (ExportData<Method>.NativePrefix)]);
@@ -77,7 +96,7 @@ public class ExportMethodAttributeValidatorTests {
 			NativeSuffix = suffix
 		};
 
-		var errors = validator.ValidateAll (data);
+		var errors = validator.ValidateAll (data, context);
 
 		Assert.True (errors.ContainsKey (nameof (ExportData<Method>.NativeSuffix)));
 		Assert.Single (errors [nameof (ExportData<Method>.NativeSuffix)]);
@@ -97,7 +116,7 @@ public class ExportMethodAttributeValidatorTests {
 			MethodName = methodName
 		};
 
-		var errors = validator.ValidateAll (data);
+		var errors = validator.ValidateAll (data, context);
 
 		Assert.True (errors.ContainsKey (nameof (ExportData<Method>.MethodName)));
 		Assert.Single (errors [nameof (ExportData<Method>.MethodName)]);
@@ -117,7 +136,7 @@ public class ExportMethodAttributeValidatorTests {
 			ResultTypeName = resultTypeName
 		};
 
-		var errors = validator.ValidateAll (data);
+		var errors = validator.ValidateAll (data, context);
 
 		Assert.True (errors.ContainsKey (nameof (ExportData<Method>.ResultTypeName)));
 		Assert.Single (errors [nameof (ExportData<Method>.ResultTypeName)]);
@@ -137,7 +156,7 @@ public class ExportMethodAttributeValidatorTests {
 			EventArgsTypeName = eventArgsTypeName
 		};
 
-		var errors = validator.ValidateAll (data);
+		var errors = validator.ValidateAll (data, context);
 
 		Assert.True (errors.ContainsKey (nameof (ExportData<Method>.EventArgsTypeName)));
 		Assert.Single (errors [nameof (ExportData<Method>.EventArgsTypeName)]);
@@ -152,7 +171,7 @@ public class ExportMethodAttributeValidatorTests {
 			Flags = Method.Async | Method.Event
 		};
 
-		var errors = validator.ValidateAll (data);
+		var errors = validator.ValidateAll (data, context);
 
 		Assert.True (errors.ContainsKey (string.Empty));
 		Assert.Single (errors [string.Empty]);
@@ -167,7 +186,7 @@ public class ExportMethodAttributeValidatorTests {
 			ResultTypeName = "MyType"
 		};
 
-		var errors = validator.ValidateAll (data);
+		var errors = validator.ValidateAll (data, context);
 
 		Assert.True (errors.ContainsKey (string.Empty));
 		Assert.Single (errors [string.Empty]);
@@ -182,7 +201,7 @@ public class ExportMethodAttributeValidatorTests {
 			ResultType = TestDataFactory.ReturnTypeForInt ()
 		};
 
-		var errors = validator.ValidateAll (data);
+		var errors = validator.ValidateAll (data, context);
 
 		Assert.True (errors.ContainsKey (string.Empty));
 		Assert.Single (errors [string.Empty]);
@@ -197,7 +216,7 @@ public class ExportMethodAttributeValidatorTests {
 			MethodName = "MyMethod"
 		};
 
-		var errors = validator.ValidateAll (data);
+		var errors = validator.ValidateAll (data, context);
 
 		Assert.True (errors.ContainsKey (string.Empty));
 		Assert.Single (errors [string.Empty]);
@@ -212,7 +231,7 @@ public class ExportMethodAttributeValidatorTests {
 			PostNonResultSnippet = "return;"
 		};
 
-		var errors = validator.ValidateAll (data);
+		var errors = validator.ValidateAll (data, context);
 
 		Assert.True (errors.ContainsKey (string.Empty));
 		Assert.Single (errors [string.Empty]);
@@ -227,7 +246,7 @@ public class ExportMethodAttributeValidatorTests {
 			EventArgsType = TestDataFactory.ReturnTypeForClass ("MyEventArgs")
 		};
 
-		var errors = validator.ValidateAll (data);
+		var errors = validator.ValidateAll (data, context);
 
 		Assert.True (errors.ContainsKey (string.Empty));
 		Assert.Single (errors [string.Empty]);
@@ -242,7 +261,7 @@ public class ExportMethodAttributeValidatorTests {
 			EventArgsTypeName = "MyEventArgs"
 		};
 
-		var errors = validator.ValidateAll (data);
+		var errors = validator.ValidateAll (data, context);
 
 		Assert.True (errors.ContainsKey (string.Empty));
 		Assert.Single (errors [string.Empty]);
@@ -257,7 +276,7 @@ public class ExportMethodAttributeValidatorTests {
 			StrongDelegateType = TestDataFactory.ReturnTypeForClass ("MyDelegate")
 		};
 
-		var errors = validator.ValidateAll (data);
+		var errors = validator.ValidateAll (data, context);
 
 		Assert.True (errors.ContainsKey (nameof (ExportData<Method>.StrongDelegateType)));
 		Assert.Single (errors [nameof (ExportData<Method>.StrongDelegateType)]);
@@ -272,7 +291,7 @@ public class ExportMethodAttributeValidatorTests {
 			StrongDelegateName = "MyDelegate"
 		};
 
-		var errors = validator.ValidateAll (data);
+		var errors = validator.ValidateAll (data, context);
 
 		Assert.True (errors.ContainsKey (nameof (ExportData<Method>.StrongDelegateName)));
 		Assert.Single (errors [nameof (ExportData<Method>.StrongDelegateName)]);
@@ -287,7 +306,7 @@ public class ExportMethodAttributeValidatorTests {
 			StrongDictionaryKeyClass = TestDataFactory.ReturnTypeForClass ("MyKey")
 		};
 
-		var errors = validator.ValidateAll (data);
+		var errors = validator.ValidateAll (data, context);
 
 		Assert.True (errors.ContainsKey (nameof (ExportData<Method>.StrongDictionaryKeyClass)));
 		Assert.Single (errors [nameof (ExportData<Method>.StrongDictionaryKeyClass)]);
@@ -308,7 +327,7 @@ public class ExportMethodAttributeValidatorTests {
 			ResultTypeName = setResultTypeName ? "MyType" : null
 		};
 
-		var errors = validator.ValidateAll (data);
+		var errors = validator.ValidateAll (data, context);
 
 		if (shouldFail) {
 			Assert.True (errors.ContainsKey (string.Empty));
@@ -329,7 +348,7 @@ public class ExportMethodAttributeValidatorTests {
 			EventArgsTypeName = "MyEventArgs"
 		};
 
-		var errors = validator.ValidateAll (data);
+		var errors = validator.ValidateAll (data, context);
 
 		Assert.Equal (2, errors.Count);
 		Assert.True (errors.ContainsKey (nameof (ExportData<Method>.Selector)));
@@ -349,7 +368,7 @@ public class ExportMethodAttributeValidatorTests {
 			ResultTypeName = "MyType",
 			Flags = flags
 		};
-		var result = ExportMethodAttributeValidator.ResultTypeNameIsAllowed (exportData, out var diagnostics);
+		var result = ExportMethodAttributeValidator.ResultTypeNameIsAllowed (exportData, context, out var diagnostics);
 		Assert.Equal (!shouldFail, result);
 		if (shouldFail) {
 			Assert.Single (diagnostics);
@@ -368,7 +387,7 @@ public class ExportMethodAttributeValidatorTests {
 			ResultType = TestDataFactory.ReturnTypeForInt (),
 			Flags = flags
 		};
-		var result = ExportMethodAttributeValidator.ResultTypeIsAllowed (exportData, out var diagnostics);
+		var result = ExportMethodAttributeValidator.ResultTypeIsAllowed (exportData, context, out var diagnostics);
 		Assert.Equal (!shouldFail, result);
 		if (shouldFail) {
 			Assert.Single (diagnostics);
@@ -387,7 +406,7 @@ public class ExportMethodAttributeValidatorTests {
 			MethodName = "MyMethod",
 			Flags = flags
 		};
-		var result = ExportMethodAttributeValidator.MethodNameIsAllowed (exportData, out var diagnostics);
+		var result = ExportMethodAttributeValidator.MethodNameIsAllowed (exportData, context, out var diagnostics);
 		Assert.Equal (!shouldFail, result);
 		if (shouldFail) {
 			Assert.Single (diagnostics);
@@ -406,7 +425,7 @@ public class ExportMethodAttributeValidatorTests {
 			PostNonResultSnippet = "return;",
 			Flags = flags
 		};
-		var result = ExportMethodAttributeValidator.PostNonResultSnippetIsAllowed (exportData, out var diagnostics);
+		var result = ExportMethodAttributeValidator.PostNonResultSnippetIsAllowed (exportData, context, out var diagnostics);
 		Assert.Equal (!shouldFail, result);
 		if (shouldFail) {
 			Assert.Single (diagnostics);
@@ -425,7 +444,7 @@ public class ExportMethodAttributeValidatorTests {
 			EventArgsType = TestDataFactory.ReturnTypeForClass ("MyEventArgs"),
 			Flags = flags
 		};
-		var result = ExportMethodAttributeValidator.EventArgsTypeIsAllowed (exportData, out var diagnostics);
+		var result = ExportMethodAttributeValidator.EventArgsTypeIsAllowed (exportData, context, out var diagnostics);
 		Assert.Equal (!shouldFail, result);
 		if (shouldFail) {
 			Assert.Single (diagnostics);
@@ -444,7 +463,7 @@ public class ExportMethodAttributeValidatorTests {
 			EventArgsTypeName = "MyEventArgs",
 			Flags = flags
 		};
-		var result = ExportMethodAttributeValidator.EventArgsTypeNameIsAllowed (exportData, out var diagnostics);
+		var result = ExportMethodAttributeValidator.EventArgsTypeNameIsAllowed (exportData, context, out var diagnostics);
 		Assert.Equal (!shouldFail, result);
 		if (shouldFail) {
 			Assert.Single (diagnostics);
@@ -464,7 +483,7 @@ public class ExportMethodAttributeValidatorTests {
 		var exportData = new ExportData<Method> {
 			Flags = flags
 		};
-		var result = ExportMethodAttributeValidator.FlagsAreValid (exportData, out var diagnostics);
+		var result = ExportMethodAttributeValidator.FlagsAreValid (exportData, context, out var diagnostics);
 		Assert.Equal (!shouldFail, result);
 		if (shouldFail) {
 			Assert.Single (diagnostics);

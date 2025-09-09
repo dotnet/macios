@@ -131,11 +131,11 @@
         <value>In order for the code to be generated a smart enum value has to have a backing field.</value>
     </data>
     <data name="RBI0008MessageFormat" xml:space="preserve">
-        <value>The enum value '{0}' must be tagged with a Field&lt;EnumValue&gt; attribute</value>
-        <comment>'{0}' is the name of the enumerator value.</comment>
+        <value>The enum '{0}' must have at least one member tagged with a Field&lt;EnumValue&gt; attribute</value>
+        <comment>'{0}' is the name of the enumerator.</comment>
     </data>
     <data name="RBI0008Title" xml:space="preserve">
-        <value>Smart enum values must be tagged with an Field&lt;EnumValue&gt; attribute</value>
+        <value>Smart enum values must have a value tagged with an Field&lt;EnumValue&gt; attribute</value>
     </data>
 
     <!-- RBI0009 -->
@@ -365,6 +365,108 @@
     </data>
     <data name="RBI0026Title" xml:space="preserve">
         <value>Bad method name</value>
+    </data>
+    
+    <!-- RBI0027 -->
+    
+    <data name="RBI0027Description" xml:space="preserve">
+        <value>The symbol is accessible in a platform where it is not supported..</value>
+    </data>
+    <data name="RBI0027MessageFormat" xml:space="preserve">
+        <value>The symbol '{0}' is accessible on platform '{1}' when it was marked otherwise</value>
+        <comment>The {0} is the name of the enum, property or method, {1} is the name of the platform.</comment>
+    </data>
+    <data name="RBI0027Title" xml:space="preserve">
+        <value>Bad method name</value>
+    </data>
+    
+    <!-- RBI0028 -->
+    
+    <data name="RBI0028Description" xml:space="preserve">
+        <value>A flag value was used on an attribute that does not support it and will be ignored.</value>
+    </data>
+    <data name="RBI0028MessageFormat" xml:space="preserve">
+        <value>The flag '{0}' is not supported on '{1}' and will be ignored</value>
+        <comment>The {0} is the name of the flag, {1} is the name of the attribute.</comment>
+    </data>
+    <data name="RBI0028Title" xml:space="preserve">
+        <value>Ignored flag</value>
+    </data>
+    
+    <!-- RBI0029 -->
+    
+    <data name="RBI0029Description" xml:space="preserve">
+        <value>There is a mismatch between the arguments of a method/property and the number of ':' in a selector.</value>
+    </data>
+    <data name="RBI0029MessageFormat" xml:space="preserve">
+        <value>There is a mismatch between the arguments of '{0}' (found {1}) and the selector '{2}' (found {3})</value>
+        <comment>The {0} is the name of the method or property, {1} is the argument count. {2} is the selector and {3} is its argument count</comment>
+    </data>
+    <data name="RBI0029Title" xml:space="preserve">
+        <value>Selector argument mismatch</value>
+    </data>
+    
+    <!-- RBI0030 -->
+    
+    <data name="RBI0030Description" xml:space="preserve">
+        <value>Field properties must be declared static.</value>
+    </data>
+    <data name="RBI0030MessageFormat" xml:space="preserve">
+        <value>Field properties must be declared static</value>
+    </data>
+    <data name="RBI0030Title" xml:space="preserve">
+        <value>Wrong field declaration</value>
+    </data>
+    
+    <!-- RBI0031 -->
+    
+    <data name="RBI0031Description" xml:space="preserve">
+        <value>Exported properties must be declared partial.</value>
+    </data>
+    <data name="RBI0031MessageFormat" xml:space="preserve">
+        <value>Exported properties must be declared partial</value>
+    </data>
+    <data name="RBI0031Title" xml:space="preserve">
+        <value>Wrong property declaration</value>
+    </data>
+    
+    <!-- RBI0032 -->
+    
+    <data name="RBI0032Description" xml:space="preserve">
+        <value>A weak delegate has to have a strong delegate name if it does not start with 'Weak'.</value>
+    </data>
+    <data name="RBI0032MessageFormat" xml:space="preserve">
+        <value>The weak delegate '{0}' is missing a strong delegate name, provide one or use the 'Weak' prefix</value>
+        <comment>{0} is the name of the property that does not start with 'Weak'.</comment>
+    </data>
+    <data name="RBI0032Title" xml:space="preserve">
+        <value>Wrong weak delegate</value>
+    </data>
+    
+    <!-- RBI0033 -->
+    
+    <data name="RBI0033Description" xml:space="preserve">
+        <value>A weak delegate has a duplicate strong delegate name.</value>
+    </data>
+    <data name="RBI0033MessageFormat" xml:space="preserve">
+        <value>The weak delegate '{0}' strong delegate '{1}' is already used by '{2}'</value>
+        <comment>{0} is the name of the property {1} is the name of the strong delegate and {2} is the name of the other property.</comment>
+    </data>
+    <data name="RBI0033Title" xml:space="preserve">
+        <value>Wrong strong delegate name</value>
+    </data>
+    
+    <!-- RBI0034 -->
+    
+    <data name="RBI0034Description" xml:space="preserve">
+        <value>A selector is used in more than one symbol.</value>
+    </data>
+    <data name="RBI0034MessageFormat" xml:space="preserve">
+        <value>The selector '{0}' used by '{1}' is already used by '{2}'</value>
+        <comment>{0} is the selector {1} is the name of the duplicate symbol and {2} is the name of the first user of the selector.</comment>
+    </data>
+    <data name="RBI0034Title" xml:space="preserve">
+        <value>Duplicate selector</value>
     </data>
     
 </root>

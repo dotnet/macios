@@ -191,6 +191,7 @@ public partial class TrampolinePropertyTests
 	public partial global::System.Action<bool> BoolActionHandler
 	{
 		[return: DelegateProxy (typeof (global::ObjCRuntime.Trampolines.SDActionArity1bool))]
+		[Export ("boolActionHandler")]
 		get
 		{
 			global::System.Action<bool> ret;
@@ -204,6 +205,7 @@ public partial class TrampolinePropertyTests
 		}
 
 		[param: BlockProxy (typeof (global::ObjCRuntime.Trampolines.NIDActionArity1bool))]
+		[Export ("setBoolActionHandler:")]
 		set
 		{
 			if (value is null)
@@ -223,6 +225,7 @@ public partial class TrampolinePropertyTests
 	public partial global::System.Action CompletionHandler
 	{
 		[return: DelegateProxy (typeof (global::ObjCRuntime.Trampolines.SDAction))]
+		[Export ("completionHandler")]
 		get
 		{
 			global::System.Action ret;
@@ -236,6 +239,7 @@ public partial class TrampolinePropertyTests
 		}
 
 		[param: BlockProxy (typeof (global::ObjCRuntime.Trampolines.NIDAction))]
+		[Export ("setCompletionHandler:")]
 		set
 		{
 			if (value is null)
@@ -255,6 +259,7 @@ public partial class TrampolinePropertyTests
 	public partial global::Microsoft.Macios.Generator.Tests.Classes.Data.TestNamespace.TrampolinePropertyTests.CreateObject CreateObjectHandler
 	{
 		[return: DelegateProxy (typeof (global::ObjCRuntime.Trampolines.SDTrampolinePropertyTests_CreateObject))]
+		[Export ("createObjectHandler")]
 		get
 		{
 			global::Microsoft.Macios.Generator.Tests.Classes.Data.TestNamespace.TrampolinePropertyTests.CreateObject ret;
@@ -268,6 +273,7 @@ public partial class TrampolinePropertyTests
 		}
 
 		[param: BlockProxy (typeof (global::ObjCRuntime.Trampolines.NIDTrampolinePropertyTests_CreateObject))]
+		[Export ("setCreateObjectHandler:")]
 		set
 		{
 			if (value is null)
@@ -287,6 +293,7 @@ public partial class TrampolinePropertyTests
 	public partial global::System.Action DuplicateCompletionHandler
 	{
 		[return: DelegateProxy (typeof (global::ObjCRuntime.Trampolines.SDAction))]
+		[Export ("duplicateCompletionHandler")]
 		get
 		{
 			global::System.Action ret;
@@ -300,6 +307,7 @@ public partial class TrampolinePropertyTests
 		}
 
 		[param: BlockProxy (typeof (global::ObjCRuntime.Trampolines.NIDAction))]
+		[Export ("setDuplicateCompletionHandler:")]
 		set
 		{
 			if (value is null)
@@ -318,6 +326,7 @@ public partial class TrampolinePropertyTests
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public partial global::AVFoundation.AVAssetImageGenerator.AsynchronouslyForTimeCompletionHandler ImageGeneratorCompletionHandler
 	{
+		[Export ("imageGeneratorCompletionHandler")]
 		get
 		{
 			global::AVFoundation.AVAssetImageGenerator.AsynchronouslyForTimeCompletionHandler ret;
@@ -330,6 +339,7 @@ public partial class TrampolinePropertyTests
 			return ret;
 		}
 
+		[Export ("setImageGeneratorCompletionHandler:")]
 		set
 		{
 			if (value is null)
@@ -347,6 +357,7 @@ public partial class TrampolinePropertyTests
 	public partial global::AVFoundation.AVAssetImageGenerateAsynchronouslyForTimeCompletionHandler ImageGeneratorCompletionHandler
 	{
 		[return: DelegateProxy (typeof (global::ObjCRuntime.Trampolines.SDAVAssetImageGenerateAsynchronouslyForTimeCompletionHandler))]
+		[Export ("imageGeneratorCompletionHandler")]
 		get
 		{
 			global::AVFoundation.AVAssetImageGenerateAsynchronouslyForTimeCompletionHandler ret;
@@ -360,6 +371,7 @@ public partial class TrampolinePropertyTests
 		}
 
 		[param: BlockProxy (typeof (global::ObjCRuntime.Trampolines.NIDAVAssetImageGenerateAsynchronouslyForTimeCompletionHandler))]
+		[Export ("setImageGeneratorCompletionHandler:")]
 		set
 		{
 			if (value is null)
@@ -379,6 +391,7 @@ public partial class TrampolinePropertyTests
 	public partial global::System.Action<int> IntActionHandler
 	{
 		[return: DelegateProxy (typeof (global::ObjCRuntime.Trampolines.SDActionArity1int))]
+		[Export ("intActionHandler")]
 		get
 		{
 			global::System.Action<int> ret;
@@ -392,6 +405,7 @@ public partial class TrampolinePropertyTests
 		}
 
 		[param: BlockProxy (typeof (global::ObjCRuntime.Trampolines.NIDActionArity1int))]
+		[Export ("setIntActionHandler:")]
 		set
 		{
 			if (value is null)
@@ -411,6 +425,7 @@ public partial class TrampolinePropertyTests
 	public partial global::AudioUnit.AUInternalRenderBlock InternalRenderBlockHandler
 	{
 		[return: DelegateProxy (typeof (global::ObjCRuntime.Trampolines.SDAUInternalRenderBlock))]
+		[Export ("internalRenderBlockHandler")]
 		get
 		{
 			global::AudioUnit.AUInternalRenderBlock ret;
@@ -424,6 +439,7 @@ public partial class TrampolinePropertyTests
 		}
 
 		[param: BlockProxy (typeof (global::ObjCRuntime.Trampolines.NIDAUInternalRenderBlock))]
+		[Export ("setInternalRenderBlockHandler:")]
 		set
 		{
 			if (value is null)
@@ -443,6 +459,7 @@ public partial class TrampolinePropertyTests
 	public partial global::CoreImage.CIKernelRoiCallback KernelRoiCallback
 	{
 		[return: DelegateProxy (typeof (global::ObjCRuntime.Trampolines.SDCIKernelRoiCallback))]
+		[Export ("kernelRoiCallback")]
 		get
 		{
 			global::CoreImage.CIKernelRoiCallback ret;
@@ -456,6 +473,7 @@ public partial class TrampolinePropertyTests
 		}
 
 		[param: BlockProxy (typeof (global::ObjCRuntime.Trampolines.NIDCIKernelRoiCallback))]
+		[Export ("setKernelRoiCallback:")]
 		set
 		{
 			if (value is null)
@@ -475,6 +493,7 @@ public partial class TrampolinePropertyTests
 	public partial global::CoreImage.CIKernelRoiCallback KernelRoiCallback
 	{
 		[return: DelegateProxy (typeof (global::ObjCRuntime.Trampolines.SDCIKernelRoiCallback))]
+		[Export ("kernelRoiCallback")]
 		get
 		{
 			global::CoreImage.CIKernelRoiCallback ret;
@@ -488,6 +507,7 @@ public partial class TrampolinePropertyTests
 		}
 
 		[param: BlockProxy (typeof (global::ObjCRuntime.Trampolines.NIDCIKernelRoiCallback))]
+		[Export ("setKernelRoiCallback:")]
 		set
 		{
 			if (value is null)
@@ -507,6 +527,7 @@ public partial class TrampolinePropertyTests
 	public partial global::AVFoundation.AVAudioEngineManualRenderingBlock ManualRendering
 	{
 		[return: DelegateProxy (typeof (global::ObjCRuntime.Trampolines.SDAVAudioEngineManualRenderingBlock))]
+		[Export ("manualRenderingCallback")]
 		get
 		{
 			global::AVFoundation.AVAudioEngineManualRenderingBlock ret;
@@ -520,6 +541,7 @@ public partial class TrampolinePropertyTests
 		}
 
 		[param: BlockProxy (typeof (global::ObjCRuntime.Trampolines.NIDAVAudioEngineManualRenderingBlock))]
+		[Export ("setManualRenderingCallback:")]
 		set
 		{
 			if (value is null)
@@ -539,6 +561,7 @@ public partial class TrampolinePropertyTests
 	public partial global::System.Action<string> StringActionHandler
 	{
 		[return: DelegateProxy (typeof (global::ObjCRuntime.Trampolines.SDActionArity1string))]
+		[Export ("stringActionHandler")]
 		get
 		{
 			global::System.Action<string> ret;
@@ -552,6 +575,7 @@ public partial class TrampolinePropertyTests
 		}
 
 		[param: BlockProxy (typeof (global::ObjCRuntime.Trampolines.NIDActionArity1string))]
+		[Export ("setStringActionHandler:")]
 		set
 		{
 			if (value is null)

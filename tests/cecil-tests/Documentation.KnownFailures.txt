@@ -17878,9 +17878,6 @@ P:ARKit.ARVideoFormat.IsVideoHdrSupported
 P:ARKit.ARWorldTrackingConfiguration.CollaborationEnabled
 P:ARKit.IARSessionProviding.Session
 P:AudioToolbox.AudioBuffers.Item(System.Int32)
-P:AudioToolbox.AudioFileMarkerList.Item(System.Int32)
-P:AudioToolbox.AudioFileRegion.Item(System.Int32)
-P:AudioToolbox.AudioFileRegionList.Item(System.Int32)
 P:AudioToolbox.AudioPacketDependencyInfoTranslation.IsIndependentlyDecodable
 P:AudioToolbox.SystemSound.SoundId
 P:AudioUnit.AUAudioUnit.IsLoadedInProcess

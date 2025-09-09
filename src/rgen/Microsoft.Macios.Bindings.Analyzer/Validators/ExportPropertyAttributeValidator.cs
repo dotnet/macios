@@ -4,7 +4,9 @@
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.Macios.Generator.Attributes;
+using Microsoft.Macios.Generator.Context;
 using ObjCBindings;
+using static Microsoft.Macios.Generator.RgenDiagnostics;
 
 namespace Microsoft.Macios.Bindings.Analyzer.Validators;
 
@@ -14,45 +16,16 @@ namespace Microsoft.Macios.Bindings.Analyzer.Validators;
 class ExportPropertyAttributeValidator : Validator<ExportData<Property>> {
 
 	/// <summary>
-	/// Diagnostic descriptor for when a property export is missing a selector.
-	/// </summary>
-	internal static readonly DiagnosticDescriptor RBI0018 = new (
-		"RBI0018",
-		new LocalizableResourceString (nameof (Resources.RBI0018Title), Resources.ResourceManager, typeof (Resources)),
-		new LocalizableResourceString (nameof (Resources.RBI0018MessageFormat), Resources.ResourceManager,
-			typeof (Resources)),
-		"Usage",
-		DiagnosticSeverity.Error,
-		isEnabledByDefault: true,
-		description: new LocalizableResourceString (nameof (Resources.RBI0018Description), Resources.ResourceManager,
-			typeof (Resources))
-	);
-
-	/// <summary>
-	/// Diagnostic descriptor for when a property export selector contains whitespace.
-	/// </summary>
-	internal static readonly DiagnosticDescriptor RBI0019 = new (
-		"RBI0019",
-		new LocalizableResourceString (nameof (Resources.RBI0019Title), Resources.ResourceManager, typeof (Resources)),
-		new LocalizableResourceString (nameof (Resources.RBI0018MessageFormat), Resources.ResourceManager,
-			typeof (Resources)),
-		"Usage",
-		DiagnosticSeverity.Error,
-		isEnabledByDefault: true,
-		description: new LocalizableResourceString (nameof (Resources.RBI0019Description), Resources.ResourceManager,
-			typeof (Resources))
-	);
-
-	/// <summary>
 	/// Validates that the selector is not null.
 	/// </summary>
 	/// <param name="selector">The data to validate.</param>
+	/// <param name="context">The root context for validation.</param>
 	/// <param name="diagnostics">When this method returns, contains an array of diagnostics if the data is invalid; otherwise, an empty array.</param>
 	/// <param name="location">The code location to be used for the diagnostics.</param>
 	/// <returns><c>true</c> if the data is valid; otherwise, <c>false</c>.</returns>
-	internal static bool SelectorIsNotNull (string? selector, out ImmutableArray<Diagnostic> diagnostics,
+	internal static bool SelectorIsNotNull (string? selector, RootContext context, out ImmutableArray<Diagnostic> diagnostics,
 		Location? location = null)
-		=> StringStrategies.IsNotNull (
+		=> StringStrategies.IsNotNullOrEmpty (
 			selector: selector,
 			descriptor: RBI0018, // A export property must have a selector defined
 			diagnostics: out diagnostics,
@@ -62,10 +35,11 @@ class ExportPropertyAttributeValidator : Validator<ExportData<Property>> {
 	/// Validates that the selector does not contain any whitespace.
 	/// </summary>
 	/// <param name="selector">The data to validate.</param>
+	/// <param name="context">The root context for validation.</param>
 	/// <param name="diagnostics">When this method returns, contains an array of diagnostics if the data is invalid; otherwise, an empty array.</param>
 	/// <param name="location">The code location to be used for the diagnostics.</param>
 	/// <returns><c>true</c> if the data is valid; otherwise, <c>false</c>.</returns>
-	internal static bool SelectorHasNoWhitespace (string? selector, out ImmutableArray<Diagnostic> diagnostics,
+	internal static bool SelectorHasNoWhitespace (string? selector, RootContext context, out ImmutableArray<Diagnostic> diagnostics,
 		Location? location = null)
 		=> StringStrategies.HasNoWhitespace (
 			stringValue: selector,
@@ -77,7 +51,7 @@ class ExportPropertyAttributeValidator : Validator<ExportData<Property>> {
 	/// <summary>
 	/// Initializes a new instance of the <see cref="ExportPropertyAttributeValidator"/> class.
 	/// </summary>
-	public ExportPropertyAttributeValidator ()
+	public ExportPropertyAttributeValidator () : base (d => d.Location)
 	{
 		// add the default rules for this validator
 		AddStrategy (d => d.Selector, RBI0018, SelectorIsNotNull);
@@ -86,8 +60,8 @@ class ExportPropertyAttributeValidator : Validator<ExportData<Property>> {
 		// prefix and suffix cannot have whitespaces
 		AddStrategy (
 			selector: d => d.NativePrefix,
-			descriptor: StringStrategies.RBI0024,
-			validation: (string? data, out ImmutableArray<Diagnostic> diagnostics, Location? location)
+			descriptor: RBI0024,
+			validation: (string? data, RootContext _, out ImmutableArray<Diagnostic> diagnostics, Location? location)
 				=> StringStrategies.NativeNameHasNoWhitespace (
 					data,
 					nameof (ExportData<Property>.NativePrefix),
@@ -97,8 +71,8 @@ class ExportPropertyAttributeValidator : Validator<ExportData<Property>> {
 
 		AddStrategy (
 			selector: d => d.NativeSuffix,
-			descriptor: StringStrategies.RBI0024,
-			validation: (string? data, out ImmutableArray<Diagnostic> diagnostics, Location? location)
+			descriptor: RBI0024,
+			validation: (string? data, RootContext _, out ImmutableArray<Diagnostic> diagnostics, Location? location)
 				=> StringStrategies.NativeNameHasNoWhitespace (
 					data,
 					nameof (ExportData<Property>.NativeSuffix),

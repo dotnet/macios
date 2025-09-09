@@ -34,6 +34,7 @@ public partial interface INSUrlSessionDelegate : INativeObject, IDisposable
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Export ("URLSession:didBecomeInvalidWithError:")]
 	internal static void _DidBecomeInvalid (this global::Microsoft.Macios.Generator.Tests.Protocols.Data.INSUrlSessionDelegate self, global::Foundation.NSUrlSession session, global::Foundation.NSError error)
 	{
 		var session__handle__ = session!.GetNonNullHandle (nameof (session));
@@ -60,6 +61,7 @@ public partial interface INSUrlSessionDelegate : INativeObject, IDisposable
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Export ("URLSessionDidFinishEventsForBackgroundURLSession:")]
 	internal static void _DidFinishEventsForBackgroundSession (this global::Microsoft.Macios.Generator.Tests.Protocols.Data.INSUrlSessionDelegate self, global::Foundation.NSUrlSession session)
 	{
 		var session__handle__ = session!.GetNonNullHandle (nameof (session));
@@ -84,6 +86,7 @@ public partial interface INSUrlSessionDelegate : INativeObject, IDisposable
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Export ("URLSession:didReceiveChallenge:completionHandler:")]
 	internal static void _DidReceiveChallenge (this global::Microsoft.Macios.Generator.Tests.Protocols.Data.INSUrlSessionDelegate self, global::Foundation.NSUrlSession session, global::Foundation.NSUrlAuthenticationChallenge challenge, global::.Action<global::Foundation.NSUrlSessionAuthChallengeDisposition, global::Foundation.NSUrlCredential> completionHandler)
 	{
 		if (completionHandler is null)
@@ -124,6 +127,7 @@ internal unsafe sealed class NSUrlSessionDelegateWrapper : BaseWrapper, INSUrlSe
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[Export<Method> ("URLSession:didBecomeInvalidWithError:")]
+	[Export ("URLSession:didBecomeInvalidWithError:")]
 	public void DidBecomeInvalid (global::Foundation.NSUrlSession session, global::Foundation.NSError error)
 	{
 		var session__handle__ = session!.GetNonNullHandle (nameof (session));
@@ -140,6 +144,7 @@ internal unsafe sealed class NSUrlSessionDelegateWrapper : BaseWrapper, INSUrlSe
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[Export<Method> ("URLSessionDidFinishEventsForBackgroundURLSession:")]
+	[Export ("URLSessionDidFinishEventsForBackgroundURLSession:")]
 	public void DidFinishEventsForBackgroundSession (global::Foundation.NSUrlSession session)
 	{
 		var session__handle__ = session!.GetNonNullHandle (nameof (session));
@@ -154,6 +159,7 @@ internal unsafe sealed class NSUrlSessionDelegateWrapper : BaseWrapper, INSUrlSe
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[Export<Method> ("URLSession:didReceiveChallenge:completionHandler:")]
+	[Export ("URLSession:didReceiveChallenge:completionHandler:")]
 	public void DidReceiveChallenge (global::Foundation.NSUrlSession session, global::Foundation.NSUrlAuthenticationChallenge challenge, global::.Action<global::Foundation.NSUrlSessionAuthChallengeDisposition, global::Foundation.NSUrlCredential> completionHandler)
 	{
 		if (completionHandler is null)

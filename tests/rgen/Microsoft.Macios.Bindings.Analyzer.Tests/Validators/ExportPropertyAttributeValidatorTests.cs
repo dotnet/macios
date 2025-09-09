@@ -2,8 +2,11 @@
 // Licensed under the MIT License.
 #pragma warning disable APL0003
 
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.Macios.Bindings.Analyzer.Validators;
 using Microsoft.Macios.Generator.Attributes;
+using Microsoft.Macios.Generator.Context;
 using ObjCBindings;
 using Xunit;
 using static Microsoft.Macios.Generator.Tests.TestDataFactory;
@@ -12,13 +15,29 @@ namespace Microsoft.Macios.Bindings.Analyzer.Tests.Validators;
 
 public class ExportPropertyAttributeValidatorTests {
 
+	readonly RootContext context;
+
+	public ExportPropertyAttributeValidatorTests ()
+	{
+		// Create a dummy compilation to get a semantic model and RootContext
+		var syntaxTree = CSharpSyntaxTree.ParseText ("namespace Test { }");
+		var compilation = CSharpCompilation.Create (
+			"TestAssembly",
+			[syntaxTree],
+			references: [],
+			options: new CSharpCompilationOptions (OutputKind.DynamicallyLinkedLibrary)
+		);
+		var semanticModel = compilation.GetSemanticModel (syntaxTree);
+		context = new RootContext (semanticModel);
+	}
+
 	[Fact]
 	public void ResultTypeShouldFailIfNullSelector ()
 	{
 		var validator = new ExportPropertyAttributeValidator ();
 		var data = new ExportData<Property> (null);
 
-		var errors = validator.ValidateAll (data);
+		var errors = validator.ValidateAll (data, context);
 
 		Assert.True (errors.ContainsKey (nameof (ExportData<Property>.Selector)));
 		Assert.Single (errors [nameof (ExportData<Property>.Selector)]);
@@ -36,7 +55,7 @@ public class ExportPropertyAttributeValidatorTests {
 		var validator = new ExportPropertyAttributeValidator ();
 		var data = new ExportData<Property> (selector);
 
-		var errors = validator.ValidateAll (data);
+		var errors = validator.ValidateAll (data, context);
 
 		Assert.True (errors.ContainsKey (nameof (ExportData<Property>.Selector)));
 		Assert.Single (errors [nameof (ExportData<Property>.Selector)]);
@@ -56,7 +75,7 @@ public class ExportPropertyAttributeValidatorTests {
 			NativePrefix = prefix
 		};
 
-		var errors = validator.ValidateAll (data);
+		var errors = validator.ValidateAll (data, context);
 
 		Assert.True (errors.ContainsKey (nameof (ExportData<Property>.NativePrefix)));
 		Assert.Single (errors [nameof (ExportData<Property>.NativePrefix)]);
@@ -76,7 +95,7 @@ public class ExportPropertyAttributeValidatorTests {
 			NativeSuffix = suffix
 		};
 
-		var errors = validator.ValidateAll (data);
+		var errors = validator.ValidateAll (data, context);
 
 		Assert.True (errors.ContainsKey (nameof (ExportData<Property>.NativeSuffix)));
 		Assert.Single (errors [nameof (ExportData<Property>.NativeSuffix)]);
@@ -91,7 +110,7 @@ public class ExportPropertyAttributeValidatorTests {
 			ResultType = ReturnTypeForInt ()
 		};
 
-		var errors = validator.ValidateAll (data);
+		var errors = validator.ValidateAll (data, context);
 
 		Assert.True (errors.ContainsKey (nameof (ExportData<Property>.ResultType)));
 		Assert.Single (errors [nameof (ExportData<Property>.ResultType)]);
@@ -106,7 +125,7 @@ public class ExportPropertyAttributeValidatorTests {
 			MethodName = "myMethod"
 		};
 
-		var errors = validator.ValidateAll (data);
+		var errors = validator.ValidateAll (data, context);
 
 		Assert.True (errors.ContainsKey (nameof (ExportData<Property>.MethodName)));
 		Assert.Single (errors [nameof (ExportData<Property>.MethodName)]);
@@ -121,7 +140,7 @@ public class ExportPropertyAttributeValidatorTests {
 			ResultTypeName = "MyType"
 		};
 
-		var errors = validator.ValidateAll (data);
+		var errors = validator.ValidateAll (data, context);
 
 		Assert.True (errors.ContainsKey (nameof (ExportData<Property>.ResultTypeName)));
 		Assert.Single (errors [nameof (ExportData<Property>.ResultTypeName)]);
@@ -136,7 +155,7 @@ public class ExportPropertyAttributeValidatorTests {
 			PostNonResultSnippet = "return;"
 		};
 
-		var errors = validator.ValidateAll (data);
+		var errors = validator.ValidateAll (data, context);
 
 		Assert.True (errors.ContainsKey (nameof (ExportData<Property>.PostNonResultSnippet)));
 		Assert.Single (errors [nameof (ExportData<Property>.PostNonResultSnippet)]);
@@ -151,7 +170,7 @@ public class ExportPropertyAttributeValidatorTests {
 			StrongDictionaryKeyClass = ReturnTypeForClass ("MyKey")
 		};
 
-		var errors = validator.ValidateAll (data);
+		var errors = validator.ValidateAll (data, context);
 
 		Assert.True (errors.ContainsKey (nameof (ExportData<Property>.StrongDictionaryKeyClass)));
 		Assert.Single (errors [nameof (ExportData<Property>.StrongDictionaryKeyClass)]);
@@ -166,7 +185,7 @@ public class ExportPropertyAttributeValidatorTests {
 			EventArgsType = ReturnTypeForClass ("MyEventArgs")
 		};
 
-		var errors = validator.ValidateAll (data);
+		var errors = validator.ValidateAll (data, context);
 
 		Assert.True (errors.ContainsKey (nameof (ExportData<Property>.EventArgsType)));
 		Assert.Single (errors [nameof (ExportData<Property>.EventArgsType)]);
@@ -181,7 +200,7 @@ public class ExportPropertyAttributeValidatorTests {
 			EventArgsTypeName = "MyEventArgs"
 		};
 
-		var errors = validator.ValidateAll (data);
+		var errors = validator.ValidateAll (data, context);
 
 		Assert.True (errors.ContainsKey (nameof (ExportData<Property>.EventArgsTypeName)));
 		Assert.Single (errors [nameof (ExportData<Property>.EventArgsTypeName)]);
@@ -198,7 +217,7 @@ public class ExportPropertyAttributeValidatorTests {
 			StrongDictionaryKeyClass = ReturnTypeForClass ("MyKey")
 		};
 
-		var errors = validator.ValidateAll (data);
+		var errors = validator.ValidateAll (data, context);
 
 		Assert.Equal (3, errors.Count);
 		Assert.True (errors.ContainsKey (nameof (ExportData<Property>.ResultType)));

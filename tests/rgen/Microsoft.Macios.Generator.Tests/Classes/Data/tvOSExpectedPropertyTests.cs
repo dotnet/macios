@@ -65,6 +65,14 @@ public partial class PropertyTests
 	static readonly global::ObjCRuntime.NativeHandle selSetName_XHandle = global::ObjCRuntime.Selector.GetHandle ("setName:");
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	const string selSealedPropertyX = "sealedProperty";
+	static readonly global::ObjCRuntime.NativeHandle selSealedPropertyXHandle = global::ObjCRuntime.Selector.GetHandle ("sealedProperty");
+
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	const string selSetSealedProperty_X = "setSealedProperty:";
+	static readonly global::ObjCRuntime.NativeHandle selSetSealedProperty_XHandle = global::ObjCRuntime.Selector.GetHandle ("setSealedProperty:");
+
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	const string selSurnamesX = "surnames";
 	static readonly global::ObjCRuntime.NativeHandle selSurnamesXHandle = global::ObjCRuntime.Selector.GetHandle ("surnames");
 
@@ -151,6 +159,14 @@ public partial class PropertyTests
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	const string selSetCenter_X = "setCenter:";
 	static readonly global::ObjCRuntime.NativeHandle selSetCenter_XHandle = global::ObjCRuntime.Selector.GetHandle ("setCenter:");
+
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	const string selNotRegistedLocationX = "NotRegistedLocation";
+	static readonly global::ObjCRuntime.NativeHandle selNotRegistedLocationXHandle = global::ObjCRuntime.Selector.GetHandle ("NotRegistedLocation");
+
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	const string selSetNotRegistedLocation_X = "setNotRegistedLocation:";
+	static readonly global::ObjCRuntime.NativeHandle selSetNotRegistedLocation_XHandle = global::ObjCRuntime.Selector.GetHandle ("setNotRegistedLocation:");
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	static readonly global::ObjCRuntime.NativeHandle class_ptr = global::ObjCRuntime.Class.GetHandle ("PropertyTests");
@@ -251,6 +267,7 @@ public partial class PropertyTests
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst13.1")]
+		[Export ("alphanumericCharacterSet")]
 		get
 		{
 			global::Foundation.NSCharacterSet ret;
@@ -269,6 +286,7 @@ public partial class PropertyTests
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst13.1")]
+		[Export ("setAlphanumericCharacterSet:")]
 		set
 		{
 			var value__handle__ = value!.GetNonNullHandle (nameof (value));
@@ -298,6 +316,7 @@ public partial class PropertyTests
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst13.1")]
+		[Export ("attributedStringByInflectingString")]
 		get
 		{
 			global::Foundation.NSAttributedString ret;
@@ -316,6 +335,7 @@ public partial class PropertyTests
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst13.1")]
+		[Export ("setAttributedStringByInflectingString:")]
 		set
 		{
 			var value__handle__ = value!.GetNonNullHandle (nameof (value));
@@ -342,6 +362,7 @@ public partial class PropertyTests
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst13.1")]
+		[Export ("canDraw")]
 		get
 		{
 			bool ret;
@@ -358,6 +379,7 @@ public partial class PropertyTests
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst13.1")]
+		[Export ("setCanDraw:")]
 		set
 		{
 			using var nsb_value = global::Foundation.NSNumber.FromBoolean (value);
@@ -383,6 +405,7 @@ public partial class PropertyTests
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst13.1")]
+		[Export ("Center")]
 		get
 		{
 			global::CoreGraphics.CGPoint ret;
@@ -399,6 +422,7 @@ public partial class PropertyTests
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst13.1")]
+		[Export ("setCenter:")]
 		set
 		{
 			if (IsDirectBinding) {
@@ -421,6 +445,7 @@ public partial class PropertyTests
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst13.1")]
+		[Export ("containsAttachments")]
 		get
 		{
 			bool ret;
@@ -437,6 +462,7 @@ public partial class PropertyTests
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst13.1")]
+		[Export ("setContainsAttachments:")]
 		set
 		{
 			if (IsDirectBinding) {
@@ -459,6 +485,7 @@ public partial class PropertyTests
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst13.1")]
+		[Export ("count")]
 		get
 		{
 			global::System.UIntPtr ret;
@@ -475,6 +502,7 @@ public partial class PropertyTests
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst13.1")]
+		[Export ("setCount:")]
 		set
 		{
 			if (IsDirectBinding) {
@@ -497,6 +525,7 @@ public partial class PropertyTests
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst13.1")]
+		[Export ("isForPersonMassUse")]
 		get
 		{
 			bool ret;
@@ -513,6 +542,7 @@ public partial class PropertyTests
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst13.1")]
+		[Export ("setForPersonMassUse:")]
 		set
 		{
 			if (IsDirectBinding) {
@@ -535,6 +565,7 @@ public partial class PropertyTests
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst13.1")]
+		[Export ("isLenient")]
 		get
 		{
 			bool ret;
@@ -551,6 +582,7 @@ public partial class PropertyTests
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst13.1")]
+		[Export ("setLenient:")]
 		set
 		{
 			if (IsDirectBinding) {
@@ -573,6 +605,7 @@ public partial class PropertyTests
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst13.1")]
+		[Export ("lineSpacing")]
 		get
 		{
 			global::System.Runtime.InteropServices.NFloat ret;
@@ -589,6 +622,7 @@ public partial class PropertyTests
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst13.1")]
+		[Export ("setLineSpacing:")]
 		set
 		{
 			if (IsDirectBinding) {
@@ -614,6 +648,7 @@ public partial class PropertyTests
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst13.1")]
+		[Export ("locale")]
 		get
 		{
 			global::Foundation.NSLocale ret;
@@ -632,6 +667,7 @@ public partial class PropertyTests
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst13.1")]
+		[Export ("setLocale:")]
 		set
 		{
 			var value__handle__ = value!.GetNonNullHandle (nameof (value));
@@ -658,6 +694,7 @@ public partial class PropertyTests
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst13.1")]
+		[Export ("Center")]
 		get
 		{
 			global::CoreGraphics.CGPoint[] ret;
@@ -674,6 +711,7 @@ public partial class PropertyTests
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst13.1")]
+		[Export ("setCenter:")]
 		set
 		{
 			if (value is null)
@@ -701,6 +739,7 @@ public partial class PropertyTests
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst13.1")]
+		[Export ("name")]
 		get
 		{
 			string ret;
@@ -717,6 +756,7 @@ public partial class PropertyTests
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst13.1")]
+		[Export ("setName:")]
 		set
 		{
 			if (value is null)
@@ -743,6 +783,7 @@ public partial class PropertyTests
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst13.1")]
+		[Export ("surnames")]
 		get
 		{
 			string[] ret;
@@ -759,6 +800,7 @@ public partial class PropertyTests
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst13.1")]
+		[Export ("setSurnames:")]
 		set
 		{
 			if (value is null)
@@ -779,12 +821,48 @@ public partial class PropertyTests
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual partial global::CoreGraphics.CGPoint[] NotRegistedLocation
+	{
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("maccatalyst13.1")]
+		get
+		{
+			global::CoreGraphics.CGPoint[] ret;
+			ret = global::Foundation.NSArray.ArrayFromHandleFunc<global::CoreGraphics.CGPoint> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("NotRegistedLocation")), global::Foundation.NSValue.ToCGPoint, false);
+			global::System.GC.KeepAlive (this);
+			return ret;
+		}
+
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("maccatalyst13.1")]
+		set
+		{
+			if (value is null)
+				global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+			using var nsa_value = global::Foundation.NSArray.FromNSObjects (value);
+			var nsb_value__handle__ = nsb_value!.GetNonNullHandle (nameof (nsb_value));
+			global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setNotRegistedLocation:"), nsa_value__handle__);
+			global::System.GC.KeepAlive (this);
+			global::System.GC.KeepAlive (nsb_value);
+		}
+	}
+
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("maccatalyst13.1")]
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual partial string? OtherName
 	{
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst13.1")]
+		[Export ("name")]
 		get
 		{
 			string? ret;
@@ -801,6 +879,7 @@ public partial class PropertyTests
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst13.1")]
+		[Export ("setName:")]
 		set
 		{
 			var nsvalue = global::CoreFoundation.CFString.CreateNative (value);
@@ -825,6 +904,7 @@ public partial class PropertyTests
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst13.1")]
+		[Export ("canDraw")]
 		get
 		{
 			global::AVFoundation.AVCaptureReactionType ret;
@@ -841,6 +921,7 @@ public partial class PropertyTests
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst13.1")]
+		[Export ("setCanDraw:")]
 		set
 		{
 			using var nsb_value = value.GetConstant ();
@@ -869,6 +950,7 @@ public partial class PropertyTests
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst13.1")]
+		[Export ("results")]
 		get
 		{
 			global::Foundation.NSMetadataItem[] ret;
@@ -887,6 +969,7 @@ public partial class PropertyTests
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst13.1")]
+		[Export ("setResults:")]
 		set
 		{
 			if (value is null)
@@ -909,12 +992,57 @@ public partial class PropertyTests
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public sealed partial string SealedProperty
+	{
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("maccatalyst13.1")]
+		[Export ("sealedProperty")]
+		get
+		{
+			string ret;
+			if (IsDirectBinding) {
+				ret = global::CoreFoundation.CFString.FromHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("sealedProperty")), false)!;
+			} else {
+				ret = global::CoreFoundation.CFString.FromHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("sealedProperty")), false)!;
+			}
+			global::System.GC.KeepAlive (this);
+			return ret;
+		}
+
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("maccatalyst13.1")]
+		[Export ("setSealedProperty:")]
+		set
+		{
+			if (value is null)
+				global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+			var nsvalue = global::CoreFoundation.CFString.CreateNative (value);
+			if (IsDirectBinding) {
+				global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setSealedProperty:"), nsvalue);
+			} else {
+				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("setSealedProperty:"), nsvalue);
+			}
+			global::System.GC.KeepAlive (this);
+			global::CoreFoundation.CFString.ReleaseNative (nsvalue);
+		}
+	}
+
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("maccatalyst13.1")]
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual partial global::CoreGraphics.CGSize Size
 	{
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst13.1")]
+		[Export ("size")]
 		get
 		{
 			global::CoreGraphics.CGSize ret;
@@ -931,6 +1059,7 @@ public partial class PropertyTests
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst13.1")]
+		[Export ("setSize:")]
 		set
 		{
 			if (IsDirectBinding) {
@@ -953,6 +1082,7 @@ public partial class PropertyTests
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst13.1")]
+		[Export ("sizes")]
 		get
 		{
 			global::System.UIntPtr[] ret;
@@ -969,6 +1099,7 @@ public partial class PropertyTests
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst13.1")]
+		[Export ("setSizes:")]
 		set
 		{
 			if (value is null)
@@ -996,6 +1127,7 @@ public partial class PropertyTests
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst13.1")]
+		[Export ("delegate")]
 		get
 		{
 			global::Foundation.NSObject? ret;
@@ -1014,6 +1146,7 @@ public partial class PropertyTests
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst13.1")]
+		[Export ("setDelegate:")]
 		set
 		{
 			var value__handle__ = value?.GetHandle ();

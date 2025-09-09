@@ -7,32 +7,40 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Linq.Expressions;
 using Microsoft.CodeAnalysis;
+using Microsoft.Macios.Generator.Context;
+using static Microsoft.Macios.Generator.RgenDiagnostics;
 
 namespace Microsoft.Macios.Bindings.Analyzer;
 
 /// <summary>
 /// Defines a contract for a validator that can validate an object and report diagnostics.
 /// </summary>
-public interface IValidator {
+interface IValidator {
 	/// <summary>
 	/// Validates the specified data object.
 	/// </summary>
 	/// <param name="data">The object to validate.</param>
+	/// <param name="context">The root context for validation.</param>
 	/// <returns>A dictionary where the key is the name of the invalid field and the value is a list of diagnostics.</returns>
-	Dictionary<string, List<Diagnostic>> ValidateAll (object data);
+	Dictionary<string, List<Diagnostic>> ValidateAll (object data, RootContext context);
+
+	/// <summary>
+	/// Gets all the diagnostic descriptors that this validator and its nested validators can produce.
+	/// </summary>
+	ImmutableArray<DiagnosticDescriptor> Descriptors { get; }
 }
 
 /// <summary>
 /// A generic validator for a specific type <typeparamref name="T"/>.
 /// </summary>
 /// <typeparam name="T">The type of the object to validate.</typeparam>
-public partial class Validator<T> : IValidator {
+partial class Validator<T> : IValidator {
 	readonly Dictionary<string, List<IFieldValidationStrategy>> strategies = new ();
 	List<IFieldValidationStrategy>? globalStrategies;
 	readonly Dictionary<string, IValidator> nestedValidators = new ();
-	Func<T, Location>? getLocation;
+	Func<T, Location?>? getLocation;
 
-	public Validator (Expression<Func<T, Location>>? locationSelector = null)
+	public Validator (Expression<Func<T, Location?>>? locationSelector = null)
 	{
 		if (locationSelector is not null) {
 			getLocation = locationSelector.Compile ();
@@ -56,6 +64,11 @@ public partial class Validator<T> : IValidator {
 				foreach (var check in globalStrategies) {
 					allDescriptors.UnionWith (check.Descriptors);
 				}
+			}
+
+			// add the nested validators
+			foreach (var (_, validator) in nestedValidators) {
+				allDescriptors.UnionWith (validator.Descriptors);
 			}
 
 			return [.. allDescriptors];
@@ -192,22 +205,7 @@ public partial class Validator<T> : IValidator {
 		Validator<TField> nestedValidator)
 	{
 		var fieldName = GetPropertyName (selector);
-
 		nestedValidators [fieldName] = nestedValidator;
-
-		AddStrategy (selector, nestedValidator.Descriptors, NestedValidation);
-
-		bool NestedValidation (TField? data, out ImmutableArray<Diagnostic> diagnostic, Location? location = null)
-		{
-			diagnostic = [];
-			if (data is null)
-				return true; // null nested = valid
-
-			var nestedErrors = nestedValidator.ValidateAll (data);
-			// flatten the diagnostics
-			diagnostic = [.. nestedErrors.SelectMany (x => x.Value)];
-			return nestedErrors.Count == 0;
-		}
 	}
 
 	/// <summary>
@@ -226,13 +224,13 @@ public partial class Validator<T> : IValidator {
 
 		AddStrategy (selector, nestedValidator.Descriptors, NestedValidation);
 
-		bool NestedValidation (TField? data, out ImmutableArray<Diagnostic> diagnostic, Location? location = null)
+		bool NestedValidation (TField? data, RootContext context, out ImmutableArray<Diagnostic> diagnostic, Location? location = null)
 		{
 			diagnostic = [];
 			if (data is null)
 				return true; // null nested = valid
 
-			var nestedErrors = nestedValidator.ValidateAll (data.Value);
+			var nestedErrors = nestedValidator.ValidateAll (data.Value, context);
 			// flatten the diagnostics
 			diagnostic = [.. nestedErrors.SelectMany (x => x.Value)];
 			return nestedErrors.Count == 0;
@@ -274,7 +272,7 @@ public partial class Validator<T> : IValidator {
 
 		AddGlobalStrategy (RBI0016, CheckSelectors);
 
-		bool CheckSelectors (T data, out ImmutableArray<Diagnostic> diagnostics, Location? location = null)
+		bool CheckSelectors (T data, RootContext _, out ImmutableArray<Diagnostic> diagnostics, Location? location = null)
 		{
 			diagnostics = [];
 			int setCount = compiledSelectors.Count (sel => {
@@ -326,7 +324,7 @@ public partial class Validator<T> : IValidator {
 
 		AddStrategy (fieldName, strategy);
 
-		bool CheckFlags ((TField FieldData, TFlag FlagData) data, out ImmutableArray<Diagnostic> diagnostics, Location? location = null)
+		bool CheckFlags ((TField FieldData, TFlag FlagData) data, RootContext _, out ImmutableArray<Diagnostic> diagnostics, Location? location = null)
 		{
 			// we do know that we can only get the anonymous type with two properties
 			diagnostics = [];
@@ -384,7 +382,7 @@ public partial class Validator<T> : IValidator {
 
 		AddStrategy (fieldName, strategy);
 
-		bool ConditionalValidation ((TField FieldData, TFlag FlagData) data, out ImmutableArray<Diagnostic> diagnostics, Location? location = null)
+		bool ConditionalValidation ((TField FieldData, TFlag FlagData) data, RootContext context, out ImmutableArray<Diagnostic> diagnostics, Location? location = null)
 		{
 			diagnostics = [];
 			var flagValue = data.FlagData;
@@ -398,7 +396,7 @@ public partial class Validator<T> : IValidator {
 				return true;
 
 			// Execute the actual validation logic
-			return validation (data.FieldData, out diagnostics, location);
+			return validation (data.FieldData, context, out diagnostics, location);
 		}
 	}
 
@@ -457,7 +455,7 @@ public partial class Validator<T> : IValidator {
 
 		AddStrategy (fieldName, strategy);
 
-		bool ConditionalValidation ((TField? FieldData, TFlag FlagData) data, out ImmutableArray<Diagnostic> diagnostics, Location? location = null)
+		bool ConditionalValidation ((TField? FieldData, TFlag FlagData) data, RootContext context, out ImmutableArray<Diagnostic> diagnostics, Location? location = null)
 		{
 			diagnostics = [];
 			var flagValue = data.FlagData;
@@ -471,7 +469,7 @@ public partial class Validator<T> : IValidator {
 				return true;
 
 			// Execute the actual validation logic
-			return validation (data.FieldData, out diagnostics, location);
+			return validation (data.FieldData, context, out diagnostics, location);
 		}
 	}
 
@@ -524,7 +522,7 @@ public partial class Validator<T> : IValidator {
 
 		AddGlobalStrategy (RBI0016, CheckSelectors);
 
-		bool CheckSelectors (T data, out ImmutableArray<Diagnostic> diagnostics, Location? location = null)
+		bool CheckSelectors (T data, RootContext _, out ImmutableArray<Diagnostic> diagnostics, Location? location = null)
 		{
 			diagnostics = [];
 			var flagValue = flagSelectorCompiled (data);
@@ -611,7 +609,7 @@ public partial class Validator<T> : IValidator {
 
 		AddGlobalStrategy (RBI0016, CheckSelectors);
 
-		bool CheckSelectors (T data, out ImmutableArray<Diagnostic> diagnostics, Location? location = null)
+		bool CheckSelectors (T data, RootContext _, out ImmutableArray<Diagnostic> diagnostics, Location? location = null)
 		{
 			diagnostics = [];
 			var flagValue = flagSelectorCompiled (data);
@@ -664,7 +662,7 @@ public partial class Validator<T> : IValidator {
 
 		AddStrategy (tupleSelector, RBI0017, CheckFlagType, GetPropertyName (selector));
 
-		bool CheckFlagType ((TField? FieldData, TFlag FlagData) data, out ImmutableArray<Diagnostic> diagnostics, Location? location = null)
+		bool CheckFlagType ((TField? FieldData, TFlag FlagData) data, RootContext _, out ImmutableArray<Diagnostic> diagnostics, Location? location = null)
 		{
 			diagnostics = [];
 			var fieldValue = data.FieldData;
@@ -715,7 +713,7 @@ public partial class Validator<T> : IValidator {
 
 		AddStrategy (tupleSelector, RBI0017, CheckFlagType, GetPropertyName (selector));
 
-		bool CheckFlagType ((TField? FieldData, TFlag FlagData) data, out ImmutableArray<Diagnostic> diagnostics, Location? location = null)
+		bool CheckFlagType ((TField? FieldData, TFlag FlagData) data, RootContext _, out ImmutableArray<Diagnostic> diagnostics, Location? location = null)
 		{
 			diagnostics = [];
 			var fieldValue = data.FieldData;
@@ -768,7 +766,7 @@ public partial class Validator<T> : IValidator {
 
 		AddStrategy (tupleSelector, RBI0017, CheckFlagType, GetPropertyName (selector));
 
-		bool CheckFlagType ((TField FieldData, TFlag FlagData) data, out ImmutableArray<Diagnostic> diagnostics, Location? location = null)
+		bool CheckFlagType ((TField FieldData, TFlag FlagData) data, RootContext _, out ImmutableArray<Diagnostic> diagnostics, Location? location = null)
 		{
 			diagnostics = [];
 			var fieldValue = data.FieldData;
@@ -799,15 +797,16 @@ public partial class Validator<T> : IValidator {
 	}
 
 	/// <inheritdoc />
-	public Dictionary<string, List<Diagnostic>> ValidateAll (object data)
-		=> data is not T validData ? [] : ValidateAll (validData);
+	public Dictionary<string, List<Diagnostic>> ValidateAll (object data, RootContext rootContext)
+		=> data is not T validData ? [] : ValidateAll (validData, rootContext);
 
 	/// <summary>
 	/// Validates the given data object against all registered strategies.
 	/// </summary>
 	/// <param name="data">The data object to validate.</param>
+	/// <param name="rootContext">The root context for validation.</param>
 	/// <returns>A dictionary of validation errors, where the key is the field name and the value is a list of diagnostics.</returns>
-	public Dictionary<string, List<Diagnostic>> ValidateAll (T data)
+	public Dictionary<string, List<Diagnostic>> ValidateAll (T data, RootContext rootContext)
 	{
 		// if the location is null BUT we have a func that can retrieve it from the data, use data
 		var location = getLocation?.Invoke (data);
@@ -817,7 +816,7 @@ public partial class Validator<T> : IValidator {
 		// Own field strategies
 		foreach (var kvp in strategies) {
 			foreach (var strategy in kvp.Value) {
-				if (strategy.IsValid (data, out var diagnostics, location))
+				if (strategy.IsValid (data, rootContext, out var diagnostics, location))
 					continue;
 
 				if (!errors.ContainsKey (kvp.Key))
@@ -830,7 +829,7 @@ public partial class Validator<T> : IValidator {
 		// Global strategies
 		if (globalStrategies is not null) {
 			foreach (var strategy in globalStrategies) {
-				if (!strategy.IsValid (data, out var diagnostics, location)) {
+				if (!strategy.IsValid (data, rootContext, out var diagnostics, location)) {
 					if (!errors.ContainsKey (string.Empty))
 						errors [string.Empty] = [];
 
@@ -849,7 +848,7 @@ public partial class Validator<T> : IValidator {
 			if (nestedValue is null)
 				continue;
 
-			var nestedErrors = nestedValidatorObj.ValidateAll (nestedValue);
+			var nestedErrors = nestedValidatorObj.ValidateAll (nestedValue, rootContext);
 			foreach (var ne in nestedErrors) {
 				var compositeKey = string.IsNullOrEmpty (ne.Key)
 					? fieldName

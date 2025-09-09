@@ -10,14 +10,8 @@ namespace Microsoft.Macios.Generator.Attributes;
 
 readonly struct FieldData<T> : IEquatable<FieldData<T>> where T : Enum {
 
-	public enum ParsingError {
-		None = 0,
-		NotIdentifier,
-		UnknownConstructor,
-		UnknownNamedArgument,
-	}
 	public string SymbolName { get; }
-	public string? LibraryName { get; }
+	public string? LibraryPath { get; }
 
 	/// <summary>
 	/// Gets and set the type to be used. This is a property that can be used on notifications.
@@ -36,10 +30,10 @@ readonly struct FieldData<T> : IEquatable<FieldData<T>> where T : Enum {
 	/// </summary>
 	public Location? Location { get; init; }
 
-	internal FieldData (string symbolName, string? libraryName, T? flags)
+	internal FieldData (string symbolName, string? libraryPath, T? flags)
 	{
 		SymbolName = symbolName;
-		LibraryName = libraryName;
+		LibraryPath = libraryPath;
 		Flags = flags;
 	}
 
@@ -49,17 +43,12 @@ readonly struct FieldData<T> : IEquatable<FieldData<T>> where T : Enum {
 
 	public static bool TryParse (AttributeData attributeData,
 		[NotNullWhen (true)] out FieldData<T>? data)
-		=> TryParse (attributeData, out data, out _);
-
-	public static bool TryParse (AttributeData attributeData,
-		[NotNullWhen (true)] out FieldData<T>? data, out AttributeParsingError<ParsingError> error)
 	{
 		data = default;
-		error = new (ParsingError.None, null);
 
 		var count = attributeData.ConstructorArguments.Length;
 		string? symbolName;
-		string? libraryName = null;
+		string? libraryPath = null;
 		T? flags = default;
 
 		// notifications customizations
@@ -68,27 +57,19 @@ readonly struct FieldData<T> : IEquatable<FieldData<T>> where T : Enum {
 
 		switch (count) {
 		case 1:
-			if (!attributeData.ConstructorArguments [0].TryGetIdentifier (out symbolName)) {
-				error = new (ParsingError.NotIdentifier, attributeData.ConstructorArguments [0].Value);
-				return false;
-			}
+			symbolName = attributeData.ConstructorArguments [0].Value as string;
 			break;
 		case 2:
-			if (!attributeData.ConstructorArguments [0].TryGetIdentifier (out symbolName)) {
-				return false;
-			}
-
+			symbolName = attributeData.ConstructorArguments [0].Value as string;
 			if (attributeData.ConstructorArguments [1].Value is string) {
-				libraryName = (string?) attributeData.ConstructorArguments [1].Value!;
+				libraryPath = (string?) attributeData.ConstructorArguments [1].Value!;
 			} else {
 				flags = (T) attributeData.ConstructorArguments [1].Value!;
 			}
 			break;
 		case 3:
-			if (!attributeData.ConstructorArguments [0].TryGetIdentifier (out symbolName)) {
-				return false;
-			}
-			libraryName = (string?) attributeData.ConstructorArguments [1].Value!;
+			symbolName = attributeData.ConstructorArguments [0].Value as string;
+			libraryPath = (string?) attributeData.ConstructorArguments [1].Value!;
 			flags = (T) attributeData.ConstructorArguments [2].Value!;
 			break;
 		default:
@@ -97,7 +78,7 @@ readonly struct FieldData<T> : IEquatable<FieldData<T>> where T : Enum {
 		}
 
 		if (attributeData.NamedArguments.Length == 0) {
-			data = new (symbolName, libraryName, flags) {
+			data = new (symbolName ?? string.Empty, libraryPath, flags) {
 				Location = attributeData.GetLocation (),
 			};
 			return true;
@@ -106,8 +87,8 @@ readonly struct FieldData<T> : IEquatable<FieldData<T>> where T : Enum {
 		// LibraryName can be a param value
 		foreach (var (name, value) in attributeData.NamedArguments) {
 			switch (name) {
-			case "LibraryName":
-				libraryName = (string?) value.Value!;
+			case "LibraryPath":
+				libraryPath = (string?) value.Value!;
 				break;
 			case "Flags":
 				flags = (T) value.Value!;
@@ -120,12 +101,11 @@ readonly struct FieldData<T> : IEquatable<FieldData<T>> where T : Enum {
 				break;
 			default:
 				data = null;
-				error = new (ParsingError.UnknownNamedArgument, name);
 				return false;
 			}
 		}
 
-		data = new (symbolName, libraryName, flags) {
+		data = new (symbolName ?? string.Empty, libraryPath, flags) {
 			Type = notificationType,
 			NotificationCenter = notificationCenter,
 			Location = attributeData.GetLocation (),
@@ -138,7 +118,7 @@ readonly struct FieldData<T> : IEquatable<FieldData<T>> where T : Enum {
 	{
 		if (SymbolName != other.SymbolName)
 			return false;
-		if (LibraryName != other.LibraryName)
+		if (LibraryPath != other.LibraryPath)
 			return false;
 		if (Type != other.Type)
 			return false;
@@ -159,7 +139,7 @@ readonly struct FieldData<T> : IEquatable<FieldData<T>> where T : Enum {
 	/// <inheritdoc />
 	public override int GetHashCode ()
 	{
-		return HashCode.Combine (SymbolName, LibraryName, Flags);
+		return HashCode.Combine (SymbolName, LibraryPath, Flags);
 	}
 
 	public static bool operator == (FieldData<T> x, FieldData<T> y)
@@ -176,7 +156,7 @@ readonly struct FieldData<T> : IEquatable<FieldData<T>> where T : Enum {
 	public override string ToString ()
 	{
 		var sb = new StringBuilder ($"{{ SymbolName: '{SymbolName}', ");
-		sb.Append ($"LibraryName: '{LibraryName ?? "null"}', ");
+		sb.Append ($"LibraryPath: '{LibraryPath ?? "null"}', ");
 		sb.Append ($"Type: '{Type ?? "null"}', ");
 		sb.Append ($"NotificationCenter: '{NotificationCenter ?? "null"}', ");
 		sb.Append ($"Flags: '{Flags}' }}");

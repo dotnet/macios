@@ -207,12 +207,6 @@ namespace Speech {
 		NSError Error { get; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Speech.SFSpeechRecognitionTaskDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Speech.SFSpeechRecognitionTaskDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Speech.SFSpeechRecognitionTaskDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="Speech.SFSpeechRecognitionTaskDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface ISFSpeechRecognitionTaskDelegate { }
 
 	/// <summary>Delegate object whose members are called in reaction to speech-recognition events.</summary>
@@ -268,12 +262,6 @@ namespace Speech {
 		void DidProcessAudioDuration (SFSpeechRecognitionTask task, double duration);
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Speech.SFSpeechRecognizerDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Speech.SFSpeechRecognizerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Speech.SFSpeechRecognizerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="Speech.SFSpeechRecognizerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface ISFSpeechRecognizerDelegate { }
 
 	/// <summary>Delegate object for <see cref="Speech.SFSpeechRecognizer" />.</summary>

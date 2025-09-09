@@ -64,6 +64,7 @@ trigger:
     - refs/heads/lego/*
     - refs/heads/locfiles/*
     - refs/heads/copilot/*
+    - refs/heads/dependabot/*
 
 pr:
   autoCancel: true

@@ -804,10 +804,13 @@
       </Item>
       <Item ItemId=";BI1075" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Unimplemented CoreImage property type {0}]]></Val>
+          <Val><![CDATA[Unimplemented CoreImage property type {0} for the property {1}.{2}.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[구현되지 않은 CoreImage 속성 형식 {0}]]></Val>
+            <Val><![CDATA[속성 {1}에 대해 구현되지 않은 CoreImage 속성 유형 {0}. {2}.]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Unimplemented CoreImage property type {0}]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>

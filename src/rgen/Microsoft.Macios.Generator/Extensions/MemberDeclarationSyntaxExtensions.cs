@@ -68,4 +68,32 @@ static class MemberDeclarationSyntaxExtensions {
 
 		return false;
 	}
+
+	/// <summary>
+	/// Gets the binding type of a class declaration.
+	/// </summary>
+	/// <param name="self">The class declaration syntax.</param>
+	/// <param name="semanticModel">The semantic model.</param>
+	/// <returns>The <see cref="BindingType"/> of the class.</returns>
+	public static BindingType GetBindingType (this ClassDeclarationSyntax self, SemanticModel semanticModel)
+	{
+		foreach (AttributeListSyntax attributeListSyntax in self.AttributeLists)
+			foreach (AttributeSyntax attributeSyntax in attributeListSyntax.Attributes) {
+				if (semanticModel.GetSymbolInfo (attributeSyntax).Symbol is not IMethodSymbol attributeSymbol)
+					continue; // if we can't get the symbol, ignore it
+
+				var currentName = attributeSymbol.ContainingType.ToDisplayString ();
+				switch (currentName) {
+				case AttributesNames.CategoryAttribute:
+					return BindingType.Category;
+				case AttributesNames.ClassAttribute:
+					return BindingType.Class;
+				case AttributesNames.StrongDictionaryAttribute:
+					return BindingType.StrongDictionary;
+				case AttributesNames.StrongDictionaryKeysAttribute:
+					return BindingType.StrongDictionaryKeys;
+				}
+			}
+		return BindingType.Unknown;
+	}
 }

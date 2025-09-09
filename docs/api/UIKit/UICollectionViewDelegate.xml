@@ -71,7 +71,7 @@
         </item>
       </list>
       <para>
-        <img href="~/UIKit/_images/UIKit.UICollectionView.HighlightAndSelect.png" alt="Sequence diagram showing user actions, UICollectionViewDelegate events, and UICollectionView Cell properties" />
+        <img href="~/xml/UIKit/_images/UIKit.UICollectionView.HighlightAndSelect.png" alt="Sequence diagram showing user actions, UICollectionViewDelegate events, and UICollectionView Cell properties" />
       </para>
       <para>Deselecting a <see cref="UIKit.UICollectionViewCell" /> follows a similar sequence:</para>
       <para>

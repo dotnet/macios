@@ -1,6 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
+#pragma warning disable APL0003
 using System.Collections.Immutable;
+using Microsoft.Macios.Generator.Attributes;
 using Microsoft.Macios.Generator.DataModel;
 using Xunit;
 
@@ -24,13 +26,13 @@ public class AccessorsEqualityComparerTests {
 			new (
 				accessorKind: AccessorKind.Getter,
 				symbolAvailability: new (),
-				exportPropertyData: null,
+				exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 				attributes: [],
 				modifiers: []),
 			new (
 				accessorKind: AccessorKind.Setter,
 				symbolAvailability: new (),
-				exportPropertyData: null,
+				exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 				attributes: [],
 				modifiers: []),
 		];
@@ -38,7 +40,7 @@ public class AccessorsEqualityComparerTests {
 			new (
 				accessorKind: AccessorKind.Getter,
 				symbolAvailability: new (),
-				exportPropertyData: null,
+				exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 				attributes: [],
 				modifiers: []),
 		];
@@ -53,13 +55,13 @@ public class AccessorsEqualityComparerTests {
 			new (
 				accessorKind: AccessorKind.Getter,
 				symbolAvailability: new (),
-				exportPropertyData: null,
+				exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 				attributes: [],
 				modifiers: []),
 			new (
 				accessorKind: AccessorKind.Setter,
 				symbolAvailability: new (),
-				exportPropertyData: null,
+				exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 				attributes: [],
 				modifiers: []),
 		];
@@ -67,13 +69,13 @@ public class AccessorsEqualityComparerTests {
 			new (
 				accessorKind: AccessorKind.Add,
 				symbolAvailability: new (),
-				exportPropertyData: null,
+				exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 				attributes: [],
 				modifiers: []),
 			new (
 				accessorKind: AccessorKind.Remove,
 				symbolAvailability: new (),
-				exportPropertyData: null,
+				exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 				attributes: [],
 				modifiers: []),
 		];
@@ -88,13 +90,13 @@ public class AccessorsEqualityComparerTests {
 			new (
 				accessorKind: AccessorKind.Getter,
 				symbolAvailability: new (),
-				exportPropertyData: null,
+				exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 				attributes: [],
 				modifiers: []),
 			new (
 				accessorKind: AccessorKind.Setter,
 				symbolAvailability: new (),
-				exportPropertyData: null,
+				exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 				attributes: [],
 				modifiers: []),
 		];
@@ -102,13 +104,13 @@ public class AccessorsEqualityComparerTests {
 			new (
 				accessorKind: AccessorKind.Setter,
 				symbolAvailability: new (),
-				exportPropertyData: null,
+				exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 				attributes: [],
 				modifiers: []),
 			new (
 				accessorKind: AccessorKind.Getter,
 				symbolAvailability: new (),
-				exportPropertyData: null,
+				exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 				attributes: [],
 				modifiers: []),
 		];
@@ -123,13 +125,13 @@ public class AccessorsEqualityComparerTests {
 			new (
 				accessorKind: AccessorKind.Getter,
 				symbolAvailability: new (),
-				exportPropertyData: null,
+				exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 				attributes: [],
 				modifiers: []),
 			new (
 				accessorKind: AccessorKind.Setter,
 				symbolAvailability: new (),
-				exportPropertyData: null,
+				exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 				attributes: [],
 				modifiers: []),
 		];
@@ -138,13 +140,13 @@ public class AccessorsEqualityComparerTests {
 			new (
 				accessorKind: AccessorKind.Getter,
 				symbolAvailability: new (),
-				exportPropertyData: null,
+				exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 				attributes: [],
 				modifiers: []),
 			new (
 				accessorKind: AccessorKind.Setter,
 				symbolAvailability: new (),
-				exportPropertyData: null,
+				exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 				attributes: [],
 				modifiers: []),
 		];

@@ -1,16 +1,17 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
+
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Macios.Generator.Availability;
 using Microsoft.Macios.Generator.Context;
+using TypeInfo = Microsoft.Macios.Generator.DataModel.TypeInfo;
 
 namespace Microsoft.Macios.Generator.DataModel;
 
@@ -32,6 +33,13 @@ readonly partial struct Binding {
 	/// The namespace that contains the named type that generated the code change.
 	/// </summary>
 	public ImmutableArray<string> Namespace => namespaces;
+
+	readonly ImmutableArray<OuterClass> outerClasses = ImmutableArray<OuterClass>.Empty;
+
+	/// <summary>
+	/// The containing classes of the type, if it's a nested type.
+	/// </summary>
+	public ImmutableArray<OuterClass> OuterClasses => outerClasses;
 
 	readonly ImmutableArray<string> interfaces = ImmutableArray<string>.Empty;
 	/// <summary>
@@ -154,10 +162,57 @@ readonly partial struct Binding {
 		}
 	}
 
+	readonly Dictionary<string, int> parentPropertyIndex = new ();
+	readonly ImmutableArray<Property> parentProperties = [];
+
+	/// <summary>
+	/// Gets the properties inherited from parent protocols.
+	/// </summary>
+	public ImmutableArray<Property> ParentProtocolProperties {
+		get => parentProperties;
+		init {
+			parentProperties = value;
+			// populate the property index for fast lookup using the symbol name
+			for (var index = 0; index < parentProperties.Length; index++) {
+				var property = parentProperties [index];
+				// there are two type of properties, those that are fields and those that are properties
+				if (property.Selector is null)
+					continue;
+				parentPropertyIndex [property.Selector!] = index;
+			}
+		}
+	}
+
 	/// <summary>
 	/// Returns all the selectors for the properties.
 	/// </summary>
 	public ImmutableArray<string> PropertySelectors => [.. propertyIndex.Keys];
+
+	readonly Dictionary<string, int> strongDictPropertyIndex = new ();
+	readonly ImmutableArray<Property> strongDictproperties = [];
+
+	/// <summary>
+	/// Changes to the properties of the symbol that is a StrongDictionary.
+	/// </summary>
+	public ImmutableArray<Property> StrongDictionaryProperties {
+		get => strongDictproperties;
+		init {
+			strongDictproperties = value;
+			// populate the property index for fast lookup using the symbol name
+			for (var index = 0; index < strongDictproperties.Length; index++) {
+				var property = strongDictproperties [index];
+				// there are two type of properties, those that are fields and those that are properties
+				if (property.Selector is null)
+					continue;
+				strongDictPropertyIndex [property.Selector!] = index;
+			}
+		}
+	}
+
+	/// <summary>
+	/// Returns all the strings that are used as keys in the StrongDictionary properties.
+	/// </summary>
+	public ImmutableArray<string> StrongDictionaryKeys => [.. strongDictPropertyIndex.Keys];
 
 	readonly Dictionary<string, int> constructorIndex = new ();
 	readonly ImmutableArray<Constructor> constructors = [];
@@ -227,6 +282,26 @@ readonly partial struct Binding {
 		}
 	}
 
+	readonly Dictionary<string, int> parentMethodIndex = new ();
+	readonly ImmutableArray<Method> parentMethods = [];
+
+	/// <summary>
+	/// Gets the methods inherited from parent protocols.
+	/// </summary>
+	public ImmutableArray<Method> ParentProtocolMethods {
+		get => parentMethods;
+		init {
+			parentMethods = value;
+			// populate the method index for fast lookup using the symbol name
+			for (var index = 0; index < parentMethods.Length; index++) {
+				var method = parentMethods [index];
+				if (method.Selector is null)
+					continue;
+				parentMethodIndex [method.Selector] = index;
+			}
+		}
+	}
+
 	/// <summary>
 	/// Returns all the selectors for the methods.
 	/// </summary>
@@ -240,14 +315,14 @@ readonly partial struct Binding {
 		where TR : struct;
 
 	static void GetMembers<T, TR> (TypeDeclarationSyntax baseDeclarationSyntax, RootContext context,
-		SkipDelegate<T> skip, TryCreateDelegate<T, TR> tryCreate, out ImmutableArray<TR> members)
+		SkipDelegate<T> skip, TryCreateDelegate<T, TR> tryCreate, out ImmutableArray<TR> members, bool validateMembers)
 		where T : MemberDeclarationSyntax
 		where TR : struct
 	{
 		var bucket = ImmutableArray.CreateBuilder<TR> ();
 		var declarations = baseDeclarationSyntax.Members.OfType<T> ();
 		foreach (var declaration in declarations) {
-			if (skip (declaration, context.SemanticModel))
+			if (validateMembers && skip (declaration, context.SemanticModel))
 				continue;
 			if (tryCreate (declaration, context, out var change))
 				bucket.Add (change.Value);

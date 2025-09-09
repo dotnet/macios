@@ -20,6 +20,10 @@ namespace ObjCBindings {
 		/// </summary >
 		public T? Flags { get; set; } = default (T);
 
+		/// <summary>
+		/// The type of the class that a category is extending.
+		/// </summary>
+		public Type? CategoryType { get; set; } = null;
 
 		/// <summary>
 		/// Get/set the error domain for an error enumerator. This has to be used with the SmartEnum flag.
@@ -29,7 +33,7 @@ namespace ObjCBindings {
 		/// <summary>
 		/// Get/set the library name for an error code. This has to be used with the SmartEnum flag.
 		/// </summary >
-		public string? LibraryName { get; set; } = null;
+		public string? LibraryPath { get; set; } = null;
 
 		/// <summary>
 		/// Get/set the visibility of the default constructor for a core image filter.
@@ -50,6 +54,11 @@ namespace ObjCBindings {
 		/// Creates a binding type attribute with the default flag value;
 		/// </summary>
 		public BindingTypeAttribute () { }
+
+		/// <summary>
+		/// Get/set the model name for a protocol model class.
+		/// </summary>
+		public string ModelName { get; set; } = string.Empty;
 
 		/// <summary>
 		/// Creates a binding type attribute with the specified flags.
@@ -73,6 +82,25 @@ namespace ObjCBindings {
 		public BindingTypeAttribute (string name, T flags)
 		{
 			Name = name;
+			Flags = flags;
+		}
+
+		/// <summary>
+		/// Creates a binding type attribute with the specified category type.
+		/// </summary>
+		public BindingTypeAttribute (Type categoryType)
+		{
+			Name = categoryType.Name;
+			CategoryType = categoryType;
+		}
+
+		/// <summary>
+		/// Creates a binding type attribute with the specified category type and flags.
+		/// </summary>
+		public BindingTypeAttribute (Type categoryType, T flags)
+		{
+			Name = categoryType.Name;
+			CategoryType = categoryType;
 			Flags = flags;
 		}
 	}

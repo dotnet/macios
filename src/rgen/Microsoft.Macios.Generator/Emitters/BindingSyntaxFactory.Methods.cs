@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -189,14 +190,19 @@ static partial class BindingSyntaxFactory {
 		var send = GetObjCMessageSendMethodName (
 			exportData: method.ExportMethodData,
 			returnType: returnType,
-			parameters: method.Parameters,
+			parameters: method.IsExtension ? method.Parameters [1..] : method.Parameters,
 			isSuper: isSuper,
 			isStret: returnType.NeedsStret
 		);
 		if (send is null || method.ExportMethodData.Selector is null) {
 			return ThrowNotImplementedException ();
 		}
-		var invocation = MessagingInvocation (send, method.ExportMethodData.Selector, arguments);
+		var invocation = MessagingInvocation (
+			objcMsgSendMethod: send,
+			selector: method.ExportMethodData.Selector,
+			parameters: arguments,
+			isSuper: isSuper,
+			thisParameter: method.IsExtension ? method.This : null);
 		if (method.ReturnType.IsVoid)
 			return invocation;
 		// we need to convert the return type to the managed type and assign it to the return variable
@@ -211,22 +217,26 @@ static partial class BindingSyntaxFactory {
 	internal static MethodInvocations GetInvocations (in Method method)
 	{
 		// calculate all the needed transformations for the method parameters
-		var argumentsTransformations = ImmutableArray.CreateBuilder<TrampolineArgumentSyntax> (method.Parameters.Length);
+		var conversions = new PriorityQueue<ArgumentConversions, ArgumentInfo> (new ArgumentInfoConversionComparer ());
 		var argumentSyntax = ImmutableArray.CreateBuilder<ArgumentSyntax> (method.Parameters.Length);
 		foreach (var param in method.Parameters) {
-			var trampolineSyntax = new TrampolineArgumentSyntax (GetNativeInvokeArgument (param)) {
+			// if the paramerer is a this parameter we will skip it since the GetSendInvocation will handle
+			if (param.IsThis)
+				continue;
+			var trampolineSyntax = new ArgumentConversions {
 				Initializers = GetNativeInvokeArgumentInitializations (param),
+				Validations = GetNativeInvokeArgumentValidations (param),
 				PreCallConversion = GetPreNativeInvokeArgumentConversions (param),
 				PostCallConversion = GetPostNativeInvokeArgumentConversions (param),
 			};
-			argumentsTransformations.Add (trampolineSyntax);
-			argumentSyntax.Add (trampolineSyntax.ArgumentSyntax);
+			conversions.Enqueue (trampolineSyntax, param);
+			argumentSyntax.Add (GetNativeInvokeArgument (param));
 		}
 
 		// calculate the send expressions, we use the export data information to determine the selector
 		var args = argumentSyntax.ToImmutable ();
 		return new MethodInvocations () {
-			Arguments = argumentsTransformations.ToImmutable (),
+			Arguments = conversions.ToImmutable (),
 			Send = GetSendInvocation (method, args, false),
 			SendSuper = GetSendInvocation (method, args, true)
 		};

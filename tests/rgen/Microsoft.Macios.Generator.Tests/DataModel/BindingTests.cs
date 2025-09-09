@@ -190,7 +190,7 @@ public class TestClass {
 			.FirstOrDefault ();
 		Assert.NotNull (node);
 		var semanticModel = compilation.GetSemanticModel (sourceTrees [0]);
-		Assert.Equal (expected, Binding.Skip (node, semanticModel));
+		Assert.Equal (expected, Binding.PropertySkip (node, semanticModel));
 	}
 
 	class TestDataSkipMethodDeclaration : IEnumerable<object []> {
@@ -318,14 +318,14 @@ public class TestClass {
 						new (
 							accessorKind: AccessorKind.Getter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [],
 							modifiers: []
 						),
 						new (
 							accessorKind: AccessorKind.Setter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [],
 							modifiers: []
 						),
@@ -404,14 +404,14 @@ public class TestClass {
 						new (
 							accessorKind: AccessorKind.Add,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [],
 							modifiers: []
 						),
 						new (
 							accessorKind: AccessorKind.Remove,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [],
 							modifiers: []
 						)

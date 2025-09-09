@@ -25,7 +25,7 @@ namespace ObjCBindings {
 		/// <summary>
 		/// Get/Set the library that contains the symbol.
 		/// </summary>
-		public string? LibraryName { get; set; } = default;
+		public string? LibraryPath { get; set; } = default;
 
 		/// <summary>
 		/// Get/Set the notification type.
@@ -45,7 +45,7 @@ namespace ObjCBindings {
 		{
 			SymbolName = symbolName;
 			Flags = default (T);
-			LibraryName = null;
+			LibraryPath = null;
 		}
 
 		/// <summary>
@@ -56,7 +56,7 @@ namespace ObjCBindings {
 		public FieldAttribute (string symbolName, string libraryName)
 		{
 			SymbolName = symbolName;
-			LibraryName = libraryName;
+			LibraryPath = libraryName;
 			Flags = default (T);
 		}
 
@@ -69,7 +69,7 @@ namespace ObjCBindings {
 		{
 			SymbolName = symbolName;
 			Flags = flags;
-			LibraryName = null;
+			LibraryPath = null;
 		}
 
 		/// <summary>
@@ -81,7 +81,7 @@ namespace ObjCBindings {
 		public FieldAttribute (string symbolName, string libraryName, T? flags)
 		{
 			SymbolName = symbolName;
-			LibraryName = libraryName;
+			LibraryPath = libraryName;
 			Flags = flags;
 		}
 

@@ -6,7 +6,6 @@
 !missing-enum! CTRubyPosition not bound
 !missing-field! kCTFontDownloadableAttribute not bound
 !missing-field! kCTFontDownloadedAttribute not bound
-!missing-field! kCTFontManagerRegisteredFontsChangedNotification not bound
 !missing-field! kCTFontOpenTypeFeatureTag not bound
 !missing-field! kCTFontOpenTypeFeatureValue not bound
 !missing-field! kCTLanguageAttributeName not bound

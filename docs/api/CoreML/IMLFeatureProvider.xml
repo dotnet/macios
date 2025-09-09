@@ -3,7 +3,7 @@
     <summary>An interface that defines input or output features and allows access to their values.</summary>
     <remarks>
       <para>CoreML does not directly read and write system-native data. Rather it uses this class to map strings to values for the inputs and outputs of the <see cref="CoreML.MLModel" /> object.</para>
-      <para>The following example shows a <see cref="Monotouch.CoreML.IMLFeatureProvider" /> that provides 3 inputs variables, all of type <see langword="double" />:</para>
+      <para>The following example shows a <see cref="CoreML.IMLFeatureProvider" /> that provides 3 inputs variables, all of type <see langword="double" />:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
 public class MarsHabitatPricerInput : NSObject, IMLFeatureProvider

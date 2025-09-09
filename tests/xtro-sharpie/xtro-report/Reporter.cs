@@ -89,8 +89,98 @@ namespace Extrospection {
 			var indexPath = Path.Combine (ReportFolder, "index.html");
 			var log = new StreamWriter (indexPath);
 
-			log.WriteLine ("<html><head><title>Extrospection results</title></head>");
-			log.WriteLine ("<body><h1>Extrospection results</h1>");
+			#region "Setup HTML Header and styles"
+			log.WriteLine ("<html><head><title>Extrospection results</title>"
+				+ @"<style>
+									:root {
+										--bg: #fff;
+										--fg: #222;
+										--green: #008100;
+										--green-light: #90EE90;
+										--red: #FF0200;
+										--red-light: #FA8072;
+										--yellow: #FFA502;
+										--yellow-light: #FFDAB9;
+										--grey: #e0e0e0;
+										--switch-bg: #ccc;
+										--switch-knob: #fff;
+									}
+									body.dark {
+										--bg: #181a1b;
+										--fg: #f1f1f1;
+										--green: #388e3c;
+										--green-light: #23422a;
+										--red: #e57373;
+										--red-light: #3a2323;
+										--yellow: #ffd54f;
+										--yellow-light: #4a3a1a;
+										--grey: #23272a;
+										--switch-bg: #555 !important;
+										--switch-knob: #f1f1f1 !important;
+									}
+						body { background: var(--bg); color: var(--fg); transition: background 0.2s, color 0.2s; }
+						.switch-container { position: absolute; top: 16px; right: 24px; z-index: 10; }
+						.switch-label { cursor: pointer; font-size: 1em; user-select: none; color: var(--fg); }
+						.switch-input { display: none; }
+						.switch-slider { display: inline-block; width: 44px; height: 24px; background: var(--switch-bg) !important; border-radius: 12px; position: relative; vertical-align: middle; transition: background 0.2s; border: 1px solid #888; }
+						.switch-slider:before { content: ''; position: absolute; left: 3px; top: 3px; width: 18px; height: 18px; background: var(--switch-knob) !important; border-radius: 50%; transition: left 0.2s, background 0.2s; box-shadow: 0 1px 3px #0002; border: 1px solid #888; }
+						.switch-input:not(:checked) + .switch-slider { background: var(--switch-bg) !important; }
+						.switch-input:checked + .switch-slider { background: #444 !important; }
+						.switch-input:checked + .switch-slider:before { left: 23px; background: #222 !important; }
+						.switch-label span { margin-left: 8px; }
+						table { background: var(--bg); color: var(--fg); }
+						td, th { color: var(--fg); }
+						td[bgcolor='lightgreen'], th[bgcolor='lightgreen'] { background: var(--green-light) !important; color: var(--fg); }
+						td[bgcolor='green'], th[bgcolor='green'] { background: var(--green) !important; color: #222; }
+						td[bgcolor='red'], th[bgcolor='red'] { background: var(--red) !important; color: #222; }
+						body.dark td[bgcolor='green'], body.dark th[bgcolor='green'] { color: #fff; }
+						body.dark td[bgcolor='red'], body.dark th[bgcolor='red'] { color: #fff; }
+						td[bgcolor='salmon'], th[bgcolor='salmon'] { background: var(--red-light) !important; color: var(--fg); }
+						td[bgcolor='orange'], th[bgcolor='orange'] { background: var(--yellow) !important; color: #222; }
+						td[bgcolor='peachpuff'], th[bgcolor='peachpuff'] { background: var(--yellow-light) !important; color: var(--fg); }
+						td[bgcolor='lightgrey'], th[bgcolor='lightgrey'] { background: var(--grey) !important; color: var(--fg); }
+			</style>"
+				+ @"<script>
+						function setMode(dark, user) {
+							document.body.classList.toggle('dark', dark);
+							if (user) {
+								document.documentElement.classList.add('xtro-user');
+								localStorage.setItem('xtro-dark', dark ? '1' : '0');
+							}
+							updateSwitch();
+						}
+						function updateSwitch() {
+							var input = document.getElementById('xtro-dark-switch');
+							if (!input) return;
+							// checked state should match body.dark class
+							input.checked = document.body.classList.contains('dark');
+						}
+						window.addEventListener('DOMContentLoaded', function() {
+							var userPref = localStorage.getItem('xtro-dark');
+							var dark = false;
+							if (userPref === '1') dark = true;
+							else if (userPref === '0') dark = false;
+							else dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+							setMode(dark, false);
+							var input = document.getElementById('xtro-dark-switch');
+							if (input) input.addEventListener('change', function() { setMode(this.checked, true); });
+							window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
+								if (!localStorage.getItem('xtro-dark')) {
+									setMode(e.matches, false);
+								}
+							});
+						});
+			</script>"
+				+ "</head>");
+			log.WriteLine ("<body>"
+				+ "<div class='switch-container'>"
+				+ "<label class='switch-label'>"
+				+ "<input type='checkbox' class='switch-input' id='xtro-dark-switch'>"
+				+ "<span class='switch-slider'></span>"
+				+ "<span>Dark Mode</span>"
+				+ "</label></div>"
+				+ "<h1>Extrospection results</h1>");
+			#endregion "Setup HTML Header and styles"
 
 			log.WriteLine ("<table border='0' cellpadding='4' cellspacing='0'>");
 

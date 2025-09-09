@@ -382,6 +382,9 @@
       <Item ItemId=";BI1027" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Support for ZeroCopy strings is not implemented. Strings will be marshalled as NSStrings.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[未實作 ZeroCopy 字串的支援。將會以 NSStrings 封送處理字串。]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -801,10 +804,13 @@
       </Item>
       <Item ItemId=";BI1075" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Unimplemented CoreImage property type {0}]]></Val>
+          <Val><![CDATA[Unimplemented CoreImage property type {0} for the property {1}.{2}.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[未實作 CoreImage 屬性類型 {0}]]></Val>
+            <Val><![CDATA[屬性 {1} 的未實作 CoreImage 屬性類型 {0}。{2}。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Unimplemented CoreImage property type {0}]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>

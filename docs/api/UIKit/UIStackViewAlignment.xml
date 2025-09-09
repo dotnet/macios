@@ -14,7 +14,7 @@
           </term>
           <description>Horizontal layout, bottom edges aligned to the bottom of the <see cref="UIKit.UIStackView" />. </description>
           <description>
-            <img href="~/UIKit/_images/UIKit.UIStackViewAlignment_Bottom.png" alt="Image showing the alignment layout." />
+            <img href="~/xml/UIKit/_images/UIKit.UIStackViewAlignment_Bottom.png" alt="Image showing the alignment layout." />
           </description>
         </item>
         <item>
@@ -23,7 +23,7 @@
           </term>
           <description>Views are aligned along the <see cref="UIKit.UIStackView.Axis" />, in the center of the <see cref="UIKit.UIStackView" />.</description>
           <description>
-            <img href="~/UIKit/_images/UIKit.UIStackViewAlignment_Center.png" alt="Image showing the alignment layout." />
+            <img href="~/xml/UIKit/_images/UIKit.UIStackViewAlignment_Center.png" alt="Image showing the alignment layout." />
           </description>
         </item>
         <item>
@@ -32,7 +32,7 @@
           </term>
           <description>Views are arranged to fill available space perpendicular to the <see cref="UIKit.UIStackView.Axis" />.</description>
           <description>
-            <img href="~/UIKit/_images/UIKit.UIStackViewAlignment_Fill.png" alt="Image showing the alignment layout." />
+            <img href="~/xml/UIKit/_images/UIKit.UIStackViewAlignment_Fill.png" alt="Image showing the alignment layout." />
           </description>
         </item>
         <item>
@@ -43,7 +43,7 @@
             Views are aligned based on the baseline of the first <see cref="UIKit.UIStackView.ArrangedSubviews" />. (Horizontal only.)
           </description>
           <description>
-            <img href="~/UIKit/_images/UIKit.UIStackViewAlignment_FirstBaseline.png" alt="Image showing the alignment layout." />
+            <img href="~/xml/UIKit/_images/UIKit.UIStackViewAlignment_FirstBaseline.png" alt="Image showing the alignment layout." />
           </description>
         </item>
         <item>
@@ -54,7 +54,7 @@
             Views are aligned based on the baseline of the last <see cref="UIKit.UIStackView.ArrangedSubviews" />. (Horizontal only.)
           </description>
           <description>
-            <img href="~/UIKit/_images/UIKit.UIStackViewAlignment_LastBaseline.png" alt="Image showing the alignment layout." />
+            <img href="~/xml/UIKit/_images/UIKit.UIStackViewAlignment_LastBaseline.png" alt="Image showing the alignment layout." />
           </description>
         </item>
         <item>
@@ -66,7 +66,7 @@
 
           </description>
           <description>
-            <img href="~/UIKit/_images/UIKit.UIStackViewAlignment_Leading.png" alt="Image showing the alignment layout." />
+            <img href="~/xml/UIKit/_images/UIKit.UIStackViewAlignment_Leading.png" alt="Image showing the alignment layout." />
           </description>
         </item>
         <item>
@@ -75,7 +75,7 @@
           </term>
           <description>Horizontal layout, top edges aligned to the top of the <see cref="UIKit.UIStackView" />. </description>
           <description>
-            <img href="~/UIKit/_images/UIKit.UIStackViewAlignment_Top.png" alt="Image showing the alignment layout." />
+            <img href="~/xml/UIKit/_images/UIKit.UIStackViewAlignment_Top.png" alt="Image showing the alignment layout." />
           </description>
         </item>
         <item>
@@ -84,7 +84,7 @@
           </term>
           <description>Views are aligned based on the trailing edge of the first <see cref="UIKit.UIStackView.ArrangedSubviews" />. (Vertical only.)</description>
           <description>
-            <img href="~/UIKit/_images/UIKit.UIStackViewAlignment_Trailing.png" alt="Image showing the alignment layout." />
+            <img href="~/xml/UIKit/_images/UIKit.UIStackViewAlignment_Trailing.png" alt="Image showing the alignment layout." />
           </description>
         </item>
       </list>

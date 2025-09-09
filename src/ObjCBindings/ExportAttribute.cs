@@ -81,6 +81,21 @@ namespace ObjCBindings {
 		/// </summary>
 		public string? StrongDelegateName { get; set; } = null;
 
+		/// <summary>
+		/// Get/Set the type of the strong dictionary key class.
+		/// </summary>
+		public Type? StrongDictionaryKeyClass { get; set; } = null;
+
+		/// <summary>
+		/// The type of the event args to use.
+		/// </summary>
+		public Type? EventArgsType { get; set; } = null;
+
+		/// <summary>
+		/// The name of the type of the event args method.
+		/// </summary>
+		public string? EventArgsTypeName { get; set; } = null;
+
 		protected ExportAttribute () { }
 
 		/// <summary>

@@ -210,4 +210,21 @@ public class Example {
 	[InlineData ("error", "_cberror")]
 	public void GetTaskCallbackParameterNameTests (string parameterName, string expectedName)
 		=> Assert.Equal (expectedName, Nomenclator.GetTaskCallbackParameterName (parameterName));
+
+	[Theory]
+	[InlineData ("MyProtocol", "MyProtocolWrapper")]
+	[InlineData ("My.Nested.Protocol", "My_Nested_ProtocolWrapper")]
+	public void GetProtocolWrapperNameTests (string protocolName, string expectedName)
+		=> Assert.Equal (expectedName, Nomenclator.GetProtocolWrapperName (protocolName));
+
+	[Theory]
+	[InlineData ("MyDelegate", "_MyDelegate")]
+	[InlineData ("IMyDelegate", "_MyDelegate")]
+	[InlineData ("AnotherDelegate", "_AnotherDelegate")]
+	[InlineData ("IAnotherDelegate", "_AnotherDelegate")]
+	public void GetInternalDelegateForEventNameTests (string delegateName, string expectedName)
+	{
+		var typeInfo = ReturnTypeForDelegate (delegateName);
+		Assert.Equal (expectedName, Nomenclator.GetInternalDelegateForEventName (typeInfo));
+	}
 }

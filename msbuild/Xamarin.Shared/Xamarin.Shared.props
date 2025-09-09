@@ -220,10 +220,23 @@ Copyright (C) 2020 Microsoft. All rights reserved.
 		<!-- that also encapsulates whether we're a library or not (this makes conditions simpler) -->
 		<_BundleOriginalResources Condition="'$(OutputType)' == 'Library' And '$(IsAppExtension)' != 'true' And '$(BundleOriginalResources)' == 'true'">true</_BundleOriginalResources>
 
-		<EnableDiagnostics Condition="'$(EnableDiagnostics)' == '' And '$(_BundlerDebug)' == 'true'">true</EnableDiagnostics>
+		<EnableDiagnostics Condition="'$(EnableDiagnostics)' == '' And ('$(DiagnosticConfiguration)' != '' Or '$(DiagnosticAddress)' != '' Or '$(DiagnosticPort)' != '' Or '$(DiagnosticSuspend)' != '' Or '$(DiagnosticListenMode)' != '')">true</EnableDiagnostics>
 
 		<!-- Set the name of the native executable -->
 		<_NativeExecutableName Condition="'$(_NativeExecutableName)' == ''">$(AssemblyName)</_NativeExecutableName>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(EnableDiagnostics)' == 'true' And '$(DiagnosticConfiguration)' == ''">
+		<DiagnosticAddress Condition="'$(DiagnosticAddress)' == ''">127.0.0.1</DiagnosticAddress>
+		<DiagnosticPort Condition="'$(DiagnosticPort)' == ''">9000</DiagnosticPort>
+		<DiagnosticSuspend Condition="'$(DiagnosticSuspend)' == ''">false</DiagnosticSuspend>
+		<DiagnosticListenMode Condition="'$(DiagnosticListenMode)' == ''">listen</DiagnosticListenMode>
+		<DiagnosticConfiguration>$(DiagnosticAddress):$(DiagnosticPort),$(DiagnosticListenMode)</DiagnosticConfiguration>
+		<DiagnosticConfiguration Condition="'$(DiagnosticSuspend)' == 'true'">$(DiagnosticConfiguration),suspend</DiagnosticConfiguration>
+		<DiagnosticConfiguration Condition="'$(DiagnosticSuspend)' != 'true'">$(DiagnosticConfiguration),nosuspend</DiagnosticConfiguration>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(EnableDiagnostics)' == 'true' And '$(DiagnosticConfiguration)' != '' And '$(DiagnosticConfiguration)' != 'disable'">
+		<AppBundleExtraOptions>$(AppBundleExtraOptions) --setenv=DOTNET_DiagnosticPorts=$(DiagnosticConfiguration)</AppBundleExtraOptions>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(IsBindingProject)' == 'true'">

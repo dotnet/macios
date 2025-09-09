@@ -1089,7 +1089,6 @@ namespace NetworkExtension {
 		[Export ("enabled")]
 		bool Enabled { [Bind ("isEnabled")] get; set; }
 
-		/// <include file="../docs/api/NetworkExtension/NEFilterManager.xml" path="/Documentation/Docs[@DocId='P:NetworkExtension.NEFilterManager.ConfigurationDidChangeNotification']/*" />
 		[Field ("NEFilterConfigurationDidChangeNotification")]
 		[Notification]
 		NSString ConfigurationDidChangeNotification { get; }
@@ -2349,7 +2348,6 @@ namespace NetworkExtension {
 		[Export ("setAuthorization:")]
 		void _SetAuthorization (IntPtr auth);
 
-		/// <include file="../docs/api/NetworkExtension/NEVpnManager.xml" path="/Documentation/Docs[@DocId='P:NetworkExtension.NEVpnManager.ConfigurationChangeNotification']/*" />
 		[Notification]
 		[Field ("NEVPNConfigurationChangeNotification")]
 		NSString ConfigurationChangeNotification { get; }
@@ -2411,7 +2409,6 @@ namespace NetworkExtension {
 		[Export ("manager")]
 		NEVpnManager Manager { get; }
 
-		/// <include file="../docs/api/NetworkExtension/NEVpnConnection.xml" path="/Documentation/Docs[@DocId='P:NetworkExtension.NEVpnConnection.StatusDidChangeNotification']/*" />
 		[Notification]
 		[Field ("NEVPNStatusDidChangeNotification")]
 		NSString StatusDidChangeNotification { get; }
@@ -3283,12 +3280,6 @@ namespace NetworkExtension {
 
 	interface INWTcpConnectionAuthenticationDelegate { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="NetworkExtension.NWTcpConnectionAuthenticationDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="NetworkExtension.NWTcpConnectionAuthenticationDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="NetworkExtension.NWTcpConnectionAuthenticationDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="NetworkExtension.NWTcpConnectionAuthenticationDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'Security.SecProtocolOptions' instead.")]
 	[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'Security.SecProtocolOptions' instead.")]
 	[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'Security.SecProtocolOptions' instead.")]
@@ -4044,7 +4035,6 @@ namespace NetworkExtension {
 	[BaseType (typeof (NSObject), Name = "NEDNSProxyManager")]
 	interface NEDnsProxyManager {
 
-		/// <include file="../docs/api/NetworkExtension/NEDnsProxyManager.xml" path="/Documentation/Docs[@DocId='P:NetworkExtension.NEDnsProxyManager.ProxyConfigurationDidChangeNotification']/*" />
 		[Notification]
 		[Field ("NEDNSProxyConfigurationDidChangeNotification")]
 		NSString ProxyConfigurationDidChangeNotification { get; }

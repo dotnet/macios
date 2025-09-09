@@ -39,12 +39,17 @@ static class ParameterFormatter {
 
 	public static ParameterSyntax ToDeclaration (this in ParameterDataModel parameter)
 	{
-		// modifiers come from two situations, we have the params keyword or not. We cannot have params + a ref modifier
-		// so we build them based on that. If you call WithModifiers twice, you will me stepping on the previous collection
-		// it won't be a merge
-		var modifiers = parameter.IsParams
-			? TokenList (Token (SyntaxKind.ParamsKeyword))
-			: parameter.ReferenceKind.ToTokens ();
+		SyntaxTokenList modifiers;
+		if (parameter.IsThis) {
+			modifiers = TokenList (Token (SyntaxKind.ThisKeyword));
+		} else {
+			// modifiers come from two situations, we have the params keyword or not. We cannot have params + a ref modifier
+			// so we build them based on that. If you call WithModifiers twice, you will be stepping on the previous collection
+			// it won't be a merge
+			modifiers = parameter.IsParams
+				? TokenList (Token (SyntaxKind.ParamsKeyword))
+				: parameter.ReferenceKind.ToTokens ();
+		}
 
 		// we are going to be ignoring the default value, the reason for it is that the partial method implementation
 		// can ignore it. The following c# code is valid:

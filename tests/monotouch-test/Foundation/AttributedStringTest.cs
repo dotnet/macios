@@ -307,5 +307,24 @@ namespace MonoTouchFixtures.Foundation {
 				return attributesPtr;
 			}
 		}
+
+#if __MACOS__
+		[Test]
+		public void NullOnFailureTest ()
+		{
+			Assert.Multiple (() => {
+				// I wasn't able to figure out any string that would make 'CreateWithHTML' fail :/
+				// var invalidHtml = NSData.FromArray ([(int) '?']);
+				Assert.IsNull (NSAttributedString.CreateWithRTF (NSData.FromArray ([0]), out var _), "CreateWithRTF");
+				Assert.IsNull (NSAttributedString.CreateWithRTFD (NSData.FromArray ([0]), out var _), "CreateWithRTFD");
+				// Assert.IsNull (NSAttributedString.CreateWithHTML (invalidHtml, out var _), "CreateWithHTML");
+				// Assert.IsNull (NSAttributedString.CreateWithHTML (invalidHtml, NSUrl.CreateFileUrl ("/tmp"), out var _), "CreateWithHTML/NSUrl");
+				// Assert.IsNull (NSAttributedString.CreateWithHTML (invalidHtml, new NSDictionary (), out var _), "CreateWithHTML/NSDictionary");
+				// Assert.IsNull (NSAttributedString.CreateWithHTML (invalidHtml, new NSAttributedStringDocumentAttributes (), out var _), "CreateWithHTML/NSAttributedStringDocumentAttributes");
+				Assert.IsNull (NSAttributedString.CreateWithDocFormat (NSData.FromArray ([0]), out var _), "CreateWithDocFormat");
+				Assert.IsNull (NSAttributedString.Create (new NSFileWrapper (NSData.FromArray ([0])), out var _), "Create/NSFileWrapper");
+			});
+		}
+#endif
 	}
 }

@@ -1001,5 +1001,140 @@ namespace Microsoft.Macios.Bindings.Analyzer {
                 return ResourceManager.GetString("RBI0034Title", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A method marked as an async method should have void as its return type..
+        /// </summary>
+        internal static string RBI0035Description {
+            get {
+                return ResourceManager.GetString("RBI0035Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The method &apos;{0}&apos; was marked as async but its return type is not void.
+        /// </summary>
+        internal static string RBI0035MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0035MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Async method not returning void.
+        /// </summary>
+        internal static string RBI0035Title {
+            get {
+                return ResourceManager.GetString("RBI0035Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A method marked as an async method should have at least one parameter that is a delegate..
+        /// </summary>
+        internal static string RBI0036Description {
+            get {
+                return ResourceManager.GetString("RBI0036Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The method &apos;{0}&apos; was marked as async but has 0 parameters when at least a single delegate parameter is required.
+        /// </summary>
+        internal static string RBI0036MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0036MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No parameters in async method.
+        /// </summary>
+        internal static string RBI0036Title {
+            get {
+                return ResourceManager.GetString("RBI0036Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A method marked as an async method should have its last parameter be a delegate..
+        /// </summary>
+        internal static string RBI0037Description {
+            get {
+                return ResourceManager.GetString("RBI0037Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The method &apos;{0}&apos; was marked as async but its last parameter is not a delegate.
+        /// </summary>
+        internal static string RBI0037MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0037MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last parameter is not a delegate.
+        /// </summary>
+        internal static string RBI0037Title {
+            get {
+                return ResourceManager.GetString("RBI0037Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A method that could be async was not marked as async..
+        /// </summary>
+        internal static string RBI0038Description {
+            get {
+                return ResourceManager.GetString("RBI0038Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The method &apos;{0}&apos; was not marked as async but it can be.
+        /// </summary>
+        internal static string RBI0038MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0038MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Possible async method missing async flag.
+        /// </summary>
+        internal static string RBI0038Title {
+            get {
+                return ResourceManager.GetString("RBI0038Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Two methods marked as async will result in the same async name..
+        /// </summary>
+        internal static string RBI0039Description {
+            get {
+                return ResourceManager.GetString("RBI0039Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The async name &apos;{0}&apos; used by &apos;{1}&apos; is already used by &apos;{2}&apos;.
+        /// </summary>
+        internal static string RBI0039MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0039MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Duplicated async name.
+        /// </summary>
+        internal static string RBI0039Title {
+            get {
+                return ResourceManager.GetString("RBI0039Title", resourceCulture);
+            }
+        }
     }
 }

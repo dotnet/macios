@@ -469,4 +469,69 @@
         <value>Duplicate selector</value>
     </data>
     
+    <!-- RBI0035 -->
+    
+    <data name="RBI0035Description" xml:space="preserve">
+        <value>A method marked as an async method should have void as its return type.</value>
+    </data>
+    <data name="RBI0035MessageFormat" xml:space="preserve">
+        <value>The method '{0}' was marked as async but its return type is not void</value>
+        <comment>{0} is the name of the method.</comment>
+    </data>
+    <data name="RBI0035Title" xml:space="preserve">
+        <value>Async method not returning void</value>
+    </data>
+    
+    <!-- RBI0036 -->
+    
+    <data name="RBI0036Description" xml:space="preserve">
+        <value>A method marked as an async method should have at least one parameter that is a delegate.</value>
+    </data>
+    <data name="RBI0036MessageFormat" xml:space="preserve">
+        <value>The method '{0}' was marked as async but has 0 parameters when at least a single delegate parameter is required</value>
+        <comment>{0} is the name of the method.</comment>
+    </data>
+    <data name="RBI0036Title" xml:space="preserve">
+        <value>No parameters in async method</value>
+    </data>
+    
+    <!-- RBI0037 -->
+    
+    <data name="RBI0037Description" xml:space="preserve">
+        <value>A method marked as an async method should have its last parameter be a delegate.</value>
+    </data>
+    <data name="RBI0037MessageFormat" xml:space="preserve">
+        <value>The method '{0}' was marked as async but its last parameter is not a delegate</value>
+        <comment>{0} is the name of the method.</comment>
+    </data>
+    <data name="RBI0037Title" xml:space="preserve">
+        <value>Last parameter is not a delegate</value>
+    </data>
+    
+    <!-- RBI0038 -->
+    
+    <data name="RBI0038Description" xml:space="preserve">
+        <value>A method that could be async was not marked as async.</value>
+    </data>
+    <data name="RBI0038MessageFormat" xml:space="preserve">
+        <value>The method '{0}' was not marked as async but it can be</value>
+        <comment>{0} is the name of the method.</comment>
+    </data>
+    <data name="RBI0038Title" xml:space="preserve">
+        <value>Possible async method missing async flag</value>
+    </data>
+    
+    <!-- RBI0039 -->
+    
+    <data name="RBI0039Description" xml:space="preserve">
+        <value>Two methods marked as async will result in the same async name.</value>
+    </data>
+    <data name="RBI0039MessageFormat" xml:space="preserve">
+        <value>The async name '{0}' used by '{1}' is already used by '{2}'</value>
+        <comment>{0} is the name of the async method, {1} is the name of the sync method and {2} is the name of the first ocurrance.</comment>
+    </data>
+    <data name="RBI0039Title" xml:space="preserve">
+        <value>Duplicated async name</value>
+    </data>
+    
 </root>

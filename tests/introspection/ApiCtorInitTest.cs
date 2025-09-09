@@ -228,6 +228,8 @@ namespace Introspection {
 			case "MTLTensorDescriptor":
 			case "MTLTensorReferenceType":
 			case "MTLTextureViewDescriptor":
+			case "MTLFXFrameInterpolatorDescriptor":
+			case "MTLFXTemporalDenoisedScalerDescriptor":
 				if (TestRuntime.IsSimulator)
 					return true;
 				break;

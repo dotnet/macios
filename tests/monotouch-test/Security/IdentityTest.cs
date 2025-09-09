@@ -32,6 +32,16 @@ namespace MonoTouchFixtures.Security {
 		}
 
 		[Test]
+		public void Create ()
+		{
+			TestRuntime.AssertXcodeVersion (26, 0);
+
+			using var identity = GetIdentity ();
+			using var newIdentity = SecIdentity.Create (identity.Certificate, identity.PrivateKey);
+			Assert.That (newIdentity, Is.Not.Null, "new identity");
+		}
+
+		[Test]
 		public void Identity ()
 		{
 			using (SecIdentity id = GetIdentity ()) {

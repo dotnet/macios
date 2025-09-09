@@ -15,6 +15,8 @@ using ObjCRuntime;
 
 namespace CoreText {
 
+	interface CTFontDescriptor : INativeObject { }
+
 	[Partial]
 	interface CTFontManager {
 		[Field ("kCTFontManagerRegisteredFontsChangedNotification")]

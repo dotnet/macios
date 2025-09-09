@@ -195,6 +195,9 @@
     <BundleResource Include="$(MonoTouchTestDirectory)\xamvideotest.mp4">
       <Link>xamvideotest.mp4</Link>
     </BundleResource>
+    <BundleResource Include="$(MonoTouchTestDirectory)\hummingbird.mov">
+      <Link>hummingbird.mov</Link>
+    </BundleResource>
     <BundleResource Include="$(MonoTouchTestDirectory)\CoreImage\xamarinmonkey.heic">
       <Link>CoreImage\xamarinmonkey.heic</Link>
     </BundleResource>

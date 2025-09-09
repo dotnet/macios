@@ -305,6 +305,7 @@ public partial class Generator {
 			break;
 		case "AVCameraCalibrationData":
 		case "MLModel":
+		case "NSString":
 		case "NSAttributedString":
 		case "NSData":
 			print ("return Runtime.GetNSObject <{0}> (GetHandle (\"{1}\"), false)!;", propertyType, propertyName);
@@ -390,6 +391,7 @@ public partial class Generator {
 		case "CIVector":
 		case "MLModel":
 		case "NSAttributedString":
+		case "NSString":
 		case "NSData":
 			// NSNumber should not be added - it should be bound as a int or a float
 			print ("SetValue (\"{0}\", value);", propertyName);

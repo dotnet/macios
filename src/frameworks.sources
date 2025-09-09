@@ -495,16 +495,23 @@ COREGRAPHICS_CORE_SOURCES = \
 	CoreGraphics/CGLayer.cs \
 	CoreGraphics/CGPath.cs \
 	CoreGraphics/CGPoint.cs \
+	CoreGraphics/CGPointDictionary.cs \
 	CoreGraphics/CGRect.cs \
+	CoreGraphics/CGRectDictionary.cs \
 	CoreGraphics/CGSize.cs \
+	CoreGraphics/CGSizeDictionary.cs \
 	CoreGraphics/CGVector.cs \
 	CoreGraphics/CGPDFDocument.cs \
 	CoreGraphics/CGPDFPage-2.cs \
 
 COREGRAPHICS_SOURCES = \
 	CoreGraphics/CGBitmapContext.cs \
+	CoreGraphics/CGBitmapInfo.cs \
+	CoreGraphics/CGBitmapParameters.cs \
 	CoreGraphics/CGContextPDF.cs \
 	CoreGraphics/CGColorConversionInfo.cs \
+	CoreGraphics/CGContentInfo.cs \
+	CoreGraphics/CGContentToneMappingInfo.cs \
 	CoreGraphics/CGDataConsumer.cs \
 	CoreGraphics/CGDataProvider.cs \
 	CoreGraphics/CGEventSource.cs \
@@ -522,8 +529,10 @@ COREGRAPHICS_SOURCES = \
 	CoreGraphics/CGPDFStream.cs \
 	CoreGraphics/CGPDFString.cs \
 	CoreGraphics/CGPdfTagType.cs \
+	CoreGraphics/CGRenderingBufferProvider.cs \
 	CoreGraphics/CGSession.cs \
 	CoreGraphics/CGShading.cs \
+	CoreGraphics/CGToneMappingOptions.cs \
 	CoreGraphics/NativeDrawingMethods.cs \
 	CoreGraphics/NSValue.cs \
 
@@ -548,7 +557,9 @@ COREIMAGE_SOURCES = \
 	CoreImage/CIFilter.cs \
 	CoreImage/CIImage.cs \
 	CoreImage/CISampler.cs \
+	CoreImage/CISystemToneMap.cs \
 	CoreImage/CIVector.cs \
+	CoreImage/ICISystemToneMapProtocol.cs \
 
 # CoreLocation
 
@@ -1571,6 +1582,11 @@ SECURITY_SOURCES = \
 	Security/SslConnection.cs \
 	Security/SslContext.cs \
 
+# SensitiveContentAnalysis
+
+SENSITIVECONTENTANALYSIS_SOURCES = \
+	SensitiveContentAnalysis/SCVideoStreamAnalyzer.cs \
+
 # SensorKit
 
 SENSORKIT_CORE_SOURCES = \
@@ -1765,6 +1781,7 @@ VIDEOTOOLBOX_SOURCES = \
 	VideoToolbox/VTDecompressionSession.cs \
 	VideoToolbox/VTFrameSilo.cs \
 	VideoToolbox/VTHdrPerFrameMetadataGenerationSession.cs \
+	VideoToolbox/VTLowLatencyFrameInterpolationConfiguration.cs \
 	VideoToolbox/VTMultiPassStorage.cs \
 	VideoToolbox/VTPixelRotationProperties.cs \
 	VideoToolbox/VTPixelRotationSession.cs \
@@ -1777,6 +1794,7 @@ VIDEOTOOLBOX_SOURCES = \
 	VideoToolbox/VTVideoEncoder.cs \
 	VideoToolbox/VTUtilities.cs \
 	VideoToolbox/VTPixelTransferProperties.cs \
+	VideoToolbox/VTMotionEstimationSession.cs \
 
 # Vision
 
@@ -2190,6 +2208,7 @@ IOS_FRAMEWORKS =         \
 	Speech \
 	SystemConfiguration \
 	ThreadNetwork \
+	TouchController \
 	Twitter \
 	UIKit XKit \
 	UserNotifications \

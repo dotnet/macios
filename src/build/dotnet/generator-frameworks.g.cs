@@ -139,6 +139,7 @@ partial class Frameworks {
 		"Symbols",
 		"SystemConfiguration",
 		"ThreadNetwork",
+		"TouchController",
 		"Twitter",
 		"UIKit",
 		"UniformTypeIdentifiers",
@@ -683,6 +684,7 @@ partial class Frameworks {
 	bool? _Symbols;
 	bool? _SystemConfiguration;
 	bool? _ThreadNetwork;
+	bool? _TouchController;
 	bool? _TVMLKit;
 	bool? _TVServices;
 	bool? _TVUIKit;
@@ -856,6 +858,7 @@ partial class Frameworks {
 	public bool HaveSymbols { get { if (!_Symbols.HasValue) _Symbols = GetValue ("Symbols"); return _Symbols.Value; } }
 	public bool HaveSystemConfiguration { get { if (!_SystemConfiguration.HasValue) _SystemConfiguration = GetValue ("SystemConfiguration"); return _SystemConfiguration.Value; } }
 	public bool HaveThreadNetwork { get { if (!_ThreadNetwork.HasValue) _ThreadNetwork = GetValue ("ThreadNetwork"); return _ThreadNetwork.Value; } }
+	public bool HaveTouchController { get { if (!_TouchController.HasValue) _TouchController = GetValue ("TouchController"); return _TouchController.Value; } }
 	public bool HaveTVMLKit { get { if (!_TVMLKit.HasValue) _TVMLKit = GetValue ("TVMLKit"); return _TVMLKit.Value; } }
 	public bool HaveTVServices { get { if (!_TVServices.HasValue) _TVServices = GetValue ("TVServices"); return _TVServices.Value; } }
 	public bool HaveTVUIKit { get { if (!_TVUIKit.HasValue) _TVUIKit = GetValue ("TVUIKit"); return _TVUIKit.Value; } }

@@ -105,6 +105,11 @@ namespace BackgroundTasks {
 		[Async]
 		[Export ("getPendingTaskRequestsWithCompletionHandler:")]
 		void GetPending (Action<BGTaskRequest []> completionHandler);
+
+		[NoMac, NoTV, NoMacCatalyst, iOS (26, 0)]
+		[Static]
+		[Export ("supportedResources")]
+		BGContinuedProcessingTaskRequestResources SupportedResources { get; }
 	}
 
 	[TV (17, 0), NoMac, iOS (17, 0), MacCatalyst (17, 0)]
@@ -116,6 +121,53 @@ namespace BackgroundTasks {
 	interface BGHealthResearchTaskRequest {
 		[Export ("protectionTypeOfRequiredData")]
 		string ProtectionTypeOfRequiredData { get; set; }
+	}
+
+	[NoTV, NoMacCatalyst, NoMac, iOS (26, 0)]
+	[BaseType (typeof (BGTask))]
+	interface BGContinuedProcessingTask : NSProgressReporting {
+		[Export ("title")]
+		string Title { get; }
+
+		[Export ("subtitle")]
+		string Subtitle { get; }
+
+		[Export ("updateTitle:subtitle:")]
+		void UpdateTitle (string title, string subtitle);
+	}
+
+	[NoTV, NoMacCatalyst, NoMac, iOS (26, 0)]
+	[BaseType (typeof (BGTaskRequest))]
+	interface BGContinuedProcessingTaskRequest {
+		[Export ("title")]
+		string Title { get; set; }
+
+		[Export ("subtitle")]
+		string Subtitle { get; set; }
+
+		[Export ("strategy", ArgumentSemantic.Assign)]
+		BGContinuedProcessingTaskRequestSubmissionStrategy Strategy { get; set; }
+
+		[Export ("requiredResources", ArgumentSemantic.Assign)]
+		BGContinuedProcessingTaskRequestResources RequiredResources { get; set; }
+
+		[Export ("initWithIdentifier:title:subtitle:")]
+		NativeHandle Constructor (string identifier, string title, string subtitle);
+	}
+
+	[NoTV, NoMacCatalyst, NoMac, iOS (26, 0)]
+	[Native]
+	public enum BGContinuedProcessingTaskRequestSubmissionStrategy : long {
+		Fail,
+		Queue,
+	}
+
+	[NoTV, NoMacCatalyst, NoMac, iOS (26, 0)]
+	[Native]
+	[Flags]
+	public enum BGContinuedProcessingTaskRequestResources : long {
+		Default = 0x0,
+		Gpu = (1L << 0),
 	}
 
 }

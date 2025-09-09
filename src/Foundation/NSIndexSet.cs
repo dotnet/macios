@@ -22,8 +22,6 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-#if MONOMAC
-
 using System;
 using System.Reflection;
 using System.Collections;
@@ -35,10 +33,6 @@ using ObjCRuntime;
 namespace Foundation {
 
 	public partial class NSIndexSet : IEnumerable, IEnumerable<nuint> {
-
-		/// <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
 		IEnumerator IEnumerable.GetEnumerator ()
 		{
 			if (this.Count == 0)
@@ -63,9 +57,8 @@ namespace Foundation {
 			}
 		}
 
-		/// <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Get all the indices in this index set as an array.</summary>
+		/// <returns>An array of all the indices in this index set.</returns>
 		public nuint [] ToArray ()
 		{
 			nuint [] indexes = new nuint [Count];
@@ -81,7 +74,7 @@ namespace Foundation {
 			return indexes;
 		}
 
-		internal T [] ToInt64EnumArray<T> () where T: System.Enum
+		internal T [] ToInt64EnumArray<T> () where T : System.Enum
 		{
 			var array = ToArray ();
 			var rv = new T [array.Length];
@@ -90,7 +83,7 @@ namespace Foundation {
 			return rv;
 		}
 
-		internal HashSet<T> ToInt64EnumHashSet<T> () where T: System.Enum
+		internal HashSet<T> ToInt64EnumHashSet<T> () where T : System.Enum
 		{
 			var array = ToArray ();
 			var rv = new HashSet<T> ();
@@ -99,10 +92,9 @@ namespace Foundation {
 			return rv;
 		}
 
-		/// <param name="items">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <returns>To be added.</returns>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Create a new <see cref="NSIndexSet" /> instance from an array of indices.</summary>
+		/// <param name="items">The indices to add to the new <see cref="NSIndexSet" />.</param>
+		/// <returns>A new <see cref="NSIndexSet" /> with the specified indices.</returns>
 		public static NSIndexSet FromArray (nuint [] items)
 		{
 			if (items is null)
@@ -114,10 +106,9 @@ namespace Foundation {
 			return indexSet;
 		}
 
-		/// <param name="items">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Create a new <see cref="NSIndexSet" /> instance from an array of indices.</summary>
+		/// <param name="items">The indices to add to the new <see cref="NSIndexSet" />.</param>
+		/// <returns>A new <see cref="NSIndexSet" /> with the specified indices.</returns>
 		public static NSIndexSet FromArray (uint [] items)
 		{
 			if (items is null)
@@ -129,10 +120,9 @@ namespace Foundation {
 			return indexSet;
 		}
 
-		/// <param name="items">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Create a new <see cref="NSIndexSet" /> instance from an array of indices.</summary>
+		/// <param name="items">The indices to add to the new <see cref="NSIndexSet" />.</param>
+		/// <returns>A new <see cref="NSIndexSet" /> with the specified indices.</returns>
 		public static NSIndexSet FromArray (int [] items)
 		{
 			if (items is null)
@@ -147,13 +137,16 @@ namespace Foundation {
 			return indexSet;
 		}
 
-		/// <param name="value">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Create a new <see cref="NSIndexSet" /> instance with the specified index.</summary>
+		/// <param name="value">The index to add to the new <see cref="NSIndexSet" />.</param>
+		/// <returns>A new <see cref="NSIndexSet" /> with the specified index.</returns>
 		public NSIndexSet (uint value) : this ((nuint) value)
 		{
 		}
 
+		/// <summary>Create a new <see cref="NSIndexSet" /> instance with the specified index.</summary>
+		/// <param name="value">The index to add to the new <see cref="NSIndexSet" />.</param>
+		/// <returns>A new <see cref="NSIndexSet" /> with the specified index.</returns>
 		public NSIndexSet (nint value) : this ((nuint) value)
 		{
 			if (value < 0)
@@ -161,9 +154,9 @@ namespace Foundation {
 			// init done by the base ctor
 		}
 
-		/// <param name="value">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Create a new <see cref="NSIndexSet" /> instance with the specified index.</summary>
+		/// <param name="value">The index to add to the new <see cref="NSIndexSet" />.</param>
+		/// <returns>A new <see cref="NSIndexSet" /> with the specified index.</returns>
 		public NSIndexSet (int value) : this ((nuint) (uint) value)
 		{
 			if (value < 0)
@@ -172,5 +165,3 @@ namespace Foundation {
 		}
 	}
 }
-
-#endif

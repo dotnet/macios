@@ -17,11 +17,11 @@ namespace Microsoft.Macios.Bindings.Analyzer.Validators;
 /// Compares tuples of (method name, ordered parameter types) to detect duplicate async method names.
 /// Being declared with the 'file' modifier keeps the helper local to this source file.
 /// </summary>
-file class AsyncNameComparer : IEqualityComparer<(string, TypeInfo[])> {
+file class AsyncNameComparer : IEqualityComparer<(string, TypeInfo [])> {
 	/// <summary>
 	/// Determines equality by requiring the same method name and identical ordered parameter type sequence.
 	/// </summary>
-	public bool Equals ((string, TypeInfo[]) x, (string, TypeInfo[]) y)
+	public bool Equals ((string, TypeInfo []) x, (string, TypeInfo []) y)
 	{
 		// has to be the same name and with the same parameter type in the same order to be considered equal
 		return x.Item1 == y.Item1 && x.Item2.SequenceEqual (y.Item2);
@@ -30,7 +30,7 @@ file class AsyncNameComparer : IEqualityComparer<(string, TypeInfo[])> {
 	/// <summary>
 	/// Computes a hash code combining the method name and ordered parameter types.
 	/// </summary>
-	public int GetHashCode ((string, TypeInfo[]) obj)
+	public int GetHashCode ((string, TypeInfo []) obj)
 	{
 		int hash = obj.Item1.GetHashCode ();
 		foreach (var t in obj.Item2)
@@ -211,7 +211,7 @@ sealed class ClassValidator : BindingValidator {
 		diagnostics = ImmutableArray<Diagnostic>.Empty;
 		var builder = ImmutableArray.CreateBuilder<Diagnostic> ();
 		// create a dictionary with a custom comparer that checks the method name and the parameter types
-		var asyncMethodNames = new Dictionary<(string Name, TypeInfo[] Arguments), List<(string SymbolName, Location? Location)>> (
+		var asyncMethodNames = new Dictionary<(string Name, TypeInfo [] Arguments), List<(string SymbolName, Location? Location)>> (
 			new AsyncNameComparer ());
 
 		foreach (var currentMethod in binding.Methods) {
@@ -238,7 +238,7 @@ sealed class ClassValidator : BindingValidator {
 					continue;
 				}
 
-				if (!currentMethod.Parameters[^1].Type.IsDelegate){
+				if (!currentMethod.Parameters [^1].Type.IsDelegate) {
 					// error, we need the last parameter to be a delegate type for the method to be async, report a diagnostic	
 					builder.Add (Diagnostic.Create (
 						descriptor: RBI0037,
@@ -251,7 +251,7 @@ sealed class ClassValidator : BindingValidator {
 					// across the binding for async methods. The async method name + parameter count has to be unique.
 					var asyncMethod = currentMethod.ToAsync ();
 					var asyncMethodKey = (
-						asyncMethod.Name, 
+						asyncMethod.Name,
 						asyncMethod.Parameters.Select (x => x.Type).ToArray ());
 					if (asyncMethodNames.TryGetValue (asyncMethodKey, out var list)) {
 						list.Add ((currentMethod.Name, currentMethod.Location));
@@ -275,7 +275,7 @@ sealed class ClassValidator : BindingValidator {
 				}
 			}
 		}
-		
+
 		// we have gone through all the methods, now we need to check if there are any duplicate async method names
 		var duplicates = asyncMethodNames.Where (x => x.Value.Count > 1).ToImmutableArray ();
 		if (duplicates.Length > 0) {
@@ -294,11 +294,11 @@ sealed class ClassValidator : BindingValidator {
 				}
 			}
 		}
-		
+
 		diagnostics = builder.ToImmutable ();
 		return diagnostics.Length == 0;
 	}
-	
+
 	/// <summary>
 	/// Initializes a new instance of the <see cref="ClassValidator"/> class.
 	/// </summary>
@@ -312,7 +312,7 @@ sealed class ClassValidator : BindingValidator {
 
 		// validate that the selectors are not duplicated, this includes properties and methods
 		AddGlobalStrategy ([RBI0034], SelectorsAreUnique);
-		
+
 		// validate async methods. This is a global strategy because it needs to look at all the methods in the binding
 		// are validated together so that async methods do not have the same names
 		AddGlobalStrategy ([RBI0035, RBI0036, RBI0037, RBI0038, RBI0039], ValidAsyncMethods);

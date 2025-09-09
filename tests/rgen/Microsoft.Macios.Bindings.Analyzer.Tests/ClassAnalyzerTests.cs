@@ -620,9 +620,9 @@ public partial class TestClass{
 				DiagnosticSeverity.Error,
 				"There is a mismatch between the arguments of 'AttributedStringByInflectingString' (found 0) and the selector 'isAttributedStringByInflectingString:' (found 1)"
 			];
-			
+
 			// async methods
-			
+
 			// async method not void
 			yield return [
 @"
@@ -659,7 +659,7 @@ public partial class TestClass{
 				DiagnosticSeverity.Error,
 				"The method 'GetCount' was marked as async but its return type is not void"
 			];
-			
+
 			// void but no args
 			yield return [
 				@"
@@ -696,7 +696,7 @@ public partial class TestClass{
 				DiagnosticSeverity.Error,
 				"The method 'GetCount' was marked as async but has 0 parameters when at least a single delegate parameter is required"
 			];
-			
+
 			// void but with args but no delegate
 			yield return [
 				@"
@@ -733,7 +733,7 @@ public partial class TestClass{
 				DiagnosticSeverity.Error,
 				"The method 'GetCount' was marked as async but its last parameter is not a delegate",
 			];
-			
+
 			// void but with delegate but with a duplicated async name
 			yield return [
 				@"
@@ -780,7 +780,7 @@ public partial class TestClass{
 				DiagnosticSeverity.Error,
 				"The async name 'GetCountAsync' used by 'GetCountSecond' is already used by 'GetCount'",
 			];
-			
+
 			// can async method but flag is missing
 			yield return [
 				@"
@@ -999,7 +999,7 @@ public partial class TestClass{
 }",
 				"RBI0034",
 			];
-			
+
 			// void but with delegate with a duplicated async name but with different args
 			yield return [
 				@"

@@ -91,7 +91,6 @@ namespace AddressBookUI {
 		void DidCompleteWithNewPerson (ABNewPersonViewController controller, [NullAllowed] ABPerson person);
 	}
 
-	/// <include file="../docs/api/AddressBookUI/IABNewPersonViewControllerDelegate.xml" path="/Documentation/Docs[@DocId='T:AddressBookUI.IABNewPersonViewControllerDelegate']/*" />
 	interface IABNewPersonViewControllerDelegate { }
 
 	/// <include file="../docs/api/AddressBookUI/ABPeoplePickerNavigationController.xml" path="/Documentation/Docs[@DocId='T:AddressBookUI.ABPeoplePickerNavigationController']/*" />
@@ -234,12 +233,6 @@ namespace AddressBookUI {
 		void DidSelectPerson (ABPeoplePickerNavigationController peoplePicker, ABPerson selectedPerson, int /* ABPropertyId = int32 */ propertyId, int /* ABMultiValueIdentifier = int32 */ identifier);
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="AddressBookUI.ABPeoplePickerNavigationControllerDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="AddressBookUI.ABPeoplePickerNavigationControllerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="AddressBookUI.ABPeoplePickerNavigationControllerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="AddressBookUI.ABPeoplePickerNavigationControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IABPeoplePickerNavigationControllerDelegate { }
 
 	/// <summary>A <see cref="UIKit.UIViewController" /> that displays the data of an <see cref="AddressBook.ABPerson" />.</summary>
@@ -510,7 +503,6 @@ namespace AddressBookUI {
 		bool ShouldPerformDefaultActionForPerson (ABPersonViewController personViewController, ABPerson person, int /* ABPropertyID = int32 */ propertyId, int /* ABMultiValueIdentifier = int32 */ identifier);
 	}
 
-	/// <include file="../docs/api/AddressBookUI/IABPersonViewControllerDelegate.xml" path="/Documentation/Docs[@DocId='T:AddressBookUI.IABPersonViewControllerDelegate']/*" />
 	interface IABPersonViewControllerDelegate { }
 
 	/// <summary>A <see cref="UIKit.UIViewController" /> that allows the application user to enter data and create a new person record.</summary>
@@ -622,11 +614,5 @@ namespace AddressBookUI {
 		[Export ("unknownPersonViewController:shouldPerformDefaultActionForPerson:property:identifier:")]
 		bool ShouldPerformDefaultActionForPerson (ABUnknownPersonViewController personViewController, ABPerson person, int /* ABPropertyID = int32 */ propertyId, int /* ABMultiValueIdentifier = int32 */ identifier);
 	}
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="AddressBookUI.ABUnknownPersonViewControllerDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="AddressBookUI.ABUnknownPersonViewControllerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="AddressBookUI.ABUnknownPersonViewControllerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="AddressBookUI.ABUnknownPersonViewControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IABUnknownPersonViewControllerDelegate { }
 }

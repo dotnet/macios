@@ -12,6 +12,50 @@ namespace Xamarin.Tests {
 	public class WindowsTest : TestBaseClass {
 
 		[Category ("Windows")]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64")]
+		[TestCase (ApplePlatform.TVOS, "tvossimulator-x64")]
+		public void BundleStructureNonRemotablePlatforms (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.IgnoreIfNotOnWindows ();
+
+			var project = "BundleStructure";
+			var configuration = "Debug";
+			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath, configuration: configuration);
+			var project_dir = Path.GetDirectoryName (Path.GetDirectoryName (project_path))!;
+			Clean (project_path);
+
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+
+			// For any platform other than iOS, all we care about is that project builds, we don't care about the built app.
+			// So assert that the project builds.
+			DotNet.AssertBuild (project_path, properties);
+		}
+
+		[Category ("Windows")]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64")]
+		[TestCase (ApplePlatform.TVOS, "tvossimulator-x64")]
+		public void BuildAppWithXCFrameworkWithSymlinks (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.IgnoreIfNotOnWindows ();
+
+			var project = "AppWithXCFrameworkWithSymlinks";
+			var configuration = "Debug";
+			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath, configuration: configuration);
+			var project_dir = Path.GetDirectoryName (Path.GetDirectoryName (project_path))!;
+			Clean (project_path);
+
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+
+			// For any platform other than iOS, all we care about is that project builds, we don't care about the built app.
+			// So assert that the project builds.
+			DotNet.AssertBuild (project_path, properties);
+		}
+
+		[Category ("Windows")]
 		[TestCase (ApplePlatform.iOS, "ios-arm64")]
 		public void BundleStructureWithHotRestart (ApplePlatform platform, string runtimeIdentifiers)
 		{

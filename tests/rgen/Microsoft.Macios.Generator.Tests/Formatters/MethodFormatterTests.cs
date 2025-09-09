@@ -555,6 +555,16 @@ public partial class MyClass {
 }
 ";
 			yield return [nullableIntPtrReturnMethod, $"public partial {Global ("System.IntPtr")}? TestMethod (string myParam, int myParamInt)"];
+			const string extensionMethod = @"
+using System;
+using ObjCBindings;
+namespace NS;
+[BindingType<Class>]
+public partial static class MyClass {
+	public static partial IntPtr? TestMethod(this string self, string myParam, int myParamInt);
+}
+";
+			yield return [extensionMethod, $"public static partial {Global ("System.IntPtr")}? TestMethod (this string self, string myParam, int myParamInt)"];
 		}
 
 		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();

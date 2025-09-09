@@ -517,12 +517,10 @@ namespace Xamarin.Mac.Tests {
 			b.ReleaseGlobally ();
 		}
 
-		class MyPasteboard2 : NSObject, INSPasteboardReading
-		{
+		class MyPasteboard2 : NSObject, INSPasteboardReading {
 		}
 
-		class MyPasteboard : NSObject, INSPasteboardWriting
-		{
+		class MyPasteboard : NSObject, INSPasteboardWriting {
 			NSObject INSPasteboardWriting.GetPasteboardPropertyListForType (string type)
 			{
 				return new NSObject ();

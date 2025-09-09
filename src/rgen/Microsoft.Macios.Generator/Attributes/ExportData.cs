@@ -5,6 +5,8 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using Microsoft.CodeAnalysis;
+using Microsoft.Macios.Generator.Context;
+using Microsoft.Macios.Generator.Extensions;
 using ObjCRuntime;
 using TypeInfo = Microsoft.Macios.Generator.DataModel.TypeInfo;
 
@@ -17,6 +19,21 @@ namespace Microsoft.Macios.Generator.Attributes;
 readonly struct ExportData<T> : IEquatable<ExportData<T>> where T : Enum {
 
 	/// <summary>
+	/// The initialization state of the struct.
+	/// </summary>
+	StructState State { get; init; } = StructState.Default;
+
+	/// <summary>
+	/// Gets the default, uninitialized instance of <see cref="ExportData{T}"/>.
+	/// </summary>
+	public static ExportData<T> Default { get; } = new (StructState.Default);
+
+	/// <summary>
+	/// Gets a value indicating whether the instance is the default, uninitialized instance.
+	/// </summary>
+	public bool IsNullOrDefault => State == StructState.Default;
+
+	/// <summary>
 	/// The exported native selector.
 	/// </summary>
 	public string? Selector { get; }
@@ -24,7 +41,7 @@ readonly struct ExportData<T> : IEquatable<ExportData<T>> where T : Enum {
 	/// <summary>
 	/// The configuration flags used on the exported member.
 	/// </summary>
-	public T? Flags { get; init; }
+	public T Flags { get; init; }
 
 	/// <summary>
 	/// Argument semantics to use with the selector.
@@ -58,7 +75,7 @@ readonly struct ExportData<T> : IEquatable<ExportData<T>> where T : Enum {
 	/// <summary>
 	/// The type of the result for an async method.
 	/// </summary>
-	public TypeInfo? ResultType { get; init; }
+	public TypeInfo ResultType { get; init; } = TypeInfo.Default;
 
 	/// <summary>
 	/// The name of the generated async method.
@@ -78,27 +95,77 @@ readonly struct ExportData<T> : IEquatable<ExportData<T>> where T : Enum {
 	/// <summary>
 	/// The type of the strong delegate for a weak delegate property.
 	/// </summary>
-	public TypeInfo? StrongDelegateType { get; init; }
+	public TypeInfo StrongDelegateType { get; init; } = TypeInfo.Default;
 
 	/// <summary>
 	/// The name of the strong delegate for a weak delegate property.
 	/// </summary>
 	public string? StrongDelegateName { get; init; }
 
-	public ExportData () { }
+	/// <summary>
+	/// The type of the dictionary key class for strong dictionary properties.
+	/// </summary>
+	public TypeInfo StrongDictionaryKeyClass { get; init; } = TypeInfo.Default;
 
-	public ExportData (string? selector)
+	/// <summary>
+	/// The type of the event arguments for an event.
+	/// </summary>
+	public TypeInfo EventArgsType { get; init; } = TypeInfo.Default;
+
+	/// <summary>
+	/// The name of the event arguments type for an event.
+	/// </summary>
+	public string? EventArgsTypeName { get; init; }
+
+	/// <summary>
+	/// The location of the attribute in source code.
+	/// </summary>
+	public Location? Location { get; init; }
+
+	/// <summary>
+	/// Initializes a new instance of the <see cref="ExportData{T}"/> struct.
+	/// </summary>
+	public ExportData () : this (StructState.Initialized) { }
+
+	/// <summary>
+	/// Initializes a new instance of the <see cref="ExportData{T}"/> struct.
+	/// </summary>
+	/// <param name="state">The initialization state.</param>
+	public ExportData (StructState state)
 	{
-		Selector = selector;
+		State = state;
+		Flags = default!;
 	}
 
-	public ExportData (string? selector, ArgumentSemantic argumentSemantic)
+	/// <summary>
+	/// Initializes a new instance of the <see cref="ExportData{T}"/> struct.
+	/// </summary>
+	/// <param name="selector">The exported native selector.</param>
+	public ExportData (string? selector) : this (StructState.Initialized)
+	{
+		Selector = selector;
+		Flags = default!;
+	}
+
+	/// <summary>
+	/// Initializes a new instance of the <see cref="ExportData{T}"/> struct.
+	/// </summary>
+	/// <param name="selector">The exported native selector.</param>
+	/// <param name="argumentSemantic">Argument semantics to use with the selector.</param>
+	public ExportData (string? selector, ArgumentSemantic argumentSemantic) : this (StructState.Initialized)
 	{
 		Selector = selector;
 		ArgumentSemantic = argumentSemantic;
+		Flags = default!;
 	}
 
-	public ExportData (string? selector, ArgumentSemantic argumentSemantic, T flags)
+	/// <summary>
+	/// Initializes a new instance of the <see cref="ExportData{T}"/> struct.
+	/// </summary>
+	/// <param name="selector">The exported native selector.</param>
+	/// <param name="argumentSemantic">Argument semantics to use with the selector.</param>
+	/// <param name="flags">The configuration flags used on the exported member.</param>
+	public ExportData (string? selector, ArgumentSemantic argumentSemantic, T flags) : this (StructState.Initialized)
 	{
 		Selector = selector;
 		ArgumentSemantic = argumentSemantic;
@@ -109,14 +176,15 @@ readonly struct ExportData<T> : IEquatable<ExportData<T>> where T : Enum {
 	/// Try to parse the attribute data to retrieve the information of an ExportAttribute&lt;T&gt;.
 	/// </summary>
 	/// <param name="attributeData">The attribute data to be parsed.</param>
+	/// <param name="context">The root context.</param>
 	/// <param name="data">The parsed data. Null if we could not parse the attribute data.</param>
 	/// <returns>True if the data was parsed.</returns>
-	public static bool TryParse (AttributeData attributeData,
+	public static bool TryParse (AttributeData attributeData, RootContext context,
 		[NotNullWhen (true)] out ExportData<T>? data)
 	{
 		data = null;
 		var count = attributeData.ConstructorArguments.Length;
-		string? selector = null;
+		string? selector;
 		ArgumentSemantic argumentSemantic = ArgumentSemantic.None;
 		T? flags = default;
 
@@ -125,13 +193,18 @@ readonly struct ExportData<T> : IEquatable<ExportData<T>> where T : Enum {
 		string? nativeSuffix = null;
 		string? library = null;
 		// async related data
-		TypeInfo? resultType = null;
+		TypeInfo resultType = TypeInfo.Default;
 		string? methodName = null;
 		string? resultTypeName = null;
 		string? postNonResultSnippet = null;
 		// weak delegate related data
-		TypeInfo? strongDelegateType = null;
+		TypeInfo strongDelegateType = TypeInfo.Default;
 		string? strongDelegateName = null;
+		// strong dictionary related data
+		TypeInfo strongDictionaryKeyClass = TypeInfo.Default;
+		// event args related data
+		TypeInfo eventArgsType = TypeInfo.Default;
+		string? eventArgsTypeName = null;
 
 		switch (count) {
 		case 1:
@@ -161,8 +234,9 @@ readonly struct ExportData<T> : IEquatable<ExportData<T>> where T : Enum {
 		}
 
 		if (attributeData.NamedArguments.Length == 0) {
-			data = flags is not null ?
-				new (selector, argumentSemantic, flags) : new (selector, argumentSemantic);
+			data = flags is not null
+				? new (selector, argumentSemantic, flags) { Location = attributeData.GetLocation () }
+				: new (selector, argumentSemantic) { Location = attributeData.GetLocation () };
 			return true;
 		}
 
@@ -176,7 +250,9 @@ readonly struct ExportData<T> : IEquatable<ExportData<T>> where T : Enum {
 
 		// from this point we have to check the name of the argument AND if the export method is an Async method.
 		var isAsync = typeof (T) == typeof (ObjCBindings.Method) && flags is not null && flags.HasFlag (ObjCBindings.Method.Async);
+		var isEvent = typeof (T) == typeof (ObjCBindings.Method) && flags is not null && flags.HasFlag (ObjCBindings.Method.Event);
 		var isWeakDelegate = typeof (T) == typeof (ObjCBindings.Property) && flags is not null && flags.HasFlag (ObjCBindings.Property.WeakDelegate);
+		var isStrongDictionaryProperty = typeof (T) == typeof (ObjCBindings.StrongDictionaryProperty);
 
 		// loop over all the named arguments and set the data accordingly, ignore the Flags one since we already set it
 		foreach (var (name, value) in attrsDict) {
@@ -202,7 +278,7 @@ readonly struct ExportData<T> : IEquatable<ExportData<T>> where T : Enum {
 			// async related data
 			case "ResultType":
 				if (isAsync) {
-					resultType = new ((INamedTypeSymbol) value!);
+					resultType = new ((INamedTypeSymbol) value!, context);
 				}
 				break;
 			case "MethodName":
@@ -223,12 +299,29 @@ readonly struct ExportData<T> : IEquatable<ExportData<T>> where T : Enum {
 			// weak delegate related data
 			case "StrongDelegateType":
 				if (isWeakDelegate) {
-					strongDelegateType = new ((INamedTypeSymbol) value!);
+					strongDelegateType = new ((INamedTypeSymbol) value!, context);
 				}
 				break;
 			case "StrongDelegateName":
 				if (isWeakDelegate) {
 					strongDelegateName = (string?) value!;
+				}
+				break;
+			// strong dictionary related data
+			case "StrongDictionaryKeyClass":
+				if (isStrongDictionaryProperty) {
+					strongDictionaryKeyClass = new ((INamedTypeSymbol) value!, context);
+				}
+				break;
+			// event args related data
+			case "EventArgsType":
+				if (isEvent) {
+					eventArgsType = new ((INamedTypeSymbol) value!, context);
+				}
+				break;
+			case "EventArgsTypeName":
+				if (isEvent) {
+					eventArgsTypeName = (string?) value!;
 				}
 				break;
 			default:
@@ -243,13 +336,19 @@ readonly struct ExportData<T> : IEquatable<ExportData<T>> where T : Enum {
 				NativeSuffix = nativeSuffix,
 				Library = library,
 				// set the data for async methods only if the flags are set
-				ResultType = isAsync ? resultType : null,
+				ResultType = isAsync ? resultType : TypeInfo.Default,
 				MethodName = isAsync ? methodName : null,
 				ResultTypeName = isAsync ? resultTypeName : null,
 				PostNonResultSnippet = isAsync ? postNonResultSnippet : null,
 				// we set the data for the weak delegate only if the flags are set
-				StrongDelegateType = isWeakDelegate ? strongDelegateType : null,
-				StrongDelegateName = isWeakDelegate ? strongDelegateName : null
+				StrongDelegateType = isWeakDelegate ? strongDelegateType : TypeInfo.Default,
+				StrongDelegateName = isWeakDelegate ? strongDelegateName : null,
+				// we set the data for the strong dictionary only if the flags are set
+				StrongDictionaryKeyClass = isStrongDictionaryProperty ? strongDictionaryKeyClass : TypeInfo.Default,
+				// we set the data for the event args only if the flags are set
+				EventArgsType = isEvent ? eventArgsType : TypeInfo.Default,
+				EventArgsTypeName = isEvent ? eventArgsTypeName : null,
+				Location = attributeData.GetLocation (),
 			};
 			return true;
 		}
@@ -257,7 +356,8 @@ readonly struct ExportData<T> : IEquatable<ExportData<T>> where T : Enum {
 		data = new (selector, argumentSemantic) {
 			NativePrefix = nativePrefix,
 			NativeSuffix = nativeSuffix,
-			Library = library
+			Library = library,
+			Location = attributeData.GetLocation (),
 		};
 		return true;
 	}
@@ -265,6 +365,8 @@ readonly struct ExportData<T> : IEquatable<ExportData<T>> where T : Enum {
 	/// <inheritdoc />
 	public bool Equals (ExportData<T> other)
 	{
+		if (State == StructState.Default && other.State == StructState.Default)
+			return true;
 		if (Selector != other.Selector)
 			return false;
 		if (ArgumentSemantic != other.ArgumentSemantic)
@@ -283,11 +385,13 @@ readonly struct ExportData<T> : IEquatable<ExportData<T>> where T : Enum {
 			return false;
 		if (PostNonResultSnippet != other.PostNonResultSnippet)
 			return false;
+		if (StrongDictionaryKeyClass != other.StrongDictionaryKeyClass)
+			return false;
 		return (Flags, other.Flags) switch {
 			(null, null) => true,
 			(null, _) => false,
 			(_, null) => false,
-			(_, _) => Flags!.Equals (other.Flags)
+			(_, _) => Flags.Equals (other.Flags)
 		};
 	}
 
@@ -303,11 +407,23 @@ readonly struct ExportData<T> : IEquatable<ExportData<T>> where T : Enum {
 		return HashCode.Combine (Selector, Flags);
 	}
 
+	/// <summary>
+	/// Compares two <see cref="ExportData{T}"/> instances for equality.
+	/// </summary>
+	/// <param name="x">The first instance.</param>
+	/// <param name="y">The second instance.</param>
+	/// <returns><c>true</c> if the instances are equal, <c>false</c> otherwise.</returns>
 	public static bool operator == (ExportData<T> x, ExportData<T> y)
 	{
 		return x.Equals (y);
 	}
 
+	/// <summary>
+	/// Compares two <see cref="ExportData{T}"/> instances for inequality.
+	/// </summary>
+	/// <param name="x">The first instance.</param>
+	/// <param name="y">The second instance.</param>
+	/// <returns><c>true</c> if the instances are not equal, <c>false</c> otherwise.</returns>
 	public static bool operator != (ExportData<T> x, ExportData<T> y)
 	{
 		return !(x == y);
@@ -316,6 +432,10 @@ readonly struct ExportData<T> : IEquatable<ExportData<T>> where T : Enum {
 	/// <inheritdoc />
 	public override string ToString ()
 	{
+		var resultTypeName = ResultType.IsNullOrDefault ? "null" : ResultType.FullyQualifiedName;
+		var strongDelegateTypeName = StrongDelegateType.IsNullOrDefault ? "null" : StrongDelegateType.FullyQualifiedName;
+		var strongDictionaryKeyClassName = StrongDictionaryKeyClass.IsNullOrDefault ? "null" : StrongDictionaryKeyClass.FullyQualifiedName;
+
 		var sb = new StringBuilder ("{ Type: '");
 		sb.Append (typeof (T).FullName);
 		sb.Append ("', Selector: '");
@@ -331,13 +451,17 @@ readonly struct ExportData<T> : IEquatable<ExportData<T>> where T : Enum {
 		sb.Append ("', Library: '");
 		sb.Append (Library ?? "null");
 		sb.Append ("', ResultType: '");
-		sb.Append (ResultType?.FullyQualifiedName ?? "null");
+		sb.Append (resultTypeName);
 		sb.Append ("', MethodName: '");
 		sb.Append (MethodName ?? "null");
 		sb.Append ("', ResultTypeName: '");
 		sb.Append (ResultTypeName ?? "null");
 		sb.Append ("', PostNonResultSnippet: '");
 		sb.Append (PostNonResultSnippet ?? "null");
+		sb.Append ("', StrongDelegateType: '");
+		sb.Append (strongDelegateTypeName);
+		sb.Append ("', StrongDictionaryKeysClass: '");
+		sb.Append (strongDictionaryKeyClassName);
 		sb.Append ("' }");
 		return sb.ToString ();
 	}

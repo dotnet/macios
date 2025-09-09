@@ -45,7 +45,7 @@ myImageView.Image = UIImage.FromImage (cgimage);
          Produces the following output:
       </para>
       <para>
-        <img href="~/CoreImage/_images/random_generator.png" alt="Result of applying the filter." />
+        <img href="~/xml/CoreImage/_images/random_generator.png" alt="Result of applying the filter." />
       </para>
     </remarks>
   </Docs>

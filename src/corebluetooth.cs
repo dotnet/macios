@@ -457,12 +457,6 @@ namespace CoreBluetooth {
 		NSString ScanOptionsKey { get; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="CoreBluetooth.CBCentralManagerDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="CoreBluetooth.CBCentralManagerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="CoreBluetooth.CBCentralManagerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="CoreBluetooth.CBCentralManagerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface ICBCentralManagerDelegate { }
 
 	/// <summary>Delegate objects for <see cref="CoreBluetooth.CBCentralManager" /> objects.</summary>
@@ -765,9 +759,8 @@ namespace CoreBluetooth {
 		CBCharacteristic Characteristic { get; }
 	}
 
-	/// <summary>A mutable <see cref="Corebluetooth.CBDescriptor" />.</summary>
-	///     
-	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CoreBluetooth/Reference/CBMutableDescriptor_Class/index.html">Apple documentation for <c>CBMutableDescriptor</c></related>
+	/// <summary>A mutable <see cref="CBDescriptor" />.</summary>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CoreBluetooth/Reference/CBMutableDescriptor_Class/index.html">Apple documentation for <c>CBMutableDescriptor</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CBDescriptor))]
 	[DisableDefaultCtor]
@@ -935,12 +928,6 @@ namespace CoreBluetooth {
 		bool AncsAuthorized { get; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="CoreBluetooth.CBPeripheralDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="CoreBluetooth.CBPeripheralDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="CoreBluetooth.CBPeripheralDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="CoreBluetooth.CBPeripheralDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface ICBPeripheralDelegate { }
 
 	/// <summary>Delegate object for <see cref="CoreBluetooth.CBPeripheral" />. Provides methods called on events relating to discovery, exploration, and interaction with a remote peripheral.</summary>
@@ -1152,12 +1139,12 @@ namespace CoreBluetooth {
 		CBService [] IncludedServices { get; [NotImplemented ("Not available on 'CBService', only available on CBMutableService.")] set; }
 
 		/// <summary>The list of characteristics discovered by this service.</summary>
-		///         <value>Array of CBCharacteristic objects.</value>
-		///         <remarks>
-		/// 	  The contents of this property are only updated after you
-		/// 	  have initiated a characteristic discovery using the <see cref="CoreBluetooth.CBPeripheral.DiscoverCharacteristic" />
-		/// 	  method.
-		/// 	</remarks>
+		/// <value>Array of CBCharacteristic objects.</value>
+		/// <remarks>
+		///   The contents of this property are only updated after you
+		///   have initiated a characteristic discovery using the <see cref="CoreBluetooth.CBPeripheral.DiscoverCharacteristics(CBUUID[],CBService)" />
+		///   method.
+		/// </remarks>
 		[Export ("characteristics", ArgumentSemantic.Retain)]
 		[NullAllowed]
 		CBCharacteristic [] Characteristics { get; [NotImplemented ("Not available on 'CBService', only available on CBMutableService.")] set; }
@@ -1393,9 +1380,8 @@ namespace CoreBluetooth {
 		nuint MaximumUpdateValueLength { get; }
 	}
 
-	/// <summary>Manages published services per the <see cref="Coreblutooth.CBPeripheral" /> device's GATT database.</summary>
-	///     
-	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CoreBluetooth/Reference/CBPeripheralManager_Class/index.html">Apple documentation for <c>CBPeripheralManager</c></related>
+	/// <summary>Manages published services per the <see cref="CBPeripheral" /> device's GATT database.</summary>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CoreBluetooth/Reference/CBPeripheralManager_Class/index.html">Apple documentation for <c>CBPeripheralManager</c></related>
 	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (CBManager), Delegates = new [] { "WeakDelegate" }, Events = new [] { typeof (CBPeripheralManagerDelegate) })]
@@ -1574,12 +1560,6 @@ namespace CoreBluetooth {
 		NSString RestoredStateAdvertisementDataKey { get; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="CoreBluetooth.CBPeripheralManagerDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="CoreBluetooth.CBPeripheralManagerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="CoreBluetooth.CBPeripheralManagerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="CoreBluetooth.CBPeripheralManagerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface ICBPeripheralManagerDelegate { }
 
 	/// <summary>Delegate object for <see cref="CoreBluetooth.CBPeripheralManager" />. Adds methods for events relating to availability, publishing, advertising, and subscription.</summary>

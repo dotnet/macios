@@ -28,7 +28,7 @@ public class GeneralPropertyTests {
 			modifiers: [Token (SyntaxKind.StaticKeyword)],
 			accessors: []
 		) {
-			ExportFieldData = new ()
+			ExportFieldData = new (StructState.Initialized)
 		};
 		Assert.Equal ($"_{propertyName}", property.BackingField);
 	}
@@ -47,7 +47,7 @@ public class GeneralPropertyTests {
 			modifiers: isStatic ? [Token (SyntaxKind.StaticKeyword)] : [],
 			accessors: []
 		) {
-			ExportFieldData = null,
+			ExportFieldData = FieldInfo<ObjCBindings.Property>.Default,
 		};
 		Assert.Equal (Nomenclator.GetPropertyBackingFieldName (propertyName, isStatic), property.BackingField);
 	}
@@ -303,14 +303,14 @@ public class GeneralPropertyTests {
 			new (
 				accessorKind: AccessorKind.Getter,
 				symbolAvailability: new (),
-				exportPropertyData: null,
+				exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 				attributes: [],
 				modifiers: []
 			),
 			new (
 				accessorKind: AccessorKind.Setter,
 				symbolAvailability: new (),
-				exportPropertyData: null,
+				exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 				attributes: [],
 				modifiers: []
 			),
@@ -324,7 +324,7 @@ public class GeneralPropertyTests {
 			new (
 				accessorKind: AccessorKind.Getter,
 				symbolAvailability: new (),
-				exportPropertyData: null,
+				exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 				attributes: [],
 				modifiers: []
 			),
@@ -386,14 +386,14 @@ public class GeneralPropertyTests {
 			new (
 				accessorKind: AccessorKind.Getter,
 				symbolAvailability: new (),
-				exportPropertyData: null,
+				exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 				attributes: [],
 				modifiers: []
 			),
 			new (
 				accessorKind: AccessorKind.Setter,
 				symbolAvailability: new (),
-				exportPropertyData: null,
+				exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 				attributes: [],
 				modifiers: []
 			),
@@ -407,14 +407,14 @@ public class GeneralPropertyTests {
 			new (
 				accessorKind: AccessorKind.Getter,
 				symbolAvailability: new (),
-				exportPropertyData: null,
+				exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 				attributes: [],
 				modifiers: []
 			),
 			new (
 				accessorKind: AccessorKind.Setter,
 				symbolAvailability: new (),
-				exportPropertyData: null,
+				exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 				attributes: [],
 				modifiers: []
 			),
@@ -475,7 +475,7 @@ public class GeneralPropertyTests {
 	[InlineData (true, true, false, false)]
 	public void ToStrongDelegate (bool isProperty, bool isWeakDelegate, bool hasStrongDelegateType, bool shouldChange)
 	{
-		TypeInfo? strongDelegateType = hasStrongDelegateType ? ReturnTypeForNSObject ("StrongDelegate") : null;
+		TypeInfo strongDelegateType = hasStrongDelegateType ? ReturnTypeForNSObject ("StrongDelegate") : TypeInfo.Default;
 		var flags = isWeakDelegate ? ObjCBindings.Property.WeakDelegate : ObjCBindings.Property.Default;
 		var property = new Property (
 			name: "Test",
@@ -506,7 +506,7 @@ public class GeneralPropertyTests {
 
 		if (shouldChange) {
 			Assert.NotEqual (property, newProperty);
-			Assert.Equal (strongDelegateType!.Value.WithNullable (true), newProperty.ReturnType);
+			Assert.Equal (strongDelegateType.WithNullable (true), newProperty.ReturnType);
 		} else {
 			Assert.Equal (property, newProperty);
 		}

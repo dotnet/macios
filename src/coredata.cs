@@ -1274,12 +1274,6 @@ namespace CoreData {
 
 	interface INSFetchedResultsControllerDelegate { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="CoreData.NSFetchedResultsControllerDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="CoreData.NSFetchedResultsControllerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="CoreData.NSFetchedResultsControllerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="CoreData.NSFetchedResultsControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
@@ -1333,7 +1327,6 @@ namespace CoreData {
 		string SectionFor (NSFetchedResultsController controller, string sectionName);
 	}
 
-	/// <include file="../docs/api/CoreData/INSFetchedResultsSectionInfo.xml" path="/Documentation/Docs[@DocId='T:CoreData.INSFetchedResultsSectionInfo']/*" />
 	[NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
@@ -2181,17 +2174,14 @@ namespace CoreData {
 		[NullAllowed, Export ("parentContext", ArgumentSemantic.Retain)]
 		NSManagedObjectContext ParentContext { get; set; }
 
-		/// <include file="../docs/api/CoreData/NSManagedObjectContext.xml" path="/Documentation/Docs[@DocId='P:CoreData.NSManagedObjectContext.ObjectsDidChangeNotification']/*" />
 		[Field ("NSManagedObjectContextObjectsDidChangeNotification")]
 		[Notification (typeof (NSManagedObjectChangeEventArgs))]
 		NSString ObjectsDidChangeNotification { get; }
 
-		/// <include file="../docs/api/CoreData/NSManagedObjectContext.xml" path="/Documentation/Docs[@DocId='P:CoreData.NSManagedObjectContext.DidSaveNotification']/*" />
 		[Field ("NSManagedObjectContextDidSaveNotification")]
 		[Notification (typeof (NSManagedObjectChangeEventArgs))]
 		NSString DidSaveNotification { get; }
 
-		/// <include file="../docs/api/CoreData/NSManagedObjectContext.xml" path="/Documentation/Docs[@DocId='P:CoreData.NSManagedObjectContext.WillSaveNotification']/*" />
 		[Field ("NSManagedObjectContextWillSaveNotification")]
 		[Notification ()]
 		NSString WillSaveNotification { get; }
@@ -4156,12 +4146,10 @@ namespace CoreData {
 		[Field ("NSStoreTypeKey")]
 		NSString StoreTypeKey { get; }
 
-		/// <include file="../docs/api/CoreData/NSPersistentStoreCoordinator.xml" path="/Documentation/Docs[@DocId='P:CoreData.NSPersistentStoreCoordinator.StoresDidChangeNotification']/*" />
 		[Notification]
 		[Field ("NSPersistentStoreCoordinatorStoresDidChangeNotification")]
 		NSString StoresDidChangeNotification { get; }
 
-		/// <include file="../docs/api/CoreData/NSPersistentStoreCoordinator.xml" path="/Documentation/Docs[@DocId='P:CoreData.NSPersistentStoreCoordinator.WillRemoveStoreNotification']/*" />
 		[Notification]
 		[Field ("NSPersistentStoreCoordinatorWillRemoveStoreNotification")]
 		NSString WillRemoveStoreNotification { get; }
@@ -4171,7 +4159,6 @@ namespace CoreData {
 		[return: NullAllowed]
 		NSObject Execute (NSPersistentStoreRequest request, NSManagedObjectContext context, out NSError error);
 
-		/// <include file="../docs/api/CoreData/NSPersistentStoreCoordinator.xml" path="/Documentation/Docs[@DocId='P:CoreData.NSPersistentStoreCoordinator.DidImportUbiquitousContentChangesNotification']/*" />
 		[NoTV]
 		[Notification]
 		[Deprecated (PlatformName.iOS, 10, 0, message: "Please see the release notes and Core Data documentation.")]
@@ -4233,7 +4220,6 @@ namespace CoreData {
 		[Export ("removeUbiquitousContentAndPersistentStoreAtURL:options:error:")]
 		bool RemoveUbiquitousContentAndPersistentStore (NSUrl storeUrl, [NullAllowed] NSDictionary options, out NSError error);
 
-		/// <include file="../docs/api/CoreData/NSPersistentStoreCoordinator.xml" path="/Documentation/Docs[@DocId='P:CoreData.NSPersistentStoreCoordinator.StoresWillChangeNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Notification (typeof (NSPersistentStoreCoordinatorStoreChangeEventArgs))]
 		[Field ("NSPersistentStoreCoordinatorStoresWillChangeNotification")]
@@ -4929,7 +4915,7 @@ namespace CoreData {
 		NSFetchRequest FetchRequest { get; }
 	}
 
-	/// <summary>The results of a <see cref="CoreData.NSBatchDeleteQuery" />.</summary>
+	/// <summary>The results of a <see cref="CoreData.NSBatchDeleteRequest" />.</summary>
 	/// <remarks>To be added.</remarks>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/CoreData/NSBatchDeleteResult">Apple documentation for <c>NSBatchDeleteResult</c></related>
 	[MacCatalyst (13, 1)]

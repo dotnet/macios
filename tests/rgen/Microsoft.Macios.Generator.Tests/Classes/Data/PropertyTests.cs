@@ -13,6 +13,10 @@ using nfloat = System.Runtime.InteropServices.NFloat;
 
 namespace TestNamespace;
 
+[SupportedOSPlatform ("macos")]
+[SupportedOSPlatform ("ios")]
+[SupportedOSPlatform ("tvos")]
+[SupportedOSPlatform ("maccatalyst13.1")]
 [BindingType<ObjCBindings.Class>]
 public partial class PropertyTests {
 
@@ -58,12 +62,19 @@ public partial class PropertyTests {
 	public virtual partial string Name { get; set; }
 
 	// nullable string
-	[Export<Property> ("name")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
+	[Export<Property> ("name")]
 	public virtual partial string? OtherName { get; set; }
+
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("maccatalyst13.1")]
+	[Export<Property> ("sealedProperty")]
+	public sealed partial string SealedProperty { get; set; }
 
 	// array of strings
 	[Export<Property> ("surnames")]
@@ -179,4 +190,12 @@ public partial class PropertyTests {
 	[BindFrom (typeof (NSValue))]
 	[Export<Property> ("Center")]
 	public virtual partial CGPoint [] Location { get; set; }
+
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("maccatalyst13.1")]
+	[BindFrom (typeof (NSValue))]
+	[Export<Property> ("NotRegistedLocation", Flags = Property.SkipRegistration)]
+	public virtual partial CGPoint [] NotRegistedLocation { get; set; }
 }

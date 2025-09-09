@@ -55,7 +55,7 @@ locationManager.DidRangeBeacons.Add(fun rangeEvents ->
 locationManager.StartRangingBeacons(beaconRegion)       
         ]]></code>
       </example>
-      <para>Applications can broadcast themselves as beacons by passing the <see cref="CoreLocation.CLBeaconRegion.PeripheralData" /> property of a <see cref="CoreLocation.CLBeaconRegion" /> to <see cref="CoreBluetooth.CBPeripheralManager.StartAdvertising(Foundation.NSDictionary)" />.</para>
+      <para>Applications can broadcast themselves as beacons by passing the return value from <see cref="CLBeaconRegion.GetPeripheralData(NSNumber)" /> to <see cref="CoreBluetooth.CBPeripheralManager.StartAdvertising(Foundation.NSDictionary)" />.</para>
     </remarks>
     <related type="article" href="https://blog.xamarin.com/play-find-the-monkey-with-ios7-ibeacons">Play 'Find the Monkey' with iOS 7 iBeacons</related>
     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CoreLocation/Reference/CLBeacon_class/index.html">Apple documentation for <c>CLBeacon</c></related>

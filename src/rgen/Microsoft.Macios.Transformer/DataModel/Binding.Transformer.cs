@@ -71,10 +71,11 @@ readonly partial struct Binding {
 			name: out name,
 			baseClass: out baseClass,
 			interfaces: out interfaces,
+			outerClasses: out outerClasses,
 			namespaces: out namespaces,
 			symbolAvailability: out availability);
 		BindingBindingInfo = new BindingInfo (null, BindingType.SmartEnum);
-		FullyQualifiedSymbol = enumDeclaration.GetFullyQualifiedIdentifier ();
+		FullyQualifiedSymbol = enumDeclaration.GetFullyQualifiedIdentifier (context.SemanticModel);
 		UsingDirectives = enumDeclaration.SyntaxTree.CollectUsingStatements ();
 		AttributesDictionary = symbol.GetAttributeData ();
 		// smart enums are expected to be public, we might need to change this in the future
@@ -236,14 +237,14 @@ readonly partial struct Binding {
 	internal Binding (InterfaceDeclarationSyntax interfaceDeclarationSyntax, INamedTypeSymbol symbol, in RootContext context)
 	{
 		// basic properties of the binding
-		FullyQualifiedSymbol = interfaceDeclarationSyntax.GetFullyQualifiedIdentifier ();
+		FullyQualifiedSymbol = interfaceDeclarationSyntax.GetFullyQualifiedIdentifier (context.SemanticModel);
 		UsingDirectives = interfaceDeclarationSyntax.SyntaxTree.CollectUsingStatements ();
 		AttributesDictionary = symbol.GetAttributeData ();
 		var baseTypeAttribute = symbol.GetBaseTypeData ();
 		BindingBindingInfo = new (baseTypeAttribute, GetBindingType (AttributesDictionary, baseTypeAttribute));
 		name = symbol.Name;
 		availability = symbol.GetAvailabilityForSymbol ();
-		namespaces = symbol.GetNamespaceArray ();
+		(namespaces, outerClasses) = symbol.GetNamespaceArrayAndOuterClasses ();
 		baseClass = GetBaseClass (BindingBindingInfo);
 
 		// retrieve the interfaces and protocols, notice that this are two out params
@@ -264,15 +265,15 @@ readonly partial struct Binding {
 			// strong dictionaries are a little different, we will get all the properties with no filter since the
 			// properties from a strong dictionary do not have any attribute
 			GetMembers<PropertyDeclarationSyntax, Property> (interfaceDeclarationSyntax, context, static (_, _) => false, Property.TryCreate,
-				out properties);
+				out properties, true);
 		} else {
 			GetMembers<PropertyDeclarationSyntax, Property> (interfaceDeclarationSyntax, context, Skip, Property.TryCreate,
-				out properties);
+				out properties, true);
 		}
 		// methods are a little diff, in the old SDK style, both methods and constructors are methods, we will get
 		// all exported methods and then filter accordingly
 		GetMembers<MethodDeclarationSyntax, Method> (interfaceDeclarationSyntax, context, Skip, Method.TryCreate,
-			out ImmutableArray<Method> allMethods);
+			out ImmutableArray<Method> allMethods, true);
 		methods = [.. allMethods.Where (m => !m.IsConstructor)];
 		constructors = allMethods.Where (m => m.IsConstructor)
 			.Select (m => m.ToConstructor ())

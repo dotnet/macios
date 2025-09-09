@@ -9,4 +9,9 @@ public static class GeneratorConfiguration {
 	/// Use the global namespace for the generated code.
 	/// </summary>
 	public const bool UseGlobalNamespace = true;
+
+	/// <summary>
+	/// Generate code compatible with bgen output for backward compatibility.
+	/// </summary>
+	public const bool BGenCompatible = true;
 }

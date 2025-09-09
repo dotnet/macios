@@ -247,4 +247,43 @@ static class Nomenclator {
 	/// </summary>
 	/// <returns>The name of the TaskCompletionSource variable.</returns>
 	public static string GetTaskCompletionSourceName () => "_tcs";
+
+	/// <summary>
+	/// Generates the name for a protocol wrapper class.
+	/// The wrapper name is created by appending 'Wrapper' to the protocol name,
+	/// with dots replaced by underscores to ensure valid identifier names for nested classes.
+	/// </summary>
+	/// <param name="protocolName">The name of the protocol.</param>
+	/// <returns>The name of the protocol wrapper class.</returns>
+	public static string GetProtocolWrapperName (string protocolName)
+	{
+		// we will use the name of the protocol with a 'Wrapper' suffix
+		// we will replace any . with _ to ensure that the name is valid when working with nested classes.
+		return $"{protocolName.Replace ('.', '_')}Wrapper";
+	}
+
+	/// <summary>
+	/// Generates a unique registration name for a protocol's model class.
+	/// </summary>
+	/// <param name="ns">The namespace of the model class.</param>
+	/// <param name="modelName">The name of the model class.</param>
+	/// <returns>A unique registration name for the model class.</returns>
+	public static string GetProtocolModelRegistrationName (ImmutableArray<string> ns, string modelName)
+	{
+		var nsString = string.Join ("_", ns);
+		return $"{nsString}_{modelName}";
+	}
+
+	/// <summary>
+	/// Generates the name for the internal delegate of an event.
+	/// </summary>
+	/// <param name="typeInfo">The type information of the delegate.</param>
+	/// <returns>The name for the internal event delegate.</returns>
+	public static string GetInternalDelegateForEventName (TypeInfo typeInfo)
+	{
+		if (typeInfo.Name [0] == 'I')
+			// if the type name starts with 'I', we will remove it to avoid confusion with interfaces
+			return $"_{typeInfo.Name [1..]}";
+		return $"_{typeInfo.Name}";
+	}
 }

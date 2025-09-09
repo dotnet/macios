@@ -6,6 +6,7 @@ using Foundation;
 using UIKit;
 using NSView = Foundation.NSObject;
 using PHLivePhotoViewContentMode = Foundation.NSObject;
+using XView = UIKit.UIView;
 #else
 using AppKit;
 using UITouch = Foundation.NSObject;
@@ -14,13 +15,13 @@ using UIColor = AppKit.NSColor;
 using UIGestureRecognizer = Foundation.NSObject;
 using PHLivePhotoBadgeOptions = Foundation.NSObject;
 using UIViewController = AppKit.NSViewController;
+using XView = AppKit.NSView;
 #endif
 using MapKit;
 using Photos;
 using System;
 
 namespace PhotosUI {
-	/// <include file="../docs/api/PhotosUI/IPHContentEditingController.xml" path="/Documentation/Docs[@DocId='T:PhotosUI.IPHContentEditingController']/*" />
 	[NoTV]
 	[MacCatalyst (14, 0)]
 	[Protocol]
@@ -63,15 +64,10 @@ namespace PhotosUI {
 		bool ShouldShowCancelConfirmation { get; }
 	}
 
-	/// <summary>A <see cref="UIKit.UIView" /> that displays a <see cref="Photo.PHLivePhoto" />.</summary>
-	///     
-	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/PhotosUI/PHLivePhotoView">Apple documentation for <c>PHLivePhotoView</c></related>
+	/// <summary>An <see cref="XView" /> that displays a <see cref="PHLivePhoto" />.</summary>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/PhotosUI/PHLivePhotoView">Apple documentation for <c>PHLivePhotoView</c></related>
 	[MacCatalyst (13, 1)]
-#if MONOMAC
-	[BaseType (typeof (NSView))]
-#else
-	[BaseType (typeof (UIView))]
-#endif
+	[BaseType (typeof (XView))]
 	interface PHLivePhotoView {
 
 		// inlined (designated initializer)
@@ -153,12 +149,6 @@ namespace PhotosUI {
 		CGRect ContentsRect { get; set; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="PhotosUI.PHLivePhotoViewDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="PhotosUI.PHLivePhotoViewDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="PhotosUI.PHLivePhotoViewDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="PhotosUI.PHLivePhotoViewDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IPHLivePhotoViewDelegate { }
 
 	/// <summary>Delegate object for <see cref="PhotosUI.PHLivePhotoView" /> objects that adds methods for responding to playback beginning and ending.</summary>

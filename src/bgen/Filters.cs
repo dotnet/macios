@@ -250,11 +250,11 @@ public partial class Generator {
 
 			if (p.GetGetMethod () is not null) {
 				PrintFilterExport (p, export, setter: false);
-				GenerateFilterGetter (ptype, name);
+				GenerateFilterGetter (ptype, name, p);
 			}
 			if (p.GetSetMethod () is not null) {
 				PrintFilterExport (p, export, setter: true);
-				GenerateFilterSetter (ptype, name);
+				GenerateFilterSetter (ptype, name, p);
 			}
 
 			indent--;
@@ -277,7 +277,7 @@ public partial class Generator {
 			print ($"[Export (\"{selector}\")]");
 	}
 
-	void GenerateFilterGetter (string propertyType, string propertyName)
+	void GenerateFilterGetter (string propertyType, string propertyName, PropertyInfo pinfo)
 	{
 		print ("get {");
 		indent++;
@@ -343,13 +343,13 @@ public partial class Generator {
 			print ("return CFArray.ArrayFromHandle<CIVector> (handle)!;");
 			break;
 		default:
-			throw new BindingException (1075, true, propertyType);
+			throw new BindingException (1075, true, propertyType, pinfo.DeclaringType?.FullName, pinfo.Name);
 		}
 		indent--;
 		print ("}");
 	}
 
-	void GenerateFilterSetter (string propertyType, string propertyName)
+	void GenerateFilterSetter (string propertyType, string propertyName, PropertyInfo pinfo)
 	{
 		print ("set {");
 		indent++;
@@ -412,7 +412,7 @@ public partial class Generator {
 			print ("}");
 			break;
 		default:
-			throw new BindingException (1075, true, propertyType);
+			throw new BindingException (1075, true, propertyType, pinfo.DeclaringType?.FullName, pinfo.Name);
 		}
 		indent--;
 		print ("}");

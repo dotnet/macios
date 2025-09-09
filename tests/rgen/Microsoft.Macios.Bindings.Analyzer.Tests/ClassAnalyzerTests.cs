@@ -818,7 +818,7 @@ public partial class TestClass{
 				DiagnosticSeverity.Warning,
 				"The method 'GetCount' was not marked as async but it can be"
 			];
-			
+
 			// correct async method but we are missing the return type
 			yield return [
 				@"
@@ -1082,7 +1082,7 @@ public partial class TestClass{
 }",
 				"RBI0039",
 			];
-			
+
 			// correct async method but with return type
 			yield return [
 				@"
@@ -1119,7 +1119,7 @@ public partial class TestClass{
 }",
 				"RBI0040",
 			];
-			
+
 			// correct async method but with return type name
 			yield return [
 				@"

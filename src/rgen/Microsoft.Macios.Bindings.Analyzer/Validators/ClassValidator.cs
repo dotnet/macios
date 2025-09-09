@@ -259,13 +259,13 @@ sealed class ClassValidator : BindingValidator {
 						// add a new list with the current property
 						asyncMethodNames.Add (asyncMethodKey, [(currentMethod.Name, currentMethod.Location)]);
 					}
-					
+
 					// add a extra validation, if current method has more than one parameter + the delegate and does 
 					// not provide a return type, create a warning for the user to avoid the usage of a nameless
 					// tuple
 					if (currentMethod.Parameters.Length > 2 // more than one parameter + the delegate
-					    && currentMethod.ExportMethodData.ResultType.IsNullOrDefault // does not provide a return type
-					    && currentMethod.ExportMethodData.ResultTypeName is null // does not provide a return type name to generate
+						&& currentMethod.ExportMethodData.ResultType.IsNullOrDefault // does not provide a return type
+						&& currentMethod.ExportMethodData.ResultTypeName is null // does not provide a return type name to generate
 						) {
 						// create warning to inform that a nameless tuple will be generated for the async method
 						// and that it is better to provide a return type name

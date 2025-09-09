@@ -259,6 +259,23 @@ sealed class ClassValidator : BindingValidator {
 						// add a new list with the current property
 						asyncMethodNames.Add (asyncMethodKey, [(currentMethod.Name, currentMethod.Location)]);
 					}
+					
+					// add a extra validation, if current method has more than one parameter + the delegate and does 
+					// not provide a return type, create a warning for the user to avoid the usage of a nameless
+					// tuple
+					if (currentMethod.Parameters.Length > 2 // more than one parameter + the delegate
+					    && currentMethod.ExportMethodData.ResultType.IsNullOrDefault // does not provide a return type
+					    && currentMethod.ExportMethodData.ResultTypeName is null // does not provide a return type name to generate
+						) {
+						// create warning to inform that a nameless tuple will be generated for the async method
+						// and that it is better to provide a return type name
+						builder.Add (Diagnostic.Create (
+							descriptor: RBI0040, // The method '{0}' was marked as async and has multiple parameters but does not provide a return type name, a nameless tuple will be generated for the async method
+							location: currentMethod.Location,
+							messageArgs: [
+								currentMethod.Name,
+							]));
+					}
 				}
 			} else {
 				// this is not an async method, but we need to check if it has a callback delegate parameter,
@@ -315,7 +332,7 @@ sealed class ClassValidator : BindingValidator {
 
 		// validate async methods. This is a global strategy because it needs to look at all the methods in the binding
 		// are validated together so that async methods do not have the same names
-		AddGlobalStrategy ([RBI0035, RBI0036, RBI0037, RBI0038, RBI0039], ValidAsyncMethods);
+		AddGlobalStrategy ([RBI0035, RBI0036, RBI0037, RBI0038, RBI0039, RBI0040], ValidAsyncMethods);
 
 		// validate that strong delegates are not duplicated, this is only for weak properties
 		AddStrategy (

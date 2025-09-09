@@ -1136,5 +1136,32 @@ namespace Microsoft.Macios.Bindings.Analyzer {
                 return ResourceManager.GetString("RBI0039Title", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No result type or result type name was provided for an async method..
+        /// </summary>
+        internal static string RBI0040Description {
+            get {
+                return ResourceManager.GetString("RBI0040Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The method &apos;{0}&apos; was marked as async and has multiple parameters but does not provide a return type name, a nameless tuple will be generated for the async method.
+        /// </summary>
+        internal static string RBI0040MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0040MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not specified return type.
+        /// </summary>
+        internal static string RBI0040Title {
+            get {
+                return ResourceManager.GetString("RBI0040Title", resourceCulture);
+            }
+        }
     }
 }

@@ -818,6 +818,44 @@ public partial class TestClass{
 				DiagnosticSeverity.Warning,
 				"The method 'GetCount' was not marked as async but it can be"
 			];
+			
+			// correct async method but we are missing the return type
+			yield return [
+				@"
+#pragma warning disable APL0003
+
+using System;
+using System.Runtime.Versioning;
+using AVFoundation;
+using CoreGraphics;
+using Foundation;
+using ObjCBindings;
+using ObjCRuntime;
+using nfloat = System.Runtime.InteropServices.NFloat;
+
+namespace TestNamespace;
+
+[SupportedOSPlatform (""macos"")]
+[SupportedOSPlatform (""ios"")]
+[SupportedOSPlatform (""tvos"")]
+[SupportedOSPlatform (""maccatalyst13.1"")]
+[BindingType<Class>]
+public partial class TestClass{
+
+	[SupportedOSPlatform (""ios"")]
+	[SupportedOSPlatform (""tvos"")]
+	[SupportedOSPlatform (""macos"")]
+	[SupportedOSPlatform (""maccatalyst13.1"")]
+	[Export<Method> (""count:"", 
+		Flags = ObjCBindings.Method.Async,
+		MethodName = ""GetCountAsync"")]
+	public virtual partial void GetCount (int first, int second, Action callback);
+
+}",
+				"RBI0040",
+				DiagnosticSeverity.Warning,
+				"The method 'GetCount' was marked as async and has multiple parameters but does not provide a return type name, a nameless tuple will be generated for the async method"
+			];
 		}
 
 		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
@@ -1043,6 +1081,80 @@ public partial class TestClass{
 
 }",
 				"RBI0039",
+			];
+			
+			// correct async method but with return type
+			yield return [
+				@"
+#pragma warning disable APL0003
+
+using System;
+using System.Runtime.Versioning;
+using AVFoundation;
+using CoreGraphics;
+using Foundation;
+using ObjCBindings;
+using ObjCRuntime;
+using nfloat = System.Runtime.InteropServices.NFloat;
+
+namespace TestNamespace;
+
+[SupportedOSPlatform (""macos"")]
+[SupportedOSPlatform (""ios"")]
+[SupportedOSPlatform (""tvos"")]
+[SupportedOSPlatform (""maccatalyst13.1"")]
+[BindingType<Class>]
+public partial class TestClass{
+
+	[SupportedOSPlatform (""ios"")]
+	[SupportedOSPlatform (""tvos"")]
+	[SupportedOSPlatform (""macos"")]
+	[SupportedOSPlatform (""maccatalyst13.1"")]
+	[Export<Method> (""count:"", 
+		Flags = ObjCBindings.Method.Async,
+		ResultType = typeof ((int First, int Second)),
+		MethodName = ""GetCountAsync"")]
+	public virtual partial void GetCount (int first, int second, Action callback);
+
+}",
+				"RBI0040",
+			];
+			
+			// correct async method but with return type name
+			yield return [
+				@"
+#pragma warning disable APL0003
+
+using System;
+using System.Runtime.Versioning;
+using AVFoundation;
+using CoreGraphics;
+using Foundation;
+using ObjCBindings;
+using ObjCRuntime;
+using nfloat = System.Runtime.InteropServices.NFloat;
+
+namespace TestNamespace;
+
+[SupportedOSPlatform (""macos"")]
+[SupportedOSPlatform (""ios"")]
+[SupportedOSPlatform (""tvos"")]
+[SupportedOSPlatform (""maccatalyst13.1"")]
+[BindingType<Class>]
+public partial class TestClass{
+
+	[SupportedOSPlatform (""ios"")]
+	[SupportedOSPlatform (""tvos"")]
+	[SupportedOSPlatform (""macos"")]
+	[SupportedOSPlatform (""maccatalyst13.1"")]
+	[Export<Method> (""count:"", 
+		Flags = ObjCBindings.Method.Async,
+		ResultTypeName = ""AsyncResult""
+		MethodName = ""GetCountAsync"")]
+	public virtual partial void GetCount (int first, int second, Action callback);
+
+}",
+				"RBI0040",
 			];
 		}
 

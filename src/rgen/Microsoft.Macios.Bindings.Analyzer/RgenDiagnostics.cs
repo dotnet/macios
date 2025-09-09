@@ -601,4 +601,19 @@ public static class RgenDiagnostics {
 		description: new LocalizableResourceString (nameof (Resources.RBI0039Description), Resources.ResourceManager,
 			typeof (Resources))
 	);
+	
+	/// <summary>
+	/// Disgnostic descriptor for when a method marked as async has does not provide a return type or return type name.
+	/// </summary>
+	internal static readonly DiagnosticDescriptor RBI0040 = new (
+		"RBI0040",
+		new LocalizableResourceString (nameof (Resources.RBI0040Title), Resources.ResourceManager, typeof (Resources)),
+		new LocalizableResourceString (nameof (Resources.RBI0040MessageFormat), Resources.ResourceManager,
+			typeof (Resources)),
+		"Usage",
+		DiagnosticSeverity.Warning,
+		isEnabledByDefault: true,
+		description: new LocalizableResourceString (nameof (Resources.RBI0040Description), Resources.ResourceManager,
+			typeof (Resources))
+	);
 }

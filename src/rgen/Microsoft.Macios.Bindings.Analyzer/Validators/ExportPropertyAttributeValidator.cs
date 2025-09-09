@@ -25,7 +25,7 @@ class ExportPropertyAttributeValidator : Validator<ExportData<Property>> {
 	/// <returns><c>true</c> if the data is valid; otherwise, <c>false</c>.</returns>
 	internal static bool SelectorIsNotNull (string? selector, RootContext context, out ImmutableArray<Diagnostic> diagnostics,
 		Location? location = null)
-		=> StringStrategies.IsNotNull (
+		=> StringStrategies.IsNotNullOrEmpty (
 			selector: selector,
 			descriptor: RBI0018, // A export property must have a selector defined
 			diagnostics: out diagnostics,

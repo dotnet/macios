@@ -406,4 +406,124 @@ public static class RgenDiagnostics {
 		description: new LocalizableResourceString (nameof (Resources.RBI0026Description), Resources.ResourceManager,
 			typeof (Resources))
 	);
+
+	/// <summary>
+	/// Diagnostic descriptor for when an symbol can be reached in an unsupported platform.
+	/// </summary>
+	internal static readonly DiagnosticDescriptor RBI0027 = new (
+		"RBI0027",
+		new LocalizableResourceString (nameof (Resources.RBI0027Title), Resources.ResourceManager, typeof (Resources)),
+		new LocalizableResourceString (nameof (Resources.RBI0027MessageFormat), Resources.ResourceManager,
+			typeof (Resources)),
+		"Usage",
+		DiagnosticSeverity.Error,
+		isEnabledByDefault: true,
+		description: new LocalizableResourceString (nameof (Resources.RBI0027Description), Resources.ResourceManager,
+			typeof (Resources))
+	);
+
+	/// <summary>
+	/// Diagnostic descriptor for when a flag is ignored because the attribute is not used in the right context.
+	/// </summary>
+	internal static readonly DiagnosticDescriptor RBI0028 = new (
+		"RBI0028",
+		new LocalizableResourceString (nameof (Resources.RBI0028Title), Resources.ResourceManager, typeof (Resources)),
+		new LocalizableResourceString (nameof (Resources.RBI0028MessageFormat), Resources.ResourceManager,
+			typeof (Resources)),
+		"Usage",
+		DiagnosticSeverity.Warning,
+		isEnabledByDefault: true,
+		description: new LocalizableResourceString (nameof (Resources.RBI0028Description), Resources.ResourceManager,
+			typeof (Resources))
+	);
+
+	/// <summary>
+	/// Diagnostic descriptor for when there is a mismatch between the number of arguments in a selector and the expected argument count.
+	/// </summary>
+	internal static readonly DiagnosticDescriptor RBI0029 = new (
+		"RBI0029",
+		new LocalizableResourceString (nameof (Resources.RBI0029Title), Resources.ResourceManager, typeof (Resources)),
+		new LocalizableResourceString (nameof (Resources.RBI0029MessageFormat), Resources.ResourceManager,
+			typeof (Resources)),
+		"Usage",
+		DiagnosticSeverity.Error,
+		isEnabledByDefault: true,
+		description: new LocalizableResourceString (nameof (Resources.RBI0029Description), Resources.ResourceManager,
+			typeof (Resources))
+	);
+
+	/// <summary>
+	/// Diagnostic descriptor for when a field property has not been marked as static.
+	/// </summary>
+	internal static readonly DiagnosticDescriptor RBI0030 = new (
+		"RBI0030",
+		new LocalizableResourceString (nameof (Resources.RBI0030Title), Resources.ResourceManager, typeof (Resources)),
+		new LocalizableResourceString (nameof (Resources.RBI0030MessageFormat), Resources.ResourceManager,
+			typeof (Resources)),
+		"Usage",
+		DiagnosticSeverity.Error,
+		isEnabledByDefault: true,
+		description: new LocalizableResourceString (nameof (Resources.RBI0030Description), Resources.ResourceManager,
+			typeof (Resources))
+	);
+
+	/// <summary>
+	/// Diagnostic descriptor for when a property has not been marked as partial.
+	/// </summary>
+	internal static readonly DiagnosticDescriptor RBI0031 = new (
+		"RBI0031",
+		new LocalizableResourceString (nameof (Resources.RBI0031Title), Resources.ResourceManager, typeof (Resources)),
+		new LocalizableResourceString (nameof (Resources.RBI0031MessageFormat), Resources.ResourceManager,
+			typeof (Resources)),
+		"Usage",
+		DiagnosticSeverity.Error,
+		isEnabledByDefault: true,
+		description: new LocalizableResourceString (nameof (Resources.RBI0031Description), Resources.ResourceManager,
+			typeof (Resources))
+	);
+
+	/// <summary>
+	/// Diagnostic descriptor for when a weak delegate does not start with "Weak".
+	/// </summary>
+	internal static readonly DiagnosticDescriptor RBI0032 = new (
+		"RBI0032",
+		new LocalizableResourceString (nameof (Resources.RBI0032Title), Resources.ResourceManager, typeof (Resources)),
+		new LocalizableResourceString (nameof (Resources.RBI0032MessageFormat), Resources.ResourceManager,
+			typeof (Resources)),
+		"Usage",
+		DiagnosticSeverity.Warning,
+		isEnabledByDefault: true,
+		description: new LocalizableResourceString (nameof (Resources.RBI0032Description), Resources.ResourceManager,
+			typeof (Resources))
+	);
+
+	/// <summary>
+	/// Diagnostic descriptor for when a weak delegate strong delegate is duplicated.
+	/// </summary>
+	internal static readonly DiagnosticDescriptor RBI0033 = new (
+		"RBI0033",
+		new LocalizableResourceString (nameof (Resources.RBI0033Title), Resources.ResourceManager, typeof (Resources)),
+		new LocalizableResourceString (nameof (Resources.RBI0033MessageFormat), Resources.ResourceManager,
+			typeof (Resources)),
+		"Usage",
+		DiagnosticSeverity.Error,
+		isEnabledByDefault: true,
+		description: new LocalizableResourceString (nameof (Resources.RBI0033Description), Resources.ResourceManager,
+			typeof (Resources))
+	);
+
+	/// <summary>
+	/// Diagnostic descriptor for when a selector is used in more than one symbol.
+	/// </summary>
+	internal static readonly DiagnosticDescriptor RBI0034 = new (
+		"RBI0034",
+		new LocalizableResourceString (nameof (Resources.RBI0034Title), Resources.ResourceManager, typeof (Resources)),
+		new LocalizableResourceString (nameof (Resources.RBI0034MessageFormat), Resources.ResourceManager,
+			typeof (Resources)),
+		"Usage",
+		DiagnosticSeverity.Warning,
+		isEnabledByDefault: true,
+		description: new LocalizableResourceString (nameof (Resources.RBI0034Description), Resources.ResourceManager,
+			typeof (Resources))
+	);
 }

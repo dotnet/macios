@@ -240,7 +240,7 @@ return GetValue (str);
 
 		const string backingFieldName = "_domain";
 		// compute the library name via the root context
-		if (!bindingContext.RootContext.TryComputeLibraryName (bindingTypeData.LibraryName,
+		if (!bindingContext.RootContext.TryComputeLibraryName (bindingTypeData.LibraryPath,
 				bindingContext.Changes.Namespace [^1],
 				out string? libraryName, out string? libraryPath)) {
 			// could not calculate the library name, this is a user error
@@ -251,8 +251,6 @@ return GetValue (str);
 					bindingContext.Changes.FullyQualifiedSymbol)];
 			return false;
 		}
-
-		var library = libraryPath ?? libraryName;
 
 		this.EmitNamespace (bindingContext);
 
@@ -265,7 +263,7 @@ return GetValue (str);
 			using (var classBlock = builder.CreateBlock (extensionClassDeclaration.ToString (), true)) {
 				classBlock.WriteLine ();
 				// emit the field that holds the error domain
-				classBlock.WriteLine ($"[Field (\"{bindingTypeData.ErrorDomain}\", \"{library}\")]");
+				classBlock.WriteLine ($"[Field (\"{bindingTypeData.ErrorDomain}\", \"{libraryPath ?? libraryName}\")]");
 				classBlock.WriteLine (StaticVariable (backingFieldName, NSString, true).ToString ());
 				classBlock.WriteLine ();
 

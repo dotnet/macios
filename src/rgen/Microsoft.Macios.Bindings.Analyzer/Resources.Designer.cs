@@ -283,7 +283,7 @@ namespace Microsoft.Macios.Bindings.Analyzer {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The enum value &apos;{0}&apos; must be tagged with a Field&lt;EnumValue&gt; attribute.
+        ///   Looks up a localized string similar to The enum &apos;{0}&apos; must have at least one member tagged with a Field&lt;EnumValue&gt; attribute.
         /// </summary>
         internal static string RBI0008MessageFormat {
             get {
@@ -292,7 +292,7 @@ namespace Microsoft.Macios.Bindings.Analyzer {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Smart enum values must be tagged with an Field&lt;EnumValue&gt; attribute.
+        ///   Looks up a localized string similar to Smart enum values must have a value tagged with an Field&lt;EnumValue&gt; attribute.
         /// </summary>
         internal static string RBI0008Title {
             get {
@@ -783,6 +783,222 @@ namespace Microsoft.Macios.Bindings.Analyzer {
         internal static string RBI0026Title {
             get {
                 return ResourceManager.GetString("RBI0026Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The symbol is accessible in a platform where it is not supported...
+        /// </summary>
+        internal static string RBI0027Description {
+            get {
+                return ResourceManager.GetString("RBI0027Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The symbol &apos;{0}&apos; is accessible on platform &apos;{1}&apos; when it was marked otherwise.
+        /// </summary>
+        internal static string RBI0027MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0027MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bad method name.
+        /// </summary>
+        internal static string RBI0027Title {
+            get {
+                return ResourceManager.GetString("RBI0027Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A flag value was used on an attribute that does not support it and will be ignored..
+        /// </summary>
+        internal static string RBI0028Description {
+            get {
+                return ResourceManager.GetString("RBI0028Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The flag &apos;{0}&apos; is not supported on &apos;{1}&apos; and will be ignored.
+        /// </summary>
+        internal static string RBI0028MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0028MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ignored flag.
+        /// </summary>
+        internal static string RBI0028Title {
+            get {
+                return ResourceManager.GetString("RBI0028Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There is a mismatch between the arguments of a method/property and the number of &apos;:&apos; in a selector..
+        /// </summary>
+        internal static string RBI0029Description {
+            get {
+                return ResourceManager.GetString("RBI0029Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There is a mismatch between the arguments of &apos;{0}&apos; (found {1}) and the selector &apos;{2}&apos; (found {3}).
+        /// </summary>
+        internal static string RBI0029MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0029MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Selector argument mismatch.
+        /// </summary>
+        internal static string RBI0029Title {
+            get {
+                return ResourceManager.GetString("RBI0029Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Field properties must be declared static..
+        /// </summary>
+        internal static string RBI0030Description {
+            get {
+                return ResourceManager.GetString("RBI0030Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Field properties must be declared static.
+        /// </summary>
+        internal static string RBI0030MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0030MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wrong field declaration.
+        /// </summary>
+        internal static string RBI0030Title {
+            get {
+                return ResourceManager.GetString("RBI0030Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exported properties must be declared partial..
+        /// </summary>
+        internal static string RBI0031Description {
+            get {
+                return ResourceManager.GetString("RBI0031Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exported properties must be declared partial.
+        /// </summary>
+        internal static string RBI0031MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0031MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wrong property declaration.
+        /// </summary>
+        internal static string RBI0031Title {
+            get {
+                return ResourceManager.GetString("RBI0031Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A weak delegate has to have a strong delegate name if it does not start with &apos;Weak&apos;..
+        /// </summary>
+        internal static string RBI0032Description {
+            get {
+                return ResourceManager.GetString("RBI0032Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The weak delegate &apos;{0}&apos; is missing a strong delegate name, provide one or use the &apos;Weak&apos; prefix.
+        /// </summary>
+        internal static string RBI0032MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0032MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wrong weak delegate.
+        /// </summary>
+        internal static string RBI0032Title {
+            get {
+                return ResourceManager.GetString("RBI0032Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A weak delegate has a duplicate strong delegate name..
+        /// </summary>
+        internal static string RBI0033Description {
+            get {
+                return ResourceManager.GetString("RBI0033Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The weak delegate &apos;{0}&apos; strong delegate &apos;{1}&apos; is already used by &apos;{2}&apos;.
+        /// </summary>
+        internal static string RBI0033MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0033MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wrong strong delegate name.
+        /// </summary>
+        internal static string RBI0033Title {
+            get {
+                return ResourceManager.GetString("RBI0033Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A selector is used in more than one symbol..
+        /// </summary>
+        internal static string RBI0034Description {
+            get {
+                return ResourceManager.GetString("RBI0034Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The selector &apos;{0}&apos; used by &apos;{1}&apos; is already used by &apos;{2}&apos;.
+        /// </summary>
+        internal static string RBI0034MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0034MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Duplicate selector.
+        /// </summary>
+        internal static string RBI0034Title {
+            get {
+                return ResourceManager.GetString("RBI0034Title", resourceCulture);
             }
         }
     }

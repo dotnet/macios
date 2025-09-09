@@ -594,8 +594,13 @@ namespace Foundation {
 		/// </remarks>
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		public bool CheckCertificateRevocationList {
+			// This implementation was mostly copied from https://github.com/dotnet/runtime/blob/0e3562e97c6db531f26a2ffe3e8084cf67ba8a93/src/libraries/System.Net.Http/src/System/Net/Http/HttpClientHandler.cs#L326-L335
 			get => CertificateChainPolicy!.RevocationMode == X509RevocationMode.Online;
-			set => CertificateChainPolicy!.RevocationMode = value ? X509RevocationMode.Online : X509RevocationMode.NoCheck;
+			set {
+				EnsureModifiability ();
+
+				CertificateChainPolicy!.RevocationMode = value ? X509RevocationMode.Online : X509RevocationMode.NoCheck;
+			}
 		}
 
 		/// <summary>Gets or sets the custom chain policy to use when validating certificate chains.</summary>

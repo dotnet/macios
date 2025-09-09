@@ -812,5 +812,113 @@ namespace Microsoft.Macios.Bindings.Analyzer {
                 return ResourceManager.GetString("RBI0027Title", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A flag value was used on an attribute that does not support it and will be ignored..
+        /// </summary>
+        internal static string RBI0028Description {
+            get {
+                return ResourceManager.GetString("RBI0028Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The flag &apos;{0}&apos; is not supported on &apos;{1}&apos; and will be ignored.
+        /// </summary>
+        internal static string RBI0028MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0028MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ignored flag.
+        /// </summary>
+        internal static string RBI0028Title {
+            get {
+                return ResourceManager.GetString("RBI0028Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There is a mismatch between the arguments of a method/property and the number of &apos;:&apos; in a selector..
+        /// </summary>
+        internal static string RBI0029Description {
+            get {
+                return ResourceManager.GetString("RBI0029Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There is a mismatch between the arguments of &apos;{0}&apos; (found {1}) and the selector &apos;{2}&apos; (found {3}).
+        /// </summary>
+        internal static string RBI0029MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0029MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Selector argument mismatch.
+        /// </summary>
+        internal static string RBI0029Title {
+            get {
+                return ResourceManager.GetString("RBI0029Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Field properties must be declared static..
+        /// </summary>
+        internal static string RBI0030Description {
+            get {
+                return ResourceManager.GetString("RBI0030Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Field properties must be declared static.
+        /// </summary>
+        internal static string RBI0030MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0030MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wrong field declaration.
+        /// </summary>
+        internal static string RBI0030Title {
+            get {
+                return ResourceManager.GetString("RBI0030Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exported properties must be declared partial..
+        /// </summary>
+        internal static string RBI0031Description {
+            get {
+                return ResourceManager.GetString("RBI0031Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exported properties must be declared partial.
+        /// </summary>
+        internal static string RBI0031MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0031MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wrong property declaration.
+        /// </summary>
+        internal static string RBI0031Title {
+            get {
+                return ResourceManager.GetString("RBI0031Title", resourceCulture);
+            }
+        }
     }
 }

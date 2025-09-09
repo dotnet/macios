@@ -178,7 +178,7 @@ abstract class TabbedWriter<T> : IDisposable, IAsyncDisposable where T : TextWri
 		Writer.WriteLine (handler.ToStringAndClear ());
 		return this;
 	}
-	
+
 	/// <summary>
 	/// Append a new raw literal by prepending the correct indentation.
 	/// </summary>
@@ -188,16 +188,14 @@ abstract class TabbedWriter<T> : IDisposable, IAsyncDisposable where T : TextWri
 	{
 		// we will split the raw string in lines and then append them so that the
 		// tabbing is correct
-		var lines = rawString.AsSpan().Split('\n');
-		var enumerator = lines.GetEnumerator();
-		bool hasNext = enumerator.MoveNext();
-		while (hasNext)
-		{
+		var lines = rawString.AsSpan ().Split ('\n');
+		var enumerator = lines.GetEnumerator ();
+		bool hasNext = enumerator.MoveNext ();
+		while (hasNext) {
 			var range = enumerator.Current;
-			var line = rawString.AsSpan(range);
-			hasNext = enumerator.MoveNext();
-			if (!hasNext)
-			{
+			var line = rawString.AsSpan (range);
+			hasNext = enumerator.MoveNext ();
+			if (!hasNext) {
 				Write (line);
 				break;
 			}
@@ -205,7 +203,7 @@ abstract class TabbedWriter<T> : IDisposable, IAsyncDisposable where T : TextWri
 		}
 		return this;
 	}
-	
+
 #else
 	/// <summary>
 	/// Append a new raw literal by prepending the correct indentation.

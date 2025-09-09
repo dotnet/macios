@@ -127,6 +127,7 @@ public partial class EventTests
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst13.1")]
+		[Export ("delegate")]
 		get
 		{
 			global::Foundation.NSObject? ret;
@@ -145,6 +146,7 @@ public partial class EventTests
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst13.1")]
+		[Export ("setDelegate:")]
 		set
 		{
 			var value__handle__ = value?.GetHandle ();

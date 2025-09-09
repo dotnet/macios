@@ -101,7 +101,7 @@ static class ClassEmitterExtensions {
 		}
 
 		// if we are dealing with a protocol or an extension method, we need to call send directly
-		if (context.Changes.BindingType == BindingType.Protocol || method.IsExtension) {
+		if (context.Changes.BindingType == BindingType.Protocol || method.IsExtension || method.SkipRegistration) {
 			methodBlock.WriteRaw (
 $@"{ExpressionStatement (invocations.Send)}
 {ExpressionStatement (KeepAlive (method.This))}
@@ -148,7 +148,7 @@ $@"if (IsDirectBinding) {{
 		}
 
 		// if we are dealing with a protocol or an extension method, we need to call send directly
-		if (context.Changes.BindingType == BindingType.Protocol || method.IsExtension) {
+		if (context.Changes.BindingType == BindingType.Protocol || method.IsExtension || method.SkipRegistration) {
 			methodBlock.WriteRaw (
 $@"{tempDeclaration}
 {ExpressionStatement (invocations.Send)}
@@ -198,6 +198,11 @@ if (IsDirectBinding) {{
 		// that is when the method is not an extension method and the binding type is protocol.
 		if (context.Changes.BindingType == BindingType.Protocol && !method.IsExtension) {
 			classBlock.AppendExportAttribute (method.ExportMethodData);
+		}
+
+		// this is needed to support the registrar until it understands the rgen attributes. 
+		if (GeneratorConfiguration.BGenCompatible && !method.SkipRegistration) {
+			classBlock.AppendBgenExportAttribute (method.ExportMethodData);
 		}
 
 		using (var methodBlock = classBlock.CreateBlock (method.ToDeclaration ().ToString (), block: true)) {
@@ -377,6 +382,7 @@ return {backingField};
 			// add the export method for the property, this is needed for the protocol wrapper
 			classBlock.AppendExportAttribute (property.ExportPropertyData);
 		}
+
 		using (var propertyBlock = classBlock.CreateBlock (property.ToDeclaration ().ToString (), block: true)) {
 			// be very verbose with the availability, makes the life easier to the dotnet analyzer
 			propertyBlock.AppendMemberAvailability (getter.SymbolAvailability);
@@ -386,6 +392,13 @@ return {backingField};
 				propertyBlock.AppendDelegateProxyReturn (property.ReturnType);
 			if (context.Changes.BindingType == BindingType.Protocol && !getter.ExportPropertyData.IsNullOrDefault)
 				propertyBlock.AppendExportAttribute (getter.ExportPropertyData);
+
+			if (GeneratorConfiguration.BGenCompatible && !property.SkipRegistration) {
+				var selector = getter.GetSelector (property);
+				// same, needed to support the registrar until it understands the rgen attributes.
+				propertyBlock.AppendBgenExportAttribute (selector);
+			}
+
 			using (var getterBlock = propertyBlock.CreateBlock ("get", block: true)) {
 				if (uiThreadCheck is not null) {
 					getterBlock.WriteLine (uiThreadCheck.ToString ());
@@ -395,7 +408,7 @@ return {backingField};
 				// the return value
 				var (tempVar, tempDeclaration) = GetReturnValueAuxVariable (property.ReturnType);
 				// if the binding is a protocol, we need to call send directly
-				if (context.Changes.BindingType == BindingType.Protocol) {
+				if (context.Changes.BindingType == BindingType.Protocol || property.SkipRegistration) {
 					getterBlock.WriteLine ($"{tempDeclaration}");
 					getterBlock.WriteLine ($"{ExpressionStatement (invocations.Getter.Send)}");
 					getterBlock.WriteLine ($"{ExpressionStatement (KeepAlive ("this"))}");
@@ -435,6 +448,12 @@ if (IsDirectBinding) {{
 				propertyBlock.AppendDelegateParameter (property.ReturnType);
 			if (context.Changes.BindingType == BindingType.Protocol && !setter.ExportPropertyData.IsNullOrDefault)
 				propertyBlock.AppendExportAttribute (setter.ExportPropertyData);
+
+			if (GeneratorConfiguration.BGenCompatible && !property.SkipRegistration) {
+				// same, needed to support the registrar until it understands the rgen attributes.
+				var selector = setter.GetSelector (property);
+				propertyBlock.AppendBgenExportAttribute (selector);
+			}
 			using (var setterBlock = propertyBlock.CreateBlock ("set", block: true)) {
 				if (uiThreadCheck is not null) {
 					setterBlock.WriteLine (uiThreadCheck.ToString ());
@@ -447,7 +466,7 @@ if (IsDirectBinding) {{
 
 				// perform the invocation
 				// if the binding is a protocol, we need to call send directly
-				if (context.Changes.BindingType == BindingType.Protocol) {
+				if (context.Changes.BindingType == BindingType.Protocol || property.SkipRegistration) {
 					setterBlock.WriteLine ($"{ExpressionStatement (invocations.Setter.Value.Send)}");
 					setterBlock.WriteLine ($"{ExpressionStatement (KeepAlive ("this"))}");
 				} else {

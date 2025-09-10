@@ -3,14 +3,11 @@
 
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
-using Microsoft.Macios.Generator;
 using Microsoft.Macios.Generator.Attributes;
 using Microsoft.Macios.Generator.Context;
 using Microsoft.Macios.Generator.DataModel;
 using ObjCBindings;
 using static Microsoft.Macios.Generator.RgenDiagnostics;
-using Constructor = Microsoft.Macios.Generator.DataModel.Constructor;
-using Property = Microsoft.Macios.Generator.DataModel.Property;
 
 namespace Microsoft.Macios.Bindings.Analyzer.Validators;
 

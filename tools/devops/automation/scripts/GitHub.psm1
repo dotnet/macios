@@ -633,7 +633,7 @@ mutation {
         }
         $body = ConvertTo-Json $payload
         $url = [GitHubComments]::GitHubGraphQLEndpoint
-        Write-Host "Minimuzing comment response (for comment id $commentId):"
+        Write-Host "Minimizing comment response (for comment id $commentId):"
         Write-Host "    url: $url"
         Write-Host "    headers: $headers"
         Write-Host "    body: $body"
@@ -661,7 +661,7 @@ mutation {
     [void] MinimizeComments($comments) {
         # we cannot do a mutation with all the comments :/ but we can loop and do it
         foreach($c in $comments) {
-             $this.MinimizeCommentId($c.id)
+             $this.MinimizeCommentId($c.node_id)
         } # foreach
     }
 
@@ -692,7 +692,7 @@ mutation {
             Write-Host "Current commit is not the latest in PR, attempting to hide the new comment"
             try {
                 Start-Sleep -Seconds 2  # Give GitHub a moment to process the comment
-                $this.MinimizeCommentId($result.id)
+                $this.MinimizeCommentId($result.node_id)
             } catch {
                 Write-Host "Warning: Failed to hide comment for non-latest commit: $_"
             }

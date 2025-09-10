@@ -887,29 +887,61 @@ namespace AVFoundation {
 	[SupportedOSPlatform ("macos26.0")]
 	[SupportedOSPlatform ("tvos26.0")]
 	[StructLayout (LayoutKind.Sequential)]
-	public struct AVCaptureTimecode {
+	public struct AVCaptureTimecode
 #if !COREBUILD
-
-		public /* uint8_t */ byte Hours;
-
-		public /* uint8_t */ byte Minutes;
-
-		public /* uint8_t */ byte Seconds;
-
-		public /* uint8_t */ byte Frames;
-
-		public /* uint32_t */ int UserBits;
-
-		public CMTime FrameDuration;
-
+	: IEquatable<AVCaptureTimecode>
+#endif
+	{
+		/* uint8_t */
+		byte hours;
+		/* uint8_t */
+		byte minutes;
+		/* uint8_t */
+		byte seconds;
+		/* uint8_t */
+		byte frames;
+		/* uint32_t */
+		uint userBits;
+		CMTime frameDuration;
 		nuint sourceType;
 
+		public byte Hours {
+			get => hours;
+			set => hours = value;
+		}
+
+		public byte Minutes {
+			get => minutes;
+			set => minutes = value;
+		}
+
+		public byte Seconds {
+			get => seconds;
+			set => seconds = value;
+		}
+
+		public byte Frames {
+			get => frames;
+			set => frames = value;
+		}
+
+		public uint UserBits {
+			get => userBits;
+			set => userBits = value;
+		}
+
+		public CMTime FrameDuration {
+			get => frameDuration;
+			set => frameDuration = value;
+		}
+
+#if !COREBUILD
 		public AVCaptureTimecodeSourceType SourceType {
 			get => (AVCaptureTimecodeSourceType) (long) sourceType;
 			set => sourceType = (nuint) (long) value;
 		}
 
-		public AVCaptureTimecode (byte hours, byte minutes, byte seconds, byte frames, int userBits, CMTime frameDuration, AVCaptureTimecodeSourceType sourceType)
+		public AVCaptureTimecode (byte hours, byte minutes, byte seconds, byte frames, uint userBits, CMTime frameDuration, AVCaptureTimecodeSourceType sourceType)
 		{
 			Hours = hours;
 			Minutes = minutes;

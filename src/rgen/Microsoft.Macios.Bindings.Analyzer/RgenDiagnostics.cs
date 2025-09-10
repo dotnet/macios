@@ -603,7 +603,7 @@ public static class RgenDiagnostics {
 	);
 
 	/// <summary>
-	/// Disgnostic descriptor for when a method marked as async has does not provide a return type or return type name.
+	/// Diagnostic descriptor for when a method marked as async has does not provide a return type or return type name.
 	/// </summary>
 	internal static readonly DiagnosticDescriptor RBI0040 = new (
 		"RBI0040",
@@ -618,7 +618,7 @@ public static class RgenDiagnostics {
 	);
 
 	/// <summary>
-	/// Disgnostic descriptor for when a class inherits from UIView and is missing the initWithFrame: constructor.
+	/// Diagnostic descriptor for when a class inherits from UIView and is missing the initWithFrame: constructor.
 	/// </summary>
 	internal static readonly DiagnosticDescriptor RBI0041 = new (
 		"RBI0041",

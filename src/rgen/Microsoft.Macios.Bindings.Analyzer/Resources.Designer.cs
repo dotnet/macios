@@ -1165,7 +1165,7 @@ namespace Microsoft.Macios.Bindings.Analyzer {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to UIView subclasses must have a initWithFrame: constructor...
+        ///   Looks up a localized string similar to UIView subclasses must have a initWithCoder: constructor..
         /// </summary>
         internal static string RBI0041Description {
             get {
@@ -1174,7 +1174,7 @@ namespace Microsoft.Macios.Bindings.Analyzer {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The class &apos;{0}&apos; inherits from UIView but does not expose a &apos;initWithFrame:&apos; constructor.
+        ///   Looks up a localized string similar to The class &apos;{0}&apos; inherits from UIView but does not expose a &apos;initWithCoder:&apos; constructor.
         /// </summary>
         internal static string RBI0041MessageFormat {
             get {
@@ -1183,7 +1183,7 @@ namespace Microsoft.Macios.Bindings.Analyzer {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Missing UIView initWithFrame:.
+        ///   Looks up a localized string similar to Missing UIView initWithCoder:.
         /// </summary>
         internal static string RBI0041Title {
             get {

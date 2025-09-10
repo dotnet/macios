@@ -915,7 +915,7 @@ public partial class TestClass : UIView {
 			diagnostic: analyzerDiagnotics [0],
 			diagnosticId: "RBI0041",
 			severity: DiagnosticSeverity.Error,
-			message: "The class 'TestClass' inherits from UIView but does not expose a 'initWithFrame:' constructor");
+			message: "The class 'TestClass' inherits from UIView but does not expose a 'initWithCoder:' constructor");
 	}
 
 	[Theory]
@@ -956,7 +956,7 @@ public partial class TestClass : NSView {
 			diagnostic: analyzerDiagnotics [0],
 			diagnosticId: "RBI0041",
 			severity: DiagnosticSeverity.Error,
-			message: "The class 'TestClass' inherits from UIView but does not expose a 'initWithFrame:' constructor");
+			message: "The class 'TestClass' inherits from UIView but does not expose a 'initWithCoder:' constructor");
 	}
 
 	class TestDataClassAnalyzerSuccess : IEnumerable<object []> {

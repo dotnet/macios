@@ -318,7 +318,7 @@ sealed class ClassValidator : BindingValidator {
 
 	/// <summary>
 	/// Validates that required constructors are present for specific base classes.
-	/// Currently checks that UIView bindings include the initWithFrame: constructor.
+	/// Currently checks that UIView bindings include the initWithCoder: constructor.
 	/// </summary>
 	/// <param name="binding">The binding to validate.</param>
 	/// <param name="context">The root context for validation.</param>
@@ -330,13 +330,13 @@ sealed class ClassValidator : BindingValidator {
 	{
 		diagnostics = [];
 		// in this case we want to make sure that some base constructors are present. At the moment we only care about 
-		// the initWithFrame: constructor from the UIView base class.
+		// the initWithCoder: constructor from the UIView base class.
 		if (!binding.TypeInfo.IsView)
 			return true;
-		// get all the constructors and ensure that the initWithFrame: constructor is present
-		var hasInitWithFrame = binding.Constructors.Any (ctor => ctor.ExportMethodData.Selector == "initWithFrame:");
+		// get all the constructors and ensure that the initWithCoder: constructor is present
+		var hasInitWithFrame = binding.Constructors.Any (ctor => ctor.ExportMethodData.Selector == "initWithCoder:");
 		if (!hasInitWithFrame) {
-			// error, all UIView bindings must provide the initWithFrame: constructor to be valid
+			// error, all UIView bindings must provide the initWithCoder: constructor to be valid
 			diagnostics = [
 				Diagnostic.Create (
 				descriptor: RBI0041,

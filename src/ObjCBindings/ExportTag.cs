@@ -31,6 +31,11 @@ namespace ObjCBindings {
 		/// marshalling the property.
 		/// </summary>
 		PlainString = 1 << 4,
+
+		/// <summary>
+		/// This value is used to skip the constructor registration in the ObjC runtime.
+		/// </summary>
+		SkipRegistration = 1 << 5,
 	}
 
 	/// <summary>
@@ -120,6 +125,11 @@ namespace ObjCBindings {
 		/// Use this flag on a method to mark it as an event handler.
 		/// </summary>
 		Event = 1 << 15,
+
+		/// <summary>
+		/// This value is used to skip the method registration in the ObjC runtime.
+		/// </summary>
+		SkipRegistration = 1 << 15,
 
 	}
 
@@ -234,6 +244,11 @@ namespace ObjCBindings {
 		/// to the delegate.
 		/// </summary>
 		CreateEvents = 1 << 17,
+
+		/// <summary>
+		/// This value is used to skip the property registration in the ObjC runtime.
+		/// </summary>
+		SkipRegistration = 1 << 18,
 	}
 
 	/// <summary>

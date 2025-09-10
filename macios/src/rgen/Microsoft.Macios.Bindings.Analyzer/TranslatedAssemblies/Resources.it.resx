@@ -363,4 +363,15 @@
   <data name="RBI0031Title" xml:space="preserve">
         <value>Wrong property declaration</value>
     </data>
+  <!-- RBI0032 -->
+  <data name="RBI0032Description" xml:space="preserve">
+        <value>A weak delegate has to have a strong delegate name if it does not start with 'Weak'.</value>
+    </data>
+  <data name="RBI0032MessageFormat" xml:space="preserve">
+        <value>The weak delegate '{0}' is missing a strong delegate name, provide one or use the 'Weak' prefix</value>
+        <comment>{0} is the name of the property that does not start with 'Weak'.</comment>
+    </data>
+  <data name="RBI0032Title" xml:space="preserve">
+        <value>Wrong weak delegate</value>
+    </data>
 </root>

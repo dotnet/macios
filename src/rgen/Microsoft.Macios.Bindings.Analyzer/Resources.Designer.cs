@@ -920,5 +920,86 @@ namespace Microsoft.Macios.Bindings.Analyzer {
                 return ResourceManager.GetString("RBI0031Title", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A weak delegate has to have a strong delegate name if it does not start with &apos;Weak&apos;..
+        /// </summary>
+        internal static string RBI0032Description {
+            get {
+                return ResourceManager.GetString("RBI0032Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The weak delegate &apos;{0}&apos; is missing a strong delegate name, provide one or use the &apos;Weak&apos; prefix.
+        /// </summary>
+        internal static string RBI0032MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0032MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wrong weak delegate.
+        /// </summary>
+        internal static string RBI0032Title {
+            get {
+                return ResourceManager.GetString("RBI0032Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A weak delegate has a duplicate strong delegate name..
+        /// </summary>
+        internal static string RBI0033Description {
+            get {
+                return ResourceManager.GetString("RBI0033Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The weak delegate &apos;{0}&apos; strong delegate &apos;{1}&apos; is already used by &apos;{2}&apos;.
+        /// </summary>
+        internal static string RBI0033MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0033MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wrong strong delegate name.
+        /// </summary>
+        internal static string RBI0033Title {
+            get {
+                return ResourceManager.GetString("RBI0033Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A selector is used in more than one symbol..
+        /// </summary>
+        internal static string RBI0034Description {
+            get {
+                return ResourceManager.GetString("RBI0034Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The selector &apos;{0}&apos; used by &apos;{1}&apos; is already used by &apos;{2}&apos;.
+        /// </summary>
+        internal static string RBI0034MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0034MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Duplicate selector.
+        /// </summary>
+        internal static string RBI0034Title {
+            get {
+                return ResourceManager.GetString("RBI0034Title", resourceCulture);
+            }
+        }
     }
 }

@@ -70,5 +70,5 @@ variables:
 - name: DotNetPreviewSdkVersion
   value: 10.0
 
-- value: minimumMacOSVersion
+- name: minimumMacOSVersion
   value: 15.6

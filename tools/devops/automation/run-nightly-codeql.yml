@@ -43,7 +43,7 @@ stages:
       name: $(PRBuildPool)
       demands:
       - Agent.OS -equals Darwin
-      - Agent.OSVersion -equals $(minimumMacOSVersion)
+      - Agent.OSVersion -gtVersion $(minimumMacOSVersion)
       - macOS.Name -equals ${{ parameters.macOSName }}
       - XcodeChannel -equals Beta
     workspace:

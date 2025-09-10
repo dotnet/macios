@@ -13,7 +13,7 @@ using Xunit;
 namespace Microsoft.Macios.Bindings.Analyzer.Tests;
 
 public class CategoryAnalyzerTests : BaseGeneratorWithAnalyzerTestClass {
-	
+
 	class TestDataCategoryAnalyzerWarnings : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()
 		{
@@ -44,7 +44,7 @@ public static class TestClass{
 				DiagnosticSeverity.Error,
 				"The binding type 'TestNamespace.TestClass' must be declared partial"
 			];
-			
+
 			// not static category 
 			yield return [
 				@"
@@ -72,7 +72,7 @@ public partial class TestClass{
 				DiagnosticSeverity.Error,
 				"BindingType<Category> can only be used to decorate a static class but was found on 'TestNamespace.TestClass' which is not static"
 			];
-			
+
 			// static method, not partial method
 			yield return [
 				@"
@@ -107,7 +107,7 @@ public static partial class TestClass{
 				DiagnosticSeverity.Error,
 				"The method 'ValueForKey' must me partial"
 			];
-			
+
 			// static method, not an extension method
 			yield return [
 				@"
@@ -142,7 +142,7 @@ public static partial class TestClass{
 				DiagnosticSeverity.Error,
 				"The method 'ValueForKey' in category 'TestClass' has to be an extension method for 'Foundation.NSObject'"
 			];
-			
+
 			// static method, an extension method for the wrong type
 			yield return [
 				@"
@@ -181,7 +181,7 @@ public static partial class TestClass{
 
 		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
 	}
-	
+
 	[Theory]
 	[AllSupportedPlatformsClassData<TestDataCategoryAnalyzerWarnings>]
 	public async Task CategoryAnalyzerWarnings (ApplePlatform platform, string inputText, string diagnosticId, DiagnosticSeverity severity, string diagnosticMessage)
@@ -195,5 +195,5 @@ public static partial class TestClass{
 		VerifyDiagnosticMessage (analyzerDiagnotics [0], diagnosticId,
 			severity, diagnosticMessage);
 	}
-	
+
 }

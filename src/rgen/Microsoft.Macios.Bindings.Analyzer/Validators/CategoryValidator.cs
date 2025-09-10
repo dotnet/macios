@@ -35,8 +35,8 @@ sealed class CategoryValidator : BindingValidator {
 		// 3. Have the correct first parameter type (the type that the category is extending)
 		var builder = ImmutableArray.CreateBuilder<Diagnostic> ();
 		foreach (var extensionMethod in binding.Methods) {
-			if (!ModifiersStrategies.IsPartial (extensionMethod.Modifiers, RBI0042, 
-				    out var partialDiagnostics, extensionMethod.Location, extensionMethod.Name)) {
+			if (!ModifiersStrategies.IsPartial (extensionMethod.Modifiers, RBI0042,
+					out var partialDiagnostics, extensionMethod.Location, extensionMethod.Name)) {
 				builder.AddRange (partialDiagnostics);
 			}
 			// check that it is an extension method
@@ -44,7 +44,7 @@ sealed class CategoryValidator : BindingValidator {
 			if (extensionMethod.IsExtension) {
 				// ensure that the first parameter type matches the type that the category is extending
 				if (extensionMethod.Parameters [0].Type.FullyQualifiedName !=
-				    bindingData.CategoryType.FullyQualifiedName) {
+					bindingData.CategoryType.FullyQualifiedName) {
 					// we do not allow to mix types in the extension methods in a category
 					builder.Add (Diagnostic.Create (
 						RBI0044, // Extension methods in a category must have the first parameter type match the category's extended type.
@@ -65,7 +65,7 @@ sealed class CategoryValidator : BindingValidator {
 					));
 			}
 		}
-		
+
 		diagnostics = builder.ToImmutable ();
 		return diagnostics.Length == 0;
 	}

@@ -631,7 +631,7 @@ public static class RgenDiagnostics {
 		description: new LocalizableResourceString (nameof (Resources.RBI0041Description), Resources.ResourceManager,
 			typeof (Resources))
 	);
-	
+
 	/// <summary>
 	/// Disgnostic descriptor for when a category method is not partial
 	/// </summary>
@@ -646,7 +646,7 @@ public static class RgenDiagnostics {
 		description: new LocalizableResourceString (nameof (Resources.RBI0042Description), Resources.ResourceManager,
 			typeof (Resources))
 	);
-	
+
 	/// <summary>
 	/// Disgnostic descriptor for when a category method is not and extension
 	/// </summary>
@@ -661,7 +661,7 @@ public static class RgenDiagnostics {
 		description: new LocalizableResourceString (nameof (Resources.RBI0043Description), Resources.ResourceManager,
 			typeof (Resources))
 	);
-	
+
 	/// <summary>
 	/// Disgnostic descriptor for when a category method is not and extension of the category's target type
 	/// </summary>

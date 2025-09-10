@@ -603,7 +603,7 @@ public static class RgenDiagnostics {
 	);
 
 	/// <summary>
-	/// Disgnostic descriptor for when a method marked as async has does not provide a return type or return type name.
+	/// Diagnostic descriptor for when a method marked as async has does not provide a return type or return type name.
 	/// </summary>
 	internal static readonly DiagnosticDescriptor RBI0040 = new (
 		"RBI0040",
@@ -618,7 +618,7 @@ public static class RgenDiagnostics {
 	);
 
 	/// <summary>
-	/// Disgnostic descriptor for when a class inherits from UIView and is missing the initWithFrame: constructor.
+	/// Diagnostic descriptor for when a class inherits from UIView and is missing the initWithFrame: constructor.
 	/// </summary>
 	internal static readonly DiagnosticDescriptor RBI0041 = new (
 		"RBI0041",
@@ -633,7 +633,7 @@ public static class RgenDiagnostics {
 	);
 
 	/// <summary>
-	/// Disgnostic descriptor for when a category method is not partial
+	/// Diagnostic descriptor for when a category method is not partial
 	/// </summary>
 	internal static readonly DiagnosticDescriptor RBI0042 = new (
 		"RBI0042",
@@ -648,7 +648,7 @@ public static class RgenDiagnostics {
 	);
 
 	/// <summary>
-	/// Disgnostic descriptor for when a category method is not and extension
+	/// Diagnostic descriptor for when a category method is not and extension
 	/// </summary>
 	internal static readonly DiagnosticDescriptor RBI0043 = new (
 		"RBI0043",
@@ -663,7 +663,7 @@ public static class RgenDiagnostics {
 	);
 
 	/// <summary>
-	/// Disgnostic descriptor for when a category method is not and extension of the category's target type
+	/// Diagnostic descriptor for when a category method is not and extension of the category's target type
 	/// </summary>
 	internal static readonly DiagnosticDescriptor RBI0044 = new (
 		"RBI0044",
@@ -678,7 +678,7 @@ public static class RgenDiagnostics {
 	);
 
 	/// <summary>
-	/// Disgnostic descriptor for when a category contains an event.
+	/// Diagnostic descriptor for when a category contains an event.
 	/// </summary>
 	internal static readonly DiagnosticDescriptor RBI0045 = new (
 		"RBI0045",
@@ -693,7 +693,7 @@ public static class RgenDiagnostics {
 	);
 
 	/// <summary>
-	/// Disgnostic descriptor for when a category contains an constructor.
+	/// Diagnostic descriptor for when a category contains an constructor.
 	/// </summary>
 	internal static readonly DiagnosticDescriptor RBI0046 = new (
 		"RBI0046",
@@ -708,7 +708,7 @@ public static class RgenDiagnostics {
 	);
 
 	/// <summary>
-	/// Disgnostic descriptor for when a category contains an constructor.
+	/// Diagnostic descriptor for when a category contains an constructor.
 	/// </summary>
 	internal static readonly DiagnosticDescriptor RBI0047 = new (
 		"RBI0047",

@@ -550,7 +550,7 @@
     <!-- RBI0040 -->
     
     <data name="RBI0041Description" xml:space="preserve">
-        <value>UIView subclasses must have a initWithFrame: constructor..</value>
+        <value>UIView subclasses must have a initWithFrame: constructor.</value>
     </data>
     <data name="RBI0041MessageFormat" xml:space="preserve">
         <value>The class '{0}' inherits from UIView but does not expose a 'initWithFrame:' constructor</value>

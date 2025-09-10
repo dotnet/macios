@@ -676,7 +676,7 @@ public static class RgenDiagnostics {
 		description: new LocalizableResourceString (nameof (Resources.RBI0044Description), Resources.ResourceManager,
 			typeof (Resources))
 	);
-	
+
 	/// <summary>
 	/// Disgnostic descriptor for when a category contains an event.
 	/// </summary>
@@ -691,7 +691,7 @@ public static class RgenDiagnostics {
 		description: new LocalizableResourceString (nameof (Resources.RBI0045Description), Resources.ResourceManager,
 			typeof (Resources))
 	);
-	
+
 	/// <summary>
 	/// Disgnostic descriptor for when a category contains an constructor.
 	/// </summary>
@@ -706,7 +706,7 @@ public static class RgenDiagnostics {
 		description: new LocalizableResourceString (nameof (Resources.RBI0046Description), Resources.ResourceManager,
 			typeof (Resources))
 	);
-	
+
 	/// <summary>
 	/// Disgnostic descriptor for when a category contains an constructor.
 	/// </summary>

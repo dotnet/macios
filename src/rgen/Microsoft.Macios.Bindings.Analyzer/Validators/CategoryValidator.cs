@@ -84,7 +84,7 @@ sealed class CategoryValidator : BindingValidator {
 		out ImmutableArray<Diagnostic> diagnostics, Location? location = null)
 	{
 		var builder = ImmutableArray.CreateBuilder<Diagnostic> ();
-		
+
 		if (binding.Events.Length > 0) {
 			builder.Add (Diagnostic.Create (
 				RBI0045, // Categories cannot contain events.
@@ -100,7 +100,7 @@ sealed class CategoryValidator : BindingValidator {
 				binding.Name,
 				binding.Constructors.Length));
 		}
-		
+
 		if (binding.Properties.Length > 0) {
 			builder.Add (Diagnostic.Create (
 				RBI0047, // Categories cannot contain properties.
@@ -108,11 +108,11 @@ sealed class CategoryValidator : BindingValidator {
 				binding.Name,
 				binding.Properties.Length));
 		}
-		
+
 		diagnostics = builder.ToImmutable ();
 		return diagnostics.Length == 0;
 	}
-	
+
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="CategoryValidator"/> class.

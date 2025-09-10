@@ -177,7 +177,7 @@ public static partial class TestClass{
 				DiagnosticSeverity.Error,
 				"Extension method 'ValueForKey' in category 'TestClass' must have the first parameter type match the category's extended type 'Foundation.NSObject' found 'Foundation.NSValue'"
 			];
-			
+
 			// category with constructors
 			yield return [
 				@"
@@ -209,7 +209,7 @@ public partial class TestClass{
 				DiagnosticSeverity.Error,
 				"Category 'TestClass' has constructors (found 1), but constructors are not supported on categories"
 			];
-			
+
 			// category with properties 
 			yield return [
 				@"

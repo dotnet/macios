@@ -544,7 +544,7 @@
 	</data>
 
 	<data name="BI1088" xml:space="preserve">
-		<value>The backing field type '{0}' is invalid. Valid backing field types are: "NSString", "NSNumber", "nint" and "nuint".</value>
+		<value>The backing field type '{0}' is invalid. Valid backing field types are: "NSString", "NSNumber", and blittable value types.</value>
 	</data>
 
 	<data name="BI1101" xml:space="preserve">

@@ -599,4 +599,43 @@
         <value>Wrong 'this' parameter in category method</value>
     </data>
     
+    <!-- RBI0045 -->
+    
+    <data name="RBI0045Description" xml:space="preserve">
+        <value>Categories do not support events.</value>
+    </data>
+    <data name="RBI0045MessageFormat" xml:space="preserve">
+        <value>Category '{0}' has events (found {1}), but events are not supported on categories</value>
+        <comment>{0} is the name of the category, {1} the number of events</comment>
+    </data>
+    <data name="RBI0045Title" xml:space="preserve">
+        <value>Events are not supported on categories</value>
+    </data>
+    
+    <!-- RBI0046 -->
+    
+    <data name="RBI0046Description" xml:space="preserve">
+        <value>Categories do not support constructors.</value>
+    </data>
+    <data name="RBI0046MessageFormat" xml:space="preserve">
+        <value>Category '{0}' has constructors (found {1}), but constructors are not supported on categories</value>
+        <comment>{0} is the name of the category, {1} the number of constructors</comment>
+    </data>
+    <data name="RBI0046Title" xml:space="preserve">
+        <value>Constructors are not supported on categories</value>
+    </data>
+    
+    <!-- RBI0047 -->
+    
+    <data name="RBI0047Description" xml:space="preserve">
+        <value>Categories do not support properties.</value>
+    </data>
+    <data name="RBI0047MessageFormat" xml:space="preserve">
+        <value>Category '{0}' has properties (found {1}), but properties are not supported on categories</value>
+        <comment>{0} is the name of the category, {1} the number of properties</comment>
+    </data>
+    <data name="RBI0047Title" xml:space="preserve">
+        <value>Properties are not supported on categories</value>
+    </data>
+    
 </root>

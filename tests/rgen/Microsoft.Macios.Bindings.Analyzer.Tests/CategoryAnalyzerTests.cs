@@ -177,6 +177,73 @@ public static partial class TestClass{
 				DiagnosticSeverity.Error,
 				"Extension method 'ValueForKey' in category 'TestClass' must have the first parameter type match the category's extended type 'Foundation.NSObject' found 'Foundation.NSValue'"
 			];
+			
+			// category with constructors
+			yield return [
+				@"
+#pragma warning disable APL0003
+
+using System;
+using System.Runtime.Versioning;
+using AVFoundation;
+using CoreGraphics;
+using Foundation;
+using ObjCBindings;
+using ObjCRuntime;
+using nfloat = System.Runtime.InteropServices.NFloat;
+
+namespace TestNamespace;
+
+[SupportedOSPlatform (""macos"")]
+[SupportedOSPlatform (""ios"")]
+[SupportedOSPlatform (""tvos"")]
+[SupportedOSPlatform (""maccatalyst13.1"")]
+[BindingType<Category> (typeof (NSObject))]
+public partial class TestClass{
+
+	[Export<Constructor> (""initWithScheme:host:path:"")]
+	public TestClass (string scheme, string host, string path);
+
+}",
+				"RBI0046",
+				DiagnosticSeverity.Error,
+				"Category 'TestClass' has constructors (found 1), but constructors are not supported on categories"
+			];
+			
+			// category with properties 
+			yield return [
+				@"
+#pragma warning disable APL0003
+
+using System;
+using System.Runtime.Versioning;
+using AVFoundation;
+using CoreGraphics;
+using Foundation;
+using ObjCBindings;
+using ObjCRuntime;
+using nfloat = System.Runtime.InteropServices.NFloat;
+
+namespace TestNamespace;
+
+[SupportedOSPlatform (""macos"")]
+[SupportedOSPlatform (""ios"")]
+[SupportedOSPlatform (""tvos"")]
+[SupportedOSPlatform (""maccatalyst13.1"")]
+[BindingType<Category> (typeof (NSObject))]
+public partial class TestClass{
+
+	[SupportedOSPlatform (""ios"")]
+	[SupportedOSPlatform (""tvos"")]
+	[SupportedOSPlatform (""macos"")]
+	[SupportedOSPlatform (""maccatalyst13.1"")]
+	[Export<Property> (""count"")]
+	public virtual partial nuint Count { get; set; }
+}",
+				"RBI0047",
+				DiagnosticSeverity.Error,
+				"Category 'TestClass' has properties (found 1), but properties are not supported on categories"
+			];
 		}
 
 		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();

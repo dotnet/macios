@@ -1271,5 +1271,86 @@ namespace Microsoft.Macios.Bindings.Analyzer {
                 return ResourceManager.GetString("RBI0044Title", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Categories do not support events..
+        /// </summary>
+        internal static string RBI0045Description {
+            get {
+                return ResourceManager.GetString("RBI0045Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Category &apos;{0}&apos; has events (found {1}), but events are not supported on categories.
+        /// </summary>
+        internal static string RBI0045MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0045MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Events are not supported on categories.
+        /// </summary>
+        internal static string RBI0045Title {
+            get {
+                return ResourceManager.GetString("RBI0045Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Categories do not support constructors..
+        /// </summary>
+        internal static string RBI0046Description {
+            get {
+                return ResourceManager.GetString("RBI0046Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Category &apos;{0}&apos; has constructors (found {1}), but constructors are not supported on categories.
+        /// </summary>
+        internal static string RBI0046MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0046MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Constructors are not supported on categories.
+        /// </summary>
+        internal static string RBI0046Title {
+            get {
+                return ResourceManager.GetString("RBI0046Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Categories do not support properties..
+        /// </summary>
+        internal static string RBI0047Description {
+            get {
+                return ResourceManager.GetString("RBI0047Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Category &apos;{0}&apos; has properties (found {1}), but properties are not supported on categories.
+        /// </summary>
+        internal static string RBI0047MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0047MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Properties are not supported on categories.
+        /// </summary>
+        internal static string RBI0047Title {
+            get {
+                return ResourceManager.GetString("RBI0047Title", resourceCulture);
+            }
+        }
     }
 }

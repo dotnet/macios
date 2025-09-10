@@ -676,4 +676,49 @@ public static class RgenDiagnostics {
 		description: new LocalizableResourceString (nameof (Resources.RBI0044Description), Resources.ResourceManager,
 			typeof (Resources))
 	);
+	
+	/// <summary>
+	/// Disgnostic descriptor for when a category contains an event.
+	/// </summary>
+	internal static readonly DiagnosticDescriptor RBI0045 = new (
+		"RBI0045",
+		new LocalizableResourceString (nameof (Resources.RBI0045Title), Resources.ResourceManager, typeof (Resources)),
+		new LocalizableResourceString (nameof (Resources.RBI0045MessageFormat), Resources.ResourceManager,
+			typeof (Resources)),
+		"Usage",
+		DiagnosticSeverity.Error,
+		isEnabledByDefault: true,
+		description: new LocalizableResourceString (nameof (Resources.RBI0045Description), Resources.ResourceManager,
+			typeof (Resources))
+	);
+	
+	/// <summary>
+	/// Disgnostic descriptor for when a category contains an constructor.
+	/// </summary>
+	internal static readonly DiagnosticDescriptor RBI0046 = new (
+		"RBI0046",
+		new LocalizableResourceString (nameof (Resources.RBI0046Title), Resources.ResourceManager, typeof (Resources)),
+		new LocalizableResourceString (nameof (Resources.RBI0046MessageFormat), Resources.ResourceManager,
+			typeof (Resources)),
+		"Usage",
+		DiagnosticSeverity.Error,
+		isEnabledByDefault: true,
+		description: new LocalizableResourceString (nameof (Resources.RBI0046Description), Resources.ResourceManager,
+			typeof (Resources))
+	);
+	
+	/// <summary>
+	/// Disgnostic descriptor for when a category contains an constructor.
+	/// </summary>
+	internal static readonly DiagnosticDescriptor RBI0047 = new (
+		"RBI0047",
+		new LocalizableResourceString (nameof (Resources.RBI0047Title), Resources.ResourceManager, typeof (Resources)),
+		new LocalizableResourceString (nameof (Resources.RBI0047MessageFormat), Resources.ResourceManager,
+			typeof (Resources)),
+		"Usage",
+		DiagnosticSeverity.Error,
+		isEnabledByDefault: true,
+		description: new LocalizableResourceString (nameof (Resources.RBI0047Description), Resources.ResourceManager,
+			typeof (Resources))
+	);
 }

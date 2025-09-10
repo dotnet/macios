@@ -9,6 +9,8 @@ using Microsoft.Macios.Generator.Context;
 using Microsoft.Macios.Generator.DataModel;
 using ObjCBindings;
 using static Microsoft.Macios.Generator.RgenDiagnostics;
+using Constructor = Microsoft.Macios.Generator.DataModel.Constructor;
+using Property = Microsoft.Macios.Generator.DataModel.Property;
 
 namespace Microsoft.Macios.Bindings.Analyzer.Validators;
 
@@ -71,6 +73,48 @@ sealed class CategoryValidator : BindingValidator {
 	}
 
 	/// <summary>
+	/// Validates that categories do not contain unsupported members such as events, constructors, or properties.
+	/// </summary>
+	/// <param name="binding">The category binding to validate.</param>
+	/// <param name="context">The root context for validation.</param>
+	/// <param name="diagnostics">When this method returns, contains diagnostics for any unsupported members; otherwise, an empty array.</param>
+	/// <param name="location">The code location to be used for the diagnostics.</param>
+	/// <returns><c>true</c> if no unsupported members are present; otherwise, <c>false</c>.</returns>
+	bool ValidMembers (Binding binding, RootContext context,
+		out ImmutableArray<Diagnostic> diagnostics, Location? location = null)
+	{
+		var builder = ImmutableArray.CreateBuilder<Diagnostic> ();
+		
+		if (binding.Events.Length > 0) {
+			builder.Add (Diagnostic.Create (
+				RBI0045, // Categories cannot contain events.
+				location,
+				binding.Name,
+				binding.Events.Length));
+		}
+
+		if (binding.Constructors.Length > 0) {
+			builder.Add (Diagnostic.Create (
+				RBI0046, // Categories cannot contain constructors.
+				location,
+				binding.Name,
+				binding.Constructors.Length));
+		}
+		
+		if (binding.Properties.Length > 0) {
+			builder.Add (Diagnostic.Create (
+				RBI0047, // Categories cannot contain properties.
+				location,
+				binding.Name,
+				binding.Properties.Length));
+		}
+		
+		diagnostics = builder.ToImmutable ();
+		return diagnostics.Length == 0;
+	}
+	
+
+	/// <summary>
 	/// Initializes a new instance of the <see cref="CategoryValidator"/> class.
 	/// </summary>
 	public CategoryValidator ()
@@ -81,5 +125,8 @@ sealed class CategoryValidator : BindingValidator {
 		AddGlobalStrategy (RBI0004, IsStatic);
 		// validate all methods in the category binding
 		AddGlobalStrategy ([RBI0042, RBI0043, RBI0044], ValidMethods);
+		// make sure that we do not have constructors, properties, fields or events
+		AddGlobalStrategy ([RBI0045, RBI0046, RBI0047], ValidMembers);
 	}
+
 }

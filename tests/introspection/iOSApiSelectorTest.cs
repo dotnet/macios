@@ -836,6 +836,23 @@ namespace Introspection {
 					return TestRuntime.IsSimulatorOrDesktop;
 				}
 				break;
+			case "inheritCullMode": // new MTLIndirectCommandBufferDescriptor methods only supported on devices, intro passes on device.
+			case "setInheritCullMode:":
+			case "inheritDepthBias":
+			case "setInheritDepthBias:":
+			case "inheritDepthClipMode":
+			case "setInheritDepthClipMode:":
+			case "inheritDepthStencilState":
+			case "setInheritDepthStencilState:":
+			case "inheritFrontFacingWinding":
+			case "setInheritFrontFacingWinding:":
+			case "inheritTriangleFillMode":
+			case "setInheritTriangleFillMode:":
+				switch (declaredType.Name) {
+				case "MTLIndirectCommandBufferDescriptor":
+					return TestRuntime.IsSimulatorOrDesktop && TestRuntime.CheckXcodeVersion (26, 0);
+				}
+				break;
 			}
 
 			return base.CheckResponse (value, actualType, method, ref name);

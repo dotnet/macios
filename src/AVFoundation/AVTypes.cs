@@ -6,6 +6,7 @@ using Vector3 = global::System.Numerics.Vector3;
 #endif // !COREBUILD
 using CoreGraphics;
 using ObjCRuntime;
+using CoreMedia;
 
 #nullable enable
 
@@ -880,4 +881,89 @@ namespace AVFoundation {
 			=> AVCaptionSizeMake (width, height);
 	}
 #endif // __TVOS__
+
+	[SupportedOSPlatform ("ios26.0")]
+	[SupportedOSPlatform ("maccatalyst26.0")]
+	[SupportedOSPlatform ("macos26.0")]
+	[SupportedOSPlatform ("tvos26.0")]
+	[StructLayout (LayoutKind.Sequential)]
+	public struct AVCaptureTimecode {
+#if !COREBUILD
+
+		public /* uint8_t */ byte Hours;
+
+		public /* uint8_t */ byte Minutes;
+
+		public /* uint8_t */ byte Seconds;
+
+		public /* uint8_t */ byte Frames;
+
+		public /* uint32_t */ int UserBits;
+
+		public CMTime FrameDuration;
+
+		nuint sourceType;
+
+		public AVCaptureTimecodeSourceType SourceType {
+			get => (AVCaptureTimecodeSourceType) (long) sourceType;
+			set => sourceType = (nuint) (long) value;
+		}
+
+		public AVCaptureTimecode (byte hours, byte minutes, byte seconds, byte frames, int userBits, CMTime frameDuration, AVCaptureTimecodeSourceType sourceType)
+		{
+			Hours = hours;
+			Minutes = minutes;
+			Seconds = seconds;
+			Frames = frames;
+			UserBits = userBits;
+			FrameDuration = frameDuration;
+			SourceType = sourceType;
+		}
+
+		// CMSampleBufferRef _Nullable AVCaptureTimecodeCreateMetadataSampleBufferAssociatedWithPresentationTimeStamp(AVCaptureTimecode timecode, CMTime presentationTimeStamp)
+		[DllImport (Constants.AVFoundationLibrary)]
+		static extern IntPtr /* CMSampleBufferRef */ AVCaptureTimecodeCreateMetadataSampleBufferAssociatedWithPresentationTimeStamp (AVCaptureTimecode timecode, CMTime presentationTimeStamp);
+
+		public CMSampleBuffer? CreateMetadataSampleBufferAssociatedWithPresentationTimeStamp (CMTime presentationTimeStamp)
+		{
+			var ptr = AVCaptureTimecodeCreateMetadataSampleBufferAssociatedWithPresentationTimeStamp (this, presentationTimeStamp);
+			return CMSampleBuffer.Create (ptr, owns: true);
+		}
+
+		// CMSampleBufferRef _Nullable AVCaptureTimecodeCreateMetadataSampleBufferForDuration(AVCaptureTimecode timecode, CMTime duration)
+		[DllImport (Constants.AVFoundationLibrary)]
+		static extern IntPtr /* CMSampleBufferRef */ AVCaptureTimecodeCreateMetadataSampleBufferForDuration (AVCaptureTimecode timecode, CMTime duration);
+
+		public CMSampleBuffer? CreateMetadataSampleBufferForDuration (CMTime duration)
+		{
+			var ptr = AVCaptureTimecodeCreateMetadataSampleBufferForDuration (this, duration);
+			return CMSampleBuffer.Create (ptr, owns: true);
+		}
+
+		// AVCaptureTimecode AVCaptureTimecodeAdvancedByFrames(AVCaptureTimecode timecode, int64_t framesToAdd)
+		[DllImport (Constants.AVFoundationLibrary)]
+		static extern AVCaptureTimecode AVCaptureTimecodeAdvancedByFrames (AVCaptureTimecode timecode, long framesToAdd);
+
+		public AVCaptureTimecode AddFrames (long framesToAdd) => AVCaptureTimecodeAdvancedByFrames (this, framesToAdd);
+
+		public static bool operator == (AVCaptureTimecode left, AVCaptureTimecode right) => left.Equals (right);
+
+		public static bool operator != (AVCaptureTimecode left, AVCaptureTimecode right) => !left.Equals (right);
+
+		public override bool Equals (object? obj) => obj is AVCaptureTimecode other && Equals (other);
+
+		public bool Equals (AVCaptureTimecode other)
+		{
+			return Hours == other.Hours
+				&& Minutes == other.Minutes
+				&& Seconds == other.Seconds
+				&& Frames == other.Frames
+				&& UserBits == other.UserBits
+				&& FrameDuration.Equals (other.FrameDuration)
+				&& SourceType == other.SourceType;
+		}
+
+		public override int GetHashCode () => HashCode.Combine (Hours, Minutes, Seconds, Frames, UserBits, FrameDuration, SourceType);
+#endif
+	}
 }

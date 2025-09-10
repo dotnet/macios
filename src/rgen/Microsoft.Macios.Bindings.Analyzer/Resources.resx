@@ -547,7 +547,7 @@
         <value>Not specified return type</value>
     </data>
     
-    <!-- RBI0040 -->
+    <!-- RBI0041 -->
     
     <data name="RBI0041Description" xml:space="preserve">
         <value>UIView subclasses must have a initWithFrame: constructor..</value>
@@ -558,6 +558,45 @@
     </data>
     <data name="RBI0041Title" xml:space="preserve">
         <value>Missing UIView initWithFrame:</value>
+    </data>
+    
+    <!-- RBI0042 -->
+    
+    <data name="RBI0042Description" xml:space="preserve">
+        <value>Category methods have to be partial.</value>
+    </data>
+    <data name="RBI0042MessageFormat" xml:space="preserve">
+        <value>The method '{0}' must me partial</value>
+        <comment>{0} is the name of the method.</comment>
+    </data>
+    <data name="RBI0042Title" xml:space="preserve">
+        <value>Not partial category method</value>
+    </data>
+    
+    <!-- RBI0043 -->
+    
+    <data name="RBI0043Description" xml:space="preserve">
+        <value>All category methods have to be extensions.</value>
+    </data>
+    <data name="RBI0043MessageFormat" xml:space="preserve">
+        <value>The method '{0}' in category '{1}' has to be an extension method for '{2}'</value>
+        <comment>{0} is the name of the class.</comment>
+    </data>
+    <data name="RBI0043Title" xml:space="preserve">
+        <value>All methods in an category have to be extensions</value>
+    </data>
+    
+    <!-- RBI0044 -->
+    
+    <data name="RBI0044Description" xml:space="preserve">
+        <value>Extension methods have to be of the same type as of the category.</value>
+    </data>
+    <data name="RBI0044MessageFormat" xml:space="preserve">
+        <value>Extension method '{0}' in category '{1}' must have the first parameter type match the category's extended type '{2}' found '{3}'</value>
+        <comment>{0} is the name of the method, {1} the name of the categoyr, {2} is the category type and {3} is the type found</comment>
+    </data>
+    <data name="RBI0044Title" xml:space="preserve">
+        <value>Wrong 'this' parameter in category method</value>
     </data>
     
 </root>

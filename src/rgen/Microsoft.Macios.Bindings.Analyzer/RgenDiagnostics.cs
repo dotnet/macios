@@ -631,4 +631,49 @@ public static class RgenDiagnostics {
 		description: new LocalizableResourceString (nameof (Resources.RBI0041Description), Resources.ResourceManager,
 			typeof (Resources))
 	);
+	
+	/// <summary>
+	/// Disgnostic descriptor for when a category method is not partial
+	/// </summary>
+	internal static readonly DiagnosticDescriptor RBI0042 = new (
+		"RBI0042",
+		new LocalizableResourceString (nameof (Resources.RBI0042Title), Resources.ResourceManager, typeof (Resources)),
+		new LocalizableResourceString (nameof (Resources.RBI0042MessageFormat), Resources.ResourceManager,
+			typeof (Resources)),
+		"Usage",
+		DiagnosticSeverity.Error,
+		isEnabledByDefault: true,
+		description: new LocalizableResourceString (nameof (Resources.RBI0042Description), Resources.ResourceManager,
+			typeof (Resources))
+	);
+	
+	/// <summary>
+	/// Disgnostic descriptor for when a category method is not and extension
+	/// </summary>
+	internal static readonly DiagnosticDescriptor RBI0043 = new (
+		"RBI0043",
+		new LocalizableResourceString (nameof (Resources.RBI0043Title), Resources.ResourceManager, typeof (Resources)),
+		new LocalizableResourceString (nameof (Resources.RBI0043MessageFormat), Resources.ResourceManager,
+			typeof (Resources)),
+		"Usage",
+		DiagnosticSeverity.Error,
+		isEnabledByDefault: true,
+		description: new LocalizableResourceString (nameof (Resources.RBI0043Description), Resources.ResourceManager,
+			typeof (Resources))
+	);
+	
+	/// <summary>
+	/// Disgnostic descriptor for when a category method is not and extension of the category's target type
+	/// </summary>
+	internal static readonly DiagnosticDescriptor RBI0044 = new (
+		"RBI0044",
+		new LocalizableResourceString (nameof (Resources.RBI0044Title), Resources.ResourceManager, typeof (Resources)),
+		new LocalizableResourceString (nameof (Resources.RBI0044MessageFormat), Resources.ResourceManager,
+			typeof (Resources)),
+		"Usage",
+		DiagnosticSeverity.Error,
+		isEnabledByDefault: true,
+		description: new LocalizableResourceString (nameof (Resources.RBI0044Description), Resources.ResourceManager,
+			typeof (Resources))
+	);
 }

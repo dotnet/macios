@@ -1190,5 +1190,86 @@ namespace Microsoft.Macios.Bindings.Analyzer {
                 return ResourceManager.GetString("RBI0041Title", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Category methods have to be partial..
+        /// </summary>
+        internal static string RBI0042Description {
+            get {
+                return ResourceManager.GetString("RBI0042Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The method &apos;{0}&apos; must me partial.
+        /// </summary>
+        internal static string RBI0042MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0042MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not partial category method.
+        /// </summary>
+        internal static string RBI0042Title {
+            get {
+                return ResourceManager.GetString("RBI0042Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All category methods have to be extensions..
+        /// </summary>
+        internal static string RBI0043Description {
+            get {
+                return ResourceManager.GetString("RBI0043Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The method &apos;{0}&apos; in category &apos;{1}&apos; has to be an extension method for &apos;{2}&apos;.
+        /// </summary>
+        internal static string RBI0043MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0043MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All methods in an category have to be extensions.
+        /// </summary>
+        internal static string RBI0043Title {
+            get {
+                return ResourceManager.GetString("RBI0043Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Extension methods have to be of the same type as of the category..
+        /// </summary>
+        internal static string RBI0044Description {
+            get {
+                return ResourceManager.GetString("RBI0044Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Extension method &apos;{0}&apos; in category &apos;{1}&apos; must have the first parameter type match the category&apos;s extended type &apos;{2}&apos; found &apos;{3}&apos;.
+        /// </summary>
+        internal static string RBI0044MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0044MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wrong &apos;this&apos; parameter in category method.
+        /// </summary>
+        internal static string RBI0044Title {
+            get {
+                return ResourceManager.GetString("RBI0044Title", resourceCulture);
+            }
+        }
     }
 }

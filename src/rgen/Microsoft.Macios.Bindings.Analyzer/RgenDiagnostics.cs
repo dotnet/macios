@@ -616,7 +616,7 @@ public static class RgenDiagnostics {
 		description: new LocalizableResourceString (nameof (Resources.RBI0040Description), Resources.ResourceManager,
 			typeof (Resources))
 	);
-	
+
 	/// <summary>
 	/// Disgnostic descriptor for when a class inherits from UIView and is missing the initWithFrame: constructor.
 	/// </summary>

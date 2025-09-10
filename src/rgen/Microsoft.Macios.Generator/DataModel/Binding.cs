@@ -26,7 +26,7 @@ readonly partial struct Binding {
 	/// The name of the named type that generated the code change.
 	/// </summary>
 	public string Name => name;
-	
+
 	readonly TypeInfo typeInfo = TypeInfo.Default;
 	/// <summary>
 	/// Gets the type information for the named type that generated the code change.

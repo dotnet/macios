@@ -39,7 +39,7 @@ static partial class SemanticModelExtensions {
 	{
 		var symbol = self.GetDeclaredSymbol (declaration);
 		// only named types have type info
-		typeInfo = (symbol is INamedTypeSymbol namedTypeSymbol) ? new (namedTypeSymbol) : TypeInfo.Default; 
+		typeInfo = (symbol is INamedTypeSymbol namedTypeSymbol) ? new (namedTypeSymbol) : TypeInfo.Default;
 		GetSymbolData (symbol, out name, out baseClass, out interfaces, out outerClasses, out namespaces, out symbolAvailability);
 		if (symbol is null)
 			bindingInfo = default;

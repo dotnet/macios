@@ -204,7 +204,7 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		get => isDictionaryContainer;
 		init => isDictionaryContainer = value;
 	}
-	
+
 	readonly bool isView = false;
 
 	/// <summary>
@@ -212,7 +212,7 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 	/// </summary>
 	public bool IsView {
 		get => isView;
-		init => isView= value;
+		init => isView = value;
 	}
 
 	/// <summary>

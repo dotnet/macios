@@ -348,7 +348,7 @@ sealed class ClassValidator : BindingValidator {
 		}
 		return diagnostics.Length == 0;
 	}
-	
+
 	/// <summary>
 	/// Initializes a new instance of the <see cref="ClassValidator"/> class.
 	/// </summary>
@@ -365,7 +365,7 @@ sealed class ClassValidator : BindingValidator {
 
 		// validate that we have the required constructors for certain base classes like UIView
 		AddGlobalStrategy ([RBI0041], ValidConstructors);
-		
+
 		// validate async methods. This is a global strategy because it needs to look at all the methods in the binding
 		// are validated together so that async methods do not have the same names
 		AddGlobalStrategy ([RBI0035, RBI0036, RBI0037, RBI0038, RBI0039, RBI0040], ValidAsyncMethods);

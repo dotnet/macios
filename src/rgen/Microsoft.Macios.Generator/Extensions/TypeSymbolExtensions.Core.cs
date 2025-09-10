@@ -433,7 +433,7 @@ static partial class TypeSymbolExtensions {
 		isNSObject = symbol.ToDisplayString ().Trim ('?') == nsObjectClass;
 		isNativeObject = false;
 		isDictionaryContainer = false;
-		isView = false;		
+		isView = false;
 
 		// parents will be returned directly in a Immutable array via a builder since the order is important
 		// interfaces will use a hash set because we do not want duplicates.

@@ -876,12 +876,12 @@ public partial class TestClass{
 	}
 
 	[Theory]
-	[PlatformInlineData(ApplePlatform.iOS)]
-	[PlatformInlineData(ApplePlatform.TVOS)]
-	[PlatformInlineData(ApplePlatform.MacCatalyst)]
+	[PlatformInlineData (ApplePlatform.iOS)]
+	[PlatformInlineData (ApplePlatform.TVOS)]
+	[PlatformInlineData (ApplePlatform.MacCatalyst)]
 	public async Task UIViewInitWithFrameMissing (ApplePlatform platform)
 	{
-		const string inputText = 
+		const string inputText =
 @"
 #pragma warning disable APL0003
 
@@ -912,17 +912,17 @@ public partial class TestClass : UIView {
 			.Where (d => d.Id == "RBI0041").ToArray ();
 		Assert.Single (analyzerDiagnotics);
 		VerifyDiagnosticMessage (
-			diagnostic: analyzerDiagnotics [0], 
+			diagnostic: analyzerDiagnotics [0],
 			diagnosticId: "RBI0041",
-			severity: DiagnosticSeverity.Error, 
+			severity: DiagnosticSeverity.Error,
 			message: "The class 'TestClass' inherits from UIView but does not expose a 'initWithFrame:' constructor");
 	}
-	
+
 	[Theory]
-	[PlatformInlineData(ApplePlatform.MacOSX)]
+	[PlatformInlineData (ApplePlatform.MacOSX)]
 	public async Task NSViewInitWithFrameMissing (ApplePlatform platform)
 	{
-		const string inputText = 
+		const string inputText =
 			@"
 #pragma warning disable APL0003
 
@@ -953,9 +953,9 @@ public partial class TestClass : NSView {
 			.Where (d => d.Id == "RBI0041").ToArray ();
 		Assert.Single (analyzerDiagnotics);
 		VerifyDiagnosticMessage (
-			diagnostic: analyzerDiagnotics [0], 
+			diagnostic: analyzerDiagnotics [0],
 			diagnosticId: "RBI0041",
-			severity: DiagnosticSeverity.Error, 
+			severity: DiagnosticSeverity.Error,
 			message: "The class 'TestClass' inherits from UIView but does not expose a 'initWithFrame:' constructor");
 	}
 

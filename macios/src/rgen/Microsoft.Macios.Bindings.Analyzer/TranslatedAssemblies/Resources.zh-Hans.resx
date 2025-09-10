@@ -451,4 +451,15 @@
   <data name="RBI0039Title" xml:space="preserve">
         <value>Duplicated async name</value>
     </data>
+  <!-- RBI0040 -->
+  <data name="RBI0040Description" xml:space="preserve">
+        <value>No result type or result type name was provided for an async method.</value>
+    </data>
+  <data name="RBI0040MessageFormat" xml:space="preserve">
+            <value>The method '{0}' was marked as async and has multiple parameters but does not provide a return type name, a nameless tuple will be generated for the async method</value>
+        <comment>{0} is the name of the async method.</comment>
+    </data>
+  <data name="RBI0040Title" xml:space="preserve">
+        <value>Not specified return type</value>
+    </data>
 </root>

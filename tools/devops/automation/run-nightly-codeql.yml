@@ -44,7 +44,7 @@ stages:
       demands:
       - Agent.OS -equals Darwin
       - macOS.Name -equals ${{ parameters.macOSName }}
-      - XcodeChannel -equals Beta
+      - XcodeChannel -equals $(xcodeChannel)
     workspace:
       clean: all
     steps:

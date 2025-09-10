@@ -69,3 +69,6 @@ variables:
 
 - name: DotNetPreviewSdkVersion
   value: 10.0
+
+- name: xcodeChannel
+  value: Beta

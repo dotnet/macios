@@ -540,11 +540,24 @@
         <value>No result type or result type name was provided for an async method.</value>
     </data>
     <data name="RBI0040MessageFormat" xml:space="preserve">
-            <value>The method '{0}' was marked as async and has multiple parameters but does not provide a return type name, a nameless tuple will be generated for the async method</value>
+        <value>The method '{0}' was marked as async and has multiple parameters but does not provide a return type name, a nameless tuple will be generated for the async method</value>
         <comment>{0} is the name of the async method.</comment>
     </data>
     <data name="RBI0040Title" xml:space="preserve">
         <value>Not specified return type</value>
+    </data>
+    
+    <!-- RBI0040 -->
+    
+    <data name="RBI0041Description" xml:space="preserve">
+        <value>UIView subclasses must have a initWithFrame: constructor..</value>
+    </data>
+    <data name="RBI0041MessageFormat" xml:space="preserve">
+        <value>The class '{0}' inherits from UIView but does not expose a 'initWithFrame:' constructor</value>
+        <comment>{0} is the name of the class.</comment>
+    </data>
+    <data name="RBI0041Title" xml:space="preserve">
+        <value>Missing UIView initWithFrame:</value>
     </data>
     
 </root>

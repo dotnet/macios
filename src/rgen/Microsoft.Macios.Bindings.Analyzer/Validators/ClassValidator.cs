@@ -317,6 +317,39 @@ sealed class ClassValidator : BindingValidator {
 	}
 
 	/// <summary>
+	/// Validates that required constructors are present for specific base classes.
+	/// Currently checks that UIView bindings include the initWithFrame: constructor.
+	/// </summary>
+	/// <param name="binding">The binding to validate.</param>
+	/// <param name="context">The root context for validation.</param>
+	/// <param name="diagnostics">When this method returns, contains diagnostics for any missing required constructors; otherwise, an empty array.</param>
+	/// <param name="location">The code location to be used for the diagnostics.</param>
+	/// <returns><c>true</c> if all required constructors are present; otherwise, <c>false</c>.</returns>
+	bool ValidConstructors (Binding binding, RootContext context,
+		out ImmutableArray<Diagnostic> diagnostics, Location? location = null)
+	{
+		diagnostics = [];
+		// in this case we want to make sure that some base constructors are present. At the moment we only care about 
+		// the initWithFrame: constructor from the UIView base class.
+		if (!binding.TypeInfo.IsView)
+			return true;
+		// get all the constructors and ensure that the initWithFrame: constructor is present
+		var hasInitWithFrame = binding.Constructors.Any (ctor => ctor.ExportMethodData.Selector == "initWithFrame:");
+		if (!hasInitWithFrame) {
+			// error, all UIView bindings must provide the initWithFrame: constructor to be valid
+			diagnostics = [
+				Diagnostic.Create (
+				descriptor: RBI0041,
+				location: location,
+				messageArgs: [
+					binding.Name,
+				])
+			];
+		}
+		return diagnostics.Length == 0;
+	}
+	
+	/// <summary>
 	/// Initializes a new instance of the <see cref="ClassValidator"/> class.
 	/// </summary>
 	public ClassValidator ()
@@ -330,6 +363,9 @@ sealed class ClassValidator : BindingValidator {
 		// validate that the selectors are not duplicated, this includes properties and methods
 		AddGlobalStrategy ([RBI0034], SelectorsAreUnique);
 
+		// validate that we have the required constructors for certain base classes like UIView
+		AddGlobalStrategy ([RBI0041], ValidConstructors);
+		
 		// validate async methods. This is a global strategy because it needs to look at all the methods in the binding
 		// are validated together so that async methods do not have the same names
 		AddGlobalStrategy ([RBI0035, RBI0036, RBI0037, RBI0038, RBI0039, RBI0040], ValidAsyncMethods);

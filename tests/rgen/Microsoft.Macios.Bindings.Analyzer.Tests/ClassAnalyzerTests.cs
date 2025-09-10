@@ -875,6 +875,90 @@ public partial class TestClass{
 			severity, diagnosticMessage);
 	}
 
+	[Theory]
+	[PlatformInlineData(ApplePlatform.iOS)]
+	[PlatformInlineData(ApplePlatform.TVOS)]
+	[PlatformInlineData(ApplePlatform.MacCatalyst)]
+	public async Task UIViewInitWithFrameMissing (ApplePlatform platform)
+	{
+		const string inputText = 
+@"
+#pragma warning disable APL0003
+
+using System;
+using System.Runtime.Versioning;
+using AVFoundation;
+using CoreGraphics;
+using Foundation;
+using ObjCBindings;
+using ObjCRuntime;
+using UIKit;
+using nfloat = System.Runtime.InteropServices.NFloat;
+
+namespace TestNamespace;
+
+[SupportedOSPlatform (""macos"")]
+[SupportedOSPlatform (""ios"")]
+[SupportedOSPlatform (""tvos"")]
+[SupportedOSPlatform (""maccatalyst13.1"")]
+[BindingType<Class>]
+public partial class TestClass : UIView {
+}
+";
+		var (compilation, _) = CreateCompilation (platform, sources: inputText);
+		var diagnostics = await RunAnalyzer (new BindingTypeSemanticAnalyzer (), compilation);
+
+		var analyzerDiagnotics = diagnostics
+			.Where (d => d.Id == "RBI0041").ToArray ();
+		Assert.Single (analyzerDiagnotics);
+		VerifyDiagnosticMessage (
+			diagnostic: analyzerDiagnotics [0], 
+			diagnosticId: "RBI0041",
+			severity: DiagnosticSeverity.Error, 
+			message: "The class 'TestClass' inherits from UIView but does not expose a 'initWithFrame:' constructor");
+	}
+	
+	[Theory]
+	[PlatformInlineData(ApplePlatform.MacOSX)]
+	public async Task NSViewInitWithFrameMissing (ApplePlatform platform)
+	{
+		const string inputText = 
+			@"
+#pragma warning disable APL0003
+
+using System;
+using System.Runtime.Versioning;
+using AVFoundation;
+using CoreGraphics;
+using Foundation;
+using ObjCBindings;
+using ObjCRuntime;
+using AppKit;
+using nfloat = System.Runtime.InteropServices.NFloat;
+
+namespace TestNamespace;
+
+[SupportedOSPlatform (""macos"")]
+[SupportedOSPlatform (""ios"")]
+[SupportedOSPlatform (""tvos"")]
+[SupportedOSPlatform (""maccatalyst13.1"")]
+[BindingType<Class>]
+public partial class TestClass : NSView {
+}
+";
+		var (compilation, _) = CreateCompilation (platform, sources: inputText);
+		var diagnostics = await RunAnalyzer (new BindingTypeSemanticAnalyzer (), compilation);
+
+		var analyzerDiagnotics = diagnostics
+			.Where (d => d.Id == "RBI0041").ToArray ();
+		Assert.Single (analyzerDiagnotics);
+		VerifyDiagnosticMessage (
+			diagnostic: analyzerDiagnotics [0], 
+			diagnosticId: "RBI0041",
+			severity: DiagnosticSeverity.Error, 
+			message: "The class 'TestClass' inherits from UIView but does not expose a 'initWithFrame:' constructor");
+	}
+
 	class TestDataClassAnalyzerSuccess : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()
 		{

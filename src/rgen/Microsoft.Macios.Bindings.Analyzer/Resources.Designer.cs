@@ -1163,5 +1163,32 @@ namespace Microsoft.Macios.Bindings.Analyzer {
                 return ResourceManager.GetString("RBI0040Title", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to UIView subclasses must have a initWithFrame: constructor...
+        /// </summary>
+        internal static string RBI0041Description {
+            get {
+                return ResourceManager.GetString("RBI0041Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The class &apos;{0}&apos; inherits from UIView but does not expose a &apos;initWithFrame:&apos; constructor.
+        /// </summary>
+        internal static string RBI0041MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0041MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Missing UIView initWithFrame:.
+        /// </summary>
+        internal static string RBI0041Title {
+            get {
+                return ResourceManager.GetString("RBI0041Title", resourceCulture);
+            }
+        }
     }
 }

@@ -315,10 +315,12 @@ public partial class SKCloudServiceSetupOptions : DictionaryContainer { }
 			isNSObject: out var isNsObject,
 			isNativeObject: out var isNativeObject,
 			isDictionaryContainer: out var isDictionaryContainer,
+			isView: out var isUIView,
 			parents: out var parents,
 			interfaces: out var interfaces);
 		Assert.Equal (expectedIsNSObject, isNsObject);
 		Assert.Equal (expectedIsNativeObject, isNativeObject);
+		Assert.False (isUIView);
 		Assert.Equal (expectedParents, parents);
 		Assert.Equal (expectedInterfaces, interfaces);
 		Assert.Equal (expectedDictionaryContainer, isDictionaryContainer);

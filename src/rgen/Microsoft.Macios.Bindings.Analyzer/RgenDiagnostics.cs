@@ -616,4 +616,19 @@ public static class RgenDiagnostics {
 		description: new LocalizableResourceString (nameof (Resources.RBI0040Description), Resources.ResourceManager,
 			typeof (Resources))
 	);
+	
+	/// <summary>
+	/// Disgnostic descriptor for when a class inherits from UIView and is missing the initWithFrame: constructor.
+	/// </summary>
+	internal static readonly DiagnosticDescriptor RBI0041 = new (
+		"RBI0041",
+		new LocalizableResourceString (nameof (Resources.RBI0041Title), Resources.ResourceManager, typeof (Resources)),
+		new LocalizableResourceString (nameof (Resources.RBI0041MessageFormat), Resources.ResourceManager,
+			typeof (Resources)),
+		"Usage",
+		DiagnosticSeverity.Error,
+		isEnabledByDefault: true,
+		description: new LocalizableResourceString (nameof (Resources.RBI0041Description), Resources.ResourceManager,
+			typeof (Resources))
+	);
 }

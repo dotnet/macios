@@ -17528,6 +17528,8 @@ namespace AVFoundation {
 		Audio,
 	}
 
+	delegate void AVCaptureDeviceSetDynamicAspectRatioCallback (CMTime syncTime, [NullAllowed] NSError error);
+
 	/// <summary>Support for accessing the audio and video capture hardware for AVCaptureSession.</summary>
 	///     <remarks>
 	///       <para>Once a capture session has begun, application developers must bracket configuration changes with calls to <see cref="AVFoundation.AVCaptureDevice.LockForConfiguration(out Foundation.NSError)" /> and <see cref="AVFoundation.AVCaptureDevice.UnlockForConfiguration" />.</para>
@@ -18047,7 +18049,7 @@ namespace AVFoundation {
 		[TV (26, 0), NoMac, MacCatalyst (26, 0), iOS (26, 0)]
 		[Export ("setDynamicAspectRatio:completionHandler:")]
 		[Async]
-		void SetDynamicAspectRatio (string dynamicAspectRatio, [NullAllowed] Action<CMTime, NSError> handler);
+		void SetDynamicAspectRatio (string dynamicAspectRatio, [NullAllowed] AVCaptureDeviceSetDynamicAspectRatioCallback handler);
 
 		[TV (26, 0), NoMac, MacCatalyst (26, 0), iOS (26, 0)]
 		[Async]

@@ -45,7 +45,7 @@ stages:
       - Agent.OS -equals Darwin
       - Agent.OSVersion -gtVersion $(minimumMacOSVersion)
       - macOS.Name -equals ${{ parameters.macOSName }}
-      - XcodeChannel -equals Beta
+      - XcodeChannel -equals $(xcodeChannel)
     workspace:
       clean: all
     steps:

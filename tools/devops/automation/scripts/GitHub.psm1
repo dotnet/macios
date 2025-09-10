@@ -633,8 +633,22 @@ mutation {
         }
         $body = ConvertTo-Json $payload
         $url = [GitHubComments]::GitHubGraphQLEndpoint
+        Write-Host "Minimuzing comment response (for comment id $commentId):"
+        Write-Host "    url: $url"
+        Write-Host "    headers: $headers"
+        Write-Host "    body: $body"
         $response = Invoke-RestMethod -Uri $url -Headers $headers -Method "POST" -Body $body
         Write-Host "Minimize comment response (for comment id $commentId): $response"
+        $response | Write-Host
+        try {
+            Write-Host "data: $($response.data)"
+            $response.data | Write-Host
+            Write-Host "errors: $($response.errors)"
+            $response.errors | Write-Host
+        } catch {
+            Write-Host "Warning: error: $_"
+        }
+
     }
 
     <#

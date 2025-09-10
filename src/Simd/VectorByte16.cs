@@ -37,7 +37,7 @@ namespace CoreGraphics {
 		/// <summary>Initializes a new instance of the <see cref="NVector16b"/> struct from a byte array.</summary>
 		/// <param name="array">The byte array to copy values from. If null, the vector will be initialized to zero. Only the first 16 elements will be used if the array is larger.</param>
 		/// <remarks>If the array has fewer than 16 elements, the remaining elements of the vector will be initialized to zero.</remarks>
-		public NVector16b (params byte[]? array)
+		public NVector16b (params byte []? array)
 		{
 			if (array is not null) {
 				for (var i = 0; i < Math.Min (array.Length, 16); i++)

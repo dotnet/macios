@@ -216,6 +216,8 @@ namespace Cecil.Tests {
 		[Test]
 		public void NoMarshalAsAttributes ()
 		{
+			Configuration.IgnoreIfAnyIgnoredPlatforms ();
+
 			var failures = new Dictionary<string, NoMarshalAsFailure> ();
 			var marshalProviders = new List<IMarshalInfoProvider> ();
 			foreach (var info in Helper.NetPlatformImplementationAssemblyDefinitions) {
@@ -248,6 +250,8 @@ namespace Cecil.Tests {
 		[Test]
 		public void CheckForNonBlittablePInvokes ()
 		{
+			Configuration.IgnoreIfAnyIgnoredPlatforms ();
+
 			var failures = new Dictionary<string, NonBlittablePInvokesFailure> ();
 			var pinvokes = new List<(AssemblyDefinition Assembly, MethodDefinition Method)> ();
 
@@ -433,6 +437,8 @@ namespace Cecil.Tests {
 		[Test]
 		public void CheckForBlockLiterals ()
 		{
+			Configuration.IgnoreIfAnyIgnoredPlatforms ();
+
 			var failures = new Dictionary<string, (string Message, string Location)> ();
 
 			foreach (var info in Helper.NetPlatformImplementationAssemblyDefinitions) {
@@ -494,6 +500,8 @@ namespace Cecil.Tests {
 		[Test]
 		public void CheckForMonoPInvokeCallback ()
 		{
+			Configuration.IgnoreIfAnyIgnoredPlatforms ();
+
 			var failures = new Dictionary<string, (string Message, string Location)> ();
 
 			foreach (var info in Helper.NetPlatformImplementationAssemblyDefinitions) {

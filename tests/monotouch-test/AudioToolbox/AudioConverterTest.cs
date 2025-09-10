@@ -2,6 +2,7 @@
 
 #if __IOS__ || __MACOS__
 using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -59,21 +60,33 @@ namespace MonoTouchFixtures.AudioToolbox {
 			}
 		}
 
+		void DoWithTemporaryDirectory (Action<string> action)
+		{
+			var temporaryDirectory = Path.Combine (NSFileManager.TemporaryDirectory, "monotouch-test", Process.GetCurrentProcess ().Id.ToString ());
+			try {
+				Directory.CreateDirectory (temporaryDirectory);
+				action (temporaryDirectory);
+			} finally {
+				Directory.Delete (temporaryDirectory, true);
+			}
+		}
+
 		[Test]
 		public void CreateWithOptions ()
 		{
 			TestRuntime.AssertXcodeVersion (16, 0);
 
 			var sourcePath = Path.Combine (NSBundle.MainBundle.ResourcePath, "Hand.wav");
-			var paths = NSSearchPath.GetDirectories (NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomain.User);
 
-			// Convert once
-			var output1 = Path.Combine (paths [0], "outputOptions1.caf");
-			Convert (sourcePath, output1, AudioFormatType.AppleLossless, options: AudioConverterOptions.None);
+			DoWithTemporaryDirectory ((temporaryDirectory) => {
+				// Convert once
+				var output1 = Path.Combine (temporaryDirectory, "outputOptions1.caf");
+				Convert (sourcePath, output1, AudioFormatType.AppleLossless, options: AudioConverterOptions.None);
 
-			// Convert converted output
-			var output2 = Path.Combine (paths [0], "outputOptions2.wav");
-			Convert (output1, output2, AudioFormatType.LinearPCM, options: AudioConverterOptions.None);
+				// Convert converted output
+				var output2 = Path.Combine (temporaryDirectory, "outputOptions2.wav");
+				Convert (output1, output2, AudioFormatType.LinearPCM, options: AudioConverterOptions.None);
+			});
 		}
 
 		[Test]
@@ -82,15 +95,16 @@ namespace MonoTouchFixtures.AudioToolbox {
 			TestRuntime.AssertXcodeVersion (9, 0);
 
 			var sourcePath = Path.Combine (NSBundle.MainBundle.ResourcePath, "Hand.wav");
-			var paths = NSSearchPath.GetDirectories (NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomain.User);
 
-			// Convert once
-			var output1 = Path.Combine (paths [0], "output1.caf");
-			Convert (sourcePath, output1, AudioFormatType.AppleLossless);
+			DoWithTemporaryDirectory ((temporaryDirectory) => {
+				// Convert once
+				var output1 = Path.Combine (temporaryDirectory, "output1.caf");
+				Convert (sourcePath, output1, AudioFormatType.AppleLossless);
 
-			// Convert converted output
-			var output2 = Path.Combine (paths [0], "output2.wav");
-			Convert (output1, output2, AudioFormatType.LinearPCM);
+				// Convert converted output
+				var output2 = Path.Combine (temporaryDirectory, "output2.wav");
+				Convert (output1, output2, AudioFormatType.LinearPCM);
+			});
 		}
 
 		void Convert (string sourceFilePath, string destinationFilePath, AudioFormatType outputFormatType, int? sampleRate = null, AudioConverterOptions? options = null)
@@ -155,7 +169,9 @@ namespace MonoTouchFixtures.AudioToolbox {
 			dstFormat = converter.CurrentOutputStreamDescription;
 
 			// create the destination file
-			using var destinationFile = AudioFile.Create (destinationUrl, AudioFileType.CAF, dstFormat, AudioFileFlags.EraseFlags);
+			using var destinationFile = AudioFile.Create (destinationUrl, AudioFileType.CAF, dstFormat, AudioFileFlags.EraseFlags, out var audioFileStatus);
+			Assert.That (audioFileStatus, Is.EqualTo (AudioFileError.Success), $"AudioFile.Create ({destinationUrl}");
+			Assert.That (destinationFile, Is.Not.Null, $"destinationFile: {destinationUrl}");
 
 			// set up source buffers and data proc info struct
 			afio.SourceFile = sourceFile;

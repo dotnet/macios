@@ -23,6 +23,11 @@ interface IValidator {
 	/// <param name="context">The root context for validation.</param>
 	/// <returns>A dictionary where the key is the name of the invalid field and the value is a list of diagnostics.</returns>
 	Dictionary<string, List<Diagnostic>> ValidateAll (object data, RootContext context);
+
+	/// <summary>
+	/// Gets all the diagnostic descriptors that this validator and its nested validators can produce.
+	/// </summary>
+	ImmutableArray<DiagnosticDescriptor> Descriptors { get; }
 }
 
 /// <summary>
@@ -59,6 +64,11 @@ partial class Validator<T> : IValidator {
 				foreach (var check in globalStrategies) {
 					allDescriptors.UnionWith (check.Descriptors);
 				}
+			}
+
+			// add the nested validators
+			foreach (var (_, validator) in nestedValidators) {
+				allDescriptors.UnionWith (validator.Descriptors);
 			}
 
 			return [.. allDescriptors];

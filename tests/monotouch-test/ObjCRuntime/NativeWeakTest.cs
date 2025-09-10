@@ -16,7 +16,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 	[Preserve (AllMembers = true)]
 	public class NativeWeakTest {
 		[Test]
-		public void DoIt ()
+		public void TestWeakReferences ()
 		{
 			var start = Stopwatch.StartNew ();
 
@@ -36,19 +36,17 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			int gotUnexpectedResponse = 0;
 			int gotFinalizedResponse = 0;
 
+			const int objectCount = 100;
+
 			var creatorThread = new Thread (() => {
 				using var holder = new WeakReferenceHolder ();
-				const int objectCount = 100;
 				for (var i = 0; i < objectCount; i++) {
 					holder.AddObject (new MyWeakReferencedObject ());
 				}
 				GC.Collect ();
 				GC.WaitForPendingFinalizers ();
-				GC.Collect ();
-				GC.WaitForPendingFinalizers ();
 
 				holder.CallDoSomething (ref nilObjectCount, ref nonNilObjectCount, ref gotExpectedResponse, ref gotUnexpectedResponse, ref gotFinalizedResponse);
-				// TestRuntime.NSLog ($"Nil object count: {nilObjectCount} Non-nil object count: {nonNilObjectCount} Expected response: {gotExpectedResponse} Unexpected responses: {gotUnexpectedResponse} Finalized response: {gotFinalizedResponse}");
 			}) {
 				IsBackground = true,
 			};
@@ -56,12 +54,12 @@ namespace MonoTouchFixtures.ObjCRuntime {
 
 			Assert.That (creatorThread.Join (TimeSpan.FromSeconds (15)), "Join CreatorThread");
 
+			var msg = $"Nil object count: {nilObjectCount} Non-nil object count: {nonNilObjectCount} Expected response: {gotExpectedResponse} Unexpected responses: {gotUnexpectedResponse} Finalized response: {gotFinalizedResponse}";
 			Assert.Multiple (() => {
-				Assert.That (nilObjectCount, Is.Not.EqualTo (0), "Nil object count");
-				Assert.That (nonNilObjectCount, Is.Not.EqualTo (0), "Non-nil object count");
-				Assert.That (gotExpectedResponse, Is.Not.EqualTo (0), "Expected response count");
-				Assert.That (gotUnexpectedResponse, Is.EqualTo (0), "Unexpected response count");
-				Assert.That (gotFinalizedResponse, Is.EqualTo (0), "Responses after finalization");
+				Assert.That (nonNilObjectCount, Is.EqualTo (objectCount - nilObjectCount), $"Non-nil object count: {msg}");
+				Assert.That (gotExpectedResponse, Is.EqualTo (objectCount - nilObjectCount), $"Expected response count: {msg}");
+				Assert.That (gotUnexpectedResponse, Is.EqualTo (0), $"Unexpected response count: {msg}");
+				Assert.That (gotFinalizedResponse, Is.EqualTo (0), $"Responses after finalization: {msg}");
 			});
 		}
 	}

@@ -2342,6 +2342,7 @@ namespace AVFoundation {
 	}
 
 	[TV (26, 0), NoMac, MacCatalyst (26, 0), iOS (26, 0)]
+	[BackingFieldType (typeof (AVCaptureWhiteBalanceTemperatureAndTintValues))]
 	public enum AVCaptureWhiteBalanceTemperatureAndTintValue {
 		[Field ("AVCaptureWhiteBalanceTemperatureAndTintValuesTungsten")]
 		Tungsten,

@@ -3637,7 +3637,7 @@ namespace Metal {
 		[Abstract (GenerateExtensionMethod = true)]
 		[Export ("setDepthTestMinBound:maxBound:")]
 		void SetDepthTest (float minBound, float maxBound);
-		
+
 		/// <param name="rect">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>

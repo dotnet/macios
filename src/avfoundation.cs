@@ -15389,8 +15389,8 @@ namespace AVFoundation {
 	}
 
 	interface IAVExternalSyncDeviceDelegate { }
-	
-	[TV (26,0), MacCatalyst (26,0), Mac (26,0), iOS (26,0)]
+
+	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false), Model]
 	[BaseType (typeof (NSObject))]
 	interface AVExternalSyncDeviceDelegate {
@@ -15448,7 +15448,7 @@ namespace AVFoundation {
 		[Export ("externalSyncSupported")]
 		bool ExternalSyncSupported { [Bind ("isExternalSyncSupported")] get; }
 
-		[TV (26,0), MacCatalyst (26,0), Mac (26,0), iOS (26,0)]
+		[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
 		[Export ("followExternalSyncDevice:videoFrameDuration:delegate:")]
 		void FollowExternalSyncDevice (AVExternalSyncDevice externalSyncDevice, CMTime frameDuration, [NullAllowed] IAVExternalSyncDeviceDelegate @delegate);
 
@@ -15461,7 +15461,7 @@ namespace AVFoundation {
 		[Export ("externalSyncDevice")]
 		AVExternalSyncDevice ExternalSyncDevice { get; }
 
-		[TV (26,0), MacCatalyst (26,0), Mac (26,0), iOS (26,0)]
+		[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
 		[Export ("unfollowExternalSyncDevice")]
 		void UnfollowExternalSyncDevice ();
 
@@ -19063,15 +19063,15 @@ namespace AVFoundation {
 		[Export ("cameraLensSmudgeDetectionSupported")]
 		bool CameraLensSmudgeDetectionSupported { [Bind ("isCameraLensSmudgeDetectionSupported")] get; }
 
-		[NoTV, NoMacCatalyst, NoMac, iOS (26,0)]
+		[NoTV, NoMacCatalyst, NoMac, iOS (26, 0)]
 		[Export ("supportedDynamicAspectRatios", ArgumentSemantic.Copy)]
 		string [] SupportedDynamicAspectRatios { get; }
 
-		[NoTV, NoMacCatalyst, NoMac, iOS (26,0)]
+		[NoTV, NoMacCatalyst, NoMac, iOS (26, 0)]
 		[Export ("videoFieldOfViewForAspectRatio:geometricDistortionCorrected:")]
 		float GetVideoFieldOfView (string aspectRatio, bool geometricDistortionCorrected);
 
-		[NoTV, NoMacCatalyst, NoMac, iOS (26,0)]
+		[NoTV, NoMacCatalyst, NoMac, iOS (26, 0)]
 		[Export ("smartFramingSupported")]
 		bool SmartFramingSupported { [Bind ("isSmartFramingSupported")] get; }
 	}
@@ -26919,7 +26919,7 @@ namespace AVFoundation {
 
 	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
 	[BaseType (typeof (NSObject))]
-	interface AVCaptureExternalDisplayConfiguration	{
+	interface AVCaptureExternalDisplayConfiguration {
 
 		[Export ("shouldMatchFrameRate")]
 		bool ShouldMatchFrameRate { get; set; }

@@ -2623,7 +2623,7 @@ namespace Metal {
 
 	[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0), TV (26, 0)]
 	[Native]
-	public enum MTLSamplerReductionMode : ulong	{
+	public enum MTLSamplerReductionMode : ulong {
 		WeightedAverage = 0,
 		Minimum = 1,
 		Maximum = 2,

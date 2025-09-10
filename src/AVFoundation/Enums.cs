@@ -2359,7 +2359,7 @@ namespace AVFoundation {
 		Shadow,
 	}
 
-	[TV (26,0), MacCatalyst (26,0), Mac (26,0), iOS (26,0)]
+	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
 	[Native]
 	public enum AVExternalSyncDeviceStatus : long {
 		Unavailable = 0,
@@ -2377,7 +2377,7 @@ namespace AVFoundation {
 		External = 2,
 	}
 
-	[TV (26,0), MacCatalyst (26,0), Mac (26,0), iOS (26,0)]
+	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
 	[Native]
 	public enum AVCaptureTimecodeGeneratorSynchronizationStatus : long {
 		Unknown = 0,

@@ -850,7 +850,7 @@ namespace Introspection {
 			case "setInheritTriangleFillMode:":
 				switch (declaredType.Name) {
 				case "MTLIndirectCommandBufferDescriptor":
-					return TestRuntime.IsSimulatorOrDesktop && TestRuntime.CheckXcodeVersion (26, 0);
+					return TestRuntime.IsSimulator;
 				}
 				break;
 			}

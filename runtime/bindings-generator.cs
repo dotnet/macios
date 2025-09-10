@@ -2636,7 +2636,7 @@ namespace Xamarin.BindingMethods.Generator {
 				new FunctionData {
 					Comment = " // NVector16b func ()",
 					Prefix = "simd__",
-					Variants = Variants.All,
+					Variants = Variants.NonStret,
 					ReturnType = Types.NVector16b,
 				}
 			);
@@ -3429,7 +3429,7 @@ namespace Xamarin.BindingMethods.Generator {
 				NativeType = "vector_uchar16",
 				NativeWrapperType = "struct VectorUChar16",
 				RequireMarshal = true,
-				IsX64Stret = true,
+				IsX64Stret = false,
 			};
 
 			public static TypeData Matrix2f = new TypeData {

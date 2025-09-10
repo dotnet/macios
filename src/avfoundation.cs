@@ -18054,7 +18054,7 @@ namespace AVFoundation {
 		[TV (26, 0), NoMac, MacCatalyst (26, 0), iOS (26, 0)]
 		[Async]
 		[Export ("setWhiteBalanceModeLockedWithDeviceWhiteBalanceTemperatureAndTintValues:completionHandler:")]
-		void SetWhiteBalanceModeLockedWithDevice (AVCaptureWhiteBalanceTemperatureAndTintValue whiteBalanceTemperatureAndTintValues, [NullAllowed] Action<CMTime> handler);
+		void SetWhiteBalanceModeLocked (AVCaptureWhiteBalanceTemperatureAndTintValue deviceWhiteBalanceTemperatureAndTintValues, [NullAllowed] Action<CMTime> handler);
 
 		/// <summary>Gets a Boolean value that tells whether the device can lock the focus to a specific position.</summary>
 		///         <value>To be added.</value>

@@ -1020,7 +1020,7 @@ namespace Foundation {
 
 			var isTaggedPointerThatShouldNotBeDisposed = false;
 			if (!DisposeTaggedPointers) {
-				/* Tagged pointer is limited to 64bit, which is all we support anyway.
+				/* Tagged pointers are limited to 64bit, which is all we support anyway.
 				 *
 				 * The bit that identifies if a pointer is a tagged pointer is:
 				 *
@@ -1048,9 +1048,7 @@ namespace Foundation {
 				}
 			}
 
-			if (isTaggedPointerThatShouldNotBeDisposed) {
-				FreeData (); // still need to do this though.
-			} else if (handle != NativeHandle.Zero) {
+			if (!isTaggedPointerThatShouldNotBeDisposed && handle != NativeHandle.Zero) {
 				if (disposing) {
 					ReleaseManagedRef ();
 				} else {

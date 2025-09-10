@@ -235,11 +235,10 @@ class MainClass {
 
 			// Verify these targets did NOT execute on incremental build after C# change
 			AssertTargetNotExecuted (allTargets, "_CreatePkgInfo", "B");
+			AssertTargetNotExecuted (allTargets, "_CompileNativeExecutable", "B");
 			if (interpreterEnabled) {
-				AssertTargetNotExecuted (allTargets, "_CompileNativeExecutable", "B");
 				AssertTargetNotExecuted (allTargets, "_LinkNativeExecutable", "B");
 			} else {
-				AssertTargetExecuted (allTargets, "_CompileNativeExecutable", "B");
 				AssertTargetExecuted (allTargets, "_LinkNativeExecutable", "B");
 			}
 		}

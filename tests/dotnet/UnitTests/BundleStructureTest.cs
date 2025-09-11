@@ -293,6 +293,8 @@ namespace Xamarin.Tests {
 			AddMultiRidAssembly (platform, expectedFiles, assemblyDirectory, "bindings-framework-test", runtimeIdentifiers, forceSingleRid: !(platform == ApplePlatform.MacCatalyst && isReleaseBuild), includeDebugFiles: includeDebugFiles);
 			AddExpectedFrameworkFiles (platform, expectedFiles, "XTest", isSigned);
 
+			AddExpectedFrameworkFiles (platform, expectedFiles, "FrameworkWithLongFileNames", isSigned, longHeader: true);
+
 			// various directories
 			expectedFiles.Add (frameworksDirectory);
 			if (isSigned == CodeSignature.None) {
@@ -531,10 +533,11 @@ namespace Xamarin.Tests {
 			}
 		}
 
-		static void AddExpectedFrameworkFiles (ApplePlatform platform, List<string> expectedFiles, string frameworkName, CodeSignature signature, string subdirectory = "")
+		static void AddExpectedFrameworkFiles (ApplePlatform platform, List<string> expectedFiles, string frameworkName, CodeSignature signature, string subdirectory = "", bool longHeader = false)
 		{
 			var isSigned = signature != CodeSignature.None;
 			var frameworksDirectory = "Frameworks";
+			var headersDirectoryInFramework = "Headers";
 			switch (platform) {
 			case ApplePlatform.iOS:
 			case ApplePlatform.TVOS:
@@ -542,6 +545,7 @@ namespace Xamarin.Tests {
 			case ApplePlatform.MacCatalyst:
 			case ApplePlatform.MacOSX:
 				frameworksDirectory = Path.Combine ("Contents", "Frameworks");
+				headersDirectoryInFramework = Path.Combine ("Versions", "A", "Headers");
 				break;
 			default:
 				throw new NotImplementedException ($"Unknown platform: {platform}");
@@ -566,6 +570,20 @@ namespace Xamarin.Tests {
 				break;
 			default:
 				throw new NotImplementedException ($"Unknown platform: {platform}");
+			}
+
+
+			var headers = new List<string> ();
+			if (longHeader)
+				headers.Add (Path.Combine (headersDirectoryInFramework, "full-paths-exceeding-two-hundred-and-sixty-characters", "often-cause-trouble-on-windows", "where-the-maximum-is-by-default-two-hundred-and-sixty-characters", "because-frameworks-and-by-extension-xcframeworks", "very-often-have-paths-longer-than-this-limit", "especially-when-contained-in-other-directories.h"));
+
+			foreach (var header in headers) {
+				var path  = Path.Combine (frameworksDirectory, $"{frameworkName}.framework");
+				var headerComponents = header.Split ('\\', '/');
+				for (var i = 0; i < headerComponents.Length; i++) {
+					path = Path.Combine (path, headerComponents [i]);
+					expectedFiles.Add (path);
+				}
 			}
 
 			if (isSigned) {

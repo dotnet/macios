@@ -124,7 +124,7 @@ sealed class CategoryValidator : BindingValidator {
 	{
 		var data = (BindingTypeData<Category>) binding.BindingInfo;
 		var builder = ImmutableArray.CreateBuilder<Diagnostic> ();
-		
+
 		// validate the name if specified
 		if (data.Name is not null) {
 			// validate that we do not have any whitespaces in the name
@@ -193,7 +193,7 @@ sealed class CategoryValidator : BindingValidator {
 				binding.Name,
 				data.StringCtorVisibility.ToString ()));
 		}
-		
+
 		diagnostics = builder.ToImmutable ();
 		return diagnostics.Length == 0;
 	}
@@ -209,7 +209,7 @@ sealed class CategoryValidator : BindingValidator {
 		AddGlobalStrategy (RBI0004, IsStatic);
 		// validate the export attr of the category
 		AddGlobalStrategy (
-			descriptor: [RBI0048, RBI0049, RBI0050, RBI0051, RBI0052, RBI0053, RBI0054], 
+			descriptor: [RBI0048, RBI0049, RBI0050, RBI0051, RBI0052, RBI0053, RBI0054],
 			validation: ValidateExportData);
 		// validate all methods in the category binding
 		AddGlobalStrategy ([RBI0042, RBI0043, RBI0044], ValidMethods);

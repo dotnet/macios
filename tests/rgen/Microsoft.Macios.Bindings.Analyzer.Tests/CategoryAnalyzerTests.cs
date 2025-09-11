@@ -244,7 +244,7 @@ public partial class TestClass{
 				DiagnosticSeverity.Error,
 				"Category 'TestClass' has properties (found 1), but properties are not supported on categories"
 			];
-			
+
 			// wrong name, is empty spaces
 			yield return [
 				@"
@@ -272,7 +272,7 @@ public partial static class TestClass{
 				DiagnosticSeverity.Error,
 				"Category 'TestClass' name '    ' is empty an empty string or has white spaces"
 			];
-			
+
 			// wrong name, contains spaces
 			yield return [
 				@"
@@ -300,7 +300,7 @@ public partial static class TestClass{
 				DiagnosticSeverity.Error,
 				"Category 'TestClass' name 'Category Name   ' is empty an empty string or has white spaces"
 			];
-			
+
 			// not INativeObject
 			yield return [
 				@"
@@ -330,7 +330,7 @@ public partial static class TestClass{
 				DiagnosticSeverity.Error,
 				"Category 'TestClass' type 'TestNamespace.MyClass' does not implement INativeObject"
 			];
-			
+
 			// DefaultCtorVisibility is ignored
 			yield return [
 				@"
@@ -359,7 +359,7 @@ public partial static class TestClass{
 				DiagnosticSeverity.Warning,
 				"Category 'TestClass' has DefaultCtorVisibility set to 'PrivateScope' but it will be ignored"
 			];
-			
+
 			// IntPtrCtorVisibility is ignored
 			yield return [
 				@"
@@ -388,7 +388,7 @@ public partial static class TestClass{
 				DiagnosticSeverity.Warning,
 				"Category 'TestClass' has IntPtrCtorVisibility set to 'Public' but it will be ignored"
 			];
-			
+
 			// StringCtorVisibility is ignored
 			yield return [
 				@"
@@ -417,7 +417,7 @@ public partial static class TestClass{
 				DiagnosticSeverity.Warning,
 				"Category 'TestClass' has StringCtorVisibility set to 'Public' but it will be ignored"
 			];
-			
+
 			// ErrorDomain is ignored
 			yield return [
 				@"
@@ -446,7 +446,7 @@ public partial static class TestClass{
 				DiagnosticSeverity.Warning,
 				"Category 'TestClass' has ErrorDomain set to 'MyErrorDomain' but it will be ignored"
 			];
-			
+
 			// ModelName is ignored
 			yield return [
 				@"

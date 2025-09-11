@@ -289,7 +289,7 @@ readonly struct BindingTypeData<T> : IEquatable<BindingTypeData<T>> where T : En
 		if (TryExtractNamedParameters (attributeData, out name, ref flags, out string? modelName, out string? errorDomain, out string? libraryName, out categoryType, out MethodAttributes defaultCtorVisibility, out MethodAttributes intPtrCtorVisibility, out MethodAttributes stringCtorVisibility)) {
 			if (isCategory) {
 				data = flags is not null
-					? new  (categoryType, flags) {
+					? new (categoryType, flags) {
 						Name = name,
 						ModelName = modelName,
 						ErrorDomain = errorDomain,
@@ -308,7 +308,7 @@ readonly struct BindingTypeData<T> : IEquatable<BindingTypeData<T>> where T : En
 						StringCtorVisibility = stringCtorVisibility,
 					};
 			} else if (isProtocol) {
-				data = flags is not null ? 
+				data = flags is not null ?
 					new (name, flags) {
 						ModelName = modelName,
 						ErrorDomain = errorDomain,
@@ -365,13 +365,13 @@ readonly struct BindingTypeData<T> : IEquatable<BindingTypeData<T>> where T : En
 	/// <param name="stringCtorVisibility">The visibility of the string constructor.</param>
 	/// <returns>True if the data was parsed.</returns>
 	static bool TryExtractNamedParameters (AttributeData attributeData,
-		out string? name, 
-		ref T? flags, 
-		out string? modelName, 
-		out string? errorDomain, 
+		out string? name,
+		ref T? flags,
+		out string? modelName,
+		out string? errorDomain,
 		out string? libraryPath,
 		out TypeInfo categoryType,
-		out MethodAttributes defaultCtorVisibility, 
+		out MethodAttributes defaultCtorVisibility,
 		out MethodAttributes intPtrCtorVisibility,
 		out MethodAttributes stringCtorVisibility)
 	{

@@ -31,6 +31,7 @@ readonly partial struct TypeInfo {
 			isNativeObject: out isINativeObject,
 			isDictionaryContainer: out isDictionaryContainer,
 			isView: out isView,
+			isNSCoder: out isNSCoder,
 			parents: out parents,
 			interfaces: out interfaces);
 		IsArray = symbol is IArrayTypeSymbol;

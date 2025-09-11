@@ -214,6 +214,16 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		get => isView;
 		init => isView = value;
 	}
+	
+	readonly bool isNSCoding = false;
+
+	/// <summary>
+	/// True if the type inherits from the NSCoder class.
+	/// </summary>
+	public bool IsNSCoding {
+		get => isNSCoding;
+		init => isNSCoding = value;
+	}
 
 	/// <summary>
 	/// True if the type represents a delegate.
@@ -398,6 +408,7 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 			isNativeObject: out isINativeObject,
 			isDictionaryContainer: out isDictionaryContainer,
 			isView: out isView,
+			isNSCoding: out isNSCoding,
 			parents: out parents,
 			interfaces: out interfaces);
 

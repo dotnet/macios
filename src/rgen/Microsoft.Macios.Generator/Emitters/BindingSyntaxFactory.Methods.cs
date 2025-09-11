@@ -36,7 +36,7 @@ static partial class BindingSyntaxFactory {
 
 		// get the argument list of the delegate type, if the last on is an NSError, we need a if statement to check for null
 		// else, the body is just the set result for the tcs
-		if (delegateType.Delegate.Parameters [^1].Type.Name.Contains ("NSError")) {
+		if (delegateType.Delegate.Parameters.Length > 0 && delegateType.Delegate.Parameters [^1].Type.Name.Contains ("NSError")) {
 			// we are dealing with a callback that has an NSError parameter, we need to check if it is null and set the exception
 			// else set the result
 			var nsErrorParamName = GetTaskCallbackParameterName (delegateType.Delegate.Parameters [^1].Name);

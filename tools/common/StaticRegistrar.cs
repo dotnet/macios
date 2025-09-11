@@ -2663,6 +2663,8 @@ namespace Registrar {
 				return "-(id) copyWithZone: (NSZone *)zone";
 			else if (method.CurrentTrampoline == Trampoline.RetainWeakReference)
 				return "-(BOOL) retainWeakReference";
+			else if (method.CurrentTrampoline == Trampoline.GetNSObjectData)
+				return "-(struct NSObjectData *) xamarinGetNSObjectData";
 
 			var sb = new StringBuilder ();
 			var isCtor = method.CurrentTrampoline == Trampoline.Constructor;
@@ -3418,7 +3420,8 @@ namespace Registrar {
 				sb.WriteLine ("}");
 				sb.WriteLine ("gchandle_flags = (enum XamarinGCHandleFlags) (gchandle_flags & ~XamarinGCHandleFlags_InitialSet);"); // Remove the InitialSet flag, we don't want to store it.
 				sb.WriteLine ("__monoObjectGCHandle.gc_handle = gc_handle;");
-				sb.WriteLine ("__monoObjectGCHandle.data = data;");
+				sb.WriteLine ("if (data != NULL)");
+				sb.WriteLine ("\t__monoObjectGCHandle.data = data;");
 				sb.WriteLine ("__monoObjectGCHandle.gchandle_flags = gchandle_flags;");
 				sb.WriteLine ("__monoObjectGCHandle.native_object = self;");
 				sb.WriteLine ("return true;");
@@ -3487,6 +3490,13 @@ namespace Registrar {
 				sb.WriteLine ("}");
 				sb.WriteLine ();
 				return true;
+			case Trampoline.GetNSObjectData:
+				sb.WriteLine ("-(struct NSObjectData *) xamarinGetNSObjectData");
+				sb.WriteLine ("{");
+				sb.WriteLine ("\treturn __monoObjectGCHandle.data;");
+				sb.WriteLine ("}");
+				sb.WriteLine ();
+				return true;
 			}
 
 			var customConformsToProtocol = method.Selector == "conformsToProtocol:" && method.Method.DeclaringType.Is ("Foundation", "NSObject") && method.Method.Name == "InvokeConformsToProtocol" && method.Parameters.Length == 1;
@@ -3549,6 +3559,10 @@ namespace Registrar {
 				}
 			case Trampoline.RetainWeakReference:
 				rettype = "BOOL";
+				isCtor = false;
+				return true;
+			case Trampoline.GetNSObjectData:
+				rettype = "struct NSObjectData *";
 				isCtor = false;
 				return true;
 			case Trampoline.Constructor:

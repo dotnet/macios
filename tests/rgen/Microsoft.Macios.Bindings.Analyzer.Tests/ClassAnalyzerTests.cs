@@ -18,7 +18,6 @@ public class ClassAnalyzerTests : BaseGeneratorWithAnalyzerTestClass {
 		public IEnumerator<object []> GetEnumerator ()
 		{
 			// not partial class
-			/*
 			yield return [
 @"
 #pragma warning disable APL0003
@@ -45,7 +44,6 @@ public class TestClass{
 				DiagnosticSeverity.Error,
 				"The binding type 'TestNamespace.TestClass' must be declared partial"
 			];
-			*/
 
 			// duplicate selector, 2 properties
 			yield return [
@@ -622,6 +620,242 @@ public partial class TestClass{
 				DiagnosticSeverity.Error,
 				"There is a mismatch between the arguments of 'AttributedStringByInflectingString' (found 0) and the selector 'isAttributedStringByInflectingString:' (found 1)"
 			];
+
+			// async methods
+
+			// async method not void
+			yield return [
+@"
+#pragma warning disable APL0003
+
+using System;
+using System.Runtime.Versioning;
+using AVFoundation;
+using CoreGraphics;
+using Foundation;
+using ObjCBindings;
+using ObjCRuntime;
+using nfloat = System.Runtime.InteropServices.NFloat;
+
+namespace TestNamespace;
+
+[SupportedOSPlatform (""macos"")]
+[SupportedOSPlatform (""ios"")]
+[SupportedOSPlatform (""tvos"")]
+[SupportedOSPlatform (""maccatalyst13.1"")]
+[BindingType<Class>]
+public partial class TestClass{
+
+	[SupportedOSPlatform (""ios"")]
+	[SupportedOSPlatform (""tvos"")]
+	[SupportedOSPlatform (""macos"")]
+	[SupportedOSPlatform (""maccatalyst13.1"")]
+	[Export<Method> (""count"", 
+		Flags = ObjCBindings.Method.Async)]
+	public virtual partial nuint GetCount ();
+
+}",
+				"RBI0035",
+				DiagnosticSeverity.Error,
+				"The method 'GetCount' was marked as async but its return type is not void"
+			];
+
+			// void but no args
+			yield return [
+				@"
+#pragma warning disable APL0003
+
+using System;
+using System.Runtime.Versioning;
+using AVFoundation;
+using CoreGraphics;
+using Foundation;
+using ObjCBindings;
+using ObjCRuntime;
+using nfloat = System.Runtime.InteropServices.NFloat;
+
+namespace TestNamespace;
+
+[SupportedOSPlatform (""macos"")]
+[SupportedOSPlatform (""ios"")]
+[SupportedOSPlatform (""tvos"")]
+[SupportedOSPlatform (""maccatalyst13.1"")]
+[BindingType<Class>]
+public partial class TestClass{
+
+	[SupportedOSPlatform (""ios"")]
+	[SupportedOSPlatform (""tvos"")]
+	[SupportedOSPlatform (""macos"")]
+	[SupportedOSPlatform (""maccatalyst13.1"")]
+	[Export<Method> (""count"", 
+		Flags = ObjCBindings.Method.Async)]
+	public virtual partial void GetCount ();
+
+}",
+				"RBI0036",
+				DiagnosticSeverity.Error,
+				"The method 'GetCount' was marked as async but has 0 parameters when at least a single delegate parameter is required"
+			];
+
+			// void but with args but no delegate
+			yield return [
+				@"
+#pragma warning disable APL0003
+
+using System;
+using System.Runtime.Versioning;
+using AVFoundation;
+using CoreGraphics;
+using Foundation;
+using ObjCBindings;
+using ObjCRuntime;
+using nfloat = System.Runtime.InteropServices.NFloat;
+
+namespace TestNamespace;
+
+[SupportedOSPlatform (""macos"")]
+[SupportedOSPlatform (""ios"")]
+[SupportedOSPlatform (""tvos"")]
+[SupportedOSPlatform (""maccatalyst13.1"")]
+[BindingType<Class>]
+public partial class TestClass{
+
+	[SupportedOSPlatform (""ios"")]
+	[SupportedOSPlatform (""tvos"")]
+	[SupportedOSPlatform (""macos"")]
+	[SupportedOSPlatform (""maccatalyst13.1"")]
+	[Export<Method> (""count:"", 
+		Flags = ObjCBindings.Method.Async)]
+	public virtual partial void GetCount (int value);
+
+}",
+				"RBI0037",
+				DiagnosticSeverity.Error,
+				"The method 'GetCount' was marked as async but its last parameter is not a delegate",
+			];
+
+			// void but with delegate but with a duplicated async name
+			yield return [
+				@"
+#pragma warning disable APL0003
+
+using System;
+using System.Runtime.Versioning;
+using AVFoundation;
+using CoreGraphics;
+using Foundation;
+using ObjCBindings;
+using ObjCRuntime;
+using nfloat = System.Runtime.InteropServices.NFloat;
+
+namespace TestNamespace;
+
+[SupportedOSPlatform (""macos"")]
+[SupportedOSPlatform (""ios"")]
+[SupportedOSPlatform (""tvos"")]
+[SupportedOSPlatform (""maccatalyst13.1"")]
+[BindingType<Class>]
+public partial class TestClass{
+
+	[SupportedOSPlatform (""ios"")]
+	[SupportedOSPlatform (""tvos"")]
+	[SupportedOSPlatform (""macos"")]
+	[SupportedOSPlatform (""maccatalyst13.1"")]
+	[Export<Method> (""count:"", 
+		Flags = ObjCBindings.Method.Async,
+		MethodName = ""GetCountAsync"")]
+	public virtual partial void GetCount (Action callback);
+
+	[SupportedOSPlatform (""ios"")]
+	[SupportedOSPlatform (""tvos"")]
+	[SupportedOSPlatform (""macos"")]
+	[SupportedOSPlatform (""maccatalyst13.1"")]
+	[Export<Method> (""count_second:"", 
+		Flags = ObjCBindings.Method.Async,
+		MethodName = ""GetCountAsync"")]
+	public virtual partial void GetCountSecond (Action callback);
+
+}",
+				"RBI0039",
+				DiagnosticSeverity.Error,
+				"The async name 'GetCountAsync' used by 'GetCountSecond' is already used by 'GetCount'",
+			];
+
+			// can async method but flag is missing
+			yield return [
+				@"
+#pragma warning disable APL0003
+
+using System;
+using System.Runtime.Versioning;
+using AVFoundation;
+using CoreGraphics;
+using Foundation;
+using ObjCBindings;
+using ObjCRuntime;
+using nfloat = System.Runtime.InteropServices.NFloat;
+
+namespace TestNamespace;
+
+[SupportedOSPlatform (""macos"")]
+[SupportedOSPlatform (""ios"")]
+[SupportedOSPlatform (""tvos"")]
+[SupportedOSPlatform (""maccatalyst13.1"")]
+[BindingType<Class>]
+public partial class TestClass{
+
+	[SupportedOSPlatform (""ios"")]
+	[SupportedOSPlatform (""tvos"")]
+	[SupportedOSPlatform (""macos"")]
+	[SupportedOSPlatform (""maccatalyst13.1"")]
+	[Export<Method> (""count:"", 
+		Flags = ObjCBindings.Method.Default,
+		MethodName = ""GetCountAsync"")]
+	public virtual partial void GetCount (Action callback);
+
+}",
+				"RBI0038",
+				DiagnosticSeverity.Warning,
+				"The method 'GetCount' was not marked as async but it can be"
+			];
+
+			// correct async method but we are missing the return type
+			yield return [
+				@"
+#pragma warning disable APL0003
+
+using System;
+using System.Runtime.Versioning;
+using AVFoundation;
+using CoreGraphics;
+using Foundation;
+using ObjCBindings;
+using ObjCRuntime;
+using nfloat = System.Runtime.InteropServices.NFloat;
+
+namespace TestNamespace;
+
+[SupportedOSPlatform (""macos"")]
+[SupportedOSPlatform (""ios"")]
+[SupportedOSPlatform (""tvos"")]
+[SupportedOSPlatform (""maccatalyst13.1"")]
+[BindingType<Class>]
+public partial class TestClass{
+
+	[SupportedOSPlatform (""ios"")]
+	[SupportedOSPlatform (""tvos"")]
+	[SupportedOSPlatform (""macos"")]
+	[SupportedOSPlatform (""maccatalyst13.1"")]
+	[Export<Method> (""count:"", 
+		Flags = ObjCBindings.Method.Async,
+		MethodName = ""GetCountAsync"")]
+	public virtual partial void GetCount (int first, int second, Action callback);
+
+}",
+				"RBI0040",
+				DiagnosticSeverity.Warning,
+				"The method 'GetCount' was marked as async and has multiple parameters but does not provide a return type name, a nameless tuple will be generated for the async method"
+			];
 		}
 
 		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
@@ -802,6 +1036,125 @@ public partial class TestClass{
 	public virtual partial nuint SecondGetCount ();
 }",
 				"RBI0034",
+			];
+
+			// void but with delegate with a duplicated async name but with different args
+			yield return [
+				@"
+#pragma warning disable APL0003
+
+using System;
+using System.Runtime.Versioning;
+using AVFoundation;
+using CoreGraphics;
+using Foundation;
+using ObjCBindings;
+using ObjCRuntime;
+using nfloat = System.Runtime.InteropServices.NFloat;
+
+namespace TestNamespace;
+
+[SupportedOSPlatform (""macos"")]
+[SupportedOSPlatform (""ios"")]
+[SupportedOSPlatform (""tvos"")]
+[SupportedOSPlatform (""maccatalyst13.1"")]
+[BindingType<Class>]
+public partial class TestClass{
+
+	[SupportedOSPlatform (""ios"")]
+	[SupportedOSPlatform (""tvos"")]
+	[SupportedOSPlatform (""macos"")]
+	[SupportedOSPlatform (""maccatalyst13.1"")]
+	[Export<Method> (""count:"", 
+		Flags = ObjCBindings.Method.Async,
+		MethodName = ""GetCountAsync"")]
+	public virtual partial void GetCount (Action callback);
+
+	[SupportedOSPlatform (""ios"")]
+	[SupportedOSPlatform (""tvos"")]
+	[SupportedOSPlatform (""macos"")]
+	[SupportedOSPlatform (""maccatalyst13.1"")]
+	[Export<Method> (""count_second:"", 
+		Flags = ObjCBindings.Method.Async,
+		MethodName = ""GetCountAsync"")]
+	public virtual partial void GetCountSecond (int second, Action callback);
+
+}",
+				"RBI0039",
+			];
+
+			// correct async method but with return type
+			yield return [
+				@"
+#pragma warning disable APL0003
+
+using System;
+using System.Runtime.Versioning;
+using AVFoundation;
+using CoreGraphics;
+using Foundation;
+using ObjCBindings;
+using ObjCRuntime;
+using nfloat = System.Runtime.InteropServices.NFloat;
+
+namespace TestNamespace;
+
+[SupportedOSPlatform (""macos"")]
+[SupportedOSPlatform (""ios"")]
+[SupportedOSPlatform (""tvos"")]
+[SupportedOSPlatform (""maccatalyst13.1"")]
+[BindingType<Class>]
+public partial class TestClass{
+
+	[SupportedOSPlatform (""ios"")]
+	[SupportedOSPlatform (""tvos"")]
+	[SupportedOSPlatform (""macos"")]
+	[SupportedOSPlatform (""maccatalyst13.1"")]
+	[Export<Method> (""count:"", 
+		Flags = ObjCBindings.Method.Async,
+		ResultType = typeof ((int First, int Second)),
+		MethodName = ""GetCountAsync"")]
+	public virtual partial void GetCount (int first, int second, Action callback);
+
+}",
+				"RBI0040",
+			];
+
+			// correct async method but with return type name
+			yield return [
+				@"
+#pragma warning disable APL0003
+
+using System;
+using System.Runtime.Versioning;
+using AVFoundation;
+using CoreGraphics;
+using Foundation;
+using ObjCBindings;
+using ObjCRuntime;
+using nfloat = System.Runtime.InteropServices.NFloat;
+
+namespace TestNamespace;
+
+[SupportedOSPlatform (""macos"")]
+[SupportedOSPlatform (""ios"")]
+[SupportedOSPlatform (""tvos"")]
+[SupportedOSPlatform (""maccatalyst13.1"")]
+[BindingType<Class>]
+public partial class TestClass{
+
+	[SupportedOSPlatform (""ios"")]
+	[SupportedOSPlatform (""tvos"")]
+	[SupportedOSPlatform (""macos"")]
+	[SupportedOSPlatform (""maccatalyst13.1"")]
+	[Export<Method> (""count:"", 
+		Flags = ObjCBindings.Method.Async,
+		ResultTypeName = ""AsyncResult""
+		MethodName = ""GetCountAsync"")]
+	public virtual partial void GetCount (int first, int second, Action callback);
+
+}",
+				"RBI0040",
 			];
 		}
 

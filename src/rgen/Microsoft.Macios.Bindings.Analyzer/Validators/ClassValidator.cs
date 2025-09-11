@@ -5,13 +5,39 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.Macios.Generator;
 using Microsoft.Macios.Generator.Context;
 using Microsoft.Macios.Generator.DataModel;
 using static Microsoft.Macios.Generator.RgenDiagnostics;
+using TypeInfo = Microsoft.Macios.Generator.DataModel.TypeInfo;
 
 namespace Microsoft.Macios.Bindings.Analyzer.Validators;
+
+/// <summary>
+/// Helper equality comparer used only within this file to key the async methods dictionary.
+/// Compares tuples of (method name, ordered parameter types) to detect duplicate async method names.
+/// Being declared with the 'file' modifier keeps the helper local to this source file.
+/// </summary>
+file class AsyncNameComparer : IEqualityComparer<(string, TypeInfo [])> {
+	/// <summary>
+	/// Determines equality by requiring the same method name and identical ordered parameter type sequence.
+	/// </summary>
+	public bool Equals ((string, TypeInfo []) x, (string, TypeInfo []) y)
+	{
+		// has to be the same name and with the same parameter type in the same order to be considered equal
+		return x.Item1 == y.Item1 && x.Item2.SequenceEqual (y.Item2);
+	}
+
+	/// <summary>
+	/// Computes a hash code combining the method name and ordered parameter types.
+	/// </summary>
+	public int GetHashCode ((string, TypeInfo []) obj)
+	{
+		int hash = obj.Item1.GetHashCode ();
+		foreach (var t in obj.Item2)
+			hash = hash * 31 + (t.GetHashCode ());
+		return hash;
+	}
+}
 
 /// <summary>
 /// Validator for class bindings.
@@ -164,6 +190,133 @@ sealed class ClassValidator : BindingValidator {
 	}
 
 	/// <summary>
+	/// Validates async methods in a binding. This includes checking for methods that should be async, methods marked as
+	/// async that are invalid, and ensuring that generated async method names are unique.
+	/// </summary>
+	/// <param name="binding">The binding to validate.</param>
+	/// <param name="context">The root context for validation.</param>
+	/// <param name="diagnostics">When this method returns, contains diagnostics for any async method issues; otherwise, an empty array.</param>
+	/// <param name="location">The code location to be used for the diagnostics.</param>
+	/// <returns><c>true</c> if all async methods are valid; otherwise, <c>false</c>.</returns>
+	bool ValidAsyncMethods (Binding binding, RootContext context,
+		out ImmutableArray<Diagnostic> diagnostics, Location? location = null)
+	{
+		// there are several things we need to validate with async methods:
+		// 1. If a method parameter is a callback delegate and the method is not marked as async, we have to report a
+		//    diagnostic as a warning.
+		// 2. I a method is marked as async yet it does not have a callback delegate parameter, we have to report a
+		//    diagnostic as an error.
+		// 3. Collect all the names of async methods and ensure that there are no duplicates across the binding.
+		//	  If there are duplicates, we have to report a diagnostic as an error.
+		diagnostics = ImmutableArray<Diagnostic>.Empty;
+		var builder = ImmutableArray.CreateBuilder<Diagnostic> ();
+		// create a dictionary with a custom comparer that checks the method name and the parameter types
+		var asyncMethodNames = new Dictionary<(string Name, TypeInfo [] Arguments), List<(string SymbolName, Location? Location)>> (
+			new AsyncNameComparer ());
+
+		foreach (var currentMethod in binding.Methods) {
+			if (currentMethod.IsAsync) {
+				if (!currentMethod.ReturnType.IsVoid) {
+					builder.Add (Diagnostic.Create (
+						descriptor: RBI0035, // The method '{0}' was marked as async but its return type is not void
+						location: currentMethod.Location,
+						messageArgs: [
+							currentMethod.Name,
+						]));
+					continue;
+				}
+				// if it was marked as async, we need to ensure that it has at least a parameter, if there are not
+				// params, the method can't be async
+				if (currentMethod.Parameters.Length == 0) {
+					// error, we need at least one parameter for the method to be async, report a diagnostic
+					builder.Add (Diagnostic.Create (
+						descriptor: RBI0036, // The method '{0}' was marked as async but has 0 parameters when at least a single delegate parameter is required
+						location: currentMethod.Location,
+						messageArgs: [
+							currentMethod.Name,
+						]));
+					continue;
+				}
+
+				if (!currentMethod.Parameters [^1].Type.IsDelegate) {
+					// error, we need the last parameter to be a delegate type for the method to be async, report a diagnostic	
+					builder.Add (Diagnostic.Create (
+						descriptor: RBI0037,
+						location: currentMethod.Location,
+						messageArgs: [
+							currentMethod.Name,
+						]));
+				} else {
+					// parameters are valid, but we want to get the async method name to ensure that the name is unique
+					// across the binding for async methods. The async method name + parameter count has to be unique.
+					var asyncMethod = currentMethod.ToAsync ();
+					var asyncMethodKey = (
+						asyncMethod.Name,
+						asyncMethod.Parameters.Select (x => x.Type).ToArray ());
+					if (asyncMethodNames.TryGetValue (asyncMethodKey, out var list)) {
+						list.Add ((currentMethod.Name, currentMethod.Location));
+					} else {
+						// add a new list with the current property
+						asyncMethodNames.Add (asyncMethodKey, [(currentMethod.Name, currentMethod.Location)]);
+					}
+
+					// add a extra validation, if current method has more than one parameter + the delegate and does 
+					// not provide a return type, create a warning for the user to avoid the usage of a nameless
+					// tuple
+					if (currentMethod.Parameters.Length > 2 // more than one parameter + the delegate
+						&& currentMethod.ExportMethodData.ResultType.IsNullOrDefault // does not provide a return type
+						&& currentMethod.ExportMethodData.ResultTypeName is null // does not provide a return type name to generate
+						) {
+						// create warning to inform that a nameless tuple will be generated for the async method
+						// and that it is better to provide a return type name
+						builder.Add (Diagnostic.Create (
+							descriptor: RBI0040, // The method '{0}' was marked as async and has multiple parameters but does not provide a return type name, a nameless tuple will be generated for the async method
+							location: currentMethod.Location,
+							messageArgs: [
+								currentMethod.Name,
+							]));
+					}
+				}
+			} else {
+				// this is not an async method, but we need to check if it has a callback delegate parameter,
+				// if it does, we need to report a warning, not an error because maybe the user does not want to use
+				// the async feature
+				if (currentMethod.ReturnType.IsVoid && currentMethod.Parameters [^1].Type.IsDelegate) {
+					// report a warning
+					builder.Add (Diagnostic.Create (
+						descriptor: RBI0038, // The method '{0}' was not marked as async but it can be
+						location: currentMethod.Location,
+						messageArgs: [
+							currentMethod.Name,
+						]));
+				}
+			}
+		}
+
+		// we have gone through all the methods, now we need to check if there are any duplicate async method names
+		var duplicates = asyncMethodNames.Where (x => x.Value.Count > 1).ToImmutableArray ();
+		if (duplicates.Length > 0) {
+			foreach (var duplicate in duplicates) {
+				var firstSymbol = duplicate.Value.First ();
+				for (var index = 1; index < duplicate.Value.Count; index++) {
+					var dupSymbol = duplicate.Value [index]; // used for the msg and the location
+					builder.Add (Diagnostic.Create (
+						descriptor: RBI0039,
+						location: dupSymbol.Location,
+						messageArgs: [
+							duplicate.Key.Name,
+							dupSymbol.SymbolName,
+							firstSymbol.SymbolName
+						]));
+				}
+			}
+		}
+
+		diagnostics = builder.ToImmutable ();
+		return diagnostics.Length == 0;
+	}
+
+	/// <summary>
 	/// Initializes a new instance of the <see cref="ClassValidator"/> class.
 	/// </summary>
 	public ClassValidator ()
@@ -176,6 +329,10 @@ sealed class ClassValidator : BindingValidator {
 
 		// validate that the selectors are not duplicated, this includes properties and methods
 		AddGlobalStrategy ([RBI0034], SelectorsAreUnique);
+
+		// validate async methods. This is a global strategy because it needs to look at all the methods in the binding
+		// are validated together so that async methods do not have the same names
+		AddGlobalStrategy ([RBI0035, RBI0036, RBI0037, RBI0038, RBI0039, RBI0040], ValidAsyncMethods);
 
 		// validate that strong delegates are not duplicated, this is only for weak properties
 		AddStrategy (

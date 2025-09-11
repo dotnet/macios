@@ -102,6 +102,11 @@ readonly partial struct Method {
 	public bool IsEvent => ExportMethodData.Flags.HasFlag (ObjCBindings.Method.Event);
 
 	/// <summary>
+	/// True if the method was marked to skip its registration.
+	/// </summary>
+	public bool SkipRegistration => ExportMethodData.Flags.HasFlag (ObjCBindings.Method.SkipRegistration);
+
+	/// <summary>
 	/// The location of the attribute in source code.
 	/// </summary>
 	public Location? Location { get; init; }

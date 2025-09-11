@@ -1287,6 +1287,8 @@ namespace Metal {
 		[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
 		BFloat4 = 124,
 		[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0), TV (26, 0)]
+		DepthStencilState = 139,
+		[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0), TV (26, 0)]
 		Tensor = 140,
 	}
 
@@ -2016,6 +2018,8 @@ namespace Metal {
 		Apple8 = 1008,
 		[NoTV]
 		Apple9 = 1009,
+		[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0), TV (26, 0)]
+		Apple10 = 1010,
 		Mac1 = 2001,
 		Mac2 = 2002,
 		Common1 = 3001,
@@ -2615,5 +2619,13 @@ namespace Metal {
 	public enum MTLVisibilityResultType : long {
 		Reset = 0,
 		Accumulate = 1,
+	}
+
+	[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0), TV (26, 0)]
+	[Native]
+	public enum MTLSamplerReductionMode : ulong {
+		WeightedAverage = 0,
+		Minimum = 1,
+		Maximum = 2,
 	}
 }

@@ -265,15 +265,15 @@ readonly partial struct Binding {
 			// strong dictionaries are a little different, we will get all the properties with no filter since the
 			// properties from a strong dictionary do not have any attribute
 			GetMembers<PropertyDeclarationSyntax, Property> (interfaceDeclarationSyntax, context, static (_, _) => false, Property.TryCreate,
-				out properties);
+				out properties, true);
 		} else {
 			GetMembers<PropertyDeclarationSyntax, Property> (interfaceDeclarationSyntax, context, Skip, Property.TryCreate,
-				out properties);
+				out properties, true);
 		}
 		// methods are a little diff, in the old SDK style, both methods and constructors are methods, we will get
 		// all exported methods and then filter accordingly
 		GetMembers<MethodDeclarationSyntax, Method> (interfaceDeclarationSyntax, context, Skip, Method.TryCreate,
-			out ImmutableArray<Method> allMethods);
+			out ImmutableArray<Method> allMethods, true);
 		methods = [.. allMethods.Where (m => !m.IsConstructor)];
 		constructors = allMethods.Where (m => m.IsConstructor)
 			.Select (m => m.ToConstructor ())

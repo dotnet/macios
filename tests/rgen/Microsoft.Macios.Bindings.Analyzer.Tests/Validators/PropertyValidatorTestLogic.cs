@@ -51,7 +51,8 @@ class PropertyValidatorTestLogic {
 		string? getterSelector = null,
 		string? setterSelector = null,
 		bool hasGetter = true,
-		bool hasSetter = true)
+		bool hasSetter = true,
+		string? strongDelegateName = null)
 	{
 		var modifiers = ImmutableArray.CreateBuilder<SyntaxToken> ();
 		modifiers.Add (SyntaxFactory.Token (SyntaxKind.PublicKeyword));
@@ -103,7 +104,9 @@ class PropertyValidatorTestLogic {
 			accessors: accessors.ToImmutable ()
 		) {
 			ExportPropertyData = new ExportData<ObjCBindings.Property> (propertySelector,
-				argumentSemantic, propertyFlags)
+				argumentSemantic, propertyFlags) {
+				StrongDelegateName = strongDelegateName
+			}
 		};
 	}
 
@@ -318,5 +321,17 @@ class PropertyValidatorTestLogic {
 		var result = validator.ValidateAll (property, context);
 		Assert.Empty (result);
 	}
-}
 
+	public void WeakPropertyNameStartsWithWeakTestsImpl (string propertyName, bool isWeak, string? strongDelegateName, int expectedDiagnosticsCount)
+	{
+		var flags = isWeak ? ObjCBindings.Property.WeakDelegate : ObjCBindings.Property.Default;
+		var property = CreateProperty (name: propertyName, propertyFlags: flags, strongDelegateName: strongDelegateName);
+		var result = validator.ValidateAll (property, context);
+		var totalDiagnostics = result.Values.Sum (x => x.Count);
+		Assert.Equal (expectedDiagnosticsCount, totalDiagnostics);
+		if (expectedDiagnosticsCount > 0) {
+			var diagnostic = result.Values.SelectMany (x => x).First ();
+			Assert.Equal ("RBI0032", diagnostic.Id);
+		}
+	}
+}

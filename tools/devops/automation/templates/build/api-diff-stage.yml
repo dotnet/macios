@@ -48,6 +48,7 @@ jobs:
     name: ${{ parameters.pool }}
     demands:
     - Agent.OS -equals Darwin
+    - Agent.OSVersion -gtVersion $(minimumMacOSVersion)
     - macOS.Name -equals ${{ parameters.macOSName }}
     - XcodeChannel -equals ${{ parameters.xcodeChannel }}
   workspace:

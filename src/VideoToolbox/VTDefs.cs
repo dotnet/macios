@@ -99,6 +99,7 @@ namespace VideoToolbox {
 		CouldNotOutputTaggedBufferGroupErr = -17699,
 		CouldNotFindExtensionErr = -19510,
 		ExtensionConflictErr = -19511,
+		VideoEncoderAutoWhiteBalanceNotLockedErr = -19512,
 	}
 
 	// uint32_t -> VTErrors.h

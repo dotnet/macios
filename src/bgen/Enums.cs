@@ -152,15 +152,10 @@ public partial class Generator {
 		var isBackingFieldValueType = backingFieldType.IsValueType;
 		var visibility = is_internal ? "internal" : "public";
 
-		if (backingFieldType != TypeCache.System_nint &&
-			backingFieldType != TypeCache.System_nuint &&
-			backingFieldType != TypeCache.System_Int32 &&
-			backingFieldType != TypeCache.System_Int64 &&
-			backingFieldType != TypeCache.System_UInt32 &&
-			backingFieldType != TypeCache.System_UInt64 &&
+		if (!backingFieldType.IsValueType &&
 			backingFieldType != TypeCache.NSString &&
 			backingFieldType != TypeCache.NSNumber) {
-			exceptions.Add (ErrorHelper.CreateError (1088 /* The backing field type '{0}' is invalid. Valid backing field types are: "NSString", "NSNumber", "nint" and "nuint". */, backingFieldType.FullName));
+			exceptions.Add (ErrorHelper.CreateError (1088 /* The backing field type '{0}' is invalid. Valid backing field types are: "NSString", "NSNumber", and blittable value types. */, backingFieldType.FullName));
 			backingFieldType = TypeCache.NSString;
 		}
 
@@ -285,7 +280,7 @@ public partial class Generator {
 				var actualLibName = useFieldAttrLibName ? libname : library_name;
 				if (isBackingFieldValueType) {
 					print ($"if (!values [{n}].HasValue)");
-					print ($"\tvalues [{n}] = Dlfcn.Get{backingFieldType.Name} (Libraries.{actualLibName}.Handle, \"{fa.SymbolName}\");");
+					print ($"\tvalues [{n}] = Dlfcn.GetStruct<{backingFieldType.Name}> (Libraries.{actualLibName}.Handle, \"{fa.SymbolName}\");");
 					print ($"return values [{n}]!.Value;"); // The ! is required due to https://github.com/dotnet/roslyn/issues/79004.
 					n++;
 				} else {

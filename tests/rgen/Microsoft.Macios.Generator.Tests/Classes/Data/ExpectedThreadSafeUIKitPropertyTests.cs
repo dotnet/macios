@@ -122,6 +122,7 @@ public partial class ThreadSafeUIKitPropertyTests
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst13.1")]
+		[Export ("count")]
 		get
 		{
 			global::System.UIntPtr ret;

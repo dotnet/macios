@@ -478,6 +478,10 @@ namespace CoreVideo {
 		[Field ("kCVImageBufferLogTransferFunction_AppleLog")]
 		NSString LogTransferFunctionAppleLogKey { get; }
 
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("kCVImageBufferLogTransferFunction_AppleLog2")]
+		NSString LogTransferFunctionAppleLog2Key { get; }
+
 		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Field ("kCVImageBufferSceneIlluminationKey")]
 		NSString SceneIlluminationKey { get; }

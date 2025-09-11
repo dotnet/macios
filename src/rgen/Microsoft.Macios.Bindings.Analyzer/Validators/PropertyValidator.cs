@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.Macios.Generator.Context;
@@ -71,6 +72,32 @@ class PropertyValidator : Validator<Property> {
 	}
 
 	/// <summary>
+	/// Validates that a weak delegate property's name starts with "Weak" or that it has a corresponding strong delegate name defined.
+	/// </summary>
+	/// <param name="data">The property to validate.</param>
+	/// <param name="context">The root context for validation.</param>
+	/// <param name="diagnostic">When this method returns, contains a diagnostic if the property name is invalid; otherwise, an empty array.</param>
+	/// <param name="location">The code location to be used for the diagnostics.</param>
+	/// <returns><c>true</c> if the property is not a weak delegate or if its name is valid; otherwise, <c>false</c>.</returns>
+	internal static bool WeakPropertyNameStartsWithWeak (Property data, RootContext context,
+		out ImmutableArray<Diagnostic> diagnostic, Location? location)
+	{
+		diagnostic = ImmutableArray<Diagnostic>.Empty;
+		if (data.IsWeakDelegate
+			&& !data.Name.StartsWith ("Weak", StringComparison.Ordinal)
+			&& string.IsNullOrEmpty (data.ExportPropertyData.StrongDelegateName)) {
+			// if the property is weak, it must start with Weak
+			diagnostic = [Diagnostic.Create (
+				descriptor: RBI0032,
+				location: data.Location,
+				messageArgs: data.Name)];
+			return false;
+		}
+		// we do not care about non-weak properties
+		return true;
+	}
+
+	/// <summary>
 	/// Initializes a new instance of the <see cref="PropertyValidator"/> class.
 	/// </summary>
 	public PropertyValidator () : base (p => p.Location)
@@ -96,5 +123,10 @@ class PropertyValidator : Validator<Property> {
 			descriptor: [RBI0018, RBI0019, RBI0029],
 			validation: AccessorIsValid,
 			propertyName: "setter");
+
+		// if a property is weak ensure that it starts the name with Weak or set the strondelegatename in the 
+		// export property data
+		AddGlobalStrategy (RBI0032, WeakPropertyNameStartsWithWeak);
 	}
+
 }

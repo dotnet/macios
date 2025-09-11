@@ -123,7 +123,6 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<IsHotRestartBuild Condition="'$(IsHotRestartBuild)' == 'True' And '$(_PlatformName)' != 'iOS'">False</IsHotRestartBuild>
 			<IsRemoteBuild Condition="'$(IsHotRestartBuild)' == 'True'">False</IsRemoteBuild>
 			<IsRemoteBuild Condition="'$(BundleOriginalResources)' == 'true' And '$(OutputType)' != 'Exe' And '$(BuildBindingProjectLocally)' != 'false'">False</IsRemoteBuild>
-			<_IsNonMacOSBuildForNonRemotablePlatform Condition="'$(_IsNonMacOSBuildForNonRemotablePlatform)' == '' And !$([System.OperatingSystem]::IsMacOS()) And '$(_PlatformName)' != 'iOS'">true</_IsNonMacOSBuildForNonRemotablePlatform>
 		</PropertyGroup>
 	</Target>
 
@@ -147,7 +146,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	-->
 	<Target
 		Name="_ExpandNativeReferences"
-		Condition="'$(_DisableBindingProjectBuild)' != 'true' And '$(_IsNonMacOSBuildForNonRemotablePlatform)' != 'true'"
+		Condition="'$(_DisableBindingProjectBuild)' != 'true'"
 		DependsOnTargets="_DetectSdkLocations;_ComputeTargetArchitectures;_GenerateBundleName;_SanitizeNativeReferences"
 		>
 		<ItemGroup>
@@ -156,7 +155,8 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<_FileNativeReference Include="@(NativeReference)" Condition="'%(Extension)' != '.framework' And '%(Extension)' != '.xcframework' And '%(Extension)' != '.zip'" />
 		</ItemGroup>
 		<ResolveNativeReferences
-			Condition="'$(IsBindingProject)' != 'true'"
+			SessionId="$(BuildSessionId)"
+			Condition="'$(IsMacEnabled)' == 'true' And '$(IsBindingProject)' != 'true'"
 			Architectures="$(TargetArchitectures)"
 			FrameworksDirectory="$(_AppFrameworksRelativePath)"
 			IntermediateOutputPath="$(DeviceSpecificIntermediateOutputPath)"

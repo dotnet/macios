@@ -663,7 +663,7 @@ mutation {
         Write-Host "MinimizeComments($comments)"
         foreach($c in $comments) {
              Write-Host "  MinimizeComments id=$($c.id) node_id=$($c.node_id) c=$c"
-             $this.MinimizeCommentId($c.node_id)
+             $this.MinimizeCommentId($c.id)
         } # foreach
     }
 

@@ -333,6 +333,11 @@
 		<ProjectReference Include="$(RootTestsDirectory)/bindings-xcframework-test/dotnet/$(_PlatformName)/bindings-xcframework-test.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<!-- a framework with a very long file inside -->
+		<NativeReference Include="$(RootTestsDirectory)/test-libraries/frameworks/.libs/FrameworkWithLongFileNames.xcframework.zip" />
+	</ItemGroup>
+
 	<!-- Adding resources using a custom target -->
 	<PropertyGroup>
 		<CollectBundleResourcesDependsOn>

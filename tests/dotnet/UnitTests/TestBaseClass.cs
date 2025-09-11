@@ -620,5 +620,20 @@ namespace Xamarin.Tests {
 			if (nowarn.Count > 0)
 				properties ["NoWarn"] = string.Join (";", nowarn);
 		}
+
+		public static bool UsesCompressedBindingResourcePackage (ApplePlatform platform, string mode = "auto")
+		{
+			if (string.Equals (mode, "true", StringComparison.OrdinalIgnoreCase)) {
+				return true;
+			} else if (string.Equals (mode, "false", StringComparison.OrdinalIgnoreCase)) {
+				return false;
+			} else if (string.Equals (mode, "auto", StringComparison.OrdinalIgnoreCase)) {
+				// return platform == ApplePlatform.MacOSX || platform == ApplePlatform.MacCatalyst;
+				return true;
+			} else {
+				throw new ArgumentOutOfRangeException (nameof (mode), "Must be 'true', 'false' or 'auto'");
+			}
+
+		}
 	}
 }

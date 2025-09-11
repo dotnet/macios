@@ -248,10 +248,8 @@ namespace Xamarin.Tests {
 				bool isCompressedBindingPackage;
 				if (compressedXcframework) {
 					isCompressedBindingPackage = false; // there are no symlinks if we only have zip files, so binding package isn't compressed
-				} else if (platformSpecificXcframework) {
-					isCompressedBindingPackage = platform == ApplePlatform.MacOSX || platform == ApplePlatform.MacCatalyst;
 				} else {
-					isCompressedBindingPackage = true;
+					isCompressedBindingPackage = UsesCompressedBindingResourcePackage (platform);
 				}
 
 				if (isCompressedBindingPackage) {

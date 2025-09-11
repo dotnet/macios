@@ -244,6 +244,237 @@ public partial class TestClass{
 				DiagnosticSeverity.Error,
 				"Category 'TestClass' has properties (found 1), but properties are not supported on categories"
 			];
+			
+			// wrong name, is empty spaces
+			yield return [
+				@"
+#pragma warning disable APL0003
+
+using System;
+using System.Runtime.Versioning;
+using AVFoundation;
+using CoreGraphics;
+using Foundation;
+using ObjCBindings;
+using ObjCRuntime;
+using nfloat = System.Runtime.InteropServices.NFloat;
+
+namespace TestNamespace;
+
+[SupportedOSPlatform (""macos"")]
+[SupportedOSPlatform (""ios"")]
+[SupportedOSPlatform (""tvos"")]
+[SupportedOSPlatform (""maccatalyst13.1"")]
+[BindingType<Category> (typeof (NSObject), Name = ""    "")]
+public partial static class TestClass{
+}",
+				"RBI0048",
+				DiagnosticSeverity.Error,
+				"Category 'TestClass' name '    ' is empty an empty string or has white spaces"
+			];
+			
+			// wrong name, contains spaces
+			yield return [
+				@"
+#pragma warning disable APL0003
+
+using System;
+using System.Runtime.Versioning;
+using AVFoundation;
+using CoreGraphics;
+using Foundation;
+using ObjCBindings;
+using ObjCRuntime;
+using nfloat = System.Runtime.InteropServices.NFloat;
+
+namespace TestNamespace;
+
+[SupportedOSPlatform (""macos"")]
+[SupportedOSPlatform (""ios"")]
+[SupportedOSPlatform (""tvos"")]
+[SupportedOSPlatform (""maccatalyst13.1"")]
+[BindingType<Category> (typeof (NSObject), Name = ""Category Name   "")]
+public partial static class TestClass{
+}",
+				"RBI0048",
+				DiagnosticSeverity.Error,
+				"Category 'TestClass' name 'Category Name   ' is empty an empty string or has white spaces"
+			];
+			
+			// not INativeObject
+			yield return [
+				@"
+#pragma warning disable APL0003
+
+using System;
+using System.Runtime.Versioning;
+using AVFoundation;
+using CoreGraphics;
+using Foundation;
+using ObjCBindings;
+using ObjCRuntime;
+using nfloat = System.Runtime.InteropServices.NFloat;
+
+namespace TestNamespace;
+
+public class MyClass {}
+
+[SupportedOSPlatform (""macos"")]
+[SupportedOSPlatform (""ios"")]
+[SupportedOSPlatform (""tvos"")]
+[SupportedOSPlatform (""maccatalyst13.1"")]
+[BindingType<Category> (typeof (MyClass))]
+public partial static class TestClass{
+}",
+				"RBI0049",
+				DiagnosticSeverity.Error,
+				"Category 'TestClass' type 'TestNamespace.MyClass' does not implement INativeObject"
+			];
+			
+			// DefaultCtorVisibility is ignored
+			yield return [
+				@"
+#pragma warning disable APL0003
+
+using System;
+using System.Reflection;
+using System.Runtime.Versioning;
+using AVFoundation;
+using CoreGraphics;
+using Foundation;
+using ObjCBindings;
+using ObjCRuntime;
+using nfloat = System.Runtime.InteropServices.NFloat;
+
+namespace TestNamespace;
+
+[SupportedOSPlatform (""macos"")]
+[SupportedOSPlatform (""ios"")]
+[SupportedOSPlatform (""tvos"")]
+[SupportedOSPlatform (""maccatalyst13.1"")]
+[BindingType<Category> (typeof (NSObject), DefaultCtorVisibility = MethodAttributes.PrivateScope)]
+public partial static class TestClass{
+}",
+				"RBI0050",
+				DiagnosticSeverity.Warning,
+				"Category 'TestClass' has DefaultCtorVisibility set to 'PrivateScope' but it will be ignored"
+			];
+			
+			// IntPtrCtorVisibility is ignored
+			yield return [
+				@"
+#pragma warning disable APL0003
+
+using System;
+using System.Reflection;
+using System.Runtime.Versioning;
+using AVFoundation;
+using CoreGraphics;
+using Foundation;
+using ObjCBindings;
+using ObjCRuntime;
+using nfloat = System.Runtime.InteropServices.NFloat;
+
+namespace TestNamespace;
+
+[SupportedOSPlatform (""macos"")]
+[SupportedOSPlatform (""ios"")]
+[SupportedOSPlatform (""tvos"")]
+[SupportedOSPlatform (""maccatalyst13.1"")]
+[BindingType<Category> (typeof (NSObject), IntPtrCtorVisibility = MethodAttributes.Public)]
+public partial static class TestClass{
+}",
+				"RBI0052",
+				DiagnosticSeverity.Warning,
+				"Category 'TestClass' has IntPtrCtorVisibility set to 'Public' but it will be ignored"
+			];
+			
+			// StringCtorVisibility is ignored
+			yield return [
+				@"
+#pragma warning disable APL0003
+
+using System;
+using System.Reflection;
+using System.Runtime.Versioning;
+using AVFoundation;
+using CoreGraphics;
+using Foundation;
+using ObjCBindings;
+using ObjCRuntime;
+using nfloat = System.Runtime.InteropServices.NFloat;
+
+namespace TestNamespace;
+
+[SupportedOSPlatform (""macos"")]
+[SupportedOSPlatform (""ios"")]
+[SupportedOSPlatform (""tvos"")]
+[SupportedOSPlatform (""maccatalyst13.1"")]
+[BindingType<Category> (typeof (NSObject), StringCtorVisibility = MethodAttributes.Public)]
+public partial static class TestClass{
+}",
+				"RBI0054",
+				DiagnosticSeverity.Warning,
+				"Category 'TestClass' has StringCtorVisibility set to 'Public' but it will be ignored"
+			];
+			
+			// ErrorDomain is ignored
+			yield return [
+				@"
+#pragma warning disable APL0003
+
+using System;
+using System.Reflection;
+using System.Runtime.Versioning;
+using AVFoundation;
+using CoreGraphics;
+using Foundation;
+using ObjCBindings;
+using ObjCRuntime;
+using nfloat = System.Runtime.InteropServices.NFloat;
+
+namespace TestNamespace;
+
+[SupportedOSPlatform (""macos"")]
+[SupportedOSPlatform (""ios"")]
+[SupportedOSPlatform (""tvos"")]
+[SupportedOSPlatform (""maccatalyst13.1"")]
+[BindingType<Category> (typeof (NSObject), ErrorDomain = ""MyErrorDomain"")]
+public partial static class TestClass{
+}",
+				"RBI0051",
+				DiagnosticSeverity.Warning,
+				"Category 'TestClass' has ErrorDomain set to 'MyErrorDomain' but it will be ignored"
+			];
+			
+			// ModelName is ignored
+			yield return [
+				@"
+#pragma warning disable APL0003
+
+using System;
+using System.Reflection;
+using System.Runtime.Versioning;
+using AVFoundation;
+using CoreGraphics;
+using Foundation;
+using ObjCBindings;
+using ObjCRuntime;
+using nfloat = System.Runtime.InteropServices.NFloat;
+
+namespace TestNamespace;
+
+[SupportedOSPlatform (""macos"")]
+[SupportedOSPlatform (""ios"")]
+[SupportedOSPlatform (""tvos"")]
+[SupportedOSPlatform (""maccatalyst13.1"")]
+[BindingType<Category> (typeof (NSObject), ModelName = ""MyModelName"")]
+public partial static class TestClass{
+}",
+				"RBI0053",
+				DiagnosticSeverity.Warning,
+				"Category 'TestClass' has ModelName set to 'MyModelName' but it will be ignored"
+			];
 		}
 
 		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();

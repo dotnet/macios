@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using System.Collections.Immutable;
+using System.Reflection;
 using Microsoft.CodeAnalysis;
 using Microsoft.Macios.Generator.Attributes;
 using Microsoft.Macios.Generator.Context;
@@ -110,6 +111,92 @@ sealed class CategoryValidator : BindingValidator {
 		return diagnostics.Length == 0;
 	}
 
+	/// <summary>
+	/// Validates the Export attribute data for a category binding, ensuring proper naming conventions,
+	/// type constraints, and constructor visibility settings.
+	/// </summary>
+	/// <param name="binding">The binding to validate.</param>
+	/// <param name="context">The root context for validation.</param>
+	/// <param name="diagnostics">When this method returns, contains diagnostics for any validation failures; otherwise, an empty array.</param>
+	/// <param name="location">The code location to be used for the diagnostics.</param>
+	/// <returns><c>true</c> if the Export attribute data is valid; otherwise, <c>false</c>.</returns>
+	bool ValidateExportData (Binding binding, RootContext context, out ImmutableArray<Diagnostic> diagnostics, Location? location)
+	{
+		var data = (BindingTypeData<Category>) binding.BindingInfo;
+		var builder = ImmutableArray.CreateBuilder<Diagnostic> ();
+		
+		// validate the name if specified
+		if (data.Name is not null) {
+			// validate that we do not have any whitespaces in the name
+			if (string.IsNullOrWhiteSpace (data.Name) || data.Name.Contains (' ')) {
+				// the name is not valid
+				builder.Add (Diagnostic.Create (
+					RBI0048, // Category '{0}' name '{1}' is empty an empty string or has white spaces
+					location,
+					binding.Name,
+					data.Name));
+			}
+		}
+		// the category types must be a INativeObject or a NSObject
+		if (!data.CategoryType.IsINativeObject) {
+			// the type is not valid
+			builder.Add (Diagnostic.Create (
+				RBI0049, // Category '{0}' type '{1}' does not implement INativeObject
+				location,
+				binding.Name,
+				data.CategoryType.FullyQualifiedName));
+		}
+		// the default ctor visibility must be the default value, else throw a warning
+		if (data.DefaultCtorVisibility != MethodAttributes.Public) {
+			// warning for the user
+			builder.Add (Diagnostic.Create (
+				RBI0050, // Category '{0}' has DefaultCtorVisibility set to '{1}' but it will be ignored
+				location,
+				binding.Name,
+				data.DefaultCtorVisibility.ToString ()));
+		}
+
+		if (data.ErrorDomain is not null) {
+			// warning for the user
+			builder.Add (Diagnostic.Create (
+				RBI0051, // Category '{0}' has set ErrorDomain to '{1}' but it will be ignored
+				location,
+				binding.Name,
+				data.ErrorDomain));
+		}
+
+		// intptr ctor visibility must be private scope since it will be ignored
+		if (data.IntPtrCtorVisibility != MethodAttributes.PrivateScope) {
+			// warning for the user
+			builder.Add (Diagnostic.Create (
+				RBI0052, // The IntPtr constructor visibility for a category must be PrivateScope.
+				location,
+				binding.Name,
+				data.IntPtrCtorVisibility.ToString ()));
+		}
+
+		if (data.ModelName is not null) {
+			// warning for the user
+			builder.Add (Diagnostic.Create (
+				RBI0053, // Category '{0}' has set ModelName to '{1}' but it will be ignored
+				location,
+				binding.Name,
+				data.ModelName));
+		}
+
+		// string ctor visibility must be private scope since it will be ignored
+		if (data.StringCtorVisibility != MethodAttributes.PrivateScope) {
+			// warning for the user
+			builder.Add (Diagnostic.Create (
+				RBI0054, // Category '{0}' has set StringCtorVisibility to '{1}' but it will be ignored
+				location,
+				binding.Name,
+				data.StringCtorVisibility.ToString ()));
+		}
+		
+		diagnostics = builder.ToImmutable ();
+		return diagnostics.Length == 0;
+	}
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="CategoryValidator"/> class.
@@ -120,6 +207,10 @@ sealed class CategoryValidator : BindingValidator {
 		AddGlobalStrategy (RBI0001, IsPartial);
 		// categories must be static
 		AddGlobalStrategy (RBI0004, IsStatic);
+		// validate the export attr of the category
+		AddGlobalStrategy (
+			descriptor: [RBI0048, RBI0049, RBI0050, RBI0051, RBI0052, RBI0053, RBI0054], 
+			validation: ValidateExportData);
 		// validate all methods in the category binding
 		AddGlobalStrategy ([RBI0042, RBI0043, RBI0044], ValidMethods);
 		// make sure that we do not have constructors, properties, fields or events

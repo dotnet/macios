@@ -638,4 +638,95 @@
         <value>Properties are not supported on categories</value>
     </data>
     
+    <!-- RBI0048 -->
+    
+    <data name="RBI0048Description" xml:space="preserve">
+        <value>A category name cannot be an empty string or have spaces.</value>
+    </data>
+    <data name="RBI0048MessageFormat" xml:space="preserve">
+        <value>Category '{0}' name '{1}' is empty an empty string or has white spaces</value>
+        <comment>{0} is the name of the category, {1} is what we found</comment>
+    </data>
+    <data name="RBI0048Title" xml:space="preserve">
+        <value>Category names cannot be a empty string or have white spaces</value>
+    </data>
+    
+    <!-- RBI0049 -->
+    
+    <data name="RBI0049Description" xml:space="preserve">
+        <value>A category type must be a INativeObject.</value>
+    </data>
+    <data name="RBI0049MessageFormat" xml:space="preserve">
+        <value>Category '{0}' type '{1}' does not implement INativeObject</value>
+        <comment>{0} is the name of the category, {1} is the category type</comment>
+    </data>
+    <data name="RBI0049Title" xml:space="preserve">
+        <value>Category types must be INativeObjects</value>
+    </data>
+    
+    <!-- RBI0050 -->
+    
+    <data name="RBI0050Description" xml:space="preserve">
+        <value>DefaultCtorVisibility is ignored in categories.</value>
+    </data>
+    <data name="RBI0050MessageFormat" xml:space="preserve">
+        <value>Category '{0}' has DefaultCtorVisibility set to '{1}' but it will be ignored</value>
+        <comment>{0} is the name of the category, {1} is the value</comment>
+    </data>
+    <data name="RBI0050Title" xml:space="preserve">
+        <value>DefaultCtorVisibility is ignored in categories</value>
+    </data>
+    
+    <!-- RBI0051 -->
+    
+    <data name="RBI0051Description" xml:space="preserve">
+        <value>ErrorDomain is ignored in categories.</value>
+    </data>
+    <data name="RBI0051MessageFormat" xml:space="preserve">
+        <value>Category '{0}' has ErrorDomain set to '{1}' but it will be ignored</value>
+        <comment>{0} is the name of the category, {1} is the value</comment>
+    </data>
+    <data name="RBI0051Title" xml:space="preserve">
+        <value>ErrorDomain is ignored in categories</value>
+    </data>
+    
+    <!-- RBI0052 -->
+    
+    <data name="RBI0052Description" xml:space="preserve">
+        <value>IntPtrCtorVisibility is ignored in categories.</value>
+    </data>
+    <data name="RBI0052MessageFormat" xml:space="preserve">
+        <value>Category '{0}' has IntPtrCtorVisibility set to '{1}' but it will be ignored</value>
+        <comment>{0} is the name of the category, {1} is the value</comment>
+    </data>
+    <data name="RBI0052Title" xml:space="preserve">
+        <value>IntPtrCtorVisibility is ignored in categories</value>
+    </data>
+    
+    <!-- RBI0053 -->
+    
+    <data name="RBI0053Description" xml:space="preserve">
+        <value>ModelName is ignored in categories.</value>
+    </data>
+    <data name="RBI0053MessageFormat" xml:space="preserve">
+        <value>Category '{0}' has ModelName set to '{1}' but it will be ignored</value>
+        <comment>{0} is the name of the category, {1} is the value</comment>
+    </data>
+    <data name="RBI0053Title" xml:space="preserve">
+        <value>ModelName is ignored in categories</value>
+    </data>
+    
+    <!-- RBI0054 -->
+    
+    <data name="RBI0054Description" xml:space="preserve">
+        <value>StringCtorVisibility is ignored in categories.</value>
+    </data>
+    <data name="RBI0054MessageFormat" xml:space="preserve">
+        <value>Category '{0}' has StringCtorVisibility set to '{1}' but it will be ignored</value>
+        <comment>{0} is the name of the category, {1} is the value</comment>
+    </data>
+    <data name="RBI0054Title" xml:space="preserve">
+        <value>StringCtorVisibility is ignored in categories</value>
+    </data>
+    
 </root>

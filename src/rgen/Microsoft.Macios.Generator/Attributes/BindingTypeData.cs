@@ -127,7 +127,7 @@ readonly struct BindingTypeData<T> : IEquatable<BindingTypeData<T>> where T : En
 	/// <summary>
 	/// Original name of the ObjC class or protocol.
 	/// </summary>
-	public string? Name { get; }
+	public string? Name { get; init; }
 
 	/// <summary>
 	/// The domain of an error enumerator. This has to be used with the SmartEnum flag.
@@ -237,7 +237,6 @@ readonly struct BindingTypeData<T> : IEquatable<BindingTypeData<T>> where T : En
 		// category related data
 		TypeInfo categoryType = TypeInfo.Default;
 		// protocol related data
-		string? modelName = null;
 
 		// check if we have a category type, we can do that by checking the type of the flag
 		var isCategory = typeof (T) == typeof (ObjCBindings.Category);
@@ -285,82 +284,70 @@ readonly struct BindingTypeData<T> : IEquatable<BindingTypeData<T>> where T : En
 			return true;
 		}
 
-		// the named types are different depending on the type of the flag, if we are dealing with a category or not.
-		if (isCategory && TryExtractCategoryNamedParameters (attributeData, out name, ref flags, out categoryType)) {
-			data = CreateCategoryBindingData (flags, categoryType);
-			return true;
-		} else if (isProtocol && TryExtractProtocolNamedParameters (attributeData, out name, ref flags, out modelName)) {
-			data = CreateProtocolBindingData (flags, name, modelName);
-			return true;
-		} else if (TryExtractClassNamedParameters (attributeData, out name, ref flags, out string? errorDomain, out string? libraryName, out MethodAttributes defaultCtorVisibility, out MethodAttributes intPtrCtorVisibility, out MethodAttributes stringCtorVisibility)) {
-			data = CreateClassBindingData (flags, name, errorDomain, libraryName, defaultCtorVisibility, intPtrCtorVisibility, stringCtorVisibility);
+		// get all the data from the attribute even when in certain use cases like categories and protocols we do no
+		// need all the data. Later the analyzer/validator will check if the data is correct and will report any issues.
+		if (TryExtractNamedParameters (attributeData, out name, ref flags, out string? modelName, out string? errorDomain, out string? libraryName, out categoryType, out MethodAttributes defaultCtorVisibility, out MethodAttributes intPtrCtorVisibility, out MethodAttributes stringCtorVisibility)) {
+			if (isCategory) {
+				data = flags is not null
+					? new  (categoryType, flags) {
+						Name = name,
+						ModelName = modelName,
+						ErrorDomain = errorDomain,
+						LibraryPath = libraryName,
+						DefaultCtorVisibility = defaultCtorVisibility,
+						IntPtrCtorVisibility = intPtrCtorVisibility,
+						StringCtorVisibility = stringCtorVisibility,
+					}
+					: new (categoryType) {
+						Name = name,
+						ModelName = modelName,
+						ErrorDomain = errorDomain,
+						LibraryPath = libraryName,
+						DefaultCtorVisibility = defaultCtorVisibility,
+						IntPtrCtorVisibility = intPtrCtorVisibility,
+						StringCtorVisibility = stringCtorVisibility,
+					};
+			} else if (isProtocol) {
+				data = flags is not null ? 
+					new (name, flags) {
+						ModelName = modelName,
+						ErrorDomain = errorDomain,
+						LibraryPath = libraryName,
+						DefaultCtorVisibility = defaultCtorVisibility,
+						IntPtrCtorVisibility = intPtrCtorVisibility,
+						StringCtorVisibility = stringCtorVisibility,
+					}
+					: new (name) {
+						ModelName = modelName,
+						ErrorDomain = errorDomain,
+						LibraryPath = libraryName,
+						DefaultCtorVisibility = defaultCtorVisibility,
+						IntPtrCtorVisibility = intPtrCtorVisibility,
+						StringCtorVisibility = stringCtorVisibility,
+					};
+			} else {
+				data = flags is not null ?
+					new (name, flags) {
+						ModelName = modelName,
+						ErrorDomain = errorDomain,
+						LibraryPath = libraryName,
+						DefaultCtorVisibility = defaultCtorVisibility,
+						IntPtrCtorVisibility = intPtrCtorVisibility,
+						StringCtorVisibility = stringCtorVisibility,
+					}
+					: new (name) {
+						ModelName = modelName,
+						ErrorDomain = errorDomain,
+						LibraryPath = libraryName,
+						DefaultCtorVisibility = defaultCtorVisibility,
+						IntPtrCtorVisibility = intPtrCtorVisibility,
+						StringCtorVisibility = stringCtorVisibility,
+					};
+			}
 			return true;
 		}
 
 		return false;
-	}
-
-	/// <summary>
-	/// Creates a new instance of <see cref="BindingTypeData{T}"/> for a class.
-	/// </summary>
-	/// <param name="flags">The configuration flags.</param>
-	/// <param name="name">The original name of the ObjC class or protocol.</param>
-	/// <param name="errorDomain">The domain of an error enumerator.</param>
-	/// <param name="libraryPath">The library name of an error/smart enum.</param>
-	/// <param name="defaultCtorVisibility">The visibility of the default constructor.</param>
-	/// <param name="intPtrCtorVisibility">The visibility of the IntPtr constructor.</param>
-	/// <param name="stringCtorVisibility">The visibility of the string constructor.</param>
-	/// <returns>A new instance of <see cref="BindingTypeData{T}"/>.</returns>
-	static BindingTypeData<T> CreateClassBindingData (T? flags, string? name, string? errorDomain,
-		string? libraryPath, MethodAttributes defaultCtorVisibility, MethodAttributes intPtrCtorVisibility,
-		MethodAttributes stringCtorVisibility)
-	{
-		return flags is not null
-			? new (name, flags) {
-				ErrorDomain = errorDomain,
-				LibraryPath = libraryPath,
-				DefaultCtorVisibility = defaultCtorVisibility,
-				IntPtrCtorVisibility = intPtrCtorVisibility,
-				StringCtorVisibility = stringCtorVisibility,
-			}
-			: new (name) {
-				ErrorDomain = errorDomain,
-				LibraryPath = libraryPath,
-				DefaultCtorVisibility = defaultCtorVisibility,
-				IntPtrCtorVisibility = intPtrCtorVisibility,
-				StringCtorVisibility = stringCtorVisibility,
-			};
-	}
-
-	/// <summary>
-	/// Creates a new instance of <see cref="BindingTypeData{T}"/> for a protocol.
-	/// </summary>
-	/// <param name="flags">The configuration flags.</param>
-	/// <param name="name">The original name of the ObjC protocol.</param>
-	/// <param name="modelName">The name of the model class for the protocol.</param>
-	/// <returns>A new instance of <see cref="BindingTypeData{T}"/>.</returns>
-	static BindingTypeData<T> CreateProtocolBindingData (T? flags, string? name, string? modelName)
-	{
-		return flags is not null
-			? new (name, flags) {
-				ModelName = modelName,
-			}
-			: new (name) {
-				ModelName = modelName,
-			};
-	}
-
-	/// <summary>
-	/// Creates a new instance of <see cref="BindingTypeData{T}"/> for a category.
-	/// </summary>
-	/// <param name="flags">The configuration flags.</param>
-	/// <param name="categoryType">The type that the category extends.</param>
-	/// <returns>A new instance of <see cref="BindingTypeData{T}"/>.</returns>
-	static BindingTypeData<T> CreateCategoryBindingData (T? flags, TypeInfo categoryType)
-	{
-		return flags is not null
-			? new (categoryType, flags)
-			: new (categoryType);
 	}
 
 	/// <summary>
@@ -369,20 +356,30 @@ readonly struct BindingTypeData<T> : IEquatable<BindingTypeData<T>> where T : En
 	/// <param name="attributeData">The attribute data to be parsed.</param>
 	/// <param name="name">The original name of the ObjC class or protocol.</param>
 	/// <param name="flags">The configuration flags.</param>
+	/// <param name="modelName">The name of the model.</param>
 	/// <param name="errorDomain">The domain of an error enumerator.</param>
 	/// <param name="libraryPath">The library name of an error/smart enum.</param>
+	/// <param name="categoryType">The category type that is being extended.</param>
 	/// <param name="defaultCtorVisibility">The visibility of the default constructor.</param>
 	/// <param name="intPtrCtorVisibility">The visibility of the IntPtr constructor.</param>
 	/// <param name="stringCtorVisibility">The visibility of the string constructor.</param>
 	/// <returns>True if the data was parsed.</returns>
-	static bool TryExtractClassNamedParameters (AttributeData attributeData,
-		out string? name, ref T? flags, out string? errorDomain, out string? libraryPath,
-		out MethodAttributes defaultCtorVisibility, out MethodAttributes intPtrCtorVisibility,
+	static bool TryExtractNamedParameters (AttributeData attributeData,
+		out string? name, 
+		ref T? flags, 
+		out string? modelName, 
+		out string? errorDomain, 
+		out string? libraryPath,
+		out TypeInfo categoryType,
+		out MethodAttributes defaultCtorVisibility, 
+		out MethodAttributes intPtrCtorVisibility,
 		out MethodAttributes stringCtorVisibility)
 	{
 		name = null;
+		modelName = null;
 		errorDomain = null;
 		libraryPath = null;
+		categoryType = TypeInfo.Default;
 		defaultCtorVisibility = MethodAttributes.PrivateScope;
 		intPtrCtorVisibility = MethodAttributes.PrivateScope;
 		stringCtorVisibility = MethodAttributes.PrivateScope;
@@ -401,6 +398,12 @@ readonly struct BindingTypeData<T> : IEquatable<BindingTypeData<T>> where T : En
 			case "LibraryPath":
 				libraryPath = (string?) value.Value!;
 				break;
+			case "ModelName":
+				modelName = (string?) value.Value!;
+				break;
+			case "CategoryType":
+				categoryType = new ((INamedTypeSymbol) value.Value!);
+				break;
 			case "DefaultCtorVisibility":
 				defaultCtorVisibility = (MethodAttributes) Convert.ToSingle ((int) value.Value!);
 				break;
@@ -409,68 +412,6 @@ readonly struct BindingTypeData<T> : IEquatable<BindingTypeData<T>> where T : En
 				break;
 			case "StringCtorVisibility":
 				stringCtorVisibility = (MethodAttributes) Convert.ToSingle ((int) value.Value!);
-				break;
-			default:
-				return false;
-			}
-		}
-
-		return true;
-	}
-
-	/// <summary>
-	/// Tries to extract the named parameters for a category from the attribute data.
-	/// </summary>
-	/// <param name="attributeData">The attribute data to be parsed.</param>
-	/// <param name="name">The original name of the ObjC class or protocol.</param>
-	/// <param name="flags">The configuration flags.</param>
-	/// <param name="categoryType">The type that the category extends.</param>
-	/// <returns>True if the data was parsed.</returns>
-	static bool TryExtractCategoryNamedParameters (AttributeData attributeData, out string? name, ref T? flags, out TypeInfo categoryType)
-	{
-		name = null;
-		categoryType = TypeInfo.Default;
-		foreach (var (paramName, value) in attributeData.NamedArguments) {
-			switch (paramName) {
-			case "Name":
-				name = (string?) value.Value!;
-				break;
-			case "Flags":
-				flags = (T) value.Value!;
-				break;
-			case "CategoryType":
-				categoryType = new ((INamedTypeSymbol) value.Value!);
-				break;
-			default:
-				return false;
-			}
-		}
-
-		return true;
-	}
-
-	/// <summary>
-	/// Tries to extract the named parameters for a protocol from the attribute data.
-	/// </summary>
-	/// <param name="attributeData">The attribute data to be parsed.</param>
-	/// <param name="name">The original name of the ObjC protocol.</param>
-	/// <param name="flags">The configuration flags.</param>
-	/// <param name="modelName">The name of the model class for the protocol.</param>
-	/// <returns>True if the data was parsed.</returns>
-	static bool TryExtractProtocolNamedParameters (AttributeData attributeData, out string? name, ref T? flags, out string? modelName)
-	{
-		name = null;
-		modelName = null;
-		foreach (var (paramName, value) in attributeData.NamedArguments) {
-			switch (paramName) {
-			case "Name":
-				name = (string?) value.Value!;
-				break;
-			case "Flags":
-				flags = (T) value.Value!;
-				break;
-			case "ModelName":
-				modelName = (string?) value.Value!;
 				break;
 			default:
 				return false;

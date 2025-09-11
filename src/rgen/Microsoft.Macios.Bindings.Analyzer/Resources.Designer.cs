@@ -1352,5 +1352,194 @@ namespace Microsoft.Macios.Bindings.Analyzer {
                 return ResourceManager.GetString("RBI0047Title", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A category name cannot be an empty string or have spaces..
+        /// </summary>
+        internal static string RBI0048Description {
+            get {
+                return ResourceManager.GetString("RBI0048Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Category &apos;{0}&apos; name &apos;{1}&apos; is empty an empty string or has white spaces.
+        /// </summary>
+        internal static string RBI0048MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0048MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Category names cannot be a empty string or have white spaces.
+        /// </summary>
+        internal static string RBI0048Title {
+            get {
+                return ResourceManager.GetString("RBI0048Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A category type must be a INativeObject..
+        /// </summary>
+        internal static string RBI0049Description {
+            get {
+                return ResourceManager.GetString("RBI0049Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Category &apos;{0}&apos; type &apos;{1}&apos; does not implement INativeObject.
+        /// </summary>
+        internal static string RBI0049MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0049MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Category types must be INativeObjects.
+        /// </summary>
+        internal static string RBI0049Title {
+            get {
+                return ResourceManager.GetString("RBI0049Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DefaultCtorVisibility is ignored in categories..
+        /// </summary>
+        internal static string RBI0050Description {
+            get {
+                return ResourceManager.GetString("RBI0050Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Category &apos;{0}&apos; has DefaultCtorVisibility set to &apos;{1}&apos; but it will be ignored.
+        /// </summary>
+        internal static string RBI0050MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0050MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DefaultCtorVisibility is ignored in categories.
+        /// </summary>
+        internal static string RBI0050Title {
+            get {
+                return ResourceManager.GetString("RBI0050Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ErrorDomain is ignored in categories..
+        /// </summary>
+        internal static string RBI0051Description {
+            get {
+                return ResourceManager.GetString("RBI0051Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Category &apos;{0}&apos; has ErrorDomain set to &apos;{1}&apos; but it will be ignored.
+        /// </summary>
+        internal static string RBI0051MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0051MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ErrorDomain is ignored in categories.
+        /// </summary>
+        internal static string RBI0051Title {
+            get {
+                return ResourceManager.GetString("RBI0051Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IntPtrCtorVisibility is ignored in categories..
+        /// </summary>
+        internal static string RBI0052Description {
+            get {
+                return ResourceManager.GetString("RBI0052Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Category &apos;{0}&apos; has IntPtrCtorVisibility set to &apos;{1}&apos; but it will be ignored.
+        /// </summary>
+        internal static string RBI0052MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0052MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IntPtrCtorVisibility is ignored in categories.
+        /// </summary>
+        internal static string RBI0052Title {
+            get {
+                return ResourceManager.GetString("RBI0052Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ModelName is ignored in categories..
+        /// </summary>
+        internal static string RBI0053Description {
+            get {
+                return ResourceManager.GetString("RBI0053Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Category &apos;{0}&apos; has ModelName set to &apos;{1}&apos; but it will be ignored.
+        /// </summary>
+        internal static string RBI0053MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0053MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ModelName is ignored in categories.
+        /// </summary>
+        internal static string RBI0053Title {
+            get {
+                return ResourceManager.GetString("RBI0053Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to StringCtorVisibility is ignored in categories..
+        /// </summary>
+        internal static string RBI0054Description {
+            get {
+                return ResourceManager.GetString("RBI0054Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Category &apos;{0}&apos; has StringCtorVisibility set to &apos;{1}&apos; but it will be ignored.
+        /// </summary>
+        internal static string RBI0054MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0054MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to StringCtorVisibility is ignored in categories.
+        /// </summary>
+        internal static string RBI0054Title {
+            get {
+                return ResourceManager.GetString("RBI0054Title", resourceCulture);
+            }
+        }
     }
 }

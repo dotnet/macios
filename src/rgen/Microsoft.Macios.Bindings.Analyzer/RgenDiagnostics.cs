@@ -721,4 +721,109 @@ public static class RgenDiagnostics {
 		description: new LocalizableResourceString (nameof (Resources.RBI0047Description), Resources.ResourceManager,
 			typeof (Resources))
 	);
+	
+	/// <summary>
+	/// Diagnostic descriptor for when a category name is incorrect.
+	/// </summary>
+	internal static readonly DiagnosticDescriptor RBI0048 = new (
+		"RBI0048",
+		new LocalizableResourceString (nameof (Resources.RBI0048Title), Resources.ResourceManager, typeof (Resources)),
+		new LocalizableResourceString (nameof (Resources.RBI0048MessageFormat), Resources.ResourceManager,
+			typeof (Resources)),
+		"Usage",
+		DiagnosticSeverity.Error,
+		isEnabledByDefault: true,
+		description: new LocalizableResourceString (nameof (Resources.RBI0048Description), Resources.ResourceManager,
+			typeof (Resources))
+	);
+	
+	/// <summary>
+	/// Diagnostic descriptor for when a category type is not a INativeObject.
+	/// </summary>
+	internal static readonly DiagnosticDescriptor RBI0049 = new (
+		"RBI0049",
+		new LocalizableResourceString (nameof (Resources.RBI0049Title), Resources.ResourceManager, typeof (Resources)),
+		new LocalizableResourceString (nameof (Resources.RBI0049MessageFormat), Resources.ResourceManager,
+			typeof (Resources)),
+		"Usage",
+		DiagnosticSeverity.Error,
+		isEnabledByDefault: true,
+		description: new LocalizableResourceString (nameof (Resources.RBI0049Description), Resources.ResourceManager,
+			typeof (Resources))
+	);
+	
+	/// <summary>
+	/// Diagnostic descriptor for when a category sets the default constructor visibility.
+	/// </summary>
+	internal static readonly DiagnosticDescriptor RBI0050 = new (
+		"RBI0050",
+		new LocalizableResourceString (nameof (Resources.RBI0050Title), Resources.ResourceManager, typeof (Resources)),
+		new LocalizableResourceString (nameof (Resources.RBI0050MessageFormat), Resources.ResourceManager,
+			typeof (Resources)),
+		"Usage",
+		DiagnosticSeverity.Warning,
+		isEnabledByDefault: true,
+		description: new LocalizableResourceString (nameof (Resources.RBI0050Description), Resources.ResourceManager,
+			typeof (Resources))
+	);
+	
+	/// <summary>
+	/// Diagnostic descriptor for when a category sets the default constructor visibility.
+	/// </summary>
+	internal static readonly DiagnosticDescriptor RBI0051 = new (
+		"RBI0051",
+		new LocalizableResourceString (nameof (Resources.RBI0051Title), Resources.ResourceManager, typeof (Resources)),
+		new LocalizableResourceString (nameof (Resources.RBI0051MessageFormat), Resources.ResourceManager,
+			typeof (Resources)),
+		"Usage",
+		DiagnosticSeverity.Warning,
+		isEnabledByDefault: true,
+		description: new LocalizableResourceString (nameof (Resources.RBI0051Description), Resources.ResourceManager,
+			typeof (Resources))
+	);
+	
+	/// <summary>
+	/// Diagnostic descriptor for when a category sets the IntPtr constructor visibility.
+	/// </summary>
+	internal static readonly DiagnosticDescriptor RBI0052 = new (
+		"RBI0052",
+		new LocalizableResourceString (nameof (Resources.RBI0052Title), Resources.ResourceManager, typeof (Resources)),
+		new LocalizableResourceString (nameof (Resources.RBI0052MessageFormat), Resources.ResourceManager,
+			typeof (Resources)),
+		"Usage",
+		DiagnosticSeverity.Warning,
+		isEnabledByDefault: true,
+		description: new LocalizableResourceString (nameof (Resources.RBI0052Description), Resources.ResourceManager,
+			typeof (Resources))
+	);
+	
+	/// <summary>
+	/// Diagnostic descriptor for when a category sets a model name.
+	/// </summary>
+	internal static readonly DiagnosticDescriptor RBI0053 = new (
+		"RBI0053",
+		new LocalizableResourceString (nameof (Resources.RBI0053Title), Resources.ResourceManager, typeof (Resources)),
+		new LocalizableResourceString (nameof (Resources.RBI0053MessageFormat), Resources.ResourceManager,
+			typeof (Resources)),
+		"Usage",
+		DiagnosticSeverity.Warning,
+		isEnabledByDefault: true,
+		description: new LocalizableResourceString (nameof (Resources.RBI0053Description), Resources.ResourceManager,
+			typeof (Resources))
+	);
+	
+	/// <summary>
+	/// Diagnostic descriptor for when a category sets a model name.
+	/// </summary>
+	internal static readonly DiagnosticDescriptor RBI0054 = new (
+		"RBI0054",
+		new LocalizableResourceString (nameof (Resources.RBI0054Title), Resources.ResourceManager, typeof (Resources)),
+		new LocalizableResourceString (nameof (Resources.RBI0054MessageFormat), Resources.ResourceManager,
+			typeof (Resources)),
+		"Usage",
+		DiagnosticSeverity.Warning,
+		isEnabledByDefault: true,
+		description: new LocalizableResourceString (nameof (Resources.RBI0054Description), Resources.ResourceManager,
+			typeof (Resources))
+	);
 }

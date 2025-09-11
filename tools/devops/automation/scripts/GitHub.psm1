@@ -660,7 +660,9 @@ mutation {
     #>
     [void] MinimizeComments($comments) {
         # we cannot do a mutation with all the comments :/ but we can loop and do it
+        Write-Host "MinimizeComments($comments)"
         foreach($c in $comments) {
+             Write-Host "  MinimizeComments id=$($c.id) node_id=$($c.node_id) c=$c"
              $this.MinimizeCommentId($c.node_id)
         } # foreach
     }
@@ -692,6 +694,7 @@ mutation {
             Write-Host "Current commit is not the latest in PR, attempting to hide the new comment"
             try {
                 Start-Sleep -Seconds 2  # Give GitHub a moment to process the comment
+                Write-Host "  HandleNewCommentHiding ($result) id=$($result.id) node_id=$($result.node_id)"
                 $this.MinimizeCommentId($result.node_id)
             } catch {
                 Write-Host "Warning: Failed to hide comment for non-latest commit: $_"

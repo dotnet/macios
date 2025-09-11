@@ -138,6 +138,15 @@ public static class Documentation {
 
 		public static string TrampolineStaticClass (string name) =>
 "/// <summary>This class bridges native block invocations that call into C#</summary>";
+		
+		public static string InitWithCoder (string name) =>
+@"/// <summary>A constructor that initializes the object from the data stored in the unarchiver object.</summary>
+/// <param name=""coder"">The unarchiver object.</param>
+/// <remarks>
+///   <para>This constructor is provided to allow the class to be initialized from an unarchiver (for example, during NIB deserialization). This is part of the <see cref=""Foundation.NSCoding"" /> protocol.</para>
+///   <para>If developers want to create a subclass of this object and continue to support deserialization from an archive, they should implement a constructor with an identical signature: taking a single parameter of type <see cref=""Foundation.NSCoder"" /> and decorate it with the <c>[Export(""initWithCoder:""]</c> attribute.</para>
+///   <para>The state of this object can also be serialized by using the <see cref=""Foundation.INSCoding.EncodeTo"" /> companion method.</para>
+/// </remarks>";
 
 	}
 
@@ -149,5 +158,6 @@ $"/// <summary>Creates a new <see cref=\"{name}\" /> with default (empty) values
 		public static string InitWithDictionary (string name) =>
 $@"/// <summary>Creates a new <see cref=""{name}"" /> from the values that are specified in <paramref name=""dictionary"" />.</summary>
 /// <param name=""dictionary"">The dictionary to use to populate the properties of this type.</param>";
+
 	}
 }

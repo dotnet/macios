@@ -117,6 +117,17 @@ public class ClassGenerationTests : BaseGeneratorTestClass {
 					{"EventTests_RgenNSKeyedArchiverDelegate.g.cs", "ExpectedEventTests_RgenNSKeyedArchiverDelegate.cs"}
 				}
 			},
+			
+			// NSCoding tests
+			new (ApplePlatform.iOS, "NSCodingSubclass", "NSCodingSubclass.cs", "ExpectedNSCodingSubclass.cs"),
+			new (ApplePlatform.TVOS, "NSCodingSubclass", "NSCodingSubclass.cs", "ExpectedNSCodingSubclass.cs"),
+			new (ApplePlatform.MacCatalyst, "NSCodingSubclass", "NSCodingSubclass.cs", "ExpectedNSCodingSubclass.cs"),
+			new (ApplePlatform.MacOSX, "NSCodingSubclass", "macosNSCodingSubclass.cs", "macosExpectedNSCodingSubclass.cs"),
+			
+			new (ApplePlatform.iOS, "NSCodingSubclassWithConstructor", "NSCodingSubclassWithConstructor.cs", "ExpectedNSCodingSubclassWithConstructor.cs"),
+			new (ApplePlatform.TVOS, "NSCodingSubclassWithConstructor", "NSCodingSubclassWithConstructor.cs", "ExpectedNSCodingSubclassWithConstructor.cs"),
+			new (ApplePlatform.MacCatalyst, "NSCodingSubclassWithConstructor", "NSCodingSubclassWithConstructor.cs", "ExpectedNSCodingSubclassWithConstructor.cs"),
+			new (ApplePlatform.MacOSX, "NSCodingSubclassWithConstructor", "macosNSCodingSubclassWithConstructor.cs", "macosExpectedNSCodingSubclassWithConstructor.cs"),
 		};
 
 		public IEnumerator<object []> GetEnumerator ()

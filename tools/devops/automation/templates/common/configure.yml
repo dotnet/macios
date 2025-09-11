@@ -146,6 +146,12 @@ steps:
   name: configure_platforms
   displayName: 'Configure platforms'
 
+- bash: ./$(BUILD_REPOSITORY_TITLE)/tools/devops/automation/scripts/bash/validate-xcode-channel.sh
+  name: validateXcodeChannel
+  displayName: 'Validate Xcode channel'
+  env:
+    XCODE_CHANNEL: $(xcodeChannel)
+
 - pwsh: |
     Import-Module $Env:SYSTEM_DEFAULTWORKINGDIRECTORY/$Env:BUILD_REPOSITORY_TITLE/tools/devops/automation/scripts/MaciosCI.psd1
     $jsonPath = Join-Path -Path "$(Build.ArtifactStagingDirectory)" -ChildPath "configuration.json"

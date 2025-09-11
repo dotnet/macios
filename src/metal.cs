@@ -2552,6 +2552,14 @@ namespace Metal {
 		[MacCatalyst (13, 1)]
 		[Export ("supportArgumentBuffers")]
 		bool SupportArgumentBuffers { get; set; }
+
+		[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Export ("lodBias")]
+		float LodBias { get; set; }
+
+		[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Export ("reductionMode", ArgumentSemantic.Assign)]
+		MTLSamplerReductionMode ReductionMode { get; set; }
 	}
 
 	interface IMTLSamplerState { }
@@ -3460,6 +3468,11 @@ namespace Metal {
 		[Abstract]
 		[Export ("device")]
 		IMTLDevice Device { get; }
+
+		[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Abstract (GenerateExtensionMethod = true)]
+		[Export ("gpuResourceID")]
+		MTLResourceId GpuResourceId { get; }
 	}
 
 	/// <summary>Configures a depth stencil test operation.</summary>
@@ -3619,6 +3632,11 @@ namespace Metal {
 		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("setDepthBias:slopeScale:clamp:")]
 		void SetDepthBias (float /* float, not CGFloat */ depthBias, float /* float, not CGFloat */ slopeScale, float /* float, not CGFloat */ clamp);
+
+		[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Abstract (GenerateExtensionMethod = true)]
+		[Export ("setDepthTestMinBound:maxBound:")]
+		void SetDepthTest (float minBound, float maxBound);
 
 		/// <param name="rect">To be added.</param>
 		/// <summary>To be added.</summary>
@@ -5393,6 +5411,15 @@ namespace Metal {
 		[Export ("setIntersectionFunctionTables:withRange:")]
 		void SetIntersectionFunctionTables (IMTLIntersectionFunctionTable [] intersectionFunctionTables, NSRange range);
 
+		[Abstract (GenerateExtensionMethod = true)]
+		[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Export ("setDepthStencilState:atIndex:")]
+		void SetDepthStencilState ([NullAllowed] IMTLDepthStencilState depthStencilState, nuint index);
+
+		[Abstract (GenerateExtensionMethod = true)]
+		[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Export ("setDepthStencilStates:withRange:")]
+		void SetDepthStencilStates (IMTLDepthStencilState [] depthStencilStates, NSRange range);
 	}
 
 	[Introduced (PlatformName.MacCatalyst, 14, 0)]
@@ -5748,6 +5775,36 @@ namespace Metal {
 		[Abstract (GenerateExtensionMethod = true)]
 		[Export ("clearBarrier")]
 		void ClearBarrier ();
+
+		[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Abstract (GenerateExtensionMethod = true)]
+		[Export ("setDepthStencilState:")]
+		void SetDepthStencilState ([NullAllowed] IMTLDepthStencilState depthStencilState);
+
+		[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Abstract (GenerateExtensionMethod = true)]
+		[Export ("setDepthBias:slopeScale:clamp:")]
+		void SetDepthBias (float depthBias, float slopeScale, float clamp);
+
+		[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Abstract (GenerateExtensionMethod = true)]
+		[Export ("setDepthClipMode:")]
+		void SetDepthClipMode (MTLDepthClipMode depthClipMode);
+
+		[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Abstract (GenerateExtensionMethod = true)]
+		[Export ("setCullMode:")]
+		void SetCullMode (MTLCullMode cullMode);
+
+		[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Abstract (GenerateExtensionMethod = true)]
+		[Export ("setFrontFacingWinding:")]
+		void SetFrontFacingWinding (MTLWinding frontFacingWindning);
+
+		[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Abstract (GenerateExtensionMethod = true)]
+		[Export ("setTriangleFillMode:")]
+		void SetTriangleFillMode (MTLTriangleFillMode fillMode);
 	}
 
 	[MacCatalyst (13, 1)]
@@ -5763,6 +5820,30 @@ namespace Metal {
 
 		[Export ("inheritBuffers")]
 		bool InheritBuffers { get; set; }
+
+		[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Export ("inheritDepthStencilState")]
+		bool InheritDepthStencilState { get; set; }
+
+		[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Export ("inheritDepthBias")]
+		bool InheritDepthBias { get; set; }
+
+		[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Export ("inheritDepthClipMode")]
+		bool InheritDepthClipMode { get; set; }
+
+		[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Export ("inheritCullMode")]
+		bool InheritCullMode { get; set; }
+
+		[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Export ("inheritFrontFacingWinding")]
+		bool InheritFrontFacingWinding { get; set; }
+
+		[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Export ("inheritTriangleFillMode")]
+		bool InheritTriangleFillMode { get; set; }
 
 		[Export ("maxVertexBufferBindCount")]
 		nuint MaxVertexBufferBindCount { get; set; }
@@ -8468,6 +8549,10 @@ namespace Metal {
 		[Abstract]
 		[Export ("setDepthBias:slopeScale:clamp:")]
 		void SetDepthBias (float depthBias, float slopeScale, float clamp);
+
+		[Abstract]
+		[Export ("setDepthTestMinBound:maxBound:")]
+		void SetDepthTest (float minBound, float maxBound);
 
 		[Abstract]
 		[Export ("setScissorRect:")]

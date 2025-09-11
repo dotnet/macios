@@ -980,7 +980,7 @@ namespace bgen {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The backing field type &apos;{0}&apos; is invalid. Valid backing field types are: &quot;NSString&quot;, &quot;NSNumber&quot;, &quot;nint&quot; and &quot;nuint&quot;..
+        ///   Looks up a localized string similar to The backing field type &apos;{0}&apos; is invalid. Valid backing field types are: &quot;NSString&quot;, &quot;NSNumber&quot;, and blittable value types..
         /// </summary>
         internal static string BI1088 {
             get {

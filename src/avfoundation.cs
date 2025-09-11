@@ -10002,6 +10002,62 @@ namespace AVFoundation {
 		[Field ("AVMetadataQuickTimeMetadataKeyCameraFocalLength35mmEquivalent")]
 		NSString QuickTimeMetadataKeyCameraFocalLength35mmEquivalent { get; }
 
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("AVMetadataIdentifierQuickTimeMetadataCameraISOSensitivity")]
+		NSString QuickTimeMetadataCameraIsoSensitivity { get; }
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("AVMetadataIdentifierQuickTimeMetadataCameraLensIrisFNumber")]
+		NSString QuickTimeMetadataCameraLensIrisFNumber { get; }
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("AVMetadataIdentifierQuickTimeMetadataCameraShutterSpeedAngle")]
+		NSString QuickTimeMetadataCameraShutterSpeedAngle { get; }
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("AVMetadataIdentifierQuickTimeMetadataCameraShutterSpeedTime")]
+		NSString QuickTimeMetadataCameraShutterSpeedTime { get; }
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("AVMetadataIdentifierQuickTimeMetadataCameraWhiteBalance")]
+		NSString QuickTimeMetadataCameraWhiteBalance { get; }
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("AVMetadataIdentifierQuickTimeMetadataWhiteBalanceByCCTColorMatrices")]
+		NSString QuickTimeMetadataWhiteBalanceByCctColorMatrices { get; }
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("AVMetadataIdentifierQuickTimeMetadataWhiteBalanceByCCTWhiteBalanceFactors")]
+		NSString QuickTimeMetadataWhiteBalanceByCctWhiteBalanceFactors { get; }
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("AVMetadataQuickTimeMetadataKeyCameraISOSensitivity")]
+		NSString QuickTimeMetadataKeyCameraIsoSensitivity { get; }
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("AVMetadataQuickTimeMetadataKeyCameraLensIrisFNumber")]
+		NSString QuickTimeMetadataKeyCameraLensIrisFNumber { get; }
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("AVMetadataQuickTimeMetadataKeyCameraShutterSpeedAngle")]
+		NSString QuickTimeMetadataKeyCameraShutterSpeedAngle { get; }
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("AVMetadataQuickTimeMetadataKeyCameraShutterSpeedTime")]
+		NSString QuickTimeMetadataKeyCameraShutterSpeedTime { get; }
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("AVMetadataQuickTimeMetadataKeyCameraWhiteBalance")]
+		NSString QuickTimeMetadataKeyCameraWhiteBalance { get; }
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("AVMetadataQuickTimeMetadataKeyWhiteBalanceByCCTColorMatrices")]
+		NSString QuickTimeMetadataKeyWhiteBalanceByCctColorMatrices { get; }
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("AVMetadataQuickTimeMetadataKeyWhiteBalanceByCCTWhiteBalanceFactors")]
+		NSString QuickTimeMetadataKeyWhiteBalanceByCctWhiteBalanceFactors { get; }
+
 		// AIME = Apple Immersive Media Embedded
 		[NoMacCatalyst, NoTV, NoiOS, Mac (26, 0)]
 		[Field ("AVMetadataIdentifierQuickTimeMetadataAIMEData")]
@@ -15332,6 +15388,20 @@ namespace AVFoundation {
 		bool FilteringEnabled { [Bind ("isFilteringEnabled")] get; set; }
 	}
 
+	interface IAVExternalSyncDeviceDelegate { }
+
+	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+	[Protocol (BackwardsCompatibleCodeGeneration = false), Model]
+	[BaseType (typeof (NSObject))]
+	interface AVExternalSyncDeviceDelegate {
+
+		[Export ("externalSyncDeviceStatusDidChange:")]
+		void ExternalSyncDeviceStatusDidChange (AVExternalSyncDevice device);
+
+		[Export ("externalSyncDevice:failedWithError:")]
+		void ExternalSyncDeviceFailed (AVExternalSyncDevice device, [NullAllowed] NSError error);
+	}
+
 	/// <summary>A type of <see cref="AVFoundation.AVCaptureInput" /> used to capture data from a <see cref="AVFoundation.AVCaptureDevice" /> object.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AVFoundation/Reference/AVCaptureDeviceInput_Class/index.html">Apple documentation for <c>AVCaptureDeviceInput</c></related>
@@ -15365,6 +15435,35 @@ namespace AVFoundation {
 		[MacCatalyst (14, 0)]
 		[Export ("videoMinFrameDurationOverride", ArgumentSemantic.Assign)]
 		CMTime VideoMinFrameDurationOverride { get; set; }
+
+		[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Export ("lockedVideoFrameDurationSupported")]
+		bool LockedVideoFrameDurationSupported { [Bind ("isLockedVideoFrameDurationSupported")] get; }
+
+		[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Export ("activeLockedVideoFrameDuration", ArgumentSemantic.Assign)]
+		CMTime ActiveLockedVideoFrameDuration { get; set; }
+
+		[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Export ("externalSyncSupported")]
+		bool ExternalSyncSupported { [Bind ("isExternalSyncSupported")] get; }
+
+		[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Export ("followExternalSyncDevice:videoFrameDuration:delegate:")]
+		void FollowExternalSyncDevice (AVExternalSyncDevice externalSyncDevice, CMTime frameDuration, [NullAllowed] IAVExternalSyncDeviceDelegate @delegate);
+
+		[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Export ("activeExternalSyncVideoFrameDuration")]
+		CMTime ActiveExternalSyncVideoFrameDuration { get; }
+
+		[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+		[NullAllowed]
+		[Export ("externalSyncDevice")]
+		AVExternalSyncDevice ExternalSyncDevice { get; }
+
+		[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Export ("unfollowExternalSyncDevice")]
+		void UnfollowExternalSyncDevice ();
 
 		[TV (18, 0), MacCatalyst (18, 0), Mac (15, 0), iOS (18, 0)]
 		[Export ("isMultichannelAudioModeSupported:")]
@@ -15784,6 +15883,11 @@ namespace AVFoundation {
 		[Export ("recommendedVideoSettingsForVideoCodecType:assetWriterOutputFileType:outputFileURL:")]
 		[return: NullAllowed]
 		NSDictionary GetRecommendedVideoSettings (string videoCodecType, string outputFileType, [NullAllowed] NSUrl outputFileUrl);
+
+		[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Export ("recommendedMovieMetadataForVideoCodecType:assetWriterOutputFileType:")]
+		[return: NullAllowed]
+		AVMetadataItem [] RecommendedMovieMetadata (string videoCodecType, string outputFileType);
 
 		[TV (17, 0), MacCatalyst (17, 0), Mac (14, 0), iOS (17, 0)]
 		[Wrap ("new AVPlayerItemVideoOutputSettings (GetRecommendedVideoSettings ((string) videoCodecType.GetConstant ()!, (string) outputFileType.GetConstant ()!, outputFileUrl)!)")]
@@ -17100,6 +17204,14 @@ namespace AVFoundation {
 		[TV (18, 0), MacCatalyst (18, 0), Mac (15, 0), iOS (18, 0)]
 		[Export ("shutterSoundSuppressionSupported")]
 		bool ShutterSoundSuppressionSupported { [Bind ("isShutterSoundSuppressionSupported")] get; }
+
+		[NoTV, NoMacCatalyst, NoMac, iOS (26, 0)]
+		[Export ("cameraSensorOrientationCompensationSupported")]
+		bool CameraSensorOrientationCompensationSupported { [Bind ("isCameraSensorOrientationCompensationSupported")] get; }
+
+		[NoTV, NoMacCatalyst, NoMac, iOS (26, 0)]
+		[Export ("cameraSensorOrientationCompensationEnabled")]
+		bool CameraSensorOrientationCompensationEnabled { [Bind ("isCameraSensorOrientationCompensationEnabled")] get; set; }
 	}
 
 	/// <summary>A type of <see cref="AVFoundation.AVCaptureFileOutput" /> that captures data to a QuickTime movie.</summary>
@@ -17415,6 +17527,8 @@ namespace AVFoundation {
 		/// <summary>To be added.</summary>
 		Audio,
 	}
+
+	delegate void AVCaptureDeviceSetDynamicAspectRatioCallback (CMTime syncTime, [NullAllowed] NSError error);
 
 	/// <summary>Support for accessing the audio and video capture hardware for AVCaptureSession.</summary>
 	///     <remarks>
@@ -17903,6 +18017,44 @@ namespace AVFoundation {
 		[MacCatalyst (13, 1)]
 		[Export ("activeVideoMaxFrameDuration", ArgumentSemantic.Copy)]
 		CMTime ActiveVideoMaxFrameDuration { get; set; }
+
+		[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Export ("videoFrameDurationLocked")]
+		bool VideoFrameDurationLocked { [Bind ("isVideoFrameDurationLocked")] get; }
+
+		[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Export ("minSupportedLockedVideoFrameDuration")]
+		CMTime MinSupportedLockedVideoFrameDuration { get; }
+
+		[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Export ("followingExternalSyncDevice")]
+		bool FollowingExternalSyncDevice { [Bind ("isFollowingExternalSyncDevice")] get; }
+
+		[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Export ("minSupportedExternalSyncFrameDuration")]
+		CMTime MinSupportedExternalSyncFrameDuration { get; }
+
+		[NoTV, NoMacCatalyst, NoMac, iOS (26, 0)]
+		[NullAllowed, Export ("smartFramingMonitor")]
+		AVCaptureSmartFramingMonitor SmartFramingMonitor { get; }
+
+		[NoTV, NoMacCatalyst, NoMac, iOS (26, 0)]
+		[Export ("dynamicDimensions")]
+		CMVideoDimensions DynamicDimensions { get; }
+
+		[NoTV, NoMacCatalyst, NoMac, iOS (26, 0)]
+		[NullAllowed, Export ("dynamicAspectRatio")]
+		string DynamicAspectRatio { get; }
+
+		[TV (26, 0), NoMac, MacCatalyst (26, 0), iOS (26, 0)]
+		[Export ("setDynamicAspectRatio:completionHandler:")]
+		[Async]
+		void SetDynamicAspectRatio (string dynamicAspectRatio, [NullAllowed] AVCaptureDeviceSetDynamicAspectRatioCallback handler);
+
+		[TV (26, 0), NoMac, MacCatalyst (26, 0), iOS (26, 0)]
+		[Async]
+		[Export ("setWhiteBalanceModeLockedWithDeviceWhiteBalanceTemperatureAndTintValues:completionHandler:")]
+		void SetWhiteBalanceModeLocked (AVCaptureWhiteBalanceTemperatureAndTintValue deviceWhiteBalanceTemperatureAndTintValues, [NullAllowed] Action<CMTime> handler);
 
 		/// <summary>Gets a Boolean value that tells whether the device can lock the focus to a specific position.</summary>
 		///         <value>To be added.</value>
@@ -18912,6 +19064,18 @@ namespace AVFoundation {
 		[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
 		[Export ("cameraLensSmudgeDetectionSupported")]
 		bool CameraLensSmudgeDetectionSupported { [Bind ("isCameraLensSmudgeDetectionSupported")] get; }
+
+		[NoTV, NoMacCatalyst, NoMac, iOS (26, 0)]
+		[Export ("supportedDynamicAspectRatios", ArgumentSemantic.Copy)]
+		string [] SupportedDynamicAspectRatios { get; }
+
+		[NoTV, NoMacCatalyst, NoMac, iOS (26, 0)]
+		[Export ("videoFieldOfViewForAspectRatio:geometricDistortionCorrected:")]
+		float GetVideoFieldOfView (string aspectRatio, bool geometricDistortionCorrected);
+
+		[NoTV, NoMacCatalyst, NoMac, iOS (26, 0)]
+		[Export ("smartFramingSupported")]
+		bool SmartFramingSupported { [Bind ("isSmartFramingSupported")] get; }
 	}
 
 	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
@@ -26543,6 +26707,9 @@ namespace AVFoundation {
 	interface AVAudioSessionPortExtensionBluetoothMicrophone {
 		[Export ("highQualityRecording", ArgumentSemantic.Strong)]
 		AVAudioSessionCapability HighQualityRecording { get; }
+
+		[Export ("farFieldCapture", ArgumentSemantic.Strong)]
+		AVAudioSessionCapability FarFieldCapture { get; }
 	}
 
 	[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
@@ -26554,5 +26721,215 @@ namespace AVFoundation {
 
 		[NullAllowed, Export ("URL")]
 		NSUrl Url { get; }
+	}
+
+	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface AVExternalSyncDeviceDiscoverySession {
+
+		[Static]
+		[NullAllowed, Export ("sharedSession")]
+		AVExternalSyncDeviceDiscoverySession SharedSession { get; }
+
+		[Static]
+		[Export ("supported")]
+		bool Supported { [Bind ("isSupported")] get; }
+
+		[Export ("devices")]
+		AVExternalSyncDevice [] Devices { get; }
+	}
+
+	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface AVExternalSyncDevice {
+
+		[Export ("status")]
+		AVExternalSyncDeviceStatus Status { get; }
+
+		[NullAllowed, Export ("clock")]
+		CMClock Clock { get; }
+
+		[Export ("signalCompensationDelay", ArgumentSemantic.Assign)]
+		CMTime SignalCompensationDelay { get; set; }
+
+		[Export ("uuid")]
+		NSUuid Uuid { get; }
+
+		[Export ("vendorID")]
+		uint VendorId { get; }
+
+		[Export ("productID")]
+		uint ProductId { get; }
+	}
+
+	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+	[BaseType (typeof (NSObject))]
+	interface AVCaptureTimecodeSource : NSCopying {
+
+		[Export ("displayName")]
+		string DisplayName { get; }
+
+		[Export ("type", ArgumentSemantic.Assign)]
+		AVCaptureTimecodeSourceType Type { get; }
+
+		[Export ("uuid", ArgumentSemantic.Copy)]
+		NSUuid Uuid { get; }
+	}
+
+	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface AVCaptureTimecodeGenerator {
+
+		[Export ("availableSources", ArgumentSemantic.Copy)]
+		AVCaptureTimecodeSource [] AvailableSources { get; }
+
+		[Export ("currentSource")]
+		AVCaptureTimecodeSource CurrentSource { get; }
+
+		[Wrap ("WeakDelegate")]
+		[NullAllowed]
+		IAVCaptureTimecodeGeneratorDelegate Delegate { get; }
+
+		[NullAllowed, Export ("delegate")]
+		NSObject WeakDelegate { get; }
+
+		[NullAllowed, Export ("delegateCallbackQueue")]
+		DispatchQueue DelegateCallbackQueue { get; }
+
+		[Export ("setDelegate:queue:")]
+		void SetDelegate ([NullAllowed] IAVCaptureTimecodeGeneratorDelegate @delegate, [NullAllowed] DispatchQueue callbackQueue);
+
+		[Export ("synchronizationTimeout")]
+		double SynchronizationTimeout { get; set; }
+
+		[Export ("timecodeAlignmentOffset")]
+		double TimecodeAlignmentOffset { get; set; }
+
+		[Export ("timecodeFrameDuration", ArgumentSemantic.Assign)]
+		CMTime TimecodeFrameDuration { get; set; }
+
+		[Export ("startSynchronizationWithTimecodeSource:")]
+		void StartSynchronization (AVCaptureTimecodeSource source);
+
+		[Export ("generateInitialTimecode")]
+		AVCaptureTimecode GenerateInitialTimecode { get; }
+
+		[Static]
+		[Export ("frameCountSource")]
+		AVCaptureTimecodeSource FrameCountSource { get; }
+
+		[Static]
+		[Export ("realTimeClockSource")]
+		AVCaptureTimecodeSource RealTimeClockSource { get; }
+	}
+
+	interface IAVCaptureTimecodeGeneratorDelegate { }
+
+	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+	[Protocol (BackwardsCompatibleCodeGeneration = false)]
+	[Model]
+	[BaseType (typeof (NSObject))]
+	interface AVCaptureTimecodeGeneratorDelegate {
+
+		[Abstract]
+		[Export ("timecodeGenerator:didReceiveUpdate:fromSource:")]
+		void DidReceiveUpdate (AVCaptureTimecodeGenerator generator, AVCaptureTimecode timecode, AVCaptureTimecodeSource source);
+
+		[Abstract]
+		[Export ("timecodeGenerator:transitionedToSynchronizationStatus:forSource:")]
+		void TransitionedToSynchronizationStatus (AVCaptureTimecodeGenerator generator, AVCaptureTimecodeGeneratorSynchronizationStatus synchronizationStatus, AVCaptureTimecodeSource source);
+
+		[Abstract]
+		[Export ("timecodeGenerator:didUpdateAvailableSources:")]
+		void DidUpdateAvailableSources (AVCaptureTimecodeGenerator generator, AVCaptureTimecodeSource [] availableSources);
+	}
+
+	[NoTV, NoMacCatalyst, NoMac, iOS (26, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface AVCaptureSmartFramingMonitor {
+
+		[Export ("supportedFramings")]
+		AVCaptureFraming [] SupportedFramings { get; }
+
+		[Export ("enabledFramings", ArgumentSemantic.Copy)]
+		AVCaptureFraming [] EnabledFramings { get; set; }
+
+		[NullAllowed, Export ("recommendedFraming")]
+		AVCaptureFraming RecommendedFraming { get; }
+
+		[Export ("startMonitoringWithError:")]
+		bool StartMonitoring ([NullAllowed] out NSError outError);
+
+		[Export ("stopMonitoring")]
+		void StopMonitoring ();
+
+		[Export ("monitoring")]
+		bool Monitoring { [Bind ("isMonitoring")] get; }
+	}
+
+	[NoTV, NoMacCatalyst, NoMac, iOS (26, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface AVCaptureFraming {
+
+		[Export ("aspectRatio")]
+		string AspectRatio { get; }
+
+		[Export ("zoomFactor")]
+		float ZoomFactor { get; }
+	}
+
+	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface AVCaptureExternalDisplayConfigurator {
+
+		[Export ("initWithDevice:previewLayer:configuration:")]
+		NativeHandle Constructor (AVCaptureDevice device, CALayer previewLayer, AVCaptureExternalDisplayConfiguration configuration);
+
+		[NullAllowed, Export ("device", ArgumentSemantic.Weak)]
+		AVCaptureDevice Device { get; }
+
+		[NullAllowed, Export ("previewLayer", ArgumentSemantic.Weak)]
+		CALayer PreviewLayer { get; }
+
+		[Export ("active")]
+		bool Active { [Bind ("isActive")] get; }
+
+		[Export ("stop")]
+		void Stop ();
+
+		[Export ("activeExternalDisplayFrameRate")]
+		double ActiveExternalDisplayFrameRate { get; }
+
+		[Static]
+		[Export ("shouldMatchFrameRateSupported")]
+		bool ShouldMatchFrameRateSupported { [Bind ("isMatchingFrameRateSupported")] get; }
+
+		[Static]
+		[Export ("supportsBypassingColorSpaceConversion")]
+		bool SupportsBypassingColorSpaceConversion { [Bind ("isBypassingColorSpaceConversionSupported")] get; }
+
+		[Static]
+		[Export ("supportsPreferredResolution")]
+		bool SupportsPreferredResolution { [Bind ("isPreferredResolutionSupported")] get; }
+	}
+
+	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+	[BaseType (typeof (NSObject))]
+	interface AVCaptureExternalDisplayConfiguration {
+
+		[Export ("shouldMatchFrameRate")]
+		bool ShouldMatchFrameRate { get; set; }
+
+		[Export ("bypassColorSpaceConversion")]
+		bool BypassColorSpaceConversion { get; set; }
+
+		[Export ("preferredResolution", ArgumentSemantic.Assign)]
+		CMVideoDimensions PreferredResolution { get; set; }
 	}
 }

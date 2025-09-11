@@ -380,6 +380,9 @@ namespace AVFoundation {
 		MediaExtensionConflict = -11887,
 		ContentKeyRequestPlaybackDestinationDoesNotSupportDeviceIdentifierRandomization = -11888,
 		ContentKeyInvalid = -11889,
+		NoSmartFramingsEnabled = -11890,
+		AutoWhiteBalanceNotLocked = -11891,
+		FollowExternalSyncDeviceTimedOut = -11892,
 	}
 
 	/// <summary>An enumeration whose values specify the behavior of the player when it finishes playing.</summary>
@@ -965,6 +968,8 @@ namespace AVFoundation {
 		PreviewOptimized = 4,
 		[iOS (18, 0), MacCatalyst (18, 0), TV (18, 0), NoMac]
 		CinematicExtendedEnhanced = 5,
+		[iOS (26, 0), NoMacCatalyst, NoTV, NoMac]
+		LowLatency = 6,
 		/// <summary>The device determines the stabilization mode.</summary>
 		Auto = -1,
 	}
@@ -1144,6 +1149,8 @@ namespace AVFoundation {
 		HlgBT2020 = 2,
 		[NoMac, NoiOS, NoMacCatalyst]
 		AppleLog = 3,
+		[NoMac, iOS (26, 0), MacCatalyst (26, 0), TV (26, 0)]
+		AppleLog2 = 4,
 	}
 
 	/// <summary>Enumerates loop count limits.</summary>
@@ -1663,6 +1670,14 @@ namespace AVFoundation {
 		[TV (18, 0), MacCatalyst (18, 0), Mac (15, 0), iOS (18, 0)]
 		[Field ("AVVideoCodecTypeJPEGXL")]
 		JpegXl = 11,
+
+		[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("AVVideoCodecTypeAppleProResRAW")]
+		AppleProResRaw = 12,
+
+		[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("AVVideoCodecTypeAppleProResRAWHQ")]
+		AppleProResRawHQ = 13,
 	}
 
 	[Introduced (PlatformName.MacCatalyst, 14, 0)]
@@ -2306,5 +2321,73 @@ namespace AVFoundation {
 		Speech = 2,
 		Movie = 3,
 		Capture = 4,
+	}
+
+	[NoTV, NoMacCatalyst, NoMac, iOS (26, 0)]
+	public enum AVCaptureAspectRatio {
+		[Field ("AVCaptureAspectRatio1x1")]
+		OneByOne1x1,
+
+		[Field ("AVCaptureAspectRatio16x9")]
+		SixteenByNine16x9,
+
+		[Field ("AVCaptureAspectRatio9x16")]
+		NineBySixteen9x16,
+
+		[Field ("AVCaptureAspectRatio4x3")]
+		FourByThree4x3,
+
+		[Field ("AVCaptureAspectRatio3x4")]
+		ThreeByFour3x4,
+	}
+
+	[TV (26, 0), NoMac, MacCatalyst (26, 0), iOS (26, 0)]
+	[BackingFieldType (typeof (AVCaptureWhiteBalanceTemperatureAndTintValues))]
+	public enum AVCaptureWhiteBalanceTemperatureAndTintValue {
+		[Field ("AVCaptureWhiteBalanceTemperatureAndTintValuesTungsten")]
+		Tungsten,
+
+		[Field ("AVCaptureWhiteBalanceTemperatureAndTintValuesFluorescent")]
+		Fluorescent,
+
+		[Field ("AVCaptureWhiteBalanceTemperatureAndTintValuesDaylight")]
+		Daylight,
+
+		[Field ("AVCaptureWhiteBalanceTemperatureAndTintValuesCloudy")]
+		Cloudy,
+
+		[Field ("AVCaptureWhiteBalanceTemperatureAndTintValuesShadow")]
+		Shadow,
+	}
+
+	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+	[Native]
+	public enum AVExternalSyncDeviceStatus : long {
+		Unavailable = 0,
+		Ready = 1,
+		Calibrating = 2,
+		ActiveSync = 3,
+		FreeRunSync = 4,
+	}
+
+	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+	[Native]
+	public enum AVCaptureTimecodeSourceType : long {
+		FrameCount = 0,
+		RealTimeClock = 1,
+		External = 2,
+	}
+
+	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+	[Native]
+	public enum AVCaptureTimecodeGeneratorSynchronizationStatus : long {
+		Unknown = 0,
+		SourceSelected = 1,
+		Synchronizing = 2,
+		Synchronized = 3,
+		TimedOut = 4,
+		SourceUnavailable = 5,
+		SourceUnsupported = 6,
+		NotRequired = 7,
 	}
 }

@@ -214,7 +214,7 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		get => isView;
 		init => isView = value;
 	}
-	
+
 	readonly bool isNSCoding = false;
 
 	/// <summary>

@@ -1544,6 +1544,18 @@ namespace GeneratorTests {
 
 		[Test]
 		[TestCase (Profile.iOS)]
+		[TestCase (Profile.tvOS)]
+		[TestCase (Profile.MacCatalyst)]
+		[TestCase (Profile.macOSMobile)]
+		public void AvailabilityAttributes (Profile profile)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
+			var bgen = BuildFile (profile, "tests/availability-attributes.cs");
+			bgen.AssertNoWarnings ();
+		}
+
+		[Test]
+		[TestCase (Profile.iOS)]
 		public void DelegatesWithNullableReturnType (Profile profile)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());

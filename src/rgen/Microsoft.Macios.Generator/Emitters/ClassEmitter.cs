@@ -25,9 +25,9 @@ namespace Microsoft.Macios.Generator.Emitters;
 /// Emitter for Objective-C classes.
 /// </summary>
 class ClassEmitter : IClassEmitter {
-	
+
 	const string initWithCoderSelector = "initWithCoder:";
-	
+
 	/// <inheritdoc />
 	public string GetSymbolName (in Binding binding)
 	{
@@ -63,7 +63,7 @@ class ClassEmitter : IClassEmitter {
 		var uiThreadCheck = (context.NeedsThreadChecks)
 			? EnsureUiThread (context.RootContext.CurrentPlatform)
 			: null;
-		
+
 		classBlock.WriteDocumentation (Documentation.Class.InitWithCoder (context.Changes.Name));
 		classBlock.AppendGeneratedCodeAttribute (optimizable: true);
 		classBlock.AppendDesignatedInitializer ();
@@ -72,7 +72,7 @@ class ClassEmitter : IClassEmitter {
 			classBlock.AppendBgenExportAttribute (initWithCoderSelector);
 		}
 		using (var constructorBlock = classBlock.CreateBlock (
-			       $"public {context.Changes.Name} (NSCoder coder) : base (NSObjectFlag.Empty)", block: true)) {
+				   $"public {context.Changes.Name} (NSCoder coder) : base (NSObjectFlag.Empty)", block: true)) {
 			if (uiThreadCheck is not null) {
 				constructorBlock.WriteLine (uiThreadCheck.ToString ());
 				constructorBlock.WriteLine ();
@@ -104,7 +104,7 @@ GC.KeepAlive (coder);
 			// constructors with the same signature
 			if (context.Changes.TypeInfo.IsNSCoding && constructor.Selector == initWithCoderSelector)
 				continue;
-			
+
 			classBlock.AppendMemberAvailability (constructor.SymbolAvailability);
 			classBlock.AppendGeneratedCodeAttribute (optimizable: true);
 			if (constructor.ExportMethodData.Flags.HasFlag (Constructor.DesignatedInitializer)) {
@@ -303,11 +303,11 @@ return del;
 					this.EmitDefaultNSObjectConstructors (className: bindingContext.Changes.Name,
 						classBlock: classBlock,
 						disableDefaultCtor: bindingData.Flags.HasFlag (ObjCBindings.Class.DisableDefaultCtor));
-					
+
 					// A class that inherits from NSCoding OR implements the INSCoding interface requires to create
 					// the 'initWithCoder:' constructor
 					if (bindingContext.Changes.TypeInfo.IsNSCoding) {
-						EmitNSCondingConstructor (bindingContext, classBlock);					
+						EmitNSCondingConstructor (bindingContext, classBlock);
 					}
 
 					// emit any other constructor that is not the default one

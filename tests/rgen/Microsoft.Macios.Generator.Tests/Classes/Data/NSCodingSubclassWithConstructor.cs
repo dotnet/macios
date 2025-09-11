@@ -18,7 +18,7 @@ namespace UIKit;
 [SupportedOSPlatform ("maccatalyst13.1")]
 [BindingType<Class>]
 public partial class NSCodingSubclassWithConstructor : NSCoding {
-	
+
 	// ensure that we do not have issues if it was already defined
 	[Export<Constructor> ("initWithCoder:",
 		Flags = Constructor.DesignatedInitializer)]

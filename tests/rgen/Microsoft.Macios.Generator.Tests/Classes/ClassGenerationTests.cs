@@ -123,7 +123,7 @@ public class ClassGenerationTests : BaseGeneratorTestClass {
 			new (ApplePlatform.TVOS, "NSCodingSubclass", "NSCodingSubclass.cs", "ExpectedNSCodingSubclass.cs"),
 			new (ApplePlatform.MacCatalyst, "NSCodingSubclass", "NSCodingSubclass.cs", "ExpectedNSCodingSubclass.cs"),
 			new (ApplePlatform.MacOSX, "NSCodingSubclass", "macosNSCodingSubclass.cs", "macosExpectedNSCodingSubclass.cs"),
-			
+
 			new (ApplePlatform.iOS, "NSCodingSubclassWithConstructor", "NSCodingSubclassWithConstructor.cs", "ExpectedNSCodingSubclassWithConstructor.cs"),
 			new (ApplePlatform.TVOS, "NSCodingSubclassWithConstructor", "NSCodingSubclassWithConstructor.cs", "ExpectedNSCodingSubclassWithConstructor.cs"),
 			new (ApplePlatform.MacCatalyst, "NSCodingSubclassWithConstructor", "NSCodingSubclassWithConstructor.cs", "ExpectedNSCodingSubclassWithConstructor.cs"),

@@ -138,7 +138,7 @@ public static class Documentation {
 
 		public static string TrampolineStaticClass (string name) =>
 "/// <summary>This class bridges native block invocations that call into C#</summary>";
-		
+
 		public static string InitWithCoder (string name) =>
 @"/// <summary>A constructor that initializes the object from the data stored in the unarchiver object.</summary>
 /// <param name=""coder"">The unarchiver object.</param>

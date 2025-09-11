@@ -578,7 +578,7 @@ namespace Xamarin.Tests {
 				headers.Add (Path.Combine (headersDirectoryInFramework, "full-paths-exceeding-two-hundred-and-sixty-characters", "often-cause-trouble-on-windows", "where-the-maximum-is-by-default-two-hundred-and-sixty-characters", "because-frameworks-and-by-extension-xcframeworks", "very-often-have-paths-longer-than-this-limit", "especially-when-contained-in-other-directories.h"));
 
 			foreach (var header in headers) {
-				var path  = Path.Combine (frameworksDirectory, $"{frameworkName}.framework");
+				var path = Path.Combine (frameworksDirectory, $"{frameworkName}.framework");
 				var headerComponents = header.Split ('\\', '/');
 				for (var i = 0; i < headerComponents.Length; i++) {
 					path = Path.Combine (path, headerComponents [i]);

@@ -1633,4 +1633,8 @@
     <data name="W7160" xml:space="preserve">
         <value>Creating a compressed binding resource package to avoid MAX_PATH problems on Windows.</value>
     </data>
+
+    <data name="W7161" xml:space="preserve">
+        <value>Not creating a compressed binding resource package, because all the native references are already compressed.</value>
+    </data>
 </root>

@@ -68,6 +68,9 @@ namespace Xamarin.MacDev.Tasks {
 				if (ContainsSymlinks (NativeReferences)) {
 					Log.LogMessage (MessageImportance.Low, MSBStrings.W7085 /* "Creating a compressed binding resource package because there are symlinks in the input." */);
 					compress = true;
+				} else if (NativeReferences.All (v => v.ItemSpec.EndsWith (".zip", StringComparison.OrdinalIgnoreCase))) {
+					compress = false;
+					Log.LogMessage (MessageImportance.Low, MSBStrings.W7161 /* "Not creating a compressed binding resource package, because all the native references are already compressed." */);
 				} else {
 					Log.LogMessage (MessageImportance.Low, MSBStrings.W7160 /* "Creating a compressed binding resource package to avoid MAX_PATH problems on Windows." */);
 					compress = true;

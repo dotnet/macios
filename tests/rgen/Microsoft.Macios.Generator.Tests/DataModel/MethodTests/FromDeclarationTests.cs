@@ -1193,11 +1193,11 @@ interface IAVAudioMixing {
 		Assert.Contains (newMethod.Modifiers, m => m.IsKind (SyntaxKind.InternalKeyword));
 		Assert.Contains (newMethod.Modifiers, m => m.IsKind (SyntaxKind.StaticKeyword));
 	}
-	
+
 	class TestDataFromMethodDeclarationToConstructor : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()
 		{
-			
+
 			const string noFactoryMethod = @"
 using System;
 using ObjCBindings;
@@ -1213,7 +1213,7 @@ namespace NS {
 ";
 
 			yield return [noFactoryMethod];
-			
+
 			const string noParameter = @"
 using System;
 using ObjCBindings;
@@ -1229,7 +1229,7 @@ namespace NS {
 ";
 
 			yield return [noParameter];
-			
+
 			const string singleParameter = @"
 using System;
 using ObjCBindings;
@@ -1245,7 +1245,7 @@ namespace NS {
 ";
 
 			yield return [singleParameter];
-			
+
 			const string multiParameter = @"
 using System;
 using ObjCBindings;
@@ -1266,7 +1266,7 @@ namespace NS {
 
 		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
 	}
-	
+
 	[Theory]
 	[AllSupportedPlatformsClassData<TestDataFromMethodDeclarationToConstructor>]
 	void FromMethodDeclarationToConstructor (ApplePlatform platform, string inputText)

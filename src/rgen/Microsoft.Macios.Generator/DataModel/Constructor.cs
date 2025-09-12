@@ -12,6 +12,22 @@ namespace Microsoft.Macios.Generator.DataModel;
 
 [StructLayout (LayoutKind.Auto)]
 readonly partial struct Constructor : IEquatable<Constructor> {
+	
+	/// <summary>
+	/// The initialization state of the struct.
+	/// </summary>
+	StructState State { get; init; } = StructState.Default;
+	
+	/// <summary>
+	/// Gets the default, uninitialized instance of <see cref="Constructor"/>.
+	/// </summary>
+	public static Constructor Default { get; } = new (StructState.Default);
+	
+	/// <summary>
+	/// Gets a value indicating whether the instance is the default, uninitialized instance.
+	/// </summary>
+	public bool IsNullOrDefault => State == StructState.Default;
+	
 	/// <summary>
 	/// Type name that owns the constructor.
 	/// </summary>
@@ -36,12 +52,18 @@ readonly partial struct Constructor : IEquatable<Constructor> {
 	/// Parameters list.
 	/// </summary>
 	public ImmutableArray<Parameter> Parameters { get; init; } = [];
+	
+	Constructor (StructState state)
+	{
+		State = state;
+		Type = string.Empty;
+	}
 
 	public Constructor (string type,
 		SymbolAvailability symbolAvailability,
 		ImmutableArray<AttributeCodeChange> attributes,
 		ImmutableArray<SyntaxToken> modifiers,
-		ImmutableArray<Parameter> parameters)
+		ImmutableArray<Parameter> parameters) : this (StructState.Initialized)
 	{
 		Type = type;
 		SymbolAvailability = symbolAvailability;

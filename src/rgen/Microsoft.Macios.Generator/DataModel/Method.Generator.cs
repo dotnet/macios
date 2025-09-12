@@ -308,6 +308,33 @@ readonly partial struct Method {
 	}
 
 	/// <summary>
+	/// Converts the current factory method into a constructor for a given target class.
+	/// </summary>
+	/// <param name="targetClass">The type information of the class for which the constructor is being created.</param>
+	/// <returns>
+	/// A new <see cref="Constructor"/> instance if the method is a factory method;
+	/// otherwise, an uninitialized <see cref="Constructor"/> instance.
+	/// </returns>
+	public Constructor ToConstructor (TypeInfo targetClass)
+	{
+		// if the method is not a factory, we cannot convert it to a constructor so we will return the default value
+		// which is an uninitialized instance
+		if (!IsFactory)
+			return Constructor.Default;
+		
+		// we need to create a constructor with  the same modifiers, parameters and the availability of the method 
+		// since there is no guarantee that the target class has the same availability as the method
+		return new(
+			type: targetClass.Name,
+			exportData: new (ExportMethodData.Selector),
+			symbolAvailability: SymbolAvailability,
+			attributes: [], // we do not really care about the attributes on the constructor that is going to be inlined
+			modifiers: modifiers,
+			parameters: Parameters
+		);
+	}
+
+	/// <summary>
 	/// Creates a new method instance with the specified modifiers.
 	/// </summary>
 	/// <param name="newModifiers">The new modifiers for the method.</param>

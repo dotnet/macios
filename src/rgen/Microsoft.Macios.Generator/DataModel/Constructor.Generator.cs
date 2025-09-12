@@ -40,7 +40,7 @@ readonly partial struct Constructor {
 		ExportData<ObjCBindings.Constructor> exportData,
 		ImmutableArray<AttributeCodeChange> attributes,
 		ImmutableArray<SyntaxToken> modifiers,
-		ImmutableArray<Parameter> parameters)
+		ImmutableArray<Parameter> parameters) : this (StructState.Initialized)
 	{
 		Type = type;
 		SymbolAvailability = symbolAvailability;

@@ -44,6 +44,7 @@
     <ThirdParty Include="BouncyCastle.Crypto.dll" />
     <!-- Build.zip -->
     <ThirdParty Include="Mono.Cecil*.dll" />
+    <ThirdParty Include="mono.cecil*.dll" />
 
     <!-- xcsync assemblies -->
     <ThirdParty Include="ClangSharp.dll" />
@@ -65,6 +66,7 @@
     <FirstParty Include="dotnet-linker.dll" />
     <FirstParty Include="Mono.Options.dll" />
     <FirstParty Include="Xamarin.*.dll" />
+    <FirstParty Include="xamarin.*.dll" />
     <!-- mlaunch.app MonoBundle content-->
     <FirstParty Include="Microsoft.macOS.dll" />
     <FirstParty Include="mlaunch.dll" />
@@ -123,11 +125,14 @@
     <FirstParty Include="Broker.resources.dll" />
     <!-- Build.zip -->
     <FirstParty Include="Build.dll" />
+    <FirstParty Include="build.dll" />
     <FirstParty Include="Microsoft.Build*.dll" />
     <FirstParty Include="Microsoft.NET.StringTools.dll" />
     <FirstParty Include="System.IO.Abstractions.dll" />
+    <FirstParty Include="system.io.abstractions.dll" />
     <!-- Xamarin.PreBuilt.iOS.app.zip -->
     <FirstParty Include="Xamarin.PreBuilt.iOS.app\*.dll" />
+    <FirstParty Include="xamarin.prebuilt.ios.app\*.dll" />
     <!-- Our new Microsoft.* product dlls -->
     <FirstParty Include="Microsoft.iOS.dll" />
     <FirstParty Include="Microsoft.MacCatalyst.dll" />

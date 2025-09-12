@@ -2166,17 +2166,17 @@ namespace Xamarin.Tests {
 			PluralRuntimeIdentifiersImpl (platform, runtimeIdentifiers);
 		}
 
-		internal static void PluralRuntimeIdentifiersImpl(ApplePlatform platform, string runtimeIdentifiers, Dictionary<string, string>? extraProperties = null)
+		internal static void PluralRuntimeIdentifiersImpl (ApplePlatform platform, string runtimeIdentifiers, Dictionary<string, string>? extraProperties = null)
 		{
 			var project = "MySimpleApp";
-			Configuration.IgnoreIfIgnoredPlatform(platform);
-			Configuration.AssertRuntimeIdentifiersAvailable(platform, runtimeIdentifiers);
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
 
-			var project_path = GetProjectPath(project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath);
-			Clean(project_path);
-			var properties = GetDefaultProperties(extraProperties: extraProperties);
-			properties["RuntimeIdentifiers"] = runtimeIdentifiers;
-			
+			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath);
+			Clean (project_path);
+			var properties = GetDefaultProperties (extraProperties: extraProperties);
+			properties ["RuntimeIdentifiers"] = runtimeIdentifiers;
+
 			DotNet.AssertBuild (project_path, properties);
 		}
 

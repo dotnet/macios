@@ -283,12 +283,14 @@ readonly partial struct Binding {
 		context.SemanticModel.GetSymbolData (
 			declaration: enumDeclaration,
 			bindingType: BindingType.SmartEnum,
+			context: context,
 			name: out name,
 			typeInfo: out typeInfo,
 			baseClass: out baseClass,
 			interfaces: out interfaces,
 			outerClasses: out outerClasses,
 			namespaces: out namespaces,
+			protocolConstructors: out _, // no constructors in enums
 			symbolAvailability: out availability,
 			bindingInfo: out bindingInfo);
 		FullyQualifiedSymbol = enumDeclaration.GetFullyQualifiedIdentifier (context.SemanticModel);
@@ -349,12 +351,14 @@ readonly partial struct Binding {
 		context.SemanticModel.GetSymbolData (
 			declaration: classDeclaration,
 			bindingType: classDeclaration.GetBindingType (context.SemanticModel),
+			context: context,
 			name: out name,
 			baseClass: out baseClass,
 			typeInfo: out typeInfo,
 			interfaces: out interfaces,
 			outerClasses: out outerClasses,
 			namespaces: out namespaces,
+			protocolConstructors: out protocolConstructors,
 			symbolAvailability: out availability,
 			bindingInfo: out bindingInfo);
 		FullyQualifiedSymbol = classDeclaration.GetFullyQualifiedIdentifier (context.SemanticModel);
@@ -393,12 +397,14 @@ readonly partial struct Binding {
 		context.SemanticModel.GetSymbolData (
 			declaration: interfaceDeclaration,
 			bindingType: BindingType.Protocol,
+			context: context,
 			name: out name,
 			typeInfo: out typeInfo,
 			baseClass: out baseClass,
 			interfaces: out interfaces,
 			outerClasses: out outerClasses,
 			namespaces: out namespaces,
+			protocolConstructors: out _, // ingored in interfaces
 			symbolAvailability: out availability,
 			bindingInfo: out bindingInfo);
 		FullyQualifiedSymbol = interfaceDeclaration.GetFullyQualifiedIdentifier (context.SemanticModel);
@@ -480,6 +486,8 @@ readonly partial struct Binding {
 		sb.AppendJoin (", ", EnumMembers);
 		sb.Append ("], Constructors: [");
 		sb.AppendJoin (", ", Constructors);
+		sb.Append ("], ProtocolConstructors: [");
+		sb.AppendJoin (", ", ProtocolConstructors);
 		sb.Append ("], Properties: [");
 		sb.AppendJoin (", ", Properties);
 		sb.Append ("], ParentProtocolProperties: [");

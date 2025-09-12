@@ -54,9 +54,17 @@ class ClassEmitter : IClassEmitter {
 	/// <param name="classBlock">Current class block.</param>
 	void EmitConstructors (in BindingContext context, TabbedWriter<StringWriter> classBlock)
 	{
+		// merge the constructors and the protocol constructors for the current class
+		var allConstructors = context.Changes.Constructors.AddRange (context.Changes.ProtocolConstructors);
+		
+		// create the ui thread check to be used in the constructors that come from a protocol factory method
+		var uiThreadCheck = (context.NeedsThreadChecks)
+			? EnsureUiThread (context.RootContext.CurrentPlatform)
+			: null;
+		
 		// When dealing with constructors we cannot sort them by name because the name is always the same as the class
 		// instead we will sort them by the selector name so that we will always generate the constructors in the same order
-		foreach (var constructor in context.Changes.Constructors.OrderBy (c => c.ExportMethodData.Selector)) {
+		foreach (var constructor in allConstructors.OrderBy (c => c.ExportMethodData.Selector)) {
 			classBlock.AppendMemberAvailability (constructor.SymbolAvailability);
 			classBlock.AppendGeneratedCodeAttribute (optimizable: true);
 			if (constructor.ExportMethodData.Flags.HasFlag (Constructor.DesignatedInitializer)) {
@@ -68,6 +76,12 @@ class ClassEmitter : IClassEmitter {
 			}
 
 			using (var constructorBlock = classBlock.CreateBlock (constructor.ToDeclaration (withBaseNSFlag: true).ToString (), block: true)) {
+				if (uiThreadCheck is not null && constructor is { IsProtocolConstructor: true, IsThreadSafe: false }) {
+					// if we are dealing with a protocol constructor, we need to ensure we are on the UI thread, this
+					// happens for example with NSCoding in ui elements.
+					constructorBlock.Write (uiThreadCheck.ToString ());
+					constructorBlock.WriteLine ();
+				}
 				// retrieve the method invocation via the factory, this will generate the necessary arguments
 				// transformations and the invocation
 				var invocations = GetInvocations (constructor);
@@ -78,7 +92,7 @@ class ClassEmitter : IClassEmitter {
 					constructorBlock.Write (argument.Initializers, verifyTrivia: false);
 					constructorBlock.Write (argument.PreCallConversion, verifyTrivia: false);
 				}
-
+				
 				// simply call the send or sendSuper accordingly
 				constructorBlock.WriteRaw (
 $@"if (IsDirectBinding) {{

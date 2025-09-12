@@ -117,6 +117,18 @@ public class ClassGenerationTests : BaseGeneratorTestClass {
 					{"EventTests_RgenNSKeyedArchiverDelegate.g.cs", "ExpectedEventTests_RgenNSKeyedArchiverDelegate.cs"}
 				}
 			},
+			
+			// test inline constructors from protocols
+			
+			new (ApplePlatform.iOS, "InlineProtocolConstructors", "InlineProtocolConstructors.cs", "ExpectedInlineProtocolConstructors.cs"),
+			new (ApplePlatform.TVOS, "InlineProtocolConstructors", "InlineProtocolConstructors.cs", "ExpectedInlineProtocolConstructors.cs"),
+			new (ApplePlatform.MacCatalyst, "InlineProtocolConstructors", "InlineProtocolConstructors.cs", "ExpectedInlineProtocolConstructors.cs"),
+			new (ApplePlatform.MacOSX, "InlineProtocolConstructors", "InlineProtocolConstructors.cs", "ExpectedInlineProtocolConstructors.cs"),
+			
+			new (ApplePlatform.iOS, "UIKitInlineProtocolConstructors", "UIKitInlineProtocolConstructors.cs", "ExpectedUIKitInlineProtocolConstructors.cs"),
+			new (ApplePlatform.TVOS, "UIKitInlineProtocolConstructors", "UIKitInlineProtocolConstructors.cs", "ExpectedUIKitInlineProtocolConstructors.cs"),
+			new (ApplePlatform.MacCatalyst, "UIKitInlineProtocolConstructors", "UIKitInlineProtocolConstructors.cs", "ExpectedUIKitInlineProtocolConstructors.cs"),
+			new (ApplePlatform.MacOSX, "AppKitInlineProtocolConstructors", "AppKitInlineProtocolConstructors.cs", "ExpectedAppKitInlineProtocolConstructors.cs"),
 		};
 
 		public IEnumerator<object []> GetEnumerator ()

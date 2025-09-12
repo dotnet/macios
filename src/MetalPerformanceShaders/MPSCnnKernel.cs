@@ -23,7 +23,7 @@ namespace MetalPerformanceShaders {
 			fixed (void* outputScaleTermsHandle = outputScaleTerms)
 			fixed (void* inputBiasTermsHandle = inputBiasTerms)
 			fixed (void* inputScaleTermsHandle = inputScaleTerms)
-				InitializeHandle (InitWithDevice (device, convolutionData, (IntPtr) outputBiasTermsHandle, (IntPtr) outputScaleTermsHandle, (IntPtr) inputBiasTermsHandle, (IntPtr) inputScaleTermsHandle, type, flags));
+				InitializeHandle (_InitWithDevice (device, convolutionData, (IntPtr) outputBiasTermsHandle, (IntPtr) outputScaleTermsHandle, (IntPtr) inputBiasTermsHandle, (IntPtr) inputScaleTermsHandle, type, flags));
 		}
 	}
 
@@ -45,7 +45,7 @@ namespace MetalPerformanceShaders {
 			fixed (void* outputScaleTermsHandle = outputScaleTerms)
 			fixed (void* inputBiasTermsHandle = inputBiasTerms)
 			fixed (void* inputScaleTermsHandle = inputScaleTerms)
-				InitializeHandle (InitWithDevice (device, convolutionData, (IntPtr) outputBiasTermsHandle, (IntPtr) outputScaleTermsHandle, (IntPtr) inputBiasTermsHandle, (IntPtr) inputScaleTermsHandle, type, flags));
+				InitializeHandle (_InitWithDevice (device, convolutionData, (IntPtr) outputBiasTermsHandle, (IntPtr) outputScaleTermsHandle, (IntPtr) inputBiasTermsHandle, (IntPtr) inputScaleTermsHandle, type, flags));
 		}
 	}
 }

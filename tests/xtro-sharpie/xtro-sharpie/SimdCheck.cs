@@ -37,6 +37,7 @@ namespace Extrospection {
 			{ "vector_int2", new NativeSimdInfo { Managed = "Vector2i", }},
 			{ "vector_int3", new NativeSimdInfo { Managed = "Vector3i", }},
 			{ "vector_int4", new NativeSimdInfo { Managed = "Vector4i", }},
+			{ "vector_uchar16", new NativeSimdInfo { Managed = "Nvector16b", }},
 			{ "vector_uint2", new NativeSimdInfo { Managed = "Vector2i", }},
 			{ "vector_uint3", new NativeSimdInfo { Managed = "Vector3i", }},
 			{ "vector_uint4", new NativeSimdInfo { Managed = "Vector4i", }},

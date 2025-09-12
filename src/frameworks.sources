@@ -1217,6 +1217,7 @@ METALPERFORMANCESHADERS_CORE_SOURCES = \
 
 METALPERFORMANCESHADERS_SOURCES = \
 	MetalPerformanceShaders/MPSImageBatch.cs \
+	MetalPerformanceShaders/MPSImageCanny.cs \
 	MetalPerformanceShaders/MPSImageScale.cs \
 	MetalPerformanceShaders/MPSCnnConvolutionDescriptor.cs \
 	MetalPerformanceShaders/MPSCnnNeuron.cs \
@@ -1225,6 +1226,7 @@ METALPERFORMANCESHADERS_SOURCES = \
 	MetalPerformanceShaders/MPSNDArrayDescriptor.cs \
 	MetalPerformanceShaders/MPSNDArrayIdentity.cs \
 	MetalPerformanceShaders/MPSNNGraph.cs \
+	MetalPerformanceShaders/MPSNNOptimizerStochasticGradientDescent.cs \
 	MetalPerformanceShaders/MPSStateBatch.cs \
 	MetalPerformanceShaders/MPSStateResourceList.cs \
 
@@ -1894,6 +1896,7 @@ SHARED_CORE_SOURCES = \
 	Simd/MatrixFloat3x3RM.cs \
 	Simd/MatrixFloat4x3.cs \
 	Simd/MatrixFloat4x4.cs \
+	Simd/VectorByte16.cs \
 	Simd/VectorDouble2.cs \
 	Simd/VectorDouble3.cs \
 	Simd/VectorDouble4.cs \

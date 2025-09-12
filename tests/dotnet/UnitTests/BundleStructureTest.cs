@@ -551,6 +551,10 @@ namespace Xamarin.Tests {
 				throw new NotImplementedException ($"Unknown platform: {platform}");
 			}
 
+			var headers = new List<string> ();
+			if (longHeader)
+				headers.Add (Path.Combine (headersDirectoryInFramework, "full-paths-exceeding-two-hundred-and-sixty-characters", "often-cause-trouble-on-windows", "where-the-maximum-is-by-default-two-hundred-and-sixty-characters", "because-frameworks-and-by-extension-xcframeworks", "very-often-have-paths-longer-than-this-limit", "especially-when-contained-in-other-directories.h"));
+
 			expectedFiles.Add (Path.Combine (frameworksDirectory, $"{frameworkName}.framework"));
 			expectedFiles.Add (Path.Combine (frameworksDirectory, $"{frameworkName}.framework", frameworkName));
 			switch (platform) {
@@ -567,15 +571,13 @@ namespace Xamarin.Tests {
 				expectedFiles.Add (Path.Combine (frameworksDirectory, $"{frameworkName}.framework", "Versions", "A", "Resources", "Info.plist"));
 				expectedFiles.Add (Path.Combine (frameworksDirectory, $"{frameworkName}.framework", "Versions", "A", frameworkName));
 				expectedFiles.Add (Path.Combine (frameworksDirectory, $"{frameworkName}.framework", "Versions", "Current"));
+
+				if (headers.Any ())
+					expectedFiles.Add (Path.Combine (frameworksDirectory, $"{frameworkName}.framework", "Headers"));
 				break;
 			default:
 				throw new NotImplementedException ($"Unknown platform: {platform}");
 			}
-
-
-			var headers = new List<string> ();
-			if (longHeader)
-				headers.Add (Path.Combine (headersDirectoryInFramework, "full-paths-exceeding-two-hundred-and-sixty-characters", "often-cause-trouble-on-windows", "where-the-maximum-is-by-default-two-hundred-and-sixty-characters", "because-frameworks-and-by-extension-xcframeworks", "very-often-have-paths-longer-than-this-limit", "especially-when-contained-in-other-directories.h"));
 
 			foreach (var header in headers) {
 				var path = Path.Combine (frameworksDirectory, $"{frameworkName}.framework");

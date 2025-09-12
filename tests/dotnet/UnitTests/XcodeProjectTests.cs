@@ -221,7 +221,7 @@ public class Binding
 			var allTargets = BinLog.GetAllTargets (rv.BinLogPath);
 			AssertTargetExecuted (allTargets, "_BuildXcodeProjects", "First _BuildXcodeProjects");
 			var expectedXcodeFxOutput = Path.Combine (testDir, "bin", "Debug", platform.ToFramework (), $"{TestName}.resources", $"{xcodeProjName}{platform.AsString ().ToLower ()}.xcframework");
-			if (UsesCompressedBindingResourcePackage (platform))	
+			if (UsesCompressedBindingResourcePackage (platform))
 				expectedXcodeFxOutput = Path.Combine (testDir, "bin", "Debug", platform.ToFramework (), $"{TestName}.resources.zip");
 			Assert.That (expectedXcodeFxOutput, Does.Exist, $"Expected xcframework output '{expectedXcodeFxOutput}' did not exist.");
 			var outputFxFirstWriteTime = File.GetLastWriteTime (expectedXcodeFxOutput);

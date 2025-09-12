@@ -54,9 +54,20 @@ class ClassEmitter : IClassEmitter {
 	/// <param name="classBlock">Current class block.</param>
 	void EmitConstructors (in BindingContext context, TabbedWriter<StringWriter> classBlock)
 	{
-		// merge the constructors and the protocol constructors for the current class
-		var allConstructors = context.Changes.Constructors.AddRange (context.Changes.ProtocolConstructors);
-		
+		// merge the constructors and the protocol constructors for the current class, use a dict to avoid duplicates
+		var allConstructors = new Dictionary<string, DataModel.Constructor> ();
+		foreach (var constructor in context.Changes.Constructors) {
+			if (constructor.Selector is null)
+				continue;
+			allConstructors.TryAdd (constructor.Selector, constructor);
+		}
+
+		foreach (var constructor in context.Changes.ProtocolConstructors) {
+			if (constructor.Selector is null)
+				continue;
+			allConstructors.TryAdd (constructor.Selector, constructor);
+		}
+
 		// create the ui thread check to be used in the constructors that come from a protocol factory method
 		var uiThreadCheck = (context.NeedsThreadChecks)
 			? EnsureUiThread (context.RootContext.CurrentPlatform)
@@ -64,7 +75,7 @@ class ClassEmitter : IClassEmitter {
 		
 		// When dealing with constructors we cannot sort them by name because the name is always the same as the class
 		// instead we will sort them by the selector name so that we will always generate the constructors in the same order
-		foreach (var constructor in allConstructors.OrderBy (c => c.ExportMethodData.Selector)) {
+		foreach (var constructor in allConstructors.Values.OrderBy (c => c.ExportMethodData.Selector)) {
 			classBlock.AppendMemberAvailability (constructor.SymbolAvailability);
 			classBlock.AppendGeneratedCodeAttribute (optimizable: true);
 			if (constructor.ExportMethodData.Flags.HasFlag (Constructor.DesignatedInitializer)) {

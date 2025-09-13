@@ -3,6 +3,8 @@
 <Project>
 	<!-- NativeLibName: the platform-specific subdirectory of tests/test-libraries/.libs where to get libraries with all the relevant architectures -->
 
+	<Import Project="$(MSBuildThisFileDirectory)/test-variations.csproj" />
+
 	<!-- Logic for iOS -->
 	<PropertyGroup Condition="$(TargetFramework.EndsWith('-ios'))">
 		<AssetTargetFallback>xamarinios10;$(AssetTargetFallback)</AssetTargetFallback>
@@ -98,7 +100,6 @@
 
 	<Import Project="$(MSBuildThisFileDirectory)/../ComputeRegistrarConstant.targets" />
 	<Import Project="$(MSBuildThisFileDirectory)/../nunit.framework.targets" Condition="'$(ExcludeNUnitLiteReference)' != 'true'" />
-	<Import Project="$(MSBuildThisFileDirectory)/test-variations.csproj" />
 
 	<Import Project="$(GeneratedProjectFile)" Condition="'$(GeneratedProjectFile)' != ''" />
 

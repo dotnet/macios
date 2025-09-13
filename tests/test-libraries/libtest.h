@@ -348,6 +348,19 @@ typedef void (^outerBlock) (innerBlock callback);
 	+(id<VeryGenericConsumerProtocol>) getConsumer;
 @end
 
+@interface WeakReferencedObject : NSObject {
+}
+-(int) doSomething;
+@end
+
+@interface WeakReferenceHolder : NSObject {
+}
+-(void) addObject: (WeakReferencedObject *) obj;
+-(void) callDoSomething: (int*) nilObjectCount nonNilObjectCount: (int *) nonNilObjectCount gotExpectedResponse: (int *) gotExpectedResponse gotUnexpectedResponse: (int *) gotUnexpectedResponse gotFinalizedResponse: (int *) gotFinalizedResponse;
+
+@property (retain) NSPointerArray* array;
+@end
+
 #pragma clang diagnostic pop
 // NS_ASSUME_NONNULL_END
 

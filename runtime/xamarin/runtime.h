@@ -370,6 +370,8 @@ struct NSObjectData {
 	id handle;
 	struct objc_super* super;
 	uint32_t /* NSObjectFlags */ flags;
+	// if this structure ever changes, the encoding for this method will likely have to be updated in Registrar.RegistrarTypeUnsafe, currently it's:
+	//    Signature = "^{NSObjectData=@^{objc_super}I}:",
 };
 
 #ifdef __cplusplus

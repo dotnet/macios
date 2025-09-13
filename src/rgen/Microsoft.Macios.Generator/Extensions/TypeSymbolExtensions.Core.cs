@@ -16,6 +16,8 @@ static partial class TypeSymbolExtensions {
 	const string nativeObjectInterface = "ObjCRuntime.INativeObject";
 	const string nsObjectClass = "Foundation.NSObject";
 	const string dictionaryContainerClass = "Foundation.DictionaryContainer";
+	const string uiViewClass = "UIKit.UIView";
+	const string appKitViewClass = "AppKit.NSView";
 
 	/// <summary>
 	/// Retrieve a dictionary with the attribute data of all the attributes attached to a symbol. Because
@@ -419,17 +421,19 @@ static partial class TypeSymbolExtensions {
 	/// <param name="symbol">The symbol whose inheritance we want to retrieve.</param>
 	/// <param name="isNativeObject">If the type implements the INativeObject interface.</param>
 	/// <param name="isDictionaryContainer">If the type inherits from Foundation.DictionaryContainer.</param>
+	/// <param name="isView">If the class represents a view.</param>
 	/// <param name="parents">An immutable array of the parents in order from closest to furthest.</param>
 	/// <param name="interfaces">All implemented interfaces by the type and its parents.</param>
 	/// <param name="isNSObject">If the type inherits from NSObject.</param>
 	public static void GetInheritance (
-		this ITypeSymbol symbol, out bool isNSObject, out bool isNativeObject, out bool isDictionaryContainer,
+		this ITypeSymbol symbol, out bool isNSObject, out bool isNativeObject, out bool isDictionaryContainer, out bool isView,
 		out ImmutableArray<string> parents,
 		out ImmutableArray<string> interfaces)
 	{
 		isNSObject = symbol.ToDisplayString ().Trim ('?') == nsObjectClass;
 		isNativeObject = false;
 		isDictionaryContainer = false;
+		isView = false;
 
 		// parents will be returned directly in a Immutable array via a builder since the order is important
 		// interfaces will use a hash set because we do not want duplicates.
@@ -443,6 +447,7 @@ static partial class TypeSymbolExtensions {
 			var parentName = currentType.ToDisplayString ().Trim ();
 			isNSObject |= parentName == nsObjectClass;
 			isDictionaryContainer |= parentName == dictionaryContainerClass;
+			isView |= parentName is uiViewClass or appKitViewClass;
 			parentsBuilder.Add (parentName);
 
 			// union with the current interfaces
@@ -497,6 +502,7 @@ static partial class TypeSymbolExtensions {
 			isNSObject: out bool isNSObject,
 			isNativeObject: out bool _,
 			isDictionaryContainer: out bool _,
+			isView: out bool _,
 			parents: out ImmutableArray<string> _,
 			interfaces: out ImmutableArray<string> _);
 		// either we are a NSObject or we are a subclass of it
@@ -514,6 +520,7 @@ static partial class TypeSymbolExtensions {
 			isNSObject: out bool _,
 			isNativeObject: out bool isNativeObject,
 			isDictionaryContainer: out bool _,
+			isView: out bool _,
 			parents: out ImmutableArray<string> _,
 			interfaces: out ImmutableArray<string> _);
 		return isNativeObject;

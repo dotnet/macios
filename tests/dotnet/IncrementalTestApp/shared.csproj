@@ -8,6 +8,8 @@
 
 		<ExcludeNUnitLiteReference>true</ExcludeNUnitLiteReference>
 		<ExcludeTouchUnitReference>true</ExcludeTouchUnitReference>
+
+		<DefineConstants>$(DefineConstants);$(AdditionalDefineConstants)</DefineConstants>
 	</PropertyGroup>
 
 	<Import Project="../../common/shared-dotnet.csproj" />

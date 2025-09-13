@@ -719,6 +719,7 @@ public class Foo {
 			declaration: declaration,
 			bindingType: bindingType,
 			name: out var name,
+			typeInfo: out var typeInfo,
 			baseClass: out var baseClass,
 			interfaces: out var interfaces,
 			outerClasses: out var outerClasses,
@@ -726,6 +727,7 @@ public class Foo {
 			symbolAvailability: out var symbolAvailability,
 			bindingInfo: out var bindingData);
 		Assert.Equal (expectedName, name);
+		Assert.False (typeInfo.IsNullOrDefault);
 		Assert.Equal (expectedBaseClass, baseClass);
 		Assert.Equal (expectedInterfaces, interfaces, interfacesComparer);
 		Assert.Equal (expectedOuterClasses, outerClasses, new OuterClassEqualityComparer ());

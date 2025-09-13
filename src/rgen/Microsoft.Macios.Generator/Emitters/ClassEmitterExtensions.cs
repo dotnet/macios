@@ -223,7 +223,8 @@ if (IsDirectBinding) {{
 			}
 		}
 
-		if (!method.IsAsync)
+		if (!method.GenerateAsync)
+			// we cannot generate an async method
 			return;
 
 		// if the method is an async method, generate its async version

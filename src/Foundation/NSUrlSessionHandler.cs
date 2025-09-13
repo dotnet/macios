@@ -131,6 +131,7 @@ namespace Foundation {
 		NSObject? notificationToken;  // needed to make sure we do not hang if not using a background session
 		readonly object notificationTokenLock = new object (); // need to make sure that threads do no step on each other with a dispose and a remove  inflight data
 #endif
+		X509ChainPolicy? policy;
 
 		static NSUrlSessionConfiguration CreateConfig ()
 		{
@@ -586,15 +587,47 @@ namespace Foundation {
 			set { }
 		}
 
-		// We're ignoring this property, just like Xamarin.Android does:
-		// https://github.com/xamarin/xamarin-android/blob/09e8cb5c07ea6c39383185a3f90e53186749b802/src/Mono.Android/Xamarin.Android.Net/AndroidMessageHandler.cs#L158
-		[UnsupportedOSPlatform ("ios")]
-		[UnsupportedOSPlatform ("maccatalyst")]
-		[UnsupportedOSPlatform ("tvos")]
-		[UnsupportedOSPlatform ("macos")]
+		/// <summary>Gets or sets a value that indicates whether the certificate is checked against the certificate authority revocation list.</summary>
+		/// <remarks>
+		///   <para>This is the same as setting CertificateChainPolicy.RevocationMode = X509RevocationMode.Online (if enabling the check) or X509RevocationMode.NoCheck (if disabling the check).</para>
+		///   <para>This only has an effect if a custom server certificate validation callback is being used ('ServerCertificateCustomValidationCallback' is set).</para>
+		/// </remarks>
 		[EditorBrowsable (EditorBrowsableState.Never)]
-		public bool CheckCertificateRevocationList { get; set; } = false;
+		public bool CheckCertificateRevocationList {
+			// This implementation was mostly copied from https://github.com/dotnet/runtime/blob/0e3562e97c6db531f26a2ffe3e8084cf67ba8a93/src/libraries/System.Net.Http/src/System/Net/Http/HttpClientHandler.cs#L326-L335
+			get => CertificateChainPolicy!.RevocationMode == X509RevocationMode.Online;
+			set {
+				EnsureModifiability ();
 
+				CertificateChainPolicy!.RevocationMode = value ? X509RevocationMode.Online : X509RevocationMode.NoCheck;
+			}
+		}
+
+		/// <summary>Gets or sets the custom chain policy to use when validating certificate chains.</summary>
+		/// <remarks>
+		///   <para>The getter will never return a <see langword="null" /> policy, it will return a policy configured with the default behavior.</para>
+		///   <para>To select the default policy, call the setter with <see langword="null" /> value.</para>
+		///   <para>This only has an effect if a custom server certificate validation callback is being used ('ServerCertificateCustomValidationCallback' is set).</para>
+		/// </remarks>
+		public X509ChainPolicy? CertificateChainPolicy {
+			get {
+				if (policy is null) {
+					policy = new X509ChainPolicy () {
+						RevocationMode = X509RevocationMode.Online,
+						RevocationFlag = X509RevocationFlag.ExcludeRoot,
+						// Ignore unknown revocation status, because Apple has a bug where revocation checks fail if the certificate(s)
+						// in question don't support revocation checking via OCSP.
+						// References:
+						// * https://learn.microsoft.com/en-us/dotnet/core/compatibility/networking/10.0/ssl-certificate-revocation-check-default
+						// * https://github.com/dotnet/macios/issues/23764#issuecomment-3264999234
+						// * https://github.com/dotnet/runtime/issues/117195
+						VerificationFlags = X509VerificationFlags.IgnoreEndRevocationUnknown,
+					};
+				}
+				return policy;
+			}
+			set => policy = value;
+		}
 
 		X509CertificateCollection? _clientCertificates;
 
@@ -703,7 +736,7 @@ namespace Foundation {
 				if (value is null) {
 					_serverCertificateCustomValidationCallbackHelper = null;
 				} else {
-					_serverCertificateCustomValidationCallbackHelper = new ServerCertificateCustomValidationCallbackHelper (value);
+					_serverCertificateCustomValidationCallbackHelper = new ServerCertificateCustomValidationCallbackHelper (value, CertificateChainPolicy!);
 				}
 			}
 		}
@@ -720,11 +753,13 @@ namespace Foundation {
 		}
 
 		sealed class ServerCertificateCustomValidationCallbackHelper {
+			X509ChainPolicy policy;
 			public Func<HttpRequestMessage, X509Certificate2?, X509Chain?, SslPolicyErrors, bool> Callback { get; private set; }
 
-			public ServerCertificateCustomValidationCallbackHelper (Func<HttpRequestMessage, X509Certificate2?, X509Chain?, SslPolicyErrors, bool> callback)
+			public ServerCertificateCustomValidationCallbackHelper (Func<HttpRequestMessage, X509Certificate2?, X509Chain?, SslPolicyErrors, bool> callback, X509ChainPolicy policy)
 			{
 				Callback = callback;
+				this.policy = policy;
 			}
 
 			public bool Invoke (HttpRequestMessage request, SecTrust secTrust)
@@ -759,10 +794,9 @@ namespace Foundation {
 
 			X509Chain CreateChain (X509Certificate2 [] certificates)
 			{
-				// inspired by https://github.com/dotnet/runtime/blob/99d21b9276ebe8f7bea7fb3ba74dca9fca625fe2/src/libraries/System.Security.Cryptography.Pkcs/src/System/Security/Cryptography/Pkcs/SignerInfo.cs#L691-L696
+				// See https://github.com/dotnet/macios/issues/23764 for more information.
 				var chain = new X509Chain ();
-				chain.ChainPolicy.RevocationMode = X509RevocationMode.Online;
-				chain.ChainPolicy.RevocationFlag = X509RevocationFlag.ExcludeRoot;
+				chain.ChainPolicy = policy.Clone ();
 				chain.ChainPolicy.ExtraStore.AddRange (certificates);
 				return chain;
 			}

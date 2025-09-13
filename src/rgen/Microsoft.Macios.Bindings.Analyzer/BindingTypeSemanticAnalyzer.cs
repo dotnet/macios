@@ -75,7 +75,7 @@ class BindingTypeSemanticAnalyzer : DiagnosticAnalyzer, IBindingTypeAnalyzer<Bas
 	{
 		var bucket = ImmutableArray.CreateBuilder<Diagnostic> ();
 		if (declarationNode is T baseTypeDeclarationSyntax) {
-			var binding = Binding.FromDeclaration (baseTypeDeclarationSyntax, context);
+			var binding = Binding.FromDeclaration (baseTypeDeclarationSyntax, context, false);
 			if (binding is null) {
 				// add a diagnostic if the binding could not be created
 				bucket.Add (Diagnostic.Create (

@@ -677,7 +677,7 @@ mutation {
             Write-Host "Current commit is not the latest in PR, attempting to hide the new comment"
             try {
                 Start-Sleep -Seconds 2  # Give GitHub a moment to process the comment
-                $this.MinimizeCommentId($result.id)
+                $this.MinimizeCommentId($result.node_id)
             } catch {
                 Write-Host "Warning: Failed to hide comment for non-latest commit: $_"
             }

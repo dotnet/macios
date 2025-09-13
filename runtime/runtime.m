@@ -122,6 +122,7 @@ struct Trampolines {
 	void* get_flags_tramp;
 	void* set_flags_tramp;
 	void* retainWeakReference_tramp;
+	void* get_nsobject_data_tramp;
 };
 
 enum InitializationFlags : int {
@@ -182,6 +183,7 @@ static struct Trampolines trampolines = {
 	(void *) &xamarin_get_flags_trampoline,
 	(void *) &xamarin_set_flags_trampoline,
 	(void *) &xamarin_retainWeakReference_trampoline,
+	(void *) &xamarin_get_nsobject_data_trampoline,
 };
 
 static struct InitializationOptions options = { 0 };
@@ -916,7 +918,10 @@ object_queued_for_finalization (MonoObject *object)
 {
 	/* This is called with the GC lock held, so it can only use signal-safe code */
 	struct Managed_NSObject *obj = (struct Managed_NSObject *) object;
-	//PRINT ("In finalization response for %s.%s %p (handle: %p class_handle: %p flags: %i)\n", 
+#if defined(DEBUG_REF_COUNTING)
+	// Don't use PRINT/NSLog/os_log here, because the process can end up aborting due to recursive locks inside the ObjC runtime. Luckily fprintf works fine.
+	fprintf (stderr, "object_queued_for_finalization (%p): data=%p flags=%x handle=%p\n", object, obj->data, (unsigned int) (obj->data ? obj->data->flags : 0), obj->data ? obj->data->handle : NULL);
+#endif
 	if (obj->data)
 		obj->data->flags |= NSObjectFlagsInFinalizerQueue;
 }

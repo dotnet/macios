@@ -87,6 +87,22 @@ readonly partial struct Method {
 	public bool IsAsync => ExportMethodData.Flags.HasFlag (ObjCBindings.Method.Async);
 
 	/// <summary>
+	/// True if an async version of the method can be generated. This is true if <see cref="IsAsync"/> is true and
+	/// the method signature is compatible (returns void, and the last parameter is a completion handler delegate).
+	/// </summary>
+	public bool GenerateAsync {
+		get {
+			if (!IsAsync)
+				return false;
+			// ensure that we have the minimum requirements for the async method to be generated correctly
+			// 1. Method has to return void
+			// 2. Method has to have parameters
+			// 3. Last parameter has to be a completion handler
+			return ReturnType.IsVoid && Parameters.Length > 0 && Parameters [^1].Type.IsDelegate;
+		}
+	}
+
+	/// <summary>
 	/// True if the method is variadic.
 	/// </summary>
 	public bool IsVariadic => ExportMethodData.Flags.HasFlag (ObjCBindings.Method.IsVariadic);

@@ -1218,6 +1218,32 @@ public sealed class MacCatalystAttribute : IntroducedAttribute {
 }
 
 [AttributeUsage (AttributeTargets.All, AllowMultiple = false)]
+public sealed class MacAttribute : IntroducedAttribute {
+	public MacAttribute (byte major, byte minor)
+		: base (PlatformName.MacOSX, (int) major, (int) minor)
+	{
+	}
+
+	public MacAttribute (byte major, byte minor, byte subminor)
+		: base (PlatformName.MacOSX, (int) major, (int) minor, subminor)
+	{
+	}
+}
+
+[AttributeUsage (AttributeTargets.All, AllowMultiple = false)]
+public sealed class iOSAttribute : IntroducedAttribute {
+	public iOSAttribute (byte major, byte minor)
+		: base (PlatformName.iOS, (int) major, (int) minor)
+	{
+	}
+
+	public iOSAttribute (byte major, byte minor, byte subminor)
+		: base (PlatformName.iOS, (int) major, (int) minor, subminor)
+	{
+	}
+}
+
+[AttributeUsage (AttributeTargets.All, AllowMultiple = false)]
 public sealed class NoMacAttribute : UnavailableAttribute {
 	public NoMacAttribute ()
 		: base (PlatformName.MacOSX)

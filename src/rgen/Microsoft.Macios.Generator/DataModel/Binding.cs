@@ -11,7 +11,6 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Macios.Generator.Availability;
 using Microsoft.Macios.Generator.Context;
-using TypeInfo = Microsoft.Macios.Generator.DataModel.TypeInfo;
 
 namespace Microsoft.Macios.Generator.DataModel;
 
@@ -27,6 +26,12 @@ readonly partial struct Binding {
 	/// The name of the named type that generated the code change.
 	/// </summary>
 	public string Name => name;
+
+	readonly TypeInfo typeInfo = TypeInfo.Default;
+	/// <summary>
+	/// Gets the type information for the named type that generated the code change.
+	/// </summary>
+	public TypeInfo TypeInfo => typeInfo;
 
 	readonly ImmutableArray<string> namespaces = ImmutableArray<string>.Empty;
 	/// <summary>
@@ -315,14 +320,14 @@ readonly partial struct Binding {
 		where TR : struct;
 
 	static void GetMembers<T, TR> (TypeDeclarationSyntax baseDeclarationSyntax, RootContext context,
-		SkipDelegate<T> skip, TryCreateDelegate<T, TR> tryCreate, out ImmutableArray<TR> members)
+		SkipDelegate<T> skip, TryCreateDelegate<T, TR> tryCreate, out ImmutableArray<TR> members, bool validateMembers)
 		where T : MemberDeclarationSyntax
 		where TR : struct
 	{
 		var bucket = ImmutableArray.CreateBuilder<TR> ();
 		var declarations = baseDeclarationSyntax.Members.OfType<T> ();
 		foreach (var declaration in declarations) {
-			if (skip (declaration, context.SemanticModel))
+			if (validateMembers && skip (declaration, context.SemanticModel))
 				continue;
 			if (tryCreate (declaration, context, out var change))
 				bucket.Add (change.Value);

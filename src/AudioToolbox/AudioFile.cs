@@ -33,6 +33,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -45,8 +46,7 @@ using AudioFileID = System.IntPtr;
 
 namespace AudioToolbox {
 
-	/// <summary>Known audio file types.   Used to specify the kind of audio file to create, or as a hint to the audio parser about the contents of the file.</summary>
-	///     <remarks>To be added.</remarks>
+	/// <summary>Known audio file types. Used to specify the kind of audio file to create, or as a hint to the audio parser about the contents of the file.</summary>
 	public enum AudioFileType {  // UInt32 AudioFileTypeID
 		/// <summary>Audio Interchange File Format.</summary>
 		AIFF = 0x41494646, // AIFF
@@ -101,11 +101,9 @@ namespace AudioToolbox {
 		LatmInLoas = 0x6c6f6173, // loas
 	}
 
-	/// <summary>The error codes returned by <see cref="AudioToolbox.AudioFile" />.</summary>
-	///     <remarks>
-	///     </remarks>
+	/// <summary>The error codes returned by <see cref="AudioFile" />.</summary>
 	public enum AudioFileError {// Implictly cast to OSType in AudioFile.h
-		/// <summary>To be added.</summary>
+		/// <summary>The operation was successful.</summary>
 		Success = 0, // noErr
 		/// <summary>An unspecified error has occurred.</summary>
 		Unspecified = 0x7768743f, // wht?
@@ -127,9 +125,11 @@ namespace AudioToolbox {
 		DoesNotAllow64BitDataSize = 0x6f66663f, // off?
 		/// <summary>A packet offset is not valid.</summary>
 		InvalidPacketOffset = 0x70636b3f, // pck?
+		/// <summary>A packet dependency is not valid.</summary>
+		InvalidPacketDependencyError = 0x6465703f, // dep?
 		/// <summary>The file is invalid.</summary>
 		InvalidFile = 0x6474613f, // dta?
-		/// <summary>To be added.</summary>
+		/// <summary>The operation is not supported.</summary>
 		OperationNotSupported = 0x6F703F3F, // op??
 		/// <summary>The file is not opened.</summary>
 		FileNotOpen = -38,
@@ -141,30 +141,35 @@ namespace AudioToolbox {
 		FilePosition = -40,
 	}
 
-	/// <summary>An enumeration whose values specify the <c>permissions</c> argument when opening an <see cref="AudioToolbox.AudioFile" />.</summary>
-	///     <remarks>To be added.</remarks>
+	/// <summary>An enumeration whose values specify the <c>permissions</c> argument when opening an <see cref="AudioFile" />.</summary>
 	[Flags]
 	public enum AudioFilePermission {
-		/// <summary>To be added.</summary>
+		/// <summary>The file is opened for reading.</summary>
 		Read = 0x01,
-		/// <summary>To be added.</summary>
+		/// <summary>The file is opened for writing.</summary>
 		Write = 0x02,
-		/// <summary>To be added.</summary>
+		/// <summary>The file is opened for both reading and writing.</summary>
 		ReadWrite = 0x03,
 	}
 
-	/// <summary>An enumeration whose values to select creation options for <see cref="AudioToolbox.AudioFile" />.</summary>
-	///     <remarks>To be added.</remarks>
+	/// <summary>An enumeration whose values to select creation options for <see cref="AudioFile" />.</summary>
 	[Flags]
 	public enum AudioFileFlags { // UInt32 in AudioFileCreateWithURL()
-		/// <summary>To be added.</summary>
+#if !XAMCORE_5_0
+		/// <summary>If this flag is set, the existing file will be erased when creating an <see cref="AudioFile" />.</summary>
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Obsolete ("Use 'EraseFile' instead.")]
 		EraseFlags = 1,
+#endif // !XAMCORE_5_0
+		/// <summary>If this flag is set, the existing file will be erased when creating an <see cref="AudioFile" />.</summary>
+		EraseFile = 1,
 		/// <summary>If this flag is set, audio data will be written without page alignment. This will make the data more compact but possibly slow readout.</summary>
 		DontPageAlignAudioData = 2,
 	}
 
-	/// <summary>An enumeration whose values represent information about a <see cref="AudioToolbox.AudioFile" />. See the <see cref="AudioToolbox.AudioFileStream.GetProperty(AudioToolbox.AudioFileStreamProperty,ref System.Int32,System.IntPtr)" /> and <see cref="AudioToolbox.AudioFile.SetProperty(AudioToolbox.AudioFileProperty,System.Int32,System.IntPtr)" /> methods.</summary>
-	///     <remarks>To be added.</remarks>
+	/// <summary>An enumeration whose values represent information about a <see cref="AudioFile" />.</summary>
+	/// <seealso cref="AudioToolbox.AudioFileStream.GetProperty(AudioToolbox.AudioFileStreamProperty,ref System.Int32,System.IntPtr)" />
+	/// <seealso cref="AudioToolbox.AudioFile.SetProperty(AudioToolbox.AudioFileProperty,System.Int32,System.IntPtr)" />
 	public enum AudioFileProperty { // typedef UInt32 AudioFilePropertyID
 		/// <summary>To be added.</summary>
 		FileFormat = 0x66666d74,
@@ -233,7 +238,6 @@ namespace AudioToolbox {
 	}
 
 	/// <summary>An enumeration whose values specify an audio-loop's direction.</summary>
-	///     <remarks>To be added.</remarks>
 	public enum AudioFileLoopDirection { // Unused?
 		/// <summary>To be added.</summary>
 		NoLooping = 0,
@@ -246,7 +250,6 @@ namespace AudioToolbox {
 	}
 
 	/// <summary>An enumeration whose values specify different types of chunks appropriate to audio files.</summary>
-	///     <remarks>To be added.</remarks>
 	public enum AudioFileChunkType : uint // CoreAudio.framework - CoreAudioTypes.h - "four char code IDs"
 	{
 		/// <summary>To be added.</summary>
@@ -311,7 +314,6 @@ namespace AudioToolbox {
 	}
 
 	/// <summary>A struct that encapsulates a Society of Motion Picture and Television Engineers time.</summary>
-	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -319,24 +321,18 @@ namespace AudioToolbox {
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AudioFileSmpteTime { // AudioFile_SMPTE_Time
 		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
 		public sbyte Hours;
 		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
 		public byte Minutes;
 		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
 		public byte Seconds;
 		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
 		public byte Frames;
 		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
 		public uint SubFrameSampleOffset;
 	}
 
 	/// <summary>A class that represents a specific named position within an audio file.</summary>
-	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -344,28 +340,20 @@ namespace AudioToolbox {
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AudioFileMarker {
 		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
 		public double FramePosition;
 		internal IntPtr Name_cfstringref;
 		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
 		public int MarkerID;
 		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
 		public AudioFileSmpteTime SmpteTime;
 		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
 		public AudioFileMarkerType Type;
 		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
 		public ushort Reserved;
 		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
 		public ushort Channel;
 
 		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		public string? Name {
 			get {
 				return CFString.FromHandle (Name_cfstringref);
@@ -420,7 +408,6 @@ namespace AudioToolbox {
 	}
 
 	/// <summary>An enumeration whose values specify the <see cref="AudioFileMarker.Type" /> property.</summary>
-	///     <remarks>To be added.</remarks>
 	public enum AudioFileMarkerType : uint // UInt32 in AudioFileMarkerType - AudioFile.h
 	{
 		/// <summary>To be added.</summary>
@@ -472,8 +459,7 @@ namespace AudioToolbox {
 		CAFKeySignature = 0x6b736967,   // 'ksig'
 	}
 
-	/// <summary>A collection of <see cref="AudioToolbox.AudioFileMarker" />s.</summary>
-	///     <remarks>To be added.</remarks>
+	/// <summary>A list of <see cref="AudioFileMarker" /> objects.</summary>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -482,10 +468,9 @@ namespace AudioToolbox {
 		IntPtr ptr;
 		readonly bool owns;
 
-		/// <param name="ptr">To be added.</param>
-		///         <param name="owns">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Create a new <see cref="AudioFileMarkerList" /> instance.</summary>
+		/// <param name="ptr">The pointer to the native value.</param>
+		/// <param name="owns">Whether the native pointer should be freed when this managed instance is disposed.</param>
 		public AudioFileMarkerList (IntPtr ptr, bool owns)
 		{
 			this.ptr = ptr;
@@ -497,24 +482,23 @@ namespace AudioToolbox {
 			Dispose (false);
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Get the <see cref="SmpteTimeType" /> for this list.</summary>
 		public SmpteTimeType SmpteTimeType {
 			get {
 				return (SmpteTimeType) Marshal.ReadInt32 (ptr);
 			}
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Get the number of elements in the list.</summary>
 		public uint Count {
 			get {
 				return (uint) Marshal.ReadInt32 (ptr, 4);
 			}
 		}
 
+		/// <summary>Get the element at the specified 0-based index.</summary>
+		/// <param name="index">The 0-based index to return.</param>
+		/// <returns>The element at the specified 0-based index.</returns>
 		public AudioFileMarker this [int index] {
 			get {
 				if (index >= Count || index < 0)
@@ -537,17 +521,14 @@ namespace AudioToolbox {
 			}
 		}
 
-		/// <summary>Releases the resources used by the AudioFileMarkerList object.</summary>
-		///         <remarks>
-		///           <para>The Dispose method releases the resources used by the AudioFileMarkerList class.</para>
-		///           <para>Calling the Dispose method when the application is finished using the AudioFileMarkerList ensures that all external resources used by this managed object are released as soon as possible.  Once developers have invoked the Dispose method, the object is no longer useful and developers should no longer make any calls to it.  For more information on releasing resources see ``Cleaning up Unmananaged Resources'' at https://msdn.microsoft.com/en-us/library/498928w2.aspx</para>
-		///         </remarks>
+		/// <summary>Releases the resources used by the <see cref="AudioFileMarkerList" /> object.</summary>
 		public void Dispose ()
 		{
 			Dispose (true);
 		}
 
-		/// <include file="../../docs/api/AudioToolbox/AudioFileMarkerList.xml" path="/Documentation/Docs[@DocId='M:AudioToolbox.AudioFileMarkerList.Dispose(System.Boolean)']/*" />
+		/// <summary>Releases the resources used by the <see cref="AudioFileMarkerList" /> object.</summary>
+		/// <param name="disposing">If set to <see langword="true" />, the method is invoked directly and will dispose managed and unmanaged resources; If set to <see langword="false" /> the method is being called by the garbage collector finalizer and should only release unmanaged resources.</param>
 		protected virtual void Dispose (bool disposing)
 		{
 			if (!owns || ptr == IntPtr.Zero)
@@ -564,26 +545,22 @@ namespace AudioToolbox {
 	}
 
 	/// <summary>Represents the number of valid frames in a file and where they begin or end.</summary>
-	///     <remarks>Not all audio file data formats guarantee that their contents are 100% valid; some have priming or remainder frames. This class can be used with such data formats to identify the valid frames in a file.</remarks>
+	/// <remarks>Not all audio file data formats guarantee that their contents are 100% valid; some have priming or remainder frames. This class can be used with such data formats to identify the valid frames in a file.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AudioFilePacketTableInfo {
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>The number of valid frames in the file.</summary>
 		public long ValidFrames;
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>The number of priming frames (invalid frames at the beginning) in the file.</summary>
 		public int PrimingFrames;
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>The number of remainder frames (invalid frames at the end) in the file.</summary>
 		public int RemainderFrames;
 	}
 
 	/// <summary>Represents a named region within an audio file.</summary>
-	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -603,26 +580,21 @@ namespace AudioToolbox {
 		//	AudioFileMarker		mMarkers[1]; // this is a variable length array of mNumberMarkers elements
 		// }
 
-		/// <param name="ptr">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Create a new <see cref="AudioFileRegion" /> instance, wrapping a native pointer.</summary>
+		/// <param name="ptr">The native pointer to wrap.</param>
 		public AudioFileRegion (IntPtr ptr)
 		{
 			this.ptr = ptr;
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>The region identifier for this region.</summary>
 		public uint RegionID {
 			get {
 				return (uint) Marshal.ReadInt32 (ptr);
 			}
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>The name for this region.</summary>
 		public string? Name {
 			get {
 				return CFString.FromHandle (NameWeak);
@@ -635,24 +607,23 @@ namespace AudioToolbox {
 			}
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>The flags for this region.</summary>
 		public unsafe AudioFileRegionFlags Flags {
 			get {
 				return (AudioFileRegionFlags) Marshal.ReadInt32 (ptr, sizeof (uint) + sizeof (IntPtr));
 			}
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>The number of elements in this region.</summary>
 		public unsafe int Count {
 			get {
 				return Marshal.ReadInt32 (ptr, 2 * sizeof (uint) + sizeof (IntPtr));
 			}
 		}
 
+		/// <summary>Get the element at the specified 0-based index.</summary>
+		/// <param name="index">The 0-based index to return.</param>
+		/// <returns>The element at the specified 0-based index.</returns>
 		public AudioFileMarker this [int index] {
 			get {
 				if (index >= Count || index < 0)
@@ -672,8 +643,7 @@ namespace AudioToolbox {
 		}
 	}
 
-	/// <summary>A flagging enumeration whose values are used in the <see cref="AudioToolbox.AudioFileRegion.Flags" /> property.</summary>
-	///     <remarks>To be added.</remarks>
+	/// <summary>A flagging enumeration whose values are used in the <see cref="AudioFileRegion.Flags" /> property.</summary>
 	[Flags]
 	public enum AudioFileRegionFlags : uint // UInt32 in AudioFileRegion
 	{
@@ -685,8 +655,7 @@ namespace AudioToolbox {
 		PlayBackward = 4,
 	}
 
-	/// <summary>A list of <see cref="AudioToolbox.AudioFileRegion" />s.</summary>
-	///     <remarks>To be added.</remarks>
+	/// <summary>A list of <see cref="AudioFileRegion" /> values.</summary>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -695,10 +664,9 @@ namespace AudioToolbox {
 		IntPtr ptr;
 		readonly bool owns;
 
-		/// <param name="ptr">To be added.</param>
-		///         <param name="owns">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Create a new <see cref="AudioFileRegionList" /> instance.</summary>
+		/// <param name="ptr">The pointer to the native value.</param>
+		/// <param name="owns">Whether the native pointer should be freed when this managed instance is disposed.</param>
 		public AudioFileRegionList (IntPtr ptr, bool owns)
 		{
 			this.ptr = ptr;
@@ -710,24 +678,23 @@ namespace AudioToolbox {
 			Dispose (false);
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Get the <see cref="SmpteTimeType" /> for this list.</summary>
 		public SmpteTimeType SmpteTimeType {
 			get {
 				return (SmpteTimeType) Marshal.ReadInt32 (ptr);
 			}
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Get the number of elements in the list.</summary>
 		public uint Count {
 			get {
 				return (uint) Marshal.ReadInt32 (ptr, sizeof (uint));
 			}
 		}
 
+		/// <summary>Get the element at the specified 0-based index.</summary>
+		/// <param name="index">The 0-based index to return.</param>
+		/// <returns>The element at the specified 0-based index.</returns>
 		public AudioFileRegion this [int index] {
 			get {
 				if (index >= Count || index < 0)
@@ -755,17 +722,14 @@ namespace AudioToolbox {
 			}
 		}
 
-		/// <summary>Releases the resources used by the AudioFileRegionList object.</summary>
-		///         <remarks>
-		///           <para>The Dispose method releases the resources used by the AudioFileRegionList class.</para>
-		///           <para>Calling the Dispose method when the application is finished using the AudioFileRegionList ensures that all external resources used by this managed object are released as soon as possible.  Once developers have invoked the Dispose method, the object is no longer useful and developers should no longer make any calls to it.  For more information on releasing resources see ``Cleaning up Unmananaged Resources'' at https://msdn.microsoft.com/en-us/library/498928w2.aspx</para>
-		///         </remarks>
+		/// <summary>Releases the resources used by the <see cref="AudioFileRegionList" /> object.</summary>
 		public void Dispose ()
 		{
 			Dispose (true);
 		}
 
-		/// <include file="../../docs/api/AudioToolbox/AudioFileRegionList.xml" path="/Documentation/Docs[@DocId='M:AudioToolbox.AudioFileRegionList.Dispose(System.Boolean)']/*" />
+		/// <summary>Releases the resources used by the <see cref="AudioFileRegionList" /> object.</summary>
+		/// <param name="disposing">If set to <see langword="true" />, the method is invoked directly and will dispose managed and unmanaged resources; If set to <see langword="false" /> the method is being called by the garbage collector finalizer and should only release unmanaged resources.</param>
 		protected virtual void Dispose (bool disposing)
 		{
 			if (!owns || ptr == IntPtr.Zero)
@@ -781,11 +745,11 @@ namespace AudioToolbox {
 		}
 	}
 
-	/// <summary>Class used to create audio files or read audio files.</summary>
-	///     <remarks>
-	///       <para>Use the Create, Open and OpenRead factory methods to create instances of this class. </para>
-	///       <para>This class provides access to the encoder and decoder for compressed audio files.</para>
-	///     </remarks>
+	/// <summary>Class used to create or read audio files.</summary>
+	/// <remarks>
+	///   <para>Use the Create, Open and OpenRead factory methods to create instances of this class. </para>
+	///   <para>This class provides access to the encoder and decoder for compressed audio files.</para>
+	/// </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -805,7 +769,7 @@ namespace AudioToolbox {
 		[DllImport (Constants.AudioToolboxLibrary)]
 		extern static OSStatus AudioFileClose (AudioFileID handle);
 
-		/// <include file="../../docs/api/AudioToolbox/AudioFile.xml" path="/Documentation/Docs[@DocId='M:AudioToolbox.AudioFile.Dispose(System.Boolean)']/*" />
+		/// <inheritdoc />
 		protected override void Dispose (bool disposing)
 		{
 			if (Handle != IntPtr.Zero && Owns)
@@ -814,8 +778,6 @@ namespace AudioToolbox {
 		}
 
 		/// <summary>Audio file size, in bytes.</summary>
-		///         <value />
-		///         <remarks>To be added.</remarks>
 		public long Length {
 			get {
 				return GetLong (AudioFileProperty.AudioDataByteCount);
@@ -823,16 +785,9 @@ namespace AudioToolbox {
 		}
 
 		[DllImport (Constants.AudioToolboxLibrary)]
-		unsafe extern static OSStatus AudioFileCreateWithURL (IntPtr cfurlref_infile, AudioFileType inFileType, AudioStreamBasicDescription* inFormat, AudioFileFlags inFlags, AudioFileID* file_id);
+		unsafe extern static AudioFileError AudioFileCreateWithURL (IntPtr cfurlref_infile, AudioFileType inFileType, AudioStreamBasicDescription* inFormat, AudioFileFlags inFlags, AudioFileID* file_id);
 
-		/// <param name="url">The url of the file to create</param>
-		///         <param name="fileType">The file type for the created file</param>
-		///         <param name="format">Description of the data that is going to be passed to the AudioFile object</param>
-		///         <param name="inFlags">Creation flags.</param>
-		///         <summary>Creates a new audio file.</summary>
-		///         <returns>The initialized audio file, or null if there is an error creating the file</returns>
-		///         <remarks>
-		///         </remarks>
+		/// <inheritdoc cref="Create(CFUrl,AudioFileType,AudioStreamBasicDescription,AudioFileFlags)" />
 		public static AudioFile? Create (string url, AudioFileType fileType, AudioStreamBasicDescription format, AudioFileFlags inFlags)
 		{
 			if (url is null)
@@ -842,142 +797,138 @@ namespace AudioToolbox {
 				return Create (cfurl, fileType, format, inFlags);
 		}
 
-		/// <param name="url">The url of the file to create</param>
-		///         <param name="fileType">The file type for the created file</param>
-		///         <param name="format">Description of the data that is going to be passed to the AudioFile object</param>
-		///         <param name="inFlags">Creation flags.</param>
-		///         <summary>Creates a new audio file.</summary>
-		///         <returns>The initialized audio file, or null if there is an error creating the file</returns>
-		///         <remarks>
-		///         </remarks>
+		/// <summary>Create a new audio file.</summary>
+		/// <param name="url">The url of the file to create.</param>
+		/// <param name="fileType">The file type for the created file.</param>
+		/// <param name="format">Description of the data that is going to be passed to the <see cref="AudioFile" /> object.</param>
+		/// <param name="inFlags">Creation flags.</param>
+		/// <returns>The initialized audio file, or <see langword="null" /> if there is an error creating the file.</returns>
 		public static AudioFile? Create (CFUrl url, AudioFileType fileType, AudioStreamBasicDescription format, AudioFileFlags inFlags)
 		{
-			if (url is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (url));
-
-			var h = default (IntPtr);
-
-			unsafe {
-				var urlHandle = url.Handle;
-				if (AudioFileCreateWithURL (urlHandle, fileType, &format, inFlags, &h) == 0) {
-					GC.KeepAlive (url);
-					return new AudioFile (h, true);
-				}
-			}
-			return null;
+			return Create (url, fileType, format, inFlags, out var _);
 		}
 
-		/// <param name="url">The url of the file to create</param>
-		///         <param name="fileType">The file type for the created file</param>
-		///         <param name="format">Description of the data that is going to be passed to the AudioFile object</param>
-		///         <param name="inFlags">Creation flags.</param>
-		///         <summary>Creates a new audio file.</summary>
-		///         <returns>The initialized audio file, or null if there is an error creating the file</returns>
-		///         <remarks>
-		///         </remarks>
+		/// <summary>Create a new audio file.</summary>
+		/// <param name="url">The url of the file to create.</param>
+		/// <param name="fileType">The file type for the created file.</param>
+		/// <param name="format">Description of the data that is going to be passed to the <see cref="AudioFile" /> object.</param>
+		/// <param name="inFlags">Creation flags.</param>
+		/// <param name="status"><see cref="AudioFileError.Success" /> if successful, or an error code otherwise.</param>
+		/// <returns>The initialized audio file, or <see langword="null" /> if there is an error creating the file.</returns>
+		public static AudioFile? Create (CFUrl url, AudioFileType fileType, AudioStreamBasicDescription format, AudioFileFlags inFlags, out AudioFileError status)
+		{
+			var rv = Create (url.GetNonNullHandle (nameof (url)), fileType, format, inFlags, out status);
+			GC.KeepAlive (url);
+			return rv;
+		}
+
+		/// <inheritdoc cref="Create(CFUrl,AudioFileType,AudioStreamBasicDescription,AudioFileFlags)" />
 		public static AudioFile? Create (NSUrl url, AudioFileType fileType, AudioStreamBasicDescription format, AudioFileFlags inFlags)
 		{
-			if (url is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (url));
+			return Create (url, fileType, format, inFlags, out var _);
+		}
 
+		/// <inheritdoc cref="Create(CFUrl,AudioFileType,AudioStreamBasicDescription,AudioFileFlags, out AudioFileError)" />
+		public static AudioFile? Create (NSUrl url, AudioFileType fileType, AudioStreamBasicDescription format, AudioFileFlags inFlags, out AudioFileError status)
+		{
+			var rv = Create (url.GetNonNullHandle (nameof (url)), fileType, format, inFlags, out status);
+			GC.KeepAlive (url);
+			return rv;
+		}
+
+		static AudioFile? Create (IntPtr url, AudioFileType fileType, AudioStreamBasicDescription format, AudioFileFlags inFlags, out AudioFileError status)
+		{
 			var h = default (IntPtr);
 
 			unsafe {
-				var urlHandle = url.Handle;
-				if (AudioFileCreateWithURL (urlHandle, fileType, &format, inFlags, &h) == 0) {
-					GC.KeepAlive (url);
-					return new AudioFile (h, true);
-				}
+				status = AudioFileCreateWithURL (url, fileType, &format, inFlags, &h);
 			}
+
+			if (status == AudioFileError.Success && h != IntPtr.Zero)
+				return new AudioFile (h, true);
+
 			return null;
 		}
-
 
 		[DllImport (Constants.AudioToolboxLibrary)]
 		unsafe extern static AudioFileError AudioFileOpenURL (IntPtr cfurlref_infile, byte permissions, AudioFileType fileTypeHint, IntPtr* file_id);
 
-		/// <param name="url">An url to a local file name.</param>
-		///         <param name="fileTypeHint">A hint indicating the file format expected, this is necessary for audio files where the operating system can not probe the type by looking at the file signature or file extension (for example AC3.   Pass zero to auto detect the format.</param>
-		///         <summary>Opens an audio file for reading.</summary>
-		///         <returns>An instance of AudioFile on success, or null on error.</returns>
-		///         <remarks>The hint is necessary as sometimes it is not possible to determine the file type merely based on the contents of the file.</remarks>
+		/// <summary>Opens an audio file for reading.</summary>
+		/// <param name="url">A url to a local file name.</param>
+		/// <param name="fileTypeHint">A hint indicating the file format expected, this is necessary for audio files where the operating system can not probe the type by looking at the file signature or file extension (for example AC3). Pass zero to auto detect the format.</param>
+		/// <returns>An instance of <see cref="AudioFile" /> on success, or <see langword="null" /> on error.</returns>
+		/// <remarks>
+		///   <para>The hint is necessary as sometimes it is not possible to determine the file type merely based on the contents of the file.</para>
+		///   <para>Once you have opened the file for reading, you can use the various Read methods to decode the audio packets contained in the file.</para>
+		/// </remarks>
 		public static AudioFile? OpenRead (string url, AudioFileType fileTypeHint = 0)
 		{
 			return Open (url, AudioFilePermission.Read, fileTypeHint);
 		}
 
-		/// <param name="url">To be added.</param>
-		///         <param name="error">To be added.</param>
-		///         <param name="fileTypeHint">To be added.</param>
-		///         <summary>Opens an audio file for reading.</summary>
-		///         <returns>An instance of AudioFile on success, or null on error.</returns>
-		///         <remarks>The hint is necessary as sometimes it is not possible to determine the file type merely based on the contents of the file.</remarks>
+		/// <summary>Opens an audio file for reading.</summary>
+		/// <param name="url">A url to a local file name.</param>
+		/// <param name="error"><see cref="AudioFileError.Success" /> if successful, or an error code otherwise.</param>
+		/// <param name="fileTypeHint">A hint indicating the file format expected, this is necessary for audio files where the operating system can not probe the type by looking at the file signature or file extension (for example AC3). Pass zero to auto detect the format.</param>
+		/// <returns>An instance of <see cref="AudioFile" /> on success, or <see langword="null" /> on error.</returns>
+		/// <remarks>
+		///   <para>The hint is necessary as sometimes it is not possible to determine the file type merely based on the contents of the file.</para>
+		///   <para>Once you have opened the file for reading, you can use the various Read methods to decode the audio packets contained in the file.</para>
+		/// </remarks>
 		public static AudioFile? OpenRead (string url, out AudioFileError error, AudioFileType fileTypeHint = 0)
 		{
 			return Open (url, AudioFilePermission.Read, out error, fileTypeHint);
 		}
 
-		/// <param name="url">Url pointing to the file to read.</param>
-		///         <param name="fileTypeHint">A hint indicating the file format expected, this is necessary for audio files where the operating system can not probe the type by looking at the file signature or file extension (for example AC3.   Pass zero to auto detect the format.</param>
-		///         <summary>Opens the specified audio file for reading, frames will be decoded from the native format to raw audio data.</summary>
-		///         <returns>An instance of AudioFile on success, or null on error.</returns>
-		///         <remarks>Once you have opened the file for reading, you can use the various Read methods to decode the audio packets contained in the file.</remarks>
+		/// <inheritdoc cref="OpenRead(string,AudioFileType)" />
 		public static AudioFile? OpenRead (CFUrl url, AudioFileType fileTypeHint = 0)
 		{
 			return Open (url, AudioFilePermission.Read, fileTypeHint);
 		}
 
-		/// <param name="url">To be added.</param>
-		///         <param name="error">To be added.</param>
-		///         <param name="fileTypeHint">To be added.</param>
-		///         <summary>Opens an audio file for reading.</summary>
-		///         <returns>An instance of AudioFile on success, or null on error.</returns>
-		///         <remarks>The hint is necessary as sometimes it is not possible to determine the file type merely based on the contents of the file.</remarks>
+		/// <inheritdoc cref="OpenRead(string,out AudioFileError,AudioFileType)" />
 		public static AudioFile? OpenRead (CFUrl url, out AudioFileError error, AudioFileType fileTypeHint = 0)
 		{
 			return Open (url, AudioFilePermission.Read, out error, fileTypeHint);
 		}
 
-		/// <param name="url">Url pointing to the file to read.</param>
-		///         <param name="fileTypeHint">A hint indicating the file format expected, this is necessary for audio files where the operating system can not probe the type by looking at the file signature or file extension (for example AC3.   Pass zero to auto detect the format.</param>
-		///         <summary>Opens the specified audio file for reading, frames will be decoded from the native format to raw audio data.</summary>
-		///         <returns>An instance of AudioFile on success, or null on error.</returns>
-		///         <remarks>Once you have opened the file for reading, you can use the various Read methods to decode the audio packets contained in the file.</remarks>
+		/// <inheritdoc cref="OpenRead(string,AudioFileType)" />
 		public static AudioFile? OpenRead (NSUrl url, AudioFileType fileTypeHint = 0)
 		{
 			return Open (url, AudioFilePermission.Read, fileTypeHint);
 		}
 
-		/// <param name="url">To be added.</param>
-		///         <param name="error">To be added.</param>
-		///         <param name="fileTypeHint">To be added.</param>
-		///         <summary>Opens an audio file for reading.</summary>
-		///         <returns>An instance of AudioFile on success, or null on error.</returns>
-		///         <remarks>The hint is necessary as sometimes it is not possible to determine the file type merely based on the contents of the file.</remarks>
+		/// <inheritdoc cref="OpenRead(string,out AudioFileError,AudioFileType)" />
 		public static AudioFile? OpenRead (NSUrl url, out AudioFileError error, AudioFileType fileTypeHint = 0)
 		{
 			return Open (url, AudioFilePermission.Read, out error, fileTypeHint);
 		}
 
-		/// <param name="url">To be added.</param>
-		///         <param name="permissions">To be added.</param>
-		///         <param name="fileTypeHint">A hint for the decoder.</param>
-		///         <summary>Opens an audio file.</summary>
-		///         <returns>An instance of AudioFile on success, null on failure.</returns>
-		///         <remarks>The hint is necessary as sometimes it is not possible to determine the file type merely based on the contents of the file.</remarks>
+		/// <summary>Opens an audio file for reading.</summary>
+		/// <param name="url">A url to a local file name.</param>
+		/// <param name="permissions">The permissions to use when opening the file.</param>
+		/// <param name="fileTypeHint">A hint indicating the file format expected, this is necessary for audio files where the operating system can not probe the type by looking at the file signature or file extension (for example AC3). Pass zero to auto detect the format.</param>
+		/// <returns>An instance of <see cref="AudioFile" /> on success, or <see langword="null" /> on error.</returns>
+		/// <remarks>
+		///   <para>The hint is necessary as sometimes it is not possible to determine the file type merely based on the contents of the file.</para>
+		///   <para>Once you have opened the file for reading, you can use the various Read methods to decode the audio packets contained in the file.</para>
+		/// </remarks>
 		public static AudioFile? Open (string url, AudioFilePermission permissions, AudioFileType fileTypeHint = 0)
 		{
 			AudioFileError error;
 			return Open (url, permissions, out error, fileTypeHint);
 		}
 
-		/// <param name="url">To be added.</param>
-		///         <param name="permissions">To be added.</param>
-		///         <param name="error">To be added.</param>
-		///         <param name="fileTypeHint">To be added.</param>
-		///         <summary>Opens an audio file.</summary>
-		///         <returns>An instance of AudioFile on success, null on failure.</returns>
-		///         <remarks>The hint is necessary as sometimes it is not possible to determine the file type merely based on the contents of the file.</remarks>
+		/// <summary>Opens an audio file for reading.</summary>
+		/// <param name="url">A url to a local file name.</param>
+		/// <param name="permissions">The permissions to use when opening the file.</param>
+		/// <param name="error"><see cref="AudioFileError.Success" /> if successful, or an error code otherwise.</param>
+		/// <param name="fileTypeHint">A hint indicating the file format expected, this is necessary for audio files where the operating system can not probe the type by looking at the file signature or file extension (for example AC3). Pass zero to auto detect the format.</param>
+		/// <returns>An instance of <see cref="AudioFile" /> on success, or <see langword="null" /> on error.</returns>
+		/// <remarks>
+		///   <para>The hint is necessary as sometimes it is not possible to determine the file type merely based on the contents of the file.</para>
+		///   <para>Once you have opened the file for reading, you can use the various Read methods to decode the audio packets contained in the file.</para>
+		/// </remarks>
 		public static AudioFile? Open (string url, AudioFilePermission permissions, out AudioFileError error, AudioFileType fileTypeHint = 0)
 		{
 			if (url is null)
@@ -987,25 +938,14 @@ namespace AudioToolbox {
 				return Open (cfurl, permissions, out error, fileTypeHint);
 		}
 
-		/// <param name="url">The url to a local file name.</param>
-		///         <param name="permissions">The permissions used for the file (reading, writing or both).</param>
-		///         <param name="fileTypeHint">A hint for the decoder.</param>
-		///         <summary>Opens an audio file.</summary>
-		///         <returns>An instance of AudioFile on success, null on failure.</returns>
-		///         <remarks>The hint is necessary as sometimes it is not possible to determine the file type merely based on the contents of the file.</remarks>
+		/// <inheritdoc cref="Open(string,AudioFilePermission,AudioFileType)" />
 		public static AudioFile? Open (CFUrl url, AudioFilePermission permissions, AudioFileType fileTypeHint = 0)
 		{
 			AudioFileError error;
 			return Open (url, permissions, out error, fileTypeHint);
 		}
 
-		/// <param name="url">To be added.</param>
-		///         <param name="permissions">To be added.</param>
-		///         <param name="error">To be added.</param>
-		///         <param name="fileTypeHint">To be added.</param>
-		///         <summary>Opens an audio file.</summary>
-		///         <returns>An instance of AudioFile on success, null on failure.</returns>
-		///         <remarks>The hint is necessary as sometimes it is not possible to determine the file type merely based on the contents of the file.</remarks>
+		/// <inheritdoc cref="Open(string,AudioFilePermission,out AudioFileError,AudioFileType)" />
 		public static AudioFile? Open (CFUrl url, AudioFilePermission permissions, out AudioFileError error, AudioFileType fileTypeHint = 0)
 		{
 			if (url is null)
@@ -1016,25 +956,14 @@ namespace AudioToolbox {
 			return audioFile;
 		}
 
-		/// <param name="url">To be added.</param>
-		///         <param name="permissions">To be added.</param>
-		///         <param name="fileTypeHint">To be added.</param>
-		///         <summary>Opens an audio file.</summary>
-		///         <returns>An instance of AudioFile on success, null on failure.</returns>
-		///         <remarks>The hint is necessary as sometimes it is not possible to determine the file type merely based on the contents of the file.</remarks>
+		/// <inheritdoc cref="Open(string,AudioFilePermission,AudioFileType)" />
 		public static AudioFile? Open (NSUrl url, AudioFilePermission permissions, AudioFileType fileTypeHint = 0)
 		{
 			AudioFileError error;
 			return Open (url, permissions, out error, fileTypeHint);
 		}
 
-		/// <param name="url">To be added.</param>
-		///         <param name="permissions">To be added.</param>
-		///         <param name="error">To be added.</param>
-		///         <param name="fileTypeHint">To be added.</param>
-		///         <summary>Opens an audio file.</summary>
-		///         <returns>An instance of AudioFile on success, null on failure.</returns>
-		///         <remarks>The hint is necessary as sometimes it is not possible to determine the file type merely based on the contents of the file.</remarks>
+		/// <inheritdoc cref="Open(string,AudioFilePermission,out AudioFileError,AudioFileType)" />
 		public static AudioFile? Open (NSUrl url, AudioFilePermission permissions, out AudioFileError error, AudioFileType fileTypeHint = 0)
 		{
 			if (url is null)
@@ -1060,8 +989,6 @@ namespace AudioToolbox {
 		extern static OSStatus AudioFileOptimize (AudioFileID handle);
 
 		/// <summary>Optimizes the audio file, thus preparing it to receive audio data.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
 		public bool Optimize ()
 		{
 			return AudioFileOptimize (Handle) == 0;
@@ -1070,14 +997,14 @@ namespace AudioToolbox {
 		[DllImport (Constants.AudioToolboxLibrary)]
 		unsafe extern static OSStatus AudioFileReadBytes (AudioFileID inAudioFile, byte useCache, long startingByte, int* numBytes, IntPtr outBuffer);
 
-		/// <param name="startingByte">To be added.</param>
-		///         <param name="buffer">To be added.</param>
-		///         <param name="offset">To be added.</param>
-		///         <param name="count">To be added.</param>
-		///         <param name="useCache">To be added.</param>
-		///         <summary>Reads <paramref name="count" /> bytes from <paramref name="buffer" />, starting at <paramref name="startingByte" />.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Reads <paramref name="count" /> bytes from <paramref name="buffer" />, starting at <paramref name="startingByte" />.</summary>
+		/// <param name="startingByte">The starting byte in the file where the data will be read.</param>
+		/// <param name="buffer">The buffer that holds the data.</param>
+		/// <param name="offset">The offset within the buffer where the audio data will stored.</param>
+		/// <param name="count">The number of bytes to read from the file.</param>
+		/// <param name="useCache">Whether the data should be cached.</param>
+		/// <returns>The number of bytes read from the file, or -1 on error.</returns>
+		/// <remarks>This API merely reads bytes from the file without any encoding. Use any of the <c>ReadPacketData</c> to read with encoding.</remarks>
 		public int Read (long startingByte, byte [] buffer, int offset, int count, bool useCache)
 		{
 			if (offset < 0)
@@ -1109,45 +1036,43 @@ namespace AudioToolbox {
 		}
 
 		[DllImport (Constants.AudioToolboxLibrary)]
-		unsafe extern static OSStatus AudioFileWriteBytes (AudioFileID audioFile, byte useCache, long startingByte, int* numBytes, IntPtr buffer);
+		unsafe extern static AudioFileError AudioFileWriteBytes (AudioFileID audioFile, byte useCache, long startingByte, int* numBytes, IntPtr buffer);
 
+		/// <summary>Writes a block of data to the audio file.</summary>
 		/// <param name="startingByte">The starting byte in the file where the data will be written.</param>
-		///         <param name="buffer">The buffer that holds the data.</param>
-		///         <param name="offset">The offset within the buffer where the data to be saved starts.</param>
-		///         <param name="count">The number of bytes to write to the file.</param>
-		///         <param name="useCache">Whether the data should be cached.</param>
-		///         <summary>Writes a block of data to the audio file.</summary>
-		///         <returns>The number of bytes written to the stream, or -1 on error.</returns>
-		///         <remarks>This API merely writes bytes to the file without any encoding.   Use WritePackets to write with encoding.</remarks>
+		/// <param name="buffer">The buffer that holds the data.</param>
+		/// <param name="offset">The offset within the buffer where the data to be saved starts.</param>
+		/// <param name="count">The number of bytes to write to the file.</param>
+		/// <param name="useCache">Whether the data should be cached.</param>
+		/// <returns>The number of bytes written to the stream, or -1 on error.</returns>
+		/// <remarks>This API merely writes bytes to the file without any encoding. Use any of the <c>WritePackets</c> overloads to write with encoding.</remarks>
 		public int Write (long startingByte, byte [] buffer, int offset, int count, bool useCache)
 		{
-			if (offset < 0)
-				throw new ArgumentOutOfRangeException (nameof (offset), "< 0");
-			if (count < 0)
-				throw new ArgumentOutOfRangeException (nameof (count), "< 0");
-			if (offset > buffer.Length - count)
-				throw new ArgumentException ("Reading would overrun buffer");
-
-			unsafe {
-				fixed (byte* p = &buffer [offset]) {
-					if (AudioFileWriteBytes (Handle, useCache ? (byte) 1 : (byte) 0, startingByte, &count, (IntPtr) p) == 0)
-						return count;
-					else
-						return -1;
-				}
-			}
+			return Write (startingByte, buffer, offset, count, useCache, out AudioFileError _);
 		}
 
-		/// <param name="startingByte">To be added.</param>
-		///         <param name="buffer">To be added.</param>
-		///         <param name="offset">To be added.</param>
-		///         <param name="count">To be added.</param>
-		///         <param name="useCache">To be added.</param>
-		///         <param name="errorCode">To be added.</param>
-		///         <summary>Writes data to an audo file.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+#if !XAMCORE_5_0
+		/// <inheritdoc cref="Write(long,byte[],int,int,bool,out AudioFileError)" />
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Obsolete ("Use 'Write (long, byte[], int, int, bool, out AudioFileError)' instead.")]
 		public int Write (long startingByte, byte [] buffer, int offset, int count, bool useCache, out int errorCode)
+		{
+			var rv = Write (startingByte, buffer, offset, count, useCache, out AudioFileError error);
+			errorCode = (int) error;
+			return rv;
+		}
+#endif // !XAMCORE_5_0
+
+		/// <summary>Writes a block of data to the audio file.</summary>
+		/// <param name="startingByte">The starting byte in the file where the data will be written.</param>
+		/// <param name="buffer">The buffer that holds the data.</param>
+		/// <param name="offset">The offset within the buffer where the data to be saved starts.</param>
+		/// <param name="count">The number of bytes to write to the file.</param>
+		/// <param name="useCache">Whether the data should be cached.</param>
+		/// <param name="errorCode"><see cref="AudioFileError.Success" /> if successful, or an error code otherwise.</param>
+		/// <returns>The number of bytes written to the stream, or -1 on error.</returns>
+		/// <remarks>This API merely writes bytes to the file without any encoding. Use any of the <c>WritePackets</c> overloads to write with encoding.</remarks>
+		public int Write (long startingByte, byte [] buffer, int offset, int count, bool useCache, out AudioFileError errorCode)
 		{
 			if (offset < 0)
 				throw new ArgumentOutOfRangeException (nameof (offset), "< 0");
@@ -1172,26 +1097,23 @@ namespace AudioToolbox {
 			AudioFileID audioFile, byte useCache, int* numBytes,
 			AudioStreamPacketDescription* packetDescriptions, long inStartingPacket, int* numPackets, IntPtr outBuffer);
 
+		/// <summary>Reads packets of audio data from an audio file.</summary>
 		/// <param name="inStartingPacket">The index of the first packet to read.</param>
-		///         <param name="nPackets">The number of packets to read.</param>
-		///         <param name="buffer">The output buffer where packets are written.</param>
-		///         <summary>Reads packets of audio data from an audio file.</summary>
-		///         <returns>Array of packet descriptors for the packets that were read.</returns>
-		///         <remarks>
-		///         </remarks>
+		/// <param name="nPackets">The number of packets to read.</param>
+		/// <param name="buffer">The output buffer where packets are written.</param>
+		/// <returns>Array of packet descriptors for the packets that were read.</returns>
 		public AudioStreamPacketDescription []? ReadPacketData (long inStartingPacket, int nPackets, byte [] buffer)
 		{
 			AudioFileError error;
 			return ReadPacketData (inStartingPacket, nPackets, buffer, out error);
 		}
 
-		/// <param name="inStartingPacket">To be added.</param>
-		///         <param name="nPackets">To be added.</param>
-		///         <param name="buffer">To be added.</param>
-		///         <param name="error">To be added.</param>
-		///         <summary>Reads packets of audio data.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Reads packets of audio data from an audio file.</summary>
+		/// <param name="inStartingPacket">The index of the first packet to read.</param>
+		/// <param name="nPackets">The number of packets to read.</param>
+		/// <param name="buffer">The output buffer where packets are written.</param>
+		/// <param name="error"><see cref="AudioFileError.Success" /> if successful, or an error code otherwise.</param>
+		/// <returns>Array of packet descriptors for the packets that were read.</returns>
 		public AudioStreamPacketDescription []? ReadPacketData (long inStartingPacket, int nPackets, byte [] buffer, out AudioFileError error)
 		{
 			if (buffer is null)
@@ -1200,31 +1122,28 @@ namespace AudioToolbox {
 			return RealReadPacketData (false, inStartingPacket, ref nPackets, buffer, 0, ref count, out error);
 		}
 
+		/// <summary>Reads packets of audio data from an audio file.</summary>
 		/// <param name="useCache">If the data should be cached.</param>
-		///         <param name="inStartingPacket">The index of the first packet to read.</param>
-		///         <param name="nPackets">The number of packets to read.</param>
-		///         <param name="buffer">The output buffer where packets are written.</param>
-		///         <param name="offset">The offset in the output buffer where to start writing packets to.</param>
-		///         <param name="count">The size of the output buffer (in bytes).</param>
-		///         <summary>Reads packets of audio data from an audio file.</summary>
-		///         <returns>Array of packet descriptors for the packets that were read.</returns>
-		///         <remarks>
-		///         </remarks>
+		/// <param name="inStartingPacket">The index of the first packet to read.</param>
+		/// <param name="nPackets">The number of packets to read.</param>
+		/// <param name="buffer">The output buffer where packets are written.</param>
+		/// <param name="offset">The offset in the output buffer where to start writing packets to.</param>
+		/// <param name="count">The size of the output buffer (in bytes).</param>
+		/// <returns>Array of packet descriptors for the packets that were read.</returns>
 		public AudioStreamPacketDescription []? ReadPacketData (bool useCache, long inStartingPacket, int nPackets, byte [] buffer, int offset, int count)
 		{
 			return ReadPacketData (useCache, inStartingPacket, ref nPackets, buffer, offset, ref count);
 		}
 
-		/// <param name="useCache">To be added.</param>
-		///         <param name="inStartingPacket">To be added.</param>
-		///         <param name="nPackets">To be added.</param>
-		///         <param name="buffer">To be added.</param>
-		///         <param name="offset">To be added.</param>
-		///         <param name="count">To be added.</param>
-		///         <param name="error">To be added.</param>
-		///         <summary>Reads packets of audio data.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Reads packets of audio data from an audio file.</summary>
+		/// <param name="useCache">If the data should be cached.</param>
+		/// <param name="inStartingPacket">The index of the first packet to read.</param>
+		/// <param name="nPackets">The number of packets to read.</param>
+		/// <param name="buffer">The output buffer where packets are written.</param>
+		/// <param name="offset">The offset in the output buffer where to start writing packets to.</param>
+		/// <param name="count">The size of the output buffer (in bytes).</param>
+		/// <param name="error"><see cref="AudioFileError.Success" /> if successful, or an error code otherwise.</param>
+		/// <returns>Array of packet descriptors for the packets that were read.</returns>
 		public AudioStreamPacketDescription []? ReadPacketData (bool useCache, long inStartingPacket, int nPackets, byte [] buffer, int offset, int count, out AudioFileError error)
 		{
 			return ReadPacketData (useCache, inStartingPacket, ref nPackets, buffer, offset, ref count, out error);
@@ -1247,32 +1166,29 @@ namespace AudioToolbox {
 			return ret;
 		}
 
+		/// <summary>Reads packets of audio data from an audio file.</summary>
 		/// <param name="useCache">If the data should be cached.</param>
-		///         <param name="inStartingPacket">The index of the first packet to read.</param>
-		///         <param name="nPackets">On input the number of packets to read, upon return the number of packets actually read.</param>
-		///         <param name="buffer">The output buffer where packets are written.</param>
-		///         <param name="offset">The offset in the output buffer where to start writing packets to.</param>
-		///         <param name="count">On input the size of the output buffer (in bytes), upon return the actual number of bytes read.</param>
-		///         <summary>Reads packets of audio data from an audio file.</summary>
-		///         <returns>Array of packet descriptors for the packets that were read.</returns>
-		///         <remarks>
-		///         </remarks>
+		/// <param name="inStartingPacket">The index of the first packet to read.</param>
+		/// <param name="nPackets">On input the number of packets to read, upon return the number of packets actually read.</param>
+		/// <param name="buffer">The output buffer where packets are written.</param>
+		/// <param name="offset">The offset in the output buffer where to start writing packets to.</param>
+		/// <param name="count">On input the size of the output buffer (in bytes), upon return the actual number of bytes read.</param>
+		/// <returns>Array of packet descriptors for the packets that were read.</returns>
 		public AudioStreamPacketDescription []? ReadPacketData (bool useCache, long inStartingPacket, ref int nPackets, byte [] buffer, int offset, ref int count)
 		{
 			AudioFileError error;
 			return ReadPacketData (useCache, inStartingPacket, ref nPackets, buffer, offset, ref count, out error);
 		}
 
-		/// <param name="useCache">To be added.</param>
-		///         <param name="inStartingPacket">To be added.</param>
-		///         <param name="nPackets">To be added.</param>
-		///         <param name="buffer">To be added.</param>
-		///         <param name="offset">To be added.</param>
-		///         <param name="count">To be added.</param>
-		///         <param name="error">To be added.</param>
-		///         <summary>Reads packets of audio data.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Reads packets of audio data from an audio file.</summary>
+		/// <param name="useCache">If the data should be cached.</param>
+		/// <param name="inStartingPacket">The index of the first packet to read.</param>
+		/// <param name="nPackets">On input the number of packets to read, upon return the number of packets actually read.</param>
+		/// <param name="buffer">The output buffer where packets are written.</param>
+		/// <param name="offset">The offset in the output buffer where to start writing packets to.</param>
+		/// <param name="count">On input the size of the output buffer (in bytes), upon return the actual number of bytes read.</param>
+		/// <param name="error"><see cref="AudioFileError.Success" /> if successful, or an error code otherwise.</param>
+		/// <returns>Array of packet descriptors for the packets that were read.</returns>
 		public AudioStreamPacketDescription []? ReadPacketData (bool useCache, long inStartingPacket, ref int nPackets, byte [] buffer, int offset, ref int count, out AudioFileError error)
 		{
 			if (buffer is null)
@@ -1290,46 +1206,42 @@ namespace AudioToolbox {
 			return RealReadPacketData (useCache, inStartingPacket, ref nPackets, buffer, offset, ref count, out error);
 		}
 
+		/// <summary>Reads packets of audio data from an audio file.</summary>
 		/// <param name="useCache">If the data should be cached.</param>
-		///         <param name="inStartingPacket">The index of the first packet to read.</param>
-		///         <param name="nPackets">The number of packets to read.</param>
-		///         <param name="buffer">The output buffer where packets are written.</param>
-		///         <param name="count">On input the size of the output buffer (in bytes), upon return the actual number of bytes read.</param>
-		///         <summary>Reads packets of audio data from an audio file.</summary>
-		///         <returns>Array of packet descriptors for the packets that were read.</returns>
-		///         <remarks>
-		///         </remarks>
+		/// <param name="inStartingPacket">The index of the first packet to read.</param>
+		/// <param name="nPackets">On input the number of packets to read, upon return the number of packets actually read.</param>
+		/// <param name="buffer">The output buffer where packets are written.</param>
+		/// <param name="count">On input the size of the output buffer (in bytes), upon return the actual number of bytes read.</param>
+		/// <returns>Array of packet descriptors for the packets that were read.</returns>
 		public AudioStreamPacketDescription []? ReadPacketData (bool useCache, long inStartingPacket, ref int nPackets, IntPtr buffer, ref int count)
 		{
 			AudioFileError error;
 			return ReadPacketData (useCache, inStartingPacket, ref nPackets, buffer, ref count, out error);
 		}
 
-		/// <param name="useCache">To be added.</param>
-		///         <param name="inStartingPacket">To be added.</param>
-		///         <param name="nPackets">To be added.</param>
-		///         <param name="buffer">To be added.</param>
-		///         <param name="count">To be added.</param>
-		///         <param name="error">To be added.</param>
-		///         <summary>Reads packets of audio data.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Reads packets of audio data from an audio file.</summary>
+		/// <param name="useCache">If the data should be cached.</param>
+		/// <param name="inStartingPacket">The index of the first packet to read.</param>
+		/// <param name="nPackets">On input the number of packets to read, upon return the number of packets actually read.</param>
+		/// <param name="buffer">The output buffer where packets are written.</param>
+		/// <param name="count">On input the size of the output buffer (in bytes), upon return the actual number of bytes read.</param>
+		/// <param name="error"><see cref="AudioFileError.Success" /> if successful, or an error code otherwise.</param>
+		/// <returns>Array of packet descriptors for the packets that were read.</returns>
 		public AudioStreamPacketDescription []? ReadPacketData (bool useCache, long inStartingPacket, ref int nPackets, IntPtr buffer, ref int count, out AudioFileError error)
 		{
 			var descriptions = new AudioStreamPacketDescription [nPackets];
 			return ReadPacketData (useCache, inStartingPacket, ref nPackets, buffer, ref count, out error, descriptions);
 		}
 
-		/// <param name="useCache">To be added.</param>
-		///         <param name="inStartingPacket">To be added.</param>
-		///         <param name="nPackets">To be added.</param>
-		///         <param name="buffer">To be added.</param>
-		///         <param name="count">To be added.</param>
-		///         <param name="error">To be added.</param>
-		///         <param name="descriptions">To be added.</param>
-		///         <summary>Reads packets of audio data.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Reads packets of audio data from an audio file.</summary>
+		/// <param name="useCache">If the data should be cached.</param>
+		/// <param name="inStartingPacket">The index of the first packet to read.</param>
+		/// <param name="nPackets">On input the number of packets to read, upon return the number of packets actually read.</param>
+		/// <param name="buffer">The output buffer where packets are written.</param>
+		/// <param name="count">On input the size of the output buffer (in bytes), upon return the actual number of bytes read.</param>
+		/// <param name="error"><see cref="AudioFileError.Success" /> if successful, or an error code otherwise.</param>
+		/// <param name="descriptions">An array of packet descriptions describing the returned packets.</param>
+		/// <returns>Array of packet descriptors for the packets that were read.</returns>
 		public unsafe AudioStreamPacketDescription []? ReadPacketData (bool useCache, long inStartingPacket, ref int nPackets, IntPtr buffer, ref int count, out AudioFileError error, AudioStreamPacketDescription [] descriptions)
 		{
 			if (buffer == IntPtr.Zero)
@@ -1384,25 +1296,23 @@ namespace AudioToolbox {
 			return descriptions;
 		}
 
-		/// <param name="inStartingPacket">To be added.</param>
-		///         <param name="nPackets">To be added.</param>
-		///         <param name="buffer">To be added.</param>
-		///         <summary>Reads <paramref name="nPackets" /> bytes into <paramref name="buffer" />, starting at <paramref name="inStartingPacket" />.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Reads <paramref name="nPackets" /> bytes into <paramref name="buffer" />, starting at <paramref name="inStartingPacket" />.</summary>
+		/// <param name="inStartingPacket">The index of the first packet to read.</param>
+		/// <param name="nPackets">On input the number of packets to read, upon return the number of packets actually read.</param>
+		/// <param name="buffer">The output buffer where packets are written.</param>
+		/// <returns>Array of packet descriptors for the packets that were read.</returns>
 		public AudioStreamPacketDescription []? ReadFixedPackets (long inStartingPacket, int nPackets, byte [] buffer)
 		{
 			AudioFileError error;
 			return ReadFixedPackets (inStartingPacket, nPackets, buffer, out error);
 		}
 
-		/// <param name="inStartingPacket">To be added.</param>
-		///         <param name="nPackets">To be added.</param>
-		///         <param name="buffer">To be added.</param>
-		///         <param name="error">To be added.</param>
-		///         <summary>Reads a fixed amount of audio data.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Reads <paramref name="nPackets" /> bytes into <paramref name="buffer" />, starting at <paramref name="inStartingPacket" />.</summary>
+		/// <param name="inStartingPacket">The index of the first packet to read.</param>
+		/// <param name="nPackets">On input the number of packets to read, upon return the number of packets actually read.</param>
+		/// <param name="buffer">The output buffer where packets are written.</param>
+		/// <param name="error"><see cref="AudioFileError.Success" /> if successful, or an error code otherwise.</param>
+		/// <returns>Array of packet descriptors for the packets that were read.</returns>
 		public AudioStreamPacketDescription []? ReadFixedPackets (long inStartingPacket, int nPackets, byte [] buffer, out AudioFileError error)
 		{
 			if (buffer is null)
@@ -1410,31 +1320,29 @@ namespace AudioToolbox {
 			return RealReadFixedPackets (false, inStartingPacket, nPackets, buffer, 0, buffer.Length, out error);
 		}
 
-		/// <param name="useCache">To be added.</param>
-		///         <param name="inStartingPacket">To be added.</param>
-		///         <param name="nPackets">To be added.</param>
-		///         <param name="buffer">To be added.</param>
-		///         <param name="offset">To be added.</param>
-		///         <param name="count">To be added.</param>
-		///         <summary>Reads a fixed amount of audio data.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Reads <paramref name="nPackets" /> bytes into <paramref name="buffer" />, starting at <paramref name="inStartingPacket" />.</summary>
+		/// <param name="useCache">If the data should be cached.</param>
+		/// <param name="inStartingPacket">The index of the first packet to read.</param>
+		/// <param name="nPackets">On input the number of packets to read, upon return the number of packets actually read.</param>
+		/// <param name="buffer">The output buffer where packets are written.</param>
+		/// <param name="offset">The offset in the output buffer where to start writing packets to.</param>
+		/// <param name="count">The number of bytes to read.</param>
+		/// <returns>Array of packet descriptors for the packets that were read.</returns>
 		public AudioStreamPacketDescription []? ReadFixedPackets (bool useCache, long inStartingPacket, int nPackets, byte [] buffer, int offset, int count)
 		{
 			AudioFileError error;
 			return ReadFixedPackets (useCache, inStartingPacket, nPackets, buffer, offset, count, out error);
 		}
 
-		/// <param name="useCache">To be added.</param>
-		///         <param name="inStartingPacket">To be added.</param>
-		///         <param name="nPackets">To be added.</param>
-		///         <param name="buffer">To be added.</param>
-		///         <param name="offset">To be added.</param>
-		///         <param name="count">To be added.</param>
-		///         <param name="error">To be added.</param>
-		///         <summary>Reads a fixed amount of audio data.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Reads <paramref name="nPackets" /> bytes into <paramref name="buffer" />, starting at <paramref name="inStartingPacket" />.</summary>
+		/// <param name="useCache">If the data should be cached.</param>
+		/// <param name="inStartingPacket">The index of the first packet to read.</param>
+		/// <param name="nPackets">On input the number of packets to read, upon return the number of packets actually read.</param>
+		/// <param name="buffer">The output buffer where packets are written.</param>
+		/// <param name="offset">The offset in the output buffer where to start writing packets to.</param>
+		/// <param name="count">The number of bytes to read.</param>
+		/// <param name="error"><see cref="AudioFileError.Success" /> if successful, or an error code otherwise.</param>
+		/// <returns>Array of packet descriptors for the packets that were read.</returns>
 		public AudioStreamPacketDescription []? ReadFixedPackets (bool useCache, long inStartingPacket, int nPackets, byte [] buffer, int offset, int count, out AudioFileError error)
 		{
 			if (buffer is null)
@@ -1476,14 +1384,13 @@ namespace AudioToolbox {
 			AudioFileID audioFile, byte useCache, int inNumBytes, AudioStreamPacketDescription* inPacketDescriptions,
 						long inStartingPacket, int* numPackets, IntPtr buffer);
 
-		/// <param name="useCache">To be added.</param>
-		///         <param name="startingPacket">The starting packet in the packetDescriptions that should be written.</param>
-		///         <param name="numPackets">To be added.</param>
-		///         <param name="buffer">To be added.</param>
-		///         <param name="byteCount">To be added.</param>
-		///         <summary>Writes packets to an audo file.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Write audio packets to the audio file.</summary>
+		/// <param name="useCache">Whether the data should be kept in the cache.</param>
+		/// <param name="startingPacket">The starting packet that should be written.</param>
+		/// <param name="numPackets">The number of packets to write.</param>
+		/// <param name="buffer">The buffer containing the audio data.</param>
+		/// <param name="byteCount">The number of bytes to write.</param>
+		/// <returns>The number of packets written or -1 on error.</returns>
 		public int WritePackets (bool useCache, long startingPacket, int numPackets, IntPtr buffer, int byteCount)
 		{
 			if (buffer == IntPtr.Zero)
@@ -1497,14 +1404,13 @@ namespace AudioToolbox {
 			return -1;
 		}
 
+		/// <summary>Write audio packets to the audio file.</summary>
 		/// <param name="useCache">Whether the data should be kept in the cache.</param>
-		///         <param name="startingPacket">The starting packet in the packetDescriptions that should be written.</param>
-		///         <param name="packetDescriptions">An array of packet descriptions that describe the content of the buffer.</param>
-		///         <param name="buffer">The buffer containing the audio data.</param>
-		///         <param name="byteCount">To be added.</param>
-		///         <summary>Write audio packets to the audio file.</summary>
-		///         <returns>The number of packets written or -1 on error.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <param name="startingPacket">The starting packet in the <paramref name="packetDescriptions" /> that should be written.</param>
+		/// <param name="packetDescriptions">An array of packet descriptions that describe the content of the buffer.</param>
+		/// <param name="buffer">The buffer containing the audio data.</param>
+		/// <param name="byteCount">The number of bytes to write.</param>
+		/// <returns>The number of packets written or -1 on error.</returns>
 		public int WritePackets (bool useCache, long startingPacket, AudioStreamPacketDescription [] packetDescriptions, IntPtr buffer, int byteCount)
 		{
 			if (packetDescriptions is null)
@@ -1521,15 +1427,14 @@ namespace AudioToolbox {
 			return -1;
 		}
 
+		/// <summary>Write audio packets to the audio file.</summary>
 		/// <param name="useCache">Whether the data should be kept in the cache.</param>
-		///         <param name="startingPacket">The starting packet in the packetDescriptions that should be written.</param>
-		///         <param name="packetDescriptions">An array of packet descriptions that describe the contents of the buffer.</param>
-		///         <param name="buffer">The buffer containing the audio data.</param>
-		///         <param name="offset">The first packet to write from the packetDescriptions.</param>
-		///         <param name="byteCount">To be added.</param>
-		///         <summary>Writes audio packets to the file.</summary>
-		///         <returns>The number of packets written or -1 on error.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <param name="startingPacket">The starting packet in the <paramref name="packetDescriptions" /> that should be written.</param>
+		/// <param name="packetDescriptions">An array of packet descriptions that describe the content of the buffer.</param>
+		/// <param name="buffer">The buffer containing the audio data.</param>
+		/// <param name="offset">The offset in the output buffer where to start writing packets to.</param>
+		/// <param name="byteCount">The number of bytes to write.</param>
+		/// <returns>The number of packets written or -1 on error.</returns>
 		unsafe public int WritePackets (bool useCache, long startingPacket, AudioStreamPacketDescription [] packetDescriptions, byte [] buffer, int offset, int byteCount)
 		{
 			if (packetDescriptions is null)
@@ -1553,16 +1458,15 @@ namespace AudioToolbox {
 			}
 		}
 
+		/// <summary>Write audio packets to the audio file.</summary>
 		/// <param name="useCache">Whether the data should be kept in the cache.</param>
-		///         <param name="startingPacket">The starting packet in the packetDescriptions that should be written.</param>
-		///         <param name="packetDescriptions">An array of packet descriptions that describe the content of the buffer.</param>
-		///         <param name="buffer">To be added.</param>
-		///         <param name="byteCount">To be added.</param>
-		///         <param name="errorCode">To be added.</param>
-		///         <summary>Writes packets to an audo file.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
-		public int WritePackets (bool useCache, long startingPacket, AudioStreamPacketDescription [] packetDescriptions, IntPtr buffer, int byteCount, out int errorCode)
+		/// <param name="startingPacket">The starting packet in the <paramref name="packetDescriptions" /> that should be written.</param>
+		/// <param name="packetDescriptions">An array of packet descriptions that describe the content of the buffer.</param>
+		/// <param name="buffer">The buffer containing the audio data.</param>
+		/// <param name="byteCount">The number of bytes to write.</param>
+		/// <param name="errorCode"><see cref="AudioFileError.Success" /> if successful, or an error code otherwise.</param>
+		/// <returns>The number of packets written or -1 on error.</returns>
+		public int WritePackets (bool useCache, long startingPacket, AudioStreamPacketDescription [] packetDescriptions, IntPtr buffer, int byteCount, out AudioFileError errorCode)
 		{
 			if (packetDescriptions is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (packetDescriptions));
@@ -1572,7 +1476,7 @@ namespace AudioToolbox {
 
 			unsafe {
 				fixed (AudioStreamPacketDescription* packetDescriptionsPtr = packetDescriptions) {
-					errorCode = (int) AudioFileWritePackets (Handle, useCache ? (byte) 1 : (byte) 0, byteCount, packetDescriptionsPtr, startingPacket, &nPackets, buffer);
+					errorCode = AudioFileWritePackets (Handle, useCache ? (byte) 1 : (byte) 0, byteCount, packetDescriptionsPtr, startingPacket, &nPackets, buffer);
 				}
 			}
 			if (errorCode == 0)
@@ -1580,17 +1484,28 @@ namespace AudioToolbox {
 			return -1;
 		}
 
+#if !XAMCORE_5_0
+		/// <inheritdoc cref="WritePackets(bool,long,AudioStreamPacketDescription[],IntPtr,int,out AudioFileError)" />
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Obsolete ("Use 'WritePackets (bool, long, AudioStreamPacketDescription[], IntPtr, int, out AudioFileError)' instead.")]
+		public int WritePackets (bool useCache, long startingPacket, AudioStreamPacketDescription [] packetDescriptions, IntPtr buffer, int byteCount, out int errorCode)
+		{
+			var rv = WritePackets (useCache, startingPacket, packetDescriptions, buffer, byteCount, out AudioFileError error);
+			errorCode = (int) error;
+			return rv;
+		}
+#endif // !XAMCORE_5_0
+
+		/// <summary>Write audio packets to the audio file.</summary>
 		/// <param name="useCache">Whether the data should be kept in the cache.</param>
-		///         <param name="startingPacket">The starting packet in the packetDescriptions that should be written.</param>
-		///         <param name="packetDescriptions">An array of packet descriptions that describe the content of the buffer.</param>
-		///         <param name="buffer">To be added.</param>
-		///         <param name="offset">To be added.</param>
-		///         <param name="byteCount">To be added.</param>
-		///         <param name="errorCode">To be added.</param>
-		///         <summary>Writes packets to an audo file.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
-		unsafe public int WritePackets (bool useCache, long startingPacket, AudioStreamPacketDescription [] packetDescriptions, byte [] buffer, int offset, int byteCount, out int errorCode)
+		/// <param name="startingPacket">The starting packet in the <paramref name="packetDescriptions" /> that should be written.</param>
+		/// <param name="packetDescriptions">An array of packet descriptions that describe the content of the buffer.</param>
+		/// <param name="buffer">The buffer containing the audio data.</param>
+		/// <param name="offset">The offset in the output buffer where to start writing packets to.</param>
+		/// <param name="byteCount">The number of bytes to write.</param>
+		/// <param name="errorCode"><see cref="AudioFileError.Success" /> if successful, or an error code otherwise.</param>
+		/// <returns>The number of packets written or -1 on error.</returns>
+		unsafe public int WritePackets (bool useCache, long startingPacket, AudioStreamPacketDescription [] packetDescriptions, byte [] buffer, int offset, int byteCount, out AudioFileError errorCode)
 		{
 			if (packetDescriptions is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (packetDescriptions));
@@ -1606,7 +1521,7 @@ namespace AudioToolbox {
 			int nPackets = packetDescriptions.Length;
 			fixed (byte* bop = &buffer [offset]) {
 				fixed (AudioStreamPacketDescription* packetDescriptionsPtr = packetDescriptions) {
-					errorCode = (int) AudioFileWritePackets (Handle, useCache ? (byte) 1 : (byte) 0, byteCount, packetDescriptionsPtr, startingPacket, &nPackets, (IntPtr) bop);
+					errorCode = AudioFileWritePackets (Handle, useCache ? (byte) 1 : (byte) 0, byteCount, packetDescriptionsPtr, startingPacket, &nPackets, (IntPtr) bop);
 				}
 				if (errorCode == 0)
 					return nPackets;
@@ -1614,16 +1529,26 @@ namespace AudioToolbox {
 			}
 		}
 
+#if !XAMCORE_5_0
+		/// <inheritdoc cref="WritePackets(bool,long,AudioStreamPacketDescription[],byte[],int,int,out AudioFileError)" />
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Obsolete ("Use 'WritePackets (bool, long, AudioStreamPacketDescription[], byte[], int, int, out AudioFileError)' instead.")]
+		public int WritePackets (bool useCache, long startingPacket, AudioStreamPacketDescription [] packetDescriptions, byte [] buffer, int offset, int byteCount, out int errorCode)
+		{
+			var rv = WritePackets (useCache, startingPacket, packetDescriptions, buffer, offset, byteCount, out AudioFileError error);
+			errorCode = (int) error;
+			return rv;
+		}
+#endif // !XAMCORE_5_0
+
 		/// <param name="useCache">Whether the data should be kept in the cache.</param>
-		///         <param name="numBytes">The number of bytes to write.</param>
-		///         <param name="packetDescriptions">An array of packet descriptions that describe the content of the buffer.</param>
-		///         <param name="startingPacket">The starting packet in the packetDescriptions that should be written.</param>
-		///         <param name="numPackets">The number of packets to write replaced with the number of packets actually written.</param>
-		///         <param name="buffer">The buffer containing the audio data.</param>
-		///         <summary>Writes audio packets to the file.</summary>
-		///         <returns>A status error code.</returns>
-		///         <remarks>
-		///         </remarks>
+		/// <param name="numBytes">The number of bytes to write.</param>
+		/// <param name="packetDescriptions">An array of packet descriptions that describe the content of the buffer.</param>
+		/// <param name="startingPacket">The starting packet in the <paramref name="packetDescriptions" /> that should be written.</param>
+		/// <param name="numPackets">On input the number of packets to write, upon return the number of packets actually written.</param>
+		/// <param name="buffer">The buffer containing the audio data.</param>
+		/// <summary>Write audio packets to the audio file.</summary>
+		/// <returns><see cref="AudioFileError.Success" /> if successful, or an error code otherwise.</returns>
 		public AudioFileError WritePackets (bool useCache, int numBytes, AudioStreamPacketDescription [] packetDescriptions, long startingPacket, ref int numPackets, IntPtr buffer)
 		{
 			if (buffer == IntPtr.Zero)
@@ -1665,7 +1590,7 @@ namespace AudioToolbox {
 
 		/// <summary>Get the size of the specified user data.</summary>
 		/// <param name="userDataId">The fourcc of the chunk.</param>
-		/// <param name="index">The index of the chunk if there are more than one chunk.</param>
+		/// <param name="index">The index of the chunk if there are more than one chunks.</param>
 		/// <returns>Returns the (non-negative) size on success, otherwise -1.</returns>
 		public int GetUserDataSize (uint userDataId, int index)
 		{
@@ -1680,7 +1605,7 @@ namespace AudioToolbox {
 
 		/// <summary>Get the size of the specified user data.</summary>
 		/// <param name="chunkType">The fourcc of the chunk.</param>
-		/// <param name="index">The index of the chunk if there are more than one chunk.</param>
+		/// <param name="index">The index of the chunk if there are more than one chunks.</param>
 		/// <returns>Returns the (non-negative) size on success, otherwise -1.</returns>
 		public int GetUserDataSize (AudioFileChunkType chunkType, int index)
 		{
@@ -1696,7 +1621,7 @@ namespace AudioToolbox {
 
 		/// <summary>Get the 64-bit size of the specified user data.</summary>
 		/// <param name="userDataId">The fourcc of the chunk.</param>
-		/// <param name="index">The index of the chunk if there are more than one chunk.</param>
+		/// <param name="index">The index of the chunk if there are more than one chunks.</param>
 		/// <param name="size">The retrieved 64-bit size of the specified user data.</param>
 		/// <returns>Returns <see cref="AudioFileError.Success" /> on success, otherwise an <see cref="AudioFileError" /> error code.</returns>
 		[SupportedOSPlatform ("ios17.0")]
@@ -1713,7 +1638,7 @@ namespace AudioToolbox {
 
 		/// <summary>Get the 64-bit size of the specified user data.</summary>
 		/// <param name="chunkType">The fourcc of the chunk.</param>
-		/// <param name="index">The index of the chunk if there are more than one chunk.</param>
+		/// <param name="index">The index of the chunk if there are more than one chunks.</param>
 		/// <param name="size">The retrieved 64-bit size of the specified user data.</param>
 		/// <returns>Returns <see cref="AudioFileError.Success" /> on success, otherwise an <see cref="AudioFileError" /> error code.</returns>
 		[SupportedOSPlatform ("ios17.0")]
@@ -1730,7 +1655,7 @@ namespace AudioToolbox {
 
 		/// <summary>Get part of the data of a chunk in a file.</summary>
 		/// <param name="userDataID">The fourcc of the chunk.</param>
-		/// <param name="index">The index of the chunk if there are more than one chunk.</param>
+		/// <param name="index">The index of the chunk if there are more than one chunks.</param>
 		/// <param name="size">On input the size of the memory <paramref name="userData" /> points to. On output the number of bytes written.</param>
 		/// <param name="userData">A pointer to memory where the data will be copied.</param>
 		/// <returns>Returns <see cref="AudioFileError.Success" /> on success, otherwise an <see cref="AudioFileError" /> error code.</returns>
@@ -1747,7 +1672,7 @@ namespace AudioToolbox {
 
 		/// <summary>Get part of the data of a chunk in a file.</summary>
 		/// <param name="chunkType">The fourcc of the chunk.</param>
-		/// <param name="index">The index of the chunk if there are more than one chunk.</param>
+		/// <param name="index">The index of the chunk if there are more than one chunks.</param>
 		/// <param name="size">On input the size of the memory <paramref name="userData" /> points to. On output the number of bytes written.</param>
 		/// <param name="userData">A pointer to memory where the data will be copied.</param>
 		/// <returns>Returns <see cref="AudioFileError.Success" /> on success, otherwise an <see cref="AudioFileError" /> error code.</returns>
@@ -1765,7 +1690,7 @@ namespace AudioToolbox {
 
 		/// <summary>Get part of the data of a chunk in a file.</summary>
 		/// <param name="userDataId">The fourcc of the chunk.</param>
-		/// <param name="index">The index of the chunk if there are more than one chunk.</param>
+		/// <param name="index">The index of the chunk if there are more than one chunks.</param>
 		/// <param name="offset">The offset from the first byte of the chunk of the data to get.</param>
 		/// <param name="size">On input the size of the memory <paramref name="userData" /> points to. On output the number of bytes written.</param>
 		/// <param name="userData">A pointer to memory where the data will be copied.</param>
@@ -1783,7 +1708,7 @@ namespace AudioToolbox {
 
 		/// <summary>Get part of the data of a chunk in a file.</summary>
 		/// <param name="chunkType">The fourcc of the chunk.</param>
-		/// <param name="index">The index of the chunk if there are more than one chunk.</param>
+		/// <param name="index">The index of the chunk if there are more than one chunks.</param>
 		/// <param name="offset">The offset from the first byte of the chunk of the data to get.</param>
 		/// <param name="size">On input the size of the memory <paramref name="userData" /> points to. On output the number of bytes written.</param>
 		/// <param name="userData">A pointer to memory where the data will be copied.</param>
@@ -1799,7 +1724,7 @@ namespace AudioToolbox {
 
 		/// <summary>Get part of the data of a chunk in a file.</summary>
 		/// <param name="userDataId">The fourcc of the chunk.</param>
-		/// <param name="index">The index of the chunk if there are more than one chunk.</param>
+		/// <param name="index">The index of the chunk if there are more than one chunks.</param>
 		/// <param name="offset">The offset from the first byte of the chunk of the data to get.</param>
 		/// <param name="size">The number of bytes written into the byte array.</param>
 		/// <param name="data">An array of bytes where the data will be copied.</param>
@@ -1819,7 +1744,7 @@ namespace AudioToolbox {
 
 		/// <summary>Get part of the data of a chunk in a file.</summary>
 		/// <param name="chunkType">The fourcc of the chunk.</param>
-		/// <param name="index">The index of the chunk if there are more than one chunk.</param>
+		/// <param name="index">The index of the chunk if there are more than one chunks.</param>
 		/// <param name="offset">The offset from the first byte of the chunk of the data to get.</param>
 		/// <param name="size">The number of bytes written into the byte array.</param>
 		/// <param name="data">An array of bytes where the data will be copied.</param>
@@ -1834,76 +1759,149 @@ namespace AudioToolbox {
 		}
 
 		[DllImport (Constants.AudioToolboxLibrary)]
-		extern static OSStatus AudioFileSetUserData (AudioFileID inAudioFile, int userDataID, int index, int userDataSize, IntPtr userData);
+		extern static AudioFileError AudioFileSetUserData (AudioFileID inAudioFile, int userDataID, int index, int userDataSize, IntPtr userData);
 
-		/// <param name="userDataId">To be added.</param>
-		///         <param name="index">To be added.</param>
-		///         <param name="userDataSize">To be added.</param>
-		///         <param name="userData">To be added.</param>
-		///         <summary>Sets the value at the specified <paramref name="index" /> into the specified <paramref name="userDataId" /> to <paramref name="userData" />, which must have the size that is specified in <paramref name="userDataSize" />.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+#if !XAMCORE_5_0
+		/// <summary>Sets the value at the specified <paramref name="index" /> into the specified <paramref name="userDataId" /> to <paramref name="userData" />, which must have the size that is specified in <paramref name="userDataSize" />.</summary>
+		/// <param name="userDataId">The fourcc of the chunk.</param>
+		/// <param name="index">The index of the chunk if there are more than one chunks.</param>
+		/// <param name="userDataSize">The number of bytes to write.</param>
+		/// <param name="userData">An array of bytes where the data will be copied.</param>
+		/// <returns>Returns <see cref="AudioFileError.Success" /> on success, otherwise an <see cref="AudioFileError" /> error code.</returns>
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Obsolete ("Use 'SetUserData (AudioFileChunkType, int, byte[])' instead.")]
 		public int SetUserData (int userDataId, int index, int userDataSize, IntPtr userData)
 		{
 			if (userData == IntPtr.Zero)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (userData));
-			return AudioFileSetUserData (Handle, userDataId, index, userDataSize, userData);
+			return (int) AudioFileSetUserData (Handle, userDataId, index, userDataSize, userData);
+		}
+#endif // !XAMCORE_5_0
+
+		/// <summary>Set the data of a chunk in a file.</summary>
+		/// <param name="chunkType">The fourcc of the chunk.</param>
+		/// <param name="index">The index of the chunk if there are more than one chunks.</param>
+		/// <param name="data">An array of bytes to set.</param>
+		/// <returns>Returns <see cref="AudioFileError.Success" /> on success, otherwise an <see cref="AudioFileError" /> error code.</returns>
+		public AudioFileError SetUserData (AudioFileChunkType chunkType, int index, byte [] data)
+		{
+			if (data is null)
+				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (data));
+
+			unsafe {
+				fixed (byte* dataPtr = data)
+					return AudioFileSetUserData (GetCheckedHandle (), (int) chunkType, index, data.Length, (IntPtr) dataPtr);
+			}
 		}
 
 		[DllImport (Constants.AudioToolboxLibrary)]
-		extern static OSStatus AudioFileRemoveUserData (AudioFileID audioFile, int userDataID, int index);
+		extern static AudioFileError AudioFileRemoveUserData (AudioFileID audioFile, int userDataID, int index);
 
-		/// <param name="userDataId">To be added.</param>
-		///         <param name="index">To be added.</param>
-		///         <summary>Removes the chunk of user data at the specified <paramref name="index" /> in the user data that is identified by <paramref name="userDataId" />.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+#if !XAMCORE_5_0
+		/// <summary>Removes the chunk of user data at the specified <paramref name="index" /> in the user data that is identified by <paramref name="userDataId" />.</summary>
+		/// <param name="userDataId">The fourcc of the chunk.</param>
+		/// <param name="index">The index of the chunk if there are more than one chunks.</param>
+		/// <returns>Returns <see cref="AudioFileError.Success" /> on success, otherwise an <see cref="AudioFileError" /> error code.</returns>
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Obsolete ("Use 'RemoveUserData (AudioFileChunkType, int)' instead.")]
 		public int RemoveUserData (int userDataId, int index)
 		{
-			return AudioFileRemoveUserData (Handle, userDataId, index);
+			return (int) AudioFileRemoveUserData (Handle, userDataId, index);
+		}
+#endif
+
+		/// <summary>Removes the specified chunk of user data.</summary>
+		/// <param name="chunkType">The fourcc of the chunk.</param>
+		/// <param name="index">The index of the chunk if there are more than one chunks.</param>
+		/// <returns>Returns <see cref="AudioFileError.Success" /> on success, otherwise an <see cref="AudioFileError" /> error code.</returns>
+		public AudioFileError RemoveUserData (AudioFileChunkType chunkType, int index)
+		{
+			return AudioFileRemoveUserData (GetCheckedHandle (), (int) chunkType, index);
 		}
 
 		[DllImport (Constants.AudioToolboxLibrary)]
-		unsafe extern static OSStatus AudioFileGetPropertyInfo (AudioFileID audioFile, AudioFileProperty propertyID, int* outDataSize, int* isWritable);
+		unsafe extern static AudioFileError AudioFileGetPropertyInfo (AudioFileID audioFile, AudioFileProperty propertyID, int* outDataSize, int* isWritable);
 
-		/// <param name="property">To be added.</param>
-		///         <param name="size">To be added.</param>
-		///         <param name="writable">To be added.</param>
-		///         <summary>Returns the value of the specified audio property, and stores the number of bytes allocated to store it in <paramref name="size" />, and indicates whether the value is writeable.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+#if !XAMCORE_5_0
+		/// <summary>Returns the value of the specified audio property, and stores the number of bytes allocated to store it in <paramref name="size" />, and indicates whether the value is writeable.</summary>
+		/// <param name="property">The property whose info to get.</param>
+		/// <param name="size">The size of the property.</param>
+		/// <param name="writable">Whether the property is writable or not.</param>
+		/// <returns>Whether the operation succeeded or not.</returns>
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Obsolete ("Use 'GetPropertyInfo (AudioFileProperty, out int, out bool)' instead.")]
 		public bool GetPropertyInfo (AudioFileProperty property, out int size, out int writable)
+		{
+			return GetPropertyInfo (property, out size, out writable, out var _);
+		}
+
+		/// <summary>Returns the value of the specified audio property, and stores the number of bytes allocated to store it in <paramref name="size" />, and indicates whether the value is writeable.</summary>
+		/// <param name="property">The property whose info to get.</param>
+		/// <param name="size">The size of the property.</param>
+		/// <param name="writable">Whether the property is writable or not.</param>
+		/// <param name="error"><see cref="AudioFileError.Success" /> if successful, or an error code otherwise.</param>
+		/// <returns>Whether the operation succeeded or not.</returns>
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Obsolete ("Use 'GetPropertyInfo (AudioFileProperty, out int, out bool, out AudioFileError)' instead.")]
+		public bool GetPropertyInfo (AudioFileProperty property, out int size, out int writable, out AudioFileError error)
 		{
 			size = default;
 			writable = default;
 			unsafe {
-				return AudioFileGetPropertyInfo (Handle, property, (int*) Unsafe.AsPointer<int> (ref size), (int*) Unsafe.AsPointer<int> (ref writable)) == 0;
+				error = AudioFileGetPropertyInfo (Handle, property, (int*) Unsafe.AsPointer<int> (ref size), (int*) Unsafe.AsPointer<int> (ref writable));
 			}
+			return error == AudioFileError.Success;
+		}
+#endif
+
+		/// <summary>Returns the value of the specified audio property, and stores the number of bytes allocated to store it in <paramref name="size" />, and indicates whether the value is writeable.</summary>
+		/// <param name="property">The property whose info to get.</param>
+		/// <param name="size">The size of the property.</param>
+		/// <param name="writable">Whether the property is writable or not.</param>
+		/// <returns>Whether the operation succeeded or not.</returns>
+		public bool GetPropertyInfo (AudioFileProperty property, out int size, out bool writable)
+		{
+			return GetPropertyInfo (property, out size, out writable, out var _);
+		}
+
+		/// <summary>Returns the value of the specified audio property, and stores the number of bytes allocated to store it in <paramref name="size" />, and indicates whether the value is writeable.</summary>
+		/// <param name="property">The property whose info to get.</param>
+		/// <param name="size">The size of the property.</param>
+		/// <param name="writable">Whether the property is writable or not.</param>
+		/// <param name="error"><see cref="AudioFileError.Success" /> if successful, or an error code otherwise.</param>
+		/// <returns>Whether the operation succeeded or not.</returns>
+		public bool GetPropertyInfo (AudioFileProperty property, out int size, out bool writable, out AudioFileError error)
+		{
+			int writableValue = 0;
+			size = default;
+
+			unsafe {
+				error = AudioFileGetPropertyInfo (Handle, property, (int*) Unsafe.AsPointer<int> (ref size), &writableValue);
+			}
+			writable = writableValue != 0;
+
+			return error == AudioFileError.Success;
 		}
 
 		/// <param name="property">The property being queried.</param>
-		///         <summary>Checks whether the property value is settable.</summary>
-		///         <returns>
-		///         </returns>
-		///         <remarks>
-		///         </remarks>
+		/// <summary>Checks whether the property value is settable.</summary>
+		/// <returns>Whether the property value is settable or not.</returns>
 		public bool IsPropertyWritable (AudioFileProperty property)
 		{
-			return GetPropertyInfo (property, out var _, out var writable) && writable != 0;
+			return GetPropertyInfo (property, out var _, out bool writable) && writable;
 		}
 
 		[DllImport (Constants.AudioToolboxLibrary)]
-		unsafe extern static OSStatus AudioFileGetProperty (AudioFileID audioFile, AudioFileProperty property, int* dataSize, IntPtr outdata);
+		unsafe extern static AudioFileError AudioFileGetProperty (AudioFileID audioFile, AudioFileProperty property, int* dataSize, IntPtr outdata);
 
 		[DllImport (Constants.AudioToolboxLibrary)]
-		unsafe extern static OSStatus AudioFileGetProperty (AudioFileID audioFile, AudioFileProperty property, int* dataSize, void* outdata);
+		unsafe extern static AudioFileError AudioFileGetProperty (AudioFileID audioFile, AudioFileProperty property, int* dataSize, void* outdata);
 
-		/// <param name="property">To be added.</param>
-		///         <param name="dataSize">To be added.</param>
-		///         <param name="outdata">To be added.</param>
-		///         <summary>Returns the value of the specified audio property, stores it in <paramref name="outdata" />, and stores the number of bytes allocated to store it in <paramref name="dataSize" />.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Returns the value of the specified audio property, stores it in <paramref name="outdata" />, and stores the number of bytes allocated to store it in <paramref name="dataSize" />.</summary>
+		/// <param name="property">The property to get.</param>
+		/// <param name="dataSize">On input the number of size of <paramref name="outdata" />, upon return the number of packets bytes written.</param>
+		/// <param name="outdata">A pointer to the memory where the property value will be stored.</param>
+		/// <returns>Whether the operation succeeded or not.</returns>
 		public bool GetProperty (AudioFileProperty property, ref int dataSize, IntPtr outdata)
 		{
 			unsafe {
@@ -1911,16 +1909,14 @@ namespace AudioToolbox {
 			}
 		}
 
-		/// <param name="property">To be added.</param>
-		///         <param name="size">To be added.</param>
-		///         <summary>Returns the value of the specified audio property, and stores the number of bytes allocated to store it in <paramref name="size" />.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Returns the value of the specified audio property, and stores the number of bytes allocated to store it in <paramref name="size" />.</summary>
+		/// <param name="property">The property to get.</param>
+		/// <param name="size">Upon return, the size of the property.</param>
+		/// <returns>A pointer to the value of the specified audio property, or <see cref="IntPtr.Size" /> in case of failure.</returns>
+		/// <remarks>The caller is responsible for freeing the returned pointer, using <see cref="Marshal.FreeHGlobal" />.</remarks>
 		public IntPtr GetProperty (AudioFileProperty property, out int size)
 		{
-			int writable;
-
-			if (!GetPropertyInfo (property, out size, out writable))
+			if (!GetPropertyInfo (property, out size, out bool _))
 				return IntPtr.Zero;
 
 			var buffer = Marshal.AllocHGlobal (size);
@@ -2016,12 +2012,11 @@ namespace AudioToolbox {
 		[DllImport (Constants.AudioToolboxLibrary)]
 		unsafe extern static AudioFileError AudioFileSetProperty (AudioFileID audioFile, AudioFileProperty property, int dataSize, AudioFilePacketTableInfo* propertyData);
 
-		/// <param name="property">To be added.</param>
-		///         <param name="dataSize">To be added.</param>
-		///         <param name="propertyData">To be added.</param>
-		///         <summary>Sets the value of the specified <paramref name="property" /> to <paramref name="propertyData" />, which must have the size that is specified in <paramref name="dataSize" />.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Sets the value of the specified <paramref name="property" /> to <paramref name="propertyData" />, which must have the size that is specified in <paramref name="dataSize" />.</summary>
+		/// <param name="property">The property to set.</param>
+		/// <param name="dataSize">The size of <paramref name="propertyData" />.</param>
+		/// <param name="propertyData">A pointer to the data to set.</param>
+		/// <returns>Whether the operation succeeded or not.</returns>
 		public bool SetProperty (AudioFileProperty property, int dataSize, IntPtr propertyData)
 		{
 			if (propertyData == IntPtr.Zero)
@@ -2042,8 +2037,6 @@ namespace AudioToolbox {
 		}
 
 		/// <summary>Audio file type.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		public AudioFileType FileType {
 			get {
 				return (AudioFileType) GetInt (AudioFileProperty.FileFormat);
@@ -2051,8 +2044,6 @@ namespace AudioToolbox {
 		}
 
 		/// <summary>The audio basic description, as determined by decoding the file.</summary>
-		///         <value />
-		///         <remarks>To be added.</remarks>
 		[Advice ("Use 'DataFormat' instead.")]
 		public AudioStreamBasicDescription StreamBasicDescription {
 			get {
@@ -2061,13 +2052,9 @@ namespace AudioToolbox {
 		}
 
 		/// <summary>Gets the status of the stream's basic description.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		public AudioFileError StreamBasicDescriptionStatus { get; private set; }
 
 		/// <summary>Gets the <see cref="AudioToolbox.AudioStreamBasicDescription" />, if present, that describes the format of the audio data.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		public AudioStreamBasicDescription? DataFormat {
 			get {
 				return GetProperty<AudioStreamBasicDescription> (AudioFileProperty.DataFormat);
@@ -2075,8 +2062,6 @@ namespace AudioToolbox {
 		}
 
 		/// <summary>Returns a list of the supported audio formats.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		public AudioFormat []? AudioFormats {
 			get {
 				unsafe {
@@ -2099,8 +2084,6 @@ namespace AudioToolbox {
 		}
 
 		/// <summary>Gets a Boolean value that tells whether the audio file has been optimized and is ready to receive sound data.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		public bool IsOptimized {
 			get {
 				return GetInt (AudioFileProperty.IsOptimized) == 1;
@@ -2108,8 +2091,7 @@ namespace AudioToolbox {
 		}
 
 		/// <summary>The magic cookie for this file.</summary>
-		///         <value />
-		///         <remarks>Certain files require the magic cookie to be set before they can be written to.   Set this property before you write packets from your source (AudioQueue).</remarks>
+		///  <remarks>Certain files require the magic cookie to be set before they can be written to. Set this property before you write packets from your source (AudioQueue).</remarks>
 		public byte [] MagicCookie {
 			get {
 				int size;
@@ -2137,8 +2119,6 @@ namespace AudioToolbox {
 		}
 
 		/// <summary>Gets the number of audio data packets in the audio file.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		public long DataPacketCount {
 			get {
 				return GetLong (AudioFileProperty.AudioDataPacketCount);
@@ -2146,8 +2126,6 @@ namespace AudioToolbox {
 		}
 
 		/// <summary>Gets the maximum audio packet size.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		public int MaximumPacketSize {
 			get {
 				return GetInt (AudioFileProperty.MaximumPacketSize);
@@ -2155,8 +2133,6 @@ namespace AudioToolbox {
 		}
 
 		/// <summary>Gets the offset, in bytes, to the beginning of the audio data in the audio file.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		public long DataOffset {
 			get {
 				return GetLong (AudioFileProperty.DataOffset);
@@ -2164,8 +2140,6 @@ namespace AudioToolbox {
 		}
 
 		/// <summary>Gets the album artwork for the audio file.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		public NSData? AlbumArtwork {
 			get {
 				return Runtime.GetNSObject<NSData> (GetIntPtr (AudioFileProperty.AlbumArtwork));
@@ -2173,8 +2147,6 @@ namespace AudioToolbox {
 		}
 
 		/// <summary>Gets the channel layout of the audio file.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		public AudioChannelLayout? ChannelLayout {
 			get {
 				int size;
@@ -2189,9 +2161,7 @@ namespace AudioToolbox {
 			}
 		}
 
-		/// <summary>Gets or sets a Boolean value that controls whether the updating of file size information in the header will be deferred until the file is read, optimized, or closed. The default, which is safer, is <see langword="false" /></summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets a boolean value that controls whether the updating of file size information in the header will be deferred until the file is read, optimized, or closed. The default, which is safer, is <see langword="false" /></summary>
 		public bool DeferSizeUpdates {
 			get {
 				return GetInt (AudioFileProperty.DeferSizeUpdates) == 1;
@@ -2202,8 +2172,6 @@ namespace AudioToolbox {
 		}
 
 		/// <summary>Audio file bit rate.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		public int BitRate {
 			get {
 				return GetInt (AudioFileProperty.BitRate);
@@ -2211,8 +2179,6 @@ namespace AudioToolbox {
 		}
 
 		/// <summary>Gets the estimated duration, in seconds, of the audio data in the file.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		public double EstimatedDuration {
 			get {
 				return GetDouble (AudioFileProperty.EstimatedDuration);
@@ -2220,8 +2186,6 @@ namespace AudioToolbox {
 		}
 
 		/// <summary>Gets the theoretical upper bound for the audio packet size for audio data in the file.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		public int PacketSizeUpperBound {
 			get {
 				return GetInt (AudioFileProperty.PacketSizeUpperBound);
@@ -2229,17 +2193,13 @@ namespace AudioToolbox {
 		}
 
 		/// <summary>Gets the amount of recording time to reserve in the audio file.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		public double ReserveDuration {
 			get {
 				return GetDouble (AudioFileProperty.ReserveDuration);
 			}
 		}
 
-		/// <summary>Gets the <see cref="AudioToolbox.AudioFileMarkerList" /> that contains the markers for the audio file.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the <see cref="AudioFileMarkerList" /> that contains the markers for the audio file.</summary>
 		public AudioFileMarkerList? MarkerList {
 			get {
 				var ptr = GetProperty (AudioFileProperty.MarkerList, out var _);
@@ -2251,8 +2211,6 @@ namespace AudioToolbox {
 		}
 
 		/// <summary>Gets a list of all the audio regions in the audio file.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		public AudioFileRegionList? RegionList {
 			get {
 				var ptr = GetProperty (AudioFileProperty.RegionList, out var _);
@@ -2264,13 +2222,9 @@ namespace AudioToolbox {
 		}
 
 		/// <summary>Gets the status of the audio packet table..</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		public AudioFileError PacketTableInfoStatus { get; private set; }
 
-		/// <summary>Gets or sets the <see cref="AudioToolbox.AudioFilePacketTableInfo" /> structure that describes the audio file packet table.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the <see cref="AudioFilePacketTableInfo" /> structure that describes the audio file packet table.</summary>
 		public unsafe AudioFilePacketTableInfo? PacketTableInfo {
 			get {
 				return GetProperty<AudioFilePacketTableInfo> (AudioFileProperty.PacketTableInfo);
@@ -2287,8 +2241,6 @@ namespace AudioToolbox {
 		}
 
 		/// <summary>Gets an array of four-character codes that describe the kind of each chunk in the audio file.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		public unsafe AudioFileChunkType []? ChunkIDs {
 			get {
 				int size;
@@ -2308,8 +2260,6 @@ namespace AudioToolbox {
 		}
 
 		/// <summary>Gets a byte array that contains the ID3Tag for the audio data.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		public unsafe byte []? ID3Tag {
 			get {
 				int size;
@@ -2328,9 +2278,7 @@ namespace AudioToolbox {
 			}
 		}
 
-		/// <summary>Gets the CF dictionary that contains audio file metadata.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the dictionary that contains audio file metadata.</summary>
 		public AudioFileInfoDictionary? InfoDictionary {
 			get {
 				var ptr = GetIntPtr (AudioFileProperty.InfoDictionary);
@@ -2341,10 +2289,9 @@ namespace AudioToolbox {
 			}
 		}
 
-		/// <param name="packet">To be added.</param>
-		///         <summary>Returns the frame number for the specified <paramref name="packet" />.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Returns the frame number for the specified <paramref name="packet" />.</summary>
+		/// <param name="packet">The packet whose frame number to get.</param>
+		/// <returns>The frame number for the specified <paramref name="packet" />, or -1 in case of failure.</returns>
 		public long PacketToFrame (long packet)
 		{
 			AudioFramePacketTranslation buffer = default;
@@ -2358,11 +2305,10 @@ namespace AudioToolbox {
 			}
 		}
 
-		/// <param name="frame">The frame.</param>
-		///         <param name="frameOffsetInPacket">The offset inside the packet that the frame points to.</param>
-		///         <summary>Converts an audio frame into a packet offset.</summary>
-		///         <returns>-1 on failure, otherwise the packet that represents the specified frame.   Additionally, the offset within the packet is returned in the out parameter.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Converts an audio frame into a packet offset.</summary>
+		/// <param name="frame">The frame whose packet offset to get.</param>
+		/// <param name="frameOffsetInPacket">The offset inside the packet that the frame points to.</param>
+		/// <returns>-1 on failure, otherwise the packet that represents the specified frame. Additionally, the offset within the packet is returned in <paramref name="frameOffsetInPacket" />.</returns>
 		public long FrameToPacket (long frame, out int frameOffsetInPacket)
 		{
 			AudioFramePacketTranslation buffer = default;
@@ -2379,11 +2325,10 @@ namespace AudioToolbox {
 			}
 		}
 
-		/// <param name="packet">To be added.</param>
-		///         <param name="isEstimate">To be added.</param>
-		///         <summary>Returns the byte offset for the <paramref name="packet" /> and indicates whether this is an estimated value in <paramref name="isEstimate" />.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Returns the byte offset for the <paramref name="packet" /> and indicates whether this is an estimated value in <paramref name="isEstimate" />.</summary>
+		/// <param name="packet">The packet whose byte offset to get.</param>
+		/// <param name="isEstimate">Whether the returned value is accurate or an estimate.</param>
+		/// <returns>The byte offset for the specified <paramref name="packet" />.</returns>
 		public long PacketToByte (long packet, out bool isEstimate)
 		{
 			AudioBytePacketTranslation buffer = default;
@@ -2400,12 +2345,11 @@ namespace AudioToolbox {
 			}
 		}
 
+		/// <summary>Converts a position on a stream to its packet location.</summary>
 		/// <param name="byteval">The byte position.</param>
-		///         <param name="byteOffsetInPacket">Offset within the packet.</param>
-		///         <param name="isEstimate">True if the return value is an estimate.</param>
-		///         <summary>Converts a position on a stream to its packet location.</summary>
-		///         <returns>The packet where the byte position would be, or -1 on error.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <param name="byteOffsetInPacket">Offset within the packet.</param>
+		/// <param name="isEstimate"><see langword="true" /> if the return value is an estimate.</param>
+		/// <returns>The packet where the byte position would be, or -1 on error.</returns>
 		public long ByteToPacket (long byteval, out int byteOffsetInPacket, out bool isEstimate)
 		{
 			AudioBytePacketTranslation buffer = default;
@@ -2426,7 +2370,6 @@ namespace AudioToolbox {
 	}
 
 	/// <summary>Metadata-like information relating to a particular audio file.</summary>
-	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -2437,198 +2380,154 @@ namespace AudioToolbox {
 		{
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>The album.</summary>
 		public string? Album {
 			get {
 				return GetStringValue ("album");
 			}
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>An approximate duration in seconds.</summary>
 		public string? ApproximateDurationInSeconds {
 			get {
 				return GetStringValue ("approximate duration in seconds");
 			}
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>The artist.</summary>
 		public string? Artist {
 			get {
 				return GetStringValue ("artist");
 			}
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>The channel layout.</summary>
 		public string? ChannelLayout {
 			get {
 				return GetStringValue ("channel layout");
 			}
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>The composer.</summary>
 		public string? Composer {
 			get {
 				return GetStringValue ("composer");
 			}
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Any comments.</summary>
 		public string? Comments {
 			get {
 				return GetStringValue ("comments");
 			}
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>The copyright.</summary>
 		public string? Copyright {
 			get {
 				return GetStringValue ("copyright");
 			}
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>The encoding application.</summary>
 		public string? EncodingApplication {
 			get {
 				return GetStringValue ("encoding application");
 			}
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>The genre.</summary>
 		public string? Genre {
 			get {
 				return GetStringValue ("genre");
 			}
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>The ISRC (International Standard Recording Code) value.</summary>
 		public string? ISRC {
 			get {
 				return GetStringValue ("ISRC");
 			}
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>The key signature.</summary>
 		public string? KeySignature {
 			get {
 				return GetStringValue ("key signature");
 			}
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>The lyricist.</summary>
 		public string? Lyricist {
 			get {
 				return GetStringValue ("lyricist");
 			}
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>The nominal bitrate.</summary>
 		public string? NominalBitRate {
 			get {
 				return GetStringValue ("nominal bit rate");
 			}
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>The recorded date.</summary>
 		public string? RecordedDate {
 			get {
 				return GetStringValue ("recorded date");
 			}
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>The source bit depth.</summary>
 		public string? SourceBitDepth {
 			get {
 				return GetStringValue ("source bit depth");
 			}
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>The source encoder.</summary>
 		public string? SourceEncoder {
 			get {
 				return GetStringValue ("source encoder");
 			}
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>The subtitle.</summary>
 		public string? SubTitle {
 			get {
 				return GetStringValue ("subtitle");
 			}
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>The tempo.</summary>
 		public string? Tempo {
 			get {
 				return GetStringValue ("tempo");
 			}
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>The time signature.</summary>
 		public string? TimeSignature {
 			get {
 				return GetStringValue ("time signature");
 			}
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>The title.</summary>
 		public string? Title {
 			get {
 				return GetStringValue ("title");
 			}
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>The track number.</summary>
 		public string? TrackNumber {
 			get {
 				return GetStringValue ("track number");
 			}
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>The year.</summary>
 		public string? Year {
 			get {
 				return GetStringValue ("year");
@@ -2641,18 +2540,19 @@ namespace AudioToolbox {
 	delegate long GetSizeProc (IntPtr clientData);
 	delegate int SetSizeProc (IntPtr clientData, long size);
 
-	/// <summary>A derived class from AudioFile that exposes virtual methods that can be hooked into (for reading and writing)</summary>
-	///     <remarks>
-	///       <para>
-	/// AudioSource is an abstract class that derives from AudioFile that allows developers to hook up into the reading and writing stages of the AudioFile.   This can be used for example to read from an in-memory audio file, or to write to an in-memory buffer.
-	/// </para>
-	///       <para>
-	/// When you write data into the AudioSource using any of the methods from AudioFile, instead of writing the encoded data into a file, the data is sent to the Read abstract method.
-	/// </para>
-	///       <para>
-	/// To use this class, you must create a class that derives from AudioSource and override the Read, Write methods and the Size property.
-	/// </para>
-	///     </remarks>
+	/// <summary>A derived class from <see cref="AudioFile" /> that exposes virtual methods that can be hooked into (for reading and writing).</summary>
+	/// <remarks>
+	///   <para>
+	///     <see cref="AudioSource" /> is an abstract class that derives from <see cref="AudioFile" /> that allows developers to hook up into the reading and writing stages of the <see cref="AudioFile" />.
+	///     This can be used for example to read from an in-memory audio file, or to write to an in-memory buffer.
+	///   </para>
+	///   <para>
+	///       When you write data into the <see cref="AudioSource" /> using any of the methods from <see cref="AudioFile" />, instead of writing the encoded data into a file, the data is sent to the <see cref="Read" /> abstract method.
+	///   </para>
+	///   <para>
+	///     To use this class, you must create a class that derives from <see cref="AudioSource" /> and override the <see cref="Read" />, <see cref="Write" /> methods and the <see cref="Size" /> property.
+	///   </para>
+	/// </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -2671,13 +2571,13 @@ namespace AudioToolbox {
 			return result;
 		}
 
+		/// <summary>Callback invoked to read encoded audio data.</summary>
 		/// <param name="position">Position in the audio stream that the data should be read from.</param>
-		///         <param name="requestCount">Number of bytes to read.</param>
-		///         <param name="buffer">Pointer to the buffer where the data should be stored.</param>
-		///         <param name="actualCount">On return, set this value to the number of bytes actually read.</param>
-		///         <summary>Callback invoked to read encoded audio data.</summary>
-		///         <returns>true on success, false on failure.</returns>
-		///         <remarks>This method is called by the AudioSource when more data is requested.</remarks>
+		/// <param name="requestCount">Number of bytes to read.</param>
+		/// <param name="buffer">Pointer to the buffer where the data should be stored.</param>
+		/// <param name="actualCount">On return, set this value to the number of bytes actually read.</param>
+		/// <returns>true on success, false on failure.</returns>
+		/// <remarks>This method is called by the <see cref="AudioSource" /> when more data is requested.</remarks>
 		public abstract bool Read (long position, int requestCount, IntPtr buffer, out int actualCount);
 
 		[UnmanagedCallersOnly]
@@ -2690,13 +2590,13 @@ namespace AudioToolbox {
 			*actualCount = localCount;
 			return result;
 		}
+		/// <summary>Callback used to write audio data into the audio stream.</summary>
 		/// <param name="position">Position where the data should be stored.</param>
-		///         <param name="requestCount">Number of bytes to write.</param>
-		///         <param name="buffer">Pointer to the buffer that contains the data to be written.</param>
-		///         <param name="actualCount">Set this value to indicate the number of bytes actually written.</param>
-		///         <summary>Callback used to write audio data into the audio stream.</summary>
-		///         <returns>True on success, false on failure.</returns>
-		///         <remarks>This method is called by the AudioSource when it has encoded the data and it need to write it out.</remarks>
+		/// <param name="requestCount">Number of bytes to write.</param>
+		/// <param name="buffer">Pointer to the buffer that contains the data to be written.</param>
+		/// <param name="actualCount">Set this value to indicate the number of bytes actually written.</param>
+		/// <returns>True on success, false on failure.</returns>
+		/// <remarks>This method is called by the <see cref="AudioSource" /> when it has encoded the data and it need to write it out.</remarks>
 		public abstract bool Write (long position, int requestCount, IntPtr buffer, out int actualCount);
 
 		[UnmanagedCallersOnly]
@@ -2718,11 +2618,12 @@ namespace AudioToolbox {
 			return 0;
 		}
 		/// <summary>Used to set or get the size of the audio stream.</summary>
-		///         <value>The size of the file.</value>
-		///         <remarks>If the AudioSource is created in reading mode, this method should return the size of the audio data.   If the AudioSource is created to write data, this method is invoked to set the audio file size.</remarks>
+		/// <value>The size of the file.</value>
+		/// <remarks>If the <see cref="AudioSource" /> is created in reading mode, this method should return the size of the audio data. If the <see cref="AudioSource" /> is created to write data, this method is invoked to set the audio file size.</remarks>
 		public abstract long Size { get; set; }
 
-		/// <include file="../../docs/api/AudioToolbox/AudioSource.xml" path="/Documentation/Docs[@DocId='M:AudioToolbox.AudioSource.Dispose(System.Boolean)']/*" />
+		/// <summary>Releases the resources used by the <see cref="AudioSource" /> object.</summary>
+		/// <param name="disposing">If set to <see langword="true" />, the method is invoked directly and will dispose managed and unmanaged resources; If set to <see langword="false" /> the method is being called by the garbage collector finalizer and should only release unmanaged resources.</param>
 		protected override void Dispose (bool disposing)
 		{
 			base.Dispose (disposing);
@@ -2731,7 +2632,7 @@ namespace AudioToolbox {
 		}
 
 		[DllImport (Constants.AudioToolboxLibrary)]
-		extern unsafe static OSStatus AudioFileInitializeWithCallbacks (
+		extern unsafe static AudioFileError AudioFileInitializeWithCallbacks (
 			IntPtr inClientData,
 			delegate* unmanaged<IntPtr, long, int, IntPtr, int*, int> inReadFunc,
 			delegate* unmanaged<IntPtr, long, int, IntPtr, int*, int> inWriteFunc,
@@ -2739,33 +2640,30 @@ namespace AudioToolbox {
 			delegate* unmanaged<IntPtr, long, int> inSetSizeFunc,
 			AudioFileType inFileType, AudioStreamBasicDescription* format, uint flags, IntPtr* id);
 
-		/// <param name="inFileType">To be added.</param>
-		///         <param name="format">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Create a new <see cref="AudioSource" /> instance, with the specified file type and format.</summary>
+		/// <param name="inFileType">The file type for the new audio source.</param>
+		/// <param name="format">The audio format for the new audio source.</param>
 		public AudioSource (AudioFileType inFileType, AudioStreamBasicDescription format)
 		{
 			Initialize (inFileType, format);
 		}
 
 		/// <summary>Constructor used when creating subclasses</summary>
-		///         <remarks>
-		/// 	  This constructor is provided as a convenience for
-		/// 	  developers that need to decouple the creation of the
-		/// 	  AudioSource from starting the read and write process.    Once you have created this object, you need to invoke the <see cref="AudioToolbox.AudioSource.Initialize(AudioToolbox.AudioFileType,AudioToolbox.AudioStreamBasicDescription)" /> method to complete the setup.
-		/// 	</remarks>
+		/// <remarks>
+		///   This constructor is provided as a convenience for developers that need to decouple the creation of the <see cref="AudioSource" /> from starting the read and write process.
+		///   Once you have created this object, you need to invoke the <see cref="Initialize(AudioToolbox.AudioFileType,AudioToolbox.AudioStreamBasicDescription)" /> method to complete the setup.
+		/// </remarks>
 		public AudioSource ()
 		{
 		}
 
-		/// <param name="inFileType">To be added.</param>
-		///         <param name="format">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Initialize the audio source with the specified file type and format.</summary>
+		/// <param name="inFileType">The file type for the new audio source.</param>
+		/// <param name="format">The audio format for the new audio source.</param>
 		protected void Initialize (AudioFileType inFileType, AudioStreamBasicDescription format)
 		{
 			gch = GCHandle.Alloc (this);
-			int code = 0;
+			AudioFileError code;
 			IntPtr handle = IntPtr.Zero;
 			unsafe {
 				code = AudioFileInitializeWithCallbacks (GCHandle.ToIntPtr (gch), &SourceRead, &SourceWrite, &SourceGetSize, &SourceSetSize, inFileType, &format, 0, &handle);
@@ -2774,11 +2672,11 @@ namespace AudioToolbox {
 				InitializeHandle (handle);
 				return;
 			}
-			throw new Exception (String.Format ("Unable to create AudioSource, code: 0x{0:x}", code));
+			throw new Exception (String.Format ("Unable to create AudioSource: {0}", code));
 		}
 
 		[DllImport (Constants.AudioToolboxLibrary)]
-		extern static unsafe int AudioFileOpenWithCallbacks (
+		extern static unsafe AudioFileError AudioFileOpenWithCallbacks (
 			IntPtr inClientData,
 			delegate* unmanaged<IntPtr, long, int, IntPtr, int*, int> inReadFunc,
 			delegate* unmanaged<IntPtr, long, int, IntPtr, int*, int> inWriteFunc,
@@ -2786,21 +2684,19 @@ namespace AudioToolbox {
 			delegate* unmanaged<IntPtr, long, int> inSetSizeFunc,
 			AudioFileType inFileTypeHint, IntPtr* outAudioFile);
 
-		/// <param name="fileTypeHint">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Create a new <see cref="AudioSource" /> instance, with the specified file type.</summary>
+		/// <param name="fileTypeHint">The file type for the new audio source.</param>
 		public AudioSource (AudioFileType fileTypeHint)
 		{
 			Open (fileTypeHint);
 		}
 
-		/// <param name="fileTypeHint">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Open the audio source for reading and/or writing.</summary>
+		/// <param name="fileTypeHint">The file type for the audio source.</param>
 		protected void Open (AudioFileType fileTypeHint)
 		{
 			gch = GCHandle.Alloc (this);
-			int code = 0;
+			AudioFileError code;
 			IntPtr handle = IntPtr.Zero;
 			unsafe {
 				code = AudioFileOpenWithCallbacks (GCHandle.ToIntPtr (gch), &SourceRead, &SourceWrite, &SourceGetSize, &SourceSetSize, fileTypeHint, &handle);
@@ -2809,7 +2705,7 @@ namespace AudioToolbox {
 				InitializeHandle (handle);
 				return;
 			}
-			throw new Exception (String.Format ("Unable to create AudioSource, code: 0x{0:x}", code));
+			throw new Exception (String.Format ("Unable to create AudioSource: {0}", code));
 		}
 	}
 }

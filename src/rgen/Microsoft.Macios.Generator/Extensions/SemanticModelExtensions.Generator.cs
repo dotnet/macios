@@ -12,10 +12,25 @@ namespace Microsoft.Macios.Generator.Extensions;
 
 static partial class SemanticModelExtensions {
 
+	/// <summary>
+	/// Extracts symbol data from a type declaration including binding information, type details, and availability.
+	/// </summary>
+	/// <param name="self">The semantic model to analyze.</param>
+	/// <param name="declaration">The type declaration syntax to process.</param>
+	/// <param name="bindingType">The type of binding to extract data for.</param>
+	/// <param name="name">When this method returns, contains the name of the symbol.</param>
+	/// <param name="baseClass">When this method returns, contains the base class name if present; otherwise, null.</param>
+	/// <param name="typeInfo">When this method returns, contains the type information for named types; otherwise, default.</param>
+	/// <param name="interfaces">When this method returns, contains the implemented interface names.</param>
+	/// <param name="outerClasses">When this method returns, contains the outer class hierarchy.</param>
+	/// <param name="namespaces">When this method returns, contains the namespace hierarchy.</param>
+	/// <param name="symbolAvailability">When this method returns, contains the platform availability information.</param>
+	/// <param name="bindingInfo">When this method returns, contains the binding-specific information based on the binding type.</param>
 	public static void GetSymbolData (this SemanticModel self, BaseTypeDeclarationSyntax declaration,
 		BindingType bindingType,
 		out string name,
 		out string? baseClass,
+		out TypeInfo typeInfo,
 		out ImmutableArray<string> interfaces,
 		out ImmutableArray<OuterClass> outerClasses,
 		out ImmutableArray<string> namespaces,
@@ -23,6 +38,8 @@ static partial class SemanticModelExtensions {
 		out BindingInfo bindingInfo)
 	{
 		var symbol = self.GetDeclaredSymbol (declaration);
+		// only named types have type info
+		typeInfo = (symbol is INamedTypeSymbol namedTypeSymbol) ? new (namedTypeSymbol) : TypeInfo.Default;
 		GetSymbolData (symbol, out name, out baseClass, out interfaces, out outerClasses, out namespaces, out symbolAvailability);
 		if (symbol is null)
 			bindingInfo = default;

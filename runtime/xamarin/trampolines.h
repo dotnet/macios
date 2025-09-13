@@ -43,6 +43,7 @@ GCHandle	xamarin_get_gchandle_trampoline (id self, SEL sel);
 bool		xamarin_set_gchandle_trampoline (id self, SEL sel, GCHandle gc_handle, enum XamarinGCHandleFlags flags, struct NSObjectData *data);
 enum XamarinGCHandleFlags xamarin_get_flags_trampoline (id self, SEL sel);
 void		xamarin_set_flags_trampoline (id self, SEL sel, enum XamarinGCHandleFlags flags);
+struct NSObjectData * xamarin_get_nsobject_data_trampoline (id self, SEL sel);
 
 int 		xamarin_get_frame_length (id self, SEL sel);
 bool		xamarin_collapse_struct_name (const char *type, char struct_name[], int max_char, GCHandle *exception_gchandle);

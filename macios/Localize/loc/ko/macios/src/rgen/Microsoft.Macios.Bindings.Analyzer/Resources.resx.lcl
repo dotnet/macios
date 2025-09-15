@@ -1096,6 +1096,33 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";RBI0040Description" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[No result type or result type name was provided for an async method.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[비동기 메서드에 대한 결과 형식 또는 결과 형식 이름이 제공되지 않았습니다.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";RBI0040MessageFormat" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The method '{0}' was marked as async and has multiple parameters but does not provide a return type name, a nameless tuple will be generated for the async method]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA['{0}' 메서드가 비동기로 표시되었으며 매개 변수가 여러 개인데 반환 형식 이름을 제공하지 않습니다. 비동기 메서드에 대해 이름 없는 튜플이 생성됩니다.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";RBI0040Title" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Not specified return type]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[지정되지 않은 반환 형식]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
     </Item>
   </Item>
 </LCX>

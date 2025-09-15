@@ -321,7 +321,7 @@ readonly partial struct Method {
 		// which is an uninitialized instance
 		if (!IsFactory)
 			return Constructor.Default;
-		
+
 		// we need to create a constructor with  the same modifiers, parameters and the availability of the method 
 		// since there is no guarantee that the target class has the same availability as the method
 		return new(

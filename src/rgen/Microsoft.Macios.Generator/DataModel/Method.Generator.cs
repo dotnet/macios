@@ -324,10 +324,10 @@ readonly partial struct Method {
 
 		// we need to create a constructor with  the same modifiers, parameters and the availability of the method 
 		// since there is no guarantee that the target class has the same availability as the method
-		return new(
+		return new (
 			type: targetClass,
 			exportData: IsThreadSafe
-				? new (ExportMethodData.Selector) { Flags = ObjCBindings.Constructor.IsThreadSafe } 
+				? new (ExportMethodData.Selector) { Flags = ObjCBindings.Constructor.IsThreadSafe }
 				: new (ExportMethodData.Selector),
 			symbolAvailability: SymbolAvailability,
 			attributes: [], // we do not really care about the attributes on the constructor that is going to be inlined

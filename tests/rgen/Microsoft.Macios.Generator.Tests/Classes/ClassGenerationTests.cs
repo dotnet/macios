@@ -124,7 +124,7 @@ public class ClassGenerationTests : BaseGeneratorTestClass {
 			new (ApplePlatform.TVOS, "InlineProtocolConstructors", "InlineProtocolConstructors.cs", "ExpectedInlineProtocolConstructors.cs"),
 			new (ApplePlatform.MacCatalyst, "InlineProtocolConstructors", "InlineProtocolConstructors.cs", "ExpectedInlineProtocolConstructors.cs"),
 			new (ApplePlatform.MacOSX, "InlineProtocolConstructors", "InlineProtocolConstructors.cs", "ExpectedInlineProtocolConstructors.cs"),
-			
+
 			new (ApplePlatform.iOS, "UIKitInlineProtocolConstructors", "UIKitInlineProtocolConstructors.cs", "ExpectedUIKitInlineProtocolConstructors.cs"),
 			new (ApplePlatform.TVOS, "UIKitInlineProtocolConstructors", "UIKitInlineProtocolConstructors.cs", "ExpectedUIKitInlineProtocolConstructors.cs"),
 			new (ApplePlatform.MacCatalyst, "UIKitInlineProtocolConstructors", "UIKitInlineProtocolConstructors.cs", "ExpectedUIKitInlineProtocolConstructors.cs"),

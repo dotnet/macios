@@ -72,7 +72,7 @@ class ClassEmitter : IClassEmitter {
 		var uiThreadCheck = (context.NeedsThreadChecks)
 			? EnsureUiThread (context.RootContext.CurrentPlatform)
 			: null;
-		
+
 		// When dealing with constructors we cannot sort them by name because the name is always the same as the class
 		// instead we will sort them by the selector name so that we will always generate the constructors in the same order
 		foreach (var constructor in allConstructors.Values.OrderBy (c => c.ExportMethodData.Selector)) {
@@ -103,7 +103,7 @@ class ClassEmitter : IClassEmitter {
 					constructorBlock.Write (argument.Initializers, verifyTrivia: false);
 					constructorBlock.Write (argument.PreCallConversion, verifyTrivia: false);
 				}
-				
+
 				// simply call the send or sendSuper accordingly
 				constructorBlock.WriteRaw (
 $@"if (IsDirectBinding) {{

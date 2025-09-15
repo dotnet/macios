@@ -27,7 +27,7 @@ readonly partial struct Constructor : IEquatable<Constructor> {
 	/// Gets a value indicating whether the instance is the default, uninitialized instance.
 	/// </summary>
 	public bool IsNullOrDefault => State == StructState.Default;
-	
+
 	/// <summary>
 	/// Gets or sets a value indicating whether the constructor comes from a protocol factory method.
 	/// </summary>
@@ -57,7 +57,7 @@ readonly partial struct Constructor : IEquatable<Constructor> {
 	/// Parameters list.
 	/// </summary>
 	public ImmutableArray<Parameter> Parameters { get; init; } = [];
-	
+
 	Constructor (StructState state)
 	{
 		State = state;

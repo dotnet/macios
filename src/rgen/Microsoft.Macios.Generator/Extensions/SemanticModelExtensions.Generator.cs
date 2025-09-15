@@ -12,7 +12,7 @@ using TypeInfo = Microsoft.Macios.Generator.DataModel.TypeInfo;
 namespace Microsoft.Macios.Generator.Extensions;
 
 static partial class SemanticModelExtensions {
-	
+
 	/// <summary>
 	/// Retrieves all the data from a symbol needed for a binding/transformation.
 	/// </summary>
@@ -47,8 +47,8 @@ static partial class SemanticModelExtensions {
 					// the inline constructors
 					foreach (var member in symbolInterface.GetMembers ()) {
 						if (member is IMethodSymbol methodSymbol &&
-						    Method.TryCreate (methodSymbol, context, out var method) &&
-						    method.Value.IsFactory) {
+							Method.TryCreate (methodSymbol, context, out var method) &&
+							method.Value.IsFactory) {
 							var constructor = method.Value.ToConstructor (name);
 							if (!constructor.IsNullOrDefault)
 								protocolConstructorsBucket.Add (constructor);
@@ -62,7 +62,7 @@ static partial class SemanticModelExtensions {
 		protocolConstructors = protocolConstructorsBucket.ToImmutable ();
 		(namespaces, outerClasses) = GetNamespaceArrayAndOuterClasses (symbol);
 	}
-	
+
 	/// <summary>
 	/// Extracts symbol data from a type declaration including binding information, type details, and availability.
 	/// </summary>

@@ -238,12 +238,12 @@ readonly partial struct Binding {
 			}
 		}
 	}
-	
+
 	/// <summary>
 	/// Returns all the selectors for the constructors.
 	/// </summary>
 	public ImmutableArray<string> ConstructorSelectors => [.. constructorIndex.Keys];
-	
+
 	readonly Dictionary<string, int> protocolConstructorIndex = new ();
 	readonly ImmutableArray<Constructor> protocolConstructors = [];
 

@@ -98,7 +98,7 @@ readonly partial struct Binding {
 			EnumMember? enumMember;
 			// try and compute the library for this enum member
 			if (fieldData is null || !context.TryComputeLibraryName (fieldData.Value.LibraryName, Namespace [^1],
-				    out string? libraryName, out string? libraryPath)) {
+					out string? libraryName, out string? libraryPath)) {
 				// create a member for those enum values that do not have a backing field, we will
 				// set the binding type to regular enum if we do not know it yet
 				if (bindingType == BindingType.Unknown) {

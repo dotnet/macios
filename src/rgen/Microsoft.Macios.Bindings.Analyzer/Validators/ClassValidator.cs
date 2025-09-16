@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -32,10 +33,11 @@ file class AsyncNameComparer : IEqualityComparer<(string, TypeInfo [])> {
 	/// </summary>
 	public int GetHashCode ((string, TypeInfo []) obj)
 	{
-		int hash = obj.Item1.GetHashCode ();
+		var hash = new HashCode ();
+		hash.Add (obj.Item1.GetHashCode ());
 		foreach (var t in obj.Item2)
-			hash = hash * 31 + (t.GetHashCode ());
-		return hash;
+			hash.Add (t.GetHashCode ());
+		return hash.ToHashCode ();
 	}
 }
 

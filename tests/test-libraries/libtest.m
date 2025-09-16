@@ -1428,4 +1428,47 @@ static void block_called ()
 }
 @end
 
+@implementation WeakReferencedObject : NSObject
+-(int) doSomething;
+{
+	return 666;
+}
+@end
+
+@implementation WeakReferenceHolder : NSObject
+-(id) init
+{
+	self.array = [NSPointerArray weakObjectsPointerArray];
+	return self;
+}
+
+-(void) addObject: (WeakReferencedObject *) obj
+{
+	[self.array addPointer: obj];
+}
+
+-(void) callDoSomething: (int*) nilObjectCount nonNilObjectCount: (int *) nonNilObjectCount gotExpectedResponse: (int *) gotExpectedResponse gotUnexpectedResponse: (int *) gotUnexpectedResponse gotFinalizedResponse: (int *) gotFinalizedResponse
+{
+	for (int i = 0; i < self.array.count; i++) {
+		WeakReferencedObject *obj = (WeakReferencedObject *) [self.array pointerAtIndex: (NSUInteger) i];
+		if (obj) {
+			*nonNilObjectCount= *nonNilObjectCount + 1;
+			int rv = [obj doSomething];
+			if (rv == 666) {
+				*gotUnexpectedResponse = *gotUnexpectedResponse + 1;
+			} else if (rv == 314) {
+				*gotFinalizedResponse = *gotFinalizedResponse + 1;
+			} else if (rv == 42) {
+				*gotExpectedResponse = *gotExpectedResponse + 1;
+			} else {
+				abort ();
+			}
+		} else {
+			*nilObjectCount = *nilObjectCount + 1;
+		}
+	}
+}
+
+@end
+
 #include "libtest.decompile.m"

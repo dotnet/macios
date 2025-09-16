@@ -1,8 +1,9 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
+
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
@@ -18,8 +19,30 @@ using static Microsoft.Macios.Generator.Emitters.BindingSyntaxFactory;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using Constructor = ObjCBindings.Constructor;
 using Property = Microsoft.Macios.Generator.DataModel.Property;
+using TypeInfo = Microsoft.Macios.Generator.DataModel.TypeInfo;
 
 namespace Microsoft.Macios.Generator.Emitters;
+
+file class ConstructorParameterComparer : IEqualityComparer<ImmutableArray<TypeInfo>> {
+	/// <summary>
+	/// Determines equality by requiring the same method name and identical ordered parameter type sequence.
+	/// </summary>
+	public bool Equals (ImmutableArray<TypeInfo> x, ImmutableArray<TypeInfo> y)
+	{
+		return x.SequenceEqual (y);
+	}
+
+	/// <summary>
+	/// Computes a hash code combining the method name and ordered parameter types.
+	/// </summary>
+	public int GetHashCode (ImmutableArray<TypeInfo> obj)
+	{
+		var hash = new HashCode ();
+		foreach (var t in obj)
+			hash.Add (t);
+		return hash.ToHashCode ();
+	}
+}
 
 /// <summary>
 /// Emitter for Objective-C classes.
@@ -55,17 +78,19 @@ class ClassEmitter : IClassEmitter {
 	void EmitConstructors (in BindingContext context, TabbedWriter<StringWriter> classBlock)
 	{
 		// merge the constructors and the protocol constructors for the current class, use a dict to avoid duplicates
-		var allConstructors = new Dictionary<string, DataModel.Constructor> ();
+		var allConstructors = new Dictionary<ImmutableArray<TypeInfo>, DataModel.Constructor> (new ConstructorParameterComparer ());
 		foreach (var constructor in context.Changes.Constructors) {
 			if (constructor.Selector is null)
 				continue;
-			allConstructors.TryAdd (constructor.Selector, constructor);
+			var key = constructor.Parameters.Select (x => x.Type).ToImmutableArray ();
+			allConstructors.TryAdd (key, constructor);
 		}
 
 		foreach (var constructor in context.Changes.ProtocolConstructors) {
 			if (constructor.Selector is null)
 				continue;
-			allConstructors.TryAdd (constructor.Selector, constructor);
+			var key = constructor.Parameters.Select (x => x.Type).ToImmutableArray ();
+			allConstructors.TryAdd (key, constructor);
 		}
 
 		// create the ui thread check to be used in the constructors that come from a protocol factory method
@@ -147,12 +172,12 @@ $@"if (IsDirectBinding) {{
 					: notification.ExportFieldData.FieldData.Type;
 				// use the raw writer which makes it easier to read in this case
 				notificationClass.WriteRaw (
-@$"public static {NSObject} {name} ({EventHandler}<{eventType}> handler)
+@$"public static {NSObject} {name} ({BindingSyntaxFactory.EventHandler}<{eventType}> handler)
 {{
 	return {notificationCenter}.AddObserver ({notification.Name}, notification => handler (null, new {eventType} (notification)));
 }}
 
-public static NSObject {name} ({NSObject} objectToObserve, {EventHandler}<{eventType}> handler)
+public static NSObject {name} ({NSObject} objectToObserve, {BindingSyntaxFactory.EventHandler}<{eventType}> handler)
 {{
 	return {notificationCenter}.AddObserver ({notification.Name}, notification => handler (null, new {eventType} (notification)), objectToObserve);
 }}
@@ -218,8 +243,8 @@ return del;
 			foreach (var eventInfo in property.ExportPropertyData.StrongDelegateType.Events) {
 				// create the event args type name
 				var eventHandler = eventInfo.EventArgsType is null
-					? EventHandler.ToString ()
-					: $"{EventHandler}<{eventInfo.EventArgsType}>";
+					? BindingSyntaxFactory.EventHandler.ToString ()
+					: $"{BindingSyntaxFactory.EventHandler}<{eventInfo.EventArgsType}>";
 				using (var eventBlock =
 					   classBlock.CreateBlock ($"public event {eventHandler} {eventInfo.Name}", true)) {
 					eventBlock.WriteLine ($"add {{ {ensureMethod} ()!.{eventInfo.Name.Decapitalize ()} += value; }}");

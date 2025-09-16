@@ -856,7 +856,7 @@ public partial class TestClass{
 				DiagnosticSeverity.Warning,
 				"The method 'GetCount' was marked as async and has multiple parameters but does not provide a return type name, a nameless tuple will be generated for the async method"
 			];
-			
+
 			// correct async method but we are missing the return type
 			yield return [
 				@"

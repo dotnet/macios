@@ -15,7 +15,7 @@ static class BindingExtensions {
 	public static bool TryGetEnumValue (this Binding self, string selector, out EnumMember? enumMember)
 	{
 		var dict = self.EnumMembers.ToDictionary (
-			keySelector: p => p.Selector!, 
+			keySelector: p => p.Selector!,
 			elementSelector: p => new EnumMember? (p));
 		return dict.TryGetValue (selector, out enumMember);
 	}
@@ -23,7 +23,7 @@ static class BindingExtensions {
 	public static bool TryGetProperty (this Binding self, string selector, out Property? property)
 	{
 		var dict = self.Properties.ToDictionary (
-			keySelector: p => p.Selector!, 
+			keySelector: p => p.Selector!,
 			elementSelector: p => new Property? (p));
 		return dict.TryGetValue (selector, out property);
 	}
@@ -31,7 +31,7 @@ static class BindingExtensions {
 	public static bool TryGetConstructor (this Binding self, string selector, out Constructor? constructor)
 	{
 		var dict = self.Constructors.ToDictionary (
-			keySelector: p => p.Selector!, 
+			keySelector: p => p.Selector!,
 			elementSelector: p => new Constructor? (p));
 		return dict.TryGetValue (selector, out constructor);
 	}
@@ -39,7 +39,7 @@ static class BindingExtensions {
 	public static bool TryGetMethod (this Binding self, string selector, out Method? method)
 	{
 		var dict = self.Methods.ToDictionary (
-			keySelector: p => p.Selector!, 
+			keySelector: p => p.Selector!,
 			elementSelector: p => new Method? (p));
 		return dict.TryGetValue (selector, out method);
 	}
@@ -47,7 +47,7 @@ static class BindingExtensions {
 	public static bool TryGetEvent (this Binding self, string selector, out Event? @event)
 	{
 		var dict = self.Events.ToDictionary (
-			keySelector: p => p.Name, 
+			keySelector: p => p.Name,
 			elementSelector: p => new Event? (p));
 		return dict.TryGetValue (selector, out @event);
 	}

@@ -46,8 +46,8 @@ static partial class SemanticModelExtensions {
 					// get the constructors for the protocol binding info to get its methods and from those
 					// the inline constructors
 					foreach (var member in symbolInterface.GetMembers ()) {
-						if (member is IMethodSymbol methodSymbol && 
-						    methodSymbol.HasAttribute (AttributesNames.ExportMethodAttribute) &&
+						if (member is IMethodSymbol methodSymbol &&
+							methodSymbol.HasAttribute (AttributesNames.ExportMethodAttribute) &&
 							Method.TryCreate (methodSymbol, context, out var method) &&
 							method.Value.IsFactory) {
 							var constructor = method.Value.ToConstructor (name);

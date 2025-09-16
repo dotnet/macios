@@ -23,37 +23,37 @@ public class PlatformAvailabilityToStringTests {
 			builder.Clear ();
 			builder.AddSupportedVersion (new Version (16, 0));
 			yield return [builder.ToImmutable (), "{ Platform: 'iOS', Supported: '16.0', Unsupported: [], Obsoleted: [] }"];
-			
+
 			builder.Clear ();
 			builder.AddUnsupportedVersion (new Version (16, 0), null);
 			yield return [builder.ToImmutable (), "{ Platform: 'iOS', Supported: '0.0', Unsupported: ['16.0': 'null'], Obsoleted: [] }"];
-			
+
 			builder.Clear ();
 			builder.AddUnsupportedVersion (new Version (16, 0), "Not supported.");
 			yield return [builder.ToImmutable (), "{ Platform: 'iOS', Supported: '0.0', Unsupported: ['16.0': 'Not supported.'], Obsoleted: [] }"];
-			
+
 			builder.Clear ();
 			builder.AddUnsupportedVersion (new Version (16, 0), "Not supported.");
 			builder.AddUnsupportedVersion (new Version (18, 0), "Not supported.");
 			yield return [builder.ToImmutable (), "{ Platform: 'iOS', Supported: '0.0', Unsupported: ['16.0': 'Not supported.', '18.0': 'Not supported.'], Obsoleted: [] }"];
-			
+
 			builder.Clear ();
 			builder.AddObsoletedVersion (new Version (16, 0), null, null);
 			yield return [builder.ToImmutable (), "{ Platform: 'iOS', Supported: '', Unsupported: [], Obsoleted: ['16.0': ('null', 'null')] }"];
-			
+
 			builder.Clear ();
 			builder.AddObsoletedVersion (new Version (16, 0), "Obsoleted method", null);
 			yield return [builder.ToImmutable (), "{ Platform: 'iOS', Supported: '', Unsupported: [], Obsoleted: ['16.0': ('Obsoleted method', 'null')] }"];
-			
+
 			builder.Clear ();
 			builder.AddObsoletedVersion (new Version (16, 0), "Obsoleted method", "https://bing.com");
 			yield return [builder.ToImmutable (), "{ Platform: 'iOS', Supported: '', Unsupported: [], Obsoleted: ['16.0': ('Obsoleted method', 'https://bing.com')] }"];
-			
+
 			builder.Clear ();
 			builder.AddObsoletedVersion (new Version (16, 0), "Obsoleted method", "https://bing.com");
 			builder.AddObsoletedVersion (new Version (18, 0), "Obsoleted method", "https://bing.com");
 			yield return [builder.ToImmutable (), "{ Platform: 'iOS', Supported: '', Unsupported: [], Obsoleted: ['16.0': ('Obsoleted method', 'https://bing.com'), '18.0': ('Obsoleted method', 'https://bing.com')] }"];
-			
+
 			builder.Clear ();
 			builder.AddSupportedVersion (new Version (16, 0));
 			builder.AddUnsupportedVersion (new Version (16, 0), "Not supported.");

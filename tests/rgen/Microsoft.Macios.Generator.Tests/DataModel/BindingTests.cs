@@ -455,7 +455,7 @@ namespace NS {
 }
 ";
 			yield return [versionConstraints, ApplePlatform.iOS, false, 1, 1, 1];
-			
+
 			// not supported platform
 			var notSupportedPlatform = @"
 using System;
@@ -482,7 +482,7 @@ namespace NS {
 }
 ";
 			yield return [notSupportedPlatform, ApplePlatform.TVOS, true, 0, 0, 0];
-			
+
 			// not supported platform version. It means that we do not return the default binding, just
 			// that we have a unsupported version.
 			var notSupportedPlatformVersion = @"
@@ -510,7 +510,7 @@ namespace NS {
 }
 ";
 			yield return [notSupportedPlatformVersion, ApplePlatform.TVOS, false, 1, 1, 1];
-			
+
 			var complexExample = @"
 using System;
 using System.Runtime.Versioning;

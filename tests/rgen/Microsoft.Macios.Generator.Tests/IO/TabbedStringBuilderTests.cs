@@ -461,7 +461,7 @@ Because we are using a raw string  we expected:
 			builder.Add (new UnsupportedOSPlatformData ("ios12.0"));
 			builder.Add (new UnsupportedOSPlatformData ("tvos12.0"));
 			builder.Add (new UnsupportedOSPlatformData ("macos"));
-			yield return [builder.ToImmutable (), "[UnsupportedOSPlatform (\"macos\")]\n[UnsupportedOSPlatform (\"ios12.0\")]\n[UnsupportedOSPlatform (\"tvos12.0\")]\n"];
+			yield return [builder.ToImmutable (), "[UnsupportedOSPlatform (\"macos\")]\n[SupportedOSPlatform (\"ios\")]\n[UnsupportedOSPlatform (\"ios12.0\")]\n[SupportedOSPlatform (\"tvos\")]\n[UnsupportedOSPlatform (\"tvos12.0\")]\n"];
 			builder.Clear ();
 		}
 	}

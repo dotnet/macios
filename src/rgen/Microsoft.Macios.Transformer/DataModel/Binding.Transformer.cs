@@ -54,7 +54,7 @@ readonly partial struct Binding {
 		string fullyQualifiedSymbol,
 		BindingInfo bindingInfo,
 		SymbolAvailability symbolAvailability,
-		Dictionary<string, List<AttributeData>> attributes)
+		Dictionary<string, List<AttributeData>> attributes) : this (StructState.Initialized)
 	{
 		this.name = name;
 		namespaces = @namespace;
@@ -64,7 +64,8 @@ readonly partial struct Binding {
 		FullyQualifiedSymbol = fullyQualifiedSymbol;
 	}
 
-	internal Binding (EnumDeclarationSyntax enumDeclaration, INamedTypeSymbol symbol, in RootContext context)
+	internal Binding (EnumDeclarationSyntax enumDeclaration, INamedTypeSymbol symbol,
+		in RootContext context) : this (StructState.Initialized)
 	{
 		SemanticModelExtensions.GetSymbolData (
 			symbol: symbol,
@@ -234,7 +235,8 @@ readonly partial struct Binding {
 	/// <param name="interfaceDeclarationSyntax">An interface that declares a binding.</param>
 	/// <param name="symbol"></param>
 	/// <param name="context">The current compilation context.</param>
-	internal Binding (InterfaceDeclarationSyntax interfaceDeclarationSyntax, INamedTypeSymbol symbol, in RootContext context)
+	internal Binding (InterfaceDeclarationSyntax interfaceDeclarationSyntax, INamedTypeSymbol symbol,
+		in RootContext context) : this (StructState.Initialized)
 	{
 		// basic properties of the binding
 		FullyQualifiedSymbol = interfaceDeclarationSyntax.GetFullyQualifiedIdentifier (context.SemanticModel);

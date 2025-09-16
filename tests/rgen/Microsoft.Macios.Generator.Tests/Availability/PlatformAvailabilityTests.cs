@@ -112,6 +112,7 @@ public class PlatformAvailabilityTests {
 		Assert.Contains (defaultVersion, availability.UnsupportedVersions.Keys);
 		Assert.Single (availability.UnsupportedVersions);
 		Assert.Null (availability.UnsupportedVersions [defaultVersion]);
+		Assert.Null (availability.SupportedVersion);
 	}
 
 	[Theory]
@@ -129,6 +130,7 @@ public class PlatformAvailabilityTests {
 		Assert.Contains (defaultVersion, availability.UnsupportedVersions.Keys);
 		Assert.Single (availability.UnsupportedVersions);
 		Assert.Equal (message, availability.UnsupportedVersions [defaultVersion]);
+		Assert.Null (availability.SupportedVersion);
 	}
 
 	[Theory]
@@ -150,6 +152,8 @@ public class PlatformAvailabilityTests {
 		Assert.Contains (defaultVersion, availability.UnsupportedVersions.Keys);
 		Assert.Single (availability.UnsupportedVersions);
 		Assert.Equal (message, availability.UnsupportedVersions [defaultVersion]);
+		// we fully unsupported the platform
+		Assert.Null (availability.SupportedVersion);
 	}
 
 	[Theory]

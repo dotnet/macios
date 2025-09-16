@@ -11,6 +11,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Macios.Generator.Availability;
 using Microsoft.Macios.Generator.Context;
 using Microsoft.Macios.Generator.Extensions;
+using Xamarin.Utils;
 
 namespace Microsoft.Macios.Generator.DataModel;
 
@@ -263,7 +264,7 @@ readonly partial struct Binding {
 	/// <param name="fullyQualifiedSymbol">The fully qualified name of the symbol.</param>
 	/// <param name="symbolAvailability">The platform availability of the named symbol.</param>
 	internal Binding (BindingInfo bindingInfo, string name, ImmutableArray<string> @namespace,
-		string fullyQualifiedSymbol, SymbolAvailability symbolAvailability)
+		string fullyQualifiedSymbol, SymbolAvailability symbolAvailability) : this (StructState.Initialized)
 	{
 		this.bindingInfo = bindingInfo;
 		this.name = name;
@@ -278,7 +279,8 @@ readonly partial struct Binding {
 	/// <param name="enumDeclaration">The enum declaration that triggered the change.</param>
 	/// <param name="context">The root binding context of the current compilation.</param>
 	/// <param name="validateMembers">If the struct should validate the members from the declarations. Defaults to true.</param>
-	Binding (EnumDeclarationSyntax enumDeclaration, RootContext context, bool validateMembers = true)
+	Binding (EnumDeclarationSyntax enumDeclaration, RootContext context,
+		bool validateMembers = true) : this (StructState.Initialized)
 	{
 		context.SemanticModel.GetSymbolData (
 			declaration: enumDeclaration,
@@ -344,7 +346,8 @@ readonly partial struct Binding {
 	/// <param name="classDeclaration">The class declaration that triggered the change.</param>
 	/// <param name="context">The root binding context of the current compilation.</param>
 	/// <param name="validateMembers">If the struct should validate the members from the declarations. Defaults to true.</param>
-	Binding (ClassDeclarationSyntax classDeclaration, RootContext context, bool validateMembers = true)
+	Binding (ClassDeclarationSyntax classDeclaration, RootContext context,
+		bool validateMembers = true) : this (StructState.Initialized)
 	{
 		context.SemanticModel.GetSymbolData (
 			declaration: classDeclaration,
@@ -388,7 +391,8 @@ readonly partial struct Binding {
 	/// <param name="interfaceDeclaration">The interface declaration that triggered the change.</param>
 	/// <param name="context">The root binding context of the current compilation.</param>
 	/// <param name="validateMembers">If the struct should validate the members from the declarations. Defaults to true.</param>
-	Binding (InterfaceDeclarationSyntax interfaceDeclaration, RootContext context, bool validateMembers = true)
+	Binding (InterfaceDeclarationSyntax interfaceDeclaration, RootContext context,
+		bool validateMembers = true) : this (StructState.Initialized)
 	{
 		context.SemanticModel.GetSymbolData (
 			declaration: interfaceDeclaration,
@@ -465,6 +469,7 @@ readonly partial struct Binding {
 	public override string ToString ()
 	{
 		var sb = new StringBuilder ("Changes: {");
+		sb.Append ($"State: {State}, ");
 		sb.Append ($"BindingData: '{BindingInfo}', Name: '{Name}', Namespace: [");
 		sb.AppendJoin (", ", Namespace);
 		sb.Append ($"], FullyQualifiedSymbol: '{FullyQualifiedSymbol}', Base: '{Base ?? "null"}', SymbolAvailability: {SymbolAvailability}, ");

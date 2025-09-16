@@ -129,6 +129,16 @@ readonly partial struct SymbolAvailability : IEquatable<SymbolAvailability> {
 		return new (merged);
 	}
 
+	/// <summary>
+	/// Returns true if the symbol is supported in the given platform.
+	/// </summary>
+	public bool IsSupported (ApplePlatform platform)
+	{
+		// if the platform is not present, it is supported by default
+		var availability = this [platform];
+		return availability is null || availability.Value.IsSupported;
+	}
+
 	/// <inheritdoc />
 	public bool Equals (SymbolAvailability other)
 	{

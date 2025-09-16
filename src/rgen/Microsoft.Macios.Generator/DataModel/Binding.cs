@@ -9,8 +9,10 @@ using System.Runtime.InteropServices;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.Macios.Generator.Attributes;
 using Microsoft.Macios.Generator.Availability;
 using Microsoft.Macios.Generator.Context;
+using Xamarin.Utils;
 
 namespace Microsoft.Macios.Generator.DataModel;
 
@@ -20,6 +22,22 @@ namespace Microsoft.Macios.Generator.DataModel;
 /// </summary>
 [StructLayout (LayoutKind.Auto)]
 readonly partial struct Binding {
+	
+	/// <summary>
+	/// The initialization state of the struct.
+	/// </summary>
+	StructState State { get; init; } = StructState.Default;
+	
+
+	/// <summary>
+	/// Gets the default, uninitialized instance of <see cref="ExportData{T}"/>.
+	/// </summary>
+	public static Binding Default { get; } = new (StructState.Default);
+	
+	/// <summary>
+	/// Gets a value indicating whether the instance is the default, uninitialized instance.
+	/// </summary>
+	public bool IsNullOrDefault => State == StructState.Default;
 
 	readonly string name = string.Empty;
 	/// <summary>
@@ -392,4 +410,44 @@ readonly partial struct Binding {
 	/// <returns>True if the method was found. False otherwise.</returns>
 	public bool TryGetMethod (string selector, out Method? method)
 		=> TryGetFromIndex (selector, methods, methodIndex, out method);
+
+	/// <summary>
+	/// Initializes a new instance of the <see cref="Binding"/> struct with a specific state.
+	/// </summary>
+	/// <param name="state">The initialization state of the struct.</param>
+	public Binding (StructState state)
+	{
+		State = state;
+		FullyQualifiedSymbol = string.Empty;
+	}
+	
+	/// <summary>
+	/// Creates a new binding containing only the members available for a specific platform.
+	/// </summary>
+	/// <param name="platform">The Apple platform to filter members for.</param>
+	/// <returns>
+	/// A new <see cref="Binding"/> instance with members filtered for the specified platform,
+	/// or the default binding if the type itself is not available on the platform.
+	/// </returns>
+	public Binding TrimForPlatform (ApplePlatform platform)
+	{
+		// if the binding is not available in the given platform, return an empty binding
+		if (!SymbolAvailability.IsSupported (platform))
+			return Default;
+		
+		// collect all the different members that we are going to keep and return the same data but
+		// without those members that are not available in the given platform
+		return this with {
+			EnumMembers = [..enumMembers.Where (m => m.SymbolAvailability.IsSupported (platform))],
+			Properties = [..properties.Where (p => p.SymbolAvailability.IsSupported (platform))],
+			ParentProtocolProperties = [..parentProperties.Where (p => p.SymbolAvailability.IsSupported (platform))],
+			StrongDictionaryProperties = [..strongDictproperties.Where (p => p.SymbolAvailability.IsSupported (platform))],
+			Constructors = [..constructors.Where (c => c.SymbolAvailability.IsSupported (platform))],
+			Events = [..events.Where (e => e.SymbolAvailability.IsSupported (platform))],
+			Methods = [..methods.Where (m => m.SymbolAvailability.IsSupported (platform))],
+			ParentProtocolMethods = [..parentMethods.Where (m => m.SymbolAvailability.IsSupported (platform))],
+		};
+
+	}
+
 }

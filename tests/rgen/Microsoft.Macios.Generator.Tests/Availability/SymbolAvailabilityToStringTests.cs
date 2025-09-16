@@ -43,7 +43,7 @@ public class SymbolAvailabilityToStringTests {
 			builder.AddSupportedVersion (ApplePlatform.iOS, new (16, 0));
 			builder.AddUnsupportedVersion (ApplePlatform.MacOSX, new (11, 0), null);
 			builder.AddSupportedVersion (ApplePlatform.MacCatalyst, new (16, 0));
-			yield return [builder.ToImmutable (), "[{ Platform: 'MacOSX', Supported: '', Unsupported: ['11.0': 'null'], Obsoleted: [] }, { Platform: 'iOS', Supported: '16.0', Unsupported: [], Obsoleted: [] }, { Platform: 'MacCatalyst', Supported: '16.0', Unsupported: [], Obsoleted: [] }]"];
+			yield return [builder.ToImmutable (), "[{ Platform: 'MacOSX', Supported: '0.0', Unsupported: ['11.0': 'null'], Obsoleted: [] }, { Platform: 'iOS', Supported: '16.0', Unsupported: [], Obsoleted: [] }, { Platform: 'MacCatalyst', Supported: '16.0', Unsupported: [], Obsoleted: [] }]"];
 		}
 
 		IEnumerator IEnumerable.GetEnumerator ()

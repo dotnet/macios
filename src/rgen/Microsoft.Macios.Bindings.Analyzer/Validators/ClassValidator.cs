@@ -318,36 +318,37 @@ sealed class ClassValidator : BindingValidator {
 		return diagnostics.Length == 0;
 	}
 
-	/// <summary>
-	/// Validates that required constructors are present for specific base classes.
-	/// Currently checks that UIView bindings include the initWithCoder: constructor.
-	/// </summary>
-	/// <param name="binding">The binding to validate.</param>
-	/// <param name="context">The root context for validation.</param>
-	/// <param name="diagnostics">When this method returns, contains diagnostics for any missing required constructors; otherwise, an empty array.</param>
-	/// <param name="location">The code location to be used for the diagnostics.</param>
-	/// <returns><c>true</c> if all required constructors are present; otherwise, <c>false</c>.</returns>
-	bool ValidConstructors (Binding binding, RootContext context,
+	bool ValidProtocolInlineConstructors (Binding binding, RootContext context,
 		out ImmutableArray<Diagnostic> diagnostics, Location? location = null)
 	{
 		diagnostics = [];
-		// in this case we want to make sure that some base constructors are present. At the moment we only care about 
-		// the initWithCoder: constructor from the UIView base class.
-		if (!binding.TypeInfo.IsView)
-			return true;
-		// get all the constructors and ensure that the initWithCoder: constructor is present
-		var hasInitWithFrame = binding.Constructors.Any (ctor => ctor.ExportMethodData.Selector == "initWithCoder:");
-		if (!hasInitWithFrame) {
-			// error, all UIView bindings must provide the initWithCoder: constructor to be valid
-			diagnostics = [
-				Diagnostic.Create (
-				descriptor: RBI0041,
-				location: location,
-				messageArgs: [
-					binding.Name,
-				])
-			];
+		// ensure that if there are any constructors that are going to be inlined from the protocols that they
+		// do not conflict with the constructors that are already defined in the class. This is a warning, and we only
+		// are about those constructors that have the same selectors. The user can disable the warning if he really has
+		var builder = ImmutableArray.CreateBuilder<Diagnostic> ();
+		// get all the selectors from the constructors defined in the class as well as the protocol ones and find
+		// the duplicates
+		var constructorSelectorsSet = binding.Constructors.ToDictionary (x => x.Selector!, x => x);
+		var duplicates = binding.ProtocolConstructors
+			.Where (x => x.Selector is not null && constructorSelectorsSet.ContainsKey (x.Selector))
+			.Select (x => x.Selector!)
+			.ToArray ();
+		if (duplicates.Length > 0) {
+			// we have duplicates, create a warning for each of them
+			foreach (var selector in duplicates) {
+				// use the class constructor location
+				var constructorLocation = constructorSelectorsSet.TryGetValue (selector, out var constructor)
+					? constructor.Location : location;
+				builder.Add (Diagnostic.Create (
+					descriptor: RBI0041, // The class '{0}' contains a constructor with the selector '{1}' that hides a inline constructor from a protocol
+					location: constructorLocation,
+					messageArgs: [
+						binding.Name,
+						selector,
+					]));
+			}
 		}
+		diagnostics = builder.ToImmutable ();
 		return diagnostics.Length == 0;
 	}
 
@@ -366,7 +367,7 @@ sealed class ClassValidator : BindingValidator {
 		AddGlobalStrategy ([RBI0034], SelectorsAreUnique);
 
 		// validate that we have the required constructors for certain base classes like UIView
-		AddGlobalStrategy ([RBI0041], ValidConstructors);
+		AddGlobalStrategy ([RBI0041], ValidProtocolInlineConstructors);
 
 		// validate async methods. This is a global strategy because it needs to look at all the methods in the binding
 		// are validated together so that async methods do not have the same names

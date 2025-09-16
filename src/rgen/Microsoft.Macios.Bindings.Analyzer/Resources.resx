@@ -550,14 +550,14 @@
     <!-- RBI0040 -->
     
     <data name="RBI0041Description" xml:space="preserve">
-        <value>UIView subclasses must have a initWithCoder: constructor.</value>
+        <value>Protocol inline constructor is hidden.</value>
     </data>
     <data name="RBI0041MessageFormat" xml:space="preserve">
-        <value>The class '{0}' inherits from UIView but does not expose a 'initWithCoder:' constructor</value>
-        <comment>{0} is the name of the class.</comment>
+        <value>The class '{0}' contains a constructor with the selector '{1}' that hides a inline constructor from a protocol</value>
+        <comment>{0} is the name of the class, {1} is the selector</comment>
     </data>
     <data name="RBI0041Title" xml:space="preserve">
-        <value>Missing UIView initWithCoder:</value>
+        <value>Protocol constructor overlap:</value>
     </data>
     
 </root>

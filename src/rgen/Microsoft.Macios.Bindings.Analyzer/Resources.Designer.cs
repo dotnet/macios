@@ -1165,7 +1165,7 @@ namespace Microsoft.Macios.Bindings.Analyzer {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to UIView subclasses must have a initWithCoder: constructor..
+        ///   Looks up a localized string similar to Protocol inline constructor is hidden..
         /// </summary>
         internal static string RBI0041Description {
             get {
@@ -1174,7 +1174,7 @@ namespace Microsoft.Macios.Bindings.Analyzer {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The class &apos;{0}&apos; inherits from UIView but does not expose a &apos;initWithCoder:&apos; constructor.
+        ///   Looks up a localized string similar to The class &apos;{0}&apos; contains a constructor with the selector &apos;{1}&apos; that hides a inline constructor from a protocol.
         /// </summary>
         internal static string RBI0041MessageFormat {
             get {
@@ -1183,7 +1183,7 @@ namespace Microsoft.Macios.Bindings.Analyzer {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Missing UIView initWithCoder:.
+        ///   Looks up a localized string similar to Protocol constructor overlap:.
         /// </summary>
         internal static string RBI0041Title {
             get {

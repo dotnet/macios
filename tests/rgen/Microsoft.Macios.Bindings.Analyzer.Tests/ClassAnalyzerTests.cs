@@ -856,6 +856,58 @@ public partial class TestClass{
 				DiagnosticSeverity.Warning,
 				"The method 'GetCount' was marked as async and has multiple parameters but does not provide a return type name, a nameless tuple will be generated for the async method"
 			];
+			
+			// correct async method but we are missing the return type
+			yield return [
+				@"
+#pragma warning disable APL0003
+
+using System;
+using System.Runtime.Versioning;
+using AVFoundation;
+using CoreGraphics;
+using Foundation;
+using ObjCBindings;
+using ObjCRuntime;
+using nfloat = System.Runtime.InteropServices.NFloat;
+
+namespace TestNamespace;
+
+[SupportedOSPlatform (""macos"")]
+[SupportedOSPlatform (""ios"")]
+[SupportedOSPlatform (""tvos"")]
+[SupportedOSPlatform (""maccatalyst13.1"")]
+[BindingType<Protocol>]
+public partial interface IMyNSCoding {
+
+	[SupportedOSPlatform (""macos"")]
+	[SupportedOSPlatform (""ios"")]
+	[SupportedOSPlatform (""tvos"")]
+	[SupportedOSPlatform (""maccatalyst13.1"")]
+	[Export<Method> (""initWithCoder:"", Flags = Method.Factory)]
+	public virtual partial IMyNSCoding CreateWithCoder (NSObject coder);
+}
+
+[SupportedOSPlatform (""macos"")]
+[SupportedOSPlatform (""ios"")]
+[SupportedOSPlatform (""tvos"")]
+[SupportedOSPlatform (""maccatalyst13.1"")]
+[BindingType<Class>]
+public partial class TestClass : IMyNSCoding {
+
+	// we are testing that the protocol constructor is not added and that we don't get a duplicate
+	[SupportedOSPlatform (""macos"")]
+	[SupportedOSPlatform (""ios"")]
+	[SupportedOSPlatform (""tvos"")]
+	[SupportedOSPlatform (""maccatalyst13.1"")]
+	[Export<Constructor> (""initWithCoder:"")]
+	public TestClass (NSObject coder);
+
+}",
+				"RBI0041",
+				DiagnosticSeverity.Warning,
+				"The class 'TestClass' contains a constructor with the selector 'initWithCoder:' that hides a inline constructor from a protocol"
+			];
 		}
 
 		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
@@ -873,90 +925,6 @@ public partial class TestClass{
 		Assert.Single (analyzerDiagnotics);
 		VerifyDiagnosticMessage (analyzerDiagnotics [0], diagnosticId,
 			severity, diagnosticMessage);
-	}
-
-	[Theory]
-	[PlatformInlineData (ApplePlatform.iOS)]
-	[PlatformInlineData (ApplePlatform.TVOS)]
-	[PlatformInlineData (ApplePlatform.MacCatalyst)]
-	public async Task UIViewInitWithFrameMissing (ApplePlatform platform)
-	{
-		const string inputText =
-@"
-#pragma warning disable APL0003
-
-using System;
-using System.Runtime.Versioning;
-using AVFoundation;
-using CoreGraphics;
-using Foundation;
-using ObjCBindings;
-using ObjCRuntime;
-using UIKit;
-using nfloat = System.Runtime.InteropServices.NFloat;
-
-namespace TestNamespace;
-
-[SupportedOSPlatform (""macos"")]
-[SupportedOSPlatform (""ios"")]
-[SupportedOSPlatform (""tvos"")]
-[SupportedOSPlatform (""maccatalyst13.1"")]
-[BindingType<Class>]
-public partial class TestClass : UIView {
-}
-";
-		var (compilation, _) = CreateCompilation (platform, sources: inputText);
-		var diagnostics = await RunAnalyzer (new BindingTypeSemanticAnalyzer (), compilation);
-
-		var analyzerDiagnotics = diagnostics
-			.Where (d => d.Id == "RBI0041").ToArray ();
-		Assert.Single (analyzerDiagnotics);
-		VerifyDiagnosticMessage (
-			diagnostic: analyzerDiagnotics [0],
-			diagnosticId: "RBI0041",
-			severity: DiagnosticSeverity.Error,
-			message: "The class 'TestClass' inherits from UIView but does not expose a 'initWithCoder:' constructor");
-	}
-
-	[Theory]
-	[PlatformInlineData (ApplePlatform.MacOSX)]
-	public async Task NSViewInitWithFrameMissing (ApplePlatform platform)
-	{
-		const string inputText =
-			@"
-#pragma warning disable APL0003
-
-using System;
-using System.Runtime.Versioning;
-using AVFoundation;
-using CoreGraphics;
-using Foundation;
-using ObjCBindings;
-using ObjCRuntime;
-using AppKit;
-using nfloat = System.Runtime.InteropServices.NFloat;
-
-namespace TestNamespace;
-
-[SupportedOSPlatform (""macos"")]
-[SupportedOSPlatform (""ios"")]
-[SupportedOSPlatform (""tvos"")]
-[SupportedOSPlatform (""maccatalyst13.1"")]
-[BindingType<Class>]
-public partial class TestClass : NSView {
-}
-";
-		var (compilation, _) = CreateCompilation (platform, sources: inputText);
-		var diagnostics = await RunAnalyzer (new BindingTypeSemanticAnalyzer (), compilation);
-
-		var analyzerDiagnotics = diagnostics
-			.Where (d => d.Id == "RBI0041").ToArray ();
-		Assert.Single (analyzerDiagnotics);
-		VerifyDiagnosticMessage (
-			diagnostic: analyzerDiagnotics [0],
-			diagnosticId: "RBI0041",
-			severity: DiagnosticSeverity.Error,
-			message: "The class 'TestClass' inherits from UIView but does not expose a 'initWithCoder:' constructor");
 	}
 
 	class TestDataClassAnalyzerSuccess : IEnumerable<object []> {

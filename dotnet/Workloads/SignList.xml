@@ -134,7 +134,8 @@
     <FirstParty Include="Microsoft.macOS.dll" />
     <FirstParty Include="Microsoft.tvOS.dll" />
     <!-- Sign dylibs -->
-    <MacDeveloperSign Include="*.dylib" />
+    <MacDeveloperSign Include="MonoBundle\*.dylib" />
+    <MacDeveloperSign Include="native\*.dylib" />
   </ItemGroup>
 
   <Import Project="$(MSBuildThisFileDirectory)SignList.targets" />

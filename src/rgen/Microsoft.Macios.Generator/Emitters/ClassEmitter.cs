@@ -1,8 +1,9 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
+
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
@@ -18,8 +19,30 @@ using static Microsoft.Macios.Generator.Emitters.BindingSyntaxFactory;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using Constructor = ObjCBindings.Constructor;
 using Property = Microsoft.Macios.Generator.DataModel.Property;
+using TypeInfo = Microsoft.Macios.Generator.DataModel.TypeInfo;
 
 namespace Microsoft.Macios.Generator.Emitters;
+
+file class ConstructorParameterComparer : IEqualityComparer<ImmutableArray<TypeInfo>> {
+	/// <summary>
+	/// Determines equality by requiring the same method name and identical ordered parameter type sequence.
+	/// </summary>
+	public bool Equals (ImmutableArray<TypeInfo> x, ImmutableArray<TypeInfo> y)
+	{
+		return x.SequenceEqual (y);
+	}
+
+	/// <summary>
+	/// Computes a hash code combining the method name and ordered parameter types.
+	/// </summary>
+	public int GetHashCode (ImmutableArray<TypeInfo> obj)
+	{
+		var hash = new HashCode ();
+		foreach (var t in obj)
+			hash.Add (t);
+		return hash.ToHashCode ();
+	}
+}
 
 /// <summary>
 /// Emitter for Objective-C classes.
@@ -54,9 +77,30 @@ class ClassEmitter : IClassEmitter {
 	/// <param name="classBlock">Current class block.</param>
 	void EmitConstructors (in BindingContext context, TabbedWriter<StringWriter> classBlock)
 	{
+		// merge the constructors and the protocol constructors for the current class, use a dict to avoid duplicates
+		var allConstructors = new Dictionary<ImmutableArray<TypeInfo>, DataModel.Constructor> (new ConstructorParameterComparer ());
+		foreach (var constructor in context.Changes.Constructors) {
+			if (constructor.Selector is null)
+				continue;
+			var key = constructor.Parameters.Select (x => x.Type).ToImmutableArray ();
+			allConstructors.TryAdd (key, constructor);
+		}
+
+		foreach (var constructor in context.Changes.ProtocolConstructors) {
+			if (constructor.Selector is null)
+				continue;
+			var key = constructor.Parameters.Select (x => x.Type).ToImmutableArray ();
+			allConstructors.TryAdd (key, constructor);
+		}
+
+		// create the ui thread check to be used in the constructors that come from a protocol factory method
+		var uiThreadCheck = (context.NeedsThreadChecks)
+			? EnsureUiThread (context.RootContext.CurrentPlatform)
+			: null;
+
 		// When dealing with constructors we cannot sort them by name because the name is always the same as the class
 		// instead we will sort them by the selector name so that we will always generate the constructors in the same order
-		foreach (var constructor in context.Changes.Constructors.OrderBy (c => c.ExportMethodData.Selector)) {
+		foreach (var constructor in allConstructors.Values.OrderBy (c => c.ExportMethodData.Selector)) {
 			classBlock.AppendMemberAvailability (constructor.SymbolAvailability);
 			classBlock.AppendGeneratedCodeAttribute (optimizable: true);
 			if (constructor.ExportMethodData.Flags.HasFlag (Constructor.DesignatedInitializer)) {
@@ -68,6 +112,12 @@ class ClassEmitter : IClassEmitter {
 			}
 
 			using (var constructorBlock = classBlock.CreateBlock (constructor.ToDeclaration (withBaseNSFlag: true).ToString (), block: true)) {
+				if (uiThreadCheck is not null && constructor is { IsProtocolConstructor: true, IsThreadSafe: false }) {
+					// if we are dealing with a protocol constructor, we need to ensure we are on the UI thread, this
+					// happens for example with NSCoding in ui elements.
+					constructorBlock.Write (uiThreadCheck.ToString ());
+					constructorBlock.WriteLine ();
+				}
 				// retrieve the method invocation via the factory, this will generate the necessary arguments
 				// transformations and the invocation
 				var invocations = GetInvocations (constructor);
@@ -122,12 +172,12 @@ $@"if (IsDirectBinding) {{
 					: notification.ExportFieldData.FieldData.Type;
 				// use the raw writer which makes it easier to read in this case
 				notificationClass.WriteRaw (
-@$"public static {NSObject} {name} ({EventHandler}<{eventType}> handler)
+@$"public static {NSObject} {name} ({BindingSyntaxFactory.EventHandler}<{eventType}> handler)
 {{
 	return {notificationCenter}.AddObserver ({notification.Name}, notification => handler (null, new {eventType} (notification)));
 }}
 
-public static NSObject {name} ({NSObject} objectToObserve, {EventHandler}<{eventType}> handler)
+public static NSObject {name} ({NSObject} objectToObserve, {BindingSyntaxFactory.EventHandler}<{eventType}> handler)
 {{
 	return {notificationCenter}.AddObserver ({notification.Name}, notification => handler (null, new {eventType} (notification)), objectToObserve);
 }}
@@ -193,8 +243,8 @@ return del;
 			foreach (var eventInfo in property.ExportPropertyData.StrongDelegateType.Events) {
 				// create the event args type name
 				var eventHandler = eventInfo.EventArgsType is null
-					? EventHandler.ToString ()
-					: $"{EventHandler}<{eventInfo.EventArgsType}>";
+					? BindingSyntaxFactory.EventHandler.ToString ()
+					: $"{BindingSyntaxFactory.EventHandler}<{eventInfo.EventArgsType}>";
 				using (var eventBlock =
 					   classBlock.CreateBlock ($"public event {eventHandler} {eventInfo.Name}", true)) {
 					eventBlock.WriteLine ($"add {{ {ensureMethod} ()!.{eventInfo.Name.Decapitalize ()} += value; }}");

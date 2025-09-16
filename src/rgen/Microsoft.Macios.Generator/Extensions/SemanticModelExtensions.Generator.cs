@@ -5,12 +5,63 @@ using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Macios.Generator.Availability;
+using Microsoft.Macios.Generator.Context;
 using Microsoft.Macios.Generator.DataModel;
 using TypeInfo = Microsoft.Macios.Generator.DataModel.TypeInfo;
 
 namespace Microsoft.Macios.Generator.Extensions;
 
 static partial class SemanticModelExtensions {
+
+	/// <summary>
+	/// Retrieves all the data from a symbol needed for a binding/transformation.
+	/// </summary>
+	/// <param name="symbol">The symbol being queried.</param>
+	/// <param name="name">Symbol name.</param>
+	/// <param name="baseClass">Symbol base class.</param>
+	/// <param name="interfaces">List of the interfaces implemented by the symbol.</param>
+	/// <param name="outerClasses">List of the outer classes of the symbol.</param>
+	/// <param name="namespaces">Collection with the namespaces of the symbol.</param>
+	/// <param name="protocolConstructors">Collection with the protocol constructors to inline.</param>
+	/// <param name="symbolAvailability">The symbols availability.</param>
+	public static void GetSymbolData (ISymbol? symbol,
+		RootContext context,
+		out string name,
+		out string? baseClass,
+		out ImmutableArray<string> interfaces,
+		out ImmutableArray<OuterClass> outerClasses,
+		out ImmutableArray<string> namespaces,
+		out ImmutableArray<Constructor> protocolConstructors,
+		out SymbolAvailability symbolAvailability)
+	{
+		name = symbol?.Name ?? string.Empty;
+		baseClass = null;
+		var interfacesBucket = ImmutableArray.CreateBuilder<string> ();
+		var protocolConstructorsBucket = ImmutableArray.CreateBuilder<Constructor> ();
+		if (symbol is INamedTypeSymbol namedTypeSymbol) {
+			baseClass = namedTypeSymbol.BaseType?.ToDisplayString ().Trim ();
+			foreach (var symbolInterface in namedTypeSymbol.Interfaces) {
+				interfacesBucket.Add (symbolInterface.ToDisplayString ().Trim ());
+				if (symbolInterface.IsProtocol ()) {
+					// get the constructors for the protocol binding info to get its methods and from those
+					// the inline constructors
+					foreach (var member in symbolInterface.GetMembers ()) {
+						if (member is IMethodSymbol methodSymbol &&
+							Method.TryCreate (methodSymbol, context, out var method) &&
+							method.Value.IsFactory) {
+							var constructor = method.Value.ToConstructor (name);
+							if (!constructor.IsNullOrDefault)
+								protocolConstructorsBucket.Add (constructor);
+						}
+					}
+				}
+			}
+		}
+		symbolAvailability = symbol?.GetSupportedPlatforms () ?? new SymbolAvailability ();
+		interfaces = interfacesBucket.ToImmutable ();
+		protocolConstructors = protocolConstructorsBucket.ToImmutable ();
+		(namespaces, outerClasses) = GetNamespaceArrayAndOuterClasses (symbol);
+	}
 
 	/// <summary>
 	/// Extracts symbol data from a type declaration including binding information, type details, and availability.
@@ -24,23 +75,26 @@ static partial class SemanticModelExtensions {
 	/// <param name="interfaces">When this method returns, contains the implemented interface names.</param>
 	/// <param name="outerClasses">When this method returns, contains the outer class hierarchy.</param>
 	/// <param name="namespaces">When this method returns, contains the namespace hierarchy.</param>
+	/// <param name="protocolConstructors"></param>
 	/// <param name="symbolAvailability">When this method returns, contains the platform availability information.</param>
 	/// <param name="bindingInfo">When this method returns, contains the binding-specific information based on the binding type.</param>
 	public static void GetSymbolData (this SemanticModel self, BaseTypeDeclarationSyntax declaration,
 		BindingType bindingType,
+		RootContext context,
 		out string name,
 		out string? baseClass,
 		out TypeInfo typeInfo,
 		out ImmutableArray<string> interfaces,
 		out ImmutableArray<OuterClass> outerClasses,
 		out ImmutableArray<string> namespaces,
+		out ImmutableArray<Constructor> protocolConstructors,
 		out SymbolAvailability symbolAvailability,
 		out BindingInfo bindingInfo)
 	{
 		var symbol = self.GetDeclaredSymbol (declaration);
 		// only named types have type info
 		typeInfo = (symbol is INamedTypeSymbol namedTypeSymbol) ? new (namedTypeSymbol) : TypeInfo.Default;
-		GetSymbolData (symbol, out name, out baseClass, out interfaces, out outerClasses, out namespaces, out symbolAvailability);
+		GetSymbolData (symbol, context, out name, out baseClass, out interfaces, out outerClasses, out namespaces, out protocolConstructors, out symbolAvailability);
 		if (symbol is null)
 			bindingInfo = default;
 		else {

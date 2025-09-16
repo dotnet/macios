@@ -210,7 +210,7 @@ readonly partial struct Method {
 		change = new (
 			type: method.ContainingSymbol.ToDisplayString ().Trim (), // we want the full name
 			name: method.Name,
-			returnType: new TypeInfo (method.ReturnType, context),
+			returnType: new TypeInfo (method.ReturnType, context, includeEvents: false),
 			symbolAvailability: method.GetSupportedPlatforms (),
 			exportMethodData: exportData,
 			attributes: attributes,
@@ -315,7 +315,7 @@ readonly partial struct Method {
 	/// A new <see cref="Constructor"/> instance if the method is a factory method;
 	/// otherwise, an uninitialized <see cref="Constructor"/> instance.
 	/// </returns>
-	public Constructor ToConstructor (TypeInfo targetClass)
+	public Constructor ToConstructor (string targetClass)
 	{
 		// if the method is not a factory, we cannot convert it to a constructor so we will return the default value
 		// which is an uninitialized instance
@@ -325,13 +325,17 @@ readonly partial struct Method {
 		// we need to create a constructor with  the same modifiers, parameters and the availability of the method 
 		// since there is no guarantee that the target class has the same availability as the method
 		return new (
-			type: targetClass.Name,
-			exportData: new (ExportMethodData.Selector),
+			type: targetClass,
+			exportData: IsThreadSafe
+				? new (ExportMethodData.Selector) { Flags = ObjCBindings.Constructor.IsThreadSafe }
+				: new (ExportMethodData.Selector),
 			symbolAvailability: SymbolAvailability,
 			attributes: [], // we do not really care about the attributes on the constructor that is going to be inlined
 			modifiers: modifiers,
 			parameters: Parameters
-		);
+		) {
+			IsProtocolConstructor = true
+		};
 	}
 
 	/// <summary>

@@ -46,12 +46,12 @@ public class ClassGenerationTests : BaseGeneratorTestClass {
 			new (ApplePlatform.MacCatalyst, "ThreadSafeUIKitPropertyTests", "ThreadSafeUIKitPropertyTests.cs", "ExpectedThreadSafeUIKitPropertyTests.cs"),
 			new (ApplePlatform.MacOSX, "AppKitPropertyTests", "AppKitPropertyTests.cs", "ExpectedAppKitPropertyTests.cs"),
 			new (ApplePlatform.MacOSX, "ThreadSafeAppKitPropertyTests", "ThreadSafeAppKitPropertyTests.cs", "ExpectedThreadSafeAppKitPropertyTests.cs"),
-			
+
 			new (ApplePlatform.iOS, "NSUserDefaults", "NSUserDefaults.cs", "ExpectedNSUserDefaults.cs"),
 			new (ApplePlatform.TVOS, "NSUserDefaults", "NSUserDefaults.cs", "ExpectedNSUserDefaults.cs"),
 			new (ApplePlatform.MacCatalyst, "NSUserDefaults", "NSUserDefaults.cs", "ExpectedNSUserDefaults.cs"),
 			new (ApplePlatform.MacOSX, "NSUserDefaults", "NSUserDefaults.cs", "ExpectedNSUserDefaults.cs"),
-			
+
 			new (ApplePlatform.iOS, "MethodTests", "MethodTests.cs", "ExpectedMethodsTests.cs")
 			{
 				ExtraFiles = new () {
@@ -124,17 +124,17 @@ public class ClassGenerationTests : BaseGeneratorTestClass {
 			new (ApplePlatform.TVOS, "InlineProtocolConstructors", "InlineProtocolConstructors.cs", "ExpectedInlineProtocolConstructors.cs"),
 			new (ApplePlatform.MacCatalyst, "InlineProtocolConstructors", "InlineProtocolConstructors.cs", "ExpectedInlineProtocolConstructors.cs"),
 			new (ApplePlatform.MacOSX, "InlineProtocolConstructors", "InlineProtocolConstructors.cs", "ExpectedInlineProtocolConstructors.cs"),
-			
+
 			new (ApplePlatform.iOS, "UIKitInlineProtocolConstructors", "UIKitInlineProtocolConstructors.cs", "ExpectedUIKitInlineProtocolConstructors.cs"),
 			new (ApplePlatform.TVOS, "UIKitInlineProtocolConstructors", "UIKitInlineProtocolConstructors.cs", "ExpectedUIKitInlineProtocolConstructors.cs"),
 			new (ApplePlatform.MacCatalyst, "UIKitInlineProtocolConstructors", "UIKitInlineProtocolConstructors.cs", "ExpectedUIKitInlineProtocolConstructors.cs"),
 			new (ApplePlatform.MacOSX, "AppKitInlineProtocolConstructors", "AppKitInlineProtocolConstructors.cs", "ExpectedAppKitInlineProtocolConstructors.cs"),
-			
+
 			new (ApplePlatform.iOS, "InlineProtocolDuplicatedConstructors", "InlineProtocolDuplicatedConstructors.cs", "ExpectedInlineProtocolDuplicatedConstructors.cs"),
 			new (ApplePlatform.TVOS, "InlineProtocolDuplicatedConstructors", "InlineProtocolDuplicatedConstructors.cs", "ExpectedInlineProtocolDuplicatedConstructors.cs"),
 			new (ApplePlatform.MacCatalyst, "InlineProtocolDuplicatedConstructors", "InlineProtocolDuplicatedConstructors.cs", "ExpectedInlineProtocolDuplicatedConstructors.cs"),
 			new (ApplePlatform.MacOSX, "InlineProtocolDuplicatedConstructors", "InlineProtocolDuplicatedConstructors.cs", "ExpectedInlineProtocolDuplicatedConstructors.cs"),
-			
+
 			new (ApplePlatform.iOS, "InlineProtocolOverloadConstructors", "InlineProtocolOverloadConstructors.cs", "ExpectedInlineProtocolOverloadConstructors.cs"),
 			new (ApplePlatform.TVOS, "InlineProtocolOverloadConstructors", "InlineProtocolOverloadConstructors.cs", "ExpectedInlineProtocolOverloadConstructors.cs"),
 			new (ApplePlatform.MacCatalyst, "InlineProtocolOverloadConstructors", "InlineProtocolOverloadConstructors.cs", "ExpectedInlineProtocolOverloadConstructors.cs"),

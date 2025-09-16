@@ -25,7 +25,7 @@ public partial interface IMyNSCoding {
 [SupportedOSPlatform ("maccatalyst13.1")]
 [BindingType<Class>]
 public partial class InlineProtocolOverloadConstructors : IMyNSCoding {
-	
+
 	// we are testing that the protocol constructor is not added and that we don't get a duplicate
 	[Export<Constructor> ("initWithOther:")]
 	public InlineProtocolOverloadConstructors (NSObject coder);

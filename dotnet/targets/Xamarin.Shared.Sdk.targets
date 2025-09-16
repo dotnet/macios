@@ -149,6 +149,12 @@
 		<_AggressiveAttributeTrimming Condition="'$(_UseNativeAot)' == 'true'">false</_AggressiveAttributeTrimming>
 		<_AggressiveAttributeTrimming Condition="'$(_AggressiveAttributeTrimming)' == ''">true</_AggressiveAttributeTrimming>
 
+		<!--
+			With NativeAOT we want to prevent ILLink from rewriting unreachable bodies so that the NativeAOT toolchain can do its own analysis on the original
+			method bodies. This ensures that NativeAOT can find backing fields for compiler-generated properties.
+		-->
+		<_TrimmerUnreachableBodies Condition="'$(_UseNativeAot)' == 'true'">false</_TrimmerUnreachableBodies>
+
 		<!-- This property is also defined in Xamarin.Shared.props, but that file is imported too late for us to use the definition, and we can't remove it from Xamarin.Shared.props quite yet, because that would break legacy
 			 (in other words: once we drop support for legacy Xamarin, we can remove the other definition) -->
 		<_CanOutputAppBundle Condition="'$(_CanOutputAppBundle)' == '' And ('$(OutputType)' == 'Exe' Or '$(IsAppExtension)' == 'true')">true</_CanOutputAppBundle>

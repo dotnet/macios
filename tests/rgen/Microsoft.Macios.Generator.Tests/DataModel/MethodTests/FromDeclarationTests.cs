@@ -1262,6 +1262,21 @@ namespace NS {
 
 			yield return [multiParameter];
 
+			const string threadSafe = @"
+using System;
+using ObjCBindings;
+using ObjCRuntime;
+
+namespace NS {
+	public class MyClass {
+
+		[Export<Method> (""initWithInputs:"", Flags = ObjCBindings.Method.Factory | ObjCBindings.Method.IsThreadSafe)] 
+		public static MyClass MyFactoryMethod (string[]? input) { }
+	}
+}
+";
+
+			yield return [threadSafe];
 		}
 
 		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
@@ -1280,10 +1295,9 @@ namespace NS {
 		Assert.NotNull (declaration);
 		Assert.True (Method.TryCreate (declaration, semanticModel, out var changes));
 		Assert.NotNull (changes);
-		var constructorType = ReturnTypeForClass ("NS.MyClass");
-		var constructor = changes.Value.ToConstructor (constructorType);
+		var constructor = changes.Value.ToConstructor ("MyClass");
 		if (changes.Value.IsFactory) {
-			Assert.Equal (constructorType.Name, constructor.Type);
+			Assert.Equal ("MyClass", constructor.Type);
 			Assert.Equal (changes.Value.Selector, constructor.Selector);
 			// will compare that all parameters are the same, that is, same type, name and position
 			var parameterEqualityComparer = new MethodParameterEqualityComparer ();
@@ -1292,6 +1306,7 @@ namespace NS {
 			var modifiersComparer = new ModifiersEqualityComparer ();
 			Assert.Equal (changes.Value.Modifiers, constructor.Modifiers, modifiersComparer);
 			Assert.False (constructor.IsNullOrDefault);
+			Assert.Equal (constructor.IsThreadSafe, changes.Value.IsThreadSafe);
 		} else {
 			Assert.True (constructor.IsNullOrDefault);
 		}

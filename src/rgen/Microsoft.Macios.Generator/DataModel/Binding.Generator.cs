@@ -300,7 +300,7 @@ readonly partial struct Binding {
 		var bucket = ImmutableArray.CreateBuilder<EnumMember> ();
 		// loop over the fields and add those that contain a FieldAttribute
 		var enumValueDeclarations = enumDeclaration.Members.OfType<EnumMemberDeclarationSyntax> ();
-		foreach (var enumValueDeclaration in enumValueDeclarations) {
+		foreach (var (index, enumValueDeclaration) in enumValueDeclarations.Index ()) {
 			if (Skip (enumValueDeclaration, context.SemanticModel))
 				continue;
 			if (context.SemanticModel.GetDeclaredSymbol (enumValueDeclaration) is not IFieldSymbol enumValueSymbol) {
@@ -314,6 +314,7 @@ readonly partial struct Binding {
 				// could not calculate the library for the enum add it with bad data for the analyzer to pick it up
 				var enumMember = new EnumMember (
 					name: enumValueDeclaration.Identifier.ToFullString ().Trim (),
+					index: (uint) index,
 					libraryName: string.Empty,
 					libraryPath: null,
 					fieldData: enumValueSymbol.GetFieldData (),
@@ -326,6 +327,7 @@ readonly partial struct Binding {
 			} else {
 				var enumMember = new EnumMember (
 					name: enumValueDeclaration.Identifier.ToFullString ().Trim (),
+					index: (uint) index,
 					libraryName: libraryName,
 					libraryPath: libraryPath,
 					fieldData: enumValueSymbol.GetFieldData (),

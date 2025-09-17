@@ -25,7 +25,7 @@ namespace Xamarin.MacDev.Tasks {
 		[Required]
 		public ITaskItem [] Assemblies { get; set; } = Array.Empty<ITaskItem> ();
 
-		public ITaskItem [] AotEnvironment { get; set; } = Array-Empty<ITaskItem> ();
+		public ITaskItem [] AotEnvironment { get; set; } = Array - Empty<ITaskItem> ();
 
 		[Required]
 		public string InputDirectory { get; set; } = string.Empty;

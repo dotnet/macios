@@ -307,8 +307,8 @@ namespace Security {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (data));
 			processed = default;
 			fixed (byte* d = &data [offset])
-				fixed (nint* processedPtr = &processed)
-					result = SSLRead (Handle, d, size, processedPtr);
+			fixed (nint* processedPtr = &processed)
+				result = SSLRead (Handle, d, size, processedPtr);
 			return result;
 		}
 
@@ -317,8 +317,8 @@ namespace Security {
 			int size = data is null ? 0 : data.Length;
 			processed = default;
 			fixed (byte* d = data)
-				fixed (nint* processedPtr = &processed)
-					result = SSLRead (Handle, d, size, processedPtr);
+			fixed (nint* processedPtr = &processed)
+				result = SSLRead (Handle, d, size, processedPtr);
 			return result;
 		}
 
@@ -331,8 +331,8 @@ namespace Security {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (data));
 			processed = default;
 			fixed (byte* d = &data [offset])
-				fixed (nint* processedPtr = &processed)
-					result = SSLWrite (Handle, d, size, processedPtr);
+			fixed (nint* processedPtr = &processed)
+				result = SSLWrite (Handle, d, size, processedPtr);
 			return result;
 		}
 
@@ -341,8 +341,8 @@ namespace Security {
 			int size = data is null ? 0 : data.Length;
 			processed = default;
 			fixed (byte* d = data)
-				fixed (nint* processedPtr = &processed)
-					result = SSLWrite (Handle, d, size, processedPtr);
+			fixed (nint* processedPtr = &processed)
+				result = SSLWrite (Handle, d, size, processedPtr);
 			return result;
 		}
 

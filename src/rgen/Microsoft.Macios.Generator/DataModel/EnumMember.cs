@@ -17,7 +17,7 @@ namespace Microsoft.Macios.Generator.DataModel;
 /// </summary>
 [StructLayout (LayoutKind.Auto)]
 readonly partial struct EnumMember : IEquatable<EnumMember> {
-	
+
 	/// <summary>
 	/// The initialization state of the struct.
 	/// </summary>
@@ -32,12 +32,12 @@ readonly partial struct EnumMember : IEquatable<EnumMember> {
 	/// Gets a value indicating whether the instance is the default, uninitialized instance.
 	/// </summary>
 	public bool IsNullOrDefault => State == StructState.Default;
-	
+
 	/// <summary>
 	/// Get the name of the member.
 	/// </summary>
 	public string Name { get; }
-	
+
 	/// <summary>
 	/// Gets the index of the enum member.
 	/// </summary>

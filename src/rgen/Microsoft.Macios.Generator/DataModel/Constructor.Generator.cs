@@ -31,16 +31,21 @@ readonly partial struct Constructor {
 	public Location? Location { get; init; }
 
 	/// <summary>
-	/// True if the cosntructor was marked to skip its registration.
+	/// True if the constructor was marked to skip its registration.
 	/// </summary>
 	public bool SkipRegistration => ExportMethodData.Flags.HasFlag (ObjCBindings.Constructor.SkipRegistration);
+
+	/// <summary>
+	/// True if the constructor is thread safe.
+	/// </summary>
+	public bool IsThreadSafe => ExportMethodData.Flags.HasFlag (ObjCBindings.Constructor.IsThreadSafe);
 
 	public Constructor (string type,
 		SymbolAvailability symbolAvailability,
 		ExportData<ObjCBindings.Constructor> exportData,
 		ImmutableArray<AttributeCodeChange> attributes,
 		ImmutableArray<SyntaxToken> modifiers,
-		ImmutableArray<Parameter> parameters)
+		ImmutableArray<Parameter> parameters) : this (StructState.Initialized)
 	{
 		Type = type;
 		SymbolAvailability = symbolAvailability;

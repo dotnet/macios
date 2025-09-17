@@ -144,14 +144,14 @@ test-msbuild run-tests-msbuild:
 	$(MAKE) test-macdev-tests test-macdev-tasks
 
 # Example TEST_FILTER:
-#    TEST_FILTER="--filter FullyQualifiedName~BuildMyCocoaApp"
+#    TEST_FILTER="--filter:FullyQualifiedName~BuildMyCocoaApp"
 # Docs: https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-test#filter-option-details
 test-macdev-tests: export MSBUILD_EXE_PATH=
 test-macdev-tests: verify-system-vsmac-xcode-match
 	$(Q) $(DOTNET) test $(TOP)/tests/msbuild/Xamarin.MacDev.Tests/Xamarin.MacDev.Tests.csproj $(TEST_FILTER)
 
 # Example TEST_FILTER:
-#    TEST_FILTER="--filter FullyQualifiedName~BuildMyCocoaApp"
+#    TEST_FILTER="--filter:FullyQualifiedName~BuildMyCocoaApp"
 # Docs: https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-test#filter-option-details
 test-macdev-tasks: export MSBUILD_EXE_PATH=
 test-macdev-tasks: verify-system-vsmac-xcode-match

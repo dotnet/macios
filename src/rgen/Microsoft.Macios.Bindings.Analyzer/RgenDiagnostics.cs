@@ -526,4 +526,94 @@ public static class RgenDiagnostics {
 		description: new LocalizableResourceString (nameof (Resources.RBI0034Description), Resources.ResourceManager,
 			typeof (Resources))
 	);
+
+	/// <summary>
+	/// Diagnostic descriptor for when a marked async method has not void return. 
+	/// </summary>
+	internal static readonly DiagnosticDescriptor RBI0035 = new (
+		"RBI0035",
+		new LocalizableResourceString (nameof (Resources.RBI0035Title), Resources.ResourceManager, typeof (Resources)),
+		new LocalizableResourceString (nameof (Resources.RBI0035MessageFormat), Resources.ResourceManager,
+			typeof (Resources)),
+		"Usage",
+		DiagnosticSeverity.Error,
+		isEnabledByDefault: true,
+		description: new LocalizableResourceString (nameof (Resources.RBI0035Description), Resources.ResourceManager,
+			typeof (Resources))
+	);
+
+	/// <summary>
+	/// Diagnostic descriptor for when a marked async method has no parameters. 
+	/// </summary>
+	internal static readonly DiagnosticDescriptor RBI0036 = new (
+		"RBI0036",
+		new LocalizableResourceString (nameof (Resources.RBI0036Title), Resources.ResourceManager, typeof (Resources)),
+		new LocalizableResourceString (nameof (Resources.RBI0036MessageFormat), Resources.ResourceManager,
+			typeof (Resources)),
+		"Usage",
+		DiagnosticSeverity.Error,
+		isEnabledByDefault: true,
+		description: new LocalizableResourceString (nameof (Resources.RBI0036Description), Resources.ResourceManager,
+			typeof (Resources))
+	);
+
+	/// <summary>
+	/// Diagnostic descriptor for when a marked async method has no delegate as the last parameter. 
+	/// </summary>
+	internal static readonly DiagnosticDescriptor RBI0037 = new (
+		"RBI0037",
+		new LocalizableResourceString (nameof (Resources.RBI0037Title), Resources.ResourceManager, typeof (Resources)),
+		new LocalizableResourceString (nameof (Resources.RBI0037MessageFormat), Resources.ResourceManager,
+			typeof (Resources)),
+		"Usage",
+		DiagnosticSeverity.Error,
+		isEnabledByDefault: true,
+		description: new LocalizableResourceString (nameof (Resources.RBI0037Description), Resources.ResourceManager,
+			typeof (Resources))
+	);
+
+	/// <summary>
+	/// Diagnostic descriptor for when a method that could be async was not marked. 
+	/// </summary>
+	internal static readonly DiagnosticDescriptor RBI0038 = new (
+		"RBI0038",
+		new LocalizableResourceString (nameof (Resources.RBI0038Title), Resources.ResourceManager, typeof (Resources)),
+		new LocalizableResourceString (nameof (Resources.RBI0038MessageFormat), Resources.ResourceManager,
+			typeof (Resources)),
+		"Usage",
+		DiagnosticSeverity.Warning,
+		isEnabledByDefault: true,
+		description: new LocalizableResourceString (nameof (Resources.RBI0038Description), Resources.ResourceManager,
+			typeof (Resources))
+	);
+
+	/// <summary>
+	/// Diagnostic descriptor for when two methods with the same parameters have the same async name. 
+	/// </summary>
+	internal static readonly DiagnosticDescriptor RBI0039 = new (
+		"RBI0039",
+		new LocalizableResourceString (nameof (Resources.RBI0039Title), Resources.ResourceManager, typeof (Resources)),
+		new LocalizableResourceString (nameof (Resources.RBI0039MessageFormat), Resources.ResourceManager,
+			typeof (Resources)),
+		"Usage",
+		DiagnosticSeverity.Error,
+		isEnabledByDefault: true,
+		description: new LocalizableResourceString (nameof (Resources.RBI0039Description), Resources.ResourceManager,
+			typeof (Resources))
+	);
+
+	/// <summary>
+	/// Disgnostic descriptor for when a method marked as async has does not provide a return type or return type name.
+	/// </summary>
+	internal static readonly DiagnosticDescriptor RBI0040 = new (
+		"RBI0040",
+		new LocalizableResourceString (nameof (Resources.RBI0040Title), Resources.ResourceManager, typeof (Resources)),
+		new LocalizableResourceString (nameof (Resources.RBI0040MessageFormat), Resources.ResourceManager,
+			typeof (Resources)),
+		"Usage",
+		DiagnosticSeverity.Warning,
+		isEnabledByDefault: true,
+		description: new LocalizableResourceString (nameof (Resources.RBI0040Description), Resources.ResourceManager,
+			typeof (Resources))
+	);
 }

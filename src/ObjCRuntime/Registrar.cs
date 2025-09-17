@@ -615,6 +615,7 @@ namespace Registrar {
 					case Trampoline.GetGCHandleFlags:
 					case Trampoline.SetGCHandleFlags:
 					case Trampoline.RetainWeakReference:
+					case Trampoline.GetNSObjectData:
 						return true;
 					default:
 						return false;
@@ -2119,6 +2120,13 @@ namespace Registrar {
 						Signature = $"{GetBoolEncoding ()}@:",
 						IsStatic = false,
 					}, ref exceptions);
+
+					objcType.Add (new ObjCMethod (this, objcType, null) {
+						Selector = "xamarinGetNSObjectData",
+						Trampoline = Trampoline.GetNSObjectData,
+						Signature = "^{NSObjectData=@^{objc_super}I}:",
+						IsStatic = false,
+					}, ref exceptions);
 				}
 
 				// Find conform_to_protocol
@@ -2854,5 +2862,6 @@ namespace Registrar {
 		GetGCHandleFlags,
 		SetGCHandleFlags,
 		RetainWeakReference,
+		GetNSObjectData,
 	}
 }

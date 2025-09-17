@@ -10,6 +10,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Macios.Generator.Attributes;
 using Microsoft.Macios.Generator.Availability;
+using Microsoft.Macios.Generator.Context;
 using Microsoft.Macios.Generator.DataModel;
 using Microsoft.Macios.Generator.Extensions;
 using ObjCBindings;
@@ -718,14 +719,18 @@ public class Foo {
 		semanticModel.GetSymbolData (
 			declaration: declaration,
 			bindingType: bindingType,
+			context: new RootContext (semanticModel),
 			name: out var name,
+			typeInfo: out var typeInfo,
 			baseClass: out var baseClass,
 			interfaces: out var interfaces,
 			outerClasses: out var outerClasses,
 			namespaces: out var @namespace,
+			protocolConstructors: out _,
 			symbolAvailability: out var symbolAvailability,
 			bindingInfo: out var bindingData);
 		Assert.Equal (expectedName, name);
+		Assert.False (typeInfo.IsNullOrDefault);
 		Assert.Equal (expectedBaseClass, baseClass);
 		Assert.Equal (expectedInterfaces, interfaces, interfacesComparer);
 		Assert.Equal (expectedOuterClasses, outerClasses, new OuterClassEqualityComparer ());

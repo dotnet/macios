@@ -11,7 +11,6 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Macios.Generator.Availability;
 using Microsoft.Macios.Generator.Context;
-using TypeInfo = Microsoft.Macios.Generator.DataModel.TypeInfo;
 
 namespace Microsoft.Macios.Generator.DataModel;
 
@@ -27,6 +26,12 @@ readonly partial struct Binding {
 	/// The name of the named type that generated the code change.
 	/// </summary>
 	public string Name => name;
+
+	readonly TypeInfo typeInfo = TypeInfo.Default;
+	/// <summary>
+	/// Gets the type information for the named type that generated the code change.
+	/// </summary>
+	public TypeInfo TypeInfo => typeInfo;
 
 	readonly ImmutableArray<string> namespaces = ImmutableArray<string>.Empty;
 	/// <summary>
@@ -238,6 +243,31 @@ readonly partial struct Binding {
 	/// Returns all the selectors for the constructors.
 	/// </summary>
 	public ImmutableArray<string> ConstructorSelectors => [.. constructorIndex.Keys];
+
+	readonly Dictionary<string, int> protocolConstructorIndex = new ();
+	readonly ImmutableArray<Constructor> protocolConstructors = [];
+
+	/// <summary>
+	/// Gets the constructors inherited from parent protocols.
+	/// </summary>
+	public ImmutableArray<Constructor> ProtocolConstructors {
+		get => protocolConstructors;
+		init {
+			protocolConstructors = value;
+			// populate the constructor index for fast lookup using the symbol name
+			for (var index = 0; index < protocolConstructors.Length; index++) {
+				var constructor = protocolConstructors [index];
+				if (constructor.Selector is null)
+					continue;
+				protocolConstructorIndex [constructor.Selector] = index;
+			}
+		}
+	}
+
+	/// <summary>
+	/// Returns all the selectors for the constructors.
+	/// </summary>
+	public ImmutableArray<string> ProtocolConstructorSelectors => [.. protocolConstructorIndex.Keys];
 
 	readonly Dictionary<string, int> eventsIndex = new ();
 	readonly ImmutableArray<Event> events = [];

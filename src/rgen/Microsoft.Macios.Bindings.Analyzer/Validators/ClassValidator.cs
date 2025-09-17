@@ -331,20 +331,22 @@ sealed class ClassValidator : BindingValidator {
 		var constructorSelectorsSet = binding.Constructors.ToDictionary (x => x.Selector!, x => x);
 		var duplicates = binding.ProtocolConstructors
 			.Where (x => x.Selector is not null && constructorSelectorsSet.ContainsKey (x.Selector))
-			.Select (x => x.Selector!)
+			.Select (x => (Selector: x.Selector!, Constructor: x))
 			.ToArray ();
 		if (duplicates.Length > 0) {
 			// we have duplicates, create a warning for each of them
-			foreach (var selector in duplicates) {
+			foreach (var (selector, protocolConstructor) in duplicates) {
 				// use the class constructor location
 				var constructorLocation = constructorSelectorsSet.TryGetValue (selector, out var constructor)
 					? constructor.Location : location;
+				var protocolName = protocolConstructor.IsProtocolConstructor ? protocolConstructor.ProtocolType : "unknown";
 				builder.Add (Diagnostic.Create (
 					descriptor: RBI0041, // The class '{0}' contains a constructor with the selector '{1}' that hides a inline constructor from a protocol
 					location: constructorLocation,
 					messageArgs: [
 						binding.Name,
 						selector,
+						protocolName
 					]));
 			}
 		}

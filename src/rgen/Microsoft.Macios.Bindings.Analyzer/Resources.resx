@@ -553,8 +553,8 @@
         <value>Protocol inline constructor is hidden.</value>
     </data>
     <data name="RBI0041MessageFormat" xml:space="preserve">
-        <value>The class '{0}' contains a constructor with the selector '{1}' that hides a inline constructor from a protocol</value>
-        <comment>{0} is the name of the class, {1} is the selector</comment>
+        <value>The class '{0}' contains a constructor with the selector '{1}' that hides a inline constructor from protocol '{2}'</value>
+        <comment>{0} is the name of the class, {1} is the selector, {2} is the name of the protocol</comment>
     </data>
     <data name="RBI0041Title" xml:space="preserve">
         <value>Protocol constructor overlap:</value>

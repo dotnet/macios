@@ -1174,7 +1174,7 @@ namespace Microsoft.Macios.Bindings.Analyzer {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The class &apos;{0}&apos; contains a constructor with the selector &apos;{1}&apos; that hides a inline constructor from a protocol.
+        ///   Looks up a localized string similar to The class &apos;{0}&apos; contains a constructor with the selector &apos;{1}&apos; that hides a inline constructor from protocol &apos;{2}&apos;.
         /// </summary>
         internal static string RBI0041MessageFormat {
             get {

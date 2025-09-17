@@ -857,7 +857,7 @@ public partial class TestClass{
 				"The method 'GetCount' was marked as async and has multiple parameters but does not provide a return type name, a nameless tuple will be generated for the async method"
 			];
 
-			// correct async method but we are missing the return type
+			// constructor that hides a protocol constructor
 			yield return [
 				@"
 #pragma warning disable APL0003
@@ -906,7 +906,7 @@ public partial class TestClass : IMyNSCoding {
 }",
 				"RBI0041",
 				DiagnosticSeverity.Warning,
-				"The class 'TestClass' contains a constructor with the selector 'initWithCoder:' that hides a inline constructor from a protocol"
+				"The class 'TestClass' contains a constructor with the selector 'initWithCoder:' that hides a inline constructor from protocol 'TestNamespace.IMyNSCoding'"
 			];
 		}
 

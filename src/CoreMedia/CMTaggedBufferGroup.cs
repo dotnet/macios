@@ -190,8 +190,10 @@ namespace CoreMedia {
 		public unsafe CVPixelBuffer? GetPixelBuffer (CMTag tag, out nint index)
 		{
 			index = 0;
-			var rv = CMTaggedBufferGroupGetCVPixelBufferForTag (GetCheckedHandle (), tag, (nint*) Unsafe.AsPointer<nint> (ref index));
-			return CVPixelBuffer.Create (rv, false);
+			fixed (nint* indexPtr = &index) {
+				var rv = CMTaggedBufferGroupGetCVPixelBufferForTag (GetCheckedHandle (), tag, indexPtr);
+				return CVPixelBuffer.Create (rv, false);
+			}
 		}
 
 		[DllImport (Constants.CoreMediaLibrary)]
@@ -207,9 +209,11 @@ namespace CoreMedia {
 		public unsafe CVPixelBuffer? GetPixelBuffer (CMTagCollection tagCollection, out nint index)
 		{
 			index = 0;
-			var rv = CMTaggedBufferGroupGetCVPixelBufferForTagCollection (GetCheckedHandle (), tagCollection.GetCheckedHandle (), (nint*) Unsafe.AsPointer<nint> (ref index));
-			GC.KeepAlive (tagCollection);
-			return CVPixelBuffer.Create (rv, false);
+			fixed (nint* indexPtr = &index) {
+				var rv = CMTaggedBufferGroupGetCVPixelBufferForTagCollection (GetCheckedHandle (), tagCollection.GetCheckedHandle (), indexPtr);
+				GC.KeepAlive (tagCollection);
+				return CVPixelBuffer.Create (rv, false);
+			}
 		}
 
 		[DllImport (Constants.CoreMediaLibrary)]
@@ -243,8 +247,10 @@ namespace CoreMedia {
 		public unsafe CMSampleBuffer? GetSampleBuffer (CMTag tag, out nint index)
 		{
 			index = 0;
-			var rv = CMTaggedBufferGroupGetCMSampleBufferForTag (GetCheckedHandle (), tag, (nint*) Unsafe.AsPointer<nint> (ref index));
-			return CMSampleBuffer.Create (rv, false);
+			fixed (nint* indexPtr = &index) {
+				var rv = CMTaggedBufferGroupGetCMSampleBufferForTag (GetCheckedHandle (), tag, indexPtr);
+				return CMSampleBuffer.Create (rv, false);
+			}
 		}
 
 		[DllImport (Constants.CoreMediaLibrary)]
@@ -260,9 +266,11 @@ namespace CoreMedia {
 		public unsafe CMSampleBuffer? GetSampleBuffer (CMTagCollection tagCollection, out nint index)
 		{
 			index = 0;
-			var rv = CMTaggedBufferGroupGetCMSampleBufferForTagCollection (GetCheckedHandle (), tagCollection.GetCheckedHandle (), (nint*) Unsafe.AsPointer<nint> (ref index));
-			GC.KeepAlive (tagCollection);
-			return CMSampleBuffer.Create (rv, false);
+			fixed (nint* indexPtr = &index) {
+				var rv = CMTaggedBufferGroupGetCMSampleBufferForTagCollection (GetCheckedHandle (), tagCollection.GetCheckedHandle (), indexPtr);
+				GC.KeepAlive (tagCollection);
+				return CMSampleBuffer.Create (rv, false);
+			}
 		}
 
 		[DllImport (Constants.CoreMediaLibrary)]

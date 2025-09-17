@@ -164,7 +164,9 @@ namespace CoreGraphics {
 			slice = default;
 			remainder = default;
 			unsafe {
-				CGRectDivide (self, (CGRect*) Unsafe.AsPointer<CGRect> (ref slice), (CGRect*) Unsafe.AsPointer<CGRect> (ref remainder), amount, edge);
+				fixed (CGRect* slicePtr = &slice, remainderPtr = &remainder) {
+					CGRectDivide (self, slicePtr, remainderPtr, amount, edge);
+				}
 			}
 		}
 #endif

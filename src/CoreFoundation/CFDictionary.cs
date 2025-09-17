@@ -109,7 +109,9 @@ namespace CoreFoundation {
 		public unsafe static bool TryGetValue (IntPtr dictionary, IntPtr key, out IntPtr value)
 		{
 			value = default;
-			return CFDictionaryGetValueIfPresent (dictionary, key, (IntPtr*) Unsafe.AsPointer<IntPtr> (ref value)) != 0;
+			fixed (IntPtr* valuePtr = &value) {
+				return CFDictionaryGetValueIfPresent (dictionary, key, valuePtr) != 0;
+			}
 		}
 
 		[DllImport (Constants.CoreFoundationLibrary)]

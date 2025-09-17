@@ -162,9 +162,11 @@ namespace VideoToolbox {
 
 			infoFlags = default;
 			unsafe {
-				VTStatus status = VTDecompressionSessionDecodeFrame (GetCheckedHandle (), sampleBuffer.Handle, decodeFlags, sourceFrame, (VTDecodeInfoFlags*) Unsafe.AsPointer<VTDecodeInfoFlags> (ref infoFlags));
-				GC.KeepAlive (sampleBuffer);
-				return status;
+				fixed (VTDecodeInfoFlags* infoFlagsPtr = &infoFlags) {
+					VTStatus status = VTDecompressionSessionDecodeFrame (GetCheckedHandle (), sampleBuffer.Handle, decodeFlags, sourceFrame, infoFlagsPtr);
+					GC.KeepAlive (sampleBuffer);
+					return status;
+				}
 			}
 		}
 
@@ -190,14 +192,16 @@ namespace VideoToolbox {
 
 			infoFlags = default;
 
-			var rv = VTDecompressionSessionDecodeFrameWithOutputHandler (
-						GetCheckedHandle (),
-						sampleBuffer.GetNonNullHandle (nameof (sampleBuffer)),
-						decodeFlags,
-						(VTDecodeInfoFlags*) Unsafe.AsPointer<VTDecodeInfoFlags> (ref infoFlags),
-						&outputHandlerBlock);
-			GC.KeepAlive (sampleBuffer);
-			return rv;
+			fixed (VTDecodeInfoFlags* infoFlagsPtr = &infoFlags) {
+				var rv = VTDecompressionSessionDecodeFrameWithOutputHandler (
+							GetCheckedHandle (),
+							sampleBuffer.GetNonNullHandle (nameof (sampleBuffer)),
+							decodeFlags,
+							infoFlagsPtr,
+							&outputHandlerBlock);
+				GC.KeepAlive (sampleBuffer);
+				return rv;
+			}
 		}
 
 		[DllImport (Constants.VideoToolboxLibrary)]
@@ -344,14 +348,16 @@ namespace VideoToolbox {
 
 			infoFlags = default;
 
-			var rv = VTDecompressionSessionDecodeFrameWithMultiImageCapableOutputHandler (
-				GetCheckedHandle (),
-				sampleBuffer.GetNonNullHandle (nameof (sampleBuffer)),
-				decodeFlags,
-				(VTDecodeInfoFlags*) Unsafe.AsPointer<VTDecodeInfoFlags> (ref infoFlags),
-				&multiImageCapableOutputHandlerBlock);
-			GC.KeepAlive (sampleBuffer);
-			return rv;
+			fixed (VTDecodeInfoFlags* infoFlagsPtr = &infoFlags) {
+				var rv = VTDecompressionSessionDecodeFrameWithMultiImageCapableOutputHandler (
+					GetCheckedHandle (),
+					sampleBuffer.GetNonNullHandle (nameof (sampleBuffer)),
+					decodeFlags,
+					infoFlagsPtr,
+					&multiImageCapableOutputHandlerBlock);
+				GC.KeepAlive (sampleBuffer);
+				return rv;
+			}
 		}
 
 		[UnmanagedCallersOnly]
@@ -459,18 +465,20 @@ namespace VideoToolbox {
 		{
 			infoFlags = default;
 
-			var rv = VTDecompressionSessionDecodeFrameWithOptions (
-				GetCheckedHandle (),
-				sampleBuffer.GetNonNullHandle (nameof (sampleBuffer)),
-				decodeFlags,
-				frameOptions.GetHandle (),
-				sourceFrameReference,
-				(VTDecodeInfoFlags*) Unsafe.AsPointer<VTDecodeInfoFlags> (ref infoFlags));
+			fixed (VTDecodeInfoFlags* infoFlagsPtr = &infoFlags) {
+				var rv = VTDecompressionSessionDecodeFrameWithOptions (
+					GetCheckedHandle (),
+					sampleBuffer.GetNonNullHandle (nameof (sampleBuffer)),
+					decodeFlags,
+					frameOptions.GetHandle (),
+					sourceFrameReference,
+					infoFlagsPtr);
 
-			GC.KeepAlive (sampleBuffer);
-			GC.KeepAlive (frameOptions);
+				GC.KeepAlive (sampleBuffer);
+				GC.KeepAlive (frameOptions);
 
-			return rv;
+				return rv;
+			}
 		}
 
 		/// <summary>Decode a video frame that may contain more than one image.</summary>
@@ -521,16 +529,18 @@ namespace VideoToolbox {
 
 			infoFlags = default;
 
-			var rv = VTDecompressionSessionDecodeFrameWithOptionsAndOutputHandler (
-						GetCheckedHandle (),
-						sampleBuffer.GetNonNullHandle (nameof (sampleBuffer)),
-						decodeFlags,
-						frameOptions.GetHandle (),
-						(VTDecodeInfoFlags*) Unsafe.AsPointer<VTDecodeInfoFlags> (ref infoFlags),
-						&outputHandlerBlock);
-			GC.KeepAlive (sampleBuffer);
-			GC.KeepAlive (frameOptions);
-			return rv;
+			fixed (VTDecodeInfoFlags* infoFlagsPtr = &infoFlags) {
+				var rv = VTDecompressionSessionDecodeFrameWithOptionsAndOutputHandler (
+							GetCheckedHandle (),
+							sampleBuffer.GetNonNullHandle (nameof (sampleBuffer)),
+							decodeFlags,
+							frameOptions.GetHandle (),
+							infoFlagsPtr,
+							&outputHandlerBlock);
+				GC.KeepAlive (sampleBuffer);
+				GC.KeepAlive (frameOptions);
+				return rv;
+			}
 		}
 
 		/// <summary>Decode a video frame that may contain more than one image.</summary>

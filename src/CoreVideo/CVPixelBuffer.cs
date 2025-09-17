@@ -398,11 +398,13 @@ namespace CoreVideo {
 			ref nuint extraRowsOnTop, ref nuint extraRowsOnBottom)
 		{
 			unsafe {
-				CVPixelBufferGetExtendedPixels (Handle,
-					(nuint*) Unsafe.AsPointer<nuint> (ref extraColumnsOnLeft),
-					(nuint*) Unsafe.AsPointer<nuint> (ref extraColumnsOnRight),
-					(nuint*) Unsafe.AsPointer<nuint> (ref extraRowsOnTop),
-					(nuint*) Unsafe.AsPointer<nuint> (ref extraRowsOnBottom));
+				fixed (nuint* extraColumnsOnLeftPtr = &extraColumnsOnLeft, extraColumnsOnRightPtr = &extraColumnsOnRight, extraRowsOnTopPtr = &extraRowsOnTop, extraRowsOnBottomPtr = &extraRowsOnBottom) {
+					CVPixelBufferGetExtendedPixels (Handle,
+						extraColumnsOnLeftPtr,
+						extraColumnsOnRightPtr,
+						extraRowsOnTopPtr,
+						extraRowsOnBottomPtr);
+				}
 			}
 		}
 

@@ -166,9 +166,11 @@ namespace CoreGraphics {
 			}
 			unsafe {
 				point = default;
-				bool result = NativeDrawingMethods.CGPointMakeWithDictionaryRepresentation (dictionaryRepresentation.Handle, (CGPoint*) Unsafe.AsPointer<CGPoint> (ref point)) != 0;
-				GC.KeepAlive (dictionaryRepresentation);
-				return result;
+				fixed (CGPoint* pointPtr = &point) {
+					bool result = NativeDrawingMethods.CGPointMakeWithDictionaryRepresentation (dictionaryRepresentation.Handle, pointPtr) != 0;
+					GC.KeepAlive (dictionaryRepresentation);
+					return result;
+				}
 			}
 		}
 

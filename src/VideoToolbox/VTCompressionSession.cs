@@ -224,12 +224,14 @@ namespace VideoToolbox {
 
 			infoFlags = default;
 			unsafe {
-				VTStatus status = VTCompressionSessionEncodeFrame (GetCheckedHandle (), imageBuffer.Handle, presentationTimestamp, duration,
-					frameProperties.GetHandle (),
-					sourceFrame, (VTEncodeInfoFlags*) Unsafe.AsPointer<VTEncodeInfoFlags> (ref infoFlags));
-				GC.KeepAlive (imageBuffer);
-				GC.KeepAlive (frameProperties);
-				return status;
+				fixed (VTEncodeInfoFlags* infoFlagsPtr = &infoFlags) {
+					VTStatus status = VTCompressionSessionEncodeFrame (GetCheckedHandle (), imageBuffer.Handle, presentationTimestamp, duration,
+						frameProperties.GetHandle (),
+						sourceFrame, infoFlagsPtr);
+					GC.KeepAlive (imageBuffer);
+					GC.KeepAlive (frameProperties);
+					return status;
+				}
 			}
 		}
 
@@ -395,19 +397,21 @@ namespace VideoToolbox {
 		{
 			infoFlags = default;
 
-			var rv = VTCompressionSessionEncodeMultiImageFrame (
-						GetCheckedHandle (),
-						taggedBufferGroup.GetNonNullHandle (nameof (taggedBufferGroup)),
-						presentationTimestamp,
-						duration,
-						frameProperties.GetHandle (),
-						sourceFrame,
-						(VTEncodeInfoFlags*) Unsafe.AsPointer<VTEncodeInfoFlags> (ref infoFlags));
+			fixed (VTEncodeInfoFlags* infoFlagsPtr = &infoFlags) {
+				var rv = VTCompressionSessionEncodeMultiImageFrame (
+							GetCheckedHandle (),
+							taggedBufferGroup.GetNonNullHandle (nameof (taggedBufferGroup)),
+							presentationTimestamp,
+							duration,
+							frameProperties.GetHandle (),
+							sourceFrame,
+							infoFlagsPtr);
 
-			GC.KeepAlive (taggedBufferGroup);
-			GC.KeepAlive (frameProperties);
+				GC.KeepAlive (taggedBufferGroup);
+				GC.KeepAlive (frameProperties);
 
-			return rv;
+				return rv;
+			}
 		}
 
 		[SupportedOSPlatform ("macos14.0")]
@@ -444,19 +448,21 @@ namespace VideoToolbox {
 
 			infoFlags = default;
 
-			var rv = VTCompressionSessionEncodeMultiImageFrameWithOutputHandler (
-						GetCheckedHandle (),
-						taggedBufferGroup.GetNonNullHandle (nameof (taggedBufferGroup)),
-						presentationTimestamp,
-						duration,
-						frameProperties.GetHandle (),
-						(VTEncodeInfoFlags*) Unsafe.AsPointer<VTEncodeInfoFlags> (ref infoFlags),
-						&trampolineBlock);
+			fixed (VTEncodeInfoFlags* infoFlagsPtr = &infoFlags) {
+				var rv = VTCompressionSessionEncodeMultiImageFrameWithOutputHandler (
+							GetCheckedHandle (),
+							taggedBufferGroup.GetNonNullHandle (nameof (taggedBufferGroup)),
+							presentationTimestamp,
+							duration,
+							frameProperties.GetHandle (),
+							infoFlagsPtr,
+							&trampolineBlock);
 
-			GC.KeepAlive (taggedBufferGroup);
-			GC.KeepAlive (frameProperties);
+				GC.KeepAlive (taggedBufferGroup);
+				GC.KeepAlive (frameProperties);
 
-			return rv;
+				return rv;
+			}
 		}
 
 		[UnmanagedCallersOnly]

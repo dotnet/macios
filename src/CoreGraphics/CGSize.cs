@@ -168,9 +168,11 @@ namespace CoreGraphics {
 			}
 			unsafe {
 				size = default;
-				bool result = NativeDrawingMethods.CGSizeMakeWithDictionaryRepresentation (dictionaryRepresentation.Handle, (CGSize*) Unsafe.AsPointer<CGSize> (ref size)) != 0;
-				GC.KeepAlive (dictionaryRepresentation);
-				return result;
+				fixed (CGSize* sizePtr = &size) {
+					bool result = NativeDrawingMethods.CGSizeMakeWithDictionaryRepresentation (dictionaryRepresentation.Handle, sizePtr) != 0;
+					GC.KeepAlive (dictionaryRepresentation);
+					return result;
+				}
 			}
 		}
 

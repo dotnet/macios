@@ -25,7 +25,8 @@ namespace OpenGLES {
 		{
 			major = default;
 			minor = default;
-			EAGLGetVersion ((nuint*) Unsafe.AsPointer<nuint> (ref major), (nuint*) Unsafe.AsPointer<nuint> (ref minor));
+			fixed (nuint* majorPtr = &major, minorPtr = &minor)
+				EAGLGetVersion (majorPtr, minorPtr);
 		}
 
 		/// <param name="target">To be added.</param>

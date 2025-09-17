@@ -977,14 +977,16 @@ namespace AudioToolbox {
 				unsafe {
 					fixed (AudioStreamPacketDependencyDescription* packetDependenciesPtr = packetDependencies) {
 						fixed (AudioStreamPacketDescription* packetDescriptionPtr = packetDescriptions) {
-							return AudioConverterFillComplexBufferWithPacketDependencies (
-								GetCheckedHandle (),
-								&FillComplexBufferShared,
-								(IntPtr) this_handle,
-								(uint*) Unsafe.AsPointer<int> (ref outputDataPacketSize),
-								(IntPtr) outputData,
-								packetDescriptionPtr,
-								packetDependenciesPtr);
+							fixed (int* outputDataPacketSizePtr = &outputDataPacketSize) {
+								return AudioConverterFillComplexBufferWithPacketDependencies (
+									GetCheckedHandle (),
+									&FillComplexBufferShared,
+									(IntPtr) this_handle,
+									(uint*) outputDataPacketSizePtr,
+									(IntPtr) outputData,
+									packetDescriptionPtr,
+									packetDependenciesPtr);
+							}
 						}
 					}
 				}

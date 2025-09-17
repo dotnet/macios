@@ -803,7 +803,7 @@ public partial class Generator : IMemberGatherer {
 	// Returns the actual way in which the type t must be marshalled
 	// for example "UIView foo" is generated as  "foo.Handle"
 	//
-	public string MarshalParameter (MethodInfo mi, ParameterInfo pi, bool null_allowed_override, PropertyInfo propInfo = null, bool castEnum = true, StringBuilder convs = null)
+	public string MarshalParameter (MethodInfo mi, ParameterInfo pi, bool null_allowed_override, PropertyInfo propInfo, bool castEnum, StringBuilder convs, StringBuilder by_ref_init, StringBuilder post_return)
 	{
 		if (pi.ParameterType.IsByRef && pi.ParameterType.GetElementType ().IsValueType == false)
 			return "&" + pi.Name + "Value";
@@ -882,15 +882,16 @@ public partial class Generator : IMemberGatherer {
 			if (nullable is not null) {
 				return $"converted_{safe_name}";
 			} else if (et.IsValueType) {
-				if (et == TypeCache.System_Boolean) {
-					if (pi.IsOut)
-						convs!.Append ($"{safe_name} = false;");
-					return $"(byte*) global::System.Runtime.CompilerServices.Unsafe.AsPointer<bool> (ref {safe_name})";
-				}
-				var blittableType = TypeManager.FormatType (mi.DeclaringType, et);
 				if (pi.IsOut)
-					convs!.Append ($"{safe_name} = default ({blittableType});");
-				return $"({blittableType}*) global::System.Runtime.CompilerServices.Unsafe.AsPointer<{blittableType}> (ref {safe_name})";
+					convs.AppendLine ($"{safe_name} = default;");
+
+				var blittableType = TypeManager.FormatType (mi.DeclaringType, et);
+				by_ref_init.AppendLine ($"fixed ({blittableType}* pointer_to__{safe_name} = &{safe_name}) {{");
+				post_return.AppendLine ("}");
+
+				if (et == TypeCache.System_Boolean)
+					return "(byte*) pointer_to__" + safe_name;
+				return "pointer_to__" + safe_name;
 			}
 			return (pi.IsOut ? "out " : "ref ") + safe_name;
 		}
@@ -1700,6 +1701,7 @@ public partial class Generator : IMemberGatherer {
 						  args: out args,
 						  convs: out convs,
 						  disposes: out disposes,
+						  post_return: out var post_return,
 						  by_ref_processing: out by_ref_processing,
 						  by_ref_init: out by_ref_init);
 
@@ -1730,6 +1732,8 @@ public partial class Generator : IMemberGatherer {
 					print ("return ret!;");
 				}
 			}
+			if (post_return?.Length > 0)
+				print (sw, post_return.ToString ());
 			indent--; print ("}");
 			indent--;
 			print ("}} /* class {0} */", ti.NativeInvokerName);
@@ -3281,13 +3285,14 @@ public partial class Generator : IMemberGatherer {
 	// @convs: conversions to perform before the invocation
 	// @disposes: dispose operations to perform after the invocation
 	// @by_ref_processing
-	void GenerateTypeLowering (MethodInfo mi, bool null_allowed_override, out StringBuilder args, out StringBuilder convs, out StringBuilder disposes, out StringBuilder by_ref_processing, out StringBuilder by_ref_init, PropertyInfo propInfo = null, bool castEnum = true)
+	void GenerateTypeLowering (MethodInfo mi, bool null_allowed_override, out StringBuilder args, out StringBuilder convs, out StringBuilder disposes, out StringBuilder by_ref_processing, out StringBuilder by_ref_init, out StringBuilder post_return, PropertyInfo propInfo = null, bool castEnum = true)
 	{
 		args = new StringBuilder ();
 		convs = new StringBuilder ();
 		disposes = new StringBuilder ();
 		by_ref_processing = new StringBuilder ();
 		by_ref_init = new StringBuilder ();
+		post_return = new StringBuilder ();
 
 		foreach (var pi in mi.GetParameters ()) {
 			var safe_name = pi.Name.GetSafeParamName ();
@@ -3296,7 +3301,7 @@ public partial class Generator : IMemberGatherer {
 			if (!IsTarget (pi)) {
 				// Construct invocation
 				args.Append (", ");
-				args.Append (MarshalParameter (mi, pi, null_allowed_override, propInfo, castEnum, convs));
+				args.Append (MarshalParameter (mi, pi, null_allowed_override, propInfo, castEnum, convs, by_ref_init, post_return));
 
 				if (pi.ParameterType.IsByRef) {
 					var et = pi.ParameterType.GetElementType ();
@@ -3568,7 +3573,7 @@ public partial class Generator : IMemberGatherer {
 		// Collect all strings that can be fast-marshalled
 		List<string> stringParameters = CollectFastStringMarshalParameters (mi);
 
-		GenerateTypeLowering (mi, null_allowed_override, out var args, out var convs, out var disposes, out var by_ref_processing, out var by_ref_init, propInfo);
+		GenerateTypeLowering (mi, null_allowed_override, out var args, out var convs, out var disposes, out var by_ref_processing, out var by_ref_init, out var post_return, propInfo);
 
 		if (minfo.is_protocol_member && minfo.is_static) {
 			print ("var class_ptr = Class.GetHandle (typeof (T));");
@@ -3782,6 +3787,8 @@ public partial class Generator : IMemberGatherer {
 		}
 		if (minfo.is_ctor)
 			WriteMarkDirtyIfDerived (sw, mi.DeclaringType);
+		if (post_return?.Length > 0)
+			print (post_return.ToString ());
 		if (stringParameters is not null) {
 			indent--;
 			print ("}");

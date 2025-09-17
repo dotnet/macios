@@ -306,7 +306,8 @@ namespace ObjCRuntime {
 		unsafe static int _NSGetExecutablePath (byte [] buf, ref int bufsize)
 		{
 			fixed (byte* bufptr = buf)
-				return _NSGetExecutablePath (bufptr, (int*) Unsafe.AsPointer<int> (ref bufsize));
+				fixed (int* bufsizePtr = &bufsize)
+					return _NSGetExecutablePath (bufptr, bufsizePtr);
 		}
 #endif
 

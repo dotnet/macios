@@ -559,9 +559,11 @@ namespace CoreGraphics {
 			}
 			rect = default;
 			unsafe {
-				bool result = NativeDrawingMethods.CGRectMakeWithDictionaryRepresentation (dictionaryRepresentation.Handle, (CGRect*) Unsafe.AsPointer<CGRect> (ref rect)) != 0;
-				GC.KeepAlive (dictionaryRepresentation);
-				return result;
+				fixed (CGRect* rectPtr = &rect) {
+					bool result = NativeDrawingMethods.CGRectMakeWithDictionaryRepresentation (dictionaryRepresentation.Handle, rectPtr) != 0;
+					GC.KeepAlive (dictionaryRepresentation);
+					return result;
+				}
 			}
 		}
 

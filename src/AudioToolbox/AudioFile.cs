@@ -1270,13 +1270,15 @@ namespace AudioToolbox {
 		{
 			OSStatus r;
 			fixed (AudioStreamPacketDescription* pdesc = descriptions) {
-				r = AudioFileReadPacketData (Handle,
-						useCache ? (byte) 1 : (byte) 0,
-						(int*) Unsafe.AsPointer<int> (ref count),
-						pdesc,
-						inStartingPacket,
-						(int*) Unsafe.AsPointer<int> (ref nPackets),
-						buffer);
+				fixed (int* countPtr = &count, nPacketsPtr = &nPackets) {
+					r = AudioFileReadPacketData (Handle,
+							useCache ? (byte) 1 : (byte) 0,
+							countPtr,
+							pdesc,
+							inStartingPacket,
+							nPacketsPtr,
+							buffer);
+				}
 			}
 
 			error = (AudioFileError) r;
@@ -1556,7 +1558,9 @@ namespace AudioToolbox {
 
 			unsafe {
 				fixed (AudioStreamPacketDescription* packetDescriptionsPtr = packetDescriptions) {
-					return AudioFileWritePackets (Handle, useCache ? (byte) 1 : (byte) 0, numBytes, packetDescriptionsPtr, startingPacket, (int*) Unsafe.AsPointer<int> (ref numPackets), buffer);
+					fixed (int* numPacketsPtr = &numPackets) {
+						return AudioFileWritePackets (Handle, useCache ? (byte) 1 : (byte) 0, numBytes, packetDescriptionsPtr, startingPacket, numPacketsPtr, buffer);
+					}
 				}
 			}
 		}
@@ -1600,15 +1604,17 @@ namespace AudioToolbox {
 			unsafe {
 				fixed (AudioStreamPacketDescription* packetDescriptionsPtr = packetDescriptions) {
 					fixed (AudioStreamPacketDependencyDescription* packetDependenciesPtr = packetDependencies) {
-						return AudioFileWritePacketsWithDependencies (
-							GetCheckedHandle (),
-							useCache.AsByte (),
-							(uint) numBytes,
-							packetDescriptionsPtr,
-							packetDependenciesPtr,
-							startingPacket,
-							(uint*) Unsafe.AsPointer<int> (ref numPackets),
-							buffer);
+						fixed (int* numPacketsPtr = &numPackets) {
+							return AudioFileWritePacketsWithDependencies (
+								GetCheckedHandle (),
+								useCache.AsByte (),
+								(uint) numBytes,
+								packetDescriptionsPtr,
+								packetDependenciesPtr,
+								startingPacket,
+								(uint*) numPacketsPtr,
+								buffer);
+						}
 					}
 				}
 			}
@@ -1715,7 +1721,8 @@ namespace AudioToolbox {
 		{
 			size = 0;
 			unsafe {
-				return (AudioFileError) AudioFileGetUserDataSize64 (Handle, userDataId, index, (ulong*) Unsafe.AsPointer<ulong> (ref size));
+				fixed (ulong* sizePtr = &size)
+					return (AudioFileError) AudioFileGetUserDataSize64 (Handle, userDataId, index, sizePtr);
 			}
 		}
 
@@ -1749,7 +1756,8 @@ namespace AudioToolbox {
 #endif
 		{
 			unsafe {
-				return AudioFileGetUserData (Handle, userDataID, index, (int*) Unsafe.AsPointer<int> (ref size), userData);
+				fixed (int* sizePtr = &size)
+					return AudioFileGetUserData (Handle, userDataID, index, sizePtr, userData);
 			}
 		}
 
@@ -1785,7 +1793,8 @@ namespace AudioToolbox {
 		public AudioFileError GetUserData (uint userDataId, int index, long offset, ref int size, IntPtr userData)
 		{
 			unsafe {
-				return (AudioFileError) AudioFileGetUserDataAtOffset (Handle, userDataId, index, offset, (int*) Unsafe.AsPointer<int> (ref size), userData);
+				fixed (int* sizePtr = &size)
+					return (AudioFileError) AudioFileGetUserDataAtOffset (Handle, userDataId, index, offset, sizePtr, userData);
 			}
 		}
 
@@ -1931,7 +1940,9 @@ namespace AudioToolbox {
 			size = default;
 			writable = default;
 			unsafe {
-				error = AudioFileGetPropertyInfo (Handle, property, (int*) Unsafe.AsPointer<int> (ref size), (int*) Unsafe.AsPointer<int> (ref writable));
+				fixed (int* sizePtr = &size, writablePtr = &writable) {
+					error = AudioFileGetPropertyInfo (Handle, property, sizePtr, writablePtr);
+				}
 			}
 			return error == AudioFileError.Success;
 		}
@@ -1959,7 +1970,8 @@ namespace AudioToolbox {
 			size = default;
 
 			unsafe {
-				error = AudioFileGetPropertyInfo (Handle, property, (int*) Unsafe.AsPointer<int> (ref size), &writableValue);
+				fixed (int* sizePtr = &size)
+					error = AudioFileGetPropertyInfo (Handle, property, sizePtr, &writableValue);
 			}
 			writable = writableValue != 0;
 
@@ -1988,7 +2000,8 @@ namespace AudioToolbox {
 		public bool GetProperty (AudioFileProperty property, ref int dataSize, IntPtr outdata)
 		{
 			unsafe {
-				return AudioFileGetProperty (Handle, property, (int*) Unsafe.AsPointer<int> (ref dataSize), outdata) == 0;
+				fixed (int* dataSizePtr = &dataSize)
+					return AudioFileGetProperty (Handle, property, dataSizePtr, outdata) == 0;
 			}
 		}
 
@@ -2007,9 +2020,11 @@ namespace AudioToolbox {
 				return IntPtr.Zero;
 
 			unsafe {
-				var rv = AudioFileGetProperty (Handle, property, (int*) Unsafe.AsPointer<int> (ref size), buffer);
-				if (rv == 0)
-					return buffer;
+				fixed (int* sizePtr = &size) {
+					var rv = AudioFileGetProperty (Handle, property, sizePtr, buffer);
+					if (rv == 0)
+						return buffer;
+				}
 			}
 			Marshal.FreeHGlobal (buffer);
 			return IntPtr.Zero;

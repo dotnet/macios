@@ -201,7 +201,8 @@ namespace AudioToolbox {
 		{
 			time = 0;
 			unsafe {
-				return MusicPlayerGetTime (Handle, (double*) Unsafe.AsPointer<double> (ref time));
+				fixed (double* timePtr = &time)
+					return MusicPlayerGetTime (Handle, timePtr);
 			}
 		}
 
@@ -293,7 +294,9 @@ namespace AudioToolbox {
 		{
 			hostTime = 0;
 			unsafe {
-				return MusicPlayerGetHostTimeForBeats (Handle, beats, (long*) Unsafe.AsPointer<long> (ref hostTime));
+				fixed (long* hostTimePtr = &hostTime) {
+					return MusicPlayerGetHostTimeForBeats (Handle, beats, hostTimePtr);
+				}
 			}
 		}
 
@@ -309,7 +312,9 @@ namespace AudioToolbox {
 		{
 			beats = 0;
 			unsafe {
-				return MusicPlayerGetBeatsForHostTime (Handle, hostTime, (double*) Unsafe.AsPointer<double> (ref beats));
+				fixed (double* beatsPtr = &beats) {
+					return MusicPlayerGetBeatsForHostTime (Handle, hostTime, beatsPtr);
+				}
 			}
 		}
 

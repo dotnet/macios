@@ -604,13 +604,17 @@ namespace CoreMedia {
 			parameterSetCount = default;
 			nalUnitHeaderLength = default;
 			unsafe {
-				error = CMVideoFormatDescriptionGetH264ParameterSetAtIndex (
-							GetCheckedHandle (),
-							index,
-							&ret,
-							&parameterSetSizeOut,
-							(nuint*) Unsafe.AsPointer<nuint> (ref parameterSetCount),
-							(int*) Unsafe.AsPointer<int> (ref nalUnitHeaderLength));
+				fixed (nuint* parameterSetCountPtr = &parameterSetCount) {
+					fixed (int* nalUnitHeaderLengthPtr = &nalUnitHeaderLength) {
+						error = CMVideoFormatDescriptionGetH264ParameterSetAtIndex (
+									GetCheckedHandle (),
+									index,
+									&ret,
+									&parameterSetSizeOut,
+									parameterSetCountPtr,
+									nalUnitHeaderLengthPtr);
+					}
+				}
 			}
 			if (error != CMFormatDescriptionError.None)
 				return null;
@@ -754,13 +758,17 @@ namespace CoreMedia {
 			parameterSetCount = default;
 			nalUnitHeaderLength = default;
 			unsafe {
-				error = CMVideoFormatDescriptionGetHEVCParameterSetAtIndex (
-							GetCheckedHandle (),
-							index,
-							&ret,
-							&parameterSetSizeOut,
-							(nuint*) Unsafe.AsPointer<nuint> (ref parameterSetCount),
-							(int*) Unsafe.AsPointer<int> (ref nalUnitHeaderLength));
+				fixed (nuint* parameterSetCountPtr = &parameterSetCount) {
+					fixed (int* nalUnitHeaderLengthPtr = &nalUnitHeaderLength) {
+						error = CMVideoFormatDescriptionGetHEVCParameterSetAtIndex (
+									GetCheckedHandle (),
+									index,
+									&ret,
+									&parameterSetSizeOut,
+									parameterSetCountPtr,
+									nalUnitHeaderLengthPtr);
+					}
+				}
 			}
 			if (error != CMFormatDescriptionError.None)
 				return null;

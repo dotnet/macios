@@ -124,10 +124,16 @@ readonly partial struct TypeInfo {
 		return parentMethodsBucket.ToImmutable ();
 	}
 
-	internal TypeInfo (ITypeSymbol symbol, RootContext context) : this (symbol)
+	/// <summary>
+	/// Initializes a new instance of the <see cref="TypeInfo"/> struct from a type symbol, with additional generator-specific information.
+	/// </summary>
+	/// <param name="symbol">The type symbol to create the <see cref="TypeInfo"/> from.</param>
+	/// <param name="context">The root context for compilation information.</param>
+	/// <param name="includeEvents">A flag to indicate whether to include event information for protocols.</param>
+	internal TypeInfo (ITypeSymbol symbol, RootContext context, bool includeEvents = true) : this (symbol)
 	{
 		NeedsStret = symbol.NeedsStret (context.Compilation);
-		if (symbol.IsProtocol ()) {
+		if (symbol.IsProtocol () && includeEvents) {
 			Events = GetInterfaceEvents (string.Join ('.', Namespace), symbol, context);
 		}
 	}

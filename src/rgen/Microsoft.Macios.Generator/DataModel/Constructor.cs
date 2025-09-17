@@ -33,11 +33,11 @@ readonly partial struct Constructor : IEquatable<Constructor> {
 	/// Gets or sets a value indicating whether the constructor comes from a protocol factory method.
 	/// </summary>
 	public bool IsProtocolConstructor { get; init; }
-	
+
 	/// <summary>
 	/// Gets the name of the protocol that this constructor originates from, if it is a protocol constructor.
 	/// </summary>
-	[MemberNotNullWhen(true, nameof(IsProtocolConstructor))]
+	[MemberNotNullWhen (true, nameof (IsProtocolConstructor))]
 	public string? ProtocolType { get; init; }
 
 	/// <summary>

@@ -455,6 +455,7 @@ namespace NS {
 }
 ";
 			yield return [versionConstraints, ApplePlatform.iOS, false, 1, 1, 1];
+			yield return [versionConstraints, ApplePlatform.TVOS, false, 1, 0, 0];
 
 			// not supported platform
 			var notSupportedPlatform = @"

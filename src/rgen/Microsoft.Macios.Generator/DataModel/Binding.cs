@@ -244,6 +244,31 @@ readonly partial struct Binding {
 	/// </summary>
 	public ImmutableArray<string> ConstructorSelectors => [.. constructorIndex.Keys];
 
+	readonly Dictionary<string, int> protocolConstructorIndex = new ();
+	readonly ImmutableArray<Constructor> protocolConstructors = [];
+
+	/// <summary>
+	/// Gets the constructors inherited from parent protocols.
+	/// </summary>
+	public ImmutableArray<Constructor> ProtocolConstructors {
+		get => protocolConstructors;
+		init {
+			protocolConstructors = value;
+			// populate the constructor index for fast lookup using the symbol name
+			for (var index = 0; index < protocolConstructors.Length; index++) {
+				var constructor = protocolConstructors [index];
+				if (constructor.Selector is null)
+					continue;
+				protocolConstructorIndex [constructor.Selector] = index;
+			}
+		}
+	}
+
+	/// <summary>
+	/// Returns all the selectors for the constructors.
+	/// </summary>
+	public ImmutableArray<string> ProtocolConstructorSelectors => [.. protocolConstructorIndex.Keys];
+
 	readonly Dictionary<string, int> eventsIndex = new ();
 	readonly ImmutableArray<Event> events = [];
 

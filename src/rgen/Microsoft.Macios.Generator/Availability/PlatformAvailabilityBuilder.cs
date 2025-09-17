@@ -84,7 +84,7 @@ readonly partial struct PlatformAvailability {
 				if (unsupported.ContainsKey (defaultVersion))
 					return;
 				unsupported [version] = message;
-				// we need to ensure that is we unsupported a version that the supported version is not null, if
+				// we need to ensure that if we unsupported a version that the supported version is not null, if
 				// it is, we need to set it to the version before the unsupported one
 				if (supportedVersion is null) {
 					supportedVersion = defaultVersion;

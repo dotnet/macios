@@ -44,8 +44,8 @@ readonly partial struct PlatformAvailability {
 				return;
 
 			// update the supported version to the larges of the two
-			supportedVersion = supportedVersion is null 
-				? version 
+			supportedVersion = supportedVersion is null
+				? version
 				: PlatformSupportVersion.Max (version, supportedVersion.Value);
 		}
 
@@ -59,7 +59,7 @@ readonly partial struct PlatformAvailability {
 			if (supportedPlatform.Platform != platform)
 				return;
 			// no version is present, therefore try to set the default one
-			AddSupportedVersion ( new (supportedPlatform.Version, SupportKind.Explicit));
+			AddSupportedVersion (new (supportedPlatform.Version, SupportKind.Explicit));
 		}
 
 		/// <summary>
@@ -85,7 +85,7 @@ readonly partial struct PlatformAvailability {
 				// that we did not fully unsupported the platform, if that is the case, we ignore this version
 				if (unsupported.ContainsKey (PlatformSupportVersion.ExplicitDefault))
 					return;
-				
+
 				// we implicitly unsupported the platform, remove that entry since we are adding a version
 				unsupported.Remove (PlatformSupportVersion.ImplicitDefault);
 				unsupported [version] = message;

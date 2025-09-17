@@ -44,12 +44,12 @@ public readonly record struct PlatformSupportVersion {
 		Version = version;
 		Kind = kind;
 	}
-	
+
 	/// <summary>
 	/// Initializes a new instance of the <see cref="PlatformSupportVersion"/> struct with an explicit support kind.
 	/// </summary>
 	/// <param name="version">The version number.</param>
-	public PlatformSupportVersion (Version version) : this(version, SupportKind.Explicit) {}
+	public PlatformSupportVersion (Version version) : this (version, SupportKind.Explicit) { }
 
 	/// <summary>
 	/// Returns the platform support version with the highest precedence.

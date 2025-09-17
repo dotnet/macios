@@ -29,6 +29,11 @@ readonly partial struct Constructor : IEquatable<Constructor> {
 	public bool IsNullOrDefault => State == StructState.Default;
 
 	/// <summary>
+	/// Gets or sets a value indicating whether the constructor comes from a protocol factory method.
+	/// </summary>
+	public bool IsProtocolConstructor { get; init; }
+
+	/// <summary>
 	/// Type name that owns the constructor.
 	/// </summary>
 	public string Type { get; }

@@ -1380,10 +1380,15 @@
 			DependsOnTargets="$(_AOTCompileDependsOn)"
 		>
 
+		<ItemGroup>
+			<_AotEnvironment Condition="'$(MonoUseCompressedInterfaceBitmap)' == 'true'" Include="MONO_COMPRESSED_INTERFACE_BITMAP" Value="1" />
+		</ItemGroup>
+
 		<AOTCompile
 			SessionId="$(BuildSessionId)"
 			Condition="'$(IsMacEnabled)' == 'true'"
 			Assemblies="@(_AssembliesToAOT)"
+			AotEnvironment="@(_AotEnvironment)"
 			AOTCompilerPath="$(_XamarinAOTCompiler)"
 			InputDirectory="$(_AOTInputDirectory)"
 			MaxDegreeOfParallelism="$(AotCompileMaxDegreeOfParallelism)"

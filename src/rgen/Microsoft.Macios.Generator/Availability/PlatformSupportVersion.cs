@@ -30,7 +30,7 @@ public readonly record struct PlatformSupportVersion {
 	/// Gets a default platform support version with an explicit kind.
 	/// </summary>
 	public static PlatformSupportVersion ExplicitDefault { get; } = new () {
-		Version = new (), 
+		Version = new (),
 		Kind = SupportKind.Explicit
 	};
 

@@ -886,12 +886,12 @@ public partial class Generator : IMemberGatherer {
 					convs.AppendLine ($"{safe_name} = default;");
 
 				var blittableType = TypeManager.FormatType (mi.DeclaringType, et);
-				by_ref_init.AppendLine ($"fixed ({blittableType}* pointer_to__{safe_name} = &{safe_name}) {{");
+				by_ref_init.AppendLine ($"fixed ({blittableType}* {safe_name}__pointer = &{safe_name}) {{");
 				post_return.AppendLine ("}");
 
 				if (et == TypeCache.System_Boolean)
-					return "(byte*) pointer_to__" + safe_name;
-				return "pointer_to__" + safe_name;
+					return "(byte*) " + safe_name + "__pointer";
+				return safe_name + "__pointer";
 			}
 			return (pi.IsOut ? "out " : "ref ") + safe_name;
 		}

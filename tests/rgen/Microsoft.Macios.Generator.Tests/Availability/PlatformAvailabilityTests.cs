@@ -22,7 +22,8 @@ public class PlatformAvailabilityTests {
 		var attrData = new SupportedOSPlatformData (attributePlatformName);
 		builder.Add (attrData);
 		var availability = builder.ToImmutable ();
-		Assert.Equal (availability.SupportedVersion, new Version ());
+		Assert.NotNull (availability.SupportedVersion);
+		Assert.Equal (availability.SupportedVersion.Value.Version, new Version ());
 	}
 
 	[Theory]
@@ -52,7 +53,8 @@ public class PlatformAvailabilityTests {
 		builder.Add (attrData);
 		var expectedVersion = Version.Parse (version);
 		var availability = builder.ToImmutable ();
-		Assert.Equal (expectedVersion, availability.SupportedVersion);
+		Assert.NotNull (availability.SupportedVersion);
+		Assert.Equal (expectedVersion, availability.SupportedVersion.Value.Version);
 	}
 
 	[Theory]
@@ -73,7 +75,8 @@ public class PlatformAvailabilityTests {
 		var expectedVersion = Version.Parse (version);
 		// should be most specific version
 		var availability = builder.ToImmutable ();
-		Assert.Equal (expectedVersion, availability.SupportedVersion);
+		Assert.NotNull (availability.SupportedVersion);
+		Assert.Equal (expectedVersion, availability.SupportedVersion.Value.Version);
 	}
 
 	[Theory]
@@ -94,7 +97,8 @@ public class PlatformAvailabilityTests {
 
 		var expected = Version.Parse (expectedVersion);
 		var availability = builder.ToImmutable ();
-		Assert.Equal (expected, availability.SupportedVersion);
+		Assert.NotNull (availability.SupportedVersion);
+		Assert.Equal (expected, availability.SupportedVersion.Value.Version);
 	}
 
 	[Theory]
@@ -107,11 +111,10 @@ public class PlatformAvailabilityTests {
 		var builder = PlatformAvailability.CreateBuilder (platform);
 		var attrData = new UnsupportedOSPlatformData (attributePlatformName);
 		builder.Add (attrData);
-		var defaultVersion = new Version ();
 		var availability = builder.ToImmutable ();
-		Assert.Contains (defaultVersion, availability.UnsupportedVersions.Keys);
+		Assert.Contains (PlatformSupportVersion.ExplicitDefault, availability.UnsupportedVersions.Keys);
 		Assert.Single (availability.UnsupportedVersions);
-		Assert.Null (availability.UnsupportedVersions [defaultVersion]);
+		Assert.Null (availability.UnsupportedVersions [PlatformSupportVersion.ExplicitDefault]);
 	}
 
 	[Theory]
@@ -124,11 +127,10 @@ public class PlatformAvailabilityTests {
 		var builder = PlatformAvailability.CreateBuilder (platform);
 		var attrData = new UnsupportedOSPlatformData (attributePlatformName, message);
 		builder.Add (attrData);
-		var defaultVersion = new Version ();
 		var availability = builder.ToImmutable ();
-		Assert.Contains (defaultVersion, availability.UnsupportedVersions.Keys);
+		Assert.Contains (PlatformSupportVersion.ExplicitDefault, availability.UnsupportedVersions.Keys);
 		Assert.Single (availability.UnsupportedVersions);
-		Assert.Equal (message, availability.UnsupportedVersions [defaultVersion]);
+		Assert.Equal (message, availability.UnsupportedVersions [PlatformSupportVersion.ExplicitDefault]);
 	}
 
 	[Theory]
@@ -145,11 +147,10 @@ public class PlatformAvailabilityTests {
 		var platformAttrData = new UnsupportedOSPlatformData (platform.AsString ().ToLower (), message);
 		builder.Add (versionAttrData);
 		builder.Add (platformAttrData);
-		var defaultVersion = new Version ();
 		var availability = builder.ToImmutable ();
-		Assert.Contains (defaultVersion, availability.UnsupportedVersions.Keys);
+		Assert.Contains (PlatformSupportVersion.ExplicitDefault, availability.UnsupportedVersions.Keys);
 		Assert.Single (availability.UnsupportedVersions);
-		Assert.Equal (message, availability.UnsupportedVersions [defaultVersion]);
+		Assert.Equal (message, availability.UnsupportedVersions [PlatformSupportVersion.ExplicitDefault]);
 	}
 
 	[Theory]
@@ -182,8 +183,8 @@ public class PlatformAvailabilityTests {
 		var availability = builder.ToImmutable ();
 		Assert.Null (availability.SupportedVersion);
 		Assert.Single (availability.UnsupportedVersions);
-		Assert.Contains (new Version (), availability.UnsupportedVersions.Keys);
-		Assert.Equal (message, availability.UnsupportedVersions [new Version ()]);
+		Assert.Contains (PlatformSupportVersion.ExplicitDefault, availability.UnsupportedVersions.Keys);
+		Assert.Equal (message, availability.UnsupportedVersions [PlatformSupportVersion.ExplicitDefault]);
 	}
 
 	[Theory]
@@ -213,8 +214,8 @@ public class PlatformAvailabilityTests {
 
 		var availability = builder.ToImmutable ();
 		Assert.Single (availability.UnsupportedVersions);
-		Assert.Contains (new Version (), availability.UnsupportedVersions.Keys);
-		Assert.Equal (message, availability.UnsupportedVersions [new Version ()]);
+		Assert.Contains (PlatformSupportVersion.ExplicitDefault, availability.UnsupportedVersions.Keys);
+		Assert.Equal (message, availability.UnsupportedVersions [PlatformSupportVersion.ExplicitDefault]);
 	}
 
 	[Theory]
@@ -239,10 +240,13 @@ public class PlatformAvailabilityTests {
 		}
 
 		var availability = builder.ToImmutable ();
+		// get all the versions we added
+		var unsupported= availability.UnsupportedVersions.Keys
+			.Select (x => x.Version).ToArray ();
 		// assert that the version is present
 		foreach (var v in versions) {
 			var currentVersion = Version.Parse (v);
-			Assert.Contains (currentVersion, availability.UnsupportedVersions.Keys);
+			Assert.Contains (currentVersion, unsupported);
 		}
 	}
 

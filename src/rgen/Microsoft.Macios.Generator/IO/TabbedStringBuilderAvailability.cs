@@ -15,15 +15,15 @@ static class TabbedStringBuilderAvailability {
 		foreach (var availability in allPlatformsAvailability.PlatformAvailabilities) {
 			var platformName = availability.Platform.AsString ().ToLower ();
 			if (availability.SupportedVersion is not null) {
-				var versionStr = (PlatformAvailability.IsDefaultVersion (availability.SupportedVersion))
+				var versionStr = (PlatformAvailability.IsDefaultVersion (availability.SupportedVersion.Value.Version))
 					? string.Empty
-					: availability.SupportedVersion.ToString ();
+					: availability.SupportedVersion.Value.Version.ToString ();
 				self.WriteLine ($"[SupportedOSPlatform (\"{platformName}{versionStr}\")]");
 			}
 
 			// loop over the unsupported versions of the platform 
 			foreach (var (version, message) in availability.UnsupportedVersions) {
-				var versionStr = (PlatformAvailability.IsDefaultVersion (version)) ? string.Empty : version.ToString ();
+				var versionStr = (PlatformAvailability.IsDefaultVersion (version.Version)) ? string.Empty : version.Version.ToString ();
 				if (message is null) {
 					self.WriteLine ($"[UnsupportedOSPlatform (\"{platformName}{versionStr}\")]");
 				} else {
@@ -61,15 +61,15 @@ static class TabbedStringBuilderAvailability {
 		foreach (var availability in allPlatformsAvailability.PlatformAvailabilities) {
 			var platformName = availability.Platform.AsString ().ToLower ();
 			if (availability.SupportedVersion is not null) {
-				var versionStr = (PlatformAvailability.IsDefaultVersion (availability.SupportedVersion))
+				var versionStr = (PlatformAvailability.IsDefaultVersion (availability.SupportedVersion.Value.Version))
 					? string.Empty
-					: availability.SupportedVersion.ToString ();
+					: availability.SupportedVersion.Value.Version.ToString ();
 				await self.WriteLineAsync ($"[SupportedOSPlatform (\"{platformName}{versionStr}\")]");
 			}
 
 			// loop over the unsupported versions of the platform
 			foreach (var (version, message) in availability.UnsupportedVersions) {
-				var versionStr = (PlatformAvailability.IsDefaultVersion (version)) ? string.Empty : version.ToString ();
+				var versionStr = (PlatformAvailability.IsDefaultVersion (version.Version)) ? string.Empty : version.Version.ToString ();
 				if (message is null) {
 					await self.WriteLineAsync ($"[UnsupportedOSPlatform (\"{platformName}{versionStr}\")]");
 				} else {

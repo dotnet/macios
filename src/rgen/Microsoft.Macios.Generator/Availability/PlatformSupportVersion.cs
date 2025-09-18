@@ -8,7 +8,7 @@ namespace Microsoft.Macios.Generator.Availability;
 /// <summary>
 /// Represents a platform support version, combining a version number and a support kind.
 /// </summary>
-public readonly record struct PlatformSupportVersion {
+public readonly record struct PlatformSupportVersion : IComparable<PlatformSupportVersion> {
 	/// <summary>
 	/// Gets the version number.
 	/// </summary>
@@ -60,12 +60,17 @@ public readonly record struct PlatformSupportVersion {
 	/// The platform support version with the highest precedence. If the kinds are the same, it returns the one with the greater version.
 	/// If the kinds are different, it returns the one with the higher kind value.
 	/// </returns>
-	public static PlatformSupportVersion Max (PlatformSupportVersion v1, PlatformSupportVersion v2)
+	public static PlatformSupportVersion? Max (PlatformSupportVersion? v1, PlatformSupportVersion? v2)
 	{
-		if (v1.Kind == v2.Kind) {
-			return v1.Version >= v2.Version ? v1 : v2;
+		if (v1 is null)
+			return v2;
+		if (v2 is null)
+			return v1;
+
+		if (v1.Value.Kind == v2.Value.Kind) {
+			return v1.Value.Version >= v2.Value.Version ? v1 : v2;
 		}
-		return (int) v1.Kind > (int) v2.Kind ? v1 : v2;
+		return (int) v1.Value.Kind > (int) v2.Value.Kind ? v1 : v2;
 	}
 
 	/// <summary>
@@ -77,11 +82,68 @@ public readonly record struct PlatformSupportVersion {
 	/// The platform support version with the lowest version if the kinds are the same.
 	/// If the kinds are different, it returns the one with the higher kind value.
 	/// </returns>
-	public static PlatformSupportVersion Min (PlatformSupportVersion v1, PlatformSupportVersion v2)
+	public static PlatformSupportVersion? Min (PlatformSupportVersion? v1, PlatformSupportVersion? v2)
 	{
-		if (v1.Kind == v2.Kind) {
-			return v1.Version <= v2.Version ? v1 : v2;
+		if (v1 is null)
+			return v2;
+		if (v2 is null)
+			return v1;
+		if (v1.Value.Kind == v2.Value.Kind) {
+			return v1.Value.Version <= v2.Value.Version ? v1 : v2;
 		}
-		return (int) v1.Kind > (int) v2.Kind ? v1 : v2;
+		return (int) v1.Value.Kind > (int) v2.Value.Kind ? v1 : v2;
+	}
+
+	/// <inheritdoc />
+	public int CompareTo(PlatformSupportVersion other)
+	{
+		var versionComparison = Version.CompareTo (other.Version);
+		if (versionComparison != 0)
+			return versionComparison;
+		return Kind.CompareTo (other.Kind);
+	}
+
+	/// <summary>
+	/// Compares two <see cref="PlatformSupportVersion"/> instances to determine if the left is less than the right.
+	/// </summary>
+	/// <param name="left">The first <see cref="PlatformSupportVersion"/> to compare.</param>
+	/// <param name="right">The second <see cref="PlatformSupportVersion"/> to compare.</param>
+	/// <returns><c>true</c> if the left instance is less than the right instance; otherwise, <c>false</c>.</returns>
+	public static bool operator <(PlatformSupportVersion left, PlatformSupportVersion right)
+	{
+		return left.CompareTo (right) < 0;
+	}
+
+	/// <summary>
+	/// Compares two <see cref="PlatformSupportVersion"/> instances to determine if the left is greater than the right.
+	/// </summary>
+	/// <param name="left">The first <see cref="PlatformSupportVersion"/> to compare.</param>
+	/// <param name="right">The second <see cref="PlatformSupportVersion"/> to compare.</param>
+	/// <returns><c>true</c> if the left instance is greater than the right instance; otherwise, <c>false</c>.</returns>
+	public static bool operator >(PlatformSupportVersion left, PlatformSupportVersion right)
+	{
+		return left.CompareTo (right) > 0;
+	}
+
+	/// <summary>
+	/// Compares two <see cref="PlatformSupportVersion"/> instances to determine if the left is less than or equal to the right.
+	/// </summary>
+	/// <param name="left">The first <see cref="PlatformSupportVersion"/> to compare.</param>
+	/// <param name="right">The second <see cref="PlatformSupportVersion"/> to compare.</param>
+	/// <returns><c>true</c> if the left instance is less than or equal to the right instance; otherwise, <c>false</c>.</returns>
+	public static bool operator <=(PlatformSupportVersion left, PlatformSupportVersion right)
+	{
+		return left.CompareTo (right) <= 0;
+	}
+
+	/// <summary>
+	/// Compares two <see cref="PlatformSupportVersion"/> instances to determine if the left is greater than or equal to the right.
+	/// </summary>
+	/// <param name="left">The first <see cref="PlatformSupportVersion"/> to compare.</param>
+	/// <param name="right">The second <see cref="PlatformSupportVersion"/> to compare.</param>
+	/// <returns><c>true</c> if the left instance is greater than or equal to the right instance; otherwise, <c>false</c>.</returns>
+	public static bool operator >=(PlatformSupportVersion left, PlatformSupportVersion right)
+	{
+		return left.CompareTo(right) >= 0;
 	}
 }

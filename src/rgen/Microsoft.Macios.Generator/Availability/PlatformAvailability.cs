@@ -29,14 +29,14 @@ readonly partial struct PlatformAvailability : IEquatable<PlatformAvailability> 
 	/// The supported version of the platform. If null, that means that the user did not add a SupportedOSPlatform
 	/// attribute. 
 	/// </summary>
-	public Version? SupportedVersion { get; }
+	public PlatformSupportVersion? SupportedVersion { get; }
 
-	readonly SortedDictionary<Version, string?> unsupported = new ();
+	readonly SortedDictionary<PlatformSupportVersion, string?> unsupported = new ();
 
 	/// <summary>
 	/// Dictionary that contains all the obsoleted versions and their optional data.
 	/// </summary>
-	public IReadOnlyDictionary<Version, string?> UnsupportedVersions => unsupported;
+	public IReadOnlyDictionary<PlatformSupportVersion, string?> UnsupportedVersions => unsupported;
 
 	readonly SortedDictionary<Version, (string? Message, string? Url)> obsoleted = new ();
 
@@ -53,10 +53,11 @@ readonly partial struct PlatformAvailability : IEquatable<PlatformAvailability> 
 			// a platform is supported if:
 			// 1. The supported version is not null, either the default version or a specific one
 			// 2. The default version is not in the unsupported list
-			return SupportedVersion is not null && !unsupported.ContainsKey (defaultVersion);
+			return SupportedVersion is not null
+			       && !unsupported.ContainsKey (PlatformSupportVersion.ImplicitDefault)
+			       && !unsupported.ContainsKey (PlatformSupportVersion.ExplicitDefault);
 		}
 	}
-
 
 	/// <summary>
 	/// Returns if a version is the default version.
@@ -65,9 +66,8 @@ readonly partial struct PlatformAvailability : IEquatable<PlatformAvailability> 
 	/// <returns>True if the version is default.</returns>
 	public static bool IsDefaultVersion (Version version) => version == defaultVersion;
 
-
-	PlatformAvailability (ApplePlatform platform, Version? supportedVersion,
-		SortedDictionary<Version, string?> unsupportedVersions,
+	PlatformAvailability (ApplePlatform platform, PlatformSupportVersion? supportedVersion,
+		SortedDictionary<PlatformSupportVersion, string?> unsupportedVersions,
 		SortedDictionary<Version, (string? Message, string? Url)> obsoletedVersions)
 	{
 		Platform = platform;
@@ -116,21 +116,19 @@ readonly partial struct PlatformAvailability : IEquatable<PlatformAvailability> 
 		// 1. If the parent has unsupported versions we will add them to the merge. If the kid has them, we will
 		// add them too
 		foreach (var (version, message) in parent.Value.unsupported) {
-			builder.AddUnsupportedVersion (new (version, SupportKind.Explicit), message);
+			builder.AddUnsupportedVersion (version, message);
 		}
 
 		foreach (var (version, message) in unsupported) {
-			builder.AddUnsupportedVersion (new (version, SupportKind.Explicit), message);
+			builder.AddUnsupportedVersion (version, message);
 		}
 
 		// 2. if supported in the platform, we will always pick the larges version between
 		//    the two. Now, because we might be unsupported
 
-		var supportedVersion = (parent.Value.SupportedVersion > SupportedVersion)
-			? parent.Value.SupportedVersion
-			: SupportedVersion;
+		var supportedVersion = PlatformSupportVersion.Max (parent.Value.SupportedVersion, SupportedVersion);
 		if (supportedVersion is not null)
-			builder.AddSupportedVersion (new (supportedVersion, SupportKind.Explicit));
+			builder.AddSupportedVersion (supportedVersion.Value);
 
 		// similar to the unsupported versions, if the parent has obsolete ones, we will add them
 		foreach (var (version, obsoleteInfo) in parent.Value.obsoleted) {
@@ -148,7 +146,7 @@ readonly partial struct PlatformAvailability : IEquatable<PlatformAvailability> 
 	public bool Equals (PlatformAvailability other)
 	{
 		var obsoleteComparer = new DictionaryComparer<Version, (string?, string?)> ();
-		var unsupportedComparer = new DictionaryComparer<Version, string?> ();
+		var unsupportedComparer = new DictionaryComparer<PlatformSupportVersion, string?> ();
 
 		var x = Equals (SupportedVersion, other.SupportedVersion);
 		return Platform == other.Platform &&
@@ -184,9 +182,9 @@ readonly partial struct PlatformAvailability : IEquatable<PlatformAvailability> 
 	{
 		var sb = new StringBuilder ("{ ");
 		sb.Append ($"Platform: '{Platform}', ");
-		sb.Append ($"Supported: '{SupportedVersion?.ToString ()}', ");
+		sb.Append ($"Supported: '{SupportedVersion?.Version.ToString ()}', ");
 		sb.Append ("Unsupported: [");
-		sb.AppendJoin (", ", unsupported.Select (v => $"'{v.Key}': '{v.Value?.ToString () ?? "null"}'"));
+		sb.AppendJoin (", ", unsupported.Select (v => $"'{v.Key.Version}': '{v.Value?.ToString () ?? "null"}'"));
 		sb.Append ("], Obsoleted: [");
 		sb.AppendJoin (", ", obsoleted.Select (v => $"'{v.Key}': ('{v.Value.Message?.ToString () ?? "null"}', '{v.Value.Url?.ToString () ?? "null"}')"));
 		sb.Append ("] }");

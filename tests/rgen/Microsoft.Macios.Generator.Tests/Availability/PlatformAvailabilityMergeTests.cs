@@ -60,7 +60,7 @@ public class PlatformAvailabilityMergeTests {
 		var parent = parentBuilder.ToImmutable ();
 		var merged = child.MergeWithParent (parent);
 		Assert.Single (merged.UnsupportedVersions);
-		Assert.Contains (unsupportedVersion.Version, merged.UnsupportedVersions);
+		Assert.Contains (unsupportedVersion, merged.UnsupportedVersions);
 	}
 
 	[Fact]
@@ -77,7 +77,7 @@ public class PlatformAvailabilityMergeTests {
 		var parent = parentBuilder.ToImmutable ();
 		var merged = child.MergeWithParent (parent);
 		Assert.Single (merged.UnsupportedVersions);
-		Assert.Contains (unsupportedPlatform.Version, merged.UnsupportedVersions);
+		Assert.Contains (unsupportedPlatform, merged.UnsupportedVersions);
 	}
 
 	[Fact]
@@ -99,8 +99,8 @@ public class PlatformAvailabilityMergeTests {
 		var merged = child.MergeWithParent (parent);
 		Assert.Equal (2, merged.UnsupportedVersions.Count);
 		// both unsupported versions should appear
-		Assert.Contains (unsupportedParentVersion.Version, merged.UnsupportedVersions);
-		Assert.Contains (unsupportedChildVersion.Version, merged.UnsupportedVersions);
+		Assert.Contains (unsupportedParentVersion, merged.UnsupportedVersions);
+		Assert.Contains (unsupportedChildVersion, merged.UnsupportedVersions);
 	}
 
 	[Fact]
@@ -120,8 +120,8 @@ public class PlatformAvailabilityMergeTests {
 		var parent = parentBuilder.ToImmutable ();
 		var merged = child.MergeWithParent (parent);
 		Assert.Single (merged.UnsupportedVersions);
-		Assert.Contains (unsupportedPlatform.Version, merged.UnsupportedVersions);
-		Assert.DoesNotContain (unsupportedChildVersion.Version, merged.UnsupportedVersions);
+		Assert.Contains (unsupportedPlatform, merged.UnsupportedVersions);
+		Assert.DoesNotContain (unsupportedChildVersion, merged.UnsupportedVersions);
 	}
 
 	[Fact]
@@ -141,8 +141,8 @@ public class PlatformAvailabilityMergeTests {
 		var parent = parentBuilder.ToImmutable ();
 		var merged = child.MergeWithParent (parent);
 		Assert.Single (merged.UnsupportedVersions);
-		Assert.Contains (unsupportedPlatform.Version, merged.UnsupportedVersions);
-		Assert.DoesNotContain (unsupportedParentVersion.Version, merged.UnsupportedVersions);
+		Assert.Contains (unsupportedPlatform, merged.UnsupportedVersions);
+		Assert.DoesNotContain (unsupportedParentVersion, merged.UnsupportedVersions);
 	}
 
 	[Fact]
@@ -163,7 +163,7 @@ public class PlatformAvailabilityMergeTests {
 		var merged = child.MergeWithParent (parent);
 		Assert.NotNull (merged.SupportedVersion);
 		// always pick the most restrictive one
-		Assert.Equal (supportedChildVersion.Version, merged.SupportedVersion);
+		Assert.Equal (supportedChildVersion, merged.SupportedVersion);
 	}
 
 	[Fact]
@@ -184,7 +184,7 @@ public class PlatformAvailabilityMergeTests {
 		var merged = child.MergeWithParent (parent);
 		Assert.NotNull (merged.SupportedVersion);
 		// always pick the most restrictive one
-		Assert.Equal (supportedParentVersion.Version, merged.SupportedVersion);
+		Assert.Equal (supportedParentVersion, merged.SupportedVersion);
 	}
 
 	[Fact]
@@ -222,8 +222,8 @@ public class PlatformAvailabilityMergeTests {
 		var parent = parentBuilder.ToImmutable ();
 		var merged = child.MergeWithParent (parent);
 		Assert.Equal (2, merged.UnsupportedVersions.Count);
-		Assert.Contains (unsupportedParentVersion.Version, merged.UnsupportedVersions);
-		Assert.Contains (unsupportedChildVersion.Version, merged.UnsupportedVersions);
+		Assert.Contains (unsupportedParentVersion, merged.UnsupportedVersions);
+		Assert.Contains (unsupportedChildVersion, merged.UnsupportedVersions);
 	}
 
 	[Fact]
@@ -241,7 +241,7 @@ public class PlatformAvailabilityMergeTests {
 		var parent = parentBuilder.ToImmutable ();
 		var merged = child.MergeWithParent (parent);
 		Assert.Single (merged.UnsupportedVersions);
-		Assert.Contains (unsupportedParentVersion.Version, merged.UnsupportedVersions);
+		Assert.Contains (unsupportedParentVersion, merged.UnsupportedVersions);
 	}
 
 	[Fact]
@@ -262,7 +262,7 @@ public class PlatformAvailabilityMergeTests {
 		var parent = parentBuilder.ToImmutable ();
 		var merged = child.MergeWithParent (parent);
 		Assert.Single (merged.UnsupportedVersions);
-		Assert.Contains (unsupportedParentVersion.Version, merged.UnsupportedVersions);
-		Assert.Equal (childMsg, merged.UnsupportedVersions [unsupportedParentVersion.Version]);
+		Assert.Contains (unsupportedParentVersion, merged.UnsupportedVersions);
+		Assert.Equal (childMsg, merged.UnsupportedVersions [unsupportedParentVersion]);
 	}
 }

@@ -239,17 +239,18 @@ namespace Xamarin.MacDev.Tasks {
 			CollectionAssert.AreEquivalent (output, task.CustomLinkFlags.Select (v => v.ItemSpec).ToArray (), string.Join (" ", output));
 		}
 
-		[TestCase ("-v", 1)]
-		[TestCase ("/v", 1)]
-		[TestCase ("/q", -1)]
-		[TestCase ("-vvvv", 4)]
-		[TestCase ("-qqq", -3)]
-		public void Verbosity (string input, int output)
+		[TestCase ("-v", "1")]
+		[TestCase ("/v", "1")]
+		[TestCase ("/q", "-1")]
+		[TestCase ("-vvvv", "4")]
+		[TestCase ("-qqq", "-3")]
+		[TestCase ("", null)]
+		public void Verbosity (string input, string output)
 		{
 			var task = CreateTask<CustomParseBundlerArguments> ();
 			task.ExtraArgs = input;
 			Assert.IsTrue (task.Execute (), input);
-			Assert.AreEqual (output, task.Verbosity, output.ToString ());
+			Assert.AreEqual (output, task.Verbosity, "Equality");
 		}
 
 		[TestCase ("--nowarn", "-1")]

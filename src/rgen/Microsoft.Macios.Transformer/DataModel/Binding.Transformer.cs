@@ -40,9 +40,12 @@ readonly partial struct Binding {
 		init => protocols = value;
 	}
 
+	public BaseTypeDeclarationSyntax? BaseDeclarationSyntax { get; init; }
+
 	/// <summary>
 	/// Internal constructor added for testing purposes.
 	/// </summary>
+	/// <param name="declarationSyntax">The syntax used to declare the binding.</param>
 	/// <param name="name">The name of the named type that created the code change.</param>
 	/// <param name="namespace">The namespace that contains the named type.</param>
 	/// <param name="fullyQualifiedSymbol">The fully qualified name of the symbol.</param>
@@ -74,6 +77,7 @@ readonly partial struct Binding {
 			outerClasses: out outerClasses,
 			namespaces: out namespaces,
 			symbolAvailability: out availability);
+		BaseDeclarationSyntax = enumDeclaration;
 		BindingBindingInfo = new BindingInfo (null, BindingType.SmartEnum);
 		FullyQualifiedSymbol = enumDeclaration.GetFullyQualifiedIdentifier (context.SemanticModel);
 		UsingDirectives = enumDeclaration.SyntaxTree.CollectUsingStatements ();
@@ -91,24 +95,55 @@ readonly partial struct Binding {
 				continue;
 			}
 			var fieldData = enumValueSymbol.GetFieldData ();
+			EnumMember? enumMember;
 			// try and compute the library for this enum member
 			if (fieldData is null || !context.TryComputeLibraryName (fieldData.Value.LibraryName, Namespace [^1],
-					out string? libraryName, out string? libraryPath))
-				// could not calculate the library for the enum, do not add it
-				continue;
-			// we do know we have a backing field, so we can set the binding type to smart enum
-			bindingType = BindingType.SmartEnum;
-			var enumMember = new EnumMember (
-				name: enumValueDeclaration.Identifier.ToFullString ().Trim (),
-				libraryName: libraryName,
-				libraryPath: libraryPath,
-				fieldData: enumValueSymbol.GetFieldData (),
-				symbolAvailability: enumValueSymbol.GetAvailabilityForSymbol () // no parent availability, just the symbol
-			);
-			bucket.Add (enumMember);
+					out string? libraryName, out string? libraryPath)) {
+				// create a member for those enum values that do not have a backing field, we will
+				// set the binding type to regular enum if we do not know it yet
+				if (bindingType == BindingType.Unknown) {
+					bindingType = BindingType.Enum;
+				}
+				enumMember = new EnumMember (
+					name: enumValueDeclaration.Identifier.ToFullString ().Trim (),
+					libraryName: string.Empty,
+					libraryPath: null,
+					fieldData: enumValueSymbol.GetFieldData (),
+					symbolAvailability: enumValueSymbol
+						.GetAvailabilityForSymbol () // no parent availability, just the symbol
+				) {
+					DeclarationSyntax = enumValueDeclaration,
+					IsSmartMember = false
+				};
+			} else {
+				// we do know we have a backing field, so we can set the binding type to smart enum
+				bindingType = BindingType.SmartEnum;
+				enumMember = new EnumMember (
+					name: enumValueDeclaration.Identifier.ToFullString ().Trim (),
+					libraryName: libraryName,
+					libraryPath: libraryPath,
+					fieldData: enumValueSymbol.GetFieldData (),
+					symbolAvailability: enumValueSymbol
+						.GetAvailabilityForSymbol () // no parent availability, just the symbol
+				) {
+					DeclarationSyntax = enumValueDeclaration,
+					IsSmartMember = true,
+				};
+			}
+			bucket.Add (enumMember.Value);
 		}
 
+		if (bindingType == BindingType.Unknown) {
+			// we could not find any enum member with a backing field this means that we are dealing with a regular enum
+			// we will set it so that we can convert the availability information
+			bindingType = BindingType.Enum;
+		}
 		BindingBindingInfo = new (null, bindingType);
+		// based on the type of enum we might need to remove enums that are not valid, this are enums without
+		// a backing field in the case of smart enums
+		if (BindingBindingInfo.BindingType == BindingType.SmartEnum) {
+			bucket.RemoveAll (em => !em.IsSmartMember);
+		}
 		EnumMembers = bucket.ToImmutable ();
 	}
 
@@ -236,6 +271,7 @@ readonly partial struct Binding {
 	/// <param name="context">The current compilation context.</param>
 	internal Binding (InterfaceDeclarationSyntax interfaceDeclarationSyntax, INamedTypeSymbol symbol, in RootContext context)
 	{
+		BaseDeclarationSyntax = interfaceDeclarationSyntax;
 		// basic properties of the binding
 		FullyQualifiedSymbol = interfaceDeclarationSyntax.GetFullyQualifiedIdentifier (context.SemanticModel);
 		UsingDirectives = interfaceDeclarationSyntax.SyntaxTree.CollectUsingStatements ();

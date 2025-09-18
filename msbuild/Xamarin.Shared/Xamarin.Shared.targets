@@ -150,15 +150,18 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<_XCFrameworkNativeReference Include="@(NativeReference -> '%(Identity)/.')" Condition="'%(Extension)' == '.xcframework' Or $([MSBuild]::ValueOrDefault('%(FileName)%(Extension)', '').EndsWith('.xcframework.zip'))" />
 			<_FrameworkNativeReference Include="@(NativeReference -> '%(Identity)/%(Filename)')" Condition="'%(Extension)' == '.framework'" />
 			<_FileNativeReference Include="@(NativeReference)" Condition="'%(Extension)' != '.framework' And '%(Extension)' != '.xcframework' And '%(Extension)' != '.zip'" />
+
+			<_ReferencesWithNativeReferencesToExpand Include="@(ReferencePath)" Condition="Exists('%(RelativeDir)%(Filename).resources.zip') Or Exists('%(RelativeDir)%(Filename).resources')" />
+			<_NativeReferencesToExpand Include="@(_XCFrameworkNativeReference);@(_FrameworkNativeReference)" />
 		</ItemGroup>
 		<ResolveNativeReferences
 			SessionId="$(BuildSessionId)"
-			Condition="'$(IsMacEnabled)' == 'true' And '$(IsBindingProject)' != 'true'"
+			Condition="'$(IsMacEnabled)' == 'true' And '$(IsBindingProject)' != 'true' And ((@(_ReferencesWithNativeReferencesToExpand->Count()) &gt; 0) Or (@(_NativeReferencesToExpand->Count()) &gt; 0))"
 			Architectures="$(TargetArchitectures)"
 			FrameworksDirectory="$(_AppFrameworksRelativePath)"
 			IntermediateOutputPath="$(DeviceSpecificIntermediateOutputPath)"
-			NativeReferences="@(_XCFrameworkNativeReference);@(_FrameworkNativeReference)"
-			References="@(ReferencePath)"
+			NativeReferences="@(_NativeReferencesToExpand)"
+			References="@(_ReferencesWithNativeReferencesToExpand)"
 			SdkIsSimulator="$(_SdkIsSimulator)"
 			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
 			>

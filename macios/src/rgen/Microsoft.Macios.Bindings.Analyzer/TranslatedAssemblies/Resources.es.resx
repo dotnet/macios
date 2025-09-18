@@ -456,10 +456,21 @@
         <value>No result type or result type name was provided for an async method.</value>
     </data>
   <data name="RBI0040MessageFormat" xml:space="preserve">
-            <value>The method '{0}' was marked as async and has multiple parameters but does not provide a return type name, a nameless tuple will be generated for the async method</value>
+        <value>The method '{0}' was marked as async and has multiple parameters but does not provide a return type name, a nameless tuple will be generated for the async method</value>
         <comment>{0} is the name of the async method.</comment>
     </data>
   <data name="RBI0040Title" xml:space="preserve">
         <value>Not specified return type</value>
+    </data>
+  <!-- RBI0040 -->
+  <data name="RBI0041Description" xml:space="preserve">
+        <value>Protocol inline constructor is hidden.</value>
+    </data>
+  <data name="RBI0041MessageFormat" xml:space="preserve">
+        <value>The class '{0}' contains a constructor with the selector '{1}' that hides a inline constructor from protocol '{2}'</value>
+        <comment>{0} is the name of the class, {1} is the selector, {2} is the name of the protocol</comment>
+    </data>
+  <data name="RBI0041Title" xml:space="preserve">
+        <value>Protocol constructor overlap:</value>
     </data>
 </root>

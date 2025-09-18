@@ -9,6 +9,7 @@ namespace Microsoft.Macios.Generator.Availability;
 /// Represents a platform support version, combining a version number and a support kind.
 /// </summary>
 public readonly record struct PlatformSupportVersion : IComparable<PlatformSupportVersion> {
+
 	/// <summary>
 	/// Gets the version number.
 	/// </summary>

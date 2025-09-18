@@ -116,11 +116,11 @@ readonly partial struct PlatformAvailability : IEquatable<PlatformAvailability> 
 		// 1. If the parent has unsupported versions we will add them to the merge. If the kid has them, we will
 		// add them too
 		foreach (var (version, message) in parent.Value.unsupported) {
-			builder.AddUnsupportedVersion (version, message);
+			builder.AddUnsupportedVersion (new (version, SupportKind.Explicit), message);
 		}
 
 		foreach (var (version, message) in unsupported) {
-			builder.AddUnsupportedVersion (version, message);
+			builder.AddUnsupportedVersion (new (version, SupportKind.Explicit), message);
 		}
 
 		// 2. if supported in the platform, we will always pick the larges version between

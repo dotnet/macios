@@ -40,12 +40,13 @@ readonly partial struct EnumMember {
 	}
 
 	public EnumMember (string name,
+		uint index,
 		string libraryName,
 		string? libraryPath,
 		FieldData? fieldData,
-		SymbolAvailability symbolAvailability)
+		SymbolAvailability symbolAvailability) : this (StructState.Initialized, name)
 	{
-		Name = name;
+		Index = index;
 		SymbolAvailability = symbolAvailability;
 		FieldInfo = new (fieldData, libraryName, libraryPath);
 	}

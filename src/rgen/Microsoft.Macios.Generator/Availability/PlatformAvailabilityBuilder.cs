@@ -142,7 +142,11 @@ readonly partial struct PlatformAvailability {
 		/// <returns>A new readonly structure that contains the platform availability.</returns>
 		public PlatformAvailability ToImmutable ()
 		{
-			return new PlatformAvailability (platform, supportedVersion, unsupported, obsoleted);
+			var unsupportedCopy = new SortedDictionary<Version, string?> ();
+			foreach (var (version, message) in unsupported) {
+				unsupportedCopy.Add (version.Version, message);
+			}
+			return new PlatformAvailability (platform, supportedVersion?.Version, unsupportedCopy, obsoleted);
 		}
 
 		/// <summary>

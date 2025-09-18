@@ -8,6 +8,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Macios.Generator.Attributes;
 using Microsoft.Macios.Generator.DataModel;
+using Microsoft.Macios.Generator.Tests.Extensions;
 using Xamarin.Tests;
 using Xamarin.Utils;
 using Xunit;
@@ -275,6 +276,7 @@ public class TestClass {
 			EnumMembers = [
 				new (
 					name: "BuiltInMicrophone",
+					index: 0,
 					libraryName: "AVCaptureDeviceTypeBuiltInMicrophone",
 					libraryPath: null,
 					fieldData: new (presentSelector),

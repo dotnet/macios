@@ -100,7 +100,6 @@ public enum AVCaptureDeviceType {
 	[Field (""AVCaptureDeviceTypeBuiltInWideAngleCamera"")]
 	BuiltInWideAngleCamera,
 
-	// missing attr, this should be ignored
 	BuiltInTelephotoCamera,
 }
 ";

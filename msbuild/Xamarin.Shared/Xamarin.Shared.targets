@@ -2206,7 +2206,6 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 		<ParseBundlerArguments
 			Aot="@(_AotArguments)"
-			EnvironmentVariables="@(_BundlerEnvironmentVariables)"
 			ExtraArgs="$(AppBundleExtraOptions)"
 			MarshalManagedExceptionMode="$(MarshalManagedExceptionMode)"
 			MarshalObjectiveCExceptionMode="$(MarshalObjectiveCExceptionMode)"

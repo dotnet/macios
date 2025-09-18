@@ -336,15 +336,11 @@ function xcodebuild_download_selected_platforms ()
 	if is_at_least_version "$XCODE_VERSION" 26.1; then
 		# passing -buildVersion .. --architectureVariant .. doesn't quite work in Xcode 26.0 (it works the first time, but then it always thinks it's the first time, tries to download and install, and gets confused), let's see if they fix it in Xcode 26.1
 		if [[ "$XCODE_IS_STABLE" == "YES" ]]; then
-			if [[ "$(arch)" == "arm64" ]]; then
-				ARCHITECTURE_VARIANT=arm64
-			else
-				ARCHITECTURE_VARIANT=universal
-			fi
+			# we always want the universal variant, so that we can run x64 test apps on arm64
 			IOS_NUGET_OS_VERSION=$(grep '^IOS_NUGET_OS_VERSION=' Make.versions | sed 's/.*=//')
-			IOS_BUILD_VERSION=" -buildVersion $IOS_NUGET_OS_VERSION -architectureVariant $ARCHITECTURE_VARIANT"
+			IOS_BUILD_VERSION=" -buildVersion $IOS_NUGET_OS_VERSION -architectureVariant universal"
 			TVOS_NUGET_OS_VERSION=$(grep '^TVOS_NUGET_OS_VERSION=' Make.versions | sed 's/.*=//')
-			TVOS_BUILD_VERSION=" -buildVersion $TVOS_NUGET_OS_VERSION -architectureVariant $ARCHITECTURE_VARIANT"
+			TVOS_BUILD_VERSION=" -buildVersion $TVOS_NUGET_OS_VERSION -architectureVariant universal"
 		fi
 	fi
 

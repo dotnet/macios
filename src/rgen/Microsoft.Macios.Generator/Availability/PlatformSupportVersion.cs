@@ -95,7 +95,7 @@ public readonly record struct PlatformSupportVersion : IComparable<PlatformSuppo
 	}
 
 	/// <inheritdoc />
-	public int CompareTo(PlatformSupportVersion other)
+	public int CompareTo (PlatformSupportVersion other)
 	{
 		var versionComparison = Version.CompareTo (other.Version);
 		if (versionComparison != 0)
@@ -109,7 +109,7 @@ public readonly record struct PlatformSupportVersion : IComparable<PlatformSuppo
 	/// <param name="left">The first <see cref="PlatformSupportVersion"/> to compare.</param>
 	/// <param name="right">The second <see cref="PlatformSupportVersion"/> to compare.</param>
 	/// <returns><c>true</c> if the left instance is less than the right instance; otherwise, <c>false</c>.</returns>
-	public static bool operator <(PlatformSupportVersion left, PlatformSupportVersion right)
+	public static bool operator < (PlatformSupportVersion left, PlatformSupportVersion right)
 	{
 		return left.CompareTo (right) < 0;
 	}
@@ -120,7 +120,7 @@ public readonly record struct PlatformSupportVersion : IComparable<PlatformSuppo
 	/// <param name="left">The first <see cref="PlatformSupportVersion"/> to compare.</param>
 	/// <param name="right">The second <see cref="PlatformSupportVersion"/> to compare.</param>
 	/// <returns><c>true</c> if the left instance is greater than the right instance; otherwise, <c>false</c>.</returns>
-	public static bool operator >(PlatformSupportVersion left, PlatformSupportVersion right)
+	public static bool operator > (PlatformSupportVersion left, PlatformSupportVersion right)
 	{
 		return left.CompareTo (right) > 0;
 	}
@@ -131,7 +131,7 @@ public readonly record struct PlatformSupportVersion : IComparable<PlatformSuppo
 	/// <param name="left">The first <see cref="PlatformSupportVersion"/> to compare.</param>
 	/// <param name="right">The second <see cref="PlatformSupportVersion"/> to compare.</param>
 	/// <returns><c>true</c> if the left instance is less than or equal to the right instance; otherwise, <c>false</c>.</returns>
-	public static bool operator <=(PlatformSupportVersion left, PlatformSupportVersion right)
+	public static bool operator <= (PlatformSupportVersion left, PlatformSupportVersion right)
 	{
 		return left.CompareTo (right) <= 0;
 	}
@@ -142,8 +142,8 @@ public readonly record struct PlatformSupportVersion : IComparable<PlatformSuppo
 	/// <param name="left">The first <see cref="PlatformSupportVersion"/> to compare.</param>
 	/// <param name="right">The second <see cref="PlatformSupportVersion"/> to compare.</param>
 	/// <returns><c>true</c> if the left instance is greater than or equal to the right instance; otherwise, <c>false</c>.</returns>
-	public static bool operator >=(PlatformSupportVersion left, PlatformSupportVersion right)
+	public static bool operator >= (PlatformSupportVersion left, PlatformSupportVersion right)
 	{
-		return left.CompareTo(right) >= 0;
+		return left.CompareTo (right) >= 0;
 	}
 }

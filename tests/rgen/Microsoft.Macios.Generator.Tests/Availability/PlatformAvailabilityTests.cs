@@ -241,7 +241,7 @@ public class PlatformAvailabilityTests {
 
 		var availability = builder.ToImmutable ();
 		// get all the versions we added
-		var unsupported= availability.UnsupportedVersions.Keys
+		var unsupported = availability.UnsupportedVersions.Keys
 			.Select (x => x.Version).ToArray ();
 		// assert that the version is present
 		foreach (var v in versions) {

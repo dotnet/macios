@@ -54,8 +54,8 @@ readonly partial struct PlatformAvailability : IEquatable<PlatformAvailability> 
 			// 1. The supported version is not null, either the default version or a specific one
 			// 2. The default version is not in the unsupported list
 			return SupportedVersion is not null
-			       && !unsupported.ContainsKey (PlatformSupportVersion.ImplicitDefault)
-			       && !unsupported.ContainsKey (PlatformSupportVersion.ExplicitDefault);
+				   && !unsupported.ContainsKey (PlatformSupportVersion.ImplicitDefault)
+				   && !unsupported.ContainsKey (PlatformSupportVersion.ExplicitDefault);
 		}
 	}
 

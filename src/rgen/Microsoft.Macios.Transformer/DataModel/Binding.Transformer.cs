@@ -106,7 +106,7 @@ readonly partial struct Binding {
 				}
 				enumMember = new EnumMember (
 					name: enumValueDeclaration.Identifier.ToFullString ().Trim (),
-          index: (uint) index,
+		  index: (uint) index,
 					libraryName: string.Empty,
 					libraryPath: null,
 					fieldData: enumValueSymbol.GetFieldData (),
@@ -121,7 +121,7 @@ readonly partial struct Binding {
 				bindingType = BindingType.SmartEnum;
 				enumMember = new EnumMember (
 					name: enumValueDeclaration.Identifier.ToFullString ().Trim (),
-          index: (uint) index,
+		  index: (uint) index,
 					libraryName: libraryName,
 					libraryPath: libraryPath,
 					fieldData: enumValueSymbol.GetFieldData (),

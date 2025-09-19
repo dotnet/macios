@@ -690,10 +690,10 @@ This directs the Mono runtime to use a compressed version of interface bitmaps
 given interface).
 
 These bitmaps can use a significant amount of memory at runtime, in particular
-for apps that have a substantial amount of types, in particular generic value
-types.
+for apps that have a substantial amount of interfaces.
 
-This setting is disabled by default, but it can be enabled like this:
+This setting is disabled by default, but it can be enabled like this, which
+will decrease the amount of memory used at runtime:
 
 ```xml
 <PropertyGroup>

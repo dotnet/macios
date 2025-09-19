@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -42,6 +43,61 @@ public partial class Generator {
 		foreach (var oa in AttributeManager.GetCustomAttributes<NativeNameAttribute> (provider))
 			print ("[NativeName (\"{0}\")]", oa.NativeName);
 	}
+
+#nullable enable
+	bool IsEnumBackedByNativeType (Type type, [NotNullWhen (true)] out Type? backingFieldType)
+	{
+		backingFieldType = null;
+
+		if (!type.IsEnum)
+			return false;
+
+		var backingFieldTypeAttribute = AttributeManager.GetCustomAttribute<BackingFieldTypeAttribute> (type);
+		if (backingFieldTypeAttribute is not null) {
+			backingFieldType = backingFieldTypeAttribute.BackingFieldType;
+			return true;
+		}
+
+		foreach (var f in type.GetFields ()) {
+			var fa = AttributeManager.GetCustomAttribute<FieldAttribute> (f);
+			if (fa is null)
+				continue;
+
+			backingFieldType = TypeCache.NSString;
+			return true;
+		}
+
+		// Checking for Field attributes on the enum only works if the enum is in the current api definition we're processing.
+		// So check for the Extensions type, with GetConstant + GetValue methods, as well.
+
+		var extensionType = type.Assembly.GetType (type.FullName + "Extensions");
+		if (extensionType is null)
+			return false;
+
+		var anyPropertiesWithFields = false;
+		foreach (var p in type.GetProperties (BindingFlags.NonPublic | BindingFlags.Static)) {
+			if (!AttributeManager.HasAttribute<FieldAttribute> (p))
+				continue;
+
+			anyPropertiesWithFields = true;
+			break;
+		}
+		if (!anyPropertiesWithFields)
+			return false;
+
+		var getConstantMethod = type.GetMethod ("GetConstant", BindingFlags.Public | BindingFlags.Static, new Type [] { type });
+		if (getConstantMethod is null)
+			return false;
+
+		backingFieldType = getConstantMethod.ReturnType;
+
+		var getValueMethod = type.GetMethod ("GetValue", BindingFlags.Public | BindingFlags.Static, new Type [] { backingFieldType });
+		if (getValueMethod is null)
+			return false;
+
+		return false;
+	}
+#nullable disable
 
 	// caller already:
 	//	- setup the header and namespace
@@ -90,19 +146,16 @@ public partial class Generator {
 		Tuple<FieldInfo, FieldAttribute> default_symbol = null;
 		var underlying_type = GetCSharpTypeName (type.GetEnumUnderlyingType ());
 		var is_internal = AttributeManager.HasAttribute<InternalAttribute> (type);
-		var backingFieldType = AttributeManager.GetCustomAttribute<BackingFieldTypeAttribute> (type)?.BackingFieldType ?? TypeCache.NSString;
+		var backingFieldTypeAttribute = AttributeManager.GetCustomAttribute<BackingFieldTypeAttribute> (type);
+		var backingFieldType = backingFieldTypeAttribute?.BackingFieldType ?? TypeCache.NSString;
+		var getConstantMethodName = backingFieldTypeAttribute?.GetConstantMethodName ?? "GetConstant";
 		var isBackingFieldValueType = backingFieldType.IsValueType;
 		var visibility = is_internal ? "internal" : "public";
 
-		if (backingFieldType != TypeCache.System_nint &&
-			backingFieldType != TypeCache.System_nuint &&
-			backingFieldType != TypeCache.System_Int32 &&
-			backingFieldType != TypeCache.System_Int64 &&
-			backingFieldType != TypeCache.System_UInt32 &&
-			backingFieldType != TypeCache.System_UInt64 &&
+		if (!backingFieldType.IsValueType &&
 			backingFieldType != TypeCache.NSString &&
 			backingFieldType != TypeCache.NSNumber) {
-			exceptions.Add (ErrorHelper.CreateError (1088 /* The backing field type '{0}' is invalid. Valid backing field types are: "NSString", "NSNumber", "nint" and "nuint". */, backingFieldType.FullName));
+			exceptions.Add (ErrorHelper.CreateError (1088 /* The backing field type '{0}' is invalid. Valid backing field types are: "NSString", "NSNumber", and blittable value types. */, backingFieldType.FullName));
 			backingFieldType = TypeCache.NSString;
 		}
 
@@ -166,8 +219,10 @@ public partial class Generator {
 				var field = fields.FirstOrDefault ();
 				var fieldAttr = field.Value;
 
-				if (!TryComputeLibraryName (fieldAttr?.LibraryName, type, out library_name, out var _))
-					throw ErrorHelper.CreateError (1042, /* Missing '[Field (LibraryName=value)]' for {0} (e.g."__Internal") */ type.FullName + "." + field.Key?.Name);
+				if (!TryComputeLibraryName (fieldAttr?.LibraryName, type, out library_name, out var _)) {
+					exceptions.Add (ErrorHelper.CreateError (1042, /* Missing '[Field (LibraryName=value)]' for {0} (e.g."__Internal") */ type.FullName + "." + field.Key?.Name));
+					library_name = "placeholder";
+				}
 			}
 		}
 
@@ -196,11 +251,15 @@ public partial class Generator {
 		}
 
 		if ((fields.Count > 0) || (null_field is not null)) {
-			print ("static IntPtr[] values = new IntPtr [{0}];", fields.Count);
+			var backingFieldTypeName = TypeManager.FormatType (type, backingFieldType);
+			if (isBackingFieldValueType) {
+				print ($"static {backingFieldTypeName}?[] values = new {backingFieldTypeName}? [{fields.Count}];");
+			} else {
+				print ("static IntPtr[] values = new IntPtr [{0}];", fields.Count);
+			}
 			print ("");
 
 			int n = 0;
-			var backingFieldTypeName = TypeManager.FormatType (type, backingFieldType);
 			foreach (var kvp in fields) {
 				var f = kvp.Key;
 				var fa = kvp.Value;
@@ -214,15 +273,22 @@ public partial class Generator {
 				// library_name contains the Framework constant name the Field is inside of, used as fallback.
 				bool useFieldAttrLibName = libname is not null && !string.Equals (libname, library_name, StringComparison.OrdinalIgnoreCase);
 				print ("[Field (\"{0}\", \"{1}\")]", fa.SymbolName, useFieldAttrLibName ? libname : libPath ?? library_name);
-				print ("internal unsafe static {1} {0} {{", fa.SymbolName, isBackingFieldValueType ? backingFieldTypeName + "*" : "IntPtr");
+				print ("internal unsafe static {1} {0} {{", fa.SymbolName, isBackingFieldValueType ? backingFieldTypeName : "IntPtr");
 				indent++;
 				print ("get {");
 				indent++;
-				print ("fixed (IntPtr *storage = &values [{0}])", n++);
-				indent++;
-				var cast = isBackingFieldValueType ? $"({backingFieldTypeName} *) " : string.Empty;
-				print ("return {2}Dlfcn.CachePointer (Libraries.{0}.Handle, \"{1}\", storage);", useFieldAttrLibName ? libname : library_name, fa.SymbolName, cast);
-				indent--;
+				var actualLibName = useFieldAttrLibName ? libname : library_name;
+				if (isBackingFieldValueType) {
+					print ($"if (!values [{n}].HasValue)");
+					print ($"\tvalues [{n}] = Dlfcn.GetStruct<{backingFieldType.Name}> (Libraries.{actualLibName}.Handle, \"{fa.SymbolName}\");");
+					print ($"return values [{n}]!.Value;"); // The ! is required due to https://github.com/dotnet/roslyn/issues/79004.
+					n++;
+				} else {
+					print ("fixed (IntPtr *storage = &values [{0}])", n++);
+					indent++;
+					print ("return Dlfcn.CachePointer (Libraries.{0}.Handle, \"{1}\", storage);", actualLibName, fa.SymbolName);
+					indent--;
+				}
 				indent--;
 				print ("}");
 				indent--;
@@ -234,12 +300,10 @@ public partial class Generator {
 				print ($"/// <summary>Retrieves the <see cref=\"global::{backingFieldType.FullName}\" /> constant that describes <paramref name=\"self\" />.</summary>");
 				print ($"/// <param name=\"self\">The instance on which this method operates.</param>");
 			}
-			print ("public static {2}{1}? GetConstant (this {0} self)", type.Name, backingFieldTypeName, isBackingFieldValueType ? "unsafe " : string.Empty);
+			print ("public static {2}{1}? {3} (this {0} self)", type.Name, backingFieldTypeName, isBackingFieldValueType ? "unsafe " : string.Empty, getConstantMethodName);
 			print ("{");
 			indent++;
-			if (isBackingFieldValueType) {
-				print ($"{backingFieldTypeName}* ptr = null;");
-			} else {
+			if (!isBackingFieldValueType) {
 				print ("IntPtr ptr = IntPtr.Zero;");
 			}
 			// can be empty - and the C# compiler emit `warning CS1522: Empty switch block`
@@ -253,16 +317,18 @@ public partial class Generator {
 					if (sn == default_symbol_name)
 						print ("default:");
 					indent++;
-					print ("ptr = {0};", sn);
-					print ("break;");
+					if (isBackingFieldValueType) {
+						print ($"return {sn};");
+					} else {
+						print ("ptr = {0};", sn);
+						print ("break;");
+					}
 					indent--;
 				}
 				print ("}");
 			}
 			if (isBackingFieldValueType) {
-				print ("if (ptr is null)");
-				print ("\t return null;");
-				print ("return *ptr;");
+				print ("return null;");
 			} else {
 				print ("return ({0}?) Runtime.GetNSObject (ptr);", backingFieldTypeName);
 			}
@@ -291,7 +357,7 @@ public partial class Generator {
 			}
 			foreach (var kvp in fields) {
 				if (isBackingFieldValueType) {
-					print ($"if (constant == *{kvp.Value.SymbolName})");
+					print ($"if (constant == {kvp.Value.SymbolName})");
 				} else {
 					print ("if (constant.IsEqualTo ({0}))", kvp.Value.SymbolName);
 				}
@@ -353,7 +419,7 @@ public partial class Generator {
 			print ("for (var i = 0; i < values.Length; i++) {");
 			indent++;
 			print ("var value = values [i];");
-			print ("rv.Add (value.GetConstant ());");
+			print ($"rv.Add (value.{getConstantMethodName} ());");
 			indent--;
 			print ("}");
 			print ("return rv.ToArray ();");

@@ -1910,52 +1910,42 @@ namespace PdfKit {
 	[BaseType (typeof (NSObject), Name = "PDFDocument", Delegates = new string [] { "WeakDelegate" }, Events = new Type [] { typeof (PdfDocumentDelegate) })]
 	interface PdfDocument : NSCopying {
 
-		/// <include file="../docs/api/PdfKit/PdfDocument.xml" path="/Documentation/Docs[@DocId='P:PdfKit.PdfDocument.DidUnlockNotification']/*" />
 		[Field ("PDFDocumentDidUnlockNotification", "+PDFKit")]
 		[Notification]
 		NSString DidUnlockNotification { get; }
 
-		/// <include file="../docs/api/PdfKit/PdfDocument.xml" path="/Documentation/Docs[@DocId='P:PdfKit.PdfDocument.DidBeginFindNotification']/*" />
 		[Field ("PDFDocumentDidBeginFindNotification", "+PDFKit")]
 		[Notification]
 		NSString DidBeginFindNotification { get; }
 
-		/// <include file="../docs/api/PdfKit/PdfDocument.xml" path="/Documentation/Docs[@DocId='P:PdfKit.PdfDocument.DidEndFindNotification']/*" />
 		[Field ("PDFDocumentDidEndFindNotification", "+PDFKit")]
 		[Notification]
 		NSString DidEndFindNotification { get; }
 
-		/// <include file="../docs/api/PdfKit/PdfDocument.xml" path="/Documentation/Docs[@DocId='P:PdfKit.PdfDocument.DidBeginPageFindNotification']/*" />
 		[Field ("PDFDocumentDidBeginPageFindNotification", "+PDFKit")]
 		[Notification]
 		NSString DidBeginPageFindNotification { get; }
 
-		/// <include file="../docs/api/PdfKit/PdfDocument.xml" path="/Documentation/Docs[@DocId='P:PdfKit.PdfDocument.DidEndPageFindNotification']/*" />
 		[Field ("PDFDocumentDidEndPageFindNotification", "+PDFKit")]
 		[Notification]
 		NSString DidEndPageFindNotification { get; }
 
-		/// <include file="../docs/api/PdfKit/PdfDocument.xml" path="/Documentation/Docs[@DocId='P:PdfKit.PdfDocument.DidFindMatchNotification']/*" />
 		[Field ("PDFDocumentDidFindMatchNotification", "+PDFKit")]
 		[Notification]
 		NSString DidFindMatchNotification { get; }
 
-		/// <include file="../docs/api/PdfKit/PdfDocument.xml" path="/Documentation/Docs[@DocId='P:PdfKit.PdfDocument.DidBeginWriteNotification']/*" />
 		[Field ("PDFDocumentDidBeginWriteNotification", "+PDFKit")]
 		[Notification]
 		NSString DidBeginWriteNotification { get; }
 
-		/// <include file="../docs/api/PdfKit/PdfDocument.xml" path="/Documentation/Docs[@DocId='P:PdfKit.PdfDocument.DidEndWriteNotification']/*" />
 		[Field ("PDFDocumentDidEndWriteNotification", "+PDFKit")]
 		[Notification]
 		NSString DidEndWriteNotification { get; }
 
-		/// <include file="../docs/api/PdfKit/PdfDocument.xml" path="/Documentation/Docs[@DocId='P:PdfKit.PdfDocument.DidBeginPageWriteNotification']/*" />
 		[Field ("PDFDocumentDidBeginPageWriteNotification", "+PDFKit")]
 		[Notification]
 		NSString DidBeginPageWriteNotification { get; }
 
-		/// <include file="../docs/api/PdfKit/PdfDocument.xml" path="/Documentation/Docs[@DocId='P:PdfKit.PdfDocument.DidEndPageWriteNotification']/*" />
 		[Field ("PDFDocumentDidEndPageWriteNotification", "+PDFKit")]
 		[Notification]
 		NSString DidEndPageWriteNotification { get; }
@@ -2367,12 +2357,6 @@ namespace PdfKit {
 		PdfSelection GetSelection (PdfPage startPage, CGPoint startPoint, PdfPage endPage, CGPoint endPoint, PdfSelectionGranularity granularity);
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="PdfKit.PdfDocumentDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="PdfKit.PdfDocumentDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="PdfKit.PdfDocumentDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="PdfKit.PdfDocumentDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IPdfDocumentDelegate { }
 
 	/// <summary>Delegate object for the <see cref="PdfKit.PdfDocument" /> class, presenting methods relating to search process and results.</summary>
@@ -2719,11 +2703,9 @@ namespace PdfKit {
 		[Export ("transformContext:forBox:")]
 		void TransformContext (CGContext context, PdfDisplayBox box);
 
-		/// <param name="size">To be added.</param>
-		///         <param name="box">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>The return type is <see cref="UIKit.UIImage" /> on iOS and <see cref="AppKit.NSImage" /> on MacOS.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Get a thumbnail for this page of the specified <paramref name="size" />.</summary>
+		/// <param name="size">The size of the returned thumbnail.</param>
+		/// <param name="box">The box type where the thumbnail will be rendered.</param>
 		[MacCatalyst (13, 1)]
 		[Export ("thumbnailOfSize:forBox:")]
 		NSImage GetThumbnail (CGSize size, PdfDisplayBox box);
@@ -2959,7 +2941,6 @@ namespace PdfKit {
 		[Export ("initWithFrame:")]
 		NativeHandle Constructor (CGRect frame);
 
-		/// <include file="../docs/api/PdfKit/PdfThumbnailView.xml" path="/Documentation/Docs[@DocId='P:PdfKit.PdfThumbnailView.DocumentEditedNotification']/*" />
 		[Field ("PDFThumbnailViewDocumentEditedNotification", "+PDFKit")]
 		[Notification]
 		NSString DocumentEditedNotification { get; }
@@ -3596,7 +3577,7 @@ namespace PdfKit {
 		void AnnotationsChanged (PdfPage page);
 
 		/// <param name="page">The page for which to get the row size.</param>
-		///         <summary>Returns the display size of a row on the specified <pararamref name="page" />.</summary>
+		///         <summary>Returns the display size of a row on the specified <paramref name="page" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[Export ("rowSizeForPage:")]
@@ -3628,62 +3609,50 @@ namespace PdfKit {
 		[Export ("enableDataDetectors")]
 		bool EnableDataDetectors { get; set; }
 
-		/// <include file="../docs/api/PdfKit/PdfView.xml" path="/Documentation/Docs[@DocId='P:PdfKit.PdfView.ChangedHistoryNotification']/*" />
 		[Field ("PDFViewChangedHistoryNotification", "+PDFKit")]
 		[Notification]
 		NSString ChangedHistoryNotification { get; }
 
-		/// <include file="../docs/api/PdfKit/PdfView.xml" path="/Documentation/Docs[@DocId='P:PdfKit.PdfView.DocumentChangedNotification']/*" />
 		[Field ("PDFViewDocumentChangedNotification", "+PDFKit")]
 		[Notification]
 		NSString DocumentChangedNotification { get; }
 
-		/// <include file="../docs/api/PdfKit/PdfView.xml" path="/Documentation/Docs[@DocId='P:PdfKit.PdfView.PageChangedNotification']/*" />
 		[Field ("PDFViewPageChangedNotification", "+PDFKit")]
 		[Notification]
 		NSString PageChangedNotification { get; }
 
-		/// <include file="../docs/api/PdfKit/PdfView.xml" path="/Documentation/Docs[@DocId='P:PdfKit.PdfView.ScaleChangedNotification']/*" />
 		[Field ("PDFViewScaleChangedNotification", "+PDFKit")]
 		[Notification]
 		NSString ScaleChangedNotification { get; }
 
-		/// <include file="../docs/api/PdfKit/PdfView.xml" path="/Documentation/Docs[@DocId='P:PdfKit.PdfView.AnnotationHitNotification']/*" />
 		[Field ("PDFViewAnnotationHitNotification", "+PDFKit")]
 		[Notification (typeof (PdfViewAnnotationHitEventArgs))]
 		NSString AnnotationHitNotification { get; }
 
-		/// <include file="../docs/api/PdfKit/PdfView.xml" path="/Documentation/Docs[@DocId='P:PdfKit.PdfView.CopyPermissionNotification']/*" />
 		[Field ("PDFViewCopyPermissionNotification", "+PDFKit")]
 		[Notification]
 		NSString CopyPermissionNotification { get; }
 
-		/// <include file="../docs/api/PdfKit/PdfView.xml" path="/Documentation/Docs[@DocId='P:PdfKit.PdfView.PrintPermissionNotification']/*" />
 		[Field ("PDFViewPrintPermissionNotification", "+PDFKit")]
 		[Notification]
 		NSString PrintPermissionNotification { get; }
 
-		/// <include file="../docs/api/PdfKit/PdfView.xml" path="/Documentation/Docs[@DocId='P:PdfKit.PdfView.AnnotationWillHitNotification']/*" />
 		[Field ("PDFViewAnnotationWillHitNotification", "+PDFKit")]
 		[Notification]
 		NSString AnnotationWillHitNotification { get; }
 
-		/// <include file="../docs/api/PdfKit/PdfView.xml" path="/Documentation/Docs[@DocId='P:PdfKit.PdfView.SelectionChangedNotification']/*" />
 		[Field ("PDFViewSelectionChangedNotification", "+PDFKit")]
 		[Notification]
 		NSString SelectionChangedNotification { get; }
 
-		/// <include file="../docs/api/PdfKit/PdfView.xml" path="/Documentation/Docs[@DocId='P:PdfKit.PdfView.DisplayModeChangedNotification']/*" />
 		[Field ("PDFViewDisplayModeChangedNotification", "+PDFKit")]
 		[Notification]
 		NSString DisplayModeChangedNotification { get; }
 
-		/// <include file="../docs/api/PdfKit/PdfView.xml" path="/Documentation/Docs[@DocId='P:PdfKit.PdfView.DisplayBoxChangedNotification']/*" />
 		[Field ("PDFViewDisplayBoxChangedNotification", "+PDFKit")]
 		[Notification]
 		NSString DisplayBoxChangedNotification { get; }
 
-		/// <include file="../docs/api/PdfKit/PdfView.xml" path="/Documentation/Docs[@DocId='P:PdfKit.PdfView.VisiblePagesChangedNotification']/*" />
 		[Field ("PDFViewVisiblePagesChangedNotification", "+PDFKit")]
 		[Notification]
 		NSString VisiblePagesChangedNotification { get; }
@@ -3726,12 +3695,6 @@ namespace PdfKit {
 		PdfAnnotation AnnotationHit { get; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="PdfKit.PdfViewDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="PdfKit.PdfViewDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="PdfKit.PdfViewDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="PdfKit.PdfViewDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IPdfViewDelegate { }
 
 	//Verify delegate methods.  There are default actions (not just return null ) that should occur

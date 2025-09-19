@@ -440,24 +440,42 @@ namespace CoreMedia {
 			/* CFDictionaryRef */ IntPtr extensions,
 			/* CMVideoFormatDescriptionRef* */ IntPtr* outDesc);
 
-		static IntPtr CreateCMVideoFormatDescription (CMVideoCodecType codecType, CMVideoDimensions size)
+		static IntPtr CreateCMVideoFormatDescription (CMVideoCodecType codecType, CMVideoDimensions size, NSDictionary? extensions)
 		{
 			IntPtr handle;
 			CMFormatDescriptionError error;
 			unsafe {
-				error = CMVideoFormatDescriptionCreate (IntPtr.Zero, codecType, size.Width, size.Height, IntPtr.Zero, &handle);
+				error = CMVideoFormatDescriptionCreate (IntPtr.Zero, codecType, size.Width, size.Height, extensions.GetHandle (), &handle);
+				GC.KeepAlive (extensions);
 			}
 			if (error != CMFormatDescriptionError.None)
 				ObjCRuntime.ThrowHelper.ThrowArgumentException (error.ToString ());
 			return handle;
 		}
 
-		/// <param name="codecType">To be added.</param>
-		///         <param name="size">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Initialize a new <see cref="CMVideoFormatDescription" /> instance.</summary>
+		/// <param name="codecType">The video codec type for the new <see cref="CMVideoFormatDescription" /> instance.</param>
+		/// <param name="size">The video dimensions for the new <see cref="CMVideoFormatDescription" /> instance.</param>
 		public CMVideoFormatDescription (CMVideoCodecType codecType, CMVideoDimensions size)
-			: base (CreateCMVideoFormatDescription (codecType, size), true)
+			: base (CreateCMVideoFormatDescription (codecType, size, null), true)
+		{
+		}
+
+		/// <summary>Initialize a new <see cref="CMVideoFormatDescription" /> instance.</summary>
+		/// <param name="codecType">The video codec type for the new <see cref="CMVideoFormatDescription" /> instance.</param>
+		/// <param name="size">The video dimensions for the new <see cref="CMVideoFormatDescription" /> instance.</param>
+		/// <param name="extensions">An optional dictionary of extensions for the new <see cref="CMVideoFormatDescription" /> instance.</param>
+		public CMVideoFormatDescription (CMVideoCodecType codecType, CMVideoDimensions size, NSDictionary? extensions)
+			: base (CreateCMVideoFormatDescription (codecType, size, extensions), true)
+		{
+		}
+
+		/// <summary>Initialize a new <see cref="CMVideoFormatDescription" /> instance.</summary>
+		/// <param name="codecType">The video codec type for the new <see cref="CMVideoFormatDescription" /> instance.</param>
+		/// <param name="size">The video dimensions for the new <see cref="CMVideoFormatDescription" /> instance.</param>
+		/// <param name="extensions">An optional dictionary of extensions for the new <see cref="CMVideoFormatDescription" /> instance.</param>
+		public CMVideoFormatDescription (CMVideoCodecType codecType, CMVideoDimensions size, CMFormatDescriptionExtensions? extensions)
+			: base (CreateCMVideoFormatDescription (codecType, size, extensions?.Dictionary), true)
 		{
 		}
 
@@ -586,13 +604,17 @@ namespace CoreMedia {
 			parameterSetCount = default;
 			nalUnitHeaderLength = default;
 			unsafe {
-				error = CMVideoFormatDescriptionGetH264ParameterSetAtIndex (
-							GetCheckedHandle (),
-							index,
-							&ret,
-							&parameterSetSizeOut,
-							(nuint*) Unsafe.AsPointer<nuint> (ref parameterSetCount),
-							(int*) Unsafe.AsPointer<int> (ref nalUnitHeaderLength));
+				fixed (nuint* parameterSetCountPtr = &parameterSetCount) {
+					fixed (int* nalUnitHeaderLengthPtr = &nalUnitHeaderLength) {
+						error = CMVideoFormatDescriptionGetH264ParameterSetAtIndex (
+									GetCheckedHandle (),
+									index,
+									&ret,
+									&parameterSetSizeOut,
+									parameterSetCountPtr,
+									nalUnitHeaderLengthPtr);
+					}
+				}
 			}
 			if (error != CMFormatDescriptionError.None)
 				return null;
@@ -736,13 +758,17 @@ namespace CoreMedia {
 			parameterSetCount = default;
 			nalUnitHeaderLength = default;
 			unsafe {
-				error = CMVideoFormatDescriptionGetHEVCParameterSetAtIndex (
-							GetCheckedHandle (),
-							index,
-							&ret,
-							&parameterSetSizeOut,
-							(nuint*) Unsafe.AsPointer<nuint> (ref parameterSetCount),
-							(int*) Unsafe.AsPointer<int> (ref nalUnitHeaderLength));
+				fixed (nuint* parameterSetCountPtr = &parameterSetCount) {
+					fixed (int* nalUnitHeaderLengthPtr = &nalUnitHeaderLength) {
+						error = CMVideoFormatDescriptionGetHEVCParameterSetAtIndex (
+									GetCheckedHandle (),
+									index,
+									&ret,
+									&parameterSetSizeOut,
+									parameterSetCountPtr,
+									nalUnitHeaderLengthPtr);
+					}
+				}
 			}
 			if (error != CMFormatDescriptionError.None)
 				return null;
@@ -752,6 +778,44 @@ namespace CoreMedia {
 
 			return arr;
 		}
+
+		[SupportedOSPlatform ("ios17.0")]
+		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("tvos17.0")]
+		[SupportedOSPlatform ("maccatalyst17.0")]
+		[DllImport (Constants.CoreMediaLibrary)]
+		unsafe static extern /* OSStatus */ CMFormatDescriptionError CMVideoFormatDescriptionCopyTagCollectionArray (
+			IntPtr /* CMVideoFormatDescriptionRef CM_NONNULL */ formatDescription,
+			IntPtr* /* CM_RETURNS_RETAINED_PARAMETER CFArrayRef CM_NULLABLE * */ tagCollectionsOut);
+
+		/// <summary>Get any multi-image properties as an array of <see cref="CMTagCollection" /> values.</summary>
+		/// <param name="tagCollections">Upon output, and if successful, the format description's array of <see cref="CMTagCollection" /> values.</param>
+		/// <returns><see cref="CMFormatDescriptionError.None" /> if succcessful, or an error code otherwise.</returns>
+		public CMFormatDescriptionError GetTagCollections (out CMTagCollection []? tagCollections)
+		{
+			IntPtr array;
+			CMFormatDescriptionError rv;
+
+			tagCollections = null;
+
+			unsafe {
+				rv = CMVideoFormatDescriptionCopyTagCollectionArray (GetCheckedHandle (), &array);
+			}
+
+			if (rv == CMFormatDescriptionError.None)
+				tagCollections = CFArray.ArrayFromHandleFunc<CMTagCollection> (array, (h) => new CMTagCollection (h, false), releaseHandle: true)!;
+
+			return rv;
+		}
+
+		/// <summary>Get any multi-image properties as an array of <see cref="CMTagCollection" /> values.</summary>
+		public CMTagCollection []? TagCollections {
+			get {
+				GetTagCollections (out var tagCollections);
+				return tagCollections;
+			}
+		}
+
 #endif
 	}
 }

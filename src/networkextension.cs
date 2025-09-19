@@ -502,7 +502,7 @@ namespace NetworkExtension {
 		Network.NWEndpoint RemoteFlowEndpoint { get; }
 	}
 
-	delegate void NEDatagramRead (NSData [] datagrams, NWEndpoint [] remoteEndpoints, NSError error);
+	delegate void NEDatagramRead ([NullAllowed] NSData [] datagrams, [NullAllowed] NWEndpoint [] remoteEndpoints, [NullAllowed] NSError error);
 	delegate void NEDatagramAndFlowEndpointsRead ([NullAllowed] NSData [] datagrams, [NullAllowed] Network.NWEndpoint [] remoteEndpoints, [NullAllowed] NSError error);
 	delegate void NEDatagramWriteResult ([NullAllowed] NSError error);
 	/// <summary>Provides IO over a UDP socket.</summary>
@@ -700,6 +700,10 @@ namespace NetworkExtension {
 		[Notification]
 		[Field ("NEDNSSettingsConfigurationDidChangeNotification")]
 		NSString ConfigurationDidChangeNotification { get; }
+
+		[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Export ("allowFailover")]
+		bool AllowFailover { get; set; }
 	}
 
 	/// <summary>Provides filter flow control information to a <see cref="NetworkExtension.NEFilterDataProvider" />.</summary>
@@ -1089,7 +1093,6 @@ namespace NetworkExtension {
 		[Export ("enabled")]
 		bool Enabled { [Bind ("isEnabled")] get; set; }
 
-		/// <include file="../docs/api/NetworkExtension/NEFilterManager.xml" path="/Documentation/Docs[@DocId='P:NetworkExtension.NEFilterManager.ConfigurationDidChangeNotification']/*" />
 		[Field ("NEFilterConfigurationDidChangeNotification")]
 		[Notification]
 		NSString ConfigurationDidChangeNotification { get; }
@@ -1409,6 +1412,8 @@ namespace NetworkExtension {
 	[NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
+	[Deprecated (PlatformName.iOS, 26, 0, message: "Use 'NEHotspotManager' instead.")] // NEHotspotManager is swift only :/
+	[Deprecated (PlatformName.MacCatalyst, 26, 0, message: "Use 'NEHotspotManager' instead.")] // NEHotspotManager is swift only :/
 	interface NEHotspotHelper {
 		[Static]
 		[Internal]
@@ -1554,7 +1559,9 @@ namespace NetworkExtension {
 		void SetNetworkList (NEHotspotNetwork [] networkList);
 
 		/// <summary>Delivers the response.</summary>
-		///         <remarks>To be added.</remarks>
+		// deprecated, but the replacment API is Swift-only :/
+		[Deprecated (PlatformName.iOS, 26, 0, message: "Use 'NEHotspotEvaluationProvider.HandleCommand' or 'NEHotspotAuthenticationProvider.HandleCommand' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, message: "Use 'NEHotspotEvaluationProvider.HandleCommand' or 'NEHotspotAuthenticationProvider.HandleCommand' instead.")]
 		[Export ("deliver")]
 		void Deliver ();
 	}
@@ -2349,7 +2356,6 @@ namespace NetworkExtension {
 		[Export ("setAuthorization:")]
 		void _SetAuthorization (IntPtr auth);
 
-		/// <include file="../docs/api/NetworkExtension/NEVpnManager.xml" path="/Documentation/Docs[@DocId='P:NetworkExtension.NEVpnManager.ConfigurationChangeNotification']/*" />
 		[Notification]
 		[Field ("NEVPNConfigurationChangeNotification")]
 		NSString ConfigurationChangeNotification { get; }
@@ -2411,7 +2417,6 @@ namespace NetworkExtension {
 		[Export ("manager")]
 		NEVpnManager Manager { get; }
 
-		/// <include file="../docs/api/NetworkExtension/NEVpnConnection.xml" path="/Documentation/Docs[@DocId='P:NetworkExtension.NEVpnConnection.StatusDidChangeNotification']/*" />
 		[Notification]
 		[Field ("NEVPNStatusDidChangeNotification")]
 		NSString StatusDidChangeNotification { get; }
@@ -2607,7 +2612,11 @@ namespace NetworkExtension {
 	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/NetworkExtension/Reference/NEVPNIKEv2SecurityAssociationParametersClassRef/index.html">Apple documentation for <c>NEVPNIKEv2SecurityAssociationParameters</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject), Name = "NEVPNIKEv2SecurityAssociationParameters")]
+#if XAMCORE_5_0
+	interface NEVpnIkev2SecurityAssociationParameters : NSSecureCoding, NSCopying {
+#else
 	interface NEVpnIke2SecurityAssociationParameters : NSSecureCoding, NSCopying {
+#endif
 
 		/// <summary>Gets or sets the encryption algorithm for the Security Association.</summary>
 		///         <value>To be added.</value>
@@ -2632,6 +2641,11 @@ namespace NetworkExtension {
 		///         <remarks>To be added.</remarks>
 		[Export ("lifetimeMinutes")]
 		int LifetimeMinutes { get; set; } /* int32_t */
+
+		[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Export ("postQuantumKeyExchangeMethods", ArgumentSemantic.Copy)]
+		[BindAs (typeof (NEVpnIkev2PostQuantumKeyExchangeMethod []))]
+		NSNumber [] PostQuantumKeyExchangeMethods { get; set; }
 	}
 
 	/// <summary>IKEv2 protocol information for VPN connections</summary>
@@ -2639,7 +2653,11 @@ namespace NetworkExtension {
 	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/NetworkExtension/Reference/NEVPNProtocolIKEv2ClassRef/index.html">Apple documentation for <c>NEVPNProtocolIKEv2</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NEVpnProtocolIpSec), Name = "NEVPNProtocolIKEv2")]
+#if XAMCORE_5_0
+	interface NEVpnProtocolIkev2 {
+#else
 	interface NEVpnProtocolIke2 {
+#endif
 
 		/// <summary>Gets or sets the rate at which the IKEv2 client will attempt to detect dead peers.</summary>
 		///         <value>To be added.</value>
@@ -2756,6 +2774,10 @@ namespace NetworkExtension {
 		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Export ("ppkConfiguration", ArgumentSemantic.Copy), NullAllowed]
 		NEVpnIkev2PpkConfiguration PpkConfiguration { get; set; }
+
+		[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Export ("allowPostQuantumKeyExchangeFallback")]
+		bool AllowPostQuantumKeyExchangeFallback { get; set; }
 	}
 
 	/// <summary>Subclasses define rules for automatic connection to VPNs.</summary>
@@ -3283,12 +3305,6 @@ namespace NetworkExtension {
 
 	interface INWTcpConnectionAuthenticationDelegate { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="NetworkExtension.NWTcpConnectionAuthenticationDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="NetworkExtension.NWTcpConnectionAuthenticationDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="NetworkExtension.NWTcpConnectionAuthenticationDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="NetworkExtension.NWTcpConnectionAuthenticationDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'Security.SecProtocolOptions' instead.")]
 	[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'Security.SecProtocolOptions' instead.")]
 	[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'Security.SecProtocolOptions' instead.")]
@@ -4044,7 +4060,6 @@ namespace NetworkExtension {
 	[BaseType (typeof (NSObject), Name = "NEDNSProxyManager")]
 	interface NEDnsProxyManager {
 
-		/// <include file="../docs/api/NetworkExtension/NEDnsProxyManager.xml" path="/Documentation/Docs[@DocId='P:NetworkExtension.NEDnsProxyManager.ProxyConfigurationDidChangeNotification']/*" />
 		[Notification]
 		[Field ("NEDNSProxyConfigurationDidChangeNotification")]
 		NSString ProxyConfigurationDidChangeNotification { get; }
@@ -4673,6 +4688,10 @@ namespace NetworkExtension {
 		[NoTV, NoMac, iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("matchPrivateLTENetworks", ArgumentSemantic.Copy)]
 		NEPrivateLteNetwork [] MatchPrivateLteNetworks { get; set; }
+
+		[MacCatalyst (26, 0), NoTV, NoMac, iOS (26, 0)]
+		[Export ("matchEthernet")]
+		bool MatchEthernet { get; set; }
 	}
 
 	[NoTV, NoMac, iOS (14, 0)]
@@ -4707,6 +4726,10 @@ namespace NetworkExtension {
 		[NoTV, NoMac, iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("start")]
 		void Start ();
+
+		[MacCatalyst (26, 0), NoTV, NoMac, iOS (26, 0)]
+		[Export ("unmatchEthernet")]
+		void UnmatchEthernet ();
 	}
 
 	[iOS (14, 0), TV (17, 0)]
@@ -4923,6 +4946,10 @@ namespace NetworkExtension {
 		[Export ("UIToggleEnabled")]
 		[TV (18, 4), Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4)]
 		bool UIToggleEnabled { [Bind ("isUIToggleEnabled")] get; set; }
+
+		[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Export ("allowDNSFailover")]
+		bool AllowDNSFailover { [Bind ("isDNSFailoverAllowed")] get; set; }
 	}
 
 	[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
@@ -4955,5 +4982,34 @@ namespace NetworkExtension {
 
 		[Export ("isMandatory")]
 		bool IsMandatory { get; set; }
+	}
+
+
+	[MacCatalyst (26, 0), NoTV, Mac (26, 0), iOS (26, 0)]
+	[Native]
+	[NativeName ("NEURLFilterVerdict")]
+	public enum NEUrlFilterVerdict : long {
+		Unknown = 1,
+		Allow = 2,
+		Deny = 3,
+	}
+
+	[MacCatalyst (26, 0), NoTV, Mac (26, 0), iOS (26, 0)]
+	[BaseType (typeof (NSObject), Name = "NEURLFilter")]
+	[DisableDefaultCtor]
+	interface NEUrlFilter {
+		[Async]
+		[Static]
+		[Export ("verdictForURL:completionHandler:")]
+		void GetVerdict (NSUrl url, Action<NEUrlFilterVerdict> completionHandler);
+	}
+
+	[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+	[Native]
+	[NativeName ("NEVPNIKEv2PostQuantumKeyExchangeMethod")]
+	public enum NEVpnIkev2PostQuantumKeyExchangeMethod : long {
+		None = 0,
+		Method36 = 36,
+		Method37 = 37
 	}
 }

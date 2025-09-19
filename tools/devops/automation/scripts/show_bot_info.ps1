@@ -45,5 +45,16 @@ if ($IsMacOS) {
     Write-Host "## Hardware info"
     Write-Host ""
     ioreg -l | grep -e Manufacturer -e 'Vendor Name'
+
+    Write-Host ""
+    Write-Host "## Xcodes"
+    Write-Host ""
+    ls -lad /Applications/Xcode*.app
+
+    Write-Host ""
+    Write-Host "## Xcode Components"
+    Write-Host ""
+    xcrun xcodebuild -showComponent MetalToolchain
 }
 
+exit 0

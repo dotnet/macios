@@ -3,9 +3,12 @@
     <summary>Coordinates a recording session.</summary>
     <remarks>
       <para>
-	The AVCaptureSession object coordinates the recording of video
-	or audio input and passing the recorded information to one or
-	more output objects.  As the iOS line has advanced, different devices have gained multiple capture devices (in particular, gained multiple cameras). Application developers can use <see cref="AVFoundation.AVCaptureDevice.DefaultDeviceWithMediaType(System.String)" /> or <see cref="AVFoundation.AVCaptureDevice.DevicesWithMediaType(System.String)" />, passing in the constants defined in <see cref="AVFoundation.AVMediaType" />.
+    The AVCaptureSession object coordinates the recording of video
+    or audio input and passing the recorded information to one or
+    more output objects.  As the iOS line has advanced, different devices
+    have gained multiple capture devices (in particular, gained multiple cameras).
+    Application developers can use <see cref="AVCaptureDevice.GetDefaultDevice(AVMediaTypes)" /> or
+    <see cref="AVCaptureDevice.DevicesWithMediaType(System.String)" />, passing in the constants defined in <see cref="AVFoundation.AVMediaTypes" />.
       </para>
       <para>
         Configuring capture consists of setting the <see cref="AVFoundation.AVCaptureSession.Inputs" /> and <see cref="AVFoundation.AVCaptureSession.Outputs" /> properties of the <see cref="AVFoundation.AVCaptureSession" />. Notice that multiple <see cref="AVFoundation.AVCaptureInput" />s and <see cref="AVFoundation.AVCaptureOutput" />s are possible. For instance, to capture both audio and video, one would use two capture inputs:</para>
@@ -13,8 +16,8 @@
         <code lang="csharp lang-csharp"><![CDATA[
 var session = new AVCaptureSession();
 
-var camera = AVCaptureDevice.DefaultDeviceWithMediaType(AVMediaType.Video);
-var mic = AVCaptureDevice.DefaultDeviceWithMediaType(AVMediaType.Audio);
+var camera = AVCaptureDevice.GetDefaultDevice(AVMediaType.Video);
+var mic = AVCaptureDevice.GetDefaultDevice(AVMediaType.Audio);
 if(camera == null || mic == null){
     throw new Exception("Can't find devices");
 }
@@ -51,7 +54,11 @@ session.AddOutput (movieFileOutput);
 movieFileOutput.StartRecordingToOutputFile (fileUrl, recordingDelegate);
           ]]></code>
       </example>
-      <para>Application developers should note that the function <see cref="AVFoundation.AVCaptureFileOutput.StopRecording" /> is asynchronous; developers should wait until the <see cref="AVFoundation.AVCaptureFileOutputRecordingDelegate.FinishedRecording(AVFoundation.AVCaptureFileOutput,Foundation.NSUrl,Foundation.NSObject[],Foundation.NSError)" /> delegate method before manipulating the file (for instance, before saving it to the Photos album with <see cref="UIKit.UIVideo.SaveToPhotosAlbum(System.String,UIKit.UIVideo.SaveStatus)" /> or <see cref="AssetsLibrary.ALAssetsLibrary.WriteVideoToSavedPhotosAlbumAsync(Foundation.NSUrl)" />).</para>
+      <para>
+        Application developers should note that the function <see cref="AVFoundation.AVCaptureFileOutput.StopRecording" /> is asynchronous;
+        developers should wait until the <see cref="AVFoundation.AVCaptureFileOutputRecordingDelegate.FinishedRecording(AVFoundation.AVCaptureFileOutput,Foundation.NSUrl,Foundation.NSObject[],Foundation.NSError)" /> delegate method
+        before manipulating the file.
+    </para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
 public class MyRecordingDelegate : AVCaptureFileOutputRecordingDelegate
@@ -106,7 +113,7 @@ void SetupCapture ()
 	};
 	
 	// create a device input and attach it to the session
-	var captureDevice = AVCaptureDevice.DefaultDeviceWithMediaType (AVMediaType.Video);
+	var captureDevice = AVCaptureDevice.GetDefaultDevice (AVMediaTypes.Video);
 	var input = AVCaptureDeviceInput.FromDevice (captureDevice);
 	if (input == null){
 	        Console.WriteLine ("No video input device");
@@ -182,328 +189,4 @@ public class OutputRecorder : AVCaptureVideoDataOutputSampleBufferDelegate {
     </remarks>
     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AVFoundation/Reference/AVCaptureSession_Class/index.html">Apple documentation for <c>AVCaptureSession</c></related>
   </Docs>
-  <Docs DocId="P:AVFoundation.AVCaptureSession.DidStopRunningNotification">
-    <summary>Notification constant for DidStopRunning</summary>
-    <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
-    <remarks>
-      <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-      <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="AVFoundation.AVCaptureSession.Notifications" />.<see cref="AVFoundation.AVCaptureSession.Notifications.ObserveDidStopRunning" /> method which offers strongly typed access to the parameters of the notification.</para>
-      <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
-      <example>
-        <code lang="csharp lang-csharp"><![CDATA[
-//
-// Lambda style
-//
-
-// listening
-notification = AVCaptureSession.Notifications.ObserveDidStopRunning ((sender, args) => {
-    /* Access strongly typed args */
-    Console.WriteLine ("Notification: {0}", args.Notification);
-});
-
-// To stop listening:
-notification.Dispose ();
-
-//
-// Method style
-//
-NSObject notification;
-void Callback (object sender, Foundation.NSNotificationEventArgs args)
-{
-    // Access strongly typed args
-    Console.WriteLine ("Notification: {0}", args.Notification);
-}
-
-void Setup ()
-{
-    notification = AVCaptureSession.Notifications.ObserveDidStopRunning (Callback);
-}
-
-void Teardown ()
-{
-    notification.Dispose ();
-}]]></code>
-      </example>
-      <para>The following example shows how to use the notification with the DefaultCenter API:</para>
-      <example>
-        <code lang="csharp lang-csharp"><![CDATA[
-// Lambda style
-NSNotificationCenter.DefaultCenter.AddObserver (
-        AVCaptureSession.DidStopRunningNotification, (notification) => {Console.WriteLine ("Received the notification AVCaptureSession", notification); }
-
-
-// Method style
-void Callback (NSNotification notification)
-{
-    Console.WriteLine ("Received a notification AVCaptureSession", notification);
-}
-
-void Setup ()
-{
-    NSNotificationCenter.DefaultCenter.AddObserver (AVCaptureSession.DidStopRunningNotification, Callback);
-}
-]]></code>
-      </example>
-    </remarks>
-  </Docs>
-  <Docs DocId="P:AVFoundation.AVCaptureSession.InterruptionEndedNotification">
-    <summary>Notification constant for InterruptionEnded</summary>
-    <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
-    <remarks>
-      <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-      <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="AVFoundation.AVCaptureSession.Notifications" />.<see cref="AVFoundation.AVCaptureSession.Notifications.ObserveInterruptionEnded" /> method which offers strongly typed access to the parameters of the notification.</para>
-      <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
-      <example>
-        <code lang="csharp lang-csharp"><![CDATA[
-//
-// Lambda style
-//
-
-// listening
-notification = AVCaptureSession.Notifications.ObserveInterruptionEnded ((sender, args) => {
-    /* Access strongly typed args */
-    Console.WriteLine ("Notification: {0}", args.Notification);
-});
-
-// To stop listening:
-notification.Dispose ();
-
-//
-// Method style
-//
-NSObject notification;
-void Callback (object sender, Foundation.NSNotificationEventArgs args)
-{
-    // Access strongly typed args
-    Console.WriteLine ("Notification: {0}", args.Notification);
-}
-
-void Setup ()
-{
-    notification = AVCaptureSession.Notifications.ObserveInterruptionEnded (Callback);
-}
-
-void Teardown ()
-{
-    notification.Dispose ();
-}]]></code>
-      </example>
-      <para>The following example shows how to use the notification with the DefaultCenter API:</para>
-      <example>
-        <code lang="csharp lang-csharp"><![CDATA[
-// Lambda style
-NSNotificationCenter.DefaultCenter.AddObserver (
-        AVCaptureSession.InterruptionEndedNotification, (notification) => {Console.WriteLine ("Received the notification AVCaptureSession", notification); }
-
-
-// Method style
-void Callback (NSNotification notification)
-{
-    Console.WriteLine ("Received a notification AVCaptureSession", notification);
-}
-
-void Setup ()
-{
-    NSNotificationCenter.DefaultCenter.AddObserver (AVCaptureSession.InterruptionEndedNotification, Callback);
-}
-]]></code>
-      </example>
-    </remarks>
-  </Docs>
-  <Docs DocId="P:AVFoundation.AVCaptureSession.DidStartRunningNotification">
-    <summary>Notification constant for DidStartRunning</summary>
-    <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
-    <remarks>
-      <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-      <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="AVFoundation.AVCaptureSession.Notifications" />.<see cref="AVFoundation.AVCaptureSession.Notifications.ObserveDidStartRunning" /> method which offers strongly typed access to the parameters of the notification.</para>
-      <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
-      <example>
-        <code lang="csharp lang-csharp"><![CDATA[
-//
-// Lambda style
-//
-
-// listening
-notification = AVCaptureSession.Notifications.ObserveDidStartRunning ((sender, args) => {
-    /* Access strongly typed args */
-    Console.WriteLine ("Notification: {0}", args.Notification);
-});
-
-// To stop listening:
-notification.Dispose ();
-
-//
-// Method style
-//
-NSObject notification;
-void Callback (object sender, Foundation.NSNotificationEventArgs args)
-{
-    // Access strongly typed args
-    Console.WriteLine ("Notification: {0}", args.Notification);
-}
-
-void Setup ()
-{
-    notification = AVCaptureSession.Notifications.ObserveDidStartRunning (Callback);
-}
-
-void Teardown ()
-{
-    notification.Dispose ();
-}]]></code>
-      </example>
-      <para>The following example shows how to use the notification with the DefaultCenter API:</para>
-      <example>
-        <code lang="csharp lang-csharp"><![CDATA[
-// Lambda style
-NSNotificationCenter.DefaultCenter.AddObserver (
-        AVCaptureSession.DidStartRunningNotification, (notification) => {Console.WriteLine ("Received the notification AVCaptureSession", notification); }
-
-
-// Method style
-void Callback (NSNotification notification)
-{
-    Console.WriteLine ("Received a notification AVCaptureSession", notification);
-}
-
-void Setup ()
-{
-    NSNotificationCenter.DefaultCenter.AddObserver (AVCaptureSession.DidStartRunningNotification, Callback);
-}
-]]></code>
-      </example>
-    </remarks>
-  </Docs>
-  <Docs DocId="P:AVFoundation.AVCaptureSession.RuntimeErrorNotification">
-        <summary>Notification constant for RuntimeError</summary>
-        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
-        <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="AVFoundation.AVCaptureSession.Notifications" />.<see cref="AVFoundation.AVCaptureSession.Notifications.ObserveRuntimeError" /> method which offers strongly typed access to the parameters of the notification.</para>
-          <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
-          <example>
-            <code lang="csharp lang-csharp"><![CDATA[
-//
-// Lambda style
-//
-
-// listening
-notification = AVCaptureSession.Notifications.ObserveRuntimeError ((sender, args) => {
-    /* Access strongly typed args */
-    Console.WriteLine ("Notification: {0}", args.Notification);
-
-    Console.WriteLine ("Error", args.Error);
-});
-
-// To stop listening:
-notification.Dispose ();
-
-//
-// Method style
-//
-NSObject notification;
-void Callback (object sender, AVFoundation.AVCaptureSessionRuntimeErrorEventArgs args)
-{
-    // Access strongly typed args
-    Console.WriteLine ("Notification: {0}", args.Notification);
-
-    Console.WriteLine ("Error", args.Error);
-}
-
-void Setup ()
-{
-    notification = AVCaptureSession.Notifications.ObserveRuntimeError (Callback);
-}
-
-void Teardown ()
-{
-    notification.Dispose ();
-}]]></code>
-          </example>
-          <para>The following example shows how to use the notification with the DefaultCenter API:</para>
-          <example>
-            <code lang="csharp lang-csharp"><![CDATA[
-// Lambda style
-NSNotificationCenter.DefaultCenter.AddObserver (
-        AVCaptureSession.RuntimeErrorNotification, (notification) => {Console.WriteLine ("Received the notification AVCaptureSession", notification); }
-
-
-// Method style
-void Callback (NSNotification notification)
-{
-    Console.WriteLine ("Received a notification AVCaptureSession", notification);
-}
-
-void Setup ()
-{
-    NSNotificationCenter.DefaultCenter.AddObserver (AVCaptureSession.RuntimeErrorNotification, Callback);
-}
-]]></code>
-          </example>
-        </remarks>
-      </Docs>
-  <Docs DocId="P:AVFoundation.AVCaptureSession.WasInterruptedNotification">
-        <summary>Notification constant for WasInterrupted</summary>
-        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
-        <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="AVFoundation.AVCaptureSession.Notifications" />.<see cref="AVFoundation.AVCaptureSession.Notifications.ObserveWasInterrupted" /> method which offers strongly typed access to the parameters of the notification.</para>
-          <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
-          <example>
-            <code lang="csharp lang-csharp"><![CDATA[
-//
-// Lambda style
-//
-
-// listening
-notification = AVCaptureSession.Notifications.ObserveWasInterrupted ((sender, args) => {
-    /* Access strongly typed args */
-    Console.WriteLine ("Notification: {0}", args.Notification);
-});
-
-// To stop listening:
-notification.Dispose ();
-
-//
-// Method style
-//
-NSObject notification;
-void Callback (object sender, Foundation.NSNotificationEventArgs args)
-{
-    // Access strongly typed args
-    Console.WriteLine ("Notification: {0}", args.Notification);
-}
-
-void Setup ()
-{
-    notification = AVCaptureSession.Notifications.ObserveWasInterrupted (Callback);
-}
-
-void Teardown ()
-{
-    notification.Dispose ();
-}]]></code>
-          </example>
-          <para>The following example shows how to use the notification with the DefaultCenter API:</para>
-          <example>
-            <code lang="csharp lang-csharp"><![CDATA[
-// Lambda style
-NSNotificationCenter.DefaultCenter.AddObserver (
-        AVCaptureSession.WasInterruptedNotification, (notification) => {Console.WriteLine ("Received the notification AVCaptureSession", notification); }
-
-
-// Method style
-void Callback (NSNotification notification)
-{
-    Console.WriteLine ("Received a notification AVCaptureSession", notification);
-}
-
-void Setup ()
-{
-    NSNotificationCenter.DefaultCenter.AddObserver (AVCaptureSession.WasInterruptedNotification, Callback);
-}
-]]></code>
-          </example>
-        </remarks>
-      </Docs>
 </Documentation>

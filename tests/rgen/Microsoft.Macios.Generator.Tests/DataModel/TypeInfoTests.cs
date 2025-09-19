@@ -6,6 +6,7 @@ using System.Linq;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Macios.Generator.DataModel;
+using Microsoft.Macios.Generator.Formatters;
 using Xamarin.Tests;
 using Xamarin.Utils;
 using Xunit;
@@ -383,6 +384,34 @@ namespace NS {
 					parameters: []
 				)
 			];
+
+			const string namedTuple = @"
+using System;
+
+namespace NS {
+	public class MyClass {
+		public (string Name, string Surname) MyMethod () {}
+	}
+}
+";
+			yield return [
+				namedTuple,
+				new Method (
+					type: "NS.MyClass",
+					name: "MyMethod",
+					returnType: ReturnTypeForNamedTuple ([
+						new ("Name", ReturnTypeForString ()),
+						new ("Surname", ReturnTypeForString ()),
+					]),
+					symbolAvailability: new (),
+					exportMethodData: new (),
+					attributes: [],
+					modifiers: [
+						SyntaxFactory.Token (SyntaxKind.PublicKeyword),
+					],
+					parameters: []
+				)
+			];
 		}
 
 		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
@@ -689,5 +718,185 @@ namespace Example {
 		Assert.Equal ("MyClass.ExampleClass", changes.Value.Parameters [0].Type.Name);
 		Assert.Equal ("Example.NS.MyClass.ExampleClass", changes.Value.Parameters [0].Type.FullyQualifiedName);
 		Assert.Equal ("Example.NS", string.Join ('.', changes.Value.Parameters [0].Type.Namespace));
+	}
+
+	[Theory]
+	[PlatformInlineData (ApplePlatform.iOS, "Action", "Task", "TaskCompletionSource")]
+	[PlatformInlineData (ApplePlatform.TVOS, "Action", "Task", "TaskCompletionSource")]
+	[PlatformInlineData (ApplePlatform.MacCatalyst, "Action", "Task", "TaskCompletionSource")]
+	[PlatformInlineData (ApplePlatform.MacOSX, "Action", "Task", "TaskCompletionSource")]
+	[PlatformInlineData (ApplePlatform.iOS, "Action<int>", "Task<int>", "TaskCompletionSource<int>")]
+	[PlatformInlineData (ApplePlatform.TVOS, "Action<int>", "Task<int>", "TaskCompletionSource<int>")]
+	[PlatformInlineData (ApplePlatform.MacCatalyst, "Action<int>", "Task<int>", "TaskCompletionSource<int>")]
+	[PlatformInlineData (ApplePlatform.MacOSX, "Action<int>", "Task<int>", "TaskCompletionSource<int>")]
+	[PlatformInlineData (ApplePlatform.iOS, "Action<int, NSError>", "Task<int>", "TaskCompletionSource<int>")]
+	[PlatformInlineData (ApplePlatform.TVOS, "Action<int, NSError>", "Task<int>", "TaskCompletionSource<int>")]
+	[PlatformInlineData (ApplePlatform.MacCatalyst, "Action<int, NSError>", "Task<int>", "TaskCompletionSource<int>")]
+	[PlatformInlineData (ApplePlatform.MacOSX, "Action<int, NSError>", "Task<int>", "TaskCompletionSource<int>")]
+	[PlatformInlineData (ApplePlatform.iOS, "Action<int, string>", "Task<(int, string)>", "TaskCompletionSource<(int, string)>")]
+	[PlatformInlineData (ApplePlatform.TVOS, "Action<int, string>", "Task<(int, string)>", "TaskCompletionSource<(int, string)>")]
+	[PlatformInlineData (ApplePlatform.MacCatalyst, "Action<int, string>", "Task<(int, string)>", "TaskCompletionSource<(int, string)>")]
+	[PlatformInlineData (ApplePlatform.MacOSX, "Action<int, string>", "Task<(int, string)>", "TaskCompletionSource<(int, string)>")]
+	[PlatformInlineData (ApplePlatform.iOS, "Action<int, string, NSError>", "Task<(int, string)>", "TaskCompletionSource<(int, string)>")]
+	[PlatformInlineData (ApplePlatform.TVOS, "Action<int, string, NSError>", "Task<(int, string)>", "TaskCompletionSource<(int, string)>")]
+	[PlatformInlineData (ApplePlatform.MacCatalyst, "Action<int, string, NSError>", "Task<(int, string)>", "TaskCompletionSource<(int, string)>")]
+	[PlatformInlineData (ApplePlatform.MacOSX, "Action<int, string, NSError>", "Task<(int, string)>", "TaskCompletionSource<(int, string)>")]
+	void TypeInfoToTask (ApplePlatform platform, string action, string expectedTask, string expectedCompletionSource)
+	{
+		var inputText = $@"
+using System;
+using System.Threading.Tasks;
+using Foundation;
+using ObjCRuntime;
+using System.Collections.Generic;
+
+namespace NS {{
+	public class MyClass {{
+		public void ProcessPointer ({action} myTask)
+		{{
+			// do nothing
+		}}
+	}}
+}}
+";
+		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
+		Assert.Single (syntaxTrees);
+		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
+		var declaration = syntaxTrees [0].GetRoot ()
+			.DescendantNodes ().OfType<MethodDeclarationSyntax> ()
+			.FirstOrDefault ();
+		Assert.NotNull (declaration);
+		Assert.True (Method.TryCreate (declaration, semanticModel, out var changes));
+		Assert.NotNull (changes);
+		// ensure that the method has a single parameter
+		Assert.Single (changes.Value.Parameters);
+		var type = changes.Value.Parameters [0].Type;
+		var task = type.ToTask ();
+		Assert.NotEqual (type, task);
+		Assert.Equal ($"{Global ("System.Threading")}.Tasks.{expectedTask}", task.GetIdentifierSyntax ().ToString ());
+		var completionSource = task.ToTaskCompletionSource ();
+		Assert.Equal ($"{Global ("System.Threading")}.Tasks.{expectedCompletionSource}", completionSource.GetIdentifierSyntax ().ToString ());
+	}
+
+	[Theory]
+	[AllSupportedPlatforms]
+	void TypeInfoToTaskNamedTuple (ApplePlatform platform)
+	{
+		var inputText = @"
+using System;
+using System.Threading.Tasks;
+using Foundation;
+using ObjCRuntime;
+using System.Collections.Generic;
+
+namespace NS {
+	public class MyClass {
+		delegate void Callback (string name, string surname, NSError error);
+		public void ProcessPointer (Callback myTask)
+		{
+			// do nothing
+		}
+	}
+}
+";
+		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
+		Assert.Single (syntaxTrees);
+		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
+		var declaration = syntaxTrees [0].GetRoot ()
+			.DescendantNodes ().OfType<MethodDeclarationSyntax> ()
+			.FirstOrDefault ();
+		Assert.NotNull (declaration);
+		Assert.True (Method.TryCreate (declaration, semanticModel, out var changes));
+		Assert.NotNull (changes);
+		// ensure that the method has a single parameter
+		Assert.Single (changes.Value.Parameters);
+		var type = changes.Value.Parameters [0].Type;
+		var task = type.ToTask ();
+		Assert.NotEqual (type, task);
+		Assert.Equal ($"{Global ("System.Threading")}.Tasks.Task<(string Name, string Surname)>", task.GetIdentifierSyntax ().ToString ());
+		var completionSource = task.ToTaskCompletionSource ();
+		Assert.Equal ($"{Global ("System.Threading")}.Tasks.TaskCompletionSource<(string Name, string Surname)>", completionSource.GetIdentifierSyntax ().ToString ());
+	}
+
+	[Theory]
+	[AllSupportedPlatforms]
+	void TypeInfoEvents (ApplePlatform platform)
+	{
+		var inputText = @"
+using System;
+using System.Runtime.Versioning;
+using AVFoundation;
+using CoreGraphics;
+using Foundation;
+using ObjCBindings;
+using ObjCRuntime;
+using nfloat = System.Runtime.InteropServices.NFloat;
+
+namespace NS;
+
+[SupportedOSPlatform (""ios"")]
+[SupportedOSPlatform (""tvos"")]
+[SupportedOSPlatform (""macos"")]
+[SupportedOSPlatform (""maccatalyst13.1"")]
+[BindingType<Protocol>]
+public partial interface IRgenNSKeyedArchiverDelegate {
+
+	// not event args, should not be needed
+	[Export<Method> (""archiver:didEncodeObject:"", Flags = ObjCBindings.Method.Event)]
+	void EncodedObject (NSKeyedArchiver archiver, NSObject obj);
+
+	// not event args, should not be needed
+	[Export<Method> (""archiverDidFinish:"", Flags = ObjCBindings.Method.Event)]
+	void Finished (NSKeyedArchiver archiver);
+
+	// not event args, should not be needed
+	[Export<Method> (""archiverDidFinish:"", Flags = ObjCBindings.Method.Event)]
+	NSObject WillEncode (NSKeyedArchiver archiver, NSObject obj);
+
+	// not event args, should not be needed
+	[Export<Method> (""archiverWillFinish:"", Flags = ObjCBindings.Method.Event)]
+	void Finishing (NSKeyedArchiver archiver);
+
+	// use a name, the class should be generated with the two NSObjects as properties
+	[Export<Method> (""archiver:willReplaceObject:withObject:"", Flags = ObjCBindings.Method.Event, EventArgsTypeName = ""NSArchiveReplace"")] 
+	void ReplacingObject (NSKeyedArchiver archiver, NSObject oldObject, NSObject newObject);
+	
+	// use a typeof named tuple
+	[Export<Method> (""archiver:willReplaceObject:withObject:"", Flags = ObjCBindings.Method.Event, EventArgsType = typeof((NSObject OldObject, NSObject NewObject)))] 
+	void ReplacingObject2 (NSKeyedArchiver archiver, NSObject oldObject, NSObject newObject);
+	
+	// use a nameless tuple
+	[Export<Method> (""archiver:willReplaceObject:withObject:"", Flags = ObjCBindings.Method.Event, EventArgsType = typeof((NSObject, NSObject)))] 
+	void ReplacingObject3 (NSKeyedArchiver archiver, NSObject oldObject, NSObject newObject);
+}
+
+[BindingType<Class>]
+public partial class EventTests {
+
+	[SupportedOSPlatform (""ios"")]
+	[SupportedOSPlatform (""tvos"")]
+	[SupportedOSPlatform (""macos"")]
+	[SupportedOSPlatform (""maccatalyst13.1"")]
+	[Export<Property> (""delegate"",
+		ArgumentSemantic.Weak,
+		Flags = Property.WeakDelegate | Property.CreateEvents,
+		StrongDelegateType = typeof (IRgenNSKeyedArchiverDelegate))]
+	public virtual partial NSObject? WeakDelegate { get; set; }
+";
+		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
+		Assert.Single (syntaxTrees);
+		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
+		var declaration = syntaxTrees [0].GetRoot ()
+			.DescendantNodes ().OfType<PropertyDeclarationSyntax> ()
+			.LastOrDefault ();
+		Assert.NotNull (declaration);
+		Assert.True (Property.TryCreate (declaration, semanticModel, out var changes));
+		Assert.NotNull (changes);
+		Assert.True (changes.Value.IsProperty);
+		// get the weak delegate property strong type
+		var type = changes.Value.ExportPropertyData.StrongDelegateType;
+		Assert.False (type.IsNullOrDefault);
+		// assert the number of events
+		Assert.Equal (7, type.Events.Length);
 	}
 }

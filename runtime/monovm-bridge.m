@@ -76,7 +76,7 @@ xamarin_bridge_initialize ()
 	mono_install_unhandled_exception_hook (xamarin_unhandled_exception_handler, NULL);
 	mono_install_ftnptr_eh_callback (xamarin_ftnptr_exception_handler);
 
-	mono_jit_init_version ("MonoTouch", "mobile");
+	mono_jit_init ("RootDomain");
 	/*
 	  As part of mono initialization a preload hook is added that overrides ours, so we need to re-instate it here.
 	  This is wasteful, but there's no way to manipulate the preload hook list except by adding to it.
@@ -88,6 +88,7 @@ xamarin_bridge_initialize ()
 void
 xamarin_bridge_shutdown ()
 {
+	mono_jit_cleanup (mono_domain_get ());
 }
 
 static MonoClass *
@@ -413,7 +414,7 @@ static MonoToggleRefStatus
 gc_toggleref_callback (MonoObject *object)
 {
 	MonoToggleRefStatus res;
-	uint8_t flags = xamarin_get_nsobject_flags (object);
+	uint32_t flags = xamarin_get_nsobject_flags (object);
 
 	res = xamarin_gc_toggleref_callback (flags, NULL, xamarin_get_nsobject_handle, object);
 

@@ -185,7 +185,83 @@ namespace MonoTouchFixtures.CoreMedia {
 		public void VideoFormatDescriptionConstructors ()
 		{
 			using (var obj = new CMVideoFormatDescription (CMVideoCodecType.H264, new CMVideoDimensions (960, 540))) {
+				Assert.AreEqual (960, obj.Dimensions.Width, "Width #1");
+				Assert.AreEqual (540, obj.Dimensions.Height, "Height #1");
+				Assert.AreEqual (CMVideoCodecType.H264, obj.VideoCodecType, "VideoCodecType #1");
+				Assert.IsNull (obj.GetExtensions (), "Extensions #1");
 			}
+
+			using (var obj = new CMVideoFormatDescription (CMVideoCodecType.H263, new CMVideoDimensions (480, 270), (NSDictionary?) null)) {
+				Assert.AreEqual (480, obj.Dimensions.Width, "Width #2");
+				Assert.AreEqual (270, obj.Dimensions.Height, "Height #2");
+				Assert.AreEqual (CMVideoCodecType.H263, obj.VideoCodecType, "VideoCodecType #2");
+				Assert.IsNull (obj.GetExtensions (), "Extensions #2");
+			}
+
+			var extensions = new CMFormatDescriptionExtensions () {
+				BytesPerRow = 24,
+			};
+			using (var obj = new CMVideoFormatDescription (CMVideoCodecType.H263, new CMVideoDimensions (480, 270), extensions)) {
+				Assert.AreEqual (480, obj.Dimensions.Width, "Width #3");
+				Assert.AreEqual (270, obj.Dimensions.Height, "Height #3");
+				Assert.AreEqual (CMVideoCodecType.H263, obj.VideoCodecType, "VideoCodecType #3");
+				var dict = obj.GetExtensions ();
+				var ext = new CMFormatDescriptionExtensions (dict);
+				Assert.IsNotNull (ext, "Extensions #3");
+				Assert.AreEqual (24, ext.BytesPerRow, "Extensions.BytesPerRow #3");
+			}
+		}
+
+		[Test]
+		public void TagCollections ()
+		{
+			TestRuntime.AssertXcodeVersion (26, 0);
+
+			using var assetUrl = NSBundle.MainBundle.GetUrlForResource ("hummingbird", "mov");
+			using var asset = AVAsset.FromUrl (assetUrl);
+			var videoTracks = asset.TracksWithMediaType (AVMediaTypes.Video.GetConstant ());
+			var videoTrack = videoTracks [0];
+			var formatDescriptor = videoTrack.FormatDescriptions [0] as CMVideoFormatDescription;
+
+			Assert.Multiple (() => {
+				{
+					var collections = formatDescriptor.TagCollections;
+					Assert.That (collections.Length, Is.EqualTo (2), "Tag Collections Length A");
+					Assert.That (collections [0].Tags.Length, Is.EqualTo (2), "Tag Collections [0].Tags.Length A");
+					Assert.That (collections [0].Tags [0].Category, Is.EqualTo (CMTagCategory.StereoView), "Tag Collections [0].Tags [0].Category A");
+					Assert.That (collections [0].Tags [0].DataType, Is.EqualTo (CMTagDataType.Flags), "Tag Collections [0].Tags [0].DataType A");
+					Assert.That (collections [0].Tags [0].Value, Is.EqualTo ((ulong) 1), "Tag Collections [0].Tags [0].Value A");
+					Assert.That (collections [0].Tags [1].Category, Is.EqualTo (CMTagCategory.VideoLayerId), "Tag Collections [0].Tags [1].Category A");
+					Assert.That (collections [0].Tags [1].DataType, Is.EqualTo (CMTagDataType.SInt64), "Tag Collections [0].Tags [1].DataType A");
+					Assert.That (collections [0].Tags [1].Value, Is.EqualTo ((ulong) 0), "Tag Collections [0].Tags [1].Value A");
+					Assert.That (collections [1].Tags.Length, Is.EqualTo (2), "Tag Collections [1].Length A");
+					Assert.That (collections [1].Tags [0].Category, Is.EqualTo (CMTagCategory.StereoView), "Tag Collections [1].Tags [0].Category A");
+					Assert.That (collections [1].Tags [0].DataType, Is.EqualTo (CMTagDataType.Flags), "Tag Collections [1].Tags [0].DataType A");
+					Assert.That (collections [1].Tags [0].Value, Is.EqualTo ((ulong) 2), "Tag Collections [1].Tags [0].Value A");
+					Assert.That (collections [1].Tags [1].Category, Is.EqualTo (CMTagCategory.VideoLayerId), "Tag Collections [1].Tags [1].Category A");
+					Assert.That (collections [1].Tags [1].DataType, Is.EqualTo (CMTagDataType.SInt64), "Tag Collections [1].Tags [1].DataType A");
+					Assert.That (collections [1].Tags [1].Value, Is.EqualTo ((ulong) 1), "Tag Collections [1].Tags [1].Value A");
+				}
+				{
+					var rv = formatDescriptor.GetTagCollections (out var collections);
+					Assert.That (rv, Is.EqualTo (CMFormatDescriptionError.None), "Tag Collections Error B");
+					Assert.That (collections.Length, Is.EqualTo (2), "Tag Collections Length B");
+					Assert.That (collections [0].Tags.Length, Is.EqualTo (2), "Tag Collections [0].Tags.Length B");
+					Assert.That (collections [0].Tags [0].Category, Is.EqualTo (CMTagCategory.StereoView), "Tag Collections [0].Tags [0].Category B");
+					Assert.That (collections [0].Tags [0].DataType, Is.EqualTo (CMTagDataType.Flags), "Tag Collections [0].Tags [0].DataType B");
+					Assert.That (collections [0].Tags [0].Value, Is.EqualTo ((ulong) 1), "Tag Collections [0].Tags [0].Value B");
+					Assert.That (collections [0].Tags [1].Category, Is.EqualTo (CMTagCategory.VideoLayerId), "Tag Collections [0].Tags [1].Category B");
+					Assert.That (collections [0].Tags [1].DataType, Is.EqualTo (CMTagDataType.SInt64), "Tag Collections [0].Tags [1].DataType B");
+					Assert.That (collections [0].Tags [1].Value, Is.EqualTo ((ulong) 0), "Tag Collections [0].Tags [1].Value B");
+					Assert.That (collections [1].Tags.Length, Is.EqualTo (2), "Tag Collections [1].Length B");
+					Assert.That (collections [1].Tags [0].Category, Is.EqualTo (CMTagCategory.StereoView), "Tag Collections [1].Tags [0].Category B");
+					Assert.That (collections [1].Tags [0].DataType, Is.EqualTo (CMTagDataType.Flags), "Tag Collections [1].Tags [0].DataType B");
+					Assert.That (collections [1].Tags [0].Value, Is.EqualTo ((ulong) 2), "Tag Collections [1].Tags [0].Value B");
+					Assert.That (collections [1].Tags [1].Category, Is.EqualTo (CMTagCategory.VideoLayerId), "Tag Collections [1].Tags [1].Category B");
+					Assert.That (collections [1].Tags [1].DataType, Is.EqualTo (CMTagDataType.SInt64), "Tag Collections [1].Tags [1].DataType B");
+					Assert.That (collections [1].Tags [1].Value, Is.EqualTo ((ulong) 1), "Tag Collections [1].Tags [1].Value B");
+				}
+			});
 		}
 	}
 }

@@ -59,7 +59,7 @@ namespace Mono.ApiTools {
 			var tgtType = target.GetTypeName ("returntype", State);
 
 			if (srcType != tgtType) {
-				change.AppendModified (srcType, tgtType, true);
+				change.AppendModified (srcType, tgtType);
 				change.Append (" ");
 			} else if (srcType is not null) {
 				// ctor don't have a return type
@@ -144,8 +144,7 @@ namespace Mono.ApiTools {
 				var list = new List<string> ();
 				foreach (var p in parameters.Elements ("parameter")) {
 					var param = p.GetTypeName ("type", State);
-					if (!State.IgnoreParameterNameChanges)
-						param += " " + p.GetAttribute ("name");
+					param += " " + p.GetAttribute ("name");
 
 					var direction = p.GetAttribute ("direction");
 					if (direction?.Length > 0)

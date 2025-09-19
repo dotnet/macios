@@ -1,8 +1,9 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
+
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
@@ -16,208 +17,145 @@ using Microsoft.Macios.Generator.IO;
 using ObjCBindings;
 using static Microsoft.Macios.Generator.Emitters.BindingSyntaxFactory;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using Constructor = ObjCBindings.Constructor;
 using Property = Microsoft.Macios.Generator.DataModel.Property;
+using TypeInfo = Microsoft.Macios.Generator.DataModel.TypeInfo;
 
 namespace Microsoft.Macios.Generator.Emitters;
 
-class ClassEmitter : ICodeEmitter {
-	public string GetSymbolName (in Binding binding) => binding.Name;
+file class ConstructorParameterComparer : IEqualityComparer<ImmutableArray<TypeInfo>> {
+	/// <summary>
+	/// Determines equality by requiring the same method name and identical ordered parameter type sequence.
+	/// </summary>
+	public bool Equals (ImmutableArray<TypeInfo> x, ImmutableArray<TypeInfo> y)
+	{
+		return x.SequenceEqual (y);
+	}
 
+	/// <summary>
+	/// Computes a hash code combining the method name and ordered parameter types.
+	/// </summary>
+	public int GetHashCode (ImmutableArray<TypeInfo> obj)
+	{
+		var hash = new HashCode ();
+		foreach (var t in obj)
+			hash.Add (t);
+		return hash.ToHashCode ();
+	}
+}
+
+/// <summary>
+/// Emitter for Objective-C classes.
+/// </summary>
+class ClassEmitter : IClassEmitter {
+	/// <inheritdoc />
+	public string GetSymbolName (in Binding binding)
+	{
+		var outerClasses = binding.OuterClasses.Select (x => x.Name);
+		var prefix = string.Join ('.', outerClasses);
+		return string.IsNullOrEmpty (prefix)
+			? binding.Name
+			: $"{prefix}.{binding.Name}";
+	}
+
+	/// <inheritdoc />
 	public IEnumerable<string> UsingStatements => [
 		"System",
 		"System.Drawing",
 		"System.Diagnostics",
 		"System.ComponentModel",
-		"System.Threading.Tasks",
 		"System.Runtime.Versioning",
 		"System.Runtime.InteropServices",
 		"System.Diagnostics.CodeAnalysis",
 		"ObjCRuntime",
 	];
 
-
-	void EmitDefaultConstructors (in BindingContext bindingContext, TabbedWriter<StringWriter> classBlock, bool disableDefaultCtor)
+	/// <summary>
+	/// Emit the code for all the constructors in the class.
+	/// </summary>
+	/// <param name="context">The current binding context.</param>
+	/// <param name="classBlock">Current class block.</param>
+	void EmitConstructors (in BindingContext context, TabbedWriter<StringWriter> classBlock)
 	{
-
-		if (!disableDefaultCtor) {
-			classBlock.WriteDocumentation (Documentation.Class.DefaultInit (bindingContext.Changes.Name));
-			classBlock.AppendGeneratedCodeAttribute ();
-			classBlock.AppendDesignatedInitializer ();
-			classBlock.WriteRaw (
-$@"[Export (""init"")]
-public {bindingContext.Changes.Name} () : base ({NSObjectFlag}.Empty)
-{{
-	if (IsDirectBinding)
-		InitializeHandle (global::ObjCRuntime.Messaging.IntPtr_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle (""init"")), ""init"");
-	else
-		InitializeHandle (global::ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle (""init"")), ""init"");
-}}
-");
-			classBlock.WriteLine ();
+		// merge the constructors and the protocol constructors for the current class, use a dict to avoid duplicates
+		var allConstructors = new Dictionary<ImmutableArray<TypeInfo>, DataModel.Constructor> (new ConstructorParameterComparer ());
+		foreach (var constructor in context.Changes.Constructors) {
+			if (constructor.Selector is null)
+				continue;
+			var key = constructor.Parameters.Select (x => x.Type).ToImmutableArray ();
+			allConstructors.TryAdd (key, constructor);
 		}
 
-		classBlock.WriteDocumentation (Documentation.Class.DefaultInitWithFlag (bindingContext.Changes.Name));
-		classBlock.AppendGeneratedCodeAttribute ();
-		classBlock.AppendEditorBrowsableAttribute (EditorBrowsableState.Advanced);
-		classBlock.WriteLine ($"protected {bindingContext.Changes.Name} ({NSObjectFlag} t) : base (t) {{}}");
+		foreach (var constructor in context.Changes.ProtocolConstructors) {
+			if (constructor.Selector is null)
+				continue;
+			var key = constructor.Parameters.Select (x => x.Type).ToImmutableArray ();
+			allConstructors.TryAdd (key, constructor);
+		}
 
-		classBlock.WriteLine ();
-		classBlock.WriteDocumentation (Documentation.Class.DefaultInitWithHandle (bindingContext.Changes.Name));
-		classBlock.AppendGeneratedCodeAttribute ();
-		classBlock.AppendEditorBrowsableAttribute (EditorBrowsableState.Advanced);
-		classBlock.WriteLine ($"protected internal {bindingContext.Changes.Name} ({NativeHandle} handle) : base (handle) {{}}");
+		// create the ui thread check to be used in the constructors that come from a protocol factory method
+		var uiThreadCheck = (context.NeedsThreadChecks)
+			? EnsureUiThread (context.RootContext.CurrentPlatform)
+			: null;
+
+		// When dealing with constructors we cannot sort them by name because the name is always the same as the class
+		// instead we will sort them by the selector name so that we will always generate the constructors in the same order
+		foreach (var constructor in allConstructors.Values.OrderBy (c => c.ExportMethodData.Selector)) {
+			classBlock.AppendMemberAvailability (constructor.SymbolAvailability);
+			classBlock.AppendGeneratedCodeAttribute (optimizable: true);
+			if (constructor.ExportMethodData.Flags.HasFlag (Constructor.DesignatedInitializer)) {
+				classBlock.AppendDesignatedInitializer ();
+			}
+
+			if (GeneratorConfiguration.BGenCompatible && !constructor.SkipRegistration) {
+				classBlock.AppendBgenExportAttribute (constructor.Selector);
+			}
+
+			using (var constructorBlock = classBlock.CreateBlock (constructor.ToDeclaration (withBaseNSFlag: true).ToString (), block: true)) {
+				if (uiThreadCheck is not null && constructor is { IsProtocolConstructor: true, IsThreadSafe: false }) {
+					// if we are dealing with a protocol constructor, we need to ensure we are on the UI thread, this
+					// happens for example with NSCoding in ui elements.
+					constructorBlock.Write (uiThreadCheck.ToString ());
+					constructorBlock.WriteLine ();
+				}
+				// retrieve the method invocation via the factory, this will generate the necessary arguments
+				// transformations and the invocation
+				var invocations = GetInvocations (constructor);
+
+				// init the needed temp variables
+				foreach (var argument in invocations.Arguments) {
+					constructorBlock.Write (argument.Validations, verifyTrivia: false);
+					constructorBlock.Write (argument.Initializers, verifyTrivia: false);
+					constructorBlock.Write (argument.PreCallConversion, verifyTrivia: false);
+				}
+
+				// simply call the send or sendSuper accordingly
+				constructorBlock.WriteRaw (
+$@"if (IsDirectBinding) {{
+	{ExpressionStatement (invocations.Send)}
+}} else {{
+	{ExpressionStatement (invocations.SendSuper)}
+}}
+");
+
+				// before we leave the methods, do any post operations
+				foreach (var argument in invocations.Arguments) {
+					constructorBlock.Write (argument.PostCallConversion, verifyTrivia: false);
+				}
+			}
+			classBlock.WriteLine ();
+		}
 	}
 
 	/// <summary>
-	/// Emit the code for all the field properties in the class. The code will add any necessary backing fields and
-	/// will return all properties that are notifications.
+	/// Emit the code for all the notifications in the class.
 	/// </summary>
-	/// <param name="className">The current class name.</param>
-	/// <param name="properties">All properties of the class, the method will filter those that are fields.</param>
+	/// <param name="properties">All properties of the class, the method will filter those that are notifications.</param>
 	/// <param name="classBlock">Current class block.</param>
-	/// <param name="notificationProperties">An immutable array with all the properties that are marked as notifications
-	/// and that need a helper class to be generated.</param>
-	void EmitFields (string className, in ImmutableArray<Property> properties, TabbedWriter<StringWriter> classBlock,
-		out ImmutableArray<Property> notificationProperties)
-	{
-		var notificationsBuilder = ImmutableArray.CreateBuilder<Property> ();
-		foreach (var property in properties.OrderBy (p => p.Name)) {
-			if (!property.IsField)
-				continue;
-
-			classBlock.WriteLine ();
-			// a field should always have a getter, if it does not, we do not generate the property
-			var getter = property.GetAccessor (AccessorKind.Getter);
-			if (getter is null)
-				continue;
-
-			// provide a backing variable for the property if and only if we are dealing with a reference type
-			if (property.IsReferenceType) {
-				classBlock.WriteLine (FieldPropertyBackingVariable (property).ToString ());
-			}
-
-			classBlock.WriteLine ();
-			classBlock.AppendMemberAvailability (property.SymbolAvailability);
-			classBlock.AppendGeneratedCodeAttribute (optimizable: true);
-			if (property.IsNotification) {
-				// add it to the bucket so that we can later generate the necessary partial class for the 
-				// notifications
-				notificationsBuilder.Add (property);
-				classBlock.AppendNotificationAdvice (className, property.Name);
-			}
-
-			using (var propertyBlock = classBlock.CreateBlock (property.ToDeclaration ().ToString (), block: true)) {
-				// generate the accessors, we will always have a get, a set is optional depending on the type
-				// if the symbol availability of the accessor is different of the one from the property, write it
-				var backingField = property.BackingField;
-
-				// be very verbose with the availability, makes the life easier to the dotnet analyzer
-				propertyBlock.AppendMemberAvailability (getter.Value.SymbolAvailability);
-				using (var getterBlock = propertyBlock.CreateBlock ("get", block: true)) {
-					// fields with a reference type have a backing fields, while value types do not
-					if (property.IsReferenceType) {
-						getterBlock.WriteRaw (
-$@"if ({backingField} is null)
-	{backingField} = {ExpressionStatement (FieldConstantGetter (property))}
-return {backingField};
-");
-					} else {
-						// directly return the call from the getter
-						getterBlock.WriteLine ($"return {ExpressionStatement (FieldConstantGetter (property))}");
-					}
-				}
-
-				var setter = property.GetAccessor (AccessorKind.Setter);
-				if (setter is null)
-					// we are done with the current property
-					continue;
-
-				propertyBlock.WriteLine (); // add space between getter and setter since we have the attrs
-				propertyBlock.AppendMemberAvailability (setter.Value.SymbolAvailability);
-				using (var setterBlock = propertyBlock.CreateBlock ("set", block: true)) {
-					if (property.IsReferenceType) {
-						// set the backing field
-						setterBlock.WriteLine ($"{backingField} = value;");
-					}
-					// call the native code
-					setterBlock.WriteLine ($"{ExpressionStatement (FieldConstantSetter (property, "value"))}");
-				}
-			}
-		}
-		notificationProperties = notificationsBuilder.ToImmutable ();
-	}
-
-	void EmitProperties (in BindingContext context, TabbedWriter<StringWriter> classBlock)
-	{
-
-		// use the binding context to decide if we need to insert the ui thread check
-		var uiThreadCheck = (context.NeedsThreadChecks)
-			? EnsureUiThread (context.RootContext.CurrentPlatform) : null;
-
-		foreach (var property in context.Changes.Properties.OrderBy (p => p.Name)) {
-			if (property.IsField)
-				// ignore fields
-				continue;
-			// use the factory to generate all the needed invocations for the current 
-			var invocations = GetInvocations (property);
-
-			// we expect to always at least have a getter
-			var getter = property.GetAccessor (AccessorKind.Getter);
-			if (getter is null)
-				continue;
-
-			classBlock.WriteLine ();
-			classBlock.AppendMemberAvailability (property.SymbolAvailability);
-			classBlock.AppendGeneratedCodeAttribute (optimizable: true);
-
-			using (var propertyBlock = classBlock.CreateBlock (property.ToDeclaration ().ToString (), block: true)) {
-				// be very verbose with the availability, makes the life easier to the dotnet analyzer
-				propertyBlock.AppendMemberAvailability (getter.Value.SymbolAvailability);
-				using (var getterBlock = propertyBlock.CreateBlock ("get", block: true)) {
-					if (uiThreadCheck is not null) {
-						getterBlock.WriteLine (uiThreadCheck.ToString ());
-						getterBlock.WriteLine ();
-					}
-					// depending on the property definition, we might need a temp variable to store
-					// the return value
-					var (tempVar, tempDeclaration) = GetReturnValueAuxVariable (property.ReturnType);
-					getterBlock.WriteRaw (
-$@"{tempDeclaration}
-if (IsDirectBinding) {{
-	{ExpressionStatement (invocations.Getter.Send)}
-}} else {{
-	{ExpressionStatement (invocations.Getter.SendSuper)}
-}}
-GC.KeepAlive (this);
-return {tempVar};
-");
-				}
-
-				var setter = property.GetAccessor (AccessorKind.Setter);
-				if (setter is null)
-					// we are done with the current property
-					continue;
-
-				propertyBlock.WriteLine (); // add space between getter and setter since we have the attrs
-				propertyBlock.AppendMemberAvailability (setter.Value.SymbolAvailability);
-				using (var setterBlock = propertyBlock.CreateBlock ("set", block: true)) {
-					if (uiThreadCheck is not null) {
-						setterBlock.WriteLine (uiThreadCheck.ToString ());
-						setterBlock.WriteLine ();
-					}
-					setterBlock.WriteLine ("throw new NotImplementedException();");
-				}
-			}
-		}
-	}
-
 	void EmitNotifications (in ImmutableArray<Property> properties, TabbedWriter<StringWriter> classBlock)
 	{
 		if (properties.Length == 0)
 			return;
-
-		// add a space just to make it nicer to read
-		classBlock.WriteLine ();
 
 		// create a nested static class with the notification helpers
 		using (var notificationClass = classBlock.CreateBlock ("public static partial class Notifications", true)) {
@@ -226,16 +164,20 @@ return {tempVar};
 			foreach (var notification in properties) {
 				var count = 12; // == "Notification".Length;
 				var name = $"Observe{notification.Name [..^count]}";
-				var notificationCenter = notification.ExportFieldData?.FieldData.NotificationCenter ?? $"{NotificationCenter}.DefaultCenter";
-				var eventType = notification.ExportFieldData?.FieldData.Type ?? NSNotificationEventArgs.ToString ();
+				var notificationCenter = notification.ExportFieldData.IsNullOrDefault || notification.ExportFieldData.FieldData.NotificationCenter is null
+					? $"{NotificationCenter}.DefaultCenter"
+					: notification.ExportFieldData.FieldData.NotificationCenter;
+				var eventType = notification.ExportFieldData.IsNullOrDefault || notification.ExportFieldData.FieldData.Type is null
+					? NSNotificationEventArgs.ToString ()
+					: notification.ExportFieldData.FieldData.Type;
 				// use the raw writer which makes it easier to read in this case
 				notificationClass.WriteRaw (
-@$"public static {NSObject} {name} ({EventHandler}<{eventType}> handler)
+@$"public static {NSObject} {name} ({BindingSyntaxFactory.EventHandler}<{eventType}> handler)
 {{
 	return {notificationCenter}.AddObserver ({notification.Name}, notification => handler (null, new {eventType} (notification)));
 }}
 
-public static NSObject {name} ({NSObject} objectToObserve, {EventHandler}<{eventType}> handler)
+public static NSObject {name} ({NSObject} objectToObserve, {BindingSyntaxFactory.EventHandler}<{eventType}> handler)
 {{
 	return {notificationCenter}.AddObserver ({notification.Name}, notification => handler (null, new {eventType} (notification)), objectToObserve);
 }}
@@ -247,68 +189,79 @@ public static NSObject {name} ({NSObject} objectToObserve, {EventHandler}<{event
 	}
 
 	/// <summary>
-	/// Emit the selector fields for the current class. The method will add the fields to the binding context so that
-	/// they can be used later.
+	/// Emit the events for the given delegates.
 	/// </summary>
 	/// <param name="bindingContext">The current binding context.</param>
-	/// <param name="classBlock">The current class block.</param>
-	void EmitSelectorFields (in BindingContext bindingContext, TabbedWriter<StringWriter> classBlock)
+	/// <param name="delegates">The delegate properties.</param>
+	/// <param name="classBlock">Current class block.</param>
+	void EmitEvents (in BindingContext bindingContext, in ImmutableArray<Property> delegates, TabbedWriter<StringWriter> classBlock)
 	{
-		// we will use the binding context to store the name of the selectors so that later other methods can
-		// access them
-		foreach (var method in bindingContext.Changes.Methods) {
-			if (method.ExportMethodData.Selector is null)
+		var applicationClass = bindingContext.RootContext.CurrentPlatform == PlatformName.MacOSX
+			? $"{NSApplication}" : $"{UIApplication}";
+		// loop over the delegates
+		foreach (var property in delegates) {
+			// see if we have a strong type
+			if (property.ExportPropertyData.StrongDelegateType.IsNullOrDefault)
 				continue;
-			var selectorName = method.ExportMethodData.GetSelectorFieldName ()!;
-			if (bindingContext.SelectorNames.TryAdd (method.ExportMethodData.Selector, selectorName)) {
-				EmitField (method.ExportMethodData.Selector, selectorName);
-			}
-		}
 
-		// Similar to methods, but with properties is hard because we have a selector for the different 
-		// accessors.
-		//
-		// The accessor.GetSelector method helps to simplify the logic by returning the 
-		// correct selector for the accessor taking the export data from the property into account
-		foreach (var property in bindingContext.Changes.Properties) {
-			if (!property.IsProperty)
-				// ignore fields
-				continue;
-			var getter = property.GetAccessor (AccessorKind.Getter);
-			if (getter is not null) {
-				var selector = getter.Value.GetSelector (property)!;
-				var selectorName = selector.GetSelectorFieldName ();
-				if (bindingContext.SelectorNames.TryAdd (selector, selectorName)) {
-					EmitField (selector, selectorName);
-				}
+			// the following are the properties that will be used for the events to register to the delegate
+			var strongDelegateType = property.ExportPropertyData.StrongDelegateType.Name [1..];
+			var strongDelegateName = property.ExportPropertyData.StrongDelegateName
+									 ?? property.Name [4..]; // remove the 'Weak' prefix
+			var internalType =
+				Nomenclator.GetInternalDelegateForEventName (property.ExportPropertyData.StrongDelegateType);
+			// this method is reused by all elements, so we want to calculate the name only once
+			var ensureMethod = $"Ensure{strongDelegateType}";
+			using (var getInternalType =
+				   classBlock.CreateBlock ($"internal virtual Type GetInternalEvent{strongDelegateName}Type", true)) {
+				getInternalType.WriteLine ($"get => typeof ({internalType});");
 			}
 
-			var setter = property.GetAccessor (AccessorKind.Setter);
-			if (setter is not null) {
-				var selector = setter.Value.GetSelector (property)!;
-				var selectorName = selector.GetSelectorFieldName ();
-				if (bindingContext.SelectorNames.TryAdd (selector, selectorName)) {
-					EmitField (selector, selectorName);
-				}
-			}
-		}
-		// helper function that simply writes the necessary fields to the class block.
-		void EmitField (string selector, string selectorName)
-		{
-			classBlock.AppendGeneratedCodeAttribute (optimizable: true);
-			classBlock.WriteLine (GetSelectorStringField (selector, selectorName).ToString ());
-			classBlock.WriteLine (GetSelectorHandleField (selector, selectorName).ToString ());
-			// reading generated code should not be painful, add a space
 			classBlock.WriteLine ();
+			using (var createInternalType =
+				   classBlock.CreateBlock ($"internal virtual {internalType} CreateInternalEvent{strongDelegateName}Type ()", true)) {
+				createInternalType.WriteLine ($"return new ();");
+			}
+
+			classBlock.WriteLine ();
+			using (var ensureInternalType = classBlock.CreateBlock (
+					   $"internal {internalType} {ensureMethod} ()", true)) {
+				ensureInternalType.WriteRaw (
+$@"if ({property.Name} is not null)
+	{applicationClass}.EnsureEventAndDelegateAreNotMismatched ({property.Name}, GetInternalEvent{strongDelegateName}Type);
+var del = {strongDelegateName} as {internalType};
+if (del is null) {{
+	del = CreateInternalEvent{strongDelegateName}Type ();
+	{strongDelegateName} = ({property.ExportPropertyData.StrongDelegateType.Name})del;
+}}
+return del;
+");
+			}
+
+			classBlock.WriteLine ();
+			// loop over the events, those should be present in the property for the delegate
+			foreach (var eventInfo in property.ExportPropertyData.StrongDelegateType.Events) {
+				// create the event args type name
+				var eventHandler = eventInfo.EventArgsType is null
+					? BindingSyntaxFactory.EventHandler.ToString ()
+					: $"{BindingSyntaxFactory.EventHandler}<{eventInfo.EventArgsType}>";
+				using (var eventBlock =
+					   classBlock.CreateBlock ($"public event {eventHandler} {eventInfo.Name}", true)) {
+					eventBlock.WriteLine ($"add {{ {ensureMethod} ()!.{eventInfo.Name.Decapitalize ()} += value; }}");
+					eventBlock.WriteLine ($"remove {{ {ensureMethod} ()!.{eventInfo.Name.Decapitalize ()} -= value; }}");
+				}
+				classBlock.WriteLine ();
+			}
 		}
 	}
 
+	/// <inheritdoc />
 	public bool TryEmit (in BindingContext bindingContext, [NotNullWhen (false)] out ImmutableArray<Diagnostic>? diagnostics)
 	{
 		diagnostics = null;
 		if (bindingContext.Changes.BindingType != BindingType.Class) {
 			diagnostics = [Diagnostic.Create (
-					Diagnostics
+					RgenDiagnostics
 						.RBI0000, // An unexpected error occurred while processing '{0}'. Please fill a bug report at https://github.com/dotnet/macios/issues/new.
 					null,
 					bindingContext.Changes.FullyQualifiedSymbol)];
@@ -316,45 +269,60 @@ public static NSObject {name} ({NSObject} objectToObserve, {EventHandler}<{event
 		}
 
 		// namespace declaration
-		bindingContext.Builder.WriteLine ();
-		bindingContext.Builder.WriteLine ($"namespace {string.Join (".", bindingContext.Changes.Namespace)};");
-		bindingContext.Builder.WriteLine ();
+		this.EmitNamespace (bindingContext);
 
-		// register the class only if we are not dealing with a static class
-		var bindingData = (BindingTypeData<Class>) bindingContext.Changes.BindingInfo;
-		// Registration depends on the class name. If the binding data contains a name, we use that one, else
-		// we use the name of the class
-		var registrationName = bindingData.Name ?? bindingContext.Changes.Name;
+		using (var _ = this.EmitOuterClasses (bindingContext, out var builder)) {
 
-		if (!bindingContext.Changes.IsStatic) {
-			bindingContext.Builder.WriteLine ($"[Register (\"{registrationName}\", true)]");
-		}
-		var modifiers = $"{string.Join (' ', bindingContext.Changes.Modifiers)} ";
-		using (var classBlock = bindingContext.Builder.CreateBlock ($"{(string.IsNullOrWhiteSpace (modifiers) ? string.Empty : modifiers)}class {bindingContext.Changes.Name}", true)) {
-			// emit the fields for the selectors before we register the class or anything
-			EmitSelectorFields (bindingContext, classBlock);
+			// register the class only if we are not dealing with a static class
+			var bindingData = (BindingTypeData<Class>) bindingContext.Changes.BindingInfo;
+			// Registration depends on the class name. If the binding data contains a name, we use that one, else
+			// we use the name of the class
+			var registrationName = bindingData.Name ?? bindingContext.Changes.Name;
 
+			// append the class availability, this will add the necessary attributes to the class
+			bindingContext.Builder.AppendMemberAvailability (bindingContext.Changes.SymbolAvailability);
 			if (!bindingContext.Changes.IsStatic) {
-				classBlock.AppendGeneratedCodeAttribute (optimizable: true);
-				classBlock.WriteLine ($"static readonly {NativeHandle} {ClassPtr} = {BindingSyntaxFactory.Class}.GetHandle (\"{registrationName}\");");
-				classBlock.WriteLine ();
-				classBlock.WriteDocumentation (Documentation.Class.ClassHandle (bindingContext.Changes.Name));
-				classBlock.WriteLine ($"public override {NativeHandle} ClassHandle => {ClassPtr};");
-				classBlock.WriteLine ();
-
-				EmitDefaultConstructors (bindingContext: bindingContext,
-					classBlock: classBlock,
-					disableDefaultCtor: bindingData.Flags.HasFlag (ObjCBindings.Class.DisableDefaultCtor));
+				builder.WriteLine ($"[Register (\"{registrationName}\", true)]");
 			}
 
-			EmitFields (bindingContext.Changes.Name, bindingContext.Changes.Properties, classBlock,
-				out var notificationProperties);
-			EmitProperties (bindingContext, classBlock);
+			var modifiers = $"{string.Join (' ', bindingContext.Changes.Modifiers)} ";
+			using (var classBlock =
+				   builder.CreateBlock (
+					   $"{(string.IsNullOrWhiteSpace (modifiers) ? string.Empty : modifiers)}class {bindingContext.Changes.Name}",
+					   true)) {
+				// emit the fields for the selectors before we register the class or anything
+				this.EmitSelectorFields (bindingContext, classBlock);
 
-			// emit the notification helper classes, leave this for the very bottom of the class
-			EmitNotifications (notificationProperties, classBlock);
-			classBlock.WriteLine ("// TODO: add binding code here");
+				if (!bindingContext.Changes.IsStatic) {
+					classBlock.AppendGeneratedCodeAttribute (optimizable: true);
+					classBlock.WriteLine (
+						$"static readonly {NativeHandle} {ClassPtr} = {BindingSyntaxFactory.Class}.GetHandle (\"{registrationName}\");");
+					classBlock.WriteLine ();
+					classBlock.WriteDocumentation (Documentation.Class.ClassHandle (bindingContext.Changes.Name));
+					classBlock.WriteLine ($"public override {NativeHandle} ClassHandle => {ClassPtr};");
+					classBlock.WriteLine ();
+
+					this.EmitDefaultNSObjectConstructors (className: bindingContext.Changes.Name,
+						classBlock: classBlock,
+						disableDefaultCtor: bindingData.Flags.HasFlag (ObjCBindings.Class.DisableDefaultCtor));
+
+					// emit any other constructor that is not the default one
+					EmitConstructors (bindingContext, classBlock);
+				}
+
+				this.EmitFields (bindingContext.Changes.Name, bindingContext.Changes.Properties, classBlock,
+					out var notificationProperties);
+				this.EmitProperties (bindingContext, classBlock, out var strongDelegates);
+				this.EmitMethods (bindingContext, classBlock);
+
+				// emit the events for the delegates
+				EmitEvents (bindingContext, strongDelegates, classBlock);
+
+				// emit the notification helper classes, leave this for the very bottom of the class
+				EmitNotifications (notificationProperties, classBlock);
+			}
+
+			return true;
 		}
-		return true;
 	}
 }

@@ -34,7 +34,7 @@ namespace AppKit {
 		/// <summary>Create a new <see cref="NSGradient" /> instance with the specified colors and color locations.</summary>
 		/// <param name="colors">The colors for the new gradient.</param>
 		/// <param name="locations">The locations for each color in the new gradient. Each location must be a value between 0.0 and 1.0.</param>
-		/// <remarks>This gradient is created in the <a cref="NSColorSpace.GenericRGBColorSpace" /> generic RGB color space.</remarks>
+		/// <remarks>This gradient is created in the <see cref="NSColorSpace.GenericRGBColorSpace" /> generic RGB color space.</remarks>
 		public NSGradient (NSColor [] colors, float [] locations) :
 			this (colors, locations, NSColorSpace.GenericRGBColorSpace)
 		{
@@ -43,7 +43,7 @@ namespace AppKit {
 		/// <summary>Create a new <see cref="NSGradient" /> instance with the specified colors and color locations.</summary>
 		/// <param name="colors">The colors for the new gradient.</param>
 		/// <param name="locations">The locations for each color in the new gradient. Each location must be a value between 0.0 and 1.0.</param>
-		/// <remarks>This gradient is created in the <a cref="NSColorSpace.GenericRGBColorSpace" /> generic RGB color space.</remarks>
+		/// <remarks>This gradient is created in the <see cref="NSColorSpace.GenericRGBColorSpace" /> generic RGB color space.</remarks>
 		public NSGradient (NSColor [] colors, double [] locations) :
 			this (colors, locations, NSColorSpace.GenericRGBColorSpace)
 		{
@@ -52,7 +52,7 @@ namespace AppKit {
 		/// <summary>Create a new <see cref="NSGradient" /> instance with the specified colors and color locations.</summary>
 		/// <param name="colors">The colors for the new gradient.</param>
 		/// <param name="locations">The locations for each color in the new gradient. Each location must be a value between 0.0 and 1.0.</param>
-		/// <remarks>This gradient is created in the <a cref="NSColorSpace.GenericRGBColorSpace" /> generic RGB color space.</remarks>
+		/// <remarks>This gradient is created in the <see cref="NSColorSpace.GenericRGBColorSpace" /> generic RGB color space.</remarks>
 		public NSGradient (NSColor [] colors, nfloat [] locations)
 			: this (colors, locations, NSColorSpace.GenericRGBColorSpace)
 		{

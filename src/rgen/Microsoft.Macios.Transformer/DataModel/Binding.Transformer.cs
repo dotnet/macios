@@ -40,9 +40,12 @@ readonly partial struct Binding {
 		init => protocols = value;
 	}
 
+	public BaseTypeDeclarationSyntax? BaseDeclarationSyntax { get; init; }
+
 	/// <summary>
 	/// Internal constructor added for testing purposes.
 	/// </summary>
+	/// <param name="declarationSyntax">The syntax used to declare the binding.</param>
 	/// <param name="name">The name of the named type that created the code change.</param>
 	/// <param name="namespace">The namespace that contains the named type.</param>
 	/// <param name="fullyQualifiedSymbol">The fully qualified name of the symbol.</param>
@@ -71,10 +74,12 @@ readonly partial struct Binding {
 			name: out name,
 			baseClass: out baseClass,
 			interfaces: out interfaces,
+			outerClasses: out outerClasses,
 			namespaces: out namespaces,
 			symbolAvailability: out availability);
+		BaseDeclarationSyntax = enumDeclaration;
 		BindingBindingInfo = new BindingInfo (null, BindingType.SmartEnum);
-		FullyQualifiedSymbol = enumDeclaration.GetFullyQualifiedIdentifier ();
+		FullyQualifiedSymbol = enumDeclaration.GetFullyQualifiedIdentifier (context.SemanticModel);
 		UsingDirectives = enumDeclaration.SyntaxTree.CollectUsingStatements ();
 		AttributesDictionary = symbol.GetAttributeData ();
 		// smart enums are expected to be public, we might need to change this in the future
@@ -85,29 +90,62 @@ readonly partial struct Binding {
 		var bindingType = HasErrorDomainAttribute ? BindingType.SmartEnum : BindingType.Unknown;
 		var bucket = ImmutableArray.CreateBuilder<EnumMember> ();
 		var enumValueDeclarations = enumDeclaration.Members.OfType<EnumMemberDeclarationSyntax> ();
-		foreach (var enumValueDeclaration in enumValueDeclarations) {
+		foreach (var (index, enumValueDeclaration) in enumValueDeclarations.Index ()) {
 			if (context.SemanticModel.GetDeclaredSymbol (enumValueDeclaration) is not IFieldSymbol enumValueSymbol) {
 				continue;
 			}
 			var fieldData = enumValueSymbol.GetFieldData ();
+			EnumMember? enumMember;
 			// try and compute the library for this enum member
 			if (fieldData is null || !context.TryComputeLibraryName (fieldData.Value.LibraryName, Namespace [^1],
-					out string? libraryName, out string? libraryPath))
-				// could not calculate the library for the enum, do not add it
-				continue;
-			// we do know we have a backing field, so we can set the binding type to smart enum
-			bindingType = BindingType.SmartEnum;
-			var enumMember = new EnumMember (
-				name: enumValueDeclaration.Identifier.ToFullString ().Trim (),
-				libraryName: libraryName,
-				libraryPath: libraryPath,
-				fieldData: enumValueSymbol.GetFieldData (),
-				symbolAvailability: enumValueSymbol.GetAvailabilityForSymbol () // no parent availability, just the symbol
-			);
-			bucket.Add (enumMember);
+					out string? libraryName, out string? libraryPath)) {
+				// create a member for those enum values that do not have a backing field, we will
+				// set the binding type to regular enum if we do not know it yet
+				if (bindingType == BindingType.Unknown) {
+					bindingType = BindingType.Enum;
+				}
+				enumMember = new EnumMember (
+					name: enumValueDeclaration.Identifier.ToFullString ().Trim (),
+		  index: (uint) index,
+					libraryName: string.Empty,
+					libraryPath: null,
+					fieldData: enumValueSymbol.GetFieldData (),
+					symbolAvailability: enumValueSymbol
+						.GetAvailabilityForSymbol () // no parent availability, just the symbol
+				) {
+					DeclarationSyntax = enumValueDeclaration,
+					IsSmartMember = false
+				};
+			} else {
+				// we do know we have a backing field, so we can set the binding type to smart enum
+				bindingType = BindingType.SmartEnum;
+				enumMember = new EnumMember (
+					name: enumValueDeclaration.Identifier.ToFullString ().Trim (),
+		  index: (uint) index,
+					libraryName: libraryName,
+					libraryPath: libraryPath,
+					fieldData: enumValueSymbol.GetFieldData (),
+					symbolAvailability: enumValueSymbol
+						.GetAvailabilityForSymbol () // no parent availability, just the symbol
+				) {
+					DeclarationSyntax = enumValueDeclaration,
+					IsSmartMember = true,
+				};
+			}
+			bucket.Add (enumMember.Value);
 		}
 
+		if (bindingType == BindingType.Unknown) {
+			// we could not find any enum member with a backing field this means that we are dealing with a regular enum
+			// we will set it so that we can convert the availability information
+			bindingType = BindingType.Enum;
+		}
 		BindingBindingInfo = new (null, bindingType);
+		// based on the type of enum we might need to remove enums that are not valid, this are enums without
+		// a backing field in the case of smart enums
+		if (BindingBindingInfo.BindingType == BindingType.SmartEnum) {
+			bucket.RemoveAll (em => !em.IsSmartMember);
+		}
 		EnumMembers = bucket.ToImmutable ();
 	}
 
@@ -235,15 +273,16 @@ readonly partial struct Binding {
 	/// <param name="context">The current compilation context.</param>
 	internal Binding (InterfaceDeclarationSyntax interfaceDeclarationSyntax, INamedTypeSymbol symbol, in RootContext context)
 	{
+		BaseDeclarationSyntax = interfaceDeclarationSyntax;
 		// basic properties of the binding
-		FullyQualifiedSymbol = interfaceDeclarationSyntax.GetFullyQualifiedIdentifier ();
+		FullyQualifiedSymbol = interfaceDeclarationSyntax.GetFullyQualifiedIdentifier (context.SemanticModel);
 		UsingDirectives = interfaceDeclarationSyntax.SyntaxTree.CollectUsingStatements ();
 		AttributesDictionary = symbol.GetAttributeData ();
 		var baseTypeAttribute = symbol.GetBaseTypeData ();
 		BindingBindingInfo = new (baseTypeAttribute, GetBindingType (AttributesDictionary, baseTypeAttribute));
 		name = symbol.Name;
 		availability = symbol.GetAvailabilityForSymbol ();
-		namespaces = symbol.GetNamespaceArray ();
+		(namespaces, outerClasses) = symbol.GetNamespaceArrayAndOuterClasses ();
 		baseClass = GetBaseClass (BindingBindingInfo);
 
 		// retrieve the interfaces and protocols, notice that this are two out params
@@ -264,15 +303,15 @@ readonly partial struct Binding {
 			// strong dictionaries are a little different, we will get all the properties with no filter since the
 			// properties from a strong dictionary do not have any attribute
 			GetMembers<PropertyDeclarationSyntax, Property> (interfaceDeclarationSyntax, context, static (_, _) => false, Property.TryCreate,
-				out properties);
+				out properties, true);
 		} else {
 			GetMembers<PropertyDeclarationSyntax, Property> (interfaceDeclarationSyntax, context, Skip, Property.TryCreate,
-				out properties);
+				out properties, true);
 		}
 		// methods are a little diff, in the old SDK style, both methods and constructors are methods, we will get
 		// all exported methods and then filter accordingly
 		GetMembers<MethodDeclarationSyntax, Method> (interfaceDeclarationSyntax, context, Skip, Method.TryCreate,
-			out ImmutableArray<Method> allMethods);
+			out ImmutableArray<Method> allMethods, true);
 		methods = [.. allMethods.Where (m => !m.IsConstructor)];
 		constructors = allMethods.Where (m => m.IsConstructor)
 			.Select (m => m.ToConstructor ())

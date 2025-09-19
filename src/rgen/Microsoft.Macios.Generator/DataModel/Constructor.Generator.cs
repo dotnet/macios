@@ -6,8 +6,10 @@ using System.Diagnostics.CodeAnalysis;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Macios.Generator.Attributes;
+using Microsoft.Macios.Generator.Availability;
 using Microsoft.Macios.Generator.Context;
 using Microsoft.Macios.Generator.Extensions;
+using ObjCRuntime;
 
 namespace Microsoft.Macios.Generator.DataModel;
 
@@ -22,6 +24,36 @@ readonly partial struct Constructor {
 	/// Return the native selector that references the enum value.
 	/// </summary>
 	public string? Selector => ExportMethodData.Selector;
+
+	/// <summary>
+	/// The location of the attribute in source code.
+	/// </summary>
+	public Location? Location { get; init; }
+
+	/// <summary>
+	/// True if the constructor was marked to skip its registration.
+	/// </summary>
+	public bool SkipRegistration => ExportMethodData.Flags.HasFlag (ObjCBindings.Constructor.SkipRegistration);
+
+	/// <summary>
+	/// True if the constructor is thread safe.
+	/// </summary>
+	public bool IsThreadSafe => ExportMethodData.Flags.HasFlag (ObjCBindings.Constructor.IsThreadSafe);
+
+	public Constructor (string type,
+		SymbolAvailability symbolAvailability,
+		ExportData<ObjCBindings.Constructor> exportData,
+		ImmutableArray<AttributeCodeChange> attributes,
+		ImmutableArray<SyntaxToken> modifiers,
+		ImmutableArray<Parameter> parameters) : this (StructState.Initialized)
+	{
+		Type = type;
+		SymbolAvailability = symbolAvailability;
+		ExportMethodData = exportData;
+		Attributes = attributes;
+		Modifiers = modifiers;
+		Parameters = parameters;
+	}
 
 	public static bool TryCreate (ConstructorDeclarationSyntax declaration, RootContext context,
 		[NotNullWhen (true)] out Constructor? change)
@@ -41,12 +73,18 @@ readonly partial struct Constructor {
 			parametersBucket.Add (parameterChange.Value);
 		}
 
+		var exportData = constructor.GetExportData<ObjCBindings.Constructor> (context)
+						 ?? new (null, ArgumentSemantic.None, ObjCBindings.Constructor.Default);
+
 		change = new (
 			type: constructor.ContainingSymbol.Name, // we DO NOT want the full name
 			symbolAvailability: constructor.GetSupportedPlatforms (),
+			exportData: exportData,
 			attributes: attributes,
 			modifiers: [.. declaration.Modifiers],
-			parameters: parametersBucket.ToImmutable ());
+			parameters: parametersBucket.ToImmutable ()) {
+			Location = declaration.GetLocation (),
+		};
 		return true;
 	}
 }

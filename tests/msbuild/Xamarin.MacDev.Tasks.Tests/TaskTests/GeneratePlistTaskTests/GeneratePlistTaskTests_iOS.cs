@@ -25,7 +25,7 @@ namespace Xamarin.MacDev.Tasks {
 		{
 			base.BundleExecutable ();
 			// Adding ".app" to the assembly name isn't allowed because iOS may fail to launch the app.
-			Task.AssemblyName = "AssemblyName.app";
+			Task.BundleExecutable = "AssemblyName.app";
 			Assert.IsFalse (Task.Execute (), "#1");
 		}
 

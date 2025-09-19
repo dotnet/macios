@@ -3,6 +3,14 @@ using ObjCRuntime;
 using System;
 
 namespace CoreTelephony {
+
+	[iOS (26, 0), Mac (26, 0), MacCatalyst (26, 0)]
+	[Native]
+	public enum CTCellularPlanCapability : long {
+		Only,
+		AndVoice,
+	}
+
 	/// <summary>Encapsulates a unique identifier for a call and it's state.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/NetworkingInternet/Reference/CTCall/index.html">Apple documentation for <c>CTCall</c></related>
@@ -26,7 +34,7 @@ namespace CoreTelephony {
 	}
 
 	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/CoreTelephony/CTCellularData">Apple documentation for <c>CTCellularData</c></related>
-	[NoMacCatalyst]
+	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface CTCellularData {
 		/// <summary>To be added.</summary>
@@ -213,9 +221,6 @@ namespace CoreTelephony {
 		[Export ("serviceSubscriberCellularProvidersDidUpdateNotifier", ArgumentSemantic.Copy)]
 		Action<NSString> ServiceSubscriberCellularProvidersDidUpdateNotifier { get; set; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[MacCatalyst (14, 0)]
 		[Notification]
 		[Field ("CTServiceRadioAccessTechnologyDidChangeNotification")]
@@ -385,7 +390,7 @@ namespace CoreTelephony {
 		CTSubscriber [] Subscribers { get; }
 	}
 
-	[NoMacCatalyst]
+	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface CTCellularPlanProvisioningRequest : NSSecureCoding {
 		/// <summary>To be added.</summary>
@@ -425,7 +430,7 @@ namespace CoreTelephony {
 		string Eid { get; set; }
 	}
 
-	[NoMacCatalyst]
+	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface CTCellularPlanProvisioning {
 		/// <summary>To be added.</summary>
@@ -447,8 +452,52 @@ namespace CoreTelephony {
 		[Export ("addPlanWith:completionHandler:")]
 		void AddPlan (CTCellularPlanProvisioningRequest request, Action<CTCellularPlanProvisioningAddPlanResult> completionHandler);
 
-		[iOS (16, 0)]
+		[iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("supportsEmbeddedSIM")]
 		bool SupportsEmbeddedSim { get; }
+
+		[Async]
+		[NoMacCatalyst] /* headers say yes, but introspection says no, so keep it out of Mac Catalyst for now */
+		[NoTV, NoMac, iOS (26, 0)]
+		[Export ("addPlanWithRequest:properties:completionHandler:")]
+		void AddPlan (CTCellularPlanProvisioningRequest request, [NullAllowed] CTCellularPlanProperties properties, CTCellularPlanProvisioningAddPlanCompletionHandler completionHandler);
+
+		[Async]
+		[NoTV, NoMac, iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("updateCellularPlanProperties:completionHandler:")]
+		void UpdateCellularPlan (CTCellularPlanProperties properties, CTCellularPlanProvisioningUpdateCellularPlanCompletionHandler completionHandler);
 	}
+
+	delegate void CTCellularPlanProvisioningAddPlanCompletionHandler (CTCellularPlanProvisioningAddPlanResult result);
+	delegate void CTCellularPlanProvisioningUpdateCellularPlanCompletionHandler ([NullAllowed] NSError error);
+
+	[NoTV, NoMac, iOS (26, 0), MacCatalyst (26, 0)]
+	[BaseType (typeof (NSObject))]
+	interface CTCellularPlanProperties : NSSecureCoding {
+		[NullAllowed, Export ("associatedIccid")]
+		string AssociatedIccid { get; set; }
+
+		[Export ("simCapability", ArgumentSemantic.Assign)]
+		CTCellularPlanCapability SimCapability { get; set; }
+
+		[Export ("supportedRegionCodes", ArgumentSemantic.Assign)]
+		string [] SupportedRegionCodes { get; set; }
+	}
+
+	[iOS (26, 0), MacCatalyst (26, 0), NoTV, NoMac]
+	[BaseType (typeof (NSObject))]
+	interface CTCellularPlanStatus {
+		[Async]
+		[Static]
+		[Export ("getTokenWithCompletion:")]
+		void GetToken (CTCellularPlanStatusGetTokenCompletionHandler completionHandler);
+
+		[Async]
+		[Static]
+		[Export ("checkValidityOfToken:completionHandler:")]
+		void CheckValidity (string token, CTCellularPlanStatusCheckValidityCompletionHandler completionHandler);
+	}
+
+	delegate void CTCellularPlanStatusGetTokenCompletionHandler ([NullAllowed] string token, [NullAllowed] NSError error);
+	delegate void CTCellularPlanStatusCheckValidityCompletionHandler (bool isValid, [NullAllowed] NSError error);
 }

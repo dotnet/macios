@@ -190,8 +190,10 @@ namespace CoreMedia {
 		public unsafe CVPixelBuffer? GetPixelBuffer (CMTag tag, out nint index)
 		{
 			index = 0;
-			var rv = CMTaggedBufferGroupGetCVPixelBufferForTag (GetCheckedHandle (), tag, (nint*) Unsafe.AsPointer<nint> (ref index));
-			return CVPixelBuffer.Create (rv, false);
+			fixed (nint* indexPtr = &index) {
+				var rv = CMTaggedBufferGroupGetCVPixelBufferForTag (GetCheckedHandle (), tag, indexPtr);
+				return CVPixelBuffer.Create (rv, false);
+			}
 		}
 
 		[DllImport (Constants.CoreMediaLibrary)]
@@ -207,9 +209,11 @@ namespace CoreMedia {
 		public unsafe CVPixelBuffer? GetPixelBuffer (CMTagCollection tagCollection, out nint index)
 		{
 			index = 0;
-			var rv = CMTaggedBufferGroupGetCVPixelBufferForTagCollection (GetCheckedHandle (), tagCollection.GetCheckedHandle (), (nint*) Unsafe.AsPointer<nint> (ref index));
-			GC.KeepAlive (tagCollection);
-			return CVPixelBuffer.Create (rv, false);
+			fixed (nint* indexPtr = &index) {
+				var rv = CMTaggedBufferGroupGetCVPixelBufferForTagCollection (GetCheckedHandle (), tagCollection.GetCheckedHandle (), indexPtr);
+				GC.KeepAlive (tagCollection);
+				return CVPixelBuffer.Create (rv, false);
+			}
 		}
 
 		[DllImport (Constants.CoreMediaLibrary)]
@@ -243,8 +247,10 @@ namespace CoreMedia {
 		public unsafe CMSampleBuffer? GetSampleBuffer (CMTag tag, out nint index)
 		{
 			index = 0;
-			var rv = CMTaggedBufferGroupGetCMSampleBufferForTag (GetCheckedHandle (), tag, (nint*) Unsafe.AsPointer<nint> (ref index));
-			return CMSampleBuffer.Create (rv, false);
+			fixed (nint* indexPtr = &index) {
+				var rv = CMTaggedBufferGroupGetCMSampleBufferForTag (GetCheckedHandle (), tag, indexPtr);
+				return CMSampleBuffer.Create (rv, false);
+			}
 		}
 
 		[DllImport (Constants.CoreMediaLibrary)]
@@ -260,9 +266,11 @@ namespace CoreMedia {
 		public unsafe CMSampleBuffer? GetSampleBuffer (CMTagCollection tagCollection, out nint index)
 		{
 			index = 0;
-			var rv = CMTaggedBufferGroupGetCMSampleBufferForTagCollection (GetCheckedHandle (), tagCollection.GetCheckedHandle (), (nint*) Unsafe.AsPointer<nint> (ref index));
-			GC.KeepAlive (tagCollection);
-			return CMSampleBuffer.Create (rv, false);
+			fixed (nint* indexPtr = &index) {
+				var rv = CMTaggedBufferGroupGetCMSampleBufferForTagCollection (GetCheckedHandle (), tagCollection.GetCheckedHandle (), indexPtr);
+				GC.KeepAlive (tagCollection);
+				return CMSampleBuffer.Create (rv, false);
+			}
 		}
 
 		[DllImport (Constants.CoreMediaLibrary)]
@@ -287,7 +295,7 @@ namespace CoreMedia {
 			IntPtr /* CMTaggedBufferGroupRef CM_NONNULL */ taggedBufferGroup,
 			IntPtr* /* CM_RETURNS_RETAINED_PARAMETER CMTaggedBufferGroupFormatDescriptionRef CM_NULLABLE * CM_NONNULL */ formatDescription);
 
-		/// <summary>Craete a <see cref="CMFormatDescription" /> for this tagged buffer group.</summary>
+		/// <summary>Create a <see cref="CMFormatDescription" /> for this tagged buffer group.</summary>
 		/// <param name="status">An error code in case of failure, 0 in case of success.</param>
 		/// <returns>A <see cref="CMFormatDescription" /> for this tagged buffer group, or null in case of failure.</returns>
 		public CMFormatDescription? CreateFormatDescription (out CMTaggedBufferGroupError status)
@@ -326,7 +334,7 @@ namespace CoreMedia {
 		/// <summary>Create a <see cref="CMSampleBuffer" /> with this tagged buffer group.</summary>
 		/// <param name="sampleBufferPts">The media time PTS of the sample buffer.</param>
 		/// <param name="sampleBufferDuration">The media time duration of the sample buffer.</param>
-		/// <param name="formatDescription">The format description describing this tagged buffer group. This format description may be created by calling <see cref="CreateFormatDescription" />.</param>
+		/// <param name="formatDescription">The format description describing this tagged buffer group. This format description may be created by calling <see cref="CreateFormatDescription(out CMTaggedBufferGroupError)" /> or <see cref="CreateFormatDescription(NSDictionary,out CMTaggedBufferGroupError)" />.</param>
 		/// <param name="status">An error code in case of failure, 0 in case of success.</param>
 		/// <returns>A new sample buffer for this tagged buffer group, or null in case of failure.</returns>
 		public CMSampleBuffer? CreateSampleBuffer (CMTime sampleBufferPts, CMTime sampleBufferDuration, CMFormatDescription formatDescription, out CMTaggedBufferGroupError status)
@@ -351,6 +359,31 @@ namespace CoreMedia {
 			var handle = CMSampleBufferGetTaggedBufferGroup (sampleBuffer.GetNonNullHandle (nameof (sampleBuffer)));
 			GC.KeepAlive (sampleBuffer);
 			return Create (handle, false);
+		}
+
+		[SupportedOSPlatform ("ios26.0")]
+		[SupportedOSPlatform ("maccatalyst26.0")]
+		[SupportedOSPlatform ("macos26.0")]
+		[SupportedOSPlatform ("tvos26.0")]
+		[DllImport (Constants.CoreMediaLibrary)]
+		static unsafe extern CMTaggedBufferGroupError CMTaggedBufferGroupFormatDescriptionCreateForTaggedBufferGroupWithExtensions (
+			IntPtr /* CFAllocatorRef CM_NULLABLE */ allocator,
+			IntPtr /* CMTaggedBufferGroupRef CM_NONNULL */ taggedBufferGroup,
+			IntPtr /* CFDictionaryRef CM_NULLABLE */ extensions,
+			IntPtr*/* CM_RETURNS_RETAINED_PARAMETER CMTaggedBufferGroupFormatDescriptionRef CM_NULLABLE * CM_NONNULL */ formatDescriptionOut);
+
+		/// <summary>Craete a <see cref="CMFormatDescription" /> for this tagged buffer group.</summary>
+		/// <param name="extensions">A dictionary of extension properties.</param>
+		/// <param name="status">An error code in case of failure, 0 in case of success.</param>
+		/// <returns>A <see cref="CMFormatDescription" /> for this tagged buffer group, or null in case of failure.</returns>
+		public CMFormatDescription? CreateFormatDescription (NSDictionary? extensions, out CMTaggedBufferGroupError status)
+		{
+			IntPtr formatDescription;
+			unsafe {
+				status = CMTaggedBufferGroupFormatDescriptionCreateForTaggedBufferGroupWithExtensions (IntPtr.Zero, GetCheckedHandle (), extensions.GetHandle (), &formatDescription);
+				GC.KeepAlive (extensions);
+			}
+			return CMFormatDescription.Create (formatDescription, true);
 		}
 #endif // COREBUILD
 	}

@@ -155,6 +155,8 @@ namespace Introspection {
 			switch (nameSpace) {
 			case "Network": // none of the classes support it and they require a lot of setup to confirm it
 				return true;
+			case "VideoToolbox": // some of the VideoToolbox classes cause VideoToolbox to crash internally on device.
+				return TestRuntime.IsDevice;
 			default:
 				return false;
 			}
@@ -245,7 +247,9 @@ namespace Introspection {
 					return true;
 #endif
 				return false;
+			case "VTMotionEstimationSession":
 			case "MTLIOCompressionContext":
+			case "CGRenderingBufferProvider":
 				return true;
 			default:
 				return false;
@@ -577,7 +581,9 @@ namespace Introspection {
 			var types = CMClockType.Assembly.GetTypes ()
 				.Where (t => !t.IsNotPublic && !CMAttachmentInterfaceType.IsAssignableFrom (t)
 					&& NativeObjectInterfaceType.IsAssignableFrom (t) && !t.IsSubclassOf (NSObjectType)
-					&& !t.IsSubclassOf (DispatchSourceType) && !t.IsInterface && !t.IsAbstract);
+					&& !t.IsSubclassOf (DispatchSourceType) && !t.IsInterface && !t.IsAbstract
+					&& !t.IsSubclassOf (typeof (BaseWrapper)) // the trimmer can make some BaseWrapper subclasses public, so exclude those.	
+					);
 			foreach (var t in types) {
 				if (Skip (t))
 					continue;

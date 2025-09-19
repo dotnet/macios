@@ -187,5 +187,60 @@ class MainClass {
 			Assert.That (File.GetLastWriteTimeUtc (appExecutable), Is.EqualTo (appExecutableTimestamp), "Modified B");
 		}
 
+		[Test]
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64", true)]
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64", false)]
+		public void CodeChangeSkipsTargets (ApplePlatform platform, string runtimeIdentifiers, bool interpreterEnabled)
+		{
+			CodeChangeSkipsTargetsImpl (platform, runtimeIdentifiers, interpreterEnabled);
+		}
+
+		[Test]
+		[Category ("RemoteWindows")]
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64", true)]
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64", false)]
+		public void CodeChangeSkipsTargetsOnRemoteWindows (ApplePlatform platform, string runtimeIdentifiers, bool interpreterEnabled)
+		{
+			Configuration.IgnoreIfNotOnWindows ();
+			CodeChangeSkipsTargetsImpl (platform, runtimeIdentifiers, interpreterEnabled);
+		}
+
+		void CodeChangeSkipsTargetsImpl (ApplePlatform platform, string runtimeIdentifiers, bool interpreterEnabled)
+		{
+			var project = "IncrementalTestApp";
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+
+			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath);
+			Clean (project_path);
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+
+			properties ["UseInterpreter"] = interpreterEnabled.ToString ();
+
+			// Build the first time
+			var rv = DotNet.AssertBuild (project_path, properties);
+			var allTargets = BinLog.GetAllTargets (rv.BinLogPath);
+
+			// Verify these targets executed on first build
+			AssertTargetExecuted (allTargets, "_CreatePkgInfo", "A");
+			AssertTargetExecuted (allTargets, "_CompileNativeExecutable", "A");
+			AssertTargetExecuted (allTargets, "_LinkNativeExecutable", "A");
+
+			// Make a code change
+			properties ["AdditionalDefineConstants"] = "INCLUDED_ADDITIONAL_CODE";
+
+			// Build again after modifying the helper C# file
+			rv = DotNet.AssertBuild (project_path, properties);
+			allTargets = BinLog.GetAllTargets (rv.BinLogPath);
+
+			// Verify these targets did NOT execute on incremental build after C# change
+			AssertTargetNotExecuted (allTargets, "_CreatePkgInfo", "B");
+			AssertTargetNotExecuted (allTargets, "_CompileNativeExecutable", "B");
+			if (interpreterEnabled) {
+				AssertTargetNotExecuted (allTargets, "_LinkNativeExecutable", "B");
+			} else {
+				AssertTargetExecuted (allTargets, "_LinkNativeExecutable", "B");
+			}
+		}
 	}
 }

@@ -53,56 +53,6 @@ namespace CoreImage {
 		LeftBottom = 8,
 	}
 
-	// convenience enum (fields are used) but also a `typedef int` -> CIImage.h
-	/// <summary>An enumeration whose values specify pixel formats.</summary>
-	public enum CIFormat {
-		/// <summary>Value that represents the kCIFormatARGB8 pixel format.</summary>
-		ARGB8 = 0,
-		/// <summary>Value that represents the kCIFormatRGBAh pixel format.</summary>
-		RGBAh = 1,
-#if MONOMAC
-		/// <summary>To be added.</summary>
-		RGBA16 = 2,
-		/// <summary>To be added.</summary>
-		[Obsolete ("This value can not be shared across Mac/iOS binaries, future proof with kRGBAf instead.")]
-		RGBAf = 3,
-
-		// Please, do not add values into MonoMac/iOS without adding an explicit value
-#endif
-		/// <summary>Value that represents the kCIFormatkRGBAf pixel format.</summary>
-		kRGBAf = 4,
-		/// <summary>Value that represents the kCIFormatkBGRA8 pixel format.</summary>
-		kBGRA8 = 5,
-		/// <summary>Value that represents the kCIFormatkRGBA8 pixel format.</summary>
-		kRGBA8 = 6,
-		/// <summary>Value that represents the kCIFormatABGR8 pixel format.</summary>
-		ABGR8 = 7,
-		/// <summary>Value that represents the kCIFormatA8 pixel format.</summary>
-		A8 = 11,
-		/// <summary>Value that represents the kCIFormatA16 pixel format.</summary>
-		A16 = 12,
-		/// <summary>Value that represents the kCIFormatAh pixel format.</summary>
-		Ah = 13,
-		/// <summary>Value that represents the kCIFormatAf pixel format.</summary>
-		Af = 14,
-		/// <summary>Value that represents the kCIFormatR8 pixel format.</summary>
-		R8 = 15,
-		/// <summary>Value that represents the kCIFormatR16 pixel format.</summary>
-		R16 = 16,
-		/// <summary>Value that represents the kCIFormatRh pixel format.</summary>
-		Rh = 17,
-		/// <summary>Value that represents the kCIFormatRf pixel format.</summary>
-		Rf = 18,
-		/// <summary>Value that represents the kCIFormatRG8 pixel format.</summary>
-		RG8 = 19,
-		/// <summary>Value that represents the kCIFormatRG16 pixel format.</summary>
-		RG16 = 20,
-		/// <summary>Value that represents the kCIFormatRGh pixel format.</summary>
-		RGh = 21,
-		/// <summary>Value that represents the kCIFormatRGf pixel format.</summary>
-		RGf = 22,
-	}
-
 	/// <summary>Enumerates the error correction levels for QR codes.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]

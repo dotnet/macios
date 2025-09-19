@@ -122,7 +122,7 @@ namespace Introspection {
 			case "MTLTileRenderPipelineDescriptor":
 			case "MTLRasterizationRateLayerDescriptor":
 			case "MTLRasterizationRateMapDescriptor":
-				return TestRuntime.IsSimulatorOrDesktop;
+				return true;
 			default:
 				return base.Skip (type);
 			}
@@ -403,9 +403,7 @@ namespace Introspection {
 			case "HKHealthStore":
 				switch (name) {
 				case "workoutSessionMirroringStartHandler":
-					if (TestRuntime.IsSimulatorOrDesktop)
-						return true;
-					break;
+					return true;
 				}
 				break;
 #endif
@@ -836,6 +834,23 @@ namespace Introspection {
 				switch (declaredType.Name) {
 				case "AVMutableComposition":
 					return TestRuntime.IsSimulatorOrDesktop;
+				}
+				break;
+			case "inheritCullMode": // new MTLIndirectCommandBufferDescriptor methods only supported on devices, intro passes on device.
+			case "setInheritCullMode:":
+			case "inheritDepthBias":
+			case "setInheritDepthBias:":
+			case "inheritDepthClipMode":
+			case "setInheritDepthClipMode:":
+			case "inheritDepthStencilState":
+			case "setInheritDepthStencilState:":
+			case "inheritFrontFacingWinding":
+			case "setInheritFrontFacingWinding:":
+			case "inheritTriangleFillMode":
+			case "setInheritTriangleFillMode:":
+				switch (declaredType.Name) {
+				case "MTLIndirectCommandBufferDescriptor":
+					return TestRuntime.IsSimulator;
 				}
 				break;
 			}

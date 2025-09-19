@@ -12,7 +12,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
-using System.Threading.Tasks;
 
 namespace UIKit;
 
@@ -119,6 +118,7 @@ public partial class UIKitPropertyTests
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst13.1")]
+		[Export ("count")]
 		get
 		{
 			UIKit.UIApplication.EnsureUIThread ();
@@ -127,11 +127,11 @@ public partial class UIKitPropertyTests
 			if (IsDirectBinding) {
 				ret = global::ObjCRuntime.Messaging.UIntPtr_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("count"));
 			} else {
-				ret = global::ObjCRuntime.Messaging.UIntPtr_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("count"));
+				ret = global::ObjCRuntime.Messaging.UIntPtr_objc_msgSendSuper (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("count"));
 			}
-			GC.KeepAlive (this);
+			global::System.GC.KeepAlive (this);
 			return ret;
 		}
 	}
-	// TODO: add binding code here
+
 }

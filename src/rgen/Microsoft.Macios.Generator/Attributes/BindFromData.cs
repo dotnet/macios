@@ -4,6 +4,7 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.CodeAnalysis;
+using Microsoft.Macios.Generator.Extensions;
 using TypeInfo = Microsoft.Macios.Generator.DataModel.TypeInfo;
 
 namespace Microsoft.Macios.Generator.Attributes;
@@ -11,14 +12,19 @@ namespace Microsoft.Macios.Generator.Attributes;
 readonly struct BindFromData : IEquatable<BindFromData> {
 
 	public TypeInfo Type { get; }
-	public TypeInfo? OriginalType { get; }
+	public TypeInfo OriginalType { get; } = TypeInfo.Default;
+
+	/// <summary>
+	/// The location of the attribute in source code.
+	/// </summary>
+	public Location? Location { get; init; }
 
 	public BindFromData (TypeInfo type)
 	{
 		Type = type;
 	}
 
-	public BindFromData (TypeInfo type, TypeInfo? originalType)
+	public BindFromData (TypeInfo type, TypeInfo originalType)
 	{
 		Type = type;
 		OriginalType = originalType;
@@ -31,7 +37,7 @@ readonly struct BindFromData : IEquatable<BindFromData> {
 		data = null;
 		var count = attributeData.ConstructorArguments.Length;
 		TypeInfo type;
-		TypeInfo? originalType = null;
+		TypeInfo originalType = TypeInfo.Default;
 
 		switch (count) {
 		case 1:
@@ -43,7 +49,9 @@ readonly struct BindFromData : IEquatable<BindFromData> {
 		}
 
 		if (attributeData.NamedArguments.Length == 0) {
-			data = new (type);
+			data = new (type) {
+				Location = attributeData.GetLocation (),
+			};
 			return true;
 		}
 
@@ -60,7 +68,10 @@ readonly struct BindFromData : IEquatable<BindFromData> {
 				return false;
 			}
 		}
-		data = new (type, originalType);
+
+		data = new (type, originalType) {
+			Location = attributeData.GetLocation (),
+		};
 		return true;
 	}
 
@@ -68,7 +79,7 @@ readonly struct BindFromData : IEquatable<BindFromData> {
 	public bool Equals (BindFromData other)
 	{
 		return Type.FullyQualifiedName == other.Type.FullyQualifiedName
-			   && OriginalType?.FullyQualifiedName == other.OriginalType?.FullyQualifiedName;
+			   && OriginalType.FullyQualifiedName == other.OriginalType.FullyQualifiedName;
 	}
 
 	/// <inheritdoc />
@@ -95,6 +106,7 @@ readonly struct BindFromData : IEquatable<BindFromData> {
 
 	public override string ToString ()
 	{
-		return $"{{ Type: '{Type.FullyQualifiedName}', OriginalType: '{OriginalType?.FullyQualifiedName ?? "null"}' }}";
+		var originalType = OriginalType.IsNullOrDefault ? "null" : OriginalType.FullyQualifiedName;
+		return $"{{ Type: '{Type.FullyQualifiedName}', OriginalType: '{originalType}' }}";
 	}
 }

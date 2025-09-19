@@ -90,7 +90,7 @@ readonly partial struct SymbolAvailability {
 			if (!supportedPlatforms.Contains (platform))
 				return;
 			var builder = GetBuilder (platform);
-			builder.AddSupportedVersion (version);
+			builder.AddSupportedVersion (new (version, SupportKind.Explicit));
 		}
 
 		/// <summary>
@@ -118,7 +118,7 @@ readonly partial struct SymbolAvailability {
 				return;
 
 			var builder = GetBuilder (platform);
-			builder.AddUnsupportedVersion (version, message);
+			builder.AddUnsupportedVersion (new (version, SupportKind.Explicit), message);
 		}
 
 		/// <summary>

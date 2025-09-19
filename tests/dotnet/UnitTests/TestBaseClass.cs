@@ -27,7 +27,7 @@ namespace Xamarin.Tests {
 			}
 		}
 
-		protected static Dictionary<string, string> GetDefaultProperties (string? runtimeIdentifiers = null, Dictionary<string, string>? extraProperties = null)
+		protected static Dictionary<string, string> GetDefaultProperties (string? runtimeIdentifiers = null, Dictionary<string, string>? extraProperties = null, bool? includeRemoteProperties = null)
 		{
 			var rv = new Dictionary<string, string> (verbosity);
 			if (!string.IsNullOrEmpty (runtimeIdentifiers))
@@ -37,7 +37,10 @@ namespace Xamarin.Tests {
 					rv [kvp.Key] = kvp.Value;
 			}
 
-			if (Configuration.IsBuildingRemotely && !rv.ContainsKey ("IsHotRestartBuild"))
+			if (!includeRemoteProperties.HasValue)
+				includeRemoteProperties = Configuration.IsBuildingRemotely && !rv.ContainsKey ("IsHotRestartBuild");
+
+			if (includeRemoteProperties == true)
 				AddRemoteProperties (rv);
 
 			return rv;
@@ -60,15 +63,17 @@ namespace Xamarin.Tests {
 			properties [multiRid] = runtimeIdentifiers;
 		}
 
-		protected static string GetProjectPath (string project, string runtimeIdentifiers, ApplePlatform platform, out string appPath, string? subdir = null, string configuration = "Debug", string? netVersion = null)
+		protected static string GetProjectPath (string project, string runtimeIdentifiers, ApplePlatform platform, out string appPath, string? subdir = null, string configuration = "Debug", string? netVersion = null, string? applicationTitle = null)
 		{
-			return GetProjectPath (project, null, runtimeIdentifiers, platform, out appPath, configuration, netVersion);
+			return GetProjectPath (project, null, runtimeIdentifiers, platform, out appPath, configuration, netVersion, applicationTitle);
 		}
 
-		protected static string GetProjectPath (string project, string? subdir, string runtimeIdentifiers, ApplePlatform platform, out string appPath, string configuration = "Debug", string? netVersion = null)
+		protected static string GetProjectPath (string project, string? subdir, string runtimeIdentifiers, ApplePlatform platform, out string appPath, string configuration = "Debug", string? netVersion = null, string? applicationTitle = null)
 		{
 			var rv = GetProjectPath (project, subdir, platform);
-			appPath = Path.Combine (GetOutputPath (project, subdir, runtimeIdentifiers, platform, configuration, netVersion), project + ".app");
+			if (applicationTitle is null)
+				applicationTitle = project;
+			appPath = Path.Combine (GetOutputPath (project, subdir, runtimeIdentifiers, platform, configuration, netVersion), applicationTitle + ".app");
 			return rv;
 		}
 
@@ -515,7 +520,7 @@ namespace Xamarin.Tests {
 			if (actualMessages.Count != expectedCount) {
 				Assert.Fail ($"Expected {expectedCount} {type}(s), got {actualMessages.Count} {type}(s)\n" +
 					$"\tExpected:\n" +
-					$"\t\t{string.Join ("\n\t\t", rendersExpectedMessage.Select (v => makeSingleLine (v ())))}" +
+					$"\t\t{string.Join ("\n\t\t", rendersExpectedMessage.Select (v => makeSingleLine (v ())))}\n" +
 					$"\tActual:\n" +
 					$"\t\t{string.Join ("\n\t\t", actualMessages.Select (v => makeSingleLine (v.Message)))}");
 				return;

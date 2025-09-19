@@ -43,12 +43,19 @@ Copyright (C) 2020 Microsoft. All rights reserved.
 	<!-- Sometimes we've used different variable names for the same thing for Xamarin.iOS and Xamarin.Mac projects. Here we try to unify those variables -->
 	<PropertyGroup>
 		<!-- ResourcePrefix -->
+		<!-- First set platform-specific properties if not already set (for backwards compatibility) -->
 		<MonoMacResourcePrefix Condition="'$(_PlatformName)' == 'macOS' And '$(MonoMacResourcePrefix)' == ''">Resources</MonoMacResourcePrefix>
 		<XamMacResourcePrefix Condition="'$(_PlatformName)' == 'macOS' And '$(XamMacResourcePrefix)' == ''">$(MonoMacResourcePrefix)</XamMacResourcePrefix>
 		<XamMacResourcePrefix Condition="'$(_PlatformName)' == 'macOS' And '$(XamMacResourcePrefix)' == ''">Resources</XamMacResourcePrefix>
 		<IPhoneResourcePrefix Condition="'$(_PlatformName)' != 'macOS' And '$(IPhoneResourcePrefix)' == ''">Resources</IPhoneResourcePrefix>
-		<_ResourcePrefix Condition="'$(_PlatformName)' == 'macOS'">$(XamMacResourcePrefix)</_ResourcePrefix>
-		<_ResourcePrefix Condition="'$(_PlatformName)' != 'macOS'">$(IPhoneResourcePrefix)</_ResourcePrefix>
+		
+		<!-- Set AppBundleResourcePrefix from platform-specific properties if not already set -->
+		<AppBundleResourcePrefix Condition="'$(AppBundleResourcePrefix)' == '' And '$(_PlatformName)' == 'macOS'">$(XamMacResourcePrefix)</AppBundleResourcePrefix>
+		<AppBundleResourcePrefix Condition="'$(AppBundleResourcePrefix)' == '' And '$(_PlatformName)' != 'macOS'">$(IPhoneResourcePrefix)</AppBundleResourcePrefix>
+		<AppBundleResourcePrefix Condition="'$(AppBundleResourcePrefix)' == ''">Resources</AppBundleResourcePrefix>
+		
+		<!-- Set _ResourcePrefix from AppBundleResourcePrefix -->
+		<_ResourcePrefix>$(AppBundleResourcePrefix)</_ResourcePrefix>
 
 		<!-- SdkVersion -->
 		<_SdkVersion Condition="'$(_PlatformName)' == 'macOS'">$(MacOSXSdkVersion)</_SdkVersion>
@@ -78,36 +85,11 @@ Copyright (C) 2020 Microsoft. All rights reserved.
 		<AppManifestDetectionEnabled Condition="'$(AppManifestDetectionEnabled)' == ''">true</AppManifestDetectionEnabled>
 	</PropertyGroup>
 
-	<!-- RequireCodeSigning -->
-	<!-- iOS/watchOS/tvOS is simple: device builds require code signing, simulator builds do not. This is a big lie, for some simulator builds need to be signed, but the _DetectCodeSigning task handles those cases. -->
-	<PropertyGroup Condition="'$(_PlatformName)' != 'macOS' And '$(_PlatformName)' != 'MacCatalyst'">
-		<!-- Make it possible to override the default logic by setting EnableCodeSigning -->
-		<_RequireCodeSigning Condition="'$(_RequireCodeSigning)' == ''">$(EnableCodeSigning)</_RequireCodeSigning>
-		<!-- Device builds must be signed -->
-		<_RequireCodeSigning Condition="'$(_RequireCodeSigning)' == '' And '$(ComputedPlatform)' == 'iPhone'">true</_RequireCodeSigning>
-		<!-- Otherwise code signing is disabled by default (simulator builds)-->
-		<_RequireCodeSigning Condition="'$(_RequireCodeSigning)' == ''">false</_RequireCodeSigning>
-	</PropertyGroup>
-	<!-- macOS is a bit more complicated:
-		* 'EnableCodeSigning' specifies whether the app is signed or not, and this defaults to false if it's not set.
-		* Extensions are special, because they must be signed. However, due to historical reasons, extension projects will have set EnableCodeSigning=false. So we do the following:
-		    * If we're an extension, and code signing is disabled: enable code signing, set the code signing key (_CodeSigningKey) to '-', and pass this value to the _DetectCodeSigning task.
-	-->
-	<PropertyGroup Condition="'$(_PlatformName)' == 'macOS' Or '$(_PlatformName)' == 'MacCatalyst'">
-		<!-- macOS and Mac Catalyst projects use the 'EnableCodeSigning' variable to enable code signing -->
-		<_RequireCodeSigning Condition="'$(_RequireCodeSigning)' == ''">$(EnableCodeSigning)</_RequireCodeSigning>
-		<!-- Signing must be enabled when archiving -->
-		<_RequireCodeSigning Condition="'$(_RequireCodeSigning)' == '' And '$(ArchiveOnBuild)' == 'true'">true</_RequireCodeSigning>
-		<!-- Extensions must be signed, so make sure they are -->
-		<_RequireCodeSigning Condition="'$(_RequireCodeSigning)' == '' And '$(IsAppExtension)' == 'true'">true</_RequireCodeSigning>
-		<!-- Otherwise code signing is disabled by default -->
-		<_RequireCodeSigning Condition="'$(_RequireCodeSigning)' == ''">false</_RequireCodeSigning>
-
-		<!-- Set _CodeSigningKey to '-' if we're an extension where code signing is not requested -->
-		<_CodeSigningKey Condition="'$(IsAppExtension)' == 'true' And '$(_CodeSigningKey)' == '' And '$(_RequireCodeSigning)' == 'false'">-</_CodeSigningKey>
-	</PropertyGroup>
-
+	<!-- Code signing defaults -->
 	<PropertyGroup>
+	<!-- EnableCodeSigning: enable by default -->
+		<EnableCodeSigning Condition="'$(EnableCodeSigning)' == ''">true</EnableCodeSigning>
+
 		<!-- SpecifiedCodeSigningKey -->
 		<!-- Xamarin.Mac projects use 'CodeSigningKey', and Xamarin.iOS projects use 'CodesignKey'. -->
 		<!-- Here we accept both, and we'll recommend using 'CodesignKey' for all platforms going forward -->
@@ -229,7 +211,8 @@ Copyright (C) 2020 Microsoft. All rights reserved.
 		<!-- Accept 'UseInterpreter' as an alternative for 'MtouchInterpreter', so that we have the same variable name as Android -->
 		<MtouchInterpreter Condition="'$(MtouchInterpreter)' == '' And '$(UseInterpreter)' == 'True'">all</MtouchInterpreter>
 
-		<_AppBundleName>$(AssemblyName)</_AppBundleName>
+		<_AppBundleName Condition="'$(_AppBundleName)' == '' And $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), 10.0)) And ('$(_PlatformName)' == 'macOS' Or '$(_PlatformName)' == 'MacCatalyst')">$(ApplicationTitle)</_AppBundleName>
+		<_AppBundleName Condition="'$(_AppBundleName)' == ''">$(AssemblyName)</_AppBundleName>
 
 		<!-- If resources are pre-compiled/processed before being embedded in libraries, or if they're stored as-is -->
 		<BundleOriginalResources Condition="'$(BundleOriginalResources)' == '' And $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), 10.0))">true</BundleOriginalResources>
@@ -238,6 +221,9 @@ Copyright (C) 2020 Microsoft. All rights reserved.
 		<_BundleOriginalResources Condition="'$(OutputType)' == 'Library' And '$(IsAppExtension)' != 'true' And '$(BundleOriginalResources)' == 'true'">true</_BundleOriginalResources>
 
 		<EnableDiagnostics Condition="'$(EnableDiagnostics)' == '' And ('$(DiagnosticConfiguration)' != '' Or '$(DiagnosticAddress)' != '' Or '$(DiagnosticPort)' != '' Or '$(DiagnosticSuspend)' != '' Or '$(DiagnosticListenMode)' != '')">true</EnableDiagnostics>
+
+		<!-- Set the name of the native executable -->
+		<_NativeExecutableName Condition="'$(_NativeExecutableName)' == ''">$(AssemblyName)</_NativeExecutableName>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(EnableDiagnostics)' == 'true' And '$(DiagnosticConfiguration)' == ''">
@@ -274,6 +260,9 @@ Copyright (C) 2020 Microsoft. All rights reserved.
 
 		<!-- Default NoBindingEmbedding to 'true' for .NET projects, it's the new way -->
 		<NoBindingEmbedding Condition="'$(NoBindingEmbedding)' == ''">true</NoBindingEmbedding>
+
+		<!-- We don't want to build a binding project when in design time mode, and not bundling original resources, because we might end up requiring a connection to a remote mac, which is not a good idea for a supposedly quick design-time build. -->
+		<_DisableBindingProjectBuild Condition="'$(_DisableBindingProjectBuild)' == '' And '$(BundleOriginalResources)' != 'true' And '$(DesignTimeBuild)' == 'true'">true</_DisableBindingProjectBuild>
 	</PropertyGroup>
 
 	<Target Name="_ComputeTargetFrameworkMoniker" Condition="'$(_ComputedTargetFrameworkMoniker)' == ''">

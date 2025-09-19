@@ -15,7 +15,7 @@ iphoneos_COMPILER_FLAGS=$(COMMON_ARGS) -miphoneos-version-min=$(DOTNET_MIN_IOS_S
 tvsimulator_COMPILER_FLAGS=$(COMMON_ARGS) -mtvos-simulator-version-min=$(DOTNET_MIN_TVOS_SDK_VERSION) -isysroot $(tvossimulator_SDK)
 tvos_COMPILER_FLAGS=$(COMMON_ARGS) -mtvos-version-min=$(DOTNET_MIN_TVOS_SDK_VERSION) -isysroot $(tvos_SDK)
 maccatalyst_COMPILER_FLAGS=$(COMMON_ARGS) $(maccatalyst_CFLAGS)
-mac_COMPILER_FLAGS=$(COMMON_ARGS) -mmacosx-version-min=$(MIN_OSX_VERSION_FOR_MAC) -isysroot $(XCODE_DEVELOPER_ROOT)/Platforms/MacOSX.platform/Developer/SDKs/MacOSX$(OSX_SDK_VERSION).sdk
+mac_COMPILER_FLAGS=$(COMMON_ARGS) -mmacosx-version-min=$(DOTNET_MIN_MACOS_SDK_VERSION) -isysroot $(XCODE_DEVELOPER_ROOT)/Platforms/MacOSX.platform/Developer/SDKs/MacOSX$(OSX_SDK_VERSION).sdk
 
 maccatalyst-x64_COMPILER_FLAGS=$(maccatalyst-x64_CFLAGS)
 maccatalyst-arm64_COMPILER_FLAGS=$(maccatalyst-arm64_CFLAGS)

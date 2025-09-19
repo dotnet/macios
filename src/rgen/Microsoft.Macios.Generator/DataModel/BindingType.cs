@@ -24,6 +24,10 @@ enum BindingType : ulong {
 	/// </summary>
 	Protocol,
 	/// <summary>
+	/// Binding type for a traditional enum.
+	/// </summary>
+	Enum,
+	/// <summary>
 	/// Binding type for a enum with backing fields.
 	/// </summary>
 	SmartEnum,
@@ -31,6 +35,10 @@ enum BindingType : ulong {
 	/// Binding type for a dictionary with strong value.
 	/// </summary>
 	StrongDictionary,
+	/// <summary>
+	/// Binding type for strong dictionary keys.
+	/// </summary>
+	StrongDictionaryKeys,
 	/// <summary>
 	/// Binding type for a core image filter.
 	/// </summary>

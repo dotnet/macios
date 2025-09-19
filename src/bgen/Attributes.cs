@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.Reflection;
 using System.Text;
 
@@ -855,6 +856,7 @@ public class DefaultEnumValueAttribute : Attribute {
 	}
 }
 
+#nullable enable
 /// <summary>This attribute is used to specify the type of the backing field for strongly typed enums.</summary>
 [AttributeUsage (AttributeTargets.Enum)]
 public class BackingFieldTypeAttribute : Attribute {
@@ -865,7 +867,13 @@ public class BackingFieldTypeAttribute : Attribute {
 	}
 
 	public Type BackingFieldType { get; set; }
+#if !XAMCORE_5_0
+	[EditorBrowsable (EditorBrowsableState.Never)]
+	public string? GetConstantMethodName { get; set; }
+#endif
 }
+#nullable disable
+
 //
 // This prevents the generator from generating the managed proxy to
 // the method being called, this is done when we are interested in
@@ -1205,6 +1213,32 @@ public sealed class MacCatalystAttribute : IntroducedAttribute {
 
 	public MacCatalystAttribute (byte major, byte minor, byte subminor)
 		: base (PlatformName.MacCatalyst, (int) major, (int) minor, subminor)
+	{
+	}
+}
+
+[AttributeUsage (AttributeTargets.All, AllowMultiple = false)]
+public sealed class MacAttribute : IntroducedAttribute {
+	public MacAttribute (byte major, byte minor)
+		: base (PlatformName.MacOSX, (int) major, (int) minor)
+	{
+	}
+
+	public MacAttribute (byte major, byte minor, byte subminor)
+		: base (PlatformName.MacOSX, (int) major, (int) minor, subminor)
+	{
+	}
+}
+
+[AttributeUsage (AttributeTargets.All, AllowMultiple = false)]
+public sealed class iOSAttribute : IntroducedAttribute {
+	public iOSAttribute (byte major, byte minor)
+		: base (PlatformName.iOS, (int) major, (int) minor)
+	{
+	}
+
+	public iOSAttribute (byte major, byte minor, byte subminor)
+		: base (PlatformName.iOS, (int) major, (int) minor, subminor)
 	{
 	}
 }

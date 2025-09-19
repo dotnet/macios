@@ -38,17 +38,29 @@
       <para>
 	These typically include:
 
-	<list type="bullet"><item><term>
+	<list type="bullet">
+		<item>
+			<term>
 	      Adjusts the shadow details (using the <see cref="CoreImage.CIHighlightShadowAdjust" /> filter).
-	    </term></item><item><term>
+	    </term>
+	  </item>
+	  <item>
+	  	<term>
 	      Adjusts the image contrast (using the <see cref="CoreImage.CIToneCurve" /> filter).
-	    </term></item><item><term>
+	    </term>
+	  </item>
+	  <item>
+	  	<term>
 	      Adjusts the image saturation (using the <see cref="CoreImage.CIVibrance" /> filter).
-	    </term></item><item><term>
+	    </term>
+	  </item>
+	  <item>
+	  	<term>
 	      Adjusts the face color balance, adjust the tone of the skin (using the <see cref="CoreImage.CIFaceBalance" /> filter).
-	    </term></item><item><term>
-	      Red Eye Correction (using the <see cref="CoreImage.CIRedEyeCorrection" /> filter).
-	    </term></item></list></para>
+	    </term>
+	  </item>
+	  </list>
+	</para>
       <para>
 	You can configure which kind of filters you want to get or
 	configure by setting the properties of an <see cref="CoreImage.CIAutoAdjustmentFilterOptions" />

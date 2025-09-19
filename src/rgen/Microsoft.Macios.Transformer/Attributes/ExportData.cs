@@ -19,6 +19,11 @@ readonly record struct ExportData {
 	/// </summary>
 	public ArgumentSemantic ArgumentSemantic { get; } = ArgumentSemantic.None;
 
+	/// <summary>
+	/// Gets a value indicating whether the method is variadic.
+	/// </summary>
+	public bool IsVariadic { get; init; }
+
 	public ExportData (string? selector)
 	{
 		Selector = selector;
@@ -43,6 +48,7 @@ readonly record struct ExportData {
 		var count = attributeData.ConstructorArguments.Length;
 		string? selector;
 		ArgumentSemantic argumentSemantic = ArgumentSemantic.None;
+		bool isVariadic = false;
 
 		// custom marshal directive values
 
@@ -72,13 +78,18 @@ readonly record struct ExportData {
 			case "ArgumentSemantic":
 				argumentSemantic = (ArgumentSemantic) value.Value!;
 				break;
+			case "IsVariadic":
+				isVariadic = (bool) value.Value!;
+				break;
 			default:
 				data = null;
 				return false;
 			}
 		}
 
-		data = new (selector, argumentSemantic);
+		data = new (selector, argumentSemantic) {
+			IsVariadic = isVariadic,
+		};
 		return true;
 	}
 }

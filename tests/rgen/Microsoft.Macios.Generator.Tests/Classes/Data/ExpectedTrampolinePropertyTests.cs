@@ -2,6 +2,7 @@
 
 #nullable enable
 
+using AudioUnit;
 using AVFoundation;
 using CoreGraphics;
 using CoreImage;
@@ -15,7 +16,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
-using System.Threading.Tasks;
 
 namespace Microsoft.Macios.Generator.Tests.Classes.Data.TestNamespace;
 
@@ -93,6 +93,14 @@ public partial class TrampolinePropertyTests
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	const string selSetManualRenderingCallback_X = "setManualRenderingCallback:";
 	static readonly global::ObjCRuntime.NativeHandle selSetManualRenderingCallback_XHandle = global::ObjCRuntime.Selector.GetHandle ("setManualRenderingCallback:");
+
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	const string selInternalRenderBlockHandlerX = "internalRenderBlockHandler";
+	static readonly global::ObjCRuntime.NativeHandle selInternalRenderBlockHandlerXHandle = global::ObjCRuntime.Selector.GetHandle ("internalRenderBlockHandler");
+
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	const string selSetInternalRenderBlockHandler_X = "setInternalRenderBlockHandler:";
+	static readonly global::ObjCRuntime.NativeHandle selSetInternalRenderBlockHandler_XHandle = global::ObjCRuntime.Selector.GetHandle ("setInternalRenderBlockHandler:");
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	static readonly global::ObjCRuntime.NativeHandle class_ptr = global::ObjCRuntime.Class.GetHandle ("TrampolinePropertyTests");
@@ -182,232 +190,405 @@ public partial class TrampolinePropertyTests
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public partial global::System.Action<bool> BoolActionHandler
 	{
+		[return: DelegateProxy (typeof (global::ObjCRuntime.Trampolines.SDActionArity1bool))]
+		[Export ("boolActionHandler")]
 		get
 		{
 			global::System.Action<bool> ret;
 			if (IsDirectBinding) {
-				ret = global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("boolActionHandler"));
+				ret = global::ObjCRuntime.Trampolines.NIDActionArity1bool.Create (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("boolActionHandler")))!;
 			} else {
-				ret = global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("boolActionHandler"));
+				ret = global::ObjCRuntime.Trampolines.NIDActionArity1bool.Create (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("boolActionHandler")))!;
 			}
-			GC.KeepAlive (this);
+			global::System.GC.KeepAlive (this);
 			return ret;
 		}
 
+		[param: BlockProxy (typeof (global::ObjCRuntime.Trampolines.NIDActionArity1bool))]
+		[Export ("setBoolActionHandler:")]
 		set
 		{
-			throw new NotImplementedException();
+			if (value is null)
+				global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+			using var block_value = global::ObjCRuntime.Trampolines.SDActionArity1bool.CreateNullableBlock (value);
+			global::ObjCRuntime.BlockLiteral* block_ptr_value = value is not null ? &block_value : null;
+			if (IsDirectBinding) {
+				global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setBoolActionHandler:"), (global::ObjCRuntime.NativeHandle) block_ptr_value);
+			} else {
+				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("setBoolActionHandler:"), (global::ObjCRuntime.NativeHandle) block_ptr_value);
+			}
+			global::System.GC.KeepAlive (this);
 		}
 	}
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public partial global::System.Action CompletionHandler
 	{
+		[return: DelegateProxy (typeof (global::ObjCRuntime.Trampolines.SDAction))]
+		[Export ("completionHandler")]
 		get
 		{
 			global::System.Action ret;
 			if (IsDirectBinding) {
-				ret = global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("completionHandler"));
+				ret = global::ObjCRuntime.Trampolines.NIDAction.Create (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("completionHandler")))!;
 			} else {
-				ret = global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("completionHandler"));
+				ret = global::ObjCRuntime.Trampolines.NIDAction.Create (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("completionHandler")))!;
 			}
-			GC.KeepAlive (this);
+			global::System.GC.KeepAlive (this);
 			return ret;
 		}
 
+		[param: BlockProxy (typeof (global::ObjCRuntime.Trampolines.NIDAction))]
+		[Export ("setCompletionHandler:")]
 		set
 		{
-			throw new NotImplementedException();
+			if (value is null)
+				global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+			using var block_value = global::ObjCRuntime.Trampolines.SDAction.CreateNullableBlock (value);
+			global::ObjCRuntime.BlockLiteral* block_ptr_value = value is not null ? &block_value : null;
+			if (IsDirectBinding) {
+				global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setCompletionHandler:"), (global::ObjCRuntime.NativeHandle) block_ptr_value);
+			} else {
+				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("setCompletionHandler:"), (global::ObjCRuntime.NativeHandle) block_ptr_value);
+			}
+			global::System.GC.KeepAlive (this);
 		}
 	}
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public partial global::Microsoft.Macios.Generator.Tests.Classes.Data.TestNamespace.TrampolinePropertyTests.CreateObject CreateObjectHandler
 	{
+		[return: DelegateProxy (typeof (global::ObjCRuntime.Trampolines.SDTrampolinePropertyTests_CreateObject))]
+		[Export ("createObjectHandler")]
 		get
 		{
 			global::Microsoft.Macios.Generator.Tests.Classes.Data.TestNamespace.TrampolinePropertyTests.CreateObject ret;
 			if (IsDirectBinding) {
-				ret = global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("createObjectHandler"));
+				ret = global::ObjCRuntime.Trampolines.NIDTrampolinePropertyTests_CreateObject.Create (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("createObjectHandler")))!;
 			} else {
-				ret = global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("createObjectHandler"));
+				ret = global::ObjCRuntime.Trampolines.NIDTrampolinePropertyTests_CreateObject.Create (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("createObjectHandler")))!;
 			}
-			GC.KeepAlive (this);
+			global::System.GC.KeepAlive (this);
 			return ret;
 		}
 
+		[param: BlockProxy (typeof (global::ObjCRuntime.Trampolines.NIDTrampolinePropertyTests_CreateObject))]
+		[Export ("setCreateObjectHandler:")]
 		set
 		{
-			throw new NotImplementedException();
+			if (value is null)
+				global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+			using var block_value = global::ObjCRuntime.Trampolines.SDTrampolinePropertyTests_CreateObject.CreateNullableBlock (value);
+			global::ObjCRuntime.BlockLiteral* block_ptr_value = value is not null ? &block_value : null;
+			if (IsDirectBinding) {
+				global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setCreateObjectHandler:"), (global::ObjCRuntime.NativeHandle) block_ptr_value);
+			} else {
+				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("setCreateObjectHandler:"), (global::ObjCRuntime.NativeHandle) block_ptr_value);
+			}
+			global::System.GC.KeepAlive (this);
 		}
 	}
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public partial global::System.Action DuplicateCompletionHandler
 	{
+		[return: DelegateProxy (typeof (global::ObjCRuntime.Trampolines.SDAction))]
+		[Export ("duplicateCompletionHandler")]
 		get
 		{
 			global::System.Action ret;
 			if (IsDirectBinding) {
-				ret = global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("duplicateCompletionHandler"));
+				ret = global::ObjCRuntime.Trampolines.NIDAction.Create (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("duplicateCompletionHandler")))!;
 			} else {
-				ret = global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("duplicateCompletionHandler"));
+				ret = global::ObjCRuntime.Trampolines.NIDAction.Create (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("duplicateCompletionHandler")))!;
 			}
-			GC.KeepAlive (this);
+			global::System.GC.KeepAlive (this);
 			return ret;
 		}
 
+		[param: BlockProxy (typeof (global::ObjCRuntime.Trampolines.NIDAction))]
+		[Export ("setDuplicateCompletionHandler:")]
 		set
 		{
-			throw new NotImplementedException();
+			if (value is null)
+				global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+			using var block_value = global::ObjCRuntime.Trampolines.SDAction.CreateNullableBlock (value);
+			global::ObjCRuntime.BlockLiteral* block_ptr_value = value is not null ? &block_value : null;
+			if (IsDirectBinding) {
+				global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setDuplicateCompletionHandler:"), (global::ObjCRuntime.NativeHandle) block_ptr_value);
+			} else {
+				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("setDuplicateCompletionHandler:"), (global::ObjCRuntime.NativeHandle) block_ptr_value);
+			}
+			global::System.GC.KeepAlive (this);
 		}
 	}
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public partial global::AVFoundation.AVAssetImageGenerator.AsynchronouslyForTimeCompletionHandler ImageGeneratorCompletionHandler
 	{
+		[Export ("imageGeneratorCompletionHandler")]
 		get
 		{
 			global::AVFoundation.AVAssetImageGenerator.AsynchronouslyForTimeCompletionHandler ret;
 			if (IsDirectBinding) {
 				ret = global::ObjCRuntime.Messaging._objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("imageGeneratorCompletionHandler"));
 			} else {
-				ret = global::ObjCRuntime.Messaging._objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("imageGeneratorCompletionHandler"));
+				ret = global::ObjCRuntime.Messaging._objc_msgSendSuper (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("imageGeneratorCompletionHandler"));
 			}
-			GC.KeepAlive (this);
+			global::System.GC.KeepAlive (this);
 			return ret;
 		}
 
+		[Export ("setImageGeneratorCompletionHandler:")]
 		set
 		{
-			throw new NotImplementedException();
+			if (value is null)
+				global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+			if (IsDirectBinding) {
+				global::ObjCRuntime.Messaging.void_objc_msgSend_ (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setImageGeneratorCompletionHandler:"), value);
+			} else {
+				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_ (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("setImageGeneratorCompletionHandler:"), value);
+			}
+			global::System.GC.KeepAlive (this);
 		}
 	}
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public partial global::AVFoundation.AVAssetImageGenerateAsynchronouslyForTimeCompletionHandler ImageGeneratorCompletionHandler
 	{
+		[return: DelegateProxy (typeof (global::ObjCRuntime.Trampolines.SDAVAssetImageGenerateAsynchronouslyForTimeCompletionHandler))]
+		[Export ("imageGeneratorCompletionHandler")]
 		get
 		{
 			global::AVFoundation.AVAssetImageGenerateAsynchronouslyForTimeCompletionHandler ret;
 			if (IsDirectBinding) {
-				ret = global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("imageGeneratorCompletionHandler"));
+				ret = global::ObjCRuntime.Trampolines.NIDAVAssetImageGenerateAsynchronouslyForTimeCompletionHandler.Create (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("imageGeneratorCompletionHandler")))!;
 			} else {
-				ret = global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("imageGeneratorCompletionHandler"));
+				ret = global::ObjCRuntime.Trampolines.NIDAVAssetImageGenerateAsynchronouslyForTimeCompletionHandler.Create (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("imageGeneratorCompletionHandler")))!;
 			}
-			GC.KeepAlive (this);
+			global::System.GC.KeepAlive (this);
 			return ret;
 		}
 
+		[param: BlockProxy (typeof (global::ObjCRuntime.Trampolines.NIDAVAssetImageGenerateAsynchronouslyForTimeCompletionHandler))]
+		[Export ("setImageGeneratorCompletionHandler:")]
 		set
 		{
-			throw new NotImplementedException();
+			if (value is null)
+				global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+			using var block_value = global::ObjCRuntime.Trampolines.SDAVAssetImageGenerateAsynchronouslyForTimeCompletionHandler.CreateNullableBlock (value);
+			global::ObjCRuntime.BlockLiteral* block_ptr_value = value is not null ? &block_value : null;
+			if (IsDirectBinding) {
+				global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setImageGeneratorCompletionHandler:"), (global::ObjCRuntime.NativeHandle) block_ptr_value);
+			} else {
+				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("setImageGeneratorCompletionHandler:"), (global::ObjCRuntime.NativeHandle) block_ptr_value);
+			}
+			global::System.GC.KeepAlive (this);
 		}
 	}
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public partial global::System.Action<int> IntActionHandler
 	{
+		[return: DelegateProxy (typeof (global::ObjCRuntime.Trampolines.SDActionArity1int))]
+		[Export ("intActionHandler")]
 		get
 		{
 			global::System.Action<int> ret;
 			if (IsDirectBinding) {
-				ret = global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("intActionHandler"));
+				ret = global::ObjCRuntime.Trampolines.NIDActionArity1int.Create (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("intActionHandler")))!;
 			} else {
-				ret = global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("intActionHandler"));
+				ret = global::ObjCRuntime.Trampolines.NIDActionArity1int.Create (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("intActionHandler")))!;
 			}
-			GC.KeepAlive (this);
+			global::System.GC.KeepAlive (this);
 			return ret;
 		}
 
+		[param: BlockProxy (typeof (global::ObjCRuntime.Trampolines.NIDActionArity1int))]
+		[Export ("setIntActionHandler:")]
 		set
 		{
-			throw new NotImplementedException();
+			if (value is null)
+				global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+			using var block_value = global::ObjCRuntime.Trampolines.SDActionArity1int.CreateNullableBlock (value);
+			global::ObjCRuntime.BlockLiteral* block_ptr_value = value is not null ? &block_value : null;
+			if (IsDirectBinding) {
+				global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setIntActionHandler:"), (global::ObjCRuntime.NativeHandle) block_ptr_value);
+			} else {
+				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("setIntActionHandler:"), (global::ObjCRuntime.NativeHandle) block_ptr_value);
+			}
+			global::System.GC.KeepAlive (this);
+		}
+	}
+
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public partial global::AudioUnit.AUInternalRenderBlock InternalRenderBlockHandler
+	{
+		[return: DelegateProxy (typeof (global::ObjCRuntime.Trampolines.SDAUInternalRenderBlock))]
+		[Export ("internalRenderBlockHandler")]
+		get
+		{
+			global::AudioUnit.AUInternalRenderBlock ret;
+			if (IsDirectBinding) {
+				ret = global::ObjCRuntime.Trampolines.NIDAUInternalRenderBlock.Create (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("internalRenderBlockHandler")))!;
+			} else {
+				ret = global::ObjCRuntime.Trampolines.NIDAUInternalRenderBlock.Create (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("internalRenderBlockHandler")))!;
+			}
+			global::System.GC.KeepAlive (this);
+			return ret;
+		}
+
+		[param: BlockProxy (typeof (global::ObjCRuntime.Trampolines.NIDAUInternalRenderBlock))]
+		[Export ("setInternalRenderBlockHandler:")]
+		set
+		{
+			if (value is null)
+				global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+			using var block_value = global::ObjCRuntime.Trampolines.SDAUInternalRenderBlock.CreateNullableBlock (value);
+			global::ObjCRuntime.BlockLiteral* block_ptr_value = value is not null ? &block_value : null;
+			if (IsDirectBinding) {
+				global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setInternalRenderBlockHandler:"), (global::ObjCRuntime.NativeHandle) block_ptr_value);
+			} else {
+				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("setInternalRenderBlockHandler:"), (global::ObjCRuntime.NativeHandle) block_ptr_value);
+			}
+			global::System.GC.KeepAlive (this);
 		}
 	}
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public partial global::CoreImage.CIKernelRoiCallback KernelRoiCallback
 	{
+		[return: DelegateProxy (typeof (global::ObjCRuntime.Trampolines.SDCIKernelRoiCallback))]
+		[Export ("kernelRoiCallback")]
 		get
 		{
 			global::CoreImage.CIKernelRoiCallback ret;
 			if (IsDirectBinding) {
-				ret = global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("kernelRoiCallback"));
+				ret = global::ObjCRuntime.Trampolines.NIDCIKernelRoiCallback.Create (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("kernelRoiCallback")))!;
 			} else {
-				ret = global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("kernelRoiCallback"));
+				ret = global::ObjCRuntime.Trampolines.NIDCIKernelRoiCallback.Create (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("kernelRoiCallback")))!;
 			}
-			GC.KeepAlive (this);
+			global::System.GC.KeepAlive (this);
 			return ret;
 		}
 
+		[param: BlockProxy (typeof (global::ObjCRuntime.Trampolines.NIDCIKernelRoiCallback))]
+		[Export ("setKernelRoiCallback:")]
 		set
 		{
-			throw new NotImplementedException();
+			if (value is null)
+				global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+			using var block_value = global::ObjCRuntime.Trampolines.SDCIKernelRoiCallback.CreateNullableBlock (value);
+			global::ObjCRuntime.BlockLiteral* block_ptr_value = value is not null ? &block_value : null;
+			if (IsDirectBinding) {
+				global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setKernelRoiCallback:"), (global::ObjCRuntime.NativeHandle) block_ptr_value);
+			} else {
+				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("setKernelRoiCallback:"), (global::ObjCRuntime.NativeHandle) block_ptr_value);
+			}
+			global::System.GC.KeepAlive (this);
 		}
 	}
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public partial global::CoreImage.CIKernelRoiCallback KernelRoiCallback
 	{
+		[return: DelegateProxy (typeof (global::ObjCRuntime.Trampolines.SDCIKernelRoiCallback))]
+		[Export ("kernelRoiCallback")]
 		get
 		{
 			global::CoreImage.CIKernelRoiCallback ret;
 			if (IsDirectBinding) {
-				ret = global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("kernelRoiCallback"));
+				ret = global::ObjCRuntime.Trampolines.NIDCIKernelRoiCallback.Create (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("kernelRoiCallback")))!;
 			} else {
-				ret = global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("kernelRoiCallback"));
+				ret = global::ObjCRuntime.Trampolines.NIDCIKernelRoiCallback.Create (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("kernelRoiCallback")))!;
 			}
-			GC.KeepAlive (this);
+			global::System.GC.KeepAlive (this);
 			return ret;
 		}
 
+		[param: BlockProxy (typeof (global::ObjCRuntime.Trampolines.NIDCIKernelRoiCallback))]
+		[Export ("setKernelRoiCallback:")]
 		set
 		{
-			throw new NotImplementedException();
+			if (value is null)
+				global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+			using var block_value = global::ObjCRuntime.Trampolines.SDCIKernelRoiCallback.CreateNullableBlock (value);
+			global::ObjCRuntime.BlockLiteral* block_ptr_value = value is not null ? &block_value : null;
+			if (IsDirectBinding) {
+				global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setKernelRoiCallback:"), (global::ObjCRuntime.NativeHandle) block_ptr_value);
+			} else {
+				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("setKernelRoiCallback:"), (global::ObjCRuntime.NativeHandle) block_ptr_value);
+			}
+			global::System.GC.KeepAlive (this);
 		}
 	}
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public partial global::AVFoundation.AVAudioEngineManualRenderingBlock ManualRendering
 	{
+		[return: DelegateProxy (typeof (global::ObjCRuntime.Trampolines.SDAVAudioEngineManualRenderingBlock))]
+		[Export ("manualRenderingCallback")]
 		get
 		{
 			global::AVFoundation.AVAudioEngineManualRenderingBlock ret;
 			if (IsDirectBinding) {
-				ret = global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("manualRenderingCallback"));
+				ret = global::ObjCRuntime.Trampolines.NIDAVAudioEngineManualRenderingBlock.Create (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("manualRenderingCallback")))!;
 			} else {
-				ret = global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("manualRenderingCallback"));
+				ret = global::ObjCRuntime.Trampolines.NIDAVAudioEngineManualRenderingBlock.Create (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("manualRenderingCallback")))!;
 			}
-			GC.KeepAlive (this);
+			global::System.GC.KeepAlive (this);
 			return ret;
 		}
 
+		[param: BlockProxy (typeof (global::ObjCRuntime.Trampolines.NIDAVAudioEngineManualRenderingBlock))]
+		[Export ("setManualRenderingCallback:")]
 		set
 		{
-			throw new NotImplementedException();
+			if (value is null)
+				global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+			using var block_value = global::ObjCRuntime.Trampolines.SDAVAudioEngineManualRenderingBlock.CreateNullableBlock (value);
+			global::ObjCRuntime.BlockLiteral* block_ptr_value = value is not null ? &block_value : null;
+			if (IsDirectBinding) {
+				global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setManualRenderingCallback:"), (global::ObjCRuntime.NativeHandle) block_ptr_value);
+			} else {
+				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("setManualRenderingCallback:"), (global::ObjCRuntime.NativeHandle) block_ptr_value);
+			}
+			global::System.GC.KeepAlive (this);
 		}
 	}
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public partial global::System.Action<string> StringActionHandler
 	{
+		[return: DelegateProxy (typeof (global::ObjCRuntime.Trampolines.SDActionArity1string))]
+		[Export ("stringActionHandler")]
 		get
 		{
 			global::System.Action<string> ret;
 			if (IsDirectBinding) {
-				ret = global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("stringActionHandler"));
+				ret = global::ObjCRuntime.Trampolines.NIDActionArity1string.Create (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("stringActionHandler")))!;
 			} else {
-				ret = global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("stringActionHandler"));
+				ret = global::ObjCRuntime.Trampolines.NIDActionArity1string.Create (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("stringActionHandler")))!;
 			}
-			GC.KeepAlive (this);
+			global::System.GC.KeepAlive (this);
 			return ret;
 		}
 
+		[param: BlockProxy (typeof (global::ObjCRuntime.Trampolines.NIDActionArity1string))]
+		[Export ("setStringActionHandler:")]
 		set
 		{
-			throw new NotImplementedException();
+			if (value is null)
+				global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+			using var block_value = global::ObjCRuntime.Trampolines.SDActionArity1string.CreateNullableBlock (value);
+			global::ObjCRuntime.BlockLiteral* block_ptr_value = value is not null ? &block_value : null;
+			if (IsDirectBinding) {
+				global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setStringActionHandler:"), (global::ObjCRuntime.NativeHandle) block_ptr_value);
+			} else {
+				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("setStringActionHandler:"), (global::ObjCRuntime.NativeHandle) block_ptr_value);
+			}
+			global::System.GC.KeepAlive (this);
 		}
 	}
-	// TODO: add binding code here
+
 }

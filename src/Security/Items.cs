@@ -2044,7 +2044,8 @@ namespace Security {
 		{
 			result = default;
 			unsafe {
-				return SecItemCopyMatching (query, (IntPtr*) Unsafe.AsPointer<IntPtr> (ref result));
+				fixed (IntPtr* resultPtr = &result)
+					return SecItemCopyMatching (query, resultPtr);
 			}
 		}
 

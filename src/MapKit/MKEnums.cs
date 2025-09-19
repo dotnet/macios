@@ -33,6 +33,8 @@ namespace MapKit {
 		Walking = 1 << 1,
 		/// <summary>Routing for public transport.</summary>
 		Transit = 1 << 2,
+		/// <summary>Routing for cycling.</summary>
+		Cycling = 1 << 3,
 		/// <summary>The routing type is not specified.</summary>
 		Any = 0x0FFFFFFF,
 	}
@@ -101,7 +103,7 @@ namespace MapKit {
 	}
 
 	// NSUInteger -> MKTypes.h
-	/// <summary>An enumeration whose values represent various errors that can occur with <see cref="MapKit.MKDirections.CalculateRoute" /> and <see cref="MapKit.MKDirections.CalculateETA(MapKit.MKETAHandler)" />.</summary>
+	/// <summary>An enumeration whose values represent various errors that can occur with <see cref="MapKit.MKDirections.CalculateDirections" /> and <see cref="MapKit.MKDirections.CalculateETA(MapKit.MKETAHandler)" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
@@ -212,6 +214,8 @@ namespace MapKit {
 		Leading,
 		/// <summary>To be added.</summary>
 		Trailing,
+		[TV (26, 0), NoMac, iOS (26, 0), MacCatalyst (26, 0)]
+		Center,
 	}
 
 	/// <summary>Enumerates visibility behavior for marker titles.</summary>

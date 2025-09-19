@@ -23,7 +23,7 @@ namespace HealthKit {
 		///         <remarks>To be added.</remarks>
 		public static HKQuantityType? Create (HKQuantityTypeIdentifier kind)
 		{
-			return HKObjectType.GetQuantityType (kind.GetConstant ());
+			return HKObjectType.GetQuantityType (kind.GetConstant ()!);
 		}
 	}
 
@@ -34,7 +34,7 @@ namespace HealthKit {
 		///         <remarks>To be added.</remarks>
 		public static HKCategoryType? Create (HKCategoryTypeIdentifier kind)
 		{
-			return HKObjectType.GetCategoryType (kind.GetConstant ());
+			return HKObjectType.GetCategoryType (kind.GetConstant ()!);
 		}
 	}
 
@@ -45,7 +45,7 @@ namespace HealthKit {
 		///         <remarks>To be added.</remarks>
 		public static HKCharacteristicType? Create (HKCharacteristicTypeIdentifier kind)
 		{
-			return HKObjectType.GetCharacteristicType (kind.GetConstant ());
+			return HKObjectType.GetCharacteristicType (kind.GetConstant ()!);
 		}
 	}
 
@@ -56,7 +56,7 @@ namespace HealthKit {
 		///         <remarks>To be added.</remarks>
 		public static HKCorrelationType? Create (HKCorrelationTypeIdentifier kind)
 		{
-			return HKObjectType.GetCorrelationType (kind.GetConstant ());
+			return HKObjectType.GetCorrelationType (kind.GetConstant ()!);
 		}
 	}
 #pragma warning restore CS0618 // Type or member is obsolete

@@ -684,12 +684,6 @@ namespace SpriteKit {
 		SKNode Listener { get; set; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="SpriteKit.SKSceneDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="SpriteKit.SKSceneDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="SpriteKit.SKSceneDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="SpriteKit.SKSceneDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface ISKSceneDelegate { }
 
 	/// <summary>Delegate object for SKScene objects. Provides methods relating to animation events.</summary>
@@ -1597,11 +1591,11 @@ namespace SpriteKit {
 		SKNode MaskNode { get; set; }
 	}
 
-	/// <summary>A <see cref="UIKit.UIView" /> that displays a <see cref="SpriteKit.SKScene" />.</summary>
-	///     <remarks>
-	///       <para>Application developers should note the availability of debugging properties, such as <see cref="SpriteKit.SKView.ShowsFPS" />.</para>
-	///     </remarks>
-	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SpriteKit/Reference/SKView/index.html">Apple documentation for <c>SKView</c></related>
+	/// <summary>A <see cref="UIView" /> that displays a <see cref="SKScene" />.</summary>
+	/// <remarks>
+	///   <para>Application developers should note the availability of debugging properties, such as <see cref="SpriteKit.SKView.ShowsFPS" />.</para>
+	/// </remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SpriteKit/Reference/SKView/index.html">Apple documentation for <c>SKView</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (UIView))]
 	[DisableDefaultCtor]
@@ -1713,12 +1707,6 @@ namespace SpriteKit {
 		bool DisableDepthStencilBuffer { get; set; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="SpriteKit.SKViewDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="SpriteKit.SKViewDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="SpriteKit.SKViewDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="SpriteKit.SKViewDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface ISKViewDelegate { }
 
 	/// <summary>Delegate object for <see cref="SpriteKit.SKView" /> objects, allowing the developer to control the frame rate.</summary>
@@ -1937,7 +1925,7 @@ namespace SpriteKit {
 		void ModifyPixelData (SKTextureModify modifyMethod);
 	}
 
-	delegate void SKTextureAtlasLoadCallback (NSError error, SKTextureAtlas foundAtlases);
+	delegate void SKTextureAtlasLoadCallback ([NullAllowed] NSError error, SKTextureAtlas foundAtlases);
 
 	/// <summary>A collection of <see cref="SpriteKit.SKTexture" />s that are loaded from a single source.</summary>
 	///     
@@ -2934,12 +2922,6 @@ namespace SpriteKit {
 
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="SpriteKit.SKPhysicsContactDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="SpriteKit.SKPhysicsContactDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="SpriteKit.SKPhysicsContactDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="SpriteKit.SKPhysicsContactDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface ISKPhysicsContactDelegate { }
 
 	/// <include file="../docs/api/SpriteKit/SKPhysicsContactDelegate.xml" path="/Documentation/Docs[@DocId='T:SpriteKit.SKPhysicsContactDelegate']/*" />

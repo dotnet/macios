@@ -58,6 +58,33 @@ namespace Microsoft.Macios.Bindings.Analyzer {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to An unexpected error happened while generating the code. No code will be added to the compilation..
+        /// </summary>
+        internal static string RBI0000Description {
+            get {
+                return ResourceManager.GetString("RBI0000Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An unexpected error ocurred while processing &apos;{0}&apos;. Please fill a bug report at https://github.com/dotnet/macios/issues/new..
+        /// </summary>
+        internal static string RBI0000MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0000MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unexpected error.
+        /// </summary>
+        internal static string RBI0000Title {
+            get {
+                return ResourceManager.GetString("RBI0000Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to In order for the code to be generated all binding types have to be declared as partial classes..
         /// </summary>
         internal static string RBI0001Description {
@@ -256,7 +283,7 @@ namespace Microsoft.Macios.Bindings.Analyzer {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The enum value &apos;{0}&apos; must be tagged with a Field&lt;EnumValue&gt; attribute.
+        ///   Looks up a localized string similar to The enum &apos;{0}&apos; must have at least one member tagged with a Field&lt;EnumValue&gt; attribute.
         /// </summary>
         internal static string RBI0008MessageFormat {
             get {
@@ -265,7 +292,7 @@ namespace Microsoft.Macios.Bindings.Analyzer {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Smart enum values must be tagged with an Field&lt;EnumValue&gt; attribute.
+        ///   Looks up a localized string similar to Smart enum values must have a value tagged with an Field&lt;EnumValue&gt; attribute.
         /// </summary>
         internal static string RBI0008Title {
             get {
@@ -432,6 +459,735 @@ namespace Microsoft.Macios.Bindings.Analyzer {
         internal static string RBI0014Title {
             get {
                 return ResourceManager.GetString("RBI0014Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to With the provided binding flags in the export methods, the mentioned field cannot be null..
+        /// </summary>
+        internal static string RBI0015Description {
+            get {
+                return ResourceManager.GetString("RBI0015Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Field &apos;{0}&apos; is required when one of the following flags is set: &apos;{1}&apos;.
+        /// </summary>
+        internal static string RBI0015MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0015MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Field value cannot be null.
+        /// </summary>
+        internal static string RBI0015Title {
+            get {
+                return ResourceManager.GetString("RBI0015Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The fields are mutually exclusive which means that at most one of them can be set..
+        /// </summary>
+        internal static string RBI0016Description {
+            get {
+                return ResourceManager.GetString("RBI0016Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fields &apos;{0}&apos; must be mutually exclusive, at most one field can be set.
+        /// </summary>
+        internal static string RBI0016MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0016MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fields are mutually exclusive.
+        /// </summary>
+        internal static string RBI0016Title {
+            get {
+                return ResourceManager.GetString("RBI0016Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The field is only allowed when a specific flag is used..
+        /// </summary>
+        internal static string RBI0017Description {
+            get {
+                return ResourceManager.GetString("RBI0017Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fields &apos;{0}&apos; was set with flag {1} when is only allowed with flag {2}.
+        /// </summary>
+        internal static string RBI0017MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0017MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Field used with the wrong flag.
+        /// </summary>
+        internal static string RBI0017Title {
+            get {
+                return ResourceManager.GetString("RBI0017Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The export attribute must have a nonnull selector..
+        /// </summary>
+        internal static string RBI0018Description {
+            get {
+                return ResourceManager.GetString("RBI0018Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An export property selector must not contain any whitespace.
+        /// </summary>
+        internal static string RBI0018MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0018MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Null selector.
+        /// </summary>
+        internal static string RBI0018Title {
+            get {
+                return ResourceManager.GetString("RBI0018Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The selector string cannot contain any whitespace characters..
+        /// </summary>
+        internal static string RBI0019Description {
+            get {
+                return ResourceManager.GetString("RBI0019Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An export property selector must not contain any whitespace.
+        /// </summary>
+        internal static string RBI0019MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0019MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bad selector format.
+        /// </summary>
+        internal static string RBI0019Title {
+            get {
+                return ResourceManager.GetString("RBI0019Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The named parameter is only allowed with a specific flag..
+        /// </summary>
+        internal static string RBI0020Description {
+            get {
+                return ResourceManager.GetString("RBI0020Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The &apos;{0}&apos; named parameter can only be used when &apos;{1}&apos; has been set.
+        /// </summary>
+        internal static string RBI0020MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0020MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid named parameter.
+        /// </summary>
+        internal static string RBI0020Title {
+            get {
+                return ResourceManager.GetString("RBI0020Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The flag combination is not allowed..
+        /// </summary>
+        internal static string RBI0021Description {
+            get {
+                return ResourceManager.GetString("RBI0021Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The combination of flags {0} is not allowed.
+        /// </summary>
+        internal static string RBI0021MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0021MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid flag.
+        /// </summary>
+        internal static string RBI0021Title {
+            get {
+                return ResourceManager.GetString("RBI0021Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The export attribute must have a nonnull selector..
+        /// </summary>
+        internal static string RBI0022Description {
+            get {
+                return ResourceManager.GetString("RBI0022Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An export method selector must not contain any whitespace.
+        /// </summary>
+        internal static string RBI0022MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0022MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Null selector.
+        /// </summary>
+        internal static string RBI0022Title {
+            get {
+                return ResourceManager.GetString("RBI0022Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The selector string cannot contain any whitespace characters..
+        /// </summary>
+        internal static string RBI0023Description {
+            get {
+                return ResourceManager.GetString("RBI0023Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An export method selector must not contain any whitespace.
+        /// </summary>
+        internal static string RBI0023MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0023MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bad selector format.
+        /// </summary>
+        internal static string RBI0023Title {
+            get {
+                return ResourceManager.GetString("RBI0023Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The native prefix/suffix cannot have white spaces..
+        /// </summary>
+        internal static string RBI0024Description {
+            get {
+                return ResourceManager.GetString("RBI0024Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The {0} string must not contain any whitespace.
+        /// </summary>
+        internal static string RBI0024MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0024MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bad native prefix/suffix.
+        /// </summary>
+        internal static string RBI0024Title {
+            get {
+                return ResourceManager.GetString("RBI0024Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Names of types to be generated cannot have white spaces..
+        /// </summary>
+        internal static string RBI0025Description {
+            get {
+                return ResourceManager.GetString("RBI0025Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The {0} type name must not contain any whitespace.
+        /// </summary>
+        internal static string RBI0025MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0025MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bad type name.
+        /// </summary>
+        internal static string RBI0025Title {
+            get {
+                return ResourceManager.GetString("RBI0025Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The async method name cannot have white spaces..
+        /// </summary>
+        internal static string RBI0026Description {
+            get {
+                return ResourceManager.GetString("RBI0026Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The async method name must not contain any whitespace.
+        /// </summary>
+        internal static string RBI0026MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0026MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bad method name.
+        /// </summary>
+        internal static string RBI0026Title {
+            get {
+                return ResourceManager.GetString("RBI0026Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The symbol is accessible in a platform where it is not supported...
+        /// </summary>
+        internal static string RBI0027Description {
+            get {
+                return ResourceManager.GetString("RBI0027Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The symbol &apos;{0}&apos; is accessible on platform &apos;{1}&apos; when it was marked otherwise.
+        /// </summary>
+        internal static string RBI0027MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0027MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bad method name.
+        /// </summary>
+        internal static string RBI0027Title {
+            get {
+                return ResourceManager.GetString("RBI0027Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A flag value was used on an attribute that does not support it and will be ignored..
+        /// </summary>
+        internal static string RBI0028Description {
+            get {
+                return ResourceManager.GetString("RBI0028Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The flag &apos;{0}&apos; is not supported on &apos;{1}&apos; and will be ignored.
+        /// </summary>
+        internal static string RBI0028MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0028MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ignored flag.
+        /// </summary>
+        internal static string RBI0028Title {
+            get {
+                return ResourceManager.GetString("RBI0028Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There is a mismatch between the arguments of a method/property and the number of &apos;:&apos; in a selector..
+        /// </summary>
+        internal static string RBI0029Description {
+            get {
+                return ResourceManager.GetString("RBI0029Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There is a mismatch between the arguments of &apos;{0}&apos; (found {1}) and the selector &apos;{2}&apos; (found {3}).
+        /// </summary>
+        internal static string RBI0029MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0029MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Selector argument mismatch.
+        /// </summary>
+        internal static string RBI0029Title {
+            get {
+                return ResourceManager.GetString("RBI0029Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Field properties must be declared static..
+        /// </summary>
+        internal static string RBI0030Description {
+            get {
+                return ResourceManager.GetString("RBI0030Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Field properties must be declared static.
+        /// </summary>
+        internal static string RBI0030MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0030MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wrong field declaration.
+        /// </summary>
+        internal static string RBI0030Title {
+            get {
+                return ResourceManager.GetString("RBI0030Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exported properties must be declared partial..
+        /// </summary>
+        internal static string RBI0031Description {
+            get {
+                return ResourceManager.GetString("RBI0031Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exported properties must be declared partial.
+        /// </summary>
+        internal static string RBI0031MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0031MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wrong property declaration.
+        /// </summary>
+        internal static string RBI0031Title {
+            get {
+                return ResourceManager.GetString("RBI0031Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A weak delegate has to have a strong delegate name if it does not start with &apos;Weak&apos;..
+        /// </summary>
+        internal static string RBI0032Description {
+            get {
+                return ResourceManager.GetString("RBI0032Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The weak delegate &apos;{0}&apos; is missing a strong delegate name, provide one or use the &apos;Weak&apos; prefix.
+        /// </summary>
+        internal static string RBI0032MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0032MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wrong weak delegate.
+        /// </summary>
+        internal static string RBI0032Title {
+            get {
+                return ResourceManager.GetString("RBI0032Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A weak delegate has a duplicate strong delegate name..
+        /// </summary>
+        internal static string RBI0033Description {
+            get {
+                return ResourceManager.GetString("RBI0033Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The weak delegate &apos;{0}&apos; strong delegate &apos;{1}&apos; is already used by &apos;{2}&apos;.
+        /// </summary>
+        internal static string RBI0033MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0033MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wrong strong delegate name.
+        /// </summary>
+        internal static string RBI0033Title {
+            get {
+                return ResourceManager.GetString("RBI0033Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A selector is used in more than one symbol..
+        /// </summary>
+        internal static string RBI0034Description {
+            get {
+                return ResourceManager.GetString("RBI0034Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The selector &apos;{0}&apos; used by &apos;{1}&apos; is already used by &apos;{2}&apos;.
+        /// </summary>
+        internal static string RBI0034MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0034MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Duplicate selector.
+        /// </summary>
+        internal static string RBI0034Title {
+            get {
+                return ResourceManager.GetString("RBI0034Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A method marked as an async method should have void as its return type..
+        /// </summary>
+        internal static string RBI0035Description {
+            get {
+                return ResourceManager.GetString("RBI0035Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The method &apos;{0}&apos; was marked as async but its return type is not void.
+        /// </summary>
+        internal static string RBI0035MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0035MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Async method not returning void.
+        /// </summary>
+        internal static string RBI0035Title {
+            get {
+                return ResourceManager.GetString("RBI0035Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A method marked as an async method should have at least one parameter that is a delegate..
+        /// </summary>
+        internal static string RBI0036Description {
+            get {
+                return ResourceManager.GetString("RBI0036Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The method &apos;{0}&apos; was marked as async but has 0 parameters when at least a single delegate parameter is required.
+        /// </summary>
+        internal static string RBI0036MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0036MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No parameters in async method.
+        /// </summary>
+        internal static string RBI0036Title {
+            get {
+                return ResourceManager.GetString("RBI0036Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A method marked as an async method should have its last parameter be a delegate..
+        /// </summary>
+        internal static string RBI0037Description {
+            get {
+                return ResourceManager.GetString("RBI0037Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The method &apos;{0}&apos; was marked as async but its last parameter is not a delegate.
+        /// </summary>
+        internal static string RBI0037MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0037MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last parameter is not a delegate.
+        /// </summary>
+        internal static string RBI0037Title {
+            get {
+                return ResourceManager.GetString("RBI0037Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A method that could be async was not marked as async..
+        /// </summary>
+        internal static string RBI0038Description {
+            get {
+                return ResourceManager.GetString("RBI0038Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The method &apos;{0}&apos; was not marked as async but it can be.
+        /// </summary>
+        internal static string RBI0038MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0038MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Possible async method missing async flag.
+        /// </summary>
+        internal static string RBI0038Title {
+            get {
+                return ResourceManager.GetString("RBI0038Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Two methods marked as async will result in the same async name..
+        /// </summary>
+        internal static string RBI0039Description {
+            get {
+                return ResourceManager.GetString("RBI0039Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The async name &apos;{0}&apos; used by &apos;{1}&apos; is already used by &apos;{2}&apos;.
+        /// </summary>
+        internal static string RBI0039MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0039MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Duplicated async name.
+        /// </summary>
+        internal static string RBI0039Title {
+            get {
+                return ResourceManager.GetString("RBI0039Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No result type or result type name was provided for an async method..
+        /// </summary>
+        internal static string RBI0040Description {
+            get {
+                return ResourceManager.GetString("RBI0040Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The method &apos;{0}&apos; was marked as async and has multiple parameters but does not provide a return type name, a nameless tuple will be generated for the async method.
+        /// </summary>
+        internal static string RBI0040MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0040MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not specified return type.
+        /// </summary>
+        internal static string RBI0040Title {
+            get {
+                return ResourceManager.GetString("RBI0040Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Protocol inline constructor is hidden..
+        /// </summary>
+        internal static string RBI0041Description {
+            get {
+                return ResourceManager.GetString("RBI0041Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The class &apos;{0}&apos; contains a constructor with the selector &apos;{1}&apos; that hides a inline constructor from protocol &apos;{2}&apos;.
+        /// </summary>
+        internal static string RBI0041MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0041MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Protocol constructor overlap:.
+        /// </summary>
+        internal static string RBI0041Title {
+            get {
+                return ResourceManager.GetString("RBI0041Title", resourceCulture);
             }
         }
     }

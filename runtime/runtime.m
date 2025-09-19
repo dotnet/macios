@@ -122,6 +122,7 @@ struct Trampolines {
 	void* get_flags_tramp;
 	void* set_flags_tramp;
 	void* retainWeakReference_tramp;
+	void* get_nsobject_data_tramp;
 };
 
 enum InitializationFlags : int {
@@ -182,6 +183,7 @@ static struct Trampolines trampolines = {
 	(void *) &xamarin_get_flags_trampoline,
 	(void *) &xamarin_set_flags_trampoline,
 	(void *) &xamarin_retainWeakReference_trampoline,
+	(void *) &xamarin_get_nsobject_data_trampoline,
 };
 
 static struct InitializationOptions options = { 0 };
@@ -207,7 +209,7 @@ xamarin_get_nsobject_handle (MonoObject *obj)
 #endif
 }
 
-uint8_t
+uint32_t
 xamarin_get_nsobject_flags (MonoObject *obj)
 {
 #if defined (CORECLR_RUNTIME)
@@ -221,7 +223,7 @@ xamarin_get_nsobject_flags (MonoObject *obj)
 }
 
 void
-xamarin_set_nsobject_flags (MonoObject *obj, uint8_t flags)
+xamarin_set_nsobject_flags (MonoObject *obj, uint32_t flags)
 {
 #if defined (CORECLR_RUNTIME)
 	xamarin_set_flags_for_nsobject (obj->gchandle, flags);
@@ -231,7 +233,7 @@ xamarin_set_nsobject_flags (MonoObject *obj, uint8_t flags)
 #endif
 }
 
-uint8_t
+uint32_t
 xamarin_get_nsobject_id_flags (id obj)
 {
 	NSObjectData *data = xamarin_get_nsobject_data (obj);
@@ -722,7 +724,7 @@ xamarin_type_get_full_name (MonoType *type, GCHandle *exception_gchandle)
 // #define DEBUG_TOGGLEREF 1
 
 MonoToggleRefStatus
-xamarin_gc_toggleref_callback (uint8_t flags, id handle, xamarin_get_handle_func get_handle, MonoObject *info)
+xamarin_gc_toggleref_callback (uint32_t flags, id handle, xamarin_get_handle_func get_handle, MonoObject *info)
 {
 	MonoToggleRefStatus res;
 
@@ -916,7 +918,10 @@ object_queued_for_finalization (MonoObject *object)
 {
 	/* This is called with the GC lock held, so it can only use signal-safe code */
 	struct Managed_NSObject *obj = (struct Managed_NSObject *) object;
-	//PRINT ("In finalization response for %s.%s %p (handle: %p class_handle: %p flags: %i)\n", 
+#if defined(DEBUG_REF_COUNTING)
+	// Don't use PRINT/NSLog/os_log here, because the process can end up aborting due to recursive locks inside the ObjC runtime. Luckily fprintf works fine.
+	fprintf (stderr, "object_queued_for_finalization (%p): data=%p flags=%x handle=%p\n", object, obj->data, (unsigned int) (obj->data ? obj->data->flags : 0), obj->data ? obj->data->handle : NULL);
+#endif
 	if (obj->data)
 		obj->data->flags |= NSObjectFlagsInFinalizerQueue;
 }
@@ -2813,7 +2818,7 @@ xamarin_gchandle_new (MonoObject *obj, bool pinned)
 #if defined (CORECLR_RUNTIME)
 	return xamarin_bridge_create_gchandle (obj == NULL ? INVALID_GCHANDLE : obj->gchandle, pinned ? XamarinGCHandleTypePinned : XamarinGCHandleTypeNormal);
 #else
-	return GINT_TO_POINTER (mono_gchandle_new (obj, pinned));
+	return mono_gchandle_new_v2 (obj, pinned);
 #endif
 }
 
@@ -2823,7 +2828,7 @@ xamarin_gchandle_new_weakref (MonoObject *obj, bool track_resurrection)
 #if defined (CORECLR_RUNTIME)
 	return xamarin_bridge_create_gchandle (obj == NULL ? INVALID_GCHANDLE : obj->gchandle, track_resurrection ? XamarinGCHandleTypeWeakTrackResurrection : XamarinGCHandleTypeWeak);
 #else
-	return GINT_TO_POINTER (mono_gchandle_new_weakref (obj, track_resurrection));
+	return mono_gchandle_new_weakref_v2 (obj, track_resurrection);
 #endif
 }
 
@@ -2836,7 +2841,7 @@ xamarin_gchandle_get_target (GCHandle handle)
 #if defined (CORECLR_RUNTIME)
 	return xamarin_bridge_get_monoobject (handle);
 #else
-	return mono_gchandle_get_target (GPOINTER_TO_UINT (handle));
+	return mono_gchandle_get_target_v2 (handle);
 #endif
 }
 
@@ -2848,7 +2853,7 @@ xamarin_gchandle_free (GCHandle handle)
 #if defined (CORECLR_RUNTIME)
 	xamarin_bridge_free_gchandle (handle);
 #else
-	mono_gchandle_free (GPOINTER_TO_UINT (handle));
+	mono_gchandle_free_v2 (handle);
 #endif
 }
 

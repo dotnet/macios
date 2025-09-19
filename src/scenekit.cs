@@ -82,22 +82,12 @@ using NSBezierPath = global::UIKit.UIBezierPath;
 namespace SceneKit {
 	/// <summary>Callback used to reflect progress during execution of <see cref="SceneKit.SCNSceneSource.SceneFromOptions(SceneKit.SCNSceneLoadingOptions,SceneKit.SCNSceneSourceStatusHandler)" />.</summary>
 	[MacCatalyst (13, 1)]
-	delegate void SCNSceneSourceStatusHandler (float /* float, not CGFloat */ totalProgress, SCNSceneSourceStatus status, NSError error, ref bool stopLoading);
+	delegate void SCNSceneSourceStatusHandler (float /* float, not CGFloat */ totalProgress, SCNSceneSourceStatus status, [NullAllowed] NSError error, ref bool stopLoading);
 
 	delegate void SCNAnimationDidStartHandler (SCNAnimation animation, ISCNAnimatable receiver);
 
 	delegate void SCNAnimationDidStopHandler (SCNAnimation animation, ISCNAnimatable receiver, bool completed);
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="SceneKit.SCNAnimatable" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="SceneKit.SCNAnimatable" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="SceneKit.SCNAnimatable" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="SceneKit.SCNAnimatable_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
-	/// <summary>Extension methods to the <see cref="SceneKit.ISCNAnimatable" /> interface to support all the methods from the <see cref="SceneKit.SCNAnimatable" /> protocol.</summary>
-	///     <remarks>
-	///       <para>The extension methods for <see cref="SceneKit.ISCNAnimatable" /> allow developers to treat instances of the interface as having all the optional methods of the original <see cref="SceneKit.SCNAnimatable" /> protocol.   Since the interface only contains the required members, these extension methods allow developers to call the optional members of the protocol.</para>
-	///     </remarks>
 	interface ISCNAnimatable { }
 
 	/// <summary>Allows animations to be applied.</summary>
@@ -726,20 +716,8 @@ namespace SceneKit {
 		nfloat RotationSensitivity { get; set; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="SceneKit.SCNCameraControllerDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="SceneKit.SCNCameraControllerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="SceneKit.SCNCameraControllerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="SceneKit.SCNCameraControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface ISCNCameraControllerDelegate { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="SceneKit.SCNCameraControllerDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="SceneKit.SCNCameraControllerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="SceneKit.SCNCameraControllerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="SceneKit.SCNCameraControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	[Model] // Figured I would keep the model for convenience, as all the methods here are optional
@@ -1822,7 +1800,7 @@ namespace SceneKit {
 		NSString ShadowFarClippingKey { get; }
 	}
 
-	/// <summary>Constants for use with the <see cref="SceneKit.SCNMaterial.LightingModel" /> property, which defines the way lights and materials combine to produce a particular rendered color.</summary>
+	/// <summary>Constants for use with the <see cref="SCNMaterial.LightingModelName" /> property, which defines the way lights and materials combine to produce a particular rendered color.</summary>
 	[MacCatalyst (13, 1)]
 	[Static]
 	interface SCNLightingModel {
@@ -2272,7 +2250,7 @@ namespace SceneKit {
 
 	/// <param name="node">The current <see cref="SceneKit.SCNNode" />.</param>
 	///     <param name="stop">An <c>out</c> parameter that, when set to true, stops the enumeration.</param>
-	///     <summary>Delegate for use with <see cref="SceneKit.SCNNode.EnumerateChildNodes(SceneKit.SCNNodePredicate)" />.</summary>
+	///     <summary>Delegate for use with <see cref="SCNNode.FindNodes(SceneKit.SCNNodePredicate)" />.</summary>
 	[MacCatalyst (13, 1)]
 	delegate bool SCNNodePredicate (SCNNode node, out bool stop);
 
@@ -2870,12 +2848,6 @@ namespace SceneKit {
 		//void Rotate (Quaternion worldRotation, NVector3 worldTarget);
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="SceneKit.SCNNodeRendererDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="SceneKit.SCNNodeRendererDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="SceneKit.SCNNodeRendererDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="SceneKit.SCNNodeRendererDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface ISCNNodeRendererDelegate { }
 
 	/// <summary>Interface defining delegate object functions for adding custom OpenGL drawing code.</summary>
@@ -3017,12 +2989,6 @@ namespace SceneKit {
 		IMTLLibrary Library { get; set; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="SceneKit.SCNProgramDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="SceneKit.SCNProgramDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="SceneKit.SCNProgramDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="SceneKit.SCNProgramDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface ISCNProgramDelegate { }
 
 	/// <summary>Delegate object for SCNProgram objects.</summary>
@@ -3226,7 +3192,7 @@ namespace SceneKit {
 	///     <param name="stop">Developers set this to true to cancel processing.</param>
 	///     <summary>Continuation handler that SceneKit repeatedly calls when exporting a scene.</summary>
 	[MacCatalyst (13, 1)]
-	delegate void SCNSceneExportProgressHandler (float /* float, not CGFloat */ totalProgress, NSError error, out bool stop);
+	delegate void SCNSceneExportProgressHandler (float /* float, not CGFloat */ totalProgress, [NullAllowed] NSError error, out bool stop);
 
 	/// <summary>The highest-level description of a 3D scene.</summary>
 	///     
@@ -3430,12 +3396,6 @@ namespace SceneKit {
 		nfloat ScreenSpaceReflectionStride { get; set; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="SceneKit.SCNSceneExportDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="SceneKit.SCNSceneExportDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="SceneKit.SCNSceneExportDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="SceneKit.SCNSceneExportDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface ISCNSceneExportDelegate { }
 
 	/// <summary>Protocol that defines methods to handle exporting a scene to a file.</summary>
@@ -3793,12 +3753,6 @@ namespace SceneKit {
 		NSString AssetUnitMeterKey { get; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="SceneKit.SCNSceneRenderer" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="SceneKit.SCNSceneRenderer" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="SceneKit.SCNSceneRenderer" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="SceneKit.SCNSceneRenderer_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface ISCNSceneRenderer { }
 
 	/// <summary>Implementation class of the <see cref="SceneKit.ISCNSceneRenderer" /> interface.</summary>
@@ -4117,12 +4071,6 @@ namespace SceneKit {
 		CGColorSpace WorkingColorSpace { get; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="SceneKit.SCNSceneRendererDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="SceneKit.SCNSceneRendererDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="SceneKit.SCNSceneRendererDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="SceneKit.SCNSceneRendererDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface ISCNSceneRendererDelegate { }
 
 	/// <summary>Delegate object for the SCNRenderer class, defines methods reflects rendering events.</summary>
@@ -4421,9 +4369,8 @@ namespace SceneKit {
 		bool LowPowerDevice { get; set; }
 	}
 
-	/// <summary>A <see cref="UIKit.UIView" /> that renders <see cref="SceneKit.SCNScene" />s.</summary>
-	///     
-	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNView_Class/index.html">Apple documentation for <c>SCNView</c></related>
+	/// <summary>A <see cref="NSView" /> that renders <see cref="SCNScene" />s.</summary>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNView_Class/index.html">Apple documentation for <c>SCNView</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSView))]
 	[DisableDefaultCtor]
@@ -5106,7 +5053,7 @@ namespace SceneKit {
 
 	/// <summary>Completion handler used with <see cref="SceneKit.SCNShadable.HandleBinding(System.String,SceneKit.SCNBindingHandler)" />.</summary>
 	[MacCatalyst (13, 1)]
-	delegate void SCNBindingHandler (uint /* unsigned int */ programId, uint /* unsigned int */ location, SCNNode renderedNode, SCNRenderer renderer);
+	delegate void SCNBindingHandler (uint /* unsigned int */ programId, uint /* unsigned int */ location, [NullAllowed] SCNNode renderedNode, SCNRenderer renderer);
 
 	/// <summary>A <see cref="Foundation.DictionaryContainer" /> containing options for shaders.</summary>
 	[MacCatalyst (13, 1)]
@@ -5134,12 +5081,6 @@ namespace SceneKit {
 		string EntryPointFragment { get; set; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="SceneKit.SCNShadable" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="SceneKit.SCNShadable" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="SceneKit.SCNShadable" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="SceneKit.SCNShadable_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface ISCNShadable { }
 
 	/// <summary>Implementation of <see cref="SceneKit.ISCNShadable" />.</summary>
@@ -5673,7 +5614,7 @@ namespace SceneKit {
 		NSValue [] Transforms { get; }
 	}
 
-	/// <summary>Defines valid keys for use with the <c>options</c> dictionary passed to <see cref="SceneKit.SCNPhysicsShape.Create" />.</summary>
+	/// <summary>Defines valid keys for use with the <c>options</c> dictionary passed to <see cref="SCNPhysicsShape.Create(SCNGeometry,SCNPhysicsShapeOptions)" /> and <see cref="SCNPhysicsShape.Create(SCNNode,SCNPhysicsShapeOptions)" /> .</summary>
 	[MacCatalyst (13, 1)]
 	[Static]
 	[EditorBrowsable (EditorBrowsableState.Advanced)]
@@ -5767,12 +5708,6 @@ namespace SceneKit {
 		nfloat SweepTestFraction { get; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="SceneKit.SCNPhysicsContactDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="SceneKit.SCNPhysicsContactDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="SceneKit.SCNPhysicsContactDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="SceneKit.SCNPhysicsContactDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface ISCNPhysicsContactDelegate { }
 
 	/// <summary>Delegate object functions responding to touches between <see cref="SceneKit.SCNPhysicsBody" /> objects..</summary>
@@ -6720,20 +6655,8 @@ namespace SceneKit {
 		SCNVector3 Offset { get; set; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="SceneKit.SCNAvoidOccluderConstraintDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="SceneKit.SCNAvoidOccluderConstraintDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="SceneKit.SCNAvoidOccluderConstraintDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="SceneKit.SCNAvoidOccluderConstraintDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface ISCNAvoidOccluderConstraintDelegate { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="SceneKit.SCNAvoidOccluderConstraintDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="SceneKit.SCNAvoidOccluderConstraintDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="SceneKit.SCNAvoidOccluderConstraintDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="SceneKit.SCNAvoidOccluderConstraintDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]

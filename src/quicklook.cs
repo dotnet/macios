@@ -107,7 +107,6 @@ namespace QuickLook {
 		void RefreshCurrentPreviewItem ();
 	}
 
-	/// <include file="../docs/api/QuickLook/IQLPreviewControllerDataSource.xml" path="/Documentation/Docs[@DocId='T:QuickLook.IQLPreviewControllerDataSource']/*" />
 	interface IQLPreviewControllerDataSource { }
 
 	/// <summary>A class that allows a <see cref="QuickLook.QLPreviewController" /> to preview multiple items.</summary>
@@ -147,12 +146,6 @@ namespace QuickLook {
 		CreateCopy,
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="QuickLook.QLPreviewControllerDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="QuickLook.QLPreviewControllerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="QuickLook.QLPreviewControllerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="QuickLook.QLPreviewControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IQLPreviewControllerDelegate { }
 
 	/// <summary>A delegate object that gives the application developer fine-grained control over events in the life-cycle of a <see cref="QuickLook.QLPreviewController" /> object.</summary>
@@ -263,12 +256,6 @@ namespace QuickLook {
 #endif
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="QuickLook.QLPreviewItem" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="QuickLook.QLPreviewItem" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="QuickLook.QLPreviewItem" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="QuickLook.QLPreviewItem_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IQLPreviewItem { }
 
 	/// <summary>An item that can be previewed with a <see cref="QuickLook.QLPreviewController" />.</summary>
@@ -417,3 +404,30 @@ namespace QuickLook {
 #endif
 
 }
+
+#if !MONOMAC
+// Apple moved ARQuickLookPreviewItem from the ARKit framework to the QuickLook framework in Xcode 26,
+// and also added it to Mac Catalyst.
+#if XAMCORE_5_0 || __MACCATALYST__
+namespace QuickLook {
+#else
+namespace ARKit {
+	using QuickLook;
+#endif
+	[iOS (13, 0), MacCatalyst (26, 0), NoTV, NoMac]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface ARQuickLookPreviewItem : QLPreviewItem {
+
+		[Export ("initWithFileAtURL:")]
+		[DesignatedInitializer]
+		NativeHandle Constructor (NSUrl url);
+
+		[NullAllowed, Export ("canonicalWebPageURL", ArgumentSemantic.Strong)]
+		NSUrl CanonicalWebPageUrl { get; set; }
+
+		[Export ("allowsContentScaling")]
+		bool AllowsContentScaling { get; set; }
+	}
+}
+#endif // !MONOMAC

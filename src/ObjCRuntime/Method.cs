@@ -112,6 +112,10 @@ namespace ObjCRuntime {
 		internal unsafe static IntPtr RetainWeakReferenceTrampoline {
 			get { return Runtime.options->Trampolines->retainWeakReference_tramp; }
 		}
+
+		internal unsafe static IntPtr GetNSObjectDataTrampoline {
+			get { return Runtime.options->Trampolines->get_nsobject_data_tramp; }
+		}
 #endif // !COREBUILD
 	}
 }

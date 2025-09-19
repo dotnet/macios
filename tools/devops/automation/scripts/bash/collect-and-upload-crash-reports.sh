@@ -22,3 +22,10 @@ else
     set -x
   fi
 fi
+
+for file in "$AGENT_TEMPDIRECTORY"/*.minidump; do
+  if ! test -f "$file"; then continue; fi
+  set +x
+  echo "##vso[artifact.upload containerfolder=minidumps;artifactname=minidumps]$file"
+  set -x
+done

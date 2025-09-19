@@ -5,6 +5,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Macios.Generator.Attributes;
@@ -70,6 +71,87 @@ namespace NS {
 					exportMethodData: new ("myMethod"),
 					attributes: [
 						new ("ObjCBindings.ExportAttribute<ObjCBindings.Method>", ["myMethod"]),
+					],
+					modifiers: [
+						SyntaxFactory.Token (SyntaxKind.PublicKeyword),
+					],
+					parameters: []
+				)
+			];
+
+			const string asyncVoidMethodNoParamsExportDataMisingFlag = @"
+using System;
+using ObjCBindings;
+
+namespace NS {
+	public class MyClass {
+		[Export<Method>(""myMethod"", Flags = Method.Default,
+			ResultTypeName = ""NSObject"",
+			PostNonResultSnippet = ""throw new NotImplementedException();"")]
+		public void MyMethod () {}
+	}
+}
+";
+
+			yield return [
+				asyncVoidMethodNoParamsExportDataMisingFlag,
+				new Method (
+					type: "NS.MyClass",
+					name: "MyMethod",
+					returnType: ReturnTypeForVoid (),
+					symbolAvailability: new (),
+					exportMethodData: new ("myMethod"), // async valus are null
+					attributes: [
+						new (
+							name: "ObjCBindings.ExportAttribute<ObjCBindings.Method>",
+							arguments: [
+								"myMethod",
+								"ObjCBindings.Method.Default",
+								"NSObject",
+								"throw new NotImplementedException();"
+							]),
+					],
+					modifiers: [
+						SyntaxFactory.Token (SyntaxKind.PublicKeyword),
+					],
+					parameters: []
+				)
+			];
+
+			const string asyncVoidMethodNoParamsExportDataAsyncFlag = @"
+using System;
+using ObjCBindings;
+
+namespace NS {
+	public class MyClass {
+		[Export<Method>(""myMethod"", Flags = Method.Default | Method.Async,
+			ResultTypeName = ""NSObject"",
+			PostNonResultSnippet = ""throw new NotImplementedException();"")]
+		public void MyMethod () {}
+	}
+}
+";
+
+			yield return [
+				asyncVoidMethodNoParamsExportDataAsyncFlag,
+				new Method (
+					type: "NS.MyClass",
+					name: "MyMethod",
+					returnType: ReturnTypeForVoid (),
+					symbolAvailability: new (),
+					exportMethodData: new ("myMethod") {
+						Flags = ObjCBindings.Method.Default | ObjCBindings.Method.Async,
+						ResultTypeName = "NSObject",
+						PostNonResultSnippet = "throw new NotImplementedException();",
+					},
+					attributes: [
+						new (
+							name: "ObjCBindings.ExportAttribute<ObjCBindings.Method>",
+							arguments: [
+								"myMethod",
+								"NSObject",
+								"throw new NotImplementedException();"
+							]),
 					],
 					modifiers: [
 						SyntaxFactory.Token (SyntaxKind.PublicKeyword),
@@ -796,4 +878,438 @@ namespace NS {
 		Assert.NotNull (changes);
 		Assert.Equal (expected, changes);
 	}
+
+	class TestDataFromMethodDeclarationToAsync : IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
+		{
+			const string simpleAsyncMethod = @"
+using System;
+using ObjCBindings;
+using ObjCRuntime;
+
+namespace NS {
+	public class MyClass {
+
+		[Export<Method> (""completeRequestReturningItems:completionHandler:"", Flags = ObjCBindings.Method.Async)] 
+		public void MyMethod (string[]? input, Action<bool> callback) { }
+	}
 }
+";
+
+			yield return [simpleAsyncMethod];
+
+			const string tupleAsyncMethod = @"
+using System;
+using ObjCBindings;
+using ObjCRuntime;
+
+namespace NS {
+	public class MyClass {
+
+		[Export<Method> (""completeRequestReturningItems:completionHandler:"", Flags = ObjCBindings.Method.Async)] 
+		public void MyMethod (string[]? input, Action<bool, string> callback) { }
+	}
+}
+";
+
+			yield return [tupleAsyncMethod];
+
+			const string asyncMethodWithName = @"
+using System;
+using ObjCBindings;
+using ObjCRuntime;
+
+namespace NS {
+	public class MyClass {
+
+		[Export<Method> (""completeRequestReturningItems:completionHandler:"", 
+			Flags = ObjCBindings.Method.Async,
+			MethodName = ""MyMethodAsync"")] 
+		public void MyMethod (string[]? input, Action<bool> callback) { }
+	}
+}
+";
+
+			yield return [asyncMethodWithName];
+
+		}
+
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
+	}
+
+	[Theory]
+	[AllSupportedPlatformsClassData<TestDataFromMethodDeclarationToAsync>]
+	void FromMethodDeclarationToAsync (ApplePlatform platform, string inputText)
+	{
+		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
+		Assert.Single (syntaxTrees);
+		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
+		var declaration = syntaxTrees [0].GetRoot ()
+			.DescendantNodes ().OfType<MethodDeclarationSyntax> ()
+			.FirstOrDefault ();
+		Assert.NotNull (declaration);
+		Assert.True (Method.TryCreate (declaration, semanticModel, out var changes));
+		Assert.NotNull (changes);
+
+		var asyncMethod = changes.Value.ToAsync ();
+		if (changes.Value.ExportMethodData.MethodName is null) {
+			Assert.Equal ($"{changes.Value.Name}Async", asyncMethod.Name);
+		} else {
+			Assert.Equal (changes.Value.ExportMethodData.MethodName, asyncMethod.Name);
+		}
+		Assert.False (asyncMethod.ReturnType.IsVoid);
+		Assert.True (asyncMethod.ReturnType.IsTask);
+		Assert.Equal (changes.Value.Parameters.Length - 1, asyncMethod.Parameters.Length);
+	}
+
+	class TestDataFromMethodDeclarationIsOptional : IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
+		{
+			const string optionalMethod = @"
+using System;
+using ObjCBindings;
+using ObjCRuntime;
+
+namespace NS {
+	public class MyClass {
+
+		[Export<Method> (""completeRequestReturningItems:completionHandler:"", Flags = ObjCBindings.Method.Optional)] 
+		public void MyMethod (string[]? input) { }
+	}
+}
+";
+
+			yield return [optionalMethod, true];
+
+			const string notOptionalMethod = @"
+using System;
+using ObjCBindings;
+using ObjCRuntime;
+
+namespace NS {
+	public class MyClass {
+
+		[Export<Method> (""completeRequestReturningItems:completionHandler:"", Flags = ObjCBindings.Method.Default)] 
+		public void MyMethod (string[]? input) { }
+	}
+}
+";
+
+			yield return [notOptionalMethod, false];
+
+		}
+
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
+	}
+
+	[Theory]
+	[AllSupportedPlatformsClassData<TestDataFromMethodDeclarationIsOptional>]
+	void FromMethodDeclarationIsOptional (ApplePlatform platform, string inputText, bool expectedIsOptional)
+	{
+		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
+		Assert.Single (syntaxTrees);
+		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
+		var declaration = syntaxTrees [0].GetRoot ()
+			.DescendantNodes ().OfType<MethodDeclarationSyntax> ()
+			.FirstOrDefault ();
+		Assert.NotNull (declaration);
+		Assert.True (Method.TryCreate (declaration, semanticModel, out var changes));
+		Assert.NotNull (changes);
+		Assert.Equal (expectedIsOptional, changes.Value.IsOptional);
+	}
+
+	class TestDataFromMethodDeclarationIsVariadic : IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
+		{
+			const string variadicMethod = @"
+using System;
+using ObjCBindings;
+using ObjCRuntime;
+
+namespace NS {
+	public class MyClass {
+
+		[Export<Method> (""completeRequestReturningItems:completionHandler:"", Flags = ObjCBindings.Method.IsVariadic)] 
+		public void MyMethod (string[]? input) { }
+	}
+}
+";
+
+			yield return [variadicMethod, true];
+
+			const string notVariadicMethod = @"
+using System;
+using ObjCBindings;
+using ObjCRuntime;
+
+namespace NS {
+	public class MyClass {
+
+		[Export<Method> (""completeRequestReturningItems:completionHandler:"", Flags = ObjCBindings.Method.Default)] 
+		public void MyMethod (string[]? input) { }
+	}
+}
+";
+
+			yield return [notVariadicMethod, false];
+
+		}
+
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
+	}
+
+	[Theory]
+	[AllSupportedPlatformsClassData<TestDataFromMethodDeclarationIsVariadic>]
+	void FromMethodDeclarationIsVariadic (ApplePlatform platform, string inputText, bool expectedIsVariadic)
+	{
+		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
+		Assert.Single (syntaxTrees);
+		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
+		var declaration = syntaxTrees [0].GetRoot ()
+			.DescendantNodes ().OfType<MethodDeclarationSyntax> ()
+			.FirstOrDefault ();
+		Assert.NotNull (declaration);
+		Assert.True (Method.TryCreate (declaration, semanticModel, out var changes));
+		Assert.NotNull (changes);
+		Assert.Equal (expectedIsVariadic, changes.Value.IsVariadic);
+	}
+
+	[Theory]
+	[AllSupportedPlatforms]
+	void ToProtocolMethodTests (ApplePlatform platform)
+	{
+		var inputText = @"
+using AVFoundation;
+using Foundation;
+using ObjCBindings;
+using ObjCRuntime;
+using System.Runtime.Versioning;
+
+namespace Microsoft.Macios.Generator.Tests.Protocols.Data;
+
+[SupportedOSPlatform (""ios"")]
+[SupportedOSPlatform (""tvos"")]
+[SupportedOSPlatform (""macos"")]
+[SupportedOSPlatform (""maccatalyst13.1"")]
+[BindingType<Protocol>]
+interface IAVAudioMixing {
+
+	[Export<Method> (""destinationForMixer:bus:"")]
+	public virtual AVAudioMixingDestination? DestinationForMixer (AVAudioNode mixer, nuint bus);
+}
+";
+
+		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
+		Assert.Single (syntaxTrees);
+		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
+		var declaration = syntaxTrees [0].GetRoot ()
+			.DescendantNodes ().OfType<MethodDeclarationSyntax> ()
+			.FirstOrDefault ();
+		Assert.NotNull (declaration);
+		Assert.True (Method.TryCreate (declaration, semanticModel, out var changes));
+		Assert.NotNull (changes);
+		var protocolMethod = changes.Value.ToProtocolMethod (new ("NS.IMyProtocol"));
+		Assert.Equal ("_DestinationForMixer", protocolMethod.Name);
+		Assert.True (protocolMethod.IsStatic);
+		Assert.True (protocolMethod.IsExtension);
+	}
+
+	[Theory]
+	[AllSupportedPlatforms]
+	void ToProtocolWrapperMethodTests (ApplePlatform platform)
+	{
+		var inputText = @"
+using AVFoundation;
+using Foundation;
+using ObjCBindings;
+using ObjCRuntime;
+using System.Runtime.Versioning;
+
+namespace Microsoft.Macios.Generator.Tests.Protocols.Data;
+
+[SupportedOSPlatform (""ios"")]
+[SupportedOSPlatform (""tvos"")]
+[SupportedOSPlatform (""macos"")]
+[SupportedOSPlatform (""maccatalyst13.1"")]
+[BindingType<Protocol>]
+interface IAVAudioMixing {
+
+	[Export<Method> (""destinationForMixer:bus:"")]
+	public virtual unsafe partial AVAudioMixingDestination? DestinationForMixer (AVAudioNode mixer, nuint bus);
+}
+";
+
+		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
+		Assert.Single (syntaxTrees);
+		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
+		var declaration = syntaxTrees [0].GetRoot ()
+			.DescendantNodes ().OfType<MethodDeclarationSyntax> ()
+			.FirstOrDefault ();
+		Assert.NotNull (declaration);
+		Assert.True (Method.TryCreate (declaration, semanticModel, out var changes));
+		Assert.NotNull (changes);
+		var protocolWrapperMethod = changes.Value.ToProtocolWrapperMethod ();
+		Assert.DoesNotContain (protocolWrapperMethod.Modifiers, m => m.IsKind (SyntaxKind.VirtualKeyword));
+		Assert.DoesNotContain (protocolWrapperMethod.Modifiers, m => m.IsKind (SyntaxKind.PartialKeyword));
+		Assert.Contains (protocolWrapperMethod.Modifiers, m => m.IsKind (SyntaxKind.PublicKeyword));
+	}
+
+	[Theory]
+	[AllSupportedPlatforms]
+	void WithModifiersTests (ApplePlatform platform)
+	{
+		var inputText = @"
+using AVFoundation;
+using Foundation;
+using ObjCBindings;
+using ObjCRuntime;
+using System.Runtime.Versioning;
+
+namespace Microsoft.Macios.Generator.Tests.Protocols.Data;
+
+[SupportedOSPlatform (""ios"")]
+[SupportedOSPlatform (""tvos"")]
+[SupportedOSPlatform (""macos"")]
+[SupportedOSPlatform (""maccatalyst13.1"")]
+[BindingType<Protocol>]
+interface IAVAudioMixing {
+
+	[Export<Method> (""destinationForMixer:bus:"")]
+	public virtual unsafe partial AVAudioMixingDestination? DestinationForMixer (AVAudioNode mixer, nuint bus);
+}
+";
+
+		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
+		Assert.Single (syntaxTrees);
+		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
+		var declaration = syntaxTrees [0].GetRoot ()
+			.DescendantNodes ().OfType<MethodDeclarationSyntax> ()
+			.FirstOrDefault ();
+		Assert.NotNull (declaration);
+		Assert.True (Method.TryCreate (declaration, semanticModel, out var changes));
+		Assert.NotNull (changes);
+		var newMethod = changes.Value.WithModifiers (SyntaxKind.InternalKeyword, SyntaxKind.StaticKeyword);
+		Assert.Equal (2, newMethod.Modifiers.Length);
+		Assert.Contains (newMethod.Modifiers, m => m.IsKind (SyntaxKind.InternalKeyword));
+		Assert.Contains (newMethod.Modifiers, m => m.IsKind (SyntaxKind.StaticKeyword));
+	}
+
+	class TestDataFromMethodDeclarationToConstructor : IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
+		{
+
+			const string noFactoryMethod = @"
+using System;
+using ObjCBindings;
+using ObjCRuntime;
+
+namespace NS {
+	public class MyClass {
+
+		[Export<Method> (""initWithInputs:"", Flags = ObjCBindings.Method.Default)] 
+		public static MyClass MyFactoryMethod () { }
+	}
+}
+";
+
+			yield return [noFactoryMethod];
+
+			const string noParameter = @"
+using System;
+using ObjCBindings;
+using ObjCRuntime;
+
+namespace NS {
+	public class MyClass {
+
+		[Export<Method> (""initWithInputs:"", Flags = ObjCBindings.Method.Factory)] 
+		public static MyClass MyFactoryMethod () { }
+	}
+}
+";
+
+			yield return [noParameter];
+
+			const string singleParameter = @"
+using System;
+using ObjCBindings;
+using ObjCRuntime;
+
+namespace NS {
+	public class MyClass {
+
+		[Export<Method> (""initWithInputs:"", Flags = ObjCBindings.Method.Factory)] 
+		public static MyClass MyFactoryMethod (string[]? input) { }
+	}
+}
+";
+
+			yield return [singleParameter];
+
+			const string multiParameter = @"
+using System;
+using ObjCBindings;
+using ObjCRuntime;
+
+namespace NS {
+	public class MyClass {
+
+		[Export<Method> (""initWithInputs:other:"", Flags = ObjCBindings.Method.Factory)] 
+		public static MyClass MyFactoryMethod (string[]? input, int other) { }
+	}
+}
+";
+
+			yield return [multiParameter];
+
+			const string threadSafe = @"
+using System;
+using ObjCBindings;
+using ObjCRuntime;
+
+namespace NS {
+	public class MyClass {
+
+		[Export<Method> (""initWithInputs:"", Flags = ObjCBindings.Method.Factory | ObjCBindings.Method.IsThreadSafe)] 
+		public static MyClass MyFactoryMethod (string[]? input) { }
+	}
+}
+";
+
+			yield return [threadSafe];
+		}
+
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
+	}
+
+	[Theory]
+	[AllSupportedPlatformsClassData<TestDataFromMethodDeclarationToConstructor>]
+	void FromMethodDeclarationToConstructor (ApplePlatform platform, string inputText)
+	{
+		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
+		Assert.Single (syntaxTrees);
+		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
+		var declaration = syntaxTrees [0].GetRoot ()
+			.DescendantNodes ().OfType<MethodDeclarationSyntax> ()
+			.FirstOrDefault ();
+		Assert.NotNull (declaration);
+		Assert.True (Method.TryCreate (declaration, semanticModel, out var changes));
+		Assert.NotNull (changes);
+		var constructor = changes.Value.ToConstructor ("MyClass");
+		if (changes.Value.IsFactory) {
+			Assert.Equal ("MyClass", constructor.Type);
+			Assert.Equal (changes.Value.Selector, constructor.Selector);
+			// will compare that all parameters are the same, that is, same type, name and position
+			var parameterEqualityComparer = new MethodParameterEqualityComparer ();
+			Assert.Equal (changes.Value.Parameters, constructor.Parameters, parameterEqualityComparer);
+			Assert.Equal (changes.Value.SymbolAvailability, constructor.SymbolAvailability);
+			var modifiersComparer = new ModifiersEqualityComparer ();
+			Assert.Equal (changes.Value.Modifiers, constructor.Modifiers, modifiersComparer);
+			Assert.False (constructor.IsNullOrDefault);
+			Assert.Equal (constructor.IsThreadSafe, changes.Value.IsThreadSafe);
+		} else {
+			Assert.True (constructor.IsNullOrDefault);
+		}
+	}
+}
+

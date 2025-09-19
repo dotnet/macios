@@ -80,8 +80,10 @@ namespace CoreMedia {
 			IntPtr attchm;
 			attachmentModeOut = default;
 			unsafe {
-				attchm = CMGetAttachment (target.Handle, nsKey, (CMAttachmentMode*) Unsafe.AsPointer<CMAttachmentMode> (ref attachmentModeOut));
-				GC.KeepAlive (target);
+				fixed (CMAttachmentMode* attachmentModeOutPtr = &attachmentModeOut) {
+					attchm = CMGetAttachment (target.Handle, nsKey, attachmentModeOutPtr);
+					GC.KeepAlive (target);
+				}
 			}
 			CFString.ReleaseNative (nsKey);
 			if (attchm != IntPtr.Zero)
@@ -97,7 +99,7 @@ namespace CoreMedia {
 		///         <remarks>To be added.</remarks>
 		public static T? GetAttachment<T> (this ICMAttachmentBearer target, CMSampleBufferAttachmentKey key, out CMAttachmentMode attachmentModeOut) where T : class, INativeObject
 		{
-			return GetAttachment<T> (target, key.GetConstant (), out attachmentModeOut);
+			return GetAttachment<T> (target, key.GetConstant ()!, out attachmentModeOut);
 		}
 
 		[DllImport (Constants.CoreMediaLibrary)]

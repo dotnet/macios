@@ -191,6 +191,30 @@ namespace ObjCRuntime {
 			}
 		}
 		static bool? is_at_least_xcode_16_4;
+
+		[SupportedOSPlatformGuard ("ios26.0")]
+		[SupportedOSPlatformGuard ("maccatalyst26.0")]
+		[SupportedOSPlatformGuard ("macos26.0")]
+		[SupportedOSPlatformGuard ("tvos26.0")]
+		internal static bool IsAtLeastXcode26 {
+			get {
+				if (is_at_least_xcode_26 is null) {
+#if __MACOS__
+					is_at_least_xcode_26 = OperatingSystem.IsMacOSVersionAtLeast (26, 0);
+#elif __MACCATALYST__
+					is_at_least_xcode_26 = OperatingSystem.IsMacCatalystVersionAtLeast (26, 0);
+#elif __IOS__
+					is_at_least_xcode_26 = OperatingSystem.IsIOSVersionAtLeast (26, 0);
+#elif __TVOS__
+					is_at_least_xcode_26 = OperatingSystem.IsTvOSVersionAtLeast (26, 0);
+#else
+#error Unknown platform
+#endif
+				}
+				return is_at_least_xcode_26.Value;
+			}
+		}
+		static bool? is_at_least_xcode_26;
 	}
 }
 #endif

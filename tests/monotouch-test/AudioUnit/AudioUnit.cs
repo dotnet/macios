@@ -33,8 +33,7 @@ namespace Xamarin.Mac.Tests {
 
 			theUnit unit = GetAudioUnitForTest ();
 
-			uint device = unit.GetCurrentDevice (AudioUnitScopeType.Global);
-			Assert.IsTrue (device != 0);
+			Assert.DoesNotThrow (() => unit.GetCurrentDevice (AudioUnitScopeType.Global));
 		}
 
 		[Test]

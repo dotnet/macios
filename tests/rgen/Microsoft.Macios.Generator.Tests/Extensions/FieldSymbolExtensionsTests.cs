@@ -78,7 +78,7 @@ public enum MyEnum {
 		var fieldData = enumValue.GetFieldData ();
 		Assert.NotNull (fieldData);
 		Assert.Equal ("First", fieldData.Value.SymbolName);
-		Assert.Null (fieldData.Value.LibraryName);
+		Assert.Null (fieldData.Value.LibraryPath);
 		Assert.Equal (EnumValue.Default, fieldData.Value.Flags);
 	}
 
@@ -110,26 +110,13 @@ public enum MyEnum {
 		var fieldData = enumValue.GetFieldData ();
 		Assert.NotNull (fieldData);
 		Assert.Equal ("First", fieldData.Value.SymbolName);
-		Assert.Equal ("Lib", fieldData.Value.LibraryName);
+		Assert.Equal ("Lib", fieldData.Value.LibraryPath);
 		Assert.Equal (EnumValue.Default, fieldData.Value.Flags);
 	}
 
 	class TestDataGetFieldDataPresentAttributeNotValid : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()
 		{
-			const string missingFieldAttributes = @"
-using ObjCBindings;
-
-namespace Test;
-public enum MyEnum {
-	First,
-	Second,
-	Last,
-}
-";
-			yield return [missingFieldAttributes];
-
-
 			const string fieldWithQuotes = @"
 using ObjCBindings;
 
@@ -206,6 +193,6 @@ public enum MyEnum {
 		var enumValue = symbol.GetMembers ().FirstOrDefault () as IFieldSymbol;
 		Assert.NotNull (enumValue);
 		var fieldData = enumValue.GetFieldData ();
-		Assert.Null (fieldData);
+		Assert.NotNull (fieldData);
 	}
 }

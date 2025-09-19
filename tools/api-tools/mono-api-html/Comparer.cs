@@ -114,27 +114,19 @@ namespace Mono.ApiTools {
 
 			if (added.Any ()) {
 				foreach (var a in added) {
-					var breaking = a.StartsWith ("[System.Diagnostics.CodeAnalysis.ExperimentalAttribute");
-					diff.AppendAdded (a + "\n", breaking);
+					diff.AppendAdded (a + "\n");
 				}
 			}
 			if (modified.Any ()) {
 				foreach (var a in modified) {
-					diff.AppendModified (a.Source + "\n", a.Target + "\n", false);
+					diff.AppendModified (a.Source + "\n", a.Target + "\n");
 				}
 			}
 			if (removed.Any ()) {
 				foreach (var a in removed) {
-					diff.AppendRemoved (a + "\n", false);
+					diff.AppendRemoved (a + "\n");
 				}
 			}
-		}
-
-		protected virtual bool IsBreakingRemoval (XElement e)
-		{
-			if (e.IsExperimental ())
-				return false;
-			return true;
 		}
 
 		public State State { get; }

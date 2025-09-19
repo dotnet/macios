@@ -529,37 +529,24 @@ static partial class BindingSyntaxFactory {
 	/// <returns>A compilation unit with the desired Dlfcn call.</returns>
 	public static ExpressionSyntax GetNSObjectField (TypeSyntax nsObjectType, string libraryName, string fieldName)
 	{
-		var getIndirectArguments = new SyntaxNodeOrToken [] {
-			GetLibraryArgument (libraryName), Token (SyntaxKind.CommaToken),
-			GetLiteralExpressionArgument (SyntaxKind.StringLiteralExpression, fieldName),
-		};
+		var getIndirectArguments = ImmutableArray.Create (
+			GetLibraryArgument (libraryName),
+			GetLiteralExpressionArgument (SyntaxKind.StringLiteralExpression, fieldName)
+		);
 
-		var getIndirectInvocation = InvocationExpression (
-			MemberAccessExpression (
-				SyntaxKind.SimpleMemberAccessExpression,
-				Dlfcn,
-				IdentifierName ("GetIndirect").WithTrailingTrivia (Space)
-			)
-		).WithArgumentList (ArgumentList (SeparatedList<ArgumentSyntax> (getIndirectArguments)).NormalizeWhitespace ());
-
+		var getIndirectInvocation = MemberInvocationExpression (Dlfcn, "GetIndirect", getIndirectArguments);
 		return GetNSObject (nsObjectType, [Argument (getIndirectInvocation)], suppressNullableWarning: true);
 	}
 
 	public static ExpressionSyntax GetBlittableField (TypeSyntax blittableType, string libraryName, string fieldName)
 	{
-		var arguments = new SyntaxNodeOrToken [] {
-			GetLibraryArgument (libraryName), Token (SyntaxKind.CommaToken),
-			GetLiteralExpressionArgument (SyntaxKind.StringLiteralExpression, fieldName),
-		};
+		var arguments = ImmutableArray.Create (
+			GetLibraryArgument (libraryName),
+			GetLiteralExpressionArgument (SyntaxKind.StringLiteralExpression, fieldName)
+		);
 
 		// Dlfcn.dlsym (FOO, BAR))
-		var dlsymInvocation = InvocationExpression (
-			MemberAccessExpression (
-				SyntaxKind.SimpleMemberAccessExpression,
-				Dlfcn,
-				IdentifierName ("dlsym").WithTrailingTrivia (Space)
-			)
-		).WithArgumentList (ArgumentList (SeparatedList<ArgumentSyntax> (arguments)).NormalizeWhitespace ());
+		var dlsymInvocation = MemberInvocationExpression (Dlfcn, "dlsym", arguments);
 
 		// *((TYPE *) dlsymCall)
 		var castExpression = PrefixUnaryExpression (
@@ -683,8 +670,8 @@ static partial class BindingSyntaxFactory {
 			throw new NotSupportedException ("Cannot retrieve getter for non field property.");
 
 		// retrieve all the necessary data from the info field of the property
-		var libraryName = property.ExportFieldData.Value.LibraryName;
-		var symbolName = property.ExportFieldData.Value.FieldData.SymbolName;
+		var libraryName = property.ExportFieldData.LibraryName;
+		var symbolName = property.ExportFieldData.FieldData.SymbolName;
 		return FieldConstantGetterSetter (property).Getter (libraryName, symbolName);
 	}
 
@@ -705,8 +692,8 @@ static partial class BindingSyntaxFactory {
 			throw new NotSupportedException ("Cannot retrieve getter for non field property.");
 
 		// retrieve all the necessary data from the info field of the property
-		var libraryName = property.ExportFieldData.Value.LibraryName;
-		var symbolName = property.ExportFieldData.Value.FieldData.SymbolName;
+		var libraryName = property.ExportFieldData.LibraryName;
+		var symbolName = property.ExportFieldData.FieldData.SymbolName;
 		return FieldConstantGetterSetter (property).Setter (libraryName, symbolName, variableName);
 	}
 }

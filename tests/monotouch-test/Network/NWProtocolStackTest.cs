@@ -13,9 +13,7 @@ namespace MonoTouchFixtures.Network {
 	[TestFixture]
 	[Preserve (AllMembers = true)]
 	public class NWProtocolStackTest {
-
-		AutoResetEvent connectedEvent;  // used to let us know when the connection was established so that we can access the NWPath
-		string host;
+		ConnectionManager manager;
 		NWConnection connection;
 		NWProtocolStack stack;
 		List<NWProtocolOptions> options;
@@ -23,39 +21,18 @@ namespace MonoTouchFixtures.Network {
 		[OneTimeSetUp]
 		public void Init ()
 		{
-			TestRuntime.AssertXcodeVersion (10, 0);
-			// we want to use a single connection, since it is expensive
-			connectedEvent = new AutoResetEvent (false);
-			host = "www.google.com";
-			Exception exception = null;
-			using (var parameters = NWParameters.CreateTcp ())
-			using (var endpoint = NWEndpoint.Create (host, "80")) {
-				connection = new NWConnection (endpoint, parameters);
-				connection.SetQueue (DispatchQueue.DefaultGlobalQueue); // important, else we will get blocked
-				connection.SetStateChangeHandler ((NWConnectionState state, NWError error) => {
-					try {
-						ConnectionStateHandler (state, error);
-					} catch (Exception e) {
-						exception = e;
-					}
-				});
-				connection.Start ();
-				Assert.True (connectedEvent.WaitOne (20000), "Connection timed out.");
-				Assert.IsNull (exception, "Exception");
-				stack = parameters.ProtocolStack;
-				using (var ipOptions = stack.InternetProtocol) {
-					if (ipOptions is not null) {
-						ipOptions.SetVersion (NWIPVersion.Version4);
-						stack.PrependApplicationProtocol (ipOptions);
-					}
-				}
-			}
+			manager = new ConnectionManager (true, "www.google.com");
+			connection = manager.CreateConnection (out var parameters);
+			stack = parameters.ProtocolStack;
+			using var ipOptions = stack.InternetProtocol;
+			if (ipOptions is not null)
+				stack.PrependApplicationProtocol (ipOptions);
 		}
 
 		[OneTimeTearDown]
 		public void Dispose ()
 		{
-			connection?.Dispose ();
+			manager?.Dispose ();
 			stack?.Dispose ();
 			if (options is not null) {
 				foreach (var o in options)
@@ -67,19 +44,6 @@ namespace MonoTouchFixtures.Network {
 		public void SetUp ()
 		{
 			options = new List<NWProtocolOptions> ();
-		}
-
-		void ConnectionStateHandler (NWConnectionState state, NWError error)
-		{
-			switch (state) {
-			case NWConnectionState.Ready:
-				connectedEvent.Set ();
-				break;
-			case NWConnectionState.Invalid:
-			case NWConnectionState.Failed:
-				Assert.Inconclusive ("Network connection could not be performed.");
-				break;
-			}
 		}
 
 		[Test]

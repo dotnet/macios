@@ -2,10 +2,12 @@
 // Licensed under the MIT License.
 using System;
 using System.Collections.Immutable;
+using System.Linq;
 using System.Runtime.InteropServices;
 using Microsoft.CodeAnalysis;
-using Microsoft.Macios.Generator.Attributes;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.Macios.Generator.Availability;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Microsoft.Macios.Generator.DataModel;
 
@@ -17,12 +19,24 @@ readonly partial struct Property : IEquatable<Property> {
 	/// <summary>
 	/// Name of the property.
 	/// </summary>
-	public string Name { get; } = string.Empty;
+	public string Name { get; init; } = string.Empty;
+
+	readonly string? backingField = null;
 
 	/// <summary>
 	/// Name of the backing field.
 	/// </summary>
-	public string BackingField { get; private init; }
+	public string BackingField {
+		get {
+			if (backingField is not null)
+				return backingField;
+			// if the backing field is not set, we use the default logic.
+			return IsField ? $"_{Name}" : Nomenclator.GetPropertyBackingFieldName (Name, IsStatic);
+		}
+		init {
+			backingField = value;
+		}
+	}
 
 	readonly TypeInfo returnType;
 
@@ -52,6 +66,13 @@ readonly partial struct Property : IEquatable<Property> {
 	/// </summary>
 	public bool IsReferenceType => ReturnType.IsReferenceType;
 
+	readonly bool isStatic;
+
+	/// <summary>
+	/// Returns if the property is static.
+	/// </summary>
+	public bool IsStatic => isStatic;
+
 	/// <summary>
 	/// The platform availability of the property.
 	/// </summary>
@@ -62,10 +83,19 @@ readonly partial struct Property : IEquatable<Property> {
 	/// </summary>
 	public ImmutableArray<AttributeCodeChange> Attributes { get; } = [];
 
+
+	readonly ImmutableArray<SyntaxToken> modifiers = [];
+
 	/// <summary>
 	/// Get the modifiers of the property.
 	/// </summary>
-	public ImmutableArray<SyntaxToken> Modifiers { get; init; } = [];
+	public ImmutableArray<SyntaxToken> Modifiers {
+		get => modifiers;
+		init {
+			modifiers = value;
+			isStatic = modifiers.Any (x => x.IsKind (SyntaxKind.StaticKeyword));
+		}
+	}
 
 	/// <summary>
 	/// Get the list of accessor changes of the property.
@@ -74,14 +104,14 @@ readonly partial struct Property : IEquatable<Property> {
 
 	public Parameter ValueParameter { get; private init; }
 
-	public Accessor? GetAccessor (AccessorKind accessorKind)
+	public Accessor GetAccessor (AccessorKind accessorKind)
 	{
 		// careful, do not use FirstOrDefault from LINQ because we are using structs!
 		foreach (var accessor in Accessors) {
 			if (accessor.Kind == accessorKind)
 				return accessor;
 		}
-		return null;
+		return Accessor.Default;
 	}
 
 	bool CoreEquals (Property other)

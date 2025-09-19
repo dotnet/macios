@@ -4367,9 +4367,6 @@ namespace Intents {
 		INEndWorkoutIntentResponseCode Code { get; }
 	}
 
-	/// <summary>Defines the <see cref="Intents.IINIntentHandlerProvider" /> interface implemented by <see cref="Intents.INExtension" />.</summary>
-	/// <remarks>
-	///     </remarks>
 	[TV (14, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol]
@@ -13597,7 +13594,7 @@ namespace Intents {
 		INShortcut Shortcut { get; }
 	}
 
-	delegate void INVoiceShortcutCenterGetVoiceShortcutsHandler ([NullAllowed] INVoiceShortcut [] voiceShortcuts, NSError error);
+	delegate void INVoiceShortcutCenterGetVoiceShortcutsHandler ([NullAllowed] INVoiceShortcut [] voiceShortcuts, [NullAllowed] NSError error);
 
 	[NoTV]
 	[MacCatalyst (13, 1)]

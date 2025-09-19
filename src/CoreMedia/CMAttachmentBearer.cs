@@ -80,8 +80,10 @@ namespace CoreMedia {
 			IntPtr attchm;
 			attachmentModeOut = default;
 			unsafe {
-				attchm = CMGetAttachment (target.Handle, nsKey, (CMAttachmentMode*) Unsafe.AsPointer<CMAttachmentMode> (ref attachmentModeOut));
-				GC.KeepAlive (target);
+				fixed (CMAttachmentMode* attachmentModeOutPtr = &attachmentModeOut) {
+					attchm = CMGetAttachment (target.Handle, nsKey, attachmentModeOutPtr);
+					GC.KeepAlive (target);
+				}
 			}
 			CFString.ReleaseNative (nsKey);
 			if (attchm != IntPtr.Zero)

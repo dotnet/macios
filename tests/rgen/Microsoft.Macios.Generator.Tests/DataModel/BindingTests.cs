@@ -276,6 +276,7 @@ public class TestClass {
 			EnumMembers = [
 				new (
 					name: "BuiltInMicrophone",
+					index: 0,
 					libraryName: "AVCaptureDeviceTypeBuiltInMicrophone",
 					libraryPath: null,
 					fieldData: new (presentSelector),

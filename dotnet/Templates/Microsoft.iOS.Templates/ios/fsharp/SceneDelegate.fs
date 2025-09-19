@@ -12,11 +12,31 @@
     member val Window : UIWindow = null with get, set
 
     [<Export("scene:willConnectToSession:options:")>]
-    member _.WillConnect(scene: UIScene, session: UISceneSession, connectionOptions: UISceneConnectionOptions) =
+    member this.WillConnect(scene: UIScene, session: UISceneSession, connectionOptions: UISceneConnectionOptions) =
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
-        // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
+        // Since we are not using a storyboard, the `window` property needs to be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see UIApplicationDelegate `GetConfiguration` instead).
-        ()
+        match scene with
+        | :? UIWindowScene as windowScene ->
+            if isNull this.Window then
+                this.Window <- new UIWindow(windowScene)
+            
+            // create a UIViewController with a single UILabel
+            let vc = new UIViewController()
+            vc.View.AddSubview(
+                new UILabel(
+                    this.Window.Frame,
+                    BackgroundColor = UIColor.SystemBackground,
+                    TextAlignment = UITextAlignment.Center,
+                    Text = "Hello, iOS!",
+                    AutoresizingMask = UIViewAutoresizing.All
+                )
+            )
+            this.Window.RootViewController <- vc
+
+            // make the window visible
+            this.Window.MakeKeyAndVisible()
+        | _ -> ()
 
 
     [<Export("sceneDidDisconnect:")>]

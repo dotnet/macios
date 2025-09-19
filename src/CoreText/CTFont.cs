@@ -2515,7 +2515,8 @@ namespace CoreText {
 			try {
 				IntPtr handle;
 				unsafe {
-					handle = CTFontCreateWithName (n, size, (CGAffineTransform*) Unsafe.AsPointer<CGAffineTransform> (ref matrix));
+					fixed (CGAffineTransform* matrixPtr = &matrix)
+						handle = CTFontCreateWithName (n, size, matrixPtr);
 				}
 				if (handle == IntPtr.Zero)
 					throw ConstructorError.Unknown (typeof (CTFont));
@@ -2558,8 +2559,10 @@ namespace CoreText {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (descriptor));
 			IntPtr handle;
 			unsafe {
-				handle = CTFontCreateWithFontDescriptor (descriptor.Handle, size, (CGAffineTransform*) Unsafe.AsPointer<CGAffineTransform> (ref matrix));
-				GC.KeepAlive (descriptor);
+				fixed (CGAffineTransform* matrixPtr = &matrix) {
+					handle = CTFontCreateWithFontDescriptor (descriptor.Handle, size, matrixPtr);
+					GC.KeepAlive (descriptor);
+				}
 			}
 			if (handle == IntPtr.Zero)
 				throw ConstructorError.Unknown (typeof (CTFont));
@@ -2613,7 +2616,9 @@ namespace CoreText {
 			try {
 				IntPtr handle;
 				unsafe {
-					handle = CTFontCreateWithNameAndOptions (n, size, (CGAffineTransform*) Unsafe.AsPointer<CGAffineTransform> (ref matrix), (nuint) (ulong) options);
+					fixed (CGAffineTransform* matrixPtr = &matrix) {
+						handle = CTFontCreateWithNameAndOptions (n, size, matrixPtr, (nuint) (ulong) options);
+					}
 				}
 				if (handle == IntPtr.Zero)
 					throw ConstructorError.Unknown (typeof (CTFont));
@@ -2668,8 +2673,10 @@ namespace CoreText {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (descriptor));
 			IntPtr handle;
 			unsafe {
-				handle = CTFontCreateWithFontDescriptorAndOptions (descriptor.Handle, size, (CGAffineTransform*) Unsafe.AsPointer<CGAffineTransform> (ref matrix), (nuint) (ulong) options);
-				GC.KeepAlive (descriptor);
+				fixed (CGAffineTransform* matrixPtr = &matrix) {
+					handle = CTFontCreateWithFontDescriptorAndOptions (descriptor.Handle, size, matrixPtr, (nuint) (ulong) options);
+					GC.KeepAlive (descriptor);
+				}
 			}
 			if (handle == IntPtr.Zero)
 				throw ConstructorError.Unknown (typeof (CTFont));
@@ -2794,9 +2801,11 @@ namespace CoreText {
 		public CTFont? WithAttributes (nfloat size, CTFontDescriptor attributes, ref CGAffineTransform matrix)
 		{
 			unsafe {
-				CTFont? result = CreateFont (CTFontCreateCopyWithAttributes (Handle, size, (CGAffineTransform*) Unsafe.AsPointer<CGAffineTransform> (ref matrix), attributes.GetHandle ()));
-				GC.KeepAlive (attributes);
-				return result;
+				fixed (CGAffineTransform* matrixPtr = &matrix) {
+					CTFont? result = CreateFont (CTFontCreateCopyWithAttributes (Handle, size, matrixPtr, attributes.GetHandle ()));
+					GC.KeepAlive (attributes);
+					return result;
+				}
 			}
 		}
 
@@ -2812,7 +2821,9 @@ namespace CoreText {
 		public CTFont? WithSymbolicTraits (nfloat size, CTFontSymbolicTraits symTraitValue, CTFontSymbolicTraits symTraitMask, ref CGAffineTransform matrix)
 		{
 			unsafe {
-				return CreateFont (CTFontCreateCopyWithSymbolicTraits (Handle, size, (CGAffineTransform*) Unsafe.AsPointer<CGAffineTransform> (ref matrix), symTraitValue, symTraitMask));
+				fixed (CGAffineTransform* matrixPtr = &matrix) {
+					return CreateFont (CTFontCreateCopyWithSymbolicTraits (Handle, size, matrixPtr, symTraitValue, symTraitMask));
+				}
 			}
 		}
 
@@ -2839,7 +2850,9 @@ namespace CoreText {
 			var n = CFString.CreateNative (family);
 			try {
 				unsafe {
-					return CreateFont (CTFontCreateCopyWithFamily (Handle, size, (CGAffineTransform*) Unsafe.AsPointer<CGAffineTransform> (ref matrix), n));
+					fixed (CGAffineTransform* matrixPtr = &matrix) {
+						return CreateFont (CTFontCreateCopyWithFamily (Handle, size, matrixPtr, n));
+					}
 				}
 			} finally {
 				CFString.ReleaseNative (n);
@@ -3396,7 +3409,9 @@ namespace CoreText {
 		{
 			IntPtr h;
 			unsafe {
-				h = CTFontCreatePathForGlyph (Handle, glyph, (CGAffineTransform*) Unsafe.AsPointer<CGAffineTransform> (ref transform));
+				fixed (CGAffineTransform* transformPtr = &transform) {
+					h = CTFontCreatePathForGlyph (Handle, glyph, transformPtr);
+				}
 			}
 			if (h == IntPtr.Zero)
 				return null;

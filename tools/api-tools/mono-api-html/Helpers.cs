@@ -47,18 +47,6 @@ namespace Mono.ApiTools {
 			return n.Value;
 		}
 
-		// if this member/type or potentially any of its parents is marked as experimental
-		public static bool IsExperimental (this XElement self, bool recursive, out string diagnosticId)
-		{
-			return TryGetAttributeProperty (self, "System.Diagnostics.CodeAnalysis.ExperimentalAttribute", recursive, out diagnosticId);
-		}
-
-		// if this member/type or any of its parents is marked as experimental
-		public static bool IsExperimental (this XElement self)
-		{
-			return IsExperimental (self, true, out var _);
-		}
-
 		public static IEnumerable<XElement> EnumerateAttributes (this XElement self, string attributeName = null)
 		{
 			if (self is null)

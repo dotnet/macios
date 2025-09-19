@@ -45,7 +45,7 @@ resources:
     - repository: yaml-templates
       type: git
       name: xamarin.yaml-templates
-      ref: refs/heads/dev/alex/macios-temp
+      ref: refs/heads/main
 
     - repository: macios-adr
       type: git
@@ -128,7 +128,7 @@ extends:
     stages:
       - template: templates/main-stage.yml
         parameters:
-          xcodeChannel: Stable
+          xcodeChannel: $(xcodeChannel)
           macOSName: ${{ parameters.macOSName }}
           isPR: false
           provisionatorChannel: ${{ parameters.provisionatorChannel }}

@@ -90,7 +90,7 @@ readonly partial struct Binding {
 		var bindingType = HasErrorDomainAttribute ? BindingType.SmartEnum : BindingType.Unknown;
 		var bucket = ImmutableArray.CreateBuilder<EnumMember> ();
 		var enumValueDeclarations = enumDeclaration.Members.OfType<EnumMemberDeclarationSyntax> ();
-		foreach (var enumValueDeclaration in enumValueDeclarations) {
+		foreach (var (index, enumValueDeclaration) in enumValueDeclarations.Index ()) {
 			if (context.SemanticModel.GetDeclaredSymbol (enumValueDeclaration) is not IFieldSymbol enumValueSymbol) {
 				continue;
 			}
@@ -106,6 +106,7 @@ readonly partial struct Binding {
 				}
 				enumMember = new EnumMember (
 					name: enumValueDeclaration.Identifier.ToFullString ().Trim (),
+		  index: (uint) index,
 					libraryName: string.Empty,
 					libraryPath: null,
 					fieldData: enumValueSymbol.GetFieldData (),
@@ -120,6 +121,7 @@ readonly partial struct Binding {
 				bindingType = BindingType.SmartEnum;
 				enumMember = new EnumMember (
 					name: enumValueDeclaration.Identifier.ToFullString ().Trim (),
+		  index: (uint) index,
 					libraryName: libraryName,
 					libraryPath: libraryPath,
 					fieldData: enumValueSymbol.GetFieldData (),

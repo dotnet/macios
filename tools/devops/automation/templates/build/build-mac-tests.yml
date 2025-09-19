@@ -33,6 +33,9 @@ parameters:
 - name: use1ES
   type: boolean
 
+- name: XcodeChannel
+  type: string
+
 steps:
 - template: build.yml
   parameters:
@@ -44,6 +47,7 @@ steps:
     gitHubToken: ${{ parameters.gitHubToken }}
     xqaCertPass: ${{ parameters.xqaCertPass }}
     use1ES: ${{ parameters.use1ES }}
+    xcodeChannel: ${{ parameters.xcodeChannel }}
     buildSteps:
 
     - bash: |

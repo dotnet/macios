@@ -1270,13 +1270,15 @@ namespace AudioToolbox {
 		{
 			OSStatus r;
 			fixed (AudioStreamPacketDescription* pdesc = descriptions) {
-				r = AudioFileReadPacketData (Handle,
-						useCache ? (byte) 1 : (byte) 0,
-						(int*) Unsafe.AsPointer<int> (ref count),
-						pdesc,
-						inStartingPacket,
-						(int*) Unsafe.AsPointer<int> (ref nPackets),
-						buffer);
+				fixed (int* countPtr = &count, nPacketsPtr = &nPackets) {
+					r = AudioFileReadPacketData (Handle,
+							useCache ? (byte) 1 : (byte) 0,
+							countPtr,
+							pdesc,
+							inStartingPacket,
+							nPacketsPtr,
+							buffer);
+				}
 			}
 
 			error = (AudioFileError) r;
@@ -1556,8 +1558,95 @@ namespace AudioToolbox {
 
 			unsafe {
 				fixed (AudioStreamPacketDescription* packetDescriptionsPtr = packetDescriptions) {
-					return AudioFileWritePackets (Handle, useCache ? (byte) 1 : (byte) 0, numBytes, packetDescriptionsPtr, startingPacket, (int*) Unsafe.AsPointer<int> (ref numPackets), buffer);
+					fixed (int* numPacketsPtr = &numPackets) {
+						return AudioFileWritePackets (Handle, useCache ? (byte) 1 : (byte) 0, numBytes, packetDescriptionsPtr, startingPacket, numPacketsPtr, buffer);
+					}
 				}
+			}
+		}
+
+		[SupportedOSPlatform ("ios26.0")]
+		[SupportedOSPlatform ("tvos26.0")]
+		[SupportedOSPlatform ("maccatalyst26.0")]
+		[SupportedOSPlatform ("macos26.0")]
+		[DllImport (Constants.AudioToolboxLibrary)]
+		unsafe extern static /* OSStatus */ AudioFileError AudioFileWritePacketsWithDependencies (
+			AudioFileID inAudioFile,
+			byte /* Boolean */ inUseCache,
+			uint /* UInt32 */ inNumBytes,
+			AudioStreamPacketDescription* /* const AudioStreamPacketDescription * __nullable */ inPacketDescriptions,
+			AudioStreamPacketDependencyDescription* /* const AudioStreamPacketDependencyDescription * */ inPacketDependencies,
+			long /* SInt64 */ inStartingPacket,
+			uint* /* UInt32 * */ ioNumPackets,
+			IntPtr /* const void * */inBuffer);
+
+		/// <summary>Writes audio packets to the file.</summary>
+		/// <param name="useCache">Whether the data should be kept in the cache.</param>
+		/// <param name="packetDescriptions">An array of packet descriptions that describe the content of the buffer.</param>
+		/// <param name="packetDependencies">An array of packet dependencies for the audio data.</param>
+		/// <param name="startingPacket">The index the first packet in the buffer to write.</param>
+		/// <param name="numPackets">The number of packets to write replaced with the number of packets actually written.</param>
+		/// <param name="buffer">The buffer containing the audio data to write.</param>
+		/// <param name="numBytes">The number of bytes to write.</param>
+		/// <returns><see cref="AudioFileError.Success" /> if successful, otherwise a status error code.</returns>
+		[SupportedOSPlatform ("ios26.0")]
+		[SupportedOSPlatform ("tvos26.0")]
+		[SupportedOSPlatform ("maccatalyst26.0")]
+		[SupportedOSPlatform ("macos26.0")]
+		public AudioFileError WritePackets (bool useCache, AudioStreamPacketDescription []? packetDescriptions, AudioStreamPacketDependencyDescription [] packetDependencies, long startingPacket, ref int numPackets, IntPtr buffer, int numBytes)
+		{
+			if (buffer == IntPtr.Zero)
+				throw new ArgumentException (nameof (buffer));
+
+			if (packetDependencies is null)
+				ThrowHelper.ThrowArgumentNullException (nameof (packetDependencies));
+
+			unsafe {
+				fixed (AudioStreamPacketDescription* packetDescriptionsPtr = packetDescriptions) {
+					fixed (AudioStreamPacketDependencyDescription* packetDependenciesPtr = packetDependencies) {
+						fixed (int* numPacketsPtr = &numPackets) {
+							return AudioFileWritePacketsWithDependencies (
+								GetCheckedHandle (),
+								useCache.AsByte (),
+								(uint) numBytes,
+								packetDescriptionsPtr,
+								packetDependenciesPtr,
+								startingPacket,
+								(uint*) numPacketsPtr,
+								buffer);
+						}
+					}
+				}
+			}
+		}
+
+		/// <summary>Writes audio packets to the file.</summary>
+		/// <param name="useCache">Whether the data should be kept in the cache.</param>
+		/// <param name="numBytes">The number of bytes to write.</param>
+		/// <param name="packetDescriptions">An array of packet descriptions that describe the content of the buffer.</param>
+		/// <param name="packetDependencies">An array of packet dependencies for the audio data.</param>
+		/// <param name="startingPacket">The index the first packet in the buffer to write.</param>
+		/// <param name="numPackets">The number of packets to write replaced with the number of packets actually written.</param>
+		/// <param name="buffer">The buffer containing the audio data to write.</param>
+		/// <param name="offset">An offset into <paramref name="buffer" /> where the audio data to write starts.</param>
+		/// <returns><see cref="AudioFileError.Success" /> if successful, otherwise a status error code.</returns>
+		[SupportedOSPlatform ("ios26.0")]
+		[SupportedOSPlatform ("tvos26.0")]
+		[SupportedOSPlatform ("maccatalyst26.0")]
+		[SupportedOSPlatform ("macos26.0")]
+		public AudioFileError WritePackets (bool useCache, AudioStreamPacketDescription []? packetDescriptions, AudioStreamPacketDependencyDescription [] packetDependencies, long startingPacket, ref int numPackets, byte [] buffer, int offset, int numBytes)
+		{
+			if (buffer is null)
+				ThrowHelper.ThrowArgumentNullException (nameof (buffer));
+			if (offset < 0)
+				throw new ArgumentOutOfRangeException (nameof (offset), "< 0");
+			if (numBytes < 0)
+				throw new ArgumentOutOfRangeException (nameof (numBytes), "< 0");
+			if (offset > buffer.Length - numBytes)
+				throw new ArgumentException ("Reading would overrun buffer");
+			unsafe {
+				fixed (byte* bufferPtr = &buffer [offset])
+					return WritePackets (useCache, packetDescriptions, packetDependencies, startingPacket, ref numPackets, (IntPtr) bufferPtr, numBytes);
 			}
 		}
 
@@ -1632,7 +1721,8 @@ namespace AudioToolbox {
 		{
 			size = 0;
 			unsafe {
-				return (AudioFileError) AudioFileGetUserDataSize64 (Handle, userDataId, index, (ulong*) Unsafe.AsPointer<ulong> (ref size));
+				fixed (ulong* sizePtr = &size)
+					return (AudioFileError) AudioFileGetUserDataSize64 (Handle, userDataId, index, sizePtr);
 			}
 		}
 
@@ -1666,7 +1756,8 @@ namespace AudioToolbox {
 #endif
 		{
 			unsafe {
-				return AudioFileGetUserData (Handle, userDataID, index, (int*) Unsafe.AsPointer<int> (ref size), userData);
+				fixed (int* sizePtr = &size)
+					return AudioFileGetUserData (Handle, userDataID, index, sizePtr, userData);
 			}
 		}
 
@@ -1702,7 +1793,8 @@ namespace AudioToolbox {
 		public AudioFileError GetUserData (uint userDataId, int index, long offset, ref int size, IntPtr userData)
 		{
 			unsafe {
-				return (AudioFileError) AudioFileGetUserDataAtOffset (Handle, userDataId, index, offset, (int*) Unsafe.AsPointer<int> (ref size), userData);
+				fixed (int* sizePtr = &size)
+					return (AudioFileError) AudioFileGetUserDataAtOffset (Handle, userDataId, index, offset, sizePtr, userData);
 			}
 		}
 
@@ -1848,7 +1940,9 @@ namespace AudioToolbox {
 			size = default;
 			writable = default;
 			unsafe {
-				error = AudioFileGetPropertyInfo (Handle, property, (int*) Unsafe.AsPointer<int> (ref size), (int*) Unsafe.AsPointer<int> (ref writable));
+				fixed (int* sizePtr = &size, writablePtr = &writable) {
+					error = AudioFileGetPropertyInfo (Handle, property, sizePtr, writablePtr);
+				}
 			}
 			return error == AudioFileError.Success;
 		}
@@ -1876,7 +1970,8 @@ namespace AudioToolbox {
 			size = default;
 
 			unsafe {
-				error = AudioFileGetPropertyInfo (Handle, property, (int*) Unsafe.AsPointer<int> (ref size), &writableValue);
+				fixed (int* sizePtr = &size)
+					error = AudioFileGetPropertyInfo (Handle, property, sizePtr, &writableValue);
 			}
 			writable = writableValue != 0;
 
@@ -1905,7 +2000,8 @@ namespace AudioToolbox {
 		public bool GetProperty (AudioFileProperty property, ref int dataSize, IntPtr outdata)
 		{
 			unsafe {
-				return AudioFileGetProperty (Handle, property, (int*) Unsafe.AsPointer<int> (ref dataSize), outdata) == 0;
+				fixed (int* dataSizePtr = &dataSize)
+					return AudioFileGetProperty (Handle, property, dataSizePtr, outdata) == 0;
 			}
 		}
 
@@ -1924,9 +2020,11 @@ namespace AudioToolbox {
 				return IntPtr.Zero;
 
 			unsafe {
-				var rv = AudioFileGetProperty (Handle, property, (int*) Unsafe.AsPointer<int> (ref size), buffer);
-				if (rv == 0)
-					return buffer;
+				fixed (int* sizePtr = &size) {
+					var rv = AudioFileGetProperty (Handle, property, sizePtr, buffer);
+					if (rv == 0)
+						return buffer;
+				}
 			}
 			Marshal.FreeHGlobal (buffer);
 			return IntPtr.Zero;

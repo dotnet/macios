@@ -988,7 +988,8 @@ namespace Security {
 		[ObsoletedOSPlatform ("ios15.0", "Use 'CreateEncryptedData' instead.")]
 		public unsafe SecStatusCode Encrypt (SecPadding padding, IntPtr plainText, nint plainTextLen, IntPtr cipherText, ref nint cipherTextLen)
 		{
-			return SecKeyEncrypt (GetCheckedHandle (), padding, plainText, plainTextLen, cipherText, (nint*) Unsafe.AsPointer<nint> (ref cipherTextLen));
+			fixed (nint* cipherTextLenPtr = &cipherTextLen)
+				return SecKeyEncrypt (GetCheckedHandle (), padding, plainText, plainTextLen, cipherText, cipherTextLenPtr);
 		}
 
 		/// <param name="padding">To be added.</param>
@@ -1072,7 +1073,8 @@ namespace Security {
 		[ObsoletedOSPlatform ("ios15.0", "Use 'CreateDecryptedData' instead.")]
 		public unsafe SecStatusCode Decrypt (SecPadding padding, IntPtr cipherText, nint cipherTextLen, IntPtr plainText, ref nint plainTextLen)
 		{
-			return SecKeyDecrypt (GetCheckedHandle (), padding, cipherText, cipherTextLen, plainText, (nint*) Unsafe.AsPointer<nint> (ref plainTextLen));
+			fixed (nint* plainTextLenPtr = &plainTextLen)
+				return SecKeyDecrypt (GetCheckedHandle (), padding, cipherText, cipherTextLen, plainText, plainTextLenPtr);
 		}
 
 		[SupportedOSPlatform ("ios")]

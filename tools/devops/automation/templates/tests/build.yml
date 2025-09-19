@@ -235,13 +235,14 @@ steps:
     set -e
     ARGS=()
     ARGS+=(--provision-simulators)
+    ARGS+=(--provision-xcode-components)
     if [[ "$XCODE_CHANNEL" == "Beta" ]]; then
       ARGS+=(--provision-old-simulators)
     fi
     ARGS+=(--ignore-shellcheck)
     ARGS+=(--ignore-yamllint)
     $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/system-dependencies.sh "${ARGS[@]}"
-  displayName: 'Provision simulators'
+  displayName: 'Provision dependencies'
   timeoutInMinutes: 250
   env:
     XCODE_CHANNEL: ${{ parameters.XcodeChannel }}

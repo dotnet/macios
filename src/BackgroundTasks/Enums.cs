@@ -22,5 +22,6 @@ namespace BackgroundTasks {
 		Unavailable = 1,
 		TooManyPendingTaskRequests = 2,
 		NotPermitted = 3,
+		ImmediateRunIneligible = 4,
 	}
 }

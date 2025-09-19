@@ -84,52 +84,39 @@ namespace MetalPerformanceShaders {
 			return size;
 		}
 
-		// TODO: Disabled due to 'MPSImageBatchIterate' is not in the native library rdar://47282304.
-		//[DllImport (Constants.MetalPerformanceShadersLibrary)]
-		//static extern nint MPSImageBatchIterate (IntPtr batch, IntPtr iterator);
+		[DllImport (Constants.MetalPerformanceShadersLibrary)]
+		unsafe static extern nint MPSImageBatchIterate (IntPtr batch, BlockLiteral* iterator);
 
-		//public delegate nint MPSImageBatchIterator (MPSImage image, nuint index);
+		public delegate nint MPSImageBatchIterator (MPSImage image, nuint index);
 
-		//[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
-		//internal delegate nint DMPSImageBatchIterator (IntPtr block, IntPtr image, nuint index);
+		[UnmanagedCallersOnly]
+		static unsafe nint InvokeIterator (IntPtr block, IntPtr image, nuint index)
+		{
+			var del = (MPSImageBatchIterator) BlockLiteral.GetTarget<MPSImageBatchIterator> (block);
+			if (del is not null) {
+				using var img = Runtime.GetNSObject<MPSImage> (image)!;
+				return del (img, index);
+			}
+			return 0;
+		}
 
-		//// This class bridges native block invocations that call into C#
-		//static internal class MPSImageBatchIteratorTrampoline {
-		//	static internal readonly DMPSImageBatchIterator Handler = Invoke;
+		/// <summary>Iterate over the unique images in the image batch.</summary>
+		/// <param name="imageBatch">The batch of images to iterate over.</param>
+		/// <param name="iterator">The callback to call for each unique image.</param>
+		/// <returns>The value returned by the callback for the last image iterated over.</returns>
+		[BindingImpl (BindingImplOptions.Optimizable)]
+		public static nint Iterate (NSArray<MPSImage> imageBatch, MPSImageBatchIterator iterator)
+		{
+			if (iterator is null)
+				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (iterator));
 
-		//	[MonoPInvokeCallback (typeof (DMPSImageBatchIterator))]
-		//	static unsafe nint Invoke (IntPtr block, IntPtr image, nuint index)
-		//	{
-		//		var descriptor = (BlockLiteral *) block;
-		//		var del = (MPSImageBatchIterator) descriptor->Target;
-		//		nint retval;
-		//		using (var img = Runtime.GetNSObject<MPSImage> (image)) {
-		//			retval = del (img, index);
-		//		}
-		//		return retval;
-		//	}
-		//}
-
-		//[BindingImpl (BindingImplOptions.Optimizable)]
-		//public static nint Iterate (NSArray<MPSImage> imageBatch, MPSImageBatchIterator iterator)
-		//{
-		//	if (imageBatch is null)
-		//		ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (imageBatch));
-		//	if (iterator is null)
-		//		ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (iterator));
-		//	unsafe {
-		//		BlockLiteral* block_ptr_iterator;
-		//		BlockLiteral block_iterator;
-		//		block_iterator = new BlockLiteral ();
-		//		block_ptr_iterator = &block_iterator;
-		//		block_iterator.SetupBlockUnsafe (MPSImageBatchIteratorTrampoline.Handler, iterator);
-
-		//		nint ret = MPSImageBatchIterate (imageBatch.Handle, (IntPtr) block_ptr_iterator);
-
-		//		block_ptr_iterator->CleanupBlock ();
-
-		//		return ret;
-		//	}
-		//}
+			unsafe {
+				delegate* unmanaged<IntPtr, IntPtr, nuint, nint> trampoline = &InvokeIterator;
+				using var block = new BlockLiteral (trampoline, iterator, typeof (MPSImageBatch), nameof (InvokeIterator));
+				var rv = MPSImageBatchIterate (imageBatch.GetNonNullHandle (nameof (imageBatch)), &block);
+				GC.KeepAlive (imageBatch);
+				return rv;
+			}
+		}
 	}
 }

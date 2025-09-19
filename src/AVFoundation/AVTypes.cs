@@ -6,6 +6,7 @@ using Vector3 = global::System.Numerics.Vector3;
 #endif // !COREBUILD
 using CoreGraphics;
 using ObjCRuntime;
+using CoreMedia;
 
 #nullable enable
 
@@ -880,4 +881,174 @@ namespace AVFoundation {
 			=> AVCaptionSizeMake (width, height);
 	}
 #endif // __TVOS__
+
+	/// <summary>Represents a timecode structure adhering to SMPTE standards for precise time information and synchronization.</summary>
+	/// <remarks>This structure corresponds to the SMPTE 12M-1 Linear Timecode (LTC) format.</remarks>
+	[SupportedOSPlatform ("ios26.0")]
+	[SupportedOSPlatform ("maccatalyst26.0")]
+	[SupportedOSPlatform ("macos26.0")]
+	[SupportedOSPlatform ("tvos26.0")]
+	[StructLayout (LayoutKind.Sequential)]
+	public struct AVCaptureTimecode
+#if !COREBUILD
+	: IEquatable<AVCaptureTimecode>
+#endif
+	{
+		/* uint8_t */
+		byte hours;
+		/* uint8_t */
+		byte minutes;
+		/* uint8_t */
+		byte seconds;
+		/* uint8_t */
+		byte frames;
+		/* uint32_t */
+		uint userBits;
+		CMTime frameDuration;
+		nuint sourceType;
+
+		/// <summary>Gets or sets the hour component of the timecode.</summary>
+		/// <value>The hour value of the current timecode.</value>
+		public byte Hours {
+			get => hours;
+			set => hours = value;
+		}
+
+		/// <summary>Gets or sets the minute component of the timecode.</summary>
+		/// <value>The minute value of the current timecode.</value>
+		public byte Minutes {
+			get => minutes;
+			set => minutes = value;
+		}
+
+		/// <summary>Gets or sets the second component of the timecode.</summary>
+		/// <value>The second value of the current timecode.</value>
+		public byte Seconds {
+			get => seconds;
+			set => seconds = value;
+		}
+
+		/// <summary>Gets or sets the frame component of the timecode.</summary>
+		/// <value>The frame count within the current second.</value>
+		public byte Frames {
+			get => frames;
+			set => frames = value;
+		}
+
+		/// <summary>Gets or sets the SMPTE user bits field.</summary>
+		/// <value>A field carrying additional metadata such as scene-take information, reel numbers, or dates.</value>
+		/// <remarks>The exact usage of user bits is application-dependent and not strictly standardized by SMPTE.</remarks>
+		public uint UserBits {
+			get => userBits;
+			set => userBits = value;
+		}
+
+		/// <summary>Gets or sets the frame duration of the timecode.</summary>
+		/// <value>The duration of each frame. If unknown, the value is <see cref="CMTime.Invalid" />.</value>
+		public CMTime FrameDuration {
+			get => frameDuration;
+			set => frameDuration = value;
+		}
+
+#if !COREBUILD
+		/// <summary>Gets or sets the source type of the timecode.</summary>
+		/// <value>The type indicating the emitter, carriage, or transport mechanism of the timecode.</value>
+		public AVCaptureTimecodeSourceType SourceType {
+			get => (AVCaptureTimecodeSourceType) (long) sourceType;
+			set => sourceType = (nuint) (long) value;
+		}
+
+		/// <summary>Initializes a new instance of the AVCaptureTimecode structure.</summary>
+		/// <param name="hours">The hour component of the timecode.</param>
+		/// <param name="minutes">The minute component of the timecode.</param>
+		/// <param name="seconds">The second component of the timecode.</param>
+		/// <param name="frames">The frame component of the timecode.</param>
+		/// <param name="userBits">The SMPTE user bits for additional metadata.</param>
+		/// <param name="frameDuration">The duration of each frame.</param>
+		/// <param name="sourceType">The source type of the timecode.</param>
+		public AVCaptureTimecode (byte hours, byte minutes, byte seconds, byte frames, uint userBits, CMTime frameDuration, AVCaptureTimecodeSourceType sourceType)
+		{
+			Hours = hours;
+			Minutes = minutes;
+			Seconds = seconds;
+			Frames = frames;
+			UserBits = userBits;
+			FrameDuration = frameDuration;
+			SourceType = sourceType;
+		}
+
+		// CMSampleBufferRef _Nullable AVCaptureTimecodeCreateMetadataSampleBufferAssociatedWithPresentationTimeStamp(AVCaptureTimecode timecode, CMTime presentationTimeStamp)
+		[DllImport (Constants.AVFoundationLibrary)]
+		static extern IntPtr /* CMSampleBufferRef */ AVCaptureTimecodeCreateMetadataSampleBufferAssociatedWithPresentationTimeStamp (AVCaptureTimecode timecode, CMTime presentationTimeStamp);
+
+		/// <summary>Creates a sample buffer containing timecode metadata associated with a presentation timestamp.</summary>
+		/// <param name="presentationTimeStamp">The presentation time stamp that determines when the metadata should be applied in the media timeline.</param>
+		/// <returns>A sample buffer with encoded timecode metadata for video synchronization, or <see langword="null" /> if creation fails.</returns>
+		/// <remarks>This method creates a <see cref="CMSampleBuffer" /> with metadata for integration with a video track at a specific moment in time.</remarks>
+		public CMSampleBuffer? CreateMetadataSampleBufferAssociatedWithPresentationTimeStamp (CMTime presentationTimeStamp)
+		{
+			var ptr = AVCaptureTimecodeCreateMetadataSampleBufferAssociatedWithPresentationTimeStamp (this, presentationTimeStamp);
+			return CMSampleBuffer.Create (ptr, owns: true);
+		}
+
+		// CMSampleBufferRef _Nullable AVCaptureTimecodeCreateMetadataSampleBufferForDuration(AVCaptureTimecode timecode, CMTime duration)
+		[DllImport (Constants.AVFoundationLibrary)]
+		static extern IntPtr /* CMSampleBufferRef */ AVCaptureTimecodeCreateMetadataSampleBufferForDuration (AVCaptureTimecode timecode, CMTime duration);
+
+		/// <summary>Creates a sample buffer containing timecode metadata for a specified duration.</summary>
+		/// <param name="duration">The duration that the metadata sample buffer should represent.</param>
+		/// <returns>A sample buffer with encoded timecode metadata for the given duration, or <see langword="null" /> if creation fails.</returns>
+		/// <remarks>Use this method for scenarios where timecode metadata needs to span a custom interval rather than a single frame.</remarks>
+		public CMSampleBuffer? CreateMetadataSampleBufferForDuration (CMTime duration)
+		{
+			var ptr = AVCaptureTimecodeCreateMetadataSampleBufferForDuration (this, duration);
+			return CMSampleBuffer.Create (ptr, owns: true);
+		}
+
+		// AVCaptureTimecode AVCaptureTimecodeAdvancedByFrames(AVCaptureTimecode timecode, int64_t framesToAdd)
+		[DllImport (Constants.AVFoundationLibrary)]
+		static extern AVCaptureTimecode AVCaptureTimecodeAdvancedByFrames (AVCaptureTimecode timecode, long framesToAdd);
+
+		/// <summary>Generates a new timecode by adding a specified number of frames to this timecode.</summary>
+		/// <param name="framesToAdd">The number of frames to add to the timecode.</param>
+		/// <returns>A new timecode with the updated time values after adding the specified frames.</returns>
+		/// <remarks>This method handles overflow for seconds, minutes, and hours appropriately.</remarks>
+		public AVCaptureTimecode AddFrames (long framesToAdd) => AVCaptureTimecodeAdvancedByFrames (this, framesToAdd);
+
+		/// <summary>Determines whether two timecode instances are equal.</summary>
+		/// <param name="left">The first timecode to compare.</param>
+		/// <param name="right">The second timecode to compare.</param>
+		/// <returns>True if the timecodes are equal; otherwise, false.</returns>
+		public static bool operator == (AVCaptureTimecode left, AVCaptureTimecode right) => left.Equals (right);
+
+		/// <summary>Determines whether two timecode instances are not equal.</summary>
+		/// <param name="left">The first timecode to compare.</param>
+		/// <param name="right">The second timecode to compare.</param>
+		/// <returns>True if the timecodes are not equal; otherwise, false.</returns>
+		public static bool operator != (AVCaptureTimecode left, AVCaptureTimecode right) => !left.Equals (right);
+
+		/// <summary>Determines whether this timecode is equal to the specified object.</summary>
+		/// <param name="obj">The object to compare with this timecode.</param>
+		/// <returns>True if the specified object is equal to this timecode; otherwise, false.</returns>
+		public override bool Equals (object? obj) => obj is AVCaptureTimecode other && Equals (other);
+
+		/// <summary>Determines whether this timecode is equal to another timecode.</summary>
+		/// <param name="other">The other timecode to compare with this timecode.</param>
+		/// <returns>True if the timecodes are equal; otherwise, false.</returns>
+		public bool Equals (AVCaptureTimecode other)
+		{
+			return Hours == other.Hours
+				&& Minutes == other.Minutes
+				&& Seconds == other.Seconds
+				&& Frames == other.Frames
+				&& UserBits == other.UserBits
+				&& FrameDuration.Equals (other.FrameDuration)
+				&& SourceType == other.SourceType;
+		}
+
+		/// <summary>Returns the hash code for this timecode.</summary>
+		/// <returns>A hash code for the current timecode.</returns>
+		public override int GetHashCode () => HashCode.Combine (Hours, Minutes, Seconds, Frames, UserBits, FrameDuration, SourceType);
+#endif
+	}
 }

@@ -50,31 +50,27 @@ namespace Mono.ApiTools {
 
 		void RenderFieldAttributes (FieldAttributes source, FieldAttributes target, ApiChange change)
 		{
-			if (!State.IgnoreNonbreaking) {
 #pragma warning disable SYSLIB0050 // 'FieldAttributes.NotSerialized' is obsolete: 'Formatter-based serialization is obsolete and should not be used.' (https://aka.ms/dotnet-warnings/SYSLIB0050)
-				var srcNotSerialized = (source & FieldAttributes.NotSerialized) == FieldAttributes.NotSerialized;
-				var tgtNotSerialized = (target & FieldAttributes.NotSerialized) == FieldAttributes.NotSerialized;
+			var srcNotSerialized = (source & FieldAttributes.NotSerialized) == FieldAttributes.NotSerialized;
+			var tgtNotSerialized = (target & FieldAttributes.NotSerialized) == FieldAttributes.NotSerialized;
 #pragma warning restore SYSLIB0050
-				if (srcNotSerialized != tgtNotSerialized) {
-					// this is not a breaking change, so only render it if it changed.
-					if (srcNotSerialized) {
-						change.AppendRemoved ($"[NonSerialized]{Environment.NewLine}", false);
-					} else {
-						change.AppendAdded ($"[NonSerialized]{Environment.NewLine}", false);
-					}
+			if (srcNotSerialized != tgtNotSerialized) {
+				if (srcNotSerialized) {
+					change.AppendRemoved ($"[NonSerialized]{Environment.NewLine}");
+				} else {
+					change.AppendAdded ($"[NonSerialized]{Environment.NewLine}");
 				}
+			}
 
-				var srcHasFieldMarshal = (source & FieldAttributes.HasFieldMarshal) != 0;
-				var tgtHasFieldMarshal = (target & FieldAttributes.HasFieldMarshal) != 0;
-				if (srcHasFieldMarshal != tgtHasFieldMarshal) {
-					// this is not a breaking change, so only render it if it changed.
-					if (srcHasFieldMarshal) {
-						change.AppendRemoved ("[MarshalAs]", false);
-					} else {
-						change.AppendAdded ("[MarshalAs]", false);
-					}
-					change.Append (Environment.NewLine);
+			var srcHasFieldMarshal = (source & FieldAttributes.HasFieldMarshal) != 0;
+			var tgtHasFieldMarshal = (target & FieldAttributes.HasFieldMarshal) != 0;
+			if (srcHasFieldMarshal != tgtHasFieldMarshal) {
+				if (srcHasFieldMarshal) {
+					change.AppendRemoved ("[MarshalAs]");
+				} else {
+					change.AppendAdded ("[MarshalAs]");
 				}
+				change.Append (Environment.NewLine);
 			}
 
 			// the visibility values are the same for MethodAttributes and FieldAttributes, so just use the same method.
@@ -89,10 +85,10 @@ namespace Mono.ApiTools {
 				if (tgtLiteral) {
 					change.Append ("const ");
 				} else {
-					change.AppendRemoved ("const", true).Append (" ");
+					change.AppendRemoved ("const").Append (" ");
 				}
 			} else if (tgtLiteral) {
-				change.AppendAdded ("const", true).Append (" ");
+				change.AppendAdded ("const").Append (" ");
 			}
 
 			var srcInitOnly = (source & FieldAttributes.InitOnly) != 0;
@@ -101,10 +97,10 @@ namespace Mono.ApiTools {
 				if (tgtInitOnly) {
 					change.Append ("readonly ");
 				} else {
-					change.AppendRemoved ("readonly", false).Append (" ");
+					change.AppendRemoved ("readonly").Append (" ");
 				}
 			} else if (tgtInitOnly) {
-				change.AppendAdded ("readonly", true).Append (" ");
+				change.AppendAdded ("readonly").Append (" ");
 			}
 		}
 
@@ -139,7 +135,7 @@ namespace Mono.ApiTools {
 			if (State.BaseType == "System.Enum") {
 				change.Append (name).Append (" = ");
 				if (srcValue != tgtValue) {
-					change.AppendModified (srcValue, tgtValue, true);
+					change.AppendModified (srcValue, tgtValue);
 				} else {
 					change.Append (srcValue);
 				}
@@ -150,7 +146,7 @@ namespace Mono.ApiTools {
 				var tgtType = target.GetTypeName ("fieldtype", State);
 
 				if (srcType != tgtType) {
-					change.AppendModified (srcType, tgtType, true);
+					change.AppendModified (srcType, tgtType);
 				} else {
 					change.Append (srcType);
 				}
@@ -170,16 +166,7 @@ namespace Mono.ApiTools {
 					if (tgtValue is null)
 						tgtValue = "null";
 
-					// Hardcode that changes to ObjCRuntime.Constants.[Sdk]Version aren't breaking.
-					var fullname = GetFullName (source);
-					var breaking = !source.IsExperimental ();
-					switch (fullname) {
-					case "ObjCRuntime.Constants.Version":
-					case "ObjCRuntime.Constants.SdkVersion":
-						breaking = false;
-						break;
-					}
-					change.AppendModified (srcValue, tgtValue, breaking);
+					change.AppendModified (srcValue, tgtValue);
 				} else if (srcValue is not null) {
 					change.Append (" = ");
 					change.Append (srcValue);

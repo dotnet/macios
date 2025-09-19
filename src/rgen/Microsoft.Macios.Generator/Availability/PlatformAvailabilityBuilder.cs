@@ -19,9 +19,10 @@ readonly partial struct PlatformAvailability {
 	/// A writable PlatformAvailability accessor.
 	/// </summary>
 	public sealed class Builder {
+		static readonly PlatformSupportVersionComparer versionComparer = new ();
 		readonly ApplePlatform platform;
-		Version? supportedVersion;
-		readonly SortedDictionary<Version, string?> unsupported = new ();
+		PlatformSupportVersion? supportedVersion;
+		readonly SortedDictionary<PlatformSupportVersion, string?> unsupported = new (versionComparer);
 		readonly SortedDictionary<Version, (string? Message, string? Url)> obsoleted = new ();
 
 		/// <summary>
@@ -36,15 +37,16 @@ readonly partial struct PlatformAvailability {
 		/// else the version is ignored.
 		/// </summary>
 		/// <param name="version">A new supported version.</param>
-		internal void AddSupportedVersion (Version version)
+		internal void AddSupportedVersion (PlatformSupportVersion version)
 		{
-			if (unsupported.ContainsKey (defaultVersion))
-				// platform is unsupported, do nothing
+			if (unsupported.ContainsKey (PlatformSupportVersion.ExplicitDefault))
+				// platform is explicitly unsupported, do nothing
 				return;
 
 			// update the supported version to the larges of the two
-			if (supportedVersion is null || version > supportedVersion)
-				supportedVersion = version;
+			supportedVersion = supportedVersion is null
+				? version
+				: PlatformSupportVersion.Max (version, supportedVersion.Value);
 		}
 
 		/// <summary>
@@ -57,7 +59,7 @@ readonly partial struct PlatformAvailability {
 			if (supportedPlatform.Platform != platform)
 				return;
 			// no version is present, therefore try to set the default one
-			AddSupportedVersion (supportedPlatform.Version);
+			AddSupportedVersion (new (supportedPlatform.Version, SupportKind.Explicit));
 		}
 
 		/// <summary>
@@ -65,24 +67,27 @@ readonly partial struct PlatformAvailability {
 		/// </summary>
 		/// <param name="version">The new unsupported version.</param>
 		/// <param name="message">The optional message of the unsupported version.</param>
-		internal void AddUnsupportedVersion (Version version, string? message)
+		internal void AddUnsupportedVersion (PlatformSupportVersion version, string? message)
 		{
 			// adding an unsupported version, due to the way the API is designed is more complicated. It can be
 			// that a selector/member is unsupported in more than one version, so we need to keep track of that
 			// the only time in which we make an exception is when we unsupported a platform (no version number)
 			// if that is the case, we will remove all unsupported versions and just un-support the platform
 			// ignore data from platforms that we do not care
-			if (version == defaultVersion) {
+			if (version == PlatformSupportVersion.ExplicitDefault) {
 				unsupported.Clear ();
-				unsupported [defaultVersion] = message;
+				unsupported [PlatformSupportVersion.ExplicitDefault] = message;
 				// we are unsupporting the platform! that means if we supported it or any version, that should be
 				// set back to null
 				supportedVersion = null;
 			} else {
 				// we have a version, that does not mean we do care about that data, first we want to check
 				// that we did not fully unsupported the platform, if that is the case, we ignore this version
-				if (unsupported.ContainsKey (defaultVersion))
+				if (unsupported.ContainsKey (PlatformSupportVersion.ExplicitDefault))
 					return;
+
+				// we implicitly unsupported the platform, remove that entry since we are adding a version
+				unsupported.Remove (PlatformSupportVersion.ImplicitDefault);
 				unsupported [version] = message;
 			}
 		}
@@ -95,7 +100,7 @@ readonly partial struct PlatformAvailability {
 		{
 			if (unsupportedPlatform.Platform != platform)
 				return;
-			AddUnsupportedVersion (unsupportedPlatform.Version, unsupportedPlatform.Message);
+			AddUnsupportedVersion (new (unsupportedPlatform.Version, SupportKind.Explicit), unsupportedPlatform.Message);
 		}
 
 
@@ -137,7 +142,11 @@ readonly partial struct PlatformAvailability {
 		/// <returns>A new readonly structure that contains the platform availability.</returns>
 		public PlatformAvailability ToImmutable ()
 		{
-			return new PlatformAvailability (platform, supportedVersion, unsupported, obsoleted);
+			var unsupportedCopy = new SortedDictionary<Version, string?> ();
+			foreach (var (version, message) in unsupported) {
+				unsupportedCopy.Add (version.Version, message);
+			}
+			return new PlatformAvailability (platform, supportedVersion?.Version, unsupportedCopy, obsoleted);
 		}
 
 		/// <summary>

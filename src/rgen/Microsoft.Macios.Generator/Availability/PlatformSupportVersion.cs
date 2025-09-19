@@ -35,6 +35,23 @@ public readonly record struct PlatformSupportVersion {
 	};
 
 	/// <summary>
+	/// Initializes a new instance of the <see cref="PlatformSupportVersion"/> struct.
+	/// </summary>
+	/// <param name="version">The version number.</param>
+	/// <param name="kind">The kind of support.</param>
+	public PlatformSupportVersion (Version version, SupportKind kind)
+	{
+		Version = version;
+		Kind = kind;
+	}
+
+	/// <summary>
+	/// Initializes a new instance of the <see cref="PlatformSupportVersion"/> struct with an explicit support kind.
+	/// </summary>
+	/// <param name="version">The version number.</param>
+	public PlatformSupportVersion (Version version) : this (version, SupportKind.Explicit) { }
+
+	/// <summary>
 	/// Returns the platform support version with the highest precedence.
 	/// </summary>
 	/// <param name="v1">The first platform support version to compare.</param>

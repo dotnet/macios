@@ -683,6 +683,28 @@ Consider using the unified [AppBundleResourcePrefix](#appbundleresourceprefix) p
 
 See also [IPhoneResourcePrefix](#iphoneresourceprefix) and [XamMacResourcePrefix](#xammacresourceprefix).
 
+## MonoUseCompressedInterfaceBitmap
+
+This directs the Mono runtime to use a compressed version of interface bitmaps
+(interface bitmaps are used to determine whether a certain types implements a
+given interface).
+
+These bitmaps can use a significant amount of memory at runtime, in particular
+for apps that have a substantial amount of types, in particular generic value
+types.
+
+This setting is disabled by default, but it can be enabled like this:
+
+```xml
+<PropertyGroup>
+    <MonoUseCompressedInterfaceBitmap>true</MonoUseCompressedInterfaceBitmap>
+</PropertyGroup>
+```
+
+The downside is that type checks (`obj is SomeInterface`) will be slower.
+
+Only applicable when using the Mono runtime.
+
 ## MtouchDebug
 
 Enables debug mode for app bundle creation.

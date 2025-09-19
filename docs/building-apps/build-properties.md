@@ -133,6 +133,29 @@ Only applicable to iOS and tvOS projects.
 
 See [CreatePackage](#createpackage) for macOS and Mac Catalyst projects.
 
+## BundleCreateDump
+
+CoreCLR has a command-line utility called [`createdump`][createdump] to create
+core dumps if the process crashes. macOS will automatically create crash
+reports for any App Store apps and make them available to the app developer,
+so the `createdump` tool is not useful for many macOS apps, and as such, it's
+not included in apps by default.
+
+This can be overriden by setting the `BundleCreateDump` property:
+
+```xml
+<PropertyGroup>
+  <BundleCreateDump>true</BundleCreateDump>
+</PropertyGroup>
+```
+
+Note: the `createdump` tool does currently not work for sandboxed apps ([#18961](https://github.com/dotnet/macios/issues/18961));
+
+Only applicable to projects that use the CoreCLR runtime (which, at the moment
+of this writing, is only macOS projects).
+
+[createdump]: https://github.com/dotnet/runtime/blob/3b63eb1346f1ddbc921374a5108d025662fb5ffd/docs/design/coreclr/botr/xplat-minidump-generation.md
+
 ## BundleOriginalResources
 
 This property determines whether resources are compiled before being embedded

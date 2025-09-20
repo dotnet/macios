@@ -70,7 +70,7 @@ namespace Mono.ApiTools {
 			IndentLevel++;
 		}
 
-		public override void AddAttributeModification (string source, string target, bool breaking)
+		public override void AddAttributeModification (string source, string target)
 		{
 			output.WriteLine ($"-{source}");
 			output.WriteLine ($"+{target}");
@@ -101,7 +101,7 @@ namespace Mono.ApiTools {
 			output.WriteLine ();
 		}
 
-		public override void BeginTypeRemoval (bool breaking)
+		public override void BeginTypeRemoval ()
 		{
 			output.WriteLine ($"#### Removed Type {State.Namespace}.{State.Type}");
 		}
@@ -117,7 +117,7 @@ namespace Mono.ApiTools {
 			output.WriteLine ("```csharp");
 		}
 
-		public override void AddMember (MemberComparer member, bool isInterfaceBreakingChange, string obsolete, string description)
+		public override void AddMember (MemberComparer member, string obsolete, string description)
 		{
 			output.Write (obsolete);
 			output.WriteLine (description);
@@ -142,7 +142,7 @@ namespace Mono.ApiTools {
 			output.WriteLine ();
 		}
 
-		public override void BeginMemberRemoval (IEnumerable<XElement> list, MemberComparer member, bool breaking)
+		public override void BeginMemberRemoval (IEnumerable<XElement> list, MemberComparer member)
 		{
 			if (State.BaseType == "System.Enum") {
 				output.WriteLine ("Removed value{0}:", list.Count () > 1 ? "s" : String.Empty);
@@ -153,7 +153,7 @@ namespace Mono.ApiTools {
 			output.WriteLine ("```csharp");
 		}
 
-		public override void RemoveMember (MemberComparer member, bool is_breaking, string obsolete, string description)
+		public override void RemoveMember (MemberComparer member, string obsolete, string description)
 		{
 			output.Write (obsolete);
 			output.WriteLine (description);
@@ -167,10 +167,10 @@ namespace Mono.ApiTools {
 
 		public override void RenderObsoleteMessage (TextChunk chunk, MemberComparer member, string description, string optionalObsoleteMessage)
 		{
-			RenderAttribute (chunk, member, "Obsolete", false, description, optionalObsoleteMessage);
+			RenderAttribute (chunk, member, "Obsolete", description, optionalObsoleteMessage);
 		}
 
-		public override void RenderAttribute (TextChunk chunk, Comparer member, string attributeName, bool breaking, string description, params string [] attributeArguments)
+		public override void RenderAttribute (TextChunk chunk, Comparer member, string attributeName, string description, params string [] attributeArguments)
 		{
 			var output = chunk.GetStringBuilder (this);
 			output.Append ($"[{attributeName} (");
@@ -196,7 +196,7 @@ namespace Mono.ApiTools {
 			return cleaned;
 		}
 
-		public override void DiffAddition (TextChunk chunk, string text, bool breaking)
+		public override void DiffAddition (TextChunk chunk, string text)
 		{
 			var output = chunk.GetStringBuilder (this);
 			output.Append ("+++");
@@ -204,15 +204,15 @@ namespace Mono.ApiTools {
 			output.Append ("+++");
 		}
 
-		public override void DiffModification (TextChunk chunk, string old, string @new, bool breaking)
+		public override void DiffModification (TextChunk chunk, string old, string @new)
 		{
 			if (old is not null && old.Length > 0)
-				DiffAddition (chunk, old, breaking);
+				DiffAddition (chunk, old);
 			if (@new is not null && @new.Length > 0)
-				DiffRemoval (chunk, @new, true);
+				DiffRemoval (chunk, @new);
 		}
 
-		public override void DiffRemoval (TextChunk chunk, string text, bool breaking)
+		public override void DiffRemoval (TextChunk chunk, string text)
 		{
 			var output = chunk.GetStringBuilder (this);
 			output.Append ("---");

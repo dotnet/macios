@@ -441,6 +441,19 @@ namespace Introspection {
 				case "CKSyncEnginePendingDatabaseChange":
 				case "NSCursor":
 					return true;
+				// Xcode 26.0
+				case "UISceneDestructionCondition": // Conformance not in headers
+				case "UICornerConfiguration": // Conformance not in headers
+				case "UICornerRadius": // Conformance not in headers
+				case "CPListImageRowItemCardElement": // Conformance not in headers
+				case "CPListImageRowItemCondensedElement": // Conformance not in headers
+				case "CPListImageRowItemElement": // Conformance not in headers
+				case "CPListImageRowItemGridElement": // Conformance not in headers
+				case "CPListImageRowItemImageGridElement": // Conformance not in headers
+				case "CPListImageRowItemRowElement": // Conformance not in headers
+				case "CPMessageGridItemConfiguration": // Conformance not in headers
+				case "PKAddIdentityDocumentMetadata": // Conformance not in headers
+					return true;
 				}
 				break;
 			case "NSSecureCoding":
@@ -639,6 +652,19 @@ namespace Introspection {
 				case "CKSyncEngineState":
 				case "NSCursor":
 					return true;
+				// Xcode 26.0
+				case "UISceneDestructionCondition": // Conformance not in headers
+				case "UICornerConfiguration": // Conformance not in headers
+				case "UICornerRadius": // Conformance not in headers
+				case "CPListImageRowItemCardElement": // Conformance not in headers
+				case "CPListImageRowItemCondensedElement": // Conformance not in headers
+				case "CPListImageRowItemElement": // Conformance not in headers
+				case "CPListImageRowItemGridElement": // Conformance not in headers
+				case "CPListImageRowItemImageGridElement": // Conformance not in headers
+				case "CPListImageRowItemRowElement": // Conformance not in headers
+				case "CPMessageGridItemConfiguration": // Conformance not in headers
+				case "PKAddIdentityDocumentMetadata": // Conformance not in headers
+					return true;
 				}
 				break;
 			case "NSCopying":
@@ -729,6 +755,17 @@ namespace Introspection {
 				case "CKSyncEnginePendingRecordZoneChange":
 				case "CKSyncEnginePendingZoneDelete":
 				case "CKSyncEnginePendingZoneSave":
+					return true;
+				// Xcode 26 beta 1
+				case "SRAmbientLightSample": // conformance not in headers
+				case "SRDeletionRecord": // conformance not in headers
+				case "SRDeviceUsageReport":
+				case "SRKeyboardMetrics":
+				case "SRMessagesUsageReport":
+				case "SRPhoneUsageReport":
+				case "SRWristDetection":
+				case "UIMenuSystemFindElementGroupConfiguration": // conformance not in headers
+				case "PKAddIdentityDocumentMetadata": // conformance not in headers
 					return true;
 				}
 				break;

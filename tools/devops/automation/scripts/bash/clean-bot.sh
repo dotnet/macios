@@ -161,5 +161,8 @@ sudo rm -Rf /Library/Frameworks/Xamarin.iOS.framework
 sudo rm -Rf /Library/Frameworks/Xamarin.Mac.framework
 ls -R /Library/Frameworks
 
+echo "Clearing xcrun cache..."
+xcrun -k
+
 # Print disk status after cleaning
 df -h

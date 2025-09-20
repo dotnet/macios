@@ -7,6 +7,7 @@
 using System;
 
 using CoreFoundation;
+using CoreGraphics;
 using Foundation;
 using ObjCRuntime;
 
@@ -246,7 +247,7 @@ namespace CoreMedia {
 		AppleLog,
 	}
 
-	[Mac (14, 0), iOS (17, 0), NoTV, MacCatalyst (17, 0)]
+	[Mac (14, 0), iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 	enum CMFormatDescriptionHeroEye {
 		[Field ("kCMFormatDescriptionHeroEye_Left")]
 		Left,
@@ -435,37 +436,41 @@ namespace CoreMedia {
 		[Field ("kCMFormatDescriptionExtension_LogTransferFunction")]
 		NSString LogTransferFunction { get; }
 
-		[iOS (17, 0), NoTV, Mac (14, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
 		[Field ("kCMFormatDescriptionExtension_HeroEye")]
 		NSString HeroEye { get; }
 
-		[iOS (17, 0), NoTV, Mac (14, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
 		[Field ("kCMFormatDescriptionExtension_StereoCameraBaseline")]
 		NSString StereoCameraBaseline { get; }
 
-		[iOS (17, 0), NoTV, Mac (14, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
 		[Field ("kCMFormatDescriptionExtension_HorizontalDisparityAdjustment")]
 		NSString HorizontalDisparityAdjustment { get; }
 
-		[iOS (17, 0), NoTV, Mac (14, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
 		[Field ("kCMFormatDescriptionExtension_HasLeftStereoEyeView")]
 		NSString HasLeftStereoEyeView { get; }
 
-		[iOS (17, 0), NoTV, Mac (14, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
 		[Field ("kCMFormatDescriptionExtension_HasRightStereoEyeView")]
 		NSString HasRightStereoEyeView { get; }
 
-		[iOS (17, 0), NoTV, Mac (14, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
 		[Field ("kCMFormatDescriptionExtension_HasAdditionalViews")]
 		NSString HasAdditionalViews { get; }
 
-		[iOS (18, 0), NoTV, Mac (15, 0), MacCatalyst (18, 0)]
+		[iOS (18, 0), TV (18, 0), Mac (15, 0), MacCatalyst (18, 0)]
 		[Field ("kCMFormatDescriptionExtension_ProjectionKind")]
 		NSString ProjectionKind { get; }
 
-		[iOS (18, 0), NoTV, Mac (15, 0), MacCatalyst (18, 0)]
+		[iOS (18, 0), TV (18, 0), Mac (15, 0), MacCatalyst (18, 0)]
 		[Field ("kCMFormatDescriptionExtension_ViewPackingKind")]
 		NSString ViewPackingKind { get; }
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("kCMFormatDescriptionExtension_CameraCalibrationDataLensCollection")]
+		NSString CameraCalibrationDataLensCollection { get; }
 	}
 
 	[StrongDictionary ("CMFormatDescriptionExtensionKeys", Suffix = "")]
@@ -583,6 +588,115 @@ namespace CoreMedia {
 
 		[iOS (18, 0), NoTV, Mac (15, 0), MacCatalyst (18, 0)]
 		CMFormatDescriptionViewPackingKind ViewPackingKind { get; set; }
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		CMCompressionPropertyCameraCalibration [] CameraCalibrationDataLensCollection { get; }
+	}
+
+
+	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+	enum CMFormatDescriptionCameraCalibrationLensAlgorithmKind {
+		[Field ("kCMFormatDescriptionCameraCalibrationLensAlgorithmKind_ParametricLens")]
+		ParametricLens,
+	}
+
+	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+	enum CMFormatDescriptionCameraCalibrationLensDomain {
+		[Field ("kCMFormatDescriptionCameraCalibrationLensDomain_Color")]
+		Color,
+	}
+
+	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+	enum CMFormatDescriptionCameraCalibrationLensRole {
+		[Field ("kCMFormatDescriptionCameraCalibrationLensRole_Mono")]
+		Mono,
+
+		[Field ("kCMFormatDescriptionCameraCalibrationLensRole_Left")]
+		Left,
+
+		[Field ("kCMFormatDescriptionCameraCalibrationLensRole_Right")]
+		Right,
+	}
+
+	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+	enum CMFormatDescriptionCameraCalibrationExtrinsicOriginSource {
+		[Field ("kCMFormatDescriptionCameraCalibrationExtrinsicOriginSource_StereoCameraSystemBaseline")]
+		StereoCameraSystemBaseline,
+	}
+
+	// There's an almost identical mirror of this class in VideoToolbox (as VTCompressionPropertyCameraCalibrationKey),
+	// which should probably be updated if this class is updated.
+	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+	[Static]
+	interface CMCompressionPropertyCameraCalibrationKey {
+		[Field ("kCMFormatDescriptionCameraCalibration_LensAlgorithmKind")]
+		NSString LensAlgorithmKind { get; } // CMFormatDescriptionCameraCalibrationLensAlgorithmKind
+
+		[Field ("kCMFormatDescriptionCameraCalibration_LensDomain")]
+		NSString LensDomain { get; } // CMFormatDescriptionCameraCalibrationLensDomain
+
+		[Field ("kCMFormatDescriptionCameraCalibration_LensIdentifier")]
+		NSString LensIdentifier { get; } // int
+
+		[Field ("kCMFormatDescriptionCameraCalibration_LensRole")]
+		NSString LensRole { get; } // CMFormatDescriptionCameraCalibrationLensRole
+
+		[Field ("kCMFormatDescriptionCameraCalibration_LensDistortions")]
+		NSString LensDistortions { get; } // float[]
+
+		[Field ("kCMFormatDescriptionCameraCalibration_LensFrameAdjustmentsPolynomialX")]
+		NSString LensFrameAdjustmentsPolynomialX { get; } // float[]
+
+		[Field ("kCMFormatDescriptionCameraCalibration_LensFrameAdjustmentsPolynomialY")]
+		NSString LensFrameAdjustmentsPolynomialY { get; } // float[]
+
+		[Field ("kCMFormatDescriptionCameraCalibration_RadialAngleLimit")]
+		NSString RadialAngleLimit { get; } // float
+
+		[Field ("kCMFormatDescriptionCameraCalibration_IntrinsicMatrix")]
+		NSString IntrinsicMatrix { get; }
+
+		[Field ("kCMFormatDescriptionCameraCalibration_IntrinsicMatrixProjectionOffset")]
+		NSString IntrinsicMatrixProjectionOffset { get; } // float
+
+		[Field ("kCMFormatDescriptionCameraCalibration_IntrinsicMatrixReferenceDimensions")]
+		NSString IntrinsicMatrixReferenceDimensions { get; } // "CGSize dictionary" = ??
+
+		[Field ("kCMFormatDescriptionCameraCalibration_ExtrinsicOriginSource")]
+		NSString ExtrinsicOriginSource { get; } // CMFormatDescriptionCameraCalibrationExtrinsicOriginSource
+
+		[Field ("kCMFormatDescriptionCameraCalibration_ExtrinsicOrientationQuaternion")]
+		NSString ExtrinsicOrientationQuaternion { get; } // float[]
+
+		[Field ("kCMFormatDescriptionExtension_ConvertedFromExternalSphericalTags")]
+		NSString ConvertedFromExternalSphericalTags { get; } // not in VTCompressionPropertyCameraCalibrationKey
+
+		// There's an almost identical mirror of this class in VideoToolbox (as VTCompressionPropertyCameraCalibrationKey)
+		// which should probably be updated if this class is updated.
+	}
+
+	// There's an almost identical mirror of this class in VideoToolbox (as VTCompressionPropertyCameraCalibration),
+	// which should probably be updated if this class is updated.
+	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+	[StrongDictionary ("CMCompressionPropertyCameraCalibrationKey", Suffix = "")]
+	interface CMCompressionPropertyCameraCalibration {
+		CMFormatDescriptionCameraCalibrationLensAlgorithmKind LensAlgorithmKind { get; set; }
+		CMFormatDescriptionCameraCalibrationLensDomain LensDomain { get; set; }
+		int LensIdentifier { get; set; }
+		CMFormatDescriptionCameraCalibrationLensRole LensRole { get; set; }
+		float [] LensDistortions { get; set; } // CFArray[CFNumber(float)]
+		float RadialAngleLimit { get; set; }
+		float [] LensFrameAdjustmentsPolynomialX { get; set; } // CFArray[CFNumber(float)]
+		float [] LensFrameAdjustmentsPolynomialY { get; set; } // CFArray[CFNumber(float)]
+		NMatrix3 IntrinsicMatrix { get; set; }
+		float IntrinsicMatrixProjectionOffset { get; set; }
+		CGSizeDictionary IntrinsicMatrixReferenceDimensions { get; set; }
+		CMFormatDescriptionCameraCalibrationExtrinsicOriginSource ExtrinsicOriginSource { get; set; }
+		float [] ExtrinsicOrientationQuaternion { get; set; } // CFArray[CFNumber(float)]
+		bool ConvertedFromExternalSphericalTags { get; set; } // not in VTCompressionPropertyCameraCalibration
+
+		// There's an almost identical mirror of this class in VideoToolbox (as VTCompressionPropertyCameraCalibration),
+		// which should probably be updated if this class is updated.
 	}
 
 	/// <summary>Class that manages the repetitive allocation and deallocation of large blocks of memory.</summary>
@@ -597,7 +711,7 @@ namespace CoreMedia {
 		IntPtr AgeOutPeriodSelector { get; }
 	}
 
-	[NoTV, Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+	[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 	public enum CMFormatDescriptionProjectionKind {
 		[Field ("kCMFormatDescriptionProjectionKind_Rectilinear")]
 		Rectilinear,
@@ -607,9 +721,17 @@ namespace CoreMedia {
 
 		[Field ("kCMFormatDescriptionProjectionKind_HalfEquirectangular")]
 		HalfEquirectangular,
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("kCMFormatDescriptionProjectionKind_ParametricImmersive")]
+		ParametricImmersive,
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("kCMFormatDescriptionProjectionKind_AppleImmersiveVideo")]
+		AppleImmersiveVideo,
 	}
 
-	[NoTV, Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+	[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 	public enum CMFormatDescriptionViewPackingKind {
 		[Field ("kCMFormatDescriptionViewPackingKind_SideBySide")]
 		SideBySide,
@@ -1112,6 +1234,10 @@ namespace CoreMedia {
 
 		[Field ("kCMTagDataTypeKey")]
 		NSString DataTypeKey { get; }
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("kCMTagProjectionTypeParametricImmersive")]
+		CMTag ProjectionTypeParametricImmersive { get; }
 	}
 
 	[MacCatalyst (17, 0), TV (17, 0), Mac (14, 0), iOS (17, 0)]
@@ -1120,6 +1246,7 @@ namespace CoreMedia {
 		Equirectangular = ('e' << 24) + ('q' << 16) + ('u' << 8) + 'i', // 'equi',
 		HalfEquirectangular = ('h' << 24) + ('e' << 16) + ('q' << 8) + 'u', // 'hequ',
 		Fisheye = ('f' << 24) + ('i' << 16) + ('s' << 8) + 'h', // 'fish',
+		ParametricImmersive = ('p' << 24) + ('r' << 16) + ('i' << 8) + 'm',// 'prim'
 	}
 
 	[MacCatalyst (17, 0), TV (17, 0), Mac (14, 0), iOS (17, 0)]
@@ -1132,5 +1259,141 @@ namespace CoreMedia {
 	[MacCatalyst (17, 0), TV (17, 0), Mac (14, 0), iOS (17, 0)]
 	public enum CMTaggedBufferGroupFormatType {
 		TaggedBufferGroup = ('t' << 24) + ('b' << 16) + ('g' << 8) + 'r', // 'tbgr',
+	}
+
+	enum CMMetadataIdentifier {
+		[Field ("kCMMetadataIdentifier_QuickTimeMetadataLocation_ISO6709")]
+		QuickTimeMetadataLocation_ISO6709,
+
+		[Field ("kCMMetadataIdentifier_QuickTimeMetadataDirection_Facing")]
+		QuickTimeMetadataDirection_Facing,
+
+		[Field ("kCMMetadataIdentifier_QuickTimeMetadataPreferredAffineTransform")]
+		QuickTimeMetadataPreferredAffineTransform,
+
+		[Field ("kCMMetadataIdentifier_QuickTimeMetadataVideoOrientation")]
+		QuickTimeMetadataVideoOrientation,
+
+		[TV (13, 0), iOS (13, 0)]
+		[Field ("kCMMetadataIdentifier_QuickTimeMetadataLivePhotoStillImageTransform")]
+		QuickTimeMetadataLivePhotoStillImageTransform,
+
+		[TV (13, 2), iOS (13, 2)]
+		[Field ("kCMMetadataIdentifier_QuickTimeMetadataLivePhotoStillImageTransformReferenceDimensions")]
+		QuickTimeMetadataLivePhotoStillImageTransformReferenceDimensions,
+
+		[MacCatalyst (18, 0), TV (18, 0), Mac (15, 0), iOS (18, 0)]
+		[Field ("kCMMetadataIdentifier_QuickTimeMetadataSegmentIdentifier")]
+		QuickTimeMetadataSegmentIdentifier,
+
+		[MacCatalyst (18, 0), TV (18, 0), Mac (15, 0), iOS (18, 0)]
+		[Field ("kCMMetadataIdentifier_QuickTimeMetadataSceneIlluminance")]
+		QuickTimeMetadataSceneIlluminance,
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("kCMMetadataIdentifier_QuickTimeMetadataSpatialAudioMix")]
+		QuickTimeMetadataSpatialAudioMix,
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("kCMMetadataIdentifier_QuickTimeMetadataDisplayMaskRectangleMono")]
+		QuickTimeMetadataDisplayMaskRectangleMono,
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("kCMMetadataIdentifier_QuickTimeMetadataDisplayMaskRectangleStereoLeft")]
+		QuickTimeMetadataDisplayMaskRectangleStereoLeft,
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("kCMMetadataIdentifier_QuickTimeMetadataDisplayMaskRectangleStereoRight")]
+		QuickTimeMetadataDisplayMaskRectangleStereoRight,
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("kCMMetadataIdentifier_QuickTimeMetadataPresentationImmersiveMedia")]
+		QuickTimeMetadataPresentationImmersiveMedia,
+	}
+
+	enum CMMetadataBaseDataType {
+		[Field ("kCMMetadataBaseDataType_RawData")]
+		RawData,
+
+		[Field ("kCMMetadataBaseDataType_UTF8")]
+		Utf8,
+
+		[Field ("kCMMetadataBaseDataType_UTF16")]
+		Utf16,
+
+		[Field ("kCMMetadataBaseDataType_GIF")]
+		Gif,
+
+		[Field ("kCMMetadataBaseDataType_JPEG")]
+		Jpeg,
+
+		[Field ("kCMMetadataBaseDataType_PNG")]
+		Png,
+
+		[Field ("kCMMetadataBaseDataType_BMP")]
+		Bmp,
+
+		[Field ("kCMMetadataBaseDataType_Float32")]
+		Float32,
+
+		[Field ("kCMMetadataBaseDataType_Float64")]
+		Float64,
+
+		[Field ("kCMMetadataBaseDataType_SInt8")]
+		SInt8,
+
+		[Field ("kCMMetadataBaseDataType_SInt16")]
+		SInt16,
+
+		[Field ("kCMMetadataBaseDataType_SInt32")]
+		SInt32,
+
+		[Field ("kCMMetadataBaseDataType_SInt64")]
+		SInt64,
+
+		[Field ("kCMMetadataBaseDataType_UInt8")]
+		UInt8,
+
+		[Field ("kCMMetadataBaseDataType_UInt16")]
+		UInt16,
+
+		[Field ("kCMMetadataBaseDataType_UInt32")]
+		UInt32,
+
+		[Field ("kCMMetadataBaseDataType_UInt64")]
+		UInt64,
+
+		[Field ("kCMMetadataBaseDataType_PointF32")]
+		PointF32,
+
+		[Field ("kCMMetadataBaseDataType_DimensionsF32")]
+		DimensionsF32,
+
+		[Field ("kCMMetadataBaseDataType_RectF32")]
+		RectF32,
+
+		[Field ("kCMMetadataBaseDataType_AffineTransformF64")]
+		AffineTransformF64,
+
+		[Field ("kCMMetadataBaseDataType_PolygonF32")]
+		PolygonF32,
+
+		[Field ("kCMMetadataBaseDataType_PolylineF32")]
+		PolylineF32,
+
+		[Field ("kCMMetadataBaseDataType_JSON")]
+		Json,
+
+		[TV (13, 0), iOS (13, 0)]
+		[Field ("kCMMetadataBaseDataType_PerspectiveTransformF64")]
+		PerspectiveTransformF64,
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("kCMMetadataBaseDataType_RasterRectangleValue")]
+		RasterRectangleValue,
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("kCMMetadataBaseDataType_ExtendedRasterRectangleValue")]
+		ExtendedRasterRectangleValue,
 	}
 }

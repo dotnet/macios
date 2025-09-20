@@ -9,6 +9,8 @@
 
 #if !MONOMAC
 using System;
+using System.Collections.Generic;
+
 using Foundation;
 using CoreGraphics;
 using UIKit;
@@ -43,30 +45,51 @@ namespace MonoTouchFixtures.CoreGraphics {
 				var start = new CGPoint (rect.Left, rect.Bottom);
 				var end = new CGPoint (rect.Left, rect.Top);
 
-				var domain = new nfloat [] { 0f, 1f };
-				var range = new nfloat [] { 0f, 1f, 0f, 1f };
 				using (var context = UIGraphics.GetCurrentContext ())
 				using (var rgb = CGColorSpace.CreateDeviceGray ())
-				using (var shadingFunction = new CGFunction (domain, range, Shading))
+				using (var shadingFunction = CreateSlopedFunction (Shaded))
 				using (var shading = CGShading.CreateAxial (rgb, start, end, shadingFunction, true, false)) {
 					context.DrawShading (shading);
 				}
 
 				base.Draw (rect);
 			}
+		}
 
-			public unsafe void Shading (nfloat* data, nfloat* outData)
-			{
-				var p = data [0];
-				outData [0] = 0.0f;
-				outData [1] = (1.0f - Slope (p, 2.0f)) * 0.5f;
-				Shaded ();
+		public unsafe static CGFunction CreateSlopedFunction (Action? shadedCallback, nint inputs = 1, nint outputs = 2)
+		{
+			if (inputs < 1 || outputs < 1)
+				throw new ArgumentOutOfRangeException ();
+
+			var domain = new List<nfloat> ();
+			for (var i = 0; i < inputs; i++) {
+				domain.Add (0);
+				domain.Add (1);
 			}
+			var range = new List<nfloat> ();
+			for (var i = 0; i < outputs; i++) {
+				range.Add (0);
+				range.Add (1);
+			}
+			return new CGFunction (domain.ToArray (), range.ToArray (), Shading);
 
-			public nfloat Slope (nfloat x, nfloat A)
+			nfloat Slope (nfloat x, nfloat A)
 			{
 				var p = Math.Pow (x, A);
 				return (nfloat) (p / (p + Math.Pow (1.0f - x, A)));
+			}
+
+			void Shading (nfloat* data, nfloat* outData)
+			{
+				outData [0] = 0.0f;
+				for (var x = 0; x < inputs; x++) {
+					var p = data [x];
+					for (var y = 1; y < outputs; y++) {
+						outData [y] = (1.0f - Slope (p, 2.0f)) * (1.0f / outputs) * y;
+					}
+				}
+				if (shadedCallback is not null)
+					shadedCallback ();
 			}
 		}
 

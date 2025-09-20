@@ -13,22 +13,43 @@ namespace Microsoft.Macios.Generator.Tests.DataModel;
 
 public class EnumMemberCodeChangesTests {
 	[Fact]
+	public void IsNullOrDefaultTest ()
+	{
+		var defaultMember = EnumMember.Default;
+		Assert.True (defaultMember.IsNullOrDefault);
+
+		var initializedMember = new EnumMember (
+			name: "name",
+			index: 0,
+			libraryName: "Test",
+			libraryPath: "/path/to/library",
+			fieldData: new (),
+			symbolAvailability: new (),
+			attributes: []);
+		Assert.False (initializedMember.IsNullOrDefault);
+	}
+
+	[Fact]
 	public void EqualsNoParams ()
 	{
 		var memberCodeChange1 = new EnumMember (
 			name: "name",
+			index: 0,
 			libraryName: "Test",
 			libraryPath: "/path/to/library",
 			fieldData: new (),
 			symbolAvailability: new (),
 			attributes: []);
+		Assert.False (memberCodeChange1.IsNullOrDefault);
 		var memberCodeChange2 = new EnumMember (
 			name: "name",
+			index: 0,
 			libraryName: "Test",
 			libraryPath: "/path/to/library",
 			fieldData: new (),
 			symbolAvailability: new (),
 			attributes: []);
+		Assert.False (memberCodeChange2.IsNullOrDefault);
 		Assert.True (memberCodeChange1.Equals (memberCodeChange2));
 		Assert.True (memberCodeChange1 == memberCodeChange2);
 		Assert.False (memberCodeChange1 != memberCodeChange2);
@@ -39,6 +60,7 @@ public class EnumMemberCodeChangesTests {
 	{
 		var memberCodeChange1 = new EnumMember (
 			name: "name",
+			index: 0,
 			libraryName: "Test",
 			libraryPath: "/path/to/library",
 			fieldData: new (),
@@ -47,8 +69,10 @@ public class EnumMemberCodeChangesTests {
 				new AttributeCodeChange ("name", ["arg1", "arg2"])
 			]
 		);
+		Assert.False (memberCodeChange1.IsNullOrDefault);
 		var memberCodeChange2 = new EnumMember (
 			name: "name",
+			index: 0,
 			libraryName: "Test",
 			libraryPath: "/path/to/library",
 			fieldData: new (),
@@ -57,6 +81,7 @@ public class EnumMemberCodeChangesTests {
 				new AttributeCodeChange ("name", ["arg1", "arg2"])
 			]
 		);
+		Assert.False (memberCodeChange2.IsNullOrDefault);
 		Assert.True (memberCodeChange1.Equals (memberCodeChange2));
 		Assert.True (memberCodeChange1 == memberCodeChange2);
 		Assert.False (memberCodeChange1 != memberCodeChange2);
@@ -67,19 +92,23 @@ public class EnumMemberCodeChangesTests {
 	{
 		var memberCodeChange1 = new EnumMember (
 			name: "name",
+			index: 0,
 			libraryName: "Test",
 			libraryPath: "/path/to/library",
 			fieldData: new (),
 			symbolAvailability: new (),
 			attributes: []);
+		Assert.False (memberCodeChange1.IsNullOrDefault);
 		var memberCodeChange2 = new EnumMember (
 			name: "name2",
+			index: 0,
 			libraryName: "Test",
 			libraryPath: "/path/to/library",
 			fieldData: new (),
 			symbolAvailability: new (),
 			attributes: []
 		);
+		Assert.False (memberCodeChange2.IsNullOrDefault);
 		Assert.False (memberCodeChange1.Equals (memberCodeChange2));
 		Assert.False (memberCodeChange1 == memberCodeChange2);
 		Assert.True (memberCodeChange1 != memberCodeChange2);
@@ -90,6 +119,7 @@ public class EnumMemberCodeChangesTests {
 	{
 		var memberCodeChange1 = new EnumMember (
 			name: "name",
+			index: 0,
 			libraryName: "Test",
 			libraryPath: "/path/to/library",
 			fieldData: new (),
@@ -98,8 +128,10 @@ public class EnumMemberCodeChangesTests {
 				new AttributeCodeChange ("name", ["arg1", "arg2"])
 			]
 		);
+		Assert.False (memberCodeChange1.IsNullOrDefault);
 		var memberCodeChange2 = new EnumMember (
 			name: "name",
+			index: 0,
 			libraryName: "Test",
 			libraryPath: "/path/to/library",
 			fieldData: new (),
@@ -108,6 +140,7 @@ public class EnumMemberCodeChangesTests {
 				new AttributeCodeChange ("name2", ["arg1", "arg2"])
 			]
 		);
+		Assert.False (memberCodeChange2.IsNullOrDefault);
 		Assert.False (memberCodeChange1.Equals (memberCodeChange2));
 		Assert.False (memberCodeChange1 == memberCodeChange2);
 		Assert.True (memberCodeChange1 != memberCodeChange2);
@@ -118,6 +151,7 @@ public class EnumMemberCodeChangesTests {
 	{
 		var memberCodeChange1 = new EnumMember (
 			name: "name",
+			index: 0,
 			libraryName: "Test",
 			libraryPath: "/path/to/library",
 			fieldData: new (),
@@ -126,8 +160,10 @@ public class EnumMemberCodeChangesTests {
 				new AttributeCodeChange ("name", ["arg1", "arg2"])
 			]
 		);
+		Assert.False (memberCodeChange1.IsNullOrDefault);
 		var memberCodeChange2 = new EnumMember (
 			name: "name",
+			index: 0,
 			libraryName: "Test",
 			libraryPath: "/path/to/library",
 			fieldData: new (),
@@ -136,6 +172,7 @@ public class EnumMemberCodeChangesTests {
 				new AttributeCodeChange ("name", ["arg1", "arg3"])
 			]
 		);
+		Assert.False (memberCodeChange2.IsNullOrDefault);
 		Assert.False (memberCodeChange1.Equals (memberCodeChange2));
 		Assert.False (memberCodeChange1 == memberCodeChange2);
 		Assert.True (memberCodeChange1 != memberCodeChange2);
@@ -146,6 +183,7 @@ public class EnumMemberCodeChangesTests {
 	{
 		var memberCodeChange1 = new EnumMember (
 			name: "name",
+			index: 0,
 			libraryName: "Test",
 			libraryPath: "/path/to/library",
 			fieldData: new (),
@@ -154,8 +192,10 @@ public class EnumMemberCodeChangesTests {
 				new AttributeCodeChange ("name", ["arg1", "arg2"])
 			]
 		);
+		Assert.False (memberCodeChange1.IsNullOrDefault);
 		var memberCodeChange2 = new EnumMember (
 			name: "name",
+			index: 0,
 			libraryName: "Test",
 			libraryPath: "/path/to/library",
 			fieldData: new (),
@@ -164,6 +204,7 @@ public class EnumMemberCodeChangesTests {
 				new AttributeCodeChange ("name", ["arg2", "arg1"])
 			]
 		);
+		Assert.False (memberCodeChange2.IsNullOrDefault);
 		Assert.False (memberCodeChange1.Equals (memberCodeChange2));
 		Assert.False (memberCodeChange1 == memberCodeChange2);
 		Assert.True (memberCodeChange1 != memberCodeChange2);
@@ -174,6 +215,7 @@ public class EnumMemberCodeChangesTests {
 	{
 		var memberCodeChange1 = new EnumMember (
 			name: "name",
+			index: 0,
 			libraryName: "Test",
 			libraryPath: "/path/to/library",
 			fieldData: new (),
@@ -183,8 +225,10 @@ public class EnumMemberCodeChangesTests {
 				new AttributeCodeChange ("name2", [])
 			]
 		);
+		Assert.False (memberCodeChange1.IsNullOrDefault);
 		var memberCodeChange2 = new EnumMember (
 			name: "name",
+			index: 0,
 			libraryName: "Test",
 			libraryPath: "/path/to/library",
 			fieldData: new (),
@@ -193,6 +237,7 @@ public class EnumMemberCodeChangesTests {
 				new AttributeCodeChange ("name", ["arg2", "arg1"])
 			]
 		);
+		Assert.False (memberCodeChange2.IsNullOrDefault);
 		Assert.False (memberCodeChange1.Equals (memberCodeChange2));
 		Assert.False (memberCodeChange1 == memberCodeChange2);
 		Assert.True (memberCodeChange1 != memberCodeChange2);
@@ -209,6 +254,7 @@ public class EnumMemberCodeChangesTests {
 
 		var memberCodeChange1 = new EnumMember (
 			name: "name",
+			index: 0,
 			libraryName: "Test",
 			libraryPath: "/path/to/library",
 			fieldData: new (),
@@ -218,8 +264,10 @@ public class EnumMemberCodeChangesTests {
 				new AttributeCodeChange ("name2", [])
 			]
 		);
+		Assert.False (memberCodeChange1.IsNullOrDefault);
 		var memberCodeChange2 = new EnumMember (
 			name: "name",
+			index: 0,
 			libraryName: "Test",
 			libraryPath: "/path/to/library",
 			fieldData: new (),
@@ -228,6 +276,34 @@ public class EnumMemberCodeChangesTests {
 				new AttributeCodeChange ("name", ["arg2", "arg1"])
 			]
 		);
+		Assert.False (memberCodeChange2.IsNullOrDefault);
+		Assert.False (memberCodeChange1.Equals (memberCodeChange2));
+		Assert.False (memberCodeChange1 == memberCodeChange2);
+		Assert.True (memberCodeChange1 != memberCodeChange2);
+	}
+
+	[Fact]
+	public void NotEqualsDifferentIndex ()
+	{
+		var memberCodeChange1 = new EnumMember (
+			name: "name",
+			index: 0,
+			libraryName: "Test",
+			libraryPath: "/path/to/library",
+			fieldData: new (),
+			symbolAvailability: new (),
+			attributes: []);
+		Assert.False (memberCodeChange1.IsNullOrDefault);
+		var memberCodeChange2 = new EnumMember (
+			name: "name",
+			index: 1,
+			libraryName: "Test",
+			libraryPath: "/path/to/library",
+			fieldData: new (),
+			symbolAvailability: new (),
+			attributes: []
+		);
+		Assert.False (memberCodeChange2.IsNullOrDefault);
 		Assert.False (memberCodeChange1.Equals (memberCodeChange2));
 		Assert.False (memberCodeChange1 == memberCodeChange2);
 		Assert.True (memberCodeChange1 != memberCodeChange2);
@@ -238,22 +314,23 @@ public class EnumMemberCodeChangesTests {
 	{
 		var memberCodeChange1 = new EnumMember (
 			name: "name",
+			index: 0,
 			libraryName: "Test",
 			libraryPath: "/path/to/library",
 			fieldData: new ("x", "libName", EnumValue.Default),
-			symbolAvailability: new (), attributes: [
-				new AttributeCodeChange ("name", ["arg1", "arg2"]),
-			]
-		);
+			symbolAvailability: new (),
+			attributes: []);
+		Assert.False (memberCodeChange1.IsNullOrDefault);
 		var memberCodeChange2 = new EnumMember (
 			name: "name",
+			index: 0,
 			libraryName: "Test",
 			libraryPath: "/path/to/library",
-			fieldData: new ("x", "yLibName", EnumValue.Default),
-			symbolAvailability: new (), attributes: [
-				new AttributeCodeChange ("name", ["arg2", "arg1"])
-			]
+			fieldData: new ("y", "libName", EnumValue.Default),
+			symbolAvailability: new (),
+			attributes: []
 		);
+		Assert.False (memberCodeChange2.IsNullOrDefault);
 		Assert.False (memberCodeChange1.Equals (memberCodeChange2));
 		Assert.False (memberCodeChange1 == memberCodeChange2);
 		Assert.True (memberCodeChange1 != memberCodeChange2);
@@ -264,14 +341,16 @@ public class EnumMemberCodeChangesTests {
 		{
 			var simpleEnum = new EnumMember (
 				name: "EnumValue",
+				index: 0,
 				libraryName: "Test",
 				libraryPath: "/path/to/library",
 				fieldData: null,
 				symbolAvailability: new (),
 				attributes: []);
-			yield return [simpleEnum, "{ Name: 'EnumValue' SymbolAvailability: [] FieldInfo:  Attributes: [] }"];
+			yield return [simpleEnum, "{ Name: 'EnumValue', Index: 0, SymbolAvailability: [] FieldInfo:  Attributes: [] }"];
 			var fieldDataEnum = new EnumMember (
 				name: "EnumValue",
+				index: 0,
 				libraryName: "Test",
 				libraryPath: "/path/to/library",
 				fieldData: new ("x", "libName", EnumValue.Default),
@@ -279,7 +358,7 @@ public class EnumMemberCodeChangesTests {
 				attributes: []);
 			yield return [
 				fieldDataEnum,
-				"{ Name: 'EnumValue' SymbolAvailability: [] FieldInfo: { State = Initialized, FieldData = { SymbolName: 'x', LibraryPath: 'libName', Type: 'null', NotificationCenter: 'null', Flags: 'Default' }, LibraryName = Test, LibraryPath = /path/to/library } Attributes: [] }",
+				"{ Name: 'EnumValue', Index: 0, SymbolAvailability: [] FieldInfo: { State = Initialized, FieldData = { SymbolName: 'x', LibraryPath: 'libName', Type: 'null', NotificationCenter: 'null', Flags: 'Default' }, LibraryName = Test, LibraryPath = /path/to/library } Attributes: [] }",
 			];
 
 			var builder = SymbolAvailability.CreateBuilder ();
@@ -287,6 +366,7 @@ public class EnumMemberCodeChangesTests {
 
 			var availabilityEnum = new EnumMember (
 				name: "EnumValue",
+				index: 0,
 				libraryName: "Test",
 				libraryPath: "/path/to/library",
 				fieldData: new ("x", "libName", EnumValue.Default),
@@ -294,11 +374,12 @@ public class EnumMemberCodeChangesTests {
 				attributes: []);
 			yield return [
 				availabilityEnum,
-				"{ Name: 'EnumValue' SymbolAvailability: [{ Platform: 'iOS', Supported: '0.0', Unsupported: [], Obsoleted: [] }] FieldInfo: { State = Initialized, FieldData = { SymbolName: 'x', LibraryPath: 'libName', Type: 'null', NotificationCenter: 'null', Flags: 'Default' }, LibraryName = Test, LibraryPath = /path/to/library } Attributes: [] }",
+				"{ Name: 'EnumValue', Index: 0, SymbolAvailability: [{ Platform: 'iOS', Supported: '0.0', Unsupported: [], Obsoleted: [] }] FieldInfo: { State = Initialized, FieldData = { SymbolName: 'x', LibraryPath: 'libName', Type: 'null', NotificationCenter: 'null', Flags: 'Default' }, LibraryName = Test, LibraryPath = /path/to/library } Attributes: [] }",
 			];
 
 			var attrsEnum = new EnumMember (
 				name: "EnumValue",
+				index: 0,
 				libraryName: "Test",
 				libraryPath: "/path/to/library",
 				fieldData: new ("x", "libName", EnumValue.Default),
@@ -309,7 +390,7 @@ public class EnumMemberCodeChangesTests {
 				]);
 			yield return [
 				attrsEnum,
-				"{ Name: 'EnumValue' SymbolAvailability: [{ Platform: 'iOS', Supported: '0.0', Unsupported: [], Obsoleted: [] }] FieldInfo: { State = Initialized, FieldData = { SymbolName: 'x', LibraryPath: 'libName', Type: 'null', NotificationCenter: 'null', Flags: 'Default' }, LibraryName = Test, LibraryPath = /path/to/library } Attributes: [{ Name: Attribute1, Arguments: [] }, { Name: Attribute2, Arguments: [] }] }",
+				"{ Name: 'EnumValue', Index: 0, SymbolAvailability: [{ Platform: 'iOS', Supported: '0.0', Unsupported: [], Obsoleted: [] }] FieldInfo: { State = Initialized, FieldData = { SymbolName: 'x', LibraryPath: 'libName', Type: 'null', NotificationCenter: 'null', Flags: 'Default' }, LibraryName = Test, LibraryPath = /path/to/library } Attributes: [{ Name: Attribute1, Arguments: [] }, { Name: Attribute2, Arguments: [] }] }",
 			];
 		}
 

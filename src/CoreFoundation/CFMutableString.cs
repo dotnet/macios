@@ -143,7 +143,9 @@ namespace CoreFoundation {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (transform));
 			str = null; // destroy any cached value
 			unsafe {
-				return CFStringTransform (Handle, (CFRange*) Unsafe.AsPointer<CFRange> (ref range), transform, reverse ? (byte) 1 : (byte) 0) != 0;
+				fixed (CFRange* rangePtr = &range) {
+					return CFStringTransform (Handle, rangePtr, transform, reverse ? (byte) 1 : (byte) 0) != 0;
+				}
 			}
 		}
 

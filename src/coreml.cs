@@ -85,6 +85,9 @@ namespace CoreML {
 		Float = 0x10000 | 32,
 		/// <summary>The array stores 32-bit integer values.</summary>
 		Int32 = 0x20000 | 32,
+		/// <summary>The array stores 8-bit integer values.</summary>
+		[iOS (26, 0), Mac (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		Int8 = 0x20000 | 8,
 	}
 
 	/// <summary>Enumerates the form of a <see cref="CoreML.MLImageSizeConstraint" />.</summary>

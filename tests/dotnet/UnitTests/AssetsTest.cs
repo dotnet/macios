@@ -213,8 +213,6 @@ namespace Xamarin.Tests {
 			if (item.TryGetProperty ("SchemaVersion", out var schemaVersion)) {
 				switch (platform) {
 				case ApplePlatform.MacOSX:
-					Assert.AreEqual ("5", schemaVersion.ToString (), "Verify SchemaVersion");
-					break;
 				case ApplePlatform.MacCatalyst:
 				case ApplePlatform.iOS:
 				case ApplePlatform.TVOS:

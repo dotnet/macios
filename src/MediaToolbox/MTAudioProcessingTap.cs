@@ -184,12 +184,16 @@ namespace MediaToolbox {
 			flags = default;
 			timeRange = default;
 			unsafe {
-				r = MTAudioProcessingTapGetSourceAudio (Handle,
-						(IntPtr) frames,
-						(IntPtr) bufferList,
-						(MTAudioProcessingTapFlags*) Unsafe.AsPointer<MTAudioProcessingTapFlags> (ref flags),
-						(CMTimeRange*) Unsafe.AsPointer<CMTimeRange> (ref timeRange),
-						&result);
+				fixed (MTAudioProcessingTapFlags* flagsPtr = &flags) {
+					fixed (CMTimeRange* timeRangePtr = &timeRange) {
+						r = MTAudioProcessingTapGetSourceAudio (Handle,
+								(IntPtr) frames,
+								(IntPtr) bufferList,
+								flagsPtr,
+								timeRangePtr,
+								&result);
+					}
+				}
 			}
 			framesProvided = (nint) result;
 			return r;

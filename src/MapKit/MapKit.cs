@@ -649,7 +649,8 @@ namespace MapKit {
 			MKMapRect slice;
 			remainder = default;
 			unsafe {
-				MKMapRectDivide (this, &slice, (MKMapRect*) Unsafe.AsPointer<MKMapRect> (ref remainder), amount, edge);
+				fixed (MKMapRect* remainderPtr = &remainder)
+					MKMapRectDivide (this, &slice, remainderPtr, amount, edge);
 			}
 			return slice;
 		}

@@ -1163,5 +1163,32 @@ namespace Microsoft.Macios.Bindings.Analyzer {
                 return ResourceManager.GetString("RBI0040Title", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Protocol inline constructor is hidden..
+        /// </summary>
+        internal static string RBI0041Description {
+            get {
+                return ResourceManager.GetString("RBI0041Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The class &apos;{0}&apos; contains a constructor with the selector &apos;{1}&apos; that hides a inline constructor from protocol &apos;{2}&apos;.
+        /// </summary>
+        internal static string RBI0041MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0041MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Protocol constructor overlap:.
+        /// </summary>
+        internal static string RBI0041Title {
+            get {
+                return ResourceManager.GetString("RBI0041Title", resourceCulture);
+            }
+        }
     }
 }

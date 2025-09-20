@@ -236,6 +236,8 @@ namespace Photos {
 		SmartAlbumCinematic = 218,
 		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		SmartAlbumSpatial = 219,
+		[iOS (14, 0), MacCatalyst (14, 0), TV (14, 0)]
+		SmartAlbumScreenRecordings = 220,
 
 		/// <summary>A bitmask of all possible subtypes.</summary>
 		Any = Int64.MaxValue,
@@ -300,6 +302,8 @@ namespace Photos {
 		VideoHighFrameRate = (1 << 17),
 		/// <summary>A timelapse video.</summary>
 		VideoTimelapse = (1 << 18),
+		[iOS (13, 0), MacCatalyst (13, 1), TV (13, 0)]
+		VideoScreenRecording = (1 << 19),
 		VideoCinematic = (1 << 21),
 	}
 

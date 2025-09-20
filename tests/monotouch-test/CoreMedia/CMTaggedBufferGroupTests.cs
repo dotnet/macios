@@ -521,6 +521,43 @@ namespace MonoTouchFixtures.CoreMedia {
 		}
 
 		[Test]
+		public void CreateFormatDescriptionWithExtensions ()
+		{
+			TestRuntime.AssertXcodeVersion (26, 0);
+
+			{
+				using var tagCollection = CMTagCollection.Create (CMTag.MediaTypeVideo);
+				using var buffer = CreateCMSampleBuffer ();
+				using var group = CMTaggedBufferGroup.Create (
+					new [] { tagCollection },
+					new [] { buffer },
+					out var status);
+				Assert.AreEqual (CMTaggedBufferGroupError.Success, status, "Status A");
+				Assert.AreEqual (1, (int) group.Count, "Count A");
+				using var desc = group.CreateFormatDescription (null, out status);
+				Assert.AreEqual (CMTaggedBufferGroupError.Success, status, "Status Desc A");
+				Assert.AreEqual (CMMediaType.TaggedBufferGroup, desc.MediaType, $"Desc.MediaType: {AVFoundationEnumTest.FourCC ((int) desc.MediaType)}");
+				Assert.AreEqual (CMTaggedBufferGroupFormatType.TaggedBufferGroup, desc.TaggedBufferGroupFormatType, "Desc.TaggedBufferGroupFormatType A");
+			}
+
+			{
+				using var tagCollection = CMTagCollection.Create (CMTag.MediaTypeVideo);
+				using var buffer = CreateCMSampleBuffer ();
+				using var group = CMTaggedBufferGroup.Create (
+					new [] { tagCollection },
+					new [] { buffer },
+					out var status);
+				Assert.AreEqual (CMTaggedBufferGroupError.Success, status, "Status B");
+				Assert.AreEqual (1, (int) group.Count, "Count B");
+				using var extensions = new NSDictionary ();
+				using var desc = group.CreateFormatDescription (extensions, out status);
+				Assert.AreEqual (CMTaggedBufferGroupError.Success, status, "Status Desc B");
+				Assert.AreEqual (CMMediaType.TaggedBufferGroup, desc.MediaType, $"Desc.MediaType: {AVFoundationEnumTest.FourCC ((int) desc.MediaType)}");
+				Assert.AreEqual (CMTaggedBufferGroupFormatType.TaggedBufferGroup, desc.TaggedBufferGroupFormatType, "Desc.TaggedBufferGroupFormatType B");
+			}
+		}
+
+		[Test]
 		public void Matches ()
 		{
 			TestRuntime.AssertXcodeVersion (15, 0);

@@ -856,6 +856,58 @@ public partial class TestClass{
 				DiagnosticSeverity.Warning,
 				"The method 'GetCount' was marked as async and has multiple parameters but does not provide a return type name, a nameless tuple will be generated for the async method"
 			];
+
+			// constructor that hides a protocol constructor
+			yield return [
+				@"
+#pragma warning disable APL0003
+
+using System;
+using System.Runtime.Versioning;
+using AVFoundation;
+using CoreGraphics;
+using Foundation;
+using ObjCBindings;
+using ObjCRuntime;
+using nfloat = System.Runtime.InteropServices.NFloat;
+
+namespace TestNamespace;
+
+[SupportedOSPlatform (""macos"")]
+[SupportedOSPlatform (""ios"")]
+[SupportedOSPlatform (""tvos"")]
+[SupportedOSPlatform (""maccatalyst13.1"")]
+[BindingType<Protocol>]
+public partial interface IMyNSCoding {
+
+	[SupportedOSPlatform (""macos"")]
+	[SupportedOSPlatform (""ios"")]
+	[SupportedOSPlatform (""tvos"")]
+	[SupportedOSPlatform (""maccatalyst13.1"")]
+	[Export<Method> (""initWithCoder:"", Flags = Method.Factory)]
+	public virtual partial IMyNSCoding CreateWithCoder (NSObject coder);
+}
+
+[SupportedOSPlatform (""macos"")]
+[SupportedOSPlatform (""ios"")]
+[SupportedOSPlatform (""tvos"")]
+[SupportedOSPlatform (""maccatalyst13.1"")]
+[BindingType<Class>]
+public partial class TestClass : IMyNSCoding {
+
+	// we are testing that the protocol constructor is not added and that we don't get a duplicate
+	[SupportedOSPlatform (""macos"")]
+	[SupportedOSPlatform (""ios"")]
+	[SupportedOSPlatform (""tvos"")]
+	[SupportedOSPlatform (""maccatalyst13.1"")]
+	[Export<Constructor> (""initWithCoder:"")]
+	public TestClass (NSObject coder);
+
+}",
+				"RBI0041",
+				DiagnosticSeverity.Warning,
+				"The class 'TestClass' contains a constructor with the selector 'initWithCoder:' that hides a inline constructor from protocol 'TestNamespace.IMyNSCoding'"
+			];
 		}
 
 		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();

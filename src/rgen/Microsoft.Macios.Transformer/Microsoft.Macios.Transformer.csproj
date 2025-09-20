@@ -53,6 +53,9 @@
         <Compile Include="../Microsoft.Macios.Generator/IO/TabbedStringBuilder.cs">
             <Link>IO/TabbedStringBuilder.cs</Link>
         </Compile>
+        <Compile Include="../Microsoft.Macios.Generator/IO/TabbedStringBuilderAvailability.cs">
+            <Link>IO/TabbedStringBuilderAvailability.cs</Link>
+        </Compile>
         <Compile Include="../Microsoft.Macios.Generator/Attributes/ObsoletedOSPlatformData.cs">
             <Link>Attributes/ObsoletedOSPlatformData.cs</Link>
         </Compile>

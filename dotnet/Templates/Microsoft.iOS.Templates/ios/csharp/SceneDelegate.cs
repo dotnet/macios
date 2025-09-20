@@ -9,9 +9,24 @@ public class SceneDelegate : UIResponder, IUIWindowSceneDelegate {
 	[Export ("scene:willConnectToSession:options:")]
 	public void WillConnect (UIScene scene, UISceneSession session, UISceneConnectionOptions connectionOptions)
 	{
-		// Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
-		// If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
-		// This delegate does not imply the connecting scene or session are new (see UIApplicationDelegate `GetConfiguration` instead).
+		// Use this method to optionally configure and attach the UIWindow 'Window' to the provided UIWindowScene 'scene'.
+		// Since we are not using a storyboard, the 'Window' property needs to be initialized and attached to the scene.
+		// This delegate does not imply the connecting scene or session are new (see UIApplicationDelegate 'GetConfiguration' instead).
+		if (scene is UIWindowScene windowScene) {
+			Window ??= new UIWindow (windowScene);
+
+			// Create a 'UIViewController' with a single 'UILabel'
+			var vc = new UIViewController ();
+			vc.View!.AddSubview (new UILabel (Window!.Frame) {
+				BackgroundColor = UIColor.SystemBackground,
+				TextAlignment = UITextAlignment.Center,
+				Text = "Hello, iOS!",
+				AutoresizingMask = UIViewAutoresizing.All,
+			});
+
+			Window.RootViewController = vc;
+			Window.MakeKeyAndVisible ();
+		}
 	}
 
 	[Export ("sceneDidDisconnect:")]

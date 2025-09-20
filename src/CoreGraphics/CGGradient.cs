@@ -200,6 +200,68 @@ namespace CoreGraphics {
 			: base (Create (colorspace, colors), true)
 		{
 		}
+
+		[SupportedOSPlatform ("ios26.0")]
+		[SupportedOSPlatform ("tvos26.0")]
+		[SupportedOSPlatform ("maccatalyst26.0")]
+		[SupportedOSPlatform ("macos26.0")]
+		[DllImport (Constants.CoreGraphicsLibrary)]
+		unsafe static extern IntPtr /* CGGradientRef __nullable */ CGGradientCreateWithContentHeadroom (
+			float headroom,
+			IntPtr /* CGColorSpaceRef cg_nullable */ space,
+			nfloat* /* const CGFloat * cg_nullable */ components,
+			nfloat* /* const CGFloat * cg_nullable */ locations,
+			nint count);
+
+		/// <summary>Create a <see cref="CGGradient" /> with the specified content headroom.</summary>
+		/// <param name="headroom">The content headroom for the new <see cref="CGGradient" />.</param>
+		/// <param name="colorSpace">The colorspace to use for the gradient. This colorspace must support HDR.</param>
+		/// <param name="components">The color components to map into the new <see cref="CGGradient" />.</param>
+		/// <param name="locations">An array of values that determines where, in the range from 0.0 to 1.0, should each color be located in the new <see cref="CGGradient" />.</param>
+		/// <returns>A new <see cref="CGGradient" /> if successful, <see langword="null" /> otherwise.</returns>
+		[SupportedOSPlatform ("ios26.0")]
+		[SupportedOSPlatform ("tvos26.0")]
+		[SupportedOSPlatform ("maccatalyst26.0")]
+		[SupportedOSPlatform ("macos26.0")]
+		public static CGGradient? Create (float headroom, CGColorSpace? colorSpace, nfloat []? components, nfloat []? locations)
+		{
+			// "The number of locations is specified by `count'"
+			// "The number of color components is the product of `count' and the number of color components of `space'."
+			var locationLength = locations?.Length ?? 0;
+			var colorComponentsCount = colorSpace?.Components ?? 0;
+			var expectedColorComponents = (locations?.Length ?? 0) * (colorSpace?.Components ?? 0);
+			if (expectedColorComponents > 0 && (components is null || components.Length < expectedColorComponents))
+				throw new ArgumentException (nameof (components), string.Format ("Must have at least {0} color components when the {1} array has {2} and the color space {3} has {4} color components.", expectedColorComponents, nameof (locations), locationLength, nameof (colorSpace), colorComponentsCount));
+
+			unsafe {
+				fixed (nfloat* componentsPtr = components) {
+					fixed (nfloat* locationsPtr = locations) {
+						var result = CGGradientCreateWithContentHeadroom (headroom, colorSpace.GetHandle (), componentsPtr, locationsPtr, locationLength);
+						GC.KeepAlive (colorSpace);
+						if (result == IntPtr.Zero)
+							return null;
+						return new CGGradient (result, true);
+					}
+				}
+			}
+		}
+
+		[SupportedOSPlatform ("ios26.0")]
+		[SupportedOSPlatform ("tvos26.0")]
+		[SupportedOSPlatform ("maccatalyst26.0")]
+		[SupportedOSPlatform ("macos26.0")]
+		[DllImport (Constants.CoreGraphicsLibrary)]
+		static extern float CGGradientGetContentHeadroom (IntPtr /* CGGradientRef gc_nullable */ gradient);
+
+		/// <summary>Get the content headroom for this gradient.</summary>
+		[SupportedOSPlatform ("ios26.0")]
+		[SupportedOSPlatform ("tvos26.0")]
+		[SupportedOSPlatform ("maccatalyst26.0")]
+		[SupportedOSPlatform ("macos26.0")]
+		public float ContentHeadroom {
+			get => CGGradientGetContentHeadroom (GetCheckedHandle ());
+		}
+
 #endif // !COREBUILD
 	}
 }

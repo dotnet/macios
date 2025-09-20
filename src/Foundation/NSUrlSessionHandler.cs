@@ -940,13 +940,16 @@ namespace Foundation {
 						httpResponse.RequestMessage.RequestUri = absoluteUri;
 
 					foreach (var v in urlResponse.AllHeaderFields) {
-						// NB: Cocoa trolling us so hard by giving us back dummy dictionary entries
-						if (v.Key is null || v.Value is null) continue;
-						// NSUrlSession tries to be smart with cookies, we will not use the raw value but the ones provided by the cookie storage
-						if (v.Key.ToString () == SetCookie) continue;
+						var key = v.Key?.ToString ();
+						var value = v.Value?.ToString ();
 
-						httpResponse.Headers.TryAddWithoutValidation (v.Key.ToString (), v.Value.ToString ());
-						httpResponse.Content.Headers.TryAddWithoutValidation (v.Key.ToString (), v.Value.ToString ());
+						// NB: Cocoa trolling us so hard by giving us back dummy dictionary entries
+						if (key is null || value is null) continue;
+						// NSUrlSession tries to be smart with cookies, we will not use the raw value but the ones provided by the cookie storage
+						if (key == SetCookie) continue;
+
+						httpResponse.Headers.TryAddWithoutValidation (key, value);
+						httpResponse.Content.Headers.TryAddWithoutValidation (key, value);
 					}
 
 					// it might be confusing that we are not using the managed CookieStore here, this is ONLY for those cookies that have been retrieved from

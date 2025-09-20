@@ -30,19 +30,21 @@ readonly partial struct EnumMember {
 	/// Create a new change that happened on a member.
 	/// </summary>
 	/// <param name="name">The name of the changed member.</param>
+	/// <param name="index">The position of the enum member starting at 0.</param>
 	/// <param name="libraryName">The library name of the smart enum.</param>
 	/// <param name="libraryPath">The library path to the library, null if it is a known frameworl.</param>
 	/// <param name="fieldData">The binding data attached to this enum value.</param>
 	/// <param name="symbolAvailability">The symbol availability of the member.</param>
 	/// <param name="attributes">The list of attribute changes in the member.</param>
 	public EnumMember (string name,
+		uint index,
 		string libraryName,
 		string? libraryPath,
 		FieldData<EnumValue>? fieldData,
 		SymbolAvailability symbolAvailability,
-		ImmutableArray<AttributeCodeChange> attributes)
+		ImmutableArray<AttributeCodeChange> attributes) : this (StructState.Initialized, name)
 	{
-		Name = name;
+		Index = index;
 		FieldInfo = fieldData is null ? null : new (fieldData.Value, libraryName, libraryPath);
 		SymbolAvailability = symbolAvailability;
 		Attributes = attributes;
@@ -52,11 +54,13 @@ readonly partial struct EnumMember {
 	/// Create a new change that happened on a member.
 	/// </summary>
 	/// <param name="name">The name of the changed member.</param>
+	/// <param name="index">The position of the enum member starting at 0.</param>
 	/// <param name="libraryName">The library name of the smart enum.</param>
 	/// <param name="libraryPath">The library path to the library, null if it is a known frameworl.</param>
-	public EnumMember (string name, string libraryName, string? libraryPath)
+	public EnumMember (string name, uint index, string libraryName, string? libraryPath)
 		: this (
 			name: name,
+			index: index,
 			libraryName: libraryName,
 			libraryPath: libraryPath,
 			fieldData: null,

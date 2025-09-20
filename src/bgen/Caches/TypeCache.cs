@@ -11,6 +11,7 @@ public class TypeCache {
 	public Type System_Boolean { get; }
 	public Type System_Byte { get; }
 	public Type System_Char { get; }
+	public Type System_DateTime { get; }
 	public Type System_Delegate { get; }
 	public Type System_Double { get; }
 	public Type System_Float { get; }
@@ -168,6 +169,7 @@ public class TypeCache {
 		System_Boolean = Lookup (corlibAssembly, "System", "Boolean");
 		System_Byte = Lookup (corlibAssembly, "System", "Byte");
 		System_Char = Lookup (corlibAssembly, "System", "Char");
+		System_DateTime = Lookup (corlibAssembly, "System", "DateTime");
 		System_Delegate = Lookup (corlibAssembly, "System", "Delegate");
 		System_Double = Lookup (corlibAssembly, "System", "Double");
 		System_Float = Lookup (corlibAssembly, "System", "Single");

@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Macios.Generator.Availability;
 using Microsoft.Macios.Transformer.Attributes;
 
@@ -14,6 +15,12 @@ readonly partial struct EnumMember {
 	/// </summary>
 	public FieldInfo? FieldInfo { get; init; }
 
+	/// <summary>
+	/// The enum member declaration.
+	/// </summary>
+	public EnumMemberDeclarationSyntax? DeclarationSyntax { get; init; }
+
+	public bool IsSmartMember { get; init; }
 
 	/// <summary>
 	/// Return the native selector that references the enum value.
@@ -33,12 +40,13 @@ readonly partial struct EnumMember {
 	}
 
 	public EnumMember (string name,
+		uint index,
 		string libraryName,
 		string? libraryPath,
 		FieldData? fieldData,
-		SymbolAvailability symbolAvailability)
+		SymbolAvailability symbolAvailability) : this (StructState.Initialized, name)
 	{
-		Name = name;
+		Index = index;
 		SymbolAvailability = symbolAvailability;
 		FieldInfo = new (fieldData, libraryName, libraryPath);
 	}

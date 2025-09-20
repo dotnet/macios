@@ -547,17 +547,10 @@ namespace CoreGraphics {
 			size = Size;
 		}
 
-		/// <param name="dictionaryRepresentation">Dictionary containing
-		/// 	a serialized CGRect.</param>
-		///         <param name="rect">The rectangle value with the contents if
-		/// 	the return value is true.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>True if the NSDictionary contained a serialized
-		/// 	CGRect and the initialized <paramref name="rect" />  with the
-		/// 	contents on return.   False on failure, and the contents of
-		/// 	<paramref name="rect" /> are set to Empty in that case.</returns>
-		///         <remarks>Used to create a CGRect from a dictionary containing
-		/// 	keys for X, Y, Widht and Height.</remarks>
+		/// <summary>Attempts to parse the contents of an <see cref="NSDictionary" /> with a serialized <see cref="CGRect" /> into a <see cref="CGRect" />.</summary>
+		/// <param name="dictionaryRepresentation">The dictionary to parse.</param>
+		/// <param name="rect">If successful, the resulting <see cref="CGRect" /> value.</param>
+		/// <returns><see langword="true" /> if the dictionary was serialized successfully, <see langword="false" /> otherwise.</returns>
 		public static bool TryParse (NSDictionary? dictionaryRepresentation, out CGRect rect)
 		{
 			if (dictionaryRepresentation is null) {
@@ -566,29 +559,39 @@ namespace CoreGraphics {
 			}
 			rect = default;
 			unsafe {
-				bool result = NativeDrawingMethods.CGRectMakeWithDictionaryRepresentation (dictionaryRepresentation.Handle, (CGRect*) Unsafe.AsPointer<CGRect> (ref rect)) != 0;
-				GC.KeepAlive (dictionaryRepresentation);
-				return result;
+				fixed (CGRect* rectPtr = &rect) {
+					bool result = NativeDrawingMethods.CGRectMakeWithDictionaryRepresentation (dictionaryRepresentation.Handle, rectPtr) != 0;
+					GC.KeepAlive (dictionaryRepresentation);
+					return result;
+				}
 			}
 		}
 
-		/// <summary>Serializes the state of the rectangle into an NSDictionary.</summary>
-		///         <returns>An NSDictionary representing the rectangle.</returns>
-		///         <remarks>
-		///           <para>
-		/// 	    The returned dictionary conforms to the serialization
-		/// 	    standard of Cocoa and CocoaTouch and can be used to serialize
-		/// 	    the state into objects that can be parsed by other Apple APIs.
-		/// 	  </para>
-		///           <para>
-		/// 	    It is possible to create CGRect from a Dictionary using
-		/// 	    the <see cref="CoreGraphics.CGRect.TryParse(Foundation.NSDictionary,out CoreGraphics.CGRect)" />
-		/// 	    method. 
-		/// 	  </para>
-		///         </remarks>
+		/// <summary>Serializes a <see cref="CGRect" /> into an <see cref="NSDictionary" />.</summary>
+		/// <returns>An <see cref="NSDictionary" /> with the values from this <see cref="CGRect" />.</returns>
+		/// <remarks>
+		///   <para>
+		///     The returned dictionary conforms to the serialization
+		///     standard of Cocoa and CocoaTouch and can be used to serialize
+		///     the state into objects that can be parsed by other Apple APIs.
+		///   </para>
+		///   <para>
+		///     It is possible to create a <see cref="CGRect" /> from an <see cref="NSDictionary" /> using
+		///     the <see cref="TryParse(NSDictionary,out CGRect)" /> method.
+		///   </para>
+		/// </remarks>
+		/// <seealso cref="ToCGRectDictionary" />
 		public NSDictionary ToDictionary ()
 		{
 			return new NSDictionary (NativeDrawingMethods.CGRectCreateDictionaryRepresentation (this));
+		}
+
+		/// <summary>Serializes a <see cref="CGRect" /> into a <see cref="CGRectDictionary" />.</summary>
+		/// <returns>A <see cref="CGRectDictionary" /> representing the values from this <see cref="CGRect" />.</returns>
+		/// <seealso cref="ToDictionary" />
+		public CGRectDictionary ToCGRectDictionary ()
+		{
+			return new CGRectDictionary (ToDictionary ());
 		}
 
 #if MONOMAC

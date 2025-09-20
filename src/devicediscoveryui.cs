@@ -22,7 +22,7 @@ namespace DeviceDiscoveryUI {
 	[Internal]
 	delegate void _DevicePickerCompletionHandler ([NullAllowed] OS_nw_endpoint endpoint, [NullAllowed] OS_nw_error error);
 
-	[NoMac, NoiOS, NoMacCatalyst, TV (16, 0)]
+	[NoMac, iOS (26, 0), NoMacCatalyst, TV (16, 0)]
 	[BaseType (typeof (UIViewController))]
 	[DisableDefaultCtor]
 	interface DDDevicePickerViewController {

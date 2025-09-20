@@ -1123,6 +1123,33 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";RBI0041Description" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Protocol inline constructor is hidden.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[协议内联构造函数处于隐藏状态。]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";RBI0041MessageFormat" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The class '{0}' contains a constructor with the selector '{1}' that hides a inline constructor from protocol '{2}']]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[类 ‘{0}’ 包含具有选择器 ‘{1}’ 的构造函数，该选择器会隐藏协议 ‘{2}’ 中的内联构造函数]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";RBI0041Title" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Protocol constructor overlap:]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[协议构造函数重叠:]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
     </Item>
   </Item>
 </LCX>

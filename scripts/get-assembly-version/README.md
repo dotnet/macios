@@ -1,0 +1,1 @@
+# get-assembly-version

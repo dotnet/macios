@@ -17,10 +17,6 @@
 !missing-selector! CISampler::initWithImage:keysAndValues: not bound
 !missing-selector! +CISampler::samplerWithImage:keysAndValues: not bound
 
-
-## bound in informal protocol CIImageProvider
-!missing-selector! NSObject::provideImageData:bytesPerRow:origin::size::userInfo: not bound
-
 ## at some point in time (iOS11/macOS 10.11) this API was removed/deprecated and we added a compatibility
 ## stub using 'autoAdjustmentFiltersWithOptions:'. Now it's back (in headers but can be ignored)
 !missing-selector! CIImage::autoAdjustmentFilters not bound
@@ -30,6 +26,7 @@
 !missing-selector! +CIFilter::additionCompositingFilter not bound
 !missing-selector! +CIFilter::affineClampFilter not bound
 !missing-selector! +CIFilter::affineTileFilter not bound
+!missing-selector! +CIFilter::areaAverageMaximumRedFilter not bound
 !missing-selector! +CIFilter::attributedTextImageGeneratorFilter not bound
 !missing-selector! +CIFilter::aztecCodeGeneratorFilter not bound
 !missing-selector! +CIFilter::barcodeGeneratorFilter not bound
@@ -40,6 +37,7 @@
 !missing-selector! +CIFilter::blendWithMaskFilter not bound
 !missing-selector! +CIFilter::blendWithRedMaskFilter not bound
 !missing-selector! +CIFilter::bloomFilter not bound
+!missing-selector! +CIFilter::blurredRoundedRectangleGeneratorFilter not bound
 !missing-selector! +CIFilter::bokehBlurFilter not bound
 !missing-selector! +CIFilter::boxBlurFilter not bound
 !missing-selector! +CIFilter::checkerboardGeneratorFilter not bound
@@ -79,6 +77,7 @@
 !missing-selector! +CIFilter::disintegrateWithMaskTransitionFilter not bound
 !missing-selector! +CIFilter::disparityToDepthFilter not bound
 !missing-selector! +CIFilter::dissolveTransitionFilter not bound
+!missing-selector! +CIFilter::distanceGradientFromRedMaskFilter not bound
 !missing-selector! +CIFilter::ditherFilter not bound
 !missing-selector! +CIFilter::divideBlendModeFilter not bound
 !missing-selector! +CIFilter::documentEnhancerFilter not bound
@@ -170,6 +169,7 @@
 !missing-selector! +CIFilter::radialGradientFilter not bound
 !missing-selector! +CIFilter::randomGeneratorFilter not bound
 !missing-selector! +CIFilter::rippleTransitionFilter not bound
+!missing-selector! +CIFilter::roundedQRCodeGeneratorFilter not bound
 !missing-selector! +CIFilter::roundedRectangleGeneratorFilter not bound
 !missing-selector! +CIFilter::saliencyMapFilter not bound
 !missing-selector! +CIFilter::saturationBlendModeFilter not bound
@@ -177,6 +177,7 @@
 !missing-selector! +CIFilter::sepiaToneFilter not bound
 !missing-selector! +CIFilter::shadedMaterialFilter not bound
 !missing-selector! +CIFilter::sharpenLuminanceFilter not bound
+!missing-selector! +CIFilter::signedDistanceGradientFromRedMaskFilter not bound
 !missing-selector! +CIFilter::sixfoldReflectedTileFilter not bound
 !missing-selector! +CIFilter::sixfoldRotatedTileFilter not bound
 !missing-selector! +CIFilter::smoothLinearGradientFilter not bound
@@ -194,6 +195,7 @@
 !missing-selector! +CIFilter::subtractBlendModeFilter not bound
 !missing-selector! +CIFilter::sunbeamsGeneratorFilter not bound
 !missing-selector! +CIFilter::swipeTransitionFilter not bound
+!missing-selector! +CIFilter::systemToneMapFilter not bound
 !missing-selector! +CIFilter::temperatureAndTintFilter not bound
 !missing-selector! +CIFilter::textImageGeneratorFilter not bound
 !missing-selector! +CIFilter::thermalFilter not bound

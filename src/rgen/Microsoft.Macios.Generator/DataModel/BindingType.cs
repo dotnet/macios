@@ -24,6 +24,10 @@ enum BindingType : ulong {
 	/// </summary>
 	Protocol,
 	/// <summary>
+	/// Binding type for a traditional enum.
+	/// </summary>
+	Enum,
+	/// <summary>
 	/// Binding type for a enum with backing fields.
 	/// </summary>
 	SmartEnum,

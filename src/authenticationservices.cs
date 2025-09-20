@@ -150,6 +150,8 @@ namespace AuthenticationServices {
 		StrongerKeyAvailable = 1uL << 4,
 		[Mac (14, 4)]
 		UserKeyInvalid = 1uL << 5,
+		[Mac (26, 0)]
+		SetupAssistant = 1 << 6,
 	}
 
 	[TV (17, 0), iOS (17, 0), MacCatalyst (16, 4), Mac (13, 3)]
@@ -510,6 +512,22 @@ namespace AuthenticationServices {
 		[NoTV, Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Export ("performPasskeyRegistrationWithoutUserInteractionIfPossible:")]
 		void PerformPasskeyRegistrationWithoutUserInteractionIfPossible (ASPasskeyCredentialRequest registrationRequest);
+
+		[iOS (26, 0), Mac (26, 0), MacCatalyst (26, 0), NoTV]
+		[Export ("reportPublicKeyCredentialUpdateForRelyingParty:userHandle:newName:")]
+		void ReportPublicKeyCredentialUpdate (string relyingParty, NSData userHandle, string newName);
+
+		[iOS (26, 0), Mac (26, 0), MacCatalyst (26, 0), NoTV]
+		[Export ("reportUnknownPublicKeyCredentialForRelyingParty:credentialID:")]
+		void ReportUnknownPublicKeyCredential (string relyingParty, NSData credentialId);
+
+		[iOS (26, 0), Mac (26, 0), MacCatalyst (26, 0), NoTV]
+		[Export ("reportAllAcceptedPublicKeyCredentialsForRelyingParty:userHandle:acceptedCredentialIDs:")]
+		void ReportAllAcceptedPublicKeyCredentials (string relyingParty, NSData userHandle, NSData [] acceptedCredentialIds);
+
+		[iOS (26, 0), Mac (26, 0), MacCatalyst (26, 0), NoTV]
+		[Export ("reportUnusedPasswordCredentialForDomain:userName:")]
+		void ReportUnusedPasswordCredential (string domain, string userName);
 	}
 
 	/// <summary>Associates a username and a password.</summary>
@@ -869,6 +887,8 @@ namespace AuthenticationServices {
 		MatchedExcludedCredential = 1006,
 		CredentialImport = 1007,
 		CredentialExport = 1008,
+		PreferSignInWithApple = 1009,
+		DeviceNotConfiguredForPasskeyCreation = 1010,
 	}
 
 	[TV (13, 0), iOS (13, 0)]
@@ -2237,6 +2257,9 @@ namespace AuthenticationServices {
 		[Async]
 		void AttestPendingKey (ASAuthorizationProviderExtensionKeyType keyType, NSData clientDataHash, ASAuthorizationProviderExtensionLoginManagerAttestCallback completion);
 
+		[Mac (26, 0)]
+		[Export ("authenticationMethod")]
+		ASAuthorizationProviderExtensionAuthenticationMethod AuthenticationMethod { get; }
 	}
 
 	delegate void ASAuthorizationProviderExtensionLoginManagerAttestCallback ([NullAllowed] NSArray attestationCertificates, [NullAllowed] NSError error);
@@ -2306,7 +2329,18 @@ namespace AuthenticationServices {
 		[Mac (15, 0)]
 		[Export ("keyWillRotateForKeyType:newKey:loginManager:completion:")]
 		void KeyWillRotateForKeyType (ASAuthorizationProviderExtensionKeyType keyType, SecKey newKey, ASAuthorizationProviderExtensionLoginManager loginManager, Action<bool> completion);
+
+		[Mac (26, 0)]
+		[Export ("displayNamesForGroups:loginManager:completion:")]
+		void GetDisplayNames (string [] groups, ASAuthorizationProviderExtensionLoginManager loginManager, ASAuthorizationProviderExtensionRegistrationHandlerGetDisplayNamesCallback completion);
+
+		[Mac (26, 0)]
+		[Export ("profilePictureForUserUsingLoginManager:completion:")]
+		void GetProfilePictureForUser (ASAuthorizationProviderExtensionLoginManager loginManager, ASAuthorizationProviderExtensionRegistrationHandlerGetProfilePictureForUserCallback completion);
 	}
+
+	delegate void ASAuthorizationProviderExtensionRegistrationHandlerGetDisplayNamesCallback (NSDictionary<NSString, NSString> fullNames);
+	delegate void ASAuthorizationProviderExtensionRegistrationHandlerGetProfilePictureForUserCallback (NSData jpegData);
 
 	interface IASAuthorizationWebBrowserExternallyAuthenticatableRequest { }
 

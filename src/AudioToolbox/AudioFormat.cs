@@ -108,9 +108,8 @@ namespace AudioToolbox {
 		UnsupportedDataFormat = 0x666d743f, // 'fmt?'
 		/// <summary>To be added.</summary>
 		UnknownFormat = 0x21666d74, // '!fmt'
-
-		// TODO: Not documented
-		// '!dat'
+		/// <summary>The format is unsupported.</summary>
+		UnsupportedFormat = 0x21646174, // '!dat'
 	}
 
 	/// <summary>A struct that holds minimum and maximum float values, indicating a range.</summary>
@@ -441,6 +440,7 @@ namespace AudioToolbox {
 		FirstPlayableFormatFromList = 0x6670666c,   // 'fpfl'
 		FormatIsVBR = 0x66766272,   // 'fvbr'
 		FormatIsExternallyFramed = 0x66657866,  // 'fexf'
+		FormatEmploysDependentPackets = 0x66646570, // 'fdep'
 		FormatIsEncrypted = 0x63727970, // 'cryp'
 		Encoders = 0x6176656e,  // 'aven'	
 		Decoders = 0x61766465,  // 'avde'

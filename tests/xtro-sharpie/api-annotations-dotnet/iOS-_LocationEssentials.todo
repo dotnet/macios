@@ -1,0 +1,2 @@
+!missing-field! kCLLocationCoordinate2DInvalid not bound
+!missing-pinvoke! CLLocationCoordinate2DMake is not bound

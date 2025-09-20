@@ -103,7 +103,7 @@ namespace Mono.ApiTools {
 			if (srcType == tgtType) {
 				change.Append (tgtType);
 			} else {
-				change.AppendModified (srcType, tgtType, true);
+				change.AppendModified (srcType, tgtType);
 			}
 			change.Append (" ");
 		}
@@ -116,29 +116,23 @@ namespace Mono.ApiTools {
 				if (srcGetter is not null) {
 					change.Append (" ").Append ("get;");
 				} else {
-					change.Append (" ").AppendAdded ("get;", false);
+					change.Append (" ").AppendAdded ("get;");
 				}
 			} else if (srcGetter is not null) {
-				change.Append (" ").AppendRemoved ("get;", !tgtGetter.IsExperimental ());
+				change.Append (" ").AppendRemoved ("get;");
 			}
 
 			if (tgtSetter is not null) {
 				if (srcSetter is not null) {
 					change.Append (" ").Append ("set;");
 				} else {
-					change.Append (" ").AppendAdded ("set;", false);
+					change.Append (" ").AppendAdded ("set;");
 				}
 			} else if (srcSetter is not null) {
-				change.Append (" ").AppendRemoved ("set;", !tgtSetter.IsExperimental ());
+				change.Append (" ").AppendRemoved ("set;");
 			}
 
 			change.Append (" }");
-
-			// Ignore added property setters if asked to
-			if (srcSetter is null && tgtSetter is not null && State.IgnoreAddedPropertySetters && !change.Breaking) {
-				change.AnyChange = false;
-				change.HasIgnoredChanges = true;
-			}
 		}
 
 		void RenderIndexers (List<XElement> srcIndexers, List<XElement> tgtIndexers, ApiChange change)
@@ -156,7 +150,7 @@ namespace Mono.ApiTools {
 				if (srcType == tgtType) {
 					change.Append (tgtType);
 				} else {
-					change.AppendModified (srcType, tgtType, true);
+					change.AppendModified (srcType, tgtType);
 				}
 				change.Append (" ");
 
@@ -165,7 +159,7 @@ namespace Mono.ApiTools {
 				if (srcName == tgtName) {
 					change.Append (tgtName);
 				} else {
-					change.AppendModified (srcName, tgtName, true);
+					change.AppendModified (srcName, tgtName);
 				}
 			}
 			change.Append ("]");
@@ -243,7 +237,7 @@ namespace Mono.ApiTools {
 			var sb = new StringBuilder ();
 
 			sb.Append (family ? "protected " : "public ");
-			if (virt && !State.IgnoreVirtualChanges)
+			if (virt)
 				sb.Append (over ? "override " : "virtual ");
 			else if (stat)
 				sb.Append ("static ");

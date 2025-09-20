@@ -82,7 +82,7 @@ namespace Mono.ApiTools {
 
 		XElement Find (IEnumerable<XElement> target)
 		{
-			return State.Lax ? target.FirstOrDefault (Find) : target.SingleOrDefault (Find);
+			return target.SingleOrDefault (Find);
 		}
 
 		public override void Compare (IEnumerable<XElement> source, IEnumerable<XElement> target)
@@ -119,11 +119,7 @@ namespace Mono.ApiTools {
 		{
 			bool a = false;
 			foreach (var item in elements) {
-				var memberDescription = $"{State.Namespace}.{State.Type}: Added {GroupName}: {GetDescription (item)}";
-				State.LogDebugMessage ($"Possible -a value: {memberDescription}");
 				SetContext (item);
-				if (State.IgnoreAdded.Any (re => re.IsMatch (memberDescription)))
-					continue;
 				if (!a) {
 					Formatter.BeginMemberAddition (elements, this);
 					a = true;
@@ -137,12 +133,8 @@ namespace Mono.ApiTools {
 		void Modify (ApiChanges modified)
 		{
 			foreach (var changes in modified) {
-				if (State.IgnoreNonbreaking && changes.Value.All (c => !c.Breaking))
-					continue;
 				Formatter.BeginMemberModification (changes.Key);
 				foreach (var element in changes.Value) {
-					if (State.IgnoreNonbreaking && !element.Breaking)
-						continue;
 					Formatter.Diff (element);
 				}
 				Formatter.EndMemberModification ();
@@ -152,19 +144,10 @@ namespace Mono.ApiTools {
 		void Remove (IEnumerable<XElement> elements)
 		{
 			bool r = false;
-			bool? isBreaking = null;
 			foreach (var item in elements) {
-				var memberDescription = $"{State.Namespace}.{State.Type}: Removed {GroupName}: {GetDescription (item)}";
-				State.LogDebugMessage ($"Possible -r value: {memberDescription}");
-				if (State.IgnoreRemoved.Any (re => re.IsMatch (memberDescription)))
-					continue;
 				SetContext (item);
-				if (State.IgnoreNonbreaking && !IsBreakingRemoval (item))
-					continue;
 				if (!r) {
-					if (isBreaking is null)
-						isBreaking = elements.Any (v => !v.IsExperimental ());
-					Formatter.BeginMemberRemoval (elements, this, isBreaking.Value);
+					Formatter.BeginMemberRemoval (elements, this);
 					first = true;
 					r = true;
 				}
@@ -204,10 +187,7 @@ namespace Mono.ApiTools {
 			if (!first && (o.Length > 0))
 				Output.WriteLine ();
 			Indent ();
-			var isInterfaceBreakingChange = false;
-			if (!wasParentAdded)
-				isInterfaceBreakingChange = string.Equals ("true", target.Attribute ("abstract")?.Value, StringComparison.Ordinal);
-			Formatter.AddMember (this, isInterfaceBreakingChange, o.ToString (), GetDescription (target));
+			Formatter.AddMember (this, o.ToString (), GetDescription (target));
 			first = false;
 		}
 
@@ -221,9 +201,7 @@ namespace Mono.ApiTools {
 			if (!first && (o.Length > 0))
 				Output.WriteLine ();
 
-			bool is_breaking = IsBreakingRemoval (source);
-
-			Formatter.RemoveMember (this, is_breaking, o.ToString (), GetDescription (source));
+			Formatter.RemoveMember (this, o.ToString (), GetDescription (source));
 			first = false;
 		}
 
@@ -259,15 +237,15 @@ namespace Mono.ApiTools {
 				if (i > 0)
 					change.Append (", ");
 				if (i >= srcCount) {
-					change.AppendAdded (RenderGenericParameter (tgt [i]), true);
+					change.AppendAdded (RenderGenericParameter (tgt [i]));
 				} else if (i >= tgtCount) {
-					change.AppendRemoved (RenderGenericParameter (src [i]), true);
+					change.AppendRemoved (RenderGenericParameter (src [i]));
 				} else {
 					var srcName = RenderGenericParameter (src [i]);
 					var tgtName = RenderGenericParameter (tgt [i]);
 
 					if (srcName != tgtName) {
-						change.AppendModified (srcName, tgtName, true);
+						change.AppendModified (srcName, tgtName);
 					} else {
 						change.Append (srcName);
 					}
@@ -319,9 +297,9 @@ namespace Mono.ApiTools {
 					mods_src = mods_src + " ";
 
 				if (i >= srcCount) {
-					change.AppendAdded (mods_tgt + tgt [i].GetTypeName ("type", State) + " " + tgt [i].GetAttribute ("name"), true);
+					change.AppendAdded (mods_tgt + tgt [i].GetTypeName ("type", State) + " " + tgt [i].GetAttribute ("name"));
 				} else if (i >= tgtCount) {
-					change.AppendRemoved (mods_src + src [i].GetTypeName ("type", State) + " " + src [i].GetAttribute ("name"), true);
+					change.AppendRemoved (mods_src + src [i].GetTypeName ("type", State) + " " + src [i].GetAttribute ("name"));
 				} else {
 					var paramSourceType = src [i].GetTypeName ("type", State);
 					var paramTargetType = tgt [i].GetTypeName ("type", State);
@@ -330,19 +308,19 @@ namespace Mono.ApiTools {
 					var paramTargetName = tgt [i].GetAttribute ("name");
 
 					if (mods_src != mods_tgt) {
-						change.AppendModified (mods_src, mods_tgt, true);
+						change.AppendModified (mods_src, mods_tgt);
 					} else {
 						change.Append (mods_src);
 					}
 
 					if (paramSourceType != paramTargetType) {
-						change.AppendModified (paramSourceType, paramTargetType, true);
+						change.AppendModified (paramSourceType, paramTargetType);
 					} else {
 						change.Append (paramSourceType);
 					}
 					change.Append (" ");
-					if (!State.IgnoreParameterNameChanges && paramSourceName != paramTargetName) {
-						change.AppendModified (paramSourceName, paramTargetName, true);
+					if (paramSourceName != paramTargetName) {
+						change.AppendModified (paramSourceName, paramTargetName);
 					} else {
 						change.Append (paramSourceName);
 					}
@@ -356,16 +334,16 @@ namespace Mono.ApiTools {
 						if (optTarget is not null) {
 							change.Append (" = ");
 							if (srcValue != tgtValue) {
-								change.AppendModified (srcValue, tgtValue, false);
+								change.AppendModified (srcValue, tgtValue);
 							} else {
 								change.Append (tgtValue);
 							}
 						} else {
-							change.AppendRemoved (" = " + srcValue, !source.IsExperimental ());
+							change.AppendRemoved (" = " + srcValue);
 						}
 					} else {
 						if (optTarget is not null)
-							change.AppendAdded (" = " + tgtValue, false);
+							change.AppendAdded (" = " + tgtValue);
 					}
 				}
 			}
@@ -386,31 +364,26 @@ namespace Mono.ApiTools {
 
 			var srcWord = srcVirtual ? (srcOverride ? "override" : "virtual") : string.Empty;
 			var tgtWord = tgtVirtual ? (tgtOverride ? "override" : "virtual") : string.Empty;
-			var breaking = srcWord.Length > 0 && tgtWord.Length == 0;
 
 			if (srcAbstract) {
 				if (tgtAbstract) {
 					change.Append ("abstract ");
 				} else if (tgtVirtual) {
-					change.AppendModified ("abstract", tgtWord, false).Append (" ");
+					change.AppendModified ("abstract", tgtWord).Append (" ");
 				} else {
-					change.AppendRemoved ("abstract", !sourceElement.IsExperimental ()).Append (" ");
+					change.AppendRemoved ("abstract").Append (" ");
 				}
 			} else {
 				if (tgtAbstract) {
-					change.AppendAdded ("abstract", true).Append (" ");
+					change.AppendAdded ("abstract").Append (" ");
 				} else if (srcWord != tgtWord) {
 					if (!tgtFinal) {
-						if (State.IgnoreVirtualChanges) {
-							change.HasIgnoredChanges = true;
-						} else {
-							change.AppendModified (srcWord, tgtWord, breaking).Append (" ");
-						}
+						change.AppendModified (srcWord, tgtWord).Append (" ");
 					}
 				} else if (tgtWord.Length > 0) {
 					change.Append (tgtWord).Append (" ");
 				} else if (srcWord.Length > 0) {
-					change.AppendRemoved (srcWord, breaking).Append (" ");
+					change.AppendRemoved (srcWord).Append (" ");
 				}
 			}
 
@@ -418,40 +391,13 @@ namespace Mono.ApiTools {
 				if (tgtFinal) {
 					change.Append ("final ");
 				} else {
-					if (srcVirtual && !tgtVirtual && State.IgnoreVirtualChanges) {
-						change.HasIgnoredChanges = true;
-					} else {
-						change.AppendRemoved ("final", false).Append (" "); // removing 'final' is not a breaking change.
-					}
+					change.AppendRemoved ("final").Append (" ");
 				}
 			} else {
 				if (tgtFinal && srcVirtual) {
-					change.AppendModified ("virtual", "final", true).Append (" "); // adding 'final' is a breaking change if the member was virtual
+					change.AppendModified ("virtual", "final").Append (" ");
 				}
 			}
-
-			if (!srcVirtual && !srcFinal && tgtVirtual && tgtFinal) {
-				// existing member implements a member from a new interface
-				// this would show up as 'virtual final', which is redundant, so show nothing at all.
-				change.HasIgnoredChanges = true;
-			}
-
-			// Ignore non-breaking virtual changes.
-			if (State.IgnoreVirtualChanges && !change.Breaking) {
-				change.AnyChange = false;
-				change.HasIgnoredChanges = true;
-			}
-
-			var tgtSecurity = (source & MethodAttributes.HasSecurity) == MethodAttributes.HasSecurity;
-			var srcSecurity = (target & MethodAttributes.HasSecurity) == MethodAttributes.HasSecurity;
-
-			if (tgtSecurity != srcSecurity)
-				change.HasIgnoredChanges = true;
-
-			var srcPInvoke = (source & MethodAttributes.PinvokeImpl) == MethodAttributes.PinvokeImpl;
-			var tgtPInvoke = (target & MethodAttributes.PinvokeImpl) == MethodAttributes.PinvokeImpl;
-			if (srcPInvoke != tgtPInvoke)
-				change.HasIgnoredChanges = true;
 		}
 
 		protected string GetVisibility (MethodAttributes attr)
@@ -483,36 +429,7 @@ namespace Mono.ApiTools {
 			if (source == target) {
 				diff.Append (GetVisibility (target));
 			} else {
-				var breaking = false;
-				switch (source) {
-				case MethodAttributes.Private:
-				case MethodAttributes.Assembly:
-				case MethodAttributes.FamANDAssem:
-					break; // these are not publicly visible, thus not breaking
-				case MethodAttributes.FamORAssem:
-				case MethodAttributes.Family:
-					switch (target) {
-					case MethodAttributes.Public:
-						// to public is not a breaking change
-						break;
-					case MethodAttributes.Family:
-					case MethodAttributes.FamORAssem:
-						// not a breaking change, but should still show up in diff
-						break;
-					default:
-						// anything else is a breaking change
-						breaking = true;
-						break;
-					}
-					break;
-				case MethodAttributes.Public:
-				default:
-					// any change from public is breaking.
-					breaking = true;
-					break;
-				}
-
-				diff.AppendModified (GetVisibility (source), GetVisibility (target), breaking);
+				diff.AppendModified (GetVisibility (source), GetVisibility (target));
 			}
 			diff.Append (" ");
 		}
@@ -524,9 +441,9 @@ namespace Mono.ApiTools {
 
 			if (srcStatic != tgtStatic) {
 				if (srcStatic) {
-					diff.AppendRemoved ("static", true).Append (" ");
+					diff.AppendRemoved ("static").Append (" ");
 				} else {
-					diff.AppendAdded ("static", true).Append (" ");
+					diff.AppendAdded ("static").Append (" ");
 				}
 			}
 		}

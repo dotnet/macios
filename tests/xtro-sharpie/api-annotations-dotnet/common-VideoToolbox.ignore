@@ -1,5 +1,4 @@
 !missing-pinvoke! VTCompressionSessionEncodeFrameWithOutputHandler is not bound
-!missing-pinvoke! VTDecompressionSessionDecodeFrameWithOutputHandler is not bound
 !missing-pinvoke! VTFrameSiloCallBlockForEachSampleBuffer is not bound
 
 ## *GetTypeID are generally not bound

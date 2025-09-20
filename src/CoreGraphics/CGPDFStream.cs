@@ -90,8 +90,10 @@ namespace CoreGraphics {
 		{
 			format = default;
 			unsafe {
-				IntPtr obj = CGPDFStreamCopyData (Handle, (CGPDFDataFormat*) Unsafe.AsPointer<CGPDFDataFormat> (ref format));
-				return Runtime.GetNSObject<NSData> (obj, true);
+				fixed (CGPDFDataFormat* formatPtr = &format) {
+					IntPtr obj = CGPDFStreamCopyData (Handle, formatPtr);
+					return Runtime.GetNSObject<NSData> (obj, true);
+				}
 			}
 		}
 	}

@@ -115,6 +115,7 @@ public class BindingEqualityComparerTests : BaseGeneratorTestClass {
 			EnumMembers = [
 				new EnumMember (
 					name: "name",
+					index: 0,
 					libraryName: "Test",
 					libraryPath: "/path/to/library",
 					fieldData: new (),
@@ -137,6 +138,7 @@ public class BindingEqualityComparerTests : BaseGeneratorTestClass {
 			EnumMembers = [
 				new EnumMember (
 					name: "name",
+					index: 0,
 					libraryName: "Test",
 					libraryPath: "/path/to/library",
 					fieldData: new (),
@@ -153,6 +155,7 @@ public class BindingEqualityComparerTests : BaseGeneratorTestClass {
 			EnumMembers = [
 				new EnumMember (
 					name: "name2",
+					index: 0,
 					libraryName: "Test",
 					libraryPath: "/path/to/library",
 					fieldData: new (),

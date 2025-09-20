@@ -64,11 +64,19 @@ namespace MonoTouchFixtures.CoreGraphics {
 			TestRuntime.AssertXcodeVersion (16, 0);
 
 			using var context = Create ();
-			Assert.AreEqual (0.0f, context.GetEdrTargetHeadroom (), "a");
-			Assert.IsTrue (context.SetEdrTargetHeadroom (2.0f), "b");
-			Assert.AreEqual (2.0f, context.GetEdrTargetHeadroom (), "c");
-			Assert.IsFalse (context.SetEdrTargetHeadroom (-2.0f), "d");
-			Assert.AreEqual (2.0f, context.GetEdrTargetHeadroom (), "e");
+			if (TestRuntime.CheckXcodeVersion (26, 0)) {
+				Assert.AreEqual (1.0f, context.GetEdrTargetHeadroom (), "a");
+				Assert.IsFalse (context.SetEdrTargetHeadroom (2.0f), "b");
+				Assert.AreEqual (1.0f, context.GetEdrTargetHeadroom (), "c");
+				Assert.IsFalse (context.SetEdrTargetHeadroom (-2.0f), "d");
+				Assert.AreEqual (1.0f, context.GetEdrTargetHeadroom (), "e");
+			} else {
+				Assert.AreEqual (0.0f, context.GetEdrTargetHeadroom (), "a");
+				Assert.IsTrue (context.SetEdrTargetHeadroom (2.0f), "b");
+				Assert.AreEqual (2.0f, context.GetEdrTargetHeadroom (), "c");
+				Assert.IsFalse (context.SetEdrTargetHeadroom (-2.0f), "d");
+				Assert.AreEqual (2.0f, context.GetEdrTargetHeadroom (), "e");
+			}
 		}
 
 		[Test]

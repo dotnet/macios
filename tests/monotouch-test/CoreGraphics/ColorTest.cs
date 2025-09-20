@@ -121,5 +121,24 @@ namespace MonoTouchFixtures.CoreGraphics {
 				Assert.IsNotNull (c2, "2");
 			}
 		}
+
+		[Test]
+		public void ContentHeadroom ()
+		{
+			TestRuntime.AssertXcodeVersion (26, 0);
+
+			using (var color = CGColor.CreateWithContentHeadroom (0.5f, null, 0.3f, 0.4f, 0.5f, 0.6f)) {
+				Assert.IsNull (color, "color #1");
+			}
+
+			using var headroomCapableColorspace = CGColorSpace.CreateWithName (CGColorSpaceNames.ExtendedSrgb);
+			using (var color = CGColor.CreateWithContentHeadroom (0.0f, headroomCapableColorspace, 0.3f, 0.4f, 0.5f, 0.6f)) {
+				Assert.IsNotNull (color, "color #2");
+				Assert.That (color.ContentHeadroom, Is.EqualTo (0.0f), "ContentHeadroom #2");
+				Assert.That (color.NumberOfComponents, Is.EqualTo ((nint) 4), "NumberOfComponents #2");
+				Assert.That (color.Components, Is.EqualTo (new nfloat [] { 0.3f, 0.4f, 0.5f, 0.6f }), "Components #2");
+				Assert.That (color.Alpha, Is.EqualTo ((nfloat) 0.6f), "Alpha #2");
+			}
+		}
 	}
 }

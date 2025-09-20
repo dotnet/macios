@@ -21,7 +21,7 @@ namespace MonoTouchFixtures.VideoToolbox {
 
 	[TestFixture]
 	[Preserve (AllMembers = true)]
-	public class VTMotionBlurConfigurationTEst {
+	public class VTMotionBlurConfigurationTest {
 		[Test]
 		public void Properties ()
 		{

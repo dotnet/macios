@@ -71,6 +71,7 @@ jobs:
       name: ${{ parameters.pool }}
       demands:
         - Agent.OS -equals Darwin
+        - Agent.OSVersion -gtVersion $(minimumMacOSVersion)
         - macOS.Name -equals ${{ parameters.macOSName }}
         - XcodeChannel -equals ${{ parameters.xcodeChannel }}
 
@@ -85,3 +86,4 @@ jobs:
           gitHubToken: ${{ parameters.gitHubToken }}
           xqaCertPass: ${{ parameters.xqaCertPass }}
           use1ES: ${{ parameters.use1ES }}
+          xcodeChannel: ${{ parameters.xcodeChannel }}

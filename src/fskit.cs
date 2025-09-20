@@ -894,6 +894,10 @@ namespace FSKit {
 		[Abstract]
 		[Export ("deactivateWithOptions:replyHandler:")]
 		void Deactivate (FSDeactivateOptions options, FSVolumeOperationsDeactivateHandler reply);
+
+		[Mac (26, 0)]
+		[Export ("enableOpenUnlinkEmulation")]
+		bool EnableOpenUnlinkEmulation { get; set; }
 	}
 
 #if !STABLE_FSKIT
@@ -1374,7 +1378,17 @@ namespace FSKit {
 
 		[Export ("didCompleteWithError:")]
 		void DidComplete ([NullAllowed] NSError error);
+
+		[Mac (26, 0)]
+		[NullAllowed, Export ("cancellationHandler", ArgumentSemantic.Copy)]
+		FSTaskCancellationCallback CancellationHandler { get; set; }
 	}
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[return: NullAllowed]
+	delegate NSError FSTaskCancellationCallback ();
 
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
@@ -1389,5 +1403,36 @@ namespace FSKit {
 		[Export ("urlForOption:")]
 		[return: NullAllowed]
 		NSUrl GetUrl (string option);
+	}
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (26, 0)]
+	[BaseType (typeof (FSResource), Name = "FSGenericURLResource")]
+	[DisableDefaultCtor]
+	interface FSGenericUrlResource {
+		[Export ("url", ArgumentSemantic.Copy)]
+		NSUrl Url { get; }
+
+		[Export ("initWithURL:")]
+		NativeHandle Constructor (NSUrl url);
+	}
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (26, 0)]
+	[BaseType (typeof (FSResource), Name = "FSPathURLResource")]
+	[DisableDefaultCtor]
+	interface FSPathUrlResource {
+		[Export ("url", ArgumentSemantic.Copy)]
+		NSUrl Url { get; }
+
+		[Export ("initWithURL:writable:")]
+		NativeHandle Constructor (NSUrl url, bool writable);
+
+		[Export ("writable")]
+		bool Writable { [Bind ("isWritable")] get; }
 	}
 }

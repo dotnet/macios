@@ -38,6 +38,9 @@ parameters:
   - name: use1ES
     type: boolean
 
+  - name: XcodeChannel
+    type: string
+
 steps:
   - template: build.yml
     parameters:
@@ -49,6 +52,7 @@ steps:
       gitHubToken: ${{ parameters.gitHubToken }}
       xqaCertPass: ${{ parameters.xqaCertPass }}
       use1ES: ${{ parameters.use1ES }}
+      xcodeChannel: ${{ parameters.xcodeChannel }}
       buildSteps:
         # build nugets
         - bash: $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/automation/scripts/bash/build-nugets.sh

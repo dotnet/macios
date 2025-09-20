@@ -1658,6 +1658,8 @@
 			     However, we'll automatically detect that we need to link with BrowserEngineKit if an app isn't trimmed, so let's just remove BrowserEngineKit
 			     here, with an escape hatch if an app really needs it (which would be rather rare). Ref: https://github.com/dotnet/macios/issues/21324 -->
 			<_NativeExecutableFrameworks Remove="BrowserEngineKit" Condition="'$(LinkWithBrowserEngineKit)' != 'true'" />
+			<!-- Treat BrowserEngineCore like BrowserEngineKit -->
+			<_NativeExecutableFrameworks Remove="BrowserEngineCore" Condition="'$(LinkWithBrowserEngineCore)' != 'true'" />
 
 			<!-- Mono requires zlib, iconv, icucore, and the "Compression framework" -->
 			<_MainLinkerFlags Include="-lz" />

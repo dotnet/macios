@@ -9,9 +9,7 @@ namespace Mono.ApiTools {
 	class ApiChange {
 		public string Header;
 		public TextChunk Member = new TextChunk ();
-		public bool Breaking;
 		public bool AnyChange;
-		public bool HasIgnoredChanges;
 		public string SourceDescription;
 		public State State;
 
@@ -27,26 +25,23 @@ namespace Mono.ApiTools {
 			return this;
 		}
 
-		public ApiChange AppendAdded (string text, bool breaking)
+		public ApiChange AppendAdded (string text)
 		{
-			State.Formatter.DiffAddition (Member, text, breaking);
-			Breaking |= breaking;
+			State.Formatter.DiffAddition (Member, text);
 			AnyChange = true;
 			return this;
 		}
 
-		public ApiChange AppendRemoved (string text, bool breaking)
+		public ApiChange AppendRemoved (string text)
 		{
-			State.Formatter.DiffRemoval (Member, text, breaking);
-			Breaking |= breaking;
+			State.Formatter.DiffRemoval (Member, text);
 			AnyChange = true;
 			return this;
 		}
 
-		public ApiChange AppendModified (string old, string @new, bool breaking)
+		public ApiChange AppendModified (string old, string @new)
 		{
-			State.Formatter.DiffModification (Member, old, @new, breaking);
-			Breaking |= breaking;
+			State.Formatter.DiffModification (Member, old, @new);
 			AnyChange = true;
 			return this;
 		}
@@ -63,22 +58,7 @@ namespace Mono.ApiTools {
 
 		public void Add (XElement source, XElement target, ApiChange change)
 		{
-			if (!change.AnyChange) {
-				// This is most likely because the rendering doesn't take into account something that's different (solution: fix rendering).
-				if (!change.HasIgnoredChanges) {
-					var isField = source.Name.LocalName == "field";
-					if (isField) {
-						State.LogDebugMessage ($"Comparison resulting in no changes (src: {source.GetFieldAttributes ()} dst: {target.GetFieldAttributes ()}) :{Environment.NewLine}{source}{Environment.NewLine}{target}{Environment.NewLine}{Environment.NewLine}");
-					} else {
-						State.LogDebugMessage ($"Comparison resulting in no changes (src: {source.GetMethodAttributes ()} dst: {target.GetMethodAttributes ()}) :{Environment.NewLine}{source}{Environment.NewLine}{target}{Environment.NewLine}{Environment.NewLine}");
-					}
-				}
-				return;
-			}
-
-			var changeDescription = $"{State.Namespace}.{State.Type}: {change.Header}: {change.SourceDescription}";
-			State.LogDebugMessage ($"Possible -r value: {changeDescription}");
-			if (State.IgnoreRemoved.Any (re => re.IsMatch (changeDescription)))
+			if (!change.AnyChange)
 				return;
 
 			List<ApiChange> list;

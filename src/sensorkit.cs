@@ -15,6 +15,64 @@ using ARKit;
 
 namespace SensorKit {
 
+	[iOS (26, 0)]
+	[MacCatalyst (26, 0)]
+	[Native]
+	public enum SRAcousticSettingsSampleLifetime : long {
+		EightDays = 1,
+		UntilUserDeletes,
+	}
+
+	[iOS (26, 0)]
+	[MacCatalyst (26, 0)]
+	[Native]
+	public enum SRAcousticSettingsAccessibilityBackgroundSoundsName : long {
+		BalancedNoise = 1,
+		BrightNoise,
+		DarkNoise,
+		Ocean,
+		Rain,
+		Stream,
+		Night,
+		Fire,
+		Babble,
+		Steam,
+		Airplane,
+		Boat,
+		Bus,
+		Train,
+		RainOnRoof,
+		QuietNight,
+	}
+
+	[iOS (26, 0)]
+	[MacCatalyst (26, 0)]
+	[Native]
+	public enum SRAcousticSettingsAccessibilityHeadphoneAccommodationsMediaEnhanceTuning : long {
+		BalancedTone = 1,
+		VocalRange,
+		Brightness,
+	}
+
+	[iOS (26, 0)]
+	[MacCatalyst (26, 0)]
+	[Native]
+	public enum SRAcousticSettingsAccessibilityHeadphoneAccommodationsMediaEnhanceBoosting : long {
+		Slight = 1,
+		Moderate,
+		Strong,
+	}
+
+	[iOS (26, 0)]
+	[MacCatalyst (26, 0)]
+	[Native]
+	public enum SRAcousticSettingsAccessibilityHeadphoneAccommodationsMediaEnhanceApplication : long {
+		None = 1,
+		Phone,
+		Media,
+		PhoneAndMedia,
+	}
+
 	// helpers for code generation
 	interface NSUnitDuration : NSUnit { }
 	interface NSUnitIlluminance : NSUnit { }
@@ -909,6 +967,14 @@ namespace SensorKit {
 		[iOS (17, 4), MacCatalyst (17, 4)]
 		[Field ("SRSensorPhotoplethysmogram")]
 		Photoplethysmogram,
+
+		[iOS (26, 0), MacCatalyst (26, 0)]
+		[Field ("SRSensorAcousticSettings")]
+		AcousticSettings,
+
+		[iOS (26, 0), MacCatalyst (26, 0)]
+		[Field ("SRSensorSleepSessions")]
+		SleepSessions,
 	}
 
 	[NoTV, NoMac]
@@ -1187,7 +1253,7 @@ namespace SensorKit {
 		NSEnumerator<SRWristTemperature> Temperatures { get; }
 	}
 
-	[NoTV, NoMac, iOS (17, 0), NoMacCatalyst]
+	[NoTV, NoMac, iOS (17, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SRFaceMetrics : NSCopying, NSSecureCoding {
@@ -1377,5 +1443,119 @@ namespace SensorKit {
 
 		[NullAllowed, Export ("temperature", ArgumentSemantic.Strong)]
 		NSMeasurement<NSUnitTemperature> Temperature { get; }
+	}
+
+	[iOS (26, 0)]
+	[MacCatalyst (26, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface SRAcousticSettings : NSSecureCoding, NSCopying {
+
+		[Export ("isEnvironmentalSoundMeasurementsEnabled")]
+		bool IsEnvironmentalSoundMeasurementsEnabled { get; }
+
+		[Export ("audioExposureSampleLifetime")]
+		SRAcousticSettingsSampleLifetime AudioExposureSampleLifetime { get; }
+
+		[NullAllowed, Export ("headphoneSafetyAudioLevel", ArgumentSemantic.Strong)]
+		NSNumber HeadphoneSafetyAudioLevel { get; }
+
+		[Export ("musicEQSettings", ArgumentSemantic.Strong)]
+		SRAcousticSettingsMusicEQ MusicEQSettings { get; }
+
+		[Export ("accessibilitySettings", ArgumentSemantic.Strong)]
+		SRAcousticSettingsAccessibility AccessibilitySettings { get; }
+	}
+
+	[iOS (26, 0)]
+	[MacCatalyst (26, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface SRAcousticSettingsMusicEQ : NSSecureCoding, NSCopying {
+
+		[Export ("isSoundCheckEnabled")]
+		bool IsSoundCheckEnabled { get; }
+
+		[Export ("isLateNightModeEnabled")]
+		bool IsLateNightModeEnabled { get; }
+	}
+
+	[iOS (26, 0)]
+	[MacCatalyst (26, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface SRAcousticSettingsAccessibility : NSSecureCoding, NSCopying {
+
+		[Export ("leftRightBalance")]
+		double LeftRightBalance { get; }
+
+		[Export ("isMonoAudioEnabled")]
+		bool IsMonoAudioEnabled { get; }
+
+		[Export ("backgroundSounds", ArgumentSemantic.Strong)]
+		SRAcousticSettingsAccessibilityBackgroundSounds BackgroundSounds { get; }
+
+		[Export ("headphoneAccommodations", ArgumentSemantic.Strong)]
+		SRAcousticSettingsAccessibilityHeadphoneAccommodations HeadphoneAccommodations { get; }
+	}
+
+	[iOS (26, 0)]
+	[MacCatalyst (26, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface SRAcousticSettingsAccessibilityBackgroundSounds : NSSecureCoding, NSCopying {
+
+		[Export ("isEnabled")]
+		bool IsEnabled { get; }
+
+		[Export ("soundName")]
+		SRAcousticSettingsAccessibilityBackgroundSoundsName SoundName { get; }
+
+		[Export ("relativeVolume")]
+		double RelativeVolume { get; }
+
+		[Export ("isPlayWithMediaEnabled")]
+		bool IsPlayWithMediaEnabled { get; }
+
+		[Export ("relativeVolumeWithMedia")]
+		double RelativeVolumeWithMedia { get; }
+
+		[Export ("isStopOnLockEnabled")]
+		bool IsStopOnLockEnabled { get; }
+	}
+
+	[iOS (26, 0)]
+	[MacCatalyst (26, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface SRAcousticSettingsAccessibilityHeadphoneAccommodations : NSSecureCoding, NSCopying {
+
+		[Export ("isEnabled")]
+		bool IsEnabled { get; }
+
+		[Export ("mediaEnhanceTuning")]
+		SRAcousticSettingsAccessibilityHeadphoneAccommodationsMediaEnhanceTuning MediaEnhanceTuning { get; }
+
+		[Export ("mediaEnhanceBoosting")]
+		SRAcousticSettingsAccessibilityHeadphoneAccommodationsMediaEnhanceBoosting MediaEnhanceBoosting { get; }
+
+		[Export ("mediaEnhanceApplication")]
+		SRAcousticSettingsAccessibilityHeadphoneAccommodationsMediaEnhanceApplication MediaEnhanceApplication { get; }
+	}
+
+	[iOS (26, 0)]
+	[MacCatalyst (26, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface SRSleepSession : NSCopying, NSSecureCoding {
+
+		[Export ("startDate", ArgumentSemantic.Strong)]
+		NSDate StartDate { get; }
+
+		[Export ("duration")]
+		double Duration { get; }
+
+		[Export ("identifier")]
+		string Identifier { get; }
 	}
 }

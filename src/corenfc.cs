@@ -27,6 +27,8 @@ namespace CoreNFC {
 		InvalidParameterLength,
 		ParameterOutOfBound,
 		RadioDisabled = 6,
+		Ineligible = 7,
+		AccessNotAccepted = 8,
 
 		/// <summary>The connection to the tag was lost.</summary>
 		ReaderTransceiveErrorTagConnectionLost = 100,
@@ -1230,4 +1232,13 @@ namespace CoreNFC {
 		[DesignatedInitializer]
 		NativeHandle Constructor (NFCVasCommandConfiguration [] commandConfigurations, INFCVasReaderSessionDelegate @delegate, [NullAllowed] DispatchQueue queue);
 	}
+
+	[MacCatalyst (26, 0), NoTV, NoMac, iOS (26, 0)]
+	[BaseType (typeof (NFCTagReaderSession))]
+	[DisableDefaultCtor]
+	interface NFCPaymentTagReaderSession {
+		[Export ("initWithDelegate:queue:")]
+		NativeHandle Constructor (INFCTagReaderSessionDelegate @delegate, [NullAllowed] DispatchQueue queue);
+	}
+
 }

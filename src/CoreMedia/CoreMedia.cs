@@ -281,5 +281,11 @@ namespace CoreMedia {
 			Width = width;
 			Height = height;
 		}
+
+		/// <inheritdoc />
+		public override string ToString ()
+		{
+			return $"[{Width}, {Height}]";
+		}
 	}
 }

@@ -1,0 +1,12 @@
+!deprecated-attribute-missing! TKSmartCardTokenSession::smartCard missing a [Deprecated] attribute
+!missing-selector! +TKSmartCardTokenRegistrationManager::defaultManager not bound
+!missing-selector! TKSmartCardSlotManager::isNFCSupported not bound
+!missing-selector! TKSmartCardSlotNFCSession::endSession not bound
+!missing-selector! TKSmartCardSlotNFCSession::slotName not bound
+!missing-selector! TKSmartCardSlotNFCSession::updateWithMessage:error: not bound
+!missing-selector! TKSmartCardTokenRegistrationManager::registeredSmartCardTokens not bound
+!missing-selector! TKSmartCardTokenRegistrationManager::registerSmartCardWithTokenID:promptMessage:error: not bound
+!missing-selector! TKSmartCardTokenRegistrationManager::unregisterSmartCardWithTokenID:error: not bound
+!missing-selector! TKSmartCardTokenSession::getSmartCardWithError: not bound
+!missing-type! TKSmartCardSlotNFCSession not bound
+!missing-type! TKSmartCardTokenRegistrationManager not bound

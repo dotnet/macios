@@ -439,7 +439,7 @@
 		<value>Missing value for the 'LibraryName' property for the '[ErrorDomain]' attribute for {0} (e.g. '[ErrorDomain ("MyDomain", LibraryName = "__Internal")]')</value>
 	</data>
   <data name="BI1088" xml:space="preserve">
-		<value>The backing field type '{0}' is invalid. Valid backing field types are: "NSString", "NSNumber", "nint" and "nuint".</value>
+		<value>The backing field type '{0}' is invalid. Valid backing field types are: "NSString", "NSNumber", and blittable value types.</value>
 	</data>
   <data name="BI1101" xml:space="preserve">
 		<value>Trying to use a string as a [Target]</value>
@@ -498,5 +498,11 @@
 	</data>
   <data name="BI1120" xml:space="preserve">
 		<value>The type '{0}' is trying to inline the methods binding the selector '{1}' from the protocols '{2}' and '{3}', using methods with different signatures ('{4}' vs '{5}'). These methods will be ignored.</value>
+	</data>
+  <data name="BI1121" xml:space="preserve">
+		<value>The strong enum '{0}' is not a valid strong dictionary field for the property '{1}.{2}', because its backing type is '{3}'. Only enums with backing type 'NSString', 'NSNumber' or 'System.Int32' are supported in strong dictionaries.</value>
+	</data>
+  <data name="BI1122" xml:space="preserve">
+		<value>Unable to find the corresponding NSNumber property for the type {0} in {1}.{2}</value>
 	</data>
 </root>

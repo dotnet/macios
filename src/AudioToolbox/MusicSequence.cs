@@ -291,9 +291,11 @@ namespace AudioToolbox {
 
 			index = 0;
 			unsafe {
-				MusicPlayerStatus status = MusicSequenceGetTrackIndex (Handle, track.Handle, (int*) Unsafe.AsPointer<int> (ref index));
-				GC.KeepAlive (track);
-				return status;
+				fixed (int* indexPtr = &index) {
+					MusicPlayerStatus status = MusicSequenceGetTrackIndex (Handle, track.Handle, indexPtr);
+					GC.KeepAlive (track);
+					return status;
+				}
 			}
 		}
 
@@ -411,7 +413,9 @@ namespace AudioToolbox {
 		{
 			barBeatTime = default (CABarBeatTime);
 			unsafe {
-				return MusicSequenceBeatsToBarBeatTime (Handle, beats, subbeatDivisor, (CABarBeatTime*) Unsafe.AsPointer<CABarBeatTime> (ref barBeatTime));
+				fixed (CABarBeatTime* barBeatTimePtr = &barBeatTime) {
+					return MusicSequenceBeatsToBarBeatTime (Handle, beats, subbeatDivisor, barBeatTimePtr);
+				}
 			}
 		}
 
@@ -426,7 +430,9 @@ namespace AudioToolbox {
 		{
 			beats = 0;
 			unsafe {
-				return MusicSequenceBarBeatTimeToBeats (Handle, barBeatTime, (double*) Unsafe.AsPointer<double> (ref beats));
+				fixed (double* beatsPtr = &beats) {
+					return MusicSequenceBarBeatTimeToBeats (Handle, barBeatTime, beatsPtr);
+				}
 			}
 		}
 

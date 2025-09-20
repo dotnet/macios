@@ -691,7 +691,8 @@ namespace AudioToolbox {
 		{
 			prepared = 0;
 			unsafe {
-				return AudioQueuePrime (handle, toPrepare, AsPointer<int> (ref prepared));
+				fixed (int* preparedPtr = &prepared)
+					return AudioQueuePrime (handle, toPrepare, preparedPtr);
 			}
 		}
 
@@ -753,7 +754,9 @@ namespace AudioToolbox {
 		{
 			audioQueueBuffer = default (IntPtr);
 			unsafe {
-				return AudioQueueAllocateBuffer (handle, bufferSize, AsPointer<IntPtr> (ref audioQueueBuffer));
+				fixed (IntPtr* audioQueueBufferPtr = &audioQueueBuffer) {
+					return AudioQueueAllocateBuffer (handle, bufferSize, audioQueueBufferPtr);
+				}
 			}
 		}
 
@@ -791,7 +794,9 @@ namespace AudioToolbox {
 		{
 			audioQueueBuffer = default (IntPtr);
 			unsafe {
-				return AudioQueueAllocateBufferWithPacketDescriptions (handle, bufferSize, nPackets, AsPointer<IntPtr> (ref audioQueueBuffer));
+				fixed (IntPtr* audioQueueBufferPtr = &audioQueueBuffer) {
+					return AudioQueueAllocateBufferWithPacketDescriptions (handle, bufferSize, nPackets, audioQueueBufferPtr);
+				}
 			}
 		}
 
@@ -898,12 +903,14 @@ namespace AudioToolbox {
 
 				fixed (AudioStreamPacketDescription* descPtr = desc)
 				fixed (AudioQueueParameterEvent* parameterEventsPtr = parameterEvents) {
-					return AudioQueueEnqueueBufferWithParameters (
-						handle, buffer, desc?.Length ?? 0, descPtr,
-						trimFramesAtStart, trimFramesAtEnd, parameterEvents?.Length ?? 0,
-						parameterEventsPtr,
-						AsPointer<AudioTimeStamp> (ref startTime),
-						AsPointer<AudioTimeStamp> (ref actualStartTime));
+					fixed (AudioTimeStamp* startTimePtr = &startTime, actualStartTimePtr = &actualStartTime) {
+						return AudioQueueEnqueueBufferWithParameters (
+							handle, buffer, desc?.Length ?? 0, descPtr,
+							trimFramesAtStart, trimFramesAtEnd, parameterEvents?.Length ?? 0,
+							parameterEventsPtr,
+							startTimePtr,
+							actualStartTimePtr);
+					}
 				}
 			}
 		}
@@ -933,12 +940,14 @@ namespace AudioToolbox {
 
 				fixed (AudioStreamPacketDescription* descPtr = desc)
 				fixed (AudioQueueParameterEvent* parameterEventsPtr = parameterEvents) {
-					return AudioQueueEnqueueBufferWithParameters (
-						handle, buffer, desc?.Length ?? 0, descPtr,
-						trimFramesAtStart, trimFramesAtEnd, parameterEvents?.Length ?? 0,
-						parameterEventsPtr,
-						null,
-						AsPointer<AudioTimeStamp> (ref actualStartTime));
+					fixed (AudioTimeStamp* actualStartTimePtr = &actualStartTime) {
+						return AudioQueueEnqueueBufferWithParameters (
+							handle, buffer, desc?.Length ?? 0, descPtr,
+							trimFramesAtStart, trimFramesAtEnd, parameterEvents?.Length ?? 0,
+							parameterEventsPtr,
+							null,
+							actualStartTimePtr);
+					}
 				}
 			}
 		}
@@ -955,12 +964,14 @@ namespace AudioToolbox {
 			fixed (AudioQueueParameterEvent* parameterEventsPtr = parameterEvents) {
 				startTime = default;
 				actualStartTime = default;
-				return AudioQueueEnqueueBufferWithParameters (
-					handle, audioQueueBuffer, desc?.Length ?? 0, descPtr,
-					trimFramesAtStart, trimFramesAtEnd, parameterEvents?.Length ?? 0,
-					parameterEventsPtr,
-					AsPointer<AudioTimeStamp> (ref startTime),
-					AsPointer<AudioTimeStamp> (ref actualStartTime));
+				fixed (AudioTimeStamp* startTimePtr = &startTime, actualStartTimePtr = &actualStartTime) {
+					return AudioQueueEnqueueBufferWithParameters (
+						handle, audioQueueBuffer, desc?.Length ?? 0, descPtr,
+						trimFramesAtStart, trimFramesAtEnd, parameterEvents?.Length ?? 0,
+						parameterEventsPtr,
+						startTimePtr,
+						actualStartTimePtr);
+				}
 			}
 		}
 
@@ -985,12 +996,14 @@ namespace AudioToolbox {
 			fixed (AudioStreamPacketDescription* descPtr = desc)
 			fixed (AudioQueueParameterEvent* parameterEventsPtr = parameterEvents) {
 				actualStartTime = default;
-				return AudioQueueEnqueueBufferWithParameters (
-					handle, audioQueueBuffer, desc?.Length ?? 0, descPtr,
-					trimFramesAtStart, trimFramesAtEnd, parameterEvents?.Length ?? 0,
-					parameterEventsPtr,
-					null,
-					AsPointer<AudioTimeStamp> (ref actualStartTime));
+				fixed (AudioTimeStamp* actualStartTimePtr = &actualStartTime) {
+					return AudioQueueEnqueueBufferWithParameters (
+						handle, audioQueueBuffer, desc?.Length ?? 0, descPtr,
+						trimFramesAtStart, trimFramesAtEnd, parameterEvents?.Length ?? 0,
+						parameterEventsPtr,
+						null,
+						actualStartTimePtr);
+				}
 			}
 		}
 
@@ -1037,7 +1050,9 @@ namespace AudioToolbox {
 			byte timelineDiscontinuityPtr;
 			AudioQueueStatus rv;
 			unsafe {
-				rv = AudioQueueGetCurrentTime (handle, arg, AsPointer<AudioTimeStamp> (ref time), &timelineDiscontinuityPtr);
+				fixed (AudioTimeStamp* timePtr = &time) {
+					rv = AudioQueueGetCurrentTime (handle, arg, timePtr, &timelineDiscontinuityPtr);
+				}
 			}
 			timelineDiscontinuty = timelineDiscontinuityPtr != 0;
 			return rv;
@@ -1265,7 +1280,9 @@ namespace AudioToolbox {
 		unsafe static AudioQueueStatus AudioQueueGetPropertySize (IntPtr AQ, uint id, out int size)
 		{
 			size = 0;
-			return AudioQueueGetPropertySize (AQ, id, AsPointer<int> (ref size));
+			fixed (int* sizePtr = &size) {
+				return AudioQueueGetPropertySize (AQ, id, sizePtr);
+			}
 		}
 
 		[DllImport (Constants.AudioToolboxLibrary)]
@@ -1290,7 +1307,9 @@ namespace AudioToolbox {
 			if (outdata == IntPtr.Zero)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (outdata));
 			unsafe {
-				return AudioQueueGetProperty (handle, (uint) property, outdata, AsPointer<int> (ref dataSize)) == 0;
+				fixed (int* dataSizePtr = &dataSize) {
+					return AudioQueueGetProperty (handle, (uint) property, outdata, dataSizePtr) == 0;
+				}
 			}
 		}
 
@@ -1331,7 +1350,9 @@ namespace AudioToolbox {
 				return IntPtr.Zero;
 
 			unsafe {
-				r = AudioQueueGetProperty (handle, (uint) property, buffer, AsPointer<int> (ref size));
+				fixed (int* sizePtr = &size) {
+					r = AudioQueueGetProperty (handle, (uint) property, buffer, sizePtr);
+				}
 			}
 			if (r == 0)
 				return buffer;
@@ -1730,11 +1751,6 @@ namespace AudioToolbox {
 			aqpt.ProcessingFormat = processingFormat;
 			return aqpt;
 		}
-
-		internal unsafe static T* AsPointer<T> (ref T value) where T : unmanaged
-		{
-			return (T*) Unsafe.AsPointer<T> (ref value);
-		}
 	}
 
 	/// <include file="../../docs/api/AudioToolbox/AudioQueueProcessingTapDelegate.xml" path="/Documentation/Docs[@DocId='T:AudioToolbox.AudioQueueProcessingTapDelegate']/*" />
@@ -1837,11 +1853,17 @@ namespace AudioToolbox {
 			parentNumberOfFrames = 0;
 			flags = default (AudioQueueProcessingTapFlags);
 			unsafe {
-				return AudioQueueProcessingTapGetSourceAudio (TapHandle, numberOfFrames,
-															 AudioQueue.AsPointer<AudioTimeStamp> (ref timeStamp),
-															 AudioQueue.AsPointer<AudioQueueProcessingTapFlags> (ref flags),
-															 AudioQueue.AsPointer<uint> (ref parentNumberOfFrames),
-															 (IntPtr) data);
+				fixed (AudioTimeStamp* timeStampPtr = &timeStamp) {
+					fixed (AudioQueueProcessingTapFlags* flagsPtr = &flags) {
+						fixed (uint* parentNumberOfFramesPtr = &parentNumberOfFrames) {
+							return AudioQueueProcessingTapGetSourceAudio (TapHandle, numberOfFrames,
+																		 timeStampPtr,
+																		 flagsPtr,
+																		 parentNumberOfFramesPtr,
+																		 (IntPtr) data);
+						}
+					}
+				}
 			}
 		}
 
@@ -1863,7 +1885,11 @@ namespace AudioToolbox {
 			sampleTime = 0;
 			frameCount = 0;
 			unsafe {
-				return AudioQueueProcessingTapGetQueueTime (TapHandle, AudioQueue.AsPointer<double> (ref sampleTime), AudioQueue.AsPointer<uint> (ref frameCount));
+				fixed (double* sampleTimePtr = &sampleTime) {
+					fixed (uint* frameCountPtr = &frameCount) {
+						return AudioQueueProcessingTapGetQueueTime (TapHandle, sampleTimePtr, frameCountPtr);
+					}
+				}
 			}
 		}
 

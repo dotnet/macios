@@ -751,6 +751,8 @@ namespace HealthKit {
 		PredictionSubMaxExercise,
 		/// <summary>To be added.</summary>
 		PredictionNonExercise,
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0), Mac (26, 0)]
+		PredictionStepTest,
 	}
 
 	/// <summary>Enumerates Fast Healthcare Interoperability Resources (FHIR) types.</summary>

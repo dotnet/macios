@@ -90,9 +90,9 @@ namespace Foundation {
 		///         <remarks>To be added.</remarks>
 		public unsafe static NSComparisonResult Compare (ref NSDecimal left, ref NSDecimal right)
 		{
-			return (NSComparisonResult) (long) NSDecimalCompare (
-				(NSDecimal*) Unsafe.AsPointer<NSDecimal> (ref left),
-				(NSDecimal*) Unsafe.AsPointer<NSDecimal> (ref right));
+			fixed (NSDecimal* leftPtr = &left, rightPtr = &right) {
+				return (NSComparisonResult) (long) NSDecimalCompare (leftPtr, rightPtr);
+			}
 		}
 
 		[DllImport (Constants.FoundationLibrary)]
@@ -100,11 +100,13 @@ namespace Foundation {
 		public unsafe static void Round (out NSDecimal result, ref NSDecimal number, nint scale, NSRoundingMode mode)
 		{
 			result = default (NSDecimal);
-			NSDecimalRound (
-				(NSDecimal*) Unsafe.AsPointer<NSDecimal> (ref result),
-				(NSDecimal*) Unsafe.AsPointer<NSDecimal> (ref number),
-				scale,
-				(nuint) (ulong) mode);
+			fixed (NSDecimal* resultPtr = &result, numberPtr = &number) {
+				NSDecimalRound (
+					resultPtr,
+					numberPtr,
+					scale,
+					(nuint) (ulong) mode);
+			}
 		}
 
 		[DllImport (Constants.FoundationLibrary)]
@@ -116,9 +118,9 @@ namespace Foundation {
 		///         <remarks>To be added.</remarks>
 		public unsafe static NSCalculationError Normalize (ref NSDecimal number1, ref NSDecimal number2)
 		{
-			return (NSCalculationError) (ulong) NSDecimalNormalize (
-				(NSDecimal*) Unsafe.AsPointer<NSDecimal> (ref number1),
-				(NSDecimal*) Unsafe.AsPointer<NSDecimal> (ref number2));
+			fixed (NSDecimal* number1Ptr = &number1, number2Ptr = &number2) {
+				return (NSCalculationError) (ulong) NSDecimalNormalize (number1Ptr, number2Ptr);
+			}
 		}
 
 		[DllImport (Constants.FoundationLibrary)]
@@ -133,11 +135,13 @@ namespace Foundation {
 		public unsafe static NSCalculationError Add (out NSDecimal result, ref NSDecimal left, ref NSDecimal right, NSRoundingMode mode)
 		{
 			result = default (NSDecimal);
-			return (NSCalculationError) (ulong) NSDecimalAdd (
-				(NSDecimal*) Unsafe.AsPointer<NSDecimal> (ref result),
-				(NSDecimal*) Unsafe.AsPointer<NSDecimal> (ref left),
-				(NSDecimal*) Unsafe.AsPointer<NSDecimal> (ref right),
-				(nuint) (ulong) mode);
+			fixed (NSDecimal* resultPtr = &result, leftPtr = &left, rightPtr = &right) {
+				return (NSCalculationError) (ulong) NSDecimalAdd (
+					resultPtr,
+					leftPtr,
+					rightPtr,
+					(nuint) (ulong) mode);
+			}
 		}
 
 		[DllImport (Constants.FoundationLibrary)]
@@ -152,11 +156,13 @@ namespace Foundation {
 		public unsafe static NSCalculationError Subtract (out NSDecimal result, ref NSDecimal left, ref NSDecimal right, NSRoundingMode mode)
 		{
 			result = default (NSDecimal);
-			return (NSCalculationError) (ulong) NSDecimalSubtract (
-				(NSDecimal*) Unsafe.AsPointer<NSDecimal> (ref result),
-				(NSDecimal*) Unsafe.AsPointer<NSDecimal> (ref left),
-				(NSDecimal*) Unsafe.AsPointer<NSDecimal> (ref right),
-				(nuint) (ulong) mode);
+			fixed (NSDecimal* resultPtr = &result, leftPtr = &left, rightPtr = &right) {
+				return (NSCalculationError) (ulong) NSDecimalSubtract (
+					resultPtr,
+					leftPtr,
+					rightPtr,
+					(nuint) (ulong) mode);
+			}
 		}
 
 		[DllImport (Constants.FoundationLibrary)]
@@ -171,11 +177,13 @@ namespace Foundation {
 		public unsafe static NSCalculationError Multiply (out NSDecimal result, ref NSDecimal left, ref NSDecimal right, NSRoundingMode mode)
 		{
 			result = default (NSDecimal);
-			return (NSCalculationError) (ulong) NSDecimalMultiply (
-				(NSDecimal*) Unsafe.AsPointer<NSDecimal> (ref result),
-				(NSDecimal*) Unsafe.AsPointer<NSDecimal> (ref left),
-				(NSDecimal*) Unsafe.AsPointer<NSDecimal> (ref right),
-				(nuint) (ulong) mode);
+			fixed (NSDecimal* resultPtr = &result, leftPtr = &left, rightPtr = &right) {
+				return (NSCalculationError) (ulong) NSDecimalMultiply (
+					resultPtr,
+					leftPtr,
+					rightPtr,
+					(nuint) (ulong) mode);
+			}
 		}
 
 		[DllImport (Constants.FoundationLibrary)]
@@ -190,11 +198,13 @@ namespace Foundation {
 		public unsafe static NSCalculationError Divide (out NSDecimal result, ref NSDecimal left, ref NSDecimal right, NSRoundingMode mode)
 		{
 			result = default (NSDecimal);
-			return (NSCalculationError) (ulong) NSDecimalDivide (
-				(NSDecimal*) Unsafe.AsPointer<NSDecimal> (ref result),
-				(NSDecimal*) Unsafe.AsPointer<NSDecimal> (ref left),
-				(NSDecimal*) Unsafe.AsPointer<NSDecimal> (ref right),
-				(nuint) (ulong) mode);
+			fixed (NSDecimal* resultPtr = &result, leftPtr = &left, rightPtr = &right) {
+				return (NSCalculationError) (ulong) NSDecimalDivide (
+					resultPtr,
+					leftPtr,
+					rightPtr,
+					(nuint) (ulong) mode);
+			}
 		}
 
 		[DllImport (Constants.FoundationLibrary)]
@@ -202,11 +212,13 @@ namespace Foundation {
 		public unsafe static NSCalculationError Power (out NSDecimal result, ref NSDecimal number, nint power, NSRoundingMode mode)
 		{
 			result = default (NSDecimal);
-			return (NSCalculationError) (ulong) NSDecimalPower (
-				(NSDecimal*) Unsafe.AsPointer<NSDecimal> (ref result),
-				(NSDecimal*) Unsafe.AsPointer<NSDecimal> (ref number),
-				power,
-				(nuint) (ulong) mode);
+			fixed (NSDecimal* resultPtr = &result, numberPtr = &number) {
+				return (NSCalculationError) (ulong) NSDecimalPower (
+					resultPtr,
+					numberPtr,
+					power,
+					(nuint) (ulong) mode);
+			}
 		}
 
 		[DllImport (Constants.FoundationLibrary)]
@@ -221,11 +233,13 @@ namespace Foundation {
 		public unsafe static NSCalculationError MultiplyByPowerOf10 (out NSDecimal result, ref NSDecimal number, short power10, NSRoundingMode mode)
 		{
 			result = default (NSDecimal);
-			return (NSCalculationError) (ulong) NSDecimalMultiplyByPowerOf10 (
-				(NSDecimal*) Unsafe.AsPointer<NSDecimal> (ref result),
-				(NSDecimal*) Unsafe.AsPointer<NSDecimal> (ref number),
-				power10,
-				(nuint) (ulong) mode);
+			fixed (NSDecimal* resultPtr = &result, numberPtr = &number) {
+				return (NSCalculationError) (ulong) NSDecimalMultiplyByPowerOf10 (
+					resultPtr,
+					numberPtr,
+					power10,
+					(nuint) (ulong) mode);
+			}
 		}
 
 		[DllImport (Constants.FoundationLibrary)]

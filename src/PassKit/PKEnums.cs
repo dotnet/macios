@@ -463,4 +463,27 @@ namespace PassKit {
 		[Field ("PKMerchantCategoryCodeNone")]
 		short None { get; }
 	}
+
+	[iOS (26, 0), Mac (26, 0), MacCatalyst (26, 0), NoTV]
+	[Native]
+	public enum PKAddIdentityDocumentType : long {
+		IdCard,
+		Mdl,
+		PhotoId,
+	}
+
+	[iOS (26, 0), Mac (26, 0), MacCatalyst (26, 0), NoTV]
+	[Native]
+	public enum PKPassLibraryAuthorizationStatus : long {
+		NotDetermined = -1,
+		Denied = 0,
+		Authorized = 1,
+		Restricted = 2,
+	}
+
+	[iOS (26, 0), Mac (26, 0), MacCatalyst (26, 0), NoTV]
+	[Native]
+	public enum PKPassLibraryCapability : long {
+		BackgroundAddPasses,
+	}
 }

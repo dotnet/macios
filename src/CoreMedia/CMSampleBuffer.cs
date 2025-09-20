@@ -934,14 +934,16 @@ namespace CoreMedia {
 
 			IntPtr buffer;
 			unsafe {
-				error = CMSampleBufferCreateReadyWithImageBuffer (
-							IntPtr.Zero,
-							imageBuffer.Handle,
-							formatDescription.Handle,
-							(CMSampleTimingInfo*) Unsafe.AsPointer<CMSampleTimingInfo> (ref sampleTiming),
-							&buffer);
-				GC.KeepAlive (imageBuffer);
-				GC.KeepAlive (formatDescription);
+				fixed (CMSampleTimingInfo* sampleTimingPtr = &sampleTiming) {
+					error = CMSampleBufferCreateReadyWithImageBuffer (
+								IntPtr.Zero,
+								imageBuffer.Handle,
+								formatDescription.Handle,
+								sampleTimingPtr,
+								&buffer);
+					GC.KeepAlive (imageBuffer);
+					GC.KeepAlive (formatDescription);
+				}
 			}
 
 			if (error != CMSampleBufferError.None)

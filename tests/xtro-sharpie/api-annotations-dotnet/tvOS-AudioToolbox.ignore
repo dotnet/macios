@@ -2,3 +2,9 @@
 !missing-pinvoke! MusicSequenceSetMIDIEndpoint is not bound
 !missing-pinvoke! MusicTrackGetDestMIDIEndpoint is not bound
 !missing-pinvoke! MusicTrackSetDestMIDIEndpoint is not bound
+
+# the enum is available on tvOS, but none of its values are, so just don't bind the enum itself
+!missing-enum! AUAudioMixRenderingStyle not bound
+
+# this enum is declared as not available on tvOS, not sure why it shows up (it's visionOS-only)
+!missing-enum! CASoundStageSize not bound

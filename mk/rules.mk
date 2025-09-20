@@ -35,6 +35,7 @@ CFLAGS=\
 	-Wformat-security \
 	-Werror=format-security \
 	-fdiagnostics-absolute-paths \
+	-Wno-objc-protocol-property-synthesis \
 	-g \
 	-I.
 SWIFTFLAGS=-g -emit-library

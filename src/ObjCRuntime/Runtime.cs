@@ -306,7 +306,8 @@ namespace ObjCRuntime {
 		unsafe static int _NSGetExecutablePath (byte [] buf, ref int bufsize)
 		{
 			fixed (byte* bufptr = buf)
-				return _NSGetExecutablePath (bufptr, (int*) Unsafe.AsPointer<int> (ref bufsize));
+				fixed (int* bufsizePtr = &bufsize)
+					return _NSGetExecutablePath (bufptr, bufsizePtr);
 		}
 #endif
 
@@ -1719,25 +1720,44 @@ namespace ObjCRuntime {
 			return o;
 		}
 
+		/// <summary>Wraps an unmanaged <see cref="IntPtr" /> into a fully typed <see cref="NSObject" />, or returns an existing wrapper object if one already exists.</summary>
 		/// <typeparam name="T">Type to wrap the native object as.</typeparam>
-		///         <param name="ptr">A pointer to an unmanaged NSObject or any class that derives from the Objective-C NSObject class.</param>
-		///         <summary>Wraps an unmanaged IntPtr into a fully typed NSObject, or returns an existing wrapper object if one already exists.</summary>
-		///         <returns>An instance of the T class.</returns>
-		///         <remarks>
-		///           <para>Returns an instance of the T class even if the native object is not in the class hierarchy of T (no type checks).</para>
-		///           <para>This method will fail if there already is a managed wrapper of a different (and incompatible) type for the native object.</para>
-		///         </remarks>
+		/// <param name="ptr">A pointer to an unmanaged <see cref="NSObject" /> or any class that derives from the Objective-C <see cref="NSObject" /> class.</param>
+		/// <returns>An instance of the class <typeparamref name="T" />.</returns>
+		/// <remarks>
+		///   <para>Returns an instance of the <typeparamref name="T" /> class even if the native object is not in the class hierarchy of <typeparamref name="T" /> (no type checks).</para>
+		///   <para>This method will fail if there already is a managed wrapper of a different and incompatible type for the native object.</para>
+		/// </remarks>
 		static public T? GetNSObject<T> (IntPtr ptr) where T : NSObject
 		{
-			return GetNSObject<T> (ptr, IntPtr.Zero, default (RuntimeMethodHandle));
+			return GetNSObject<T> (ptr, IntPtr.Zero, default (RuntimeMethodHandle), false, false);
+		}
+
+		/// <summary>Wraps an unmanaged <see cref="IntPtr" /> into a fully typed <see cref="NSObject" />, or returns an existing wrapper object if one already exists.</summary>
+		/// <typeparam name="T">Type to wrap the native object as.</typeparam>
+		/// <param name="ptr">A pointer to an unmanaged <see cref="NSObject" /> or any class that derives from the Objective-C <see cref="NSObject" /> class.</param>
+		/// <returns>An instance of the class <typeparamref name="T" />.</returns>
+		/// <remarks>
+		///   <para>Contrary to <see cref="GetNSObject{T}(IntPtr)" />, this method will throw an exception if the native object's type is not compatible with <typeparamref name="T" />.</para>
+		///   <para>This method will fail if there already is a managed wrapper of a different and incompatible type for the native object.</para>
+		/// </remarks>
+		// Not doing "GetNSObject(IntPtr, bool checked)" because that signature very much looks like the second parameter is an "owns" parameter, a common signatures in similar methods.
+		public static T? GetNSObjectChecked<T> (IntPtr ptr) where T : NSObject
+		{
+			return GetNSObject<T> (ptr, IntPtr.Zero, default (RuntimeMethodHandle), false, true);
 		}
 
 		static T? GetNSObject<T> (IntPtr ptr, IntPtr sel, RuntimeMethodHandle method_handle) where T : NSObject
 		{
-			return GetNSObject<T> (ptr, sel, method_handle, false);
+			return GetNSObject<T> (ptr, sel, method_handle, false, false);
 		}
 
 		static T? GetNSObject<T> (IntPtr ptr, IntPtr sel, RuntimeMethodHandle method_handle, bool evenInFinalizerQueue) where T : NSObject
+		{
+			return GetNSObject<T> (ptr, sel, method_handle, evenInFinalizerQueue, false);
+		}
+
+		static T? GetNSObject<T> (IntPtr ptr, IntPtr sel, RuntimeMethodHandle method_handle, bool evenInFinalizerQueue, bool typeSafe) where T : NSObject
 		{
 			if (ptr == IntPtr.Zero)
 				return null;
@@ -1747,6 +1767,9 @@ namespace ObjCRuntime {
 			// First check if we got an object of the expected type
 			if (obj is T o)
 				return o;
+
+			if (typeSafe && obj is not null)
+				throw new InvalidCastException ($"Unable to cast object of type '{obj.GetType ().FullName}' to type '{typeof (T).FullName}'.");
 
 			// We either didn't find an object, or it was of the wrong type, so we need to create a new instance.
 
@@ -1770,6 +1793,13 @@ namespace ObjCRuntime {
 				}
 			} else {
 				target_type = typeof (NSObject);
+			}
+
+			if (typeSafe) {
+				obj = ConstructNSObject<NSObject> (ptr, target_type, MissingCtorResolution.ThrowConstructor1NotFound, sel, method_handle);
+				if (obj is T o2)
+					return o2;
+				throw new InvalidCastException ($"Unable to cast object of type '{obj.GetType ().FullName}' to type '{typeof (T).FullName}'.");
 			}
 
 			return ConstructNSObject<T> (ptr, target_type, MissingCtorResolution.ThrowConstructor1NotFound, sel, method_handle);
@@ -2330,6 +2360,34 @@ namespace ObjCRuntime {
 				nsobj.DangerousAutorelease ();
 			}
 			return obj.GetHandle ();
+		}
+
+		/// <summary>Retain and autorelease the given object, then return the object's handle.</summary>
+		/// <param name="obj">The object to retain and autorelease.</param>
+		/// <returns>The object's handle (retained and autorelease).</returns>
+		/// <remarks>The behavior is undefined if the handle's type doesn't support the 'retain' and 'autorelease' selectors.</remarks>
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		internal static NativeHandle RetainAndAutoreleaseHandle (INativeObject? obj)
+		{
+			if (obj is null)
+				return NativeHandle.Zero;
+#pragma warning disable RBI0014
+			return RetainAndAutoreleaseHandle (obj.GetHandle ());
+#pragma warning restore RBI0014
+		}
+
+		/// <summary>Retain and autorelease the given handle, then return the handle.</summary>
+		/// <param name="handle">The handle to retain and autorelease.</param>
+		/// <returns>The handle (retained and autorelease).</returns>
+		/// <remarks>The behavior is undefined if the handle's type doesn't support the 'retain' and 'autorelease' selectors.</remarks>
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		internal static NativeHandle RetainAndAutoreleaseHandle (NativeHandle handle)
+		{
+			if (handle == NativeHandle.Zero)
+				return NativeHandle.Zero;
+			NSObject.DangerousRetain (handle);
+			NSObject.DangerousAutorelease (handle);
+			return handle;
 		}
 
 		static IntPtr CopyAndAutorelease (IntPtr ptr)

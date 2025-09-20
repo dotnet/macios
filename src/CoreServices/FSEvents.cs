@@ -41,6 +41,9 @@ namespace CoreServices {
 		UseExtendedData = 0x00000040,
 		[SupportedOSPlatform ("macos")]
 		FullHistory = 0x00000080,
+		WithDocId = 0x00000100,
+		[SupportedOSPlatform ("macos26.0")]
+		DeviceState = 0x00000200,
 	}
 
 	// FSEvents.h: typedef UInt32                          FSEventStreamEventFlags;

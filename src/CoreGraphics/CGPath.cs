@@ -580,7 +580,9 @@ namespace CoreGraphics {
 		{
 			unsafe {
 				rect = default;
-				return CGPathIsRect (Handle, (CGRect*) Unsafe.AsPointer<CGRect> (ref rect)) != 0;
+				fixed (CGRect* rectPtr = &rect) {
+					return CGPathIsRect (Handle, rectPtr) != 0;
+				}
 			}
 		}
 

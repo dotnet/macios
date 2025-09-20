@@ -397,9 +397,11 @@ namespace GameController {
 		{
 			snapshotData = default;
 			unsafe {
-				bool result = GCExtendedGamepadSnapShotDataV100FromNSData ((GCExtendedGamepadSnapShotDataV100*) Unsafe.AsPointer<GCExtendedGamepadSnapShotDataV100> (ref snapshotData), data.GetHandle ()) != 0;
-				GC.KeepAlive (data);
-				return result;
+				fixed (GCExtendedGamepadSnapShotDataV100* snapshotDataPtr = &snapshotData) {
+					bool result = GCExtendedGamepadSnapShotDataV100FromNSData (snapshotDataPtr, data.GetHandle ()) != 0;
+					GC.KeepAlive (data);
+					return result;
+				}
 			}
 		}
 
@@ -421,7 +423,11 @@ namespace GameController {
 			snapshotData = default;
 			unsafe {
 #if XAMCORE_5_0
-				return GCExtendedGamepadSnapshotDataFromNSData ((GCExtendedGamepadSnapshotData*) Unsafe.AsPointer<GCExtendedGamepadSnapshotData> (ref snapshotData), data.GetHandle ()) != 0;
+				fixed (GCExtendedGamepadSnapshotData* snapshotDataPtr = /snapshotData) {
+					var rv = GCExtendedGamepadSnapshotDataFromNSData (snapshotDataPtr, data.GetHandle ()) != 0;
+					GC.KeepAlive (data);
+					return rv;
+				}
 #else
 				GCExtendedGamepadSnapshotData_Blittable blittableData = snapshotData.ToBlittable ();
 				var rv = GCExtendedGamepadSnapshotDataFromNSData (&blittableData, data.GetHandle ()) != 0;

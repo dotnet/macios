@@ -1,5 +1,2 @@
-## Requires binding CMTaggedBuffer from CoreMedia first
-!missing-pinvoke! VTCompressionSessionEncodeMultiImageFrame is not bound
-!missing-pinvoke! VTCompressionSessionEncodeMultiImageFrameWithOutputHandler is not bound
-!missing-pinvoke! VTDecompressionSessionDecodeFrameWithMultiImageCapableOutputHandler is not bound
-!missing-pinvoke! VTDecompressionSessionSetMultiImageCallback is not bound
+# Removed in XAMCORE_5_0
+!extra-protocol-member! unexpected selector VTFrameProcessorConfiguration::+processorSupported found

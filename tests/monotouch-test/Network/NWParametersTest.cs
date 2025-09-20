@@ -385,5 +385,17 @@ namespace MonoTouchFixtures.Network {
 			using var nwParams = NWParameters.CreateApplicationService ();
 			Assert.NotNull (nwParams);
 		}
+
+		[Test]
+		public void MiscPropertiesTest ()
+		{
+			TestRuntime.AssertXcodeVersion (26, 0);
+			using var nwParams = NWParameters.CreateApplicationService ();
+			Assert.That (nwParams.AllowUltraConstrained, Is.True.Or.False, "AllowUltraConstrained#1");
+			nwParams.AllowUltraConstrained = true;
+			Assert.That (nwParams.AllowUltraConstrained, Is.True, "AllowUltraConstrained#2");
+			nwParams.AllowUltraConstrained = false;
+			Assert.That (nwParams.AllowUltraConstrained, Is.False, "AllowUltraConstrained#1");
+		}
 	}
 }

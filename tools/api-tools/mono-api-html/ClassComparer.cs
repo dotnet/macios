@@ -81,11 +81,6 @@ namespace Mono.ApiTools {
 
 		public override void Added (XElement target, bool wasParentAdded)
 		{
-			var addedDescription = $"{State.Namespace}.{State.Type}: Added type";
-			State.LogDebugMessage ($"Possible -n value: {addedDescription}");
-			if (State.IgnoreNew.Any (re => re.IsMatch (addedDescription)))
-				return;
-
 			Formatter.BeginTypeAddition ();
 			AddedInner (target);
 			Formatter.EndTypeAddition ();
@@ -199,36 +194,6 @@ namespace Mono.ApiTools {
 			Indent ().WriteLine ("}");
 		}
 
-		bool IsBaseChangeCompatible (string source, string target)
-		{
-			if (State.TargetClassHierarchyMap is null)
-				State.TargetClassHierarchyMap = CreateClassHierarchyMap (State.TargetFile);
-
-			// Changing a type hierarchy like this:
-			//
-			// class UIPointerStyle : NSObject {}
-			// class UIHoverStyle : NSObject {}
-			//
-			// to
-			//
-			// class UIPointerStyle : UIHoverStyle {}
-			// class UIHoverStyle : NSObject {}
-			//
-			// is considered a compatible change.
-			// There are a few caveats, but we're hoping they're corner cases we won't hit:
-			//	* A type can be introduced into a hierarchy between two existing types if it doesn't introduce any new abstract members or change the semantics or behavior of existing types.
-			//  * https://learn.microsoft.com/en-us/dotnet/core/compatibility/library-change-rules
-
-			var nextTarget = target;
-			while (State.TargetClassHierarchyMap.TryGetValue (nextTarget, out var nextBase)) {
-				if (nextBase == source)
-					return true;
-				nextTarget = nextBase;
-			}
-
-			return false;
-		}
-
 		// Create a map of a type and its base type.
 		static Dictionary<string, string> CreateClassHierarchyMap (string xml)
 		{
@@ -288,14 +253,11 @@ namespace Mono.ApiTools {
 			var tb = target.GetAttribute ("base");
 			var rm = $"{State.Namespace}.{State.Type}: Modified base type: '{sb}' to '{tb}'";
 			State.LogDebugMessage ($"Possible -r value: {rm}");
-			if (sb != tb && !State.IgnoreRemoved.Any (re => re.IsMatch (rm))) {
-				var isCompatible = IsBaseChangeCompatible (sb, tb);
-				if (!(State.IgnoreNonbreaking && isCompatible)) {
-					Formatter.BeginMemberModification ("Modified base type");
-					var apichange = new ApiChange ($"{State.Namespace}.{State.Type}", State).AppendModified (sb, tb, !isCompatible);
-					Formatter.Diff (apichange);
-					Formatter.EndMemberModification ();
-				}
+			if (sb != tb) {
+				Formatter.BeginMemberModification ("Modified base type");
+				var apichange = new ApiChange ($"{State.Namespace}.{State.Type}", State).AppendModified (sb, tb);
+				Formatter.Diff (apichange);
+				Formatter.EndMemberModification ();
 			}
 
 			ccomparer.Compare (source, target);
@@ -327,14 +289,7 @@ namespace Mono.ApiTools {
 
 		public override void Removed (XElement source)
 		{
-			string name = State.Namespace + "." + State.Type;
-
-			var memberDescription = $"{name}: Removed type";
-			State.LogDebugMessage ($"Possible -r value: {memberDescription}");
-			if (State.IgnoreRemoved.Any (re => re.IsMatch (name)))
-				return;
-
-			Formatter.BeginTypeRemoval (!source.IsExperimental ());
+			Formatter.BeginTypeRemoval ();
 			Formatter.EndTypeRemoval ();
 		}
 

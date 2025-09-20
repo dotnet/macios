@@ -1,7 +1,7 @@
 <Project>
   <!-- Extensions for signing nested .zip files for https://github.com/xamarin/yaml-templates/blob/e0f3cdce6210e05495188def8c695372b64ada1d/sign-artifacts/steps/v2-SignFiles.proj -->
   <Target Name="_UnzipNestedZips"
-      BeforeTargets="_CalculateItemsToSign">
+      BeforeTargets="_CreateItemsToSign">
     <PropertyGroup>
       <_NestedZipExtractionDir>$(_WorkingDir)nested\</_NestedZipExtractionDir>
     </PropertyGroup>

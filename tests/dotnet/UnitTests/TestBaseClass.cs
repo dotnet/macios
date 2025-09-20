@@ -520,7 +520,7 @@ namespace Xamarin.Tests {
 			if (actualMessages.Count != expectedCount) {
 				Assert.Fail ($"Expected {expectedCount} {type}(s), got {actualMessages.Count} {type}(s)\n" +
 					$"\tExpected:\n" +
-					$"\t\t{string.Join ("\n\t\t", rendersExpectedMessage.Select (v => makeSingleLine (v ())))}" +
+					$"\t\t{string.Join ("\n\t\t", rendersExpectedMessage.Select (v => makeSingleLine (v ())))}\n" +
 					$"\tActual:\n" +
 					$"\t\t{string.Join ("\n\t\t", actualMessages.Select (v => makeSingleLine (v.Message)))}");
 				return;

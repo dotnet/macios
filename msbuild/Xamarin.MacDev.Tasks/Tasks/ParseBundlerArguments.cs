@@ -64,7 +64,7 @@ namespace Xamarin.MacDev.Tasks {
 		public string? SkipMarkingNSObjectsInUserAssemblies { get; set; }
 
 		[Output]
-		public int Verbosity { get; set; }
+		public string? Verbosity { get; set; }
 
 		[Output]
 		public string? Warn { get; set; }
@@ -102,6 +102,7 @@ namespace Xamarin.MacDev.Tasks {
 				var aot = new List<ITaskItem> ();
 				var envVariables = new List<ITaskItem> ();
 				var dlsyms = new List<ITaskItem> ();
+				int? verbosity = null;
 
 				for (int i = 0; i < args.Length; i++) {
 					var arg = args [i];
@@ -153,11 +154,15 @@ namespace Xamarin.MacDev.Tasks {
 						break;
 					case "verbose":
 					case "v":
-						Verbosity++;
+						if (!verbosity.HasValue)
+							verbosity = 0;
+						verbosity++;
 						break;
 					case "quiet":
 					case "q":
-						Verbosity--;
+						if (!verbosity.HasValue)
+							verbosity = 0;
+						verbosity--;
 						break;
 					case "marshal-managed-exceptions":
 						value = hasValue ? value : nextValue; // requires a value, which might be the next option
@@ -249,10 +254,14 @@ namespace Xamarin.MacDev.Tasks {
 						if (value.Length == 0 && name.Length > 1 && name.All (ch => ch == name [0])) {
 							switch (name [0]) {
 							case 'v':
-								Verbosity += name.Length;
+								if (!verbosity.HasValue)
+									verbosity = 0;
+								verbosity += name.Length;
 								continue;
 							case 'q':
-								Verbosity -= name.Length;
+								if (!verbosity.HasValue)
+									verbosity = 0;
+								verbosity -= name.Length;
 								continue;
 							}
 						}
@@ -296,6 +305,9 @@ namespace Xamarin.MacDev.Tasks {
 						aot.AddRange (Aot);
 					Aot = aot.ToArray ();
 				}
+
+				if (verbosity.HasValue)
+					Verbosity = verbosity.Value.ToString ();
 			}
 
 			return !Log.HasLoggedErrors;

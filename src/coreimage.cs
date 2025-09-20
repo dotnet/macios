@@ -579,45 +579,12 @@ namespace CoreImage {
 		[Export ("clearCaches")]
 		void ClearCaches ();
 
-		[Internal, Field ("kCIContextOutputColorSpace", "+CoreImage")]
-		NSString OutputColorSpace { get; }
-
-		[Internal, Field ("kCIContextWorkingColorSpace", "+CoreImage")]
-		NSString _WorkingColorSpace { get; }
-
-		[Internal, Field ("kCIContextUseSoftwareRenderer", "+CoreImage")]
-		NSString UseSoftwareRenderer { get; }
-
-		[MacCatalyst (13, 1)]
-		[Internal, Field ("kCIContextPriorityRequestLow", "+CoreImage")]
-		NSString PriorityRequestLow { get; }
-
-		[MacCatalyst (13, 1)]
-		[Internal, Field ("kCIContextWorkingFormat", "+CoreImage")]
-		NSString WorkingFormatField { get; }
-
-		[MacCatalyst (13, 1)]
-		[Internal]
-		[Field ("kCIContextHighQualityDownsample", "+CoreImage")]
-		NSString HighQualityDownsample { get; }
-
-		[iOS (13, 0)]
-		[TV (13, 0)]
-		[MacCatalyst (13, 1)]
-		[Internal]
-		[Field ("kCIContextAllowLowPower")]
-		NSString AllowLowPower { get; }
-
-		[iOS (14, 0)]
-		[TV (14, 0)]
-		[MacCatalyst (14, 0)]
-		[Internal]
-		[Field ("kCIContextName")]
-		NSString Name { get; }
-
+#if !XAMCORE_5_0
+		[Obsolete ("Use 'CIContextOptions.MemoryLimit' instead.")]
 		[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
 		[Field ("kCIContextMemoryLimit")]
 		NSString MemoryLimit { get; }
+#endif // !XAMCORE_5_0
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
@@ -657,15 +624,6 @@ namespace CoreImage {
 		[Export ("workingFormat")]
 		CIFormat WorkingFormat { get; }
 
-		[Internal]
-		[Field ("kCIContextOutputPremultiplied", "+CoreImage")]
-		NSString OutputPremultiplied { get; }
-
-		[MacCatalyst (13, 1)]
-		[Internal]
-		[Field ("kCIContextCacheIntermediates", "+CoreImage")]
-		NSString CacheIntermediates { get; }
-
 		[iOS (13, 0)]
 		[TV (13, 0)]
 		[MacCatalyst (13, 1)]
@@ -688,8 +646,148 @@ namespace CoreImage {
 		[Export ("OpenEXRRepresentationOfImage:options:error:")]
 		[return: NullAllowed]
 		NSData GetOpenEXRRepresentation (CIImage image, NSDictionary<NSString, NSObject> options, [NullAllowed] out NSError errorPtr);
+
+		// From the createCGImage (CIContext) category
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0), Mac (26, 0)]
+		[Export ("createCGImage:fromRect:format:colorSpace:deferred:calculateHDRStats:")]
+		[return: NullAllowed]
+		CGImage CreateCGImage (CIImage image, CGRect fromRect, int format, [NullAllowed] CGColorSpace colorSpace, bool deferred, bool calculateHdrStats);
+
+		// From the CalculateHDRStats (CIContext) category
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0), Mac (26, 0)]
+		[Export ("calculateHDRStatsForIOSurface:")]
+		void CalculateHdrStats (IOSurface.IOSurface surface);
+
+		// From the CalculateHDRStats (CIContext) category
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0), Mac (26, 0)]
+		[Export ("calculateHDRStatsForCVPixelBuffer:")]
+		void CalculateHdrStats (CVPixelBuffer buffer);
+
+		// From the CalculateHDRStats (CIContext) category
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0), Mac (26, 0)]
+		[Export ("calculateHDRStatsForCGImage:")]
+		CGImage CalculateHdrStats (CGImage cgimage);
+
+		// From the CalculateHDRStats (CIContext) category
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0), Mac (26, 0)]
+		[Export ("calculateHDRStatsForImage:")]
+		[return: NullAllowed]
+		CIImage CalculateHdrStats (CIImage image);
 	}
 
+	[Internal]
+	[Static]
+	interface CIContextOptionKeys {
+		[Field ("kCIContextOutputColorSpace", "+CoreImage")]
+		NSString OutputColorSpace { get; }
+
+		[Field ("kCIContextWorkingColorSpace", "+CoreImage")]
+		NSString WorkingColorSpace { get; }
+
+		[MacCatalyst (13, 1)]
+		[Field ("kCIContextWorkingFormat", "+CoreImage")]
+		NSString WorkingFormatField { get; }
+
+		[MacCatalyst (13, 1)]
+		[Field ("kCIContextHighQualityDownsample", "+CoreImage")]
+		NSString HighQualityDownsample { get; }
+
+		[Field ("kCIContextOutputPremultiplied", "+CoreImage")]
+		NSString OutputPremultiplied { get; }
+
+		[MacCatalyst (13, 1)]
+		[Field ("kCIContextCacheIntermediates", "+CoreImage")]
+		NSString CacheIntermediates { get; }
+
+		[Field ("kCIContextUseSoftwareRenderer", "+CoreImage")]
+		NSString UseSoftwareRenderer { get; }
+
+		[MacCatalyst (13, 1)]
+		[Field ("kCIContextPriorityRequestLow", "+CoreImage")]
+		NSString PriorityRequestLow { get; }
+
+		[iOS (13, 0)]
+		[TV (13, 0)]
+		[MacCatalyst (13, 1)]
+		[Field ("kCIContextAllowLowPower")]
+		NSString AllowLowPower { get; }
+
+		[iOS (14, 0)]
+		[TV (14, 0)]
+		[MacCatalyst (14, 0)]
+		[Field ("kCIContextName")]
+		NSString Name { get; }
+
+		[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
+		[Field ("kCIContextMemoryLimit")]
+		NSString MemoryLimit { get; }
+
+		[MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0), TV (26, 0)]
+		[Field ("kCIContextCVMetalTextureCache")]
+		NSString CVMetalTextureCache { get; }
+	}
+
+	[StrongDictionary ("CIContextOptionKeys", Suffix = "")]
+	interface CIContextOptions {
+		/// <summary>The desired CIColorSpace to be used for the CIContext rendering operation.</summary>
+		/// <remarks>This color space is used before the image is rendered into the output.</remarks>
+		CGColorSpace OutputColorSpace { get; set; }
+
+		/// <summary>The colorspace used by image processing operations, this is different than the colorspace used for the final rendering.</summary>
+		CGColorSpace WorkingColorSpace { get; set; }
+
+		/// <summary>Gets or sets the image format to use for storing intermediate rendering results.</summary>
+		CIFormat WorkingFormatField { get; set; }
+
+		/// <summary><see langword="true" /> if downsampling should be higher quality at the expense of performance.</summary>
+		bool HighQualityDownsample { get; set; }
+
+		/// <summary>If <see langword="true" />, the output should premultiply pixel values by their alpha values.</summary>
+		bool OutputPremultiplied { get; set; }
+
+		/// <summary>If not <see langword="null" />, <see langword="true" /> indicates that intermediate images should be cached.</summary>
+		bool CacheIntermediates { get; set; }
+
+#if !XAMCORE_6_0
+#if __MACOS__
+		/// <include file="../docs/api/CoreImage/CIContextOptions.xml" path="/Documentation/Docs[@DocId='macOS:P:CoreImage.CIContextOptions.UseSoftwareRenderer']/*" />
+#else
+		/// <include file="../docs/api/CoreImage/CIContextOptions.xml" path="/Documentation/Docs[@DocId='P:CoreImage.CIContextOptions.UseSoftwareRenderer']/*" />
+#endif
+		[Export ("UseSoftwareRenderer")]
+#if XAMCORE_5_0
+		[Obsolete ("Use 'UseSoftwareRenderer' instead.")]
+#endif
+		bool NullableUseSoftwareRenderer { get; }
+#endif // !XAMCORE_6_0
+
+#if XAMCORE_5_0
+#if __MACOS__
+		/// <include file="../docs/api/CoreImage/CIContextOptions.xml" path="/Documentation/Docs[@DocId='macOS:P:CoreImage.CIContextOptions.UseSoftwareRenderer']/*" />
+#else
+		/// <include file="../docs/api/CoreImage/CIContextOptions.xml" path="/Documentation/Docs[@DocId='P:CoreImage.CIContextOptions.UseSoftwareRenderer']/*" />
+#endif
+		[Export ("UseSoftwareRenderer")]
+		bool UseSoftwareRenderer { get; }
+#endif // XAMCORE_5_0
+
+		/// <summary>Gets or sets whether to request low priority from the GPU.</summary>
+		bool PriorityRequestLow { get; set; }
+
+		[iOS (13, 0), TV (13, 0), MacCatalyst (13, 1)]
+		bool AllowLowPower { get; set; }
+
+		[iOS (14, 0), TV (14, 0), MacCatalyst (14, 0)]
+		string Name { get; set; }
+
+		[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
+		[Field ("kCIContextMemoryLimit")]
+		NSString MemoryLimit { get; }
+
+		[MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0), TV (26, 0)]
+		[Field ("kCIContextCVMetalTextureCache")]
+		NSString CVMetalTextureCache { get; }
+	}
 	/// <summary>Extension methods for <see cref="CoreImage.CIContext" /> that can generate common image formats.</summary>
 	[Category]
 	[BaseType (typeof (CIContext))]
@@ -1279,25 +1377,33 @@ namespace CoreImage {
 	public enum CIRawDecoderVersion : long {
 
 		[Field ("CIRAWDecoderVersionNone")]
-		VersionNone,
+		VersionNone = 0,
+
+		[iOS (26, 0), MacCatalyst (26, 0), TV (26, 0), Mac (26, 0)]
+		[Field ("CIRAWDecoderVersion9")]
+		Version9 = 7,
+
+		[iOS (26, 0), MacCatalyst (26, 0), TV (26, 0), Mac (26, 0)]
+		[Field ("CIRAWDecoderVersion9DNG")]
+		Version9Dng = 8,
 
 		[Field ("CIRAWDecoderVersion8")]
-		Version8,
+		Version8 = 1,
 
 		[Field ("CIRAWDecoderVersion8DNG")]
-		Version8Dng,
+		Version8Dng = 2,
 
 		[Field ("CIRAWDecoderVersion7")]
-		Version7,
+		Version7 = 3,
 
 		[Field ("CIRAWDecoderVersion7DNG")]
-		Version7Dng,
+		Version7Dng = 4,
 
 		[Field ("CIRAWDecoderVersion6")]
-		Version6,
+		Version6 = 5,
 
 		[Field ("CIRAWDecoderVersion6DNG")]
-		Version6Dng,
+		Version6Dng = 6,
 	}
 
 	[iOS (15, 0), MacCatalyst (15, 0), TV (15, 0)]
@@ -1447,6 +1553,14 @@ namespace CoreImage {
 		[Export ("filterWithCVPixelBuffer:properties:")]
 		[return: NullAllowed]
 		CIRawFilter Create (CVPixelBuffer buffer, NSDictionary properties);
+
+		[MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0), TV (26, 0)]
+		[Export ("highlightRecoverySupported")]
+		bool HighlightRecoverySupported { [Bind ("isHighlightRecoverySupported")] get; }
+
+		[MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0), TV (26, 0)]
+		[Export ("highlightRecoveryEnabled")]
+		bool HighlightRecoveryEnabled { [Bind ("isHighlightRecoveryEnabled")] get; set; }
 	}
 
 	[Deprecated (PlatformName.iOS, 15, 0, message: "Use 'CIRawFilter' instead.")]
@@ -1983,6 +2097,74 @@ namespace CoreImage {
 		[MacCatalyst (13, 1)]
 		[Field ("kCIInputAmountKey", "+CoreImage")]
 		NSString Amount { get; }
+
+		[MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0), TV (26, 0)]
+		[Field ("kCIInputCountKey", "+CoreImage")]
+		NSString Count { get; }
+
+		[MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0), TV (26, 0)]
+		[Field ("kCIInputThresholdKey", "+CoreImage")]
+		NSString Threshold { get; }
+
+		[MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0), TV (26, 0)]
+		[Field ("kCIInputRadius0Key", "+CoreImage")]
+		NSString Radius0 { get; }
+
+		[MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0), TV (26, 0)]
+		[Field ("kCIInputRadius1Key", "+CoreImage")]
+		NSString Radius1 { get; }
+
+		[MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0), TV (26, 0)]
+		[Field ("kCIInputColor0Key", "+CoreImage")]
+		NSString Color0 { get; }
+
+		[MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0), TV (26, 0)]
+		[Field ("kCIInputColor1Key", "+CoreImage")]
+		NSString Color1 { get; }
+
+		[MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0), TV (26, 0)]
+		[Field ("kCIInputColorSpaceKey", "+CoreImage")]
+		NSString ColorSpace { get; }
+
+		[MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0), TV (26, 0)]
+		[Field ("kCIInputExtrapolateKey", "+CoreImage")]
+		NSString Extrapolate { get; }
+
+		[MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0), TV (26, 0)]
+		[Field ("kCIInputPerceptualKey", "+CoreImage")]
+		NSString Perceptual { get; }
+
+		[MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0), TV (26, 0)]
+		[Field ("kCIInputBiasVectorKey", "+CoreImage")]
+		NSString BiasVector { get; }
+
+		[MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0), TV (26, 0)]
+		[Field ("kCIInputBacksideImageKey", "+CoreImage")]
+		NSString BacksideImage { get; }
+
+		[MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0), TV (26, 0)]
+		[Field ("kCIInputPaletteImageKey", "+CoreImage")]
+		NSString PaletteImage { get; }
+
+		[MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0), TV (26, 0)]
+		[Field ("kCIInputPoint0Key", "+CoreImage")]
+		NSString Point0 { get; }
+
+		[MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0), TV (26, 0)]
+		[Field ("kCIInputPoint1Key", "+CoreImage")]
+		NSString Point1 { get; }
+	}
+
+	[MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0), TV (26, 0)]
+	enum CIDynamicRangeOption {
+		[Field ("kCIDynamicRangeStandard")]
+		Standard,
+
+		[Field ("kCIDynamicRangeConstrainedHigh")]
+		ConstrainedHigh,
+
+		[Field ("kCIDynamicRangeHigh")]
+		High,
 	}
 
 	/// <summary>Constants used for CIFilter's attributes</summary>
@@ -2721,10 +2903,28 @@ namespace CoreImage {
 		[MacCatalyst (14, 1)]
 		bool AuxiliarySemanticSegmentationGlassesMatte { get; set; }
 
+		[iOS (14, 1), TV (14, 1), MacCatalyst (14, 1)]
+		bool AuxiliaryHdrGainMap { get; set; }
+
 		[iOS (14, 1)]
 		[TV (14, 2)]
 		[MacCatalyst (14, 1)]
 		bool ToneMapHdrToSdr { get; set; }
+
+		[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
+		bool CacheImmediately { get; }
+
+		[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
+		bool ExpandToHdr { get; }
+
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		float ContentHeadroom { get; }
+
+		[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		float ContentAverageLightLevel { get; }
+
+		[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		bool ApplyCleanAperture { get; }
 	}
 
 	[Internal]
@@ -2780,6 +2980,10 @@ namespace CoreImage {
 		[Field ("kCIImageAuxiliarySemanticSegmentationGlassesMatte")]
 		NSString AuxiliarySemanticSegmentationGlassesMatteKey { get; }
 
+		[iOS (14, 1), TV (14, 1), MacCatalyst (14, 1)]
+		[Field ("kCIImageAuxiliaryHDRGainMap")]
+		NSString AuxiliaryHdrGainMapKey { get; }
+
 		[iOS (14, 3), TV (14, 3)]
 		[MacCatalyst (14, 3)]
 		[Field ("kCIImageAuxiliarySemanticSegmentationSkyMatte")]
@@ -2791,6 +2995,25 @@ namespace CoreImage {
 		[Field ("kCIImageToneMapHDRtoSDR")]
 		NSString ToneMapHdrToSdrKey { get; }
 
+		[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
+		[Field ("kCIImageCacheImmediately")]
+		NSString CacheImmediatelyKey { get; }
+
+		[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
+		[Field ("kCIImageExpandToHDR")]
+		NSString ExpandToHdrKey { get; }
+
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[Field ("kCIImageContentHeadroom")]
+		NSString ContentHeadroomKey { get; }
+
+		[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Field ("kCIImageContentAverageLightLevel")]
+		NSString ContentAverageLightLevelKey { get; }
+
+		[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Field ("kCIImageApplyCleanAperture")]
+		NSString ApplyCleanApertureKey { get; }
 	}
 
 	/// <include file="../docs/api/CoreImage/CIImage.xml" path="/Documentation/Docs[@DocId='T:CoreImage.CIImage']/*" />
@@ -4169,6 +4392,22 @@ namespace CoreImage {
 		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Export ("metalTexture"), NullAllowed]
 		IMTLTexture MetalTexture { get; }
+
+		[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("imageByInsertingTiledIntermediate")]
+		CIImage CreateByInsertingTiledIntermediate ();
+
+		[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("imageBySettingContentHeadroom:")]
+		CIImage CreateBySettingContentHeadroom (float headroom);
+
+		[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("imageBySettingContentAverageLightLevel:")]
+		CIImage CreateBySettingContentAverageLightLevel (float average);
+
+		[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("contentAverageLightLevel")]
+		float ContentAverageLightLevel { get; }
 	}
 
 	/// <summary>An enumeration whose values specify pixel formats.</summary>
@@ -4353,6 +4592,10 @@ namespace CoreImage {
 		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0), Mac (14, 0)]
 		[Field ("kCIFormatRGBXh")]
 		RgbXh = 34,
+
+		/// <summary>Represents the value associated with the constant kCIFormatRGBX8</summary>
+		[Field ("kCIFormatRGBX8")]
+		Rgbx8 = 35,
 	}
 
 	interface ICIImageProcessorInput { }
@@ -4525,6 +4768,7 @@ namespace CoreImage {
 
 	interface ICIImageProvider { }
 
+#if !XAMCORE_5_0
 	// Informal protocol
 	/// <summary>Interface defining an image provider.</summary>
 	[Protocol (IsInformal = true)]
@@ -4532,6 +4776,24 @@ namespace CoreImage {
 		[Abstract]
 		[Export ("provideImageData:bytesPerRow:origin::size::userInfo:")]
 		unsafe void ProvideImageData (IntPtr data, nuint rowbytes, nuint x, nuint y, nuint width, nuint height, [NullAllowed] NSObject info);
+
+		[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("provideImageToMTLTexture:commandBuffer:originx:originy:width:height:userInfo:")]
+		void ProvideImageToMTLTexture (IMTLTexture texture, IMTLCommandBuffer commandBuffer, nuint originx, nuint originy, nuint width, nuint height, [NullAllowed] NSObject info);
+	}
+#endif
+
+	/// <summary>Interface defining an image provider.</summary>
+	[Category]
+	[BaseType (typeof (NSObject))]
+	interface NSObject_CIImageProvider {
+		[Abstract]
+		[Export ("provideImageData:bytesPerRow:origin::size::userInfo:")]
+		void ProvideImageData (IntPtr data, nuint rowbytes, nuint x, nuint y, nuint width, nuint height, [NullAllowed] NSObject info);
+
+		[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("provideImageToMTLTexture:commandBuffer:originx:originy:width:height:userInfo:")]
+		void ProvideImageToMTLTexture (IMTLTexture texture, IMTLCommandBuffer commandBuffer, nuint originx, nuint originy, nuint width, nuint height, [NullAllowed] NSObject info);
 	}
 
 	/// <summary>Completion handler for deterimining a region of interest in the source image.</summary>
@@ -5577,6 +5839,25 @@ namespace CoreImage {
 		[Static]
 		[Export ("roiTileArrayForInput:arguments:outputRect:")]
 		CIVector [] GetRoiTileArray (int input, [NullAllowed] NSDictionary<NSString, NSObject> arguments, CGRect outputRect);
+
+		// From the MultipleOutputSupport (CIImageProcessorKernel) category
+		[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Static]
+		[Export ("processWithInputs:arguments:outputs:error:")]
+		bool Process ([NullAllowed] ICIImageProcessorInput [] inputs, [NullAllowed] NSDictionary<NSString, NSObject> arguments, ICIImageProcessorOutput [] outputs, [NullAllowed] out NSError error);
+
+		// From the MultipleOutputSupport (CIImageProcessorKernel) category
+		[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Static]
+		[Export ("outputFormatAtIndex:arguments:")]
+		CIFormat GetOutputFormat (int outputIndex, [NullAllowed] NSDictionary<NSString, NSObject> arguments);
+
+		// From the MultipleOutputSupport (CIImageProcessorKernel) category
+		[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Static]
+		[Export ("applyWithExtents:inputs:arguments:error:")]
+		[return: NullAllowed]
+		CIImage [] Apply (CIVector [] extents, [NullAllowed] CIImage [] inputs, [NullAllowed] NSDictionary<NSString, NSObject> arguments, [NullAllowed] out NSError error);
 	}
 
 	/// <summary>Animates a transition by creating an accordion-fold effect on the source image.</summary>
@@ -7451,9 +7732,6 @@ namespace CoreImage {
 	[CoreImageFilter]
 	[BaseType (typeof (CIFilter))]
 	interface CIToneCurve : CIToneCurveProtocol {
-		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
-		[CoreImageFilterProperty ("inputExtrapolate")]
-		bool Extrapolate { get; set; }
 	}
 
 	[iOS (14, 0)]
@@ -8684,6 +8962,11 @@ namespace CoreImage {
 		///         <remarks>To be added.</remarks>
 		[Export ("blendsInDestinationColorSpace")]
 		bool BlendsInDestinationColorSpace { get; set; }
+
+		[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("captureTraceURL", ArgumentSemantic.Retain)]
+		[NullAllowed]
+		NSUrl CaptureTraceUrl { get; set; }
 	}
 
 	/// <summary>Holds information about a render pass, including timing information and number of pixels processed.</summary>
@@ -8844,37 +9127,24 @@ namespace CoreImage {
 		[TV (14, 2)]
 		[MacCatalyst (14, 1)]
 		[Field ("kCIImageRepresentationSemanticSegmentationGlassesMatteImage")]
-		NSString SemanticSegmentationGlassesMatteImage { get; }
+		NSString SemanticSegmentationGlassesMatteImageKey { get; }
 
 		[iOS (14, 3), TV (14, 3)]
 		[MacCatalyst (14, 3)]
 		[Field ("kCIImageRepresentationSemanticSegmentationSkyMatteImage")]
-		NSString SemanticSegmentationSkyMatteImage { get; }
-
-		[iOS (14, 1), TV (14, 1), MacCatalyst (14, 1)]
-		[Field ("kCIImageAuxiliaryHDRGainMap")]
-		NSString AuxiliaryHdrGainMap { get; }
-
-		[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
-		[Field ("kCIImageCacheImmediately")]
-		NSString CacheImmediately { get; }
-
-		[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
-		[Field ("kCIImageExpandToHDR")]
-		NSString ExpandToHdr { get; }
+		NSString SemanticSegmentationSkyMatteImageKey { get; }
 
 		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Field ("kCIImageRepresentationHDRImage")]
-		NSString HdrImage { get; }
-
-		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
-		[Field ("kCIImageContentHeadroom")]
-		NSString ContentHeadroom { get; }
+		NSString HdrImageKey { get; }
 
 		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Field ("kCIImageRepresentationHDRGainMapImage")]
-		NSString HdrGainMapImage { get; }
+		NSString HdrGainMapImageKey { get; }
 
+		[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Field ("kCIImageRepresentationHDRGainMapAsRGB")]
+		NSString RepresentationHdrGainMapAsRgbKey { get; }
 	}
 
 	[MacCatalyst (13, 1)]
@@ -8920,6 +9190,24 @@ namespace CoreImage {
 		[TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		CIImage SemanticSegmentationTeethMatteImage { get; set; }
+
+		[iOS (14, 1)]
+		[TV (14, 2)]
+		[MacCatalyst (14, 1)]
+		CIImage SemanticSegmentationGlassesMatteImage { get; }
+
+		[iOS (14, 3), TV (14, 3)]
+		[MacCatalyst (14, 3)]
+		CIImage SemanticSegmentationSkyMatteImage { get; }
+
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		CIImage HdrImage { get; }
+
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		CIImage HdrGainMapImage { get; }
+
+		[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		bool RepresentationHdrGainMapAsRgb { get; }
 	}
 
 	[iOS (14, 0)]
@@ -12057,6 +12345,11 @@ namespace CoreImage {
 		[Abstract]
 		[Export ("color", ArgumentSemantic.Retain)]
 		CIColor Color { get; set; }
+
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0), Mac (26, 0)]
+		[Abstract]
+		[Export ("smoothness", ArgumentSemantic.Retain)]
+		float Smoothness { get; set; }
 	}
 
 	[iOS (13, 0)]
@@ -12680,6 +12973,11 @@ namespace CoreImage {
 		[Abstract]
 		[Export ("point4", ArgumentSemantic.Assign)]
 		CGPoint InputPoint4 { get; set; }
+
+		[Abstract]
+		[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("extrapolate")]
+		bool Extrapolate { get; set; }
 	}
 
 	[iOS (13, 0)]
@@ -13262,6 +13560,11 @@ namespace CoreImage {
 		[Abstract]
 		[NullAllowed, Export ("color", ArgumentSemantic.Retain)]
 		CIColor Color { get; set; }
+
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0), Mac (26, 0)]
+		[Abstract]
+		[Export ("smoothness", ArgumentSemantic.Retain)]
+		float Smoothness { get; set; }
 	}
 
 	[CoreImageFilter]
@@ -13358,18 +13661,153 @@ namespace CoreImage {
 	interface CIAreaBoundsRedProtocol : CIAreaReductionFilterProtocol {
 	}
 
+	[TV (18, 1), Mac (15, 1), iOS (18, 1), MacCatalyst (18, 1)]
+	[Protocol (Name = "CIDistanceGradientFromRedMask", BackwardsCompatibleCodeGeneration = false)]
+	interface CIDistanceGradientFromRedMaskProtocol : CIFilterProtocol {
+		/// <summary>Gets or sets an image to filter.</summary>
+		[Abstract]
+		[Export ("inputImage")]
+		CIImage InputImage { get; set; }
+
+		[Abstract]
+		[Export ("maximumDistance")]
+		int MaximumDistance { get; set; }
+	}
+
 	[CoreImageFilter]
 	[TV (18, 1), Mac (15, 1), iOS (18, 1), MacCatalyst (18, 1)]
 	[BaseType (typeof (CIFilter))]
-	interface CIDistanceGradientFromRedMask : CIFilterProtocol {
+	interface CIDistanceGradientFromRedMask : CIDistanceGradientFromRedMaskProtocol {
+	}
 
+	[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+	[Protocol (Name = "CISignedDistanceGradientFromRedMask", BackwardsCompatibleCodeGeneration = false)]
+	interface CISignedDistanceGradientFromRedMaskProtocol : CIFilterProtocol {
 		/// <summary>Gets or sets an image to filter.</summary>
-		[CoreImageFilterProperty ("inputImage")]
+		[Abstract]
+		[Export ("inputImage", ArgumentSemantic.Retain)]
+		[NullAllowed]
 		CIImage InputImage { get; set; }
 
-		[CoreImageFilterProperty ("inputMaximumDistance")]
-		int MaximumDistance { get; set; }
+		[Abstract]
+		[Export ("maximumDistance")]
+		float MaximumDistance { get; set; }
 	}
+
+	[CoreImageFilter]
+	[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+	[BaseType (typeof (CIFilter))]
+	interface CISignedDistanceGradientFromRedMask : CISignedDistanceGradientFromRedMaskProtocol {
+	}
+
+	[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+	[Protocol (Name = "CISystemToneMap", BackwardsCompatibleCodeGeneration = false)]
+	interface CISystemToneMapProtocol : CIFilterProtocol {
+		/// <summary>Gets or sets an image to filter.</summary>
+		[Abstract]
+		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
+		CIImage InputImage { get; set; }
+
+		[Abstract]
+		[Export ("displayHeadroom")]
+		float DisplayHeadroom { get; set; }
+
+		[Abstract]
+		[NullAllowed, Export ("preferredDynamicRange", ArgumentSemantic.Retain)]
+		NSString WeakPreferredDynamicRange { get; set; }
+	}
+
+	[CoreImageFilter]
+	[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+	[BaseType (typeof (CIFilter))]
+	interface CISystemToneMap : CISystemToneMapProtocol {
+	}
+
+	[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+	[Protocol (Name = "CIBlurredRoundedRectangleGenerator", BackwardsCompatibleCodeGeneration = false)]
+	interface CIBlurredRoundedRectangleGeneratorProtocol : CIFilterProtocol {
+		[Abstract]
+		[Export ("extent", ArgumentSemantic.Assign)]
+		CGRect Extent { get; set; }
+
+		[Abstract]
+		[Export ("radius")]
+		float Radius { get; set; }
+
+		[Abstract]
+		[Export ("smoothness")]
+		float Smoothness { get; set; }
+
+		[Abstract]
+		[Export ("sigma")]
+		float Sigma { get; set; }
+
+		[Abstract]
+		[Export ("color", ArgumentSemantic.Retain)]
+		CIColor Color { get; set; }
+	}
+
+	[CoreImageFilter]
+	[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+	[BaseType (typeof (CIFilter))]
+	interface CIBlurredRoundedRectangleGenerator : CIBlurredRoundedRectangleGeneratorProtocol {
+	}
+
+	[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+	[Protocol (Name = "CIRoundedQRCodeGenerator", BackwardsCompatibleCodeGeneration = false)]
+	interface CIRoundedQRCodeGeneratorProtocol : CIFilterProtocol {
+		[Abstract]
+		[Export ("message", ArgumentSemantic.Retain)]
+		NSData Message { get; set; }
+
+		[Abstract]
+		[Export ("correctionLevel", ArgumentSemantic.Retain)]
+		string CorrectionLevel { get; set; }
+
+		[Abstract]
+		[Export ("scale")]
+		float Scale { get; set; }
+
+		[Abstract]
+		[Export ("roundedMarkers")]
+		nint RoundedMarkers { get; set; }
+
+		[Abstract]
+		[Export ("roundedData")]
+		bool RoundedData { get; set; }
+
+		[Abstract]
+		[Export ("centerSpaceSize")]
+		float CenterSpaceSize { get; set; }
+
+		[Abstract]
+		[Export ("color0", ArgumentSemantic.Retain)]
+		CIColor Color0 { get; set; }
+
+		[Abstract]
+		[Export ("color1", ArgumentSemantic.Retain)]
+		CIColor Color1 { get; set; }
+	}
+
+	[CoreImageFilter]
+	[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+	[BaseType (typeof (CIFilter))]
+	interface CIRoundedQRCodeGenerator : CIRoundedQRCodeGeneratorProtocol {
+		[CoreImageFilterProperty ("outputCGImage")]
+		CGImage OutputCGImage { get; }
+	}
+
+	[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+	[Protocol (Name = "CIAreaAverageMaximumRed", BackwardsCompatibleCodeGeneration = false)]
+	interface CIAreaAverageMaximumRedProtocol : CIAreaReductionFilterProtocol {
+	}
+
+	[CoreImageFilter]
+	[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+	[BaseType (typeof (CIFilter))]
+	interface CIAreaAverageMaximumRed : CIAreaAverageMaximumRedProtocol {
+	}
+
 	#endregion
 
 }

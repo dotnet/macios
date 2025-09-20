@@ -168,4 +168,11 @@ namespace CoreFoundation {
 		Error = 0x10,
 		Fault = 0x11,
 	}
+
+	[Native]
+	public enum CFByteOrder : long {
+		Unknown,
+		LittleEndian,
+		BigEndian,
+	}
 }

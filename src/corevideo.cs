@@ -478,6 +478,10 @@ namespace CoreVideo {
 		[Field ("kCVImageBufferLogTransferFunction_AppleLog")]
 		NSString LogTransferFunctionAppleLogKey { get; }
 
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("kCVImageBufferLogTransferFunction_AppleLog2")]
+		NSString LogTransferFunctionAppleLog2Key { get; }
+
 		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Field ("kCVImageBufferSceneIlluminationKey")]
 		NSString SceneIlluminationKey { get; }
@@ -489,6 +493,18 @@ namespace CoreVideo {
 		[Mac (15, 0), NoiOS, NoTV, NoMacCatalyst]
 		[Field ("kCVImageBufferPostDecodeProcessingFrameMetadataKey")]
 		NSString PostDecodeProcessingFrameMetadataKey { get; }
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("kCVImageBufferDisplayMaskRectangleKey")]
+		NSString DisplayMaskRectangleKey { get; }
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("kCVImageBufferDisplayMaskRectangleStereoLeftKey")]
+		NSString DisplayMaskRectangleStereoLeftKey { get; }
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("kCVImageBufferDisplayMaskRectangleStereoRightKey")]
+		NSString DisplayMaskRectangleStereoRightKey { get; }
 	}
 
 	[MacCatalyst (13, 1)]
@@ -784,6 +800,10 @@ namespace CoreVideo {
 		[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
 		[Field ("kCVPixelBufferProResRAWKey_MetadataExtension")]
 		NSString MetadataExtension { get; }
+
+		[MacCatalyst (15, 0), TV (15, 0), Mac (12, 0), iOS (15, 0)]
+		[Field ("kCVPixelBufferIOSurfacePurgeableKey")]
+		NSString IOSurfacePurgeableKey { get; }
 	}
 
 	/// <summary>A reusable set of <see cref="CoreVideo.CVPixelBuffer" />s.</summary>
@@ -956,6 +976,7 @@ namespace CoreVideo {
 		NSString BitsPerComponent { get; }
 	}
 
+#if !XAMCORE_5_0
 	[Partial]
 	interface CVPixelFormatComponentRangeKeys {
 		[Field ("kCVPixelFormatComponentRange_VideoRange")]
@@ -980,6 +1001,23 @@ namespace CoreVideo {
 		// there's no documentation about the type, so binding as NSObject
 		NSObject WideRange { get; set; }
 	}
+#endif // !XAMCORE_5_0
+
+#if XAMCORE_5_0
+	enum CVPixelFormatComponentRange {
+#else
+	enum CVPixelFormatComponentRangeValues {
+#endif
+		[Field ("kCVPixelFormatComponentRange_VideoRange")]
+		VideoRange,
+
+		[Field ("kCVPixelFormatComponentRange_FullRange")]
+		FullRange,
+
+		[Field ("kCVPixelFormatComponentRange_WideRange")]
+		WideRange,
+	}
+
 
 	[StrongDictionary ("CVPixelFormatKeys", Suffix = "")]
 	interface CVPixelFormatDescription {
@@ -1019,7 +1057,17 @@ namespace CoreVideo {
 		bool FormatContainsSenselArray { get; set; }
 #endif
 
+#if XAMCORE_6_0
 		CVPixelFormatComponentRange ComponentRange { get; set; }
+#elif XAMCORE_5_0
+		CVPixelFormatComponentRange ComponentRange { get; set; }
+		[Export ("ComponentRange")]
+		[Obsolete ("Use 'ComponentRange' instead.")]
+		CVPixelFormatComponentRange ComponentRangeValue { get; set; }
+#else
+		[Export ("ComponentRange")]
+		CVPixelFormatComponentRangeValues ComponentRangeValue { get; set; }
+#endif
 
 		// This can be an array of dictionaries, or a single dictionary when there's only one plane, so we have to type as 'NSObject'.
 		NSObject Planes { get; set; }
@@ -1063,5 +1111,46 @@ namespace CoreVideo {
 
 		[iOS (18, 0), Mac (15, 0), MacCatalyst (18, 0), TV (18, 0)]
 		int BitsPerComponent { get; set; }
+	}
+
+	[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+	[Static]
+	interface CVImageBufferDisplayMaskRectangleKeys {
+		[Field ("kCVImageBufferDisplayMaskRectangle_ReferenceRasterWidthKey")]
+		NSString ReferenceRasterWidthKey { get; }
+
+		[Field ("kCVImageBufferDisplayMaskRectangle_ReferenceRasterHeightKey")]
+		NSString ReferenceRasterHeightKey { get; }
+
+		[Field ("kCVImageBufferDisplayMaskRectangle_RectangleLeftKey")]
+		NSString RectangleLeftKey { get; }
+
+		[Field ("kCVImageBufferDisplayMaskRectangle_RectangleWidthKey")]
+		NSString RectangleWidthKey { get; }
+
+		[Field ("kCVImageBufferDisplayMaskRectangle_RectangleTopKey")]
+		NSString RectangleTopKey { get; }
+
+		[Field ("kCVImageBufferDisplayMaskRectangle_RectangleHeightKey")]
+		NSString RectangleHeightKey { get; }
+
+		[Field ("kCVImageBufferDisplayMaskRectangle_LeftEdgePointsKey")]
+		NSString LeftEdgePointsKey { get; }
+
+		[Field ("kCVImageBufferDisplayMaskRectangle_RightEdgePointsKey")]
+		NSString RightEdgePointsKey { get; }
+	}
+
+	[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+	[StrongDictionary ("CVImageBufferDisplayMaskRectangleKeys")]
+	interface CVImageBufferDisplayMaskRectangle {
+		ushort ReferenceRasterWidth { get; }
+		ushort ReferenceRasterHeight { get; }
+		ushort RectangleLeft { get; }
+		ushort RectangleWidth { get; }
+		ushort RectangleTop { get; }
+		ushort RectangleHeight { get; }
+		ushort [] LeftEdgePoints { get; }
+		ushort [] RightEdgePoints { get; }
 	}
 }

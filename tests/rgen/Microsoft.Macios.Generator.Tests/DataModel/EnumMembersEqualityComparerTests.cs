@@ -21,43 +21,43 @@ public class EnumMembersEqualityComparerTests {
 	[Fact]
 	public void NotEqualsDiffLength ()
 	{
-		ImmutableArray<EnumMember> x = [new ("name", string.Empty, string.Empty, new (), new (), []), new ("name1", string.Empty, string.Empty)];
-		ImmutableArray<EnumMember> y = [new ("name", string.Empty, string.Empty, new (), new (), [])];
+		ImmutableArray<EnumMember> x = [new ("name", 0, string.Empty, string.Empty, new (), new (), []), new ("name1", 0, string.Empty, string.Empty)];
+		ImmutableArray<EnumMember> y = [new ("name", 0, string.Empty, string.Empty, new (), new (), [])];
 		Assert.False (comparer.Equals (x, y));
 	}
 
 	[Fact]
 	public void NotEqualsDiffAttributes ()
 	{
-		ImmutableArray<EnumMember> x = [new ("name", string.Empty, string.Empty, new (), new (), []), new ("name1", string.Empty, string.Empty)];
-		ImmutableArray<EnumMember> y = [new ("name", string.Empty, string.Empty, new (), new (), [
+		ImmutableArray<EnumMember> x = [new ("name", 0, string.Empty, string.Empty, new (), new (), []), new ("name1", 0, string.Empty, string.Empty)];
+		ImmutableArray<EnumMember> y = [new ("name", 0, string.Empty, string.Empty, new (), new (), [
 			new ("AttrName")
 		]),
-			new ("name1", string.Empty, string.Empty)];
+			new ("name1", 0, string.Empty, string.Empty)];
 		Assert.False (comparer.Equals (x, y));
 	}
 
 	[Fact]
 	public void EqualsSameOrder ()
 	{
-		ImmutableArray<EnumMember> x = [new ("name", string.Empty, string.Empty, new (), new SymbolAvailability (), []), new ("name1", string.Empty, string.Empty)];
-		ImmutableArray<EnumMember> y = [new ("name", string.Empty, string.Empty, new (), new SymbolAvailability (), []), new ("name1", string.Empty, string.Empty)];
+		ImmutableArray<EnumMember> x = [new ("name", 0, string.Empty, string.Empty, new (), new SymbolAvailability (), []), new ("name1", 0, string.Empty, string.Empty)];
+		ImmutableArray<EnumMember> y = [new ("name", 0, string.Empty, string.Empty, new (), new SymbolAvailability (), []), new ("name1", 0, string.Empty, string.Empty)];
 		Assert.True (comparer.Equals (x, y));
 	}
 
 	[Fact]
 	public void EqualsDiffOrder ()
 	{
-		ImmutableArray<EnumMember> x = [new ("name1", string.Empty, string.Empty), new ("name", string.Empty, string.Empty)];
-		ImmutableArray<EnumMember> y = [new ("name", string.Empty, string.Empty), new ("name1", string.Empty, string.Empty)];
+		ImmutableArray<EnumMember> x = [new ("name1", 0, string.Empty, string.Empty), new ("name", 0, string.Empty, string.Empty)];
+		ImmutableArray<EnumMember> y = [new ("name", 0, string.Empty, string.Empty), new ("name1", 0, string.Empty, string.Empty)];
 		Assert.True (comparer.Equals (x, y));
 	}
 
 	[Fact]
 	public void NotEqualsDiffFieldData ()
 	{
-		ImmutableArray<EnumMember> x = [new ("name", "", "", new ("x", "xLib", EnumValue.Default), new SymbolAvailability (), []), new ("name1", "", "")];
-		ImmutableArray<EnumMember> y = [new ("name", "", "", new ("y", "xLib", EnumValue.Default), new SymbolAvailability (), []), new ("name1", "", "")];
+		ImmutableArray<EnumMember> x = [new ("name", 0, "", "", new ("x", "xLib", EnumValue.Default), new SymbolAvailability (), []), new ("name1", 0, "", "")];
+		ImmutableArray<EnumMember> y = [new ("name", 0, "", "", new ("y", "xLib", EnumValue.Default), new SymbolAvailability (), []), new ("name1", 0, "", "")];
 		Assert.False (comparer.Equals (x, y));
 	}
 }

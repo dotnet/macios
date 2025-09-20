@@ -19,6 +19,13 @@ using UIKit;
 #endif
 
 namespace VideoSubscriberAccount {
+	[TV (26, 0), NoMacCatalyst, Mac (26, 0), iOS (26, 0)]
+	[Native]
+	public enum VSAutoSignInAuthorization : long {
+		NotDetermined = 0,
+		Granted,
+		Denied,
+	}
 
 	/// <summary>Encapsulates errors that may occur during attempts to verify credentials.</summary>
 	[Native]
@@ -463,9 +470,9 @@ namespace VideoSubscriberAccount {
 		Api,
 	}
 
-	[Deprecated (PlatformName.iOS, 18, 0, message: "Use the 'VSUserAccountType' enum instead.")]
-	[Deprecated (PlatformName.TvOS, 18, 0, message: "Use the 'VSUserAccountType' enum instead.")]
-	[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use the 'VSUserAccount' type instead.")]
+	[Deprecated (PlatformName.iOS, 18, 0, message: "Use the 'VSUserAccount' and 'VSUserAccountType' types instead.")]
+	[Deprecated (PlatformName.TvOS, 18, 0, message: "Use the 'VSUserAccount' and 'VSUserAccountType' types instead.")]
+	[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use the 'VSUserAccount' and 'VSUserAccountType' types instead.")]
 	[NoMacCatalyst]
 	[Native]
 	public enum VSSubscriptionAccessLevel : long {
@@ -565,7 +572,31 @@ namespace VideoSubscriberAccount {
 		[Async]
 		[Export ("queryUserAccountsWithOptions:completion:")]
 		void QueryUserAccounts (VSUserAccountQueryOptions options, Action<NSArray<VSUserAccount>, NSError> completion);
+
+		[Async]
+		[TV (26, 0), NoMacCatalyst, Mac (26, 0), iOS (26, 0)]
+		[Export ("queryAutoSignInTokenWithCompletionHandler:")]
+		void QueryAutoSignInToken (VSUserAccountManagerQueryAutoSignInTokenCallback completion);
+
+		[Async]
+		[TV (26, 0), NoMacCatalyst, NoMac, iOS (26, 0)]
+		[Export ("requestAutoSignInAuthorizationWithCompletionHandler:")]
+		void RequestAutoSignInAuthorization (VSUserAccountManagerRequestAutoSignInAuthorizationCallback completion);
+
+		[Async]
+		[TV (26, 0), NoMacCatalyst, NoMac, iOS (26, 0)]
+		[Export ("updateAutoSignInToken:updateContext:completionHandler:")]
+		void UpdateAutoSignInToken (string autoSignInToken, VSAutoSignInTokenUpdateContext context, VSUserAccountManagerCallback completion);
+
+		[Async]
+		[TV (26, 0), NoMacCatalyst, Mac (26, 0), iOS (26, 0)]
+		[Export ("deleteAutoSignInTokenWithCompletionHandler:")]
+		void DeleteAutoSignInToken (VSUserAccountManagerCallback completion);
 	}
+
+	delegate void VSUserAccountManagerQueryAutoSignInTokenCallback ([NullAllowed] VSAutoSignInToken token, [NullAllowed] NSError error);
+	delegate void VSUserAccountManagerRequestAutoSignInAuthorizationCallback ([NullAllowed] VSAutoSignInTokenUpdateContext updateContext, [NullAllowed] NSError error);
+	delegate void VSUserAccountManagerCallback ([NullAllowed] NSError error);
 
 	[TV (16, 0), NoMacCatalyst, iOS (16, 0), Mac (13, 0)]
 	[BaseType (typeof (NSObject))]
@@ -637,4 +668,22 @@ namespace VideoSubscriberAccount {
 		NativeHandle Constructor (string customerId, string [] productCodes);
 	}
 
+	[TV (26, 0), NoMacCatalyst, Mac (26, 0), iOS (26, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface VSAutoSignInToken : NSSecureCoding {
+		[Export ("authorization")]
+		VSAutoSignInAuthorization Authorization { get; }
+
+		[NullAllowed, Export ("value")]
+		string Value { get; }
+	}
+
+	[TV (26, 0), NoMacCatalyst, NoMac, iOS (26, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface VSAutoSignInTokenUpdateContext {
+		[Export ("authorization")]
+		VSAutoSignInAuthorization Authorization { get; }
+	}
 }

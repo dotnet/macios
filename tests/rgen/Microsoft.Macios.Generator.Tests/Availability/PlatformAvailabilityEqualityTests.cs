@@ -26,8 +26,8 @@ public class PlatformAvailabilityEqualityTests {
 	{
 		var leftBuilder = PlatformAvailability.CreateBuilder (ApplePlatform.iOS);
 		var rightBuilder = PlatformAvailability.CreateBuilder (ApplePlatform.TVOS);
-		leftBuilder.AddSupportedVersion (new Version (12, 0));
-		rightBuilder.AddSupportedVersion (new Version (10, 0));
+		leftBuilder.AddSupportedVersion (new (new Version (12, 0)));
+		rightBuilder.AddSupportedVersion (new (new Version (10, 0)));
 		var left = leftBuilder.ToImmutable ();
 		var right = rightBuilder.ToImmutable ();
 		Assert.False (left.Equals (right));
@@ -41,7 +41,7 @@ public class PlatformAvailabilityEqualityTests {
 	{
 		var leftBuilder = PlatformAvailability.CreateBuilder (ApplePlatform.iOS);
 		var rightBuilder = PlatformAvailability.CreateBuilder (ApplePlatform.TVOS);
-		leftBuilder.AddSupportedVersion (new Version (12, 0));
+		leftBuilder.AddSupportedVersion (new (new Version (12, 0)));
 		var left = leftBuilder.ToImmutable ();
 		var right = rightBuilder.ToImmutable ();
 		Assert.False (left.Equals (right));
@@ -55,9 +55,9 @@ public class PlatformAvailabilityEqualityTests {
 	{
 		var leftBuilder = PlatformAvailability.CreateBuilder (ApplePlatform.iOS);
 		var rightBuilder = PlatformAvailability.CreateBuilder (ApplePlatform.TVOS);
-		leftBuilder.AddSupportedVersion (new Version (12, 0));
-		leftBuilder.AddUnsupportedVersion (new Version (10, 0), "Unsupported");
-		rightBuilder.AddSupportedVersion (new Version (12, 0));
+		leftBuilder.AddSupportedVersion (new (new Version (12, 0)));
+		leftBuilder.AddUnsupportedVersion (new (new Version (10, 0)), "Unsupported");
+		rightBuilder.AddSupportedVersion (new (new Version (12, 0)));
 		var left = leftBuilder.ToImmutable ();
 		var right = rightBuilder.ToImmutable ();
 		Assert.False (left.Equals (right));
@@ -71,11 +71,11 @@ public class PlatformAvailabilityEqualityTests {
 	{
 		var leftBuilder = PlatformAvailability.CreateBuilder (ApplePlatform.iOS);
 		var rightBuilder = PlatformAvailability.CreateBuilder (ApplePlatform.TVOS);
-		leftBuilder.AddSupportedVersion (new Version (12, 0));
-		leftBuilder.AddUnsupportedVersion (new Version (10, 0), "Unsupported");
+		leftBuilder.AddSupportedVersion (new (new Version (12, 0)));
+		leftBuilder.AddUnsupportedVersion (new (new Version (10, 0)), "Unsupported");
 		leftBuilder.AddObsoletedVersion (new Version (12, 0), "Obsolete", null);
-		rightBuilder.AddSupportedVersion (new Version (12, 0));
-		rightBuilder.AddUnsupportedVersion (new Version (10, 0), "Unsupported");
+		rightBuilder.AddSupportedVersion (new (new Version (12, 0)));
+		rightBuilder.AddUnsupportedVersion (new (new Version (10, 0)), "Unsupported");
 		leftBuilder.AddObsoletedVersion (new Version (12, 0), "Obsolete", "url");
 		var left = leftBuilder.ToImmutable ();
 		var right = rightBuilder.ToImmutable ();

@@ -83,5 +83,14 @@ namespace DeviceDiscoveryExtension {
 	public enum DDDeviceSupports : ulong {
 		BluetoothPairingLE = 1 << 1,
 		BluetoothTransportBridging = 1 << 2,
+		[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		BluetoothHid = (1uL << 3),
+	}
+
+	[Native]
+	[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0), NoTV]
+	public enum DDDeviceWiFiAwareServiceRole : long {
+		Subscriber = 10,
+		Publisher = 20,
 	}
 }

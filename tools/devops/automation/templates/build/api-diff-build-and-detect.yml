@@ -32,6 +32,9 @@ parameters:
   type: string
   default: '$(MaciosUploadPrefix)'
 
+- name: XcodeChannel
+  type: string
+
 # build the source code (build.yml) and detect changes (the nested api-diff.yml)
 steps:
 
@@ -45,6 +48,7 @@ steps:
     gitHubToken: ${{ parameters.gitHubToken }}
     xqaCertPass: ${{ parameters.xqaCertPass }}
     makeParallelism: '4'
+    xcodeChannel: ${{ parameters.xcodeChannel }}
     use1ES: false
 
 # detect changes

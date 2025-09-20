@@ -291,6 +291,8 @@ public class Frameworks : Dictionary<string, Framework> {
 
 					{ "FSKit", "FSKit", 15, 4 },
 					{ "SecurityUI", "SecurityUI", 15, 4 },
+
+					{ "GameSave", "GameSave", 26, 0 },
 				};
 			}
 			return mac_frameworks;
@@ -468,12 +470,17 @@ public class Frameworks : Dictionary<string, Framework> {
 				{ "Cinematic", "Cinematic", new Version (17, 0), NotAvailableInSimulator },
 				{ "Symbols", "Symbols", 17, 0 },
 				{ "SensitiveContentAnalysis", "SensitiveContentAnalysis", 17, 0 },
+				{ "BrowserEngineCore", "BrowserEngineCore", 17, 4},
 				{ "BrowserEngineKit", "BrowserEngineKit", 17, 4},
 
 				{ "AccessorySetupKit", "AccessorySetupKit", 18, 0 },
 
 				{ "SecurityUI", "SecurityUI", 18, 4 },
 
+				{ "DeviceDiscoveryUI", "DeviceDiscoveryUI", 26, 0 },
+				{ "ExtensionKit", "ExtensionKit", 26, 0 },
+				{ "GameSave", "GameSave", 26, 0 },
+				{ "TouchController", "TouchController", 26, 0 },
 				// the above MUST be kept in sync with simlauncher
 				// see tools/mtouch/Makefile
 				// please also keep it sorted to ease comparison
@@ -582,13 +589,15 @@ public class Frameworks : Dictionary<string, Framework> {
 					{ "Symbols", "Symbols", 17, 0 },
 					{ "NetworkExtension", "NetworkExtension", 17, 0 },
 					{ "Phase", "PHASE", new Version (17,0), NotAvailableInSimulator },
-					{ "BrowserEngineKit", "BrowserEngineKit", new Version (17, 4), NotAvailableInSimulator },
+					{ "BrowserEngineKit", "BrowserEngineKit", new Version (17, 4), new Version (26, 0) },
 
 					{ "PdfKit", "PDFKit", 18, 2 },
 
 					{ "BackgroundAssets", "BackgroundAssets", 18, 4 },
 					{ "MetalFX", "MetalFX", new Version (18, 4), NotAvailableInSimulator },
 					{ "SecurityUI", "SecurityUI", 18, 4 },
+
+					{ "AVRouting", "AVRouting", 26, 0 },
 				};
 			}
 			return tvos_frameworks;
@@ -608,6 +617,7 @@ public class Frameworks : Dictionary<string, Framework> {
 			var v14_2 = new Version (14, 2);
 			var v16_1 = new Version (16, 1);
 			var v18_0 = new Version (18, 0);
+			var v26_0 = new Version (26, 0);
 			foreach (var f in catalyst_frameworks.Values) {
 				switch (f.Name) {
 				// These frameworks were added to Catalyst after they were added to iOS, so we have to adjust the Versions fields
@@ -626,12 +636,15 @@ public class Frameworks : Dictionary<string, Framework> {
 				case "ThreadNetwork":
 					f.Version = v16_1;
 					break;
-				// These frameworks are not available on Mac Catalyst
+				case "Cinematic":
+					f.Version = v26_0;
+					break;
 				case "BrowserEngineKit":
 				case "DeviceDiscoveryExtension":
 					f.Version = v18_0;
 					break;
 				// These frameworks are not available on Mac Catalyst
+				case "DeviceDiscoveryUI": // xtro and introspection says it's not in Mac Catalyst, Apple's website says it is. For now, listen to xtro and introspection, until proven otherwise.
 				case "OpenGLES":
 				case "NewsstandKit":
 				case "MediaSetup":
@@ -647,8 +660,8 @@ public class Frameworks : Dictionary<string, Framework> {
 				case "AddressBookUI":
 				case "ARKit":
 				case "AssetsLibrary":
+				case "BrowserEngineCore":
 				case "CarPlay":
-				case "Cinematic":
 				case "WatchConnectivity":
 					f.Unavailable = true;
 					break;

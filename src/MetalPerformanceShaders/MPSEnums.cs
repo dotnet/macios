@@ -73,6 +73,13 @@ namespace MetalPerformanceShaders {
 		/// <summary>Indicates 32-bit floating point format data.</summary>
 		Float32 = FloatBit | 32,
 
+		[iOS (16, 2), MacCatalyst (16, 2), TV (16, 2)]
+		ComplexBit = 0x01000000,
+		[iOS (16, 2), MacCatalyst (16, 2), TV (16, 2)]
+		ComplexFloat32 = FloatBit | ComplexBit | 64,
+		[iOS (16, 2), MacCatalyst (16, 2), TV (16, 2)]
+		ComplexFloat16 = FloatBit | ComplexBit | 32,
+
 		/// <summary>To be added.</summary>
 		SignedBit = 0x20000000,
 		[TV (18, 4), Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4)]
@@ -103,6 +110,13 @@ namespace MetalPerformanceShaders {
 		[TV (14, 2)]
 		[MacCatalyst (14, 1)]
 		UInt64 = 64,
+
+		[iOS (15, 0), MacCatalyst (15, 0), TV (15, 0)]
+		AlternateEncodingBit = 0x80000000,
+		[iOS (15, 0), MacCatalyst (15, 0), TV (15, 0)]
+		Bool = AlternateEncodingBit | 8,
+		[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0), Mac (14, 0)]
+		BFloat16 = AlternateEncodingBit | Float16,
 
 		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
@@ -389,6 +403,18 @@ namespace MetalPerformanceShaders {
 		PrimitiveIndexInstanceIndex = 3,
 		/// <summary>To be added.</summary>
 		PrimitiveIndexInstanceIndexCoordinates = 4,
+
+		[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
+		PrimitiveIndexBufferIndex = 5,
+
+		[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
+		PrimitiveIndexBufferIndexCoordinates = 6,
+
+		[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
+		PrimitiveIndexBufferIndexInstanceIndex = 7,
+
+		[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
+		PrimitiveIndexBufferIndexInstanceIndexCoordinates = 8,
 	}
 
 	[MacCatalyst (13, 1)]

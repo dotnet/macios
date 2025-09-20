@@ -94,6 +94,10 @@ namespace MediaExtension {
 
 		[Export ("fragmentsStatus", ArgumentSemantic.Assign)]
 		MEFileInfoFragmentsStatus FragmentsStatus { get; set; }
+
+		[Mac (26, 0)]
+		[Export ("sidecarFileName"), NullAllowed]
+		string SidecarFileName { get; set; }
 	}
 
 	delegate void METrackReaderLoadTrackInfoCallback ([NullAllowed] METrackInfo trackInfo, [NullAllowed] NSError error);
@@ -725,6 +729,10 @@ namespace MediaExtension {
 		[Abstract]
 		[Export ("processFrameFromImageBuffer:completionHandler:")]
 		void ProcessFrame (CVPixelBuffer inputFrame, MERawProcessorProcessFrameCallback completionHandler);
+
+		[Mac (26, 0)]
+		[Export ("metadataForSidecarFile")]
+		NSData MetadataForSidecarFile { get; }
 	}
 
 	[NoTV, NoiOS, Mac (15, 0), MacCatalyst (18, 0)]

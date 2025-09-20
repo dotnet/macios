@@ -10,9 +10,27 @@ Namespace MacCatalystApp1
 		Public Overrides Property Window As UIWindow
 
 		Public Overrides Sub WillConnect(ByVal scene As UIScene, ByVal session As UISceneSession, ByVal connectionOptions As UISceneConnectionOptions)
-			' Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
-			' If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
-			' This delegate does not imply the connecting scene or session are new (see UIApplicationDelegate `GetConfiguration` instead).
+			' Use this method to optionally configure and attach the UIWindow 'Window' to the provided UIWindowScene 'scene'.
+			' Since we are not using a storyboard, the 'Window' property needs to be initialized and attached to the scene.
+			' This delegate does not imply the connecting scene or session are new (see UIApplicationDelegate 'GetConfiguration' instead).
+			If TypeOf scene Is UIWindowScene Then
+				Dim windowScene As UIWindowScene = CType(scene, UIWindowScene)
+				If Window Is Nothing Then
+					Window = New UIWindow(windowScene)
+				End If
+
+				' Create a 'UIViewController' with a single 'UILabel'
+				Dim vc As New UIViewController()
+				vc.View.AddSubview(New UILabel(Window.Frame) With {
+					.BackgroundColor = UIColor.SystemBackground,
+					.TextAlignment = UITextAlignment.Center,
+					.Text = "Hello, Mac Catalyst!",
+					.AutoresizingMask = UIViewAutoresizing.All
+				})
+
+				Window.RootViewController = vc
+				Window.MakeKeyAndVisible()
+			End If
 		End Sub
 
 		Public Overrides Sub DidDisconnect(ByVal scene As UIScene)

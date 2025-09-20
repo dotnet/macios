@@ -35,22 +35,11 @@ using System.Text;
 namespace Mono.ApiTools {
 
 	class HtmlFormatter : Formatter {
+		public string Header { get; set; } = "";
 
 		public HtmlFormatter (State state)
 			: base (state)
 		{
-		}
-
-		public bool AnyBreakingChanges;
-
-		string GetBreakingAttribute (bool breaking)
-		{
-			return breaking ? "data-is-breaking" : "data-is-non-breaking";
-		}
-
-		string GetBreakingClass (bool breaking)
-		{
-			return breaking ? "breaking" : "";
 		}
 
 		public override string LesserThan => "&lt;";
@@ -63,100 +52,42 @@ namespace Mono.ApiTools {
 				output.WriteLine ("<style scoped>");
 				output.WriteLine ("\t.obsolete { color: gray; }");
 				output.WriteLine ("\t.added { color: green; }");
+				output.WriteLine ("\t.added-inline { text-decoration: line-through; }");
 				output.WriteLine ("\t.removed-inline { text-decoration: line-through; }");
-				output.WriteLine ("\t.removed-breaking-inline { color: red;}");
-				output.WriteLine ("\t.added-breaking-inline { color: red; }");
-				output.WriteLine ("\t.nonbreaking { color: black; }");
-				output.WriteLine ("\t.breaking { color: red; }");
+				output.WriteLine ("\t.removed { color: red; }");
 				output.WriteLine ("</style>");
 			}
-			output.WriteLine (
-				@"<script type=""text/javascript"">
-	// Only some elements have 'data-is-[non-]breaking' attributes. Here we
-	// iterate over all descendents elements, and set 'data-is-[non-]breaking'
-	// depending on whether there are any descendents with that attribute.
-	function propagateDataAttribute (element)
-	{
-		if (element.hasAttribute ('data-is-propagated'))
-			return;
-
-		var i;
-		var any_breaking = element.hasAttribute ('data-is-breaking');
-		var any_non_breaking = element.hasAttribute ('data-is-non-breaking');
-		for (i = 0; i < element.children.length; i++) {
-			var el = element.children [i];
-			propagateDataAttribute (el);
-			any_breaking |= el.hasAttribute ('data-is-breaking');
-			any_non_breaking |= el.hasAttribute ('data-is-non-breaking');
-		}
-		
-		if (any_breaking)
-			element.setAttribute ('data-is-breaking', null);
-		else if (any_non_breaking)
-			element.setAttribute ('data-is-non-breaking', null);
-		element.setAttribute ('data-is-propagated', null);
-	}
-
-	function hideNonBreakingChanges ()
-	{
-		var topNodes = document.querySelectorAll ('[data-is-topmost]');
-		var n;
-		var i;
-		for (n = 0; n < topNodes.length; n++) {
-			propagateDataAttribute (topNodes [n]);
-			var elements = topNodes [n].querySelectorAll ('[data-is-non-breaking]');
-			for (i = 0; i < elements.length; i++) {
-				var el = elements [i];
-				if (!el.hasAttribute ('data-original-display'))
-					el.setAttribute ('data-original-display', el.style.display);
-				el.style.display = 'none';
-			}
-		}
-		
-		var links = document.getElementsByClassName ('hide-nonbreaking');
-		for (i = 0; i < links.length; i++)
-			links [i].style.display = 'none';
-		links = document.getElementsByClassName ('restore-nonbreaking');
-		for (i = 0; i < links.length; i++)
-			links [i].style.display = '';
-	}
-
-	function showNonBreakingChanges ()
-	{
-		var elements = document.querySelectorAll ('[data-original-display]');
-		var i;
-		for (i = 0; i < elements.length; i++) {
-			var el = elements [i];
-			el.style.display = el.getAttribute ('data-original-display');
-		}
-
-		var links = document.getElementsByClassName ('hide-nonbreaking');
-		for (i = 0; i < links.length; i++)
-			links [i].style.display = '';
-		links = document.getElementsByClassName ('restore-nonbreaking');
-		for (i = 0; i < links.length; i++)
-			links [i].style.display = 'none';
-	}
-</script>");
 		}
 
 		public override void BeginAssembly ()
 		{
 			output.WriteLine ($"<h1>{State.Assembly}.dll</h1>");
-			if (!State.IgnoreNonbreaking) {
-				output.WriteLine ("<a href='javascript: hideNonBreakingChanges (); ' class='hide-nonbreaking'>Hide non-breaking changes</a>");
-				output.WriteLine ("<a href='javascript: showNonBreakingChanges (); ' class='restore-nonbreaking' style='display: none;'>Show non-breaking changes</a>");
-				output.WriteLine ("<br/>");
+			if (!string.IsNullOrEmpty (Header)) {
+				var lines = File.ReadAllLines (Header);
+				var htmlEncoding = false;
+				foreach (var line in lines) {
+					if (line.Contains ("<!-- start html encode -->")) {
+						htmlEncoding = true;
+						continue;
+					} else if (line.Contains ("<!-- end html encode -->")) {
+						htmlEncoding = false;
+						continue;
+					}
+
+					if (htmlEncoding) {
+						output.WriteLine (System.Web.HttpUtility.HtmlEncode (line));
+					} else {
+						output.WriteLine (line);
+					}
+				}
 			}
-			output.WriteLine ("<div data-is-topmost>");
+			output.WriteLine ("<div> <!-- start topmost div -->");
 		}
 
 		public override void EndAssembly ()
 		{
 			output.WriteLine ("</div> <!-- end topmost div -->");
 			output.WriteLine ("</div>");
-			if (AnyBreakingChanges)
-				output.WriteLine ($"<!-- BreakingChangesDetected -->");
 		}
 
 		public override void BeginNamespace (string action)
@@ -178,16 +109,14 @@ namespace Mono.ApiTools {
 			IndentLevel++;
 		}
 
-		public override void AddAttributeModification (string source, string target, bool breaking)
+		public override void AddAttributeModification (string source, string target)
 		{
-			output.Write ("\t<span class='removed-inline removed-attribute {0}' {1}>", GetBreakingClass (breaking), GetBreakingAttribute (breaking));
+			output.Write ("\t<span class='removed'>");
 			AppendEncoded (source);
 			output.WriteLine ("</span>");
-			output.Write ("\t<span class='added added-attribute {0}' {1}>", GetBreakingClass (breaking), GetBreakingAttribute (breaking));
+			output.Write ("\t<span class='added'>");
 			AppendEncoded (target);
 			output.WriteLine ("</span>");
-			if (breaking)
-				AnyBreakingChanges = true;
 		}
 
 		public override void EndAttributeModification ()
@@ -201,7 +130,7 @@ namespace Mono.ApiTools {
 		{
 			output.WriteLine ($"<div> <!-- start type {State.Type} -->");
 			output.WriteLine ($"<h3>New Type {State.Namespace}.{State.Type}</h3>");
-			output.WriteLine ("<pre class='added' data-is-non-breaking>");
+			output.WriteLine ("<pre class='added'>");
 		}
 
 		public override void EndTypeAddition ()
@@ -221,11 +150,9 @@ namespace Mono.ApiTools {
 			output.WriteLine ($"</div> <!-- end type {State.Type} -->");
 		}
 
-		public override void BeginTypeRemoval (bool breaking)
+		public override void BeginTypeRemoval ()
 		{
-			output.Write ($"<h3>Removed Type <span class='{GetBreakingClass (breaking)}' {GetBreakingAttribute (breaking)}>{State.Namespace}.{State.Type}</span></h3>");
-			if (breaking)
-				AnyBreakingChanges = true;
+			output.Write ($"<h3>Removed Type <span class='removed'>{State.Namespace}.{State.Type}</span></h3>");
 		}
 
 		public override void BeginMemberAddition (IEnumerable<XElement> list, MemberComparer member)
@@ -233,7 +160,7 @@ namespace Mono.ApiTools {
 			output.WriteLine ("<div>");
 			if (State.BaseType == "System.Enum") {
 				output.WriteLine ("<p>Added value{0}:</p>", list.Count () > 1 ? "s" : String.Empty);
-				output.WriteLine ("<pre class='added' data-is-non-breaking>");
+				output.WriteLine ("<pre class='added'>");
 			} else {
 				output.WriteLine ("<p>Added {0}:</p>", list.Count () > 1 ? member.GroupName : member.ElementName);
 				output.WriteLine ("<pre>");
@@ -241,13 +168,11 @@ namespace Mono.ApiTools {
 			IndentLevel++;
 		}
 
-		public override void AddMember (MemberComparer member, bool isInterfaceBreakingChange, string obsolete, string description)
+		public override void AddMember (MemberComparer member, string obsolete, string description)
 		{
-			output.Write ("<span class='added added-{0} {1}' {2}>", member.ElementName, GetBreakingClass (isInterfaceBreakingChange), GetBreakingAttribute (isInterfaceBreakingChange));
+			output.Write ("<span class='added'>", member.ElementName);
 			output.Write ($"{obsolete}{description}");
 			output.WriteLine ("</span>");
-			if (isInterfaceBreakingChange)
-				AnyBreakingChanges = true;
 		}
 
 		public override void EndMemberAddition ()
@@ -268,13 +193,11 @@ namespace Mono.ApiTools {
 			output.WriteLine ("</pre>");
 		}
 
-		public override void BeginMemberRemoval (IEnumerable<XElement> list, MemberComparer member, bool breaking)
+		public override void BeginMemberRemoval (IEnumerable<XElement> list, MemberComparer member)
 		{
 			if (State.BaseType == "System.Enum") {
 				output.WriteLine ("<p>Removed value{0}:</p>", list.Count () > 1 ? "s" : String.Empty);
-				output.WriteLine ($"<pre class='removed' {GetBreakingAttribute (breaking)}>");
-				if (breaking)
-					AnyBreakingChanges = true;
+				output.WriteLine ($"<pre class='removed'>");
 			} else {
 				output.WriteLine ("<p>Removed {0}:</p>", list.Count () > 1 ? member.GroupName : member.ElementName);
 				output.WriteLine ("<pre>");
@@ -282,29 +205,27 @@ namespace Mono.ApiTools {
 			IndentLevel++;
 		}
 
-		public override void RemoveMember (MemberComparer member, bool breaking, string obsolete, string description)
+		public override void RemoveMember (MemberComparer member, string obsolete, string description)
 		{
 			WriteIndentation ();
-			output.Write ("<span class='removed removed-{0} {2}' {1}>", member.ElementName, GetBreakingAttribute (breaking), GetBreakingClass (breaking));
+			output.Write ("<span class='removed'>");
 			if (obsolete.Length > 0) {
 				output.Write (obsolete);
 				WriteIndentation ();
 			}
 			output.Write (description);
 			output.WriteLine ("</span>");
-			if (breaking)
-				AnyBreakingChanges = true;
 		}
 
 		public override void RenderObsoleteMessage (TextChunk chunk, MemberComparer member, string description, string optionalObsoleteMessage)
 		{
-			RenderAttribute (chunk, member, "Obsolete", false, description, optionalObsoleteMessage);
+			RenderAttribute (chunk, member, "Obsolete", description, optionalObsoleteMessage);
 		}
 
-		public override void RenderAttribute (TextChunk chunk, Comparer member, string attributeName, bool breaking, string description, params string [] attributeArguments)
+		public override void RenderAttribute (TextChunk chunk, Comparer member, string attributeName, string description, params string [] attributeArguments)
 		{
 			var output = chunk.GetStringBuilder (this);
-			output.Append ($"<span class='obsolete obsolete-{member.ElementName} {GetBreakingClass (breaking)}' {GetBreakingAttribute (breaking)}>");
+			output.Append ($"<span class='obsolete'>");
 			output.Append ($"[{attributeName} (");
 			foreach (var arg in attributeArguments) {
 				output.Append ('"').Append (arg).Append ('"');
@@ -322,49 +243,42 @@ namespace Mono.ApiTools {
 			output.WriteLine ("</pre>"); ;
 		}
 
-		public override void DiffAddition (TextChunk chunk, string text, bool breaking)
+		public override void DiffAddition (TextChunk chunk, string text)
 		{
 			var output = chunk.GetStringBuilder (this);
 			output.Append ("<span class='added ");
-			if (breaking)
-				output.Append ("added-breaking-inline");
 			output.Append ("'>");
 			output.Append (text);
 			output.Append ("</span>");
 		}
 
-		public override void DiffModification (TextChunk chunk, string old, string @new, bool breaking)
+		public override void DiffModification (TextChunk chunk, string old, string @new)
 		{
 			var output = chunk.GetStringBuilder (this);
 			if (old.Length > 0)
-				DiffRemoval (chunk, old, breaking);
-			if (old.Length > 0 && @new.Length > 0)
-				output.Append (' ');
+				DiffRemoval (chunk, old);
+			// if (old.Length > 0 && @new.Length > 0)
+			// 	output.Append (' ');
 			if (@new.Length > 0)
-				DiffAddition (chunk, @new, false);
+				DiffAddition (chunk, @new);
 		}
 
-		public override void DiffRemoval (TextChunk chunk, string text, bool breaking)
+		public override void DiffRemoval (TextChunk chunk, string text)
 		{
 			var output = chunk.GetStringBuilder (this);
-			output.Append ("<span class='removed removed-inline ");
-			if (breaking)
-				output.Append ("removed-breaking-inline");
-			output.Append ("'>");
+			output.Append ("<span class='removed'>");
 			output.Append (text);
 			output.Append ("</span>");
 		}
 
 		public override void Diff (ApiChange apichange)
 		{
-			output.Write ("<div {0}>", GetBreakingAttribute (apichange.Breaking));
+			output.Write ("<div>");
 			foreach (var line in apichange.Member.GetStringBuilder (this).ToString ().Split (new [] { Environment.NewLine }, 0)) {
 				output.Write ('\t');
 				output.WriteLine (line);
 			}
 			output.Write ("</div>");
-			if (apichange.Breaking)
-				AnyBreakingChanges = true;
 		}
 
 		void AppendEncoded (string value)

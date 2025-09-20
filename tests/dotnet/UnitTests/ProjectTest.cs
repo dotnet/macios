@@ -273,13 +273,21 @@ namespace Xamarin.Tests {
 			// Verify the resource count in the binding assembly, and their names
 			var ad = AssemblyDefinition.ReadAssembly (asm, new ReaderParameters { ReadingMode = ReadingMode.Deferred });
 			var resources = ad.MainModule.Resources.Select (v => v.Name).ToArray ();
-			var expectedResources = new string [] {
+			var expectedResources = new List<string> {
 				"basn3p08.png",
 				"basn3p08__with__loc.png",
 				"xamvideotest.mp4",
 			};
-			var oldPrefixed = expectedResources.Select (v => $"__{prefix}_content_{v}").ToArray ();
-			var newPrefixed = expectedResources.Select (v => $"__{prefix}_item_BundleResource_{v}").ToArray ();
+
+			var oldPrefixed = expectedResources.Select (v => $"__{prefix}_content_{v}").ToList ();
+			var newPrefixed = expectedResources.Select (v => $"__{prefix}_item_BundleResource_{v}").ToList ();
+
+			// Add shared-dotnet.plist with PartialAppManifest prefix
+			if (platform != "macOS" && bundleOriginalResources == true) {
+				oldPrefixed.Add ($"__{prefix}_content_shared-dotnet.plist");
+				newPrefixed.Add ($"__{prefix}_item_PartialAppManifest_shared-dotnet.plist");
+			}
+
 			Assert.That (resources, Is.EquivalentTo (oldPrefixed).Or.EquivalentTo (newPrefixed), "Resources");
 		}
 
@@ -864,12 +872,12 @@ namespace Xamarin.Tests {
 			using var ad = AssemblyDefinition.ReadAssembly (asm, new ReaderParameters { ReadingMode = ReadingMode.Deferred });
 			var actualResources = ad.MainModule.Resources.Select (v => v.Name).OrderBy (v => v).ToArray ();
 
-			string [] expectedResources;
+			List<string> expectedResources;
 
 			if (anyLibraryResources) {
 				var platformPrefix = (platform == ApplePlatform.MacOSX) ? "xammac" : "monotouch";
 				if (actualBundleOriginalResources) {
-					expectedResources = new string [] {
+					expectedResources = new List<string> {
 						$"__{platformPrefix}_item_AtlasTexture_Archer__Attack.atlas_sarcher__attack__0001.png",
 						$"__{platformPrefix}_item_AtlasTexture_Archer__Attack.atlas_sarcher__attack__0002.png",
 						$"__{platformPrefix}_item_AtlasTexture_Archer__Attack.atlas_sarcher__attack__0003.png",
@@ -897,53 +905,56 @@ namespace Xamarin.Tests {
 						$"__{platformPrefix}_item_SceneKitAsset_DirWithResources_slinkedArt.scnassets_sscene.scn",
 						$"__{platformPrefix}_item_SceneKitAsset_DirWithResources_slinkedArt.scnassets_stexture.png",
 					};
+					if (platform != ApplePlatform.MacOSX && bundleOriginalResources == true) {
+						expectedResources.Add ($"__{platformPrefix}_item_PartialAppManifest_shared-dotnet.plist");
+					}
 				} else {
-					var expectedList = new List<string> ();
-					expectedList.Add ($"__{platformPrefix}_content_A.ttc");
-					expectedList.Add ($"__{platformPrefix}_content_Archer__Attack.atlasc_sArcher__Attack.plist");
-					expectedList.Add ($"__{platformPrefix}_content_art.scnassets_sscene.scn");
-					expectedList.Add ($"__{platformPrefix}_content_art.scnassets_stexture.png");
-					expectedList.Add ($"__{platformPrefix}_content_Assets.car");
-					expectedList.Add ($"__{platformPrefix}_content_B.otf");
-					expectedList.Add ($"__{platformPrefix}_content_C.ttf");
-					expectedList.Add ($"__{platformPrefix}_content_DirWithResources_slinkedArt.scnassets_sscene.scn");
-					expectedList.Add ($"__{platformPrefix}_content_DirWithResources_slinkedArt.scnassets_stexture.png");
-					expectedList.Add ($"__{platformPrefix}_content_scene.dae");
+					expectedResources = new List<string> {
+						$"__{platformPrefix}_content_A.ttc",
+						$"__{platformPrefix}_content_Archer__Attack.atlasc_sArcher__Attack.plist",
+						$"__{platformPrefix}_content_art.scnassets_sscene.scn",
+						$"__{platformPrefix}_content_art.scnassets_stexture.png",
+						$"__{platformPrefix}_content_Assets.car",
+						$"__{platformPrefix}_content_B.otf",
+						$"__{platformPrefix}_content_C.ttf",
+						$"__{platformPrefix}_content_DirWithResources_slinkedArt.scnassets_sscene.scn",
+						$"__{platformPrefix}_content_DirWithResources_slinkedArt.scnassets_stexture.png",
+						$"__{platformPrefix}_content_scene.dae"
+					};
 					switch (platform) {
 					case ApplePlatform.iOS:
-						expectedList.Add ($"__{platformPrefix}_content_Main.storyboardc_sBYZ-38-t0r-view-8bC-Xf-vdC.nib");
-						expectedList.Add ($"__{platformPrefix}_content_Main.storyboardc_sInfo.plist");
-						expectedList.Add ($"__{platformPrefix}_content_Main.storyboardc_sUIViewController-BYZ-38-t0r.nib");
+						expectedResources.Add ($"__{platformPrefix}_content_Main.storyboardc_sBYZ-38-t0r-view-8bC-Xf-vdC.nib");
+						expectedResources.Add ($"__{platformPrefix}_content_Main.storyboardc_sInfo.plist");
+						expectedResources.Add ($"__{platformPrefix}_content_Main.storyboardc_sUIViewController-BYZ-38-t0r.nib");
 						break;
 					case ApplePlatform.TVOS:
-						expectedList.Add ($"__{platformPrefix}_content_Main.storyboardc_sBYZ-38-t0r-view-8bC-Xf-vdC.nib");
-						expectedList.Add ($"__{platformPrefix}_content_Main.storyboardc_sInfo.plist");
-						expectedList.Add ($"__{platformPrefix}_content_Main.storyboardc_sUIViewController-BYZ-38-t0r.nib");
+						expectedResources.Add ($"__{platformPrefix}_content_Main.storyboardc_sBYZ-38-t0r-view-8bC-Xf-vdC.nib");
+						expectedResources.Add ($"__{platformPrefix}_content_Main.storyboardc_sInfo.plist");
+						expectedResources.Add ($"__{platformPrefix}_content_Main.storyboardc_sUIViewController-BYZ-38-t0r.nib");
 						break;
 					case ApplePlatform.MacCatalyst:
-						expectedList.Add ($"__{platformPrefix}_content_Main.storyboardc_s1-view-2.nib");
-						expectedList.Add ($"__{platformPrefix}_content_Main.storyboardc_sInfo.plist");
-						expectedList.Add ($"__{platformPrefix}_content_Main.storyboardc_sUIViewController-1.nib");
+						expectedResources.Add ($"__{platformPrefix}_content_Main.storyboardc_s1-view-2.nib");
+						expectedResources.Add ($"__{platformPrefix}_content_Main.storyboardc_sInfo.plist");
+						expectedResources.Add ($"__{platformPrefix}_content_Main.storyboardc_sUIViewController-1.nib");
 						break;
 					case ApplePlatform.MacOSX:
-						expectedList.Add ($"__{platformPrefix}_content_Main.storyboardc_sInfo.plist");
-						expectedList.Add ($"__{platformPrefix}_content_Main.storyboardc_sMainMenu.nib");
-						expectedList.Add ($"__{platformPrefix}_content_Main.storyboardc_sNSWindowController-B8D-0N-5wS.nib");
-						expectedList.Add ($"__{platformPrefix}_content_Main.storyboardc_sXfG-lQ-9wD-view-m2S-Jp-Qdl.nib");
+						expectedResources.Add ($"__{platformPrefix}_content_Main.storyboardc_sInfo.plist");
+						expectedResources.Add ($"__{platformPrefix}_content_Main.storyboardc_sMainMenu.nib");
+						expectedResources.Add ($"__{platformPrefix}_content_Main.storyboardc_sNSWindowController-B8D-0N-5wS.nib");
+						expectedResources.Add ($"__{platformPrefix}_content_Main.storyboardc_sXfG-lQ-9wD-view-m2S-Jp-Qdl.nib");
 						break;
 					}
-					expectedList.Add ($"__{platformPrefix}_content_SqueezeNet.mlmodelc_sanalytics_scoremldata.bin");
-					expectedList.Add ($"__{platformPrefix}_content_SqueezeNet.mlmodelc_scoremldata.bin");
-					expectedList.Add ($"__{platformPrefix}_content_SqueezeNet.mlmodelc_smetadata.json");
-					expectedList.Add ($"__{platformPrefix}_content_SqueezeNet.mlmodelc_smodel.espresso.net");
-					expectedList.Add ($"__{platformPrefix}_content_SqueezeNet.mlmodelc_smodel.espresso.shape");
-					expectedList.Add ($"__{platformPrefix}_content_SqueezeNet.mlmodelc_smodel.espresso.weights");
-					expectedList.Add ($"__{platformPrefix}_content_SqueezeNet.mlmodelc_smodel_scoremldata.bin");
-					expectedList.Add ($"__{platformPrefix}_content_SqueezeNet.mlmodelc_sneural__network__optionals_scoremldata.bin");
-					expectedResources = expectedList.ToArray ();
+					expectedResources.Add ($"__{platformPrefix}_content_SqueezeNet.mlmodelc_sanalytics_scoremldata.bin");
+					expectedResources.Add ($"__{platformPrefix}_content_SqueezeNet.mlmodelc_scoremldata.bin");
+					expectedResources.Add ($"__{platformPrefix}_content_SqueezeNet.mlmodelc_smetadata.json");
+					expectedResources.Add ($"__{platformPrefix}_content_SqueezeNet.mlmodelc_smodel.espresso.net");
+					expectedResources.Add ($"__{platformPrefix}_content_SqueezeNet.mlmodelc_smodel.espresso.shape");
+					expectedResources.Add ($"__{platformPrefix}_content_SqueezeNet.mlmodelc_smodel.espresso.weights");
+					expectedResources.Add ($"__{platformPrefix}_content_SqueezeNet.mlmodelc_smodel_scoremldata.bin");
+					expectedResources.Add ($"__{platformPrefix}_content_SqueezeNet.mlmodelc_sneural__network__optionals_scoremldata.bin");
 				}
 			} else {
-				expectedResources = new string [0];
+				expectedResources = new List<string> ();
 			}
 			CollectionAssert.AreEquivalent (expectedResources, actualResources, "Resources");
 		}
@@ -2974,14 +2985,17 @@ namespace Xamarin.Tests {
 			"/System/Library/Frameworks/DataDetection.framework/DataDetection",
 			"/System/Library/Frameworks/DeviceCheck.framework/DeviceCheck",
 			"/System/Library/Frameworks/DeviceDiscoveryExtension.framework/DeviceDiscoveryExtension",
+			"/System/Library/Frameworks/DeviceDiscoveryUI.framework/DeviceDiscoveryUI",
 			"/System/Library/Frameworks/EventKit.framework/EventKit",
 			"/System/Library/Frameworks/EventKitUI.framework/EventKitUI",
+			"/System/Library/Frameworks/ExtensionKit.framework/ExtensionKit",
 			"/System/Library/Frameworks/ExternalAccessory.framework/ExternalAccessory",
 			"/System/Library/Frameworks/FileProvider.framework/FileProvider",
 			"/System/Library/Frameworks/FileProviderUI.framework/FileProviderUI",
 			"/System/Library/Frameworks/Foundation.framework/Foundation",
 			"/System/Library/Frameworks/GameController.framework/GameController",
 			"/System/Library/Frameworks/GameKit.framework/GameKit",
+			"/System/Library/Frameworks/GameSave.framework/GameSave",
 			"/System/Library/Frameworks/GameplayKit.framework/GameplayKit",
 			"/System/Library/Frameworks/GLKit.framework/GLKit",
 			"/System/Library/Frameworks/GSS.framework/GSS",
@@ -3052,6 +3066,7 @@ namespace Xamarin.Tests {
 			"/System/Library/Frameworks/Symbols.framework/Symbols",
 			"/System/Library/Frameworks/SystemConfiguration.framework/SystemConfiguration",
 			"/System/Library/Frameworks/ThreadNetwork.framework/ThreadNetwork",
+			"/System/Library/Frameworks/TouchController.framework/TouchController",
 			"/System/Library/Frameworks/Twitter.framework/Twitter",
 			"/System/Library/Frameworks/UIKit.framework/UIKit",
 			"/System/Library/Frameworks/UniformTypeIdentifiers.framework/UniformTypeIdentifiers",
@@ -3075,7 +3090,6 @@ namespace Xamarin.Tests {
 			"/usr/lib/swift/libswiftCoreFoundation.dylib",
 			"/usr/lib/swift/libswiftCoreImage.dylib",
 			"/usr/lib/swift/libswiftDarwin.dylib",
-			"/usr/lib/swift/libswiftDataDetection.dylib",
 			"/usr/lib/swift/libswiftDispatch.dylib",
 			"/usr/lib/swift/libswiftFoundation.dylib",
 			"/usr/lib/swift/libswiftMetal.dylib",
@@ -3113,6 +3127,7 @@ namespace Xamarin.Tests {
 			"/System/Library/Frameworks/AuthenticationServices.framework/AuthenticationServices",
 			"/System/Library/Frameworks/AVFoundation.framework/AVFoundation",
 			"/System/Library/Frameworks/AVKit.framework/AVKit",
+			"/System/Library/Frameworks/AVRouting.framework/AVRouting",
 			"/System/Library/Frameworks/BackgroundAssets.framework/BackgroundAssets",
 			"/System/Library/Frameworks/BackgroundTasks.framework/BackgroundTasks",
 			"/System/Library/Frameworks/CFNetwork.framework/CFNetwork",
@@ -3297,6 +3312,7 @@ namespace Xamarin.Tests {
 			"/System/Library/Frameworks/FSKit.framework/Versions/A/FSKit",
 			"/System/Library/Frameworks/GameController.framework/Versions/A/GameController",
 			"/System/Library/Frameworks/GameKit.framework/Versions/A/GameKit",
+			"/System/Library/Frameworks/GameSave.framework/Versions/A/GameSave",
 			"/System/Library/Frameworks/GameplayKit.framework/Versions/A/GameplayKit",
 			"/System/Library/Frameworks/GLKit.framework/Versions/A/GLKit",
 			"/System/Library/Frameworks/HealthKit.framework/Versions/A/HealthKit",
@@ -3383,7 +3399,6 @@ namespace Xamarin.Tests {
 			"/usr/lib/swift/libswiftCoreFoundation.dylib",
 			"/usr/lib/swift/libswiftCoreImage.dylib",
 			"/usr/lib/swift/libswiftDarwin.dylib",
-			"/usr/lib/swift/libswiftDataDetection.dylib",
 			"/usr/lib/swift/libswiftDispatch.dylib",
 			"/usr/lib/swift/libswiftFoundation.dylib",
 			"/usr/lib/swift/libswiftIOKit.dylib",
@@ -3392,6 +3407,7 @@ namespace Xamarin.Tests {
 			"/usr/lib/swift/libswiftos.dylib",
 			"/usr/lib/swift/libswiftOSLog.dylib",
 			"/usr/lib/swift/libswiftQuartzCore.dylib",
+			"/usr/lib/swift/libswiftsimd.dylib",
 			"/usr/lib/swift/libswiftUniformTypeIdentifiers.dylib",
 			"/usr/lib/swift/libswiftXPC.dylib",
 		];
@@ -3436,12 +3452,15 @@ namespace Xamarin.Tests {
 			"/System/iOSSupport/System/Library/Frameworks/AVKit.framework/Versions/A/AVKit",
 			"/System/iOSSupport/System/Library/Frameworks/BusinessChat.framework/Versions/A/BusinessChat",
 			"/System/iOSSupport/System/Library/Frameworks/ContactsUI.framework/Versions/A/ContactsUI",
+			"/System/iOSSupport/System/Library/Frameworks/Cinematic.framework/Versions/A/Cinematic",
 			"/System/iOSSupport/System/Library/Frameworks/CoreAudioKit.framework/Versions/A/CoreAudioKit",
 			"/System/iOSSupport/System/Library/Frameworks/CoreLocationUI.framework/Versions/A/CoreLocationUI",
 			"/System/iOSSupport/System/Library/Frameworks/CoreNFC.framework/Versions/A/CoreNFC",
 			"/System/iOSSupport/System/Library/Frameworks/EventKitUI.framework/Versions/A/EventKitUI",
+			"/System/iOSSupport/System/Library/Frameworks/ExtensionKit.framework/Versions/A/ExtensionKit",
 			"/System/iOSSupport/System/Library/Frameworks/GameController.framework/Versions/A/GameController",
 			"/System/iOSSupport/System/Library/Frameworks/GameKit.framework/Versions/A/GameKit",
+			"/System/iOSSupport/System/Library/Frameworks/GameSave.framework/Versions/A/GameSave",
 			"/System/iOSSupport/System/Library/Frameworks/GameplayKit.framework/Versions/A/GameplayKit",
 			"/System/iOSSupport/System/Library/Frameworks/HealthKitUI.framework/Versions/A/HealthKitUI",
 			"/System/iOSSupport/System/Library/Frameworks/HomeKit.framework/Versions/A/HomeKit",
@@ -3573,7 +3592,6 @@ namespace Xamarin.Tests {
 			"/usr/lib/swift/libswiftCoreFoundation.dylib",
 			"/usr/lib/swift/libswiftCoreImage.dylib",
 			"/usr/lib/swift/libswiftDarwin.dylib",
-			"/usr/lib/swift/libswiftDataDetection.dylib",
 			"/usr/lib/swift/libswiftDispatch.dylib",
 			"/usr/lib/swift/libswiftFoundation.dylib",
 			"/usr/lib/swift/libswiftIOKit.dylib",

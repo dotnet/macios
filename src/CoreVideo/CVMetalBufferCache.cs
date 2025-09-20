@@ -78,9 +78,11 @@ namespace CoreVideo {
 		{
 			handle = IntPtr.Zero;
 			unsafe {
-				status = CVMetalBufferCacheCreate (IntPtr.Zero, attributes.GetHandle (), device.GetNonNullHandle (nameof (device)), (IntPtr*) Unsafe.AsPointer<IntPtr> (ref handle));
-				GC.KeepAlive (attributes);
-				GC.KeepAlive (device);
+				fixed (IntPtr* handlePtr = &handle) {
+					status = CVMetalBufferCacheCreate (IntPtr.Zero, attributes.GetHandle (), device.GetNonNullHandle (nameof (device)), handlePtr);
+					GC.KeepAlive (attributes);
+					GC.KeepAlive (device);
+				}
 			}
 			return status == CVReturn.Success;
 		}

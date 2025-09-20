@@ -104,6 +104,7 @@ package-download/all-package-references.csproj: $(GIT_DIRECTORY)/HEAD $(GIT_DIRE
 	@# https://github.com/dotnet/sdk/issues/16165
 	$(Q) rm -f ~/.dotnet/toolResolverCache/*/dotnet-t4
 	$(Q) rm -f ~/.dotnet/toolResolverCache/*/dotnet-ilrepack
+	$(Q) rm -f ~/.dotnet/toolResolverCache/*/microsoft.dotnet.apicompat.tool
 	$(DOTNET) tool restore
 	$(Q) touch $@
 

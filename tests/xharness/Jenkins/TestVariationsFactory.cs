@@ -1,8 +1,10 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.DotNet.XHarness.Common.Execution;
+using Microsoft.DotNet.XHarness.Common.Logging;
 using Microsoft.DotNet.XHarness.iOS.Shared;
 using Microsoft.DotNet.XHarness.iOS.Shared.Hardware;
 using Microsoft.DotNet.XHarness.iOS.Shared.Utilities;
@@ -123,7 +125,7 @@ namespace Xharness.Jenkins {
 						yield return new TestData {
 							Variation = $"Debug ({test.Platform.GetSimulatorMinVersion ()})",
 							Debug = true,
-							Candidates = jenkins.Simulators.SelectDevices (target.GetTargetOs (true), jenkins.SimulatorLoadLog, true),
+							Candidates = new IDeviceEnumerator (jenkins, target.GetTargetOs (true), jenkins.SimulatorLoadLog),
 							Ignored = ignore ?? !jenkins.TestSelection.IsEnabled (PlatformLabel.OldiOSSimulator) || !jenkins.TestSelection.IsEnabled (TestLabel.Introspection),
 						};
 					break;
@@ -158,6 +160,46 @@ namespace Xharness.Jenkins {
 				break;
 			default:
 				throw new NotImplementedException (test.ProjectPlatform);
+			}
+		}
+
+		class IDeviceEnumerator : IEnumerable<IDevice> {
+			readonly Jenkins jenkins;
+			readonly TestTargetOs os;
+			readonly ILog log;
+
+			public IDeviceEnumerator (Jenkins jenkins, TestTargetOs os, ILog log)
+			{
+				this.jenkins = jenkins;
+				this.os = os;
+				this.log = log;
+			}
+
+			public IEnumerator<IDevice> GetEnumerator ()
+			{
+				var maxAttempts = 3;
+				for (var i = 0; i < maxAttempts; i++) {
+					try {
+						var rv = jenkins.Simulators.SelectDevices (os, log, true).GetEnumerator ();
+						return rv;
+					} catch (Exception e) {
+						log.WriteLine ($"Failed to get simulators (attempt {i + 1} of {maxAttempts}): {e}");
+						if (i == maxAttempts - 1)
+							break;
+
+						log.WriteLine ("Reloading simulators...");
+						jenkins.Simulators.LoadDevices (log, false, false).Wait ();
+						log.WriteLine ("Reloaded simulators!");
+					}
+				}
+
+				log.WriteLine ("Reached max number of attempts to load simulators");
+				return Enumerable.Empty<IDevice> ().GetEnumerator ();
+			}
+
+			IEnumerator IEnumerable.GetEnumerator ()
+			{
+				return GetEnumerator ();
 			}
 		}
 

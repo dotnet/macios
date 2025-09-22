@@ -352,10 +352,7 @@ namespace Xamarin.MacDev {
 					var entriesWithZipName = entries.Select (v => new { Path = v, ZipName = v.Substring (rootDirLength) });
 					foreach (var entry in entriesWithZipName) {
 						if (Directory.Exists (entry.Path)) {
-							if (entries.Where (v => v.StartsWith (entry.Path, StringComparison.Ordinal)).Count () == 1) {
-								// this is a directory with no files inside, we need to create an entry with a trailing directory separator.
-								archive.CreateEntry (CanonicalizeZipEntryPath (entry.ZipName) + zipDirectorySeparator);
-							}
+							archive.CreateEntry (CanonicalizeZipEntryPath (entry.ZipName) + zipDirectorySeparator);
 						} else {
 							WriteFileToZip (log, archive, entry.Path, entry.ZipName, maxCompression);
 						}

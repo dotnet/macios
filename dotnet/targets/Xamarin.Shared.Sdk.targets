@@ -907,10 +907,34 @@
 		</ItemGroup>
 	</Target>
 
+	<!-- When copying files into the app bundle, the final paths can be *long*. This is not a problem on macOS, but Windows still lives in a world where MAX_PATH is unreasonable,
+	     so we have to come up with some hopefully not too unreasonable workarounds.
+
+	     We want the _CopyDirectoriesToBundle task to have correct Inputs and Outputs (to support incremental builds properly), but to avoid ending up
+	     with Outputs paths that cause problems on Windows, we use a stamp file as the Output, and the stamp file is a hashed version of the actual Output location
+
+	     This target will compute that stamp file location.
+	-->
+	<Target Name="_CreateStampLocationForCopyDirectoriesToBundle">
+		<ComputeHashForItems
+			Input="@(_DirectoriesToPublish)"
+			InputMetadata="Identity;TargetDirectory"
+			OutputMetadata="StampHash"
+		>
+			<Output TaskParameter="Output" ItemName="_DirectoriesToPublishWithStampHash" />
+		</ComputeHashForItems>
+		<ItemGroup>
+			<_DirectoriesToPublish />
+			<_DirectoriesToPublish Include="@(_DirectoriesToPublishWithStampHash)">
+				<StampLocation>$(DeviceSpecificIntermediateOutputPath)copieddirectories\%(_DirectoriesToPublishWithStampHash.StampHash)</StampLocation>
+			</_DirectoriesToPublish>
+		</ItemGroup>
+	</Target>
+
 	<Target Name="_CopyDirectoriesToBundle"
-		DependsOnTargets="_CollectDecompressedPlugins;_ComputeFrameworkFilesToPublish;_CollectDecompressedXpcServices"
+		DependsOnTargets="_CollectDecompressedPlugins;_ComputeFrameworkFilesToPublish;_CollectDecompressedXpcServices;_CreateStampLocationForCopyDirectoriesToBundle"
 		Inputs="@(_DirectoriesToPublish)"
-		Outputs="@(_DirectoriesToPublish -> '%(TargetDirectory)/%(Filename)')"
+		Outputs="@(_DirectoriesToPublish -> '%(StampLocation)')"
 		>
 
 		<!-- Ask ditto to not copy architectures we don't care about. This can be overridden by passing 'SkipLibraryThinning=true' -->
@@ -931,6 +955,8 @@
 			Source="%(_DirectoriesToPublish.SourceDirectory)"
 			Destination="%(_DirectoriesToPublish.TargetDirectory)"
 			TouchDestinationFiles="true"
+			StampFile="%(_DirectoriesToPublish.StampLocation)"
+			CreateOutputFiles="false"
 		/>
 	</Target>
 

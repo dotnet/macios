@@ -8,7 +8,7 @@
         <param name="actualFontSize">To be added.</param>
         <param name="breakMode">To be added.</param>
         <param name="adjustment">To be added.</param>
-        <summary>Developers should use <see cref="Foundation.NSString.DrawString(CoreGraphics.CGRect, UIKit.UIStringAttributes)" /> rather than this deprecated method.</summary>
+        <summary>Developers should use <see cref="NSStringDrawing.DrawString(NSString,CoreGraphics.CGRect, UIKit.UIStringAttributes)" /> rather than this deprecated method.</summary>
         <returns>To be added.</returns>
         <remarks>
           <para>(More documentation for this node is coming)</para>
@@ -23,7 +23,7 @@
         <param name="fontSize">To be added.</param>
         <param name="breakMode">To be added.</param>
         <param name="adjustment">To be added.</param>
-        <summary>Developers should use <see cref="Foundation.NSString.DrawString(CoreGraphics.CGRect, UIKit.UIStringAttributes)" /> rather than this deprecated method.</summary>
+        <summary>Developers should use <see cref="NSStringDrawing.DrawString(NSString,CoreGraphics.CGRect, UIKit.UIStringAttributes)" /> rather than this deprecated method.</summary>
         <returns>To be added.</returns>
         <remarks>
           <para>(More documentation for this node is coming)</para>

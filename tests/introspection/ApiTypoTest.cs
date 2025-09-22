@@ -1071,6 +1071,10 @@ namespace Introspection {
 					if (TestRuntime.IsSimulatorOrDesktop)
 						break;
 					goto default;
+				case "SensorKitLibrary": // SensorKit doesn't exist on iPads
+					if (TestRuntime.IsDevice && TestRuntime.IsiPad)
+						break;
+					goto default;
 #if __TVOS__
 				// This framework is only available on device
 				case "BrowserEngineKitLibrary":

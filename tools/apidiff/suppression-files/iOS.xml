@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- https://learn.microsoft.com/dotnet/fundamentals/package-validation/diagnostic-ids -->
+<Suppressions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:ObjCBindings.BindingTypeAttribute`1.get_LibraryName</Target>
+    <Left>temp/comparison/iOS/Microsoft.iOS.dll</Left>
+    <Right>../../_build/Microsoft.iOS.Ref.net9.0_26.0/ref/net9.0/Microsoft.iOS.dll</Right>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:ObjCBindings.BindingTypeAttribute`1.set_LibraryName(System.String)</Target>
+    <Left>temp/comparison/iOS/Microsoft.iOS.dll</Left>
+    <Right>../../_build/Microsoft.iOS.Ref.net9.0_26.0/ref/net9.0/Microsoft.iOS.dll</Right>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:ObjCBindings.FieldAttribute`1.get_LibraryName</Target>
+    <Left>temp/comparison/iOS/Microsoft.iOS.dll</Left>
+    <Right>../../_build/Microsoft.iOS.Ref.net9.0_26.0/ref/net9.0/Microsoft.iOS.dll</Right>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:ObjCBindings.FieldAttribute`1.set_LibraryName(System.String)</Target>
+    <Left>temp/comparison/iOS/Microsoft.iOS.dll</Left>
+    <Right>../../_build/Microsoft.iOS.Ref.net9.0_26.0/ref/net9.0/Microsoft.iOS.dll</Right>
+  </Suppression>
+</Suppressions>

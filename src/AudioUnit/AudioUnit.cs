@@ -44,8 +44,7 @@ using Foundation;
 
 namespace AudioUnit {
 #if !COREBUILD
-	/// <summary>An exception relating to functions in the MonoTouch.AudioUnit namespace.</summary>
-	///     <remarks>To be added.</remarks>
+	/// <summary>An exception relating to functions in the AudioUnit namespace.</summary>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -1059,13 +1058,15 @@ namespace AudioUnit {
 			if ((IntPtr) data == IntPtr.Zero)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (data));
 			unsafe {
-				return AudioUnitRender (
-					Handle,
-					(AudioUnitRenderActionFlags*) Unsafe.AsPointer<AudioUnitRenderActionFlags> (ref actionFlags),
-					&timeStamp,
-					busNumber,
-					numberFrames,
-					(IntPtr) data);
+				fixed (AudioUnitRenderActionFlags* actionFlagsPtr = &actionFlags) {
+					return AudioUnitRender (
+						Handle,
+						actionFlagsPtr,
+						&timeStamp,
+						busNumber,
+						numberFrames,
+						(IntPtr) data);
+				}
 			}
 		}
 

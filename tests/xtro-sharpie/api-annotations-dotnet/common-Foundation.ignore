@@ -173,9 +173,6 @@
 # this is a better named version of `date` which we already bound as `Now` in C#
 !missing-selector! +NSDate::now not bound
 
-# Apple says this is not implemented
-!missing-field! NSDidBecomeSingleThreadedNotification not bound
-
 # Contains variadic arguments, which are complicated to bind from managed code
 !missing-selector! +NSDictionary::dictionaryWithObjectsAndKeys: not bound
 

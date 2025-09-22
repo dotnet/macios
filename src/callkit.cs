@@ -58,6 +58,7 @@ namespace CallKit {
 		FilteredByBlockList = 4,
 		FilteredDuringRestrictedSharingMode = 5,
 		CallIsProtected = 6,
+		FilteredBySensitiveParticipants = 7,
 	}
 
 	/// <summary>Enumerates transaction request errors.</summary>
@@ -458,7 +459,6 @@ namespace CallKit {
 
 	}
 
-	/// <summary>Interface that represents the required methods (if any) of the <see cref="CallKit.CXCallObserverDelegate" /> protocol.</summary>
 	interface ICXCallObserverDelegate { }
 
 	/// <summary>Delegate object that responds to call changes.</summary>
@@ -562,12 +562,6 @@ namespace CallKit {
 		CXPlayDtmfCallActionType Type { get; set; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="CallKit.CXProviderDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="CallKit.CXProviderDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="CallKit.CXProviderDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="CallKit.CXProviderDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface ICXProviderDelegate { }
 
 	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/CallKit/CXProviderDelegate">Apple documentation for <c>CXProviderDelegate</c></related>
@@ -673,6 +667,10 @@ namespace CallKit {
 		[MacCatalyst (13, 1)]
 		[Export ("provider:didDeactivateAudioSession:")]
 		void DidDeactivateAudioSession (CXProvider provider, AVAudioSession audioSession);
+
+		[iOS (26, 0), NoMacCatalyst, NoMac]
+		[Export ("provider:performSetTranslatingCallAction:")]
+		void PerformSetTranslatingCallAction (CXProvider provider, CXSetTranslatingCallAction action);
 	}
 
 	/// <summary>Reports external (out-of-band) events, such as incoming calls, to the system, and receives internal (in-band) user action events from the system.</summary>
@@ -785,6 +783,10 @@ namespace CallKit {
 		[DesignatedInitializer]
 		[Export ("init")]
 		NativeHandle Constructor ();
+
+		[iOS (26, 0), MacCatalyst (26, 0), Mac (26, 0)]
+		[Export ("supportsAudioTranslation")]
+		bool SupportsAudioTranslation { get; set; }
 	}
 
 	/// <summary>Contains the data that are needed to join a group call.</summary>
@@ -912,5 +914,33 @@ namespace CallKit {
 
 		[Export ("addAction:")]
 		void AddAction (CXAction action);
+	}
+
+	[NoTV, NoMacCatalyst, NoMac, iOS (26, 0)]
+	[BaseType (typeof (CXCallAction))]
+	[DisableDefaultCtor]
+	interface CXSetTranslatingCallAction : NSSecureCoding {
+		[Export ("isTranslating")]
+		bool IsTranslating { get; }
+
+		[Export ("localLanguage", ArgumentSemantic.Strong)]
+		NSLocale LocalLanguage { get; }
+
+		[Export ("remoteLanguage", ArgumentSemantic.Strong)]
+		NSLocale RemoteLanguage { get; }
+
+		[Export ("initWithCallUUID:isTranslating:localLanguage:remoteLanguage:")]
+		[DesignatedInitializer]
+		NativeHandle Constructor (NSUuid uuid, bool isTranslating, NSLocale localLanguage, NSLocale remoteLanguage);
+
+		[Export ("fulfillUsingTranslationEngine:")]
+		void Fulfill (CXTranslationEngine translationEngine);
+	}
+
+	[iOS (26, 0), NoMacCatalyst, NoMac]
+	[Native]
+	public enum CXTranslationEngine : long {
+		Default,
+		Custom,
 	}
 }

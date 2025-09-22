@@ -73,6 +73,10 @@ namespace PencilKit {
 		[Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Field ("PKInkTypeCrayon")]
 		Crayon,
+
+		[iOS (26, 0), Mac (26, 0), MacCatalyst (26, 0)]
+		[Field ("PKInkTypeReed")]
+		Reed,
 	}
 
 	[iOS (14, 0), NoMac]
@@ -92,6 +96,8 @@ namespace PencilKit {
 		Version2 = 2,
 		[iOS (17, 4), Mac (14, 4), MacCatalyst (17, 4)]
 		Version3 = 3,
+		[iOS (26, 0), Mac (26, 0), MacCatalyst (26, 0)]
+		Version4 = 4,
 	}
 
 	[iOS (13, 0), NoMac]
@@ -112,9 +118,11 @@ namespace PencilKit {
 		[Export ("canvasViewDidEndUsingTool:")]
 		void EndUsingTool (PKCanvasView canvasView);
 
+#if !XAMCORE_5_0
 		[iOS (18, 1), NoMacCatalyst]
 		[Export ("canvasView:didRefineStrokes:withNewStrokes:")]
 		void DidRefineStrokes (PKCanvasView canvasView, PKStroke [] strokes, PKStroke [] newStrokes);
+#endif
 	}
 
 	interface IPKCanvasViewDelegate { }
@@ -265,6 +273,11 @@ namespace PencilKit {
 		[Export ("initWithInkType:color:")]
 		NativeHandle Constructor ([BindAs (typeof (PKInkType))] NSString type, UIColor color);
 
+		[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("initWithInkType:color:width:azimuth:")]
+		[DesignatedInitializer]
+		NativeHandle Constructor ([BindAs (typeof (PKInkType))] NSString type, UIColor color, nfloat width, nfloat azimuth);
+
 		[iOS (14, 0)]
 		[MacCatalyst (14, 0)]
 		[Export ("initWithInk:width:")]
@@ -298,6 +311,10 @@ namespace PencilKit {
 		[Export ("width")]
 		nfloat Width { get; }
 
+		[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("azimuth")]
+		nfloat Azimuth { get; }
+
 		[iOS (14, 0)]
 		[MacCatalyst (14, 0)]
 		[Export ("ink")]
@@ -306,6 +323,11 @@ namespace PencilKit {
 		[Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("requiredContentVersion")]
 		PKContentVersion RequiredContentVersion { get; }
+
+		[iOS (26, 0), Mac (26, 0), MacCatalyst (26, 0)]
+		[Static]
+		[Export ("invertColor:")]
+		CGColor InvertColor (CGColor color);
 	}
 
 	[iOS (13, 0)]
@@ -436,6 +458,14 @@ namespace PencilKit {
 		[Wrap ("WeakDelegate"), NullAllowed]
 		IPKToolPickerDelegate Delegate { get; set; }
 
+		[iOS (26, 0), MacCatalyst (26, 0)]
+		[Static]
+		[Export ("defaultToolItems")]
+		PKToolPickerItem [] DefaultToolItems { get; }
+
+		[iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("colorMaximumLinearExposure")]
+		nfloat ColorMaximumLinearExposure { get; set; }
 	}
 
 	[iOS (14, 0)]
@@ -579,6 +609,11 @@ namespace PencilKit {
 		[DesignatedInitializer]
 		NativeHandle Constructor (CGPoint location, double timeOffset, CGSize size, nfloat opacity, nfloat force, nfloat azimuth, nfloat altitude, nfloat secondaryScale);
 
+		[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("initWithLocation:timeOffset:size:opacity:force:azimuth:altitude:secondaryScale:threshold:")]
+		[DesignatedInitializer]
+		NativeHandle Constructor (CGPoint location, double timeOffset, CGSize size, nfloat opacity, nfloat force, nfloat azimuth, nfloat altitude, nfloat secondaryScale, nfloat threshold);
+
 		[Export ("location")]
 		CGPoint Location { get; }
 
@@ -603,6 +638,10 @@ namespace PencilKit {
 		[Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("secondaryScale")]
 		nfloat SecondaryScale { get; }
+
+		[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("threshold")]
+		nfloat Threshold { get; }
 	}
 
 	[iOS (18, 0), MacCatalyst (18, 0), NoMac]
@@ -666,7 +705,7 @@ namespace PencilKit {
 		PKToolPickerCustomItemControlOptions ToolAttributeControls { get; set; }
 	}
 
-	[iOS (18, 0), MacCatalyst (18, 0), NoMac]
+	[iOS (18, 0), MacCatalyst (18, 0), Mac (26, 0)]
 	[BaseType (typeof (PKToolPickerItem))]
 	[DisableDefaultCtor]
 	interface PKToolPickerEraserItem {
@@ -680,24 +719,47 @@ namespace PencilKit {
 		PKEraserTool EraserTool { get; }
 	}
 
-	[iOS (18, 0), MacCatalyst (18, 0), NoMac]
+	[iOS (18, 0), MacCatalyst (18, 0), Mac (26, 0)]
 	[BaseType (typeof (PKToolPickerItem))]
 	[DisableDefaultCtor]
 	interface PKToolPickerInkingItem {
 		[Export ("initWithInkType:")]
+		NativeHandle Constructor (NSString inkType);
+
+		[Wrap ("this (inkType.GetConstant ()!)")]
 		NativeHandle Constructor (PKInkType inkType);
 
 		[Export ("initWithInkType:color:")]
+		NativeHandle Constructor (NSString inkType, UIColor color);
+
+		[Wrap ("this (inkType.GetConstant ()!, color)")]
 		NativeHandle Constructor (PKInkType inkType, UIColor color);
 
 		[Export ("initWithInkType:width:")]
+		NativeHandle Constructor (NSString inkType, nfloat width);
+
+		[Wrap ("this (inkType.GetConstant ()!, width)")]
 		NativeHandle Constructor (PKInkType inkType, nfloat width);
 
 		[Export ("initWithInkType:color:width:")]
+		NativeHandle Constructor (NSString inkType, UIColor color, nfloat width);
+
+		[Wrap ("this (inkType.GetConstant ()!, color, width)")]
 		NativeHandle Constructor (PKInkType inkType, UIColor color, nfloat width);
 
 		[Export ("initWithInkType:color:width:identifier:")]
+		NativeHandle Constructor (NSString inkType, UIColor color, nfloat width, [NullAllowed] string identifier);
+
+		[Wrap ("this (inkType.GetConstant ()!, color, width, identifier)")]
 		NativeHandle Constructor (PKInkType inkType, UIColor color, nfloat width, [NullAllowed] string identifier);
+
+		[iOS (26, 0), Mac (26, 0), MacCatalyst (26, 0)]
+		[Export ("initWithInkType:color:width:azimuth:identifier:")]
+		NativeHandle Constructor (NSString inkType, UIColor color, nfloat width, nfloat azimuth, [NullAllowed] string identifier);
+
+		[iOS (26, 0), Mac (26, 0), MacCatalyst (26, 0)]
+		[Wrap ("this (inkType.GetConstant ()!, color, width, azimuth, identifier)")]
+		NativeHandle Constructor (PKInkType inkType, UIColor color, nfloat width, nfloat azimuth, [NullAllowed] string identifier);
 
 		[Export ("inkingTool")]
 		PKInkingTool InkingTool { get; }
@@ -706,12 +768,17 @@ namespace PencilKit {
 		bool AllowsColorSelection { get; set; }
 	}
 
-	[iOS (18, 0), MacCatalyst (18, 0), NoMac]
+	[iOS (18, 0), MacCatalyst (18, 0), Mac (26, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface PKToolPickerItem : NSCopying {
 		[Export ("identifier")]
 		string Identifier { get; }
+
+		[iOS (26, 0), Mac (26, 0), MacCatalyst (26, 0)]
+		[Export ("tool")]
+		[NullAllowed]
+		PKTool Tool { get; }
 	}
 
 	[iOS (18, 0), MacCatalyst (18, 0), NoMac]
@@ -746,5 +813,32 @@ namespace PencilKit {
 		None = 0,
 		Width = 1 << 0,
 		Opacity = 1 << 1,
+	}
+
+	[iOS (26, 0), NoMac, MacCatalyst (26, 0)]
+	[Native]
+	public enum PKToolPickerVisibility : long {
+		Inherited,
+		Inactive,
+		Hidden,
+		Visible,
+	}
+
+	[iOS (26, 0), NoMac, MacCatalyst (26, 0)]
+	[BaseType (typeof (NSObject))]
+	interface PKResponderState {
+		[Export ("toolPickerVisibility", ArgumentSemantic.Assign)]
+		PKToolPickerVisibility ToolPickerVisibility { get; set; }
+
+		[NullAllowed, Export ("activeToolPicker", ArgumentSemantic.Strong)]
+		PKToolPicker ActiveToolPicker { get; set; }
+	}
+
+	[iOS (26, 0), NoMac, MacCatalyst (26, 0)]
+	[Category]
+	[BaseType (typeof (UIResponder))]
+	interface UIResponder_PKResponderState {
+		[Export ("pencilKitResponderState")]
+		PKResponderState GetPencilKitResponderState ();
 	}
 }

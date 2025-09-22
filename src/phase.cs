@@ -235,6 +235,7 @@ namespace Phase {
 	public enum PhaseAutomaticHeadTrackingFlags : ulong {
 		None = 0,
 		Orientation = 1UL << 0,
+		Position = 1uL << 1
 	}
 
 	[TV (17, 0), iOS (15, 0), MacCatalyst (15, 0)]
@@ -885,6 +886,7 @@ namespace Phase {
 
 	[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
 	[BaseType (typeof (PhaseDirectivityModelParameters), Name = "PHASEConeDirectivityModelParameters")]
+	[DisableDefaultCtor] // doesn't have init itself, and the base class has it marked as unavailable
 	interface PhaseConeDirectivityModelParameters {
 		[Export ("initWithSubbandParameters:")]
 		NativeHandle Constructor (PhaseConeDirectivityModelSubbandParameters [] subbandParameters);
@@ -1113,8 +1115,11 @@ namespace Phase {
 		[Export ("startWithCompletion:")]
 		bool Start ([NullAllowed] Action<PhaseSoundEventStartHandlerReason> completionBlock);
 
+#if !XAMCORE_5_0
+		[Obsolete ("Use the other 'Start' overload instead, this doesn't exist.")]
 		[Export ("startAndReturnError:")]
 		bool Start ([NullAllowed] out NSError error);
+#endif // !XAMCORE_5_0
 
 		[Async]
 		[Export ("seekToTime:completion:")]
@@ -1150,6 +1155,18 @@ namespace Phase {
 		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Export ("pullStreamNodes", ArgumentSemantic.Copy)]
 		NSDictionary<NSString, PhasePullStreamNode> PullStreamNodes { get; }
+
+		[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Export ("startAtTime:completion:")]
+		void Start ([NullAllowed] AVAudioTime when, [NullAllowed] Action<PhaseSoundEventStartHandlerReason> handler);
+
+		[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Export ("seekToTime:resumeAtEngineTime:completion:")]
+		void Seek (double time, AVAudioTime engineTime, [NullAllowed] Action<PhaseSoundEventSeekHandlerReason> handler);
+
+		[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Export ("resumeAtTime:")]
+		void Resume ([NullAllowed] AVAudioTime time);
 	}
 
 	[TV (17, 0), iOS (15, 0), MacCatalyst (15, 0)]
@@ -1207,6 +1224,11 @@ namespace Phase {
 
 		[NullAllowed, Export ("activeGroupPreset", ArgumentSemantic.Strong)]
 		PhaseGroupPreset ActiveGroupPreset { get; }
+
+		[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Export ("lastRenderTime")]
+		[NullAllowed]
+		AVAudioTime LastRenderTime { get; }
 	}
 
 	[TV (17, 0), iOS (15, 0), MacCatalyst (15, 0)]

@@ -38,6 +38,7 @@ namespace Xamarin.Tests {
 		public static bool include_tvos;
 		public static bool include_maccatalyst;
 		public static bool EnableXamarin;
+		public static bool EnableAdr;
 		public static bool XcodeIsStable;
 		public static string DOTNET_DIR;
 
@@ -299,6 +300,7 @@ namespace Xamarin.Tests {
 			DotNetExecutable = GetVariable ("DOTNET", null);
 			DotNetTfm = GetVariable ("DOTNET_TFM", null);
 			EnableXamarin = !string.IsNullOrEmpty (GetVariable ("ENABLE_XAMARIN", ""));
+			EnableAdr = !string.IsNullOrEmpty (GetVariable ("ENABLE_ADR", ""));
 			XcodeIsStable = string.Equals (GetVariable ("XCODE_IS_STABLE", ""), "true",
 				StringComparison.OrdinalIgnoreCase);
 			DOTNET_DIR = GetVariable ("DOTNET_DIR", "");
@@ -415,6 +417,11 @@ namespace Xamarin.Tests {
 			return GetVariable (variableName, variableName + " not found");
 		}
 
+		public static Version GetDotNetVersion ()
+		{
+			return Version.Parse (DotNetTfm.Replace ("net", ""));
+		}
+
 		public static string GetDotNetRoot ()
 		{
 			if (IsVsts) {
@@ -526,6 +533,14 @@ namespace Xamarin.Tests {
 		public static string GetBaseLibrary (TargetFramework targetFramework)
 		{
 			return Path.Combine (GetRefDirectory (targetFramework), GetBaseLibraryName (targetFramework));
+		}
+
+		public static IList<string> GetAllRuntimeIdentifiers ()
+		{
+			var rv = new List<string> ();
+			foreach (var platform in GetAllPlatforms ())
+				rv.AddRange (GetRuntimeIdentifiers (platform));
+			return rv;
 		}
 
 		public static IList<string> GetRuntimeIdentifiers (ApplePlatform platform)

@@ -1,3 +1,4 @@
+#pragma warning disable APL0003
 using System;
 using System.Runtime.Versioning;
 using Foundation;
@@ -8,7 +9,6 @@ namespace TestNamespace;
 [SupportedOSPlatform ("macos")]
 [SupportedOSPlatform ("ios11.0")]
 [SupportedOSPlatform ("tvos11.0")]
-
 [BindingType<Class> ()]
 public partial class CIImage {
 

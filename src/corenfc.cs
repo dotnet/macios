@@ -27,6 +27,8 @@ namespace CoreNFC {
 		InvalidParameterLength,
 		ParameterOutOfBound,
 		RadioDisabled = 6,
+		Ineligible = 7,
+		AccessNotAccepted = 8,
 
 		/// <summary>The connection to the tag was lost.</summary>
 		ReaderTransceiveErrorTagConnectionLost = 100,
@@ -218,14 +220,14 @@ namespace CoreNFC {
 		NativeHandle Constructor (NSRange range, nuint chunkSize, nuint maximumRetries, double retryInterval);
 	}
 
-	delegate void NFCGetSystemInfoCompletionHandler (nint dsfid, nint afi, nint blockSize, nint blockCount, nint icReference, NSError error);
+	delegate void NFCGetSystemInfoCompletionHandler (nint dsfid, nint afi, nint blockSize, nint blockCount, nint icReference, [NullAllowed] NSError error);
 
 	interface INFCIso15693Tag { }
 
-	delegate void NFCIso15693TagReadMultipleBlocksCallback (NSData [] dataBlocks, NSError error);
-	delegate void NFCIso15693TagResponseCallback (NFCIso15693ResponseFlag responseFlag, NSData response, NSError error);
-	delegate void NFCIso15693TagGetMultipleBlockSecurityStatusCallback (NSNumber [] securityStatus, NSError error);
-	delegate void NFCIso15693TagGetSystemInfoAndUidCallback (NSData uid, nint dsfid, nint afi, nint blockSize, nint blockCount, nint icReference, NSError error);
+	delegate void NFCIso15693TagReadMultipleBlocksCallback (NSData [] dataBlocks, [NullAllowed] NSError error);
+	delegate void NFCIso15693TagResponseCallback (NFCIso15693ResponseFlag responseFlag, NSData response, [NullAllowed] NSError error);
+	delegate void NFCIso15693TagGetMultipleBlockSecurityStatusCallback (NSNumber [] securityStatus, [NullAllowed] NSError error);
+	delegate void NFCIso15693TagGetSystemInfoAndUidCallback (NSData uid, nint dsfid, nint afi, nint blockSize, nint blockCount, nint icReference, [NullAllowed] NSError error);
 
 	//[NoTV, NoMac]
 	/// <summary>Implements <see cref="CoreNFC.INFCTag" /> with data associated with an ISO-15693 vicinity card.</summary>
@@ -966,11 +968,11 @@ namespace CoreNFC {
 
 	interface INFCFeliCaTag { }
 
-	delegate void NFCFeliCaPollingCompletionHandler (NSData pmm, NSData requestData, NSError error);
-	delegate void NFCFeliCaReadWithoutEncryptionCompletionHandler (nint statusFlag1, nint statusFlag2, NSData [] blockData, NSError error);
-	delegate void NFCFeliCaStatus1Status2CompletionHandler (nint statusFlag1, nint statusFlag2, NSError error);
-	delegate void NFCFeliCaRequestServiceV2CompletionHandler (nint statusFlag1, nint statusFlag2, NFCFeliCaEncryptionId encryptionIdentifier, NSData [] nodeKeyVersionListAes, NSData [] nodeKeyVersionListDes, NSError error);
-	delegate void NFCFeliCaRequestSpecificationVersionCompletionHandler (nint statusFlag1, nint statusFlag2, NSData basicVersion, NSData optionVersion, NSError error);
+	delegate void NFCFeliCaPollingCompletionHandler (NSData pmm, NSData requestData, [NullAllowed] NSError error);
+	delegate void NFCFeliCaReadWithoutEncryptionCompletionHandler (nint statusFlag1, nint statusFlag2, NSData [] blockData, [NullAllowed] NSError error);
+	delegate void NFCFeliCaStatus1Status2CompletionHandler (nint statusFlag1, nint statusFlag2, [NullAllowed] NSError error);
+	delegate void NFCFeliCaRequestServiceV2CompletionHandler (nint statusFlag1, nint statusFlag2, NFCFeliCaEncryptionId encryptionIdentifier, NSData [] nodeKeyVersionListAes, NSData [] nodeKeyVersionListDes, [NullAllowed] NSError error);
+	delegate void NFCFeliCaRequestSpecificationVersionCompletionHandler (nint statusFlag1, nint statusFlag2, NSData basicVersion, NSData optionVersion, [NullAllowed] NSError error);
 
 	[iOS (13, 0)]
 	[MacCatalyst (13, 1)]
@@ -1091,7 +1093,7 @@ namespace CoreNFC {
 
 	interface INFCMiFareTag { }
 
-	delegate void NFCIso7816SendCompletionHandler (NSData responseData, byte sw1, byte sw2, NSError error);
+	delegate void NFCIso7816SendCompletionHandler (NSData responseData, byte sw1, byte sw2, [NullAllowed] NSError error);
 
 	[iOS (13, 0)]
 	[MacCatalyst (13, 1)]
@@ -1230,4 +1232,13 @@ namespace CoreNFC {
 		[DesignatedInitializer]
 		NativeHandle Constructor (NFCVasCommandConfiguration [] commandConfigurations, INFCVasReaderSessionDelegate @delegate, [NullAllowed] DispatchQueue queue);
 	}
+
+	[MacCatalyst (26, 0), NoTV, NoMac, iOS (26, 0)]
+	[BaseType (typeof (NFCTagReaderSession))]
+	[DisableDefaultCtor]
+	interface NFCPaymentTagReaderSession {
+		[Export ("initWithDelegate:queue:")]
+		NativeHandle Constructor (INFCTagReaderSessionDelegate @delegate, [NullAllowed] DispatchQueue queue);
+	}
+
 }

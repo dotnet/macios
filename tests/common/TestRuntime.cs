@@ -375,6 +375,27 @@ partial class TestRuntime {
 			macOS = new { Major = 11, Minor = 0, Build = "20A5395" },
 		};
 
+		var twentysixb1 = new {
+			Xcode = new { Major = 26, Minor = 0, Beta = 1 },
+			iOS = new { Major = 26, Minor = 0, Build = "23A5260l" },
+			tvOS = new { Major = 26, Minor = 0, Build = "23J5279m" },
+			macOS = new { Major = 26, Minor = 0, Build = "25A5279m" },
+		};
+
+		var twentysixb2 = new {
+			Xcode = new { Major = 26, Minor = 0, Beta = 2 },
+			iOS = new { Major = 26, Minor = 0, Build = "23A5276e" },
+			tvOS = new { Major = 26, Minor = 0, Build = "23J5295e" },
+			macOS = new { Major = 26, Minor = 0, Build = "25A5295e" },
+		};
+
+		var twentysixb3 = new {
+			Xcode = new { Major = 26, Minor = 0, Beta = 3 },
+			iOS = new { Major = 26, Minor = 0, Build = "25A5306g" },
+			tvOS = new { Major = 26, Minor = 0, Build = "23J5306f" },
+			macOS = new { Major = 26, Minor = 0, Build = "25A5306g" },
+		};
+
 		var versions = new [] {
 			nineb1,
 			nineb2,
@@ -383,6 +404,9 @@ partial class TestRuntime {
 			elevenb6,
 			twelvedot2b2,
 			twelvedot2b3,
+			twentysixb1,
+			twentysixb2,
+			twentysixb3,
 		};
 
 		foreach (var v in versions) {
@@ -399,7 +423,6 @@ partial class TestRuntime {
 			if (v.iOS.Build == "?")
 				throw new NotImplementedException ($"Build number for iOS {v.iOS.Major}.{v.iOS.Minor} beta {beta} (candidate: {GetiOSBuildVersion ()})");
 			var actual = GetiOSBuildVersion ();
-			Console.WriteLine (actual);
 			return actual.StartsWith (v.iOS.Build, StringComparison.Ordinal);
 #elif __TVOS__
 			if (!CheckExacttvOSSystemVersion (v.tvOS.Major, v.tvOS.Minor))
@@ -407,13 +430,12 @@ partial class TestRuntime {
 			if (v.tvOS.Build == "?")
 				throw new NotImplementedException ($"Build number for tvOS {v.tvOS.Major}.{v.tvOS.Minor} beta {beta} (candidate: {GetiOSBuildVersion ()})");
 			var actual = GetiOSBuildVersion ();
-			Console.WriteLine (actual);
 			return actual.StartsWith (v.tvOS.Build, StringComparison.Ordinal);
 #elif __MACOS__
 			if (!CheckExactmacOSSystemVersion (v.macOS.Major, v.macOS.Minor))
 				return false;
 			if (v.macOS.Build == "?")
-				throw new NotImplementedException ($"Build number for macOS {v.macOS.Major}.{v.macOS.Minor} beta {beta}.");
+				throw new NotImplementedException ($"Build number for macOS {v.macOS.Major}.{v.macOS.Minor} beta {beta} (must be contained within: {NSProcessInfo.ProcessInfo.OperatingSystemVersionString}).");
 			/*
 			 * I could be parsing the string but docs says it is not suitable for parsing and this is ugly enough so
 			 * an apology in advance (I'm very sorry =]) to my future self or whoever is dealing with this if it broke
@@ -434,6 +456,21 @@ partial class TestRuntime {
 	public static bool CheckXcodeVersion (int major, int minor, int build = 0)
 	{
 		switch (major) {
+		case 26:
+			switch (minor) {
+			case 0:
+#if __TVOS__
+				return ChecktvOSSystemVersion (26, 0);
+#elif __IOS__
+				return CheckiOSSystemVersion (26, 0);
+#elif MONOMAC
+				return CheckMacSystemVersion (26, 0);
+#else
+				throw new NotImplementedException ($"Missing platform case for Xcode {major}.{minor}");
+#endif
+			default:
+				throw new NotImplementedException ($"Missing version logic for checking for Xcode {major}.{minor}");
+			}
 		case 16:
 			switch (minor) {
 			case 0:
@@ -1028,6 +1065,15 @@ partial class TestRuntime {
 		}
 	}
 
+	/// <summary>Calls Assert.Ignore if we're running on an earlier OS version than the highest we support.</summary>
+	public static void AssertMatchingOSVersionAndSdkVersion ()
+	{
+		var sdk = new Version (Constants.SdkVersion);
+		if (CheckSystemVersion (CurrentPlatform, sdk.Major, sdk.Minor, sdk.Build == -1 ? 0 : sdk.Build))
+			return;
+		Assert.Ignore ($"This test only executes using the latest OS version ({sdk.Major}.{sdk.Minor})");
+	}
+
 	// This method returns true if:
 	// system version >= specified version
 	// AND
@@ -1197,6 +1243,26 @@ partial class TestRuntime {
 			return true;
 #else
 			return Runtime.Arch == Arch.SIMULATOR;
+#endif
+		}
+	}
+
+	public static bool IsiPad {
+		get {
+#if __MACOS__
+			return false;
+#else
+			return UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Pad;
+#endif
+		}
+	}
+
+	public static bool IsiPhone {
+		get {
+#if __MACOS__
+			return false;
+#else
+			return UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone;
 #endif
 		}
 	}
@@ -1453,13 +1519,13 @@ partial class TestRuntime {
 #endif
 	}
 
-	public static byte GetFlags (NSObject obj)
+	public static uint GetFlags (NSObject obj)
 	{
 		const string name = "flags";
 		var prop = typeof (NSObject).GetProperty (name, BindingFlags.Instance | BindingFlags.NonPublic);
 		if (prop is null)
 			throw new InvalidOperationException ($"Unable to find the property '{name}' in NSObject.");
-		return (byte) prop.GetValue (obj)!;
+		return (uint) prop.GetValue (obj)!;
 	}
 
 	// Determine if linkall was enabled by checking if an unused class in this assembly is still here.

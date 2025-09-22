@@ -24,8 +24,15 @@ Copyright (C) 2011-2013 Xamarin. All rights reserved.
 	<Import Project="$(MSBuildThisFileDirectory)Xamarin.Messaging.Build.targets" Condition="Exists('$(MSBuildThisFileDirectory)Xamarin.Messaging.Build.targets') And '$(MessagingBuildTargetsImported)' != 'true'" />
 	<Import Project="$(MSBuildThisFileDirectory)Xamarin.iOS.Windows.After.targets" Condition="Exists('$(MSBuildThisFileDirectory)Xamarin.iOS.Windows.After.targets')" />
 
+	<PropertyGroup>
+		<_RequiresMacConnection Condition="'$(_RequiresMacConnection)' == '' And '$(_CanOutputAppBundle)' == 'true'">true</_RequiresMacConnection>
+		<_RequiresMacConnection Condition="'$(_RequiresMacConnection)' == '' And '$(_BundleOriginalResources)' != 'true'">true</_RequiresMacConnection>
+		<_RequiresMacConnection Condition="'$(_RequiresMacConnection)' == ''">false</_RequiresMacConnection>
+	</PropertyGroup>
+
 	<Target Name="EnsureMacConnection" 
 		DependsOnTargets="_SayHello" 
+		Condition="'$(_RequiresMacConnection)' == 'true'"
 		BeforeTargets="_CleanDebugSymbols;_CleanAppBundle;_DetectAppManifest;_DetectSdkLocations;_GenerateBundleName" />
 	
 	<!-- Default context path values for remote builds -->
@@ -412,11 +419,10 @@ Copyright (C) 2011-2013 Xamarin. All rights reserved.
 				ToolPath="$(_DotNetHostDirectory)"
 				ILLinkPath="$(_RemoteILLinkPath)"
 				LinkerItemsDirectory="$(_LinkerItemsDirectory)"
+				LinkerCacheDirectory="$(_LinkerCacheDirectory)"
 				DebugSymbols="@(_ILLinkDebugSymbols)"
 				ContinueOnError="ErrorAndContinue">
 			<Output TaskParameter="ExitCode" PropertyName="_ILLinkExitCode" />
-			<Output TaskParameter="LinkedItems" ItemName="_XamarinLinkedItems" />
-			<Output TaskParameter="LinkerOutputItems" ItemName="_XamarinLinkerItems" />
 		</Xamarin.MacDev.Tasks.ILLink>
 
 		<PropertyGroup>

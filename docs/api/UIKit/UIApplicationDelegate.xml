@@ -33,12 +33,16 @@ public partial class AppDelegate : UIApplicationDelegate
       <block subset="none" type="behaviors">UIApplicationDelegate and the Application Lifecycle</block>
       <para>The <see cref="UIKit.UIApplicationDelegate" /> provides overridable methods for the entire application lifecycle:</para>
       <para>
-        <img href="~/UIKit/_images/UIApplicationDelegate.Lifecycle.png" alt="Sequence diagram showing the UIApplicationDelegate lifecycle" />
+        <img href="~/xml/UIKit/_images/UIApplicationDelegate.Lifecycle.png" alt="Sequence diagram showing the UIApplicationDelegate lifecycle" />
       </para>
       <para>Applications have four major modes:</para>
       <list type="bullet">
         <item>
-          <term>Launching, involving the methods <see cref="UIKit.UIApplicationDelegate.WillFinishLaunching(UIKit.UIApplication,Foundation.NSDictionary)" />, <see cref="UIKit.UIApplicationDelegate_Extensions.FinishedLaunching(UIKit.IUIApplicationDelegate,UIKit.UIApplication,Foundation.NSDictionary)" />, and perhaps <see cref="UIKit.UIApplication.OpenURL" /> (if the application was launched or foregrounded with <see cref="UIKit.UIApplication.OpenURL" />).</term>
+          <term>
+            Launching, involving the methods <see cref="UIKit.UIApplicationDelegate.WillFinishLaunching(UIKit.UIApplication,Foundation.NSDictionary)" />,
+            <see cref="UIKit.UIApplicationDelegate_Extensions.FinishedLaunching(UIKit.IUIApplicationDelegate,UIKit.UIApplication,Foundation.NSDictionary)" />,
+            and perhaps <see cref="UIKit.UIApplication.OpenUrl" /> (if the application was launched or foregrounded with <see cref="UIKit.UIApplication.OpenURL" />).
+          </term>
         </item>
         <item>
           <term>Foreground processing, book-ended by the methods <see cref="UIKit.UIApplicationDelegate.OnActivated(UIKit.UIApplication)" /> and <see cref="UIKit.UIApplicationDelegate.OnResignActivation(UIKit.UIApplication)" />.</term>

@@ -9,6 +9,7 @@ using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
+using Microsoft.Macios.Generator.Attributes;
 using Microsoft.Macios.Generator.Context;
 using Microsoft.Macios.Generator.DataModel;
 using Microsoft.Macios.Generator.Emitters;
@@ -59,6 +60,16 @@ public class BindingSourceGeneratorGenerator : IIncrementalGenerator {
 		var trampolineProvider = provider
 			.Select ((tuple, _) => (tuple.RootBindingContext, tuple.Bindings.Trampolines));
 
+		var asyncResultsProvider = provider
+			.Select ((tuple, _) => (tuple.RootBindingContext, tuple.Bindings.AsyncResults));
+
+		var eventArgsProvider = provider
+			.Select ((tuple, _) => (tuple.RootBindingContext, tuple.Bindings.WeakDelegateEvents));
+
+		var delegatesInfoProvider = provider
+			.Select ((tuple, _) => (tuple.RootBindingContext, tuple.Bindings.WeakDelegatesClasses));
+
+
 		context.RegisterSourceOutput (context.CompilationProvider.Combine (bindings.Collect ()),
 			((ctx, t) => GenerateCode (ctx, t.Right)));
 
@@ -67,6 +78,32 @@ public class BindingSourceGeneratorGenerator : IIncrementalGenerator {
 
 		context.RegisterSourceOutput (context.CompilationProvider.Combine (trampolineProvider.Collect ()),
 			((ctx, t) => GenerateTrampolineCode (ctx, t.Right)));
+
+		context.RegisterSourceOutput (context.CompilationProvider.Combine (asyncResultsProvider.Collect ()),
+			((ctx, t) => GenerateAsyncResultCode (ctx, t.Right)));
+
+		context.RegisterSourceOutput (context.CompilationProvider.Combine (eventArgsProvider.Collect ()),
+			((ctx, t) => GenerateEventArgTypes (ctx, t.Right)));
+
+		context.RegisterSourceOutput (context.CompilationProvider.Combine (delegatesInfoProvider.Collect ()),
+			((ctx, t) => GenerateDelegateTypes (ctx, t.Right)));
+
+		if (GeneratorConfiguration.BGenCompatible) {
+			// the following code generations will only be used when the generator is compatible with bgen.
+
+			var strongDictionaryKeysProvider = provider
+				.Where (t => {
+					if (t.Bindings.BindingType != BindingType.StrongDictionaryKeys)
+						return false;
+					// only want those kyes that we need to make backwards compatible with bgen
+					var bindingInfo = (BindingTypeData<ObjCBindings.StrongDictionaryKeys>) t.Bindings.BindingInfo;
+					return bindingInfo.Flags.HasFlag (ObjCBindings.StrongDictionaryKeys.BackwardCompatible);
+				})
+				.Select ((tuple, _) => (tuple.RootBindingContext, tuple.Bindings));
+
+			context.RegisterSourceOutput (context.CompilationProvider.Combine (strongDictionaryKeysProvider.Collect ()),
+				((ctx, t) => GenerateBGenStrongDictionaryKeys (ctx, t.Right)));
+		}
 	}
 
 	/// <summary>
@@ -138,7 +175,7 @@ public class BindingSourceGeneratorGenerator : IIncrementalGenerator {
 				// we don't have an emitter for this type, so we can't generate the code, add a diagnostic letting the
 				// user we do not support what they are trying to do
 				context.ReportDiagnostic (Diagnostic.Create (
-					Diagnostics
+					RgenDiagnostics
 						.RBI0000, // An unexpected error ocurred while processing '{0}'. Please fill a bug report at https://github.com/dotnet/macios/issues/new.
 					null,
 					binding.FullyQualifiedSymbol));
@@ -220,6 +257,163 @@ public class BindingSourceGeneratorGenerator : IIncrementalGenerator {
 		}
 	}
 
+	static void GenerateAsyncResultCode (SourceProductionContext context,
+		ImmutableArray<(RootContext RootBindingContext, IEnumerable<AsyncResultInfo>
+			AsyncResults)> asyncResultsChanges)
+	{
+		// we don't have any async results to generate, so we can return
+		if (asyncResultsChanges.Length == 0)
+			return;
+
+		// it might be the case that we have several async results with the same name and namespace, so we need to
+		// ensure that we do not have duplicates. We do so by using a dict.
+		var infos = new Dictionary<string, AsyncResultInfo> ();
+		foreach (var (_, asyncInfos) in asyncResultsChanges) {
+			foreach (var info in asyncInfos) {
+				infos.Add (info.FullyQualifiedName, info);
+			}
+		}
+
+		var sb = new TabbedStringBuilder (new ());
+		foreach (var (_, asyncResult) in infos) {
+			// init sb and add the header
+			sb.Clear ();
+			sb.WriteHeader ();
+			var emitter = new AsyncResultEmitter (sb);
+			if (emitter.TryEmit (asyncResult, out var diagnostics)) {
+				// only add a file when we do generate code
+				var code = sb.ToCode ();
+				var namespacePath = Path.Combine (asyncResult.Namespace.ToArray ());
+				context.AddSource ($"{Path.Combine (namespacePath, asyncResult.Name)}.g.cs",
+					SourceText.From (code, Encoding.UTF8));
+			} else {
+				// add to the diagnostics and continue to the next possible candidate
+				context.ReportDiagnostics (diagnostics);
+			}
+		}
+	}
+
+	/// <summary>
+	/// Code generator that emits event argument types for weak delegates.
+	/// </summary>
+	/// <param name="context">Source production context.</param>
+	/// <param name="eventInfoChanges">The event info for which event argument types will be generated.</param>
+	static void GenerateEventArgTypes (SourceProductionContext context,
+		ImmutableArray<(RootContext RootBindingContext, IEnumerable<EventInfo>
+			EventInfos)> eventInfoChanges)
+	{
+		// we don't have what to generate, so we can return
+		if (eventInfoChanges.Length == 0)
+			return;
+
+		// it might be the case that we have several event argument types with the same name and namespace, so we need to
+		// ensure that we do not have duplicates. We do so by using a dict.
+		var infos = new Dictionary<string, EventInfo> ();
+		foreach (var (_, eventInfos) in eventInfoChanges) {
+			foreach (var info in eventInfos) {
+				infos.Add (info.EventArgsFullyQualifiedName, info);
+			}
+		}
+
+		var sb = new TabbedStringBuilder (new ());
+		foreach (var (_, eventInfo) in infos) {
+			if (!eventInfo.ToGenerate)
+				continue;
+			// init sb and add the header
+			sb.Clear ();
+			sb.WriteHeader ();
+			var emitter = new EventTypeEmitter (sb);
+			if (emitter.TryEmit (eventInfo, out var diagnostics)) {
+				// only add a file when we do generate code
+				var code = sb.ToCode ();
+				context.AddSource ($"{Path.Combine (eventInfo.Namespace, eventInfo.EventArgsType)}.g.cs",
+					SourceText.From (code, Encoding.UTF8));
+			} else {
+				// add to the diagnostics and continue to the next possible candidate
+				context.ReportDiagnostics (diagnostics);
+			}
+		}
+	}
+
+	/// <summary>
+	/// Code generator that emits delegate types for weak delegates.
+	/// </summary>
+	/// <param name="context">Source production context.</param>
+	/// <param name="delegateInfoChanges">The event delegate info for which delegate types will be generated.</param>
+	static void GenerateDelegateTypes (SourceProductionContext context,
+		ImmutableArray<(RootContext RootBindingContext, IEnumerable<EventDelegateInfo>
+			DelegateInfos)> delegateInfoChanges)
+	{
+		// we don't have what to generate, so we can return
+		if (delegateInfoChanges.Length == 0)
+			return;
+
+		// it might be the case that we have several async results with the same name and namespace, so we need to
+		// ensure that we do not have duplicates. We do so by using a dict.
+		var infos = new Dictionary<string, EventDelegateInfo> ();
+		foreach (var (_, delegateInfo) in delegateInfoChanges) {
+			foreach (var info in delegateInfo) {
+				infos.Add (info.FullyQualifiedDelegateTypeName, info);
+			}
+		}
+
+		var sb = new TabbedStringBuilder (new ());
+		foreach (var (_, delegateInfo) in infos) {
+			// init sb and add the header
+			sb.Clear ();
+			sb.WriteHeader ();
+			var emitter = new EventDelegateEmitter (sb);
+			if (emitter.TryEmit (delegateInfo, out var diagnostics)) {
+				// only add a file when we do generate code
+				var code = sb.ToCode ();
+				var delegateClassFileName =
+					$"{delegateInfo.OuterClassName}{Nomenclator.GetInternalDelegateForEventName (delegateInfo.DelegateType)}";
+				context.AddSource ($"{Path.Combine (delegateInfo.Namespace, delegateClassFileName)}.g.cs",
+					SourceText.From (code, Encoding.UTF8));
+			} else {
+				// add to the diagnostics and continue to the next possible candidate
+				context.ReportDiagnostics (diagnostics);
+			}
+		}
+	}
+
+	/// <summary>
+	/// Code generator that emits strong dictionary keys classes compatible with bgen output.
+	/// This generates backward-compatible strong dictionary keys when the BackwardCompatible flag is set.
+	/// </summary>
+	/// <param name="context">Source production context.</param>
+	/// <param name="bindingsList">The bindings that need backward-compatible strong dictionary keys generation.</param>
+	static void GenerateBGenStrongDictionaryKeys (SourceProductionContext context,
+		in ImmutableArray<(RootContext Context, Binding Binding)> bindingsList)
+	{
+		if (bindingsList.Length == 0)
+			return;
+		// all items contain the same root context, we can get it from the first item
+		var rootBindingContext = bindingsList [0].Context;
+
+		// loop over all the bindings that have to be backwards compatible with bgen
+		// and generate the code for them.
+		var sb = new TabbedStringBuilder (new ());
+		var emitter = new BGenStrongDictionaryKeysEmitter ();
+		foreach (var (_, binding) in bindingsList) {
+			// init sb and add the header
+			sb.Clear ();
+			sb.WriteHeader ();
+			var bindingContext = new BindingContext (rootBindingContext, sb, binding);
+			if (emitter.TryEmit (bindingContext, out var diagnostics)) {
+				// only add a file when we do generate code
+				var code = sb.ToCode ();
+				var namespacePath = Path.Combine (binding.Namespace.ToArray ());
+				var fileName = emitter.GetSymbolName (binding);
+				context.AddSource ($"{Path.Combine (namespacePath, fileName)}.g.cs",
+					SourceText.From (code, Encoding.UTF8));
+			} else {
+				// add to the diagnostics and continue to the next possible candidate
+				context.ReportDiagnostics (diagnostics);
+			}
+		}
+	}
+
 	/// <summary>
 	/// Collect the using statements from the named ype code changes and add them to the string builder
 	/// that will be used to generate the code. This way we ensure that we have all the namespaces needed by the
@@ -235,6 +429,12 @@ public class BindingSourceGeneratorGenerator : IIncrementalGenerator {
 		var usingDirectivesToKeep = new SortedSet<string> (binding.UsingDirectives) {
 			// add the using statements that we know we need and print them to the sb
 		};
+
+		// if there is at least one method that is async, we need to add the threading
+		// namespace.
+		if (binding.Methods.Any (m => m.IsAsync)) {
+			usingDirectivesToKeep.Add ("System.Threading.Tasks");
+		}
 
 		// add those using statements needed by the emitter
 		foreach (var ns in emitter.UsingStatements) {

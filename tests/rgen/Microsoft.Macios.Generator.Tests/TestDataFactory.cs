@@ -2,8 +2,12 @@
 // Licensed under the MIT License.
 
 #pragma warning disable APL0003
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.Macios.Generator.DataModel;
+using Microsoft.Macios.Generator.Formatters;
 using TypeInfo = Microsoft.Macios.Generator.DataModel.TypeInfo;
 
 namespace Microsoft.Macios.Generator.Tests;
@@ -540,6 +544,8 @@ static class TestDataFactory {
 			isReferenceType: true
 		) {
 			IsDelegate = true,
+			IsGenericType = parameters.Length > 0,
+			TypeArguments = [.. parameters],
 			Delegate = delegateInfo,
 			Parents = [
 				"System.MulticastDelegate",
@@ -549,7 +555,7 @@ static class TestDataFactory {
 			Interfaces = [
 				"System.ICloneable",
 				"System.Runtime.Serialization.ISerializable",
-			]
+			],
 		};
 
 	public static TypeInfo ReturnTypeForFunc (DelegateInfo? delegateInfo = null, params string [] parameters)
@@ -649,4 +655,35 @@ static class TestDataFactory {
 				"Foundation.INSObjectFactory"
 			]
 		};
+
+	public static TypeInfo ReturnTypeForNamedTuple (params KeyValuePair<string, TypeInfo> [] fields)
+	{
+		var dataMembers = string.Join (", ", fields.Select (x => $"{x.Value.GetIdentifierSyntax ()} {x.Key}"));
+		var genericMembers = string.Join (", ", fields.Select (x => $"{x.Value.GetIdentifierSyntax ()}"));
+		var tupleFields = ImmutableArray.CreateBuilder<KeyValuePair<string, string>> (fields.Length);
+		foreach (var (name, typeInfo) in fields) {
+			tupleFields.Add (new (name, typeInfo.GetIdentifierSyntax ().ToString ()));
+		}
+		var type = new TypeInfo (
+			name: $"({dataMembers})",
+			isNullable: false,
+			isBlittable: false,
+			isArray: false,
+			isReferenceType: false,
+			isStruct: true
+		) {
+			IsNamedTuple = true,
+			NamedTupleFields = tupleFields.ToImmutable (),
+			Parents = ["System.ValueType", "object"],
+			Interfaces = [
+				"System.Collections.IStructuralComparable",
+				"System.Collections.IStructuralEquatable",
+				"System.IComparable",
+				$"System.IComparable<({genericMembers})>",
+				$"System.IEquatable<({genericMembers})>",
+				"System.Runtime.CompilerServices.ITuple"
+			]
+		};
+		return type;
+	}
 }

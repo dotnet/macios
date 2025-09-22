@@ -16,8 +16,81 @@ using CoreGraphics;
 using Foundation;
 using CoreFoundation;
 using CoreMedia;
+using UniformTypeIdentifiers;
 
 namespace ScreenCaptureKit {
+
+	[Mac (26, 0), MacCatalyst (26, 0)]
+	[Native]
+	public enum SCScreenshotDisplayIntent : long {
+		Canonical,
+		Local,
+	}
+
+	[Mac (26, 0), MacCatalyst (26, 0)]
+	[Native]
+	public enum SCScreenshotDynamicRange : long {
+		Sdr,
+		Hdr,
+		SdrAndHdr,
+	}
+
+	[Mac (26, 0), MacCatalyst (26, 0)]
+	[BaseType (typeof (NSObject))]
+	interface SCScreenshotConfiguration {
+		[Export ("width")]
+		nint Width { get; set; }
+
+		[Export ("height")]
+		nint Height { get; set; }
+
+		[Export ("showsCursor")]
+		bool ShowsCursor { get; set; }
+
+		[Export ("sourceRect", ArgumentSemantic.Assign)]
+		CGRect SourceRect { get; set; }
+
+		[Export ("destinationRect", ArgumentSemantic.Assign)]
+		CGRect DestinationRect { get; set; }
+
+		[Export ("ignoreShadows")]
+		bool IgnoreShadows { get; set; }
+
+		[Export ("ignoreClipping")]
+		bool IgnoreClipping { get; set; }
+
+		[Export ("includeChildWindows")]
+		bool IncludeChildWindows { get; set; }
+
+		[Export ("displayIntent", ArgumentSemantic.Assign)]
+		SCScreenshotDisplayIntent DisplayIntent { get; set; }
+
+		[Export ("dynamicRange", ArgumentSemantic.Assign)]
+		SCScreenshotDynamicRange DynamicRange { get; set; }
+
+		[Export ("contentType", ArgumentSemantic.Assign)]
+		UTType ContentType { get; set; }
+
+		[NullAllowed, Export ("fileURL", ArgumentSemantic.Strong)]
+		NSUrl FileUrl { get; set; }
+
+		[Static]
+		[Export ("supportedContentTypes")]
+		UTType [] SupportedContentTypes { get; }
+	}
+
+	[Mac (26, 0), MacCatalyst (26, 0)]
+	[BaseType (typeof (NSObject))]
+	interface SCScreenshotOutput {
+		[NullAllowed, Export ("sdrImage", ArgumentSemantic.Strong)]
+		CGImage SdrImage { get; set; }
+
+		[NullAllowed, Export ("hdrImage", ArgumentSemantic.Strong)]
+		CGImage HdrImage { get; set; }
+
+		[NullAllowed, Export ("fileURL", ArgumentSemantic.Assign)]
+		NSUrl FileUrl { get; set; }
+	}
 
 	[NoiOS, NoTV, Mac (12, 3), MacCatalyst (18, 2)]
 	[ErrorDomain ("SCStreamErrorDomain")]
@@ -125,6 +198,8 @@ namespace ScreenCaptureKit {
 		CaptureHdrStreamCanonicalDisplay,
 		CaptureHdrScreenshotLocalDisplay,
 		CaptureHdrScreenshotCanonicalDisplay,
+		[MacCatalyst (26, 0), Mac (26, 0)]
+		CaptureHdrRecordingPreservedSdrHdr10,
 	}
 
 	[NoiOS, NoTV, Mac (12, 3), MacCatalyst (18, 2)]
@@ -643,6 +718,7 @@ namespace ScreenCaptureKit {
 	}
 
 	delegate void SCScreenshotManagerCaptureImageCallback ([NullAllowed] CGImage image, [NullAllowed] NSError error);
+	delegate void SCScreenshotManagerCaptureScreenshotCallback ([NullAllowed] SCScreenshotOutput output, [NullAllowed] NSError error);
 
 	[NoiOS, NoTV, Mac (14, 0), MacCatalyst (18, 2)]
 	[BaseType (typeof (NSObject))]
@@ -663,6 +739,18 @@ namespace ScreenCaptureKit {
 		[Export ("captureImageInRect:completionHandler:")]
 		[Async]
 		void CaptureImage (CGRect rect, [NullAllowed] SCScreenshotManagerCaptureImageCallback completionHandler);
+
+		[Async]
+		[MacCatalyst (26, 0), Mac (26, 0)]
+		[Static]
+		[Export ("captureScreenshotWithFilter:configuration:completionHandler:")]
+		void CaptureScreenshot (SCContentFilter contentFilter, SCScreenshotConfiguration config, [NullAllowed] SCScreenshotManagerCaptureScreenshotCallback completionHandler);
+
+		[Async]
+		[MacCatalyst (26, 0), Mac (26, 0)]
+		[Static]
+		[Export ("captureScreenshotWithRect:configuration:completionHandler:")]
+		void CaptureScreenshot (CGRect rect, SCScreenshotConfiguration config, [NullAllowed] SCScreenshotManagerCaptureScreenshotCallback completionHandler);
 	}
 
 	[Mac (15, 0), NoiOS, NoTV, MacCatalyst (18, 2)]

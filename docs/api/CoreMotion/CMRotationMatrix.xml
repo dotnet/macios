@@ -5,7 +5,7 @@
       <para>The rotation matrix describes the attitude of the device (see <see cref="CMAttitude" />) relative to an initial attitude.</para>
       <para>As with other attitude data, the axes are defined as follows:</para>
       <para>
-        <img href="~/CoreMotion/_images/CoreMotion.CMAttitude.Axes.png" alt="Illustration of the axes relative to device orientation" />
+        <img href="~/xml/CoreMotion/_images/CoreMotion.CMAttitude.Axes.png" alt="Illustration of the axes relative to device orientation" />
       </para>
       <para>(Note that yaw increases as the device is rotated counter-clockwise.)</para>
     </remarks>

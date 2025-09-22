@@ -31,6 +31,11 @@ namespace ObjCBindings {
 		/// marshalling the property.
 		/// </summary>
 		PlainString = 1 << 4,
+
+		/// <summary>
+		/// This value is used to skip the constructor registration in the ObjC runtime.
+		/// </summary>
+		SkipRegistration = 1 << 5,
 	}
 
 	/// <summary>
@@ -105,6 +110,26 @@ namespace ObjCBindings {
 		/// Use this flag on a method to mark that the method is a factory method.
 		/// </summary>
 		Factory = 1 << 12,
+
+		/// <summary>
+		/// Use this flag on a method to generate an async version of the method.
+		/// </summary>
+		Async = 1 << 13,
+
+		/// <summary>
+		/// Use this flag on a method to mark it as optional in a protocol definition.
+		/// </summary>
+		Optional = 1 << 14,
+
+		/// <summary>
+		/// Use this flag on a method to mark it as an event handler.
+		/// </summary>
+		Event = 1 << 15,
+
+		/// <summary>
+		/// This value is used to skip the method registration in the ObjC runtime.
+		/// </summary>
+		SkipRegistration = 1 << 15,
 
 	}
 
@@ -204,6 +229,37 @@ namespace ObjCBindings {
 		/// </summary>
 		Proxy = 1 << 14,
 
+		/// <summary>
+		/// Use this flag on a property to mark it as a weak delegate.
+		/// </summary>
+		WeakDelegate = 1 << 15,
+
+		/// <summary>
+		/// Use this flag on a method to mark it as optional in a protocol definition.
+		/// </summary>
+		Optional = 1 << 16,
+
+		/// <summary>
+		/// Use this flag on a method to mark a weak delegate property to generate the events realted
+		/// to the delegate.
+		/// </summary>
+		CreateEvents = 1 << 17,
+
+		/// <summary>
+		/// This value is used to skip the property registration in the ObjC runtime.
+		/// </summary>
+		SkipRegistration = 1 << 18,
+	}
+
+	/// <summary>
+	/// Export flag that states that the field is used as a StrongDictionary property.
+	/// </summary>
+	[Flags]
+	[Experimental ("APL0003")]
+	public enum StrongDictionaryProperty {
+		/// <summary>
+		/// Use the default values.
+		/// </summary>
+		Default = 0,
 	}
 }
-

@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
+#pragma warning disable APL0003
 
 using System;
 using System.Runtime.Versioning;
@@ -8,6 +9,10 @@ using ObjCBindings;
 
 namespace AppKit;
 
+[SupportedOSPlatform ("macos")]
+[SupportedOSPlatform ("ios")]
+[SupportedOSPlatform ("tvos")]
+[SupportedOSPlatform ("maccatalyst13.1")]
 [BindingType<Class> (Class.IsThreadSafe)]
 public partial class ThreadSafeAppKitPropertyTests {
 

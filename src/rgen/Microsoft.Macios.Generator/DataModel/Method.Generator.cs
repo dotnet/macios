@@ -5,12 +5,15 @@ using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Macios.Generator.Attributes;
 using Microsoft.Macios.Generator.Availability;
 using Microsoft.Macios.Generator.Context;
 using Microsoft.Macios.Generator.Extensions;
+using Microsoft.Macios.Generator.Formatters;
 using ObjCRuntime;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Microsoft.Macios.Generator.DataModel;
 
@@ -78,12 +81,58 @@ readonly partial struct Method {
 	/// </summary>
 	public bool IsProxy => ExportMethodData.Flags.HasFlag (ObjCBindings.Method.Proxy);
 
+	/// <summary>
+	/// True if the method was marked to be generated as an async method.
+	/// </summary>
+	public bool IsAsync => ExportMethodData.Flags.HasFlag (ObjCBindings.Method.Async);
+
+	/// <summary>
+	/// True if an async version of the method can be generated. This is true if <see cref="IsAsync"/> is true and
+	/// the method signature is compatible (returns void, and the last parameter is a completion handler delegate).
+	/// </summary>
+	public bool GenerateAsync {
+		get {
+			if (!IsAsync)
+				return false;
+			// ensure that we have the minimum requirements for the async method to be generated correctly
+			// 1. Method has to return void
+			// 2. Method has to have parameters
+			// 3. Last parameter has to be a completion handler
+			return ReturnType.IsVoid && Parameters.Length > 0 && Parameters [^1].Type.IsDelegate;
+		}
+	}
+
+	/// <summary>
+	/// True if the method is variadic.
+	/// </summary>
+	public bool IsVariadic => ExportMethodData.Flags.HasFlag (ObjCBindings.Method.IsVariadic);
+
+	/// <summary>
+	/// States if a method is optional in a protocol definition.
+	/// </summary>
+	public bool IsOptional => ExportMethodData.Flags.HasFlag (ObjCBindings.Method.Optional);
+
+	/// <summary>
+	/// True if the method is an event.
+	/// </summary>
+	public bool IsEvent => ExportMethodData.Flags.HasFlag (ObjCBindings.Method.Event);
+
+	/// <summary>
+	/// True if the method was marked to skip its registration.
+	/// </summary>
+	public bool SkipRegistration => ExportMethodData.Flags.HasFlag (ObjCBindings.Method.SkipRegistration);
+
+	/// <summary>
+	/// The location of the attribute in source code.
+	/// </summary>
+	public Location? Location { get; init; }
+
 	public Method (string type, string name, TypeInfo returnType,
 		SymbolAvailability symbolAvailability,
 		ExportData<ObjCBindings.Method> exportMethodData,
 		ImmutableArray<AttributeCodeChange> attributes,
 		ImmutableArray<SyntaxToken> modifiers,
-		ImmutableArray<Parameter> parameters)
+		ImmutableArray<Parameter> parameters) : this (StructState.Initialized)
 	{
 		Type = type;
 		Name = name;
@@ -95,12 +144,51 @@ readonly partial struct Method {
 		Parameters = parameters;
 	}
 
-	public static bool TryCreate (MethodDeclarationSyntax declaration, RootContext context,
+	/// <summary>
+	/// Tries to create a <see cref="Method"/> instance from the given <see cref="IMethodSymbol"/>.
+	/// </summary>
+	/// <param name="method">The method symbol to process.</param>
+	/// <param name="context">The root context for the generation.</param>
+	/// <param name="change">When this method returns, contains the created <see cref="Method"/> instance if the creation succeeds, or null if it fails.</param>
+	/// <returns><c>true</c> if the <see cref="Method"/> instance was created successfully; otherwise, <c>false</c>.</returns>
+	public static bool TryCreate (IMethodSymbol method, RootContext context,
 		[NotNullWhen (true)] out Method? change)
 	{
-		if (context.SemanticModel.GetDeclaredSymbol (declaration) is not IMethodSymbol method) {
-			change = null;
-			return false;
+		change = null;
+		if (method.DeclaringSyntaxReferences.FirstOrDefault ()?.GetSyntax () is MethodDeclarationSyntax methodDeclarationSyntax) {
+			return TryCreate (methodDeclarationSyntax, context, out change, method);
+		}
+		return false;
+	}
+
+	/// <summary>
+	/// Tries to create a <see cref="Method"/> instance from the given <see cref="MethodDeclarationSyntax"/>.
+	/// </summary>
+	/// <param name="declaration">The method declaration syntax to process.</param>
+	/// <param name="context">The root context for the generation.</param>
+	/// <param name="change">When this method returns, contains the created <see cref="Method"/> instance if the creation succeeds, or null if it fails.</param>
+	/// <returns><c>true</c> if the <see cref="Method"/> instance was created successfully; otherwise, <c>false</c>.</returns>
+	public static bool TryCreate (MethodDeclarationSyntax declaration, RootContext context,
+		[NotNullWhen (true)] out Method? change)
+			=> TryCreate (declaration, context, out change, null);
+
+	/// <summary>
+	/// Tries to create a <see cref="Method"/> instance from the given <see cref="MethodDeclarationSyntax"/>.
+	/// </summary>
+	/// <param name="declaration">The method declaration syntax to process.</param>
+	/// <param name="context">The root context for the generation.</param>
+	/// <param name="change">When this method returns, contains the created <see cref="Method"/> instance if the creation succeeds, or null if it fails.</param>
+	/// <param name="method">Optional symbol to avoid querying the SemanticModel if the symbol is known.</param>
+	/// <returns><c>true</c> if the <see cref="Method"/> instance was created successfully; otherwise, <c>false</c>.</returns>
+	public static bool TryCreate (MethodDeclarationSyntax declaration, RootContext context,
+		[NotNullWhen (true)] out Method? change, IMethodSymbol? method)
+	{
+		change = null;
+		if (method is null) {
+			if (ModelExtensions.GetDeclaredSymbol (context.SemanticModel, declaration) is not IMethodSymbol methodSymbol) {
+				return false;
+			}
+			method = methodSymbol;
 		}
 
 		var attributes = declaration.GetAttributeCodeChanges (context.SemanticModel);
@@ -116,13 +204,13 @@ readonly partial struct Method {
 		// DO NOT USE default if null, the reason is that it will set the ArgumentSemantics to be value 0, when
 		// none is value 1. The reason for that is that the default of an enum is 0, that was a mistake 
 		// in the old binding code.
-		var exportData = method.GetExportData<ObjCBindings.Method> ()
+		var exportData = method.GetExportData<ObjCBindings.Method> (context)
 						 ?? new (null, ArgumentSemantic.None, ObjCBindings.Method.Default);
 
 		change = new (
 			type: method.ContainingSymbol.ToDisplayString ().Trim (), // we want the full name
 			name: method.Name,
-			returnType: new TypeInfo (method.ReturnType, context.Compilation),
+			returnType: new TypeInfo (method.ReturnType, context, includeEvents: false),
 			symbolAvailability: method.GetSupportedPlatforms (),
 			exportMethodData: exportData,
 			attributes: attributes,
@@ -130,8 +218,138 @@ readonly partial struct Method {
 			parameters: parametersBucket.ToImmutableArray ()) {
 			BindAs = method.GetBindFromData (),
 			ForcedType = method.GetForceTypeData (),
+			Location = declaration.GetLocation (),
 		};
 
 		return true;
+	}
+
+	/// <summary>
+	/// Converts the current method to its asynchronous version if it's marked with the `Async` flag.
+	/// </summary>
+	/// <returns>
+	/// A new <see cref="Method"/> instance representing the asynchronous version of the method,
+	/// or the current instance if the method is not marked as async.
+	/// </returns>
+	public Method ToAsync ()
+	{
+		if (!IsAsync)
+			return this;
+
+		// calculating the return type depends on the data present in the export data
+		var resultType = Parameters [^1].Type.ToTask ();
+
+		// if the user provided a result type, we need to update the calculated result type to a task
+		if (!ExportMethodData.ResultType.IsNullOrDefault) {
+			resultType = resultType.ToTask (ExportMethodData.ResultType.GetIdentifierSyntax ().ToString ());
+		}
+
+		if (ExportMethodData.ResultTypeName is not null) {
+			resultType = resultType.ToTask (ExportMethodData.ResultTypeName);
+		}
+
+		return this with {
+			// update name, if user did not specify a name, use the default one
+			Name = ExportMethodData.MethodName ?? $"{Name}Async",
+			// remove last parameter which is the completion handler
+			Parameters = [.. Parameters.SkipLast (1)],
+			// update the return type to be a task
+			ReturnType = resultType,
+			// remove the unsafe modifier if present since our async methods are not unsafe
+			Modifiers = [
+				.. Modifiers.Where (m => !m.IsKind (SyntaxKind.UnsafeKeyword) && !m.IsKind (SyntaxKind.PartialKeyword)),
+			]
+		};
+	}
+
+	/// <summary>
+	/// Converts the current method into a static helper method for a protocol.
+	/// </summary>
+	/// <param name="protocol">The protocol for which the helper method is being created.</param>
+	/// <returns>A new <see cref="Method"/> instance representing the protocol helper method.</returns>
+	public Method ToProtocolMethod (TypeInfo protocol)
+	{
+		// we need to create the same method but update the name and insert a 'this' parameter and use the correct tokens
+		var thisParameter = new Parameter (0, protocol, "self") { IsThis = true };
+		var newParameters = ImmutableArray.CreateBuilder<Parameter> (Parameters.Length + 1);
+		newParameters.Add (thisParameter);
+		// add the rest of the parameters BUT update the position of each parameter
+		for (var index = 0; index < Parameters.Length; index++) {
+			var parameter = Parameters [index];
+			// update the position of the parameter to be one more than the current index
+			newParameters.Add (parameter.WithPosition (index + 1));
+		}
+
+		return this with {
+			Name = $"_{Name}",
+			Parameters = newParameters.ToImmutableArray (),
+			Modifiers = [
+				Token (SyntaxKind.InternalKeyword).WithTrailingTrivia (Space),
+				Token (SyntaxKind.StaticKeyword).WithTrailingTrivia (Space),
+			],
+		};
+	}
+
+	/// <summary>
+	/// Converts the current method into a method suitable for a protocol wrapper class.
+	/// This involves removing modifiers like 'unsafe', 'partial', and 'virtual'.
+	/// </summary>
+	/// <returns>A new <see cref="Method"/> instance with updated modifiers for the protocol wrapper.</returns>
+	public Method ToProtocolWrapperMethod ()
+	{
+		// contains the exact same data but the modifiers are updated to remove virtual and partial if they are present
+		return this with {
+			Modifiers = [
+				.. Modifiers.Where (m =>
+					!m.IsKind (SyntaxKind.PartialKeyword) &&
+					!m.IsKind (SyntaxKind.VirtualKeyword)),
+			]
+		};
+	}
+
+	/// <summary>
+	/// Converts the current factory method into a constructor for a given target class.
+	/// </summary>
+	/// <param name="targetClass">The type information of the class for which the constructor is being created.</param>
+	/// <returns>
+	/// A new <see cref="Constructor"/> instance if the method is a factory method;
+	/// otherwise, an uninitialized <see cref="Constructor"/> instance.
+	/// </returns>
+	public Constructor ToConstructor (string targetClass)
+	{
+		// if the method is not a factory, we cannot convert it to a constructor so we will return the default value
+		// which is an uninitialized instance
+		if (!IsFactory)
+			return Constructor.Default;
+
+		// we need to create a constructor with  the same modifiers, parameters and the availability of the method 
+		// since there is no guarantee that the target class has the same availability as the method
+		return new (
+			type: targetClass,
+			exportData: IsThreadSafe
+				? new (ExportMethodData.Selector) { Flags = ObjCBindings.Constructor.IsThreadSafe }
+				: new (ExportMethodData.Selector),
+			symbolAvailability: SymbolAvailability,
+			attributes: [], // we do not really care about the attributes on the constructor that is going to be inlined
+			modifiers: modifiers,
+			parameters: Parameters
+		) {
+			IsProtocolConstructor = true,
+			ProtocolType = Type
+		};
+	}
+
+	/// <summary>
+	/// Creates a new method instance with the specified modifiers.
+	/// </summary>
+	/// <param name="newModifiers">The new modifiers for the method.</param>
+	/// <returns>A new <see cref="Method"/> instance with the specified modifiers.</returns>
+	public Method WithModifiers (params SyntaxKind [] newModifiers)
+	{
+		return this with {
+			Modifiers = [
+				.. newModifiers.Select (m => Token (m).WithTrailingTrivia (Space))
+			]
+		};
 	}
 }

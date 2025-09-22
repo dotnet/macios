@@ -224,3 +224,61 @@ Describe 'Convert-Markdown' {
         }
     }
 }
+
+Describe 'IsCurrentCommitLatestInPR' {
+    Context 'when in PR context' {
+        BeforeAll {
+            $Script:envVariables = @{
+                "GITHUB_TOKEN" = "test-token";
+            }
+
+            $Script:envVariables.GetEnumerator() | ForEach-Object { 
+                $key = $_.Key
+                Set-Item -Path "Env:$key" -Value $_.Value
+            }
+        }
+
+        It 'returns true when current commit matches head commit' {
+            Mock Invoke-Request {
+                return @{
+                    "head" = @{
+                        "sha" = "abc123def456"
+                    }
+                }
+            } -ModuleName 'GitHub'
+
+            $githubComments = [GitHubComments]::new("testorg", "testrepo", "test-token", "abc123def456")
+            $githubComments.PRIds = @("123")
+            
+            $result = $githubComments.IsCurrentCommitLatestInPR()
+            
+            $result | Should -Be $true
+        }
+
+        It 'returns false when current commit does not match head commit' {
+            Mock Invoke-Request {
+                return @{
+                    "head" = @{
+                        "sha" = "different123hash"
+                    }
+                }
+            } -ModuleName 'GitHub'
+
+            $githubComments = [GitHubComments]::new("testorg", "testrepo", "test-token", "abc123def456")
+            $githubComments.PRIds = @("123")
+            
+            $result = $githubComments.IsCurrentCommitLatestInPR()
+            
+            $result | Should -Be $false
+        }
+
+        It 'returns true when not in PR context' {
+            $githubComments = [GitHubComments]::new("testorg", "testrepo", "test-token", "abc123def456")
+            $githubComments.PRIds = @()  # Empty array means not in PR
+            
+            $result = $githubComments.IsCurrentCommitLatestInPR()
+            
+            $result | Should -Be $true
+        }
+    }
+}

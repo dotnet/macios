@@ -56,6 +56,10 @@ namespace Introspection {
 				if (TestRuntime.IsSimulator)
 					return !TestRuntime.CheckXcodeVersion (15, 0); // doesn't seem to be available in the iOS simulator until iOS 17+
 				break;
+			case "SensorKit": // SensorKit doesn't exist on iPads
+				if (TestRuntime.IsDevice && TestRuntime.IsiPad)
+					return true;
+				break;
 			}
 
 			switch (type.FullName) {
@@ -73,6 +77,18 @@ namespace Introspection {
 			// These concrete (wrapper) subclasses do not implement all of those optional members, but we
 			// still need to provide a binding for them, so that user subclasses can implement those members.
 			switch (type.Name) {
+			case "CALayer":
+				switch (selectorName) {
+				case "layerWithRemoteClientId:": // defined in a category
+					return true;
+				}
+				break;
+			case "AVCaptureDevice":
+				switch (selectorName) {
+				case "cinematicVideoCaptureSceneMonitoringStatuses": // works in Xcode
+					return true;
+				}
+				break;
 			case "AVAggregateAssetDownloadTask":
 				switch (selectorName) {
 				case "URLAsset": // added in Xcode 9 and it is present.
@@ -416,6 +432,12 @@ namespace Introspection {
 					return true;
 				}
 				break;
+			case "AVDeviceCapture":
+				switch (selectorName) {
+				case "cinematicVideoCaptureSceneMonitoringStatuses":
+					return true; // works in an Xcode project
+				}
+				break;
 			case "MTLBufferLayoutDescriptor": // We do have unit tests under monotouch-tests for this properties
 				switch (selectorName) {
 				case "stepFunction":
@@ -517,6 +539,11 @@ namespace Introspection {
 				case "maxVertexBufferBindCount":
 				case "setMaxVertexBufferBindCount:":
 					return true;
+				case "supportColorAttachmentMapping":
+				case "setSupportColorAttachmentMapping:":
+					if (TestRuntime.IsSimulator)
+						return true;
+					break;
 				}
 				break;
 			case "MTLPipelineBufferDescriptor":
@@ -1118,6 +1145,166 @@ namespace Introspection {
 					return !TestRuntime.CheckXcodeVersion (15, 0); // it's not in iOS 16, but maybe iOS 17?
 				}
 				break;
+			case "CPListImageRowItem":
+				switch (selectorName) {
+				case "imageTitles":
+					return TestRuntime.CheckXcodeVersion (26, 0); // https://github.com/rolfbjarne/apple-feedback/tree/main/FB18122430
+				}
+				break;
+			case "PhaseSoundEvent":
+				switch (selectorName) {
+				case "startAndReturnError:": // incorrect binding
+					return TestRuntime.CheckXcodeVersion (26, 0);
+				}
+				break;
+			case "NSDate":
+				switch (selectorName) {
+				case "dateWithSRAbsoluteTime:": // This is from a category defined in SensorKit, and SensorKit doesn't exist on iPads
+				case "initWithSRAbsoluteTime:": // This is from a category defined in SensorKit, and SensorKit doesn't exist on iPads
+				case "srAbsoluteTime": // This is from a category defined in SensorKit, and SensorKit doesn't exist on iPads
+					if (TestRuntime.IsDevice && TestRuntime.IsiPad)
+						return true;
+					break;
+				}
+				break;
+			case "MTLRenderPassDescriptor":
+				switch (selectorName) {
+				case "supportColorAttachmentMapping":
+				case "setSupportColorAttachmentMapping:":
+				case "visibilityResultType":
+				case "setVisibilityResultType:":
+					if (TestRuntime.IsSimulator)
+						return true;
+					break;
+				}
+				break;
+			case "MTLArrayType":
+				switch (selectorName) {
+				case "elementTensorReferenceType":
+					if (TestRuntime.IsSimulator)
+						return true;
+					break;
+				}
+				break;
+			case "MTLCompileOptions":
+				switch (selectorName) {
+				case "requiredThreadsPerThreadgroup":
+				case "setRequiredThreadsPerThreadgroup:":
+					if (TestRuntime.IsSimulator)
+						return true;
+					break;
+				}
+				break;
+			case "MTLComputePipelineDescriptor":
+				switch (selectorName) {
+				case "requiredThreadsPerThreadgroup":
+				case "setRequiredThreadsPerThreadgroup:":
+					if (TestRuntime.IsSimulator)
+						return true;
+					break;
+				}
+				break;
+			case "MTLFunctionReflection":
+				switch (selectorName) {
+				case "bindings":
+					return true;
+				}
+				break;
+			case "MTLMeshRenderPipelineDescriptor":
+				switch (selectorName) {
+				case "requiredThreadsPerMeshThreadgroup":
+				case "setRequiredThreadsPerMeshThreadgroup:":
+				case "requiredThreadsPerObjectThreadgroup":
+				case "setRequiredThreadsPerObjectThreadgroup:":
+					if (TestRuntime.IsSimulator)
+						return true;
+					break;
+				}
+				break;
+			case "MTLStructMember":
+				switch (selectorName) {
+				case "tensorReferenceType":
+					if (TestRuntime.IsSimulator)
+						return true;
+					break;
+				}
+				break;
+			case "MTLTextureDescriptor":
+				switch (selectorName) {
+				case "placementSparsePageSize":
+				case "setPlacementSparsePageSize:":
+					if (TestRuntime.IsSimulator)
+						return true;
+					break;
+				}
+				break;
+			case "VTLowLatencyFrameInterpolationConfiguration":
+				switch (selectorName) {
+				case "isSupported":
+					if (TestRuntime.IsSimulator)
+						return true;
+					break;
+				}
+				break;
+			case "VTFrameRateConversionConfiguration":
+				switch (selectorName) {
+				case "defaultRevision":
+				case "isSupported":
+				case "supportedRevisions":
+					if (TestRuntime.IsSimulator)
+						return true;
+					break;
+				}
+				break;
+			case "VTLowLatencySuperResolutionScalerConfiguration":
+				switch (selectorName) {
+				case "supportedScaleFactorsForFrameWidth:frameHeight:":
+				case "isSupported":
+					if (TestRuntime.IsSimulator)
+						return true;
+					break;
+				}
+				break;
+			case "VTMotionBlurConfiguration":
+				switch (selectorName) {
+				case "defaultRevision":
+				case "isSupported":
+				case "supportedRevisions":
+					if (TestRuntime.IsSimulator)
+						return true;
+					break;
+				}
+				break;
+			case "VTOpticalFlowConfiguration":
+				switch (selectorName) {
+				case "defaultRevision":
+				case "isSupported":
+				case "supportedRevisions":
+					if (TestRuntime.IsSimulator)
+						return true;
+					break;
+				}
+				break;
+			case "VTSuperResolutionScalerConfiguration":
+				switch (selectorName) {
+				case "defaultRevision":
+				case "isSupported":
+				case "supportedRevisions":
+				case "supportedScaleFactors":
+					if (TestRuntime.IsSimulator)
+						return true;
+					break;
+				}
+				break;
+			case "VTTemporalNoiseFilterConfiguration":
+				switch (selectorName) {
+				case "isSupported":
+				case "supportedSourcePixelFormats":
+					if (TestRuntime.IsSimulator)
+						return true;
+					break;
+				}
+				break;
 			}
 
 			// old binding mistake
@@ -1245,12 +1432,21 @@ namespace Introspection {
 			}
 		}
 
-		protected virtual IntPtr GetClassForType (Type type)
+		protected virtual bool TryGetClassForType (Type type, out IntPtr cls)
 		{
+			if (type.IsGenericType) {
+				cls = Class.GetHandle (type);
+				return true;
+			}
+
 			var fi = type.GetField ("class_ptr", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static);
-			if (fi is null)
-				return IntPtr.Zero; // e.g. *Delegate
-			return (NativeHandle) fi.GetValue (null);
+			if (fi is null) {
+				cls = IntPtr.Zero; // e.g. *Delegate
+				return false;
+			}
+
+			cls = (NativeHandle) fi.GetValue (null);
+			return true;
 		}
 
 		[Test]
@@ -1267,7 +1463,8 @@ namespace Introspection {
 				if (Skip (t) || SkipDueToAttribute (t))
 					continue;
 
-				IntPtr class_ptr = GetClassForType (t);
+				if (!TryGetClassForType (t, out var class_ptr))
+					continue;
 
 				if (class_ptr == IntPtr.Zero)
 					continue;
@@ -1365,10 +1562,8 @@ namespace Introspection {
 				if (Skip (t) || SkipDueToAttribute (t))
 					continue;
 
-				FieldInfo fi = t.GetField ("class_ptr", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static);
-				if (fi is null)
+				if (!TryGetClassForType (t, out var class_ptr))
 					continue; // e.g. *Delegate
-				IntPtr class_ptr = (IntPtr) (NativeHandle) fi.GetValue (null);
 
 				foreach (var m in t.GetMethods (BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static)) {
 					if (SkipDueToAttribute (m))

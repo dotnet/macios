@@ -91,7 +91,8 @@ namespace OpenGL {
 			CGLErrorCode ret;
 			unsafe {
 				fixed (CGLPixelFormatAttribute* marshalAttribsPtr = marshalAttribs) {
-					ret = CGLChoosePixelFormat (marshalAttribsPtr, &pixelFormatOut, (int*) Unsafe.AsPointer<int> (ref npix));
+					fixed (int* npixPtr = &npix)
+						ret = CGLChoosePixelFormat (marshalAttribsPtr, &pixelFormatOut, npixPtr);
 				}
 			}
 

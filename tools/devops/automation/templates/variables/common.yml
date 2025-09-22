@@ -69,3 +69,9 @@ variables:
 
 - name: DotNetPreviewSdkVersion
   value: 10.0
+
+- name: minimumMacOSVersion
+  value: 15.6
+
+- name: xcodeChannel
+  value: Stable

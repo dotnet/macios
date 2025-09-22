@@ -158,6 +158,7 @@ public class Example {
 			yield return [exampleParameter, Nomenclator.VariableType.NSArray, $"nsa_{exampleParameter.Name}"];
 			yield return [exampleParameter, Nomenclator.VariableType.NSString, $"ns{exampleParameter.Name}"];
 			yield return [exampleParameter, Nomenclator.VariableType.NSStringStruct, $"_s{exampleParameter.Name}"];
+			yield return [exampleParameter, Nomenclator.VariableType.NullableBlock, $"block_{exampleParameter.Name}"];
 			yield return [exampleParameter, Nomenclator.VariableType.BindFrom, $"nsb_{exampleParameter.Name}"];
 		}
 
@@ -197,5 +198,33 @@ public class Example {
 	[ClassData (typeof (TestDataGetNameForTempTrampolineVariable))]
 	void GetNameForTempTrampolineVariable (DelegateParameter parameter, string expectedName)
 		=> Assert.Equal (expectedName, Nomenclator.GetNameForTempTrampolineVariable (parameter));
-}
 
+	[Theory]
+	[InlineData ("MyProperty", true, "__mt_MyProperty_var_static")]
+	[InlineData ("AnotherProperty", false, "__mt_AnotherProperty_var")]
+	public void GetPropertyBackingFieldNameTests (string propertyName, bool isStatic, string expectedName)
+		=> Assert.Equal (expectedName, Nomenclator.GetPropertyBackingFieldName (propertyName, isStatic));
+
+	[Theory]
+	[InlineData ("result", "_cbresult")]
+	[InlineData ("error", "_cberror")]
+	public void GetTaskCallbackParameterNameTests (string parameterName, string expectedName)
+		=> Assert.Equal (expectedName, Nomenclator.GetTaskCallbackParameterName (parameterName));
+
+	[Theory]
+	[InlineData ("MyProtocol", "MyProtocolWrapper")]
+	[InlineData ("My.Nested.Protocol", "My_Nested_ProtocolWrapper")]
+	public void GetProtocolWrapperNameTests (string protocolName, string expectedName)
+		=> Assert.Equal (expectedName, Nomenclator.GetProtocolWrapperName (protocolName));
+
+	[Theory]
+	[InlineData ("MyDelegate", "_MyDelegate")]
+	[InlineData ("IMyDelegate", "_MyDelegate")]
+	[InlineData ("AnotherDelegate", "_AnotherDelegate")]
+	[InlineData ("IAnotherDelegate", "_AnotherDelegate")]
+	public void GetInternalDelegateForEventNameTests (string delegateName, string expectedName)
+	{
+		var typeInfo = ReturnTypeForDelegate (delegateName);
+		Assert.Equal (expectedName, Nomenclator.GetInternalDelegateForEventName (typeInfo));
+	}
+}

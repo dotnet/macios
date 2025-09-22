@@ -492,7 +492,7 @@ namespace AddressBook {
 	///         values.
 	///       </para>
 	///     </remarks>
-	///     <altmember cref="AddressBook.ABPerson.GetInstantMessages" />
+	///     <altmember cref="AddressBook.ABPerson.GetInstantMessageServices" />
 	///     <altmember cref="AddressBook.ABPerson.SetInstantMessages(AddressBook.ABMultiValue{Foundation.NSDictionary})" />
 	[SupportedOSPlatform ("ios")]
 	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
@@ -1561,7 +1561,6 @@ namespace AddressBook {
 			GC.KeepAlive (value);
 		}
 
-		[Advice ("Use GetInstantMessageServices.")]
 		ABMultiValue<NSDictionary>? GetInstantMessages ()
 		{
 			return CreateDictionaryMultiValue (CopyValue (ABPersonPropertyId.InstantMessage));
@@ -1576,16 +1575,16 @@ namespace AddressBook {
 		}
 
 		// Obsolete
+		/// <summary>
+		///   Sets the <see cref="AddressBook.ABPerson" />'s new instant messaging services.
+		/// </summary>
 		/// <param name="value">
-		///           A <see cref="AddressBook.ABMultiValue{T}" /> of <see cref="Foundation.NSDictionary" />
-		///           containing the <see cref="AddressBook.ABPerson" />'s new instant messaging services.
-		///         </param>
-		///         <summary>
-		///           Sets the <see cref="AddressBook.ABPerson" />'s new instant messaging services.
-		///         </summary>
-		///         <remarks>
-		///         </remarks>
-		///         <altmember cref="AddressBook.ABPerson.GetInstantMessages" />
+		///   A <see cref="AddressBook.ABMultiValue{T}" /> of <see cref="Foundation.NSDictionary" />
+		///   containing the <see cref="AddressBook.ABPerson" />'s new instant messaging services.
+		/// </param>
+		/// <remarks>
+		/// </remarks>
+		/// <altmember cref="AddressBook.ABPerson.GetInstantMessageServices" />
 		public void SetInstantMessages (ABMultiValue<NSDictionary>? value)
 		{
 			SetValue (ABPersonPropertyId.InstantMessage, value.GetHandle ());

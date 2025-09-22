@@ -156,7 +156,8 @@ namespace Security {
 		unsafe static IntPtr SecAccessControlCreateWithFlags (IntPtr allocator, /* CFTypeRef */ IntPtr protection, /* SecAccessControlCreateFlags */ nint flags, out IntPtr error)
 		{
 			error = default;
-			return SecAccessControlCreateWithFlags (allocator, protection, flags, (IntPtr*) Unsafe.AsPointer<IntPtr> (ref error));
+			fixed (IntPtr* errorPtr = &error)
+				return SecAccessControlCreateWithFlags (allocator, protection, flags, errorPtr);
 		}
 #endif
 	}

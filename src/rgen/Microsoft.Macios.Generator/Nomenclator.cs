@@ -26,6 +26,7 @@ static class Nomenclator {
 		NSArray,
 		NSString,
 		NSStringStruct,
+		NullableBlock,
 		PrimitivePointer,
 		StringPointer,
 		BindFrom,
@@ -112,6 +113,16 @@ static class Nomenclator {
 	}
 
 	/// <summary>
+	/// Return the name of the trampoline class to be used for the given type info.
+	/// This is a convenience overload for <see cref="GetTrampolineClassName(string, TrampolineClassType)"/>.
+	/// </summary>
+	/// <param name="typeInfo">The type info for which to get the trampoline class name.</param>
+	/// <param name="trampolineClassType">The type of class to be generated.</param>
+	/// <returns>The name to be used by the generated class.</returns>
+	public static string GetTrampolineClassName (in TypeInfo typeInfo, TrampolineClassType trampolineClassType)
+		=> GetTrampolineClassName (GetTrampolineName (typeInfo), trampolineClassType);
+
+	/// <summary>
 	/// Returns the name of the aux variable that would have needed for the given parameter. Use the
 	/// variable type to name it.
 	/// </summary>
@@ -127,6 +138,7 @@ static class Nomenclator {
 			VariableType.NSArray => $"nsa_{cleanedName}",
 			VariableType.NSString => $"ns{cleanedName}",
 			VariableType.NSStringStruct => $"_s{cleanedName}",
+			VariableType.NullableBlock => $"block_{cleanedName}",
 			VariableType.PrimitivePointer => $"converted_{cleanedName}",
 			VariableType.StringPointer => $"_p{cleanedName}",
 			VariableType.BindFrom => $"nsb_{cleanedName}",
@@ -162,6 +174,12 @@ static class Nomenclator {
 	/// </summary>
 	/// <returns>The name of the variable used to store delegates in trampolines.</returns>
 	public static string GetTrampolineDelegateVariableName () => "del";
+
+	/// <summary>
+	/// Returns the name of the variable used to store the native invoker in trampolines.
+	/// </summary>
+	/// <returns>The name of the native invoker variable.</returns>
+	public static string GetNativeInvokerVariableName () => "invoker";
 
 	/// <summary>
 	/// Return the name of the trampoline block parameter. This is the name of the parameter that will be containing the
@@ -201,4 +219,71 @@ static class Nomenclator {
 	/// </summary>
 	/// <returns>The method name to be used.</returns>
 	public static string GetTrampolineDelegatePointerVariableName () => "trampoline";
+
+	/// <summary>
+	/// Returns the name used for the block literal type.
+	/// </summary>
+	public static string GetBlockLiteralName () => "BlockLiteral";
+
+	/// <summary>
+	/// Generates the name for the backing field of a property.
+	/// </summary>
+	/// <param name="propertyName">The name of the property.</param>
+	/// <param name="isStatic">A value indicating whether the property is static.</param>
+	/// <returns>The name of the backing field for the property.</returns>
+	public static string GetPropertyBackingFieldName (string propertyName, bool isStatic)
+		=> $"__mt_{propertyName}_var{(isStatic ? "_static" : "")}";
+
+	/// <summary>
+	/// Generates the name for a parameter in a task-based async method's callback.
+	/// </summary>
+	/// <param name="parameterName">The original name of the parameter.</param>
+	/// <returns>The name for the callback parameter.</returns>
+	public static string GetTaskCallbackParameterName (string parameterName)
+		=> $"_cb{parameterName}";
+
+	/// <summary>
+	/// Gets the name for the TaskCompletionSource variable used in async methods.
+	/// </summary>
+	/// <returns>The name of the TaskCompletionSource variable.</returns>
+	public static string GetTaskCompletionSourceName () => "_tcs";
+
+	/// <summary>
+	/// Generates the name for a protocol wrapper class.
+	/// The wrapper name is created by appending 'Wrapper' to the protocol name,
+	/// with dots replaced by underscores to ensure valid identifier names for nested classes.
+	/// </summary>
+	/// <param name="protocolName">The name of the protocol.</param>
+	/// <returns>The name of the protocol wrapper class.</returns>
+	public static string GetProtocolWrapperName (string protocolName)
+	{
+		// we will use the name of the protocol with a 'Wrapper' suffix
+		// we will replace any . with _ to ensure that the name is valid when working with nested classes.
+		return $"{protocolName.Replace ('.', '_')}Wrapper";
+	}
+
+	/// <summary>
+	/// Generates a unique registration name for a protocol's model class.
+	/// </summary>
+	/// <param name="ns">The namespace of the model class.</param>
+	/// <param name="modelName">The name of the model class.</param>
+	/// <returns>A unique registration name for the model class.</returns>
+	public static string GetProtocolModelRegistrationName (ImmutableArray<string> ns, string modelName)
+	{
+		var nsString = string.Join ("_", ns);
+		return $"{nsString}_{modelName}";
+	}
+
+	/// <summary>
+	/// Generates the name for the internal delegate of an event.
+	/// </summary>
+	/// <param name="typeInfo">The type information of the delegate.</param>
+	/// <returns>The name for the internal event delegate.</returns>
+	public static string GetInternalDelegateForEventName (TypeInfo typeInfo)
+	{
+		if (typeInfo.Name [0] == 'I')
+			// if the type name starts with 'I', we will remove it to avoid confusion with interfaces
+			return $"_{typeInfo.Name [1..]}";
+		return $"_{typeInfo.Name}";
+	}
 }

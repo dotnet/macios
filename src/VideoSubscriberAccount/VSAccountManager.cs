@@ -18,10 +18,9 @@ using Foundation;
 namespace VideoSubscriberAccount {
 	public partial class VSAccountManager {
 
-		/// <param name="accessOptions">If not empty, may contain the key <see cref="VideoSubscriberAccount.VSCheckAccessOptionKeys" />.</param>
-		///         <param name="completionHandler">Called by the system with the results of the permission check.</param>
-		///         <summary>Checks whether the user has provided permission for the app to access their subscription information.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Checks whether the user has provided permission for the app to access their subscription information.</summary>
+		/// <param name="accessOptions">If not empty, may specify whether the user should be asked for access permission.</param>
+		/// <param name="completionHandler">Called by the system with the results of the permission check.</param>
 		public void CheckAccessStatus (VSAccountManagerAccessOptions accessOptions, Action<VSAccountAccessStatus, NSError> completionHandler)
 		{
 			if (accessOptions is null)
@@ -32,10 +31,9 @@ namespace VideoSubscriberAccount {
 			CheckAccessStatus (accessOptions.Dictionary, completionHandler);
 		}
 
+		/// <summary>Asynchronously checks whether the user has provided permission for the app to access their subscription information.</summary>
 		/// <param name="accessOptions">To be added.</param>
-		///         <summary>Asynchronously checks whether the user has provided permission for the app to access their subscription information.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <returns>To be added.</returns>
 		public Task<VSAccountAccessStatus> CheckAccessStatusAsync (VSAccountManagerAccessOptions accessOptions)
 		{
 			if (accessOptions is null)

@@ -19,7 +19,31 @@ namespace Microsoft.Macios.Generator.DataModel;
 [StructLayout (LayoutKind.Auto)]
 readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 
-	public static TypeInfo Void = new ("void", SpecialType.System_Void) { Parents = ["System.ValueType", "object"], };
+	/// <summary>
+	/// Represents the `void` type.
+	/// </summary>
+	public static TypeInfo Void = new ("System.void", SpecialType.System_Void) { Parents = ["System.ValueType", "object"], };
+
+	/// <summary>
+	/// Represents a `System.NativeHandle` type.
+	/// </summary>
+	public static TypeInfo NativeHandle = new ("System.NativeHandle", SpecialType.System_IntPtr) { Parents = ["System.ValueType", "object"], };
+
+	/// <summary>
+	/// The initialization state of the struct.
+	/// </summary>
+	StructState State { get; init; } = StructState.Default;
+
+	/// <summary>
+	/// Gets the default, uninitialized instance of <see cref="TypeInfo"/>.
+	/// </summary>
+	public static TypeInfo Default { get; } =
+		new (string.Empty, SpecialType.None) { State = StructState.Default };
+
+	/// <summary>
+	/// Gets a value indicating whether the instance is the default, uninitialized instance.
+	/// </summary>
+	public bool IsNullOrDefault => State == StructState.Default;
 
 	/// <summary>
 	/// The fully qualified name of the type.
@@ -122,6 +146,16 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 	public bool IsWrapped { get; init; }
 
 	/// <summary>
+	/// True if the type represents a Task.
+	/// </summary>
+	public bool IsTask { get; init; }
+
+	/// <summary>
+	/// True if the type represents a strong dictionary.
+	/// </summary>
+	public bool IsStrongDictionary { get; init; }
+
+	/// <summary>
 	/// Returns, if the type is an array, if its elements are a wrapped object from the objc world.
 	/// </summary>
 	public bool ArrayElementTypeIsWrapped { get; init; }
@@ -130,6 +164,16 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 	/// Returns, if the type is an array, if its elements implement the INativeObject interface.
 	/// </summary>
 	public bool ArrayElementIsINativeObject { get; init; }
+
+	/// <summary>
+	/// If the type is an array of enums, it returns the special type of the underlying enum type.
+	/// </summary>
+	public SpecialType? ArrayElementEnumUnderlyingType { get; init; }
+
+	/// <summary>
+	/// Returns true if the type is an array of enums.
+	/// </summary>
+	public bool ArrayElementTypeIsEnum => ArrayElementEnumUnderlyingType is not null;
 
 	readonly bool isNSObject = false;
 
@@ -161,6 +205,16 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		init => isDictionaryContainer = value;
 	}
 
+	readonly bool isView = false;
+
+	/// <summary>
+	/// True if the type inherits from the UIView class.
+	/// </summary>
+	public bool IsView {
+		get => isView;
+		init => isView = value;
+	}
+
 	/// <summary>
 	/// True if the type represents a delegate.
 	/// </summary>
@@ -187,6 +241,17 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 	/// </summary>
 	public bool IsProtocol { get; init; }
 
+	/// <summary>
+	/// True if the type represents a named tuple.
+	/// </summary>
+	public bool IsNamedTuple { get; init; }
+
+	/// <summary>
+	/// Array of named tuple field names and their types. We use an array of key-value pairs instead of a dictionary
+	/// because we care about the order in which the values were added.
+	/// </summary>
+	public ImmutableArray<KeyValuePair<string, string>> NamedTupleFields { get; init; } = [];
+
 	readonly ImmutableArray<string> parents = [];
 	/// <summary>
 	/// Array of the parent types of the type.
@@ -206,13 +271,17 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		init => interfaces = value;
 	}
 
-
 	/// <summary>
 	/// The type arguments of the generic type.
 	/// </summary>
 	public ImmutableArray<string> TypeArguments { get; init; } = [];
 
-	internal TypeInfo (string name, SpecialType specialType)
+	internal TypeInfo (StructState state)
+	{
+		State = state;
+	}
+
+	internal TypeInfo (string name, SpecialType specialType) : this (StructState.Initialized)
 	{
 		FullyQualifiedName = name;
 		SpecialType = specialType;
@@ -304,7 +373,7 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		return components.ToImmutableArray ();
 	}
 
-	internal TypeInfo (ITypeSymbol symbol)
+	internal TypeInfo (ITypeSymbol symbol) : this (StructState.Initialized)
 	{
 		// general case, get the name and namespace. If we are dealing with a generic type or an array type
 		// the name will be later overwritten with the generic name or the array name
@@ -321,12 +390,14 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		IsNativeIntegerType = symbol.IsNativeIntegerType;
 		IsNativeEnum = symbol.HasAttribute (AttributesNames.NativeAttribute);
 		IsProtocol = symbol.HasAttribute (AttributesNames.ProtocolAttribute);
+		IsStrongDictionary = symbol.HasAttribute (AttributesNames.StrongDictionaryAttribute);
 
 		// data that we can get from the symbol without being INamedType
 		symbol.GetInheritance (
 			isNSObject: out isNSObject,
 			isNativeObject: out isINativeObject,
 			isDictionaryContainer: out isDictionaryContainer,
+			isView: out isView,
 			parents: out parents,
 			interfaces: out interfaces);
 
@@ -337,6 +408,7 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 			FullyQualifiedName = arraySymbol.ElementType.ToDisplayString ();
 			IsArray = true;
 			ArrayElementType = arraySymbol.ElementType.SpecialType;
+			ArrayElementEnumUnderlyingType = arraySymbol.ElementType is INamedTypeSymbol enumType ? enumType.EnumUnderlyingType?.SpecialType : null;
 			ArrayElementTypeIsWrapped = arraySymbol.ElementType.IsWrapped ();
 			ArrayElementIsINativeObject = arraySymbol.ElementType.IsINativeObject ();
 		}
@@ -347,16 +419,29 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		// store the enum special type, useful when generate code that needs to cast
 		EnumUnderlyingType = namedTypeSymbol?.EnumUnderlyingType?.SpecialType;
 		if (namedTypeSymbol is not null) {
-			IsGenericType = namedTypeSymbol.IsGenericType;
-			var typeArgumentsBucket = ImmutableArray.CreateBuilder<string> (namedTypeSymbol.TypeArguments.Length);
-			foreach (var typeArgument in namedTypeSymbol.TypeArguments) {
-				// rather than use the display name, which could be a generic name, we will create a struct for the 
-				// type and use our type formater
-				var info = new TypeInfo (typeArgument);
-				var syntax = info.GetIdentifierSyntax ();
-				typeArgumentsBucket.Add (syntax.ToString ());
+			// if we are dealing with a tuple type, we will set the named tuple fields otherwise we try to retrieve the 
+			// generic type arguments
+			if (!namedTypeSymbol.TupleElements.IsDefaultOrEmpty) {
+				IsNamedTuple = true;
+				var namedTupleFieldsBucket = ImmutableArray.CreateBuilder<KeyValuePair<string, string>> (namedTypeSymbol.TupleElements.Length);
+				foreach (var field in namedTypeSymbol.TupleElements) {
+					var currentType = new TypeInfo (field.Type);
+					namedTupleFieldsBucket.Add (new (field.Name, currentType.GetIdentifierSyntax ().ToString ()));
+				}
+				NamedTupleFields = namedTupleFieldsBucket.ToImmutable ();
+			} else {
+				IsGenericType = namedTypeSymbol.IsGenericType;
+				var typeArgumentsBucket = ImmutableArray.CreateBuilder<string> (namedTypeSymbol.TypeArguments.Length);
+				foreach (var typeArgument in namedTypeSymbol.TypeArguments) {
+					// rather than use the display name, which could be a generic name, we will create a struct for the 
+					// type and use our type formater
+					var info = new TypeInfo (typeArgument);
+					var syntax = info.GetIdentifierSyntax ();
+					typeArgumentsBucket.Add (syntax.ToString ());
+				}
+
+				TypeArguments = typeArgumentsBucket.ToImmutable ();
 			}
-			TypeArguments = typeArgumentsBucket.ToImmutable ();
 
 			if (namedTypeSymbol.DelegateInvokeMethod is not null &&
 				DelegateInfo.TryCreate (namedTypeSymbol, out var delegateInfo))
@@ -390,6 +475,8 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 	/// <inheritdoc/>
 	public bool Equals (TypeInfo other)
 	{
+		if (State == StructState.Default && other.State == StructState.Default)
+			return true;
 		if (FullyQualifiedName != other.FullyQualifiedName)
 			return false;
 		if (SpecialType != other.SpecialType)
@@ -421,6 +508,8 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		if (Delegate != other.Delegate)
 			return false;
 		if (IsProtocol != other.IsProtocol)
+			return false;
+		if (IsStrongDictionary != other.IsStrongDictionary)
 			return false;
 
 		// compare base classes and interfaces, order does not matter at all
@@ -459,6 +548,7 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		hashCode.Add (IsNativeEnum);
 		hashCode.Add (Delegate);
 		hashCode.Add (IsProtocol);
+		hashCode.Add (IsStrongDictionary);
 		foreach (var parent in parents) {
 			hashCode.Add (parent);
 		}
@@ -480,26 +570,26 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		return !left.Equals (right);
 	}
 
-	const string NativeHandle = "NativeHandle";
-	const string IntPtr = "IntPtr";
-	const string UIntPtr = "UIntPtr";
+	const string NativeHandleString = "NativeHandle";
+	const string IntPtrString = "IntPtr";
+	const string UIntPtrString = "UIntPtr";
 
 	public string? ToMarshallType ()
 	{
 #pragma warning disable format
 		var type = this switch {
 			// arrays
-			{ IsArray: true } => NativeHandle,
+			{ IsArray: true } => NativeHandleString,
 			
 			// special cases based on name
 			{ Name: "nfloat" or "NFloat" } => "nfloat", 
 			{ Name: "nint" or "nuint" } => MetadataName,
 			// special string case
-			{ SpecialType: SpecialType.System_String } => NativeHandle, // use a NSString when we get a string
+			{ SpecialType: SpecialType.System_String } => NativeHandleString, // use a NSString when we get a string
 
 			// NSObject should use the native handle
-			{ IsNSObject: true } => NativeHandle, 
-			{ IsINativeObject: true } => NativeHandle,
+			{ IsNSObject: true } => NativeHandleString, 
+			{ IsINativeObject: true } => NativeHandleString,
 
 			// structs will use their name
 			{ IsStruct: true, SpecialType: SpecialType.System_Double } => "Double", 
@@ -510,9 +600,9 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 			// IsNativeEnum: Depends on the enum backing field kind.
 			// GeneralEnum: Depends on the EnumUnderlyingType
 
-			{ IsNativeEnum: true, EnumUnderlyingType: SpecialType.System_Int64 } => IntPtr, 
-			{ IsNativeEnum: true, EnumUnderlyingType: SpecialType.System_UInt64 } => UIntPtr, 
-			{ IsSmartEnum: true } => NativeHandle, 
+			{ IsNativeEnum: true, EnumUnderlyingType: SpecialType.System_Int64 } => IntPtrString, 
+			{ IsNativeEnum: true, EnumUnderlyingType: SpecialType.System_UInt64 } => UIntPtrString, 
+			{ IsSmartEnum: true } => NativeHandleString, 
 			{ IsEnum: true, EnumUnderlyingType: not null } => EnumUnderlyingType.GetKeyword (),
 
 			// special type that is a keyword (none would be a ref type)
@@ -523,7 +613,7 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 			{ IsReferenceType: false } => Name,
 			
 			// delegates will use the native handle
-			{ IsDelegate: true} => NativeHandle,
+			{ IsDelegate: true} => NativeHandleString,
 
 			_ => null,
 		};
@@ -551,20 +641,19 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 	}
 
 	/// <summary>
-	/// If the current <see cref="TypeInfo"/> is nullable, this method returns a new <see cref="TypeInfo"/>
-	/// representing the non-nullable version of the type. Otherwise, it returns the current instance.
+	/// Returns a new <see cref="TypeInfo"/> with the specified nullability.
 	/// </summary>
+	/// <param name="isNullable">A boolean value indicating whether the new type should be nullable.</param>
 	/// <returns>
-	/// A new <see cref="TypeInfo"/> instance with <see cref="IsNullable"/> set to false if the original <see cref="IsNullable"/> was true;
-	/// otherwise, returns the current <see cref="TypeInfo"/> instance.
+	/// A new <see cref="TypeInfo"/> instance with the specified nullability. If the current instance already has the
+	/// specified nullability, the current instance is returned.
 	/// </returns>
-	public TypeInfo ToNonNullable ()
+	public TypeInfo WithNullable (bool isNullable)
 	{
-		if (!IsNullable)
+		if (IsNullable == isNullable)
 			return this;
-		// copy all the elements from the current array type and set the array type to false
 		return this with {
-			IsNullable = false,
+			IsNullable = isNullable,
 		};
 	}
 
@@ -586,10 +675,132 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		};
 	}
 
+	/// <summary>
+	/// Gets the generic type arguments for a <see cref="System.Threading.Tasks.Task"/> from a delegate's parameters.
+	/// </summary>
+	/// <returns>An immutable array of strings representing the type arguments for the task.</returns>
+	/// <remarks>
+	/// This method extracts the parameter types from the delegate. If the last parameter is an <c>NSError</c>,
+	/// it is omitted from the returned types, as it will be handled as an exception in the async method.
+	/// </remarks>
+	ImmutableArray<KeyValuePair<string, string>> GetDelegateTypesForTask ()
+	{
+		if (Delegate is null)
+			return [];
+
+		// get all the type information from the delegate parameters since this is what is needed for 
+		// the task type. It is important to remember that for async methods in objc if the last parameter is a
+		// a NSError we will drop it since that will be converted to an exception in the generated code.
+		var builder = ImmutableArray.CreateBuilder<KeyValuePair<string, string>> (Delegate.Parameters.Length);
+		foreach (var param in Delegate.Parameters) {
+			builder.Add (new (param.Name, param.Type.GetIdentifierSyntax ().ToString ()));
+		}
+		var delegateTypes = builder.ToImmutableArray ();
+		if (delegateTypes.Length > 0 && delegateTypes [^1].Value.Contains ("NSError")) {
+			// remove the last parameter since it is not needed for the task type
+			delegateTypes = delegateTypes [..^1];
+		}
+
+		return delegateTypes;
+	}
+
+	/// <summary>
+	/// If the current <see cref="TypeInfo"/> represents a delegate, this method returns a new <see cref="TypeInfo"/>
+	/// representing a <see cref="System.Threading.Tasks.Task"/> with the delegate's parameters as generic arguments.
+	/// Otherwise, it returns the current instance.
+	/// </summary>
+	/// <returns>
+	/// A new <see cref="TypeInfo"/> instance representing a <c>Task</c> if the type is a delegate;
+	/// otherwise, returns the current <see cref="TypeInfo"/> instance.
+	/// </returns>
+	public TypeInfo ToTask ()
+	{
+		// no conversion is done if we are not dealing with a delegate type
+		if (Delegate is null)
+			return this;
+
+		var delegateTypes = GetDelegateTypesForTask ();
+		var genericTypeArguments = ImmutableArray.CreateBuilder<string> (delegateTypes.Length);
+		if (delegateTypes.Length > 1) {
+			// we need to create a named tuple or tuple, that depends on the type of delegate type, if we are
+			// dealing with a Action or Func, we will create a tuple type else we will create a named tuple type.
+			if (Delegate.FullyQualifiedType.Contains ("Action")) {
+				// we are dealing with a tuple type, so we will use the tuple syntax
+				genericTypeArguments.Add ($"({string.Join (", ", delegateTypes.Select (d => d.Value))})");
+			} else {
+				// we are dealing with a named tuple type, so we will use the named tuple syntax
+				var namedTuple = string.Join (", ", delegateTypes.Select (d => $"{d.Value} {d.Key.Capitalize ()}"));
+				genericTypeArguments.Add ($"({namedTuple})");
+			}
+
+		} else if (delegateTypes.Length == 1) {
+			genericTypeArguments.Add (delegateTypes [0].Value);
+		}
+
+		// generate a task type that will contain the delegate type information.
+		return new TypeInfo (
+			name: "System.Threading.Tasks.Task",
+			specialType: SpecialType.None,
+			isNullable: false,
+			isBlittable: false,
+			isSmartEnum: false,
+			isArray: false,
+			isReferenceType: true,
+			isStruct: false
+		) {
+			Delegate = null,
+			EnumUnderlyingType = null,
+			IsGenericType = genericTypeArguments.Count > 0,
+			IsTask = true,
+			TypeArguments = genericTypeArguments.ToImmutable (),
+		};
+	}
+
+	/// <summary>
+	/// If the current <see cref="TypeInfo"/> represents a <see cref="System.Threading.Tasks.Task"/>, this method returns a new <see cref="TypeInfo"/>
+	/// with its generic type arguments replaced by the provided types. Otherwise, it returns the current instance.
+	/// </summary>
+	/// <param name="types">The new generic type arguments for the task.</param>
+	/// <returns>
+	/// A new <see cref="TypeInfo"/> instance with updated generic type arguments if the type is a <c>Task</c>;
+	/// otherwise, returns the current <see cref="TypeInfo"/> instance.
+	/// </returns>
+	public TypeInfo ToTask (params string [] types)
+	{
+		if (!IsTask)
+			return this;
+
+		// update the type arguments to use the provided ones in the method
+		return this with {
+			TypeArguments = [.. types],
+		};
+	}
+
+	/// <summary>
+	/// If the current <see cref="TypeInfo"/> represents a <see cref="System.Threading.Tasks.Task"/>, this method returns a new <see cref="TypeInfo"/>
+	/// representing a <see cref="System.Threading.Tasks.TaskCompletionSource{TResult}"/> with the task's generic arguments.
+	/// Otherwise, it returns the current instance.
+	/// </summary>
+	/// <returns>
+	/// A new <see cref="TypeInfo"/> instance representing a <c>TaskCompletionSource</c> if the type is a <c>Task</c>;
+	/// otherwise, returns the current <see cref="TypeInfo"/> instance.
+	/// </returns>
+	public TypeInfo ToTaskCompletionSource ()
+	{
+		if (!IsTask)
+			return this;
+
+		return this with {
+			Name = "TaskCompletionSource",
+			FullyQualifiedName = "System.Threading.Tasks.TaskCompletionSource",
+		};
+	}
+
 	/// <inheritdoc/>
 	public override string ToString ()
 	{
 		var sb = new StringBuilder ("{");
+		sb.Append ($"StructState: '{State}', ");
 		sb.Append ($"Name: '{FullyQualifiedName}', ");
 		sb.Append ($"MetadataName: '{MetadataName}', ");
 		sb.Append ($"SpecialType: '{SpecialType}', ");
@@ -607,6 +818,7 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		sb.Append ($"IsNativeIntegerType: {IsNativeIntegerType}, ");
 		sb.Append ($"IsNativeEnum: {IsNativeEnum}, ");
 		sb.Append ($"IsProtocol: {IsProtocol}, ");
+		sb.Append ($"IsStrongDictionary: {IsStrongDictionary}, ");
 		sb.Append ($"Delegate: {Delegate?.ToString () ?? "null"}, ");
 		sb.Append ($"EnumUnderlyingType: '{EnumUnderlyingType?.ToString () ?? "null"}', ");
 		sb.Append ("Parents: [");

@@ -10,52 +10,152 @@ namespace Microsoft.Macios.Generator.Tests.Classes;
 
 public class ClassGenerationTests : BaseGeneratorTestClass {
 
+	public record ClassGenerationData (
+		ApplePlatform Platform,
+		string ClassName,
+		string BindingFile,
+		string OutputFile) {
+		public string? LibrariesFile { get; set; } = null;
+		public string? TrampolinesFile { get; set; } = null;
+		public Dictionary<string, string>? ExtraFiles { get; set; } = null;
+	}
+
 	public class TestDataGenerator : BaseTestDataGenerator, IEnumerable<object []> {
-		readonly List<(ApplePlatform Platform, string ClassName, string BindingFile, string OutputFile, string? LibraryText, string? TrampolinesText)> _data = new ()
+		readonly List<ClassGenerationData> _data = new ()
 		{
-			(ApplePlatform.iOS, "AVAudioPcmBuffer", "AVAudioPcmBufferNoDefaultCtr.cs", "ExpectedAVAudioPcmBufferNoDefaultCtr.cs", null, null),
-			(ApplePlatform.TVOS, "AVAudioPcmBuffer", "AVAudioPcmBufferNoDefaultCtr.cs", "ExpectedAVAudioPcmBufferNoDefaultCtr.cs", null, null),
-			(ApplePlatform.MacCatalyst, "AVAudioPcmBuffer", "AVAudioPcmBufferNoDefaultCtr.cs", "ExpectedAVAudioPcmBufferNoDefaultCtr.cs", null, null),
-			(ApplePlatform.MacOSX, "AVAudioPcmBuffer", "AVAudioPcmBufferNoDefaultCtr.cs", "ExpectedAVAudioPcmBufferNoDefaultCtr.cs", null, null),
-			(ApplePlatform.iOS, "AVAudioPcmBuffer", "AVAudioPcmBufferDefaultCtr.cs", "ExpectedAVAudioPcmBufferDefaultCtr.cs", null, null),
-			(ApplePlatform.MacOSX, "AVAudioPcmBuffer", "AVAudioPcmBufferDefaultCtr.cs", "ExpectedAVAudioPcmBufferDefaultCtr.cs", null, null),
-			(ApplePlatform.iOS, "AVAudioPcmBuffer", "AVAudioPcmBufferNoNativeName.cs", "ExpectedAVAudioPcmBufferNoNativeName.cs", null, null),
-			(ApplePlatform.MacOSX, "AVAudioPcmBuffer", "AVAudioPcmBufferNoNativeName.cs", "ExpectedAVAudioPcmBufferNoNativeName.cs", null, null),
-			(ApplePlatform.iOS, "CIImage", "CIImage.cs", "ExpectedCIImage.cs", null, null),
-			(ApplePlatform.TVOS, "CIImage", "CIImage.cs", "ExpectedCIImage.cs", null, null),
-			(ApplePlatform.MacCatalyst, "CIImage", "CIImage.cs", "ExpectedCIImage.cs", null, null),
-			(ApplePlatform.iOS, "PropertyTests", "PropertyTests.cs", "iOSExpectedPropertyTests.cs", null, null),
-			(ApplePlatform.TVOS, "PropertyTests", "PropertyTests.cs", "tvOSExpectedPropertyTests.cs", null, null),
-			(ApplePlatform.MacCatalyst, "PropertyTests", "PropertyTests.cs", "iOSExpectedPropertyTests.cs", null, null),
-			(ApplePlatform.MacOSX, "PropertyTests", "PropertyTests.cs", "macOSExpectedPropertyTests.cs", null, null),
-			(ApplePlatform.iOS, "UIKitPropertyTests", "UIKitPropertyTests.cs", "ExpectedUIKitPropertyTests.cs", null, null),
-			(ApplePlatform.TVOS, "UIKitPropertyTests", "UIKitPropertyTests.cs", "ExpectedUIKitPropertyTests.cs", null, null),
-			(ApplePlatform.MacCatalyst, "UIKitPropertyTests", "UIKitPropertyTests.cs", "ExpectedUIKitPropertyTests.cs", null, null),
-			(ApplePlatform.iOS, "ThreadSafeUIKitPropertyTests", "ThreadSafeUIKitPropertyTests.cs", "ExpectedThreadSafeUIKitPropertyTests.cs", null, null),
-			(ApplePlatform.TVOS, "ThreadSafeUIKitPropertyTests", "ThreadSafeUIKitPropertyTests.cs", "ExpectedThreadSafeUIKitPropertyTests.cs", null, null),
-			(ApplePlatform.MacCatalyst, "ThreadSafeUIKitPropertyTests", "ThreadSafeUIKitPropertyTests.cs", "ExpectedThreadSafeUIKitPropertyTests.cs", null, null),
-			(ApplePlatform.MacOSX, "AppKitPropertyTests", "AppKitPropertyTests.cs", "ExpectedAppKitPropertyTests.cs", null, null),
-			(ApplePlatform.MacOSX, "ThreadSafeAppKitPropertyTests", "ThreadSafeAppKitPropertyTests.cs", "ExpectedThreadSafeAppKitPropertyTests.cs", null, null),
+			new (ApplePlatform.iOS, "AVAudioPcmBuffer", "AVAudioPcmBufferNoDefaultCtr.cs", "ExpectedAVAudioPcmBufferNoDefaultCtr.cs"),
+			new (ApplePlatform.TVOS, "AVAudioPcmBuffer", "AVAudioPcmBufferNoDefaultCtr.cs", "ExpectedAVAudioPcmBufferNoDefaultCtr.cs"),
+			new (ApplePlatform.MacCatalyst, "AVAudioPcmBuffer", "AVAudioPcmBufferNoDefaultCtr.cs", "ExpectedAVAudioPcmBufferNoDefaultCtr.cs"),
+			new (ApplePlatform.MacOSX, "AVAudioPcmBuffer", "AVAudioPcmBufferNoDefaultCtr.cs", "ExpectedAVAudioPcmBufferNoDefaultCtr.cs"),
+			new (ApplePlatform.iOS, "AVAudioPcmBuffer", "AVAudioPcmBufferDefaultCtr.cs", "ExpectedAVAudioPcmBufferDefaultCtr.cs"),
+			new (ApplePlatform.MacOSX, "AVAudioPcmBuffer", "AVAudioPcmBufferDefaultCtr.cs", "ExpectedAVAudioPcmBufferDefaultCtr.cs"),
+			new (ApplePlatform.iOS, "AVAudioPcmBuffer", "AVAudioPcmBufferNoNativeName.cs", "ExpectedAVAudioPcmBufferNoNativeName.cs"),
+			new (ApplePlatform.MacOSX, "AVAudioPcmBuffer", "AVAudioPcmBufferNoNativeName.cs", "ExpectedAVAudioPcmBufferNoNativeName.cs"),
+			new (ApplePlatform.iOS, "CIImage", "CIImage.cs", "ExpectedCIImage.cs"),
+			new (ApplePlatform.TVOS, "CIImage", "CIImage.cs", "ExpectedCIImage.cs"),
+			new (ApplePlatform.MacCatalyst, "CIImage", "CIImage.cs", "ExpectedCIImage.cs"),
+			new (ApplePlatform.iOS, "PropertyTests", "PropertyTests.cs", "iOSExpectedPropertyTests.cs"),
+			new (ApplePlatform.TVOS, "PropertyTests", "PropertyTests.cs", "tvOSExpectedPropertyTests.cs"),
+			new (ApplePlatform.MacCatalyst, "PropertyTests", "PropertyTests.cs", "iOSExpectedPropertyTests.cs"),
+			new (ApplePlatform.MacOSX, "PropertyTests", "PropertyTests.cs", "macOSExpectedPropertyTests.cs"),
+			new (ApplePlatform.iOS, "UIKitPropertyTests", "UIKitPropertyTests.cs", "ExpectedUIKitPropertyTests.cs"),
+			new (ApplePlatform.TVOS, "UIKitPropertyTests", "UIKitPropertyTests.cs", "ExpectedUIKitPropertyTests.cs"),
+			new (ApplePlatform.MacCatalyst, "UIKitPropertyTests", "UIKitPropertyTests.cs", "ExpectedUIKitPropertyTests.cs"),
+			new (ApplePlatform.iOS, "ThreadSafeUIKitPropertyTests", "ThreadSafeUIKitPropertyTests.cs", "ExpectedThreadSafeUIKitPropertyTests.cs"),
+			new (ApplePlatform.TVOS, "ThreadSafeUIKitPropertyTests", "ThreadSafeUIKitPropertyTests.cs", "ExpectedThreadSafeUIKitPropertyTests.cs"),
+			new (ApplePlatform.MacCatalyst, "ThreadSafeUIKitPropertyTests", "ThreadSafeUIKitPropertyTests.cs", "ExpectedThreadSafeUIKitPropertyTests.cs"),
+			new (ApplePlatform.MacOSX, "AppKitPropertyTests", "AppKitPropertyTests.cs", "ExpectedAppKitPropertyTests.cs"),
+			new (ApplePlatform.MacOSX, "ThreadSafeAppKitPropertyTests", "ThreadSafeAppKitPropertyTests.cs", "ExpectedThreadSafeAppKitPropertyTests.cs"),
 
-			(ApplePlatform.iOS, "NSUserDefaults", "NSUserDefaults.cs", "ExpectedNSUserDefaults.cs", null, null),
-			(ApplePlatform.TVOS, "NSUserDefaults", "NSUserDefaults.cs", "ExpectedNSUserDefaults.cs", null, null),
-			(ApplePlatform.MacCatalyst, "NSUserDefaults", "NSUserDefaults.cs", "ExpectedNSUserDefaults.cs", null, null),
-			(ApplePlatform.MacOSX, "NSUserDefaults", "NSUserDefaults.cs", "ExpectedNSUserDefaults.cs", null, null),
+			new (ApplePlatform.iOS, "NSUserDefaults", "NSUserDefaults.cs", "ExpectedNSUserDefaults.cs"),
+			new (ApplePlatform.TVOS, "NSUserDefaults", "NSUserDefaults.cs", "ExpectedNSUserDefaults.cs"),
+			new (ApplePlatform.MacCatalyst, "NSUserDefaults", "NSUserDefaults.cs", "ExpectedNSUserDefaults.cs"),
+			new (ApplePlatform.MacOSX, "NSUserDefaults", "NSUserDefaults.cs", "ExpectedNSUserDefaults.cs"),
 
+			new (ApplePlatform.iOS, "MethodTests", "MethodTests.cs", "ExpectedMethodsTests.cs")
+			{
+				ExtraFiles = new () {
+					{"NSLoadFromHtmlResult.g.cs", "ExpectedNSLoadFromHtmlResult.cs"},
+				}
+			},
+			new (ApplePlatform.TVOS, "MethodTests", "MethodTests.cs", "tvOSExpectedMethodsTests.cs"),
+			new (ApplePlatform.MacCatalyst, "MethodTests", "MethodTests.cs", "ExpectedMethodsTests.cs")
+			{
+				ExtraFiles = new () {
+					{"NSLoadFromHtmlResult.g.cs", "ExpectedNSLoadFromHtmlResult.cs"},
+				}
+			},
+			new (ApplePlatform.MacOSX, "MethodTests", "MethodTests.cs", "ExpectedMethodsTests.cs")
+			{
+				ExtraFiles = new () {
+					{"NSLoadFromHtmlResult.g.cs", "ExpectedNSLoadFromHtmlResult.cs"},
+				}
+			},
+			new (ApplePlatform.iOS, "ConstructorTests", "ConstructorTests.cs", "ExpectedConstructorTests.cs"),
+			new (ApplePlatform.TVOS, "ConstructorTests", "ConstructorTests.cs", "ExpectedConstructorTests.cs"),
+			new (ApplePlatform.MacCatalyst, "ConstructorTests", "ConstructorTests.cs", "ExpectedConstructorTests.cs"),
+			new (ApplePlatform.MacOSX, "ConstructorTests", "ConstructorTests.cs", "ExpectedConstructorTests.cs"),
+			
+			// nested classes
+			new (ApplePlatform.iOS, "NestedClasses", "NestedClasses.cs", "ExpectedNestedClasses.cs"),
+			new (ApplePlatform.TVOS, "NestedClasses", "NestedClasses.cs", "ExpectedNestedClasses.cs"),
+			new (ApplePlatform.MacCatalyst, "NestedClasses", "NestedClasses.cs", "ExpectedNestedClasses.cs"),
+			new (ApplePlatform.MacOSX, "NestedClasses", "NestedClasses.cs", "ExpectedNestedClasses.cs"),
+			
 			// trampoline tests
-			(ApplePlatform.iOS, "TrampolinePropertyTests", "TrampolinePropertyTests.cs", "ExpectedTrampolinePropertyTests.cs", null, "ExpectedTrampolinePropertyTestsTrampolines.cs"),
-			(ApplePlatform.TVOS, "TrampolinePropertyTests", "TrampolinePropertyTests.cs", "ExpectedTrampolinePropertyTests.cs", null, "ExpectedTrampolinePropertyTestsTrampolines.cs"),
-			(ApplePlatform.MacCatalyst, "TrampolinePropertyTests", "TrampolinePropertyTests.cs", "ExpectedTrampolinePropertyTests.cs", null, "ExpectedTrampolinePropertyTestsTrampolines.cs"),
-			(ApplePlatform.MacOSX, "TrampolinePropertyTests", "TrampolinePropertyTests.cs", "ExpectedTrampolinePropertyTests.cs", null, "ExpectedTrampolinePropertyTestsTrampolines.cs"),
+			new (ApplePlatform.iOS, "TrampolinePropertyTests", "TrampolinePropertyTests.cs", "ExpectedTrampolinePropertyTests.cs"){ TrampolinesFile = "ExpectedTrampolinePropertyTestsTrampolines.cs"},
+			new (ApplePlatform.TVOS, "TrampolinePropertyTests", "TrampolinePropertyTests.cs", "ExpectedTrampolinePropertyTests.cs"){ TrampolinesFile = "ExpectedTrampolinePropertyTestsTrampolines.cs"},
+			new (ApplePlatform.MacCatalyst, "TrampolinePropertyTests", "TrampolinePropertyTests.cs", "ExpectedTrampolinePropertyTests.cs"){ TrampolinesFile = "ExpectedTrampolinePropertyTestsTrampolines.cs"},
+			new (ApplePlatform.MacOSX, "TrampolinePropertyTests", "TrampolinePropertyTests.cs", "ExpectedTrampolinePropertyTests.cs"){ TrampolinesFile = "ExpectedTrampolinePropertyTestsTrampolines.cs"},
+			
+			// event tests
+			new (ApplePlatform.iOS, "EventTests", "EventTests.cs", "ExpectedEventTests.cs")
+			{
+				ExtraFiles = new () {
+					{"NSArchiveReplaceEventArgs.g.cs", "ExpectedNSArchiveReplace.cs"},
+					{"EventTests_RgenNSKeyedArchiverDelegate.g.cs", "ExpectedEventTests_RgenNSKeyedArchiverDelegate.cs"}
+				}
+			},
+			new (ApplePlatform.TVOS, "EventTests", "EventTests.cs", "ExpectedEventTests.cs")
+			{
+				ExtraFiles = new () {
+					{"NSArchiveReplaceEventArgs.g.cs", "ExpectedNSArchiveReplace.cs"},
+					{"EventTests_RgenNSKeyedArchiverDelegate.g.cs", "ExpectedEventTests_RgenNSKeyedArchiverDelegate.cs"}
+				}
+			},
+			new (ApplePlatform.MacCatalyst, "EventTests", "EventTests.cs", "ExpectedEventTests.cs")
+			{
+				ExtraFiles = new () {
+					{"NSArchiveReplaceEventArgs.g.cs", "ExpectedNSArchiveReplace.cs"},
+					{"EventTests_RgenNSKeyedArchiverDelegate.g.cs", "ExpectedEventTests_RgenNSKeyedArchiverDelegate.cs"}
+				}
+			},
+			new (ApplePlatform.MacOSX, "EventTests", "EventTests.cs", "macOSExpectedEventTests.cs")
+			{
+				ExtraFiles = new () {
+					{"NSArchiveReplaceEventArgs.g.cs", "ExpectedNSArchiveReplace.cs"},
+					{"EventTests_RgenNSKeyedArchiverDelegate.g.cs", "ExpectedEventTests_RgenNSKeyedArchiverDelegate.cs"}
+				}
+			},
+			
+			// test inline constructors from protocols
+			
+			new (ApplePlatform.iOS, "InlineProtocolConstructors", "InlineProtocolConstructors.cs", "ExpectedInlineProtocolConstructors.cs"),
+			new (ApplePlatform.TVOS, "InlineProtocolConstructors", "InlineProtocolConstructors.cs", "ExpectedInlineProtocolConstructors.cs"),
+			new (ApplePlatform.MacCatalyst, "InlineProtocolConstructors", "InlineProtocolConstructors.cs", "ExpectedInlineProtocolConstructors.cs"),
+			new (ApplePlatform.MacOSX, "InlineProtocolConstructors", "InlineProtocolConstructors.cs", "ExpectedInlineProtocolConstructors.cs"),
+
+			new (ApplePlatform.iOS, "UIKitInlineProtocolConstructors", "UIKitInlineProtocolConstructors.cs", "ExpectedUIKitInlineProtocolConstructors.cs"),
+			new (ApplePlatform.TVOS, "UIKitInlineProtocolConstructors", "UIKitInlineProtocolConstructors.cs", "ExpectedUIKitInlineProtocolConstructors.cs"),
+			new (ApplePlatform.MacCatalyst, "UIKitInlineProtocolConstructors", "UIKitInlineProtocolConstructors.cs", "ExpectedUIKitInlineProtocolConstructors.cs"),
+			new (ApplePlatform.MacOSX, "AppKitInlineProtocolConstructors", "AppKitInlineProtocolConstructors.cs", "ExpectedAppKitInlineProtocolConstructors.cs"),
+
+			new (ApplePlatform.iOS, "InlineProtocolDuplicatedConstructors", "InlineProtocolDuplicatedConstructors.cs", "ExpectedInlineProtocolDuplicatedConstructors.cs"),
+			new (ApplePlatform.TVOS, "InlineProtocolDuplicatedConstructors", "InlineProtocolDuplicatedConstructors.cs", "ExpectedInlineProtocolDuplicatedConstructors.cs"),
+			new (ApplePlatform.MacCatalyst, "InlineProtocolDuplicatedConstructors", "InlineProtocolDuplicatedConstructors.cs", "ExpectedInlineProtocolDuplicatedConstructors.cs"),
+			new (ApplePlatform.MacOSX, "InlineProtocolDuplicatedConstructors", "InlineProtocolDuplicatedConstructors.cs", "ExpectedInlineProtocolDuplicatedConstructors.cs"),
+
+			new (ApplePlatform.iOS, "InlineProtocolOverloadConstructors", "InlineProtocolOverloadConstructors.cs", "ExpectedInlineProtocolOverloadConstructors.cs"),
+			new (ApplePlatform.TVOS, "InlineProtocolOverloadConstructors", "InlineProtocolOverloadConstructors.cs", "ExpectedInlineProtocolOverloadConstructors.cs"),
+			new (ApplePlatform.MacCatalyst, "InlineProtocolOverloadConstructors", "InlineProtocolOverloadConstructors.cs", "ExpectedInlineProtocolOverloadConstructors.cs"),
+			new (ApplePlatform.MacOSX, "InlineProtocolOverloadConstructors", "InlineProtocolOverloadConstructors.cs", "ExpectedInlineProtocolOverloadConstructors.cs"),
 		};
 
 		public IEnumerator<object []> GetEnumerator ()
 		{
 			foreach (var testData in _data) {
-				var libraryText = string.IsNullOrEmpty (value: testData.LibraryText) ?
-					null : ReadFileAsString (file: testData.LibraryText);
-				var trampolineText = string.IsNullOrEmpty (value: testData.TrampolinesText) ?
-					null : ReadFileAsString (file: testData.TrampolinesText);
+				var libraryText = string.IsNullOrEmpty (value: testData.LibrariesFile) ?
+					null : ReadFileAsString (file: testData.LibrariesFile);
+				var trampolineText = string.IsNullOrEmpty (value: testData.TrampolinesFile) ?
+					null : ReadFileAsString (file: testData.TrampolinesFile);
+				Dictionary<string, string>? extraFiles = null;
+				if (testData.ExtraFiles is not null) {
+					extraFiles = new ();
+					foreach (var (key, filePath) in testData.ExtraFiles) {
+						var extraFileText = ReadFileAsString (file: filePath);
+						extraFiles.Add (key, extraFileText);
+					}
+				}
 				if (Configuration.IsEnabled (platform: testData.Platform))
 					yield return [
 						new GenerationTestData (
@@ -66,7 +166,8 @@ public class ClassGenerationTests : BaseGeneratorTestClass {
 							OutputFileName: testData.OutputFile,
 							ExpectedOutputText: ReadFileAsString (file: testData.OutputFile),
 							ExpectedLibraryText: libraryText,
-							ExpectedTrampolineText: trampolineText
+							ExpectedTrampolineText: trampolineText,
+							ExtraFiles: extraFiles
 						)
 					];
 			}

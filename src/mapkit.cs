@@ -355,6 +355,10 @@ namespace MapKit {
 		, NSItemProviderReading, NSItemProviderWriting
 #endif
 	{
+		[Obsoleted (PlatformName.iOS, 26, 0, "Use 'Location', 'Address' and 'AddressRepresentations' instead.")]
+		[Obsoleted (PlatformName.TvOS, 26, 0, "Use 'Location', 'Address' and 'AddressRepresentations' instead.")]
+		[Obsoleted (PlatformName.MacOSX, 26, 0, "Use 'Location', 'Address' and 'AddressRepresentations' instead.")]
+		[Obsoleted (PlatformName.MacCatalyst, 26, 0, "Use 'Location', 'Address' and 'AddressRepresentations' instead.")]
 		[Export ("placemark", ArgumentSemantic.Retain)]
 		MKPlacemark Placemark { get; }
 
@@ -377,8 +381,16 @@ namespace MapKit {
 		[Export ("mapItemForCurrentLocation")]
 		MKMapItem MapItemForCurrentLocation ();
 
+		[Obsoleted (PlatformName.iOS, 26, 0, "Use the constructor that takes '(CLLocation, MKAddress)' instead.")]
+		[Obsoleted (PlatformName.TvOS, 26, 0, "Use the constructor that takes '(CLLocation, MKAddress)' instead.")]
+		[Obsoleted (PlatformName.MacOSX, 26, 0, "Use the constructor that takes '(CLLocation, MKAddress)' instead.")]
+		[Obsoleted (PlatformName.MacCatalyst, 26, 0, "Use the constructor that takes '(CLLocation, MKAddress)' instead.")]
 		[Export ("initWithPlacemark:")]
 		NativeHandle Constructor (MKPlacemark placemark);
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Export ("initWithLocation:address:")]
+		NativeHandle Constructor (CLLocation location, [NullAllowed] MKAddress address);
 
 		[NoTV]
 		[MacCatalyst (13, 1)]
@@ -445,26 +457,6 @@ namespace MapKit {
 		[Field ("MKLaunchOptionsCameraKey"), Internal]
 		NSString MKLaunchOptionsCameraKey { get; }
 
-		[NoTV]
-		[MacCatalyst (13, 1)]
-		[Field ("MKLaunchOptionsDirectionsModeDriving"), Internal]
-		NSString MKLaunchOptionsDirectionsModeDriving { get; }
-
-		[NoTV]
-		[MacCatalyst (13, 1)]
-		[Field ("MKLaunchOptionsDirectionsModeWalking"), Internal]
-		NSString MKLaunchOptionsDirectionsModeWalking { get; }
-
-		[NoTV]
-		[MacCatalyst (13, 1)]
-		[Field ("MKLaunchOptionsDirectionsModeTransit"), Internal]
-		NSString MKLaunchOptionsDirectionsModeTransit { get; }
-
-		[NoTV]
-		[MacCatalyst (13, 1)]
-		[Field ("MKLaunchOptionsDirectionsModeDefault"), Internal]
-		NSString MKLaunchOptionsDirectionsModeDefault { get; }
-
 		[Export ("timeZone")]
 		[MacCatalyst (13, 1)]
 		[NullAllowed]
@@ -489,6 +481,51 @@ namespace MapKit {
 		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Export ("alternateIdentifiers")]
 		NSSet<MKMapItemIdentifier> AlternateIdentifiers { get; }
+
+		[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("location")]
+		CLLocation Location { get; }
+
+		[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[NullAllowed, Export ("address")]
+		MKAddress Address { get; }
+
+		[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[NullAllowed, Export ("addressRepresentations")]
+		MKAddressRepresentations AddressRepresentations { get; }
+	}
+
+	/// <summary>An enumeration of travel methods for which directions can be provided.</summary>>
+	public enum MKDirectionsMode {
+		/// <summary>Driving directions.</summary>
+		[NoTV]
+		[MacCatalyst (13, 1)]
+		[Field ("MKLaunchOptionsDirectionsModeDriving")]
+		Driving,
+
+		/// <summary>Walking directions.</summary>
+		[NoTV]
+		[MacCatalyst (13, 1)]
+		[Field ("MKLaunchOptionsDirectionsModeWalking")]
+		Walking,
+
+		/// <summary>Transit directions.</summary>
+		[NoTV]
+		[MacCatalyst (13, 1)]
+		[Field ("MKLaunchOptionsDirectionsModeTransit")]
+		Transit,
+
+		/// <summary>Cycling directions.</summary>
+		[NoTV]
+		[MacCatalyst (13, 1)]
+		[Field ("MKLaunchOptionsDirectionsModeDefault")]
+		Default,
+
+		/// <summary>The user's preferred direction type.</summary>
+		[NoTV]
+		[iOS (14, 0)]
+		[Field ("MKLaunchOptionsDirectionsModeCycling")]
+		Cycling,
 	}
 
 	[BaseType (typeof (UIView), Delegates = new string [] { "WeakDelegate" }, Events = new Type [] { typeof (MKMapViewDelegate) })]
@@ -859,12 +896,6 @@ namespace MapKit {
 
 	interface IMKMapViewDelegate { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="MapKit.MKMapViewDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="MapKit.MKMapViewDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="MapKit.MKMapViewDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="MapKit.MKMapViewDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[BaseType (typeof (NSObject))]
 	[Model]
 	[Protocol]
@@ -1252,6 +1283,10 @@ namespace MapKit {
 		string Zip { get; set; }
 	}
 
+	[Obsoleted (PlatformName.iOS, 26, 0, "Use 'MKMapItem.Location', 'MKMapItem.Address' and 'MKMapItem.AddressRepresentations' instead, and MKAddressRepresentations for formatted address strings.")]
+	[Obsoleted (PlatformName.TvOS, 26, 0, "Use 'MKMapItem.Location', 'MKMapItem.Address' and 'MKMapItem.AddressRepresentations' instead, and MKAddressRepresentations for formatted address strings.")]
+	[Obsoleted (PlatformName.MacOSX, 26, 0, "Use 'MKMapItem.Location', 'MKMapItem.Address' and 'MKMapItem.AddressRepresentations' instead, and MKAddressRepresentations for formatted address strings.")]
+	[Obsoleted (PlatformName.MacCatalyst, 26, 0, "Use 'MKMapItem.Location', 'MKMapItem.Address' and 'MKMapItem.AddressRepresentations' instead, and MKAddressRepresentations for formatted address strings.")]
 	[BaseType (typeof (CLPlacemark))]
 	// crash (at least) when calling 'description' when instance is created by 'init'
 	[DisableDefaultCtor]
@@ -1342,7 +1377,6 @@ namespace MapKit {
 		MKPlacemark Placemark { get; }
 	}
 
-	/// <include file="../docs/api/MapKit/IMKReverseGeocoderDelegate.xml" path="/Documentation/Docs[@DocId='T:MapKit.IMKReverseGeocoderDelegate']/*" />
 	interface IMKReverseGeocoderDelegate { }
 
 #pragma warning disable 618
@@ -1753,7 +1787,7 @@ namespace MapKit {
 	/// <summary>A delegate that is used to handle the results of a map-based search.</summary>
 	/// <remarks>To be added.</remarks>
 	/// <altmember cref="MapKit.MKLocalSearch" />
-	delegate void MKLocalSearchCompletionHandler (MKLocalSearchResponse response, NSError error);
+	delegate void MKLocalSearchCompletionHandler ([NullAllowed] MKLocalSearchResponse response, [NullAllowed] NSError error);
 
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
@@ -1928,13 +1962,13 @@ namespace MapKit {
 	/// <summary>The completion handler for calls to <see cref="MapKit.MKDirections.CalculateDirections(MapKit.MKDirectionsHandler)" />.</summary>
 	/// <remarks>To be added.</remarks>
 	/// <altmember cref="MapKit.MKDirectionsRequest" />
-	delegate void MKDirectionsHandler (MKDirectionsResponse response, NSError error);
+	delegate void MKDirectionsHandler ([NullAllowed] MKDirectionsResponse response, [NullAllowed] NSError error);
 
 	/// <param name="response">Returned if the request was successful.</param>
 	/// <param name="error">If not <see langword="null" />, an error occurred with the request.</param>
 	/// <summary>The completion handler for calls to <see cref="MapKit.MKDirections.CalculateETA(MapKit.MKETAHandler)" />.</summary>
 	/// <remarks>To be added.</remarks>
-	delegate void MKETAHandler (MKETAResponse response, NSError error);
+	delegate void MKETAHandler ([NullAllowed] MKETAResponse response, [NullAllowed] NSError error);
 
 	[BaseType (typeof (NSObject))]
 	[MacCatalyst (13, 1)]
@@ -2253,7 +2287,7 @@ namespace MapKit {
 	/// <param name="error">If not <see langword="null" />, an error occurred with the request.</param>
 	/// <summary>The completion handler for <see cref="MapKit.MKMapSnapshotter.StartAsync(CoreFoundation.DispatchQueue)" />.</summary>
 	/// <remarks>To be added.</remarks>
-	delegate void MKMapSnapshotCompletionHandler (MKMapSnapshot snapshot, NSError error);
+	delegate void MKMapSnapshotCompletionHandler ([NullAllowed] MKMapSnapshot snapshot, [NullAllowed] NSError error);
 
 	[BaseType (typeof (MKOverlayRenderer))]
 	[MacCatalyst (13, 1)]
@@ -2509,7 +2543,7 @@ namespace MapKit {
 	/// <param name="error">To be added.</param>
 	/// <summary>The completion handler for <see cref="MapKit.MKTileOverlay.LoadTileAtPath(MapKit.MKTileOverlayPath,MapKit.MKTileOverlayLoadTileCompletionHandler)" />.</summary>
 	/// <remarks>To be added.</remarks>
-	delegate void MKTileOverlayLoadTileCompletionHandler (NSData tileData, NSError error);
+	delegate void MKTileOverlayLoadTileCompletionHandler ([NullAllowed] NSData tileData, [NullAllowed] NSError error);
 
 	[BaseType (typeof (MKOverlayRenderer))]
 	// Objective-C exception thrown.  Name: NSInvalidArgumentException Reason: Expected a MKTileOverlay but got (null)
@@ -2590,12 +2624,6 @@ namespace MapKit {
 
 	interface IMKLocalSearchCompleterDelegate { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="MapKit.MKLocalSearchCompleterDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="MapKit.MKLocalSearchCompleterDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="MapKit.MKLocalSearchCompleterDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="MapKit.MKLocalSearchCompleterDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	[Model]
@@ -3404,4 +3432,113 @@ namespace MapKit {
 		Default = 0,
 		Required,
 	}
+
+	[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface MKAddress {
+		[Export ("initWithFullAddress:shortAddress:")]
+		NativeHandle Constructor (string fullAddress, [NullAllowed] string shortAddress);
+
+		[Export ("fullAddress")]
+		string FullAddress { get; }
+
+		[NullAllowed, Export ("shortAddress")]
+		string ShortAddress { get; }
+	}
+
+	[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+	[Native]
+	public enum MKAddressRepresentationsContextStyle : long {
+		Automatic,
+		Short,
+		Full,
+	}
+
+	[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface MKAddressRepresentations {
+		[Export ("fullAddressIncludingRegion:singleLine:")]
+		[return: NullAllowed]
+		string GetFullAddress (bool includingRegion, bool singleLine);
+
+		[NullAllowed, Export ("cityName")]
+		string CityName { get; }
+
+		[NullAllowed, Export ("cityWithContext")]
+		string CityWithContext { get; }
+
+		[Export ("cityWithContextUsingStyle:")]
+		[return: NullAllowed]
+		string GetCityWithContext (MKAddressRepresentationsContextStyle style);
+
+		[NullAllowed, Export ("regionName")]
+		string RegionName { get; }
+
+		[NullAllowed, Export ("regionCode")]
+		string RegionCode { get; }
+	}
+
+	delegate void MKGeocodingRequestGetMapItemsCompletionHandler ([NullAllowed] MKMapItem [] mapItems, [NullAllowed] NSError error);
+
+	[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface MKGeocodingRequest {
+		[Export ("cancelled")]
+		bool Cancelled { [Bind ("isCancelled")] get; }
+
+		[Export ("loading")]
+		bool Loading { [Bind ("isLoading")] get; }
+
+		[Export ("addressString")]
+		string AddressString { get; }
+
+		[Export ("region", ArgumentSemantic.Assign)]
+		MKCoordinateRegion Region { get; set; }
+
+		[NullAllowed, Export ("preferredLocale", ArgumentSemantic.Strong)]
+		NSLocale PreferredLocale { get; set; }
+
+		[Export ("initWithAddressString:")]
+		NativeHandle Constructor (string addressString);
+
+		[Async]
+		[Export ("getMapItemsWithCompletionHandler:")]
+		void GetMapItems (MKGeocodingRequestGetMapItemsCompletionHandler completionHandler);
+
+		[Export ("cancel")]
+		void Cancel ();
+	}
+
+	delegate void MKReverseGeocodingRequestGetMapItemsCompletionHandler ([NullAllowed] MKMapItem [] mapItems, [NullAllowed] NSError error);
+
+	[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface MKReverseGeocodingRequest {
+		[Export ("cancelled")]
+		bool Cancelled { [Bind ("isCancelled")] get; }
+
+		[Export ("loading")]
+		bool Loading { [Bind ("isLoading")] get; }
+
+		[Export ("location", ArgumentSemantic.Copy)]
+		CLLocation Location { get; }
+
+		[NullAllowed, Export ("preferredLocale", ArgumentSemantic.Strong)]
+		NSLocale PreferredLocale { get; set; }
+
+		[Export ("initWithLocation:")]
+		NativeHandle Constructor (CLLocation location);
+
+		[Async]
+		[Export ("getMapItemsWithCompletionHandler:")]
+		void GetMapItems (MKReverseGeocodingRequestGetMapItemsCompletionHandler completionHandler);
+
+		[Export ("cancel")]
+		void Cancel ();
+	}
+
 }

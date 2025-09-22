@@ -99,12 +99,14 @@ namespace VideoToolbox {
 		CouldNotOutputTaggedBufferGroupErr = -17699,
 		CouldNotFindExtensionErr = -19510,
 		ExtensionConflictErr = -19511,
+		VideoEncoderAutoWhiteBalanceNotLockedErr = -19512,
 	}
 
 	// uint32_t -> VTErrors.h
 	/// <summary>Flags to control encoder in a decompression session</summary>
 	[Flags]
 	public enum VTDecodeFrameFlags : uint {
+		None = 0,
 		/// <summary>To be added.</summary>
 		EnableAsynchronousDecompression = 1 << 0,
 		/// <summary>To be added.</summary>
@@ -119,6 +121,7 @@ namespace VideoToolbox {
 	/// <summary>Flags for status reporting in decoding sessions.</summary>
 	[Flags]
 	public enum VTDecodeInfoFlags : uint {
+		None = 0,
 		/// <summary>To be added.</summary>
 		Asynchronous = 1 << 0,
 		/// <summary>To be added.</summary>
@@ -126,6 +129,8 @@ namespace VideoToolbox {
 		/// <summary>To be added.</summary>
 		ImageBufferModifiable = 1 << 2,
 		SkippedLeadingFrameDropped = 1 << 3,
+		[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+		FrameInterrupted = 1 << 4,
 	}
 
 	// UInt32 -> VTErrors.h
@@ -442,6 +447,11 @@ namespace VideoToolbox {
 		None,
 		[Field ("kVTHDRMetadataInsertionMode_Auto")]
 		Auto,
+
+		[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("kVTHDRMetadataInsertionMode_RequestSDRRangePreservation")]
+		RequestSdrRangePreservation,
+
 	}
 
 	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]

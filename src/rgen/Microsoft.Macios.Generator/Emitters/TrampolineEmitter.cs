@@ -31,7 +31,7 @@ class TrampolineEmitter (
 	public bool TryEmitStaticClass (in TypeInfo typeInfo, string trampolineName, TabbedWriter<StringWriter> classBuilder)
 	{
 		// create a new static class using the name from the nomenclator
-		var argumentSyntax = GetTrampolineInvokeArguments (trampolineName, typeInfo.Delegate!);
+		var (argumentSyntax, conversions) = GetTrampolineInvokeArguments (trampolineName, typeInfo.Delegate!);
 		var delegateIdentifier = typeInfo.GetIdentifierSyntax ();
 		var className = Nomenclator.GetTrampolineClassName (trampolineName, Nomenclator.TrampolineClassType.StaticBridgeClass);
 		var invokeMethodName = Nomenclator.GetTrampolineInvokeMethodName ();
@@ -47,8 +47,8 @@ class TrampolineEmitter (
 			classBlock.WriteLine ($"[UserDelegateType (typeof ({delegateIdentifier}))]");
 			using (var invokeMethod = classBlock.CreateBlock (GetTrampolineInvokeSignature (typeInfo).ToString (), true)) {
 				// initialized the parameters, this might be needed for the parameters that are out or ref
-				foreach (var argument in argumentSyntax) {
-					invokeMethod.Write (argument.Initializers);
+				foreach (var c in conversions) {
+					invokeMethod.Write (c.Initializers);
 				}
 
 				// get the delegate from the block literal to execute with the trampoline
@@ -61,15 +61,15 @@ $@"if ({delegateVariableName} is null)
 );
 
 				// build any needed pre conversion operations before calling the delegate
-				foreach (var argument in argumentSyntax) {
-					invokeMethod.Write (argument.PreDelegateCallConversion);
+				foreach (var c in conversions) {
+					invokeMethod.Write (c.PreCallConversion);
 				}
 
 				invokeMethod.WriteLine ($"{CallTrampolineDelegate (typeInfo.Delegate!, argumentSyntax)}");
 
 				// build any needed post conversion operations after calling the delegate
-				foreach (var argument in argumentSyntax) {
-					invokeMethod.Write (argument.PostDelegateCallConversion);
+				foreach (var c in conversions) {
+					invokeMethod.Write (c.PostCallConversion);
 				}
 
 				// perform any return conversions needed
@@ -111,7 +111,7 @@ return CreateBlock (callback);
 		var delegateIdentifier = Nomenclator.GetTrampolineClassName (trampolineName, Nomenclator.TrampolineClassType.DelegateType);
 
 		using (var classBlock = classBuilder.CreateBlock ($"internal sealed class {className} : TrampolineBlockBase", true)) {
-			classBlock.WriteLine ($"{delegateName} invoker;");
+			classBlock.WriteLine ($"{delegateName} {Nomenclator.GetNativeInvokerVariableName ()};");
 			classBlock.WriteLine (); // empty line for readability
 									 // constructor
 			classBlock.WriteRaw (
@@ -138,7 +138,30 @@ public unsafe static {delegateIdentifier}? Create (IntPtr block)
 );
 			classBlock.WriteLine (); // empty line for readability
 									 // invoke method
-			classBlock.WriteLine ("// TODO: generate invoke method.");
+			using (var invokeBlock = classBlock.CreateBlock (GetTrampolineNativeInvokeSignature (typeInfo).ToString (), true)) {
+				// retrieve the arguments for the invoker execution. 
+				var (argumentSyntax, conversions) = GetTrampolineNativeInvokeArguments (typeInfo.Delegate!);
+				foreach (var c in conversions) {
+					invokeBlock.Write (c.Validations, verifyTrivia: false);
+					invokeBlock.Write (c.Initializers, verifyTrivia: false);
+				}
+				// write the conversion code for the arguments
+				foreach (var c in conversions) {
+					invokeBlock.Write (c.PreCallConversion, verifyTrivia: false);
+				}
+
+				// execute the native invoker delegate
+				invokeBlock.WriteLine ($"{CallNativeInvokerDelegate (typeInfo.Delegate!, argumentSyntax)}");
+
+				// build any needed post conversion operations after calling the delegate
+				foreach (var c in conversions) {
+					invokeBlock.Write (c.PostCallConversion, verifyTrivia: false);
+				}
+
+				// perform any return conversions needed
+				if (typeInfo.Delegate!.ReturnType.SpecialType != SpecialType.System_Void)
+					invokeBlock.WriteLine ($"return {GetTrampolineNativeInvokeReturnType (typeInfo, Nomenclator.GetReturnVariableName ())};");
+			}
 		}
 
 		return true;

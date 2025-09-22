@@ -216,6 +216,8 @@ namespace Cecil.Tests {
 		[Test]
 		public void NoMarshalAsAttributes ()
 		{
+			Configuration.IgnoreIfAnyIgnoredPlatforms ();
+
 			var failures = new Dictionary<string, NoMarshalAsFailure> ();
 			var marshalProviders = new List<IMarshalInfoProvider> ();
 			foreach (var info in Helper.NetPlatformImplementationAssemblyDefinitions) {
@@ -248,6 +250,8 @@ namespace Cecil.Tests {
 		[Test]
 		public void CheckForNonBlittablePInvokes ()
 		{
+			Configuration.IgnoreIfAnyIgnoredPlatforms ();
+
 			var failures = new Dictionary<string, NonBlittablePInvokesFailure> ();
 			var pinvokes = new List<(AssemblyDefinition Assembly, MethodDefinition Method)> ();
 
@@ -433,11 +437,16 @@ namespace Cecil.Tests {
 		[Test]
 		public void CheckForBlockLiterals ()
 		{
+			Configuration.IgnoreIfAnyIgnoredPlatforms ();
+
 			var failures = new Dictionary<string, (string Message, string Location)> ();
 
 			foreach (var info in Helper.NetPlatformImplementationAssemblyDefinitions) {
 				var assembly = info.Assembly;
 				foreach (var type in assembly.EnumerateTypes ()) {
+					if (type.Is ("ObjCRuntime", "BlockLiteral"))
+						continue;
+
 					foreach (var method in type.EnumerateMethods (m => m.HasBody)) {
 						var body = method.Body;
 						foreach (var instr in body.Instructions) {
@@ -458,14 +467,25 @@ namespace Cecil.Tests {
 							switch (targetMethod.Name) {
 							case "SetupBlock":
 							case "SetupBlockUnsafe":
-								break;
+								var location = method.RenderLocation (instr);
+								var message = $"The call to {targetMethod.Name} in {method.AsFullName ()} must be converted to new Block syntax.";
+								failures [message] = new (message, location);
+								continue;
+							case ".ctor":
+								if (!method.HasBindingImplAttribute (out var bindingImplOptions)) {
+									var loc = method.RenderLocation (body.Instructions.First ());
+									var msg = $"{method.AsFullName ()}: needs [BindingImpl (BindingImplOptions.Optimizable)] because this method creates a BlockLiteral.";
+									failures [msg] = new (msg, loc);
+								} else if ((bindingImplOptions & BindingImplOptions.Optimizable) != BindingImplOptions.Optimizable) {
+									var loc = method.RenderLocation (body.Instructions.First ());
+									var msg = $"{method.AsFullName ()}: has the required [BindingImpl] attribute (because this method creates a BlockLiteral), but the BindingImplOptions.Optimizable flag isn't set.";
+									failures [msg] = new (msg, loc);
+								}
+								continue;
 							default:
 								continue;
 							}
 
-							var location = method.RenderLocation (instr);
-							var message = $"The call to {targetMethod.Name} in {method.AsFullName ()} must be converted to new Block syntax.";
-							failures [message] = new (message, location);
 						}
 					}
 				}
@@ -475,15 +495,13 @@ namespace Cecil.Tests {
 		}
 
 		static HashSet<string> knownFailuresBlockLiterals = new HashSet<string> {
-			"The call to SetupBlock in ObjCRuntime.BlockLiteral.CreateBlockForDelegate(System.Delegate, System.Delegate, System.String) must be converted to new Block syntax.",
-			"The call to SetupBlock in ObjCRuntime.BlockLiteral.GetBlockForDelegate(System.Reflection.MethodInfo, System.Object, System.UInt32, System.String) must be converted to new Block syntax.",
-			"The call to SetupBlock in ObjCRuntime.BlockLiteral.SetupBlock(System.Delegate, System.Delegate) must be converted to new Block syntax.",
-			"The call to SetupBlock in ObjCRuntime.BlockLiteral.SetupBlockUnsafe(System.Delegate, System.Delegate) must be converted to new Block syntax.",
 		};
 
 		[Test]
 		public void CheckForMonoPInvokeCallback ()
 		{
+			Configuration.IgnoreIfAnyIgnoredPlatforms ();
+
 			var failures = new Dictionary<string, (string Message, string Location)> ();
 
 			foreach (var info in Helper.NetPlatformImplementationAssemblyDefinitions) {

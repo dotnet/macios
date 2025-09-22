@@ -18,7 +18,7 @@ namespace CoreTelephony {
 	}
 
 	/// <summary>Enumerates data restrictions for <see cref="CoreTelephony.CTCellularData.RestrictedState" />.</summary>
-	[NoMacCatalyst]
+	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CTCellularDataRestrictedState : ulong {
 		/// <summary>To be added.</summary>
@@ -29,7 +29,7 @@ namespace CoreTelephony {
 		NotRestricted,
 	}
 
-	[NoMacCatalyst]
+	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CTCellularPlanProvisioningAddPlanResult : long {
 		/// <summary>To be added.</summary>

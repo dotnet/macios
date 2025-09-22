@@ -512,20 +512,6 @@ namespace CoreText {
 			return ret;
 		}
 
-		static NSString? _RegisteredFontsChangedNotification;
-
-		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("tvos")]
-		static NSString? RegisteredFontsChangedNotification {
-			get {
-				if (_RegisteredFontsChangedNotification is null)
-					_RegisteredFontsChangedNotification = Dlfcn.GetStringConstant (Libraries.CoreText.Handle, "kCTFontManagerRegisteredFontsChangedNotification");
-				return _RegisteredFontsChangedNotification;
-			}
-		}
-
 		/// <summary>Observer for receiving notifications when fonts are added to the registry.</summary>
 		///     <remarks>To be added.</remarks>
 		public static partial class Notifications {

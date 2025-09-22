@@ -82,7 +82,8 @@ namespace SearchKit {
 			foundCount = default;
 			unsafe {
 				fixed (nint* p = ids) {
-					return SKSearchFindMatches (Handle, maxCount, (IntPtr) p, IntPtr.Zero, waitTime, (nint*) Unsafe.AsPointer<nint> (ref foundCount)) != 0;
+					fixed (nint* foundCountPtr = &foundCount)
+						return SKSearchFindMatches (Handle, maxCount, (IntPtr) p, IntPtr.Zero, waitTime, foundCountPtr) != 0;
 				}
 			}
 		}
@@ -105,11 +106,13 @@ namespace SearchKit {
 			foundCount = default;
 			unsafe {
 				fixed (nint* p = ids) {
-					if (scores is null)
-						return SKSearchFindMatches (Handle, maxCount, (IntPtr) p, IntPtr.Zero, waitTime, (nint*) Unsafe.AsPointer<nint> (ref foundCount)) != 0;
-					else {
-						fixed (float* s = scores) {
-							return SKSearchFindMatches (Handle, maxCount, (IntPtr) p, (IntPtr) s, waitTime, (nint*) Unsafe.AsPointer<nint> (ref foundCount)) != 0;
+					fixed (nint* foundCountPtr = &foundCount) {
+						if (scores is null)
+							return SKSearchFindMatches (Handle, maxCount, (IntPtr) p, IntPtr.Zero, waitTime, foundCountPtr) != 0;
+						else {
+							fixed (float* s = scores) {
+								return SKSearchFindMatches (Handle, maxCount, (IntPtr) p, (IntPtr) s, waitTime, foundCountPtr) != 0;
+							}
 						}
 					}
 				}

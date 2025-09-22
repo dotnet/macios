@@ -1,4 +1,4 @@
-#!/bin/bash -ex
+#!/bin/bash -e
 
 # Go to the top level directory
 cd "$(git rev-parse --show-toplevel)"
@@ -23,6 +23,7 @@ IFS=$'\n'
 		SED=(sed -i)
 	fi
 
+	echo 'Changing "== null" and "!= null" to "is null" and "is not null"...'
 	for file in $(git ls-files -- '*.cs' ':(exclude)tests/monotouch-test/Foundation/UrlTest.cs' ':(exclude)tests/monotouch-test/AVFoundation/AVAudioFormatTest.cs'); do
 		if [[ -L "$file" ]]; then
 			echo "Skipping $file because it's a symlink"
@@ -33,44 +34,63 @@ IFS=$'\n'
 	done
 )
 
-# Go one directory up, to avoid any global.json in xamarin-macios
+# Go one directory up, to avoid any global.json in dotnet/macios
 cd ..
 
+if test -z "${DOTNET:-}"; then
+	DOTNET=dotnet
+fi
+
+function af_whitespace ()
+{
+	echo "Processing $1..."
+	$DOTNET format whitespace "$1"
+}
+
 # Start formatting!
-dotnet format whitespace "$SRC_DIR/tests/cecil-tests/cecil-tests.csproj"
-dotnet format whitespace "$SRC_DIR/tests/dotnet/UnitTests/DotNetUnitTests.csproj"
-dotnet format whitespace "$SRC_DIR/msbuild/Messaging/Xamarin.Messaging.Build/Xamarin.Messaging.Build.csproj"
-dotnet format whitespace "$SRC_DIR/msbuild/Xamarin.Localization.MSBuild/Xamarin.Localization.MSBuild.csproj"
-dotnet format whitespace "$SRC_DIR/msbuild/Xamarin.MacDev.Tasks/Xamarin.MacDev.Tasks.csproj"
-dotnet format whitespace "$SRC_DIR/msbuild/Xamarin.iOS.Tasks.Windows/Xamarin.iOS.Tasks.Windows.csproj"
-dotnet format whitespace "$SRC_DIR/src/bgen/bgen.csproj"
-dotnet format whitespace "$SRC_DIR/tools/dotnet-linker/dotnet-linker.csproj"
-dotnet format whitespace "$SRC_DIR/tools/mmp/mmp.csproj"
-dotnet format whitespace "$SRC_DIR/tools/mtouch/mtouch.csproj"
-dotnet format whitespace "$SRC_DIR/tests/xharness/xharness.sln"
-dotnet format whitespace "$SRC_DIR/tests/introspection/dotnet/iOS/introspection.csproj"
-dotnet format whitespace "$SRC_DIR/tests/introspection/dotnet/MacCatalyst/introspection.csproj"
-dotnet format whitespace "$SRC_DIR/tests/introspection/dotnet/macOS/introspection.csproj"
-dotnet format whitespace "$SRC_DIR/tests/introspection/dotnet/tvOS/introspection.csproj"
-dotnet format whitespace "$SRC_DIR/tests/monotouch-test/dotnet/iOS/monotouch-test.csproj"
-dotnet format whitespace "$SRC_DIR/tests/monotouch-test/dotnet/MacCatalyst/monotouch-test.csproj"
-dotnet format whitespace "$SRC_DIR/tests/monotouch-test/dotnet/macOS/monotouch-test.csproj"
-dotnet format whitespace "$SRC_DIR/tests/monotouch-test/dotnet/tvOS/monotouch-test.csproj"
-dotnet format whitespace "$SRC_DIR/tests/xtro-sharpie/xtro-sharpie/xtro-sharpie.csproj"
-dotnet format whitespace "$SRC_DIR/tests/xtro-sharpie/u2ignore/u2ignore.csproj"
-dotnet format whitespace "$SRC_DIR/tests/xtro-sharpie/u2todo/u2todo.csproj"
-dotnet format whitespace "$SRC_DIR/tests/xtro-sharpie/xtro-report/xtro-report.csproj"
-dotnet format whitespace "$SRC_DIR/tests/xtro-sharpie/xtro-sanity/xtro-sanity.csproj"
-dotnet format whitespace "$SRC_DIR/tools/api-tools/mono-api-html/mono-api-html.csproj"
-dotnet format whitespace "$SRC_DIR/tools/api-tools/mono-api-info/mono-api-info.csproj"
-dotnet format whitespace "$SRC_DIR/tests/common/MonoTouch.Dialog/MonoTouch.Dialog.iOS.csproj"
-dotnet format whitespace "$SRC_DIR/tests/common/MonoTouch.Dialog/MonoTouch.Dialog.MacCatalyst.csproj"
-dotnet format whitespace "$SRC_DIR/tests/common/MonoTouch.Dialog/MonoTouch.Dialog.tvOS.csproj"
-dotnet format whitespace "$SRC_DIR/tests/common/Touch.Unit/Touch.Client/dotnet/Touch.Client.iOS.csproj"
-dotnet format whitespace "$SRC_DIR/tests/common/Touch.Unit/Touch.Client/dotnet/Touch.Client.MacCatalyst.csproj"
-dotnet format whitespace "$SRC_DIR/tests/common/Touch.Unit/Touch.Client/dotnet/Touch.Client.macOS.csproj"
-dotnet format whitespace "$SRC_DIR/tests/common/Touch.Unit/Touch.Client/dotnet/Touch.Client.tvOS.csproj"
-dotnet format whitespace --folder "$SRC_DIR"
+af_whitespace "$SRC_DIR/tests/cecil-tests/cecil-tests.csproj"
+af_whitespace "$SRC_DIR/tests/dotnet/UnitTests/DotNetUnitTests.csproj"
+af_whitespace "$SRC_DIR/msbuild/Messaging/Xamarin.Messaging.Build/Xamarin.Messaging.Build.csproj"
+af_whitespace "$SRC_DIR/msbuild/Xamarin.Localization.MSBuild/Xamarin.Localization.MSBuild.csproj"
+af_whitespace "$SRC_DIR/msbuild/Xamarin.MacDev.Tasks/Xamarin.MacDev.Tasks.csproj"
+af_whitespace "$SRC_DIR/msbuild/Xamarin.iOS.Tasks.Windows/Xamarin.iOS.Tasks.Windows.csproj"
+af_whitespace "$SRC_DIR/src/bgen/bgen.csproj"
+af_whitespace "$SRC_DIR/src/rgen/Microsoft.Macios.Binding.Common/Microsoft.Macios.Binding.Common.csproj"
+af_whitespace "$SRC_DIR/src/rgen/Microsoft.Macios.Bindings.Analyzer.Sample/Microsoft.Macios.Bindings.Analyzer.Sample.csproj"
+af_whitespace "$SRC_DIR/src/rgen/Microsoft.Macios.Bindings.Analyzer/Microsoft.Macios.Bindings.Analyzer.csproj"
+af_whitespace "$SRC_DIR/src/rgen/Microsoft.Macios.Bindings.CodeFixers/Microsoft.Macios.Bindings.CodeFixers.csproj"
+af_whitespace "$SRC_DIR/src/rgen/Microsoft.Macios.Generator.Sample/Microsoft.Macios.Generator.Sample.csproj"
+af_whitespace "$SRC_DIR/src/rgen/Microsoft.Macios.Generator/Microsoft.Macios.Generator.csproj"
+af_whitespace "$SRC_DIR/src/rgen/Microsoft.Macios.Transformer/Microsoft.Macios.Transformer.csproj"
+af_whitespace "$SRC_DIR/tools/dotnet-linker/dotnet-linker.csproj"
+af_whitespace "$SRC_DIR/tools/mmp/mmp.csproj"
+af_whitespace "$SRC_DIR/tools/mtouch/mtouch.csproj"
+af_whitespace "$SRC_DIR/tests/xharness/xharness.sln"
+af_whitespace "$SRC_DIR/tests/introspection/dotnet/iOS/introspection.csproj"
+af_whitespace "$SRC_DIR/tests/introspection/dotnet/MacCatalyst/introspection.csproj"
+af_whitespace "$SRC_DIR/tests/introspection/dotnet/macOS/introspection.csproj"
+af_whitespace "$SRC_DIR/tests/introspection/dotnet/tvOS/introspection.csproj"
+af_whitespace "$SRC_DIR/tests/monotouch-test/dotnet/iOS/monotouch-test.csproj"
+af_whitespace "$SRC_DIR/tests/monotouch-test/dotnet/MacCatalyst/monotouch-test.csproj"
+af_whitespace "$SRC_DIR/tests/monotouch-test/dotnet/macOS/monotouch-test.csproj"
+af_whitespace "$SRC_DIR/tests/monotouch-test/dotnet/tvOS/monotouch-test.csproj"
+af_whitespace "$SRC_DIR/tests/xtro-sharpie/xtro-sharpie/xtro-sharpie.csproj"
+af_whitespace "$SRC_DIR/tests/xtro-sharpie/u2ignore/u2ignore.csproj"
+af_whitespace "$SRC_DIR/tests/xtro-sharpie/u2todo/u2todo.csproj"
+af_whitespace "$SRC_DIR/tests/xtro-sharpie/xtro-report/xtro-report.csproj"
+af_whitespace "$SRC_DIR/tests/xtro-sharpie/xtro-sanity/xtro-sanity.csproj"
+af_whitespace "$SRC_DIR/tools/api-tools/mono-api-html/mono-api-html.csproj"
+af_whitespace "$SRC_DIR/tools/api-tools/mono-api-info/mono-api-info.csproj"
+af_whitespace "$SRC_DIR/tests/common/MonoTouch.Dialog/MonoTouch.Dialog.iOS.csproj"
+af_whitespace "$SRC_DIR/tests/common/MonoTouch.Dialog/MonoTouch.Dialog.MacCatalyst.csproj"
+af_whitespace "$SRC_DIR/tests/common/MonoTouch.Dialog/MonoTouch.Dialog.tvOS.csproj"
+af_whitespace "$SRC_DIR/tests/common/Touch.Unit/Touch.Client/dotnet/Touch.Client.iOS.csproj"
+af_whitespace "$SRC_DIR/tests/common/Touch.Unit/Touch.Client/dotnet/Touch.Client.MacCatalyst.csproj"
+af_whitespace "$SRC_DIR/tests/common/Touch.Unit/Touch.Client/dotnet/Touch.Client.macOS.csproj"
+af_whitespace "$SRC_DIR/tests/common/Touch.Unit/Touch.Client/dotnet/Touch.Client.tvOS.csproj"
+
+echo "Processing $SRC_DIR..."
+$DOTNET format whitespace --folder "$SRC_DIR"
 
 for file in "$SRC_DIR"/dotnet/Templates/Microsoft.*.Templates/*/*/.template.config/localize/*.json "$SRC_DIR"/dotnet/Templates/Microsoft.*.Templates/*/.template.config/localize/*.json; do
 	tr -d $'\r' < "$file" > "$file".tmp

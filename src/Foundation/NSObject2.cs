@@ -38,7 +38,7 @@ using System.Runtime.InteropServices.ObjectiveC;
 using ObjCRuntime;
 #if !COREBUILD
 using Xamarin.Bundler;
-#if MONOTOUCH
+#if HAS_UIKIT
 using UIKit;
 using CoreAnimation;
 #endif
@@ -184,7 +184,7 @@ namespace Foundation {
 
 		// This enum has a native counterpart in runtime.h
 		[Flags]
-		internal enum Flags : byte {
+		internal enum Flags : uint {
 			Disposed = 1,
 			NativeRef = 2,
 			IsDirectBinding = 4,

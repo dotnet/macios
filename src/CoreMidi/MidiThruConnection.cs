@@ -74,6 +74,14 @@ namespace CoreMidi {
 			}
 		}
 
+		internal MidiThruConnectionRef GetCheckedHandle ()
+		{
+			if (handle == MidiObject.InvalidRef)
+				throw new ObjectDisposedException ("handle");
+
+			return handle;
+		}
+
 		[DllImport (Constants.CoreMidiLibrary)]
 		unsafe static extern /* OSStatus */ MidiError MIDIThruConnectionCreate (
 			/* CFStringRef */ IntPtr inPersistentOwnerID, /* can be null */
@@ -125,12 +133,9 @@ namespace CoreMidi {
 		///         <remarks>To be added.</remarks>
 		public MidiThruConnectionParams? GetParams (out MidiError error)
 		{
-			if (Handle == InvalidRef)
-				throw new ObjectDisposedException ("MidiThruConnection");
-
 			IntPtr ret;
 			unsafe {
-				error = MIDIThruConnectionGetParams (Handle, &ret);
+				error = MIDIThruConnectionGetParams (GetCheckedHandle (), &ret);
 			}
 			if (error != MidiError.Ok || ret == IntPtr.Zero)
 				return null;
@@ -163,13 +168,11 @@ namespace CoreMidi {
 		///         <remarks>To be added.</remarks>
 		public MidiError SetParams (MidiThruConnectionParams connectionParams)
 		{
-			if (Handle == InvalidRef)
-				throw new ObjectDisposedException ("MidiThruConnection");
 			if (connectionParams is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (connectionParams));
 
 			using (var data = connectionParams.WriteStruct ()) {
-				var error = MIDIThruConnectionSetParams (Handle, data.Handle);
+				var error = MIDIThruConnectionSetParams (GetCheckedHandle (), data.Handle);
 				return error;
 			}
 		}

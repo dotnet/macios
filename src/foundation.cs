@@ -177,7 +177,7 @@ namespace Foundation {
 	/// <param name="options">To be added.</param>
 	/// <summary>Defines the load handler for use with the <see cref="Foundation.NSItemProvider.RegisterItemForTypeIdentifier(System.String,Foundation.NSItemProviderLoadHandler)" /> and <see cref="Foundation.NSItemProvider.SetPreviewImageHandler(Foundation.NSItemProviderLoadHandler)" /> methods.</summary>
 	/// <remarks>To be added.</remarks>
-	delegate void NSItemProviderLoadHandler ([BlockCallback] NSItemProviderCompletionHandler completionHandler, Class expectedValueClass, NSDictionary options);
+	delegate void NSItemProviderLoadHandler ([BlockCallback, NullAllowed] NSItemProviderCompletionHandler completionHandler, [NullAllowed] Class expectedValueClass, [NullAllowed] NSDictionary options);
 	/// <param name="date">To be added.</param>
 	/// <param name="exactMatch">To be added.</param>
 	/// <param name="stop">To be added.</param>
@@ -501,7 +501,22 @@ namespace Foundation {
 		[NoMacCatalyst]
 		[NoTV]
 		[Export ("initWithDocFormat:documentAttributes:")]
+		[Internal]
+		NativeHandle _InitWithDocFormat (NSData wordDocFormat, out NSDictionary docAttributes);
+
+#if !XAMCORE_5_0
+		/// <param name="wordDocFormat">To be added.</param>
+		/// <param name="docAttributes">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
+		[NoiOS]
+		[NoMacCatalyst]
+		[NoTV]
+		[Export ("initWithDocFormat:documentAttributes:")]
+		[Sealed]
+		[Obsolete ("Use 'CreateWithDocFormat' instead.")]
 		NativeHandle Constructor (NSData wordDocFormat, out NSDictionary docAttributes);
+#endif
 
 		/// <param name="htmlData">To be added.</param>
 		/// <param name="baseUrl">To be added.</param>
@@ -512,7 +527,23 @@ namespace Foundation {
 		[NoMacCatalyst]
 		[NoTV]
 		[Export ("initWithHTML:baseURL:documentAttributes:")]
+		[Internal]
+		NativeHandle _InitWithHTML (NSData htmlData, NSUrl baseUrl, out NSDictionary docAttributes);
+
+#if !XAMCORE_5_0
+		/// <param name="htmlData">To be added.</param>
+		/// <param name="baseUrl">To be added.</param>
+		/// <param name="docAttributes">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
+		[NoiOS]
+		[NoMacCatalyst]
+		[NoTV]
+		[Export ("initWithHTML:baseURL:documentAttributes:")]
+		[Sealed]
+		[Obsolete ("Use 'CreateWithHTML' instead.")]
 		NativeHandle Constructor (NSData htmlData, NSUrl baseUrl, out NSDictionary docAttributes);
+#endif
 
 		/// <param name="rect">To be added.</param>
 		///         <param name="options">To be added.</param>
@@ -531,7 +562,7 @@ namespace Foundation {
 		[NoiOS]
 		[NoMacCatalyst]
 		[NoTV]
-		[Deprecated (PlatformName.MacOSX, 10, 11, message: "Use 'NSAttributedString (NSUrl, NSDictionary, out NSDictionary, ref NSError)' instead.")]
+		[Deprecated (PlatformName.MacOSX, 10, 11, message: "Use 'Create (NSUrl, NSDictionary, out NSDictionary, out NSError)' instead.")]
 		[Export ("initWithPath:documentAttributes:")]
 		NativeHandle Constructor (string path, out NSDictionary resultDocumentAttributes);
 
@@ -542,7 +573,7 @@ namespace Foundation {
 		[NoiOS]
 		[NoMacCatalyst]
 		[NoTV]
-		[Deprecated (PlatformName.MacOSX, 10, 11, message: "Use 'NSAttributedString (NSUrl, NSDictionary, out NSDictionary, ref NSError)' instead.")]
+		[Deprecated (PlatformName.MacOSX, 10, 11, message: "Use 'Create (NSUrl, NSDictionary, out NSDictionary, out NSError)' instead.")]
 		[Export ("initWithURL:documentAttributes:")]
 		NativeHandle Constructor (NSUrl url, out NSDictionary resultDocumentAttributes);
 
@@ -564,6 +595,7 @@ namespace Foundation {
 		[Internal, Export ("initWithHTML:documentAttributes:")]
 		IntPtr _InitWithHTML (NSData data, out NSDictionary resultDocumentAttributes);
 
+#if !XAMCORE_5_0
 		/// <param name="data">To be added.</param>
 		/// <param name="options">To be added.</param>
 		/// <param name="resultDocumentAttributes">To be added.</param>
@@ -573,8 +605,19 @@ namespace Foundation {
 		[NoMacCatalyst]
 		[NoTV]
 		[Export ("initWithHTML:options:documentAttributes:")]
+		[Deprecated (PlatformName.MacOSX, 10, 11, message: "Use 'CreateWithHTML (NSData, NSDictionary, out NSDictionary)' instead.")]
+		[Sealed]
 		NativeHandle Constructor (NSData data, [NullAllowed] NSDictionary options, out NSDictionary resultDocumentAttributes);
+#endif
 
+		[NoiOS]
+		[NoMacCatalyst]
+		[NoTV]
+		[Export ("initWithHTML:options:documentAttributes:")]
+		[Internal]
+		NativeHandle _InitWithHTML (NSData data, NSDictionary options, out NSDictionary resultDocumentAttributes);
+
+#if !XAMCORE_5_0
 		/// <param name="data">To be added.</param>
 		/// <param name="options">To be added.</param>
 		/// <param name="resultDocumentAttributes">To be added.</param>
@@ -584,8 +627,11 @@ namespace Foundation {
 		[NoMacCatalyst]
 		[NoTV]
 		[Wrap ("this (data, options.GetDictionary (), out resultDocumentAttributes)")]
+		[Deprecated (PlatformName.MacOSX, 10, 11, message: "Use 'CreateWithHTML (NSData, NSAttributedStringDocumentAttributes, out NSDictionary)' instead.")]
 		NativeHandle Constructor (NSData data, NSAttributedStringDocumentAttributes options, out NSDictionary resultDocumentAttributes);
+#endif
 
+#if !XAMCORE_5_0
 		/// <param name="wrapper">To be added.</param>
 		/// <param name="resultDocumentAttributes">To be added.</param>
 		/// <summary>To be added.</summary>
@@ -594,7 +640,17 @@ namespace Foundation {
 		[NoMacCatalyst]
 		[NoTV]
 		[Export ("initWithRTFDFileWrapper:documentAttributes:")]
+		[Deprecated (PlatformName.MacOSX, 10, 11, message: "Use 'Create (NSFileWrapper, out NSDictionary)' instead.")]
+		[Sealed]
 		NativeHandle Constructor (NSFileWrapper wrapper, out NSDictionary resultDocumentAttributes);
+#endif
+
+		[NoiOS]
+		[NoMacCatalyst]
+		[NoTV]
+		[Export ("initWithRTFDFileWrapper:documentAttributes:")]
+		[Internal]
+		NativeHandle _InitWithRTFDFileWrapper (NSFileWrapper wrapper, out NSDictionary resultDocumentAttributes);
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
@@ -1186,6 +1242,10 @@ namespace Foundation {
 		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Field ("NSLocalizedNumberFormatAttributeName")]
 		LocalizedNumberFormat,
+
+		[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Field ("NSListItemDelimiterAttributeName")]
+		ListItemDelimiter,
 	}
 
 	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
@@ -1310,12 +1370,6 @@ namespace Foundation {
 
 	interface INSCacheDelegate { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Foundation.NSCacheDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Foundation.NSCacheDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Foundation.NSCacheDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="Foundation.NSCacheDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[BaseType (typeof (NSObject))]
 	[Model]
 	[Protocol]
@@ -1361,6 +1415,9 @@ namespace Foundation {
 		[Export ("initWithCalendarIdentifier:")]
 		NativeHandle Constructor (NSString identifier);
 
+		[Wrap ("this (calendarType.GetConstant ()!)")]
+		NativeHandle Constructor (NSCalendarType calendarType);
+
 		[Export ("calendarIdentifier")]
 		string Identifier { get; }
 
@@ -1391,56 +1448,6 @@ namespace Foundation {
 
 		[Export ("dateFromComponents:")]
 		NSDate DateFromComponents (NSDateComponents comps);
-
-		[Field ("NSCalendarIdentifierGregorian"), Internal]
-		NSString NSGregorianCalendar { get; }
-
-		[Field ("NSCalendarIdentifierBuddhist"), Internal]
-		NSString NSBuddhistCalendar { get; }
-
-		[Field ("NSCalendarIdentifierChinese"), Internal]
-		NSString NSChineseCalendar { get; }
-
-		[Field ("NSCalendarIdentifierHebrew"), Internal]
-		NSString NSHebrewCalendar { get; }
-
-		[Field ("NSIslamicCalendar"), Internal]
-		NSString NSIslamicCalendar { get; }
-
-		[Field ("NSCalendarIdentifierIslamicCivil"), Internal]
-		NSString NSIslamicCivilCalendar { get; }
-
-		[Field ("NSCalendarIdentifierJapanese"), Internal]
-		NSString NSJapaneseCalendar { get; }
-
-		[Field ("NSCalendarIdentifierRepublicOfChina"), Internal]
-		NSString NSRepublicOfChinaCalendar { get; }
-
-		[Field ("NSCalendarIdentifierPersian"), Internal]
-		NSString NSPersianCalendar { get; }
-
-		[Field ("NSCalendarIdentifierIndian"), Internal]
-		NSString NSIndianCalendar { get; }
-
-		[Field ("NSCalendarIdentifierISO8601"), Internal]
-		NSString NSISO8601Calendar { get; }
-
-		[Field ("NSCalendarIdentifierCoptic"), Internal]
-		NSString CopticCalendar { get; }
-
-		[Field ("NSCalendarIdentifierEthiopicAmeteAlem"), Internal]
-		NSString EthiopicAmeteAlemCalendar { get; }
-
-		[Field ("NSCalendarIdentifierEthiopicAmeteMihret"), Internal]
-		NSString EthiopicAmeteMihretCalendar { get; }
-
-		[MacCatalyst (13, 1)]
-		[Field ("NSCalendarIdentifierIslamicTabular"), Internal]
-		NSString IslamicTabularCalendar { get; }
-
-		[MacCatalyst (13, 1)]
-		[Field ("NSCalendarIdentifierIslamicUmmAlQura"), Internal]
-		NSString IslamicUmmAlQuraCalendar { get; }
 
 		[Export ("eraSymbols")]
 		string [] EraSymbols { get; }
@@ -1710,11 +1717,130 @@ namespace Foundation {
 		[MacCatalyst (13, 1)]
 		NSDate StartOfDayForDate (NSDate date);
 
-		/// <include file="../docs/api/Foundation/NSCalendar.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSCalendar.DayChangedNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("NSCalendarDayChangedNotification")]
 		NSString DayChangedNotification { get; }
+	}
+
+	/// <summary>Calendar types that can be used with the NSCalendar constructor.</summary>
+	enum NSCalendarType {
+		/// <summary>Gregorian calendar.</summary>
+		[Field ("NSCalendarIdentifierGregorian")]
+		Gregorian = 0,
+
+		/// <summary>Buddhist calendar.</summary>
+		[Field ("NSCalendarIdentifierBuddhist")]
+		Buddhist = 1,
+
+		/// <summary>Chinese calendar.</summary>
+		[Field ("NSCalendarIdentifierChinese")]
+		Chinese = 2,
+
+		/// <summary>Hebrew calendar.</summary>
+		[Field ("NSCalendarIdentifierHebrew")]
+		Hebrew = 3,
+
+		/// <summary>Islamic calendar.</summary>
+		[Field ("NSIslamicCalendar")]
+		Islamic = 4,
+
+		/// <summary>IslamicCivil calendar.</summary>
+		[Field ("NSCalendarIdentifierIslamicCivil")]
+		IslamicCivil = 5,
+
+		/// <summary>Japanese calendar.</summary>
+		[Field ("NSCalendarIdentifierJapanese")]
+		Japanese = 6,
+
+#if !XAMCORE_5_0
+		/// <summary>Calendar for Taiwan.</summary>
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Obsolete ("Use 'RepublicOfChina' instead.")]
+		Taiwan = 7,
+#endif
+
+		/// <summary>Calendar for the Republic of China.</summary>
+		[Field ("NSCalendarIdentifierRepublicOfChina")]
+		RepublicOfChina = 7,
+
+		/// <summary>Persian calendar.</summary>
+		[Field ("NSCalendarIdentifierPersian")]
+		Persian = 8,
+
+		/// <summary>Indian calendar.</summary>
+		[Field ("NSCalendarIdentifierIndian")]
+		Indian = 9,
+
+		/// <summary>ISO8601 calendar.</summary>
+		[Field ("NSCalendarIdentifierISO8601")]
+		ISO8601 = 10,
+
+		/// <summary>Coptic calendar.</summary>
+		[Field ("NSCalendarIdentifierCoptic")]
+		Coptic = 11,
+
+		/// <summary>Ethiopic (Amete Alem) calendar.</summary>
+		[Field ("NSCalendarIdentifierEthiopicAmeteAlem")]
+		EthiopicAmeteAlem = 12,
+
+		/// <summary>Ethiopic (Amete Mihret) calendar.</summary>
+		[Field ("NSCalendarIdentifierEthiopicAmeteMihret")]
+		EthiopicAmeteMihret = 13,
+
+		/// <summary>Tabular Islamic calendar.</summary>
+		[MacCatalyst (13, 1)]
+		[Field ("NSCalendarIdentifierIslamicTabular")]
+		IslamicTabular = 14,
+
+		/// <summary>Islamic Umm al-Qura calendar.</summary>
+		[MacCatalyst (13, 1)]
+		[Field ("NSCalendarIdentifierIslamicUmmAlQura")]
+		IslamicUmmAlQura = 15,
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("NSCalendarIdentifierBangla")]
+		Bangla,
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("NSCalendarIdentifierGujarati")]
+		Gujarati,
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("NSCalendarIdentifierKannada")]
+		Kannada,
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("NSCalendarIdentifierMalayalam")]
+		Malayalam,
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("NSCalendarIdentifierMarathi")]
+		Marathi,
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("NSCalendarIdentifierOdia")]
+		Odia,
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("NSCalendarIdentifierTamil")]
+		Tamil,
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("NSCalendarIdentifierTelugu")]
+		Telugu,
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("NSCalendarIdentifierVikram")]
+		Vikram,
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("NSCalendarIdentifierDangi")]
+		Dangi,
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("NSCalendarIdentifierVietnamese")]
+		Vietnamese,
 	}
 
 	// Obsolete, but the only API surfaced by WebKit.WebHistory.
@@ -2496,6 +2622,14 @@ namespace Foundation {
 		[Export ("valueForComponent:")]
 		[MacCatalyst (13, 1)]
 		nint GetValueForComponent (NSCalendarUnit unit);
+
+		[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("repeatedDay")]
+		bool IsRepeatedDay {
+			[Bind ("isRepeatedDay")]
+			get;
+			set;
+		}
 	}
 
 	[BaseType (typeof (NSFormatter))]
@@ -3083,22 +3217,18 @@ namespace Foundation {
 		[Field ("NSFileHandleOperationException")]
 		NSString OperationException { get; }
 
-		/// <include file="../docs/api/Foundation/NSFileHandle.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSFileHandle.ReadCompletionNotification']/*" />
 		[Field ("NSFileHandleReadCompletionNotification")]
 		[Notification (typeof (NSFileHandleReadEventArgs))]
 		NSString ReadCompletionNotification { get; }
 
-		/// <include file="../docs/api/Foundation/NSFileHandle.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSFileHandle.ReadToEndOfFileCompletionNotification']/*" />
 		[Field ("NSFileHandleReadToEndOfFileCompletionNotification")]
 		[Notification (typeof (NSFileHandleReadEventArgs))]
 		NSString ReadToEndOfFileCompletionNotification { get; }
 
-		/// <include file="../docs/api/Foundation/NSFileHandle.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSFileHandle.ConnectionAcceptedNotification']/*" />
 		[Field ("NSFileHandleConnectionAcceptedNotification")]
 		[Notification (typeof (NSFileHandleConnectionAcceptedEventArgs))]
 		NSString ConnectionAcceptedNotification { get; }
 
-		/// <include file="../docs/api/Foundation/NSFileHandle.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSFileHandle.DataAvailableNotification']/*" />
 		[Field ("NSFileHandleDataAvailableNotification")]
 		[Notification]
 		NSString DataAvailableNotification { get; }
@@ -3277,12 +3407,6 @@ namespace Foundation {
 	}
 
 #if !XAMCORE_5_0
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Foundation.NSCoding" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Foundation.NSCoding" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Foundation.NSCoding" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="Foundation.NSCoding_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[BaseType (typeof (NSObject))]
 	[Model]
 #endif
@@ -3320,12 +3444,6 @@ namespace Foundation {
 	}
 
 #if !XAMCORE_5_0
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Foundation.NSCopying" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Foundation.NSCopying" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Foundation.NSCopying" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="Foundation.NSCopying_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[BaseType (typeof (NSObject))]
 	[Model]
 #endif
@@ -3344,12 +3462,6 @@ namespace Foundation {
 	}
 
 #if !XAMCORE_5_0
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Foundation.NSMutableCopying" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Foundation.NSMutableCopying" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Foundation.NSMutableCopying" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="Foundation.NSMutableCopying_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[BaseType (typeof (NSObject))]
 	[Model]
 #endif
@@ -3433,12 +3545,6 @@ namespace Foundation {
 
 	interface INSKeyedUnarchiverDelegate { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Foundation.NSKeyedUnarchiverDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Foundation.NSKeyedUnarchiverDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Foundation.NSKeyedUnarchiverDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="Foundation.NSKeyedUnarchiverDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[BaseType (typeof (NSObject))]
 	[Model]
 	[Protocol]
@@ -3535,18 +3641,18 @@ namespace Foundation {
 		[return: NullAllowed]
 		NSData GetArchivedData (NSObject @object, bool requiresSecureCoding, [NullAllowed] out NSError error);
 
-		[Deprecated (PlatformName.TvOS, 12, 0, message: "Use 'ArchivedDataWithRootObject (NSObject, bool, out NSError)' instead.")]
-		[Deprecated (PlatformName.iOS, 12, 0, message: "Use 'ArchivedDataWithRootObject (NSObject, bool, out NSError)' instead.")]
-		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'ArchivedDataWithRootObject (NSObject, bool, out NSError)' instead.")]
-		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'ArchivedDataWithRootObject (NSObject, bool, out NSError)' instead.")]
+		[Deprecated (PlatformName.TvOS, 12, 0, message: "Use 'GetArchivedData (NSObject, bool, out NSError)' instead.")]
+		[Deprecated (PlatformName.iOS, 12, 0, message: "Use 'GetArchivedData (NSObject, bool, out NSError)' instead.")]
+		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'GetArchivedData (NSObject, bool, out NSError)' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'GetArchivedData (NSObject, bool, out NSError)' instead.")]
 		[Export ("archivedDataWithRootObject:")]
 		[Static]
 		NSData GetArchivedData (NSObject root);
 
-		[Deprecated (PlatformName.TvOS, 12, 0, message: "Use 'ArchivedDataWithRootObject (NSObject, bool, out NSError)' instead.")]
-		[Deprecated (PlatformName.iOS, 12, 0, message: "Use 'ArchivedDataWithRootObject (NSObject, bool, out NSError)' instead.")]
-		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'ArchivedDataWithRootObject (NSObject, bool, out NSError)' instead.")]
-		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'ArchivedDataWithRootObject (NSObject, bool, out NSError)' instead.")]
+		[Deprecated (PlatformName.TvOS, 12, 0, message: "Use 'GetArchivedData (NSObject, bool, out NSError)' and then 'NSData.Save' instead.")]
+		[Deprecated (PlatformName.iOS, 12, 0, message: "Use 'GetArchivedData (NSObject, bool, out NSError)' and then 'NSData.Save' instead.")]
+		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'GetArchivedData (NSObject, bool, out NSError)' and then 'NSData.Save' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'GetArchivedData (NSObject, bool, out NSError)' and then 'NSData.Save' instead.")]
 		[Export ("archiveRootObject:toFile:")]
 		[Static]
 		bool ArchiveRootObjectToFile (NSObject root, string file);
@@ -3823,22 +3929,18 @@ namespace Foundation {
 		NSObject [] SearchScopes { get; set; }
 
 		// There is no info associated with these notifications
-		/// <include file="../docs/api/Foundation/NSMetadataQuery.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSMetadataQuery.DidStartGatheringNotification']/*" />
 		[Field ("NSMetadataQueryDidStartGatheringNotification")]
 		[Notification]
 		NSString DidStartGatheringNotification { get; }
 
-		/// <include file="../docs/api/Foundation/NSMetadataQuery.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSMetadataQuery.GatheringProgressNotification']/*" />
 		[Field ("NSMetadataQueryGatheringProgressNotification")]
 		[Notification]
 		NSString GatheringProgressNotification { get; }
 
-		/// <include file="../docs/api/Foundation/NSMetadataQuery.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSMetadataQuery.DidFinishGatheringNotification']/*" />
 		[Field ("NSMetadataQueryDidFinishGatheringNotification")]
 		[Notification]
 		NSString DidFinishGatheringNotification { get; }
 
-		/// <include file="../docs/api/Foundation/NSMetadataQuery.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSMetadataQuery.DidUpdateNotification']/*" />
 		[Field ("NSMetadataQueryDidUpdateNotification")]
 		[Notification]
 		NSString DidUpdateNotification { get; }
@@ -6231,7 +6333,7 @@ namespace Foundation {
 		string [] CallStackSymbols { get; }
 	}
 
-	delegate NSObject NSExpressionCallbackHandler (NSObject evaluatedObject, NSExpression [] expressions, NSMutableDictionary context);
+	delegate NSObject NSExpressionCallbackHandler ([NullAllowed] NSObject evaluatedObject, NSExpression [] expressions, [NullAllowed] NSMutableDictionary context);
 	[BaseType (typeof (NSObject))]
 	// Objective-C exception thrown.  Name: NSInvalidArgumentException Reason: *** -predicateFormat cannot be sent to an abstract object of class NSExpression: Create a concrete instance!
 	[DisableDefaultCtor]
@@ -6389,28 +6491,24 @@ namespace Foundation {
 		[Field ("NSExtensionItemsAndErrorsKey")]
 		NSString ItemsAndErrorsKey { get; }
 
-		/// <include file="../docs/api/Foundation/NSExtensionContext.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSExtensionContext.HostWillEnterForegroundNotification']/*" />
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("NSExtensionHostWillEnterForegroundNotification")]
 		NSString HostWillEnterForegroundNotification { get; }
 
-		/// <include file="../docs/api/Foundation/NSExtensionContext.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSExtensionContext.HostDidEnterBackgroundNotification']/*" />
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("NSExtensionHostDidEnterBackgroundNotification")]
 		NSString HostDidEnterBackgroundNotification { get; }
 
-		/// <include file="../docs/api/Foundation/NSExtensionContext.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSExtensionContext.HostWillResignActiveNotification']/*" />
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("NSExtensionHostWillResignActiveNotification")]
 		NSString HostWillResignActiveNotification { get; }
 
-		/// <include file="../docs/api/Foundation/NSExtensionContext.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSExtensionContext.HostDidBecomeActiveNotification']/*" />
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Notification]
@@ -6504,7 +6602,11 @@ namespace Foundation {
 	/// <param name="stop">To be added.</param>
 	/// <summary>A delegate that enumerates values for <see cref="Foundation.NSLinguisticTagger.EnumerateTagsInRange(Foundation.NSRange,Foundation.NSString,Foundation.NSLinguisticTaggerOptions,Foundation.NSLingusticEnumerator)" />.</summary>
 	/// <remarks>To be added.</remarks>
-	delegate void NSLingusticEnumerator (NSString tag, NSRange tokenRange, NSRange sentenceRange, ref bool stop);
+#if XAMCORE_5_0
+	delegate void NSLinguisticEnumerator ([NullAllowed] NSString tag, NSRange tokenRange, NSRange sentenceRange, ref bool stop);
+#else
+	delegate void NSLingusticEnumerator ([NullAllowed] NSString tag, NSRange tokenRange, NSRange sentenceRange, ref bool stop);
+#endif
 
 	[Deprecated (PlatformName.MacOSX, 11, 0, message: "Use 'NaturalLanguage.*' API instead.")]
 	[Deprecated (PlatformName.iOS, 14, 0, message: "Use 'NaturalLanguage.*' API instead.")]
@@ -6542,7 +6644,11 @@ namespace Foundation {
 		void StringEditedInRange (NSRange newRange, nint delta);
 
 		[Export ("enumerateTagsInRange:scheme:options:usingBlock:")]
+#if XAMCORE_5_0
+		void EnumerateTagsInRange (NSRange range, NSString tagScheme, NSLinguisticTaggerOptions opts, NSLinguisticEnumerator enumerator);
+#else
 		void EnumerateTagsInRange (NSRange range, NSString tagScheme, NSLinguisticTaggerOptions opts, NSLingusticEnumerator enumerator);
+#endif
 
 		[Export ("sentenceRangeForRange:")]
 		NSRange GetSentenceRangeForRange (NSRange range);
@@ -6723,7 +6829,6 @@ namespace Foundation {
 		[Export ("localeWithLocaleIdentifier:")]
 		NSLocale FromLocaleIdentifier (string ident);
 
-		/// <include file="../docs/api/Foundation/NSLocale.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSLocale.CurrentLocaleDidChangeNotification']/*" />
 		[Field ("NSCurrentLocaleDidChangeNotification")]
 		[Notification]
 		NSString CurrentLocaleDidChangeNotification { get; }
@@ -7344,7 +7449,6 @@ namespace Foundation {
 		[Export ("synchronize")]
 		bool Synchronize ();
 
-		/// <include file="../docs/api/Foundation/NSUbiquitousKeyValueStore.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSUbiquitousKeyValueStore.DidChangeExternallyNotification']/*" />
 		[Field ("NSUbiquitousKeyValueStoreDidChangeExternallyNotification")]
 		[Notification (typeof (NSUbiquitousKeyValueStoreChangeEventArgs))]
 		NSString DidChangeExternallyNotification { get; }
@@ -7840,35 +7944,39 @@ namespace Foundation {
 		[Field ("NSRegistrationDomain")]
 		NSString RegistrationDomain { get; }
 
-		/// <include file="../docs/api/Foundation/NSUserDefaults.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSUserDefaults.SizeLimitExceededNotification']/*" />
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("NSUserDefaultsSizeLimitExceededNotification")]
 		NSString SizeLimitExceededNotification { get; }
 
-		/// <include file="../docs/api/Foundation/NSUserDefaults.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSUserDefaults.NoCloudAccountNotification']/*" />
+		[Deprecated (PlatformName.iOS, 9, 3, "This notification is never posted.")]
+		[Deprecated (PlatformName.TvOS, 9, 3, "This notification is never posted.")]
+		[Deprecated (PlatformName.MacCatalyst, 13, 1, "This notification is never posted.")]
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("NSUbiquitousUserDefaultsNoCloudAccountNotification")]
 		NSString NoCloudAccountNotification { get; }
 
-		/// <include file="../docs/api/Foundation/NSUserDefaults.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSUserDefaults.DidChangeAccountsNotification']/*" />
+		[Deprecated (PlatformName.iOS, 9, 3, "This notification is never posted.")]
+		[Deprecated (PlatformName.TvOS, 9, 3, "This notification is never posted.")]
+		[Deprecated (PlatformName.MacCatalyst, 13, 1, "This notification is never posted.")]
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("NSUbiquitousUserDefaultsDidChangeAccountsNotification")]
 		NSString DidChangeAccountsNotification { get; }
 
-		/// <include file="../docs/api/Foundation/NSUserDefaults.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSUserDefaults.CompletedInitialSyncNotification']/*" />
+		[Deprecated (PlatformName.iOS, 9, 3, "This notification is never posted.")]
+		[Deprecated (PlatformName.TvOS, 9, 3, "This notification is never posted.")]
+		[Deprecated (PlatformName.MacCatalyst, 13, 1, "This notification is never posted.")]
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("NSUbiquitousUserDefaultsCompletedInitialSyncNotification")]
 		NSString CompletedInitialSyncNotification { get; }
 
-		/// <include file="../docs/api/Foundation/NSUserDefaults.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSUserDefaults.DidChangeNotification']/*" />
 		[Notification]
 		[Field ("NSUserDefaultsDidChangeNotification")]
 		NSString DidChangeNotification { get; }
@@ -8897,6 +9005,14 @@ namespace Foundation {
 		[Field ("NSURLUbiquitousSharedItemPermissionsReadWrite")]
 		NSString UbiquitousSharedItemPermissionsReadWrite { get; }
 
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("NSURLUbiquitousItemSupportedSyncControlsKey")]
+		NSString UbiquitousItemSupportedSyncControlsKey { get; }
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("NSURLUbiquitousItemIsSyncPausedKey")]
+		NSString UbiquitousItemIsSyncPausedKey { get; }
+
 		/// <summary>Represents the value associated with the constant NSURLIsExcludedFromBackupKey</summary>
 		///         <value>
 		///         </value>
@@ -9526,12 +9642,6 @@ namespace Foundation {
 		NSUrlConnection Sender { get; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Foundation.NSURLAuthenticationChallengeSender" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Foundation.NSURLAuthenticationChallengeSender" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Foundation.NSURLAuthenticationChallengeSender" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="Foundation.NSURLAuthenticationChallengeSender_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[Protocol (Name = "NSURLAuthenticationChallengeSender")]
 	interface NSUrlAuthenticationChallengeSender {
 		[Abstract]
@@ -9559,7 +9669,7 @@ namespace Foundation {
 	/// <param name="error">To be added.</param>
 	/// <summary>The delegate used as the completion handler for <see cref="Foundation.NSUrlConnection.SendAsynchronousRequest(Foundation.NSUrlRequest,Foundation.NSOperationQueue,Foundation.NSUrlConnectionDataResponse)" />.</summary>
 	/// <remarks>To be added.</remarks>
-	delegate void NSUrlConnectionDataResponse (NSUrlResponse response, NSData data, NSError error);
+	delegate void NSUrlConnectionDataResponse ([NullAllowed] NSUrlResponse response, [NullAllowed] NSData data, [NullAllowed] NSError error);
 
 	[BaseType (typeof (NSObject), Name = "NSURLConnection")]
 	interface NSUrlConnection :
@@ -9664,12 +9774,6 @@ namespace Foundation {
 
 	interface INSUrlConnectionDelegate { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Foundation.NSUrlConnectionDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Foundation.NSUrlConnectionDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Foundation.NSUrlConnectionDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="Foundation.NSUrlConnectionDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[BaseType (typeof (NSObject), Name = "NSURLConnectionDelegate")]
 	[Model]
 	[Protocol]
@@ -9730,12 +9834,6 @@ namespace Foundation {
 		void WillSendRequestForAuthenticationChallenge (NSUrlConnection connection, NSUrlAuthenticationChallenge challenge);
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Foundation.NSUrlConnectionDataDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Foundation.NSUrlConnectionDataDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Foundation.NSUrlConnectionDataDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="Foundation.NSUrlConnectionDataDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[BaseType (typeof (NSUrlConnectionDelegate), Name = "NSURLConnectionDataDelegate")]
 	[Protocol, Model]
 	interface NSUrlConnectionDataDelegate {
@@ -9795,12 +9893,6 @@ namespace Foundation {
 		void FinishedLoading (NSUrlConnection connection);
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Foundation.NSUrlConnectionDownloadDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Foundation.NSUrlConnectionDownloadDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Foundation.NSUrlConnectionDownloadDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="Foundation.NSUrlConnectionDownloadDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[BaseType (typeof (NSUrlConnectionDelegate), Name = "NSURLConnectionDownloadDelegate")]
 	[Model]
 	[Protocol]
@@ -9918,7 +10010,10 @@ namespace Foundation {
 		[Field ("NSURLCredentialStorageRemoveSynchronizableCredentials")]
 		NSString RemoveSynchronizableCredentials { get; }
 
-		/// <include file="../docs/api/Foundation/NSUrlCredentialStorage.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSUrlCredentialStorage.ChangedNotification']/*" />
+		[Deprecated (PlatformName.MacOSX, 10, 14, "This notification is never posted.")]
+		[Deprecated (PlatformName.iOS, 12, 0, "This notification is never posted.")]
+		[Deprecated (PlatformName.TvOS, 12, 0, "This notification is never posted.")]
+		[Deprecated (PlatformName.MacCatalyst, 13, 1, "This notification is never posted.")]
 		[Field ("NSURLCredentialStorageChangedNotification")]
 		[Notification]
 		NSString ChangedNotification { get; }
@@ -9979,7 +10074,7 @@ namespace Foundation {
 	/// <summary>Signature for callbacks invoked by NSUrlSession for various background operations.</summary>
 	/// <remarks>
 	///     </remarks>
-	delegate void NSUrlSessionResponse (NSData data, NSUrlResponse response, NSError error);
+	delegate void NSUrlSessionResponse ([NullAllowed] NSData data, [NullAllowed] NSUrlResponse response, [NullAllowed] NSError error);
 	delegate void NSUrlSessionDownloadResponse (NSUrl data, NSUrlResponse response, NSError error);
 
 	/// <param name="location">To be added.</param>
@@ -9987,7 +10082,7 @@ namespace Foundation {
 	/// <param name="error">To be added.</param>
 	/// <summary>Completion handler for calls to <see cref="Foundation.NSUrlSession.CreateDownloadTask" /> and <see cref="Foundation.NSUrlSession.CreateDownloadTaskFromResumeData(Foundation.NSData,Foundation.NSUrlDownloadSessionResponse)" />.</summary>
 	/// <remarks>To be added.</remarks>
-	delegate void NSUrlDownloadSessionResponse (NSUrl location, NSUrlResponse response, NSError error);
+	delegate void NSUrlDownloadSessionResponse ([NullAllowed] NSUrl location, [NullAllowed] NSUrlResponse response, [NullAllowed] NSError error);
 
 	interface INSUrlSessionDelegate { }
 
@@ -10279,7 +10374,7 @@ namespace Foundation {
 		[Async (ResultTypeName = "NSUrlSessionCombinedTasks", XmlDocs = """
 			<summary>To be added.</summary>
 			<returns>
-			          <para>A task that represents the asynchronous GetAllTasks operation.   The value of the TResult parameter is an array of MonoTouch.Foundation.NSUrlSessionTask.  The base class for data-transfer tasks created by a .</para>
+			          <para>A task that represents the asynchronous GetAllTasks operation.   The value of the TResult parameter is an array of NSUrlSessionTask.  The base class for data-transfer tasks created by a .</para>
 			        </returns>
 			<remarks>
 			          <para copied="true">The GetAllTasksAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
@@ -10375,7 +10470,7 @@ namespace Foundation {
 		void CompletedTaskCaptureStreams (NSUrlSession session, NSUrlSessionStreamTask streamTask, NSInputStream inputStream, NSOutputStream outputStream);
 	}
 
-	delegate void NSUrlSessionDataRead (NSData data, bool atEof, NSError error);
+	delegate void NSUrlSessionDataRead ([NullAllowed] NSData data, bool atEof, [NullAllowed] NSError error);
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSUrlSessionTask), Name = "NSURLSessionStreamTask")]
 	[DisableDefaultCtor] // now (xcode11) marked as deprecated
@@ -10806,14 +10901,12 @@ namespace Foundation {
 		[iOS (18, 4), TV (18, 4), MacCatalyst (18, 4), Mac (15, 4)]
 		[Export ("usesClassicLoadingMode")]
 		bool UsesClassicLoadingMode { get; set; }
+
+		[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("enablesEarlyData")]
+		bool EnablesEarlyData { get; set; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Foundation.NSUrlSessionDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Foundation.NSUrlSessionDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Foundation.NSUrlSessionDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="Foundation.NSUrlSessionDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Model, BaseType (typeof (NSObject), Name = "NSURLSessionDelegate")]
 	[Protocol]
@@ -10843,12 +10936,6 @@ namespace Foundation {
 
 	public interface INSUrlSessionTaskDelegate { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Foundation.NSUrlSessionTaskDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Foundation.NSUrlSessionTaskDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Foundation.NSUrlSessionTaskDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="Foundation.NSUrlSessionTaskDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Model]
 	[BaseType (typeof (NSUrlSessionDelegate), Name = "NSURLSessionTaskDelegate")]
@@ -10941,12 +11028,6 @@ namespace Foundation {
 		void NeedNewBodyStream (NSUrlSession session, NSUrlSessionTask task, long offset, Action<NSInputStream> completionHandler);
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Foundation.NSUrlSessionDataDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Foundation.NSUrlSessionDataDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Foundation.NSUrlSessionDataDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="Foundation.NSUrlSessionDataDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Model]
 	[BaseType (typeof (NSUrlSessionTaskDelegate), Name = "NSURLSessionDataDelegate")]
@@ -10996,12 +11077,6 @@ namespace Foundation {
 		void DidBecomeStreamTask (NSUrlSession session, NSUrlSessionDataTask dataTask, NSUrlSessionStreamTask streamTask);
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Foundation.NSUrlSessionDownloadDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Foundation.NSUrlSessionDownloadDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Foundation.NSUrlSessionDownloadDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="Foundation.NSUrlSessionDownloadDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Model]
 	[BaseType (typeof (NSUrlSessionTaskDelegate), Name = "NSURLSessionDownloadDelegate")]
@@ -11157,37 +11232,30 @@ namespace Foundation {
 		[Export ("redoMenuTitleForUndoActionName:")]
 		string RedoMenuTitleForUndoActionName (string name);
 
-		/// <include file="../docs/api/Foundation/NSUndoManager.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSUndoManager.CheckpointNotification']/*" />
 		[Field ("NSUndoManagerCheckpointNotification")]
 		[Notification]
 		NSString CheckpointNotification { get; }
 
-		/// <include file="../docs/api/Foundation/NSUndoManager.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSUndoManager.DidOpenUndoGroupNotification']/*" />
 		[Field ("NSUndoManagerDidOpenUndoGroupNotification")]
 		[Notification]
 		NSString DidOpenUndoGroupNotification { get; }
 
-		/// <include file="../docs/api/Foundation/NSUndoManager.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSUndoManager.DidRedoChangeNotification']/*" />
 		[Field ("NSUndoManagerDidRedoChangeNotification")]
 		[Notification]
 		NSString DidRedoChangeNotification { get; }
 
-		/// <include file="../docs/api/Foundation/NSUndoManager.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSUndoManager.DidUndoChangeNotification']/*" />
 		[Field ("NSUndoManagerDidUndoChangeNotification")]
 		[Notification]
 		NSString DidUndoChangeNotification { get; }
 
-		/// <include file="../docs/api/Foundation/NSUndoManager.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSUndoManager.WillCloseUndoGroupNotification']/*" />
 		[Field ("NSUndoManagerWillCloseUndoGroupNotification")]
 		[Notification (typeof (NSUndoManagerCloseUndoGroupEventArgs))]
 		NSString WillCloseUndoGroupNotification { get; }
 
-		/// <include file="../docs/api/Foundation/NSUndoManager.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSUndoManager.WillRedoChangeNotification']/*" />
 		[Field ("NSUndoManagerWillRedoChangeNotification")]
 		[Notification]
 		NSString WillRedoChangeNotification { get; }
 
-		/// <include file="../docs/api/Foundation/NSUndoManager.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSUndoManager.WillUndoChangeNotification']/*" />
 		[Field ("NSUndoManagerWillUndoChangeNotification")]
 		[Notification]
 		NSString WillUndoChangeNotification { get; }
@@ -11208,7 +11276,6 @@ namespace Foundation {
 		[Field ("NSUndoManagerGroupIsDiscardableKey")]
 		NSString GroupIsDiscardableKey { get; }
 
-		/// <include file="../docs/api/Foundation/NSUndoManager.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSUndoManager.DidCloseUndoGroupNotification']/*" />
 		[Field ("NSUndoManagerDidCloseUndoGroupNotification")]
 		[Notification (typeof (NSUndoManagerCloseUndoGroupEventArgs))]
 		NSString DidCloseUndoGroupNotification { get; }
@@ -11976,12 +12043,6 @@ namespace Foundation {
 
 	interface INSStreamDelegate { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Foundation.NSStreamDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Foundation.NSStreamDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Foundation.NSStreamDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="Foundation.NSStreamDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[BaseType (typeof (NSObject))]
 	[Model]
 	[Protocol]
@@ -12519,7 +12580,7 @@ namespace Foundation {
 	/// <summary>An enumerator to pass to methods in the <see cref="Foundation.NSLinguisticAnalysis" /> class.</summary>
 	/// <returns>To be added.</returns>
 	/// <remarks>To be added.</remarks>
-	delegate bool NSEnumerateLinguisticTagsEnumerator (NSString tag, NSRange tokenRange, NSRange sentenceRange, ref bool stop);
+	delegate bool NSEnumerateLinguisticTagsEnumerator ([NullAllowed] NSString tag, NSRange tokenRange, NSRange sentenceRange, ref bool stop);
 
 	[Category]
 	[BaseType (typeof (NSString))]
@@ -13811,12 +13872,14 @@ namespace Foundation {
 		[Export ("storeCookies:forTask:")]
 		void StoreCookies (NSHttpCookie [] cookies, NSUrlSessionTask task);
 
-		/// <include file="../docs/api/Foundation/NSHttpCookieStorage.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSHttpCookieStorage.CookiesChangedNotification']/*" />
 		[Notification]
 		[Field ("NSHTTPCookieManagerAcceptPolicyChangedNotification")]
 		NSString CookiesChangedNotification { get; }
 
-		/// <include file="../docs/api/Foundation/NSHttpCookieStorage.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSHttpCookieStorage.AcceptPolicyChangedNotification']/*" />
+		[Deprecated (PlatformName.MacOSX, 10, 11, "This notification is never posted.")]
+		[Deprecated (PlatformName.iOS, 9, 0, "This notification is never posted.")]
+		[Deprecated (PlatformName.TvOS, 9, 0, "This notification is never posted.")]
+		[Deprecated (PlatformName.MacCatalyst, 13, 1, "This notification is never posted.")]
 		[Notification]
 		[Field ("NSHTTPCookieManagerCookiesChangedNotification")]
 		NSString AcceptPolicyChangedNotification { get; }
@@ -14214,7 +14277,6 @@ namespace Foundation {
 		[Export ("endAccessingResources")]
 		void EndAccessingResources ();
 
-		/// <include file="../docs/api/Foundation/NSBundleResourceRequest.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSBundleResourceRequest.LowDiskSpaceNotification']/*" />
 		[Field ("NSBundleResourceRequestLowDiskSpaceNotification")]
 		[Notification]
 		NSString LowDiskSpaceNotification { get; }
@@ -14228,14 +14290,8 @@ namespace Foundation {
 
 	[BaseType (typeof (NSObject))]
 	interface NSIndexPath : NSCoding, NSSecureCoding, NSCopying {
-		/// <param name="index">
-		/// Object to place in the index-path.
-		///   	   </param>
-		/// <summary>Create a new index-path object with the specified object (not required for use with iOS <see cref="UIKit.UITableView" />).</summary>
-		/// <returns>
-		///         </returns>
-		/// <remarks>
-		///         </remarks>
+		/// <summary>Create a new index-path object with the specified object.</summary>
+		/// <param name="index">Object to place in the index-path.</param>
 		[Export ("indexPathWithIndex:")]
 		[Static]
 		NSIndexPath FromIndex (nuint index);
@@ -14245,34 +14301,16 @@ namespace Foundation {
 		[Static]
 		NSIndexPath _FromIndex (IntPtr indexes, nint len);
 
-		/// <param name="index">
-		/// 
-		/// Index to be appended.
-		///   	   
-		///   	   </param>
-		/// <summary>Returns a new index-path containing those in this object plus the new <paramref name="index" /> (not required for use with iOS <see cref="UIKit.UITableView" />).</summary>
-		/// <returns>
-		///         </returns>
-		/// <remarks>
-		///         </remarks>
+		/// <summary>Returns a new index-path containing those in this object plus the new <paramref name="index" />.</summary>
+		/// <param name="index">Index to be appended.</param>
 		[Export ("indexPathByAddingIndex:")]
 		NSIndexPath IndexPathByAddingIndex (nuint index);
 
 		[Export ("indexPathByRemovingLastIndex")]
 		NSIndexPath IndexPathByRemovingLastIndex ();
 
-		/// <param name="position">
-		/// 
-		/// 
-		/// Position of index to return.
-		///   	   
-		///   	   
-		///   	   </param>
-		/// <summary>Return the index at the given <paramref name="position" /> in the index-path (not required for use with iOS <see cref="UIKit.UITableView" />).</summary>
-		/// <returns>
-		///         </returns>
-		/// <remarks>
-		///         </remarks>
+		/// <summary>Return the index at the given <paramref name="position" /> in the index-path.</summary>
+		/// <param name="position">Position of index to return.</param>
 		[Export ("indexAtPosition:")]
 		nuint IndexAtPosition (nint position);
 
@@ -14300,28 +14338,16 @@ namespace Foundation {
 		[Export ("row")]
 		nint LongRow { get; }
 
-		/// <summary>The index of a section within a <see cref="UIKit.UITableView" /> (read-only).</summary>
-		///         <value>
-		///           <para />
-		///         </value>
-		///         <remarks>
-		///           <para />
-		///         </remarks>
+		/// <summary>The index of a section within a <see cref="UIKit.UITableView" /> (read-only).</summary>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("section")]
 		nint LongSection { get; }
 
-		/// <param name="row">
-		/// The row index within the corresponding <paramref name="section" /> of a <see cref="UIKit.UITableView" />.
-		///   	   </param>
-		/// <param name="section">
-		/// The index of the section in the <see cref="UIKit.UITableView" /> that contains the <paramref name="row" />.
-		///   	   </param>
 		/// <summary>Returns an index-path object initialized with the given row and section details.</summary>
+		/// <param name="row">The row index within the corresponding <paramref name="section" /> of a <see cref="UIKit.UITableView" />.</param>
+		/// <param name="section">The index of the section in the <see cref="UIKit.UITableView" /> that contains the <paramref name="row" />.</param>
 		/// <returns>An <see cref="Foundation.NSIndexPath" /> object, or <see langword="null" /> if it could not be created.</returns>
-		/// <remarks>
-		///         </remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Static]
@@ -14334,26 +14360,16 @@ namespace Foundation {
 		[Export ("section")]
 		nint Section { get; }
 
-		/// <param name="item">
-		/// Item value.
-		///   	   </param>
-		/// <param name="section">
-		/// Section value.
-		///   	   </param>
-		/// <summary>Creates an NSIndexPath from the given item and section values.</summary>
-		/// <returns>New instance of the NSIndexPath.</returns>
-		/// <remarks>
-		///         </remarks>
+		/// <summary>Creates an <see cref="NSIndexPath" /> from the given item and section values.</summary>
+		/// <param name="item">Item value.</param>
+		/// <param name="section">Section value.</param>
+		/// <returns>New instance of the <see cref="NSIndexPath" />.</returns>
 		[Static]
 		[MacCatalyst (13, 1)]
 		[Export ("indexPathForItem:inSection:")]
 		NSIndexPath FromItemSection (nint item, nint section);
 
-		/// <summary>The item component of this NSIndexPath.</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>
-		///         </remarks>
+		/// <summary>The item component of this <see cref="NSIndexPath" />.</summary>
 		[Export ("item")]
 		[MacCatalyst (13, 1)]
 		nint Item { get; }
@@ -14792,12 +14808,12 @@ namespace Foundation {
 	[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 	delegate NSProgress NSItemProviderUTTypeLoadDelegate ([BlockCallback] ItemProviderDataCompletionHandler completionHandler);
 	[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
-	delegate void LoadFileRepresentationHandler (NSUrl fileUrl, bool openInPlace, NSError error);
+	delegate void LoadFileRepresentationHandler ([NullAllowed] NSUrl fileUrl, bool openInPlace, [NullAllowed] NSError error);
 	delegate NSProgress RegisterFileRepresentationLoadHandler ([BlockCallback] RegisterFileRepresentationCompletionHandler completionHandler);
 	delegate void RegisterFileRepresentationCompletionHandler (NSUrl fileUrl, bool coordinated, NSError error);
-	delegate void ItemProviderDataCompletionHandler (NSData data, NSError error);
+	delegate void ItemProviderDataCompletionHandler ([NullAllowed] NSData data, [NullAllowed] NSError error);
 	delegate NSProgress RegisterDataRepresentationLoadHandler ([BlockCallback] ItemProviderDataCompletionHandler completionHandler);
-	delegate void LoadInPlaceFileRepresentationHandler (NSUrl fileUrl, bool isInPlace, NSError error);
+	delegate void LoadInPlaceFileRepresentationHandler ([NullAllowed] NSUrl fileUrl, bool isInPlace, [NullAllowed] NSError error);
 	delegate NSProgress RegisterObjectRepresentationLoadHandler ([BlockCallback] RegisterObjectRepresentationCompletionHandler completionHandler);
 	delegate void RegisterObjectRepresentationCompletionHandler (INSItemProviderWriting @object, NSError error);
 
@@ -14882,7 +14898,7 @@ namespace Foundation {
 		/// <param name="typeIdentifier">A Universal Type Identifier (UTI) indicating the type of data to load.</param>
 		/// <param name="completionHandler">The method called after the data is loaded.</param>
 		/// <summary>Implement this method to customize the loading of data by an <see cref="Foundation.NSItemProvider" />.</summary>
-		/// <returns>An <see cref="Monotouch.Foundation.NSProgress" /> object reflecting the data-loading operation.</returns>
+		/// <returns>An <see cref="NSProgress" /> object reflecting the data-loading operation.</returns>
 		/// <remarks>
 		///           <para>The <paramref name="typeIdentifier" /> must be in the set of values returned by <see cref="Foundation.NSItemProviderWriting_Extensions.GetWritableTypeIdentifiersForItemProvider(Foundation.INSItemProviderWriting)" />.</para>
 		///         </remarks>
@@ -15151,12 +15167,6 @@ namespace Foundation {
 
 	interface INSNetServiceDelegate { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Foundation.NSNetServiceDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Foundation.NSNetServiceDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Foundation.NSNetServiceDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="Foundation.NSNetServiceDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Model, BaseType (typeof (NSObject))]
 	[Protocol]
@@ -15315,12 +15325,6 @@ namespace Foundation {
 
 	interface INSNetServiceBrowserDelegate { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Foundation.NSNetServiceBrowserDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Foundation.NSNetServiceBrowserDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Foundation.NSNetServiceBrowserDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="Foundation.NSNetServiceBrowserDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Model, BaseType (typeof (NSObject))]
 	[Protocol]
@@ -16607,10 +16611,18 @@ namespace Foundation {
 		[Export ("qualityOfService")]
 		NSQualityOfService QualityOfService { get; set; }
 
+		[Deprecated (PlatformName.MacOSX, 26, 0, "This notification does not protect against race conditions.")]
+		[Deprecated (PlatformName.iOS, 26, 0, "This notification does not protect against race conditions.")]
+		[Deprecated (PlatformName.TvOS, 26, 0, "This notification does not protect against race conditions.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, "This notification does not protect against race conditions.")]
 		[Notification]
 		[Field ("NSThreadWillExitNotification")]
 		NSString ThreadWillExitNotification { get; }
 
+		[Deprecated (PlatformName.MacOSX, 26, 0, "This notification does not protect against race conditions.")]
+		[Deprecated (PlatformName.iOS, 26, 0, "This notification does not protect against race conditions.")]
+		[Deprecated (PlatformName.TvOS, 26, 0, "This notification does not protect against race conditions.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, "This notification does not protect against race conditions.")]
 		[Notification]
 		[Field ("NSWillBecomeMultiThreadedNotification")]
 		NSString WillBecomeMultiThreadedNotification { get; }
@@ -16707,12 +16719,6 @@ namespace Foundation {
 
 	interface INSPortDelegate { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Foundation.NSPortDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Foundation.NSPortDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Foundation.NSPortDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="Foundation.NSPortDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[Model, BaseType (typeof (NSObject))]
 	[Protocol]
 	interface NSPortDelegate {
@@ -16820,12 +16826,6 @@ namespace Foundation {
 
 	interface INSMachPortDelegate { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Foundation.NSMachPortDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Foundation.NSMachPortDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Foundation.NSMachPortDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="Foundation.NSMachPortDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[Model, BaseType (typeof (NSPortDelegate))]
 	[Protocol]
 	interface NSMachPortDelegate {
@@ -16952,7 +16952,6 @@ namespace Foundation {
 		[Export ("lowPowerModeEnabled")]
 		bool LowPowerModeEnabled { [Bind ("isLowPowerModeEnabled")] get; }
 
-		/// <include file="../docs/api/Foundation/NSProcessInfo.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSProcessInfo.PowerStateDidChangeNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("NSProcessInfoPowerStateDidChangeNotification")]
@@ -16962,7 +16961,6 @@ namespace Foundation {
 		[Export ("thermalState")]
 		NSProcessInfoThermalState ThermalState { get; }
 
-		/// <include file="../docs/api/Foundation/NSProcessInfo.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSProcessInfo.ThermalStateDidChangeNotification']/*" />
 		[Field ("NSProcessInfoThermalStateDidChangeNotification")]
 		[MacCatalyst (13, 1)]
 		[Notification]
@@ -17339,16 +17337,6 @@ namespace Foundation {
 
 	interface INSProgressReporting { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Foundation.INSProgressReporting" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Foundation.INSProgressReporting" />.</para>
-	///       <para>If you create objects that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Foundation.INSProgressReporting" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="Foundation.NSProgressReporting_Extensions" /> class as extension methods to the interface, allowing you to invoke any optional methods on the protocol.</para>
-	///     </remarks>
-	/// <summary>Extension methods to the <see cref="Foundation.INSProgressReporting" /> interface to support all the methods from the <see cref="Foundation.INSProgressReporting" /> protocol.</summary>
-	/// <remarks>
-	///       <para>The extension methods for <see cref="Foundation.INSProgressReporting" /> allow developers to treat instances of the interface as having all the optional methods of the original <see cref="Foundation.INSProgressReporting" /> protocol.   Since the interface only contains the required members, these extension methods allow developers to call the optional members of the protocol.</para>
-	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface NSProgressReporting {
@@ -17909,7 +17897,6 @@ namespace Foundation {
 		[Export ("ubiquityIdentityToken")]
 		NSObject UbiquityIdentityToken { get; }
 
-		/// <include file="../docs/api/Foundation/NSFileManager.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSFileManager.UbiquityIdentityDidChangeNotification']/*" />
 		[Field ("NSUbiquityIdentityDidChangeNotification")]
 		[Notification]
 		NSString UbiquityIdentityDidChangeNotification { get; }
@@ -17952,16 +17939,34 @@ namespace Foundation {
 			        </remarks>
 			"""), Export ("getFileProviderServicesForItemAtURL:completionHandler:")]
 		void GetFileProviderServices (NSUrl url, Action<NSDictionary<NSString, NSFileProviderService>, NSError> completionHandler);
+
+		[Async]
+		[MacCatalyst (26, 0), NoTV, Mac (26, 0), iOS (26, 0)]
+		[Export ("pauseSyncForUbiquitousItemAtURL:completionHandler:")]
+		void PauseSyncForUbiquitousItem (NSUrl url, NSFileManagerSyncForUbiquitousItemHandler completionHandler);
+
+		[Async]
+		[MacCatalyst (26, 0), NoTV, Mac (26, 0), iOS (26, 0)]
+		[Export ("resumeSyncForUbiquitousItemAtURL:withBehavior:completionHandler:")]
+		void ResumeSyncForUbiquitousItem (NSUrl url, NSFileManagerResumeSyncBehavior behavior, NSFileManagerSyncForUbiquitousItemHandler completionHandler);
+
+		[Async]
+		[MacCatalyst (26, 0), NoTV, Mac (26, 0), iOS (26, 0)]
+		[Export ("fetchLatestRemoteVersionOfItemAtURL:completionHandler:")]
+		void FetchLatestRemoteVersionOfItem (NSUrl url, NSFileManagerFetchLatestRemoteVersionOfItemHandler completionHandler);
+
+		[Async]
+		[MacCatalyst (26, 0), NoTV, Mac (26, 0), iOS (26, 0)]
+		[Export ("uploadLocalVersionOfUbiquitousItemAtURL:withConflictResolutionPolicy:completionHandler:")]
+		void UploadLocalVersionOfUbiquitousItem (NSUrl url, NSFileManagerUploadLocalVersionConflictPolicy conflictResolutionPolicy, NSFileManagerUploadLocalVersionOfUbiquitousItemHandler completionHandler);
 	}
+
+	delegate void NSFileManagerSyncForUbiquitousItemHandler ([NullAllowed] NSError error);
+	delegate void NSFileManagerFetchLatestRemoteVersionOfItemHandler ([NullAllowed] NSFileVersion latestRemoteVersion, [NullAllowed] NSError error);
+	delegate void NSFileManagerUploadLocalVersionOfUbiquitousItemHandler ([NullAllowed] NSFileVersion uploadedVersion, [NullAllowed] NSError error);
 
 	interface INSFileManagerDelegate { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Foundation.NSFileManagerDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Foundation.NSFileManagerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Foundation.NSFileManagerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="Foundation.NSFileManagerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[BaseType (typeof (NSObject))]
 	[Model]
 	[Protocol]
@@ -18163,12 +18168,6 @@ namespace Foundation {
 		NSUrl GetHomeDirectory (string userName);
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Foundation.NSFilePresenter" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Foundation.NSFilePresenter" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Foundation.NSFilePresenter" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="Foundation.NSFilePresenter_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[BaseType (typeof (NSObject))]
 	[Model]
 	[Protocol]
@@ -18186,8 +18185,8 @@ namespace Foundation {
 		[NullAllowed]
 		NSUrl PresentedItemUrl { get; }
 
-		/// <summary>Gets the <see cref="Monotouch.Foundation.NSOperationQueue" /> on which presenter-related methods are executed.</summary>
-		/// <value>The <see cref="Monotouch.Foundation.NSOperationQueue" /> on which methods are executed.</value>
+		/// <summary>Gets the <see cref="NSOperationQueue" /> on which presenter-related methods are executed.</summary>
+		/// <value>The <see cref="NSOperationQueue" /> on which methods are executed.</value>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("presentedItemOperationQueue", ArgumentSemantic.Retain)]
@@ -18555,7 +18554,7 @@ namespace Foundation {
 	/// <summary>A delegate that represents the expression to use with <see cref="Foundation.NSPredicate.FromExpression(Foundation.NSPredicateEvaluator)" />.</summary>
 	/// <returns>To be added.</returns>
 	/// <remarks>To be added.</remarks>
-	delegate bool NSPredicateEvaluator (NSObject evaluatedObject, NSDictionary bindings);
+	delegate bool NSPredicateEvaluator ([NullAllowed] NSObject evaluatedObject, [NullAllowed] NSDictionary bindings);
 
 	[BaseType (typeof (NSObject))]
 	// 'init' returns NIL
@@ -18981,12 +18980,11 @@ namespace Foundation {
 
 	interface INSExtensionRequestHandling { }
 
-	/// <include file="../docs/api/Foundation/INSExtensionRequestHandling.xml" path="/Documentation/Docs[@DocId='T:Foundation.INSExtensionRequestHandling']/*" />
 	[MacCatalyst (13, 1)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface NSExtensionRequestHandling {
-		/// <param name="context">The <see cref="Monotouch.Foundation.NSExtensionContext" /> containing extension-relevant data.</param>
+		/// <param name="context">The <see cref="NSExtensionContext" /> containing extension-relevant data.</param>
 		/// <summary>Developers can implement this method to prepare their extension for the host application request.</summary>
 		/// <remarks>
 		///           <para>Developers who implement this method must call <c>base.BeginRequestWithExtensionContext(context)</c> within their implementation.</para>
@@ -18997,8 +18995,6 @@ namespace Foundation {
 		void BeginRequestWithExtensionContext (NSExtensionContext context);
 	}
 
-	/// <summary>Interface that, together with the <see cref="Foundation.NSLocking_Extensions" /> class, comprise the NSLocking protocol.</summary>
-	/// <remarks>To be added.</remarks>
 	[Protocol]
 	interface NSLocking {
 
@@ -20487,9 +20483,6 @@ namespace Foundation {
 		[Export ("terminationReason")]
 		NSTaskTerminationReason TerminationReason { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Field ("NSTaskDidTerminateNotification")]
 		[Notification]
 		NSString DidTerminateNotification { get; }
@@ -23190,4 +23183,27 @@ namespace Foundation {
 		[Export ("automatic")]
 		NSLocalizedNumberFormatRule Automatic { get; }
 	}
+
+	[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+	[Native]
+	public enum NSFileManagerSupportedSyncControls : ulong {
+		PauseSync = 1uL << 0,
+		FailUploadOnConflict = 1uL << 1,
+	}
+
+	[MacCatalyst (26, 0), NoTV, Mac (26, 0), iOS (26, 0)]
+	[Native]
+	public enum NSFileManagerResumeSyncBehavior : long {
+		PreserveLocalChanges = 0,
+		AfterUploadWithFailOnConflict = 1,
+		DropLocalChanges = 2,
+	}
+
+	[MacCatalyst (26, 0), NoTV, Mac (26, 0), iOS (26, 0)]
+	[Native]
+	public enum NSFileManagerUploadLocalVersionConflictPolicy : long {
+		Default = 0,
+		FailOnConflict = 1,
+	}
+
 }

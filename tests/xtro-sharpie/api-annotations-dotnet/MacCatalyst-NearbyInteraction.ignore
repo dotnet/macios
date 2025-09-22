@@ -1,2 +1,5 @@
 # This selector requires ARKit, which doesn't work on Mac Catalyst
 !missing-selector! NISession::setARSession: not bound
+# Headers are clear that these two enums are not supported on Mac Catalyst, don't know why xtro thinks they are
+!missing-enum! NIDLTDOACoordinatesType not bound
+!missing-enum! NIDLTDOAMeasurementType not bound

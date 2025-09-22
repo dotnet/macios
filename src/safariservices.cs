@@ -220,25 +220,17 @@ namespace SafariServices {
 		[Wrap ("WeakDelegate")]
 		ISFSafariViewControllerDelegate Delegate { get; set; }
 
-		/// <summary>To be added.</summary>
-		///         <value>
-		///           <para>(More documentation for this node is coming)</para>
-		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		[Deprecated (PlatformName.iOS, 26, 0, message: "Interferes with system-provided background effects")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, message: "Interferes with system-provided background effects")]
 		[MacCatalyst (13, 1)]
 		[NullAllowed]
 		[Export ("preferredBarTintColor", ArgumentSemantic.Assign)]
 		UIColor PreferredBarTintColor { get; set; }
 
-		/// <summary>To be added.</summary>
-		///         <value>
-		///           <para>(More documentation for this node is coming)</para>
-		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
-		///         </value>
-		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[NullAllowed]
+		[Deprecated (PlatformName.iOS, 26, 0, message: "Interferes with system-provided background effects")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, message: "Interferes with system-provided background effects")]
 		[Export ("preferredControlTintColor", ArgumentSemantic.Assign)]
 		UIColor PreferredControlTintColor { get; set; }
 
@@ -262,12 +254,6 @@ namespace SafariServices {
 		SFSafariViewControllerPrewarmingToken PrewarmConnections (NSUrl [] urls);
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="SafariServices.SFSafariViewControllerDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="SafariServices.SFSafariViewControllerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="SafariServices.SFSafariViewControllerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="SafariServices.SFSafariViewControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface ISFSafariViewControllerDelegate { }
 
 	/// <summary>Protocol for presenting a user interface for web browsing.</summary>
@@ -914,4 +900,17 @@ namespace SafariServices {
 		[Export ("websiteCookies", ArgumentSemantic.Copy)]
 		NSHttpCookie [] WebsiteCookies { get; set; }
 	}
+
+	delegate void SFSafariSettingsOpenExportBrowsingDataSettingsCompletionHandler ([NullAllowed] NSError error);
+
+	[NoTV, NoMacCatalyst, iOS (26, 0), NoMac]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface SFSafariSettings {
+		[Async]
+		[Static]
+		[Export ("openExportBrowsingDataSettingsWithCompletionHandler:")]
+		void OpenExportBrowsingDataSettings ([NullAllowed] SFSafariSettingsOpenExportBrowsingDataSettingsCompletionHandler completionHandler);
+	}
+
 }

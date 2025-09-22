@@ -412,12 +412,10 @@ namespace CoreMidi {
 	[MacCatalyst (13, 1)]
 	[Static]
 	interface Midi {
-		/// <include file="../docs/api/CoreMidi/Midi.xml" path="/Documentation/Docs[@DocId='P:CoreMidi.Midi.NetworkNotificationContactsDidChange']/*" />
 		[Field ("MIDINetworkNotificationContactsDidChange")]
 		[Notification]
 		NSString NetworkNotificationContactsDidChange { get; }
 
-		/// <include file="../docs/api/CoreMidi/Midi.xml" path="/Documentation/Docs[@DocId='P:CoreMidi.Midi.NetworkNotificationSessionDidChange']/*" />
 		[Field ("MIDINetworkNotificationSessionDidChange")]
 		[Notification]
 		NSString NetworkNotificationSessionDidChange { get; }
@@ -635,7 +633,7 @@ namespace CoreMidi {
 
 	delegate void MidiCIProfileChangedHandler (MidiCISession session, byte channel, MidiCIProfile profile, bool enabled);
 	delegate void MidiCIProfileSpecificDataHandler (MidiCISession session, byte channel, MidiCIProfile profile, NSData data);
-	delegate void MidiCISessionDisconnectHandler (MidiCISession session, NSError error);
+	delegate void MidiCISessionDisconnectHandler ([NullAllowed] MidiCISession session, [NullAllowed] NSError error);
 
 	[NoTV]
 	[MacCatalyst (13, 1)]

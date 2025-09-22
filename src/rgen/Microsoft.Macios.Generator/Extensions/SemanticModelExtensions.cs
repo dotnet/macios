@@ -3,6 +3,7 @@
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.Macios.Generator.Availability;
+using Microsoft.Macios.Generator.DataModel;
 
 namespace Microsoft.Macios.Generator.Extensions;
 
@@ -13,18 +14,26 @@ static partial class SemanticModelExtensions {
 	/// </summary>
 	/// <param name="symbol">The symbol whose namespaces we want to retrieve.</param>
 	/// <returns>An array with the namespaces that contain the symbol from bigger to smaller one.</returns>
-	public static ImmutableArray<string> GetNamespaceArray (this ISymbol? symbol)
+	public static (ImmutableArray<string> Namespace, ImmutableArray<OuterClass> OuterClasses) GetNamespaceArrayAndOuterClasses (this ISymbol? symbol)
 	{
-		var bucket = ImmutableArray.CreateBuilder<string> ();
+		var namespaceBucket = ImmutableArray.CreateBuilder<string> ();
+		var outerClassesBucket = ImmutableArray.CreateBuilder<OuterClass> ();
 		var ns = symbol?.ContainingNamespace;
 		while (ns is not null) {
 			if (!string.IsNullOrWhiteSpace (ns.Name))
 				// prepend the namespace so that we can read from top to bottom
-				bucket.Insert (0, ns.Name);
+				namespaceBucket.Insert (0, ns.Name);
 			ns = ns.ContainingNamespace;
 		}
 
-		return bucket.ToImmutable ();
+		var type = symbol?.ContainingType;
+
+		while (type is not null) {
+			outerClassesBucket.Insert (0, new OuterClass (type));
+			type = type.ContainingType;
+		}
+
+		return (namespaceBucket.ToImmutable (), outerClassesBucket.ToImmutable ());
 	}
 
 	/// <summary>
@@ -34,12 +43,14 @@ static partial class SemanticModelExtensions {
 	/// <param name="name">Symbol name.</param>
 	/// <param name="baseClass">Symbol base class.</param>
 	/// <param name="interfaces">List of the interfaces implemented by the symbol.</param>
+	/// <param name="outerClasses">List of the outer classes of the symbol.</param>
 	/// <param name="namespaces">Collection with the namespaces of the symbol.</param>
 	/// <param name="symbolAvailability">The symbols availability.</param>
 	public static void GetSymbolData (ISymbol? symbol,
 		out string name,
 		out string? baseClass,
 		out ImmutableArray<string> interfaces,
+		out ImmutableArray<OuterClass> outerClasses,
 		out ImmutableArray<string> namespaces,
 		out SymbolAvailability symbolAvailability)
 	{
@@ -54,7 +65,7 @@ static partial class SemanticModelExtensions {
 		}
 		symbolAvailability = symbol?.GetSupportedPlatforms () ?? new SymbolAvailability ();
 		interfaces = interfacesBucket.ToImmutable ();
-		namespaces = symbol.GetNamespaceArray ();
+		(namespaces, outerClasses) = GetNamespaceArrayAndOuterClasses (symbol);
 	}
 
 }

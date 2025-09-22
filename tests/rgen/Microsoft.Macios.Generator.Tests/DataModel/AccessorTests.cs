@@ -18,13 +18,13 @@ public class AccessorTests {
 		var x = new Accessor (
 			accessorKind: AccessorKind.Getter,
 			symbolAvailability: new (),
-			exportPropertyData: null,
+			exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 			attributes: [],
 			modifiers: []);
 		var y = new Accessor (
 			accessorKind: AccessorKind.Setter,
 			symbolAvailability: new (),
-			exportPropertyData: null,
+			exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 			attributes: [],
 			modifiers: []);
 
@@ -62,7 +62,7 @@ public class AccessorTests {
 		var x = new Accessor (
 			accessorKind: AccessorKind.Getter,
 			symbolAvailability: new (),
-			exportPropertyData: null,
+			exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 			attributes: [
 				new ("First"),
 				new ("Second"),
@@ -71,7 +71,7 @@ public class AccessorTests {
 		var y = new Accessor (
 			accessorKind: AccessorKind.Getter,
 			symbolAvailability: new (),
-			exportPropertyData: null,
+			exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 			attributes: [
 				new ("First"),
 			],
@@ -88,7 +88,7 @@ public class AccessorTests {
 		var x = new Accessor (
 			accessorKind: AccessorKind.Getter,
 			symbolAvailability: new (),
-			exportPropertyData: null,
+			exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 			attributes: [
 				new ("First"),
 				new ("Second"),
@@ -97,7 +97,7 @@ public class AccessorTests {
 		var y = new Accessor (
 			accessorKind: AccessorKind.Getter,
 			symbolAvailability: new (),
-			exportPropertyData: null,
+			exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 			attributes: [
 				new ("Third"),
 				new ("Fourth"),
@@ -116,7 +116,7 @@ public class AccessorTests {
 		var x = new Accessor (
 			accessorKind: AccessorKind.Getter,
 			symbolAvailability: new (),
-			exportPropertyData: null,
+			exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 			attributes: [
 				new ("First"),
 				new ("Second"),
@@ -125,7 +125,7 @@ public class AccessorTests {
 		var y = new Accessor (
 			accessorKind: AccessorKind.Getter,
 			symbolAvailability: new (),
-			exportPropertyData: null,
+			exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 			attributes: [
 				new ("Second"),
 				new ("First"),
@@ -144,7 +144,7 @@ public class AccessorTests {
 		var x = new Accessor (
 			accessorKind: AccessorKind.Getter,
 			symbolAvailability: new (),
-			exportPropertyData: null,
+			exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 			attributes: [
 				new ("First"),
 				new ("Second"),
@@ -156,7 +156,7 @@ public class AccessorTests {
 		var y = new Accessor (
 			accessorKind: AccessorKind.Getter,
 			symbolAvailability: new (),
-			exportPropertyData: null,
+			exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 			attributes: [
 				new ("Second"),
 				new ("First"),
@@ -177,7 +177,7 @@ public class AccessorTests {
 		var x = new Accessor (
 			accessorKind: AccessorKind.Getter,
 			symbolAvailability: new (),
-			exportPropertyData: null,
+			exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 			attributes: [
 				new ("First"),
 				new ("Second"),
@@ -189,7 +189,7 @@ public class AccessorTests {
 		var y = new Accessor (
 			accessorKind: AccessorKind.Getter,
 			symbolAvailability: new (),
-			exportPropertyData: null,
+			exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 			attributes: [
 				new ("Second"),
 				new ("First"),
@@ -211,7 +211,7 @@ public class AccessorTests {
 		var x = new Accessor (
 			accessorKind: AccessorKind.Getter,
 			symbolAvailability: new (),
-			exportPropertyData: null,
+			exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 			attributes: [
 				new ("First"),
 				new ("Second"),
@@ -223,7 +223,7 @@ public class AccessorTests {
 		var y = new Accessor (
 			accessorKind: AccessorKind.Getter,
 			symbolAvailability: new (),
-			exportPropertyData: null,
+			exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 			attributes: [
 				new ("Second"),
 				new ("First"),
@@ -247,7 +247,7 @@ public class AccessorTests {
 		var x = new Accessor (
 			accessorKind: AccessorKind.Getter,
 			symbolAvailability: builder.ToImmutable (),
-			exportPropertyData: null,
+			exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 			attributes: [
 				new ("First"),
 				new ("Second"),
@@ -261,7 +261,7 @@ public class AccessorTests {
 		var y = new Accessor (
 			accessorKind: AccessorKind.Getter,
 			symbolAvailability: builder.ToImmutable (),
-			exportPropertyData: null,
+			exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 			attributes: [
 				new ("Second"),
 				new ("First"),
@@ -284,7 +284,7 @@ public class AccessorTests {
 		var x = new Accessor (
 			accessorKind: AccessorKind.Getter,
 			symbolAvailability: builder.ToImmutable (),
-			exportPropertyData: null,
+			exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 			attributes: [
 				new ("First"),
 				new ("Second"),
@@ -296,7 +296,7 @@ public class AccessorTests {
 		var y = new Accessor (
 			accessorKind: AccessorKind.Getter,
 			symbolAvailability: builder.ToImmutable (),
-			exportPropertyData: null,
+			exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 			attributes: [
 				new ("Second"),
 				new ("First"),
@@ -329,7 +329,7 @@ public class AccessorTests {
 		var accessor = new Accessor (
 			accessorKind: AccessorKind.Getter,
 			symbolAvailability: new (),
-			exportPropertyData: null,
+			exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 			attributes: [
 				new ("First"),
 				new ("Second"),
@@ -359,7 +359,7 @@ public class AccessorTests {
 		var accessor = new Accessor (
 			accessorKind: AccessorKind.Getter,
 			symbolAvailability: new (),
-			exportPropertyData: null,
+			exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 			attributes: [
 				new ("First"),
 				new ("Second"),
@@ -371,7 +371,7 @@ public class AccessorTests {
 
 		var selector = accessor.GetSelector (property);
 		Assert.NotNull (selector);
-		Assert.Equal (property.ExportPropertyData.Value.Selector, selector);
+		Assert.Equal (property.ExportPropertyData.Selector, selector);
 	}
 
 	[Fact]
@@ -424,7 +424,7 @@ public class AccessorTests {
 		var accessor = new Accessor (
 			accessorKind: AccessorKind.Setter,
 			symbolAvailability: new (),
-			exportPropertyData: null,
+			exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 			attributes: [
 				new ("First"),
 				new ("Second"),

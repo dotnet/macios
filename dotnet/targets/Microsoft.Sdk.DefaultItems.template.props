@@ -59,7 +59,7 @@
 			<IsDefaultItem>true</IsDefaultItem>
 		</SceneKitAsset>
 
-		<!-- Include everything in the project's Resources folder (as represented by the _ResourcePrefix property, which is set from the IPhoneResourcePrefix/XamMacResourcePrefix properties),
+		<!-- Include everything in the project's Resources folder (as represented by the _ResourcePrefix property, which is set from the AppBundleResourcePrefix or legacy IPhoneResourcePrefix/XamMacResourcePrefix properties),
 		     except for files that are already in any of the other resource type item groups -->
 		<BundleResource Include="$(_ResourcePrefix)\**\*" Exclude="
 			$(DefaultItemExcludes);

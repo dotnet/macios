@@ -18,5 +18,5 @@ readonly record struct PropertyInvocations {
 	/// <summary>
 	/// Invocations for the setter.
 	/// </summary>
-	public (ExpressionSyntax Send, ExpressionSyntax SendSuper) Setter { get; init; }
+	public (ArgumentConversions Argument, ExpressionSyntax Send, ExpressionSyntax SendSuper)? Setter { get; init; }
 }

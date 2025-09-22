@@ -12,7 +12,7 @@ using Microsoft.DotNet.XHarness.iOS.Shared.Logging;
 
 namespace Xharness.Jenkins.TestTasks {
 	public class RunSimulator {
-
+		readonly Jenkins jenkins;
 		readonly ILog mainLog;
 		readonly ILog simulatorLoadLog;
 		readonly ISimulatorLoader simulators;
@@ -29,12 +29,13 @@ namespace Xharness.Jenkins.TestTasks {
 			}
 		}
 
-		public RunSimulator (IRunSimulatorTask testTask,
+		internal RunSimulator (Jenkins jenkins, IRunSimulatorTask testTask,
 							 ISimulatorLoader simulators,
 							 IErrorKnowledgeBase errorKnowledgeBase,
 							 ILog mainLog,
 							 ILog simulatorLoadLog)
 		{
+			this.jenkins = jenkins;
 			this.testTask = testTask ?? throw new ArgumentNullException (nameof (testTask));
 			this.simulators = simulators ?? throw new ArgumentNullException (nameof (simulators));
 			this.errorKnowledgeBase = errorKnowledgeBase ?? throw new ArgumentNullException (nameof (errorKnowledgeBase));
@@ -54,11 +55,23 @@ namespace Xharness.Jenkins.TestTasks {
 			if (testTask.Device is not null)
 				return;
 
-			var asyncEnumerable = testTask.Candidates as IAsyncEnumerable;
-			if (asyncEnumerable is not null)
-				await asyncEnumerable.ReadyTask;
-
 			try {
+				var asyncEnumerable = testTask.Candidates as IAsyncEnumerable;
+				if (asyncEnumerable is not null) {
+					try {
+						await asyncEnumerable.ReadyTask;
+					} catch (Exception e) {
+						var simlog = mainLog;
+						var sims = jenkins.Simulators;
+
+						simlog.WriteLine ($"Failed to find simulators: {e}");
+						var devices = sims.AvailableDevices.ToList ();
+						simlog.WriteLine ($"{devices.Count} available devices:");
+						foreach (var d in devices)
+							simlog.WriteLine ($"  {d.Name}: {d.UDID} ({d.SimDeviceType} - {d.SimRuntime})");
+						throw;
+					}
+				}
 				if (!testTask.Candidates.Any ()) {
 					testTask.ExecutionResult = TestExecutingResult.DeviceNotFound;
 					testTask.FailureMessage = "No applicable devices found.";

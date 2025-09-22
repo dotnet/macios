@@ -2200,6 +2200,10 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<MarshalObjectiveCExceptionMode Condition="'$(MarshalObjectiveCExceptionMode)' == ''">$(_MarshalObjectiveCExceptionMode)</MarshalObjectiveCExceptionMode>
 		</PropertyGroup>
 
+		<ItemGroup>
+			<_BundlerEnvironmentVariables Condition="'$(MonoUseCompressedInterfaceBitmap)' == 'true'" Include="MONO_COMPRESSED_INTERFACE_BITMAP" Value="1" />
+		</ItemGroup>
+
 		<ParseBundlerArguments
 			Aot="@(_AotArguments)"
 			ExtraArgs="$(AppBundleExtraOptions)"

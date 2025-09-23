@@ -23,15 +23,19 @@ This file should be imported by eng/Versions.props
     <MicrosoftiOSSdknet80_170PackageVersion>17.0.8523</MicrosoftiOSSdknet80_170PackageVersion>
     <MicrosoftiOSSdknet80_180PackageVersion>18.0.8324</MicrosoftiOSSdknet80_180PackageVersion>
     <MicrosoftiOSSdknet90_180PackageVersion>18.0.9617</MicrosoftiOSSdknet90_180PackageVersion>
+    <MicrosoftiOSSdknet90_260PackageVersion>26.0.9744</MicrosoftiOSSdknet90_260PackageVersion>
     <MicrosoftMacCatalystSdknet80_170PackageVersion>17.0.8523</MicrosoftMacCatalystSdknet80_170PackageVersion>
     <MicrosoftMacCatalystSdknet80_180PackageVersion>18.0.8324</MicrosoftMacCatalystSdknet80_180PackageVersion>
     <MicrosoftMacCatalystSdknet90_180PackageVersion>18.0.9617</MicrosoftMacCatalystSdknet90_180PackageVersion>
+    <MicrosoftMacCatalystSdknet90_260PackageVersion>26.0.9744</MicrosoftMacCatalystSdknet90_260PackageVersion>
     <MicrosoftmacOSSdknet80_140PackageVersion>14.0.8523</MicrosoftmacOSSdknet80_140PackageVersion>
     <MicrosoftmacOSSdknet80_150PackageVersion>15.0.8324</MicrosoftmacOSSdknet80_150PackageVersion>
     <MicrosoftmacOSSdknet90_150PackageVersion>15.0.9617</MicrosoftmacOSSdknet90_150PackageVersion>
+    <MicrosoftmacOSSdknet90_260PackageVersion>26.0.9744</MicrosoftmacOSSdknet90_260PackageVersion>
     <MicrosofttvOSSdknet80_170PackageVersion>17.0.8523</MicrosofttvOSSdknet80_170PackageVersion>
     <MicrosofttvOSSdknet80_180PackageVersion>18.0.8324</MicrosofttvOSSdknet80_180PackageVersion>
     <MicrosofttvOSSdknet90_180PackageVersion>18.0.9617</MicrosofttvOSSdknet90_180PackageVersion>
+    <MicrosofttvOSSdknet90_260PackageVersion>26.0.9744</MicrosofttvOSSdknet90_260PackageVersion>
     <!-- dotnet/arcade dependencies -->
     <MicrosoftDotNetArcadeSdkPackageVersion>9.0.0-beta.25465.2</MicrosoftDotNetArcadeSdkPackageVersion>
     <MicrosoftDotNetBuildTasksFeedPackageVersion>9.0.0-beta.25465.2</MicrosoftDotNetBuildTasksFeedPackageVersion>
@@ -60,15 +64,19 @@ This file should be imported by eng/Versions.props
     <MicrosoftiOSSdknet80_170Version>$(MicrosoftiOSSdknet80_170PackageVersion)</MicrosoftiOSSdknet80_170Version>
     <MicrosoftiOSSdknet80_180Version>$(MicrosoftiOSSdknet80_180PackageVersion)</MicrosoftiOSSdknet80_180Version>
     <MicrosoftiOSSdknet90_180Version>$(MicrosoftiOSSdknet90_180PackageVersion)</MicrosoftiOSSdknet90_180Version>
+    <MicrosoftiOSSdknet90_260Version>$(MicrosoftiOSSdknet90_260PackageVersion)</MicrosoftiOSSdknet90_260Version>
     <MicrosoftMacCatalystSdknet80_170Version>$(MicrosoftMacCatalystSdknet80_170PackageVersion)</MicrosoftMacCatalystSdknet80_170Version>
     <MicrosoftMacCatalystSdknet80_180Version>$(MicrosoftMacCatalystSdknet80_180PackageVersion)</MicrosoftMacCatalystSdknet80_180Version>
     <MicrosoftMacCatalystSdknet90_180Version>$(MicrosoftMacCatalystSdknet90_180PackageVersion)</MicrosoftMacCatalystSdknet90_180Version>
+    <MicrosoftMacCatalystSdknet90_260Version>$(MicrosoftMacCatalystSdknet90_260PackageVersion)</MicrosoftMacCatalystSdknet90_260Version>
     <MicrosoftmacOSSdknet80_140Version>$(MicrosoftmacOSSdknet80_140PackageVersion)</MicrosoftmacOSSdknet80_140Version>
     <MicrosoftmacOSSdknet80_150Version>$(MicrosoftmacOSSdknet80_150PackageVersion)</MicrosoftmacOSSdknet80_150Version>
     <MicrosoftmacOSSdknet90_150Version>$(MicrosoftmacOSSdknet90_150PackageVersion)</MicrosoftmacOSSdknet90_150Version>
+    <MicrosoftmacOSSdknet90_260Version>$(MicrosoftmacOSSdknet90_260PackageVersion)</MicrosoftmacOSSdknet90_260Version>
     <MicrosofttvOSSdknet80_170Version>$(MicrosofttvOSSdknet80_170PackageVersion)</MicrosofttvOSSdknet80_170Version>
     <MicrosofttvOSSdknet80_180Version>$(MicrosofttvOSSdknet80_180PackageVersion)</MicrosofttvOSSdknet80_180Version>
     <MicrosofttvOSSdknet90_180Version>$(MicrosofttvOSSdknet90_180PackageVersion)</MicrosofttvOSSdknet90_180Version>
+    <MicrosofttvOSSdknet90_260Version>$(MicrosofttvOSSdknet90_260PackageVersion)</MicrosofttvOSSdknet90_260Version>
     <!-- dotnet/arcade dependencies -->
     <MicrosoftDotNetArcadeSdkVersion>$(MicrosoftDotNetArcadeSdkPackageVersion)</MicrosoftDotNetArcadeSdkVersion>
     <MicrosoftDotNetBuildTasksFeedVersion>$(MicrosoftDotNetBuildTasksFeedPackageVersion)</MicrosoftDotNetBuildTasksFeedVersion>

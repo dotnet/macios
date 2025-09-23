@@ -9648,6 +9648,10 @@ namespace Metal {
 	interface MTLFunctionReflection {
 		[Export ("bindings")]
 		IMTLBinding [] Bindings { get; }
+
+		[Mac (26, 1), iOS (26, 1), TV (26, 1), MacCatalyst (26, 1)]
+		[NullAllowed, Export ("userAnnotation")]
+		string UserAnnotation { get; }
 	}
 
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]

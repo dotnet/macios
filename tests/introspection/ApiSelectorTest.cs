@@ -1207,6 +1207,7 @@ namespace Introspection {
 			case "MTLFunctionReflection":
 				switch (selectorName) {
 				case "bindings":
+				case "userAnnotation":
 					return true;
 				}
 				break;

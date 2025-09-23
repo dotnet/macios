@@ -1,0 +1,2 @@
+# headers say yes, but introspection says no, so keep this selector out of Mac Catalyst for now
+!missing-selector! CTCellularPlanProvisioning::addPlanWithRequest:properties:completionHandler: not bound

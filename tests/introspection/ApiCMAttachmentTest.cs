@@ -247,7 +247,9 @@ namespace Introspection {
 					return true;
 #endif
 				return false;
+			case "VTMotionEstimationSession":
 			case "MTLIOCompressionContext":
+			case "CGRenderingBufferProvider":
 				return true;
 			default:
 				return false;

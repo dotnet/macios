@@ -379,4 +379,46 @@ namespace Symbols {
 	[DisableDefaultCtor]
 	interface NSSymbolMagicReplaceContentTransition {
 	}
+
+	[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+	[BaseType (typeof (NSSymbolEffect))]
+	[DisableDefaultCtor]
+	interface NSSymbolDrawOnEffect {
+		[Static]
+		[Export ("effect")]
+		NSSymbolDrawOnEffect Create ();
+
+		[Export ("effectWithByLayer")]
+		NSSymbolDrawOnEffect CreateWithByLayer ();
+
+		[Export ("effectWithWholeSymbol")]
+		NSSymbolDrawOnEffect CreateWithWholeSymbol ();
+
+		[Export ("effectWithIndividually")]
+		NSSymbolDrawOnEffect CreateWithIndividually ();
+	}
+
+	[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+	[BaseType (typeof (NSSymbolEffect))]
+	[DisableDefaultCtor]
+	interface NSSymbolDrawOffEffect {
+		[Static]
+		[Export ("effect")]
+		NSSymbolDrawOffEffect Create ();
+
+		[Export ("effectWithByLayer")]
+		NSSymbolDrawOffEffect CreateWithByLayer ();
+
+		[Export ("effectWithWholeSymbol")]
+		NSSymbolDrawOffEffect CreateWithWholeSymbol ();
+
+		[Export ("effectWithIndividually")]
+		NSSymbolDrawOffEffect CreateWithIndividually ();
+
+		[Export ("effectWithReversed")]
+		NSSymbolDrawOffEffect CreateWithReversed ();
+
+		[Export ("effectWithNonReversed")]
+		NSSymbolDrawOffEffect CreateWithNonReversed ();
+	}
 }

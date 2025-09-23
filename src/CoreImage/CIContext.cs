@@ -25,6 +25,7 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 using System;
+using System.ComponentModel;
 
 using Foundation;
 using CoreGraphics;
@@ -39,166 +40,37 @@ using OpenGLES;
 
 namespace CoreImage {
 	/// <summary>Use to configure the CIContext rendering pipeline.</summary>
-	///     <remarks>You would use an instance of this class to configure the CIContext rendering operations.</remarks>
+	/// <remarks>You would use an instance of this class to configure the CIContext rendering operations.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-	public class CIContextOptions : DictionaryContainer {
-
-		/// <summary>Creates an empty set of options for CIContext rendering.</summary>
-		///         <remarks>
-		///         </remarks>
-		public CIContextOptions ()
-		{
-		}
-
-		/// <param name="dictionary">To be added.</param>
-		///         <summary>Constructs a new <see cref="CoreImage.CIContextOptions" /> object using the options specified in <paramref name="dictionary" />.</summary>
-		///         <remarks>To be added.</remarks>
-		public CIContextOptions (NSDictionary dictionary)
-			: base (dictionary)
-		{
-		}
-
-		/// <summary>The desired CIColorSpace to be used for the CIContext rendering operation.</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>This color space is used before the image is rendered into the output.</remarks>
-		public CGColorSpace? OutputColorSpace {
-			get {
-				return GetNativeValue<CGColorSpace> (CIContext.OutputColorSpace);
-			}
-			set {
-				SetNativeValue (CIContext.OutputColorSpace, value);
-			}
-		}
-
-		/// <summary>The colorspace used by image processing operations, this is different than the colorspace used for the final rendering.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		public CGColorSpace? WorkingColorSpace {
-			get {
-				return GetNativeValue<CGColorSpace> (CIContext._WorkingColorSpace);
-			}
-			set {
-				SetNativeValue (CIContext._WorkingColorSpace, value);
-			}
-		}
-
-#if __MACOS__
-		/// <include file="../../docs/api/CoreImage/CIContextOptions.xml" path="/Documentation/Docs[@DocId='macOS:P:CoreImage.CIContextOptions.UseSoftwareRenderer']/*" />
-#else
-		/// <include file="../../docs/api/CoreImage/CIContextOptions.xml" path="/Documentation/Docs[@DocId='P:CoreImage.CIContextOptions.UseSoftwareRenderer']/*" />
-#endif
+	public partial class CIContextOptions : DictionaryContainer {
+#if !XAMCORE_5_0
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Obsolete ("Use 'NullableUseSoftwareRenderer' instead.")]
 		public bool UseSoftwareRenderer {
 			get {
-				var b = GetBoolValue (CIContext.UseSoftwareRenderer);
+				var b = GetBoolValue (CIContextOptionKeys.UseSoftwareRenderer);
 				return b.HasValue ? b.Value : false;
 			}
 			set {
-				SetBooleanValue (CIContext.UseSoftwareRenderer, value);
+				SetBooleanValue (CIContextOptionKeys.UseSoftwareRenderer, value);
 			}
 		}
 
 		/// <summary>Gets or sets the image format to use for storing intermediate rendering results.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Obsolete ("Use 'WorkingFormatField' instead.")]
 		public int? CIImageFormat {
 			get {
-				return GetInt32Value (CIContext.WorkingFormatField);
+				return GetInt32Value (CIContextOptionKeys.WorkingFormatField);
 			}
 			set {
-				SetNumberValue (CIContext.WorkingFormatField, value);
+				SetNumberValue (CIContextOptionKeys.WorkingFormatField, value);
 			}
 		}
-
-		/// <summary>Gets or sets whether to request low priority from the GPU.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("tvos")]
-		public bool? PriorityRequestLow {
-			get {
-				return GetBoolValue (CIContext.PriorityRequestLow);
-			}
-			set {
-				SetBooleanValue (CIContext.PriorityRequestLow, value);
-			}
-		}
-
-		/// <summary>
-		///           <see langword="true" /> if downsampling should be higher quality at the expense of performance.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		public bool? HighQualityDownsample {
-			get {
-				return GetBoolValue (CIContext.HighQualityDownsample);
-			}
-			set {
-				SetBooleanValue (CIContext.HighQualityDownsample, value);
-			}
-		}
-
-		/// <summary>If <see langword="true" />, the output should premultiply pixel values by their alpha values.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("tvos")]
-		public bool? OutputPremultiplied {
-			get {
-				return GetBoolValue (CIContext.OutputPremultiplied);
-			}
-			set {
-				SetBooleanValue (CIContext.OutputPremultiplied, value);
-			}
-		}
-
-		/// <summary>If not <see langword="null" />, <see langword="true" /> indicates that intermediate images should be cached.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("tvos")]
-		public bool? CacheIntermediates {
-			get {
-				return GetBoolValue (CIContext.CacheIntermediates);
-			}
-			set {
-				SetBooleanValue (CIContext.CacheIntermediates, value);
-			}
-		}
-
-		[SupportedOSPlatform ("ios13.0")]
-		[SupportedOSPlatform ("tvos13.0")]
-		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("maccatalyst")]
-		public bool? AllowLowPower {
-			get {
-				return GetBoolValue (CIContext.AllowLowPower);
-			}
-			set {
-				SetBooleanValue (CIContext.AllowLowPower, value);
-			}
-		}
-
-		[SupportedOSPlatform ("ios14.0")]
-		[SupportedOSPlatform ("tvos14.0")]
-		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("maccatalyst")]
-		public string? Name {
-			get {
-				return GetStringValue (CIContext.Name);
-			}
-			set {
-				SetStringValue (CIContext.Name, value);
-			}
-		}
+#endif // !XAMCORE_5_0
 	}
 
 	public partial class CIContext {

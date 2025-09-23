@@ -1,25 +1,25 @@
-#if IOS
-
 #nullable enable
 
 using System;
 
 using Foundation;
 using ObjCRuntime;
-using UIKit;
 
 namespace MetricKit {
 
 	public partial class MXMetric {
-
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[UnsupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("macos")]
 		public virtual NSDictionary DictionaryRepresentation {
 			get {
-				if (SystemVersion.IsAtLeastXcode12)
-					return _DictionaryRepresentation14;
-				else
+#if !__MACOS__
+				if (!SystemVersion.IsAtLeastXcode12)
 					return _DictionaryRepresentation13;
+#endif
+				return _DictionaryRepresentation14;
 			}
 		}
 	}
 }
-#endif

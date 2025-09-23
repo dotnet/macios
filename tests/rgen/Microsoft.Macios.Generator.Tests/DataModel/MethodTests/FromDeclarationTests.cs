@@ -1193,4 +1193,123 @@ interface IAVAudioMixing {
 		Assert.Contains (newMethod.Modifiers, m => m.IsKind (SyntaxKind.InternalKeyword));
 		Assert.Contains (newMethod.Modifiers, m => m.IsKind (SyntaxKind.StaticKeyword));
 	}
+
+	class TestDataFromMethodDeclarationToConstructor : IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
+		{
+
+			const string noFactoryMethod = @"
+using System;
+using ObjCBindings;
+using ObjCRuntime;
+
+namespace NS {
+	public class MyClass {
+
+		[Export<Method> (""initWithInputs:"", Flags = ObjCBindings.Method.Default)] 
+		public static MyClass MyFactoryMethod () { }
+	}
 }
+";
+
+			yield return [noFactoryMethod];
+
+			const string noParameter = @"
+using System;
+using ObjCBindings;
+using ObjCRuntime;
+
+namespace NS {
+	public class MyClass {
+
+		[Export<Method> (""initWithInputs:"", Flags = ObjCBindings.Method.Factory)] 
+		public static MyClass MyFactoryMethod () { }
+	}
+}
+";
+
+			yield return [noParameter];
+
+			const string singleParameter = @"
+using System;
+using ObjCBindings;
+using ObjCRuntime;
+
+namespace NS {
+	public class MyClass {
+
+		[Export<Method> (""initWithInputs:"", Flags = ObjCBindings.Method.Factory)] 
+		public static MyClass MyFactoryMethod (string[]? input) { }
+	}
+}
+";
+
+			yield return [singleParameter];
+
+			const string multiParameter = @"
+using System;
+using ObjCBindings;
+using ObjCRuntime;
+
+namespace NS {
+	public class MyClass {
+
+		[Export<Method> (""initWithInputs:other:"", Flags = ObjCBindings.Method.Factory)] 
+		public static MyClass MyFactoryMethod (string[]? input, int other) { }
+	}
+}
+";
+
+			yield return [multiParameter];
+
+			const string threadSafe = @"
+using System;
+using ObjCBindings;
+using ObjCRuntime;
+
+namespace NS {
+	public class MyClass {
+
+		[Export<Method> (""initWithInputs:"", Flags = ObjCBindings.Method.Factory | ObjCBindings.Method.IsThreadSafe)] 
+		public static MyClass MyFactoryMethod (string[]? input) { }
+	}
+}
+";
+
+			yield return [threadSafe];
+		}
+
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
+	}
+
+	[Theory]
+	[AllSupportedPlatformsClassData<TestDataFromMethodDeclarationToConstructor>]
+	void FromMethodDeclarationToConstructor (ApplePlatform platform, string inputText)
+	{
+		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
+		Assert.Single (syntaxTrees);
+		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
+		var declaration = syntaxTrees [0].GetRoot ()
+			.DescendantNodes ().OfType<MethodDeclarationSyntax> ()
+			.FirstOrDefault ();
+		Assert.NotNull (declaration);
+		Assert.True (Method.TryCreate (declaration, semanticModel, out var changes));
+		Assert.NotNull (changes);
+		var constructor = changes.Value.ToConstructor ("MyClass");
+		if (changes.Value.IsFactory) {
+			Assert.Equal ("MyClass", constructor.Type);
+			Assert.Equal (changes.Value.Selector, constructor.Selector);
+			// will compare that all parameters are the same, that is, same type, name and position
+			var parameterEqualityComparer = new MethodParameterEqualityComparer ();
+			Assert.Equal (changes.Value.Parameters, constructor.Parameters, parameterEqualityComparer);
+			Assert.Equal (changes.Value.SymbolAvailability, constructor.SymbolAvailability);
+			var modifiersComparer = new ModifiersEqualityComparer ();
+			Assert.Equal (changes.Value.Modifiers, constructor.Modifiers, modifiersComparer);
+			Assert.False (constructor.IsNullOrDefault);
+			Assert.Equal (constructor.IsThreadSafe, changes.Value.IsThreadSafe);
+		} else {
+			Assert.True (constructor.IsNullOrDefault);
+		}
+	}
+}
+

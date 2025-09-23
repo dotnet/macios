@@ -55,6 +55,27 @@ namespace BackgroundAssets {
 		SessionDownloadNotPermittedBeforeAppLaunch = 206,
 	}
 
+	[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0), Mac (26, 0)]
+	[Flags]
+	[Native]
+	public enum BAAssetPackStatus : ulong {
+		DownloadAvailable = 1uL << 0,
+		UpdateAvailable = 1uL << 1,
+		UpToDate = 1uL << 2,
+		OutOfDate = 1uL << 3,
+		Obsolete = 1uL << 4,
+		Downloading = 1uL << 5,
+		Downloaded = 1uL << 6,
+	}
+
+	[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0), Mac (26, 0)]
+	[ErrorDomain ("BAManagedErrorDomain")]
+	[Native]
+	public enum BAManagedErrorCode : long {
+		AssetPackNotFound,
+		FileNotFound,
+	}
+
 	[TV (18, 4), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -224,6 +245,143 @@ namespace BackgroundAssets {
 		[Export ("initWithIdentifier:request:essential:fileSize:applicationGroupIdentifier:priority:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (string identifier, NSUrlRequest request, bool essential, nuint fileSize, string applicationGroupIdentifier, nint priority);
+	}
+
+	[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0), Mac (26, 0)]
+	[Protocol (BackwardsCompatibleCodeGeneration = false), Model]
+	[BaseType (typeof (NSObject))]
+	interface BAManagedAssetPackDownloadDelegate {
+		[Export ("downloadOfAssetPackBegan:")]
+		void DownloadBegan (BAAssetPack assetPack);
+
+		[Export ("downloadOfAssetPack:hasProgress:")]
+		void DownloadProgress (BAAssetPack assetPack, NSProgress progress);
+
+		[Export ("downloadOfAssetPackPaused:")]
+		void DownloadPaused (BAAssetPack assetPack);
+
+		[Export ("downloadOfAssetPackFinished:")]
+		void DownloadFinished (BAAssetPack assetPack);
+
+		[Export ("downloadOfAssetPack:failedWithError:")]
+		void DownloadFailed (BAAssetPack assetPack, NSError error);
+	}
+
+	interface IBAManagedAssetPackDownloadDelegate { }
+
+	[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0), Mac (26, 0)]
+	[Protocol (BackwardsCompatibleCodeGeneration = false)]
+	interface BAManagedDownloaderExtension : BADownloaderExtension {
+		[Export ("shouldDownloadAssetPack:")]
+		bool ShouldDownload (BAAssetPack assetPack);
+	}
+
+	[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0), Mac (26, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface BAAssetPack {
+		[Export ("identifier")]
+		string Identifier { get; }
+
+		[Export ("downloadSize")]
+		nint DownloadSize { get; }
+
+		[Export ("version")]
+		nint Version { get; }
+
+		[NullAllowed, Export ("userInfo", ArgumentSemantic.Copy)]
+		NSData UserInfo { get; }
+
+		[Export ("download")]
+		BADownload Download ();
+
+		[Export ("downloadForContentRequest:")]
+		BADownload Download (BAContentRequest contentRequest);
+
+		[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0), Mac (26, 0)]
+		[Field ("BAAssetPackIdentifierErrorKey")]
+		NSString IdentifierErrorKey { get; }
+	}
+
+	delegate void BAAssetPackManagerGetAllAssetPacksCompletionHandler ([NullAllowed] NSSet<BAAssetPack> assetPacks, [NullAllowed] NSError error);
+	delegate void BAAssetPackManagerGetAssetPackCompletionHandler ([NullAllowed] BAAssetPack assetPack, [NullAllowed] NSError error);
+	delegate void BAAssetPackManagerGetStatusCompletionHandler ([NullAllowed] BAAssetPackStatus status, [NullAllowed] NSError error);
+	delegate void BAAssetPackManagerEnsureLocalAvailabilityCompletionHandler ([NullAllowed] NSError error);
+	delegate void BAAssetPackManagerCheckForUpdatesCompletionHandler ([NullAllowed] NSSet<NSString> updatingIdentifiers, [NullAllowed] NSSet<NSString> removedIdentifiers, [NullAllowed] NSError error);
+	delegate void BAAssetPackManagerRemoveAssetPackCompletionHandler ([NullAllowed] NSError error);
+
+	[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0), Mac (26, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface BAAssetPackManager {
+		[Static]
+		[Export ("sharedManager", ArgumentSemantic.Strong)]
+		BAAssetPackManager SharedManager { get; }
+
+		[Wrap ("WeakDelegate")]
+		[NullAllowed]
+		IBAManagedAssetPackDownloadDelegate Delegate { get; set; }
+
+		[NullAllowed, Export ("delegate", ArgumentSemantic.Weak)]
+		NSObject WeakDelegate { get; set; }
+
+		[Export ("getAllAssetPacksWithCompletionHandler:")]
+		[Async]
+		void GetAllAssetPacks (BAAssetPackManagerGetAllAssetPacksCompletionHandler completionHandler);
+
+		[Export ("getAssetPackWithIdentifier:completionHandler:")]
+		[Async]
+		void GetAssetPack (string assetPackIdentifier, BAAssetPackManagerGetAssetPackCompletionHandler completionHandler);
+
+		[Export ("getStatusOfAssetPackWithIdentifier:completionHandler:")]
+		[Async]
+		void GetStatus (string assetPackIdentifier, BAAssetPackManagerGetStatusCompletionHandler completionHandler);
+
+		[Export ("ensureLocalAvailabilityOfAssetPack:completionHandler:")]
+		[Async]
+		void EnsureLocalAvailability (BAAssetPack assetPack, BAAssetPackManagerEnsureLocalAvailabilityCompletionHandler completionHandler);
+
+		[Export ("checkForUpdatesWithCompletionHandler:")]
+		[Async (ResultTypeName = "BAAssetPackManagerCheckForUpdatesResult")]
+		void CheckForUpdates ([NullAllowed] BAAssetPackManagerCheckForUpdatesCompletionHandler completionHandler);
+
+		[Export ("contentsAtPath:searchingInAssetPackWithIdentifier:options:error:")]
+		[return: NullAllowed]
+		NSData GetContents (string path, [NullAllowed] string assetPackIdentifier, NSDataReadingOptions options, [NullAllowed] out NSError error);
+
+		[Export ("fileDescriptorForPath:searchingInAssetPackWithIdentifier:error:")]
+		int GetFileDescriptor (string path, [NullAllowed] string assetPackIdentifier, [NullAllowed] out NSError error);
+
+		[Export ("URLForPath:error:")]
+		[return: NullAllowed]
+		NSUrl GetUrl (string path, [NullAllowed] out NSError error);
+
+		[Export ("removeAssetPackWithIdentifier:completionHandler:")]
+		[Async]
+		void RemoveAssetPack (string assetPackIdentifier, [NullAllowed] BAAssetPackManagerRemoveAssetPackCompletionHandler completionHandler);
+	}
+
+	[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0), Mac (26, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface BAAssetPackManifest {
+		[Export ("assetPacks", ArgumentSemantic.Copy)]
+		NSSet<BAAssetPack> AssetPacks { get; }
+
+		[Internal]
+		[Export ("initWithContentsOfURL:applicationGroupIdentifier:error:")]
+		NativeHandle _InitWithContentsOfUrl (NSUrl url, string applicationGroupIdentifier, [NullAllowed] out NSError error);
+
+		[Internal]
+		[Export ("initFromData:applicationGroupIdentifier:error:")]
+		NativeHandle _InitFromData (NSData data, string applicationGroupIdentifier, [NullAllowed] out NSError error);
+
+		[Export ("allDownloads")]
+		NSSet<BADownload> GetAllDownloads ();
+
+		// -(NSSet<BADownload *> * _Nonnull)allDownloadsForContentRequest:(BAContentRequest)contentRequest;
+		[Export ("allDownloadsForContentRequest:")]
+		NSSet<BADownload> GetAllDownloads (BAContentRequest contentRequest);
 	}
 
 }

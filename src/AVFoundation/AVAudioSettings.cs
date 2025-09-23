@@ -324,6 +324,48 @@ namespace AVFoundation {
 			}
 		}
 
+		/// <summary>Represents the dynamic range control configuration.</summary>
+		[SupportedOSPlatform ("ios26.0")]
+		[SupportedOSPlatform ("maccatalyst26.0")]
+		[SupportedOSPlatform ("macos26.0")]
+		[SupportedOSPlatform ("tvos26.0")]
+		public AVAudioDynamicRangeControlConfiguration? DynamicRangeControlConfiguration {
+			get {
+				return (AVAudioDynamicRangeControlConfiguration?) (long?) GetNIntValue (AVAudioSettings.AVEncoderDynamicRangeControlConfigurationKey);
+			}
+			set {
+				SetNumberValue (AVAudioSettings.AVEncoderDynamicRangeControlConfigurationKey, (nint?) (long?) value);
+			}
+		}
+
+		/// <summary>Represents the content source.</summary>
+		[SupportedOSPlatform ("ios26.0")]
+		[SupportedOSPlatform ("maccatalyst26.0")]
+		[SupportedOSPlatform ("macos26.0")]
+		[SupportedOSPlatform ("tvos26.0")]
+		public AVAudioContentSource? ContentSource {
+			get {
+				return (AVAudioContentSource?) (long?) GetNIntValue (AVAudioSettings.AVEncoderContentSourceKey);
+			}
+			set {
+				SetNumberValue (AVAudioSettings.AVEncoderContentSourceKey, (nint?) (long?) value);
+			}
+		}
+
+		/// <summary>The frequency of audio synchronization packets.</summary>
+		/// <remarks>This value must be greater than 2. The recommended value is 75.</remarks>
+		[SupportedOSPlatform ("ios26.0")]
+		[SupportedOSPlatform ("maccatalyst26.0")]
+		[SupportedOSPlatform ("macos26.0")]
+		[SupportedOSPlatform ("tvos26.0")]
+		public nint? AspFrequencyKey {
+			get {
+				return GetNIntValue (AVAudioSettings.AVEncoderAspFrequencyKey);
+			}
+			set {
+				SetNumberValue (AVAudioSettings.AVEncoderAspFrequencyKey, value);
+			}
+		}
 #endif
 	}
 }

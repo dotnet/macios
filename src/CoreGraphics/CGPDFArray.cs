@@ -92,7 +92,9 @@ namespace CoreGraphics {
 		{
 			result = default;
 			unsafe {
-				return CGPDFArrayGetInteger (Handle, idx, (nint*) Unsafe.AsPointer<nint> (ref result)) != 0;
+				fixed (nint* resultPtr = &result) {
+					return CGPDFArrayGetInteger (Handle, idx, resultPtr) != 0;
+				}
 			}
 		}
 
@@ -105,7 +107,9 @@ namespace CoreGraphics {
 		{
 			result = default;
 			unsafe {
-				return CGPDFArrayGetNumber (Handle, idx, (nfloat*) Unsafe.AsPointer<nfloat> (ref result)) != 0;
+				fixed (nfloat* resultPtr = &result) {
+					return CGPDFArrayGetNumber (Handle, idx, resultPtr) != 0;
+				}
 			}
 		}
 

@@ -70,7 +70,15 @@ namespace Speech {
 		AudioReadFailed = 2,
 		UndefinedTemplateClassName = 7,
 		MalformedSupplementalModel = 8,
+#if XAMCORE_5_0
+		Timeout = 12,
+#else
+		// Apple changed the value for 'Timeout' from 10 to 12 in Xcode 26.
+		[Obsolete ("Use 'Timeout2' instead'.")]
 		Timeout = 10,
+		Timeout2 = 12,
+#endif
+		MissingParameter = 13,
 	}
 
 	/// <summary>Abstract base class for speech recognition requests (see <see cref="Speech.SFSpeechAudioBufferRecognitionRequest" /> and <see cref="Speech.SFSpeechUrlRecognitionRequest" />).</summary>
@@ -456,7 +464,7 @@ namespace Speech {
 
 	[Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0), TV (18, 0)]
 	[BaseType (typeof (NSObject))]
-	interface SFSpeechLanguageModelConfiguration : NSCopying {
+	interface SFSpeechLanguageModelConfiguration : NSCopying, NSSecureCoding {
 		[Export ("initWithLanguageModel:")]
 		NativeHandle Constructor (NSUrl languageModel);
 
@@ -468,20 +476,51 @@ namespace Speech {
 
 		[NullAllowed, Export ("vocabulary", ArgumentSemantic.Copy)]
 		NSUrl Vocabulary { get; }
+
+		[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[NullAllowed, Export ("weight", ArgumentSemantic.Copy)]
+		[BindAs (typeof (float?))]
+		NSNumber Weight { get; }
+
+		[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("initWithLanguageModel:vocabulary:weight:")]
+		NativeHandle Constructor (NSUrl languageModel, [NullAllowed] NSUrl vocabulary, [NullAllowed][BindAs (typeof (float?))] NSNumber weight);
 	}
 
 	[Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0), TV (18, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SFSpeechLanguageModel {
+		[Deprecated (PlatformName.iOS, 26, 0, message: "Use the 'PrepareCustomModel' overload that takes a 'SFSpeechLanguageModelConfiguration' instead.")]
+		[Deprecated (PlatformName.MacOSX, 26, 0, message: "Use the 'PrepareCustomModel' overload that takes a 'SFSpeechLanguageModelConfiguration' instead.")]
+		[Deprecated (PlatformName.TvOS, 26, 0, message: "Use the 'PrepareCustomModel' overload that takes a 'SFSpeechLanguageModelConfiguration' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, message: "Use the 'PrepareCustomModel' overload that takes a 'SFSpeechLanguageModelConfiguration' instead.")]
 		[Static]
 		[Export ("prepareCustomLanguageModelForUrl:clientIdentifier:configuration:completion:")]
 		[Async]
 		void PrepareCustomModel (NSUrl asset, string clientIdentifier, SFSpeechLanguageModelConfiguration configuration, Action<NSError> completion);
 
+		[Deprecated (PlatformName.iOS, 26, 0, message: "Use the 'PrepareCustomModel' overload that takes a 'SFSpeechLanguageModelConfiguration' instead.")]
+		[Deprecated (PlatformName.MacOSX, 26, 0, message: "Use the 'PrepareCustomModel' overload that takes a 'SFSpeechLanguageModelConfiguration' instead.")]
+		[Deprecated (PlatformName.TvOS, 26, 0, message: "Use the 'PrepareCustomModel' overload that takes a 'SFSpeechLanguageModelConfiguration' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, message: "Use the 'PrepareCustomModel' overload that takes a 'SFSpeechLanguageModelConfiguration' instead.")]
 		[Static]
 		[Export ("prepareCustomLanguageModelForUrl:clientIdentifier:configuration:ignoresCache:completion:")]
 		[Async]
 		void PrepareCustomModel (NSUrl asset, string clientIdentifier, SFSpeechLanguageModelConfiguration configuration, bool ignoresCache, Action<NSError> completion);
+
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0), Mac (26, 0)]
+		[Async]
+		[Static]
+		[Export ("prepareCustomLanguageModelForUrl:configuration:completion:")]
+		void PrepareCustomModel (NSUrl asset, SFSpeechLanguageModelConfiguration configuration, SFSpeechLanguageModelPrepareCustomModelHandler completion);
+
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0), Mac (26, 0)]
+		[Async]
+		[Static]
+		[Export ("prepareCustomLanguageModelForUrl:configuration:ignoresCache:completion:")]
+		void PrepareCustomModel (NSUrl asset, SFSpeechLanguageModelConfiguration configuration, bool ignoresCache, SFSpeechLanguageModelPrepareCustomModelHandler completion);
 	}
+
+	delegate void SFSpeechLanguageModelPrepareCustomModelHandler ([NullAllowed] NSError error);
 }

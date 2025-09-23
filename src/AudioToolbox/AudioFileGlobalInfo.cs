@@ -240,22 +240,28 @@ namespace AudioToolbox {
 		static bool TryGetGlobalInfoSize (AudioFileGlobalProperty propertyId, out uint size)
 		{
 			size = 0;
-			var rv = AudioFileGetGlobalInfoSize (propertyId, 0, null, (uint*) Unsafe.AsPointer<uint> (ref size));
-			return rv == 0;
+			fixed (uint* sizePtr = &size) {
+				var rv = AudioFileGetGlobalInfoSize (propertyId, 0, null, sizePtr);
+				return rv == 0;
+			}
 		}
 
 		static bool TryGetGlobalInfoSize (AudioFileGlobalProperty propertyId, AudioFileType fileType, out uint size)
 		{
 			size = 0;
-			var rv = AudioFileGetGlobalInfoSize (propertyId, sizeof (AudioFileType), (void*) &fileType, (uint*) Unsafe.AsPointer<uint> (ref size));
-			return rv == 0;
+			fixed (uint* sizePtr = &size) {
+				var rv = AudioFileGetGlobalInfoSize (propertyId, sizeof (AudioFileType), (void*) &fileType, sizePtr);
+				return rv == 0;
+			}
 		}
 
 		static bool TryGetGlobalInfoSize (AudioFileGlobalProperty propertyId, AudioFileTypeAndFormatID audioFileTypeAndFormatId, out uint size)
 		{
 			size = 0;
-			var rv = AudioFileGetGlobalInfoSize (propertyId, (uint) sizeof (AudioFileTypeAndFormatID), (void*) &audioFileTypeAndFormatId, (uint*) Unsafe.AsPointer<uint> (ref size));
-			return rv == 0;
+			fixed (uint* sizePtr = &size) {
+				var rv = AudioFileGetGlobalInfoSize (propertyId, (uint) sizeof (AudioFileTypeAndFormatID), (void*) &audioFileTypeAndFormatId, sizePtr);
+				return rv == 0;
+			}
 		}
 
 		[DllImport (Constants.AudioToolboxLibrary)]
@@ -304,17 +310,20 @@ namespace AudioToolbox {
 		{
 			var size = (uint) sizeof (IntPtr);
 			outPropertyData = default;
-			var rv = AudioFileGetGlobalInfo (propertyId, sizeof (AudioFileType), &fileType, &size, (IntPtr*) Unsafe.AsPointer<IntPtr> (ref outPropertyData));
-			return rv == 0;
-
+			fixed (IntPtr* outPropertyDataPtr = &outPropertyData) {
+				var rv = AudioFileGetGlobalInfo (propertyId, sizeof (AudioFileType), &fileType, &size, outPropertyDataPtr);
+				return rv == 0;
+			}
 		}
 
 		static bool TryGetGlobalInfo (AudioFileGlobalProperty propertyId, out IntPtr outPropertyData)
 		{
 			var size = (uint) sizeof (IntPtr);
 			outPropertyData = default;
-			var rv = AudioFileGetGlobalInfo (propertyId, 0, null, &size, (IntPtr*) Unsafe.AsPointer<IntPtr> (ref outPropertyData));
-			return rv == 0;
+			fixed (IntPtr* outPropertyDataPtr = &outPropertyData) {
+				var rv = AudioFileGetGlobalInfo (propertyId, 0, null, &size, outPropertyDataPtr);
+				return rv == 0;
+			}
 		}
 	}
 

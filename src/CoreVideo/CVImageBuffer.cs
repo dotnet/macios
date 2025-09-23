@@ -97,44 +97,30 @@ namespace CoreVideo {
 			}
 		}
 
-		// it was mentioned in iOS4 diff (without an architecture) but it's never been seen elsewhere for iOS
-#if MONOMAC
 		[DllImport (Constants.CoreVideoLibrary)]
 		extern static /* CGColorSpaceRef */ IntPtr CVImageBufferGetColorSpace (/* CVImageBufferRef */ IntPtr imageBuffer);
 
-		/// <summary>Developers should not use this deprecated property. </summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		[UnsupportedOSPlatform ("maccatalyst")]
-		[UnsupportedOSPlatform ("tvos")]
-		[UnsupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("macos")]
-		[ObsoletedOSPlatform ("macos10.4")]
+		/// <summary>Get the color space for this image buffer</summary>
+		/// <value>The color space for this image buffer.</value>
 		public CGColorSpace? ColorSpace {
 			get {
 				var h = CVImageBufferGetColorSpace (Handle);
 				return h == IntPtr.Zero ? null : new CGColorSpace (h, false);
 			}
 		}
-#endif
 
-#if MONOMAC
 		[DllImport (Constants.CoreVideoLibrary)]
 		extern static /* CGColorSpaceRef */ IntPtr CVImageBufferCreateColorSpaceFromAttachments (/* CFDictionaryRef */ IntPtr attachments);
 
-		/// <param name="attachments">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Try to create a <see cref="CGColorSpace" /> from an image buffer's attachments.</summary>
+		/// <param name="attachments">An image buffer's attachments to use when trying to create a new color space.</param>
+		/// <returns>If successful, a new <see cref="CGColorSpace" /> instance, otherwise <see langword="null" />.</returns>
 		public static CGColorSpace? CreateFrom (NSDictionary attachments)
 		{
-			if (attachments is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (attachments));
-			var h = CVImageBufferCreateColorSpaceFromAttachments (attachments.Handle);
+			var h = CVImageBufferCreateColorSpaceFromAttachments (attachments.GetNonNullHandle (nameof (attachments)));
 			GC.KeepAlive (attachments);
 			return h == IntPtr.Zero ? null : new CGColorSpace (h, true);
 		}
-#endif
 
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]

@@ -283,11 +283,14 @@ readonly partial struct Binding {
 		context.SemanticModel.GetSymbolData (
 			declaration: enumDeclaration,
 			bindingType: BindingType.SmartEnum,
+			context: context,
 			name: out name,
+			typeInfo: out typeInfo,
 			baseClass: out baseClass,
 			interfaces: out interfaces,
 			outerClasses: out outerClasses,
 			namespaces: out namespaces,
+			protocolConstructors: out _, // no constructors in enums
 			symbolAvailability: out availability,
 			bindingInfo: out bindingInfo);
 		FullyQualifiedSymbol = enumDeclaration.GetFullyQualifiedIdentifier (context.SemanticModel);
@@ -297,7 +300,7 @@ readonly partial struct Binding {
 		var bucket = ImmutableArray.CreateBuilder<EnumMember> ();
 		// loop over the fields and add those that contain a FieldAttribute
 		var enumValueDeclarations = enumDeclaration.Members.OfType<EnumMemberDeclarationSyntax> ();
-		foreach (var enumValueDeclaration in enumValueDeclarations) {
+		foreach (var (index, enumValueDeclaration) in enumValueDeclarations.Index ()) {
 			if (Skip (enumValueDeclaration, context.SemanticModel))
 				continue;
 			if (context.SemanticModel.GetDeclaredSymbol (enumValueDeclaration) is not IFieldSymbol enumValueSymbol) {
@@ -311,6 +314,7 @@ readonly partial struct Binding {
 				// could not calculate the library for the enum add it with bad data for the analyzer to pick it up
 				var enumMember = new EnumMember (
 					name: enumValueDeclaration.Identifier.ToFullString ().Trim (),
+					index: (uint) index,
 					libraryName: string.Empty,
 					libraryPath: null,
 					fieldData: enumValueSymbol.GetFieldData (),
@@ -323,6 +327,7 @@ readonly partial struct Binding {
 			} else {
 				var enumMember = new EnumMember (
 					name: enumValueDeclaration.Identifier.ToFullString ().Trim (),
+					index: (uint) index,
 					libraryName: libraryName,
 					libraryPath: libraryPath,
 					fieldData: enumValueSymbol.GetFieldData (),
@@ -348,11 +353,14 @@ readonly partial struct Binding {
 		context.SemanticModel.GetSymbolData (
 			declaration: classDeclaration,
 			bindingType: classDeclaration.GetBindingType (context.SemanticModel),
+			context: context,
 			name: out name,
 			baseClass: out baseClass,
+			typeInfo: out typeInfo,
 			interfaces: out interfaces,
 			outerClasses: out outerClasses,
 			namespaces: out namespaces,
+			protocolConstructors: out protocolConstructors,
 			symbolAvailability: out availability,
 			bindingInfo: out bindingInfo);
 		FullyQualifiedSymbol = classDeclaration.GetFullyQualifiedIdentifier (context.SemanticModel);
@@ -391,11 +399,14 @@ readonly partial struct Binding {
 		context.SemanticModel.GetSymbolData (
 			declaration: interfaceDeclaration,
 			bindingType: BindingType.Protocol,
+			context: context,
 			name: out name,
+			typeInfo: out typeInfo,
 			baseClass: out baseClass,
 			interfaces: out interfaces,
 			outerClasses: out outerClasses,
 			namespaces: out namespaces,
+			protocolConstructors: out _, // ingored in interfaces
 			symbolAvailability: out availability,
 			bindingInfo: out bindingInfo);
 		FullyQualifiedSymbol = interfaceDeclaration.GetFullyQualifiedIdentifier (context.SemanticModel);
@@ -477,6 +488,8 @@ readonly partial struct Binding {
 		sb.AppendJoin (", ", EnumMembers);
 		sb.Append ("], Constructors: [");
 		sb.AppendJoin (", ", Constructors);
+		sb.Append ("], ProtocolConstructors: [");
+		sb.AppendJoin (", ", ProtocolConstructors);
 		sb.Append ("], Properties: [");
 		sb.AppendJoin (", ", Properties);
 		sb.Append ("], ParentProtocolProperties: [");

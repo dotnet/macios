@@ -135,4 +135,29 @@ namespace AVRouting {
 		[Export ("route")]
 		AVCustomDeviceRoute Route { get; }
 	}
+
+	[TV (26, 0), MacCatalyst (26, 0), NoMac, iOS (26, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface AVRoutingPlaybackArbiter {
+		[Static]
+		[Export ("sharedRoutingPlaybackArbiter")]
+		AVRoutingPlaybackArbiter SharedInstance { get; }
+
+		[TV (26, 0), NoMacCatalyst, NoMac, NoiOS]
+		[NullAllowed]
+		[Export ("preferredParticipantForNonMixableAudioRoutes", ArgumentSemantic.Weak)]
+		IAVRoutingPlaybackParticipant PreferredParticipantForNonMixableAudioRoutes { get; set; }
+
+		[TV (26, 0), MacCatalyst (26, 0), NoMac, iOS (26, 0)]
+		[NullAllowed, Export ("preferredParticipantForExternalPlayback", ArgumentSemantic.Weak)]
+		IAVRoutingPlaybackParticipant PreferredParticipantForExternalPlayback { get; set; }
+	}
+
+	interface IAVRoutingPlaybackParticipant { }
+
+	[TV (26, 0), MacCatalyst (26, 0), NoMac, iOS (26, 0)]
+	[Protocol (BackwardsCompatibleCodeGeneration = false)]
+	interface AVRoutingPlaybackParticipant {
+	}
 }

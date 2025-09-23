@@ -87,6 +87,22 @@ readonly partial struct Method {
 	public bool IsAsync => ExportMethodData.Flags.HasFlag (ObjCBindings.Method.Async);
 
 	/// <summary>
+	/// True if an async version of the method can be generated. This is true if <see cref="IsAsync"/> is true and
+	/// the method signature is compatible (returns void, and the last parameter is a completion handler delegate).
+	/// </summary>
+	public bool GenerateAsync {
+		get {
+			if (!IsAsync)
+				return false;
+			// ensure that we have the minimum requirements for the async method to be generated correctly
+			// 1. Method has to return void
+			// 2. Method has to have parameters
+			// 3. Last parameter has to be a completion handler
+			return ReturnType.IsVoid && Parameters.Length > 0 && Parameters [^1].Type.IsDelegate;
+		}
+	}
+
+	/// <summary>
 	/// True if the method is variadic.
 	/// </summary>
 	public bool IsVariadic => ExportMethodData.Flags.HasFlag (ObjCBindings.Method.IsVariadic);
@@ -194,7 +210,7 @@ readonly partial struct Method {
 		change = new (
 			type: method.ContainingSymbol.ToDisplayString ().Trim (), // we want the full name
 			name: method.Name,
-			returnType: new TypeInfo (method.ReturnType, context),
+			returnType: new TypeInfo (method.ReturnType, context, includeEvents: false),
 			symbolAvailability: method.GetSupportedPlatforms (),
 			exportMethodData: exportData,
 			attributes: attributes,
@@ -288,6 +304,38 @@ readonly partial struct Method {
 					!m.IsKind (SyntaxKind.PartialKeyword) &&
 					!m.IsKind (SyntaxKind.VirtualKeyword)),
 			]
+		};
+	}
+
+	/// <summary>
+	/// Converts the current factory method into a constructor for a given target class.
+	/// </summary>
+	/// <param name="targetClass">The type information of the class for which the constructor is being created.</param>
+	/// <returns>
+	/// A new <see cref="Constructor"/> instance if the method is a factory method;
+	/// otherwise, an uninitialized <see cref="Constructor"/> instance.
+	/// </returns>
+	public Constructor ToConstructor (string targetClass)
+	{
+		// if the method is not a factory, we cannot convert it to a constructor so we will return the default value
+		// which is an uninitialized instance
+		if (!IsFactory)
+			return Constructor.Default;
+
+		// we need to create a constructor with  the same modifiers, parameters and the availability of the method 
+		// since there is no guarantee that the target class has the same availability as the method
+		return new (
+			type: targetClass,
+			exportData: IsThreadSafe
+				? new (ExportMethodData.Selector) { Flags = ObjCBindings.Constructor.IsThreadSafe }
+				: new (ExportMethodData.Selector),
+			symbolAvailability: SymbolAvailability,
+			attributes: [], // we do not really care about the attributes on the constructor that is going to be inlined
+			modifiers: modifiers,
+			parameters: Parameters
+		) {
+			IsProtocolConstructor = true,
+			ProtocolType = Type
 		};
 	}
 

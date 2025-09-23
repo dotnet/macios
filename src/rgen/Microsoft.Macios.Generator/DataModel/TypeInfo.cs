@@ -205,6 +205,16 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		init => isDictionaryContainer = value;
 	}
 
+	readonly bool isView = false;
+
+	/// <summary>
+	/// True if the type inherits from the UIView class.
+	/// </summary>
+	public bool IsView {
+		get => isView;
+		init => isView = value;
+	}
+
 	/// <summary>
 	/// True if the type represents a delegate.
 	/// </summary>
@@ -387,6 +397,7 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 			isNSObject: out isNSObject,
 			isNativeObject: out isINativeObject,
 			isDictionaryContainer: out isDictionaryContainer,
+			isView: out isView,
 			parents: out parents,
 			interfaces: out interfaces);
 

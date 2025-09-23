@@ -61,7 +61,19 @@ namespace BrowserEngineKit {
 
 		[Export ("createXPCRepresentation")]
 		OS_xpc_object CreateXpcRepresentation ();
+
+		[MacCatalyst (26, 0), NoTV, NoMac, iOS (26, 0)]
+		[Static]
+		[Export ("handleWithPort:data:error:")]
+		[return: NullAllowed]
+		BELayerHierarchyHandle Create (uint port, NSData data, [NullAllowed] out NSError error);
+
+		[MacCatalyst (26, 0), NoTV, NoMac, iOS (26, 0)]
+		[Export ("encodeWithBlock:")]
+		void Encode (BELayerHierarchyHandleEncodeCallback callback);
 	}
+
+	delegate void BELayerHierarchyHandleEncodeCallback (uint copiedPort, NSData data);
 
 	[NoTV, NoMac, iOS (17, 4), MacCatalyst (17, 4)]
 	[BaseType (typeof (NSObject))]
@@ -115,7 +127,19 @@ namespace BrowserEngineKit {
 
 		[Export ("commit")]
 		void Commit ();
+
+		[MacCatalyst (26, 0), NoTV, NoMac, iOS (26, 0)]
+		[Static]
+		[Export ("coordinatorWithPort:data:error:")]
+		[return: NullAllowed]
+		BELayerHierarchyHostingTransactionCoordinator Create (uint port, NSData data, [NullAllowed] out NSError error);
+
+		[MacCatalyst (26, 0), NoTV, NoMac, iOS (26, 0)]
+		[Export ("encodeWithBlock:")]
+		void Encode (BELayerHierarchyHostingTransactionCoordinatorEncodeCallback handler);
 	}
+
+	delegate void BELayerHierarchyHostingTransactionCoordinatorEncodeCallback (uint copiedPort, NSData data);
 
 	[NoTV, NoMac, iOS (17, 4), MacCatalyst (17, 4)]
 	[BaseType (typeof (UIContextMenuConfiguration))]
@@ -215,7 +239,7 @@ namespace BrowserEngineKit {
 	[NoTV, Mac (14, 3), iOS (17, 4), MacCatalyst (17, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface BEWebContentProcess {
+	interface BEWebContentProcess : BEExtensionProcess {
 		[Static]
 		[Export ("webContentProcessWithInterruptionHandler:completion:")]
 		[Async]
@@ -227,11 +251,11 @@ namespace BrowserEngineKit {
 		void Create (string bundleId, Action interruptionHandler, BEWebContentProcessCreateCallback completion);
 
 		[Export ("invalidate")]
-		void Invalidate ();
+		new void Invalidate ();
 
 		[Export ("makeLibXPCConnectionError:")]
 		[return: NullAllowed]
-		OS_xpc_object MakeLibXpcConnection ([NullAllowed] out NSError error);
+		new OS_xpc_object MakeLibXpcConnection ([NullAllowed] out NSError error);
 
 		[NoMac]
 		[Export ("createVisibilityPropagationInteraction")]
@@ -254,7 +278,7 @@ namespace BrowserEngineKit {
 	[NoTV, Mac (14, 3), iOS (17, 4), MacCatalyst (17, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface BENetworkingProcess {
+	interface BENetworkingProcess : BEExtensionProcess {
 		[Static]
 		[Export ("networkProcessWithInterruptionHandler:completion:")]
 		[Async]
@@ -266,11 +290,11 @@ namespace BrowserEngineKit {
 		void Create (string bundleId, Action interruptionHandler, BENetworkingProcessCreateCallback completion);
 
 		[Export ("invalidate")]
-		void Invalidate ();
+		new void Invalidate ();
 
 		[Export ("makeLibXPCConnectionError:")]
 		[return: NullAllowed]
-		OS_xpc_object MakeLibXpcConnection ([NullAllowed] out NSError error);
+		new OS_xpc_object MakeLibXpcConnection ([NullAllowed] out NSError error);
 
 
 		// Inlined from the Capability (BENetworkingProcess) category
@@ -290,7 +314,7 @@ namespace BrowserEngineKit {
 	[NoTV, Mac (14, 3), iOS (17, 4), MacCatalyst (17, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface BERenderingProcess {
+	interface BERenderingProcess : BEExtensionProcess {
 		[Static]
 		[Export ("renderingProcessWithInterruptionHandler:completion:")]
 		[Async]
@@ -302,11 +326,11 @@ namespace BrowserEngineKit {
 		void Create (string bundleId, Action interruptionHandler, BERenderingProcessCreateCallback completion);
 
 		[Export ("invalidate")]
-		void Invalidate ();
+		new void Invalidate ();
 
 		[Export ("makeLibXPCConnectionError:")]
 		[return: NullAllowed]
-		OS_xpc_object MakeLibXpcConnection ([NullAllowed] out NSError error);
+		new OS_xpc_object MakeLibXpcConnection ([NullAllowed] out NSError error);
 
 		[NoMac]
 		[Export ("createVisibilityPropagationInteraction")]
@@ -798,6 +822,14 @@ namespace BrowserEngineKit {
 		[iOS (18, 0), MacCatalyst (18, 0), TV (18, 0)]
 		[Export ("keyboardWillDismiss")]
 		void KeyboardWillDismiss ();
+
+		[iOS (26, 0), TV (26, 0), NoMacCatalyst]
+		[Export ("selectionContainerViewBelowText")]
+		UIView SelectionContainerViewBelowText { get; }
+
+		[iOS (26, 0), TV (26, 0), NoMacCatalyst]
+		[Export ("selectionContainerViewAboveText")]
+		UIView SelectionContainerViewAboveText { get; }
 	}
 
 	interface IBETextInput { }
@@ -1301,5 +1333,37 @@ namespace BrowserEngineKit {
 		[return: NullAllowed]
 		[Export ("createAccessToken")]
 		NSData CreateAccessToken ();
+	}
+
+	[MacCatalyst (26, 0), NoTV, Mac (26, 0), iOS (26, 0)]
+	[Protocol (BackwardsCompatibleCodeGeneration = false)]
+	interface BEExtensionProcess {
+		[Abstract]
+		[Export ("invalidate")]
+		void Invalidate ();
+
+		[Abstract]
+		[Export ("makeLibXPCConnectionError:")]
+		[return: NullAllowed]
+		OS_xpc_object MakeLibXpcConnection ([NullAllowed] out NSError error);
+	}
+
+	[iOS (26, 0), MacCatalyst (26, 0), NoTV, NoMac]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface BEAccessibilityRemoteHostElement {
+		[Export ("initWithIdentifier:remotePid:")]
+		NativeHandle Constructor (string identifier, int remotePid);
+
+		[NullAllowed, Export ("accessibilityContainer", ArgumentSemantic.Weak)]
+		NSObject AccessibilityContainer { get; set; }
+	}
+
+	[iOS (26, 0), MacCatalyst (26, 0), NoTV, NoMac]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface BEAccessibilityRemoteElement {
+		[Export ("initWithIdentifier:hostPid:")]
+		NativeHandle Constructor (string identifier, int hostPid);
 	}
 }

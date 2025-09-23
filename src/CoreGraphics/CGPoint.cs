@@ -154,11 +154,10 @@ namespace CoreGraphics {
 			this.y = point.y;
 		}
 
-		/// <param name="dictionaryRepresentation">To be added.</param>
-		///         <param name="point">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Attempts to parse the contents of an <see cref="NSDictionary" /> with a serialized <see cref="CGPoint" /> into a <see cref="CGPoint" />.</summary>
+		/// <param name="dictionaryRepresentation">The dictionary to parse.</param>
+		/// <param name="point">If successful, the resulting <see cref="CGPoint" /> value.</param>
+		/// <returns><see langword="true" /> if the dictionary was serialized successfully, <see langword="false" /> otherwise.</returns>
 		public static bool TryParse (NSDictionary? dictionaryRepresentation, out CGPoint point)
 		{
 			if (dictionaryRepresentation is null) {
@@ -167,18 +166,39 @@ namespace CoreGraphics {
 			}
 			unsafe {
 				point = default;
-				bool result = NativeDrawingMethods.CGPointMakeWithDictionaryRepresentation (dictionaryRepresentation.Handle, (CGPoint*) Unsafe.AsPointer<CGPoint> (ref point)) != 0;
-				GC.KeepAlive (dictionaryRepresentation);
-				return result;
+				fixed (CGPoint* pointPtr = &point) {
+					bool result = NativeDrawingMethods.CGPointMakeWithDictionaryRepresentation (dictionaryRepresentation.Handle, pointPtr) != 0;
+					GC.KeepAlive (dictionaryRepresentation);
+					return result;
+				}
 			}
 		}
 
-		/// <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Serializes a <see cref="CGPoint" /> into an <see cref="Foundation.NSDictionary" />.</summary>
+		/// <returns>A <see cref="Foundation.NSDictionary" /> with the values from this <see cref="CGPoint" />.</returns>
+		/// <remarks>
+		///   <para>
+		///     The returned dictionary conforms to the serialization
+		///     standard of Cocoa and CocoaTouch and can be used to serialize
+		///     the state into objects that can be parsed by other Apple APIs.
+		///   </para>
+		///   <para>
+		///     It is possible to create a <see cref="CGPoint" /> from an <see cref="NSDictionary" /> using
+		///     the <see cref="TryParse(NSDictionary,out CGPoint)" /> method.
+		///   </para>
+		/// </remarks>
+		/// <seealso cref="ToCGPointDictionary" />
 		public NSDictionary ToDictionary ()
 		{
 			return new NSDictionary (NativeDrawingMethods.CGPointCreateDictionaryRepresentation (this));
+		}
+
+		/// <summary>Serializes a <see cref="CGPoint" /> into a <see cref="CGPointDictionary" />.</summary>
+		/// <returns>A <see cref="CGPointDictionary" /> representing the values from this <see cref="CGPoint" />.</returns>
+		/// <seealso cref="ToDictionary" />
+		public CGPointDictionary ToCGPointDictionary ()
+		{
+			return new CGPointDictionary (ToDictionary ());
 		}
 #endif // !COREBUILD
 

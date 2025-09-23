@@ -361,6 +361,124 @@ namespace MediaAccessibility {
 		{
 			return MACaptionAppearanceIsCustomized ((nint) (long) domain) != 0;
 		}
+
+		[SupportedOSPlatform ("tvos26.0")]
+		[SupportedOSPlatform ("macos26.0")]
+		[SupportedOSPlatform ("ios26.0")]
+		[SupportedOSPlatform ("maccatalyst26.0")]
+		[DllImport (Constants.MediaAccessibilityLibrary)]
+		static extern /* CFArrayRef CF_RETURNS_RETAINED */ IntPtr MACaptionAppearanceCopyProfileIDs ();
+
+		/// <summary>Gets all the system and user-defined profile identifiers.</summary>
+		/// <returns>A string array of profile identifiers.</returns>
+		[SupportedOSPlatform ("tvos26.0")]
+		[SupportedOSPlatform ("macos26.0")]
+		[SupportedOSPlatform ("ios26.0")]
+		[SupportedOSPlatform ("maccatalyst26.0")]
+		public static string []? GetProfileIds ()
+		{
+			var handle = MACaptionAppearanceCopyProfileIDs ();
+			var rv = CFArray.StringArrayFromHandle (handle, releaseHandle: true);
+			return (string []?) (object?) rv;
+		}
+
+		[SupportedOSPlatform ("tvos26.0")]
+		[SupportedOSPlatform ("macos26.0")]
+		[SupportedOSPlatform ("ios26.0")]
+		[SupportedOSPlatform ("maccatalyst26.0")]
+		[DllImport (Constants.MediaAccessibilityLibrary)]
+		static extern void MACaptionAppearanceSetActiveProfileID (IntPtr /* CFStringRef */ profileID);
+
+		[SupportedOSPlatform ("tvos26.0")]
+		[SupportedOSPlatform ("macos26.0")]
+		[SupportedOSPlatform ("ios26.0")]
+		[SupportedOSPlatform ("maccatalyst26.0")]
+		[DllImport (Constants.MediaAccessibilityLibrary)]
+		static extern /* CFStringRef CF_RETURNS_RETAINED */ IntPtr MACaptionAppearanceCopyActiveProfileID ();
+
+		/// <summary>Gets or sets the currently active system-wide caption-drawing profile by its identifier.</summary>
+		[SupportedOSPlatform ("tvos26.0")]
+		[SupportedOSPlatform ("macos26.0")]
+		[SupportedOSPlatform ("ios26.0")]
+		[SupportedOSPlatform ("maccatalyst26.0")]
+		public static string? ActiveProfileId {
+			get {
+				return CFString.FromHandle (MACaptionAppearanceCopyActiveProfileID (), true);
+			}
+			set {
+				if (value is null)
+					ThrowHelper.ThrowArgumentNullException (nameof (value));
+
+				using var profileIdHandle = new TransientCFString (value);
+				MACaptionAppearanceSetActiveProfileID (profileIdHandle);
+			}
+		}
+
+		[SupportedOSPlatform ("tvos26.0")]
+		[SupportedOSPlatform ("macos26.0")]
+		[SupportedOSPlatform ("ios26.0")]
+		[SupportedOSPlatform ("maccatalyst26.0")]
+		[DllImport (Constants.MediaAccessibilityLibrary)]
+		static extern /* CFStringRef CF_RETURNS_RETAINED */ IntPtr MACaptionAppearanceCopyProfileName (/* CFStringRef */ IntPtr profileId);
+
+		/// <summary>Get the human-readable name for a given profile identifier.</summary>
+		/// <param name="profileId">The profile identifier whose human-readable name to return.</param>
+		/// <returns>The human-readable name for the specified profile identifier.</returns>
+		[SupportedOSPlatform ("tvos26.0")]
+		[SupportedOSPlatform ("macos26.0")]
+		[SupportedOSPlatform ("ios26.0")]
+		[SupportedOSPlatform ("maccatalyst26.0")]
+		public static string? GetProfileName (string profileId)
+		{
+			if (profileId is null)
+				ThrowHelper.ThrowArgumentNullException (nameof (profileId));
+
+			using var profileIdHandle = new TransientCFString (profileId);
+			return CFString.FromHandle (MACaptionAppearanceCopyProfileName (profileIdHandle), true);
+		}
+
+		[SupportedOSPlatform ("tvos26.0")]
+		[SupportedOSPlatform ("macos26.0")]
+		[SupportedOSPlatform ("ios26.0")]
+		[SupportedOSPlatform ("maccatalyst26.0")]
+		[DllImport (Constants.MediaAccessibilityLibrary)]
+		unsafe static extern void MACaptionAppearanceExecuteBlockForProfileID (IntPtr /* CFStringRef */ profileId, BlockLiteral* aBlock);
+
+		/// <summary>Execute a callback as if the specified profile was the currently active profile.</summary>
+		/// <param name="profileId">The identifier for the profile that will be active when the callback is executed.</param>
+		/// <param name="callback">The callback to call with the specified profile as the currently active profile.</param>
+		/// <remarks>This method can be used to get the fonts and colors for a profile without changing the currently selected profile.</remarks>
+		[SupportedOSPlatform ("tvos26.0")]
+		[SupportedOSPlatform ("macos26.0")]
+		[SupportedOSPlatform ("ios26.0")]
+		[SupportedOSPlatform ("maccatalyst26.0")]
+		[BindingImpl (BindingImplOptions.Optimizable)]
+		public static void ExecuteCallbackForProfile (string profileId, Action callback)
+		{
+			if (profileId is null)
+				ThrowHelper.ThrowArgumentNullException (nameof (profileId));
+
+			if (callback is null)
+				ThrowHelper.ThrowArgumentNullException (nameof (callback));
+
+			using var profileIdHandle = new TransientCFString (profileId);
+
+			unsafe {
+				delegate* unmanaged<IntPtr, void> trampoline = &Callback;
+				using var block = new BlockLiteral (trampoline, callback, typeof (MACaptionAppearance), nameof (Callback));
+				MACaptionAppearanceExecuteBlockForProfileID (profileIdHandle, &block);
+			}
+		}
+
+		[UnmanagedCallersOnly]
+		static void Callback (IntPtr block)
+		{
+			var del = BlockLiteral.GetTarget<Action> (block);
+			if (del is null)
+				return;
+
+			del ();
+		}
 	}
 
 	[SupportedOSPlatform ("ios")]

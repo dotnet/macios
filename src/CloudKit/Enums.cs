@@ -127,6 +127,7 @@ namespace CloudKit {
 		/// <summary>To be added.</summary>
 		AssetNotAvailable = 35,
 		TemporarilyUnavailable = 36,
+		ParticipantAlreadyInvited = 37,
 	}
 
 	// NSInteger -> CKModifyRecordsOperation.h
@@ -321,6 +322,8 @@ namespace CloudKit {
 		PrivateUser = 3,
 		/// <summary>To be added.</summary>
 		PublicUser = 4,
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		Administrator = 2,
 	}
 
 	[NoTV, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
@@ -394,4 +397,10 @@ namespace CloudKit {
 		DeleteZone,
 	}
 
+	[TV (26, 0), Mac (26, 0), MacCatalyst (26, 0), iOS (26, 0)]
+	[Native]
+	public enum CKRecordZoneEncryptionScope : long {
+		Record,
+		Zone,
+	}
 }

@@ -66,11 +66,6 @@ namespace Mono.ApiTools {
 
 		public override void Added (XElement target, bool wasParentAdded)
 		{
-			var namespaceDescription = $"{State.Namespace}: Added namespace";
-			State.LogDebugMessage ($"Possible -n value: {namespaceDescription}");
-			if (State.IgnoreNew.Any (re => re.IsMatch (namespaceDescription)))
-				return;
-
 			Formatter.BeginNamespace ("New ");
 			// list all new types
 			foreach (var addedType in target.Element ("classes").Elements ("class")) {
@@ -98,13 +93,6 @@ namespace Mono.ApiTools {
 
 		public override void Removed (XElement source)
 		{
-			var name = source.Attribute ("name").Value;
-
-			var namespaceDescription = $"{name}: Removed namespace";
-			State.LogDebugMessage ($"Possible -r value: {namespaceDescription}");
-			if (State.IgnoreRemoved.Any (re => re.IsMatch (namespaceDescription)))
-				return;
-
 			Formatter.BeginNamespace ("Removed ");
 			Output.WriteLine ();
 			// list all removed types

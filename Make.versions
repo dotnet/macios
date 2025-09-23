@@ -21,17 +21,17 @@
 # IMPORTANT: There must be *no* managed API differences unless the two first
 # numbers (major.minor) changes.
 
-IOS_NUGET_OS_VERSION=18.5
-TVOS_NUGET_OS_VERSION=18.5
-MACOS_NUGET_OS_VERSION=15.5
-MACCATALYST_NUGET_OS_VERSION=18.5
+IOS_NUGET_OS_VERSION=26.0
+TVOS_NUGET_OS_VERSION=26.0
+MACOS_NUGET_OS_VERSION=26.0
+MACCATALYST_NUGET_OS_VERSION=26.0
 
 # The following are the OS versions we first supported with the current .NET version.
 # These versions must *not* change with minor .NET updates, only major .NET releases.
-IOS_TARGET_PLATFORM_VERSION_LIBRARY=18.0
-TVOS_TARGET_PLATFORM_VERSION_LIBRARY=18.0
-MACOS_TARGET_PLATFORM_VERSION_LIBRARY=15.0
-MACCATALYST_TARGET_PLATFORM_VERSION_LIBRARY=18.0
+IOS_TARGET_PLATFORM_VERSION_LIBRARY=26.0
+TVOS_TARGET_PLATFORM_VERSION_LIBRARY=26.0
+MACOS_TARGET_PLATFORM_VERSION_LIBRARY=26.0
+MACCATALYST_TARGET_PLATFORM_VERSION_LIBRARY=26.0
 
 # In theory we should define the default platform version if it's not specified in the TFM. The default should not change for a given .NET version:
 # * We release support for iOS 14.5 with .NET 6

@@ -1,0 +1,5 @@
+# These enum values disappeared from the tvOS headers (they still show up as available on tvOS in the header files for other platforms, so it's likely a mistake by Apple).
+!extra-enum-value! Managed value 24 for MTLArgumentType.VisibleFunctionTable not found in native headers
+!extra-enum-value! Managed value 25 for MTLArgumentType.PrimitiveAccelerationStructure not found in native headers
+!extra-enum-value! Managed value 26 for MTLArgumentType.InstanceAccelerationStructure not found in native headers
+!extra-enum-value! Managed value 27 for MTLArgumentType.IntersectionFunctionTable not found in native headers

@@ -655,6 +655,30 @@ namespace Network {
 			get => nw_parameters_requires_dnssec_validation (GetCheckedHandle ()) != 0;
 			set => nw_parameters_set_requires_dnssec_validation (GetCheckedHandle (), value.AsByte ());
 		}
+
+		[SupportedOSPlatform ("tvos26.0")]
+		[SupportedOSPlatform ("macos26.0")]
+		[SupportedOSPlatform ("ios26.0")]
+		[SupportedOSPlatform ("maccatalyst26.0")]
+		[DllImport (Constants.NetworkLibrary)]
+		static extern byte nw_parameters_get_allow_ultra_constrained (IntPtr parameters);
+
+		[SupportedOSPlatform ("tvos26.0")]
+		[SupportedOSPlatform ("macos26.0")]
+		[SupportedOSPlatform ("ios26.0")]
+		[SupportedOSPlatform ("maccatalyst26.0")]
+		[DllImport (Constants.NetworkLibrary)]
+		static extern void nw_parameters_set_allow_ultra_constrained (IntPtr parameters, byte prohibit_constrained);
+
+		[SupportedOSPlatform ("tvos26.0")]
+		[SupportedOSPlatform ("macos26.0")]
+		[SupportedOSPlatform ("ios26.0")]
+		[SupportedOSPlatform ("maccatalyst26.0")]
+		public bool AllowUltraConstrained {
+			get => nw_parameters_get_allow_ultra_constrained (GetCheckedHandle ()) != 0;
+			set => nw_parameters_set_allow_ultra_constrained (GetCheckedHandle (), value.AsByte ());
+		}
+
 #endif // COREBUILD
 	}
 }

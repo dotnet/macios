@@ -517,6 +517,8 @@ namespace AppKit {
 		/// <summary>To be added.</summary>
 		Mini = 2,
 		Large = 3,
+		[Mac (26, 0)]
+		ExtraLarge = 4,
 	}
 
 	[NoMacCatalyst]
@@ -684,6 +686,8 @@ namespace AppKit {
 		/// <summary>To be added.</summary>
 		DirectTouch = 37, // 10.10
 		ChangeMode = 38,
+		[Mac (26, 0)]
+		MouseCancelled = 40,
 	}
 
 	[NoMacCatalyst]
@@ -754,6 +758,8 @@ namespace AppKit {
 		/// <summary>To be added.</summary>
 		DirectTouch = 1UL << (int) NSEventType.DirectTouch, // 10.10
 		ChangeMode = 1UL << (int) NSEventType.ChangeMode,
+		[Mac (26, 0)]
+		MouseCancelled = 1UL << (int) NSEventType.MouseCancelled,
 		/// <summary>To be added.</summary>
 		AnyEvent = unchecked((ulong) UInt64.MaxValue),
 	}
@@ -1578,6 +1584,8 @@ namespace AppKit {
 		AccessoryBar = 13,
 		PushDisclosure = 14,
 		Badge = 15,
+		[Mac (20, 0)]
+		Glass = 16,
 #if !XAMCORE_5_0
 		/// <summary>To be added.</summary>
 		[Obsoleted (PlatformName.MacOSX, 10, 14, message: "Use 'Push' instead.")]
@@ -4715,5 +4723,46 @@ namespace AppKit {
 	enum NSPasteboardMetadataType {
 		[Field ("NSPasteboardMetadataTypeContentType")]
 		ContentType,
+	}
+
+	[MacCatalyst (26, 0), Mac (26, 0)]
+	[Native]
+	public enum NSToolbarItemStyle : long {
+		Plain,
+		Prominent,
+	}
+
+	[NoMacCatalyst, Mac (26, 0)]
+	[Native]
+	public enum NSImageSymbolColorRenderingMode : long {
+		Automatic = 0,
+		Flat,
+		Gradient,
+	}
+
+	[NoMacCatalyst, Mac (26, 0)]
+	[Native]
+	public enum NSImageSymbolVariableValueMode : long {
+		Automatic = 0,
+		Color,
+		Draw,
+	}
+
+	[NoMacCatalyst, Mac (26, 0)]
+	[Native]
+	public enum NSTintProminence : long {
+		Automatic = 0,
+		None,
+		Primary,
+		Secondary,
+	}
+
+	[NoMacCatalyst, Mac (26, 0)]
+	[Native]
+	public enum NSControlBorderShape : long {
+		Automatic,
+		Capsule,
+		RoundedRectangle,
+		Circle,
 	}
 }

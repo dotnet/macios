@@ -8,6 +8,8 @@
 //
 using System;
 using System.Collections.Generic;
+
+using CoreGraphics;
 using Foundation;
 using ObjCRuntime;
 using CoreMedia;
@@ -16,6 +18,9 @@ using CoreVideo;
 using Metal;
 
 namespace VideoToolbox {
+
+	interface VTSession : INativeObject { }
+	interface VTDecompressionSession : VTSession { }
 
 	/// <summary>A class that encapsulates keys necessary for compression sessions. Used by <see cref="VideoToolbox.VTCompressionProperties" /></summary>
 	[MacCatalyst (13, 1)]
@@ -338,11 +343,11 @@ namespace VideoToolbox {
 		[Field ("kVTCompressionPropertyKey_RecommendedParallelizationLimit")]
 		NSString RecommendedParallelizationLimit { get; }
 
-		[NoiOS, NoTV, NoMacCatalyst, Mac (14, 0)]
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0), Mac (14, 0)]
 		[Field ("kVTCompressionPropertyKey_RecommendedParallelizedSubdivisionMinimumFrameCount")]
 		NSString RecommendedParallelizedSubdivisionMinimumFrameCount { get; }
 
-		[NoiOS, NoTV, NoMacCatalyst, Mac (14, 0)]
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0), Mac (14, 0)]
 		[Field ("kVTCompressionPropertyKey_RecommendedParallelizedSubdivisionMinimumDuration")]
 		NSString RecommendedParallelizedSubdivisionMinimumDuration { get; }
 
@@ -457,6 +462,58 @@ namespace VideoToolbox {
 		[Field ("kVTCompressionPropertyKey_HorizontalFieldOfView")]
 		NSString HorizontalFieldOfView { get; }
 
+		[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("kVTCompressionPropertyKey_VariableBitRate")]
+		NSString VariableBitRate { get; }
+
+		// VBV = Video Buffering Verifier
+		[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("kVTCompressionPropertyKey_VBVMaxBitRate")]
+		NSString VbvMaxBitRate { get; }
+
+		// VBV = Video Buffering Verifier
+		[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("kVTCompressionPropertyKey_VBVBufferDuration")]
+		NSString VbvBufferDuration { get; }
+
+		// VBV = Video Buffering Verifier
+		[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("kVTCompressionPropertyKey_VBVInitialDelayPercentage")]
+		NSString VbvInitialDelayPercentage { get; }
+
+		[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("kVTCompressionPropertyKey_CameraCalibrationDataLensCollection")]
+		NSString CameraCalibrationDataLensCollection { get; }
+
+		[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("kVTCompressionPropertyKey_SupportedPresetDictionaries")]
+		NSString SupportedPresetDictionaries { get; }
+	}
+
+	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+	[Static]
+	interface VTCompressionPresetKey {
+		[Field ("kVTCompressionPreset_HighQuality")]
+		NSString HighQuality { get; }
+
+		[Field ("kVTCompressionPreset_Balanced")]
+		NSString Balanced { get; }
+
+		[Field ("kVTCompressionPreset_HighSpeed")]
+		NSString HighSpeed { get; }
+
+		[Field ("kVTCompressionPreset_VideoConferencing")]
+		NSString VideoConferencing { get; }
+	}
+
+	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+	[StrongDictionary ("VTCompressionPresetKey", Suffix = "")]
+	interface VTCompressionPreset {
+		// FIXME: investigate stronger typing that NSDictionary
+		NSDictionary HighQuality { get; }
+		NSDictionary Balanced { get; }
+		NSDictionary HighSpeed { get; }
+		NSDictionary VideoConferencing { get; }
 	}
 
 	[iOS (13, 0), TV (13, 0)]
@@ -693,11 +750,11 @@ namespace VideoToolbox {
 		[Export ("RecommendedParallelizationLimit")]
 		int RecommendedParallelizationLimit { get; }
 
-		[NoiOS, NoTV, NoMacCatalyst, Mac (14, 0)]
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0), Mac (14, 0)]
 		[Export ("RecommendedParallelizedSubdivisionMinimumFrameCount")]
 		ulong RecommendedParallelizedSubdivisionMinimumFrameCount { get; }
 
-		[NoiOS, NoTV, NoMacCatalyst, Mac (14, 0)]
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0), Mac (14, 0)]
 		[Export ("RecommendedParallelizedSubdivisionMinimumDuration")]
 		NSDictionary RecommendedParallelizedSubdivisionMinimumDuration { get; }
 
@@ -762,11 +819,19 @@ namespace VideoToolbox {
 
 		[NoTV, Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Export ("ProjectionKind")]
+#if XAMCORE_5_0
+		VTProjectionKind /* NSString */ ProjectionKind { get; }
+#else
 		CMFormatDescriptionProjectionKind /* NSString */ ProjectionKind { get; }
+#endif
 
 		[NoTV, Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Export ("ViewPackingKind")]
+#if XAMCORE_5_0
+		VTViewPackingKind /* NSString */ ViewPackingKind { get; }
+#else
 		CMFormatDescriptionViewPackingKind /* NSString */ ViewPackingKind { get; }
+#endif
 
 		[NoTV, Mac (15, 0), NoiOS, NoMacCatalyst]
 		[Export ("SuggestedLookAheadFrameCount")]
@@ -778,19 +843,33 @@ namespace VideoToolbox {
 
 		[iOS (17, 0), NoTV, MacCatalyst (17, 0), Mac (14, 0)]
 		[Export ("MvHevcVideoLayerIds")]
-		NSNumber [] MvHevcVideoLayerIds { get; }
+		NSNumber [] MvHevcVideoLayerIds { get; set; }
 
 		[iOS (17, 0), NoTV, MacCatalyst (17, 0), Mac (14, 0)]
 		[Export ("MvHevcViewIds")]
-		NSNumber [] MvHevcViewIds { get; }
+		NSNumber [] MvHevcViewIds { get; set; }
 
 		[iOS (17, 0), NoTV, MacCatalyst (17, 0), Mac (14, 0)]
 		[Export ("MvHevcLeftAndRightViewIds")]
-		NSNumber [] MvHevcLeftAndRightViewIds { get; }
+		NSNumber [] MvHevcLeftAndRightViewIds { get; set; }
 
 		[iOS (17, 0), NoTV, MacCatalyst (17, 0), Mac (14, 0)]
 		[Export ("HeroEye")]
+#if XAMCORE_5_0
+		VTHeroEye HeroEye { get; }
+#else
+		[Obsolete ("Use the strongly typed 'VTHeroEye' instead.")]
 		string HeroEye { get; }
+#endif
+
+#if !XAMCORE_6_0
+#if XAMCORE_5_0
+		[Obsolete ("Use 'HeroEye' instead.")]
+#endif
+		[NoTV, MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Export ("HeroEye")]
+		VTHeroEye VTHeroEye { get; }
+#endif
 
 		[iOS (17, 0), NoTV, MacCatalyst (17, 0), Mac (14, 0)]
 		[Export ("StereoCameraBaseline")]
@@ -802,15 +881,176 @@ namespace VideoToolbox {
 
 		[iOS (17, 0), NoTV, MacCatalyst (17, 0), Mac (14, 0)]
 		[Export ("HasLeftStereoEyeView")]
-		bool HasLeftStereoEyeView { get; }
+		bool HasLeftStereoEyeView { get; set; }
 
 		[iOS (17, 0), NoTV, MacCatalyst (17, 0), Mac (14, 0)]
 		[Export ("HasRightStereoEyeView")]
-		bool HasRightStereoEyeView { get; }
+		bool HasRightStereoEyeView { get; set; }
 
 		[iOS (17, 0), NoTV, MacCatalyst (17, 0), Mac (14, 0)]
 		[Export ("HorizontalFieldOfView")]
-		uint HorizontalFieldOfView { get; }
+		uint HorizontalFieldOfView { get; set; }
+
+		[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Export ("VariableBitRate")]
+		uint VariableBitRate { get; set; }
+
+		// VBV = Video Buffering Verifier
+		[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Export ("VbvMaxBitRate")]
+		uint VbvMaxBitRate { get; set; }
+
+		// VBV = Video Buffering Verifier
+		[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Export ("VbvBufferDuration")]
+		float VbvBufferDuration { get; set; }
+
+		// VBV = Video Buffering Verifier
+		[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Export ("VbvInitialDelayPercentage")]
+		float VbvInitialDelayPercentage { get; set; }
+
+		[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Export ("CameraCalibrationDataLensCollection")]
+		VTCompressionPropertyCameraCalibration [] CameraCalibrationDataLensCollection { get; set; }
+
+		[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Export ("SupportedPresetDictionaries")]
+		VTCompressionPreset SupportedPresetDictionaries { get; }
+	}
+
+	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+	enum VTCameraCalibrationLensAlgorithmKind {
+		[Field ("kVTCameraCalibrationLensAlgorithmKind_ParametricLens")]
+		ParametricLens,
+	}
+
+	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+	enum VTCameraCalibrationLensDomain {
+		[Field ("kVTCameraCalibrationLensDomain_Color")]
+		Color,
+	}
+
+	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+	enum VTCameraCalibrationLensRole {
+		[Field ("kVTCameraCalibrationLensRole_Mono")]
+		Mono,
+
+		[Field ("kVTCameraCalibrationLensRole_Left")]
+		Left,
+
+		[Field ("kVTCameraCalibrationLensRole_Right")]
+		Right,
+	}
+
+	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+	enum VTCameraCalibrationExtrinsicOriginSource {
+		[Field ("kVTCameraCalibrationExtrinsicOriginSource_StereoCameraSystemBaseline")]
+		StereoCameraSystemBaseline,
+	}
+
+	// There's an almost identical mirror of this class in CoreMedia (as CMCompressionPropertyCameraCalibrationKey),
+	// which should probably be updated if this class is updated.
+	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+	[Static]
+	interface VTCompressionPropertyCameraCalibrationKey {
+		[Field ("kVTCompressionPropertyCameraCalibrationKey_LensAlgorithmKind")]
+		NSString LensAlgorithmKind { get; } // VTCameraCalibrationLensAlgorithmKind
+
+		[Field ("kVTCompressionPropertyCameraCalibrationKey_LensDomain")]
+		NSString LensDomain { get; } // VTCameraCalibrationLensDomain
+
+		[Field ("kVTCompressionPropertyCameraCalibrationKey_LensIdentifier")]
+		NSString LensIdentifier { get; } // int
+
+		[Field ("kVTCompressionPropertyCameraCalibrationKey_LensRole")]
+		NSString LensRole { get; } // kVTCameraCalibrationLensRole
+
+		[Field ("kVTCompressionPropertyCameraCalibrationKey_LensDistortions")]
+		NSString LensDistortions { get; } // float[]
+
+		[Field ("kVTCompressionPropertyCameraCalibrationKey_RadialAngleLimit")]
+		NSString RadialAngleLimit { get; } // float
+
+		[Field ("kVTCompressionPropertyCameraCalibrationKey_LensFrameAdjustmentsPolynomialX")]
+		NSString LensFrameAdjustmentsPolynomialX { get; } // float[]
+
+		[Field ("kVTCompressionPropertyCameraCalibrationKey_LensFrameAdjustmentsPolynomialY")]
+		NSString LensFrameAdjustmentsPolynomialY { get; } // float[]
+
+		[Field ("kVTCompressionPropertyCameraCalibrationKey_IntrinsicMatrix")]
+		NSString IntrinsicMatrix { get; }
+
+		[Field ("kVTCompressionPropertyCameraCalibrationKey_IntrinsicMatrixProjectionOffset")]
+		NSString IntrinsicMatrixProjectionOffset { get; } // float
+
+		[Field ("kVTCompressionPropertyCameraCalibrationKey_IntrinsicMatrixReferenceDimensions")]
+		NSString IntrinsicMatrixReferenceDimensions { get; } // "CGSize dictionary" = ??
+
+		[Field ("kVTCompressionPropertyCameraCalibrationKey_ExtrinsicOriginSource")]
+		NSString ExtrinsicOriginSource { get; } // VTCameraCalibrationExtrinsicOriginSource
+
+		[Field ("kVTCompressionPropertyCameraCalibrationKey_ExtrinsicOrientationQuaternion")]
+		NSString ExtrinsicOrientationQuaternion { get; } // float[]
+
+		// There's an almost identical mirror of this class in CoreMedia (as CMCompressionPropertyCameraCalibrationKey),
+		// which should probably be updated if this class is updated.
+	}
+
+	// There's an almost identical mirror of this class in CoreMedia (as CMCompressionPropertyCameraCalibrationKey),
+	// which should probably be updated if this class is updated.
+	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+	[StrongDictionary ("VTCompressionPropertyCameraCalibrationKey", Suffix = "")]
+	interface VTCompressionPropertyCameraCalibration {
+		VTCameraCalibrationLensAlgorithmKind LensAlgorithmKind { get; set; }
+		VTCameraCalibrationLensDomain LensDomain { get; set; }
+		int LensIdentifier { get; set; }
+		VTCameraCalibrationLensRole LensRole { get; set; }
+		float [] LensDistortions { get; set; } // CFArray[CFNumber(float)]
+		float RadialAngleLimit { get; set; }
+		float [] LensFrameAdjustmentsPolynomialX { get; set; } // CFArray[CFNumber(float)]
+		float [] LensFrameAdjustmentsPolynomialY { get; set; } // CFArray[CFNumber(float)]
+		NMatrix3 IntrinsicMatrix { get; set; }
+		float IntrinsicMatrixProjectionOffset { get; set; }
+		CGSizeDictionary IntrinsicMatrixReferenceDimensions { get; set; }
+		VTCameraCalibrationExtrinsicOriginSource ExtrinsicOriginSource { get; set; }
+		float [] ExtrinsicOrientationQuaternion { get; set; } // CFArray[CFNumber(float)]
+
+		// There's an almost identical mirror of this class in CoreMedia (as CMCompressionPropertyCameraCalibrationKey),
+		// which should probably be updated if this class is updated.
+	}
+
+	[NoTV, MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+	enum VTHeroEye {
+		[Field ("kVTHeroEye_Left")]
+		Left,
+
+		[Field ("kVTHeroEye_Right")]
+		Right,
+	}
+
+	[NoTV, MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+	enum VTProjectionKind {
+		[Field ("kVTProjectionKind_Rectilinear")]
+		Rectilinear,
+
+		[Field ("kVTProjectionKind_Equirectangular")]
+		Equirectangular,
+
+		[Field ("kVTProjectionKind_HalfEquirectangular")]
+		HalfEquirectangular,
+
+		[Field ("kVTProjectionKind_ParametricImmersive")]
+		ParametricImmersive,
+	}
+
+	[NoTV, MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+	enum VTViewPackingKind {
+		[Field ("kVTViewPackingKind_SideBySide")]
+		SideBySide,
+
+		[Field ("kVTViewPackingKind_OverUnder")]
+		OverUnder,
 	}
 
 	[NoTV, Mac (15, 0), NoiOS, NoMacCatalyst]
@@ -1731,7 +1971,11 @@ namespace VideoToolbox {
 		[TV (14, 2)]
 		[MacCatalyst (14, 1)]
 		[Export ("PropagatePerFrameHdrDisplayMetadata")]
+#if XAMCORE_5_0
+		bool PropagatePerFrameHdrDisplayMetadata { get; set; }
+#else
 		bool PropagatePerFrameHhrDisplayMetadata { get; set; }
+#endif
 
 		[Export ("GeneratePerFrameHdrDisplayMetadata")]
 		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0), Mac (14, 0)]
@@ -1773,18 +2017,12 @@ namespace VideoToolbox {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[NoiOS]
-		[NoTV]
-		[NoMacCatalyst]
 		[Export ("RequiredDecoderGpuRegistryId")]
 		NSNumber RequiredDecoderGpuRegistryId { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[NoiOS]
-		[NoTV]
-		[NoMacCatalyst]
 		[Export ("PreferredDecoderGpuRegistryId")]
 		NSNumber PreferredDecoderGpuRegistryId { get; }
 	}
@@ -1808,18 +2046,12 @@ namespace VideoToolbox {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[NoiOS]
-		[NoTV]
-		[NoMacCatalyst]
 		[Field ("kVTVideoDecoderSpecification_RequiredDecoderGPURegistryID")]
 		NSString RequiredDecoderGpuRegistryId { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[NoiOS]
-		[NoTV]
-		[NoMacCatalyst]
 		[Field ("kVTVideoDecoderSpecification_PreferredDecoderGPURegistryID")]
 		NSString PreferredDecoderGpuRegistryId { get; }
 	}
@@ -2472,6 +2704,10 @@ namespace VideoToolbox {
 
 		[Field ("kVTRAWProcessingPropertyKey_OutputColorAttachments")]
 		NSString OutputColorAttachments { get; }
+
+		[Mac (26, 0)]
+		[Field ("kVTRAWProcessingPropertyKey_MetadataForSidecarFile")]
+		NSString MetadataForSidecarFile { get; }
 	}
 
 	[NoTV, NoiOS, NoMacCatalyst, Mac (15, 0)]
@@ -2480,6 +2716,9 @@ namespace VideoToolbox {
 		ulong MetalDeviceRegistryId { get; set; }
 
 		NSDictionary OutputColorAttachments { get; }
+
+		[Mac (26, 0)]
+		NSData MetadataForSidecarFile { get; }
 	}
 
 	[MacCatalyst (13, 1)]
@@ -2505,7 +2744,7 @@ namespace VideoToolbox {
 		NSString ChromaRedMeanSquaredError { get; }
 	}
 
-	[NoMacCatalyst, NoTV, NoiOS, Mac (15, 4)]
+	[MacCatalyst (26, 0), TV (26, 0), iOS (26, 0), Mac (15, 4)]
 	[BaseType (typeof (NSObject))]
 	interface VTFrameProcessor {
 		[Export ("startSessionWithConfiguration:error:")]
@@ -2514,8 +2753,13 @@ namespace VideoToolbox {
 		[Export ("processWithParameters:error:")]
 		bool Process (IVTFrameProcessorParameters parameters, [NullAllowed] out NSError error);
 
+		[Async]
 		[Export ("processWithParameters:completionHandler:")]
 		void Process (IVTFrameProcessorParameters parameters, VTFrameProcessorProcessHandler completionHandler);
+
+		[MacCatalyst (26, 0), TV (26, 0), iOS (26, 0), Mac (26, 0)]
+		[Export ("processWithParameters:frameOutputHandler:")]
+		void Process (IVTFrameProcessorParameters parameters, VTFrameProcessorProcessFrameOutputHandler frameOutputHandler);
 
 		[Export ("processWithCommandBuffer:parameters:")]
 		void Process (IMTLCommandBuffer commandBuffer, IVTFrameProcessorParameters parameters);
@@ -2525,13 +2769,18 @@ namespace VideoToolbox {
 	}
 
 	delegate void VTFrameProcessorProcessHandler (IVTFrameProcessorParameters parameters, [NullAllowed] NSError error);
+	delegate void VTFrameProcessorProcessFrameOutputHandler (IVTFrameProcessorParameters parameters, CMTime presentationTimeStamp, bool isFinalOutput, [NullAllowed] NSError error);
 
-	[NoMacCatalyst, NoTV, NoiOS, Mac (15, 4)]
+	[MacCatalyst (26, 0), TV (26, 0), iOS (26, 0), Mac (15, 4)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
 	interface VTFrameProcessorConfiguration {
+#if !XAMCORE_5_0
+		[NoMacCatalyst, NoTV, NoiOS]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, "Use 'Supported' instead.")]
 		[Static, Abstract]
 		[Export ("processorSupported")]
 		bool ProcessorSupported { get; }
+#endif
 
 		[Abstract]
 		[Export ("frameSupportedPixelFormats")]
@@ -2573,10 +2822,8 @@ namespace VideoToolbox {
 
 	interface IVTFrameProcessorConfiguration { }
 
-	[MacCatalyst (18, 4), NoTV, NoiOS, Mac (15, 4)]
-#if !__MACCATALYST__
-	[ErrorDomain ("VTFrameProcessorErrorDomain")]
-#endif
+	[MacCatalyst (18, 4), TV (26, 0), iOS (26, 0), Mac (15, 4)]
+	[ErrorDomain ("VTFrameProcessorErrorDomain")] // this field is only available in Mac Catalyst for Mac Catalyst 26+
 	[Native]
 	public enum VTFrameProcessorError : long {
 		UnknownError = -19730,
@@ -2591,10 +2838,11 @@ namespace VideoToolbox {
 		RevisionNotSupported = -19739,
 		ProcessingError = -19740,
 		InvalidParameterError = -19741,
-		InvalidFrameTiming = -19742
+		InvalidFrameTiming = -19742,
+		AssetDownloadFailed = -19743,
 	}
 
-	[NoMacCatalyst, NoTV, NoiOS, Mac (15, 4)]
+	[MacCatalyst (26, 0), TV (26, 0), iOS (26, 0), Mac (15, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface VTFrameProcessorFrame {
@@ -2608,7 +2856,7 @@ namespace VideoToolbox {
 		CMTime PresentationTimeStamp { get; }
 	}
 
-	[NoMacCatalyst, NoTV, NoiOS, Mac (15, 4)]
+	[MacCatalyst (26, 0), TV (26, 0), iOS (26, 0), Mac (15, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface VTFrameProcessorOpticalFlow {
@@ -2622,30 +2870,38 @@ namespace VideoToolbox {
 		CVPixelBuffer BackwardFlow { get; }
 	}
 
-	[NoMacCatalyst, NoTV, NoiOS, Mac (15, 4)]
+	[MacCatalyst (26, 0), TV (26, 0), iOS (26, 0), Mac (15, 4)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
 	interface VTFrameProcessorParameters {
 		[Abstract]
 		[Export ("sourceFrame")]
 		VTFrameProcessorFrame SourceFrame { get; }
+
+		[MacCatalyst (26, 0), TV (26, 0), iOS (26, 0), Mac (26, 0)]
+		[Export ("destinationFrame")]
+		VTFrameProcessorFrame DestinationFrame { get; }
+
+		[MacCatalyst (26, 0), TV (26, 0), iOS (26, 0), Mac (26, 0)]
+		[Export ("destinationFrames")]
+		VTFrameProcessorFrame [] DestinationFrames { get; }
 	}
 
 	interface IVTFrameProcessorParameters { }
 
-	[MacCatalyst (18, 4), NoTV, NoiOS, Mac (15, 4)]
+	[MacCatalyst (18, 4), NoTV, iOS (26, 0), Mac (15, 4)]
 	[Native]
 	public enum VTFrameRateConversionConfigurationQualityPrioritization : long {
 		Normal = 1,
 		Quality = 2,
 	}
 
-	[MacCatalyst (18, 4), NoTV, NoiOS, Mac (15, 4)]
+	[MacCatalyst (18, 4), NoTV, iOS (26, 0), Mac (15, 4)]
 	[Native]
 	public enum VTFrameRateConversionConfigurationRevision : long {
 		Revision1 = 1,
 	}
 
-	[MacCatalyst (18, 4), NoTV, NoiOS, Mac (15, 4)]
+	[MacCatalyst (18, 4), NoTV, iOS (26, 0), Mac (15, 4)]
 	[Native]
 	public enum VTFrameRateConversionParametersSubmissionMode : long {
 		Random = 1,
@@ -2653,7 +2909,7 @@ namespace VideoToolbox {
 		SequentialReferencesUnchanged = 3,
 	}
 
-	[NoMacCatalyst, NoTV, NoiOS, Mac (15, 4)]
+	[MacCatalyst (18, 4), NoTV, iOS (26, 0), Mac (15, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface VTFrameRateConversionConfiguration : VTFrameProcessorConfiguration {
@@ -2686,17 +2942,19 @@ namespace VideoToolbox {
 		[Static]
 		[Export ("defaultRevision")]
 		VTFrameRateConversionConfigurationRevision DefaultRevision { get; }
+
+		[MacCatalyst (26, 0), iOS (26, 0), Mac (26, 0)]
+		[Static]
+		[Export ("supported")]
+		bool Supported { [Bind ("isSupported")] get; }
 	}
 
-	[NoMacCatalyst, NoTV, NoiOS, Mac (15, 4)]
+	[MacCatalyst (18, 4), NoTV, iOS (26, 0), Mac (15, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface VTFrameRateConversionParameters : VTFrameProcessorParameters {
 		[Export ("initWithSourceFrame:nextFrame:opticalFlow:interpolationPhase:submissionMode:destinationFrames:")]
 		NativeHandle Constructor (VTFrameProcessorFrame sourceFrame, VTFrameProcessorFrame nextFrame, [NullAllowed] VTFrameProcessorOpticalFlow opticalFlow, NSNumber [] interpolationPhase, VTFrameRateConversionParametersSubmissionMode submissionMode, VTFrameProcessorFrame [] destinationFrame);
-
-		[Export ("sourceFrame")]
-		new VTFrameProcessorFrame SourceFrame { get; }
 
 		[NullAllowed, Export ("nextFrame")]
 		VTFrameProcessorFrame NextFrame { get; }
@@ -2710,32 +2968,29 @@ namespace VideoToolbox {
 
 		[Export ("submissionMode")]
 		VTFrameRateConversionParametersSubmissionMode SubmissionMode { get; }
-
-		[Export ("destinationFrames")]
-		VTFrameProcessorFrame [] DestinationFrames { get; }
 	}
 
-	[MacCatalyst (18, 4), NoTV, NoiOS, Mac (15, 4)]
+	[MacCatalyst (18, 4), NoTV, iOS (26, 0), Mac (15, 4)]
 	[Native]
 	public enum VTMotionBlurConfigurationQualityPrioritization : long {
 		Normal = 1,
 		Quality = 2,
 	}
 
-	[MacCatalyst (18, 4), NoTV, NoiOS, Mac (15, 4)]
+	[MacCatalyst (18, 4), NoTV, iOS (26, 0), Mac (15, 4)]
 	[Native]
 	public enum VTMotionBlurConfigurationRevision : long {
 		Revision1 = 1,
 	}
 
-	[MacCatalyst (18, 4), NoTV, NoiOS, Mac (15, 4)]
+	[MacCatalyst (18, 4), NoTV, iOS (26, 0), Mac (15, 4)]
 	[Native]
 	public enum VTMotionBlurParametersSubmissionMode : long {
 		Random = 1,
 		Sequential = 2,
 	}
 
-	[NoMacCatalyst, NoTV, NoiOS, Mac (15, 4)]
+	[MacCatalyst (26, 0), NoTV, iOS (26, 0), Mac (15, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface VTMotionBlurConfiguration : VTFrameProcessorConfiguration {
@@ -2768,17 +3023,19 @@ namespace VideoToolbox {
 		[Static]
 		[Export ("defaultRevision")]
 		VTMotionBlurConfigurationRevision DefaultRevision { get; }
+
+		[MacCatalyst (26, 0), iOS (26, 0), Mac (26, 0)]
+		[Static]
+		[Export ("supported")]
+		bool Supported { [Bind ("isSupported")] get; }
 	}
 
-	[NoMacCatalyst, NoTV, NoiOS, Mac (15, 4)]
+	[MacCatalyst (26, 0), NoTV, iOS (26, 0), Mac (15, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface VTMotionBlurParameters : VTFrameProcessorParameters {
 		[Export ("initWithSourceFrame:nextFrame:previousFrame:nextOpticalFlow:previousOpticalFlow:motionBlurStrength:submissionMode:destinationFrame:")]
 		NativeHandle Constructor (VTFrameProcessorFrame sourceFrame, [NullAllowed] VTFrameProcessorFrame nextFrame, [NullAllowed] VTFrameProcessorFrame previousFrame, [NullAllowed] VTFrameProcessorOpticalFlow nextOpticalFlow, [NullAllowed] VTFrameProcessorOpticalFlow previousOpticalFlow, nint motionBlurStrength, VTMotionBlurParametersSubmissionMode submissionMode, VTFrameProcessorFrame destinationFrame);
-
-		[Export ("sourceFrame")]
-		new VTFrameProcessorFrame SourceFrame { get; }
 
 		[NullAllowed, Export ("nextFrame")]
 		VTFrameProcessorFrame NextFrame { get; }
@@ -2797,32 +3054,29 @@ namespace VideoToolbox {
 
 		[Export ("submissionMode")]
 		VTMotionBlurParametersSubmissionMode SubmissionMode { get; }
-
-		[Export ("destinationFrame")]
-		VTFrameProcessorFrame DestinationFrame { get; }
 	}
 
-	[MacCatalyst (18, 4), NoTV, NoiOS, Mac (15, 4)]
+	[MacCatalyst (18, 4), NoTV, iOS (26, 0), Mac (15, 4)]
 	[Native]
 	public enum VTOpticalFlowConfigurationQualityPrioritization : long {
 		Normal = 1,
 		Quality = 2,
 	}
 
-	[MacCatalyst (18, 4), NoTV, NoiOS, Mac (15, 4)]
+	[MacCatalyst (18, 4), NoTV, iOS (26, 0), Mac (15, 4)]
 	[Native]
 	public enum VTOpticalFlowConfigurationRevision : long {
 		Revision1 = 1,
 	}
 
-	[MacCatalyst (18, 4), NoTV, NoiOS, Mac (15, 4)]
+	[MacCatalyst (18, 4), NoTV, iOS (26, 0), Mac (15, 4)]
 	[Native]
 	public enum VTOpticalFlowParametersSubmissionMode : long {
 		Random = 1,
 		Sequential = 2,
 	}
 
-	[NoMacCatalyst, NoTV, NoiOS, Mac (15, 4)]
+	[MacCatalyst (26, 0), NoTV, iOS (26, 0), Mac (15, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface VTOpticalFlowConfiguration : VTFrameProcessorConfiguration {
@@ -2852,17 +3106,19 @@ namespace VideoToolbox {
 		[Static]
 		[Export ("defaultRevision")]
 		VTOpticalFlowConfigurationRevision DefaultRevision { get; }
+
+		[MacCatalyst (26, 0), NoTV, iOS (26, 0), Mac (26, 0)]
+		[Static]
+		[Export ("supported")]
+		bool Supported { [Bind ("isSupported")] get; }
 	}
 
-	[NoMacCatalyst, NoTV, NoiOS, Mac (15, 4)]
+	[MacCatalyst (26, 0), NoTV, iOS (26, 0), Mac (15, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface VTOpticalFlowParameters : VTFrameProcessorParameters {
 		[Export ("initWithSourceFrame:nextFrame:submissionMode:destinationOpticalFlow:")]
 		NativeHandle Constructor (VTFrameProcessorFrame sourceFrame, VTFrameProcessorFrame nextFrame, VTOpticalFlowParametersSubmissionMode submissionMode, VTFrameProcessorOpticalFlow destinationOpticalFlow);
-
-		[Export ("sourceFrame")]
-		new VTFrameProcessorFrame SourceFrame { get; }
 
 		[Export ("nextFrame")]
 		VTFrameProcessorFrame NextFrame { get; }
@@ -2872,5 +3128,295 @@ namespace VideoToolbox {
 
 		[Export ("destinationOpticalFlow")]
 		VTFrameProcessorOpticalFlow DestinationOpticalFlow { get; }
+	}
+
+	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface VTLowLatencyFrameInterpolationConfiguration : VTFrameProcessorConfiguration {
+		[Internal]
+		[Export ("initWithFrameWidth:frameHeight:numberOfInterpolatedFrames:")]
+		NativeHandle _InitWithFrameWidthAndNumberOfInterpolatedFrames (nint frameWidth, nint frameHeight, nint numberOfInterpolatedFrames);
+
+		[Internal]
+		[Export ("initWithFrameWidth:frameHeight:spatialScaleFactor:")]
+		NativeHandle _InitWithFrameWidthAndSpatialScaleFactor (nint frameWidth, nint frameHeight, nint spatialScaleFactor);
+
+		[Export ("frameWidth")]
+		nint FrameWidth { get; }
+
+		[Export ("frameHeight")]
+		nint FrameHeight { get; }
+
+		[Export ("spatialScaleFactor")]
+		nint SpatialScaleFactor { get; }
+
+		[Export ("numberOfInterpolatedFrames")]
+		nint NumberOfInterpolatedFrames { get; }
+
+		[Static]
+		[Export ("supported")]
+		bool Supported { [Bind ("isSupported")] get; }
+	}
+
+	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface VTLowLatencyFrameInterpolationParameters : VTFrameProcessorParameters {
+		[Export ("initWithSourceFrame:previousFrame:interpolationPhase:destinationFrames:")]
+		NativeHandle Constructor (VTFrameProcessorFrame sourceFrame, VTFrameProcessorFrame previousFrame, [BindAs (typeof (float []))] NSNumber [] interpolationPhase, VTFrameProcessorFrame [] destinationFrames);
+
+		[Export ("previousFrame")]
+		VTFrameProcessorFrame PreviousFrame { get; }
+
+		[Export ("interpolationPhase")]
+		[BindAs (typeof (float []))]
+		NSNumber [] InterpolationPhase { get; }
+	}
+
+	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface VTLowLatencySuperResolutionScalerConfiguration : VTFrameProcessorConfiguration {
+		[Export ("initWithFrameWidth:frameHeight:scaleFactor:")]
+		NativeHandle Constructor (nint frameWidth, nint frameHeight, float scaleFactor);
+
+		[Export ("frameWidth")]
+		nint FrameWidth { get; }
+
+		[Export ("frameHeight")]
+		nint FrameHeight { get; }
+
+		[Export ("scaleFactor")]
+		float ScaleFactor { get; }
+
+		[Static]
+		[Export ("supported")]
+		bool Supported { [Bind ("isSupported")] get; }
+
+		[Static]
+		[Export ("supportedScaleFactorsForFrameWidth:frameHeight:")]
+		[return: BindAs (typeof (nint []))]
+		NSNumber [] GetSupportedScaleFactors (nint frameWidth, nint frameHeight);
+	}
+
+	[NoTV, MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface VTSuperResolutionScalerConfiguration : VTFrameProcessorConfiguration {
+		[Export ("initWithFrameWidth:frameHeight:scaleFactor:inputType:usePrecomputedFlow:qualityPrioritization:revision:")]
+		NativeHandle Constructor (nint frameWidth, nint frameHeight, nint scaleFactor, VTSuperResolutionScalerConfigurationInputType inputType, bool usePrecomputedFlow, VTSuperResolutionScalerConfigurationQualityPrioritization qualityPrioritization, VTSuperResolutionScalerConfigurationRevision revision);
+
+		[Export ("frameWidth")]
+		nint FrameWidth { get; }
+
+		[Export ("frameHeight")]
+		nint FrameHeight { get; }
+
+		[Export ("inputType")]
+		VTSuperResolutionScalerConfigurationInputType InputType { get; }
+
+		[Export ("precomputedFlow")]
+		bool PrecomputedFlow { [Bind ("usesPrecomputedFlow")] get; }
+
+		[Export ("scaleFactor")]
+		nint ScaleFactor { get; }
+
+		[Export ("qualityPrioritization")]
+		VTSuperResolutionScalerConfigurationQualityPrioritization QualityPrioritization { get; }
+
+		[Export ("revision")]
+		VTSuperResolutionScalerConfigurationRevision Revision { get; }
+
+		[Static]
+		[Export ("supportedRevisions")]
+		NSIndexSet SupportedRevisions { get; }
+
+		[Static]
+		[Export ("defaultRevision")]
+		VTSuperResolutionScalerConfigurationRevision DefaultRevision { get; }
+
+		[Export ("configurationModelStatus")]
+		VTSuperResolutionScalerConfigurationModelStatus ConfigurationModelStatus { get; }
+
+		[Async]
+		[Export ("downloadConfigurationModelWithCompletionHandler:")]
+		void DownloadConfigurationModel (VTSuperResolutionScalerConfigurationDownloadConfigurationModelCallback completionHandler);
+
+		[Export ("configurationModelPercentageAvailable")]
+		float ConfigurationModelPercentageAvailable { get; }
+
+		[Static]
+		[Export ("supported")]
+		bool Supported { [Bind ("isSupported")] get; }
+
+		[Static]
+		[Export ("supportedScaleFactors")]
+		[BindAs (typeof (float []))]
+		NSNumber [] SupportedScaleFactors { get; }
+	}
+
+	delegate void VTSuperResolutionScalerConfigurationDownloadConfigurationModelCallback ([NullAllowed] NSError error);
+
+	[MacCatalyst (26, 0), NoTV, Mac (26, 0), iOS (26, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface VTSuperResolutionScalerParameters : VTFrameProcessorParameters {
+		[Export ("initWithSourceFrame:previousFrame:previousOutputFrame:opticalFlow:submissionMode:destinationFrame:")]
+		NativeHandle Constructor (VTFrameProcessorFrame sourceFrame, [NullAllowed] VTFrameProcessorFrame previousFrame, [NullAllowed] VTFrameProcessorFrame previousOutputFrame, [NullAllowed] VTFrameProcessorOpticalFlow opticalFlow, VTSuperResolutionScalerParametersSubmissionMode submissionMode, VTFrameProcessorFrame destinationFrame);
+
+		[NullAllowed, Export ("previousFrame")]
+		VTFrameProcessorFrame PreviousFrame { get; }
+
+		[NullAllowed, Export ("previousOutputFrame")]
+		VTFrameProcessorFrame PreviousOutputFrame { get; }
+
+		[NullAllowed, Export ("opticalFlow")]
+		VTFrameProcessorOpticalFlow OpticalFlow { get; }
+
+		[Export ("submissionMode")]
+		VTSuperResolutionScalerParametersSubmissionMode SubmissionMode { get; }
+	}
+
+	[MacCatalyst (26, 0), NoTV, Mac (26, 0), iOS (26, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface VTTemporalNoiseFilterConfiguration : VTFrameProcessorConfiguration {
+		[Export ("initWithFrameWidth:frameHeight:sourcePixelFormat:")]
+		NativeHandle Constructor (nint frameWidth, nint frameHeight, CMPixelFormat sourcePixelFormat);
+
+		[Export ("frameWidth")]
+		nint FrameWidth { get; }
+
+		[Export ("frameHeight")]
+		nint FrameHeight { get; }
+
+		[Static]
+		[Export ("supportedSourcePixelFormats")]
+		[BindAs (typeof (CMPixelFormat []))]
+		NSNumber [] SupportedSourcePixelFormats { get; }
+
+		[Static]
+		[Export ("supported")]
+		bool Supported { [Bind ("isSupported")] get; }
+	}
+
+	[MacCatalyst (26, 0), NoTV, Mac (26, 0), iOS (26, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface VTTemporalNoiseFilterParameters : VTFrameProcessorParameters {
+		[Export ("initWithSourceFrame:nextFrames:previousFrames:destinationFrame:filterStrength:hasDiscontinuity:")]
+		NativeHandle Constructor (VTFrameProcessorFrame sourceFrame, VTFrameProcessorFrame [] nextFrames, VTFrameProcessorFrame [] previousFrames, VTFrameProcessorFrame destinationFrame, float filterStrength, byte hasDiscontinuity);
+
+		[Export ("nextFrames")]
+		VTFrameProcessorFrame [] NextFrames { get; }
+
+		[Export ("previousFrames")]
+		VTFrameProcessorFrame [] PreviousFrames { get; }
+
+		[Export ("filterStrength")]
+		float FilterStrength { get; set; }
+
+		[Export ("hasDiscontinuity")]
+		bool HasDiscontinuity { get; set; }
+	}
+
+	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+	[Flags]
+	public enum VTMotionEstimationFrameFlags : uint {
+		None = 0,
+		CurrentBufferWillBeNextReferenceBuffer = 1u << 0,
+	}
+
+	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+	[Flags]
+	public enum VTMotionEstimationInfoFlags : uint {
+		None = 0,
+		Reserved0 = 1u << 0,
+	}
+
+	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+	[Static]
+	interface VTMotionEstimationSessionCreationOptionKey {
+		[Field ("kVTMotionEstimationSessionCreationOption_MotionVectorSize")]
+		NSString MotionVectorSize { get; }
+
+		[Field ("kVTMotionEstimationSessionCreationOption_UseMultiPassSearch")]
+		NSString UseMultiPassSearch { get; }
+
+		[Field ("kVTMotionEstimationSessionCreationOption_Label")]
+		NSString Label { get; }
+	}
+
+	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface VTLowLatencySuperResolutionScalerParameters : VTFrameProcessorParameters {
+		[Export ("initWithSourceFrame:destinationFrame:")]
+		NativeHandle Constructor (VTFrameProcessorFrame sourceFrame, VTFrameProcessorFrame destinationFrame);
+	}
+
+	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+	[StrongDictionary ("VTMotionEstimationSessionCreationOptionKey", Suffix = "")]
+	interface VTMotionEstimationSessionCreationOption {
+		[Field ("kVTMotionEstimationSessionCreationOption_MotionVectorSize")]
+		nint MotionVectorSize { get; set; }
+
+		[Field ("kVTMotionEstimationSessionCreationOption_UseMultiPassSearch")]
+		bool UseMultiPassSearch { get; set; }
+
+		[Field ("kVTMotionEstimationSessionCreationOption_Label")]
+		string Label { get; set; }
+	}
+
+	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+	[Static]
+	interface VTDecodeFrameOptionKey {
+		[Field ("kVTDecodeFrameOptionKey_ContentAnalyzerRotation")]
+		NSString ContentAnalyzerRotation { get; }
+
+		[Field ("kVTDecodeFrameOptionKey_ContentAnalyzerCropRectangle")]
+		NSString ContentAnalyzerCropRectangle { get; }
+	}
+
+	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+	[StrongDictionary ("VTDecodeFrameOptionKey", Suffix = "")]
+	interface VTDecodeFrameOptions {
+		nint ContentAnalyzerRotation { get; set; }
+		CGRectDictionary ContentAnalyzerCropRectangle { get; set; }
+	}
+
+	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+	[Native]
+	public enum VTSuperResolutionScalerConfigurationQualityPrioritization : long {
+		Normal = 1,
+	}
+
+	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+	[Native]
+	public enum VTSuperResolutionScalerConfigurationRevision : long {
+		Revision1 = 1,
+	}
+
+	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+	[Native]
+	public enum VTSuperResolutionScalerConfigurationInputType : long {
+		Video = 1,
+		Image = 2,
+	}
+
+	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+	[Native]
+	public enum VTSuperResolutionScalerConfigurationModelStatus : long {
+		DownloadRequired = 0,
+		Downloading = 1,
+		Ready = 2,
+	}
+
+	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+	[Native]
+	public enum VTSuperResolutionScalerParametersSubmissionMode : long {
+		Random = 1,
+		Sequential = 2,
 	}
 }

@@ -251,5 +251,32 @@ namespace Network {
 		{
 			return nw_path_get_unsatisfied_reason (GetCheckedHandle ());
 		}
+
+		[SupportedOSPlatform ("tvos26.0")]
+		[SupportedOSPlatform ("macos26.0")]
+		[SupportedOSPlatform ("ios26.0")]
+		[SupportedOSPlatform ("maccatalyst26.0")]
+		[DllImport (Constants.NetworkLibrary)]
+		static extern byte nw_path_is_ultra_constrained (IntPtr path);
+
+		[SupportedOSPlatform ("tvos26.0")]
+		[SupportedOSPlatform ("macos26.0")]
+		[SupportedOSPlatform ("ios26.0")]
+		[SupportedOSPlatform ("maccatalyst26.0")]
+		public bool IsUltraConstrained => nw_path_is_ultra_constrained (GetCheckedHandle ()) != 0;
+
+		[SupportedOSPlatform ("tvos26.0")]
+		[SupportedOSPlatform ("macos26.0")]
+		[SupportedOSPlatform ("ios26.0")]
+		[SupportedOSPlatform ("maccatalyst26.0")]
+		[DllImport (Constants.NetworkLibrary)]
+		static extern NWLinkQuality nw_path_get_link_quality (IntPtr path);
+
+		[SupportedOSPlatform ("tvos26.0")]
+		[SupportedOSPlatform ("macos26.0")]
+		[SupportedOSPlatform ("ios26.0")]
+		[SupportedOSPlatform ("maccatalyst26.0")]
+		public NWLinkQuality LinkQuality => nw_path_get_link_quality (GetCheckedHandle ());
+
 	}
 }

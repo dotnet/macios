@@ -1495,6 +1495,7 @@ namespace GeneratorTests {
 
 		[Test]
 		[TestCase (Profile.iOS)]
+		[TestCase (Profile.MacCatalyst)]
 		public void BackingFieldType (Profile profile)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
@@ -1511,6 +1512,7 @@ namespace GeneratorTests {
 				new { BackingFieldType = "Int64", NullableType = $"System.Nullable`1<System.Int64>", RenderedBackingFieldType = "System.Int64", SimplifiedNullableType = "System.Nullable`1" },
 				new { BackingFieldType = "UInt32", NullableType = $"System.Nullable`1<System.UInt32>", RenderedBackingFieldType = "System.UInt32", SimplifiedNullableType = "System.Nullable`1" },
 				new { BackingFieldType = "UInt64", NullableType = $"System.Nullable`1<System.UInt64>", RenderedBackingFieldType = "System.UInt64", SimplifiedNullableType = "System.Nullable`1" },
+				new { BackingFieldType = "NSString", NullableType = $"Foundation.NSString", RenderedBackingFieldType = "Foundation.NSString", SimplifiedNullableType = "Foundation.NSString" },
 			};
 
 			foreach (var tc in testCases) {
@@ -1540,6 +1542,18 @@ namespace GeneratorTests {
 		{
 			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
 			BuildFile (profile, true, true, "tests/underlyingfieldtype.cs");
+		}
+
+		[Test]
+		[TestCase (Profile.iOS)]
+		[TestCase (Profile.tvOS)]
+		[TestCase (Profile.MacCatalyst)]
+		[TestCase (Profile.macOSMobile)]
+		public void AvailabilityAttributes (Profile profile)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
+			var bgen = BuildFile (profile, "tests/availability-attributes.cs");
+			bgen.AssertNoWarnings ();
 		}
 
 		[Test]

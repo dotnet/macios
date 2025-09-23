@@ -20,6 +20,10 @@ namespace Network {
 		/// <summary>To be added.</summary>
 		[Field ("kNWErrorDomainTLS")]
 		Tls = 3,
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("kNWErrorDomainWiFiAware")]
+		WiFiAware,
 	}
 
 	[MacCatalyst (13, 1)]

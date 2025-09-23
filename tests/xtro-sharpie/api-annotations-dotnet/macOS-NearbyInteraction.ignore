@@ -1,0 +1,3 @@
+# Headers are clear that these two enums are not supported on macOS, don't know why xtro thinks they are
+!missing-enum! NIDLTDOACoordinatesType not bound
+!missing-enum! NIDLTDOAMeasurementType not bound

@@ -24,6 +24,7 @@ partial class Frameworks {
 		"AVRouting",
 		"BackgroundAssets",
 		"BackgroundTasks",
+		"BrowserEngineCore",
 		"BrowserEngineKit",
 		"BusinessChat",
 		"CallKit",
@@ -58,8 +59,10 @@ partial class Frameworks {
 		"DataDetection",
 		"DeviceCheck",
 		"DeviceDiscoveryExtension",
+		"DeviceDiscoveryUI",
 		"EventKit",
 		"EventKitUI",
+		"ExtensionKit",
 		"ExternalAccessory",
 		"FileProvider",
 		"FileProviderUI",
@@ -67,6 +70,7 @@ partial class Frameworks {
 		"GameController",
 		"GameKit",
 		"GameplayKit",
+		"GameSave",
 		"GLKit",
 		"HealthKit",
 		"HealthKitUI",
@@ -135,6 +139,7 @@ partial class Frameworks {
 		"Symbols",
 		"SystemConfiguration",
 		"ThreadNetwork",
+		"TouchController",
 		"Twitter",
 		"UIKit",
 		"UniformTypeIdentifiers",
@@ -210,6 +215,7 @@ partial class Frameworks {
 		"GameController",
 		"GameKit",
 		"GameplayKit",
+		"GameSave",
 		"GLKit",
 		"HealthKit",
 		"ImageCaptureCore",
@@ -302,6 +308,7 @@ partial class Frameworks {
 		"AuthenticationServices",
 		"AVFoundation",
 		"AVKit",
+		"AVRouting",
 		"BackgroundAssets",
 		"BackgroundTasks",
 		"BrowserEngineKit",
@@ -406,6 +413,7 @@ partial class Frameworks {
 		"BusinessChat",
 		"CallKit",
 		"CFNetwork",
+		"Cinematic",
 		"ClassKit",
 		"CloudKit",
 		"Compression",
@@ -438,12 +446,14 @@ partial class Frameworks {
 		"EventKit",
 		"EventKitUI",
 		"ExecutionPolicy",
+		"ExtensionKit",
 		"ExternalAccessory",
 		"FileProvider",
 		"Foundation",
 		"GameController",
 		"GameKit",
 		"GameplayKit",
+		"GameSave",
 		"HealthKit",
 		"HealthKitUI",
 		"HomeKit",
@@ -538,6 +548,7 @@ partial class Frameworks {
 	bool? _AVRouting;
 	bool? _BackgroundAssets;
 	bool? _BackgroundTasks;
+	bool? _BrowserEngineCore;
 	bool? _BrowserEngineKit;
 	bool? _BusinessChat;
 	bool? _CallKit;
@@ -589,6 +600,7 @@ partial class Frameworks {
 	bool? _GameController;
 	bool? _GameKit;
 	bool? _GameplayKit;
+	bool? _GameSave;
 	bool? _GLKit;
 	bool? _HealthKit;
 	bool? _HealthKitUI;
@@ -672,6 +684,7 @@ partial class Frameworks {
 	bool? _Symbols;
 	bool? _SystemConfiguration;
 	bool? _ThreadNetwork;
+	bool? _TouchController;
 	bool? _TVMLKit;
 	bool? _TVServices;
 	bool? _TVUIKit;
@@ -709,6 +722,7 @@ partial class Frameworks {
 	public bool HaveAVRouting { get { if (!_AVRouting.HasValue) _AVRouting = GetValue ("AVRouting"); return _AVRouting.Value; } }
 	public bool HaveBackgroundAssets { get { if (!_BackgroundAssets.HasValue) _BackgroundAssets = GetValue ("BackgroundAssets"); return _BackgroundAssets.Value; } }
 	public bool HaveBackgroundTasks { get { if (!_BackgroundTasks.HasValue) _BackgroundTasks = GetValue ("BackgroundTasks"); return _BackgroundTasks.Value; } }
+	public bool HaveBrowserEngineCore { get { if (!_BrowserEngineCore.HasValue) _BrowserEngineCore = GetValue ("BrowserEngineCore"); return _BrowserEngineCore.Value; } }
 	public bool HaveBrowserEngineKit { get { if (!_BrowserEngineKit.HasValue) _BrowserEngineKit = GetValue ("BrowserEngineKit"); return _BrowserEngineKit.Value; } }
 	public bool HaveBusinessChat { get { if (!_BusinessChat.HasValue) _BusinessChat = GetValue ("BusinessChat"); return _BusinessChat.Value; } }
 	public bool HaveCallKit { get { if (!_CallKit.HasValue) _CallKit = GetValue ("CallKit"); return _CallKit.Value; } }
@@ -760,6 +774,7 @@ partial class Frameworks {
 	public bool HaveGameController { get { if (!_GameController.HasValue) _GameController = GetValue ("GameController"); return _GameController.Value; } }
 	public bool HaveGameKit { get { if (!_GameKit.HasValue) _GameKit = GetValue ("GameKit"); return _GameKit.Value; } }
 	public bool HaveGameplayKit { get { if (!_GameplayKit.HasValue) _GameplayKit = GetValue ("GameplayKit"); return _GameplayKit.Value; } }
+	public bool HaveGameSave { get { if (!_GameSave.HasValue) _GameSave = GetValue ("GameSave"); return _GameSave.Value; } }
 	public bool HaveGLKit { get { if (!_GLKit.HasValue) _GLKit = GetValue ("GLKit"); return _GLKit.Value; } }
 	public bool HaveHealthKit { get { if (!_HealthKit.HasValue) _HealthKit = GetValue ("HealthKit"); return _HealthKit.Value; } }
 	public bool HaveHealthKitUI { get { if (!_HealthKitUI.HasValue) _HealthKitUI = GetValue ("HealthKitUI"); return _HealthKitUI.Value; } }
@@ -843,6 +858,7 @@ partial class Frameworks {
 	public bool HaveSymbols { get { if (!_Symbols.HasValue) _Symbols = GetValue ("Symbols"); return _Symbols.Value; } }
 	public bool HaveSystemConfiguration { get { if (!_SystemConfiguration.HasValue) _SystemConfiguration = GetValue ("SystemConfiguration"); return _SystemConfiguration.Value; } }
 	public bool HaveThreadNetwork { get { if (!_ThreadNetwork.HasValue) _ThreadNetwork = GetValue ("ThreadNetwork"); return _ThreadNetwork.Value; } }
+	public bool HaveTouchController { get { if (!_TouchController.HasValue) _TouchController = GetValue ("TouchController"); return _TouchController.Value; } }
 	public bool HaveTVMLKit { get { if (!_TVMLKit.HasValue) _TVMLKit = GetValue ("TVMLKit"); return _TVMLKit.Value; } }
 	public bool HaveTVServices { get { if (!_TVServices.HasValue) _TVServices = GetValue ("TVServices"); return _TVServices.Value; } }
 	public bool HaveTVUIKit { get { if (!_TVUIKit.HasValue) _TVUIKit = GetValue ("TVUIKit"); return _TVUIKit.Value; } }

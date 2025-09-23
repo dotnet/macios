@@ -837,8 +837,10 @@ xamarin_retainWeakReference_trampoline (id self, SEL sel)
 	bool isInFinalizerQueue = (flags & NSObjectFlagsInFinalizerQueue) == NSObjectFlagsInFinalizerQueue;
 
 #if defined(DEBUG_REF_COUNTING)
-	PRINT ("xamarin_retainWeakReference_trampoline (%s Handle=%p) flags: %x isInFinalizerQueue: %i\n",
-		class_getName ([self class]), self, flags, isInFinalizerQueue);
+	struct NSObjectData *data = xamarin_get_nsobject_data (self);
+	// Don't use PRINT/NSLog/os_log here, because the process can end up aborting due to recursive locks inside the ObjC runtime. Luckily fprintf works fine.
+	fprintf (stderr, "xamarin_retainWeakReference_trampoline (%s Handle=%p) flags: %x isInFinalizerQueue: %i data: %p data->flags: %x data->handle: %p\n",
+		class_getName ([self class]), self, flags, isInFinalizerQueue, data, (unsigned int) (data ? data->flags : 0), data ? data->handle : NULL);
 #endif
 
 	// Do not allow any weak references to be resolved if the managed wrapper has been scheduled for finalization,
@@ -896,7 +898,8 @@ xamarin_set_gchandle_trampoline (id self, SEL sel, GCHandle gc_handle, enum Xama
 
 	if (obj != NULL) {
 		obj->gc_handle = gc_handle;
-		obj->data = NULL;
+		if (data != NULL)
+			obj->data = data;
 		obj->gchandle_flags = gchandle_flags;
 	}
 	
@@ -965,6 +968,24 @@ xamarin_set_flags_trampoline (id self, SEL sel, enum XamarinGCHandleFlags gchand
 	pthread_mutex_unlock (&gchandle_hash_lock);
 }
 
+struct NSObjectData *
+xamarin_get_nsobject_data_trampoline (id self, SEL sel)
+{
+	/* This is for types registered using the dynamic registrar */
+	XamarinAssociatedObject *obj;
+	obj = objc_getAssociatedObject (self, associated_key);
+
+	struct NSObjectData *data = NULL;
+	if (obj != NULL)
+		data = obj->data;
+
+#if defined(DEBUG_REF_COUNTING)
+	PRINT ("xamarin_get_nsobject_data_trampoline (%s = %p) obj: %p data: %p data->flags: %x data->handle: %p\n",
+		class_getName ([self class]), self, obj, data ? data->flags : NULL, data ? data->handle : NULL);
+#endif
+
+	return data;
+}
 id
 xamarin_generate_conversion_to_native (MonoObject *value, MonoType *inputType, MonoType *outputType, MonoMethod *method, void *context, GCHandle *exception_gchandle)
 {

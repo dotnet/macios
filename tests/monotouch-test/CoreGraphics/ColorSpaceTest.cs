@@ -225,10 +225,8 @@ namespace MonoTouchFixtures.CoreGraphics {
 #endif
 				using (var provider = new CGDataProvider (icc)) {
 					using (var cs = CGColorSpace.CreateIccData (provider)) {
-						// broke? with Xcode 13 beta 1 (iOS, tvOS)
-						if (TestRuntime.CheckXcodeVersion (13, 0))
-							Assert.Null (cs, "null colorspace");
-						else
+						// some OS versions work, some don't, so just check the ICC if we got a color space
+						if (cs is not null)
 							TestICC (cs);
 					}
 				}

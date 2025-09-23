@@ -34413,11 +34413,6 @@ namespace UIKit {
 		[Export ("glassButtonConfiguration")]
 		UIButtonConfiguration GlassButtonConfiguration { get; }
 
-		[Static]
-		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
-		[Export ("tintedGlassButtonConfiguration")]
-		UIButtonConfiguration TintedGlassButtonConfiguration { get; }
-
 		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 		[Export ("symbolContentTransition", ArgumentSemantic.Strong)]
 		[NullAllowed]

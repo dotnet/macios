@@ -997,7 +997,6 @@ namespace Xamarin.Tests {
 			Clean (project_path);
 
 			Dictionary<string, string>? extraProperties = null;
-			string? tmpdir;
 
 			var properties = GetDefaultProperties (runtimeIdentifiers, extraProperties);
 			properties ["Configuration"] = config;

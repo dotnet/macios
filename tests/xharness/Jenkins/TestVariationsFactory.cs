@@ -281,7 +281,12 @@ namespace Xharness.Jenkins {
 					log.WriteLine ($"Failed to get simulators (attempt {i + 1} of {maxAttempts}): {e}");
 
 					var tmpfile = System.IO.Path.GetTempFileName ();
-					jenkins.ProcessManager.ExecuteCommandAsync ("xcrun", new string [] { "simctl", "list", "--json", "--json-output", tmpfile }, log).Wait ();
+					var callback = new Action<string> ((line) => {
+						lock (log) {
+							log.WriteLine (line);
+						}
+					});
+					Xamarin.Utils.Execution.RunWithCallbacksAsync ("xcrun", new string [] { "simctl", "list", "--json", "--json-output", tmpfile }, standardOutput: callback, standardError: callback).Wait ();
 					var contents = System.IO.File.ReadAllText (tmpfile);
 					log.WriteLine ($"Contents of 'xcrun simctl list --json':\n{contents}");
 					System.IO.File.Delete (tmpfile);

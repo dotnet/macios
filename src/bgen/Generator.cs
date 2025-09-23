@@ -5131,6 +5131,14 @@ public partial class Generator : IMemberGatherer {
 		print ("{");
 		print ("}");
 		print ("");
+
+		print ($"[DynamicDependencyAttribute (DynamicallyAccessedMemberTypes.PublicConstructors, typeof ({TypeName}Wrapper))]");
+		print ($"static {TypeName}Wrapper ()");
+		print ("{");
+		print ("\tGC.KeepAlive (null);"); // need to do _something_ (doesn't seem to matter what), otherwise the static cctor (and the DynamicDependency attribute) is trimmed away.
+		print ("}");
+		print ("");
+
 		// Methods
 		// First find duplicates and select the best one. We use the selector to determine what's a duplicate.
 		var methodData = requiredInstanceMethods.Select ((v) => {

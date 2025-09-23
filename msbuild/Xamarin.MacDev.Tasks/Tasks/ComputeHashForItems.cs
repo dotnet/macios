@@ -19,11 +19,11 @@ namespace Xamarin.MacDev.Tasks {
 	// This task will iterate over each input item, compute a hash value for all the specified metadata in the input items, and then set the specified output metadata to the hashed value
 	public class ComputeHashForItems : XamarinTask {
 		[Required]
-		public ITaskItem[] Input { get; set; } = Array.Empty<ITaskItem> ();
+		public ITaskItem [] Input { get; set; } = Array.Empty<ITaskItem> ();
 
 		// The metadata in each input item to use as input for the hash algorithm.
 		[Required]
-		public ITaskItem[] InputMetadata { get; set; } = Array.Empty<ITaskItem> ();
+		public ITaskItem [] InputMetadata { get; set; } = Array.Empty<ITaskItem> ();
 
 		// The name of the metadata where to store the computed hashed value
 		[Required]
@@ -31,7 +31,7 @@ namespace Xamarin.MacDev.Tasks {
 
 		// The output items. This will be Input, where each item will also have 'OutputMetadata' set to the computed hash value.
 		[Output]
-		public ITaskItem[] Output { get; set; } = Array.Empty<ITaskItem> ();
+		public ITaskItem [] Output { get; set; } = Array.Empty<ITaskItem> ();
 
 		public override bool Execute ()
 		{

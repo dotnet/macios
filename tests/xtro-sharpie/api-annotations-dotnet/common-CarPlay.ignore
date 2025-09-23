@@ -1,3 +1,4 @@
+# These are just basically ToString for enums, which we don't need to bind
 !missing-pinvoke! NSStringFromCPJunctionType is not bound
 !missing-pinvoke! NSStringFromCPLaneStatus is not bound
 !missing-pinvoke! NSStringFromCPManeuverType is not bound

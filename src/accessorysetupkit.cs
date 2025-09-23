@@ -87,6 +87,7 @@ namespace AccessorySetupKit {
 		AccessoryAdded = 30,
 		AccessoryRemoved = 31,
 		AccessoryChanged = 32,
+		Discovered = 33,
 		PickerDidPresent = 40,
 		PickerDidDismiss = 50,
 		PickerSetupBridging = 60,
@@ -156,9 +157,21 @@ namespace AccessorySetupKit {
 		[iOS (26, 0)]
 		[Export ("updateAuthorization:descriptor:completionHandler:")]
 		void UpdateAuthorization (ASAccessory accessory, ASDiscoveryDescriptor descriptor, ASAccessorySessionUpdateAuthorizationHandler completionHandler);
+
+		[Async]
+		[iOS (26, 1)]
+		[Export ("updatePickerShowingDiscoveredDisplayItems:completionHandler:")]
+		void UpdatePicker (ASDiscoveredDisplayItem[] showingDisplayItems, ASAccessorySessionUpdatePickerHandler completionHandler);
+
+		[Async]
+		[iOS (26, 1)]
+		[Export ("finishPickerDiscovery:")]
+		void FinishPickerDiscovery (ASAccessorySessionFinishPickerDiscoveryHandler completionHandler);
 	}
 
 	delegate void ASAccessorySessionUpdateAuthorizationHandler ([NullAllowed] NSError error);
+	delegate void ASAccessorySessionUpdatePickerHandler ([NullAllowed] NSError error);
+	delegate void ASAccessorySessionFinishPickerDiscoveryHandler ([NullAllowed] NSError error);
 
 	[BaseType (typeof (NSObject))]
 	[iOS (18, 0)]
@@ -295,6 +308,10 @@ namespace AccessorySetupKit {
 		[Export ("initWithName:productImage:descriptor:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (string name, UIImage productImage, ASDiscoveryDescriptor descriptor);
+
+		[iOS (26, 1)]
+		[Export ("wifiAwarePairedDeviceID")]
+		ulong WifiAwarePairedDeviceId { get; set; }
 	}
 
 	[iOS (26, 0)]
@@ -328,6 +345,10 @@ namespace AccessorySetupKit {
 
 		[Export ("discoveryTimeout")]
 		double DiscoveryTimeout { get; set; }
+
+		[iOS (26, 1)]
+		[Export ("options", ArgumentSemantic.Assign)]
+		ASPickerDisplaySettingsOptions Options { get; set; }
 	}
 
 	[Static]
@@ -343,5 +364,43 @@ namespace AccessorySetupKit {
 		[iOS (26, 0)]
 		[Field ("ASPickerDisplaySettingsDiscoveryTimeoutLong")]
 		double Long { get; }
+
+		[iOS (26, 1)]
+		[Field ("ASPickerDisplaySettingsDiscoveryTimeoutUnbounded")]
+		double Unbounded { get; }
+	}
+
+	[iOS (26, 1)]
+	[BaseType (typeof (ASAccessory))]
+	interface ASDiscoveredAccessory
+	{
+		[NullAllowed]
+		[Wrap ("WeakBluetoothAdvertisementData")]
+		CoreBluetooth.AdvertisementData BluetoothAdvertisementData { get; }
+
+		[NullAllowed, Export ("bluetoothAdvertisementData", ArgumentSemantic.Copy)]
+		NSDictionary WeakBluetoothAdvertisementData { get; }
+
+		[Export ("bluetoothRSSI", ArgumentSemantic.Copy)]
+		[BindAs (typeof (nint?))]
+		NSNumber BluetoothRSSI { get; }
+	}
+
+	[iOS (26, 1)]
+	[BaseType (typeof (ASPickerDisplayItem))]
+	[DisableDefaultCtor]
+	interface ASDiscoveredDisplayItem
+	{
+		[Export ("initWithName:productImage:accessory:")]
+		NativeHandle Constructor (string name, UIImage productImage, ASDiscoveredAccessory accessory);
+	}
+
+	[iOS (26, 1)]
+	[Flags]
+	[Native]
+	public enum ASPickerDisplaySettingsOptions : ulong
+	{
+		None = 0,
+		FilterDiscoveryResults = (1uL << 0),
 	}
 }

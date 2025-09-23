@@ -142,6 +142,7 @@ F:AccessorySetupKit.ASAccessoryEventType.AccessoryAdded
 F:AccessorySetupKit.ASAccessoryEventType.AccessoryChanged
 F:AccessorySetupKit.ASAccessoryEventType.AccessoryRemoved
 F:AccessorySetupKit.ASAccessoryEventType.Activated
+F:AccessorySetupKit.ASAccessoryEventType.Discovered
 F:AccessorySetupKit.ASAccessoryEventType.Invalidated
 F:AccessorySetupKit.ASAccessoryEventType.MigrationComplete
 F:AccessorySetupKit.ASAccessoryEventType.PickerDidDismiss
@@ -177,6 +178,8 @@ F:AccessorySetupKit.ASErrorCode.UserRestricted
 F:AccessorySetupKit.ASPickerDisplayItemSetupOptions.ConfirmAuthorization
 F:AccessorySetupKit.ASPickerDisplayItemSetupOptions.FinishInApp
 F:AccessorySetupKit.ASPickerDisplayItemSetupOptions.Rename
+F:AccessorySetupKit.ASPickerDisplaySettingsOptions.FilterDiscoveryResults
+F:AccessorySetupKit.ASPickerDisplaySettingsOptions.None
 F:AddressBook.ABPropertyType.MultiMask
 F:AdServices.AAAttributionErrorCode.InternalError
 F:AdServices.AAAttributionErrorCode.NetworkError
@@ -8139,11 +8142,13 @@ M:Accessibility.AXPrefers.HorizontalTextEnabled
 M:Accessibility.AXPrefers.NonBlinkingTextInsertionIndicator
 M:AccessorySetupKit.ASAccessorySession.FailAuthorizationAsync(AccessorySetupKit.ASAccessory)
 M:AccessorySetupKit.ASAccessorySession.FinishAuthorizationAsync(AccessorySetupKit.ASAccessory,AccessorySetupKit.ASAccessorySettings)
+M:AccessorySetupKit.ASAccessorySession.FinishPickerDiscoveryAsync
 M:AccessorySetupKit.ASAccessorySession.RemoveAccessoryAsync(AccessorySetupKit.ASAccessory)
 M:AccessorySetupKit.ASAccessorySession.RenameAccessoryAsync(AccessorySetupKit.ASAccessory,AccessorySetupKit.ASAccessoryRenameOptions)
 M:AccessorySetupKit.ASAccessorySession.ShowPickerAsync
 M:AccessorySetupKit.ASAccessorySession.ShowPickerAsync(AccessorySetupKit.ASPickerDisplayItem[])
 M:AccessorySetupKit.ASAccessorySession.UpdateAuthorizationAsync(AccessorySetupKit.ASAccessory,AccessorySetupKit.ASDiscoveryDescriptor)
+M:AccessorySetupKit.ASAccessorySession.UpdatePickerAsync(AccessorySetupKit.ASDiscoveredDisplayItem[])
 M:Accounts.ACAccountStore.Dispose(System.Boolean)
 M:AddressBook.ABAddressBook.add_ExternalChange(System.EventHandler{AddressBook.ExternalChangeEventArgs})
 M:AddressBook.ABAddressBook.remove_ExternalChange(System.EventHandler{AddressBook.ExternalChangeEventArgs})
@@ -18128,6 +18133,7 @@ P:Accessibility.IAXCustomContentProvider.AccessibilityCustomContentHandler
 P:Accessibility.IAXDataAxisDescriptor.AttributedTitle
 P:Accessibility.IAXDataAxisDescriptor.Title
 P:Accessibility.IAXMathExpressionProvider.AccessibilityMathExpression
+P:AccessorySetupKit.ASDiscoveredAccessory.BluetoothAdvertisementData
 P:AddressBook.ABMultiValue`1.Item(System.IntPtr)
 P:AppClip.APActivationPayload.Url
 P:AppKit.INSAccessibility.AccessibilityActivationPoint
@@ -24807,7 +24813,9 @@ T:Accessibility.ValueDescriptionProviderHandler
 T:AccessorySetupKit.ASAccessoryEventType
 T:AccessorySetupKit.ASAccessoryRenameOptions
 T:AccessorySetupKit.ASAccessorySessionCompletionHandler
+T:AccessorySetupKit.ASAccessorySessionFinishPickerDiscoveryHandler
 T:AccessorySetupKit.ASAccessorySessionUpdateAuthorizationHandler
+T:AccessorySetupKit.ASAccessorySessionUpdatePickerHandler
 T:AccessorySetupKit.ASAccessoryState
 T:AccessorySetupKit.ASAccessorySupportOptions
 T:AccessorySetupKit.ASDiscoveryDescriptorRange
@@ -24815,6 +24823,7 @@ T:AccessorySetupKit.ASDiscoveryDescriptorWiFiAwareServiceRole
 T:AccessorySetupKit.ASErrorCode
 T:AccessorySetupKit.ASPickerDisplayItemSetupOptions
 T:AccessorySetupKit.ASPickerDisplaySettingsDiscoveryTimeout
+T:AccessorySetupKit.ASPickerDisplaySettingsOptions
 T:Accounts.ACLinkedInKey
 T:AdServices.AAAttributionErrorCode
 T:AppClip.APActivationPayload

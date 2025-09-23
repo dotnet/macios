@@ -9980,6 +9980,7 @@ M:BrowserEngineKit.NSObject_BEAccessibility.SetBrowserAccessibilitySortDirection
 M:BusinessChat.BCChatButton.BCChatButtonAppearance.#ctor(System.IntPtr)
 M:CallKit.CXCallDirectoryExtensionContext.Dispose(System.Boolean)
 M:CallKit.CXCallDirectoryManager.OpenSettingsAsync
+M:CallKit.CXProvider.ReportNewIncomingProtectedImavCallAsync(Foundation.NSUuid,CallKit.CXCallUpdate)
 M:CallKit.CXProvider.ReportNewIncomingVoIPPushPayloadAsync(Foundation.NSDictionary)
 M:CallKit.CXProviderDelegate_Extensions.PerformSetTranslatingCallAction(CallKit.ICXProviderDelegate,CallKit.CXProvider,CallKit.CXSetTranslatingCallAction)
 M:CallKit.ICXProviderDelegate.PerformSetTranslatingCallAction(CallKit.CXProvider,CallKit.CXSetTranslatingCallAction)
@@ -25828,6 +25829,7 @@ T:BusinessChat.BCChatButton
 T:BusinessChat.BCChatButtonStyle
 T:BusinessChat.BCParameterName
 T:CallKit.CXErrorCodeNotificationServiceExtensionError
+T:CallKit.CXProviderReportIncomingCallback
 T:CallKit.CXTranslationEngine
 T:CarPlay.CPAssistantCellActionType
 T:CarPlay.CPAssistantCellPosition

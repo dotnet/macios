@@ -731,7 +731,14 @@ namespace CallKit {
 
 		[Export ("pendingCallActionsOfClass:withCallUUID:")]
 		CXCallAction [] GetPendingCallActions (Class callActionClass, NSUuid callUuid);
+
+		[iOS (26, 1), MacCatalyst (26, 1)]
+		[Async]
+		[Export ("reportNewIncomingProtectedIMAVCallWithUUID:update:completion:")]
+		void ReportNewIncomingProtectedImavCall (NSUuid uuid, CXCallUpdate update, CXProviderReportIncomingCallback completion);
 	}
+
+	delegate void CXProviderReportIncomingCallback ([NullAllowed] NSError error);
 
 	/// <summary>Contains values that control miscellaneous call properties, such as the ringtone, whether the call supports video, the maximum number of callers, and so on.</summary>
 	///     

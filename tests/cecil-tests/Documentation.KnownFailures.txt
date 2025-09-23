@@ -4050,6 +4050,7 @@ F:HomeKit.HMError.MaximumAccessoriesOfTypeInHome
 F:HomeKit.HMError.ObjectWithSimilarNameExists
 F:HomeKit.HMError.OwnershipFailure
 F:HomeKit.HMError.PartialCommunicationFailure
+F:HomeKit.HMError.QuotaExceeded
 F:HomeKit.HMError.TimedOutWaitingForAccessory
 F:HomeKit.HMError.WiFiCredentialGenerationFailed
 F:HomeKit.HMHomeManagerAuthorizationStatus.Authorized

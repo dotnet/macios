@@ -279,6 +279,13 @@ namespace Xharness.Jenkins {
 					return rv.GetEnumerator ();
 				} catch (Exception e) {
 					log.WriteLine ($"Failed to get simulators (attempt {i + 1} of {maxAttempts}): {e}");
+
+					var tmpfile = System.IO.Path.GetTempFileName ();
+					jenkins.ProcessManager.ExecuteCommandAsync ("xcrun", new string [] { "simctl", "list", "--json", "--json-output", tmpfile }, log).Wait ();
+					var contents = System.IO.File.ReadAllText (tmpfile);
+					log.WriteLine ($"Contents of 'xcrun simctl list --json':\n{contents}");
+					System.IO.File.Delete (tmpfile);
+
 					if (i >= maxAttempts - 1)
 						break;
 

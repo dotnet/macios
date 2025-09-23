@@ -24048,7 +24048,6 @@ P:UIKit.UIButton.Held
 P:UIKit.UIButton.Hovered
 P:UIKit.UIButton.PointerInteractionEnabled
 P:UIKit.UIButton.UIButtonAppearance.ContentEdgeInsets
-P:UIKit.UIButtonConfiguration.TintedGlassButtonConfiguration
 P:UIKit.UIButtonEventArgs.ButtonIndex
 P:UIKit.UICalendarSelectionMultiDate.Delegate
 P:UIKit.UICalendarSelectionSingleDate.Delegate

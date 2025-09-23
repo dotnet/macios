@@ -115,6 +115,10 @@ namespace AutomaticAssessmentConfiguration {
 		[iOS (17, 5), Mac (12, 0), MacCatalyst (15, 0)]
 		[Export ("setConfiguration:forApplication:")]
 		void SetConfiguration (AEAssessmentParticipantConfiguration configuration, AEAssessmentApplication application);
+
+		[NoiOS, MacCatalyst (26, 1), Mac (26, 1)]
+		[Export ("allowsScreenshots")]
+		bool AllowsScreenshots { get; set; }
 	}
 
 	[iOS (13, 4)]

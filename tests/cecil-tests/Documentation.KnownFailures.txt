@@ -1463,6 +1463,7 @@ F:AVFoundation.AVFileTypeProfile.None
 F:AVFoundation.AVFileTypes.Ahap
 F:AVFoundation.AVFileTypes.AppleiTT
 F:AVFoundation.AVFileTypes.Dicom
+F:AVFoundation.AVFileTypes.QuickTimeAudio
 F:AVFoundation.AVFileTypes.Scc
 F:AVFoundation.AVMediaCharacteristics.CarriesVideoStereoMetadata
 F:AVFoundation.AVMediaCharacteristics.ContainsAlphaChannel

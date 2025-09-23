@@ -9488,8 +9488,6 @@ M:AVFoundation.AVComposition_AVCompositionTrackInspection.LoadTracksWithMediaTyp
 M:AVFoundation.AVComposition_AVCompositionTrackInspection.LoadTracksWithMediaTypeAsync(AVFoundation.AVComposition,System.String)
 M:AVFoundation.AVContentKeyRecipient_Extensions.DidProvideContentKey(AVFoundation.IAVContentKeyRecipient,AVFoundation.AVContentKeySession,AVFoundation.AVContentKey)
 M:AVFoundation.AVContentKeyRequest.Dispose(System.Boolean)
-M:AVFoundation.AVContentKeyRequest.RespondByRequestingPersistableContentKeyRequest
-M:AVFoundation.AVContentKeyRequest.RespondByRequestingPersistableContentKeyRequest(Foundation.NSError@)
 M:AVFoundation.AVContentKeyResponse.Create(Foundation.NSData,AVFoundation.AVContentKeyResponseDataType)
 M:AVFoundation.AVContentKeySession.Dispose(System.Boolean)
 M:AVFoundation.AVContentKeySessionDelegate_Extensions.DidProvideContentKeyRequests(AVFoundation.IAVContentKeySessionDelegate,AVFoundation.AVContentKeySession,AVFoundation.AVContentKeyRequest[],Foundation.NSData)
@@ -24049,6 +24047,7 @@ P:UIKit.UIButton.Held
 P:UIKit.UIButton.Hovered
 P:UIKit.UIButton.PointerInteractionEnabled
 P:UIKit.UIButton.UIButtonAppearance.ContentEdgeInsets
+P:UIKit.UIButtonConfiguration.TintedGlassButtonConfiguration
 P:UIKit.UIButtonEventArgs.ButtonIndex
 P:UIKit.UICalendarSelectionMultiDate.Delegate
 P:UIKit.UICalendarSelectionSingleDate.Delegate

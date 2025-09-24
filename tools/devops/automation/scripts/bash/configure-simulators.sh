@@ -1,5 +1,12 @@
 #!/bin/bash -ex
 
+# This script will:
+# * Delete all simulator devices.
+# * Create two new simulator devices, one for iOS and one for tvOS,
+#   and try to work around how unreliable the process is. For some
+#   reason, successfully creating a simulator device doesn't always
+#   result in an actual simulator device.
+
 set -o pipefail
 
 if test -z "$BUILD_SOURCESDIRECTORY"; then

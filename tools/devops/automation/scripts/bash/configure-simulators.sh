@@ -44,6 +44,13 @@ TVOS_OS_VERSION=$TVOS_NUGET_OS_VERSION
 IOS_SIMRUNTIME_VERSION=${IOS_OS_VERSION/./-}
 TVOS_SIMRUNTIME_VERSION=${TVOS_OS_VERSION/./-}
 
+function killCoreSimulator ()
+{
+	launchctl kill -9 system/com.apple.CoreSimulator.simdiskimaged || true
+	pkill -9 com.apple.CoreSimulator.CoreSimulatorService || true
+	pkill -9 CoreSimulator.framework || true
+}
+
 function createDevice ()
 {
 	local PLATFORM=$1
@@ -68,7 +75,8 @@ function createDevice ()
 			return
 		fi
 
-		# device doesn't exists (yet?), wait a bit and check again
+		# device doesn't exists (yet?), cleanup, wait a bit and check again
+		killCoreSimulator
 		sleep "$(( ATTEMPTS * 10 ))"
 
 		xcrun simctl list devices > "$FILE" 2>&1

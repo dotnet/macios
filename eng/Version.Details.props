@@ -6,19 +6,19 @@ This file should be imported by eng/Versions.props
 <Project>
   <PropertyGroup>
     <!-- dotnet/sdk dependencies -->
-    <MicrosoftNETSdkPackageVersion>9.0.110-servicing.25418.5</MicrosoftNETSdkPackageVersion>
+    <MicrosoftNETSdkPackageVersion>9.0.111-servicing.25467.3</MicrosoftNETSdkPackageVersion>
     <!-- dotnet/runtime dependencies -->
     <MicrosoftNETILLinkPackageVersion>9.0.0-alpha.1.23556.4</MicrosoftNETILLinkPackageVersion>
     <MicrosoftNETRuntimeMonoTargetsSdkPackageVersion>9.0.0-rc.2.24462.10</MicrosoftNETRuntimeMonoTargetsSdkPackageVersion>
     <!-- _git/dotnet-runtime dependencies -->
-    <MicrosoftNETILLinkTasksPackageVersion>9.0.8</MicrosoftNETILLinkTasksPackageVersion>
-    <MicrosoftNETCoreAppRefPackageVersion>9.0.8</MicrosoftNETCoreAppRefPackageVersion>
+    <MicrosoftNETILLinkTasksPackageVersion>9.0.9</MicrosoftNETILLinkTasksPackageVersion>
+    <MicrosoftNETCoreAppRefPackageVersion>9.0.9</MicrosoftNETCoreAppRefPackageVersion>
     <!-- _git/dotnet-aspnetcore dependencies -->
-    <MicrosoftAspNetCoreAppRefPackageVersion>9.0.8</MicrosoftAspNetCoreAppRefPackageVersion>
+    <MicrosoftAspNetCoreAppRefPackageVersion>9.0.9</MicrosoftAspNetCoreAppRefPackageVersion>
     <!-- dotnet/emsdk dependencies -->
-    <MicrosoftNETWorkloadEmscriptenCurrentManifest90100TransportPackageVersion>9.0.8-servicing.25353.1</MicrosoftNETWorkloadEmscriptenCurrentManifest90100TransportPackageVersion>
+    <MicrosoftNETWorkloadEmscriptenCurrentManifest90100TransportPackageVersion>9.0.9-servicing.25418.4</MicrosoftNETWorkloadEmscriptenCurrentManifest90100TransportPackageVersion>
     <!-- dotnet/cecil dependencies -->
-    <MicrosoftDotNetCecilPackageVersion>0.11.5-alpha.25329.2</MicrosoftDotNetCecilPackageVersion>
+    <MicrosoftDotNetCecilPackageVersion>0.11.5-alpha.25370.2</MicrosoftDotNetCecilPackageVersion>
     <!-- dotnet/macios dependencies -->
     <MicrosoftiOSSdknet80_170PackageVersion>17.0.8523</MicrosoftiOSSdknet80_170PackageVersion>
     <MicrosoftiOSSdknet80_180PackageVersion>18.0.8324</MicrosoftiOSSdknet80_180PackageVersion>

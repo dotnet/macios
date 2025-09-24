@@ -161,7 +161,7 @@ namespace AccessorySetupKit {
 		[Async]
 		[iOS (26, 1)]
 		[Export ("updatePickerShowingDiscoveredDisplayItems:completionHandler:")]
-		void UpdatePicker (ASDiscoveredDisplayItem[] showingDisplayItems, ASAccessorySessionUpdatePickerHandler completionHandler);
+		void UpdatePicker (ASDiscoveredDisplayItem [] showingDisplayItems, ASAccessorySessionUpdatePickerHandler completionHandler);
 
 		[Async]
 		[iOS (26, 1)]
@@ -372,8 +372,7 @@ namespace AccessorySetupKit {
 
 	[iOS (26, 1)]
 	[BaseType (typeof (ASAccessory))]
-	interface ASDiscoveredAccessory
-	{
+	interface ASDiscoveredAccessory {
 		[NullAllowed]
 		[Wrap ("WeakBluetoothAdvertisementData")]
 		CoreBluetooth.AdvertisementData BluetoothAdvertisementData { get; }
@@ -389,8 +388,7 @@ namespace AccessorySetupKit {
 	[iOS (26, 1)]
 	[BaseType (typeof (ASPickerDisplayItem))]
 	[DisableDefaultCtor]
-	interface ASDiscoveredDisplayItem
-	{
+	interface ASDiscoveredDisplayItem {
 		[Export ("initWithName:productImage:accessory:")]
 		NativeHandle Constructor (string name, UIImage productImage, ASDiscoveredAccessory accessory);
 	}
@@ -398,8 +396,7 @@ namespace AccessorySetupKit {
 	[iOS (26, 1)]
 	[Flags]
 	[Native]
-	public enum ASPickerDisplaySettingsOptions : ulong
-	{
+	public enum ASPickerDisplaySettingsOptions : ulong {
 		None = 0,
 		FilterDiscoveryResults = (1uL << 0),
 	}

@@ -1631,7 +1631,7 @@ namespace Xamarin.Tests {
 				if (hasDirectoryResources)
 					continue;
 
-				var zipContents = ZipHelpers.List (zip).ToHashSet ();
+				var zipContents = ZipHelpers.List (zip, '/').ToHashSet ();
 				var mustHaveContents = new List<string> {
 					"manifest",
 				};

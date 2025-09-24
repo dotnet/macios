@@ -1,2 +1,5 @@
 !missing-selector! AUAudioUnit::messageChannelFor: not bound
 !missing-protocol! AUMessageChannel not bound
+
+# this enum is declared as not available on iOS, not sure why it shows up (it's visionOS-only)
+!missing-enum! CASoundStageSize not bound

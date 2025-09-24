@@ -47,6 +47,9 @@ parameters:
     type: boolean
     default: true
 
+  - name: XcodeChannel
+    type: string
+
 steps:
 
   - template: ../common/checkout.yml
@@ -80,6 +83,18 @@ steps:
       github_token: ${{ parameters.gitHubToken }}
     timeoutInMinutes: 250
     retryCountOnTaskFailure: ${{ parameters.retryCount }}  # mono does give issues sometimes to download, we will retry
+
+  - bash: |
+      set -x
+      set -e
+      ARGS=()
+      ARGS+=(--ignore-all)
+      ARGS+=(--provision-xcode-components)
+      $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/system-dependencies.sh "${ARGS[@]}"
+    displayName: 'Provision dependencies'
+    timeoutInMinutes: 250
+    env:
+      XCODE_CHANNEL: ${{ parameters.xcodeChannel }}
 
   # Use the env variables that were set by the label parsing in the configure step
   # print some useful logging to allow to know what is going on AND allow make some
@@ -157,6 +172,7 @@ steps:
        set -e
        rm -rf ~/Library/Developer/Xcode/DerivedData/*
        rm -rf ~/Library/Caches/com.apple.dt.Xcode
+       xcrun -k
     displayName: 'Clear Xcode cache'
 
   - task: CodeQL3000Init@0

@@ -31,6 +31,7 @@
 #nullable enable
 
 using System;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Foundation;
 using ObjCRuntime;
@@ -95,6 +96,22 @@ namespace CoreFoundation {
 		public static IntPtr GetValue (IntPtr theDict, IntPtr key)
 		{
 			return CFDictionaryGetValue (theDict, key);
+		}
+
+		[DllImport (Constants.CoreFoundationLibrary)]
+		unsafe extern static byte /* Boolean */ CFDictionaryGetValueIfPresent (IntPtr /* CFDictionaryRef */ theDict, IntPtr /* const void * */ key, IntPtr* /* const void * * */ value);
+
+		/// <summary>Try to get the stored value for the specified <paramref name="key" />.</summary>
+		/// <param name="dictionary">The dictionary whose value to get.</param>
+		/// <param name="key">The key of the value to find.</param>
+		/// <param name="value">Upon return, the value that was found, or <see cref="IntPtr.Zero" /> if the dictionary doesn't contain a value for the specified <paramref name="key" />.</param>
+		/// <returns><see langword="true" /> if the dictionary contains the specified <paramref name="key" />, <see langword="false" /> otherwise.</returns>
+		public unsafe static bool TryGetValue (IntPtr dictionary, IntPtr key, out IntPtr value)
+		{
+			value = default;
+			fixed (IntPtr* valuePtr = &value) {
+				return CFDictionaryGetValueIfPresent (dictionary, key, valuePtr) != 0;
+			}
 		}
 
 		[DllImport (Constants.CoreFoundationLibrary)]
@@ -219,6 +236,19 @@ namespace CoreFoundation {
 		public static void SetValue (IntPtr theDict, IntPtr key, bool value)
 		{
 			SetValue (theDict, key, value ? CFBoolean.TrueHandle : CFBoolean.FalseHandle);
+		}
+
+		internal static void SetValue (IntPtr theDict, INativeObject? key, INativeObject? value)
+		{
+			SetValue (theDict, key.GetHandle (), value.GetHandle ());
+			GC.KeepAlive (key);
+			GC.KeepAlive (value);
+		}
+
+		internal static void SetValue (IntPtr theDict, INativeObject? key, IntPtr value)
+		{
+			SetValue (theDict, key.GetHandle (), value);
+			GC.KeepAlive (key);
 		}
 	}
 }

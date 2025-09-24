@@ -379,7 +379,8 @@ namespace CoreVideo {
 			CVReturn ret;
 			outTime = default;
 			unsafe {
-				ret = CVDisplayLinkGetCurrentTime (this.Handle, (CVTimeStamp*) Unsafe.AsPointer<CVTimeStamp> (ref outTime));
+				fixed (CVTimeStamp* outTimePtr = &outTime)
+					ret = CVDisplayLinkGetCurrentTime (this.Handle, outTimePtr);
 			}
 
 			return ret;
@@ -460,7 +461,8 @@ namespace CoreVideo {
 		public bool TryTranslateTime (CVTimeStamp inTime, ref CVTimeStamp outTime)
 		{
 			unsafe {
-				return CVDisplayLinkTranslateTime (this.Handle, inTime, (CVTimeStamp*) Unsafe.AsPointer<CVTimeStamp> (ref outTime)) == 0;
+				fixed (CVTimeStamp* outTimePtr = &outTime)
+					return CVDisplayLinkTranslateTime (this.Handle, inTime, outTimePtr) == 0;
 			}
 		}
 	}

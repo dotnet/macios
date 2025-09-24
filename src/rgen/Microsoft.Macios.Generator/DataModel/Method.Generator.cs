@@ -334,7 +334,8 @@ readonly partial struct Method {
 			modifiers: modifiers,
 			parameters: Parameters
 		) {
-			IsProtocolConstructor = true
+			IsProtocolConstructor = true,
+			ProtocolType = Type
 		};
 	}
 

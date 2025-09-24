@@ -133,6 +133,29 @@ Only applicable to iOS and tvOS projects.
 
 See [CreatePackage](#createpackage) for macOS and Mac Catalyst projects.
 
+## BundleCreateDump
+
+CoreCLR has a command-line utility called [`createdump`][createdump] to create
+core dumps if the process crashes. macOS will automatically create crash
+reports for any App Store apps and make them available to the app developer,
+so the `createdump` tool is not useful for many macOS apps, and as such, it's
+not included in apps by default.
+
+This can be overriden by setting the `BundleCreateDump` property:
+
+```xml
+<PropertyGroup>
+  <BundleCreateDump>true</BundleCreateDump>
+</PropertyGroup>
+```
+
+Note: the `createdump` tool does currently not work for sandboxed apps ([#18961](https://github.com/dotnet/macios/issues/18961));
+
+Only applicable to projects that use the CoreCLR runtime (which, at the moment
+of this writing, is only macOS projects).
+
+[createdump]: https://github.com/dotnet/runtime/blob/3b63eb1346f1ddbc921374a5108d025662fb5ffd/docs/design/coreclr/botr/xplat-minidump-generation.md
+
 ## BundleOriginalResources
 
 This property determines whether resources are compiled before being embedded
@@ -790,6 +813,28 @@ Only applicable to macOS projects.
 Consider using the unified [AppBundleResourcePrefix](#appbundleresourceprefix) property instead.
 
 See also [IPhoneResourcePrefix](#iphoneresourceprefix) and [XamMacResourcePrefix](#xammacresourceprefix).
+
+## MonoUseCompressedInterfaceBitmap
+
+This directs the Mono runtime to use a compressed version of interface bitmaps
+(interface bitmaps are used to determine whether a certain types implements a
+given interface).
+
+These bitmaps can use a significant amount of memory at runtime, in particular
+for apps that have a substantial amount of interfaces.
+
+This setting is disabled by default, but it can be enabled like this, which
+will decrease the amount of memory used at runtime:
+
+```xml
+<PropertyGroup>
+    <MonoUseCompressedInterfaceBitmap>true</MonoUseCompressedInterfaceBitmap>
+</PropertyGroup>
+```
+
+The downside is that type checks (`obj is SomeInterface`) will be slower.
+
+Only applicable when using the Mono runtime.
 
 ## MtouchDebug
 

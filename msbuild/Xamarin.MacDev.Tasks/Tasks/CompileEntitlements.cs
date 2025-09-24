@@ -825,7 +825,7 @@ namespace Xamarin.MacDev.Tasks {
 					new EntitlementData ("com.apple.developer.web-browser.public-key-credential", desktop, EntitlementType.Boolean ),
 					new EntitlementData ("com.apple.external-accessory.wireless-configuration", iOS, EntitlementType.Boolean ),
 					new EntitlementData ("com.apple.security.app-sandbox", desktop, EntitlementType.Boolean, requiresProvisioningProfile: false ),
-					new EntitlementData ("com.apple.security.application-groups", desktop, EntitlementType.ArrayOfStrings, requiresProvisioningProfile: false ),
+					new EntitlementData ("com.apple.security.application-groups", allPlatforms, EntitlementType.ArrayOfStrings ),
 					new EntitlementData ("com.apple.security.assets.movies.read-only", desktop, EntitlementType.Boolean, requiresProvisioningProfile: false ),
 					new EntitlementData ("com.apple.security.assets.movies.read-write", desktop, EntitlementType.Boolean, requiresProvisioningProfile: false ),
 					new EntitlementData ("com.apple.security.assets.music.read-only", desktop, EntitlementType.Boolean, requiresProvisioningProfile: false ),

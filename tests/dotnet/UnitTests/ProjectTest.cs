@@ -104,17 +104,17 @@ namespace Xamarin.Tests {
 			Assert.That (result.StandardOutput.ToString (), Does.Not.Contain ("Task \"ILLink\""), "Linker executed unexpectedly.");
 		}
 
-		[TestCase ("iOS")]
-		[TestCase ("tvOS")]
-		[TestCase ("macOS")]
-		[TestCase ("MacCatalyst")]
+		[TestCase (ApplePlatform.iOS)]
+		[TestCase (ApplePlatform.TVOS)]
+		[TestCase (ApplePlatform.MacOSX)]
+		[TestCase (ApplePlatform.MacCatalyst)]
 		[Category ("WindowsInclusive")]
-		public void BuildEmbeddedResourcesTest (string platform)
+		public void BuildEmbeddedResourcesTest (ApplePlatform platform)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 			var assemblyName = "EmbeddedResources";
 			var dotnet_bindings_dir = Path.Combine (Configuration.SourceRoot, "tests", assemblyName, "dotnet");
-			var project_dir = Path.Combine (dotnet_bindings_dir, platform);
+			var project_dir = Path.Combine (dotnet_bindings_dir, platform.AsString ());
 			var project_path = Path.Combine (project_dir, $"{assemblyName}.csproj");
 			Clean (project_path);
 			var result = DotNet.AssertBuild (project_path, verbosity);
@@ -129,25 +129,36 @@ namespace Xamarin.Tests {
 			Assert.That (asm, Does.Exist, "Assembly existence");
 			// Verify that there's one resource in the assembly, and its name
 			var ad = AssemblyDefinition.ReadAssembly (asm, new ReaderParameters { ReadingMode = ReadingMode.Deferred });
-			Assert.That (ad.MainModule.Resources.Count, Is.EqualTo (1), "1 resource");
-			Assert.That (ad.MainModule.Resources [0].Name, Is.EqualTo ("EmbeddedResources.Welcome.resources"), "libtest.a");
+
+			var actualResources = ad.MainModule.Resources.Select (v => v.Name).OrderBy (v => v).ToArray ();
+			var expectedResources = new List<string> ()
+			{
+				"EmbeddedResources.Welcome.resources",
+			};
+			if (platform != ApplePlatform.MacOSX) {
+				// macOS doesn't have this resources, and it's removed by the linker for Mac Catalyst
+				// it's not removed for iOS/tvOS, because we don't bother removing resources for simulator builds.
+				expectedResources.Add ("__monotouch_item_PartialAppManifest_shared-dotnet.plist");
+			}
+			Assert.That (actualResources, Is.EqualTo (expectedResources.OrderBy (v => v).ToArray ()), $"embedded resources");
+
 			var asm_dir = Path.GetDirectoryName (asm)!;
 			Assert.That (Path.Combine (asm_dir, "en-AU", "EmbeddedResources.resources.dll"), Does.Exist, "en-AU");
 			Assert.That (Path.Combine (asm_dir, "de", "EmbeddedResources.resources.dll"), Does.Exist, "de");
 			Assert.That (Path.Combine (asm_dir, "es", "EmbeddedResources.resources.dll"), Does.Exist, "es");
 		}
 
-		[TestCase ("iOS")]
-		[TestCase ("tvOS")]
-		[TestCase ("macOS")]
-		[TestCase ("MacCatalyst")]
+		[TestCase (ApplePlatform.iOS)]
+		[TestCase (ApplePlatform.TVOS)]
+		[TestCase (ApplePlatform.MacOSX)]
+		[TestCase (ApplePlatform.MacCatalyst)]
 		[Category ("WindowsInclusive")]
-		public void BuildFSharpLibraryTest (string platform)
+		public void BuildFSharpLibraryTest (ApplePlatform platform)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 			var assemblyName = "fsharplibrary";
 			var dotnet_bindings_dir = Path.Combine (Configuration.SourceRoot, "tests", assemblyName, "dotnet");
-			var project_dir = Path.Combine (dotnet_bindings_dir, platform);
+			var project_dir = Path.Combine (dotnet_bindings_dir, platform.AsString ());
 			var project_path = Path.Combine (project_dir, $"{assemblyName}.fsproj");
 			Clean (project_path);
 			var result = DotNet.AssertBuild (project_path, verbosity);
@@ -161,13 +172,15 @@ namespace Xamarin.Tests {
 			Assert.That (asm, Does.Exist, "Assembly existence");
 			// Verify that there's no resources in the assembly
 			var ad = AssemblyDefinition.ReadAssembly (asm, new ReaderParameters { ReadingMode = ReadingMode.Deferred });
-			var expectedFSharpResources = new string [] {
+			var expectedFSharpResources = new List<string> {
 				"FSharpOptimizationCompressedData.fsharplibrary",
 				"FSharpSignatureCompressedData.fsharplibrary",
 				"FSharpSignatureCompressedDataB.fsharplibrary",
 			};
+			if (platform != ApplePlatform.MacOSX)
+				expectedFSharpResources.Add ("__monotouch_item_PartialAppManifest_shared-dotnet.plist");
 			var actualFSharpResources = ad.MainModule.Resources.Select (v => v.Name).OrderBy (v => v).ToArray ();
-			Assert.That (actualFSharpResources, Is.EqualTo (expectedFSharpResources), "F# resources:"); // There are some embedded resources by default by the F# compiler.
+			Assert.That (actualFSharpResources, Is.EqualTo (expectedFSharpResources.OrderBy (v => v).ToArray ()), "F# resources:"); // There are some embedded resources by default by the F# compiler.
 		}
 
 		[TestCase (ApplePlatform.iOS)]
@@ -197,7 +210,11 @@ namespace Xamarin.Tests {
 
 			// Verify that there's one resource in the binding assembly, and its name
 			var ad = AssemblyDefinition.ReadAssembly (asm, new ReaderParameters { ReadingMode = ReadingMode.Deferred });
-			Assert.That (ad.MainModule.Resources.Count, Is.EqualTo (0), "no embedded resources");
+			var actualResources = ad.MainModule.Resources.Select (v => v.Name).OrderBy (v => v).ToArray ();
+			var expectedResources = new List<string> ();
+			if (platform != ApplePlatform.MacOSX)
+				expectedResources.Add ("__monotouch_item_PartialAppManifest_shared-dotnet.plist");
+			Assert.That (actualResources, Is.EqualTo (expectedResources.OrderBy (v => v).ToArray ()), "embedded resources");
 			var resourceBundle = Path.Combine (project_dir, "bin", "Debug", platform.ToFramework (), assemblyName + ".resources");
 			var resourceZip = resourceBundle + ".zip";
 			if (!Directory.Exists (resourceBundle) && !File.Exists (resourceZip))
@@ -230,7 +247,11 @@ namespace Xamarin.Tests {
 
 			// Verify that there's one resource in the binding assembly, and its name
 			var ad = AssemblyDefinition.ReadAssembly (asm, new ReaderParameters { ReadingMode = ReadingMode.Deferred });
-			Assert.That (ad.MainModule.Resources.Count, Is.EqualTo (0), "no embedded resources");
+			var actualResources = ad.MainModule.Resources.Select (v => v.Name).OrderBy (v => v).ToArray ();
+			var expectedResources = new List<string> ();
+			if (platform != ApplePlatform.MacOSX)
+				expectedResources.Add ("__monotouch_item_PartialAppManifest_shared-dotnet.plist");
+			Assert.That (actualResources, Is.EqualTo (expectedResources.OrderBy (v => v).ToArray ()), "embedded resources");
 
 			var resourceBundle = Path.Combine (project_dir, "bin", "Debug", platform.ToFramework (), assemblyName + ".resources");
 			if (UsesCompressedBindingResourcePackage (platform))
@@ -276,26 +297,35 @@ namespace Xamarin.Tests {
 			// Verify the resource count in the binding assembly, and their names
 			var ad = AssemblyDefinition.ReadAssembly (asm, new ReaderParameters { ReadingMode = ReadingMode.Deferred });
 			var resources = ad.MainModule.Resources.Select (v => v.Name).ToArray ();
-			var expectedResources = new string [] {
+			var expectedResources = new List<string> {
 				"basn3p08.png",
 				"basn3p08__with__loc.png",
 				"xamvideotest.mp4",
 			};
-			var oldPrefixed = expectedResources.Select (v => $"__{prefix}_content_{v}").ToArray ();
-			var newPrefixed = expectedResources.Select (v => $"__{prefix}_item_BundleResource_{v}").ToArray ();
+
+			var oldPrefixed = expectedResources.Select (v => $"__{prefix}_content_{v}").ToList ();
+			var newPrefixed = expectedResources.Select (v => $"__{prefix}_item_BundleResource_{v}").ToList ();
+
+			// Add shared-dotnet.plist with PartialAppManifest prefix
+			var actualBundleOriginalResources = bundleOriginalResources ?? Version.Parse (Configuration.DotNetTfm.Replace ("net", "")).Major >= 10;
+			if (platform != "macOS" && actualBundleOriginalResources) {
+				oldPrefixed.Add ($"__{prefix}_content_shared-dotnet.plist");
+				newPrefixed.Add ($"__{prefix}_item_PartialAppManifest_shared-dotnet.plist");
+			}
+
 			Assert.That (resources, Is.EquivalentTo (oldPrefixed).Or.EquivalentTo (newPrefixed), "Resources");
 		}
 
-		[TestCase ("iOS")]
-		[TestCase ("tvOS")]
-		[TestCase ("macOS")]
-		[TestCase ("MacCatalyst")]
-		public void BuildInterdependentBindingProjects (string platform)
+		[TestCase (ApplePlatform.iOS)]
+		[TestCase (ApplePlatform.TVOS)]
+		[TestCase (ApplePlatform.MacOSX)]
+		[TestCase (ApplePlatform.MacCatalyst)]
+		public void BuildInterdependentBindingProjects (ApplePlatform platform)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 			var assemblyName = "interdependent-binding-projects";
 			var dotnet_bindings_dir = Path.Combine (Configuration.SourceRoot, "tests", assemblyName, "dotnet");
-			var project_dir = Path.Combine (dotnet_bindings_dir, platform);
+			var project_dir = Path.Combine (dotnet_bindings_dir, platform.AsString ());
 			var project_path = Path.Combine (project_dir, $"{assemblyName}.csproj");
 
 			Clean (project_path);
@@ -316,13 +346,21 @@ namespace Xamarin.Tests {
 			Assert.That (ad.MainModule.Resources.Count, Is.EqualTo (0), "0 resources for interdependent-binding-projects.dll");
 
 			var ad1 = AssemblyDefinition.ReadAssembly (Path.Combine (asmDir, "bindings-test.dll"), new ReaderParameters { ReadingMode = ReadingMode.Deferred });
+
 			// The native library is removed from the resources by the linker
-			Assert.That (ad1.MainModule.Resources.Count, Is.EqualTo (0), "0 resources for bindings-test.dll");
+			var actualResources1 = ad1.MainModule.Resources.Select (v => v.Name).OrderBy (v => v).ToArray ();
+			var expectedResources = new List<string> ();
+			if (platform != ApplePlatform.MacOSX && platform != ApplePlatform.MacCatalyst) {
+				// macOS doesn't have this resources, and it's removed by the linker for Mac Catalyst
+				// it's not removed for iOS/tvOS, because we don't bother removing resources for simulator builds.
+				expectedResources.Add ("__monotouch_item_PartialAppManifest_shared-dotnet.plist");
+			}
+			Assert.That (actualResources1, Is.EqualTo (expectedResources.OrderBy (v => v).ToArray ()), $"embedded resources for bindings-test.dll");
 
 			var ad2 = AssemblyDefinition.ReadAssembly (Path.Combine (asmDir, "bindings-test2.dll"), new ReaderParameters { ReadingMode = ReadingMode.Deferred });
 			// The native library is removed from the resources by the linker
-			Assert.That (ad2.MainModule.Resources.Count, Is.EqualTo (0), "0 resources for bindings-test2.dll");
-
+			var actualResources2 = ad2.MainModule.Resources.Select (v => v.Name).OrderBy (v => v).ToArray ();
+			Assert.That (actualResources2, Is.EqualTo (expectedResources.OrderBy (v => v).ToArray ()), "embedded resources for bindings-test2.dll");
 		}
 
 		[Test]
@@ -878,12 +916,12 @@ namespace Xamarin.Tests {
 			using var ad = AssemblyDefinition.ReadAssembly (asm, new ReaderParameters { ReadingMode = ReadingMode.Deferred });
 			var actualResources = ad.MainModule.Resources.Select (v => v.Name).OrderBy (v => v).ToArray ();
 
-			string [] expectedResources;
+			List<string> expectedResources;
 
 			if (anyLibraryResources) {
 				var platformPrefix = (platform == ApplePlatform.MacOSX) ? "xammac" : "monotouch";
 				if (actualBundleOriginalResources) {
-					expectedResources = new string [] {
+					expectedResources = new List<string> {
 						$"__{platformPrefix}_item_AtlasTexture_Archer__Attack.atlas_sarcher__attack__0001.png",
 						$"__{platformPrefix}_item_AtlasTexture_Archer__Attack.atlas_sarcher__attack__0002.png",
 						$"__{platformPrefix}_item_AtlasTexture_Archer__Attack.atlas_sarcher__attack__0003.png",
@@ -911,53 +949,56 @@ namespace Xamarin.Tests {
 						$"__{platformPrefix}_item_SceneKitAsset_DirWithResources_slinkedArt.scnassets_sscene.scn",
 						$"__{platformPrefix}_item_SceneKitAsset_DirWithResources_slinkedArt.scnassets_stexture.png",
 					};
+					if (platform != ApplePlatform.MacOSX && actualBundleOriginalResources) {
+						expectedResources.Add ($"__{platformPrefix}_item_PartialAppManifest_shared-dotnet.plist");
+					}
 				} else {
-					var expectedList = new List<string> ();
-					expectedList.Add ($"__{platformPrefix}_content_A.ttc");
-					expectedList.Add ($"__{platformPrefix}_content_Archer__Attack.atlasc_sArcher__Attack.plist");
-					expectedList.Add ($"__{platformPrefix}_content_art.scnassets_sscene.scn");
-					expectedList.Add ($"__{platformPrefix}_content_art.scnassets_stexture.png");
-					expectedList.Add ($"__{platformPrefix}_content_Assets.car");
-					expectedList.Add ($"__{platformPrefix}_content_B.otf");
-					expectedList.Add ($"__{platformPrefix}_content_C.ttf");
-					expectedList.Add ($"__{platformPrefix}_content_DirWithResources_slinkedArt.scnassets_sscene.scn");
-					expectedList.Add ($"__{platformPrefix}_content_DirWithResources_slinkedArt.scnassets_stexture.png");
-					expectedList.Add ($"__{platformPrefix}_content_scene.dae");
+					expectedResources = new List<string> {
+						$"__{platformPrefix}_content_A.ttc",
+						$"__{platformPrefix}_content_Archer__Attack.atlasc_sArcher__Attack.plist",
+						$"__{platformPrefix}_content_art.scnassets_sscene.scn",
+						$"__{platformPrefix}_content_art.scnassets_stexture.png",
+						$"__{platformPrefix}_content_Assets.car",
+						$"__{platformPrefix}_content_B.otf",
+						$"__{platformPrefix}_content_C.ttf",
+						$"__{platformPrefix}_content_DirWithResources_slinkedArt.scnassets_sscene.scn",
+						$"__{platformPrefix}_content_DirWithResources_slinkedArt.scnassets_stexture.png",
+						$"__{platformPrefix}_content_scene.dae"
+					};
 					switch (platform) {
 					case ApplePlatform.iOS:
-						expectedList.Add ($"__{platformPrefix}_content_Main.storyboardc_sBYZ-38-t0r-view-8bC-Xf-vdC.nib");
-						expectedList.Add ($"__{platformPrefix}_content_Main.storyboardc_sInfo.plist");
-						expectedList.Add ($"__{platformPrefix}_content_Main.storyboardc_sUIViewController-BYZ-38-t0r.nib");
+						expectedResources.Add ($"__{platformPrefix}_content_Main.storyboardc_sBYZ-38-t0r-view-8bC-Xf-vdC.nib");
+						expectedResources.Add ($"__{platformPrefix}_content_Main.storyboardc_sInfo.plist");
+						expectedResources.Add ($"__{platformPrefix}_content_Main.storyboardc_sUIViewController-BYZ-38-t0r.nib");
 						break;
 					case ApplePlatform.TVOS:
-						expectedList.Add ($"__{platformPrefix}_content_Main.storyboardc_sBYZ-38-t0r-view-8bC-Xf-vdC.nib");
-						expectedList.Add ($"__{platformPrefix}_content_Main.storyboardc_sInfo.plist");
-						expectedList.Add ($"__{platformPrefix}_content_Main.storyboardc_sUIViewController-BYZ-38-t0r.nib");
+						expectedResources.Add ($"__{platformPrefix}_content_Main.storyboardc_sBYZ-38-t0r-view-8bC-Xf-vdC.nib");
+						expectedResources.Add ($"__{platformPrefix}_content_Main.storyboardc_sInfo.plist");
+						expectedResources.Add ($"__{platformPrefix}_content_Main.storyboardc_sUIViewController-BYZ-38-t0r.nib");
 						break;
 					case ApplePlatform.MacCatalyst:
-						expectedList.Add ($"__{platformPrefix}_content_Main.storyboardc_s1-view-2.nib");
-						expectedList.Add ($"__{platformPrefix}_content_Main.storyboardc_sInfo.plist");
-						expectedList.Add ($"__{platformPrefix}_content_Main.storyboardc_sUIViewController-1.nib");
+						expectedResources.Add ($"__{platformPrefix}_content_Main.storyboardc_s1-view-2.nib");
+						expectedResources.Add ($"__{platformPrefix}_content_Main.storyboardc_sInfo.plist");
+						expectedResources.Add ($"__{platformPrefix}_content_Main.storyboardc_sUIViewController-1.nib");
 						break;
 					case ApplePlatform.MacOSX:
-						expectedList.Add ($"__{platformPrefix}_content_Main.storyboardc_sInfo.plist");
-						expectedList.Add ($"__{platformPrefix}_content_Main.storyboardc_sMainMenu.nib");
-						expectedList.Add ($"__{platformPrefix}_content_Main.storyboardc_sNSWindowController-B8D-0N-5wS.nib");
-						expectedList.Add ($"__{platformPrefix}_content_Main.storyboardc_sXfG-lQ-9wD-view-m2S-Jp-Qdl.nib");
+						expectedResources.Add ($"__{platformPrefix}_content_Main.storyboardc_sInfo.plist");
+						expectedResources.Add ($"__{platformPrefix}_content_Main.storyboardc_sMainMenu.nib");
+						expectedResources.Add ($"__{platformPrefix}_content_Main.storyboardc_sNSWindowController-B8D-0N-5wS.nib");
+						expectedResources.Add ($"__{platformPrefix}_content_Main.storyboardc_sXfG-lQ-9wD-view-m2S-Jp-Qdl.nib");
 						break;
 					}
-					expectedList.Add ($"__{platformPrefix}_content_SqueezeNet.mlmodelc_sanalytics_scoremldata.bin");
-					expectedList.Add ($"__{platformPrefix}_content_SqueezeNet.mlmodelc_scoremldata.bin");
-					expectedList.Add ($"__{platformPrefix}_content_SqueezeNet.mlmodelc_smetadata.json");
-					expectedList.Add ($"__{platformPrefix}_content_SqueezeNet.mlmodelc_smodel.espresso.net");
-					expectedList.Add ($"__{platformPrefix}_content_SqueezeNet.mlmodelc_smodel.espresso.shape");
-					expectedList.Add ($"__{platformPrefix}_content_SqueezeNet.mlmodelc_smodel.espresso.weights");
-					expectedList.Add ($"__{platformPrefix}_content_SqueezeNet.mlmodelc_smodel_scoremldata.bin");
-					expectedList.Add ($"__{platformPrefix}_content_SqueezeNet.mlmodelc_sneural__network__optionals_scoremldata.bin");
-					expectedResources = expectedList.ToArray ();
+					expectedResources.Add ($"__{platformPrefix}_content_SqueezeNet.mlmodelc_sanalytics_scoremldata.bin");
+					expectedResources.Add ($"__{platformPrefix}_content_SqueezeNet.mlmodelc_scoremldata.bin");
+					expectedResources.Add ($"__{platformPrefix}_content_SqueezeNet.mlmodelc_smetadata.json");
+					expectedResources.Add ($"__{platformPrefix}_content_SqueezeNet.mlmodelc_smodel.espresso.net");
+					expectedResources.Add ($"__{platformPrefix}_content_SqueezeNet.mlmodelc_smodel.espresso.shape");
+					expectedResources.Add ($"__{platformPrefix}_content_SqueezeNet.mlmodelc_smodel.espresso.weights");
+					expectedResources.Add ($"__{platformPrefix}_content_SqueezeNet.mlmodelc_smodel_scoremldata.bin");
+					expectedResources.Add ($"__{platformPrefix}_content_SqueezeNet.mlmodelc_sneural__network__optionals_scoremldata.bin");
 				}
 			} else {
-				expectedResources = new string [0];
+				expectedResources = new List<string> ();
 			}
 			CollectionAssert.AreEquivalent (expectedResources, actualResources, "Resources");
 		}
@@ -1000,7 +1041,6 @@ namespace Xamarin.Tests {
 			Clean (project_path);
 
 			Dictionary<string, string>? extraProperties = null;
-			string? tmpdir;
 
 			var properties = GetDefaultProperties (runtimeIdentifiers, extraProperties);
 			properties ["Configuration"] = config;
@@ -2098,6 +2138,7 @@ namespace Xamarin.Tests {
 			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath, netVersion: tfm);
 			Clean (project_path);
 			var properties = GetDefaultProperties (runtimeIdentifiers);
+			properties ["ValidateXcodeVersion"] = "false"; // we might end up trying to build an older, but still supported, version, which requires a different version of Xcode than the one we currently have, which will show an error. Ignore this error.
 
 			var result = DotNet.AssertBuild (project_path, properties);
 			AssertThatLinkerExecuted (result);
@@ -2972,14 +3013,17 @@ namespace Xamarin.Tests {
 			"/System/Library/Frameworks/DataDetection.framework/DataDetection",
 			"/System/Library/Frameworks/DeviceCheck.framework/DeviceCheck",
 			"/System/Library/Frameworks/DeviceDiscoveryExtension.framework/DeviceDiscoveryExtension",
+			"/System/Library/Frameworks/DeviceDiscoveryUI.framework/DeviceDiscoveryUI",
 			"/System/Library/Frameworks/EventKit.framework/EventKit",
 			"/System/Library/Frameworks/EventKitUI.framework/EventKitUI",
+			"/System/Library/Frameworks/ExtensionKit.framework/ExtensionKit",
 			"/System/Library/Frameworks/ExternalAccessory.framework/ExternalAccessory",
 			"/System/Library/Frameworks/FileProvider.framework/FileProvider",
 			"/System/Library/Frameworks/FileProviderUI.framework/FileProviderUI",
 			"/System/Library/Frameworks/Foundation.framework/Foundation",
 			"/System/Library/Frameworks/GameController.framework/GameController",
 			"/System/Library/Frameworks/GameKit.framework/GameKit",
+			"/System/Library/Frameworks/GameSave.framework/GameSave",
 			"/System/Library/Frameworks/GameplayKit.framework/GameplayKit",
 			"/System/Library/Frameworks/GLKit.framework/GLKit",
 			"/System/Library/Frameworks/GSS.framework/GSS",
@@ -3050,6 +3094,7 @@ namespace Xamarin.Tests {
 			"/System/Library/Frameworks/Symbols.framework/Symbols",
 			"/System/Library/Frameworks/SystemConfiguration.framework/SystemConfiguration",
 			"/System/Library/Frameworks/ThreadNetwork.framework/ThreadNetwork",
+			"/System/Library/Frameworks/TouchController.framework/TouchController",
 			"/System/Library/Frameworks/Twitter.framework/Twitter",
 			"/System/Library/Frameworks/UIKit.framework/UIKit",
 			"/System/Library/Frameworks/UniformTypeIdentifiers.framework/UniformTypeIdentifiers",
@@ -3073,7 +3118,6 @@ namespace Xamarin.Tests {
 			"/usr/lib/swift/libswiftCoreFoundation.dylib",
 			"/usr/lib/swift/libswiftCoreImage.dylib",
 			"/usr/lib/swift/libswiftDarwin.dylib",
-			"/usr/lib/swift/libswiftDataDetection.dylib",
 			"/usr/lib/swift/libswiftDispatch.dylib",
 			"/usr/lib/swift/libswiftFoundation.dylib",
 			"/usr/lib/swift/libswiftMetal.dylib",
@@ -3111,6 +3155,7 @@ namespace Xamarin.Tests {
 			"/System/Library/Frameworks/AuthenticationServices.framework/AuthenticationServices",
 			"/System/Library/Frameworks/AVFoundation.framework/AVFoundation",
 			"/System/Library/Frameworks/AVKit.framework/AVKit",
+			"/System/Library/Frameworks/AVRouting.framework/AVRouting",
 			"/System/Library/Frameworks/BackgroundAssets.framework/BackgroundAssets",
 			"/System/Library/Frameworks/BackgroundTasks.framework/BackgroundTasks",
 			"/System/Library/Frameworks/CFNetwork.framework/CFNetwork",
@@ -3294,6 +3339,7 @@ namespace Xamarin.Tests {
 			"/System/Library/Frameworks/FSKit.framework/Versions/A/FSKit",
 			"/System/Library/Frameworks/GameController.framework/Versions/A/GameController",
 			"/System/Library/Frameworks/GameKit.framework/Versions/A/GameKit",
+			"/System/Library/Frameworks/GameSave.framework/Versions/A/GameSave",
 			"/System/Library/Frameworks/GameplayKit.framework/Versions/A/GameplayKit",
 			"/System/Library/Frameworks/GLKit.framework/Versions/A/GLKit",
 			"/System/Library/Frameworks/HealthKit.framework/Versions/A/HealthKit",
@@ -3380,7 +3426,6 @@ namespace Xamarin.Tests {
 			"/usr/lib/swift/libswiftCoreFoundation.dylib",
 			"/usr/lib/swift/libswiftCoreImage.dylib",
 			"/usr/lib/swift/libswiftDarwin.dylib",
-			"/usr/lib/swift/libswiftDataDetection.dylib",
 			"/usr/lib/swift/libswiftDispatch.dylib",
 			"/usr/lib/swift/libswiftFoundation.dylib",
 			"/usr/lib/swift/libswiftIOKit.dylib",
@@ -3389,6 +3434,7 @@ namespace Xamarin.Tests {
 			"/usr/lib/swift/libswiftos.dylib",
 			"/usr/lib/swift/libswiftOSLog.dylib",
 			"/usr/lib/swift/libswiftQuartzCore.dylib",
+			"/usr/lib/swift/libswiftsimd.dylib",
 			"/usr/lib/swift/libswiftUniformTypeIdentifiers.dylib",
 			"/usr/lib/swift/libswiftXPC.dylib",
 		];
@@ -3432,12 +3478,15 @@ namespace Xamarin.Tests {
 			"/System/iOSSupport/System/Library/Frameworks/AVKit.framework/Versions/A/AVKit",
 			"/System/iOSSupport/System/Library/Frameworks/BusinessChat.framework/Versions/A/BusinessChat",
 			"/System/iOSSupport/System/Library/Frameworks/ContactsUI.framework/Versions/A/ContactsUI",
+			"/System/iOSSupport/System/Library/Frameworks/Cinematic.framework/Versions/A/Cinematic",
 			"/System/iOSSupport/System/Library/Frameworks/CoreAudioKit.framework/Versions/A/CoreAudioKit",
 			"/System/iOSSupport/System/Library/Frameworks/CoreLocationUI.framework/Versions/A/CoreLocationUI",
 			"/System/iOSSupport/System/Library/Frameworks/CoreNFC.framework/Versions/A/CoreNFC",
 			"/System/iOSSupport/System/Library/Frameworks/EventKitUI.framework/Versions/A/EventKitUI",
+			"/System/iOSSupport/System/Library/Frameworks/ExtensionKit.framework/Versions/A/ExtensionKit",
 			"/System/iOSSupport/System/Library/Frameworks/GameController.framework/Versions/A/GameController",
 			"/System/iOSSupport/System/Library/Frameworks/GameKit.framework/Versions/A/GameKit",
+			"/System/iOSSupport/System/Library/Frameworks/GameSave.framework/Versions/A/GameSave",
 			"/System/iOSSupport/System/Library/Frameworks/GameplayKit.framework/Versions/A/GameplayKit",
 			"/System/iOSSupport/System/Library/Frameworks/HealthKitUI.framework/Versions/A/HealthKitUI",
 			"/System/iOSSupport/System/Library/Frameworks/HomeKit.framework/Versions/A/HomeKit",
@@ -3569,7 +3618,6 @@ namespace Xamarin.Tests {
 			"/usr/lib/swift/libswiftCoreFoundation.dylib",
 			"/usr/lib/swift/libswiftCoreImage.dylib",
 			"/usr/lib/swift/libswiftDarwin.dylib",
-			"/usr/lib/swift/libswiftDataDetection.dylib",
 			"/usr/lib/swift/libswiftDispatch.dylib",
 			"/usr/lib/swift/libswiftFoundation.dylib",
 			"/usr/lib/swift/libswiftIOKit.dylib",

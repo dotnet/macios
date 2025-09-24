@@ -777,6 +777,14 @@ namespace ARKit {
 		[iOS (16, 0)]
 		[Export ("videoHDRSupported")]
 		bool IsVideoHdrSupported { [Bind ("isVideoHDRSupported")] get; }
+
+		[iOS (26, 0)]
+		[Export ("defaultColorSpace")]
+		AVCaptureColorSpace DefaultColorSpace { get; }
+
+		[iOS (26, 0)]
+		[Export ("defaultPhotoSettings")]
+		AVCapturePhotoSettings DefaultPhotoSettings { get; }
 	}
 
 	/// <summary>A subclass of <see cref="SceneKit.SCNView" /> that supports augmented-reality content.</summary>
@@ -1038,7 +1046,14 @@ namespace ARKit {
 		[Async]
 		[Export ("captureHighResolutionFrameWithCompletion:")]
 		void CaptureHighResolutionFrame (Action<ARFrame?, NSError?> handler);
+
+		[iOS (26, 0)]
+		[Async]
+		[Export ("captureHighResolutionFrameUsingPhotoSettings:completion:")]
+		void CaptureHighResolutionFrame ([NullAllowed] AVCapturePhotoSettings photoSettings, ARSessionCaptureHighResolutionFrame completion);
 	}
+
+	delegate void ARSessionCaptureHighResolutionFrame ([NullAllowed] ARFrame frame, [NullAllowed] NSError error);
 
 	/// <summary>Interface defining methods that respond to events in an <see cref="ARKit.ARSession" />.</summary>
 	/// <remarks>To be added.</remarks>
@@ -1139,6 +1154,10 @@ namespace ARKit {
 		[Static]
 		[Export ("isSupported")]
 		bool IsSupported { get; }
+
+		[Static]
+		[Export ("supportedVideoFormats")]
+		ARVideoFormat [] SupportedVideoFormats { get; }
 
 		[Export ("videoFormat", ArgumentSemantic.Strong)]
 		ARVideoFormat VideoFormat { get; set; }
@@ -2267,22 +2286,6 @@ namespace ARKit {
 
 		[Export ("generateDilatedDepthFromFrame:commandBuffer:")]
 		IMTLTexture GenerateDilatedDepth (ARFrame frame, IMTLCommandBuffer commandBuffer);
-	}
-
-	[iOS (13, 0)]
-	[BaseType (typeof (NSObject))]
-	[DisableDefaultCtor]
-	interface ARQuickLookPreviewItem : QLPreviewItem {
-
-		[Export ("initWithFileAtURL:")]
-		[DesignatedInitializer]
-		NativeHandle Constructor (NSUrl url);
-
-		[NullAllowed, Export ("canonicalWebPageURL", ArgumentSemantic.Strong)]
-		NSUrl CanonicalWebPageUrl { get; set; }
-
-		[Export ("allowsContentScaling")]
-		bool AllowsContentScaling { get; set; }
 	}
 
 	[iOS (13, 0)]

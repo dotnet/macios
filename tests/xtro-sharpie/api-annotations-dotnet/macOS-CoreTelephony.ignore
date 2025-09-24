@@ -1,0 +1,4 @@
+# CoreTelephony doesn't make much sense on macOS, so we're not exposing it.
+!missing-enum! CTCellularDataRestrictedState not bound
+!missing-enum! CTCellularPlanCapability not bound
+!missing-enum! CTCellularPlanProvisioningAddPlanResult not bound

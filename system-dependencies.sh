@@ -25,6 +25,11 @@ while ! test -z $1; do
 			unset IGNORE_XCODE
 			shift
 			;;
+		--provision-xcode-components)
+			PROVISION_XCODE_COMPONENTS=1
+			unset IGNORE_XCODE_COMPONENTS
+			shift
+			;;
 		--provision)
 			# historical reasons :(
 			PROVISION_XCODE=1
@@ -116,6 +121,8 @@ while ! test -z $1; do
 			unset IGNORE_SHELLCHECK
 			PROVISION_YAMLLINT=1
 			unset IGNORE_YAMLLINT
+			PROVISION_XCODE_COMPONENTS=1
+			unset IGNORE_XCODE_COMPONENTS
 			shift
 			;;
 		--ignore-all)
@@ -131,6 +138,7 @@ while ! test -z $1; do
 			IGNORE_DOTNET=1
 			IGNORE_SHELLCHECK=1
 			IGNORE_YAMLLINT=1
+			IGNORE_XCODE_COMPONENTS=1
 			shift
 			;;
 		--ignore-osx)
@@ -139,6 +147,10 @@ while ! test -z $1; do
 			;;
 		--ignore-xcode)
 			IGNORE_XCODE=1
+			shift
+			;;
+		--ignore-xcode-components)
+			IGNORE_XCODE_COMPONENTS=1
 			shift
 			;;
 		--ignore-*-studio)
@@ -304,13 +316,39 @@ function install_mono () {
 
 function xcodebuild_download_selected_platforms ()
 {
-	IOS_NUGET_OS_VERSION=$(grep '^IOS_NUGET_OS_VERSION=' Make.versions | sed 's/.*=//')
-	log "Executing '$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild -downloadPlatform iOS -buildVersion $IOS_NUGET_OS_VERSION' $1"
-	"$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild" -downloadPlatform iOS -buildVersion $IOS_NUGET_OS_VERSION
+	local XCODE_DEVELOPER_ROOT
+	local XCODE_NAME
+	local XCODE_IS_STABLE
+	local XCODE_VERSION
+	local IOS_NUGET_OS_VERSION
+	local IOS_BUILD_VERSION
+	local TVOS_NUGET_OS_VERSION
+	local TVOS_BUILD_VERSION
 
-	TVOS_NUGET_OS_VERSION=$(grep '^TVOS_NUGET_OS_VERSION=' Make.versions | sed 's/.*=//')
-	log "Executing '$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild -downloadPlatform tvOS -buildVersion $TVOS_NUGET_OS_VERSION' $1"
-	"$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild" -downloadPlatform tvOS -buildVersion $TVOS_NUGET_OS_VERSION
+	XCODE_DEVELOPER_ROOT=$(grep XCODE_DEVELOPER_ROOT= Make.config | sed 's/.*=//')
+	XCODE_NAME=$(basename "$(dirname "$(dirname "$XCODE_DEVELOPER_ROOT")")")
+	# we use the same logic here as in Make.config to determine whether we're using a stable version of Xcode or not (search for XCODE_IS_STABLE/XCODE_IS_PREVIEW)
+	XCODE_IS_STABLE=$(echo "$XCODE_NAME" | sed -e 's@^Xcode[_0-9.]*[.]app$@YES@')
+	XCODE_VERSION=$(grep ^XCODE_VERSION= Make.config | sed 's/.*=//')
+
+	IOS_BUILD_VERSION=
+	TVOS_BUILD_VERSION=
+	if is_at_least_version "$XCODE_VERSION" 26.1; then
+		# passing -buildVersion .. --architectureVariant .. doesn't quite work in Xcode 26.0 (it works the first time, but then it always thinks it's the first time, tries to download and install, and gets confused), let's see if they fix it in Xcode 26.1
+		if [[ "$XCODE_IS_STABLE" == "YES" ]]; then
+			# we always want the universal variant, so that we can run x64 test apps on arm64
+			IOS_NUGET_OS_VERSION=$(grep '^IOS_NUGET_OS_VERSION=' Make.versions | sed 's/.*=//')
+			IOS_BUILD_VERSION=" -buildVersion $IOS_NUGET_OS_VERSION -architectureVariant universal"
+			TVOS_NUGET_OS_VERSION=$(grep '^TVOS_NUGET_OS_VERSION=' Make.versions | sed 's/.*=//')
+			TVOS_BUILD_VERSION=" -buildVersion $TVOS_NUGET_OS_VERSION -architectureVariant universal"
+		fi
+	fi
+
+	log "Executing '$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild -downloadPlatform iOS$IOS_BUILD_VERSION' $1"
+	"$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild" -downloadPlatform iOS $IOS_BUILD_VERSION
+
+	log "Executing '$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild -downloadPlatform tvOS$TVOS_BUILD_VERSION' $1"
+	"$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild" -downloadPlatform tvOS $TVOS_BUILD_VERSION
 }
 
 function download_xcode_platforms ()
@@ -618,6 +656,31 @@ function check_xcode () {
 	if test ! -d $D -a -z "$FAIL"; then
 		fail "The directory $D does not exist. If you've updated the Xcode location it means you also need to update TVOS_SDK_VERSION in Make.config."
 	fi
+}
+
+function check_xcode_components ()
+{
+	if ! test -z "$IGNORE_XCODE_COMPONENTS"; then return; fi
+
+	local COMPONENTS=(MetalToolchain)
+
+	for comp in "${COMPONENTS[@]}"; do
+		componentInfo=$(xcrun xcodebuild -showComponent "$comp")
+		if  [[ "$componentInfo" =~ .*Status:" "installed.* ]]; then
+			ok "The Xcode component ${COLOR_BLUE}$comp${COLOR_CLEAR} is installed."
+		elif test -z "$PROVISION_XCODE_COMPONENTS"; then
+			fail "The Xcode component ${COLOR_BLUE}$comp${COLOR_RESET} is not installed. Execute ${COLOR_MAGENTA}xcrun xcodebuild -downloadComponent $comp${COLOR_RESET} or ${COLOR_MAGENTA}./system-dependencies.sh --provision-xcode-components${COLOR_RESET} to install."
+			fail "Alternatively you can ${COLOR_MAGENTA}export IGNORE_XCODE_COMPONENTS=1${COLOR_RED} to skip this check."
+		else
+			log "Installing the Xcode component ${COLOR_BLUE}$comp${COLOR_CLEAR} by executing ${COLOR_BLUE}xcrun xcodebuild -downloadComponent $comp${COLOR_CLEAR}..."
+			xcrun xcodebuild -downloadComponent "$comp"
+
+			ok "Successfully installed the Xcode component ${COLOR_BLUE}$comp${COLOR_CLEAR}."
+		fi
+	done
+
+	log "Clearing xcrun cache..."
+	xcrun -k
 }
 
 function check_mono () {
@@ -968,6 +1031,7 @@ echo "Checking system..."
 check_osx_version
 check_checkout_dir
 check_xcode
+check_xcode_components
 check_homebrew
 check_shellcheck
 check_yamllint

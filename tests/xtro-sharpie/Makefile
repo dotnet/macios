@@ -40,12 +40,17 @@ $(XTRO_SANITY): $(wildcard xtro-sanity/*.cs) $(wildcard xtro-sanity/*.csproj) $(
 
 CORETELEPHONY_HEADERS = \
 	-i CoreTelephony/CoreTelephonyDefines.h \
-	-i CoreTelephony/CTCarrier.h \
 	-i CoreTelephony/CTCall.h \
 	-i CoreTelephony/CTCallCenter.h \
-	-i CoreTelephony/CTTelephonyNetworkInfo.h \
+	-i CoreTelephony/CTCarrier.h \
+	-i CoreTelephony/CTCellularData.h \
+	-i CoreTelephony/CTCellularPlanProperties.h \
+	-i CoreTelephony/CTCellularPlanProvisioning.h \
+	-i CoreTelephony/CTCellularPlanProvisioningRequest.h \
+	-i CoreTelephony/CTCellularPlanStatus.h \
 	-i CoreTelephony/CTSubscriber.h \
 	-i CoreTelephony/CTSubscriberInfo.h \
+	-i CoreTelephony/CTTelephonyNetworkInfo.h \
 
 SWIFT_FRAMEWORKS = \
 	CoreTransferable \
@@ -56,7 +61,6 @@ COMMON_IGNORED_FRAMEWORKS = \
 	$(SWIFT_FRAMEWORKS) \
 	_CoreNFC_UIKit \
 	AssetsLibrary \
-	BrowserEngineCore \
 	BrowserKit \
 	FactoryOTALogger \
 	FactoryOTANetworkUtils \
@@ -75,6 +79,7 @@ IGNORED_TVOS_FRAMEWORKS = \
 IGNORED_MACOS_FRAMEWORKS = \
 	$(COMMON_IGNORED_FRAMEWORKS) \
 	AccessorySetupKit \
+	CompositorServices \
 
 IGNORED_MACCATALYST_FRAMEWORKS = \
 	$(COMMON_IGNORED_FRAMEWORKS) \
@@ -85,6 +90,7 @@ IGNORED_MACCATALYST_FRAMEWORKS = \
 	CalendarStore \
 	Carbon \
 	ClockKit \
+	CompositorServices \
 	DiscRecordingUI \
 	FSKit \
 	GLKit \
@@ -108,17 +114,25 @@ COMMON_SHARPIE_ARGUMENTS = \
 IOS_SHARPIE_ARGUMENTS = \
 	$(COMMON_SHARPIE_ARGUMENTS) \
 	$(CORETELEPHONY_HEADERS) \
+	--compiler-arguments=-F \
+	--compiler-arguments=$(XCODE_DEVELOPER_ROOT)/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS$(IOS_SDK_VERSION).sdk/System/Library/SubFrameworks
 
 TVOS_SHARPIE_ARGUMENTS = \
 	$(COMMON_SHARPIE_ARGUMENTS) \
+	--compiler-arguments=-F \
+	--compiler-arguments=$(XCODE_DEVELOPER_ROOT)/Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS$(TVOS_SDK_VERSION).sdk/System/Library/SubFrameworks
 
 MACCATALYST_SHARPIE_ARGUMENTS = \
 	$(COMMON_SHARPIE_ARGUMENTS) \
 	$(CORETELEPHONY_HEADERS) \
+	--compiler-arguments=-F \
+	--compiler-arguments=$(XCODE_DEVELOPER_ROOT)/Platforms/MacOSX.platform/Developer/SDKs/MacOSX$(MACOS_SDK_VERSION).sdk/System/Library/SubFrameworks
 
 MACOS_SHARPIE_ARGUMENTS = \
 	$(COMMON_SHARPIE_ARGUMENTS) \
 	$(CORETELEPHONY_HEADERS) \
+	--compiler-arguments=-F \
+	--compiler-arguments=$(XCODE_DEVELOPER_ROOT)/Platforms/MacOSX.platform/Developer/SDKs/MacOSX$(MACOS_SDK_VERSION).sdk/System/Library/SubFrameworks
 
 IOS_PLATFORM=iphoneos$(IOS_SDK_VERSION)
 TVOS_PLATFORM=appletvos$(TVOS_SDK_VERSION)

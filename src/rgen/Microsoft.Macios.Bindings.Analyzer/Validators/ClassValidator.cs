@@ -318,6 +318,42 @@ sealed class ClassValidator : BindingValidator {
 		return diagnostics.Length == 0;
 	}
 
+	bool ValidProtocolInlineConstructors (Binding binding, RootContext context,
+		out ImmutableArray<Diagnostic> diagnostics, Location? location = null)
+	{
+		diagnostics = [];
+		// ensure that if there are any constructors that are going to be inlined from the protocols that they
+		// do not conflict with the constructors that are already defined in the class. This is a warning, and we only
+		// are about those constructors that have the same selectors. The user can disable the warning if he really has
+		var builder = ImmutableArray.CreateBuilder<Diagnostic> ();
+		// get all the selectors from the constructors defined in the class as well as the protocol ones and find
+		// the duplicates
+		var constructorSelectorsSet = binding.Constructors.ToDictionary (x => x.Selector!, x => x);
+		var duplicates = binding.ProtocolConstructors
+			.Where (x => x.Selector is not null && constructorSelectorsSet.ContainsKey (x.Selector))
+			.Select (x => (Selector: x.Selector!, Constructor: x))
+			.ToArray ();
+		if (duplicates.Length > 0) {
+			// we have duplicates, create a warning for each of them
+			foreach (var (selector, protocolConstructor) in duplicates) {
+				// use the class constructor location
+				var constructorLocation = constructorSelectorsSet.TryGetValue (selector, out var constructor)
+					? constructor.Location : location;
+				var protocolName = protocolConstructor.IsProtocolConstructor ? protocolConstructor.ProtocolType : "unknown";
+				builder.Add (Diagnostic.Create (
+					descriptor: RBI0041, // The class '{0}' contains a constructor with the selector '{1}' that hides a inline constructor from a protocol
+					location: constructorLocation,
+					messageArgs: [
+						binding.Name,
+						selector,
+						protocolName
+					]));
+			}
+		}
+		diagnostics = builder.ToImmutable ();
+		return diagnostics.Length == 0;
+	}
+
 	/// <summary>
 	/// Initializes a new instance of the <see cref="ClassValidator"/> class.
 	/// </summary>
@@ -331,6 +367,9 @@ sealed class ClassValidator : BindingValidator {
 
 		// validate that the selectors are not duplicated, this includes properties and methods
 		AddGlobalStrategy ([RBI0034], SelectorsAreUnique);
+
+		// validate that we have the required constructors for certain base classes like UIView
+		AddGlobalStrategy ([RBI0041], ValidProtocolInlineConstructors);
 
 		// validate async methods. This is a global strategy because it needs to look at all the methods in the binding
 		// are validated together so that async methods do not have the same names

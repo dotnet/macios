@@ -210,7 +210,7 @@ namespace Introspection {
 						}
 					}
 					if (!found) {
-						ReportError (name);
+						ReportError ($"Could not find the method '{name}' for the notification '{p.DeclaringType.FullName}.{p.Name}'. Most likely the field is missing a [Notification] attribute.");
 						failed_fields.Add (name);
 					}
 				}

@@ -76,6 +76,11 @@ namespace Introspection {
 				return true;
 			case "CIAreaAlphaWeightedHistogram": // not in Xcode 16 b1 or b2 headers.
 				return true;
+#if __TVOS__
+			case "CIPersonSegmentation": // removed in Xcode 26?
+			case "CISaliencyMapFilter": // removed in Xcode 26?
+				return TestRuntime.CheckXcodeVersion (26, 0);
+#endif
 			}
 		}
 
@@ -446,6 +451,9 @@ namespace Introspection {
 						// 'input' is implied (generally) and explicit (in a few cases)
 						if (!key.StartsWith ("input", StringComparison.Ordinal))
 							key = "input" + Char.ToUpperInvariant (key [0]) + key.Substring (1);
+
+						var inputKeys = f.InputKeys;
+						Assert.That (inputKeys, Is.Not.Null, $"InputKeys for {t.FullName} is null");
 
 						if (Array.IndexOf (f.InputKeys, key) < 0) {
 							ReportError ($"{t.Name}: Property `{p.Name}` mapped to key `{key}` is not part of `InputKeys`.");

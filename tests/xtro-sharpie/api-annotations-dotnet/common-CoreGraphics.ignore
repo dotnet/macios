@@ -12,7 +12,6 @@
 
 ## unsorted
 
-!missing-enum! CGBitmapInfo not bound
 !missing-enum! CGError not bound
 !missing-enum! CGFontPostScriptFormat not bound
 !missing-field! CGAffineTransformIdentity not bound

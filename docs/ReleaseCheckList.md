@@ -20,11 +20,10 @@ Copy this list into a new issue and then check off as the release progresses.
     * XCODE_VERSION
     * XCODE_URL
     * XCODE_DEVELOPER_ROOT
-  * Update any `xcodeChannel` values in tools/devops. Change to `Beta` if using an Xcode beta or release candidate, and switch back to `Stable` with the final (stable) Xcode release.
+  * Update the `xcodeChannel` value in `tools/devops/automation/templates/variables/common.yml`. Change to `Beta` if using an Xcode beta or release candidate, and switch back to `Stable` with the final (stable) Xcode release.
     ```shell
-    $ cd tools/devops
-    $ git grep -nE -e 'xcodeChannel: (Stable|Beta)' -i
-      [...] # these are the matches that may need fixing.
+    $ git grep -A 1 -E 'xcodeChannel' -- tools/devops/automation/templates/variables/common.yml
+      [...] # the value that needs to be updated
     ```
   * Add the new OS versions to the `builds/Version-*.plist.in` files.
   * Build and fix any issues.

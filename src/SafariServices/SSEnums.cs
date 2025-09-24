@@ -56,6 +56,10 @@ namespace SafariServices {
 		NoAttachmentFound = 2,
 		/// <summary>An error occurred that prevented the blocker or extension from loading.</summary>
 		LoadingInterrupted = 3,
+		/// <summary>An internal error occurred.</summary>
+		InternalError = 4,
+		/// <summary>The app is missing an entitlement.</summary>
+		MissingEntitlement = 5,
 	}
 
 	[NoMac]

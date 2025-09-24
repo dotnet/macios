@@ -290,7 +290,7 @@ namespace Xamarin.Tests {
 			AddExpectedFrameworkFiles (platform, expectedFiles, "FrameworkTest4", isSigned);
 			AddExpectedFrameworkFiles (platform, expectedFiles, "FrameworkTest5", isSigned);
 
-			AddMultiRidAssembly (platform, expectedFiles, assemblyDirectory, "bindings-framework-test", runtimeIdentifiers, forceSingleRid: !(platform == ApplePlatform.MacCatalyst && isReleaseBuild), includeDebugFiles: includeDebugFiles);
+			AddMultiRidAssembly (platform, expectedFiles, assemblyDirectory, "bindings-framework-test", runtimeIdentifiers, forceSingleRid: platform != ApplePlatform.MacCatalyst, includeDebugFiles: includeDebugFiles);
 			AddExpectedFrameworkFiles (platform, expectedFiles, "XTest", isSigned);
 
 			AddExpectedFrameworkFiles (platform, expectedFiles, "FrameworkWithLongFileNames", isSigned, longHeader: true);

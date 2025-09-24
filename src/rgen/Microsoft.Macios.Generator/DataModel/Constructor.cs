@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 using System;
 using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -32,6 +33,12 @@ readonly partial struct Constructor : IEquatable<Constructor> {
 	/// Gets or sets a value indicating whether the constructor comes from a protocol factory method.
 	/// </summary>
 	public bool IsProtocolConstructor { get; init; }
+
+	/// <summary>
+	/// Gets the name of the protocol that this constructor originates from, if it is a protocol constructor.
+	/// </summary>
+	[MemberNotNullWhen (true, nameof (IsProtocolConstructor))]
+	public string? ProtocolType { get; init; }
 
 	/// <summary>
 	/// Type name that owns the constructor.

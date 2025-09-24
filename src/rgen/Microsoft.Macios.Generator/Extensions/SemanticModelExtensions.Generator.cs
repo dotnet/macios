@@ -47,6 +47,7 @@ static partial class SemanticModelExtensions {
 					// the inline constructors
 					foreach (var member in symbolInterface.GetMembers ()) {
 						if (member is IMethodSymbol methodSymbol &&
+							methodSymbol.HasAttribute (AttributesNames.ExportMethodAttribute) &&
 							Method.TryCreate (methodSymbol, context, out var method) &&
 							method.Value.IsFactory) {
 							var constructor = method.Value.ToConstructor (name);

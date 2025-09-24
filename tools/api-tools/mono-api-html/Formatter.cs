@@ -150,32 +150,32 @@ namespace Mono.ApiTools {
 		{
 		}
 
-		public abstract void BeginTypeRemoval (bool breaking);
+		public abstract void BeginTypeRemoval ();
 		public virtual void EndTypeRemoval ()
 		{
 		}
 
 		public abstract void BeginAttributeModification ();
-		public abstract void AddAttributeModification (string source, string target, bool breaking);
+		public abstract void AddAttributeModification (string source, string target);
 		public abstract void EndAttributeModification ();
 
 		public abstract void BeginMemberAddition (IEnumerable<XElement> list, MemberComparer member);
-		public abstract void AddMember (MemberComparer member, bool isInterfaceBreakingChange, string obsolete, string description);
+		public abstract void AddMember (MemberComparer member, string obsolete, string description);
 		public abstract void EndMemberAddition ();
 
 		public abstract void BeginMemberModification (string sectionName);
 		public abstract void EndMemberModification ();
 
-		public abstract void BeginMemberRemoval (IEnumerable<XElement> list, MemberComparer member, bool breaking);
-		public abstract void RemoveMember (MemberComparer member, bool breaking, string obsolete, string description);
+		public abstract void BeginMemberRemoval (IEnumerable<XElement> list, MemberComparer member);
+		public abstract void RemoveMember (MemberComparer member, string obsolete, string description);
 		public abstract void EndMemberRemoval ();
 
 		public abstract void RenderObsoleteMessage (TextChunk chunk, MemberComparer member, string description, string optionalObsoleteMessage);
-		public abstract void RenderAttribute (TextChunk chunk, Comparer member, string attributeName, bool breaking, string description, params string [] attributeArguments);
+		public abstract void RenderAttribute (TextChunk chunk, Comparer member, string attributeName, string description, params string [] attributeArguments);
 
-		public abstract void DiffAddition (TextChunk chunk, string text, bool breaking);
-		public abstract void DiffModification (TextChunk chunk, string old, string @new, bool breaking);
-		public abstract void DiffRemoval (TextChunk chunk, string text, bool breaking);
+		public abstract void DiffAddition (TextChunk chunk, string text);
+		public abstract void DiffModification (TextChunk chunk, string old, string @new);
+		public abstract void DiffRemoval (TextChunk chunk, string text);
 		public abstract void Diff (ApiChange apichange);
 
 		public virtual void IncreaseIndentation ()

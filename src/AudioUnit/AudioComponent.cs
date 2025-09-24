@@ -303,7 +303,9 @@ namespace AudioUnit {
 		{
 			var handle = cmp.GetHandle ();
 			unsafe {
-				handle = AudioComponentFindNext (handle, (AudioComponentDescription*) Unsafe.AsPointer<AudioComponentDescription> (ref cd));
+				fixed (AudioComponentDescription* cdPtr = &cd) {
+					handle = AudioComponentFindNext (handle, cdPtr);
+				}
 			}
 			AudioComponent? result = (handle != IntPtr.Zero) ? new AudioComponent (handle, false) : null;
 			GC.KeepAlive (cmp);

@@ -15,8 +15,8 @@ var outputPath = args [argumentIndex++];
 var windowsPlatforms = args [argumentIndex++].Split (new char [] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 var hasWindows = Array.IndexOf (windowsPlatforms, platform) >= 0;
 var currentApiVersion = args [argumentIndex++];
-var supportedApiVersions = args [argumentIndex++].Split (' ');
-var betaApiVersions = args [argumentIndex++].Split (' ');
+var supportedApiVersions = args [argumentIndex++].Split (' ', StringSplitOptions.RemoveEmptyEntries);
+var betaApiVersions = args [argumentIndex++].Split (' ', StringSplitOptions.RemoveEmptyEntries);
 
 var platformLowerCase = platform.ToLowerInvariant ();
 

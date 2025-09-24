@@ -394,6 +394,16 @@ namespace CoreVideo {
 				FillExtendedPixelsCallback = data;
 			}
 		}
+
+#if !XAMCORE_5_0
+		[Obsolete ("Use 'ComponentRangeValue' instead, the property type is incorrect for this property.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		public CVPixelFormatComponentRange? ComponentRange {
+			get => null;
+			set { }
+		}
+#endif // !XAMCORE_5_0
+
 #endif // !COREBUILD
 	}
 }

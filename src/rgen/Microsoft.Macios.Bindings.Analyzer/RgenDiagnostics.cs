@@ -603,7 +603,7 @@ public static class RgenDiagnostics {
 	);
 
 	/// <summary>
-	/// Disgnostic descriptor for when a method marked as async has does not provide a return type or return type name.
+	/// Diagnostic descriptor for when a method marked as async has does not provide a return type or return type name.
 	/// </summary>
 	internal static readonly DiagnosticDescriptor RBI0040 = new (
 		"RBI0040",
@@ -614,6 +614,21 @@ public static class RgenDiagnostics {
 		DiagnosticSeverity.Warning,
 		isEnabledByDefault: true,
 		description: new LocalizableResourceString (nameof (Resources.RBI0040Description), Resources.ResourceManager,
+			typeof (Resources))
+	);
+
+	/// <summary>
+	/// Diagnostic descriptor for when a class inherits from UIView and is missing the initWithFrame: constructor.
+	/// </summary>
+	internal static readonly DiagnosticDescriptor RBI0041 = new (
+		"RBI0041",
+		new LocalizableResourceString (nameof (Resources.RBI0041Title), Resources.ResourceManager, typeof (Resources)),
+		new LocalizableResourceString (nameof (Resources.RBI0041MessageFormat), Resources.ResourceManager,
+			typeof (Resources)),
+		"Usage",
+		DiagnosticSeverity.Warning,
+		isEnabledByDefault: true,
+		description: new LocalizableResourceString (nameof (Resources.RBI0041Description), Resources.ResourceManager,
 			typeof (Resources))
 	);
 }

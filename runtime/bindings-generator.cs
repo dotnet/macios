@@ -97,6 +97,15 @@ namespace Xamarin.BindingMethods.Generator {
 
 			data.Add (
 				new FunctionData {
+					Comment = " // NVector3d func ()",
+					Prefix = "simd__",
+					Variants = Variants.All,
+					ReturnType = Types.NVector3d,
+				}
+			);
+
+			data.Add (
+				new FunctionData {
 					Comment = " // void func (NVector3)",
 					Prefix = "simd__",
 					Variants = Variants.msgSend | Variants.msgSendSuper,
@@ -2623,6 +2632,15 @@ namespace Xamarin.BindingMethods.Generator {
 				}
 			);
 
+			data.Add (
+				new FunctionData {
+					Comment = " // NVector16b func ()",
+					Prefix = "simd__",
+					Variants = Variants.NonStret,
+					ReturnType = Types.NVector16b,
+				}
+			);
+
 			// We must expand functions with native types to their actual type as well.
 			for (int i = data.Count - 1; i >= 0; i--) {
 				if (!data [i].HasNativeType)
@@ -2789,6 +2807,10 @@ namespace Xamarin.BindingMethods.Generator {
 				writer.WriteLine ("\t{0}{2}min.b = {1}.min [1];", managedVariable, nativeVariable, accessor);
 				writer.WriteLine ("\t{0}{2}min.c = {1}.min [2];", managedVariable, nativeVariable, accessor);
 				break;
+			case "NVector16b":
+				writer.WriteLine ("\tfor (int i = 0; i < 16; i++)");
+				writer.WriteLine ("\t\t{0}{2}values [i] = {1} [i];", managedVariable, nativeVariable, accessor);
+				break;
 			default:
 				throw new NotImplementedException (string.Format ("MarshalToManaged for: NativeType: {0} ManagedType: {1}", type.NativeType, type.ManagedType));
 			}
@@ -2935,6 +2957,10 @@ namespace Xamarin.BindingMethods.Generator {
 				writer.WriteLine ("\t{0}.min [0] = {1}{2}min.a;", nativeVariable, managedVariable, accessor);
 				writer.WriteLine ("\t{0}.min [1] = {1}{2}min.b;", nativeVariable, managedVariable, accessor);
 				writer.WriteLine ("\t{0}.min [2] = {1}{2}min.c;", nativeVariable, managedVariable, accessor);
+				break;
+			case "VectorUChar16":
+				writer.WriteLine ("\tfor (int i = 0; i < 16; i++)");
+				writer.WriteLine ("\t\t{0} [i] = {1}{2}values[i];", nativeVariable, managedVariable, accessor);
 				break;
 			default:
 				throw new NotImplementedException (string.Format ("MarshalToNative for: NativeType: {0} ManagedType: {1}", type.NativeType, type.ManagedType));
@@ -3397,6 +3423,15 @@ namespace Xamarin.BindingMethods.Generator {
 				NativeWrapperType = "struct Vector4d",
 				RequireMarshal = true,
 			};
+
+			public static TypeData NVector16b = new TypeData {
+				ManagedType = "NVector16b",
+				NativeType = "vector_uchar16",
+				NativeWrapperType = "struct VectorUChar16",
+				RequireMarshal = true,
+				IsX64Stret = false,
+			};
+
 			public static TypeData Matrix2f = new TypeData {
 				ManagedType = "Matrix2",
 				NativeType = "matrix_float2x2",

@@ -1,5 +1,7 @@
 #!/bin/bash -ex
 
+set -o pipefail
+
 if test -z "$BUILD_SOURCESDIRECTORY"; then
 	pushd .
 	cd "$(dirname "${BASH_SOURCE[0]}")/../../../../../.."
@@ -14,6 +16,7 @@ xcrun simctl shutdown all
 xcrun simctl erase all
 
 FILE=$(pwd)/tmp.txt
+trap 'rm -f $FILE' EXIT
 
 make -C "$BUILD_SOURCESDIRECTORY/$BUILD_REPOSITORY_TITLE/tools/devops" print-variable-value-to-file FILE="$FILE" VARIABLE=IOS_SIMULATOR_DEVICE_TYPE
 IOS_SIMULATOR_DEVICE_TYPE=$(cat "$FILE")
@@ -33,8 +36,6 @@ TVOS_OS_VERSION=$TVOS_NUGET_OS_VERSION
 IOS_SIMRUNTIME_VERSION=${IOS_OS_VERSION/./-}
 TVOS_SIMRUNTIME_VERSION=${TVOS_OS_VERSION/./-}
 
-rm -f "$FILE"
-
 function createDevice ()
 {
 	local PLATFORM=$1
@@ -50,13 +51,19 @@ function createDevice ()
 		echo "Trying to create an $PLATFORM device..."
 		DEVICE_UDID=$(xcrun simctl create "$NAME" "$DEVICE_TYPE" "$RUNTIME")
 		echo "Created $PLATFORM device with UDID=$DEVICE_UDID"
-		if xcrun simctl list | grep "$DEVICE_UDID" >/dev/null 2>&1; then
+
+		xcrun simctl list devices > "$FILE" 2>&1
+		cat "$FILE"
+		if grep "$DEVICE_UDID" "$FILE"; then
 			return
 		fi
 
 		# device doesn't exists (yet?), wait a bit and check again
 		sleep "$(( ATTEMPTS * 10 ))"
-		if xcrun simctl list | grep "$DEVICE_UDID" >/dev/null 2>&1; then
+
+		xcrun simctl list devices > "$FILE" 2>&1
+		cat "$FILE"
+		if grep "$DEVICE_UDID" "$FILE"; then
 			return
 		fi
 

@@ -218,7 +218,7 @@ steps:
 
 # Use the provisionator to install the test dependencies. Those have been generated in the 'Generate Provisionator csx file' step.
 - task: xamops.azdevex.provisionator-task.provisionator@2
-  displayName: 'Provision dependencies'
+  displayName: 'Provisionator dependencies'
   inputs:
     provisioning_script: $(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/build-provisioning.csx
     provisioning_extra_args: '-vvvv'
@@ -242,16 +242,22 @@ steps:
     ARGS+=(--ignore-shellcheck)
     ARGS+=(--ignore-yamllint)
     $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/system-dependencies.sh "${ARGS[@]}"
-  displayName: 'Provision dependencies'
+  displayName: 'Provision system dependencies'
   timeoutInMinutes: 250
   env:
     XCODE_CHANNEL: ${{ parameters.XcodeChannel }}
 
 # clean sims incase we were left in a strange state
 - bash: |
-    sudo xcrun simctl shutdown all
-    sudo xcrun simctl erase all
+    xcrun simctl shutdown all
+    xcrun simctl erase all
+    xcrun simctl create "Apple TV (tvOS 26.0) - created by CI" com.apple.CoreSimulator.SimDeviceType.Apple-TV-1080p com.apple.CoreSimulator.SimRuntime.tvOS-26-0
+    xcrun simctl create "iPhone 14 (iOS 26.0) - created by CI" com.apple.CoreSimulator.SimDeviceType.iPhone-14 com.apple.CoreSimulator.SimRuntime.iOS-26-0
   displayName: 'Clean simulators'
+  timeoutInMinutes: 20
+
+- bash: '$SYSTEM_DEFAULTWORKINGDIRECTORY/$BUILD_REPOSITORY_TITLE/tools/devops/automation/scripts/bash/configure-simulators.sh'
+  displayName: 'Configure simulators'
   timeoutInMinutes: 20
 
 - template: ./run-tests.yml

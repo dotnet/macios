@@ -205,6 +205,8 @@ namespace Xharness {
 		public string JENKINS_RESULTS_DIRECTORY { get; } // Use same name as in Makefiles, so that a grep finds it.
 		public string DOTNET_DIR { get; set; }
 		public string DOTNET_TFM { get; set; }
+		public string IOS_SIMULATOR_DEVICE_TYPE { get; set; }
+		public string TVOS_SIMULATOR_DEVICE_TYPE { get; set; }
 
 		public Version DotNetVersion {
 			get => Version.Parse (DOTNET_TFM.Replace ("net", ""));
@@ -273,6 +275,8 @@ namespace Xharness {
 			INCLUDE_MACCATALYST = IsVariableSet (nameof (INCLUDE_MACCATALYST));
 			DOTNET_DIR = GetVariable (nameof (DOTNET_DIR));
 			DOTNET_TFM = GetVariable (nameof (DOTNET_TFM));
+			IOS_SIMULATOR_DEVICE_TYPE = GetVariable (nameof (IOS_SIMULATOR_DEVICE_TYPE));
+			TVOS_SIMULATOR_DEVICE_TYPE = GetVariable (nameof (TVOS_SIMULATOR_DEVICE_TYPE));
 
 			if (string.IsNullOrEmpty (SdkRoot))
 				SdkRoot = GetVariable ("XCODE_DEVELOPER_ROOT", configuration.SdkRoot);

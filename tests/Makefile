@@ -66,6 +66,8 @@ test.config: Makefile $(TOP)/Make.config $(TOP)/mk/mono.mk $(TOP)/eng/Version.De
 	@printf "XCODE_IS_STABLE=$(XCODE_IS_STABLE)\n" >> $@
 	@printf "XCODE_VERSION=$(XCODE_VERSION)\n" >> $@
 	@printf "$(foreach platform,$(DOTNET_PLATFORMS_UPPERCASE),DOTNET_MIN_$(platform)_SDK_VERSION=$(DOTNET_MIN_$(platform)_SDK_VERSION)\\n)" | sed 's/^ //' >> $@
+	@printf "IOS_SIMULATOR_DEVICE_TYPE=$(IOS_SIMULATOR_DEVICE_TYPE)" >> $@
+	@printf "TVOS_SIMULATOR_DEVICE_TYPE=$(TVOS_SIMULATOR_DEVICE_TYPE)" >> $@
 
 test-system.config: Makefile $(TOP)/Make.config $(TOP)/mk/mono.mk $(TOP)/eng/Version.Details.xml
 	@rm -f $@
@@ -93,6 +95,8 @@ test-system.config: Makefile $(TOP)/Make.config $(TOP)/mk/mono.mk $(TOP)/eng/Ver
 	@printf "XCODE_IS_STABLE=$(XCODE_IS_STABLE)\n" >> $@
 	@printf "XCODE_VERSION=$(XCODE_VERSION)\n" >> $@
 	@printf "$(foreach platform,$(DOTNET_PLATFORMS_UPPERCASE),DOTNET_MIN_$(platform)_SDK_VERSION=$(DOTNET_MIN_$(platform)_SDK_VERSION)\\n)" | sed 's/^ //' >> $@
+	@printf "IOS_SIMULATOR_DEVICE_TYPE=$(IOS_SIMULATOR_DEVICE_TYPE)" >> $@
+	@printf "TVOS_SIMULATOR_DEVICE_TYPE=$(TVOS_SIMULATOR_DEVICE_TYPE)" >> $@
 
 ## run targets = build + [install] + exec
 

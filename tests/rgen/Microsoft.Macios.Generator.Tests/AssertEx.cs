@@ -106,7 +106,7 @@ public class AssertEx {
 
 		try {
 			Assert.True (condition);
-		} catch (EqualException ex) {
+		} catch (TrueException ex) {
 			_exceptions.Add (ex);
 		}
 	}

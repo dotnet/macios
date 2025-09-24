@@ -52,11 +52,10 @@ namespace Xamarin.Tests {
 
 		public override ValueTask<IReadOnlyCollection<ITheoryDataRow>> GetData (MethodInfo testMethod, DisposalTracker disposalTracker)
 		{
-			var traits = new Dictionary<string, HashSet<string>>(StringComparer.OrdinalIgnoreCase);
-			TestIntrospectionHelper.MergeTraitsInto(traits, Traits);
-			return new([
-				new TheoryDataRow (Data)
-				{
+			var traits = new Dictionary<string, HashSet<string>> (StringComparer.OrdinalIgnoreCase);
+			TestIntrospectionHelper.MergeTraitsInto (traits, Traits);
+			return new ([
+				new TheoryDataRow (Data) {
 					Explicit = ExplicitAsNullable,
 					Label = Label,
 					Skip = Skip,
@@ -65,7 +64,7 @@ namespace Xamarin.Tests {
 					Traits = traits,
 				}
 			]);
-			
+
 		}
 
 	}
@@ -79,21 +78,21 @@ namespace Xamarin.Tests {
 		{
 			dataValues = parameters;
 		}
-		
+
 		public override bool SupportsDiscoveryEnumeration () => true;
-		
-		public override ValueTask<IReadOnlyCollection<ITheoryDataRow>> GetData(
+
+		public override ValueTask<IReadOnlyCollection<ITheoryDataRow>> GetData (
 			MethodInfo testMethod,
 			DisposalTracker disposalTracker)
 		{
-			var result = new List<ITheoryDataRow>();
+			var result = new List<ITheoryDataRow> ();
 
 			foreach (var platform in Configuration.GetIncludedPlatforms ()) {
 				var row = dataValues.Prepend (platform).ToArray ();
 				result.Add (ConvertDataRow (row));
 			}
 
-			return ValueTask.FromResult(result.CastOrToReadOnlyCollection());
+			return ValueTask.FromResult (result.CastOrToReadOnlyCollection ());
 		}
 	}
 
@@ -105,60 +104,56 @@ namespace Xamarin.Tests {
 		{
 			dataAttributeType = typeof (T);
 		}
-		
-		public override bool SupportsDiscoveryEnumeration() =>
-			!typeof(IDisposable).IsAssignableFrom(dataAttributeType) && !typeof(IAsyncDisposable).IsAssignableFrom(dataAttributeType);
-		
-		/// <inheritdoc/>
-		protected override ITheoryDataRow ConvertDataRow(object dataRow)
-		{
-			Guard.ArgumentNotNull(dataRow);
 
-			try
-			{
-				return base.ConvertDataRow(dataRow);
-			}
-			catch (ArgumentException)
-			{
-				throw new ArgumentException(
-					string.Format(
+		public override bool SupportsDiscoveryEnumeration () =>
+			!typeof (IDisposable).IsAssignableFrom (dataAttributeType) && !typeof (IAsyncDisposable).IsAssignableFrom (dataAttributeType);
+
+		/// <inheritdoc/>
+		protected override ITheoryDataRow ConvertDataRow (object dataRow)
+		{
+			Guard.ArgumentNotNull (dataRow);
+
+			try {
+				return base.ConvertDataRow (dataRow);
+			} catch (ArgumentException) {
+				throw new ArgumentException (
+					string.Format (
 						CultureInfo.CurrentCulture,
 						"Class '{0}' yielded an item of type '{1}' which is not an 'object?[]', 'Xunit.ITheoryDataRow' or 'System.Runtime.CompilerServices.ITuple'",
 						dataAttributeType.FullName,
-						dataRow?.GetType().SafeName()
+						dataRow?.GetType ().SafeName ()
 					),
-					nameof(dataRow)
+					nameof (dataRow)
 				);
 			}
 		}
-		
-		public override async ValueTask<IReadOnlyCollection<ITheoryDataRow>> GetData(
+
+		public override async ValueTask<IReadOnlyCollection<ITheoryDataRow>> GetData (
 			MethodInfo testMethod,
 			DisposalTracker disposalTracker)
 		{
 			var classInstance = Activator.CreateInstance (dataAttributeType);
-			disposalTracker.Add(classInstance);
+			disposalTracker.Add (classInstance);
 
 			if (classInstance is IAsyncLifetime classLifetime)
-				await classLifetime.InitializeAsync();
+				await classLifetime.InitializeAsync ();
 
-			if (classInstance is IEnumerable<object[]> dataItems)
-			{
-				var result = new List<ITheoryDataRow>();
+			if (classInstance is IEnumerable<object []> dataItems) {
+				var result = new List<ITheoryDataRow> ();
 
 				foreach (var platform in Configuration.GetIncludedPlatforms ()) {
 					foreach (var row in dataItems) {
-						
+
 						var platformRow = row.Prepend (platform).ToArray ();
 						result.Add (ConvertDataRow (platformRow));
 					}
 				}
 
-				return result.CastOrToReadOnlyCollection();
+				return result.CastOrToReadOnlyCollection ();
 			}
 
-			throw new ArgumentException(
-				string.Format(
+			throw new ArgumentException (
+				string.Format (
 					CultureInfo.CurrentCulture,
 					"'{0}' must implement one of the following interfaces to be used as ClassData:{1}- IEnumerable<object[]>{1}",
 					dataAttributeType.FullName,

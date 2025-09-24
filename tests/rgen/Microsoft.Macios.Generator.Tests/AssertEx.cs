@@ -13,7 +13,7 @@ namespace Microsoft.Macios.Generator.Tests;
 /// Provides a set of custom assertion methods that can be used with xUnit, including support for multiple assertion scopes.
 /// </summary>
 public class AssertEx {
-	
+
 	/// <summary>
 	/// Verifies that two <see cref="PlatformAvailability"/> instances are equal by comparing their properties within a multiple assertion scope.
 	/// </summary>
@@ -23,11 +23,11 @@ public class AssertEx {
 	{
 		var obsoleteComparer = new DictionaryComparer<Version, (string?, string?)> ();
 		var unsupportedComparer = new DictionaryComparer<Version, string?> ();
-		Assert.Multiple(
+		Assert.Multiple (
 			() => Assert.Equal (expected?.Platform, actual?.Platform),
 			() => Assert.Equal (expected?.SupportedVersion, actual?.SupportedVersion),
-			() => Assert.True(unsupportedComparer.Equals (expected?.UnsupportedVersions, actual?.UnsupportedVersions)),
-			() => Assert.True(obsoleteComparer.Equals (expected?.ObsoletedVersions, actual?.ObsoletedVersions))
+			() => Assert.True (unsupportedComparer.Equals (expected?.UnsupportedVersions, actual?.UnsupportedVersions)),
+			() => Assert.True (obsoleteComparer.Equals (expected?.ObsoletedVersions, actual?.ObsoletedVersions))
 		);
 	}
 
@@ -41,9 +41,9 @@ public class AssertEx {
 		var platformActions = new List<Action> ();
 		// compare each of the platforms individually
 		foreach (var platform in SymbolAvailability.SupportedPlatforms) {
-			platformActions.Add(() => Equal (expected [platform], actual [platform]));
+			platformActions.Add (() => Equal (expected [platform], actual [platform]));
 		}
-		
+
 		Assert.Multiple (platformActions.ToArray ());
 	}
 }

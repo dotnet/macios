@@ -109,7 +109,9 @@ namespace CoreGraphics {
 		{
 			value = default;
 			unsafe {
-				return CGPDFObjectGetNIntValue (Handle, CGPDFObjectType.Integer, (nint*) Unsafe.AsPointer<nint> (ref value)) != 0;
+				fixed (nint* valuePtr = &value) {
+					return CGPDFObjectGetNIntValue (Handle, CGPDFObjectType.Integer, valuePtr) != 0;
+				}
 			}
 		}
 
@@ -117,7 +119,9 @@ namespace CoreGraphics {
 		{
 			value = default;
 			unsafe {
-				return CGPDFObjectGetValue (Handle, CGPDFObjectType.Real, (nfloat*) Unsafe.AsPointer<nfloat> (ref value)) != 0;
+				fixed (nfloat* valuePtr = &value) {
+					return CGPDFObjectGetValue (Handle, CGPDFObjectType.Real, valuePtr) != 0;
+				}
 			}
 		}
 

@@ -6,3 +6,5 @@
 
 !unknown-field! NEAppProxyErrorDomain bound
 
+# headers are clear that NEURLFilter isn't available on tvOS, not sure why xtro thinks otherwise.
+!missing-type! NEURLFilter not bound

@@ -21,4 +21,18 @@ namespace CarPlay {
 		Identifier,
 		FullName,
 	}
+
+	[NoTV, NoMac, iOS (26, 0), MacCatalyst (26, 0)]
+	[Native]
+	public enum CPListImageRowItemCondensedElementShape : long {
+		RoundedRect = 0,
+		Circle = 1,
+	}
+
+	[NoTV, NoMac, iOS (26, 0), MacCatalyst (26, 0)]
+	[Native]
+	public enum CPListImageRowItemImageGridElementShape : long {
+		RoundedRect = 0,
+		Circle = 1,
+	}
 }

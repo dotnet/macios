@@ -629,6 +629,21 @@ namespace CoreGraphics {
 		[Internal]
 		[Field ("kCGEXRToneMappingGammaKneeHigh")]
 		NSString ExrToneMappingGammaKneeHighKey { get; }
+
+		[Internal]
+		[TV (26, 0), Mac (26, 0), MacCatalyst (26, 0), iOS (26, 0)]
+		[Field ("kCGPreferredDynamicRange")]
+		NSString PreferredDynamicRangeKey { get; }
+
+		[Internal]
+		[TV (26, 0), Mac (26, 0), MacCatalyst (26, 0), iOS (26, 0)]
+		[Field ("kCGContentAverageLightLevel")]
+		NSString ContentAverageLightLevelKey { get; }
+
+		[Internal]
+		[TV (26, 0), Mac (26, 0), MacCatalyst (26, 0), iOS (26, 0)]
+		[Field ("kCGContentAverageLightLevelNits")]
+		NSString ContentAverageLightLevelNitsKey { get; }
 	}
 
 	[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
@@ -641,6 +656,17 @@ namespace CoreGraphics {
 		float ExrToneMappingGammaExposure { get; set; }
 		float ExrToneMappingGammaKneeLow { get; set; }
 		float ExrToneMappingGammaKneeHigh { get; set; }
+
+		[TV (26, 0), Mac (26, 0), MacCatalyst (26, 0), iOS (26, 0)]
+		CGDynamicRange PreferredDynamicRange { get; set; }
+
+		// property type deduced from similarly named properties on other classes
+		[TV (26, 0), Mac (26, 0), MacCatalyst (26, 0), iOS (26, 0)]
+		float ContentAverageLightLevel { get; set; }
+
+		// property type: I've never seen floating-point nits, so use an integer type
+		[TV (26, 0), Mac (26, 0), MacCatalyst (26, 0), iOS (26, 0)]
+		nint ContentAverageLightLevelNits { get; }
 	}
 
 	[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
@@ -649,5 +675,80 @@ namespace CoreGraphics {
 	interface CoreGraphicsFields {
 		[Field ("kCGDefaultHDRImageContentHeadroom")]
 		float DefaultHdrImageContentHeadroom { get; }
+	}
+
+	[TV (26, 0), Mac (26, 0), MacCatalyst (26, 0), iOS (26, 0)]
+	[Flags]
+	public enum CGColorModel : uint {
+		NoColorant = 0u << 0,
+		Gray = 1u << 0,
+		Rgb = 1u << 1,
+		Cmyk = 1u << 2,
+		Lab = 1u << 3,
+		DeviceN = 1u << 4,
+	}
+
+	[TV (26, 0), Mac (26, 0), MacCatalyst (26, 0), iOS (26, 0)]
+	public enum CGComponent : uint {
+		Unknown = 0,
+		Integer8Bit = 1,
+		Integer10Bit = 6,
+		Integer16Bit = 2,
+		Integer32Bit = 3,
+		Float16Bit = 5,
+		Float32Bit = 4,
+	}
+
+	[TV (26, 0), Mac (26, 0), MacCatalyst (26, 0), iOS (26, 0)]
+	public enum CGBitmapLayout : uint {
+		AlphaOnly,
+		Gray,
+		GrayAlpha,
+		Rgba,
+		Argb,
+		Rgbx,
+		Xrgb,
+		Bgra,
+		Bgrx,
+		Abgr,
+		Xbgr,
+		Cmyk,
+	}
+
+	[TV (26, 0), Mac (26, 0), MacCatalyst (26, 0), iOS (26, 0)]
+	[Partial]
+	interface CGAdaptiveKeys {
+		[Field ("kCGAdaptiveMaximumBitDepth")]
+		NSString MaximumBitDepthKey { get; }
+	}
+
+	[StrongDictionary ("CGAdaptiveKeys")]
+	interface CGAdaptiveOptions {
+		CGComponent MaximumBitDepth { get; set; }
+	}
+
+	public enum CGImageComponentInfo : uint {
+		Integer = (0u << 8),
+		Float = (1u << 8),
+	}
+
+	[Flags]
+	public enum CGBitmapInfo : uint {
+		AlphaInfoMask = 0x1F,
+		ComponentInfoMask = 0xF00,
+		ByteOrderInfoMask = 0x7000,
+		PixelFormatInfoMask = 0xF0000,
+	}
+
+	[TV (26, 0), Mac (26, 0), MacCatalyst (26, 0), iOS (26, 0)]
+	enum CGDynamicRange {
+		[Field ("kCGDynamicRangeHigh")]
+		High,
+
+		[Field ("kCGDynamicRangeConstrained")]
+		Constrained,
+
+		[Field ("kCGDynamicRangeStandard")]
+		Standard,
 	}
 }

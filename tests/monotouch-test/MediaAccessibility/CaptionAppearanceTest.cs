@@ -57,5 +57,35 @@ namespace MonoTouchFixtures.MediaAccessibility {
 				Assert.That (MACaptionAppearance.IsCustomized (value), Is.EqualTo (true).Or.EqualTo (false), value.ToString ());
 			}
 		}
+
+		[Test]
+		public void TestProfiles ()
+		{
+			TestRuntime.AssertXcodeVersion (26, 0);
+
+			Assert.Multiple (() => {
+				var profiles = MACaptionAppearance.GetProfileIds ();
+				Assert.That (profiles, Is.Not.Empty, "Profiles");
+
+				Assert.That (MACaptionAppearance.ActiveProfileId, Is.Not.Null, "ActiveProfileId#1");
+				var originalProfileId = MACaptionAppearance.ActiveProfileId;
+				try {
+					MACaptionAppearance.ActiveProfileId = profiles [0];
+					Assert.That (MACaptionAppearance.ActiveProfileId, Is.EqualTo (profiles [0]), "ActiveProfileId#2");
+				} finally {
+					MACaptionAppearance.ActiveProfileId = originalProfileId;
+				}
+
+				foreach (var p in profiles) {
+					Assert.That (MACaptionAppearance.GetProfileName (p), Is.Not.Null.And.Not.Empty, $"ProfileName - {p}");
+				}
+
+				var calledCallback = false;
+				MACaptionAppearance.ExecuteCallbackForProfile (profiles [0], () => {
+					calledCallback = true;
+				});
+				Assert.That (calledCallback, Is.True, "ExecuteCallbackForProfile");
+			});
+		}
 	}
 }

@@ -648,6 +648,17 @@
 			<_ExtraTrimmerArgs>$(_ExtraTrimmerArgs) -b</_ExtraTrimmerArgs>
 
 			<!--
+				Always preserve symbol paths, which will preserve the original path to the pdb in the trimmed assembly.
+				This ensures that building for different architectures don't end up with different trimmed assemblies
+				only because the path to the pdb in the trimmed assembly is different between those builds.
+				References:
+				* https://github.com/dotnet/runtime/pull/103295
+				* https://github.com/jbevain/cecil/pull/554
+				* https://github.com/rolfbjarne/macios/commit/53874c863996656eaba43a5582731b93eb6f53b7
+			-->
+			<_ExtraTrimmerArgs>$(_ExtraTrimmerArgs) --preserve-symbol-paths</_ExtraTrimmerArgs>
+
+			<!--
 
 				The linker will treat type checks as a constant value (false),
 				if the type in question is not instantiated, but we're
@@ -1380,10 +1391,15 @@
 			DependsOnTargets="$(_AOTCompileDependsOn)"
 		>
 
+		<ItemGroup>
+			<_AotEnvironment Condition="'$(MonoUseCompressedInterfaceBitmap)' == 'true'" Include="MONO_COMPRESSED_INTERFACE_BITMAP" Value="1" />
+		</ItemGroup>
+
 		<AOTCompile
 			SessionId="$(BuildSessionId)"
 			Condition="'$(IsMacEnabled)' == 'true'"
 			Assemblies="@(_AssembliesToAOT)"
+			AotEnvironment="@(_AotEnvironment)"
 			AOTCompilerPath="$(_XamarinAOTCompiler)"
 			InputDirectory="$(_AOTInputDirectory)"
 			MaxDegreeOfParallelism="$(AotCompileMaxDegreeOfParallelism)"
@@ -1658,6 +1674,8 @@
 			     However, we'll automatically detect that we need to link with BrowserEngineKit if an app isn't trimmed, so let's just remove BrowserEngineKit
 			     here, with an escape hatch if an app really needs it (which would be rather rare). Ref: https://github.com/dotnet/macios/issues/21324 -->
 			<_NativeExecutableFrameworks Remove="BrowserEngineKit" Condition="'$(LinkWithBrowserEngineKit)' != 'true'" />
+			<!-- Treat BrowserEngineCore like BrowserEngineKit -->
+			<_NativeExecutableFrameworks Remove="BrowserEngineCore" Condition="'$(LinkWithBrowserEngineCore)' != 'true'" />
 
 			<!-- Mono requires zlib, iconv, icucore, and the "Compression framework" -->
 			<_MainLinkerFlags Include="-lz" />

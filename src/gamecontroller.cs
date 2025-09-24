@@ -1394,6 +1394,22 @@ namespace GameController {
 		[Field ("GCInputRightThumbstickButton")]
 		NSString RightThumbstickButton { get; }
 
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("GCInputGripButton")]
+		NSString GripButton { get; }
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("GCInputThumbstick")]
+		NSString Thumbstick { get; }
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("GCInputThumbstickButton")]
+		NSString ThumbstickButton { get; }
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("GCInputTrigger")]
+		NSString Trigger { get; }
+
 		[Field ("GCInputButtonHome")]
 		NSString ButtonHome { get; }
 
@@ -2696,6 +2712,10 @@ namespace GameController {
 		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Field ("GCProductCategoryArcadeStick")]
 		NSString ArcadeStick { get; }
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Field ("GCProductCategorySpatialController")]
+		NSString SpatialController { get; }
 	}
 
 	[NoiOS, Mac (13, 0), NoTV, MacCatalyst (16, 0)]
@@ -2896,6 +2916,11 @@ namespace GameController {
 		[Abstract]
 		[NullAllowed, Export ("touchedInput")]
 		IGCTouchedStateInput TouchedInput { get; }
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Abstract]
+		[NullAllowed, Export ("forceInput")]
+		IGCLinearInput ForceInput { get; }
 	}
 
 	delegate void ElementValueDidChangeHandler (IGCDevicePhysicalInput physicalInput, IGCPhysicalInputElement element);
@@ -3218,6 +3243,10 @@ namespace GameController {
 
 		[Export ("handledEventTypes")]
 		GCUIEventTypes HandledEventTypes { get; set; }
+
+		[MacCatalyst (26, 0), iOS (26, 0)]
+		[Export ("receivesEventsInView")]
+		bool ReceivesEventsInView { get; set; }
 	}
 #endif // IOS || MACCATALYST
 

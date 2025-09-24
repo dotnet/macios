@@ -169,7 +169,8 @@ namespace PrintCore {
 
 			index = default;
 			unsafe {
-				code = PMSessionCreatePrinterList (Handle, &array, (int*) Unsafe.AsPointer<int> (ref index), &printerHandle);
+				fixed (int* indexPtr = &index)
+					code = PMSessionCreatePrinterList (Handle, &array, indexPtr, &printerHandle);
 			}
 			if (code != PMStatusCode.Ok) {
 				printerList = null;
@@ -320,7 +321,8 @@ namespace PrintCore {
 			minPage = default;
 			maxPage = default;
 			unsafe {
-				return PMGetPageRange (Handle, (uint*) Unsafe.AsPointer<uint> (ref minPage), (uint*) Unsafe.AsPointer<uint> (ref maxPage));
+				fixed (uint* minPagePtr = &minPage, maxPagePtr = &maxPage)
+					return PMGetPageRange (Handle, minPagePtr, maxPagePtr);
 			}
 		}
 

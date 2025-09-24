@@ -19,9 +19,17 @@ namespace MonoTouchFixtures.Security {
 		{
 			TestRuntime.AssertXcodeVersion (11, 0);
 			Assert.That (SecProtocolOptions.DefaultMaxDtlsProtocolVersion, Is.EqualTo (TlsProtocolVersion.Dtls12), "MaxDtls");
-			Assert.That (SecProtocolOptions.DefaultMinDtlsProtocolVersion, Is.EqualTo (TlsProtocolVersion.Dtls10), "MinDtls");
+			if (TestRuntime.CheckXcodeVersion (26, 0)) {
+				Assert.That (SecProtocolOptions.DefaultMinDtlsProtocolVersion, Is.EqualTo (TlsProtocolVersion.Dtls12), "MinDtls");
+			} else {
+				Assert.That (SecProtocolOptions.DefaultMinDtlsProtocolVersion, Is.EqualTo (TlsProtocolVersion.Dtls10), "MinDtls");
+			}
 			Assert.That (SecProtocolOptions.DefaultMaxTlsProtocolVersion, Is.EqualTo (TlsProtocolVersion.Tls13), "MaxTls");
-			Assert.That (SecProtocolOptions.DefaultMinTlsProtocolVersion, Is.EqualTo (TlsProtocolVersion.Tls10), "MinTls");
+			if (TestRuntime.CheckXcodeVersion (26, 0)) {
+				Assert.That (SecProtocolOptions.DefaultMinTlsProtocolVersion, Is.EqualTo (TlsProtocolVersion.Tls12), "MinTls");
+			} else {
+				Assert.That (SecProtocolOptions.DefaultMinTlsProtocolVersion, Is.EqualTo (TlsProtocolVersion.Tls10), "MinTls");
+			}
 		}
 
 		[Test]

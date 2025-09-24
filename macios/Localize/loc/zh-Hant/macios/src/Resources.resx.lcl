@@ -924,10 +924,13 @@
       </Item>
       <Item ItemId=";BI1088" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The backing field type '{0}' is invalid. Valid backing field types are: "NSString", "NSNumber", "nint" and "nuint".]]></Val>
+          <Val><![CDATA[The backing field type '{0}' is invalid. Valid backing field types are: "NSString", "NSNumber", and blittable value types.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[備份欄位類型 '{0}' 無效。有效的備份欄位類型為: "NSString"、"NSNumber"、"nint" 和 "nuint"。]]></Val>
+            <Val><![CDATA[備份欄位類型 '{0}' 無效。有效的備份欄位類型為: "NSString"、"NSNumber" 和 blittable 值類型。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The backing field type '{0}' is invalid. Valid backing field types are: "NSString", "NSNumber", "nint" and "nuint".]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -1098,6 +1101,24 @@
           <Val><![CDATA[The type '{0}' is trying to inline the methods binding the selector '{1}' from the protocols '{2}' and '{3}', using methods with different signatures ('{4}' vs '{5}'). These methods will be ignored.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[類型 '{0}' 正嘗試使用具有不同簽章 ('{4}' 與 '{5}') 的方法，從通訊協定 '{2}' 與 '{3}' 內嵌繫結選取器 '{1}' 的方法。這些方法將被忽略。]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1121" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The strong enum '{0}' is not a valid strong dictionary field for the property '{1}.{2}', because its backing type is '{3}'. Only enums with backing type 'NSString', 'NSNumber' or 'System.Int32' are supported in strong dictionaries.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[強式列舉 '{0}' 不是屬性 '{1}.{2}' 的有效強式字典欄位，因為它的支援類型是 '{3}'。強式字典僅支援備援類型為 'NSString'、'NSNumber' 或 'System.Int32' 的列舉。]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1122" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Unable to find the corresponding NSNumber property for the type {0} in {1}.{2}]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[無法為類型 {0} 在 {1} 中找到對應的 NSNumber 屬性。{2}]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

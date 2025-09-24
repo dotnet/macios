@@ -128,7 +128,8 @@ namespace CoreMedia {
 		public CMBlockBufferError AccessDataBytes (nuint offset, nuint length, IntPtr temporaryBlock, ref IntPtr returnedPointer)
 		{
 			unsafe {
-				return CMBlockBufferAccessDataBytes (GetCheckedHandle (), offset, length, temporaryBlock, (IntPtr*) Unsafe.AsPointer<IntPtr> (ref returnedPointer));
+				fixed (IntPtr* returnedPointerPtr = &returnedPointer)
+					return CMBlockBufferAccessDataBytes (GetCheckedHandle (), offset, length, temporaryBlock, returnedPointerPtr);
 			}
 		}
 
@@ -202,11 +203,15 @@ namespace CoreMedia {
 			lengthAtOffset = default;
 			totalLength = default;
 			unsafe {
-				return CMBlockBufferGetDataPointer (GetCheckedHandle (),
-													offset,
-													(nuint*) Unsafe.AsPointer<nuint> (ref lengthAtOffset),
-													(nuint*) Unsafe.AsPointer<nuint> (ref totalLength),
-													(IntPtr*) Unsafe.AsPointer<IntPtr> (ref dataPointer));
+				fixed (nuint* lengthAtOffsetPtr = &lengthAtOffset, totalLengthPtr = &totalLength) {
+					fixed (IntPtr* dataPointerPtr = &dataPointer) {
+						return CMBlockBufferGetDataPointer (GetCheckedHandle (),
+															offset,
+															lengthAtOffsetPtr,
+															totalLengthPtr,
+															dataPointerPtr);
+					}
+				}
 			}
 		}
 

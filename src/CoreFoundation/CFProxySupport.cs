@@ -895,10 +895,12 @@ namespace CoreFoundation {
 				unsafe {
 					factory = delegate (delegate* unmanaged<IntPtr, IntPtr, IntPtr, void> cb, ref CFStreamClientContext context)
 					{
-						var result = CFNetworkExecuteProxyAutoConfigurationScript (pacScript.Handle, url.Handle, cb, (CFStreamClientContext*) Unsafe.AsPointer<CFStreamClientContext> (ref context));
-						GC.KeepAlive (pacScript);
-						GC.KeepAlive (url);
-						return result;
+						fixed (CFStreamClientContext* contextPtr = &context) {
+							var result = CFNetworkExecuteProxyAutoConfigurationScript (pacScript.Handle, url.Handle, cb, contextPtr);
+							GC.KeepAlive (pacScript);
+							GC.KeepAlive (url);
+							return result;
+						}
 					};
 				}
 				return ExecutePacCFRunLoopSourceBlocking (factory, out outError);
@@ -919,10 +921,12 @@ namespace CoreFoundation {
 				unsafe {
 					factory = delegate (delegate* unmanaged<IntPtr, IntPtr, IntPtr, void> cb, ref CFStreamClientContext context)
 					{
-						var result = CFNetworkExecuteProxyAutoConfigurationScript (pacScript.Handle, url.Handle, cb, (CFStreamClientContext*) Unsafe.AsPointer<CFStreamClientContext> (ref context));
-						GC.KeepAlive (pacScript);
-						GC.KeepAlive (url);
-						return result;
+						fixed (CFStreamClientContext* contextPtr = &context) {
+							var result = CFNetworkExecuteProxyAutoConfigurationScript (pacScript.Handle, url.Handle, cb, contextPtr);
+							GC.KeepAlive (pacScript);
+							GC.KeepAlive (url);
+							return result;
+						}
 					};
 				}
 				// use the helper task with a factory for this method
@@ -952,10 +956,12 @@ namespace CoreFoundation {
 				unsafe {
 					factory = delegate (delegate* unmanaged<IntPtr, IntPtr, IntPtr, void> cb, ref CFStreamClientContext context)
 					{
-						var result = CFNetworkExecuteProxyAutoConfigurationURL (pacUrl.Handle, url.Handle, cb, (CFStreamClientContext*) Unsafe.AsPointer<CFStreamClientContext> (ref context));
-						GC.KeepAlive (pacUrl);
-						GC.KeepAlive (url);
-						return result;
+						fixed (CFStreamClientContext* contextPtr = &context) {
+							var result = CFNetworkExecuteProxyAutoConfigurationURL (pacUrl.Handle, url.Handle, cb, contextPtr);
+							GC.KeepAlive (pacUrl);
+							GC.KeepAlive (url);
+							return result;
+						}
 					};
 				}
 				return ExecutePacCFRunLoopSourceBlocking (factory, out outError);
@@ -977,10 +983,12 @@ namespace CoreFoundation {
 				unsafe {
 					factory = delegate (delegate* unmanaged<IntPtr, IntPtr, IntPtr, void> cb, ref CFStreamClientContext context)
 					{
-						var result = CFNetworkExecuteProxyAutoConfigurationURL (pacUrl.Handle, url.Handle, cb, (CFStreamClientContext*) Unsafe.AsPointer<CFStreamClientContext> (ref context));
-						GC.KeepAlive (pacUrl);
-						GC.KeepAlive (url);
-						return result;
+						fixed (CFStreamClientContext* contextPtr = &context) {
+							var result = CFNetworkExecuteProxyAutoConfigurationURL (pacUrl.Handle, url.Handle, cb, contextPtr);
+							GC.KeepAlive (pacUrl);
+							GC.KeepAlive (url);
+							return result;
+						}
 					};
 				}
 				// use the helper task with a factory for this method

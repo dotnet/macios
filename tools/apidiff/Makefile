@@ -3,14 +3,6 @@ TOP = ../..
 include $(TOP)/Make.config
 include $(TOP)/mk/colors.mk
 
-ifdef SKIP_NEW_APIS #Requires https://github.com/mono/mono/commit/4c6a463678f3f0bfa599caeb66de72c7217fa95d
-NEW_REGEX = "-n:.?"
-endif
-
-ifdef SKIP_ADDED_APIS
-ADD_REGEX = "-a:.?"
-endif
-
 ifeq ($(APIDIFF_DIR),)
 APIDIFF_DIR=temp
 endif
@@ -25,12 +17,12 @@ MONO_API_HTML = $(API_TOOLS_PATH)/mono-api-html/bin/Debug/$(DOTNET_TFM)/mono-api
 MONO_API_INFO_EXEC = $(DOTNET) --roll-forward Major $(MONO_API_INFO) --ignore-inherited-interfaces
 MONO_API_HTML_EXEC = $(DOTNET) --roll-forward Major $(MONO_API_HTML)
 
+BREAKING_CHANGES_SENTINEL=BreakingChangesDetected
+
 export HTML_BREAKING_CHANGES_MESSAGE=❗️Breaking changes❗️
 export HTML_NO_BREAKING_CHANGES_MESSAGE=No breaking changes
 export MARKDOWN_BREAKING_CHANGES_MESSAGE=:heavy_exclamation_mark: Breaking changes :heavy_exclamation_mark:
 export MARKDOWN_NO_BREAKING_CHANGES_MESSAGE=No breaking changes
-
-APIDIFF_IGNORE = -i 'INSObjectProtocol'
 
 $(MONO_API_INFO): $(wildcard $(API_TOOLS_PATH)/mono-api-info/*.cs*)
 	$(Q) $(DOTNET) build $(API_TOOLS_PATH)/mono-api-info/mono-api-info.csproj /bl:$@.binlog $(MSBUILD_VERBOSITY)
@@ -47,10 +39,31 @@ $(MONO_API_HTML): $(wildcard $(API_TOOLS_PATH)/mono-api-html/*.cs*)
 # dependencies changed)
 
 define DotNetComputeDiff
-$(OUTPUT_DIR)/diff/Microsoft.$(1)%html $(OUTPUT_DIR)/diff/Microsoft.$(1)%md: $(APIDIFF_DIR)/references/current/Microsoft.$(1)%xml $(APIDIFF_DIR)/references/comparison/Microsoft.$(1).xml $(MONO_API_HTML)
+HTML_SENTINEL_$(1)=^<h1>Microsoft.$(1).dll</h1>$$
+$(OUTPUT_DIR)/diff/Microsoft.$(1)%html $(OUTPUT_DIR)/diff/Microsoft.$(1)%md: $(APIDIFF_DIR)/references/current/Microsoft.$(1)%xml $(APIDIFF_DIR)/references/comparison/Microsoft.$(1).xml $(MONO_API_HTML) $(OUTPUT_DIR)/diff/Microsoft.$(platform).txt
 	$$(Q) mkdir -p $$(dir $$@)
-	$$(QF_GEN) $(MONO_API_HTML_EXEC) $(NEW_REGEX) $(ADD_REGEX) $$(abspath $(APIDIFF_DIR)/references/comparison/Microsoft.$(1).xml) $$(abspath $(APIDIFF_DIR)/references/current/Microsoft.$(1).xml) $(APIDIFF_IGNORE) --html "$$(abspath $$(basename $$@).html)" --markdown "$$(abspath $$(basename $$@).md)"
+
+	$$(Q) rm -f $$@.header.html
+	$$(Q) if test -f $(OUTPUT_DIR)/diff/Microsoft.$(platform).breaking.txt; then \
+		echo "<!-- $(BREAKING_CHANGES_SENTINEL) -->" >> "$$@.header.html"; \
+	fi
+	$$(Q) echo "<div>" >> "$$@.header.html"
+	$$(Q) echo "<h2>API compatibility verification</h2>" >> "$$@.header.html"
+	$$(Q) if test -f $(OUTPUT_DIR)/diff/Microsoft.$(platform).breaking.txt; then \
+		echo "<pre style='color: red'>" >> "$$@.header.html"; \
+	else \
+		echo "<pre style='color: green'>" >> "$$@.header.html"; \
+	fi
+	$$(Q) echo "    <!-- start html encode -->" >> "$$@.header.html"
+	$$(Q) cat $(OUTPUT_DIR)/diff/Microsoft.$(platform).txt | grep -v 'API compatibility errors between' | grep -v 'API breaking changes found.' | sed 's/^/    /' >> "$$@.header.html"
+	$$(Q) echo "    <!-- end html encode -->" >> "$$@.header.html"
+	$$(Q) echo "</pre>" >> "$$@.header.html"
+	$$(Q) echo "</div>" >> "$$@.header.html"
+
+	$$(QF_GEN) $(MONO_API_HTML_EXEC) $$(abspath $(APIDIFF_DIR)/references/comparison/Microsoft.$(1).xml) $$(abspath $(APIDIFF_DIR)/references/current/Microsoft.$(1).xml) --html "$$(abspath $$(basename $$@).html.tmp)" --markdown "$$(abspath $$(basename $$@).md)" --html-header "$$(abspath $$@.header.html)"
+	$$(Q) mv "$$(abspath $$(basename $$@).html.tmp)" "$$@"
 	$$(Q) touch $$@
+	$$(Q) rm -f "$$@.header.html"
 
 html:: $(OUTPUT_DIR)/diff/Microsoft.$(1).html
 markdown:: $(OUTPUT_DIR)/diff/Microsoft.$(1).md
@@ -58,6 +71,7 @@ endef
 $(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call DotNetComputeDiff,$(platform))))
 
 API_DIFF_DEPENDENCIES += $(foreach platform,$(DOTNET_PLATFORMS),$(OUTPUT_DIR)/diff/Microsoft.$(platform).html)
+API_DIFF_DEPENDENCIES += $(foreach platform,$(DOTNET_PLATFORMS),$(OUTPUT_DIR)/diff/Microsoft.$(platform).txt)
 
 $(OUTPUT_DIR)/index.html: $(OUTPUT_DIR)/api-diff.html
 	$(Q) $(CP) $< $@
@@ -101,7 +115,7 @@ $(OUTPUT_DIR)/api-diff.html: $(API_DIFF_DEPENDENCIES)
 
 	$(Q) if grep "$(HTML_BREAKING_CHANGES_MESSAGE)" $@ >/dev/null 2>&1; then \
 		echo "" >> $@; \
-		echo "<!-- BreakingChangesDetected -->" >> $@; \
+		echo "<!-- $(BREAKING_CHANGES_SENTINEL) -->" >> $@; \
 		echo "" >> $@; \
 	fi
 
@@ -121,7 +135,7 @@ all-markdowns:: $(OUTPUT_DIR)/api-diff.md
 $(OUTPUT_DIR)/api-diff.md: $(API_DIFF_DEPENDENCIES)
 	$(Q) if $(foreach html,$(wildcard $(OUTPUT_DIR)/diff/Microsoft.*.html),! test -s "$(html)" &&) true; then \
 		echo "<details><summary>NET (empty diffs)</summary>" >> "$@"; \
-	elif grep BreakingChangesDetected "$(OUTPUT_DIR)"/diff/Microsoft.*.html &> /dev/null; then \
+	elif grep $(BREAKING_CHANGES_SENTINEL) "$(OUTPUT_DIR)"/diff/Microsoft.*.html &> /dev/null; then \
 		echo "<details><summary>.NET ( $(MARKDOWN_BREAKING_CHANGES_MESSAGE) )</summary>" >> "$@"; \
 	else \
 		echo "<details><summary>.NET ( $(MARKDOWN_NO_BREAKING_CHANGES_MESSAGE) )</summary>" >> "$@"; \
@@ -137,7 +151,7 @@ $(OUTPUT_DIR)/api-diff.md: $(API_DIFF_DEPENDENCIES)
 
 	$(Q) if grep "$(MARKDOWN_BREAKING_CHANGES_MESSAGE)" $@ >/dev/null 2>&1; then \
 		echo "" >> $@; \
-		echo "<!-- BreakingChangesDetected -->" >> $@; \
+		echo "<!-- $(BREAKING_CHANGES_SENTINEL) -->" >> $@; \
 		echo "" >> $@; \
 	fi
 
@@ -209,3 +223,44 @@ $(APIDIFF_DIR)/references/current/Microsoft.$(1).xml: $(DOTNET_DESTDIR)/$($(1)_N
 update-current-refs:: $(APIDIFF_DIR)/references/current/Microsoft.$(1).xml
 endef
 $(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call GenerateCurrentReferenceXml,$(platform))))
+
+install-apicompat.stamp:
+	$(Q) $(DOTNET) tool restore
+	$(Q) touch $@
+
+include $(TOP)/scripts/get-assembly-version/fragment.mk
+
+define ComputeAssemblyVersions
+$$(OUTPUT_DIR)/tmp/left-assembly-version-$(1).txt: $$(COMPARISON_DLL_$(1)) $$(GET_ASSEMBLY_VERSION)
+	$$(Q) mkdir -p $$(dir $$@)
+	$$(GET_ASSEMBLY_VERSION_EXEC) $$< > $$@.tmp
+	$$(Q) mv $$@.tmp $$@
+
+$$(OUTPUT_DIR)/tmp/right-assembly-version-$(1).txt: $(DOTNET_DESTDIR)/$($(1)_NUGET_REF_NAME)/ref/$(DOTNET_TFM)/Microsoft.$(1).dll $$(GET_ASSEMBLY_VERSION)
+	$$(Q) mkdir -p $$(dir $$@)
+	$$(GET_ASSEMBLY_VERSION_EXEC) $$< > $$@.tmp
+	$$(Q) mv $$@.tmp $$@
+
+assembly-versions-$(1): $$(OUTPUT_DIR)/tmp/left-assembly-version-$(1).txt $$(OUTPUT_DIR)/tmp/right-assembly-version-$(1).txt
+assembly-versions:: assembly-versions-$(1)
+endef
+$(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call ComputeAssemblyVersions,$(platform))))
+
+define VerifyNoBreakingChanges
+$$(OUTPUT_DIR)/diff/Microsoft.$(platform).txt: export DOTNET=$(DOTNET)
+$$(OUTPUT_DIR)/diff/Microsoft.$(platform).txt: $$(COMPARISON_DLL_$(1)) $(DOTNET_DESTDIR)/$($(1)_NUGET_REF_NAME)/ref/$(DOTNET_TFM)/Microsoft.$(1).dll suppression-files/$(1).xml Makefile assembly-versions-$(1) install-apicompat.stamp
+	$$(Q) mkdir -p $$(dir $$@)
+	$$(QF_GEN) ./apicompat.sh verify "$(1)" "$$(COMPARISON_DLL_$(1))" "$(DOTNET_DESTDIR)/$($(1)_NUGET_REF_NAME)/ref/$(DOTNET_TFM)/Microsoft.$(1).dll" "$$(abspath $$@)" "$$(OUTPUT_DIR)" "$$(OUTPUT_DIR)/tmp/left-assembly-version-$(1).txt" "$$(OUTPUT_DIR)/tmp/right-assembly-version-$(1).txt" "$(NUGET_PRERELEASE_IDENTIFIER)"
+
+verify-no-breaking-changes:: $$(OUTPUT_DIR)/diff/Microsoft.$(platform).txt
+endef
+$(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call VerifyNoBreakingChanges,$(platform))))
+
+define RegenerateSuppressionFiles
+regenerate-suppression-files-$(1): export DOTNET=$(DOTNET)
+regenerate-suppression-files-$(1): $$(COMPARISON_DLL_$(1)) $(DOTNET_DESTDIR)/$($(1)_NUGET_REF_NAME)/ref/$(DOTNET_TFM)/Microsoft.$(1).dll Makefile assembly-versions-$(1) install-apicompat.stamp
+	$$(QF_GEN) ./apicompat.sh regenerate "$(1)" "$$(COMPARISON_DLL_$(1))" "$(DOTNET_DESTDIR)/$($(1)_NUGET_REF_NAME)/ref/$(DOTNET_TFM)/Microsoft.$(1).dll" "" "$$(OUTPUT_DIR)" "$$(OUTPUT_DIR)/tmp/left-assembly-version-$(1).txt" "$$(OUTPUT_DIR)/tmp/right-assembly-version-$(1).txt" "$(NUGET_PRERELEASE_IDENTIFIER)"
+
+regenerate-suppression-files:: regenerate-suppression-files-$(1)
+endef
+$(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call RegenerateSuppressionFiles,$(platform))))

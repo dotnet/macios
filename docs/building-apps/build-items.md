@@ -309,6 +309,27 @@ the `CollectAppManifestsDependsOn` property:
 </Target>
 ```
 
+### SkipCodesignItems
+
+An item group that specifies files or directories in the app bundle that should not be signed.
+
+The purpose is to exclude from signing files and directories that are copied
+manually (for instance through custom MSBuild targets in the project file) to
+the app bundle, and which are already signed.
+
+The path to include is the path to the file or directory relative to the root
+of the app bundle.
+
+Example:
+
+```xml
+<ItemGroup>
+    <SkipCodesignItems Include="Contents/SharedSupport/mysignedlibrary.dylib" />
+</ItemGroup>
+```
+
+Applicable to all platforms.
+
 ## XcodeProject
 
 `<XcodeProject>` can be used to build and consume the outputs

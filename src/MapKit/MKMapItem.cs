@@ -15,27 +15,6 @@ using ObjCRuntime;
 #nullable enable
 
 namespace MapKit {
-
-	// it's similar to MKDirectionsTransportType values but it's something only used on the managed side
-	// to replace NSString fields
-	/// <summary>An enumeration of travel methods for which directions can be provided.</summary>
-	///     <remarks>
-	///     </remarks>
-	public enum MKDirectionsMode {
-		/// <summary>Driving directions.</summary>
-		Driving,
-		/// <summary>Walking directions.</summary>
-		Walking,
-		/// <summary>Transit directions.</summary>
-		Transit,
-		/// <summary>The user's preferred direction type.</summary>
-		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[UnsupportedOSPlatform ("tvos")]
-		Default,
-	}
-
 	/// <summary>Encapsulates properties to be used with <see cref="MapKit.MKMapItem.OpenInMaps(MapKit.MKLaunchOptions)" />.</summary>
 	///     <remarks>
 	///     </remarks>
@@ -98,24 +77,7 @@ namespace MapKit {
 			int i = 0;
 			if (DirectionsMode.HasValue) {
 				keys [i] = MKMapItem.MKLaunchOptionsDirectionsModeKey;
-				NSString v = MKMapItem.MKLaunchOptionsDirectionsModeDriving;
-				switch (DirectionsMode.Value) {
-				case MKDirectionsMode.Driving:
-					v = MKMapItem.MKLaunchOptionsDirectionsModeDriving;
-					break;
-				case MKDirectionsMode.Transit:
-					v = MKMapItem.MKLaunchOptionsDirectionsModeTransit;
-					break;
-				case MKDirectionsMode.Walking:
-					v = MKMapItem.MKLaunchOptionsDirectionsModeWalking;
-					break;
-#if !TV
-				case MKDirectionsMode.Default:
-					v = MKMapItem.MKLaunchOptionsDirectionsModeDefault;
-					break;
-#endif
-				}
-				values [i++] = v;
+				values [i++] = DirectionsMode.Value.GetConstant ()!;
 			}
 
 			if (MapType.HasValue) {

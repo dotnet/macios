@@ -11,7 +11,7 @@ using System;
 
 namespace Cinematic {
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), NoMacCatalyst]
+	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (26, 0)]
 	[ErrorDomain ("CNCinematicErrorDomain")]
 	[Native]
 	public enum CNCinematicErrorCode : long {
@@ -24,7 +24,7 @@ namespace Cinematic {
 		Cancelled = 7,
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), NoMacCatalyst]
+	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (26, 0)]
 	[Native]
 	public enum CNRenderingQuality : long {
 		Thumbnail,
@@ -50,7 +50,79 @@ namespace Cinematic {
 		Custom = 102,
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), NoMacCatalyst]
+	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+	[Native]
+	public enum CNSpatialAudioRenderingStyle : long {
+		Cinematic = 0,
+		Studio = 1,
+		InFrame = 2,
+		CinematicBackgroundStem = 3,
+		CinematicForegroundStem = 4,
+		StudioForegroundStem = 5,
+		InFrameForegroundStem = 6,
+		Standard = 7,
+		StudioBackgroundStem = 8,
+		InFrameBackgroundStem = 9,
+	}
+
+	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+	[Native]
+	public enum CNSpatialAudioContentType : long {
+		Stereo,
+		Spatial,
+	}
+
+	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface CNAssetSpatialAudioInfo {
+		[Static]
+		[Export ("isSupported")]
+		bool IsSupported { get; }
+
+		[Async]
+		[Static]
+		[Export ("checkIfContainsSpatialAudio:completionHandler:")]
+		void CheckIfContainsSpatialAudio (AVAsset asset, CNAssetSpatialAudioInfoCheckIfContainsSpatialAudioCallback completionHandler);
+
+		[Async]
+		[Static]
+		[Export ("loadFromAsset:completionHandler:")]
+		void Load (AVAsset asset, CNAssetSpatialAudioInfoLoadCallback completionHandler);
+
+		// From the CNAssetSpatialAudioInfo (Properties) category
+		[Export ("defaultSpatialAudioTrack")]
+		AVAssetTrack DefaultSpatialAudioTrack { get; }
+
+		// From the CNAssetSpatialAudioInfo (Properties) category
+		[Export ("defaultEffectIntensity")]
+		float DefaultEffectIntensity { get; }
+
+		// From the CNAssetSpatialAudioInfo (Properties) category
+		[Export ("defaultRenderingStyle")]
+		CNSpatialAudioRenderingStyle DefaultRenderingStyle { get; }
+
+		// From the CNAssetSpatialAudioInfo (Properties) category
+		[Export ("spatialAudioMixMetadata")]
+		NSData SpatialAudioMixMetadata { get; }
+
+		// From the CNAssetSpatialAudioInfo (SynthesizeAVFoundationObjects) category
+		[Export ("audioMixWithEffectIntensity:renderingStyle:")]
+		AVAudioMix CreateAudioMix (float effectIntensity, CNSpatialAudioRenderingStyle renderingStyle);
+
+		// From the CNAssetSpatialAudioInfo (SynthesizeAVFoundationObjects) category
+		[Export ("assetReaderOutputSettingsForContentType:")]
+		NSDictionary<NSString, NSObject> GetAssetReaderOutputSettings (CNSpatialAudioContentType contentType);
+
+		// From the CNAssetSpatialAudioInfo (SynthesizeAVFoundationObjects) category
+		[Export ("assetWriterInputSettingsForContentType:")]
+		NSDictionary<NSString, NSObject> GetAssetWriterInputSettingsFor (CNSpatialAudioContentType contentType);
+	}
+
+	delegate void CNAssetSpatialAudioInfoCheckIfContainsSpatialAudioCallback (bool result);
+	delegate void CNAssetSpatialAudioInfoLoadCallback ([NullAllowed] CNAssetSpatialAudioInfo assetInfo, [NullAllowed] NSError error);
+
+	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CNAssetInfo {
@@ -106,14 +178,14 @@ namespace Cinematic {
 		NSNumber [] SampleDataTrackIds { get; }
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), NoMacCatalyst]
+	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (CNAssetInfo))]
 	interface CNCompositionInfo {
 		[Export ("insertTimeRange:ofCinematicAssetInfo:atTime:error:")]
 		bool InsertTimeRange (CMTimeRange timeRange, CNAssetInfo assetInfo, CMTime startTime, [NullAllowed] out NSError outError);
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), NoMacCatalyst]
+	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CNRenderingSessionAttributes {
@@ -126,7 +198,7 @@ namespace Cinematic {
 		nint RenderingVersion { get; }
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), NoMacCatalyst]
+	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CNRenderingSessionFrameAttributes : NSCopying, NSMutableCopying {
@@ -143,7 +215,7 @@ namespace Cinematic {
 		float FNumber { get; set; }
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), NoMacCatalyst]
+	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CNRenderingSession {
@@ -180,7 +252,7 @@ namespace Cinematic {
 		NSNumber [] DestinationPixelFormatTypes { get; }
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), NoMacCatalyst]
+	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CNDetection : NSCopying {
@@ -222,7 +294,7 @@ namespace Cinematic {
 		float DisparityInNormalizedRect (CGRect normalizedRect, CVPixelBuffer sourceDisparity, CNDetectionType detectionType, float priorDisparity);
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), NoMacCatalyst]
+	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CNDecision : NSCopying {
@@ -253,7 +325,7 @@ namespace Cinematic {
 		bool StrongDecision { [Bind ("isStrongDecision")] get; }
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), NoMacCatalyst]
+	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CNDetectionTrack : NSCopying {
@@ -284,7 +356,7 @@ namespace Cinematic {
 		CNDetection [] GetDetectionsInTimeRange (CMTimeRange timeRange);
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), NoMacCatalyst]
+	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (CNDetectionTrack))]
 	interface CNFixedDetectionTrack {
 		[Export ("initWithFocusDisparity:")]
@@ -300,7 +372,7 @@ namespace Cinematic {
 		CNDetection OriginalDetection { get; }
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), NoMacCatalyst]
+	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (CNDetectionTrack))]
 	interface CNCustomDetectionTrack {
 		[Export ("initWithDetections:smooth:")]
@@ -310,7 +382,7 @@ namespace Cinematic {
 		CNDetection [] AllDetections { get; }
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), NoMacCatalyst]
+	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CNScript {
@@ -403,7 +475,7 @@ namespace Cinematic {
 		CNDetectionTrack [] AddedDetectionTracks { get; }
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), NoMacCatalyst]
+	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CNScriptChanges {
@@ -423,7 +495,7 @@ namespace Cinematic {
 		CNDetectionTrack [] AddedDetectionTracks { get; }
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), NoMacCatalyst]
+	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CNScriptFrame : NSCopying {
@@ -448,7 +520,7 @@ namespace Cinematic {
 		CNDetection GetBestDetectionForGroupId (long detectionGroupId);
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), NoMacCatalyst]
+	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
 	interface CNBoundsPrediction : NSCopying, NSMutableCopying {
 		[Export ("normalizedBounds", ArgumentSemantic.Assign)]
@@ -458,7 +530,7 @@ namespace Cinematic {
 		float Confidence { get; set; }
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), NoMacCatalyst]
+	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CNObjectTracker {

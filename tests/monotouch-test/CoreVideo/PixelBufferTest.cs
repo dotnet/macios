@@ -99,5 +99,32 @@ namespace MonoTouchFixtures.CoreVideo {
 			var invalid = Runtime.GetINativeObject<CVPixelBuffer> (IntPtr.Zero, false);
 			Assert.Null (invalid, "CheckInvalidPtr");
 		}
+
+		[Test]
+		public void IsCompatibleWithAttributeTest ()
+		{
+			nint width = 1280;
+			nint height = 720;
+			var planeWidths = new nint [] { width, width / 2 };
+			var planeHeights = new nint [] { height, height / 2 };
+			var planeBytesPerRow = new nint [] { width, width };
+
+			nint bytesPerRow = width * 4;
+			var pixelFormat = CVPixelFormatType.CV32BGRA;
+			var pixelFormat2 = CVPixelFormatType.CV24RGB;
+			var data = new byte [height * bytesPerRow];
+
+			using var buffer = CVPixelBuffer.Create (width, height, pixelFormat, data, bytesPerRow, null, out var status);
+			Assert.AreEqual (status, CVReturn.Success, "Status");
+			Assert.IsNotNull (buffer, "Buffer");
+
+			var attributes = new CVPixelBufferAttributes (pixelFormat, width, height);
+			Assert.That (buffer.IsCompatibleWithAttributes (attributes), Is.EqualTo (true), "IsCompatible 1");
+			Assert.That (buffer.IsCompatibleWithAttributes (attributes.Dictionary), Is.EqualTo (true), "IsCompatible 2");
+
+			var attributes2 = new CVPixelBufferAttributes (pixelFormat2, width, height);
+			Assert.That (buffer.IsCompatibleWithAttributes (attributes2), Is.EqualTo (false), "IsCompatible B 1");
+			Assert.That (buffer.IsCompatibleWithAttributes (attributes2.Dictionary), Is.EqualTo (false), "IsCompatible B 2");
+		}
 	}
 }

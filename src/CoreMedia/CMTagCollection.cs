@@ -285,8 +285,11 @@ namespace CoreMedia {
 			tagsCopied = 0;
 
 			unsafe {
-				fixed (CMTag* tagPtr = tags)
-					return CMTagCollectionGetTags (GetCheckedHandle (), tagPtr, tagCount, (nint*) Unsafe.AsPointer<nint> (ref tagsCopied));
+				fixed (CMTag* tagPtr = tags) {
+					fixed (nint* tagsCopiedPtr = &tagsCopied) {
+						return CMTagCollectionGetTags (GetCheckedHandle (), tagPtr, tagCount, tagsCopiedPtr);
+					}
+				}
 			}
 		}
 
@@ -328,8 +331,11 @@ namespace CoreMedia {
 			tagsCopied = 0;
 
 			unsafe {
-				fixed (CMTag* tagPtr = tags)
-					return CMTagCollectionGetTagsWithCategory (GetCheckedHandle (), category, tagPtr, tagCount, (nint*) Unsafe.AsPointer<nint> (ref tagsCopied));
+				fixed (CMTag* tagPtr = tags) {
+					fixed (nint* tagsCopiedPtr = &tagsCopied) {
+						return CMTagCollectionGetTagsWithCategory (GetCheckedHandle (), category, tagPtr, tagCount, tagsCopiedPtr);
+					}
+				}
 			}
 		}
 
@@ -408,13 +414,15 @@ namespace CoreMedia {
 			CMTagCollectionError rv;
 			unsafe {
 				fixed (CMTag* tagPtr = tags) {
-					rv = CMTagCollectionGetTagsWithFilterFunction (
-						GetCheckedHandle (),
-						tagPtr,
-						tagCount,
-						(nint*) Unsafe.AsPointer<nint> (ref tagsCopied),
-						&CMTagCollectionTagFilterFunction_Callback,
-						GCHandle.ToIntPtr (gchandle));
+					fixed (nint* tagsCopiedPtr = &tagsCopied) {
+						rv = CMTagCollectionGetTagsWithFilterFunction (
+							GetCheckedHandle (),
+							tagPtr,
+							tagCount,
+							tagsCopiedPtr,
+							&CMTagCollectionTagFilterFunction_Callback,
+							GCHandle.ToIntPtr (gchandle));
+					}
 				}
 			}
 			gchandle.Free ();

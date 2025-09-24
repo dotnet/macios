@@ -9,6 +9,7 @@
 
 using System;
 using ObjCRuntime;
+using Foundation;
 #if !COREBUILD
 using CoreGraphics;
 #endif
@@ -253,5 +254,33 @@ namespace UIKit {
 			return new UIColor (color.R/255.0f, color.G/255.0f, color.B/255.0f, color.A/255.0f);
 		}
 #endif
+
+		/// <summary>
+		/// Creates a high dynamic range (HDR) color by applying exposure adjustments to standard dynamic range (SDR) color values.
+		/// </summary>
+		/// <param name="red">Red color component, typically in the range [0..1].</param>
+		/// <param name="green">Green color component, typically in the range [0..1].</param>
+		/// <param name="blue">Blue color component, typically in the range [0..1].</param>
+		/// <param name="alpha">Alpha transparency component, typically in the range [0..1].</param>
+		/// <param name="exposure">Exposure adjustment value. Must be >= 0 for exponential exposure or >= 1 for linear exposure.</param>
+		/// <param name="isLinearExposure">When true, applies linear exposure scaling. When false, applies exponential exposure scaling.</param>
+		/// <remarks>
+		/// <para>The HDR color is computed by processing the input color in linear color space with exposure adjustments.</para>
+		/// <para>For exponential exposure (isLinearExposure = false): Color components are scaled by 2^exposure, where each unit increase doubles the brightness.</para>
+		/// <para>For linear exposure (isLinearExposure = true): Color components are scaled directly by the exposure value, where doubling the exposure doubles the brightness.</para>
+		/// <para>The resulting color's content headroom corresponds to the linearized exposure factor.</para>
+		/// </remarks>
+		[SupportedOSPlatform ("ios26.0")]
+		[SupportedOSPlatform ("maccatalyst26.0")]
+		[SupportedOSPlatform ("tvos26.0")]
+		public UIColor (nfloat red, nfloat green, nfloat blue, nfloat alpha, nfloat exposure, bool isLinearExposure)
+			: base (NSObjectFlag.Empty)
+		{
+			if (isLinearExposure) {
+				InitializeHandle (_InitWithRedGreenBlueAlphaLinearExposure (red, green, blue, alpha, exposure), "initWithRed:green:blue:alpha:linearExposure:");
+			} else {
+				InitializeHandle (_InitWithRedGreenBlueAlphaExposure (red, green, blue, alpha, exposure), "initWithRed:green:blue:alpha:exposure:");
+			}
+		}
 	}
 }

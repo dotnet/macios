@@ -1,4 +1,6 @@
 using System;
+using System.ComponentModel;
+
 using ObjCRuntime;
 using Foundation;
 
@@ -18,14 +20,34 @@ namespace LocalAuthentication {
 		[NoiOS]
 		[NoMacCatalyst]
 		DeviceOwnerAuthenticationWithWatch = 3,
-		[NoTV, MacCatalyst (18, 0), Mac (15, 0), iOS (18, 0)]
+
+#if XAMCORE_5_0
+		[NoiOS]
+#else
+		[iOS (18, 0)]
+#if __IOS__ && !__MACCATALYST__
+		[Obsolete ("This value is not available on this platform.")]
+#endif
+#endif
+		[NoTV, MacCatalyst (18, 0), Mac (15, 0)]
 		DeviceOwnerAuthenticationWithCompanion = 3,
+
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'DeviceOwnerAuthenticationWithBiometricsOrCompanion' instead.")]
 		[NoiOS]
 		[NoMacCatalyst]
 		DeviceOwnerAuthenticationWithBiometricsOrWatch = 4,
-		[NoTV, MacCatalyst (18, 0), Mac (15, 0), iOS (18, 0)]
+
+#if XAMCORE_5_0
+		[NoiOS]
+#else
+		[iOS (18, 0)]
+#if __IOS__ && !__MACCATALYST__
+		[Obsolete ("This value is not available on this platform.")]
+#endif
+#endif
+		[NoTV, MacCatalyst (18, 0), Mac (15, 0)]
 		DeviceOwnerAuthenticationWithBiometricsOrCompanion = 4,
+
 		[Obsolete ("Use DeviceOwnerAuthenticationWithBiometricsOrWatch enum value instead.")]
 		[NoiOS]
 		[NoMacCatalyst]

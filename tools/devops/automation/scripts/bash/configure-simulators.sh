@@ -35,7 +35,7 @@ TVOS_SIMRUNTIME_VERSION=${TVOS_OS_VERSION/./-}
 
 rm -f "$FILE"
 
-xcrun simctl create "Apple TV (tvOS $TVOS_OS_VERSION) - created by CI" $TVOS_SIMULATOR_DEVICE_TYPE com.apple.CoreSimulator.SimRuntime.tvOS-$TVOS_SIMRUNTIME_VERSION
-xcrun simctl create "iPhone 14 (iOS $IOS_OS_VERSION) - created by CI"  $IOS_SIMULATOR_DEVICE_TYPE  com.apple.CoreSimulator.SimRuntime.iOS-$IOS_SIMRUNTIME_VERSION
+xcrun simctl create "Apple TV (tvOS $TVOS_OS_VERSION) - created by CI" "$TVOS_SIMULATOR_DEVICE_TYPE" "com.apple.CoreSimulator.SimRuntime.tvOS-$TVOS_SIMRUNTIME_VERSION"
+xcrun simctl create "iPhone 14 (iOS $IOS_OS_VERSION) - created by CI"  "$IOS_SIMULATOR_DEVICE_TYPE"  "com.apple.CoreSimulator.SimRuntime.iOS-$IOS_SIMRUNTIME_VERSION"
 
 xcrun simctl list --json
